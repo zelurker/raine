@@ -554,7 +554,7 @@ void TMenu::setup_font(unsigned int len_frame) {
     w = sdl_screen->w/(len_frame); // ideal font width & height, with some
   }
   if (!nb_disp_items) return;
-  h = (work_area.h ? work_area.h-40 : sdl_screen->h - 40)/(nb_disp_items); // margin
+  h = (sdl_screen->h - 40)/(nb_disp_items); // margin
   h = h*4/9; // This 5/11 is just the result of tests, so that the main
   // menu fits on the screen without scrollbar when loading bublbobl !
   // Actually it's probably dependant of the font (size w != size h).
