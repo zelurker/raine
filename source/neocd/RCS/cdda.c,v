@@ -1,0 +1,283 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.2
+date	2008.03.07.14.28.34;	author manu;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.02.16.19.45.45;	author manu;	state Exp;
+branches;
+next	;
+
+
+desc
+@Version sdl_mixer
+@
+
+
+1.2
+log
+@Version sdl_sound
+@
+text
+@#include <dirent.h>
+#include <unistd.h>
+#include "raine.h"
+#include "neocd.h"
+#include "sasound.h"
+#include "profile.h"
+#include "savegame.h"
+#include "cdrom.h"
+#include "ingame.h"
+
+struct {
+  int playing,track,loop,pos;
+} cdda;
+
+int sfx_volume,music_volume;
+
+static char *find_file(char *pattern,char *path){
+  static char name[256];
+  char buff[1024];
+  char number[25];
+  char ext[10];
+  char *s = strchr(pattern,'.');
+  if (s) {
+    strcpy(ext,s);
+    strcpy(number,pattern);
+    number[s-pattern] = 0;
+  } else {
+    number[0] = ext[0] = 0;
+  }
+
+  name[0] = 0;
+
+  DIR *dir = opendir(path);
+  if (!dir) return NULL;
+  struct dirent *dent;
+  while ((dent = readdir(dir))) {
+    // windows does not support strcasestr, use strlwr before...
+    strcpy(buff,dent->d_name);
+    strlwr(buff);
+    if (strstr(buff,pattern)) {
+      strcpy(name,dent->d_name);
+      break;
+    } else if (*number) {
+      // if (strcasestr(dent->d_name,ext))
+      {
+	int len = strlen(number);
+	s = dent->d_name-1;
+	do {
+	  s = strstr(s+1,number);
+	  // search for the track number alone in the filename (ie followed
+	  // by a non digit, and either at the start of the name, or following
+	  // a non digit !
+	} while (s && ((s[len] <= '9' && s[len] >= '0') ||
+	  (s > dent->d_name && (s[-1] >= '0' && s[-1] <= '9'))));
+	if (s) {
+	  strcpy(name,dent->d_name);
+	  break;
+	}
+      }
+    }
+  }
+  closedir(dir);
+  if (name[0]) return name;
+  return NULL;
+}
+
+void cdda_stop() {
+  // usefull before loading a game...
+  init_samples();
+  cdda.playing = 0;
+}
+
+static int cdda_play(int track,int loop)
+{
+  char str[256];char str2[256];char *str3;
+  print_debug("cdda_play %d,%d\n",track,loop);
+
+  if (!RaineSoundCard) return 1;
+
+  if(cdda.playing && cdda.track==track) {
+    if (cdda.playing==2) {//was in pause, so resume & let stop/play again
+      cdda.playing = 1;
+    }
+    return 1;
+  }
+
+  cdda_stop();
+  cdda.track = track;
+
+  str3 = get_mp3_track(track);
+  if (!str3) {
+    sprintf(str,"%s%sneocd.mp3",neocd_dir,SLASH);
+    strcpy(str2,"xx.mp3");
+    str2[0]=(((track)/10)%10)+48;
+    str2[1]=((track)%10)+48;
+
+    str3=find_file(str2,str);
+    if (!str3) { // try in the same dir
+      strcpy(str,neocd_dir);
+      str3=find_file(str2,str);
+    }
+  } else
+    strcpy(str,neocd_dir);
+
+  if (str3) {
+    print_debug("cdda play - mp3 found\n");
+    if (str[strlen(str)-1] != SLASH[0])
+      strcat(str,SLASH);
+    strcat(str,str3);
+    load_sample(str);
+    if (loop)
+      cdda.loop = -1;
+    else
+      cdda.loop = 0;
+    cdda.playing = 1;
+    print_debug("playing %s\n",str);
+    reset_ingame_timer(); // loading the song can be long, esp from a cd !
+  } else
+	  print_ingame(180,"Could not find audio track %d",track);
+
+  return 1;
+}
+
+static void	cdda_pause(void)
+{
+  print_debug("cdda pause\n");
+  cdda.playing = 2;
+}
+
+void do_cdda( int command, int track_number_bcd)
+{
+	int		track_number;
+
+  print_debug("do_cdda(%d,%d)\n",command,track_number_bcd);
+	if ((command == 0)&&(track_number_bcd == 0))
+		return;
+
+	switch( command )
+	{
+	  case	0:
+	  case	1:
+	  case	5:
+	  case	4:
+	  case	3:
+	  case	7:
+	    // This write to set the track number to 0 is *VERY* important
+	    // because it prevents the bios from overwriting the irq2 vector
+	    // when you start aero fighters 2, with the z80 scanning enabled
+            WriteByte(&RAM[(0x108000 + 0x764b) ^ 1],0); // track number
+	    track_number = ((track_number_bcd>>4)*10) + (track_number_bcd&0x0F);
+	    if ((track_number == 0)&&(!cdda.playing))
+	    {
+	      cdda.playing = 1;
+	    }
+	    else if ((track_number>1)&&(track_number<99))
+	    {
+	      cdda_play(track_number,!(command&1));
+	    }
+	    break;
+	  case	6:
+	  case	2:
+	    if (cdda.playing)
+	    {
+	      //sound_mute();
+	      cdda_pause();
+	    }
+	    break;
+
+	}
+}
+
+void init_cdda() {
+  cdda.playing = cdda.track = 0;
+  init_samples();
+}
+
+void restore_cdda() {
+  if (cdda.playing == 1) {
+    int track = cdda.track;
+    int pos = cdda.pos;
+    cdda.track = -1;
+    cdda_play(track,cdda.loop);
+    set_sample_pos(pos);
+  }
+  print_debug("cdda restored\n");
+}
+
+void prepare_cdda_save(UINT32 id) {
+  AddSaveData(id,(UINT8*)&cdda,sizeof(cdda));
+  AddLoadCallback(restore_cdda);
+}
+ 
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a0 1
+#include <SDL_mixer.h>
+d9 1
+a9 1
+#include "cdda.h"
+d11 2
+a12 2
+static struct {
+  int playing,track,loop;
+a14 1
+static Mix_Music *music;
+d67 6
+a81 1
+      Mix_ResumeMusic();
+d110 10
+a119 15
+    music = Mix_LoadMUS(str);
+    if (music) {
+      if (loop)
+	cdda.loop = -1;
+      else
+	cdda.loop = 0;
+      Mix_PlayMusic(music,cdda.loop);
+      Mix_VolumeMusic(128*music_volume/100);
+      cdda.playing = 1;
+      print_debug("playing %s\n",str);
+      reset_ingame_timer(); // loading the song can be long, esp from a cd !
+    } else {
+      print_debug("couldn't load %s\n",str);
+    }
+  }
+a125 1
+  Mix_PauseMusic();
+a152 1
+	      Mix_ResumeMusic();
+d174 1
+a174 4
+  if (music) {
+    Mix_FreeMusic(music);
+    music = NULL;
+  }
+d180 1
+d183 1
+a192 10
+void cdda_stop() {
+  // usefull before loading a game...
+  if (music) {
+    Mix_HaltMusic();
+    Mix_FreeMusic(music);
+    music = NULL;
+  }
+  cdda.playing = 0;
+}
+
+@

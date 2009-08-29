@@ -1,0 +1,709 @@
+/******************************************************************************/
+/*                                                                            */
+/*                               LOAD/SAVE GAME                               */
+/*                                                                            */
+/******************************************************************************/
+// format zlib only, sdl compatible
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include "cpumain.h"
+#include "files.h"
+#include "sasound.h"
+#include "control.h" // trackball
+#include <sys/stat.h> // mkdir ! (linux)
+#include <zlib.h> // now uses zlib all the time for the savegames
+#include <time.h>
+
+#include "profile.h" // reset_ingame_timer()
+
+#ifndef SDL
+#include "gui.h" // setup/release_gui
+#include "rgui.h" // raine file selector...
+#else
+// #include "compat.h"
+// #include "sdl/SDL_gfx/SDL_rotozoom.h"
+// #include "sdl/blit_sdl.h"
+#endif
+
+#include "timer.h" // update_timers
+#include "dejap.h" // default eeproms in raine.dat
+#include "hiscore.h"
+#include "newmem.h"
+#ifdef NEO
+#include "neocd/cdda.h"
+#endif
+
+// #include "blit.h"
+// #include "palette.h"
+// #include "loadpng.h"
+
+/*
+
+Todo:
+
+- Change ram area, so there is a savedata entry in each game driver (then it is
+  not a special case in here).
+- Add savedata and any callbacks needed for sound chip emulators and U68020.
+- Make save_data_list into a linked list, for more expandable code.
+- Think of something useful to save in the global header, currently it is empty.
+- Remove old load support, after the next release or two.
+
+*/
+
+#include "raine.h"
+#include "savegame.h"
+
+#include "starhelp.h"
+#include "mz80help.h"
+#ifndef NEO
+#include "68020.h"
+#include "m68k.h"
+#include "newcpu.h"
+#endif
+
+#include "config.h"
+#include "memory.h"
+
+#include "games.h"		// Games List
+
+#include "ingame.h"
+
+int RAMSize,RefreshBuffers;
+UINT8 *RAM;
+
+// ---- Saved Data Types -------------------------------
+
+#define SAVE_RAM              ASCII_ID('R','A','M',0x00)
+#define SAVE_MOUSE            ASCII_ID('M','O','U','S')
+// SAVE_MOUSE is especially usefull for the demos...
+#define SAVE_END              ASCII_ID('E','N','D',0x00)
+#define SAVE_PICT              ASCII_ID('P','I','C','T')
+
+// -----------------------------------------------------
+
+typedef struct SAVE_DATA
+{
+   UINT32 id;			// Unique ASCII_ID for this data
+   UINT8 *source;		// Pointer to the data in memory
+   UINT32 size;			// Size of the data in bytes
+} SAVE_DATA;
+
+static struct SAVE_DATA save_data_list[0x40];
+
+int SaveDataCount;
+int UseCompression,SaveSlot;
+int savegame_version;
+
+void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
+{
+  int n;
+  for (n=0; n<SaveDataCount; n++) {
+    if (save_data_list[n].id == id) {
+      save_data_list[n].source = src;
+      save_data_list[n].size   = size;
+      return;
+    }
+  }
+  save_data_list[SaveDataCount].id     = id;
+  save_data_list[SaveDataCount].source = src;
+  save_data_list[SaveDataCount].size   = size;
+  SaveDataCount++;
+}
+
+// -----------------------------------------------------
+
+#define CALLBACK_LOAD      (0x00000001)
+#define CALLBACK_SAVE      (0x00000002)
+#define CALLBACK_CORE      (0x00000004)
+
+typedef struct SAVE_CALLBACK
+{
+   UINT32 flags;			// Unique ASCII_ID for this data
+   void (*proc)();		// Callback routine ptr
+} SAVE_CALLBACK;
+
+static struct SAVE_CALLBACK save_callback_list[0x40];
+
+UINT32 SaveCallbackCount;
+
+void AddLoadCallback(void *callback)
+{
+   save_callback_list[SaveCallbackCount].flags     = CALLBACK_LOAD;
+   save_callback_list[SaveCallbackCount].proc      = callback;
+   SaveCallbackCount++;
+}
+void AddSaveCallback(void *callback)
+{
+   save_callback_list[SaveCallbackCount].flags     = CALLBACK_SAVE;
+   save_callback_list[SaveCallbackCount].proc      = callback;
+   SaveCallbackCount++;
+}
+
+void AddLoadCallback_Internal(void *callback)
+{
+   save_callback_list[SaveCallbackCount].flags     = CALLBACK_LOAD|CALLBACK_CORE;
+   save_callback_list[SaveCallbackCount].proc      = callback;
+   SaveCallbackCount++;
+}
+
+void AddSaveCallback_Internal(void *callback)
+{
+   save_callback_list[SaveCallbackCount].flags     = CALLBACK_SAVE|CALLBACK_CORE;
+   save_callback_list[SaveCallbackCount].proc      = callback;
+   SaveCallbackCount++;
+}
+
+void ProcessCallbackList(UINT32 flags)
+{
+   UINT32 ta;
+
+   for(ta=0; ta<SaveCallbackCount; ta++){
+      if(save_callback_list[ta].flags == flags){
+         if(save_callback_list[ta].proc)
+            save_callback_list[ta].proc();
+      }
+   }
+}
+
+#define MAX_DYN 10
+static struct {
+  void (*load)(UINT8 *buff, int len);
+  void (*save)(UINT8 **buff, int *len);
+} dyn_callbacks[MAX_DYN];
+  
+void AddSaveDynCallbacks(int id,void (*load)(UINT8 *buff, int len),
+  void (*save)(UINT8 **buf, int *len)) {
+  if (id < MAX_DYN) {
+    dyn_callbacks[id].load = load;
+    dyn_callbacks[id].save = save;
+  } else {
+    print_debug("bad dyn save id %d\n",id);
+  }
+}
+
+void reset_dyn_callbacks() {
+  memset(&dyn_callbacks,0,sizeof(dyn_callbacks));
+}
+
+// -----------------------------------------------------
+
+void NewSave(gzFile fout)
+{
+   int ta;
+
+   ProcessCallbackList(CALLBACK_SAVE);
+   ProcessCallbackList(CALLBACK_SAVE|CALLBACK_CORE);
+
+   // global header
+
+   mputl(SAVE_FILE_TYPE_2, fout);
+   iputl(0x00000000, fout);
+
+   // ram header
+
+   mputl(SAVE_RAM, fout);
+   iputl(RAMSize, fout);
+   gzwrite( fout,RAM, RAMSize);
+
+   // user data header
+
+   for(ta=0;ta<SaveDataCount;ta++){
+      mputl(save_data_list[ta].id, fout);
+      iputl(save_data_list[ta].size, fout);
+      gzwrite( fout,save_data_list[ta].source, save_data_list[ta].size);
+   }
+
+   if (GameMouse) {
+     mputl(SAVE_MOUSE,fout);
+     iputw(p1_trackball_x,fout);
+     iputw(p1_trackball_y,fout);
+   }
+
+   for (ta=0; ta < MAX_DYN; ta++) {
+     if (dyn_callbacks[ta].save) {
+       UINT8 *buff;
+       int len;
+       dyn_callbacks[ta].save(&buff,&len);
+       if (len) {
+	 mputl(ASCII_ID('D','Y','N',ta),fout);
+	 print_debug("storing %d bytes for dynamic callback %d\n",len,ta);
+	 iputl(len,fout);
+	 gzwrite(fout,buff,len);
+	 FreeMem(buff);
+       }
+     }
+   }
+
+   mputl(SAVE_END, fout);
+}
+
+void do_save_state(char *name) {
+   gzFile fout;
+   char str[256],*disp_str;
+
+   if(RAMSize){
+     if (strstr(name,SLASH)) // The name is already a path
+       strcpy(str,name);
+     else
+       sprintf(str,"%ssavegame" SLASH "%s",dir_cfg.exe_path,name);
+     disp_str = strstr(str,"savegame");
+     if (!disp_str) disp_str = str;
+     if (!(fout=gzopen(str,"wb9"))){
+      print_ingame(120,"Unable to save: %s",disp_str);
+      return;
+     }
+
+     sa_pause_sound();
+     stop_cpu_main();
+
+     NewSave(fout);
+
+     gzclose(fout);
+
+     print_ingame(120,"Saved to: %s",disp_str);
+     if (!raine_cfg.req_pause_game) {
+       start_cpu_main();
+       sa_unpause_sound();
+       reset_ingame_timer();
+     }
+
+   }
+   else{
+      print_ingame(120,"Game does not support Saving.");
+   }
+
+   print_debug("END: GameSave()\n");
+}
+
+void GameSave(void)
+{
+   char str[256];
+
+   print_debug("BEGIN: GameSave()\n");
+
+   sprintf(str,"%s.sv%d",current_game->main_name,SaveSlot);
+   do_save_state(str);
+}
+
+void GameSaveName(void)
+{
+  char str[256];
+
+   print_debug("BEGIN: GameSaveName()\n");
+
+   sprintf(str,"savegame" SLASH "%s" SLASH,current_game->main_name);
+   mkdir_rwx(str);
+   sa_pause_sound();
+   stop_cpu_main();
+#ifndef SDL
+   setup_gui();
+   if (raine_file_select("Save game",str,NULL))
+     do_save_state(str);
+   release_gui();
+#endif
+}
+
+/******************************************************************************/
+
+void read_safe_data(UINT8 *dest, UINT32 dest_size, UINT32 data_size, gzFile fin)
+{
+
+   if(dest_size==data_size){
+      gzread(fin,dest,data_size);
+      return;
+   }
+   if(dest_size>data_size){
+      print_debug("Actual size is bigger than load data!\n");
+      if(data_size>0) gzread(fin,dest,data_size);
+      return;
+   }
+   if(dest_size<data_size){
+      print_debug("Actual size is smaller than load data!\n");
+      if(dest_size>0) gzread(fin,dest,dest_size);
+			gzseek(fin,data_size - dest_size,SEEK_CUR);
+			print_debug("read_safe_data: skiping %d bytes\n",data_size - dest_size);
+      return;
+   }
+}
+
+#define ASC(x) ((x)<32?(x)+0x30:(x))
+
+void NewLoad(gzFile fin)
+{
+   int ta,tb,load_done;
+   UINT32 t_size,t_id;
+	 int endianess_bug = 0;
+
+   // global header
+
+   t_size = igetl(fin);
+
+   load_done=0;
+
+   do{
+
+   // read header
+
+   t_id   = mgetl(fin);
+	 if (endianess_bug) 
+		 t_size = mgetl(fin);
+	 else
+		 t_size = igetl(fin);
+		 
+   switch(t_id){
+      case SAVE_RAM:
+	 if (abs(t_size-RAMSize) > 0x10000) {
+		 print_debug("endianess bug detected, ramsize = %x instead of %x\n",t_size,RAMSize);
+		 gzseek(fin,-4,SEEK_CUR);
+		 t_size = mgetl(fin);
+		 endianess_bug = 1;
+	 }
+	 print_debug("save_file: SAVE_RAM section\n");
+         read_safe_data(RAM,RAMSize,t_size,fin);
+      break;
+      case SAVE_PICT:
+        print_debug("save_file: SAVE_PICT section\n");
+        gzseek(fin,t_size,SEEK_CUR);
+	break;
+
+      case SAVE_END:
+         print_debug("Load Completed Successfully\n");
+         load_done=1;
+      break;
+      case EOF:
+         print_debug("Load Completed, but 'END.' marker was not found\n");
+         load_done=1;
+      break;
+      case SAVE_MOUSE: // Only saved when GameMouse is true
+	print_debug("save_file: SAVE_MOUSE section\n");
+      	p1_trackball_x = t_size & 0xffff;
+	p1_trackball_y = t_size >> 16;
+	break;
+      default:
+         for (ta=0; ta<MAX_DYN; ta++) {
+	   if (t_id == ASCII_ID('D','Y','N',ta)) {
+	     print_debug("save_file: SAVE_DYN%d section\n",ta);
+	     if (dyn_callbacks[ta].load) {
+	       UINT8 *buff = AllocateMem(t_size);
+	       if (buff) {
+		 gzread(fin,buff,t_size);
+		 dyn_callbacks[ta].load(buff,t_size);
+		 FreeMem(buff);
+		 break;
+	       } else {
+		 print_debug("could not allocate %d bytes for dyn callback\n",t_size);
+		 gzseek(fin,t_size,SEEK_CUR);
+	       }
+	     } else {
+	       print_debug("found dyn callback %d but I have no loading function\n",ta);
+	     }
+	   }
+	 }
+	 if (t_id == ASCII_ID('D','Y','N',ta))
+	   break;
+
+         tb=0;
+         for(ta=0;ta<SaveDataCount && tb==0;ta++){
+            if(save_data_list[ta].id == t_id){
+	      print_debug("save_file: section %c%c%c%c\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff));
+               read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
+               tb=1;
+            }
+         }
+         if(tb==0){
+            print_debug("Unexpected ID in savefile: %08x/%08x\n",t_id,t_size);
+            read_safe_data(NULL,0,t_size,fin);
+	    if (t_size <= 0) {
+	      print_debug("early exit for savefile\n");
+	      load_done = 1;
+	    }
+	      
+         }
+      break;
+   }
+
+   }while(!load_done);
+   ProcessCallbackList(CALLBACK_LOAD|CALLBACK_CORE);
+   ProcessCallbackList(CALLBACK_LOAD);
+}
+
+void do_load_state(char *name) {
+  gzFile fin;
+  char str[256],*disp_str;
+
+   if(RAMSize){
+     if (strstr(name,SLASH)) // The name is already a path
+       strcpy(str,name);
+     else
+       sprintf(str,"%ssavegame" SLASH "%s",dir_cfg.exe_path,name);
+   disp_str = strstr(str,"savegame");
+   if (!disp_str) disp_str = str;
+   if(!(fin=gzopen(str,"rb"))){
+        print_ingame(120,"Unable to load: %s", disp_str);
+        return;
+   }
+
+   savegame_version = mgetl(fin);
+
+   sa_pause_sound();
+   stop_cpu_main();
+
+   switch(savegame_version){
+      case SAVE_FILE_TYPE_0:
+	print_ingame(120,"savegame" SLASH "%s.sv%d is too ancient!", current_game->main_name, SaveSlot);
+         gzclose(fin);
+         return;
+      break;
+      case SAVE_FILE_TYPE_1:
+      case SAVE_FILE_TYPE_2:
+         hs_close();
+	 hs_open();
+#ifdef NEO
+	 cdda_stop();
+#endif
+         NewLoad(fin);
+	 // In fact, this hs_load is a problem : normally the hiscores are
+	 // loaded once the memory has been init by the driver. But there is no
+	 // way to guess if a savegame is after the memory has been initialised
+	 // or not. Well since normally this initialization happens very quickly
+	 // it seems better to force the loading of the hiscores (if we don't
+	 // force it, then it can't detect if the memory was initialized and
+	 // they are never loaded).
+	 hs_load();
+	 print_ingame(120,"Loaded from: %s", disp_str);
+	 update_timers();
+      break;
+      default:
+	print_ingame(120,"savegame" SLASH "%s.sv%d is not recognised", current_game->main_name, SaveSlot);
+         // gzclose(fin);
+         // return;
+      break;
+   }
+
+   gzclose(fin);
+
+
+   RefreshBuffers=1;
+
+   if (!raine_cfg.req_pause_game) {
+     start_cpu_main();
+     sa_unpause_sound();
+     reset_ingame_timer();
+   }
+
+   }
+   else{
+      print_ingame(120,"Game does not support Loading.");
+   }
+
+   reset_ingame_timer();
+
+   print_debug("END: GameLoad()\n");
+}
+
+void GameLoad(void)
+{
+   char str[256];
+
+   print_debug("BEGIN: GameLoad()\n");
+
+   sprintf(str,"%s.sv%d", current_game->main_name, SaveSlot);
+   do_load_state(str);
+}
+
+void GameLoadName(void)
+{
+  char str[256];
+
+   print_debug("BEGIN: GameLoadName()\n");
+
+   sprintf(str,"savegame" SLASH "%s" SLASH,current_game->main_name);
+   sa_pause_sound();
+   stop_cpu_main();
+#ifndef SDL
+   setup_gui();
+   if (raine_file_select("Load game",str,NULL))
+     do_load_state(str);
+   release_gui();
+#endif
+}
+
+/******************************************************************************/
+
+#define MAX_EPROM	(4)
+
+typedef struct EPR_DATA
+{
+   UINT8 *source;		// Pointer to the data in memory
+   UINT32 size;			// Size of the data in bytes
+   UINT8 flags;			// Flags
+} EPR_DATA;
+
+static struct EPR_DATA eeprom_list[MAX_EPROM];
+
+static int eeprom_count;
+UINT8 *default_eeprom;
+UINT16 default_eeprom_size;
+
+void clear_eeprom_list(void)
+{
+   eeprom_count=0;
+   default_eeprom = NULL;
+   default_eeprom_size = 0;
+}
+
+void add_eeprom(UINT8 *source, UINT32 size, UINT8 flags)
+{
+   int ta;
+
+   ta = eeprom_count;
+
+   eeprom_list[ta].source = source;
+   eeprom_list[ta].size   = size;
+   eeprom_list[ta].flags  = flags;
+
+   memset(eeprom_list[ta].source,0xff,eeprom_list[ta].size);
+
+   eeprom_count++;
+}
+
+static char *epr_ext[MAX_EPROM]=
+{
+   ".epr",
+   ".ep0",
+   ".ep1",
+   ".ep2",
+};
+
+int load_eeprom(void)
+{
+   char str[256];
+   int ta,ret=0;
+
+   for(ta=0;ta<eeprom_count;ta++){
+
+   sprintf(str,"%ssavedata" SLASH "%s%s", dir_cfg.exe_path, current_game->main_name, epr_ext[ta]);
+   ret = load_file(str, eeprom_list[ta].source, eeprom_list[ta].size);
+   if(!ret){
+     memset(eeprom_list[ta].source,0xff,eeprom_list[ta].size);
+     if (default_eeprom && default_eeprom_size) {
+       memcpy(eeprom_list[ta].source,default_eeprom,default_eeprom_size);
+       continue;
+     }
+   }
+
+   }
+   return ret;
+}
+
+void save_eeprom(void)
+{
+   char str[256];
+   int ta;
+
+   for(ta=0;ta<eeprom_count;ta++){
+      sprintf(str,"%ssavedata" SLASH "%s%s", dir_cfg.exe_path, current_game->main_name, epr_ext[ta]);
+      save_file(str, eeprom_list[ta].source, eeprom_list[ta].size);
+   }
+}
+
+void next_save_slot(void)
+{
+  struct stat buf;
+  char str[256],date[30];
+   SaveSlot++;
+
+   if(SaveSlot>9)
+      SaveSlot=0;
+
+   sprintf(str,"%ssavegame" SLASH "%s.sv%d",dir_cfg.exe_path,current_game->main_name, SaveSlot);
+   if (stat(str,&buf) < 0) 
+     sprintf(date,"free");
+   else
+     strftime(date,sizeof(date),"%x %X",localtime(&buf.st_mtime));
+
+   print_ingame(120,"Save Slot %01d (%s)",SaveSlot,date);
+}
+
+#if 0
+// previews in savegames disabled for now because I need a new kind of gui
+// widget to display them...
+int get_saved_picture(gzFile fin,char **s) {
+  // return the picture if one was saved it the savegame
+  // fin points in the savegame just after the version number
+  UINT32 t_size,t_id;
+  t_size = igetl(fin);
+  do{
+
+    // read header
+
+    t_id   = mgetl(fin);
+    t_size = igetl(fin);
+    switch(t_id) {
+      case SAVE_MOUSE:
+        igetl(fin);
+	break;
+      case SAVE_PICT:
+        *s = (char*)malloc(t_size);
+	gzread(fin,*s,t_size);
+	return t_size;
+      default:
+        gzseek(fin,t_size,SEEK_CUR);
+	break;
+    }
+  } while (t_id != SAVE_END);
+  *s = NULL;
+  return 0;
+}
+
+void store_picture(gzFile fout) {
+#ifdef SDL
+#define SBUF 1024
+   char buff[SBUF];
+   FILE *f;
+   int taille;
+   mputl(SAVE_PICT, fout);
+   sprintf(buff, "%stemp.png", dir_cfg.screen_dir);
+   SDL_PixelFormat *fmt = sdl_game_bitmap->format;
+   SDL_Surface *view = SDL_CreateRGBSurface(SDL_SWSURFACE,
+     GameViewBitmap->w,GameViewBitmap->h,32,
+     0xff0000,0xff00,0xff,0);
+   SDL_Rect r;
+   r.x = current_game->video_info->border_size;
+   r.y = r.x;
+   r.w = GameViewBitmap->w;
+   r.h = GameViewBitmap->h;
+   int ret = SDL_BlitSurface(sdl_game_bitmap,&r,view,NULL);
+   printf("blit : %d\n",ret);
+
+    SDL_Surface *scaled = rotozoomSurfaceXY(view,
+      0.0, 0.33, 0.33, 0);
+    BITMAP *scaled_bmp = surface_to_bmp(scaled);
+   save_png(buff,scaled_bmp,pal);
+   destroy_bitmap(scaled_bmp);
+   SDL_FreeSurface(view);
+   f = fopen(buff,"rb");
+   if (f) {
+     fseek(f,0L,SEEK_END);
+     taille = ftell(f);
+     fseek(f,0L,SEEK_SET);
+     iputl(taille,fout);
+
+     while (taille > 0) {
+       if (taille > SBUF) {
+	 fread(buff,SBUF,1,f);
+	 gzwrite( fout,buff, SBUF);
+	 taille -= SBUF;
+       } else {
+	 fread(buff,taille,1,f);
+	 gzwrite( fout, buff, taille);
+	 taille = 0;
+       }
+     }
+     fclose(f);
+   }
+#endif
+}
+#endif

@@ -1,0 +1,16 @@
+***************
+*** 122,128 ****
+        char buff[80];
+        sprintf(buff,"%d - %s",saves[n].num,saves[n].date);
+        menu[n].label = strdup(buff);
+-       menu[n].label = strdup(buff);
+        menu[n].menu_func = (for_saving ? &saveit : &load_savegame);
+  #if 0
+        static int dummy = 0;
+--- 124,129 ----
+        char buff[80];
+        sprintf(buff,"%d - %s",saves[n].num,saves[n].date);
+        menu[n].label = strdup(buff);
+        menu[n].menu_func = (for_saving ? &saveit : &load_savegame);
+  #if 0
+        static int dummy = 0;

@@ -1,0 +1,194 @@
+--- /home/manu/hq2x/asm/hq2x32.asm	2003-11-21 02:36:36.000000000 +0100
++++ hq2x32.asm	2008-01-16 15:51:03.922633506 +0100
+@@ -38,6 +38,9 @@
+ w7        resd 1
+ w8        resd 1
+ w9        resd 1
++src_add   resd 1
++dst_add   resd 1
++pitch	  resd 1
+ c1        resd 1
+ c2        resd 1
+ c3        resd 1
+@@ -64,7 +67,7 @@
+     mov     edx,[%1]
+     cmp     edx,[%2]
+     je      %%fin
+-    mov     ecx,_RGBtoYUV
++    mov     ecx,[_RGBtoYUV]
+     movd    mm1,[ecx+edx*4]
+     movq    mm5,mm1
+     mov     edx,[%2]
+@@ -414,23 +417,58 @@
+ 
+ inbuffer     equ 8
+ outbuffer    equ 12
+-Xres         equ 16
+-Yres         equ 20
+-pitch        equ 24
++x1	     equ 16
++y1	     equ 20
++x2	     equ 24
++y2	     equ 28
++Xres         equ 32
++Yres         equ 36
+ 
+ _hq2x_32:
+     push ebp
+     mov ebp,esp
+     pushad
+ 
++    mov	    ecx,[ebp+Xres]
++    shl	    ecx,1
++
++    ; setup source
+     mov     esi,[ebp+inbuffer]
++    mov	    eax,[ebp+y1]
++    shl     eax,2
++
++    mov    edx,[esi+68]
++    sub    edx,[esi+64] ; line length in bytes
++    mov	   [nextline],edx
++    sub    edx,ecx
++    mov    [src_add],edx
++
++    mov    esi,[esi+eax+64]
++    mov    eax,[ebp+x1]
++    shl	    eax,2
++    add    esi,eax
++
++    ; setup dest
+     mov     edi,[ebp+outbuffer]
++    mov	    eax,[ebp+y2]
++    shl     eax,2
++
++    mov    edx,[edi+68]
++    sub    edx,[edi+64] ; line length in bytes
++    mov	   [pitch],edx
++    shl	   edx,1 ; 2 lines / loop... !!!
++    shl	   ecx,2 ; *2 because after scaling
++    sub    edx,ecx
++    mov    [dst_add],edx
++
++    mov    edi,[edi+eax+64]
++    mov    eax,[ebp+x2]
++    shl	    eax,2
++    add    edi,eax
++
+     mov     edx,[ebp+Yres]
+     mov     [linesleft],edx
+-    mov     ebx,[ebp+Xres]
+-    shl     ebx,1
+     mov     dword[prevline],0
+-    mov     dword[nextline],ebx
+ .loopy
+     mov     ecx,[ebp+Xres]
+     sub     ecx,2                 ; x={Xres-2, Xres-1} are special cases.
+@@ -494,7 +532,7 @@
+     movzx   edx,ax  
+     mov     [w9],edx
+ .flags
+-    mov     ebx,_RGBtoYUV
++    mov     ebx,[_RGBtoYUV]
+     mov     eax,[w5]
+     xor     ecx,ecx
+     movd    mm5,[ebx+eax*4]
+@@ -563,7 +601,7 @@
+     test    ecx,ecx
+     jnz     .testflag1
+     mov     ecx,[cross]
+-    mov     ebx,_LUT16to32
++    mov     ebx,[_LUT16to32]
+     mov     eax,[ebx+eax*4]
+     jmp     [FuncTable2+ecx*4]
+ .testflag1
+@@ -623,7 +661,7 @@
+     jz      .noflag9
+     or      ecx,128
+ .noflag9
+-    mov  ebx,_LUT16to32
++    mov  ebx,[_LUT16to32]
+     mov  eax,[ebx+eax*4]
+     mov  edx,[w2]
+     mov  edx,[ebx+edx*4]
+@@ -652,7 +690,7 @@
+     mov  edx,[ebx+edx*4]
+     mov  [c9],edx
+ .switch
+-    mov  ebx,[ebp+pitch]
++    mov  ebx,[pitch]
+     jmp  [FuncTable+ecx*4]
+ 
+ ..@flag0
+@@ -1716,7 +1754,7 @@
+ 
+ 
+ ..@cross0
+-    mov     ebx,[ebp+pitch]
++    mov	    ebx,[pitch]
+     mov     [edi],eax
+     mov     [edi+4],eax
+     mov     [edi+ebx],eax
+@@ -1729,7 +1767,7 @@
+     add     edx,[ebx+ecx*4]
+     sub     edx,eax
+     shr     edx,2
+-    mov     ebx,[ebp+pitch]
++    mov     ebx,[pitch]
+     mov     [edi],edx
+     mov     [edi+4],edx
+     mov     [edi+ebx],eax
+@@ -1742,7 +1780,7 @@
+     add     edx,[ebx+ecx*4]
+     sub     edx,eax
+     shr     edx,2
+-    mov     ebx,[ebp+pitch]
++    mov     ebx,[pitch]
+     mov     [edi],edx
+     mov     [edi+4],eax
+     mov     [edi+ebx],edx
+@@ -1755,7 +1793,7 @@
+     add     edx,[ebx+ecx*4]
+     sub     edx,eax
+     shr     edx,2
+-    mov     ebx,[ebp+pitch]
++    mov     ebx,[pitch]
+     mov     [edi],eax
+     mov     [edi+4],edx
+     mov     [edi+ebx],eax
+@@ -1768,7 +1806,7 @@
+     add     edx,[ebx+ecx*4]
+     sub     edx,eax
+     shr     edx,2
+-    mov     ebx,[ebp+pitch]
++    mov     ebx,[pitch]
+     mov     [edi],eax
+     mov     [edi+4],eax
+     mov     [edi+ebx],edx
+@@ -1787,7 +1825,7 @@
+     mov     edx,[w8]
+     mov     ecx,[ebx+edx*4]
+     mov     [c8],ecx
+-    mov     ebx,[ebp+pitch]
++    mov     ebx,[pitch]
+     jmp     ..@flag0
+ 
+ .loopx_end
+@@ -1864,14 +1902,13 @@
+     mov     [w9],eax
+     jmp     .flags
+ .nexty
+-    add     edi,ebx
++    add     edi,[dst_add]
++    add	    esi,[src_add]
+     dec     dword[linesleft]
+     jz      .fin
+-    mov     ebx,[ebp+Xres]
+-    shl     ebx,1
++    mov     ebx,[nextline]
+     cmp     dword[linesleft],1
+     je      .lastline
+-    mov     dword[nextline],ebx
+     neg     ebx
+     mov     dword[prevline],ebx
+     jmp     .loopy

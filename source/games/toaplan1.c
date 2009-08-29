@@ -1,0 +1,3171 @@
+/******************************************************************************/
+/*                                                                            */
+/*                          TOAPLAN 68000 SYSTEM#1                            */
+/*                          ----------------------                            */
+/*   CPU: 68000 Z80 <PROTECTED>                                               */
+/* SOUND: YM3812                                                              */
+/* VIDEO: 320x240 TOAPLAN CUSTOM <4xBG0 1xSPR>                                */
+/*                                                                            */
+/******************************************************************************/
+
+#include "gameinc.h"
+#include "toaplan1.h"
+#include "3812intf.h"
+#include "sasound.h"		// sample support routines
+#include "blit.h" // clear_game_screen
+#include "timer.h"
+#include "profile.h" // fps
+
+static struct DIR_INFO vimana_dirs[] =
+{
+   { "vimana", },
+   { "vimana1", },
+   { ROMOF("vimana"), },
+   { CLONEOF("vimana"), },
+   { NULL, },
+};
+
+static struct ROM_INFO vimana_roms[] =
+{
+   {    "vim07.bin", 0x00020000, 0x1efaea84, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {    "vim08.bin", 0x00020000, 0xe45b7def, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {     "vim6.bin", 0x00020000, 0x2886878d, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {     "vim5.bin", 0x00020000, 0x61a63d7a, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {     "vim4.bin", 0x00020000, 0xb0515768, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {     "vim3.bin", 0x00020000, 0x0b539131, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {     "vim1.bin", 0x00080000, 0xcdde26cd, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {     "vim2.bin", 0x00080000, 0x1dbfc118, REGION_GFX2, 0x080000, LOAD_NORMAL, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct INPUT_INFO vimana_inputs[] =
+{
+   { KB_DEF_COIN1,        MSG_COIN1,               0x023003, 0x08, BIT_ACTIVE_1 },
+   { KB_DEF_COIN2,        MSG_COIN2,               0x023003, 0x10, BIT_ACTIVE_1 },
+   { KB_DEF_TILT,         MSG_TILT,                0x023003, 0x02, BIT_ACTIVE_1 },
+   { KB_DEF_SERVICE,      MSG_SERVICE,             0x023003, 0x01, BIT_ACTIVE_1 },
+
+   { KB_DEF_P1_START,     MSG_P1_START,            0x023003, 0x20, BIT_ACTIVE_1 },
+   { KB_DEF_P1_UP,        MSG_P1_UP,               0x023004, 0x01, BIT_ACTIVE_1 },
+   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x023004, 0x02, BIT_ACTIVE_1 },
+   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x023004, 0x04, BIT_ACTIVE_1 },
+   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x023004, 0x08, BIT_ACTIVE_1 },
+   { KB_DEF_P1_B1,        MSG_P1_B1,               0x023004, 0x10, BIT_ACTIVE_1 },
+   { KB_DEF_P1_B2,        MSG_P1_B2,               0x023004, 0x20, BIT_ACTIVE_1 },
+
+   { KB_DEF_P2_START,     MSG_P2_START,            0x023003, 0x40, BIT_ACTIVE_1 },
+   { KB_DEF_P2_UP,        MSG_P2_UP,               0x023005, 0x01, BIT_ACTIVE_1 },
+   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x023005, 0x02, BIT_ACTIVE_1 },
+   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x023005, 0x04, BIT_ACTIVE_1 },
+   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x023005, 0x08, BIT_ACTIVE_1 },
+   { KB_DEF_P2_B1,        MSG_P2_B1,               0x023005, 0x10, BIT_ACTIVE_1 },
+   { KB_DEF_P2_B2,        MSG_P2_B2,               0x023005, 0x20, BIT_ACTIVE_1 },
+
+   { 0,                   NULL,                    0,        0,    0            },
+};
+
+static struct DSW_DATA dsw_data_rally_bike_0[] =
+{
+   { MSG_CABINET,             0x01, 0x02 },
+   { MSG_UPRIGHT,             0x00, 0x00 },
+   { MSG_TABLE,               0x01, 0x00 },
+   { MSG_SCREEN,              0x00, 0x02 },
+   { MSG_NORMAL,              0x00, 0x00 },
+   { MSG_INVERT,              0x02, 0x00 },
+   { MSG_TEST_MODE,           0x04, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x04, 0x00 },
+   { MSG_DEMO_SOUND,          0x08, 0x02 },
+   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x08, 0x00 },
+   { MSG_COIN1,               0x30, 0x04 },
+   { MSG_1COIN_1PLAY,         0x00, 0x00 },
+   { MSG_1COIN_2PLAY,         0x10, 0x00 },
+   { MSG_2COIN_1PLAY,         0x20, 0x00 },
+   { MSG_2COIN_3PLAY,         0x30, 0x00 },
+   { MSG_COIN2,               0xC0, 0x04 },
+   { MSG_1COIN_1PLAY,         0x00, 0x00 },
+   { MSG_1COIN_2PLAY,         0x40, 0x00 },
+   { MSG_2COIN_1PLAY,         0x80, 0x00 },
+   { MSG_2COIN_3PLAY,         0xC0, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_DATA dsw_data_rally_bike_1[] =
+{
+   { MSG_DIFFICULTY,          0x00, 0x04 },
+   { MSG_NORMAL,              0x00, 0x00 },
+   { MSG_EASY,                0x01, 0x00 },
+   { MSG_HARD,                0x02, 0x00 },
+   { MSG_HARDEST,             0x03, 0x00 },
+   { "Unknown",               0x04, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x04, 0x00 },
+   { "Unknown",               0x04, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x04, 0x00 },
+   { "Territory/Copyright",   0x20, 0x04 },
+   { "World/Taito Corp Japan",0x20, 0x00 },
+   { "USA/Taito America",     0x10, 0x00 },
+   { "Japan/Taito Corp",      0x00, 0x00 },
+   { "USA/Taito America (Romstar)", 0x30, 0x00 },
+   { "Dipsw display",         0x00, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x40, 0x00 },
+   { "Continue",              0x80, 0x02 },
+   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x80, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_DATA dsw_data_hellfire_0[] =
+{
+   { MSG_UNUSED,                0x01, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x01, 0x00 },
+   { MSG_SCREEN,              0x00, 0x02 },
+   { MSG_NORMAL,              0x00, 0x00 },
+   { MSG_INVERT,              0x02, 0x00 },
+   { MSG_TEST_MODE,           0x04, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x04, 0x00 },
+   { MSG_DEMO_SOUND,          0x08, 0x02 },
+   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x08, 0x00 },
+   { MSG_COIN1,               0x30, 0x04 },
+   { MSG_1COIN_1PLAY,         0x00, 0x00 },
+   { MSG_1COIN_2PLAY,         0x10, 0x00 },
+   { MSG_2COIN_1PLAY,         0x20, 0x00 },
+   { MSG_2COIN_3PLAY,         0x30, 0x00 },
+   { MSG_COIN2,               0xC0, 0x04 },
+   { MSG_1COIN_1PLAY,         0x00, 0x00 },
+   { MSG_1COIN_2PLAY,         0x40, 0x00 },
+   { MSG_2COIN_1PLAY,         0x80, 0x00 },
+   { MSG_2COIN_3PLAY,         0xC0, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_DATA dsw_data_truxton_1[] =
+{
+   { MSG_DIFFICULTY,          0x03, 0x04 },
+   { MSG_NORMAL,              0x00, 0x00 },
+   { MSG_EASY,                0x01, 0x00 },
+   { MSG_HARD,                0x02, 0x00 },
+   { MSG_HARDEST,             0x03, 0x00 },
+   { "Extra Life",            0x00, 0x04 },
+   { "50K, every 150K",       0x04, 0x00 },
+   { "70K, every 200K",       0x00, 0x00 },
+   { "100K only",             0x08, 0x00 },
+   { "none",                  0x0C, 0x00 },
+   { "Lives",                 0x00, 0x04 },
+   { "2",                     0x30, 0x00 },
+   { "3",                     0x00, 0x00 },
+   { "4",                     0x20, 0x00 },
+   { "5",                     0x10, 0x00 },
+   { "Dipsw display",         0x00, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x40, 0x00 },
+   { "Continue",              0x80, 0x02 },
+   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x80, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_DATA dsw_data_hellfire_1[] =
+{
+   { MSG_DIFFICULTY,          0x03, 0x04 },
+   { MSG_NORMAL,              0x00, 0x00 },
+   { MSG_EASY,                0x01, 0x00 },
+   { MSG_HARD,                0x02, 0x00 },
+   { MSG_HARDEST,             0x03, 0x00 },
+   { "Extra Life",            0x00, 0x04 },
+   { "70K, every 200K",       0x00, 0x00 },
+   { "50K, every 250K",       0x04, 0x00 },
+   { "100K only",             0x08, 0x00 },
+   { "200k only",             0x0C, 0x00 },
+   { "Lives",                 0x00, 0x04 },
+   { "2",                     0x30, 0x00 },
+   { "3",                     0x00, 0x00 },
+   { "4",                     0x20, 0x00 },
+   { "5",                     0x10, 0x00 },
+   { "Invulnerability",       0x00, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x40, 0x00 },
+   { MSG_UNUSED,                0x80, 0x02 },
+   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x80, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_DATA dsw_data_fire_shark_1[] =
+{
+   { MSG_DIFFICULTY,          0x03, 0x04 },
+   { MSG_NORMAL,              0x00, 0x00 },
+   { MSG_EASY,                0x01, 0x00 },
+   { MSG_HARD,                0x02, 0x00 },
+   { MSG_HARDEST,             0x03, 0x00 },
+   { "Extra Life",            0x00, 0x04 },
+   { "70K, every 150K",       0x00, 0x00 },
+   { "50K, every 200K",       0x04, 0x00 },
+   { "100K only",             0x08, 0x00 },
+   { "None",                  0x0C, 0x00 },
+   { "Lives",                 0x00, 0x04 },
+   { "2",                     0x30, 0x00 },
+   { "3",                     0x00, 0x00 },
+   { "4",                     0x20, 0x00 },
+   { "5",                     0x10, 0x00 },
+   { "Invulnerability",       0x00, 0x02 },
+   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x40, 0x00 },
+   { MSG_UNUSED,                0x80, 0x02 },
+   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x80, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_DATA dsw_data_vimana_1[] =
+{
+  { MSG_DIFFICULTY, 0x03, 4 },
+  { "Easy" , 0x01, 0x00 },
+  { "Medium" , 0x00, 0x00 },
+  { "Hard" , 0x02, 0x00 },
+  { "Hardest" , 0x03, 0x00 },
+  { MSG_EXTRA_LIFE, 0x0c, 4 },
+  { "70K and 200K" , 0x00, 0x00 },
+  { "100K and 250K" , 0x04, 0x00 },
+  { "100K" , 0x08, 0x00 },
+  { "200K" , 0x0c, 0x00 },
+  { MSG_LIVES, 0x30, 4 },
+  { "2" , 0x30, 0x00 },
+  { "3" , 0x00, 0x00 },
+  { "4" , 0x20, 0x00 },
+  { "5" , 0x10, 0x00 },
+  { "Invulnerability",    0x40, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x40, 0x00 },
+  { "Allow Continue", 0x80, 2 },
+  { MSG_NO, 0x80, 0x00 },
+  { MSG_YES, 0x00, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_vimana_2[] =
+{
+  { "Territory", 0x0f, 16 },
+  { "Europe" , 0x02, 0x00 },
+  { "US" , 0x01, 0x00 },
+  { "Japan" , 0x00, 0x00 },
+  { "Hong Kong" , 0x03, 0x00 },
+  { "Korea" , 0x04, 0x00 },
+  { "Taiwan" , 0x05, 0x00 },
+  { "Taiwan" , 0x06, 0x00 },
+  { "US" , 0x07, 0x00 },
+  { "Hong Kong" , 0x08, 0x00 },
+  { MSG_UNUSED, 0x09, 0x00 },
+  { MSG_UNUSED, 0x0a, 0x00 },
+  { MSG_UNUSED, 0x0b, 0x00 },
+  { MSG_UNUSED, 0x0c, 0x00 },
+  { MSG_UNUSED, 0x0d, 0x00 },
+  { MSG_UNUSED, 0x0e, 0x00 },
+  { "Japan" , 0x0f, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO vimana_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_hellfire_0 },
+   { 0x023001, 0x00, dsw_data_vimana_1 },
+   { 0x023002, 0x02, dsw_data_vimana_2 },
+   { 0,        0,    NULL,      },
+};
+
+static struct GFX_LAYOUT tilelayout =
+{
+	8,8,	/* 8x8 */
+	16384,	/* 16384 tiles */
+	4,		/* 4 bits per pixel */
+	{ 3*8*0x20000, 2*8*0x20000, 1*8*0x20000, 0*8*0x20000 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7 },
+	{ 0, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38 },
+	64
+};
+
+static struct GFX_LAYOUT rallybik_spr_layout =
+{
+	16,16,	/* 16*16 sprites */
+	2048,	/* 2048 sprites */
+	4,		/* 4 bits per pixel */
+	{ 0*2048*32*8, 1*2048*32*8, 2*2048*32*8, 3*2048*32*8 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
+			8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16 },
+	32*8	/* every sprite takes 32 consecutive bytes */
+};
+
+static struct GFX_LAYOUT vm_tilelayout =
+{
+	8,8,	/* 8x8 */
+	32768,	/* 32768 tiles */
+	4,		/* 4 bits per pixel */
+	{ 8*0x80000+8, 8*0x80000, 8, 0 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7 },
+	{ 0, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70 },
+	128
+};
+
+static struct GFX_LIST toaplan1_gfx[] =
+{
+   { REGION_GFX1, &tilelayout, },
+   { REGION_GFX2, &tilelayout, },
+   { 0,           NULL,        },
+};
+
+static struct GFX_LIST rally_bike_gfx[] =
+{
+   { REGION_GFX1, &tilelayout,           },
+   { REGION_GFX2, &rallybik_spr_layout,  },
+   { 0,           NULL,                  },
+};
+
+static struct GFX_LIST outzone_gfx[] =
+{
+   { REGION_GFX1, &vm_tilelayout, },
+   { REGION_GFX2, &tilelayout,    },
+   { 0,           NULL,           },
+};
+
+static struct GFX_LIST vimana_gfx[] =
+{
+   { REGION_GFX1, &tilelayout,    },
+   { REGION_GFX2, &vm_tilelayout, },
+   { 0,           NULL,           },
+};
+
+static struct VIDEO_INFO toaplan1_video =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   toaplan1_gfx,
+};
+
+static struct VIDEO_INFO toaplan1_r270_video =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   toaplan1_gfx,
+};
+
+static struct VIDEO_INFO rally_bike_video =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   rally_bike_gfx,
+};
+
+static struct VIDEO_INFO outzone_video =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   outzone_gfx,
+};
+
+static struct VIDEO_INFO vimana_video =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   vimana_gfx,
+};
+
+static struct YM3812interface ym3812_interface =
+{
+   1,              // 1 chip
+   3500000,        // 3.5 MHz
+   { 255 },        // volume
+   { z80_irq_handler }
+};
+
+static struct SOUND_INFO toaplan1_sound[] =
+{
+   { SOUND_YM3812,  &ym3812_interface,    },
+   { 0,             NULL,                 },
+};
+
+GAME( vimana ,
+   vimana_dirs,
+   vimana_roms,
+   vimana_inputs,
+   vimana_dsw,
+   NULL,
+
+   load_vimana,
+   clear_vimana,
+   &vimana_video,
+   ExecuteToaplan1Frame,
+   "vimana1",
+   "Vimana",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP019",
+   1991,
+   NULL,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO vimana_alt_dirs[] =
+{
+   { "vimana2", },
+   { "vimana", },
+   { NULL, },
+};
+
+static struct ROM_INFO vimana_alt_roms[] =
+{
+   { "tp019-7a.bin", 0x00020000, 0x5a4bf73e, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   { "tp019-8a.bin", 0x00020000, 0x03ba27e8, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {     "vim6.bin", 0x00020000, 0x2886878d, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {     "vim5.bin", 0x00020000, 0x61a63d7a, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {     "vim4.bin", 0x00020000, 0xb0515768, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {     "vim3.bin", 0x00020000, 0x0b539131, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {     "vim1.bin", 0x00080000, 0xcdde26cd, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {     "vim2.bin", 0x00080000, 0x1dbfc118, REGION_GFX2, 0x080000, LOAD_NORMAL, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+GAME( vimana_alt ,
+   vimana_alt_dirs,
+   vimana_alt_roms,
+   vimana_inputs,
+   vimana_dsw,
+   NULL,
+
+   load_vimana,
+   clear_vimana,
+   &vimana_video,
+   ExecuteToaplan1Frame,
+   "vimana",
+   "Vimana (alternate)",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP019",
+   1991,
+   NULL,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO outzone_dirs[] =
+{
+   { "outzone", },
+   { "outzoneb", },
+   { NULL, },
+};
+
+static struct ROM_INFO outzone_roms[] =
+{
+   {     "rom7.bin", 0x00020000, 0x936e25d8, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {     "rom8.bin", 0x00020000, 0xd19b3ecf, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {     "rom5.bin", 0x00080000, 0xc64ec7b6, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {     "rom6.bin", 0x00080000, 0x64b6c5ac, REGION_GFX1, 0x080000, LOAD_NORMAL, },
+   {     "rom2.bin", 0x00020000, 0x6bb72d16, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {     "rom1.bin", 0x00020000, 0x0934782d, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {     "rom3.bin", 0x00020000, 0xec903c07, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {     "rom4.bin", 0x00020000, 0x50cbf1a8, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {     "rom9.bin", 0x00008000, 0x73d8e235, 0, 0, 0, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_outzone_1[] =
+{
+  { MSG_DIFFICULTY, 0x03, 4 },
+  { "Easy" , 0x01, 0x00 },
+  { "Medium" , 0x00, 0x00 },
+  { "Hard" , 0x02, 0x00 },
+  { "Hardest" , 0x03, 0x00 },
+  { MSG_EXTRA_LIFE, 0x0c, 4 },
+  { "Every 300K" , 0x00, 0x00 },
+  { "200K and 500K" , 0x04, 0x00 },
+  { "300K only" , 0x08, 0x00 },
+  { "None" , 0x0c, 0x00 },
+  { MSG_LIVES, 0x30, 4 },
+  { "1" , 0x30, 0x00 },
+  { "2" , 0x20, 0x00 },
+  { "3" , 0x00, 0x00 },
+  { "5" , 0x10, 0x00 },
+  { "Invulnerability", 0x40, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x40, 0x00 },
+  { MSG_UNUSED, 0x80, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x80, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_outzone_2[] =
+{
+  { "Territory", 0x07, 6 },
+  { "Europe" , 0x02, 0x00 },
+  { "US" , 0x01, 0x00 },
+  { "Japan" , 0x00, 0x00 },
+  { "Hong Kong" , 0x03, 0x00 },
+  { "Korea" , 0x04, 0x00 },
+  { "Taiwan" , 0x05, 0x00 },
+  { MSG_UNKNOWN, 0x08, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x08, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO outzone_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_hellfire_0 },
+   { 0x023001, 0x00, dsw_data_outzone_1 },
+   { 0x023002, 0x02, dsw_data_outzone_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( outzone ,
+   outzone_dirs,
+   outzone_roms,
+   vimana_inputs,
+   outzone_dsw,
+   NULL,
+
+   load_outzone,
+   clear_outzone,
+   &outzone_video,
+   ExecuteToaplan1Frame_Sound,
+   "outzone",
+   "Outzone",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP018",
+   1990,
+   toaplan1_sound,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO rally_bike_dirs[] =
+{
+   { "rally_bike", },
+   { "rallybik", },
+   { "rallyb", },
+   { NULL, },
+};
+
+static struct ROM_INFO rally_bike_roms[] =
+{
+   {    "b45-02.rom", 0x00008000, 0x383386d7, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {    "b45-01.rom", 0x00008000, 0x7602f6a7, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {    "b45-04.rom", 0x00020000, 0xe9b005b1, REGION_ROM1, 0x040000, LOAD_8_16,   },
+   {    "b45-03.rom", 0x00020000, 0x555344ce, REGION_ROM1, 0x040001, LOAD_8_16,   },
+   {    "b45-09.bin", 0x00020000, 0x1dc7b010, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {    "b45-08.bin", 0x00020000, 0xfab661ba, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {    "b45-07.bin", 0x00020000, 0xcd3748b4, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {    "b45-06.bin", 0x00020000, 0x144b085c, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {    "b45-11.rom", 0x00010000, 0x0d56e8bb, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {    "b45-10.rom", 0x00010000, 0xdbb7c57e, REGION_GFX2, 0x010000, LOAD_NORMAL, },
+   {    "b45-12.rom", 0x00010000, 0xcf5aae4e, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {    "b45-13.rom", 0x00010000, 0x1683b07c, REGION_GFX2, 0x030000, LOAD_NORMAL, },
+   {    "b45-05.rom", 0x00004000, 0x10814601, 0, 0, 0, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_rally_bike_2[] =
+{
+   { "Language",              0x0F, 0x10 },
+   { "0",                     0x00, 0x00 },
+   { "1",                     0x01, 0x00 },
+   { "2",                     0x02, 0x00 },
+   { "3",                     0x03, 0x00 },
+   { "4",                     0x04, 0x00 },
+   { "5",                     0x05, 0x00 },
+   { "6",                     0x06, 0x00 },
+   { "7",                     0x07, 0x00 },
+   { "8",                     0x08, 0x00 },
+   { "9",                     0x09, 0x00 },
+   { "A",                     0x0A, 0x00 },
+   { "B",                     0x0B, 0x00 },
+   { "C",                     0x0C, 0x00 },
+   { "D",                     0x0D, 0x00 },
+   { "E",                     0x0E, 0x00 },
+   { "F",                     0x0F, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_INFO rally_bike_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_rally_bike_0 },
+   { 0x023001, 0x00, dsw_data_rally_bike_1 },
+   { 0x023002, 0x00, dsw_data_rally_bike_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( rally_bike ,
+   rally_bike_dirs,
+   rally_bike_roms,
+   vimana_inputs,
+   rally_bike_dsw,
+   NULL,
+
+   load_rally_bike,
+   clear_rally_bike,
+   &rally_bike_video,
+   ExecuteToaplan1Frame_Sound,
+   "rallybik",
+   "Rally Bike",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP012",
+   1988,
+   toaplan1_sound,
+   GAME_RACE | GAME_NOT_WORKING
+);
+
+static struct DIR_INFO zero_wing_dirs[] =
+{
+   { "zero_wing", },
+   { "zerowing", },
+   { NULL, },
+};
+
+static struct ROM_INFO zero_wing_roms[] =
+{
+   {   "o15-11.rom", 0x00008000, 0x6ff2b9a0, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {   "o15-12.rom", 0x00008000, 0x9773e60b, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {   "o15-09.rom", 0x00020000, 0x13764e95, REGION_ROM1, 0x040000, LOAD_8_16,   },
+   {   "o15-10.rom", 0x00020000, 0x351ba71a, REGION_ROM1, 0x040001, LOAD_8_16,   },
+   {   "o15-05.rom", 0x00020000, 0x4e5dd246, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {   "o15-06.rom", 0x00020000, 0xc8c6d428, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {   "o15-07.rom", 0x00020000, 0xefc40e99, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {   "o15-08.rom", 0x00020000, 0x1b019eab, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {   "o15-03.rom", 0x00020000, 0x7f245fd3, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {   "o15-04.rom", 0x00020000, 0x0b1a1289, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {   "o15-01.rom", 0x00020000, 0x70570e43, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {   "o15-02.rom", 0x00020000, 0x724b487f, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {   "o15-13.rom", 0x00008000, 0xe7b72383, 0, 0, 0, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_zerowing_1[] =
+{
+  { MSG_DIFFICULTY, 0x03, 4 },
+  { "Easy" , 0x01, 0x00 },
+  { "Medium" , 0x00, 0x00 },
+  { "Hard" , 0x02, 0x00 },
+  { "Hardest" , 0x03, 0x00 },
+  { MSG_EXTRA_LIFE, 0x0c, 4 },
+  { "200Kevery 500K" , 0x00, 0x00 },
+  { "500Kevery 1M" , 0x04, 0x00 },
+  { "500K" , 0x08, 0x00 },
+  { "None" , 0x0c, 0x00 },
+  { MSG_LIVES, 0x30, 4 },
+  { "2" , 0x30, 0x00 },
+  { "3" , 0x00, 0x00 },
+  { "4" , 0x20, 0x00 },
+  { "5" , 0x10, 0x00 },
+  { "Invulnerability",    0x40, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x40, 0x00 },
+  { "Allow Continue", 0x80, 2 },
+  { MSG_NO, 0x80, 0x00 },
+  { MSG_YES, 0x00, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_zerowing_2[] =
+{
+  { "Territory", 0x03, 4 },
+  { "Europe" , 0x02, 0x00 },
+  { "Europe" , 0x03, 0x00 },
+  { "US" , 0x01, 0x00 },
+  { "Japan" , 0x00, 0x00 },
+  { MSG_UNUSED, 0x04, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x04, 0x00 },
+  { MSG_UNUSED, 0x08, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x08, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO zero_wing_dsw[] =
+{
+   { 0x023000, 0x01, dsw_data_rally_bike_0 },
+   { 0x023001, 0x00, dsw_data_zerowing_1 },
+   { 0x023002, 0x02, dsw_data_zerowing_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( zero_wing ,
+   zero_wing_dirs,
+   zero_wing_roms,
+   vimana_inputs,
+   zero_wing_dsw,
+   NULL,
+
+   load_zero_wing,
+   clear_zero_wing,
+   &toaplan1_video,
+   ExecuteToaplan1Frame_Sound,
+   "zerowing",
+   "Zero Wing",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP015",
+   1989,
+   toaplan1_sound,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO demons_world_dirs[] =
+{
+   { "demons_world", },
+   { "demonwld", },
+   { "demonwl1", },
+   { NULL, },
+};
+
+static struct ROM_INFO demons_world_roms[] =
+{
+   {        "rom10", 0x00020000, 0x036ee46c, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {        "rom09", 0x00020000, 0xbed746e3, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {        "rom05", 0x00020000, 0x6506c982, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {        "rom07", 0x00020000, 0xa3a0d993, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {        "rom06", 0x00020000, 0x4fc5e5f3, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {        "rom08", 0x00020000, 0xeb53ab09, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {        "rom01", 0x00020000, 0x1b3724e9, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {        "rom02", 0x00020000, 0x7b20a44d, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {        "rom03", 0x00020000, 0x2cacdcd0, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {        "rom04", 0x00020000, 0x76fd3201, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {        "rom11", 0x00008000, 0x397eca1b, 0, 0, 0, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_demonwld_1[] =
+{
+  { MSG_DIFFICULTY, 0x03, 4 },
+  { "Easy" , 0x01, 0x00 },
+  { "Medium" , 0x00, 0x00 },
+  { "Hard" , 0x02, 0x00 },
+  { "Hardest" , 0x03, 0x00 },
+  { MSG_EXTRA_LIFE, 0x0c, 4 },
+  { "30Kevery 100K" , 0x00, 0x00 },
+  { "50K and 100K" , 0x04, 0x00 },
+  { "100K only" , 0x08, 0x00 },
+  { "None" , 0x0c, 0x00 },
+  { MSG_LIVES, 0x30, 4 },
+  { "1" , 0x30, 0x00 },
+  { "2" , 0x20, 0x00 },
+  { "3" , 0x00, 0x00 },
+  { "5" , 0x10, 0x00 },
+  { "Invulnerability",    0x40, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x40, 0x00 },
+  { MSG_UNUSED, 0x80, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x80, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_demonwld_2[] =
+{
+  { "Territory/Copyright", 0x01, 2 },
+  { "Toaplan" , 0x01, 0x00 },
+  { "Japan/Taito Corp" , 0x00, 0x00 },
+  { MSG_UNKNOWN, 0x02, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x02, 0x00 },
+  { MSG_UNKNOWN, 0x04, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x04, 0x00 },
+  { MSG_UNKNOWN, 0x08, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x08, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO demons_world_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_hellfire_0 },
+   { 0x023001, 0x00, dsw_data_demonwld_1 },
+   { 0x023002, 0x01, dsw_data_demonwld_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( demons_world ,
+   demons_world_dirs,
+   demons_world_roms,
+   vimana_inputs,
+   demons_world_dsw,
+   NULL,
+
+   load_demons_world,
+   clear_demons_world,
+   &toaplan1_video,
+   ExecuteToaplan1Frame_Sound,
+   "demonwl1",
+   "Demon's World",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP016",
+   1989,
+   toaplan1_sound,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO fire_shark_dirs[] =
+{
+   { "fire_shark", },
+   { "fireshrk", },
+   { NULL, },
+};
+
+static struct ROM_INFO fire_shark_roms[] =
+{
+   {        "9.bin", 0x00008000, 0xf0c70e6f, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {       "10.bin", 0x00008000, 0x9d253d77, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {       "11.bin", 0x00020000, 0x6beac378, REGION_ROM1, 0x040000, LOAD_8_16,   },
+   {       "12.bin", 0x00020000, 0x6adb6eb5, REGION_ROM1, 0x040001, LOAD_8_16,   },
+   {   "o17_05.bin", 0x00020000, 0x565315f8, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {   "o17_06.bin", 0x00020000, 0x95262d4c, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {   "o17_07.bin", 0x00020000, 0x4c4b735c, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {   "o17_08.bin", 0x00020000, 0x95c6586c, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {   "o17_01.bin", 0x00020000, 0xea12e491, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {   "o17_02.bin", 0x00020000, 0x32a13a9f, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {   "o17_03.bin", 0x00020000, 0x68723dc9, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {   "o17_04.bin", 0x00020000, 0xfe0ecb13, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_fire_shark_2[] =
+{
+   { "Language",              0x0F, 0x10 },
+   { "0",                     0x00, 0x00 },
+   { "1",                     0x01, 0x00 },
+   { "2",                     0x02, 0x00 },
+   { "3",                     0x03, 0x00 },
+   { "4",                     0x04, 0x00 },
+   { "5",                     0x05, 0x00 },
+   { "6",                     0x06, 0x00 },
+   { "7",                     0x07, 0x00 },
+   { "8",                     0x08, 0x00 },
+   { "9",                     0x09, 0x00 },
+   { "A",                     0x0A, 0x00 },
+   { "B",                     0x0B, 0x00 },
+   { "C",                     0x0C, 0x00 },
+   { "D",                     0x0D, 0x00 },
+   { "E",                     0x0E, 0x00 },
+   { "F",                     0x0F, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_INFO fire_shark_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_hellfire_0 },
+   { 0x023001, 0x00, dsw_data_fire_shark_1 },
+   { 0x023002, 0x00, dsw_data_fire_shark_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( fire_shark ,
+   fire_shark_dirs,
+   fire_shark_roms,
+   vimana_inputs,
+   fire_shark_dsw,
+   NULL,
+
+   load_fire_shark,
+   clear_fire_shark,
+   &toaplan1_r270_video,
+   ExecuteToaplan1Frame,
+   "fireshrk",
+   "Fire Shark",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP017",
+   1990,
+   NULL,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO same_same_same_dirs[] =
+{
+   { "same_same_same", },
+   { "same3", },
+   { "samesame", },
+   { ROMOF("fireshrk"), },
+   { CLONEOF("fireshrk"), },
+   { NULL, },
+};
+
+static struct ROM_INFO same_same_same_roms[] =
+{
+   {   "o17_09.bin", 0x00008000, 0x3f69e437, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {   "o17_10.bin", 0x00008000, 0x4e723e0a, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {   "o17_11.bin", 0x00020000, 0xbe07d101, REGION_ROM1, 0x040000, LOAD_8_16,   },
+   {   "o17_12.bin", 0x00020000, 0xef698811, REGION_ROM1, 0x040001, LOAD_8_16,   },
+   {   "o17_05.bin", 0x00020000, 0x565315f8, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {   "o17_06.bin", 0x00020000, 0x95262d4c, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {   "o17_07.bin", 0x00020000, 0x4c4b735c, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {   "o17_08.bin", 0x00020000, 0x95c6586c, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {   "o17_01.bin", 0x00020000, 0xea12e491, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {   "o17_02.bin", 0x00020000, 0x32a13a9f, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {   "o17_03.bin", 0x00020000, 0x68723dc9, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {   "o17_04.bin", 0x00020000, 0xfe0ecb13, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_samesame_1[] =
+{
+  { MSG_DIFFICULTY, 0x03, 4 },
+  { "Easy" , 0x01, 0x00 },
+  { "Medium" , 0x00, 0x00 },
+  { "Hard" , 0x02, 0x00 },
+  { "Hardest" , 0x03, 0x00 },
+  { MSG_EXTRA_LIFE, 0x0c, 4 },
+  { "50Kevery 150K" , 0x04, 0x00 },
+  { "70Kevery 200K" , 0x00, 0x00 },
+  { "100K" , 0x08, 0x00 },
+  { "None" , 0x0c, 0x00 },
+  { MSG_LIVES, 0x30, 4 },
+  { "2" , 0x30, 0x00 },
+  { "3" , 0x00, 0x00 },
+  { "4" , 0x20, 0x00 },
+  { "5" , 0x10, 0x00 },
+  { "Invulnerability",    0x40, 2 },
+  { MSG_OFF, 0x00, 0x00 },
+  { MSG_ON, 0x40, 0x00 },
+  { "Allow Continue", 0x80, 2 },
+  { MSG_NO, 0x80, 0x00 },
+  { MSG_YES, 0x00, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_same_same_same_2[] =
+{
+   { "Language",              0x0F, 0x10 },
+   { "0",                     0x00, 0x00 },
+   { "1",                     0x01, 0x00 },
+   { "2",                     0x02, 0x00 },
+   { "3",                     0x03, 0x00 },
+   { "4",                     0x04, 0x00 },
+   { "5",                     0x05, 0x00 },
+   { "6",                     0x06, 0x00 },
+   { "7",                     0x07, 0x00 },
+   { "8",                     0x08, 0x00 },
+   { "9",                     0x09, 0x00 },
+   { "A",                     0x0A, 0x00 },
+   { "B",                     0x0B, 0x00 },
+   { "C",                     0x0C, 0x00 },
+   { "D",                     0x0D, 0x00 },
+   { "E",                     0x0E, 0x00 },
+   { "F",                     0x0F, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_INFO same_same_same_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_rally_bike_0 },
+   { 0x023001, 0x00, dsw_data_samesame_1 },
+   { 0x023002, 0xf0, dsw_data_same_same_same_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( same_same_same ,
+   same_same_same_dirs,
+   same_same_same_roms,
+   vimana_inputs,
+   same_same_same_dsw,
+   NULL,
+
+   load_fire_shark,
+   clear_fire_shark,
+   &toaplan1_r270_video,
+   ExecuteToaplan1Frame,
+   "samesame",
+   "Same Same Same",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "TP017",
+   1989,
+   NULL,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO hell_fire_dirs[] =
+{
+   { "hell_fire", },
+   { "hellfire", },
+   { NULL, },
+};
+
+static struct ROM_INFO hell_fire_roms[] =
+{
+   {   "b90-14.bin", 0x00020000, 0x101df9f5, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {   "b90-15.bin", 0x00020000, 0xe67fd452, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {   "b90-04.bin", 0x00020000, 0xea6150fc, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {   "b90-05.bin", 0x00020000, 0xbb52c507, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {   "b90-06.bin", 0x00020000, 0xcf5b0252, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {   "b90-07.bin", 0x00020000, 0xb98af263, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {   "b90-11.bin", 0x00020000, 0xc33e543c, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {   "b90-10.bin", 0x00020000, 0x35fd1092, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {   "b90-09.bin", 0x00020000, 0xcf01009e, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {   "b90-08.bin", 0x00020000, 0x3404a5e3, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {   "b90-03.bin", 0x00008000, 0x4058fa67, 0, 0, 0, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_hell_fire_2[] =
+{
+   { "Language",              0x0F, 0x10 },
+   { "0",                     0x00, 0x00 },
+   { "1",                     0x01, 0x00 },
+   { "2",                     0x02, 0x00 },
+   { "3",                     0x03, 0x00 },
+   { "4",                     0x04, 0x00 },
+   { "5",                     0x05, 0x00 },
+   { "6",                     0x06, 0x00 },
+   { "7",                     0x07, 0x00 },
+   { "8",                     0x08, 0x00 },
+   { "9",                     0x09, 0x00 },
+   { "A",                     0x0A, 0x00 },
+   { "B",                     0x0B, 0x00 },
+   { "C",                     0x0C, 0x00 },
+   { "D",                     0x0D, 0x00 },
+   { "E",                     0x0E, 0x00 },
+   { "F",                     0x0F, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_INFO hell_fire_dsw[] =
+{
+   { 0x023000, 0x00, dsw_data_hellfire_0 },
+   { 0x023001, 0x00, dsw_data_hellfire_1 },
+   { 0x023002, 0x00, dsw_data_hell_fire_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( hell_fire ,
+   hell_fire_dirs,
+   hell_fire_roms,
+   vimana_inputs,
+   hell_fire_dsw,
+   NULL,
+
+   load_hell_fire,
+   clear_hell_fire,
+   &toaplan1_video,
+   ExecuteToaplan1Frame_Sound,
+   "hellfire",
+   "Hell Fire",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "B90",
+   1989,
+   toaplan1_sound,
+   GAME_SHOOT
+);
+
+static struct DIR_INFO truxton_dirs[] =
+{
+   { "truxton", },
+   { NULL, },
+};
+
+static struct ROM_INFO truxton_roms[] =
+{
+   {   "b65_11.bin", 0x00020000, 0x1a62379a, REGION_ROM1, 0x000000, LOAD_8_16,   },
+   {   "b65_10.bin", 0x00020000, 0xaff5195d, REGION_ROM1, 0x000001, LOAD_8_16,   },
+   {   "b65_08.bin", 0x00020000, 0xd2315b37, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {   "b65_07.bin", 0x00020000, 0xfb83252a, REGION_GFX1, 0x020000, LOAD_NORMAL, },
+   {   "b65_06.bin", 0x00020000, 0x36cedcbe, REGION_GFX1, 0x040000, LOAD_NORMAL, },
+   {   "b65_05.bin", 0x00020000, 0x81cd95f1, REGION_GFX1, 0x060000, LOAD_NORMAL, },
+   {   "b65_04.bin", 0x00020000, 0x8c6ff461, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   {   "b65_03.bin", 0x00020000, 0x58b1350b, REGION_GFX2, 0x020000, LOAD_NORMAL, },
+   {   "b65_02.bin", 0x00020000, 0x1dd55161, REGION_GFX2, 0x040000, LOAD_NORMAL, },
+   {   "b65_01.bin", 0x00020000, 0xe974937f, REGION_GFX2, 0x060000, LOAD_NORMAL, },
+   {   "b65_09.bin", 0x00008000, 0xf1c0f410, 0, 0, 0, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct DSW_DATA dsw_data_truxton_2[] =
+{
+   { "Language",              0x0F, 0x10 },
+   { "0",                     0x00, 0x00 },
+   { "1",                     0x01, 0x00 },
+   { "2",                     0x02, 0x00 },
+   { "3",                     0x03, 0x00 },
+   { "4",                     0x04, 0x00 },
+   { "5",                     0x05, 0x00 },
+   { "6",                     0x06, 0x00 },
+   { "7",                     0x07, 0x00 },
+   { "8",                     0x08, 0x00 },
+   { "9",                     0x09, 0x00 },
+   { "A",                     0x0A, 0x00 },
+   { "B",                     0x0B, 0x00 },
+   { "C",                     0x0C, 0x00 },
+   { "D",                     0x0D, 0x00 },
+   { "E",                     0x0E, 0x00 },
+   { "F",                     0x0F, 0x00 },
+   { NULL,                    0,    0,   },
+};
+
+static struct DSW_INFO truxton_dsw[] =
+{
+   { 0x023003, 0x00, dsw_data_rally_bike_0 },
+   { 0x023004, 0x00, dsw_data_truxton_1 },
+   { 0x023005, 0x00, dsw_data_truxton_2 },
+   { 0,        0,    NULL,      },
+};
+
+GAME( truxton ,
+   truxton_dirs,
+   truxton_roms,
+   vimana_inputs,
+   truxton_dsw,
+   NULL,
+
+   load_truxton,
+   clear_truxton,
+   &toaplan1_r270_video,
+   ExecuteToaplan1Frame_Sound,
+   "truxton",
+   "Tatsujin",
+   NULL,
+   COMPANY_ID_TOAPLAN,
+   "B65",
+   1988,
+   toaplan1_sound,
+   GAME_SHOOT
+);
+
+// Store Tiles in priority lists (good idea from Shark!).
+
+#define MAX_PRI         32              // 32 levels of priority
+#define MAX_TILES       0x8000          // 0x4000*0x14=0x60000
+
+static struct TILE_Q
+{
+   UINT32 tile;                          // Tile number
+   UINT32 x,y;                           // X,Y position
+   UINT8 *map;                          // Colour map data
+   struct TILE_Q *next;                 // Next item with equal priority
+} TILE_Q;
+
+static struct TILE_Q *TileQueue;               // full list
+static struct TILE_Q *last_tile;               // last tile in use
+static struct TILE_Q *prilist[MAX_PRI];        // start node for each priority list
+
+#define ROM_COUNT       10
+
+/*
+
+ Supported romsets:
+
+  0 - Vimana              - 1991 - TOAPLAN
+  1 - Vimana alt set      - 1991 - TOAPLAN
+  2 - Outzone             - 1990 - TOAPLAN
+  3 - Rally Bike          - 1988 - TOAPLAN
+  4 - Zero Wing           - 1990 - TOAPLAN
+  5 - Demon's World       - 1990 - TOAPLAN
+  6 - Fire Shark          - 19.. - TOAPLAN
+  7 - Same Same Same      - 19.. - TOAPLAN
+  8 - Hell Fire           - 19.. - TOAPLAN
+  9 - Truxton             - 1988 - TOAPLAN
+
+ Todo:
+
+ - Lots
+
+Vimana:
+
+ - Sound Z80 is not dumped
+
+Rally Bike:
+
+ - Object ram is directly accessed (no port) bootleg?
+
+Fire Shark:
+
+ - Sound Z80 is not dumped
+
+Same Same Same:
+
+ - Sound Z80 is not dumped
+
+*/
+
+static int romset;
+
+static UINT8 *GFX_BG0;
+static UINT8 *GFX_BG0_SOLID;
+
+static UINT8 *GFX_SPR;
+static UINT8 *GFX_SPR_SOLID;
+
+static UINT16 scroll_offsx;
+
+/******************************************************************************/
+/*  VCU CHIP                                                                  */
+/******************************************************************************/
+
+typedef struct TP1VCU				// information about 1 chip
+{
+   UINT8 *VRAM;					// layer ram (0x10000 bytes)
+   UINT8 *RAM_OBJ;				// object ram (0x800 + 0x80 bytes)
+   UINT8 *SCROLL;				// scroll ram (0x10 bytes)
+   UINT32 obj_pos;				// current offset in object ram
+   UINT32 bg_pos;				// current offset in layer ram
+   UINT32 scroll_pos;				// current offset in SCROLL
+   UINT32 status;				// some status read
+   UINT8 *GFX_BG;				// GFX data
+   UINT8 *MASK_BG;				// MASK data
+   UINT32 tile_mask_bg;				// tile count
+   UINT32 tile_mask_obj;				// tile count
+   UINT32 tile_ofs_obj;				// tile offset
+} TP1VCU;
+
+struct TP1VCU tp1vcu[1];			// max 1 chips
+
+static void init_tp1vcu(UINT32 num)
+{
+   tp1vcu[num].obj_pos    = 0x0000;
+   tp1vcu[num].bg_pos     = 0x0000;
+   tp1vcu[num].scroll_pos = 0x0000;
+   tp1vcu[num].status     = 0x0000;
+}
+
+static void tp1vcu_obj_ww(UINT32 offset, UINT16 data)
+{
+   switch(offset&0x0E){
+      case 0x02:                        // Port Address
+         tp1vcu[0].obj_pos = (data<<1) & 0x7FE;
+      break;
+      case 0x04:                        // Port Data
+         WriteWord(&tp1vcu[0].RAM_OBJ[tp1vcu[0].obj_pos], data);
+         tp1vcu[0].obj_pos += 0x002;
+         tp1vcu[0].obj_pos &= 0x7FE;
+      break;
+      case 0x06:                        // Port Data
+         WriteWord(&tp1vcu[0].RAM_OBJ[tp1vcu[0].obj_pos+0x800], data);
+         tp1vcu[0].obj_pos += 0x002;
+         tp1vcu[0].obj_pos &= 0x7FE;
+      break;
+      default:
+         print_debug("tp1vcu[0] ww(%04x,%04x)\n", offset&0x0E, data);
+      break;
+   }
+}
+
+static UINT16 tp1vcu_obj_rw(UINT32 offset)
+{
+   UINT16 ret;
+
+   switch(offset&0x0E){
+      case 0x00:                        // Status
+         ret = tp1vcu[0].status;
+         tp1vcu[0].status ^= 1;
+      break;
+      case 0x04:                        // Port Data
+         ret = ReadWord(&tp1vcu[0].RAM_OBJ[tp1vcu[0].obj_pos]);
+         tp1vcu[0].obj_pos += 0x002;
+         tp1vcu[0].obj_pos &= 0x7FE;
+      break;
+      case 0x06:                        // Port Data
+         ret = ReadWord(&tp1vcu[0].RAM_OBJ[tp1vcu[0].obj_pos+0x800]);
+         tp1vcu[0].obj_pos += 0x002;
+         tp1vcu[0].obj_pos &= 0x7FE;
+      break;
+      default:
+         ret = 0x0000;
+         print_debug("tp1vcu[0] rw(%04x)\n", offset&0x0E);
+      break;
+   }
+
+   return ret;
+}
+
+static UINT8 tp1vcu_obj_rb(UINT32 offset)
+{
+   UINT16 ret;
+   ret = tp1vcu_obj_rw(offset);
+
+   if((offset&1)==0)
+      return (UINT8) ((ret>>8)&0xFF);
+   else
+      return (UINT8) ((ret>>0)&0xFF);
+}
+
+static UINT16 tp1_flipscreen;
+
+static void tp1vcu_bg_ww(UINT32 offset, UINT16 data)
+{
+   switch(offset&0x1E){
+   case 0:
+     tp1_flipscreen = data;
+     break;
+   case 0x02:                        // Port Address
+     tp1vcu[0].bg_pos = (data<<2) & 0xFFFE;
+     break;
+   case 0x04:                        // Port Data
+     WriteWord(&tp1vcu[0].VRAM[tp1vcu[0].bg_pos], data);
+     break;
+   case 0x06:                        // Port Data
+     WriteWord(&tp1vcu[0].VRAM[tp1vcu[0].bg_pos+2], data);
+     tp1vcu[0].bg_pos += 0x0002;
+     tp1vcu[0].bg_pos &= 0xFFFE;
+     break;
+   case 0x10:                        // Scroll
+   case 0x12:                        // Scroll
+   case 0x14:                        // Scroll
+   case 0x16:                        // Scroll
+   case 0x18:                        // Scroll
+   case 0x1A:                        // Scroll
+   case 0x1C:                        // Scroll
+   case 0x1E:                        // Scroll
+     WriteWord(&tp1vcu[0].SCROLL[offset&0x0E], data);
+     break;
+   default:
+     print_debug("tp1vcu[0] ww(%04x,%04x)\n", offset&0x1E, data);
+     break;
+   }
+}
+
+static UINT16 tp1vcu_bg_rw(UINT32 offset)
+{
+   UINT16 ret;
+
+   switch(offset&0x1E){
+   case 0x00:                        // Status
+     ret = tp1vcu[0].status;
+     tp1vcu[0].status ^= 1;
+     break;
+   case 2:
+     return tp1vcu[0].bg_pos>>2;
+   case 0x04:                        // Port Data
+     ret = ReadWord(&tp1vcu[0].VRAM[tp1vcu[0].bg_pos]);
+     break;
+   case 0x06:                        // Port Data
+     ret = ReadWord(&tp1vcu[0].VRAM[tp1vcu[0].bg_pos+2]);
+     break;
+
+   case 0x10:                        // Scroll
+   case 0x12:                        // Scroll
+   case 0x14:                        // Scroll
+   case 0x16:                        // Scroll
+   case 0x18:                        // Scroll
+   case 0x1A:                        // Scroll
+   case 0x1C:                        // Scroll
+   case 0x1E:                        // Scroll
+     ret = ReadWord(&tp1vcu[0].SCROLL[offset&0x0E]);
+     break;
+   default:
+     ret = 0x0000;
+     print_debug("tp1vcu[0] rw(%04x)\n", offset&0x0E);
+     break;
+   }
+
+   return ret;
+}
+
+static UINT8 tp1vcu_bg_rb(UINT32 offset)
+{
+   UINT16 ret;
+
+   ret = tp1vcu_bg_rw(offset);
+
+   if((offset&1)==0)
+      return (UINT8) ((ret>>8)&0xFF);
+   else
+      return (UINT8) ((ret>>0)&0xFF);
+}
+
+/******************************************************************************/
+/*  VBLANK/INTERRUPT THINGY                                                   */
+/******************************************************************************/
+
+static UINT32 want_int;
+
+static int x_ofs[4];
+
+static UINT8 tp_vblank_rb(UINT32 offset)
+{
+   static UINT8 status;
+
+   switch(offset & 0x0E){
+   case 0x00:
+      status ^= 1;
+      return status;
+   break;
+   default:
+      return 0;
+   break;
+   }
+}
+
+static UINT16 tp_vblank_rw(UINT32 offset)
+{
+   return (UINT16) (tp_vblank_rb(offset));
+}
+
+static void tp_vblank_wb(UINT32 offset, UINT8 data)
+{
+   switch(offset & 0x0E){
+   case 0x02:
+     if (data != 1 || want_int != 1)
+     want_int = data & 1;
+      print_debug("want_int: %d\n", want_int);
+   break;
+   /* Incredible : apparently these offsets are not used ?!!!!! */
+   /* But then why did Antiriad think they were usefull ?!????  */
+/*    case 0x08: */
+/*       x_ofs[0] = (data&0xFF) - 0xd8; */
+/*    break; */
+/*    case 0x0A: */
+/*       x_ofs[1] = (data&0xFF) - 0x17; */
+/*    break; */
+/*    case 0x0C: */
+/*       x_ofs[2] = (data&0xFF) - 0x88; */
+/*    break; */
+/*    case 0x0E: */
+/*       x_ofs[3] = (data&0xFF) - 0x07; */
+/*    break; */
+/*    default: */
+/*    break; */
+   }
+}
+
+static void tp_vblank_ww(UINT32 offset, UINT16 data)
+{
+   tp_vblank_wb(offset, (UINT8)(data&0xFF));
+}
+
+static int bg_x_ofs;
+static int bg_y_ofs;
+
+static void tp1vcu_ofsreg_ww(UINT32 offset, UINT16 data)
+{
+  switch (offset & 6) {
+  case 0:
+    bg_x_ofs = data;
+    break;
+  case 2:
+    bg_y_ofs = data;
+    break;
+  case 6:
+    break;
+  }
+}
+
+
+/******************************************************************************/
+/*  Z80 CUSTOM (not dumped)                                                   */
+/******************************************************************************/
+
+static UINT8 vimana_z80_rb(UINT32 offset)
+{
+   UINT16 ret;
+
+   offset |= 1;
+
+   switch(offset&0xFF){
+      case 0x01:                        // sound comm?
+         ret = 0xFF;
+      break;
+      case 0x03:                        // sound comm?
+         ret = 0x00;
+      break;
+      case 0x05:                        // credits
+         ret = 0x01;
+      break;
+      case 0x07:                        // dswa
+         ret = get_dsw(0);
+      break;
+      case 0x09:                        // misc input
+         ret = RAM[0x023003];
+      break;
+      case 0x0B:                        // p1 input
+	  ret = RAM[0x023004];
+      break;
+      case 0x0D:                        // p2 input
+         ret = RAM[0x023005];
+      break;
+      case 0x0F:                        // dswb
+         ret = get_dsw(1);
+      break;
+      case 0x11:                        // dswc
+         ret = get_dsw(2);
+      break;
+      default:
+         ret = 0x00;
+         print_debug("vimana_z80_rb(%04x)\n", offset&0xFF);
+      break;
+   }
+
+   return ret;
+}
+
+static UINT16 vimana_z80_rw(UINT32 offset)
+{
+   return (UINT16) (vimana_z80_rb(offset|1));
+}
+
+static UINT8 fshark_z80_rb(UINT32 offset)
+{
+   UINT16 ret;
+
+   offset |= 1;
+   switch(offset&0xFF){
+      case 0x01:                        // p1 controls
+	ret = RAM[0x023004];
+      break;
+      case 0x03:                        // p2 input
+         ret = RAM[0x023005];
+      break;
+      case 0x05:                        // dsw a
+         ret = get_dsw(0);
+      break;
+      case 0x07:                        // dswb
+         ret = get_dsw(1);
+      break;
+      case 0x09:                        // misc input
+	ret = RAM[0x023003];
+      break;
+      case 0x0B:                        // dsw c
+	ret = get_dsw(2) | 0x80;
+      break;
+      default:
+         ret = 0x00;
+         print_debug("fshark_z80_rb(%04x)\n", offset&0xFF);
+      break;
+   }
+
+   return ret;
+}
+
+static UINT16 fshark_z80_rw(UINT32 offset)
+{
+  // fprintf(stderr,"called %x\n",offset);
+  return (UINT16) (fshark_z80_rb(offset|1));
+}
+
+/******************************************************************************/
+/*  Z80 NORMAL                                                                */
+/******************************************************************************/
+
+static UINT8 tp1_z80_rb(UINT32 offset)
+{
+   offset  &= 0xFFF;
+   offset >>= 1;
+
+   return Z80ROM[0x8000 + offset];
+}
+
+static UINT16 tp1_z80_rw(UINT32 offset)
+{
+   offset  &= 0xFFF;
+   offset >>= 1;
+
+   return (UINT16) (Z80ROM[0x8000 + offset]);
+}
+
+static void tp1_z80_wb(UINT32 offset, UINT8 data)
+{
+   offset  &= 0xFFF;
+   offset >>= 1;
+
+   Z80ROM[0x8000 + offset] = data;
+}
+
+static void tp1_z80_ww(UINT32 offset, UINT16 data)
+{
+   offset  &= 0xFFF;
+   offset >>= 1;
+
+   Z80ROM[0x8000 + offset] = (UINT8) (data&0xFF);
+}
+
+static UINT8 zero_wing_port_rb(UINT16 offset)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         return RAM[0x023004];
+      break;
+      case 0x08:
+         return RAM[0x023005];
+      break;
+      case 0x20:
+         return get_dsw(0);
+      break;
+      case 0x28:
+         return get_dsw(1);
+      break;
+      case 0x80:
+         return RAM[0x023003];
+      break;
+      case 0x88:
+         return get_dsw(2);
+      break;
+      case 0xA8:
+	return YM3812ReadZ80(0);
+      break;
+      default:
+         return 0x00;
+      break;
+   }
+}
+
+static void zero_wing_port_wb(UINT16 offset, UINT8 data)
+{
+   switch(offset&0xFF){
+      case 0xA8:
+         YM3812WriteZ80(0,data);
+      break;
+      case 0xA9:
+         YM3812WriteZ80(1,data);
+      break;
+      default:
+      break;
+   }
+}
+
+static UINT8 demons_world_port_rb(UINT16 offset)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         return YM3812ReadZ80(0);
+      break;
+      case 0x20:
+         return get_dsw(2);
+      break;
+      case 0x60:
+         return RAM[0x023003];
+      break;
+      case 0x80:
+         return RAM[0x023004];
+      break;
+      case 0xA0:
+         return get_dsw(1);
+      break;
+      case 0xC0:
+         return RAM[0x023005];
+      break;
+      case 0xE0:
+         return get_dsw(0);
+      break;
+      default:
+         return 0xFF;
+      break;
+   }
+}
+
+static void demons_world_port_wb(UINT16 offset, UINT8 data)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         YM3812WriteZ80(0,data);
+      break;
+      case 0x01:
+         YM3812WriteZ80(1,data);
+      break;
+      default:
+      break;
+   }
+}
+
+static UINT8 truxton_port_rb(UINT16 offset)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         return RAM[0x023004];
+      break;
+      case 0x10:
+         return RAM[0x023005];
+      break;
+      case 0x20:
+         return RAM[0x023003];
+      break;
+      case 0x40:
+         return get_dsw(0);
+      break;
+      case 0x50:
+         return get_dsw(1);
+      break;
+      case 0x60:
+         return YM3812ReadZ80(0);
+      break;
+      case 0x70:
+         return get_dsw(2);
+      break;
+      default:
+         return 0xFF;
+      break;
+   }
+}
+
+static void truxton_port_wb(UINT16 offset, UINT8 data)
+{
+   switch(offset&0xFF){
+   case 0x60:
+     YM3812WriteZ80(0,data);
+     break;
+   case 0x61:
+     YM3812WriteZ80(1,data);
+     break;
+   default:
+     break;
+   }
+}
+
+static UINT8 outzone_port_rb(UINT16 offset)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         return YM3812ReadZ80(0);
+      break;
+      case 0x08:
+         return get_dsw(0);
+      break;
+      case 0x0C:
+         return get_dsw(1);
+      break;
+      case 0x10:
+         return RAM[0x023003];
+      break;
+      case 0x14:
+         return RAM[0x023004];
+      break;
+      case 0x18:
+         return RAM[0x023005];
+      break;
+      case 0x1C:
+         return get_dsw(2);
+      break;
+      default:
+         return 0xFF;
+      break;
+   }
+}
+
+static void outzone_port_wb(UINT16 offset, UINT8 data)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         YM3812WriteZ80(0,data);
+      break;
+      case 0x01:
+         YM3812WriteZ80(1,data);
+      break;
+      default:
+      break;
+   }
+}
+
+
+static UINT8 hell_fire_port_rb(UINT16 offset)
+{
+   switch(offset&0xFF){
+      case 0x00:
+         return get_dsw(0);
+      break;
+      case 0x10:
+         return get_dsw(1);
+      break;
+      case 0x20:
+         return get_dsw(2);
+      break;
+      case 0x40:
+         return RAM[0x023004];
+      break;
+      case 0x50:
+         return RAM[0x023005];
+      break;
+      case 0x60:
+         return RAM[0x023003];
+      break;
+      case 0x70:
+         return YM3812ReadZ80(0);
+      break;
+      default:
+         return 0xFF;
+      break;
+   }
+}
+
+static void hell_fire_port_wb(UINT16 offset, UINT8 data)
+{
+   switch(offset&0xFF){
+      case 0x70:
+         YM3812WriteZ80(0,data);
+      break;
+      case 0x71:
+         YM3812WriteZ80(1,data);
+      break;
+      default:
+      break;
+   }
+}
+
+/******************************************************************************/
+
+static int layer_id_data[5];
+
+static char *layer_id_name[5] =
+{
+   "PF1", "PF2", "PF3", "PF4", "OBJECT",
+};
+
+static int tp1_setup_gfx() {
+  GFX_BG0 = NULL;
+  if(!(TileQueue = (struct TILE_Q *) AllocateMem(sizeof(TILE_Q)*MAX_TILES)))return -1;
+  return 0;
+}
+
+static void tp1_finish_setup_gfx() {
+  int nb_bg0 = max_sprites[0];
+  int nb_obj = max_sprites[1];
+  int i;
+
+  for (i=0; i<5; i++)
+    layer_id_data[i] = add_layer_info(layer_id_name[i]);
+
+  GFX_BG0 = gfx1;
+  GFX_SPR = gfx2;
+
+  GFX_BG0_SOLID = gfx1_solid;
+  GFX_SPR_SOLID = gfx2_solid;
+
+  tp1vcu[0].VRAM          = RAM+0x11000;
+  tp1vcu[0].RAM_OBJ       = RAM+0x21000;
+  tp1vcu[0].SCROLL        = RAM+0x22000;
+  tp1vcu[0].GFX_BG        = GFX_BG0;
+  tp1vcu[0].MASK_BG       = GFX_BG0_SOLID;
+  tp1vcu[0].tile_mask_bg  = nb_bg0-1;
+  tp1vcu[0].tile_mask_obj = nb_obj-1;
+  tp1vcu[0].tile_ofs_obj  = nb_bg0;
+  init_tp1vcu(0);
+
+  InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
+
+  set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
+}
+
+void load_vimana()
+{
+   romset = 0;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   memset(RAM+0x00000,0x00,0x40000);
+   RAMSize=0x40000+0x10000;
+
+   if(is_current_game("vimana1"))
+   {
+
+   // Kill the annoying reset instruction
+
+   WriteWord68k(&ROM[0x1A830],0x4E71);          // nop
+
+   // Something failed a test
+
+   WriteWord68k(&ROM[0x1AA3E],0x4E71);          // nop
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x17918],0x13FC0000);
+   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+
+   }
+   else{
+
+   // Kill the annoying reset instruction
+
+   WriteWord68k(&ROM[0x1ab1c],0x4E71);          // nop
+
+   // Something failed a test
+
+   WriteWord68k(&ROM[0x1ad2a],0x4E71);          // nop
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x17c04],0x13FC0000);
+   WriteLong68k(&ROM[0x17c08],0x00AA0000);
+
+   }
+
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x40000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0x480000, 0x483FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x0C0000, 0x0C000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x4C0000, 0x4C001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x400000, 0x40000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x440000, 0x440FFF, vimana_z80_rb, NULL);                // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x480000, 0x483FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x0C0000, 0x0C000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x4C0000, 0x4C001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x400000, 0x40000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x440000, 0x440FFF, vimana_z80_rw, NULL);                // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x480000, 0x483FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x400000, 0x40000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x480000, 0x483FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x0C0000, 0x0C000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x4C0000, 0x4C001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x400000, 0x40000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x080000, 0x080003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_outzone(void)
+{
+   romset = 2;
+   scroll_offsx = 0x1ef;
+   fps = 55;
+
+   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,fps));
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   memset(RAM+0x00000,0x00,0x40000);
+   RAMSize=0x40000+0x10000;
+
+   /* Sound Setup */
+
+   Z80ROM=RAM+0x40000;
+   if(!load_rom("rom9.bin", Z80ROM, 0x08000)) return;
+/*
+   // Fix Checksum
+
+   Z80ROM[0x0156]=0x00; // NOP
+   Z80ROM[0x0157]=0x00; // NOP
+   Z80ROM[0x0158]=0x00; // NOP
+
+   // Apply Speed Patch
+
+   Z80ROM[0x019D]=0xD3; // OUTA (AAh)
+   Z80ROM[0x019E]=0xAA; //
+
+   SetStopZ80Mode2(0x019C);
+*/
+   // Setup Z80 memory map
+   // --------------------
+
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
+   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
+
+   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
+   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+
+   AddZ80AReadPort(0x00, 0xFF, outzone_port_rb,         NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, outzone_port_wb,        NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+
+   AddZ80AInit();
+
+   // Kill the annoying reset instruction
+
+   WriteWord68k(&ROM[0x124bc],0x4E71);          // nop
+/*
+   // Something failed a test
+
+   WriteWord68k(&ROM[0x1AA3E],0x4E71);          // nop
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x17918],0x13FC0000);
+   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+*/
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x40000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0x240000, 0x243FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x304000, 0x3047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x306000, 0x3067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x100000, 0x10000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x200000, 0x20001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x300000, 0x30000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x140000, 0x140FFF, tp1_z80_rb, NULL);                   // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x240000, 0x243FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x304000, 0x3047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x306000, 0x3067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x100000, 0x10000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x200000, 0x20001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x300000, 0x30000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x140000, 0x140FFF, tp1_z80_rw, NULL);                   // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x240000, 0x243FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x304000, 0x3047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x306000, 0x3067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x300000, 0x30000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0x140000, 0x140FFF, tp1_z80_wb, NULL);                  // SOUND COMM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x240000, 0x243FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x304000, 0x3047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x306000, 0x3067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x100000, 0x10000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x200000, 0x20001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x300000, 0x30000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x140000, 0x140FFF, tp1_z80_ww, NULL);                  // SOUND COMM
+   AddWriteWord(0x340000, 0x340003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_rally_bike(void)
+{
+   romset = 3;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   memset(RAM+0x00000,0x00,0x40000);
+   RAMSize=0x40000+0x10000;
+
+   /* Sound Setup */
+
+   Z80ROM=RAM+0x40000;
+   if(!load_rom("b45-05.rom", Z80ROM, 0x08000)) return;
+/*
+   // Fix Checksum
+
+   Z80ROM[0x0156]=0x00; // NOP
+   Z80ROM[0x0157]=0x00; // NOP
+   Z80ROM[0x0158]=0x00; // NOP
+
+   // Apply Speed Patch
+
+   Z80ROM[0x019D]=0xD3; // OUTA (AAh)
+   Z80ROM[0x019E]=0xAA; //
+
+   SetStopZ80Mode2(0x019C);
+*/
+   // Setup Z80 memory map
+   // --------------------
+
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
+   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
+
+   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
+   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+
+   AddZ80AReadPort(0x00, 0xFF, truxton_port_rb,         NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, truxton_port_wb,        NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+
+   AddZ80AInit();
+
+   // Something failed a test
+
+   WriteWord68k(&ROM[0x0193E],0x6000);
+
+   // Fix rom checksum
+
+   WriteWord68k(&ROM[0x01A66],0x7400);
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x01BA0],0x13FC0000);
+   WriteLong68k(&ROM[0x01BA4],0x00AA0000);
+
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x80000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x144000, 0x1447FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x146000, 0x1467FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x021000);                 // OBJECT
+   AddReadByte(0x100000, 0x10001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x140000, 0x14000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x180000, 0x180FFF, tp1_z80_rb, NULL);                   // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x144000, 0x1447FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x146000, 0x1467FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x021000);                 // OBJECT
+   AddReadWord(0x100000, 0x10001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x140000, 0x14000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x180000, 0x180FFF, tp1_z80_rw, NULL);                   // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x144000, 0x1447FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x146000, 0x1467FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x021000);                // OBJECT
+   AddWriteByte(0x140000, 0x14000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0x180000, 0x180FFF, tp1_z80_wb, NULL);                  // SOUND COMM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x144000, 0x1447FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x146000, 0x1467FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x021000);                // OBJECT
+   AddWriteWord(0x100000, 0x10001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x140000, 0x14000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x180000, 0x180FFF, tp1_z80_ww, NULL);                  // SOUND COMM
+   AddWriteWord(0x1C0000, 0x1C0003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_zero_wing(void)
+{
+   romset = 4;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   RAMSize=0x40000+0x10000;
+   memset(RAM+0x00000,0x00,RAMSize);
+
+   /* Sound Setup */
+
+   Z80ROM=RAM+0x40000;
+   if(!load_rom("o15-13.rom", Z80ROM, 0x08000)) return;
+/*
+   // Fix Checksum
+
+   Z80ROM[0x0156]=0x00; // NOP
+   Z80ROM[0x0157]=0x00; // NOP
+   Z80ROM[0x0158]=0x00; // NOP
+
+   // Apply Speed Patch
+
+   Z80ROM[0x019D]=0xD3; // OUTA (AAh)
+   Z80ROM[0x019E]=0xAA; //
+
+   SetStopZ80Mode2(0x019C);
+*/
+   // Setup Z80 memory map
+   // --------------------
+
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
+   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
+
+   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
+   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+
+   AddZ80AReadPort(0x00, 0xFF, zero_wing_port_rb,       NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, zero_wing_port_wb,      NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+
+   AddZ80AInit();
+
+   // Kill the annoying reset instruction
+
+   WriteWord68k(&ROM[0x0023C],0x4E71);          // nop
+
+   // Fix rom checksum
+
+   WriteLong68k(&ROM[0x004DA],0x4E714E71);      // nop
+
+   // Fix sound error
+
+   WriteLong68k(&ROM[0x004E6],0x4E714E71);      // nop
+   WriteLong68k(&ROM[0x0050C],0x4E714E71);      // nop
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x17918],0x13FC0000);
+   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x80000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x4C0000, 0x4C000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x480000, 0x48001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x400000, 0x40000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x440000, 0x440FFF, tp1_z80_rb, NULL);                   // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x4C0000, 0x4C000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x480000, 0x48001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x400000, 0x40000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x440000, 0x440FFF, tp1_z80_rw, NULL);                   // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x400000, 0x40000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0x440000, 0x440FFF, tp1_z80_wb, NULL);                  // SOUND COMM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x4C0000, 0x4C000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x480000, 0x48001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x400000, 0x40000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x440000, 0x440FFF, tp1_z80_ww, NULL);                  // SOUND COMM
+   AddWriteWord(0x0c0000, 0x0c0003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_demons_world(void)
+{
+   romset = 5;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   memset(RAM+0x00000,0x00,0x40000);
+   RAMSize=0x40000+0x10000;
+
+   /* Sound Setup */
+
+   Z80ROM=RAM+0x40000;
+   if(!load_rom("rom11", Z80ROM, 0x08000)) return;
+/*
+   // Fix Checksum
+
+   Z80ROM[0x0156]=0x00; // NOP
+   Z80ROM[0x0157]=0x00; // NOP
+   Z80ROM[0x0158]=0x00; // NOP
+
+   // Apply Speed Patch
+
+   Z80ROM[0x019D]=0xD3; // OUTA (AAh)
+   Z80ROM[0x019E]=0xAA; //
+
+   SetStopZ80Mode2(0x019C);
+*/
+   // Setup Z80 memory map
+   // --------------------
+
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
+   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
+
+   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
+   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+
+   AddZ80AReadPort(0x00, 0xFF, demons_world_port_rb,    NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, demons_world_port_wb,   NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+
+   AddZ80AInit();
+
+   // Kill the annoying reset instruction
+/*
+   WriteWord68k(&ROM[0x0023C],0x4E71);          // nop
+
+   // Fix rom checksum
+
+   WriteLong68k(&ROM[0x004DA],0x4E714E71);      // nop
+*/
+   // Fix sound error
+
+   WriteLong68k(&ROM[0x0188C],0x4E714E71);      // nop
+   WriteLong68k(&ROM[0x018B2],0x4E714E71);      // nop
+
+/*
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x17918],0x13FC0000);
+   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+*/
+   // Fix protection/mcu?
+
+   WriteWord68k(&ROM[0x0181C],0x4E71);
+   WriteWord68k(&ROM[0x01824],0x600A);
+
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x40000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0xA00000, 0xA0000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x800000, 0x80001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x400000, 0x40000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x600000, 0x600FFF, tp1_z80_rb, NULL);                   // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0xA00000, 0xA0000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x800000, 0x80001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x400000, 0x40000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x600000, 0x600FFF, tp1_z80_rw, NULL);                   // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x400000, 0x40000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0x600000, 0x600FFF, tp1_z80_wb, NULL);                  // SOUND COMM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0xA00000, 0xA0000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x800000, 0x80001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x400000, 0x40000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x600000, 0x600FFF, tp1_z80_ww, NULL);                  // SOUND COMM
+   AddWriteWord(0xE00000, 0xE00003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_fire_shark(void)
+{
+   romset = 6;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   memset(RAM+0x00000,0x00,0x40000);
+   RAMSize=0x40000+0x10000;
+
+   if(is_current_game("fireshrk"))
+   {
+
+   // Kill the annoying reset instruction
+
+     WriteWord68k(&ROM[0x06f6c],0x4E71);          // nop
+
+     // Something failed a test
+
+     WriteWord68k(&ROM[0x0706e],0x4e71);          // nop
+     //WriteWord68k(&ROM[0x05f0a],0x4e71);          // nop
+
+     // 68000 speed hack
+
+     WriteLong68k(&ROM[0x5f04],0x13FC0000);
+     WriteLong68k(&ROM[0x5f08],0x00AA0000);
+   }
+   else
+   {
+
+   // Kill the annoying reset instruction
+
+   WriteWord68k(&ROM[0x06c56],0x4E71);          // nop
+
+   // Something failed a test
+
+   WriteWord68k(&ROM[0x06d62],0x4e71);          // nop
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x58c8],0x13FC0000);
+   WriteLong68k(&ROM[0x58cc],0x00AA0000);
+
+   }
+
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x80000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   //AddReadBW(0x000000, 0x00ffff, NULL, ROM+0x000000);                 // 68000 ROM
+   //AddReadBW(0x040000, 0x07FFFF, NULL, ROM+0x040000);                 // 68000 ROM
+   AddReadByte(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x104000, 0x1047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x106000, 0x1067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x1C0000, 0x1C000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x180000, 0x18001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x100000, 0x100001, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x140000, 0x140FFF, fshark_z80_rb, NULL);                // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x104000, 0x1047FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x106000, 0x1067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x1C0000, 0x1C000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x180000, 0x18001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x100000, 0x10000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x140000, 0x140FFF, fshark_z80_rw, NULL);                // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x104000, 0x1047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x106000, 0x1067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x100000, 0x10000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x104000, 0x1047FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x106000, 0x1067FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x1C0000, 0x1C000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x180000, 0x18001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x100000, 0x10000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x080000, 0x080007, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_hell_fire(void)
+{
+   romset = 8;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   memset(RAM+0x00000,0x00,0x40000);
+   RAMSize=0x40000+0x10000;
+
+   /* Sound Setup */
+
+   Z80ROM=RAM+0x40000;
+   if(!load_rom("b90-03.bin", Z80ROM, 0x08000)) return;
+/*
+   // Fix Checksum
+
+   Z80ROM[0x0156]=0x00; // NOP
+   Z80ROM[0x0157]=0x00; // NOP
+   Z80ROM[0x0158]=0x00; // NOP
+
+   // Apply Speed Patch
+
+   Z80ROM[0x019D]=0xD3; // OUTA (AAh)
+   Z80ROM[0x019E]=0xAA; //
+
+   SetStopZ80Mode2(0x019C);
+*/
+   // Setup Z80 memory map
+   // --------------------
+
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
+   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
+
+   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
+   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+
+   AddZ80AReadPort(0x00, 0xFF, hell_fire_port_rb,       NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, hell_fire_port_wb,      NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+
+   AddZ80AInit();
+
+   // Kill the annoying reset instruction
+/*
+   WriteWord68k(&ROM[0x0023C],0x4E71);          // nop
+
+   // Fix rom checksum
+
+   WriteLong68k(&ROM[0x004DA],0x4E714E71);      // nop
+*/
+   // Fix sound error
+/*
+   WriteLong68k(&ROM[0x0188C],0x4E714E71);      // nop
+   WriteLong68k(&ROM[0x018B2],0x4E714E71);      // nop
+*/
+/*
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x17918],0x13FC0000);
+   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+*/
+   // Fix protection/mcu?
+/*
+   WriteWord68k(&ROM[0x0181C],0x4E71);
+   WriteWord68k(&ROM[0x01824],0x600A);
+*/
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x40000);
+   ByteSwap(RAM,0x40000);
+
+   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0x040000, 0x043FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x084000, 0x0847FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x086000, 0x0867FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x140000, 0x14000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x100000, 0x10001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x080000, 0x08000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x0C0000, 0x0C0FFF, tp1_z80_rb, NULL);                   // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x040000, 0x043FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x084000, 0x0847FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x086000, 0x0867FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x140000, 0x14000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x100000, 0x10001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x080000, 0x08000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x0C0000, 0x0C0FFF, tp1_z80_rw, NULL);                   // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x040000, 0x043FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x084000, 0x0847FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x086000, 0x0867FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x080000, 0x08000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0x0C0000, 0x0C0FFF, tp1_z80_wb, NULL);                  // SOUND COMM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x040000, 0x043FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x084000, 0x0847FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x086000, 0x0867FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x140000, 0x14000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x100000, 0x10001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x080000, 0x08000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x0C0000, 0x0C0FFF, tp1_z80_ww, NULL);                  // SOUND COMM
+   AddWriteWord(0x180000, 0x180003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void load_truxton(void)
+{
+   romset = 9;
+   scroll_offsx = 0x1ef;
+
+   if(!(RAM=AllocateMem(0x80000)))return;
+   if (tp1_setup_gfx()) return;
+
+   RAMSize=0x40000+0x10000;
+   memset(RAM+0x00000,0x00,RAMSize);
+
+   /* Sound Setup */
+
+   Z80ROM=RAM+0x40000;
+   if(!load_rom("b65_09.bin", Z80ROM, 0x08000)) return;
+/*
+   // Fix Checksum
+
+   Z80ROM[0x0156]=0x00; // NOP
+   Z80ROM[0x0157]=0x00; // NOP
+   Z80ROM[0x0158]=0x00; // NOP
+
+   // Apply Speed Patch
+
+   Z80ROM[0x019D]=0xD3; // OUTA (AAh)
+   Z80ROM[0x019E]=0xAA; //
+
+   SetStopZ80Mode2(0x019C);
+*/
+   // Setup Z80 memory map
+   // --------------------
+
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x87FF, NULL,                        Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,               NULL);
+   AddZ80AReadByte(    -1,     -1, NULL,                        NULL);
+
+   AddZ80AWriteByte(0x8000, 0x87FF, NULL,                       Z80ROM+0x8000); // Z80 RAM
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
+   AddZ80AWriteByte(    -1,     -1, NULL,                       NULL);
+
+   AddZ80AReadPort(0x00, 0xFF, truxton_port_rb,         NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, truxton_port_wb,        NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+
+   AddZ80AInit();
+
+   // 68000 speed hack
+
+   WriteLong68k(&ROM[0x26ce],0x13FC0000);
+   WriteLong68k(&ROM[0x26d2],0x00AA0000);
+   WriteWord68k(&ROM[0x5076],0x4e71);
+
+   // Kill the annoying reset instruction
+/*
+   WriteWord68k(&ROM[0x0023C],0x4E71);          // nop
+
+   // Fix rom checksum
+
+   WriteLong68k(&ROM[0x004DA],0x4E714E71);      // nop
+*/
+   // Fix sound error
+/*
+   WriteLong68k(&ROM[0x0188C],0x4E714E71);      // nop
+   WriteLong68k(&ROM[0x018B2],0x4E714E71);      // nop
+*/
+/*
+*/
+   // Fix protection/mcu?
+/*
+   WriteWord68k(&ROM[0x0181C],0x4E71);
+   WriteWord68k(&ROM[0x01824],0x600A);
+*/
+/*
+ *  StarScream Stuff follows
+ */
+
+   ByteSwap(ROM,0x40000);
+   ByteSwap(RAM,0x20000);
+
+   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
+   AddMemFetch(-1, -1, NULL);
+
+   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x144000, 0x1447FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadByte(0x146000, 0x1467FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadByte(0x0C0000, 0x0C000F, tp1vcu_obj_rb, NULL);                // OBJECT
+   AddReadByte(0x100000, 0x10001F, tp1vcu_bg_rb, NULL);                 // LAYER
+   AddReadByte(0x140000, 0x14000F, tp_vblank_rb, NULL);                 // VSYNC
+   AddReadByte(0x180000, 0x180FFF, tp1_z80_rb, NULL);                   // SOUND COMM
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+   AddReadByte(-1, -1, NULL, NULL);
+
+   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x144000, 0x1447FF, NULL, RAM+0x010000);                 // COLOR RAM
+   AddReadWord(0x146000, 0x1467FF, NULL, RAM+0x010800);                 // COLOR RAM
+   AddReadWord(0x0C0000, 0x0C000F, tp1vcu_obj_rw, NULL);                // OBJECT
+   AddReadWord(0x100000, 0x10001F, tp1vcu_bg_rw, NULL);                 // LAYER
+   AddReadWord(0x140000, 0x14000F, tp_vblank_rw, NULL);                 // VSYNC
+   AddReadWord(0x180000, 0x180FFF, tp1_z80_rw, NULL);                   // SOUND COMM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+   AddReadWord(-1, -1,NULL, NULL);
+
+   AddWriteByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteByte(0x144000, 0x1447FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteByte(0x146000, 0x1467FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteByte(0x140000, 0x14000F, tp_vblank_wb, NULL);                // VSYNC
+   AddWriteByte(0x180000, 0x180FFF, tp1_z80_wb, NULL);                  // SOUND COMM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteByte(-1, -1, NULL, NULL);
+
+   AddWriteWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x144000, 0x1447FF, NULL, RAM+0x010000);                // COLOR RAM
+   AddWriteWord(0x146000, 0x1467FF, NULL, RAM+0x010800);                // COLOR RAM
+   AddWriteWord(0x0C0000, 0x0C000F, tp1vcu_obj_ww, NULL);               // OBJECT
+   AddWriteWord(0x100000, 0x10001F, tp1vcu_bg_ww, NULL);                // LAYER
+   AddWriteWord(0x140000, 0x14000F, tp_vblank_ww, NULL);                // VSYNC
+   AddWriteWord(0x180000, 0x180FFF, tp1_z80_ww, NULL);                  // SOUND COMM
+   AddWriteWord(0x1C0000, 0x1C0003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
+   AddWriteWord(-1, -1, NULL, NULL);
+
+   AddInitMemory();     // Set Starscream mem pointers...
+
+}
+
+void ClearToaplan1(void)
+{
+#ifdef RAINE_DEBUG
+  switch(romset){
+      case 3:
+      case 4:
+      case 6:
+      case 7:
+      save_debug("ROM.bin",ROM,0x80000,1);
+      save_debug("RAM.bin",RAM,RAMSize,1);
+      break;
+      default:
+      save_debug("ROM.bin",ROM,0x40000,1);
+      save_debug("RAM.bin",RAM,RAMSize,1);
+      break;
+      }
+#endif
+}
+
+void ExecuteToaplan1Frame(void)
+{
+  cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 16MHz (60fps) (real game is only ??MHz)
+   if(want_int) {
+     cpu_interrupt(CPU_68K_0, 4);
+   }
+   // samesame / fireshark need int 2...
+   if (romset == 6) {
+     // If we don't execute these few cycles, then int4 is simply ignored !!!
+     cpu_execute_cycles(CPU_68K_0, 1000);
+     cpu_interrupt(CPU_68K_0, 2);
+   }
+}
+
+void ExecuteToaplan1Frame_Sound(void)
+{
+   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 16MHz (60fps) (real game is only ??MHz)
+   if(want_int)
+      cpu_interrupt(CPU_68K_0, 4);
+
+   execute_z80_audio_frame();
+}
+
+static void ClearTileQueue(void)
+{
+   int ta;
+
+   for(ta=0;ta<MAX_PRI;ta++){
+     prilist[ta] = NULL;
+   }
+
+   last_tile = TileQueue;
+}
+
+static DEF_INLINE void QueueTile(int tile, int x, int y, UINT8 *map, int pri)
+{
+   last_tile->tile = tile;
+   last_tile->x    = x;
+   last_tile->y    = y;
+   last_tile->map  = map;
+   last_tile->next = prilist[pri];
+   prilist[pri]    = last_tile;
+   last_tile       = last_tile+1;
+}
+
+static void DrawTileQueue(void)
+{
+   struct TILE_Q *tile_ptr;
+   UINT32 ta,pri,pri_start;
+
+   // priority 0 is for "off" sprites.
+   if (romset == 2) // but outzone does not have sprites turned off !
+     pri_start = 0;
+   else
+     pri_start = 2;
+   for(pri=pri_start; pri<MAX_PRI; pri++)
+   {
+      tile_ptr = prilist[pri];
+
+      if(!(pri & 1))
+      {
+         while(tile_ptr){
+            ta = tile_ptr->tile;
+            if(GFX_BG0_SOLID[ta]!=0){                      // No pixels; skip
+               if(GFX_BG0_SOLID[ta]==1)                    // Some pixels; trans
+                  Draw8x8_Trans_Mapped_Rot(&GFX_BG0[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
+               else                                        // all pixels; solid
+                  Draw8x8_Mapped_Rot(&GFX_BG0[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
+            }
+            tile_ptr = tile_ptr->next;
+         }
+      }
+      else
+      {
+         while(tile_ptr){
+            ta = tile_ptr->tile;
+            if(GFX_SPR_SOLID[ta]!=0){                      // No pixels; skip
+               if(GFX_SPR_SOLID[ta]==1)                    // Some pixels; trans
+                  Draw8x8_Trans_Mapped_Rot(&GFX_SPR[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
+               else                                        // all pixels; solid
+                  Draw8x8_Mapped_Rot(&GFX_SPR[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
+            }
+            tile_ptr = tile_ptr->next;
+         }
+      }
+
+   }
+
+}
+
+static UINT16 vram_ofs[ROM_COUNT][4] =
+{
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 },
+   { 0x0000,0x4000,0x8000,0xC000 }, // Truxton
+};
+
+#define OBJ_X_MASK	0x1FF
+#define OBJ_Y_MASK	0x1FF
+
+void DrawToaplan1(void)
+{
+   int x,y,ta,pri,layer;
+   int zz,zzz,zzzz,x16,y16;
+   int xx,xxx,xxxx,yyy,x1,y1;
+   UINT8 *MAP,*RAM_BG,*RAM_BG2;
+   UINT32 tile_mask,tile_ofs;
+   UINT16 ctrl;
+   if (!GFX_BG0)
+     tp1_finish_setup_gfx();
+
+   ClearPaletteMap();
+
+	 MAP_PALETTE_MAPPED_NEW(
+				0x12,
+				16,
+				MAP
+				);
+   clear_game_screen(ReadLong(&MAP[0]));
+
+   ClearTileQueue();
+
+   // tp1_flipscreen changes layer alignement, but it seems to be only related
+   // to the invert screen dip. So we just don't use it for now.
+
+   // BG0123
+
+   /* Bg info from mame... Don't ask me why Antiriad NEVER puts any interesting comments
+      in his source code...
+
+  There are 4 scrolling layers of graphics, stored in planes of 64x64 tiles.
+  Each tile in each plane is assigned a priority between 1 and 15, higher
+  numbers have greater priority.
+
+ BCU controller. Each tile takes up 32 bits - the format is:
+
+  0         1         2         3
+  ---- ---- ---- ---- -ttt tttt tttt tttt = Tile number (0 - $7fff)
+  ---- ---- ---- ---- h--- ---- ---- ---- = Hidden
+  ---- ---- --cc cccc ---- ---- ---- ---- = Color (0 - $3f)
+  pppp ---- ---- ---- ---- ---- ---- ---- = Priority (0-$f)
+  ---- ???? ??-- ---- ---- ---- ---- ---- = Unknown / Unused
+
+  Scroll Reg
+
+  0         1         2         3
+  xxxx xxxx x--- ---- ---- ---- ---- ---- = X position
+  ---- ---- ---- ---- yyyy yyyy y--- ---- = Y position
+  ---- ---- -??? ???? ---- ---- -??? ???? = Unknown / Unused
+   */
+
+   for(layer=0; layer<4; layer++){
+
+     if(! check_layer_enabled(layer_id_data[layer]))
+       continue;
+     tile_mask = tp1vcu[0].tile_mask_bg;
+
+     RAM_BG = tp1vcu[0].VRAM + vram_ofs[romset][layer];
+
+     x1 = ReadWord(&tp1vcu[0].SCROLL[0+(layer<<2)])>>7;
+     if (romset == 2) // outzone
+       x1 += scroll_offsx - bg_x_ofs; //  + (6-layer*2);
+     else
+       x1 += scroll_offsx - bg_x_ofs + (6-layer*2);
+     x1 += x_ofs[layer];
+     x1 &= 0x1FF;
+
+     y1 = ReadWord(&tp1vcu[0].SCROLL[2+(layer<<2)])>>7;
+     y1 += (0x101 - bg_y_ofs);
+     y1 &= 0x1FF;
+
+     //-(scr_ofs[romset][0+(layer<<1)]),
+     //-(scr_ofs[romset][1+(layer<<1)])
+
+     MAKE_SCROLL_512x512_4_8(
+			     x1,
+			     y1
+			     );
+
+     START_SCROLL_512x512_4_8(32,32,320,240);
+
+     pri = ReadWord(&RAM_BG[zz]);
+     if (!pri) pri=1;
+
+     ta = ReadWord(&RAM_BG[2+zz]);
+
+     if (!(ta & 0x8000)) { // hidden, thanks to mame
+       ta &= tile_mask;
+
+       if (romset == 5 && layer == 0) {
+	 int my_pri = RAM_BG[zz+1]>>4;
+	 if (my_pri<=1) {
+	   // This removes all the annoying black squares in the background
+	   MAP_PALETTE_MAPPED_NEW(
+				  pri&0x3F,
+				  16,
+				  MAP
+				  );
+
+	   pri = (pri >> 11) & 0x1E;
+	   Draw8x8_Mapped_Rot(&GFX_BG0[ta<<6],x,y,MAP);
+	 }
+       } else if(GFX_BG0_SOLID[ta]!=0){
+
+	 MAP_PALETTE_MAPPED_NEW(
+				pri&0x3F,
+				16,
+				MAP
+				);
+
+	 pri = (pri >> 11) & 0x1E;
+	 QueueTile(ta, x, y, MAP, pri);
+#if 0
+       } else {
+	 /* I could not find any place yet where it's necessary.
+	    All this comes from mame. I leave it here in case one day it's usefull */
+	 else { // toaplan1 "usual"
+	   if ((layer == 3 && my_pri==0) ||
+	       (layer == 0 && my_pri >= 8)) { // thanks again to mame for that
+	     MAP_PALETTE_MAPPED_NEW(
+				    pri&0x3F,
+				    16,
+				    MAP
+				    );
+
+	     pri = (pri >> 11) & 0x1E;
+	     Draw8x8_Mapped_Rot(&GFX_BG0[ta<<6],x,y,MAP);
+	   }
+	 }
+#endif
+       }
+     } // hidden
+
+     END_SCROLL_512x512_4_8();
+
+   } // for
+
+   // OBJECT
+
+   if(check_layer_enabled(layer_id_data[4])) {
+     tile_mask = tp1vcu[0].tile_mask_obj;
+     tile_ofs  = tp1vcu[0].tile_ofs_obj;
+
+     RAM_BG  = tp1vcu[0].RAM_OBJ;
+     RAM_BG2 = tp1vcu[0].RAM_OBJ+0x800;
+
+     zz = 0x7F8;
+     do{
+       ctrl = ReadWord(&RAM_BG[zz+2]);
+
+       pri = ReadWord(&RAM_BG2[(ctrl>>5)&0x7E]);
+
+       if(pri&0xFF){
+
+	 ta = (ReadWord(&RAM_BG[zz+0])&tile_mask);
+
+	 x = ((ReadWord(&RAM_BG[zz+4])>>7)+32) & OBJ_X_MASK;
+	 y = ((ReadWord(&RAM_BG[zz+6])>>7)+32) & OBJ_Y_MASK;
+
+	 MAP_PALETTE_MAPPED_NEW(
+				(ctrl&0x3F)|0x40,
+				16,
+				MAP
+				);
+
+	 xxx = (pri>>0) & 0x0F;
+	 yyy = (pri>>4) & 0x0F;
+
+	 pri = ((ctrl >> 11) & 0x1E) | 1;
+
+	 xxxx=x;
+	 while((--yyy)>=0){
+	   x=xxxx;
+	   xx=xxx;
+	   while((--xx)>=0){
+
+	     if(GFX_SPR_SOLID[ta]!=0){
+
+	       if((x>24)&&(y>24)&&(x<320+32)&&(y<240+32)){
+		 QueueTile(ta, x, y, MAP, pri);
+	       }
+
+	     }
+
+	     ta++;
+	     x = (x + 8) & OBJ_X_MASK;
+	   };
+	   y = (y + 8) & OBJ_Y_MASK;
+	 };
+
+       }
+
+     }while((zz-=8)>=0);
+   } // if sprites enabled
+
+   DrawTileQueue();
+}
