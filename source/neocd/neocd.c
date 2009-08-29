@@ -1432,7 +1432,6 @@ static void neogeo_hreset(void)
   pending_command = sound_code = 0;
   last_cdda_cmd = 0;
   last_cdda_track = 0;
-  memset(RAM,0,RAMSize);
 
   video_modulo = video_pointer = 0;
 
@@ -2046,6 +2045,7 @@ static void load_neocd() {
   if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
   if(!(video_spr_usage=AllocateMem(0x800000/0x100))) return;
   if(!(PCMROM=AllocateMem(0x100000))) return;
+  memset(RAM,0,RAMSize);
   memset(video_fix_usage,0,4096);
   memset(video_spr_usage,0,0x8000);
   memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
@@ -2069,7 +2069,6 @@ static void load_neocd() {
 
   set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
   InitPaletteMap(RAM_PAL,0x100,0x10,0x8000);
-  memset(RAM_PAL,0,0x4000);
 
   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
   AddZ80ARW(0x0000, 0xffff, NULL, Z80ROM);

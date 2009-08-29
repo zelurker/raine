@@ -746,8 +746,6 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
     }
     SDL_UnlockYUVOverlay(sdl_overlay);
 
-    print_debug("area overlay %d %d %d %d\n",area_overlay.x,area_overlay.y,
-	area_overlay.w,area_overlay.h);
     SDL_DisplayYUVOverlay(sdl_overlay,&area_overlay);
     /* The SDL_DisplayYUVOverlay is a magical function :
      *  - it stretches the overlay to the desired size without bothering the cpu

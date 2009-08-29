@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "raine.h"
 #include "console.h"
 #include "parser.h"
