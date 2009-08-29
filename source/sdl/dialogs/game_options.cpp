@@ -43,17 +43,15 @@ static int allocated = 0, used = 0;
 static saves_t *saves = NULL;
 
 static int load_savegame(int sel) {
-  char buff[80];
-  sprintf(buff,"%s.sv%d",current_game->main_name,saves[sel].num);
-  do_load_state(buff);
+  SaveSlot = saves[sel].num;
+  GameLoad();
   exit_options = 1;
   return 1;
 }
 
 static int saveit(int sel) {
-  char buff[80];
-  sprintf(buff,"%s.sv%d",current_game->main_name,saves[sel].num);
-  do_save_state(buff);
+  SaveSlot = saves[sel].num;
+  GameSave();
   exit_options = 1;
   return 1;
 }
@@ -123,6 +121,7 @@ static menu_item_t *get_savegames(int for_saving) {
     for (n=0; n<used; n++) {
       char buff[80];
       sprintf(buff,"%d - %s",saves[n].num,saves[n].date);
+      menu[n].label = strdup(buff);
       menu[n].label = strdup(buff);
       menu[n].menu_func = (for_saving ? &saveit : &load_savegame);
 #if 0
