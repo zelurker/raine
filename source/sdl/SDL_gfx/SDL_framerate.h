@@ -33,7 +33,6 @@ extern "C" {
 	Uint32 framecount;
 	float rateticks;
 	Uint32 lastticks;
-	Uint32 rate;
 	int use_cpu_frame_count;
     } FPSmanager;
 
@@ -44,8 +43,8 @@ extern "C" {
 /* Functions return 0 or value for sucess and -1 for error */
 
      void SDL_initFramerate(FPSmanager * manager);
-    int SDL_setFramerate(FPSmanager * manager, int rate);
-    int SDL_getFramerate(FPSmanager * manager);
+    int SDL_setFramerate(FPSmanager * manager, float frate);
+    float SDL_getFramerate(FPSmanager * manager);
     void SDL_framerateDelay(FPSmanager * manager);
 int SDL_get_frame_count(FPSmanager * manager);
 

@@ -9,7 +9,7 @@
 #include <sdl/SDL_gfx/SDL_framerate.h>
 #endif
 
-int fps = 60;
+float fps = 60.0;
 
 int use_rdtsc;
 UINT32 timer_next_update;	// timer_frame_count at next fps() update

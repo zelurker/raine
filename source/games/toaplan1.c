@@ -1972,7 +1972,7 @@ void load_outzone(void)
 {
    romset = 2;
    scroll_offsx = 0x1ef;
-   fps = 55;
+   fps = 55.0;
 
    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,fps));
 

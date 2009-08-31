@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include <sdl/SDL_gfx/SDL_framerate.h>
 
-int fps = 60;
+float fps = 60.0;
 
 /* Profiling in SDL : */
 /* They announce RDTSC for v1.3. */
@@ -29,13 +29,13 @@ UINT32 skip_frame_count;		// number of frames since last video emulation
 
 struct PROFILE_RESULTS profile_results[PRO_COUNT] =
 {
-   { " Misc", 0, 0 },
-   { "  Cpu", 0, 0 },
-   { "Sound", 0, 0 },
-   { " Draw", 0, 0 },
-   { " Blit", 0, 0 },
-   { "  Pal", 0, 0 },
-   { " Free", 0, 0 },
+   { (UINT8*)" Misc", 0, 0 },
+   { (UINT8*)"  Cpu", 0, 0 },
+   { (UINT8*)"Sound", 0, 0 },
+   { (UINT8*)" Draw", 0, 0 },
+   { (UINT8*)" Blit", 0, 0 },
+   { (UINT8*)"  Pal", 0, 0 },
+   { (UINT8*)" Free", 0, 0 },
 };
 
 #ifdef RDTSC_PROFILE
@@ -232,7 +232,7 @@ static void update_fps(int quiet)
   case 0x01:
     timer_next_update = read_ingame_timer() + fps;	// set time of next update
     render_start_count = render_frame_count;	// render count at start
-    sprintf(fps_buff,"\?\?/%d",fps);
+    sprintf(fps_buff,"\?\?/%g",fps);
     if(quiet) print_ingame(120,"FPS Counter Enabled");
     return;
     break;
@@ -240,7 +240,7 @@ static void update_fps(int quiet)
     timer_start_count = read_ingame_timer();		// start time
     timer_next_update = timer_start_count + fps;	// set time of next update
     render_start_count = render_frame_count;	// render count at start
-    sprintf(fps_buff,"\?\?/%d",fps);
+    sprintf(fps_buff,"\?\?/%g",fps);
     if(quiet) print_ingame(120,"Average FPS Counter Enabled");
     return;
     break;
@@ -335,7 +335,7 @@ void start_ingame_timer(void)
      // So this function has very little chances to be called 60 times
      // / second. It's just something like "hope for the best" !
 
-     id = SDL_AddTimer(1000/60,ingame_timer_proc_nordtsc,&pc_timer);
+     id = SDL_AddTimer(1000/60,ingame_timer_proc_nordtsc,(void*)&pc_timer);
 
 #ifdef RDTSC_PROFILE
    }
@@ -345,8 +345,8 @@ void start_ingame_timer(void)
 
       pc_timer = 0;
 
-      memset(rdtsc_times,0,sizeof(rdtsc_times));
-      id = SDL_AddTimer(100,timer_setup_rdtsc,rdtsc_times);
+      memset((void*)rdtsc_times,0,sizeof(rdtsc_times));
+      id = SDL_AddTimer(100,timer_setup_rdtsc,(void*)rdtsc_times);
 
       while (!rdtsc_times[5]);
 

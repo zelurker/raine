@@ -24,7 +24,8 @@ void LoadDefault(void)
 #ifdef RDTSC_PROFILE
   cycles_per_frame = 0; // recalibrate for non 60fps games
 #endif
-  fps = 60; // 60 fps (default)
+  fps = 59.1856; // As reported in the forum, see
+  // http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
   ay8910_amplify = 1;
 
   ExitOnEI = 0;

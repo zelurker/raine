@@ -25,7 +25,6 @@ void SDL_initFramerate(FPSmanager * manager)
      * Store some sane values 
      */
     manager->framecount = 0;
-    manager->rate = FPS_DEFAULT;
     manager->rateticks = (1000.0 / (float) FPS_DEFAULT);
     manager->lastticks = SDL_GetTicks();
 }
@@ -34,11 +33,9 @@ void SDL_initFramerate(FPSmanager * manager)
    Set the framerate in Hz 
 */
 
-int SDL_setFramerate(FPSmanager * manager, int rate)
+int SDL_setFramerate(FPSmanager * manager, float frate)
 {
-    if ((rate >= FPS_LOWER_LIMIT) && (rate <= FPS_UPPER_LIMIT)) {
-	manager->rate = rate;
-	double frate = rate;
+    if ((frate >= FPS_LOWER_LIMIT) && (frate <= FPS_UPPER_LIMIT)) {
 	manager->rateticks = (1000.0 / frate);
 	if (manager->use_cpu_frame_count) {
 	  manager->framecount = cpu_frame_count;
@@ -55,12 +52,12 @@ int SDL_setFramerate(FPSmanager * manager, int rate)
   Return the current target framerate in Hz 
 */
 
-int SDL_getFramerate(FPSmanager * manager)
+float SDL_getFramerate(FPSmanager * manager)
 {
-    if (manager == NULL) {
+    if (manager == NULL || manager->rateticks < 0.001) {
 	return (-1);
     } else {
-	return (manager->rate);
+	return (1000.0/manager->rateticks);
     }
 }
 
