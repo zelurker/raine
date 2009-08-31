@@ -220,6 +220,8 @@ static int graphical_layers(int sel) {
 extern int cpu_fps; // ingame.c
 
 static int ifps;
+char field_edit[21];
+
 static menu_item_t game_options[] =
 {
   { "Reset game hardware", &my_reset },
@@ -231,7 +233,7 @@ static menu_item_t game_options[] =
   { "Translator", &do_translate },
 #endif
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
-  { "FPS", NULL, &ifps, 3, { 20, 80, 1 } },
+  { "FPS", NULL, &ifps, ITEM_EDIT, { 20,0 }, { field_edit } },
   { "FPS counter", NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
     { "Off", "Immediate FPS", "Average FPS", "Profiler", "Rdtsc Cycles" } },
   { NULL }
@@ -255,13 +257,11 @@ class TGame_options : public TMenu {
 };
 
 int do_game_options(int sel) {
-  ifps = (int)fps;
-  float frac = fps - ifps;
+  sprintf(field_edit,"%g",fps);
   TGame_options *menu = new TGame_options("Game options",game_options);
   menu->execute();
   delete menu;
-  // keep the fraction part
-  fps = ifps + frac;
+  sscanf(field_edit,"%f",&fps);
   return exit_options;
 }
 
