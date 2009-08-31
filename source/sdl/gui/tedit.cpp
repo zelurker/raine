@@ -4,6 +4,11 @@
 void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
   font = myfont;
+  if (*menu->label) {
+    TStatic::disp(s,myfont,x,y,w,h,fg,bg,xoptions);
+    w -= xoptions - x;
+    x = xoptions;
+  }
   rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));
   if (field[0])
     font->surf_string(s,x+1,y+1,field,fg_color,0);
@@ -88,6 +93,7 @@ int TEdit::handle_key(SDL_Event *event) {
 	case SDLK_UP:
 	case SDLK_DOWN:
 	{
+	  if (!use_hist) return 0;
 	  if (used_hist <= 0) break;
 	  if (current_hist == -1) { // start to browse history
             strncpy(prefix_hist,field,80);
@@ -143,6 +149,7 @@ int TEdit::handle_key(SDL_Event *event) {
 }
 
 void TEdit::add_history() {
+  if (!use_hist) return;
   if (used_hist && !strcmp(history[0],field))
     return; // don't store repeated commands !!!
   if (used_hist == MAX_HISTORY) {

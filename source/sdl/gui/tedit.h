@@ -14,13 +14,14 @@ class TEdit : public TStatic
     SDL_Surface *mys;
     TFont *font;
     char *history[MAX_HISTORY];
-    int used_hist,current_hist;
+    int used_hist,current_hist,use_hist;
     char prefix_hist[80];
   public:
     TEdit(menu_item_t *my_menu) : TStatic(my_menu)
     {
       field = menu->values_list_label[0];
       maxl = menu->values_list[0];
+      use_hist = menu->values_list[1];
       pos = strlen(field);
       cursor_on = 0;
       used_hist = update_count = 0;

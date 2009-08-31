@@ -67,7 +67,9 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 /* Edit
  * parameters :
  * values_list_label[0] -> pointer to the resulting string
- * values_list[0] : maxlen */
+ * values_list[0] : maxlen 
+ * values_list[1] : use history (0/1). If using history the widget captures
+ * the up and down keys. */
 #define ITEM_EDIT (-3)
 
 /* TBitmap (see tbitmap.h) */
