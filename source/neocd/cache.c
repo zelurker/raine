@@ -377,7 +377,7 @@ void cache_save_fix(UINT8 **buff, int *len) {
     UINT8 *tmp = *buff + *len;
     for (n=0; n<used[FIX_TYPE]; n++) {
       if (!strcmp(cache[FIX_TYPE][n].name,"upload")) {
-	memcpy(tmp,GFX + cache[FIX_TYPE][n].offset,cache[FIX_TYPE][n].len);
+	memcpy(tmp,neogeo_fix_memory + cache[FIX_TYPE][n].offset,cache[FIX_TYPE][n].len);
 	tmp += cache[FIX_TYPE][n].len;
       }
     }
