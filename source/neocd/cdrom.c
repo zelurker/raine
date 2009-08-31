@@ -1344,7 +1344,7 @@ void    neogeo_cdrom_load_files(UINT8 *Ptr)
 
   // sa_pause_sound();
 
-  // if (auto_stop_cdda) cdda_stop();
+  if (auto_stop_cdda) cdda_stop();
   //menu_raise();
   // cdda_current_track = 0;
   // now_loading();
