@@ -318,8 +318,7 @@ int set_offset(int sel) {
 
 static menu_item_t offset_menu[] =
 {
-  { "Enter offset (hex)" },
-  { "", NULL, &base_no, ITEM_EDIT, { 10 }, { str_offset } },
+  { "Enter offset (hex)", NULL, &base_no, ITEM_EDIT, { 10,0 }, { str_offset } },
   { NULL, NULL, NULL }
 };
 

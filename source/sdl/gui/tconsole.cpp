@@ -63,6 +63,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   edit_menu.values_list_size = ITEM_EDIT;
   edit_menu.values_list_label[0] = field;
   edit_menu.values_list[0] = maxlen;
+  edit_menu.values_list[1] = 1; // use history
   edit_child = new TEdit(&edit_menu);
   visible = 1;
   interactive = NULL;
