@@ -137,7 +137,7 @@ Used by the ingame gui, to get the white pen (nearly always 255)
 
 */
 
-UINT8 get_white_pen(void);
+UINT32 get_white_pen(void);
 
 // Call this to remove resources (eg. in clear default)
 

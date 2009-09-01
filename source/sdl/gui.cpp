@@ -39,6 +39,7 @@
 #include "neocd/neocd.h"
 #include "blit.h"
 #include "newspr.h"
+#include "str_opaque.h"
 #include "neocd/cdrom.h"
 #endif
 
@@ -50,7 +51,7 @@ int repeat_delay, repeat_interval;
 
 void read_gui_config() {
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
-  repeat_interval = raine_get_config_int("GUI","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
+  repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
 #ifndef NEO
   read_game_list_config();
 #else
@@ -58,6 +59,7 @@ void read_gui_config() {
 #endif
   read_font_config();
   read_menu_config();
+  opaque_hud = raine_get_config_int("gui","opaque_hud",0);
 }
 
 void write_gui_config() {
@@ -70,6 +72,7 @@ void write_gui_config() {
 #endif
   save_font_config();
   save_menu_config();
+  raine_set_config_int("GUI","opaque_hud",opaque_hud);
 }
 
 static int set_repeat_rate(int sel) {

@@ -14,6 +14,7 @@
 #include "lspr16.h"
 #include "lspr8.h"
 #include "pdraw.h"
+#include "str_opaque.h"
 
 static int disp_x;
 static int disp_y;
@@ -1484,15 +1485,24 @@ void init_video_core(void)
 
    switch(internal_bpp(display_cfg.bpp)){
       case 8:
-         textout_fast = &draw_string_6x8;
+	  if (opaque_hud)
+	      textout_fast = &draw_string_6x8_opaque;
+	  else
+	      textout_fast = &draw_string_6x8;
 	 raine_put_pixel = &raine_put_pixel_8;
       break;
       case 16:
-         textout_fast = &draw_string_6x8_16;
+	  if (opaque_hud)
+	      textout_fast = &draw_string_6x8_opaque_16;
+	  else
+	      textout_fast = &draw_string_6x8_16;
 	 raine_put_pixel = &raine_put_pixel_16;
       break;
       case 32:
-         textout_fast = &draw_string_6x8_32;
+	  if (opaque_hud)
+	      textout_fast = &draw_string_6x8_opaque_32;
+	  else
+	      textout_fast = &draw_string_6x8_32;
 	 raine_put_pixel = &raine_put_pixel_32;
       break;
    }

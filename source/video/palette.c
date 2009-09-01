@@ -167,16 +167,16 @@ void set_white_pen(int pen)
    white_pen = pen;
 }
 
-// Note: get_white_pen does not return a usable white pen value
-// unless you are in 8 bit color mode.  Otherwise you should use
-// makecol( 255,255,255 ); to get a true white value.
-UINT8 get_white_pen(void)
+UINT32 get_white_pen(void)
 {
-   pal[white_pen].r = 255;
-   pal[white_pen].g = 255;
-   pal[white_pen].b = 255;
+    if (display_cfg.bpp > 8)
+	return makecol(255,255,255);
 
-   return white_pen;
+    pal[white_pen].r = 255;
+    pal[white_pen].g = 255;
+    pal[white_pen].b = 255;
+
+    return white_pen;
 }
 
 int Reserve_Pens(int num)

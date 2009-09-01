@@ -628,6 +628,7 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/hq2x32.oa \
 	$(OBJDIR)/video/hq3x16.oa \
 	$(OBJDIR)/video/hq3x32.oa \
+	$(OBJDIR)/video/c/str_opaque.o \
 	$(OBJDIR)/video/c/pdraw.o
 
 ifndef SDL

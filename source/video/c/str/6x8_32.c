@@ -20,11 +20,6 @@ void draw_string_6x8_32(char *STR, int x, int y, UINT32 cmap)
 	UINT32 ch;
 	UINT32 *line;
 
-	//  The get_white_pen does not return a value that is usable in color depths
-	//  Other than 8 bit.  So, to ensure that we have a good "white" override the
-	//  input with a call to allegro for an rgb value of 255,255,255 (pure white).
-	cmap = makecol( 255, 255, 255 );
-
 	while( STR[ i ] != 0 )
 	{
 		ch = STR[i++];
