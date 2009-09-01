@@ -297,9 +297,12 @@ void TMenu::create_child(int n) {
     child[n] = new TSlider(&menu[n]);
   else if (menu[n].values_list_size == ITEM_EDIT) 
     child[n] = new TEdit(&menu[n]);
-  else if (menu[n].values_list_size == ITEM_TBITMAP) {
+  else if (menu[n].values_list_size == ITEM_TBITMAP) 
     child[n] = new TBitmap(&menu[n]);
-  } else {
+  else if (menu[n].values_list_size == ITEM_FLOATEDIT) 
+    child[n] = new TFloatEdit(&menu[n]);
+
+  else {
     printf("unknown extension %d\n",menu[n].values_list_size);
     exit(1);
   }
@@ -339,6 +342,20 @@ void TMenu::compute_nb_items() {
     }
     if (sel >= nb_items) sel = 0;
   }
+}
+
+int TMenu::can_exit() {
+  caller = this;
+  for (int n=0; n<nb_items; n++) {
+    if (!child[n]->can_exit()) {
+      if (can_be_selected(n)) {
+	sel = n;
+	reset_top();
+      }
+      return 0;
+    }
+  }
+  return 1; // nobody refuses the exit
 }
 
 char* TMenu::get_emuname() {
@@ -1082,7 +1099,7 @@ void TMenu::handle_key(SDL_Event *event) {
 	  exec_menu_item();
 	  break;
 	case SDLK_ESCAPE:
-	  exit_menu = 1;
+	  exit_menu = can_exit();
 	  break;
 	default:
           if (sym >= ' ' && sym <= 'z' && sel >= 0) {
@@ -1270,7 +1287,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
 	    // Apparently in sdl button 2 is center button, and 3 is right
 	    // (hope it's standard in every os !)
 	    case 2: if (index == sel) prev_list_item(); break;
-	    case 3: exit_menu = 1; break;
+	    case 3: exit_menu = can_exit(); break;
 	    case 4: prev_page(); break;
 	    case 5: next_page(); break;
 	  }
@@ -1382,7 +1399,7 @@ void TMenu::handle_joystick(SDL_Event *event) {
   case SDL_JOYBUTTONUP:
     switch (event->jbutton.button) {
       case 0: exec_menu_item(); break;
-      case 1: exit_menu = 1; break;
+      case 1: exit_menu = can_exit(); break;
     }
     break;
   } // end processing event type
@@ -1392,6 +1409,7 @@ void TMenu::call_handler() {
   if (menu[sel].menu_func) {
     caller = this;
     exit_menu = (*menu[sel].menu_func)(sel);
+    if (exit_menu) exit_menu = can_exit();
     caller = parent;
     if (!exit_menu) {
       draw();

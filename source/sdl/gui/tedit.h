@@ -7,7 +7,7 @@
 
 class TEdit : public TStatic
 {
-  private:
+  protected:
     char *field;
     unsigned int maxl,pos,cursor_on,update_count,old_pos,pos_cursor;
     int myx,myy,myh;
@@ -19,15 +19,15 @@ class TEdit : public TStatic
   public:
     TEdit(menu_item_t *my_menu) : TStatic(my_menu)
     {
-      field = menu->values_list_label[0];
       maxl = menu->values_list[0];
       use_hist = menu->values_list[1];
-      pos = strlen(field);
       cursor_on = 0;
       used_hist = update_count = 0;
       current_hist = -1;
       history[MAX_HISTORY-1] = NULL;
       pos_cursor = old_pos = 0;
+      field = menu->values_list_label[0];
+      pos = strlen(field);
     }
     ~TEdit() {
       for (int n=0; n<used_hist; n++) {
@@ -49,6 +49,17 @@ class TEdit : public TStatic
     virtual void add_history();
     virtual void insert(char *s);
     virtual int can_be_selected() { return 1; }
+    virtual int valid_chars(int sym, int unicode);
+};
+
+class TFloatEdit : public TEdit {
+  protected:
+      float *the_float, min, max;
+  public:
+    TFloatEdit(menu_item_t *my_menu);
+    ~TFloatEdit();
+    virtual int valid_chars(int sym, int unicode);
+    virtual int can_exit();
 };
 
 #endif

@@ -117,6 +117,7 @@ class TMenu {
     }
     // overload this one to change just the emuname on the top frame
     virtual char* get_emuname();
+    virtual int can_exit();
 };
 
 class TBitmap_menu : public TMenu {

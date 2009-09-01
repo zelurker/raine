@@ -1,5 +1,6 @@
 #include "tedit.h"
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "sdl/dialogs/messagebox.h"
 
 void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
@@ -65,6 +66,10 @@ int TEdit::get_width(TFont *font) {
   return w*maxl+2;
 }
 
+int TEdit::valid_chars(int sym, int unicode) {
+    return ((sym >= ' ' && sym < 255) || (sym == 0 && unicode));
+}
+
 int TEdit::handle_key(SDL_Event *event) {
   unsigned int oldpos = pos;
   switch (event->type) {
@@ -127,7 +132,16 @@ int TEdit::handle_key(SDL_Event *event) {
 	  return 1; // call the handler !!!
 	default:
 	  int unicode = event->key.keysym.unicode;
-	  if (((sym >= ' ' && sym < 255) || (sym == 0 && unicode)) && pos < maxl) {
+	  if (sym >= SDLK_KP0 && sym <= SDLK_KP9) sym = '0' + sym-SDLK_KP0;
+	  switch(sym) {
+	      case SDLK_KP_PERIOD: sym = '.'; break;
+	      case SDLK_KP_DIVIDE: sym = '/'; break;
+	      case SDLK_KP_MULTIPLY: sym = '*'; break;
+	      case SDLK_KP_MINUS: sym = '-'; break;
+	      case SDLK_KP_PLUS: sym = '+'; break;
+	      case SDLK_KP_EQUALS: sym = '='; break;
+	  }
+	  if (pos < maxl && valid_chars(sym,unicode)) {
 	    memmove(&field[pos+1],&field[pos],maxl-pos);
 	    if (unicode) sym = unicode;
 	    field[pos++] = sym;
@@ -174,5 +188,36 @@ void TEdit::insert(char *s) {
   pos += len;
 }
 
+// TFloatEdit
 
+TFloatEdit::TFloatEdit(menu_item_t *my_menu) : TEdit(my_menu) 
+{
+    maxl = 20;
+    field = (char*)malloc(maxl+1);
+    the_float = (float*)menu->values_list_label[1];
+    sscanf(menu->values_list_label[2],"%f",&min);
+    sscanf(menu->values_list_label[3],"%f",&max);
+    sprintf(field,"%g",*the_float);
+    use_hist = 0;
+    pos = strlen(field);
+}
+
+TFloatEdit::~TFloatEdit() {
+    free(field);
+}
+
+int TFloatEdit::valid_chars(int sym, int unicode) {
+    return !unicode && ((sym >= '0' && sym <= '9') || sym == '.');
+}
+
+int TFloatEdit::can_exit() {
+  sscanf(field,"%f",the_float);
+  if (*the_float < min || *the_float > max) {
+      char content[80];
+      sprintf(content,"The field %g must have a value between %g and %g",*the_float,min,max);
+      MessageBox("Error",content);
+      return 0;
+  }
+  return 1;
+}
 

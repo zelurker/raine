@@ -44,6 +44,9 @@ class TStatic {
     virtual void update() {
       // called to update the widget when nothing better to do...
     }
+    virtual int can_exit() {
+	return 1;
+    }
 };
 
 class TProgressBar : public TStatic
