@@ -22,11 +22,11 @@ static int cursorx, cursory,len; // these must stay out of a class because
 
 class TTransBitmap : public TBitmap {
   protected:
-    UINT8 *font;
     UINT16 *map;
     int size_map, used_map;
     int sprites_changed;
   public:
+    UINT8 *font;
     TTransBitmap(menu_item_t *my_menu);
     ~TTransBitmap();
     virtual int handle_key(SDL_Event *event);
@@ -118,6 +118,10 @@ class TTransMenu : public TMenu {
 void TTransMenu::create_child(int n) {
   if (menu[n].values_list_size == ITEM_TBITMAP) {
     child[n] = new TTransBitmap(&menu[n]);
+    if (!((TTransBitmap *)child[n])->font) {
+	exit_menu = 1;
+	printf("asked for exit\n");
+    }
   } else
     TMenu::create_child(n);
 }

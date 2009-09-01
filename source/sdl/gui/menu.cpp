@@ -345,7 +345,6 @@ void TMenu::compute_nb_items() {
 }
 
 int TMenu::can_exit() {
-  caller = this;
   for (int n=0; n<nb_items; n++) {
     if (!child[n]->can_exit()) {
       if (can_be_selected(n)) {
@@ -1407,10 +1406,8 @@ void TMenu::handle_joystick(SDL_Event *event) {
 
 void TMenu::call_handler() {
   if (menu[sel].menu_func) {
-    caller = this;
     exit_menu = (*menu[sel].menu_func)(sel);
     if (exit_menu) exit_menu = can_exit();
-    caller = parent;
     if (!exit_menu) {
       draw();
     }
@@ -1484,18 +1481,10 @@ void TMenu::execute() {
   if (caller != this) {
     parent = caller; // update parent for persistant dialogs
   }
-#if 0
-  /* Puting this here prevents from calling ErrorMsg or MessageBox from a
-   * widget constructor. I could work around it by using catch/throw, but it
-   * seems easier to be able to call directly ErrorMsg from there for now.
-   * So for now I'll just comment this, and try to find places where it can
-   * be usefull... */
-  caller = this; // to try to init caller correctly before a new dialog
-  printf("caller = this in execute %x\n",caller);
-  // is created from here without calling call_handler
-#endif
 
   draw();
+  caller = this; // init after calling draw
+
   while (!exit_menu) {
     int oldsel = sel;
     int oldtop = top;
