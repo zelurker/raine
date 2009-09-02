@@ -21,7 +21,7 @@ VERSION_NEO = "1.2.7"
 NEO=1
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
