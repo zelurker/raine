@@ -54,6 +54,9 @@
 #ifndef RAINE_DOS
 #include "sdl/SDL_gfx/SDL_framerate.h"
 #endif
+#ifdef NEO
+#include "neocd/cdda.h"
+#endif
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...
    I can avoid to fix this by just adding these declarations here : */
@@ -209,6 +212,14 @@ UINT32 run_game_emulation(void)
    }
 #ifdef SDL
    fpsm.use_cpu_frame_count = 1;
+   if (!RaineSoundCard)
+       print_ingame(180,"warning : sound emulation disabled");
+#ifdef NEO
+   if (mute_sfx)
+       print_ingame(180,"warning : sfx disabled");
+   if (mute_music)
+       print_ingame(180,"warning : music disabled");
+#endif
 #endif
 
    reset_ingame_timer();

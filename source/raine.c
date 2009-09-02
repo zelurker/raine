@@ -401,6 +401,8 @@ int main(int argc,char *argv[])
    sfx_volume = raine_get_config_int("neocd","sfx_volume",DEFAULT_SFX_VOLUME);
    neocd_cdda_format = raine_get_config_int("neocd","cdda_format",AUDIO_S16LSB);
    auto_stop_cdda = raine_get_config_int("neocd","auto_stop_cdda",1);
+   mute_sfx = raine_get_config_int("neocd","mute_sfx",0);
+   mute_music = raine_get_config_int("neocd","mute_music",0);
    allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
 #endif
 
@@ -634,6 +636,8 @@ int main(int argc,char *argv[])
    raine_set_config_int("neocd","sfx_volume",sfx_volume);
    raine_set_config_int("neocd","cdda_format",neocd_cdda_format);
    raine_set_config_int("neocd","auto_stop_cdda",auto_stop_cdda);
+   raine_set_config_int("neocd","mute_sfx",mute_sfx);
+   raine_set_config_int("neocd","mute_music",mute_music);
    raine_set_config_int("neocd","allowed_speed_hacks",allowed_speed_hacks);
 #endif
 

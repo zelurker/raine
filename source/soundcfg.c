@@ -19,8 +19,8 @@ void sound_load_cfg() {
    RaineSoundCard = 0;
 #ifndef ALLEGRO_SOUND
    // sdl, default to sound enabled (1)
-   // id = raine_get_config_id(    "Sound",        "sound_card",  1);
-   id = 1; // force auto-detect ALWAYS
+   id = raine_get_config_id(    "Sound",        "sound_card",  1);
+   // id = 1; // force auto-detect ALWAYS
    // there is no reason not to autodetect the sound
 #else
 #ifdef RAINE_WIN32
