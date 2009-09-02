@@ -17,7 +17,6 @@ static menu_item_t color_menu[] =
 
 int do_gui_options(int sel) {
   int nb = 0;
-  int opaque = opaque_hud;
   nb += add_fonts_gui_options(&gui_menu[nb]);
   nb += add_gui_options(&gui_menu[nb]);
   nb += add_menu_options(&gui_menu[nb]);
