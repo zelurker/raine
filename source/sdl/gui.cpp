@@ -39,9 +39,9 @@
 #include "neocd/neocd.h"
 #include "blit.h"
 #include "newspr.h"
-#include "str_opaque.h"
 #include "neocd/cdrom.h"
 #endif
+#include "str_opaque.h"
 
 static int WantScreen;
 static int WantQuit;
