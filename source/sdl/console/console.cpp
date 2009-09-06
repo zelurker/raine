@@ -1060,12 +1060,14 @@ int do_console(int sel) {
     } else {
       cons->print("watch %d: for adr:%x, size:%d, but no direct mapping",n,watch[n].adr,watch[n].size);
     }
-    if (s68000context.sr >= 0x2100 && s68000context.sr < 0x2700) {
+#if 0
+    if (s68000context.sr >= 0x2100 && s68000context.sr < 0x2700 && goto_debuger < 100) {
       cons->print("geting out of the irq...");
       get_regs(0);
       do_irq(0,NULL); // get out of the irq...
       set_regs(0);
     }
+#endif
     goto_debuger = 0;
   } else
     check_breakpoint();
