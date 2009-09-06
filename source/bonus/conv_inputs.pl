@@ -123,7 +123,7 @@ while (<F>) {
 	$port+=2;
       }
       handle_bitx();
-      if (/PORT_BIT\( *(.+?) \)/) {
+      if (/PORT_BIT\( *(.+?) ?\)/) {
 	my $whole_line = $_;
 	my $args = $1;
 	if ($started) {
@@ -190,7 +190,7 @@ while (<F>) {
 	  }
 	  $_ = <F>;
 	  handle_bitx();
-	  if (/PORT_BIT\( *(.+?) \)/) {
+	  if (/PORT_BIT\( *(.+?) ?\)/) {
 	    $args = $1;
 	    next;
 	  } else {
