@@ -519,7 +519,8 @@ void do_irq(int argc, char **argv) {
   } 
   if ((s68000context.sr & 0x2700) <= 0x2000)
     throw "not in an irq !";
-  while ((s68000context.sr & 0x2700) >= 0x2100)
+  int current = s68000context.sr & 0x2700;
+  while ((s68000context.sr & 0x2700) == current)
     do_cycles(CPU_68K_0);
   disp_instruction();
 }
