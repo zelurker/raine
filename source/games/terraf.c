@@ -12,6 +12,7 @@
 #include "terraf.h"
 #include "nichisnd.h"
 #include "blit.h" // clear_game_screen
+#include "profile.h" // fps
 
 static struct DIR_INFO terra_force_dirs[] =
 {
@@ -385,6 +386,7 @@ void LoadTerraF(void)
 
    RAMSize=0x20100+0x10000;
 
+   fps = 57;
    if(!(ROM=AllocateMem(0x50000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
    if(!(GFX=AllocateMem(0xD0000))) return;

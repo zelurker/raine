@@ -7,6 +7,7 @@
 #include "gameinc.h"
 #include "nichisnd.h"
 #include "blit.h" // clear_game_screen
+#include "profile.h" // fps
 
 static struct DIR_INFO armed_formation_dirs[] =
 {
@@ -396,6 +397,7 @@ static void finish_conf() {
 static void LoadArmedF(void)
 {
    x_res = 320; sp_off = 16;
+   fps = 57;
 
    RAMSize=0x40000+0x10000;
    io_w = 0xd000;

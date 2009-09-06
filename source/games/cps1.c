@@ -1295,6 +1295,7 @@ static void cps1_init_machine(void)
    int n;
    int size = get_region_size(REGION_GFX1); // size of packed region
    int max_sprites16 = size*2 / 0x100;
+   fps = 59.61; // Verified by mame team...
    memset(input_buffer,0xff,0x20);
    cps1_sound_fade_timer = 0xff;
    size_code2 = get_region_size(REGION_ROM2);
@@ -2320,6 +2321,7 @@ void load_cps2() {
   // save_file("xor",xor,size_user1);
 
   load_common(1);
+  fps = 59.63; // small adjustement for cps2
 
   // ByteSwap((UINT8*)xor, size_user1 );
 

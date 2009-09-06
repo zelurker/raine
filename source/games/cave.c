@@ -54,6 +54,7 @@
 #include "pdraw.h"
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 #include "speed_hack.h"
+#include "profile.h" // fps
 
 static int limitx, gamex;
 
@@ -221,6 +222,7 @@ static void install_region() {
 
 static void setup_cave_game() {
   int i;
+  fps = 15625/271.5;
   init_pbitmap();
   memset(input_buffer, 0xff, 16);
 
@@ -2507,8 +2509,6 @@ void execute_mazinger_frame(void)
    if (s68000context.pc == 0x1d92)
      reset_game_hardware();
 }
-
-extern int cpu_frame_count;
 
 static UINT8 *RAM_OBJ;
 
