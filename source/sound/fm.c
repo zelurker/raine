@@ -293,6 +293,47 @@ O(16),O(16),O(16),O(16),O(16),O(16),O(16),O(16),
 O(16),O(16),O(16),O(16),O(16),O(16),O(16),O(16)
 
 };
+static const UINT8 eg_rate_select2612[32+64+32]={    /* Envelope Generator rates (32 + 64 rates + 32 RKS) from tests on YM2612 */
+/* 32 infinite time rates */
+O(18),O(18),O(18),O(18),O(18),O(18),O(18),O(18),
+O(18),O(18),O(18),O(18),O(18),O(18),O(18),O(18),
+O(18),O(18),O(18),O(18),O(18),O(18),O(18),O(18),
+O(18),O(18),O(18),O(18),O(18),O(18),O(18),O(18),
+
+/* rates 00-11 */
+O( 18),O( 18),O( 0),O( 0),
+O( 0),O( 0),O( 2),O( 2),  // Nemesis's tests
+
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+O( 0),O( 1),O( 2),O( 3),
+
+/* rate 12 */
+O( 4),O( 5),O( 6),O( 7),
+
+/* rate 13 */
+O( 8),O( 9),O(10),O(11),
+
+/* rate 14 */
+O(12),O(13),O(14),O(15),
+
+/* rate 15 */
+O(16),O(16),O(16),O(16),
+
+/* 32 dummy rates (same as 15 3) */
+O(16),O(16),O(16),O(16),O(16),O(16),O(16),O(16),
+O(16),O(16),O(16),O(16),O(16),O(16),O(16),O(16),
+O(16),O(16),O(16),O(16),O(16),O(16),O(16),O(16),
+O(16),O(16),O(16),O(16),O(16),O(16),O(16),O(16)
+
+};
 #undef O
 
 /*rate  0,    1,    2,   3,   4,   5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15*/
@@ -545,7 +586,7 @@ typedef struct
 
 	/* Phase Generator */
 	UINT32	phase;		/* phase counter */
-	UINT32	Incr;		/* phase step */
+	INT32	Incr;		/* phase step */
 
 	/* Envelope Generator */
 	UINT8	state;		/* phase type */
@@ -879,18 +920,36 @@ static INLINE void FM_BUSY_SET(FM_ST *ST,int busyclock )
 
 
 
-static INLINE void FM_KEYON(FM_CH *CH , int s )
+INLINE void FM_KEYON(UINT8 type, FM_CH *CH , int s )
 {
 	FM_SLOT *SLOT = &CH->SLOT[s];
 	if( !SLOT->key )
 	{
 		SLOT->key = 1;
 		SLOT->phase = 0;		/* restart Phase Generator */
+		SLOT->ssgn = (SLOT->ssg & 0x04) >> 1;
+
+		if ((type == TYPE_YM2612) || (type == TYPE_YM2608))
+		{
+		        if( (SLOT->ar + SLOT->ksr) < 32+62 )
+		        {
 		SLOT->state = EG_ATT;	/* phase -> Attack */
+	}
+			else
+			{
+			        /* directly switch to Decay */
+			        SLOT->volume = MIN_ATT_INDEX;
+			        SLOT->state = EG_DEC;
+			}
+		}
+		else
+		{
+			SLOT->state = EG_ATT;
+		}
 	}
 }
 
-static INLINE void FM_KEYOFF(FM_CH *CH , int s )
+INLINE void FM_KEYOFF(FM_CH *CH , int s )
 {
 	FM_SLOT *SLOT = &CH->SLOT[s];
 	if( SLOT->key )
@@ -1003,7 +1062,7 @@ static INLINE void set_tl(FM_CH *CH,FM_SLOT *SLOT , int v)
 }
 
 /* set attack rate & key scale  */
-static INLINE void set_ar_ksr(FM_CH *CH,FM_SLOT *SLOT,int v)
+static INLINE void set_ar_ksr(UINT8 type,FM_CH *CH,FM_SLOT *SLOT,int v)
 {
 	UINT8 old_KSR = SLOT->KSR;
 
@@ -1014,55 +1073,82 @@ static INLINE void set_ar_ksr(FM_CH *CH,FM_SLOT *SLOT,int v)
 	{
 		CH->SLOT[SLOT1].Incr=-1;
 	}
-	else
-	{
+
 		/* refresh Attack rate */
 		if ((SLOT->ar + SLOT->ksr) < 32+62)
 		{
 			SLOT->eg_sh_ar  = eg_rate_shift [SLOT->ar  + SLOT->ksr ];
+		if ((type == TYPE_YM2612) || (type == TYPE_YM2608))
+		{
+                	SLOT->eg_sh_ar  = eg_rate_shift [SLOT->ar  + SLOT->ksr ];
+			SLOT->eg_sel_ar = eg_rate_select2612[SLOT->ar  + SLOT->ksr ];
+		}
+		else
+		{
 			SLOT->eg_sel_ar = eg_rate_select[SLOT->ar  + SLOT->ksr ];
 		}
+	}
 		else
 		{
 			SLOT->eg_sh_ar  = 0;
 			SLOT->eg_sel_ar = 17*RATE_STEPS;
 		}
 	}
-}
 
 /* set decay rate */
-static INLINE void set_dr(FM_SLOT *SLOT,int v)
+INLINE void set_dr(UINT8 type, FM_SLOT *SLOT,int v)
 {
 	SLOT->d1r = (v&0x1f) ? 32 + ((v&0x1f)<<1) : 0;
 
 	SLOT->eg_sh_d1r = eg_rate_shift [SLOT->d1r + SLOT->ksr];
+	if ((type == TYPE_YM2612) || (type == TYPE_YM2608))
+	{
+		SLOT->eg_sel_d1r= eg_rate_select2612[SLOT->d1r + SLOT->ksr];
+	}
+	else
+	{
 	SLOT->eg_sel_d1r= eg_rate_select[SLOT->d1r + SLOT->ksr];
+	}
 
 }
 
 /* set sustain rate */
-static INLINE void set_sr(FM_SLOT *SLOT,int v)
+INLINE void set_sr(UINT8 type, FM_SLOT *SLOT,int v)
 {
 	SLOT->d2r = (v&0x1f) ? 32 + ((v&0x1f)<<1) : 0;
 
 	SLOT->eg_sh_d2r = eg_rate_shift [SLOT->d2r + SLOT->ksr];
+	if ((type == TYPE_YM2612) || (type == TYPE_YM2608))
+	{
+		SLOT->eg_sel_d2r= eg_rate_select2612[SLOT->d2r + SLOT->ksr];
+	}
+	else
+	{
 	SLOT->eg_sel_d2r= eg_rate_select[SLOT->d2r + SLOT->ksr];
+}
 }
 
 /* set release rate */
-static INLINE void set_sl_rr(FM_SLOT *SLOT,int v)
+INLINE void set_sl_rr(UINT8 type, FM_SLOT *SLOT,int v)
 {
 	SLOT->sl = sl_table[ v>>4 ];
 
 	SLOT->rr  = 34 + ((v&0x0f)<<2);
 
 	SLOT->eg_sh_rr  = eg_rate_shift [SLOT->rr  + SLOT->ksr];
+	if ((type == TYPE_YM2612) || (type == TYPE_YM2608))
+	{
+		SLOT->eg_sel_rr = eg_rate_select2612[SLOT->rr  + SLOT->ksr];
+	}
+	else
+	{
 	SLOT->eg_sel_rr = eg_rate_select[SLOT->rr  + SLOT->ksr];
+}
 }
 
 
 
-static INLINE signed int op_calc(UINT32 phase, unsigned int env, signed int pm)
+INLINE signed int op_calc(UINT32 phase, unsigned int env, signed int pm)
 {
 	UINT32 p;
 
@@ -1085,15 +1171,12 @@ static INLINE signed int op_calc1(UINT32 phase, unsigned int env, signed int pm)
 }
 
 /* advance LFO to next sample */
-static INLINE void advance_lfo(FM_OPN *OPN)
+INLINE void advance_lfo(FM_OPN *OPN)
 {
 	UINT8 pos;
-	UINT8 prev_pos;
 
 	if (OPN->lfo_inc)	/* LFO enabled ? */
 	{
-		prev_pos = OPN->lfo_cnt>>LFO_SH & 127;
-
 		OPN->lfo_cnt += OPN->lfo_inc;
 
 		pos = (OPN->lfo_cnt >> LFO_SH) & 127;
@@ -1101,7 +1184,6 @@ static INLINE void advance_lfo(FM_OPN *OPN)
 
 		/* update AM when LFO output changes */
 
-		/*if (prev_pos != pos)*/
 		/* actually I can't optimize is this way without rewritting chan_calc()
 		to use chip->lfo_am instead of global lfo_am */
 		{
@@ -1115,7 +1197,6 @@ static INLINE void advance_lfo(FM_OPN *OPN)
 		}
 
 		/* PM works with 4 times slower clock */
-		prev_pos >>= 2;
 		pos >>= 2;
 		/* update PM when LFO output changes */
 		/*if (prev_pos != pos)*/ /* can't use global lfo_pm for this optimization, must be chip->lfo_pm instead*/
@@ -1131,7 +1212,8 @@ static INLINE void advance_lfo(FM_OPN *OPN)
 	}
 }
 
-static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
+/* changed from INLINE to static here to work around gcc 4.2.1 codegen bug */
+static void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 {
 	unsigned int out;
 	unsigned int swap_flag = 0;
@@ -1141,6 +1223,9 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 	i = 4; /* four operators per channel */
 	do
 	{
+		/* reset SSG-EG swap flag */
+		swap_flag = 0;
+
 		switch(SLOT->state)
 		{
 		case EG_ATT:		/* attack phase */
@@ -1159,13 +1244,36 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 		break;
 
 		case EG_DEC:	/* decay phase */
+			if ((OPN->type == TYPE_YM2612) || (OPN->type == TYPE_YM2608))
+			{
+                                if ( !(OPN->eg_cnt & ((1<<SLOT->eg_sh_d1r)-1) ) )
+                                {
+					if (SLOT->ssg&0x08)   /* SSG EG type envelope selected */
+					{
+				       		SLOT->volume += 6 * eg_inc[SLOT->eg_sel_d1r + ((OPN->eg_cnt>>SLOT->eg_sh_d1r)&7)];
+					}
+					else
+					{
+                                                SLOT->volume += eg_inc[SLOT->eg_sel_d1r + ((OPN->eg_cnt>>SLOT->eg_sh_d1r)&7)];
+					}
+        			}
+
+				/* check transition even if no volume update: this fixes the case when SL = MIN_ATT_INDEX */
+				if ( SLOT->volume >= (INT32)(SLOT->sl) )
+				{
+					SLOT->volume = (INT32)(SLOT->sl);
+					SLOT->state = EG_SUS;
+				}
+			}
+			else
+			{
 			if (SLOT->ssg&0x08)	/* SSG EG type envelope selected */
 			{
 				if ( !(OPN->eg_cnt & ((1<<SLOT->eg_sh_d1r)-1) ) )
 				{
 					SLOT->volume += 4 * eg_inc[SLOT->eg_sel_d1r + ((OPN->eg_cnt>>SLOT->eg_sh_d1r)&7)];
 
-					if ( SLOT->volume >= SLOT->sl )
+						if ( SLOT->volume >= (INT32)(SLOT->sl) )
 						SLOT->state = EG_SUS;
 				}
 			}
@@ -1175,9 +1283,10 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 				{
 					SLOT->volume += eg_inc[SLOT->eg_sel_d1r + ((OPN->eg_cnt>>SLOT->eg_sh_d1r)&7)];
 
-					if ( SLOT->volume >= SLOT->sl )
+						if ( SLOT->volume >= (INT32)(SLOT->sl) )
 						SLOT->state = EG_SUS;
 				}
+			}
 			}
 		break;
 
@@ -1186,11 +1295,22 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 			{
 				if ( !(OPN->eg_cnt & ((1<<SLOT->eg_sh_d2r)-1) ) )
 				{
-					SLOT->volume += 4 * eg_inc[SLOT->eg_sel_d2r + ((OPN->eg_cnt>>SLOT->eg_sh_d2r)&7)];
 
-					if ( SLOT->volume >= MAX_ATT_INDEX )
+					if ((OPN->type == TYPE_YM2612) || (OPN->type == TYPE_YM2608))
+					{
+						SLOT->volume += 6 * eg_inc[SLOT->eg_sel_d2r + ((OPN->eg_cnt>>SLOT->eg_sh_d2r)&7)];
+					}
+					else
+					{
+					SLOT->volume += 4 * eg_inc[SLOT->eg_sel_d2r + ((OPN->eg_cnt>>SLOT->eg_sh_d2r)&7)];
+					}
+
+					if ( SLOT->volume >= ENV_QUIET )
+					{
+						if ((OPN->type != TYPE_YM2612) && (OPN->type != TYPE_YM2608))
 					{
 						SLOT->volume = MAX_ATT_INDEX;
+						}
 
 						if (SLOT->ssg&0x01)	/* bit 0 = hold */
 						{
@@ -1206,12 +1326,28 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 						{
 							/* same as KEY-ON operation */
 
-							/* restart of the Phase Generator should be here,
-								only if AR is not maximum ??? */
-							/*SLOT->phase = 0;*/
+							/* restart of the Phase Generator should be here */
+							SLOT->phase = 0;
 
+							if ((OPN->type == TYPE_YM2612) || (OPN->type == TYPE_YM2608))
+							{
+								if ((SLOT->ar + SLOT->ksr) < 94 /*32+62*/)
+								{
+									SLOT->state = EG_ATT; /* phase -> Attack */
+								}
+								else
+								{
+									/* Attack Rate is maximal: directly switch to Decay (or Substain) */
+									SLOT->volume = MIN_ATT_INDEX;
+									SLOT->state = (SLOT->sl == MIN_ATT_INDEX) ? EG_SUS : EG_DEC;
+								}
+							}
+							else
+							{
 							/* phase -> Attack */
+								SLOT->volume = 511;
 							SLOT->state = EG_ATT;
+							}
 
 							swap_flag = (SLOT->ssg&0x02); /* bit 1 = alternate */
 						}
@@ -1237,7 +1373,15 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 		case EG_REL:	/* release phase */
 				if ( !(OPN->eg_cnt & ((1<<SLOT->eg_sh_rr)-1) ) )
 				{
+					/* SSG-EG affects Release phase also (Nemesis) */
+					if ((SLOT->ssg&0x08) && ((OPN->type = TYPE_YM2612) || (OPN->type = TYPE_YM2608)))
+					{
+						SLOT->volume += 6 * eg_inc[SLOT->eg_sel_rr + ((OPN->eg_cnt>>SLOT->eg_sh_rr)&7)];
+					}
+					else
+					{
 					SLOT->volume += eg_inc[SLOT->eg_sel_rr + ((OPN->eg_cnt>>SLOT->eg_sh_rr)&7)];
+					}
 
 					if ( SLOT->volume >= MAX_ATT_INDEX )
 					{
@@ -1249,15 +1393,18 @@ static INLINE void advance_eg_channel(FM_OPN *OPN, FM_SLOT *SLOT)
 
 		}
 
-		out = SLOT->tl + ((UINT32)SLOT->volume);
 
-		if ((SLOT->ssg&0x08) && (SLOT->ssgn&2))	/* negate output (changes come from alternate bit, init comes from attack bit) */
-			out ^= ((1<<ENV_BITS)-1); /* 1023 */
+		out = ((UINT32)SLOT->volume);
+
+                /* negate output (changes come from alternate bit, init comes from attack bit) */
+		if ((SLOT->ssg&0x08) && (SLOT->ssgn&2) && (SLOT->state > EG_REL))
+			out ^= MAX_ATT_INDEX;
 
 		/* we need to store the result here because we are going to change ssgn
 			in next instruction */
-		SLOT->vol_out = out;
+		SLOT->vol_out = out + SLOT->tl;
 
+                /* reverse SLOT inversion flag */
 		SLOT->ssgn ^= swap_flag;
 
 		SLOT++;
@@ -1599,15 +1746,29 @@ static void FMCloseTable( void )
 
 
 /* CSM Key Controll */
-static INLINE void CSMKeyControll(FM_CH *CH)
+static INLINE void CSMKeyControll(UINT8 type,FM_CH *CH)
 {
-	/* this is wrong, atm */
-
-	/* all key on */
-	FM_KEYON(CH,SLOT1);
-	FM_KEYON(CH,SLOT2);
-	FM_KEYON(CH,SLOT3);
-	FM_KEYON(CH,SLOT4);
+	/* all key on then off (only for operators which were OFF!) */
+	if (!CH->SLOT[SLOT1].key)
+	{
+		FM_KEYON(type, CH,SLOT1);
+		FM_KEYOFF(CH, SLOT1);
+	}
+	if (!CH->SLOT[SLOT2].key)
+	{
+		FM_KEYON(type, CH,SLOT2);
+		FM_KEYOFF(CH, SLOT2);
+	}
+	if (!CH->SLOT[SLOT3].key)
+	{
+		FM_KEYON(type, CH,SLOT3);
+		FM_KEYOFF(CH, SLOT3);
+	}
+	if (!CH->SLOT[SLOT4].key)
+	{
+		FM_KEYON(type, CH,SLOT4);
+		FM_KEYOFF(CH, SLOT4);
+	}
 }
 
 #ifdef _STATE_H
@@ -1755,10 +1916,10 @@ static void OPNWriteMode(FM_OPN *OPN, int r, int v)
 		if( (v&0x04) && (OPN->type & TYPE_6CH) ) c+=3;
 		CH = OPN->P_CH;
 		CH = &CH[c];
-		if(v&0x10) FM_KEYON(CH,SLOT1); else FM_KEYOFF(CH,SLOT1);
-		if(v&0x20) FM_KEYON(CH,SLOT2); else FM_KEYOFF(CH,SLOT2);
-		if(v&0x40) FM_KEYON(CH,SLOT3); else FM_KEYOFF(CH,SLOT3);
-		if(v&0x80) FM_KEYON(CH,SLOT4); else FM_KEYOFF(CH,SLOT4);
+		if(v&0x10) FM_KEYON(OPN->type,CH,SLOT1); else FM_KEYOFF(CH,SLOT1);
+		if(v&0x20) FM_KEYON(OPN->type,CH,SLOT2); else FM_KEYOFF(CH,SLOT2);
+		if(v&0x40) FM_KEYON(OPN->type,CH,SLOT3); else FM_KEYOFF(CH,SLOT3);
+		if(v&0x80) FM_KEYON(OPN->type,CH,SLOT4); else FM_KEYOFF(CH,SLOT4);
 		break;
 	}
 }
@@ -1790,11 +1951,11 @@ static void OPNWriteReg(FM_OPN *OPN, int r, int v)
 		break;
 
 	case 0x50:	/* KS, AR */
-		set_ar_ksr(CH,SLOT,v);
+		set_ar_ksr(OPN->type,CH,SLOT,v);
 		break;
 
 	case 0x60:	/* bit7 = AM ENABLE, DR */
-		set_dr(SLOT,v);
+		set_dr(OPN->type, SLOT,v);
 
 		if(OPN->type & TYPE_LFOPAN) /* YM2608/2610/2610B/2612 */
 		{
@@ -1803,11 +1964,11 @@ static void OPNWriteReg(FM_OPN *OPN, int r, int v)
 		break;
 
 	case 0x70:	/*     SR */
-		set_sr(SLOT,v);
+		set_sr(OPN->type,SLOT,v);
 		break;
 
 	case 0x80:	/* SL, RR */
-		set_sl_rr(SLOT,v);
+		set_sl_rr(OPN->type,SLOT,v);
 		break;
 
 	case 0x90:	/* SSG-EG */
@@ -2322,7 +2483,7 @@ int YM2203TimerOver(int n,int c)
 		/* CSM mode key,TL control */
 		if( F2203->OPN.ST.mode & 0x80 )
 		{	/* CSM mode auto key on */
-			CSMKeyControll( &(F2203->CH[2]) );
+			CSMKeyControll( F2203->OPN.type, &(F2203->CH[2]) );
 		}
 	}
 	return F2203->OPN.ST.irq;
@@ -3773,7 +3934,7 @@ int YM2608TimerOver(int n,int c)
 			/* CSM mode key,TL controll */
 			if( F2608->OPN.ST.mode & 0x80 )
 			{	/* CSM mode total level latch and auto key on */
-				CSMKeyControll( &(F2608->CH[2]) );
+				CSMKeyControll( F2608->OPN.type, &(F2608->CH[2]) );
 			}
 		}
 		break;
@@ -4474,7 +4635,7 @@ int YM2610TimerOver(int n,int c)
 		/* CSM mode key,TL controll */
 		if( F2610->OPN.ST.mode & 0x80 )
 		{	/* CSM mode total level latch and auto key on */
-			CSMKeyControll( &(F2610->CH[2]) );
+			CSMKeyControll( F2610->OPN.type, &(F2610->CH[2]) );
 		}
 	}
 	return F2610->OPN.ST.irq;
@@ -4874,7 +5035,7 @@ int YM2612TimerOver(int n,int c)
 		/* CSM mode key,TL controll */
 		if( F2612->OPN.ST.mode & 0x80 )
 		{	/* CSM mode total level latch and auto key on */
-			CSMKeyControll( &(F2612->CH[2]) );
+			CSMKeyControll( F2612->OPN.type, &(F2612->CH[2]) );
 		}
 	}
 	return F2612->OPN.ST.irq;
