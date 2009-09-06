@@ -57,10 +57,13 @@ void s68000_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
          M68000_dataregion_rb[cpu][n].userdata &&
          M68000_dataregion_rb[cpu][n].userdata+M68000_dataregion_rb[cpu][n].lowaddr != RAM_PAL &&
 	 (M68000_dataregion_rb[cpu][n].lowaddr & 0xff000000) == 0) {
-      if (!find_rom(cpu,M68000_dataregion_rb[cpu][n].lowaddr,M68000_dataregion_rb[cpu][n].highaddr)) {
+	// it's not convinient to use find_rom here
+	// some areas can be writen to by handlers and read directly
+	// for now I just disable find_rom it was usefull only with neocd...
+      // if (!find_rom(cpu,M68000_dataregion_rb[cpu][n].lowaddr,M68000_dataregion_rb[cpu][n].highaddr)) {
 	range[(*count)++] = M68000_dataregion_rb[cpu][n].lowaddr;
 	range[(*count)++] = M68000_dataregion_rb[cpu][n].highaddr;
-      }
+      // }
     }
   }
 }
