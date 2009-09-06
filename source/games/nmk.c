@@ -26,6 +26,8 @@
 #include "savegame.h"
 #include "blit.h" // clear_game_screen (when bg0 is disabled)
 #include "nmk004.h"
+#include "sdl/gui.h" // goto_debuger
+#include "profile.h" // fps
 
 static void (*ExecuteSoundFrame)();	// Pointer to ExecuteSoundFrame rountine (sound cpu work for 1 frame), used for pausegame + playsound
 
@@ -164,33 +166,47 @@ static struct INPUT_INFO ssmissin_inputs[] =
    { 0,                   NULL,                    0,        0,    0            },
 };
 
+/* The inputs of tharrier are quite particular : instead of using the
+ * input_mode of the other games, it uses a pointer from ram to read the
+ * inputs, initalised by or.b #8,$f9f1a and or.b #2,$f9f1c which puts
+ * $80202 in $f9f1a which is then used for the inputs instead of $80002.
+ * $80002 is still used though, particularly for the hiscore table and to
+ * start a game. */
+
 static struct INPUT_INFO tharrier_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x010000, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x010000, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x010000, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_COIN1, MSG_COIN1, 0x10000, 0x01, BIT_ACTIVE_1 },
+  { KB_DEF_COIN2, MSG_COIN2, 0x10000, 0x02, BIT_ACTIVE_1 },
+  { KB_DEF_SERVICE, MSG_SERVICE, 0x10000, 0x04, BIT_ACTIVE_1 },
+  { KB_DEF_P1_START, MSG_P1_START, 0x10000, 0x08, BIT_ACTIVE_1 },
+  { KB_DEF_P2_START, MSG_P2_START, 0x10000, 0x10, BIT_ACTIVE_1 },
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x010000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x010002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x010002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x010002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x010002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x010002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x010002, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x010002, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x010002, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P1_START, MSG_P1_START, 0x10002, 0x01, BIT_ACTIVE_1 },
+  { KB_DEF_P2_START, MSG_P2_START, 0x10002, 0x02, BIT_ACTIVE_1 },
+  { KB_DEF_COIN2, MSG_COIN2, 0x10002, 0x20, BIT_ACTIVE_1 },
+  { KB_DEF_COIN1, MSG_COIN1, 0x10002, 0x80, BIT_ACTIVE_1 },
+  { KB_DEF_P2_START, MSG_P2_START, 0x10003, 0x01, BIT_ACTIVE_1 },
+  // hiscore :
+   { KB_DEF_P1_RIGHT,        MSG_P1_RIGHT,    0x010002, 0x08, BIT_ACTIVE_1 },
+   { KB_DEF_P1_B1,      MSG_P1_B1,0x010002, 0x02, BIT_ACTIVE_1 },
+   { KB_DEF_P1_LEFT,        MSG_P1_LEFT,    0x010002, 0x10, BIT_ACTIVE_1 },
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x010000, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x010003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x010003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x010003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x010003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x010003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x010003, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x010003, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B4,        MSG_P2_B4,               0x010003, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1, MSG_P1_B1, 0x10202, 0x02, BIT_ACTIVE_1 },
+  { KB_DEF_P1_B2, MSG_P1_B2, 0x10202, 0x04, BIT_ACTIVE_1 },
+  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x10202, 0x08, BIT_ACTIVE_1 },
+  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x10202, 0x10, BIT_ACTIVE_1 },
+  { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x10202, 0x20, BIT_ACTIVE_1 },
+  { KB_DEF_P1_UP, MSG_P1_UP, 0x10202, 0x40, BIT_ACTIVE_1 },
+  { KB_DEF_P1_B3, MSG_P1_B3, 0x10202, 0x80, BIT_ACTIVE_1 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+  { KB_DEF_P2_B1, MSG_P2_B1, 0x10203, 0x02, BIT_ACTIVE_1 },
+  { KB_DEF_P2_B2, MSG_P2_B2, 0x10203, 0x04, BIT_ACTIVE_1 },
+  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x10203, 0x08, BIT_ACTIVE_1 },
+  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x10203, 0x10, BIT_ACTIVE_1 },
+  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x10203, 0x20, BIT_ACTIVE_1 },
+  { KB_DEF_P2_UP, MSG_P2_UP, 0x10203, 0x40, BIT_ACTIVE_1 },
+  { KB_DEF_P2_B3, MSG_P2_B3, 0x10203, 0x80, BIT_ACTIVE_1 },
+   { 0, NULL, 0, 0, 0 },
 };
 
 static struct DSW_DATA dsw_data_ssmissin_2[] =
@@ -843,18 +859,67 @@ static struct ROM_INFO mustang_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DSW_DATA dsw_data_task_0[] =
+static struct DSW_DATA dsw_data_tharrier_2[] =
 {
    { MSG_TEST_MODE,           0x01, 0x02 },
    { MSG_ON,                  0x00, 0x00 },
    { MSG_OFF,                 0x01, 0x00 },
-   { NULL,                    0,    0,   },
+   // The following bits are not read by tharrier, but maybe by mustang...
+  { MSG_DEMO_SOUND, 0x0002, 2 },
+  { MSG_OFF, 0x0000, 0x00 },
+  { MSG_ON, 0x0002, 0x00 },
+  { MSG_COIN2, 0x001c, 8 },
+  { MSG_4COIN_1PLAY, 0x0010, 0x00 },
+  { MSG_3COIN_1PLAY, 0x0008, 0x00 },
+  { MSG_2COIN_1PLAY, 0x0018, 0x00 },
+  { MSG_1COIN_1PLAY, 0x001c, 0x00 },
+  { MSG_1COIN_2PLAY, 0x000c, 0x00 },
+  { MSG_1COIN_3PLAY, 0x0014, 0x00 },
+  { MSG_1COIN_4PLAY, 0x0004, 0x00 },
+  { MSG_FREE_PLAY, 0x0000, 0x00 },
+  { MSG_COIN1, 0x00e0, 8 },
+  { MSG_4COIN_1PLAY, 0x0080, 0x00 },
+  { MSG_3COIN_1PLAY, 0x0040, 0x00 },
+  { MSG_2COIN_1PLAY, 0x00c0, 0x00 },
+  { MSG_1COIN_1PLAY, 0x00e0, 0x00 },
+  { MSG_1COIN_2PLAY, 0x0060, 0x00 },
+  { MSG_1COIN_3PLAY, 0x00a0, 0x00 },
+  { MSG_1COIN_4PLAY, 0x0020, 0x00 },
+  { MSG_FREE_PLAY, 0x0000, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_mustang_3[] =
+{
+  { MSG_SCREEN, 0x1, 2 },
+  { MSG_OFF, 0x1, 0x00 },
+  { MSG_ON, 0x0, 0x00 },
+  { MSG_UNKNOWN, 0x2, 2 },
+  { MSG_OFF, 0x2, 0x00 },
+  { MSG_ON, 0x0, 0x00 },
+  { MSG_DIFFICULTY, 0xc, 4 },
+  { MSG_EASY, 0x4, 0x00 },
+  { MSG_NORMAL, 0xc, 0x00 },
+  { MSG_HARD, 0x8, 0x00 },
+  { MSG_HARDEST, 0x0, 0x00 },
+  { MSG_UNKNOWN, 0x10, 2 },
+  { MSG_OFF, 0x10, 0x00 },
+  { MSG_ON, 0x0, 0x00 },
+  { MSG_UNKNOWN, 0x20, 2 },
+  { MSG_OFF, 0x20, 0x00 },
+  { MSG_ON, 0x0, 0x00 },
+  { MSG_LIVES, 0xc0, 4 },
+  { "2", 0x40, 0x00 },
+  { "3", 0xc0, 0x00 },
+  { "4", 0x80, 0x00 },
+  { "5", 0x0, 0x00 },
+  { NULL, 0, 0}
 };
 
 static struct DSW_INFO mustang_dsw[] =
 {
-   { 0x010005, 0xFF, dsw_data_task_0 },
-   { 0x010004, 0xFF, dsw_data_default_1 },
+   { 0x010005, 0xFF, dsw_data_tharrier_2 },
+   { 0x010004, 0xFF, dsw_data_mustang_3 },
    { 0,        0,    NULL,      },
 };
 
@@ -1042,22 +1107,22 @@ static struct DIR_INFO task_force_harrier_dirs[] =
 static struct ROM_INFO task_force_harrier_roms[] =
 {
    {            "1", 0x00010000, 0xc7402e4a, 0, 0, 0, },
-   {            "2", 0x00020000, 0x78923aaa, 0, 0, 0, },
-   {            "3", 0x00020000, 0x99cea259, 0, 0, 0, },
-   {           "12", 0x00010000, 0xb959f837, 0, 0, 0, },
+   {            "2", 0x00020000, 0x78923aaa, REGION_CPU1, 0, LOAD_8_16, },
+   {            "3", 0x00020000, 0x99cea259, REGION_CPU1, 1, LOAD_8_16, },
+   {           "12", 0x00010000, 0xb959f837, REGION_CPU2, 0, LOAD_NORMAL, },
    {      "89050-4", 0x00080000, 0x64d7d687, 0, 0, 0, },
-   {      "89050-8", 0x00080000, 0x11ee4c39, 0, 0, 0, },
-   {     "89050-10", 0x00080000, 0x893552ab, 0, 0, 0, },
+   {      "89050-8", 0x00080000, 0x11ee4c39, REGION_SOUND1, 0x20000, LOAD_NORMAL },
+   {     "89050-10", 0x00080000, 0x893552ab, REGION_SOUND2, 0x20000, LOAD_NORMAL },
    {     "89050-13", 0x00080000, 0x24db3fa4, 0, 0, 0, },
    {     "89050-17", 0x00080000, 0x7f715421, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_INFO task_force_harrier_dsw[] =
+static struct DSW_INFO tharrier_dsw[] =
 {
-   { 0x010005, 0xFF, dsw_data_task_0 },
-   { 0x010004, 0xFF, dsw_data_default_1 },
-   { 0,        0,    NULL,      },
+  { 0x10005, 0xff, dsw_data_tharrier_2 },
+  // { 0x10004, 0xff, dsw_data_tharrier_3 }, (not read)
+  { 0, 0, NULL }
 };
 
 static struct DIR_INFO thunder_dragon_dirs[] =
@@ -1323,8 +1388,7 @@ static void WriteSound68k(UINT32 address, UINT16 data)
   if (macross2_hack && (data == 0xc3)) // this commande produces a volume fade out which never
     // ends. We can filter it out this way...
     return;
-    // fprintf(stderr,"sound %x\n",data);
-    sound_latch = data;
+  sound_latch = data;
 }
 
 static UINT16 TDSoundReadZ80(UINT16 offset)
@@ -1467,28 +1531,6 @@ static void NMKVideoWB(UINT32 addr, UINT8 data)
 
    RAM[0x10000+(addr^1)]=data;
 
-   if(romset==4){
-      if(addr==0x0013){
-	//fprintf(stderr,"set inp mode %x,%x\n",s68000readPC(),data);
-	switch(data&0x1F){
-	case 0x11:
-	  input_mode = 0;
-	  break;
-	case 0x12:
-	  input_mode = 1;
-	  break;
-	case 0x13:
-	  input_mode = 2;
-	  break;
-	case 0x14:
-	  input_mode = 3;
-	  break;
-	default:
-	  print_debug("input_write:%02x (%x)\n",data&0x1F,s68000readPC());
-	  break;
-	}
-      }
-   }
    // Mustang does not write anything here.
    if(addr==0x001f){
 #ifdef RAINE_DEBUG
@@ -1504,28 +1546,6 @@ static void NMKVideoWB(UINT32 addr, UINT8 data)
 static UINT16 NMKVideoRW(UINT32 addr)
 {
    addr&=0x7FFF;
-
-   if(romset==4){
-      if(addr==0x0002){
-	switch(input_mode){
-            case 0:
-               return ~ReadWord(&RAM[0x10004]);	// DSW
-            break;
-            case 1:
-               return ~ReadWord(&RAM[0x10002]);	// PLAYER
-            break;
-            case 2:
-	      return ~ReadWord(&RAM[0x10000]);	// COIN
-            break;
-            case 3:
-               return ~ReadWord(&RAM[0x10002]);	// PLAYER
-            break;
-            default:
-               return 0;
-            break;
-         }
-      }
-   }
 
    switch(addr){
    case 0x4000:
@@ -1706,7 +1726,6 @@ static void EmptySoundFrame(void)
 static void NormalSoundFrame(void)
 {
   execute_z80_audio_frame();
-  print_debug("Z80PC0:%04x\n",z80pc);
 }
 
 static int respcount;
@@ -1743,6 +1762,7 @@ static void myStop68000(UINT32 offset, UINT8 data) {
 static void finish_nmk_conf(void)
 {
   int ta;
+  fps = 56;
   req_int2 = 0;
   macross2_hack = 0;
   AddMemFetch(-1, -1, NULL);
@@ -1803,17 +1823,16 @@ void AddNMKMainCPU(UINT32 ram, UINT32 vram)
 
    // The vram area contains controls + ram + videoram...
    // That's why the write do not start at vram : these are the controls.   AddReadByte(vram+0xe,vram + 0xf, NMK004_r, NULL);
-   AddReadByte(vram+0xe,vram + 0xf, NMK004_r, NULL);
+   if (romset == 4) // tharrier
+       AddRWBW(vram, vram+0x1FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
+   else {
+       AddReadByte(vram+0xe,vram + 0xf, NMK004_r, NULL);
+       AddReadWord(vram, vram+0x07FFF, NMKVideoRW, NULL);                   // MISC SCREEN RAM
+       AddWriteByte(vram, vram+0x07FFF, NMKVideoWB, NULL);                  // MISC SCREEN RAM
+       AddWriteWord(vram, vram+0x07FFF, NMKVideoWW, NULL);                  // MISC SCREEN RAM
 
-   AddReadByte(vram, vram+0x1FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-
-   AddReadWord(vram+0x8000,vram+0x1FFFF, NULL, RAM+0x018000);           // SCREEN RAM
-   AddReadWord(vram, vram+0x07FFF, NMKVideoRW, NULL);                   // MISC SCREEN RAM
-
-   AddWriteBW(vram+0x8000, vram+0x1FFFF, NULL, RAM+0x018000);         // SCREEN RAM
-   AddWriteByte(vram, vram+0x07FFF, NMKVideoWB, NULL);                  // MISC SCREEN RAM
-
-   AddWriteWord(vram, vram+0x07FFF, NMKVideoWW, NULL);                  // MISC SCREEN RAM
+       AddRWBW(vram, vram+0x1FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
+   }
 }
 
 void LoadBombJackTwin(void)
@@ -2104,7 +2123,6 @@ static void ssmissin_sound_frame(void)
 {
 
   cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(4,60));
-  print_debug("Z80PC0:%04x\n",z80pc);
 }
 
 void load_ssmissin(void)
@@ -2760,110 +2778,189 @@ void LoadMustang(void)
    req_int2 = 1;
 }
 
-static void test_6c(UINT32 adr, UINT8 data) {
-  RAM[adr-0xf0000] =data;
-  RAM[adr-0xf0000+1] =data;
-  if (data == 1 || data == 2) {
-    RAM[0x902e] = 10;
-    RAM[0x902c] = 0;
-  }
+static UINT8 tharrier_mcu_r(UINT32 offset) {
+    if ((offset & 1) == 0)
+    {
+	static const UINT8 to_main[] =
+	{
+	    0x82,0xc7,0x00,0x2c,0x6c,0x00,0x9f,0xc7,0x00,0x29,0x69,0x00,0x8b,0xc7,0x00
+	};
+	static int prot_count;
+
+	int res;
+
+	if (s68000readPC()==0x8aa) {
+	    res = (ReadWord(&RAM[0x9064]))|0x20; /* Task Force Harrier */
+	} else if (s68000readPC()==0x8ce) {
+	    res = (ReadWord(&RAM[0x9064]))|0x60; /* Task Force Harrier */
+	} else if (s68000readPC()==0x8e4)
+	    // At $8e4 the mcu just wants 0s !
+	    res = 0;
+	else
+	{
+	    res = to_main[prot_count++];
+	    if (prot_count >= sizeof(to_main))
+		prot_count = 0;
+	}
+
+	return res;
+    }
+    else {
+	printf("returning port\n");
+	return RAM[0x10003]; // input_port_read(space->machine, "IN1");
+    }
 }
 
-static UINT8 macross_mcu_r(UINT32 offset)
-{
-  // This one is taken from mame. It will avoid a heavy patch of task harrier
-  static int resp[] = { 0x82, 0xc7, 0x00,
-                        0x2c, 0x6c, 0x00,
-                        0x9f, 0xc7, 0x00,
-                        0x29, 0x69, 0x00,
-                        0x8b, 0xc7, 0x00 };
-  int res;
+static void copy_bytes(UINT32 offset, UINT8 data) {
+    offset &= 0xffff;
+    RAM[offset] = RAM[offset ^ 1] = data;
+}
 
-  if (s68000readPC()==0x8aa) res = (RAM[0x9064])|0x20; /* Task Force Harrier */
-  else if (s68000readPC()==0x8ce) res = (RAM[0x9064])|0x60; /* Task Force Harrie
-r */
-  else if (s68000readPC() == 0x0332     /* Macross */
-           ||   s68000readPC() == 0x64f4)       /* GunNail */
-    res = RAM[0x90f7];
-  else
-    {
-      res = resp[respcount++];
-      if (respcount >= sizeof(resp)/sizeof(resp[0])) respcount = 0;
-    }
-  return res;
+static void tharrier_oki6295_bankswitch_0_w(UINT32 offset, UINT8 data)
+{
+	UINT8 *rom = load_region[REGION_SOUND1];
+
+	data &= 3;
+	if (data != 3)
+		memcpy(rom + 0x20000,rom + 0x40000 + data * 0x20000,0x20000);
+}
+
+static void tharrier_oki6295_bankswitch_1_w(UINT32 offset, UINT8 data)
+{
+	UINT8 *rom = load_region[REGION_SOUND2];
+
+	data &= 3;
+	if (data != 3)
+		memcpy(rom + 0x20000,rom + 0x40000 + data * 0x20000,0x20000);
+}
+
+static UINT8 soundlatch_read(UINT32 offset) {
+    return sound_latch;
+}
+
+static void latch2_w(UINT32 offset, UINT8 data) {
+    latch2 = data;
+}
+
+static void soundlatch_w(UINT32 offset, UINT16 data) {
+    sound_latch = data;
+}
+
+static UINT16 soundlatch2_r(UINT32 offset) {
+    return latch2;
 }
 
 void LoadTaskForceHarrier(void)
 {
-   int ta;
-
    romset=4;
+   /* The ym2203 depends directly on the z80 frequency, it's a very weird
+    * setup here. So just keep 3 Mhz here. */
+   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(3,60)); // no z80, but we will simulate it for the timers
+   UINT8 *tmp;
 
-   if(!(ROM=AllocateMem(0x100000))) return;
+   if(!(tmp=AllocateMem(0x100000))) return;
+
+   if(!load_rom("1", tmp, 0x10000)) return;   		   	 // 8x8 FG0 TILES
+   if(!NMKDecodeFG0(tmp,0x10000))return;
+
+   if(!load_rom("89050-13", tmp+0x00000, 0x80000)) return;       // 16x16 TILES
+   if(!load_rom("89050-17", tmp+0x80000, 0x80000)) return;       // 16x16 TILES
+   if(!NMKDecodeSPR_Mustang(tmp,0x100000))return;
+
+   if(!load_rom("89050-4", tmp+0x00000, 0x80000)) return;        // 16x16 TILES
+   if(!NMKDecodeBG0(tmp,0x80000))return;
+   FreeMem(tmp);
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("1", RAM, 0x10000)) return;   		   	 // 8x8 FG0 TILES
-   if(!NMKDecodeFG0(RAM,0x10000))return;
-
-   if(!load_rom("89050-13", ROM+0x00000, 0x80000)) return;       // 16x16 TILES
-   if(!load_rom("89050-17", ROM+0x80000, 0x80000)) return;       // 16x16 TILES
-   if(!NMKDecodeSPR_Mustang(ROM,0x100000))return;
-
-   if(!load_rom("89050-4", ROM+0x00000, 0x80000)) return;        // 16x16 TILES
-   if(!NMKDecodeBG0(ROM,0x80000))return;
-
-   if(!load_rom("2", RAM+0x00000, 0x20000)) return;   		 // 68000 ROM
-   memset(RAM+0x20000,0xFF,0x10000);
-   for(ta=0;ta<0x30000;ta++){
-      ROM[ta+ta+0]=RAM[ta];
-   }
-   if(!load_rom("3", RAM+0x00000, 0x20000)) return;
-   memset(RAM+0x20000,0xFF,0x10000);
-   for(ta=0;ta<0x30000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
-
-   RAMSize=0x40000;
+   RAMSize=0x40800;
+   memcpy(load_region[REGION_SOUND1], load_region[REGION_SOUND1]+0x20000, 0x20000);
+   memcpy(load_region[REGION_SOUND2], load_region[REGION_SOUND2]+0x20000, 0x20000);
 
    scr_x = 256;
    scr_y = 224;
 
    // Speed Hack
 
+#if 0
+   /* irq 1 is very sensitive for this driver.
+    * If we enable a speed hack here, then the number of cycles between 2 irqs
+    * 1 can't be constant anymore. Consequences : the mcu can decide we are not
+    * allowed to play anymore, and even if it doesn't you don't see your plane
+    * flashing anymore to show it's invincible when it 1st appears.
+    * The easiest solution is just to disable the speed hack for now */
    WriteLong68k(&ROM[0x00738],0x13FC0000);       // move.b #$00,$AA0000
    WriteLong68k(&ROM[0x0073C],0x00AA0000);       //
 
    WriteLong68k(&ROM[0x00722],0x13FC0000);       // move.b #$00,$AA0000
    WriteLong68k(&ROM[0x00726],0x00AA0000);       //
+#endif
 
    // Make Test Mode Easier
 
    WriteLong68k(&ROM[0x6dc4],0x80004); // test dsw0 instead of input
    WriteWord68k(&ROM[0x6dcc],0x0100);       // bit0 seems fine
    WriteLong68k(&ROM[0x6DCE],0x660006d2);
-   WriteWord68k(&ROM[0x6dd2],0x604a);
-
-   // Fix byte order for starscream
-   WriteWord68k(&ROM[0x968],0x1e39);
-   WriteWord68k(&ROM[0x52a4],0x1e39);
-   WriteWord68k(&ROM[0x62ee],0x1e39);
-
-   //WriteWord68k(&ROM[0x9d0],0x4e71);
-   AddWriteByte(0xf906c,0xf906c,test_6c,NULL);
-   //WriteWord68k(&ROM[0x974],0x4e71);
-
-   //AddReadByte(0x80000,0x80001,input_test_b,NULL);
+   WriteWord68k(&ROM[0x6dd2],0x604a);  
 
 /*
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
+   ByteSwap(ROM,0x40000);
    ByteSwap(RAM,0x40000);
-   AddReadByte(0x80002,0x80002,macross_mcu_r,NULL);
+   AddReadByte( 0x80002,0x80003,tharrier_mcu_r,NULL);
+   // AddWriteByte(0xf9f1a, 0xf9f1d, NULL, &RAM[0x9f1a]);
+   AddWriteByte(0xf0000,0xfffff,copy_bytes,NULL);
+   AddWriteBW(0x8001e, 0x08001f, soundlatch_w, NULL);
+   AddReadBW(0x8000e, 0x08000f, soundlatch2_r, NULL);
    AddNMKMainCPU(0x0F0000, 0x080000);
 
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80ARead(0x0000, 0xbfff, NULL, Z80ROM);
+   AddZ80ARW(0xc000, 0xc7ff, NULL, Z80ROM+0xc000); // RAM+0x40000); // normal ram
+   memcpy(RAM+0x40000,Z80ROM+0xc000,0x800);
+   AddZ80ARead(0xf000, 0xf000, soundlatch_read, NULL);
+   AddZ80AWrite(0xf000, 0xf000, latch2_w, NULL);
+
+   AddZ80ARead(0xf400, 0xf400, OKIM6295_status_0_r, NULL);
+   AddZ80ARead(0xf500, 0xf500, OKIM6295_status_1_r, NULL);
+   AddZ80AWrite(0xf400, 0xf400, OKIM6295_data_0_w,       NULL);
+   AddZ80AWrite(0xf500, 0xf500, OKIM6295_data_1_w,       NULL);
+   AddZ80AWrite(0xf600, 0xf600, tharrier_oki6295_bankswitch_0_w, NULL);
+   AddZ80AWrite(0xf700, 0xf700, tharrier_oki6295_bankswitch_1_w, NULL);
+
+   AddZ80AReadPort(0x00, 0x00, YM2203_status_port_0_r, NULL);
+   AddZ80AReadPort(0x01, 0x01, YM2203_read_port_0_r,   NULL);
+
+   AddZ80AWritePort(0x00, 0x00, YM2203_control_port_0_w, NULL);
+   AddZ80AWritePort(0x01, 0x01, YM2203_write_port_0_w,   NULL);
+
+   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
+   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
+   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,		NULL);
+   AddZ80AReadPort(  -1,   -1, NULL,			NULL);
+   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80, 	NULL);
+   AddZ80AWritePort(  -1,   -1, NULL,			NULL);
+
+   AddZ80AInit();
+
    finish_nmk_conf();
+   set_reset_function(reset_input_mode);
+   /* The big surprise of this driver :
+    * This is some broken hardware, the ym2203 generates 1 irq for the z80
+    * and the z80 never clears the ym2203 irq.
+    * 2 consequences : the ym2203 never stands any other irq and remains with
+    * its active irq line for ever
+    * and the z80 keeps on accepting irqs.
+    * This behaviour (the irq line) is NOT emulated by mz80, at all, no way to
+    * do it !!! So the work-around is to patch the rom to make it loop on its
+    * irq with a jump from the end to the begin, 2 bytes only, but these are
+    * 2 quite surprising bytes !!! */
+   WriteWord68k(&Z80ROM[0x6d],0x18ca);
+   // also need to clear bit 8 of $10002 to say mcu is ready
+   WriteWord(&RAM[0x10000],0xffff);
+   WriteWord(&RAM[0x10002],0);
 }
 
 void LoadThunderDragon(void)
@@ -3220,7 +3317,7 @@ static int int_rate[ROM_COUNT]=
    112,
    112,
    60,
-   60,
+   112,
    112,
    60,
    112,
@@ -3231,11 +3328,10 @@ static int tick;
 
 void ExecuteNMKFrame(void)
 {
+   cpu_interrupt(CPU_68K_0, 2);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
    //WriteWord(&RAM[0x9000],ReadWord(&RAM[0x9000]) | 1);
    //fprintf(stderr,"%x %x\n",ReadWord(&RAM[0x9000]),ReadWord(&RAM[0x9074]));
-   cpu_interrupt(CPU_68K_0, 4);
-   cpu_interrupt(CPU_68K_0, 2);
 
    tick += int_rate[romset];
 
@@ -3243,19 +3339,58 @@ void ExecuteNMKFrame(void)
      cpu_interrupt(CPU_68K_0, 1);
      // cpu_interrupt(CPU_68K_0, 2);
       tick-=60;
+      if (tick >= 60)
+	  cpu_execute_cycles(CPU_68K_0,1000);
    }
-/*
-#ifdef RAINE_DEBUG
-   if(key[KEY_G]) int_rate[romset]--;
-   if(key[KEY_H]) int_rate[romset]++;
-
-   print_ingame(60,"Int#1 @ %d bps",int_rate[romset]);
-#endif
-*/
-
-   //print_ingame(60,"0x%04X 0x%04X",ReadWord(&RAM[0x10000]),ReadWord(&RAM[0x10002]));
+   cpu_interrupt(CPU_68K_0, 4);
 
    ExecuteSoundFrame();
+}
+
+// It's better to leave tharrier without speed hack -> 10 Mhz
+// 12 MHz gives a little plus when there are 2 big ships on screen
+#define FRAME_68K CPU_FRAME_MHz(12,60)
+
+void execute_tharrier(void)
+{
+   cpu_interrupt(CPU_68K_0, 2);
+   static int remaining; // remaining cycles before irq 1
+   int cycles = FRAME_68K;
+   stopped_cpu = 0;
+   while (cycles > 0) {
+       /* Task force harrier is tricky because you can't just execute irq 1
+	* as much as you want, you need to interleave it with normal code
+	* execution. It's required for the mcu to get the correct values when
+	* it compares to the values from ram. If you use the normal frame
+	* then the mcu gets unhappy as soon as the demo (after the title screen)
+	* starts. */
+       if (!remaining)
+	   remaining = FRAME_68K*60/int_rate[romset];
+       if (remaining <= cycles) {
+	   cpu_execute_cycles(CPU_68K_0, remaining);
+	   cycles -= remaining;
+	   remaining = 0;
+	   cpu_interrupt(CPU_68K_0, 1);
+       } else {
+	   cpu_execute_cycles(CPU_68K_0, cycles);
+	   remaining -= cycles;
+	   cycles = 0;
+       }
+       if (stopped_cpu && cycles) {
+	   // If you try a speed hack here, the invicible effect disappears
+	   // so it's probably better to disable speed hacks for now here
+	   if (remaining < cycles) {
+	       cpu_interrupt(CPU_68K_0,1);
+	       remaining = 0;
+	   } else
+	       remaining -= cycles;
+	   cycles = 0;
+       }
+   }
+
+
+   execute_z80_audio_frame();
+   cpu_interrupt(CPU_68K_0, 4); // vbl
 }
 
 /* The crazy thing : the mcu runs the coin counter, so we must simulate it entierly ! */
@@ -3485,6 +3620,7 @@ static void RenderNMKSprites(int pri)
 	do{
 
 	  if(ta <= nb_sprites && SPR_Mask[ta]!=0){                      // No pixels; skip
+	      x = ((x+16)&0x1ff)-16;
 
 	    if((x>16)&&(y>16)&&(x<scr_x+32)&&(y<scr_y+32)){
 
@@ -3516,6 +3652,94 @@ static void RenderNMKSprites(int pri)
       }
       zz+=16;
    } while(--r1>=0);
+}
+
+static void RenderNMKSprites_flip(int pri)
+{
+    int x,y,zz,r1,ta,xx,yy,xp,xxp;
+    UINT8 *MAP;
+    UINT8 col_bank;
+    UINT8 x_ofs;
+
+    if(! check_layer_enabled(3)) {
+	return;
+    }
+
+    if(romset==7)
+	zz=0xF000;
+    else
+	zz=0x8000;
+
+    if(romset==2)
+	col_bank = 0x20;
+    else
+	col_bank = 0x10;
+
+    r1 = 255;
+
+    x_ofs = 32+videoshift;
+
+    do {
+	if((ReadWord(&RAM[zz]))!=0){		// Strahl - Check other games are ok
+
+	    x=(ReadWord(&RAM[zz+ 8]))&0x1FF;
+	    y=(ReadWord(&RAM[zz+12]))&0x1FF;
+
+	    ta=ReadWord(&RAM[zz+ 6]);
+	    MAP_PALETTE_MAPPED_NEW(
+		    (RAM[zz+14]&0x1F)+col_bank,
+		    16,
+		    MAP
+		    );
+
+	    xx=(RAM[zz+2]&0x0F);
+	    yy=(RAM[zz+2]>>4);
+
+	    xxp=xx;
+
+	    int flip= (RAM[zz+3] & 0x03);
+	    int flipx = flip & 1;
+	    int flipy = flip & 2;
+	    if (flipx) {
+		x += 16*xx;
+	    }
+	    if (flipy) {
+       	       y += 16*yy;
+	    }
+	    xp=x;
+	    do{
+		do{
+
+		    if(ta <= nb_sprites && SPR_Mask[ta]!=0){                      // No pixels; skip
+			x = ((x+16)&0x1ff)-16;
+			if((x>-16)&&(y>-16)&&(x<scr_x+16)&&(y<scr_y+16)){
+
+			    if(SPR_Mask[ta]==1){                      // Some pixels; trans
+
+				Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR[ta<<8],x+x_ofs,y+16,MAP,flip);
+			    }
+			    else{                                     // all pixels; solid
+
+				Draw16x16_Mapped_flip_Rot(&GFX_SPR[ta<<8],((x+16)&0x1ff)-16+x_ofs,y+16,MAP,flip);
+
+			    }
+
+			}
+
+		    }
+
+		    ta++;
+		    x=(x+16*(flipx?-1:1));
+
+		}while(--xx>=0);
+
+		x=xp;
+		xx=xxp;
+		y=(y+16*(flipy?-1:1));
+	    }while(--yy>=0);
+	}
+	zz+=16;
+    } while(--r1>=0);
 }
 
 static int NMKLayerCount;
@@ -4232,17 +4456,19 @@ void DrawTaskForceHarrier(void)
    NMKLayers[2].PAL          =0x00;
    }
 
-   for(tb=0;tb<16;tb+=2){
+   for(tb=2;tb<16;tb+=2){
       ta = (RAM[0x1C000+tb+tb]<<8) | (RAM[0x1C002+tb+tb]);
       WriteWord(&RAM[0x14200+tb], ta);
    }
+   WriteWord(&RAM[0x14200],ReadWord(&RAM[0x9f00])); // offset x
+   // WriteWord(&RAM[0x14202],0); // offset y (no shift)
 
-   WriteLong(&RAM[0x14008],0x00000000);
+   WriteWord(&RAM[0x14008],0x00000000); // no scroll at all on this one
    WriteLong(&RAM[0x1400C],0xFFFFFFFF);
 
    RenderNMKLayer(0);
 
-   RenderNMKSprites(0);
+   RenderNMKSprites_flip(0);
 
    RenderNMKLayer(2);
 }
@@ -4808,21 +5034,21 @@ GAME( task_force_harrier ,
    task_force_harrier_dirs,
    task_force_harrier_roms,
    tharrier_inputs,
-   task_force_harrier_dsw,
+   tharrier_dsw,
    NULL,
 
    LoadTaskForceHarrier,
    NULL,
    &task_force_harrier_video,
-   ExecuteNMKFrame,
+   execute_tharrier,
    "tforceh",
    "Task Force Harrier",
    NULL,
    COMPANY_ID_UPL,
    "UPL-89050",
    1989,
-   NULL,
-   GAME_SHOOT | GAME_NOT_WORKING
+   macross2_sound,
+   GAME_SHOOT
 );
 
 GAME( thunder_dragon ,
