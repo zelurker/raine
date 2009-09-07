@@ -2935,6 +2935,7 @@ void LoadTaskForceHarrier(void)
 
    AddZ80AWritePort(0x00, 0x00, YM2203_control_port_0_w, NULL);
    AddZ80AWritePort(0x01, 0x01, YM2203_write_port_0_w,   NULL);
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
 
    AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
@@ -2957,7 +2958,11 @@ void LoadTaskForceHarrier(void)
     * do it !!! So the work-around is to patch the rom to make it loop on its
     * irq with a jump from the end to the begin, 2 bytes only, but these are
     * 2 quite surprising bytes !!! */
-   WriteWord68k(&Z80ROM[0x6d],0x18ca);
+   // WriteWord68k(&Z80ROM[0x6d],0x18ca);
+   /* The patch is done by a speed hack after all otherwise we waste an
+    * incredible amount of cpu power just to call ym2203_status_r */
+   WriteWord68k(&Z80ROM[0x6d],0xd3aa); // outa (aah)
+   SetStopZ80Mode2(0x39);
    // also need to clear bit 8 of $10002 to say mcu is ready
    WriteWord(&RAM[0x10000],0xffff);
    WriteWord(&RAM[0x10002],0);
@@ -3390,6 +3395,7 @@ void execute_tharrier(void)
 
 
    execute_z80_audio_frame();
+   // cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(3,60));
    cpu_interrupt(CPU_68K_0, 4); // vbl
 }
 
