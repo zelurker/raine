@@ -207,7 +207,7 @@ TFloatEdit::~TFloatEdit() {
 }
 
 int TFloatEdit::valid_chars(int sym, int unicode) {
-    return !unicode && ((sym >= '0' && sym <= '9') || sym == '.');
+    return (!unicode || unicode == sym) && ((sym >= '0' && sym <= '9') || sym == '.');
 }
 
 int TFloatEdit::can_exit() {
