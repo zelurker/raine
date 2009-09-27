@@ -1432,6 +1432,9 @@ static void neogeo_hreset(void)
   pending_command = sound_code = 0;
   last_cdda_cmd = 0;
   last_cdda_track = 0;
+  /* Clear last bank of palette so that the bg color of screen is black
+   * when you start the game (last color of last bank) */
+  memset(RAM_PAL+0xff*0x20,0,0x20);
 
   video_modulo = video_pointer = 0;
 
@@ -2007,16 +2010,6 @@ static void write_word(UINT32 offset, UINT16 data) {
 }
 */
 
-static void test_write_word(UINT32 offset, UINT16 data) {
-  printf("WW %x,%x from %x\n",offset,data,s68000readPC());
-  WriteWord(&RAM[offset],data);
-}
-
-static void test_write_byte(UINT32 offset, UINT8 data) {
-  printf("WB %x,%x from %x\n",offset,data,s68000readPC());
-  RAM[offset ^ 1] = data;
-}
-
 static void load_neocd() {
   register_driver_emu_keys(list_emu,4);
   layer_id_data[0] = add_layer_info("FIX layer");
@@ -2094,8 +2087,6 @@ static void load_neocd() {
   AddMemFetch(0xc00000, 0xc7ffff, neocd_bios - 0xc00000);
   AddMemFetch(-1, -1, NULL);
 
-  // AddWriteWord(0x10f6ea, 0x10f6ec, test_write_word, NULL);
-  // AddWriteByte(0x107, 0x107, test_write_byte, NULL);
   AddWriteByte(0x10f6f6, 0x10f6f6, cdda_cmd, NULL);
   AddWriteByte(0x10F651, 0x10F651, test_end_loading, NULL);
 
