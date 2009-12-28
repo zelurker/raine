@@ -1165,7 +1165,7 @@ static void draw_sprites_capture(int start, int end) {
       } 
     }  // for y
   }  // for count
-  if (nb_block <= capture_block) {
+  if (nb_block <= capture_block && capture_block > 0) {
     capture_block = 0;
     return draw_sprites_capture(start,end);
   }
@@ -1330,7 +1330,7 @@ static void draw_neocd() {
     return;
 
   int start = 0, end = 0x300 >> 1;
-  if (!spr_disabled) {
+  if (check_layer_enabled(layer_id_data[1]) && !spr_disabled) {
     if (neocd_id == 0x0085 && !capture_mode) {
       // pseudo priority code specific to ssrpg (samurai spirits rpg)
       // it draws the sprites at the begining of the list at the end to have them
