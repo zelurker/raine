@@ -51,19 +51,20 @@ TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
   fseek(f,0L,SEEK_SET);
   fread(font,1,taille,f);
   fclose(f);
-  map = (UINT16*)malloc(0xff*2);
-  size_map = 255;
+#define SIZE 255/2
+  map = (UINT16*)malloc(SIZE*2);
+  size_map = SIZE;
   used_map = 0;
   f = fopen(get_shared("savedata/ssrpg.map"),"rb");
-  memset(map,0,255*2);
+  memset(map,0,SIZE*2);
   if (f) {
-    fread(map,1,0xff*2,f);
+    fread(map,1,SIZE*2,f);
     fclose(f);
     while (used_map < size_map && map[used_map])
       used_map++;
-    printf("used_map %d\n",used_map);
+    printf("used_map %x\n",used_map);
   } else
-    memset(map,0,255*2);
+    memset(map,0,SIZE*2);
 }
 
 static UINT32 base,offset,end;
@@ -75,7 +76,7 @@ TTransBitmap::~TTransBitmap() {
     sprintf(path,"%ssavedata/ssrpg.map",dir_cfg.exe_path);
     FILE *f = fopen(path,"wb");
     if (f) {
-      fwrite(map,1,0xff*2,f);
+      fwrite(map,1,SIZE*2,f);
       fclose(f);
     } else
       printf("could not save map\n");
@@ -85,7 +86,7 @@ TTransBitmap::~TTransBitmap() {
     sprintf(path,"%soverride",dir_cfg.exe_path);
     mkdir_rwx(path);
     sprintf(path,"%soverride/combos.spr",dir_cfg.exe_path);
-    save_file(path,&GFX[0x20100],0xff00);
+    save_file(path,&GFX[0x20100],SIZE*0x100);
     char *name;
     int nb;
     get_cache_origin(PRG_TYPE,base+offset,&name,&nb);
