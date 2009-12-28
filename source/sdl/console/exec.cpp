@@ -153,7 +153,7 @@ static int do_cycles(int cpu, int can_be_stopped = 1) {
       }
     }
   }
-  get_regs(0);
+  get_regs(cpu);
   return cycles-1;
 }
 
@@ -515,6 +515,7 @@ void do_irq(int argc, char **argv) {
   if (argc == 2) {
     int irq = parse(argv[1]);
     cpu_interrupt(CPU_68K_0,irq);
+    get_regs(0);
     return;
   } 
   if ((s68000context.sr & 0x2700) <= 0x2000)
