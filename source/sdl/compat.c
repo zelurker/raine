@@ -149,7 +149,7 @@ char *get_filename(char *f) {
 void strlwr(char *s) {
   while (*s) {
     if (*s >= 'A' && *s <= 'Z')
-      s+=32;
+      *s+=32;
     s++;
   }
 }
