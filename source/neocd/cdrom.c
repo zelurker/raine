@@ -629,6 +629,7 @@ void neogeo_cdrom_load_title(void)
   cdrom_speed = old_cdrom;
   memcpy(RAM_PAL,buff,0x5a0);
   ByteSwap(RAM_PAL,0x5a0);
+  print_debug("palette init from title\n");
 
   spr_conv(&buff[0x5a0], GFX, size-0x5a0, video_spr_usage);
 
@@ -1017,7 +1018,7 @@ static void finish_loading() {
 }
 
 int hextodec(char c) {
-  switch (tolower(c)) {
+  switch (c) {
     case '0':	return 0;
     case '1':	return 1;
     case '2':	return 2;
@@ -1051,6 +1052,7 @@ static void init_loading_progress() {
   // save pal
   memcpy(&RAM[0x11be06],RAM_PAL,0x200);
   // pal = bios pal
+  print_debug("pal init from bios\n");
   memcpy(RAM_PAL,&neocd_bios[0x1701c],0x200);
   int offset = 0x120002;
   while (offset != -1) {
@@ -1181,8 +1183,9 @@ int    neogeo_cdrom_process_ipl(loading_params *param)
       Off=0;
       i=0;
       j=0;
+      strlwr(Line);
       while((Line[i] != ',')&&(Line[i]!=0))
-	FileName[j++] = tolower(Line[i++]);
+	FileName[j++] = Line[i++];
       FileName[j]=0;
 
       j -= 3;
@@ -1197,7 +1200,8 @@ int    neogeo_cdrom_process_ipl(loading_params *param)
 
 	i++;
 	// Get the offset (hex)
-	while(Line[i] != 0x0D) {
+	while ((Line[i] >= '0' && Line[i]<='9') ||
+	       	(Line[i]>='a' && Line[i]<='f')) {
 	  Off*=16;
 	  Off+=hextodec(Line[i++]);
 	}
