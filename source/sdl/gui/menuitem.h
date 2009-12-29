@@ -80,7 +80,7 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
  * values_list_label[0] : compatibility with TEdit : dummy string (the limit of C)
  * values_list_label[1] : pointer to the resulting float (overwrite the type)
  * values_list_label[2] and [3] : min max values (in string format)
- * values_list is not used */
+ * values_list[0] = maxlen */
 #define ITEM_FLOATEDIT (-5)
 
 #ifdef __cplusplus
