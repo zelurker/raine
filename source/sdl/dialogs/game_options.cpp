@@ -232,7 +232,7 @@ static menu_item_t game_options[] =
   { "Translator", &do_translate },
 #endif
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
-  { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 20 }, { "", (char*)&fps, "1", "200" } },
+  { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10 }, { "", (char*)&fps, "1", "200" } },
   { "FPS counter", NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
     { "Off", "Immediate FPS", "Average FPS", "Profiler", "Rdtsc Cycles" } },
   { NULL }
