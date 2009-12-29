@@ -418,7 +418,8 @@ void TMenu::draw_frame(SDL_Rect *r) {
     delete font;
     font = old_font;
   } else {
-    delete old_font;
+      if (old_font)
+	  delete old_font;
     if (fg_layer) {
       /* In case the font just changed, then we must recreate fg_layer
        * Notice that this thing here is a particularity in windows
