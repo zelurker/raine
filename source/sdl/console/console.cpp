@@ -1038,47 +1038,53 @@ commands_t commands[] =
 };
 
 int do_console(int sel) {
-  s68000_get_ram(0,ram,&nb_ram);
-  if (!cons)
-    cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,1000, commands);
-  if (goto_debuger >= 100) {
-    cons->set_visible();
-    int n = goto_debuger - 100;
-    UINT8 *ptr = get_ptr(watch[n].adr,NULL);
-    if (ptr) {
-      if (watch[n].size == 1) {
-	if (watch[n].read)
-	  cons->print("watch #%d byte at %x has just been read",n,watch[n].adr);
-	else
-	  cons->print("watch #%d: byte at %x changed, new value: %x",n,watch[n].adr,ptr[watch[n].adr ^1]);
-      } else { // word
-	if (watch[n].read)
-	  cons->print("watch #%d word at %x has just been read",n,watch[n].adr);
-	else
-	  cons->print("watch #%d: word at %x changed, new value: %x",n,watch[n].adr,ReadWord(&ptr[watch[n].adr]));
-      }
-    } else {
-      cons->print("watch %d: for adr:%x, size:%d, but no direct mapping",n,watch[n].adr,watch[n].size);
-    }
+    s68000_get_ram(0,ram,&nb_ram);
+    int irq = 0;
+    if (!cons)
+	cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,1000, commands);
+    if (goto_debuger >= 100) {
+	cons->set_visible();
+	int n = goto_debuger - 100;
+	UINT8 *ptr = get_ptr(watch[n].adr,NULL);
+	if (ptr) {
+	    if (watch[n].size == 1) {
+		if (watch[n].read)
+		    cons->print("watch #%d byte at %x has just been read",n,watch[n].adr);
+		else
+		    cons->print("watch #%d: byte at %x changed, new value: %x",n,watch[n].adr,ptr[watch[n].adr ^1]);
+	    } else { // word
+		if (watch[n].read)
+		    cons->print("watch #%d word at %x has just been read",n,watch[n].adr);
+		else
+		    cons->print("watch #%d: word at %x changed, new value: %x",n,watch[n].adr,ReadWord(&ptr[watch[n].adr]));
+	    }
+	} else {
+	    cons->print("watch %d: for adr:%x, size:%d, but no direct mapping",n,watch[n].adr,watch[n].size);
+	}
 #if 0
-    if (s68000context.sr >= 0x2100 && s68000context.sr < 0x2700 && goto_debuger < 100) {
-      cons->print("geting out of the irq...");
-      get_regs(0);
-      do_irq(0,NULL); // get out of the irq...
-      set_regs(0);
-    }
+	if (s68000context.sr >= 0x2100 && s68000context.sr < 0x2700 && goto_debuger < 100) {
+	    cons->print("geting out of the irq...");
+	    get_regs(0);
+	    do_irq(0,NULL); // get out of the irq...
+	    set_regs(0);
+	}
 #endif
-    goto_debuger = 0;
-  } else
-    check_breakpoint();
-  get_regs(0);
-  if (goto_debuger >= 0)
-    cons->execute();
-  else
-    goto_debuger = 0;
-  restore_breakpoints();
-  set_regs(0);
-  return 0;
+	goto_debuger = 0;
+    } else
+	irq = check_breakpoint();
+    get_regs(0);
+    if (goto_debuger >= 0)
+	cons->execute();
+    else
+	goto_debuger = 0;
+    set_regs(0);
+    restore_breakpoints();
+    if (irq) {
+	printf("generating irq %d\n",irq);
+	cpu_interrupt(CPU_68K_0,irq);
+    } else
+	printf("no irq\n");
+    return 0;
 }
 
 void done_console() {

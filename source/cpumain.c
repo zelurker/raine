@@ -168,8 +168,6 @@ extern int goto_debuger;
 
 void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 {
-    if (goto_debuger)
-	return;
    switch_cpu(cpu_id);
 
    switch(cpu_id){
@@ -245,8 +243,6 @@ execute a cpu for some cycles
 
 void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 {
-    if (goto_debuger)
-	return;
    switch_cpu(cpu_id);
 
    switch(cpu_id){

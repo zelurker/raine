@@ -96,38 +96,40 @@ void do_break(int argc, char **argv) {
   }
 }
 
-void check_breakpoint() {
-  if (goto_debuger > 0 && goto_debuger <= MAX_BREAK) {
-    int n = goto_debuger-1;
-    UINT8 *ptr = get_userdata(0,breakp[n].adr);
-    WriteWord(&ptr[breakp[n].adr],breakp[n].old);
-    if (s68000context.sr >= 0x2100) {
-      UINT8 *ptr = get_userdata(0,s68000context.areg[7]);
-      if (((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2])) == breakp[n].adr+2) {
-	printf("updating irq return on stack\n");
-	WriteLongSc(&ptr[s68000context.areg[7]+2],breakp[n].adr);
-	get_regs(0);
-	do_irq(0,NULL); // get out of the irq...
-      } else
-	printf("irq detected but address does not match !\n");
+// return the irq were were in or 0 ir no irq
+int check_breakpoint() {
+    int irq = 0;
+    if (goto_debuger > 0 && goto_debuger <= MAX_BREAK) {
+	int n = goto_debuger-1;
+	UINT8 *ptr = get_userdata(0,breakp[n].adr);
+	WriteWord(&ptr[breakp[n].adr],breakp[n].old);
+	if (s68000context.sr >= 0x2100) {
+	    UINT8 *ptr = get_userdata(0,s68000context.areg[7]);
+	    if (((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2])) == breakp[n].adr+2) {
+		printf("updating irq return on stack\n");
+		WriteLongSc(&ptr[s68000context.areg[7]+2],breakp[n].adr);
+		irq = (s68000context.sr & 0x700) >> 8;
+		get_regs(0);
+		do_irq(0,NULL); // get out of the irq...
+	    } else
+		printf("irq detected but address does not match !\n");
+	}
+	if (s68000context.pc == breakp[n].adr+2) {
+	    printf("pc match breakpoint\n");
+	    s68000context.pc = breakp[n].adr;
+	}
+	if (breakp[n].cond) {
+	    get_regs(0);
+	    if (!parse(breakp[n].cond)) {
+		goto_debuger = -1; // breakpoint failed, avoid console
+		return irq;
+	    }
+	}
+	cons->set_visible();
+	goto_debuger = 0;
+	cons->print("breakpoint #%d at %x",n,breakp[n].adr);
     }
-    if (s68000context.pc == breakp[n].adr+2) {
-      printf("pc match breakpoint\n");
-      s68000context.pc = breakp[n].adr;
-    }
-    if (breakp[n].cond) {
-      get_regs(0);
-      if (!parse(breakp[n].cond)) {
-	printf("condition %s false\n",breakp[n].cond);
-	goto_debuger = -1; // breakpoint failed, avoid console
-	return;
-      }
-      printf("condition %s true\n",breakp[n].cond);
-    }
-    cons->set_visible();
-    goto_debuger = 0;
-    cons->print("breakpoint #%d at %x",n,breakp[n].adr);
-  }
+    return irq;
 }
 
 static int do_cycles(int cpu, int can_be_stopped = 1) {
