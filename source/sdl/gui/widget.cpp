@@ -76,7 +76,9 @@ int TStatic::get_width(TFont *font) {
 }
 
 int TStatic::get_width_max_options(TFont *font) {
-  return 0;
+    int w,h;
+    font->dimensions("W",&w,&h);
+  return w*get_len_max_options();
 }
 
 int TStatic::get_list_index() {
