@@ -6,7 +6,7 @@ void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
   font = myfont;
   if (*menu->label) {
-    TStatic::disp(s,myfont,x,y,w,h,fg,bg,xoptions);
+    TStatic::disp(s,myfont,x,y,xoptions-x,h,fg,bg,xoptions);
     w -= xoptions - x;
     x = xoptions;
   }
@@ -60,10 +60,16 @@ void TEdit::update() {
   }
 }
 
-int TEdit::get_width(TFont *font) {
-  int w,h;
-  font->dimensions("W",&w,&h);
-  return w*maxl+2;
+int TEdit::get_len_max_options() {
+    if (*menu->label) 
+	return maxl;
+    return 0;
+}
+
+int TEdit::get_len() {
+    if (*menu->label) 
+	return TStatic::get_len();
+    return maxl;
 }
 
 int TEdit::valid_chars(int sym, int unicode) {
@@ -192,7 +198,7 @@ void TEdit::insert(char *s) {
 
 TFloatEdit::TFloatEdit(menu_item_t *my_menu) : TEdit(my_menu) 
 {
-    maxl = 20;
+    maxl = menu->values_list[0];
     field = (char*)malloc(maxl+1);
     the_float = (float*)menu->values_list_label[1];
     sscanf(menu->values_list_label[2],"%f",&min);
@@ -207,7 +213,8 @@ TFloatEdit::~TFloatEdit() {
 }
 
 int TFloatEdit::valid_chars(int sym, int unicode) {
-    return (!unicode || unicode == sym) && ((sym >= '0' && sym <= '9') || sym == '.');
+    if (unicode && unicode != sym) sym = unicode;
+    return ((sym >= '0' && sym <= '9') || sym == '.');
 }
 
 int TFloatEdit::can_exit() {

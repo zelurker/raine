@@ -38,11 +38,9 @@ class TEdit : public TStatic
     void update_cursor();
     virtual void disp(SDL_Surface *mys, TFont *myfont, int x, int y, int w, int h, 
   int fg, int bg, int xoptions);
-    virtual int get_len() {
-      return maxl;
-    }
     virtual int get_height(TFont *font);
-    virtual int get_width(TFont *font);
+    virtual int get_len();
+    virtual int get_len_max_options();
     // virtual int handle_mouse(SDL_Event *event);
     virtual int handle_key(SDL_Event *event);
     virtual void update();
