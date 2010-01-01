@@ -281,29 +281,53 @@ char *get_mp3_track(int n) {
   return NULL;
 }
 
+static int    recon_filetype(char *ext, char *filename)
+{
+  int n;
+  for (n=0; n<sizeof(exts)/sizeof(char*); n++)
+    if (!strcmp(ext,exts[n]))
+      return n;
+
+  // else try to find the type in the filename !
+  for (n=0; n<sizeof(exts)/sizeof(char*); n++)
+    if (strstr(filename,exts[n]))
+      return n;
+
+  if (!strcmp(ext,"obj")) // sprites in art of fighting !!!!
+    return SPR_TYPE;
+
+  // really nothing to do !
+  return    -1;
+}
+
 int get_size(char *filename) {
-  int size;
-  switch(load_type) {
-    case ZIP_TYPE: size = size_zipped(neocd_path,filename,0); break;
-    case IPL_TYPE: 
-		   if (!strchr(filename,SLASH[0])) {
-		     char file[1024];
-		     sprintf(file,"%s%s%s",neocd_dir,SLASH,filename);
-		     size = size_file(file);
-		     break;
-		   }
-		   size = size_file(filename);
-		   break;
-    default:
-		   // iso, cue
-		   size = iso_size(neocd_path,filename);
-  }
-  if (!size) {
+    int size;
+    // 1st check override
     char file[1024];
     sprintf(file,"%soverride" SLASH "%s",dir_cfg.exe_path,filename);
     size = size_file(file);
-  }
-  return size;
+    if (size) {
+	int type = recon_filetype(&file[strlen(file)-3],file);
+	if (type == SPR_TYPE)
+	    size /= 2;
+	return size;
+    }
+    switch(load_type) {
+	case ZIP_TYPE: size = size_zipped(neocd_path,filename,0); break;
+	case IPL_TYPE: 
+		       if (!strchr(filename,SLASH[0])) {
+			   char file[1024];
+			   sprintf(file,"%s%s%s",neocd_dir,SLASH,filename);
+			   size = size_file(file);
+			   break;
+		       }
+		       size = size_file(filename);
+		       break;
+	default:
+		       // iso, cue
+		       size = iso_size(neocd_path,filename);
+    }
+    return size;
 }
 
 static int check_offset;
@@ -438,7 +462,6 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
       size = current.size - neocd_lp.bytes_loaded;
       offset = neocd_lp.bytes_loaded;
     } else {
-      print_debug("load_neocd %s %x,%d\n",name,current.offset,size);
       neocd_lp.bytes_loaded = 0;
       current.name = name;
       current.dest = dest;
@@ -456,7 +479,6 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
     current.conv_off = current.bytes_left = 0;
   }
       
-  print_debug("load_neocd %d,%d\n",offset,size);
   switch(load_type) {
     case ZIP_TYPE: // return load_zipped(neocd_path, name, size, 0, dest, 1);
       ret = load_zipped_part(neocd_path, name, offset, size, dest);
@@ -565,25 +587,6 @@ void cdrom_load_neocd() {
 }
 
 extern UINT8 *RAM_PAL;
-
-static int    recon_filetype(char *ext, char *filename)
-{
-  int n;
-  for (n=0; n<sizeof(exts)/sizeof(char*); n++)
-    if (!strcmp(ext,exts[n]))
-      return n;
-
-  // else try to find the type in the filename !
-  for (n=0; n<sizeof(exts)/sizeof(char*); n++)
-    if (strstr(filename,exts[n]))
-      return n;
-
-  if (!strcmp(ext,"obj")) // sprites in art of fighting !!!!
-    return SPR_TYPE;
-
-  // really nothing to do !
-  return    -1;
-}
 
 void fix_extension(char *FileName, char *extension) {
   char *ext = strrchr(FileName,'.');
@@ -1073,6 +1076,7 @@ static int handle_file(char *FileName, int Off, int Bnk) {
   char *ext = strrchr(FileName,'.');
   if (ext) ext++;
   current.FileType = recon_filetype(ext,FileName);
+  print_debug("handle_file %s %x,%x\n",FileName,Off,Bnk);
   int size;
   switch( current.FileType ) {
     case PRG_TYPE:
@@ -1098,6 +1102,7 @@ static int handle_file(char *FileName, int Off, int Bnk) {
       print_debug("didn't recognise %s (%d)\n",FileName,current.FileType);
       size = 1; // size = 0 is an error, we return 1 to avoid the error
   }
+  print_debug("%s size : %d\n",FileName,size);
   neocd_lp.sectors_to_load = (size + 2047) / 2048;
   if (cdrom_speed && animations_enabled) {
     reset_ingame_timer();
