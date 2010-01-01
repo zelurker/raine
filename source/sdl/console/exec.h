@@ -8,6 +8,7 @@ void do_next(int argc, char **argv);
 void do_irq(int argc, char **argv);
 void do_list(int argc, char **argv);
 void done_breakpoint();
+int check_irq(uint adr);
 int check_breakpoint();
 void do_break(int argc, char **argv);
 void restore_breakpoints();

@@ -20,7 +20,7 @@ static UINT32 nb_search, nb_alloc_search, *search;
 #define MAX_WATCH 10
 
 typedef struct {
-  UINT32 adr;
+  UINT32 adr,pc;
   int size,read,value;
 } twatch;
 static twatch watch[MAX_WATCH];
@@ -44,101 +44,103 @@ typedef int (thandler)(UINT32 offset, UINT32 data);
 
 static UINT16 exec_watchw(UINT32 offset, UINT16 data);
 static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
-  int n;
-  for (n=0; n<nb_watch; n++) {
-    if (offset == watch[n].adr && watch[n].size == 1) {
-      UINT8 *ptr = get_ptr(offset,NULL);
-      thandler *func;
-      if (!ptr) {
-	int off_start = 0;
-	void *temp;
-	do {
-	  temp = get_userfunc(0,watch[n].read, watch[n].size, off_start, offset);
-	  if (!temp) return 0;
-	  off_start++;
-	} while (temp == exec_watchb || temp == exec_watchw);
-	func = (thandler *)temp;
-      }
-      if (watch[n].value == -1 ||
-	  (!watch[n].read && watch[n].value == data) ||
-	  (watch[n].read && ptr && watch[n].value == ptr[offset ^ 1])) {
-	Stop68000(0,0);
-	goto_debuger = n+100;
-      }
-      if (ptr) {
-	printf("watchb: changing offset %x,%x\n",offset^1,data);
-	if (!watch[n].read)
-	  ptr[offset ^ 1] = data;
-	else
-	  return ptr[offset ^ 1];
-      } else if (func) {
-	return (*func)(offset,data);
-      } else {
-	cons->print("no handler found for %x",offset);
-      }
-      break;
+    int n;
+    for (n=0; n<nb_watch; n++) {
+	if (offset == watch[n].adr && watch[n].size == 1) {
+	    UINT8 *ptr = get_ptr(offset,NULL);
+	    thandler *func;
+	    if (!ptr) {
+		int off_start = 0;
+		void *temp;
+		do {
+		    temp = get_userfunc(0,watch[n].read, watch[n].size, off_start, offset);
+		    if (!temp) return 0;
+		    off_start++;
+		} while (temp == exec_watchb || temp == exec_watchw);
+		func = (thandler *)temp;
+	    }
+	    if (watch[n].value == -1 ||
+		    (!watch[n].read && watch[n].value == data) ||
+		    (watch[n].read && ptr && watch[n].value == ptr[offset ^ 1])) {
+		watch[n].pc = s68000readPC();
+		Stop68000(0,0);
+		goto_debuger = n+100;
+	    }
+	    if (ptr) {
+		printf("watchb: changing offset %x,%x\n",offset^1,data);
+		if (!watch[n].read)
+		    ptr[offset ^ 1] = data;
+		else
+		    return ptr[offset ^ 1];
+	    } else if (func) {
+		return (*func)(offset,data);
+	    } else {
+		cons->print("no handler found for %x",offset);
+	    }
+	    break;
+	}
     }
-  }
-  if (n>=nb_watch) {
-    printf("exec_watchb: %x not found !!!\n",offset);
-  }
-  return 0;
+    if (n>=nb_watch) {
+	printf("exec_watchb: %x not found !!!\n",offset);
+    }
+    return 0;
 }
 
 static UINT16 exec_watchw(UINT32 offset, UINT16 data) {
   // the code is almost the same as exec_watchb but I am forced to separate
   // them or otherwise I couldn't tell the difference between access to a word
   // and access to its first byte
-  int n;
-  for (n=0; n<nb_watch; n++) {
-    if (offset >= watch[n].adr && offset < watch[n].adr+watch[n].size &&
-       	watch[n].size >= 2) {
-      UINT8 *ptr = get_ptr(offset,NULL);
-      thandler *func;
-      if (!ptr) {
-	int off_start = 0;
-	void *temp;
-	do {
-	  temp = get_userfunc(0,watch[n].read, watch[n].size, off_start, offset);
-	  if (!temp) return 0;
-	  off_start++;
-	} while (temp == exec_watchb || temp == exec_watchw);
-	func = (thandler *)temp;
-      }
-      if (watch[n].value == -1 ||
-	  (!watch[n].read && watch[n].value == data) ||
-	  (watch[n].read && ptr && watch[n].value == ReadWord(&ptr[offset]))) {
-	Stop68000(0,0);
-	goto_debuger = n+100;
-      }
-      if (ptr) {
-	printf("watchw: changing offset %x,%x\n",offset,data);
-	if (!watch[n].read)
-	  WriteWord(&ptr[offset],data);
-	else {
-	  return ReadWord(&ptr[offset]);
+    int n;
+    for (n=0; n<nb_watch; n++) {
+	if (offset >= watch[n].adr && offset < watch[n].adr+watch[n].size &&
+		watch[n].size >= 2) {
+	    UINT8 *ptr = get_ptr(offset,NULL);
+	    thandler *func;
+	    if (!ptr) {
+		int off_start = 0;
+		void *temp;
+		do {
+		    temp = get_userfunc(0,watch[n].read, watch[n].size, off_start, offset);
+		    if (!temp) return 0;
+		    off_start++;
+		} while (temp == exec_watchb || temp == exec_watchw);
+		func = (thandler *)temp;
+	    }
+	    if (watch[n].value == -1 ||
+		    (!watch[n].read && watch[n].value == data) ||
+		    (watch[n].read && ptr && watch[n].value == ReadWord(&ptr[offset]))) {
+		watch[n].pc = s68000readPC();
+		Stop68000(0,0);
+		goto_debuger = n+100;
+	    }
+	    if (ptr) {
+		printf("watchw: changing offset %x,%x\n",offset,data);
+		if (!watch[n].read)
+		    WriteWord(&ptr[offset],data);
+		else {
+		    return ReadWord(&ptr[offset]);
+		}
+	    } else if (func) {
+		return (*func)(offset,data);
+	    } else {
+		cons->print("no handler found for %x",offset);
+	    }
+	    break;
 	}
-      } else if (func) {
-	return (*func)(offset,data);
-      } else {
-	cons->print("no handler found for %x",offset);
-      }
-      break;
     }
-  }
-  if (n>=nb_watch) {
-    UINT8 *ptr = get_ptr(offset,NULL);
-    if (ptr) {
-      printf("watchw: changing offset %x,%x\n",offset,data);
-      if (!watch[n].read)
-	WriteWord(&ptr[offset],data);
-      else {
-	return ReadWord(&ptr[offset]);
-      }
-    } else
-      printf("exec_watchw: %x not found !!!\n",offset);
-  }
-  return 0;
+    if (n>=nb_watch) {
+	UINT8 *ptr = get_ptr(offset,NULL);
+	if (ptr) {
+	    printf("watchw: changing offset %x,%x\n",offset,data);
+	    if (!watch[n].read)
+		WriteWord(&ptr[offset],data);
+	    else {
+		return ReadWord(&ptr[offset]);
+	    }
+	} else
+	    printf("exec_watchw: %x not found !!!\n",offset);
+    }
+    return 0;
 }
 
 static int add_watch(UINT32 adr, int size, int read, int value=-1) {
@@ -160,7 +162,7 @@ static int add_watch(UINT32 adr, int size, int read, int value=-1) {
       if (size == 1) {
 	insert_wb(0,0,adr,adr,(void*)exec_watchb,NULL);
       } else if (size == 2) 
-	insert_ww(0,0,adr,adr,(void*)exec_watchw,NULL);
+	insert_ww(0,0,adr,adr+1,(void*)exec_watchw,NULL);
       else {
 	insert_ww(0,0,adr,adr+size-1,(void*)exec_watchw,NULL);
 	cons->print("added watch, size %d bytes\n",size);
@@ -227,7 +229,7 @@ void TRaineConsole::execute() {
   TConsole::execute();
   // Take a snapshot of the ram to be able to look for variations
   for (UINT32 n=0; n<nb_ram; n+=2) {
-    int size = ram[n+1]-ram[n];
+    int size = ram[n+1]-ram[n]+1;
     if (!ram_buf[n/2]) {
       ram_buf[n/2] = AllocateMem(size);
     }
@@ -408,7 +410,7 @@ static void do_watch(int argc, char **argv) {
       return;
     }
     for (int n=0; n<nb_watch; n++) {
-      cons->print("watch #%d: adr:%x size:%d",n,watch[n].adr,watch[n].size);
+      cons->print("watch #%d: adr:%x size:%d read:%d",n,watch[n].adr,watch[n].size,watch[n].read);
     }
     return;
   }
@@ -1045,6 +1047,7 @@ int do_console(int sel) {
     if (goto_debuger >= 100) {
 	cons->set_visible();
 	int n = goto_debuger - 100;
+	irq = check_irq(watch[n].pc);
 	UINT8 *ptr = get_ptr(watch[n].adr,NULL);
 	if (ptr) {
 	    if (watch[n].size == 1) {
@@ -1077,10 +1080,9 @@ int do_console(int sel) {
 	cons->execute();
     else
 	goto_debuger = 0;
-    set_regs(0);
     restore_breakpoints();
+    set_regs(0);
     if (irq) {
-	printf("generating irq %d\n",irq);
 	cpu_interrupt(CPU_68K_0,irq);
     } else
 	printf("no irq\n");

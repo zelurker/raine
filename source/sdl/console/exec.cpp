@@ -96,6 +96,26 @@ void do_break(int argc, char **argv) {
   }
 }
 
+// check if we are current in an irq and the return adress is just after
+// adr. In this case execute the irq and adjust the return address to be
+// adr (for watch points and breakpoints). Return the irq number or 0
+int check_irq(uint adr) {
+    int irq = 0;
+    if (s68000context.sr >= 0x2100) {
+	UINT8 *ptr = get_userdata(0,s68000context.areg[7]);
+	UINT32 ret = ((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2]));
+	if (ret == adr+2 || ret == adr) {
+	    WriteLongSc(&ptr[s68000context.areg[7]+2],adr);
+	    irq = (s68000context.sr & 0x700) >> 8;
+	    get_regs(0);
+	    do_irq(0,NULL); // get out of the irq...
+	} else
+	    printf("irq detected but address does not match : %x, passed %x\n",
+		    ReadLongSc(&ptr[s68000context.areg[7]+2]),adr);
+    }
+    return irq;
+}
+
 // return the irq were were in or 0 ir no irq
 int check_breakpoint() {
     int irq = 0;
@@ -103,19 +123,8 @@ int check_breakpoint() {
 	int n = goto_debuger-1;
 	UINT8 *ptr = get_userdata(0,breakp[n].adr);
 	WriteWord(&ptr[breakp[n].adr],breakp[n].old);
-	if (s68000context.sr >= 0x2100) {
-	    UINT8 *ptr = get_userdata(0,s68000context.areg[7]);
-	    if (((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2])) == breakp[n].adr+2) {
-		printf("updating irq return on stack\n");
-		WriteLongSc(&ptr[s68000context.areg[7]+2],breakp[n].adr);
-		irq = (s68000context.sr & 0x700) >> 8;
-		get_regs(0);
-		do_irq(0,NULL); // get out of the irq...
-	    } else
-		printf("irq detected but address does not match !\n");
-	}
+	irq = check_irq(breakp[n].adr);
 	if (s68000context.pc == breakp[n].adr+2) {
-	    printf("pc match breakpoint\n");
 	    s68000context.pc = breakp[n].adr;
 	}
 	if (breakp[n].cond) {
@@ -187,7 +196,6 @@ void restore_breakpoints() {
   // Also frees the offsets when leaving the console...
   for (n=0; n<0x100; n++)
     if (used_offs[n]) {
-      printf("releasing offsets %x\n",n);
       used_offs[n] = 0;
       free(offs[n]);
       offs[n] = NULL;
@@ -314,7 +322,10 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   strcpy(name,name2);
   name[strlen(name)-2] = 0; // remove extension .s
   char cmd[1024];
-  sprintf(cmd,"m68kdis -pc %d -o \"%s\" \"%s\"",start,name2,name);
+  // add the -all option because m68kdis sometimes tries to be too clever
+  // and finds data where there are only instructions (maybe there is another
+  // way to do it, but it's the fastest one).
+  sprintf(cmd,"m68kdis -all -pc %d -o \"%s\" \"%s\"",start,name2,name);
   ByteSwap(&ptr[start],end-start);
   save_file(name,&ptr[start],end-start);
   ByteSwap(&ptr[start],end-start);
