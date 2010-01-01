@@ -26,6 +26,9 @@
 #include "hq2x.h"
 #include "newspr.h" // init_video_core
 #include "video/priorities.h"
+#ifdef NEO
+#include "neocd/neocd.h"
+#endif
 
 SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
@@ -234,9 +237,14 @@ void DrawPaused(void)
    cpu_frame_count++;
 
    // blit(pause_buffer, GameBitmap, xoff2, yoff2, xoff2, yoff2, xxx, yyy);
-   SDL_BlitSurface(
-     get_surface_from_bmp(pause_buffer), NULL,
-     get_surface_from_bmp(GameBitmap), NULL);
+#ifdef NEO
+   if (is_current_game("ssrpg"))
+       draw_neocd_paused();
+   else
+#endif
+       SDL_BlitSurface(
+	       get_surface_from_bmp(pause_buffer), NULL,
+	       get_surface_from_bmp(GameBitmap), NULL);
 
    DrawNormal();		// Overlay text interface, blit to screen
 
@@ -793,17 +801,17 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 	  locked = lock_surface(sdl_screen);
 	  if (locked > -1) {
 	    if (use_scale2x == 1)
-	      switch(sdl_screen->format->BitsPerPixel) {
+		switch(sdl_screen->format->BitsPerPixel) {
 		case 16: hq2x_16(source,screen,x1,y1,x2,y2,w,h); break;
 		case 32: hq2x_32(source,screen,x1,y1,x2,y2,w,h); break;
 			 // Notice : in 32bpp, this thing needs a 16bpp source, so we must
 			 // setup a special format for it in compat.c
-	      }
+		}
 	    else if (use_scale2x == 2) 
-	      switch(sdl_screen->format->BitsPerPixel) {
+		switch(sdl_screen->format->BitsPerPixel) {
 		case 16: hq3x_16(source,screen,x1,y1,x2,y2,w,h); break;
 		case 32: hq3x_32(source,screen,x1,y1,x2,y2,w,h); break;
-	      }
+		}
 	    __asm__ __volatile__("finit\n"); // restore fpu status after mmx code
 	    if (locked) SDL_UnlockSurface(sdl_screen);
 	  }

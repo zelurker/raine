@@ -34,6 +34,7 @@
 #endif
 #include "sdl/control_internal.h"
 #include "loadpng.h"
+#include "games/gun.h"
 
 static int capture_mode = 0;
 static int capture_block; // block to be shown...
@@ -85,13 +86,16 @@ static void do_capture() {
       sprintf(filename,"%ssavedata" SLASH "block%d-%d.map", dir_cfg.exe_path, capture_block,current_bank+1);
     else
       sprintf(filename,"%ssavedata" SLASH "block%d.map", dir_cfg.exe_path, capture_block);
+    memset(pal,254,sizeof(pal));
     fdata = fopen(filename,"w");
-    printf("call draw_sprites_capture\n");
     draw_sprites_capture(0,384);
     fclose(fdata);
-    pal[1].r = pal[1].g = pal[1].b = pal[255].r = pal[255].g = pal[255].b = 0;
-    memcpy(&pal[0],&pal[1],16*sizeof(SDL_Color)); // fix the palette for the
-    // reserved color !
+    // memcpy(&pal[0],&pal[1],16*sizeof(SDL_Color)); // fix the palette for the
+    pal[15].r = pal[15].g = pal[15].b = 1;
+    /* Color 15 is background, always transparent for sprites.
+     * I set it to almost black (1,1,1), this color is impossible to render
+     * with the native neocd colors so there should be no color collision with
+     * it */
     if (current_bank > 0)
       sprintf(filename,"%sblock%d-%d.png",dir_cfg.screen_dir,capture_block,current_bank);
     else
@@ -642,6 +646,7 @@ static void restore_bank() {
   // These last 2 should have been saved but I guess I can just reset them...
   last_cdda_cmd = 0;
   last_cdda_track = 0;
+  restore_override();
 }
 
 static void system_control_w(UINT32 offset, UINT16 data)
@@ -950,6 +955,8 @@ void video_draw_fix(void)
   }
 }
 
+static int mousex, mousey;
+
 static void draw_sprites_capture(int start, int end) {
   // Version which draws only 1 specific block of sprites !
   int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
@@ -961,6 +968,15 @@ static void draw_sprites_capture(int start, int end) {
   UINT8 *map;
   int nb_block = 0,new_block;
   int bank = -1;
+  int mx,my;
+  GetMouseMickeys(&mx,&my);
+  mousex += mx; if (mousex > 320-16) mousex = 320-16;
+  if (mousex < -8) mousex = -8;
+  mousey += my;
+  if (mousey > 224-8) mousey = 224-8;
+  if (mousey < -16) mousey = -16;
+  // display gun at the end to see something !!!
+  
 
   for (count=start; count<end;count++) {
 
@@ -1025,7 +1041,7 @@ static void draw_sprites_capture(int start, int end) {
     if ((rows==0)|| sx < 1-rzx || (sx>= maxx)) {
       continue;
     }
-    if (new_block) {
+    if (new_block && capture_mode) {
       // check if sprite block is enabled only here, because there are lots
       // of bad blocks in sprite ram usually, so we just skip them first
       if (nb_block < capture_block) {
@@ -1132,8 +1148,8 @@ static void draw_sprites_capture(int start, int end) {
 	  get_cache_origin(SPR_TYPE,tileno<<8,&name,&nb);
 	  if (nb > -1) {
 	    if (fdata) {
-	      fprintf(fdata,"%d,%d,%x,%d,%s,%x\n",sx+offx-16,sy+16-16,nb/256,tileatr & 3,name,tileno);
-	      put_override(SPR_TYPE,name);
+	      fprintf(fdata,"%d,%d,%x,%d,%s\n",sx+offx-16,sy+16-16,nb/256,tileatr & 3,name);
+	      put_override(SPR_TYPE,name,0);
 	    }
 	  } else {
 	    printf("no cache found for tileno %x\n",tileno);
@@ -1148,16 +1164,20 @@ static void draw_sprites_capture(int start, int end) {
 	  // in 8bpp, there is 1 reserved color (white)
 	  // as a result, the color n is mapped to n+1, and we want a direct
 	  // mapping here...
-	  if (map[1] != 1) {
-	    memmove(&map[1],&map[0],15);
-	    map[0]=0;
-	  }
+	    int n;
+	    for (n=0; n<16; n++) {
+		pal[n] = pal[map[n]];
+		map[n] = n;
+	    }
 	}
 	if (sx+offx < 0) {
 	  printf("bye: %d,%d\n",sx+offx,sy+16);
 	  exit(1);
 	}
-	printf("sprite %d,%d,%x\n",sx,sy,tileno);
+	// printf("sprite %d,%d,%x\n",sx,sy,tileno);
+	if (sx >= mousex && sx < mousex+16 && sy>= mousey && sy < mousey+16)
+	    print_ingame(1,"%d,%d,%x",sx,sy,tileno);
+
 	if (video_spr_usage[tileno] == 2) // all solid
 	  Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
 	else
@@ -1169,10 +1189,12 @@ static void draw_sprites_capture(int start, int end) {
     capture_block = 0;
     return draw_sprites_capture(start,end);
   }
-  if (raine_cfg.req_pause_game)
-    print_ingame(60,"block %d",capture_block);
-  else
+  if (!raine_cfg.req_pause_game)
     print_ingame(1,"block %d",capture_block);
+  if (!one_palette)
+      disp_gun(0,mousex+offx+8,mousey+16+8);
+  print_ingame(1,"mouse: %d,%d",mousex,mousey);
+  print_ingame(1,"offs: %x",ReadLongSc(&RAM[0x104c4c]));
 }
 
 static void draw_sprites(int start, int end) {
@@ -1366,6 +1388,25 @@ static void draw_neocd() {
 
   if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
     video_draw_fix();
+}
+
+void draw_neocd_paused() {
+    UINT8 *map;
+    ClearPaletteMap();
+
+    MAP_PALETTE_MAPPED_NEW(
+	    0xff,
+	    16,
+	    map);
+    switch(display_cfg.bpp) {
+	case 8: clear_game_screen(map[15]); break;
+	case 15:
+	case 16: clear_game_screen(ReadWord(&map[15*2])); break;
+	case 32: clear_game_screen(ReadLong(&map[15*4])); break;
+    }
+    draw_sprites_capture(0,384);
+    if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
+	video_draw_fix();
 }
 
 static struct VIDEO_INFO neocd_video =

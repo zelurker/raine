@@ -34,6 +34,7 @@ void fix_disable(UINT32 offset, UINT8 data);
 void video_enable(UINT32 offset, UINT8 data);
 void update_game_vectors();
 void myStop68000(UINT32 adr, UINT8 data);
+void draw_neocd_paused();
 
 extern struct GAME_MAIN game_neocd;
 
