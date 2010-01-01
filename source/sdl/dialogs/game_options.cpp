@@ -15,6 +15,7 @@
 #include "sprite_viewer.h"
 #ifdef NEO
 #include "translator.h"
+#include "neocd/cache.h"
 #endif
 
 // #include <SDL/SDL_image.h>
@@ -229,7 +230,8 @@ static menu_item_t game_options[] =
   { "Graphical layers...", &graphical_layers },
   { "Sprite viewer", &sprite_viewer },
 #ifdef NEO
-  { "Translator", &do_translate },
+  { "Edit screen", &do_screen },
+  { "Edit msg", &do_msg },
 #endif
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
   { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10 }, { "", (char*)&fps, "1", "200" } },
@@ -247,7 +249,15 @@ class TGame_options : public TMenu {
 	case 3: // graphical layers
 	  return layer_info_count;
 #ifdef NEO
-	case 5: // translator
+	case 5: // screens
+	  if (is_current_game("ssrpg")) {
+	      char name[30];
+	      name[0] = 0;
+	      uint len,offset;
+	      return find_spec("f_bg",name,&offset,&len);
+	  }
+	  return 0;
+	case 6: // msg
 	  return current_game && is_current_game("ssrpg");
 #endif
       }

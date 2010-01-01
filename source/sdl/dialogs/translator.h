@@ -2,7 +2,8 @@
 extern "C" {
 #endif
 
-int do_translate(int sel);
+int do_msg(int sel);
+int do_screen(int sel);
 
 #ifdef __cplusplus
 }

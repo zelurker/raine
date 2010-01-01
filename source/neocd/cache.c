@@ -10,6 +10,7 @@
 #include "newmem.h"
 #include "files.h"
 #include "starhelp.h"
+#include "ingame.h"
 
 #ifdef PSP
 #define printf	pspDebugScreenPrintf
@@ -48,7 +49,7 @@ static UINT8 *get_src(int type, int offset) {
   return NULL;
 }
 
-void put_override(int type, char *name) {
+void put_override(int type, char *name, uint size_msg) {
   if (cache[type]) {
     file_entry *list = cache[type];
     int n = 0;
@@ -62,7 +63,12 @@ void put_override(int type, char *name) {
       UINT8 *src = get_src(type,list[n].offset);
       if (type == PRG_TYPE) 
         ByteSwap(src,list[n].len);
-      printf("write %s len %d\n",list[n].name,list[n].len);
+      print_debug("write %s len %d\n",list[n].name,list[n].len);
+      if (!strncmp(list[n].name,"msg",3) && size_msg) {
+	  printf("size changed from %d to %d for %s\n",list[n].len,size_msg,
+		  filename);
+	  list[n].len = size_msg;
+      }
       FILE *f = fopen(filename,"wb");
       fwrite(src,1,list[n].len,f);
       fclose(f);
@@ -70,6 +76,57 @@ void put_override(int type, char *name) {
         ByteSwap(src,list[n].len);
     }
   }
+}
+
+// find a prg loaded whose name starts by spec, usefull for ssrpg
+// if the name passed is != "" then the search starts at that name
+// returns 1 if found something, with name, offset and len initialized
+int find_spec(char *spec, char *name, uint *offset, uint *size) {
+    file_entry *list = cache[PRG_TYPE];
+    int n=0;
+    if (*name) {
+	for (;n < used[PRG_TYPE] && strcmp(list[n].name,name); n++);
+	n++;
+    }
+    int len_spec = strlen(spec);
+    while (n < used[PRG_TYPE]) {
+	if (!strncmp(list[n].name,spec,len_spec)) {
+	    strcpy(name,list[n].name);
+	    *offset = list[n].offset;
+	    *size = list[n].len;
+	    return 1;
+	}
+	n++;
+    }
+    return 0;
+}
+
+void restore_override() {
+    file_entry *list = cache[PRG_TYPE];
+    int n;
+    for (n=0;n < used[PRG_TYPE]; n++) {
+	char filename[256];
+	sprintf(filename,"override/%s",list[n].name);
+	char *fn = get_shared(filename);
+	int size = size_file(fn);
+	if (!size) continue;
+	FILE *f = fopen(fn,"rb");
+	if (f) {
+	    fread(RAM + list[n].offset,1,size,f);
+	    fclose(f);
+	    ByteSwap(&RAM[list[n].offset],size);
+	    printf("restore_override: %s,%x, size %d\n",fn,list[n].offset,size);
+	    print_ingame(180,"used override for %s",list[n].name);
+	    cache_set_crc(list[n].offset,size,PRG_TYPE);
+	    int Offset = list[n].offset;
+	    if (Offset <= 0x68 && Offset +size >= 0x6c) {
+		// irq2 overwriten, kof96 neocd collection is the only known game to do
+		// this !!!
+		WriteLongSc(&RAM[0x10f6ee],ReadLongSc(&RAM[0x68]));
+		print_debug("saving irq2 after load prg over it (%x)\n",ReadLongSc(&RAM[0x68]));
+	    }
+	}
+    }
 }
 
 int file_cache(char *filename, int offset, int size,int type) {
@@ -110,17 +167,18 @@ int file_cache(char *filename, int offset, int size,int type) {
 	n++;
 	end = offset+size;
 	while (n < used[type] && list[n].offset >= offset && list[n].offset < end) {
-	  /* We don't test the end here. The idea is that a new file overwrites
-	   * the start of an old one. In this case we consider the whole old
-	   * file to be bad... */
+	    /* We don't test the end here. The idea is that a new file overwrites
+	     * the start of an old one. In this case we consider the whole old
+	     * file to be bad... */
 #ifdef DEBUG_CACHE
-	  if (type == 2) {
-	    printf("remove %s %x %x\n",list[n].name,list[n].offset,list[n].len);
-	  }
+	    if (type == 2) {
+		printf("remove %s %x %x\n",list[n].name,list[n].offset,list[n].len);
+	    }
 #endif
-	  memmove(&list[n],&list[n+1],sizeof(file_entry)*(used[type]-(n+1)));
-	  used[type]--;
+	    memmove(&list[n],&list[n+1],sizeof(file_entry)*(used[type]-(n+1)));
+	    used[type]--;
 	}
+
 	n--;
 	cache_set_crc(offset,size,type);
 	if (list[n].crc != old_crc) {
@@ -213,12 +271,16 @@ void cache_set_crc(int offset,int size,int type) {
     UINT8 *src=NULL;
     unsigned int crc;
 
-    while (n < used[type] && (list[n].offset != offset || list[n].len != size))
+    while (n < used[type] && (list[n].offset != offset))
       n++;
 
     /* Normally this function is called AFTER file_cache, which means that this loop
        will always find the correct file in the cache, we just need to compute the crc
        here */
+    if (list[n].len != size) {
+	printf("cache_set_crc: size change from %x to %x\n",list[n].len,size);
+	list[n].len = size;
+    }
 
     switch(type) {
       case PRG_TYPE: src= RAM + offset; break;
