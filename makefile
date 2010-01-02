@@ -14,14 +14,14 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.51.5"
-VERSION_NEO = "1.2.7"
+VERSION = "0.51.7"
+VERSION_NEO = "1.2.8"
 
 # Uncomment to build neoraine instead of raine
 NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -395,14 +395,14 @@ OBJDIRS=$(OBJDIR) \
 	$(OBJDIR)/mini-unzip \
 	$(OBJDIR)/video/i386/packed \
 	$(VIDEO_CORE)/str \
-	$(OBJDIR)/video/zoom 
+	$(OBJDIR)/video/zoom \
+	$(OBJDIR)/games 
 
 ifndef NEO
   OBJDIRS += \
 	$(OBJDIR)/68020 \
 	$(OBJDIR)/6502 \
-	$(OBJDIR)/m68705 \
-	$(OBJDIR)/games 
+	$(OBJDIR)/m68705 
 else
   OBJDIRS += \
 	$(OBJDIR)/neocd 
@@ -825,7 +825,8 @@ NEOCD = $(OBJDIR)/neocd/games.o \
 	$(OBJDIR)/neocd/cache.o \
 	$(OBJDIR)/neocd/cdda.o \
 	$(OBJDIR)/neocd/iso.o \
-	$(OBJDIR)/neocd/neocd.o 
+	$(OBJDIR)/neocd/neocd.o \
+	$(OBJDIR)/games/gun.o
 
 OBJS +=	 \
 	$(VIDEO) \
