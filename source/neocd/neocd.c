@@ -646,7 +646,7 @@ static void restore_bank() {
   // These last 2 should have been saved but I guess I can just reset them...
   last_cdda_cmd = 0;
   last_cdda_track = 0;
-  restore_override();
+  restore_override(0);
 }
 
 static void system_control_w(UINT32 offset, UINT16 data)
@@ -1038,7 +1038,7 @@ static void draw_sprites_capture(int start, int end) {
       sx -= 0x200;
 
     // No point doing anything if tile strip is 0
-    if ((rows==0)|| sx < 1-rzx || (sx>= maxx)) {
+    if ((rows==0)|| sx < -offx || (sx>= maxx)) {
       continue;
     }
     if (new_block && capture_mode) {
@@ -1171,7 +1171,7 @@ static void draw_sprites_capture(int start, int end) {
 	    }
 	}
 	if (sx+offx < 0) {
-	  printf("bye: %d,%d\n",sx+offx,sy+16);
+	  printf("bye: %d,%d rzx %d offx %d\n",sx+offx,sy+16,rzx,offx);
 	  exit(1);
 	}
 	// printf("sprite %d,%d,%x\n",sx,sy,tileno);
@@ -1265,7 +1265,7 @@ static void draw_sprites(int start, int end) {
       sx -= 0x200;
 
     // No point doing anything if tile strip is 0
-    if ((rows==0)|| sx < 1-rzx || (sx>= maxx)) {
+    if ((rows==0)|| sx < -offx || (sx>= maxx)) {
       continue;
     }
 
@@ -1629,7 +1629,6 @@ static int read_upload(int offset) {
       return neogeo_fix_memory[offset+offsets[offset & 3]] | 0xff00;
     case Z80_TYPE:
       if (offset < 0x20000) {
-	print_debug("read_upload:z80 %x -> %x from %x\n",offset>>1,Z80ROM[offset >> 1],s68000readPC());
 	return Z80ROM[offset >> 1];
       }
       return 0xff;
@@ -1639,7 +1638,6 @@ static int read_upload(int offset) {
 	print_debug("read_upload: pcm overflow\n");
 	return 0xffff;
       }
-      print_debug("read_upload: read pcm offset %x\n",offset);
       return PCMROM[offset] | 0xff00;
     default:
       //sprintf(mem_str,"read_upload unimplemented zone %x\n",zone);
@@ -1667,13 +1665,11 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       // like this...
       offset &= 0x1ffff;
       offset >>= 1;
-      print_debug("direct write to z80 memory %x,%x from %x\n",offset,data,s68000readPC());
       Z80ROM[offset] = data;
       return;
     } else if (zone == PCM_TYPE) {
       offset = ((offset&0xfffff)>>1) + (bank<<19);
       if (offset < 0x100000) {
-	print_debug("direct write to pcm %x,%x\n",offset,data);
 	PCMROM[offset] = data;
       } else {
 	print_debug("overflow pcm write %x,%x\n",offset,data);
@@ -1932,9 +1928,7 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 
 static void write_upload(int offset, int data) {
   // int zone = RAM[0x10FEDA ^ 1];
-  int zone = RAM[0x10FEDA ^ 1];
   // int size = ReadLongSc(&RAM[0x10FEFC]);
-  print_debug("write_upload_byte %x,%x zone %x called\n",offset,data,zone);
   write_upload_word(offset,data);
 }
 
