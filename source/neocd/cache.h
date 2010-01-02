@@ -10,6 +10,7 @@ void clear_file_cache();
 void cache_set_crc(int offset,int size,int type);
 void prepare_cdda_save(UINT32 id);
 void prepare_cache_save();
+char *get_override(char *name);
 
 #ifdef __cplusplus
 }

@@ -303,11 +303,9 @@ static int    recon_filetype(char *ext, char *filename)
 int get_size(char *filename) {
     int size;
     // 1st check override
-    char file[1024];
-    sprintf(file,"%soverride" SLASH "%s",dir_cfg.exe_path,filename);
-    size = size_file(file);
+    size = size_file(get_override(filename));
     if (size) {
-	int type = recon_filetype(&file[strlen(file)-3],file);
+	int type = recon_filetype(&filename[strlen(filename)-3],filename);
 	if (type == SPR_TYPE)
 	    size /= 2;
 	return size;
@@ -398,6 +396,28 @@ static int load_file_off(char *name, UINT8 *dest, int offset, int size) {
   return 1;
 }
 
+// Contrary to spr_conv, this one just updates the usage based on an already
+// converted sprites are (on 256 bytes, not 128).
+void update_spr_usage(uint offset, uint size) {
+    UINT8 *dest = GFX + offset;
+    UINT8 *usage_ptr = video_spr_usage + (offset>>8);
+    print_debug("update_spr_usage %x,%x\n",offset,size);
+    int i,j;
+    for (i=0; i<size; i+= 256) {
+	int res = 0;
+	for (j=0; j<256; j++) {
+	    if (dest[i+j])
+		res++;
+	}
+	if (res == 0) // all transp
+	    usage_ptr[i/256] = 0;
+	else if (res == 256)
+	    usage_ptr[i/256] = 2; // all solid
+	else
+	    usage_ptr[i/256] = 1; // semi
+    }
+}
+
 static int load_neocd(char *name, UINT8 *dest, int size) {
   int offset = 0,ret;
   UINT8 *Ptr;
@@ -405,37 +425,19 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
     /* Quick support for override directory :
      * no loading progress for this, and any file in this directory is chosen
      * first, whatever the game */
-    char filename[256];
-    sprintf(filename,"override/%s",name);
-    FILE *f = fopen(get_shared(filename),"rb");
+    FILE *f = fopen(get_override(name),"rb");
     if (f) {
       fread(GFX + current.offset*2,1,size*2,f);
       fclose(f);
       print_ingame(180,"used override for %s",name);
-      int i,j;
       free(dest);
       // We must still update usage area, or we'll see nothing !
-      dest = GFX + current.offset*2;
-      UINT8 *usage_ptr = video_spr_usage + (current.offset>>7);
-      for (i=0; i<size*2; i+= 256) {
-	int res = 0;
-	for (j=0; j<256; j++) {
-	  if (dest[i+j])
-	    res++;
-	}
-	if (res == 0) // all transp
-	  usage_ptr[i/256] = 0;
-	else if (res == 256)
-	  usage_ptr[i/256] = 2; // all solid
-	else
-	  usage_ptr[i/256] = 1; // semi
-      }
+      cache_set_crc(current.offset*2,current.size*2,SPR_TYPE);
+      update_spr_usage(current.offset*2,size*2);
       return 1;
     }
   } else if (name && strstr(name,".prg")) {
-    char filename[256];
-    sprintf(filename,"override/%s",name);
-    FILE *f = fopen(get_shared(filename),"rb");
+    FILE *f = fopen(get_override(name),"rb");
     if (f) {
       fread(RAM + current.offset,1,size,f);
       fclose(f);
@@ -566,6 +568,14 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
 	break;
       case PRG_TYPE:
 
+	if (current.offset < 0x400) {
+	    // try to restore the name as fast as possible to be able
+	    // to restore the override dir from the current game name
+	    char *name = current_game->main_name;
+	    neogeo_read_gamename();
+	    if (name != current_game->main_name)
+		restore_override(1);
+	}
 	cache_set_crc(current.offset,current.size,PRG_TYPE);
 	if (Offset <= 0x68 && Offset +current.size >= 0x6c) {
 	  // irq2 overwriten, kof96 neocd collection is the only known game to do

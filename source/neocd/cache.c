@@ -11,6 +11,7 @@
 #include "files.h"
 #include "starhelp.h"
 #include "ingame.h"
+#include "games.h"
 
 #ifdef PSP
 #define printf	pspDebugScreenPrintf
@@ -56,8 +57,10 @@ void put_override(int type, char *name, uint size_msg) {
     while (n < used[type] && strcasecmp(list[n].name,name))
       n++;
     if (n< used[type]) { // found
-      char filename[256];
+      char *filename = get_override(name);
       sprintf(filename,"%soverride", dir_cfg.exe_path);
+      mkdir_rwx(filename);
+      sprintf(&filename[strlen(filename)],SLASH "%s", current_game->main_name);
       mkdir_rwx(filename);
       sprintf(&filename[strlen(filename)],SLASH "%s", name);
       UINT8 *src = get_src(type,list[n].offset);
@@ -101,31 +104,48 @@ int find_spec(char *spec, char *name, uint *offset, uint *size) {
     return 0;
 }
 
-void restore_override() {
+char *get_override(char *name) {
+    static char filename[1024];
+    sprintf(filename,"%s/override/%s/%s",dir_cfg.exe_path,
+	    current_game->main_name,name);
+    return filename;
+}
+
+void restore_override(int all) {
     file_entry *list = cache[PRG_TYPE];
     int n;
     for (n=0;n < used[PRG_TYPE]; n++) {
-	char filename[256];
-	sprintf(filename,"override/%s",list[n].name);
-	char *fn = get_shared(filename);
+	char *fn = get_override(list[n].name);
 	int size = size_file(fn);
 	if (!size) continue;
 	FILE *f = fopen(fn,"rb");
-	if (f) {
-	    fread(RAM + list[n].offset,1,size,f);
-	    fclose(f);
-	    ByteSwap(&RAM[list[n].offset],size);
-	    printf("restore_override: %s,%x, size %d\n",fn,list[n].offset,size);
-	    print_ingame(180,"used override for %s",list[n].name);
-	    cache_set_crc(list[n].offset,size,PRG_TYPE);
-	    int Offset = list[n].offset;
-	    if (Offset <= 0x68 && Offset +size >= 0x6c) {
-		// irq2 overwriten, kof96 neocd collection is the only known game to do
-		// this !!!
-		WriteLongSc(&RAM[0x10f6ee],ReadLongSc(&RAM[0x68]));
-		print_debug("saving irq2 after load prg over it (%x)\n",ReadLongSc(&RAM[0x68]));
-	    }
+	if (!f) continue;
+	fread(RAM + list[n].offset,1,size,f);
+	fclose(f);
+	ByteSwap(&RAM[list[n].offset],size);
+	print_debug("restore_override: %s,%x, size %d\n",fn,list[n].offset,size);
+	cache_set_crc(list[n].offset,size,PRG_TYPE);
+	int Offset = list[n].offset;
+	if (Offset <= 0x68 && Offset +size >= 0x6c) {
+	    // irq2 overwriten, kof96 neocd collection is the only known game to do
+	    // this !!!
+	    WriteLongSc(&RAM[0x10f6ee],ReadLongSc(&RAM[0x68]));
+	    print_debug("saving irq2 after load prg over it (%x)\n",ReadLongSc(&RAM[0x68]));
 	}
+    }
+    if (!all) return;
+    list = cache[SPR_TYPE];
+    for (n=0;n < used[SPR_TYPE]; n++) {
+	char *fn = get_override(list[n].name);
+	int size = size_file(fn);
+	if (!size) continue;
+	FILE *f = fopen(fn,"rb");
+	if (!f) continue;
+	fread(GFX + list[n].offset,1,size,f);
+	fclose(f);
+	print_debug("restore_override: %s,%x, size %d\n",fn,list[n].offset,size);
+	cache_set_crc(list[n].offset,size,SPR_TYPE);
+	update_spr_usage(list[n].offset,size);
     }
 }
 
