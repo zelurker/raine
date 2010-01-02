@@ -177,6 +177,9 @@ int TOptions::get_list_index() {
 
 int TOptions::get_len_max_options() {
   unsigned int len_max_options = 0;
+  if (menu->values_list_label[0] && 
+	  !strcmp(menu->values_list_label[0],"hidden"))
+      return 0;
   if (menu->value_int && menu->values_list_size) {
     if (menu->values_list_label[0]) { // we have strings for the options
       for (int l=0; l<menu->values_list_size; l++) {
@@ -202,6 +205,9 @@ int TOptions::get_len_max_options() {
 
 int TOptions::get_width_max_options(TFont *font) {
   int w,h,width_max_options = 0;
+  if (menu->values_list_label[0] && 
+	  !strcmp(menu->values_list_label[0],"hidden"))
+      return 0;
   if (menu->value_int && menu->values_list_size) {
     if (menu->values_list_label[0]) { // we have strings for the options
       for (int l=0; l<menu->values_list_size; l++) {
@@ -225,6 +231,9 @@ int TOptions::get_width_max_options(TFont *font) {
 void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
   int fg, int bg, int xoptions) {
   TStatic::disp(s,font,x,y,w,h,fg,bg,xoptions);
+  if (menu->values_list_label[0] && 
+	  !strcmp(menu->values_list_label[0],"hidden"))
+      return;
 
   int index;
   if (menu->values_list_size != 3 || menu->values_list_label[0]) {
@@ -252,7 +261,9 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
  * (only 1 button to browse since the right button is to exit and the middle
  * one is not convinient at all for this */
 void TOptions::next_list_item() {
-  if (menu->values_list_size == 3 && !menu->values_list_label[0]) {
+  if (menu->values_list_size == 3 && 
+	  (!menu->values_list_label[0] ||
+	   !strcmp(menu->values_list_label[0],"hidden"))) {
     // special interval list
     *(menu->value_int) += menu->values_list[2];
     if (*(menu->value_int) > menu->values_list[1])
@@ -268,7 +279,9 @@ void TOptions::next_list_item() {
 }
       
 void TOptions::prev_list_item() {
-  if (menu->values_list_size == 3 && !menu->values_list_label[0]) {
+  if (menu->values_list_size == 3 &&
+	  (!menu->values_list_label[0] ||
+	   !strcmp(menu->values_list_label[0],"hidden"))) {
     // special interval list
     *(menu->value_int) -= menu->values_list[2];
     if (*(menu->value_int) < menu->values_list[0])
