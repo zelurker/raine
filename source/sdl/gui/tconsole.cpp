@@ -206,12 +206,6 @@ int TConsole::get_fglayer_footer_height() {
   return 0;
 }
 
-int TConsole::get_fglayer_footer_width() {
-  if (font) 
-    return edit_child->get_width(font);
-  return 0;
-}
-
 int TConsole::get_fglayer_footer_len() {
   return edit_child->get_len();
 }

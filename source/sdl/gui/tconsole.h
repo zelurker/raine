@@ -66,7 +66,6 @@ class TConsole : public TDialog
     virtual void post_print(); // easier than overloading print
     virtual void setup_fg_layer();
     virtual int get_fglayer_footer_height();
-    virtual int get_fglayer_footer_width();
     virtual int get_fglayer_footer_len();
     virtual void display_fglayer_footer(int x,int &y,int w, int xoptions);
     virtual void fglayer_footer_update();
