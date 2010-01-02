@@ -558,7 +558,7 @@ void TMenu::setup_font(unsigned int len_frame) {
 	len_max_options = len;
     }
     len = get_fglayer_footer_len();
-    if (len > len_max)
+    if (len > len_max + len_max_options)
       len_max = len;
   }
 
@@ -695,6 +695,8 @@ void TMenu::disp_menu(int n,int y,int w,int h) {
 
 void TMenu::display_fglayer_header(int &y) {
   // No default header
+  // but a border, usefull when dialogs are opaque
+  rectangleColor(fg_layer,0,0,fg_layer->w-1,fg_layer->h-1,fg);
 }
 
 void TMenu::skip_fglayer_header(int &y) {
@@ -710,6 +712,11 @@ int TMenu::get_fglayer_footer_len() {
 }
 
 int TMenu::get_fglayer_footer_width() {
+    if (font) {
+	int w,h;
+	font->dimensions("W",&w,&h);
+	return w * get_fglayer_footer_len();
+    }
   return 0;
 }
 
@@ -1679,6 +1686,7 @@ void TDialog::setup_font(unsigned int len_frame) {
 }
 
 void TDialog::display_fglayer_header(int &y) {
+    TMenu::display_fglayer_header(y);
   if (!parent && !bg_layer) {
     if (!color_format) color_format = sdl_screen->format;
     if (display_cfg.bpp == 8)
