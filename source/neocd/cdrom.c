@@ -398,7 +398,7 @@ static int load_file_off(char *name, UINT8 *dest, int offset, int size) {
 
 // Contrary to spr_conv, this one just updates the usage based on an already
 // converted sprites are (on 256 bytes, not 128).
-void update_spr_usage(uint offset, uint size) {
+void update_spr_usage(UINT32 offset, UINT32 size) {
     UINT8 *dest = GFX + offset;
     UINT8 *usage_ptr = video_spr_usage + (offset>>8);
     print_debug("update_spr_usage %x,%x\n",offset,size);

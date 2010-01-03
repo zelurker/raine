@@ -35,7 +35,7 @@ class TTransBitmap : public TBitmap {
 };
 
 typedef struct {
-    uint offset,size;
+    UINT32 offset,size;
 } tcombo_loc;
 
 tcombo_loc combo_loc[] = {
@@ -45,8 +45,8 @@ tcombo_loc combo_loc[] = {
 };
 
 typedef struct {
-    uint adr,size;
-    uint ref[4];
+    UINT32 adr,size;
+    UINT32 ref[4];
 } tref;
 
 // These 2 msg areas are referenced in these adresses in prog.prg
@@ -73,7 +73,7 @@ static int get_map_size() {
     return size;
 }
 
-static int is_in_map(uint spr) {
+static int is_in_map(UINT32 spr) {
     int x = 0;
     while (combo_loc[x].size) {
 	if (spr >= combo_loc[x].offset &&
@@ -84,7 +84,7 @@ static int is_in_map(uint spr) {
     return 0;
 }
 // returns the sprite number corresponding to the nth mapping
-static int get_sprite_map(uint n) {
+static int get_sprite_map(UINT32 n) {
     int x = 0;
     while (combo_loc[x].size) {
 	if (combo_loc[x].size > n)
@@ -224,7 +224,7 @@ static void disp_offset() {
     sprite_menu->draw();
 }
 
-static uint get_entry_offset(uint base, int cur_entry) {
+static UINT32 get_entry_offset(UINT32 base, int cur_entry) {
     if (screens) {
 	int ret;
 	if (ReadWord(&RAM[base]) == 0xffff) 
@@ -241,9 +241,9 @@ static uint get_entry_offset(uint base, int cur_entry) {
 }
 
 // find the size of a msg in ram, usefull for variable sizes in prog.prg
-static uint get_msg_size(uint base) {
+static UINT32 get_msg_size(UINT32 base) {
     int last_entry = (ReadWord(&RAM[base])-4)/2;
-    uint off = get_entry_offset(base,last_entry);
+    UINT32 off = get_entry_offset(base,last_entry);
     while (ReadWord(&RAM[base+off]) != 0xffff)
 	off += 2;
     return off+2;
@@ -255,7 +255,7 @@ static void insert_char() {
 	MessageBox("Error","Insertion in this area not handled yet","OK");
 	return;
     }
-    uint last_offset;
+    UINT32 last_offset;
     UINT8 *offs;
     offs = &RAM[base+offset+(cursorx+20*cursory)*2];
     if (cur_entry < last_entry)
@@ -288,7 +288,7 @@ static void move_ref(int diff) {
 	    for (int x=0; x<4; x++) {
 		if (!reference[n].ref[x])
 		    continue;
-		if ((uint)ReadLongSc(&RAM[reference[n].ref[x]]) !=
+		if ((UINT32)ReadLongSc(&RAM[reference[n].ref[x]]) !=
 			reference[n].adr) {
 		    printf("reference mismatch base %x ref %d\n",base,x);
 		    exit(1);
@@ -359,7 +359,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 	    if (size_msg) {
 		int last_entry = (ReadWord(&RAM[base])-4)/2;
 		int n;
-		uint last_offset;
+		UINT32 last_offset;
 		if (cur_entry < last_entry)
 		    last_offset = get_entry_offset(base, cur_entry+1)-2;
 		else {
@@ -423,7 +423,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 		    offs = &RAM[base+offset+(cursorx+20*cursory)*2];
 		    prevchar = ReadWord(offs-2)+OFFS_SPRITES;
 		}
-		uint last_offset;
+		UINT32 last_offset;
 		int last_entry = (ReadWord(&RAM[base])-4)/2;
 		if (size_msg) {
 		    // find the real len, that is the len of the current
@@ -550,7 +550,7 @@ static int draw_translator(int sel) {
     if (screens) {
 	for (x=0; x<=19; x++)
 	    for (y=0; y<16; y++) {
-		uint ofs = (x*16+y)*4+base+offset;
+		UINT32 ofs = (x*16+y)*4+base+offset;
 		spriteno = ReadWord(&RAM[ofs]);
 		if (base < 0x80000) spriteno += 0x1200;
 		if (spriteno < 0x8000)
@@ -692,11 +692,11 @@ static menu_item_t screen_menu[] =
 
 int do_screen(int sel) {
     char name[30];
-    uint offset,size;
+    UINT32 offset,size;
     init_valid_chars();
     name[0] = 0;
     int nb = 10;
-    uint loff[10],lsize[10];
+    UINT32 loff[10],lsize[10];
     int n = 0;
     char buff[1024];
     buff[0] = 0;
@@ -760,13 +760,13 @@ int do_screen(int sel) {
 
 int do_msg(int sel) {
     char name[30];
-    uint offset,size;
+    UINT32 offset,size;
     screens = 0;
     init_valid_chars();
     name[0] = 0;
     int nb = 10;
     menu_item_t *menu = (menu_item_t*)calloc(nb,sizeof(menu_item_t));
-    uint loff[10],lsize[10];
+    UINT32 loff[10],lsize[10];
     int n = 0;
     menu[n].label = "prog.prg miniatures (60d62)";
     loff[n] = 0x60d62;

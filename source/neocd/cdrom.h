@@ -36,7 +36,7 @@ int neogeo_cdrom_load_pcm_file(char *FileName, unsigned int Offset);
 int    neogeo_cdrom_load_prg_file(char *FileName, unsigned int Offset);
 char *get_mp3_track(int n);
 void get_track_index(int track, int *start, int *end);
-void update_spr_usage(uint offset, uint size);
+void update_spr_usage(UINT32 offset, UINT32 size);
 
 void save_cdrom_config();
 void restore_cdrom_config();

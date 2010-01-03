@@ -99,7 +99,7 @@ void do_break(int argc, char **argv) {
 // check if we are current in an irq and the return adress is just after
 // adr. In this case execute the irq and adjust the return address to be
 // adr (for watch points and breakpoints). Return the irq number or 0
-int check_irq(uint adr) {
+int check_irq(UINT32 adr) {
     int irq = 0;
     if (s68000context.sr >= 0x2100) {
 	UINT8 *ptr = get_userdata(0,s68000context.areg[7]);

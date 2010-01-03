@@ -253,7 +253,7 @@ class TGame_options : public TMenu {
 	  if (is_current_game("ssrpg")) {
 	      char name[30];
 	      name[0] = 0;
-	      uint len,offset;
+	      UINT32 len,offset;
 	      return find_spec("f_bg",name,&offset,&len);
 	  }
 	  return 0;

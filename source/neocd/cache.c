@@ -50,7 +50,7 @@ static UINT8 *get_src(int type, int offset) {
   return NULL;
 }
 
-void put_override(int type, char *name, uint size_msg) {
+void put_override(int type, char *name, UINT32 size_msg) {
   if (cache[type]) {
     file_entry *list = cache[type];
     int n = 0;
@@ -84,7 +84,7 @@ void put_override(int type, char *name, uint size_msg) {
 // find a prg loaded whose name starts by spec, usefull for ssrpg
 // if the name passed is != "" then the search starts at that name
 // returns 1 if found something, with name, offset and len initialized
-int find_spec(char *spec, char *name, uint *offset, uint *size) {
+int find_spec(char *spec, char *name, UINT32 *offset, UINT32 *size) {
     file_entry *list = cache[PRG_TYPE];
     int n=0;
     if (*name) {
