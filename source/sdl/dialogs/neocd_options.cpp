@@ -6,6 +6,8 @@
 #include "sdl/dialogs/fsel.h"
 #include "raine.h"
 #include "SDL_image.h"
+#include "neocd/cache.h"
+#include "games.h"
 
 int exit_to_code = 2;
 static int exit_to(int sel) {
@@ -49,8 +51,7 @@ static int do_update_block(int sel) {
       fscanf(fmap,"%d,%d,%x,%d,%s\n",&x,&y,&tileno,&flip,spr);
       if (!*last_name || strcmp(last_name,spr)) {
 	strcpy(last_name,spr);
-	char path[256];
-	sprintf(path,"%soverride" SLASH "%s",dir_cfg.exe_path,spr);
+	char *path = get_override(spr);
 	if (fspr) fclose(fspr);
 	fspr = fopen(path,"rb+");
 	if (!fspr) {
@@ -61,7 +62,6 @@ static int do_update_block(int sel) {
 	}
 	printf("%s:\n",spr);
       }
-      printf("%x\n",tileno);
       fseek(fspr,tileno*256,SEEK_SET);
       UINT8 *pixels = ((UINT8*)img->pixels)+y*pitch+x;
       for (y=0; y<16; y++) {
@@ -76,7 +76,7 @@ static int do_update_block(int sel) {
   return 0;
 }
 
-menu_item_t neocd_menu[] =
+static menu_item_t neocd_menu[] =
 {
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
@@ -87,8 +87,19 @@ menu_item_t neocd_menu[] =
   { NULL },
 };
 
+class TNeo_options : public TMenu {
+  public:
+    TNeo_options(char *title, menu_item_t *menu) : TMenu(title,menu)
+  {}
+    int can_be_displayed(int n) {
+      switch(n) {
+      case 2: return (current_game != NULL); // update block
+      }
+      return 1;
+    }
+};
 int do_neocd_options(int sel) {
-  TMenu *menu = new TMenu("Neocd options", neocd_menu);
+  TMenu *menu = new TNeo_options("Neocd options", neocd_menu);
   menu->execute();
   delete menu;
   return 0;

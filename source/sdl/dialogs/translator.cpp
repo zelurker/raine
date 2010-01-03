@@ -15,6 +15,7 @@
 #if HAS_CONSOLE
 #include "sdl/console/parser.h"
 #endif
+#include "games.h"
 
 static int cursorx, cursory,len; // these must stay out of a class because
 // of the draw function (pure C). Not sure it was a good idea to use this
@@ -123,7 +124,6 @@ TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
 	fread(map,1,size*2,f);
 	fclose(f);
 	while (used_map < size_map && map[used_map]) {
-	    printf("%x: %x\n",used_map,map[used_map]);
 	    used_map++;
 	}
 	printf("used_map %x\n",used_map);
@@ -152,12 +152,16 @@ TTransBitmap::~TTransBitmap() {
 	printf("Saving the changes...\n");
 	sprintf(path,"%soverride",dir_cfg.exe_path);
 	mkdir_rwx(path);
+	sprintf(path,"/%s",current_game->main_name);
+	mkdir_rwx(path);
 	int n = 0;
 	while (combo_loc[n].offset) {
 	    if (n == 0)
-		sprintf(path,"%soverride/combos.spr",dir_cfg.exe_path);
+		sprintf(path,"%soverride/%s/combos.spr",dir_cfg.exe_path,
+			current_game->main_name);
 	    else
-		sprintf(path,"%soverride/combos%d.spr",dir_cfg.exe_path,n);
+		sprintf(path,"%soverride/%s/combos%d.spr",dir_cfg.exe_path,
+			current_game->main_name,n);
 	    printf("saving %s size %d\n",path,combo_loc[n].size*0x100);
 	    save_file(path,&GFX[combo_loc[n].offset*0x100],
 		    combo_loc[n].size*0x100);
@@ -548,6 +552,7 @@ static int draw_translator(int sel) {
 	    for (y=0; y<16; y++) {
 		uint ofs = (x*16+y)*4+base+offset;
 		spriteno = ReadWord(&RAM[ofs]);
+		if (base < 0x80000) spriteno += 0x1200;
 		if (spriteno < 0x8000)
 		    Draw16x16_Trans_Mapped(&GFX[(spriteno)<<8],x*16,y*16,map);
 		if (x == cursorx && y == cursory) {
@@ -562,7 +567,7 @@ static int draw_translator(int sel) {
 	// printf("%d,%d,%x (%x+%x+%x)\n",x,y,spriteno,base,offset,n);
 	if (!spriteno)
 	    spriteno = 0x400; // note (line break)
-	else
+	else 
 	    spriteno += OFFS_SPRITES;
 	// printf("%d,%d,%x\n",x,y,spriteno);
 	if (spriteno < 0x8000)
@@ -696,6 +701,17 @@ int do_screen(int sel) {
     char buff[1024];
     buff[0] = 0;
 
+#if 0
+    // 100% experimental, this screen is just a part of a screen (5x3)
+    // with offset $1200 on the chars which seems to be used during the
+    // fights. Given this size it's probably not a good idea to try to
+    // edit it directly in the gui
+    strcpy(buff,"prog.prg offset:7a9ca|");
+    loff[n] = 0x7a9ca;
+    lsize[0] = 20*16*4+4;
+    n = 1;
+#endif
+
     while (find_spec("f_bg",name,&offset,&size)) {
 	sprintf(&buff[strlen(buff)],"%s offset:%x|",name,offset);
 	loff[n] = offset;
@@ -707,6 +723,7 @@ int do_screen(int sel) {
 	}
     }
     buff[strlen(buff)-1] = 0; // remove last |
+    selected = -1;
     selected = MessageBox("Selection","File to edit ?",buff);
 
     if (selected < 0) return 0;
