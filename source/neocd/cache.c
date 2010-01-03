@@ -118,6 +118,10 @@ void restore_override(int all) {
 	char *fn = get_override(list[n].name);
 	int size = size_file(fn);
 	if (!size) continue;
+	if (size != list[n].len && strncmp(list[n].name,"msg",3)) {
+	    printf("list: %s %x size_file %x\n",list[n].name,list[n].len,size);
+	    exit(1);
+	}
 	FILE *f = fopen(fn,"rb");
 	if (!f) continue;
 	fread(RAM + list[n].offset,1,size,f);
@@ -139,6 +143,10 @@ void restore_override(int all) {
 	char *fn = get_override(list[n].name);
 	int size = size_file(fn);
 	if (!size) continue;
+	if (size != list[n].len) {
+	    printf("list: %s %x size_file %x\n",list[n].name,list[n].len,size);
+	    exit(1);
+	}
 	FILE *f = fopen(fn,"rb");
 	if (!f) continue;
 	fread(GFX + list[n].offset,1,size,f);
@@ -150,115 +158,109 @@ void restore_override(int all) {
 }
 
 int file_cache(char *filename, int offset, int size,int type) {
-  int use;
-  char *s = strrchr(filename,'/');
-  if (s)
-    filename = s+1; // no path here !
+    int use;
+    char *s = strrchr(filename,'/');
+    if (s)
+	filename = s+1; // no path here !
 
 #ifdef DEBUG_CACHE
-  if (type == 2)
-    printf("looking for %s offset %x size %x\n",filename,offset,size);
+    if (type == 2)
+	printf("looking for %s offset %x size %x\n",filename,offset,size);
 #endif
 
-  if (cache[type]) {
-    file_entry *list = cache[type];
-    int n = 0;
-    while (n < used[type] && list[n].offset < offset)
-      n++;
-    if (n == used[type]) { // reached the end of list
-      use = used[type]++;
-      if (used[type] >= max[type]) {
-	// I use >= on purpose because I want more room for an eventual insertion
-	// see memmove further
-	max[type]+=32;
-	cache[type] = realloc(cache[type],sizeof(file_entry)*max[type]);
-      }
-    } else { // found an offset >= this one
-      int end;
-      while (n < used[type] && list[n].offset == offset && list[n].len > size)
-	n++; // leave the bigger ones, go forward...
-      if (n < used[type] && list[n].offset == offset && list[n].len == size &&
-	  !strcmp(list[n].name,filename)) {
-	// already have it !
-	int old_crc = list[n].crc;
-	// printf("!!! already have it !!!\n");
-	/* Since this one is going to be reloaded, we remove the ones
-	 * overwriten just after it */
-	n++;
-	end = offset+size;
-	while (n < used[type] && list[n].offset >= offset && list[n].offset < end) {
-	    /* We don't test the end here. The idea is that a new file overwrites
-	     * the start of an old one. In this case we consider the whole old
-	     * file to be bad... */
-#ifdef DEBUG_CACHE
-	    if (type == 2) {
-		printf("remove %s %x %x\n",list[n].name,list[n].offset,list[n].len);
+    if (cache[type]) {
+	file_entry *list = cache[type];
+	int n = 0;
+	while (n < used[type] && list[n].offset < offset)
+	    n++;
+	if (n == used[type]) { // reached the end of list
+	    use = used[type]++;
+	    if (used[type] >= max[type]) {
+		// I use >= on purpose because I want more room for an eventual insertion
+		// see memmove further
+		max[type]+=32;
+		cache[type] = realloc(cache[type],sizeof(file_entry)*max[type]);
 	    }
+	} else { // found an offset >= this one
+	    int end;
+	    if (n < used[type] && list[n].offset == offset && list[n].len == size &&
+		    !strcmp(list[n].name,filename)) {
+		// already have it !
+		int old_crc = list[n].crc;
+		// printf("!!! already have it !!!\n");
+		/* Since this one is going to be reloaded, we remove the ones
+		 * overwriten just after it */
+		n++;
+		end = offset+size;
+		while (n < used[type] && list[n].offset >= offset && list[n].offset < end) {
+		    /* We don't test the end here. The idea is that a new file overwrites
+		     * the start of an old one. In this case we consider the whole old
+		     * file to be bad... */
+#ifdef DEBUG_CACHE
+		    if (type == 2) {
+			printf("remove %s %x %x\n",list[n].name,list[n].offset,list[n].len);
+		    }
 #endif
-	    memmove(&list[n],&list[n+1],sizeof(file_entry)*(used[type]-(n+1)));
-	    used[type]--;
-	}
+		    memmove(&list[n],&list[n+1],sizeof(file_entry)*(used[type]-(n+1)));
+		    used[type]--;
+		}
 
-	n--;
-	cache_set_crc(offset,size,type);
-	if (list[n].crc != old_crc) {
-	  print_debug("cache: %s: crc differ (%x & %x)\n",filename,old_crc,list[n].crc);
-	  return 0;
-	}
-	print_debug("cache: %s: same crc %x\n",filename,old_crc);
-	return 0;
-      }
-      end = offset+size;
-      // First : skip eventually biger files loaded here (we overwrite the beg so we
-      // should be loaded after them
-      while (n < used[type] && list[n].offset == offset && list[n].offset+list[n].len > end) {
-#ifdef DEBUG_CACHE
-	if (type == 2) {
-	  printf("skip %s %x %x\n",list[n].name,list[n].offset,list[n].len);
-	}
-#endif
-	n++;
-      }
+		n--;
+		cache_set_crc(offset,size,type);
+		if (list[n].crc != old_crc) {
+		    print_debug("cache: %s: crc differ (%x & %x)\n",filename,old_crc,list[n].crc);
+		    return 0;
+		}
+		print_debug("cache: %s: same crc %x\n",filename,old_crc);
+		/* Carefull here, there were tons of bugs in the cache,
+		 * returning 1 here can be dangerous these bugs are often
+		 * hard to find !
+		 * Returning 0 obliges to reload the same data, but since
+		 * returning 1 doesn't give any speed boost at least on pc,
+		 * I'll return 0 for now. */
+		return 0;
+	    }
+	    end = offset+size;
 
-      // remove those which are overwriten (if there are some)
-      // We also remove the ones partially overwritten, because I don't think
-      // the neocd would keep accessing some data partially overwritten
-      // and it will make the cache handling much easier
-      while (n < used[type] && list[n].offset >= offset && list[n].offset < end) {
+	    // remove those which are overwriten (if there are some)
+	    // We also remove the ones partially overwritten, because I don't think
+	    // the neocd would keep accessing some data partially overwritten
+	    // and it will make the cache handling much easier
+	    while (n < used[type] && list[n].offset >= offset && list[n].offset < end) {
 #ifdef DEBUG_CACHE
-	if (type == 2) {
-	  printf("remove %s %x %x\n",list[n].name,list[n].offset,list[n].len);
+		if (type == 2) {
+		    printf("remove %s %x %x\n",list[n].name,list[n].offset,list[n].len);
+		}
+#endif
+		memmove(&list[n],&list[n+1],sizeof(file_entry)*(used[type]-(n+1)));
+		used[type]--;
+	    }
+	    // otherwise insertion needed at this place
+	    if (n < used[type]) {
+#ifdef DEBUG_CACHE
+		if (type == 2)
+		    printf("insertion before %s %x %x\n",list[n].name,list[n].offset,list[n].len);
+#endif
+		memmove(&list[n+1],&list[n],(used[type]-n)*sizeof(file_entry));
+	    }
+	    use = n;
+	    used[type]++;
+	    if (used[type] >= max[type]) {
+		max[type]+=32;
+		cache[type] = realloc(cache[type],sizeof(file_entry)*max[type]);
+	    }
 	}
-#endif
-	memmove(&list[n],&list[n+1],sizeof(file_entry)*(used[type]-(n+1)));
-	used[type]--;
-      }
-      // otherwise insertion needed at this place
-      if (n < used[type]) {
-#ifdef DEBUG_CACHE
-	if (type == 2)
-	  printf("insertion before %s %x %x\n",list[n].name,list[n].offset,list[n].len);
-#endif
-	memmove(&list[n+1],&list[n],(used[type]-n)*sizeof(file_entry));
-      }
-      use = n;
-      used[type]++;
-      if (used[type] >= max[type]) {
-	max[type]+=32;
-	cache[type] = realloc(cache[type],sizeof(file_entry)*max[type]);
-      }
+    } else { // first allocation
+	if (!max[type])
+	    max[type] = 32;
+	cache[type] = malloc(sizeof(file_entry)*max[type]);
+	used[type] = 1;
+	use = 0;
     }
-  } else { // first allocation
-    if (!max[type])
-      max[type] = 32;
-    cache[type] = malloc(sizeof(file_entry)*max[type]);
-    used[type] = 1;
-    use = 0;
-  }
-  strcpy(cache[type][use].name,filename);
-  cache[type][use].offset = offset;
-  cache[type][use].len = size;
-  return 0; // not already cached, new file
+    strcpy(cache[type][use].name,filename);
+    cache[type][use].offset = offset;
+    cache[type][use].len = size;
+    return 0; // not already cached, new file
 }
 
   int get_used(int type) {
@@ -535,23 +537,41 @@ void cache_save_pcm(UINT8 **buff, int *len) {
  * the one file_cache has put here : 0 most of the time !!!
  * So the correct way is to import everything into the cache, crcs included,
  * without changing anything to the ram area. */
+// #define LOAD
 static void cache_load_prg(UINT8 *buff, int len) {
   file_entry *tcache = (file_entry *)buff;
   int old_cd = cdrom_speed;
   cdrom_speed = 0;
   used[PRG_TYPE] = 0;
+#ifdef LOAD
+  int size = tcache->len;
+  UINT8 *tmp = malloc(size);
+#endif
   while (len > 0) {
-    if (used[PRG_TYPE] >= max[PRG_TYPE]) {
-      // I use >= on purpose because I want more room for an eventual insertion
-      // see memmove further
-      max[PRG_TYPE]+=32;
-      cache[PRG_TYPE] = realloc(cache[PRG_TYPE],sizeof(file_entry)*max[PRG_TYPE]);
-    }
-    cache[PRG_TYPE][used[PRG_TYPE]++] = *tcache; // copy everything
-
-    tcache++;
-    len -= sizeof(file_entry);
+#ifdef LOAD
+      if (tcache->len > size) {
+	  free(tmp);
+	  size = tcache->len;
+	  tmp = malloc(size);
+      }
+      memcpy(tmp,&RAM[tcache->offset],tcache->len);
+      printf("on recalcule la taille pour %s,%x\n",tcache->name,tcache->len);
+      neogeo_cdrom_load_prg_file(tcache->name, tcache->offset);
+      memcpy(&RAM[tcache->offset],tmp,tcache->len);
+#else
+      // Normally a file_cache call is enough, no need to reload the thing
+      /* But the size is obviously wrong in some savegames, so I should fix
+       * it first */
+      char *fn = get_override(tcache->name);
+      tcache->len = size_file(fn);
+      file_cache(tcache->name,tcache->offset,tcache->len,PRG_TYPE);
+#endif
+      tcache++;
+      len -= sizeof(file_entry);
   }
+#ifdef LOAD
+  free(tmp);
+#endif
   cdrom_speed = old_cd;
 }
 
