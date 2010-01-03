@@ -432,7 +432,7 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
       print_ingame(180,"used override for %s",name);
       free(dest);
       // We must still update usage area, or we'll see nothing !
-      cache_set_crc(current.offset*2,current.size*2,SPR_TYPE);
+      cache_set_crc(current.offset*2,size*2,SPR_TYPE);
       update_spr_usage(current.offset*2,size*2);
       return 1;
     }
@@ -443,7 +443,7 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
       fclose(f);
       ByteSwap(&RAM[current.offset],size);
       print_ingame(180,"used override for %s",name);
-      cache_set_crc(current.offset,current.size,PRG_TYPE);
+      cache_set_crc(current.offset,size,PRG_TYPE);
       int Offset = current.offset;
       if (Offset <= 0x68 && Offset +current.size >= 0x6c) {
 	// irq2 overwriten, kof96 neocd collection is the only known game to do
