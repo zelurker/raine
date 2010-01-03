@@ -39,74 +39,84 @@
 static int capture_mode = 0;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1;
+static int one_palette;
+static int assigned_banks, current_bank;
 
 static void toggle_capture_mode() {
-  capture_mode ^= 1;
+  capture_mode++;
+  if (capture_mode == 2)
+      one_palette = 1;
+  else one_palette = 0;
+  if (capture_mode > 2)
+      capture_mode = 0;
 }
 
 static void prev_sprite_block() {
-  if (capture_mode && capture_block > 0)
-    capture_block--;
+  switch (capture_mode) {
+  case 1: if (capture_block > 0) capture_block--; break;
+  case 2: if (current_bank > 0) current_bank--; break;
+  }
 }
 
 static void next_sprite_block() {
-  if (capture_mode)
-    capture_block++;
+  switch(capture_mode) {
+  case 1: capture_block++; break;
+  case 2: if (current_bank < assigned_banks) current_bank++; break;
+  }
 }
-
-static int one_palette;
 
 static void draw_sprites_capture(int start, int end);
 
 static FILE *fdata;
-#define MAX_BANKS 10
+#define MAX_BANKS 256
 static UINT8 banks[MAX_BANKS];
-static int assigned_banks, current_bank;
 
 static void do_capture() {
-  if (!capture_mode) return;
-  int bpp = display_cfg.bpp;
-  display_cfg.bpp = 8;
-  current_game->video_info->flags |= VIDEO_NEEDS_8BPP;
-  SetupScreenBitmap();
-  if (bitmap_color_depth(GameBitmap) != 8) {
-    printf("gamebitmap stupidity %d\n",bitmap_color_depth(GameBitmap));
-    exit(1);
-  }
-  set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
-  one_palette = 1;
-  assigned_banks = current_bank = -1;
-  do {
-    clear_game_screen(0);
-    ClearPaletteMap();
-    ClearPaletteMap(); // 2 ClearPaletteMap, it's not an error
-    // it's to clear both palettes in double buffer mode
-    char filename[256];
-    if (current_bank > -1)
-      sprintf(filename,"%ssavedata" SLASH "block%d-%d.map", dir_cfg.exe_path, capture_block,current_bank+1);
-    else
-      sprintf(filename,"%ssavedata" SLASH "block%d.map", dir_cfg.exe_path, capture_block);
-    memset(pal,254,sizeof(pal));
-    fdata = fopen(filename,"w");
-    draw_sprites_capture(0,384);
-    fclose(fdata);
-    // memcpy(&pal[0],&pal[1],16*sizeof(SDL_Color)); // fix the palette for the
-    pal[15].r = pal[15].g = pal[15].b = 1;
-    /* Color 15 is background, always transparent for sprites.
-     * I set it to almost black (1,1,1), this color is impossible to render
-     * with the native neocd colors so there should be no color collision with
-     * it */
-    if (current_bank > 0)
-      sprintf(filename,"%sblock%d-%d.png",dir_cfg.screen_dir,capture_block,current_bank);
-    else
-      sprintf(filename,"%sblock%d.png",dir_cfg.screen_dir,capture_block);
-    save_png(filename,GameViewBitmap,pal);
-  } while (current_bank < assigned_banks);
-  one_palette = 0;
-  display_cfg.bpp = bpp;
-  current_game->video_info->flags &= ~VIDEO_NEEDS_8BPP;
-  SetupScreenBitmap();
-  set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
+    if (!capture_mode) return;
+    int bpp = display_cfg.bpp;
+    display_cfg.bpp = 8;
+    current_game->video_info->flags |= VIDEO_NEEDS_8BPP;
+    SetupScreenBitmap();
+    if (bitmap_color_depth(GameBitmap) != 8) {
+	printf("gamebitmap stupidity %d\n",bitmap_color_depth(GameBitmap));
+	exit(1);
+    }
+    set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
+    one_palette = 1;
+    if (capture_mode < 2)
+	assigned_banks = current_bank = -1;
+    do {
+	ClearPaletteMap();
+	ClearPaletteMap(); // 2 ClearPaletteMap, it's not an error
+	// it's to clear both palettes in double buffer mode
+	char filename[256];
+	if (current_bank > -1)
+	    sprintf(filename,"%ssavedata" SLASH "block%d-%d.map", dir_cfg.exe_path, capture_block,(capture_mode == 2 ? current_bank : current_bank+1));
+	else
+	    sprintf(filename,"%ssavedata" SLASH "block%d.map", dir_cfg.exe_path, capture_block);
+	fdata = fopen(filename,"w");
+	draw_sprites_capture(0,384);
+	memset(&pal[16],1,sizeof(pal)-16*sizeof(SDL_Color));
+	fclose(fdata);
+	fdata = NULL;
+	// memcpy(&pal[0],&pal[1],16*sizeof(SDL_Color)); // fix the palette for the
+	pal[15].r = pal[15].g = pal[15].b = 1;
+	/* Color 15 is background, always transparent for sprites.
+	 * I set it to almost black (1,1,1), this color is impossible to render
+	 * with the native neocd colors so there should be no color collision with
+	 * it */
+	if (current_bank > 0)
+	    sprintf(filename,"%sblock%d-%d.png",dir_cfg.screen_dir,capture_block,current_bank);
+	else
+	    sprintf(filename,"%sblock%d.png",dir_cfg.screen_dir,capture_block);
+	save_png(filename,GameViewBitmap,pal);
+	if (capture_mode == 2) break;
+    } while (current_bank < assigned_banks || capture_mode < 2);
+    if (capture_mode < 2) one_palette = 0;
+    display_cfg.bpp = bpp;
+    current_game->video_info->flags &= ~VIDEO_NEEDS_8BPP;
+    SetupScreenBitmap();
+    set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
 }
 
 static struct DEF_INPUT_EMU list_emu[] =
@@ -957,6 +967,11 @@ void video_draw_fix(void)
 
 static int mousex, mousey;
 
+typedef struct {
+    int x,y,sprite,attr,tileno,rzx,zy;
+    char name[14];
+} tsprite;
+
 static void draw_sprites_capture(int start, int end) {
   // Version which draws only 1 specific block of sprites !
   int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
@@ -969,6 +984,10 @@ static void draw_sprites_capture(int start, int end) {
   int nb_block = 0,new_block;
   int bank = -1;
   int mx,my;
+  int fixed_palette = 0;
+  tsprite *sprites = NULL;
+  int nb_sprites = 0,alloc_sprites = 0;
+
   GetMouseMickeys(&mx,&my);
   mousex += mx; if (mousex > 320-16) mousex = 320-16;
   if (mousex < -8) mousex = -8;
@@ -1041,7 +1060,7 @@ static void draw_sprites_capture(int start, int end) {
     if ((rows==0)|| sx < -offx || (sx>= maxx)) {
       continue;
     }
-    if (new_block && capture_mode) {
+    if (new_block && capture_mode==1) {
       // check if sprite block is enabled only here, because there are lots
       // of bad blocks in sprite ram usually, so we just skip them first
       if (nb_block < capture_block) {
@@ -1113,11 +1132,13 @@ static void draw_sprites_capture(int start, int end) {
 	      current_bank = assigned_banks = 0;
 	      banks[current_bank] = bank;
 	    } else {
-	      current_bank++;
-	      if (current_bank > assigned_banks) {
-		printf("banks error\n");
-		exit(1);
-	      }
+		if (capture_mode == 1) {
+		    current_bank++;
+		    if (current_bank > assigned_banks) {
+			printf("banks error\n");
+			exit(1);
+		    }
+		}
 	      bank = banks[current_bank];
 	      if (bank != (tileatr >> 8))
 		continue;
@@ -1146,14 +1167,23 @@ static void draw_sprites_capture(int start, int end) {
 	  char *name;
 	  int nb=-1;
 	  get_cache_origin(SPR_TYPE,tileno<<8,&name,&nb);
-	  if (nb > -1) {
-	    if (fdata) {
-	      fprintf(fdata,"%d,%d,%x,%d,%s\n",sx+offx-16,sy+16-16,nb/256,tileatr & 3,name);
+	  if (fdata && nb > -1 && sx+offx >= 16 && sx+offx < 320+16 && sy >= 0 && sy < 224) {
+	      if (nb_sprites == alloc_sprites) {
+		  alloc_sprites += 20;
+		  sprites = realloc(sprites,alloc_sprites*sizeof(tsprite));
+	      }
+	      tsprite *spr = &sprites[nb_sprites];
+	      spr->x = sx+offx-16;
+	      spr->y = sy;
+	      spr->sprite = nb/256;
+	      spr->tileno = tileno;
+	      spr->rzx = rzx;
+	      spr->zy = zy;
+	      spr->attr = tileatr & 3;
+	      strcpy(spr->name,name);
+	      nb_sprites++;
+
 	      put_override(SPR_TYPE,name,0);
-	    }
-	  } else {
-	    printf("no cache found for tileno %x\n",tileno);
-	    exit(1);
 	  }
 	}
 	MAP_PALETTE_MAPPED_NEW(
@@ -1164,12 +1194,22 @@ static void draw_sprites_capture(int start, int end) {
 	  // in 8bpp, there is 1 reserved color (white)
 	  // as a result, the color n is mapped to n+1, and we want a direct
 	  // mapping here...
-	    int n;
-	    for (n=0; n<16; n++) {
-		pal[n] = pal[map[n]];
-		map[n] = n;
+	    if (bitmap_color_depth(GameBitmap) == 8 && !fixed_palette) {
+		fixed_palette = 1;
+		printf("palette fix\n");
+		PALETTE pal2;
+		int n;
+		for (n=0; n<16; n++) {
+		    pal2[n] = pal[map[n]];
+		    printf("pal %d = pal %d rgb %02x %02x %02x\n",n,map[n],
+			    pal2[n].r,pal2[n].g,pal2[n].b);
+		    map[n] = n;
+		}
+		memcpy(pal,pal2,sizeof(SDL_Color)*16);
+		// clear screen with transparent color : color 0.
+		clear_game_screen(0);
 	    }
-	}
+	} 
 	if (sx+offx < 0) {
 	  printf("bye: %d,%d rzx %d offx %d\n",sx+offx,sy+16,rzx,offx);
 	  exit(1);
@@ -1178,10 +1218,12 @@ static void draw_sprites_capture(int start, int end) {
 	if (sx >= mousex && sx < mousex+16 && sy>= mousey && sy < mousey+16)
 	    print_ingame(1,"%d,%d,%x",sx,sy,tileno);
 
-	if (video_spr_usage[tileno] == 2) // all solid
-	  Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
-	else
-	  Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+	if (!fdata) {
+	    if (video_spr_usage[tileno] == 2) // all solid
+		Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+	    else
+		Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+	}
       } 
     }  // for y
   }  // for count
@@ -1193,8 +1235,41 @@ static void draw_sprites_capture(int start, int end) {
     print_ingame(1,"block %d",capture_block);
   if (!one_palette)
       disp_gun(0,mousex+offx+8,mousey+16+8);
-  print_ingame(1,"mouse: %d,%d",mousex,mousey);
-  print_ingame(1,"offs: %x",ReadLongSc(&RAM[0x104c4c]));
+  print_ingame(1,"offs: %x palbank %x",ReadLongSc(&RAM[0x104c4c]),current_bank);
+  if (fdata && sprites) {
+      int nb = nb_sprites-1;
+      int nb2 = nb-1;
+      while (nb > 0) {
+	  tsprite *spr = &sprites[nb], *spr2 = &sprites[nb2];
+	  if (abs(spr->x - spr2->x) < 16 && abs(spr->y - spr2->y) < 16) {
+	      // the 2 sprites overlap
+	      // in this case the last of the list is on top, so I remove nb2
+	      memmove(&sprites[nb2],&sprites[nb2+1],
+		      (nb_sprites-nb2)*sizeof(tsprite));
+	      nb--;
+	      nb_sprites--;
+	  }
+	  nb2--;
+	  if (nb2 < 0) {
+	      nb--;
+	      nb2 = nb-1;
+	  }
+      }
+      nb = nb_sprites-1;
+      while (nb >= 0) {
+	  tsprite *spr = &sprites[nb];
+	  fprintf(fdata,"%d,%d,%x,%d,%s\n",spr->x,spr->y,spr->sprite,spr->attr,
+		  spr->name);
+	  if (video_spr_usage[tileno] == 2) // all solid
+	      Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[spr->tileno<<8],spr->x+16,
+		      spr->y+16,map,spr->rzx,spr->zy,spr->attr);
+	  else
+	      Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[spr->tileno<<8],spr->x+16,
+		      spr->y+16,map,spr->rzx,spr->zy,spr->attr);
+	  nb--;
+      }
+      free(sprites);
+  }
 }
 
 static void draw_sprites(int start, int end) {
