@@ -325,16 +325,31 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   // add the -all option because m68kdis sometimes tries to be too clever
   // and finds data where there are only instructions (maybe there is another
   // way to do it, but it's the fastest one).
-  sprintf(cmd,"m68kdis -all -pc %d -o \"%s\" \"%s\"",start,name2,name);
+  sprintf(cmd,"m68kdis -pc %d -o \"%s\" \"%s\"",start,name2,name);
   ByteSwap(&ptr[start],end-start);
   save_file(name,&ptr[start],end-start);
   ByteSwap(&ptr[start],end-start);
   printf("cmd: %s\n",cmd);
   if (system(cmd) < 0) 
     throw "can't execute m68kdis !";
+  int found_dcw = 0;
+  FILE *f = fopen(name2,"r");
+  while (!feof(f) && !found_dcw) {
+      char buff[1024];
+      fgets(buff,1024,f);
+      if (strstr(buff,"DC.W")) {
+	  found_dcw = 1;
+	  break;
+      }
+  }
+  fclose(f);
+  if (found_dcw) {
+      sprintf(cmd,"m68kdis -all -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      system(cmd);
+  }
   name[strlen(name)] = '.'; // extension back
   name[strlen(name)-1] = 't'; // extension back
-  FILE *f = fopen(name,"w");
+  f = fopen(name,"w");
   if (!f) 
     throw "can't create asm temporary file";
   fprintf(f,"%s\n",header);
