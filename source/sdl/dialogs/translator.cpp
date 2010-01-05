@@ -417,7 +417,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 		UINT8 *offs;
 		UINT16 prevchar;
 		if (screens) {
-		    offs = &RAM[base+(cursorx*16+cursory)*4];
+		    offs = &RAM[base+offset+(cursorx*16+cursory)*4];
 		    prevchar = ReadWord(offs-16*4);
 		} else {
 		    offs = &RAM[base+offset+(cursorx+20*cursory)*2];
