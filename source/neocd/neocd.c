@@ -1235,7 +1235,11 @@ static void draw_sprites_capture(int start, int end) {
     print_ingame(1,"block %d",capture_block);
   if (!one_palette)
       disp_gun(0,mousex+offx+8,mousey+16+8);
-  print_ingame(1,"offs: %x palbank %x",ReadLongSc(&RAM[0x104c4c]),current_bank);
+  for (offs = 0x104000; offs <= 0x105000; offs+= 0x100)
+      // MESSCONT, but the bytes are swapped...
+      if (!strncmp((char*)&RAM[offs+4],"EMSSOCTN",8))
+	  break;
+  print_ingame(1,"offs: %x [%x] palbank %x",ReadLongSc(&RAM[offs+0x4c]),offs,current_bank);
   if (fdata && sprites) {
       int nb = nb_sprites-1;
       int nb2 = nb-1;
