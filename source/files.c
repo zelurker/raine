@@ -477,7 +477,7 @@ int load_zipped_part(char *zipfile, char *name, int offset, int size, UINT8 *des
 #endif
 
 int myfgets(char *buff, int size, FILE *f) {
-  fgets(buff,1024,f);
+  fgets(buff,size,f);
   int len = strlen(buff);
   while (len > 0 && buff[len-1] < 32)
     buff[--len] = 0;
