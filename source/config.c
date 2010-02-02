@@ -45,7 +45,7 @@ process the -help/-?/--help/-h option
 static void CLI_Help(void)
 {
    allegro_message(
-	"USE: Raine <commands> <options>\n"
+	"USE: Raine <commands> <options> [gamename]\n"
 	"\n"
 	"Commands:\n"
 	"\n"
@@ -1668,7 +1668,7 @@ void parse_command_line(int argc, char *argv[])
        }
 
        }
-       else{
+       else if (ArgPosition == ArgCount-1) { 
 
           // allow raine <gamename> (preferred use is raine -game <gamename>)
 
