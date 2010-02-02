@@ -343,10 +343,12 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       }
   }
   fclose(f);
+#if 0
   if (found_dcw) {
       sprintf(cmd,"m68kdis -all -pc %d -o \"%s\" \"%s\"",start,name2,name);
       system(cmd);
   }
+#endif
   name[strlen(name)] = '.'; // extension back
   name[strlen(name)-1] = 't'; // extension back
   f = fopen(name,"w");
