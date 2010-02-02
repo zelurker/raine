@@ -65,6 +65,7 @@
 #include "driver.h"
 // #include "state.h"
 #include "sasound.h"
+#include "savegame.h"
 
 #include "ymdeltat.h"
 

@@ -26,6 +26,8 @@ extern int GameSound;
 #define VOLUME_MIN	(0)			// Minimum volume
 #define VOLUME_MAX	(255)			// Maximum volume
 
+#define _STATE_H // mame state.h compatibility !
+
 /*
  *  Panning Section
  */

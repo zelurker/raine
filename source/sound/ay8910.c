@@ -16,6 +16,7 @@
 #include "streams.h"
 #include "sasound.h"
 #include <string.h> // memset
+#include "savegame.h"
 
 #define MAX_OUTPUT 0x7fff
 
@@ -45,7 +46,7 @@ struct AY8910
 	signed char CountEnv;
 	unsigned char Hold,Alternate,Attack,Holding;
 	int RNG;
-	unsigned int VolTable[32];
+	unsigned int VolTable[31];
 };
 
 /* register id's */
@@ -732,6 +733,10 @@ static int AY8910_init(const char *chip_name,int chip,
 
 	AY8910_set_clock(chip,clock);
 	AY8910_reset(chip);
+	AddSaveData(ASCII_ID('A','8','9',chip),
+		((UINT8*)&PSG->register_latch),
+		((UINT8*)&PSG->VolTable+sizeof(PSG->VolTable)) -
+		((UINT8*)&PSG->register_latch));
 
 	return 0;
 }
