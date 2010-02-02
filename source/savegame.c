@@ -45,8 +45,7 @@ Todo:
 
 - Change ram area, so there is a savedata entry in each game driver (then it is
   not a special case in here).
-- Add savedata and any callbacks needed for sound chip emulators and U68020.
-- Make save_data_list into a linked list, for more expandable code.
+- Add savedata and any callbacks needed for sound chip emulators and U68020. (done ?)
 - Think of something useful to save in the global header, currently it is empty.
 - Remove old load support, after the next release or two.
 
@@ -80,17 +79,22 @@ UINT8 *RAM;
 // SAVE_MOUSE is especially usefull for the demos...
 #define SAVE_END              ASCII_ID('E','N','D',0x00)
 #define SAVE_PICT              ASCII_ID('P','I','C','T')
+#define SAVE_EXT		0
 
 // -----------------------------------------------------
+
+#define EXT_NAME 30
 
 typedef struct SAVE_DATA
 {
    UINT32 id;			// Unique ASCII_ID for this data
+   char name[EXT_NAME+1];		// in case of extended id
    UINT8 *source;		// Pointer to the data in memory
    UINT32 size;			// Size of the data in bytes
 } SAVE_DATA;
 
-static struct SAVE_DATA save_data_list[0x40];
+static int alloc_save_list;
+static struct SAVE_DATA *save_data_list;
 
 int SaveDataCount;
 int UseCompression,SaveSlot;
@@ -99,8 +103,13 @@ int savegame_version;
 void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
 {
   int n;
+  if (SaveDataCount == alloc_save_list) {
+      alloc_save_list += 10;
+      save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
+  }
   for (n=0; n<SaveDataCount; n++) {
     if (save_data_list[n].id == id) {
+	print_debug("AddSaveData: collision for id %x\n",id);
       save_data_list[n].source = src;
       save_data_list[n].size   = size;
       return;
@@ -110,6 +119,40 @@ void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
   save_data_list[SaveDataCount].source = src;
   save_data_list[SaveDataCount].size   = size;
   SaveDataCount++;
+}
+
+void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
+{
+  int n;
+  if (SaveDataCount == alloc_save_list) {
+      alloc_save_list += 10;
+      save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
+  }
+  if (strlen(name) > EXT_NAME) {
+      printf("AddSaveData_ext: name overflow: %d\n",strlen(name));
+      exit(1);
+  }
+  
+  for (n=0; n<SaveDataCount; n++) {
+    if (save_data_list[n].id == SAVE_EXT &&
+	    !strcmp(save_data_list[n].name,name)) {
+	print_debug("AddSaveData: collision for extended name %s\n",name);
+      save_data_list[n].source = src;
+      save_data_list[n].size   = size;
+      return;
+    }
+  }
+  strcpy(save_data_list[SaveDataCount].name,name);
+  save_data_list[SaveDataCount].id     = SAVE_EXT;
+  save_data_list[SaveDataCount].source = src;
+  save_data_list[SaveDataCount].size   = size;
+  SaveDataCount++;
+}
+
+void state_save_register_UINT8(const char *base,int num, char *part, void *src, int size) {
+    char buff[80];
+    snprintf(buff,80,"%s.%d.%s",base,num,part);
+    AddSaveData_ext(buff,src,size);
 }
 
 // -----------------------------------------------------
@@ -211,6 +254,10 @@ void NewSave(gzFile fout)
 
    for(ta=0;ta<SaveDataCount;ta++){
       mputl(save_data_list[ta].id, fout);
+      if (save_data_list[ta].id == SAVE_EXT) {
+	  gzputc(fout,strlen(save_data_list[ta].name));
+	  gzwrite(fout,save_data_list[ta].name, strlen(save_data_list[ta].name));
+      }
       iputl(save_data_list[ta].size, fout);
       gzwrite( fout,save_data_list[ta].source, save_data_list[ta].size);
    }
@@ -333,6 +380,7 @@ void read_safe_data(UINT8 *dest, UINT32 dest_size, UINT32 data_size, gzFile fin)
 void NewLoad(gzFile fin)
 {
    int ta,tb,load_done;
+   char name[EXT_NAME+1];
    UINT32 t_size,t_id;
 	 int endianess_bug = 0;
 
@@ -347,10 +395,32 @@ void NewLoad(gzFile fin)
    // read header
 
    t_id   = mgetl(fin);
-	 if (endianess_bug) 
-		 t_size = mgetl(fin);
-	 else
-		 t_size = igetl(fin);
+   if (t_id == SAVE_EXT) {
+       t_size = gzgetc(fin);
+       gzread(fin,name,t_size);
+       name[t_size] = 0;
+       if (endianess_bug) 
+	   t_size = mgetl(fin);
+       else
+	   t_size = igetl(fin);
+       for(ta=0;ta<SaveDataCount;ta++){
+	   if(save_data_list[ta].id == SAVE_EXT &&
+		   !strcmp(save_data_list[ta].name,name)){
+	       print_debug("save_file: extended section %s\n",name);
+	       read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
+	       break;
+	   } 
+       }
+       if (ta == SaveDataCount) {
+	   print_debug("save_file: extended section %s not found\n",name);
+	   read_safe_data(NULL,0,t_size,fin);
+       }
+       continue;
+   }
+   if (endianess_bug) 
+       t_size = mgetl(fin);
+   else
+       t_size = igetl(fin);
 		 
    switch(t_id){
       case SAVE_RAM:
@@ -410,7 +480,7 @@ void NewLoad(gzFile fin)
 	      print_debug("save_file: section %c%c%c%c\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff));
                read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
                tb=1;
-            }
+            } 
          }
          if(tb==0){
             print_debug("Unexpected ID in savefile: %08x/%08x\n",t_id,t_size);
@@ -694,7 +764,7 @@ void store_picture(gzFile fout) {
      while (taille > 0) {
        if (taille > SBUF) {
 	 fread(buff,SBUF,1,f);
-	 gzwrite( fout,buff, SBUF);
+	 zwrite( fout,buff, SBUF);
 	 taille -= SBUF;
        } else {
 	 fread(buff,taille,1,f);
