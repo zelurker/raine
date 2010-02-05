@@ -98,6 +98,8 @@ typedef int BOOL;
 
 #define ASCII_ID(a,b,c,d)	  ((a<<24) | (b<<16) | (c<<8) | (d<<0))
 
+#define ARRAY_LENGTH(x) (sizeof(x) / sizeof(x[0]))
+
 typedef void mapper_direct(int bank, int cols);
 
 #endif
