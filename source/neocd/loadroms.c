@@ -60,6 +60,7 @@ void LoadDefault(void)
    SaveSlot=0;					// Reset save slot to 0
    SaveDataCount=0;				// No save data
    SaveCallbackCount=0; 			// No save callbacks
+   savecbptr_count = 0;
    reset_dyn_callbacks();
 
    RAMSize=0x80000;				// Size of RAM memory allocated (should be 0 here really)

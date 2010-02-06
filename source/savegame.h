@@ -39,8 +39,10 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size);
 
 // Add a callback routine before savegame/after loadgame
 
-extern UINT32 SaveCallbackCount;
+extern UINT32 SaveCallbackCount,savecbptr_count;
 void AddLoadCallback(void *callback);
+void AddLoadCallback_ptr(void *callback,void *arg);
+#define state_save_register_func_postload_ptr AddLoadCallback_ptr
 void AddSaveCallback(void *callback);
 
 // mame _STATE_H pseudo compatibility (ever changing as always with mame !)
@@ -50,6 +52,10 @@ void state_save_register_UINT8(const char *base,int num, char *part, void *src, 
 #define state_save_register_INT32(a,b,c,d,e) state_save_register_UINT8(a,b,c,d,(e)*4)
 #define state_save_register_double(a,b,c,d,e) state_save_register_UINT8(a,b,c,d,(e)*sizeof(double))
 #define state_save_register_int(a,b,c,d) state_save_register_UINT8(a,b,c,d,sizeof(int))
+#define state_save_register_item(a,b,c) state_save_register_UINT8(a,b,#c,&c,sizeof(c))
+#define state_save_register_item_array state_save_register_item
+#define state_save_register_item_2d_array state_save_register_item
+
 // Private (cpu state saving etc)
 
 void AddLoadCallback_Internal(void *callback);

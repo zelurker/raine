@@ -83,7 +83,7 @@ UINT8 *RAM;
 
 // -----------------------------------------------------
 
-#define EXT_NAME 30
+#define EXT_NAME 50
 
 typedef struct SAVE_DATA
 {
@@ -129,7 +129,7 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
   }
   if (strlen(name) > EXT_NAME) {
-      printf("AddSaveData_ext: name overflow: %d\n",strlen(name));
+      printf("AddSaveData_ext: name overflow: %d: %s\n",strlen(name),name);
       exit(1);
   }
   
@@ -167,18 +167,63 @@ typedef struct SAVE_CALLBACK
    void (*proc)();		// Callback routine ptr
 } SAVE_CALLBACK;
 
-static struct SAVE_CALLBACK save_callback_list[0x40];
+struct ptr_callback {
+    void (*proc)(void *);
+    void *arg;
+};
 
-UINT32 SaveCallbackCount;
+#define SIZE_CALLB 0x40
+static struct SAVE_CALLBACK save_callback_list[SIZE_CALLB];
+static struct ptr_callback save_callback_ptr[SIZE_CALLB];
+
+UINT32 SaveCallbackCount,savecbptr_count;
+
+static int find_callback(int flags, void *callback) {
+    if (SaveCallbackCount == SIZE_CALLB) {
+	printf("callbacks overflow, sorry !\n");
+	exit(1);
+    }
+    int n;
+    for (n=0; n<SaveCallbackCount; n++)
+	if (save_callback_list[n].flags == flags &&
+	       	save_callback_list[n].proc == callback)
+	    return n;
+    return -1;
+}
+
+void AddLoadCallback_ptr(void *callback,void *arg) {
+    if (savecbptr_count == SIZE_CALLB) {
+	printf("callbackptr overflow\n");
+	exit(1);
+    }
+    int n;
+    for (n=0; n<savecbptr_count; n++) {
+	if (save_callback_ptr[n].proc == callback &&
+		save_callback_ptr[n].arg == arg) {
+	    print_debug("AddLoadCallback_ptr: callback already added!\n");
+	    return;
+	}
+    }
+    save_callback_ptr[savecbptr_count].proc = callback;
+    save_callback_ptr[savecbptr_count++].arg = arg;
+}
 
 void AddLoadCallback(void *callback)
 {
+    if (find_callback(CALLBACK_LOAD,callback)>0) {
+	print_debug("AddLoadCallback: callback already inserted\n");
+	return;
+    }
    save_callback_list[SaveCallbackCount].flags     = CALLBACK_LOAD;
    save_callback_list[SaveCallbackCount].proc      = callback;
    SaveCallbackCount++;
 }
 void AddSaveCallback(void *callback)
 {
+    if (find_callback(CALLBACK_SAVE,callback)>0) {
+	print_debug("AddSaveCallback: callback already inserted\n");
+	return;
+    }
    save_callback_list[SaveCallbackCount].flags     = CALLBACK_SAVE;
    save_callback_list[SaveCallbackCount].proc      = callback;
    SaveCallbackCount++;
@@ -186,6 +231,10 @@ void AddSaveCallback(void *callback)
 
 void AddLoadCallback_Internal(void *callback)
 {
+    if (find_callback(CALLBACK_LOAD|CALLBACK_CORE,callback)>0) {
+	print_debug("AddLoadCallback_internal: callback already inserted\n");
+	return;
+    }
    save_callback_list[SaveCallbackCount].flags     = CALLBACK_LOAD|CALLBACK_CORE;
    save_callback_list[SaveCallbackCount].proc      = callback;
    SaveCallbackCount++;
@@ -193,6 +242,10 @@ void AddLoadCallback_Internal(void *callback)
 
 void AddSaveCallback_Internal(void *callback)
 {
+    if (find_callback(CALLBACK_SAVE|CALLBACK_CORE,callback)>0) {
+	print_debug("AddSaveCallback_Internal: callback already inserted\n");
+	return;
+    }
    save_callback_list[SaveCallbackCount].flags     = CALLBACK_SAVE|CALLBACK_CORE;
    save_callback_list[SaveCallbackCount].proc      = callback;
    SaveCallbackCount++;
@@ -207,6 +260,12 @@ void ProcessCallbackList(UINT32 flags)
          if(save_callback_list[ta].proc)
             save_callback_list[ta].proc();
       }
+   }
+   if (flags == CALLBACK_LOAD) {
+       int n;
+       for (n=0; n<savecbptr_count; n++) {
+	   save_callback_ptr[n].proc(save_callback_ptr[n].arg);
+       }
    }
 }
 
@@ -764,7 +823,7 @@ void store_picture(gzFile fout) {
      while (taille > 0) {
        if (taille > SBUF) {
 	 fread(buff,SBUF,1,f);
-	 zwrite( fout,buff, SBUF);
+	 gzwrite( fout,buff, SBUF);
 	 taille -= SBUF;
        } else {
 	 fread(buff,taille,1,f);
