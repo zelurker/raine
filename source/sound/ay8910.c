@@ -46,7 +46,7 @@ struct AY8910
 	signed char CountEnv;
 	unsigned char Hold,Alternate,Attack,Holding;
 	int RNG;
-	unsigned int VolTable[31];
+	unsigned int VolTable[32];
 };
 
 /* register id's */
