@@ -151,7 +151,11 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
 
 void state_save_register_UINT8(const char *base,int num, char *part, void *src, int size) {
     char buff[80];
+#ifdef RAINE_DOS
+    sprintf(buff,"%s.%d.%s",base,num,part);
+#else
     snprintf(buff,80,"%s.%d.%s",base,num,part);
+#endif
     AddSaveData_ext(buff,src,size);
 }
 

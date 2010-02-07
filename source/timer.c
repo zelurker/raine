@@ -180,8 +180,10 @@ void triger_timers() {
 #if VERBOSE
   int count=0;
 #endif
+#ifndef RAINE_DOS
   if (goto_debuger)
       return;
+#endif
   /* cyclesRemaining is not reseted by mz80 at the end of its frame... */
   /* If we are here, the frame is over. */
   cyclesRemaining=0;
@@ -283,8 +285,10 @@ INT32 get_min_cycles(UINT32 frame) {
 }
 
 int execute_one_z80_audio_frame(UINT32 frame) {
-    if (goto_debuger)
-	return frame;
+#ifndef RAINE_DOS
+  if (goto_debuger)
+      return;
+#endif
   if (RaineSoundCard) {
     UINT32 elapsed = dwElapsedTicks;
     INT32 min_cycles = get_min_cycles(frame);
@@ -315,8 +319,10 @@ void finish_speed_hack(INT32 diff) {
 
 void execute_z80_audio_frame() {
   INT32 frame = z80_frame;
+#ifndef RAINE_DOS
   if (goto_debuger)
       return;
+#endif
   switch_cpu(audio_cpu);
   while (frame > 0) {
     frame -= execute_one_z80_audio_frame(frame);
