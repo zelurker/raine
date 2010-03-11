@@ -258,7 +258,6 @@ static int region_code;
 
 static int set_region(int sel) {
   SetLanguageSwitch(region_code);
-  reset_game_hardware();
   return 0;
 }
 
@@ -335,11 +334,12 @@ class TMain_menu : public TMenu
 
 static void do_main_menu() {
   TMain_menu *main_menu = new TMain_menu("Main menu",main_items);
+  int old_region;
   // init romsw
   if (current_game && current_game->romsw_list) {
     main_items[2].values_list_size = LanguageSw.Count;
     main_items[2].value_int = &region_code;
-    region_code = GetLanguageSwitch();
+    old_region = region_code = GetLanguageSwitch();
     for (int n=0; n<LanguageSw.Count; n++) {
       main_items[2].values_list[n] = n;
       main_items[2].values_list_label[n] = LanguageSw.Mode[n];
@@ -347,6 +347,8 @@ static void do_main_menu() {
   }
 
   main_menu->execute();
+  if (old_region != region_code)
+      reset_game_hardware();
   delete main_menu;
 }
 
