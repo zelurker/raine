@@ -347,7 +347,7 @@ static void do_main_menu() {
   }
 
   main_menu->execute();
-  if (old_region != region_code)
+  if (current_game && current_game->romsw_list && old_region != region_code)
       reset_game_hardware();
   delete main_menu;
 }
