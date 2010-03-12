@@ -369,7 +369,7 @@ void set_sample_pos(int pos) {
     fbin = fopen(neocd_path,"rb");
   }
   if (sample) {
-    Sound_Seek(sample,pos*1000/(44100*4));
+    Sound_Seek(sample,pos*10/(441*4));
     if (done_flag) printf("fix ok\n");
     done_flag = 0;
   } else if (fbin) {
