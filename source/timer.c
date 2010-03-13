@@ -287,7 +287,7 @@ INT32 get_min_cycles(UINT32 frame) {
 int execute_one_z80_audio_frame(UINT32 frame) {
 #ifndef RAINE_DOS
   if (goto_debuger)
-      return;
+      return 0;
 #endif
   if (RaineSoundCard) {
     UINT32 elapsed = dwElapsedTicks;
