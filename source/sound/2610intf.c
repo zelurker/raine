@@ -185,10 +185,17 @@ int YM2610B_sh_start(const struct YM2610interface *msound)
 		}
 		stream[i] = stream_init_multim(YM2610_NUMBUF,name,vol,rate,i,YM2610BUpdateOne);
 		/* setup adpcm buffers */
+#ifdef NEO
+		pcmbufa[i] = (void *)PCMROM;
+		pcmsizea[i] = 0x100000;
+		pcmbufb[i] = NULL;
+		pcmsizeb[i] = 0;
+#else
 		pcmbufa[i]  = (void *)(memory_region(intf->pcmroma[i]));
 		pcmsizea[i] = memory_region_length(intf->pcmroma[i]);
 		pcmbufb[i]  = (void *)(memory_region(intf->pcmromb[i]));
 		pcmsizeb[i] = memory_region_length(intf->pcmromb[i]);
+#endif
 	}
 
 	/**** initialize YM2610 ****/
