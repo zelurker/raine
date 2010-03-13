@@ -41,6 +41,7 @@ void LoadDefault(void)
   cycles_per_frame = 0; // recalibrate for non 60fps games
 #endif
   fps = 60.0; // 60 fps (default)
+  default_fps = 0.0; // init only by the dialog which allows to change fps
 #if HAS_ADPCM
   adpcm_amplify = 1;
 #endif

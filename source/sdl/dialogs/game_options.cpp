@@ -17,6 +17,7 @@
 #include "translator.h"
 #include "neocd/cache.h"
 #endif
+#include <math.h>
 
 // #include <SDL/SDL_image.h>
 
@@ -222,6 +223,11 @@ extern int cpu_fps; // ingame.c
 
 static int ifps;
 
+static int reset_fps(int sel) {
+    fps = default_fps;
+    return 0;
+}
+
 static menu_item_t game_options[] =
 {
   { "Reset game hardware", &my_reset },
@@ -235,6 +241,7 @@ static menu_item_t game_options[] =
 #endif
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
   { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10 }, { "", (char*)&fps, "1", "200" } },
+  { "Reset fps to driver's default value", &reset_fps },
   { "FPS counter", NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
     { "Off", "Immediate FPS", "Average FPS", "Profiler", "Rdtsc Cycles" } },
   { NULL }
@@ -266,9 +273,11 @@ class TGame_options : public TMenu {
 };
 
 int do_game_options(int sel) {
-  TGame_options *menu = new TGame_options("Game options",game_options);
-  menu->execute();
-  delete menu;
-  return exit_options;
+    if (fabs(default_fps) < 1e-4)
+	default_fps = fps;
+    TGame_options *menu = new TGame_options("Game options",game_options);
+    menu->execute();
+    delete menu;
+    return exit_options;
 }
 

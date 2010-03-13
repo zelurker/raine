@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include <sdl/SDL_gfx/SDL_framerate.h>
 
-float fps = 60.0;
+float fps = 60.0,default_fps;
 
 /* Profiling in SDL : */
 /* They announce RDTSC for v1.3. */
