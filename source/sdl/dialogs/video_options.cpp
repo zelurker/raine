@@ -96,18 +96,20 @@ static menu_item_t video_items[] =
 };
 
 int do_video_options(int sel) {
-  video_options = new TVideo("Video options", video_items);
-  video_options->execute();
-  SetupScreenBitmap();
-  if ((sdl_overlay != NULL || display_cfg.video_mode == 1) &&
-        display_cfg.video_mode != 2) {
-    // explicitely clear scanlines when overlays are enabled
-    display_cfg.scanlines = 0;
-  }
-  if (display_cfg.stretch == 3 && sdl_game_bitmap) {
-    DestroyScreenBitmap(); // init hq2x/3x, switch gamebitmap to 16bpp
-    // + recall InitLUTs by recreating game_bitmap when enabling hq2x/3x
-  }
-  return 0;
+    int old_stretch = display_cfg.stretch;
+    video_options = new TVideo("Video options", video_items);
+    video_options->execute();
+    SetupScreenBitmap();
+    if ((sdl_overlay != NULL || display_cfg.video_mode == 1) &&
+	    display_cfg.video_mode != 2) {
+	// explicitely clear scanlines when overlays are enabled
+	display_cfg.scanlines = 0;
+    }
+    if (old_stretch != display_cfg.stretch && display_cfg.stretch == 3 &&
+	    sdl_game_bitmap) {
+	DestroyScreenBitmap(); // init hq2x/3x, switch gamebitmap to 16bpp
+	// + recall InitLUTs by recreating game_bitmap when enabling hq2x/3x
+    }
+    return 0;
 }
 
