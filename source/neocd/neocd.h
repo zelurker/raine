@@ -19,6 +19,7 @@ extern int neocd_id,allowed_speed_hacks;
 extern UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
 extern char neocd_path[1024],neocd_dir[1024];
 extern int sfx_volume, music_volume;
+extern int capture_new_pictures;
 
 extern UINT8 *neocd_bios;
 void setup_neocd_bios();
@@ -36,6 +37,8 @@ void update_game_vectors();
 void myStop68000(UINT32 adr, UINT8 data);
 void draw_neocd_paused();
 void neogeo_read_gamename(void);
+void restore_neocd_config();
+void save_neocd_config();
 
 extern struct GAME_MAIN game_neocd;
 

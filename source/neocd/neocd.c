@@ -41,6 +41,17 @@ static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1;
 static int one_palette;
 static int assigned_banks, current_bank;
+int capture_new_pictures;
+
+void restore_neocd_config() {
+  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
+  capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
+}
+
+void save_neocd_config() {
+  raine_set_config_int("neocd","allowed_speed_hacks",allowed_speed_hacks);
+  raine_set_config_int("neocd","capture_new_pictures",capture_new_pictures);
+}
 
 static void toggle_capture_mode() {
   capture_mode++;
@@ -77,10 +88,6 @@ static void do_capture() {
     display_cfg.bpp = 8;
     current_game->video_info->flags |= VIDEO_NEEDS_8BPP;
     SetupScreenBitmap();
-    if (bitmap_color_depth(GameBitmap) != 8) {
-	printf("gamebitmap stupidity %d\n",bitmap_color_depth(GameBitmap));
-	exit(1);
-    }
     set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     one_palette = 1;
     if (capture_mode < 2)
@@ -109,9 +116,23 @@ static void do_capture() {
 	    sprintf(filename,"%sblock%d-%d.png",dir_cfg.screen_dir,capture_block,current_bank);
 	else
 	    sprintf(filename,"%sblock%d.png",dir_cfg.screen_dir,capture_block);
+	fdata = fopen(filename,"rb");
+	if (fdata && capture_new_pictures) {
+	    fclose(fdata);
+	    char *s = strstr(filename,".png");
+	    int nb = 0;
+	    do {
+		sprintf(s,"-%d.png",nb);
+		fdata = fopen(filename,"rb");
+		if (fdata) {
+		    fclose(fdata);
+		    nb++;
+		}
+	    } while (fdata); // find an unused name
+	}
 	save_png(filename,GameViewBitmap,pal);
 	if (capture_mode == 2) break;
-    } while (current_bank < assigned_banks || capture_mode < 2);
+    } while (current_bank < assigned_banks);
     if (capture_mode < 2) one_palette = 0;
     display_cfg.bpp = bpp;
     current_game->video_info->flags &= ~VIDEO_NEEDS_8BPP;
@@ -317,7 +338,6 @@ static int cpu_readcoin(int addr)
      */
     int coinflip = pd4990a_testbit_r(0);
     int databit = pd4990a_databit_r(0);
-    printf("test high bits %d %d\n",coinflip,databit);
     return 0xff ^ (coinflip << 6) ^ (databit << 7);
   }
   {
@@ -1135,7 +1155,7 @@ static void draw_sprites_capture(int start, int end) {
 		if (capture_mode == 1) {
 		    current_bank++;
 		    if (current_bank > assigned_banks) {
-			printf("banks error\n");
+			printf("banks error: %d > %d\n",current_bank,assigned_banks);
 			exit(1);
 		    }
 		}

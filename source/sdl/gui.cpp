@@ -56,6 +56,7 @@ void read_gui_config() {
   read_game_list_config();
 #else
 	restore_cdrom_config();
+	restore_neocd_config();
 #endif
   read_font_config();
   read_menu_config();
@@ -69,6 +70,7 @@ void write_gui_config() {
   save_game_list_config();
 #else
 	save_cdrom_config();
+	save_neocd_config();
 #endif
   save_font_config();
   save_menu_config();
@@ -376,109 +378,110 @@ int goto_debuger = 0;
 
 void StartGUI(void)
 {
-  setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
+    setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 
 #ifdef RAINE_DEBUG
-   print_debug("StartGUI(): START\n");
+    print_debug("StartGUI(): START\n");
 #endif
 
-   init_display();
+    init_display();
 
-   setup_font(); // Usefull even without gui for the messages on screen
+    setup_font(); // Usefull even without gui for the messages on screen
 
-   WantScreen=0;
-   WantQuit=0;
-   WantPlay=0;
+    WantScreen=0;
+    WantQuit=0;
+    WantPlay=0;
 
 #ifdef RAINE_DEBUG
-   print_debug("StartGUI(): prepare international\n");
+    print_debug("StartGUI(): prepare international\n");
 #endif
 
    // We need to know if we have hw overlay support, and the only way to know
    // is to try to create one...
-   if (display_cfg.video_mode <= 1 && !sdl_overlay && display_cfg.bpp >= 16)
-     sdl_create_overlay(display_cfg.screen_x,display_cfg.screen_y);
+    if (display_cfg.video_mode <= 1 && !sdl_overlay && display_cfg.bpp >= 16) {
+	sdl_create_overlay(display_cfg.screen_x,display_cfg.screen_y);
+    }
 
 #ifdef NEO
-  setup_neocd_bios();
+    setup_neocd_bios();
 #endif
 
    while(!WantQuit){		// ----- Main Loop ------
 
-     /*
+       /*
 
-     check for load game request (from the command line)
+	  check for load game request (from the command line)
 
-     */
+*/
 
 #ifndef NEO
-     if(raine_cfg.req_load_game)
+       if(raine_cfg.req_load_game)
 
-       do_load_game();
+	   do_load_game();
 #endif
 
-     if(!raine_cfg.no_gui)	// GUI MODE
-     {
+       if(!raine_cfg.no_gui)	// GUI MODE
+       {
 #ifdef HAS_CONSOLE
-	if (goto_debuger) {
-	  do_console(0);
-	  WantPlay = 1;
-	} else
+	   if (goto_debuger) {
+	       do_console(0);
+	       WantPlay = 1;
+	   } else
 #endif
-	{
-	  do_main_menu();
-	  if (!WantQuit && !WantPlay && !raine_cfg.req_load_game && current_game)
-	    WantPlay = 1;
-	}
-     } else {
+	   {
+	       do_main_menu();
+	       if (!WantQuit && !WantPlay && !raine_cfg.req_load_game && current_game)
+		   WantPlay = 1;
+	   }
+       } else {
 
-       WantQuit=1;
+	   WantQuit=1;
 
-       if(current_game)
+	   if(current_game)
 
-	 WantPlay = 1;
+	       WantPlay = 1;
 
-       else
+	   else
 
-	 WantPlay = 0;
-     }
-
-    if(current_game && display_cfg.auto_mode_change) { 
-      switch_res(current_game->video_info);
-      if (bestw) {
-	display_cfg.screen_x = bestw;
-	display_cfg.screen_y = besth;
-	bestw = besth = 0;
-      }
-    }
-
-     if(WantScreen || display_cfg.screen_x != sdl_screen->w ||
-        display_cfg.screen_y != sdl_screen->h || 
-	(display_cfg.bpp != sdl_screen->format->BitsPerPixel && !sdl_overlay) ||
-	((videoflags & SDL_DOUBLEBUF) && !(sdl_screen->flags & SDL_DOUBLEBUF))){
-       // Are we here for a screenchange?
-       WantScreen=0;
-       ScreenChange();
-     } 
-
-     clear_raine_screen();
-
-     if(WantPlay){		// Are we able to and wanting to play?
-       WantPlay = 0;
-       SDL_ShowCursor(0);
-#ifndef RAINE_DEBUG
-       if (GameMouse)
-         SDL_WM_GrabInput(SDL_GRAB_ON);
-#endif
-       if(run_game_emulation()){ // In no gui mode, tab will reactivate the gui (req. by bubbles)
-	 raine_cfg.no_gui = 0;
-	 WantQuit = 0;
+	       WantPlay = 0;
        }
-       if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
-	 SDL_ShowCursor(1);
-       if (GameMouse)
-         SDL_WM_GrabInput(SDL_GRAB_OFF);
-     }
+
+       if(current_game && display_cfg.auto_mode_change) { 
+	   switch_res(current_game->video_info);
+	   if (bestw) {
+	       display_cfg.screen_x = bestw;
+	       display_cfg.screen_y = besth;
+	       bestw = besth = 0;
+	   }
+       }
+
+       if(WantScreen || display_cfg.screen_x != sdl_screen->w ||
+	       display_cfg.screen_y != sdl_screen->h || 
+	       (display_cfg.bpp != sdl_screen->format->BitsPerPixel && !sdl_overlay) ||
+	       ((videoflags & SDL_DOUBLEBUF) && !(sdl_screen->flags & SDL_DOUBLEBUF))){
+	   // Are we here for a screenchange?
+	   WantScreen=0;
+	   ScreenChange();
+       } 
+
+       clear_raine_screen();
+
+       if(WantPlay){		// Are we able to and wanting to play?
+	   WantPlay = 0;
+	   SDL_ShowCursor(0);
+#ifndef RAINE_DEBUG
+	   if (GameMouse)
+	       SDL_WM_GrabInput(SDL_GRAB_ON);
+#endif
+	   if(run_game_emulation()){ // In no gui mode, tab will reactivate the gui (req. by bubbles)
+	       raine_cfg.no_gui = 0;
+	       WantQuit = 0;
+	   }
+	   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
+	       SDL_ShowCursor(1);
+	   if (GameMouse)
+	       SDL_WM_GrabInput(SDL_GRAB_OFF);
+       }
 
    }			// ----- Main Loop -----
 
