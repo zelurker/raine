@@ -1752,10 +1752,10 @@ load_game_config(int game): load game specific settings for a certain game.
 */
 
 static void load_cheats(char *name) {
-  char str[256];
   load_arpro_cheats(name);
 
 #ifdef RAINE_UNIX
+  char str[256];
   if (CheatCount == 0) {
     // No cheats found -> try the system wide file
 

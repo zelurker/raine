@@ -21,7 +21,7 @@ VERSION_NEO = "1.2.10"
 # NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -845,6 +845,7 @@ endif
 ifdef SDL
 OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/display.o \
+	$(OBJDIR)/sdl/winpos.o \
 	$(OBJDIR)/sdl/compat.o \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/gen_conv.o \

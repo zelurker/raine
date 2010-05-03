@@ -11,6 +11,7 @@
 #ifndef NEO
 #include "bezel.h"
 #endif
+#include "winpos.h"
 
 int disp_screen_x, prefered_yuv_format;
 int disp_screen_y;
@@ -54,6 +55,15 @@ void adjust_gui_resolution() {
 void display_read_config() {
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
 
+   char *pos = raine_get_config_string("Display", "position", "");
+   if (pos) {
+       static char buffer[100];
+       snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",pos);
+       buffer[99] = 0;
+       putenv(buffer);
+       printf("window position recorded !\n");
+   }
+
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0);
    display_cfg.screen_x = raine_get_config_int( "Display", "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int( "Display", "screen_y", display_cfg.screen_y);
@@ -78,6 +88,9 @@ void display_read_config() {
 
 void display_write_config() {
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
+
+  if (!display_cfg.fullscreen)
+      update_window_pos();
 
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
@@ -332,6 +345,9 @@ void ScreenChange(void)
   //show_mouse(NULL);
 
   SDL_Surface *s;
+  if (!display_cfg.fullscreen)
+      update_window_pos();
+
    if((s = new_set_gfx_mode()) == NULL){	// Didn't work:
       memcpy(&display_cfg, &prev_display_cfg, sizeof(DISPLAY_CFG));
       s = new_set_gfx_mode();	// Revert to old mode
