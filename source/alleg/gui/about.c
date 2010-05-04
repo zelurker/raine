@@ -171,7 +171,7 @@ int about_proc(int msg, DIALOG *d, int c)
     Unselect_Button(d);
     FadeGUI();
     check_cpu();
-    sprintf(about0, EMUNAME " " VERSION " (c)1998-2009 " HANDLE);
+    sprintf(about0, EMUNAME " " VERSION " (c)1998-2010 " HANDLE);
     sprintf(about1, "Compiled on " __DATE__ " (" __TIME__ ")");
 #ifdef __GNUC__
     {

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*									      */
-/*	   RAINE (680x0 arcade emulation) v0.35 (c) 1998-2009 Raine Team      */
+/*	   RAINE (680x0 arcade emulation) v0.35 (c) 1998-2010 Raine Team      */
 /*									      */
 /******************************************************************************/
 
@@ -172,7 +172,7 @@ int main(int argc,char *argv[])
      printf(" RAINE");
 #endif
 #endif
-    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2009(!) " HANDLE);
+    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2010(!) " HANDLE);
 
 #ifndef RAINE_DOS
    printf("\E[0m"); // normal text
