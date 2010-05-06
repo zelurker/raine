@@ -100,7 +100,13 @@ static int do_paths(int sel) {
   path_sel *paths = new path_sel();
   paths->add_item(getenv("HOME"));
 #ifdef RAINE_UNIX
+  int pipe_opened = 0;
   FILE *f = fopen("/etc/mtab","r");
+  if (!f) {
+      // Darwin doesn't seem to have a file for that, so let's use popen...
+      f = popen("mount","r");
+      pipe_opened = 1;
+  }
   if (f) {
     char buff[2048];
     while (!feof(f)) {
@@ -112,9 +118,19 @@ static int do_paths(int sel) {
       char *s2 = strchr(s1+1,' ');
       if (!s2) continue;
       *s2 = 0;
+      if (!strcmp(s1+1,"on")) {
+	  // darwin speciality, just ignore it
+	  s1 = s2;
+	  s2 = strchr(s1+1,'(');
+	  if (!s2) continue;
+	  s2[-1] = 0;
+      }
       paths->add_item(s1+1);
     }
-    fclose(f);
+    if (pipe_opened)
+	pclose(f);
+    else
+	fclose(f);
   }
 #else
   // windows
