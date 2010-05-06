@@ -212,6 +212,10 @@ static SDL_Surface *new_set_gfx_mode() {
   } else {
     // bpp = 16 is the default : better looking gui, and hq2x works at 16bpp min
     bpp = 16;
+#ifdef DARWIN
+      if (display_cfg.fullscreen)
+	  bpp = desktop_bpp;
+#endif
   }
 
   if (!desktop_w) {
