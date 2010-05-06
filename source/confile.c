@@ -63,7 +63,6 @@ char *get_data_ptr(CONFIG *cfg,UINT32 size) {
   char *new_ptr;
   CONFIG_ENTRY *pos, *prev;
   UINT32 offset;
-  int nb = 0;
 
   if (size == 0){
     fprintf(stderr,"get_data_ptr: Allocation of 0 byte !!!\n");

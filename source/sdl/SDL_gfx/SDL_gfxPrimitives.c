@@ -3028,7 +3028,7 @@ int doPieColor(SDL_Surface * dst, Sint16 x, Sint16 y, Sint16 rad, Sint16 start, 
     }
 
     /* Allocate vertex array */
-    vx = vy = (Uint16 *) malloc(2 * sizeof(Uint16) * numpoints);
+    vx = vy = (Sint16 *) malloc(2 * sizeof(Uint16) * numpoints);
     if (vx == NULL) {
 	return (-1);
     }
@@ -3292,7 +3292,7 @@ int filledPolygonColor(SDL_Surface * dst, const Sint16 * vx, const Sint16 * vy, 
 {
     int result;
     int i;
-    int x, y, xa, xb;
+    int y, xa, xb;
     int miny, maxy;
     int x1, y1;
     int x2, y2;
@@ -3439,7 +3439,6 @@ int characterColor(SDL_Surface * dst, Sint16 x, Sint16 y, char c, Uint32 color)
     int result;
     int ix, iy;
     const unsigned char *charpos;
-    unsigned char *bitpos;
     Uint8 *curpos;
     int forced_redraw;
     Uint8 patt, mask;
