@@ -20,7 +20,12 @@
 #  Generated file - do not edit
 
 		.data
+#ifdef DARWIN
+		.align 8
+#else
 		.align 32
+#endif
+
 .L3:
 		.long		0x00ff00ff, 0x00ff00ff
 .L4:
@@ -62,7 +67,11 @@
 .L62:
 		.long		0x001f001f, 0x001f001f
 		.text
+#ifdef DARWIN
+		.align 8
+#else
 		.align		16
+#endif
 		.globl		mmx_rgb565_yuyv
 		.globl		_mmx_rgb565_yuyv
 # prototype :
@@ -83,7 +92,9 @@ _mmx_rgb565_yuyv:
 		subl		%ecx,%ebx
 		movl		0+12+8(%esp),%esi
 		movl		0+12+4(%esp),%edi
+#ifndef DARWIN
 		.align 16
+#endif
 .L61:
 		movl		0+12+12(%esp),%ecx
 .L60:
@@ -196,7 +207,9 @@ _mmx_rgb565_yuyv:
 		ret
 
 		.text
+#ifndef DARWIN
 		.align		16
+#endif
 		.globl		mmx_rgb565_yuv420
 		.globl		_mmx_rgb565_yuv420
 # protocol :
@@ -236,7 +249,9 @@ _mmx_rgb565_yuv420:
 		movl		24+16+16(%esp),%esi
 		movl		%eax,t103(%esp)
 		movl		24+16+8(%esp),%eax
+#ifndef DARWIN
 		.align 16
+#endif
 .L78:
 		movl		t102(%esp),%ecx
 .L77:
