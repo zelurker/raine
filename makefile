@@ -18,7 +18,7 @@ VERSION = "0.51.9"
 VERSION_NEO = "1.2.11"
 
 # Uncomment to build neoraine instead of raine
-NEO=1
+# NEO=1
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -886,17 +886,24 @@ OBJS += $(OBJDIR)/sdl/sasound.o
 ifdef DARWIN
 # -fno-pic is an OBLGATION in darwin, without it the global variables can't
 # be accessed directly and the asm code can't work anymore
-# CFLAGS +=  -mdynamic-no-pic # -fno-pic
-# CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
-CFLAGS += `sdl-config --cflags` -DDARWIN
-# LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
-# LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa 
+CFLAGS +=  -fno-pic
+CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
+# CFLAGS += `sdl-config --cflags` -DDARWIN
+LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
+LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa 
 # LIBS += `sdl-config --libs` -lSDL_ttf  -lSDL_image -framework Cocoa
-LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
+# LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -lSDL_ttf -lmuparser -lSDL_image -framework Cocoa -lstdc++
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
-CFLAGS_MCU += -DDARWIN # -mdynamic-no-pic
+CFLAGS_MCU += -DDARWIN -fno-pic
+LFLAGS += -fno-pic -bind_at_load -read_only_relocs suppress
+
+ifdef NEO
+CFLAGS += -I/Library/Frameworks/SDL_sound.framework/Headers
+# LIBS += -lSDL_sound
+LIBS += -framework SDL_sound
+endif
 else
 CFLAGS += `sdl-config --cflags`
 ifdef NEO
