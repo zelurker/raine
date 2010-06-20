@@ -225,9 +225,9 @@ static SDL_Surface *new_set_gfx_mode() {
   }
   if ((videoflags & SDL_FULLSCREEN) == 0) {
     // Forbid windows larger than the screen
-    if (display_cfg.screen_x > desktop_w)
+    if (display_cfg.screen_x > desktop_w && desktop_w)
       display_cfg.screen_x = desktop_w;
-    if (display_cfg.screen_y > desktop_h)
+    if (display_cfg.screen_y > desktop_h && desktop_h)
       display_cfg.screen_y = desktop_h;
   }
   {
