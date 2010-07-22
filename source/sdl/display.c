@@ -61,7 +61,6 @@ void display_read_config() {
        snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",pos);
        buffer[99] = 0;
        putenv(buffer);
-       printf("window position recorded !\n");
    }
 
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0);

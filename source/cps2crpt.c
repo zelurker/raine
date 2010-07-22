@@ -649,7 +649,6 @@ static void cps2_decrypt(/* running_machine *machine, */const UINT32 *master_key
 	UINT32 key1[4];
 	struct optimised_sbox sboxes1[4*4];
 	struct optimised_sbox sboxes2[4*4];
-	printf("at start rom %x\n",rom[0]);
 
 	optimise_sboxes(&sboxes1[0*4], fn1_r1_boxes);
 	optimise_sboxes(&sboxes1[1*4], fn1_r2_boxes);
@@ -672,7 +671,6 @@ static void cps2_decrypt(/* running_machine *machine, */const UINT32 *master_key
 	key1[1] ^= BIT(key1[1], 8) << 11;
 	key1[2] ^= BIT(key1[2], 1) <<  5;
 	key1[2] ^= BIT(key1[2], 8) << 11;
-	printf("key1 %x %x %x\n",key1[0],key1[1],key1[2]);
 
 	for (i = 0; i < 0x10000; ++i)
 	{
@@ -727,9 +725,6 @@ static void cps2_decrypt(/* running_machine *machine, */const UINT32 *master_key
 			dec[a] = feistel(rom[a], fn2_groupA, fn2_groupB,
 				&sboxes2[0*4], &sboxes2[1*4], &sboxes2[2*4], &sboxes2[3*4],
 				key2[0], key2[1], key2[2], key2[3]);
-			if (a == 0) {
-			                            printf("dec %x from rom %x\n%x %x %x %x\n",dec[a],rom[a], key2[0], key2[1], key2[2], key2[3]);
-			}
 		}
 		// copy the unencrypted part (not really needed)
 		while (a < length/2)

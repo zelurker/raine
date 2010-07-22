@@ -443,7 +443,7 @@ void SetupScreenBitmap(void)
 #endif
    area_overlay.w = xxx2;
    area_overlay.h = yyy2;
-   printf("area overlay %d %d %d %d with xxx %d yyy %d display %d %d ratio1 %g ratio2 %g\n",destx2,desty2,xxx2,yyy2,xxx,yyy,display_cfg.screen_x,display_cfg.screen_y,ratio1,ratio2);
+   print_debug("area overlay %d %d %d %d with xxx %d yyy %d display %d %d ratio1 %g ratio2 %g\n",destx2,desty2,xxx2,yyy2,xxx,yyy,display_cfg.screen_x,display_cfg.screen_y,ratio1,ratio2);
  } else {
    if (display_cfg.stretch >= 1 && !display_cfg.scanlines) {
      if (ratio1 >= 3.0 && ratio2 >= 3.0 && (display_cfg.stretch == 1 ||

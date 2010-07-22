@@ -370,7 +370,6 @@ void setup_font()
     printf("no font, byebye !\n");
     exit(1);
   }
-  printf("font loaded\n");
 }
 
 extern UINT32 videoflags; // sdl/display.c

@@ -1394,8 +1394,6 @@ static void cps1_init_machine(void)
    max_sprites32++;
    max_sprites8 = MIN( max_sprites8, (size / 0x40 - base1));
    max_sprites32 = MIN(max_sprites32,(max_sprites16/4 - base3));
-   printf("max_sprites8 %x instead of %x\n",max_sprites8,size / 0x40 - base1);
-   printf("max_sprites32 %x instead of %x\n",max_sprites32,max_sprites16/4 - base3);
    nb_sprites = gfxrom_bank_mapper(GFXTYPE_SPRITES,sprites_ranges);
 
    scrwidth = current_game->video_info->screen_x+32;
