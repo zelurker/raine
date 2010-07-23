@@ -28,6 +28,7 @@ void adjust_gui_resolution() {
   video_info = SDL_GetVideoInfo();
   screen_flags = sdl_screen->flags;
 
+
   if (sdl_screen->w < 640 || sdl_screen->h < 480) {
     if (!strcmp(driver,"fbcon")) {
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -35,6 +36,18 @@ void adjust_gui_resolution() {
     }
     sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,sdl_screen->flags | SDL_ANYFORMAT);
   }
+#ifdef DARWIN
+  else if (sdl_overlay) {
+      /* Huge bugs with overlays in darwin, at least on my computer.
+       * The menu appears hidden under the overlay when returning to the gui.
+       * This should fix it */
+      printf("reinit video\n");
+      int w = sdl_screen->w, h = sdl_screen->h;
+      SDL_QuitSubSystem(SDL_INIT_VIDEO);
+      SDL_InitSubSystem(SDL_INIT_VIDEO);
+      sdl_screen = SDL_SetVideoMode(w,h,display_cfg.bpp,SDL_SWSURFACE| SDL_ANYFORMAT);
+  }
+#endif
   if (sdl_screen->format->BitsPerPixel < 16 && strcmp(driver,"fbcon")) {
     sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,sdl_screen->flags | SDL_ANYFORMAT);
   }
