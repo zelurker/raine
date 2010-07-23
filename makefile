@@ -37,6 +37,19 @@ USE_BEZELS=1
 
 # end of user options, after this line the real thing starts...
 
+# This stupid DOIT stuff is just to be able to do a OR :
+# if defined(DARWIN) or !defined(NEO)
+# makefile is really limited sometimes...
+# this is needed because darwin is the only place where we install neoraine
+# and raine to separate directories, in this case we must always install
+# everything.
+ifdef DARWIN
+DOIT=1
+endif
+ifndef NEO
+DOIT=1
+endif
+
 # Try to detect mingw... If you want to build the dos and the mingw
 # version on the same system you should unset djdir before making
 # the mingw version.
@@ -245,11 +258,24 @@ else
 
 SDL = 1
 
+ifdef DARWIN
+ifdef NEO
+DESTDIR = NeoRaine.app
+else
+DESTDIR = Raine.app
+endif
+   prefix = $(DESTDIR)/Contents
+   bindir = $(prefix)/MacOS
+   sharedir = $(prefix)/Resources
+   mandir = $(prefix)/man/man6
+   rainedata = $(sharedir)
+else
    prefix = $(DESTDIR)/usr
    bindir = $(prefix)/games
    sharedir = $(prefix)/share/games
    mandir = $(prefix)/man/man6
    rainedata = $(sharedir)/raine
+endif
 ifndef SDL
    langdir = $(rainedata)/languages
 else
@@ -887,8 +913,8 @@ ifdef DARWIN
 # -fno-pic is an OBLGATION in darwin, without it the global variables can't
 # be accessed directly and the asm code can't work anymore
 CFLAGS +=  -fno-pic
-CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
-# CFLAGS += `sdl-config --cflags` -DDARWIN
+# CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
+CFLAGS += `sdl-config --cflags` -DDARWIN
 LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
 LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa 
 # LIBS += `sdl-config --libs` -lSDL_ttf  -lSDL_image -framework Cocoa
@@ -1211,13 +1237,15 @@ vclean:
 
 # Installation part (Only for Unix)
 install: install_dirs $(RAINE_LNG) $(RAINE_EXE)
+	strip $(RAINE_EXE)
 ifdef RAINE_UNIX
 	echo installing $(RAINE_EXE) in $(bindir)
 	$(INSTALL_BIN) $(RAINE_EXE) $(bindir)
 ifndef SDL
 	$(INSTALL_DATA) $(RAINE_DAT) $(rainedata)
 else
-ifndef NEO
+
+ifdef DOIT
 	echo installing fonts in $(fonts_dir)
 	$(INSTALL_DATA) fonts/Vera.ttf fonts/VeraMono.ttf fonts/font6x8.bin $(fonts_dir)
 	$(INSTALL_DATA) bitmaps/cursor.png bitmaps/raine_logo.png $(bitmaps_dir)
@@ -1234,6 +1262,16 @@ else
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
 	$(INSTALL_DATA) neoraine.desktop $(prefix)/share/applications
 	$(INSTALL_DATA) neoraine.png $(prefix)/share/pixmaps
+endif
+ifdef DARWIN
+	@echo creating package for raine
+ifdef NEO
+	@cp neoraine.plist $(prefix)/Info.plist
+	@cp neocd.icns $(sharedir)
+else
+	@cp Info.plist $(prefix)
+	@cp new_logo.icns $(sharedir)
+endif
 endif
 
 install_dirs:
