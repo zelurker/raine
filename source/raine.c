@@ -238,6 +238,13 @@ int main(int argc,char *argv[])
 
    strcpy(dir_cfg.share_path,dir_cfg.exe_path); // avoid useless ifdefs...
 #endif
+#ifdef DARWIN
+   if ((s = strstr(argv[0],"MacOS/"))) {
+       // If lauched from a bundle the share path becomes the Ressources dir
+       strncpy(dir_cfg.share_path,argv[0],256);
+       strcpy(dir_cfg.share_path+(s - argv[0]),"Resources/");
+   }
+#endif
 
    // set config filename
 
@@ -321,6 +328,10 @@ int main(int argc,char *argv[])
 #ifdef RAINE_DEBUG
    debug_mode			= raine_get_config_int( "General",      "debug_mode",           0);
    open_debug();
+   char pwd[1024];
+   getcwd(pwd,1024);
+   print_debug("exe_path %s share_path %s pwd %s argv0 %s\n",dir_cfg.exe_path,
+	   dir_cfg.share_path,pwd,argv[0]);
 #endif
 
    raine_cfg.wibble		= raine_get_config_int( "General",      "wibble",               0);
