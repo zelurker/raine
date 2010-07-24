@@ -18,6 +18,7 @@ extern int neocd_id,allowed_speed_hacks;
 
 extern UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
 extern char neocd_path[1024],neocd_dir[1024];
+extern char neocd_bios_file[1024];
 extern int sfx_volume, music_volume;
 extern int capture_new_pictures;
 

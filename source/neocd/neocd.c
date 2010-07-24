@@ -33,6 +33,7 @@
 #include "sdl/gui.h"
 #endif
 #include "sdl/control_internal.h"
+#include "sdl/dialogs/fsel.h"
 #include "loadpng.h"
 #include "games/gun.h"
 
@@ -149,7 +150,10 @@ static struct DEF_INPUT_EMU list_emu[] =
 };
 
 #define FRAME_NEO  CPU_FRAME_MHz(12,60)
+// neocd_path points to a neocd image, neocd_dir is the last path used for
+// neocd files (which is not always an image path).
 char neocd_path[1024],neocd_dir[1024];
+char neocd_bios_file[1024];
 
 static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
 {
@@ -191,11 +195,35 @@ void setup_neocd_bios() {
     return;
   neocd_bios = malloc(0x80000);
   // unsigned char rom_fix_usage[4096];
-  if (!load_file(get_shared("neocd.bin"),neocd_bios,0x80000)) {
-    if (!load_zipped(get_shared("neocd.zip"), "neocd.bin", 0x80000, 0, neocd_bios, 1)) {
-      MessageBox("Error","Fatal Error: Could not load neocd.bin\nTried neocd.zip too","OK");
+  int ret = 0;
+  if (!*neocd_bios_file) {
+      if (exists(get_shared("neocd.bin")))
+	  strcpy(neocd_bios_file,get_shared("neocd.bin"));
+      else if (exists(get_shared("neocd.zip")))
+	  strcpy(neocd_bios_file,get_shared("neocd.zip"));
+  }
+  int tries = 0;
+  do {
+      if (*neocd_bios_file) {
+	  if (!stricmp(&neocd_bios_file[strlen(neocd_bios_file)-3],"zip")) {
+	      ret = load_zipped(neocd_bios_file, "neocd.bin", 0x80000, 0, neocd_bios, 1);
+	  } else {
+	      ret = load_file(neocd_bios_file,neocd_bios,0x80000);
+	  }
+      }
+      if (!ret && !tries) {
+	  char *exts[] = { "neocd.*", NULL };
+	  *neocd_bios_file = 0;
+	  fsel(dir_cfg.share_path,exts,neocd_bios_file,"Find Neocd bios");
+	  if (!*neocd_bios_file) break;
+	  tries++;
+      } else
+	  break;
+  } while (1);
+
+  if (!ret) {
+      MessageBox("Fatal error", "Find the neocd bios (neocd.bin).\nAsk Google if you can't find it !","OK");
       exit(1);
-    }
   }
 
   // Check BIOS validity

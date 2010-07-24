@@ -11,6 +11,7 @@
 #else
 #include <fnmatch.h>
 #endif
+#include "fsel.h"
 
 class TFileSel : public TMenu
 {
