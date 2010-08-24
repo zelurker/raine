@@ -152,6 +152,12 @@ int unz_locate_file_name(unzFile file, char *name)
 
 		if(!unzStringFileNameCompare(current,name,2))
 			return UNZ_OK;
+		char *base = strrchr(current,'/');
+		if (base) {
+		    base++;
+		    if(!unzStringFileNameCompare(base,name,2))
+			return UNZ_OK;
+		}
 
 		err = unzGoToNextFile(file);
 	}
