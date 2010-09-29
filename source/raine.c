@@ -408,6 +408,7 @@ int main(int argc,char *argv[])
 #endif
 #ifdef NEO
    strcpy(neocd_dir,    raine_get_config_string("neocd", "neocd_dir", dir_cfg.exe_path));
+   strcpy(neocd_bios_file, raine_get_config_string("neocd", "neocd_bios", ""));
    music_volume = raine_get_config_int("neocd","music_volume",DEFAULT_MUSIC_VOLUME);
    sfx_volume = raine_get_config_int("neocd","sfx_volume",DEFAULT_SFX_VOLUME);
    neocd_cdda_format = raine_get_config_int("neocd","cdda_format",AUDIO_S16LSB);
@@ -643,6 +644,7 @@ int main(int argc,char *argv[])
 #endif
 #ifdef NEO
    raine_set_config_string("neocd", "neocd_dir", neocd_dir);
+   raine_set_config_string("neocd", "neocd_bios", neocd_bios_file);
    raine_set_config_int("neocd","music_volume",music_volume);
    raine_set_config_int("neocd","sfx_volume",sfx_volume);
    raine_set_config_int("neocd","cdda_format",neocd_cdda_format);
