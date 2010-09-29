@@ -37,19 +37,6 @@ USE_BEZELS=1
 
 # end of user options, after this line the real thing starts...
 
-# This stupid DOIT stuff is just to be able to do a OR :
-# if defined(DARWIN) or !defined(NEO)
-# makefile is really limited sometimes...
-# this is needed because darwin is the only place where we install neoraine
-# and raine to separate directories, in this case we must always install
-# everything.
-ifdef DARWIN
-DOIT=1
-endif
-ifndef NEO
-DOIT=1
-endif
-
 # Try to detect mingw... If you want to build the dos and the mingw
 # version on the same system you should unset djdir before making
 # the mingw version.
@@ -64,6 +51,19 @@ ifeq ("$(shell uname)","Darwin")
 # Mac os X
 DARWIN=1
 OSTYPE=darwin
+endif
+
+# This stupid DOIT stuff is just to be able to do a OR :
+# if defined(DARWIN) or !defined(NEO)
+# makefile is really limited sometimes...
+# this is needed because darwin is the only place where we install neoraine
+# and raine to separate directories, in this case we must always install
+# everything.
+ifdef DARWIN
+DOIT=1
+endif
+ifndef NEO
+DOIT=1
 endif
 
 ifeq ("$(OSTYPE)","msys")
@@ -295,7 +295,11 @@ ifndef SDL
 endif
    RAINE_UNIX = 1
 
+ifdef VERBOSE
    INSTALL = /usr/bin/install
+else
+    INSTALL = @install
+endif
    INSTALL_BIN = $(INSTALL) -m 755
    INSTALL_DATA = $(INSTALL) -m 644
    RD = rmdir --ignore-fail-on-non-empty
@@ -1239,14 +1243,14 @@ vclean:
 install: install_dirs $(RAINE_LNG) $(RAINE_EXE)
 	strip $(RAINE_EXE)
 ifdef RAINE_UNIX
-	echo installing $(RAINE_EXE) in $(bindir)
+	@echo installing $(RAINE_EXE) in $(bindir)
 	$(INSTALL_BIN) $(RAINE_EXE) $(bindir)
 ifndef SDL
 	$(INSTALL_DATA) $(RAINE_DAT) $(rainedata)
 else
 
 ifdef DOIT
-	echo installing fonts in $(fonts_dir)
+	@echo installing fonts in $(fonts_dir)
 	$(INSTALL_DATA) fonts/Vera.ttf fonts/VeraMono.ttf fonts/font6x8.bin $(fonts_dir)
 	$(INSTALL_DATA) bitmaps/cursor.png bitmaps/raine_logo.png $(bitmaps_dir)
 #	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
@@ -1256,15 +1260,19 @@ ifndef NEO
 	sh -c "if [ -f hiscore.dat ]; then $(INSTALL_DATA) hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f history.dat ]; then $(INSTALL_DATA) history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
+ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
+endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
 else
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
+ifndef DARWIN
 	$(INSTALL_DATA) neoraine.desktop $(prefix)/share/applications
+endif
 	$(INSTALL_DATA) neoraine.png $(prefix)/share/pixmaps
 endif
 ifdef DARWIN
-	@echo creating package for raine
+	@echo creating package $(DESTDIR)
 ifdef NEO
 	@cp neoraine.plist $(prefix)/Info.plist
 	@cp neocd.icns $(sharedir)
@@ -1275,7 +1283,7 @@ endif
 endif
 
 install_dirs:
-	$(MD) -pv $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir)
+	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir)
 
 $(RAINE_LNG):
 	$(INSTALL_DATA) config/language/$@ $(langdir)
