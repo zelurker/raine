@@ -431,16 +431,17 @@ void SetupScreenBitmap(void)
    bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
 #endif
 #ifdef DARWIN
-   // I have a bug here which makes the overlay invisible if it doesn't start
-   // at the top of the screen !!!
-   // It seems so stupid that it's probably a bug of my video driver, but to
-   // be sure I'll put a fix here, it's better than a black screen...
-   area_overlay.x = destx2 = 0;
-   area_overlay.y = desty2 = 0;
-#else
+   if (overlays_workarounds) {
+       // I have a bug here which makes the overlay invisible if it doesn't start
+       // at the top of the screen !!!
+       // It seems so stupid that it's probably a bug of my video driver, but to
+       // be sure I'll put a fix here, it's better than a black screen...
+       area_overlay.x = destx2 = 0;
+       area_overlay.y = desty2 = 0;
+   }
+#endif
    area_overlay.x = destx2;
    area_overlay.y = desty2;
-#endif
    area_overlay.w = xxx2;
    area_overlay.h = yyy2;
    print_debug("area overlay %d %d %d %d with xxx %d yyy %d display %d %d ratio1 %g ratio2 %g\n",destx2,desty2,xxx2,yyy2,xxx,yyy,display_cfg.screen_x,display_cfg.screen_y,ratio1,ratio2);

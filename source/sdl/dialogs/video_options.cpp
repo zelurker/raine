@@ -92,6 +92,9 @@ static menu_item_t video_items[] =
   { "None", "90°", "180°", "270°" } },
 { "Flip screen", NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
   { "None", "Flip X", "Flip Y", "Flip XY" } },
+#ifdef DARWIN
+{ "Overlays workarounds", NULL, &overlays_workarounds, 2, { 0, 1}, {"No","Yes"}},
+#endif
 {  NULL },
 };
 

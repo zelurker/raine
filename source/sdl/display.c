@@ -14,6 +14,9 @@
 #include "winpos.h"
 
 int disp_screen_x, prefered_yuv_format;
+#ifdef DARWIN
+int overlays_workarounds = 1;
+#endif
 int disp_screen_y;
 BITMAP *screen;
 UINT32 videoflags;
@@ -37,11 +40,10 @@ void adjust_gui_resolution() {
     sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,sdl_screen->flags | SDL_ANYFORMAT);
   }
 #ifdef DARWIN
-  else if (sdl_overlay) {
+  else if (sdl_overlay && overlays_workarounds) {
       /* Huge bugs with overlays in darwin, at least on my computer.
        * The menu appears hidden under the overlay when returning to the gui.
        * This should fix it */
-      printf("reinit video\n");
       int w = sdl_screen->w, h = sdl_screen->h;
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
       SDL_InitSubSystem(SDL_INIT_VIDEO);
@@ -94,6 +96,9 @@ void display_read_config() {
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
    display_cfg.double_buffer = raine_get_config_int("display", "double_buffer", 1);
    prefered_yuv_format = raine_get_config_int("display","prefered_yuv_format",0);
+#ifdef DARWIN
+   overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
+#endif
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
 }
@@ -120,6 +125,9 @@ void display_write_config() {
    raine_set_config_int("Display", "auto_mode_change", display_cfg.auto_mode_change);
    raine_set_config_int("display", "fix_aspect_ratio", display_cfg.fix_aspect_ratio);
    raine_set_config_int("display", "prefered_yuv_format", prefered_yuv_format);
+#ifdef DARWIN
+   raine_set_config_int("display", "overlays_workarounds",overlays_workarounds);
+#endif
    raine_set_config_int("display", "fullscreen", display_cfg.fullscreen);
    raine_set_config_int("display", "double_buffer", display_cfg.double_buffer);
 
