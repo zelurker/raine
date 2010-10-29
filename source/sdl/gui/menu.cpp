@@ -1517,22 +1517,24 @@ void TMenu::execute() {
         handle_joystick(&event);
 	break;
       case SDL_VIDEORESIZE:
-        display_cfg.screen_x = event.resize.w;
-	display_cfg.screen_y = event.resize.h;
-	if (display_cfg.screen_x < 640)
-	  display_cfg.screen_x = 640;
-	if (display_cfg.screen_y < 480)
-	  display_cfg.screen_y = 480;
-        resize();
-	if (font) {
-	  delete font;
-	  font = NULL;
-	}
-	draw();
+	if (!display_cfg.fullscreen || display_cfg.auto_mode_change) {
+	    display_cfg.screen_x = event.resize.w;
+	    display_cfg.screen_y = event.resize.h;
+	    if (display_cfg.screen_x < 640)
+		display_cfg.screen_x = 640;
+	    if (display_cfg.screen_y < 480)
+		display_cfg.screen_y = 480;
+	    resize();
+	    if (font) {
+		delete font;
+		font = NULL;
+	    }
+	    draw();
 
-	SDL_initFramerate(&fpsm);
-	fpsm.use_cpu_frame_count = 0;
-	SDL_setFramerate(&fpsm,30);
+	    SDL_initFramerate(&fpsm);
+	    fpsm.use_cpu_frame_count = 0;
+	    SDL_setFramerate(&fpsm,30);
+	}
 	break;
       case SDL_VIDEOEXPOSE:
         /* Strangely the VideoExposeEvent does not give any region to be
