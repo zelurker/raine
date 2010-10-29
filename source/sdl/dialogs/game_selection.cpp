@@ -17,7 +17,7 @@
  *  to the big mess that was required to do that in allegro.
  *  It remains relatively easy to read for what it does. */
 
-static int game_list_mode,company,status = 1,category,driver;
+static int game_list_mode,company,status = 1,category,driver,clones = 1;
 
 // Number of options before the list of games
 // yes I know it's a hack, and not a very good one, but it's much easier
@@ -38,6 +38,7 @@ static menu_item_t options[] =
 { "Company", NULL, &company, }, // finished dynamically also
 { "Driver", NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
 { "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
+{ "Clones", NULL, &clones, 2, {0, 1 }, { "Without", "With" } },
 { "Rom directories...", &do_romdir },
 { NULL },
 };
@@ -120,6 +121,8 @@ class TGame_sel : public TMenu
       return 0;
     if (driver && !strstr(game_list[n]->source_file,drivers[driver-1]))
       return 0;
+    if (!clones && is_clone(game_list[n]))
+	return 0;
     return 1;
   }
 

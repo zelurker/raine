@@ -167,6 +167,19 @@ const char *parent_name() {
   return current_game->main_name;
 }
 
+int is_clone(struct GAME_MAIN *current_game) {
+  const DIR_INFO* dlist = current_game->dir_list;
+  char *dir;
+  while (dlist->maindir) {
+    dir = dlist->maindir;
+    if( IS_ROMOF(dir) || IS_CLONEOF(dir)){
+	return 1;
+    }
+    dlist++;
+  }
+  return 0;
+}
+
 int game_exists(GAME_MAIN **my_game_list,int num)
 {
    const DIR_INFO *dir_list;

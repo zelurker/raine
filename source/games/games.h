@@ -441,6 +441,7 @@ else return current game name
 */
 
 const char *parent_name();
+int is_clone(struct GAME_MAIN *current_game);
 
 GAME_MAIN *find_game(char *main_name); // in loadroms.c
 
