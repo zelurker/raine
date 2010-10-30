@@ -122,7 +122,7 @@ static int goto_url(int sel) {
 	sprintf(cmd,"www-browser \"%s\" &",menu[sel].values_list_label[0]);
 #else
 	// windows
-	sprintf(cmd,"open \"%s\"",menu[sel].values_list_label[0]);
+	sprintf(cmd,"explorer \"%s\"",menu[sel].values_list_label[0]);
 #endif
 	system(cmd);
     }
