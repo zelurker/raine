@@ -1,3 +1,4 @@
+#include <time.h>
 #include "raine.h"
 #include "blit.h"
 #include "palette.h"
@@ -261,7 +262,7 @@ static SDL_Surface *new_set_gfx_mode() {
      * to make this black border disappear, so I have to look directly in the
      * list of video modes... */
     int flags = videoflags;
-    if (sdl_screen) flags = sdl_screen->flags;
+    // if (sdl_screen) flags = sdl_screen->flags;
     SDL_Rect **modes = SDL_ListModes(NULL,flags);
     if (modes && modes != (SDL_Rect **)-1) {
       int diffx = 10000, diffy = 10000, selected = 0;
@@ -392,6 +393,7 @@ void ScreenChange(void)
 
 void resize() {
   // Minimum size
+  static int last_time;
   if (display_cfg.screen_x < 320)
     display_cfg.screen_x = 320;
   if (display_cfg.screen_y < 240)
@@ -419,10 +421,22 @@ void resize() {
     }
 
     /* Resize to keep ratio but always within the size chosen by the user */
-    if (ratio < 1)
-      display_cfg.screen_x = ratio * display_cfg.screen_y;
-    else
-      display_cfg.screen_y = display_cfg.screen_x / ratio;
+    if (time(NULL) - last_time > 1) {
+	/* this timing thing is to try to detect windows managers which block
+	 * resize commands, like compiz.
+	 * Basically when a window size matches the fullscreen size, it switches
+	 * its state to fullscreen. At this point the window can't be resized
+	 * anymore, any resize attempt will result in another resize message
+	 * sent immediately to restore it to fullscreen, which can create
+	 * a stupid loop. So this timing here is to try to detect this kind
+	 * of loop. Never understood this behavior anyway... */
+	if (ratio < 1)
+	    display_cfg.screen_x = ratio * display_cfg.screen_y;
+	else
+	    display_cfg.screen_y = display_cfg.screen_x / ratio;
+    } else
+	printf("blocking ratio correction\n");
+    last_time = time(NULL);
 
     if (!sdl_overlay || display_cfg.video_mode == 2) { // normal blits
       if (display_cfg.scanlines >= 2) {
