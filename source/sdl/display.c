@@ -508,6 +508,7 @@ void clear_raine_screen() {
   if (sdl_screen->flags & SDL_DOUBLEBUF) {
     SDL_Flip(sdl_screen);
     clear_bitmap(screen);
+    SDL_Flip(sdl_screen);
   } else {
     SDL_UpdateRect(sdl_screen,0,0,0,0);
   }
