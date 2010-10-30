@@ -8,6 +8,8 @@
 #include "history.h"
 #include "sdl/dialogs/messagebox.h"
 #include "gui/tfont.h"
+#include "control.h"
+#include "sdl/control_internal.h"
 
 class TAbout_menu : public TBitmap_menu
 {
@@ -105,10 +107,31 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
   TBitmap_menu::update_fg_layer(nb_to_update);
 }
 
+static menu_item_t *menu;
+
+static int goto_url(int sel) {
+#ifdef RAINE_UNIX
+    // at least when using compiz, you can't switch to any other window while
+    // in fullscreen mode, so it's better to leave it first !
+    if (display_cfg.fullscreen)
+	toggle_fullscreen();
+#endif
+    if (menu[sel].values_list_label[0]) {
+	char cmd[2048];
+#ifdef RAINE_UNIX
+	sprintf(cmd,"www-browser \"%s\" &",menu[sel].values_list_label[0]);
+#else
+	// windows
+	sprintf(cmd,"open \"%s\"",menu[sel].values_list_label[0]);
+#endif
+	system(cmd);
+    }
+    return 0;
+}
   
 static int about_game(int sel) {
   int nb_lines = 10;
-  menu_item_t *menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
+  menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
   int used = 0;
   unsigned int maxlen = sdl_screen->w/(min_font_size); // rough approximation
 
@@ -117,8 +140,44 @@ static int about_game(int sel) {
     char *nl;
     char previous;
     while ((nl = strchr(s,'\n'))) {
+      char *q;
       previous = *nl;
       *nl = 0;
+      if ((q=strstr(s,"<a href="))) {
+	  /* Basic parsing for urls. We assume everything is lowercase with
+	   * only 1 space and not more, and everything on 1 line of text.
+	   * I don't was a general html parser here, just something to parse
+	   * basic urls */
+	  q+=8;
+	  char *end;
+	  char old;
+	  if (*q == '"') {
+	      q++;
+	      end = strchr(q,'"');
+	  } else 
+	      end = strchr(q,' ');
+	  if (end) {
+	      old = *end;
+	      *end = 0;
+	      menu[used].values_list_label[0] = strdup(q);
+	      *end = old;
+	      q = end+1;
+	  } else
+	      menu[used].values_list_label[0] = NULL;
+	  q = strchr(q,'>');
+	  if (q) {
+	      q++;
+	      end = strstr(q,"</a>");
+	      if (end) {
+		  old = *end;
+		  *end = 0;
+		  menu[used].label = strdup(q);
+		  *end = old;
+		  menu[used].menu_func = &goto_url;
+		  goto end_loop;
+	      }
+	  }
+      }
       if (strlen(s) > maxlen) {
 	char start;
 	if (s > history) {
@@ -143,11 +202,13 @@ static int about_game(int sel) {
 	previous = *nl;
 	*nl = 0;
       }
-      char *q;
       while ((q = strchr(s,0x92)))
 	*q = 0x27; // fix the stupid non standard ' code from krosoft
+	
       menu[used].label = strdup(s);
       menu[used].menu_func = NULL;
+      menu[used].values_list_label[0] = NULL;
+end_loop:
       menu[used].value_int = NULL;
       used++;
       if (used == nb_lines) {
@@ -171,6 +232,8 @@ static int about_game(int sel) {
 
     for (int n=0; n<used; n++) {
       free((void*)menu[n].label);
+      if (menu[n].values_list_label[0])
+	  free(menu[n].values_list_label[0]);
     }
   }
   free(menu);
