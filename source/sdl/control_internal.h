@@ -51,7 +51,7 @@ extern char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 
 extern int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
-  analog_maxy,analog_normx,analog_normy;
+  analog_maxy,analog_normx,analog_normy, app_state;
 // analog_normx & normy are the normalized position of the stick after
 // calibration (between -16384 and +16384 inclusive).
 

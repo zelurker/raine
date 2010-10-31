@@ -60,6 +60,8 @@
 #include "neocd/neocd.h"
 #include "neocd/cdda.h"
 #endif
+#include "control.h"
+#include "control_internal.h"
 
 int GameSound;
 UINT8 *PCMROM;
@@ -483,7 +485,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 {
   int i,channel,diff;
   short *wstream = (short*) stream;
-  if (pause_sound) {
+  if (pause_sound || !(app_state & (SDL_APPMOUSEFOCUS|SDL_APPINPUTFOCUS))) {
+      /* silence the sound if the application looses focus.
+       * In windows for some reason you get some APPACTIVE event, but
+       * the app is never inactive. So we must test only the inputs bits here
+       * (linux does not pass APPACTIVE events, they don't seem to make much
+       * sense anyway, even in windows !). */
     return;
   }
   if (callback_busy)

@@ -63,7 +63,8 @@ char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 
 int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
-  analog_maxy,analog_normx,analog_normy;
+  analog_maxy,analog_normx,analog_normy, 
+  app_state = SDL_APPMOUSEFOCUS|SDL_APPINPUTFOCUS;
 // analog_normx & normy are the normalized position of the stick after
 // calibration (between -16384 and +16384 inclusive).
 Uint8 key[0x300];
@@ -1343,6 +1344,12 @@ static void handle_event(SDL_Event *event) {
       break;
     case SDL_QUIT:
       exit(0);
+    case SDL_ACTIVEEVENT:
+      if (event->active.gain)
+	      app_state |= event->active.state;
+      else
+	      app_state &= ~event->active.state;
+      break;
   }
 }
 
