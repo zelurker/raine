@@ -1349,6 +1349,9 @@ static void handle_event(SDL_Event *event) {
 	      app_state |= event->active.state;
       else
 	      app_state &= ~event->active.state;
+      if (! raine_cfg.req_pause_game && !(app_state & SDL_APPINPUTFOCUS))
+	  // lost input -> go to pause
+	      raine_cfg.req_pause_game = 1;
       break;
   }
 }
