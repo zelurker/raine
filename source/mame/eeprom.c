@@ -1,6 +1,7 @@
 #include "driver.h"
 #include "eeprom.h"
 #include "savegame.h"
+#include "debug.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -45,7 +46,7 @@ void logerror(const char *text, ...)
   va_list arg;
 
   va_start(arg, text);
-  vfprintf(stderr, text, arg);
+  print_debug( text, arg);
   va_end(arg);
 #endif
 }

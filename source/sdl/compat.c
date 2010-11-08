@@ -268,7 +268,7 @@ void sdl_create_overlay( int w, int h) {
   if (sdl_overlay && !sdl_overlay->hw_overlay && display_cfg.video_mode != 1) {
     SDL_FreeYUVOverlay(sdl_overlay);
     sdl_overlay = NULL;
-    fprintf(stderr,"no hardware support for YUY2 overlay\n");
+    print_debug("no hardware support for YUY2 overlay\n");
     return;
   } else if (sdl_overlay)
     print_debug("using YUV overlay\n");
