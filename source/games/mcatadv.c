@@ -315,7 +315,7 @@ static struct YM2610interface mcatadv_ym2610_interface =
 {
 	1,
 	16000000/2,	/* ? */
-	{ YM2203_VOL(100,180) },
+	{ (180 | (OSD_PAN_CENTER<<8) ) },
 	{ 0 },	/* A_r */
 	{ 0 },	/* B_r */
 	{ 0 },	/* A_w */
