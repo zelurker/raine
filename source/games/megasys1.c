@@ -1383,28 +1383,28 @@ static struct DIR_INFO plus_alpha_dirs[] =
 
 static struct ROM_INFO plus_alpha_roms[] =
 {
-   {  "pa-rom1.bin", 0x00020000, 0xa32fdcae, 0, 0, 0, },
-   {  "pa-rom2.bin", 0x00020000, 0x33244799, 0, 0, 0, },
-   {  "pa-rom3.bin", 0x00010000, 0x1b739835, 0, 0, 0, },
-   {  "pa-rom4.bin", 0x00010000, 0xff760e80, 0, 0, 0, },
-   {  "pa-rom5.bin", 0x00010000, 0xddc2739b, 0, 0, 0, },
-   {  "pa-rom6.bin", 0x00010000, 0xf6f8a167, 0, 0, 0, },
-   {  "pa-rom7.bin", 0x00020000, 0x9f5d800e, 0, 0, 0, },
-   {  "pa-rom8.bin", 0x00020000, 0xae007750, 0, 0, 0, },
-   {  "pa-rom9.bin", 0x00020000, 0x065364bd, 0, 0, 0, },
-   { "pa-rom10.bin", 0x00020000, 0x395df3b2, 0, 0, 0, },
-   { "pa-rom11.bin", 0x00020000, 0xeb709ae7, 0, 0, 0, },
-   { "pa-rom12.bin", 0x00020000, 0xcacbc350, 0, 0, 0, },
-   { "pa-rom13.bin", 0x00020000, 0xfad093dd, 0, 0, 0, },
-   { "pa-rom14.bin", 0x00020000, 0xd3676cd1, 0, 0, 0, },
-   { "pa-rom15.bin", 0x00020000, 0x8787735b, 0, 0, 0, },
-   { "pa-rom16.bin", 0x00020000, 0xa06b813b, 0, 0, 0, },
-   { "pa-rom17.bin", 0x00020000, 0xc6b38a4b, 0, 0, 0, },
-   { "pa-rom19.bin", 0x00010000, 0x39ef193c, 0, 0, 0, },
-   { "pa-rom20.bin", 0x00020000, 0x86c557a8, 0, 0, 0, },
-   { "pa-rom21.bin", 0x00020000, 0x81140a88, 0, 0, 0, },
-   { "pa-rom22.bin", 0x00020000, 0x97e39886, 0, 0, 0, },
-   { "pa-rom23.bin", 0x00020000, 0x0383fb65, 0, 0, 0, },
+	LOAD8_16(REGION_ROM1, 0, 0x020000,
+   "pa-rom2.bin", 0x33244799, "pa-rom1.bin", 0xa32fdcae ),
+	LOAD8_16(REGION_ROM1, 0x40000, 0x010000,
+    "pa-rom3.bin", 0x1b739835, "pa-rom4.bin", 0xff760e80 ),
+	LOAD8_16(REGION_ROM1, 0x60000, 0x010000,
+     "pa-rom5.bin", 0xddc2739b, "pa-rom6.bin", 0xf6f8a167 ),
+   {  "pa-rom7.bin", 0x00020000, 0x9f5d800e, REGION_SOUND2 },
+   {  "pa-rom8.bin", 0x00020000, 0xae007750, REGION_SOUND2, 0x20000 },
+   {  "pa-rom9.bin", 0x00020000, 0x065364bd, REGION_SOUND1 },
+   { "pa-rom10.bin", 0x00020000, 0x395df3b2, REGION_SOUND1, 0x20000 },
+   { "pa-rom11.bin", 0x00020000, 0xeb709ae7, REGION_GFX1 },
+   { "pa-rom12.bin", 0x00020000, 0xcacbc350, REGION_GFX1, 0x20000 },
+   { "pa-rom13.bin", 0x00020000, 0xfad093dd, REGION_GFX1, 0x40000 },
+   { "pa-rom14.bin", 0x00020000, 0xd3676cd1, REGION_GFX1, 0x60000 },
+   { "pa-rom15.bin", 0x00020000, 0x8787735b, REGION_GFX2 },
+   { "pa-rom16.bin", 0x00020000, 0xa06b813b, REGION_GFX2, 0x20000 },
+   { "pa-rom17.bin", 0x00020000, 0xc6b38a4b, REGION_GFX2, 0x40000 },
+   { "pa-rom19.bin", 0x00010000, 0x39ef193c, REGION_GFX4 },
+   { "pa-rom20.bin", 0x00020000, 0x86c557a8, REGION_GFX3 },
+   { "pa-rom21.bin", 0x00020000, 0x81140a88, REGION_GFX3, 0x20000 },
+   { "pa-rom22.bin", 0x00020000, 0x97e39886, REGION_GFX3, 0x40000 },
+   { "pa-rom23.bin", 0x00020000, 0x0383fb65, REGION_GFX3, 0x60000 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -2167,7 +2167,7 @@ int MS1DecodeFG0(UINT8 *src, UINT32 size)
    UINT32 ta,tb;
 
    /* Temporary fix to convert to regions : pass the region directly... */
-   int region = (int)src;
+   UINT32 region = (UINT32)src;
    if (region < REGION_MAX)
 	   src = load_region[region];
 
@@ -2192,7 +2192,7 @@ int MS1DecodeSPR(UINT8 *src, UINT32 size)
    UINT32 ta,tb;
 
    if(!(GFX_SPR=AllocateMem(size<<1))) return(0);
-   int region = (int)src;
+   UINT32 region = (UINT32)src;
    if (region < REGION_MAX)
 	   src = load_region[region];
 
@@ -2226,7 +2226,7 @@ int MS1DecodeBG1(UINT8 *src, UINT32 size)
 
    if(!(GFX_BG1=AllocateMem(0x100000))) return(0);
    memset(GFX_BG1,0x00,0x100000);
-   int region = (int)src;
+   UINT32 region = (UINT32)src;
    if (region < REGION_MAX)
 	   src = load_region[region];
 
@@ -2258,7 +2258,7 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
 
    if(!(GFX_BG0=AllocateMem(0x100000))) return(0);
    memset(GFX_BG0,0x00,0x100000);
-   int region = (int)src;
+   UINT32 region = (UINT32)src;
    if (region < REGION_MAX)
 	   src = load_region[region];
 
@@ -3196,67 +3196,21 @@ void LoadPlusAlpha(void)
 
    romset=6; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
-   if(!(RAM=AllocateMem(0x60000))) return;
+   if(!(RAM=AllocateMem(0x40000))) return;
 
-   if(!load_rom("pa-rom19.bin", RAM, 0x10000)) return;                // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x10000))return;
+   if(!MS1DecodeFG0(REGION_GFX4, 0x10000))return;
 
-   if(!load_rom("pa-rom20.bin", ROM+0x00000, 0x20000)) return;        // 16x16 SPRITES
-   if(!load_rom("pa-rom21.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("pa-rom22.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("pa-rom23.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeSPR(ROM,0x80000))return;
+   if(!MS1DecodeSPR(REGION_GFX3,0x80000))return;
 
-   if(!load_rom("pa-rom15.bin", ROM+0x00000, 0x20000)) return;        // 16x16 TILES
-   if(!load_rom("pa-rom16.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("pa-rom17.bin", ROM+0x40000, 0x20000)) return;
-   if(!MS1DecodeBG1(ROM,0x60000))return;
+   if(!MS1DecodeBG1(REGION_GFX2,0x60000))return;
 
-   if(!load_rom("pa-rom11.bin", ROM+0x00000, 0x20000)) return;        // 16x16 TILES
-   if(!load_rom("pa-rom12.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("pa-rom13.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("pa-rom14.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeBG0(ROM,0x80000))return;
+   if(!MS1DecodeBG0(REGION_GFX1,0x80000))return;
 
-   if(!load_rom("pa-rom2.bin", RAM, 0x20000)) return;         // MAIN 68000
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom("pa-rom1.bin", RAM, 0x20000)) return;
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
-   DecodePlusAlpha(ROM);                                                        // Deprotection
-
-   if(!load_rom("pa-rom3.bin", RAM, 0x10000)) return;         // MAIN 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x40000]=RAM[ta];
-   }
-   if(!load_rom("pa-rom4.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x40001]=RAM[ta];
-   }
-
-   if(!load_rom("pa-rom5.bin", RAM, 0x10000)) return;         // SUB 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60000]=RAM[ta];
-   }
-   if(!load_rom("pa-rom6.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60001]=RAM[ta];
-   }
+   DecodePlusAlpha(ROM);                                      // Deprotection
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "pa-rom9.bin", PCMROM+0x00000,0x20000)) return;
-   if(!load_rom( "pa-rom10.bin",PCMROM+0x20000,0x20000)) return;
-   if(!load_rom( "pa-rom7.bin", PCMROM+0x40000,0x20000)) return;
-   if(!load_rom( "pa-rom8.bin", PCMROM+0x60000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 7;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
