@@ -100,24 +100,24 @@ static struct ROM_INFO superg_roms[] =
 static struct DSW_DATA dsw_data_frogger_1[] =
 {
   { MSG_LIVES, 0x03, 4 },
-  { "3", 	0x00, 0x00 },
-  { "5", 	0x01, 0x00 },
-  { "7", 	0x02, 0x00 },
-  { "256 (Cheat)", 	0x03, 0x00 },
-  { NULL, 0, 0}
+  { "3", 	0x00},
+  { "5", 	0x01},
+  { "7", 	0x02},
+  { "256 (Cheat)", 	0x03},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_frogger_2[] =
 {
   { MSG_COINAGE, 0x06, 4 },
-  { "A 2/1 B 2/1 C 2/1", 	0x02, 0x00 },
-  { "A 2/1 B 1/3 C 2/1", 	0x04, 0x00 },
-  { "A 1/1 B 1/1 C 1/1", 	0x00, 0x00 },
-  { "A 1/1 B 1/6 C 1/1", 	0x06, 0x00 },
+  { "A 2/1 B 2/1 C 2/1", 	0x02},
+  { "A 2/1 B 1/3 C 2/1", 	0x04},
+  { "A 1/1 B 1/1 C 1/1", 	0x00},
+  { "A 1/1 B 1/6 C 1/1", 	0x06},
   { MSG_CABINET, 0x08, 2 },
-  { MSG_UPRIGHT, 	0x00, 0x00 },
-  { MSG_TABLE, 	0x08, 0x00 },
-  { NULL, 0, 0}
+  { MSG_UPRIGHT, 	0x00},
+  { MSG_TABLE, 	0x08},
+  { NULL, 0}
 };
 
 static struct DSW_INFO frogger_dsw[] =
@@ -130,39 +130,39 @@ static struct DSW_INFO frogger_dsw[] =
 static struct DSW_DATA dsw_data_galaxian_0[] =
 {
   { MSG_CABINET, 0x20, 2 },
-  { MSG_UPRIGHT, 0x00, 0x00 },
-  { MSG_TABLE, 0x20, 0x00 },
+  { MSG_UPRIGHT, 0x00},
+  { MSG_TABLE, 0x20},
   { MSG_SERVICE, 0x40,2 },
-  { MSG_OFF, 0,0 },
-  { MSG_ON, 0x40,0 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0},
+  { MSG_ON, 0x40},
+  { NULL, 0}
 };
 
 
 static struct DSW_DATA dsw_data_galaxian_1[] =
 {
   { MSG_COINAGE, 0xc0, 4 },
-  { MSG_2COIN_1PLAY, 0x40, 0x00 },
-  { MSG_1COIN_1PLAY, 0x00, 0x00 },
-  { MSG_1COIN_2PLAY, 0x80, 0x00 },
-  { MSG_FREE_PLAY, 0xc0, 0x00 },
-  { NULL, 0, 0}
+  { MSG_2COIN_1PLAY, 0x40},
+  { MSG_1COIN_1PLAY, 0x00},
+  { MSG_1COIN_2PLAY, 0x80},
+  { MSG_FREE_PLAY, 0xc0},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_galaxian_2[] =
 {
   { MSG_EXTRA_LIFE, 0x03, 4 },
-  { "7000", 0x00, 0x00 },
-  { "10000", 0x01, 0x00 },
-  { "12000", 0x02, 0x00 },
-  { "20000", 0x03, 0x00 },
+  { "7000", 0x00},
+  { "10000", 0x01},
+  { "12000", 0x02},
+  { "20000", 0x03},
   { MSG_LIVES, 0x04, 2 },
-  { "2", 0x00, 0x00 },
-  { "3", 0x04, 0x00 },
+  { "2", 0x00},
+  { "3", 0x04},
   { MSG_UNUSED, 0x08, 2 },
-  { MSG_OFF, 0x00, 0x00 },
-  { MSG_ON, 0x08, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x00},
+  { MSG_ON, 0x08},
+  { NULL, 0}
 };
 
 static struct DSW_INFO galaxian_dsw[] =
@@ -176,17 +176,17 @@ static struct DSW_INFO galaxian_dsw[] =
 static struct DSW_DATA dsw_data_superg_0[] =
 {
   { MSG_EXTRA_LIFE, 0x03, 4 },
-  { "4000", 0x01, 0x00 },
-  { "5000", 0x02, 0x00 },
-  { "7000", 0x03, 0x00 },
-  { MSG_UNKNOWN, 0x00, 0x00 },
+  { "4000", 0x01},
+  { "5000", 0x02},
+  { "7000", 0x03},
+  { MSG_UNKNOWN, 0x00},
   { MSG_LIVES, 0x04, 2 },
-  { "3", 0x00, 0x00 },
-  { "5", 0x04, 0x00 },
+  { "3", 0x00},
+  { "5", 0x04},
   { MSG_UNUSED, 0x08, 2 },
-  { MSG_OFF, 0x00, 0x00 },
-  { MSG_ON, 0x08, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x00},
+  { MSG_ON, 0x08},
+  { NULL, 0}
 };
 
 static struct DSW_INFO superg_dsw[] =

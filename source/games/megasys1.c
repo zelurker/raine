@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*                                                                            */
 /*                        JALECO MEGA SYSTEM-1/1B/1C                          */
-/*                        ------------------------                          */
+/*                        --------------------------                          */
 /*   CPU: 68000                                                               */
 /* SOUND: 68000 YM2151 M6295x2                                                */
 /* VIDEO: 256x224 JALECO CUSTOM <3xBG0 1xSPR+CHAIN>                           */
@@ -100,20 +100,18 @@ static struct DIR_INFO _64th_street_dirs[] =
 
 static struct ROM_INFO _64th_street_roms[] =
 {
-  { "64th_03.rom", 0x040000, 0xed6c6942 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "64th_02.rom", 0x040000, 0x0621ed1d , REGION_ROM1, 0x000001, LOAD_8_16 },
+	LOAD8_16(REGION_ROM1, 0, 0x040000,
+			"64th_03.rom", 0xed6c6942, "64th_02.rom", 0x0621ed1d),
   // CPU 2
-  { "64th_08.rom", 0x010000, 0x632be0c1 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "64th_07.rom", 0x010000, 0x13595d01 , REGION_ROM1, 0x080001, LOAD_8_16 },
-   {  "64th_01.rom", 0x00080000, 0x06222f90, 0, 0, 0, },
-   {  "64th_04.rom", 0x00080000, 0x98f83ef6, 0, 0, 0, },
-   {  "64th_05.rom", 0x00080000, 0xa89a7020, 0, 0, 0, },
-   {  "64th_06.rom", 0x00080000, 0x2bfcdc75, 0, 0, 0, },
-   {  "64th_09.rom", 0x00020000, 0xa4a97db4, 0, 0, 0, },
-   {  "64th_10.rom", 0x00040000, 0xa3390561, 0, 0, 0, },
-   {  "64th_11.rom", 0x00020000, 0xb0b8a65c, 0, 0, 0, },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
+   {  "64th_01.rom", 0x00080000, 0x06222f90, REGION_GFX1, },
+   {  "64th_06.rom", 0x00080000, 0x2bfcdc75, REGION_GFX2, },
+   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX3, },
+   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX3, 0x80000 },
+   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX4, },
+   {  "64th_11.rom", 0x00020000, 0xb0b8a65c, REGION_SOUND1, },
+   {  "64th_10.rom", 0x00040000, 0xa3390561, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -144,10 +142,33 @@ static struct INPUT_INFO megasys_1_inputs[] =
    { 0,                   NULL,                    0,        0,    0            },
 };
 
-static struct DSW_DATA dsw_data_64street_0[] =
+static struct DSW_DATA dsw_data_coinage_8bits[] =
 {
-   COINAGE_8BITS
-   { NULL,                    0,    0,   },
+   { MSG_COIN1,               0x0f, 0x0b },
+   { MSG_4COIN_1PLAY,         0x07 },
+   { MSG_3COIN_1PLAY,         0x08 },
+   { MSG_2COIN_1PLAY,         0x09 },
+   { MSG_1COIN_1PLAY,         0x0f },
+   { MSG_2COIN_3PLAY,         0x06 },
+   { MSG_1COIN_2PLAY,         0x0e },
+   { MSG_1COIN_3PLAY,         0x0d },
+   { MSG_1COIN_4PLAY,         0x0c },
+   { MSG_1COIN_5PLAY,         0x0b },
+   { MSG_1COIN_6PLAY,         0x0a },
+   { MSG_FREE_PLAY,           0x00 },
+   { MSG_COIN2,               0xf0, 0x0b },
+   { MSG_4COIN_1PLAY,         0x70 },
+   { MSG_3COIN_1PLAY,         0x80 },
+   { MSG_2COIN_1PLAY,         0x90 },
+   { MSG_1COIN_1PLAY,         0xf0 },
+   { MSG_2COIN_3PLAY,         0x60 },
+   { MSG_1COIN_2PLAY,         0xe0 },
+   { MSG_1COIN_3PLAY,         0xd0 },
+   { MSG_1COIN_4PLAY,         0xc0 },
+   { MSG_1COIN_5PLAY,         0xb0 },
+   { MSG_1COIN_6PLAY,         0xa0 },
+   { MSG_FREE_PLAY,           0x00 },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_64street_1[] =
@@ -174,12 +195,12 @@ static struct DSW_DATA dsw_data_64street_1[] =
    { MSG_SERVICE,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 struct DSW_INFO _64th_street_dsw[] =
 {
-   { 0x010007, 0xFF, dsw_data_64street_0 },
+   { 0x010007, 0xFF, dsw_data_coinage_8bits },
    { 0x010006, 0xBD, dsw_data_64street_1 },
    { 0,        0,    NULL,      },
 };
@@ -219,8 +240,8 @@ static struct OKIM6295interface m6295_interface =
    2,					// 1 chip
    { 30000,
      30000 },				// rate
-   { 0,
-     0 },		// rom list
+   { REGION_SOUND1,
+     REGION_SOUND2 },		// rom list
    { 100, 100 }, // volumes
 };
 
@@ -242,20 +263,18 @@ static struct DIR_INFO _64th_street_japanese_dirs[] =
 
 static struct ROM_INFO _64th_street_japanese_roms[] =
 {
-  { "91105-3.bin", 0x040000, 0xa211a83b , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "91105-2.bin", 0x040000, 0x27c1f436 , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+            "91105-3.bin",  0xa211a83b , "91105-2.bin",  0x27c1f436 ),
   // cpu 2
-  { "64th_08.rom", 0x010000, 0x632be0c1 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "64th_07.rom", 0x010000, 0x13595d01 , REGION_ROM1, 0x080001, LOAD_8_16 },
-   {  "64th_01.rom", 0x00080000, 0x06222f90, 0, 0, 0, },
-   {  "64th_04.rom", 0x00080000, 0x98f83ef6, 0, 0, 0, },
-   {  "64th_05.rom", 0x00080000, 0xa89a7020, 0, 0, 0, },
-   {  "64th_06.rom", 0x00080000, 0x2bfcdc75, 0, 0, 0, },
-   {  "64th_09.rom", 0x00020000, 0xa4a97db4, 0, 0, 0, },
-   {  "64th_10.rom", 0x00040000, 0xa3390561, 0, 0, 0, },
-   {  "64th_11.rom", 0x00020000, 0xb0b8a65c, 0, 0, 0, },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
+   {  "64th_01.rom", 0x00080000, 0x06222f90, REGION_GFX1, 0, LOAD_NORMAL, },
+   {  "64th_06.rom", 0x00080000, 0x2bfcdc75, REGION_GFX2, 0, LOAD_NORMAL, },
+   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX3, },
+   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX3, 0x80000 },
+   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX4, },
+   {  "64th_11.rom", 0x00020000, 0xb0b8a65c, REGION_ROM2, },
+   {  "64th_10.rom", 0x00040000, 0xa3390561, REGION_ROM2, 0x20000, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -267,15 +286,13 @@ static struct DIR_INFO astyanax_dirs[] =
 
 static struct ROM_INFO astyanax_roms[] =
 {
-  { "astyan2.bin", 0x20000, 0x1b598dcc , REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "astyan1.bin", 0x20000, 0x1a1ad3cf , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "astyan3.bin", 0x10000, 0x097b53a6 , REGION_ROM1, 0x40000, LOAD_8_16 },
-
-  { "astyan4.bin", 0x10000, 0x1e1cbdb2 , REGION_ROM1, 0x40001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "astyan2.bin",  0x1b598dcc , "astyan1.bin",  0x1a1ad3cf ),
+  LOAD8_16(  REGION_ROM1,  0x40000,  0x10000,
+            "astyan3.bin",  0x097b53a6 , "astyan4.bin",  0x1e1cbdb2 ),
   // cpu 2
-  { "astyan5.bin", 0x010000, 0x11c74045 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "astyan6.bin", 0x010000, 0xeecd4b16 , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "astyan5.bin",  0x11c74045 , "astyan6.bin",  0xeecd4b16 ),
    {  "astyan7.bin", 0x00020000, 0x319418cc, 0, 0, 0, },
    {  "astyan8.bin", 0x00020000, 0x5e5d2a22, 0, 0, 0, },
    {  "astyan9.bin", 0x00020000, 0xa10b3f17, 0, 0, 0, },
@@ -299,50 +316,50 @@ static struct ROM_INFO astyanax_roms[] =
 static struct DSW_DATA dsw_data_astyanax_0[] =
 {
    { MSG_COIN1,               0x07, 0x04 },
-   { MSG_4COIN_1PLAY,         0x00, 0x00 },
-   { MSG_3COIN_1PLAY,         0x04, 0x00 },
-   { MSG_2COIN_1PLAY,         0x02, 0x00 },
-   { MSG_1COIN_1PLAY,         0x07, 0x00 },
+   { MSG_4COIN_1PLAY,         0x00},
+   { MSG_3COIN_1PLAY,         0x04},
+   { MSG_2COIN_1PLAY,         0x02},
+   { MSG_1COIN_1PLAY,         0x07},
    { MSG_COIN2,               0x38, 0x04 },
-   { MSG_4COIN_1PLAY,         0x00, 0x00 },
-   { MSG_3COIN_1PLAY,         0x20, 0x00 },
-   { MSG_2COIN_1PLAY,         0x10, 0x00 },
-   { MSG_1COIN_1PLAY,         0x38, 0x00 },
+   { MSG_4COIN_1PLAY,         0x00},
+   { MSG_3COIN_1PLAY,         0x20},
+   { MSG_2COIN_1PLAY,         0x10},
+   { MSG_1COIN_1PLAY,         0x38},
    { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x40, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x40},
+   { MSG_ON,                  0x00},
    { MSG_TEST_MODE,           0x80, 0x02 },	// p1_start + p2_start to pause
-   { MSG_OFF,                 0x80, 0x00 },	// p2_start to advance one frame
-   { MSG_ON,                  0x00, 0x00 },	// up or down to open menu
-   { NULL,                    0,    0,   },
+   { MSG_OFF,                 0x80},	// p2_start to advance one frame
+   { MSG_ON,                  0x00},	// up or down to open menu
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_astyanax_1[] =
 {
    { MSG_UNKNOWN,             0x01, 0x02 },
-   { MSG_OFF,                 0x01, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x01},
+   { MSG_ON,                  0x00},
    { MSG_UNKNOWN,             0x02, 0x02 },
-   { MSG_OFF,                 0x02, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x02},
+   { MSG_ON,                  0x00},
    { MSG_EXTRA_LIFE,          0x04, 0x02 },
-   { "30k 70k..",             0x04, 0x00 },
-   { "50k 100k..",            0x00, 0x00 },
+   { "30k 70k..",             0x04},
+   { "50k 100k..",            0x00},
    { MSG_LIVES,               0x18, 0x04 },
-   { "2",                     0x08, 0x00 },
-   { "3",                     0x18, 0x00 },
-   { "4",                     0x10, 0x00 },
-   { "5",                     0x00, 0x00 },
+   { "2",                     0x08},
+   { "3",                     0x18},
+   { "4",                     0x10},
+   { "5",                     0x00},
    { MSG_DIFFICULTY,          0x20, 0x02 },
-   { MSG_NORMAL,              0x20, 0x00 },
-   { MSG_HARD,                0x00, 0x00 },
+   { MSG_NORMAL,              0x20},
+   { MSG_HARD,                0x00},
    { "1P/2P Control Flip",    0x40, 0x02 },
-   { MSG_OFF,                 0x40, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x40},
+   { MSG_ON,                  0x00},
    { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80, 0x00 },
-   { MSG_INVERT,              0x00, 0x00 },
-   { NULL,                    0,    0,   },
+   { MSG_NORMAL,              0x80},
+   { MSG_INVERT,              0x00},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO astyanax_dsw[] =
@@ -384,15 +401,13 @@ static struct DIR_INFO the_lord_of_king_dirs[] =
 
 static struct ROM_INFO the_lord_of_king_roms[] =
 {
-  { "lokj02.bin", 0x20000, 0x0d7f9b4a , REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "lokj01.bin", 0x20000, 0xbed3cb93 , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "lokj03.bin", 0x20000, 0xd8702c91 , REGION_ROM1, 0x40000, LOAD_8_16 },
-
-  { "lokj04.bin", 0x20000, 0xeccbf8c9 , REGION_ROM1, 0x40001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "lokj02.bin",  0x0d7f9b4a , "lokj01.bin",  0xbed3cb93 ),
+  LOAD8_16(  REGION_ROM1,  0x40000,  0x20000,
+            "lokj03.bin",  0xd8702c91 , "lokj04.bin",  0xeccbf8c9 ),
   // cpu 2
-  { "astyan5.bin", 0x010000, 0x11c74045 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "astyan6.bin", 0x010000, 0xeecd4b16 , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "astyan5.bin",  0x11c74045 , "astyan6.bin",  0xeecd4b16 ),
    {  "astyan7.bin", 0x00020000, 0x319418cc, 0, 0, 0, },
    {  "astyan8.bin", 0x00020000, 0x5e5d2a22, 0, 0, 0, },
    {  "astyan9.bin", 0x00020000, 0xa10b3f17, 0, 0, 0, },
@@ -422,13 +437,11 @@ static struct DIR_INFO avenging_spirit_dirs[] =
 
 static struct ROM_INFO avenging_spirit_roms[] =
 {
-  { "spirit05.rom", 0x40000, 0xb26a341a , REGION_ROM1, 0, LOAD_8_16 },
-
-  { "spirit06.rom", 0x40000, 0x609f71fe , REGION_ROM1, 1, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0,  0x40000,
+            "spirit05.rom",  0xb26a341a , "spirit06.rom",  0x609f71fe ),
   // cpu 2
-  { "spirit01.rom", 0x020000, 0xd02ec045 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "spirit02.rom", 0x020000, 0x30213390 , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x020000,
+            "spirit01.rom",  0xd02ec045 , "spirit02.rom",  0x30213390 ),
    { "spirit09.rom", 0x00020000, 0x0c37edf7, 0, 0, 0, },
    { "spirit10.rom", 0x00080000, 0x2b1180b3, 0, 0, 0, },
    { "spirit11.rom", 0x00080000, 0x7896f6b0, 0, 0, 0, },
@@ -438,43 +451,37 @@ static struct ROM_INFO avenging_spirit_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_DATA dsw_data_avspirit_0[] =
-{
-   COINAGE_8BITS
-   { NULL,                    0,    0,   },
-};
-
 static struct DSW_DATA dsw_data_avspirit_1[] =
 {
    { MSG_SCREEN,		      0x01, 0x02 },
-   { MSG_NORMAL,		      0x01, 0x00 },
-   { MSG_INVERT,		      0x00, 0x00 },
+   { MSG_NORMAL,		      0x01},
+   { MSG_INVERT,		      0x00},
    { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_OFF,                 0x02, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x02},
+   { MSG_ON,                  0x00},
    { MSG_CONTINUE_PLAY,       0x04, 0x02 },
-   { MSG_OFF,                 0x00, 0x00 },
-   { MSG_ON,                  0x04, 0x00 },
+   { MSG_OFF,                 0x00},
+   { MSG_ON,                  0x04},
    { MSG_DIFFICULTY,          0x18, 0x04 },
-   { MSG_EASY,                0x08, 0x00 },
-   { MSG_NORMAL,              0x18, 0x00 },
-   { MSG_HARD,                0x10, 0x00 },
-   { MSG_HARDEST,             0x00, 0x00 },
+   { MSG_EASY,                0x08},
+   { MSG_NORMAL,              0x18},
+   { MSG_HARD,                0x10},
+   { MSG_HARDEST,             0x00},
    { MSG_CABINET,             0x20, 0x02 },
-   { MSG_UPRIGHT,             0x20, 0x00 },
-   { MSG_TABLE,               0x00, 0x00 },
+   { MSG_UPRIGHT,             0x20},
+   { MSG_TABLE,               0x00},
    { MSG_TEST_MODE,           0x40, 0x02 },	// p1_start + p2_start to pause
-   { MSG_OFF,                 0x40, 0x00 },	// p2_start to advance one frame
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x40},	// p2_start to advance one frame
+   { MSG_ON,                  0x00},
    { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
-   { NULL,                    0,    0,   },
+   { MSG_OFF,                 0x80},
+   { MSG_ON,                  0x00},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO avenging_spirit_dsw[] =
 {
-   { 0x010007, 0xFF, dsw_data_avspirit_0 },
+   { 0x010007, 0xFF, dsw_data_coinage_8bits },
    { 0x010006, 0xFD, dsw_data_avspirit_1 },
    { 0,        0,    NULL,      },
 };
@@ -488,13 +495,11 @@ static struct DIR_INFO chimera_beast_dirs[] =
 
 static struct ROM_INFO chimera_beast_roms[] =
 {
-  { "prg3.bin", 0x040000, 0x70f1448f , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "prg2.bin", 0x040000, 0x821dbb85 , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+            "prg3.bin",  0x70f1448f , "prg2.bin",  0x821dbb85 ),
   // cpu 2
-  { "prg8.bin", 0x010000, 0xa682b1ca , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "prg7.bin", 0x010000, 0x83b9982d , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "prg8.bin",  0xa682b1ca , "prg7.bin",  0x83b9982d ),
    {       "b1.bin", 0x00080000, 0x29c0385e, 0, 0, 0, },
    {       "b2.bin", 0x00080000, 0x6e7f1778, 0, 0, 0, },
    {       "s1.bin", 0x00080000, 0xe4c2ac77, 0, 0, 0, },
@@ -529,19 +534,13 @@ static struct DSW_DATA dsw_data_chimerab_0[] =
    { MSG_SERVICE,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
-};
-
-static struct DSW_DATA dsw_data_chimerab_1[] =
-{
-   COINAGE_8BITS
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO chimera_beast_dsw[] =
 {
    { 0x010007, 0xBD, dsw_data_chimerab_0 },
-   { 0x010006, 0xFF, dsw_data_chimerab_1 },
+   { 0x010006, 0xFF, dsw_data_coinage_8bits },
    { 0,        0,    NULL,      },
 };
 
@@ -558,7 +557,7 @@ GAME( chimera_beast ,
    ExecuteMegaSystem2Frame,
    "chimerab",
    "Chimera Beast",
-   "ÉLÉÅÉâÉrÅ[ÉXÉg",
+   "‚L‚¸‚Î‚r¸[‚X‚g",
    COMPANY_ID_JALECO,
    NULL,
    1993,
@@ -575,12 +574,10 @@ static struct DIR_INFO cybattler_dirs[] =
 
 static struct ROM_INFO cybattler_roms[] =
 {
-  { "cb_03.rom", 0x040000, 0xbee20587 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "cb_02.rom", 0x040000, 0x2ed14c50 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "cb_08.rom", 0x010000, 0xbf7b3558 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "cb_07.rom", 0x010000, 0x85d219d7 , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+            "cb_03.rom",  0xbee20587 , "cb_02.rom",  0x2ed14c50 ),
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "cb_08.rom",  0xbf7b3558 , "cb_07.rom",  0x85d219d7 ),
    {   "cb_m01.rom", 0x00080000, 0x1109337f, 0, 0, 0, },
    {   "cb_m04.rom", 0x00080000, 0x0c91798e, 0, 0, 0, },
    {    "cb_02.rom", 0x00040000, 0x2ed14c50, 0, 0, 0, },
@@ -617,7 +614,7 @@ static struct DSW_DATA dsw_data_cybattler_0[] =
    { MSG_SERVICE,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_cybattler_1[] =
@@ -639,7 +636,7 @@ static struct DSW_DATA dsw_data_cybattler_1[] =
    { MSG_SCREEN,              0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO cybattler_dsw[] =
@@ -662,7 +659,7 @@ GAME( cybattler ,
    ExecuteMegaSystem2Frame,
    "cybattlr",
    "Cybattler",
-   "ÉTÉCÉoÉgÉâÅ[",
+   "‚T‚C‚o‚g‚Î¸[",
    COMPANY_ID_JALECO,
    NULL,
    1993,
@@ -680,13 +677,11 @@ static struct DIR_INFO earth_defence_force_dirs[] =
 
 static struct ROM_INFO earth_defence_force_roms[] =
 {
-  { "edf_05.rom", 0x40000, 0x105094d1 , REGION_ROM1, 0, LOAD_8_16 },
-
-  { "edf_06.rom", 0x40000, 0x94da2f0c , REGION_ROM1, 1, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0,  0x40000,
+            "edf_05.rom",  0x105094d1 , "edf_06.rom",  0x94da2f0c ),
   // cpu 2
-  { "edf_01.rom", 0x020000, 0x2290ea19 , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "edf_02.rom", 0x020000, 0xce93643e , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x020000,
+            "edf_01.rom",  0x2290ea19 , "edf_02.rom",  0xce93643e ),
    {   "edf_09.rom", 0x00020000, 0x96e38983, 0, 0, 0, },
    {  "edf_m01.rom", 0x00040000, 0x9149286b, 0, 0, 0, },
    {  "edf_m02.rom", 0x00040000, 0xfc4281d2, 0, 0, 0, },
@@ -705,7 +700,7 @@ static struct DSW_DATA dsw_data_edf_0[] =
    { MSG_SERVICE,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_edf_1[] =
@@ -733,7 +728,7 @@ static struct DSW_DATA dsw_data_edf_1[] =
    { MSG_SCREEN,              0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO earth_defence_force_dsw[] =
@@ -756,7 +751,7 @@ GAME( earth_defence_force ,
    ExecuteMegaSystem1Frame,
    "edf",
    "Earth Defence Force",
-   "ÇdÅDÇcÅDÇe",
+   "Èd¸DÈc¸DÈe",
    COMPANY_ID_JALECO,
    NULL,
    1991,
@@ -772,13 +767,11 @@ static struct DIR_INFO hachoo_dirs[] =
 
 static struct ROM_INFO hachoo_roms[] =
 {
-  { "hacho02.rom", 0x020000, 0x49489c27 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "hacho01.rom", 0x020000, 0x97fc9515 , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "hacho02.rom",  0x49489c27 , "hacho01.rom",  0x97fc9515 ),
   // cpu 2
-  { "hacho05.rom", 0x010000, 0x6271f74f , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "hacho06.rom", 0x010000, 0xdb9e743c , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "hacho05.rom",  0x6271f74f , "hacho06.rom",  0xdb9e743c ),
    {  "hacho08.rom", 0x00020000, 0x888a6df1, 0, 0, 0, },
    {  "hacho07.rom", 0x00020000, 0x06e6ca7f, 0, 0, 0, },
    {  "hacho09.rom", 0x00020000, 0xe9f35c90, 0, 0, 0, },
@@ -805,7 +798,7 @@ static struct DSW_DATA dsw_data_hachoo_0[] =
    { MSG_UNKNOWN,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_hachoo_1[] =
@@ -833,7 +826,7 @@ static struct DSW_DATA dsw_data_hachoo_1[] =
    { MSG_SCREEN,              0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO hachoo_dsw[] =
@@ -856,7 +849,7 @@ GAME( hachoo ,
    ExecuteMegaSystem1Frame,
    "hachoo",
    "Hachoo",
-   "˜jíÛ",
+   "îj∆õ",
    COMPANY_ID_JALECO,
    NULL,
    1989,
@@ -873,12 +866,10 @@ static struct DIR_INFO kick_off_dirs[] =
 
 static struct ROM_INFO kick_off_roms[] =
 {
-  { "kioff03.rom", 0x010000, 0x3b01be65 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "kioff01.rom", 0x010000, 0xae6e68a1 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "kioff09.rom", 0x010000, 0x1770e980 , REGION_ROM1, 0x020000, LOAD_8_16 },
-
-  { "kioff19.rom", 0x010000, 0x1b03bbe4 , REGION_ROM1, 0x020001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x010000,
+            "kioff03.rom",  0x3b01be65 , "kioff01.rom",  0xae6e68a1 ),
+  LOAD8_16(  REGION_ROM1,  0x020000,  0x010000,
+            "kioff09.rom",  0x1770e980 , "kioff19.rom",  0x1b03bbe4 ),
    {  "kioff07.rom", 0x00020000, 0xed649919, 0, 0, 0, },
    {  "kioff05.rom", 0x00020000, 0xe7232103, 0, 0, 0, },
    {  "kioff06.rom", 0x00020000, 0xa0b3cb75, 0, 0, 0, },
@@ -919,34 +910,34 @@ static struct DSW_DATA dsw_data_kick_off_0[] =
    { "Text",                  0x80, 0x02 },
    { "Japanese",              0x80 },
    { "English",               0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_kick_off_1[] =
 {
    { "Time",                  0x03, 0x04 },
-   { "3'",                    0x03, 0x00 },
-   { "4'",                    0x02, 0x00 },
-   { "5'",                    0x01, 0x00 },
-   { "6'",                    0x00, 0x00 },
+   { "3'",                    0x03},
+   { "4'",                    0x02},
+   { "5'",                    0x01},
+   { "6'",                    0x00},
    { MSG_UNKNOWN,             0x04, 0x02 },
-   { MSG_OFF,                 0x04, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x04},
+   { MSG_ON,                  0x00},
    { MSG_UNKNOWN,             0x08, 0x02 },
-   { MSG_OFF,                 0x08, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x08},
+   { MSG_ON,                  0x00},
    { MSG_DIFFICULTY,          0x30, 0x04 },
-   { MSG_EASY,                0x30, 0x00 },
-   { MSG_NORMAL,              0x20, 0x00 },
-   { MSG_HARD,                0x10, 0x00 },
-   { MSG_HARDEST,             0x00, 0x00 },
+   { MSG_EASY,                0x30},
+   { MSG_NORMAL,              0x20},
+   { MSG_HARD,                0x10},
+   { MSG_HARDEST,             0x00},
    { "Controls",              0x40, 0x02 },
-   { MSG_UNKNOWN,             0x40, 0x00 },
-   { "Joystick",              0x00, 0x00 },
+   { MSG_UNKNOWN,             0x40},
+   { "Joystick",              0x00},
    { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80, 0x00 },
-   { MSG_INVERT,              0x00, 0x00 },
-   { NULL,                    0,    0,   },
+   { MSG_NORMAL,              0x80},
+   { MSG_INVERT,              0x00},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO kick_off_dsw[] =
@@ -992,9 +983,8 @@ static struct ROM_INFO legend_of_makai_roms[] =
    {   "lom_05.rom", 0x00020000, 0xd04fc713, 0, 0, 0, },
    {   "lom_06.rom", 0x00020000, 0xf33b6eed, 0, 0, 0, },
    {   "lom_08.rom", 0x00010000, 0xbdb15e67, 0, 0, 0, },
-  { "lom_30.rom", 0x020000, 0xba6d65b8 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "lom_20.rom", 0x020000, 0x56a00dc2 , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "lom_30.rom",  0xba6d65b8 , "lom_20.rom",  0x56a00dc2 ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1007,7 +997,7 @@ static struct DSW_DATA dsw_data_legend_of_makai_0[] =
    { "Invulnerability",       0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_legend_of_makai_1[] =
@@ -1034,7 +1024,7 @@ static struct DSW_DATA dsw_data_legend_of_makai_1[] =
    { MSG_SCREEN,              0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO legend_of_makai_dsw[] =
@@ -1086,7 +1076,7 @@ GAME( legend_of_makai ,
    ExecuteMegaSystem1Frame,
    "lomakai",
    "Legend of Makai",
-   "ñÇä@ì`ê‡",
+   "˚ÈË@Ù`…Ö",
    COMPANY_ID_JALECO,
    NULL,
    1988,
@@ -1109,9 +1099,8 @@ static struct ROM_INFO makai_densetsu_roms[] =
    {   "lom_05.rom", 0x00020000, 0xd04fc713, 0, 0, 0, },
    {   "lom_06.rom", 0x00020000, 0xf33b6eed, 0, 0, 0, },
    {   "makaiden.8", 0x00010000, 0xa7f623f9, 0, 0, 0, },
-  { "makaiden.3a", 0x020000, 0x87cf81d1 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "makaiden.2a", 0x020000, 0xd40e0fea , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "makaiden.3a",  0x87cf81d1 , "makaiden.2a",  0xd40e0fea ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1128,7 +1117,7 @@ GAME( makai_densetsu ,
    ExecuteMegaSystem1Frame,
    "makaiden",
    "Makai Densetsu",
-   "ñÇä@ì`ê‡",
+   "˚ÈË@Ù`…Ö",
    COMPANY_ID_JALECO,
    NULL,
    1988,
@@ -1146,13 +1135,11 @@ static struct DIR_INFO p47_american_dirs[] =
 
 static struct ROM_INFO p47_american_roms[] =
 {
-  { "p47us3.bin", 0x020000, 0x022e58b8 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "p47us1.bin", 0x020000, 0xed926bd8 , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "p47us3.bin",  0x022e58b8 , "p47us1.bin",  0xed926bd8 ),
   // cpu 2
-  { "p47j_9.bin", 0x010000, 0xffcf318e , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "p47j_19.bin", 0x010000, 0xadb8c12e , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
    {  "p47j_12.bin", 0x00020000, 0x5268395f, 0, 0, 0, },
   { "p47us16.bin", 0x010000, 0x5a682c8f , REGION_GFX3, 0x000000, LOAD_NORMAL },
    {  "p47j_26.bin", 0x00020000, 0x4d07581a, 0, 0, 0, },
@@ -1178,7 +1165,7 @@ static struct DSW_DATA dsw_data_p47_0[] =
    { "Invulnerability",       0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_p47_1[] =
@@ -1205,7 +1192,7 @@ static struct DSW_DATA dsw_data_p47_1[] =
    { MSG_SCREEN,              0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO p47_dsw[] =
@@ -1226,12 +1213,11 @@ static struct DIR_INFO p47_japanese_dirs[] =
 
 static struct ROM_INFO p47_japanese_roms[] =
 {
-  { "p47j_3.bin", 0x020000, 0x11c655e5 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "p47j_1.bin", 0x020000, 0x0a5998de , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "p47j_3.bin",  0x11c655e5 , "p47j_1.bin",  0x0a5998de ),
   // cpu 2
-  { "p47j_9.bin", 0x010000, 0xffcf318e , REGION_ROM1, 0x060000, LOAD_8_16 },
-  { "p47j_19.bin", 0x010000, 0xadb8c12e , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
    {  "p47j_10.bin", 0x00020000, 0xb9d79c1e, 0, 0, 0, },
    {  "p47j_11.bin", 0x00020000, 0xfa0d1887, 0, 0, 0, },
    {  "p47j_12.bin", 0x00020000, 0x5268395f, 0, 0, 0, },
@@ -1257,9 +1243,8 @@ static struct DIR_INFO peek_a_boo_dirs[] =
 
 static struct ROM_INFO peek_a_boo_roms[] =
 {
-  { "j3", 0x020000, 0xf5f4cf33 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "j2", 0x020000, 0x7b3d430d , REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "j3",  0xf5f4cf33 , "j2",  0x7b3d430d ),
    {            "1", 0x00080000, 0x5a444ecf, 0, 0, 0, },
    {            "5", 0x00080000, 0x34fa07bb, 0, 0, 0, },
    {            "4", 0x00020000, 0xf037794b, 0, 0, 0, },
@@ -1301,7 +1286,7 @@ static struct DSW_DATA dsw_data_peekaboo_0[] =
    { MSG_SCREEN,         	0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_peekaboo_1[] =
@@ -1328,7 +1313,7 @@ static struct DSW_DATA dsw_data_peekaboo_1[] =
    { "Controls",              0x80, 0x02 },
    { "1",                     0x80 },
    { "2",                     0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO peek_a_boo_dsw[] =
@@ -1372,15 +1357,13 @@ static struct DIR_INFO phantasm_dirs[] =
 
 static struct ROM_INFO phantasm_roms[] =
 {
-  { "phntsm02.bin", 0x020000, 0xd96a3584 , REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "phntsm01.bin", 0x020000, 0xa54b4b87 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "phntsm03.bin", 0x010000, 0x1d96ce20 , REGION_ROM1, 0x040000, LOAD_8_16 },
-
-  { "phntsm04.bin", 0x010000, 0xdc0c4994 , REGION_ROM1, 0x040001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "phntsm02.bin",  0xd96a3584 , "phntsm01.bin",  0xa54b4b87 ),
+  LOAD8_16(  REGION_ROM1,  0x040000,  0x010000,
+            "phntsm03.bin",  0x1d96ce20 , "phntsm04.bin",  0xdc0c4994 ),
   // cpu 2
-  { "phntsm05.bin", 0x010000, 0x3b169b4a , REGION_ROM1, 0x080000, LOAD_8_16 },
-
-  { "phntsm06.bin", 0x010000, 0xdf2dfb2e , REGION_ROM1, 0x080001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
+            "phntsm05.bin",  0x3b169b4a , "phntsm06.bin",  0xdf2dfb2e ),
    { "spirit13.rom", 0x00040000, 0x05bc04d9, 0, 0, 0, },
    { "spirit14.rom", 0x00040000, 0x13be9979, 0, 0, 0, },
    { "spirit12.rom", 0x00080000, 0x728335d4, 0, 0, 0, },
@@ -1434,7 +1417,7 @@ static struct DSW_DATA dsw_data_plusalph_0[] =
    { "Freeze",                0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_plusalph_1[] =
@@ -1461,7 +1444,7 @@ static struct DSW_DATA dsw_data_plusalph_1[] =
    { MSG_SCREEN,         	0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO plus_alpha_dsw[] =
@@ -1484,7 +1467,7 @@ GAME( plus_alpha ,
    ExecuteMegaSystem1Frame,
    "plusalph",
    "Plus Alpha",
-   "ÉvÉâÉXÉAÉãÉtÉ@",
+   "‚v‚Î‚X‚A‚Ô‚t‚@",
    COMPANY_ID_JALECO,
    NULL,
    1989,
@@ -1502,15 +1485,13 @@ static struct DIR_INFO rodland_dirs[] =
 
 static struct ROM_INFO rodland_roms[] =
 {
-  { "rl_02.rom", 0x020000, 0xc7e00593 , REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "rl_01.rom", 0x020000, 0x2e748ca1 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "rl_03.rom", 0x010000, 0x62fdf6d7 , REGION_ROM1, 0x040000, LOAD_8_16 },
-
-  { "rl_04.rom", 0x010000, 0x44163c86 , REGION_ROM1, 0x040001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "rl_02.rom",  0xc7e00593 , "rl_01.rom",  0x2e748ca1 ),
+  LOAD8_16(  REGION_ROM1,  0x040000,  0x010000,
+            "rl_03.rom",  0x62fdf6d7 , "rl_04.rom",  0x44163c86 ),
   // cou 2
-  { "rl_05.rom", 0x010000, 0xc1617c28 , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "rl_06.rom", 0x010000, 0x663392b2 , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "rl_05.rom",  0xc1617c28 , "rl_06.rom",  0x663392b2 ),
   { "rl_23.rom", 0x80000, 0xac60e771 , REGION_GFX1, 0, LOAD_NORMAL },
 
   { "rl_18.rom", 0x080000, 0xf3b30ca6 , REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -1532,7 +1513,7 @@ static struct DSW_DATA dsw_data_rodland_0[] =
    { MSG_SERVICE,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_rodland_1[] =
@@ -1553,7 +1534,7 @@ static struct DSW_DATA dsw_data_rodland_1[] =
    { MSG_SCREEN,         	0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO rodland_dsw[] =
@@ -1584,16 +1565,14 @@ static struct DIR_INFO rodlandj_dirs[] =
 
 static struct ROM_INFO rodlandjb_roms[] =
 {
-  { "rl19.bin", 0x010000, 0x028de21f , REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "rl17.bin", 0x010000, 0x9c720046 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "rl20.bin", 0x010000, 0x3f536d07 , REGION_ROM1, 0x020000, LOAD_8_16 },
-  { "rl18.bin", 0x010000, 0x5aa61717 , REGION_ROM1, 0x020001, LOAD_8_16 },
-  { "rl_3.bin", 0x010000, 0xc5b1075f , REGION_ROM1, 0x040000, LOAD_8_16 },
-
-  { "rl_4.bin", 0x010000, 0x9ec61048 , REGION_ROM1, 0x040001, LOAD_8_16 },
-  { "rl02.bin", 0x010000, 0xd26eae8f , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "rl01.bin", 0x010000, 0x04cf24bc , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x010000,
+            "rl19.bin",  0x028de21f , "rl17.bin",  0x9c720046 ),
+  LOAD8_16(  REGION_ROM1,  0x020000,  0x010000,
+            "rl20.bin",  0x3f536d07 , "rl18.bin",  0x5aa61717 ),
+  LOAD8_16(  REGION_ROM1,  0x040000,  0x010000,
+            "rl_3.bin",  0xc5b1075f , "rl_4.bin",  0x9ec61048 ),
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "rl02.bin",  0xd26eae8f , "rl01.bin",  0x04cf24bc ),
   { "rl_23.rom", 0x80000, 0xac60e771 , REGION_GFX1, 0, LOAD_NORMAL },
 
   { "rl_18.rom", 0x080000, 0xf3b30ca6 , REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -1609,14 +1588,12 @@ static struct ROM_INFO rodlandjb_roms[] =
 
 static struct ROM_INFO rodlandj_roms[] =
 {
-  { "rl_2.bin", 0x020000, 0xb1d2047e , REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "rl_1.bin", 0x020000, 0x3c47c2a3 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "rl_3.bin", 0x010000, 0xc5b1075f , REGION_ROM1, 0x040000, LOAD_8_16 },
-
-  { "rl_4.bin", 0x010000, 0x9ec61048 , REGION_ROM1, 0x040001, LOAD_8_16 },
-  { "rl_05.rom", 0x010000, 0xc1617c28 , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "rl_06.rom", 0x010000, 0x663392b2 , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "rl_2.bin",  0xb1d2047e , "rl_1.bin",  0x3c47c2a3 ),
+  LOAD8_16(  REGION_ROM1,  0x040000,  0x010000,
+            "rl_3.bin",  0xc5b1075f , "rl_4.bin",  0x9ec61048 ),
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "rl_05.rom",  0xc1617c28 , "rl_06.rom",  0x663392b2 ),
   { "rl_14.bin", 0x080000, 0x8201e1bb , REGION_GFX1, 0x000000, LOAD_NORMAL },
 
   { "rl_18.rom", 0x080000, 0xf3b30ca6 , REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -1672,7 +1649,7 @@ static struct DSW_DATA dsw_data_saint_dragon_0[] =
    { MSG_UNKNOWN,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_saint_dragon_1[] =
@@ -1699,7 +1676,7 @@ static struct DSW_DATA dsw_data_saint_dragon_1[] =
    { MSG_SCREEN,         	0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO saint_dragon_dsw[] =
@@ -1722,7 +1699,7 @@ GAME( saint_dragon ,
    ExecuteMegaSystem1Frame,
    "stdragon",
    "Saint Dragon",
-   "ìVêπó¥",
+   "ÙV…π˘¥",
    COMPANY_ID_JALECO,
    NULL,
    1989,
@@ -1763,7 +1740,7 @@ static struct DSW_DATA dsw_data_soldam_0[] =
    { MSG_SERVICE,         	0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_soldam_1[] =
@@ -1790,7 +1767,7 @@ static struct DSW_DATA dsw_data_soldam_1[] =
    { MSG_SCREEN,              0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO soldam_dsw[] =
@@ -1868,7 +1845,7 @@ static struct DSW_DATA dsw_data_iganinju_0[] =
    { "Freeze",                0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_iganinju_1[] =
@@ -1895,7 +1872,7 @@ static struct DSW_DATA dsw_data_iganinju_1[] =
    { MSG_SCREEN,         	0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO iga_ninjyutsuden_dsw[] =
@@ -1918,7 +1895,7 @@ GAME( iga_ninjyutsuden ,
    ExecuteMegaSystem1Frame,
    "iganinju",
    "Iga Ninjyutsuden",
-   "à…âÍ˜Eèpì`",
+   "ÍêÎàîE≈pÙ`",
    COMPANY_ID_JALECO,
    NULL,
    1988,
@@ -1935,12 +1912,10 @@ static struct DIR_INFO shingen_dirs[] =
 
 static struct ROM_INFO shingen_roms[] =
 {
-  { "takeda2.bin", 0x020000, 0x6ddfc9f3 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "takeda1.bin", 0x020000, 0x1afc6b7d , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "takeda5.bin", 0x010000, 0xfbdc51c0 , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "takeda6.bin", 0x010000, 0x8fa65b69 , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "takeda2.bin",  0x6ddfc9f3 , "takeda1.bin",  0x1afc6b7d ),
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "takeda5.bin",  0xfbdc51c0 , "takeda6.bin",  0x8fa65b69 ),
    { "shing_07.rom", 0x00020000, 0xc37ecbdc, 0, 0, 0, },
    { "shing_08.rom", 0x00020000, 0x36d56c8c, 0, 0, 0, },
    { "takeda9.bin", 0x00020000, 0xdb7f3f4f, 0, 0, 0, },
@@ -1971,7 +1946,7 @@ static struct DSW_DATA dsw_data_shingen_0[] =
    { MSG_UNKNOWN,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_shingen_1[] =
@@ -1997,7 +1972,7 @@ static struct DSW_DATA dsw_data_shingen_1[] =
    { MSG_SCREEN,         	0x80, 0x02 },
    { MSG_NORMAL,              0x80 },
    { MSG_INVERT,              0x00 },
-   { NULL,                    0,    0,   },
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO shingen_dsw[] =
@@ -2018,12 +1993,10 @@ static struct DIR_INFO tshingna_dirs[] =
 
 static struct ROM_INFO tshingna_roms[] =
 {
-  { "shing_02.rom", 0x020000, 0xd9ab5b78 , REGION_ROM1, 0x000000, LOAD_8_16 },
-
-  { "shing_01.rom", 0x020000, 0xa9d2de20 , REGION_ROM1, 0x000001, LOAD_8_16 },
-  { "takeda5.bin", 0x010000, 0xfbdc51c0 , REGION_ROM1, 0x060000, LOAD_8_16 },
-
-  { "takeda6.bin", 0x010000, 0x8fa65b69 , REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "shing_02.rom",  0xd9ab5b78 , "shing_01.rom",  0xa9d2de20 ),
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+            "takeda5.bin",  0xfbdc51c0 , "takeda6.bin",  0x8fa65b69 ),
   { "takeda11.bin", 0x020000, 0xbf0b40a6 , REGION_GFX1, 0x000000, LOAD_NORMAL },
 
   { "shing_12.rom", 0x020000, 0x5e4adedb , REGION_GFX1, 0x020000, LOAD_NORMAL },
@@ -2193,6 +2166,11 @@ int MS1DecodeFG0(UINT8 *src, UINT32 size)
 {
    UINT32 ta,tb;
 
+   /* Temporary fix to convert to regions : pass the region directly... */
+   int region = (int)src;
+   if (region < REGION_MAX)
+	   src = load_region[region];
+
    if(!(GFX_FG0=AllocateMem(0x40000))) return(0);
    memset(GFX_FG0,0x00,0x40000);
 
@@ -2204,6 +2182,8 @@ int MS1DecodeFG0(UINT8 *src, UINT32 size)
 
    FG0_Mask = make_solid_mask_8x8(GFX_FG0, 0x1000);
 
+   if (region < REGION_MAX)
+	   FreeMem(src);
    return 1;
 }
 
@@ -2212,6 +2192,9 @@ int MS1DecodeSPR(UINT8 *src, UINT32 size)
    UINT32 ta,tb;
 
    if(!(GFX_SPR=AllocateMem(size<<1))) return(0);
+   int region = (int)src;
+   if (region < REGION_MAX)
+	   src = load_region[region];
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -2231,6 +2214,8 @@ int MS1DecodeSPR(UINT8 *src, UINT32 size)
    SPR_Mask = make_solid_mask_16x16(GFX_SPR, size/0x80);
 
    RenderSpr=0;
+   if (region < REGION_MAX)
+	   FreeMem(src);
 
    return 1;
 }
@@ -2241,6 +2226,9 @@ int MS1DecodeBG1(UINT8 *src, UINT32 size)
 
    if(!(GFX_BG1=AllocateMem(0x100000))) return(0);
    memset(GFX_BG1,0x00,0x100000);
+   int region = (int)src;
+   if (region < REGION_MAX)
+	   src = load_region[region];
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -2258,6 +2246,8 @@ int MS1DecodeBG1(UINT8 *src, UINT32 size)
    }
 
    BG1_Mask = make_solid_mask_16x16(GFX_BG1, 0x1000);
+   if (region < REGION_MAX)
+	   FreeMem(src);
 
    return 1;
 }
@@ -2268,6 +2258,9 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
 
    if(!(GFX_BG0=AllocateMem(0x100000))) return(0);
    memset(GFX_BG0,0x00,0x100000);
+   int region = (int)src;
+   if (region < REGION_MAX)
+	   src = load_region[region];
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -2284,6 +2277,8 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
       else{if((tb&0xFF)==8){tb-=8;}}
    }
 
+   if (region < REGION_MAX)
+	   FreeMem(src);
    BG0_Mask = make_solid_mask_16x16(GFX_BG0, 0x1000);
 
    return 1;
@@ -3609,33 +3604,19 @@ static void Load64thStreet(void)
 
    romset=9; spr_pri_needed=0;
 
-   if(!(TMP=AllocateMem(0x100000))) return;
+   if(!MS1DecodeFG0(REGION_GFX4,0x020000))return;
 
-   if(!load_rom("64th_09.rom", TMP, 0x20000)) return;         // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(TMP,0x020000))return;
+   if(!MS1DecodeSPR(REGION_GFX3,0x100000))return;
 
-   if(!load_rom("64th_05.rom",&TMP[0x00000],0x80000)) return; // 16x16 SPRITES
-   if(!load_rom("64th_04.rom",&TMP[0x80000],0x80000)) return; // 16x16 SPRITES
-   if(!MS1DecodeSPR(TMP,0x100000))return;
+   if(!MS1DecodeBG1(REGION_GFX2,0x080000))return;
 
-   if(!load_rom("64th_06.rom", TMP, 0x80000)) return;         // 16x16 TILES
-   if(!MS1DecodeBG1(TMP,0x080000))return;
-
-   if(!load_rom("64th_01.rom", TMP, 0x80000)) return;         // 16x16 TILES
-   if(!MS1DecodeBG0(TMP,0x080000))return;
-
-   FreeMem(TMP);
+   if(!MS1DecodeBG0(REGION_GFX1,0x080000))return;
 
    if(!(RAM=AllocateMem(0x80000))) return;
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "64th_11.rom", PCMROM+0x00000,0x20000)) return;
-   if(!load_rom( "64th_10.rom", PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 10;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3655,31 +3636,13 @@ static void Load64thStreet(void)
    AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
    AddMemFetch(-1, -1, NULL);
 
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddReadBW(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddRWBW(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddWriteWord(0x0C8000, 0x0C8001, MS2SoundWrite, NULL);               // SOUND
-   AddWriteWord(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
+   AddRWBW(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
 
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_starscream();
 
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
 
@@ -6074,7 +6037,7 @@ GAME( 64th_street ,
    ExecuteMegaSystem2Frame,
    "64street",
    "64th Street",
-   "ÇUÇS˜‘äX American",
+   "ÈUÈSî‘ËX American",
    COMPANY_ID_JALECO,
    NULL,
    1991,
@@ -6095,7 +6058,7 @@ GAME( 64th_street_japanese ,
    ExecuteMegaSystem2Frame,
    "64streej",
    "64th Street Japanese",
-   "ÇUÇS˜‘äX",
+   "ÈUÈSî‘ËX",
    COMPANY_ID_JALECO,
    NULL,
    1991,
@@ -6116,7 +6079,7 @@ GAME( astyanax ,
    ExecuteMegaSystem1Frame,
    "astyanax",
    "Astyanax",
-   "ÉUÅEÉçÅ[ÉhÅEÉIÉuÅEÉLÉìÉO American",
+   "‚U¸E‚Ï¸[‚h¸E‚I‚u¸E‚L‚Ù‚O American",
    COMPANY_ID_JALECO,
    NULL,
    1989,
@@ -6137,7 +6100,7 @@ GAME( the_lord_of_king ,
    ExecuteMegaSystem1Frame,
    "lordofk",
    "The Lord of King",
-   "ÉUÅEÉçÅ[ÉhÅEÉIÉuÅEÉLÉìÉO",
+   "‚U¸E‚Ï¸[‚h¸E‚I‚u¸E‚L‚Ù‚O",
    COMPANY_ID_JALECO,
    NULL,
    1988,
@@ -6158,7 +6121,7 @@ GAME( p47_american ,
    ExecuteMegaSystem1Frame,
    "p47",
    "P47",
-   "ÇoÇSÇV American",
+   "ÈoÈSÈV American",
    COMPANY_ID_JALECO,
    NULL,
    1988,
@@ -6179,7 +6142,7 @@ GAME( p47_japanese ,
    ExecuteMegaSystem1Frame,
    "p47j",
    "P47 Japanese",
-   "ÇoÇSÇV",
+   "ÈoÈSÈV",
    COMPANY_ID_JALECO,
    NULL,
    1988,
@@ -6203,7 +6166,7 @@ GAME( avenging_spirit ,
    ExecuteMegaSystem1Frame,
    "avspirit",
    "Avenging Spirit",
-   "ÉtÉ@ÉìÉ^ÉYÉÄ American",
+   "‚t‚@‚Ù‚^‚Y‚« American",
    COMPANY_ID_JALECO,
    NULL,
    1991,
@@ -6224,7 +6187,7 @@ GAME( phantasm ,
    ExecuteMegaSystem1Frame,
    "phantasm",
    "Phantasm",
-   "ÉtÉ@ÉìÉ^ÉYÉÄ",
+   "‚t‚@‚Ù‚^‚Y‚«",
    COMPANY_ID_JALECO,
    NULL,
    1990,
@@ -6245,7 +6208,7 @@ GAME( rodland ,
    ExecuteMegaSystem1Frame,
    "rodland",
    "Rodland",
-   "ÉçÉbÉhÉâÉìÉh American",
+   "‚Ï‚b‚h‚Î‚Ù‚h American",
    COMPANY_ID_JALECO,
    NULL,
    1990,
@@ -6266,7 +6229,7 @@ GAME( rodlandjb ,
    ExecuteMegaSystem1Frame,
    "rodlndjb",
    "Rodland Japanese bootleg",
-   "ÉçÉbÉhÉâÉìÉh",
+   "‚Ï‚b‚h‚Î‚Ù‚h",
    COMPANY_ID_JALECO,
    NULL,
    1990,
@@ -6287,7 +6250,7 @@ GAME( rodlandj ,
    ExecuteMegaSystem1Frame,
    "rodlandj",
    "Rodland Japanese",
-   "ÉçÉbÉhÉâÉìÉh",
+   "‚Ï‚b‚h‚Î‚Ù‚h",
    COMPANY_ID_JALECO,
    NULL,
    1990,

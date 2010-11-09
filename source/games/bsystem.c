@@ -23,8 +23,8 @@ static struct DIR_INFO quiz_sekai_wa_show_by_shobai_dirs[] =
 
 static struct ROM_INFO quiz_sekai_wa_show_by_shobai_roms[] =
 {
-   {   "d72-13.bin", 0x00080000, 0xa867759f, REGION_ROM1, 0x000000, LOAD_8_16, },
-   {   "d72-12.bin", 0x00080000, 0x522c09a7, REGION_ROM1, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
+              "d72-13.bin",  0xa867759f,   "d72-12.bin",  0x522c09a7),
    {   "d72-01.bin", 0x00200000, 0xb82b8830, 0, 0, 0, },
    {   "d72-02.bin", 0x00200000, 0xbf0da640, 0, 0, 0, },
    {   "d72-03.bin", 0x00200000, 0x1de257d0, 0, 0, 0, },
@@ -100,8 +100,8 @@ static struct DIR_INFO puzzle_bobble_b_system_dirs[] =
 
 static struct ROM_INFO puzzle_bobble_b_system_roms[] =
 {
-   {  "pb-1c18.bin", 0x00040000, 0x5de14f49, REGION_ROM1, 0x000000, LOAD_8_16, },
-   {   "pb-ic2.bin", 0x00040000, 0x2abe07d1, REGION_ROM1, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00040000,
+             "pb-1c18.bin",  0x5de14f49,   "pb-ic2.bin",  0x2abe07d1),
    {   "pb-ic9.bin", 0x00080000, 0x3253aac9, 0, 0, 0, },
    {  "pb-ic14.bin", 0x00080000, 0x55f90ea4, 0, 0, 0, },
    {  "pb-ic15.bin", 0x00100000, 0x0840cbc4, 0, 0, 0, },

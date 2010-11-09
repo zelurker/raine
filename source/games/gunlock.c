@@ -36,8 +36,8 @@ static struct ROM_INFO gun_lock_roms[] =
    {   "d66-18.rom", 0x00040000, 0x8418513e, 0, 0, 0, },
    {   "d66-19.rom", 0x00040000, 0x95731473, 0, 0, 0, },
    {   "d66-21.rom", 0x00040000, 0xbd0d60f2, 0, 0, 0, },
-   {   "d66-23.rom", 0x00040000, 0x57fb7c49, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d66-22.rom", 0x00040000, 0x83dd7f9b, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d66-23.rom",  0x57fb7c49,   "d66-22.rom",  0x83dd7f9b),
    {   "d66-24.rom", 0x00040000, 0x97816378, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -114,8 +114,8 @@ static struct ROM_INFO ray_force_roms[] =
    {   "d66-18.rom", 0x00040000, 0x8418513e, 0, 0, 0, },
    {   "d66-19.rom", 0x00040000, 0x95731473, 0, 0, 0, },
    {   "d66-21.rom", 0x00040000, 0xbd0d60f2, 0, 0, 0, },
-   {   "d66-23.rom", 0x00040000, 0x57fb7c49, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d66-22.rom", 0x00040000, 0x83dd7f9b, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d66-23.rom",  0x57fb7c49,   "d66-22.rom",  0x83dd7f9b),
    {  "gunlocku.35", 0x00040000, 0xe08653ee, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -167,8 +167,8 @@ static struct ROM_INFO ray_force_jp_roms[] =
    {   "d66-18.rom", 0x00040000, 0x8418513e, 0, 0, 0, },
    {   "d66-19.rom", 0x00040000, 0x95731473, 0, 0, 0, },
    {   "d66-21.rom", 0x00040000, 0xbd0d60f2, 0, 0, 0, },
-   {   "d66-23.rom", 0x00040000, 0x57fb7c49, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d66-22.rom", 0x00040000, 0x83dd7f9b, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d66-23.rom",  0x57fb7c49,   "d66-22.rom",  0x83dd7f9b),
    {    "d66-20.35", 0x00040000, 0x798f0254, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };

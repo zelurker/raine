@@ -23,8 +23,8 @@ static struct DIR_INFO space_invaders_95_dirs[] =
 static struct ROM_INFO space_invaders_95_roms[] =
 {
    {       "e06.05", 0x00200000, 0xf370ff15, 0, 0, 0, },
-   {       "e06.09", 0x00040000, 0x9bcafc87, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {       "e06.10", 0x00040000, 0xb752b61f, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+                  "e06.09",  0x9bcafc87,       "e06.10",  0xb752b61f),
    {       "e06.11", 0x00020000, 0x3fe550b9, 0, 0, 0, },
    {       "e06.12", 0x00020000, 0x06cbd72b, 0, 0, 0, },
    {       "e06.13", 0x00020000, 0xf506ba4b, 0, 0, 0, },

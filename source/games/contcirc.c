@@ -63,46 +63,46 @@ static struct INPUT_INFO continental_circus_inputs[] =
 static struct DSW_DATA dsw_data_contcirc_0[] =
 {
   { MSG_CABINET, 0x01, 2 },
-  { MSG_UPRIGHT, 0x01, 0x00 },
-  { "Cockpit", 0x00, 0x00 },	// analogue accelerator pedal
+  { MSG_UPRIGHT, 0x01},
+  { "Cockpit", 0x00},	// analogue accelerator pedal
   { MSG_UNKNOWN, 0x02, 2 },
-  { MSG_OFF, 0x02, 0x00 },
-  { MSG_ON, 0x00, 0x00 },
+  { MSG_OFF, 0x02},
+  { MSG_ON, 0x00},
   { MSG_SERVICE, 0x04,2 },
-  { MSG_ON, 0,0 },
-  { MSG_OFF, 0x04,0 },
+  { MSG_ON, 0},
+  { MSG_OFF, 0x04},
 	TAITO_Z_COINAGE_WORLD_8
   { MSG_DEMO_SOUND, 0x08, 2 },
-  { MSG_OFF, 0x00, 0x00 },
-  { MSG_ON, 0x08, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x00},
+  { MSG_ON, 0x08},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_contcirc_1[] =
 {
   { "Difficulty 1 (time/speed)", 0x03, 4 },
-  { MSG_EASY, 0x02, 0x00 },
-  { MSG_NORMAL, 0x03, 0x00 },
-  { MSG_HARD, 0x01, 0x00 },
-  { MSG_HARDEST, 0x00, 0x00 },
+  { MSG_EASY, 0x02},
+  { MSG_NORMAL, 0x03},
+  { MSG_HARD, 0x01},
+  { MSG_HARDEST, 0x00},
   { "Difficulty 2 (other cars)", 0x0c, 4 },
-  { MSG_EASY, 0x08, 0x00 },
-  { MSG_NORMAL, 0x0c, 0x00 },
-  { MSG_HARD, 0x04, 0x00 },
-  { MSG_HARDEST, 0x00, 0x00 },
+  { MSG_EASY, 0x08},
+  { MSG_NORMAL, 0x0c},
+  { MSG_HARD, 0x04},
+  { MSG_HARDEST, 0x00},
   { "Steering wheel", 0x10, 2 },
-  { "Free", 0x10, 0x00 },
-  { "Locked", 0x00, 0x00 },
+  { "Free", 0x10},
+  { "Locked", 0x00},
   { "Enable 3d alternate frames", 0x20, 2 },
-  { MSG_OFF, 0x00, 0x00 },
-  { MSG_ON, 0x20, 0x00 },
+  { MSG_OFF, 0x00},
+  { MSG_ON, 0x20},
   { MSG_UNKNOWN, 0x40, 2 },
-  { MSG_OFF, 0x40, 0x00 },
-  { MSG_ON, 0x00, 0x00 },
+  { MSG_OFF, 0x40},
+  { MSG_ON, 0x00},
   { MSG_UNKNOWN, 0x80, 2 },
-  { MSG_OFF, 0x80, 0x00 },
-  { MSG_ON, 0x00, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x80},
+  { MSG_ON, 0x00},
+  { NULL, 0}
 };
 
 static struct DSW_INFO continental_circus_dsw[] =
@@ -153,10 +153,10 @@ static struct ROM_INFO continental_circus_us_roms[] =
   { "b33-10.17", 0x80000, 0xe9ce03ab, REGION_SMP1, 0x80000, LOAD_NORMAL },
   { "b33-08.19", 0x80000, 0xcaa1c4c8, REGION_SMP2, 0x00000, LOAD_NORMAL },
    {  "b33_30", 0x00010000, 0xd8746234, 0, 0, 0, },
-  { "ic25", 0x20000, 0xf5c92e42, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "ic26", 0x20000, 0xe7c1d1fa, REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "ic35", 0x20000, 0x16522f2d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ic36", 0x20000, 0xd6741e33, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "ic25",  0xf5c92e42, "ic26",  0xe7c1d1fa),
+  LOAD8_16(  REGION_CPU1,  0x40000,  0x20000,
+            "ic35",  0x16522f2d, "ic36",  0xd6741e33),
    {  "b14-30", 0x00010000, 0xdccb0c7f, 0, 0, 0, },
    {       "b14-31", 0x00002000, 0x5c6b013d, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -179,14 +179,10 @@ static struct ROM_INFO continental_circus_roms[] =
   { "b33-10.17", 0x80000, 0xe9ce03ab, REGION_SMP1, 0x80000, LOAD_NORMAL },
   { "b33-08.19", 0x80000, 0xcaa1c4c8, REGION_SMP2, 0x00000, LOAD_NORMAL },
   { "b33-30.11", 0x10000, 0xd8746234, 0, 0, 0 },
-  { "ic25", 0x20000, 0xf5c92e42, REGION_ROM1, 0x00000, LOAD_8_16 },
-// this was bogus and has been removed.
-// someone hacked the copyright year from 1987 to 1989, and changed an unused byte from FF to F3 to keep
-// the checksum the same. There are no other differences.
-//  ROM_LOAD16_BYTE( "cc_26.bin", 0x00001, 0x20000, CRC(1345ebe6) SHA1(88b9cc8ba2f7061beb8f6b763583cd45b03bcea1) )
-  { "ic26", 0x20000, 0xe7c1d1fa, REGION_ROM1, 0x00001, LOAD_8_16 },
-   {  "ic35", 0x00020000, 0x16522f2d, REGION_ROM1, 0x40000, LOAD_8_16, },
-   {  "cc_36.bin", 0x00020000, 0xa1732ea5, REGION_ROM1, 0x40001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "ic25",  0xf5c92e42, "ic26",  0xe7c1d1fa),
+  LOAD8_16(  REGION_ROM1,  0x40000,  0x00020000,
+             "ic35",  0x16522f2d,  "cc_36.bin",  0xa1732ea5),
    {  "b14-30", 0x00010000, 0xdccb0c7f, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };

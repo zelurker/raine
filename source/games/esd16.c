@@ -12,8 +12,8 @@
 
 static struct ROM_INFO multchmp_roms[] =
 {
-  { "multchmp.u02", 0x040000, 0x7da8c0df, REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "multchmp.u03", 0x040000, 0x5dc62799, REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+            "multchmp.u02",  0x7da8c0df, "multchmp.u03",  0x5dc62799),
   { "multchmp.u06", 0x20000, 0x7c178bd7, REGION_ROM2, 0, LOAD_NORMAL },
   { "multchmp.u06", 0x20000, 0x7c178bd7, REGION_ROM2, 0x8000, LOAD_NORMAL },
   { "multchmp.u36", 0x040000, 0xd8f06fa8, REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -35,35 +35,34 @@ static struct ROM_INFO multchmp_roms[] =
 
 static struct ROM_INFO mchampdx_roms[] =
 {
-  { "esd2.cu02", 0x040000, 0x4cca802c, REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "esd1.cu03", 0x040000, 0x0af1cd0a, REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+            "esd2.cu02",  0x4cca802c, "esd1.cu03",  0x0af1cd0a),
   { "esd3.su06", 0x80000, 0x2c0c8813, REGION_ROM2, 0, LOAD_NORMAL },
   { "esd3.su06", 0x80000, 0x2c0c8813, REGION_ROM2, 0x8000, LOAD_NORMAL },
   { "rom.ju02", 0x200000, 0x7e87e332, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "rom.ju01", 0x200000, 0x1a749fc2, REGION_GFX1, 0x200000, LOAD_NORMAL },
-  { "esd5.ju07",0x080000, 0x6cc871cc, REGION_GFX1, 0x400000, LOAD_8_16 },
-/* Ignored : 	ROM_FILL( 0x500000, 0x100000, 0 ) */
-  { "esd5.ju07", 0x080000, 0x6cc871cc, REGION_GFX1, 0x500001, LOAD_8_16 },
-  { "rom.fu35", 0x200000, 0xba46f3dc, REGION_GFX2, 0x000000, LOAD_8_16 },
-  { "rom.fu34", 0x200000, 0x2895cf09, REGION_GFX2, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
+            "esd5.ju07",  0x6cc871cc, "esd5.ju07",  0x6cc871cc),
+  LOAD8_16(  REGION_GFX2,  0x000000,  0x200000,
+            "rom.fu35",  0xba46f3dc, "rom.fu34",  0x2895cf09),
   { "esd4.su10", 0x80000, 0x14c4a30d, REGION_SMP1, 0x00000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO hedpanic_roms[] =
 {
-  { "esd2", 0x040000, 0x8cccc691, REGION_ROM1, 0x000000, LOAD_8_16 },
-  { "esd1", 0x040000, 0xd8574925, REGION_ROM1, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+            "esd2",  0x8cccc691, "esd1",  0xd8574925),
   { "esd3", 0x80000, 0xc668d443, REGION_ROM2, 0, LOAD_NORMAL },
   { "esd3", 0x80000, 0xc668d443, REGION_ROM2, 0x8000, LOAD_NORMAL },
   { "esd6", 0x200000, 0x5858372c, REGION_GFX1, 0x200000, LOAD_NORMAL },
 	/* expand this to take up 0x200000 bytes too so we can decode it */
   { "esd7", 0x200000, 0x055d525f, REGION_GFX1, 0x000000, LOAD_NORMAL },
 /* Ignored : 	ROM_FILL( 0x500000, 0x100000, 0 ) */
-  { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x400000, LOAD_8_16 },
-  { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x500001, LOAD_8_16 },
-  { "esd8", 0x200000, 0x23aceb4f, REGION_GFX2, 0x000000, LOAD_8_16 },
-  { "esd9", 0x200000, 0x76b46cd2, REGION_GFX2, 0x000001, LOAD_8_16 },
+  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
+            "esd5",  0xbd785921, "esd5",  0xbd785921),
+  LOAD8_16(  REGION_GFX2,  0x000000,  0x200000,
+            "esd8",  0x23aceb4f, "esd9",  0x76b46cd2),
   { "esd4", 0x080000, 0x5692fe92, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -71,54 +70,54 @@ static struct ROM_INFO hedpanic_roms[] =
 static struct DSW_DATA dsw_data_multchmp_2[] =
 {
   { MSG_SERVICE, 0x0001,2 },
-  { MSG_ON, 0,0 },
-  { MSG_OFF, 0x0001,0 },
+  { MSG_ON, 0},
+  { MSG_OFF, 0x0001},
   { "Coinage Type", 0x0002, 1 },
-  { "1", 0x0002, 0x00 },
+  { "1", 0x0002},
   { MSG_DEMO_SOUND, 0x0004, 2 },
-  { MSG_OFF, 0x0004, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0004},
+  { MSG_ON, 0x0000},
   { MSG_SCREEN, 0x0008, 2 },
-  { MSG_OFF, 0x0008, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0008},
+  { MSG_ON, 0x0000},
   { MSG_COIN1, 0x0030, 4 },
-  { MSG_2COIN_1PLAY, 0x0010, 0x00 },
-  { MSG_1COIN_1PLAY, 0x0030, 0x00 },
-  { MSG_2COIN_3PLAY, 0x0000, 0x00 },
-  { MSG_1COIN_2PLAY, 0x0020, 0x00 },
+  { MSG_2COIN_1PLAY, 0x0010},
+  { MSG_1COIN_1PLAY, 0x0030},
+  { MSG_2COIN_3PLAY, 0x0000},
+  { MSG_1COIN_2PLAY, 0x0020},
   { MSG_COIN2, 0x00c0, 4 },
-  { MSG_2COIN_1PLAY, 0x0040, 0x00 },
-  { MSG_1COIN_1PLAY, 0x00c0, 0x00 },
-  { MSG_2COIN_3PLAY, 0x0000, 0x00 },
-  { MSG_1COIN_2PLAY, 0x0080, 0x00 },
-  { NULL, 0, 0}
+  { MSG_2COIN_1PLAY, 0x0040},
+  { MSG_1COIN_1PLAY, 0x00c0},
+  { MSG_2COIN_3PLAY, 0x0000},
+  { MSG_1COIN_2PLAY, 0x0080},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_multchmp_3[] =
 {
   { MSG_DIFFICULTY, 0x3, 4 },
-  { MSG_EASY, 0x2, 0x00 },
-  { MSG_NORMAL, 0x3, 0x00 },
-  { MSG_HARD, 0x1, 0x00 },
-  { MSG_HARDEST, 0x0, 0x00 },
+  { MSG_EASY, 0x2},
+  { MSG_NORMAL, 0x3},
+  { MSG_HARD, 0x1},
+  { MSG_HARDEST, 0x0},
   { MSG_LIVES, 0xc, 4 },
-  { "2", 0x0, 0x00 },
-  { "3", 0xc, 0x00 },
-  { "4", 0x8, 0x00 },
-  { "5", 0x4, 0x00 },
+  { "2", 0x0},
+  { "3", 0xc},
+  { "4", 0x8},
+  { "5", 0x4},
   { "Selectable Games", 0x10, 2 },
-  { "3", 0x10, 0x00 },
-  { "4", 0x0, 0x00 },
+  { "3", 0x10},
+  { "4", 0x0},
   { MSG_FREE_PLAY, 0x20, 2 },
-  { MSG_OFF, 0x20, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x20},
+  { MSG_ON, 0x0},
   { "Unknown 2-6", 0x40, 2 },
-  { MSG_OFF, 0x40, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x40},
+  { MSG_ON, 0x0},
   { "Unknown 2-7", 0x80, 2 },
-  { MSG_OFF, 0x80, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x80},
+  { MSG_ON, 0x0},
+  { NULL, 0}
 };
 
 static struct DSW_INFO multchmp_dsw[] =

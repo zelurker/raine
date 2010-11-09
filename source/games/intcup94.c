@@ -38,8 +38,8 @@ static struct ROM_INFO international_cup_94_roms[] =
    {   "d78-06", 0x00020000, 0x42db1d41, 0, 0, 0, },
    {   "d78-07", 0x00020000, 0x8525d990, 0, 0, 0, },
    {   "d78-11", 0x00020000, 0xbb9d2987, 0, 0, 0, },
-   {   "d78-08", 0x00020000, 0xa629d07c, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d78-09", 0x00020000, 0x1f0efe01, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00020000,
+              "d78-08",  0xa629d07c,   "d78-09",  0x1f0efe01),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

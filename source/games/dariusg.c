@@ -32,8 +32,8 @@ static struct ROM_INFO darius_gaiden_roms[] =
    {   "d87-10.bin", 0x00080000, 0x4149f66f, 0, 0, 0, },
    {   "d87-11.bin", 0x00080000, 0xf7bed18e, 0, 0, 0, },
    {   "d87-12.bin", 0x00080000, 0xde78f328, 0, 0, 0, },
-   {   "d87-13.bin", 0x00040000, 0x15b1fff4, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d87-14.bin", 0x00040000, 0xeecda29a, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d87-13.bin",  0x15b1fff4,   "d87-14.bin",  0xeecda29a),
    {   "d87-17.bin", 0x00200000, 0xe601d63e, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -74,8 +74,8 @@ static struct ROM_INFO darius_gaiden_extra_roms[] =
    { "dge_mpr1.bin", 0x00080000, 0xbc030f6f, 0, 0, 0, },
    { "dge_mpr2.bin", 0x00080000, 0x7be23e23, 0, 0, 0, },
    { "dge_mpr3.bin", 0x00080000, 0x1c1e24a7, 0, 0, 0, },
-   {   "d87-13.bin", 0x00040000, 0x15b1fff4, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d87-14.bin", 0x00040000, 0xeecda29a, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d87-13.bin",  0x15b1fff4,   "d87-14.bin",  0xeecda29a),
    {   "d87-17.bin", 0x00200000, 0xe601d63e, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };

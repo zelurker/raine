@@ -30,8 +30,8 @@ static struct DIR_INFO pirates_dirs[] =
 static struct ROM_INFO pirates_roms[] =
 {
 	/* 68000 Code (encrypted) */
-  { "r_449b.bin", 0x80000, 0x224aeeda, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "l_5c1e.bin", 0x80000, 0x46740204, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+            "r_449b.bin",  0x224aeeda, "l_5c1e.bin",  0x46740204),
    /* GFX (encrypted) */
   { "p4_4d48.bin", 0x080000, 0x89fda216, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "p2_5d74.bin", 0x080000, 0x40e069b4, REGION_GFX1, 0x080000, LOAD_NORMAL },
@@ -58,8 +58,8 @@ static struct DIR_INFO genix_dirs[] =
 static struct ROM_INFO genix_roms[] =
 {
 	/* 68000 Code (encrypted) */
-  { "1.15", 0x80000, 0xd26abfb0, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "2.16", 0x80000, 0xa14a25b4, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+            "1.15",  0xd26abfb0, "2.16",  0xa14a25b4),
    /* GFX (encrypted) */
   { "7.34", 0x040000, 0x58da8aac, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "9.35", 0x040000, 0x96bad9a8, REGION_GFX1, 0x080000, LOAD_NORMAL },

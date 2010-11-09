@@ -503,8 +503,8 @@ static struct DIR_INFO feversos_dirs[] =
 
 static struct ROM_INFO esprade_roms[] =
 {
-   {      "u42_i.bin", 0x00080000, 0x3b510a73,REGION_ROM1,0,LOAD_8_16 },
-   {      "u41_i.bin", 0x00080000, 0x97c1b649,REGION_ROM1,1,LOAD_8_16 },
+  LOAD8_16( REGION_ROM1, 0,  0x00080000,
+                 "u42_i.bin",  0x3b510a73,      "u41_i.bin",  0x97c1b649),
 
    {      "u54.bin", 0x00400000, 0xe7ca6936,REGION_GFX1,0x000000,LOAD8X8_16X16 },
    {      "u55.bin", 0x00400000, 0xf53bd94f,REGION_GFX1,0x400000,LOAD8X8_16X16 },
@@ -514,10 +514,10 @@ static struct ROM_INFO esprade_roms[] =
 
    {      "u51.bin", 0x00400000, 0x0b9b875c,REGION_GFX3,0x000000,LOAD8X8_16X16 },
 
-   {      "u63.bin", 0x00400000, 0x2f2fe92c,REGION_GFX4,0x000000,LOAD_8_16S },
-   {      "u64.bin", 0x00400000, 0x491a3da4,REGION_GFX4,0x000001,LOAD_8_16S },
-   {      "u65.bin", 0x00400000, 0x06563efe,REGION_GFX4,0x800000,LOAD_8_16S },
-   {      "u66.bin", 0x00400000, 0x7bbe4cfc,REGION_GFX4,0x800001,LOAD_8_16S },
+  LOAD8_16( REGION_GFX4, 0x000000,  0x00400000,
+                 "u63.bin",  0x2f2fe92c,      "u64.bin",  0x491a3da4),
+  LOAD8_16( REGION_GFX4, 0x800000,  0x00400000,
+                 "u65.bin",  0x06563efe,      "u66.bin",  0x7bbe4cfc),
 
    {      "u19.bin", 0x00400000, 0xf54b1cab,REGION_SMP1,0,LOAD_NORMAL },
    {           NULL,          0,          0, },
@@ -525,8 +525,8 @@ static struct ROM_INFO esprade_roms[] =
 
 static struct ROM_INFO espradeo_roms[] =
 {
-   {      "u42.bin", 0x00080000, 0x0718c7e5,REGION_ROM1,0,LOAD_8_16 },
-   {      "u41.bin", 0x00080000, 0xdef30539,REGION_ROM1,1,LOAD_8_16 },
+  LOAD8_16( REGION_ROM1, 0,  0x00080000,
+                 "u42.bin",  0x0718c7e5,      "u41.bin",  0xdef30539),
 
 
 
@@ -537,8 +537,8 @@ static struct ROM_INFO espradeo_roms[] =
 
 static struct ROM_INFO espradej_roms[] =
 {
-   {      "u42_ver2.bin", 0x00080000, 0x75d03c42,REGION_ROM1,0,LOAD_8_16 },
-   {      "u41_ver2.bin", 0x00080000, 0x734b3ef0,REGION_ROM1,1,LOAD_8_16 },
+  LOAD8_16( REGION_ROM1, 0,  0x00080000,
+                 "u42_ver2.bin",  0x75d03c42,      "u41_ver2.bin",  0x734b3ef0),
 
 
 
@@ -584,26 +584,26 @@ static struct ROM_INFO donpachk_roms[] =
 
 static struct ROM_INFO guwange_roms[] =
 {
-  { "gu-u0127.bin", 0x00080000, 0xf86b5293, REGION_ROM1, 0x0000000, LOAD_8_16,   },
-  { "gu-u0129.bin", 0x00080000, 0x6c0e3b93, REGION_ROM1, 0x0000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
+            "gu-u0127.bin",  0xf86b5293, "gu-u0129.bin",  0x6c0e3b93),
 
   {     "u101.bin", 0x00800000, 0x0369491f, REGION_GFX1, 0x0000000, LOAD8X8_16X16, },
 
   {   "u10102.bin", 0x00400000, 0xe28d6855, REGION_GFX2, 0x0000000, LOAD8X8_16X16, },
    {   "u10103.bin", 0x00400000, 0x0fe91b8e, REGION_GFX3, 0x0000000, LOAD8X8_16X16, },
 
-  {     "u083.bin", 0x00800000, 0xadc4b9c4, REGION_GFX4, 0x0000000, LOAD_8_16S, },
-   {     "u082.bin", 0x00800000, 0x3d75876c, REGION_GFX4, 0x0000001, LOAD_8_16S, },
-   {     "u086.bin", 0x00400000, 0x188e4f81, REGION_GFX4, 0x1000000, LOAD_8_16S, },
-   {     "u085.bin", 0x00400000, 0xa7d5659e, REGION_GFX4, 0x1000001, LOAD_8_16S, },
+  LOAD8_16(  REGION_GFX4,  0x0000000,  0x00800000,
+                "u083.bin",  0xadc4b9c4,     "u082.bin",  0x3d75876c),
+  LOAD8_16(  REGION_GFX4,  0x1000000,  0x00400000,
+                "u086.bin",  0x188e4f81,     "u085.bin",  0xa7d5659e),
    {    "u0462.bin", 0x00400000, 0xb3d75691, REGION_SMP1, 0, LOAD_NORMAL, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO ddonpach_roms[] =
 {
-   {      "b1.u27", 0x00080000, 0xb5cdc8d3, REGION_ROM1, 0x0000000, LOAD_8_16,    },
-   {      "b2.u26", 0x00080000, 0x6bbb063a, REGION_ROM1, 0x0000001, LOAD_8_16,    },
+  LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
+                 "b1.u27",  0xb5cdc8d3,      "b2.u26",  0x6bbb063a),
 
    {      "u60.bin", 0x00200000, 0x903096a7, REGION_GFX1, 0x0000000, LOAD_NORMAL,  },
 
@@ -622,8 +622,8 @@ static struct ROM_INFO ddonpach_roms[] =
 
 static struct ROM_INFO ddonpchj_roms[] =
 {
-   {      "u27.bin", 0x00080000, 0x2432ff9b, REGION_ROM1, 0x0000000, LOAD_8_16,    },
-   {      "u26.bin", 0x00080000, 0x4f3a914a, REGION_ROM1, 0x0000001, LOAD_8_16,    },
+  LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
+                 "u27.bin",  0x2432ff9b,      "u26.bin",  0x4f3a914a),
 
 
 
@@ -633,8 +633,8 @@ static struct ROM_INFO ddonpchj_roms[] =
 
 static struct ROM_INFO hotdogst_roms[] =
 {
-   {       "mp3u29", 0x00080000, 0x1f4e5479,REGION_ROM1,0,LOAD_8_16 },
-   {       "mp4u28", 0x00080000, 0x6f1c3c4b,REGION_ROM1,1,LOAD_8_16 },
+  LOAD8_16( REGION_ROM1, 0,  0x00080000,
+                  "mp3u29",  0x1f4e5479,       "mp4u28",  0x6f1c3c4b),
 
    {       "mp2u19", 0x00040000, 0xff979ebe,REGION_ROM2,0x000,LOAD_NORMAL },
 
@@ -734,8 +734,8 @@ static struct ROM_INFO agallet_roms[] =
 
 static struct ROM_INFO uo_poko_roms[] =
 {
-   {     "u26j.bin", 0x00080000, 0xe7eec050, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {     "u25j.bin", 0x00080000, 0x68cb6211, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
+                "u26j.bin",  0xe7eec050,     "u25j.bin",  0x68cb6211),
    {      "u49.bin", 0x00400000, 0x12fb11bb, REGION_GFX1, 0x000000, LOAD_NORMAL, },
    {      "u33.bin", 0x00400000, 0x5d142ad2, REGION_GFX4, 0x000000, LOAD_NORMAL, },
    {       "u4.bin", 0x00200000, 0xa2d0d755, REGION_SMP1, 0x000000, LOAD_NORMAL, },
@@ -744,8 +744,8 @@ static struct ROM_INFO uo_poko_roms[] =
 
 static struct ROM_INFO dfeveron_roms[] =
 {
-   {      "cv01-u34.bin", 0x00080000, 0xbe87f19d, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {      "cv01-u33.bin", 0x00080000, 0xe53a7db3, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
+                 "cv01-u34.bin",  0xbe87f19d,      "cv01-u33.bin",  0xe53a7db3),
 
    {      "cv01-u50.bin", 0x00200000, 0x7a344417, REGION_GFX1, 0x000000, LOAD_NORMAL, },
 
@@ -759,8 +759,8 @@ static struct ROM_INFO dfeveron_roms[] =
 
 static struct ROM_INFO feversos_roms[] =
 {
-   {      "rom2.bin", 0x00080000, 0x24ef3ce6, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {      "rom1.bin", 0x00080000, 0x64ff73fd, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
+                 "rom2.bin",  0x24ef3ce6,      "rom1.bin",  0x64ff73fd),
 
 
 

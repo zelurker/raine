@@ -37,8 +37,8 @@ static struct ROM_INFO twin_qix_roms[] =
    {    "snd-1.b44", 0x00080000, 0x274864af, 0, 0, 0, },
    {   "snd-14.b10", 0x00080000, 0x26312451, 0, 0, 0, },
    {   "snd-15.b11", 0x00080000, 0x2edaa9dc, 0, 0, 0, },
-   {   "spr0-1.b66", 0x00040000, 0x4b20e99d, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "spr0-0.b65", 0x00040000, 0x2569eb30, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "spr0-1.b66",  0x4b20e99d,   "spr0-0.b65",  0x2569eb30),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

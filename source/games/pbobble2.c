@@ -31,8 +31,8 @@ static struct ROM_INFO puzzle_bobble_2_roms[] =
    {   "e10-09.rom", 0x00040000, 0xe0b1b599, 0, 0, 0, },
    {   "e10-10.rom", 0x00040000, 0xf432267a, 0, 0, 0, },
    {   "e10-11.rom", 0x00040000, 0xb82f81da, 0, 0, 0, },
-   {   "e10-12.rom", 0x00040000, 0xb92dc8ad, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "e10-13.rom", 0x00040000, 0x87842c13, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "e10-12.rom",  0xb92dc8ad,   "e10-13.rom",  0x87842c13),
    {   "e10-15.rom", 0x00040000, 0xa2c0a268, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -104,8 +104,8 @@ static struct ROM_INFO puzzle_bobble_2x_roms[] =
    {       "e10.27", 0x00040000, 0x88cc0b5c, 0, 0, 0, },
    {       "e10.28", 0x00040000, 0x412a3602, 0, 0, 0, },
    {       "e10.29", 0x00040000, 0xf1e9ad3f, 0, 0, 0, },
-   {       "e10.30", 0x00040000, 0xbb090c1e, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {       "e10.31", 0x00040000, 0xf4b88d65, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+                  "e10.30",  0xbb090c1e,       "e10.31",  0xf4b88d65),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

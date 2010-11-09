@@ -34,18 +34,18 @@ static struct DIR_INFO diverboy_dirs[] =
 
 static struct ROM_INFO diverboy_roms[] =
 {
-	{ "db_01.bin",    0x020000, 0x6aa11366, REGION_ROM1, 0x000000, LOAD_8_16, },
-	{ "db_02.bin",    0x020000, 0x45f8a673, REGION_ROM1, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM1,  0x000000,     0x020000,
+            "db_01.bin",  0x6aa11366, "db_02.bin",  0x45f8a673),
 	{ "db_05.bin",    0x010000, 0xffeb49ec, REGION_ROM2, 0x000000, LOAD_NORMAL },
 	{ "db_03.bin",    0x080000, 0x50457505, REGION_SMP1, 0x000000, LOAD_NORMAL }, // note, load at 0x040000, banks get memcpy'd to 0
 	{ "db_04.bin",    0x020000, 0x01b81da0, REGION_SMP1, 0x0a0000, LOAD_NORMAL },
 	{ "db_04.bin",    0x020000, 0x01b81da0, REGION_SMP1, 0x0e0000, LOAD_NORMAL },
-	{ "db_08.bin",    0x080000, 0x7bb96220, REGION_GFX1, 0x000000, LOAD_8_16 },
-	{ "db_09.bin",    0x080000, 0x12b15476, REGION_GFX1, 0x000001, LOAD_8_16 },
-	{ "db_07.bin",    0x020000, 0x18485741, REGION_GFX2, 0x000000, LOAD_8_16 },
-	{ "db_10.bin",    0x020000, 0xc381d1cc, REGION_GFX2, 0x000001, LOAD_8_16 },
-	{ "db_06.bin",    0x020000, 0x21b4e352, REGION_GFX2, 0x040000, LOAD_8_16 },
-	{ "db_11.bin",    0x020000, 0x41d29c81, REGION_GFX2, 0x040001, LOAD_8_16 },
+  LOAD8_16(  REGION_GFX1,  0x000000,     0x080000,
+            "db_08.bin",  0x7bb96220, "db_09.bin",  0x12b15476),
+  LOAD8_16(  REGION_GFX2,  0x000000,     0x020000,
+            "db_07.bin",  0x18485741, "db_10.bin",  0xc381d1cc),
+  LOAD8_16(  REGION_GFX2,  0x040000,     0x020000,
+            "db_06.bin",  0x21b4e352, "db_11.bin",  0x41d29c81),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -85,29 +85,29 @@ static struct INPUT_INFO diverboy_inputs[] =
 static struct DSW_DATA dsw_data_diverboy_1[] =
 {
   { MSG_COINAGE, 0x07, 8 },
-  { MSG_4COIN_1PLAY, 0x07, 0x00 },
-  { MSG_3COIN_1PLAY, 0x06, 0x00 },
-  { MSG_2COIN_1PLAY, 0x05, 0x00 },
-  { MSG_1COIN_1PLAY, 0x00, 0x00 },
-  { MSG_1COIN_2PLAY, 0x01, 0x00 },
-  { MSG_1COIN_3PLAY, 0x02, 0x00 },
-  { MSG_1COIN_4PLAY, 0x03, 0x00 },
-  { MSG_1COIN_6PLAY, 0x04, 0x00 },
+  { MSG_4COIN_1PLAY, 0x07},
+  { MSG_3COIN_1PLAY, 0x06},
+  { MSG_2COIN_1PLAY, 0x05},
+  { MSG_1COIN_1PLAY, 0x00},
+  { MSG_1COIN_2PLAY, 0x01},
+  { MSG_1COIN_3PLAY, 0x02},
+  { MSG_1COIN_4PLAY, 0x03},
+  { MSG_1COIN_6PLAY, 0x04},
   { MSG_LIVES, 0x08, 2 },
-  { "2", 0x00, 0x00 },
-  { "3", 0x08, 0x00 },
+  { "2", 0x00},
+  { "3", 0x08},
   { "Display Copyright", 0x10, 2 },
-  { MSG_NO, 0x00, 0x00 },
-  { MSG_YES, 0x10, 0x00 },
+  { MSG_NO, 0x00},
+  { MSG_YES, 0x10},
   { MSG_DIFFICULTY, 0x60, 4 },
-  { MSG_EASY, 0x00, 0x00 },
-  { MSG_NORMAL, 0x20, 0x00 },
-  { MSG_HARD, 0x40, 0x00 },
-  { MSG_HARDEST, 0x60, 0x00 },
+  { MSG_EASY, 0x00},
+  { MSG_NORMAL, 0x20},
+  { MSG_HARD, 0x40},
+  { MSG_HARDEST, 0x60},
   { MSG_FREE_PLAY, 0x80, 2 },
-  { MSG_NO, 0x80, 0x00 },
-  { MSG_YES, 0x00, 0x00 },
-  { NULL, 0, 0}
+  { MSG_NO, 0x80},
+  { MSG_YES, 0x00},
+  { NULL, 0}
 };
 
 static struct DSW_INFO diverboy_dsw[] =

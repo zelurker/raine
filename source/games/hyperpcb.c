@@ -149,54 +149,54 @@ static struct INPUT_INFO finalttr_inputs[] =
 static struct DSW_DATA dsw_data_finalttr_0[] =
 {
   { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0000, 0x00 },
-  { MSG_ON, 0x0001, 0x00 },
+  { MSG_OFF, 0x0000},
+  { MSG_ON, 0x0001},
   { MSG_UNKNOWN, 0x0002, 2 },
-  { MSG_OFF, 0x0002, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0002},
+  { MSG_ON, 0x0000},
   { MSG_UNKNOWN, 0x0004, 2 },
-  { MSG_OFF, 0x0004, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0004},
+  { MSG_ON, 0x0000},
   { MSG_COINAGE, 0x0038, 4 },
-  { MSG_4COIN_1PLAY, 0x0000, 0x00 },
-  { MSG_3COIN_1PLAY, 0x0010, 0x00 },
-  { MSG_2COIN_1PLAY, 0x0030, 0x00 },
-  { MSG_1COIN_1PLAY, 0x0038, 0x00 },
+  { MSG_4COIN_1PLAY, 0x0000},
+  { MSG_3COIN_1PLAY, 0x0010},
+  { MSG_2COIN_1PLAY, 0x0030},
+  { MSG_1COIN_1PLAY, 0x0038},
   { MSG_UNKNOWN, 0x0040, 2 },
-  { MSG_OFF, 0x0040, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0040},
+  { MSG_ON, 0x0000},
   { MSG_UNKNOWN, 0x0080, 2 },
-  { MSG_OFF, 0x0080, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x0080},
+  { MSG_ON, 0x0000},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_finalttr_1[] =
 {
   { MSG_UNKNOWN, 0x0001, 2 },
-  { MSG_OFF, 0x0001, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0001},
+  { MSG_ON, 0x0000},
   { MSG_UNKNOWN, 0x0002, 2 },
-  { MSG_OFF, 0x0002, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0002},
+  { MSG_ON, 0x0000},
   { "Time", 0x000c, 4 },
-  { "60 Seconds", 0x0000, 0x00 },
-  { "90 Seconds", 0x000c, 0x00 },
-  { "120 Seconds", 0x0008, 0x00 },
-  { "150 Seconds", 0x0004, 0x00 },
+  { "60 Seconds", 0x0000},
+  { "90 Seconds", 0x000c},
+  { "120 Seconds", 0x0008},
+  { "150 Seconds", 0x0004},
   { MSG_UNKNOWN, 0x0010, 2 },
-  { MSG_OFF, 0x0010, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0010},
+  { MSG_ON, 0x0000},
   { MSG_UNKNOWN, 0x0020, 2 },
-  { MSG_OFF, 0x0020, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0020},
+  { MSG_ON, 0x0000},
   { MSG_UNKNOWN, 0x0040, 2 },
-  { MSG_OFF, 0x0040, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0040},
+  { MSG_ON, 0x0000},
   { MSG_UNKNOWN, 0x0080, 2 },
-  { MSG_OFF, 0x0080, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x0080},
+  { MSG_ON, 0x0000},
+  { NULL, 0}
 };
 
 static struct DSW_INFO finalttr_dsw[] =
@@ -210,8 +210,8 @@ static int romset;
 
 static struct ROM_INFO hyperpac_roms[] =
 {
-  { "hyperpac.h12", 0x20000, 0x2cf0531a , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "hyperpac.i12", 0x20000, 0x9c7d85b8 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
+            "hyperpac.h12",  0x2cf0531a , "hyperpac.i12",  0x9c7d85b8 ),
   { "hyperpac.u1", 0x10000 , 0x03faf88e , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "hyperpac.j15", 0x40000, 0xfb9f468d , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "hyperpac.a4", 0x40000, 0xbd8673da , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -222,8 +222,8 @@ static struct ROM_INFO hyperpac_roms[] =
 
 static struct ROM_INFO twinkle_roms[] =
 {
-  { "uh12.bin", 0x20000, 0xa99626fe , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "ui12.bin", 0x20000, 0x5af73684 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
+            "uh12.bin",  0xa99626fe , "ui12.bin",  0x5af73684 ),
   { "u1.bin",   0x10000, 0xe40481da , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "uj15.bin", 0x40000, 0x0a534b37 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "ua4.bin",  0x80000, 0x6b64bb09 , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -233,8 +233,8 @@ static struct ROM_INFO twinkle_roms[] =
 
 static struct ROM_INFO _3in1semi_roms[] =
 {
-  { "u52",          0x40000, 0xb0e4a0f7 , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "u74",          0x40000, 0x266862c4 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,           0x40000,
+            "u52",  0xb0e4a0f7 , "u74",  0x266862c4 ),
   { "u35",          0x10000, 0xe40481da , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "u14",          0x40000, 0xc83c11be , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "u75",          0x80000, 0xb66a0db6 , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -249,8 +249,8 @@ static struct ROM_INFO _3in1semi_roms[] =
 
 static struct ROM_INFO cookbib2_roms[] =
 {
-  { "cookbib2.02", 0x40000, 0xb2909460 , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "cookbib2.01", 0x40000, 0x65aafde2 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
+            "cookbib2.02",  0xb2909460 , "cookbib2.01",  0x65aafde2 ),
   { "cookbib2.07", 0x10000, 0xf59f1c9a , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "cookbib2.06", 0x20000, 0x5e6f76b8 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "cookbib2.05", 0x80000, 0x89fb38ce , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -262,8 +262,8 @@ static struct ROM_INFO cookbib2_roms[] =
 
 static struct ROM_INFO moremore_roms[] =
 {
-  { "u52.bin", 0x40000, 0xcea4b246 , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "u74.bin", 0x40000, 0x2acdcb88 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
+            "u52.bin",  0xcea4b246 , "u74.bin",  0x2acdcb88 ),
   { "u35.bin", 0x10000, 0x92dc95fc , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "u14.bin", 0x40000, 0x90580088 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "u75.bin", 0x80000, 0xd671815c , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -276,8 +276,8 @@ static struct ROM_INFO moremore_roms[] =
 
 static struct ROM_INFO moremorp_roms[] =
 {
-  { "mmp_u52.bin", 0x40000, 0x66baf9b2 , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "mmp_u74.bin", 0x40000, 0x7c6fede5 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
+            "mmp_u52.bin",  0x66baf9b2 , "mmp_u74.bin",  0x7c6fede5 ),
   { "mmp_u35.bin", 0x10000, 0x4d098cad , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "mmp_u14.bin", 0x40000, 0x211a2566 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "mmp_u75.bin", 0x80000, 0xaf9e824e , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -290,8 +290,8 @@ static struct ROM_INFO moremorp_roms[] =
 
 static struct ROM_INFO finalttr_roms[] =
 {
-  { "9.5o", 0x20000, 0x58d3640e , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "10.7o",0x20000, 0xeecc83e5 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001, 0x20000,
+            "9.5o",  0x58d3640e , "10.7o",  0xeecc83e5 ),
   { "12.5r",0x10000, 0x4bc21361 , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "11.7p",0x20000, 0x2e331022 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "5.1d", 0x40000, 0x64a450f3 , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -306,15 +306,15 @@ static struct ROM_INFO finalttr_roms[] =
 
 static struct ROM_INFO hyperpcb_roms[] =
 {
-  { "hpacuh12.bin", 0x20000, 0x633ab2c6 , REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "hpacui12.bin", 0x20000, 0x23dc00d1 , REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
+            "hpacuh12.bin",  0x633ab2c6 , "hpacui12.bin",  0x23dc00d1 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO snowbros_roms[] =
 {
-   {      "sn6.bin", 0x00020000, 0x4899ddcf, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {      "sn5.bin", 0x00020000, 0xad310d3f, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+                 "sn6.bin",  0x4899ddcf,      "sn5.bin",  0xad310d3f),
    {   "snowbros.4", 0x00008000, 0xe6eab4e4, REGION_ROM2, 0x000000, LOAD_NORMAL, },
    {   "sbros-1.41", 0x00080000, 0x16f06b3a, REGION_GFX1, 0x000000, LOAD_NORMAL, },
 
@@ -328,40 +328,40 @@ static struct ROM_INFO snowbros_roms[] =
 
 static struct ROM_INFO snowbroa_roms[] =
 {
-   {  "snowbros.3a", 0x00020000, 0x10cb37e1, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {  "snowbros.2a", 0x00020000, 0xab91cc1e, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+             "snowbros.3a",  0x10cb37e1,  "snowbros.2a",  0xab91cc1e),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
 static struct ROM_INFO snowbroj_roms[] =
 {
-   {   "snowbros.3", 0x00020000, 0x3f504f9e, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {   "snowbros.2", 0x00020000, 0x854b02bc, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+              "snowbros.3",  0x3f504f9e,   "snowbros.2",  0x854b02bc),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
 static struct ROM_INFO snowbra2_roms[] =
 {
-   {     "sbros3-a", 0x00020000, 0x301627d6, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {     "sbros2-a", 0x00020000, 0xf6689f41, REGION_ROM1, 0x000001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+                "sbros3-a",  0x301627d6,     "sbros2-a",  0xf6689f41),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO wintbob_roms[] =
 {
-   {     "wb03.bin", 0x00010000, 0xdf56e168, REGION_ROM1, 0x000000, LOAD_8_16,   },
-   {     "wb01.bin", 0x00010000, 0x05722f17, REGION_ROM1, 0x000001, LOAD_8_16,   },
-   {     "wb04.bin", 0x00010000, 0x53be758d, REGION_ROM1, 0x020000, LOAD_8_16,   },
-   {     "wb02.bin", 0x00010000, 0xfc8e292e, REGION_ROM1, 0x020001, LOAD_8_16,   },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x00010000,
+                "wb03.bin",  0xdf56e168,     "wb01.bin",  0x05722f17),
+  LOAD8_16(  REGION_ROM1,  0x020000,  0x00010000,
+                "wb04.bin",  0x53be758d,     "wb02.bin",  0xfc8e292e),
    {     "wb05.bin", 0x00010000, 0x53fe59df, REGION_ROM2, 0x000000, LOAD_NORMAL, },
-   {     "wb06.bin", 0x00010000, 0x68204937, REGION_GFX1, 0x000001, LOAD_8_16,   },
-   {     "wb07.bin", 0x00010000, 0x53f40978, REGION_GFX1, 0x020001, LOAD_8_16,   },
-   {     "wb08.bin", 0x00010000, 0x9497b88c, REGION_GFX1, 0x040001, LOAD_8_16,   },
-   {     "wb09.bin", 0x00010000, 0x9be718ca, REGION_GFX1, 0x060001, LOAD_8_16,   },
-   {     "wb10.bin", 0x00010000, 0x5fa22b1e, REGION_GFX1, 0x060000, LOAD_8_16,   },
-   {     "wb11.bin", 0x00010000, 0x41cb4563, REGION_GFX1, 0x040000, LOAD_8_16,   },
-   {     "wb12.bin", 0x00010000, 0xef4e04c7, REGION_GFX1, 0x020000, LOAD_8_16,   },
-   {     "wb13.bin", 0x00010000, 0x426921de, REGION_GFX1, 0x000000, LOAD_8_16,   },
+  LOAD8_16(  REGION_GFX1,  0x000001,  0x00010000,
+                "wb06.bin",  0x68204937,     "wb07.bin",  0x53f40978),
+  LOAD8_16(  REGION_GFX1,  0x040001,  0x00010000,
+                "wb08.bin",  0x9497b88c,     "wb09.bin",  0x9be718ca),
+  LOAD8_16(  REGION_GFX1,  0x060000,  0x00010000,
+                "wb10.bin",  0x5fa22b1e,     "wb11.bin",  0x41cb4563),
+  LOAD8_16(  REGION_GFX1,  0x020000,  0x00010000,
+                "wb12.bin",  0xef4e04c7,     "wb13.bin",  0x426921de),
    {           NULL,          0,          0,           0,        0,         0,   },
 };
 
@@ -415,58 +415,58 @@ static struct INPUT_INFO snow_bros_inputs[] =
 static struct DSW_DATA dsw_data_hyperpac_0[] =
 {
   { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0001, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0001},
+  { MSG_ON, 0x0000},
   { MSG_LIVES, 0x0002, 2 },
-  { "3" , 0x0002, 0x00 },
-  { "5" , 0x0000, 0x00 },
+  { "3" , 0x0002},
+  { "5" , 0x0000},
   { MSG_COINAGE, 0x001c, 8 },
-  { MSG_5COIN_1PLAY, 0x0000, 0x00 },
-  { MSG_4COIN_1PLAY, 0x0004, 0x00 },
-  { MSG_3COIN_1PLAY, 0x0008, 0x00 },
-  { MSG_2COIN_1PLAY, 0x000c, 0x00 },
-  { MSG_1COIN_1PLAY, 0x001c, 0x00 },
-  { MSG_2COIN_3PLAY, 0x0014, 0x00 },
-  { MSG_1COIN_1PLAY, 0x0018, 0x00 },
-  { MSG_1COIN_3PLAY, 0x0010, 0x00 },
+  { MSG_5COIN_1PLAY, 0x0000},
+  { MSG_4COIN_1PLAY, 0x0004},
+  { MSG_3COIN_1PLAY, 0x0008},
+  { MSG_2COIN_1PLAY, 0x000c},
+  { MSG_1COIN_1PLAY, 0x001c},
+  { MSG_2COIN_3PLAY, 0x0014},
+  { MSG_1COIN_1PLAY, 0x0018},
+  { MSG_1COIN_3PLAY, 0x0010},
   { MSG_DIFFICULTY, 0x0060, 4 },
-  { "Easy" , 0x0000, 0x00 },
-  { "Normal" , 0x0060, 0x00 },
-  { "Hard" , 0x0040, 0x00 },
-  { "Hardest" , 0x0020, 0x00 },
+  { "Easy" , 0x0000},
+  { "Normal" , 0x0060},
+  { "Hard" , 0x0040},
+  { "Hardest" , 0x0020},
   { MSG_SERVICE, 0x0080,2 },
-  { MSG_ON, 0,0 },
-  { MSG_OFF, 0x0080,0 },
-  { NULL, 0, 0}
+  { MSG_ON, 0},
+  { MSG_OFF, 0x0080},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_hyperpac_1[] =
 {
   { MSG_UNUSED, 0x0001, 2 },
-  { MSG_OFF, 0x0001, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0001},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0002, 2 },
-  { MSG_OFF, 0x0002, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0002},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0004, 2 },
-  { MSG_OFF, 0x0004, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0004},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0008, 2 },
-  { MSG_OFF, 0x0008, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0008},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0010, 2 },
-  { MSG_OFF, 0x0010, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0010},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0020, 2 },
-  { MSG_OFF, 0x0020, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0020},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0040, 2 },
-  { MSG_OFF, 0x0040, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0040},
+  { MSG_ON, 0x0000},
   { MSG_UNUSED, 0x0080, 2 },
-  { MSG_OFF, 0x0080, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x0080},
+  { MSG_ON, 0x0000},
+  { NULL, 0}
 };
 
 static struct DSW_INFO hyperpac_dsw[] =
@@ -479,54 +479,54 @@ static struct DSW_INFO hyperpac_dsw[] =
 static struct DSW_DATA dsw_data_snow_bros_0[] =
 {
    { "Country",               0x01, 0x02 },
-   { "America",               0x01, 0x00 },
-   { "Europe",                0x00, 0x00 },
+   { "America",               0x01},
+   { "Europe",                0x00},
    { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02, 0x00 },
-   { MSG_INVERT,              0x00, 0x00 },
+   { MSG_NORMAL,              0x02},
+   { MSG_INVERT,              0x00},
    { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x04},
+   { MSG_ON,                  0x00},
    { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08, 0x00 },
-   { MSG_OFF,                 0x00, 0x00 },
+   { MSG_ON,                  0x08},
+   { MSG_OFF,                 0x00},
    { MSG_COIN1,               0x30, 0x04 },
-   { "1/1",                   0x30, 0x00 },
-   { "1/2; 2/1",              0x20, 0x00 },
-   { "2/1; 3/1",              0x10, 0x00 },
-   { "2/3; 4/1",              0x00, 0x00 },
+   { "1/1",                   0x30},
+   { "1/2; 2/1",              0x20},
+   { "2/1; 3/1",              0x10},
+   { "2/3; 4/1",              0x00},
    { MSG_COIN2,               0xC0, 0x04 },
-   { "1/1",                   0xC0, 0x00 },
-   { "1/2; 1/3",              0x80, 0x00 },
-   { "2/1; 1/4",              0x40, 0x00 },
-   { "2/3; 1/6",              0x00, 0x00 },
-   { NULL,                    0,    0,   },
+   { "1/1",                   0xC0},
+   { "1/2; 1/3",              0x80},
+   { "2/1; 1/4",              0x40},
+   { "2/3; 1/6",              0x00},
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_snow_bros_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
-   { MSG_NORMAL,              0x03, 0x00 },
-   { MSG_EASY,                0x02, 0x00 },
-   { MSG_HARD,                0x01, 0x00 },
-   { MSG_HARDEST,             0x00, 0x00 },
+   { MSG_NORMAL,              0x03},
+   { MSG_EASY,                0x02},
+   { MSG_HARD,                0x01},
+   { MSG_HARDEST,             0x00},
    { "Extra Life at",         0x0C, 0x04 },
-   { "100k",                  0x0C, 0x00 },
-   { "200k",                  0x08, 0x00 },
-   { "100k 200k",             0x04, 0x00 },
-   { "Nothing",               0x00, 0x00 },
+   { "100k",                  0x0C},
+   { "200k",                  0x08},
+   { "100k 200k",             0x04},
+   { "Nothing",               0x00},
    { "Lives",                 0x30, 0x04 },
-   { "3",                     0x30, 0x00 },
-   { "1",                     0x20, 0x00 },
-   { "4",                     0x10, 0x00 },
-   { "2",                     0x00, 0x00 },
+   { "3",                     0x30},
+   { "1",                     0x20},
+   { "4",                     0x10},
+   { "2",                     0x00},
    { "Invulnerability",                 0x40, 0x02 },
-   { MSG_OFF,                 0x40, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x40},
+   { MSG_ON,                  0x00},
    { "Continue",              0x80, 0x02 },
-   { MSG_ON,                  0x80, 0x00 },
-   { MSG_OFF,                 0x00, 0x00 },
-   { NULL,                    0,    0,   },
+   { MSG_ON,                  0x80},
+   { MSG_OFF,                 0x00},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO snow_bros_dsw[] =
@@ -539,38 +539,38 @@ static struct DSW_INFO snow_bros_dsw[] =
 static struct DSW_DATA dsw_data_moremore_0[] =
 {
   { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0001, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
+  { MSG_OFF, 0x0001},
+  { MSG_ON, 0x0000},
   { MSG_COINAGE, 0x000e, 8 },
-  { MSG_5COIN_1PLAY, 0x0000, 0x00 },
-  { MSG_4COIN_1PLAY, 0x0002, 0x00 },
-  { MSG_3COIN_1PLAY, 0x0004, 0x00 },
-  { MSG_2COIN_1PLAY, 0x0006, 0x00 },
-  { MSG_1COIN_1PLAY, 0x000e, 0x00 },
-  { MSG_2COIN_3PLAY, 0x000a, 0x00 },
-  { MSG_1COIN_2PLAY, 0x000c, 0x00 },
-  { MSG_1COIN_3PLAY, 0x0008, 0x00 },
+  { MSG_5COIN_1PLAY, 0x0000},
+  { MSG_4COIN_1PLAY, 0x0002},
+  { MSG_3COIN_1PLAY, 0x0004},
+  { MSG_2COIN_1PLAY, 0x0006},
+  { MSG_1COIN_1PLAY, 0x000e},
+  { MSG_2COIN_3PLAY, 0x000a},
+  { MSG_1COIN_2PLAY, 0x000c},
+  { MSG_1COIN_3PLAY, 0x0008},
   { MSG_DIFFICULTY, 0x0070, 8 },
-  { "Level 1", 0x0020, 0x00 },
-  { "Level 2", 0x0010, 0x00 },
-  { "Level 3", 0x0000, 0x00 },
-  { "Level 4", 0x0070, 0x00 },
-  { "Level 5", 0x0060, 0x00 },
-  { "Level 6", 0x0050, 0x00 },
-  { "Level 7", 0x0040, 0x00 },
-  { "Level 8", 0x0030, 0x00 },
+  { "Level 1", 0x0020},
+  { "Level 2", 0x0010},
+  { "Level 3", 0x0000},
+  { "Level 4", 0x0070},
+  { "Level 5", 0x0060},
+  { "Level 6", 0x0050},
+  { "Level 7", 0x0040},
+  { "Level 8", 0x0030},
   { MSG_SERVICE, 0x0080,2 },
-  { MSG_ON, 0,0 },
-  { MSG_OFF, 0x0080,0 },
-  { NULL, 0, 0}
+  { MSG_ON, 0},
+  { MSG_OFF, 0x0080},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_moremore_1[] =
 {
   { MSG_FREE_PLAY, 0x0080, 2 },
-  { MSG_OFF, 0x0080, 0x00 },
-  { MSG_ON, 0x0000, 0x00 },
-  { NULL, 0, 0}
+  { MSG_OFF, 0x0080},
+  { MSG_ON, 0x0000},
+  { NULL, 0}
 };
 
 static struct DSW_INFO moremore_dsw[] =

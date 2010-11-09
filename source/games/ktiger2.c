@@ -35,8 +35,8 @@ static struct ROM_INFO kyukyoku_tiger_2_roms[] =
    {   "e15-12.bin", 0x00040000, 0x59d832f2, 0, 0, 0, },
    {   "e15-13.bin", 0x00040000, 0x0f03daf7, 0, 0, 0, },
    {   "e15-14.bin", 0x00040000, 0xb527b733, 0, 0, 0, },
-   {   "e15-15.bin", 0x00020000, 0x22126dfb, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "e15-16.bin", 0x00020000, 0xf8b58ea0, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00020000,
+              "e15-15.bin",  0x22126dfb,   "e15-16.bin",  0xf8b58ea0),
    {   "e15-01.bin", 0x00100000, 0x85421aac, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };

@@ -46,8 +46,8 @@ static struct ROM_INFO kaiser_knuckle_roms[] =
    {   "d84-23.rom", 0x00080000, 0x39f12a9b, 0, 0, 0, },
    {   "d84-24.rom", 0x00080000, 0xbf20c755, 0, 0, 0, },
    {   "d84-25.rom", 0x00080000, 0x2840893f, 0, 0, 0, },
-   {   "d84-26.rom", 0x00040000, 0x4f5b8563, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d84-27.rom", 0x00040000, 0xfb0cb1ba, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d84-26.rom",  0x4f5b8563,   "d84-27.rom",  0xfb0cb1ba),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -130,8 +130,8 @@ static struct ROM_INFO kaiser_knuckle_alt_roms[] =
    { "dkg_mpr1.bin", 0x00080000, 0x97566f69, 0, 0, 0, },
    { "dkg_mpr2.bin", 0x00080000, 0x18a4748b, 0, 0, 0, },
    { "dkg_mpr3.bin", 0x00080000, 0xee1531ca, 0, 0, 0, },
-   {   "d84-26.rom", 0x00040000, 0x4f5b8563, REGION_ROM2, 0x000000, LOAD_8_16, },
-   {   "d84-27.rom", 0x00040000, 0xfb0cb1ba, REGION_ROM2, 0x000001, LOAD_8_16, },
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+              "d84-26.rom",  0x4f5b8563,   "d84-27.rom",  0xfb0cb1ba),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

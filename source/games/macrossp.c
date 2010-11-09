@@ -55,8 +55,8 @@ static struct ROM_INFO macrossp_roms[] =
   { "bp964a-c.u3", 0x080000, 0xfb895a7b , REGION_ROM1, 0x000001, LOAD_8_32 },
   { "bp964a-c.u4", 0x080000, 0x8c8b966c , REGION_ROM1, 0x000000, LOAD_8_32 },
 
-  { "bp964a.u20", 0x080000, 0x12960cbb , REGION_ROM2, 0x000001, LOAD_8_16 },
-  { "bp964a.u21", 0x080000, 0x87bdd2fc , REGION_ROM2, 0x000000, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM2,  0x000001,  0x080000,
+            "bp964a.u20",  0x12960cbb , "bp964a.u21",  0x87bdd2fc ),
 
   /* Bios : unknown use */
   { "bp964a.u49", 0x020000, 0xad203f76 , REGION_USER1, 0x000000, LOAD_NORMAL },
@@ -77,9 +77,8 @@ static struct ROM_INFO macrossp_roms[] =
 
   { "bp964a.u19", 0x080000, 0x19c7acd9 , REGION_GFX5, 0x000000, LOAD_NORMAL },
 
-  { "bp964a.u24", 0x400000, 0x93f90336 , REGION_SMP1, 0x000001, LOAD_8_16 },
-  // REGION_SMP2 initialised from REGION_SMP1 in the loading function
-  { NULL, 0, 0, 0, 0, 0 }
+  LOAD8_16(  0,  0x000001,  0,
+            "bp964a.u24",  0x93f90336 , NULL,  0),
 };
 
 #if 0
@@ -123,59 +122,59 @@ static struct ROM_INFO quizmoon_roms[] =
 static struct DSW_DATA dsw_data_macrossp_4[] =
 {
   { MSG_SCREEN, 0x1, 2 },
-  { MSG_OFF, 0x1, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x1},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x2, 2 },
-  { MSG_OFF, 0x2, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x2},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x4, 2 },
-  { MSG_OFF, 0x4, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x4},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x8, 2 },
-  { MSG_OFF, 0x8, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x8},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x10, 2 },
-  { MSG_OFF, 0x10, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x10},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x20, 2 },
-  { MSG_OFF, 0x20, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x20},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x40, 2 },
-  { MSG_OFF, 0x40, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x40},
+  { MSG_ON, 0x0},
   { MSG_SERVICE, 0x80,2 },
-  { MSG_ON, 0,0 },
-  { MSG_OFF, 0x80,0 },
-  { NULL, 0, 0}
+  { MSG_ON, 0},
+  { MSG_OFF, 0x80},
+  { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_macrossp_5[] =
 {
   { "2", 0x1, 2 },
-  { MSG_OFF, 0x1, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x1},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x2, 2 },
-  { MSG_OFF, 0x2, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x2},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x4, 2 },
-  { MSG_OFF, 0x4, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x4},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x8, 2 },
-  { MSG_OFF, 0x8, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x8},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x10, 2 },
-  { MSG_OFF, 0x10, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x10},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x20, 2 },
-  { MSG_OFF, 0x20, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x20},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x40, 2 },
-  { MSG_OFF, 0x40, 0x00 },
-  { MSG_ON, 0x0, 0x00 },
+  { MSG_OFF, 0x40},
+  { MSG_ON, 0x0},
   { MSG_UNKNOWN, 0x80,2 },
-  { MSG_ON, 0,0 },
-  { MSG_OFF, 0x80,0 },
-  { NULL, 0, 0}
+  { MSG_ON, 0},
+  { MSG_OFF, 0x80},
+  { NULL, 0}
 };
 
 /* These are the only 2 ports listed in service mode. Except for the

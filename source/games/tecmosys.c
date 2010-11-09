@@ -16,8 +16,8 @@
 
 static struct ROM_INFO shadoww_roms[] =
 {
-  { "shadowa.1", 0x20000, 0x8290d567, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "shadowa.2", 0x20000, 0xf3f08921, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "shadowa.1",  0x8290d567, "shadowa.2",  0xf3f08921),
   { "gaiden.3", 0x10000, 0x75fd3e6a, REGION_ROM2, 0x0000, LOAD_NORMAL },
   { "gaiden.5", 0x10000, 0x8d4035f7, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "14.bin", 0x20000, 0x1ecfddaa, REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -44,8 +44,8 @@ static struct ROM_INFO shadoww_roms[] =
 
 static struct ROM_INFO shadowwa_roms[] =
 {
-  { "shadoww.1", 0x20000, 0xfefba387, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "shadoww.2", 0x20000, 0x9b9d6b18, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "shadoww.1",  0xfefba387, "shadoww.2",  0x9b9d6b18),
   { "gaiden.3", 0x10000, 0x75fd3e6a, REGION_ROM2, 0x0000, LOAD_NORMAL },
   { "gaiden.5", 0x10000, 0x8d4035f7, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "14.bin", 0x20000, 0x1ecfddaa, REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -72,8 +72,8 @@ static struct ROM_INFO shadowwa_roms[] =
 
 static struct ROM_INFO gaiden_roms[] =
 {
-  { "gaiden.1", 0x20000, 0xe037ff7c, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "gaiden.2", 0x20000, 0x454f7314, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "gaiden.1",  0xe037ff7c, "gaiden.2",  0x454f7314),
   { "gaiden.3", 0x10000, 0x75fd3e6a, REGION_ROM2, 0x0000, LOAD_NORMAL },
   { "gaiden.5", 0x10000, 0x8d4035f7, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "14.bin", 0x20000, 0x1ecfddaa, REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -98,8 +98,8 @@ static struct ROM_INFO gaiden_roms[] =
 
 static struct ROM_INFO ryukendn_roms[] =
 {
-  { "ryukendn.1", 0x20000, 0x6203a5e2, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "ryukendn.2", 0x20000, 0x9e99f522, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "ryukendn.1",  0x6203a5e2, "ryukendn.2",  0x9e99f522),
   { "ryukendn.3", 0x10000, 0x6b686b69, REGION_ROM2, 0x0000, LOAD_NORMAL },
   { "ryukendn.5", 0x10000, 0x765e7baa, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "14.bin", 0x20000, 0x1ecfddaa, REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -127,8 +127,8 @@ static struct ROM_INFO ryukendn_roms[] =
 
 static struct ROM_INFO tknight_roms[] =
 {
-  { "tkni1.bin", 0x20000, 0x9121daa8, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "tkni2.bin", 0x20000, 0x6669cd87, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "tkni1.bin",  0x9121daa8, "tkni2.bin",  0x6669cd87),
   { "tkni3.bin", 0x10000, 0x15623ec7, REGION_ROM2, 0x0000, LOAD_NORMAL },
   { "tkni5.bin", 0x10000, 0x5ed15896, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "tkni7.bin", 0x80000, 0x4b4d4286, REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -141,8 +141,8 @@ static struct ROM_INFO tknight_roms[] =
 
 static struct ROM_INFO wildfang_roms[] =
 {
-  { "1.3st", 0x20000, 0xab876c9b, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "2.5st", 0x20000, 0x1dc74b3b, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "1.3st",  0xab876c9b, "2.5st",  0x1dc74b3b),
   { "tkni3.bin", 0x10000, 0x15623ec7, REGION_ROM2, 0x0000, LOAD_NORMAL },
   { "tkni5.bin", 0x10000, 0x5ed15896, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "14.3a", 0x20000, 0x0d20c10c, REGION_GFX2, 0x000000, LOAD_NORMAL },
@@ -165,8 +165,8 @@ static struct ROM_INFO wildfang_roms[] =
 
 static struct ROM_INFO stratof_roms[] =
 {
-  { "1.3s", 0x20000, 0x060822a4, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "2.4s", 0x20000, 0x339358fa, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "1.3s",  0x060822a4, "2.4s",  0x339358fa),
   { "a-4b.3", 0x10000, 0x18655c95, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "a-6v.mcu", 0x1000, NO_DUMP , REGION_CPU3, 0x00000, LOAD_NORMAL },
   { "b-7a.5", 0x10000, 0x6d2e4bf1, REGION_GFX1, 0x00000, LOAD_NORMAL },
@@ -180,8 +180,8 @@ static struct ROM_INFO stratof_roms[] =
 
 static struct ROM_INFO raiga_roms[] =
 {
-  { "a-3s.1", 0x20000, 0x303c2a6c, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "a-4s.2", 0x20000, 0x5f31fecb, REGION_ROM1, 0x00001, LOAD_8_16 },
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "a-3s.1",  0x303c2a6c, "a-4s.2",  0x5f31fecb),
   { "a-4b.3", 0x10000, 0x18655c95, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "a-6v.mcu", 0x1000, NO_DUMP , REGION_CPU3, 0x00000, LOAD_NORMAL },
   { "b-7a.5", 0x10000, 0x6d2e4bf1, REGION_GFX1, 0x00000, LOAD_NORMAL },
@@ -314,55 +314,55 @@ static struct INPUT_INFO ninja_gaiden_inputs[] =
 static struct DSW_DATA dsw_data_ninja_gaiden_0[] =
 {
    { MSG_DEMO_SOUND,          0x01, 0x02 },
-   { MSG_OFF,                 0x00, 0x00 },
-   { MSG_ON,                  0x01, 0x00 },
+   { MSG_OFF,                 0x00},
+   { MSG_ON,                  0x01},
    { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02, 0x00 },
-   { MSG_INVERT,              0x00, 0x00 },
+   { MSG_NORMAL,              0x02},
+   { MSG_INVERT,              0x00},
    { MSG_COIN2,               0x1c, 0x08 },
-   { MSG_5COIN_1PLAY,         0x00, 0x00 },
-   { MSG_4COIN_1PLAY,         0x10, 0x00 },
-   { MSG_3COIN_1PLAY,         0x08, 0x00 },
-   { MSG_2COIN_1PLAY,         0x04, 0x00 },
-   { MSG_1COIN_1PLAY,         0x1c, 0x00 },
-   { MSG_1COIN_2PLAY,         0x0c, 0x00 },
-   { MSG_1COIN_3PLAY,         0x14, 0x00 },
-   { MSG_1COIN_4PLAY,         0x18, 0x00 },
+   { MSG_5COIN_1PLAY,         0x00},
+   { MSG_4COIN_1PLAY,         0x10},
+   { MSG_3COIN_1PLAY,         0x08},
+   { MSG_2COIN_1PLAY,         0x04},
+   { MSG_1COIN_1PLAY,         0x1c},
+   { MSG_1COIN_2PLAY,         0x0c},
+   { MSG_1COIN_3PLAY,         0x14},
+   { MSG_1COIN_4PLAY,         0x18},
    { MSG_COIN1,               0xe0, 0x08 },
-   { MSG_5COIN_1PLAY,         0x00, 0x00 },
-   { MSG_4COIN_1PLAY,         0x80, 0x00 },
-   { MSG_3COIN_1PLAY,         0x40, 0x00 },
-   { MSG_2COIN_1PLAY,         0x20, 0x00 },
-   { MSG_1COIN_1PLAY,         0xe0, 0x00 },
-   { MSG_1COIN_2PLAY,         0x60, 0x00 },
-   { MSG_1COIN_3PLAY,         0xa0, 0x00 },
-   { MSG_1COIN_4PLAY,         0xc0, 0x00 },
-   { NULL,                    0,    0,   },
+   { MSG_5COIN_1PLAY,         0x00},
+   { MSG_4COIN_1PLAY,         0x80},
+   { MSG_3COIN_1PLAY,         0x40},
+   { MSG_2COIN_1PLAY,         0x20},
+   { MSG_1COIN_1PLAY,         0xe0},
+   { MSG_1COIN_2PLAY,         0x60},
+   { MSG_1COIN_3PLAY,         0xa0},
+   { MSG_1COIN_4PLAY,         0xc0},
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_ninja_gaiden_1[] =
 {
    { MSG_UNKNOWN,             0x01, 0x02 },
-   { MSG_OFF,                 0x01, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x01},
+   { MSG_ON,                  0x00},
    { MSG_UNKNOWN,             0x02, 0x02 },
-   { MSG_OFF,                 0x02, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x02},
+   { MSG_ON,                  0x00},
    { MSG_DIFFICULTY,          0x0c, 0x03 },	// enemy "recovery" time
-   { MSG_NORMAL,              0x0c, 0x00 },
-   { MSG_HARD,                0x04, 0x00 },
-   { MSG_HARDEST,             0x00, 0x00 },
+   { MSG_NORMAL,              0x0c},
+   { MSG_HARD,                0x04},
+   { MSG_HARDEST,             0x00},
    { "Energy",                0x30, 0x04 },
-   { "2",                     0x00, 0x00 },
-   { "3",                     0x30, 0x00 },
-   { "4",                     0x10, 0x00 },
-   { "5",                     0x20, 0x00 },
+   { "2",                     0x00},
+   { "3",                     0x30},
+   { "4",                     0x10},
+   { "5",                     0x20},
    { MSG_LIVES,               0xc0, 0x04 },
-   { "1",                     0x00, 0x00 },
-   { "2",                     0xc0, 0x00 },
-   { "3",                     0x40, 0x00 },
-   { "4",                     0x80, 0x00 },
-   { NULL,                    0,    0,   },
+   { "1",                     0x00},
+   { "2",                     0xc0},
+   { "3",                     0x40},
+   { "4",                     0x80},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO ninja_gaiden_dsw[] =
@@ -439,27 +439,27 @@ static struct INPUT_INFO tecmo_knight_inputs[] =
 static struct DSW_DATA dsw_data_tecmo_knight_1[] =
 {
    { MSG_UNKNOWN,             0x01, 0x02 },
-   { MSG_OFF,                 0x01, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x01},
+   { MSG_ON,                  0x00},
    { MSG_UNKNOWN,             0x02, 0x02 },
-   { MSG_OFF,                 0x02, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x02},
+   { MSG_ON,                  0x00},
    { MSG_DIFFICULTY,          0x0c, 0x04 },	// enemy "recovery" time
-   { MSG_EASY,                0x04, 0x00 },
-   { MSG_NORMAL,              0x0c, 0x00 },
-   { MSG_HARD,                0x08, 0x00 },
-   { MSG_HARDEST,             0x00, 0x00 },
+   { MSG_EASY,                0x04},
+   { MSG_NORMAL,              0x0c},
+   { MSG_HARD,                0x08},
+   { MSG_HARDEST,             0x00},
    { MSG_UNKNOWN,             0x10, 0x02 },
-   { MSG_OFF,                 0x10, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x10},
+   { MSG_ON,                  0x00},
    { MSG_UNKNOWN,             0x20, 0x02 },
-   { MSG_OFF,                 0x20, 0x00 },
-   { MSG_ON,                  0x00, 0x00 },
+   { MSG_OFF,                 0x20},
+   { MSG_ON,                  0x00},
    { MSG_LIVES,               0xc0, 0x03 },
-   { "1",                     0x80, 0x00 },
-   { "2",                     0xc0, 0x00 },
-   { "3",                     0x40, 0x00 },
-   { NULL,                    0,    0,   },
+   { "1",                     0x80},
+   { "2",                     0xc0},
+   { "3",                     0x40},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO tecmo_knight_dsw[] =
