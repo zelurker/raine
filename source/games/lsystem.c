@@ -6,8 +6,7 @@
 /*                                                                            */
 /******************************************************************************/
 /* TODO : update bankswitch code to use automatic code
-   update video functions to work in other color depths
-   Find out why plotting hangs when loading it after running play girls 2 */
+   update video functions to work in other color depths */
 
 /* In fact this driver is a total mess. It should probably be rewriten one day (too old) */
 /* But it's not an easy one, so good luck for the motivation ! */
@@ -2226,7 +2225,7 @@ extern UINT8 *ROM_BANK[];
 static UINT8 lsystem_ym2203_reg;
 static UINT8 VRAMBank[4];
 
-static void init_bank_rom(UINT8 *src, UINT8 *dst)
+static void init_bank_rom(UINT8 *src )
 {
   int i;
   UINT8 *dest;
@@ -2241,17 +2240,6 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
     dest = ROM_BANK[1] + i * 0x8000 + 0x6000;
     memcpy(dest,src+i*0x2000,0x2000);
   }
-/*    int ta; */
-
-/*    for(ta=0;ta<0x100;ta++){ */
-/*       ROM_BANK[ta]=NULL; */
-/*    } */
-
-/*    for(ta=0;ta<Z80BankCount;ta++){ */
-/*       ROM_BANK[ta] = dst+(ta*0x8000); */
-/*       memcpy(ROM_BANK[ta]+0x0000,src+0x0000,0x6000); */
-/*       memcpy(ROM_BANK[ta]+0x6000,src+(ta*0x2000),0x2000); */
-/*    } */
 }
 
 /******************************************************************************/
@@ -2289,7 +2277,7 @@ static UINT8 LSystemSubCpuBankRead(UINT16 offset)
    return Z802Bank;
 }
 
-static void init_bank_rom2(UINT8 *src, UINT8 *dst)
+static void init_bank_rom2(UINT8 *src)
 {
   int i;
   UINT8 *dest;
@@ -2300,17 +2288,6 @@ static void init_bank_rom2(UINT8 *src, UINT8 *dst)
     dest = ROM_BANK[2] + i * 0xc000 + 0x8000;
     memcpy(dest,src+i*0x4000,0x4000);
   }
-/*    int ta; */
-
-/*    for(ta=0;ta<0x100;ta++){ */
-/*       ROM_BANK_2[ta]=NULL; */
-/*    } */
-
-/*    for(ta=0;ta<Z802BankCount;ta++){ */
-/*       ROM_BANK_2[ta] = dst+(ta*0xC000); */
-/*       memcpy(ROM_BANK_2[ta]+0x0000,src+0x0000,0x8000); */
-/*       memcpy(ROM_BANK_2[ta]+0x8000,src+(ta*0x4000),0x4000); */
-/*    } */
 }
 
 /******************************************************************************/
@@ -2752,7 +2729,7 @@ void LoadRaimais(void)
 
    SetStopZ80BMode2(0x0121);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -2802,7 +2779,7 @@ void LoadRaimais(void)
 
    SetStopZ80CMode2(0x0012);
 
-   init_bank_rom2(TMP,ROM2);
+   init_bank_rom2(TMP);
 
    memcpy(RAM2, TMP, 0x8000+0x4000);
 
@@ -2918,7 +2895,7 @@ void load_american_horseshoes(void)
 
    SetStopZ80BMode2(0x0151);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -3064,7 +3041,7 @@ void LoadPlotting(void)
 
    SetStopZ80BMode2(0x0B2);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -3331,7 +3308,7 @@ void LoadFightingHawk(void)
 
    SetStopZ80BMode2(0x010D);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -3378,7 +3355,7 @@ void LoadFightingHawk(void)
 
    SetStopZ80CMode2(0x0025);
 
-   init_bank_rom2(TMP,ROM2);
+   init_bank_rom2(TMP);
 
    memcpy(RAM2, TMP, 0x8000+0x4000);
 
@@ -3516,7 +3493,7 @@ static void load_kuri_kinton_actual(int romset_2)
 
    }
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -3562,7 +3539,7 @@ static void load_kuri_kinton_actual(int romset_2)
 
    SetStopZ80CMode2(0x011B);
 
-   init_bank_rom2(TMP,ROM2);
+   init_bank_rom2(TMP);
 
    memcpy(RAM2, TMP, 0x8000+0x4000);
 
@@ -3735,7 +3712,7 @@ void LoadPuzznic(void)
 
    SetStopZ80BMode2(0x01B1);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -3851,7 +3828,7 @@ void LoadPlgirls(void)
 
    // SetStopZ80BMode2(0x01B1);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -3973,7 +3950,7 @@ void LoadPlgirls2(void)
 
    // SetStopZ80BMode2(0x01B1);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -4093,7 +4070,7 @@ void LoadPalamedes(void)
 
    SetStopZ80BMode2(0x0120);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -4213,7 +4190,7 @@ void load_cuby_bop(void)
 
    SetStopZ80BMode2(0x0120);
 */
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -4335,7 +4312,7 @@ void load_tube_it(void)
 
    SetStopZ80BMode2(0x0120);
 */
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
@@ -4457,7 +4434,7 @@ void load_cachat(void)
 
    SetStopZ80BMode2(0x0289);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(TMP);
 
    memcpy(RAM, TMP,  0x6000+0x2000);
 
