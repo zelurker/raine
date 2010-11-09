@@ -2661,6 +2661,7 @@ static void palamedes_led_write(UINT16 offset, UINT8 data)
 
 void LSystemAddSaveData(void)
 {
+	memset(VectorData,0,4);
    AddSaveData(SAVE_USER_0, (UINT8 *) &VectorData,          sizeof(VectorData));
    AddSaveData(SAVE_USER_1, (UINT8 *) &ah_gfx_bank,         sizeof(ah_gfx_bank));
    AddSaveData(SAVE_USER_2, (UINT8 *) &TileBank,            sizeof(TileBank));
