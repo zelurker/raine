@@ -156,12 +156,8 @@ static struct DSW_DATA dsw_data_full_throttle_0[] =
 //   { "Spinner + Digital",     0x01},
 //   { "Wheel + Motor",         0x00},
 
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_2COIN_1PLAY,         0x20},
@@ -192,9 +188,7 @@ static struct DSW_DATA dsw_data_full_throttle_1[] =
    { "2",                     0x20},
    { "4",                     0x10},
    { "5",                     0x00},
-   { "Continue Play",         0x40, 0x02 },
-   { MSG_OFF,                 0x40},
-   { MSG_ON,                  0x00},
+   DSW_CONTINUE_PLAY( 0x00, 0x40),
    { NULL,                    0,   },
 };
 

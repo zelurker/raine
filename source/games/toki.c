@@ -112,12 +112,8 @@ static struct DSW_DATA dsw_data_toki_0[] =
    { "Joysticks",             0x20, 0x02 },
    { "1",                     0x20},
    { "2",                     0x00},
-   { "Cabinet",               0x40, 0x02 },
-   { "Upright",               0x40},
-   { "Cocktail",              0x00},
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80},
-   { MSG_INVERT,              0x00},
+   DSW_CABINET( 0x40, 0x00),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -138,12 +134,8 @@ static struct DSW_DATA dsw_data_toki_1[] =
    { MSG_EASY,                0x20},
    { MSG_HARD,                0x10},
    { MSG_HARDEST,             0x00},
-   { "Continue Play",         0x40, 0x02 },
-   { MSG_ON,                  0x40},
-   { MSG_OFF,                 0x00},
-   { MSG_DEMO_SOUND,          0x80, 0x02 },
-   { MSG_ON,                  0x80},
-   { MSG_OFF,                 0x00},
+   DSW_CONTINUE_PLAY( 0x40, 0x00),
+   DSW_DEMO_SOUND( 0x80, 0x00),
    { NULL,                    0,   },
 };
 

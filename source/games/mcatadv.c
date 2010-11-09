@@ -163,15 +163,9 @@ static struct INPUT_INFO mcatadv_inputs[] =
 
 static struct DSW_DATA dsw_data_mcatadv_2[] =
 {
-  { MSG_DEMO_SOUND, 0x01, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x01},
-  { MSG_SCREEN, 0x02, 2 },
-  { MSG_OFF, 0x02},
-  { MSG_ON, 0x00},
-  { MSG_SERVICE, 0x04,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x04},
+  DSW_DEMO_SOUND( 0x01, 0x00),
+  DSW_SCREEN( 0x02, 0x00),
+  DSW_SERVICE( 0, 0x04),
   { "Coin Mode", 0x08, 2 },
   { "Mode 1" , 0x08},
   { "Mode 2" , 0x00},
@@ -231,12 +225,8 @@ static struct DSW_DATA dsw_data_nost_2[] =
   { MSG_NORMAL, 0x0c},
   { MSG_HARD, 0x04},
   { MSG_HARDEST, 0x00},
-  { MSG_SCREEN, 0x10, 2 },
-  { MSG_OFF, 0x10},
-  { MSG_ON, 0x00},
-  { MSG_DEMO_SOUND, 0x20, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x20},
+  DSW_SCREEN( 0x10, 0x00),
+  DSW_DEMO_SOUND( 0x20, 0x00),
   { MSG_EXTRA_LIFE, 0xc0, 4 },
   { "500k 1000k", 0x80},
   { "800k 1500k", 0xc0},
@@ -265,12 +255,8 @@ static struct DSW_DATA dsw_data_nost_3[] =
   { MSG_2COIN_3PLAY, 0x18},
   { MSG_1COIN_1PLAY, 0x30},
   { MSG_1COIN_3PLAY, 0x28},
-  { MSG_UNUSED, 0x40, 2 },
-  { MSG_OFF, 0x40},
-  { MSG_ON, 0x00},
-  { MSG_SERVICE, 0x80,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x80},
+  DSW_UNUSED( 0x00, 0x40),
+  DSW_SERVICE( 0, 0x80),
   { NULL, 0}
 };
 

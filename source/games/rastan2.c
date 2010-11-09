@@ -38,15 +38,9 @@ static struct ROM_INFO nastar_roms[] =
 
 static struct DSW_DATA dsw_data_nastar_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02},
-   { MSG_INVERT,              0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_SCREEN( 0x02, 0x00),
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_2COIN_1PLAY,         0x20},
@@ -77,9 +71,7 @@ struct DSW_DATA dsw_data_nastar_1[] =
    { "1",                     0x20},
    { "2",                     0x10},
    { "5",                     0x00},
-   { MSG_CONTINUE_PLAY,       0x40, 0x02 },
-   { MSG_ON,                  0x40},
-   { MSG_OFF,                 0x00},
+   DSW_CONTINUE_PLAY( 0x40, 0x00),
    { NULL,                    0,   },
 };
 
@@ -157,15 +149,9 @@ static struct ROM_INFO rastan_saga_2_roms[] =
 
 static struct DSW_DATA dsw_data_rastan_saga_2_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02},
-   { MSG_INVERT,              0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_SCREEN( 0x02, 0x00),
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_1COIN_2PLAY,         0x20},
@@ -236,15 +222,9 @@ static struct ROM_INFO nastar_warrior_roms[] =
 
 static struct DSW_DATA dsw_data_nastar_warrior_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02},
-   { MSG_INVERT,              0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_SCREEN( 0x02, 0x00),
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN_SLOTS,          0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_2COIN_1PLAY,         0x20},

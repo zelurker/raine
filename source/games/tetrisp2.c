@@ -101,9 +101,7 @@ static struct DSW_DATA dsw_data_tetrisp2_0[] =
    { MSG_FREE_PLAY,             0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
-   { MSG_TEST_MODE,           0x80, 0x02 },
-   { MSG_OFF,                 0x80},
-   { MSG_ON,                  0x00},
+   DSW_TEST_MODE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -126,12 +124,8 @@ static struct DSW_DATA dsw_data_tetrisp2_1[] =
    { "Voice",                 0x20, 0x02 },
    { MSG_ON,                  0x20},
    { MSG_OFF,                 0x00},
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_ON,                  0x40},
-   { MSG_OFF,                 0x00},
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80},
-   { MSG_INVERT,              0x00},
+   DSW_DEMO_SOUND( 0x40, 0x00),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 

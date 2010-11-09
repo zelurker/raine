@@ -69,17 +69,11 @@ static struct ROM_INFO hedpanic_roms[] =
 
 static struct DSW_DATA dsw_data_multchmp_2[] =
 {
-  { MSG_SERVICE, 0x0001,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x0001},
+  DSW_SERVICE( 0, 0x0001),
   { "Coinage Type", 0x0002, 1 },
   { "1", 0x0002},
-  { MSG_DEMO_SOUND, 0x0004, 2 },
-  { MSG_OFF, 0x0004},
-  { MSG_ON, 0x0000},
-  { MSG_SCREEN, 0x0008, 2 },
-  { MSG_OFF, 0x0008},
-  { MSG_ON, 0x0000},
+  DSW_DEMO_SOUND( 0x0000, 0x0004),
+  DSW_SCREEN( 0x0008, 0x0000),
   { MSG_COIN1, 0x0030, 4 },
   { MSG_2COIN_1PLAY, 0x0010},
   { MSG_1COIN_1PLAY, 0x0030},

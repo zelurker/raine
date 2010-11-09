@@ -111,12 +111,8 @@ static struct DSW_DATA dsw_data_blood_bros_1[] =
    { MSG_EASY,                0x20},
    { MSG_HARD,                0x10},
    { MSG_HARDEST,             0x00},
-   { "Continue Play",         0x40, 0x02 },
-   { MSG_ON,                  0x40},
-   { MSG_OFF,                 0x00},
-   { MSG_DEMO_SOUND,          0x80, 0x02 },
-   { MSG_ON,                  0x80},
-   { MSG_OFF,                 0x00},
+   DSW_CONTINUE_PLAY( 0x40, 0x00),
+   DSW_DEMO_SOUND( 0x80, 0x00),
    { NULL,                    0,   },
 };
 

@@ -116,12 +116,8 @@ static struct DSW_DATA dsw_data_wwf_super_stars_0[] =
    { MSG_1COIN_3PLAY,         0x28},
    { MSG_1COIN_4PLAY,         0x20},
    { MSG_1COIN_5PLAY,         0x18},
-   { MSG_UNUSED,              0x40, 0x02 },	/* Bit 6 of DSW0 is unused */
-   { MSG_OFF,                 0x40},
-   { MSG_ON,                  0x00},
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80},
-   { MSG_INVERT,              0x00},	// OK, but not handled yet
+   DSW_UNUSED( 0x00, 0x40),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -132,9 +128,7 @@ static struct DSW_DATA dsw_data_wwf_super_stars_1[] =
    { MSG_NORMAL,              0x03},
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x00},
-   { MSG_DEMO_SOUND,          0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
+   DSW_DEMO_SOUND( 0x04, 0x00),
    { "Super Techniques",      0x08, 0x02 },
    { MSG_NORMAL,              0x08},
    { MSG_HARD,                0x00},
@@ -143,9 +137,7 @@ static struct DSW_DATA dsw_data_wwf_super_stars_1[] =
    { "Default",               0x30},
    { "-2:30",                 0x10},
    { "-5:00",                 0x00},
-   { MSG_UNUSED,              0x40, 0x02 },	/* Bit 6 of DSW1 is unused */
-   { MSG_OFF,                 0x40},
-   { MSG_ON,                  0x00},
+   DSW_UNUSED( 0x00, 0x40),
    { "Health For Winning",    0x80, 0x02 },
    { MSG_NO,                  0x80},
    { MSG_YES,                 0x00},

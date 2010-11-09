@@ -168,15 +168,11 @@ static struct DSW_DATA dsw_data_fix_eight_0[] =
    { "Max Players",           0x01, 0x02 },
    { "2",                     0x00},
    { "3",                     0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
+   DSW_SCREEN( 0x00, 0x02),
    { "Shooting Style",        0x04, 0x02 },
    { "Fully-auto",            0x00},
    { "Semi-auto",             0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_2COIN_1PLAY,         0x10},
@@ -210,9 +206,7 @@ static struct DSW_DATA dsw_data_fix_eight_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -442,15 +436,9 @@ static struct DSW_DATA dsw_data_knuckle_bash_0[] =
    { "Discount",              0x01, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -484,9 +472,7 @@ static struct DSW_DATA dsw_data_knuckle_bash_1[] =
    { MSG_CHEAT,               0x40, 0x02 },     // This has an effect only in "test mode"
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -603,15 +589,9 @@ static struct DSW_DATA dsw_data_snow_bros_2_0[] =
    { "Discount",              0x01, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -726,15 +706,9 @@ static struct INPUT_INFO tatsujin_2_inputs[] =
 
 static struct DSW_DATA dsw_data_tatsujin_2_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_2COIN_1PLAY,         0x10},
@@ -768,9 +742,7 @@ static struct DSW_DATA dsw_data_tatsujin_2_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -849,15 +821,9 @@ static struct DSW_DATA dsw_data_dogyuun_0[] =
    { MSG_FREE_PLAY,              0x01, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -891,9 +857,7 @@ static struct DSW_DATA dsw_data_dogyuun_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -970,15 +934,9 @@ static struct INPUT_INFO whoopee_inputs[] =
 
 static struct DSW_DATA dsw_data_whoopee_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -1109,15 +1067,9 @@ static struct INPUT_INFO pipi_and_bibi_inputs[] =
 
 static struct DSW_DATA dsw_data_pipi_and_bibi_0[] =
 {
-// { MSG_SCREEN,              0x02, 0x02 },     // Not supported by video hardware (MAME notes)
-// { MSG_NORMAL,              0x00},
-// { MSG_INVERT,              0x02},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -1177,15 +1129,9 @@ static struct ROM_INFO teki_paki_roms[] =
 
 static struct DSW_DATA dsw_data_teki_paki_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -1254,15 +1200,9 @@ static struct ROM_INFO ghox_roms[] =
 
 static struct DSW_DATA dsw_data_ghox_0[] =
 {
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -1352,18 +1292,10 @@ static struct ROM_INFO v_five_roms[] =
 
 static struct DSW_DATA dsw_data_v_five_0[] =
 {
-   { MSG_CABINET,             0x01, 0x02 },
-   { MSG_UPRIGHT,             0x00},
-   { MSG_TABLE,               0x01},     // OK, but screen flipping isn't handled yet
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_CABINET( 0x00, 0x01),
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -1397,9 +1329,7 @@ static struct DSW_DATA dsw_data_v_five_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -1443,18 +1373,10 @@ static struct ROM_INFO grind_stormer_roms[] =
 
 static struct DSW_DATA dsw_data_grind_stormer_0[] =
 {
-   { MSG_CABINET,             0x01, 0x02 },
-   { MSG_UPRIGHT,             0x00},
-   { MSG_TABLE,               0x01},     // OK, but screen flipping isn't handled yet
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_CABINET( 0x00, 0x01),
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_2COIN_1PLAY,         0x10},
@@ -1471,7 +1393,7 @@ static struct DSW_DATA dsw_data_grind_stormer_0[] =
 static struct DSW_DATA dsw_data_grind_stormer_2[] =
 {
    { "Language",              0x0F, 0x0B },
-   { "Korea, Unite Trading", 0x00 },
+   { "Korea, Unite Trading"},
    { "Korea",                 0x01},
    { "Hong Kong",             0x02},
    { "Hong Kong, Charterfield",0x03, 0x00 },
@@ -1558,15 +1480,9 @@ static struct DSW_DATA dsw_data_shippu_mahoudai_0[] =
    { MSG_FREE_PLAY,              0x01, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},     // OK, but not handled yet
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -1600,9 +1516,7 @@ static struct DSW_DATA dsw_data_shippu_mahoudai_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -1718,9 +1632,7 @@ static struct ROM_INFO batrider_roms[] =
 
 static struct DSW_DATA dsw_data_batrider_0[] =
 {
-   { MSG_TEST_MODE,           0x01, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x01},
+   DSW_TEST_MODE( 0x01, 0x00),
    { "Credits to Start",      0x02, 0x02 },     // "Stick Mode" when "Free Play"
    { "1 Credit",              0x00},     //   - "Normal"
    { "2 Credits",             0x02},     //   - "Special"
@@ -1783,18 +1695,12 @@ static struct DSW_DATA dsw_data_batrider_1[] =
 
 static struct DSW_DATA dsw_data_batrider_2[] =
 {
-   { MSG_SCREEN,              0x01, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x01},             // OK, but not handled yet
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x02},
+   DSW_SCREEN( 0x00, 0x01),
+   DSW_DEMO_SOUND( 0x00, 0x02),
    { "Stage Edit",            0x04, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x04},
-   { MSG_CONTINUE_PLAY,       0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_CONTINUE_PLAY( 0x00, 0x08),
    { MSG_CHEAT,               0x10, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x10},
@@ -1987,9 +1893,7 @@ static struct ROM_INFO battle_garegh_roms[] =
 
 static struct DSW_DATA dsw_data_battle_garegga_0[] =
 {
-   { MSG_TEST_MODE,           0x01, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x01},
+   DSW_TEST_MODE( 0x01, 0x00),
    { "Credits to Start",      0x02, 0x02 },
    { "1 Credit",              0x00},
    { "2 Credits",             0x02},
@@ -2032,12 +1936,8 @@ static struct DSW_DATA dsw_data_battle_garegga_1[] =
    { MSG_EASY,                0x01},
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
-   { MSG_SCREEN,              0x04, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x04},     // OK, but not handled yet
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_LIVES,               0x70, 0x08 },
    { "3",                     0x00},
    { "4",                     0x10},
@@ -2060,9 +1960,7 @@ static struct DSW_DATA dsw_data_battle_garegga_2[] =
    { "Europe",                0x01},
    { "USA",                   0x02},
    { "Asia",                  0x03},
-   { MSG_CONTINUE_PLAY,       0x04, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x04},
+   DSW_CONTINUE_PLAY( 0x00, 0x04),
    { "Stage Edit",            0x08, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x08},
@@ -2076,12 +1974,8 @@ static struct DSW_DATA dsw_data_battle_garegc_1[] =
    { MSG_EASY,                0x01},
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
-   { MSG_SCREEN,              0x04, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_LIVES,               0x70, 0x08 },
    { "3",                     0x00},
    { "4",                     0x10},
@@ -2104,9 +1998,7 @@ static struct DSW_DATA dsw_data_battle_garegc_2[] =
    { "Denmark",               0x01},
    { "USA",                   0x02},
    { "China",                 0x03},
-   { MSG_CONTINUE_PLAY,       0x04, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x04},
+   DSW_CONTINUE_PLAY( 0x00, 0x04),
    { "Stage Edit",            0x08, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x08},
@@ -2157,15 +2049,9 @@ static struct DSW_DATA dsw_data_batsugun_0[] =
    { "Continue",              0x01, 0x02 },
    { MSG_NORMAL,              0x00},
    { "Discount",              0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -2199,9 +2085,7 @@ static struct DSW_DATA dsw_data_batsugun_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_CONTINUE_PLAY,       0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_CONTINUE_PLAY( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -6409,9 +6293,7 @@ static void execute_bakraid() {
 
 static struct DSW_DATA dsw_data_bbakraid_0[] =
 {
-   { MSG_TEST_MODE,           0x01, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x01},
+   DSW_TEST_MODE( 0x01, 0x00),
    { "Credits to Start",      0x02, 0x02 },
    { "1 Credit",              0x00},
    { "2 Credits",             0x02},
@@ -6477,18 +6359,12 @@ static struct DSW_DATA dsw_data_bbakraid_1[] =
 
 static struct DSW_DATA dsw_data_bbakraid_2[] =
 {
-   { MSG_SCREEN,              0x01, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x01},             // OK, but not handled yet
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x02},
+   DSW_SCREEN( 0x00, 0x01),
+   DSW_DEMO_SOUND( 0x00, 0x02),
    { "Stage Edit",            0x04, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x04},
-   { MSG_CONTINUE_PLAY,       0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_CONTINUE_PLAY( 0x00, 0x08),
    { MSG_CHEAT,               0x10, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x10},

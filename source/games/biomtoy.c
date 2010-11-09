@@ -92,18 +92,10 @@ static struct INPUT_INFO BiomToy_inputs[] =
 /* Dipswitch 2 */
 static struct DSW_DATA dsw_data_BiomToy_0[] =
 {
-   { MSG_SERVICE,	      0x01, 0x02 },
-   { MSG_OFF,		      0x01},
-   { MSG_ON,		      0x00},
-   { MSG_UNUSED,	      0x02, 0x02 },
-   { MSG_OFF,		      0x02},
-   { MSG_ON,		      0x00},
-   { MSG_UNUSED,	      0x04, 0x02 },
-   { MSG_OFF,		      0x04},
-   { MSG_ON,		      0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x08},
+   DSW_SERVICE( 0x00, 0x01),
+   DSW_UNUSED( 0x00, 0x02),
+   DSW_UNUSED( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_LIVES,               0x30, 0x04 },
    { "1",                     0x20},
    { "2",                     0x10},
@@ -243,15 +235,11 @@ static struct ROM_INFO Maniacsq_roms[] =
 /* Dipswitch 2 */
 static struct DSW_DATA dsw_data_Maniacsq_0[] =
 {
-   { MSG_SERVICE,	      0x01, 0x02 },
-   { MSG_OFF,		      0x01},
-   { MSG_ON,		      0x00},
+   DSW_SERVICE( 0x00, 0x01),
    { MSG_UNKNOWN,	      0x02, 0x02 },
    { MSG_OFF,		      0x02},
    { MSG_ON,		      0x00},
-   { MSG_DEMO_SOUND,          0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
+   DSW_DEMO_SOUND( 0x04, 0x00),
    { "Sound type",            0x08, 0x02 },
    { "Mono",                  0x08},
    { "Stereo",                0x00},

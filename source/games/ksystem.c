@@ -268,18 +268,12 @@ static struct INPUT_INFO kiki_kai_kai_inputs[] =
 
 static struct DSW_DATA dsw_data_kiki_kai_kai_0[] =
 {
-   { "Cabinet",               0x01, 0x02 },
-   { "Upright",               0x01},
-   { "Table",                 0x00},
+   DSW_CABINET( 0x01, ),
    { MSG_DSWA_BIT2,           0x02, 0x02 },
    { MSG_OFF,                 0x02},
    { MSG_ON,                  0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_1COIN_2PLAY,         0x20},

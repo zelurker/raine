@@ -213,9 +213,7 @@ static struct DSW_DATA dsw_data_cookbib_3[] =
 
 static struct DSW_DATA dsw_data_cookbib_4[] =
 {
-  { MSG_SERVICE, 0x01,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x01},
+  DSW_SERVICE( 0, 0x01),
   { MSG_DIFFICULTY, 0x06, 4 },
   { MSG_EASY, 0x00},
   { MSG_NORMAL, 0x06},
@@ -233,9 +231,7 @@ static struct DSW_DATA dsw_data_cookbib_4[] =
   { "VS Round", 0x40, 2 },
   { "3", 0x40},
   { "1", 0x00},
-  { MSG_DEMO_SOUND, 0x80, 2 },
-  { MSG_OFF, 0x80},
-  { MSG_ON, 0x00},
+  DSW_DEMO_SOUND( 0x00, 0x80),
   { NULL, 0}
 };
 
@@ -248,12 +244,8 @@ static struct DSW_INFO cookbib_dsw[] =
 
 static struct DSW_DATA dsw_data_jumppop_3[] =
 {
-  { MSG_SERVICE, 0x0001,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x0001},
-  { MSG_SCREEN, 0x0002, 2 },
-  { MSG_OFF, 0x0002},
-  { MSG_ON, 0x0000},
+  DSW_SERVICE( 0, 0x0001),
+  DSW_SCREEN( 0x0002, 0x0000),
   { MSG_COIN2, 0x001c, 8 },
   { MSG_3COIN_1PLAY, 0x0000},
   { MSG_2COIN_1PLAY, 0x0010},
@@ -277,9 +269,7 @@ static struct DSW_DATA dsw_data_jumppop_3[] =
 
 static struct DSW_DATA dsw_data_jumppop_4[] =
 {
-  { MSG_DEMO_SOUND, 0x1, 2 },
-  { MSG_OFF, 0x1},
-  { MSG_ON, 0x0},
+  DSW_DEMO_SOUND( 0x0, 0x1),
   { "Allow_Continue", 0x2, 2 },
   { MSG_NO, 0x0},
   { MSG_YES, 0x2},
@@ -311,9 +301,7 @@ static struct DSW_INFO jumppop_dsw[] =
 
 static struct DSW_DATA dsw_data_htchctch_4[] =
 {
-  { MSG_SERVICE, 0x01,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x01},
+  DSW_SERVICE( 0, 0x01),
   { MSG_DIFFICULTY, 0x06, 4 },
   { MSG_EASY, 0x00},
   { MSG_NORMAL, 0x06},
@@ -331,9 +319,7 @@ static struct DSW_DATA dsw_data_htchctch_4[] =
   { "Stage Skip", 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
-  { MSG_DEMO_SOUND, 0x80, 2 },
-  { MSG_OFF, 0x80},
-  { MSG_ON, 0x00},
+  DSW_DEMO_SOUND( 0x00, 0x80),
   { NULL, 0}
 };
 
@@ -372,9 +358,7 @@ static struct DSW_DATA dsw_data_chokchok_3[] =
 
 static struct DSW_DATA dsw_data_chokchok_4[] =
 {
-  { MSG_SERVICE, 0x01,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x01},
+  DSW_SERVICE( 0, 0x01),
   { MSG_UNKNOWN, 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
@@ -393,9 +377,7 @@ static struct DSW_DATA dsw_data_chokchok_4[] =
   { MSG_UNKNOWN, 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
-  { MSG_DEMO_SOUND, 0x80, 2 },
-  { MSG_OFF, 0x80},
-  { MSG_ON, 0x00},
+  DSW_DEMO_SOUND( 0x00, 0x80),
   { NULL, 0}
 };
 

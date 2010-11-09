@@ -211,23 +211,15 @@ static struct INPUT_INFO tharrier_inputs[] =
 
 static struct DSW_DATA dsw_data_ssmissin_2[] =
 {
-  { MSG_SCREEN, 0x0001, 2 },
-  { MSG_OFF, 0x0001},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0002, 2 },
-  { MSG_OFF, 0x0002},
-  { MSG_ON, 0x0000},
+  DSW_SCREEN( 0x0001, 0x0000),
+  DSW_UNUSED( 0x0000, 0x0002),
   { MSG_DIFFICULTY, 0x000c, 4 },
   { "Easy" , 0x0004},
   { "Normal" , 0x000c},
   { "Hard" , 0x0008},
   { "Hardest" , 0x0000},
-  { MSG_UNUSED, 0x0010, 2 },
-  { MSG_OFF, 0x0010},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0020, 2 },
-  { MSG_OFF, 0x0020},
-  { MSG_ON, 0x0000},
+  DSW_UNUSED( 0x0000, 0x0010),
+  DSW_UNUSED( 0x0000, 0x0020),
   { MSG_LIVES, 0x00c0, 4 },
   { "1" , 0x0000},
   { "2" , 0x0040},
@@ -259,20 +251,14 @@ static struct DSW_INFO ssmissin_dsw[] =
 
 static struct DSW_DATA dsw_data_bio_ship_paladin_0[] =
 {
-   { MSG_SCREEN,              0x01, 0x02 },
-   { MSG_NORMAL,              0x01},
-   { MSG_INVERT,              0x00},
+   DSW_SCREEN( 0x01, 0x00),
    { MSG_DIFFICULTY,          0x06, 0x04 },
    { MSG_NORMAL,              0x06},
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x04},
    { MSG_EASY,                0x00},
-   { MSG_TEST_MODE,           0x08, 0x02 },
-   { MSG_OFF,                 0x08},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x20, 0x02 },
-   { MSG_ON,                  0x20},
-   { MSG_OFF,                 0x00},
+   DSW_TEST_MODE( 0x00, 0x08),
+   DSW_DEMO_SOUND( 0x20, 0x00),
    { "Lives",                 0xC0, 0x04 },
    { "3",                     0xC0},
    { "5",                     0x40},
@@ -401,9 +387,7 @@ static struct ROM_INFO bomb_jack_twin_roms[] =
 
 struct DSW_DATA dsw_data_bomb_jack_twin_0[] =
 {
-   { MSG_SCREEN,              0x01, 0x02 },
-   { MSG_NORMAL,              0x01},
-   { MSG_INVERT,              0x00},
+   DSW_SCREEN( 0x01, 0x00),
    { "Start Level",           0x0E, 0x08 },
    { "Japan",                 0x0E},
    { "Nevada",                0x0C},
@@ -428,9 +412,7 @@ struct DSW_DATA dsw_data_bomb_jack_twin_0[] =
 
 struct DSW_DATA dsw_data_bomb_jack_twin_1[] =
 {
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_OFF,                 0x02},
-   { MSG_ON,                  0x00},
+   DSW_DEMO_SOUND( 0x00, 0x02),
    { MSG_COIN2,               0x1C, 0x08 },
    { MSG_1COIN_1PLAY,         0x1C},
    { MSG_1COIN_2PLAY,         0x0C},
@@ -480,9 +462,7 @@ static struct ROM_INFO saboten_bombers_roms[] =
 
 struct DSW_DATA dsw_data_saboten_bombers_0[] =
 {
-   { MSG_SCREEN,              0x01, 0x02 },
-   { MSG_NORMAL,              0x01},
-   { MSG_INVERT,              0x00},
+   DSW_SCREEN( 0x01, 0x00),
    { "Language",              0x02, 0x02 },
    { "Japanese",              0x02},
    { "English",               0x00},
@@ -501,9 +481,7 @@ struct DSW_DATA dsw_data_saboten_bombers_0[] =
 
 struct DSW_DATA dsw_data_saboten_bombers_1[] =
 {
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_OFF,                 0x02},
-   { MSG_ON,                  0x00},
+   DSW_DEMO_SOUND( 0x00, 0x02),
    { MSG_COIN1,               0xE0, 0x08 }, // Looks ugly and out of order, but it's correct!
    { MSG_1COIN_1PLAY,         0xE0},
    { MSG_1COIN_2PLAY,         0xC0},
@@ -619,15 +597,11 @@ static struct ROM_INFO macross2_roms[] =
 
 static struct DSW_DATA dsw_data_macross_2[] =
 {
-  { MSG_SERVICE, 0x01,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x01},
+  DSW_SERVICE( 0, 0x01),
   { MSG_UNKNOWN, 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
-  { MSG_SCREEN, 0x04, 2 },
-  { MSG_OFF, 0x04},
-  { MSG_ON, 0x00},
+  DSW_SCREEN( 0x04, 0x00),
   { "Language", 0x08, 2 },
   { "English" , 0x00},
   { "Japanese" , 0x08},
@@ -692,12 +666,8 @@ static struct DSW_INFO macross_dsw[] =
 
 static struct DSW_DATA dsw_data_blkheart_2[] =
 {
-  { MSG_SCREEN, 0x01, 2 },
-  { MSG_OFF, 0x01},
-  { MSG_ON, 0x00},
-  { MSG_SERVICE, 0x02,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x02},
+  DSW_SCREEN( 0x01, 0x00),
+  DSW_SERVICE( 0, 0x02),
   { MSG_DIFFICULTY, 0x04, 2 },
   { "Normal" , 0x04},
   { "Hard" , 0x00},
@@ -861,13 +831,9 @@ static struct ROM_INFO mustang_roms[] =
 
 static struct DSW_DATA dsw_data_tharrier_2[] =
 {
-   { MSG_TEST_MODE,           0x01, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x01},
+   DSW_TEST_MODE( 0x00, 0x01),
    // The following bits are not read by tharrier, but maybe by mustang...
-  { MSG_DEMO_SOUND, 0x0002, 2 },
-  { MSG_OFF, 0x0000},
-  { MSG_ON, 0x0002},
+  DSW_DEMO_SOUND( 0x0002, 0x0000),
   { MSG_COIN2, 0x001c, 8 },
   { MSG_4COIN_1PLAY, 0x0010},
   { MSG_3COIN_1PLAY, 0x0008},
@@ -891,9 +857,7 @@ static struct DSW_DATA dsw_data_tharrier_2[] =
 
 static struct DSW_DATA dsw_data_mustang_3[] =
 {
-  { MSG_SCREEN, 0x1, 2 },
-  { MSG_OFF, 0x1},
-  { MSG_ON, 0x0},
+  DSW_SCREEN( 0x1, 0x0),
   { MSG_UNKNOWN, 0x2, 2 },
   { MSG_OFF, 0x2},
   { MSG_ON, 0x0},
@@ -937,12 +901,8 @@ static struct DIR_INFO acrobatm_dirs[] =
 
 static struct DSW_DATA dsw_data_acrobatm_2[] =
 {
-  { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0001},
-  { MSG_ON, 0x0000},
-  { MSG_SCREEN, 0x0002, 2 },
-  { MSG_OFF, 0x0002},
-  { MSG_ON, 0x0000},
+  DSW_DEMO_SOUND( 0x0000, 0x0001),
+  DSW_SCREEN( 0x0002, 0x0000),
   { MSG_COIN2, 0x001C, 8 },
   { MSG_5COIN_1PLAY, 0x0000},
   { MSG_4COIN_1PLAY, 0x0010},
@@ -966,9 +926,7 @@ static struct DSW_DATA dsw_data_acrobatm_2[] =
 
 static struct DSW_DATA dsw_data_acrobatm_3[] =
 {
-  { MSG_SERVICE, 0x01,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x01},
+  DSW_SERVICE( 0, 0x01),
   { MSG_EXTRA_LIFE, 0x06, 4 },
   { "50k and 100k" , 0x02},
   { "100k and 100k" , 0x06},
@@ -1052,12 +1010,8 @@ static struct DSW_DATA dsw_data_strahl_2[] =
   { MSG_1COIN_1PLAY, 0x30},
   { MSG_1COIN_3PLAY, 0x28},
   { MSG_1COIN_4PLAY, 0x20},
-  { MSG_SCREEN, 0x40, 2 },
-  { MSG_OFF, 0x40},
-  { MSG_ON, 0x00},
-  { MSG_DEMO_SOUND, 0x80, 2 },
-  { MSG_OFF, 0x80},
-  { MSG_ON, 0x00},
+  DSW_SCREEN( 0x40, 0x00),
+  DSW_DEMO_SOUND( 0x00, 0x80),
   { NULL, 0}
 };
 
@@ -1073,17 +1027,13 @@ static struct DSW_DATA dsw_data_strahl_3[] =
   { "Normal" , 0x0c},
   { "Hard" , 0x04},
   { "Hardest" , 0x00},
-  { MSG_UNUSED, 0x10, 2 },
-  { MSG_OFF, 0x10},
-  { MSG_ON, 0x00},
+  DSW_UNUSED( 0x00, 0x10),
   { MSG_EXTRA_LIFE, 0x60, 4 },
   { "100k and every 200k" , 0x40},
   { "200k and every 200k" , 0x60},
   { "300k and every 300k" , 0x20},
   { "None" , 0x00},
-  { MSG_SERVICE, 0x80,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x80},
+  DSW_SERVICE( 0, 0x80),
   { NULL, 0}
 };
 
@@ -1225,9 +1175,7 @@ static struct DIR_INFO ssmissin_dirs[] =
 
 static struct DSW_DATA dsw_data_tdragon_2[] =
 {
-  { MSG_SCREEN, 0x0001, 2 },
-  { MSG_OFF, 0x0001},
-  { MSG_ON, 0x0000},
+  DSW_SCREEN( 0x0001, 0x0000),
   { MSG_UNKNOWN, 0x0002, 2 },
   { MSG_OFF, 0x0002},
   { MSG_ON, 0x0000},
@@ -1307,9 +1255,7 @@ static struct DSW_DATA dsw_data_tdragonb_2[] =
   { MSG_UNKNOWN, 0x0040, 2 },
   { MSG_OFF, 0x0040},
   { MSG_ON, 0x0000},
-  { MSG_SCREEN, 0x0080, 2 },
-  { MSG_OFF, 0x0080},
-  { MSG_ON, 0x0000},
+  DSW_SCREEN( 0x0080, 0x0000),
   { NULL, 0}
 };
 
@@ -1333,9 +1279,7 @@ static struct DSW_DATA dsw_data_tdragonb_3[] =
   { MSG_1COIN_3PLAY, 0x0010},
   { MSG_1COIN_4PLAY, 0x0008},
   { MSG_FREE_PLAY, 0x0000},
-  { MSG_DEMO_SOUND, 0x0040, 2 },
-  { MSG_OFF, 0x0000},
-  { MSG_ON, 0x0040},
+  DSW_DEMO_SOUND( 0x0040, 0x0000),
   { MSG_UNKNOWN, 0x0080, 2 },
   { MSG_OFF, 0x0080},
   { MSG_ON, 0x0000},

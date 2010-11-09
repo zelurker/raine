@@ -114,9 +114,7 @@ static struct DSW_DATA dsw_data_frogger_2[] =
   { "A 2/1 B 1/3 C 2/1", 	0x04},
   { "A 1/1 B 1/1 C 1/1", 	0x00},
   { "A 1/1 B 1/6 C 1/1", 	0x06},
-  { MSG_CABINET, 0x08, 2 },
-  { MSG_UPRIGHT, 	0x00},
-  { MSG_TABLE, 	0x08},
+  DSW_CABINET( 0x00, 0x08),
   { NULL, 0}
 };
 
@@ -129,12 +127,8 @@ static struct DSW_INFO frogger_dsw[] =
 
 static struct DSW_DATA dsw_data_galaxian_0[] =
 {
-  { MSG_CABINET, 0x20, 2 },
-  { MSG_UPRIGHT, 0x00},
-  { MSG_TABLE, 0x20},
-  { MSG_SERVICE, 0x40,2 },
-  { MSG_OFF, 0},
-  { MSG_ON, 0x40},
+  DSW_CABINET( 0x00, 0x20),
+  DSW_SERVICE( 0x40, 0),
   { NULL, 0}
 };
 
@@ -159,9 +153,7 @@ static struct DSW_DATA dsw_data_galaxian_2[] =
   { MSG_LIVES, 0x04, 2 },
   { "2", 0x00},
   { "3", 0x04},
-  { MSG_UNUSED, 0x08, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x08},
+  DSW_UNUSED( 0x08, 0x00),
   { NULL, 0}
 };
 
@@ -183,9 +175,7 @@ static struct DSW_DATA dsw_data_superg_0[] =
   { MSG_LIVES, 0x04, 2 },
   { "3", 0x00},
   { "5", 0x04},
-  { MSG_UNUSED, 0x08, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x08},
+  DSW_UNUSED( 0x08, 0x00),
   { NULL, 0}
 };
 

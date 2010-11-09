@@ -313,12 +313,8 @@ static struct INPUT_INFO ninja_gaiden_inputs[] =
 
 static struct DSW_DATA dsw_data_ninja_gaiden_0[] =
 {
-   { MSG_DEMO_SOUND,          0x01, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x01},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02},
-   { MSG_INVERT,              0x00},
+   DSW_DEMO_SOUND( 0x01, 0x00),
+   DSW_SCREEN( 0x02, 0x00),
    { MSG_COIN2,               0x1c, 0x08 },
    { MSG_5COIN_1PLAY,         0x00},
    { MSG_4COIN_1PLAY,         0x10},

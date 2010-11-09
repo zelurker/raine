@@ -66,18 +66,10 @@ static struct INPUT_INFO vimana_inputs[] =
 
 static struct DSW_DATA dsw_data_rally_bike_0[] =
 {
-   { MSG_CABINET,             0x01, 0x02 },
-   { MSG_UPRIGHT,             0x00},
-   { MSG_TABLE,               0x01},
-   { MSG_SCREEN,              0x00, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_CABINET( 0x00, 0x01),
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -120,18 +112,10 @@ static struct DSW_DATA dsw_data_rally_bike_1[] =
 
 static struct DSW_DATA dsw_data_hellfire_0[] =
 {
-   { MSG_UNUSED,                0x01, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x01},
-   { MSG_SCREEN,              0x00, 0x02 },
-   { MSG_NORMAL,              0x00},
-   { MSG_INVERT,              0x02},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x08},
+   DSW_UNUSED( 0x01, 0x00),
+   DSW_SCREEN( 0x00, 0x02),
+   DSW_TEST_MODE( 0x04, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x10},
@@ -154,7 +138,7 @@ static struct DSW_DATA dsw_data_truxton_1[] =
    { MSG_HARDEST,             0x03},
    { "Extra Life",            0x00, 0x04 },
    { "50K, every 150K",       0x04, 0x00 },
-   { "70K, every 200K", 0x00 },
+   { "70K, every 200K"},
    { "100K only",             0x08},
    { "none",                  0x0C},
    { "Lives",                 0x00, 0x04 },
@@ -179,7 +163,7 @@ static struct DSW_DATA dsw_data_hellfire_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { "Extra Life",            0x00, 0x04 },
-   { "70K, every 200K", 0x00 },
+   { "70K, every 200K"},
    { "50K, every 250K",       0x04, 0x00 },
    { "100K only",             0x08},
    { "200k only",             0x0C},
@@ -191,9 +175,7 @@ static struct DSW_DATA dsw_data_hellfire_1[] =
    { "Invulnerability",       0x00, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_UNUSED,                0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_UNUSED( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -205,7 +187,7 @@ static struct DSW_DATA dsw_data_fire_shark_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { "Extra Life",            0x00, 0x04 },
-   { "70K, every 150K", 0x00 },
+   { "70K, every 150K"},
    { "50K, every 200K",       0x04, 0x00 },
    { "100K only",             0x08},
    { "None",                  0x0C},
@@ -217,9 +199,7 @@ static struct DSW_DATA dsw_data_fire_shark_1[] =
    { "Invulnerability",       0x00, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { MSG_UNUSED,                0x80, 0x02 },
-   { MSG_ON,                  0x00},
-   { MSG_OFF,                 0x80},
+   DSW_UNUSED( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -513,9 +493,7 @@ static struct DSW_DATA dsw_data_outzone_1[] =
   { "Invulnerability", 0x40, 2 },
   { MSG_OFF, 0x00},
   { MSG_ON, 0x40},
-  { MSG_UNUSED, 0x80, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x80},
+  DSW_UNUSED( 0x80, 0x00),
   { NULL, 0}
 };
 
@@ -698,12 +676,8 @@ static struct DSW_DATA dsw_data_zerowing_2[] =
   { "Europe" , 0x03},
   { "US" , 0x01},
   { "Japan" , 0x00},
-  { MSG_UNUSED, 0x04, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x04},
-  { MSG_UNUSED, 0x08, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x08},
+  DSW_UNUSED( 0x04, 0x00),
+  DSW_UNUSED( 0x08, 0x00),
   { NULL, 0}
 };
 
@@ -780,9 +754,7 @@ static struct DSW_DATA dsw_data_demonwld_1[] =
   { "Invulnerability",    0x40, 2 },
   { MSG_OFF, 0x00},
   { MSG_ON, 0x40},
-  { MSG_UNUSED, 0x80, 2 },
-  { MSG_OFF, 0x00},
-  { MSG_ON, 0x80},
+  DSW_UNUSED( 0x80, 0x00),
   { NULL, 0}
 };
 

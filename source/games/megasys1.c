@@ -173,15 +173,9 @@ static struct DSW_DATA dsw_data_coinage_8bits[] =
 
 static struct DSW_DATA dsw_data_64street_1[] =
 {
-   { MSG_SCREEN,		      0x01, 0x02 },
-   { MSG_NORMAL,		      0x01 },
-   { MSG_INVERT,		      0x00 },
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_OFF,                 0x02 },
-   { MSG_ON,                  0x00 },
-   { MSG_CONTINUE_PLAY,       0x04, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x04 },
+   DSW_SCREEN( 0x01, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x02),
+   DSW_CONTINUE_PLAY( 0x04, 0x00),
    { MSG_DIFFICULTY,          0x18, 0x04 },
    { MSG_EASY,                0x10 },
    { MSG_NORMAL,              0x18 },
@@ -192,9 +186,7 @@ static struct DSW_DATA dsw_data_64street_1[] =
    { "2",                     0x60 },
    { "3",                     0x20 },
    { "5",                     0x00 },
-   { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80 },
-   { MSG_ON,                  0x00 },
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -325,12 +317,8 @@ static struct DSW_DATA dsw_data_astyanax_0[] =
    { MSG_3COIN_1PLAY,         0x20},
    { MSG_2COIN_1PLAY,         0x10},
    { MSG_1COIN_1PLAY,         0x38},
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x40},
-   { MSG_ON,                  0x00},
-   { MSG_TEST_MODE,           0x80, 0x02 },	// p1_start + p2_start to pause
-   { MSG_OFF,                 0x80},	// p2_start to advance one frame
-   { MSG_ON,                  0x00},	// up or down to open menu
+   DSW_DEMO_SOUND( 0x00, 0x40),
+   DSW_TEST_MODE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -356,9 +344,7 @@ static struct DSW_DATA dsw_data_astyanax_1[] =
    { "1P/2P Control Flip",    0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80},
-   { MSG_INVERT,              0x00},
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -453,29 +439,17 @@ static struct ROM_INFO avenging_spirit_roms[] =
 
 static struct DSW_DATA dsw_data_avspirit_1[] =
 {
-   { MSG_SCREEN,		      0x01, 0x02 },
-   { MSG_NORMAL,		      0x01},
-   { MSG_INVERT,		      0x00},
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_OFF,                 0x02},
-   { MSG_ON,                  0x00},
-   { MSG_CONTINUE_PLAY,       0x04, 0x02 },
-   { MSG_OFF,                 0x00},
-   { MSG_ON,                  0x04},
+   DSW_SCREEN( 0x01, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x02),
+   DSW_CONTINUE_PLAY( 0x04, 0x00),
    { MSG_DIFFICULTY,          0x18, 0x04 },
    { MSG_EASY,                0x08},
    { MSG_NORMAL,              0x18},
    { MSG_HARD,                0x10},
    { MSG_HARDEST,             0x00},
-   { MSG_CABINET,             0x20, 0x02 },
-   { MSG_UPRIGHT,             0x20},
-   { MSG_TABLE,               0x00},
-   { MSG_TEST_MODE,           0x40, 0x02 },	// p1_start + p2_start to pause
-   { MSG_OFF,                 0x40},	// p2_start to advance one frame
-   { MSG_ON,                  0x00},
-   { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80},
-   { MSG_ON,                  0x00},
+   DSW_CABINET( 0x20, 0x00),
+   DSW_TEST_MODE( 0x00, 0x40),
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -512,15 +486,9 @@ static struct ROM_INFO chimera_beast_roms[] =
 
 static struct DSW_DATA dsw_data_chimerab_0[] =
 {
-   { MSG_SCREEN,		      0x01, 0x02 },
-   { MSG_NORMAL,		      0x01 },
-   { MSG_INVERT,		      0x00 },
-   { MSG_DEMO_SOUND,          0x02, 0x02 },
-   { MSG_OFF,                 0x02 },
-   { MSG_ON,                  0x00 },
-   { MSG_CONTINUE_PLAY,       0x04, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x04 },
+   DSW_SCREEN( 0x01, 0x00),
+   DSW_DEMO_SOUND( 0x00, 0x02),
+   DSW_CONTINUE_PLAY( 0x04, 0x00),
    { MSG_DIFFICULTY,          0x18, 0x04 },
    { MSG_EASY,                0x10 },
    { MSG_NORMAL,              0x18 },
@@ -531,9 +499,7 @@ static struct DSW_DATA dsw_data_chimerab_0[] =
    { "2",                     0x60 },
    { "3",                     0x20 },
    { "4",                     0x00 },
-   { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80 },
-   { MSG_ON,                  0x00 },
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -611,9 +577,7 @@ static struct DSW_DATA dsw_data_cybattler_0[] =
    { MSG_FREE_PLAY,           0x40, 0x02 },
    { MSG_OFF,                 0x40 },
    { MSG_ON,                  0x00 },
-   { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80 },
-   { MSG_ON,                  0x00 },
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -627,15 +591,9 @@ static struct DSW_DATA dsw_data_cybattler_1[] =
    { "Instructions",          0x04, 0x02 },
    { MSG_OFF,                 0x00 },
    { MSG_ON,                  0x04 },
-   { MSG_CONTINUE_PLAY,       0x18, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x18 },
-   { MSG_DEMO_SOUND,          0x60, 0x02 },
-   { MSG_OFF,                 0x40 },
-   { MSG_ON,                  0x20 },
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_CONTINUE_PLAY( 0x18, 0x00),
+   DSW_DEMO_SOUND( 0x20, 0x40),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -694,12 +652,8 @@ static struct ROM_INFO earth_defence_force_roms[] =
 static struct DSW_DATA dsw_data_edf_0[] =
 {
    COINAGE_6BITS
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
-   { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80 },
-   { MSG_ON,                  0x00 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -725,9 +679,7 @@ static struct DSW_DATA dsw_data_edf_1[] =
    { MSG_UNKNOWN,             0x40, 0x02 },
    { MSG_OFF,                 0x40 },
    { MSG_ON,                  0x00 },
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -792,9 +744,7 @@ static struct ROM_INFO hachoo_roms[] =
 static struct DSW_DATA dsw_data_hachoo_0[] =
 {
    COINAGE_6BITS
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
    { MSG_UNKNOWN,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -823,9 +773,7 @@ static struct DSW_DATA dsw_data_hachoo_1[] =
    { MSG_UNKNOWN,             0x40, 0x02 },
    { MSG_OFF,                 0x40 },
    { MSG_ON,                  0x00 },
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -904,9 +852,7 @@ static struct DSW_DATA dsw_data_kick_off_0[] =
    { "Freeze",                0x20, 0x02 },
    { MSG_OFF,                 0x20 },
    { MSG_ON,                  0x00 },
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x40 },
-   { MSG_ON,                  0x00 },
+   DSW_DEMO_SOUND( 0x00, 0x40),
    { "Text",                  0x80, 0x02 },
    { "Japanese",              0x80 },
    { "English",               0x00 },
@@ -934,9 +880,7 @@ static struct DSW_DATA dsw_data_kick_off_1[] =
    { "Controls",              0x40, 0x02 },
    { MSG_UNKNOWN,             0x40},
    { "Joystick",              0x00},
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80},
-   { MSG_INVERT,              0x00},
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -991,9 +935,7 @@ static struct ROM_INFO legend_of_makai_roms[] =
 static struct DSW_DATA dsw_data_legend_of_makai_0[] =
 {
    COINAGE_6BITS_ALT
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x40 },
-   { MSG_ON,                  0x00 },
+   DSW_DEMO_SOUND( 0x00, 0x40),
    { "Invulnerability",       0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -1021,9 +963,7 @@ static struct DSW_DATA dsw_data_legend_of_makai_1[] =
    { "Controls",              0x40, 0x02 },
    { "1",                     0x00 },
    { "2",                     0x40 },
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1159,9 +1099,7 @@ static struct ROM_INFO p47_american_roms[] =
 static struct DSW_DATA dsw_data_p47_0[] =
 {
    COINAGE_6BITS_ALT
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
    { "Invulnerability",       0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -1189,9 +1127,7 @@ static struct DSW_DATA dsw_data_p47_1[] =
    { MSG_UNKNOWN,             0x40, 0x02 },
    { MSG_OFF,                 0x40 },
    { MSG_ON,                  0x00 },
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1280,12 +1216,8 @@ static struct INPUT_INFO peek_a_boo_inputs[] =
 static struct DSW_DATA dsw_data_peekaboo_0[] =
 {
    COINAGE_6BITS_ALT
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
-   { MSG_SCREEN,         	0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1296,9 +1228,7 @@ static struct DSW_DATA dsw_data_peekaboo_1[] =
    { MSG_NORMAL,              0x03 },
    { MSG_HARD,                0x02 },
    { MSG_HARDEST,             0x01 },
-   { MSG_SERVICE,             0x04, 0x02 },
-   { MSG_OFF,                 0x04 },
-   { MSG_ON,                  0x00 },
+   DSW_SERVICE( 0x00, 0x04),
    { "Movement",              0x08, 0x02 },
    { "Paddles",               0x08 },
    { "Buttons",               0x00 },
@@ -1307,9 +1237,7 @@ static struct DSW_DATA dsw_data_peekaboo_1[] =
    { "Female & Male",         0x10 },
    { "Female (Full)",         0x20 },
    { "None",                  0x00 },
-   { MSG_CABINET,             0x40, 0x02 },
-   { MSG_UPRIGHT,             0x40 },
-   { MSG_TABLE,               0x00 },
+   DSW_CABINET( 0x40, 0x00),
    { "Controls",              0x80, 0x02 },
    { "1",                     0x80 },
    { "2",                     0x00 },
@@ -1411,9 +1339,7 @@ static struct ROM_INFO plus_alpha_roms[] =
 static struct DSW_DATA dsw_data_plusalph_0[] =
 {
    COINAGE_6BITS
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
    { "Freeze",                0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -1438,12 +1364,8 @@ static struct DSW_DATA dsw_data_plusalph_1[] =
    { MSG_NORMAL,              0x30 },
    { MSG_HARD,                0x10 },
    { MSG_HARDEST,             0x20 },
-   { MSG_CABINET,             0x40, 0x02 },
-   { MSG_UPRIGHT,             0x00 },
-   { MSG_TABLE,               0x40 },
-   { MSG_SCREEN,         	0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_CABINET( 0x00, 0x40),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1507,12 +1429,8 @@ static struct ROM_INFO rodland_roms[] =
 static struct DSW_DATA dsw_data_rodland_0[] =
 {
    COINAGE_6BITS
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x40 },
-   { MSG_ON,                  0x00 },
-   { MSG_SERVICE,             0x80, 0x02 },
-   { MSG_OFF,                 0x80 },
-   { MSG_ON,                  0x00 },
+   DSW_DEMO_SOUND( 0x00, 0x40),
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -1531,9 +1449,7 @@ static struct DSW_DATA dsw_data_rodland_1[] =
    { MSG_NORMAL,              0x60 },
    { MSG_HARD,                0x40 },
    { MSG_HARDEST,             0x00 },
-   { MSG_SCREEN,         	0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1643,9 +1559,7 @@ static struct ROM_INFO saint_dragon_roms[] =
 static struct DSW_DATA dsw_data_saint_dragon_0[] =
 {
    COINAGE_6BITS_ALT
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
    { MSG_UNKNOWN,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -1670,12 +1584,8 @@ static struct DSW_DATA dsw_data_saint_dragon_1[] =
    { MSG_NORMAL,              0x20 },
    { MSG_HARD,                0x10 },
    { MSG_HARDEST,             0x00 },
-   { MSG_CABINET,             0x40, 0x02 },
-   { MSG_UPRIGHT,             0x00 },
-   { MSG_TABLE,               0x40 },
-   { MSG_SCREEN,         	0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_CABINET( 0x00, 0x40),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1734,12 +1644,8 @@ static struct ROM_INFO soldam_roms[] =
 static struct DSW_DATA dsw_data_soldam_0[] =
 {
    COINAGE_6BITS_ALT
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
-   { MSG_SERVICE,         	0x80, 0x02 },
-   { MSG_OFF,                 0x80 },
-   { MSG_ON,                  0x00 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
+   DSW_SERVICE( 0x00, 0x80),
    { NULL,                    0,   },
 };
 
@@ -1755,18 +1661,14 @@ static struct DSW_DATA dsw_data_soldam_1[] =
    { "2",                     0x0c },
    { "3",                     0x08 },
    { "4",                     0x04 },
-   { MSG_CONTINUE_PLAY,       0x10, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x10 },
+   DSW_CONTINUE_PLAY( 0x10, 0x00),
    { "Cred. to Start (Vs)",   0x20, 0x02 },
    { "1",                     0x20 },
    { "2",                     0x00 },
    { "Cred. Continue (Vs)",   0x40, 0x02 },
    { "1",                     0x40 },
    { "2",                     0x00 },
-   { MSG_SCREEN,              0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1839,9 +1741,7 @@ static struct ROM_INFO iga_ninjyutsuden_roms[] =
 static struct DSW_DATA dsw_data_iganinju_0[] =
 {
    COINAGE_6BITS
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x40 },
-   { MSG_ON,                  0x00 },
+   DSW_DEMO_SOUND( 0x00, 0x40),
    { "Freeze",                0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -1858,20 +1758,14 @@ static struct DSW_DATA dsw_data_iganinju_1[] =
    { MSG_EXTRA_LIFE,          0x04, 0x02 },
    { "50k",                   0x04 },
    { "200k",                  0x00 },
-   { MSG_CONTINUE_PLAY,       0x08, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x08 },
+   DSW_CONTINUE_PLAY( 0x08, 0x00),
    { MSG_DIFFICULTY,          0x30, 0x04 },	// does it change something??
    { MSG_EASY,                0x20 },
    { MSG_NORMAL,              0x30 },
    { MSG_HARD,                0x10 },
    { MSG_HARDEST,             0x00 },
-   { MSG_CABINET,             0x40, 0x02 },
-   { MSG_UPRIGHT,             0x00 },
-   { MSG_TABLE,               0x40 },
-   { MSG_SCREEN,         	0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_CABINET( 0x00, 0x40),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 
@@ -1940,9 +1834,7 @@ static struct ROM_INFO shingen_roms[] =
 static struct DSW_DATA dsw_data_shingen_0[] =
 {
    COINAGE_6BITS
-   { MSG_DEMO_SOUND,          0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
+   DSW_DEMO_SOUND( 0x40, 0x00),
    { MSG_UNKNOWN,             0x80, 0x02 },
    { MSG_OFF,                 0x80 },
    { MSG_ON,                  0x00 },
@@ -1966,12 +1858,8 @@ static struct DSW_DATA dsw_data_shingen_1[] =
    { MSG_NORMAL,              0x10 },
    { MSG_HARD,                0x20 },
    { MSG_HARDEST,             0x00 },
-   { MSG_CONTINUE_PLAY,       0x40, 0x02 },
-   { MSG_OFF,                 0x00 },
-   { MSG_ON,                  0x40 },
-   { MSG_SCREEN,         	0x80, 0x02 },
-   { MSG_NORMAL,              0x80 },
-   { MSG_INVERT,              0x00 },
+   DSW_CONTINUE_PLAY( 0x40, 0x00),
+   DSW_SCREEN( 0x80, 0x00),
    { NULL,                    0,   },
 };
 

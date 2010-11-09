@@ -121,9 +121,7 @@ static struct ROM_INFO quizmoon_roms[] =
 
 static struct DSW_DATA dsw_data_macrossp_4[] =
 {
-  { MSG_SCREEN, 0x1, 2 },
-  { MSG_OFF, 0x1},
-  { MSG_ON, 0x0},
+  DSW_SCREEN( 0x1, 0x0),
   { MSG_UNKNOWN, 0x2, 2 },
   { MSG_OFF, 0x2},
   { MSG_ON, 0x0},
@@ -142,9 +140,7 @@ static struct DSW_DATA dsw_data_macrossp_4[] =
   { MSG_UNKNOWN, 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x0},
-  { MSG_SERVICE, 0x80,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x80},
+  DSW_SERVICE( 0, 0x80),
   { NULL, 0}
 };
 

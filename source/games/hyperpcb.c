@@ -148,9 +148,7 @@ static struct INPUT_INFO finalttr_inputs[] =
 
 static struct DSW_DATA dsw_data_finalttr_0[] =
 {
-  { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0000},
-  { MSG_ON, 0x0001},
+  DSW_DEMO_SOUND( 0x0001, 0x0000),
   { MSG_UNKNOWN, 0x0002, 2 },
   { MSG_OFF, 0x0002},
   { MSG_ON, 0x0000},
@@ -414,9 +412,7 @@ static struct INPUT_INFO snow_bros_inputs[] =
 
 static struct DSW_DATA dsw_data_hyperpac_0[] =
 {
-  { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0001},
-  { MSG_ON, 0x0000},
+  DSW_DEMO_SOUND( 0x0000, 0x0001),
   { MSG_LIVES, 0x0002, 2 },
   { "3" , 0x0002},
   { "5" , 0x0000},
@@ -434,38 +430,20 @@ static struct DSW_DATA dsw_data_hyperpac_0[] =
   { "Normal" , 0x0060},
   { "Hard" , 0x0040},
   { "Hardest" , 0x0020},
-  { MSG_SERVICE, 0x0080,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x0080},
+  DSW_SERVICE( 0, 0x0080),
   { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_hyperpac_1[] =
 {
-  { MSG_UNUSED, 0x0001, 2 },
-  { MSG_OFF, 0x0001},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0002, 2 },
-  { MSG_OFF, 0x0002},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0004, 2 },
-  { MSG_OFF, 0x0004},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0008, 2 },
-  { MSG_OFF, 0x0008},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0010, 2 },
-  { MSG_OFF, 0x0010},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0020, 2 },
-  { MSG_OFF, 0x0020},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0040, 2 },
-  { MSG_OFF, 0x0040},
-  { MSG_ON, 0x0000},
-  { MSG_UNUSED, 0x0080, 2 },
-  { MSG_OFF, 0x0080},
-  { MSG_ON, 0x0000},
+  DSW_UNUSED( 0x0000, 0x0001),
+  DSW_UNUSED( 0x0000, 0x0002),
+  DSW_UNUSED( 0x0000, 0x0004),
+  DSW_UNUSED( 0x0000, 0x0008),
+  DSW_UNUSED( 0x0000, 0x0010),
+  DSW_UNUSED( 0x0000, 0x0020),
+  DSW_UNUSED( 0x0000, 0x0040),
+  DSW_UNUSED( 0x0000, 0x0080),
   { NULL, 0}
 };
 
@@ -481,15 +459,9 @@ static struct DSW_DATA dsw_data_snow_bros_0[] =
    { "Country",               0x01, 0x02 },
    { "America",               0x01},
    { "Europe",                0x00},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02},
-   { MSG_INVERT,              0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_SCREEN( 0x02, 0x00),
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { "1/1",                   0x30},
    { "1/2; 2/1",              0x20},
@@ -538,9 +510,7 @@ static struct DSW_INFO snow_bros_dsw[] =
 
 static struct DSW_DATA dsw_data_moremore_0[] =
 {
-  { MSG_DEMO_SOUND, 0x0001, 2 },
-  { MSG_OFF, 0x0001},
-  { MSG_ON, 0x0000},
+  DSW_DEMO_SOUND( 0x0000, 0x0001),
   { MSG_COINAGE, 0x000e, 8 },
   { MSG_5COIN_1PLAY, 0x0000},
   { MSG_4COIN_1PLAY, 0x0002},
@@ -559,9 +529,7 @@ static struct DSW_DATA dsw_data_moremore_0[] =
   { "Level 6", 0x0050},
   { "Level 7", 0x0040},
   { "Level 8", 0x0030},
-  { MSG_SERVICE, 0x0080,2 },
-  { MSG_ON, 0},
-  { MSG_OFF, 0x0080},
+  DSW_SERVICE( 0, 0x0080),
   { NULL, 0}
 };
 

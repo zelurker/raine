@@ -429,6 +429,41 @@ extern char MSG_UPRIGHT[];
 extern char MSG_TABLE[];
 extern char MSG_ALT[];
 
+#define DSW_SCREEN( normal, invert)           \
+   { MSG_SCREEN,              normal, 0x02 }, \
+   { MSG_NORMAL,              normal },       \
+   { MSG_INVERT,              invert }
+
+#define DSW_DEMO_SOUND( on, off )     \
+   { MSG_DEMO_SOUND,      on, 0x02 }, \
+   { MSG_ON,              on },       \
+   { MSG_OFF,             off }
+
+#define DSW_TEST_MODE( on, off )       \
+   { MSG_TEST_MODE,      off, 0x02 },  \
+   { MSG_ON,              on },        \
+   { MSG_OFF,             off }
+
+#define DSW_SERVICE( on, off )         \
+   { MSG_SERVICE,      off, 0x02 },    \
+   { MSG_ON,              on },        \
+   { MSG_OFF,             off }
+
+#define DSW_CONTINUE_PLAY( on, off )       \
+   { MSG_CONTINUE_PLAY,    on, 0x02 },     \
+   { MSG_ON,              on },            \
+   { MSG_OFF,             off }
+
+#define DSW_CABINET( upright, table )       \
+   { MSG_CABINET,    upright, 0x02 },       \
+   { MSG_UPRIGHT,     upright },            \
+   { MSG_TABLE,      table }
+
+#define DSW_UNUSED( on, off )          \
+   { MSG_UNUSED,      off, 0x02 },     \
+   { MSG_ON,              on },        \
+   { MSG_OFF,             off }
+
   void raine_set_scancode(int index, int code);
   void raine_set_emu_scancode(int index, int code);
   char* raine_get_key_name(int index);

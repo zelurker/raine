@@ -78,16 +78,12 @@ static struct DSW_DATA dsw_data_terra_cresta_0[] =
    { "6",                     0x00},
    { "Extra Life at",         0x04, 0x02 },
    { "20,000",                0x04, 0x00 },
-   { "50,000", 0x00 },
+   { "50,000"},
    { "Second Life at",        0x08, 0x02 },
    { "60,000",                0x08, 0x00 },
-   { "90,000", 0x00 },
-   { MSG_DEMO_SOUND,          0x10, 0x02 },
-   { MSG_ON,                  0x10},
-   { MSG_OFF,                 0x00},
-   { "Cabinet",               0x20, 0x02 },
-   { "Table",                 0x20},
-   { "Upright",               0x00},
+   { "90,000"},
+   DSW_DEMO_SOUND( 0x10, 0x00),
+   DSW_CABINET( 0x00, ),
    { NULL,                    0,   },
 };
 
@@ -106,9 +102,7 @@ static struct DSW_DATA dsw_data_terra_cresta_1[] =
    { MSG_DIFFICULTY,          0x10, 0x02 },
    { MSG_NORMAL,              0x10},
    { MSG_HARD,                0x00},
-   { MSG_SCREEN,              0x20, 0x02 },
-   { MSG_NORMAL,              0x20},
-   { MSG_INVERT,              0x00},
+   DSW_SCREEN( 0x20, 0x00),
    { NULL,                    0,   },
 };
 

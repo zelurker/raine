@@ -35,18 +35,10 @@ static struct ROM_INFO violence_fight_roms[] =
 
 struct DSW_DATA dsw_data_violence_fight_0[] =
 {
-   { "Cabinet",               0x01, 0x02 },
-   { "Table",                 0x01},
-   { "Upright",               0x00},
-   { MSG_SCREEN,              0x02, 0x02 },
-   { MSG_NORMAL,              0x02},
-   { MSG_INVERT,              0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+   DSW_CABINET( 0x00, ),
+   DSW_SCREEN( 0x02, 0x00),
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_2COIN_1PLAY,         0x20},
