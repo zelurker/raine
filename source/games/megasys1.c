@@ -107,9 +107,9 @@ static struct ROM_INFO _64th_street_roms[] =
             "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
    {  "64th_01.rom", 0x00080000, 0x06222f90, REGION_GFX1, },
    {  "64th_06.rom", 0x00080000, 0x2bfcdc75, REGION_GFX2, },
-   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX3, },
-   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX3, 0x80000 },
-   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX4, },
+   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX3, },
+   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX4, },
+   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX4, 0x80000 },
    {  "64th_11.rom", 0x00020000, 0xb0b8a65c, REGION_SOUND1, },
    {  "64th_10.rom", 0x00040000, 0xa3390561, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -262,9 +262,9 @@ static struct ROM_INFO _64th_street_japanese_roms[] =
             "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
    {  "64th_01.rom", 0x00080000, 0x06222f90, REGION_GFX1, 0, LOAD_NORMAL, },
    {  "64th_06.rom", 0x00080000, 0x2bfcdc75, REGION_GFX2, 0, LOAD_NORMAL, },
-   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX3, },
-   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX3, 0x80000 },
-   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX4, },
+   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX3, },
+   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX4, },
+   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX4, 0x80000 },
    {  "64th_11.rom", 0x00020000, 0xb0b8a65c, REGION_ROM2, },
    {  "64th_10.rom", 0x00040000, 0xa3390561, REGION_ROM2, 0x20000, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1328,11 +1328,11 @@ static struct ROM_INFO plus_alpha_roms[] =
    { "pa-rom15.bin", 0x00020000, 0x8787735b, REGION_GFX2 },
    { "pa-rom16.bin", 0x00020000, 0xa06b813b, REGION_GFX2, 0x20000 },
    { "pa-rom17.bin", 0x00020000, 0xc6b38a4b, REGION_GFX2, 0x40000 },
-   { "pa-rom19.bin", 0x00010000, 0x39ef193c, REGION_GFX4 },
-   { "pa-rom20.bin", 0x00020000, 0x86c557a8, REGION_GFX3 },
-   { "pa-rom21.bin", 0x00020000, 0x81140a88, REGION_GFX3, 0x20000 },
-   { "pa-rom22.bin", 0x00020000, 0x97e39886, REGION_GFX3, 0x40000 },
-   { "pa-rom23.bin", 0x00020000, 0x0383fb65, REGION_GFX3, 0x60000 },
+   { "pa-rom19.bin", 0x00010000, 0x39ef193c, REGION_GFX3 },
+   { "pa-rom20.bin", 0x00020000, 0x86c557a8, REGION_GFX4 },
+   { "pa-rom21.bin", 0x00020000, 0x81140a88, REGION_GFX4, 0x20000 },
+   { "pa-rom22.bin", 0x00020000, 0x97e39886, REGION_GFX4, 0x40000 },
+   { "pa-rom23.bin", 0x00020000, 0x0383fb65, REGION_GFX4, 0x60000 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1421,8 +1421,8 @@ static struct ROM_INFO rodland_roms[] =
   { "rl_19.bin", 0x020000, 0x124d7e8f , REGION_GFX3, 0x000000, LOAD_NORMAL },
 
   { "rl_14.rom", 0x080000, 0x08d01bf4 , REGION_GFX4, 0x000000, LOAD_NORMAL },
-   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, 0, 0, 0, },
-   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, 0, 0, 0, },
+   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, REGION_SOUND1 },
+   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1497,8 +1497,8 @@ static struct ROM_INFO rodlandjb_roms[] =
 
   { "rl_14.rom", 0x080000, 0x08d01bf4 , REGION_GFX4, 0x000000, LOAD_NORMAL },
 
-   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, 0, 0, 0, },
-   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, 0, 0, 0, },
+   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, REGION_SOUND1 },
+   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1518,8 +1518,8 @@ static struct ROM_INFO rodlandj_roms[] =
 
 
   { "rl_23.bin", 0x080000, 0x936db174 , REGION_GFX4, 0x000000, LOAD_NORMAL },
-   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, 0, 0, 0, },
-   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, 0, 0, 0, },
+   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, REGION_SOUND1 },
+   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1532,27 +1532,31 @@ static struct DIR_INFO saint_dragon_dirs[] =
 
 static struct ROM_INFO saint_dragon_roms[] =
 {
-   {   "jsd-01.bin", 0x00020000, 0x67429a57, 0, 0, 0, },
-   {   "jsd-02.bin", 0x00020000, 0xcc29ab19, 0, 0, 0, },
-   {   "jsd-05.bin", 0x00010000, 0x8c04feaa, 0, 0, 0, },
-   {   "jsd-06.bin", 0x00010000, 0x0bb62f3a, 0, 0, 0, },
-   {   "jsd-07.bin", 0x00020000, 0x6a48e979, 0, 0, 0, },
-   {   "jsd-08.bin", 0x00020000, 0x40704962, 0, 0, 0, },
-   {   "jsd-09.bin", 0x00020000, 0xe366bc5a, 0, 0, 0, },
-   {   "jsd-10.bin", 0x00020000, 0x4a8f4fe6, 0, 0, 0, },
-   {   "jsd-11.bin", 0x00020000, 0x2783b7b1, 0, 0, 0, },
-   {   "jsd-12.bin", 0x00020000, 0x89466ab7, 0, 0, 0, },
-   {   "jsd-13.bin", 0x00020000, 0x9896ae82, 0, 0, 0, },
-   {   "jsd-14.bin", 0x00020000, 0x7e8da371, 0, 0, 0, },
-   {   "jsd-15.bin", 0x00020000, 0xe296bf59, 0, 0, 0, },
-   {   "jsd-16.bin", 0x00020000, 0xd8919c06, 0, 0, 0, },
-   {   "jsd-17.bin", 0x00020000, 0x4f7ad563, 0, 0, 0, },
-   {   "jsd-18.bin", 0x00020000, 0x1f4da822, 0, 0, 0, },
-   {   "jsd-19.bin", 0x00010000, 0x25ce807d, 0, 0, 0, },
-   {   "jsd-20.bin", 0x00020000, 0x2c6e93bb, 0, 0, 0, },
-   {   "jsd-21.bin", 0x00020000, 0x864bcc61, 0, 0, 0, },
-   {   "jsd-22.bin", 0x00020000, 0x44fe2547, 0, 0, 0, },
-   {   "jsd-23.bin", 0x00020000, 0x6b010e1a, 0, 0, 0, },
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+      "jsd-02.bin", 0xcc29ab19, "jsd-01.bin", 0x67429a57),
+  LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
+      "jsd-05.bin", 0x8c04feaa, "jsd-06.bin", 0x0bb62f3a),
+   {   "jsd-07.bin", 0x00020000, 0x6a48e979, REGION_SOUND2 },
+   {   "jsd-08.bin", 0x00020000, 0x40704962, REGION_SOUND2, 0x20000 },
+   {   "jsd-09.bin", 0x00020000, 0xe366bc5a, REGION_SOUND1 },
+   {   "jsd-10.bin", 0x00020000, 0x4a8f4fe6, REGION_SOUND1, 0x20000 },
+
+   {   "jsd-11.bin", 0x00020000, 0x2783b7b1, REGION_GFX1, },
+   {   "jsd-12.bin", 0x00020000, 0x89466ab7, REGION_GFX1, 0x20000 },
+   {   "jsd-13.bin", 0x00020000, 0x9896ae82, REGION_GFX1, 0x40000 },
+   {   "jsd-14.bin", 0x00020000, 0x7e8da371, REGION_GFX1, 0x60000 },
+
+   {   "jsd-15.bin", 0x00020000, 0xe296bf59, REGION_GFX2 },
+   {   "jsd-16.bin", 0x00020000, 0xd8919c06, REGION_GFX2, 0x20000 },
+   {   "jsd-17.bin", 0x00020000, 0x4f7ad563, REGION_GFX2, 0x40000 },
+   {   "jsd-18.bin", 0x00020000, 0x1f4da822, REGION_GFX2, 0x60000 },
+
+   {   "jsd-19.bin", 0x00010000, 0x25ce807d, REGION_GFX3 },
+
+   {   "jsd-20.bin", 0x00020000, 0x2c6e93bb, REGION_GFX4 },
+   {   "jsd-21.bin", 0x00020000, 0x864bcc61, REGION_GFX4, 0x20000 },
+   {   "jsd-22.bin", 0x00020000, 0x44fe2547, REGION_GFX4, 0x40000 },
+   {   "jsd-23.bin", 0x00020000, 0x6b010e1a, REGION_GFX4, 0x60000 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -2173,9 +2177,9 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
 }
 
 static int setup_gfx() {
-   if(!MS1DecodeFG0(REGION_GFX4, get_region_size(REGION_GFX4)))return 0;
+   if(!MS1DecodeSPR(REGION_GFX4,get_region_size(REGION_GFX4)))return 0;
 
-   if(!MS1DecodeSPR(REGION_GFX3,get_region_size(REGION_GFX3)))return 0;
+   if(!MS1DecodeFG0(REGION_GFX3, get_region_size(REGION_GFX3)))return 0;
 
    if(!MS1DecodeBG1(REGION_GFX2,get_region_size(REGION_GFX2)))return 0;
 
@@ -2459,7 +2463,6 @@ static void load_rodland(void)
 
    romset=0; spr_pri_needed=0;
 
-   RAM = load_region[REGION_GFX3];
    if (!strcmp(current_game->main_name,"rodlandj")) {
      // Thanks to mame for this.
      // I don't think this clone is really usefull by the way, but anyway...
@@ -2467,32 +2470,19 @@ static void load_rodland(void)
      rodlandj_gfx_unmangle(3);
    }
 
-   if(!MS1DecodeFG0(RAM,0x10000))return;
-   FreeMem(RAM);
-   if(!(RAM=AllocateMem(0x60000))) return;
-
-   ROM = load_region[REGION_GFX4];
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-   FreeMem(ROM);
-
-   ROM = load_region[REGION_GFX2];
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-   FreeMem(ROM);
-
    ROM = load_region[REGION_GFX1];
    for(ta=0;ta<0x10000;ta++){
-   tb=ROM[ta+0x20000];
-   tc=ROM[ta+0x30000];
-   td=ROM[ta+0x40000];
-   te=ROM[ta+0x50000];
-   ROM[ta+0x20000]=td;
-   ROM[ta+0x30000]=tb;
-   ROM[ta+0x40000]=te;
-   ROM[ta+0x50000]=tc;
+	   tb=ROM[ta+0x20000];
+	   tc=ROM[ta+0x30000];
+	   td=ROM[ta+0x40000];
+	   te=ROM[ta+0x50000];
+	   ROM[ta+0x20000]=td;
+	   ROM[ta+0x30000]=tb;
+	   ROM[ta+0x40000]=te;
+	   ROM[ta+0x50000]=tc;
    }
-   if(!MS1DecodeBG0(ROM,0x80000))return;
+   if (!setup_gfx()) return;
 
-   FreeMem(ROM);
    ROM = load_region[REGION_CPU1];
 
    if (!strcmp(current_game->main_name,"rodland")) // only this one is decoded
@@ -2503,17 +2493,13 @@ static void load_rodland(void)
 
    SoundWorkInit();             /* sound call work init */
 
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("rl_10.rom",PCMROM+0x00000,0x40000)) return;
-   if(!load_rom("rl_08.rom",PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
-
    MS1SoundLoop = 11;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
 
    /*-----------------------*/
 
    RAMSize=0x40000;
+   if(!(RAM=AllocateMem(RAMSize))) return;
 
    // 68000 Speed hack
    // ----------------
@@ -2550,59 +2536,12 @@ void LoadSaintDragon(void)
 
    romset=1; spr_pri_needed=1;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
-   if(!(RAM=AllocateMem(0x60000))) return;
-
-   if(!load_rom("jsd-19.bin", RAM, 0x10000)) return;          // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x10000))return;
-
-   if(!load_rom("jsd-20.bin", ROM+0x00000, 0x20000)) return;  // 16x16 SPRITES
-   if(!load_rom("jsd-21.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("jsd-22.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("jsd-23.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("jsd-15.bin", ROM+0x00000, 0x20000)) return;  // 16x16 TILES
-   if(!load_rom("jsd-16.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("jsd-17.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("jsd-18.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("jsd-11.bin", ROM+0x00000, 0x20000)) return;  // 16x16 TILES
-   if(!load_rom("jsd-12.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("jsd-13.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("jsd-14.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   if(!load_rom("jsd-02.bin", RAM, 0x20000)) return;          // MAIN 68000
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom("jsd-01.bin", RAM, 0x20000)) return;
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
+   if (!setup_gfx()) return;
    DecodeStDragon(ROM);                                                 // Deprotection
-
-   if(!load_rom("jsd-05.bin", RAM, 0x10000)) return;          // SUB 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60000]=RAM[ta];
-   }
-   if(!load_rom("jsd-06.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60001]=RAM[ta];
-   }
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("jsd-09.bin",PCMROM+0x00000,0x20000)) return;
-   if(!load_rom("jsd-10.bin",PCMROM+0x20000,0x20000)) return;
-   if(!load_rom("jsd-07.bin",PCMROM+0x40000,0x20000)) return;
-   if(!load_rom("jsd-08.bin",PCMROM+0x60000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 8;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -2610,7 +2549,7 @@ void LoadSaintDragon(void)
    /*-----------------------*/
 
    RAMSize=0x40000;
-
+   if(!(RAM=AllocateMem(RAMSize))) return;
 
    // Checksum Fix
    // ------------
