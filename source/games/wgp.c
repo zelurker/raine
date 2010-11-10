@@ -59,19 +59,19 @@ static struct ROM_INFO world_grand_prix_roms[] =
 
 static struct INPUT_INFO world_grand_prix_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x06220E, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x06220E, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x06220E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x06220E, 0x02, BIT_ACTIVE_0 }, // Vibration?!
+   INP0( COIN1, 0x06220E, 0x04 ),
+   INP0( COIN2, 0x06220E, 0x08 ),
+   INP0( TILT, 0x06220E, 0x01 ),
+   INP0( SERVICE, 0x06220E, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x062204, 0x08, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x062204, 0x08 ),
    { KB_DEF_P1_B1,        "Shift Up",              0x062204, 0x02, BIT_ACTIVE_0 },
    { KB_DEF_P1_B2,        "Shift Down",            0x062204, 0x04, BIT_ACTIVE_0 },
 
    { KB_DEF_P1_B3,        "Start Lump (Lamp?)",    0x062206, 0x01, BIT_ACTIVE_1 },
    { KB_DEF_P1_B4,        "Brake Lump (Lamp?)",    0x062206, 0x02, BIT_ACTIVE_1 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_world_grand_prix_0[] =

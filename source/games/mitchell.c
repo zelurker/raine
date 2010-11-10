@@ -104,90 +104,90 @@ static struct ROM_INFO blockjoy_roms[] =
 
 static struct INPUT_INFO pkladies_inputs[] =
 {
-  { KB_DEF_TEST, MSG_TEST, 0x00, 0x02, BIT_ACTIVE_0 },
+  INP0( TEST, 0x00, 0x02 ),
 
-  { KB_DEF_SERVICE, MSG_SERVICE, 0x01, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1, MSG_COIN1, 0x01, 0x80, BIT_ACTIVE_0 },
+  INP0( SERVICE, 0x01, 0x01 ),
+  INP0( COIN1, 0x01, 0x80 ),
 
-  { KB_DEF_P1_KAN, MSG_P1_KAN, 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_E, MSG_P1_E, 0x02, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P1_A, MSG_P1_A, 0x02, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_KAN, 0x02, 0x20 ),
+  INP0( P1_E, 0x02, 0x40 ),
+  INP0( P1_A, 0x02, 0x80 ),
 
-  { KB_DEF_P1_PON, MSG_P1_PON, 0x03, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B, MSG_P1_B, 0x03, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_PON, 0x03, 0x20 ),
+  INP0( P1_B, 0x03, 0x80 ),
 
-  { KB_DEF_P1_CHI, MSG_P1_CHI, 0x04, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_C, MSG_P1_C, 0x04, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_CHI, 0x04, 0x20 ),
+  INP0( P1_C, 0x04, 0x80 ),
 
-  { KB_DEF_P1_D, MSG_P1_D, 0x05, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_D, 0x05, 0x80 ),
 
-
-/* P2 Control */
-  { KB_DEF_P1_KAN, MSG_P1_KAN, 0x07, 0x20, BIT_ACTIVE_0 },
-/* P2 Control */
-  { KB_DEF_P1_E, MSG_P1_E, 0x07, 0x40, BIT_ACTIVE_0 },
-/* P2 Control */
-  { KB_DEF_P1_A, MSG_P1_A, 0x07, 0x80, BIT_ACTIVE_0 },
 
 /* P2 Control */
-  { KB_DEF_P1_PON, MSG_P1_PON, 0x8, 0x20, BIT_ACTIVE_0 },
+  INP0( P1_KAN, 0x07, 0x20 ),
 /* P2 Control */
-  { KB_DEF_P1_B, MSG_P1_B, 0x8, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_E, 0x07, 0x40 ),
+/* P2 Control */
+  INP0( P1_A, 0x07, 0x80 ),
 
 /* P2 Control */
-  { KB_DEF_P1_CHI, MSG_P1_CHI, 0x9, 0x20, BIT_ACTIVE_0 },
+  INP0( P1_PON, 0x8, 0x20 ),
 /* P2 Control */
-  { KB_DEF_P1_C, MSG_P1_C, 0x9, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_B, 0x8, 0x80 ),
 
 /* P2 Control */
-  { KB_DEF_P1_D, MSG_P1_D, 0xa, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_CHI, 0x9, 0x20 ),
+/* P2 Control */
+  INP0( P1_C, 0x9, 0x80 ),
 
-   { 0, NULL, 0, 0, 0 },
+/* P2 Control */
+  INP0( P1_D, 0xa, 0x80 ),
+
+   END_INPUT
 };
 
 static struct INPUT_INFO pang_inputs[] =
 {
-  { KB_DEF_TEST, MSG_TEST, 0x00, 0x02, BIT_ACTIVE_0 },
+  INP0( TEST, 0x00, 0x02 ),
 
-  { KB_DEF_P2_START, MSG_P2_START, 0x01, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P1_START, MSG_P1_START, 0x01, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, MSG_COIN2, 0x01, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1, MSG_COIN1, 0x01, 0x80, BIT_ACTIVE_0 },
+  INP0( P2_START, 0x01, 0x02 ),
+  INP0( P1_START, 0x01, 0x08 ),
+  INP0( COIN2, 0x01, 0x40 ),
+  INP0( COIN1, 0x01, 0x80 ),
 
-  { KB_DEF_P1_B2, MSG_P1_B2, 0x02, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1, MSG_P1_B1, 0x02, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x02, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x02, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P1_UP, MSG_P1_UP, 0x02, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_B2, 0x02, 0x04 ),
+  INP0( P1_B1, 0x02, 0x08 ),
+  INP0( P1_RIGHT, 0x02, 0x10 ),
+  INP0( P1_LEFT, 0x02, 0x20 ),
+  INP0( P1_DOWN, 0x02, 0x40 ),
+  INP0( P1_UP, 0x02, 0x80 ),
 
-  { KB_DEF_P2_B2, MSG_P2_B2, 0x03, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, MSG_P2_B1, 0x03, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x03, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x03, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x03, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P2_UP, MSG_P2_UP, 0x03, 0x80, BIT_ACTIVE_0 },
-   { 0, NULL, 0, 0, 0 },
+  INP0( P2_B2, 0x03, 0x04 ),
+  INP0( P2_B1, 0x03, 0x08 ),
+  INP0( P2_RIGHT, 0x03, 0x10 ),
+  INP0( P2_LEFT, 0x03, 0x20 ),
+  INP0( P2_DOWN, 0x03, 0x40 ),
+  INP0( P2_UP, 0x03, 0x80 ),
+   END_INPUT
 };
 
 static struct INPUT_INFO block_inputs[] =
 {
-  { KB_DEF_TEST, MSG_TEST, 0x00, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_START, MSG_P2_START, 0x01, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P1_START, MSG_P1_START, 0x01, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, MSG_COIN2, 0x01, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1, MSG_COIN1, 0x01, 0x80, BIT_ACTIVE_0 },
+  INP0( TEST, 0x00, 0x02 ),
+  INP0( P2_START, 0x01, 0x02 ),
+  INP0( P1_START, 0x01, 0x08 ),
+  INP0( COIN2, 0x01, 0x40 ),
+  INP0( COIN1, 0x01, 0x80 ),
 
-  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x02, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1, MSG_P1_B1, 0x02, 0x80, BIT_ACTIVE_0 }, // 8 is dial direction
+  INP0( P1_RIGHT, 0x02, 0x10 ),
+  INP0( P1_LEFT, 0x02, 0x20 ),
+  INP0( P1_B1, 0x02, 0x80 ),
 
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x03, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x03, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, MSG_P2_B1, 0x03, 0x80, BIT_ACTIVE_0 },
+  INP0( P2_RIGHT, 0x03, 0x10 ),
+  INP0( P2_LEFT, 0x03, 0x20 ),
+  INP0( P2_B1, 0x03, 0x80 ),
   // port 4 is dial 0, port 5 is dial 1
 
-   { 0, NULL, 0, 0, 0 },
+   END_INPUT
 };
 
 static struct GfxLayout charlayout =

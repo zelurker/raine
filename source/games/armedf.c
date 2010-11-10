@@ -106,60 +106,60 @@ static GFX_LIST gfxdecodeinfo[] =
 
 static struct INPUT_INFO armed_formation_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x00C001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x00C001, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x00C003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x00C003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x00C003, 0x04, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x00C001, 0x04 ),
+   INP0( COIN2, 0x00C001, 0x08 ),
+   INP0( SERVICE, 0x00C003, 0x01 ),
+   INP0( TEST, 0x00C003, 0x02 ),
+   INP0( TILT, 0x00C003, 0x04 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x00C001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x00C000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x00C000, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x00C000, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x00C000, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x00C000, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x00C000, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x00C001, 0x01 ),
+   INP0( P1_UP, 0x00C000, 0x01 ),
+   INP0( P1_DOWN, 0x00C000, 0x02 ),
+   INP0( P1_LEFT, 0x00C000, 0x04 ),
+   INP0( P1_RIGHT, 0x00C000, 0x08 ),
+   INP0( P1_B1, 0x00C000, 0x10 ),
+   INP0( P1_B2, 0x00C000, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x00C001, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x00C002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x00C002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x00C002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x00C002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x00C002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x00C002, 0x20, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x00C001, 0x02 ),
+   INP0( P2_UP, 0x00C002, 0x01 ),
+   INP0( P2_DOWN, 0x00C002, 0x02 ),
+   INP0( P2_LEFT, 0x00C002, 0x04 ),
+   INP0( P2_RIGHT, 0x00C002, 0x08 ),
+   INP0( P2_B1, 0x00C002, 0x10 ),
+   INP0( P2_B2, 0x00C002, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct INPUT_INFO crazy_climber2_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x018001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x018001, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x018003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x018003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x018003, 0x04, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x018001, 0x04 ),
+   INP0( COIN2, 0x018001, 0x08 ),
+   INP0( SERVICE, 0x018003, 0x01 ),
+   INP0( TEST, 0x018003, 0x02 ),
+   INP0( TILT, 0x018003, 0x04 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x018001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x018000, 0x01, BIT_ACTIVE_0 }, // joy l up
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x018000, 0x02, BIT_ACTIVE_0 }, // joy l down
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x018000, 0x04, BIT_ACTIVE_0 }, // joy l left
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x018000, 0x08, BIT_ACTIVE_0 }, // joy l right
-   { KB_DEF_P1_B5,        MSG_P1_B5,               0x018000, 0x10, BIT_ACTIVE_0 }, // joy r up
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x018000, 0x20, BIT_ACTIVE_0 }, // joy r down
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x018000, 0x40, BIT_ACTIVE_0 }, // joy r left
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x018000, 0x80, BIT_ACTIVE_0 }, // joy r right
+   INP0( P1_START, 0x018001, 0x01 ),
+   INP0( P1_UP, 0x018000, 0x01 ),
+   INP0( P1_DOWN, 0x018000, 0x02 ),
+   INP0( P1_LEFT, 0x018000, 0x04 ),
+   INP0( P1_RIGHT, 0x018000, 0x08 ),
+   INP0( P1_B5, 0x018000, 0x10 ),
+   INP0( P1_B2, 0x018000, 0x20 ),
+   INP0( P1_B1, 0x018000, 0x40 ),
+   INP0( P1_B3, 0x018000, 0x80 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x018001, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x018002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x018002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x018002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x018002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B5,        MSG_P2_B5,               0x018002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x018002, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x018002, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x018002, 0x80, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x018001, 0x02 ),
+   INP0( P2_UP, 0x018002, 0x01 ),
+   INP0( P2_DOWN, 0x018002, 0x02 ),
+   INP0( P2_LEFT, 0x018002, 0x04 ),
+   INP0( P2_RIGHT, 0x018002, 0x08 ),
+   INP0( P2_B5, 0x018002, 0x10 ),
+   INP0( P2_B2, 0x018002, 0x20 ),
+   INP0( P2_B1, 0x018002, 0x40 ),
+   INP0( P2_B3, 0x018002, 0x80 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 #define COINAGE_ARMEDFORMATION \

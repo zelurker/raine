@@ -50,21 +50,21 @@ static struct ROM_INFO aqua_jack_roms[] =
 
 static struct INPUT_INFO aqua_jack_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x01F104, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x01F104, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x01F104, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x01F104, 0x10, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x01F104, 0x04 ),
+   INP0( COIN2, 0x01F104, 0x08 ),
+   INP0( TILT, 0x01F104, 0x20 ),
+   INP0( SERVICE, 0x01F104, 0x10 ),
 
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x01F106, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x01F106, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x01F106, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x01F106, 0x04, BIT_ACTIVE_0 },
+   INP0( P1_UP, 0x01F106, 0x08 ),
+   INP0( P1_DOWN, 0x01F106, 0x01 ),
+   INP0( P1_LEFT, 0x01F106, 0x02 ),
+   INP0( P1_RIGHT, 0x01F106, 0x04 ),
    { KB_DEF_P1_B1,        "Missile",               0x01F106, 0x10, BIT_ACTIVE_0 },
    { KB_DEF_P1_B2,        "Jump",                  0x01F106, 0x20, BIT_ACTIVE_0 },
    { KB_DEF_P1_B3,        "Vulcan",                0x01F106, 0x40, BIT_ACTIVE_0 },
    { KB_DEF_P1_B4,        "Accelerate?",           0x01F10E, 0xFF, BIT_ACTIVE_0 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_aqua_jack_0[] =

@@ -43,17 +43,17 @@ static struct ROM_INFO under_fire_roms[] =
 
 static struct INPUT_INFO under_fire_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x069007, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x069007, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x069007, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x069007, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_START,     MSG_P1_START,            0x069002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x069001, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x069001, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_START,     MSG_P2_START,            0x069002, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x069001, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x069001, 0x80, BIT_ACTIVE_0 },
-   { 0,                   NULL,                    0,        0,    0            },
+   INP0( COIN1, 0x069007, 0x04 ),
+   INP0( COIN2, 0x069007, 0x08 ),
+   INP0( SERVICE, 0x069007, 0x02 ),
+   INP0( TEST, 0x069007, 0x01 ),
+   INP0( P1_START, 0x069002, 0x10 ),
+   INP0( P1_B1, 0x069001, 0x10 ),
+   INP0( P1_B2, 0x069001, 0x20 ),
+   INP0( P2_START, 0x069002, 0x20 ),
+   INP0( P2_B1, 0x069001, 0x40 ),
+   INP0( P2_B2, 0x069001, 0x80 ),
+   END_INPUT
 };
 
 static struct ROMSW_DATA romsw_data_under_fire_0[] =

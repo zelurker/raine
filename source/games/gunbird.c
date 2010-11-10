@@ -185,32 +185,32 @@ static struct ROM_INFO btlkroad_roms[] =
 
 static struct INPUT_INFO gunbird_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x30003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x30003, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x30003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x30003, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x30003, 0x40, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x30003, 0x01 ),
+   INP1( COIN2, 0x30003, 0x04 ),
+   INP0( SERVICE, 0x30003, 0x10 ),
+   INP0( TEST, 0x30003, 0x20 ),
+   INP0( TILT, 0x30003, 0x40 ),
    // 0x80 from sound CPU
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x30000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x30000, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x30000, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x30000, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x30000, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x30000, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x30000, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x30000, 0x02, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x30000, 0x01 ),
+   INP0( P1_UP, 0x30000, 0x80 ),
+   INP0( P1_DOWN, 0x30000, 0x40 ),
+   INP0( P1_LEFT, 0x30000, 0x10 ),
+   INP0( P1_RIGHT, 0x30000, 0x20 ),
+   INP0( P1_B1, 0x30000, 0x08 ),
+   INP0( P1_B2, 0x30000, 0x04 ),
+   INP0( P1_B3, 0x30000, 0x02 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x30001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x30001, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x30001, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x30001, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x30001, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x30001, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x30001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x30001, 0x02, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x30001, 0x01 ),
+   INP0( P2_UP, 0x30001, 0x80 ),
+   INP0( P2_DOWN, 0x30001, 0x40 ),
+   INP0( P2_LEFT, 0x30001, 0x10 ),
+   INP0( P2_RIGHT, 0x30001, 0x20 ),
+   INP0( P2_B1, 0x30001, 0x08 ),
+   INP0( P2_B2, 0x30001, 0x04 ),
+   INP0( P2_B3, 0x30001, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 #define s1945_inputs gunbird_inputs
@@ -218,38 +218,38 @@ static struct INPUT_INFO gunbird_inputs[] =
 
 static struct INPUT_INFO btlkroad_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x30003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x30003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x30003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x30003, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x30003, 0x40, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x30003, 0x01 ),
+   INP0( COIN2, 0x30003, 0x02 ),
+   INP0( SERVICE, 0x30003, 0x10 ),
+   INP0( TEST, 0x30003, 0x20 ),
+   INP0( TILT, 0x30003, 0x40 ),
    // 0x80 from sound CPU
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x30000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x30000, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x30000, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x30000, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x30000, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x30000, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x30000, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x30000, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x30002, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B5,        MSG_P1_B5,               0x30002, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B6,        MSG_P1_B6,               0x30002, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x30000, 0x01 ),
+   INP0( P1_UP, 0x30000, 0x80 ),
+   INP0( P1_DOWN, 0x30000, 0x40 ),
+   INP0( P1_LEFT, 0x30000, 0x10 ),
+   INP0( P1_RIGHT, 0x30000, 0x20 ),
+   INP0( P1_B1, 0x30000, 0x08 ),
+   INP0( P1_B2, 0x30000, 0x04 ),
+   INP0( P1_B3, 0x30000, 0x02 ),
+   INP0( P1_B4, 0x30002, 0x80 ),
+   INP0( P1_B5, 0x30002, 0x40 ),
+   INP0( P1_B6, 0x30002, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x30001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x30001, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x30001, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x30001, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x30001, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x30001, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x30001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x30001, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B4,        MSG_P2_B4,               0x30002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B5,        MSG_P2_B5,               0x30002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B6,        MSG_P2_B6,               0x30002, 0x02, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x30001, 0x01 ),
+   INP0( P2_UP, 0x30001, 0x80 ),
+   INP0( P2_DOWN, 0x30001, 0x40 ),
+   INP0( P2_LEFT, 0x30001, 0x10 ),
+   INP0( P2_RIGHT, 0x30001, 0x20 ),
+   INP0( P2_B1, 0x30001, 0x08 ),
+   INP0( P2_B2, 0x30001, 0x04 ),
+   INP0( P2_B3, 0x30001, 0x02 ),
+   INP0( P2_B4, 0x30002, 0x08 ),
+   INP0( P2_B5, 0x30002, 0x04 ),
+   INP0( P2_B6, 0x30002, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 
@@ -521,32 +521,32 @@ static struct ROM_INFO tengai_roms[] =
 
 static struct INPUT_INFO samuraia_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x30009, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x30009, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x30009, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x30009, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x30009, 0x40, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x30009, 0x01 ),
+   INP0( COIN2, 0x30009, 0x02 ),
+   INP0( SERVICE, 0x30009, 0x10 ),
+   INP0( TEST, 0x30009, 0x20 ),
+   INP0( TILT, 0x30009, 0x40 ),
    // 0x80 from sound CPU
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x30000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x30000, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x30000, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x30000, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x30000, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x30000, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x30000, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x30000, 0x02, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x30000, 0x01 ),
+   INP0( P1_UP, 0x30000, 0x80 ),
+   INP0( P1_DOWN, 0x30000, 0x40 ),
+   INP0( P1_LEFT, 0x30000, 0x10 ),
+   INP0( P1_RIGHT, 0x30000, 0x20 ),
+   INP0( P1_B1, 0x30000, 0x08 ),
+   INP0( P1_B2, 0x30000, 0x04 ),
+   INP0( P1_B3, 0x30000, 0x02 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x30001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x30001, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x30001, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x30001, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x30001, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x30001, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x30001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x30001, 0x02, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x30001, 0x01 ),
+   INP0( P2_UP, 0x30001, 0x80 ),
+   INP0( P2_DOWN, 0x30001, 0x40 ),
+   INP0( P2_LEFT, 0x30001, 0x10 ),
+   INP0( P2_RIGHT, 0x30001, 0x20 ),
+   INP0( P2_B1, 0x30001, 0x08 ),
+   INP0( P2_B2, 0x30001, 0x04 ),
+   INP0( P2_B3, 0x30001, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 GME_ROMSW( samuraia,

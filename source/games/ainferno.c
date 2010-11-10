@@ -46,20 +46,20 @@ static struct ROM_INFO air_inferno_roms[] =
 
 static struct INPUT_INFO air_inferno_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x055204, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x055204, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x055204, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x055204, 0x10, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x055204, 0x04 ),
+   INP1( COIN2, 0x055204, 0x08 ),
+   INP0( TILT, 0x055204, 0x20 ),
+   INP0( SERVICE, 0x055204, 0x10 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x055204, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x055206, 0x08, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x055204, 0x40 ),
+   INP0( P1_B1, 0x055206, 0x08 ),
    { KB_DEF_P1_B2,        "Lever",                 0x055206, 0x01, BIT_ACTIVE_0 },
    { KB_DEF_P1_B3,        "Handle X",              0x055206, 0x02, BIT_ACTIVE_0 },
    { KB_DEF_P1_B4,        "Handle Y",              0x055206, 0x04, BIT_ACTIVE_0 },
    { KB_DEF_P1_B5,        "Pedal L",               0x055206, 0x20, BIT_ACTIVE_0 },
    { KB_DEF_P1_B6,        "Pedal R",               0x055206, 0x10, BIT_ACTIVE_0 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_air_inferno_0[] =

@@ -26,13 +26,13 @@ static struct ROM_INFO psychic_force_roms[] =
 
 static struct INPUT_INFO psychic_force_inputs[] =
 {
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x000000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x000000, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x000000, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x000000, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x000000, 0x10, BIT_ACTIVE_0 },
+   INP0( P1_UP, 0x000000, 0x01 ),
+   INP0( P1_DOWN, 0x000000, 0x02 ),
+   INP0( P1_LEFT, 0x000000, 0x04 ),
+   INP0( P1_RIGHT, 0x000000, 0x08 ),
+   INP0( P1_B1, 0x000000, 0x10 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 

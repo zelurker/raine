@@ -114,24 +114,24 @@ static struct ROM_INFO bubble_bobble_roms[] =
 
 static struct INPUT_INFO bubble_bobble_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x010000, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x010001, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x010002, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x010003, 0xFF, BIT_ACTIVE_1 },
+   INP1( COIN1, 0x010000, 0xFF ),
+   INP1( COIN2, 0x010001, 0xFF ),
+   INP1( TILT, 0x010002, 0xFF ),
+   INP1( SERVICE, 0x010003, 0xFF ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x010010, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x010013, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x010014, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x010016, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x010015, 0xFF, BIT_ACTIVE_1 },
+   INP1( P1_START, 0x010010, 0xFF ),
+   INP1( P1_LEFT, 0x010013, 0xFF ),
+   INP1( P1_RIGHT, 0x010014, 0xFF ),
+   INP1( P1_B1, 0x010016, 0xFF ),
+   INP1( P1_B2, 0x010015, 0xFF ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x010020, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x010023, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x010024, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x010026, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x010025, 0xFF, BIT_ACTIVE_1 },
+   INP1( P2_START, 0x010020, 0xFF ),
+   INP1( P2_LEFT, 0x010023, 0xFF ),
+   INP1( P2_RIGHT, 0x010024, 0xFF ),
+   INP1( P2_B1, 0x010026, 0xFF ),
+   INP1( P2_B2, 0x010025, 0xFF ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_bubble_bobble_0[] =
@@ -397,24 +397,24 @@ static struct ROM_INFO bobble_bobble_roms[] =
 
 static struct INPUT_INFO bobble_bobble_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x00FF02, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x00FF02, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x00FF03, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x00FF03, 0x08, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x00FF02, 0x08 ),
+   INP0( COIN2, 0x00FF02, 0x04 ),
+   INP0( TILT, 0x00FF03, 0x04 ),
+   INP0( SERVICE, 0x00FF03, 0x08 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x00FF02, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x00FF02, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x00FF02, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x00FF02, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x00FF02, 0x10, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x00FF02, 0x40 ),
+   INP0( P1_LEFT, 0x00FF02, 0x01 ),
+   INP0( P1_RIGHT, 0x00FF02, 0x02 ),
+   INP0( P1_B1, 0x00FF02, 0x20 ),
+   INP0( P1_B2, 0x00FF02, 0x10 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x00FF03, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x00FF03, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x00FF03, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x00FF03, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x00FF03, 0x10, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x00FF03, 0x40 ),
+   INP0( P2_LEFT, 0x00FF03, 0x01 ),
+   INP0( P2_RIGHT, 0x00FF03, 0x02 ),
+   INP0( P2_B1, 0x00FF03, 0x20 ),
+   INP0( P2_B2, 0x00FF03, 0x10 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_bobble_bobble_1[] =

@@ -45,16 +45,16 @@ static struct ROM_INFO full_throttle_roms[] =
 
 static struct INPUT_INFO full_throttle_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x055004, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x055004, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x055004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x055006, 0x02, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x055004, 0x08 ),
+   INP1( COIN2, 0x055004, 0x04 ),
+   INP0( SERVICE, 0x055004, 0x10 ),
+   INP0( TILT, 0x055006, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x055006, 0x08, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x055006, 0x08 ),
 
 // Fake wheel addresses, used for keyboard support
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x05501C, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x05501D, 0xFF, BIT_ACTIVE_1 },
+   INP1( P1_LEFT, 0x05501C, 0xFF ),
+   INP1( P1_RIGHT, 0x05501D, 0xFF ),
 
 // Fake pedal addresses, used for keyboard support - Unsure if adresses are really unused
    { KB_DEF_P1_B1,        "Accelerator",           0x05501E, 0xFF, BIT_ACTIVE_1 },
@@ -63,7 +63,7 @@ static struct INPUT_INFO full_throttle_inputs[] =
    { KB_DEF_P1_B2,        "Low Gear",              0x055006, 0x10, BIT_ACTIVE_1 },
    { KB_DEF_P1_B4,        "Nitro",                 0x055006, 0x01, BIT_ACTIVE_0 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 /*

@@ -36,29 +36,29 @@ static struct ROM_INFO blood_bros_roms[] =
 
 static struct INPUT_INFO blood_bros_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020005, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020005, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020005, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020005, 0x10 ),
+   INP0( TILT, 0x020005, 0x01 ),
+   INP0( SERVICE, 0x020005, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020002, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x020002, 0x40, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020004, 0x01 ),
+   INP0( P1_UP, 0x020002, 0x01 ),
+   INP0( P1_DOWN, 0x020002, 0x02 ),
+   INP0( P1_LEFT, 0x020002, 0x04 ),
+   INP0( P1_RIGHT, 0x020002, 0x08 ),
+   INP0( P1_B1, 0x020002, 0x10 ),
+   INP0( P1_B2, 0x020002, 0x20 ),
+   INP0( P1_B3, 0x020002, 0x40 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x020003, 0x40, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020004, 0x10 ),
+   INP0( P2_UP, 0x020003, 0x01 ),
+   INP0( P2_DOWN, 0x020003, 0x02 ),
+   INP0( P2_LEFT, 0x020003, 0x04 ),
+   INP0( P2_RIGHT, 0x020003, 0x08 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
+   INP0( P2_B3, 0x020003, 0x40 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_blood_bros_0[] =
@@ -196,28 +196,28 @@ static struct ROM_INFO west_story_roms[] =
 
 static struct INPUT_INFO west_story_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x01 ),
+   INP0( COIN2, 0x020004, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020002, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x020002, 0x40, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020004, 0x08 ),
+   INP0( P1_UP, 0x020002, 0x01 ),
+   INP0( P1_DOWN, 0x020002, 0x02 ),
+   INP0( P1_LEFT, 0x020002, 0x04 ),
+   INP0( P1_RIGHT, 0x020002, 0x08 ),
+   INP0( P1_B1, 0x020002, 0x10 ),
+   INP0( P1_B2, 0x020002, 0x20 ),
+   INP0( P1_B3, 0x020002, 0x40 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x020003, 0x40, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020004, 0x10 ),
+   INP0( P2_UP, 0x020003, 0x01 ),
+   INP0( P2_DOWN, 0x020003, 0x02 ),
+   INP0( P2_LEFT, 0x020003, 0x04 ),
+   INP0( P2_RIGHT, 0x020003, 0x08 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
+   INP0( P2_B3, 0x020003, 0x40 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct YM3812interface ym3812_interface =

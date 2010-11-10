@@ -42,28 +42,28 @@ static struct ROM_INFO record_breaker_roms[] =
 
 static struct INPUT_INFO record_breaker_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x032004, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x032004, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x032004, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x032004, 0x10, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x032004, 0x04 ),
+   INP1( COIN2, 0x032004, 0x08 ),
+   INP0( TILT, 0x032004, 0x20 ),
+   INP0( SERVICE, 0x032004, 0x10 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x032006, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x03200E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x03200E, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x03200E, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x03200E, 0x08, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x032006, 0x01 ),
+   INP0( P1_UP, 0x03200E, 0x01 ),
+   INP0( P1_DOWN, 0x03200E, 0x02 ),
+   INP0( P1_B1, 0x03200E, 0x04 ),
+   INP0( P1_B2, 0x03200E, 0x08 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x032006, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x03200E, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x03200E, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x03200E, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x03200E, 0x80, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x032006, 0x02 ),
+   INP0( P2_UP, 0x03200E, 0x10 ),
+   INP0( P2_DOWN, 0x03200E, 0x20 ),
+   INP0( P2_B1, 0x03200E, 0x40 ),
+   INP0( P2_B2, 0x03200E, 0x80 ),
 
-   { KB_DEF_P3_START,     MSG_P3_START,            0x032006, 0x04, BIT_ACTIVE_0 },
+   INP0( P3_START, 0x032006, 0x04 ),
 
-   { KB_DEF_P4_START,     MSG_P4_START,            0x032006, 0x08, BIT_ACTIVE_0 },
+   INP0( P4_START, 0x032006, 0x08 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_record_breaker_0[] =

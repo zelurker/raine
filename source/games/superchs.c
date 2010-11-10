@@ -44,18 +44,18 @@ static struct ROM_INFO super_chase_roms[] =
 static struct INPUT_INFO super_chase_inputs[] =
 {
 
-   { KB_DEF_COIN1,        MSG_COIN1,               0x069001, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x069001, 0x40, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x069001, 0x80 ),
+   INP0( COIN2, 0x069001, 0x40 ),
 
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x069001, 0x07, BIT_ACTIVE_0 },
-   { KB_DEF_TEST,         MSG_TEST,                0x069001, 0x10, BIT_ACTIVE_0 },
+   INP0( SERVICE, 0x069001, 0x07 ),
+   INP0( TEST, 0x069001, 0x10 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x069002, 0x80, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x069002, 0x80 ),
 
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x069002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x069002, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_B1, 0x069002, 0x10 ),
+   INP0( P1_B2, 0x069002, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct ROMSW_DATA romsw_data_super_chase_0[] =

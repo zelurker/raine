@@ -193,27 +193,27 @@ static struct DSW_INFO pengo_dsw[] =
 
 static struct INPUT_INFO pengo_inputs[] =
 {
-  { KB_DEF_P1_UP, MSG_P1_UP, 0x00, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x00, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x00, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x00, 0x08, BIT_ACTIVE_0 },
+  INP0( P1_UP, 0x00, 0x01 ),
+  INP0( P1_DOWN, 0x00, 0x02 ),
+  INP0( P1_LEFT, 0x00, 0x04 ),
+  INP0( P1_RIGHT, 0x00, 0x08 ),
 
-  { KB_DEF_COIN1, MSG_COIN1, 0x00, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, MSG_COIN2, 0x00, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_COIN3, MSG_COIN3, 0x00, 0x40, BIT_ACTIVE_0 },
+  INP0( COIN1, 0x00, 0x10 ),
+  INP0( COIN2, 0x00, 0x20 ),
+  INP0( COIN3, 0x00, 0x40 ),
 
-  { KB_DEF_P1_B1, MSG_P1_B1, 0x00, 0x80, BIT_ACTIVE_0 },
+  INP0( P1_B1, 0x00, 0x80 ),
 
-  { KB_DEF_P2_UP, MSG_P2_UP, 0x02, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x02, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x02, 0x08, BIT_ACTIVE_0 },
+  INP0( P2_UP, 0x02, 0x01 ),
+  INP0( P2_DOWN, 0x02, 0x02 ),
+  INP0( P2_LEFT, 0x02, 0x04 ),
+  INP0( P2_RIGHT, 0x02, 0x08 ),
 
-  { KB_DEF_TEST, MSG_TEST, 0x02, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_START, MSG_P1_START, 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_START, MSG_P2_START, 0x02, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, MSG_P2_B1, 0x02, 0x80, BIT_ACTIVE_0 },
-  { 0, NULL, 0, 0, 0 },
+  INP0( TEST, 0x02, 0x10 ),
+  INP0( P1_START, 0x02, 0x20 ),
+  INP0( P2_START, 0x02, 0x40 ),
+  INP0( P2_B1, 0x02, 0x80 ),
+  END_INPUT
 };
 
 static struct ROM_INFO pengo_roms[] =
@@ -1273,30 +1273,30 @@ static struct ROM_INFO pacplus_roms[] =
 
 static struct INPUT_INFO puckman_inputs[] =
 {
-  { KB_DEF_P1_UP, MSG_P1_UP, 0x00, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x00, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x00, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x00, 0x08, BIT_ACTIVE_0 },
+  INP0( P1_UP, 0x00, 0x01 ),
+  INP0( P1_LEFT, 0x00, 0x02 ),
+  INP0( P1_RIGHT, 0x00, 0x04 ),
+  INP0( P1_DOWN, 0x00, 0x08 ),
   // cheat (must be validated by the dsw !)
 #ifdef RAINE_DEBUG
-  { KB_DEF_P1_B2, MSG_P1_B2, 0x08, 0x8, BIT_ACTIVE_1 },
+  INP1( P1_B2, 0x08, 0x8 ),
 #endif
 
-  { KB_DEF_COIN1, MSG_COIN1, 0x00, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, MSG_COIN2, 0x00, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_SERVICE, MSG_SERVICE, 0x00, 0x80, BIT_ACTIVE_0 },
+  INP0( COIN1, 0x00, 0x20 ),
+  INP0( COIN2, 0x00, 0x40 ),
+  INP0( SERVICE, 0x00, 0x80 ),
 
-  { KB_DEF_P2_UP, MSG_P2_UP, 0x02, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x02, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x02, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x08, BIT_ACTIVE_0 },
+  INP0( P2_UP, 0x02, 0x01 ),
+  INP0( P2_LEFT, 0x02, 0x02 ),
+  INP0( P2_RIGHT, 0x02, 0x04 ),
+  INP0( P2_DOWN, 0x02, 0x08 ),
 
-  { KB_DEF_P1_START, MSG_P1_START, 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1, MSG_P1_B1, 0x02, 0x20, BIT_ACTIVE_0 }, // p1b1 = p1start
+  INP0( P1_START, 0x02, 0x20 ),
+  INP0( P1_B1, 0x02, 0x20 ),
   // (to simplfy gameplay with some games)
-  { KB_DEF_P2_START, MSG_P2_START, 0x02, 0x40, BIT_ACTIVE_0 },
+  INP0( P2_START, 0x02, 0x40 ),
 
-   { 0, NULL, 0, 0, 0 },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_pacman_0[] =

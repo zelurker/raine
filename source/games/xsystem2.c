@@ -56,28 +56,28 @@ static struct ROM_INFO arkanoid_2_american_roms[] =
 
 static struct INPUT_INFO arkanoid_2_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020005, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020005, 0x01, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x02 ),
+   INP0( COIN2, 0x020004, 0x01 ),
+   INP0( TILT, 0x020005, 0x02 ),
+   INP0( SERVICE, 0x020005, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020003, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020006, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020006, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020006, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020006, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020003, 0x80 ),
+   INP1( P1_UP, 0x020006, 0x04 ),
+   INP1( P1_DOWN, 0x020006, 0x08 ),
+   INP1( P1_LEFT, 0x020006, 0x01 ),
+   INP1( P1_RIGHT, 0x020006, 0x02 ),
+   INP0( P1_B1, 0x020003, 0x10 ),
+   INP0( P1_B2, 0x020003, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020007, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020007, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020007, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020007, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x02, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020003, 0x08 ),
+   INP1( P2_UP, 0x020007, 0x04 ),
+   INP1( P2_DOWN, 0x020007, 0x08 ),
+   INP1( P2_LEFT, 0x020007, 0x01 ),
+   INP1( P2_RIGHT, 0x020007, 0x02 ),
+   INP0( P2_B1, 0x020003, 0x01 ),
+   INP0( P2_B2, 0x020003, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_arkanoid_2_0[] =
@@ -409,28 +409,28 @@ static struct ROM_INFO insector_x_roms[] =
 
 static struct INPUT_INFO insector_x_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020004, 0x01, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x08 ),
+   INP0( COIN2, 0x020004, 0x04 ),
+   INP0( TILT, 0x020004, 0x02 ),
+   INP0( SERVICE, 0x020004, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020002, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020002, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020002, 0x80 ),
+   INP0( P1_UP, 0x020002, 0x04 ),
+   INP0( P1_DOWN, 0x020002, 0x08 ),
+   INP0( P1_LEFT, 0x020002, 0x01 ),
+   INP0( P1_RIGHT, 0x020002, 0x02 ),
+   INP0( P1_B1, 0x020002, 0x10 ),
+   INP0( P1_B2, 0x020002, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020003, 0x80 ),
+   INP0( P2_UP, 0x020003, 0x04 ),
+   INP0( P2_DOWN, 0x020003, 0x08 ),
+   INP0( P2_LEFT, 0x020003, 0x01 ),
+   INP0( P2_RIGHT, 0x020003, 0x02 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_insector_x_0[] =
@@ -524,28 +524,28 @@ static struct ROM_INFO the_nz_story_roms[] =
 
 static struct INPUT_INFO the_nz_story_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020005, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020005, 0x01, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x01 ),
+   INP0( COIN2, 0x020004, 0x02 ),
+   INP0( TILT, 0x020005, 0x02 ),
+   INP0( SERVICE, 0x020005, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020003, 0x80, BIT_ACTIVE_1 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020006, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020006, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020006, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020006, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020003, 0x10, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020003, 0x20, BIT_ACTIVE_1 },
+   INP1( P1_START, 0x020003, 0x80 ),
+   INP1( P1_UP, 0x020006, 0x04 ),
+   INP1( P1_DOWN, 0x020006, 0x08 ),
+   INP1( P1_LEFT, 0x020006, 0x01 ),
+   INP1( P1_RIGHT, 0x020006, 0x02 ),
+   INP1( P1_B1, 0x020003, 0x10 ),
+   INP1( P1_B2, 0x020003, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020008, 0x80, BIT_ACTIVE_1 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020007, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020007, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020007, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020007, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020008, 0x10, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020008, 0x20, BIT_ACTIVE_1 },
+   INP1( P2_START, 0x020008, 0x80 ),
+   INP1( P2_UP, 0x020007, 0x04 ),
+   INP1( P2_DOWN, 0x020007, 0x08 ),
+   INP1( P2_LEFT, 0x020007, 0x01 ),
+   INP1( P2_RIGHT, 0x020007, 0x02 ),
+   INP1( P2_B1, 0x020008, 0x10 ),
+   INP1( P2_B2, 0x020008, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_the_nz_story_0[] =
@@ -650,28 +650,28 @@ static struct ROM_INFO the_nz_story_bootleg_roms[] =
 
 static struct INPUT_INFO the_nz_story_bootleg_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020004, 0x01, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x10 ),
+   INP0( COIN2, 0x020004, 0x20 ),
+   INP0( TILT, 0x020004, 0x02 ),
+   INP0( SERVICE, 0x020004, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020002, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020002, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020002, 0x80 ),
+   INP0( P1_UP, 0x020002, 0x04 ),
+   INP0( P1_DOWN, 0x020002, 0x08 ),
+   INP0( P1_LEFT, 0x020002, 0x01 ),
+   INP0( P1_RIGHT, 0x020002, 0x02 ),
+   INP0( P1_B1, 0x020002, 0x10 ),
+   INP0( P1_B2, 0x020002, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020003, 0x80 ),
+   INP0( P2_UP, 0x020003, 0x04 ),
+   INP0( P2_DOWN, 0x020003, 0x08 ),
+   INP0( P2_LEFT, 0x020003, 0x01 ),
+   INP0( P2_RIGHT, 0x020003, 0x02 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct YM2203interface ym2203_bootleg_interface =
@@ -895,28 +895,28 @@ static struct ROM_INFO kageki_roms[] =
 
 static struct INPUT_INFO kageki_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020004, 0x01, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x10 ),
+   INP0( COIN2, 0x020004, 0x20 ),
+   INP0( TILT, 0x020004, 0x02 ),
+   INP0( SERVICE, 0x020004, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020002, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020002, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020002, 0x80 ),
+   INP0( P1_UP, 0x020002, 0x04 ),
+   INP0( P1_DOWN, 0x020002, 0x08 ),
+   INP0( P1_LEFT, 0x020002, 0x01 ),
+   INP0( P1_RIGHT, 0x020002, 0x02 ),
+   INP0( P1_B1, 0x020002, 0x10 ),
+   INP0( P1_B2, 0x020002, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020003, 0x80 ),
+   INP0( P2_UP, 0x020003, 0x04 ),
+   INP0( P2_DOWN, 0x020003, 0x08 ),
+   INP0( P2_LEFT, 0x020003, 0x01 ),
+   INP0( P2_RIGHT, 0x020003, 0x02 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_kageki_0[] =
@@ -996,28 +996,28 @@ static struct ROM_INFO chuka_taisen_roms[] =
 
 static struct INPUT_INFO chuka_taisen_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020004, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020004, 0x08, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x020004, 0x01 ),
+   INP1( COIN2, 0x020004, 0x02 ),
+   INP0( TILT, 0x020004, 0x04 ),
+   INP0( SERVICE, 0x020004, 0x08 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020002, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020002, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020002, 0x80 ),
+   INP0( P1_UP, 0x020002, 0x04 ),
+   INP0( P1_DOWN, 0x020002, 0x08 ),
+   INP0( P1_LEFT, 0x020002, 0x01 ),
+   INP0( P1_RIGHT, 0x020002, 0x02 ),
+   INP0( P1_B1, 0x020002, 0x10 ),
+   INP0( P1_B2, 0x020002, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020003, 0x80 ),
+   INP0( P2_UP, 0x020003, 0x04 ),
+   INP0( P2_DOWN, 0x020003, 0x08 ),
+   INP0( P2_LEFT, 0x020003, 0x01 ),
+   INP0( P2_RIGHT, 0x020003, 0x02 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_chuka_taisen_0[] =
@@ -1113,28 +1113,28 @@ static struct ROM_INFO dr_toppel_roms[] =
 
 static struct INPUT_INFO dr_toppel_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020005, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020005, 0x01, BIT_ACTIVE_1 },
+   INP1( COIN1, 0x020004, 0x01 ),
+   INP1( COIN2, 0x020004, 0x02 ),
+   INP1( TILT, 0x020005, 0x02 ),
+   INP1( SERVICE, 0x020005, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020003, 0x80, BIT_ACTIVE_1 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020006, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020006, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020006, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020006, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020003, 0x10, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020003, 0x20, BIT_ACTIVE_1 },
+   INP1( P1_START, 0x020003, 0x80 ),
+   INP1( P1_UP, 0x020006, 0x04 ),
+   INP1( P1_DOWN, 0x020006, 0x08 ),
+   INP1( P1_LEFT, 0x020006, 0x01 ),
+   INP1( P1_RIGHT, 0x020006, 0x02 ),
+   INP1( P1_B1, 0x020003, 0x10 ),
+   INP1( P1_B2, 0x020003, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020008, 0x80, BIT_ACTIVE_1 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020007, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020007, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020007, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020007, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020008, 0x10, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020008, 0x20, BIT_ACTIVE_1 },
+   INP1( P2_START, 0x020008, 0x80 ),
+   INP1( P2_UP, 0x020007, 0x04 ),
+   INP1( P2_DOWN, 0x020007, 0x08 ),
+   INP1( P2_LEFT, 0x020007, 0x01 ),
+   INP1( P2_RIGHT, 0x020007, 0x02 ),
+   INP1( P2_B1, 0x020008, 0x10 ),
+   INP1( P2_B2, 0x020008, 0x20 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_dr_toppel_0[] =
@@ -1238,28 +1238,28 @@ static struct ROM_INFO plump_pop_roms[] =
 
 static struct INPUT_INFO plump_pop_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020005, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020005, 0x01, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020004, 0x01 ),
+   INP0( COIN2, 0x020004, 0x02 ),
+   INP0( TILT, 0x020005, 0x02 ),
+   INP0( SERVICE, 0x020005, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020003, 0x80, BIT_ACTIVE_1 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020006, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020006, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020006, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020006, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020003, 0x10, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020003, 0x20, BIT_ACTIVE_1 },
+   INP1( P1_START, 0x020003, 0x80 ),
+   INP1( P1_UP, 0x020006, 0x04 ),
+   INP1( P1_DOWN, 0x020006, 0x08 ),
+   INP1( P1_LEFT, 0x020006, 0x01 ),
+   INP1( P1_RIGHT, 0x020006, 0x02 ),
+   INP1( P1_B1, 0x020003, 0x10 ),
+   INP1( P1_B2, 0x020003, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020007, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020007, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020007, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020007, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x02, BIT_ACTIVE_1 },
+   INP1( P2_START, 0x020003, 0x08 ),
+   INP1( P2_UP, 0x020007, 0x04 ),
+   INP1( P2_DOWN, 0x020007, 0x08 ),
+   INP1( P2_LEFT, 0x020007, 0x01 ),
+   INP1( P2_RIGHT, 0x020007, 0x02 ),
+   INP1( P2_B1, 0x020003, 0x01 ),
+   INP1( P2_B2, 0x020003, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_plump_pop_0[] =

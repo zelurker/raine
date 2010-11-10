@@ -117,29 +117,29 @@ static struct ROM_INFO _64th_street_roms[] =
 
 static struct INPUT_INFO megasys_1_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x010000, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x010000, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x010000, 0x3C, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x010000, 0x40 ),
+   INP0( COIN2, 0x010000, 0x80 ),
+   INP0( SERVICE, 0x010000, 0x3C ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x010000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x010002, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x010002, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x010002, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x010002, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x010002, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x010002, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x010002, 0x40, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x010000, 0x01 ),
+   INP0( P1_UP, 0x010002, 0x08 ),
+   INP0( P1_DOWN, 0x010002, 0x04 ),
+   INP0( P1_LEFT, 0x010002, 0x02 ),
+   INP0( P1_RIGHT, 0x010002, 0x01 ),
+   INP0( P1_B1, 0x010002, 0x10 ),
+   INP0( P1_B2, 0x010002, 0x20 ),
+   INP0( P1_B3, 0x010002, 0x40 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x010000, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x010004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x010004, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x010004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x010004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x010004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x010004, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x010004, 0x40, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x010000, 0x02 ),
+   INP0( P2_UP, 0x010004, 0x08 ),
+   INP0( P2_DOWN, 0x010004, 0x04 ),
+   INP0( P2_LEFT, 0x010004, 0x02 ),
+   INP0( P2_RIGHT, 0x010004, 0x01 ),
+   INP0( P2_B1, 0x010004, 0x10 ),
+   INP0( P2_B2, 0x010004, 0x20 ),
+   INP0( P2_B3, 0x010004, 0x40 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_coinage_8bits[] =
@@ -1191,26 +1191,26 @@ static struct ROM_INFO peek_a_boo_roms[] =
 
 static struct INPUT_INFO peek_a_boo_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x040000, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x040000, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x040000, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x040000, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x040000, 0x04 ),
+   INP0( COIN2, 0x040000, 0x08 ),
+   INP0( TILT, 0x040000, 0x01 ),
+   INP0( SERVICE, 0x040000, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x040000, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x014010, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x014011, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x040001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x040001, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x040001, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x040001, 0x20, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x040000, 0x10 ),
+   INP1( P1_LEFT, 0x014010, 0xFF ),
+   INP1( P1_RIGHT, 0x014011, 0xFF ),
+   INP0( P1_B1, 0x040001, 0x01 ),
+   INP0( P1_B2, 0x040001, 0x02 ),
+   INP0( P1_B3, 0x040001, 0x10 ),
+   INP0( P1_B4, 0x040001, 0x20 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x040000, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x014020, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x014021, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x040001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x040001, 0x08, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x040000, 0x20 ),
+   INP1( P2_LEFT, 0x014020, 0xFF ),
+   INP1( P2_RIGHT, 0x014021, 0xFF ),
+   INP0( P2_B1, 0x040001, 0x04 ),
+   INP0( P2_B2, 0x040001, 0x08 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_peekaboo_0[] =
@@ -2172,6 +2172,16 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
    return 1;
 }
 
+static int setup_gfx() {
+   if(!MS1DecodeFG0(REGION_GFX4, get_region_size(REGION_GFX4)))return 0;
+
+   if(!MS1DecodeSPR(REGION_GFX3,get_region_size(REGION_GFX3)))return 0;
+
+   if(!MS1DecodeBG1(REGION_GFX2,get_region_size(REGION_GFX2)))return 0;
+
+   if(!MS1DecodeBG0(REGION_GFX1,get_region_size(REGION_GFX1)))return 0;
+   return 1;
+}
 
 #define DEF_MS1_SOUNDCLOCK  (CPU_FRAME_MHz(12,60))
 static int MS1SoundLoop = 8;
@@ -3080,19 +3090,11 @@ void LoadHachoo(void)
 
 void LoadPlusAlpha(void)
 {
-   int ta;
-
    romset=6; spr_pri_needed=0;
 
    if(!(RAM=AllocateMem(0x40000))) return;
 
-   if(!MS1DecodeFG0(REGION_GFX4, 0x10000))return;
-
-   if(!MS1DecodeSPR(REGION_GFX3,0x80000))return;
-
-   if(!MS1DecodeBG1(REGION_GFX2,0x60000))return;
-
-   if(!MS1DecodeBG0(REGION_GFX1,0x80000))return;
+   if (!setup_gfx()) return;
 
    DecodePlusAlpha(ROM);                                      // Deprotection
 
@@ -3442,17 +3444,9 @@ void unprotect_64thstreet() {
 
 static void Load64thStreet(void)
 {
-   UINT8 *TMP;
-
    romset=9; spr_pri_needed=0;
 
-   if(!MS1DecodeFG0(REGION_GFX4,0x020000))return;
-
-   if(!MS1DecodeSPR(REGION_GFX3,0x100000))return;
-
-   if(!MS1DecodeBG1(REGION_GFX2,0x080000))return;
-
-   if(!MS1DecodeBG0(REGION_GFX1,0x080000))return;
+   if (!setup_gfx()) return;
 
    if(!(RAM=AllocateMem(0x80000))) return;
 

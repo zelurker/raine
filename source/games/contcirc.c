@@ -30,14 +30,14 @@ static struct DIR_INFO continental_circus_dirs[] =
 
 static struct INPUT_INFO continental_circus_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x022804, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x022804, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x022806, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x022804, 0x10, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x022804, 0x08 ),
+   INP1( COIN2, 0x022804, 0x04 ),
+   INP0( TILT, 0x022806, 0x04 ),
+   INP0( SERVICE, 0x022804, 0x10 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x022806, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x022818, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x02281A, 0xFF, BIT_ACTIVE_1 },
+   INP0( P1_START, 0x022806, 0x08 ),
+   INP1( P1_LEFT, 0x022818, 0xFF ),
+   INP1( P1_RIGHT, 0x02281A, 0xFF ),
 
    { KB_DEF_P1_B1,        "Accelerate",            0x022820, 0xFF, BIT_ACTIVE_1 },	// Accelerate - Analogue uses bit#567
    { KB_DEF_P1_B2,        "Brake",                 0x022822, 0xFF, BIT_ACTIVE_1 },	// Brake      - Analogue uses bit#567 (not available in digital mode!)
@@ -45,7 +45,7 @@ static struct INPUT_INFO continental_circus_inputs[] =
    { KB_DEF_P1_B4,        "Gear Low",            0x022825, 0x01, BIT_ACTIVE_0 },	// Gear Shift - High/Low
    { KB_DEF_P1_B5,        "Gear High",           0x022825, 0x02, BIT_ACTIVE_0 },	// Gear Shift - High/Low
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 #define TAITO_Z_COINAGE_WORLD_8 \

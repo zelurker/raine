@@ -55,15 +55,15 @@ static struct ROM_INFO chase_hq_roms[] =
 
 static struct INPUT_INFO chase_hq_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x022804, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x022804, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x022806, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x022804, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_START,     MSG_P1_START,            0x022806, 0x08, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x022804, 0x04 ),
+   INP1( COIN2, 0x022804, 0x08 ),
+   INP0( TILT, 0x022806, 0x02 ),
+   INP0( SERVICE, 0x022804, 0x10 ),
+   INP0( P1_START, 0x022806, 0x08 ),
 
 // Fake wheel addresses, used for keyboard support
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x022818, 0x7F, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x02281A, 0x7F, BIT_ACTIVE_0 },
+   INP0( P1_LEFT, 0x022818, 0x7F ),
+   INP0( P1_RIGHT, 0x02281A, 0x7F ),
 
 // Fake pedal addresses, used for keyboard support - Unsure if adresses are really unused
    { KB_DEF_P1_B1,        "Accelerator",           0x022807, 0xFF, BIT_ACTIVE_1 },
@@ -72,7 +72,7 @@ static struct INPUT_INFO chase_hq_inputs[] =
    { KB_DEF_P1_B3,        "Gear Change",           0x022820, 0xFF, BIT_ACTIVE_1 },
    { KB_DEF_P1_B4,        "Turbo",                 0x022806, 0x01, BIT_ACTIVE_0 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_chase_hq_0[] =
@@ -287,22 +287,22 @@ static struct ROM_INFO night_striker_roms[] =
 
 static struct INPUT_INFO night_striker_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x022804, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x022804, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x022804, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x022804, 0x40, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x022804, 0x20 ),
+   INP0( COIN2, 0x022804, 0x10 ),
+   INP0( TILT, 0x022804, 0x80 ),
+   INP0( SERVICE, 0x022804, 0x40 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x02280E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x022910, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x022911, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x022912, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x022913, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x02280E, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x02280E, 0x80, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x02280E, 0x01 ),
+   INP1( P1_UP, 0x022910, 0xFF ),
+   INP1( P1_DOWN, 0x022911, 0xFF ),
+   INP1( P1_LEFT, 0x022912, 0xFF ),
+   INP1( P1_RIGHT, 0x022913, 0xFF ),
+   INP0( P1_B1, 0x02280E, 0x40 ),
+   INP0( P1_B2, 0x02280E, 0x80 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x02280E, 0x02, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x02280E, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_night_striker_0[] =

@@ -48,26 +48,26 @@ static struct ROM_INFO syvalion_roms[] =
 
 static struct INPUT_INFO syvalion_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x032004, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x032004, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x032004, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x032004, 0x10, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x032004, 0x04 ),
+   INP1( COIN2, 0x032004, 0x08 ),
+   INP0( TILT, 0x032004, 0x20 ),
+   INP0( SERVICE, 0x032004, 0x10 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x032004, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x032080, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x032081, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x032082, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x032083, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x032006, 0x10, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x032004, 0x40 ),
+   INP1( P1_UP, 0x032080, 0xFF ),
+   INP1( P1_DOWN, 0x032081, 0xFF ),
+   INP1( P1_LEFT, 0x032082, 0xFF ),
+   INP1( P1_RIGHT, 0x032083, 0xFF ),
+   INP0( P1_B1, 0x032006, 0x10 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x032004, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x032084, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x032085, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x032086, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x032087, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x032006, 0x01, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x032004, 0x80 ),
+   INP1( P2_UP, 0x032084, 0xFF ),
+   INP1( P2_DOWN, 0x032085, 0xFF ),
+   INP1( P2_LEFT, 0x032086, 0xFF ),
+   INP1( P2_RIGHT, 0x032087, 0xFF ),
+   INP0( P2_B1, 0x032006, 0x01 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_syvalion_0[] =

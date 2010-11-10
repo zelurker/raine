@@ -51,14 +51,14 @@ static struct ROM_INFO chase_hq_2_sci_roms[] =
 
 static struct INPUT_INFO chase_hq_2_sci_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x022804, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x022804, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x022806, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x022804, 0x10, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x022804, 0x04 ),
+   INP0( COIN2, 0x022804, 0x08 ),
+   INP0( TILT, 0x022806, 0x02 ),
+   INP0( SERVICE, 0x022804, 0x10 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x022806, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x02281C, 0xFF, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x02281D, 0xFF, BIT_ACTIVE_1 },
+   INP0( P1_START, 0x022806, 0x08 ),
+   INP1( P1_LEFT, 0x02281C, 0xFF ),
+   INP1( P1_RIGHT, 0x02281D, 0xFF ),
    { KB_DEF_P1_B4,        "Turbo",                 0x022806, 0x01, BIT_ACTIVE_0 },
    { KB_DEF_P1_B3,        "Fire",                  0x022804, 0x02, BIT_ACTIVE_0 },
    { KB_DEF_P1_B2,        "Low Gear",              0x022806, 0x10, BIT_ACTIVE_1 },
@@ -66,7 +66,7 @@ static struct INPUT_INFO chase_hq_2_sci_inputs[] =
    { KB_DEF_P1_B5,        "Brake",                 0x022804, 0x20, BIT_ACTIVE_0 },
    { KB_DEF_P1_B6,        "Centre",                0x022806, 0x04, BIT_ACTIVE_0 },
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 

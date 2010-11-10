@@ -42,30 +42,30 @@ static struct ROM_INFO balloon_bros_roms[] =
 
 static struct INPUT_INFO x_system_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x020005, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x020005, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x020005, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x020005, 0x04, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x020005, 0x01 ),
+   INP0( COIN2, 0x020005, 0x02 ),
+   INP0( TILT, 0x020005, 0x08 ),
+   INP0( SERVICE, 0x020005, 0x04 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x020001, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x020001, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x020001, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x020001, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x020001, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x020001, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x020001, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x020001, 0x40, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x020001, 0x80 ),
+   INP0( P1_UP, 0x020001, 0x01 ),
+   INP0( P1_DOWN, 0x020001, 0x02 ),
+   INP0( P1_LEFT, 0x020001, 0x04 ),
+   INP0( P1_RIGHT, 0x020001, 0x08 ),
+   INP0( P1_B1, 0x020001, 0x10 ),
+   INP0( P1_B2, 0x020001, 0x20 ),
+   INP0( P1_B3, 0x020001, 0x40 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x020003, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x020003, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x020003, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x020003, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x020003, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x020003, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x020003, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x020003, 0x40, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x020003, 0x80 ),
+   INP0( P2_UP, 0x020003, 0x01 ),
+   INP0( P2_DOWN, 0x020003, 0x02 ),
+   INP0( P2_LEFT, 0x020003, 0x04 ),
+   INP0( P2_RIGHT, 0x020003, 0x08 ),
+   INP0( P2_B1, 0x020003, 0x10 ),
+   INP0( P2_B2, 0x020003, 0x20 ),
+   INP0( P2_B3, 0x020003, 0x40 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_balloon_bros_0[] =

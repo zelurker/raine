@@ -78,20 +78,20 @@ static struct ROM_INFO silkworm_roms[] =
 static struct INPUT_INFO silkworm_inputs[] =
 {
    JOY_1
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x6001, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x6001, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x6001, 0x04, BIT_ACTIVE_1 },
+   INP1( P1_B1, 0x6001, 0x02 ),
+   INP1( P1_B2, 0x6001, 0x01 ),
+   INP1( P1_B3, 0x6001, 0x04 ),
 
    JOY_2
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x6003, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x6003, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x6003, 0x04, BIT_ACTIVE_1 },
+   INP1( P2_B1, 0x6003, 0x02 ),
+   INP1( P2_B2, 0x6003, 0x01 ),
+   INP1( P2_B3, 0x6003, 0x04 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x600F, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_START,     MSG_P2_START,            0x600F, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_COIN1,        MSG_COIN1,               0x600F, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x600F, 0x08, BIT_ACTIVE_1 },
-   { 0,                   NULL,                    0,        0,    0            },
+   INP1( P1_START, 0x600F, 0x01 ),
+   INP1( P2_START, 0x600F, 0x02 ),
+   INP1( COIN1, 0x600F, 0x04 ),
+   INP1( COIN2, 0x600F, 0x08 ),
+   END_INPUT
 };
 
 #define COINAGE_SILKWORM \
@@ -365,23 +365,23 @@ static struct ROM_INFO rygar_roms[] =
 static struct INPUT_INFO rygar_inputs[] =
 {
    JOY_1
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x6001, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x6001, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x6001, 0x04, BIT_ACTIVE_1 },
+   INP1( P1_B1, 0x6001, 0x01 ),
+   INP1( P1_B2, 0x6001, 0x02 ),
+   INP1( SERVICE, 0x6001, 0x04 ),
 
-   { KB_DEF_P2_LEFT,      MSG_P2_LEFT,             0x6002, 0x02, BIT_ACTIVE_1 },\
-   { KB_DEF_P2_RIGHT,     MSG_P2_RIGHT,            0x6002, 0x01, BIT_ACTIVE_1 },\
-   { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x6002, 0x04, BIT_ACTIVE_1 },\
-   { KB_DEF_P2_UP,        MSG_P2_UP,               0x6002, 0x08, BIT_ACTIVE_1 },
+   INP1( P2_LEFT, 0x6002, 0x02 ),
+   INP1( P2_RIGHT, 0x6002, 0x01 ),
+   INP1( P2_DOWN, 0x6002, 0x04 ),
+   INP1( P2_UP, 0x6002, 0x08 ),
 
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x6003, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x6003, 0x02, BIT_ACTIVE_1 },
+   INP1( P2_B1, 0x6003, 0x01 ),
+   INP1( P2_B2, 0x6003, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x6004, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_START,     MSG_P2_START,            0x6004, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_COIN1,        MSG_COIN1,               0x6004, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x6004, 0x04, BIT_ACTIVE_1 },
-   { 0,                   NULL,                    0,        0,    0            },
+   INP1( P1_START, 0x6004, 0x02 ),
+   INP1( P2_START, 0x6004, 0x01 ),
+   INP1( COIN1, 0x6004, 0x08 ),
+   INP1( COIN2, 0x6004, 0x04 ),
+   END_INPUT
 };
 
 /* Dipswitch B */
@@ -494,18 +494,18 @@ static struct ROM_INFO gemini_roms[] =
 static struct INPUT_INFO gemini_inputs[] =
 {
    JOY_1
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x6001, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x6001, 0x01, BIT_ACTIVE_1 },
+   INP1( P1_B1, 0x6001, 0x02 ),
+   INP1( P1_B2, 0x6001, 0x01 ),
 
    JOY_2
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x6003, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x6003, 0x01, BIT_ACTIVE_1 },
+   INP1( P2_B1, 0x6003, 0x02 ),
+   INP1( P2_B2, 0x6003, 0x01 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x6005, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P2_START,     MSG_P2_START,            0x6005, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_COIN1,        MSG_COIN1,               0x6005, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x6005, 0x08, BIT_ACTIVE_1 },
-   { 0,                   NULL,                    0,        0,    0            },
+   INP1( P1_START, 0x6005, 0x01 ),
+   INP1( P2_START, 0x6005, 0x02 ),
+   INP1( COIN1, 0x6005, 0x04 ),
+   INP1( COIN2, 0x6005, 0x08 ),
+   END_INPUT
 };
 
 /* Dipswitch B */

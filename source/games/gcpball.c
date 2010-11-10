@@ -49,27 +49,27 @@ static struct ROM_INFO grand_cross_pinball_roms[] =
 
 static struct INPUT_INFO grand_cross_pinball_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x016087, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x016087, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x016087, 0x01 ),
+   INP0( COIN2, 0x016087, 0x02 ),
 
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x016087, 0x08, BIT_ACTIVE_0 },
+   INP0( SERVICE, 0x016087, 0x08 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x016085, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_START,     MSG_P2_START,            0x016084, 0x80, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x016085, 0x80 ),
+   INP0( P2_START, 0x016084, 0x80 ),
 
-   { KB_DEF_FLIPPER_1_L,  MSG_FLIPPER_1_L,         0x016085, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_FLIPPER_1_R,  MSG_FLIPPER_1_R,         0x016084, 0x10, BIT_ACTIVE_0 },
+   INP0( FLIPPER_1_L, 0x016085, 0x10 ),
+   INP0( FLIPPER_1_R, 0x016084, 0x10 ),
 
-   { KB_DEF_FLIPPER_2_L,  MSG_FLIPPER_2_L,         0x016085, 0x20, BIT_ACTIVE_0 },
-   { KB_DEF_FLIPPER_2_R,  MSG_FLIPPER_2_R,         0x016084, 0x20, BIT_ACTIVE_0 },
+   INP0( FLIPPER_2_L, 0x016085, 0x20 ),
+   INP0( FLIPPER_2_R, 0x016084, 0x20 ),
 
-   { KB_DEF_TILT_L,       MSG_TILT_L,              0x016085, 0x40, BIT_ACTIVE_0 },
-   { KB_DEF_TILT_R,       MSG_TILT_R,              0x016084, 0x40, BIT_ACTIVE_0 },
+   INP0( TILT_L, 0x016085, 0x40 ),
+   INP0( TILT_R, 0x016084, 0x40 ),
 
-   { KB_DEF_B1_L,         MSG_B1_L,                0x016085, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_B1_R,         MSG_B1_R,                0x016084, 0x08, BIT_ACTIVE_0 },
+   INP0( B1_L, 0x016085, 0x08 ),
+   INP0( B1_R, 0x016084, 0x08 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_grand_cross_pinball_0[] =

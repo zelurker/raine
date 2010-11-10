@@ -49,17 +49,17 @@ static struct ROM_INFO battle_shark_roms[] =
 
 static struct INPUT_INFO battle_shark_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x027014, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x027014, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x027014, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x027014, 0x04, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x027014, 0x02 ),
+   INP0( COIN2, 0x027014, 0x01 ),
+   INP0( TILT, 0x027014, 0x08 ),
+   INP0( SERVICE, 0x027014, 0x04 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x02701E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x02701E, 0x40, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x02701E, 0x01 ),
+   INP0( P1_B1, 0x02701E, 0x40 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x02701E, 0x02, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x02701E, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_battle_shark_0[] =

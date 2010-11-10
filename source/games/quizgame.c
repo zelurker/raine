@@ -42,24 +42,24 @@ static struct ROM_INFO quiz_torimonochou_roms[] =
 
 static struct INPUT_INFO quiz_torimonochou_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x03C00E, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x03C00E, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x03C00E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x03C00E, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x03C00E, 0x04 ),
+   INP0( COIN2, 0x03C00E, 0x08 ),
+   INP0( TILT, 0x03C00E, 0x01 ),
+   INP0( SERVICE, 0x03C00E, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x03C004, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x03C004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x03C004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x03C004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x03C004, 0x04, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x03C004, 0x10 ),
+   INP0( P1_B1, 0x03C004, 0x01 ),
+   INP0( P1_B2, 0x03C004, 0x02 ),
+   INP0( P1_B3, 0x03C004, 0x08 ),
+   INP0( P1_B4, 0x03C004, 0x04 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x03C006, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x03C006, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x03C006, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x03C006, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B4,        MSG_P2_B4,               0x03C006, 0x04, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x03C006, 0x10 ),
+   INP0( P2_B1, 0x03C006, 0x01 ),
+   INP0( P2_B2, 0x03C006, 0x02 ),
+   INP0( P2_B3, 0x03C006, 0x08 ),
+   INP0( P2_B4, 0x03C006, 0x04 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_quiz_torimonochou_0[] =
@@ -175,26 +175,26 @@ static struct ROM_INFO quiz_hq_roms[] =
 
 static struct INPUT_INFO quiz_hq_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x03C00E, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x03C00E, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x03C00E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x03C00E, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x03C00E, 0x04 ),
+   INP0( COIN2, 0x03C00E, 0x08 ),
+   INP0( TILT, 0x03C00E, 0x01 ),
+   INP0( SERVICE, 0x03C00E, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x03C004, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x03C004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x03C004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x03C004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x03C004, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B5,        MSG_P1_B5,               0x03C004, 0x10, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x03C004, 0x80 ),
+   INP0( P1_B1, 0x03C004, 0x01 ),
+   INP0( P1_B2, 0x03C004, 0x02 ),
+   INP0( P1_B3, 0x03C004, 0x08 ),
+   INP0( P1_B4, 0x03C004, 0x04 ),
+   INP0( P1_B5, 0x03C004, 0x10 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x03C006, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x03C006, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x03C006, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x03C006, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B4,        MSG_P2_B4,               0x03C006, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B5,        MSG_P2_B5,               0x03C006, 0x10, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x03C006, 0x80 ),
+   INP0( P2_B1, 0x03C006, 0x01 ),
+   INP0( P2_B2, 0x03C006, 0x02 ),
+   INP0( P2_B3, 0x03C006, 0x08 ),
+   INP0( P2_B4, 0x03C006, 0x04 ),
+   INP0( P2_B5, 0x03C006, 0x10 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_quiz_hq_0[] =
@@ -302,26 +302,26 @@ static struct ROM_INFO yuyu_no_quiz_de_gogo_roms[] =
 
 static struct INPUT_INFO yuyu_no_quiz_de_gogo_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x03C00E, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x03C00E, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x03C00E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x03C00E, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x03C00E, 0x04 ),
+   INP0( COIN2, 0x03C00E, 0x08 ),
+   INP0( TILT, 0x03C00E, 0x01 ),
+   INP0( SERVICE, 0x03C00E, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x03C004, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x03C004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x03C004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x03C004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x03C004, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B5,        MSG_P1_B5,               0x03C004, 0x10, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x03C004, 0x80 ),
+   INP0( P1_B1, 0x03C004, 0x01 ),
+   INP0( P1_B2, 0x03C004, 0x02 ),
+   INP0( P1_B3, 0x03C004, 0x08 ),
+   INP0( P1_B4, 0x03C004, 0x04 ),
+   INP0( P1_B5, 0x03C004, 0x10 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x03C006, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x03C006, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x03C006, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x03C006, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B4,        MSG_P2_B4,               0x03C006, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B5,        MSG_P2_B5,               0x03C006, 0x10, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x03C006, 0x80 ),
+   INP0( P2_B1, 0x03C006, 0x01 ),
+   INP0( P2_B2, 0x03C006, 0x02 ),
+   INP0( P2_B3, 0x03C006, 0x08 ),
+   INP0( P2_B4, 0x03C006, 0x04 ),
+   INP0( P2_B5, 0x03C006, 0x10 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_yuyu_no_quiz_de_gogo_0[] =
@@ -417,24 +417,24 @@ static struct ROM_INFO quiz_crayon_shinchan_roms[] =
 
 static struct INPUT_INFO quiz_crayon_shinchan_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x03C00E, 0x04, BIT_ACTIVE_0 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x03C00E, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_TILT,         MSG_TILT,                0x03C00E, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x03C00E, 0x02, BIT_ACTIVE_0 },
+   INP0( COIN1, 0x03C00E, 0x04 ),
+   INP0( COIN2, 0x03C00E, 0x08 ),
+   INP0( TILT, 0x03C00E, 0x01 ),
+   INP0( SERVICE, 0x03C00E, 0x02 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x03C004, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x03C004, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x03C004, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B3,        MSG_P1_B3,               0x03C004, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B4,        MSG_P1_B4,               0x03C004, 0x04, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x03C004, 0x80 ),
+   INP0( P1_B1, 0x03C004, 0x01 ),
+   INP0( P1_B2, 0x03C004, 0x02 ),
+   INP0( P1_B3, 0x03C004, 0x08 ),
+   INP0( P1_B4, 0x03C004, 0x04 ),
 
-   { KB_DEF_P2_START,     MSG_P2_START,            0x03C006, 0x80, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B1,        MSG_P2_B1,               0x03C006, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B2,        MSG_P2_B2,               0x03C006, 0x02, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B3,        MSG_P2_B3,               0x03C006, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_P2_B4,        MSG_P2_B4,               0x03C006, 0x04, BIT_ACTIVE_0 },
+   INP0( P2_START, 0x03C006, 0x80 ),
+   INP0( P2_B1, 0x03C006, 0x01 ),
+   INP0( P2_B2, 0x03C006, 0x02 ),
+   INP0( P2_B3, 0x03C006, 0x08 ),
+   INP0( P2_B4, 0x03C006, 0x04 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 struct DSW_DATA dsw_data_quiz_crayon_shinchan_0[] =

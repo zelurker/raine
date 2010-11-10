@@ -40,20 +40,20 @@ static struct ROM_INFO operation_wolf_roms[] =
 
 static struct INPUT_INFO operation_wolf_inputs[] =
 {
-   { KB_DEF_COIN1,        MSG_COIN1,               0x05C580, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_COIN2,        MSG_COIN2,               0x05C581, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_TILT,         MSG_TILT,                0x02B10A, 0x08, BIT_ACTIVE_0 },
-   { KB_DEF_SERVICE,      MSG_SERVICE,             0x02B10A, 0x04, BIT_ACTIVE_0 },
+   INP1( COIN1, 0x05C580, 0x04 ),
+   INP1( COIN2, 0x05C581, 0x04 ),
+   INP0( TILT, 0x02B10A, 0x08 ),
+   INP0( SERVICE, 0x02B10A, 0x04 ),
 
-   { KB_DEF_P1_START,     MSG_P1_START,            0x02B10A, 0x10, BIT_ACTIVE_0 },
-   { KB_DEF_P1_UP,        MSG_P1_UP,               0x02B408, 0x01, BIT_ACTIVE_1 },
-   { KB_DEF_P1_DOWN,      MSG_P1_DOWN,             0x02B408, 0x02, BIT_ACTIVE_1 },
-   { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             0x02B408, 0x04, BIT_ACTIVE_1 },
-   { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            0x02B408, 0x08, BIT_ACTIVE_1 },
-   { KB_DEF_P1_B1,        MSG_P1_B1,               0x02B10A, 0x01, BIT_ACTIVE_0 },
-   { KB_DEF_P1_B2,        MSG_P1_B2,               0x02B10A, 0x02, BIT_ACTIVE_0 },
+   INP0( P1_START, 0x02B10A, 0x10 ),
+   INP1( P1_UP, 0x02B408, 0x01 ),
+   INP1( P1_DOWN, 0x02B408, 0x02 ),
+   INP1( P1_LEFT, 0x02B408, 0x04 ),
+   INP1( P1_RIGHT, 0x02B408, 0x08 ),
+   INP0( P1_B1, 0x02B10A, 0x01 ),
+   INP0( P1_B2, 0x02B10A, 0x02 ),
 
-   { 0,                   NULL,                    0,        0,    0            },
+   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_operation_wolf_0[] =

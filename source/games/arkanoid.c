@@ -169,22 +169,22 @@ static struct DSW_INFO arkatayt_dsw[] =
 
 static struct INPUT_INFO arkanoid_inputs[] =
 {
-  { KB_DEF_P1_START, MSG_P1_START, 0x0000, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_START, MSG_P2_START, 0x0000, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_SERVICE,  MSG_SERVICE,  0x0000, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_TILT,     MSG_TILT,     0x0000, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1,    MSG_COIN1,    0x0000, 0x10, BIT_ACTIVE_1 },
-  { KB_DEF_COIN2,    MSG_COIN2,    0x0000, 0x20, BIT_ACTIVE_1 },
+  INP0( P1_START, 0x0000, 0x01 ),
+  INP0( P2_START, 0x0000, 0x02 ),
+  INP0( SERVICE, 0x0000, 0x04 ),
+  INP0( TILT, 0x0000, 0x08 ),
+  INP1( COIN1, 0x0000, 0x10 ),
+  INP1( COIN2, 0x0000, 0x20 ),
   // The last 2 bits are from the 68705 (mcu) 0x40 and 0x80
 
   // These 2 are added for those who are crazy enough to play arkanoid without a mouse
   // or a trackball...
-  { KB_DEF_P1_LEFT,      MSG_P1_LEFT,             1, 0x01, BIT_ACTIVE_1 },
-  { KB_DEF_P1_RIGHT,     MSG_P1_RIGHT,            1, 0x02, BIT_ACTIVE_1 },
+  INP1( P1_LEFT, 1, 0x01 ),
+  INP1( P1_RIGHT, 1, 0x02 ),
 
-  { KB_DEF_P1_B1, MSG_P1_B1, 0x0002, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, MSG_P2_B1, 0x0002, 0x04, BIT_ACTIVE_0 },
-  { 0, NULL, 0, 0, 0 },
+  INP0( P1_B1, 0x0002, 0x01 ),
+  INP0( P2_B1, 0x0002, 0x04 ),
+  END_INPUT
 };
 
 

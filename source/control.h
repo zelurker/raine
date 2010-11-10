@@ -464,21 +464,29 @@ extern char MSG_ALT[];
    { MSG_ON,              on },        \
    { MSG_OFF,             off }
 
-  void raine_set_scancode(int index, int code);
-  void raine_set_emu_scancode(int index, int code);
-  char* raine_get_key_name(int index);
-  int raine_get_scancode(int index);
-  char* raine_get_emu_key_name(int index);
-  int raine_get_emu_scancode(int index);
-  int raine_get_emu_nb_ctrl();
+#define INP0( input, adr, mask ) \
+   { KB_DEF_##input, MSG_##input, adr, mask, BIT_ACTIVE_0 }
+#define INP1( input, adr, mask ) \
+   { KB_DEF_##input, MSG_##input, adr, mask, BIT_ACTIVE_1 }
 
-  void raine_increase_auto_rate(int index);
-  char* raine_input_name(int index);
-  char *raine_auto_name(int index);
-  int raine_get_input_count();
+#define END_INPUT \
+   { 0, NULL, 0, 0, 0 },
 
-  void raine_set_key(int index, int key);
-  int raine_get_key(int index);
+void raine_set_scancode(int index, int code);
+void raine_set_emu_scancode(int index, int code);
+char* raine_get_key_name(int index);
+int raine_get_scancode(int index);
+char* raine_get_emu_key_name(int index);
+int raine_get_emu_scancode(int index);
+int raine_get_emu_nb_ctrl();
+
+void raine_increase_auto_rate(int index);
+char* raine_input_name(int index);
+char *raine_auto_name(int index);
+int raine_get_input_count();
+
+void raine_set_key(int index, int key);
+int raine_get_key(int index);
 
 #ifdef __cplusplus
 }
