@@ -449,13 +449,13 @@ static struct ROM_INFO chimera_beast_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
             "prg8.bin",  0xa682b1ca , "prg7.bin",  0x83b9982d ),
-   {       "b1.bin", 0x00080000, 0x29c0385e, 0, 0, 0, },
-   {       "b2.bin", 0x00080000, 0x6e7f1778, 0, 0, 0, },
-   {       "s1.bin", 0x00080000, 0xe4c2ac77, 0, 0, 0, },
-   {       "s2.bin", 0x00080000, 0xfafb37a5, 0, 0, 0, },
-   {     "scr3.bin", 0x00020000, 0x5fe38a83, 0, 0, 0, },
-   {    "voi10.bin", 0x00040000, 0x67498914, 0, 0, 0, },
-   {    "voi11.bin", 0x00040000, 0x14b3afe6, 0, 0, 0, },
+   {       "b1.bin", 0x00080000, 0x29c0385e, REGION_GFX4, 0x80000 },
+   {       "b2.bin", 0x00080000, 0x6e7f1778, REGION_GFX4 },
+   {       "s1.bin", 0x00080000, 0xe4c2ac77, REGION_GFX1 },
+   {       "s2.bin", 0x00080000, 0xfafb37a5, REGION_GFX2 },
+   {     "scr3.bin", 0x00020000, 0x5fe38a83, REGION_GFX3 },
+   {    "voi10.bin", 0x00040000, 0x67498914, REGION_SOUND2 },
+   {    "voi11.bin", 0x00040000, 0x14b3afe6, REGION_SOUND1 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -3212,38 +3212,14 @@ static void Load64thStreet(void)
 
 void load_chimera_beast(void)
 {
-   UINT8 *TMP;
-
    romset=18; spr_pri_needed=0;
-
-   if(!(TMP=AllocateMem(0x100000))) return;
-
-   if(!load_rom("scr3.bin", TMP, 0x20000)) return;         // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(TMP,0x020000))return;
-
-   if(!load_rom("b2.bin", TMP+0x00000, 0x80000)) return;   // 16x16 SPRITES
-   if(!load_rom("b1.bin", TMP+0x80000, 0x80000)) return;   // 16x16 SPRITES
-   if(!MS1DecodeSPR(TMP,0x100000))return;
-
-   if(!load_rom("s2.bin", TMP, 0x80000)) return;           // 16x16 TILES
-   if(!MS1DecodeBG1(TMP,0x080000))return;
-
-   if(!load_rom("s1.bin", TMP, 0x80000)) return;           // 16x16 TILES
-   if(!MS1DecodeBG0(TMP,0x080000))return;
-
-   FreeMem(TMP);
+   if (!setup_ms1_gfx()) return;
 
    if(!(RAM=AllocateMem(0x80000))) return;
-   ROM = load_region[REGION_CPU1];
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "voi11.bin", PCMROM+0x00000,0x40000)) return;
-   if(!load_rom( "voi10.bin", PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 8;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3304,6 +3280,8 @@ void load_chimera_beast(void)
 
    AddMS2Controls();
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_program_region(0,0xFF0000,0xFFFFFF,RAM+0x000000-0xFF0000);              // 68000 RAM
+
    add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                // 68000 RAM
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                // SCREEN RAM
    add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
