@@ -226,7 +226,6 @@ static struct YM2151interface ym2151_interface =
   { NULL }              // maybe i tried the wrong games? :).
 };
 
-
 static struct OKIM6295interface m6295_interface =
 {
    2,					// 1 chip
@@ -260,13 +259,6 @@ static struct ROM_INFO _64th_street_japanese_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
             "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
-   {  "64th_01.rom", 0x00080000, 0x06222f90, REGION_GFX1, 0, LOAD_NORMAL, },
-   {  "64th_06.rom", 0x00080000, 0x2bfcdc75, REGION_GFX2, 0, LOAD_NORMAL, },
-   {  "64th_09.rom", 0x00020000, 0xa4a97db4, REGION_GFX3, },
-   {  "64th_05.rom", 0x00080000, 0xa89a7020, REGION_GFX4, },
-   {  "64th_04.rom", 0x00080000, 0x98f83ef6, REGION_GFX4, 0x80000 },
-   {  "64th_11.rom", 0x00020000, 0xb0b8a65c, REGION_ROM2, },
-   {  "64th_10.rom", 0x00040000, 0xa3390561, REGION_ROM2, 0x20000, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -285,23 +277,23 @@ static struct ROM_INFO astyanax_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
             "astyan5.bin",  0x11c74045 , "astyan6.bin",  0xeecd4b16 ),
-   {  "astyan7.bin", 0x00020000, 0x319418cc, 0, 0, 0, },
-   {  "astyan8.bin", 0x00020000, 0x5e5d2a22, 0, 0, 0, },
-   {  "astyan9.bin", 0x00020000, 0xa10b3f17, 0, 0, 0, },
-   { "astyan10.bin", 0x00020000, 0x4f704e7a, 0, 0, 0, },
-   { "astyan11.bin", 0x00020000, 0x5593fec9, 0, 0, 0, },
-   { "astyan12.bin", 0x00020000, 0xe8b313ec, 0, 0, 0, },
-   { "astyan13.bin", 0x00020000, 0x5f3496c6, 0, 0, 0, },
-   { "astyan14.bin", 0x00020000, 0x29a09ec2, 0, 0, 0, },
-   { "astyan15.bin", 0x00020000, 0x0d316615, 0, 0, 0, },
-   { "astyan16.bin", 0x00020000, 0xba96e8d9, 0, 0, 0, },
-   { "astyan17.bin", 0x00020000, 0xbe60ba06, 0, 0, 0, },
-   { "astyan18.bin", 0x00020000, 0x3668da3d, 0, 0, 0, },
-   { "astyan19.bin", 0x00020000, 0x98158623, 0, 0, 0, },
-   { "astyan20.bin", 0x00020000, 0xc1ad9aa0, 0, 0, 0, },
-   { "astyan21.bin", 0x00020000, 0x0bf498ee, 0, 0, 0, },
-   { "astyan22.bin", 0x00020000, 0x5f04d9b1, 0, 0, 0, },
-   { "astyan23.bin", 0x00020000, 0x7bd4d1e7, 0, 0, 0, },
+   {  "astyan7.bin", 0x00020000, 0x319418cc, REGION_SOUND2 },
+   {  "astyan8.bin", 0x00020000, 0x5e5d2a22, REGION_SOUND2, 0x20000 },
+   {  "astyan9.bin", 0x00020000, 0xa10b3f17, REGION_SOUND1 },
+   { "astyan10.bin", 0x00020000, 0x4f704e7a, REGION_SOUND1, 0x20000 },
+   { "astyan11.bin", 0x00020000, 0x5593fec9, REGION_GFX1, },
+   { "astyan12.bin", 0x00020000, 0xe8b313ec, REGION_GFX1, 0x20000 },
+   { "astyan13.bin", 0x00020000, 0x5f3496c6, REGION_GFX1, 0x40000 },
+   { "astyan14.bin", 0x00020000, 0x29a09ec2, REGION_GFX1, 0x60000 },
+   { "astyan15.bin", 0x00020000, 0x0d316615, REGION_GFX2 },
+   { "astyan16.bin", 0x00020000, 0xba96e8d9, REGION_GFX2, 0x20000 },
+   { "astyan17.bin", 0x00020000, 0xbe60ba06, REGION_GFX2, 0x40000 },
+   { "astyan18.bin", 0x00020000, 0x3668da3d, REGION_GFX2, 0x60000 },
+   { "astyan19.bin", 0x00020000, 0x98158623, REGION_GFX3 },
+   { "astyan20.bin", 0x00020000, 0xc1ad9aa0, REGION_GFX4 },
+   { "astyan21.bin", 0x00020000, 0x0bf498ee, REGION_GFX4, 0x20000 },
+   { "astyan22.bin", 0x00020000, 0x5f04d9b1, REGION_GFX4, 0x40000 },
+   { "astyan23.bin", 0x00020000, 0x7bd4d1e7, REGION_GFX4, 0x60000 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -394,23 +386,6 @@ static struct ROM_INFO the_lord_of_king_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
             "astyan5.bin",  0x11c74045 , "astyan6.bin",  0xeecd4b16 ),
-   {  "astyan7.bin", 0x00020000, 0x319418cc, 0, 0, 0, },
-   {  "astyan8.bin", 0x00020000, 0x5e5d2a22, 0, 0, 0, },
-   {  "astyan9.bin", 0x00020000, 0xa10b3f17, 0, 0, 0, },
-   { "astyan10.bin", 0x00020000, 0x4f704e7a, 0, 0, 0, },
-   { "astyan11.bin", 0x00020000, 0x5593fec9, 0, 0, 0, },
-   { "astyan12.bin", 0x00020000, 0xe8b313ec, 0, 0, 0, },
-   { "astyan13.bin", 0x00020000, 0x5f3496c6, 0, 0, 0, },
-   { "astyan14.bin", 0x00020000, 0x29a09ec2, 0, 0, 0, },
-   { "astyan15.bin", 0x00020000, 0x0d316615, 0, 0, 0, },
-   { "astyan16.bin", 0x00020000, 0xba96e8d9, 0, 0, 0, },
-   { "astyan17.bin", 0x00020000, 0xbe60ba06, 0, 0, 0, },
-   { "astyan18.bin", 0x00020000, 0x3668da3d, 0, 0, 0, },
-   { "astyan19.bin", 0x00020000, 0x98158623, 0, 0, 0, },
-   { "astyan20.bin", 0x00020000, 0xc1ad9aa0, 0, 0, 0, },
-   { "astyan21.bin", 0x00020000, 0x0bf498ee, 0, 0, 0, },
-   { "astyan22.bin", 0x00020000, 0x5f04d9b1, 0, 0, 0, },
-   { "astyan23.bin", 0x00020000, 0x7bd4d1e7, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -428,12 +403,12 @@ static struct ROM_INFO avenging_spirit_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x020000,
             "spirit01.rom",  0xd02ec045 , "spirit02.rom",  0x30213390 ),
-   { "spirit09.rom", 0x00020000, 0x0c37edf7, 0, 0, 0, },
-   { "spirit10.rom", 0x00080000, 0x2b1180b3, 0, 0, 0, },
-   { "spirit11.rom", 0x00080000, 0x7896f6b0, 0, 0, 0, },
-   { "spirit12.rom", 0x00080000, 0x728335d4, 0, 0, 0, },
-   { "spirit13.rom", 0x00040000, 0x05bc04d9, 0, 0, 0, },
-   { "spirit14.rom", 0x00040000, 0x13be9979, 0, 0, 0, },
+   { "spirit09.rom", 0x00020000, 0x0c37edf7, REGION_GFX3 },
+   { "spirit10.rom", 0x00080000, 0x2b1180b3, REGION_GFX4 },
+   { "spirit11.rom", 0x00080000, 0x7896f6b0, REGION_GFX2 },
+   { "spirit12.rom", 0x00080000, 0x728335d4, REGION_GFX1 },
+   { "spirit13.rom", 0x00040000, 0x05bc04d9, REGION_SOUND2 },
+   { "spirit14.rom", 0x00040000, 0x13be9979, REGION_SOUND1 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1292,12 +1267,6 @@ static struct ROM_INFO phantasm_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
             "phntsm05.bin",  0x3b169b4a , "phntsm06.bin",  0xdf2dfb2e ),
-   { "spirit13.rom", 0x00040000, 0x05bc04d9, 0, 0, 0, },
-   { "spirit14.rom", 0x00040000, 0x13be9979, 0, 0, 0, },
-   { "spirit12.rom", 0x00080000, 0x728335d4, 0, 0, 0, },
-   { "spirit11.rom", 0x00080000, 0x7896f6b0, 0, 0, 0, },
-   { "spirit09.rom", 0x00020000, 0x0c37edf7, 0, 0, 0, },
-   { "spirit10.rom", 0x00080000, 0x2b1180b3, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1489,16 +1458,6 @@ static struct ROM_INFO rodlandjb_roms[] =
             "rl_3.bin",  0xc5b1075f , "rl_4.bin",  0x9ec61048 ),
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "rl02.bin",  0xd26eae8f , "rl01.bin",  0x04cf24bc ),
-  { "rl_23.rom", 0x80000, 0xac60e771 , REGION_GFX1, 0, LOAD_NORMAL },
-
-  { "rl_18.rom", 0x080000, 0xf3b30ca6 , REGION_GFX2, 0x000000, LOAD_NORMAL },
-
-  { "rl_19.bin", 0x020000, 0x124d7e8f , REGION_GFX3, 0x000000, LOAD_NORMAL },
-
-  { "rl_14.rom", 0x080000, 0x08d01bf4 , REGION_GFX4, 0x000000, LOAD_NORMAL },
-
-   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, REGION_SOUND1 },
-   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1512,14 +1471,7 @@ static struct ROM_INFO rodlandj_roms[] =
             "rl_05.rom",  0xc1617c28 , "rl_06.rom",  0x663392b2 ),
   { "rl_14.bin", 0x080000, 0x8201e1bb , REGION_GFX1, 0x000000, LOAD_NORMAL },
 
-  { "rl_18.rom", 0x080000, 0xf3b30ca6 , REGION_GFX2, 0x000000, LOAD_NORMAL },
-
-  { "rl_19.bin", 0x020000, 0x124d7e8f , REGION_GFX3, 0x000000, LOAD_NORMAL },
-
-
   { "rl_23.bin", 0x080000, 0x936db174 , REGION_GFX4, 0x000000, LOAD_NORMAL },
-   {    "rl_10.rom", 0x00040000, 0xe1d1cd99, REGION_SOUND1 },
-   {    "rl_08.rom", 0x00040000, 0x8a49d3a7, REGION_SOUND2, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -2176,7 +2128,7 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
    return 1;
 }
 
-static int setup_gfx() {
+static int setup_ms1_gfx() {
    if(!MS1DecodeSPR(REGION_GFX4,get_region_size(REGION_GFX4)))return 0;
 
    if(!MS1DecodeFG0(REGION_GFX3, get_region_size(REGION_GFX3)))return 0;
@@ -2238,8 +2190,19 @@ static int layer_id_data[4];
 
 static char *layer_id_name[4] =
 {
-   "BG0",   "BG1",   "BG2",   "OBJ",
+   "BG0",   "BG1",   "FG0",   "OBJ",
 };
+
+static void finish_ms1_gfx() {
+   InitPaletteMap(RAM_COL, 0x40, 0x10, 0x8000);
+
+   set_colour_mapper(&col_map_rrrr_gggg_bbbb_rgbx_rev);
+
+   layer_id_data[0] = add_layer_info(layer_id_name[0]);
+   layer_id_data[1] = add_layer_info(layer_id_name[1]);
+   layer_id_data[2] = add_layer_info(layer_id_name[2]);
+   layer_id_data[3] = add_layer_info(layer_id_name[3]);
+}
 
 static void AddMS1Controls(void)
 {
@@ -2255,14 +2218,7 @@ static void AddMS1Controls(void)
    memset(RAM+0x10000,0xFF,0x00008);
 
    RAM_COL=RAM+0x18000;
-   InitPaletteMap(RAM_COL, 0x40, 0x10, 0x8000);
-
-   set_colour_mapper(&col_map_rrrr_gggg_bbbb_rgbx_rev);
-
-   layer_id_data[0] = add_layer_info(layer_id_name[0]);
-   layer_id_data[1] = add_layer_info(layer_id_name[1]);
-   layer_id_data[2] = add_layer_info(layer_id_name[2]);
-   layer_id_data[3] = add_layer_info(layer_id_name[3]);
+   finish_ms1_gfx();
 }
 
 static void AddMS2Controls(void)
@@ -2278,14 +2234,7 @@ static void AddMS2Controls(void)
    memset(&RAM[0x10000],0xFF,0x00008);
 
    RAM_COL=RAM+0x48000;
-   InitPaletteMap(RAM_COL, 0x40, 0x10, 0x8000);
-
-   set_colour_mapper(&col_map_rrrr_gggg_bbbb_rgbx_rev);
-
-   layer_id_data[0] = add_layer_info(layer_id_name[0]);
-   layer_id_data[1] = add_layer_info(layer_id_name[1]);
-   layer_id_data[2] = add_layer_info(layer_id_name[2]);
-   layer_id_data[3] = add_layer_info(layer_id_name[3]);
+   finish_ms1_gfx();
 }
 
 void AddMS1MainCPU(UINT32 ram_addr)
@@ -2413,7 +2362,7 @@ static void load_rodland(void)
 	   ROM[ta+0x40000]=te;
 	   ROM[ta+0x50000]=tc;
    }
-   if (!setup_gfx()) return;
+   if (!setup_ms1_gfx()) return;
 
    ROM = load_region[REGION_CPU1];
 
@@ -2464,11 +2413,9 @@ static void load_rodland(void)
 
 void LoadSaintDragon(void)
 {
-   int ta;
-
    romset=1; spr_pri_needed=1;
 
-   if (!setup_gfx()) return;
+   if (!setup_ms1_gfx()) return;
    DecodeStDragon(ROM);                                                 // Deprotection
 
    /*-----[Sound Setup]-----*/
@@ -2713,24 +2660,9 @@ static void LoadP47J(void)
 static void LoadPhantasm(void)
 {
    romset=3; spr_pri_needed=0;
+   setup_ms1_gfx();
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
-
-   if(!load_rom("spirit09.rom", RAM, 0x20000)) return;                // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
-
-   if(!load_rom("spirit10.rom", ROM, 0x80000)) return;                // 16x16 SPRITES
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("spirit11.rom", ROM, 0x80000)) return;                // 16x16 TILES
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("spirit12.rom", ROM, 0x80000)) return;                // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   FreeMem(ROM);
-   ROM = load_region[REGION_ROM1];
 
    DecodeStDragon(ROM);                                               // Deprotection
 
@@ -2738,18 +2670,12 @@ static void LoadPhantasm(void)
 
    SoundWorkInit();             /* sound call work init */
 
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("spirit14.rom",PCMROM+0x00000,0x40000)) return;
-   if(!load_rom("spirit13.rom",PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
-
    MS1SoundLoop = 10;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
 
    /*-----------------------*/
 
    RAMSize=0x40000;
-
 
    // Checksum Fix
    // ------------
@@ -2777,7 +2703,6 @@ static void LoadPhantasm(void)
    WriteLong68k(&ROM[0x804AA],0x13FC0000);      // move.b #$00,$AA0000
    WriteLong68k(&ROM[0x804AE],0x00AA0000);      //
    WriteLong68k(&ROM[0x804B2],0x4E714E71);      //
-
 
 /*
  *  StarScream Stuff follows
@@ -2965,7 +2890,7 @@ void LoadPlusAlpha(void)
 
    if(!(RAM=AllocateMem(0x40000))) return;
 
-   if (!setup_gfx()) return;
+   if (!setup_ms1_gfx()) return;
 
    DecodePlusAlpha(ROM);                                      // Deprotection
 
@@ -3024,33 +2949,13 @@ void LoadPlusAlpha(void)
 static void LoadAvengingSpirit(void)
 {
    romset=7; spr_pri_needed=0;
+   setup_ms1_gfx();
 
-   if(!(ROM=AllocateMem(0xA0000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
-
-   if(!load_rom("spirit09.rom", RAM, 0x20000)) return;                // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
-
-   if(!load_rom("spirit10.rom", ROM, 0x80000)) return;                // 16x16 SPRITES
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("spirit11.rom", ROM, 0x80000)) return;                // 16x16 TILES
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("spirit12.rom", ROM, 0x80000)) return;                // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   FreeMem(ROM);
-   ROM = load_region[REGION_ROM1];
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "spirit14.rom", PCMROM+0x00000,0x40000)) return;
-   if(!load_rom( "spirit13.rom", PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 10;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3058,7 +2963,6 @@ static void LoadAvengingSpirit(void)
    /*-----------------------*/
 
    RAMSize=0x40000;
-
 
    ROM[0x0105A]=0x60;                           // Watchdog fix
    WriteWord68k(&ROM[0x0006A],0x1052);          // Use Int#2 instead of 4
@@ -3272,7 +3176,7 @@ static void Load64thStreet(void)
 {
    romset=9; spr_pri_needed=0;
 
-   if (!setup_gfx()) return;
+   if (!setup_ms1_gfx()) return;
 
    if(!(RAM=AllocateMem(0x80000))) return;
 
@@ -3696,44 +3600,14 @@ static void load_astyanax(void)
 {
    romset=13; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
+   if (!setup_ms1_gfx()) return;
 
-   if(!load_rom("astyan19.bin", RAM, 0x20000)) return;                // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
-
-   if(!load_rom("astyan20.bin", ROM+0x00000, 0x20000)) return;        // 16x16 SPRITES
-   if(!load_rom("astyan21.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("astyan22.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("astyan23.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("astyan15.bin", ROM+0x00000, 0x20000)) return;        // 16x16 TILES
-   if(!load_rom("astyan16.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("astyan17.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("astyan18.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("astyan11.bin", ROM+0x00000, 0x20000)) return;        // 16x16 TILES
-   if(!load_rom("astyan12.bin", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("astyan13.bin", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("astyan14.bin", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   FreeMem(ROM);
-   ROM = load_region[REGION_CPU1];
    DecodePlusAlpha(ROM);                                                // Deprotection
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("astyan9.bin", PCMROM+0x00000,0x20000)) return;
-   if(!load_rom("astyan10.bin",PCMROM+0x20000,0x20000)) return;
-   if(!load_rom("astyan7.bin", PCMROM+0x40000,0x20000)) return;
-   if(!load_rom("astyan8.bin", PCMROM+0x60000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 10;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
