@@ -3729,7 +3729,7 @@ static void load_blandia() {
      WriteWord(&ROM[0x003fa],0x6100-8);
     }
 
-    finish_conf_starscream();
+    finish_conf_68000(0);
     return;
   }
 
@@ -3809,7 +3809,7 @@ static void load_blandia() {
 
   AddWriteByte(0xAA0000, 0xAA0001, stop_68k, NULL);			// Trap Idle 68000
 
-  finish_conf_starscream();
+  finish_conf_68000(0);
 
 #ifdef USE_XSYSTEM
   seta_x1.RAM_A	= RAM_SPR2;
@@ -4126,7 +4126,7 @@ static void LoadMetaFox(void)
      AddWriteByte(0xAA0000, 0xAA0001, stop_68k, NULL);			// Trap Idle 68000
 
      memset(input_buffer,255,0x20);
-     finish_conf_starscream();
+     finish_conf_68000(0);
      return;
    } else if (is_current_game("usclssic")) {
      AddRWBW(0xFf0000, 0xFffFFF, NULL, RAM+0x1a000+0x30000);			// 68000 RAM
@@ -4146,7 +4146,7 @@ static void LoadMetaFox(void)
      AddReadBW(0xb40018, 0xb4001f, usclssic_dsw_r, NULL);
 
      AddRWBW(0x900000, 0x900001, NULL, RAM+0x1a000);		// ?
-     finish_conf_starscream();
+     finish_conf_68000(0);
      GameMouse = 1;
      return;
    } else if (is_current_game("calibr50")) {
@@ -4174,7 +4174,7 @@ static void LoadMetaFox(void)
      AddRWBW(0xc00000, 0xc03FFF, NULL, RAM_SPR2);			// OBJECT RAM
      AddWriteBW(0x800000, 0x800007, sub_ctrl_w, NULL);
      AddWriteByte(0xAA0000, 0xAA0001, stop_68k, NULL);			// Trap Idle 68000
-     finish_conf_starscream();
+     finish_conf_68000(0);
      min_y = 8;
      return;
    } else {
@@ -4211,7 +4211,7 @@ static void LoadMetaFox(void)
 
    AddWriteByte(0xAA0000, 0xAA0001, stop_68k, NULL);			// Trap Idle 68000
 
-   finish_conf_starscream();
+   finish_conf_68000(0);
 }
 
 void ExecuteMetaFoxFrame(void)

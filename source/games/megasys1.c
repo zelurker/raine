@@ -2290,138 +2290,70 @@ static void AddMS2Controls(void)
 
 void AddMS1MainCPU(UINT32 ram_addr)
 {
-   AddMemFetch(0x000000, 0x05FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x05FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x000000);          // 68000 RAM
-   AddReadByte(0x080000, 0x09FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x05FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x000000);          // 68000 RAM
-   AddReadWord(0x080000, 0x09FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x000000);         // 68000 RAM
-   AddWriteByte(0x080000, 0x09FFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x000000);         // 68000 RAM
-   AddWriteWord(0x090000, 0x09FFFF, NULL, RAM+0x020000);                // SCREEN RAM
-   AddWriteWord(0x080000, 0x08FFFF, MS1VideoWrite, NULL);               // MISC SCREEN RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   add_68000_rom(0,0x000000,0x05FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_rom(0,0x080000,0x09FFFF,RAM+0x010000);                // SCREEN RAM
+   add_68000_ram(0,ram_addr,ram_addr+0xFFFF,RAM+0x000000);         // 68000 RAM
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_wb(0,0x080000,0x09FFFF,NULL,RAM+0x010000);                // SCREEN RAM
+   add_68000_ww(0,0x080000,0x08FFFF,MS1VideoWrite,NULL);               // MISC SCREEN RAM
+   add_68000_ww(0,0x090000,0x09FFFF,NULL,RAM+0x020000);                // SCREEN RAM
+   finish_conf_68000(0);
 }
 
 void AddMS1SoundCPU(UINT32 rom_offset, UINT32 ram_offset, UINT32 ram_addr)
 {
-   AddMemFetchMC68000B(0x000000, 0x01FFFF, ROM+rom_offset-0x000000);    // SUB 68000 ROM
-   AddMemFetchMC68000B(-1, -1, NULL);
-
-   AddReadByteMC68000B(0x000000, 0x01FFFF, NULL, ROM+rom_offset);               // SUB 68000 ROM
-   AddReadByteMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+ram_offset);        // SUB 68000 RAM
-   AddReadByteMC68000B(0x080002, 0x080003, ym2151_rb, NULL);                   // YM2151
    if(PCMROM){
-     AddReadByteMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Read_68k, NULL);           // OKI M6295 A
-     AddReadByteMC68000B(0x0C0000, 0x0CFFFF, M6295_B_Read_68k, NULL);           // OKI M6295 B
-   }
-   AddReadByteMC68000B(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByteMC68000B(-1, -1, NULL, NULL);
-
-   AddReadWordMC68000B(0x000000, 0x01FFFF, NULL, ROM+rom_offset);               // SUB 68000 ROM
-   AddReadWordMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+ram_offset);        // SUB 68000 RAM
-   AddReadWordMC68000B(0x080002, 0x080003, ym2151_rw, NULL);                    // YM2151
-   if(PCMROM){
-     AddReadWordMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Read_68k, NULL);           // OKI M6295 A
-     AddReadWordMC68000B(0x0C0000, 0x0CFFFF, M6295_B_Read_68k, NULL);           // OKI M6295 B
+     add_68000_rb(1,0x0C0000,0x0CFFFF,M6295_B_Read_68k,NULL);           // OKI M6295 B
+     add_68000_rb(1,0x0A0000,0x0AFFFF,M6295_A_Read_68k,NULL);           // OKI M6295 A
+     add_68000_rw(1,0x0C0000,0x0CFFFF,M6295_B_Read_68k,NULL);           // OKI M6295 B
+     add_68000_rw(1,0x0A0000,0x0AFFFF,M6295_A_Read_68k,NULL);           // OKI M6295 A
+	 add_68000_wb(1,0x0C0000,0x0CFFFF,M6295_B_Write_68k,NULL);           // OKI M6295 B
+	 add_68000_wb(1,0x0A0000,0x0AFFFF,M6295_A_Write_68k,NULL);           // OKI M6295 A
+	 add_68000_ww(1,0x0C0000,0x0CFFFF,M6295_B_Write_68k,NULL);           // OKI M6295 B
+	 add_68000_ww(1,0x0A0000,0x0AFFFF,M6295_A_Write_68k,NULL);           // OKI M6295 A
    }
    if((romset==8)||(romset==9)||(romset==17)||(romset==18)){                // Cybattler + 64th Street
-   AddReadWordMC68000B(0x060000, 0x060001, SubSoundRead, NULL);                 // SOUND COMM
+	   add_68000_rw(1,0x060000,0x060001,SubSoundRead,NULL);                 // SOUND COMM
    }
    else{
-   AddReadWordMC68000B(0x040000, 0x040001, SubSoundRead, NULL);                 // SOUND COMM
+	   add_68000_rw(1,0x040000,0x040001,SubSoundRead,NULL);                 // SOUND COMM
    }
-   AddReadWordMC68000B(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWordMC68000B(-1, -1, NULL, NULL);
 
-   AddWriteByteMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+ram_offset);       // SUB 68000 RAM
-   AddWriteByteMC68000B(0x080000, 0x080003, ym2151_wb, NULL);                   // YM2151
-   if(PCMROM){
-     AddWriteByteMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Write_68k, NULL);           // OKI M6295 A
-     AddWriteByteMC68000B(0x0C0000, 0x0CFFFF, M6295_B_Write_68k, NULL);           // OKI M6295 B
-   }
-   AddWriteByteMC68000B(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByteMC68000B(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByteMC68000B(-1, -1, NULL, NULL);
-
-   AddWriteWordMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+ram_offset);       // SUB 68000 RAM
-   AddWriteWordMC68000B(0x080000, 0x080003, ym2151_ww, NULL);                   // YM2151
-   if(PCMROM){
-   AddWriteWordMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Write_68k, NULL);           // OKI M6295 A
-   AddWriteWordMC68000B(0x0C0000, 0x0CFFFF, M6295_B_Write_68k, NULL);           // OKI M6295 B
-   }
-   AddWriteWordMC68000B(0x040000, 0x040001, SubSoundWrite, NULL);               // SOUND COMM
-   AddWriteWordMC68000B(0x060000, 0x060001, SubSoundWrite, NULL);               // SOUND COMM
-   AddWriteWordMC68000B(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWordMC68000B(-1, -1, NULL, NULL);
-
-   AddInitMemoryMC68000B();     // Set Starscream mem pointers...
+   add_68000_rom(1,0x000000,0x01FFFF,ROM+rom_offset);               // SUB 68000 ROM
+   add_68000_ram(1,ram_addr,ram_addr+0xFFFF,RAM+ram_offset);       // SUB 68000 RAM
+   add_68000_rb(1,0x080002,0x080003,ym2151_rb,NULL);                   // YM2151
+   add_68000_rw(1,0x080002,0x080003,ym2151_rw,NULL);                    // YM2151
+   add_68000_wb(1,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_wb(1,0x080000,0x080003,ym2151_wb,NULL);                   // YM2151
+   add_68000_ww(1,0x060000,0x060001,SubSoundWrite,NULL);               // SOUND COMM
+   add_68000_ww(1,0x040000,0x040001,SubSoundWrite,NULL);               // SOUND COMM
+   add_68000_ww(1,0x080000,0x080003,ym2151_ww,NULL);                   // YM2151
+   finish_conf_68000(1);
 }
 
 void AddMS1SoundCPUHachoo(UINT32 ram_addr)
 {
-   AddMemFetchMC68000B(0x000000, 0x01FFFF, ROM+0x060000-0x000000);      // SUB 68000 ROM
-   AddMemFetchMC68000B(-1, -1, NULL);
-//   fprintf(stderr,"hachoo init\n");
-   AddReadByteMC68000B(0x000000, 0x01FFFF, NULL, ROM+0x060000);                 // SUB 68000 ROM
-   AddReadByteMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x030000);          // SUB 68000 RAM
-   AddReadByteMC68000B(0x080002, 0x080003, ym2151_rb, NULL);                    // YM2151
    if(PCMROM){
-   AddReadByteMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Read_68k, NULL);             // OKI M6295 A
-   AddReadByteMC68000B(0x0C0000, 0x0CFFFF, OKIM6295_status_1_r, NULL);          // OKI M6295 B
+   add_68000_rb(1,0x0A0000,0x0AFFFF,M6295_A_Read_68k,NULL);             // OKI M6295 A
+   add_68000_rb(1,0x0C0000,0x0CFFFF,OKIM6295_status_1_r,NULL);          // OKI M6295 B
+   add_68000_rw(1,0x0A0000,0x0AFFFF,M6295_A_Read_68k,NULL);             // OKI M6295 A
+   add_68000_rw(1,0x0C0000,0x0CFFFF,OKIM6295_status_1_r,NULL);          // OKI M6295 B
+   add_68000_wb(1,0x0C0000,0x0CFFFF,M6295_B_Write_68k,NULL);           // OKI M6295 B
+   add_68000_wb(1,0x0A0000,0x0AFFFF,M6295_A_Write_68k,NULL);           // OKI M6295 A
+   add_68000_ww(1,0x0C0000,0x0CFFFF,M6295_B_Write_68k,NULL);           // OKI M6295 B
+   add_68000_ww(1,0x0A0000,0x0AFFFF,M6295_A_Write_68k,NULL);           // OKI M6295 A
    }
-   AddReadByteMC68000B(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByteMC68000B(-1, -1, NULL, NULL);
 
-   AddReadWordMC68000B(0x000000, 0x01FFFF, NULL, ROM+0x060000);                 // SUB 68000 ROM
-   AddReadWordMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x030000);          // SUB 68000 RAM
-   AddReadWordMC68000B(0x080002, 0x080003, ym2151_rw, NULL);                    // YM2151
-   if(PCMROM){
-   AddReadWordMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Read_68k, NULL);             // OKI M6295 A
-   AddReadWordMC68000B(0x0C0000, 0x0CFFFF, OKIM6295_status_1_r, NULL);          // OKI M6295 B
-   }
-   AddReadWordMC68000B(0x040000, 0x040001, SubSoundRead, NULL);                 // SOUND COMM
-   AddReadWordMC68000B(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWordMC68000B(-1, -1, NULL, NULL);
-
-   AddWriteByteMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x030000);         // SUB 68000 RAM
-   AddWriteByteMC68000B(0x080000, 0x080003, ym2151_wb, NULL);                   // YM2151
-   if(PCMROM){
-   AddWriteByteMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Write_68k, NULL);           // OKI M6295 A
-   AddWriteByteMC68000B(0x0C0000, 0x0CFFFF, M6295_B_Write_68k, NULL);           // OKI M6295 B
-   }
-   AddWriteByteMC68000B(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByteMC68000B(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByteMC68000B(-1, -1, NULL, NULL);
-
-   AddWriteWordMC68000B(ram_addr, ram_addr+0xFFFF, NULL, RAM+0x030000);         // SUB 68000 RAM
-   AddWriteWordMC68000B(0x080000, 0x080003, ym2151_ww, NULL);                   // YM2151
-   if(PCMROM){
-   AddWriteWordMC68000B(0x0A0000, 0x0AFFFF, M6295_A_Write_68k, NULL);           // OKI M6295 A
-   AddWriteWordMC68000B(0x0C0000, 0x0CFFFF, M6295_B_Write_68k, NULL);           // OKI M6295 B
-   }
-   AddWriteWordMC68000B(0x060000, 0x060001, SubSoundWrite, NULL);               // SOUND COMM
-   AddWriteWordMC68000B(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWordMC68000B(-1, -1, NULL, NULL);
-
-   AddInitMemoryMC68000B();     // Set Starscream mem pointers...
+   add_68000_rom(1,0x000000,0x01FFFF,ROM+0x060000);                 // SUB 68000 ROM
+   add_68000_ram(1,ram_addr,ram_addr+0xFFFF,RAM+0x030000);         // SUB 68000 RAM
+   add_68000_rb(1,0x080002,0x080003,ym2151_rb,NULL);                    // YM2151
+   add_68000_rw(1,0x040000,0x040001,SubSoundRead,NULL);                 // SOUND COMM
+   add_68000_rw(1,0x080002,0x080003,ym2151_rw,NULL);                    // YM2151
+   add_68000_wb(1,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_wb(1,0x080000,0x080003,ym2151_wb,NULL);                   // YM2151
+   add_68000_ww(1,0x060000,0x060001,SubSoundWrite,NULL);               // SOUND COMM
+   add_68000_ww(1,0x080000,0x080003,ym2151_ww,NULL);                   // YM2151
+   finish_conf_68000(1);
 }
 
 static void rodlandj_gfx_unmangle(int region)
@@ -3174,40 +3106,18 @@ static void LoadAvengingSpirit(void)
    ByteSwap(ROM,0xA0000);
    ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x070000, 0x07FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x080000, 0x0BFFFF, NULL, ROM+0x040000);                 // DATA ROM
-   AddReadByte(0x040000, 0x05FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x070000, 0x07FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x080000, 0x0BFFFF, NULL, ROM+0x040000);                 // DATA ROM
-   AddReadWord(0x040000, 0x05FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0x070000, 0x07FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x040000, 0x05FFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0x070000, 0x07FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x050000, 0x05FFFF, NULL, RAM+0x020000);                // SCREEN RAM
-   AddWriteWord(0x040000, 0x04FFFF, MS1VideoWrite, NULL);               // MISC SCREEN RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
    AddMS1SoundCPU(0x80000, 0x30000, 0x0E0000);
 
    AddMS1Controls();
+   add_68000_rom(0,0x000000,0x03FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_rom(0,0x040000,0x05FFFF,RAM+0x010000);                // SCREEN RAM
+   add_68000_rom(0,0x080000,0x0BFFFF,ROM+0x040000);                 // DATA ROM
+   add_68000_ram(0,0x070000,0x07FFFF,RAM+0x000000);                // 68000 RAM
+   add_68000_wb(0,0x040000,0x05FFFF,NULL,RAM+0x010000);                // SCREEN RAM
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_ww(0,0x050000,0x05FFFF,NULL,RAM+0x020000);                // SCREEN RAM
+   add_68000_ww(0,0x040000,0x04FFFF,MS1VideoWrite,NULL);               // MISC SCREEN RAM
+   finish_conf_68000(0);
 }
 
 void LoadCybattler(void)
@@ -3301,38 +3211,15 @@ void LoadCybattler(void)
    ByteSwap(ROM,0xA0000);
    ByteSwap(RAM,0x60000);
 
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x1F0000, 0x1FFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x1F0000, 0x1FFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0x1F0000, 0x1FFFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0x1F0000, 0x1FFFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x0C8000, 0x0C8001, MS2SoundWrite, NULL);               // SOUND
-   AddWriteWord(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
 
    AddMS2Controls();
+   add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0x1F0000,0x1FFFFF,RAM+0x000000);                // 68000 RAM
+   add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                // SCREEN RAM
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
+   finish_conf_68000(0);
 }
 
 void unprotect_64thstreet() {
@@ -3408,20 +3295,15 @@ static void Load64thStreet(void)
    ByteSwap(ROM,0xA0000);
    ByteSwap(RAM,0x60000);
 
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadBW(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddRWBW(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddWriteWord(0x0C8000, 0x0C8001, MS2SoundWrite, NULL);               // SOUND
-   AddRWBW(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-
-   finish_conf_starscream();
-
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
 
    AddMS2Controls();
+   add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                 // SCREEN RAM
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
+   finish_conf_68000(0);
 }
 
 void load_chimera_beast(void)
@@ -3514,39 +3396,15 @@ void load_chimera_beast(void)
    ByteSwap(ROM,0xA0000);
    ByteSwap(RAM,0x60000);
 
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      	// 68000 ROM
-   AddMemFetch(0xFF0000, 0xFFFFFF, RAM+0x000000-0xFF0000);              // 68000 RAM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x0C8000, 0x0C8001, MS2SoundWrite, NULL);               // SOUND
-   AddWriteWord(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
 
    AddMS2Controls();
+   add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                // 68000 RAM
+   add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                // SCREEN RAM
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
+   finish_conf_68000(0);
 }
 
 void LoadEarthDefForce(void)
@@ -3654,41 +3512,18 @@ void LoadEarthDefForce(void)
    ByteSwap(ROM,0xA0000);
    ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(0x080000, 0x0BFFFF, ROM+0x040000-0x080000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x060000, 0x06FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x080000, 0x0BFFFF, NULL, ROM+0x040000);                 // DATA ROM
-   AddReadByte(0x040000, 0x05FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x060000, 0x06FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x080000, 0x0BFFFF, NULL, ROM+0x040000);                 // DATA ROM
-   AddReadWord(0x040000, 0x05FFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0x060000, 0x06FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x040000, 0x05FFFF, NULL, RAM+0x010000);                // SCREEN RAM
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0x060000, 0x06FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x050000, 0x05FFFF, NULL, RAM+0x020000);                // SCREEN RAM
-   AddWriteWord(0x040000, 0x04FFFF, MS1VideoWrite, NULL);               // MISC SCREEN RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
    AddMS1SoundCPU(0x80000, 0x30000, 0x0E0000);
 
    AddMS1Controls();
+   add_68000_rom(0,0x000000,0x03FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_rom(0,0x040000,0x05FFFF,RAM+0x010000);                // SCREEN RAM
+   add_68000_rom(0,0x080000,0x0BFFFF,ROM+0x040000);                 // DATA ROM
+   add_68000_ram(0,0x060000,0x06FFFF,RAM+0x000000);                // 68000 RAM
+   add_68000_wb(0,0x040000,0x05FFFF,NULL,RAM+0x010000);                // SCREEN RAM
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_ww(0,0x050000,0x05FFFF,NULL,RAM+0x020000);                // SCREEN RAM
+   add_68000_ww(0,0x040000,0x04FFFF,MS1VideoWrite,NULL);               // MISC SCREEN RAM
+   finish_conf_68000(0);
 }
 
 void LoadShingen(void)
@@ -3768,7 +3603,6 @@ void LoadShingen(void)
 
    AddMS1MainCPU(0x0F0000);
 
-   AddInitMemory();     // Set Starscream mem pointers...
 
    AddMS1SoundCPU(0x60000, 0x30000, 0x0F0000);
 
@@ -4123,33 +3957,6 @@ void LoadPeekABoo(void)
    ByteSwap(ROM,0x40000);
    ByteSwap(RAM,0x60000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadBW(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddRWBW(0x1F0000, 0x1FFFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x0f8000, 0x0f8001, OKIM6295_status_0_r, NULL);
-   AddWriteWord(0x0f8000, 0x0f8001, OKIM6295_data_0_w, NULL);
-   AddRWBW(0x0C0000, 0x0FFFFF, NULL, RAM+0x010000);                 // SCREEN RAM
-   AddReadByte(0x100000, 0x100001, protection_peekaboo_r, NULL);
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x100000, 0x100001, protection_peekaboo_r, NULL);
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x100000, 0x100001, protection_peekaboo_w, NULL);
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0x100000, 0x100001, protection_peekaboo_w, NULL);
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
    ExecuteSoundFrame=&PeekABooSoundFrame;
 
    memset(RAM+0x00000,0x00,0x40000);
@@ -4165,6 +3972,17 @@ void LoadPeekABoo(void)
    layer_id_data[1] = add_layer_info(layer_id_name[1]);
    layer_id_data[2] = add_layer_info(layer_id_name[2]);
    layer_id_data[3] = add_layer_info(layer_id_name[3]);
+   add_68000_rom(0,0x000000,0x03FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0x1F0000,0x1FFFFF,RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                 // SCREEN RAM
+   add_68000_rb(0,0x100000,0x100001,protection_peekaboo_r,NULL);
+   add_68000_rw(0,0x100000,0x100001,protection_peekaboo_r,NULL);
+   add_68000_rw(0,0x0f8000,0x0f8001,OKIM6295_status_0_r,NULL);
+   add_68000_wb(0,0x100000,0x100001,protection_peekaboo_w,NULL);
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_ww(0,0x100000,0x100001,protection_peekaboo_w,NULL);
+   add_68000_ww(0,0x0f8000,0x0f8001,OKIM6295_data_0_w,NULL);
+   finish_conf_68000(0);
 }
 
 void ExecuteMegaSystem1Frame(void)

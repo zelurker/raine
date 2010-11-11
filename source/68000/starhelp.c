@@ -111,18 +111,21 @@ void AddMemoryList(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
    ma++;
 }
 
-static void add_s68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
+void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
 {
+	int n;
+	for (n=0; n<program_count[cpu]; n++) {
+		if (d0 == M68000_programregion[cpu][n].lowaddr &&
+		    d1 == M68000_programregion[cpu][n].highaddr) {
+			// already has a memfetch for this, skip it
+			return;
+		}
+	}
+
    M68000_programregion[cpu][program_count[cpu]].lowaddr  = d0;
    M68000_programregion[cpu][program_count[cpu]].highaddr = d1;
    M68000_programregion[cpu][program_count[cpu]].offset   = (UINT32) d2;
    program_count[cpu]++;
-
-   // Normally this is totally useless, since ma is cleared by LoadDefault
-   // I hope so since I tend to add AddMemFetch(-1,-1,NULL)
-   // at the end !
-/*     if(cpu == 0) */
-/*        ma = 0; */
 }
 
 UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end)
@@ -138,8 +141,22 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end)
   return NULL;
 }
 
-static void add_s68000_data_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+// macro to check if a callback needs to be inserted before some data
+#define CHECK_INSERT(type)                                            \
+    if (d3 == NULL) {                                                 \
+        int n;                                                        \
+        for (n=0; n<data_count_##type[cpu]; n++) {                    \
+            if (d0 >= M68000_dataregion_##type[cpu][n].lowaddr &&     \
+                    d1 <= M68000_dataregion_##type[cpu][n].highaddr) {\
+                insert_##type(cpu,n,d0,d1,d2,d3);                     \
+                return;                                               \
+            }                                                         \
+        }                                                             \
+    }
+
+void add_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
+	CHECK_INSERT(rb);
    M68000_dataregion_rb[cpu][data_count_rb[cpu]].lowaddr    = d0;
    M68000_dataregion_rb[cpu][data_count_rb[cpu]].highaddr   = d1;
    M68000_dataregion_rb[cpu][data_count_rb[cpu]].memorycall = d2;
@@ -153,8 +170,9 @@ static void add_s68000_data_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2
       AddMemoryList(d0,d1,d2,d3);
 }
 
-static void add_s68000_data_region_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void add_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
+	CHECK_INSERT(rw);
    M68000_dataregion_rw[cpu][data_count_rw[cpu]].lowaddr    = d0;
    M68000_dataregion_rw[cpu][data_count_rw[cpu]].highaddr   = d1;
    M68000_dataregion_rw[cpu][data_count_rw[cpu]].memorycall = d2;
@@ -168,8 +186,9 @@ static void add_s68000_data_region_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2
       AddMemoryList(d0,d1,d2,d3);
 }
 
-static void add_s68000_data_region_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void add_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
+	CHECK_INSERT(wb);
    M68000_dataregion_wb[cpu][data_count_wb[cpu]].lowaddr    = d0;
    M68000_dataregion_wb[cpu][data_count_wb[cpu]].highaddr   = d1;
    M68000_dataregion_wb[cpu][data_count_wb[cpu]].memorycall = d2;
@@ -258,7 +277,7 @@ void del_rw(int cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
 int insert_wb(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
   if (data_count_wb[cpu] >= MAX_DATA || !data_count_wb[cpu])
     return 0;
-  if (index < data_count_wb[cpu]-1)
+  if (index < data_count_wb[cpu])
     memmove(&M68000_dataregion_wb[cpu][index+1],
 	    &M68000_dataregion_wb[cpu][index],
 	    sizeof(struct STARSCREAM_DATAREGION)*(data_count_wb[cpu]-index));
@@ -273,7 +292,7 @@ int insert_wb(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
 int insert_ww(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
   if (data_count_ww[cpu] >= MAX_DATA || !data_count_ww[cpu])
     return 0;
-  if (index < data_count_ww[cpu]-1)
+  if (index < data_count_ww[cpu])
     memmove(&M68000_dataregion_ww[cpu][index+1],
 	    &M68000_dataregion_ww[cpu][index],
 	    sizeof(struct STARSCREAM_DATAREGION)*(data_count_ww[cpu]-index));
@@ -315,19 +334,16 @@ int insert_rw(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
   return 1;
 }
 
-static void add_s68000_data_region_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void add_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-#ifdef RAINE_DEBUG
-  if (d1 < d0)
-    fprintf(stderr,"stupidity ww\n");
-#endif
+  CHECK_INSERT(ww);
 
    M68000_dataregion_ww[cpu][data_count_ww[cpu]].lowaddr    = d0;
    M68000_dataregion_ww[cpu][data_count_ww[cpu]].highaddr   = d1;
    M68000_dataregion_ww[cpu][data_count_ww[cpu]].memorycall = d2;
    M68000_dataregion_ww[cpu][data_count_ww[cpu]].userdata   = d3 - d0;
    if (data_count_ww[cpu]++ >= MAX_DATA) {
-     fprintf(stderr,"overflow add_s68000_data_region_ww\n");
+     fprintf(stderr,"overflow add_68000_ww\n");
      exit(1);
    }
 
@@ -335,7 +351,7 @@ static void add_s68000_data_region_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2
       AddMemoryList(d0,d1,d2,d3);
 }
 
-void set_s68000_data_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void set_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
   int i;
   for (i=0; i<data_count_rb[cpu]; i++) {
@@ -352,7 +368,7 @@ void set_s68000_data_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8
   }
 }
 
-void set_s68000_data_region_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void set_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
   int i;
   for (i=0; i<data_count_rw[cpu]; i++) {
@@ -369,7 +385,7 @@ void set_s68000_data_region_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8
   }
 }
 
-void set_s68000_data_region_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void set_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
   int i;
   for (i=0; i<data_count_wb[cpu]; i++) {
@@ -386,7 +402,7 @@ void set_s68000_data_region_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8
   }
 }
 
-void set_s68000_data_region_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void set_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
   int i;
   for (i=0; i<data_count_ww[cpu]; i++) {
@@ -403,57 +419,72 @@ void set_s68000_data_region_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8
   }
 }
 
-void set_s68000_data_region_io(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void set_68000_io(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-  set_s68000_data_region_rb(cpu, d0, d1, d2, d3);
-  set_s68000_data_region_rw(cpu, d0, d1, d2, d3);
-  set_s68000_data_region_wb(cpu, d0, d1, d2, d3);
-  set_s68000_data_region_ww(cpu, d0, d1, d2, d3);
+  set_68000_rb(cpu, d0, d1, d2, d3);
+  set_68000_rw(cpu, d0, d1, d2, d3);
+  set_68000_wb(cpu, d0, d1, d2, d3);
+  set_68000_ww(cpu, d0, d1, d2, d3);
 }
 
 void AddMemFetch(UINT32 d0, UINT32 d1, UINT8 *d2)
 {
-   add_s68000_program_region(0, d0, d1, d2);
+   add_68000_program_region(0, d0, d1, d2);
 }
 
 void AddReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_rb(0, d0, d1, d2, d3);
+   add_68000_rb(0, d0, d1, d2, d3);
 }
 
 void AddReadWord(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_rw(0, d0, d1, d2, d3);
+   add_68000_rw(0, d0, d1, d2, d3);
 }
 
 void AddReadBW (UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
-   add_s68000_data_region_rb(0, d0, d1, d2, d3);
-   add_s68000_data_region_rw(0, d0, d1, d2, d3);
+   add_68000_rb(0, d0, d1, d2, d3);
+   add_68000_rw(0, d0, d1, d2, d3);
 }
 
 
 void AddWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_wb(0, d0, d1, d2, d3);
+   add_68000_wb(0, d0, d1, d2, d3);
 }
 
 void AddWriteWord(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_ww(0, d0, d1, d2, d3);
+   add_68000_ww(0, d0, d1, d2, d3);
 }
 
 void AddWriteBW(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_wb(0, d0, d1, d2, d3);
-   add_s68000_data_region_ww(0, d0, d1, d2, d3);
+   add_68000_wb(0, d0, d1, d2, d3);
+   add_68000_ww(0, d0, d1, d2, d3);
 }
 
 void AddRWBW (UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_rb(0, d0, d1, d2, d3);
-   add_s68000_data_region_rw(0, d0, d1, d2, d3);
-   add_s68000_data_region_wb(0, d0, d1, d2, d3);
-   add_s68000_data_region_ww(0, d0, d1, d2, d3);
+   add_68000_rb(0, d0, d1, d2, d3);
+   add_68000_rw(0, d0, d1, d2, d3);
+   add_68000_wb(0, d0, d1, d2, d3);
+   add_68000_ww(0, d0, d1, d2, d3);
+}
+
+void add_68000_ram(int cpu,UINT32 d0, UINT32 d1, UINT8 *d2)
+{
+   add_68000_rb(cpu, d0, d1, NULL, d2);
+   add_68000_rw(cpu, d0, d1, NULL, d2);
+   add_68000_wb(cpu, d0, d1, NULL, d2);
+   add_68000_ww(cpu, d0, d1, NULL, d2);
+}
+
+void add_68000_rom(int cpu,UINT32 d0, UINT32 d1, UINT8 *d2)
+{
+   add_68000_rb(cpu, d0, d1, NULL, d2);
+   add_68000_rw(cpu, d0, d1, NULL, d2);
+   add_68000_program_region(cpu,d0,d1,d2-d0);
 }
 
 void quiet_reset_handler() {
@@ -512,7 +543,7 @@ void AddInitMemory(void)
    AddLoadCallback_Internal(M68000A_load_update);
    AddSaveData(SAVE_68K_0, (UINT8 *) &save_buffer[0], sizeof(SAVE_BUFFER));
 
-   StarScreamEngine = 1;
+   if (StarScreamEngine < 1) StarScreamEngine = 1;
 }
 
 void Clear68000List(void)
@@ -579,27 +610,27 @@ UINT8 ReadStarScreamByte(UINT32 address)
 
 void AddMemFetchMC68000B(UINT32 d0, UINT32 d1, UINT8 *d2)
 {
-   add_s68000_program_region(1, d0, d1, d2);
+   add_68000_program_region(1, d0, d1, d2);
 }
 
 void AddReadByteMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_rb(1, d0, d1, d2, d3);
+   add_68000_rb(1, d0, d1, d2, d3);
 }
 
 void AddReadWordMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_rw(1, d0, d1, d2, d3);
+   add_68000_rw(1, d0, d1, d2, d3);
 }
 
 void AddWriteByteMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_wb(1, d0, d1, d2, d3);
+   add_68000_wb(1, d0, d1, d2, d3);
 }
 
 void AddWriteWordMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_s68000_data_region_ww(1, d0, d1, d2, d3);
+   add_68000_ww(1, d0, d1, d2, d3);
 }
 
 void AddInitMemoryMC68000B(void)
@@ -626,7 +657,7 @@ void AddInitMemoryMC68000B(void)
    AddLoadCallback_Internal(M68000B_load_update);
    AddSaveData(SAVE_68K_1, (UINT8 *) &save_buffer[1], sizeof(SAVE_BUFFER));
 
-   StarScreamEngine = 2;
+   if (StarScreamEngine < 2) StarScreamEngine = 2;
 }
 
 /*
@@ -775,15 +806,24 @@ void M68000B_load_update(void)
    do_load_unpacking(1);
 }
 
-void finish_conf_starscream() {
-   AddReadByte(0x000000, 0xFFFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-   AddReadWord(0x000000, 0xFFFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-   AddWriteByte(0x000000, 0xFFFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-   AddWriteWord(0x000000, 0xFFFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
+void finish_conf_68000(int cpu) {
+   add_68000_rb(cpu,0x000000, 0xFFFFFFFF, DefBadReadByte, NULL);
+   add_68000_rb(cpu,-1, -1, NULL, NULL);
+   add_68000_rw(cpu,0x000000, 0xFFFFFFFF, DefBadReadWord, NULL);
+   add_68000_rw(cpu,-1, -1,NULL, NULL);
+   add_68000_wb(cpu,0x000000, 0xFFFFFFFF, DefBadWriteByte, NULL);
+   add_68000_wb(cpu,-1, -1, NULL, NULL);
+   add_68000_ww(cpu,0x000000, 0xFFFFFFFF, DefBadWriteWord, NULL);
+   add_68000_ww(cpu,-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers...
+   add_68000_program_region(cpu,-1,-1,NULL);
+
+   if (cpu == 1)
+	   AddInitMemoryMC68000B();	// Set Starscream mem pointers...
+   else if (cpu == 0)
+	   AddInitMemory();	// Set Starscream mem pointers...
+   else {
+	   fprintf(stderr,"can't finish conf for 68000 #%d\n",cpu);
+	   exit(1);
+   }
 }

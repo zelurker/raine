@@ -34,6 +34,13 @@ void AddWriteWord(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void AddWriteBW(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 // AddReadByte+AddReadWord+AddWriteByte+AddWriteWord !!!
 void AddRWBW (UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void add_68000_ram(int cpu,UINT32 d0, UINT32 d1, UINT8 *d2);
+void add_68000_rom(int cpu,UINT32 d0, UINT32 d1, UINT8 *d2);
+void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2);
+void add_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void add_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void add_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void add_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 
 void quiet_reset_handler();
 void AddResetHandler(void *d0);
@@ -78,14 +85,14 @@ void DefBadWriteWord(UINT32 address, UINT16 data);
  */
 
 void ByteSwap(UINT8 *MEM, UINT32 size);
-void finish_conf_starscream();
+void finish_conf_68000(int cpu);
 
-  void set_s68000_data_region_io(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void set_68000_io(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 
-  void set_s68000_data_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
-  void set_s68000_data_region_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
-  void set_s68000_data_region_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
-  void set_s68000_data_region_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void set_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void set_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void set_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void set_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 
 void s68000_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
 UINT8 *get_userdata(UINT32 cpu, UINT32 adr);

@@ -678,7 +678,7 @@ static void neogeo_set_palette_bank(int bit) {
   if (palbank != bit) {
     palbank = bit;
     RAM_PAL = RAM + 0x230000 + 0x2000*palbank;
-    set_s68000_data_region_io(0,0x400000, 0x401fff, NULL, RAM_PAL);
+    set_68000_io(0,0x400000, 0x401fff, NULL, RAM_PAL);
     print_debug("palbank %d\n",bit);
   }
 }
