@@ -1818,7 +1818,7 @@ void load_common(int cps2)
    UINT32 *dest;
    int size_code;
    UINT8 *cps1_gfx;
-   int rotate_screen = (current_game->video_info->flags ^ display_cfg.user_rotate) & 3;
+   int rotate_screen = (current_game->video_info->flags) & 3;
    old_palette = NULL;
 
    set_reset_function(cps2_reset);
