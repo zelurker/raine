@@ -516,17 +516,24 @@ static struct DIR_INFO cybattler_dirs[] =
 static struct ROM_INFO cybattler_roms[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
-            "cb_03.rom",  0xbee20587 , "cb_02.rom",  0x2ed14c50 ),
+            "cb_03.rom",  0xbee20587, "cb_02.rom",  0x2ed14c50),
   LOAD8_16(  REGION_ROM1,  0x080000,  0x010000,
-            "cb_08.rom",  0xbf7b3558 , "cb_07.rom",  0x85d219d7 ),
-   {   "cb_m01.rom", 0x00080000, 0x1109337f, 0, 0, 0, },
-   {   "cb_m04.rom", 0x00080000, 0x0c91798e, 0, 0, 0, },
-   {    "cb_02.rom", 0x00040000, 0x2ed14c50, 0, 0, 0, },
-   {    "cb_03.rom", 0x00040000, 0xbee20587, 0, 0, 0, },
-   {    "cb_09.rom", 0x00020000, 0x37b1f195, 0, 0, 0, },
-   {    "cb_10.rom", 0x00040000, 0x8af95eed, 0, 0, 0, },
-   {    "cb_11.rom", 0x00040000, 0x59d62d1f, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+            "cb_08.rom",  0xbf7b3558, "cb_07.rom",  0x85d219d7),
+
+  { "cb_m01.rom", 0x080000, 0x1109337f, REGION_GFX1, 0x000000, LOAD_NORMAL },
+
+  { "cb_m04.rom", 0x080000, 0x0c91798e, REGION_GFX2, 0x000000, LOAD_NORMAL },
+
+  { "cb_09.rom", 0x020000, 0x37b1f195, REGION_GFX3, 0x000000, LOAD_NORMAL },
+  { "cb_m03.rom", 0x080000, 0x4cd49f58, REGION_GFX4, 0x000000, LOAD_NORMAL },
+
+  { "cb_m02.rom", 0x080000, 0x882825db, REGION_GFX4, 0x080000, LOAD_NORMAL },
+
+  { "cb_11.rom", 0x040000, 0x59d62d1f, REGION_SMP1, 0x000000, LOAD_NORMAL },
+
+  { "cb_10.rom", 0x040000, 0x8af95eed, REGION_SMP2, 0x000000, LOAD_NORMAL },
+  { "pr-91028.12", 0x0200, 0xcfe90082, REGION_PROMS, 0x0000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_cybattler_0[] =
@@ -615,12 +622,12 @@ static struct ROM_INFO earth_defence_force_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x080000,  0x020000,
             "edf_01.rom",  0x2290ea19 , "edf_02.rom",  0xce93643e ),
-   {   "edf_09.rom", 0x00020000, 0x96e38983, 0, 0, 0, },
-   {  "edf_m01.rom", 0x00040000, 0x9149286b, 0, 0, 0, },
-   {  "edf_m02.rom", 0x00040000, 0xfc4281d2, 0, 0, 0, },
-   {  "edf_m03.rom", 0x00080000, 0xef469449, 0, 0, 0, },
-   {  "edf_m04.rom", 0x00080000, 0x6744f406, 0, 0, 0, },
-   {  "edf_m05.rom", 0x00080000, 0x6f47e456, 0, 0, 0, },
+{ "edf_09.rom",0x00020000,0x96e38983,REGION_GFX3,},
+{ "edf_m01.rom",0x00040000,0x9149286b,REGION_SOUND2,},
+{ "edf_m02.rom",0x00040000,0xfc4281d2,REGION_SOUND1,},
+{ "edf_m03.rom",0x00080000,0xef469449,REGION_GFX4,},
+{ "edf_m04.rom",0x00080000,0x6744f406,REGION_GFX1,},
+{ "edf_m05.rom",0x00080000,0x6f47e456,REGION_GFX2,},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -699,20 +706,20 @@ static struct ROM_INFO hachoo_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "hacho05.rom",  0x6271f74f , "hacho06.rom",  0xdb9e743c ),
-   {  "hacho08.rom", 0x00020000, 0x888a6df1, 0, 0, 0, },
-   {  "hacho07.rom", 0x00020000, 0x06e6ca7f, 0, 0, 0, },
-   {  "hacho09.rom", 0x00020000, 0xe9f35c90, 0, 0, 0, },
-   {  "hacho10.rom", 0x00020000, 0x1aeaa188, 0, 0, 0, },
-   {  "hacho14.rom", 0x00080000, 0x10188483, 0, 0, 0, },
-   {  "hacho15.rom", 0x00020000, 0xe559347e, 0, 0, 0, },
-   {  "hacho16.rom", 0x00020000, 0x105fd8b5, 0, 0, 0, },
-   {  "hacho17.rom", 0x00020000, 0x77f46174, 0, 0, 0, },
-   {  "hacho18.rom", 0x00020000, 0x0be21111, 0, 0, 0, },
-   {  "hacho19.rom", 0x00020000, 0x33bc9de3, 0, 0, 0, },
-   {  "hacho20.rom", 0x00020000, 0x2ae2011e, 0, 0, 0, },
-   {  "hacho21.rom", 0x00020000, 0x6dcfb8d5, 0, 0, 0, },
-   {  "hacho22.rom", 0x00020000, 0xccabf0e0, 0, 0, 0, },
-   {  "hacho23.rom", 0x00020000, 0xff5f77aa, 0, 0, 0, },
+{ "hacho08.rom",0x00020000,0x888a6df1,REGION_SOUND2,0x20000},
+{ "hacho07.rom",0x00020000,0x06e6ca7f,REGION_SOUND2,},
+{ "hacho09.rom",0x00020000,0xe9f35c90,REGION_SOUND1,},
+{ "hacho10.rom",0x00020000,0x1aeaa188,REGION_SOUND1,0x20000},
+{ "hacho14.rom",0x00080000,0x10188483,REGION_GFX1,},
+{ "hacho15.rom",0x00020000,0xe559347e,REGION_GFX2,},
+{ "hacho16.rom",0x00020000,0x105fd8b5,REGION_GFX2,0x20000},
+{ "hacho17.rom",0x00020000,0x77f46174,REGION_GFX2,0x40000},
+{ "hacho18.rom",0x00020000,0x0be21111,REGION_GFX2,0x60000},
+{ "hacho19.rom",0x00020000,0x33bc9de3,REGION_GFX3,},
+{ "hacho20.rom",0x00020000,0x2ae2011e,REGION_GFX4,},
+{ "hacho21.rom",0x00020000,0x6dcfb8d5,REGION_GFX4,0x20000},
+{ "hacho22.rom",0x00020000,0xccabf0e0,REGION_GFX4,0x40000},
+{ "hacho23.rom",0x00020000,0xff5f77aa,REGION_GFX4,0x60000},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -793,17 +800,17 @@ static struct ROM_INFO kick_off_roms[] =
             "kioff03.rom",  0x3b01be65 , "kioff01.rom",  0xae6e68a1 ),
   LOAD8_16(  REGION_ROM1,  0x020000,  0x010000,
             "kioff09.rom",  0x1770e980 , "kioff19.rom",  0x1b03bbe4 ),
-   {  "kioff07.rom", 0x00020000, 0xed649919, 0, 0, 0, },
-   {  "kioff05.rom", 0x00020000, 0xe7232103, 0, 0, 0, },
-   {  "kioff06.rom", 0x00020000, 0xa0b3cb75, 0, 0, 0, },
-   {  "kioff10.rom", 0x00020000, 0xfd739fec, 0, 0, 0, },
-   {  "kioff16.rom", 0x00020000, 0x22c46314, 0, 0, 0, },
-   {  "kioff17.rom", 0x00020000, 0xf171559e, 0, 0, 0, },
-   {  "kioff18.rom", 0x00020000, 0xd7909ada, 0, 0, 0, },
-   {  "kioff20.rom", 0x00020000, 0x5c28bd2d, 0, 0, 0, },
-   {  "kioff21.rom", 0x00020000, 0x195940cf, 0, 0, 0, },
-   {  "kioff26.rom", 0x00020000, 0x2a90df1b, 0, 0, 0, },
-   {  "kioff27.rom", 0x00020000, 0xca221ae2, 0, 0, 0, },
+{ "kioff07.rom",0x00020000,0xed649919,REGION_GFX1,0x40000},
+{ "kioff05.rom",0x00020000,0xe7232103,REGION_GFX1,},
+{ "kioff06.rom",0x00020000,0xa0b3cb75,REGION_GFX1,0x20000},
+{ "kioff10.rom",0x00020000,0xfd739fec,REGION_SOUND2,},
+{ "kioff16.rom",0x00020000,0x22c46314,REGION_GFX3,},
+{ "kioff17.rom",0x00020000,0xf171559e,REGION_GFX4,0x40000},
+{ "kioff18.rom",0x00020000,0xd7909ada,REGION_GFX4,0x20000},
+{ "kioff20.rom",0x00020000,0x5c28bd2d,REGION_SOUND1,},
+{ "kioff21.rom",0x00020000,0x195940cf,REGION_SOUND1,0x20000},
+{ "kioff26.rom",0x00020000,0x2a90df1b,REGION_GFX4,0x60000},
+{ "kioff27.rom",0x00020000,0xca221ae2,REGION_GFX4,},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -899,9 +906,9 @@ static struct DIR_INFO legend_of_makai_dirs[] =
 static struct ROM_INFO legend_of_makai_roms[] =
 {
   { "lom_01.rom", 0x10000, 0x46e85e90 , REGION_ROM2, 0x0000, LOAD_NORMAL },
-   {   "lom_05.rom", 0x00020000, 0xd04fc713, 0, 0, 0, },
-   {   "lom_06.rom", 0x00020000, 0xf33b6eed, 0, 0, 0, },
-   {   "lom_08.rom", 0x00010000, 0xbdb15e67, 0, 0, 0, },
+   {   "lom_05.rom", 0x00020000, 0xd04fc713, REGION_GFX1 },
+   {   "lom_06.rom", 0x00020000, 0xf33b6eed, REGION_GFX4 },
+   {   "lom_08.rom", 0x00010000, 0xbdb15e67, REGION_GFX3 },
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "lom_30.rom",  0xba6d65b8 , "lom_20.rom",  0x56a00dc2 ),
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1055,19 +1062,19 @@ static struct ROM_INFO p47_american_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
-   {  "p47j_12.bin", 0x00020000, 0x5268395f, 0, 0, 0, },
+{ "p47j_12.bin",0x00020000,0x5268395f,REGION_GFX2,0x60000},
   { "p47us16.bin", 0x010000, 0x5a682c8f , REGION_GFX3, 0x000000, LOAD_NORMAL },
-   {  "p47j_26.bin", 0x00020000, 0x4d07581a, 0, 0, 0, },
-   {   "p47j_7.bin", 0x00020000, 0xf77723b7, 0, 0, 0, },
-   {  "p47j_27.bin", 0x00020000, 0x9e2bde8e, 0, 0, 0, },
-   {  "p47j_18.bin", 0x00020000, 0x29d8f676, 0, 0, 0, },
-   {  "p47j_23.bin", 0x00020000, 0x6e9bc864, 0, 0, 0, },
-   {   "p47j_5.bin", 0x00020000, 0xfe65b65c, 0, 0, 0, },
-   {   "p47j_6.bin", 0x00020000, 0xe191d2d2, 0, 0, 0, },
-   {  "p47j_10.bin", 0x00020000, 0xb9d79c1e, 0, 0, 0, },
-   {  "p47j_11.bin", 0x00020000, 0xfa0d1887, 0, 0, 0, },
-   {  "p47j_20.bin", 0x00020000, 0x2ed53624, 0, 0, 0, },
-   {  "p47j_21.bin", 0x00020000, 0x6f56b56d, 0, 0, 0, },
+{ "p47j_26.bin",0x00020000,0x4d07581a,REGION_GFX4,0x60000},
+{ "p47j_7.bin",0x00020000,0xf77723b7,REGION_GFX1,0x40000},
+{ "p47j_27.bin",0x00020000,0x9e2bde8e,REGION_GFX4,},
+{ "p47j_18.bin",0x00020000,0x29d8f676,REGION_GFX4,0x20000},
+{ "p47j_23.bin",0x00020000,0x6e9bc864,REGION_GFX2,0x20000},
+{ "p47j_5.bin",0x00020000,0xfe65b65c,REGION_GFX1,},
+{ "p47j_6.bin",0x00020000,0xe191d2d2,REGION_GFX1,0x20000},
+{ "p47j_10.bin",0x00020000,0xb9d79c1e,REGION_SOUND2,},
+{ "p47j_11.bin",0x00020000,0xfa0d1887,REGION_SOUND2,0x20000},
+{ "p47j_20.bin",0x00020000,0x2ed53624,REGION_SOUND1,},
+{ "p47j_21.bin",0x00020000,0x6f56b56d,REGION_SOUND1,0x20000},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1129,19 +1136,19 @@ static struct ROM_INFO p47_japanese_roms[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
-   {  "p47j_10.bin", 0x00020000, 0xb9d79c1e, 0, 0, 0, },
-   {  "p47j_11.bin", 0x00020000, 0xfa0d1887, 0, 0, 0, },
-   {  "p47j_12.bin", 0x00020000, 0x5268395f, 0, 0, 0, },
+{ "p47j_10.bin",0x00020000,0xb9d79c1e,REGION_SOUND2,},
+{ "p47j_11.bin",0x00020000,0xfa0d1887,REGION_SOUND2,0x20000},
+{ "p47j_12.bin",0x00020000,0x5268395f,REGION_GFX2,0x60000},
   { "p47j_16.bin", 0x010000, 0x30e44375 , REGION_GFX3, 0x000000, LOAD_NORMAL },
-   {  "p47j_18.bin", 0x00020000, 0x29d8f676, 0, 0, 0, },
-   {  "p47j_20.bin", 0x00020000, 0x2ed53624, 0, 0, 0, },
-   {  "p47j_21.bin", 0x00020000, 0x6f56b56d, 0, 0, 0, },
-   {  "p47j_23.bin", 0x00020000, 0x6e9bc864, 0, 0, 0, },
-   {  "p47j_26.bin", 0x00020000, 0x4d07581a, 0, 0, 0, },
-   {  "p47j_27.bin", 0x00020000, 0x9e2bde8e, 0, 0, 0, },
-   {   "p47j_5.bin", 0x00020000, 0xfe65b65c, 0, 0, 0, },
-   {   "p47j_6.bin", 0x00020000, 0xe191d2d2, 0, 0, 0, },
-   {   "p47j_7.bin", 0x00020000, 0xf77723b7, 0, 0, 0, },
+{ "p47j_18.bin",0x00020000,0x29d8f676,REGION_GFX4,0x20000},
+{ "p47j_20.bin",0x00020000,0x2ed53624,REGION_SOUND1,},
+{ "p47j_21.bin",0x00020000,0x6f56b56d,REGION_SOUND1,0x20000},
+{ "p47j_23.bin",0x00020000,0x6e9bc864,REGION_GFX2,0x20000},
+{ "p47j_26.bin",0x00020000,0x4d07581a,REGION_GFX4,0x60000},
+{ "p47j_27.bin",0x00020000,0x9e2bde8e,REGION_GFX4,},
+{ "p47j_5.bin",0x00020000,0xfe65b65c,REGION_GFX1,},
+{ "p47j_6.bin",0x00020000,0xe191d2d2,REGION_GFX1,0x20000},
+{ "p47j_7.bin",0x00020000,0xf77723b7,REGION_GFX1,0x40000},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1156,9 +1163,9 @@ static struct ROM_INFO peek_a_boo_roms[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "j3",  0xf5f4cf33 , "j2",  0x7b3d430d ),
-   {            "1", 0x00080000, 0x5a444ecf, 0, 0, 0, },
-   {            "5", 0x00080000, 0x34fa07bb, 0, 0, 0, },
-   {            "4", 0x00020000, 0xf037794b, 0, 0, 0, },
+{ "1",0x00080000,0x5a444ecf,REGION_GFX4,},
+{ "5",0x00080000,0x34fa07bb,REGION_GFX1,},
+{ "4",0x00020000,0xf037794b,REGION_GFX3,},
    { "peeksamp.124", 0x100000, 0xe1206fa8 , REGION_SMP1, 0, LOAD_NORMAL },
    { "peeksamp.124", 0x100000, 0xe1206fa8 , REGION_SMP1,0x20000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1582,18 +1589,18 @@ static struct DIR_INFO soldam_dirs[] =
 
 static struct ROM_INFO soldam_roms[] =
 {
-   {  "soldam1.bin", 0x00020000, 0xe7cb0c20, 0, 0, 0, },
-   {  "soldam2.bin", 0x00020000, 0xc73d29e4, 0, 0, 0, },
-   {  "soldam3.bin", 0x00010000, 0xc5382a07, 0, 0, 0, },
-   {  "soldam4.bin", 0x00010000, 0x1df7816f, 0, 0, 0, },
-   {  "soldam5.bin", 0x00010000, 0xd1019a67, 0, 0, 0, },
-   {  "soldam6.bin", 0x00010000, 0x3ed219b4, 0, 0, 0, },
-   {  "soldam8.bin", 0x00040000, 0xfcd36019, 0, 0, 0, },
-   { "soldam10.bin", 0x00040000, 0x8d5613bf, 0, 0, 0, },
-   { "soldam14.bin", 0x00080000, 0x26cea54a, 0, 0, 0, },
-   { "soldam18.bin", 0x00080000, 0x7d8e4712, 0, 0, 0, },
-   { "soldam19.bin", 0x00020000, 0x38465da1, 0, 0, 0, },
-   { "soldam23.bin", 0x00080000, 0x0ca09432, 0, 0, 0, },
+  LOAD8_16( REGION_CPU1, 0, 0x00020000,
+             "soldam2.bin", 0xc73d29e4,  "soldam1.bin", 0xe7cb0c20),
+  LOAD8_16( REGION_CPU1, 0x40000, 0x00010000,
+             "soldam3.bin", 0xc5382a07,  "soldam4.bin", 0x1df7816f),
+  LOAD8_16( REGION_CPU1, 0x60000, 0x00010000,
+             "soldam5.bin", 0xd1019a67,  "soldam6.bin", 0x3ed219b4),
+{ "soldam8.bin",0x00040000,0xfcd36019,REGION_SOUND2,},
+{ "soldam10.bin",0x00040000,0x8d5613bf,REGION_SOUND1,},
+{ "soldam14.bin",0x00080000,0x26cea54a,REGION_GFX1,},
+{ "soldam18.bin",0x00080000,0x7d8e4712,REGION_GFX2,},
+{ "soldam19.bin",0x00020000,0x38465da1,REGION_GFX3,},
+{ "soldam23.bin",0x00080000,0x0ca09432,REGION_GFX4,},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1679,18 +1686,18 @@ static struct DIR_INFO iga_ninjyutsuden_dirs[] =
 
 static struct ROM_INFO iga_ninjyutsuden_roms[] =
 {
-   {   "iga_01.bin", 0x00020000, 0xfa416a9e, 0, 0, 0, },
-   {   "iga_02.bin", 0x00020000, 0xbd00c280, 0, 0, 0, },
-   {   "iga_03.bin", 0x00010000, 0xde5937ad, 0, 0, 0, },
-   {   "iga_04.bin", 0x00010000, 0xafaf0480, 0, 0, 0, },
-   {   "iga_05.bin", 0x00010000, 0x13580868, 0, 0, 0, },
-   {   "iga_06.bin", 0x00010000, 0x7904d5dd, 0, 0, 0, },
-   {   "iga_08.bin", 0x00040000, 0x857dbf60, 0, 0, 0, },
-   {   "iga_10.bin", 0x00040000, 0x67a89e0d, 0, 0, 0, },
-   {   "iga_14.bin", 0x00040000, 0xc707d513, 0, 0, 0, },
-   {   "iga_18.bin", 0x00080000, 0x6c727519, 0, 0, 0, },
-   {   "iga_19.bin", 0x00020000, 0x98a7e998, 0, 0, 0, },
-   {   "iga_23.bin", 0x00080000, 0xfb58c5f4, 0, 0, 0, },
+  LOAD8_16( REGION_CPU1, 0, 0x00020000,
+             "iga_02.bin", 0xbd00c280,  "iga_01.bin", 0xfa416a9e),
+  LOAD8_16( REGION_CPU1, 0x40000, 0x00010000,
+             "iga_03.bin", 0xde5937ad,  "iga_04.bin", 0xafaf0480),
+  LOAD8_16( REGION_CPU1, 0x60000, 0x00010000,
+             "iga_05.bin", 0x13580868,  "iga_06.bin", 0x7904d5dd),
+{ "iga_08.bin",0x00040000,0x857dbf60,REGION_SOUND2,},
+{ "iga_10.bin",0x00040000,0x67a89e0d,REGION_SOUND1,},
+{ "iga_14.bin",0x00040000,0xc707d513,REGION_GFX1,},
+{ "iga_18.bin",0x00080000,0x6c727519,REGION_GFX2,},
+{ "iga_19.bin",0x00020000,0x98a7e998,REGION_GFX3,},
+{ "iga_23.bin",0x00080000,0xfb58c5f4,REGION_GFX4,},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1766,10 +1773,10 @@ static struct ROM_INFO shingen_roms[] =
             "takeda2.bin",  0x6ddfc9f3 , "takeda1.bin",  0x1afc6b7d ),
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "takeda5.bin",  0xfbdc51c0 , "takeda6.bin",  0x8fa65b69 ),
-   { "shing_07.rom", 0x00020000, 0xc37ecbdc, 0, 0, 0, },
-   { "shing_08.rom", 0x00020000, 0x36d56c8c, 0, 0, 0, },
-   { "takeda9.bin", 0x00020000, 0xdb7f3f4f, 0, 0, 0, },
-   { "takeda10.bin", 0x00020000, 0xc9959d71, 0, 0, 0, },
+{ "shing_07.rom",0x00020000,0xc37ecbdc,REGION_SOUND2,},
+{ "shing_08.rom",0x00020000,0x36d56c8c,REGION_SOUND2,0x20000},
+{ "takeda9.bin",0x00020000,0xdb7f3f4f,REGION_SOUND1,},
+{ "takeda10.bin",0x00020000,0xc9959d71,REGION_SOUND1,0x20000},
   { "takeda11.bin", 0x020000, 0xbf0b40a6 , REGION_GFX1, 0x000000, LOAD_NORMAL },
 
   { "takeda12.bin", 0x020000, 0x07987d89 , REGION_GFX1, 0x020000, LOAD_NORMAL },
@@ -1855,10 +1862,10 @@ static struct ROM_INFO tshingna_roms[] =
   { "takeda22.bin", 0x020000, 0xb165b6ae , REGION_GFX4, 0x040000, LOAD_NORMAL },
 
   { "takeda23.bin", 0x020000, 0x37cb9214 , REGION_GFX4, 0x060000, LOAD_NORMAL },
-   { "shing_07.rom", 0x00020000, 0xc37ecbdc, 0, 0, 0, },
-   { "shing_08.rom", 0x00020000, 0x36d56c8c, 0, 0, 0, },
-   { "takeda9.bin", 0x00020000, 0xdb7f3f4f, 0, 0, 0, },
-   { "takeda10.bin", 0x00020000, 0xc9959d71, 0, 0, 0, },
+{ "shing_07.rom",0x00020000,0xc37ecbdc,REGION_SOUND2,},
+{ "shing_08.rom",0x00020000,0x36d56c8c,REGION_SOUND2,0x20000},
+{ "takeda9.bin",0x00020000,0xdb7f3f4f,REGION_SOUND1,},
+{ "takeda10.bin",0x00020000,0xc9959d71,REGION_SOUND1,0x20000},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -2006,14 +2013,12 @@ static void ym2151_ww(UINT32 address, UINT16 data)
   //   ym2151_wb(address+1, (UINT8) (data&0xFF) );
 }
 
-int MS1DecodeFG0(UINT8 *src, UINT32 size)
+int MS1DecodeFG0(UINT32 region)
 {
    UINT32 ta,tb;
 
-   /* Temporary fix to convert to regions : pass the region directly... */
-   UINT32 region = (UINT32)src;
-   if (region < REGION_MAX)
-	   src = load_region[region];
+   UINT8 *src = load_region[region];
+   UINT32 size = get_region_size(region);
 
    if(!(GFX_FG0=AllocateMem(0x40000))) return(0);
    memset(GFX_FG0,0x00,0x40000);
@@ -2031,14 +2036,13 @@ int MS1DecodeFG0(UINT8 *src, UINT32 size)
    return 1;
 }
 
-int MS1DecodeSPR(UINT8 *src, UINT32 size)
+int MS1DecodeSPR(UINT32 region)
 {
    UINT32 ta,tb;
+   UINT8 *src = load_region[region];
+   UINT32 size = get_region_size(region);
 
    if(!(GFX_SPR=AllocateMem(size<<1))) return(0);
-   UINT32 region = (UINT32)src;
-   if (region < REGION_MAX)
-	   src = load_region[region];
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -2064,15 +2068,14 @@ int MS1DecodeSPR(UINT8 *src, UINT32 size)
    return 1;
 }
 
-int MS1DecodeBG1(UINT8 *src, UINT32 size)
+int MS1DecodeBG1(UINT32 region)
 {
    UINT32 ta,tb;
 
    if(!(GFX_BG1=AllocateMem(0x100000))) return(0);
    memset(GFX_BG1,0x00,0x100000);
-   UINT32 region = (UINT32)src;
-   if (region < REGION_MAX)
-	   src = load_region[region];
+   UINT8 *src = load_region[region];
+   UINT32 size = get_region_size(region);
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -2096,15 +2099,14 @@ int MS1DecodeBG1(UINT8 *src, UINT32 size)
    return 1;
 }
 
-int MS1DecodeBG0(UINT8 *src, UINT32 size)
+int MS1DecodeBG0(UINT32 region)
 {
    UINT32 ta,tb;
 
    if(!(GFX_BG0=AllocateMem(0x100000))) return(0);
    memset(GFX_BG0,0x00,0x100000);
-   UINT32 region = (UINT32)src;
-   if (region < REGION_MAX)
-	   src = load_region[region];
+   UINT8 * src = load_region[region];
+   UINT32 size = get_region_size(region);
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -2129,13 +2131,13 @@ int MS1DecodeBG0(UINT8 *src, UINT32 size)
 }
 
 static int setup_ms1_gfx() {
-   if(!MS1DecodeSPR(REGION_GFX4,get_region_size(REGION_GFX4)))return 0;
+   if(!MS1DecodeSPR(REGION_GFX4))return 0;
 
-   if(!MS1DecodeFG0(REGION_GFX3, get_region_size(REGION_GFX3)))return 0;
+   if(!MS1DecodeFG0(REGION_GFX3))return 0;
 
-   if(!MS1DecodeBG1(REGION_GFX2,get_region_size(REGION_GFX2)))return 0;
+   if (load_region[REGION_GFX1]) if(!MS1DecodeBG1(REGION_GFX2))return 0;
 
-   if(!MS1DecodeBG0(REGION_GFX1,get_region_size(REGION_GFX1)))return 0;
+   if(!MS1DecodeBG0(REGION_GFX1))return 0;
    return 1;
 }
 
@@ -2470,61 +2472,17 @@ void LoadSaintDragon(void)
 
 void load_iga_ninjyutsuden(void)
 {
-   int ta;
-
    romset=20; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("iga_19.bin", RAM, 0x10000)) return;          // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x10000))return;
+   if (!setup_ms1_gfx()) return;
 
-   if(!load_rom("iga_23.bin", ROM+0x00000, 0x80000)) return;  // 16x16 SPRITES
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("iga_18.bin", ROM+0x00000, 0x80000)) return;  // 16x16 TILES
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("iga_14.bin", ROM+0x00000, 0x40000)) return;  // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   if(!load_rom("iga_02.bin", RAM, 0x20000)) return;          // MAIN 68000
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom("iga_01.bin", RAM, 0x20000)) return;
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
    DecodeStDragon(ROM);                                       // Deprotection
-
-   if(!load_rom("iga_03.bin", RAM, 0x10000)) return;          // MAIN 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x40000]=RAM[ta];
-   }
-   if(!load_rom("iga_04.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x40001]=RAM[ta];
-   }
-
-   if(!load_rom("iga_05.bin", RAM, 0x10000)) return;          // SUB 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60000]=RAM[ta];
-   }
-   if(!load_rom("iga_06.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60001]=RAM[ta];
-   }
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("iga_10.bin",PCMROM+0x00000,0x40000)) return;
-   if(!load_rom("iga_08.bin",PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 24;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -2568,41 +2526,14 @@ static void LoadP47J(void)
 {
    romset=2; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!MS1DecodeFG0(load_region[REGION_GFX3],0x10000))return;
-
-   if(!load_rom("p47j_27.bin", ROM+0x00000, 0x20000)) return;             // 16x16 SPRITES
-   if(!load_rom("p47j_18.bin", ROM+0x20000, 0x20000)) return;             // *
-   if(!load_rom("p47j_26.bin", ROM+0x40000, 0x20000)) return;             // <Blank>
-   if(!load_rom("p47j_26.bin", ROM+0x60000, 0x20000)) return;             // *
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("p47j_23.bin", ROM+0x00000, 0x20000)) return;             // 16x16 TILES
-   if(!load_rom("p47j_23.bin", ROM+0x20000, 0x20000)) return;             // <Blank>
-   if(!load_rom("p47j_12.bin", ROM+0x40000, 0x20000)) return;             // *
-   if(!load_rom("p47j_12.bin", ROM+0x60000, 0x20000)) return;             // <Blank>
-   if(!MS1DecodeBG1(ROM,0x60000))return;
-
-   if(!load_rom("p47j_5.bin", ROM+0x00000, 0x20000)) return;              // 16x16 TILES
-   if(!load_rom("p47j_6.bin", ROM+0x20000, 0x20000)) return;              // *
-   if(!load_rom("p47j_7.bin", ROM+0x40000, 0x20000)) return;              // *
-   if(!MS1DecodeBG0(ROM,0x60000))return;
-
-   FreeMem(ROM);
-   ROM = load_region[REGION_ROM1];
+   if (!setup_ms1_gfx()) return;
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
 
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("p47j_20.bin",PCMROM+0x00000,0x20000)) return;
-   if(!load_rom("p47j_21.bin",PCMROM+0x20000,0x20000)) return;
-   if(!load_rom("p47j_10.bin",PCMROM+0x40000,0x20000)) return;
-   if(!load_rom("p47j_11.bin",PCMROM+0x60000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 24;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -2722,35 +2653,13 @@ void LoadKickOff(void)
 {
    romset=4; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("kioff16.rom", RAM, 0x20000)) return;          // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
-
-   if(!load_rom("kioff27.rom", ROM+0x00000, 0x20000)) return;  // 16x16 SPRITES
-   if(!load_rom("kioff18.rom", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("kioff17.rom", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("kioff26.rom", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("kioff05.rom", ROM+0x00000, 0x20000)) return;  // 16x16 TILES
-   if(!load_rom("kioff06.rom", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("kioff07.rom", ROM+0x40000, 0x20000)) return;
-   if(!MS1DecodeBG0(ROM,0x60000))return;
-
-   FreeMem(ROM);
-   ROM = load_region[REGION_ROM1];
+   if (!setup_ms1_gfx()) return;
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x60000))) return;
-   if(!load_rom("kioff20.rom",PCMROM+0x00000,0x20000)) return;
-   if(!load_rom("kioff21.rom",PCMROM+0x20000,0x20000)) return;
-   if(!load_rom("kioff10.rom",PCMROM+0x40000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 26;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -2758,7 +2667,6 @@ void LoadKickOff(void)
    /*-----------------------*/
 
    RAMSize=0x40000;
-
 
    // Int Fix
    // -------
@@ -2799,42 +2707,17 @@ void LoadHachoo(void)
 {
    romset=5; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("hacho19.rom", RAM, 0x20000)) return;           // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
-
-   if(!load_rom("hacho20.rom", ROM+0x00000, 0x20000)) return;   // 16x16 SPRITES
-   if(!load_rom("hacho21.rom", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("hacho22.rom", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("hacho23.rom", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("hacho15.rom", ROM+0x00000, 0x20000)) return;   // 16x16 TILES
-   if(!load_rom("hacho16.rom", ROM+0x20000, 0x20000)) return;
-   if(!load_rom("hacho17.rom", ROM+0x40000, 0x20000)) return;
-   if(!load_rom("hacho18.rom", ROM+0x60000, 0x20000)) return;
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("hacho14.rom", ROM+0x00000, 0x80000)) return;   // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x80000))return;
+   if (!setup_ms1_gfx()) return;
 
    FreeMem(ROM);
-   ROM = load_region[REGION_ROM1];
 
    DecodePlusAlpha(ROM);                                                // Deprotection
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("hacho09.rom",PCMROM+0x00000,0x20000)) return;
-   if(!load_rom("hacho10.rom",PCMROM+0x20000,0x20000)) return;
-   if(!load_rom("hacho07.rom",PCMROM+0x40000,0x20000)) return;
-   if(!load_rom("hacho08.rom",PCMROM+0x60000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 13;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3026,38 +2909,14 @@ static void LoadAvengingSpirit(void)
 
 void LoadCybattler(void)
 {
-   UINT8 *TMP;
-
    romset=8; spr_pri_needed=0;
-
-   if(!(TMP=AllocateMem(0x100000))) return;
-
-   if(!load_rom("cb_09.rom", TMP, 0x20000)) return;           // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(TMP,0x020000)) return;
-
-   if(!load_rom("cb_m01.rom", TMP, 0x80000)) return;          // 16x16 TILES
-   if(!MS1DecodeBG0(TMP,0x080000)) return;
-
-   if(!load_rom("cb_m03.rom", TMP+0x00000, 0x80000)) return;  // 16x16 SPRITES
-   if(!load_rom("cb_m02.rom", TMP+0x80000, 0x80000)) return;  // 16x16 SPRITES
-   if(!MS1DecodeSPR(TMP,0x100000)) return;
-
-   if(!load_rom("cb_m04.rom", TMP, 0x80000)) return;          // 16x16 TILES
-   if(!MS1DecodeBG1(TMP,0x080000)) return;
-
-   FreeMem(TMP);
+   setup_ms1_gfx();
 
    if(!(RAM=AllocateMem(0x80000))) return;
-   ROM = load_region[REGION_CPU1];
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "cb_11.rom", PCMROM+0x00000,0x40000)) return;
-   if(!load_rom( "cb_10.rom", PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 8;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3291,35 +3150,15 @@ void load_chimera_beast(void)
 
 void LoadEarthDefForce(void)
 {
-
    romset=10; spr_pri_needed=1;
 
-   if(!(ROM=AllocateMem(0xA0000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("edf_09.rom", RAM, 0x20000)) return;               // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
-
-   if(!load_rom("edf_m03.rom", ROM, 0x80000)) return;              // 16x16 SPRITES
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("edf_m04.rom", ROM, 0x80000)) return;              // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   if(!load_rom("edf_m05.rom", ROM, 0x80000)) return;              // 16x16 TILES
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   FreeMem(ROM);
-   ROM = load_region[REGION_CPU1];
+   if (!setup_ms1_gfx()) return;
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "edf_m02.rom", PCMROM+0x00000,0x40000)) return;
-   if(!load_rom( "edf_m01.rom", PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 10;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3327,7 +3166,6 @@ void LoadEarthDefForce(void)
    /*-----------------------*/
 
    RAMSize=0x40000;
-
 
    WriteLong68k(&ROM[0x00000],0x0006FFFE);      // Stack
 
@@ -3413,24 +3251,9 @@ void LoadShingen(void)
    romset=11; spr_pri_needed=1;
 
 
-   RAM = load_region[REGION_GFX3];         // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x10000))return;
-   FreeMem(RAM);
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   ROM = load_region[REGION_GFX4];
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-   FreeMem(ROM);
-
-   ROM = load_region[REGION_GFX2];
-   if(!MS1DecodeBG1(ROM,0x60000))return;
-   FreeMem(ROM);
-
-   ROM = load_region[REGION_GFX1];
-   if(!MS1DecodeBG0(ROM,0x40000))return;
-   FreeMem(ROM);
-
-   ROM = load_region[REGION_CPU1];
+   if (!setup_ms1_gfx()) return;
    DecodeStDragon(ROM);                                                 // Deprotection
 
    ROM[0]=0;    // Garbage
@@ -3439,12 +3262,6 @@ void LoadShingen(void)
 
    SoundWorkInit();             /* sound call work init */
 
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom( "takeda9.bin", PCMROM+0x00000,0x20000)) return;
-   if(!load_rom( "takeda10.bin", PCMROM+0x20000,0x20000)) return;
-   if(!load_rom( "shing_07.rom", PCMROM+0x40000,0x20000)) return;
-   if(!load_rom( "shing_08.rom", PCMROM+0x60000,0x20000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 24;                   // Antiriad: Change from 8
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3495,17 +3312,8 @@ void LoadLegendOfMakaj(void)
 {
    romset=12; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
-
-   if(!load_rom_index(3, RAM, 0x10000)) return;           // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x10000))return;
-
-   if(!load_rom_index(2, ROM, 0x20000)) return;           // 16x16 SPRITES
-   if(!MS1DecodeSPR(ROM,0x20000))return;
-
-   if(!load_rom_index(1, ROM, 0x20000)) return;           // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x20000))return;
+   if (!setup_ms1_gfx()) return;
 
    /*-------[SOUND SYSTEM INIT]-------*/
 
@@ -3594,8 +3402,6 @@ static void load_astyanax(void)
 
    RAMSize=0x40000;
 
-
-
    // Checksum Fix
    // ------------
 
@@ -3627,54 +3433,17 @@ static void load_astyanax(void)
 
 void load_soldam(void)
 {
-   int ta;
-
    romset=21; spr_pri_needed=0;
 
-   if(!(ROM=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("soldam19.bin", RAM, 0x20000)) return;           // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(RAM,0x20000))return;
+   if (!setup_ms1_gfx()) return;
 
-   if(!load_rom("soldam23.bin", ROM+0x00000, 0x80000)) return;   // 16x16 SPRITES
-   if(!MS1DecodeSPR(ROM,0x80000))return;
-
-   if(!load_rom("soldam18.bin", ROM+0x00000, 0x80000)) return;   // 16x16 TILES
-   if(!MS1DecodeBG1(ROM,0x80000))return;
-
-   if(!load_rom("soldam14.bin", ROM+0x00000, 0x80000)) return;   // 16x16 TILES
-   if(!MS1DecodeBG0(ROM,0x80000))return;
-
-   if(!load_rom("soldam2.bin", RAM+0x00000, 0x20000)) return;   // MAIN 68000
-   if(!load_rom("soldam3.bin", RAM+0x20000, 0x10000)) return;
-   for(ta=0;ta<0x30000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom("soldam1.bin", RAM+0x00000, 0x20000)) return;
-   if(!load_rom("soldam4.bin", RAM+0x20000, 0x10000)) return;
-   for(ta=0;ta<0x30000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
    DecodePlusAlpha(ROM);
-
-   if(!load_rom("soldam5.bin", RAM, 0x10000)) return;           // SUB 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60000]=RAM[ta];
-   }
-   if(!load_rom("soldam6.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x60001]=RAM[ta];
-   }
 
    /*-----[Sound Setup]-----*/
 
    SoundWorkInit();             /* sound call work init */
-
-   if(!(PCMROM = AllocateMem(0x80000))) return;
-   if(!load_rom("soldam10.bin",PCMROM+0x00000,0x40000)) return;
-   if(!load_rom("soldam8.bin",PCMROM+0x40000,0x40000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    MS1SoundLoop = 7;
    MS1SoundClock = DEF_MS1_SOUNDCLOCK / MS1SoundLoop; /* hiro-shi!! */
@@ -3761,14 +3530,9 @@ void LoadPeekABoo(void)
 
    if(!(TMP=AllocateMem(0x080000))) return;
 
-   if(!load_rom("4", TMP, 0x20000)) return;         // 8x8 FG0 TILES
-   if(!MS1DecodeFG0(TMP,0x020000))return;
 
-   if(!load_rom("1", TMP, 0x80000)) return;	    // 16x16 SPRITES
-   if(!MS1DecodeSPR(TMP,0x080000))return;
+   if (!setup_ms1_gfx()) return;
 
-   if(!load_rom("5", TMP, 0x80000)) return;         // 16x16 TILES
-   if(!MS1DecodeBG0(TMP,0x080000))return;
 
    FreeMem(TMP);
 
