@@ -978,8 +978,6 @@ static struct ROMSW_INFO neocd_romsw[] =
   { 0,        0,    NULL },
 };
 
-#include "cache.h"
-
 /* Draw entire Character Foreground */
 void video_draw_fix(void)
 {
@@ -2317,7 +2315,7 @@ static void load_neocd() {
   // using these registers directly
 
   AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
-  finish_conf_starscream();
+  finish_conf_68000(0);
   // There doesn't seem to be any irq3 in the neocd, irqs are very different
   // here
   // irq3_pending = 1;
