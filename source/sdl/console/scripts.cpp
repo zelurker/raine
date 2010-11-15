@@ -3,7 +3,6 @@
 #include "files.h"
 #include "scripts.h"
 #include "console.h"
-#include "files.h"
 
 typedef struct {
   char *title;

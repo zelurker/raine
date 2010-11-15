@@ -14,7 +14,6 @@
 // #include "state.h"
 #include "ym2151.h"
 #include "sasound.h"
-#include "ym2151.h"
 #include "timer.h"
 
 /* undef this to not use MAME timer system */

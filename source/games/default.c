@@ -25,7 +25,6 @@
 #include "bezel.h"
 #include "config.h"
 #include "hiscore.h"
-#include "sasound.h"
 #include "video/res.h"
 #include "tc005rot.h"
 #ifdef HAS_CONSOLE
