@@ -5,7 +5,7 @@
 #include "str_opaque.h"
 
 extern int do_dirs(int sel); // dirs.cpp
-static menu_item_t gui_menu[10];
+static menu_item_t gui_menu[11];
 extern int add_gui_options(menu_item_t *menu);
 extern int add_fonts_gui_options(menu_item_t *menu);
 TMenu *gui_options;

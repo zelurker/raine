@@ -33,7 +33,7 @@ void adjust_gui_resolution() {
   screen_flags = sdl_screen->flags;
 
 
-  if (sdl_screen->w < 640 || sdl_screen->h < 480) {
+  if (keep_vga && (sdl_screen->w < 640 || sdl_screen->h < 480)) {
     if (!strcmp(driver,"fbcon")) {
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
       SDL_InitSubSystem(SDL_INIT_VIDEO);

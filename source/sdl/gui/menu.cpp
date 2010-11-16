@@ -112,7 +112,7 @@ buffer before calling the gui */
 #include "newmem.h" // GetMemoryPoolSize
 
 static int return_mandatory = 0, use_transparency = 1;
-int emulate_mouse_cursor = 0;
+int emulate_mouse_cursor = 0,keep_vga;
 static int mouse_erased,unicode;
 
 extern int repeat_interval, repeat_delay; // in gui.cpp
@@ -146,6 +146,7 @@ menu_item_t menu_options[] =
   { "Use transparency", NULL, &use_transparency, 2, { 0, 1 }, { "No", "Yes" }},
   { "Use custom mouse cursor", &toggle_mouse, &emulate_mouse_cursor, 2,
     { 0,1 }, { "No", "Yes" } },
+  { "Minimum GUI resolution = VGA", NULL,&keep_vga, 2, { 0,1 }, { "No","Yes" }},
 };
 
 int fg_color, bg_color,fgframe_color,bgframe_color,cslider_border,
@@ -165,6 +166,7 @@ void save_menu_config() {
   raine_set_config_32bit_hex("GUI", "slider_lift", cslider_lift);
 
   raine_set_config_32bit_hex("GUI", "bg_dialog_bar", bg_dialog_bar);
+  raine_set_config_int("GUI", "keep_vga", keep_vga);
 }
 
 void read_menu_config() {
@@ -178,13 +180,15 @@ void read_menu_config() {
   cslider_bar = raine_get_config_hex("GUI", "slider_bar", mymakecol(0xc0,0xc0,0xc0));
   cslider_lift = raine_get_config_hex("GUI", "slider_lift", mymakecol(0xff,0xff,0xff));
   bg_dialog_bar = raine_get_config_hex("GUI", "bg_dialog_bar", mymakecol(0,0,0));
+  keep_vga = raine_get_config_int("GUI","keep_vga",1);
 }
 
 int add_menu_options(menu_item_t *menu) {
   menu[0] = menu_options[0];
   menu[1] = menu_options[1];
   menu[2] = menu_options[2];
-  return 3;
+  menu[3] = menu_options[3];
+  return 4;
 }
 
 static SDL_Surface *cursor = NULL;
@@ -1520,10 +1524,12 @@ void TMenu::execute() {
 	if (!display_cfg.fullscreen || display_cfg.auto_mode_change) {
 	    display_cfg.screen_x = event.resize.w;
 	    display_cfg.screen_y = event.resize.h;
-	    if (display_cfg.screen_x < 640)
-		display_cfg.screen_x = 640;
-	    if (display_cfg.screen_y < 480)
-		display_cfg.screen_y = 480;
+		if (keep_vga) {
+			if (display_cfg.screen_x < 640)
+				display_cfg.screen_x = 640;
+			if (display_cfg.screen_y < 480)
+				display_cfg.screen_y = 480;
+		}
 	    resize();
 	    if (font) {
 		delete font;

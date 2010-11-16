@@ -31,10 +31,9 @@ typedef struct {
 
 // default colors
 extern int fg_color, bg_color,fgframe_color,bgframe_color,cslider_border,
-  cslider_bar,cslider_lift,bg_dialog_bar;
+  cslider_bar,cslider_lift,bg_dialog_bar,keep_vga,emulate_mouse_cursor;
 
 void sort_menu(menu_item_t *menu);
-extern int emulate_mouse_cursor;
 void setup_mouse_cursor(SDL_Surface *mycursor);
 int add_menu_options(menu_item_t *menu);
 void read_menu_config();
