@@ -258,6 +258,8 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   phase_repeat = jmoved = 0;
   work_area.h = 0;
   rows = 0;
+  work_area.x = 0;
+  work_area.w = sdl_screen->w;
 }
 
 TMenu::~TMenu() {
@@ -445,12 +447,8 @@ void TMenu::draw_frame(SDL_Rect *r) {
 
   int base = sdl_screen->h-h_game;
 
-  if (!r) {
-    work_area.x = 0;
-    work_area.y = h_title;
-    work_area.w = sdl_screen->w;
-    work_area.h = (base - (h_title));
-  }
+  work_area.y = h_title;
+  work_area.h = (base - (h_title));
 
   if (!r || r->y < h_title) {
     draw_top_frame();
@@ -535,6 +533,11 @@ void TMenu::compute_width_from_font() {
   if (w > width_max)
     width_max = w;
   width_max += 2*HMARGIN;
+  if (width_max > work_area.w) {
+	  width_max = work_area.w;
+  }
+  if (width_max_options > work_area.w)
+	  width_max_options = work_area.w;
   xoptions = width_max;
   if (width_max_options) {
     width_max += width_max_options;
@@ -581,10 +584,12 @@ void TMenu::setup_font(unsigned int len_frame) {
   h = h*4/9; // This 5/11 is just the result of tests, so that the main
   // menu fits on the screen without scrollbar when loading bublbobl !
   // Actually it's probably dependant of the font (size w != size h).
-  if (h < w && h >= min_font_size) w=h; // take the minimum for the ttf...
+  if (h<min_font_size) h = min_font_size;
+  if (h < w) w=h; // take the minimum for the ttf...
   else while (h < min_font_size && (w+h)/2 > 2+min_font_size) {
     w = (w+h)/2; // take an average value when w much bigger than h
   }
+  if (w < min_font_size) w = min_font_size;
   font = new TFont_ttf(w,font_name);
   if (lift) { // lift place changes with the font
     delete lift;
