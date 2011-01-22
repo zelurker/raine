@@ -269,18 +269,6 @@ int file_cache(char *filename, int offset, int size,int type) {
     return -1;
   }
 
-void clear_file_cache() {
-  int n;
-  for (n=0; n<7; n++) {
-    if (cache[n]) {
-      free(cache[n]);
-      cache[n] = NULL;
-      used[n] = 0;
-      max[n] = 32;
-    }
-  }
-}
-
 void cache_set_crc(int offset,int size,int type) {
   /* The problem of neocd is that everything is loaded in ram, which means that it can
      be changed dynamically after it's loaded. Most of the time this is only changed
@@ -326,55 +314,96 @@ void cache_set_crc(int offset,int size,int type) {
   }
 }
 
-#define MAX_UPLOAD 128
+static int nb_upload, used_upload = 0,*upload_offset,*upload_size;
+
+void clear_file_cache() {
+  int n;
+  for (n=0; n<7; n++) {
+    if (cache[n]) {
+      free(cache[n]);
+      cache[n] = NULL;
+      used[n] = 0;
+      max[n] = 32;
+    }
+  }
+  if (upload_offset) {
+	  free(upload_offset);
+	  upload_offset = NULL;
+  }
+  if (upload_size) {
+	  free(upload_size);
+	  upload_size = NULL;
+  }
+  used_upload = 0;
+}
+
+static UINT8 *fill_upload(UINT8 *buff, int *len, int type)
+{
+	int old_cd = cdrom_speed;
+	nb_upload = 0;
+	file_entry *tcache = (file_entry *)buff;
+	cdrom_speed = 0;
+	while (*len > 0) {
+		if (!strcmp(tcache->name,"upload")) {
+			if (nb_upload == used_upload) {
+				used_upload += 20;
+				upload_offset = realloc(upload_offset,sizeof(int)*used_upload);
+				upload_size = realloc(upload_size,sizeof(int)*used_upload);
+			}
+			if (upload_offset && upload_size) {
+				upload_offset[nb_upload] = tcache->offset;
+				upload_size[nb_upload++] = tcache->len;
+			}
+			*len -= tcache->len;
+		} else {
+			switch(type) {
+			case SPR_TYPE:
+				neogeo_cdrom_load_spr_file(tcache->name, tcache->offset/2);
+				break;
+			case FIX_TYPE:
+				neogeo_cdrom_load_fix_file(tcache->name, tcache->offset); break;
+			case PCM_TYPE:
+				neogeo_cdrom_load_pcm_file(tcache->name, tcache->offset); break;
+			default:
+				printf("unknown type passed to fill_upload\n");
+				exit(1);
+			}
+		}
+		tcache++;
+		*len -= sizeof(file_entry);
+	}
+	cdrom_speed = old_cd;
+	return (UINT8*)tcache;
+}
 
 static void cache_load_spr(UINT8 *buff, int len) {
   /* Actually the cache isn't directly loaded from the savegame, we use
    * the filenames and uploads areas from the savegame and feed them directly
    * to the existing cache which existed before the load */
-  file_entry *tcache = (file_entry *)buff;
-  int nb_upload = 0, upload_offset[MAX_UPLOAD],upload_size[MAX_UPLOAD],n;
-  int old_cd = cdrom_speed;
-  cdrom_speed = 0;
-  while (len > 0) {
-    if (!strcmp(tcache->name,"upload")) {
-      upload_offset[nb_upload] = tcache->offset;
-      upload_size[nb_upload++] = tcache->len;
-      if (nb_upload == MAX_UPLOAD) {
-	MessageBox("error","cache_load_spr: max_upload overflow, expect trouble","ok");
-	return;
-      }
-      len -= tcache->len;
-    } else {
-      neogeo_cdrom_load_spr_file(tcache->name, tcache->offset/2);
-    }
-    tcache++;
-    len -= sizeof(file_entry);
-  }
-  buff = (UINT8 *)tcache;
+  buff = fill_upload(buff,&len,SPR_TYPE);
+  int n;
   for (n = 0; n<nb_upload; n++) {
-    print_debug("restoring spr upload %x,%x\n",upload_offset[n],
-	upload_size[n]);
-    memcpy(GFX+upload_offset[n],buff,upload_size[n]);
-    UINT8 *usage_ptr = video_spr_usage + (upload_offset[n]>>8);
-    int i;
-    for (i=0; i<upload_size[n]; i+= 256) {
-      int res = 0;
-      int j;
-      for (j=0; j<256; j++) {
-	if (buff[i+j])
-	  res++;
-      }
-      if (res == 0) // all transp
-	usage_ptr[i/256] = 0;
-      else if (res == 256)
-	usage_ptr[i/256] = 2; // all solid
-      else
-	usage_ptr[i/256] = 1; // semi
-    }
-    buff += upload_size[n];
+	  print_debug("restoring spr upload %x,%x\n",upload_offset[n],
+			  upload_size[n]);
+	  memcpy(GFX+upload_offset[n],buff,upload_size[n]);
+	  UINT8 *usage_ptr = video_spr_usage + (upload_offset[n]>>8);
+	  int i;
+	  for (i=0; i<upload_size[n]; i+= 256) {
+		  int res = 0;
+		  int j;
+		  for (j=0; j<256; j++) {
+			  if (buff[i+j])
+				  res++;
+		  }
+		  if (res == 0) // all transp
+			  usage_ptr[i/256] = 0;
+		  else if (res == 256)
+			  usage_ptr[i/256] = 2; // all solid
+		  else
+			  usage_ptr[i/256] = 1; // semi
+	  }
+	  buff += upload_size[n];
   }
-  cdrom_speed = old_cd;
 }
 
 void cache_save_spr(UINT8 **buff, int *len) {
@@ -401,49 +430,30 @@ void cache_save_spr(UINT8 **buff, int *len) {
 }
 
 static void cache_load_fix(UINT8 *buff, int len) {
-  file_entry *tcache = (file_entry *)buff;
-  int nb_upload = 0, upload_offset[MAX_UPLOAD],upload_size[MAX_UPLOAD],n;
-  int old_cd = cdrom_speed;
-  cdrom_speed = 0;
-  while (len > 0) {
-    if (!strcmp(tcache->name,"upload")) {
-      upload_offset[nb_upload] = tcache->offset;
-      upload_size[nb_upload++] = tcache->len;
-      if (nb_upload == MAX_UPLOAD) {
-	MessageBox("error","cache_load_fix: max_upload overflow, expect trouble","ok");
-	return;
-      }
-      len -= tcache->len;
-    } else {
-      neogeo_cdrom_load_fix_file(tcache->name, tcache->offset);
-    }
-    tcache++;
-    len -= sizeof(file_entry);
-  }
-  buff = (UINT8 *)tcache;
+  buff = fill_upload(buff,&len,FIX_TYPE);
+  int n;
   for (n = 0; n<nb_upload; n++) {
-    print_debug("restoring fix upload %x,%x\n",upload_offset[n],
-	upload_size[n]);
-    memcpy(neogeo_fix_memory+upload_offset[n],buff,upload_size[n]);
-    UINT8 *usage_ptr = video_fix_usage + (upload_offset[n]>>5);
-    int i;
-    for (i=0; i<upload_size[n]; i+= 32) {
-      int res = 0;
-      int j;
-      for (j=0; j<32; j++) {
-	if (buff[i+j])
-	  res++;
-      }
-      if (res == 0) // all transp
-	usage_ptr[i/32] = 0;
-      else if (res == 32)
-	usage_ptr[i/32] = 2; // all solid
-      else
-	usage_ptr[i/32] = 1; // semi
-    }
-    buff += upload_size[n];
+	  print_debug("restoring fix upload %x,%x\n",upload_offset[n],
+			  upload_size[n]);
+	  memcpy(neogeo_fix_memory+upload_offset[n],buff,upload_size[n]);
+	  UINT8 *usage_ptr = video_fix_usage + (upload_offset[n]>>5);
+	  int i;
+	  for (i=0; i<upload_size[n]; i+= 32) {
+		  int res = 0;
+		  int j;
+		  for (j=0; j<32; j++) {
+			  if (buff[i+j])
+				  res++;
+		  }
+		  if (res == 0) // all transp
+			  usage_ptr[i/32] = 0;
+		  else if (res == 32)
+			  usage_ptr[i/32] = 2; // all solid
+		  else
+			  usage_ptr[i/32] = 1; // semi
+	  }
+	  buff += upload_size[n];
   }
-  cdrom_speed = old_cd;
 }
 
 void cache_save_fix(UINT8 **buff, int *len) {
@@ -470,34 +480,14 @@ void cache_save_fix(UINT8 **buff, int *len) {
 }
 
 static void cache_load_pcm(UINT8 *buff, int len) {
-  file_entry *tcache = (file_entry *)buff;
-  int nb_upload = 0, upload_offset[MAX_UPLOAD],upload_size[MAX_UPLOAD],n;
-  int old_cd = cdrom_speed;
-  cdrom_speed = 0;
-  while (len > 0) {
-    if (!strcmp(tcache->name,"upload")) {
-      printf("upload in pcm area, getting crazy !\n");
-      upload_offset[nb_upload] = tcache->offset;
-      upload_size[nb_upload++] = tcache->len;
-      if (nb_upload == MAX_UPLOAD) {
-	MessageBox("error","cache_load_pcm: max_upload overflow, expect trouble","ok");
-	return;
-      }
-      len -= tcache->len;
-    } else {
-      neogeo_cdrom_load_pcm_file(tcache->name, tcache->offset);
-    }
-    tcache++;
-    len -= sizeof(file_entry);
-  }
-  buff = (UINT8 *)tcache;
+  buff = fill_upload(buff,&len,PCM_TYPE);
+  int n;
   for (n = 0; n<nb_upload; n++) {
-    print_debug("restoring pcm upload %x,%x\n",upload_offset[n],
-	upload_size[n]);
-    memcpy(PCMROM+upload_offset[n],buff,upload_size[n]);
-    buff += upload_size[n];
+	  print_debug("restoring pcm upload %x,%x\n",upload_offset[n],
+			  upload_size[n]);
+	  memcpy(PCMROM+upload_offset[n],buff,upload_size[n]);
+	  buff += upload_size[n];
   }
-  cdrom_speed = old_cd;
 }
 
 void cache_save_pcm(UINT8 **buff, int *len) {

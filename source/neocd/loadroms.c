@@ -13,6 +13,7 @@
 #if HAS_CONSOLE
 #include "sdl/console/console.h"
 #endif
+#include "cache.h"
 
 // I just need these for the general warning messages
 int load_error;
@@ -115,6 +116,7 @@ void ClearDefault(void)
    current_game->main_name = "neocd";
    current_game = NULL;
    DestroyScreenBitmap();
+   clear_file_cache();
 #if HAS_CONSOLE
    done_console();
 #endif
