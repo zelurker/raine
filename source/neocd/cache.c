@@ -326,7 +326,7 @@ void cache_set_crc(int offset,int size,int type) {
   }
 }
 
-#define MAX_UPLOAD 64
+#define MAX_UPLOAD 128
 
 static void cache_load_spr(UINT8 *buff, int len) {
   /* Actually the cache isn't directly loaded from the savegame, we use
