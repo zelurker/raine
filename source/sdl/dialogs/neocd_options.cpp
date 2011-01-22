@@ -81,7 +81,7 @@ static menu_item_t neocd_menu[] =
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
-    { "Off", "CD 1x (150 Kb/s)", "2x", "4x", "8x", "16x", "32x", "48x" } },
+    { "Off", "CD 1x (150 Kb/s)", "2x", "4x", "8x (default)", "16x", "32x", "48x" } },
   { "Update neocd sprite block", &do_update_block },
   { "Allow speed hacks", NULL, &allowed_speed_hacks, 2, { 0, 1 }, { "No", "Yes" }},
   { "Capture mode", NULL, &capture_new_pictures, 2, { 0, 1 }, { "Overwrite", "New pictures" }},
