@@ -1668,6 +1668,16 @@ void postprocess_ipl() {
     if (region2 != region_code)
       neogeo_read_gamename();
   }
+  if (cdrom_speed) {
+	  // Force clearing of the screen to be sure to erase the interface when
+	  // changing the game resolution
+	  int fps = raine_cfg.show_fps_mode;
+	  raine_cfg.show_fps_mode = 0;
+	  clear_ingame_message_list();
+	  clear_game_screen(0);
+	  DrawNormal();
+	  raine_cfg.show_fps_mode = fps;
+  }
   if (game->width == 320) {
     neocd_video.screen_x = 320;
     offx = 16;
