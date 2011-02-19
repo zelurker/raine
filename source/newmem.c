@@ -107,8 +107,8 @@ void FreeMem(UINT8 *memptr)
 	  MemoryPoolSize -= MemSize[ta];
 	  found = 1;
 	  if (MemoryPoolCount > ta+1) {
-	    memcpy(&MemoryPool[ta],&MemoryPool[ta+1],(MemoryPoolCount-(ta+1))*sizeof(UINT8*));
-	    memcpy(&MemSize[ta],&MemSize[ta+1],(MemoryPoolCount-(ta+1))*sizeof(UINT32));
+	    memmove(&MemoryPool[ta],&MemoryPool[ta+1],(MemoryPoolCount-(ta+1))*sizeof(UINT8*));
+	    memmove(&MemSize[ta],&MemSize[ta+1],(MemoryPoolCount-(ta+1))*sizeof(UINT32));
 	  }
 	  MemoryPoolCount--;
 	}
