@@ -596,6 +596,9 @@ void update_monitoring() {
     if (!f_record) {
       f_record = fopen("raine_sound.wav","wb");
       if (f_record) {
+		  char dir[1024];
+		  getcwd(dir,1024);
+		  print_ingame(240,"wav in %s\n",dir);
 	fwrite("RIFF",1,4,f_record);
 	fwrite(&i,1,4,f_record); // length of the file -8 -> at the end
 	fwrite("WAVE",1,4,f_record);
@@ -619,7 +622,13 @@ void update_monitoring() {
 
 	fwrite("data",1,4,f_record);
 	fwrite(&i,1,4,f_record); // size 2 (offset 40) = filesize - 44 ???
-      }
+      } else {
+		  char dir[1024];
+		  sprintf(dir,"Can't create raine_sound.wav,\ndir:");
+		  int l = strlen(dir);
+		  getcwd(&dir[l],1024-l);
+		  MessageBox("Error",dir,"OK");
+	  }
     }
 
     if (f_record) {
