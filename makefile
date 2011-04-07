@@ -320,13 +320,13 @@ endif
 	   -DRAINE_UNIX
 
 ifndef SDL
-   LIBS = -lz `allegro-config --libs` `libpng-config --ldflags`
-   LIBS_DEBUG = -lz `allegro-config --libs ` `libpng-config --ldflags` 
-   LIBS_STATIC = -lz `allegro-config --static` `libpng-config --static --ldflags`
+   LIBS = -lz `allegro-config --libs` `libpng-config --ldflags` -lm
+   LIBS_DEBUG = -lz `allegro-config --libs ` `libpng-config --ldflags` -lm
+   LIBS_STATIC = -lz `allegro-config --static` `libpng-config --static --ldflags` -lm
 else
-   LIBS = -lz `libpng-config --ldflags` 
-   LIBS_DEBUG = -lz `libpng-config --ldflags`
-   LIBS_STATIC = -lz `libpng-config --static --ldflags`
+   LIBS = -lz `libpng-config --ldflags` -lm
+   LIBS_DEBUG = -lz `libpng-config --ldflags` -lm
+   LIBS_STATIC = -lz `libpng-config --static --ldflags` -lm
 endif
 
 ifndef SDL
