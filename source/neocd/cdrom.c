@@ -120,7 +120,8 @@ static int *indexes,nb_indexes,alloc_indexes;
 static char jue[4] = "jue"; // region selection
 
 void get_track_index(int track, int *start, int *end) {
-  track--; // tracks start at 1
+  track -= 2; // track 1 = data, 2 = audio, and array index starts at 0...
+  if (track < 0) track = 0; // just to be safe
   if (track < nb_indexes) {
     *start = indexes[track];
     if (track < nb_indexes-1)
