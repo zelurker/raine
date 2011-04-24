@@ -11,6 +11,7 @@
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #endif
 #include "blit.h" // GameBitmap
+#include <unistd.h>
 
 int recording =0,monitoring = 1;
 static int mixing_buff_len;
