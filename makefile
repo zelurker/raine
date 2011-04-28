@@ -14,8 +14,8 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.51.9"
-VERSION_NEO = "1.2.11"
+VERSION = "0.51.10"
+VERSION_NEO = "1.2.12"
 
 # Uncomment to build neoraine instead of raine
 # NEO=1
@@ -463,11 +463,15 @@ ifdef RAINE32
   OBJDIRS += $(OBJDIR)/fnmatch
 endif
 
-INCDIR += -I/usr/local/include -I/usr/include/muParser
+INCDIR += -I/usr/local/include
+ifdef RAINE_UNIX
+	# windows uses /usr/include so it's handy when cross compiling from linux
+	INCDIR += -I/usr/include/muParser
+endif
 
 ifdef RAINE_DEBUG
-CFLAGS = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
 CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+CFLAGS = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
 
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
