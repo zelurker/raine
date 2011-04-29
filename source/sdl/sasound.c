@@ -59,6 +59,7 @@
 #include <SDL_sound.h>
 #include "neocd/neocd.h"
 #include "neocd/cdda.h"
+#include "neocd/cdrom.h"
 #endif
 #include "control.h"
 #include "control_internal.h"
@@ -528,7 +529,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	cdda.pos += cpysize;
       } /* if */
     } /* while */
-  } else if (start_index && !mute_music) { // trying to play a track in a bin file...
+  } else if (start_index && !mute_music && !nb_tracks) { // trying to play a track in a bin file...
     static int end_pos;
     if (!cdda.pos) {
       fbin = fopen(neocd_path,"rb");

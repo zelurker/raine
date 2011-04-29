@@ -20,7 +20,7 @@ extern "C" {
   } loading_params;
 
 extern loading_params neocd_lp;
-extern int total_sectors, sectors_to_load,loaded_sectors, cdrom_speed;
+extern int total_sectors, sectors_to_load,loaded_sectors, cdrom_speed,nb_tracks;
 
 void init_load_type();
 void neogeo_cdrom_load_title(void);

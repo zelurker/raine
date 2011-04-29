@@ -114,7 +114,8 @@ enum{
   ISO_TYPE,
   CUE_TYPE };
 
-static int nb_tracks, alloc_tracks;
+int nb_tracks; 
+static int alloc_tracks;
 static char **mp3_track;
 static int *indexes,nb_indexes,alloc_indexes;
 static char jue[4] = "jue"; // region selection
