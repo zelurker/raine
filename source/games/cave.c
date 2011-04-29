@@ -514,9 +514,9 @@ static struct ROM_INFO esprade_roms[] =
 
    {      "u51.bin", 0x00400000, 0x0b9b875c,REGION_GFX3,0x000000,LOAD8X8_16X16 },
 
-  LOAD8_16( REGION_GFX4, 0x000000,  0x00400000,
+  LOAD8_16S( REGION_GFX4, 0x000000,  0x00400000,
                  "u63.bin",  0x2f2fe92c,      "u64.bin",  0x491a3da4),
-  LOAD8_16( REGION_GFX4, 0x800000,  0x00400000,
+  LOAD8_16S( REGION_GFX4, 0x800000,  0x00400000,
                  "u65.bin",  0x06563efe,      "u66.bin",  0x7bbe4cfc),
 
    {      "u19.bin", 0x00400000, 0xf54b1cab,REGION_SMP1,0,LOAD_NORMAL },
@@ -592,9 +592,9 @@ static struct ROM_INFO guwange_roms[] =
   {   "u10102.bin", 0x00400000, 0xe28d6855, REGION_GFX2, 0x0000000, LOAD8X8_16X16, },
    {   "u10103.bin", 0x00400000, 0x0fe91b8e, REGION_GFX3, 0x0000000, LOAD8X8_16X16, },
 
-  LOAD8_16(  REGION_GFX4,  0x0000000,  0x00800000,
+  LOAD8_16S(  REGION_GFX4,  0x0000000,  0x00800000,
                 "u083.bin",  0xadc4b9c4,     "u082.bin",  0x3d75876c),
-  LOAD8_16(  REGION_GFX4,  0x1000000,  0x00400000,
+  LOAD8_16S(  REGION_GFX4,  0x1000000,  0x00400000,
                 "u086.bin",  0x188e4f81,     "u085.bin",  0xa7d5659e),
    {    "u0462.bin", 0x00400000, 0xb3d75691, REGION_SMP1, 0, LOAD_NORMAL, },
    {           NULL,          0,          0, 0, 0, 0, },

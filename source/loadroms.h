@@ -114,6 +114,10 @@ enum region_flags
 { rom1, size, crc1, region, offset, LOAD_8_16 }, \
 { rom2, size, crc2, region, offset+1, LOAD_8_16 }
 
+#define LOAD8_16S(region, offset, size, rom1, crc1, rom2, crc2) \
+{ rom1, size, crc1, region, offset, LOAD_8_16S }, \
+{ rom2, size, crc2, region, offset+1, LOAD_8_16S }
+
 #define LOAD16_64(region, offset, size, rom1, crc1, rom2, crc2, \
 		rom3, crc3, rom4, crc4) \
 { rom1, size, crc1, region, offset, LOAD_16_64 }, \
