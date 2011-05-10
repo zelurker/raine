@@ -42,6 +42,7 @@
 #include "neocd/cdrom.h"
 #endif
 #include "str_opaque.h"
+#include "control_internal.h"
 
 static int WantScreen;
 static int WantQuit;
@@ -61,6 +62,7 @@ void read_gui_config() {
   read_font_config();
   read_menu_config();
   opaque_hud = raine_get_config_int("gui","opaque_hud",0);
+  pause_on_focus = raine_get_config_int("gui","pause_on_focus",0);
 }
 
 void write_gui_config() {
@@ -75,6 +77,7 @@ void write_gui_config() {
   save_font_config();
   save_menu_config();
   raine_set_config_int("GUI","opaque_hud",opaque_hud);
+  raine_set_config_int("GUI","pause_on_focus",pause_on_focus);
 }
 
 static int set_repeat_rate(int sel) {

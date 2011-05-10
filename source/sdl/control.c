@@ -64,7 +64,7 @@ char analog_name[80]; // analog device saved by name because its index
 
 int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
   analog_maxy,analog_normx,analog_normy, 
-  app_state = SDL_APPMOUSEFOCUS|SDL_APPINPUTFOCUS;
+  app_state = SDL_APPMOUSEFOCUS|SDL_APPINPUTFOCUS, pause_on_focus;
 // analog_normx & normy are the normalized position of the stick after
 // calibration (between -16384 and +16384 inclusive).
 Uint8 key[0x300];
@@ -1349,8 +1349,9 @@ static void handle_event(SDL_Event *event) {
 	      app_state |= event->active.state;
       else
 	      app_state &= ~event->active.state;
-      if (! raine_cfg.req_pause_game && !(app_state & SDL_APPINPUTFOCUS))
-	  // lost input -> go to pause
+      if (! raine_cfg.req_pause_game && !(app_state & SDL_APPINPUTFOCUS) &&
+			  pause_on_focus)
+		  // lost input -> go to pause
 	      raine_cfg.req_pause_game = 1;
       break;
   }
