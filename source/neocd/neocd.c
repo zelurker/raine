@@ -255,6 +255,7 @@ void setup_neocd_bios() {
 
   /*** Trap exceptions ***/
   WriteWord(&neocd_bios[0xA5B6], 0x60fe); // 0x4e70); // reset instruction !
+
 #if 0
   WriteWord(&neocd_bios[0xA5B6], 0x4ef9); // reset instruction !
   WriteWord(&neocd_bios[0xA5B8], 0xc0); 
@@ -2075,15 +2076,6 @@ static void load_files(UINT32 offset, UINT16 data) {
       neogeo_cdrom_load_files(&RAM[0x115a06]);
     } else {
       print_debug("load_files: name %x 10f6b5 %x sector h %x %x %x\n",RAM[0x115a06^1],RAM[0x10f6b5^1],RAM[0x76C8^1],RAM[0x76C9^1],RAM[0x76Ca^1]);
-      if (offset == 0xc0e792) { // offset for ipl.txt in the bios !
-	// ipl.txt processing in the bios is not like an usual file
-	// probably lower level, and I don't want to cope with sector access
-	// since I want to keep zip support, so here is the workaround :
-	// reset everything in this case !
-	print_debug("load_files: ipl.txt offset detected in the bios -> reset\n");
-	Stop68000(0,0);
-	reset_game_hardware();
-      }
     }
     // irq.disable : during test mode when testing the cd, the bios disables
     // irqs, issues cd commands, and waits for irqs to come back. So I guess
@@ -2601,6 +2593,14 @@ void execute_neocd() {
   }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
+  if (s68000readPC() == 0xc0e602) {
+	  // maybe this one should be emulated with a timer which resets the hw
+	  // after some irq inactivity ?
+	  // Anyway this is where the pc ends when selecting start from the cd
+	  // interface.
+	  Stop68000(0,0);
+	  reset_game_hardware();
+  }
 }
 
 static void clear_neocd() {
