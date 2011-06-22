@@ -253,7 +253,7 @@ void TFileSel::compute_nb_items() {
 	for (s=ext[0], idx=1; s; s=ext[idx++]) {
 	  int l = strlen(s);
 	  if (strchr(s,'*') || strchr(s,'?')) { // pattern search
-	    if (!fnmatch(s,dent->d_name,0)) {
+	    if (!fnmatch(s,dent->d_name,FNM_CASEFOLD)) {
 	      found = 1;
 	      break;
 	    }
