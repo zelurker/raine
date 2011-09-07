@@ -9,6 +9,7 @@
 #include "wrestlef.h"
 #include "tchnosnd.h"
 #include "adpcm.h"
+#include "blit.h" // clear_game_screen
 
 static struct DIR_INFO wrestle_fest_dirs[] =
 {
@@ -179,6 +180,13 @@ static UINT8 *GFX_SPR_SOLID;
 
 static UINT8 *GFX_FG0;
 static UINT8 *GFX_FG0_SOLID;
+
+static int layer_id_data[4];
+
+static char *layer_id_name[4] =
+{
+   "BG0", "BG1", "FG0", "OBJECT",
+};
 
 static void wf_colour_ram_wb(UINT32 address, UINT8 data)
 {
@@ -556,6 +564,8 @@ void LoadWrestleF(void)
 
    AddInitMemory();	// Set Starscream mem pointers... 
    adpcm_amplify = 2;
+   for (ta=0; ta<4; ta++)
+       layer_id_data[ta] = add_layer_info(layer_id_name[ta]);
 }
 
 void ClearWrestleF(void)
@@ -599,6 +609,8 @@ void RenderObject(void)
    int zz,x,y,ta,nn;
    UINT8 *map;
 
+   if(! check_layer_enabled(layer_id_data[3]))
+       return;
    for(zz=0x0000;zz<0x1000;zz+=16){
 
       if((RAM_SPR[zz+2]&0x01)!=0){
@@ -722,61 +734,66 @@ void DrawWrestleF(void)
    // BG1
    // ---
 
-   MAKE_SCROLL_512x512_4_16(
-       ReadWord(&RAM[0x2C000]),
-       ReadWord(&RAM[0x2C002])+8
-   );
+   if(check_layer_enabled(layer_id_data[1])) {
+       MAKE_SCROLL_512x512_4_16(
+	       ReadWord(&RAM[0x2C000]),
+	       ReadWord(&RAM[0x2C002])+8
+	       );
 
-   START_SCROLL_512x512_4_16(32,32,320,240);
+       START_SCROLL_512x512_4_16(32,32,320,240);
 
-      ta = ReadWord(&RAM_BG1[zz+2])&0x1FFF;
+       ta = ReadWord(&RAM_BG1[zz+2])&0x1FFF;
 
-         MAP_PALETTE_MAPPED_NEW(
-            (RAM_BG1[zz]&0x0F)|0x100,
-            16,
-            map
-         );
+       MAP_PALETTE_MAPPED_NEW(
+	       (RAM_BG1[zz]&0x0F)|0x100,
+	       16,
+	       map
+	       );
 
-            switch(RAM_BG1[zz]&0xC0){
-            case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);        break;
-            case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
-            case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
-            case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8], x, y, map); break;
-            }
+       switch(RAM_BG1[zz]&0xC0){
+       case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);        break;
+       case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
+       case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
+       case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8], x, y, map); break;
+       }
 
-   END_SCROLL_512x512_4_16();
+       END_SCROLL_512x512_4_16();
+   } else
+       clear_game_screen(0);
 
    if(bg_pri==1) RenderObject();
 
    // BG0
    // ---
+  
+   if(check_layer_enabled(layer_id_data[0])) {
+       MAKE_SCROLL_512x512_2_16(
+	       ReadWord(&RAM[0x2C004]),
+	       ReadWord(&RAM[0x2C006])+8
+	       );
 
-   MAKE_SCROLL_512x512_2_16(
-       ReadWord(&RAM[0x2C004]),
-       ReadWord(&RAM[0x2C006])+8
-   );
+       START_SCROLL_512x512_2_16(32,32,320,240);
 
-   START_SCROLL_512x512_2_16(32,32,320,240);
+       ta = ReadWord(&RAM_BG0[zz])&0x0FFF;
+       if(GFX_BG0_SOLID[ta]!=0){				// No pixels; skip
 
-      ta = ReadWord(&RAM_BG0[zz])&0x0FFF;
-      if(GFX_BG0_SOLID[ta]!=0){				// No pixels; skip
-
-         MAP_PALETTE_MAPPED_NEW(
-            ((ReadWord(&RAM_BG0[zz])>>12)&0x0F)|0xC0,
-            16,
-            map
-         );
+	   MAP_PALETTE_MAPPED_NEW(
+		   ((ReadWord(&RAM_BG0[zz])>>12)&0x0F)|0xC0,
+		   16,
+		   map
+		   );
 
 
-         if(GFX_BG0_SOLID[ta]==1){			// Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
-         }
-         else{						// all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
-         }
-      }
+	   if(GFX_BG0_SOLID[ta]==1){			// Some pixels; trans
+	       Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
+	   }
+	   else{						// all pixels; solid
+	       Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
+	   }
+       }
 
-   END_SCROLL_512x512_2_16();
+       END_SCROLL_512x512_2_16();
+   }
 
    if(bg_pri==0) RenderObject();
 
@@ -786,63 +803,68 @@ void DrawWrestleF(void)
    // BG0
    // ---
 
-   MAKE_SCROLL_512x512_2_16(
-       ReadWord(&RAM[0x2C004]),
-       ReadWord(&RAM[0x2C006])+8
-   );
+   if(check_layer_enabled(layer_id_data[0])) {
+       MAKE_SCROLL_512x512_2_16(
+	       ReadWord(&RAM[0x2C004]),
+	       ReadWord(&RAM[0x2C006])+8
+	       );
 
-   START_SCROLL_512x512_2_16(32,32,320,240);
+       START_SCROLL_512x512_2_16(32,32,320,240);
 
-      MAP_PALETTE_MAPPED_NEW(
-         ((ReadWord(&RAM_BG0[zz])>>12)&0x0F)|0xC0,
-         16,
-         map
-      );
+       MAP_PALETTE_MAPPED_NEW(
+	       ((ReadWord(&RAM_BG0[zz])>>12)&0x0F)|0xC0,
+	       16,
+	       map
+	       );
 
-      Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord(&RAM_BG0[zz])&0x0FFF)<<8], x, y, map);
+       Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord(&RAM_BG0[zz])&0x0FFF)<<8], x, y, map);
 
-   END_SCROLL_512x512_2_16();
+       END_SCROLL_512x512_2_16();
+   } else
+       clear_game_screen(0);
 
    // BG1
    // ---
 
 
-   MAKE_SCROLL_512x512_4_16(
-       ReadWord(&RAM[0x2C000]),
-       ReadWord(&RAM[0x2C002])+8
-   );
+   if(check_layer_enabled(layer_id_data[1])) {
+       MAKE_SCROLL_512x512_4_16(
+	       ReadWord(&RAM[0x2C000]),
+	       ReadWord(&RAM[0x2C002])+8
+	       );
 
-   START_SCROLL_512x512_4_16(32,32,320,240);
+       START_SCROLL_512x512_4_16(32,32,320,240);
 
-      ta = ReadWord(&RAM_BG1[zz+2])&0x1FFF;
-      if(GFX_BG0_SOLID[ta]!=0){				// No pixels; skip
+       ta = ReadWord(&RAM_BG1[zz+2])&0x1FFF;
+       if(GFX_BG0_SOLID[ta]!=0){				// No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            (RAM_BG1[zz]&0x0F)|0x100,
-            16,
-            map
-         );
+	   MAP_PALETTE_MAPPED_NEW(
+		   (RAM_BG1[zz]&0x0F)|0x100,
+		   16,
+		   map
+		   );
 
-         if(GFX_BG0_SOLID[ta]==1){			// Some pixels; trans
-            switch(RAM_BG1[zz]&0xC0){
-            case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);        break;
-            case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
-            case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
-            case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8], x, y, map); break;
-            }
-         }
-         else{						// all pixels; solid
-            switch(RAM_BG1[zz]&0xC0){
-            case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);        break;
-            case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
-            case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
-            case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8], x, y, map); break;
-            }
-         }
+	   if(GFX_BG0_SOLID[ta]==1){			// Some pixels; trans
+	       switch(RAM_BG1[zz]&0xC0){
+	       case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);        break;
+	       case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
+	       case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
+	       case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8], x, y, map); break;
+	       }
+	   }
+	   else{						// all pixels; solid
+	       switch(RAM_BG1[zz]&0xC0){
+	       case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);        break;
+	       case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
+	       case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8], x, y, map);  break;
+	       case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8], x, y, map); break;
+	       }
+	   }
 
-      }
+       }
 
-   END_SCROLL_512x512_4_16();
+       END_SCROLL_512x512_4_16();
+   }
 
    RenderObject();
 
@@ -851,32 +873,34 @@ void DrawWrestleF(void)
    // FG0
    // ---
 
-   MAKE_SCROLL_512x512_4_8(
-       0,
-       8
-   );
+   if(check_layer_enabled(layer_id_data[2])) {
+       MAKE_SCROLL_512x512_4_8(
+	       0,
+	       8
+	       );
 
-   START_SCROLL_512x512_4_8(32,32,320,240);
+       START_SCROLL_512x512_4_8(32,32,320,240);
 
-      ta = ((RAM_FG0[zz]) | (RAM_FG0[zz+2]<<8))&0xFFF;
+       ta = ((RAM_FG0[zz]) | (RAM_FG0[zz+2]<<8))&0xFFF;
 
-      if(GFX_FG0_SOLID[ta]!=0){				// No pixels; skip
+       if(GFX_FG0_SOLID[ta]!=0){				// No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            RAM_FG0[zz+2]>>4,
-            16,
-            map
-         );
+	   MAP_PALETTE_MAPPED_NEW(
+		   RAM_FG0[zz+2]>>4,
+		   16,
+		   map
+		   );
 
-         if(GFX_FG0_SOLID[ta]==1){			// Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
-         }
-         else{						// all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
-         }
-      }
+	   if(GFX_FG0_SOLID[ta]==1){			// Some pixels; trans
+	       Draw8x8_Trans_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
+	   }
+	   else{						// all pixels; solid
+	       Draw8x8_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
+	   }
+       }
 
-   END_SCROLL_512x512_4_8();
+       END_SCROLL_512x512_4_8();
+   }
 
 }
 
