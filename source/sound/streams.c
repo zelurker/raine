@@ -9,6 +9,7 @@
 #include "palette.h"
 #ifdef SDL
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "sdl/dialogs/messagebox.h"
 #endif
 #include "blit.h" // GameBitmap
 #include <unistd.h>
