@@ -1261,8 +1261,8 @@ ifdef DOIT
 endif
 endif
 ifndef NEO
-	sh -c "if [ -f hiscore.dat ]; then $(INSTALL_DATA) hiscore.dat $(rainedata); fi"
-	sh -c "if [ -f history.dat ]; then $(INSTALL_DATA) history.dat $(rainedata); fi"
+	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
+	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
 ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
