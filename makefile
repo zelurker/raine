@@ -18,7 +18,7 @@ VERSION = "0.51.11"
 VERSION_NEO = "1.2.12"
 
 # Uncomment to build neoraine instead of raine
-# NEO=1
+NEO=1
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1

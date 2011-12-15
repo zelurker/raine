@@ -1,0 +1,12 @@
+Source: neoraine
+Section: games
+Priority: optional
+Maintainer: Emmanuel Anne <emmanuel.anne@gmail.com>
+Build-Depends: binutils (>= 2.18-1 ), libc6 (>= 2.6.1-1+b1 ), libc6-dev (>= 2.6.1-1+b1 ), libc6-i686 (>= 2.6.1-1+b1 ), libncurses5 (>= 5.6+20071013-1 ), libpng12-dev (>= 1.2.15~beta5-3 ), libsdl-image1.2-dev (>= 1.2.6-1 ), libsdl-sound1.2-dev (>= 1.0.1 ), libsdl-ttf2.0-dev (>= 2.0.9-1 ), libsdl1.2-dev (>= 1.2.11-9 ), libselinux1 (>= 2.0.15-2+b1 ), libsepol1 (>= 2.0.3-1+b1 ), linux-libc-dev (>= 2.6.22-4 ), zlib1g-dev (>= 1 )
+Standards-Version: 3.7.2
+
+Package: neoraine
+Architecture: i386
+Depends: ${shlibs:Depends}, ${misc:Depends}, raine (>= 0.50.12 )
+Description: Neocd emulation using the raine engine
+ Emulate the games of the neocd console

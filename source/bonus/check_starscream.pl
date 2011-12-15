@@ -5,7 +5,6 @@ my $level = 0;
 our (@rb,@rw,@wb,@ww,@pref,@suf,@fetch) = ();
 my $finish = 0;
 our $last_prefix;
-my $nb_finish = 0;
 
 sub print3($$$) {
 	my ($header,$cpu,$arg) = @_;
@@ -157,7 +156,6 @@ while (<>) {
 					print4("add_68000_ww(",$n,$_);
 				}
 				my $c=0;
-				$nb_finish++ if ($finish);
 				while ($finish) {
 					if ($finish & (1<<$c)) {
 						print $last_prefix."finish_conf_68000($c);\n";
@@ -172,10 +170,6 @@ while (<>) {
 		(@rb,@rw,@wb,@ww,@pref,@suf,@fetch) = ();
 	}
 	if (/\}/ && $level == 0) {
-		if ($nb_finish > 1) {
-			die "function $function, $nb_finish calls to finish_conf_68000\n";
-		}
-		$nb_finish = 0;
 		$function = undef;
 	}
 	print;

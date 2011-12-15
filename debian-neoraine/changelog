@@ -1,0 +1,436 @@
+neoraine (1.2.11) unstable; urgency=low
+
+  * some songs had their 1st 2 seconds cut on some tosec neocd dumps using
+   indexes, fixed.
+ - when loading a game working in 304x224, the screen is now totally cleared
+   when changing the resolution, after the 1st loading animation.
+ - you won't get anymore errors when saving a game after playing too long in
+   kof, now the savegames use lists for the uploads and not a limited array.
+ - ask for neocd bios if it can't be found (mainly useful for osx).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:44:48 +0100
+
+neoraine (1.2.10) unstable; urgency=low
+
+  * This version mainly adds support to save the state of fm sound chips
+    (music) in savegames and restore them correctly, it should help to get rid
+	of the reports of sound corruption in neoraine.
+  * It also fixes a problem with the command line of neoraine, adds a cheat to
+    disable encounters in ssrpg, and tweaks some minor details. 
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:40:16 +0100
+
+neoraine (1.2.9) unstable; urgency=low
+
+  * New translator for ssrpg, mainly, + console fixes and gui improvements
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:37:23 +0100
+
+neoraine (1.2.8) unstable; urgency=low
+
+  * The last color palette was not correctly cleared when reseting, + some
+    debuger fixes and some sound warnings removals.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 23 Dec 2009 09:17:27 +0100
+
+neoraine (1.2.7) unstable; urgency=low
+
+  * Small bug fixes and improvements, most notably a better sync with music
+    thanks to a float fps now, and a fix for savegames which didn't save
+    correctly  the fix area when it was uploaded from the prg ram.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 02 Sep 2009 11:18:52 +0200
+
+neoraine (1.2.6) unstable; urgency=low
+
+  * There was again a bug in the crc calculation of the cache, which prevented
+    neoraine to load a file it should have loaded from the game in some cases.
+    Since I really had too many bugs of this kind, I completely disabled the
+    optimization and thus fixed this bug for good this time. You should get
+    much more reliable savegames now, especially with games which load tons of
+    files like king of fighters. (It also affects normal play, when loading
+    files between rounds).
+  * See raine 0.51.5 changelog for generic changes in this version (gui,
+    double bufer, etc...).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 07 Apr 2009 11:27:01 +0200
+
+neoraine (1.2.5) unstable; urgency=low
+
+  * Fix a rare cache corruption bug (which could load some bad sprites in some
+    very specific cases).
+  * Better handling of commands to restart the same audio track (previously it
+    was interpreted as unpause command)
+  * Better support of cue files with multiple audio files in them (previously
+    some files could very well not be found).
+  * Support for starting indexes for audio tracks in cue files.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 25 Mar 2009 11:18:12 +0100
+
+neoraine (1.2.4) unstable; urgency=low
+
+  * Fix the stupid bug with "mute sfx" freezing the emulation
+  * Fix a crash when trying to cancel "update sprite block" in neocd options.
+  * Now correctly emulate the pause command sent to the audio cd before
+    loading any file from the cd. The "Always stop cd music while loading"
+    option moves from neocd options to sound options and is now set to yes by
+    default, and is saved while you leave the emulator.
+  * Speed hacks are coming back in a better form. The speed hacks
+    autodetection could not work anymore for a few versions, it's working
+    again now (try ironclad, you'll see the difference). There is now an
+    option in "neocd options" to disable speed hacks if you fear the game
+    might be a little faster with speed hacks enabled (it's not the case normaly
+    speed hacks just make the animations smoother normaly, but there might be
+    exceptions).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 22 Mar 2009 00:48:10 +0100
+
+neoraine (1.2.3) unstable; urgency=low
+
+  * Fixed hq2x/3x in 16bpp, see raine changelog for details
+  * Running games without sound emulation should now work correctly (very
+    likely to crash previously !).
+  * You can now choose in neocd options to always turn cd music off when
+    loading a file, which is what the console was doing because it couldn't do
+    both at the same time. It can still be usefull to do the same in some very
+    rare cases, so it's your choice.
+  * You can now mute either the sfx or the cd music in the sound options menu.
+  * The default sfx volume and cd volume are now both 60, and there is an
+    option to return to the default volumes in the sound menu.
+  * When restoring a savegame new cdda commands are now always handled (they
+    could be ignored in some cases before).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 13 Mar 2009 23:01:50 +0100
+
+neoraine (1.2.2) unstable; urgency=low
+
+  * Sound sample rate can only be 44 Khz in neoraine because of the audio cd
+    tracks, so the sound options don't allow to change this.
+  * When stopping sound emulation in the middle of a game the sound now stops
+    immediately.
+  * See raine changelog for version 0.51.0 for changes not specific to
+    neoraine (gui, console, video...).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 16 Jan 2009 19:36:50 +0100
+
+neoraine (1.2.1) unstable; urgency=low
+
+  * Fixed a crash when restoring a savegame in kof98 (too many pcm uploads)
+  * Savegames could be badly restored starting in version 1.2.0 because of a
+    change in the handling of the main ram. 
+  * Added an error message when trying to load a game from a .cue file and the
+    iso defined in the cue file is not readable.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Jan 2009 23:30:46 +0100
+
+neoraine (1.2.0) unstable; urgency=low
+
+  * The 1.2.x branch is targeted at editing neocd games, specially ssrpg.
+  * The sprites blocks can't be toggled anymore with the layer keys, because
+    you couldn't toggle every sprite block this way. Now F5 toggles the fix
+    layer and f6 toggles all the sprites blocks. To toggle sprites blocks, use
+    the backspace key (default key - can be changed in the gui) to enter
+    capture mode, then browse the blocks using right and left arrows, and
+    finally capture with the C key (preferably in pause mode !).
+  * Added "update neocd sprite block" to neocd options, thid does the opposite
+    of capture mode, it takes the pngs, and converts them back to sprites
+    using the data saved while in capture mode.
+  * Added a translator for ssrpg (and only ssrpg). Available in "Game
+    Options" once the game is loaded. Should be used with the console to get
+    the address of the string to translate (you can use break $55120 and
+    display a0 to get the address, or break $6858 and then display a0 to get the
+    address of a text printed ingame, character by character (dialog usually)).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 15 Aug 2008 11:28:25 +0200
+
+neoraine (1.1.7) unstable; urgency=low
+
+  * changes for the console : better handling of scripts in windows (fopen rb
+    instead of r !!!), now correctly handles tabs in scripts, reports errors
+    if console is hidden (during scripts execution), adds save and restore
+    commands.
+  * all the scripts for ssrpg have been updated to handle up to 3
+    characters in the team at the same time (thanks to saaleh for the savegame
+    which allowed me to do that !)
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 13 Aug 2008 11:16:26 +0200
+
+neoraine (1.1.6) unstable; urgency=low
+
+  * This version mainly takes the changes from raine 0.40.15 : joysticks are
+    more responsive, and the console gets new commands which allow better
+    cheats for ssrpg
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 09 Aug 2008 10:37:01 +0200
+
+neoraine (1.1.5) unstable; urgency=low
+
+  * fix loading a mode1/2352 image with animations enabled
+  * Now supports audio tracks contained in the game image file (usually a bin
+    file). I tested with a mode1/2048 image and a mode1/2352 one, so it should
+    normally work everywhere. If you made your own image from a real cd, and
+    all you can hear is a big "sssssshhhhhhh" instead of music, then there is
+    a new option for you in sound options : "audio tracks format". Normally cd
+    tracks should always be in lsb format, but some cd player swap the bytes
+    when reading them, so you can try msb if the sound is broken for you, but
+    normally you should never have to touch this option.
+  * See raine changelog for the stupid gui fixes of previous version.
+  * Basic support for playing directly an audio cd : if no external audio
+    track can be found, then neoraine will try to play the 1st audio cd it can
+    find. In linux it works only if you have the cable between the cdrom drive
+    and your soundcard, in windows it works everywhere (converted to digital).
+    This is the less "efficient" mode of playing : looping isn't supported,
+    which means that in aero fighters the track won't loop during game play,
+    and for now it doesn't try to save the current track position in
+    savegames.
+  * When a cd track was played until its end, it stopped completely the cdda
+    and you couldn't hear anymore any track. It's fixed now.
+  * The demo of street hoop didn't play correctly if loading animations were
+    enabled. This bug affected only games which used the horizontal irq (very
+    few)
+  * disabled speed hack for magical drop 2 as it made the menu much harder to
+    use !
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 10 May 2008 10:25:09 +0200
+
+neoraine (1.1.4) unstable; urgency=low
+
+  * Fixed a few problems when switching between yuv layers and normal blits
+  * Disabled double buffer for the gui in windows, this makes a lot of things
+    much easier and already improves the look of some parts of the gui
+  * Fixed the message "loading error" on some games.
+  * neoraine could crash on a cd song change sometimes (thread bug - it's a
+    one which happens only if you are unlucky !). It's fixed now.
+  * The colors selection dialog gains some sliders controls, and you can now
+    change the fg color to any color (if you chose a dark color in previous
+    versions, you got something very ugly !). Notice that alpha is ignored for
+    fg color, but it's better this way, transparent text becomes unreadable !
+  * fix 8bpp mode (when launching neoraine on an 8bpp desktop), broken in many
+    places (crashes, palette, etc...).
+  * Prevent a possible crash when reseting a game, and prevent graphics
+    corruption when reseting during the 1st animation while the fix area is
+    being loaded
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 05 Apr 2008 17:14:27 +0200
+
+neoraine (1.1.3) unstable; urgency=low
+
+  * Fixed the loading animations "flashes", during, after or before the
+    animations (thanks to Juveno41 for the animation he found on youtube, it
+    helped a lot !). It also finally explains why the animations of overtop
+    were bad from level 2 : they were not supposed to be shown at all !
+  * Fix a stupid mistake which could cause a bad restoration of savegames in
+    some situations
+  * Some part of the gui could remain visible after the game was started...
+  * The depencies for raine and neoraine are now in different files to avoid
+    to reproduce the mistake of version 1.1.2 with the bad windows binary !
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 14 Mar 2008 23:51:50 +0100
+
+neoraine (1.1.2) unstable; urgency=low
+
+  * Fix the mess between default and custom controls created by the autofire
+    saving ability
+  * Prevent a crash when messing with the autofire before a game is actually
+    loaded
+  * Fix bad palette in kof96ng (it's a general fix, the palette actually uses
+    a mirror).
+  * The turbo control works as expected with a joystick too (release the
+    control to stop the turbo effect).
+  * Help the user from turning animations off in the middle of a loading
+    animation and prevent last blade 2 from geting lost if we use a low speed
+    of loading. Also make the loading progression bar slightly more precise,
+    and survive if the user changes the cdrom speed in the middle of a loading
+    animation.
+  * small improvements to the gui, and added the ability to change most of the
+    colors (gui options / Colors).
+  * fixed speed too fast in some places for janshin (Quest of Jong Master)
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 13 Mar 2008 17:28:51 +0100
+
+neoraine (1.1.1) unstable; urgency=low aka "triple 1" !!!
+
+  * The autofire options are fixed and they are now saved with your game
+    options (as custom controls).
+  * Fixed a stupid graphical glitch which can happen after a loading sequence
+    (like on the title screen of last blade 2).
+  * Fixed again scanlines (asm problem) + double pixel scaler (same problem)
+  * Fixed a possible crash when using normal blits and loading a new game
+  * Remapped custom keys : the multimedia keys were recognised before, bad
+    very badly mapped since they could cause a serious buffer overflow. So
+    they have been remapped and if you used some non standard keys in your
+    mappings you'll have to remap them using the gui.
+  * The loading is now progressive when animations are enabled, this produces
+    a smoother animation and allows to better see some effects (notice that at
+    speed > 2, it can still be not totally smooth because at these speeds the
+    number of sectors loaded by frame can vary from frame to frame).
+  * the turbo key (default: del) becomes like the game keys : keep it pressed
+    to enable turbo, release it to go back to normal.
+  * When changing a control, you now have the option to delete it.
+  * Fix again some corruption in the savegames. This correction might fix some
+    savegames saved before this version, but you might be obliged to create
+    new savegames to be sure to get rid of the problem (tested with samsho4).
+  * When loading a game with animations enabled and the game uses a resolution
+    of 304x224, there could be some glitches left on the borders of the screen
+    after the initial animation, it's fixed now.
+  * Fix problems with starting some loading animations (breakers).
+  * Add handling of direct writes to fix area for over top, the only game I
+    know which needs this ! And fix the animations of overtop which were bad
+    begining at level 2
+  * Fix a remarquable bug with the memory pool : if you played in windowed
+    mode with normal blits and resized the window while playing a game by
+    draging a border of the window, the memory pool had an overflow after
+    about 1s of resizing, which was ending in a violent crash !  The memory
+    allocation is now more resistant to this kind of fun !
+    Notice the bug could happen only if your window manager resizes the window
+    in real time, that is if it sends redraw messages every time the size
+    changes. MS Windows doesn't do that normaly, it happened in kde for me.
+  * Until now if you pressed the windows key by mistake, windows throws you to
+    the desktop, but if you were in the middle of a game, you had a ugly
+    message when you came back, and raine/neoraine exited after you validate
+    the message. Well it's windows specific behaviour... anyway now when you
+    press this damned key, you are still thrown to the desktop (I don't think
+    I can do anything to prevent this !), but you can continue your game when
+    you come back with alt-tab. Notice that the game is not paused in this
+    case !
+  * Recompile the windows version of sdl_sound with smpeg support to be able
+    to play some weird kind of mp3s called "free format" which couldn't be
+    played in 1.1.0. Now if you find another unplayable format, the error
+    message will appear on the game screen instead of the console since
+    usually there is no console in windows ! ;-)
+  * If starting a game which had a title bitmap (which appears after you have
+    done "load game") in normal blits at a resolution such that width > 640
+    and height < 480, then you had a crash. It's fixed too !
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 11 Mar 2008 09:16:26 +0100
+
+neoraine (1.1.0) unstable; urgency=low
+
+  * Switched from SDL_Mixer to SDL_Sound to decode audio tracks : no more
+    weird crashes with electric fence, adds flac audio support for the audio
+    tracks, and allows to save the position of the audio track in the
+    savegames.
+  * Fixed a problem with semi transparent sprites which showed only in puzzle
+    bubble !
+  * Setting the speed to 85% in aof2 didn't work, fixed
+  * Fixed kof96 neocd collector demo, which was messing with interrupt
+    vectors.
+  * Added error messages in game when an audio track can't be loaded (either
+    file unreadable, or track not found)
+  * Added pseudo video layers keys to the neocd driver : you can now disable
+    the 8 first sprites blocks + the fix layer using the F5..F12 keys. Notice
+    that the sprites layers are logical layers, the hardware doesn't handle
+    them directly.
+  * Fixed the opening b demo in last blade 2 (option->demo viewer->opening b)
+  * Inputs are now reseted when returning to the game, which avoids the
+    problems when calling the gui while keeping a game key pressed.
+  * fullheight scanlines + double width were kaput (old broken asm code)
+  * Fix the blinking effect of scanlines in windows fullscreen with double
+    buffer enabled
+  * Add loading animations support - by default they play as they would with
+    an 8x cdrom drive, it seems the best choice between too slow and too fast.
+    You can change their speed in the neocd options in the gui (or set it to
+    off to disable completely the animations).
+  * Fix some possible corruption in the savegames, but old ones can still
+    create corruption, try to use only savegames created with this version.
+  * savegames are compatible again between linux & windows
+  * handles the urls in history.dat without crashing.
+  * You can finally change the keys for the video layers, go to the inputs
+    section / Video layers...
+  * Fixed loading directly an iso passed on the command line, it was broken
+    since 1.0.5.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 06 Mar 2008 16:13:09 +0100
+
+neoraine (1.0.6) unstable; urgency=low
+
+  * Fixed a stupid bug with the cache, never use xor to see if a memory area
+    was changed. The + I now use is still not perfect, but it's much better,
+    and it should be enough for what it's used.
+  * Fixed a possible crash when loading a savegame because I had forgoten to
+    turn the cd music off before restoring a savegame...
+  * Add a "turbo" key : the default is del, you can change it in the gui, it
+    just toggles the limit speed setting. If you are not limited by vsync, you
+    can reach 700 fps in neoraine with yuv overlays when disabling the speed
+    limitation with this key !
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 12 Feb 2008 19:37:47 +0100
+
+neoraine (1.0.5) unstable; urgency=low
+
+  * Fix pcm handling in ssrpg (random battles)
+  * fix speed hacks handling when raster frame is used (like in the demo of
+    street hoop which was really too fast !!!)
+  * add experimental support for mode2/2352 isos (normally neocd isos are all
+    supposed to be mode1/2048, so usually mode2/2352 are bad rips, but
+    sometimes they work anyway !!!).
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 25 Jan 2008 17:39:32 +0100
+
+neoraine (1.0.4) unstable; urgency=low
+
+  * cue files now support filenames up to 256 characters, and improved error
+    messages for the cue files.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 06 Jan 2008 11:49:53 +0100
+
+neoraine (1.0.3) unstable; urgency=low
+
+  * Fonts were badly rendered when forcing normal blits (instead of yuv
+    overlays)
+  * From the raine engine : fix a crash when choosing to change the video mode
+    to the game resolution with scale 2x enabled.
+  * Added a new speed hack for last resort.
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 05 Jan 2008 11:54:23 +0100
+
+neoraine (1.0.2-3) unstable; urgency=low
+
+  * now supports wav in cue files, and neocheats.cfg is the right version, not
+    the test version as before !
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 04 Jan 2008 23:51:25 +0100
+
+neoraine (1.0.2-2) unstable; urgency=low
+
+  * removes the forgoten z80_check_w (debuging stuff)
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 04 Jan 2008 00:19:25 +0100
+
+neoraine (1.0.2) unstable; urgency=low
+
+  * Fixed corrupted line in the about dialog when displaying it for the 2nd
+    time
+  * Allow the sfx volume and music volume to be set to more than 100% (until
+    200%) for games with too quiet samples.
+  * fixed crash in last resort (at start)
+  * games which upload to the pcm area can also use savegames now (previously
+    trying to save such a game exited neoraine)
+  * startup.bin becomes obsolete and is removed
+  * last blade 2 had lost its title screen because it was trying to use dma
+    for its uploads, it's now supported.
+  * Pulstar gains a speed hack too.
+  * Fixed the huge bug with the sfx sound only on the left side, it's now
+    stereo, sorry !!!
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 03 Jan 2008 23:39:50 +0100
+
+neoraine (1.0.1) unstable; urgency=low
+
+  * Samurai spirits rpg fix : there was a specific video priority problem
+    which was hiding text boxes for some characters
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 28 Dec 2007 13:23:56 +0100
+
+neoraine (1.0.0-2) unstable; urgency=low
+
+  * Adds the forgoten startup.bin to the binary package...
+
+ -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 26 Dec 2007 23:57:46 +0100
+
+neoraine (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Emmanuel Anne <emmanuel.anne@gmail.com>  Wed, 26 Dec 2007 21:39:53 +0100
+

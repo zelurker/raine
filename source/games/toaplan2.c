@@ -3917,17 +3917,6 @@ static void LoadKnuckleBash(void)
 
    if(!(RAM=AllocateMem(0x20000)))return;
 
-   /*-----[Sound Setup]-----*/
-
-#if 0
-   // Sound disabled ??!
-   if(!(PCMROM = AllocateMem(0x40000))) return;
-   if(!load_rom("kbash07.bin", PCMROM, 0x40000)) return; // ADPCM ROM <1 bank>
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
-#endif
-
-   /*-----------------------*/
-
    memset(RAM+0x00000,0x00,0x20000);
 
    RAMSize=0x20000;
@@ -3988,6 +3977,26 @@ static void LoadKnuckleBash(void)
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                 // SCREEN RAM
    //AddReadByte(0x200000, 0x200003, YM2151Read68k, NULL);              // YM2151
    AddReadByte(0x200004, 0x20000F, NULL, RAM+0x01F004);                 // INPUT
+   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
+
+   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                 // SCREEN RAM
+   AddReadWord(0x700000, 0x700001, NULL, RAM+0x01F020);                 // TIMER/VSYNC?
+   AddReadWord(0x200000, 0x200001, OKIM6295_status_0_r, NULL);               // M6295
+   AddReadWord(0x200004, 0x20000F, NULL, RAM+0x01F004);                 // INPUT
+   AddReadWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                 // COLOUR RAM
+   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
+
+   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
+   //AddWriteByte(0x200000, 0x200003, YM2151Write68k, NULL);            // YM2151
+   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
+   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
+   AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);               // SCREEN RAM
+   AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
+   AddWriteWord(0x208000, 0x20803F, knuckle_bash_ioc_ww, NULL);         // INPUT
+   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
    if (is_current_game("kbash2")) {
      AddReadBW(0x200010, 0x20001b, NULL, RAM+0x01F010); // inputs
      AddReadBW(0x200020, 0x200021, OKIM6295_status_1_r, NULL);
@@ -3998,34 +4007,13 @@ static void LoadKnuckleBash(void)
    } else {
      AddReadBW(0x208010, 0x20801F, NULL, RAM+0x01F010);                 // INPUT
    }
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                 // SCREEN RAM
-   AddReadWord(0x700000, 0x700001, NULL, RAM+0x01F020);                 // TIMER/VSYNC?
-   AddReadWord(0x200000, 0x200001, OKIM6295_status_0_r, NULL);               // M6295
-   AddReadWord(0x200004, 0x20000F, NULL, RAM+0x01F004);                 // INPUT
-   AddReadWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                 // COLOUR RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   //AddWriteByte(0x200000, 0x200003, YM2151Write68k, NULL);            // YM2151
    if (is_current_game("kbash")) {
      AddWriteByte(0x200000, 0x200003, kbash_okisnd_w, NULL);               // M6295
      AddWriteByte(0x208000, 0x20803F, knuckle_bash_ioc_wb, NULL);         // INPUT
    }
-   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
+   AddReadByte(-1, -1, NULL, NULL);
+   AddReadWord(-1, -1,NULL, NULL);
    AddWriteByte(-1, -1, NULL, NULL);
-
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);               // SCREEN RAM
-   AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
-   AddWriteWord(0x208000, 0x20803F, knuckle_bash_ioc_ww, NULL);         // INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
    AddInitMemory();     // Set Starscream mem pointers...
@@ -4080,17 +4068,7 @@ void LoadFixEight(void)
    /*-----[Sound Setup]-----*/
 
 
-   if(is_current_game("fixeight"))
-   {
-     // ugh, malcor fried the Sample ROM (no M6295)
-     // ugh, it has some silly protected z80 (no YM2151 either)
-#if 0
-     if(!(PCMROM = AllocateMem(0x40000))) return;
-     if(!load_rom("tp-026-2", PCMROM, 0x40000)) return;     // ADPCM ROM <1 bank>
-     ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
-#endif
-   }
-   else
+   if(!is_current_game("fixeight"))
    {
      if(!(PCMROM = AllocateMem(0x40000 + 0x50000))) return;
      if(!load_rom("1.bin", RAM, 0x80000)) return;
@@ -4230,8 +4208,9 @@ void LoadFixEight(void)
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                 // GCU RAM (SCREEN)
    AddReadByte(0x200018, 0x200019, OKIM6295_status_0_r, NULL);               // M6295
    AddReadByte(0x200000, 0x20003F, NULL, RAM+0x01F000);                 // INPUT
-	if(!is_current_game("fixeight"))
+	if(!is_current_game("fixeight")) {
 		AddReadByte(0x700000, 0x700001, TimerRead, NULL);               // TIMER
+	}
    AddReadByte(0x280000, 0x28FFFF, TS_001_Turbo_RB, NULL);              // TS-001-TURBO
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
    AddReadByte(-1, -1, NULL, NULL);
@@ -4243,9 +4222,9 @@ void LoadFixEight(void)
    AddReadWord(0x200018, 0x200019, OKIM6295_status_0_r, NULL);               // M6295
    AddReadWord(0x200000, 0x20003F, NULL, RAM+0x01F000);                 // INPUT
    AddReadWord(0x600000, 0x60FFFF, NULL, RAM+0x044000);                 // CG RAM (FG0 GFX RAM)
-	if(is_current_game("fixeight"))
+	if(is_current_game("fixeight")) {
    AddReadWord(0x800000, 0x800001, TimerRead, NULL);                    // TIMER
-	else
+	} else
 	{
 		AddReadWord(0x700000, 0x700001, TimerRead, NULL);               // TIMER
 		AddReadWord(0x800000, 0x87FFFF, NULL, ROM+0x080000);            // UNPROTECTED MAPS :)
@@ -4256,10 +4235,11 @@ void LoadFixEight(void)
 
    AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x200014, 0x200015, fixeighb_oki_bankswitch_w, NULL);   // M6295 BANKING
-   if (is_current_game("fixeight"))
+   if (is_current_game("fixeight")) {
      AddWriteByte(0x28f000, 0x28f001, fixeight_okisnd_w, NULL);               // M6295
-   else
+   } else {
      AddWriteByte(0x200018, 0x200019, M6295Write68k, NULL);               // M6295
+   }
    AddWriteByte(0x200000, 0x20003F, fix_eight_ioc_wb, NULL);            // INPUT
    AddWriteByte(0x280000, 0x28FFFF, TS_001_Turbo_WB, NULL);             // TS-001-TURBO
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
@@ -5694,13 +5674,6 @@ void load_batrider(void)
    ADPCMSetBuffers(((struct ADPCMinterface*)&batrider_m6295),PCMROM+0x00000,0x140000);
    PCMBanksize=0x140000;
 
-/*    for(ta=0; ta<0x10; ta++){ */
-/*       batrider_m6295_romlist_chip_a[ta].data = PCMROM+0x000000+(ta*0x10000); */
-/*       batrider_m6295_romlist_chip_a[ta].size = 0x10000; */
-/*       batrider_m6295_romlist_chip_b[ta].data = PCMROM+0x100000+(ta*0x10000); */
-/*       batrider_m6295_romlist_chip_b[ta].size = 0x10000; */
-/*    } */
-
    Z80ROM = RAM+0x34000+0x10000;
 
    if(!(BR_Z80_ROM = AllocateMem(0x10*0xC000))) return;
@@ -6265,9 +6238,6 @@ static void execute_bakraid() {
     //if (z80ok) {
       cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(7,60)/SLICE);    // Z80 4MHz (60fps)
       cpu_interrupt(CPU_Z80_0,0x38);
-/*       if (z80pc == 0x103f) */
-/* 	z80ok = 0; // reached speed hack */
-/*     } */
     if (cycles) // not reached the speed hack
       cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(28,60)/SLICE);    // M68000 28MHz (60fps)
     else {
