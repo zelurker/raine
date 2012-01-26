@@ -389,7 +389,7 @@ static struct {
 } irq;
 
 static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
-	   scanline,diable_irq1,
+	   scanline,disable_irq1,watchdog_counter,
 	   // irq3_pending,
 	   display_position_interrupt_pending, vblank_interrupt_pending;
 
@@ -426,6 +426,7 @@ static void neo_irq1pos_w(int offset, UINT16 data)
        * Clearly this is a rough approximation (the irq.pos value is not
        * compared at all to any clock), but it seems to work well enough ! */
       int line = (irq.pos + 3) / 0x180; /* ridhero gives 0x17d */
+      printf("load_relative: irq.pos = %d\n",irq.pos);
       get_scanline();
       if (scanline == 263)
 	irq.start = line;
@@ -463,13 +464,20 @@ static void update_interrupts(void)
       print_debug("irqs disabled\n");
       return;
     }
-    if (level == 2 && irq.wait_for_vbl_ack) {
-      print_debug("received vbl, still waiting for ack\n");
-      return;
-    } 
+    if (level == 2) {
+	if (watchdog_counter-- == 0) {
+	    printf("watchdog reset in vbl %d\n",(s68000context.interrupts[0] & (1<<level)));
+	    reset_game_hardware();
+	}
+
+       if (irq.wait_for_vbl_ack) {
+	   print_debug("received vbl, still waiting for ack\n");
+	   return;
+       } 
+    }
     print_debug("68k irq %d\n",level);
-    print_debug("10fd80 = %x 1021BE %x 100014 %x\n",ReadWord(&RAM[0x10fd80]),
-	ReadWord(&RAM[0x1021BE]),ReadWord(&RAM[0x100014]));
+    /* print_debug("10fd80 = %x 1021BE %x 100014 %x\n",ReadWord(&RAM[0x10fd80]),
+	ReadWord(&RAM[0x1021BE]),ReadWord(&RAM[0x100014])); */
 
     if (s68000context.interrupts[0] & (1<<level)) {
       print_debug("irq already pending, ignoring...\n");
@@ -495,10 +503,11 @@ static void update_interrupts(void)
 }
 
 static void write_videoreg(UINT32 offset, UINT32 data) {
+    // Called LSPC in the neogeo api documentation
   switch((offset >> 1) & 7) {
-    case 0x00: // printf("set_video_pointer %x\n",data);
+    case 0x00: // Address register
       video_pointer = data; break;
-    case 0x01: 
+    case 0x01:  // Write data register
       neogeo_vidram[video_pointer] = data;
 #if 0
       if (video_pointer == 0x8215)
@@ -509,14 +518,14 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
       // video_pointer = (video_pointer & 0x8000) | ((video_pointer + video_modulo) & 0x7fff);
       video_pointer += video_modulo;
       break;
-    case 0x02: video_modulo = data; break;
-    case 0x03: 
-	       neogeo_frame_counter_speed=((data>>8)&0xff)+1;
+    case 0x02: video_modulo = data; break; // Automatic increment register
+    case 0x03: // Mode register
+	       neogeo_frame_counter_speed=(data>>8)+1;
 	       irq.control = data & 0xff;
 	       print_debug("irq.control = %x, data received %x offset %x\n",data & 0xff,data, offset);
 	       break;
-    case    4: neo_irq1pos_w(0,data); /* IRQ position */    break;
-    case    5: neo_irq1pos_w(1,data); /* IRQ position */    break;
+    case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
+    case    5: neo_irq1pos_w(1,data); /* timer low */    break;
     case    6:    /* IRQ acknowledge */
 	       // if (data & 0x01) irq3_pending = 0;
 	       if (data & 0x02) display_position_interrupt_pending = 0;
@@ -619,23 +628,19 @@ static UINT16 read_videoreg(UINT32 offset) {
 
 static void watchdog_w(UINT32 offset, UINT16 data)
 {
-  /* only an LSB write resets the watchdog */
-  // In fact, there is no watchdog in the neocd console
-  // it's because the console needs to disable irqs while doing an upload
-  // and the uploads can be long sometimes, and since the watchdog is updated
-  // during the vbl (irq2), there simply can't be any watchdog here...
-  // watchdog_counter = 18;  // 0.13 * 60 = 7.8, so I'll use 8 frames...
-  // With 8, mslug can't start the game (reset before the game starts).
-  // With 9, mslug resets at start of stage 3
-  // I'll take 18 to have some margin, anyway this is in frames, for the
-  // user it won't make much of a difference...
+    /* Ok, maybe there is a watchdog after all, it takes 0.13s from mame to
+     * reset the hardware, which is 8 frames. With 8, mslug resets at the
+     * beginning of stage 3, 9 seems to be ok. I'll keep this value for now */
+  watchdog_counter = 9;
 }
 
 void neogeo_set_screen_dark(UINT32 bit) {
   // not supported, is it really usefull ???
 }
 
-static UINT8 game_vectors[0x100], game_vectors_set;
+#define NEO_VECTORS 0x80
+
+static UINT8 game_vectors[NEO_VECTORS], game_vectors_set;
 
 static void    neogeo_select_bios_vectors (int bit) {
   if (bit) {
@@ -643,21 +648,21 @@ static void    neogeo_select_bios_vectors (int bit) {
     if (game_vectors_set) {
       print_debug("already set\n");
     } else {
-      memcpy(RAM,game_vectors,0x100);
+      memcpy(RAM,game_vectors,NEO_VECTORS);
       game_vectors_set = 1;
     }
   } else {
     if (game_vectors_set) {
-      memcpy(game_vectors,RAM,0x100);
+      memcpy(game_vectors,RAM,NEO_VECTORS);
       game_vectors_set = 0;
     }
     print_debug("set bios vectors\n");
-    memcpy(RAM, neocd_bios, 0x100);
+    memcpy(RAM, neocd_bios, NEO_VECTORS);
   }
 }
 
 void update_game_vectors() {
-  memcpy(game_vectors,RAM,0x100);
+  memcpy(game_vectors,RAM,NEO_VECTORS);
   game_vectors_set = 1;
   print_debug("game vectors updated\n");
 }
@@ -1658,9 +1663,10 @@ void postprocess_ipl() {
        the easiest fix is to just disable it ! 
        For neo turf masters, the screen is flashing when enabling it. It might
        be because of unemulated raster effects for now... */
-    diable_irq1 = 1;
+    disable_irq1 = 1;
   else
-    diable_irq1 = 0;
+    disable_irq1 = 0;
+  watchdog_counter = 9;
 
   SetLanguageSwitch(region_code);
   if (old_name != current_game->main_name) {
@@ -2489,7 +2495,10 @@ void execute_neocd() {
   // RAM[0x10fd97^1] = 15;
 
   stopped_68k = 0;
-  if ((irq.control & IRQ1CTRL_ENABLE) && !diable_irq1 && irq.start < 264) {
+  if (irq.control & IRQ1CTRL_ENABLE) {
+      printf("irq.start %d\n",irq.start);
+  }
+  if ((irq.control & IRQ1CTRL_ENABLE) && !disable_irq1 && irq.start < 264) {
     print_debug("raster frame\n");
 
     raster_frame = 1;
@@ -2539,7 +2548,7 @@ void execute_neocd() {
     // the 68k frame does not need to be sliced any longer, we
     // execute cycles on the z80 upon receiving a command !
     cpu_execute_cycles(CPU_68K_0, current_neo_frame);
-    if ((irq.control & IRQ1CTRL_ENABLE) && !diable_irq1 && irq.start >= 264) 
+    if ((irq.control & IRQ1CTRL_ENABLE) && !disable_irq1 && irq.start >= 264) 
       irq.start -= 264; // it will be for next frame ! :)
     raster_frame = 0;
     if (z80_enabled && !irq.disable && RaineSoundCard) {

@@ -9,8 +9,12 @@ extern "C" {
 #define WriteLongSc(a,b) WriteWord(a,(b)>>16); WriteWord(a+2,((b)&0xffff))
 
 #define IRQ1CTRL_AUTOANIM_STOP		0x08
-#define IRQ1CTRL_ENABLE				0x10
+// Issues an interrupt when counter = 0 :
+#define IRQ1CTRL_ENABLE			0x10
+// When timer low register is set, timer counter is simultaneously set
 #define IRQ1CTRL_LOAD_RELATIVE		0x20
+// Timer counter is set at the beginning of the horizontal blanking of the 1st
+// vertical line
 #define IRQ1CTRL_AUTOLOAD_VBLANK	0x40
 #define IRQ1CTRL_AUTOLOAD_REPEAT	0x80
 
