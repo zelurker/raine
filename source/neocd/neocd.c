@@ -180,8 +180,10 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P2_START, MSG_P2_START, 0x04, 0x04, BIT_ACTIVE_0 },
   { KB_DEF_COIN2, MSG_COIN2, 0x04, 0x08, BIT_ACTIVE_0 },
   // Bit 4 (0x10) is 0 if the memory card is present !!!
-  // From mame : d0 & D1 are presence bit indicator, d2 is write enabled
-  // so the 3 bits must be set to 0 for a normal memory card behaviour.
+  // neogeo doc :
+  // bit 5 = mc 2 insertion status (0 = inserted)
+  // bit 6 write protect 0 = write enable
+  // bit 7 = neogeo mode : 0 = neogeo / 1 = mvs !!!
 
   { 0, NULL,        0,        0,    0            },
 };
@@ -534,15 +536,17 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
 
 	       update_interrupts();
 	       break;
-    case 0x07: break; /* unknown, see get_video_control */
+    case 0x07: break; /* LSPC2 : timer stop switch - indicate wether the hbl
+			 interrupt should also count the supplemental lines
+			 in pal mode. AFAIK all the games are NTSC, this is
+			 not supported.
+			 Anyway, the doc says only bit 0 is used :
+			 default value = 1
+			 bit 0 = 0 timer counter is stopped when in pal mode
+			 bit 0 = 1 when in pal, timer counter is stopped 32
+			 horizontal lines
+ */
   }
-}
-
-static void write_videoregb(UINT32 offset, UINT32 data) {
-  print_debug("write video byte %x,%x\n",offset,data);
-  if (offset & 1)
-    // Write the same byte in LSB & MSB
-    write_videoreg(offset,data | (data << 8));
 }
 
 static UINT16 read_videoreg(UINT32 offset) {
@@ -727,9 +731,9 @@ static void system_control_w(UINT32 offset, UINT16 data)
     // case 0x06: set_save_ram_unlock(bit); break;
     case 0x07: neogeo_set_palette_bank(bit); break;
 
-    case 0x02: /* unknown - HC32 middle pin 1 */
-    case 0x03: /* unknown - uPD4990 pin ? */
-    case 0x04: /* unknown - HC32 middle pin 10 */
+    case 0x02: /* unknown - HC32 middle pin 1 */ // mc 1 write enable
+    case 0x03: /* unknown - uPD4990 pin ? */     // mc 2 write enable
+    case 0x04: /* unknown - HC32 middle pin 10 */ // mc register select/normal
 	       // writes 0 here when the memory card has been detected
 	       print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000readPC(), offset & 0x07, bit,data,ReadLongSc(&RAM[s68000context.areg[7]]),ReadLongSc(&RAM[s68000context.areg[7]+4]));
 	       break;
@@ -1345,6 +1349,7 @@ static void draw_sprites(int start, int end) {
 
     // If this bit is set this new column is placed next to last one
     if (y_control & 0x40) {
+	if (rows == 0) continue; // chain on an erased 3d sprite
       sx += (rzx);
 
       // Get new zoom for this column
@@ -1356,6 +1361,7 @@ static void draw_sprites(int start, int end) {
       sx = (neogeo_vidram[0x8400 + count]) >> 7;
       sy = 0x1F0 - (y_control >> 7);
       rows = y_control & 0x3f;
+      if (rows == 0) continue;
       zx = (zoom_control >> 8)&0x0F;
 
       rzy = zoom_control & 0xff;
@@ -1365,6 +1371,7 @@ static void draw_sprites(int start, int end) {
       if (rows == 0x20)
 	fullmode = 1;
       else if (rows >= 0x21)
+	  // The neogeo api doc says it should be 0x21 (specific setting)
 	fullmode = 2;   // most games use 0x21, but
       else
 	fullmode = 0;   // Alpha Mission II uses 0x3f
@@ -1468,6 +1475,7 @@ static void draw_neocd() {
   // + an 8x8 text layer (fix) over them
   ClearPaletteMap();
 
+  /* Confirmed by neogeo doc : palette 255 for bg */
   MAP_PALETTE_MAPPED_NEW(
       0xff,
       16,
@@ -2271,14 +2279,17 @@ static void load_neocd() {
   AddWriteByte(0x800000, 0x80ffff, write_memcard, NULL);
   AddWriteWord(0x800000, 0x80ffff, write_memcardw, NULL);
 
+  // No byte access supported to the LSPC (neogeo doc)
   AddReadWord(0x3c0000, 0x3c0007, read_videoreg, NULL);
-  AddWriteByte(0x3c0000, 0x3c000f, write_videoregb, NULL);
   AddWriteWord(0x3c0000, 0x3c000f, write_videoreg, NULL);
 
   AddWriteByte(0x320000, 0x320001, write_sound_command, NULL);
   AddWriteWord(0x320000, 0x320000, write_sound_command_word, NULL);
 
   AddWriteBW(0x3a0000, 0x3a001f, system_control_w, NULL);
+  /* Notes about the palette from neogeo doc :
+   * should be accessed only during vbl to avoid noise on screen, by words
+   * only. Well byte access can be allowed here, it can't harm */
   AddRWBW(0x400000, 0x401fff, NULL, RAM_PAL);
   AddWriteWord(0x402000, 0x403fff, write_pal, NULL); // palette mirror !
   AddSaveData(SAVE_USER_0, (UINT8*)&palbank, sizeof(palbank));
@@ -2602,6 +2613,7 @@ void execute_neocd() {
   }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
+  /*
   if (s68000readPC() == 0xc0e602) {
 	  // maybe this one should be emulated with a timer which resets the hw
 	  // after some irq inactivity ?
@@ -2610,6 +2622,7 @@ void execute_neocd() {
 	  Stop68000(0,0);
 	  reset_game_hardware();
   }
+  */
 }
 
 static void clear_neocd() {
