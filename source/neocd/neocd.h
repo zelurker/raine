@@ -16,6 +16,7 @@ extern "C" {
 // Timer counter is set at the beginning of the horizontal blanking of the 1st
 // vertical line
 #define IRQ1CTRL_AUTOLOAD_VBLANK	0x40
+// Timer counter is set to initial value when it reaches 0
 #define IRQ1CTRL_AUTOLOAD_REPEAT	0x80
 
 extern int neocd_id,allowed_speed_hacks;

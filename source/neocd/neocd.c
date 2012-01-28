@@ -37,12 +37,25 @@
 #include "loadpng.h"
 #include "games/gun.h"
 
-static int capture_mode = 0;
+static int capture_mode = 0,start_line,screen_cleared;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1;
 static int one_palette;
 static int assigned_banks, current_bank;
 int capture_new_pictures;
+static BITMAP *raster_bitmap;
+static void draw_neocd();
+
+static struct VIDEO_INFO neocd_video =
+{
+  draw_neocd,
+  320,
+  224,
+  16,
+  VIDEO_ROTATE_NORMAL |
+    VIDEO_ROTATABLE,
+  NULL,
+};
 
 void restore_neocd_config() {
   allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
@@ -77,7 +90,8 @@ static void next_sprite_block() {
   }
 }
 
-static void draw_sprites_capture(int start, int end);
+static void draw_sprites_capture(int start, int end, int start_line, 
+	int end_line);
 
 static FILE *fdata;
 #define MAX_BANKS 256
@@ -103,7 +117,7 @@ static void do_capture() {
 	else
 	    sprintf(filename,"%ssavedata" SLASH "block%d.map", dir_cfg.exe_path, capture_block);
 	fdata = fopen(filename,"w");
-	draw_sprites_capture(0,384);
+	draw_sprites_capture(0,384,0,224);
 	memset(&pal[16],1,sizeof(pal)-16*sizeof(SDL_Color));
 	fclose(fdata);
 	fdata = NULL;
@@ -428,7 +442,6 @@ static void neo_irq1pos_w(int offset, UINT16 data)
        * Clearly this is a rough approximation (the irq.pos value is not
        * compared at all to any clock), but it seems to work well enough ! */
       int line = (irq.pos + 3) / 0x180; /* ridhero gives 0x17d */
-      printf("load_relative: irq.pos = %d\n",irq.pos);
       get_scanline();
       if (scanline == 263)
 	irq.start = line;
@@ -467,8 +480,9 @@ static void update_interrupts(void)
       return;
     }
     if (level == 2) {
-	if (watchdog_counter-- == 0) {
-	    printf("watchdog reset in vbl %d\n",(s68000context.interrupts[0] & (1<<level)));
+	if ((s68000context.interrupts[0] & (1<<level))==0 &&
+		watchdog_counter-- == 0) {
+	    printf("watchdog reset in vbl \n");
 	    reset_game_hardware();
 	}
 
@@ -581,14 +595,9 @@ static UINT16 read_videoreg(UINT32 offset) {
 	     * and the counter goes from 0xf8 to 0x1ff with a twist... ! */
 	    {
 	      get_scanline();
-	      int vcounter = scanline + 0x100;
-	      if (vcounter >= 0x200)
-		vcounter -= 0x108; // That's the twist, the 0xf8-0xff is at the
-	      // end
-	      // Magician lord uses this counter a lot when entering the
-	      // score, if the scanline estimation is wrong then the game
-	      // freezes there !
-	      print_debug("access vcounter %x frame_counter %x from %x\n",vcounter,neogeo_frame_counter,s68000readPC());
+	      int vcounter = scanline + 0xf8;
+	      print_debug("access vcounter %d frame_counter %x from %x\n",vcounter,neogeo_frame_counter,s68000readPC());
+
 	      return (vcounter << 7) | (neogeo_frame_counter & 7);
 	    }
   }
@@ -1028,312 +1037,310 @@ typedef struct {
     char name[14];
 } tsprite;
 
-static void draw_sprites_capture(int start, int end) {
-  // Version which draws only 1 specific block of sprites !
-  int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
-  int         offs,count,y;
-  int         tileatr,y_control,zoom_control;
-  UINT16 tileno;
-  char         fullmode=0;
-  int         rzx=16,zy=0;
-  UINT8 *map;
-  int nb_block = 0,new_block;
-  int bank = -1;
-  int mx,my;
-  int fixed_palette = 0;
-  tsprite *sprites = NULL;
-  int nb_sprites = 0,alloc_sprites = 0;
+static void draw_sprites_capture(int start, int end, int start_line, int end_line) {
+    // Version which draws only 1 specific block of sprites !
+    int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
+    int         offs,count,y;
+    int         tileatr,y_control,zoom_control;
+    UINT16 tileno;
+    char         fullmode=0;
+    int         rzx=16,zy=0;
+    UINT8 *map;
+    int nb_block = 0,new_block;
+    int bank = -1;
+    int mx,my;
+    int fixed_palette = 0;
+    tsprite *sprites = NULL;
+    int nb_sprites = 0,alloc_sprites = 0;
 
-  GetMouseMickeys(&mx,&my);
-  mousex += mx; if (mousex > 320-16) mousex = 320-16;
-  if (mousex < -8) mousex = -8;
-  mousey += my;
-  if (mousey > 224-8) mousey = 224-8;
-  if (mousey < -16) mousey = -16;
-  // display gun at the end to see something !!!
-  
-
-  for (count=start; count<end;count++) {
-
-    zoom_control = neogeo_vidram[0x8000 + count];
-    y_control = neogeo_vidram[0x8200 + count];
-
-    // If this bit is set this new column is placed next to last one
-    if (y_control & 0x40) {
-      new_block = 0;
-      sx += (rzx);
-
-      // Get new zoom for this column
-      zx = (zoom_control >> 8)&0x0F;
-
-      sy = oy;
-    } else {   // nope it is a new block
-      new_block = 1;
-      // Sprite scaling
-      sx = (neogeo_vidram[0x8400 + count]) >> 7;
-      sy = 0x1F0 - (y_control >> 7);
-      rows = y_control & 0x3f;
-      zx = (zoom_control >> 8)&0x0F;
-
-      rzy = zoom_control & 0xff;
+    GetMouseMickeys(&mx,&my);
+    mousex += mx; if (mousex > 320-16) mousex = 320-16;
+    if (mousex < -8) mousex = -8;
+    mousey += my;
+    if (mousey > 224-8) mousey = 224-8;
+    if (mousey < -16) mousey = -16;
+    // display gun at the end to see something !!!
 
 
-      // Number of tiles in this strip
-      if (rows == 0x20)
-	fullmode = 1;
-      else if (rows >= 0x21)
-	fullmode = 2;   // most games use 0x21, but
-      else
-	fullmode = 0;   // Alpha Mission II uses 0x3f
+    for (count=start; count<end;count++) {
 
-      if (sy > 0x100) sy -= 0x200;
+	zoom_control = neogeo_vidram[0x8000 + count];
+	y_control = neogeo_vidram[0x8200 + count];
 
-      if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
-      {
-	while (sy < -16) sy += 2 * (rzy + 1);
-      }
-      oy = sy;
+	// If this bit is set this new column is placed next to last one
+	if (y_control & 0x40) {
+	    new_block = 0;
+	    sx += (rzx);
 
-      if(rows==0x21) rows=0x20;
-      else if(rzy!=0xff && rows!=0) {
-	rows=((rows*16*256)/(rzy+1) + 15)/16;
-      }
+	    // Get new zoom for this column
+	    zx = (zoom_control >> 8)&0x0F;
 
-      if(rows>0x20) rows=0x20;
-    }
+	    sy = oy;
+	} else {   // nope it is a new block
+	    new_block = 1;
+	    // Sprite scaling
+	    sx = (neogeo_vidram[0x8400 + count]) >> 7;
+	    sy = 0x1F0 - (y_control >> 7);
+	    rows = y_control & 0x3f;
+	    zx = (zoom_control >> 8)&0x0F;
 
-    rzx = zx+1;
-    // skip if falls completely outside the screen
-    if (sx >= 0x140 && sx <= 0x1f0) {
-      // printf("%d,%d,%d continue sur sx count %x\n",sx,sy,rzx,count);
-      continue;
-    }
+	    rzy = (zoom_control & 0xff)+1;
 
-    if ( sx >= 0x1F0 )
-      sx -= 0x200;
 
-    // No point doing anything if tile strip is 0
-    if ((rows==0)|| sx < -offx || (sx>= maxx)) {
-      continue;
-    }
-    if (new_block && capture_mode==1) {
-      // check if sprite block is enabled only here, because there are lots
-      // of bad blocks in sprite ram usually, so we just skip them first
-      if (nb_block < capture_block) {
-	// look for next start of block
-	do {
-	  count++;
-	} while ((neogeo_vidram[0x8200 + count] & 0x40) && count < end);
-	count--; // continue will increase count again...
-	nb_block++;
-	continue;
-      }
-      nb_block++;
-      if (nb_block > capture_block+1)
-	break;
-    }
+	    // Number of tiles in this strip
+	    if (rows == 0x20)
+		fullmode = 1;
+	    else if (rows >= 0x21)
+		fullmode = 2;   // most games use 0x21, but
+	    else
+		fullmode = 0;   // Alpha Mission II uses 0x3f
 
-    offs = count<<6;
+	    if (sy > 0x100) sy -= 0x200;
 
-    // TODO : eventually find the precise correspondance between rzy and zy, this
-    // here is just a guess...
-    if (rzy)
-      zy = (rzy >> 4) + 1;
-    else
-      zy = 0;
+	    if (fullmode == 2 || (fullmode == 1 && rzy == 0x100))
+	    {
+		while (sy < -16) sy += 2 * rzy;
+	    }
+	    oy = sy;
 
-    // rows holds the number of tiles in each vertical multisprite block
-    for (y=0; y < rows ;y++) {
-      tileno = neogeo_vidram[offs];
-      tileatr = neogeo_vidram[offs+1];
-      offs += 2;
-      if (y)
-	// This is much more accurate for the zoomed bgs in aof/aof2
-	sy = oy + (((rzy+1)*y)>>4);
+	    if(rows==0x21) rows=0x20;
+	    else if(rzy!=0x100 && rows!=0) {
+		rows=((rows*16*256)/rzy + 15)/16;
+	    }
 
-      if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP)) {
-	if (tileatr&0x8) {
-	  // printf("animation tileno 8\n");
-	  tileno = (tileno&~7)|(neogeo_frame_counter&7);
-	} else if (tileatr&0x4) {
-	  // printf("animation tileno 4\n");
-	  tileno = (tileno&~3)|(neogeo_frame_counter&3);
+	    if(rows>0x20) rows=0x20;
 	}
-      }
 
-      //         tileno &= 0x7FFF;
-      if (tileno>0x7FFF) {
-	// printf("%d,%d continue sur tileno %x count %x\n",sx,sy,tileno,count);
-	continue;
-      }
-
-      if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
-      {
-	if (sy >= 248) {
-	  sy -= 2 * (rzy + 1);
+	rzx = zx+1;
+	// skip if falls completely outside the screen
+	if (sx >= 0x140 && sx <= 0x1f0) {
+	    // printf("%d,%d,%d continue sur sx count %x\n",sx,sy,rzx,count);
+	    continue;
 	}
-      }
-      else if (fullmode == 1)
-      {
-	if (y >= 0x10) sy -= 2 * (rzy + 1);
-      }
-      else if (sy > 0x110) sy -= 0x200;
 
-      if (((tileatr>>8))&&(sy<224 && sy>=-15) && video_spr_usage[tileno])
-      {
-	if (one_palette) {
-	  if (bank == -1) {
-	    if (current_bank < 0) {
-	      bank = tileatr >> 8;
-	      current_bank = assigned_banks = 0;
-	      banks[current_bank] = bank;
-	    } else {
-		if (capture_mode == 1) {
-		    current_bank++;
-		    if (current_bank > assigned_banks) {
-			printf("banks error: %d > %d\n",current_bank,assigned_banks);
-			exit(1);
-		    }
-		}
-	      bank = banks[current_bank];
-	      if (bank != (tileatr >> 8))
+	if ( sx >= 0x1F0 )
+	    sx -= 0x200;
+
+	// No point doing anything if tile strip is 0
+	if ((rows==0)|| sx < -offx || (sx>= maxx)) {
+	    continue;
+	}
+	if (new_block && capture_mode==1) {
+	    // check if sprite block is enabled only here, because there are lots
+	    // of bad blocks in sprite ram usually, so we just skip them first
+	    if (nb_block < capture_block) {
+		// look for next start of block
+		do {
+		    count++;
+		} while ((neogeo_vidram[0x8200 + count] & 0x40) && count < end);
+		count--; // continue will increase count again...
+		nb_block++;
 		continue;
 	    }
-	  } else if (bank != (tileatr >> 8)){ // 2nd palette of this sprite bank
-	    // store the new bank for next call (if we don't have it already)
-	    int new = tileatr >> 8;
-	    int n;
-	    int found = 0;
-	    for (n=0; n<=assigned_banks; n++) {
-	      if (banks[n] == new) {
-		found = 1;
+	    nb_block++;
+	    if (nb_block > capture_block+1)
 		break;
-	      }
-	    }
-	    if (found)
-	      continue;
-	    assigned_banks++;
-	    if (assigned_banks == MAX_BANKS) {
-	      printf("color banks overflow\n");
-	      exit(1);
-	    }
-	    banks[assigned_banks] = tileatr >> 8;
-	    continue;
-	  }
-	  char *name;
-	  int nb=-1;
-	  get_cache_origin(SPR_TYPE,tileno<<8,&name,&nb);
-	  if (fdata && nb > -1 && sx+offx >= 16 && sx+offx < 320+16 && sy >= 0 && sy < 224) {
-	      if (nb_sprites == alloc_sprites) {
-		  alloc_sprites += 20;
-		  sprites = realloc(sprites,alloc_sprites*sizeof(tsprite));
-	      }
-	      tsprite *spr = &sprites[nb_sprites];
-	      spr->x = sx+offx-16;
-	      spr->y = sy;
-	      spr->sprite = nb/256;
-	      spr->tileno = tileno;
-	      spr->rzx = rzx;
-	      spr->zy = zy;
-	      spr->attr = tileatr & 3;
-	      strcpy(spr->name,name);
-	      nb_sprites++;
-
-	      put_override(SPR_TYPE,name,0);
-	  }
 	}
-	MAP_PALETTE_MAPPED_NEW(
-	    (tileatr >> 8),
-	    16,
-	    map);
-	if (one_palette) {
-	  // in 8bpp, there is 1 reserved color (white)
-	  // as a result, the color n is mapped to n+1, and we want a direct
-	  // mapping here...
-	    if (bitmap_color_depth(GameBitmap) == 8 && !fixed_palette) {
-		fixed_palette = 1;
-		printf("palette fix\n");
-		PALETTE pal2;
-		int n;
-		for (n=0; n<16; n++) {
-		    pal2[n] = pal[map[n]];
-		    printf("pal %d = pal %d rgb %02x %02x %02x\n",n,map[n],
-			    pal2[n].r,pal2[n].g,pal2[n].b);
-		    map[n] = n;
+
+	offs = count<<6;
+
+	// TODO : eventually find the precise correspondance between rzy and zy, this
+	// here is just a guess...
+	zy = (rzy >> 4);
+
+	// rows holds the number of tiles in each vertical multisprite block
+	for (y=0; y < rows ;y++) {
+	    tileno = neogeo_vidram[offs];
+	    tileatr = neogeo_vidram[offs+1];
+	    offs += 2;
+	    if (y)
+		// This is much more accurate for the zoomed bgs in aof/aof2
+		sy = oy + (((rzy+1)*y)>>4);
+
+	    if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP)) {
+		if (tileatr&0x8) {
+		    // printf("animation tileno 8\n");
+		    tileno = (tileno&~7)|(neogeo_frame_counter&7);
+		} else if (tileatr&0x4) {
+		    // printf("animation tileno 4\n");
+		    tileno = (tileno&~3)|(neogeo_frame_counter&3);
 		}
-		memcpy(pal,pal2,sizeof(SDL_Color)*16);
-		// clear screen with transparent color : color 0.
-		clear_game_screen(0);
 	    }
-	} 
-	if (sx+offx < 0) {
-	  printf("bye: %d,%d rzx %d offx %d\n",sx+offx,sy+16,rzx,offx);
-	  exit(1);
-	}
-	// printf("sprite %d,%d,%x\n",sx,sy,tileno);
-	if (sx >= mousex && sx < mousex+16 && sy>= mousey && sy < mousey+16)
-	    print_ingame(1,"%d,%d,%x",sx,sy,tileno);
 
-	if (!fdata) {
-	    if (video_spr_usage[tileno] == 2) // all solid
-		Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
-	    else
-		Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+	    //         tileno &= 0x7FFF;
+	    if (tileno>0x7FFF) {
+		// printf("%d,%d continue sur tileno %x count %x\n",sx,sy,tileno,count);
+		continue;
+	    }
+
+	    if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
+	    {
+		if (sy >= 248) {
+		    sy -= 2 * (rzy + 1);
+		}
+	    }
+	    else if (fullmode == 1)
+	    {
+		if (y >= 0x10) sy -= 2 * (rzy + 1);
+	    }
+	    else if (sy > 0x110) sy -= 0x200;
+
+	    if (((tileatr>>8))&&(sy<end_line && sy+zy>=start_line) && video_spr_usage[tileno])
+	    {
+		if (one_palette) {
+		    if (bank == -1) {
+			if (current_bank < 0) {
+			    bank = tileatr >> 8;
+			    current_bank = assigned_banks = 0;
+			    banks[current_bank] = bank;
+			} else {
+			    if (capture_mode == 1) {
+				current_bank++;
+				if (current_bank > assigned_banks) {
+				    printf("banks error: %d > %d\n",current_bank,assigned_banks);
+				    exit(1);
+				}
+			    }
+			    bank = banks[current_bank];
+			    if (bank != (tileatr >> 8))
+				continue;
+			}
+		    } else if (bank != (tileatr >> 8)){ // 2nd palette of this sprite bank
+			// store the new bank for next call (if we don't have it already)
+			int new = tileatr >> 8;
+			int n;
+			int found = 0;
+			for (n=0; n<=assigned_banks; n++) {
+			    if (banks[n] == new) {
+				found = 1;
+				break;
+			    }
+			}
+			if (found)
+			    continue;
+			assigned_banks++;
+			if (assigned_banks == MAX_BANKS) {
+			    printf("color banks overflow\n");
+			    exit(1);
+			}
+			banks[assigned_banks] = tileatr >> 8;
+			continue;
+		    }
+		    char *name;
+		    int nb=-1;
+		    get_cache_origin(SPR_TYPE,tileno<<8,&name,&nb);
+		    if (fdata && nb > -1 && sx+offx+rzx >= 16 && sx+offx < 320+16) {
+			if (nb_sprites == alloc_sprites) {
+			    alloc_sprites += 20;
+			    sprites = realloc(sprites,alloc_sprites*sizeof(tsprite));
+			}
+			tsprite *spr = &sprites[nb_sprites];
+			spr->x = sx+offx-16;
+			spr->y = sy;
+			spr->sprite = nb/256;
+			spr->tileno = tileno;
+			spr->rzx = rzx;
+			spr->zy = zy;
+			spr->attr = tileatr & 3;
+			strcpy(spr->name,name);
+			nb_sprites++;
+
+			put_override(SPR_TYPE,name,0);
+		    }
+		}
+		MAP_PALETTE_MAPPED_NEW(
+			(tileatr >> 8),
+			16,
+			map);
+		if (one_palette) {
+		    // in 8bpp, there is 1 reserved color (white)
+		    // as a result, the color n is mapped to n+1, and we want a direct
+		    // mapping here...
+		    if (bitmap_color_depth(GameBitmap) == 8 && !fixed_palette) {
+			fixed_palette = 1;
+			printf("palette fix\n");
+			PALETTE pal2;
+			int n;
+			for (n=0; n<16; n++) {
+			    pal2[n] = pal[map[n]];
+			    printf("pal %d = pal %d rgb %02x %02x %02x\n",n,map[n],
+				    pal2[n].r,pal2[n].g,pal2[n].b);
+			    map[n] = n;
+			}
+			memcpy(pal,pal2,sizeof(SDL_Color)*16);
+			// clear screen with transparent color : color 0.
+			clear_game_screen(0);
+		    }
+		} 
+		if (sx+offx < 0) {
+		    printf("bye: %d,%d rzx %d offx %d\n",sx+offx,sy+16,rzx,offx);
+		    exit(1);
+		}
+		// printf("sprite %d,%d,%x\n",sx,sy,tileno);
+		if (sx >= mousex && sx < mousex+16 && sy>= mousey && sy < mousey+16)
+		    print_ingame(1,"%d,%d,%x",sx,sy,tileno);
+
+		if (!fdata) {
+		    if (video_spr_usage[tileno] == 2) // all solid
+			Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+		    else
+			Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+		}
+	    } 
+	}  // for y
+    }  // for count
+    if (nb_block <= capture_block && capture_block > 0) {
+	capture_block = 0;
+	draw_sprites_capture(start,end,start_line,end_line);
+	return;
+    }
+    if (!raine_cfg.req_pause_game)
+	print_ingame(1,"block %d",capture_block);
+    if (!one_palette)
+	disp_gun(0,mousex+offx+8,mousey+16+8);
+    for (offs = 0x104000; offs <= 0x105000; offs+= 0x100)
+	// MESSCONT, but the bytes are swapped...
+	if (!strncmp((char*)&RAM[offs+4],"EMSSOCTN",8))
+	    break;
+    print_ingame(1,"offs: %x [%x] palbank %x",ReadLongSc(&RAM[offs+0x4c]),offs,current_bank);
+    if (fdata && sprites) {
+	int nb = nb_sprites-1;
+	int nb2 = nb-1;
+	while (nb > 0) {
+	    tsprite *spr = &sprites[nb], *spr2 = &sprites[nb2];
+	    if (abs(spr->x - spr2->x) < 16 && abs(spr->y - spr2->y) < 16) {
+		// the 2 sprites overlap
+		// in this case the last of the list is on top, so I remove nb2
+		memmove(&sprites[nb2],&sprites[nb2+1],
+			(nb_sprites-nb2)*sizeof(tsprite));
+		nb--;
+		nb_sprites--;
+	    }
+	    nb2--;
+	    if (nb2 < 0) {
+		nb--;
+		nb2 = nb-1;
+	    }
 	}
-      } 
-    }  // for y
-  }  // for count
-  if (nb_block <= capture_block && capture_block > 0) {
-    capture_block = 0;
-    return draw_sprites_capture(start,end);
-  }
-  if (!raine_cfg.req_pause_game)
-    print_ingame(1,"block %d",capture_block);
-  if (!one_palette)
-      disp_gun(0,mousex+offx+8,mousey+16+8);
-  for (offs = 0x104000; offs <= 0x105000; offs+= 0x100)
-      // MESSCONT, but the bytes are swapped...
-      if (!strncmp((char*)&RAM[offs+4],"EMSSOCTN",8))
-	  break;
-  print_ingame(1,"offs: %x [%x] palbank %x",ReadLongSc(&RAM[offs+0x4c]),offs,current_bank);
-  if (fdata && sprites) {
-      int nb = nb_sprites-1;
-      int nb2 = nb-1;
-      while (nb > 0) {
-	  tsprite *spr = &sprites[nb], *spr2 = &sprites[nb2];
-	  if (abs(spr->x - spr2->x) < 16 && abs(spr->y - spr2->y) < 16) {
-	      // the 2 sprites overlap
-	      // in this case the last of the list is on top, so I remove nb2
-	      memmove(&sprites[nb2],&sprites[nb2+1],
-		      (nb_sprites-nb2)*sizeof(tsprite));
-	      nb--;
-	      nb_sprites--;
-	  }
-	  nb2--;
-	  if (nb2 < 0) {
-	      nb--;
-	      nb2 = nb-1;
-	  }
-      }
-      nb = nb_sprites-1;
-      while (nb >= 0) {
-	  tsprite *spr = &sprites[nb];
-	  fprintf(fdata,"%d,%d,%x,%d,%s\n",spr->x,spr->y,spr->sprite,spr->attr,
-		  spr->name);
-	  if (video_spr_usage[tileno] == 2) // all solid
-	      Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[spr->tileno<<8],spr->x+16,
-		      spr->y+16,map,spr->rzx,spr->zy,spr->attr);
-	  else
-	      Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[spr->tileno<<8],spr->x+16,
-		      spr->y+16,map,spr->rzx,spr->zy,spr->attr);
-	  nb--;
-      }
-      free(sprites);
-  }
+	nb = nb_sprites-1;
+	while (nb >= 0) {
+	    tsprite *spr = &sprites[nb];
+	    fprintf(fdata,"%d,%d,%x,%d,%s\n",spr->x,spr->y,spr->sprite,spr->attr,
+		    spr->name);
+	    if (video_spr_usage[tileno] == 2) // all solid
+		Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[spr->tileno<<8],spr->x+16,
+			spr->y+16,map,spr->rzx,spr->zy,spr->attr);
+	    else
+		Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[spr->tileno<<8],spr->x+16,
+			spr->y+16,map,spr->rzx,spr->zy,spr->attr);
+	    nb--;
+	}
+	free(sprites);
+    }
 }
 
-static void draw_sprites(int start, int end) {
-  if (capture_mode) return draw_sprites_capture(start,end);
+static void draw_sprites(int start, int end, int start_line, int end_line) {
+  if (capture_mode) return draw_sprites_capture(start,end,start_line,end_line);
   int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
   int         offs,count,y;
   int         tileatr,y_control,zoom_control;
@@ -1365,7 +1372,6 @@ static void draw_sprites(int start, int end) {
       zx = (zoom_control >> 8)&0x0F;
 
       rzy = zoom_control & 0xff;
-
 
       // Number of tiles in this strip
       if (rows == 0x20)
@@ -1403,7 +1409,7 @@ static void draw_sprites(int start, int end) {
       sx -= 0x200;
 
     // No point doing anything if tile strip is 0
-    if ((rows==0)|| sx < -offx || (sx>= maxx)) {
+    if (sx < -offx || (sx>= maxx)) {
       continue;
     }
 
@@ -1453,7 +1459,7 @@ static void draw_sprites(int start, int end) {
       }
       else if (sy > 0x110) sy -= 0x200;
 
-      if (((tileatr>>8))&&(sy<224 && sy>=-15) && video_spr_usage[tileno])
+      if (((tileatr>>8))&&(sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
       {
 	MAP_PALETTE_MAPPED_NEW(
 	    (tileatr >> 8),
@@ -1468,25 +1474,36 @@ static void draw_sprites(int start, int end) {
   }  // for count
 }
 
-static void draw_neocd() {
-  UINT8 *map;
-  static int fc;
-  // Apparently there are only sprites to be drawn, zoomable and chainable
-  // + an 8x8 text layer (fix) over them
-  ClearPaletteMap();
-
-  /* Confirmed by neogeo doc : palette 255 for bg */
-  MAP_PALETTE_MAPPED_NEW(
-      0xff,
-      16,
-      map);
-  switch(display_cfg.bpp) {
+static void clear_screen() {
+    UINT8 *map;
+    if (screen_cleared)
+	return; 
+    screen_cleared = 1;
+    /* Not totally sure the palette can be cleared here and not every
+     * time the sprites are drawn during a raster interrupt.
+     * The doc says the palette should be changed only during vbl to
+     * avoid noise... we'll try, I didn't find any game so far changing
+     * the palette during an hbl */
+    ClearPaletteMap();
+    /* Confirmed by neogeo doc : palette 255 for bg */
+    MAP_PALETTE_MAPPED_NEW(
+	    0xff,
+	    16,
+	    map);
+    switch(display_cfg.bpp) {
     case 8: clear_game_screen(map[15]); break;
     case 15:
     case 16: clear_game_screen(ReadWord(&map[15*2])); break;
     case 32: clear_game_screen(ReadLong(&map[15*4])); break;
-  }
+    }
+}
 
+static void draw_neocd() {
+  static int fc;
+  // Apparently there are only sprites to be drawn, zoomable and chainable
+  // + an 8x8 text layer (fix) over them
+
+  clear_screen();
   if (!video_enabled)
     return;
 
@@ -1509,12 +1526,12 @@ static void draw_neocd() {
       }
 
       do {
-	draw_sprites(start,end);
+	draw_sprites(start,end,start_line,224);
 	end = start;
 	start = 0;
       } while (end != 0);
     } else
-      draw_sprites(0, 384);
+      draw_sprites(0, 384,start_line,224);
   }
 
   if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
@@ -1525,39 +1542,21 @@ static void draw_neocd() {
     }
   }
 
+  if (raster_bitmap && start_line) {
+      // printf("blit raster %x start_line %d offx %d\n",irq.control,start_line,offx);
+      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,
+	      start_line);
+  }
   if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
     video_draw_fix();
 }
 
 void draw_neocd_paused() {
-    UINT8 *map;
-    ClearPaletteMap();
-
-    MAP_PALETTE_MAPPED_NEW(
-	    0xff,
-	    16,
-	    map);
-    switch(display_cfg.bpp) {
-	case 8: clear_game_screen(map[15]); break;
-	case 15:
-	case 16: clear_game_screen(ReadWord(&map[15*2])); break;
-	case 32: clear_game_screen(ReadLong(&map[15*4])); break;
-    }
-    draw_sprites_capture(0,384);
+    clear_screen();
+    draw_sprites_capture(0,384,0,224);
     if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
 	video_draw_fix();
 }
-
-static struct VIDEO_INFO neocd_video =
-{
-  draw_neocd,
-  320,
-  224,
-  16,
-  VIDEO_ROTATE_NORMAL |
-    VIDEO_ROTATABLE,
-  NULL,
-};
 
 void set_neocd_exit_to(int code) {
   neocd_bios[0xad36] = code;
@@ -1658,22 +1657,8 @@ void postprocess_ipl() {
   /* read game name */
   neogeo_read_gamename();
 
-  if (is_current_game("neodrift") || 
-      is_current_game("turfmast") || 
-      is_current_game("rallych") || 
-      is_current_game("tpgolf") || 
-      is_current_game("doubledr"))
-    /* Neo Drift out doesn't seem to need irq1.
-       Worse : if you enable it, then the image jumps from time to time, becoming
-       unstable and almost unplayable.
-       It probably means that I missed something in this irq1 emulation.
-       Now I can't find what's wrong, and since it doesn't seem to need this irq1,
-       the easiest fix is to just disable it ! 
-       For neo turf masters, the screen is flashing when enabling it. It might
-       be because of unemulated raster effects for now... */
-    disable_irq1 = 1;
-  else
-    disable_irq1 = 0;
+  // For now disable_irq1 is always disabled
+  disable_irq1 = 0;
   watchdog_counter = 9;
 
   SetLanguageSwitch(region_code);
@@ -2429,6 +2414,7 @@ void neocd_function(int vector) {
 
 void loading_progress_function() {
   static int frames,init_loaded;
+  screen_cleared = 0;
   if (!cdrom_speed) // prevent the cdrom_speed to disappear in the middle of
     // loading !
     cdrom_speed = neocd_lp.initial_cdrom_speed;
@@ -2506,28 +2492,33 @@ void execute_neocd() {
   // RAM[0x10fd97^1] = 15;
 
   stopped_68k = 0;
-  if (irq.control & IRQ1CTRL_ENABLE) {
-      printf("irq.start %d\n",irq.start);
-  }
-  if ((irq.control & IRQ1CTRL_ENABLE) && !disable_irq1 && irq.start < 264) {
+  screen_cleared = 0;
+  start_line = 0;
+  if ((irq.control & (IRQ1CTRL_ENABLE|IRQ1CTRL_AUTOLOAD_VBLANK)) &&
+	  !disable_irq1 && irq.start < 264) {
     print_debug("raster frame\n");
 
+    if (raster_bitmap && bitmap_color_depth(raster_bitmap) !=
+	    bitmap_color_depth(GameBitmap)) {
+	destroy_bitmap(raster_bitmap);
+	raster_bitmap = NULL;
+    }
+	
+    if (!raster_bitmap)
+	raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
+		320,224);
+
     raster_frame = 1;
+    clear_screen();
     for (scanline = 0; scanline < 264; scanline++) {
-      if (scanline == 0)	/* vblank */
-      {
+	/* From http://wiki.neogeodev.org/index.php?title=Display_timing
+	 *  8 scanlines vertical sync pulse
+	 16 scanlines top border
+	 224 scanlines active display
+	 16 scanlines bottom border
 
-	if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
-	  if (irq.pos == 0xffffffff)
-	    irq.start = -1;
-	  else {
-	    irq.start = ((irq.pos + 3) / 0x180);	/* ridhero gives 0x17d */
-	  }
-	  print_debug("irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
-	} 
-
-	vblank_interrupt_pending = 1;	   /* vertical blank */
-      }
+	 Well apparently in ridhero there is a border of 28 pixels and not 24
+	 */
 
       if (scanline == irq.start && (irq.control & IRQ1CTRL_ENABLE)) {
 	if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
@@ -2542,14 +2533,50 @@ void execute_neocd() {
 	}
 
 	display_position_interrupt_pending = 1;
-      }
+	if (raster_bitmap && scanline <= 224+28 && scanline > 28) {
+	    draw_sprites(0,384,start_line,scanline-28);
+	    blit(GameBitmap,raster_bitmap,16,start_line+16,0,start_line,
+		    neocd_video.screen_x,scanline-28-start_line);
+	    start_line = scanline-28;
+	}
+      } else if (scanline >= 256) {
+	    /* VBL is exactly where vcounter is adjusted (0xf8-0xff) */
+	  /* There is a paradox here :
+	   * vbl should always be at line 256 normally, it must be at the
+	   * end of the screen to fix the screen when the car jumps in neodrift
+	   * or Rally Chase.
+	   * Now a game like ridhero is sending an hbl on line 256.
+	   * Well it doesn't seem to work with a simple irq mask, don't know
+	   * why. So what I do here is that I try to send a vbl only when there
+	   * is no more hbl. VBL being caused by the hardware, it's just a
+	   * hack... */
 
-      if (display_position_interrupt_pending || vblank_interrupt_pending) 
+	    if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
+		if (irq.pos == 0xffffffff)
+		    irq.start = -1;
+		else {
+		    irq.start = ((irq.pos + 3) / 0x180);	/* ridhero gives 0x17d */
+		}
+		print_debug("irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
+	    } 
+
+	    vblank_interrupt_pending = 1;	   /* vertical blank */
+	}
+
+      if (display_position_interrupt_pending || vblank_interrupt_pending) {
 	update_interrupts();
-      cpu_execute_cycles(CPU_68K_0,200000/264);
-      if (stopped_68k)
+	if (stopped_68k) 
+	    stopped_68k = 0;
+      }
+      if (!stopped_68k)
+	  cpu_execute_cycles(CPU_68K_0,200000/264);
+      if (stopped_68k && !(irq.start > scanline && irq.start < 224+28))
 	break;
     }
+    // If there is still an interrupt executing, add some lines
+    while (s68000context.interrupts[0] & 2)
+	cpu_execute_cycles(CPU_68K_0,200000/264);
+
     if (z80_enabled && !irq.disable && RaineSoundCard) {
       execute_z80_audio_frame(); // no need to interleave the z80 with the 68k
     }
@@ -2635,6 +2662,10 @@ static void clear_neocd() {
   if (debug_mode)
     ByteSwap(neocd_bios,0x80000); // restore the bios for the next game
 #endif
+  if (raster_bitmap) {
+      destroy_bitmap(raster_bitmap);
+      raster_bitmap = NULL;
+  }
 }
 
 struct GAME_MAIN game_neocd = 
