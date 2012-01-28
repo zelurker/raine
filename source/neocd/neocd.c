@@ -270,7 +270,7 @@ void setup_neocd_bios() {
   // WriteWord(&neocd_bios[0xd736],0x4e75);
 
   /*** Trap exceptions ***/
-  WriteWord(&neocd_bios[0xA5B6], 0x60fe); // 0x4e70); // reset instruction !
+  // WriteWord(&neocd_bios[0xA5B6], 0x4e70); // reset instruction !
 
 #if 0
   WriteWord(&neocd_bios[0xA5B6], 0x4ef9); // reset instruction !
@@ -484,7 +484,7 @@ static void update_interrupts(void)
 		watchdog_counter-- == 0) {
 	    printf("watchdog reset in vbl \n");
 	    reset_game_hardware();
-	}
+	} 
 
        if (irq.wait_for_vbl_ack) {
 	   print_debug("received vbl, still waiting for ack\n");
@@ -2491,6 +2491,8 @@ void execute_neocd() {
   // printf("cd loaded %x 76b9 %x\n",RAM[0x10fec4^1],RAM[0x76b9]); 
   // RAM[0x10fd97^1] = 15;
 
+    int pc;
+
   stopped_68k = 0;
   screen_cleared = 0;
   start_line = 0;
@@ -2602,7 +2604,7 @@ void execute_neocd() {
     if (allowed_speed_hacks) {
       static int not_stopped_frames;
       if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
-	int pc = s68000readPC();
+	pc = s68000readPC();
 
 	if (pc < 0x200000) {
 	  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
@@ -2640,16 +2642,12 @@ void execute_neocd() {
   }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
-  /*
-  if (s68000readPC() == 0xc0e602) {
-	  // maybe this one should be emulated with a timer which resets the hw
-	  // after some irq inactivity ?
-	  // Anyway this is where the pc ends when selecting start from the cd
-	  // interface.
+  if (s68000readPC() == 0xc0e602) { // start button
+      // For start, irqs are disabled, maybe it expects them to come back
+      // from the cd ?
 	  Stop68000(0,0);
 	  reset_game_hardware();
-  }
-  */
+  } 
 }
 
 static void clear_neocd() {
