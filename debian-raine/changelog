@@ -3,26 +3,26 @@ raine (0.51.11) unstable; urgency=low
   * A quick new binary to fix a stupid bug in the version of yesterday with
     the colors of esprade and guwange.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:53:15 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:53:15 +0100
 
 raine (0.51.10) unstable; urgency=low
 
   * See http://rainemu.swishparty.co.uk/html/archive/news
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:56:10 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:56:10 +0100
 
 raine (0.51.9) unstable; urgency=low
 
   * Find the changes in git !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:56:10 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:56:10 +0100
 
 raine (0.51.8) unstable; urgency=low
 
   * This version mainly adds support to save the state of fm sound chips
     (music) in savegames and restore them correctly, 
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:49:19 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:49:19 +0100
 
 raine (0.51.7) unstable; urgency=low
 
@@ -30,7 +30,7 @@ raine (0.51.7) unstable; urgency=low
     playable, a few fixes for the debugger, and removal of some sound warning
     messages.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 23 Dec 2009 09:15:14 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 23 Dec 2009 09:15:14 +0100
 
 raine (0.51.6) unstable; urgency=low
 
@@ -40,7 +40,7 @@ raine (0.51.6) unstable; urgency=low
     simply pressing esc on the main menu was resizing the font !).
   * the ingame texts (hud) can be made optionally opaque from the gui
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 02 Sep 2009 11:17:41 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 02 Sep 2009 11:17:41 +0200
 
 raine (0.51.5) unstable; urgency=low
 
@@ -64,7 +64,7 @@ raine (0.51.5) unstable; urgency=low
     absolutely want to force double buffer, leave this option on its default
     value: "when possible", it should improve yuv overlays.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 07 Apr 2009 20:31:23 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 07 Apr 2009 20:31:23 +0200
 
 raine (0.51.4) unstable; urgency=low
 
@@ -76,7 +76,7 @@ raine (0.51.4) unstable; urgency=low
   * Improvements to the gui, fixes some display bugs, and the file/dir
     selector gains a title.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 26 Mar 2009 10:00:44 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 26 Mar 2009 10:00:44 +0100
 
 raine (0.51.3) unstable; urgency=low
 
@@ -89,7 +89,7 @@ raine (0.51.3) unstable; urgency=low
   * Loading a savegame from the gui now automatically returns to game (for
     neoraine too).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 20 Mar 2009 22:49:05 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 20 Mar 2009 22:49:05 +0100
 
 raine (0.51.2) unstable; urgency=low
 
@@ -99,7 +99,7 @@ raine (0.51.2) unstable; urgency=low
   * Loading a 2nd game works again as before (a change in the gui for 0.51.1
     made this quite special !).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 14 Mar 2009 21:51:50 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 14 Mar 2009 21:51:50 +0100
 
 raine (0.51.1) unstable; urgency=low
 
@@ -121,7 +121,7 @@ raine (0.51.1) unstable; urgency=low
   * Bezels are now correctly displayed when using scanlines : double
     height+double width.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 13 Mar 2009 23:08:49 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 13 Mar 2009 23:08:49 +0100
 
 raine (0.51.0) unstable; urgency=low
 
@@ -173,7 +173,7 @@ raine (0.51.0) unstable; urgency=low
   * Misc bugs fixed, for example a memory leak in the taito f3 sound emulation
     was suddenly found because the link order made it to crash the program.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 28 Jan 2009 10:55:30 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 28 Jan 2009 10:55:30 +0100
 
 raine (0.50.17) unstable; urgency=low
 
@@ -200,7 +200,7 @@ raine (0.50.17) unstable; urgency=low
     Once you have chosen, it includes the required cpu emulators/sound
     drivers. It might be usefull when building for small systems...
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Jan 2009 23:48:47 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Jan 2009 23:48:47 +0100
 
 raine (0.50.16) unstable; urgency=low
 
@@ -222,7 +222,7 @@ raine (0.50.16) unstable; urgency=low
   * Be sure to exit with a return code of 0 for the stupid verbosity of vista
     which seems to complain when a program does not so.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 27 Aug 2008 13:38:25 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 27 Aug 2008 13:38:25 +0200
 
 raine (0.50.15) unstable; urgency=low
 
@@ -237,7 +237,7 @@ raine (0.50.15) unstable; urgency=low
   * Added a few things to the console, required to have better cheats for
     ssrpg (neoraine)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 08 Aug 2008 00:21:42 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 08 Aug 2008 00:21:42 +0200
 
 raine (0.50.14) unstable; urgency=low
 
@@ -260,7 +260,7 @@ raine (0.50.14) unstable; urgency=low
     zoomed in or out (previously it was an approximation which showed
     specially in mazinger, now the animations are much better).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 26 Jun 2008 10:18:25 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 26 Jun 2008 10:18:25 +0200
 
 raine (0.50.13) unstable; urgency=low
 
@@ -284,7 +284,7 @@ raine (0.50.13) unstable; urgency=low
     rainemu forum about the console, and see the integrated help (help
     command).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 27 May 2008 19:20:38 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 27 May 2008 19:20:38 +0200
 
 raine (0.50.12) unstable; urgency=low
 
@@ -296,7 +296,7 @@ raine (0.50.12) unstable; urgency=low
   * There was a possibility of crash when reseting a game with f1 and sound
     was playing.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 05 Apr 2008 22:20:43 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 05 Apr 2008 22:20:43 +0200
 
 raine (0.50.11) unstable; urgency=low
 
@@ -309,13 +309,13 @@ raine (0.50.11) unstable; urgency=low
   * The recent gui changes could make some part of the gui to remain visible
     after a game had been started... lack of tests here, sorry !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 14 Mar 2008 23:17:43 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 14 Mar 2008 23:17:43 +0100
 
 raine (0.50.10) unstable; urgency=low
 
   * Controls and gui changes, see changelog of neoraine 1.1.2.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 13 Mar 2008 17:45:10 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 13 Mar 2008 17:45:10 +0100
 
 raine (0.50.9) unstable; urgency=low
 
@@ -323,7 +323,7 @@ raine (0.50.9) unstable; urgency=low
     scanlines, pixel double, and a few others... See neoraine 1.1.1 changelog
     for version 1.1.1
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 11 Mar 2008 20:14:21 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 11 Mar 2008 20:14:21 +0100
 
 raine (0.50.8) unstable; urgency=low
 
@@ -342,7 +342,7 @@ raine (0.50.8) unstable; urgency=low
   * Inputs are now reseted when returning to the game, which avoids the
     problems when calling the gui while keeping a game key pressed.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 06 Mar 2008 11:21:01 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 06 Mar 2008 11:21:01 +0100
 
 raine (0.50.7) unstable; urgency=low
 
@@ -353,28 +353,28 @@ raine (0.50.7) unstable; urgency=low
     options.
   * Added hq2x and hq3x scalers in MMX versions only.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 16 Jan 2008 21:28:02 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 16 Jan 2008 21:28:02 +0100
 
 raine (0.50.6-4) unstable; urgency=low
 
   * when choosing video mode change -> low resolution with scale2x enabled,
     you were very likely to triger a crash, it's now fixed.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 05 Jan 2008 11:53:15 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 05 Jan 2008 11:53:15 +0100
 
 raine (0.50.6-3) unstable; urgency=low
 
   * Fixed the about dialog (showing it 2 times corrupted the line about the
     sdl versions), and improves handling of corrupted savegames
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 03 Jan 2008 23:53:06 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 03 Jan 2008 23:53:06 +0100
 
 raine (0.50.6-2) unstable; urgency=low
 
   * Add history.dat to the binary package. It's used also by neoraine and I am
     sure noone installs it by hand so it's better to put it inside...
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 28 Dec 2007 21:42:52 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 28 Dec 2007 21:42:52 +0100
 
 raine (0.50.6) unstable; urgency=low
 
@@ -388,7 +388,7 @@ raine (0.50.6) unstable; urgency=low
     loaded again at the end of the currently loaded ones every time the region
     was changed !!! With this behaviour it was very easy to crash !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 27 Dec 2007 00:13:31 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 27 Dec 2007 00:13:31 +0100
 
 raine (0.50.5) unstable; urgency=low
 
@@ -417,7 +417,7 @@ raine (0.50.5) unstable; urgency=low
      achieve with overlays. You have to explicitly force normal blits if you
      really want to have scanlines and your video hardware supports overlays.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 07 Jul 2007 11:36:56 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 07 Jul 2007 11:36:56 +0200
 
 raine (0.50.4) unstable; urgency=low
 
@@ -461,7 +461,7 @@ raine (0.50.4) unstable; urgency=low
     chasehq, night striker, continental circus and space gun (no more fake
     dipswitches for chasehq).
 
- -- No value has been set <manu@manu-home.dyndns.org>  Thu, 26 Apr 2007 19:40:56 +0200
+ -- No value has been set <manu@manu-home.hd.free.fr>  Thu, 26 Apr 2007 19:40:56 +0200
 
 raine (0.50.3) unstable; urgency=low
 
@@ -488,7 +488,7 @@ raine (0.50.3) unstable; urgency=low
     samples if you want sound !
   * Editable cheats, usually to select the game stage, are supported again.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 22 Feb 2007 10:27:22 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 22 Feb 2007 10:27:22 +0100
 
 raine (0.50.2) unstable; urgency=low
 
@@ -518,7 +518,7 @@ raine (0.50.2) unstable; urgency=low
   * Added a savegame converter, from the old allegro format to the new 0.50
     format in the bonus folder (make converter to build it).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 26 Jan 2007 17:32:04 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 26 Jan 2007 17:32:04 +0100
 
 raine (0.50.1-2) unstable; urgency=low
 
@@ -528,7 +528,7 @@ raine (0.50.1-2) unstable; urgency=low
   * The about dialog isn't confused anymore if you invoke it first in a
     windowed mode, and then in fullscreen double buffered.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 19 Jan 2007 03:32:51 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 19 Jan 2007 03:32:51 +0100
 
 raine (0.50.1-1) unstable; urgency=low
 
@@ -537,7 +537,7 @@ raine (0.50.1-1) unstable; urgency=low
   * Fix the crash in the messagebox for the message about raine logo color 0
     not transparent (if you try to change raine logo). 
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 18 Jan 2007 09:47:55 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 18 Jan 2007 09:47:55 +0100
 
 raine (0.50.1) unstable; urgency=low
 
@@ -570,7 +570,7 @@ raine (0.50.1) unstable; urgency=low
     voice filters option (leave it to yes if you have a fast computer, the
     sound is better with this option turned on).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 17 Jan 2007 11:11:09 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 17 Jan 2007 11:11:09 +0100
 
 raine (0.50.0-2) unstable; urgency=low
 
@@ -608,7 +608,7 @@ raine (0.50.0-2) unstable; urgency=low
   * Finally took the time to fix the "make install" target of the makefile. It
     allows to build a clean debian package again.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 13 Jan 2007 11:00:42 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 13 Jan 2007 11:00:42 +0100
 
 raine (0.50.0-1) unstable; urgency=low
 
@@ -626,7 +626,7 @@ raine (0.50.0-1) unstable; urgency=low
   * Fixed allocation of m6585 sound chip which crashed gcpinbal when reseting
     the game (very, very old bug).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon,  1 Jan 2007 20:53:53 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon,  1 Jan 2007 20:53:53 +0100
 
 raine (0.50.0) unstable; urgency=low
 
@@ -649,7 +649,7 @@ raine (0.50.0) unstable; urgency=low
      lsystem.c
      xsystem2.c
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 16 Aug 2006 22:52:35 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 16 Aug 2006 22:52:35 +0200
 
 raine (0.43.4) unstable; urgency=low
 
@@ -691,7 +691,7 @@ raine (0.43.4) unstable; urgency=low
   * The debian package installs correctly its data files in
     /usr/share/games/raine and not /usr/share/raine as in 0.43.3
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 26 May 2006 13:41:46 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 26 May 2006 13:41:46 +0200
 
 raine (0.43.3) unstable; urgency=low
 
@@ -703,7 +703,7 @@ raine (0.43.3) unstable; urgency=low
     compilation doesn't stop with 2 pages of error messages just because
     we forgot to install a lib (liballeg, sdl and allegro tested).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 26 May 2006 13:41:46 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 26 May 2006 13:41:46 +0200
 
 raine (0.43.2-2) unstable; urgency=low
 
@@ -713,14 +713,14 @@ raine (0.43.2-2) unstable; urgency=low
     All these are fixed by -O1, so I switch to -O1 for now (this is already
     the case for the windows version).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 21 Sep 2005 16:12:54 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 21 Sep 2005 16:12:54 +0200
 
 raine (0.43.2-1) unstable; urgency=low
 
   * fix the stupid segfault in multchmp (it crashes only the windows and dos
     version apparently !)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 20 Sep 2005 22:28:05 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 20 Sep 2005 22:28:05 +0200
 
 raine (0.43.2) unstable; urgency=low
 
@@ -763,7 +763,7 @@ raine (0.43.2) unstable; urgency=low
   * fine tune the music of the hammer in donkey kong so that the other sounds
     can be heared while it's playing.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 20 Sep 2005 09:15:46 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 20 Sep 2005 09:15:46 +0200
 
 raine (0.43.1) unstable; urgency=low
 
@@ -773,19 +773,19 @@ raine (0.43.1) unstable; urgency=low
     cookbib driver : Cookie and Bibi, Hatch Catch, Choky Choky.
     I fixed the dipswitches, and for final tetris the sound and the inputs.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon,  5 Sep 2005 22:33:29 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon,  5 Sep 2005 22:33:29 +0200
 
 raine (0.43.0-2) unstable; urgency=low
 
   * back to the non debug version, sorry !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri,  2 Sep 2005 01:03:55 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri,  2 Sep 2005 01:03:55 +0200
 
 raine (0.43.0-1) unstable; urgency=low
 
   * fix icon/menu generation for debian and other linux distributions
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon, 29 Aug 2005 16:22:57 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon, 29 Aug 2005 16:22:57 +0200
 
 raine (0.43.0) unstable; urgency=low
 
@@ -847,7 +847,7 @@ raine (0.43.0) unstable; urgency=low
     for raine.dat, hiscore.dat, history.dat, the snapshots, the language
     files, and the bezels.
 
- -- root <root@manu-home.dyndns.org>  Sat, 27 Aug 2005 21:41:49 +0200
+ -- root <root@manu-home.hd.free.fr>  Sat, 27 Aug 2005 21:41:49 +0200
 
 raine (0.42.5) unstable; urgency=low
 
@@ -855,7 +855,7 @@ raine (0.42.5) unstable; urgency=low
   especially when compiling the 6502 emulator, but most of them are gone now,
   and the build works.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed,  3 Aug 2005 14:24:22 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed,  3 Aug 2005 14:24:22 +0200
 
 raine (0.42.4) unstable; urgency=low
 
@@ -863,7 +863,7 @@ raine (0.42.4) unstable; urgency=low
   * add pzloop2j (with speed hack)
   * Fixed 1944.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 20 Mar 2005 11:01:21 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 20 Mar 2005 11:01:21 +0100
 
 raine (0.42.3) unstable; urgency=low
 
@@ -876,7 +876,7 @@ raine (0.42.3) unstable; urgency=low
   * Added a speed hack for mpangj
   * Fix bad color palette for snapshots in the gui in 16bpp sometimes
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed,  8 Dec 2004 08:09:07 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed,  8 Dec 2004 08:09:07 +0100
 
 raine (0.42.2) unstable; urgency=low
 
@@ -885,13 +885,13 @@ raine (0.42.2) unstable; urgency=low
   * Fix annoying gui corrupted colors after loading some games.
   * Added the cps2 games from mame with a non working parent
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun,  5 Dec 2004 21:14:18 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun,  5 Dec 2004 21:14:18 +0100
 
 raine (0.42.1-1) unstable; urgency=low
 
   * the released linux version was the debug build !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  4 Dec 2004 13:14:35 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  4 Dec 2004 13:14:35 +0100
 
 raine (0.42.1) unstable; urgency=low
 
@@ -916,7 +916,7 @@ raine (0.42.1) unstable; urgency=low
   * Added new game : nostradamus, fully playable (it was to test the oddities
     of the mcatadv driver...).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  4 Dec 2004 12:47:03 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  4 Dec 2004 12:47:03 +0100
 
 raine (0.42.0) unstable; urgency=low
 
@@ -932,7 +932,7 @@ raine (0.42.0) unstable; urgency=low
   * Fix a possible buffer overflow in history.dat handling (there was one for
     mvsc) and expand the history.dat buffer to 8kb.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 20 Nov 2004 12:24:19 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 20 Nov 2004 12:24:19 +0100
 
 raine (0.41.4) unstable; urgency=low
 
@@ -941,14 +941,14 @@ raine (0.41.4) unstable; urgency=low
   * cps2 becomes runnable now (no video priorities yet, and still some
    sound synchronization issues on some games)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 17 Nov 2004 12:10:33 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 17 Nov 2004 12:10:33 +0100
 
 raine (0.41.3) unstable; urgency=low
 
   * Fix the stupid forgoten bug in the patch of starscream (byte inversion).
     The fixes *LOTS* of problems especially with cps1 games.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 16 Nov 2004 00:37:34 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 16 Nov 2004 00:37:34 +0100
 
 raine (0.41.2-1) unstable; urgency=low
 
@@ -964,7 +964,7 @@ raine (0.41.2-1) unstable; urgency=low
     one was never finden earlier !!!).
   * Fixed a crash when launching "Bobble Bobble" (not Bubble Bobble).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue,  9 Nov 2004 16:19:42 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue,  9 Nov 2004 16:19:42 +0100
 
 raine (0.41.2) unstable; urgency=low
 
@@ -974,7 +974,7 @@ raine (0.41.2) unstable; urgency=low
      files found by Mike.
      - Added a new tune when you loose a life, from one of these old files.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed,  6 Oct 2004 08:52:20 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed,  6 Oct 2004 08:52:20 +0200
 
 raine (0.41.1) unstable; urgency=low
 
@@ -992,7 +992,7 @@ raine (0.41.1) unstable; urgency=low
   * Fixed sound card name (SDL <Not initialised yet> was displayed in the
     sound driver selection dialog).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed,  8 Sep 2004 17:05:21 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed,  8 Sep 2004 17:05:21 +0200
 
 raine (0.41.0-17) unstable; urgency=low
 
@@ -1001,27 +1001,27 @@ raine (0.41.0-17) unstable; urgency=low
     which must work with big sound buffers for the updates.
   * Fixed a bug when loading dkong after mspacmab.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun,  5 Sep 2004 22:12:50 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun,  5 Sep 2004 22:12:50 +0200
 
 raine (0.41.0-16) unstable; urgency=low
 
   * Fixed the missing sprite of the purple frog in frogger
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  4 Sep 2004 15:22:20 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  4 Sep 2004 15:22:20 +0200
 
 raine (0.41.0-15) unstable; urgency=low
 
   * the roars at when the game starts and when a level ends are now emulated
     in dkong (2 roars instead of 3 because dx roars last longer !).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  4 Sep 2004 10:33:31 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  4 Sep 2004 10:33:31 +0200
 
 raine (0.41.0-14) unstable; urgency=low
 
   * dx samples status is now saved in savegames, and they stop when you reset
     the game hardware.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  4 Sep 2004 10:01:28 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  4 Sep 2004 10:01:28 +0200
 
 raine (0.41.0-13) unstable; urgency=low
 
@@ -1031,14 +1031,14 @@ raine (0.41.0-13) unstable; urgency=low
     (-1,-1 serves nothing by itself, whereas 0,0xffff, DefBadReadByte is
     always there).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  4 Sep 2004 08:36:33 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  4 Sep 2004 08:36:33 +0200
 
 raine (0.41.0-12) unstable; urgency=low
 
   * emudx samples now work in sdl, and I took back the musics from the dx
     samples with volume adustements.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 29 Aug 2004 20:53:24 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 29 Aug 2004 20:53:24 +0200
 
 raine (0.41.0-11) unstable; urgency=low
 
@@ -1046,14 +1046,14 @@ raine (0.41.0-11) unstable; urgency=low
     uses more efficiently the callback, better results in windows and shorter
     and much easier code.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 28 Aug 2004 23:04:02 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 28 Aug 2004 23:04:02 +0200
 
 raine (0.41.0-10) unstable; urgency=low
 
   * Fixed a problem with cheats/hiscore on games using exactly 2 z80s frogger,
     for example
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 27 Aug 2004 11:40:31 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 27 Aug 2004 11:40:31 +0200
 
 raine (0.41.0-9) unstable; urgency=low
 
@@ -1062,7 +1062,7 @@ raine (0.41.0-9) unstable; urgency=low
   * Finally converted the dx characters in frogger to retrieve their originol
     colours. Quite crazy !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 26 Aug 2004 13:33:34 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 26 Aug 2004 13:33:34 +0200
 
 raine (0.41.0-8) unstable; urgency=low
 
@@ -1074,7 +1074,7 @@ raine (0.41.0-8) unstable; urgency=low
     where they use allegro 4.0.x which is supposed to be stable).
     This work around disables dialog solid movements (no blits).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 26 Aug 2004 11:05:25 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 26 Aug 2004 11:05:25 +0200
 
 raine (0.41.0-7) unstable; urgency=low
 
@@ -1083,27 +1083,27 @@ raine (0.41.0-7) unstable; urgency=low
   * Disable ansi sequences in windows (stupid windows still does not support
     ansi sequences natively, what a shame !!!).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 26 Aug 2004 10:25:29 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 26 Aug 2004 10:25:29 +0200
 
 raine (0.41.0-6) unstable; urgency=low
 
   * Added emudx support for frogger (graphics and sound). Kept the ay8910 for
     music.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 25 Aug 2004 23:59:48 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 25 Aug 2004 23:59:48 +0200
 
 raine (0.41.0-5) unstable; urgency=low
 
   * Added frogger, playable without sound (will try to add only emudx sound,
     these filters used by frogger for sound look like a real mess !)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 24 Aug 2004 16:47:24 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 24 Aug 2004 16:47:24 +0200
 
 raine (0.41.0-4) unstable; urgency=low
 
   * Added sstriker, european translation of mahoudai (toaplan2)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon, 23 Aug 2004 20:42:11 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon, 23 Aug 2004 20:42:11 +0200
 
 raine (0.41.0-3) unstable; urgency=low
 
@@ -1121,7 +1121,7 @@ raine (0.41.0-3) unstable; urgency=low
      currently in 32bpp (it's for emudx support which absolutely requires
      16bpp and can't work in 32bpp).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon, 23 Aug 2004 08:42:10 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon, 23 Aug 2004 08:42:10 +0200
 
 raine (0.41.0-2) unstable; urgency=low
 
@@ -1141,7 +1141,7 @@ raine (0.41.0-2) unstable; urgency=low
     it is for quite a while, I hate windows, and I don't want to spend time on
     it.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 22 Aug 2004 17:38:37 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 22 Aug 2004 17:38:37 +0200
 
 raine (0.41.0-1) unstable; urgency=low
 
@@ -1149,20 +1149,20 @@ raine (0.41.0-1) unstable; urgency=low
     pacman ! For now the alpha blending is locked at 50%, which makes the
     ghosts a little dark... but at least it's fast !!!
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 20 Aug 2004 21:14:19 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 20 Aug 2004 21:14:19 +0200
 
 raine (0.40.5-5) unstable; urgency=low
 
   * Added emudx support for pacman/puckman and mspacmab :-) !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 20 Aug 2004 08:32:27 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 20 Aug 2004 08:32:27 +0200
 
 raine (0.40.5-4) unstable; urgency=low
 
   * Fixed pacman savestates to save irq status (it allows to load a game
     without having to wait for the machine to initialize).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 19 Aug 2004 00:32:21 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 19 Aug 2004 00:32:21 +0200
 
 raine (0.40.5-3) unstable; urgency=low
 
@@ -1171,7 +1171,7 @@ raine (0.40.5-3) unstable; urgency=low
     (using button 1 to enable it or not, after having enabled the cheat from
     the dsw).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 18 Aug 2004 11:39:47 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 18 Aug 2004 11:39:47 +0200
 
 raine (0.40.5-2) unstable; urgency=low
 
@@ -1180,7 +1180,7 @@ raine (0.40.5-2) unstable; urgency=low
     the main purpose of the DIR_INFO struct : allowing recursion !). It makes
     the ROM_INFO structs even shorter now !
     
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 17 Aug 2004 22:51:37 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 17 Aug 2004 22:51:37 +0200
 
 raine (0.40.5-1) unstable; urgency=low
 
@@ -1196,13 +1196,13 @@ raine (0.40.5-1) unstable; urgency=low
     It makes shorter source code, and makes it easier to maintain too. It
     fixes the bad snowbros clones in 0.40.5 by the way.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon, 16 Aug 2004 18:09:02 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon, 16 Aug 2004 18:09:02 +0200
 
 raine (0.40.5) unstable; urgency=low
 
   * Enough of fixes for raine-0.40.5
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun,  8 Aug 2004 14:56:46 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun,  8 Aug 2004 14:56:46 +0200
 
 raine (0.40.4-9) unstable; urgency=low
 
@@ -1213,49 +1213,49 @@ raine (0.40.4-9) unstable; urgency=low
     Also this fix will probably improve the stability when loading a few games
     which are using the tc100scn video chip.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun,  8 Aug 2004 01:02:27 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun,  8 Aug 2004 01:02:27 +0200
 
 raine (0.40.4-8) unstable; urgency=low
 
   * Running a toaplan2 game like dogyuun, and then a cave game like donpachi
     works normally now.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  7 Aug 2004 20:16:36 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  7 Aug 2004 20:16:36 +0200
 
 raine (0.40.4-7) unstable; urgency=low
 
   * Fix ym3812 timer. Now demon's world, snow bros and quite a few others are
     playable again... By the way snowbros now uses the new mame set.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  7 Aug 2004 12:58:33 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  7 Aug 2004 12:58:33 +0200
 
 raine (0.40.4-6) unstable; urgency=low
 
   * Upgrade Chuka Taisen to use the latest mame set (b44.12 was changed to
     b44.12w, but I ignore the reason). 
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  7 Aug 2004 10:29:50 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  7 Aug 2004 10:29:50 +0200
 
 raine (0.40.4-5) unstable; urgency=low
 
   * fixed ballbros/twinhawk when raine was compiled in debug mode (there was a
     ++ in a print_debug, what a shame !!!)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat,  7 Aug 2004 10:04:37 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat,  7 Aug 2004 10:04:37 +0200
 
 raine (0.40.4-4) unstable; urgency=low
 
   * Fix tc0100scn emulation for "asuka & asuka", and opwolf.
   * Fixed c-chip for opwolf (ingame and reset game).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri,  6 Aug 2004 17:55:44 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri,  6 Aug 2004 17:55:44 +0200
 
 raine (0.40.4-3) unstable; urgency=low
 
   * Fixed a few drivers with sound too loud in sdl (matmania, arkanoid...)
   * Fixed noise channel not working for the ay8910 (in matmania for example).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri,  6 Aug 2004 13:08:01 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri,  6 Aug 2004 13:08:01 +0200
 
 raine (0.40.4-2) unstable; urgency=low
 
@@ -1270,7 +1270,7 @@ raine (0.40.4-2) unstable; urgency=low
     Anyway, it does not seem to create any bad delay, but it needs more
     testing. 
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri,  6 Aug 2004 10:51:08 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri,  6 Aug 2004 10:51:08 +0200
 
 raine (0.40.4-1) unstable; urgency=low
 
@@ -1286,7 +1286,7 @@ raine (0.40.4-1) unstable; urgency=low
     does nothing anymore.
   * Fixed controls in sf2ce clones (sf2m4, m5, m6, etc...).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 12 Jun 2004 16:04:12 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 12 Jun 2004 16:04:12 +0200
 
 raine (0.40.4) unstable; urgency=low
 
@@ -1294,23 +1294,23 @@ raine (0.40.4) unstable; urgency=low
   and it can follow when one of the points is at the begin of the buffer while
   the other is at the end. It fixes the sound in all taito f3 games.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue,  8 Jun 2004 08:32:05 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue,  8 Jun 2004 08:32:05 +0200
 
 raine (0.40.3-2) unstable; urgency=low
 
   * Unix version now uses its shared path (/usr/shar/games/raine) as the
     default location to load the hiscore.dat and history.dat file.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon,  7 Jun 2004 14:01:55 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon,  7 Jun 2004 14:01:55 +0200
 
 raine (0.40.3-1) unstable; urgency=low
 
   * SDL sound support, bug fixes 
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Mon,  7 Jun 2004 07:30:55 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Mon,  7 Jun 2004 07:30:55 +0200
 
 raine (0.40.1-1) unstable; urgency=low
 
   * Initial Release.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 13 May 2004 11:33:00 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 13 May 2004 11:33:00 +0200

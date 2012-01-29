@@ -1,3 +1,18 @@
+neoraine (1.3.0) unstable; urgency=low
+
+  * Add raster interrupts emulation
+
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 29 Jan 2012 09:57:24 +0100
+
+neoraine (1.2.12) unstable; urgency=low
+
+  * fixed a bug in which NeoRaine would crash if not finding the audio track in the folder;
+  * pause in lost focus state is now optional;
+  * changed the behavior when leaving the NGCD BIOS interface;
+  * now the NGCD BIOS file is detected in either lower and uppercase;
+
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 29 Jan 2012 09:57:24 +0100
+
 neoraine (1.2.11) unstable; urgency=low
 
   * some songs had their 1st 2 seconds cut on some tosec neocd dumps using
@@ -8,7 +23,7 @@ neoraine (1.2.11) unstable; urgency=low
    kof, now the savegames use lists for the uploads and not a limited array.
  - ask for neocd bios if it can't be found (mainly useful for osx).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:44:48 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:44:48 +0100
 
 neoraine (1.2.10) unstable; urgency=low
 
@@ -18,20 +33,20 @@ neoraine (1.2.10) unstable; urgency=low
   * It also fixes a problem with the command line of neoraine, adds a cheat to
     disable encounters in ssrpg, and tweaks some minor details. 
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:40:16 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:40:16 +0100
 
 neoraine (1.2.9) unstable; urgency=low
 
   * New translator for ssrpg, mainly, + console fixes and gui improvements
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Dec 2011 20:37:23 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Dec 2011 20:37:23 +0100
 
 neoraine (1.2.8) unstable; urgency=low
 
   * The last color palette was not correctly cleared when reseting, + some
     debuger fixes and some sound warnings removals.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 23 Dec 2009 09:17:27 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 23 Dec 2009 09:17:27 +0100
 
 neoraine (1.2.7) unstable; urgency=low
 
@@ -39,7 +54,7 @@ neoraine (1.2.7) unstable; urgency=low
     thanks to a float fps now, and a fix for savegames which didn't save
     correctly  the fix area when it was uploaded from the prg ram.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 02 Sep 2009 11:18:52 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 02 Sep 2009 11:18:52 +0200
 
 neoraine (1.2.6) unstable; urgency=low
 
@@ -53,7 +68,7 @@ neoraine (1.2.6) unstable; urgency=low
   * See raine 0.51.5 changelog for generic changes in this version (gui,
     double bufer, etc...).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 07 Apr 2009 11:27:01 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 07 Apr 2009 11:27:01 +0200
 
 neoraine (1.2.5) unstable; urgency=low
 
@@ -65,7 +80,7 @@ neoraine (1.2.5) unstable; urgency=low
     some files could very well not be found).
   * Support for starting indexes for audio tracks in cue files.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 25 Mar 2009 11:18:12 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 25 Mar 2009 11:18:12 +0100
 
 neoraine (1.2.4) unstable; urgency=low
 
@@ -83,7 +98,7 @@ neoraine (1.2.4) unstable; urgency=low
     speed hacks just make the animations smoother normaly, but there might be
     exceptions).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 22 Mar 2009 00:48:10 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 22 Mar 2009 00:48:10 +0100
 
 neoraine (1.2.3) unstable; urgency=low
 
@@ -100,7 +115,7 @@ neoraine (1.2.3) unstable; urgency=low
   * When restoring a savegame new cdda commands are now always handled (they
     could be ignored in some cases before).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 13 Mar 2009 23:01:50 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 13 Mar 2009 23:01:50 +0100
 
 neoraine (1.2.2) unstable; urgency=low
 
@@ -111,7 +126,7 @@ neoraine (1.2.2) unstable; urgency=low
   * See raine changelog for version 0.51.0 for changes not specific to
     neoraine (gui, console, video...).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 16 Jan 2009 19:36:50 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 16 Jan 2009 19:36:50 +0100
 
 neoraine (1.2.1) unstable; urgency=low
 
@@ -121,7 +136,7 @@ neoraine (1.2.1) unstable; urgency=low
   * Added an error message when trying to load a game from a .cue file and the
     iso defined in the cue file is not readable.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 15 Jan 2009 23:30:46 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 15 Jan 2009 23:30:46 +0100
 
 neoraine (1.2.0) unstable; urgency=low
 
@@ -141,7 +156,7 @@ neoraine (1.2.0) unstable; urgency=low
     display a0 to get the address, or break $6858 and then display a0 to get the
     address of a text printed ingame, character by character (dialog usually)).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 15 Aug 2008 11:28:25 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 15 Aug 2008 11:28:25 +0200
 
 neoraine (1.1.7) unstable; urgency=low
 
@@ -153,7 +168,7 @@ neoraine (1.1.7) unstable; urgency=low
     characters in the team at the same time (thanks to saaleh for the savegame
     which allowed me to do that !)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 13 Aug 2008 11:16:26 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 13 Aug 2008 11:16:26 +0200
 
 neoraine (1.1.6) unstable; urgency=low
 
@@ -161,7 +176,7 @@ neoraine (1.1.6) unstable; urgency=low
     more responsive, and the console gets new commands which allow better
     cheats for ssrpg
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 09 Aug 2008 10:37:01 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 09 Aug 2008 10:37:01 +0200
 
 neoraine (1.1.5) unstable; urgency=low
 
@@ -191,7 +206,7 @@ neoraine (1.1.5) unstable; urgency=low
   * disabled speed hack for magical drop 2 as it made the menu much harder to
     use !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 10 May 2008 10:25:09 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 10 May 2008 10:25:09 +0200
 
 neoraine (1.1.4) unstable; urgency=low
 
@@ -211,7 +226,7 @@ neoraine (1.1.4) unstable; urgency=low
     corruption when reseting during the 1st animation while the fix area is
     being loaded
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 05 Apr 2008 17:14:27 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 05 Apr 2008 17:14:27 +0200
 
 neoraine (1.1.3) unstable; urgency=low
 
@@ -225,7 +240,7 @@ neoraine (1.1.3) unstable; urgency=low
   * The depencies for raine and neoraine are now in different files to avoid
     to reproduce the mistake of version 1.1.2 with the bad windows binary !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 14 Mar 2008 23:51:50 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 14 Mar 2008 23:51:50 +0100
 
 neoraine (1.1.2) unstable; urgency=low
 
@@ -246,7 +261,7 @@ neoraine (1.1.2) unstable; urgency=low
     colors (gui options / Colors).
   * fixed speed too fast in some places for janshin (Quest of Jong Master)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 13 Mar 2008 17:28:51 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 13 Mar 2008 17:28:51 +0100
 
 neoraine (1.1.1) unstable; urgency=low aka "triple 1" !!!
 
@@ -302,7 +317,7 @@ neoraine (1.1.1) unstable; urgency=low aka "triple 1" !!!
     done "load game") in normal blits at a resolution such that width > 640
     and height < 480, then you had a crash. It's fixed too !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 11 Mar 2008 09:16:26 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 11 Mar 2008 09:16:26 +0100
 
 neoraine (1.1.0) unstable; urgency=low
 
@@ -340,7 +355,7 @@ neoraine (1.1.0) unstable; urgency=low
   * Fixed loading directly an iso passed on the command line, it was broken
     since 1.0.5.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 06 Mar 2008 16:13:09 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 06 Mar 2008 16:13:09 +0100
 
 neoraine (1.0.6) unstable; urgency=low
 
@@ -354,7 +369,7 @@ neoraine (1.0.6) unstable; urgency=low
     can reach 700 fps in neoraine with yuv overlays when disabling the speed
     limitation with this key !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Tue, 12 Feb 2008 19:37:47 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 12 Feb 2008 19:37:47 +0100
 
 neoraine (1.0.5) unstable; urgency=low
 
@@ -365,14 +380,14 @@ neoraine (1.0.5) unstable; urgency=low
     supposed to be mode1/2048, so usually mode2/2352 are bad rips, but
     sometimes they work anyway !!!).
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 25 Jan 2008 17:39:32 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 25 Jan 2008 17:39:32 +0100
 
 neoraine (1.0.4) unstable; urgency=low
 
   * cue files now support filenames up to 256 characters, and improved error
     messages for the cue files.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sun, 06 Jan 2008 11:49:53 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sun, 06 Jan 2008 11:49:53 +0100
 
 neoraine (1.0.3) unstable; urgency=low
 
@@ -382,20 +397,20 @@ neoraine (1.0.3) unstable; urgency=low
     to the game resolution with scale 2x enabled.
   * Added a new speed hack for last resort.
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Sat, 05 Jan 2008 11:54:23 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Sat, 05 Jan 2008 11:54:23 +0100
 
 neoraine (1.0.2-3) unstable; urgency=low
 
   * now supports wav in cue files, and neocheats.cfg is the right version, not
     the test version as before !
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 04 Jan 2008 23:51:25 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 04 Jan 2008 23:51:25 +0100
 
 neoraine (1.0.2-2) unstable; urgency=low
 
   * removes the forgoten z80_check_w (debuging stuff)
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 04 Jan 2008 00:19:25 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 04 Jan 2008 00:19:25 +0100
 
 neoraine (1.0.2) unstable; urgency=low
 
@@ -413,20 +428,20 @@ neoraine (1.0.2) unstable; urgency=low
   * Fixed the huge bug with the sfx sound only on the left side, it's now
     stereo, sorry !!!
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Thu, 03 Jan 2008 23:39:50 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Thu, 03 Jan 2008 23:39:50 +0100
 
 neoraine (1.0.1) unstable; urgency=low
 
   * Samurai spirits rpg fix : there was a specific video priority problem
     which was hiding text boxes for some characters
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Fri, 28 Dec 2007 13:23:56 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 28 Dec 2007 13:23:56 +0100
 
 neoraine (1.0.0-2) unstable; urgency=low
 
   * Adds the forgoten startup.bin to the binary package...
 
- -- Emmanuel Anne <manu@manu-home.dyndns.org>  Wed, 26 Dec 2007 23:57:46 +0100
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Wed, 26 Dec 2007 23:57:46 +0100
 
 neoraine (1.0.0-1) unstable; urgency=low
 
