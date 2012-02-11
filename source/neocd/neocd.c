@@ -442,11 +442,20 @@ static void neo_irq1pos_w(int offset, UINT16 data)
        * Clearly this is a rough approximation (the irq.pos value is not
        * compared at all to any clock), but it seems to work well enough ! */
       int line = (irq.pos + 3) / 0x180; /* ridhero gives 0x17d */
+      /* Ugly hack : the hw gives an interrupt in cycles, which translate
+       * directly to pixels, so we should allow more than 1 interrupt / line.
+       * But we translate this to a line number, so if there is a 2nd interrupt
+       * on the same line, it's just lost.
+       * We work around this here, by setting it to 1 minimal.
+       * I'll have to consider using real pixels as the start of the interrupt
+       * instead of lines, maybe it's not so complex to do */
+      if (line == 0) line = 1;
       get_scanline();
       if (scanline == 263)
 	irq.start = line;
       else
 	irq.start = scanline + line;
+      // printf("irq.start = %d on scanline %d from irq.pos %d\n",irq.start,scanline,irq.pos);
       if (irq.pos == 0xffffffff)
 	irq.start = -1;
       print_debug("irq.start = %d from direct write\n",irq.start);
@@ -480,11 +489,11 @@ static void update_interrupts(void)
       return;
     }
     if (level == 2) {
-	if ((s68000context.interrupts[0] & (1<<level))==0 &&
+/*	if ((s68000context.interrupts[0] & (1<<level))==0 &&
 		watchdog_counter-- == 0) {
 	    printf("watchdog reset in vbl \n");
 	    reset_game_hardware();
-	} 
+	} */
 
        if (irq.wait_for_vbl_ack) {
 	   print_debug("received vbl, still waiting for ack\n");
@@ -2512,6 +2521,7 @@ void execute_neocd() {
 
     raster_frame = 1;
     clear_screen();
+    int vbl_sent = 0;
     for (scanline = 0; scanline < 264; scanline++) {
 	/* From http://wiki.neogeodev.org/index.php?title=Display_timing
 	 *  8 scanlines vertical sync pulse
@@ -2535,13 +2545,14 @@ void execute_neocd() {
 	}
 
 	display_position_interrupt_pending = 1;
+	// printf("hbl on %d\n",scanline);
 	if (raster_bitmap && scanline <= 224+28 && scanline > 28) {
 	    draw_sprites(0,384,start_line,scanline-28);
 	    blit(GameBitmap,raster_bitmap,16,start_line+16,0,start_line,
 		    neocd_video.screen_x,scanline-28-start_line);
 	    start_line = scanline-28;
 	}
-      } else if (scanline >= 256) {
+      } else if (scanline >= 256 && !vbl_sent) {
 	    /* VBL is exactly where vcounter is adjusted (0xf8-0xff) */
 	  /* There is a paradox here :
 	   * vbl should always be at line 256 normally, it must be at the
@@ -2563,6 +2574,8 @@ void execute_neocd() {
 	    } 
 
 	    vblank_interrupt_pending = 1;	   /* vertical blank */
+	    vbl_sent = 1;
+	    // printf("vbl on %d\n",scanline);
 	}
 
       if (display_position_interrupt_pending || vblank_interrupt_pending) {
@@ -2574,6 +2587,11 @@ void execute_neocd() {
 	  cpu_execute_cycles(CPU_68K_0,200000/264);
       if (stopped_68k && !(irq.start > scanline && irq.start < 224+28))
 	break;
+    }
+    if (!vbl_sent) {
+	// Update vbl if needed (speed hack)
+	vblank_interrupt_pending = 1;
+	update_interrupts();
     }
     // If there is still an interrupt executing, add some lines
     while (s68000context.interrupts[0] & 2)
