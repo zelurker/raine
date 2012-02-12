@@ -391,10 +391,6 @@ void saDestroySound( int remove_all_resources )
 
    //pause_raine_ym3812();
 
-   if(remove_all_resources){
-     saStopSoundEmulators();
-   }
-
    /* We *MUST* close the audio here because of implicit frequency conversion.
       If you load pacman first then the audio will be opened at 96 Khz, so it must
       be closed at the end in order to open it again at a more normal frequency later. */
@@ -407,6 +403,11 @@ void saDestroySound( int remove_all_resources )
 		 Sound_Quit();
 #endif
    }
+
+   if(remove_all_resources){
+     saStopSoundEmulators();
+   }
+
 
    for( i = 0; i < NUMVOICES; i++ ){
       saDestroyChannel(i);
