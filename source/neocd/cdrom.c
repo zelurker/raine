@@ -292,13 +292,28 @@ static int    recon_filetype(char *ext, char *filename)
 
   // else try to find the type in the filename !
   for (n=0; n<sizeof(exts)/sizeof(char*); n++)
-    if (strstr(filename,exts[n]))
+    if (strstr(filename,exts[n])) {
+#ifdef RAINE_DEBUG
+	printf("warning: type taken from filename %s\n",filename);
+#endif
       return n;
+    }
 
-  if (!strcmp(ext,"obj")) // sprites in art of fighting !!!!
+  if (!strcmp(ext,"obj")) {// sprites in art of fighting !!!!
+#ifdef RAINE_DEBUG
+      printf("warning: aof sprites %s\n",filename);
+#endif
     return SPR_TYPE;
+  }
 
   // really nothing to do !
+#ifdef RAINE_DEBUG
+  /* Neo turf master for example has a se_02.a80 file in its ipl.txt
+   * same size and same crc as se_02.z80. It's very probably an error, the file
+   * seems to be ignored by the original hw, and the correct one (.z80) loaded
+   * later */
+  printf("file type not recognized : %s\n",filename);
+#endif
   return    -1;
 }
 
