@@ -37,6 +37,27 @@
 #include "loadpng.h"
 #include "games/gun.h"
 
+#define DBG_RASTER 1
+#define DBG_IRQ    2
+#define DBG_LEVEL DBG_RASTER
+
+#ifndef RAINE_DEBUG
+#define debug
+#else
+void debug(int level, const char *format, ...)
+{
+    if (level & DBG_LEVEL) {
+	va_list ap;
+	va_start(ap,format);
+	vprintf(format,ap);
+	va_end(ap);
+    }
+}
+#endif
+
+#define NB_LINES 264 // lines on the screen (including borders)
+#define START_SCREEN 28 // screen starts at this line (1st visible line)
+
 static int capture_mode = 0,start_line,screen_cleared;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1;
@@ -401,7 +422,7 @@ static int cpu_readcoin(int addr)
 
 static struct {
   int start, control, pos; // flags for irq1
-  int disable,wait_for_vbl_ack; // global / irq2
+  int disable; // global / irq2
 } irq;
 
 static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
@@ -413,7 +434,7 @@ static void get_scanline() {
   if (!raster_frame) {
     // scanline isn't available, find it
     int cycles = s68000readOdometer() % FRAME_NEO;
-    scanline = cycles * 264 / FRAME_NEO;
+    scanline = cycles * NB_LINES / FRAME_NEO;
   }
 }
 
@@ -451,14 +472,10 @@ static void neo_irq1pos_w(int offset, UINT16 data)
        * instead of lines, maybe it's not so complex to do */
       if (line == 0) line = 1;
       get_scanline();
-      if (scanline == 263)
-	irq.start = line;
-      else
-	irq.start = scanline + line;
-      // printf("irq.start = %d on scanline %d from irq.pos %d\n",irq.start,scanline,irq.pos);
+      irq.start = scanline + line;
+      debug(DBG_RASTER,"irq.start = %d on scanline %d from irq.pos %x\n",irq.start,scanline,irq.pos);
       if (irq.pos == 0xffffffff)
 	irq.start = -1;
-      print_debug("irq.start = %d from direct write\n",irq.start);
     }
   } else {
     irq.pos = (irq.pos & 0x0000ffff) | (data << 16);
@@ -474,48 +491,30 @@ static void update_interrupts(void)
 {
   int level = 0;
 
-  /* determine which interrupt is active - order implies priority */
-  /* The odd thing is that vblank (level 1) is masked by hbl (level 2) ?!!!!
-   * Anyway, this comes from mame, so I guess they spent months testing it even
-   * if it seems crazy ! */
-  if (display_position_interrupt_pending) level = 1;
   if (vblank_interrupt_pending) level = 2;
+  if (display_position_interrupt_pending) level = 1;
   // if (irq3_pending) level = 3;
 
   /* either set or clear the appropriate lines */
   if (level) {
     if (irq.disable) {
-      print_debug("irqs disabled\n");
-      return;
+	debug(DBG_IRQ,"update_interrupts: irqs disabled\n");
+	return;
     }
-    if (level == 2) {
-/*	if ((s68000context.interrupts[0] & (1<<level))==0 &&
-		watchdog_counter-- == 0) {
-	    printf("watchdog reset in vbl \n");
-	    reset_game_hardware();
-	} */
-
-       if (irq.wait_for_vbl_ack) {
-	   print_debug("received vbl, still waiting for ack\n");
-	   return;
-       } 
-    }
-    print_debug("68k irq %d\n",level);
-    /* print_debug("10fd80 = %x 1021BE %x 100014 %x\n",ReadWord(&RAM[0x10fd80]),
-	ReadWord(&RAM[0x1021BE]),ReadWord(&RAM[0x100014])); */
 
     if (s68000context.interrupts[0] & (1<<level)) {
-      print_debug("irq already pending, ignoring...\n");
-    } else
-      cpu_interrupt(CPU_68K_0,level);
-    if (level == 2) {
-      // vblank_interrupt_pending = 0; 
-      irq.wait_for_vbl_ack = 1;
-    } else
+      debug(DBG_IRQ,"irq already pending, ignoring...\n");
+    } else {
+	debug(DBG_IRQ,"irq %d on line %d\n",level,scanline);
+	cpu_interrupt(CPU_68K_0,level);
+    }
+#if 0
+    else
       /* Finally, the hblank neither : in super sidekicks 3, sometimes the
        * programs acks the irq, but not always !!! If we don't disable it here
        * then we make a stack overflow !!! */
       display_position_interrupt_pending = 0;
+#endif
   }
   else {
 #ifdef RAINE_DEBUG
@@ -523,7 +522,6 @@ static void update_interrupts(void)
       print_debug("should be cleared. %x\n",s68000context.interrupts[0]); 
 #endif
     s68000context.interrupts[0] &= ~7;
-    irq.wait_for_vbl_ack = 0;
   }
 }
 
@@ -553,10 +551,9 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
     case    6:    /* IRQ acknowledge */
 	       // if (data & 0x01) irq3_pending = 0;
+	       debug(DBG_IRQ,"irq ack %d\n",data);
 	       if (data & 0x02) display_position_interrupt_pending = 0;
 	       if (data & 0x04) vblank_interrupt_pending = 0;
-	       print_debug("interrupt ack %x from %x\n",data,s68000readPC());
-
 	       update_interrupts();
 	       break;
     case 0x07: break; /* LSPC2 : timer stop switch - indicate wether the hbl
@@ -606,6 +603,7 @@ static UINT16 read_videoreg(UINT32 offset) {
 	      get_scanline();
 	      int vcounter = scanline + 0xf8;
 	      print_debug("access vcounter %d frame_counter %x from %x\n",vcounter,neogeo_frame_counter,s68000readPC());
+	      debug(DBG_RASTER,"access vcounter %d frame_counter %x from pc=%x scanline=%d\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline);
 
 	      return (vcounter << 7) | (neogeo_frame_counter & 7);
 	    }
@@ -1433,7 +1431,11 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 
     // rows holds the number of tiles in each vertical multisprite block
     for (y=0; y < rows ;y++) {
-      tileno = neogeo_vidram[offs];
+	// 100% specific to neocd : maximum possible sprites $80000
+	// super sidekicks 2 draws the playground with bit $8000 set
+	// the only way to see the playground is to use and $7fff
+	// Plus rasters must be enabled
+  	tileno = neogeo_vidram[offs] & 0x7fff;
       tileatr = neogeo_vidram[offs+1];
       offs += 2;
       if (y)
@@ -1448,12 +1450,6 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	  // printf("animation tileno 4\n");
 	  tileno = (tileno&~3)|(neogeo_frame_counter&3);
 	}
-      }
-
-      //         tileno &= 0x7FFF;
-      if (tileno>0x7FFF) {
-	// printf("%d,%d continue sur tileno %x count %x\n",sx,sy,tileno,count);
-	continue;
       }
 
       if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
@@ -1517,7 +1513,7 @@ static void draw_neocd() {
     return;
 
   int start = 0, end = 0x300 >> 1;
-  if (check_layer_enabled(layer_id_data[1]) && !spr_disabled) {
+  if (check_layer_enabled(layer_id_data[1]) && !spr_disabled && !raster_frame) {
     if (neocd_id == 0x0085 && !capture_mode) {
       // pseudo priority code specific to ssrpg (samurai spirits rpg)
       // it draws the sprites at the begining of the list at the end to have them
@@ -1541,6 +1537,10 @@ static void draw_neocd() {
       } while (end != 0);
     } else
       draw_sprites(0, 384,start_line,224);
+  } else if (raster_frame && start_line) {
+      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,
+	      start_line);
+      debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame\n");
   }
 
   if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
@@ -1551,11 +1551,6 @@ static void draw_neocd() {
     }
   }
 
-  if (raster_bitmap && start_line) {
-      // printf("blit raster %x start_line %d offx %d\n",irq.control,start_line,offx);
-      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,
-	      start_line);
-  }
   if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
     video_draw_fix();
 }
@@ -1626,16 +1621,6 @@ static void neogeo_hreset(void)
 
   video_modulo = video_pointer = 0;
 
-#if 0
-  // Not sure this startup.bin is still usefull, maybe the watchdog now
-  // initializes the ram correctly...
-  if (!load_file(get_shared("startup.bin"),&RAM[0x10F300],3328)) {
-    ErrorMsg("No startup.bin found !");
-    ClearDefault();
-    return;
-  }
-  ByteSwap(&RAM[0x10f300],3328);
-#endif
   SetLanguageSwitch(region_code);
 
   neogeo_cdrom_load_title();
@@ -2162,6 +2147,7 @@ static UINT16 read_reg(UINT32 offset) {
 static void write_pal(UINT32 offset, UINT16 data) {
   /* There are REALLY mirrors of the palette, used by kof96ng at least,
    * see demo / story */
+    printf("pal mirror %x\n",offset);
   offset &= 0x1fff;
   WriteWord(&RAM_PAL[offset],data);
 /*  get_scanline();
@@ -2181,6 +2167,7 @@ static void write_word(UINT32 offset, UINT16 data) {
 */
 
 static void load_neocd() {
+    raster_frame = 0;
   register_driver_emu_keys(list_emu,4);
   layer_id_data[0] = add_layer_info("FIX layer");
   layer_id_data[1] = add_layer_info("sprites layer");
@@ -2285,7 +2272,7 @@ static void load_neocd() {
    * should be accessed only during vbl to avoid noise on screen, by words
    * only. Well byte access can be allowed here, it can't harm */
   AddRWBW(0x400000, 0x401fff, NULL, RAM_PAL);
-  AddWriteWord(0x402000, 0x403fff, write_pal, NULL); // palette mirror !
+  AddWriteWord(0x402000, 0x4fffff, write_pal, NULL); // palette mirror !
   AddSaveData(SAVE_USER_0, (UINT8*)&palbank, sizeof(palbank));
   prepare_cdda_save(SAVE_USER_1);
   AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
@@ -2505,159 +2492,127 @@ void execute_neocd() {
   stopped_68k = 0;
   screen_cleared = 0;
   start_line = 0;
-  if ((irq.control & (IRQ1CTRL_ENABLE|IRQ1CTRL_AUTOLOAD_VBLANK)) &&
-	  !disable_irq1 && irq.start < 264) {
-    print_debug("raster frame\n");
+  if ((irq.control & (IRQ1CTRL_ENABLE)) && !disable_irq1) {
+      debug(DBG_RASTER,"raster frame\n");
 
-    if (raster_bitmap && bitmap_color_depth(raster_bitmap) !=
-	    bitmap_color_depth(GameBitmap)) {
-	destroy_bitmap(raster_bitmap);
-	raster_bitmap = NULL;
-    }
-	
-    if (!raster_bitmap)
-	raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
-		320,224);
-
-    raster_frame = 1;
-    clear_screen();
-    int vbl_sent = 0;
-    for (scanline = 0; scanline < 264; scanline++) {
-	/* From http://wiki.neogeodev.org/index.php?title=Display_timing
-	 *  8 scanlines vertical sync pulse
-	 16 scanlines top border
-	 224 scanlines active display
-	 16 scanlines bottom border
-
-	 Well apparently in ridhero there is a border of 28 pixels and not 24
-	 */
-
-      if (scanline == irq.start && (irq.control & IRQ1CTRL_ENABLE)) {
-	if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
-	  if (irq.pos == 0xffffffff)
-	    irq.start = -1;
-	  else {
-	    irq.start += (irq.pos + 3) / 0x180;	/* ridhero gives 0x17d */
-	  }
-	  print_debug("irq1 autorepeat %d (scanline %d)\n",irq.start,scanline);
-	  /* 		    if (irq.start < 40) */
-	  /* 		      irq.start = 40; */
-	}
-
-	display_position_interrupt_pending = 1;
-	// printf("hbl on %d\n",scanline);
-	if (raster_bitmap && scanline <= 224+28 && scanline > 28) {
-	    draw_sprites(0,384,start_line,scanline-28);
-	    blit(GameBitmap,raster_bitmap,16,start_line+16,0,start_line,
-		    neocd_video.screen_x,scanline-28-start_line);
-	    start_line = scanline-28;
-	}
-      } else if (scanline >= 256 && !vbl_sent) {
-	    /* VBL is exactly where vcounter is adjusted (0xf8-0xff) */
-	  /* There is a paradox here :
-	   * vbl should always be at line 256 normally, it must be at the
-	   * end of the screen to fix the screen when the car jumps in neodrift
-	   * or Rally Chase.
-	   * Now a game like ridhero is sending an hbl on line 256.
-	   * Well it doesn't seem to work with a simple irq mask, don't know
-	   * why. So what I do here is that I try to send a vbl only when there
-	   * is no more hbl. VBL being caused by the hardware, it's just a
-	   * hack... */
-
-	    if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
-		if (irq.pos == 0xffffffff)
-		    irq.start = -1;
-		else {
-		    irq.start = ((irq.pos + 3) / 0x180);	/* ridhero gives 0x17d */
-		}
-		print_debug("irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
-	    } 
-
-	    vblank_interrupt_pending = 1;	   /* vertical blank */
-	    vbl_sent = 1;
-	    // printf("vbl on %d\n",scanline);
-	}
-
-      if (display_position_interrupt_pending || vblank_interrupt_pending) {
-	update_interrupts();
-	if (stopped_68k) 
-	    stopped_68k = 0;
+      if (raster_bitmap && bitmap_color_depth(raster_bitmap) !=
+	      bitmap_color_depth(GameBitmap)) {
+	  destroy_bitmap(raster_bitmap);
+	  raster_bitmap = NULL;
       }
-      if (!stopped_68k)
-	  cpu_execute_cycles(CPU_68K_0,200000/264);
-      if (stopped_68k && !(irq.start > scanline && irq.start < 224+28))
-	break;
-    }
-    if (!vbl_sent) {
-	// Update vbl if needed (speed hack)
-	vblank_interrupt_pending = 1;
-	update_interrupts();
-    }
-    // If there is still an interrupt executing, add some lines
-    while (s68000context.interrupts[0] & 2)
-	cpu_execute_cycles(CPU_68K_0,200000/264);
 
-    if (z80_enabled && !irq.disable && RaineSoundCard) {
-      execute_z80_audio_frame(); // no need to interleave the z80 with the 68k
-    }
-    if (irq.start >= 264)
-      irq.start -= 264; // it will be for next frame ! :)
+      if (!raster_bitmap)
+	  raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
+		  320,224);
+
+      raster_frame = 1;
+      clear_screen();
+      for (scanline = 0; scanline < NB_LINES; scanline++) {
+	  /* From http://wiki.neogeodev.org/index.php?title=Display_timing
+	   *  8 scanlines vertical sync pulse
+	   16 scanlines top border
+	   224 scanlines active display
+	   16 scanlines bottom border
+
+	   Well apparently in ridhero there is a border of 28 pixels and not 24
+	   */
+
+	  if (scanline == 12) 
+	      // End of vbl sync -> draw screen
+	      draw_sprites(0,384,0,224);
+
+	  if (scanline == irq.start && (irq.control & IRQ1CTRL_ENABLE)) {
+	      if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
+		  if (irq.pos == 0xffffffff)
+		      irq.start = -1;
+		  else {
+		      irq.start += (irq.pos + 3) / 0x180;	/* ridhero gives 0x17d */
+		  }
+		  debug(DBG_RASTER,"irq1 autorepeat %d (scanline %d)\n",irq.start,scanline);
+	      }
+
+	      display_position_interrupt_pending = 1;
+	      debug(DBG_RASTER,"hbl on %d interrupts %x\n",scanline,s68000context.interrupts[0]);
+	      if (raster_bitmap && scanline <= 224+START_SCREEN && scanline > START_SCREEN) {
+		  debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
+		  draw_sprites(0,384,start_line,scanline-START_SCREEN);
+		  blit(GameBitmap,raster_bitmap,16,start_line+16,
+			  0,start_line,
+			  neocd_video.screen_x,
+			  scanline-START_SCREEN-start_line);
+		  start_line = scanline-START_SCREEN;
+	      }
+	  }
+
+	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
+	      update_interrupts();
+	      if (stopped_68k) 
+		  stopped_68k = 0;
+	  }
+	  if (!stopped_68k)
+	      cpu_execute_cycles(CPU_68K_0,200000/NB_LINES);
+	  if (stopped_68k && !(irq.start > scanline)) {
+	      // We are obliged to stay in the loop if an irq will follow even
+	      // if it's out of screen, because it can set irq.control to
+	      // reload hbl on vblank (case of super sidekicks 3).
+	      break;
+	  }
+      }
   } else { // normal frame (no raster)
-    // the 68k frame does not need to be sliced any longer, we
-    // execute cycles on the z80 upon receiving a command !
-    cpu_execute_cycles(CPU_68K_0, current_neo_frame);
-    if ((irq.control & IRQ1CTRL_ENABLE) && !disable_irq1 && irq.start >= 264) 
-      irq.start -= 264; // it will be for next frame ! :)
-    raster_frame = 0;
-    if (z80_enabled && !irq.disable && RaineSoundCard) {
-      execute_z80_audio_frame();
-    }
-    vblank_interrupt_pending = 1;	   /* vertical blank */
-    // print_debug("A7:%x return %x a0:%x a1:%x a2:%x a3:%x a4:%x a5:%x\n",s68000context.areg[7],ReadLongSc(&RAM[s68000context.areg[7]+8]),s68000context.areg[0],
-    // s68000context.areg[1],s68000context.areg[2],s68000context.areg[3],s68000context.areg[4],s68000context.areg[5]);
+      // the 68k frame does not need to be sliced any longer, we
+      // execute cycles on the z80 upon receiving a command !
+      raster_frame = 0;
+      cpu_execute_cycles(CPU_68K_0, current_neo_frame);
+      if (allowed_speed_hacks) {
+	  static int not_stopped_frames;
+	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
+	      pc = s68000readPC();
 
-    //		if (s68000context.areg[7] < 0x10f200 && cpu_frame_count > 60)
-    //			exit(1);
-    // printf("stopped %d desired %d current %d frame_count %d\n",stopped_68k,desired_68k_speed,current_neo_frame,frame_count);
-    if (allowed_speed_hacks) {
-      static int not_stopped_frames;
-      if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
-	pc = s68000readPC();
-
-	if (pc < 0x200000) {
-	  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
-	  not_stopped_frames = 0;
-	  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
-	      ReadWord(&RAM[pc+4]) == 0x67fa) {
-	    apply_hack(pc);
-	  } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
-	      ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
-	    apply_hack(pc);
-	    WriteWord(&RAM[pc+6],0x4e71); // nop
-	  } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
-	      ReadWord(&RAM[pc-6]) == 0x4a39) {
-	    apply_hack(pc-6);
-	    WriteWord(&RAM[pc],0x4e71);
-	  } else if (ReadWord(&RAM[pc]) == 0x0839 &&
-	      ReadWord(&RAM[pc+8]) == 0x66f2) {
-	    apply_hack(pc);
-	    WriteWord(&RAM[pc+6],0x4e71); // nop
-	    WriteWord(&RAM[pc+8],0x4e71); // nop
-	  } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
-	      ReadWord(&RAM[pc-6]) == 0x4a79) { // TST / BEQ/BNE
-	    apply_hack(pc-6);
-	    WriteWord(&RAM[pc],0x4e71); // nop
+	      if (pc < 0x200000) {
+		  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
+		  not_stopped_frames = 0;
+		  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
+			  ReadWord(&RAM[pc+4]) == 0x67fa) {
+		      apply_hack(pc);
+		  } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
+			  ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
+		      apply_hack(pc);
+		      WriteWord(&RAM[pc+6],0x4e71); // nop
+		  } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
+			  ReadWord(&RAM[pc-6]) == 0x4a39) {
+		      apply_hack(pc-6);
+		      WriteWord(&RAM[pc],0x4e71);
+		  } else if (ReadWord(&RAM[pc]) == 0x0839 &&
+			  ReadWord(&RAM[pc+8]) == 0x66f2) {
+		      apply_hack(pc);
+		      WriteWord(&RAM[pc+6],0x4e71); // nop
+		      WriteWord(&RAM[pc+8],0x4e71); // nop
+		  } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
+			  ReadWord(&RAM[pc-6]) == 0x4a79) { // TST / BEQ/BNE
+		      apply_hack(pc-6);
+		      WriteWord(&RAM[pc],0x4e71); // nop
+		  }
+	      }
+	  } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
+	      // speed hack missed again for some reason (savegames can do that)
+	      if (not_stopped_frames++ >= 10)
+		  current_neo_frame = FRAME_NEO;
 	  }
-	}
-      } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
-	// speed hack missed again for some reason (savegames can do that)
-	if (not_stopped_frames++ >= 10)
-	  current_neo_frame = FRAME_NEO;
-      }
-    } // allowed_speed_hacks
-    update_interrupts();
-
+      } // allowed_speed_hacks
   }
+  if (z80_enabled && !irq.disable && RaineSoundCard) {
+      execute_z80_audio_frame();
+  }
+  vblank_interrupt_pending = 1;	   /* vertical blank */
+  update_interrupts();
+  if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
+      if (irq.pos == 0xffffffff)
+	  irq.start = -1;
+      else {
+	  irq.start = ((irq.pos + 3) / 0x180);	/* ridhero gives 0x17d */
+      }
+      debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
+  } 
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
   if (s68000readPC() == 0xc0e602) { // start button
