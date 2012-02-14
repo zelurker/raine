@@ -546,7 +546,6 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     case 0x03: // Mode register
 	       neogeo_frame_counter_speed=(data>>8)+1;
 	       irq.control = data & 0xff;
-	       print_debug("irq.control = %x, data received %x offset %x\n",data & 0xff,data, offset);
 	       break;
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
@@ -2568,6 +2567,13 @@ void execute_neocd() {
 	      break;
 	  }
       }
+      if (irq.control & IRQ1CTRL_LOAD_RELATIVE)
+	  // On relative loads, sometimes the display interrupt can be set
+	  // outside the screen. But it's actually a timer, so once the screen
+	  // is drawn we can substract 264 lines.
+	  // It happens on super sidekicks 3, randomly. Without this fix here
+	  // the playground is replaced by the public and never comes back !
+	  irq.start -= 264;
   } else { // normal frame (no raster)
       // the 68k frame does not need to be sliced any longer, we
       // execute cycles on the z80 upon receiving a command !
