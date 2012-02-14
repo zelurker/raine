@@ -34,6 +34,7 @@
 #endif
 #include "sdl/control_internal.h"
 #include "sdl/dialogs/fsel.h"
+#include "sdl/gui.h"
 #include "loadpng.h"
 #include "games/gun.h"
 
@@ -1389,8 +1390,6 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
       else
 	fullmode = 0;   // Alpha Mission II uses 0x3f
 
-      if (sy > 0x100) sy -= 0x200;
-
       if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
       {
 	while (sy < -16) sy += 2 * (rzy + 1);
@@ -1540,7 +1539,7 @@ static void draw_neocd() {
   } else if (raster_frame && start_line) {
       blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,
 	      start_line);
-      debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame\n");
+      debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
   }
 
   if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
@@ -2536,6 +2535,7 @@ void execute_neocd() {
 	      if (raster_bitmap && scanline <= 224+START_SCREEN && scanline > START_SCREEN) {
 		  debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
 		  draw_sprites(0,384,start_line,scanline-START_SCREEN);
+		  debug(DBG_RASTER,"blit hbl from %d lines %d\n",start_line,scanline-START_SCREEN-start_line);
 		  blit(GameBitmap,raster_bitmap,16,start_line+16,
 			  0,start_line,
 			  neocd_video.screen_x,
@@ -2551,7 +2551,7 @@ void execute_neocd() {
 	  }
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0,200000/NB_LINES);
-	  if (stopped_68k && !(irq.start > scanline)) {
+	  if (goto_debuger || (stopped_68k && !(irq.start > scanline))) {
 	      // We are obliged to stay in the loop if an irq will follow even
 	      // if it's out of screen, because it can set irq.control to
 	      // reload hbl on vblank (case of super sidekicks 3).
