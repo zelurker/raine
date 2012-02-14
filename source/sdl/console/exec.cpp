@@ -42,8 +42,8 @@ static void exec_break() {
 void do_break(int argc, char **argv) {
   if (argc == 1) {
     if (used_break == 0) {
-      cons->print("no breakpoint");
-    } else {
+      if (cons) cons->print("no breakpoint");
+    } else if (cons) {
       int n;
       for (n=0; n<used_break; n++) {
 	cons->print("break #%d at %x",n,breakp[n].adr);
@@ -54,7 +54,7 @@ void do_break(int argc, char **argv) {
       throw "break del <number> or break adr";
     int nb = parse(argv[2]);
     if (nb >= used_break) {
-      cons->print("no breakpoint #%d",nb);
+      if (cons) cons->print("no breakpoint #%d",nb);
       return;
     }
     int adr = breakp[nb].adr;
@@ -65,23 +65,23 @@ void do_break(int argc, char **argv) {
     if (nb < used_break-1)
       memmove(&breakp[nb],&breakp[nb+1],(used_break-1-nb)*sizeof(tbreak));
     used_break--;
-    cons->print("breakpoint #%d deleted",nb);
+    if (cons) cons->print("breakpoint #%d deleted",nb);
     return;
   } else {
     int adr = parse(argv[1]),n;
     for (n=0; n<used_break; n++) {
       if (abs(adr-breakp[n].adr)<6) {
-	cons->print("already have a breakpoint at %x",breakp[n].adr);
+	if (cons) cons->print("already have a breakpoint at %x",breakp[n].adr);
 	return;
       }
     }
     UINT8 *ptr = get_userdata(0,adr);
     if (!ptr) {
-      cons->print("no data known for this adr");
+      if (cons) cons->print("no data known for this adr");
       return;
     }
     if (used_break == MAX_BREAK) {
-      cons->print("maximum number of breakpoints reached");
+      if (cons) cons->print("maximum number of breakpoints reached");
       return;
     }
     breakp[used_break].old = ReadWord(&ptr[adr]);
@@ -92,7 +92,7 @@ void do_break(int argc, char **argv) {
       resethandler = s68000context.resethandler;
       M68000_context[0].resethandler = s68000context.resethandler = &exec_break;
     }
-    cons->print("breakpoint #%d inserted at %x",used_break-1,adr);
+    if (cons) cons->print("breakpoint #%d inserted at %x",used_break-1,adr);
   }
 }
 
