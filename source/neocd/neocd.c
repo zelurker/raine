@@ -1390,6 +1390,16 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
       else
 	fullmode = 0;   // Alpha Mission II uses 0x3f
 
+      /* Super ugly hack : this 1 line fix for sy below is required for games
+       * like neo drift out, but if you enable it without fullmode==2, then
+       * the upper part of the playground is not drawn correctly in super
+       * sidekicks 2 & 3 ! Absolutely no idea why it works like that for now!
+       * So this fix reads something like "if the code is stupid enough to set
+       * fullmode to 2 (which should not happen normally !), then fix its
+       * coordinates this way.
+       * Not generic at all, frustrating, but it works (afaik). */
+      if (sy > 0x100 && fullmode==2) sy -= 0x200;
+
       if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
       {
 	while (sy < -16) sy += 2 * (rzy + 1);
