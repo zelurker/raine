@@ -168,6 +168,8 @@ extern int goto_debuger;
 
 void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 {
+    if (goto_debuger) return;
+
    switch_cpu(cpu_id);
 
    switch(cpu_id){
