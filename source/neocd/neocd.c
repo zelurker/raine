@@ -2567,13 +2567,10 @@ void execute_neocd() {
 	      break;
 	  }
       }
-      if (irq.control & IRQ1CTRL_LOAD_RELATIVE)
-	  // On relative loads, sometimes the display interrupt can be set
-	  // outside the screen. But it's actually a timer, so once the screen
-	  // is drawn we can substract 264 lines.
-	  // It happens on super sidekicks 3, randomly. Without this fix here
-	  // the playground is replaced by the public and never comes back !
-	  irq.start -= 264;
+      // Actually even on non relative loads the timer can be set out of the
+      // screen, and super sidekicks 3 must re-enable the interrupt for the
+      // next screen or it's lost for ever
+      irq.start -= 264;
   } else { // normal frame (no raster)
       // the 68k frame does not need to be sliced any longer, we
       // execute cycles on the z80 upon receiving a command !
