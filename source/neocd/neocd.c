@@ -57,7 +57,7 @@ void debug(int level, const char *format, ...)
 #endif
 
 #define NB_LINES 264 // lines on the screen (including borders)
-#define START_SCREEN 28 // screen starts at this line (1st visible line)
+#define START_SCREEN 36 // screen starts at this line (1st visible line)
 
 static int capture_mode = 0,start_line,screen_cleared;
 static int capture_block; // block to be shown...
@@ -67,6 +67,7 @@ static int assigned_banks, current_bank;
 int capture_new_pictures;
 static BITMAP *raster_bitmap;
 static void draw_neocd();
+static void draw_sprites(int start, int end, int start_line, int end_line);
 
 static struct VIDEO_INFO neocd_video =
 {
@@ -458,22 +459,13 @@ static void neo_irq1pos_w(int offset, UINT16 data)
     // irq.pos to get 1 irq1 for every scanline. Since we use only a scanline
     // counter (irq.start), we must use (irq.pos + 3)/0x180 or we would not
     // get the interrupt repeat...
-    if (irq.control & IRQ1CTRL_LOAD_RELATIVE)
+    if (irq.control & IRQ1CTRL_LOAD_LOW)
     {
       /* This version is from the neocdpsp code.
        * Clearly this is a rough approximation (the irq.pos value is not
        * compared at all to any clock), but it seems to work well enough ! */
-      int line = (irq.pos + 3) / 0x180; /* ridhero gives 0x17d */
-      /* Ugly hack : the hw gives an interrupt in cycles, which translate
-       * directly to pixels, so we should allow more than 1 interrupt / line.
-       * But we translate this to a line number, so if there is a 2nd interrupt
-       * on the same line, it's just lost.
-       * We work around this here, by setting it to 1 minimal.
-       * I'll have to consider using real pixels as the start of the interrupt
-       * instead of lines, maybe it's not so complex to do */
-      if (line == 0) line = 1;
       get_scanline();
-      irq.start = scanline + line;
+      irq.start = irq.pos + 3;
       debug(DBG_RASTER,"irq.start = %d on scanline %d from irq.pos %x\n",irq.start,scanline,irq.pos);
       if (irq.pos == 0xffffffff)
 	irq.start = -1;
@@ -532,20 +524,28 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     case 0x00: // Address register
       video_pointer = data; break;
     case 0x01:  // Write data register
+      if (raster_frame && scanline > start_line && raster_bitmap &&
+	      scanline < 224+START_SCREEN) {
+	  // Must draw the upper part of the screen BEFORE changing the sprites
+	  start_line -= START_SCREEN;
+	  debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
+	  draw_sprites(0,384,start_line,scanline-START_SCREEN);
+	  debug(DBG_RASTER,"blit hbl from %d lines %d\n",start_line,scanline-START_SCREEN-start_line);
+	  blit(GameBitmap,raster_bitmap,16,start_line+16,
+		  0,start_line,
+		  neocd_video.screen_x,
+		  scanline-START_SCREEN-start_line);
+	  start_line = scanline;
+      }
       neogeo_vidram[video_pointer] = data;
-#if 0
-      if (video_pointer == 0x8215)
-	printf("write %x,%x\n",video_pointer,data);
-#endif
 
-      /* auto increment/decrement the current offset - A15 is NOT effected */
-      // video_pointer = (video_pointer & 0x8000) | ((video_pointer + video_modulo) & 0x7fff);
       video_pointer += video_modulo;
       break;
     case 0x02: video_modulo = data; break; // Automatic increment register
     case 0x03: // Mode register
 	       neogeo_frame_counter_speed=(data>>8)+1;
 	       irq.control = data & 0xff;
+	       printf("irq.control = %x\n",data);
 	       break;
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
@@ -1347,6 +1347,8 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 }
 
 static void draw_sprites(int start, int end, int start_line, int end_line) {
+    if (!check_layer_enabled(layer_id_data[1])) return;
+    if (end_line > 223) end_line = 223;
   if (capture_mode) return draw_sprites_capture(start,end,start_line,end_line);
   int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
   int         offs,count,y;
@@ -1490,7 +1492,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 static void clear_screen() {
     UINT8 *map;
     if (screen_cleared)
-	return; 
+	return;  
     screen_cleared = 1;
     /* Not totally sure the palette can be cleared here and not every
      * time the sprites are drawn during a raster interrupt.
@@ -1521,7 +1523,7 @@ static void draw_neocd() {
     return;
 
   int start = 0, end = 0x300 >> 1;
-  if (check_layer_enabled(layer_id_data[1]) && !spr_disabled && !raster_frame) {
+  if (!spr_disabled && start_line == 0) {
     if (neocd_id == 0x0085 && !capture_mode) {
       // pseudo priority code specific to ssrpg (samurai spirits rpg)
       // it draws the sprites at the begining of the list at the end to have them
@@ -1545,9 +1547,8 @@ static void draw_neocd() {
       } while (end != 0);
     } else
       draw_sprites(0, 384,start_line,224);
-  } else if (raster_frame && start_line) {
-      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,
-	      start_line);
+  } else if (raster_frame && start_line > 0) {
+      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,start_line);
       debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
   }
 
@@ -2155,7 +2156,6 @@ static UINT16 read_reg(UINT32 offset) {
 static void write_pal(UINT32 offset, UINT16 data) {
   /* There are REALLY mirrors of the palette, used by kof96ng at least,
    * see demo / story */
-    printf("pal mirror %x\n",offset);
   offset &= 0x1fff;
   WriteWord(&RAM_PAL[offset],data);
 /*  get_scanline();
@@ -2499,23 +2499,23 @@ void execute_neocd() {
 
   stopped_68k = 0;
   screen_cleared = 0;
-  start_line = 0;
+  start_line = START_SCREEN;
+  if (raster_bitmap && bitmap_color_depth(raster_bitmap) !=
+	  bitmap_color_depth(GameBitmap)) {
+      destroy_bitmap(raster_bitmap);
+      raster_bitmap = NULL;
+  }
+
+  if (!raster_bitmap)
+      raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
+	      320,224);
   if ((irq.control & (IRQ1CTRL_ENABLE)) && !disable_irq1) {
       debug(DBG_RASTER,"raster frame\n");
 
-      if (raster_bitmap && bitmap_color_depth(raster_bitmap) !=
-	      bitmap_color_depth(GameBitmap)) {
-	  destroy_bitmap(raster_bitmap);
-	  raster_bitmap = NULL;
-      }
-
-      if (!raster_bitmap)
-	  raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
-		  320,224);
 
       raster_frame = 1;
       clear_screen();
-      for (scanline = 0; scanline < NB_LINES; scanline++) {
+      for (scanline = 0; scanline < NB_LINES; scanline++, irq.start -= 0x180) {
 	  /* From http://wiki.neogeodev.org/index.php?title=Display_timing
 	   *  8 scanlines vertical sync pulse
 	   16 scanlines top border
@@ -2525,32 +2525,21 @@ void execute_neocd() {
 	   Well apparently in ridhero there is a border of 28 pixels and not 24
 	   */
 
-	  if (scanline == 12) 
-	      // End of vbl sync -> draw screen
-	      draw_sprites(0,384,0,224);
-
-	  if (scanline == irq.start && (irq.control & IRQ1CTRL_ENABLE)) {
+	  if (irq.start < 0x180 && (irq.control & IRQ1CTRL_ENABLE)) {
+	      // irq.start is a timer, in pixels, 0x180 ticks / line
+	      // so if irq.start < 0x180 then there is a timer interrupt on this
+	      // line
 	      if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
 		  if (irq.pos == 0xffffffff)
 		      irq.start = -1;
 		  else {
-		      irq.start += (irq.pos + 3) / 0x180;	/* ridhero gives 0x17d */
+		      irq.start = irq.pos + 1;	/* ridhero gives 0x17d */
 		  }
 		  debug(DBG_RASTER,"irq1 autorepeat %d (scanline %d)\n",irq.start,scanline);
 	      }
 
 	      display_position_interrupt_pending = 1;
 	      debug(DBG_RASTER,"hbl on %d interrupts %x\n",scanline,s68000context.interrupts[0]);
-	      if (raster_bitmap && scanline <= 224+START_SCREEN && scanline > START_SCREEN) {
-		  debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
-		  draw_sprites(0,384,start_line,scanline-START_SCREEN);
-		  debug(DBG_RASTER,"blit hbl from %d lines %d\n",start_line,scanline-START_SCREEN-start_line);
-		  blit(GameBitmap,raster_bitmap,16,start_line+16,
-			  0,start_line,
-			  neocd_video.screen_x,
-			  scanline-START_SCREEN-start_line);
-		  start_line = scanline-START_SCREEN;
-	      }
 	  }
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
@@ -2560,17 +2549,14 @@ void execute_neocd() {
 	  }
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0,200000/NB_LINES);
-	  if (goto_debuger || (stopped_68k && !(irq.start > scanline))) {
+	  if (goto_debuger || (stopped_68k && !(irq.start >= 0x180))) {
 	      // We are obliged to stay in the loop if an irq will follow even
 	      // if it's out of screen, because it can set irq.control to
 	      // reload hbl on vblank (case of super sidekicks 3).
+	      printf("sortie raster frame sur speed hack, irq.start %d\n",irq.start);
 	      break;
 	  }
       }
-      // Actually even on non relative loads the timer can be set out of the
-      // screen, and super sidekicks 3 must re-enable the interrupt for the
-      // next screen or it's lost for ever
-      irq.start -= 264;
   } else { // normal frame (no raster)
       // the 68k frame does not need to be sliced any longer, we
       // execute cycles on the z80 upon receiving a command !
@@ -2613,6 +2599,7 @@ void execute_neocd() {
 	  }
       } // allowed_speed_hacks
   }
+  start_line -= START_SCREEN;
   if (z80_enabled && !irq.disable && RaineSoundCard) {
       execute_z80_audio_frame();
   }
@@ -2622,7 +2609,7 @@ void execute_neocd() {
       if (irq.pos == 0xffffffff)
 	  irq.start = -1;
       else {
-	  irq.start = ((irq.pos + 3) / 0x180);	/* ridhero gives 0x17d */
+	  irq.start = irq.pos;	/* ridhero gives 0x17d */
       }
       debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
   } 

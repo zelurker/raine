@@ -21,13 +21,13 @@ VERSION_NEO = "1.3.1"
 NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
 
 # Use asm video core ? (comment to use C core)
-ASM_VIDEO_CORE = 1
+# ASM_VIDEO_CORE = 1
 
 # console ?
 HAS_CONSOLE = 1

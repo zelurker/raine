@@ -12,7 +12,7 @@ extern "C" {
 // Issues an interrupt when counter = 0 :
 #define IRQ1CTRL_ENABLE			0x10
 // When timer low register is set, timer counter is simultaneously set
-#define IRQ1CTRL_LOAD_RELATIVE		0x20
+#define IRQ1CTRL_LOAD_LOW		0x20
 // Timer counter is set at the beginning of the horizontal blanking of the 1st
 // vertical line
 #define IRQ1CTRL_AUTOLOAD_VBLANK	0x40
