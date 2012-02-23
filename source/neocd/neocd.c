@@ -2378,6 +2378,7 @@ void neocd_function(int vector) {
   // function...
   int pc = cpu_get_pc(CPU_68K_0);
   char buff[6];
+  raster_frame = 0;
   if (pc < 0x200000) {
     memcpy(buff,&RAM[pc],6);
     WriteWord(&RAM[pc],0x4239); // stop 68000 here
