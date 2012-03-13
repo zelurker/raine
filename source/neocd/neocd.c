@@ -424,7 +424,7 @@ static int cpu_readcoin(int addr)
 
 static struct {
   int start, control, pos; // flags for irq1
-  int disable; // global / irq2
+  int disable,wait_for_vbl_ack; // global / irq2
 } irq;
 
 static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
@@ -494,12 +494,24 @@ static void update_interrupts(void)
 	debug(DBG_IRQ,"update_interrupts: irqs disabled\n");
 	return;
     }
+    if (level == 2) {
+
+       if (irq.wait_for_vbl_ack) {
+	   // For some unknown reason this seems to be
+	   // necessary for last blade 2
+	   // Without this, the stack is filled !!!
+	   debug(DBG_IRQ,"received vbl, still waiting for ack sr=%x\n",s68000context.sr);
+	   return;
+       } 
+    }
 
     if (s68000context.interrupts[0] & (1<<level)) {
       debug(DBG_IRQ,"irq already pending, ignoring...\n");
     } else {
-	debug(DBG_IRQ,"irq %d on line %d\n",level,scanline);
+	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000context.sr);
 	cpu_interrupt(CPU_68K_0,level);
+	if (level == 2) 
+	    irq.wait_for_vbl_ack = 1;
     }
 #if 0
     else
@@ -515,6 +527,7 @@ static void update_interrupts(void)
       print_debug("should be cleared. %x\n",s68000context.interrupts[0]); 
 #endif
     s68000context.interrupts[0] &= ~7;
+    irq.wait_for_vbl_ack = 0;
   }
 }
 
