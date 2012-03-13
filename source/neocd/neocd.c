@@ -1416,13 +1416,8 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
     }
 
     rzx = zx+1;
-    // skip if falls completely outside the screen
-    if (sx >= 0x140 && sx <= 0x1f0) {
-      // printf("%d,%d,%d continue sur sx count %x\n",sx,sy,rzx,count);
-      continue;
-    }
 
-    if ( sx >= 0x1F0 )
+    if ( sx >= 0x1F0 ) 
       sx -= 0x200;
 
     // No point doing anything if tile strip is 0
@@ -1547,7 +1542,8 @@ static void draw_neocd() {
       } while (end != 0);
     } else
       draw_sprites(0, 384,start_line,224);
-  } else if (raster_frame && start_line > 0) {
+  }
+  if (raster_frame && start_line > 0) {
       blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,start_line);
       debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
   }

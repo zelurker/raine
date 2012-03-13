@@ -406,7 +406,7 @@ static void cache_load_spr(UINT8 *buff, int len) {
   }
 }
 
-void cache_save_spr(UINT8 **buff, int *len) {
+static void cache_save_spr(UINT8 **buff, int *len) {
   int upload_size = 0;
   int n;
   for (n=0; n<used[SPR_TYPE]; n++) {
@@ -456,7 +456,7 @@ static void cache_load_fix(UINT8 *buff, int len) {
   }
 }
 
-void cache_save_fix(UINT8 **buff, int *len) {
+static void cache_save_fix(UINT8 **buff, int *len) {
   int upload_size = 0;
   int n;
   for (n=0; n<used[FIX_TYPE]; n++) {
