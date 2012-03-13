@@ -1288,7 +1288,6 @@ unsigned neogeo_cdrom_test_files(unsigned char *Ptr, loading_params *param)
   unsigned ret=0;
   char    Entry[32];
   static char FileName[14];
-  char    *Ext;
   int     i, j, Bnk, Off;
   if (param) {
     if (param->file_to_load != 0) {
@@ -1341,7 +1340,6 @@ unsigned neogeo_cdrom_test_files(unsigned char *Ptr, loading_params *param)
     }
 
     j++;
-    Ext=&FileName[j];
 
     ret++;
     // printf("Loading File: %s %02x %08x\n", FileName, Bnk, Off);
@@ -1376,8 +1374,6 @@ unsigned neogeo_cdrom_test_files(unsigned char *Ptr, loading_params *param)
 
 void    neogeo_cdrom_load_files(UINT8 *Ptr)
 {
-  unsigned nfiles=0;
-
   // sa_pause_sound();
 
   if (auto_stop_cdda) cdda_stop();
@@ -1386,7 +1382,7 @@ void    neogeo_cdrom_load_files(UINT8 *Ptr)
   // now_loading();
   // neogeo_cdrom_load_title();
 
-  nfiles=neogeo_cdrom_test_files(Ptr,NULL);
+  neogeo_cdrom_test_files(Ptr,NULL);
 
   /*
      else

@@ -146,7 +146,7 @@ extern int max_mixer_volume;
 BOOL saInitSoundCard( int soundcard, int sample_rate )
 {
 
-   int i,id;
+   int i;
    if (opened_audio)
      return TRUE;
    RaineSoundCard = 1;
@@ -154,7 +154,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
      // Normally, soundcard =0 means no sound in raine.
      // I will try not to break this to keep compatibility with the other
      // sources...
-   id = sound_card_id(soundcard);
+   sound_card_id(soundcard);
 
 /*    if ( SDL_Init(SDL_INIT_AUDIO) < 0 ) { */
 /*      fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError()); */

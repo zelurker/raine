@@ -423,17 +423,10 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 		    offs = &RAM[base+offset+(cursorx+20*cursory)*2];
 		    prevchar = ReadWord(offs-2)+OFFS_SPRITES;
 		}
-		UINT32 last_offset;
-		int last_entry = (ReadWord(&RAM[base])-4)/2;
 		if (size_msg) {
 		    // find the real len, that is the len of the current
 		    // entry, not the length before the next end of string
 		    // code
-		    if (cur_entry < last_entry)
-			last_offset = get_entry_offset(base, cur_entry+1)-2;
-		    else {
-			last_offset = size_msg - 2;
-		    }
 		} else if (cursory*20+(cursorx+1)==len && is_in_map(prevchar)) {
 		    if (screens) {
 			prevchar = ReadWord(offs); // exception for the very last char

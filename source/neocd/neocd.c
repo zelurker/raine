@@ -558,7 +558,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     case 0x03: // Mode register
 	       neogeo_frame_counter_speed=(data>>8)+1;
 	       irq.control = data & 0xff;
-	       printf("irq.control = %x\n",data);
+	       debug(DBG_IRQ,"irq.control = %x\n",data);
 	       break;
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
