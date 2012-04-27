@@ -14,11 +14,11 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.51.11"
+VERSION = "0.51.12"
 VERSION_NEO = "1.3.2"
 
 # Uncomment to build neoraine instead of raine
-NEO=1
+# NEO=1
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -27,7 +27,7 @@ NEO=1
 # VERBOSE = 1
 
 # Use asm video core ? (comment to use C core)
-# ASM_VIDEO_CORE = 1
+ASM_VIDEO_CORE = 1
 
 # console ?
 HAS_CONSOLE = 1
