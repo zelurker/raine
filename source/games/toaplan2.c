@@ -6573,7 +6573,7 @@ void load_battle_garegga(void)
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x500000, 0x503FFF, NULL, RAM+0x020000);                // TEXT RAM (FG0 RAM)
-   AddWriteByte(0x600000, 0x601000, battleg_sound_ww, NULL);            // sound comm
+   AddWriteWord(0x600000, 0x601000, battleg_sound_ww, NULL);            // sound comm
    AddWriteWord(0x218000, 0x21FFFF, battleg_ioc_68k_ww, NULL);          // turbo comm ram
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
