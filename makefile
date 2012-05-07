@@ -964,7 +964,7 @@ endif
 endif
 endif
 
-all:	cpuinfo message maketree depend $(RAINE_EXE)
+all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
 
 depend:
 	@echo dependencies : if you get an error here, install the required dev package
