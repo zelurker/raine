@@ -7,6 +7,7 @@
 #include "raine.h"
 #include "games.h"
 #include "newspr.h"
+#include "spr64.h"
 #include "tilemod.h"
 
 #include "zoom/16x16.h"
@@ -1216,6 +1217,18 @@ MAKE_ROT_JUMP_16( Draw16x16_64_Trans_Mapped_ZoomXY, (disp_x - zoom_x), (disp_y -
 #undef ARGS_2
 #undef CMAP_FUNC
 
+#define ARGS      UINT8 *cmap, int zoom
+#define ARGS_1    cmap, zoom
+#define ARGS_2    cmap, zoom
+#define CMAP_FUNC draw_mapped_zoom_func
+
+MAKE_ROT_JUMP_16( Draw64x64_Trans_Mapped_Zoom,       (disp_x - zoom), (disp_y - zoom) )
+
+#undef ARGS
+#undef ARGS_1
+#undef ARGS_2
+#undef CMAP_FUNC
+
 #define ARGS      UINT8 *cmap, int zoom_x, int zoom_y, int pri
 #define ARGS_1    cmap, zoom_x, zoom_y, pri
 #define ARGS_2    cmap, zoom_y, zoom_x, pri
@@ -1368,6 +1381,8 @@ void init_video_core(void)
    Draw16x16_32_Trans_Mapped_ZoomXY_init_jump_table();
    Draw16x16_64_Mapped_ZoomXY_init_jump_table();
    Draw16x16_64_Trans_Mapped_ZoomXY_init_jump_table();
+
+   Draw64x64_Trans_Mapped_Zoom_init_jump_table();
 
    Draw64x64_Mapped_init_jump_table();
 

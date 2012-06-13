@@ -35,6 +35,123 @@ void Init64x64_Table(UINT8 *TPOS)
    }
 }
 
+/* Here are the basic definitions of Draw64x64_Trans_Mapped_16 functions, taken
+ * directly from video/c/16x16_16.c */
+
+static void Draw64x64_Trans_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT16 *line;
+   int xx,yy;
+
+   for(yy=0; yy<64; yy++){
+      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=0; xx<64; xx++, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT16 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+static void Draw64x64_Trans_Mapped_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT16 *line;
+   int xx,yy;
+
+   for(yy=63; yy>=0; yy--){
+      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=0; xx<64; xx++, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT16 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+static void Draw64x64_Trans_Mapped_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT16 *line;
+   int xx,yy;
+
+   for(yy=0; yy<64; yy++){
+      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=63; xx>=0; xx--, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT16 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+static void Draw64x64_Trans_Mapped_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT16 *line;
+   int xx,yy;
+
+   for(yy=63; yy>=0; yy--){
+      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=63; xx>=0; xx--, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT16 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+// And the ones from 16x16_32...
+
+static void Draw64x64_Trans_Mapped_32(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT32 *line;
+   int xx,yy;
+
+   for(yy=0; yy<64; yy++){
+      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=0; xx<64; xx++, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT32 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+static void Draw64x64_Trans_Mapped_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT32 *line;
+   int xx,yy;
+
+   for(yy=63; yy>=0; yy--){
+      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=0; xx<64; xx++, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT32 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+static void Draw64x64_Trans_Mapped_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT32 *line;
+   int xx,yy;
+
+   for(yy=0; yy<64; yy++){
+      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=63; xx>=0; xx--, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT32 *)cmap)[ *SPR ];
+      }
+   }
+}
+
+static void Draw64x64_Trans_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap)
+{
+   UINT32 *line;
+   int xx,yy;
+
+   for(yy=63; yy>=0; yy--){
+      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;
+      for(xx=63; xx>=0; xx--, SPR++){
+         if(*SPR)
+            line[xx] = ((UINT32 *)cmap)[ *SPR ];
+      }
+   }
+}
+
 /********************************************************************/
 // Draw64x64_Trans_Mapped_Zoom():
 // Draw64x64_Trans_Mapped_Zoom_FlipY():
@@ -44,108 +161,117 @@ void Init64x64_Table(UINT8 *TPOS)
 // From Looking at the compiled asm, I'm not sure it's worth trying
 // to rewrite these in asm...
 
-void Draw64x64_Trans_Mapped_Zoom(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom)
-{
-   UINT8 *BIT,*SSS,*ZZXY;
-   int xx,yy;
+#define GEN_FUNCS(EXT, TYPE)                                                                   \
+void Draw64x64_Trans_Mapped_Zoom##EXT(UINT8 *SPR, int x, int y, TYPE *cmap, int zoom)          \
+{                                                                                              \
+   TYPE *BIT;                                                                                  \
+   UINT8 *SSS,*ZZXY;                                                                           \
+   int xx,yy;                                                                                  \
+                                                                                               \
+   if(zoom>=63){                                                                               \
+      Draw64x64_Trans_Mapped##EXT(SPR,x,y,(UINT8*)cmap);                                                    \
+   }                                                                                           \
+   else{                                                                                       \
+                                                                                               \
+   ZZXY=ZOOM64+(zoom<<6);                                                                      \
+                                                                                               \
+   BIT=((TYPE*)GameBitmap->line[y])+x;                                                                  \
+                                                                                               \
+   for(yy=0;yy<=zoom;yy++){                                                                    \
+      SSS=SPR+(ZZXY[yy]<<6);                                                                   \
+      for(xx=0;xx<=zoom;xx++){                                                                 \
+         if(SSS[ZZXY[xx]]!=0)BIT[xx]=cmap[SSS[ZZXY[xx]]];                                      \
+      }                                                                                        \
+      BIT+=GameBitmap->w;                                                                      \
+   }                                                                                           \
+                                                                                               \
+   }                                                                                           \
+}                                                                                              \
+                                                                                               \
+void Draw64x64_Trans_Mapped_Zoom##EXT##_FlipY(UINT8 *SPR, int x, int y, TYPE *cmap, int zoom)  \
+{                                                                                              \
+   TYPE *BIT;                                                                                  \
+   UINT8 *SSS,*ZZX,*ZZY;                                                                       \
+   int xx,yy;                                                                                  \
+                                                                                               \
+                                                                                               \
+   if(zoom>=63){                                                                               \
+      Draw64x64_Trans_Mapped##EXT##_FlipY(SPR,x,y,(UINT8*)cmap);                                              \
+   }                                                                                           \
+   else{                                                                                       \
+                                                                                               \
+   ZZX=ZOOM64R+(zoom<<6);                                                                      \
+   ZZY=ZOOM64+(zoom<<6);                                                                       \
+                                                                                               \
+   BIT=((TYPE*)GameBitmap->line[y])+x;                                                                  \
+                                                                                               \
+   for(yy=0;yy<=zoom;yy++){                                                                    \
+      SSS=SPR+(ZZY[yy]<<6);                                                                    \
+      for(xx=0;xx<=zoom;xx++){                                                                 \
+         if(SSS[ZZX[xx]]!=0)BIT[xx]=cmap[SSS[ZZX[xx]]];                                        \
+      }                                                                                        \
+      BIT+=GameBitmap->w;                                                                      \
+   }                                                                                           \
+                                                                                               \
+   }                                                                                           \
+}                                                                                              \
+                                                                                               \
+void Draw64x64_Trans_Mapped_Zoom##EXT##_FlipX(UINT8 *SPR, int x, int y, TYPE *cmap, int zoom)  \
+{                                                                                              \
+   TYPE *BIT;                                                                                  \
+   UINT8 *SSS,*ZZX,*ZZY;                                                                       \
+   int xx,yy;                                                                                  \
+                                                                                               \
+   if(zoom>=63){                                                                               \
+      Draw64x64_Trans_Mapped##EXT##_FlipX(SPR,x,y,(UINT8*)cmap);                                              \
+   }                                                                                           \
+   else{                                                                                       \
+                                                                                               \
+   ZZX=ZOOM64+(zoom<<6);                                                                       \
+   ZZY=ZOOM64R+(zoom<<6);                                                                      \
+                                                                                               \
+   BIT=((TYPE*)GameBitmap->line[y])+x;                                                                  \
+                                                                                               \
+   for(yy=0;yy<=zoom;yy++){                                                                    \
+      SSS=SPR+(ZZY[yy]<<6);                                                                    \
+      for(xx=0;xx<=zoom;xx++){                                                                 \
+         if(SSS[ZZX[xx]]!=0)BIT[xx]=cmap[SSS[ZZX[xx]]];                                        \
+      }                                                                                        \
+      BIT+=GameBitmap->w;                                                                      \
+   }                                                                                           \
+                                                                                               \
+   }                                                                                           \
+}                                                                                              \
+                                                                                               \
+void Draw64x64_Trans_Mapped_Zoom##EXT##_FlipXY(UINT8 *SPR, int x, int y, TYPE *cmap, int zoom) \
+{                                                                                              \
+   TYPE *BIT;                                                                                  \
+   UINT8 *SSS,*ZZXY;                                                                           \
+   int xx,yy;                                                                                  \
+                                                                                               \
+   if(zoom>=63){                                                                               \
+      Draw64x64_Trans_Mapped##EXT##_FlipXY(SPR,x,y,(UINT8*)cmap);                                             \
+   }                                                                                           \
+   else{                                                                                       \
+                                                                                               \
+   ZZXY=ZOOM64R+(zoom<<6);                                                                     \
+                                                                                               \
+   BIT=((TYPE*)GameBitmap->line[y])+x;                                                                  \
+                                                                                               \
+   for(yy=0;yy<=zoom;yy++){                                                                    \
+      SSS=SPR+(ZZXY[yy]<<6);                                                                   \
+      for(xx=0;xx<=zoom;xx++){                                                                 \
+         if(SSS[ZZXY[xx]]!=0)BIT[xx]=cmap[SSS[ZZXY[xx]]];                                      \
+      }                                                                                        \
+      BIT+=GameBitmap->w;                                                                      \
+   }                                                                                           \
+                                                                                               \
+   }                                                                                           \
+} 
 
-   if(zoom>=63){
-      Draw64x64_Trans_Mapped(SPR,x,y,cmap);
-   }
-   else{
-
-   ZZXY=ZOOM64+(zoom<<6);
-
-   BIT=GameBitmap->line[y]+x;
-
-   for(yy=0;yy<=zoom;yy++){
-      SSS=SPR+(ZZXY[yy]<<6);
-      for(xx=0;xx<=zoom;xx++){
-         if(SSS[ZZXY[xx]]!=0)BIT[xx]=cmap[SSS[ZZXY[xx]]];
-      }
-      BIT+=GameBitmap->w;
-   }
-
-   }
-}
-
-void Draw64x64_Trans_Mapped_Zoom_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-
-   if(zoom>=63){
-      Draw64x64_Trans_Mapped_FlipY(SPR,x,y,cmap);
-   }
-   else{
-
-   ZZX=ZOOM64R+(zoom<<6);
-   ZZY=ZOOM64+(zoom<<6);
-
-   BIT=GameBitmap->line[y]+x;
-
-   for(yy=0;yy<=zoom;yy++){
-      SSS=SPR+(ZZY[yy]<<6);
-      for(xx=0;xx<=zoom;xx++){
-         if(SSS[ZZX[xx]]!=0)BIT[xx]=cmap[SSS[ZZX[xx]]];
-      }
-      BIT+=GameBitmap->w;
-   }
-
-   }
-}
-
-void Draw64x64_Trans_Mapped_Zoom_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if(zoom>=63){
-      Draw64x64_Trans_Mapped_FlipX(SPR,x,y,cmap);
-   }
-   else{
-
-   ZZX=ZOOM64+(zoom<<6);
-   ZZY=ZOOM64R+(zoom<<6);
-
-   BIT=GameBitmap->line[y]+x;
-
-   for(yy=0;yy<=zoom;yy++){
-      SSS=SPR+(ZZY[yy]<<6);
-      for(xx=0;xx<=zoom;xx++){
-         if(SSS[ZZX[xx]]!=0)BIT[xx]=cmap[SSS[ZZX[xx]]];
-      }
-      BIT+=GameBitmap->w;
-   }
-
-   }
-}
-
-void Draw64x64_Trans_Mapped_Zoom_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom)
-{
-   UINT8 *BIT,*SSS,*ZZXY;
-   int xx,yy;
-
-   if(zoom>=63){
-      Draw64x64_Trans_Mapped_FlipXY(SPR,x,y,cmap);
-   }
-   else{
-
-   ZZXY=ZOOM64R+(zoom<<6);
-
-   BIT=GameBitmap->line[y]+x;
-
-   for(yy=0;yy<=zoom;yy++){
-      SSS=SPR+(ZZXY[yy]<<6);
-      for(xx=0;xx<=zoom;xx++){
-         if(SSS[ZZXY[xx]]!=0)BIT[xx]=cmap[SSS[ZZXY[xx]]];
-      }
-      BIT+=GameBitmap->w;
-   }
-
-   }
-}
+GEN_FUNCS(,UINT8);
+GEN_FUNCS(_16,UINT16);
+GEN_FUNCS(_32,UINT32);
 
 /********************************************************************/
 

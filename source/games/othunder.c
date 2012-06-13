@@ -142,7 +142,7 @@ static struct VIDEO_INFO operation_thunderbolt_video =
    320,
    240,
    64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE | VIDEO_NEEDS_8BPP,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
 };
 
 GAME( operation_thunderbolt ,
@@ -690,39 +690,38 @@ void DrawOpThunderbolt(void)
 
    for(zz=0x20600-8;zz>=0x20000;zz-=8){
 
-      if((RAM[zz+3]&0x80)!=0){
+      if((RAM[zz+3]&0x80)==0) continue;
 
       z=(RAM[zz+1]>>1)&63;
-      if(z!=0){
-         y=RAM[zz];
-         if((RAM[zz+1]&1)!=0){y=0-((y^255)+1);}
-         y=32+19+y;
-         x=ReadWord(&RAM[zz+2])&0x1FF;
-         if(x>400){x=0-((x^511)+1);}
-         x=(320+(63-z))-x;
+      if(z==0) continue;
+      y=RAM[zz];
+      if((RAM[zz+1]&1)!=0) y=0-((y^255)+1);
+      y=32+19+y;
+      x=ReadWord(&RAM[zz+2])&0x1FF;
+      if(x>400) x=0-((x^511)+1);
+      x=(320+(63-z))-x;
 
-         if((x>0)&&(y>0)&&(x<320+64)&&(y<240+64)){
-            ta=ReadWord(&RAM[zz+6])&0x7FF;
+      if((x>0)&&(y>0)&&(x<320+64)&&(y<240+64)){
+	  ta=ReadWord(&RAM[zz+6])&0x7FF;
 
-            if((ta!=0)&&(ta<0x559)){
+	  if((ta==0)||(ta>=0x559)) continue;
 
-      MAP_PALETTE_MAPPED_NEW(
-               RAM[zz+5],
-               16,        MAP
-            );
+	  MAP_PALETTE_MAPPED_NEW(
+		  RAM[zz+5],
+		  16,        MAP
+		  );
 
-               if((RAM[zz+7]&0x80)==0){
-                  if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom(&GFX_SPR[ta<<12],x,y,MAP,z);}
-                  else{				Draw64x64_Trans_Mapped_Zoom_FlipY(&GFX_SPR[ta<<12],x,y,MAP,z);}
-               }
-               else{
-                  if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom_FlipX(&GFX_SPR[ta<<12],x,y,MAP,z);}
-                  else{				Draw64x64_Trans_Mapped_Zoom_FlipXY(&GFX_SPR[ta<<12],x,y,MAP,z);}
-               }
+	  if((RAM[zz+7]&0x80)==0){
+	      if((RAM[zz+3]&0x40)!=0)
+		  Draw64x64_Trans_Mapped_Zoom_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);
+	      else
+		  Draw64x64_Trans_Mapped_Zoom_FlipY_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);
+	  }
+	  else{
+	      if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom_FlipX_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);}
+	      else{				Draw64x64_Trans_Mapped_Zoom_FlipXY_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);}
+	  }
 
-            }
-         }
-      }
       }
    }
 
@@ -760,12 +759,12 @@ void DrawOpThunderbolt(void)
                //(*Zoom64x64_Trans_Mapped_JumpList[z])(&GFX_SPR[ta<<12],x,y,MAP);
 
                if((RAM[zz+7]&0x80)==0){
-                  if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom(&GFX_SPR[ta<<12],x,y,MAP,z);}
-                  else{				Draw64x64_Trans_Mapped_Zoom_FlipY(&GFX_SPR[ta<<12],x,y,MAP,z);}
+                  if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);}
+                  else{				Draw64x64_Trans_Mapped_Zoom_FlipY_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);}
                }
                else{
-                  if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom_FlipX(&GFX_SPR[ta<<12],x,y,MAP,z);}
-                  else{				Draw64x64_Trans_Mapped_Zoom_FlipXY(&GFX_SPR[ta<<12],x,y,MAP,z);}
+                  if((RAM[zz+3]&0x40)!=0){	Draw64x64_Trans_Mapped_Zoom_FlipX_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);}
+                  else{				Draw64x64_Trans_Mapped_Zoom_FlipXY_Rot(&GFX_SPR[ta<<12],x,y,MAP,z);}
                }
 
 
