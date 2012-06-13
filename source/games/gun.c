@@ -87,9 +87,9 @@ void disp_gun(int nb, int x,int y) {
       for (n=252; n<=254; n++) {
 	UINT16 res;
 	GET_PEN_FOR_COLOUR_16(
-			      pal[n].r<<2,
-			      pal[n].g<<2,
-			      pal[n].b<<2,
+			      pal[n].r,
+			      pal[n].g,
+			      pal[n].b,
 			      res);
 	WriteWord(&map[n*2],res);
       }
@@ -100,8 +100,8 @@ void disp_gun(int nb, int x,int y) {
   switch(display_cfg.bpp) {
   case 8:  Draw16x16_Trans(sprite_gun[nb],x,y,0); update_palette(); break;
   case 15:
-  case 16: Draw16x16_Trans_Mapped_16(SpriteGun1,x,y,map); break;
-  case 32: Draw16x16_Trans_Mapped_32(SpriteGun1,x,y,map); break;
+  case 16: Draw16x16_Trans_Mapped_16(sprite_gun[nb],x,y,map); break;
+  case 32: Draw16x16_Trans_Mapped_32(sprite_gun[nb],x,y,map); break;
   }
 }
 
