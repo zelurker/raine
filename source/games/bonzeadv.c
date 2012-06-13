@@ -529,9 +529,9 @@ static void WriteLevelData(void)
 static void CChipWriteB(UINT32 address, int data)
 {
    int i;
-   int ta;
+   // int ta;
 
-   ta=CBANK[0][0x21];
+   // ta=CBANK[0][0x21];
    i=address&0x0FFF;
    data&=0xFF;
 

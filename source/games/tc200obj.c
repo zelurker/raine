@@ -446,7 +446,6 @@ void render_tc0200obj_mapped_yuyugogo(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -454,7 +453,6 @@ void render_tc0200obj_mapped_yuyugogo(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -592,7 +590,6 @@ void render_tc0200obj_mapped_yuyugogo2(int pri)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -600,7 +597,6 @@ void render_tc0200obj_mapped_yuyugogo2(int pri)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -751,7 +747,6 @@ void render_tc0200obj_mapped_r270(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -759,7 +754,6 @@ void render_tc0200obj_mapped_r270(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -889,8 +883,8 @@ void render_tc0200obj_mapped_r270(void)
 void render_tc0200obj_mapped(int pri_mask)
 {
    int color,offs,big_sprite=0,zoomxlatch=0,zoomylatch=0,xcurrent,ycurrent;
-   int xn,yn,spritecont,zx,zy,x_no=0,y_no=0,last_continuation_tile=0;
-   int scroll1x=0,scroll1y=0,sprites_flip_screen,scrollx=0,scrolly=0,xlatch=0,ylatch=0;
+   int spritecont,zx,zy,x_no=0,y_no=0,last_continuation_tile=0;
+   int scroll1x=0,scroll1y=0,/* sprites_flip_screen, */ scrollx=0,scrolly=0,xlatch=0,ylatch=0;
    int curx,cury;
    UINT8 *map;
    UINT8 *NEW_RAM = RAM_BG;
@@ -906,8 +900,6 @@ void render_tc0200obj_mapped(int pri_mask)
 
    x=0;
    y=0;
-   xn=0;
-   yn=0;
    color=0;
 
 /*    if(((ReadWord(&RAM_BG[0x2A])&0x0001)!=0) && (tc0200obj.RAM_B != NULL)){ */
@@ -920,8 +912,7 @@ void render_tc0200obj_mapped(int pri_mask)
 
      if (RAM_BG[offs+7] & 0x80) { // special commands
        disabled = RAM_BG[offs+11] & 0x10;
-       // sprites_flipscreen = RAM_BG[offs+11] & 0x20;
-       sprites_flip_screen = RAM_BG[offs+11] & 0x20;
+       // sprites_flip_screen = RAM_BG[offs+11] & 0x20;
        if ((RAM_BG[offs+10] & 1) && tc0200obj.RAM_B) {
 	 NEW_RAM = tc0200obj.RAM_B;
        } else
@@ -1165,7 +1156,6 @@ void render_tc0200obj_mapped_soliltary_fighter(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -1173,7 +1163,6 @@ void render_tc0200obj_mapped_soliltary_fighter(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -1336,7 +1325,6 @@ void render_tc0200obj_mapped_fchamp(int pri)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -1344,7 +1332,6 @@ void render_tc0200obj_mapped_fchamp(int pri)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -1502,7 +1489,6 @@ void render_tc0200obj_mapped_opwolf3(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -1510,7 +1496,6 @@ void render_tc0200obj_mapped_opwolf3(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -1665,7 +1650,6 @@ void render_tc0200obj_mapped_f3system(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -1673,7 +1657,6 @@ void render_tc0200obj_mapped_f3system(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -1814,7 +1797,6 @@ void render_tc0200obj_mapped_f3system_b(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -1822,7 +1804,6 @@ void render_tc0200obj_mapped_f3system_b(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -1955,7 +1936,7 @@ void render_tc0200obj_mapped_f3system_b(void)
 
 void render_tc0200obj_mapped_f3system_b_multi(UINT8 *colour_mask)
 {
-   int x,y,ta,tb,zz,cols;
+   int x,y,ta,tb,zz;
    int xn,yn,td,zx,zy,tx,ty;
    int rel_x,rel_y;
    int rel_x2,rel_y2;
@@ -1970,7 +1951,6 @@ void render_tc0200obj_mapped_f3system_b_multi(UINT8 *colour_mask)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -1979,7 +1959,6 @@ void render_tc0200obj_mapped_f3system_b_multi(UINT8 *colour_mask)
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
    COL_MSK   = colour_mask;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -1987,8 +1966,6 @@ void render_tc0200obj_mapped_f3system_b_multi(UINT8 *colour_mask)
    sy_2      = tc0200obj.bmp_y + tc0200obj.bmp_h;
    ofs_x     = tc0200obj.bmp_x + tc0200obj.ofs_x;
    ofs_y     = tc0200obj.bmp_y + tc0200obj.ofs_y;
-
-   cols      = tc0200obj.cols;
 
    x=0;
    y=0;
@@ -2114,7 +2091,6 @@ void render_tc0200obj_mapped_f3system_r180(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -2122,7 +2098,6 @@ void render_tc0200obj_mapped_f3system_r180(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;
@@ -2270,7 +2245,6 @@ void render_tc0200obj_mapped_f3system_r270_b(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
    UINT32 tile_mask;
-   mapper_direct *pal_map;
 
    if(!check_layer_enabled(object_id))
        return;
@@ -2278,7 +2252,6 @@ void render_tc0200obj_mapped_f3system_r270_b(void)
    RAM_BG    = tc0200obj.RAM;
    RAM_GFX   = tc0200obj.GFX;
    RAM_MSK   = tc0200obj.MASK;
-   pal_map   = tc0200obj.mapper;
    tile_mask = tc0200obj.tile_mask;
    sx_1      = tc0200obj.bmp_x - 16;
    sy_1      = tc0200obj.bmp_y - 16;

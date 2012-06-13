@@ -145,13 +145,11 @@ void f3video_render_fg0(void)
 
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
-   mapper_direct *pal_map;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0003vcu.RAM + 0x1C000;
    GFX_BG    = tc0003vcu.RAM + 0x1E000;
-   pal_map   = tc0003vcu.mapper;
 
    bmp_x = tc0003vcu.bmp_x;
    bmp_y = tc0003vcu.bmp_y;
@@ -200,13 +198,11 @@ void f3video_render_fg0_new(void)
 
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
-   mapper_direct *pal_map;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0003vcu.RAM + 0x1C000;
    GFX_BG    = tc0003vcu.RAM + 0x1E000;
-   pal_map   = tc0003vcu.mapper;
 
    bmp_x = tc0003vcu.bmp_x;
    bmp_y = tc0003vcu.bmp_y;
@@ -255,13 +251,11 @@ void f3video_render_fg0_r180(void)
 
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
-   mapper_direct *pal_map;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0003vcu.RAM + 0x1C000;
    GFX_BG    = tc0003vcu.RAM + 0x1E000;
-   pal_map   = tc0003vcu.mapper;
 
    bmp_x = tc0003vcu.bmp_x;
    bmp_y = tc0003vcu.bmp_y;
@@ -310,13 +304,11 @@ void f3video_render_fg0_r270(void)
 
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
-   mapper_direct *pal_map;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0003vcu.RAM + 0x1C000;
    GFX_BG    = tc0003vcu.RAM + 0x1E000;
-   pal_map   = tc0003vcu.mapper;
 
    bmp_x = tc0003vcu.bmp_x;
    bmp_y = tc0003vcu.bmp_y;
@@ -367,13 +359,11 @@ void f3video_render_fg0_gfx2(void)
 
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
-   mapper_direct *pal_map;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0003vcu.RAM + 0x1C000;
    GFX_BG    = tc0003vcu.RAM + 0x1E000;
-   pal_map   = tc0003vcu.mapper;
 
    bmp_x = tc0003vcu.bmp_x;
    bmp_y = tc0003vcu.bmp_y;

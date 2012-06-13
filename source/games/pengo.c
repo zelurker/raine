@@ -623,7 +623,7 @@ static int multipac_bank;
 // Trigered by p1b2 in debug builds and in emudx mode
 static void draw_debug_tile() {
   int offs;
-  UINT8 *solid,*gfx,*gfx_spr;
+  UINT8 *solid,*gfx;
   int bank,col_base;
 
   if (display_cfg.bpp > 16 || display_cfg.bpp < 15) {
@@ -639,11 +639,9 @@ static void draw_debug_tile() {
       col_base = 0;
     bank = *gfx_bank * 2;
     gfx = load_region[REGION_GFX1 + bank];
-    gfx_spr = load_region[REGION_GFX2 + bank];
   } else {
     col_base = 0;
     gfx = load_region[REGION_GFX1]+0x8000*(*gfx_bank);
-    gfx_spr = load_region[REGION_GFX2]+0x8000*(*gfx_bank)+0x4000;
   }
 
   if( check_layer_enabled(layer_id_data[0])) {

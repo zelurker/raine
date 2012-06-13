@@ -385,7 +385,7 @@ void ExecuteTerraCFrame(void)
 
 void DrawTerraC(void)
 {
-   int x,y,ta,tb;
+   int x,y,ta;
    int zz,zzz,zzzz,x16,y16;
    UINT8 *map;
 
@@ -405,8 +405,6 @@ void DrawTerraC(void)
    y16=(zzz&15);				// Y Offset (0-15)
 
    zzzz&=0x0FFF;
-
-   tb=0;
 
    for(x=(32-y16);x<(256+32);x+=16){
    zz=zzzz;

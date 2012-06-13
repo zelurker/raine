@@ -142,14 +142,12 @@ void render_seta_x1_68000(void)
    UINT8 *GFX_SPR;
    UINT8 *GFX_SPR_SOLID;
 
-   UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
+   UINT32 bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_A     = seta_x1.RAM_A;
    RAM_B     = seta_x1.RAM_B;
 
-   bmp_x     = seta_x1.bmp_x;
-   bmp_y     = seta_x1.bmp_y;
    bmp_w     = seta_x1.bmp_w;
    bmp_h     = seta_x1.bmp_h;
    scr_x     = seta_x1.scr_x;
@@ -328,7 +326,6 @@ void render_seta_x1_z80(void)
    int rx,ry;
 #endif
    int st,tb;
-   UINT32 tile_mask;
    UINT8 *map;
    UINT8 *RAM_BGA;
    UINT8 *RAM_BGB;
@@ -336,26 +333,13 @@ void render_seta_x1_z80(void)
    UINT8 *RAM_A;
    UINT8 *RAM_B;
 
-   UINT8 *GFX_SPR;
    UINT8 *GFX_SPR_SOLID;
-
-   UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
-   UINT32 scr_x,scr_y;
 
    RAM_A     = seta_x1.RAM_A;
    RAM_B     = seta_x1.RAM_B;
 
-   bmp_x     = seta_x1.bmp_x;
-   bmp_y     = seta_x1.bmp_y;
-   bmp_w     = seta_x1.bmp_w;
-   bmp_h     = seta_x1.bmp_h;
-   scr_x     = seta_x1.scr_x;
-   scr_y     = seta_x1.scr_y;
-
-   GFX_SPR       = seta_x1.GFX;
    GFX_SPR_SOLID = seta_x1.MASK;
 
-   tile_mask     = seta_x1.tile_mask;
 
    // BASE SCREEN COLOUR
 

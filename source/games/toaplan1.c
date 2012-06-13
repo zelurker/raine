@@ -2950,7 +2950,7 @@ void DrawToaplan1(void)
    int zz,zzz,zzzz,x16,y16;
    int xx,xxx,xxxx,yyy,x1,y1;
    UINT8 *MAP,*RAM_BG,*RAM_BG2;
-   UINT32 tile_mask,tile_ofs;
+   UINT32 tile_mask;
    UINT16 ctrl;
    if (!GFX_BG0)
      tp1_finish_setup_gfx();
@@ -3085,7 +3085,6 @@ void DrawToaplan1(void)
 
    if(check_layer_enabled(layer_id_data[4])) {
      tile_mask = tp1vcu[0].tile_mask_obj;
-     tile_ofs  = tp1vcu[0].tile_ofs_obj;
 
      RAM_BG  = tp1vcu[0].RAM_OBJ;
      RAM_BG2 = tp1vcu[0].RAM_OBJ+0x800;

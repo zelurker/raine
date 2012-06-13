@@ -148,15 +148,13 @@ static void scroll_512_bg0_lscroll(TC0100SCN_LAYER *tc_layer, int trans) {
    UINT8 *RAM_GFX;
    UINT8 *RAM_MSK;
    UINT32 tile_mask;
-   UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
+   UINT32 bmp_y,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
    RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
-   bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;
-   bmp_w = tc_layer->bmp_w;
    bmp_h = tc_layer->bmp_h;
    tile_mask = tc_layer->tile_mask;
    scr_x = tc_layer->scr_x -(ReadWord(RAM_SCR+0));
@@ -667,13 +665,13 @@ void render_fg0_solid_mapped_r270(TC0100SCN_LAYER *tc_layer)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *RAM_GFX;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
-   RAM_SCR = tc_layer->SCR;
+   // RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
    bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;
@@ -714,13 +712,13 @@ void render_fg0_transparent_mapped_r270(TC0100SCN_LAYER *tc_layer)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *RAM_GFX;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
-   RAM_SCR = tc_layer->SCR;
+   // RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
    bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;
@@ -814,7 +812,6 @@ void render_fg0scr_transparent_mapped_r270(TC0100SCN_LAYER *tc_layer)
 void render_tc0100scn_layer_mapped_r270(int chip, int layer)
 {
    TC0100SCN *tchip;
-   int lscroll = 0;
 
    if(!check_layer_enabled(layer_id_data[chip][layer]))
        return;
@@ -835,8 +832,9 @@ void render_tc0100scn_layer_mapped_r270(int chip, int layer)
 
      for (ta=0; ta<240; ta++)
        if (bgscroll_ram[ta]) {
-	 lscroll = 1;
+#ifdef RAINE_DEBUG
 	 print_ingame(1,"lscroll");
+#endif
 	 // bgscroll_ram[ta] = -bgscroll_ram[ta];
        }
    }
@@ -995,13 +993,13 @@ void render_fg0_solid_mapped_flipy(TC0100SCN_LAYER *tc_layer)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *RAM_GFX;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
-   RAM_SCR = tc_layer->SCR;
+   // RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
    bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;
@@ -1041,13 +1039,13 @@ void render_fg0_transparent_mapped_flipy(TC0100SCN_LAYER *tc_layer)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *RAM_GFX;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
-   RAM_SCR = tc_layer->SCR;
+   // RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
    bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;
@@ -1315,13 +1313,13 @@ void render_fg0_solid_r180_mapped(TC0100SCN_LAYER *tc_layer)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *RAM_GFX;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
-   RAM_SCR = tc_layer->SCR;
+   // RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
    bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;
@@ -1362,13 +1360,13 @@ void render_fg0_transparent_r180_mapped(TC0100SCN_LAYER *tc_layer)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *RAM_GFX;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG  = tc_layer->RAM;
-   RAM_SCR = tc_layer->SCR;
+   // RAM_SCR = tc_layer->SCR;
    RAM_GFX = tc_layer->GFX;
    bmp_x = tc_layer->bmp_x;
    bmp_y = tc_layer->bmp_y;

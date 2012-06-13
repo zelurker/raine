@@ -980,7 +980,7 @@ void ExecuteBloodBrosFrame(void)
 
 static void draw_blood_bros_object(int pri) 
 {
-   int x,y,rx,ry,rxx,ryy,rxxx,ryyy;
+   int x,y,rx,ry,rxx,ryy,ryyy;
    int zz,ta;
    UINT8 *MAP;
 
@@ -1008,7 +1008,6 @@ static void draw_blood_bros_object(int pri)
       rx=(ReadWord(&RAM[zz])>>4)&7;
       ry=(ReadWord(&RAM[zz])>>7)&7;
 
-      rxxx=x;
       ryyy=y;
 
    switch(ReadWord(&RAM[zz])&0x6000){

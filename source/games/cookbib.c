@@ -635,7 +635,7 @@ static void cookbib_drawsprites(int hack_flipx)
 
 	for (offs = 0;offs<0x1000;offs+=8)
 	{
-		int x,y,sprite,colour,multi,fx,fy,inc,flash,mult,flipyx,xdraw;
+		int x,y,sprite,colour,multi,/* fx,*/ fy,inc,flash,mult,flipyx,xdraw;
 
 //		print_debug("sprite %04x\n",offs);
 
@@ -653,7 +653,7 @@ static void cookbib_drawsprites(int hack_flipx)
 		x =      ReadWord(&RAM_SPRITE[offs+4]);
 		colour = (x >>9) & 0xf;
 
-		fx = y & 0x2000;
+		// fx = y & 0x2000;
 		fy = y & 0x4000;
 		flipyx = (y&0x6000)>>13;
 

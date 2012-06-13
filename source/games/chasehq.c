@@ -2216,7 +2216,6 @@ void DrawChaseHQ(void)
    int mask_pos[32];
    int mask_pos_y[32];
    UINT16 scroll_store;
-   UINT16 scroll_store2;
 
    ClearPaletteMap();
 
@@ -2227,7 +2226,6 @@ void DrawChaseHQ(void)
    tc0100scn[0].ctrl = ReadWord(RAM_SCROLL+12);
 
    scroll_store = ReadWord(RAM_SCROLL+0);
-   scroll_store2 = ReadWord(RAM_SCROLL+2);
 
    WriteWord(RAM_SCROLL+0,scroll_store+ReadWord(RAM_VIDEO+0xC100));
    WriteWord(RAM_SCROLL+2,scroll_store+ReadWord(RAM_VIDEO+0xC400));

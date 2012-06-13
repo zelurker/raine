@@ -837,7 +837,7 @@ static void draw_comad_sprites() {
 
 static void DrawGalPanic(void)
 {
-   int col_lo, col_hi,x,y;
+   int x,y;
    UINT8 *video;
    UINT8 *map;
    static UINT8 transp[256]; // transparent color ?
@@ -859,7 +859,6 @@ static void DrawGalPanic(void)
    //-----------------------------------------------------------------------------
    // VIDEO
    //-----------------------------------------------------------------------------
-   col_hi = col_lo = 0;
    video = VIDEO_FG + video_offset; // the bitmpa is 256x256 and we display 256x224
    // (because of the size of the real screen).
 

@@ -374,14 +374,14 @@ void vcu_render_bg2(void)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *GFX_BG;
    UINT8 *RAM_MSK;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0180vcu.RAM + 0x08000;
-   RAM_SCR   = NULL;
+   // RAM_SCR   = NULL;
    GFX_BG    = tc0180vcu.GFX_BG2;
    RAM_MSK   = tc0180vcu.GFX_BG2_MSK;
 
@@ -753,14 +753,14 @@ void vcu_render_bg2_r270(void)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
+   // UINT8 *RAM_SCR;
    UINT8 *GFX_BG;
    UINT8 *RAM_MSK;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0180vcu.RAM + 0x08000;
-   RAM_SCR   = NULL;
+   // RAM_SCR   = NULL;
    GFX_BG    = tc0180vcu.GFX_BG2;
    RAM_MSK   = tc0180vcu.GFX_BG2_MSK;
 

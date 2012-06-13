@@ -473,8 +473,8 @@ void DrawVolfied(void)
    int x,y,zz;
    UINT8 *BIT;
    UINT8 *MAP;
-   static int tm=1,flip1,flip2;
-   static int tm2=8,flip3,flip4;
+   static int tm=1;
+   static int tm2=8;
    UINT16 ta;
 
    ClearPaletteMap();
@@ -495,7 +495,7 @@ void DrawVolfied(void)
    }
    else{
 #endif
-      flip1=0;
+      // flip1=0;
 #if 0
    }
    if(key[KEY_K]){
@@ -507,7 +507,7 @@ void DrawVolfied(void)
    }
    else{
 #endif
-      flip2=0;
+      // flip2=0;
 #if 0
      }
 
@@ -520,7 +520,7 @@ void DrawVolfied(void)
    }
    else{
 #endif
-      flip3=0;
+      // flip3=0;
 #if 0
    }
    if(key[KEY_O]){
@@ -532,7 +532,7 @@ void DrawVolfied(void)
    }
    else{
 #endif
-      flip4=0;
+      // flip4=0;
    // }
 
    print_ingame(60,"%04x.%04x",tm,tm2);
