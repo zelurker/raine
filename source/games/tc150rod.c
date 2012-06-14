@@ -191,8 +191,8 @@ void tc0150rod_render(UINT32 start, UINT32 end)
 
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
-   UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
-   UINT32 scr_x,scr_y;
+   UINT32 bmp_y,bmp_h;
+   UINT32 scr_y;
 
    UINT32 line_0,line_1;
     INT32 x_0,   x_1;
@@ -205,11 +205,8 @@ void tc0150rod_render(UINT32 start, UINT32 end)
    RAM_BG    = tc0150rod.RAM;
    GFX_BG    = tc0150rod.GFX;
 
-   bmp_x = tc0150rod.bmp_x;
    bmp_y = tc0150rod.bmp_y;
-   bmp_w = tc0150rod.bmp_w;
    bmp_h = tc0150rod.bmp_h;
-   scr_x = tc0150rod.scr_x;
    scr_y = tc0150rod.scr_y;
 
    ctrl = ReadWord(&RAM_BG[0x1FFE]);
@@ -550,7 +547,7 @@ void tc0150rod_render_flipy(UINT32 start, UINT32 end)
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
-   UINT32 scr_x,scr_y;
+   UINT32 scr_y;
 
    RAM_BG    = tc0150rod.RAM;
    GFX_BG    = tc0150rod.GFX;
@@ -559,7 +556,6 @@ void tc0150rod_render_flipy(UINT32 start, UINT32 end)
    bmp_y = tc0150rod.bmp_y;
    bmp_w = tc0150rod.bmp_w;
    bmp_h = tc0150rod.bmp_h;
-   scr_x = tc0150rod.scr_x;
    scr_y = tc0150rod.scr_y;
 
 
