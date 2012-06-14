@@ -1212,6 +1212,9 @@ MAKE_ROT_JUMP_16( Draw16x16_64_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y -
 
 MAKE_ROT_JUMP_16( Draw16x16_64_Trans_Mapped_ZoomXY, (disp_x - zoom_x), (disp_y - zoom_y) )
 
+MAKE_ROT_JUMP_16( Draw64x64_Trans_Mapped_Zoom2,       (disp_x - zoom_x), (disp_y - zoom_y) )
+MAKE_ROT_JUMP_16( Draw64x64_Mapped_Zoom2,       (disp_x - zoom_x), (disp_y - zoom_y) )
+
 #undef ARGS
 #undef ARGS_1
 #undef ARGS_2
@@ -1366,6 +1369,8 @@ void init_video_core(void)
 
    Draw16x16_Mapped_ZoomXY_init_jump_table();
    Draw16x16_Trans_Mapped_ZoomXY_init_jump_table();
+   Draw64x64_Mapped_Zoom2_init_jump_table();
+   Draw64x64_Trans_Mapped_Zoom2_init_jump_table();
    Draw16x8_Mapped_ZoomXY_init_jump_table();
    Draw16x8_Trans_Mapped_ZoomXY_init_jump_table();
 

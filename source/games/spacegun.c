@@ -139,15 +139,13 @@ static struct ROMSW_INFO space_gun_romsw[] =
    { 0,        0,    NULL },
 };
 
-/* We should convert the Draw64x64_Zoom2 functions to their Rot version one day
- * maybe... ! */
 static struct VIDEO_INFO space_gun_video =
 {
    DrawSpaceGun,
    320,
    240,
    64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE | VIDEO_NEEDS_8BPP,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
 };
 
 GAME( space_gun ,
@@ -807,20 +805,28 @@ void DrawSpaceGun(void)
 
                if(GFX_SPR_SOLID[ta]==0){
                   if((RAM[zz+7]&0x80)==0){
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	
+			 Draw64x64_Trans_Mapped_Zoom2_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);
+		     }
+                     else{
+ 			 Draw64x64_Trans_Mapped_Zoom2_FlipY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);
+		     }
                   }else{
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2_FlipX(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipXY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2_FlipX_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipXY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
                   }
                }
                else{
                   if((RAM[zz+7]&0x80)==0){
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Mapped_Zoom2_FlipY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){
+		 	 Draw64x64_Mapped_Zoom2_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);
+		     }
+                     else{
+ 			 Draw64x64_Mapped_Zoom2_FlipY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);
+		     }
                   }else{
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2_FlipX(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Mapped_Zoom2_FlipXY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2_FlipX_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     else{			Draw64x64_Mapped_Zoom2_FlipXY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
                   }
                }
 
@@ -865,20 +871,20 @@ void DrawSpaceGun(void)
 
                if(GFX_SPR_SOLID[ta]==0){
                   if((RAM[zz+7]&0x80)==0){
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
                   }else{
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2_FlipX(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipXY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Trans_Mapped_Zoom2_FlipX_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     else{			Draw64x64_Trans_Mapped_Zoom2_FlipXY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
                   }
                }
                else{
                   if((RAM[zz+7]&0x80)==0){
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Mapped_Zoom2_FlipY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     else{			Draw64x64_Mapped_Zoom2_FlipY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
                   }else{
-                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2_FlipX(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
-                     else{			Draw64x64_Mapped_Zoom2_FlipXY(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     if((RAM[zz+3]&0x40)==0){	Draw64x64_Mapped_Zoom2_FlipX_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
+                     else{			Draw64x64_Mapped_Zoom2_FlipXY_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);}
                   }
                }
 
