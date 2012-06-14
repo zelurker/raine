@@ -70,7 +70,7 @@ FUNC( Draw64x64_Mapped_32 )
 	movl	0xDEADBEEF(%eax),%edi
 blin_00:
 	movl	28(%esp),%eax			// x
-	movl	36(%esp),%ebp			// cmap
+	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
 		
 	xorl	%edx,%edx
@@ -126,7 +126,7 @@ FUNC( Draw64x64_Mapped_32_FlipY )
 	movl	0xDEADBEEF(%eax),%edi           // Goto the end...
 blin_01:
 	movl	28(%esp),%eax			// x
-	movl	36(%esp),%ebp			// cmap
+	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
 		
 	xorl	%edx,%edx
@@ -183,7 +183,7 @@ FUNC( Draw64x64_Mapped_32_FlipX )
 	movl	0xDEADBEEF(%eax),%edi
 blin_02:
 	movl	28(%esp),%eax			// x
-	movl	36(%esp),%ebp			// cmap
+	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
 		
 	xorl	%edx,%edx
@@ -240,7 +240,7 @@ FUNC( Draw64x64_Mapped_32_FlipXY )
 	movl	0xDEADBEEF(%eax),%edi
 blin_03:
 	movl	28(%esp),%eax			// x
-	movl	36(%esp),%ebp			// cmap
+	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
 		
 	xorl	%edx,%edx
