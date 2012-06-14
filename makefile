@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.51.12"
+VERSION = "0.51.13"
 VERSION_NEO = "1.3.2"
 
 # Uncomment to build neoraine instead of raine
