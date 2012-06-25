@@ -164,20 +164,30 @@ void init_load_type() {
 	strcpy(orig,buff);
 
 	if (!strncmp(buff,"FILE",4)) {
+	    char *start;
 	  char *end = strrchr(buff,'"');
 	  if (!end) {
-	    char msg[1024];
-	    sprintf(msg,"cue format error on line : %s",orig);
-	    MessageBox("Error",msg,"OK");
-	    break;
-	  }
-	  *end = 0;
-	  char *start = strchr(buff,'"');
-	  if (!start) {
-	    char msg[1024];
-	    sprintf(msg,"cue format error on line : %s",orig);
-	    MessageBox("Error",msg,"OK");
-	    break;
+	      end = strrchr(buff,' ');
+	      if (!end) {
+		  char msg[1024];
+		  sprintf(msg,"Serious cue format error on line %s",orig);
+		  MessageBox("Error",msg,"OK");
+		  break;
+	      }
+	      start = buff + 5;
+	      while (start == ' ') start++;
+	      *end = 0;
+	      end--; // so that end+2 points to binary
+	      start--; // so that start+1 points to the beg of filename
+	  } else {
+	      *end = 0;
+	      char *start = strchr(buff,'"');
+	      if (!start) {
+		  char msg[1024];
+		  sprintf(msg,"cue format error on line : %s",orig);
+		  MessageBox("Error",msg,"OK");
+		  break;
+	      }
 	  }
 	  if (!strncmp(end+2,"BINARY",6)) {
 	    char *path = strrchr(neocd_path,SLASH[0]);
