@@ -18,10 +18,10 @@ VERSION = "0.51.13"
 VERSION_NEO = "1.3.2"
 
 # Uncomment to build neoraine instead of raine
-# NEO=1
+NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -212,7 +212,7 @@ endif
 	   -DRAINE_WIN32 \
 
    LIBS = -lz $(PNG_LFLAGS)
-   LIBS_STATIC = -lz  $(PNG_STATIC_LFLAGS)
+   LIBS_STATIC = -lz $(PNG_STATIC_LFLAGS)
    INCDIR += $(PNG_CFLAGS)
 
 LIBS_DEBUG = -lz $(PNG_LFLAGS)
@@ -471,7 +471,7 @@ endif
 
 ifdef RAINE_DEBUG
 CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
-CFLAGS = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
 
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
@@ -481,7 +481,7 @@ else
 
 ifdef RAINE32
 # when starting a game -> black screen if -O > 1 (bug in uint64 calculation)
-CFLAGS = -O1
+CFLAGS += -O1
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
 CFLAGS = -O3
