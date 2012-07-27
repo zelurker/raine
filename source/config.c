@@ -68,6 +68,7 @@ static void CLI_Help(void)
 	"-noautoload                    : Disable auto savegame loading\n"
 	"-screenx/-sx [width]           : Select screen width\n"
 	"-screeny/-sy [height]          : Select screen height\n"
+	"-geometry [width][xheight][+posx][+posy] : window placement\n"
 	"-screenmode/sm [type]          : Select screen type (see list in raine.cfg)\n"
 	"-fullscreen/fs [0/1]           : Set fullscreen mode on/off\n"
 	"-bpp/-depth [number]           : Select screen colour depth\n"
@@ -297,6 +298,56 @@ static void CLI_screen_y(void)
 {
    ArgPosition++;
    sscanf(ArgList[ArgPosition], "%d", &display_cfg.screen_y);
+}
+
+static void CLI_geometry(void) {
+    int nb = 0, size = 0, pos = -1,x = -1,y = -1;
+    char *s = ArgList[++ArgPosition];
+
+    while (*s) {
+	if (*s >= '0' && *s <= '9') {
+	    nb = 10*nb+(*s-'0');
+	} else if (*s == 'x') {
+	    size++;
+	    if (size == 1) 
+		display_cfg.screen_x = nb;
+	    else
+		printf("geometry: bad syntax : %s\n",ArgList[ArgPosition-1]);
+	    nb = 0;
+	} else if (*s == '+') {
+	    if (size == 1 && pos < 0)
+		display_cfg.screen_y = nb;
+	    pos++;
+	    if (pos == 1)
+		x = nb;
+	    nb = 0;
+	}
+	s++;
+    }
+    if (s[-1] >= '0' && s[-1] <= '9') {
+	if (pos < 0) {
+	    if (size == 0)
+		display_cfg.screen_x = nb;
+	    else
+		display_cfg.screen_y = nb;
+	} else if (pos == 0)
+	    x = nb;
+	else if (pos == 1)
+	    y = nb;
+    }
+    if (x >= 0 || y >= 0) {
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+	char buf[80];
+	sprintf(buf,"%d,%d",x,y);
+	raine_set_config_string("Display","position",buf);
+	display_cfg.fullscreen = 0;
+	// I would have used setenv here, but windows doesn't know setenv... !!!
+	static char buffer[100];
+	snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",buf);
+	buffer[99] = 0;
+	putenv(buffer);
+    }
 }
 
 #ifndef SDL
@@ -1562,6 +1613,7 @@ static CLI_OPTION cli_commands[] =
    { "-sx",		CLI_screen_x		},
    { "-screeny",	CLI_screen_y		},
    { "-sy",		CLI_screen_y		},
+   { "-geometry",	CLI_geometry },
 #ifndef SDL
    { "-screenmode",	CLI_screen_mode		},
    { "-sm",		CLI_screen_mode		},
