@@ -1,3 +1,19 @@
+raine (0.51.13) unstable; urgency=low
+
+  * 16bpp support for operation thunderbolt / spacegun
+  * -geometry command line option
+  * borderless option (enabled if passing -geometry)
+  * Finally fixes the display if going from a small window to high resolution
+    fullscreen
+
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 27 Jul 2012 10:28:57 +0200
+
+raine (0.51.12) unstable; urgency=low
+
+  * Fix for battle garrega sound
+
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 27 Jul 2012 09:12:33 +0200
+
 raine (0.51.11) unstable; urgency=low
 
   * A quick new binary to fix a stupid bug in the version of yesterday with
