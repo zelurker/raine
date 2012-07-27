@@ -212,6 +212,8 @@ static SDL_Surface *new_set_gfx_mode() {
   videoflags = SDL_SWSURFACE| SDL_RESIZABLE| SDL_ASYNCBLIT|SDL_ANYFORMAT | SDL_HWPALETTE;
   if (display_cfg.double_buffer)
     videoflags |= SDL_DOUBLEBUF;
+  if (display_cfg.noborder)
+      videoflags |= SDL_NOFRAME;
   if (display_cfg.fullscreen)
     videoflags |= SDL_FULLSCREEN;
   if (current_game && current_game->video_info->flags & VIDEO_NEEDS_8BPP) {

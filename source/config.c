@@ -342,6 +342,7 @@ static void CLI_geometry(void) {
 	sprintf(buf,"%d,%d",x,y);
 	raine_set_config_string("Display","position",buf);
 	display_cfg.fullscreen = 0;
+	display_cfg.noborder = 1;
 	// I would have used setenv here, but windows doesn't know setenv... !!!
 	static char buffer[100];
 	snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",buf);

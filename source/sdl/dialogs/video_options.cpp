@@ -5,6 +5,7 @@
 #include "sdl/blit_sdl.h"
 #include "control.h"
 #include "sdl/control_internal.h"
+#include "display.h"
 #include "sdl/display_sdl.h"
 #include "sdl/dialogs/messagebox.h"
 
@@ -15,10 +16,11 @@ class TVideo : public TMenu
     TMenu(my_title,mymenu)
     {}
   int can_be_displayed(int n) {
-    if (n >= 4 && n <= 6) // yuv overlay options
+      if (n == 2) return !display_cfg.fullscreen;
+    if (n >= 5 && n <= 7) // yuv overlay options
       return ((sdl_overlay != NULL || display_cfg.video_mode <= 1) &&
         display_cfg.video_mode != 2);
-    else if (n >=7 && n <= 10) // normal blits
+    else if (n >=8 && n <= 11) // normal blits
       if (display_cfg.video_mode <= 1) {
 	// At first I had these options shown when in autodetect mode
 	// (video_mode == 0), but it's unclear for the users since the default
@@ -41,15 +43,22 @@ class TVideo : public TMenu
 static TVideo *video_options;
 
 static int my_toggle_fullscreen(int sel) {
+    int oldx = display_cfg.screen_x, oldy = display_cfg.screen_y;
   display_cfg.fullscreen ^= 1;
   toggle_fullscreen();
   adjust_gui_resolution();
   video_options->draw();
   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
     SDL_ShowCursor(SDL_ENABLE);
-  return 0;
+  video_options->redraw(NULL);
+  return (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
   
+static int my_toggle_border(int sel) {
+    ScreenChange();
+    return 0;
+}
+
 static int update_options(int sel) {
   // Each time we change the renderer type, we redraw the whole dialog
   // to change the options which should be hidden/shown
@@ -72,6 +81,7 @@ static menu_item_t video_items[] =
   { "Autodetect : hw YUV overlays / normal blits", "Force YUV overlays (can be slow!)",
     "Force normal blits"} },
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
+{ "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, "No", "Yes" },
 { "Use double buffer", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
 { "Video info...", &do_video_info, },
 { "YUV overlays:" },
@@ -100,6 +110,7 @@ static menu_item_t video_items[] =
 
 int do_video_options(int sel) {
     int old_stretch = display_cfg.stretch;
+    int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo("Video options", video_items);
     video_options->execute();
     SetupScreenBitmap();
@@ -113,6 +124,6 @@ int do_video_options(int sel) {
 	DestroyScreenBitmap(); // init hq2x/3x, switch gamebitmap to 16bpp
 	// + recall InitLUTs by recreating game_bitmap when enabling hq2x/3x
     }
-    return 0;
+    return (oldx != display_cfg.screen_x || oldy != display_cfg.screen_y);
 }
 
