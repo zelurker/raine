@@ -47,6 +47,8 @@ typedef struct DEF_INPUT_EMU
 #define MAX_HAT 16
 
 extern SDL_Joystick *joy[MAX_JOY];
+extern char* joy_name[MAX_JOY];
+extern int bad_axes[MAX_JOY*MAX_AXIS];
 extern char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 

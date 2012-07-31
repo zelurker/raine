@@ -59,6 +59,8 @@
  * sure ! :) */
 
 SDL_Joystick *joy[MAX_JOY];
+char *joy_name[MAX_JOY];
+int bad_axes[MAX_JOY*MAX_AXIS];
 char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 
@@ -647,7 +649,7 @@ void load_default_keys(char *section)
    if (analog_name[0]) {
      int n;
      for (n=0; n<SDL_NumJoysticks(); n++) {
-       if (!strcmp(analog_name,SDL_JoystickName(n))) {
+       if (!strcmp(analog_name,joy_name[n])) {
 	 printf("Found analog device %s\n",analog_name);
 	 analog_num = n;
 	 break;
@@ -700,14 +702,10 @@ void save_default_keys(char *section)
       sprintf(key_name,"%s",def_input_list[ta].name);
       no_spaces(key_name);
       raine_set_config_int(section,key_name,def_input_list[ta].scancode);
-      if (def_input_list[ta].joycode) {
-	sprintf(other_name,"%s_joystick",key_name);
-	raine_set_config_int(section,other_name,def_input_list[ta].joycode);
-      }
-      if (def_input_list[ta].mousebtn) {
-	sprintf(other_name,"%s_mouse",key_name);
-	raine_set_config_int(section,other_name,def_input_list[ta].mousebtn);
-      }
+      sprintf(other_name,"%s_joystick",key_name);
+      raine_set_config_int(section,other_name,def_input_list[ta].joycode);
+      sprintf(other_name,"%s_mouse",key_name);
+      raine_set_config_int(section,other_name,def_input_list[ta].mousebtn);
    }
 
    for (ta=0; ta<MAX_LAYER_INFO; ta++) {
@@ -1272,8 +1270,7 @@ static void handle_event(SDL_Event *event) {
       axis = event->jaxis.axis;
       value = event->jaxis.value;
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
-	printf("which %d axis %d\n",which,axis);
-	exit(1);
+	return;
       } else if (which == analog_num+1 && axis/2 == analog_stick) {
 	// Normalized position for analog input...
 	if (axis == analog_stick*2) {
@@ -1668,31 +1665,49 @@ void inputs_preinit() {
   int n;
   SDL_Event event;
   int handled;
-  for (n=0; n<SDL_NumJoysticks(); n++) 
+  memset(bad_axes,0,sizeof(bad_axes));
+  for (n=0; n<SDL_NumJoysticks(); n++) {
     joy[n] = SDL_JoystickOpen(n);
+    // Memorize the joystick name because calls to this function are very
+    // slow for some reason... !
+    joy_name[n] = strdup(SDL_JoystickName(n));
+    printf("joy %d opened (%s), numaxes %d\n",n,joy_name[n],SDL_JoystickNumAxes(joy[n]));
+  }
 
   // Some peripherals like a certain microsoft keyboard is recognized as a
   // joystick when pluged in usb, and they send a few faulty events at start
   // this loop should get rid of them...
+  while (!SDL_PollEvent(&event));
   do {
-    handled = 0;
-    if (SDL_PollEvent(&event)) {
-      switch(event.type) {
-      case SDL_JOYAXISMOTION:
-      case SDL_JOYBALLMOTION:
-      case SDL_JOYHATMOTION:
-      case SDL_JOYBUTTONDOWN:
-      case SDL_JOYBUTTONUP:
-	handled = 1;
-	break;
+      int which, axis, value;
+      handled = 0;
+      if (SDL_PollEvent(&event)) {
+	  switch(event.type) {
+	  case SDL_JOYAXISMOTION:
+	      which = event.jaxis.which;
+	      axis = event.jaxis.axis;
+	      value = event.jaxis.value;
+	      if (axis < MAX_AXIS && abs(value)>32700 && !bad_axes[which*MAX_AXIS+axis]) {
+		  printf("bad axis : joy %d axis %d\n",which,axis);
+		  bad_axes[which*MAX_AXIS+axis] = 1;
+	      }
+	  case SDL_JOYBALLMOTION:
+	  case SDL_JOYHATMOTION:
+	  case SDL_JOYBUTTONDOWN:
+	  case SDL_JOYBUTTONUP:
+	      handled = 1;
+	      break;
+	  }
       }
-    }
   } while (handled);
 }
 
 void inputs_done() {
   int n;
   for (n=0; n<SDL_NumJoysticks(); n++) 
-    if (joy[n]) SDL_JoystickClose(joy[n]);
+    if (joy[n]) {
+	SDL_JoystickClose(joy[n]);
+	free(joy_name[n]);
+    }
 }
 

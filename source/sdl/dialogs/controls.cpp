@@ -19,8 +19,16 @@ static UINT32 inp_key,inp_joy,inp_mouse;
 static char *get_joy_name(int code) {
   if (!code)
     return strdup("");
+  else if ((code & 0xff)-1 >= SDL_NumJoysticks())
+      return strdup("Not here");
   char name[80];
-  sprintf(name,"Joy %d ",code & 0xff);
+  // sprintf(name,"Joy %d ",code & 0xff);
+  snprintf(name,30,"Joy %d (%s",code & 0xff,joy_name[(code & 0xff)-1]);
+  name[30] = 0;
+  if (strlen(name) == 29)
+      strcat(name,"...");
+  strcat(name,") ");
+
   int stick = (code >> 8) & 0xff;
   int btn = (code >> 16) & 0xff;
   if (!btn) {
@@ -125,13 +133,18 @@ void TInput::handle_joystick(SDL_Event *event) {
       axis = event->jaxis.axis;
       value = event->jaxis.value;
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
-	printf("which %d axis %d\n",which,axis);
-	exit(1);
+	return;
       }
-      if (value < -10000) {
+      if (bad_axes[MAX_AXIS*(which-1)+axis]) {
+	  printf("skipping bad axis\n");
+	  return;
+      }
+      if (axis > SDL_JoystickNumAxes(joy[which-1]))
+	  return;
+      if (value < -20000) {
 	inp_joy = JOY(which,AXIS_LEFT(axis),0,0);
 	exit_menu = 1;
-      } else if (value > 10000) {
+      } else if (value > 20000) {
 	inp_joy = JOY(which,AXIS_RIGHT(axis),0,0);
 	exit_menu = 1;
       }
@@ -273,16 +286,22 @@ static int do_input_ingame(int sel) {
       switch(ret) {
 	case 1: 
 		InputList[sel+base_input].Key = 0;
+		if (!use_custom_keys) 
+		    def_input_list[InputList[sel+base_input].default_key & 0xFF].scancode = 0;
 		free(cols[sel*3+0]);
 		cols[sel*3+0] = strdup("no key");
 		break;
 	case 2: 
 		InputList[sel+base_input].Joy = 0;
+		if (!use_custom_keys) 
+		    def_input_list[InputList[sel+base_input].default_key & 0xFF].joycode = 0;
 		free(cols[sel*3+1]);
 		cols[sel*3+1] = strdup("");
 		break;
 	case 3:
 		InputList[sel+base_input].mousebtn = 0;
+		if (!use_custom_keys) 
+		    def_input_list[InputList[sel+base_input].default_key & 0xFF].mousebtn = 0;
 		free(cols[sel*3+2]);
 		cols[sel*3+2] = strdup("");
 		break;
@@ -625,7 +644,7 @@ static int setup_analog(int sel) {
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   selected = nb;
   for (n=0; n<nb; n++) {
-    menu[n].label = strdup(SDL_JoystickName(n));
+    menu[n].label = strdup(joy_name[n]);
     menu[n].menu_func = &select_joy;
   }
   menu[n].label = "No analog device";
