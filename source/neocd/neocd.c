@@ -2295,7 +2295,7 @@ static void load_neocd() {
   AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
   // I should probably put all these variables in a struct to be cleaner...
   AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled, 
-    ((UINT8*)&video_enabled)-((UINT8*)&z80_enabled)+sizeof(int));
+    5*sizeof(int));
   AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
   AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
   prepare_cache_save();
