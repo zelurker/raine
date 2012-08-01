@@ -165,7 +165,7 @@ void init_load_type() {
 
 	if (!strncmp(buff,"FILE",4)) {
 	    char *start;
-	  char *end = strrchr(buff,'"');
+	    char *end = strrchr(buff,'"');
 	  if (!end) {
 	      end = strrchr(buff,' ');
 	      if (!end) {
@@ -181,7 +181,7 @@ void init_load_type() {
 	      start--; // so that start+1 points to the beg of filename
 	  } else {
 	      *end = 0;
-	      char *start = strchr(buff,'"');
+	      start = strchr(buff,'"');
 	      if (!start) {
 		  char msg[1024];
 		  sprintf(msg,"cue format error on line : %s",orig);
