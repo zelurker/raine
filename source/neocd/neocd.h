@@ -19,7 +19,7 @@ extern "C" {
 // Timer counter is set to initial value when it reaches 0
 #define IRQ1CTRL_AUTOLOAD_REPEAT	0x80
 
-extern int neocd_id,allowed_speed_hacks;
+extern int neocd_id,allowed_speed_hacks,disable_irq1;
 
 extern UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
 extern char neocd_path[1024],neocd_dir[1024];

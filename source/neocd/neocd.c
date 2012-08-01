@@ -61,7 +61,7 @@ void debug(int level, const char *format, ...)
 
 static int capture_mode = 0,start_line,screen_cleared;
 static int capture_block; // block to be shown...
-int allowed_speed_hacks = 1;
+int allowed_speed_hacks = 1,disable_irq1 = 0;
 static int one_palette;
 static int assigned_banks, current_bank;
 int capture_new_pictures;
@@ -82,11 +82,13 @@ static struct VIDEO_INFO neocd_video =
 
 void restore_neocd_config() {
   allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
+  disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);
   capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
 }
 
 void save_neocd_config() {
   raine_set_config_int("neocd","allowed_speed_hacks",allowed_speed_hacks);
+  raine_set_config_int("neocd","disable_irq1",disable_irq1);
   raine_set_config_int("neocd","capture_new_pictures",capture_new_pictures);
 }
 
@@ -428,7 +430,7 @@ static struct {
 } irq;
 
 static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
-	   scanline,disable_irq1,watchdog_counter,
+	   scanline,watchdog_counter,
 	   // irq3_pending,
 	   display_position_interrupt_pending, vblank_interrupt_pending;
 
@@ -1669,8 +1671,6 @@ void postprocess_ipl() {
   /* read game name */
   neogeo_read_gamename();
 
-  // For now disable_irq1 is always disabled
-  disable_irq1 = 0;
   watchdog_counter = 9;
 
   SetLanguageSwitch(region_code);
