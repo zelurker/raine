@@ -5,8 +5,12 @@ raine (0.51.13) unstable; urgency=low
   * borderless option (enabled if passing -geometry)
   * Finally fixes the display if going from a small window to high resolution
     fullscreen
+  * filter bad joysticks'axes when there are some
+  * display joysticks names in the inputs dialogs
+  * allow to clear some default inputs and save them (previously they were not
+    saved if cleared).
 
- -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Fri, 27 Jul 2012 10:28:57 +0200
+ -- Emmanuel Anne <manu@manu-home.hd.free.fr>  Tue, 31 Jul 2012 22:58:24 +0200
 
 raine (0.51.12) unstable; urgency=low
 
