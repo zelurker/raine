@@ -40,7 +40,7 @@
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
-#define DBG_LEVEL DBG_RASTER
+#define DBG_LEVEL 3 // DBG_RASTER
 
 #ifndef RAINE_DEBUG
 #define debug
@@ -448,7 +448,7 @@ static void neo_irq1pos_w(int offset, UINT16 data)
   if (offset) {
     irq.pos = (irq.pos & 0xffff0000) | data;
     if (raster_frame) {
-      print_debug("update irq.pos at line %d = %x\n",scanline,irq.pos);
+      debug(DBG_RASTER,"update irq.pos at line %d = %x\n",scanline,irq.pos);
     } else {
       print_debug("update irq.pos %x control %x\n",irq.pos,irq.control);
     }
@@ -470,12 +470,12 @@ static void neo_irq1pos_w(int offset, UINT16 data)
       irq.start = irq.pos + 3;
       debug(DBG_RASTER,"irq.start = %d on scanline %d from irq.pos %x\n",irq.start,scanline,irq.pos);
       if (irq.pos == 0xffffffff)
-	irq.start = -1;
+	irq.start = -1000;
     }
   } else {
     irq.pos = (irq.pos & 0x0000ffff) | (data << 16);
     if (raster_frame) {
-      print_debug("update2 irq.pos at line %d = %x\n",scanline,irq.pos);
+      debug(DBG_RASTER,"update2 irq.pos at line %d = %x\n",scanline,irq.pos);
     } else {
       print_debug("update2 irq.pos %x\n",irq.pos);
     }
@@ -533,14 +533,19 @@ static void update_interrupts(void)
   }
 }
 
+static int offx, maxx;
+
 static void write_videoreg(UINT32 offset, UINT32 data) {
     // Called LSPC in the neogeo api documentation
   switch((offset >> 1) & 7) {
     case 0x00: // Address register
-      video_pointer = data; break;
+      video_pointer = data; 
+      // debug(DBG_IRQ,"set video pointer to %x from %x\n",data,s68000readPC());
+      break;
     case 0x01:  // Write data register
       if (raster_frame && scanline > start_line && raster_bitmap &&
-	      scanline < 224+START_SCREEN) {
+	      scanline < 224+START_SCREEN && 
+	      neogeo_vidram[video_pointer] != data) {
 	  // Must draw the upper part of the screen BEFORE changing the sprites
 	  start_line -= START_SCREEN;
 	  debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
@@ -555,11 +560,15 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
       neogeo_vidram[video_pointer] = data;
 
       video_pointer += video_modulo;
+      // video_pointer = (video_pointer & 0x8000) | ((video_pointer + video_modulo) & 0x7fff);
       break;
     case 0x02: video_modulo = data; break; // Automatic increment register
     case 0x03: // Mode register
 	       neogeo_frame_counter_speed=(data>>8)+1;
+	       // printf("counter speed %d\n",neogeo_frame_counter_speed);
 	       irq.control = data & 0xff;
+	       if ((irq.control & IRQ1CTRL_AUTOANIM_STOP))
+		   neogeo_frame_counter = 0;
 	       debug(DBG_IRQ,"irq.control = %x\n",data);
 	       break;
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
@@ -616,9 +625,19 @@ static UINT16 read_videoreg(UINT32 offset) {
 	     * and the counter goes from 0xf8 to 0x1ff with a twist... ! */
 	    {
 	      get_scanline();
-	      int vcounter = scanline + 0xf8;
-	      print_debug("access vcounter %d frame_counter %x from %x\n",vcounter,neogeo_frame_counter,s68000readPC());
-	      debug(DBG_RASTER,"access vcounter %d frame_counter %x from pc=%x scanline=%d\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline);
+	      int vcounter;
+#if 1
+	      vcounter = scanline + 0xf8;
+#else
+	      if (scanline == 0)
+		  vcounter = 0x1f0;
+	      else if (scanline > NB_LINES-16) {
+		  int l = scanline-(NB_LINES-16);
+		  vcounter = 0x1f0+l;
+	      } else
+		  vcounter = (NB_LINES-scanline) + 0xf8 - 16;
+#endif
+	      debug(DBG_RASTER,"access vcounter %x frame_counter %x from pc=%x scanline=%d final value %x\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline,(vcounter << 7) | (neogeo_frame_counter & 7));
 
 	      return (vcounter << 7) | (neogeo_frame_counter & 7);
 	    }
@@ -824,7 +843,6 @@ static void save_memcard() {
 }
 
 int neocd_id;
-static int offx, maxx;
 /* The spr_disabled...video_enabled are usefull to clean up loading sequences
  * they are really used by the console, verified on a youtube video for aof3
  * without them, there are some flashing effects */
@@ -1364,139 +1382,139 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 static void draw_sprites(int start, int end, int start_line, int end_line) {
     if (!check_layer_enabled(layer_id_data[1])) return;
     if (end_line > 223) end_line = 223;
-  if (capture_mode) return draw_sprites_capture(start,end,start_line,end_line);
-  int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
-  int         offs,count,y;
-  int         tileatr,y_control,zoom_control;
-  UINT16 tileno;
-  char         fullmode=0;
-  int         rzx=16,zy=0;
-  UINT8 *map;
+    if (capture_mode) return draw_sprites_capture(start,end,start_line,end_line);
+    int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
+    int         offs,count,y;
+    int         tileatr,y_control,zoom_control;
+    UINT16 tileno;
+    char         fullmode=0;
+    int         rzx=16,zy=0;
+    UINT8 *map;
 
-  for (count=start; count<end;count++) {
+    for (count=start; count<end;count++) {
 
-    zoom_control = neogeo_vidram[0x8000 + count];
-    y_control = neogeo_vidram[0x8200 + count];
+	zoom_control = neogeo_vidram[0x8000 + count];
+	y_control = neogeo_vidram[0x8200 + count];
 
-    // If this bit is set this new column is placed next to last one
-    if (y_control & 0x40) {
-	if (rows == 0) continue; // chain on an erased 3d sprite
-      sx += (rzx);
+	// If this bit is set this new column is placed next to last one
+	if (y_control & 0x40) {
+	    if (rows == 0) continue; // chain on an erased 3d sprite
+	    sx += (rzx);
 
-      // Get new zoom for this column
-      zx = (zoom_control >> 8)&0x0F;
+	    // Get new zoom for this column
+	    zx = (zoom_control >> 8)&0x0F;
 
-      sy = oy;
-    } else {   // nope it is a new block
-      // Sprite scaling
-      sx = (neogeo_vidram[0x8400 + count]) >> 7;
-      sy = 0x1F0 - (y_control >> 7);
-      rows = y_control & 0x3f;
-      if (rows == 0) continue;
-      zx = (zoom_control >> 8)&0x0F;
+	    sy = oy;
+	} else {   // nope it is a new block
+	    // Sprite scaling
+	    sx = (neogeo_vidram[0x8400 + count]) >> 7;
+	    sy = 0x1F0 - (y_control >> 7);
+	    rows = y_control & 0x3f;
+	    if (rows == 0) continue;
+	    zx = (zoom_control >> 8)&0x0F;
 
-      rzy = zoom_control & 0xff;
+	    rzy = zoom_control & 0xff;
 
-      // Number of tiles in this strip
-      if (rows == 0x20)
-	fullmode = 1;
-      else if (rows >= 0x21)
-	  // The neogeo api doc says it should be 0x21 (specific setting)
-	fullmode = 2;   // most games use 0x21, but
-      else
-	fullmode = 0;   // Alpha Mission II uses 0x3f
+	    // Number of tiles in this strip
+	    if (rows == 0x20)
+		fullmode = 1;
+	    else if (rows >= 0x21)
+		// The neogeo api doc says it should be 0x21 (specific setting)
+		fullmode = 2;   // most games use 0x21, but
+	    else
+		fullmode = 0;   // Alpha Mission II uses 0x3f
 
-      /* Super ugly hack : this 1 line fix for sy below is required for games
-       * like neo drift out, but if you enable it without fullmode==2, then
-       * the upper part of the playground is not drawn correctly in super
-       * sidekicks 2 & 3 ! Absolutely no idea why it works like that for now!
-       * So this fix reads something like "if the code is stupid enough to set
-       * fullmode to 2 (which should not happen normally !), then fix its
-       * coordinates this way.
-       * Not generic at all, frustrating, but it works (afaik). */
-      if (sy > 0x100 && fullmode==2) sy -= 0x200;
+	    /* Super ugly hack : this 1 line fix for sy below is required for games
+	     * like neo drift out, but if you enable it without fullmode==2, then
+	     * the upper part of the playground is not drawn correctly in super
+	     * sidekicks 2 & 3 ! Absolutely no idea why it works like that for now!
+	     * So this fix reads something like "if the code is stupid enough to set
+	     * fullmode to 2 (which should not happen normally !), then fix its
+	     * coordinates this way.
+	     * Not generic at all, frustrating, but it works (afaik). */
+	    if (sy > 0x100 && fullmode==2) sy -= 0x200;
 
-      if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
-      {
-	while (sy < -16) sy += 2 * (rzy + 1);
-      }
-      oy = sy;
+	    if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
+	    {
+		while (sy < -16) sy += 2 * (rzy + 1);
+	    }
+	    oy = sy;
 
-      if(rows==0x21) rows=0x20;
-      else if(rzy!=0xff && rows!=0) {
-	rows=((rows*16*256)/(rzy+1) + 15)/16;
-      }
+	    if(rows==0x21) rows=0x20;
+	    else if(rzy!=0xff && rows!=0) {
+		rows=((rows*16*256)/(rzy+1) + 15)/16;
+	    }
 
-      if(rows>0x20) rows=0x20;
-    }
-
-    rzx = zx+1;
-
-    if ( sx >= 0x1F0 ) 
-      sx -= 0x200;
-
-    // No point doing anything if tile strip is 0
-    if (sx < -offx || (sx>= maxx)) {
-      continue;
-    }
-
-    offs = count<<6;
-
-    // TODO : eventually find the precise correspondance between rzy ane zy, this
-    // here is just a guess...
-    if (rzy)
-      zy = (rzy >> 4) + 1;
-    else
-      zy = 0;
-
-    // rows holds the number of tiles in each vertical multisprite block
-    for (y=0; y < rows ;y++) {
-	// 100% specific to neocd : maximum possible sprites $80000
-	// super sidekicks 2 draws the playground with bit $8000 set
-	// the only way to see the playground is to use and $7fff
-	// Plus rasters must be enabled
-  	tileno = neogeo_vidram[offs] & 0x7fff;
-      tileatr = neogeo_vidram[offs+1];
-      offs += 2;
-      if (y)
-	// This is much more accurate for the zoomed bgs in aof/aof2
-	sy = oy + (((rzy+1)*y)>>4);
-
-      if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP)) {
-	if (tileatr&0x8) {
-	  // printf("animation tileno 8\n");
-	  tileno = (tileno&~7)|(neogeo_frame_counter&7);
-	} else if (tileatr&0x4) {
-	  // printf("animation tileno 4\n");
-	  tileno = (tileno&~3)|(neogeo_frame_counter&3);
+	    if(rows>0x20) rows=0x20;
 	}
-      }
 
-      if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
-      {
-	if (sy >= 248) {
-	  sy -= 2 * (rzy + 1);
+	rzx = zx+1;
+
+	if ( sx >= 0x1F0 ) 
+	    sx -= 0x200;
+
+	// No point doing anything if tile strip is 0
+	if (sx < -offx || (sx>= maxx)) {
+	    continue;
 	}
-      }
-      else if (fullmode == 1)
-      {
-	if (y >= 0x10) sy -= 2 * (rzy + 1);
-      }
-      else if (sy > 0x110) sy -= 0x200;
 
-      if (((tileatr>>8))&&(sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
-      {
-	MAP_PALETTE_MAPPED_NEW(
-	    (tileatr >> 8),
-	    16,
-	    map);
-	if (video_spr_usage[tileno] == 2) // all solid
-	  Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+	offs = count<<6;
+
+	// TODO : eventually find the precise correspondance between rzy ane zy, this
+	// here is just a guess...
+	if (rzy)
+	    zy = (rzy >> 4) + 1;
 	else
-	  Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
-      } 
-    }  // for y
-  }  // for count
+	    zy = 0;
+
+	// rows holds the number of tiles in each vertical multisprite block
+	for (y=0; y < rows ;y++) {
+	    // 100% specific to neocd : maximum possible sprites $80000
+	    // super sidekicks 2 draws the playground with bit $8000 set
+	    // the only way to see the playground is to use and $7fff
+	    // Plus rasters must be enabled
+	    tileno = neogeo_vidram[offs] & 0x7fff;
+	    tileatr = neogeo_vidram[offs+1];
+	    offs += 2;
+	    if (y)
+		// This is much more accurate for the zoomed bgs in aof/aof2
+		sy = oy + (((rzy+1)*y)>>4);
+
+	    if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP)) {
+		if (tileatr&0x8) {
+		    // printf("animation tileno 8\n");
+		    tileno = (tileno&~7)|(neogeo_frame_counter&7);
+		} else if (tileatr&0x4) {
+		    // printf("animation tileno 4\n");
+		    tileno = (tileno&~3)|(neogeo_frame_counter&3);
+		}
+	    }
+
+	    if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
+	    {
+		if (sy >= 248) {
+		    sy -= 2 * (rzy + 1);
+		}
+	    }
+	    else if (fullmode == 1)
+	    {
+		if (y >= 0x10) sy -= 2 * (rzy + 1);
+	    }
+	    else if (sy > 0x110) sy -= 0x200;
+
+	    if (((tileatr>>8))&&(sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
+	    {
+		MAP_PALETTE_MAPPED_NEW(
+			(tileatr >> 8),
+			16,
+			map);
+		if (video_spr_usage[tileno] == 2) // all solid
+		    Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+		else
+		    Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+	    } 
+	}  // for y
+    }  // for count
 }
 
 static void clear_screen() {
@@ -2525,7 +2543,8 @@ void execute_neocd() {
 
       raster_frame = 1;
       clear_screen();
-      for (scanline = 0; scanline < NB_LINES; scanline++, irq.start -= 0x180) {
+      for (scanline = 0; scanline < NB_LINES; scanline++) {
+	  if (irq.start > 0) irq.start -= 0x180;
 	  /* From http://wiki.neogeodev.org/index.php?title=Display_timing
 	   *  8 scanlines vertical sync pulse
 	   16 scanlines top border
@@ -2535,21 +2554,22 @@ void execute_neocd() {
 	   Well apparently in ridhero there is a border of 28 pixels and not 24
 	   */
 
-	  if (irq.start < 0x180 && (irq.control & IRQ1CTRL_ENABLE)) {
+	  if (irq.start < 0x180 && irq.start > -1000 && (irq.control & IRQ1CTRL_ENABLE)) {
 	      // irq.start is a timer, in pixels, 0x180 ticks / line
 	      // so if irq.start < 0x180 then there is a timer interrupt on this
 	      // line
 	      if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
 		  if (irq.pos == 0xffffffff)
-		      irq.start = -1;
+		      irq.start = -1000;
 		  else {
 		      irq.start = irq.pos + 1;	/* ridhero gives 0x17d */
 		  }
 		  debug(DBG_RASTER,"irq1 autorepeat %d (scanline %d)\n",irq.start,scanline);
-	      }
+	      } else
+		  irq.start = -1000;
 
 	      display_position_interrupt_pending = 1;
-	      debug(DBG_RASTER,"hbl on %d interrupts %x\n",scanline,s68000context.interrupts[0]);
+	      debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x\n",scanline,s68000context.interrupts[0],s68000readPC(),s68000context.sr);
 	  }
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
@@ -2566,6 +2586,8 @@ void execute_neocd() {
 	      printf("sortie raster frame sur speed hack, irq.start %d\n",irq.start);
 	      break;
 	  }
+	  if (stopped_68k)
+	      break;
       }
   } else { // normal frame (no raster)
       // the 68k frame does not need to be sliced any longer, we
@@ -2617,7 +2639,7 @@ void execute_neocd() {
   update_interrupts();
   if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
       if (irq.pos == 0xffffffff)
-	  irq.start = -1;
+	  irq.start = -1000;
       else {
 	  irq.start = irq.pos;	/* ridhero gives 0x17d */
       }
