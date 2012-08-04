@@ -40,7 +40,7 @@
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
-#define DBG_LEVEL 3
+#define DBG_LEVEL 0
 
 #ifndef RAINE_DEBUG
 #define debug
@@ -57,7 +57,25 @@ void debug(int level, const char *format, ...)
 #endif
 
 #define NB_LINES 264 // lines on the screen (including borders)
-#define START_SCREEN 36 // screen starts at this line (1st visible line)
+#define START_SCREEN 0x10 
+/* This is quite surprising, mame team has made some measurements and it appears that the dev documentation
+ * is at least incomplete, or wrong. From the web, it appears there should be :
+ From http://wiki.neogeodev.org/index.php?title=Display_timing
+ 8 scanlines vertical sync pulse
+ 16 scanlines top border
+ 224 scanlines active display
+ 16 scanlines bottom border
+
+ I knew there was something wrong because I had found already that neo turf masters needed at least
+ START_SCREEN = 36 instead of 24 so that the animation of the clouds on top of the mountains be
+ correct, but these numbers produced problmes elsewhere, and I started to wonder if the vbl should not
+ start before the end of the screen... I was on the right track, finally there is no real border at all,
+ the screen starts 16 lines after the top, but it's not a border, it's inside the vbl, and the vbl starts
+ right after the viewable display, at line 16+224 (f0). That makes quite a considerable difference with the
+ docs !!!
+ And you can't really call the area after line $f0 a border since it's the line where the hbl counter is
+ reloaded on vblank !
+ */
 
 static int capture_mode = 0,start_line,screen_cleared;
 static int capture_block; // block to be shown...
@@ -656,25 +674,11 @@ static UINT16 read_videoreg(UINT32 offset) {
 	     * and the counter goes from 0xf8 to 0x1ff with a twist... ! */
 	    {
 	      get_scanline();
-	      int vcounter;
-#if 1
-	      /* All the official devs documentation says about this is that
-	       * the highest bit is 1 when the display is "active".
-	       * Well f8 + scanline matches pretty well this description :
-	       * 8 lines for the vbl, and then the "active" display. */
-	      if (scanline < 8)
-		  vcounter = 0xf8 +8-scanline;
-	      else
-		  vcounter = 0xf8 + scanline;
-#else
-	      if (scanline == 0)
-		  vcounter = 0x1f0;
-	      else if (scanline > NB_LINES-16) {
-		  int l = scanline-(NB_LINES-16);
-		  vcounter = 0x1f0+l;
-	      } else
-		  vcounter = (NB_LINES-scanline) + 0xf8 - 16;
-#endif
+	      int vcounter = scanline + 0x100;
+	      if (scanline >= 0x200) scanline -= 0x108; // to have the range f8..1ff
+	      // All the dev docs said about this was that the highest bit was 1 for the displayed area
+	      // which is actually wrong ! This counter goes from f8 to 1ff, and the vbl starts at line f0
+	      // ends at line $10, so much more than 8 lines are not visible on screen !
 	      debug(DBG_RASTER,"access vcounter %x frame_counter %x from pc=%x scanline=%d final value %x\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline,(vcounter << 7) | (neogeo_frame_counter & 7));
 
 	      return (vcounter << 7) | (neogeo_frame_counter & 7);
@@ -999,7 +1003,8 @@ const NEOCD_GAME games[] =
 };
 
 static const NEOCD_GAME *game;
-static int current_neo_frame, desired_68k_speed, stopped_68k;
+static int current_neo_frame, desired_68k_speed, stopped_68k,rolled;
+static int do_not_stop;
 
 // isprint is broken in windows, they allow non printable characters !!!
 #define ischar(x) ((x)>=32) //  && (x)<=127)
@@ -2189,8 +2194,12 @@ static void cdda_cmd(UINT32 offset, UINT8 data) {
 }
 
 void myStop68000(UINT32 adr, UINT8 data) {
-  Stop68000(0,0);
-  stopped_68k = 1;
+    if (!do_not_stop) {
+	Stop68000(0,0);
+	stopped_68k = 1;
+    } else
+	do_not_stop = 0;
+    rolled = 0;
 }
 
 static void disable_irq_w(UINT32 offset, UINT8 data) {
@@ -2241,6 +2250,7 @@ static void write_word(UINT32 offset, UINT16 data) {
 
 static void load_neocd() {
     raster_frame = 0;
+    do_not_stop = 0;
   register_driver_emu_keys(list_emu,4);
   layer_id_data[0] = add_layer_info("FIX layer");
   layer_id_data[1] = add_layer_info("sprites layer");
@@ -2581,36 +2591,44 @@ void execute_neocd() {
 
       raster_frame = 1;
       clear_screen();
+      rolled = 0;
       for (scanline = 0; scanline < NB_LINES; scanline++) {
-	  if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE))
-	      irq.start -= 0x180;
-	  /* From http://wiki.neogeodev.org/index.php?title=Display_timing
-	   *  8 scanlines vertical sync pulse
-	   16 scanlines top border
-	   224 scanlines active display
-	   16 scanlines bottom border
-
-	   Well apparently in ridhero there is a border of 28 pixels and not 24
-	   */
-
-	  check_hbl();
+	  if (scanline == 0xf0) {
+	      vblank_interrupt_pending = 1;	   /* vertical blank */
+	      if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
+		  if (irq.pos == 0xffffffff)
+		      irq.start = -1000;
+		  else {
+		      irq.start = irq.pos;	/* ridhero gives 0x17d */
+		  }
+		  if (irq.start > -1000) {
+		      debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
+		  }
+	      } 
+	  }
+//	  if (scanline >= 0 && scanline < 0xf0) {
+	     if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE))
+		  irq.start -= 0x180;
+	     check_hbl();
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
 	      if (stopped_68k) {
 		  s68000context.pc -= 6;
 		  stopped_68k = 0;
+		  rolled = 1;
 	      }
 	      update_interrupts();
 	  }
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0,200000/NB_LINES);
-	  if (goto_debuger || (stopped_68k && !(irq.start >= 0x180))) {
-	      // We are obliged to stay in the loop if an irq will follow even
-	      // if it's out of screen, because it can set irq.control to
-	      // reload hbl on vblank (case of super sidekicks 3).
-	      printf("sortie raster frame sur speed hack, irq.start %d\n",irq.start);
+	  if (goto_debuger) {
 	      break;
 	  }
+      }
+      if (rolled && !stopped_68k) {
+	  do_not_stop = 1; // the vbl will end in the next frame
+	  // so we must not stop when it will end !!!
+	  // Case in top golf for example
       }
   } else { // normal frame (no raster)
       // the 68k frame does not need to be sliced any longer, we
@@ -2673,18 +2691,10 @@ void execute_neocd() {
   if (z80_enabled && !irq.disable && RaineSoundCard) {
       execute_z80_audio_frame();
   }
-  vblank_interrupt_pending = 1;	   /* vertical blank */
-  update_interrupts();
-  if (irq.control & IRQ1CTRL_AUTOLOAD_VBLANK) {
-      if (irq.pos == 0xffffffff)
-	  irq.start = -1000;
-      else {
-	  irq.start = irq.pos;	/* ridhero gives 0x17d */
-      }
-      if (irq.start > -1000) {
-	  debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
-      }
-  } 
+  if (!raster_frame) {
+      vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
+      update_interrupts();
+  }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
   if (s68000readPC() == 0xc0e602) { // start button
