@@ -40,7 +40,7 @@
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
-#define DBG_LEVEL 3 // DBG_RASTER
+#define DBG_LEVEL 0
 
 #ifndef RAINE_DEBUG
 #define debug
@@ -442,46 +442,6 @@ static void get_scanline() {
   }
 }
 
-static void neo_irq1pos_w(int offset, UINT16 data)
-{
-  /* This is entierly from mame, so thanks to them ! */
-  if (offset) {
-    irq.pos = (irq.pos & 0xffff0000) | data;
-    if (raster_frame) {
-      debug(DBG_RASTER,"update irq.pos at line %d = %x\n",scanline,irq.pos);
-    } else {
-      print_debug("update irq.pos %x control %x\n",irq.pos,irq.control);
-    }
-    // irq.pos is in ticks of the neogeo pixel clock (6 MHz)
-    // 1 tick happens for every pixel, not for every scanline.
-    // So 1 scanline is 0x180 ticks, and you have 0x180*0x108 ticks for the
-    // whole screen. Since the clock is at 6 MHz, this gives in 1s :
-    // 6e6/(0x180*0x108) = 59.19 fps
-    // Anyway for the current problem : some games like ridhero put 0x17d in
-    // irq.pos to get 1 irq1 for every scanline. Since we use only a scanline
-    // counter (irq.start), we must use (irq.pos + 3)/0x180 or we would not
-    // get the interrupt repeat...
-    if (irq.control & IRQ1CTRL_LOAD_LOW)
-    {
-      /* This version is from the neocdpsp code.
-       * Clearly this is a rough approximation (the irq.pos value is not
-       * compared at all to any clock), but it seems to work well enough ! */
-      get_scanline();
-      irq.start = irq.pos + 3;
-      debug(DBG_RASTER,"irq.start = %d on scanline %d from irq.pos %x\n",irq.start,scanline,irq.pos);
-      if (irq.pos == 0xffffffff)
-	irq.start = -1000;
-    }
-  } else {
-    irq.pos = (irq.pos & 0x0000ffff) | (data << 16);
-    if (raster_frame) {
-      debug(DBG_RASTER,"update2 irq.pos at line %d = %x\n",scanline,irq.pos);
-    } else {
-      print_debug("update2 irq.pos %x\n",irq.pos);
-    }
-  }
-}
-
 static void update_interrupts(void)
 {
   int level = 0;
@@ -533,7 +493,86 @@ static void update_interrupts(void)
   }
 }
 
+static void check_hbl() {
+    if (irq.start < 0x180 && irq.start > -1000 && (irq.control & IRQ1CTRL_ENABLE)) {
+	// irq.start is a timer, in pixels, 0x180 ticks / line
+	// so if irq.start < 0x180 then there is a timer interrupt on this
+	// line
+	if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
+	    if (irq.pos == 0xffffffff)
+		irq.start = -1000;
+	    else {
+		irq.start = irq.pos + 1;	/* ridhero gives 0x17d */
+	    }
+	    debug(DBG_RASTER,"irq1 autorepeat %d (scanline %d)\n",irq.start,scanline);
+	} else
+	    irq.start = -1000;
+
+	display_position_interrupt_pending = 1;
+	debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x\n",scanline,s68000context.interrupts[0],s68000readPC(),s68000context.sr);
+    }
+}
+
+static void neo_irq1pos_w(int offset, UINT16 data)
+{
+  /* This is entierly from mame, so thanks to them ! */
+  if (offset) {
+    irq.pos = (irq.pos & 0xffff0000) | data;
+    if (raster_frame) {
+      debug(DBG_RASTER,"update irq.pos at line %d = %x\n",scanline,irq.pos);
+    } else {
+      print_debug("update irq.pos %x control %x\n",irq.pos,irq.control);
+    }
+    // irq.pos is in ticks of the neogeo pixel clock (6 MHz)
+    // 1 tick happens for every pixel, not for every scanline.
+    // So 1 scanline is 0x180 ticks, and you have 0x180*0x108 ticks for the
+    // whole screen. Since the clock is at 6 MHz, this gives in 1s :
+    // 6e6/(0x180*0x108) = 59.19 fps
+    // Anyway for the current problem : some games like ridhero put 0x17d in
+    // irq.pos to get 1 irq1 for every scanline. Since we use only a scanline
+    // counter (irq.start), we must use (irq.pos + 3)/0x180 or we would not
+    // get the interrupt repeat...
+    if (irq.control & IRQ1CTRL_LOAD_LOW)
+    {
+      /* This version is from the neocdpsp code.
+       * Clearly this is a rough approximation (the irq.pos value is not
+       * compared at all to any clock), but it seems to work well enough ! */
+      get_scanline();
+      irq.start = irq.pos + 3;
+      if (irq.pos == 0xffffffff)
+	irq.start = -1000;
+      else {
+	  debug(DBG_RASTER,"irq.start = %d on scanline %d from irq.pos %x\n",irq.start,scanline,irq.pos);
+      }
+      if (irq.start < 0x180 && irq.start > 0 &&
+	      (irq.control & IRQ1CTRL_ENABLE)) {
+	  check_hbl();
+	  update_interrupts();
+      }
+    }
+  } else {
+    irq.pos = (irq.pos & 0x0000ffff) | (data << 16);
+    if (raster_frame) {
+      debug(DBG_RASTER,"update2 irq.pos at line %d = %x\n",scanline,irq.pos);
+    } else {
+      print_debug("update2 irq.pos %x\n",irq.pos);
+    }
+  }
+}
+
 static int offx, maxx;
+
+static void update_raster() {
+    start_line -= START_SCREEN;
+    debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
+    draw_sprites(0,384,start_line,scanline-START_SCREEN);
+    debug(DBG_RASTER,"blit hbl from %d lines %d\n",start_line,scanline-START_SCREEN-start_line);
+    blit(GameBitmap,raster_bitmap,16,start_line+16,
+	    0,start_line,
+	    neocd_video.screen_x,
+	    scanline-START_SCREEN-start_line);
+    start_line = scanline;
+}
 
 static void write_videoreg(UINT32 offset, UINT32 data) {
     // Called LSPC in the neogeo api documentation
@@ -547,15 +586,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
 	      scanline < 224+START_SCREEN && 
 	      neogeo_vidram[video_pointer] != data) {
 	  // Must draw the upper part of the screen BEFORE changing the sprites
-	  start_line -= START_SCREEN;
-	  debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
-	  draw_sprites(0,384,start_line,scanline-START_SCREEN);
-	  debug(DBG_RASTER,"blit hbl from %d lines %d\n",start_line,scanline-START_SCREEN-start_line);
-	  blit(GameBitmap,raster_bitmap,16,start_line+16,
-		  0,start_line,
-		  neocd_video.screen_x,
-		  scanline-START_SCREEN-start_line);
-	  start_line = scanline;
+	  update_raster();
       }
       neogeo_vidram[video_pointer] = data;
 
@@ -627,7 +658,14 @@ static UINT16 read_videoreg(UINT32 offset) {
 	      get_scanline();
 	      int vcounter;
 #if 1
-	      vcounter = scanline + 0xf8;
+	      /* All the official devs documentation says about this is that
+	       * the highest bit is 1 when the display is "active".
+	       * Well f8 + scanline matches pretty well this description :
+	       * 8 lines for the vbl, and then the "active" display. */
+	      if (scanline < 8)
+		  vcounter = 0xf8 +8-scanline;
+	      else
+		  vcounter = 0xf8 + scanline;
 #else
 	      if (scanline == 0)
 		  vcounter = 0x1f0;
@@ -1555,7 +1593,7 @@ static void draw_neocd() {
       debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
   }
   int start = 0, end = 0x300 >> 1;
-  if (!spr_disabled) {
+  if (!spr_disabled && start_line < 224) {
     if (neocd_id == 0x0085 && !capture_mode) {
       // pseudo priority code specific to ssrpg (samurai spirits rpg)
       // it draws the sprites at the begining of the list at the end to have them
@@ -2544,7 +2582,8 @@ void execute_neocd() {
       raster_frame = 1;
       clear_screen();
       for (scanline = 0; scanline < NB_LINES; scanline++) {
-	  if (irq.start > 0) irq.start -= 0x180;
+	  if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE))
+	      irq.start -= 0x180;
 	  /* From http://wiki.neogeodev.org/index.php?title=Display_timing
 	   *  8 scanlines vertical sync pulse
 	   16 scanlines top border
@@ -2554,23 +2593,7 @@ void execute_neocd() {
 	   Well apparently in ridhero there is a border of 28 pixels and not 24
 	   */
 
-	  if (irq.start < 0x180 && irq.start > -1000 && (irq.control & IRQ1CTRL_ENABLE)) {
-	      // irq.start is a timer, in pixels, 0x180 ticks / line
-	      // so if irq.start < 0x180 then there is a timer interrupt on this
-	      // line
-	      if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
-		  if (irq.pos == 0xffffffff)
-		      irq.start = -1000;
-		  else {
-		      irq.start = irq.pos + 1;	/* ridhero gives 0x17d */
-		  }
-		  debug(DBG_RASTER,"irq1 autorepeat %d (scanline %d)\n",irq.start,scanline);
-	      } else
-		  irq.start = -1000;
-
-	      display_position_interrupt_pending = 1;
-	      debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x\n",scanline,s68000context.interrupts[0],s68000readPC(),s68000context.sr);
-	  }
+	check_hbl();
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
 	      update_interrupts();
@@ -2594,43 +2617,58 @@ void execute_neocd() {
       // execute cycles on the z80 upon receiving a command !
       raster_frame = 0;
       cpu_execute_cycles(CPU_68K_0, current_neo_frame);
-      if (allowed_speed_hacks) {
-	  static int not_stopped_frames;
-	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
-	      pc = s68000readPC();
-
-	      if (pc < 0x200000) {
-		  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
-		  not_stopped_frames = 0;
-		  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
-			  ReadWord(&RAM[pc+4]) == 0x67fa) {
-		      apply_hack(pc);
-		  } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
-			  ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
-		      apply_hack(pc);
-		      WriteWord(&RAM[pc+6],0x4e71); // nop
-		  } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
-			  ReadWord(&RAM[pc-6]) == 0x4a39) {
-		      apply_hack(pc-6);
-		      WriteWord(&RAM[pc],0x4e71);
-		  } else if (ReadWord(&RAM[pc]) == 0x0839 &&
-			  ReadWord(&RAM[pc+8]) == 0x66f2) {
-		      apply_hack(pc);
-		      WriteWord(&RAM[pc+6],0x4e71); // nop
-		      WriteWord(&RAM[pc+8],0x4e71); // nop
-		  } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
-			  ReadWord(&RAM[pc-6]) == 0x4a79) { // TST / BEQ/BNE
-		      apply_hack(pc-6);
-		      WriteWord(&RAM[pc],0x4e71); // nop
-		  }
-	      }
-	  } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
-	      // speed hack missed again for some reason (savegames can do that)
-	      if (not_stopped_frames++ >= 10)
-		  current_neo_frame = FRAME_NEO;
-	  }
-      } // allowed_speed_hacks
   }
+  if (allowed_speed_hacks) {
+      static int not_stopped_frames;
+      if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
+	  pc = s68000readPC();
+
+	  if (pc < 0x200000) {
+	      // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
+	      not_stopped_frames = 0;
+	      if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
+		      ReadWord(&RAM[pc+4]) == 0x67fa) {
+		  apply_hack(pc);
+	      } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
+		      ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
+		  apply_hack(pc);
+		  WriteWord(&RAM[pc+6],0x4e71); // nop
+	      } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
+		      ReadWord(&RAM[pc-6]) == 0x4a39) {
+		  apply_hack(pc-6);
+		  WriteWord(&RAM[pc],0x4e71);
+	      } else if (ReadWord(&RAM[pc]) == 0x0839 &&
+		      ReadWord(&RAM[pc+8]) == 0x66f2) {
+		  apply_hack(pc);
+		  WriteWord(&RAM[pc+6],0x4e71); // nop
+		  WriteWord(&RAM[pc+8],0x4e71); // nop
+	      } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
+		      (ReadWord(&RAM[pc-6]) == 0x4a79 ||
+		       ReadWord(&RAM[pc-6]) == 0x4a39)) { // TST / BEQ/BNE
+		  apply_hack(pc-6);
+		  WriteWord(&RAM[pc],0x4e71); // nop
+	      } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
+		      ReadWord(&RAM[pc+8]) == 0x6600 &&
+		      ReadWord(&RAM[pc+10]) == 8 &&
+		      ReadWord(&RAM[pc+16]) == 0x60ee) {
+		  /* This one is quite crazy, for neo drift out... */
+		  apply_hack(pc);
+		  WriteWord(&RAM[pc+6],0x4e71); // nop
+		  WriteWord(&RAM[pc+8],0x6000); // bra
+	      } else if (ReadWord(&RAM[pc]) == 0x67f2 &&
+		      ReadWord(&RAM[pc-6]) == 0x4a39 && // tst.b
+		      ReadWord(&RAM[pc-12]) == 0x5279) { // addq.w
+		  // neo turf masters
+		  apply_hack(pc-6);
+		  WriteWord(&RAM[pc],0x4e71); // nop
+	      }
+	  }
+      } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
+	  // speed hack missed again for some reason (savegames can do that)
+	  if (not_stopped_frames++ >= 10)
+	      current_neo_frame = FRAME_NEO;
+      }
+  } // allowed_speed_hacks
   start_line -= START_SCREEN;
   if (z80_enabled && !irq.disable && RaineSoundCard) {
       execute_z80_audio_frame();
@@ -2643,7 +2681,9 @@ void execute_neocd() {
       else {
 	  irq.start = irq.pos;	/* ridhero gives 0x17d */
       }
-      debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
+      if (irq.start > -1000) {
+	  debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
+      }
   } 
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
