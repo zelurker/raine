@@ -40,7 +40,7 @@
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
-#define DBG_LEVEL 0
+#define DBG_LEVEL 3
 
 #ifndef RAINE_DEBUG
 #define debug
@@ -498,6 +498,7 @@ static void check_hbl() {
 	// irq.start is a timer, in pixels, 0x180 ticks / line
 	// so if irq.start < 0x180 then there is a timer interrupt on this
 	// line
+	debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x irq.start %d\n",scanline,s68000context.interrupts[0],s68000readPC(),s68000context.sr,irq.start);
 	if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
 	    if (irq.pos == 0xffffffff)
 		irq.start = -1000;
@@ -509,7 +510,6 @@ static void check_hbl() {
 	    irq.start = -1000;
 
 	display_position_interrupt_pending = 1;
-	debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x\n",scanline,s68000context.interrupts[0],s68000readPC(),s68000context.sr);
     }
 }
 
@@ -2593,12 +2593,14 @@ void execute_neocd() {
 	   Well apparently in ridhero there is a border of 28 pixels and not 24
 	   */
 
-	check_hbl();
+	  check_hbl();
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
-	      update_interrupts();
-	      if (stopped_68k) 
+	      if (stopped_68k) {
+		  s68000context.pc -= 6;
 		  stopped_68k = 0;
+	      }
+	      update_interrupts();
 	  }
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0,200000/NB_LINES);
@@ -2609,8 +2611,6 @@ void execute_neocd() {
 	      printf("sortie raster frame sur speed hack, irq.start %d\n",irq.start);
 	      break;
 	  }
-	  if (stopped_68k)
-	      break;
       }
   } else { // normal frame (no raster)
       // the 68k frame does not need to be sliced any longer, we
