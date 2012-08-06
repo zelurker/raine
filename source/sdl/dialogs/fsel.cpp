@@ -220,6 +220,7 @@ void TFileSel::compute_nb_items() {
   int nb_menu = 10;
   char cwd[1024];
   char tmp_path[1024];
+  int found_cue = 0, found_iso = 0;
   if (menu)
     free(menu);
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
@@ -249,7 +250,13 @@ void TFileSel::compute_nb_items() {
       } else if (!(options & ONLY_DIRS)) {
 	menu[nb_files].menu_func = &exec_file;
 	int found = 0,idx;
-	char *s;
+	char *s = &dent->d_name[strlen(dent->d_name)-3];
+	if (strlen(dent->d_name) > 3) {
+	    if (!stricmp(s,"iso"))
+		found_iso++;
+	    else if (!stricmp(s,"cue"))
+		found_cue++;
+	}
 	for (s=ext[0], idx=1; s; s=ext[idx++]) {
 	  int l = strlen(s);
 	  if (strchr(s,'*') || strchr(s,'?')) { // pattern search
@@ -285,7 +292,16 @@ void TFileSel::compute_nb_items() {
     qsort(&menu[2],nb_files-2,sizeof(menu_item_t),&sort_menu);
     chdir(cwd);
   }
-  TMenu::compute_nb_items();
+#ifdef NEO
+  if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
+      char *myexts[] = { ".iso", NULL };
+      char **old = ext;
+      ext = myexts;
+      compute_nb_items();
+      ext = old;
+  } else
+#endif
+      TMenu::compute_nb_items();
 }
 
 TFileSel::~TFileSel() {
