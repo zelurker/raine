@@ -32,7 +32,7 @@ class TFileSel : public TMenu
       return can_be_displayed(n);
     }
     virtual void set_dir(char *mypath);
-    virtual int mychdir(int sel);
+    virtual int mychdir(int n);
     virtual int myexec_file(int sel);
 };
 
@@ -336,11 +336,13 @@ void TFileSel::set_dir(char *mypath) {
     strcat(res_file,SLASH); // To show it's a path more easily
 }
 
-int TFileSel::mychdir(int sel) {
-  if (sel == 1) { // ..
+int TFileSel::mychdir(int n) {
+    char *old = NULL;
+  if (n == 1) { // ..
     char *s = strrchr(path,SLASH[0]);
     if (s) {
       *s = 0;
+      old = strdup(s+1);
 #ifdef RAINE_WIN32
       if (s[-1] == SLASH[0]) { s[-1] = 0; // double \ in windows
 	printf("double replace for %s\n",path);
@@ -355,8 +357,18 @@ int TFileSel::mychdir(int sel) {
       strcpy(path,SLASH);
 #endif
   } else
-    sprintf(&path[strlen(path)],"%s%s",SLASH,menu[sel].label);
+    sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].label);
   set_dir(path);
+  if (old) {
+      for (n=0; n<nb_items; n++)
+	  if (!strcmp(menu[n].label,old)) {
+	      sel = n;
+	      printf("sel found for ..\n");
+	      break;
+	  }
+      free(old);
+  }
+
   return 0;
 }
 
