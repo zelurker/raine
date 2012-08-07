@@ -584,7 +584,6 @@ static void update_raster() {
     start_line -= START_SCREEN;
     debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
     draw_sprites(0,384,start_line,scanline-START_SCREEN);
-    debug(DBG_RASTER,"blit hbl from %d lines %d\n",start_line,scanline-START_SCREEN-start_line);
     blit(GameBitmap,raster_bitmap,16,start_line+16,
 	    0,start_line,
 	    neocd_video.screen_x,
@@ -618,7 +617,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
 	       irq.control = data & 0xff;
 	       if ((irq.control & IRQ1CTRL_AUTOANIM_STOP))
 		   neogeo_frame_counter = 0;
-	       debug(DBG_IRQ,"irq.control = %x\n",data);
+	       debug(DBG_IRQ,"irq.control = %x at line %d\n",data,scanline);
 	       break;
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
@@ -2606,10 +2605,10 @@ void execute_neocd() {
 		  }
 	      } 
 	  }
-//	  if (scanline >= 0 && scanline < 0xf0) {
-	     if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE))
-		  irq.start -= 0x180;
-	     check_hbl();
+	  if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE)) {
+	      irq.start -= 0x180;
+	      check_hbl();
+	  }
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
 	      if (stopped_68k) {
@@ -2623,7 +2622,13 @@ void execute_neocd() {
 	      update_interrupts();
 	  }
 	  if (!stopped_68k)
-	      cpu_execute_cycles(CPU_68K_0,200000/NB_LINES);
+	      /* Boost cpu frequency, that's 15 Mhz instead of 12.
+	       * Well that's just for the raster frames.
+	       * Without this boost, the display becomes "unstable" on some
+	       * games like neo turf masters (on the green for example).
+	       * It's probably a bug in the timing of instructions in
+	       * starscream, this should be 12 MHz here. */
+	      cpu_execute_cycles(CPU_68K_0,250000/NB_LINES);
 	  if (goto_debuger) {
 	      break;
 	  }
