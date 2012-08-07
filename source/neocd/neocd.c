@@ -2613,9 +2613,12 @@ void execute_neocd() {
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
 	      if (stopped_68k) {
-		  s68000context.pc -= 6;
 		  stopped_68k = 0;
-		  rolled = 1;
+		  if (!vblank_interrupt_pending) {
+		      // If it's a vbl, we mustn't stop anymore !
+		      s68000context.pc -= 6;
+		      rolled = 1;
+		  }
 	      }
 	      update_interrupts();
 	  }
