@@ -2622,13 +2622,13 @@ void execute_neocd() {
 	      update_interrupts();
 	  }
 	  if (!stopped_68k)
-	      /* Boost cpu frequency, that's 15 Mhz instead of 12.
+	      /* Boost cpu frequency, that's 30 Mhz instead of 12.
 	       * Well that's just for the raster frames.
 	       * Without this boost, the display becomes "unstable" on some
 	       * games like neo turf masters (on the green for example).
 	       * It's probably a bug in the timing of instructions in
 	       * starscream, this should be 12 MHz here. */
-	      cpu_execute_cycles(CPU_68K_0,250000/NB_LINES);
+	      cpu_execute_cycles(CPU_68K_0,500000/NB_LINES);
 	  if (goto_debuger) {
 	      break;
 	  }
