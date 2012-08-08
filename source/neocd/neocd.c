@@ -341,11 +341,11 @@ void save_fix(int vidram) {
 }
 
 void restore_fix(int vidram) {
-  if (vidram)
-    memcpy(&neogeo_vidram[0x7000],&RAM[0x110804],0x500*2); 
-  memcpy(neogeo_fix_memory,&RAM[0x115e06],0x6000);
-  memcpy(video_fix_usage,temp_fix_usage,0x300);
-  saved_fix = 0;
+    if (vidram)
+	memcpy(&neogeo_vidram[0x7000],&RAM[0x110804],0x500*2); 
+    memcpy(neogeo_fix_memory,&RAM[0x115e06],0x6000);
+    memcpy(video_fix_usage,temp_fix_usage,0x300);
+    saved_fix = 0;
 }
 
 // Save ram : the neogeo hardware seems to have a non volatile ram, but it
@@ -2643,58 +2643,61 @@ void execute_neocd() {
       // execute cycles on the z80 upon receiving a command !
       raster_frame = 0;
       cpu_execute_cycles(CPU_68K_0, current_neo_frame);
-  }
-  if (allowed_speed_hacks) {
-      static int not_stopped_frames;
-      if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
-	  pc = s68000readPC();
+      if (allowed_speed_hacks) {
+	  /* Speed hacks are searched ONLY in the normal frame because we
+	   * could find places waiting for an hbl and not a vbl if using also
+	   * raster frames */
+	  static int not_stopped_frames;
+	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
+	      pc = s68000readPC();
 
-	  if (pc < 0x200000) {
-	      // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
-	      not_stopped_frames = 0;
-	      if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
-		      ReadWord(&RAM[pc+4]) == 0x67fa) {
-		  apply_hack(pc);
-	      } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
-		      ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
-		  apply_hack(pc);
-		  WriteWord(&RAM[pc+6],0x4e71); // nop
-	      } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
-		      ReadWord(&RAM[pc-6]) == 0x4a39) {
-		  apply_hack(pc-6);
-		  WriteWord(&RAM[pc],0x4e71);
-	      } else if (ReadWord(&RAM[pc]) == 0x0839 &&
-		      ReadWord(&RAM[pc+8]) == 0x66f2) {
-		  apply_hack(pc);
-		  WriteWord(&RAM[pc+6],0x4e71); // nop
-		  WriteWord(&RAM[pc+8],0x4e71); // nop
-	      } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
-		      (ReadWord(&RAM[pc-6]) == 0x4a79 ||
-		       ReadWord(&RAM[pc-6]) == 0x4a39)) { // TST / BEQ/BNE
-		  apply_hack(pc-6);
-		  WriteWord(&RAM[pc],0x4e71); // nop
-	      } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
-		      ReadWord(&RAM[pc+8]) == 0x6600 &&
-		      ReadWord(&RAM[pc+10]) == 8 &&
-		      ReadWord(&RAM[pc+16]) == 0x60ee) {
-		  /* This one is quite crazy, for neo drift out... */
-		  apply_hack(pc);
-		  WriteWord(&RAM[pc+6],0x4e71); // nop
-		  WriteWord(&RAM[pc+8],0x6000); // bra
-	      } else if (ReadWord(&RAM[pc]) == 0x67f2 &&
-		      ReadWord(&RAM[pc-6]) == 0x4a39 && // tst.b
-		      ReadWord(&RAM[pc-12]) == 0x5279) { // addq.w
-		  // neo turf masters
-		  apply_hack(pc-6);
-		  WriteWord(&RAM[pc],0x4e71); // nop
+	      if (pc < 0x200000) {
+		  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
+		  not_stopped_frames = 0;
+		  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
+			  ReadWord(&RAM[pc+4]) == 0x67fa) {
+		      apply_hack(pc);
+		  } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
+			  ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
+		      apply_hack(pc);
+		      WriteWord(&RAM[pc+6],0x4e71); // nop
+		  } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
+			  ReadWord(&RAM[pc-6]) == 0x4a39) {
+		      apply_hack(pc-6);
+		      WriteWord(&RAM[pc],0x4e71);
+		  } else if (ReadWord(&RAM[pc]) == 0x0839 &&
+			  ReadWord(&RAM[pc+8]) == 0x66f2) {
+		      apply_hack(pc);
+		      WriteWord(&RAM[pc+6],0x4e71); // nop
+		      WriteWord(&RAM[pc+8],0x4e71); // nop
+		  } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
+			  (ReadWord(&RAM[pc-6]) == 0x4a79 ||
+			   ReadWord(&RAM[pc-6]) == 0x4a39)) { // TST / BEQ/BNE
+		      apply_hack(pc-6);
+		      WriteWord(&RAM[pc],0x4e71); // nop
+		  } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
+			  ReadWord(&RAM[pc+8]) == 0x6600 &&
+			  ReadWord(&RAM[pc+10]) == 8 &&
+			  ReadWord(&RAM[pc+16]) == 0x60ee) {
+		      /* This one is quite crazy, for neo drift out... */
+		      apply_hack(pc);
+		      WriteWord(&RAM[pc+6],0x4e71); // nop
+		      WriteWord(&RAM[pc+8],0x6000); // bra
+		  } else if (ReadWord(&RAM[pc]) == 0x67f2 &&
+			  ReadWord(&RAM[pc-6]) == 0x4a39 && // tst.b
+			  ReadWord(&RAM[pc-12]) == 0x5279) { // addq.w
+		      // neo turf masters
+		      apply_hack(pc-6);
+		      WriteWord(&RAM[pc],0x4e71); // nop
+		  }
 	      }
+	  } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
+	      // speed hack missed again for some reason (savegames can do that)
+	      if (not_stopped_frames++ >= 10)
+		  current_neo_frame = FRAME_NEO; // search again !
 	  }
-      } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
-	  // speed hack missed again for some reason (savegames can do that)
-	  if (not_stopped_frames++ >= 10)
-	      current_neo_frame = FRAME_NEO;
-      }
-  } // allowed_speed_hacks
+      } // allowed_speed_hacks
+  }
   start_line -= START_SCREEN;
   if (z80_enabled && !irq.disable && RaineSoundCard) {
       execute_z80_audio_frame();
