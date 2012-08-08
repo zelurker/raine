@@ -2363,6 +2363,7 @@ static void load_neocd() {
     5*sizeof(int));
   AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
   AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
+  AddSaveData(SAVE_USER_6, (UINT8*)&video_modulo,sizeof(UINT16)*2);
   prepare_cache_save();
   AddLoadCallback(restore_bank);
   // is the save ram usefull ?!??? probably not with neocd...
