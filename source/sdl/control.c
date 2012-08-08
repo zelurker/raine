@@ -1677,7 +1677,10 @@ void inputs_preinit() {
   // Some peripherals like a certain microsoft keyboard is recognized as a
   // joystick when pluged in usb, and they send a few faulty events at start
   // this loop should get rid of them...
-  while (!SDL_PollEvent(&event));
+  int ticks = SDL_GetTicks();
+  event.type = 0;
+  while (!SDL_PollEvent(&event) && SDL_GetTicks()-ticks < 100);
+  if (event.type) SDL_PushEvent(&event);
   do {
       int which, axis, value;
       handled = 0;
