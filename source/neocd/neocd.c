@@ -1592,10 +1592,6 @@ static void draw_neocd() {
   if (!video_enabled)
     return;
 
-  if (raster_frame && start_line > 0) {
-      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,start_line);
-      debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
-  }
   int start = 0, end = 0x300 >> 1;
   if (!spr_disabled && start_line < 224) {
     if (neocd_id == 0x0085 && !capture_mode) {
@@ -1621,6 +1617,10 @@ static void draw_neocd() {
       } while (end != 0);
     } else
       draw_sprites(0, 384,start_line,224);
+  }
+  if (raster_frame && start_line > 0) {
+      blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,start_line);
+      debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
   }
 
   if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
