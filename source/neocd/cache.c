@@ -438,19 +438,19 @@ static void cache_load_fix(UINT8 *buff, int len) {
 	  memcpy(neogeo_fix_memory+upload_offset[n],buff,upload_size[n]);
 	  UINT8 *usage_ptr = video_fix_usage + (upload_offset[n]>>5);
 	  int i;
-	  for (i=0; i<upload_size[n]; i+= 32) {
+	  for (i=0; i<upload_size[n]; i+= 64) {
 		  int res = 0;
 		  int j;
-		  for (j=0; j<32; j++) {
+		  for (j=0; j<64; j++) {
 			  if (buff[i+j])
 				  res++;
 		  }
 		  if (res == 0) // all transp
-			  usage_ptr[i/32] = 0;
-		  else if (res == 32)
-			  usage_ptr[i/32] = 2; // all solid
+			  usage_ptr[i/64] = 0;
+		  else if (res == 64)
+			  usage_ptr[i/64] = 2; // all solid
 		  else
-			  usage_ptr[i/32] = 1; // semi
+			  usage_ptr[i/64] = 1; // semi
 	  }
 	  buff += upload_size[n];
   }
