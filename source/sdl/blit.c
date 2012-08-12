@@ -507,9 +507,7 @@ extern void *old_draw; // dlg_sound
 
 static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
-   UINT32 ta,d_w;
-
-   d_w = dest->w;
+   UINT32 ta;
 
    ta = 0;
    if (d_y >= dest->h) return;
@@ -583,9 +581,7 @@ static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int 
 
 static void raine_blit_scale3x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
-   UINT32 ta,d_w;
-
-   d_w = dest->w;
+   UINT32 ta;
 
    ta = 0;
    if (d_y >= dest->h) return;
@@ -845,7 +841,6 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 
 static void update_screen_palette(PALETTE palette)
 {
-  int ret;
 /*  PALETTE pal2;
 
   memcpy(pal2,pal,sizeof(PALETTE));
@@ -871,15 +866,15 @@ static void update_screen_palette(PALETTE palette)
    if (use_scale2x == 0) { // must test use_scale2x
      // display_cfg.stretch is the desired scaler, but use_scale2x is the
      // amount of scaling actually used (0 = normal blits).
-     ret = SDL_SetPalette(sdl_game_bitmap,SDL_LOGPAL,(SDL_Color*)pal,0,256);
-     ret = SDL_SetPalette(sdl_screen,SDL_LOGPAL|SDL_PHYSPAL,(SDL_Color*)pal,0,256);
+     SDL_SetPalette(sdl_game_bitmap,SDL_LOGPAL,(SDL_Color*)pal,0,256);
+     SDL_SetPalette(sdl_screen,SDL_LOGPAL|SDL_PHYSPAL,(SDL_Color*)pal,0,256);
    } else {
      // with scalers, only the physical palette needs to be updated
      // ret = SDL_SetPalette(sdl_screen,SDL_PHYSPAL,(SDL_Color*)pal,0,256);
      // optimisation disabled : it prevents bg_layer to use game bitmap since
      // its logical palette isn't updated anymore !!!
-     ret = SDL_SetPalette(sdl_game_bitmap,SDL_LOGPAL,(SDL_Color*)pal,0,256);
-     ret = SDL_SetPalette(sdl_screen,SDL_LOGPAL|SDL_PHYSPAL,(SDL_Color*)pal,0,256);
+     SDL_SetPalette(sdl_game_bitmap,SDL_LOGPAL,(SDL_Color*)pal,0,256);
+     SDL_SetPalette(sdl_screen,SDL_LOGPAL|SDL_PHYSPAL,(SDL_Color*)pal,0,256);
    }
    }
 
