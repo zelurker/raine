@@ -290,8 +290,6 @@ int main(int argc,char *argv[])
 	}
       }
    }
-#else
-   sdl_init();
 #endif
 
    raine_cfg.no_gui = 0;
@@ -486,6 +484,9 @@ int main(int argc,char *argv[])
 #endif
 
    parse_command_line(argc,argv);
+#ifdef SDL
+   sdl_init();
+#endif
 
 #ifdef GFX_FBCON
    // With Frame buffer, I have to avoid the standard modex, or raine freezes!
