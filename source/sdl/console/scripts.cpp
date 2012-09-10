@@ -44,6 +44,7 @@ void init_scripts() {
 	free(script[n].lines[x]);
     }
     free(script);
+    script = NULL;
     nb_scripts = 0;
   }
   // rb should allow fseek in windoze...
