@@ -684,10 +684,10 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 
 
   if (recording) {
-    if (mixing_buff_len != len) {
-      mixing_buff_len = len;
-    }
-    mixing_buff = (short*)stream;
+    mixing_buff_len = len;
+    mixing_buff = wstream;
+    if (f_record) 
+	fwrite(mixing_buff,2,len,f_record);
     updated_recording++;
   }
   callback_busy = 0;

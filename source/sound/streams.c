@@ -578,70 +578,76 @@ int get_stream_sample_rate(int channel)
 static int updated_recording;
 
 void update_monitoring() {
-  if ((recording && updated_recording)) {
-    int i;
-    int w = current_game->video_info->screen_x;
-    int h = current_game->video_info->screen_y - 50;
-    int pen = makecol(255,255,255);
-    int border=current_game->video_info->border_size;
-    if (monitoring) {
-      int h2 = h;
-      h -= 100;
-      for (i=0; i<mixing_buff_len; i+=2) {
-	int x = i*w/mixing_buff_len;
-	int y = mixing_buff[i]*50/32767;
-	int y2 = mixing_buff[i+1]*50/32767;
-	line(GameBitmap,x+border,h+border,x+border,h+y+border,pen);
-	line(GameBitmap,x+border,h2+border,x+border,h2+y2+border,pen);
-      }
-    }
-    if (!f_record) {
-      f_record = fopen("raine_sound.wav","wb");
-      if (f_record) {
-		  char dir[1024];
-		  getcwd(dir,1024);
-		  print_ingame(240,"wav in %s\n",dir);
-	fwrite("RIFF",1,4,f_record);
-	fwrite(&i,1,4,f_record); // length of the file -8 -> at the end
-	fwrite("WAVE",1,4,f_record);
+    if ((recording && updated_recording)) {
+	int i;
+	int w = current_game->video_info->screen_x;
+	int h = current_game->video_info->screen_y - 50;
+	int pen = makecol(255,255,255);
+	int border=current_game->video_info->border_size;
+	if (monitoring) {
+	    int h2 = h;
+	    h -= 100;
+	    for (i=0; i<mixing_buff_len; i+=2) {
+		int x = i*w/mixing_buff_len;
+		int y = mixing_buff[i]*50/32767;
+		int y2 = mixing_buff[i+1]*50/32767;
+		line(GameBitmap,x+border,h+border,x+border,h+y+border,pen);
+		line(GameBitmap,x+border,h2+border,x+border,h2+y2+border,pen);
+	    }
+	}
+	if (!f_record) {
+	    char path[1024];
+	    sprintf(path,"%sraine_sound",dir_cfg.exe_path);
+	    int l = strlen(path);
+	    strcat(path,".wav");
+	    int num = 0;
+	    while (exists(path)) {
+		sprintf(&path[l],"_%03d.wav",num);
+		num++;
+	    }
+	    f_record = fopen(path,"wb");
+	    if (f_record) {
+		fwrite("RIFF",1,4,f_record);
+		fwrite(&i,1,4,f_record); // length of the file -8 -> at the end
+		fwrite("WAVE",1,4,f_record);
 
-	fwrite("fmt ",1,4,f_record);
-	i=16; fwrite(&i,1,4,f_record); //length of chunk (waste of space !)
-	i=1;  fwrite(&i,1,2,f_record); // codec : pcm
-	// if (mixing_stereo)
-	  i=2;
-	fwrite(&i,1,2,f_record); // number of channels
+		fwrite("fmt ",1,4,f_record);
+		i=16; fwrite(&i,1,4,f_record); //length of chunk (waste of space !)
+		i=1;  fwrite(&i,1,2,f_record); // codec : pcm
+		// if (mixing_stereo)
+		i=2;
+		fwrite(&i,1,2,f_record); // number of channels
 
-	fwrite(&audio_sample_rate,1,4,f_record);
-	// if (mixing_stereo)
-	  i = audio_sample_rate * 4;
-/* 	else */
-/* 	  i = audio_sample_rate * 2; */
-	fwrite(&i,1,4,f_record); // bytes / second
+		fwrite(&audio_sample_rate,1,4,f_record);
+		// if (mixing_stereo)
+		i = audio_sample_rate * 4;
+		/* 	else */
+		/* 	  i = audio_sample_rate * 2; */
+		fwrite(&i,1,4,f_record); // bytes / second
 
-	i=4; fwrite(&i,1,2,f_record); // block alignement ??!!!!
-	i=16; fwrite(&i,1,2,f_record); // bits / sample
+		i=4; fwrite(&i,1,2,f_record); // block alignement ??!!!!
+		i=16; fwrite(&i,1,2,f_record); // bits / sample
 
-	fwrite("data",1,4,f_record);
-	fwrite(&i,1,4,f_record); // size 2 (offset 40) = filesize - 44 ???
-      } else {
-		  char dir[1024];
-		  sprintf(dir,"Can't create raine_sound.wav,\ndir:");
-		  int l = strlen(dir);
-		  getcwd(&dir[l],1024-l);
-		  MessageBox("Error",dir,"OK");
-	  }
-    }
+		fwrite("data",1,4,f_record);
+		fwrite(&i,1,4,f_record); // size 2 (offset 40) = filesize - 44 ???
+	    } else {
+		char dir[1024];
+		sprintf(dir,"Can't create %s",path);
+		MessageBox("Error",dir,"OK");
+		recording = 0;
+	    }
+	}
 
-    if (f_record) {
-      fwrite(mixing_buff,2,mixing_buff_len,f_record);
-    }
-    updated_recording = 0;
+	updated_recording = 0;
 #ifdef ALLEGRO_SOUND
-    /* This is useless in sdl since eveything is done in the sound handler */
-    memset(mixing_buff,0,mixing_buff_len*2);
+	// update directly in the callback for sdl, it's sometimes called more
+	// often than the video !
+	if (f_record) {
+	    fwrite(mixing_buff,2,mixing_buff_len,f_record);
+	/* This is useless in sdl since eveything is done in the sound handler */
+	memset(mixing_buff,0,mixing_buff_len*2);
 #endif
-  }
+    }
 }
 
 void init_mixing_buff(int len) {
