@@ -90,7 +90,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line);
 static struct VIDEO_INFO neocd_video =
 {
   draw_neocd,
-  320,
+  304,
   224,
   16,
   VIDEO_ROTATE_NORMAL |
@@ -1759,7 +1759,8 @@ void postprocess_ipl() {
     offx = 16-8;
     maxx = 320-8;
   }
-  if (cdrom_speed && neocd_video.screen_x != GameBitmap->w) {
+  if (cdrom_speed &&
+	  neocd_video.screen_x+2*neocd_video.border_size != GameBitmap->w) {
     /* If loading animations are enabled, then the game name is known only after
      * having started the emulation, so we must reset a few parameters at this
      * time */
@@ -2253,8 +2254,9 @@ static void load_neocd() {
   register_driver_emu_keys(list_emu,4);
   layer_id_data[0] = add_layer_info("FIX layer");
   layer_id_data[1] = add_layer_info("sprites layer");
-  // force the screen to 320 to avoid glitches when starting a 320 game in 304
-  neocd_video.screen_x = 320;
+  neocd_video.screen_x = 304;
+  offx = 16-8;
+  maxx = 320-8;
   current_game->long_name = "No game loaded yet";
   current_game->main_name = "neocd";
   desired_68k_speed = CPU_FRAME_MHz(24,60);
