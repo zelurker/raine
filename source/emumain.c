@@ -215,7 +215,7 @@ UINT32 run_game_emulation(void)
 #endif
 
    reset_ingame_timer();
-   while(!quit_loop){
+   while(!quit_loop && current_game){
 
      /* Handle sound FIRST : it is the most sensitive part for synchronisatino
       * So it MUST be at the begining (before getting any chance to be out

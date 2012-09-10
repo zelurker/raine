@@ -440,11 +440,14 @@ int load_zipped_part(char *zipfile, char *name, int offset, int size, UINT8 *des
       return 0;		// Fail: File not in zip
     }
 
+    if (!uf) return 0;
+
     err = unzOpenCurrentFile(uf);
     if(err!=UNZ_OK){
       print_debug("unzOpenCurrentFile(): Error #%d\n",err);
       unzCloseCurrentFile(uf);	// Is this needed when open failed?
       unzClose(uf);
+      uf = NULL;
       return 0;			// Fail: Something internal
     }
   }
@@ -458,6 +461,7 @@ int load_zipped_part(char *zipfile, char *name, int offset, int size, UINT8 *des
     print_debug("unzReadCurrentFile(): Error #%d\n",err);
     unzCloseCurrentFile(uf);
     unzClose(uf);
+    uf = NULL;
     return 0;			// Fail: Something internal
   }
 
