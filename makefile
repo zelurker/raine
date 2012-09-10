@@ -21,7 +21,7 @@ VERSION_NEO = "1.3.3"
 NEO=1
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -226,6 +226,7 @@ endif
 
 ifndef RAINE_DEBUG
 # this one hides the console in windows
+  LFLAGS = -mwindows
 endif
 else
 ifdef DJDIR
@@ -481,7 +482,7 @@ else
 
 ifdef RAINE32
 # when starting a game -> black screen if -O > 1 (bug in uint64 calculation)
-CFLAGS += -O1
+CFLAGS += -O3
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
 CFLAGS = -O3
