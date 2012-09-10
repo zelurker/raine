@@ -266,19 +266,18 @@ static char gcc_version[30];
 static char about_cpu[64];
 
 int do_about(int sel) {
-  if (!about_menu) {
     char *dir = get_shared("bitmaps");
     char path[256];
 #ifdef __GNUC__
     {
-      int major = __GNUC__;
-      int minor = __GNUC_MINOR__;
+	int major = __GNUC__;
+	int minor = __GNUC_MINOR__;
 #ifdef __GNUC_PATCHLEVEL__
-      int patchlevel = __GNUC_PATCHLEVEL__;
+	int patchlevel = __GNUC_PATCHLEVEL__;
 #else
-      int patchlevel = 0;
+	int patchlevel = 0;
 #endif
-      sprintf(gcc_version,"with gcc %d.%d.%d",major,minor,patchlevel);
+	sprintf(gcc_version,"with gcc %d.%d.%d",major,minor,patchlevel);
     }
 #else
     sprintf(gcc_version,"with an unknown gcc ???");
@@ -293,16 +292,17 @@ int do_about(int sel) {
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();
     sprintf(about_sdl,"Linked with SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
-      img->major,img->minor,img->patch,
-      ttf->major,ttf->minor,ttf->patch);
+	    img->major,img->minor,img->patch,
+	    ttf->major,ttf->minor,ttf->patch);
 
     about_items[4].label = about_sdl;
-  }
 #ifdef RDTSC_PROFILE
   if (cycles_per_second) {
     sprintf(about_cpu,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);
   }
 #endif
   about_menu->execute();
+  delete about_menu;
+  about_menu = NULL;
   return 0;
 }
