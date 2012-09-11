@@ -175,7 +175,7 @@ void init_load_type() {
 		  break;
 	      }
 	      start = buff + 5;
-	      while (start == ' ') start++;
+	      while (*start == ' ') start++;
 	      *end = 0;
 	      end--; // so that end+2 points to binary
 	      start--; // so that start+1 points to the beg of filename
@@ -873,12 +873,15 @@ int    neogeo_cdrom_load_spr_file(char *FileName, unsigned int Offset)
   fix_extension(FileName,"spr");
 
   size = get_size(FileName);
-  if (!size) return 1;
+  if (!size) {
+      print_debug("load_spr: problem with %s\n",FileName);
+      return 1;
+  }
 
   if (Offset + size > 0x400000) {
+    print_debug("warn: sprite size correction original:%d new:%d\n",size,0x400000-Offset);
     size = 0x400000 - Offset;
     if (size < 0) return 1;
-    print_debug("warn: sprite size correction %d\n",size);
   }
   if (file_cache(FileName,Offset*2,size*2,SPR_TYPE)) {
     if (loading_phase == 0)
