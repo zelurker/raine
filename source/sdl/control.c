@@ -44,6 +44,7 @@
 #include "sdl/console/console.h"
 #endif
 #include "sdl/dialogs/cheats.h"
+#include "sound/sasound.h"
 
 /* The difference in the sdl version :
  * instead of looping for every frame in all the available inputs to the game
@@ -254,6 +255,13 @@ static void key_save_screen(void)
    raine_cfg.req_save_screen = 1;
 }
 
+static void key_quit() {
+    // Violent quit, equivalent of closing the window
+    if (recording) 
+	end_recording();
+    exit(1);
+}
+
 static void frame_skip_up(void)
 {
    if((display_cfg.frame_skip<9) && (display_cfg.frame_skip)){
@@ -374,6 +382,7 @@ struct DEF_INPUT_EMU def_input_list_emu[] =
  { 31 /* TILDE */, 0x00, "Console", call_console},
 #endif
  { SDLK_c | (KMOD_ALT<<16), 0x00, "Cheats", call_cheats},
+ { SDLK_F4 | (KMOD_ALT<<16),       0x00,           "Quit w/o saving", key_quit     },
 };
 
 struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
