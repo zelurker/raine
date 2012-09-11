@@ -236,7 +236,6 @@ void streams_sh_stop(void)
 {
   int i;
 
-  end_recording();
   for (i = 0;i < MAX_STREAM_CHANNELS;i++)
     {
       if(stream_buffer[i]) FreeMem(stream_buffer[i]);
@@ -594,7 +593,8 @@ void update_monitoring() {
 		line(GameBitmap,x+border,h+border,x+border,h+y+border,pen);
 		line(GameBitmap,x+border,h2+border,x+border,h2+y2+border,pen);
 	    }
-	}
+	} else
+	    print_ingame(1,"Recording to wav...");
 	if (!f_record) {
 	    char path[1024];
 	    sprintf(path,"%sraine_sound",dir_cfg.exe_path);

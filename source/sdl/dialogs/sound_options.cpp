@@ -64,6 +64,7 @@ class TSoundDlg : public TMenu {
 };
 
 int do_sound_options(int sel) {
+    int old = recording;
   menu = new TSoundDlg("Sound options", sound_menu);
   menu->execute();
   delete menu;
@@ -71,5 +72,8 @@ int do_sound_options(int sel) {
     monitoring = 1;
   else
     monitoring = 0;
+  if (old && !recording)
+      end_recording();
+
   return 0;
 }

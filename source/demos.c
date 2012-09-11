@@ -195,10 +195,10 @@ void stop_demo()
     MouseB = ((int*)&mouse_b);
     GetMouseMickeys = &get_mouse_mickeys;
   }
-  if (recording)
-    end_recording();
   if (recording_video) {
     recording_video = 0;
+    if (recording)
+	end_recording();
   }
 }
 

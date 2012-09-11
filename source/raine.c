@@ -588,6 +588,8 @@ int main(int argc,char *argv[])
 #endif
 
    StartGUI();
+   if (recording) 
+       end_recording();
 
    sprintf(str,"%sconfig" SLASH "%s", dir_cfg.exe_path, dir_cfg.config_file);
 #ifndef SDL

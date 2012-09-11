@@ -215,6 +215,8 @@ void init_samples();
 void set_sample_pos(int pos);
 #endif
 
+void end_recording();
+
 /******************************************************************************/
 /*                                                                            */
 /*                          'MAME' STREAMS INTERFACE                          */
