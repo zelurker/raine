@@ -8,9 +8,10 @@ fi
 dpkg-scanpackages . /dev/null dists/unstable/main/binary-$arch/ | tee Packages | gzip -9 > Packages.gz
 # rpl "Filename: ." "Filename: dists/unstable/main/binary-i386" Packages
 rm -rf unstable
-rsync -av * jojo:raine/html/archive/debian/dists/unstable/main/binary-$arch/
+rsync -av --delete . jojo:raine/html/archive/debian/dists/unstable/main/binary-$arch/
 mkdir unstable && cd unstable && mkdir main && cd main && ln -s ../.. binary-$arch
 cd ../.. 
-apt-ftparchive -o APT::FTPArchive::Release::Suite=unstable -o APT::FTPArchive::Release::Label="Unofficial rainemu packages" -o APT::FTPArchive::Release::Architectures=$arch release unstable > ../Release
-# gpg --default-key B8C0220B --sign -ba -o ../Release.gpg ../Release \
+apt-ftparchive -o APT::FTPArchive::Release::Suite=unstable -o APT::FTPArchive::Release::Label="Unofficial rainemu packages" -o APT::FTPArchive::Release::Architectures=$arch release unstable > ../Release-$arch
+cat ../Release-i386 ../Release-amd64 > ../Release
+gpg --default-key 6DCD5D36 --sign -ba -o ../Release.gpg ../Release 
 rsync -av ../Release* jojo:raine/html/archive/debian/dists/unstable/
