@@ -790,7 +790,7 @@ static void restore_bank() {
   int new_bank = palbank;
   palbank = -1;
   neogeo_set_palette_bank(new_bank);
-  print_debug("palette bank restored\n");
+  print_debug("palette bank restored %d\n",new_bank);
   // now also restore the loading progress status...
   neocd_lp.sectors_to_load = 0;
   if (neocd_lp.bytes_loaded) {
@@ -2361,11 +2361,15 @@ static void load_neocd() {
   prepare_cdda_save(SAVE_USER_1);
   AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
   // I should probably put all these variables in a struct to be cleaner...
-  AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled, 
-    5*sizeof(int));
+  AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
   AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
   AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
-  AddSaveData(SAVE_USER_6, (UINT8*)&video_modulo,sizeof(UINT16)*2);
+  AddSaveData(SAVE_USER_6, (UINT8*)&video_modulo,sizeof(video_modulo));
+  AddSaveData(SAVE_USER_7, (UINT8*)&video_pointer,sizeof(video_pointer));
+  AddSaveData(SAVE_USER_8, (UINT8*)&direct_fix,sizeof(direct_fix));
+  AddSaveData(SAVE_USER_9, (UINT8*)&spr_disabled,sizeof(spr_disabled));
+  AddSaveData(SAVE_USER_10, (UINT8*)&fix_disabled,sizeof(fix_disabled));
+  AddSaveData(SAVE_USER_11, (UINT8*)&video_enabled,sizeof(video_enabled));
   prepare_cache_save();
   AddLoadCallback(restore_bank);
   // is the save ram usefull ?!??? probably not with neocd...
