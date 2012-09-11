@@ -1,2 +1,2 @@
-shlibs:Depends=ia32-libs (>= 20111001), lib32gcc1 (>= 1:4.1.1), lib32muparser0, lib32sdl-image1.2, lib32sdl-sound1.2, lib32sdl-ttf2.0, lib32stdc++6 (>= 4.1.1), lib32z1 (>= 1:1.1.4), libc6-i386 (>= 2.3)
+shlibs:Depends=ia32-libs (>= 20120102), lib32gcc1 (>= 1:4.1.1), lib32muparser0, lib32sdl-image1.2, lib32sdl-sound1.2, lib32sdl-ttf2.0, lib32stdc++6 (>= 4.1.1), lib32z1 (>= 1:1.1.4), libc6-i386 (>= 2.3)
 misc:Depends=
