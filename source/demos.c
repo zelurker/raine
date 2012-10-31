@@ -273,7 +273,7 @@ static void do_load_demo(char *str) {
       break;
       case SAVE_FILE_TYPE_1:
       case SAVE_FILE_TYPE_2:
-         NewLoad(fdemo);
+         NewLoad(&fdemo);
       break;
       default:
 	print_ingame(120,"%s is not recognised", disp_str);

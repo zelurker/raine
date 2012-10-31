@@ -1817,7 +1817,6 @@ void load_common(int cps2)
    UINT32 ta,size;
    UINT32 *dest;
    int size_code;
-   UINT8 *cps1_gfx;
    int rotate_screen = (current_game->video_info->flags) & 3;
    old_palette = NULL;
 
@@ -1856,8 +1855,6 @@ void load_common(int cps2)
 
    GFX_SPR = load_region[REGION_GFX1];
    size = get_region_size(REGION_GFX1); // size of packed region
-
-   cps1_gfx = GFX_SPR;
 
    load_message("Decoding GFX layer");
    if (cps2)
