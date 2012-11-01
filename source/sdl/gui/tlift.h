@@ -14,6 +14,7 @@ class TLift {
     TLift(int x,int y,int h,int *mytop, int *mydispitems,int *myrows,
       int *myupdate_count,
       SDL_Surface *suft, int myfgcol, int mybgcol, int mythumbcol);
+    virtual ~TLift() {}
     int get_width() { return w; }
     void draw();
     void draw(SDL_Surface *mys, int ax, int ay, int aw, int ah);
