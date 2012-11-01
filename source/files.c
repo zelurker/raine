@@ -323,7 +323,7 @@ void iputw(int nb, gzFile file) {
 #endif
 }
   
-int load_zipped(char *zipfile, char *name, int size, int crc32, UINT8 *dest, int actual_load)
+int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *dest, int actual_load)
 {
    unzFile uf;
    int err;
@@ -422,7 +422,7 @@ int load_zipped(char *zipfile, char *name, int size, int crc32, UINT8 *dest, int
 }
 
 #ifdef NEO
-int load_zipped_part(char *zipfile, char *name, int offset, int size, UINT8 *dest)
+int load_zipped_part(char *zipfile, char *name, int offset, unsigned int size, UINT8 *dest)
 {
   static unzFile uf;
   int err;

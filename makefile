@@ -21,7 +21,7 @@ VERSION_NEO = "1.3.4"
 # NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -424,6 +424,7 @@ OBJDIRS=$(OBJDIR) \
 	$(OBJDIR)/video/i386/newspr2 \
 	$(VIDEO_CORE)/blit_x2 \
 	$(OBJDIR)/mini-unzip \
+	$(OBJDIR)/7z \
 	$(OBJDIR)/video/i386/packed \
 	$(VIDEO_CORE)/str \
 	$(OBJDIR)/video/zoom \
@@ -829,6 +830,26 @@ endif
 UNZIP = $(OBJDIR)/mini-unzip/unzip.o \
 	$(OBJDIR)/mini-unzip/ioapi.o
 
+D7Z = $(OBJDIR)/7z
+P7Z = $(D7Z)/7zAlloc.o \
+	  $(D7Z)/7zBuf2.o \
+	  $(D7Z)/7zBuf.o \
+	  $(D7Z)/7zCrc.o \
+	  $(D7Z)/7zCrcOpt.o \
+	  $(D7Z)/7zDec.o \
+	  $(D7Z)/7zFile.o \
+	  $(D7Z)/7zIn.o \
+	  $(D7Z)/7zStream.o \
+	  $(D7Z)/Bcj2.o \
+	  $(D7Z)/Bra86.o \
+	  $(D7Z)/Bra.o \
+	  $(D7Z)/CpuArch.o \
+	  $(D7Z)/LzmaDec.o \
+	  $(D7Z)/Ppmd7.o \
+	  $(D7Z)/Ppmd7Dec.o \
+	  $(D7Z)/Lzma2Dec.o \
+	  $(D7Z)/7zMain.o
+
 ifndef SDL
 CORE += $(OBJDIR)/alleg/jpg/jpeg.o \
 	$(OBJDIR)/alleg/dsw.o \
@@ -869,6 +890,7 @@ OBJS +=	 \
 	$(CORE) \
 	$(UNZIP) \
 	$(MAME) \
+	$(P7Z) \
 	$(GUI) 
 
 ifndef NEO
@@ -1039,6 +1061,13 @@ else
 	@echo Linking Raine...
 endif
 	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $(OBJS) $(LIBS) -lstdc++
+
+$(D7Z)/%.o: source/7z/%.c
+	@echo Compiling 7z $<...
+	$(CCV) $(CFLAGS) -c $< -D_7ZIP_PPMD_SUPPPORT -o $@
+
+tags:
+	ctags -R source
 
 converter: source/bonus/converter.c
 	$(CCV) $(CFLAGS) -c $< -o $(OBJDIR)/converter.o

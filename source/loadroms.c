@@ -16,6 +16,7 @@
 #if HAVE_6502
 #include "6502/m6502hlp.h"
 #endif
+#include "7z.h"
 
 UINT8 *GFX,*Z80ROM,*ROM,*PCMROM;
 UINT8 *load_region[REGION_MAX];
@@ -237,6 +238,12 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 		 return 1;
 	       }
 
+               sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
+               if((load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
+		 // printf("loaded %s from %s\n",rec_rom_info.name,path);
+		 return 1;
+	       }
+
                sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);
                if((load_file(path, rec_dest, rec_rom_info.size)))
                   return 1;
@@ -345,7 +352,7 @@ static void dump_search_path(const DIR_INFO *dir_list)
 	    for(i = 0; dir_cfg.rom_dir[i]; i ++){
 
 
-	      sprintf(load_debug+strlen(load_debug),"%s%s [.zip]\n",dir_cfg.rom_dir[i], dir);
+	      sprintf(load_debug+strlen(load_debug),"%s%s [.zip|7z]\n",dir_cfg.rom_dir[i], dir);
 
 	    }
          }

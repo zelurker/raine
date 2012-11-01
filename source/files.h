@@ -39,12 +39,12 @@ int igetl(gzFile file);
 int igetw(gzFile file);
 void iputl(int nb, gzFile file);
 void iputw(int nb, gzFile file);
-int load_zipped(char *zipfile, char *name, int size, int crc32, UINT8 *dest, int actual_load);
+int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *dest, int actual_load);
 int size_zipped(char *zipfile, char *name, int crc32);
 void backslash(char *s);
 
 #ifdef NEO
-int load_zipped_part(char *zipfile, char *name, int offset, int size, UINT8 *dest);
+int load_zipped_part(char *zipfile, char *name, unsigned int offset, int size, UINT8 *dest);
 #endif
 
 #include <stdio.h>

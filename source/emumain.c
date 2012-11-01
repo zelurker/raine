@@ -185,7 +185,10 @@ UINT32 run_game_emulation(void)
 
    vid_info = current_game->video_info;
 
-   if(!vid_info->draw_game) quit_loop = 1; // I want the game to always draw
+   if(!vid_info->draw_game) {
+       print_debug("quit game emulation because no draw_game function\n");
+       quit_loop = 1; // I want the game to always draw
+   }
 
    print_debug("Reset ingame timer...\n");
    reset_ingame_timer(); // For sound we'd better init this here...

@@ -199,6 +199,9 @@ int game_exists(GAME_MAIN **my_game_list,int num)
 	       sprintf(str,"%s%s.zip", dir_cfg.rom_dir[ta], dir_list->maindir);
 	       if((exists(str))) return 1;
 
+	       sprintf(str,"%s%s.7z", dir_cfg.rom_dir[ta], dir_list->maindir);
+	       if((exists(str))) return 1;
+
 	       sprintf(str,"%s%s", dir_cfg.rom_dir[ta], dir_list->maindir);
 	       if((exists(str))) return 1;
 
