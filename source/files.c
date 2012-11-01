@@ -328,9 +328,6 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
    unzFile uf;
    int err;
 
-   if (!strcmp(name,REGION_EMPTY))
-     return 1;
-
    uf = unzOpen(zipfile);
 
    if(!uf)			// Fail: Unable to find/open zipfile
@@ -422,7 +419,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 }
 
 #ifdef NEO
-int load_zipped_part(char *zipfile, char *name, int offset, unsigned int size, UINT8 *dest)
+int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned int size, UINT8 *dest)
 {
   static unzFile uf;
   int err;
@@ -453,7 +450,7 @@ int load_zipped_part(char *zipfile, char *name, int offset, unsigned int size, U
   }
 
   /* Notice : I couldn't find a function to read from a file in a zip starting
-   * at a given offset, so I have changed my mind, offset is just used to*
+   * at a given offset, so I have changed my mind, offset is just used to
    * read incrementaly, ignoring the exact value of offset... */
 
   err = unzReadCurrentFile(uf,dest,size);

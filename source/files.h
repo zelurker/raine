@@ -44,7 +44,7 @@ int size_zipped(char *zipfile, char *name, int crc32);
 void backslash(char *s);
 
 #ifdef NEO
-int load_zipped_part(char *zipfile, char *name, unsigned int offset, int size, UINT8 *dest);
+int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned int size, UINT8 *dest);
 #endif
 
 #include <stdio.h>

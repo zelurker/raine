@@ -232,21 +232,24 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 
             if(dir_cfg.rom_dir[ta][0]){
 
-               sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
-               if((load_zipped(path, rec_rom_info.name, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
-		 // printf("loaded %s from %s\n",rec_rom_info.name,path);
-		 return 1;
-	       }
+		if (!strcmp(rec_rom_info.name,REGION_EMPTY))
+		    return 1;
 
-               sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
-               if((load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
-		 // printf("loaded %s from %s\n",rec_rom_info.name,path);
-		 return 1;
-	       }
+		sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
+		if((load_zipped(path, rec_rom_info.name, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
+		    // printf("loaded %s from %s\n",rec_rom_info.name,path);
+		    return 1;
+		}
 
-               sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);
-               if((load_file(path, rec_dest, rec_rom_info.size)))
-                  return 1;
+		sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
+		if((load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
+		    // printf("loaded %s from %s\n",rec_rom_info.name,path);
+		    return 1;
+		}
+
+		sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);
+		if((load_file(path, rec_dest, rec_rom_info.size)))
+		    return 1;
 
             }
          }
@@ -298,6 +301,10 @@ static UINT32 recursive_rom_size(const DIR_INFO *head)
          for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
 	   sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
 	   if( ( len=size_zipped(path, rec_rom_info.name,rec_rom_info.crc32) ) )
+	     return len;
+
+	   sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
+	   if((len=load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, NULL, 0)))
 	     return len;
 
 	   sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);

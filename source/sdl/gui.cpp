@@ -274,7 +274,7 @@ static int load_neo_game(int sel) {
   // and it's better to use the cue file (to support the mp3 names of the tosec
   // versions for example !)
   // ".iso",
-  ".cue", "ipl.txt", NULL };
+  ".cue", "ipl.txt", "7z", NULL };
   fsel(neocd_dir,exts,res,"Load neocd game");
   return load_neo_from_name(res);
 }

@@ -19,6 +19,7 @@
 #include "display.h"
 #include "display_sdl.h"
 #include "ingame.h"
+#include "7z.h"
 
 // cdrom_speed : used only for the speed of the loading animations
 int cdrom_speed;
@@ -112,7 +113,9 @@ enum{
   ZIP_TYPE = 0,
   IPL_TYPE,
   ISO_TYPE,
-  CUE_TYPE };
+  CUE_TYPE,
+  P7Z_TYPE
+};
 
 int nb_tracks; 
 static int alloc_tracks;
@@ -144,6 +147,8 @@ void init_load_type() {
   nb_indexes = 0;
   if (!stricmp(&neocd_path[strlen(neocd_path)-3],"zip"))
     load_type = ZIP_TYPE;
+  if (!stricmp(&neocd_path[strlen(neocd_path)-2],"7z"))
+    load_type = P7Z_TYPE;
   else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"txt")) 
     load_type = IPL_TYPE;
   else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"cue")) {
@@ -339,6 +344,7 @@ int get_size(char *filename) {
     }
     switch(load_type) {
 	case ZIP_TYPE: size = size_zipped(neocd_path,filename,0); break;
+	case P7Z_TYPE: size = load_7z(neocd_path,filename,0,0,0,NULL,0); break;
 	case IPL_TYPE: 
 		       if (!strchr(filename,SLASH[0])) {
 			   char file[1024];
@@ -511,6 +517,9 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
   switch(load_type) {
     case ZIP_TYPE: // return load_zipped(neocd_path, name, size, 0, dest, 1);
       ret = load_zipped_part(neocd_path, name, offset, size, dest);
+      break;
+    case P7Z_TYPE:
+      ret = load_7z(neocd_path, name, offset, size, 0, dest, 1);
       break;
     case IPL_TYPE: 
 		   if (!strchr(name,SLASH[0])) {

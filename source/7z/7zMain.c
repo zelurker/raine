@@ -21,6 +21,16 @@
 
 #include "../loadroms.h"
 
+#ifdef __GLIBC__
+#if __GLIBC__ >= 2
+#define stricmp strcasecmp
+#define strnicmp strncasecmp
+#endif
+#elif defined(DARWIN)
+#define stricmp strcasecmp
+#define strnicmp strncasecmp
+#endif
+
 static ISzAlloc g_Alloc = { SzAlloc, SzFree };
 
 static int Buf_EnsureSize(CBuf *dest, size_t size)
@@ -140,7 +150,8 @@ void PrintError(char *sz)
     }
 }
 
-int load_7z(char *zipfile, char *name, unsigned int offset, unsigned int size, int crc32, unsigned char *dest, int actual_load)
+// Returns the size of the file in case of success, 0 if error
+int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int crc32, unsigned char *dest, int actual_load)
 {
   static CFileInStream archiveStream;
   static CLookToRead lookStream;
@@ -156,6 +167,8 @@ int load_7z(char *zipfile, char *name, unsigned int offset, unsigned int size, i
   static UInt32 blockIndex = 0xFFFFFFFF; /* it can have any value before first call (if outBuffer = 0) */
   static size_t outSizeProcessed = 0;
   UInt32 i;
+  UInt32 offset = 0;
+  const CSzFileItem *f;
 
   if (!*oldfile) {
       allocImp.Alloc = SzAlloc;
@@ -215,7 +228,7 @@ int load_7z(char *zipfile, char *name, unsigned int offset, unsigned int size, i
 
       for (i = 0; i < db.db.NumFiles; i++)
       {
-        const CSzFileItem *f = db.db.Files + i;
+        f = db.db.Files + i;
         size_t len;
         if (f->IsDir)
 	    continue;
@@ -237,24 +250,24 @@ int load_7z(char *zipfile, char *name, unsigned int offset, unsigned int size, i
 	Buf_Init(&buf);
 	Utf16_To_Char(&buf,temp,0);
 
-	if (f->Crc == crc32 || !strcmp(name,(char*)buf.data))
+	if (f->Crc == crc32 || !stricmp(name,(char*)buf.data))
         {
 	    if (actual_load) {
 		res = SzArEx_Extract(&db, &lookStream.s, i,
 			&blockIndex, &outBuffer, &outBufferSize,
 			&offset, &outSizeProcessed,
 			&allocImp, &allocTempImp);
-		if (outSizeProcessed <= size)
-		    memcpy(dest,outBuffer+offset,size);
-#ifndef NEO
-		if (outSizeProcessed != size) {
+		if (outSizeProcessed >= size)
+		    memcpy(dest,outBuffer+offset+offs,size);
+		else if (outSizeProcessed)
+		    memcpy(dest,outBuffer+offset+offs,outSizeProcessed);
+		if (res == SZ_ERROR_CRC) {
 		    load_error |= LOAD_WARNING;
 
 		    if (load_debug)
 			sprintf(load_debug+strlen(load_debug),
-				"Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,outSizeProcessed);
+				"Got a bad CRC for ROM %s (%x)\n",name,crc32);
 		}
-#endif
 	    } else 
 		res = SZ_OK;
 	    Buf_Free(&buf, &g_Alloc);
@@ -268,14 +281,19 @@ int load_7z(char *zipfile, char *name, unsigned int offset, unsigned int size, i
   if (res == SZ_OK)
   {
     // printf("\nEverything is Ok\n");
-    return 1;
+    return f->Size;
   }
   if (res == SZ_ERROR_UNSUPPORTED)
     PrintError("decoder doesn't support this archive");
   else if (res == SZ_ERROR_MEM)
     PrintError("can not allocate memory");
-  else if (res == SZ_ERROR_CRC)
-    PrintError("CRC error");
+  else if (res == SZ_ERROR_CRC) {
+      load_error |= LOAD_WARNING;
+
+      if (load_debug)
+	  sprintf(load_debug+strlen(load_debug),
+		  "Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,outSizeProcessed);
+  }
   else {
       char buf[80];
       sprintf(buf,"7z ERROR #%d\n", res);
