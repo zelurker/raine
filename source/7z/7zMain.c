@@ -2,6 +2,7 @@
 2010-10-28 : Igor Pavlov : Public domain */
 
 #include <string.h>
+#include <stdio.h>
 
 #include "7z.h"
 #include "7zAlloc.h"
