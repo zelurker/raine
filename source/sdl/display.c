@@ -477,6 +477,11 @@ int lock_surface(SDL_Surface *s) {
       return -1;
     }
     if (s == sdl_screen) {
+	/* If the screen uses double buffer, then the base adress changes
+	 * all the time and the line array must be updated
+	 * This is a little stupid, this array is just a convenience, the
+	 * asm code should be rewritten to work without it, but it wouldn't
+	 * be very enjoyable ! */
       int a;
       for (a=0; a < s->h; a++)
 	screen->line[a] = (UINT8 *)s->pixels+a*s->pitch;

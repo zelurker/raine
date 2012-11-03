@@ -961,20 +961,16 @@ void DrawNormal(void)
        break;
      case 1:
        // half height
-       locked = lock_surface(sdl_screen);
-       if (locked > -1) {
-	 s1.x = xoff2;
-	 s1.w = xxx;
-	 s1.h = 1;
-	 s2.x = destx;
-	 s2.w = s1.w;
-	 s2.h = s1.h;
-	 for (i=0; i<yyy; i+=2) {
+       s1.x = xoff2;
+       s1.w = xxx;
+       s1.h = 1;
+       s2.x = destx;
+       s2.w = s1.w;
+       s2.h = s1.h;
+       for (i=0; i<yyy; i+=2) {
 	   s1.y = yoff2+i;
 	   s2.y = desty+i;
 	   SDL_BlitSurface(sdl_game_bitmap, &s1, sdl_screen, &s2);
-	 }
-	 if (locked) SDL_UnlockSurface(sdl_screen);
        }
        if ( sdl_screen->flags & SDL_DOUBLEBUF ) {
 	 SDL_Flip(sdl_screen);
@@ -984,22 +980,18 @@ void DrawNormal(void)
        break;
      case 2: {
        int end;
-       locked = lock_surface(sdl_screen);
-       if (locked > -1) {
-	 end = MIN(2*yyy,screen->h-1)/2;
-	 // full height scanlines
-	 s1.x = xoff2;
-	 s1.w = xxx;
-	 s1.h = 1;
-	 s2.x = destx;
-	 s2.w = s1.w;
-	 s2.h = s1.h;
-	 for (i=0; i<end; i++) {
+       end = MIN(2*yyy,screen->h-1)/2;
+       // full height scanlines
+       s1.x = xoff2;
+       s1.w = xxx;
+       s1.h = 1;
+       s2.x = destx;
+       s2.w = s1.w;
+       s2.h = s1.h;
+       for (i=0; i<end; i++) {
 	   s1.y = yoff2+i;
 	   s2.y = desty+i*2;
 	   SDL_BlitSurface(sdl_game_bitmap, &s1, sdl_screen, &s2);
-	 }
-	 if (locked) SDL_UnlockSurface(sdl_screen);
        }
        if ( sdl_screen->flags & SDL_DOUBLEBUF ) {
 	 SDL_Flip(sdl_screen);
