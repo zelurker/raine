@@ -188,6 +188,8 @@ static void get_desktop_mode() {
     driver[0] = 0;
 }
 
+extern int forced_bpp;
+
 static SDL_Surface *new_set_gfx_mode() {
   SDL_Surface *s;
   int bpp;
@@ -240,6 +242,8 @@ static SDL_Surface *new_set_gfx_mode() {
 	  bpp = desktop_bpp;
 #endif
   }
+  if (forced_bpp && !sdl_overlay && display_cfg.video_mode != 1)
+      bpp = forced_bpp;
 
   if (!desktop_w) {
     get_desktop_mode();

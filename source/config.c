@@ -616,6 +616,8 @@ process -bpp
 
 */
 
+int forced_bpp;
+
 static void CLI_screen_bpp(void)
 {
    int i;
@@ -644,6 +646,7 @@ static void CLI_screen_bpp(void)
          display_cfg.bpp = 8;
       break;
    }
+   forced_bpp = display_cfg.bpp;
 }
 
 /*
