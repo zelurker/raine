@@ -475,7 +475,6 @@ static int new_set_gfx_mode(int SType,int SX,int SY,int SLines)
       centre_all_dialogs();
       update_stretch();
     }
-    bpp = desktop_color_depth();
     return ta;
   }
   else
