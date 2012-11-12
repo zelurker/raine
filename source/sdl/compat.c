@@ -178,24 +178,28 @@ SDL_Overlay *sdl_overlay;
 
 void sdl_init() {
   /* Initialize the SDL library */
-  if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_JOYSTICK
+    static int init;
+    if (!init) {
+	init = 1;
+	if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_JOYSTICK
 #ifdef NEO
-    |SDL_INIT_CDROM
+		    |SDL_INIT_CDROM
 #endif
-    ) < 0 ) {
-    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
-    exit(2);
-  }
-  if ( TTF_Init() < 0 ) {
-    fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
-    SDL_Quit();
-    return;
-  }
-  SDL_WM_SetCaption(EMUNAME,EMUNAME);
+		    ) < 0 ) {
+	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
+	    exit(2);
+	}
+	if ( TTF_Init() < 0 ) {
+	    fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
+	    SDL_Quit();
+	    return;
+	}
+	SDL_WM_SetCaption(EMUNAME,EMUNAME);
 
-  inputs_preinit();
+	inputs_preinit();
 
-  atexit(sdl_done);
+	atexit(sdl_done);
+    }
 }
 
 void sdl_done() {

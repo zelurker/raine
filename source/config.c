@@ -1731,6 +1731,7 @@ void parse_command_line(int argc, char *argv[])
 #ifndef NEO
           CLI_game_load_alt();
 #else
+	  sdl_init();
 	  backslash(ArgList[ArgPosition]);
 	  load_neo_from_name(ArgList[ArgPosition]);
 #endif
