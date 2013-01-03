@@ -34,8 +34,23 @@ class TColorDlg : public TDialog
 
 static TColorDlg *dlg;
 
+static int set_gui_color(int sel);
+
+static menu_item_t colors_dlg[] =
+{
+    { "color", NULL, NULL, },
+{  "red", &set_gui_color, &r, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{  "green", &set_gui_color, &g, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{  "blue", &set_gui_color, &b, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{  "alpha", &set_gui_color, &a, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{ NULL, NULL, NULL }
+};
+
+static char color_label[25];
+
 static int set_gui_color(int sel) {
   int color = a | (b<<8) | (g<<16) | (r<<24);
+  sprintf(color_label,"color #%02x%02x%02x alpha %02x",r,g,b,a);
   switch (cindex) {
     case 0: fg_color = color;
       dlg->set_fgcolor(color);
@@ -53,15 +68,6 @@ static int set_gui_color(int sel) {
   return 0;
 }
   
-static menu_item_t colors_dlg[] =
-{
-{  "red", &set_gui_color, &r, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{  "green", &set_gui_color, &g, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{  "blue", &set_gui_color, &b, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{  "alpha", &set_gui_color, &a, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{ NULL, NULL, NULL }
-};
-
 static int get_color_from_index() {
   switch(cindex) {
     case 0: return fg_color;
@@ -73,34 +79,12 @@ static int get_color_from_index() {
   return 0;
 }
 
-static int change_color(int sel) {
-  cindex = sel;
-  int color = get_color_from_index();
-  a = color & 0xff;
-  b = (color >> 8) & 0xff;
-  g = (color >> 16) & 0xff;
-  r = (color >> 24) & 0xff;
-  for (int n=0; n<=3; n++) {
-    colors_dlg[n].values_list[3] = cslider_border;
-    colors_dlg[n].values_list[5] = cslider_lift;
-  }
-  colors_dlg[0].values_list[4] = mymakecol(255,0,0);
-  colors_dlg[1].values_list[4] = mymakecol(0,255,0);
-  colors_dlg[2].values_list[4] = mymakecol(0,0,255);
-  colors_dlg[3].values_list[4] = cslider_bar;
-
-  dlg = new TColorDlg("Change color...", colors_dlg);
-  dlg->execute();
-  delete dlg;
-  return 1;
-}
-
 static int theme;
 
-int set_theme(int sel) {
+static int set_theme(int sel) {
   switch(theme) {
     case 0: // blue
-      bg_color =  makecol_alpha(0x28,0x28,0x78,128);
+      bg_color =  makecol_alpha(0x11,0x07,0x78,128);
       bgframe_color = mymakecol(0,0,128);
       break;
     case 1: // green
@@ -117,6 +101,8 @@ int set_theme(int sel) {
   return 0;
 }
 
+static int change_color(int sel);
+
 static menu_item_t colors_menu[] =
 {
 {  "fg color", &change_color, },
@@ -127,6 +113,31 @@ static menu_item_t colors_menu[] =
 { "Revert to...", &set_theme, &theme, 2, { 0, 1 }, { "Blue", "Green" } },
 { NULL, NULL, NULL }
 };
+
+static int change_color(int sel) {
+  cindex = sel;
+  int color = get_color_from_index();
+  a = color & 0xff;
+  b = (color >> 8) & 0xff;
+  g = (color >> 16) & 0xff;
+  r = (color >> 24) & 0xff;
+  for (int n=0; n<=3; n++) {
+    colors_dlg[n+1].values_list[3] = cslider_border;
+    colors_dlg[n+1].values_list[5] = cslider_lift;
+  }
+  colors_dlg[1].values_list[4] = mymakecol(255,0,0);
+  colors_dlg[2].values_list[4] = mymakecol(0,255,0);
+  colors_dlg[3].values_list[4] = mymakecol(0,0,255);
+  colors_dlg[4].values_list[4] = cslider_bar;
+  sprintf(color_label,"color #%02x%02x%02x alpha %02x",r,g,b,a);
+  colors_dlg[0].label = color_label;
+
+  dlg = new TColorDlg((char*)colors_menu[cindex].label, colors_dlg);
+  dlg->execute();
+  delete dlg;
+  return 1;
+}
+
 
 int do_colors(int sel) {
   TMenu *tmenu = new TMenu("Colors",colors_menu);
