@@ -242,6 +242,8 @@ BITMAP *overlay_to_bmp(SDL_Overlay *s) {
 }
 
 void sdl_create_overlay( int w, int h) {
+  if (sdl_screen->flags & SDL_OPENGL)
+      return;
   // Init a fake bitmap to point to a newly created sdl_surface
   if (sdl_overlay) {
     SDL_FreeYUVOverlay(sdl_overlay);
@@ -351,7 +353,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
     bmp->line[n] = src->line[n+y] + bpp*x;
   bmp->extra = src->extra;
   bmp->id = src->id+1; // sub bitmap
-  if (display_cfg.video_mode <= 1 && !(sdl_screen->flags & SDL_OPENGL)) {
+  if (display_cfg.video_mode <= 1) {
     sdl_create_overlay(w,h);
   }
   if (sdl_overlay) {

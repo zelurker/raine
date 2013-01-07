@@ -30,7 +30,6 @@
 #include "neocd/neocd.h"
 #endif
 #include "sdl/opengl.h"
-#include <SDL_opengl.h>
 
 SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
@@ -187,7 +186,7 @@ void ReClipScreen(void)
   // GameScreen.xview = oldxview;
   // GameScreen.yview = oldyview;
   if (sdl_screen->flags & SDL_OPENGL)
-      glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
+      opengl_reshape(sdl_screen->w,sdl_screen->h);
 }
 
 void InitDrawPaused(void)

@@ -112,7 +112,7 @@ buffer before calling the gui */
 #include "newmem.h" // GetMemoryPoolSize
 
 static int return_mandatory = 0, use_transparency = 1;
-int emulate_mouse_cursor = 0,keep_vga;
+int emulate_mouse_cursor = 0,keep_vga,gui_level;
 static int mouse_erased,unicode;
 
 extern int repeat_interval, repeat_delay; // in gui.cpp
@@ -949,6 +949,7 @@ void TMenu::draw() {
 void TMenu::redraw_fg_layer() {
   // this layer has become tricky to update finally !!!
   if (!fg_layer) return;
+  if (!sdl_screen->pixels) adjust_gui_resolution();
   update_fg_layer(-1);
   // update_bg_layer must be called just before calling blitsurface to
   // sdl_screen or otherwise you see bglayer alone on screen during the update
@@ -1203,6 +1204,7 @@ void TMenu::handle_key(SDL_Event *event) {
 }
 
 void TMenu::redraw(SDL_Rect *r) {
+    if (!sdl_screen->pixels) adjust_gui_resolution();
   draw_frame(r);
   update_bg_layer(r);
   if (!r) {
@@ -1467,6 +1469,8 @@ void TMenu::exec_menu_item() {
 static int gui_init;
 
 void TMenu::execute() {
+    gui_level++;
+    if (!sdl_screen->pixels) adjust_gui_resolution();
   SDL_Event event;
   exit_menu = 0;
   if (!gui_init++) {
@@ -1620,6 +1624,7 @@ void TMenu::execute() {
     sa_unpause_sound();
   }
   parent = NULL; // to be on the safe side
+  gui_level--;
 }
 
 // TBitmap_menu : a menu with a bitmap on top of it

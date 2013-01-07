@@ -21,7 +21,7 @@ VERSION_NEO = "1.3.5"
 # NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -211,11 +211,11 @@ endif
    DEFINE = -D__RAINE__ \
 	   -DRAINE_WIN32 \
 
-   LIBS = -lz $(PNG_LFLAGS) -lGL -lGLU
+   LIBS = -lz $(PNG_LFLAGS) -lopengl32 -lglu32
    LIBS_STATIC = -lz $(PNG_STATIC_LFLAGS)
    INCDIR += $(PNG_CFLAGS)
 
-LIBS_DEBUG = -lz $(PNG_LFLAGS)
+LIBS_DEBUG = -lz $(PNG_LFLAGS) -lopengl32 -lglu32
 
 ifndef SDL
 LIBS += -lalleg

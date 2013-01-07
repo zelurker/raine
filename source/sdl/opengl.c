@@ -16,6 +16,7 @@ void opengl_reshape(int w, int h) {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();    
+    glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
 }
 
 void draw_opengl() {

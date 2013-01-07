@@ -39,7 +39,7 @@ void adjust_gui_resolution() {
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
       SDL_InitSubSystem(SDL_INIT_VIDEO);
     }
-    sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,sdl_screen->flags | SDL_ANYFORMAT);
+    sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
 #ifdef DARWIN
   else if (sdl_overlay && overlays_workarounds) {
@@ -53,7 +53,7 @@ void adjust_gui_resolution() {
   }
 #endif
   if (sdl_screen->format->BitsPerPixel < 16 && strcmp(driver,"fbcon")) {
-    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,sdl_screen->flags | SDL_ANYFORMAT);
+    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
   if (sdl_screen->flags & (SDL_DOUBLEBUF |SDL_HWSURFACE|SDL_OPENGL)) {
     printf("disabling double buffer\n");
@@ -186,7 +186,7 @@ static void get_desktop_mode() {
     driver[0] = 0;
 }
 
-extern int forced_bpp;
+extern int forced_bpp,gui_level;
 
 static SDL_Surface *new_set_gfx_mode() {
   SDL_Surface *s;
@@ -297,6 +297,8 @@ static SDL_Surface *new_set_gfx_mode() {
   SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
   videoflags |= SDL_OPENGL;
 
+  if (gui_level)
+      videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL; 
   if (!sdl_screen || display_cfg.screen_x != sdl_screen->w ||
     display_cfg.screen_y != sdl_screen->h ||
     display_cfg.bpp != sdl_screen->format->BitsPerPixel ||
@@ -361,8 +363,6 @@ static SDL_Surface *new_set_gfx_mode() {
   if ((s->flags & SDL_DOUBLEBUF) || emulate_mouse_cursor) {
     SDL_ShowCursor(SDL_DISABLE);
   }
-  if (s->flags & SDL_OPENGL)
-      opengl_reshape(s->w,s->h);
   return s;
 }
 
