@@ -351,7 +351,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
     bmp->line[n] = src->line[n+y] + bpp*x;
   bmp->extra = src->extra;
   bmp->id = src->id+1; // sub bitmap
-  if (display_cfg.video_mode <= 1) {
+  if (display_cfg.video_mode <= 1 && !(sdl_screen->flags & SDL_OPENGL)) {
     sdl_create_overlay(w,h);
   }
   if (sdl_overlay) {
@@ -362,7 +362,9 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
     print_debug("color_format: game bitmap format bpp %d\n",sdl_game_bitmap->format->BitsPerPixel);
   }
       
-  if (!sdl_overlay && (!current_game || !(current_game->video_info->flags & VIDEO_NEEDS_8BPP))) {
+  if (!sdl_overlay && !(sdl_screen->flags & SDL_OPENGL) &&
+	  (!current_game || 
+	   !(current_game->video_info->flags & VIDEO_NEEDS_8BPP))) {
     /* We start raine in 16bpp for yuv overlays.
      * If a hw yuv overlay can't be created, then adapt to the bpp of the
      * screen to speed up blits */
@@ -379,7 +381,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
       set_colour_mapper(current_colour_mapper);
       ResetPalette();
     } 
-  } else if (sdl_overlay && bpp != 2) {
+  } else if ((sdl_overlay || sdl_screen->flags & SDL_OPENGL) && bpp != 2) {
     // Overlays are for 16bpp only (the mmx code knows only how to handle
     // 16bpp)
     display_cfg.bpp = 16;

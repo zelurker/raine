@@ -13,6 +13,7 @@
 #include "bezel.h"
 #endif
 #include "winpos.h"
+#include "sdl/opengl.h"
 
 int disp_screen_x, prefered_yuv_format;
 #ifdef DARWIN
@@ -54,12 +55,9 @@ void adjust_gui_resolution() {
   if (sdl_screen->format->BitsPerPixel < 16 && strcmp(driver,"fbcon")) {
     sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,sdl_screen->flags | SDL_ANYFORMAT);
   }
-  if (sdl_screen->flags & SDL_DOUBLEBUF) {
+  if (sdl_screen->flags & (SDL_DOUBLEBUF |SDL_HWSURFACE|SDL_OPENGL)) {
     printf("disabling double buffer\n");
-    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,sdl_screen->format->BitsPerPixel,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
-  }
-  if (sdl_screen->flags & SDL_HWSURFACE) {
-    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,sdl_screen->format->BitsPerPixel,sdl_screen->flags & ~SDL_HWSURFACE);
+    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,sdl_screen->format->BitsPerPixel,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
   SDL_ShowCursor(SDL_ENABLE);
   if (sdl_screen->flags & (SDL_DOUBLEBUF|SDL_HWSURFACE)) {
@@ -291,12 +289,13 @@ static SDL_Surface *new_set_gfx_mode() {
 	  bpp, videoflags);
   /*
   SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
-  SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 5 );
+  SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 6 );
   SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5 );
   SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-  videoflags |= SDL_OPENGL;
   */
+  SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
+  videoflags |= SDL_OPENGL;
 
   if (!sdl_screen || display_cfg.screen_x != sdl_screen->w ||
     display_cfg.screen_y != sdl_screen->h ||
@@ -362,6 +361,8 @@ static SDL_Surface *new_set_gfx_mode() {
   if ((s->flags & SDL_DOUBLEBUF) || emulate_mouse_cursor) {
     SDL_ShowCursor(SDL_DISABLE);
   }
+  if (s->flags & SDL_OPENGL)
+      opengl_reshape(s->w,s->h);
   return s;
 }
 
@@ -427,7 +428,7 @@ void resize() {
     }
 
     /* Resize to keep ratio but always within the size chosen by the user */
-    if (time(NULL) - last_time > 1) {
+    if (time(NULL) - last_time > 1 || !sdl_overlay) {
 	/* this timing thing is to try to detect windows managers which block
 	 * resize commands, like compiz.
 	 * Basically when a window size matches the fullscreen size, it switches
@@ -507,7 +508,7 @@ void clear_bitmap(BITMAP *screen) {
   int len = screen->w*screen->h*bytes_per_pixel(screen);
   SDL_Surface *s = get_surface_from_bmp(screen);
   int locked = lock_surface(s);
-  if (locked > -1) {
+  if (locked > -1 && s->pixels) {
     memset(s->pixels,0,len);
     if (locked)
       SDL_UnlockSurface(s);

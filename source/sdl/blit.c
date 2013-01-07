@@ -29,6 +29,8 @@
 #ifdef NEO
 #include "neocd/neocd.h"
 #endif
+#include "sdl/opengl.h"
+#include <SDL_opengl.h>
 
 SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
@@ -37,16 +39,6 @@ BITMAP *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (
 
 UINT32 pause_time;
 int recording_video = 0,last_video_frame,video_fps;
-
-typedef struct RAINEBITMAP
-{
-   int xfull;		// Full bitmap width
-   int yfull;		// Full bitmap height
-   int xtop;		// X Offset of viewable area
-   int ytop;		// Y offset of viewable area
-   int xview;		// Viewable bitmap width
-   int yview;		// Viewable bitmap height
-} RAINEBITMAP;
 
 RAINEBITMAP GameScreen;
 
@@ -109,7 +101,7 @@ static void do_save_screen(void)
 
 }
 
-static SDL_Rect area_overlay,area2;
+SDL_Rect area_overlay,area2;
 
 void get_overlay_area(int *x, int *y, int *w, int *h) {
   *x = area_overlay.x;
@@ -194,6 +186,8 @@ void ReClipScreen(void)
 
   // GameScreen.xview = oldxview;
   // GameScreen.yview = oldyview;
+  if (sdl_screen->flags & SDL_OPENGL)
+      glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
 }
 
 void InitDrawPaused(void)
@@ -373,7 +367,7 @@ void SetupScreenBitmap(void)
    do {
      oldbpp = display_cfg.bpp;
      if (GameBitmap) {
-       DestroyScreenBitmap();
+       DestroyScreenBitmap(); // destroys gameviewbitmap too
      }
      GameBitmap = sdl_create_bitmap_ex(internal_bpp(display_cfg.bpp), GameScreen.xfull, GameScreen.yfull);
      sdl_game_bitmap = get_surface_from_bmp(GameBitmap);
@@ -391,7 +385,7 @@ void SetupScreenBitmap(void)
  ratio2 = display_cfg.screen_y*1.0/game_y;
  // printf("ratio1 %g ratio2 %g game_x %d game_y %d\n",ratio1,ratio2,game_x,game_y);
 
- if (sdl_overlay) {
+ if (sdl_overlay || sdl_screen->flags & SDL_OPENGL) {
    if (display_cfg.fix_aspect_ratio ) {
      /* Fixing the aspect ratio must be done on the game resolution and not
       * on the screen resolution, otherwise the screen size will change
@@ -417,12 +411,12 @@ void SetupScreenBitmap(void)
    int xxx2,yyy2,destx2,desty2;
    if (ratio1 < ratio2) {
      xxx2 = display_cfg.screen_x;
-     yyy2 = ratio1 * game_y;
+     yyy2 = round(ratio1 * game_y);
      destx2 = 0;
      desty2 = (display_cfg.screen_y - yyy2)/2;
    } else {
      yyy2 = display_cfg.screen_y;
-     xxx2 = ratio2 * game_x;
+     xxx2 = round(ratio2 * game_x);
      desty2 = 0;
      destx2 = (display_cfg.screen_x - xxx2) /2;
    }
@@ -949,6 +943,12 @@ void DrawNormal(void)
 
    */
 
+   RefreshBuffers = 0;
+   if (sdl_screen->flags & SDL_OPENGL) {
+       draw_opengl();
+       return;
+   }
+
    switch(display_cfg.scanlines){
      // scanlines must be able to work with other video effects, at least
      // for double width. But there were too many modes which worked badly
@@ -1035,7 +1035,6 @@ void DrawNormal(void)
 	     break;
 	     }
    }
-   RefreshBuffers = 0;
 }
 
 void clear_game_screen(int pen)

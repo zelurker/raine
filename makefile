@@ -14,14 +14,14 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.51.15"
+VERSION = "0.51.16"
 VERSION_NEO = "1.3.5"
 
 # Uncomment to build neoraine instead of raine
 # NEO=1
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -211,7 +211,7 @@ endif
    DEFINE = -D__RAINE__ \
 	   -DRAINE_WIN32 \
 
-   LIBS = -lz $(PNG_LFLAGS)
+   LIBS = -lz $(PNG_LFLAGS) -lGL -lGLU
    LIBS_STATIC = -lz $(PNG_STATIC_LFLAGS)
    INCDIR += $(PNG_CFLAGS)
 
@@ -325,8 +325,8 @@ ifndef SDL
    LIBS_DEBUG = -lz `allegro-config --libs ` `libpng-config --ldflags` -lm
    LIBS_STATIC = -lz `allegro-config --static` `libpng-config --static --ldflags` -lm
 else
-   LIBS = -lz `libpng-config --ldflags` -lm
-   LIBS_DEBUG = -lz `libpng-config --ldflags` -lm
+   LIBS = -lz `libpng-config --ldflags` -lGL -lGLU -lm
+   LIBS_DEBUG = -lz `libpng-config --ldflags` -lGL -lGLU -lm
    LIBS_STATIC = -lz `libpng-config --static --ldflags` -lm
 endif
 
@@ -483,7 +483,7 @@ else
 
 ifdef RAINE32
 # when starting a game -> black screen if -O > 1 (bug in uint64 calculation)
-CFLAGS += -O3
+CFLAGS += -O1
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
 CFLAGS = -O3
@@ -906,6 +906,7 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/compat.o \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/gen_conv.o \
+	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/sdl/profile.o
 
 else

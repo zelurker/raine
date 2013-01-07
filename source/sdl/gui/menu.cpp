@@ -929,6 +929,7 @@ void TMenu::do_update(SDL_Rect *region) {
 
 void TMenu::draw() {
 
+    if (!sdl_screen->pixels) return;
   draw_frame();
 
   if (!bg_layer) {
@@ -947,6 +948,7 @@ void TMenu::draw() {
 
 void TMenu::redraw_fg_layer() {
   // this layer has become tricky to update finally !!!
+  if (!fg_layer) return;
   update_fg_layer(-1);
   // update_bg_layer must be called just before calling blitsurface to
   // sdl_screen or otherwise you see bglayer alone on screen during the update
