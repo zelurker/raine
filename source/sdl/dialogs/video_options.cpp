@@ -15,29 +15,6 @@ class TVideo : public TMenu
   TVideo(char *my_title, menu_item_t *mymenu) :
     TMenu(my_title,mymenu)
     {}
-  int can_be_displayed(int n) {
-      if (n == 2) return !display_cfg.fullscreen;
-    if (n >= 5 && n <= 7) // yuv overlay options
-      return ((sdl_overlay != NULL || display_cfg.video_mode <= 1) &&
-        display_cfg.video_mode != 2);
-    else if (n >=8 && n <= 11) // normal blits
-      if (display_cfg.video_mode <= 1) {
-	// At first I had these options shown when in autodetect mode
-	// (video_mode == 0), but it's unclear for the users since the default
-	// is to use yuv overlays these options are indeed rarely used in
-	// autodetect mode. So it's probably better to hide them completely
-	// and keep them only for "force normal blits"
-	return 0;
-      }
-    return 1;
-  }
-  void update_options() {
-    if (font) {
-      delete font;
-      font = NULL;
-    }
-    draw();
-  }
 };
 
 static TVideo *video_options;
@@ -59,13 +36,6 @@ static int my_toggle_border(int sel) {
     return 0;
 }
 
-static int update_options(int sel) {
-  // Each time we change the renderer type, we redraw the whole dialog
-  // to change the options which should be hidden/shown
-  video_options->update_options();
-  return 0;
-}
-
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
     MessageBox("Warning","You can't have at the same time a scaler + scanlines,\nChoose 1","Ok");
@@ -75,25 +45,58 @@ static int update_scaler(int sel) {
   return 0;
 }
 
+static menu_item_t overlays_options[] =
+{
+    { "Prefered YUV format", NULL, &prefered_yuv_format, 2, { 0, 1 }, { "YUY2", "YV12 (mpeg)" } },
+    { "Fix aspect ratio to 4:3", NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {"No", "Yes" } },
+#ifdef DARWIN
+    { "Overlays workarounds", NULL, &overlays_workarounds, 2, { 0, 1}, {"No","Yes"}},
+#endif
+    {  NULL },
+};
+
+static menu_item_t blits_options[] =
+{
+    { "Change video mode", NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
+	{ "Never", "To match game resolution (low res most of the time)", "To match 2x game resolution" } },
+    { "Scaler", &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 }, 
+	{ "None", "Scale2x/3x", "Pixel double", "hq2x/3x" } },
+    { "Scanlines", &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
+	{ "Off", "Halfheight", "Fullheight", "Fullheight + Double width" } },
+    {  NULL },
+};
+
+static menu_item_t ogl_options[] =
+{
+    { "Sync on monitor refresh rate", NULL, &ogl.sync, 2, { 0, 1 }, {"No","Yes"} },
+    {  NULL },
+};
+
+int renderer_options(int sel) {
+    TMenu *menu;
+    switch(display_cfg.video_mode) {
+    case 0: menu = new TDialog("OpenGL Options", ogl_options); break;
+    case 1: menu = new TDialog("Overlays Options", overlays_options); break;
+    case 2: menu = new TDialog("Blits Options", blits_options); break;
+    default:
+	    MessageBox("Error","No options for this renderer ? Strange !","OK");
+	    return 0;
+    }
+    menu->set_transparency(0);
+    menu->execute();
+    delete menu;
+    return 0;
+}
+
 static menu_item_t video_items[] =
 {
-{  "Video renderer", &update_options, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
-  { "Autodetect : hw YUV overlays / normal blits", "Force YUV overlays (can be slow!)",
-    "Force normal blits"} },
+{  "Video renderer", NULL, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
+  { "OpenGL", "YUV overlays","Normal blits"} },
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
 { "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, "No", "Yes" },
-{ "Use double buffer", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
+{ "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
 { "Video info...", &do_video_info, },
-{ "YUV overlays:" },
-{ "Prefered YUV format", NULL, &prefered_yuv_format, 2, { 0, 1 }, { "YUY2", "YV12 (mpeg)" } },
-{ "Fix aspect ratio to 4:3", NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {"No", "Yes" } },
-{ "Normal blits:" },
-{ "Change video mode", NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
-  { "Never", "To match game resolution (low res most of the time)", "To match 2x game resolution" } },
-{ "Scaler", &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 }, 
-  { "None", "Scale2x/3x", "Pixel double", "hq2x/3x" } },
-{ "Scanlines", &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
-  { "Off", "Halfheight", "Fullheight", "Fullheight + Double width" } },
+{ "Renderer options", &renderer_options },
 { "General options:" },
 { "Limit framerate <= 60fps", NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {"No","Yes"} },
 { "Frame skip", NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -102,9 +105,6 @@ static menu_item_t video_items[] =
   { "None", "90°", "180°", "270°" } },
 { "Flip screen", NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
   { "None", "Flip X", "Flip Y", "Flip XY" } },
-#ifdef DARWIN
-{ "Overlays workarounds", NULL, &overlays_workarounds, 2, { 0, 1}, {"No","Yes"}},
-#endif
 {  NULL },
 };
 

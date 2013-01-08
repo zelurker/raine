@@ -49,12 +49,14 @@ class TMenu {
     TLift *lift; // in case a lift is needed !
     char keybuf[MAX_KEYBUF];
     int mousex[2],mousey[2],flip_page; // must handle the mouse when double buffering
+    int use_transparency;
   public:
     // There is a lot of methods, but most of them are very small and are
     // here to easily create objects which inherit from this one
     TMenu(char *my_title, menu_item_t *mymenu,char *myfont = NULL,
       int myfg=-1, int mybg=-1,int myfg_frame=-1,int mybg_frame=-1);
     virtual ~TMenu();
+    void set_transparency(int transp) { use_transparency = transp; }
     virtual void draw_top_frame();
     virtual char* get_bot_frame_text();
     virtual int get_max_bot_frame_dimensions(int &w, int &h);

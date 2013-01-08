@@ -9,6 +9,12 @@ extern "C" {
 
 #include "deftypes.h"
 
+typedef struct {
+    int sync;
+} togl_options;
+
+extern togl_options ogl;
+
 extern int prefered_yuv_format;
 #ifdef DARWIN
 extern int overlays_workarounds;

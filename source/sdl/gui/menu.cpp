@@ -260,6 +260,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   rows = 0;
   work_area.x = 0;
   work_area.w = sdl_screen->w;
+  use_transparency = ::use_transparency;
 }
 
 TMenu::~TMenu() {

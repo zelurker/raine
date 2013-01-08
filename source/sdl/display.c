@@ -14,6 +14,9 @@
 #endif
 #include "winpos.h"
 #include "sdl/opengl.h"
+#include "sdl/display_sdl.h"
+
+togl_options ogl;
 
 int disp_screen_x, prefered_yuv_format;
 #ifdef DARWIN
@@ -98,6 +101,7 @@ void display_read_config() {
 #ifdef DARWIN
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
 #endif
+   ogl.sync = raine_get_config_int("display","ogl_sync",0);
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
 }
@@ -124,6 +128,7 @@ void display_write_config() {
    raine_set_config_int("Display", "auto_mode_change", display_cfg.auto_mode_change);
    raine_set_config_int("display", "fix_aspect_ratio", display_cfg.fix_aspect_ratio);
    raine_set_config_int("display", "prefered_yuv_format", prefered_yuv_format);
+   raine_set_config_int("display", "ogl_sync", ogl.sync);
 #ifdef DARWIN
    raine_set_config_int("display", "overlays_workarounds",overlays_workarounds);
 #endif
@@ -210,7 +215,7 @@ static SDL_Surface *new_set_gfx_mode() {
 	// flag here. It might be related to the 32 bit compatibility layer on my
 	// amd64 though. It seems harmless without libefence.
   videoflags = SDL_SWSURFACE| SDL_RESIZABLE| SDL_ASYNCBLIT|SDL_ANYFORMAT | SDL_HWPALETTE;
-  if (display_cfg.double_buffer)
+  if (display_cfg.double_buffer && display_cfg.video_mode != 0)
     videoflags |= SDL_DOUBLEBUF;
   if (display_cfg.noborder)
       videoflags |= SDL_NOFRAME;
@@ -294,8 +299,11 @@ static SDL_Surface *new_set_gfx_mode() {
   SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
   */
-  SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
-  videoflags |= SDL_OPENGL;
+  if (display_cfg.video_mode == 0) { // opengl
+      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.sync );
+      videoflags |= SDL_OPENGL;
+      printf("setting opengl\n");
+  }
 
   if (gui_level)
       videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL; 

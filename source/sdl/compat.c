@@ -377,6 +377,8 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
       if (display_cfg.stretch == 3) // hq2x is in 16bpp source only
 	display_cfg.bpp = 16;
     }
+    if (display_cfg.video_mode == 0) // opengl
+	display_cfg.bpp = 16;
 
     print_debug("bpp selected %d\n",display_cfg.bpp);
     if (current_colour_mapper) {
