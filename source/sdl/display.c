@@ -300,9 +300,10 @@ static SDL_Surface *new_set_gfx_mode() {
   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
   */
   if (display_cfg.video_mode == 0) { // opengl
+      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // probably default anyway
       SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.sync );
+      SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       videoflags |= SDL_OPENGL;
-      printf("setting opengl\n");
   }
 
   if (gui_level)
@@ -365,6 +366,10 @@ static SDL_Surface *new_set_gfx_mode() {
   disp_screen_x = display_cfg.screen_x;
   display_cfg.bpp = s->format->BitsPerPixel;
   print_debug("mode %dx%d %dbpp fullscreen %d flags asked %x got %x video memory %x\n",display_cfg.screen_x, display_cfg.screen_y,display_cfg.bpp,s->flags & SDL_FULLSCREEN,videoflags,s->flags,s->flags&SDL_HWSURFACE);
+
+  if (s->flags & SDL_OPENGL) {
+      get_ogl_infos();
+  }
 
 /*  if (!color_format)
     color_format = sdl_screen->format; */

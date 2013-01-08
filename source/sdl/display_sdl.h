@@ -11,6 +11,11 @@ extern "C" {
 
 typedef struct {
     int sync;
+    int info;
+    char *vendor,*renderer,*version;
+    struct {
+	int dbuf,fsaa_buffers,fsaa_samples,accel,vbl;
+    } infos;
 } togl_options;
 
 extern togl_options ogl;

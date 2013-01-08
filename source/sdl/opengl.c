@@ -4,6 +4,7 @@
 #include "blit.h"
 #include "blit_sdl.h"
 #include "games.h"
+#include "sdl/display_sdl.h"
 
 void opengl_reshape(int w, int h) {
     glViewport(0, 0, w, h);
@@ -17,6 +18,23 @@ void opengl_reshape(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();    
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
+}
+
+void get_ogl_infos() {
+    ogl.info = 1;
+    if (ogl.vendor) {
+	free(ogl.vendor);
+	free(ogl.renderer);
+	free(ogl.version);
+    }
+    ogl.vendor = strdup( (char*)glGetString( GL_VENDOR ) );
+    ogl.renderer = strdup( (char*)glGetString( GL_RENDERER ) );
+    ogl.version = strdup( (char*)glGetString( GL_VERSION ) );
+    SDL_GL_GetAttribute( SDL_GL_DOUBLEBUFFER, &ogl.infos.dbuf );
+    SDL_GL_GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &ogl.infos.fsaa_buffers );
+    SDL_GL_GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &ogl.infos.fsaa_samples );
+    SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &ogl.infos.accel );
+    SDL_GL_GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
 }
 
 void draw_opengl() {

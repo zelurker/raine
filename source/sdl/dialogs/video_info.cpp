@@ -4,6 +4,7 @@
 #include "blit.h"
 #include "sdl/blit_sdl.h"
 #include "sdl/display_sdl.h"
+#include "raine.h"
 
 static menu_item_t video_info_menu[20];
 
@@ -48,6 +49,23 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
   memset(video_info_menu,0,sizeof(video_info_menu));
   sprintf(video_mode_label,"%dx%d, %d bpp",video_info->current_w, video_info->current_h, video_info->vfmt->BitsPerPixel);
   print_menu_string(0,"Current display",video_mode_label);
+  menu = video_info_menu;
+  if (display_cfg.video_mode == 0) {
+      if (!ogl.info) {
+	  print_menu_string(1,"No opengl info yet, run something first","");
+	  video_info_menu[2].label = NULL;
+	  return;
+      }
+      print_menu_string(1,"OpenGL vendor",ogl.vendor);
+      print_menu_string(2,"Renderer",ogl.renderer);
+      print_menu_string(3,"version",ogl.version);
+      print_tf_state(4,"OpenGL double buffer", ogl.infos.dbuf);
+      print_tf_state(5,"fsaa (multisampling)", ogl.infos.fsaa_buffers);
+      print_tf_state(6,"Acceleration", ogl.infos.accel);
+      print_tf_state(7,"OpenGL VBL (force sync)", ogl.infos.vbl);
+      video_info_menu[8].label = NULL;
+      return;
+  }
   if ( SDL_VideoDriverName(driver, sizeof(driver)) ) {
     print_menu_string(1,"Video driver name",driver);
   }
@@ -74,7 +92,6 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
   else
     video_info_menu[12].label = "Using unscaled blits";
 
-  menu = video_info_menu;
 }
 
 int do_video_info(int sel) {
