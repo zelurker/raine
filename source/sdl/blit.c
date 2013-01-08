@@ -356,10 +356,10 @@ void SetupScreenBitmap(void)
  );
 
  if (!GameBitmap || (GameBitmap->w != GameScreen.xfull || GameBitmap->h != GameScreen.yfull || sdl_game_bitmap->format->BitsPerPixel != display_cfg.bpp) ||
-     (sdl_overlay && display_cfg.video_mode > 1) ||
-     (!sdl_overlay && display_cfg.video_mode <= 1)) {
+     (sdl_overlay && display_cfg.video_mode != 1) ||
+     (!sdl_overlay && display_cfg.video_mode == 1)) {
    print_debug("regen GameBitmap\n");
-   if (display_cfg.video_mode > 1 && sdl_overlay) {
+   if (display_cfg.video_mode != 1 && sdl_overlay) {
      SDL_FreeYUVOverlay(sdl_overlay);
      sdl_overlay = NULL;
    }

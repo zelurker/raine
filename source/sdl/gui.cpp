@@ -400,7 +400,7 @@ void StartGUI(void)
 
    // We need to know if we have hw overlay support, and the only way to know
    // is to try to create one...
-    if (display_cfg.video_mode <= 1 && !sdl_overlay && display_cfg.bpp >= 16) {
+    if (display_cfg.video_mode == 1 && !sdl_overlay && display_cfg.bpp >= 16) {
 	sdl_create_overlay(display_cfg.screen_x,display_cfg.screen_y);
     }
 

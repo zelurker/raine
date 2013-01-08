@@ -353,7 +353,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
     bmp->line[n] = src->line[n+y] + bpp*x;
   bmp->extra = src->extra;
   bmp->id = src->id+1; // sub bitmap
-  if (display_cfg.video_mode <= 1) {
+  if (display_cfg.video_mode == 1) {
     sdl_create_overlay(w,h);
   }
   if (sdl_overlay) {
