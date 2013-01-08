@@ -56,10 +56,11 @@ void adjust_gui_resolution() {
   }
 #endif
   if (sdl_screen->format->BitsPerPixel < 16 && strcmp(driver,"fbcon")) {
+      print_debug("adjust_gui_res: depth correction...\n");
     sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
   if (sdl_screen->flags & (SDL_DOUBLEBUF |SDL_HWSURFACE|SDL_OPENGL)) {
-    printf("disabling double buffer\n");
+    print_debug("adjust_gui_res: disabling double buffer/opengl/doublebuffer\n");
     sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,sdl_screen->format->BitsPerPixel,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
   SDL_ShowCursor(SDL_ENABLE);
@@ -290,7 +291,7 @@ static SDL_Surface *new_set_gfx_mode() {
       }
     }
   }
-  print_debug("SDL_SetVideMode %d %d %d %x\n",display_cfg.screen_x, display_cfg.screen_y,
+  print_debug("SDL_SetVideoMode %d %d %d %x\n",display_cfg.screen_x, display_cfg.screen_y,
 	  bpp, videoflags);
   /*
   SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
@@ -306,12 +307,17 @@ static SDL_Surface *new_set_gfx_mode() {
       videoflags |= SDL_OPENGL;
   }
 
-  if (gui_level)
+  if (gui_level) {
+      print_debug("limiting flags on gui_level\n");
       videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL; 
+  }
   if (!sdl_screen || display_cfg.screen_x != sdl_screen->w ||
     display_cfg.screen_y != sdl_screen->h ||
-    display_cfg.bpp != sdl_screen->format->BitsPerPixel ||
-    sdl_screen->flags != videoflags) {
+    (display_cfg.bpp != sdl_screen->format->BitsPerPixel && display_cfg.video_mode != 0) ||
+    ((sdl_screen->flags ^ videoflags) & (~(SDL_ANYFORMAT|SDL_HWPALETTE)))) {
+      if (sdl_screen)
+	  print_debug("new_set_gfx_mode decision : flags %x x %x y %d bpp %d\n",sdl_screen->flags ^ videoflags,display_cfg.screen_x != sdl_screen->w,
+		  display_cfg.screen_y != sdl_screen->h,display_cfg.bpp != sdl_screen->format->BitsPerPixel);
     if (!strcmp(driver,"fbcon")) {
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
       SDL_InitSubSystem(SDL_INIT_VIDEO);
@@ -359,13 +365,14 @@ static SDL_Surface *new_set_gfx_mode() {
       sdl_create_overlay(overlay_w,overlay_h);
     }
   } else { // no need to change the mode
+      print_debug("new_set_gfx_mode: no mode change\n");
     s = sdl_screen;
   }
   display_cfg.screen_x = s->w; display_cfg.screen_y = s->h;
   disp_screen_y = display_cfg.screen_y;
   disp_screen_x = display_cfg.screen_x;
   display_cfg.bpp = s->format->BitsPerPixel;
-  print_debug("mode %dx%d %dbpp fullscreen %d flags asked %x got %x video memory %x\n",display_cfg.screen_x, display_cfg.screen_y,display_cfg.bpp,s->flags & SDL_FULLSCREEN,videoflags,s->flags,s->flags&SDL_HWSURFACE);
+  print_debug("mode %dx%d %dbpp fullscreen %d flags asked %x got %x video memory %x\n",display_cfg.screen_x, display_cfg.screen_y,display_cfg.bpp,s->flags & SDL_FULLSCREEN,videoflags,s->flags,s->pixels);
 
   if (s->flags & SDL_OPENGL) {
       get_ogl_infos();
@@ -380,6 +387,7 @@ static SDL_Surface *new_set_gfx_mode() {
 }
 
 void init_display() {
+    print_debug("init_display calling new_set_gfx_mode\n");
   new_set_gfx_mode();
   if (screen) free(screen);
   screen = surface_to_bmp(sdl_screen);
@@ -393,6 +401,7 @@ void ScreenChange(void)
   if (!display_cfg.fullscreen)
       update_window_pos();
 
+  print_debug("ScreenChange calling new_set_gfx_mode\n");
    if((s = new_set_gfx_mode()) == NULL){	// Didn't work:
       memcpy(&display_cfg, &prev_display_cfg, sizeof(DISPLAY_CFG));
       s = new_set_gfx_mode();	// Revert to old mode
@@ -473,6 +482,7 @@ void resize() {
     bezel_fix_screen_size(&display_cfg.screen_x,&display_cfg.screen_y);
 #endif
   }
+  print_debug("calling ScreenChange from resize\n");
   ScreenChange();
 }
 
@@ -494,7 +504,7 @@ int lock_surface(SDL_Surface *s) {
       return value quite burdensome but there is no other way... */
       return -1;
     }
-    if (s == sdl_screen) {
+    if (s == sdl_screen && s->pixels) {
 	/* If the screen uses double buffer, then the base adress changes
 	 * all the time and the line array must be updated
 	 * This is a little stupid, this array is just a convenience, the
@@ -523,7 +533,8 @@ void clear_bitmap(BITMAP *screen) {
   int locked = lock_surface(s);
   if (locked > -1 && s->pixels) {
     memset(s->pixels,0,len);
-    if (locked)
+  }
+  if (locked) {
       SDL_UnlockSurface(s);
   }
 }

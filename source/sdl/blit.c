@@ -356,6 +356,7 @@ void SetupScreenBitmap(void)
  );
 
  if (!GameBitmap || (GameBitmap->w != GameScreen.xfull || GameBitmap->h != GameScreen.yfull || sdl_game_bitmap->format->BitsPerPixel != display_cfg.bpp) ||
+	 (display_cfg.video_mode == 0 && display_cfg.bpp != 16) ||
      (sdl_overlay && display_cfg.video_mode != 1) ||
      (!sdl_overlay && display_cfg.video_mode == 1)) {
    print_debug("regen GameBitmap\n");

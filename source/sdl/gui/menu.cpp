@@ -625,6 +625,8 @@ int TMenu::compute_fglayer_height() {
 void TMenu::setup_fg_layer() {
   int w,h;
 
+  work_area.x = 0;
+  work_area.w = sdl_screen->w;
   w = width_max;
   h = compute_fglayer_height();
   fgdst.x = (work_area.w-w)/2;
@@ -798,7 +800,17 @@ void TMenu::update_fg_layer(int nb_to_update) {
 	if (nb_to_update != sel && fg_layer->format->Amask) {
 	  update_bg_layer(&to);
 	}
-	SDL_BlitSurface(fg_layer,&from,sdl_screen,&tmp);
+	int ret = SDL_BlitSurface(fg_layer,&from,sdl_screen,&tmp);
+	if (ret) {
+	    printf("SDL_BlitSurface returned %d\n",ret);
+	    char *sdl_error = SDL_GetError( );
+
+	    if( sdl_error[0] != '\0' ) {
+		fprintf(stderr, "draw_opengl: SDL error '%s'\n", sdl_error);
+		SDL_ClearError();
+	    }
+	    exit(1);
+	}
 	do_update(&to);
       }
     }
@@ -930,7 +942,10 @@ void TMenu::do_update(SDL_Rect *region) {
 
 void TMenu::draw() {
 
-    if (!sdl_screen->pixels) return;
+    if (!sdl_screen->pixels) {
+	print_debug("returning from draw on null pixels\n");
+	return;
+    }
   draw_frame();
 
   if (!bg_layer) {
@@ -949,8 +964,14 @@ void TMenu::draw() {
 
 void TMenu::redraw_fg_layer() {
   // this layer has become tricky to update finally !!!
-  if (!fg_layer) return;
-  if (!sdl_screen->pixels) adjust_gui_resolution();
+  if (!fg_layer) {
+      print_debug("rebuilding fg_layer\n");
+      return draw();
+  }
+  if (!sdl_screen->pixels) {
+      printf("adjust_gui_resolution from redraw_fg_layer\n");
+      adjust_gui_resolution();
+  }
   update_fg_layer(-1);
   // update_bg_layer must be called just before calling blitsurface to
   // sdl_screen or otherwise you see bglayer alone on screen during the update
@@ -1205,7 +1226,10 @@ void TMenu::handle_key(SDL_Event *event) {
 }
 
 void TMenu::redraw(SDL_Rect *r) {
-    if (!sdl_screen->pixels) adjust_gui_resolution();
+    if (!sdl_screen->pixels) {
+	print_debug("adjust_gui_resolution from redraw\n");
+	adjust_gui_resolution();
+    }
   draw_frame(r);
   update_bg_layer(r);
   if (!r) {
@@ -1471,7 +1495,10 @@ static int gui_init;
 
 void TMenu::execute() {
     gui_level++;
-    if (!sdl_screen->pixels) adjust_gui_resolution();
+    if (!sdl_screen->pixels) {
+	printf("adjust gui res from execute\n");
+	adjust_gui_resolution();
+    }
   SDL_Event event;
   exit_menu = 0;
   if (!gui_init++) {

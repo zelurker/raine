@@ -338,6 +338,8 @@ class TMain_menu : public TMenu
 };
 
 static void do_main_menu() {
+    if (!sdl_screen->pixels)
+	adjust_gui_resolution();
   TMain_menu *main_menu = new TMain_menu("Main menu",main_items);
   int old_region;
   // init romsw
@@ -463,6 +465,7 @@ void StartGUI(void)
 	       ((videoflags & SDL_DOUBLEBUF) && !(sdl_screen->flags & SDL_DOUBLEBUF))){
 	   // Are we here for a screenchange?
 	   WantScreen=0;
+	   print_debug("calling ScreenChange from StartGUI, WantScreen=0\n");
 	   ScreenChange();
        } 
 

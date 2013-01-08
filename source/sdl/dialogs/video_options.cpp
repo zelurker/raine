@@ -20,15 +20,16 @@ class TVideo : public TMenu
 static TVideo *video_options;
 
 static int my_toggle_fullscreen(int sel) {
-    int oldx = display_cfg.screen_x, oldy = display_cfg.screen_y;
+    // int oldx = display_cfg.screen_x, oldy = display_cfg.screen_y;
   display_cfg.fullscreen ^= 1;
   toggle_fullscreen();
   adjust_gui_resolution();
   video_options->draw();
   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
     SDL_ShowCursor(SDL_ENABLE);
-  video_options->redraw(NULL);
-  return (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
+  clear_raine_screen();
+  video_options->draw();
+  return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
   
 static int my_toggle_border(int sel) {
@@ -110,7 +111,7 @@ static menu_item_t video_items[] =
 
 int do_video_options(int sel) {
     int old_stretch = display_cfg.stretch;
-    int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
+    // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo("Video options", video_items);
     video_options->execute();
     SetupScreenBitmap();
@@ -124,6 +125,6 @@ int do_video_options(int sel) {
 	DestroyScreenBitmap(); // init hq2x/3x, switch gamebitmap to 16bpp
 	// + recall InitLUTs by recreating game_bitmap when enabling hq2x/3x
     }
-    return (oldx != display_cfg.screen_x || oldy != display_cfg.screen_y);
+    return 0; // (oldx != display_cfg.screen_x || oldy != display_cfg.screen_y);
 }
 
