@@ -1643,6 +1643,7 @@ void TMenu::execute() {
     clear_surface(sdl_screen);
     caller = NULL;
   }
+  gui_level--;
   if (!--gui_init) {
     SDL_ShowCursor(SDL_DISABLE);
     SDL_EnableKeyRepeat(0,0);
@@ -1652,7 +1653,6 @@ void TMenu::execute() {
     sa_unpause_sound();
   }
   parent = NULL; // to be on the safe side
-  gui_level--;
 }
 
 // TBitmap_menu : a menu with a bitmap on top of it
