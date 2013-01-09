@@ -216,12 +216,14 @@ static SDL_Surface *new_set_gfx_mode() {
 	// flag here. It might be related to the 32 bit compatibility layer on my
 	// amd64 though. It seems harmless without libefence.
   videoflags = SDL_SWSURFACE| SDL_RESIZABLE| SDL_ASYNCBLIT|SDL_ANYFORMAT | SDL_HWPALETTE;
-  if (display_cfg.double_buffer && display_cfg.video_mode != 0)
+  if (display_cfg.double_buffer) //  && display_cfg.video_mode != 0)
     videoflags |= SDL_DOUBLEBUF;
   if (display_cfg.noborder)
       videoflags |= SDL_NOFRAME;
-  if (display_cfg.fullscreen)
+  if (display_cfg.fullscreen) {
     videoflags |= SDL_FULLSCREEN;
+    videoflags &= ~SDL_RESIZABLE;
+  }
   if (current_game && current_game->video_info->flags & VIDEO_NEEDS_8BPP) {
     bpp = 8;
     /* Actually we could leave the SDL_ANYFORMAT alone and let the
@@ -241,6 +243,8 @@ static SDL_Surface *new_set_gfx_mode() {
   } else {
     // bpp = 16 is the default : better looking gui, and hq2x works at 16bpp min
     bpp = 16;
+    if (display_cfg.video_mode == 0) // opengl
+	bpp = 32;
 #ifdef DARWIN
       if (display_cfg.fullscreen)
 	  bpp = desktop_bpp;
@@ -301,9 +305,22 @@ static SDL_Surface *new_set_gfx_mode() {
   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
   */
   if (display_cfg.video_mode == 0) { // opengl
+#if 0
+      if (bpp > 16) {
+	  SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
+	  SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
+	  SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 );
+      } else if (bpp == 16) {
+	  SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
+	  SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 6 );
+	  SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5 );
+      }
+      SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, (bpp < 32 ? bpp : 24) );
+#endif
       SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // probably default anyway
       SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.sync );
       SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+      videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT);
       videoflags |= SDL_OPENGL;
   }
 
@@ -337,6 +354,15 @@ static SDL_Surface *new_set_gfx_mode() {
     }
     if ( (s = SDL_SetVideoMode(display_cfg.screen_x, display_cfg.screen_y,
 	    bpp, videoflags)) == NULL ) {
+#ifdef RAINE_DEBUG
+	/* Check for error conditions. */
+	char *sdl_error = SDL_GetError( );
+
+	if( sdl_error[0] != '\0' ) {
+	    fprintf(stderr, "new_set_gfx_mode: SDL error '%s'\n", sdl_error);
+	    SDL_ClearError();
+	}
+#endif
       SDL_Rect **modes = SDL_ListModes(NULL,videoflags);
       if (modes && modes != (SDL_Rect **)-1) {
 	int diffx = 10000, diffy = 10000, selected;
@@ -353,10 +379,11 @@ static SDL_Surface *new_set_gfx_mode() {
 	display_cfg.screen_y = modes[selected]->h;
 	print_debug("found res %d %d\n",display_cfg.screen_x,display_cfg.screen_y);
       }
+      videoflags &= ~SDL_OPENGL;
       if ( (s = SDL_SetVideoMode(display_cfg.screen_x, display_cfg.screen_y,
 	      bpp, videoflags)) == NULL ) {
-	fprintf(stderr,"could not setup %dx%d %d bpp\n",display_cfg.screen_x,display_cfg.screen_y,display_cfg.bpp);
-	exit(1);
+	fprintf(stderr,"could not setup %dx%d %d bpp really\n",display_cfg.screen_x,display_cfg.screen_y,display_cfg.bpp);
+	exit(25);
       }
     }
     sdl_screen = s;
@@ -372,7 +399,13 @@ static SDL_Surface *new_set_gfx_mode() {
   disp_screen_y = display_cfg.screen_y;
   disp_screen_x = display_cfg.screen_x;
   display_cfg.bpp = s->format->BitsPerPixel;
-  print_debug("mode %dx%d %dbpp fullscreen %d flags asked %x got %x video memory %x\n",display_cfg.screen_x, display_cfg.screen_y,display_cfg.bpp,s->flags & SDL_FULLSCREEN,videoflags,s->flags,s->pixels);
+  print_debug("mode %dx%d %dbpp fullscreen %d flags asked %x got %x video memory %x masks %x %x %x %x loss %x %x %x %x shift %x %x %x %x\n",
+	  s->w,s->h,s->format->BitsPerPixel,s->flags & SDL_FULLSCREEN ? 1 : 0,
+	  videoflags,s->flags,s->pixels,
+	  s->format->Rmask,s->format->Gmask,s->format->Bmask,s->format->Amask,
+	  s->format->Rloss,s->format->Gloss,s->format->Bloss,s->format->Aloss,
+	  s->format->Rshift,s->format->Gshift,s->format->Bshift,s->format->Ashift
+	  );
 
   if (s->flags & SDL_OPENGL) {
       get_ogl_infos();
@@ -502,6 +535,7 @@ int lock_surface(SDL_Surface *s) {
       /* When locking fails in windows, the surface really becomes totally
       unavailable and we must abort the blits. It makes the testing of the
       return value quite burdensome but there is no other way... */
+	print_debug("lock failed\n");
       return -1;
     }
     if (s == sdl_screen && s->pixels) {
@@ -510,13 +544,14 @@ int lock_surface(SDL_Surface *s) {
 	 * This is a little stupid, this array is just a convenience, the
 	 * asm code should be rewritten to work without it, but it wouldn't
 	 * be very enjoyable ! */
-      int a;
-      for (a=0; a < s->h; a++)
-	screen->line[a] = (UINT8 *)s->pixels+a*s->pitch;
+	print_debug("lock_surface: restoring line array\n");
+	int a;
+	for (a=0; a < s->h; a++)
+	    screen->line[a] = (UINT8 *)s->pixels+a*s->pitch;
     }
     return 1;
   }
-  if (((UINT8*)sdl_screen->pixels) - screen->line[0]) {
+  if (sdl_screen->pixels && (((UINT8*)sdl_screen->pixels) - screen->line[0])) {
     // These 2 must remain identical, but might change after some sdl
     // operations !!!
     print_debug("*** SCREEN CHANGE ***\n");
@@ -540,7 +575,11 @@ void clear_bitmap(BITMAP *screen) {
 }
 
 void clear_raine_screen() {
+    if (display_cfg.video_mode == 0) // opengl
+	return;
   clear_bitmap(screen);
+#if 0
+  // I don't believe it's needed to update the display for this
   if (sdl_screen->flags & SDL_DOUBLEBUF) {
     SDL_Flip(sdl_screen);
     clear_bitmap(screen);
@@ -548,6 +587,7 @@ void clear_raine_screen() {
   } else {
     SDL_UpdateRect(sdl_screen,0,0,0,0);
   }
+#endif
 }
 
 // Sadly, I have to make this because I can't switch res as soon as I want.
