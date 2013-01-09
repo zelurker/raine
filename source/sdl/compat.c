@@ -242,8 +242,10 @@ BITMAP *overlay_to_bmp(SDL_Overlay *s) {
 }
 
 void sdl_create_overlay( int w, int h) {
-  if (sdl_screen->flags & SDL_OPENGL)
+  if (sdl_screen->flags & SDL_OPENGL) {
+      print_debug("no overlays with opengl\n");
       return;
+  }
   // Init a fake bitmap to point to a newly created sdl_surface
   if (sdl_overlay) {
     SDL_FreeYUVOverlay(sdl_overlay);
@@ -251,11 +253,13 @@ void sdl_create_overlay( int w, int h) {
   }
 
   if (!(raine_cpu_capabilities & CPU_MMX)) {
-    printf("no MMX support -> no overlay\n");
+    print_debug("no MMX support -> no overlay\n");
     return;
   }
-  if (sdl_screen->format->BitsPerPixel == 8)
+  if (sdl_screen->format->BitsPerPixel == 8) {
+      print_debug("no overlay in 8bpp\n");
     return;
+  }
 
   if (!current_game || !(current_game->video_info->flags & VIDEO_NEEDS_8BPP)) {
     sdl_overlay = SDL_CreateYUVOverlay( // these bitmaps are ALWAYS in ram
