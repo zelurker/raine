@@ -121,10 +121,15 @@ int main(int argc,char *argv[])
   /* This just helps some window managers to grab some info from the
    * .desktop file if it exists */
   putenv((char*)"SDL_VIDEO_X11_WMCLASS=raine");
+#if 0
+  /* Don't force directx anymore, creating too many problems especially in
+   * fullscreen. There is a reason why windib is now the default windows video
+   * driver in sdl... */
 #ifdef RAINE_WIN32
   /* This one is because directx doesn't seem to be the default driver
    * in windows, and it's the only one with hardware acceleration... */
   putenv("SDL_VIDEODRIVER=directx");
+#endif
 #endif
 
    /*
