@@ -23,6 +23,7 @@
 #ifdef HAS_CONSOLE
 #include "sdl/console/scripts.h"
 #endif
+#include "sdl/opengl.h"
 char fps_buff[32];		// fps() message string
 
 /**[Message List Stuff]*************************************/
@@ -110,7 +111,7 @@ void clear_ingame_message_list(void)
 #define     round(a)    (int)(((a)<0.0)?(a)-.5:(a)+.5)
 #endif
 
-void overlay_ingame_interface(void)
+void overlay_ingame_interface(int ogl)
 {
    int ta,tb;
    int xoff2,yoff2,destx,desty,xxx,yyy;
@@ -138,7 +139,10 @@ void overlay_ingame_interface(void)
 
 	 MsgList[ta].messagetime -= (INT32) skip_frame_count;
 
-	 textout_fast(MsgList[ta].message,xoff2,(yoff2+yyy-8)-(((MSG_LIST_SIZE-1)-tb)<<3),get_white_pen());
+	 if (ogl)
+	     opengl_text(MsgList[ta].message,0,(((MSG_LIST_SIZE-1)-tb)));
+	 else
+	     textout_fast(MsgList[ta].message,xoff2,(yoff2+yyy-8)-(((MSG_LIST_SIZE-1)-tb)<<3),get_white_pen());
 
       }
 
@@ -161,7 +165,10 @@ void overlay_ingame_interface(void)
 	 render_start_count = render_frame_count;			// render count at start
 	 timer_next_update = ta + fps;					// set time of next update
       }
-      textout_fast(fps_buff,xoff2+xxx-(strlen(fps_buff)*6),yoff2,get_white_pen());
+      if (ogl)
+	  opengl_text(fps_buff,-strlen(fps_buff),-1);
+      else
+	  textout_fast(fps_buff,xoff2+xxx-(strlen(fps_buff)*6),yoff2,get_white_pen());
    break;
    case 0x02:				// Show Average FPS (takes a while to adapt to changes)
      ta = read_ingame_timer();
@@ -169,18 +176,27 @@ void overlay_ingame_interface(void)
        sprintf(fps_buff,"Avg:%02d/%g",round(((render_frame_count-render_start_count)*1.0/(ta-timer_start_count))*60),fps);
        timer_next_update = ta + fps;					// set time of next update
      }
-     textout_fast(fps_buff,xoff2+xxx-(strlen(fps_buff)*6),yoff2,get_white_pen());
+      if (ogl)
+	  opengl_text(fps_buff,-strlen(fps_buff),-1);
+      else
+	  textout_fast(fps_buff,xoff2+xxx-(strlen(fps_buff)*6),yoff2,get_white_pen());
      break;
    case 0x03:				// Show Profile results (percent)
       for(ta=0;ta<PRO_COUNT;ta++){
       sprintf(fps_buff,"%s: %2d%%",profile_results[ta].name, profile_results[ta].percent);
-      textout_fast(fps_buff,xoff2+xxx-(10*6),yoff2+(ta*8),get_white_pen());
+      if (ogl) 
+	  opengl_text(fps_buff,-10,-1-ta);
+      else
+	  textout_fast(fps_buff,xoff2+xxx-(10*6),yoff2+(ta*8),get_white_pen());
       }
    break;
    case 0x04:				// Show Profile results (cycles)
       for(ta=0;ta<PRO_COUNT;ta++){
       sprintf(fps_buff,"%s: %6x",profile_results[ta].name, profile_results[ta].cycles);
-      textout_fast(fps_buff,xoff2+xxx-(13*6),yoff2+(ta*8),get_white_pen());
+      if (ogl)
+	  opengl_text(fps_buff,-13,-1-ta);
+      else
+	  textout_fast(fps_buff,xoff2+xxx-(13*6),yoff2+(ta*8),get_white_pen());
       }
    break;
    default:				// Show nothing
@@ -193,9 +209,13 @@ void overlay_ingame_interface(void)
 
    */
 
-   if((raine_cfg.req_pause_game) && (!(pause_time & 0x20)))
+   if((raine_cfg.req_pause_game) && (!(pause_time & 0x20))) {
 
-      textout_fast("<Paused>",xoff2+((xxx-(6*8))>>1),yoff2+((yyy-8)>>1),get_white_pen());
+      if (ogl)
+	  opengl_text("<Paused>",-1000,-1000);
+      else
+	  textout_fast("<Paused>",xoff2+((xxx-(6*8))>>1),yoff2+((yyy-8)>>1),get_white_pen());
+   }
 
 }
 

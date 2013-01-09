@@ -11,6 +11,7 @@ extern "C" {
 
 typedef struct {
     int sync;
+    int overlay;
     int info;
     char *vendor,*renderer,*version;
     struct {

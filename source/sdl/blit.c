@@ -927,7 +927,8 @@ void DrawNormal(void)
 
    */
 
-   overlay_ingame_interface();
+   if (!ogl.overlay || !(sdl_screen->flags & SDL_OPENGL))
+       overlay_ingame_interface(0);
 
    /*
 
@@ -946,6 +947,9 @@ void DrawNormal(void)
    RefreshBuffers = 0;
    if (sdl_screen->flags & SDL_OPENGL) {
        draw_opengl();
+       if (ogl.overlay)
+	   overlay_ingame_interface(1);
+       finish_opengl();
        return;
    }
 
