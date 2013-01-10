@@ -14,6 +14,7 @@
 #include "control_internal.h"
 #include "blit_x2.h"
 #include "video/res.h"
+#include "sdl/dialogs/messagebox.h"
 
 UINT32 emudx_transp; 
 static SDL_PixelFormat overlay_format = {
@@ -275,11 +276,18 @@ void sdl_create_overlay( int w, int h) {
        sdl_screen);
     }
   }
-  if (sdl_overlay && !sdl_overlay->hw_overlay && display_cfg.video_mode != 1) {
-    SDL_FreeYUVOverlay(sdl_overlay);
-    sdl_overlay = NULL;
+  if (sdl_overlay && !sdl_overlay->hw_overlay) {
     print_debug("no hardware support for YUY2 overlay\n");
-    return;
+    static int warned_hw;
+    if (!warned_hw) {
+	warned_hw = 1;
+	MessageBox("Warning","No hardware support for overlays","ok");
+    }
+     if ( display_cfg.video_mode != 1) {
+	 SDL_FreeYUVOverlay(sdl_overlay);
+	 sdl_overlay = NULL;
+     }
+    // return;
   } else if (sdl_overlay)
     print_debug("using YUV overlay\n");
 
