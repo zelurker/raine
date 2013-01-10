@@ -92,6 +92,10 @@ int renderer_options(int sel) {
 
 static menu_item_t video_items[] =
 {
+#ifdef RAINE_WIN32
+{  "video driver", NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
+  { "SDL default (windib since 1.2.10)", "windib (good for ogl)","directx (good for hw overlays/blits)"} },
+#endif
 {  "Video renderer", NULL, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
   { "OpenGL", "YUV overlays","Normal blits"} },
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
@@ -112,9 +116,25 @@ static menu_item_t video_items[] =
 
 int do_video_options(int sel) {
     int old_stretch = display_cfg.stretch;
+#ifdef RAINE_WIN32
+    UINT32 old_driver = display_cfg.video_driver;
+#endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo("Video options", video_items);
     video_options->execute();
+#ifdef RAINE_WIN32
+    if (old_driver != display_cfg.video_driver) {
+	if (sdl_overlay) {
+	    SDL_FreeYUVOverlay(sdl_overlay);
+	    sdl_overlay = NULL;
+	}
+	sdl_screen = NULL;
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	setup_video_driver();
+	SDL_InitSubSystem(SDL_INIT_VIDEO);
+	ScreenChange();
+    }
+#endif
     SetupScreenBitmap();
     if ((sdl_overlay != NULL || display_cfg.video_mode == 1) &&
 	    display_cfg.video_mode != 2) {
