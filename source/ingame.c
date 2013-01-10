@@ -160,7 +160,10 @@ void overlay_ingame_interface(int ogl)
    case 0x01:				// Show Accurate FPS (changes rapidly)
       ta = read_ingame_timer();
       if((UINT32)ta >= timer_next_update){					// we have done 60 frames
-	 sprintf(fps_buff,"%02d/%g",render_frame_count-render_start_count,fps);  // make message string
+	  if (display_cfg.limit_speed)
+	      sprintf(fps_buff,"%02d/%g",render_frame_count-render_start_count,fps);  // make message string
+	  else
+	      sprintf(fps_buff,"%02d",render_frame_count-render_start_count);
 	 // printf("%s timer %d start_count %d\n",fps_buff,ta,render_start_count);
 	 render_start_count = render_frame_count;			// render count at start
 	 timer_next_update = ta + fps;					// set time of next update
@@ -173,7 +176,10 @@ void overlay_ingame_interface(int ogl)
    case 0x02:				// Show Average FPS (takes a while to adapt to changes)
      ta = read_ingame_timer();
      if((UINT32)ta >= timer_next_update){					// we have done 60 frames
-       sprintf(fps_buff,"Avg:%02d/%g",round(((render_frame_count-render_start_count)*1.0/(ta-timer_start_count))*60),fps);
+	  if (display_cfg.limit_speed)
+	      sprintf(fps_buff,"Avg:%02d/%g",round(((render_frame_count-render_start_count)*1.0/(ta-timer_start_count))*fps),fps);
+	  else
+	      sprintf(fps_buff,"Avg:%02d",round(((render_frame_count-render_start_count)*1.0/(ta-timer_start_count))*fps));
        timer_next_update = ta + fps;					// set time of next update
      }
       if (ogl)
