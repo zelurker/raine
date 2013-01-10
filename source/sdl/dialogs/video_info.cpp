@@ -9,7 +9,7 @@
 static menu_item_t video_info_menu[20];
 
 static int video_mode = 0,status[11];
-static char video_mode_label[20],info[11][20];
+static char video_mode_label[20],info[11][30];
 
 static void print_tf_state(int n, char *label, int test) {
   video_info_menu[n].label = label;
@@ -30,8 +30,8 @@ static void print_menu_string(int n, char *label, char *s) {
   video_info_menu[n].value_int = &video_mode;
   video_info_menu[n].values_list_size = 1;
   video_info_menu[n].values_list_label[0] = info[n];
-  strncpy(info[n],s,20);
-  info[n][19] = 0;
+  strncpy(info[n],s,30);
+  info[n][29] = 0;
 }
 
 class TVideo_menu : public TMenu
