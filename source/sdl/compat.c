@@ -208,6 +208,7 @@ void sdl_done() {
   print_debug("sdl_done...\n");
   inputs_done();
   TTF_Quit();
+  opengl_done();
   SDL_Quit();
 }
 

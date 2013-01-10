@@ -67,9 +67,8 @@ void opengl_text(char *msg, int x, int y) {
     if (!font) {
 	char *name= get_shared("fonts/10x20.fnt");
 	UINT32 size = size_file(name);
-	font = AllocateMem(size);
+	font = malloc(size);
 	load_file(name,font,size);
-	printf("font read size %d\n",size);
 	int i,j;
 	char tmp[20*2];
 	// Maybe the font should also be unpacked to 4 bytes boundary ?
@@ -127,3 +126,6 @@ void finish_opengl() {
 #endif
 }
 
+void opengl_done() {
+    if (font) free(font);
+}
