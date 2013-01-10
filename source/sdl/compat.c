@@ -45,7 +45,7 @@ struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
     SDL_PixelFormat *fmt = inf->vfmt;
     if (sdl_overlay) {
       fmt = &overlay_format;
-    } else if (display_cfg.stretch == 3) // hq2x
+    } else if (display_cfg.stretch == 3 && display_cfg.video_mode == 2) // hq2x
       fmt = &hq2x_format;
 
     if (fmt->BitsPerPixel != bpp) {
