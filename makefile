@@ -14,14 +14,14 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.51.16"
-VERSION_NEO = "1.3.5"
+VERSION = "0.60.0"
+VERSION_NEO = "1.4.0"
 
 # Uncomment to build neoraine instead of raine
 # NEO=1
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -1286,7 +1286,7 @@ else
 
 ifdef DOIT
 	@echo installing fonts in $(fonts_dir)
-	$(INSTALL_DATA) fonts/Vera.ttf fonts/VeraMono.ttf fonts/font6x8.bin $(fonts_dir)
+	$(INSTALL_DATA) fonts/Vera.ttf fonts/10x20.fnt fonts/VeraMono.ttf fonts/font6x8.bin $(fonts_dir)
 	$(INSTALL_DATA) bitmaps/cursor.png bitmaps/raine_logo.png $(bitmaps_dir)
 #	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
 endif
