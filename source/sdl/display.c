@@ -61,7 +61,15 @@ void adjust_gui_resolution() {
   }
   if (sdl_screen->flags & (SDL_DOUBLEBUF |SDL_HWSURFACE|SDL_OPENGL)) {
     print_debug("adjust_gui_res: disabling double buffer/opengl/doublebuffer\n");
-    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,sdl_screen->format->BitsPerPixel,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
+#ifdef RAINE_WIN32
+    // With the windib driver in fullscreen opengl, we can't restore the gui
+    // screen, it's just not updated. Changing the bpp forces a screen update
+    // This bug is windows specific, of course
+    int bpp = sdl_screen->format->BitsPerPixel < 32 ? 32 : 16;
+#else
+    int bpp = sdl_screen->format->BitsPerPixel;
+#endif
+    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
   SDL_ShowCursor(SDL_ENABLE);
   if (sdl_screen->flags & (SDL_DOUBLEBUF|SDL_HWSURFACE)) {
@@ -322,6 +330,7 @@ static SDL_Surface *new_set_gfx_mode() {
       SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // probably default anyway
       SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.sync );
       SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+      // filter out the unused flags
       videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT);
       videoflags |= SDL_OPENGL;
   }
