@@ -30,6 +30,16 @@ static char driver[128];
 const SDL_VideoInfo *video_info;
 UINT32 screen_flags;
 
+#ifdef RAINE_WIN32
+void setup_video_driver() {
+    switch(display_cfg.video_driver) {
+    case 0: putenv("SDL_VIDEODRIVER="); break;
+    case 1: putenv("SDL_VIDEODRIVER=windib"); break;
+    case 2: putenv("SDL_VIDEODRIVER=directx"); break;
+    }
+}
+#endif
+
 void adjust_gui_resolution() {
   // To be called just before starting the gui, when already with a video mode
   // 1st keep the current video mode parameters for video info...
@@ -90,6 +100,9 @@ void display_read_config() {
    }
 
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0);
+#ifdef RAINE_WIN32
+   display_cfg.video_driver = raine_get_config_int( "Display", "video_driver", 0);
+#endif
    display_cfg.screen_x = raine_get_config_int( "Display", "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int( "Display", "screen_y", display_cfg.screen_y);
    display_cfg.winx = raine_get_config_int( "Display", "winx", 640);
@@ -123,6 +136,9 @@ void display_write_config() {
       update_window_pos();
 
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
+#ifdef RAINE_WIN32
+   raine_set_config_int("Display", "video_driver", display_cfg.video_driver);
+#endif
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
    raine_set_config_int("Display", "screen_y", display_cfg.screen_y);
    raine_set_config_int("Display", "winx", display_cfg.winx);
