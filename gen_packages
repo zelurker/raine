@@ -8,7 +8,7 @@ fi
 dpkg-scanpackages . /dev/null dists/unstable/main/binary-$arch/ | tee Packages | gzip -9 > Packages.gz
 # rpl "Filename: ." "Filename: dists/unstable/main/binary-i386" Packages
 rm -rf unstable
-rsync -av --delete . jojo:raine/html/archive/debian/dists/unstable/main/binary-$arch/
+rsync -av . jojo:raine/html/archive/debian/dists/unstable/main/binary-$arch/
 mkdir unstable && cd unstable && mkdir main && cd main && /bin/rm -f * && mkdir binary-amd64 binary-i386 
 cd binary-i386 && for n in ~/dist/*; do ln $n; done
 cd ../binary-amd64 && for n in ~/dist-amd64/*; do ln $n; done
