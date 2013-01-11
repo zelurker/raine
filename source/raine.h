@@ -299,7 +299,7 @@ typedef struct DISPLAY_CFG
 #ifndef SDL
    UINT32 screen_type;			// pc screen display type {..MODX,VB2L,VBAF..}
 #else
-   UINT32 video_mode;
+   UINT32 video_mode,video_driver;
    // 0 : auto-detect (hw YUV overlay, then classic blits)
    // 1 : force YUV overlays
    // 2 : force classic blits

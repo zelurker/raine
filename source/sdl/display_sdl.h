@@ -31,6 +31,9 @@ extern const SDL_VideoInfo *video_info;
 void resize();
 int lock_surface(SDL_Surface *s);
 void adjust_gui_resolution();
+#ifdef RAINE_WIN32
+void setup_video_driver();
+#endif
 
 #ifdef __cplusplus
 }
