@@ -605,8 +605,7 @@ void clear_raine_screen() {
     if (display_cfg.video_mode == 0) // opengl
 	return;
   clear_bitmap(screen);
-#if 0
-  // I don't believe it's needed to update the display for this
+  // Needed to clear the gui in normal blits
   if (sdl_screen->flags & SDL_DOUBLEBUF) {
     SDL_Flip(sdl_screen);
     clear_bitmap(screen);
@@ -614,7 +613,6 @@ void clear_raine_screen() {
   } else {
     SDL_UpdateRect(sdl_screen,0,0,0,0);
   }
-#endif
 }
 
 // Sadly, I have to make this because I can't switch res as soon as I want.
