@@ -50,7 +50,7 @@ void draw_opengl() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Current Raster Position always at bottom left hand corner of window
-    glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h);
+    glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
     glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
 	    -(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
     glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
