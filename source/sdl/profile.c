@@ -150,66 +150,66 @@ void ProfileStop(UINT8 mode)
 
 static int pcount;
 
-/* There is a chance of overflow when running on a very fast cpu (> 2Ghz), and one of the
-   components gets more than 90% of the cpu time. Then you cycles * 100 might be bigger
-   than 2**32. P_UPDATE_RATE = 16 should make this very unlikely */
-
+/* The computation is now done in UINT64 to avoid any overflow */
 void UpdateProfile(void)
 {
    if(Profile[0].state==2){
 
-   int total,total2,ta;
+   UINT64 total,total2;
+   int ta;
 
    pcount++;
 
    if(pcount>P_UPDATE_RATE){
-   pcount=0;
-
-   for(ta=0;ta<PRO_COUNT;ta++){
-      Profile[ta].cycles = Profile[ta].cycles / P_UPDATE_RATE;
-   }
-
-   total2 = total = Profile[0].cycles;
-
-   if(raine_cfg.show_fps_mode==3){
-
-   for(ta=1;ta<PRO_COUNT;ta++){
-      if(Profile[ta].state==2){
-	 profile_results[ta].percent = (Profile[ta].cycles * 100)/total;
-	 total2 -= (Profile[ta].cycles);
-      }
-      else{
-	 profile_results[ta].percent = 0;
-      }
-   }
-   if(total2>0){
-      profile_results[0].percent = (total2 * 100)/total;
-   }
-   else{
-      profile_results[0].percent = 0;
-   }
-
-   }
-   else{
-
-   for(ta=1;ta<PRO_COUNT;ta++){
-      if(Profile[ta].state==2){
-	 profile_results[ta].cycles = Profile[ta].cycles;
-	 total2 -= (Profile[ta].cycles);
-      }
-      else{
-	 profile_results[ta].cycles = 0;
-      }
-   }
-   profile_results[0].cycles = total2;
-
-   }
+       pcount=0;
 
 
-   for(ta=0;ta<PRO_COUNT;ta++){
-      Profile[ta].state=0;
-      Profile[ta].cycles=0;
-   }
+       for(ta=0;ta<PRO_COUNT;ta++){
+	   Profile[ta].cycles = Profile[ta].cycles / P_UPDATE_RATE;
+       }
+
+
+       total2 = total = Profile[0].cycles;
+
+       if(raine_cfg.show_fps_mode==3){
+
+	   for(ta=1;ta<PRO_COUNT;ta++){
+	       if(Profile[ta].state==2){
+		   profile_results[ta].percent = (Profile[ta].cycles * (UINT64)100)/total;
+		   total2 -= (Profile[ta].cycles);
+	       }
+	       else{
+		   profile_results[ta].percent = 0;
+	       }
+	   }
+	   if(total2>0){
+	       profile_results[0].percent = (total2 * (UINT64)100)/total;
+	   }
+	   else{
+	       profile_results[0].percent = 0;
+	   }
+
+       }
+       else{
+
+	   for(ta=1;ta<PRO_COUNT;ta++){
+	       if(Profile[ta].state==2){
+		   profile_results[ta].cycles = Profile[ta].cycles;
+		   total2 -= (Profile[ta].cycles);
+	       }
+	       else{
+		   profile_results[ta].cycles = 0;
+	       }
+	   }
+	   profile_results[0].cycles = total2;
+
+       }
+
+
+       for(ta=0;ta<PRO_COUNT;ta++){
+	   Profile[ta].state=0;
+	   Profile[ta].cycles=0;
+       }
 
    }
 
