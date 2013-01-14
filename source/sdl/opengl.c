@@ -108,7 +108,10 @@ void opengl_text(char *msg, int x, int y) {
 }
 
 void finish_opengl() {
-    SDL_GL_SwapBuffers();
+    if (ogl.dbuf)
+	SDL_GL_SwapBuffers();
+    else
+	glFlush();
 #ifdef RAINE_DEBUG
     /* Check for error conditions. */
     int gl_error = glGetError( );

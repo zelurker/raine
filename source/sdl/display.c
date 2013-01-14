@@ -123,7 +123,7 @@ void display_read_config() {
 #ifdef DARWIN
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
 #endif
-   ogl.sync = raine_get_config_int("display","ogl_sync",0);
+   ogl.dbuf = raine_get_config_int("display","ogl_dbuf",1);
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1);
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
@@ -154,7 +154,7 @@ void display_write_config() {
    raine_set_config_int("Display", "auto_mode_change", display_cfg.auto_mode_change);
    raine_set_config_int("display", "fix_aspect_ratio", display_cfg.fix_aspect_ratio);
    raine_set_config_int("display", "prefered_yuv_format", prefered_yuv_format);
-   raine_set_config_int("display", "ogl_sync", ogl.sync);
+   raine_set_config_int("display", "ogl_dbuf", ogl.dbuf);
    raine_set_config_int("display", "ogl_overlay", ogl.overlay);
 #ifdef DARWIN
    raine_set_config_int("display", "overlays_workarounds",overlays_workarounds);
@@ -343,8 +343,8 @@ static SDL_Surface *new_set_gfx_mode() {
       }
       SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, (bpp < 32 ? bpp : 24) );
 #endif
-      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // probably default anyway
-      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.sync );
+      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf ); 
+      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
       SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       // filter out the unused flags
       videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT);

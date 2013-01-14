@@ -10,7 +10,7 @@ extern "C" {
 #include "deftypes.h"
 
 typedef struct {
-    int sync;
+    int dbuf;
     int overlay;
     int info;
     char *vendor,*renderer,*version;

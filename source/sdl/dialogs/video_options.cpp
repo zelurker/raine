@@ -69,7 +69,7 @@ static menu_item_t blits_options[] =
 
 static menu_item_t ogl_options[] =
 {
-    { "Sync on monitor refresh rate", NULL, &ogl.sync, 2, { 0, 1 }, {"No","Yes"} },
+    { "Double buffer", NULL, &ogl.dbuf, 2, { 0, 1 }, {"No","Yes"} },
     { "OpenGL overlay interface", NULL, &ogl.overlay, 2, { 0, 1 }, {"No","Yes"} },
     {  NULL },
 };
