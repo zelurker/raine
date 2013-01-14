@@ -15,6 +15,7 @@
 #include "blit_x2.h"
 #include "video/res.h"
 #include "sdl/dialogs/messagebox.h"
+#include "sdl/opengl.h"
 
 UINT32 emudx_transp; 
 static SDL_PixelFormat overlay_format = {
@@ -390,7 +391,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
       if (display_cfg.stretch == 3) // hq2x is in 16bpp source only
 	display_cfg.bpp = 16;
     }
-    if (display_cfg.video_mode == 0) // opengl
+    if (sdl_screen->flags & SDL_OPENGL) 
 	display_cfg.bpp = 16;
 
     print_debug("bpp selected %d\n",display_cfg.bpp);

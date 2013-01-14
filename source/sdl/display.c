@@ -602,8 +602,8 @@ void clear_bitmap(BITMAP *screen) {
 }
 
 void clear_raine_screen() {
-    if (display_cfg.video_mode == 0) // opengl
-	return;
+  if (sdl_screen->flags & SDL_OPENGL) 
+      return;
   clear_bitmap(screen);
   // Needed to clear the gui in normal blits
   if (sdl_screen->flags & SDL_DOUBLEBUF) {
