@@ -708,8 +708,6 @@ void neogeo_cdrom_load_title(void)
       sdl_screen->format->BitsPerPixel != display_cfg.bpp)
     ScreenChange();
   DrawNormal();
-  adjust_gui_resolution();
-  // SDL_Delay(1500);
 }
 
 static int loading_phase,total_size;
