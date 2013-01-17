@@ -490,6 +490,7 @@ void TMenu::setup_bg_layer(SDL_Surface *bitmap) {
     bgdst.x = (work_area.w-bgdst.w)/2+work_area.x;
     bgdst.y = (work_area.h-bgdst.h)/2+work_area.y;
     SDL_Surface *zoomed;
+    if (!color_format) color_format = sdl_screen->format;
     if (border) {
       bg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE,src.w,src.h,display_cfg.bpp,color_format->Rmask,color_format->Gmask,color_format->Bmask,color_format->Amask);
       if (display_cfg.bpp == 8)
@@ -508,8 +509,6 @@ void TMenu::setup_bg_layer(SDL_Surface *bitmap) {
     }
   } else {
     bgdst = work_area;
-    //bg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE,bgdst.w,bgdst.h,display_cfg.bpp,color_format->Rmask,color_format->Gmask,color_format->Bmask,color_format->Amask);
-    // clear_surface(bg_layer);
     bg_layer = NULL;
   }
 }
