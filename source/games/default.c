@@ -161,6 +161,7 @@ void ClearDefault(void)
    free_emudx();
 #endif
    reset_arpro();				// Free action replay
+   reset_savegames();
 
    saDestroySound(1);				// Free all sound resources
 

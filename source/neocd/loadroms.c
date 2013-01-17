@@ -99,6 +99,7 @@ void ClearDefault(void)
   if (current_game->clear_game)
     current_game->clear_game();
 
+  reset_savegames();
    saDestroySound(1);				// Free all sound resources
    reset_arpro();				// Free action replay
 

@@ -100,6 +100,14 @@ int SaveDataCount;
 int UseCompression,SaveSlot;
 int savegame_version;
 
+void reset_savegames() {
+    alloc_save_list = SaveDataCount = 0;
+    if (save_data_list) {
+	free(save_data_list);
+	save_data_list = NULL;
+    }
+}
+
 void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
 {
   int n;
