@@ -67,6 +67,10 @@ void opengl_text(char *msg, int x, int y) {
     if (!font) {
 	char *name= get_shared("fonts/10x20.fnt");
 	UINT32 size = size_file(name);
+	if (!size) {
+	    printf("couldn't find font %s exe:%s share:%s\n",name,dir_cfg.exe_path,dir_cfg.share_path);
+	    return;
+	}
 	font = malloc(size);
 	load_file(name,font,size);
 	int i,j;
