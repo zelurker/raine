@@ -124,6 +124,7 @@ void display_read_config() {
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
 #endif
    ogl.dbuf = raine_get_config_int("display","ogl_dbuf",1);
+   ogl.render = raine_get_config_int("display","ogl_render",0);
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1);
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
@@ -155,6 +156,7 @@ void display_write_config() {
    raine_set_config_int("display", "fix_aspect_ratio", display_cfg.fix_aspect_ratio);
    raine_set_config_int("display", "prefered_yuv_format", prefered_yuv_format);
    raine_set_config_int("display", "ogl_dbuf", ogl.dbuf);
+   raine_set_config_int("display", "ogl_render", ogl.render);
    raine_set_config_int("display", "ogl_overlay", ogl.overlay);
 #ifdef DARWIN
    raine_set_config_int("display", "overlays_workarounds",overlays_workarounds);

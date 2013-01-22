@@ -23,6 +23,12 @@ void opengl_reshape(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();    
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
+    if (ogl.render == 1) {
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
 }
 
 void get_ogl_infos() {
@@ -30,7 +36,10 @@ void get_ogl_infos() {
     // Slight optimization
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
-    glDisable(GL_TEXTURE_2D);
+    if (ogl.render == 1)
+	glEnable(GL_TEXTURE_2D);
+    else
+	glDisable(GL_TEXTURE_2D);
     if (ogl.vendor) {
 	free(ogl.vendor);
 	free(ogl.renderer);
@@ -49,12 +58,31 @@ void get_ogl_infos() {
 void draw_opengl() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Current Raster Position always at bottom left hand corner of window
-    glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
-    glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
-	    -(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
-    glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
+    if (ogl.render == 1) {
+	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
+		GameScreen.xview,GameScreen.yview,0,GL_RGB,
+		GL_UNSIGNED_SHORT_5_6_5_REV,
+		sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
 
+
+	glBegin(GL_QUADS);
+	glNormal3f(0,0,1.0);
+	glTexCoord2f(0.0,0.0);
+	glVertex3d(area_overlay.x, area_overlay.y+area_overlay.h-1,0);
+	glTexCoord2f(1.0,0.0);
+	glVertex3d(area_overlay.x+area_overlay.w-1, area_overlay.y+area_overlay.h-1,0);
+	glTexCoord2f(1.0,1.0);
+	glVertex3d(area_overlay.x+area_overlay.w-1, area_overlay.y,0);
+	glTexCoord2f(0.0,1.0);
+	glVertex3d(area_overlay.x, area_overlay.y,0);
+	glEnd();
+    } else {
+	// Current Raster Position always at bottom left hand corner of window
+	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
+	glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
+		-(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
+	glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
+    }
 }
 
 void opengl_text(char *msg, int x, int y) {
@@ -85,7 +113,6 @@ void opengl_text(char *msg, int x, int y) {
 	}
     }
 
-    glColor3f(1.0f,1.0f,1.0f);
     if (x == -1000 && y == -1000) { // center
 	x = (sdl_screen->w-strlen(msg)*10)/2;
 	y = (sdl_screen->h-20)/2;
@@ -103,12 +130,15 @@ void opengl_text(char *msg, int x, int y) {
 
     glPixelStorei(GL_UNPACK_ROW_LENGTH,2);
     glPixelStorei(GL_UNPACK_ALIGNMENT,2);
+    glDisable(GL_TEXTURE_2D);
+    glColor3f(1.0f,1.0f,1.0f);
     while (*msg) {
 	glBitmap(10, 20, 0.0, 0.0, 10.0, 0.0, font+*msg*20*2);
 	msg++;
     }
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+    glEnable(GL_TEXTURE_2D);
 }
 
 void finish_opengl() {

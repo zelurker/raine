@@ -13,6 +13,8 @@ typedef struct {
     int dbuf;
     int overlay;
     int info;
+    // render : 0 for drawpixels, 1 for textures
+    int render;
     char *vendor,*renderer,*version;
     struct {
 	int dbuf,fsaa_buffers,fsaa_samples,accel,vbl;
