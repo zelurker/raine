@@ -459,10 +459,11 @@ void StartGUI(void)
 	   }
        }
 
-       if(WantScreen || display_cfg.screen_x != sdl_screen->w ||
+       if(!WantQuit &&
+	       (WantScreen || display_cfg.screen_x != sdl_screen->w ||
 	       display_cfg.screen_y != sdl_screen->h || 
 	       (display_cfg.bpp != sdl_screen->format->BitsPerPixel && !sdl_overlay) ||
-	       ((videoflags & SDL_DOUBLEBUF) && !(sdl_screen->flags & SDL_DOUBLEBUF))){
+	       ((videoflags & SDL_DOUBLEBUF) && !(sdl_screen->flags & SDL_DOUBLEBUF)))){
 	   // Are we here for a screenchange?
 	   WantScreen=0;
 	   print_debug("calling ScreenChange from StartGUI, WantScreen=0\n");
