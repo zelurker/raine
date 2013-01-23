@@ -53,20 +53,22 @@ static PFNGLUNIFORM1IPROC glUniform1i = 0;
 static PFNGLUNIFORM2FVPROC glUniform2fv = 0;
 static PFNGLUNIFORM4FVPROC glUniform4fv = 0;
 
-static void check_error() {
+#ifdef RAINE_DEBUG
+static void check_error(char *msg) {
     int gl_error = glGetError( );
 
     if( gl_error != GL_NO_ERROR ) {
-	fprintf( stderr, "finish_opengl: OpenGL error: %d\n", gl_error );
+	fprintf( stderr, "%s: OpenGL error: %d\n", msg,gl_error );
     }
 
     char *sdl_error = SDL_GetError( );
 
     if( sdl_error[0] != '\0' ) {
-	fprintf(stderr, "finish_opengl: SDL error '%s'\n", sdl_error);
+	fprintf(stderr, "%s: SDL error '%s'\n",msg, sdl_error);
 	SDL_ClearError();
     }
 }
+#endif
 
 void ogl_save_png(char *name) {
     // unsigned long lImageSize;   // Size in bytes of image
@@ -184,7 +186,7 @@ static void attach(GLuint shader) {
 	print_debug("attaching vertexshader to program %d\n",pass[nb_pass].glprogram);
 	glAttachShader(pass[nb_pass].glprogram, vertexshader);
     }
-    print_debug("attaching shader to program %d\n",pass[nb_pass].glprogram);
+    print_debug("attaching shader %d to program %d\n",shader,pass[nb_pass].glprogram);
     glAttachShader(pass[nb_pass].glprogram, shader);
 }
 
@@ -499,8 +501,8 @@ void get_ogl_infos() {
     && glGetProgramiv && glGetProgramInfoLog && glGetUniformLocation
     && glUniform1i && glUniform2fv && glUniform4fv;
 
-    if (shader_support && ogl.render == 1) {
-	read_shader("/home/manu/xml-shaders/shaders/OpenGL/v1.0/5xBR Rounded.shader");
+    if (shader_support && ogl.render == 1 && strcmp(ogl.shader,"None")) {
+	read_shader(ogl.shader);
     }
     if (ogl.vendor) {
 	free(ogl.vendor);
@@ -520,7 +522,6 @@ void get_ogl_infos() {
 static void render_texture(int linear) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear);
-    check_error();
     glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
 	    GameScreen.xview,GameScreen.yview,0,GL_RGB,
 	    GL_UNSIGNED_SHORT_5_6_5_REV,
@@ -547,27 +548,29 @@ void draw_opengl(int linear) {
 	if (shader_support && pass[0].glprogram) {
 
 	    int n;
-	    check_error();
 	    for (n=0; n<=nb_pass; n++) {
 
 		GLuint glprogram = pass[n].glprogram;
 		glUseProgram(glprogram);
-		check_error();
 		GLint location;
 
 		float inputSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
 		location = glGetUniformLocation(glprogram, "rubyInputSize");
-		if (location)
+		if (location > -1)
 		    glUniform2fv(location, 1, inputSize);
+#ifdef RAINE_DEBUG
 		else
-		    printf("no rubyInputSize\n");
+		    printf("no rubyInputSize from %d\n",glprogram);
+#endif
 
 		float outputSize[2] = { (float)area_overlay.w, (float)area_overlay.h };
 		location = glGetUniformLocation(glprogram, "rubyOutputSize");
-		if (location)
+		if (location > -1)
 		    glUniform2fv(location, 1, outputSize);
+#ifdef RAINE_DEBUG
 		else
 		    printf("no rubyOutputSize\n");
+#endif
 
 		// This one is supposed to be >= GameScreen.[xy]view
 		// I guess it's in case you decide to use hq2/3x on GameScreen
@@ -575,10 +578,12 @@ void draw_opengl(int linear) {
 		// that (loss of cycles everywhere !)
 		float textureSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
 		location = glGetUniformLocation(glprogram, "rubyTextureSize");
-		if (location)
+		if (location > -1)
 		    glUniform2fv(location, 1, textureSize);
+#ifdef RAINE_DEBUG
 		else
 		    printf("no rubyTextureSize\n");
+#endif
 
 		if (pass[n].filter == 2) // explicit nearest
 		    linear = GL_NEAREST;
@@ -587,7 +592,6 @@ void draw_opengl(int linear) {
 		/* Notice : for now all the size/scale/outscale parameters are
 		 * simply ignored, it's because I didn't find any shader using
 		 * them until now */
-		check_error();
 		render_texture(linear);
 	    }
 	    glUseProgram(0); // all shaders off now
@@ -672,7 +676,7 @@ void finish_opengl() {
 	glFlush();
 #ifdef RAINE_DEBUG
     /* Check for error conditions. */
-    check_error();
+    check_error("finish_opengl");
 #endif
 }
 

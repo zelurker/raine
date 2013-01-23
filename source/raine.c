@@ -311,6 +311,9 @@ int main(int argc,char *argv[])
    sprintf(dir_cfg.screen_dir,"%sscreens" SLASH, dir_cfg.exe_path);
    sprintf(dir_cfg.emudx_dir,"%semudx" SLASH, dir_cfg.share_path);
    sprintf(dir_cfg.artwork_dir,"%sartwork" SLASH, dir_cfg.share_path);
+#ifdef SDL
+   sprintf(dir_cfg.shader_dir,"%sshaders" SLASH, dir_cfg.share_path);
+#endif
    init_rom_dir();
    sprintf(str,"%sroms" SLASH, dir_cfg.exe_path);
    add_rom_dir(str);

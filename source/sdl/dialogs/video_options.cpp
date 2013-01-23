@@ -8,6 +8,7 @@
 #include "display.h"
 #include "sdl/display_sdl.h"
 #include "sdl/dialogs/messagebox.h"
+#include "sdl/dialogs/fsel.h"
 
 class TVideo : public TMenu
 {
@@ -67,17 +68,44 @@ static menu_item_t blits_options[] =
     {  NULL },
 };
 
+static void preinit_ogl_options();
+
+static int choose_shader(int sel) {
+    // This part is a little tricky because I want the fileselector when I
+    // select this, but I don't want the whole path to be displayed, just
+    // the filename selected alone. Tricky, but not long... !
+    char *exts[] = { "*.shader", NULL };
+    if (!strcmp(ogl.shader,"None"))
+	*ogl.shader = 0;
+    fsel(dir_cfg.shader_dir,exts,ogl.shader,"Select shader");
+    if (ogl.shader[strlen(ogl.shader)-1] == '/') // cancelled ?
+	strcpy(ogl.shader,"None");
+    preinit_ogl_options();
+    return 0;
+}
+
+static int bidon;
+
 static menu_item_t ogl_options[] =
 {
     { "Rendering", NULL, &ogl.render, 2, { 0, 1 }, { "DrawPixels (no shaders)", "Texture (possible shaders)" }, },
     { "Double buffer", NULL, &ogl.dbuf, 2, { 0, 1 }, {"No","Yes"} },
     { "Save opengl screenshots", NULL, &ogl.save, 2, {0, 1}, {"No", "Yes"} },
+    { "Shader", &choose_shader,&bidon,1,{0},{ogl.shader}}, 
     { "OpenGL overlay interface", NULL, &ogl.overlay, 2, { 0, 1 }, {"No","Yes"} },
     {  NULL },
 };
 
+static void preinit_ogl_options() {
+    char *p = strrchr(ogl.shader,SLASH[0]);
+    if (p) ogl_options[3].values_list_label[0] = p+1;
+    else
+	ogl_options[3].values_list_label[0] = "None";
+}
+
 int renderer_options(int sel) {
     TMenu *menu;
+    preinit_ogl_options();
     switch(display_cfg.video_mode) {
     case 0: menu = new TDialog("OpenGL Options", ogl_options); break;
     case 1: menu = new TDialog("Overlays Options", overlays_options); break;
