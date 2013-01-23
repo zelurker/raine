@@ -62,7 +62,7 @@ void TEdit::update() {
 
 int TEdit::get_len_max_options() {
     if (*menu->label) 
-	return maxl;
+	return strlen(field);
     return 0;
 }
 
