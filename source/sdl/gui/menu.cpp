@@ -805,7 +805,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
 	    char *sdl_error = SDL_GetError( );
 
 	    if( sdl_error[0] != '\0' ) {
-		fprintf(stderr, "draw_opengl: SDL error '%s'\n", sdl_error);
+		fprintf(stderr, "update_fg_layer: SDL error '%s'\n", sdl_error);
 		SDL_ClearError();
 	    }
 	    exit(1);
