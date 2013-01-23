@@ -454,8 +454,8 @@ void opengl_reshape(int w, int h) {
     glLoadIdentity();    
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
     if (ogl.render == 1) {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
 }
 
@@ -555,35 +555,35 @@ void draw_opengl(int linear) {
 		GLint location;
 
 		float inputSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+#if 0
+		if (n > 0) {
+		    inputSize[0] = (float)area_overlay.w;
+		    inputSize[1] = (float)area_overlay.h;
+		}
+#endif
 		location = glGetUniformLocation(glprogram, "rubyInputSize");
 		if (location > -1)
 		    glUniform2fv(location, 1, inputSize);
-#ifdef RAINE_DEBUG
-		else
-		    printf("no rubyInputSize from %d\n",glprogram);
-#endif
 
 		float outputSize[2] = { (float)area_overlay.w, (float)area_overlay.h };
 		location = glGetUniformLocation(glprogram, "rubyOutputSize");
 		if (location > -1)
 		    glUniform2fv(location, 1, outputSize);
-#ifdef RAINE_DEBUG
-		else
-		    printf("no rubyOutputSize\n");
-#endif
 
 		// This one is supposed to be >= GameScreen.[xy]view
 		// I guess it's in case you decide to use hq2/3x on GameScreen
 		// to generate the texture, but I don't think I'll want to do
 		// that (loss of cycles everywhere !)
 		float textureSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+#if 0
+		if (n > 0) {
+		    textureSize[0] = (float)area_overlay.w;
+		    textureSize[1] = (float)area_overlay.h;
+		}
+#endif
 		location = glGetUniformLocation(glprogram, "rubyTextureSize");
 		if (location > -1)
 		    glUniform2fv(location, 1, textureSize);
-#ifdef RAINE_DEBUG
-		else
-		    printf("no rubyTextureSize\n");
-#endif
 
 		if (pass[n].filter == 2) // explicit nearest
 		    linear = GL_NEAREST;
