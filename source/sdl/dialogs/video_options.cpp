@@ -71,6 +71,7 @@ static menu_item_t ogl_options[] =
 {
     { "Rendering", NULL, &ogl.render, 2, { 0, 1 }, { "DrawPixels (no shaders)", "Texture (possible shaders)" }, },
     { "Double buffer", NULL, &ogl.dbuf, 2, { 0, 1 }, {"No","Yes"} },
+    { "Save opengl screenshots", NULL, &ogl.save, 2, {0, 1}, {"No", "Yes"} },
     { "OpenGL overlay interface", NULL, &ogl.overlay, 2, { 0, 1 }, {"No","Yes"} },
     {  NULL },
 };

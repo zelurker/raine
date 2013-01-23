@@ -47,7 +47,10 @@ static int show_fps_mode_store;
 static UINT32 pause_timer;
 
 static void my_save_png(char *full_name) {
-  save_png(full_name, GameViewBitmap, pal);
+    if ((sdl_screen->flags & SDL_OPENGL) && ogl.save)
+	ogl_save_png(full_name);
+    else
+	save_png(full_name, GameViewBitmap, pal);
 }
 
 static void do_save_screen(void)
@@ -929,6 +932,10 @@ void DrawNormal(void)
 
    if (!ogl.overlay || !(sdl_screen->flags & SDL_OPENGL))
        overlay_ingame_interface(0);
+   else
+       overlay_ingame_interface(1);
+   if (sdl_screen->flags & SDL_OPENGL)
+       finish_opengl();
 
    /*
 
@@ -946,10 +953,7 @@ void DrawNormal(void)
 
    RefreshBuffers = 0;
    if (sdl_screen->flags & SDL_OPENGL) {
-       draw_opengl();
-       if (ogl.overlay)
-	   overlay_ingame_interface(1);
-       finish_opengl();
+       draw_opengl(1);
        return;
    }
 

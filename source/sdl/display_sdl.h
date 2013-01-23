@@ -11,7 +11,7 @@ extern "C" {
 
 typedef struct {
     int dbuf;
-    int overlay;
+    int overlay,save;
     int info;
     // render : 0 for drawpixels, 1 for textures
     int render;

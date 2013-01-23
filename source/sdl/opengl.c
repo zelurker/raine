@@ -8,6 +8,7 @@
 #include "files.h"
 #include "newmem.h"
 #include "raine.h"
+#include "loadpng.h"
 
 #ifdef RAINE_UNIX
   #include <GL/glx.h>
@@ -65,6 +66,42 @@ static void check_error() {
 	fprintf(stderr, "finish_opengl: SDL error '%s'\n", sdl_error);
 	SDL_ClearError();
     }
+}
+
+void ogl_save_png(char *name) {
+    // unsigned long lImageSize;   // Size in bytes of image
+    GLint iViewport[4];         // Viewport in pixels
+    BITMAP *b;
+    int a;
+    SDL_Surface *s;
+    int bpp = sdl_screen->format->BitsPerPixel;
+
+    // Get the viewport dimensions
+    glGetIntegerv(GL_VIEWPORT, iViewport);
+
+    // How big is the image going to be (targas are tightly packed)
+    // lImageSize = iViewport[2] * 3 * iViewport[3];	
+
+    // Allocate block. If this doesn't work, go home
+    b = sdl_create_bitmap_ex(bpp,iViewport[2],iViewport[3]);
+    s = (SDL_Surface *)b->extra;
+
+    // Read bits from color buffer
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+    glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+
+    // Get the current read buffer setting and save it. Switch to
+    // the front buffer and do the read operation. Finally, restore
+    // the read buffer state
+    glReadPixels(0, 0, iViewport[2], iViewport[3], (bpp == 32 ? GL_BGRA : GL_BGR), GL_UNSIGNED_BYTE, b->line[0]);
+    // Flip the picture, it's upside down in opengl
+    for (a=0; a < b->h; a++) {
+	b->line[a] = (UINT8 *)s->pixels+(b->h-1-a)*s->pitch;
+    }
+    save_png(name,b,NULL);
+    destroy_bitmap(b);
 }
 
 static char* getstr(char *s, char *what) {
