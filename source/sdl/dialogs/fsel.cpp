@@ -203,9 +203,6 @@ TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, in
   } while (res < 0);
   title = path;
   res_file = res_str;
-  strcpy(res_file,path);
-  if (path[strlen(path)-1] != SLASH[0]) 
-    strcat(res_file,SLASH);
 }
 
 char* TFileSel::get_emuname() {
@@ -221,6 +218,8 @@ void TFileSel::compute_nb_items() {
   char cwd[1024];
   char tmp_path[1024];
   int found_cue = 0, found_iso = 0;
+  char *oldsel = strrchr(res_file,'/');
+  if (oldsel) oldsel++;
   if (menu)
     free(menu);
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
@@ -290,8 +289,17 @@ void TFileSel::compute_nb_items() {
     menu[nb_files].label = NULL;
     closedir(dir);
     qsort(&menu[2],nb_files-2,sizeof(menu_item_t),&sort_menu);
+    if (oldsel)
+	for (int n=2; n<nb_files; n++)
+	    if (!strcmp(menu[n].label,oldsel)) {
+		printf("sel = %d for %s\n",nb_files,menu[n].label);
+		sel = n;
+	    }
     chdir(cwd);
   }
+  strcpy(res_file,path);
+  if (path[strlen(path)-1] != SLASH[0]) 
+    strcat(res_file,SLASH);
 #ifdef NEO
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
       char *myexts[] = { ".iso", NULL };

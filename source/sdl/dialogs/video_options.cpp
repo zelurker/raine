@@ -75,9 +75,16 @@ static int choose_shader(int sel) {
     // select this, but I don't want the whole path to be displayed, just
     // the filename selected alone. Tricky, but not long... !
     char *exts[] = { "*.shader", NULL };
+    char dir[PATH_MAX];
+    strcpy(dir,dir_cfg.shader_dir);
     if (!strcmp(ogl.shader,"None"))
 	*ogl.shader = 0;
-    fsel(dir_cfg.shader_dir,exts,ogl.shader,"Select shader");
+    else {
+	strcpy(dir,ogl.shader);
+	char *p = strrchr(dir,'/');
+	if (p) *p = 0;
+    }
+    fsel(dir,exts,ogl.shader,"Select shader");
     if (ogl.shader[strlen(ogl.shader)-1] == '/') // cancelled ?
 	strcpy(ogl.shader,"None");
     preinit_ogl_options();
