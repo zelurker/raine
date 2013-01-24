@@ -81,11 +81,11 @@ static int choose_shader(int sel) {
 	*ogl.shader = 0;
     else {
 	strcpy(dir,ogl.shader);
-	char *p = strrchr(dir,'/');
+	char *p = strrchr(dir,SLASH[0]);
 	if (p) *p = 0;
     }
     fsel(dir,exts,ogl.shader,"Select shader");
-    if (ogl.shader[strlen(ogl.shader)-1] == '/') // cancelled ?
+    if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0]) // cancelled ?
 	strcpy(ogl.shader,"None");
     preinit_ogl_options();
     return 0;
