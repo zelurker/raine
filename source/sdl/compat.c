@@ -16,6 +16,7 @@
 #include "video/res.h"
 #include "sdl/dialogs/messagebox.h"
 #include "sdl/opengl.h"
+#include "loadpng.h"
 
 UINT32 emudx_transp; 
 static SDL_PixelFormat overlay_format = {
@@ -426,5 +427,16 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
       break;
   }
   return bmp;
+}
+
+void save_png_surf_rev(char *name, SDL_Surface *s) {
+    BITMAP *b = surface_to_bmp(s);
+    int a;
+    // Flip the picture, it's upside down in opengl
+    for (a=0; a < b->h; a++) {
+	b->line[a] = (UINT8 *)s->pixels+(b->h-1-a)*s->pitch;
+    }
+    save_png(name,b,NULL);
+    destroy_bitmap(b);
 }
 

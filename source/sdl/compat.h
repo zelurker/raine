@@ -175,6 +175,11 @@ extern void load_message(char *);
   SDL_FillRect(get_surface_from_bmp(bmp),&r,coul); \
 }
 
+// lovely callback to avoid the violent name collision between allegro and
+// windows about BITMAP. I think BITMAP has probably been removed from allegro
+// now, I should check that one day... !
+void save_png_surf_rev(char *name, SDL_Surface *s);
+
 #ifdef __cplusplus
 }
 #endif

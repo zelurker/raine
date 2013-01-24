@@ -7,14 +7,13 @@
 #include "sdl/display_sdl.h"
 #include "files.h"
 #include "newmem.h"
-#include "raine.h"
-#include "loadpng.h"
+#include "raine.h" // ReadWord/WriteWord
 
 #ifdef RAINE_UNIX
   #include <GL/glx.h>
   #define glGetProcAddress(name) (*glXGetProcAddress)((const GLubyte*)(name))
-#elif defined(PLATFORM_WIN)
-  #include <GL/glext.h>
+#elif defined(RAINE_WIN32)
+  #include <GL/glaux.h>
   #define glGetProcAddress(name) wglGetProcAddress(name)
 #else
   #error "OpenGL: unsupported platform"
@@ -73,10 +72,9 @@ static void check_error(char *msg) {
 void ogl_save_png(char *name) {
     // unsigned long lImageSize;   // Size in bytes of image
     GLint iViewport[4];         // Viewport in pixels
-    BITMAP *b;
-    int a;
     SDL_Surface *s;
     int bpp = sdl_screen->format->BitsPerPixel;
+    SDL_PixelFormat *f = sdl_screen->format;
 
     // Get the viewport dimensions
     glGetIntegerv(GL_VIEWPORT, iViewport);
@@ -84,9 +82,8 @@ void ogl_save_png(char *name) {
     // How big is the image going to be (targas are tightly packed)
     // lImageSize = iViewport[2] * 3 * iViewport[3];	
 
-    // Allocate block. If this doesn't work, go home
-    b = sdl_create_bitmap_ex(bpp,iViewport[2],iViewport[3]);
-    s = (SDL_Surface *)b->extra;
+    s = SDL_CreateRGBSurface(SDL_SWSURFACE,sdl_screen->w,sdl_screen->h,
+	    f->BitsPerPixel,f->Rmask,f->Gmask,f->Bmask,f->Amask);
 
     // Read bits from color buffer
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -97,13 +94,8 @@ void ogl_save_png(char *name) {
     // Get the current read buffer setting and save it. Switch to
     // the front buffer and do the read operation. Finally, restore
     // the read buffer state
-    glReadPixels(0, 0, iViewport[2], iViewport[3], (bpp == 32 ? GL_BGRA : GL_BGR), GL_UNSIGNED_BYTE, b->line[0]);
-    // Flip the picture, it's upside down in opengl
-    for (a=0; a < b->h; a++) {
-	b->line[a] = (UINT8 *)s->pixels+(b->h-1-a)*s->pitch;
-    }
-    save_png(name,b,NULL);
-    destroy_bitmap(b);
+    glReadPixels(0, 0, iViewport[2], iViewport[3], (bpp == 32 ? GL_BGRA : GL_BGR), GL_UNSIGNED_BYTE, s->pixels);
+    save_png_surf_rev(name,s);
 }
 
 static char* getstr(char *s, char *what) {
@@ -623,7 +615,7 @@ void opengl_text(char *msg, int x, int y) {
 	char *name= get_shared("fonts/10x20.fnt");
 	UINT32 size = size_file(name);
 	if (!size) {
-	    printf("couldn't find font %s exe:%s share:%s\n",name,dir_cfg.exe_path,dir_cfg.share_path);
+	    printf("couldn't find font %s\n",name);
 	    return;
 	}
 	font = malloc(size);
