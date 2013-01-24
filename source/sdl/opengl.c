@@ -31,6 +31,7 @@ typedef struct {
     GLuint glprogram, fragmentshader;
     int sizex,sizey,filter;
     float outscalex,outscaley;
+    int vertex;
 } tpass;
 
 tpass pass[MAX_PASS];
@@ -178,7 +179,8 @@ static int attach(GLuint shader) {
 	pass[nb_pass].glprogram = glCreateProgram();
 	print_debug("pass %d glprogram created %d\n",nb_pass,pass[nb_pass].glprogram);
     }
-    if (vertexshader && vertexshader != shader) {
+    if (vertexshader && vertexshader != shader &&
+	    vertexshader != pass[nb_pass].vertex) {
 	print_debug("attaching vertex shader to program %d\n",pass[nb_pass].glprogram);
 	gl_error = glGetError( );
 	glAttachShader(pass[nb_pass].glprogram, vertexshader);
@@ -197,7 +199,8 @@ static int attach(GLuint shader) {
 	strcpy(ogl.shader,"None");
 	MessageBox("OpenGL error","error while attaching fragment shader","ok");
 	return 0;
-    }
+    } else if (vertexshader == shader)
+	pass[nb_pass].vertex = shader;
     return 1;
 }
 
@@ -262,7 +265,7 @@ static void delete_shaders() {
 	    glDeleteProgram(pass[n].glprogram);
 	    pass[n].fragmentshader = pass[n].glprogram = 0;
 	}
-	pass[n].sizex = pass[n].sizey = pass[n].filter = 0;
+	pass[n].sizex = pass[n].sizey = pass[n].filter = pass[n].vertex = 0;
 	pass[n].outscalex = pass[n].outscaley = 0.0;
     }
     if (vertexshader) glDeleteShader(vertexshader);
@@ -424,7 +427,7 @@ static void read_shader(char *shader) {
 	    p = getstr(p,"/fragment>");
 	} else if (!mystrcmp(&p,"/shader>")) {
 	    int n;
-	    printf("end of shader\n");
+	    print_debug("end of shader\n");
 
 	    for (n=0; n<=nb_pass; n++) {
 		glLinkProgram(pass[n].glprogram);
@@ -450,7 +453,7 @@ static void read_shader(char *shader) {
 			printf("Errors validating shader program %d: %s\n", n,buf);
 			free(buf);
 		    } else
-			printf("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
+			print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
 		} else
 		    printf("impossible to validate shader, no validation function\n");
 	    }
@@ -623,9 +626,8 @@ void draw_opengl(int linear) {
 	    }
 	    glUseProgram(0); // all shaders off now
 	    return;
-	} else
-	    printf("shader support %d 1st program %d\n",shader_support,pass[0].glprogram);
-	if (linear) 
+	} 
+	if (linear != 2) 
 	    linear = GL_LINEAR;
 	else
 	    linear = GL_NEAREST;
