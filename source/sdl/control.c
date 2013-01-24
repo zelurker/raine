@@ -242,6 +242,17 @@ struct DEF_INPUT def_input_list[KB_DEF_COUNT] =
  { SDLK_r,       0x00, 0, "Def Button 2 Left",    },      // KB_DEF_B2_L,
  { SDLK_t,    0x00, 0, "Def Button 2 Right",   },      // KB_DEF_B2_R,
 
+ { 0,           0, 0, "Player1 B1+B2", }, // p1_b1B2
+ { 0,           0, 0, "Player1 B3+B4", }, 
+ { 0,           0, 0, "Player1 B2+B3", },
+ { 0,           0, 0, "Player1 B1+B2+B3", },
+ { 0,           0, 0, "Player1 B2+B3+B4", },
+
+ { 0,           0, 0, "Player2 B1+B2", }, // p2_b1B2
+ { 0,           0, 0, "Player2 B3+B4", }, 
+ { 0,           0, 0, "Player2 B2+B3", },
+ { 0,           0, 0, "Player2 B1+B2+B3", },
+ { 0,           0, 0, "Player2 B2+B3+B4", },
 };
 
 /******************************************************************************/

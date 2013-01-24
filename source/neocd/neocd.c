@@ -222,6 +222,11 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P1_B2, MSG_P1_B2, 0x00, 0x20, BIT_ACTIVE_0 },
   { KB_DEF_P1_B3, MSG_P1_B3, 0x00, 0x40, BIT_ACTIVE_0 },
   { KB_DEF_P1_B4, MSG_P1_B4, 0x00, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1B2,"Player1 b1+b2", 0, 0x30, BIT_ACTIVE_0 }, 
+  { KB_DEF_P1_B3B4,"Player1 b3+b4", 0, 0xc0, BIT_ACTIVE_0 }, 
+  { KB_DEF_P1_B2B3,"Player1 b2+b3", 0, 0x60, BIT_ACTIVE_0 }, 
+  { KB_DEF_P1_B1B2B3,"Player1 b1+b2+b3", 0, 0x70, BIT_ACTIVE_0 }, 
+  { KB_DEF_P1_B2B3B4,"Player1 b2+b3+b4", 0, 0xe0, BIT_ACTIVE_0 }, 
 
   { KB_DEF_P2_UP, MSG_P2_UP, 0x02, 0x01, BIT_ACTIVE_0 },
   { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x02, BIT_ACTIVE_0 },
@@ -231,6 +236,11 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P2_B2, MSG_P2_B2, 0x02, 0x20, BIT_ACTIVE_0 },
   { KB_DEF_P2_B3, MSG_P2_B3, 0x02, 0x40, BIT_ACTIVE_0 },
   { KB_DEF_P2_B4, MSG_P2_B4, 0x02, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2,"Player2 b1+b2", 2, 0x30, BIT_ACTIVE_0 }, 
+  { KB_DEF_P2_B3B4,"Player2 b3+b4", 2, 0xc0, BIT_ACTIVE_0 }, 
+  { KB_DEF_P2_B2B3,"Player2 b2+b3", 2, 0x60, BIT_ACTIVE_0 }, 
+  { KB_DEF_P2_B1B2B3,"Player2 b1+b2+b3", 2, 0x70, BIT_ACTIVE_0 }, 
+  { KB_DEF_P2_B2B3B4,"Player2 b2+b3+b4", 2, 0xe0, BIT_ACTIVE_0 }, 
 
   { KB_DEF_P1_START, MSG_P1_START, 0x04, 0x01, BIT_ACTIVE_0 },
   { KB_DEF_COIN1, MSG_COIN1, 0x04, 0x02, BIT_ACTIVE_0 },
