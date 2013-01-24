@@ -8,6 +8,7 @@
 #include "files.h"
 #include "newmem.h"
 #include "raine.h" // ReadWord/WriteWord
+#include "sdl/dialogs/messagebox.h"
 
 #ifdef RAINE_UNIX
   #include <GL/glx.h>
@@ -171,20 +172,37 @@ static int mystrcmp(char **s, char *cmp) {
     return ret;
 }
 
-static void attach(GLuint shader) {
+static int attach(GLuint shader) {
+    int gl_error;
     if (!pass[nb_pass].glprogram) {
 	pass[nb_pass].glprogram = glCreateProgram();
 	print_debug("pass %d glprogram created %d\n",nb_pass,pass[nb_pass].glprogram);
     }
     if (vertexshader && vertexshader != shader) {
-	print_debug("attaching vertexshader to program %d\n",pass[nb_pass].glprogram);
+	print_debug("attaching vertex shader to program %d\n",pass[nb_pass].glprogram);
+	gl_error = glGetError( );
 	glAttachShader(pass[nb_pass].glprogram, vertexshader);
+	gl_error = glGetError( );
+	if( gl_error != GL_NO_ERROR ) {
+	    strcpy(ogl.shader,"None");
+	    MessageBox("OpenGL error","error while attaching vertex shader","ok");
+	    return 0;
+	}
     }
     print_debug("attaching shader %d to program %d\n",shader,pass[nb_pass].glprogram);
+    gl_error = glGetError( );
     glAttachShader(pass[nb_pass].glprogram, shader);
+    gl_error = glGetError( );
+    if( gl_error != GL_NO_ERROR ) {
+	strcpy(ogl.shader,"None");
+	MessageBox("OpenGL error","error while attaching fragment shader","ok");
+	return 0;
+    }
+    return 1;
 }
 
-static void set_fragment_shader(const char *source) {
+static int set_fragment_shader(const char *source) {
+    int ret = 1;
     GLuint fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentshader, 1, &source, 0);
     glCompileShader(fragmentshader);
@@ -195,14 +213,18 @@ static void set_fragment_shader(const char *source) {
 	glGetShaderiv(fragmentshader, GL_INFO_LOG_LENGTH, &tmp);
 	GLchar *buf = malloc(tmp);
 	glGetShaderInfoLog(fragmentshader, tmp, NULL, buf);
-	printf("Errors compiling fragment shader: %s\n", buf);
+	strcpy(ogl.shader,"None");
+	MessageBox("Errors compiling fragment shader",buf,"ok");
 	free(buf);
+	ret = 0;
     } else 
-	attach(fragmentshader);
+	ret = attach(fragmentshader);
     pass[nb_pass].fragmentshader = fragmentshader;
+    return ret;
 }
 
-static void set_vertex_shader(const char *source) {
+static int set_vertex_shader(const char *source) {
+    int ret = 1;
     vertexshader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexshader, 1, &source, 0);
     glCompileShader(vertexshader);
@@ -215,15 +237,17 @@ static void set_vertex_shader(const char *source) {
 	glGetShaderInfoLog(vertexshader, tmp, NULL, buf);
 	printf("Errors compiling vertex shader: %s\n", buf);
 	free(buf);
+	ret = 0;
     } else {
 	/* After seeing an example of a v1.2 xml shader, it seems the vertex
 	 * shader can be totally at the end of the file, so I guess that it
 	 * needs to be attached to all created programs in this case ! */
 	int nb = nb_pass;
 	for (nb_pass=0; nb_pass <= nb; nb_pass++)
-	    attach(vertexshader);
+	    ret &= attach(vertexshader);
 	nb_pass = nb;
     }
+    return ret;
 }
 
 static void delete_shaders() {
@@ -323,7 +347,10 @@ static void read_shader(char *shader) {
 		printf("shader: parsing of vertex tag failed\n");
 		flee;
 	    }
-	    set_vertex_shader(vertex_src);
+	    if (!set_vertex_shader(vertex_src)) {
+		delete_shaders();
+		flee;
+	    }
 	    p = getstr(p,"/vertex>");
 
 
@@ -390,7 +417,10 @@ static void read_shader(char *shader) {
 		printf("shader: parsing of fragment tag failed\n");
 		flee;
 	    }
-	    set_fragment_shader(frag_src);
+	    if (!set_fragment_shader(frag_src)) {
+		delete_shaders();
+		flee;
+	    }
 	    p = getstr(p,"/fragment>");
 	} else if (!mystrcmp(&p,"/shader>")) {
 	    int n;
@@ -405,7 +435,9 @@ static void read_shader(char *shader) {
 		    glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
 		    GLchar *buf = malloc(tmp);
 		    glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
-		    printf("Errors linking shader program %d: %s\n", n,buf);
+		    delete_shaders();
+		    strcpy(ogl.shader,"None");
+		    MessageBox("Error linking shader",buf,"OK");
 		    free(buf);
 		} else if (glValidateProgram) {
 		    glValidateProgram(pass[n].glprogram);
@@ -422,6 +454,7 @@ static void read_shader(char *shader) {
 		} else
 		    printf("impossible to validate shader, no validation function\n");
 	    }
+
 	    flee;
 	} else {
 	    char *e = p;
