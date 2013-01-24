@@ -1,5 +1,8 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
+#ifdef MessageBox
+#undef MessageBox
+#endif
 #include "sdl/compat.h"
 #include "blit.h"
 #include "blit_sdl.h"
