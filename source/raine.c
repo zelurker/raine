@@ -93,7 +93,9 @@ char raine_cpu_model[80]; // declared in gui/about.c, not available with sdl...
 
 int main(int argc,char *argv[])
 {
+#ifndef NEO
    int i;
+#endif
    unsigned int version_id;
 #ifndef SDL
    int ta;
@@ -398,6 +400,7 @@ int main(int argc,char *argv[])
 #endif
 
    strcpy(dir_cfg.screen_dir,	 raine_get_config_string( "Directories", "screenshots",   dir_cfg.screen_dir));
+#ifndef NEO
    strcpy(dir_cfg.emudx_dir,	 raine_get_config_string( "Directories", "emudx",   dir_cfg.emudx_dir));
    strcpy(dir_cfg.artwork_dir,	 raine_get_config_string( "Directories", "artwork",   dir_cfg.artwork_dir));
    i=0;
@@ -409,6 +412,7 @@ int main(int argc,char *argv[])
        break;
      dir_cfg.rom_dir[i++] = strdup(s);
    } while(1);
+#endif
 #ifndef SDL
    strcpy(dir_cfg.language_file, raine_get_config_string( "Directories", "language_file", "english.cfg"));
 #endif
@@ -422,12 +426,13 @@ int main(int argc,char *argv[])
    mute_sfx = raine_get_config_int("neocd","mute_sfx",0);
    mute_music = raine_get_config_int("neocd","mute_music",0);
    allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
-#endif
+#else
 
    for(i = 0; dir_cfg.rom_dir[i]; i ++){
      put_backslash(dir_cfg.rom_dir[i]);
      strlwr(dir_cfg.rom_dir[i]);
    }
+#endif
 
 
    /*
@@ -653,6 +658,7 @@ int main(int argc,char *argv[])
 #ifdef RAINE_DOS
    raine_set_config_int(	"Directories",  "long_file_names",      dir_cfg.long_file_names);
 #endif
+   raine_set_config_string(	"Directories",  "ScreenShots",          dir_cfg.screen_dir);
 #ifdef NEO
    raine_set_config_string("neocd", "neocd_dir", neocd_dir);
    raine_set_config_string("neocd", "neocd_bios", neocd_bios_file);
@@ -663,9 +669,7 @@ int main(int argc,char *argv[])
    raine_set_config_int("neocd","mute_sfx",mute_sfx);
    raine_set_config_int("neocd","mute_music",mute_music);
    raine_set_config_int("neocd","allowed_speed_hacks",allowed_speed_hacks);
-#endif
-
-   raine_set_config_string(	"Directories",  "ScreenShots",          dir_cfg.screen_dir);
+#else
    raine_set_config_string(	"Directories",  "emudx",          dir_cfg.emudx_dir);
    raine_set_config_string(	"Directories",  "artwork",          dir_cfg.artwork_dir);
    for(i = 0; dir_cfg.rom_dir[i]; i ++){
@@ -681,6 +685,7 @@ int main(int argc,char *argv[])
        raine_set_config_string("Directories",str,"");
    } while (s);
    free(dir_cfg.rom_dir);
+#endif
 #ifndef SDL
    raine_set_config_string(	"Directories",  "language_file",        dir_cfg.language_file);
 #endif
