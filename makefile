@@ -281,6 +281,7 @@ ifndef SDL
    langdir = $(rainedata)/languages
 else
    bitmaps_dir = $(rainedata)/bitmaps
+   shaders_dir = $(rainedata)/shaders
    fonts_dir = $(rainedata)/fonts
    scripts_dir = $(rainedata)/scripts/raine
 endif
@@ -1287,7 +1288,10 @@ else
 ifdef DOIT
 	@echo installing fonts in $(fonts_dir)
 	$(INSTALL_DATA) fonts/Vera.ttf fonts/10x20.fnt fonts/VeraMono.ttf fonts/font6x8.bin $(fonts_dir)
+	@echo installing bitmaps in $(bitmaps_dir)
 	$(INSTALL_DATA) bitmaps/cursor.png bitmaps/raine_logo.png $(bitmaps_dir)
+	@echo installing shaders in $(shaders_dir)
+	$(INSTALL_DATA) shaders/* $(shaders_dir)
 #	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
 endif
 endif
@@ -1318,7 +1322,8 @@ endif
 endif
 
 install_dirs:
-	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir)
+	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps 
+	$(MD) -p $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir) $(shaders_dir)
 
 $(RAINE_LNG):
 	$(INSTALL_DATA) config/language/$@ $(langdir)
