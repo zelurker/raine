@@ -23,6 +23,8 @@
 #include <conio.h>
 #elif defined(RAINE_UNIX)
 #include <unistd.h> // isatty
+#elif defined(RAINE_WIN32)
+#include <io.h> // getcwd, chdir...
 #endif
 
 #include "raine.h"              // General defines and stuff
