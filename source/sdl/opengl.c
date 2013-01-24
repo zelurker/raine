@@ -13,7 +13,9 @@
   #include <GL/glx.h>
   #define glGetProcAddress(name) (*glXGetProcAddress)((const GLubyte*)(name))
 #elif defined(RAINE_WIN32)
-  #include <GL/glaux.h>
+//  With sdl glext.h doesn't need to be included here, and it's a good thing
+//  because it has disappeared from the i686-w64-mingw32-gcc files
+//  #include <GL/glaux.h>
   #define glGetProcAddress(name) wglGetProcAddress(name)
 #else
   #error "OpenGL: unsupported platform"
