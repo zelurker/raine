@@ -291,10 +291,8 @@ void TFileSel::compute_nb_items() {
     qsort(&menu[2],nb_files-2,sizeof(menu_item_t),&sort_menu);
     if (oldsel)
 	for (int n=2; n<nb_files; n++)
-	    if (!strcmp(menu[n].label,oldsel)) {
-		printf("sel = %d for %s\n",nb_files,menu[n].label);
+	    if (!strcmp(menu[n].label,oldsel)) 
 		sel = n;
-	    }
     chdir(cwd);
   }
   strcpy(res_file,path);
