@@ -1422,8 +1422,13 @@ void update_inputs(void)
 /*                                                                            */
 /******************************************************************************/
 
+#ifdef NEO
+char MSG_COIN1[]        = "Player 1 select";
+char MSG_COIN2[]        = "Player 2 select";
+#else
 char MSG_COIN1[]        = "Coin A";
 char MSG_COIN2[]        = "Coin B";
+#endif
 char MSG_COIN3[]        = "Coin C";
 char MSG_COIN4[]        = "Coin D";
 
@@ -1444,10 +1449,17 @@ char MSG_P1_DOWN[]      = "Player1 Down";
 char MSG_P1_LEFT[]      = "Player1 Left";
 char MSG_P1_RIGHT[]     = "Player1 Right";
 
+#ifdef NEO
+char MSG_P1_B1[]        = "Player1 A";
+char MSG_P1_B2[]        = "Player1 B";
+char MSG_P1_B3[]        = "Player1 C";
+char MSG_P1_B4[]        = "Player1 D";
+#else
 char MSG_P1_B1[]        = "Player1 Button1";
 char MSG_P1_B2[]        = "Player1 Button2";
 char MSG_P1_B3[]        = "Player1 Button3";
 char MSG_P1_B4[]        = "Player1 Button4";
+#endif
 char MSG_P1_B5[]        = "Player1 Button5";
 char MSG_P1_B6[]        = "Player1 Button6";
 char MSG_P1_B7[]        = "Player1 Button7";
@@ -1460,10 +1472,17 @@ char MSG_P2_DOWN[]      = "Player2 Down";
 char MSG_P2_LEFT[]      = "Player2 Left";
 char MSG_P2_RIGHT[]     = "Player2 Right";
 
+#ifdef NEO
+char MSG_P2_B1[]        = "Player2 A";
+char MSG_P2_B2[]        = "Player2 B";
+char MSG_P2_B3[]        = "Player2 C";
+char MSG_P2_B4[]        = "Player2 D";
+#else
 char MSG_P2_B1[]        = "Player2 Button1";
 char MSG_P2_B2[]        = "Player2 Button2";
 char MSG_P2_B3[]        = "Player2 Button3";
 char MSG_P2_B4[]        = "Player2 Button4";
+#endif
 char MSG_P2_B5[]        = "Player2 Button5";
 char MSG_P2_B6[]        = "Player2 Button6";
 char MSG_P2_B7[]        = "Player2 Button7";
