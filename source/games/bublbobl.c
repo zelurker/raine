@@ -722,7 +722,7 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
 {
    UINT32 ta;
 
-   setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(8,60));
+   setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(3,60));
 
    for(ta=0;ta<4;ta++){
       ROM_BANK[ta] = dst+(ta*0xC000);
@@ -808,7 +808,7 @@ static void SelectNMI(UINT16 offset, UINT8 data)
 	(void)(data);
    switch(offset & 3)
    {
-   case 0: break;
+   case 0: RAM[0xfa00] = data; break;
    case 1: nmi_enable = 1; break;
    case 2: nmi_enable = 0; break;
    }
@@ -876,6 +876,12 @@ static void DrawNibble(UINT8 *out, int plane, UINT8 c)
 
 static UINT8 HACK[3][2];
 
+static void BublBobl_resetsound(UINT32 offset, UINT8 data) {
+    /*
+    if (data) 
+	cpu_reset(CPU_Z80_2); */
+}
+
 void load_bubble_bobble(void)
 {
    int ta, tb;
@@ -936,6 +942,7 @@ void load_bubble_bobble(void)
    AddZ80AWriteByte(0xF800, 0xF9FF, NULL /* BublBobl_PalRAMWrite */,   RAM+0xf800);         // Color RAM
    AddZ80AWriteByte(0xFB40, 0xFB40, BublBobl_BankSwitch,    NULL);         // Bank switch
    AddZ80AWriteByte(0xFA00, 0xFA00, BublBobl_SoundCmd,      NULL);         // Sound command
+   AddZ80AWriteByte(0xFA03, 0xFA03, BublBobl_resetsound,      NULL);         // Sound command
    AddZ80AWriteByte(0xFA40, 0xFA40, NULL,                   RAM+0xFA40);   // ???
    AddZ80AWriteByte(0xFA80, 0xFA80, NULL,                   RAM+0xFA80);   // Watchdog
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);         // <bad writes>
@@ -1228,10 +1235,10 @@ void load_bobble_bobble(void)
    HACK[2][0] = ROM_SND[0x0178];
    HACK[2][1] = ROM_SND[0x0179];
 
-   ROM_SND[0x0178]=0xD3;  // OUT (AAh), A
-   ROM_SND[0x0179]=0xAA;  //
+   // ROM_SND[0x0178]=0xD3;  // OUT (AAh), A
+   // ROM_SND[0x0179]=0xAA;  //
 
-   SetStopZ80CMode2(0x016D);
+   // SetStopZ80CMode2(0x016D);
 
    AddZ80CROMBase(ROM_SND, 0x38, 0x66);
 
@@ -1551,12 +1558,12 @@ void execute_bubble_bobble_frame(void)
    {
       if(cpu_get_pc(CPU_Z80_0) != 0x01ED)
       {
-         cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(8,60)/CPU_SLICE);  // Main Z80 8MHz (60fps)
+         cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Main Z80 8MHz (60fps)
       }
 
       if(cpu_get_pc(CPU_Z80_1) != 0x000A)
       {
-	cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
+	cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
       }
 
       if (nmi_trigger && nmi_enable)
@@ -1565,12 +1572,12 @@ void execute_bubble_bobble_frame(void)
          //nmi_trigger = 0;
       }
 
-      //      if(cpu_get_pc(CPU_Z80_2) != 0x016D)
-      //{
-         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
-	 //}
+//      if(cpu_get_pc(CPU_Z80_2) != 0x016D)
+//      {
+         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(3,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
+//      }
+      triger_timers();
 
-	 triger_timers();
    }
    print_debug("Z80PC_MAIN:%04x\n",cpu_get_pc(CPU_Z80_0));
    cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
