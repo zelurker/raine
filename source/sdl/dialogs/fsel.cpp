@@ -300,7 +300,7 @@ void TFileSel::compute_nb_items() {
     strcat(res_file,SLASH);
 #ifdef NEO
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
-      char *myexts[] = { ".iso", NULL };
+      char *myexts[] = { ".iso", "iso.gz", NULL };
       char **old = ext;
       ext = myexts;
       compute_nb_items();

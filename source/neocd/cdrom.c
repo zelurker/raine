@@ -114,7 +114,7 @@ enum{
   IPL_TYPE,
   ISO_TYPE,
   CUE_TYPE,
-  P7Z_TYPE
+  P7Z_TYPE,
 };
 
 int nb_tracks; 
@@ -201,6 +201,16 @@ void init_load_type() {
 	      break;
 	    }
 	    strcpy(path+1,start+1);
+	    if (!exists(neocd_path)) {
+		strcat(neocd_path,".gz");
+		if (!exists(neocd_path)) {
+		    MessageBox("Error","can't find iso file","OK");
+		    path[1] = 0;
+		    break;
+		} else
+		    init_iso_gz();
+	    } else 
+		init_iso();
 	  } else if (!strncmp(end+2,"MP3",3) || !strncmp(end+2,"WAVE",4)) {
 	    if (alloc_tracks == nb_tracks) {
 	      alloc_tracks += 10;
@@ -286,6 +296,11 @@ void init_load_type() {
   } else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"iso")) {
     load_type = ISO_TYPE;
     iso_sector_size = 2048;
+    init_iso();
+  } else if (!stricmp(&neocd_path[strlen(neocd_path)-6],"iso.gz")) {
+    load_type = ISO_TYPE;
+    iso_sector_size = 2048;
+    init_iso_gz();
   }
 }
 
