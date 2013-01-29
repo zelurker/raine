@@ -52,7 +52,6 @@ static int num_voices;
 static int sound_enable;
 static int stream;
 static int namco_clock;
-static int sample_rate;
 
 /* mixer tables and internal buffers */
 static INT16 *mixer_table;
@@ -97,6 +96,7 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 	sound_channel *voice;
 	short *mix;
 	int i;
+	int clen = length*namco_clock/audio_sample_rate;
 
 	/* if no sound, we're done */
 	if (sound_enable == 0)
@@ -106,7 +106,7 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 	}
 
 	/* zap the contents of the mixer buffer */
-	memset(mixer_buffer, 0, length * sizeof(short));
+	memset(mixer_buffer, 0, clen * sizeof(short));
 
 	/* loop over each voice and add its contribution */
 	for (voice = channel_list; voice < last_channel; voice++)
@@ -121,12 +121,12 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 			/* only update if we have non-zero volume and frequency */
 			if (v && (f & 0xff))
 			{
-				float fbase = (float)sample_rate / (float)namco_clock;
+				float fbase = (float)audio_sample_rate / (float)namco_clock;
 				int delta = (float)((f & 0xff) << 4) * fbase;
 				int c = voice->noise_counter;
 
 				/* add our contribution */
-				for (i = 0; i < length; i++)
+				for (i = 0; i < clen; i++)
 				{
 					int noise_data;
 					int cnt;
@@ -159,7 +159,7 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 				int c = voice->counter;
 
 				/* add our contribution */
-				for (i = 0; i < length; i++)
+				for (i = 0; i < clen; i++)
 				{
 					int offs;
 
@@ -184,8 +184,16 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 
 	/* mix it down */
 	mix = mixer_buffer;
-	for (i = 0; i < length; i++)
-		*buffer++ = mixer_lookup[*mix++];
+	int pos = 0;
+	for (i = 0; i < clen; i++) {
+	    pos = i*audio_sample_rate/namco_clock;
+	    if (pos == length) {
+		printf("break at i = %d / %d\n",i,clen);
+		break;
+	    }
+	    buffer[pos] = mixer_lookup[*mix++];
+	}
+
 }
 
 
@@ -223,7 +231,7 @@ static void namco_update_stereo(int ch, INT16 **buffer, int length)
 			/* only update if we have non-zero volume and frequency */
 			if ((lv || rv) && (f & 0xff))
 			{
-				float fbase = (float)sample_rate / (float)namco_clock;
+				float fbase = (float)audio_sample_rate / (float)namco_clock;
 				int delta = (float)((f & 0xff) << 4) * fbase;
 				int c = voice->noise_counter;
 
@@ -320,7 +328,6 @@ int namco_sh_start(const struct namco_interface *intf)
 	sound_channel *voice;
 
 	namco_clock = intf->samplerate;
-	sample_rate = audio_sample_rate;
 	/* get stream channels */
 	if (intf->stereo)
 	{
