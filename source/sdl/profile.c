@@ -155,7 +155,7 @@ void UpdateProfile(void)
 {
    if(Profile[0].state==2){
 
-   UINT64 total,total2;
+   INT64 total,total2;
    int ta;
 
    pcount++;

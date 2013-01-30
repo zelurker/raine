@@ -227,13 +227,11 @@ UINT32 run_game_emulation(void)
 
 #ifdef RDTSC_PROFILE
       if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_FRAME);
-      if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
 #endif
 
       saUpdateSound(1);
 
 #ifdef RDTSC_PROFILE
-      if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
       if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_CPU);
 #endif
 

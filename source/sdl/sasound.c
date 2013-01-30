@@ -66,7 +66,6 @@
 
 int GameSound;
 UINT8 *PCMROM;
-static UINT8 counter[MAX_STREAM_CHANNELS];
 
 static char driver_name[40];
 
@@ -89,7 +88,6 @@ static INT16 *lpWave[NUMVOICES];
 // It just uses "streams" ! What a mess !
 
 static int	   playing[NUMVOICES];
-static INT16	   *vout[NUMVOICES],*vend[NUMVOICES],*vout_stream[NUMVOICES];
 
 int	    audio_sample_rate;
 
@@ -122,23 +120,14 @@ void saSetPan( int channel, int data )
 
 void saUpdateSound( int nowclock )
 {
-   if( ! GameSound ) return;
-   if( ! RaineSoundCard ) return;
-   if( ! audio_sample_rate ) return;
-   if( ! SndMachine ) return;
-
-   if( nowclock ){
-     //int i;
-     // This part is called for each frame, which *should* be 60
-  // times/sec, but it can be less (if the game slows down)
-      streams_sh_update();
-   }
-
+// All updates are in the callback now
 }
 
 int enh_stereo = 0;
 
 extern int max_mixer_volume;
+static void my_callback(void *userdata, Uint8 *stream, int len);
+SDL_AudioSpec gotspec;
 
 /******************************************/
 /*    setup sound			  */
@@ -173,6 +162,56 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    //reserved_channel = 0;
 
    pause_sound = 0;		/* pause flag off */
+   if (!opened_audio) {
+       SDL_AudioSpec spec;
+       spec.freq = sample_rate;
+       spec.format = AUDIO_S16LSB;
+       spec.channels = 2;
+       int len = sample_rate/fps;
+       spec.samples = (len); // should be pow2, but doesn't change anything!
+       printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
+       /* Notice : creative labs semms to make sound drivers which do not respect specs
+	  in windows, since they are unable to handle small buffers for the updates.
+	  For their drivers, spec.samples should be :
+	  spec.samples = 512 * audio_sample_rate / 11025; // 1 << (nb);
+	  But unfortunately this makes the correction of the sound delays much more
+	  unprecise and you hear cracks if you play long enough (they don't last long, but
+	  they come back regularly). So the best is to switch back windows to the allegro
+	  sound driver, and use an optimum value for spec.samples here.
+
+	  I NEVER heard about this bug in linux. They respect specs in linux usually.
+	  So I just put this in an ifndef, and I should probably add some configuration
+	  variable to force precise updates in win32 too ! */
+
+#if 0
+#ifndef RAINE_UNIX
+       /* This insanity never happens in linux afaik ! */
+       if (spec.samples < LEN_SAMPLES && !smallest_sound_buffer) {
+	   // printf("forçage len_samples\n");
+	   spec.samples = LEN_SAMPLES;
+       }
+#endif
+#endif
+       spec.userdata = NULL;
+       spec.callback = my_callback;
+       if ( SDL_OpenAudio(&spec, &gotspec) < 0 ) {
+	   fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+	   RaineSoundCard = 0;
+	   return 1;
+       }
+       printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
+       opened_audio = 1;
+#ifndef NEO
+       read_dx_file();
+#else
+       Sound_Init(); // init sdl_sound
+#endif
+       strcpy(driver_name,"SDL ");
+       SDL_AudioDriverName(&driver_name[4], 32);
+       printf("driver name : %s\n",driver_name);
+       // set_sound_variables(0);
+       SDL_PauseAudio(0);
+   }
    if(!init_sound_emulators()) {
      return FALSE;  // Everything fine
    }
@@ -485,14 +524,18 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
 
 static void my_callback(void *userdata, Uint8 *stream, int len)
 {
-  int i,channel,diff;
+  int i,channel;
   short *wstream = (short*) stream;
   if (pause_sound) {
     return;
   }
+#ifdef RDTSC_PROFILE
+  if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
+#endif
   if (callback_busy)
     print_debug("entering callback with busy = %d\n",callback_busy);
   callback_busy = 1;
+  // printf("callback frame %d\n",cpu_frame_count);
   // int nb=0;
 
 #ifdef NEO
@@ -561,37 +604,15 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
   
   if (mute_sfx) {
     callback_busy = 0;
+#ifdef RDTSC_PROFILE
+    if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
+#endif
     return;
   }
 #endif
 
-  len /= 2;
+  len /= 2; // 16 bits from now on
 
-  for (channel=0; channel<NUMVOICES; channel++) {
-    if( playing[channel] ){
-      if (!vout_stream[channel])
-	vout_stream[channel] = lpWave[channel];
-      do {
-	diff = vout[channel] - vout_stream[channel];
-	if (diff < 0) {
-	  diff += (vend[channel] - lpWave[channel]);
-	}
-	// printf("callback diff %d/%d\n",diff,len/2);
-	if (diff > 3*len/2) {
-	  vout_stream[channel] += len/2;
-	  // printf("too much delay channel %d\n",channel);
-	  if (vout_stream[channel] > vend[channel]) {
-	    // printf("over buffer channel %d\n",channel);
-	    vout_stream[channel] = lpWave[channel]+(vout_stream[channel] - vend[channel]);
-	  }
-	}
-	if (diff < len/2) {
-	  // printf("compens %d\n",nb++);
-	  streams_sh_update();
-	}
-      } while (diff < len/2);
-    }
-  }
   /* Ideally in this case I would average the buffer.
      But normally this happens only when the sound becomes late because of the OS.
      Either heavy swapping or windows "multitasking" defieciency (saw it even in win2k
@@ -599,7 +620,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
      this case we just need to jump directly to the correct point of update */
 
   for (channel=0; channel<NUMVOICES; channel++) {
-    if( playing[channel] ){
+    if( stream_buffer[channel] ){
       int volume = SampleVol[channel];
       int vol_l = (255-SamplePan[channel])*volume/255;
       int vol_r = (SamplePan[channel])*volume/255;
@@ -607,47 +628,15 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
       vol_l = vol_l*sfx_volume/100;
       vol_r = vol_r*sfx_volume/100;
 #endif
-      signed short *din=((signed short*)vout_stream[channel]);
-      diff = vout[channel] - vout_stream[channel];
-      if (diff < 0) {
-	diff += (vend[channel] - lpWave[channel]);
+      if (len > stream_buffer_len[channel]) {
+	  printf("callback asked update of %d samples, allocated %d\n",len,stream_buffer_len[channel]);
+	  exit(1);
       }
-      if (diff < len/2) {
-	printf("diff %d for channel %d, should not happen\n",diff,channel);
-	// exit(1);
-      }
-      // vol_l>>=1;
-      // vol_r>>=1;
-#if 0
 
-      if (stream_sample_rate[channel] != audio_sample_rate) {
-	/* Normally resampling should use SDL_ConvertAudio.
-	   The problem is that when a stream is played at a different frequency, then
-	   its buffer length is different too (of course), which makes the synchronization
-	   code different (vout_stream must not be compared directly to vout, but adaptated
-	   using the ratio of the frequencies.
-	   So it would make the code notably more complex for something which is only an
-	   exception. Until now, only the namco sound drivers requires a different playing
-	   frequency. So the best for now is just to open the audio at the frequency of
-	   stream 0, which makes the conversion automatic. */
-      } else
-#endif
-	if (vout_stream[channel] + len/2 > vend[channel]) {
-	  /* Overlap of the buffer */
-	  int len2 = (vend[channel] - vout_stream[channel])*2;
-	  for (i=0; i<len2; i+=2) {
-	    *wstream++ += *(din)*vol_l/255;
-	    *wstream++ += *(din++)*vol_r/255;
-	  }
-	  din = (signed short*)lpWave[channel];
-	  len -= len2;
-	  for (i=0; i<len; i+=2) {
-	    *wstream++ += *(din)*vol_l/255;
-	    *wstream++ += *(din++)*vol_r/255;
-	  }
-	  wstream = (INT16*) stream;
-	  len += len2;
-	} else {
+	if (stream_callback[channel] || stream_callback_multi[channel]) 
+	    stream_update_channel(channel, len/2); 
+	// Otherwise it's been initialized already...
+      signed short *din=((signed short*)stream_buffer[channel]);
 	  /* normal buffer, no resample */
 	  for (i=0; i<len; i+=2) {
 	    INT16 left = *(din)*vol_l/255;
@@ -676,9 +665,6 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    wstream[i+1] += right;
 #endif
 	  }
-	}
-      vout_stream[channel] = din;
-
     }
   }
 
@@ -691,153 +677,23 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     updated_recording++;
   }
   callback_busy = 0;
+#ifdef RDTSC_PROFILE
+    if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
+#endif
 }
-
-SDL_AudioSpec gotspec;
 
 extern int smallest_sound_buffer;
 
 void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, int freq, int volume, int bits , int pan ){
 	/* This version works at low level, creating a sample, and following its
 		 advancement directly in the voice_position... */
-	int i;
-	INT16 *dout,*dfin;
-	signed short *din;
 	// fprintf(stderr,"saPlayBuffer %d freq %d bits %d pan %d len %d\n",channel,freq,bits,pan,len);
 	if( audio_sample_rate == 0 || channel >= NUMVOICES )	return;
 	if( SndMachine == NULL )  return;
 	if( !playing[channel] ){
-#ifdef USE_COMPENS
-		int fin = stream_buffer_max * freq * 2 / fps;
-#else
-		int fin = stream_buffer_max * len;
-#endif
-		if( lpWave[channel] ){
-			FreeMem( (UINT8*)lpWave[channel] );
-			lpWave[channel] = 0;
-		}
-
-		if (!(lpWave[channel] = (INT16*)AllocateMem(fin*2))){
-			lpWave[channel] = 0;
-			return;
-		}
-
-		memset( lpWave[channel], 0, fin );
-		dfin=lpWave[channel]+fin;
-		vend[channel] = dfin;
-		counter[channel] = 0;
 
 		playing[channel] = 1;	/* use front surface */
 
-		dout=lpWave[channel];
-		din = (INT16*)data;
-		//	      memcpy( dout, din, len );
-		for (i=0; i<len; i+=2){
-			*(dout++) = *(din++);
-		}
-
-		vout[channel] = dout;
-		vout_stream[channel] = NULL;
-
-		if (dout ==dfin){
-			dout=lpWave[channel];
-		}
-
-		if (!opened_audio) {
-			SDL_AudioSpec spec;
-			int nb=0;
-			spec.freq = freq; // audio_sample_rate
-			spec.format = AUDIO_S16LSB;
-			spec.channels = 2;
-			spec.samples  = len/2;
-			while (spec.samples) {
-				spec.samples >>= 1;
-				nb++;
-			}
-			spec.samples = 1 << nb;
-			/* Notice : creative labs semms to make sound drivers which do not respect specs
-				 in windows, since they are unable to handle small buffers for the updates.
-				 For their drivers, spec.samples should be :
-				 spec.samples = 512 * audio_sample_rate / 11025; // 1 << (nb);
-				 But unfortunately this makes the correction of the sound delays much more
-				 unprecise and you hear cracks if you play long enough (they don't last long, but
-				 they come back regularly). So the best is to switch back windows to the allegro
-				 sound driver, and use an optimum value for spec.samples here.
-
-				 I NEVER heard about this bug in linux. They respect specs in linux usually.
-				 So I just put this in an ifndef, and I should probably add some configuration
-				 variable to force precise updates in win32 too ! */
-
-#ifndef RAINE_UNIX
-			/* This insanity never happens in linux afaik ! */
-			if (spec.samples < LEN_SAMPLES && !smallest_sound_buffer) {
-				// printf("forçage len_samples\n");
-				spec.samples = LEN_SAMPLES;
-			}
-#endif
-			spec.userdata = NULL;
-			spec.callback = my_callback;
-			if ( SDL_OpenAudio(&spec, &gotspec) < 0 ) {
-				fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
-				RaineSoundCard = 0;
-				return;
-			}
-			opened_audio = 1;
-#ifndef NEO
-			read_dx_file();
-#else
-			Sound_Init();
-#endif
-			strcpy(driver_name,"SDL ");
-			SDL_AudioDriverName(&driver_name[4], 32);
-			printf("driver name : %s\n",driver_name);
-			// set_sound_variables(0);
-			SDL_PauseAudio(0);
-		}
-		/* vout_stream is initalized at its first update.
-			 It's because the updates do not start at cpu frame 0, so it's better to wait */
-	} else{
-
-		/* At first I had the idea to compute the expected delay between the stream update
-			 point and the voice position and then asking more or less streams in
-			 streams_sh_update. But it's useless in SDL and produces bad quality !!!
-			 Since the callback is called reliably by hardware interrupts (normally) we can
-			 just synchronize the sound there : if the buffer produced by the streams is not
-			 long enough, then just ask for more in the callback, and if the buffer becomes
-			 too big, then just jump some frames to resynchronize (see the comments there
-			 for more details) */
-
-		dout=vout[channel];
-		if (!vout_stream[channel] && dout - lpWave[channel]>LEN_SAMPLES){
-			// printf("waiting...\n");
-			return;
-		}
-		din = ((signed short*)data);
-		dfin = vend[channel];
-		if (dout+len/2 > dfin) {
-			memcpy(dout,din,(dfin-dout)*2);
-			len -= (dfin - dout)*2;
-			din += (dfin - dout);
-			dout=(short*)lpWave[channel];
-		}
-		memcpy(dout,din,len);
-
-		dout += len/2;
-		if (dout >=dfin){
-			dout=(short*)lpWave[channel];
-
-		}
-
-		vout[channel] = dout;
-
-		// more than count frames of advance : more stream !
-#if 0
-		pos -= count*len/2;
-		if (pos > th_pos && pos > 0) {
-			more_stream = 1;
-		} else
-			more_stream = 0;
-#endif
 	}
 }
 
