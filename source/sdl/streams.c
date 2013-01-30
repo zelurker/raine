@@ -123,8 +123,11 @@ void streams_sh_stop(void)
 
   for (i = 0;i < MAX_STREAM_CHANNELS;i++)
     {
-      if(stream_buffer[i]) FreeMem(stream_buffer[i]);
-      stream_buffer[i] = 0;
+      if(stream_buffer[i]) {
+	  FreeMem(stream_buffer[i]);
+	  stream_buffer[i] = 0;
+	  stream_callback[i] = NULL;
+      }
     }
 }
 
