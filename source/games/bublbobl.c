@@ -75,6 +75,7 @@ changes/antiriad:
  */
 
 #define BIH_COUNT 60
+#define MAME_MCU
 
 /******************************************************************************/
 
@@ -112,6 +113,7 @@ static struct ROM_INFO bubble_bobble_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
+#ifndef MAME_MCU
 static struct INPUT_INFO bubble_bobble_inputs[] =
 {
    INP1( COIN1, 0x010000, 0xFF ),
@@ -133,12 +135,37 @@ static struct INPUT_INFO bubble_bobble_inputs[] =
 
    END_INPUT
 };
+#else
+static struct INPUT_INFO bubble_bobble_inputs[] =
+{
+   INP0( TILT,   0x010000, 1 ),
+   INP0( SERVICE,0x010000, 2 ),
+   INP1( COIN1,  0x010000, 4 ),
+   INP1( COIN2,  0x010000, 8 ),
+
+   INP0( P1_LEFT,  0x010003, 1 ),
+   INP0( P1_RIGHT, 0x010003, 2 ),
+   INP0( P1_B2,    0x010003, 0x10 ),
+   INP0( P1_B1,    0x010003, 0x20 ),
+   INP0( P1_START, 0x010003, 0x40 ),
+
+   INP0( P2_LEFT,  0x010004, 1 ),
+   INP0( P2_RIGHT, 0x010004, 2 ),
+   INP0( P2_B2,    0x010004, 0x10 ),
+   INP0( P2_B1,    0x010004, 0x20 ),
+   INP0( P2_START, 0x010004, 0x40 ),
+
+   END_INPUT
+};
+#endif
 
 struct DSW_DATA dsw_data_bubble_bobble_0[] =
 {
-   { "Language",              0x01, 0x02 },
-   { "Japanese",              0x01},
-   { "English",               0x00},
+   { "Mode",              0x05, 0x04 },
+   { "Japanese",              0x05},
+   { "English",               0x04},
+   { "Test (grid and input)", 1 },
+   { "Test (ram and sound)/pause", 0 },
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
@@ -183,8 +210,13 @@ struct DSW_DATA dsw_data_bubble_bobble_1[] =
 
 static struct DSW_INFO bubble_bobble_dsw[] =
 {
+#ifndef MAME_MCU
    { 0x010030, 0xFE, dsw_data_bubble_bobble_0 },
    { 0x010040, 0xFF, dsw_data_bubble_bobble_1 },
+#else
+   { 0x010001, 0xFE, dsw_data_bubble_bobble_0 },
+   { 0x010002, 0xFF, dsw_data_bubble_bobble_1 },
+#endif
    { 0,        0,    NULL,      },
 };
 
@@ -592,39 +624,118 @@ static UINT8 *GFX_BG0_SOLID;
 static int mcu_addr;
 static UINT8 mcu_latch, mcu_port_a, mcu_old_data;
 static UINT8 *RAM_MCU, *ROM_2ND, *ROM_SND, *RAM_SND;
-static int nmi_enable, nmi_trigger;
+static int nmi_enable, nmi_pending;
 static UINT8 sound_cmd;
 
 void BubbleBobble_mcu(int bih_count);
 void BubbleBobble_mcu_reset(void);
+static UINT8 portA_in,portA_out,ddrA;
+static UINT8 portB_in,portB_out,ddrB;
 
 UINT8 BubbleBobble_MCU_RDMEM(int a)
 {
+#ifdef MAME_MCU
+    switch(a) {
+    case 0: return (portA_out & ddrA) | (portA_in & ~ddrA);
+    case 1: return (portB_out & ddrB) | (portB_in & ~ddrB);
+    case 2: return RAM_INPUT[0] | 0xf0;
+    default: return RAM_MCU[a];
+    }
+#else
    if (a == 0x02) /* COIN + TILT */
    {
       return 0xff - (RAM_INPUT[0x00] ? 4 : 0);
    }
    return RAM_MCU[a];
+#endif
 }
 
-void BubbleBobble_MCU_WRMEM(int a, UINT8 v)
+void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 {
+#ifdef MAME_MCU 
+   RAM_MCU[a] = data;
+    switch(a) {
+    case 0: portA_out = data; break;
+    case 1:
+	if ((ddrB & 0x01) && (~data & 0x01) && (portB_out & 0x01))
+		portA_in = mcu_latch;
+	if ((ddrB & 0x02) && (data & 0x02) && (~portB_out & 0x02)) /* positive edge trigger */
+		mcu_addr = (mcu_addr & 0xff00) | portA_out;
+//logerror("%04x: 68705 mcu_addr %02x\n",activecpu_get_pc(),portA_out);
+	if ((ddrB & 0x04) && (data & 0x04) && (~portB_out & 0x04)) /* positive edge trigger */
+		mcu_addr = (mcu_addr & 0x00ff) | ((portA_out & 0x0f) << 8);
+	if ((ddrB & 0x10) && (~data & 0x10) && (portB_out & 0x10))
+	{
+		if (data & 0x08)	/* read */
+		{
+			if ((mcu_addr & 0x0800) == 0x0000)
+			{
+//logerror("%04x: 68705 read input port %02x\n",activecpu_get_pc(),mcu_addr);
+				mcu_latch = RAM_INPUT[(mcu_addr & 3) + 1];
+			}
+			else if ((mcu_addr & 0x0c00) == 0x0c00)
+			{
+//logerror("%04x: 68705 read %02x from mcu_addr %04x\n",activecpu_get_pc(),bublbobl_mcu_sharedram[mcu_addr],mcu_addr);
+				mcu_latch = RAM[0xfc00+(mcu_addr & 0x03ff)];
+			}
+			else {
+			    print_debug("%04x: 68705 unknown read mcu_addr %04x\n",activecpu_get_pc(),mcu_addr);
+			}
+		}
+		else	/* write */
+		{
+			if ((mcu_addr & 0x0c00) == 0x0c00)
+			{
+//logerror("%04x: 68705 write %02x to mcu_addr %04x\n",activecpu_get_pc(),portA_out,mcu_addr);
+				RAM[0xfc00+(mcu_addr & 0x03ff)] = portA_out;
+			}
+			else {
+			    print_debug("%04x: 68705 unknown write to mcu_addr %04x\n",activecpu_get_pc(),mcu_addr);
+			}
+		}
+	}
+	if ((ddrB & 0x20) && (~data & 0x20) && (portB_out & 0x20))
+	{
+		/* hack to get random EXTEND letters (who is supposed to do this? 68705? PAL?) */
+	    // This part apparently happens during the irq, there is no irq
+	    // for the68705 in raine, so we'll execute all this in the frame...
+		RAM[0xfc7c] = rand()%6;
+		cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
+
+	}
+	if ((ddrB & 0x40) && (~data & 0x40) && (portB_out & 0x40))
+	{
+	    print_debug("%04x: 68705 unknown port B bit %02x\n",activecpu_get_pc(),data);
+	}
+	if ((ddrB & 0x80) && (~data & 0x80) && (portB_out & 0x80))
+	{
+	    print_debug("%04x: 68705 unknown port B bit %02x\n",activecpu_get_pc(),data);
+	}
+
+	portB_out = data;
+	break;
+    case 4: ddrA = data; break;
+    case 5: ddrB = data; break;
+    }
+
+
+#else
    UINT8 rising,falling;
 
-   RAM_MCU[a] = v;
-   if (a == 0x00) mcu_port_a = v;
+   RAM_MCU[a] = data;
+   if (a == 0x00) mcu_port_a = data;
    else if (a == 0x01) /* I/O control */
    {
-      rising = (v ^ mcu_old_data) & v; /* only the rising-edge triggers these */
-      falling = (v ^ mcu_old_data) & mcu_old_data; /* only the falling-edge triggers these */
-      mcu_old_data = v;
+      rising = (data ^ mcu_old_data) & data; /* only the rising-edge triggers these */
+      falling = (data ^ mcu_old_data) & mcu_old_data; /* only the falling-edge triggers these */
+      mcu_old_data = data;
 
       if (falling & 0x01) RAM_MCU[0x00] = mcu_latch;
       if (rising & 0x02) mcu_addr = (mcu_addr & 0xff00) | mcu_port_a;
       if (rising & 0x04) mcu_addr = (mcu_addr & 0x00ff) | ((mcu_port_a & 0x0f) << 8);
       if (falling & 0x10)
       {
-         if (v & 0x08) /* read */
+         if (data & 0x08) /* read */
          {
             if ((mcu_addr & 0x0f00) == 0x0000)
             {
@@ -669,6 +780,7 @@ void BubbleBobble_MCU_WRMEM(int a, UINT8 v)
       }
       //if (falling & 0x20) set_IRQ_line((falling >> 5) & 1);
    }
+#endif
 }
 
 /******************************************************************************/
@@ -697,19 +809,12 @@ static void BublBobl_SoundCmd(UINT16 offset, UINT8 data)
 {
 	(void)(offset);
    sound_cmd = data;
-   nmi_trigger = 1;
+   nmi_pending = 1;
 }
 
 static UINT8 BublBobl_SoundCmd_read(UINT16 offset)
 {
-   int ta;
-	(void)(offset);
-
-   ta = sound_cmd;
-   sound_cmd = 0;
-   nmi_trigger = 0;
-
-   return ta;
+   return sound_cmd;
 }
 
 /******************************************************************************/
@@ -722,7 +827,7 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
 {
    UINT32 ta;
 
-   setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(3,60));
+   setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(4,60));
 
    for(ta=0;ta<4;ta++){
       ROM_BANK[ta] = dst+(ta*0xC000);
@@ -741,6 +846,11 @@ static void BublBobl_BankSwitch(UINT16 addr, UINT8 value)
       bank_sw = value & 3;
       Z80ASetBank( ROM_BANK[bank_sw] );
    }
+   if (value & 0x10) 
+       cpu_reset(CPU_Z80_1);
+   if (value & 0x20)
+       BubbleBobble_mcu_reset();
+
 }
 
 /******************************************************************************/
@@ -809,7 +919,12 @@ static void SelectNMI(UINT16 offset, UINT8 data)
    switch(offset & 3)
    {
    case 0: RAM[0xfa00] = data; break;
-   case 1: nmi_enable = 1; break;
+   case 1: nmi_enable = 1; 
+	   if (nmi_pending) {
+	       cpu_int_nmi(CPU_Z80_2);
+	       nmi_pending = 0;
+	   }
+	   break;
    case 2: nmi_enable = 0; break;
    }
 }
@@ -842,7 +957,7 @@ static void BublBoblAddSaveData(void)
    AddSaveData(SAVE_USER_6, (UINT8 *)&ym3526_reg,     sizeof(ym3526_reg));
    AddSaveData(SAVE_USER_7, (UINT8 *)&sound_cmd,      sizeof(sound_cmd));
    AddSaveData(SAVE_USER_8, (UINT8 *)&nmi_enable,     sizeof(nmi_enable));
-   AddSaveData(SAVE_USER_9, (UINT8 *)&nmi_trigger,    sizeof(nmi_trigger));
+   AddSaveData(SAVE_USER_9, (UINT8 *)&nmi_pending,    sizeof(nmi_pending));
    AddSaveData(SAVE_USER_10, RAM_MCU,                 0x80);
 }
 
@@ -920,8 +1035,8 @@ void load_bubble_bobble(void)
 
    init_bank_rom(TMP,ROM);
 
-   nmi_enable = 1;
-   nmi_trigger = 0;
+   nmi_enable = 0;
+   nmi_pending = 0;
 
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx_68k); // col_map_12bit_RRRRGGGGBBBBxxxx_Rev );
    InitPaletteMap(RAM+0xf800, 0x10, 0x10, 0x1000);
@@ -1149,8 +1264,8 @@ void load_bobble_bobble(void)
 
    init_bank_rom(TMP,ROM);
 
-   nmi_enable = 1;
-   nmi_trigger = 0;
+   nmi_enable = 0;
+   nmi_pending = 0;
 
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx_68k); // col_map_12bit_RRRRGGGGBBBBxxxx_Rev );
    InitPaletteMap(RAM+0xf800, 0x10, 0x10, 0x1000);
@@ -1360,8 +1475,8 @@ void load_super_bobble_bobble(void)
 
    init_bank_rom(TMP,ROM);
 
-   nmi_enable = 1;
-   nmi_trigger = 0;
+   nmi_enable = 0;
+   nmi_pending = 0;
 
    /* Copy ROM code into our virtual image (copy 1st bank as well) */
    memcpy(RAM+0x0000, ROM, 0xC000);
@@ -1541,12 +1656,6 @@ void execute_bubble_bobble_frame(void)
 
    BubbleBobble_mcu(BIH_COUNT);
 
-   /*
-    * This makes the EXTEND letters random. Neither the game nor the MCU
-    * appears to be doing this (why not???), so we do...
-    */
-   RAM[0xfc7c] ++;
-   RAM[0xfc7c] %= 6;
 
    /*
     * 4 slices is enough for the orignal, but the bootlegs need more (lousy
@@ -1566,27 +1675,35 @@ void execute_bubble_bobble_frame(void)
 	cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
       }
 
-      if (nmi_trigger && nmi_enable)
+         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(2,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
+      if (nmi_pending && nmi_enable)
       {
          cpu_int_nmi(CPU_Z80_2);
-         //nmi_trigger = 0;
+         nmi_pending = 0;
       }
 
 //      if(cpu_get_pc(CPU_Z80_2) != 0x016D)
 //      {
-         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(3,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
+         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(2,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
 //      }
       triger_timers();
 
    }
+// #ifndef MAME_MCU
+// // All this part should happen during the mcu irq, no irq here
    print_debug("Z80PC_MAIN:%04x\n",cpu_get_pc(CPU_Z80_0));
    cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
+   /*
+    * This makes the EXTEND letters random. Neither the game nor the MCU
+    * appears to be doing this (why not???), so we do...
+    */
+   RAM[0xfc7c] ++;
+   RAM[0xfc7c] %= 6;
+// #endif
 
    print_debug("Z80PC_SUB:%04x\n",cpu_get_pc(CPU_Z80_1));
-   cpu_interrupt(CPU_Z80_1, 0xff);
+   cpu_interrupt(CPU_Z80_1, 0x38);
 
-
-   print_debug("Z80PC_SOUND:%04x\n",cpu_get_pc(CPU_Z80_2));
 
 #if 0
    // Piece of history, I keep it here !

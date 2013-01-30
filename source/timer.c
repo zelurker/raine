@@ -199,7 +199,7 @@ void triger_timers() {
       count++;
 #endif
 #if 1
-      if (!_z80iff) {
+      while (!_z80iff) {
 	// Sometimes 2 timers trigger too close to each other and the z80
 	// needs time to handle the interrupt.
 	// I really wonder how the original hardware handled this.
@@ -213,10 +213,6 @@ void triger_timers() {
 	cpu_execute_cycles(audio_cpu, 240000 );
 	// printf("%d cycles more\n",dwElapsedTicks - elapsed);
 	ExitOnEI = 0;
-	// if (!_z80iff) {
-	//  printf("sorry bad int\n");
-	//  exit(1);
-	// } 
 	dwElapsedTicks = elapsed; // This frame must not count for the timers
 	cyclesRemaining=0;
       }
