@@ -908,6 +908,7 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/gen_conv.o \
 	$(OBJDIR)/sdl/opengl.o \
+	$(OBJDIR)/sdl/glsl.o \
 	$(OBJDIR)/sdl/profile.o
 
 else

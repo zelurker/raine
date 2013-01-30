@@ -49,6 +49,9 @@ static PFNGLUNIFORM2FVPROC glUniform2fv = 0;
 static PFNGLUNIFORM4FVPROC glUniform4fv = 0;
 
 static int nb_pass; // number of passes for the shader
+#define MAX_VARIABLES 256
+#define MAx_TEXTURES 8
+#define PREV_TEXTURES 7
 #define MAX_PASS 10
 typedef struct {
     GLuint glprogram, fragmentshader;
@@ -58,6 +61,31 @@ typedef struct {
 } tpass;
 
 static tpass pass[MAX_PASS];
+
+// Vertexes of the quad to draw the texture on...
+// Used for the last pass when rendering to the back buffer.
+const GLfloat vertexes_flipped[] = {
+   0, 1,
+   1, 1,
+   0, 0,
+   1, 0
+};
+
+// Used when rendering to an FBO.
+// Texture coords have to be aligned with vertex coordinates.
+static const GLfloat vertexes[] = {
+   0, 0,
+   1, 0,
+   0, 1,
+   1, 1
+};
+
+static const GLfloat tex_coords[] = {
+   0, 0,
+   1, 0,
+   0, 1,
+   1, 1
+};
 
 static char* getstr(char *s, char *what) {
     char *p = strstr(s,what);
@@ -240,13 +268,6 @@ void read_shader(char *shader) {
      * cdata even though it's not part of 1.1 specification, but I added
      * support for it anyway... */
 
-    // A fast exit define because it happens a lot...
-#define flee \
-    if (frag_used_src) free(frag_src);    \
-    if (vertex_used_src) free(vertex_src);\
-    free(buf);                            \
-    return;
-
     char *vertex_src = NULL, *frag_src = NULL;
     char *buf = my_load_file(shader);
     int vertex_used_src = 0, frag_used_src = 0;
@@ -292,7 +313,7 @@ start_shader:
     p = getstr(buf,"<shader");
     if (!p) {
 	printf("no shader in file %s\n",shader);
-	flee;
+	goto flee;
     }
     while (*p == ' ') {
 	p = getarg(p);
@@ -314,7 +335,7 @@ start_shader:
 	else if (!mystrcmp(&p,"vertex")) {
 	    if (vertex_src) {
 		printf("shader: 2 vertex codes found in this shader, aborting\n");
-		flee;
+		goto flee;
 	    }
 	    while (*p == ' ') {
 		/* No argument expected for vertex shader, but I'll process
@@ -324,7 +345,7 @@ start_shader:
 		    vertex_src = my_load_file(value);
 		    if (!vertex_src) {
 			printf("shader: couldn't load vertex shader from src %s\n",value);
-			flee;
+			goto flee;
 		    }
 		    vertex_used_src = 1;
 		} else
@@ -334,7 +355,7 @@ start_shader:
 	    if (!mystrcmp(&p,"![CDATA[")) {
 		if (vertex_src) {
 		    printf("shader: 2 vertex declarations\n");
-		    flee;
+		    goto flee;
 		}
 		p = process_cdata(p);
 		vertex_src = value;
@@ -343,11 +364,11 @@ start_shader:
 	    }
 	    if (!vertex_src) {
 		printf("shader: parsing of vertex tag failed\n");
-		flee;
+		goto flee;
 	    }
 	    if (!set_vertex_shader(vertex_src)) {
 		delete_shaders();
-		flee;
+		goto flee;
 	    }
 	    p = getstr(p,"/vertex>");
 
@@ -365,7 +386,7 @@ start_shader:
 		    frag_src = my_load_file(value);
 		    if (!frag_src) {
 			printf("shader: couldn't load fragment shader from src %s\n",value);
-			flee;
+			goto flee;
 		    }
 		    frag_used_src = 1;
 		} else if (!strcmp(arg,"filter")) {
@@ -413,11 +434,11 @@ start_shader:
 	    }
 	    if (!frag_src) {
 		printf("shader: parsing of fragment tag failed\n");
-		flee;
+		goto flee;
 	    }
 	    if (!set_fragment_shader(frag_src)) {
 		delete_shaders();
-		flee;
+		goto flee;
 	    }
 	    p = getstr(p,"/fragment>");
 	} else if (!mystrcmp(&p,"/shader>")) {
@@ -453,7 +474,7 @@ start_shader:
 		    printf("impossible to validate shader, no validation function\n");
 	    }
 
-	    flee;
+	    goto flee;
 	} else {
 	    char *e = p;
 	    p = getstr(p,">");
@@ -463,7 +484,11 @@ start_shader:
     }
 
     printf("shader: something went wrong, missing end shader declaration ?\n");
-    flee;
+flee:
+    if (frag_used_src) free(frag_src);
+    if (vertex_used_src) free(vertex_src);
+    free(buf);
+    return;
 }
 
 void draw_shader(int linear)
