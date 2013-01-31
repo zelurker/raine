@@ -1721,18 +1721,10 @@ void inputs_preinit() {
   while (!SDL_PollEvent(&event) && SDL_GetTicks()-ticks < 100);
   if (event.type) SDL_PushEvent(&event);
   do {
-      int which, axis, value;
       handled = 0;
       if (SDL_PollEvent(&event)) {
 	  switch(event.type) {
 	  case SDL_JOYAXISMOTION:
-	      which = event.jaxis.which;
-	      axis = event.jaxis.axis;
-	      value = event.jaxis.value;
-	      if (axis < MAX_AXIS && abs(value)>32700 && !bad_axes[which*MAX_AXIS+axis]) {
-		  printf("bad axis : joy %d axis %d\n",which,axis);
-		  bad_axes[which*MAX_AXIS+axis] = 1;
-	      }
 	  case SDL_JOYBALLMOTION:
 	  case SDL_JOYHATMOTION:
 	  case SDL_JOYBUTTONDOWN:
