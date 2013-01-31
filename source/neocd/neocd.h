@@ -22,8 +22,8 @@ extern "C" {
 extern int neocd_id,allowed_speed_hacks,disable_irq1;
 
 extern UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
-extern char neocd_path[1024],neocd_dir[1024];
-extern char neocd_bios_file[1024];
+extern char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
+extern char neocd_bios_file[FILENAME_MAX];
 extern int sfx_volume, music_volume;
 extern int capture_new_pictures;
 

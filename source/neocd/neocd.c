@@ -209,8 +209,8 @@ static struct DEF_INPUT_EMU list_emu[] =
 #define FRAME_NEO  CPU_FRAME_MHz(12,60)
 // neocd_path points to a neocd image, neocd_dir is the last path used for
 // neocd files (which is not always an image path).
-char neocd_path[1024],neocd_dir[1024];
-char neocd_bios_file[1024];
+char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
+char neocd_bios_file[FILENAME_MAX];
 
 static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
 {

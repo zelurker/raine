@@ -8,13 +8,12 @@ extern "C" {
 #endif
 
 #include "deftypes.h"
-#include <limits.h>
 
 typedef struct {
     int dbuf;
     int overlay,save;
     int info;
-    char shader[PATH_MAX];
+    char shader[FILENAME_MAX];
     // render : 0 for drawpixels, 1 for textures
     int render;
     char *vendor,*renderer,*version;

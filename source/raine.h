@@ -14,7 +14,6 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h> // Would you believe that this is included by allegro.h
 #include <stdarg.h> // this one too by the way (needed by arkanoid.c at least)
-#include <limits.h>
 
 #include <string.h>
 
@@ -361,18 +360,18 @@ file & directory configuration
 
 typedef struct DIR_CFG
 {
-   char exe_path[PATH_MAX]; 		// current path of raine.exe
-   char share_path[PATH_MAX];		// location of data files
+   char exe_path[FILENAME_MAX]; 		// current path of raine.exe
+   char share_path[FILENAME_MAX];		// location of data files
 #ifndef SDL
-   char language_file[PATH_MAX];		// language translation file (no path)
+   char language_file[FILENAME_MAX];		// language translation file (no path)
 #else
-   char shader_dir[PATH_MAX];
+   char shader_dir[FILENAME_MAX];
 #endif
-   char screen_dir[PATH_MAX];		// screenshot path
-   char emudx_dir[PATH_MAX];		// screenshot path
-   char artwork_dir[PATH_MAX];		// screenshot path
+   char screen_dir[FILENAME_MAX];		// screenshot path
+   char emudx_dir[FILENAME_MAX];		// screenshot path
+   char artwork_dir[FILENAME_MAX];		// screenshot path
    char **rom_dir;		// rom paths
-   char config_file[PATH_MAX];		// config file (no path)
+   char config_file[FILENAME_MAX];		// config file (no path)
    UINT32 long_file_names;		// enable long file name support
    UINT32 last_screenshot_num;		// counter for last screenshot
 } DIR_CFG;

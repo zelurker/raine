@@ -39,7 +39,7 @@ static void myfseek(FILE *f, int pos, int where) {
   }
 }
 
-static char last_name[PATH_MAX];
+static char last_name[FILENAME_MAX];
 static FILE *last_file;
 // gz reads are extremely slow if we seek all the time because the buffer
 // becomes useless. So we must at least make a dir cache to avoid to read

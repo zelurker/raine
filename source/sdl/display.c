@@ -571,7 +571,7 @@ int lock_surface(SDL_Surface *s) {
 	print_debug("lock failed\n");
       return -1;
     }
-    if (s == sdl_screen && s->pixels) {
+    if (screen && s == sdl_screen && s->pixels) {
 	/* If the screen uses double buffer, then the base adress changes
 	 * all the time and the line array must be updated
 	 * This is a little stupid, this array is just a convenience, the
@@ -584,7 +584,7 @@ int lock_surface(SDL_Surface *s) {
     }
     return 1;
   }
-  if (sdl_screen->pixels && (((UINT8*)sdl_screen->pixels) - screen->line[0])) {
+  if (sdl_screen->pixels && screen && (((UINT8*)sdl_screen->pixels) - screen->line[0])) {
     // These 2 must remain identical, but might change after some sdl
     // operations !!!
     print_debug("*** SCREEN CHANGE ***\n");

@@ -137,7 +137,7 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
   }
   if (strlen(name) > EXT_NAME) {
-      printf("AddSaveData_ext: name overflow: %zd: %s\n",strlen(name),name);
+      printf("AddSaveData_ext: name overflow: %d: %s\n",strlen(name),name);
       exit(1);
   }
   
