@@ -623,7 +623,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
        this case we just need to jump directly to the correct point of update */
 
     for (channel=0; channel<NUMVOICES; channel++) {
-	if (stream_callback[channel] || stream_callback_multi[channel]) {
+	if (stream_buffer[channel]) {
 	    SDL_SemWait(sem[channel]);
 	    // printf("my_callback chan %d len %d\n",channel,len);
 	    int volume = SampleVol[channel];
@@ -635,7 +635,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 #endif
 	    if (stream_buffer_pos[channel] < len/2) {
 		// printf("callb: underrun channel %d, wanted %d got %d\n",channel,len/2,stream_buffer_pos[channel]);
-		stream_update_channel(channel, len/2-stream_buffer_pos[channel]); 
+		if (stream_callback[channel] || stream_callback_multi[channel])
+		    stream_update_channel(channel, len/2-stream_buffer_pos[channel]); 
+		else {
+		    printf("buffer underrun channel %d and no callback\n",channel);
+		    continue;
+		}
 	    }
 	    // Otherwise it's been initialized already...
 	    signed short *din=((signed short*)stream_buffer[channel]);
@@ -668,15 +673,11 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 #endif
 	    }
 	    if (stream_buffer_pos[channel] == len/2) {
-		for( i = 0; i < stream_joined_channels[channel]; i++ ) {
-		    stream_buffer_pos[channel+i] = 0;
-		}
+		stream_buffer_pos[channel] = 0;
 	    } else {
 		// printf("after callback pos = %d instead of %d\n",stream_buffer_pos[channel],len/2);
-		for( i = 0; i < stream_joined_channels[channel]; i++ ) {
-		    memcpy(stream_buffer[channel+i],stream_buffer[channel+i]+len,stream_buffer_pos[channel+i]*2-len);
-		    stream_buffer_pos[channel+i] -= len/2;
-		}
+		memcpy(stream_buffer[channel],stream_buffer[channel]+len,stream_buffer_pos[channel]*2-len);
+		stream_buffer_pos[channel] -= len/2;
 	    }
 	    SDL_SemPost(sem[channel]);
 	}

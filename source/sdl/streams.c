@@ -148,7 +148,7 @@ static void stream_update_channel(int channel, int samples) {
 #endif
       (*stream_callback_multi[channel])(stream_param[channel],buf,samples);
       for (i = 0;i < stream_joined_channels[channel];i++)
-	  stream_buffer_pos[i] += samples;
+	  stream_buffer_pos[channel+i] += samples;
     }
 
 #if SOFT_VOL
@@ -300,10 +300,10 @@ int stream_init_multi(int channels,const char **name,int sample_rate,int sample_
   printf("alloc stream %d\n",stream_buffer_len[channel]*8);
       if ((stream_buffer[channel+i] = AllocateMem(total_len)) == 0)
 	return -1;
-      memset(stream_buffer[channel+i],0,(sample_bits/8)*stream_buffer_len[channel+i]);
+      memset(stream_buffer[channel+i],0,total_len);
       stream_sample_rate[channel+i] = sample_rate;
       stream_sample_bits[channel+i] = sample_bits;
-      stream_buffer_pos[channel] = 0;
+      stream_buffer_pos[channel+i] = 0;
     }
 
   stream_param[channel] = param;
