@@ -14,32 +14,30 @@
 #include "blit.h" // GameBitmap
 #include <unistd.h>
 
+SDL_AudioSpec gotspec;
+SDL_sem *sem[MAX_STREAM_CHANNELS];
 int recording =0,monitoring = 1;
-static int mixing_buff_len;
+static int mixing_buff_len,total_len;
 static FILE *f_record = NULL;
 static short *mixing_buff;
 
 int SampleVol[MAX_STREAM_CHANNELS];
 static int SamplePan[MAX_STREAM_CHANNELS];
 
-static int stream_joined_channels[MAX_STREAM_CHANNELS],more_stream;
+static int stream_joined_channels[MAX_STREAM_CHANNELS];
 static char stream_name[MAX_STREAM_CHANNELS][40];
 static void *stream_buffer[MAX_STREAM_CHANNELS];
 static int stream_buffer_len[MAX_STREAM_CHANNELS];
-static int base_len,base_len0; // base length of sample for 1 frame
-static int remaining_samples[MAX_STREAM_CHANNELS]; // remaining samples to be played at the end
+static int base_len; // base length of sample for 1 frame
 static int stream_sample_rate[MAX_STREAM_CHANNELS];
 static int stream_sample_bits[MAX_STREAM_CHANNELS];
-static int stream_sample_length[MAX_STREAM_CHANNELS];	/* in usec */
+static int stream_buffer_pos[MAX_STREAM_CHANNELS];
 static int stream_param[MAX_STREAM_CHANNELS];
 static void (*stream_callback[MAX_STREAM_CHANNELS])(int param,INT16 *buffer,int length);
 static void (*stream_callback_multi[MAX_STREAM_CHANNELS])(int param,INT16 **buffer,int length);
 
 void apply_volume_16( INT16 *buf, UINT32 len, int vol )
 {
-  // Normally, now that we have the same values as osd functions,
-  // we should be abble to simply make a voice_set_volume here...
-  // I keep this for the end !
   if(vol != VOLUME_MAX){	// Add [J3d!]: Small speedup
 
       if( vol != VOLUME_MIN){	// Add [J3d!]: Another speedup
@@ -125,6 +123,7 @@ void streams_sh_stop(void)
     {
       if(stream_buffer[i]) {
 	  FreeMem(stream_buffer[i]);
+	  SDL_DestroySemaphore(sem[i]);
 	  stream_buffer[i] = 0;
 	  stream_callback[i] = NULL;
       }
@@ -140,14 +139,16 @@ static void stream_update_channel(int channel, int samples) {
       if (stream_sample_bits[channel] == 16){
 #endif
 	for (i = 0;i < stream_joined_channels[channel];i++)
-	  buf[i] = &((short *)stream_buffer[channel+i])[0];
+	  buf[i] = &((short *)stream_buffer[channel+i])[stream_buffer_pos[channel+i]];
 #ifdef USE_8BITS
       } else {
 	for (i = 0;i < stream_joined_channels[channel];i++)
-	  buf[i] = &((char *)stream_buffer[channel+i])[0];
+	  buf[i] = &((char *)stream_buffer[channel+i])[stream_buffer_pos[channel+i]];
       }
 #endif
       (*stream_callback_multi[channel])(stream_param[channel],buf,samples);
+      for (i = 0;i < stream_joined_channels[channel];i++)
+	  stream_buffer_pos[i] += samples;
     }
 
 #if SOFT_VOL
@@ -155,10 +156,10 @@ static void stream_update_channel(int channel, int samples) {
     // volume & pan are set at the begining and that's all !
     if (stream_sample_bits[channel] == 16){
       for (i = 0;i < stream_joined_channels[channel];i++)
-      apply_volume_16( stream_buffer[channel+i], stream_buffer_len[channel+i], SampleVol[channel+i] );
+      apply_volume_16( stream_buffer[channel+i], samples, SampleVol[channel+i] );
     } else {
       for (i = 0;i < stream_joined_channels[channel];i++)
-      apply_volume_8( stream_buffer[channel+i], stream_buffer_len[channel+i], SampleVol[channel+i] );
+      apply_volume_8( stream_buffer[channel+i], samples, SampleVol[channel+i] );
     }
 #endif // SOFT_VOL
   } else { // stream_joinded_channels
@@ -166,27 +167,62 @@ static void stream_update_channel(int channel, int samples) {
       void *buf;
 
       if (stream_sample_bits[channel] == 16)
-	buf = &((short *)stream_buffer[channel])[0];
+	buf = &((short *)stream_buffer[channel])[stream_buffer_pos[channel]];
       else
-	buf = &((char *)stream_buffer[channel])[0];
+	buf = &((char *)stream_buffer[channel])[stream_buffer_pos[channel]];
       (*stream_callback[channel])(stream_param[channel],buf,samples);
+      stream_buffer_pos[channel] += samples;
     }
 
 #if SOFT_VOL
     if (stream_sample_bits[channel] == 16)
-	apply_volume_16( stream_buffer[channel], stream_buffer_len[channel], SampleVol[channel] );
+	apply_volume_16( buf, samples, SampleVol[channel] );
     else
-	apply_volume_8( stream_buffer[channel], stream_buffer_len[channel], SampleVol[channel] );
+	apply_volume_8( buf, samples, SampleVol[channel] );
 #endif
   } // else if joined...
 }
 
 void streams_sh_update(void)
 {
-    // should not do anything anymore
+  int channel;
+  int buflen;
+
+  for (channel = 0;channel < MAX_STREAM_CHANNELS;channel += stream_joined_channels[channel]){
+    buflen = gotspec.samples;
+
+    if (stream_buffer[channel]) {
+	/* The goal here is to have the streams as closely in sync as possible
+	 * with the sdl update callback, so we just create less samples if the
+	 * callback is late, hoping that it won't be heared.
+	 * I tried to test by only calling stream_update_channel from the
+	 * callback first, but then some frames are not updated and some sounds
+	 * are clearly "shrunk", not very often though but easy to reproduce in
+	 * some games like bubble bobble. So the idea is to update for every
+	 * frame here, and to customize the buffer length to allow the callback
+	 * to catch up. It sounds remarkably well in fact ! */
+	int pos = stream_buffer_pos[channel]/buflen;
+	if (pos >= 3) {
+	    buflen /= 2;
+	} else if (pos >= 2) {
+	    buflen = buflen*3/4;
+	} else if (pos) {
+	    buflen = buflen*0.8;
+	}
+      if (stream_buffer_pos[channel] + buflen > gotspec.samples*4)
+	  buflen = gotspec.samples*4-stream_buffer_pos[channel];
+      if (buflen) {
+	  //printf("update chan %d pos %d len %d / %d\n",channel,stream_buffer_pos[channel],buflen,base_len);
+	  SDL_SemWait(sem[channel]);
+	  stream_update_channel(channel, buflen);
+	  SDL_SemPost(sem[channel]);
+      } else
+	  printf("no update channel %d\n",channel);
+
+    } // if (stream_buffer_channel)
+  } // for...
 }
 
-#if 0
 static int pow2(int base_len) {
   int nb=0;
   while (base_len) {
@@ -195,7 +231,6 @@ static int pow2(int base_len) {
   }
   return 1 << nb;
 }
-#endif
 
 int stream_init(const char *name,int sample_rate,int sample_bits,
 		int param,void (*callback)(int param,INT16 *buffer,int length))
@@ -213,41 +248,24 @@ int stream_init(const char *name,int sample_rate,int sample_bits,
   /* adjust sample rate to make it a multiple of buffer_len */
   sample_rate = stream_buffer_len[channel] * Machine->drv->frames_per_second;
 #else
-  base_len = 2048; // pow2(sample_rate / CPU_FPS)*2;
-  more_stream = 1;
+  base_len = pow2(sample_rate / CPU_FPS);
   stream_buffer_len[channel] = base_len;
-  remaining_samples[channel] = base_len;
-
-#ifdef USE_COMPENS
-  compensation = STREAM_BUFFER_MAXB * sample_rate / CPU_FPS -
-    STREAM_BUFFER_MAXB * base_len;
-  nb_frames = STREAM_BUFFER_MAXB;
-  reset_streams();
-#endif
 
   // Needs +1 to adjust more precisely to what the result should be !!!
   /* adjust sample rate to make it a multiple of buffer_len */
-#ifdef ALLEGRO_SOUND
-  /* This sample rate is used again in the allegro sound driver at leat.
-     it allows voices to play at a different sample rate from the main sound card mixer
-     I don't think the conversion is made in hardware but it seems very fast anyway */
-  sample_rate = stream_buffer_len[channel] * CPU_FPS;
-  /* If not in allegro, adjusting this is useless and wastes cpu time */
 #endif
 
-#endif
-
-  if ((stream_buffer[channel] = AllocateMem((sample_bits/8)*(stream_buffer_len[channel]+4))) == 0)
+  total_len = (sample_bits/8)*(stream_buffer_len[channel]*16);
+  printf("alloc stream %d\n",total_len);
+  if ((stream_buffer[channel] = AllocateMem(total_len)) == 0)
 		return -1;
-	stream_sample_rate[channel] = sample_rate;
-	stream_sample_bits[channel] = sample_bits;
-	if (sample_rate)
-		stream_sample_length[channel] = 1000000 / sample_rate;
-	else
-		stream_sample_length[channel] = 0;
-	stream_param[channel] = param;
-	stream_callback[channel] = callback;
-	return channel;
+  sem[channel] = SDL_CreateSemaphore(1);
+  stream_sample_rate[channel] = sample_rate;
+  stream_sample_bits[channel] = sample_bits;
+  stream_buffer_pos[channel] = 0;
+  stream_param[channel] = param;
+  stream_callback[channel] = callback;
+  return channel;
 }
 
 
@@ -269,9 +287,7 @@ int stream_init_multi(int channels,const char **name,int sample_rate,int sample_
       /* adjust sample rate to make it a multiple of buffer_len */
       sample_rate = stream_buffer_len[channel+i] * Machine->drv->frames_per_second;
 #else
-  base_len = 2048; // pow2(sample_rate / CPU_FPS)*2;
-  more_stream = 1;
-  base_len0 = base_len;
+  base_len = pow2(sample_rate / CPU_FPS);
   stream_buffer_len[channel+i] = base_len;
 
 #ifdef ALLEGRO_SOUND
@@ -279,19 +295,19 @@ int stream_init_multi(int channels,const char **name,int sample_rate,int sample_
   sample_rate = stream_buffer_len[channel+i] * CPU_FPS;
 #endif
 #endif
+  total_len = (sample_bits/8)*stream_buffer_len[channel+i]*16;
 
-      if ((stream_buffer[channel+i] = AllocateMem((sample_bits/8)*stream_buffer_len[channel+i]+4)) == 0)
+  printf("alloc stream %d\n",stream_buffer_len[channel]*8);
+      if ((stream_buffer[channel+i] = AllocateMem(total_len)) == 0)
 	return -1;
       memset(stream_buffer[channel+i],0,(sample_bits/8)*stream_buffer_len[channel+i]);
       stream_sample_rate[channel+i] = sample_rate;
       stream_sample_bits[channel+i] = sample_bits;
-      if (sample_rate)
-	stream_sample_length[channel+i] = 1000000 / sample_rate;
-      else
-	stream_sample_length[channel+i] = 0;
+      stream_buffer_pos[channel] = 0;
     }
 
   stream_param[channel] = param;
+  sem[channel] = SDL_CreateSemaphore(1);
   stream_callback_multi[channel] = callback;
 
   return channel;

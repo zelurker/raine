@@ -120,14 +120,23 @@ void saSetPan( int channel, int data )
 
 void saUpdateSound( int nowclock )
 {
-// All updates are in the callback now
+   if( ! GameSound ) return;
+   if( ! RaineSoundCard ) return;
+   if( ! audio_sample_rate ) return;
+   if( ! SndMachine ) return;
+
+   if( nowclock ){
+     //int i;
+     // This part is called for each frame, which *should* be 60
+  // times/sec, but it can be less (if the game slows down)
+      streams_sh_update();
+   }
 }
 
 int enh_stereo = 0;
 
 extern int max_mixer_volume;
 static void my_callback(void *userdata, Uint8 *stream, int len);
-SDL_AudioSpec gotspec;
 
 /******************************************/
 /*    setup sound			  */
@@ -524,162 +533,164 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
 
 static void my_callback(void *userdata, Uint8 *stream, int len)
 {
-  int i,channel;
-  short *wstream = (short*) stream;
-  if (pause_sound) {
-    return;
-  }
-#ifdef RDTSC_PROFILE
-  if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
-#endif
-  if (callback_busy)
-    print_debug("entering callback with busy = %d\n",callback_busy);
-  callback_busy = 1;
-  // printf("callback frame %d\n",cpu_frame_count);
-  // int nb=0;
+    int i,channel;
+    short *wstream = (short*) stream;
+    if (pause_sound) {
+	return;
+    }
+    if (callback_busy)
+	print_debug("entering callback with busy = %d\n",callback_busy);
+    callback_busy = 1;
+    // printf("callback frame %d\n",cpu_frame_count);
+    // int nb=0;
 
 #ifdef NEO
-  // 1. Fill the stream with the sample, if available
-  if (sample && cdda.playing == 1 && !done_flag && !mute_music) {
-    int bw = 0; /* bytes written to stream this time through the callback */
-    while (bw < len)
-    {
-      int cpysize;  /* bytes to copy on this iteration of the loop. */
+    // 1. Fill the stream with the sample, if available
+    if (sample && cdda.playing == 1 && !done_flag && !mute_music) {
+	int bw = 0; /* bytes written to stream this time through the callback */
+	while (bw < len)
+	{
+	    int cpysize;  /* bytes to copy on this iteration of the loop. */
 
-      if (!read_more_data(sample)) /* read more data, if needed. */
-      {
-	/* ...there isn't any more data to read! */
-	memset(stream + bw, '\0', len - bw);
-	done_flag = 1;
-	printf("over\n");
-	break;
-      } /* if */
+	    if (!read_more_data(sample)) /* read more data, if needed. */
+	    {
+		/* ...there isn't any more data to read! */
+		memset(stream + bw, '\0', len - bw);
+		done_flag = 1;
+		printf("over\n");
+		break;
+	    } /* if */
 
-      /* decoded_bytes and decoder_ptr are updated as necessary... */
+	    /* decoded_bytes and decoder_ptr are updated as necessary... */
 
-      cpysize = len - bw;
-      if (cpysize > global_state.decoded_bytes)
-	cpysize = global_state.decoded_bytes;
+	    cpysize = len - bw;
+	    if (cpysize > global_state.decoded_bytes)
+		cpysize = global_state.decoded_bytes;
 
-      if (cpysize > 0)
-      {
-	memcpy_with_volume(stream + bw,
-	    (Uint8 *) global_state.decoded_ptr,
-	    cpysize,sample->desired.format);
+	    if (cpysize > 0)
+	    {
+		memcpy_with_volume(stream + bw,
+			(Uint8 *) global_state.decoded_ptr,
+			cpysize,sample->desired.format);
 
-	bw += cpysize;
-	global_state.decoded_ptr += cpysize;
-	global_state.decoded_bytes -= cpysize;
-	cdda.pos += cpysize;
-      } /* if */
-    } /* while */
-  } else if (start_index && !mute_music && !nb_tracks) { // trying to play a track in a bin file...
-    static int end_pos;
-    if (!cdda.pos) {
-      fbin = fopen(neocd_path,"rb");
-      cdda.pos = start_index*2352;
-      end_pos = end_index*2352;
-      fseek(fbin,cdda.pos,SEEK_SET);
+		bw += cpysize;
+		global_state.decoded_ptr += cpysize;
+		global_state.decoded_bytes -= cpysize;
+		cdda.pos += cpysize;
+	    } /* if */
+	} /* while */
+    } else if (start_index && !mute_music && !nb_tracks) { // trying to play a track in a bin file...
+	static int end_pos;
+	if (!cdda.pos) {
+	    fbin = fopen(neocd_path,"rb");
+	    cdda.pos = start_index*2352;
+	    end_pos = end_index*2352;
+	    fseek(fbin,cdda.pos,SEEK_SET);
+	}
+	int cpysize;
+	if (cdda.pos+len < end_pos)
+	    cpysize = len;
+	else
+	    cpysize = end_pos - cdda.pos;
+	cdda.pos += len;
+	len -= cpysize;
+	read_buff(fbin,cpysize,stream);
+	if (len) { // more to process...
+	    if (cdda.loop) {
+		cdda.pos = start_index*2352;
+		fseek(fbin,cdda.pos,SEEK_SET);
+		read_buff(fbin,len,stream+cpysize);
+	    } else
+		memset(stream+cpysize,0,len);
+	}
+	len += cpysize; // restore len for the sound effects...
+    } else {
+	memset(stream,0,len);
     }
-    int cpysize;
-    if (cdda.pos+len < end_pos)
-      cpysize = len;
-    else
-      cpysize = end_pos - cdda.pos;
-    cdda.pos += len;
-    len -= cpysize;
-    read_buff(fbin,cpysize,stream);
-    if (len) { // more to process...
-      if (cdda.loop) {
-	cdda.pos = start_index*2352;
-	fseek(fbin,cdda.pos,SEEK_SET);
-	read_buff(fbin,len,stream+cpysize);
-      } else
-	memset(stream+cpysize,0,len);
+
+    if (mute_sfx) {
+	callback_busy = 0;
+	return;
     }
-    len += cpysize; // restore len for the sound effects...
-  } else {
-    memset(stream,0,len);
-  }
-  
-  if (mute_sfx) {
-    callback_busy = 0;
-#ifdef RDTSC_PROFILE
-    if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
-#endif
-    return;
-  }
 #endif
 
-  len /= 2; // 16 bits from now on
+    len /= 2; // 16 bits from now on
 
-  /* Ideally in this case I would average the buffer.
-     But normally this happens only when the sound becomes late because of the OS.
-     Either heavy swapping or windows "multitasking" defieciency (saw it even in win2k
-     when you change the focus of the window, the sound stops updating !!!). So in
-     this case we just need to jump directly to the correct point of update */
+    /* Ideally in this case I would average the buffer.
+       But normally this happens only when the sound becomes late because of the OS.
+       Either heavy swapping or windows "multitasking" defieciency (saw it even in win2k
+       when you change the focus of the window, the sound stops updating !!!). So in
+       this case we just need to jump directly to the correct point of update */
 
-  for (channel=0; channel<NUMVOICES; channel++) {
-    if( stream_buffer[channel] ){
-      int volume = SampleVol[channel];
-      int vol_l = (255-SamplePan[channel])*volume/255;
-      int vol_r = (SamplePan[channel])*volume/255;
+    for (channel=0; channel<NUMVOICES; channel++) {
+	if (stream_callback[channel] || stream_callback_multi[channel]) {
+	    SDL_SemWait(sem[channel]);
+	    // printf("my_callback chan %d len %d\n",channel,len);
+	    int volume = SampleVol[channel];
+	    int vol_l = (255-SamplePan[channel])*volume/255;
+	    int vol_r = (SamplePan[channel])*volume/255;
 #ifdef NEO
-      vol_l = vol_l*sfx_volume/100;
-      vol_r = vol_r*sfx_volume/100;
+	    vol_l = vol_l*sfx_volume/100;
+	    vol_r = vol_r*sfx_volume/100;
 #endif
-      if (len > stream_buffer_len[channel]) {
-	  printf("callback asked update of %d samples, allocated %d\n",len,stream_buffer_len[channel]);
-	  exit(1);
-      }
-
-	if (stream_callback[channel] || stream_callback_multi[channel]) 
-	    stream_update_channel(channel, len/2); 
-	// Otherwise it's been initialized already...
-      signed short *din=((signed short*)stream_buffer[channel]);
-	  /* normal buffer, no resample */
-	  for (i=0; i<len; i+=2) {
-	    INT16 left = *(din)*vol_l/255;
-	    INT16 right = *(din++)*vol_r/255;
+	    if (stream_buffer_pos[channel] < len/2) {
+		// printf("callb: underrun channel %d, wanted %d got %d\n",channel,len/2,stream_buffer_pos[channel]);
+		stream_update_channel(channel, len/2-stream_buffer_pos[channel]); 
+	    }
+	    // Otherwise it's been initialized already...
+	    signed short *din=((signed short*)stream_buffer[channel]);
+	    /* normal buffer, no resample */
+	    for (i=0; i<len; i+=2) {
+		INT16 left = *(din)*vol_l/255;
+		INT16 right = *(din++)*vol_r/255;
 #ifdef TEST_OVERFLOW
-	    INT32 sample = wstream[i]+left;
-	    if (sample > 0x7fff) {
-	      printf("overflow left %x\n",sample);
-	      sample = 0x7fff;
-	    } else if (sample < -0x8000) {
-	      printf("underflow left %x\n",sample);
-	      sample = -0x8000;
-	    }
-	    wstream[i] = sample;
-	    sample = wstream[i+1] + right;
-	    if (sample > 0x7fff) {
-	      printf("overflow right %x\n",sample);
-	      sample = 0x7fff;
-	    } else if (sample < -0x8000) {
-	      printf("underflow right %x\n",sample);
-	      sample = -0x8000;
-	    }
-	    wstream[i+1] = sample;
+		INT32 sample = wstream[i]+left;
+		if (sample > 0x7fff) {
+		    printf("overflow left %x\n",sample);
+		    sample = 0x7fff;
+		} else if (sample < -0x8000) {
+		    printf("underflow left %x\n",sample);
+		    sample = -0x8000;
+		}
+		wstream[i] = sample;
+		sample = wstream[i+1] + right;
+		if (sample > 0x7fff) {
+		    printf("overflow right %x\n",sample);
+		    sample = 0x7fff;
+		} else if (sample < -0x8000) {
+		    printf("underflow right %x\n",sample);
+		    sample = -0x8000;
+		}
+		wstream[i+1] = sample;
 #else
-	    wstream[i] += left;
-	    wstream[i+1] += right;
+		wstream[i] += left;
+		wstream[i+1] += right;
 #endif
-	  }
+	    }
+	    if (stream_buffer_pos[channel] == len/2) {
+		for( i = 0; i < stream_joined_channels[channel]; i++ ) {
+		    stream_buffer_pos[channel+i] = 0;
+		}
+	    } else {
+		// printf("after callback pos = %d instead of %d\n",stream_buffer_pos[channel],len/2);
+		for( i = 0; i < stream_joined_channels[channel]; i++ ) {
+		    memcpy(stream_buffer[channel+i],stream_buffer[channel+i]+len,stream_buffer_pos[channel+i]*2-len);
+		    stream_buffer_pos[channel+i] -= len/2;
+		}
+	    }
+	    SDL_SemPost(sem[channel]);
+	}
     }
-  }
 
 
-  if (recording) {
-    mixing_buff_len = len;
-    mixing_buff = wstream;
-    if (f_record) 
-	fwrite(mixing_buff,2,len,f_record);
-    updated_recording++;
-  }
-  callback_busy = 0;
-#ifdef RDTSC_PROFILE
-    if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
-#endif
+    if (recording) {
+	mixing_buff_len = len;
+	mixing_buff = wstream;
+	if (f_record) 
+	    fwrite(mixing_buff,2,len,f_record);
+	updated_recording++;
+    }
+    callback_busy = 0;
 }
 
 extern int smallest_sound_buffer;
