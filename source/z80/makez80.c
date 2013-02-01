@@ -3140,7 +3140,7 @@ void RetIRetNHandler(UINT32 dwOpcode)
 		fprintf(fp, "           add     word [_z80sp], 02h      ; Remove our two bytes from the stack\n");
 	}
 
-	if (dwOpcode == 0x45) // RETN
+//	if (dwOpcode == 0x45) // RETN
 	  { // This is where IFF1 becomes IFF2
 	    fprintf(fp, "               xor     edx, edx\n");
 	    fprintf(fp, "               mov     dl, [_z80iff]   ; Get interrupt flags\n");
@@ -3148,14 +3148,10 @@ void RetIRetNHandler(UINT32 dwOpcode)
 	    fprintf(fp, "               or     dword [_z80iff], edx\n");
 	  } // IFF2 is maintained (to allow nested nmis).
 
-	// From the z80 manual, RETI is a RET for the end of interrupts.
-	// They say peripheral know it's the end of an interrupt when reti is
-	// executed, but they don't say how... They say it's usefull in
-	// nested interrupts... Bah ! For now I can probably treat it as a
-	// normal ret (like mz80 3.4)
-	//if (dwOpcode == 0x4d){
-	//	fprintf(fp, "           mov     dword [_z80inInterrupt], 0\n");
-	//}
+	  // From the z80 undocumented : reti = retn in all the cases
+	  // the only case where reti is different is where there is a special
+	  // external pio to handle interrupts, in this case it detects reti
+	  // and sends the next interrupt in queue when it's executed.
 
 	fprintf(fp, "           xor     edx, edx        ; Make sure we don't hose things\n");
 	FetchNextInstruction(dwOpcode);
