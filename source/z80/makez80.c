@@ -4487,7 +4487,6 @@ void CodeSegmentEnd(void)
 
 void ProgramEnd(void)
 {
-	fprintf(fp, "           end\n");
 }
 
 void EmitRegularInstructions(void)
