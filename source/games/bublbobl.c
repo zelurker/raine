@@ -202,9 +202,9 @@ struct DSW_DATA dsw_data_bubble_bobble_1[] =
    { MSG_DSWB_BIT7,           0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
-   { MSG_DSWB_BIT8,           0x80, 0x02 },
-   { MSG_OFF,                 0x80},
-   { MSG_ON,                  0x00},
+   { "ROM type",           0x80, 0x02 },
+   { "IC52=512kb, IC53=none",    0x80},
+   { "IC52=256kb, IC53=256kb",   0x00},
    { NULL,                    0,   },
 };
 
@@ -622,7 +622,10 @@ static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG0_SOLID;
 
 static int mcu_addr;
-static UINT8 mcu_latch, mcu_port_a, mcu_old_data;
+static UINT8 mcu_latch;
+#ifndef MAME_MCU
+static UINT8 mcu_port_a, mcu_old_data;
+#endif
 static UINT8 *RAM_MCU, *ROM_2ND, *ROM_SND, *RAM_SND;
 static int nmi_enable, nmi_pending;
 static UINT8 sound_cmd;
@@ -700,6 +703,7 @@ void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 	    // This part apparently happens during the irq, there is no irq
 	    // for the68705 in raine, so we'll execute all this in the frame...
 		RAM[0xfc7c] = rand()%6;
+		printf("interrupt from mcu !!!\n");
 		cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
 
 	}
@@ -827,7 +831,7 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
 {
    UINT32 ta;
 
-   setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(4,60));
+   setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(3,60));
 
    for(ta=0;ta<4;ta++){
       ROM_BANK[ta] = dst+(ta*0xC000);
@@ -846,18 +850,21 @@ static void BublBobl_BankSwitch(UINT16 addr, UINT8 value)
       bank_sw = value & 3;
       Z80ASetBank( ROM_BANK[bank_sw] );
    }
-   if (value & 0x10) 
+#if 0
+   if ((value & 0x10)) {
+       printf("reset z80b\n");
        cpu_reset(CPU_Z80_1);
-   if (value & 0x20)
+   }
+   if ((value & 0x20a)) {
+       printf("reset mcu\n");
        BubbleBobble_mcu_reset();
-
+   }
+#endif
 }
 
 /******************************************************************************/
 /* Bubble Bobble YM2203                                                       */
 /******************************************************************************/
-
-static UINT8 ym2203_reg, ym3526_reg;
 
 // YM2203
 
@@ -878,10 +885,8 @@ static void BB_YM2203Write(UINT16 offset, UINT8 data)
 {
    if(!(offset&1)){
      YM2203_control_port_0_w(offset,data);
-     //ym2203_reg = data;
    }
    else{
-     //YM2203_control_port_0_w(offset,ym2203_reg);
       YM2203_write_port_0_w(offset,data);
    }
 }
@@ -902,7 +907,6 @@ static void BB_YM3526Write(UINT16 offset, UINT8 data)
      YM3526_control_port_0_w(offset,data);//      ym3526_reg = data;
    }
    else{
-     //YM3812_control_port_0_w(offset,ym3526_reg);
       YM3812_write_port_0_w(offset,data);
    }
 }
@@ -942,6 +946,16 @@ static void BublBoblLoadUpdate(void)
    ta = bank_sw;
    bank_sw = 0xFF;
    BublBobl_BankSwitch(0,ta);
+   portA_out = RAM_MCU[0];
+   portB_out = RAM_MCU[1];
+   ddrA = RAM_MCU[4];
+   ddrB = RAM_MCU[5];
+   RAM[0x10000] = 0x03;
+   if (!RAM[0x10001] && !RAM[0x10002]) {
+       // Old dsw ? Copy to the new location
+       RAM[0x10001] = RAM[0x10030];
+       RAM[0x10002] = RAM[0x10040];
+   }
 }
 
 static void BublBoblAddSaveData(void)
@@ -951,10 +965,12 @@ static void BublBoblAddSaveData(void)
    AddSaveData(SAVE_USER_0, (UINT8 *)&bank_sw,        sizeof(bank_sw));
    AddSaveData(SAVE_USER_1, (UINT8 *)&mcu_addr,       sizeof(mcu_addr));
    AddSaveData(SAVE_USER_2, (UINT8 *)&mcu_latch,      sizeof(mcu_latch));
+#ifdef MAME_MCU
+   AddSaveData(SAVE_USER_4, (UINT8 *)&portA_in,     sizeof(portA_in));
+#else
    AddSaveData(SAVE_USER_3, (UINT8 *)&mcu_port_a,     sizeof(mcu_port_a));
    AddSaveData(SAVE_USER_4, (UINT8 *)&mcu_old_data,   sizeof(mcu_old_data));
-   AddSaveData(SAVE_USER_5, (UINT8 *)&ym2203_reg,     sizeof(ym2203_reg));
-   AddSaveData(SAVE_USER_6, (UINT8 *)&ym3526_reg,     sizeof(ym3526_reg));
+#endif
    AddSaveData(SAVE_USER_7, (UINT8 *)&sound_cmd,      sizeof(sound_cmd));
    AddSaveData(SAVE_USER_8, (UINT8 *)&nmi_enable,     sizeof(nmi_enable));
    AddSaveData(SAVE_USER_9, (UINT8 *)&nmi_pending,    sizeof(nmi_pending));
@@ -1675,17 +1691,13 @@ void execute_bubble_bobble_frame(void)
 	cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
       }
 
-         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(2,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
       if (nmi_pending && nmi_enable)
       {
          cpu_int_nmi(CPU_Z80_2);
          nmi_pending = 0;
       }
+      cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(3,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
 
-//      if(cpu_get_pc(CPU_Z80_2) != 0x016D)
-//      {
-         cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(2,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
-//      }
       triger_timers();
 
    }
