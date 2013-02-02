@@ -21,7 +21,7 @@ VERSION_NEO = "1.4.1"
 # NEO=1
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -1036,8 +1036,6 @@ ifdef RAINE32
 
 # Add a nice little icon...
 
-OBJS += $(OBJDIR)/raine.res
-
 $(OBJDIR)/raine.res:	source/raine.rc
 	windres -O coff -o $(OBJDIR)/raine.res -i source/raine.rc
 endif
@@ -1057,13 +1055,18 @@ ifndef ASM_VIDEO_CORE
 	@echo "          video core. Using the asm functions for these..."
 endif
 
+ifdef RAINE32
+$(RAINE_EXE):	$(OBJS) $(OBJDIR)/raine.res
+else
 $(RAINE_EXE):	$(OBJS)
+endif
+
 ifdef NEO
 	@echo Linking NeoRaine...
 else
 	@echo Linking Raine...
 endif
-	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $(OBJS) $(LIBS) -lstdc++
+	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $^ $(LIBS) -lstdc++
 
 $(D7Z)/%.o: source/7z/%.c
 	@echo Compiling 7z $<...
@@ -1111,7 +1114,7 @@ $(OBJDIR)/%.o: source/%.c
 $(OBJDIR)/%.o: source/%.cpp
 	@echo Compiling c++ $<...
 	$(CXXV) $(CFLAGS) -MD -c $< -o $@
-	@cp $(OBJDIR)$*.d $(OBJDIR)/$*.P; \
+	@cp $(OBJDIR)/$*.d $(OBJDIR)/$*.P; \
             sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
                 -e '/^$$/ d' -e 's/$$/ :/' < $(OBJDIR)/$*.d >> $(OBJDIR)/$*.P; \
             rm -f $(OBJDIR)/$*.d
