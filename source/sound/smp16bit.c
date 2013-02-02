@@ -66,7 +66,7 @@ static void ad_decode(int ad_code)
 
 // Type 0 - adpcm (cabal)
 
-void decode_sample_adpcm(UINT8 *src, UINT32 size, UINT16 *dest, int volume)
+void decode_sample_adpcm(UINT8 *src, UINT32 size, INT16 *dest, int volume)
 {
    UINT32 ta;
 
@@ -83,7 +83,7 @@ void decode_sample_adpcm(UINT8 *src, UINT32 size, UINT16 *dest, int volume)
 
 // Type 1 - 8bit dac (nichibutsu)
 
-void decode_sample_8bit(UINT8 *src, UINT32 size, UINT16 *dest, int volume)
+void decode_sample_8bit(UINT8 *src, UINT32 size, INT16 *dest, int volume)
 {
    UINT32 ta;
 
@@ -270,14 +270,11 @@ int SMP16buffer_status( int num )
 /*    update                                      */
 /**************************************************/
 
-void SMP16buffer_UpdateOne( int num, void *buffer, int length )
+void SMP16buffer_UpdateOne( int num, INT16 *sp, int length )
 {
    int data;
-   INT16 *sp;
 
    if(!length) return;
-
-   sp = (INT16 *) buffer;
 
    SMP16 = &SMP16_entry[num];
 

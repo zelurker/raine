@@ -11,8 +11,8 @@ extern "C" {
 #ifndef __SMP16_H__
 #define __SMP16_H__
 
-void decode_sample_adpcm(UINT8 *src, UINT32 size, UINT16 *dest, int volume);
-void decode_sample_8bit(UINT8 *src, UINT32 size, UINT16 *dest, int volume);
+void decode_sample_adpcm(UINT8 *src, UINT32 size, INT16 *dest, int volume);
+void decode_sample_8bit(UINT8 *src, UINT32 size, INT16 *dest, int volume);
 
 #define SMP16BF_MAX     (2)
 #define SMP16BF_CHANNEL (1)
@@ -53,7 +53,7 @@ int SMP16buffer_sh_start( struct SMP16buffer_interface *interface );
 void SMP16buffer_sh_stop( void );
 void SMP16buffer_request( int num, int code );
 int  SMP16buffer_status( int num );
-void SMP16buffer_UpdateOne( int num, void *buffer, int length );
+void SMP16buffer_UpdateOne( int num, INT16 *sp, int length );
 
 #endif
 

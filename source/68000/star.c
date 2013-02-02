@@ -2646,7 +2646,7 @@ static void prefixes(void) {
 ** the jump table / loop info table
 */
 static void suffixes(void) {
-	emit("end\n");
+//	emit("end\n");
 }
 
 /****************************************************************************

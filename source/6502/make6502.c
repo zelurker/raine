@@ -405,7 +405,7 @@ static void FlagsX86to6502()
 	fprintf(fp, "		or		ah, [_altFlags]\n");
 }
 
-static void SetZeroSign(UINT8 *pszRegister)
+static void SetZeroSign(char *pszRegister)
 {
 	fprintf(fp, "		mov	dl, ah	; Save flags\n");
 	fprintf(fp, "		or	%s, %s	; OR Our new value\n", pszRegister, pszRegister);
@@ -415,7 +415,7 @@ static void SetZeroSign(UINT8 *pszRegister)
 	fprintf(fp, "		or	ah, dl		; New flags with the old!\n");
 }
 
-static void SetZero(UINT8 *pszRegister)
+static void SetZero(char *pszRegister)
 {
 	fprintf(fp, "		mov	dl, ah	; Save flags\n");
 	fprintf(fp, "		or	%s, %s	; OR Our new value\n", pszRegister, pszRegister);
@@ -425,7 +425,7 @@ static void SetZero(UINT8 *pszRegister)
 	fprintf(fp, "		or	ah, dl		; New flags with the old!\n");
 }
 
-static void DecSetZeroSign(UINT8 *pszRegister)
+static void DecSetZeroSign(char *pszRegister)
 {
 	fprintf(fp, "		mov	dl, ah	; Save flags\n");
 	fprintf(fp, "		dec	%s	; Decrement\n", pszRegister);
@@ -435,7 +435,7 @@ static void DecSetZeroSign(UINT8 *pszRegister)
 	fprintf(fp, "		or	ah, dl		; New flags with the old!\n");
 }
 
-static void IncSetZeroSign(UINT8 *pszRegister)
+static void IncSetZeroSign(char *pszRegister)
 {
 	fprintf(fp, "		mov	dl, ah	; Save flags\n");
 	fprintf(fp, "		inc	%s	; Increment\n", pszRegister);
@@ -535,7 +535,7 @@ static void FetchAndExec(UINT32 dwClock)
 	fprintf(fp, "		jmp	dword [%sregular+edx*4]\n\n", cpubasename);
 }
 
-static void ReadMemoryByte(UINT8 *pszTargetReg, UINT8 *pszAddress)
+static void ReadMemoryByte(char *pszTargetReg, char *pszAddress)
 {
 	fprintf(fp, "		mov	edi, [_%sMemRead]	; Point to the read array\n\n", cpubasename);
 	fprintf(fp, "checkLoop%ld:\n", dwGlobalLabel);
@@ -629,7 +629,7 @@ static void ReadMemoryWord()
 	fprintf(fp, "		mov	ax, [_%saf]	; Restore AF\n", cpubasename);
 }
 
-static void WriteMemoryByte(UINT8 *pszSourceReg, UINT8 *pszAddress)
+static void WriteMemoryByte(char *pszSourceReg, char *pszAddress)
 {
 	fprintf(fp, "		mov	edi, [_%sMemWrite]	; Point to the write array\n\n", cpubasename);
 	fprintf(fp, "checkLoop%ld:\n", dwGlobalLabel);
@@ -1060,7 +1060,6 @@ static void CodeSegmentEnd()
 
 static void ProgramEnd()
 {
-	fprintf(fp, "		end\n");
 }
 
 static void EmitRegularInstructions()
@@ -1085,7 +1084,7 @@ static void EmitRegularInstructions()
 	}
 }
 
-static void Immediate(UINT8 *pszRegister)
+static void Immediate(char *pszRegister)
 {
 	fprintf(fp, "		mov	%s, [esi]	; Get our next byte\n", pszRegister);
 	fprintf(fp, "		inc	esi		; Increment to our next byte\n");
