@@ -48,23 +48,26 @@ value_type lpeek(value_type fadr) {
 }
 
 void get_regs(int cpu) {
-  // for now cpu is just ignored, we'll see if I decide to handle other cpus...
-  for (int n=0; n<8; n++) {
-    a[n] = s68000context.areg[n];
-    d[n] = s68000context.dreg[n];
-  }
-  sr = s68000context.sr;
-  pc = s68000context.pc;
+    if ((cpu >> 4) == 1) { // 68k
+	for (int n=0; n<8; n++) {
+	    a[n] = s68000context.areg[n];
+	    d[n] = s68000context.dreg[n];
+	}
+	sr = s68000context.sr;
+	pc = s68000context.pc;
+    }
 }
 
 void set_regs(int cpu) {
-  // for now cpu is just ignored, we'll see if I decide to handle other cpus...
-  for (int n=0; n<8; n++) {
-    M68000_context[0].areg[n] = s68000context.areg[n] = a[n];
-    M68000_context[0].dreg[n] = s68000context.dreg[n] = d[n];
-  }
-  M68000_context[0].sr = s68000context.sr = sr;
-  M68000_context[0].pc = s68000context.pc = pc;
+    int num = cpu & 0xf;
+    if ((cpu >> 4) == 1) { // 68k
+	for (int n=0; n<8; n++) {
+	    M68000_context[num].areg[n] = s68000context.areg[n] = a[n];
+	    M68000_context[num].dreg[n] = s68000context.dreg[n] = d[n];
+	}
+	M68000_context[num].sr = s68000context.sr = sr;
+	M68000_context[num].pc = s68000context.pc = pc;
+    }
 }
 
 static value_type alert(const char_type *msg_and_btns) {

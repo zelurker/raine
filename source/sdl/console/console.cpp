@@ -12,6 +12,7 @@
 #include "console/exec.h"
 #include "cpumain.h"
 
+static int cpu_id;
 extern void do_if(int argc, char **argv);
 static UINT32 ram[MAX_DATA*2],nb_ram;
 static UINT8 *ram_buf[MAX_DATA],*search_size;
@@ -37,7 +38,7 @@ UINT8 *get_ptr(UINT32 adr, UINT32 *the_block) {
   }
   if (the_block) *the_block = block;
 
-  return get_userdata(0,ram[block]);
+  return get_userdata(cpu_id & 0xf,ram[block]);
 }
 
 typedef int (thandler)(UINT32 offset, UINT32 data);
@@ -464,23 +465,25 @@ static void do_map(int argc, char **argv) {
 void do_regs(int argc, char **argv) {
   char buf[1024];
   *buf = 0;
-  set_regs(0);
-  for (int n=0; n<8; n++) {
-    sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,s68000context.dreg[n]);
-    if (n==3 || n==7) {
-      cons->print(buf);
-      *buf = 0;
-    }
+  set_regs(cpu_id);
+  if ((cpu_id >> 4) == 1) { // 68k
+      for (int n=0; n<8; n++) {
+	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,s68000context.dreg[n]);
+	  if (n==3 || n==7) {
+	      cons->print(buf);
+	      *buf = 0;
+	  }
+      }
+      for (int n=0; n<8; n++) {
+	  sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,s68000context.areg[n]);
+	  if (n==3 || n==7) {
+	      cons->print(buf);
+	      *buf = 0;
+	  }
+      }
+      cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000context.sr,
+	      s68000context.pc);
   }
-  for (int n=0; n<8; n++) {
-    sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,s68000context.areg[n]);
-    if (n==3 || n==7) {
-      cons->print(buf);
-      *buf = 0;
-    }
-  }
-  cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000context.sr,
-    s68000context.pc);
 }
 
 static void do_poke(int argc, char **argv) {
@@ -1040,7 +1043,7 @@ commands_t commands[] =
 };
 
 int do_console(int sel) {
-    s68000_get_ram(0,ram,&nb_ram);
+    s68000_get_ram(cpu_id & 0xf,ram,&nb_ram);
     int irq = 0;
     if (!cons)
 	cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,1000, commands);
@@ -1075,13 +1078,13 @@ int do_console(int sel) {
 	goto_debuger = 0;
     } else
 	irq = check_breakpoint();
-    get_regs(0);
+    get_regs(cpu_id);
     if (goto_debuger >= 0)
 	cons->execute();
     else
 	goto_debuger = 0;
     restore_breakpoints();
-    set_regs(0);
+    set_regs(cpu_id);
     if (irq) {
 	cpu_interrupt(CPU_68K_0,irq);
     } else
@@ -1113,8 +1116,8 @@ void run_console_command(char *command) {
   if (!cons)
     cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,50, commands);
   printf("get_regs\n");
-  get_regs(0);
+  get_regs(cpu_id);
   cons->run_cmd(command);
-  set_regs(0);
+  set_regs(cpu_id);
 }
 
