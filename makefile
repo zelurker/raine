@@ -21,7 +21,7 @@ VERSION_NEO = "1.4.1"
 # NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -591,12 +591,12 @@ ASM020= $(OBJDIR)/68020/newcpu.o \
 
 # STARSCREAM 68000 core
 
-SC000=	$(OBJDIR)/68000/s68000.oa \
+SC000=	$(OBJDIR)/68000/s68000.o \
 	$(OBJDIR)/68000/starhelp.o \
 
 # MZ80 core
 
-MZ80=	$(OBJDIR)/z80/mz80.oa \
+MZ80=	$(OBJDIR)/z80/mz80.o \
 	$(OBJDIR)/z80/mz80help.o
 
 # network core
@@ -607,7 +607,7 @@ NET=	$(OBJDIR)/net/d_system.o \
 
 # M6502 core
 
-M6502=	$(OBJDIR)/6502/m6502.oa \
+M6502=	$(OBJDIR)/6502/m6502.o \
 	$(OBJDIR)/6502/m6502hlp.o \
 
 # M68705 core
@@ -661,10 +661,10 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/zoom/16x8.o \
 	$(OBJDIR)/video/c/lscroll.o \
 	$(OBJDIR)/video/alpha.o \
-	$(OBJDIR)/video/hq2x16.oa \
-	$(OBJDIR)/video/hq2x32.oa \
-	$(OBJDIR)/video/hq3x16.oa \
-	$(OBJDIR)/video/hq3x32.oa \
+	$(OBJDIR)/video/hq2x16.o \
+	$(OBJDIR)/video/hq2x32.o \
+	$(OBJDIR)/video/hq3x16.o \
+	$(OBJDIR)/video/hq3x32.o \
 	$(OBJDIR)/video/c/str_opaque.o \
 	$(OBJDIR)/video/c/pdraw.o
 
@@ -673,7 +673,7 @@ VIDEO += \
 	$(OBJDIR)/video/arcmon.o \
 	$(OBJDIR)/video/arcmode.o \
 	$(OBJDIR)/video/blitasm.o \
-	$(OBJDIR)/video/eagle.oa
+	$(OBJDIR)/video/eagle.o
 endif
 
 # Sound core
@@ -1067,7 +1067,11 @@ endif
 
 $(D7Z)/%.o: source/7z/%.c
 	@echo Compiling 7z $<...
-	$(CCV) $(CFLAGS) -c $< -D_7ZIP_PPMD_SUPPPORT -o $@
+	$(CCV) $(CFLAGS) -MD -c $< -D_7ZIP_PPMD_SUPPPORT -o $@
+	@cp $(D7Z)/$*.d $(D7Z)/$*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $(D7Z)/$*.d >> $(D7Z)/$*.P; \
+            rm -f $(D7Z)/$*.d
 
 tags:
 	ctags -R source
@@ -1098,11 +1102,21 @@ compress: $(RAINE_EXE)
 
 $(OBJDIR)/%.o: source/%.c
 	@echo Compiling $<...
-	$(CCV) $(CFLAGS) -c $< -o $@
+	$(CCV) $(CFLAGS) -MD -c $< -o $@
+	@cp $(OBJDIR)/$*.d $(OBJDIR)/$*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $(OBJDIR)/$*.d >> $(OBJDIR)/$*.P; \
+            rm -f $(OBJDIR)/$*.d
 
 $(OBJDIR)/%.o: source/%.cpp
 	@echo Compiling c++ $<...
-	$(CXXV) $(CFLAGS) -c $< -o $@
+	$(CXXV) $(CFLAGS) -MD -c $< -o $@
+	@cp $(OBJDIR)$*.d $(OBJDIR)/$*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $(OBJDIR)/$*.d >> $(OBJDIR)/$*.P; \
+            rm -f $(OBJDIR)/$*.d
+
+-include $(OBJS:%.o=%.P)
 
 # compile object from at&t asm
 
@@ -1118,15 +1132,23 @@ $(OBJDIR)/%.s: source/%.c
 
 # compile object from intel asm
 
-$(OBJDIR)/%.oa: source/%.asm
+# Rules to make video asm files...
+$(OBJDIR)/%.o: source/%.asm
 	@echo Assembling $<...
-	$(ASM) -o $@ $(AFLAGS) $<
-
+	$(ASM) -MD $(OBJDIR)/$*.d -o $@ $(AFLAGS) $<
+	@cp $(OBJDIR)/$*.d $(OBJDIR)/$*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $(OBJDIR)/$*.d >> $(OBJDIR)/$*.P; \
+            rm -f $(OBJDIR)/$*.d
 # generate s68000.asm
 
-$(OBJDIR)/68000/s68000.oa: $(OBJDIR)/68000/s68000.asm
+$(OBJDIR)/68000/s68000.o: $(OBJDIR)/68000/s68000.asm
 	@echo Assembling $<...
-	$(ASM) -o $@ $(AFLAGS) $<
+	$(ASM) -MD $*.d -o $@ $(AFLAGS) $<
+	@cp $*.d $*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+            rm -f $*.d
 
 ifdef CROSSCOMPILE
 $(OBJDIR)/68000/s68000.asm: $(NATIVE)/object/68000/star.exe
@@ -1139,9 +1161,13 @@ endif
 
 # generate mz80.asm
 
-$(OBJDIR)/z80/mz80.oa: $(OBJDIR)/z80/mz80.asm
+$(OBJDIR)/z80/mz80.o: $(OBJDIR)/z80/mz80.asm
 	@echo Assembling $<...
-	$(ASM) -o $@ $(AFLAGS) $<
+	$(ASM) -MD $*.d -o $@ $(AFLAGS) $<
+	@cp $*.d $*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+            rm -f $*.d
 
 ifdef CROSSCOMPILE
 $(OBJDIR)/z80/mz80.asm: $(NATIVE)/object/z80/makez80.exe
@@ -1162,9 +1188,13 @@ endif
 
 # generate m6502.asm
 
-$(OBJDIR)/6502/m6502.oa: $(OBJDIR)/6502/m6502.asm
+$(OBJDIR)/6502/m6502.o: $(OBJDIR)/6502/m6502.asm
 	@echo Assembling $<...
-	$(ASM) -o $@ $(AFLAGS) $<
+	$(ASM) -MD $*.d -o $@ $(AFLAGS) $<
+	@cp $*.d $*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+            rm -f $*.d
 
 $(OBJDIR)/6502/m6502.asm: $(OBJDIR)/6502/make6502.o
 	@echo Building M6502 $(OBJDIR)...
@@ -1222,23 +1252,6 @@ $(OBJDIR)/z80/makez80.o: source/z80/makez80.c
 $(OBJDIR)/6502/make6502.o: source/6502/make6502.c
 	@echo Compiling make6502...
 	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
-
-# dependencies
-
-# does perl exist for djgpp ??!
-ifdef NEO
-dep: make.neocd.dep
-make.neocd.dep:
-	./makedep $(OBJDIR) $(OBJS) > make.neocd.dep
-
-include make.neocd.dep
-else
-dep: make.dep
-make.dep:
-	./makedep $(OBJDIR) $(OBJS) > make.dep
-
-include make.dep
-endif
 
 cpuinfo:
 	@sh ./detect-cpu
