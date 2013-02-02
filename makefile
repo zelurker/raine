@@ -21,7 +21,7 @@ VERSION_NEO = "1.4.1"
 # NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -429,6 +429,7 @@ OBJDIRS=$(OBJDIR) \
 	$(OBJDIR)/video/i386/packed \
 	$(VIDEO_CORE)/str \
 	$(OBJDIR)/video/zoom \
+	$(OBJDIR)/math \
 	$(OBJDIR)/games 
 
 ifndef NEO
@@ -908,6 +909,7 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/gen_conv.o \
 	$(OBJDIR)/sdl/opengl.o \
+	$(OBJDIR)/math/matrix.o \
 	$(OBJDIR)/sdl/glsl.o \
 	$(OBJDIR)/sdl/profile.o
 

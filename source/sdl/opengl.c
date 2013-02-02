@@ -93,6 +93,7 @@ void get_ogl_infos() {
 
 
     if (ogl.render == 1 && strcmp(ogl.shader,"None")) {
+	printf("read_shader...\n");
 	read_shader(ogl.shader);
     }
     if (ogl.vendor) {
@@ -111,6 +112,9 @@ void get_ogl_infos() {
 }
 
 void render_texture(int linear) {
+    // glPushMatrix();
+    // glTranslated((area_overlay.x+area_overlay.w-1),0,0);
+    // glRotatef(90.0,0.0,0.0,1.0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear);
     glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
@@ -119,17 +123,18 @@ void render_texture(int linear) {
 	    sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
 
 
-    glBegin(GL_QUADS);
+    glBegin(GL_TRIANGLE_STRIP);
     glNormal3f(0,0,1.0);
     glTexCoord2f(0.0,0.0);
     glVertex3d(area_overlay.x, area_overlay.y+area_overlay.h-1,0);
     glTexCoord2f(1.0,0.0);
     glVertex3d(area_overlay.x+area_overlay.w-1, area_overlay.y+area_overlay.h-1,0);
-    glTexCoord2f(1.0,1.0);
-    glVertex3d(area_overlay.x+area_overlay.w-1, area_overlay.y,0);
     glTexCoord2f(0.0,1.0);
     glVertex3d(area_overlay.x, area_overlay.y,0);
+    glTexCoord2f(1.0,1.0);
+    glVertex3d(area_overlay.x+area_overlay.w-1, area_overlay.y,0);
     glEnd();
+    // glPopMatrix();
 }
 
 void draw_opengl(int linear) {

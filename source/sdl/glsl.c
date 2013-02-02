@@ -11,6 +11,7 @@
 #include "sdl/display_sdl.h"
 #include "sdl/opengl.h"
 #include "sdl/dialogs/messagebox.h"
+#include "math/matrix.h"
 
 // glsl shaders
 
@@ -29,6 +30,11 @@
 static int shader_support,modern;
 static GLuint vertexshader; // only one
 static PFNGLCREATEPROGRAMPROC glCreateProgram = 0;
+static PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = 0;
+static PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocation = 0;
+static PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = 0;
+static PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = 0;
+
 static PFNGLVALIDATEPROGRAMPROC glValidateProgram = 0;
 static PFNGLDELETEPROGRAMPROC glDeleteProgram = 0;
 static PFNGLUSEPROGRAMPROC glUseProgram = 0;
@@ -58,6 +64,9 @@ typedef struct {
     int sizex,sizey,filter;
     float outscalex,outscaley;
     int vertex;
+    // locations
+    GLint input_size,output_size,texture_size,mvp;
+
 } tpass;
 
 static tpass pass[MAX_PASS];
@@ -73,7 +82,7 @@ const GLfloat vertexes_flipped[] = {
 
 // Used when rendering to an FBO.
 // Texture coords have to be aligned with vertex coordinates.
-static const GLfloat vertexes[] = {
+static GLfloat vertexes[] = {
    0, 0,
    1, 0,
    0, 1,
@@ -275,6 +284,10 @@ void read_shader(char *shader) {
     if (!glCreateProgram) {
 	//bind shader functions
 	glCreateProgram = (PFNGLCREATEPROGRAMPROC)glGetProcAddress("glCreateProgram");
+	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
+	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
+	glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)glGetProcAddress("glEnableVertexAttribArray");
+	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)glGetProcAddress("glVertexAttribPointer");
 	glValidateProgram = (PFNGLVALIDATEPROGRAMPROC)glGetProcAddress("glValidateProgram");
 	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)glGetProcAddress("glDeleteProgram");
 	glUseProgram = (PFNGLUSEPROGRAMPROC)glGetProcAddress("glUseProgram");
@@ -458,7 +471,9 @@ start_shader:
 		    strcpy(ogl.shader,"None");
 		    MessageBox("Error linking shader",buf,"OK");
 		    free(buf);
-		} else if (glValidateProgram) {
+		    break;
+		}
+		if (glValidateProgram) {
 		    glValidateProgram(pass[n].glprogram);
 		    GLint tmp;
 		    glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
@@ -468,10 +483,46 @@ start_shader:
 			glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
 			printf("Errors validating shader program %d: %s\n", n,buf);
 			free(buf);
-		    } else
-			print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
+			break;
+		    } 
+		    print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
 		} else
 		    printf("impossible to validate shader, no validation function\n");
+		GLuint glprogram = pass[n].glprogram;
+		pass[n].input_size = glGetUniformLocation(glprogram, "rubyInputSize");
+		pass[n].output_size = glGetUniformLocation(glprogram, "rubyOutputSize");
+		pass[n].texture_size = glGetUniformLocation(glprogram, "rubyTextureSize");
+		GLint loc = glGetAttribLocation(glprogram, "rubyVertexCoord");
+		if (loc > -1) {
+		    printf("rubyVertexCoord... %d,%d\n",area_overlay.w,area_overlay.h);
+		    vertexes[0] = area_overlay.x; vertexes[1] = area_overlay.y+area_overlay.h-1;
+		    vertexes[2] = area_overlay.x+area_overlay.w-1;
+		    vertexes[3] = area_overlay.y+area_overlay.h-1;
+		    vertexes[4] = area_overlay.x; vertexes[5] = area_overlay.y;
+		    vertexes[6] = area_overlay.x+area_overlay.w-1;
+		    vertexes[7] = area_overlay.y;
+
+		    glEnableVertexAttribArray(loc);
+		    glVertexAttribPointer(loc,2,GL_FLOAT,GL_FALSE,0,vertexes);
+		}
+		loc = pass[n].mvp = glGetUniformLocation(glprogram, "rubyMVPMatrix");
+		if (loc > -1) {
+		    printf("init mvp\n");
+		    math_matrix mat;
+		    matrix_ortho(&mat,area_overlay.x,
+			    area_overlay.x+area_overlay.w-1,
+			    area_overlay.y,
+			    area_overlay.y+area_overlay.h-1,
+			    -1,1);
+		    glUniformMatrix4fv(loc, 1, GL_FALSE, mat.data);
+		} else 
+		    printf("no rubyMVPMatrix: %d\n",loc);
+		loc = glGetAttribLocation(glprogram, "rubyTexCoord");
+		if (loc > -1) {
+		    printf("rubyTexCoord...\n");
+		    glEnableVertexAttribArray(loc);
+		    glVertexAttribPointer(loc,2,GL_FLOAT,GL_FALSE,0,tex_coords);
+		}
 	    }
 
 	    goto flee;
@@ -500,38 +551,37 @@ void draw_shader(int linear)
 
 	    GLuint glprogram = pass[n].glprogram;
 	    glUseProgram(glprogram);
-	    GLint location;
 
-	    float inputSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
 #if 0
 	    if (n > 0) {
 		inputSize[0] = (float)area_overlay.w;
 		inputSize[1] = (float)area_overlay.h;
 	    }
 #endif
-	    location = glGetUniformLocation(glprogram, "rubyInputSize");
-	    if (location > -1)
-		glUniform2fv(location, 1, inputSize);
-
-	    float outputSize[2] = { (float)area_overlay.w, (float)area_overlay.h };
-	    location = glGetUniformLocation(glprogram, "rubyOutputSize");
-	    if (location > -1)
-		glUniform2fv(location, 1, outputSize);
-
-	    // This one is supposed to be >= GameScreen.[xy]view
-	    // I guess it's in case you decide to use hq2/3x on GameScreen
-	    // to generate the texture, but I don't think I'll want to do
-	    // that (loss of cycles everywhere !)
-	    float textureSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
-#if 0
-	    if (n > 0) {
-		textureSize[0] = (float)area_overlay.w;
-		textureSize[1] = (float)area_overlay.h;
+	    if (pass[n].input_size > -1) {
+		float inputSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+		glUniform2fv(pass[n].input_size, 1, inputSize);
 	    }
+	    if (pass[n].output_size > -1) {
+
+		float outputSize[2] = { (float)area_overlay.w, (float)area_overlay.h };
+		glUniform2fv(pass[n].output_size, 1, outputSize);
+	    }
+
+	    if (pass[n].texture_size > -1) {
+		// This one is supposed to be >= GameScreen.[xy]view
+		// I guess it's in case you decide to use hq2/3x on GameScreen
+		// to generate the texture, but I don't think I'll want to do
+		// that (loss of cycles everywhere !)
+		float textureSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+#if 0
+		if (n > 0) {
+		    textureSize[0] = (float)area_overlay.w;
+		    textureSize[1] = (float)area_overlay.h;
+		}
 #endif
-	    location = glGetUniformLocation(glprogram, "rubyTextureSize");
-	    if (location > -1)
-		glUniform2fv(location, 1, textureSize);
+		glUniform2fv(pass[n].texture_size, 1, textureSize);
+	    }
 
 	    if (pass[n].filter == 2) // explicit nearest
 		linear = GL_NEAREST;
