@@ -386,8 +386,12 @@ void load_sample(char *filename) {
   sample = Sound_NewSampleFromFile(filename,
       NULL,
       16384);
-  if (!sample)
+  if (!sample) {
     print_ingame(183, "Audio track unreadable");
+    print_debug("Audio track unreadable : %s\n",filename);
+  } else {
+      print_debug("load_sample %s ok\n",filename);
+  }
   callback_busy = 0;
   done_flag = 0;
   SDL_PauseAudio(0);

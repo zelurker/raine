@@ -142,6 +142,8 @@ void init_load_type() {
     for (n=0; n<nb_tracks; n++) {
       free(mp3_track[n]);
     }
+    free(mp3_track);
+    mp3_track = NULL;
   }
   nb_tracks = 0;
   nb_indexes = 0;
@@ -220,8 +222,26 @@ void init_load_type() {
 		break;
 	      }
 	    }
-	    mp3_track[nb_tracks++] = strdup(start+1);
-	    print_debug("adding mp3 track %s\n",start+1);
+	    int n = nb_tracks;
+	    mp3_track[nb_tracks++] = malloc(strlen(start+1)+strlen(neocd_dir)+4); // +1 for the /, +2 for flac instead of wav, +3 for the end 0.
+	    sprintf(mp3_track[n],"%s" SLASH "%s",neocd_dir,start+1);
+	    if (!exists(mp3_track[n])) {
+		char *ext = strrchr(mp3_track[n],'.');
+		if (ext) {
+		    char *exts[] = { "mp3","ogg","flac", NULL };
+		    int x = 0;
+		    while (exts[x]) {
+			strcpy(ext+1,exts[x]);
+			if (exists(mp3_track[n])) break;
+			x++;
+		    }
+		    if (!exts[x]) {
+			strcpy(ext+1,"wav");
+			print_debug("track %d does not exist : %s\n",n,mp3_track[n]);
+		    }
+		}
+	    }
+	    print_debug("adding mp3 track %s\n",mp3_track[n]);
 	  } else {
 	    char msg[160];
 	    sprintf(msg,"Track format unknown '%s'",end+2);

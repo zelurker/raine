@@ -87,7 +87,7 @@ static void cdda_resume() {
 
 static int cdda_play(int track,int loop)
 {
-  char str[256];char str2[256];char *str3;
+  char str[FILENAME_MAX];char str2[FILENAME_MAX];char *str3;
   print_debug("cdda_play %d loop %d\n",track,loop);
 
   if (!RaineSoundCard) return 1;
@@ -118,8 +118,10 @@ static int cdda_play(int track,int loop)
       strcpy(str,neocd_dir);
       str3=find_file(str2,str);
     }
-  } else
+  } else if (!strchr(str3,SLASH[0])) // no path in track
     strcpy(str,neocd_dir);
+  else
+      str[0] = 0;
 
   if (!str3) {
     // defaults to direct cdda reading...
@@ -167,8 +169,10 @@ static int cdda_play(int track,int loop)
     cdda.playing = 1;
     print_debug("playing %s\n",str);
     reset_ingame_timer(); // loading the song can be long, esp from a cd !
-  } else
-	  print_ingame(180,"Could not find audio track %d",track);
+  } else {
+      print_ingame(180,"Could not find audio track %d",track);
+      print_debug("Could not find audio track %d",track);
+  }
 
   return 1;
 }
