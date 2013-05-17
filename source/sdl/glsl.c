@@ -1,4 +1,5 @@
 #include <SDL.h>
+#define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 #ifdef MessageBox
 #undef MessageBox
@@ -27,32 +28,8 @@
   #error "OpenGL: unsupported platform"
 #endif
 
-static int shader_support,modern;
+static int modern;
 static GLuint vertexshader; // only one
-static PFNGLCREATEPROGRAMPROC glCreateProgram = 0;
-static PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = 0;
-static PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocation = 0;
-static PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = 0;
-static PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = 0;
-
-static PFNGLVALIDATEPROGRAMPROC glValidateProgram = 0;
-static PFNGLDELETEPROGRAMPROC glDeleteProgram = 0;
-static PFNGLUSEPROGRAMPROC glUseProgram = 0;
-static PFNGLCREATESHADERPROC glCreateShader = 0;
-static PFNGLDELETESHADERPROC glDeleteShader = 0;
-static PFNGLSHADERSOURCEPROC glShaderSource = 0;
-static PFNGLCOMPILESHADERPROC glCompileShader = 0;
-static PFNGLGETSHADERIVPROC glGetShaderiv = 0;
-static PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = 0;
-static PFNGLATTACHSHADERPROC glAttachShader = 0;
-static PFNGLDETACHSHADERPROC glDetachShader = 0;
-static PFNGLLINKPROGRAMPROC glLinkProgram = 0;
-static PFNGLGETPROGRAMIVPROC glGetProgramiv = 0;
-static PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = 0;
-static PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = 0;
-static PFNGLUNIFORM1IPROC glUniform1i = 0;
-static PFNGLUNIFORM2FVPROC glUniform2fv = 0;
-static PFNGLUNIFORM4FVPROC glUniform4fv = 0;
 
 static int nb_pass; // number of passes for the shader
 #define MAX_VARIABLES 256
@@ -281,42 +258,6 @@ void read_shader(char *shader) {
     char *buf = my_load_file(shader);
     int vertex_used_src = 0, frag_used_src = 0;
 
-    if (!glCreateProgram) {
-	//bind shader functions
-	glCreateProgram = (PFNGLCREATEPROGRAMPROC)glGetProcAddress("glCreateProgram");
-	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
-	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
-	glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)glGetProcAddress("glEnableVertexAttribArray");
-	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)glGetProcAddress("glVertexAttribPointer");
-	glValidateProgram = (PFNGLVALIDATEPROGRAMPROC)glGetProcAddress("glValidateProgram");
-	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)glGetProcAddress("glDeleteProgram");
-	glUseProgram = (PFNGLUSEPROGRAMPROC)glGetProcAddress("glUseProgram");
-	glCreateShader = (PFNGLCREATESHADERPROC)glGetProcAddress("glCreateShader");
-	glDeleteShader = (PFNGLDELETESHADERPROC)glGetProcAddress("glDeleteShader");
-	glShaderSource = (PFNGLSHADERSOURCEPROC)glGetProcAddress("glShaderSource");
-	glCompileShader = (PFNGLCOMPILESHADERPROC)glGetProcAddress("glCompileShader");
-	glGetShaderiv = (PFNGLGETSHADERIVPROC)glGetProcAddress("glGetShaderiv");
-	glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)glGetProcAddress("glGetShaderInfoLog");
-	glAttachShader = (PFNGLATTACHSHADERPROC)glGetProcAddress("glAttachShader");
-	glDetachShader = (PFNGLDETACHSHADERPROC)glGetProcAddress("glDetachShader");
-	glLinkProgram = (PFNGLLINKPROGRAMPROC)glGetProcAddress("glLinkProgram");
-	glGetProgramiv = (PFNGLGETPROGRAMIVPROC)glGetProcAddress("glGetProgramiv");
-	glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)glGetProcAddress("glGetProgramInfoLog");
-	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)glGetProcAddress("glGetUniformLocation");
-	glUniform1i = (PFNGLUNIFORM1IPROC)glGetProcAddress("glUniform1i");
-	glUniform2fv = (PFNGLUNIFORM2FVPROC)glGetProcAddress("glUniform2fv");
-	glUniform4fv = (PFNGLUNIFORM4FVPROC)glGetProcAddress("glUniform4fv");
-
-	shader_support = glCreateProgram && glUseProgram && glCreateShader
-	    && glDeleteShader && glShaderSource && glCompileShader && glGetShaderiv
-	    && glGetShaderInfoLog && glAttachShader && glDetachShader && glLinkProgram
-	    && glGetProgramiv && glGetProgramInfoLog && glGetUniformLocation
-	    && glUniform1i && glUniform2fv && glUniform4fv;
-    }
-    if (!shader_support) {
-	MessageBox("Warning","No shader support on your hardware","ok");
-	return;
-    }
     delete_shaders();
 	
     if (!buf)
@@ -473,21 +414,17 @@ start_shader:
 		    free(buf);
 		    break;
 		}
-		if (glValidateProgram) {
-		    glValidateProgram(pass[n].glprogram);
-		    GLint tmp;
+		glValidateProgram(pass[n].glprogram);
+		glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
+		if (!tmp) {
 		    glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
-		    if (!tmp) {
-			glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
-			GLchar *buf = malloc(tmp);
-			glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
-			printf("Errors validating shader program %d: %s\n", n,buf);
-			free(buf);
-			break;
-		    } 
-		    print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
-		} else
-		    printf("impossible to validate shader, no validation function\n");
+		    GLchar *buf = malloc(tmp);
+		    glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
+		    printf("Errors validating shader program %d: %s\n", n,buf);
+		    free(buf);
+		    break;
+		}
+		print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
 		GLuint glprogram = pass[n].glprogram;
 		pass[n].input_size = glGetUniformLocation(glprogram, "rubyInputSize");
 		pass[n].output_size = glGetUniformLocation(glprogram, "rubyOutputSize");
