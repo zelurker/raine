@@ -16,25 +16,10 @@
 
 // glsl shaders
 
-#ifdef RAINE_UNIX
-  #include <GL/glx.h>
-  #define glGetProcAddress(name) (*glXGetProcAddress)((const GLubyte*)(name))
-#elif defined(RAINE_WIN32)
-//  With sdl glext.h doesn't need to be included here, and it's a good thing
-//  because it has disappeared from the i686-w64-mingw32-gcc files
-//  #include <GL/glaux.h>
-  #define glGetProcAddress(name) wglGetProcAddress(name)
-#else
-  #error "OpenGL: unsupported platform"
-#endif
-
 static int modern;
 static GLuint vertexshader; // only one
 
 static int nb_pass; // number of passes for the shader
-#define MAX_VARIABLES 256
-#define MAx_TEXTURES 8
-#define PREV_TEXTURES 7
 #define MAX_PASS 10
 typedef struct {
     GLuint glprogram, fragmentshader;
@@ -152,7 +137,7 @@ static int attach(GLuint shader) {
     }
     if (vertexshader && vertexshader != shader &&
 	    vertexshader != pass[nb_pass].vertex) {
-	print_debug("attaching vertex shader to program %d\n",pass[nb_pass].glprogram);
+	print_debug("attaching vertex shader %d to program %d\n",vertexshader,pass[nb_pass].glprogram);
 	gl_error = glGetError( );
 	glAttachShader(pass[nb_pass].glprogram, vertexshader);
 	gl_error = glGetError( );
@@ -191,7 +176,7 @@ static int set_fragment_shader(const char *source) {
 	MessageBox("Errors compiling fragment shader",buf,"ok");
 	free(buf);
 	ret = 0;
-    } else 
+    } else
 	ret = attach(fragmentshader);
     pass[nb_pass].fragmentshader = fragmentshader;
     return ret;
@@ -201,6 +186,7 @@ static int set_vertex_shader(const char *source) {
     int ret = 1;
     vertexshader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexshader, 1, &source, 0);
+    print_debug("compiling vertex shader %d\n",vertexshader);
     glCompileShader(vertexshader);
 
     GLint tmp;
@@ -210,12 +196,14 @@ static int set_vertex_shader(const char *source) {
 	GLchar *buf = malloc(tmp);
 	glGetShaderInfoLog(vertexshader, tmp, NULL, buf);
 	printf("Errors compiling vertex shader: %s\n", buf);
+	print_debug("errors compiling vertex shader : %s\n",buf);
 	free(buf);
 	ret = 0;
     } else {
 	/* After seeing an example of a v1.2 xml shader, it seems the vertex
 	 * shader can be totally at the end of the file, so I guess that it
 	 * needs to be attached to all created programs in this case ! */
+	print_debug("compilation vertex shader ok\n");
 	int nb = nb_pass;
 	for (nb_pass=0; nb_pass <= nb; nb_pass++)
 	    ret &= attach(vertexshader);
@@ -235,12 +223,16 @@ void delete_shaders() {
 	    }
 	    if (vertexshader) glDetachShader(pass[n].glprogram,vertexshader);
 	    glDeleteProgram(pass[n].glprogram);
+	    print_debug("delete program %d\n",pass[n].glprogram);
 	    pass[n].fragmentshader = pass[n].glprogram = 0;
 	}
 	pass[n].sizex = pass[n].sizey = pass[n].filter = pass[n].vertex = 0;
 	pass[n].outscalex = pass[n].outscaley = 0.0;
     }
-    if (vertexshader) glDeleteShader(vertexshader);
+    if (vertexshader) {
+	glDeleteShader(vertexshader);
+	vertexshader = 0;
+    }
     nb_pass = 0;
 }
 
@@ -282,7 +274,7 @@ void read_shader(char *shader) {
     /* The idea is to try to make the code as readable as possible (it's
      * about string manipulation in C, so there won't be any miracle !), but
      * I'll have a separate block of code for each tag, and since there are
-     * only shader, vertex and fragment here, it should do... 
+     * only shader, vertex and fragment here, it should do...
      *
      * Also I saw somewhere on the web that sometimes they use src instead of
      * cdata even though it's not part of 1.1 specification, but I added
@@ -293,7 +285,7 @@ void read_shader(char *shader) {
     int vertex_used_src = 0, frag_used_src = 0;
 
     delete_shaders();
-	
+
     if (!buf)
 	return;
     char *p = buf;
@@ -435,6 +427,7 @@ start_shader:
 
 	    for (n=0; n<=nb_pass; n++) {
 		glLinkProgram(pass[n].glprogram);
+		print_debug("linking program %d pass %d\n",pass[n].glprogram,n);
 
 		GLint tmp;
 		glGetProgramiv(pass[n].glprogram, GL_LINK_STATUS, &tmp);
@@ -445,8 +438,11 @@ start_shader:
 		    delete_shaders();
 		    strcpy(ogl.shader,"None");
 		    MessageBox("Error linking shader",buf,"OK");
+		    print_debug("link error : %s\n",buf);
 		    free(buf);
 		    break;
+		} else {
+		    print_debug("link ok\n");
 		}
 		glValidateProgram(pass[n].glprogram);
 		glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
@@ -486,7 +482,7 @@ start_shader:
 			    area_overlay.y+area_overlay.h-1,
 			    -1,1);
 		    glUniformMatrix4fv(loc, 1, GL_FALSE, mat.data);
-		} else 
+		} else
 		    printf("no MVPMatrix: %d\n",loc);
 		loc = get_attrib_loc(glprogram, "TexCoord");
 		if (loc > -1) {
@@ -565,8 +561,8 @@ void draw_shader(int linear)
 	}
 	glUseProgram(0); // all shaders off now
 	return;
-    } 
-    if (linear != 2) 
+    }
+    if (linear != 2)
 	linear = GL_LINEAR;
     else
 	linear = GL_NEAREST;
