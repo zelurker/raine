@@ -244,6 +244,40 @@ void delete_shaders() {
     nb_pass = 0;
 }
 
+static char *prefix[] = {
+    "ruby", NULL };
+
+static GLint get_uniform_loc(GLuint prog, const char *name)
+{
+    GLint loc = glGetUniformLocation(prog,name);
+    if (loc > 0) return loc;
+    char buf[64];
+    char **pref = &prefix[0];
+    while (*pref) {
+	sprintf(buf,"%s%s",*pref,name);
+	loc = glGetUniformLocation(prog,buf);
+	if (loc > 0) return loc;
+	pref++;
+    }
+    return -1;
+}
+
+// Exactly the same function, but with glGetAttributeLocation... so unefficient
+static GLint get_attrib_loc(GLuint prog, const char *name)
+{
+    GLint loc = glGetAttribLocation(prog,name);
+    if (loc > 0) return loc;
+    char buf[64];
+    char **pref = &prefix[0];
+    while (*pref) {
+	sprintf(buf,"%s%s",*pref,name);
+	loc = glGetAttribLocation(prog,buf);
+	if (loc > 0) return loc;
+	pref++;
+    }
+    return -1;
+}
+
 void read_shader(char *shader) {
     /* The idea is to try to make the code as readable as possible (it's
      * about string manipulation in C, so there won't be any miracle !), but
@@ -426,12 +460,12 @@ start_shader:
 		}
 		print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
 		GLuint glprogram = pass[n].glprogram;
-		pass[n].input_size = glGetUniformLocation(glprogram, "rubyInputSize");
-		pass[n].output_size = glGetUniformLocation(glprogram, "rubyOutputSize");
-		pass[n].texture_size = glGetUniformLocation(glprogram, "rubyTextureSize");
-		GLint loc = glGetAttribLocation(glprogram, "rubyVertexCoord");
+		pass[n].input_size = get_uniform_loc(glprogram, "InputSize");
+		pass[n].output_size = get_uniform_loc(glprogram, "OutputSize");
+		pass[n].texture_size = get_uniform_loc(glprogram, "TextureSize");
+		GLint loc = get_attrib_loc(glprogram, "VertexCoord");
 		if (loc > -1) {
-		    printf("rubyVertexCoord... %d,%d\n",area_overlay.w,area_overlay.h);
+		    printf("VertexCoord... %d,%d\n",area_overlay.w,area_overlay.h);
 		    vertexes[0] = area_overlay.x; vertexes[1] = area_overlay.y+area_overlay.h-1;
 		    vertexes[2] = area_overlay.x+area_overlay.w-1;
 		    vertexes[3] = area_overlay.y+area_overlay.h-1;
@@ -442,7 +476,7 @@ start_shader:
 		    glEnableVertexAttribArray(loc);
 		    glVertexAttribPointer(loc,2,GL_FLOAT,GL_FALSE,0,vertexes);
 		}
-		loc = pass[n].mvp = glGetUniformLocation(glprogram, "rubyMVPMatrix");
+		loc = pass[n].mvp = get_uniform_loc(glprogram, "MVPMatrix");
 		if (loc > -1) {
 		    printf("init mvp\n");
 		    math_matrix mat;
@@ -453,10 +487,10 @@ start_shader:
 			    -1,1);
 		    glUniformMatrix4fv(loc, 1, GL_FALSE, mat.data);
 		} else 
-		    printf("no rubyMVPMatrix: %d\n",loc);
-		loc = glGetAttribLocation(glprogram, "rubyTexCoord");
+		    printf("no MVPMatrix: %d\n",loc);
+		loc = get_attrib_loc(glprogram, "TexCoord");
 		if (loc > -1) {
-		    printf("rubyTexCoord...\n");
+		    printf("TexCoord...\n");
 		    glEnableVertexAttribArray(loc);
 		    glVertexAttribPointer(loc,2,GL_FLOAT,GL_FALSE,0,tex_coords);
 		}
