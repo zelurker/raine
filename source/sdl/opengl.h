@@ -14,6 +14,8 @@ void finish_opengl();
 void opengl_done();
 void render_texture(int linear);
 
+void check_error(char *msg);
+
 #ifdef __cplusplus
 }
 #endif

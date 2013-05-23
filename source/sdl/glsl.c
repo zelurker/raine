@@ -157,6 +157,7 @@ static int attach(GLuint shader) {
 	return 0;
     } else if (vertexshader == shader)
 	pass[nb_pass].vertex = shader;
+    check_error("attach");
     return 1;
 }
 
@@ -179,6 +180,7 @@ static int set_fragment_shader(const char *source) {
     } else
 	ret = attach(fragmentshader);
     pass[nb_pass].fragmentshader = fragmentshader;
+    check_error("set_fragment");
     return ret;
 }
 
@@ -209,6 +211,7 @@ static int set_vertex_shader(const char *source) {
 	    ret &= attach(vertexshader);
 	nb_pass = nb;
     }
+    check_error("set_vertex");
     return ret;
 }
 
@@ -506,11 +509,12 @@ flee:
     if (frag_used_src) free(frag_src);
     if (vertex_used_src) free(vertex_src);
     free(buf);
-    return;
+    check_error("read_shader");
 }
 
 void draw_shader(int linear)
 {
+    check_error("start draw_shader");
     if (pass[0].glprogram) {
 
 	int n;
@@ -560,6 +564,7 @@ void draw_shader(int linear)
 	    render_texture(linear);
 	}
 	glUseProgram(0); // all shaders off now
+	check_error("ret draw_shader");
 	return;
     }
     if (linear != 2)
@@ -567,5 +572,6 @@ void draw_shader(int linear)
     else
 	linear = GL_NEAREST;
     render_texture(linear);
+    check_error("end draw_shader");
 }
 

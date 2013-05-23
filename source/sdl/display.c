@@ -278,8 +278,8 @@ static SDL_Surface *new_set_gfx_mode() {
     if (display_cfg.video_mode == 0) // opengl
 	bpp = 32;
 #ifdef DARWIN
-      if (display_cfg.fullscreen)
-	  bpp = desktop_bpp;
+    if (display_cfg.fullscreen)
+	bpp = desktop_bpp;
 #endif
   }
   if (forced_bpp && !sdl_overlay && display_cfg.video_mode != 1)

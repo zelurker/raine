@@ -12,8 +12,9 @@
 
 static UINT8 *font;
 
+void check_error(char *msg) {
 #ifdef RAINE_DEBUG
-static void check_error(char *msg) {
+    // No need to display this in non debug builds
     int gl_error = glGetError( );
 
     if( gl_error != GL_NO_ERROR ) {
@@ -26,8 +27,8 @@ static void check_error(char *msg) {
 	fprintf(stderr, "%s: SDL error '%s'\n",msg, sdl_error);
 	SDL_ClearError();
     }
-}
 #endif
+}
 
 void ogl_save_png(char *name) {
     // unsigned long lImageSize;   // Size in bytes of image
@@ -76,7 +77,19 @@ void opengl_reshape(int w, int h) {
     }
 }
 
+static int GetAttribute(int attr, int *value) {
+    int ret = SDL_GL_GetAttribute(attr,value);
+    if (ret < 0) {
+	// Some attributes unsupported on some system (broken i945GM !)
+	// so just clear the opengl error in this case
+	glGetError( );
+	SDL_ClearError();
+    }
+    return ret;
+}
+
 void get_ogl_infos() {
+    check_error("start ogl_infos");
     ogl.info = 1;
     // Slight optimization
     glDisable(GL_DEPTH_TEST);
@@ -104,11 +117,12 @@ void get_ogl_infos() {
     ogl.vendor = strdup( (char*)glGetString( GL_VENDOR ) );
     ogl.renderer = strdup( (char*)glGetString( GL_RENDERER ) );
     ogl.version = strdup( (char*)glGetString( GL_VERSION ) );
-    SDL_GL_GetAttribute( SDL_GL_DOUBLEBUFFER, &ogl.infos.dbuf );
-    SDL_GL_GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &ogl.infos.fsaa_buffers );
-    SDL_GL_GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &ogl.infos.fsaa_samples );
-    SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL, &ogl.infos.accel );
-    SDL_GL_GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
+    GetAttribute( SDL_GL_DOUBLEBUFFER, &ogl.infos.dbuf );
+    GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &ogl.infos.fsaa_buffers );
+    GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &ogl.infos.fsaa_samples );
+    GetAttribute( SDL_GL_ACCELERATED_VISUAL, &ogl.infos.accel );
+    GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
+    check_error("end ogl_infos");
 }
 
 void render_texture(int linear) {
