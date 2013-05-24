@@ -22,11 +22,21 @@ my %raine_regions =
 	'"gfx"' => "REGION_GFX1",
 	'"audio"' => "REGION_ROM2",
 	'"qsound"' => "REGION_SMP1",
+	'"audiocpu"' => "REGION_ROM2",
+	'"sprites"' => "REGION_SPRITES",
+	'"layer0"' => "REGION_GFX1",
+	'"layer1"' => "REGION_GFX2",
+	'"layer2"' => "REGION_GFX3",
+	'"layer3"' => "REGION_GFX4",
+	'"eeprom"' => "REGION_EEPROM",
 	'"oki"' => "REGION_SMP1",
+	'"oki1"' => "REGION_SMP1",
+	'"oki2"' => "REGION_SMP2",
 	'"mcu"' => "REGION_ROM3",
 	'"user1"' => "REGION_USER1",
 	'"maincpu"' => "REGION_CPU1",
 	'"x1snd"' => "REGION_SOUND1",
+	'"ymz"' => "REGION_SOUND1",
 	'"gfx1"' => "REGION_GFX1",
 	'"gfx2"' => "REGION_GFX2",
 );
@@ -36,15 +46,30 @@ my $warncont = undef;
 my (@odd,@even);
 
 open(F,"<$ARGV[0]") || die "Impossible to open $ARGV[0]";
-while (<F>) {
-	if (/ROM_START ?\( ?(.+?) ?\)/) {
+my @file = <F>;
+close(F);
+my %def = ();
+
+while ($_ = shift @file) {
+	chomp;
+	s/\r//;
+	if (/^#define (.+) \\/) {
 		my $name = $1;
-		$name = "_".$name; #  if ($name =~ /^\d/);
+		print STDERR "define $name found\n";
+		while ($_ = shift @file) {
+			s/\r$//;
+			my $rep = s/\\$//;
+			$def{$name} .= $_;
+			last if (!$rep);
+		}
+	} elsif (/ROM_START ?\( ?(.+?) ?\)/) {
+		my $name = $1;
+		$name = "_".$name if ($name =~ /^\d/);
 		print "static struct ROM_INFO $name\_roms\[\] =\n{\n";
 		my $comment = undef;
 		my $load_be = undef;
-		while (<F>) {
-			if (/ROM_REGION\( ?(.+?) ?\)/ || /ROM_REGION16_BE\( ?(.+?) ?\)/ || /ROM_REGION16_LE\( ?(.+?) ?\)/) {
+		while ($_ = shift @file) {
+			if (/ROM_REGION\( ?(.+) ?\)/ || /ROM_REGION16_BE\( ?(.+?) ?\)/ || /ROM_REGION16_LE\( ?(.+?) ?\)/) {
 				my $nbx = 0;
 				my $args = $1;
 #	$load_be = 1 if (/ROM_REGION16_BE/);
@@ -54,8 +79,8 @@ while (<F>) {
 					$size =~ s/^ *//;
 					$region_name = $raine_regions{$region_name} if ($raine_regions{$region_name});
 					if ($region_name !~ /REGION/) {
-						print STDERR "ignoring region_name $region_name\n";
-						while (<F>) {
+						print STDERR "ignoring region_name $region_name from args $args\n";
+						while ($_ = shift @file) {
 							chomp;
 							s/\r//;
 							last if (/^$/);
@@ -68,25 +93,26 @@ while (<F>) {
 						}
 					}
 					my ($function,$oldname,$oldsize,$oldbase,$oldcrc,$oldfunc) = undef;
-					while (<F>) {
+					while ($_ = shift @file) {
+						s/\r//; # Very important here !
 						if (/^[ \t]*\/\*.+\*\/[ \t]*$/ || /^[ \t]*\/\//) {
 							print;
 							next;
 						}
-#	    s/\/\*.+\*\///; # filter out comments (or try to)
 						if ($comment) {
 							print;
+							print STDERR "comment ($region_name): $_";
 							if (/\*\//) {
 								$comment = undef;
 							}
 							next;
 						}
 						if (/^[ \t]*(\/\*)/) {
-							print;
-							while (<F>) {
+							do {
 								print;
+								print STDERR "inside comment ($region_name): $_";
 								last if (/\*\//);
-							}
+							} while ($_ = shift @file);
 							next;
 						}
 
@@ -106,8 +132,7 @@ while (<F>) {
 								$base = $name;
 								$name = $oldname;
 								$crc = $oldcrc;
-								$attrib = $oldfunc;
-								$function = "LOAD_NORMAL";
+								$function = $oldfunc;
 							} elsif ($function eq "ROMX_LOAD") {
 								my @arg = split(/ *\| */,$attrib);
 								if ($arg[0] eq "ROM_GROUPBYTE") {
@@ -127,13 +152,34 @@ while (<F>) {
 								print "/* Ignored : $_ */\n";
 								$function = $oldfunc;
 								next;
+							} elsif ($function =~ /(NEO_SFIX_128K|NEO_BIOS_)/) {
+								if ($base =~ /CRC\((.+?)\)/) {
+									$crc = "0x$1";
+								}
+								if ($function =~ /NEO_SFIX/) {
+									$base = "NEOGEO_REGION_FIXED_LAYER_CARTRIDGE";
+								}
+								$region_name = $base;
+								$base = 0;
+								if ($function =~ /_32K$/) {
+									$size = 0x8000;
+								} elsif ($function =~ /_64K$/) {
+									$size = 0x10000;
+								} elsif ($function =~ /_128K$/) {
+									$size = 0x20000;
+								} elsif ($function =~ /_256K$/) {
+									$size = 0x40000;
+								}
+
+								# print "// $_";
+								print "  { $name,$size,$crc,$region_name,$base,LOAD_NORMAL },\n";
 							} elsif (!($function eq "ROM_CONTINUE")) {
 								print STDERR "Unknown loading $function from line $_\n";
 								exit(1);
 							}
 							if ($function eq "ROM_CONTINUE") {
 								if (!$warncont) {
-									print STDERR "ROM_CONTINUE found. Forcing loading at 0, whole size...\n";
+									print STDERR "ROM_CONTINUE found. Forcing loading at 0, whole size ($oldsize)...\n";
 									$warncont = 1;
 								}
 								if ($oldsize =~ /^0x/) {
@@ -184,10 +230,20 @@ while (<F>) {
 					print STDERR "Failure to parse REGION args $args\n";
 					exit(1);
 				}
+			} else {
+				chomp;
+				s/\r$//;
+				my $line = $_;
+				foreach (keys %def) {
+					if ($line =~ /^[ \t]*$_/) {
+						print STDERR "found def $_ usage...\n";
+						unshift @file,split(/\n/,$def{$_});
+						last;
+					}
+				}
 			} # if (/ROM_REGION
 			redo if (/ROM_REGION/); # yet another line...
-		} # while (<F>)
+		} # while ($_ = shift @file)
 	}
 }
-close(F);
 
