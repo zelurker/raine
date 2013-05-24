@@ -2,10 +2,18 @@ use strict;
 
 # conversion to LOAD8_16 and LOAD16_64 macros
 
+my @tmp;
+
+$| = 1;
+
 sub get_list {
 	my $list = undef;
 	do {
-		$_ = <>;
+		if (@tmp) {
+			$_ = shift @tmp;
+		} else {
+			$_ = <>;
+		}
 		($list) = $_ =~ /\{ *?(.*) *?\}/;
 	} while (!$list);
 	$list;
@@ -16,17 +24,28 @@ while (<>) {
 		my $list = $1;
 		my ($rom1, $size,$crc1, $region, $offset, $load) = split(/\,/,$list);
 		if ($load =~ /LOAD_8_16/) {
-			$list = get_list();
-			my ($rom2, $size,$crc2, $region, $offset2, $load) = split(/\,/,$list);
-			if (hex($offset2) < hex($offset)) {
-				print STDERR "invert $rom1 & $rom2\n";
-				my @tab = ($rom1, $size,$crc1, $region, $offset, $load);
-				($rom1, $size,$crc1, $region, $offset, $load) =
-				($rom2, $size,$crc2, $region, $offset2, $load);
-				($rom2, $size,$crc2, $region, $offset2, $load) = @tab;
-			} else {
-				print STDERR "$offset2 < $offset for $rom2 & $rom1\n";
-			}
+			my (@temp,$rom2,$crc2,$offset2);
+			my $list0 = $list;
+			while (1) {
+				$list = get_list();
+				($rom2, $size,$crc2, $region, $offset2, $load) = split(/\,/,$list);
+				$offset =~ s/^ //;
+				$offset2 =~ s/^ //;
+				if (hex($offset2) == hex($offset) - 1) {
+					print STDERR "invert $rom1 & $rom2\n";
+					my @tab = ($rom1, $size,$crc1, $region, $offset, $load);
+					($rom1, $size,$crc1, $region, $offset, $load) =
+					($rom2, $size,$crc2, $region, $offset2, $load);
+					($rom2, $size,$crc2, $region, $offset2, $load) = @tab;
+					last;
+				} elsif (hex($offset) == hex($offset2) -1) {
+					last;
+				} else {
+					# print STDERR "offsets:$offset,$offset2, diff offsets : ",(hex($offset)-hex($offset2))," from $list0\n";
+					push @temp,$_;
+				}
+			};
+			@tmp = @temp;
 
 			print "  LOAD8_16( $region, $offset, $size,\n";
 			print "            $rom1, $crc1, $rom2, $crc2),\n";
