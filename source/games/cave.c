@@ -2328,8 +2328,13 @@ void load_guwange(void)
 
    // Speed hack
 
-   apply_hack(0x6d6de,4);
-   pWriteWord(&ROM[0x6d6e4],0x6010);
+   if (is_current_game("guwange")) {
+       apply_hack(0x6d6de,4);
+       pWriteWord(&ROM[0x6d6e4],0x6010);
+   } else if (is_current_game("guwanges")) {
+       apply_hack(0x6ec44,4);
+       pWriteWord(&ROM[0x6ec4a],0x6010);
+   }
 
    pWriteWord(&ROM[0x6d76],0x4e71); // disable rom check : nop
    pWriteWord(&ROM[0x6d80],0x6008); // bra
