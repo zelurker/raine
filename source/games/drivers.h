@@ -77,6 +77,7 @@
   DRV(espradej)
   DRV(espradeo)
   DRV(guwange)
+  DRV(guwanges)
   DRV(ddonpach)
   DRV(ddonpchj)
   DRV(donpachi)

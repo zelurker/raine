@@ -582,6 +582,8 @@ static struct ROM_INFO donpachk_roms[] =
    {           NULL,          0,          0, },
 };
 
+#define REGION_SPRITES REGION_GFX4
+
 static struct ROM_INFO guwange_roms[] =
 {
   LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
@@ -596,8 +598,25 @@ static struct ROM_INFO guwange_roms[] =
                 "u083.bin",  0xadc4b9c4,     "u082.bin",  0x3d75876c),
   LOAD8_16S(  REGION_GFX4,  0x1000000,  0x00400000,
                 "u086.bin",  0x188e4f81,     "u085.bin",  0xa7d5659e),
+  LOAD8_16S(  REGION_SPRITES, 0x1800000,  0x400000,
+             "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
    {    "u0462.bin", 0x00400000, 0xb3d75691, REGION_SMP1, 0, LOAD_NORMAL, },
    {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO guwanges_roms[] = // clone of guwange
+{
+  LOAD8_16(  REGION_CPU1, 0x000000,  0x080000,
+             "gu-u0127b.bin",  0x64667d2e,  "gu-u0129b.bin",  0xa99C6b6c),
+  LOAD8_16S(  REGION_SPRITES, 0x0000000,  0x800000,
+             "u083.bin",  0xadc4b9c4,  "u082.bin",  0x3d75876c),
+  LOAD8_16S(  REGION_SPRITES, 0x1000000,  0x400000,
+             "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
+//  sprite bug fix?
+//  ROM_FILL(                    0x1800000, 0x800000, 0xff )
+  LOAD8_16S(  REGION_SPRITES, 0x1800000,  0x400000,
+             "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO ddonpach_roms[] =
@@ -1271,7 +1290,7 @@ static UINT16 cave_irq_cause_r(UINT32 offset)
 
     if (offset == 4/2)   vblank_irq = 0;
     else if (offset == 6/2)   unknown_irq = 0;
-    else if (offset == 0) { 
+    else if (offset == 0) {
       // vblank_irq = 0;
       // if (romset != 8 && irq_status) result |= 4;
       result &= ~4;
@@ -1394,7 +1413,7 @@ void load_ddonpach(void)
      pWriteWord(&ROM[0x53f6],0x4e71);
      pWriteWord(&ROM[0x5400],0x6008);
    } else { // international version (new set)
-     apply_hack(0x571b2,1); 
+     apply_hack(0x571b2,1);
 
      // Disable rom check
 
@@ -1761,8 +1780,8 @@ WRITE_HANDLER( sailormn_okibank0_w )
 WRITE_HANDLER( sailormn_okibank1_w )
 {
   UINT8 *RAM = load_region[REGION_SMP2];
-  int bank1 = (data >> 0) & 0x3;
-  int bank2 = (data >> 4) & 0x3;
+  int bank1 = (data >> 0) & 0xf;
+  int bank2 = (data >> 4) & 0xf;
   if (audio_sample_rate == 0)	return;
   memcpy(RAM + 0x20000 * 0, RAM + 0x40000 + 0x20000 * bank1, 0x20000);
   memcpy(RAM + 0x20000 * 1, RAM + 0x40000 + 0x20000 * bank2, 0x20000);
@@ -2309,7 +2328,7 @@ void load_guwange(void)
 
    // Speed hack
 
-   apply_hack(0x6d6de,4); 
+   apply_hack(0x6d6de,4);
    pWriteWord(&ROM[0x6d6e4],0x6010);
 
    pWriteWord(&ROM[0x6d76],0x4e71); // disable rom check : nop
@@ -2543,18 +2562,18 @@ void execute_cave_68k_frame(void)
      execute_z80_audio_frame();
 
    vblank_irq = 1;
-   agallet_vblank_irq = 1; 
+   agallet_vblank_irq = 1;
    if (stopped_68k) {
      // return to the speed hack
      s68000context.pc = get_speed_hack_adr(0)-ROM;
      stopped_68k = 0;
-   }  
+   }
    update_irq_state();
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(1.8,60)); 
+   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(1.8,60));
    if (!stopped_68k) {
      // bonus frame, not needed in normal frames, I guess I could do without
      // completely. Gives a little boost on the hardware test phase.
-     cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60)); 
+     cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
    }
    agallet_vblank_irq = 0;
 }
@@ -3319,7 +3338,7 @@ void draw_cave_68k(void)
 {
    int x,y,ta,size,code,priority,zoomx,zoomy;
    int ww,hh,flip,attr;
-   UINT8 *map; 
+   UINT8 *map;
 
    if (!GFX_BG0) {
      setup_cave_tiles();
@@ -3727,6 +3746,12 @@ GAME( guwange ,
    GAME_SHOOT
 );
 
+#define guwange_dsw NULL
+#define guwange_video esprade_video_r270
+#define execute_guwange execute_cave_68k_frame
+#define guwange_sound cave_sound
+CLONE( guwanges, guwange, "Guwange (Japan, Special Ver. 00/01/01)", COMPANY_ID_CAVE, 2000, GAME_SHOOT);
+
 GAME( ddonpach ,
    ddonpach_dirs,
    ddonpach_roms,
@@ -3947,7 +3972,7 @@ GAME( sailormn ,
    load_sailormn,
    clear_cave_68k,
    &sailormn_video,
-   execute_cave_68k_frame, 
+   execute_cave_68k_frame,
    "sailormn",
    "Pretty Soldier Sailor Moon Ver B",
    "BP945A",
