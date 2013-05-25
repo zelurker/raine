@@ -130,7 +130,7 @@ static struct ROMSW_INFO rastan_romsw[] =
    { 0,        0,    NULL },
 };
 
-static struct GFX_LAYOUT rastan_gfx_tiles =
+static gfx_layout rastan_gfx_tiles =
 {
    8,8,
    RGN_FRAC(1,1),
@@ -141,7 +141,7 @@ static struct GFX_LAYOUT rastan_gfx_tiles =
    8*8*4
 };
 
-static struct GFX_LAYOUT rastan_gfx_object =
+static gfx_layout rastan_gfx_object =
 {
    16,16,
    RGN_FRAC(1,1),

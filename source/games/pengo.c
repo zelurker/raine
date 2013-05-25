@@ -18,7 +18,7 @@
    game with the speed cheat enabled in the dipswitches) or completely
    different games which really look and sound horrible nowdays. Interestingly
    pacman still looks and sounds interesting 20 years after its creation. I
-   guess that's where you recognize a master piece. 
+   guess that's where you recognize a master piece.
 
    Added multi15 finally, which includes 24 clones/hacks of pacman.
    I added it very cleanly : if you reset the game, it returns to the menu so that
@@ -419,7 +419,7 @@ static struct SOUND_INFO namco_sound[] =
 
 static UINT8 *interrupt_enable,*gfx_bank,multipac_mode;
 
-static struct GFX_LAYOUT tilelayout =
+static gfx_layout tilelayout =
 {
 	8,8,	/* 8*8 characters */
     RGN_FRAC(1,2),    /* 256 characters */
@@ -431,7 +431,7 @@ static struct GFX_LAYOUT tilelayout =
 };
 
 
-static struct GFX_LAYOUT spritelayout =
+static gfx_layout spritelayout =
 {
 	16,16,	/* 16*16 sprites */
 	RGN_FRAC(1,2),	/* 64 sprites */
@@ -1415,7 +1415,7 @@ static struct DSW_INFO mspacpls_dsw[] =
   { 0, 0, NULL }
 };
 
-static struct GfxLayout tilelayout2 =
+static GfxLayout tilelayout2 =
 {
 	8,8,	/* 8*8 characters */
 	RGN_FRAC(1,1),
@@ -1426,7 +1426,7 @@ static struct GfxLayout tilelayout2 =
     16*8    /* every char takes 16 bytes */
 };
 
-static struct GfxLayout spritelayout2 =
+static GfxLayout spritelayout2 =
 {
 	16,16,	/* 16*16 sprites */
 	RGN_FRAC(1,1),
@@ -1574,7 +1574,7 @@ static char *multipac_games[] =
   "msindy",
   "lizwiz",
 };
-  
+
 static void speedcheat_test() {
   if ((ROM[0x180b] == 0xbe && ROM[0x1ffd] == 0x00) ||
       (ROM[0x180b] == 0x01 && ROM[0x1ffd] == 0xbd)) {
@@ -1642,7 +1642,7 @@ static void multipac_color_w(UINT32 offset, UINT8 data) {
    printf("multipac_color_w %x\n",data);
    if (data==2) {
       RAM[0x1050]=0; // maps to f000, don't know what it does !!!
-   }     
+   }
 }
 
 static void multipac_reset() {
@@ -1743,7 +1743,7 @@ static void load_puckman()
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);
    AddZ80AReadPort(0x00, 0xFF, DefBadReadPort,		NULL);
    AddZ80AReadPort(  -1,   -1, NULL,			NULL);
-  AddZ80AWritePort(0x00, 0x00, irq_vector_w,			NULL);	
+  AddZ80AWritePort(0x00, 0x00, irq_vector_w,			NULL);
    AddZ80AWritePort(0x01, 0xFF, DefBadWritePort, 	NULL);
    AddZ80AWritePort(  -1,   -1, NULL,			NULL);
 
@@ -1802,7 +1802,7 @@ static void load_puckman()
      // 2nd bank (pac man plus) -> 0x20
      for (i = 0;i < 0x80;i++)
      {
-       if (*color_prom) 
+       if (*color_prom)
 	 WriteWord(&RAM_PAL[i*2+0x100],ReadWord(&palette[((*color_prom & 0x0f) + 0x10) * 2]));      /* third palette bank */
        else     /* preserve transparency */
 	 WriteWord(&RAM_PAL[0x80*2+i*2], 0);
@@ -1814,7 +1814,7 @@ static void load_puckman()
      // 3rd bank (Crush Roller) -> 0x40
      for (i = 0;i < 0x80;i++)
      {
-       if (*color_prom) 
+       if (*color_prom)
 	 WriteWord(&RAM_PAL[i*2+0x200],ReadWord(&palette[((*color_prom & 0x0f) + 0x00) * 2]));      /* third palette bank */
        else     /* preserve transparency */
 	 WriteWord(&RAM_PAL[0x200+i*2], 0);
@@ -1826,7 +1826,7 @@ static void load_puckman()
     // 4th bank (Liz Wiz) -> 0x60
      for (i = 0;i < 0x80;i++)
      {
-       if (*color_prom) 
+       if (*color_prom)
 	 WriteWord(&RAM_PAL[i*2+0x300],ReadWord(&palette[((*color_prom & 0x0f) + 0x30) * 2]));      /* third palette bank */
        else     /* preserve transparency */
 	 WriteWord(&RAM_PAL[0x300+i*2], 0);
@@ -1923,7 +1923,7 @@ static void execute_puckman() {
   }
   if (*interrupt_enable) {
     cpu_interrupt(CPU_Z80_0, *vector);
-  } 
+  }
 }
 
 GAME( puckman ,

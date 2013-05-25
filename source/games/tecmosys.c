@@ -239,7 +239,7 @@ static struct DIR_INFO tknight_dirs[] =
   { NULL }
 };
 
-static struct GfxLayout tilelayout =
+static GfxLayout tilelayout =
 {
 	8,8,	/* tile size */
 	RGN_FRAC(1,1),	/* number of tiles */
@@ -250,7 +250,7 @@ static struct GfxLayout tilelayout =
 	32*8	/* offset to next tile */
 };
 
-static struct GfxLayout tile2layout =
+static GfxLayout tile2layout =
 {
 	16,16,	/* tile size */
 	RGN_FRAC(1,1),	/* number of tiles */
@@ -264,7 +264,7 @@ static struct GfxLayout tile2layout =
 	128*8	/* offset to next tile */
 };
 
-static struct GfxLayout spritelayout =
+static GfxLayout spritelayout =
 {
 	8,8,	/* sprites size */
 	RGN_FRAC(1,2),	/* number of sprites */

@@ -114,7 +114,7 @@ static struct DSW_INFO asuka_and_asuka_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct GfxLayout charlayout =
+static GfxLayout charlayout =
 {
 	8,8,
 	RGN_FRAC(1,1),
@@ -125,7 +125,7 @@ static struct GfxLayout charlayout =
 	32*8
 };
 
-static struct GfxLayout tilelayout =
+static GfxLayout tilelayout =
 {
 	16,16,
 	RGN_FRAC(1,1),

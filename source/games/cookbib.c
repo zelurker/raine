@@ -821,7 +821,7 @@ static void draw_jumppop(void)
 /* The GFX decodes are basically the same as MAME */
 
 
-static struct GFX_LAYOUT cookbib_8x8tiles =
+static gfx_layout cookbib_8x8tiles =
 {
 	8,8,
 	RGN_FRAC(1,2),
@@ -833,7 +833,7 @@ static struct GFX_LAYOUT cookbib_8x8tiles =
 };
 
 
-static struct GFX_LAYOUT cookbib_16x16tiles =
+static gfx_layout cookbib_16x16tiles =
 {
 	16,16,
 	RGN_FRAC(1,2),
@@ -846,7 +846,7 @@ static struct GFX_LAYOUT cookbib_16x16tiles =
 	64*8
 };
 
-static struct GfxLayout jumppop_tcharlayout =
+static GfxLayout jumppop_tcharlayout =
 {
 	8,8,
 	RGN_FRAC(1,2),
@@ -857,7 +857,7 @@ static struct GfxLayout jumppop_tcharlayout =
 	32*8
 };
 
-static struct GfxLayout jumpop_tlayout =
+static GfxLayout jumpop_tlayout =
 {
 	16,16,
 	RGN_FRAC(1,2),

@@ -79,7 +79,8 @@ char *company_name[] =
    "Nintendo",
    "Mitchell",
    "SemiCom",
-   "ESD"
+   "ESD",
+   "Spacy Industrial, Ltd."
 };
 
 const int nb_companies = sizeof(company_name)/4;

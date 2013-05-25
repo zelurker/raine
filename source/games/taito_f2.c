@@ -1279,7 +1279,7 @@ static struct ROMSW_INFO liquidk_romsw[] =
    { 0,        0,    NULL },
 };
 
-static struct GfxLayout tilelayout =
+static GfxLayout tilelayout =
 {
 	16,16,	/* 16*16 sprites */
 	RGN_FRAC(1,1),
@@ -1290,7 +1290,7 @@ static struct GfxLayout tilelayout =
 	128*8	/* every sprite takes 128 consecutive bytes */
 };
 
-static struct GfxLayout charlayout =
+static GfxLayout charlayout =
 {
 	8,8,	/* 8*8 characters */
 	RGN_FRAC(1,1),
@@ -1301,7 +1301,7 @@ static struct GfxLayout charlayout =
 	32*8	/* every sprite takes 32 consecutive bytes */
 };
 
-static struct GfxLayout pivotlayout =
+static GfxLayout pivotlayout =
 {
 	8,8,	/* 8*8 characters */
 	RGN_FRAC(1,1),
@@ -1312,7 +1312,7 @@ static struct GfxLayout pivotlayout =
 	32*8	/* every sprite takes 32 consecutive bytes */
 };
 
-static struct GfxLayout finalb_tilelayout =
+static GfxLayout finalb_tilelayout =
 {
 	16,16,	/* 16*16 sprites */
 	RGN_FRAC(1,2),
@@ -1469,7 +1469,7 @@ static void finish_setup_gfx() {
    if (gfx3 && tc0005rot.RAM) {
      tc0005rot.GFX_ROT = gfx3;
      if (is_current_game("pulirula") || is_current_game("driftout") ||
-       is_current_game("driveout")) 
+       is_current_game("driveout"))
        init_tc430grw();
      else
        init_tc0005rot();
@@ -2561,7 +2561,7 @@ static struct DSW_INFO pulirula_dsw[] =
 
 static void pri_swap_bytes(UINT32 offset, UINT16 data) {
   offset &= 0x1f;
-  
+
   if (TC0360PRI_regs[offset] != data) {
     TC0360PRI_regs[(offset)] = data;
   }
@@ -3430,7 +3430,7 @@ static void draw_f2_pri_rot_delay(void)
    }
    if (pri_mask) {
      render_tc0200obj_mapped(pri_mask);
-   } 
+   }
    WriteLong(&RAM_OBJECT[0x24],last_scr2);	// [Restore]
 }
 

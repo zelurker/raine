@@ -288,7 +288,7 @@ static struct INPUT_INFO dkong_inputs[] =
 };
 */
 
-static struct GfxLayout charlayout =
+static GfxLayout charlayout =
 {
 	8,8,	/* 8*8 characters */
 	RGN_FRAC(1,2),
@@ -299,7 +299,7 @@ static struct GfxLayout charlayout =
 	8*8	/* every char takes 8 consecutive bytes */
 };
 
-static struct GfxLayout spritelayout =
+static GfxLayout spritelayout =
 {
 	16,16,	/* 16*16 sprites */
 	RGN_FRAC(1,4),	/* 128 sprites */
@@ -475,7 +475,7 @@ static BITMAP *flame_red, *flame_blue;
 #define tile_index zz
 #define BORDER 16
 
-#ifdef RAINE_DEBUG 
+#ifdef RAINE_DEBUG
 static void draw_debug_tile() {
   UINT8 code, color;
   SCROLL_REGS;
@@ -553,7 +553,7 @@ static void draw_emudx() {
     clear_game_screen(0);
   }
 
-#ifdef RAINE_DEBUG 
+#ifdef RAINE_DEBUG
   if (input_buffer[8] & 8) {
     draw_debug_tile();
     return;

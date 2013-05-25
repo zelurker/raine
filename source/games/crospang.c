@@ -157,7 +157,7 @@ static struct SOUND_INFO crospang_sound[] =
 
 
 
-static struct GFX_LAYOUT layout_16x16x4a =
+static gfx_layout layout_16x16x4a =
 {
 	16,16,
 	RGN_FRAC(1,4),
@@ -169,7 +169,7 @@ static struct GFX_LAYOUT layout_16x16x4a =
 };
 
 
-static struct GFX_LAYOUT layout_16x16x4 =
+static gfx_layout layout_16x16x4 =
 {
 	16,16,
 	RGN_FRAC(1,4),

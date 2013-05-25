@@ -931,10 +931,10 @@ static void decodechar(GFX_ELEMENT *gfx, int num, const UINT8 *src, const GFX_LA
    }
 }
 
-UINT8 *decode_gfx(const UINT8 *src, const UINT32 src_size, const GFX_LAYOUT *gfx_layout,UINT32 *dest_size)
+UINT8 *decode_gfx(const UINT8 *src, const UINT32 src_size, const GFX_LAYOUT *layout,UINT32 *dest_size)
 {
    GFX_ELEMENT gfx;
-   GFX_LAYOUT gl;
+   gfx_layout gl;
    UINT8 *gfx_data;
    UINT32 c, j, reglen;
 
@@ -946,7 +946,7 @@ UINT8 *decode_gfx(const UINT8 *src, const UINT32 src_size, const GFX_LAYOUT *gfx
 
    reglen = 8 * src_size;
 
-   memcpy(&gl, gfx_layout, sizeof(gl));
+   memcpy(&gl, layout, sizeof(gl));
 
    if (IS_FRAC(gl.total))
       gl.total = reglen / gl.charincrement * FRAC_NUM(gl.total) / FRAC_DEN(gl.total);

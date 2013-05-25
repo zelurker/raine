@@ -843,7 +843,7 @@ static struct INPUT_INFO guwange_inputs[] =
 };
 
 /* 8x8x4 tiles */
-static struct GFX_LAYOUT layout_8x8x4 =
+static gfx_layout layout_8x8x4 =
 {
    8,8,
    RGN_FRAC(1,1),
@@ -855,7 +855,7 @@ static struct GFX_LAYOUT layout_8x8x4 =
 };
 
 /* 8x8x8 tiles */
-static struct GFX_LAYOUT layout_8x8x8 =
+static gfx_layout layout_8x8x8 =
 {
    8,8,
    RGN_FRAC(1,1),
@@ -868,7 +868,7 @@ static struct GFX_LAYOUT layout_8x8x8 =
 
 
 /* 16x16x4 tiles */
-static struct GFX_LAYOUT layout_16x16x4 =
+static gfx_layout layout_16x16x4 =
 {
    16,16,
    RGN_FRAC(1,1),
@@ -882,7 +882,7 @@ static struct GFX_LAYOUT layout_16x16x4 =
 };
 
 /* 16x16x8 tiles */
-static struct GFX_LAYOUT layout_16x16x8 =
+static gfx_layout layout_16x16x8 =
 {
    16,16,
    RGN_FRAC(1,1),
@@ -896,7 +896,7 @@ static struct GFX_LAYOUT layout_16x16x8 =
 };
 
 /* 16x16x4 objects */
-static struct GFX_LAYOUT cave_gfx_object =
+static gfx_layout cave_gfx_object =
 {
    16,16,
    RGN_FRAC(1,1),
@@ -908,7 +908,7 @@ static struct GFX_LAYOUT cave_gfx_object =
    16*16*4
 };
 
-static struct GFX_LAYOUT layout_8x8x6 =
+static gfx_layout layout_8x8x6 =
 {
 	8,8,
 	RGN_FRAC(1,1),
@@ -921,7 +921,7 @@ static struct GFX_LAYOUT layout_8x8x6 =
 
 /* 8x8x6 tiles (4 bits in one rom, 2 bits in the other,
    unpacked in 2 pages of 4 bits) */
-static struct GFX_LAYOUT layout_8x8x6_2 =
+static gfx_layout layout_8x8x6_2 =
 {
 	8,8,
 	RGN_FRAC(1,2),
@@ -933,7 +933,7 @@ static struct GFX_LAYOUT layout_8x8x6_2 =
 };
 
 /* 16x16x4 objects */
-static struct GFX_LAYOUT ddonpach_gfx_object =
+static gfx_layout ddonpach_gfx_object =
 {
    16,16,
    RGN_FRAC(1,1),

@@ -136,7 +136,7 @@ static struct DSW_INFO tetrisp2_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct GfxLayout layout_8x8x8 =
+static GfxLayout layout_8x8x8 =
 {
 	8,8,
 	RGN_FRAC(1,1),
@@ -147,7 +147,7 @@ static struct GfxLayout layout_8x8x8 =
 	8*8*8
 };
 
-static struct GfxLayout layout_16x16x8 =
+static GfxLayout layout_16x16x8 =
 {
 	16,16,
 	RGN_FRAC(1,1),

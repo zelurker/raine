@@ -190,7 +190,7 @@ static struct INPUT_INFO block_inputs[] =
    END_INPUT
 };
 
-static struct GfxLayout charlayout =
+static GfxLayout charlayout =
 {
 	8,8,	/* 8*8 characters */
 	32768,	/* 32768 characters */
@@ -201,7 +201,7 @@ static struct GfxLayout charlayout =
 	16*8    /* every char takes 16 consecutive bytes */
 };
 
-static struct GfxLayout spritelayout =
+static GfxLayout spritelayout =
 {
 	16,16,  /* 16*16 sprites */
 	2048,   /* 2048 sprites */
@@ -221,7 +221,7 @@ static struct GFX_LIST gfxdecodeinfo[] =
 	{ 0, NULL } /* end of array */
 };
 
-static struct GfxLayout marukin_charlayout =
+static GfxLayout marukin_charlayout =
 {
 	8,8,	/* 8*8 characters */
 	65536,	/* 65536 characters */

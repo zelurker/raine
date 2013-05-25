@@ -151,7 +151,7 @@ static struct INPUT_INFO matmania_inputs[] =
     END_INPUT
   };
 
-static struct GfxLayout charlayout =
+static GfxLayout charlayout =
   {
     8,8,	/* 8*8 characters */
     1024,	/* 1024 characters */
@@ -162,7 +162,7 @@ static struct GfxLayout charlayout =
     8*8	/* every char takes 8 consecutive bytes */
   };
 
-static struct GfxLayout tilelayout =
+static GfxLayout tilelayout =
   {
     16,16,  /* 16*16 tiles */
     512,    /* 512 tiles */
@@ -175,7 +175,7 @@ static struct GfxLayout tilelayout =
     32*8	/* every tile takes 16 consecutive bytes */
   };
 
-static struct GfxLayout matmania_spritelayout =
+static GfxLayout matmania_spritelayout =
   {
     16,16,  /* 16*16 sprites */
     3584,    /* 3584 sprites */

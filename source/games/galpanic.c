@@ -334,7 +334,7 @@ static struct DSW_INFO missw96_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct GfxLayout spritelayout =
+static GfxLayout spritelayout =
 {
 	16,16,
 	RGN_FRAC(1,1),

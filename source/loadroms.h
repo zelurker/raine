@@ -48,7 +48,9 @@ typedef struct GFX_LAYOUT
    UINT32 xoffset[MAX_GFX_SIZE];       // position of the bit corresponding to the pixel
    UINT32 yoffset[MAX_GFX_SIZE];       // of the given coordinates
    UINT16 charincrement;               // distance between two consecutive characters/sprites (in bits)
-} GFX_LAYOUT;
+} gfx_layout;
+
+#define GFX_LAYOUT gfx_layout
 
 // mame compatibility
 #define GfxLayout GFX_LAYOUT
@@ -56,7 +58,7 @@ typedef struct GFX_LAYOUT
 typedef struct GFX_LIST
 {
    UINT32       region;
-   GFX_LAYOUT *layout;
+   gfx_layout *layout;
 } GFX_LIST;
 
 enum region_type

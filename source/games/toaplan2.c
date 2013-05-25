@@ -25,7 +25,7 @@
 // use cache for solid tiles/sprites...
 #define USE_CACHE
 
-static struct GfxLayout raizing_textlayout =
+static GfxLayout raizing_textlayout =
 {
 	8,8,	/* 8x8 characters */
 	1024,	/* 1024 characters */
@@ -3260,7 +3260,7 @@ static UINT16 SoundReadZ80(UINT16 address)
 static void LoadActual(void)
 {
    int ta,tb,tc;
-   UINT8 *Z80RAM; 
+   UINT8 *Z80RAM;
 
    if(!(RAM=AllocateMem(0x100000)))return;
    Z80RAM = RAM+0x20000;

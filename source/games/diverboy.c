@@ -232,7 +232,7 @@ static void draw_diverboy(void)
 
 /* Video Setup */
 
-static struct GFX_LAYOUT diverboy_16x16tiles =
+static gfx_layout diverboy_16x16tiles =
 {
 	16,16,
 	RGN_FRAC(1,1),

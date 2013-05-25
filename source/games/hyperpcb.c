@@ -548,7 +548,7 @@ static struct DSW_INFO moremore_dsw[] =
   { 0, 0, NULL }
 };
 
-static struct GFX_LAYOUT hyper_pacman_object =
+static GFX_LAYOUT hyper_pacman_object =
 {
    16, 16,
    RGN_FRAC(1,1),
@@ -567,7 +567,7 @@ static struct GFX_LIST hyper_pacman_gfx[] =
    { 0,           NULL,              },
 };
 
-static struct GFX_LAYOUT snow_bros_object =
+static GFX_LAYOUT snow_bros_object =
 {
    16, 16,
    RGN_FRAC(1,1),
@@ -585,7 +585,7 @@ static struct GFX_LIST snow_bros_gfx[] =
 };
 
 
-static struct GFX_LAYOUT winter_bobble_object =
+static GFX_LAYOUT winter_bobble_object =
 {
    16,16,
    RGN_FRAC(1,1),

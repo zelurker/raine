@@ -139,7 +139,7 @@ static struct ROMSW_INFO dynamite_league_romsw[] =
    { 0,        0,    NULL },
 };
 
-static struct GFX_LAYOUT tilelayout =
+static gfx_layout tilelayout =
 {
 	16,16,	/* 16x16 pixels */
 	32768,	/* 32768 tiles */
@@ -152,7 +152,7 @@ static struct GFX_LAYOUT tilelayout =
 	16*16
 };
 
-static struct GFX_LAYOUT charlayout =
+static gfx_layout charlayout =
 {
 	8, 8,	/* 8x8 pixels */
 	256,	/* 256 chars */

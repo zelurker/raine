@@ -259,7 +259,7 @@ static struct DSW_INFO vimana_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct GFX_LAYOUT tilelayout =
+static gfx_layout tilelayout =
 {
 	8,8,	/* 8x8 */
 	16384,	/* 16384 tiles */
@@ -270,7 +270,7 @@ static struct GFX_LAYOUT tilelayout =
 	64
 };
 
-static struct GFX_LAYOUT rallybik_spr_layout =
+static gfx_layout rallybik_spr_layout =
 {
 	16,16,	/* 16*16 sprites */
 	2048,	/* 2048 sprites */
@@ -282,7 +282,7 @@ static struct GFX_LAYOUT rallybik_spr_layout =
 	32*8	/* every sprite takes 32 consecutive bytes */
 };
 
-static struct GFX_LAYOUT vm_tilelayout =
+static gfx_layout vm_tilelayout =
 {
 	8,8,	/* 8x8 */
 	32768,	/* 32768 tiles */

@@ -142,7 +142,7 @@ static struct SOUND_INFO pirates_sound[] =
    { 0,             NULL,                 },
 };
 
-static struct GfxLayout charlayout =
+static GfxLayout charlayout =
 {
 	8,8,
 	RGN_FRAC(1,4),
@@ -153,7 +153,7 @@ static struct GfxLayout charlayout =
 	8*8
 };
 
-static struct GfxLayout spritelayout =
+static GfxLayout spritelayout =
 {
 	16,16,
 	RGN_FRAC(1,4),

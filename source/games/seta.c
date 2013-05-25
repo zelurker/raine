@@ -1024,7 +1024,7 @@ static void draw_blandia() {
   }
 }
 
-static struct GfxLayout layout_planes_2roms =
+static GfxLayout layout_planes_2roms =
 {
 	16,16,
 	RGN_FRAC(1,2),
@@ -1036,7 +1036,7 @@ static struct GfxLayout layout_planes_2roms =
 	16*16*2
 };
 
-static struct GfxLayout layout_planes_2roms_split =
+static GfxLayout layout_planes_2roms_split =
 {
 	16,16,
 	RGN_FRAC(1,2),
@@ -1056,7 +1056,7 @@ static struct GFX_LIST downtown_gfxdecodeinfo[] =
 	{ 0, NULL }
 };
 
-static struct GfxLayout layout_packed_6bits_3roms =
+static GfxLayout layout_packed_6bits_3roms =
 {
 	16,16,
 	RGN_FRAC(1,3),
@@ -1069,7 +1069,7 @@ static struct GfxLayout layout_packed_6bits_3roms =
 	16*16*2
 };
 
-static struct GfxLayout layout_packed =
+static GfxLayout layout_packed =
 {
 	16,16,
 	RGN_FRAC(1,1),
@@ -1082,7 +1082,7 @@ static struct GfxLayout layout_packed =
 	16*16*4
 };
 
-static struct GfxLayout layout_packed_6bits_2roms =
+static GfxLayout layout_packed_6bits_2roms =
 {
 	16,16,
 	RGN_FRAC(1,2),
@@ -1095,7 +1095,7 @@ static struct GfxLayout layout_packed_6bits_2roms =
 	16*16*4
 };
 
-static struct GfxLayout wiggie_layout =
+static GfxLayout wiggie_layout =
 {
 	16,16,
 	RGN_FRAC(1,4),

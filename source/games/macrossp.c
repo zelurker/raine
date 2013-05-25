@@ -184,7 +184,7 @@ static struct DSW_INFO macrossp_dsw[] =
 
 /*** GFX DECODE **************************************************************/
 
-static struct GFX_LAYOUT macrossp_char16x16x4layout =
+static gfx_layout macrossp_char16x16x4layout =
 {
 	16,16,
 	RGN_FRAC(1,1),
@@ -196,7 +196,7 @@ static struct GFX_LAYOUT macrossp_char16x16x4layout =
 	16*64
 };
 
-static struct GFX_LAYOUT macrossp_char16x16x8layout =
+static gfx_layout macrossp_char16x16x8layout =
 {
 	16,16,
 	RGN_FRAC(1,1),

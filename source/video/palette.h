@@ -180,6 +180,8 @@ extern UINT8 *coltab[MAX_COLBANKS];
    if(bank_status[bank] == 0)                 \
       current_cmap_func(bank, cols);          \
 
+#define MAP_PAL MAP_PALETTE_MAPPED_NEW
+
 // MAP_PALETTE_MULTI_MAPPED(mapper, bank, cols, dst)
 
 #define MAP_PALETTE_MULTI_MAPPED(mapper,bank,cols,dst) \

@@ -131,7 +131,7 @@ GAME( zero_zone ,
    GAME_PUZZLE | GAME_ADULT
 );
 
-static struct GFX_LAYOUT zero_zone_bg0 =
+static gfx_layout zero_zone_bg0 =
 {
    8,8,   /* 8*8 characters */
    0x4000,   /* 0x4000 characters */

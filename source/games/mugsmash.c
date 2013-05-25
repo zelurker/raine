@@ -254,7 +254,7 @@ static void draw_mugsmash(void)
 	mugsmash_draw_sprites();
 }
 
-static struct GFX_LAYOUT mugsmash_16x16tiles =
+static gfx_layout mugsmash_16x16tiles =
 {
 	16,16,
 	RGN_FRAC(1,1),
@@ -266,7 +266,7 @@ static struct GFX_LAYOUT mugsmash_16x16tiles =
 	16*64
 };
 
-static struct GFX_LAYOUT mugsmash_16x16tiles2 =
+static gfx_layout mugsmash_16x16tiles2 =
 {
 	16,16,
 	RGN_FRAC(1,4),

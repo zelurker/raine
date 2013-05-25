@@ -188,7 +188,7 @@ static struct INPUT_INFO arkanoid_inputs[] =
 };
 
 
-static struct GFX_LAYOUT charlayout =
+static GFX_LAYOUT charlayout =
 {
 	8,8,	/* 8*8 characters */
 	4096,	/* 4096 characters */

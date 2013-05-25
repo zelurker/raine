@@ -279,7 +279,7 @@ static UINT16  mcat_wd_r (UINT32 offset) {
   return 0xc00;
 }
 
-static struct GfxLayout mcatadv_tiles16x16x4_layout =
+static GfxLayout mcatadv_tiles16x16x4_layout =
 {
 	16,16,
 	RGN_FRAC(1,1),

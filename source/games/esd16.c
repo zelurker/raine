@@ -170,7 +170,7 @@ static struct INPUT_INFO hedpanic_inputs[] =
    END_INPUT
 };
 
-static struct GfxLayout layout_16x16x5 =
+static GfxLayout layout_16x16x5 =
 {
 	16,16,
 	RGN_FRAC(1,5),
@@ -181,7 +181,7 @@ static struct GfxLayout layout_16x16x5 =
 	16*16
 };
 
-static struct GfxLayout layout_8x8x8 =
+static GfxLayout layout_8x8x8 =
 {
 	8,8,
 	RGN_FRAC(1,4),
@@ -201,7 +201,7 @@ static struct GFX_LIST esd16_gfxdecodeinfo[] =
 	{ 0, NULL }
 };
 
-static struct GfxLayout hedpanic_layout_8x8x8 =
+static GfxLayout hedpanic_layout_8x8x8 =
 {
 	8,8,
 	RGN_FRAC(1,1),
@@ -212,7 +212,7 @@ static struct GfxLayout hedpanic_layout_8x8x8 =
 	64*8,
 };
 
-static struct GfxLayout hedpanic_layout_16x16x8 =
+static GfxLayout hedpanic_layout_16x16x8 =
 {
 	16,16,
 	RGN_FRAC(1,1),
@@ -226,7 +226,7 @@ static struct GfxLayout hedpanic_layout_16x16x8 =
 	256*8,
 };
 
-static struct GfxLayout hedpanic_sprite_16x16x5 =
+static GfxLayout hedpanic_sprite_16x16x5 =
 {
 	16,16,
 	RGN_FRAC(1,3),

@@ -232,7 +232,7 @@ static struct INPUT_INFO galaxian_inputs[] =
    END_INPUT
 };
 
-static struct GfxLayout galaxian_charlayout =
+static GfxLayout galaxian_charlayout =
 {
 	8,8,
 	RGN_FRAC(1,2),
@@ -242,7 +242,7 @@ static struct GfxLayout galaxian_charlayout =
 	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8 },
 	8*8
 };
-static struct GfxLayout galaxian_spritelayout =
+static GfxLayout galaxian_spritelayout =
 {
 	16,16,
 	RGN_FRAC(1,2),
@@ -302,7 +302,7 @@ static struct dxsmpinterface galax_emudx_interface =
     "galdxm.dx2",
     YM3012_VOL(255,MIXER_PAN_LEFT,255,MIXER_PAN_RIGHT)
   };
-  
+
 static struct SOUND_INFO frogger_sound[] =
 {
    { SOUND_AY8910,  &frogger_ay8910_interface,  },
@@ -521,7 +521,7 @@ static void setup_gal_gfx(void)
 	// the following line will prevent digits (codes from 0 to 9) to be
 	// blended. They are really more readable without blending, so it's
 	// probably better...
-	// if (chr >= 10 && (src[a] & 0x1f) > red) red = src[a] & 0x1f; 
+	// if (chr >= 10 && (src[a] & 0x1f) > red) red = src[a] & 0x1f;
 	if (red < 12) red = 12; // avoid too dark sprites
 	dest[a] = red;
       } else {
@@ -969,9 +969,9 @@ static void draw_emudx_gal() {
 		  /* The aliens - there already available in different colors
 		   * from the emudx files -> draw directly (no palette) */
 
-			if(color==3) 
+			if(color==3)
 				code+=224;
-			if(color==4) 
+			if(color==4)
 				code+=280;
 			code = corresp_tiles[code];
 			if (solid[code0] == 1) // transp
@@ -992,7 +992,7 @@ static void draw_emudx_gal() {
       }
     }
   }
-  
+
   { // bullets
     int offs;
     for (offs = 0;offs < 0x20;offs += 4)
@@ -1006,7 +1006,7 @@ static void draw_emudx_gal() {
 	  sy > 240)
 	continue;
 
-      if (*flip_screen_y) { 
+      if (*flip_screen_y) {
 	sy = 255 - sy;
       }
 
@@ -1158,7 +1158,7 @@ static void load_frogger() {
     /* I test inputs using the very much simplified method of emudx instead of the
        "emulate everything" method of mame. Hope I won't need anything from mame here. */
     AddZ80ARead(0xe000, 0xe004, NULL, input_buffer);
-  
+
     // sound z80
     AddZ80BROMBase(rom2, 0x0038, 0x0066); // ???!
     AddZ80BRead(0x0000, 0x1fff, NULL, rom2);
@@ -1196,8 +1196,8 @@ static void load_frogger() {
     AddZ80AWrite(0x6805, 0x6805, shot_enable_w, NULL);
     AddZ80ARead(0x7000, 0x7000, NULL, &input_buffer[4]);
   }
-    
-  if (is_current_game("froggs")) { 
+
+  if (is_current_game("froggs")) {
     // hiscores enhancements (froggs roms)
     AddZ80ARW(0x7000, 0x7020, NULL, ram_hiscores);
     AddZ80ARead(0x7100, 0x7101, NULL, ram_hiscores+0x21);
@@ -1318,7 +1318,7 @@ static void load_frogger() {
       }
     }
   }
-  
+
   InitPaletteMap((UINT8*)RAM_PAL, (8+1+16), 4, 0x200); // 8 banks of 4 colors each : extreme !!! + 1 for bg/bullets, +16 for stars
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
   layer_id_data[0] = add_layer_info("BG");
@@ -1384,7 +1384,7 @@ static void galaxian_draw_bullets(int offs, int x, int y,UINT8 *map)
       for (i = 0; i < 4; i++)
       {
 	x--;
-	*(GameBitmap->line[x]+y) = color; 
+	*(GameBitmap->line[x]+y) = color;
       }
       break;
     case 15:
@@ -1397,7 +1397,7 @@ static void galaxian_draw_bullets(int offs, int x, int y,UINT8 *map)
       }
       break;
     case 32:
-      color = ReadLong(&map[color*4]); 
+      color = ReadLong(&map[color*4]);
       for (i = 0; i < 4; i++)
       {
 	x--;
@@ -1553,7 +1553,7 @@ static void draw_frogger() {
 	  sy > 240)
 	continue;
 
-      if (!*flip_screen_y) { 
+      if (!*flip_screen_y) {
 	sy = 255 - sy;
       }
 
