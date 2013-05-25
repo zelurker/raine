@@ -5,11 +5,7 @@
 /*              Z80+YM2203 or Z80+Z80+YM2610 or Z80+Z80+YM2203                */
 /*                                                                            */
 /******************************************************************************/
-/* TODO : update bankswitch code to use automatic code
-   update video functions to work in other color depths */
-
-/* In fact this driver is a total mess. It should probably be rewriten one day (too old) */
-/* But it's not an easy one, so good luck for the motivation ! */
+// Started to cleanup the code, not sure I'll finish this... !
 
 #include "gameinc.h"
 #include "lsystem.h"
@@ -20,6 +16,7 @@
 #include "savegame.h"
 #include "sasound.h"		// sample support routines
 #include "emumain.h" // set_reset_function
+#include "blit.h" // clear_game_screen
 
 static struct ROMSW_DATA romsw_data_fighting_hawk_0[] =
 {
@@ -130,6 +127,21 @@ static struct DSW_INFO american_horseshoes_dsw[] =
    { 0,        0,    NULL,      },
 };
 
+#define O 8*8*2
+#define O2 2*O
+static gfx_layout sp1_layout =
+{
+        16, 16,
+        RGN_FRAC(1,2),
+        4,
+        { RGN_FRAC(1,2)+0, RGN_FRAC(1,2)+4, 0, 4 },
+        { 3, 2, 1, 0, 8+3, 8+2, 8+1, 8+0, O+3, O+2, O+1, O+0, O+8+3, O+8+2, O+8+1, O+8+0 },
+        { 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16, O2+0*16, O2+1*16, O2+2*16, O2+3*16, O2+4*16, O2+5*16, O2+6*16, O2+7*16 },
+        8*8*2*4
+};
+#undef O
+#undef O2
+
 static GFX_LAYOUT bg2_layout =
 {
 	8, 8,
@@ -164,25 +176,45 @@ static GFX_LIST gfxdecodeinfo2[] =
 	{ -1 }
 };
 
-static struct VIDEO_INFO lsystem_video =
-{
-   DrawLSystem,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP |
-   VIDEO_ROTATABLE,
-};
-
 static struct VIDEO_INFO gfx_info =
 {
    DrawLSystem,
    320,
    224,
    32,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP |
+   VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
    gfxdecodeinfo2
+};
+
+static gfx_layout bg1_layout =
+{
+        8, 8,
+        RGN_FRAC(1,2),
+        4,
+        { RGN_FRAC(1,2)+0, RGN_FRAC(1,2)+4, 0, 4 },
+        { 3, 2, 1, 0, 8+3, 8+2, 8+1, 8+0 },
+        { 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16 },
+        8*8*2
+};
+
+static GFX_LIST gfxdecodeinfo[] =
+{
+	{ REGION_GFX1, &bg1_layout, },
+	{ REGION_GFX1, &sp1_layout, },
+	{ 0,           NULL}, // Ram-based
+	{ -1 }
+};
+
+static struct VIDEO_INFO lsystem_video =
+{
+   DrawLSystem,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo
 };
 
 static struct VIDEO_INFO l_system_270_video =
@@ -195,6 +227,119 @@ static struct VIDEO_INFO l_system_270_video =
    VIDEO_ROTATABLE,
 };
 
+#define LSYS_INT0	1		// Usually does nothing
+#define LSYS_INT1	2		// Usually main int (frame start?)
+#define LSYS_INT2	4		// Usually second main int (frame end?)
+
+static int romset;
+
+static UINT8 *RAM2;
+static UINT8 *ROM2;
+static UINT8 *RAM_INP;
+
+static int spr_mask;
+static int tile_mask;
+
+static UINT8 *GFX_BG0;
+static UINT8 *GFX_BG0_SOLID;
+static UINT8 VectorData[4];
+
+static void TrackBall(void)
+{
+   int px,py;
+
+   if(*MouseB&1) RAM_INP[0] &= ~0x80;
+   if(*MouseB&2) RAM_INP[1] &= ~0x80;
+
+   GetMouseMickeys(&px,&py);
+   WriteWord(&RAM_INP[0x04], py<<3);
+   WriteWord(&RAM_INP[0x06], px<<3);
+
+}
+
+static void execute_lsystem(void)
+{
+   if(romset==1)
+      TrackBall();
+
+      print_debug("Z80PC_MAIN_A:%04x\n",z80pc);
+   cpu_execute_cycles(CPU_Z80_1, 16);	// Main Z80 8MHz (60fps)
+      print_debug("Z80PC_MAIN_B:%04x\n",z80pc);
+   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// Main Z80 8MHz (60fps)
+      print_debug("Z80PC_MAIN_0:%04x\n",z80pc);
+   if(romset==9)
+   {
+   if(VectorData[3] & LSYS_INT2){
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+   }
+   }
+   else
+   {
+   if(VectorData[3] & LSYS_INT2){
+      cpu_interrupt(CPU_Z80_1, VectorData[2]);
+      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));
+   }
+   }
+      print_debug("Z80PC_MAIN_1:%04x\n",z80pc);
+   if(VectorData[3] & LSYS_INT1){
+      cpu_interrupt(CPU_Z80_1, VectorData[1]);
+   }
+   if(VectorData[3] & LSYS_INT0){
+      cpu_interrupt(CPU_Z80_1, VectorData[0]);
+   }
+
+   if(romset==0){
+   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+      print_debug("Z80PC_SUB:%04x\n",z80pc);
+   //if(z80pc==0x10D) cpu_interrupt(CPU_Z80_0, 0x38);
+   }
+
+   if(romset==3){
+   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+   /*#ifdef RAINE_DEBUG
+      print_debug("Z80PC_SUB:%04x\n",z80pc);
+#endif*/
+   if(z80pc==0x10D) cpu_interrupt(CPU_Z80_2, 0x38);
+   }
+
+   if(romset==4){
+   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+   /*#ifdef RAINE_DEBUG
+      print_debug("Z80PC_SUB:%04x\n",z80pc);
+#endif*/
+   if(z80pc==0x025) cpu_interrupt(CPU_Z80_2, 0x38);
+   }
+
+   if(romset==5){
+   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+   /*#ifdef RAINE_DEBUG
+      print_debug("Z80PC_SUB:%04x\n",z80pc);
+#endif*/
+   if(z80pc==0x11B) cpu_interrupt(CPU_Z80_2, 0x38);
+   }
+
+   if(romset==0)
+      Taito2610_Frame();		// Z80 and YM2610
+
+   if((romset==3)||(romset==4))
+      Taito2203_Frame();		// Z80 and YM2203
+}
+
 GAME( american_horseshoes ,
    american_horseshoes_dirs,
    american_horseshoes_roms,
@@ -205,7 +350,7 @@ GAME( american_horseshoes ,
    load_american_horseshoes,
    clear_american_horseshoes,
    &l_system_270_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "horshoes",
    "American Horseshoes",
    "アメリカンホースシュー",
@@ -330,7 +475,7 @@ GAME( champion_wrestler ,
    LoadChampionWr,
    ClearChampionWr,
    &gfx_info,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "champwr",
    "Champion Wrestler",
    "チャンピオンレスラー",
@@ -398,7 +543,7 @@ GAME( champion_wrestler_us ,
    LoadChampionWr,
    ClearChampionWr,
    &gfx_info,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "champwru",
    "Champion Wrestler (US)",
    "秡粐糜龝礫糜粽禮粱�[ (US)",
@@ -465,7 +610,7 @@ GAME( champion_wrestler_jp ,
    LoadChampionWr,
    ClearChampionWr,
    &gfx_info,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "champwrj",
    "Champion Wrestler (Japan)",
    "秡粐糜龝礫糜粽禮粱�[ (Japan)",
@@ -588,7 +733,7 @@ GAME( cachat ,
    load_cachat,
    clear_cachat,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "cachat",
    "Cachat",
    NULL,
@@ -699,7 +844,7 @@ GAME( fighting_hawk ,
    LoadFightingHawk,
    ClearFightingHawk,
    &l_system_270_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "fhawk",
    "Fighting Hawk",
    "ファイティングホーク",
@@ -816,7 +961,7 @@ GAME( kuri_kinton ,
    LoadKuriKinton,
    ClearKuriKinton,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "kurikina",
    "Kuri Kinton (Alternate)",
    "公李金団 (Alternate)",
@@ -901,7 +1046,7 @@ GAME( kuri_kinton_alt ,
    LoadKuriKinton_alt,
    ClearKuriKinton,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "kurikint",
    "Kuri Kinton",
    "公李金団",
@@ -922,7 +1067,7 @@ GAME( kuri_kinton_jap ,
    LoadKuriKinton_jap,
    ClearKuriKinton,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "kurikinj",
    "Kuri Kinton (JPN Ver.)",
    "公李金団 (alternate)",
@@ -937,18 +1082,28 @@ GAME( kuri_kinton_jap ,
    PLOTTING
  ************/
 
-static struct DIR_INFO plotting_dirs[] =
-{
-   { "plotting", },
-   { NULL, },
-};
-
 static struct ROM_INFO plotting_roms[] =
 {
-   {   "plot01.bin", 0x00010000, 0x5b30bc25, 0, 0, 0, },
-   {   "plot07.bin", 0x00010000, 0x6e0bad2a, 0, 0, 0, },
-   {   "plot08.bin", 0x00010000, 0xfb5f3ca4, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "ic10", 0x10000, 0xbe240921, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "b96-07.ic9", 0x10000, 0x0713a387, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b96-08.ic8", 0x10000, 0x55b8e294, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO plottinga_roms[] = // clone of plotting
+{
+  { "plot01.ic10", 0x10000, 0x5b30bc25, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "b96-02.ic9", 0x10000, 0x6e0bad2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b96-03.ic8", 0x10000, 0xfb5f3ca4, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO plottingb_roms[] = // clone of plotting
+{
+  { "b96-06.ic10", 0x10000, 0xf89a54b1, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "b96-02.ic9", 0x10000, 0x6e0bad2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b96-03.ic8", 0x10000, 0xfb5f3ca4, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct INPUT_INFO plotting_inputs[] =
@@ -1032,27 +1187,6 @@ static struct ROMSW_INFO plotting_romsw[] =
    { 0x007FFF, 0x02, romsw_data_plotting_0 },
    { 0,        0,    NULL },
 };
-
-GAME( plotting ,
-   plotting_dirs,
-   plotting_roms,
-   plotting_inputs,
-   plotting_dsw,
-   plotting_romsw,
-
-   LoadPlotting,
-   ClearPlotting,
-   &lsystem_video,
-   ExecuteLSystemFrame,
-   "plotting",
-   "Plotting",
-   "フリップル",
-   COMPANY_ID_TAITO,
-   "B96",
-   1989,
-   taito_ym2203_sound,
-   GAME_PUZZLE | VIDEO_NEEDS_8BPP
-);
 
 /***********
    PUZZNIC
@@ -1168,7 +1302,7 @@ GAME( puzznic ,
    LoadPuzznic,
    ClearPuzznic,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "puzznic",
    "Puzznic",
    "パズニック",
@@ -1291,7 +1425,7 @@ GAME( plgirls ,
    LoadPlgirls,
    ClearPlgirls,
    &l_system_270_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "plgirls",
    "Play Girls",
    "Play Girls",
@@ -1411,7 +1545,7 @@ GAME( plgirls2 ,
    LoadPlgirls2,
    ClearPlgirls2,
    &l_system_270_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "plgirls2",
    "Play Girls 2",
    "Play Girls 2",
@@ -1549,7 +1683,7 @@ GAME( palamedes ,
    LoadPalamedes,
    ClearPalamedes,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "palamed",
    "Palamedes",
    "パラメデス",
@@ -1674,7 +1808,7 @@ GAME( cuby_bop ,
    load_cuby_bop,
    clear_cuby_bop,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "cubybop",
    "Cuby Bop",
    NULL,
@@ -1716,7 +1850,7 @@ GAME( tube_it ,
    load_tube_it,
    clear_tube_it,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "tubeit",
    "Tube It",
    NULL,
@@ -1836,7 +1970,7 @@ GAME( raimais ,
    LoadRaimais,
    ClearRaimais,
    &lsystem_video,
-   ExecuteLSystemFrame,
+   execute_lsystem,
    "raimais",
    "Raimais",
    "レイメイズ",
@@ -1846,18 +1980,6 @@ GAME( raimais ,
    taito_ym2610_sound,
    GAME_MISC
 );
-
-static int romset;
-
-static UINT8 *RAM2;
-static UINT8 *ROM2;
-static UINT8 *RAM_INP;
-
-static int spr_mask;
-static int tile_mask;
-
-static UINT8 *GFX_BG0;
-static UINT8 *GFX_BG0_SOLID;
 
 /*
 
@@ -1967,76 +2089,6 @@ Todo:
 
 */
 
-static void TrackBall(void)
-{
-#if 0
-  static int p1x,p1y;
-  static int last_p1x,last_p1y;
-  int ta;
-#endif
-   int px,py;
-
-   if(*MouseB&1) RAM_INP[0] &= ~0x80;
-   if(*MouseB&2) RAM_INP[1] &= ~0x80;
-
-   GetMouseMickeys(&px,&py);
-/*
-   p1y += py;
-   p1x += px;
-
-   if(RAM_INP[0x08]) p1y -= 0x02;
-   if(RAM_INP[0x09]) p1y += 0x02;
-   if(RAM_INP[0x0A]) p1x -= 0x02;
-   if(RAM_INP[0x0B]) p1x += 0x02;
-
-   px = 0;
-   py = 0;
-
-   for(ta=0;ta<4;ta++){
-   if((p1x - last_p1x) >= 0x08){
-       last_p1x += 8;
-       px -= 127;
-   }
-   if((last_p1x - p1x) >= 0x08){
-       last_p1x -= 8;
-       px += 127;
-   }
-   if((p1y - last_p1y) >= 0x08){
-       last_p1y += 8;
-       py -= 127;
-   }
-   if((last_p1y - p1y) >= 0x08){
-       last_p1y -= 8;
-       py += 127;
-   }
-   }
-*/
-   WriteWord(&RAM_INP[0x04], py<<3);
-   WriteWord(&RAM_INP[0x06], px<<3);
-
-/*
-   p1x &= 0x1FF;
-   p1y &= 0x1FF;
-
-   p1y = 0;
-   p1x = 0;
-
-   if(RAM_INP[0x08]) p1y = 0x80;
-   if(RAM_INP[0x09]) p1y = 0x7F;
-   if(RAM_INP[0x0A]) p1x = 0x80;
-   if(RAM_INP[0x0B]) p1x = 0x7F;
-
-   WriteWord(&RAM_INP[0x04],p1y<<3);
-   WriteWord(&RAM_INP[0x06],p1x<<3);
-
-   print_ingame(600,"[%04x|%04x]",p1x&0x1FF,p1y&0x1FF);
-   print_ingame(600,"[%04x|%04x]",p1x&0x1FF,p1y&0x1FF);
-   print_ingame(600,"[%04x|%04x]",p1x&0x1FF,p1y&0x1FF);
-   print_ingame(600,"[%04x|%04x]",p1x&0x1FF,p1y&0x1FF);
-   print_ingame(600,"[%04x|%04x]",ReadWord(RAM+0x8B91),ReadWord(RAM+0x8B93));
-*/
-}
-
 static UINT8 ReadTrackBall(UINT16 offset)
 {
    return RAM_INP[4|((offset>>2)&3)];
@@ -2045,12 +2097,6 @@ static UINT8 ReadTrackBall(UINT16 offset)
 /******************************************************************************/
 /* L-SYSTEM INTERRUPT VECTORS                                                 */
 /******************************************************************************/
-
-#define LSYS_INT0	1		// Usually does nothing
-#define LSYS_INT1	2		// Usually main int (frame start?)
-#define LSYS_INT2	4		// Usually second main int (frame end?)
-
-static UINT8 VectorData[4];
 
 static void LSystemIntVecWrite(UINT16 offset, UINT8 data)
 {
@@ -2294,21 +2340,7 @@ static UINT8 *RAM_PAL;		// $200 bytes
 
 static DEF_INLINE void LSystem_PAL_Write(UINT16 offset, UINT8 data)
 {
-   UINT16 ta;
-
    RAM_PAL[offset&0x1FF] = data;
-
-   ta = ReadWord(&RAM_PAL[offset&0x1FE]);
-
-#ifdef SDL
-   pal[offset>>1].b=(ta&0x0F00)>>4;
-   pal[offset>>1].g=(ta&0x00F0);
-   pal[offset>>1].r=(ta&0x000F)<<4;
-#else
-   pal[offset>>1].b=(ta&0x0F00)>>6;
-   pal[offset>>1].g=(ta&0x00F0)>>2;
-   pal[offset>>1].r=(ta&0x000F)<<2;
-#endif
 }
 
 static DEF_INLINE UINT16 LSystem_PAL_Read(UINT16 offset)
@@ -2405,6 +2437,7 @@ static UINT8 LSystemVRAMRead(UINT16 offset)
    }
 }
 
+static int layer_id_data[5];
 static void lsystem_vcu_init(int fg0_size)
 {
    memset(RAM_BG0,0x00,0x4000);
@@ -2421,6 +2454,13 @@ static void lsystem_vcu_init(int fg0_size)
    gfx_fg0_dirty_count = 0;
    memset(GFX_FG0_DIRTY,0x00,0x400*4);
    memset(GFX_FG0_SOLID,0x00,0x400);
+   layer_id_data[0] = add_layer_info("BG0");
+   layer_id_data[1] = add_layer_info("OBJ");
+   layer_id_data[2] = add_layer_info("BG1");
+   layer_id_data[3] = add_layer_info("OBJ 2");
+   layer_id_data[4] = add_layer_info("FG");
+   set_colour_mapper(&col_map_xxxx_bbbb_gggg_rrrr);
+   InitPaletteMap(RAM_PAL, 0x10, 0x10, 0x8000);
 }
 
 /******************************************************************************/
@@ -2885,14 +2925,11 @@ void clear_american_horseshoes(void)
 #endif
 }
 
-void LoadPlotting(void)
+static void load_plotting(void)
 {
-   int ta, tb;
-   UINT8 *TMP;
-
    romset=2;
-   Z80BankCount=0x10000/0x2000;
-   Z802BankCount=0x00000/0x4000;
+   Z80BankCount=get_region_size(REGION_CPU1)/0x2000;
+   Z802BankCount=0;
 
    RAMSize=0x10000+0x8000+0x10000+0x4000+0x200+0x10+0x10000;
 
@@ -2905,37 +2942,49 @@ void LoadPlotting(void)
    RAM_PAL=RAM+0x10000+0x8000+0x10000+0x4000;
    RAM_INP=RAM+0x10000+0x8000+0x10000+0x4000+0x200;
 
-   if(!(TMP =AllocateMem(0x10000))) return;
-
-   if(!load_rom("plot01.bin",TMP,0x10000)) return;      // Z80 MAIN ROM
-   if(ReadLong68k(&TMP[0])==0xC3A2C000) DecodePlotting(TMP);
+   if(ReadLong68k(&ROM[0])==0xC3A2C000) DecodePlotting(ROM);
 
    // Fix ROM Checksum
    // ----------------
 
-   TMP[0x396]=0x00;  // NOP
-   TMP[0x397]=0x00;  // NOP
-   TMP[0x398]=0x00;  // NOP
+   if (ReadWord68k(&ROM[0x434]) == 0xc2af) {
+       printf("patching plotting\n");
+       ROM[0x434]=0x00;  // NOP
+       ROM[0x435]=0x00;  // NOP
+       ROM[0x436]=0x00;  // NOP
+       // Skip Idle Z80
+       // -------------
 
-   // Skip Idle Z80
-   // -------------
+       ROM[0x0bb]=0xC3;
+       ROM[0x0bc]=0x18;
+       ROM[0x0bd]=0x00;
+       SetStopZ80BMode2(0x0Be);
+   } else {
+       ROM[0x396]=0x00;  // NOP
+       ROM[0x397]=0x00;  // NOP
+       ROM[0x398]=0x00;  // NOP
+       //
+       // Skip Idle Z80
+       // -------------
 
-   TMP[0x0AF]=0xC3;
-   TMP[0x0B0]=0x18;
-   TMP[0x0B1]=0x00;
+       ROM[0x0AF]=0xC3;
+       ROM[0x0B0]=0x18;
+       ROM[0x0B1]=0x00;
+       SetStopZ80BMode2(0x0B2);
+   }
 
-   TMP[0x018]=0x3A;
-   TMP[0x019]=0x31;
-   TMP[0x01A]=0x82;
 
-   TMP[0x01B]=0xD3;  // OUTA (AAh)
-   TMP[0x01C]=0xAA;  //
+   ROM[0x018]=0x3A;
+   ROM[0x019]=0x31;
+   ROM[0x01A]=0x82;
 
-   SetStopZ80BMode2(0x0B2);
+   ROM[0x01B]=0xD3;  // OUTA (AAh)
+   ROM[0x01C]=0xAA;  //
 
-   init_bank_rom(TMP);
 
-   memcpy(RAM, TMP,  0x6000+0x2000);
+   init_bank_rom(ROM);
+
+   memcpy(RAM, ROM,  0x6000+0x2000);
 
    AddZ80BROMBase(RAM, 0x0038, 0x0066);
 
@@ -2969,32 +3018,7 @@ void LoadPlotting(void)
 
    AddZ80BInit();
 
-   FreeMem(TMP);
-
    /*-----------------------*/
-
-   if(!(GFX=AllocateMem(0x040000))) return;
-   if(!(TMP=AllocateMem(0x020000))) return;
-
-   if(!load_rom("plot07.bin", TMP+0x00000, 0x10000)) return;
-   if(!load_rom("plot08.bin", TMP+0x10000, 0x10000)) return;
-
-   tb=0;
-   for(ta=0;ta<0x10000;ta+=2,tb+=8){
-      DrawNibble0(&GFX[tb+0],0, (UINT8) (TMP[ta+0x00000] &15) );
-      DrawNibble0(&GFX[tb+4],0, (UINT8) (TMP[ta+0x00001] &15) );
-      DrawNibble (&GFX[tb+0],1, (UINT8) (TMP[ta+0x00000] >>4) );
-      DrawNibble (&GFX[tb+4],1, (UINT8) (TMP[ta+0x00001] >>4) );
-      DrawNibble (&GFX[tb+0],2, (UINT8) (TMP[ta+0x10000] &15) );
-      DrawNibble (&GFX[tb+4],2, (UINT8) (TMP[ta+0x10001] &15) );
-      DrawNibble (&GFX[tb+0],3, (UINT8) (TMP[ta+0x10000] >>4) );
-      DrawNibble (&GFX[tb+4],3, (UINT8) (TMP[ta+0x10001] >>4) );
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0 = GFX+0x000000;
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX_BG0, 0x1000);
 
    spr_mask = 0x03FF;
    tile_mask = 0x0FFF;
@@ -3004,13 +3028,6 @@ void LoadPlotting(void)
    LSystemAddSaveData();
 }
 
-void ClearPlotting(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x040000, 0);
-#endif
-}
 
 void LoadChampionWr(void)
 {
@@ -3126,9 +3143,6 @@ void LoadChampionWr(void)
    AddZ80CWritePort(-1, -1, NULL, NULL);
 
    AddZ80CInit();
-
-   GFX_BG0 = gfx[0];
-   GFX_BG0_SOLID = gfx_solid[0];
 
    spr_mask = 0x3FFF;
    tile_mask = 0xFFFF;
@@ -4419,94 +4433,11 @@ void clear_cachat(void)
 #endif
 }
 
-void ExecuteLSystemFrame(void)
-{
-   if(romset==1)
-      TrackBall();
-
-      print_debug("Z80PC_MAIN_A:%04x\n",z80pc);
-   cpu_execute_cycles(CPU_Z80_1, 16);	// Main Z80 8MHz (60fps)
-      print_debug("Z80PC_MAIN_B:%04x\n",z80pc);
-   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// Main Z80 8MHz (60fps)
-      print_debug("Z80PC_MAIN_0:%04x\n",z80pc);
-   if(romset==9)
-   {
-   if(VectorData[3] & LSYS_INT2){
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-   }
-   }
-   else
-   {
-   if(VectorData[3] & LSYS_INT2){
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));
-   }
-   }
-      print_debug("Z80PC_MAIN_1:%04x\n",z80pc);
-   if(VectorData[3] & LSYS_INT1){
-      cpu_interrupt(CPU_Z80_1, VectorData[1]);
-   }
-   if(VectorData[3] & LSYS_INT0){
-      cpu_interrupt(CPU_Z80_1, VectorData[0]);
-   }
-
-   if(romset==0){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
-   //if(z80pc==0x10D) cpu_interrupt(CPU_Z80_0, 0x38);
-   }
-
-   if(romset==3){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
-#endif*/
-   if(z80pc==0x10D) cpu_interrupt(CPU_Z80_2, 0x38);
-   }
-
-   if(romset==4){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
-#endif*/
-   if(z80pc==0x025) cpu_interrupt(CPU_Z80_2, 0x38);
-   }
-
-   if(romset==5){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
-#endif*/
-   if(z80pc==0x11B) cpu_interrupt(CPU_Z80_2, 0x38);
-   }
-
-   if(romset==0)
-      Taito2610_Frame();		// Z80 and YM2610
-
-   if((romset==3)||(romset==4))
-      Taito2203_Frame();		// Z80 and YM2203
-}
-
 void DrawLSystem(void)
 {
    int w,x,y,code,ta;
    int zz,zzz,zzzz,x16,y16;
-   UINT8 *p,colour;
+   UINT8 *p,colour,*map;
    UINT8 *GFX_BG,*MSK_BG;
    if (!GFX_BG0_SOLID) {
      GFX_BG0_SOLID = gfx_solid[0];
@@ -4515,22 +4446,7 @@ void DrawLSystem(void)
      }
    }
 
-
-   if(RefreshBuffers){
-   for(zz=0;zz<0x200;zz+=2){
-   ta=ReadWord(&RAM_PAL[zz]);
-#ifdef SDL
-   pal[zz>>1].b=(ta&0x0F00)>>4;
-   pal[zz>>1].g=(ta&0x00F0);
-   pal[zz>>1].r=(ta&0x000F)<<4;
-#else
-   pal[zz>>1].b=(ta&0x0F00)>>6;
-   pal[zz>>1].g=(ta&0x00F0)>>2;
-   pal[zz>>1].r=(ta&0x000F)<<2;
-#endif
-   }
-
-   }
+   ClearPaletteMap();
 
    GFX_BG = GFX_BG0;
    MSK_BG = GFX_BG0_SOLID;
@@ -4545,181 +4461,213 @@ void DrawLSystem(void)
    // BG0
    // ---
 
-   MAKE_SCROLL_512x256_2_8(
-       0-(ReadWord(&RAM_BG0[0x33FC])+28+10),
-      16-(ReadWord(&RAM_BG0[0x33FE]))
-   );
+   if(check_layer_enabled(layer_id_data[0])) {
+       MAKE_SCROLL_512x256_2_8(
+	       0-(ReadWord(&RAM_BG0[0x33FC])+28+10),
+	       16-(ReadWord(&RAM_BG0[0x33FE]))
+	       );
 
-   START_SCROLL_512x256_2_8(32,32,320,224);
+       START_SCROLL_512x256_2_8(32,32,320,224);
 
-      code = ReadWord(&RAM_BG0[0x1000+zz]);
-      ta   = ((code&0x3FF)|(TileBank[(code>>10)&3]<<10))&tile_mask;
+       code = ReadWord(&RAM_BG0[0x1000+zz]);
+       ta   = ((code&0x3FF)|(TileBank[(code>>10)&3]<<10))&tile_mask;
+       colour = (UINT8) ((code>>8)&0xF0)>>4;
+       MAP_PALETTE_MAPPED_NEW(colour,
+	       16,
+	       map);
 
-      Draw8x8_Rot(&GFX_BG[ta<<6], x, y, (UINT8) ((code>>8)&0xF0));
+       Draw8x8_Mapped_Rot(&GFX_BG[ta<<6], x, y, map);
 
-   END_SCROLL_512x256_2_8();
+       END_SCROLL_512x256_2_8();
+   } else
+       clear_game_screen(0);
 
    // OBJECT
    // ------
 
-   if((TileBank[4]&0x08)==0){
+   if(check_layer_enabled(layer_id_data[1])) {
+       if((TileBank[4]&0x08)==0){
 
-   p = &RAM_BG0[0x33F0];
-   w = 0x7E;
-   do {
-      p -= 8;
-      code = ReadWord(p) & spr_mask;
+	   p = &RAM_BG0[0x33F0];
+	   w = 0x7E;
+	   do {
+	       p -= 8;
+	       code = ReadWord(p) & spr_mask;
 
-      if(code!=0){
-      if((colour = ((*(p+2)) & 15))>=8){
+	       if(code!=0){
+		   if((colour = ((*(p+2)) & 15))>=8){
 
-         x = (ReadWord(p+4)+32)&0x1FF;
-         y = (ReadWord(p+6)+16)&0xFF;
+		       x = (ReadWord(p+4)+32)&0x1FF;
+		       y = (ReadWord(p+6)+16)&0xFF;
 
-         if((x>16)&&(y>16)&&(x<320+32)&&(y<224+32)){
+		       if((x>16)&&(y>16)&&(x<320+32)&&(y<224+32)){
 
-            colour <<= 4;
-            code <<= 8;
+			   code <<= 8;
+			   MAP_PAL(colour,
+				   16,
+				   map);
 
-            switch((*(p+3)) & 3){
-            case 0x00:
-               Draw8x8_Trans_Rot(&GFX_BG[code+0x00], x,   y,   colour);
-               Draw8x8_Trans_Rot(&GFX_BG[code+0x40], x+8, y,   colour);
-               Draw8x8_Trans_Rot(&GFX_BG[code+0x80], x,   y+8, colour);
-               Draw8x8_Trans_Rot(&GFX_BG[code+0xC0], x+8, y+8, colour);
-            break;
-            case 0x01:
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0x00], x+8, y,   colour);
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0x40], x,   y,   colour);
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0x80], x+8, y+8, colour);
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0xC0], x,   y+8, colour);
-            break;
-            case 0x02:
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0x00], x,   y+8, colour);
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0x40], x+8, y+8, colour);
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0x80], x,   y,   colour);
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0xC0], x+8, y,   colour);
-            break;
-            case 0x03:
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0x00], x+8, y+8, colour);
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0x40], x,   y+8, colour);
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0x80], x+8, y,   colour);
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0xC0], x,   y,   colour);
-            break;
-            }
-         }
-      }}
-   } while(--w);
+			   switch((*(p+3)) & 3){
+			   case 0x00:
+			       Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0x00], x,   y,   map);
+			       Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0x40], x+8, y,   map);
+			       Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0x80], x,   y+8, map);
+			       Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0xC0], x+8, y+8, map);
+			       break;
+			   case 0x01:
+			       Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0x00], x+8, y,   map);
+			       Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0x40], x,   y,   map);
+			       Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0x80], x+8, y+8, map);
+			       Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0xC0], x,   y+8, map);
+			       break;
+			   case 0x02:
+			       Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0x00], x,   y+8, map);
+			       Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0x40], x+8, y+8, map);
+			       Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0x80], x,   y,   map);
+			       Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0xC0], x+8, y,   map);
+			       break;
+			   case 0x03:
+			       Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0x00], x+8, y+8, map);
+			       Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0x40], x,   y+8, map);
+			       Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0x80], x+8, y,   map);
+			       Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0xC0], x,   y,   map);
+			       break;
+			   }
+		       }
+		   }}
+	   } while(--w);
+       }
    }
 
    // BG1
    // ---
 
-   MAKE_SCROLL_512x256_2_8(
-       0-(ReadWord(&RAM_BG0[0x33F4])+28),
-      16-(ReadWord(&RAM_BG0[0x33F6]))
-   );
+   if(check_layer_enabled(layer_id_data[2])) {
+       MAKE_SCROLL_512x256_2_8(
+	       0-(ReadWord(&RAM_BG0[0x33F4])+28),
+	       16-(ReadWord(&RAM_BG0[0x33F6]))
+	       );
 
-   START_SCROLL_512x256_2_8(32,32,320,224);
+       START_SCROLL_512x256_2_8(32,32,320,224);
 
-      code = ReadWord(&RAM_BG0[0x0000+zz]);
-      ta   = ((code&0x3FF)|(TileBank[(code>>10)&3]<<10))&tile_mask;
+       code = ReadWord(&RAM_BG0[0x0000+zz]);
+       ta   = ((code&0x3FF)|(TileBank[(code>>10)&3]<<10))&tile_mask;
+       colour = (UINT8) ((code>>8)&0xF0)>>4;
+       MAP_PAL(colour,
+	       16,
+	       map);
 
-      if(MSK_BG[ta]!=0){			// No pixels; skip
+       if(MSK_BG[ta]!=0){			// No pixels; skip
 
-         if(MSK_BG[ta]==1){			// Some pixels; trans
-            Draw8x8_Trans_Rot(&GFX_BG[ta<<6], x, y, (UINT8) ((code>>8)&0xF0));
-         }
-         else{					// all pixels; solid
-            Draw8x8_Rot(&GFX_BG[ta<<6], x, y, (UINT8) ((code>>8)&0xF0));
-         }
+	   if(MSK_BG[ta]==1){			// Some pixels; trans
+	       Draw8x8_Trans_Mapped_Rot(&GFX_BG[ta<<6], x, y, map);
+	   }
+	   else{					// all pixels; solid
+	       Draw8x8_Mapped_Rot(&GFX_BG[ta<<6], x, y, map);
+	   }
 
-      }
+       }
 
-   END_SCROLL_512x256_2_8();
+       END_SCROLL_512x256_2_8();
+   }
 
    // OBJECT
    // ------
 
-   if((TileBank[4]&0x08)==0){
-      ta = 8;
+   if(check_layer_enabled(layer_id_data[3])) {
+       if((TileBank[4]&0x08)==0){
+	   ta = 8;
+       }
+       else{
+	   ta = 16;
+       }
+
+       p = &RAM_BG0[0x33F0];
+       w = 0x7E;
+       do {
+	   p -= 8;
+	   code = ReadWord(p) & spr_mask;
+
+	   if(code!=0){
+	       if((colour = ((*(p+2)) & 15))<ta){
+		   x = (ReadWord(p+4)+32)&0x1FF;
+		   y = (ReadWord(p+6)+16)&0x0FF;
+
+		   if((x>16)&&(y>16)&&(x<320+32)&&(y<224+32)){
+
+		       MAP_PAL(colour,
+			       16,
+			       map);
+		       code <<= 8;
+
+		       switch((*(p+3)) & 3){
+		       case 0x00:
+			   Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0x00], x,   y,   map);
+			   Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0x40], x+8, y,   map);
+			   Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0x80], x,   y+8, map);
+			   Draw8x8_Trans_Mapped_Rot(&GFX_BG[code+0xC0], x+8, y+8, map);
+			   break;
+		       case 0x01:
+			   Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0x00], x+8, y,   map);
+			   Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0x40], x,   y,   map);
+			   Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0x80], x+8, y+8, map);
+			   Draw8x8_Trans_Mapped_FlipY_Rot(&GFX_BG[code+0xC0], x,   y+8, map);
+			   break;
+		       case 0x02:
+			   Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0x00], x,   y+8, map);
+			   Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0x40], x+8, y+8, map);
+			   Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0x80], x,   y,   map);
+			   Draw8x8_Trans_Mapped_FlipX_Rot(&GFX_BG[code+0xC0], x+8, y,   map);
+			   break;
+		       case 0x03:
+			   Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0x00], x+8, y+8, map);
+			   Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0x40], x,   y+8, map);
+			   Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0x80], x+8, y,   map);
+			   Draw8x8_Trans_Mapped_FlipXY_Rot(&GFX_BG[code+0xC0], x,   y,   map);
+			   break;
+		       }
+		   }
+	       }}
+       } while(--w);
    }
-   else{
-      ta = 16;
-   }
-
-   p = &RAM_BG0[0x33F0];
-   w = 0x7E;
-   do {
-      p -= 8;
-      code = ReadWord(p) & spr_mask;
-
-      if(code!=0){
-      if((colour = ((*(p+2)) & 15))<ta){
-         x = (ReadWord(p+4)+32)&0x1FF;
-         y = (ReadWord(p+6)+16)&0x0FF;
-
-         if((x>16)&&(y>16)&&(x<320+32)&&(y<224+32)){
-
-            colour <<= 4;
-            code <<= 8;
-
-            switch((*(p+3)) & 3){
-            case 0x00:
-               Draw8x8_Trans_Rot(&GFX_BG[code+0x00], x,   y,   colour);
-               Draw8x8_Trans_Rot(&GFX_BG[code+0x40], x+8, y,   colour);
-               Draw8x8_Trans_Rot(&GFX_BG[code+0x80], x,   y+8, colour);
-               Draw8x8_Trans_Rot(&GFX_BG[code+0xC0], x+8, y+8, colour);
-            break;
-            case 0x01:
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0x00], x+8, y,   colour);
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0x40], x,   y,   colour);
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0x80], x+8, y+8, colour);
-               Draw8x8_Trans_FlipY_Rot(&GFX_BG[code+0xC0], x,   y+8, colour);
-            break;
-            case 0x02:
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0x00], x,   y+8, colour);
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0x40], x+8, y+8, colour);
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0x80], x,   y,   colour);
-               Draw8x8_Trans_FlipX_Rot(&GFX_BG[code+0xC0], x+8, y,   colour);
-            break;
-            case 0x03:
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0x00], x+8, y+8, colour);
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0x40], x,   y+8, colour);
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0x80], x+8, y,   colour);
-               Draw8x8_Trans_FlipXY_Rot(&GFX_BG[code+0xC0], x,   y,   colour);
-            break;
-            }
-         }
-      }}
-   } while(--w);
 
    // FG0
    // ---
 
-   update_gfx_fg0();
+   if(check_layer_enabled(layer_id_data[4])) {
+       update_gfx_fg0();
 
-   MAKE_SCROLL_512x256_2_8(
-       8,
-      16
-   );
+       MAKE_SCROLL_512x256_2_8(
+	       8,
+	       16
+	       );
 
-   START_SCROLL_512x256_2_8(32,32,320,224);
+       START_SCROLL_512x256_2_8(32,32,320,224);
 
-      code = ReadWord(&RAM_BG0[0x2000+zz]);
-      ta = (code&0x1FF)|((code&0x400)>>1);
+       code = ReadWord(&RAM_BG0[0x2000+zz]);
+       ta = (code&0x1FF)|((code&0x400)>>1);
+       MAP_PAL((UINT8) ((code>>8)&0xF0)>>4,
+	       16,
+	       map);
 
-      if(GFX_FG0_SOLID[ta]){			// No pixels; skip
+       if(GFX_FG0_SOLID[ta]){			// No pixels; skip
 
-         if(GFX_FG0_SOLID[ta]==1){		// Some pixels; trans
-            Draw8x8_Trans_Rot(&GFX_FG0[ta<<6], x, y, (UINT8) ((code>>8)&0xF0));
-         }
-         else{					// all pixels; solid
-            Draw8x8_Rot(&GFX_FG0[ta<<6], x, y, (UINT8) ((code>>8)&0xF0));
-         }
+	   if(GFX_FG0_SOLID[ta]==1){		// Some pixels; trans
+	       Draw8x8_Trans_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
+	   }
+	   else{					// all pixels; solid
+	       Draw8x8_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
+	   }
 
-      }
+       }
 
-   END_SCROLL_512x256_2_8();
+       END_SCROLL_512x256_2_8();
+   }
 }
+
+#define lsystem_sound taito_ym2203_sound
+
+GME_ROMSWD( plotting ,"Plotting",COMPANY_ID_TAITO,1989,GAME_PUZZLE,lsystem);
+CLONE_ROMSWD( plottinga,plotting,"Plotting (World set 2, protected)",COMPANY_ID_TAITO,1989,GAME_PUZZLE,lsystem);
+CLONE_ROMSWD( plottingb,plotting,"Plotting (World set 3, earliest version)",COMPANY_ID_TAITO,1989,GAME_PUZZLE,lsystem);
 

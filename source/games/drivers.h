@@ -653,6 +653,8 @@
   DRV(kuri_kinton_alt)
   DRV(kuri_kinton_jap)
   DRV(plotting)
+  DRV(plottinga)
+  DRV(plottingb)
   DRV(puzznic)
   DRV(plgirls)
   DRV(plgirls2)
