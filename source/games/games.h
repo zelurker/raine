@@ -69,7 +69,8 @@ enum company_num
    COMPANY_ID_NINTENDO,
    COMPANY_ID_MITCHELL,
    COMPANY_ID_SEMICOM,
-   COMPANY_ID_ESD
+   COMPANY_ID_ESD,
+   COMPANY_ID_SPACY
 };
 
 extern const int nb_companies;
@@ -252,6 +253,31 @@ GAME( name,                                           \
       name##_sound,                                   \
       flags)
 
+#define GME_DRV(name,long_name,company,year,flags,driver)        \
+static struct DIR_INFO name##_dirs[] =                \
+{                                                     \
+   { #name, },                                        \
+   { NULL, },                                         \
+};                                                    \
+GAME( name,                                           \
+      name##_dirs,                                    \
+      name##_roms,                                    \
+      name##_inputs,                                  \
+      name##_dsw,                                     \
+      NULL,                                           \
+      load_##name,                                    \
+      NULL,                                           \
+      &driver##_video,                                  \
+      execute_##driver,                                 \
+      #name,                                          \
+      long_name,                                      \
+      long_name,                                      \
+      company,                                        \
+      NULL,                                           \
+      year,                                           \
+      driver##_sound,                                   \
+      flags)
+
 #define GME_ROMSW(name,long_name,company,year,flags)    \
 static struct DIR_INFO name##_dirs[] =                  \
 {                                                       \
@@ -275,6 +301,31 @@ GAME( name,                                             \
       NULL,                                             \
       year,                                             \
       name##_sound,                                     \
+      flags)
+
+#define GME_ROMSWD(name,long_name,company,year,flags,driver)    \
+static struct DIR_INFO name##_dirs[] =                  \
+{                                                       \
+   { #name, },                                          \
+   { NULL, },                                           \
+};                                                      \
+GAME( name,                                             \
+      name##_dirs,                                      \
+      name##_roms,                                      \
+      name##_inputs,                                    \
+      name##_dsw,                                       \
+      name##_romsw,                                     \
+      load_##name,                                      \
+      NULL,                                     \
+      &driver##_video,                                    \
+      execute_##driver,                                   \
+      #name,                                            \
+      long_name,                                        \
+      long_name,                                        \
+      company,                                          \
+      NULL,                                             \
+      year,                                             \
+      driver##_sound,                                     \
       flags)
 
 #define CLONE(name, parent,long_name,company,year,flags)          \
@@ -385,6 +436,32 @@ GAME( name,                                                        \
       parent##_sound,                                              \
       flags)
 
+#define CLONE_ROMSWD(name, parent, long_name,company,year,flags,driver)    \
+static struct DIR_INFO name##_dirs[] =                             \
+{                                                                  \
+   { #name, },                                                     \
+   { ROMOF( #parent ), },                                          \
+   { CLONEOF( #parent ), },                                        \
+   { NULL, },                                                      \
+};                                                                 \
+GAME( name,                                                        \
+      name##_dirs,                                                 \
+      name##_roms,                                                 \
+      parent##_inputs,                                             \
+      parent##_dsw,                                                \
+      parent##_romsw,                                              \
+      load_##parent,                                               \
+      NULL,                                              \
+      &driver##_video,                                             \
+      execute_##driver,                                            \
+      #name,                                                       \
+      long_name,                                                   \
+      long_name,                                                   \
+      company,                                                     \
+      NULL,                                                        \
+      year,                                                        \
+      driver##_sound,                                              \
+      flags)
 /*
 
 the list of all games
