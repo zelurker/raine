@@ -199,7 +199,10 @@ void triger_timers() {
       count++;
 #endif
 #if 1
-      while (!_z80iff) {
+      // if here, not while. silentd messes its timers at start and recovers
+      // after that, if there is a while here, it's an infinite loop
+      // (the logic of the driver might be wrong, but it works this way anyway)
+      if (!_z80iff) {
 	// Sometimes 2 timers trigger too close to each other and the z80
 	// needs time to handle the interrupt.
 	// I really wonder how the original hardware handled this.
