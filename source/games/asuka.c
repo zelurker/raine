@@ -141,6 +141,56 @@ struct GFX_LIST asuka_gfx[] =
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
+
+void setup_asuka_layers(UINT8 *rv, UINT8 *rs, UINT8 *gf)
+{
+    RAM_VIDEO = rv;
+    RAM_SCROLL = rs;
+    GFX_FG0 = gf;
+
+   // Init tc0100scn emulation
+   // ------------------------
+
+   tc0100scn[0].layer[0].RAM	= RAM_VIDEO+0x0000;
+   tc0100scn[0].layer[0].SCR	= RAM_SCROLL+0;
+   tc0100scn[0].layer[0].type	= 0;
+   tc0100scn[0].layer[0].bmp_x	= 32;
+   tc0100scn[0].layer[0].bmp_y	= 32;
+   tc0100scn[0].layer[0].bmp_w	= 320;
+   tc0100scn[0].layer[0].bmp_h	= 224;
+   tc0100scn[0].layer[0].tile_mask= 0x3FFF;
+   tc0100scn[0].layer[0].scr_x	= 16;
+   tc0100scn[0].layer[0].scr_y	= 16;
+
+   tc0100scn[0].layer[1].RAM	= RAM_VIDEO+0x8000;
+   tc0100scn[0].layer[1].SCR	= RAM_SCROLL+2;
+   tc0100scn[0].layer[1].type	= 0;
+   tc0100scn[0].layer[1].bmp_x	= 32;
+   tc0100scn[0].layer[1].bmp_y	= 32;
+   tc0100scn[0].layer[1].bmp_w	= 320;
+   tc0100scn[0].layer[1].bmp_h	= 224;
+   tc0100scn[0].layer[1].tile_mask= 0x3FFF;
+   tc0100scn[0].layer[1].scr_x	= 16;
+   tc0100scn[0].layer[1].scr_y	= 16;
+
+   if (GFX_FG0) {
+       tc0100scn[0].layer[2].RAM	= RAM_VIDEO+0x4000;
+       tc0100scn[0].layer[2].GFX	= GFX_FG0;
+       tc0100scn[0].layer[2].SCR	= RAM_SCROLL+4;
+       tc0100scn[0].layer[2].type	= 1;
+       tc0100scn[0].layer[2].bmp_x	= 32;
+       tc0100scn[0].layer[2].bmp_y	= 32;
+       tc0100scn[0].layer[2].bmp_w	= 320;
+       tc0100scn[0].layer[2].bmp_h	= 224;
+       tc0100scn[0].layer[2].scr_x	= 16;
+       tc0100scn[0].layer[2].scr_y	= 16;
+   }
+
+   tc0100scn[0].RAM	= RAM_VIDEO;
+   tc0100scn[0].GFX_FG0 = GFX_FG0;
+   init_tc0100scn(0);
+}
+
 static UINT8 *RAM_OBJECT;
 static UINT8 *RAM_INPUT;
 
@@ -182,34 +232,7 @@ static void load_asuka(void)
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    //reset_tc0220ioc();
 
-   // Init tc0100scn emulation
-   // ------------------------
-
-   tc0100scn[0].layer[0].RAM	=RAM_VIDEO+0x0000;
-   tc0100scn[0].layer[0].SCR	=RAM_SCROLL+0;
-   tc0100scn[0].layer[0].type	=0;
-   tc0100scn[0].layer[0].bmp_x	=32;
-   tc0100scn[0].layer[0].bmp_y	=32;
-   tc0100scn[0].layer[0].bmp_w	=320;
-   tc0100scn[0].layer[0].bmp_h	=224;
-   tc0100scn[0].layer[0].tile_mask=0x3FFF;
-   tc0100scn[0].layer[0].scr_x	=16;
-   tc0100scn[0].layer[0].scr_y	=16;
-
-   tc0100scn[0].layer[1].RAM	=RAM_VIDEO+0x8000;
-   tc0100scn[0].layer[1].SCR	=RAM_SCROLL+2;
-   tc0100scn[0].layer[1].type	=0;
-   tc0100scn[0].layer[1].bmp_x	=32;
-   tc0100scn[0].layer[1].bmp_y	=32;
-   tc0100scn[0].layer[1].bmp_w	=320;
-   tc0100scn[0].layer[1].bmp_h	=224;
-   tc0100scn[0].layer[1].tile_mask=0x3FFF;
-   tc0100scn[0].layer[1].scr_x	=16;
-   tc0100scn[0].layer[1].scr_y	=16;
-
-   tc0100scn[0].RAM     = RAM_VIDEO;
-   tc0100scn[0].GFX_FG0 = NULL;
-   init_tc0100scn(0);
+    setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,NULL);
 
    // Init tc0002obj emulation
    // ------------------------
@@ -254,6 +277,7 @@ static void load_asuka(void)
    AddReadWord(-1, -1,NULL, NULL);
 
    AddWriteByte(0x100000, 0x103FFF, NULL, RAM+0x000000);		// 68000 RAM
+   AddWriteBW(0x3A0000, 0x3A0001, NULL, RAM+0x020010);		// sprite ctrl
    AddWriteByte(0xD00000, 0xD007FF, NULL, RAM_OBJECT);			// OBJECT RAM
    AddWriteByte(0xC00000, 0xC0FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteByte(0x3E0000, 0x3E0003, tc0140syt_write_main_68k, NULL);	// SOUND
@@ -283,7 +307,7 @@ static void execute_asuka(void)
    Taito2151_Frame();			// Z80 and YM2151
 }
 
-static void DrawAsuka(void)
+void DrawAsuka(void)
 {
    ClearPaletteMap();
 
@@ -305,7 +329,7 @@ static void DrawAsuka(void)
    // Init tc0002obj emulation
    // ------------------------
 
-   tc0002obj.ctrl	= 0x0000;
+   tc0002obj.ctrl = ReadWord(&RAM[0x20010]);
 
    // BG0
    // ---
@@ -322,6 +346,13 @@ static void DrawAsuka(void)
    else{
       render_tc0002obj_mapped();
       render_tc0100scn_layer_mapped(0,1,1);
+   }
+
+   if (GFX_FG0) {
+       // FG0
+       // ---
+
+       render_tc0100scn_layer_mapped(0,2,1);
    }
 }
 

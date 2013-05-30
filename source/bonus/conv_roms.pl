@@ -22,6 +22,7 @@ my %raine_regions =
 	'"gfx"' => "REGION_GFX1",
 	'"audio"' => "REGION_ROM2",
 	'"qsound"' => "REGION_SMP1",
+	'"ymsnd"' => "REGION_SMP1",
 	'"audiocpu"' => "REGION_ROM2",
 	'"sprites"' => "REGION_SPRITES",
 	'"layer0"' => "REGION_GFX1",

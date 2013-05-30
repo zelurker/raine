@@ -1,4 +1,4 @@
-#define DRV_DEF_SOUND taito_ym2610_sound
+#define DRV_DEF_SOUND sound_mcatadv
 /******************************************************************************/
 /*									      */
 /*	       BONZE ADVENTURE/JIGOKU (C) 1988 TAITO CORPORATION	      */
@@ -11,6 +11,9 @@
 #include "tc002obj.h"
 #include "sasound.h"            // sample support routines
 #include "taitosnd.h"
+
+// taito_ym2610_sound uses 2 sound regions, we have only 1 here, like mcatadv !
+extern struct SOUND_INFO sound_mcatadv[];
 
 /*******************
    BONZE ADVENTURE
@@ -108,7 +111,6 @@ static struct DSW_INFO dsw_bonzeadv[] =
    { 0,        0,    NULL,	},
 };
 
-
 static struct ROMSW_DATA romsw_data_bonze_adventure_0[] =
 {
    { "Taito Japan (Japanese)", 0x00 },
@@ -172,10 +174,8 @@ static struct ROMSW_INFO jigoku_meguri_romsw[] =
 };
 */
 
-static int init;
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
-static UINT8 *GFX_BG0_SOLID,*GFX_SPR,*GFX_SPR_SOLID;
 
 static UINT8 *RAM_OBJECT;
 
@@ -544,10 +544,10 @@ static void CChipWriteW(UINT32 address, int data)
    CChipWriteB(address+1,data&0xFF);
 }
 
+extern void setup_asuka_layers(UINT8 *RAM_VIDEO, UINT8 *RAM_SCROLL, UINT8 *GFX_FG0); // asuka.c
+
 static void load_bonzeadv()
 {
-   init = 0;
-
    RAMSize=0x54000;
 
    if(!(RAM=AllocateMem(RAMSize))) return;
@@ -616,46 +616,9 @@ static void load_bonzeadv()
    tc0002obj.tile_mask	= 0x0FFF;
    tc0002obj.ofs_x	= 0;
    tc0002obj.ofs_y	= -16;
+   tc0002obj.MASK = NULL;
 
-   // Init tc0100scn emulation
-   // ------------------------
-
-   tc0100scn[0].layer[0].RAM	= RAM_VIDEO+0x0000;
-   tc0100scn[0].layer[0].SCR	= RAM_SCROLL+0;
-   tc0100scn[0].layer[0].type	= 0;
-   tc0100scn[0].layer[0].bmp_x	= 32;
-   tc0100scn[0].layer[0].bmp_y	= 32;
-   tc0100scn[0].layer[0].bmp_w	= 320;
-   tc0100scn[0].layer[0].bmp_h	= 224;
-   tc0100scn[0].layer[0].tile_mask= 0x3FFF;
-   tc0100scn[0].layer[0].scr_x	= 16;
-   tc0100scn[0].layer[0].scr_y	= 16;
-
-   tc0100scn[0].layer[1].RAM	= RAM_VIDEO+0x8000;
-   tc0100scn[0].layer[1].SCR	= RAM_SCROLL+2;
-   tc0100scn[0].layer[1].type	= 0;
-   tc0100scn[0].layer[1].bmp_x	= 32;
-   tc0100scn[0].layer[1].bmp_y	= 32;
-   tc0100scn[0].layer[1].bmp_w	= 320;
-   tc0100scn[0].layer[1].bmp_h	= 224;
-   tc0100scn[0].layer[1].tile_mask= 0x3FFF;
-   tc0100scn[0].layer[1].scr_x	= 16;
-   tc0100scn[0].layer[1].scr_y	= 16;
-
-   tc0100scn[0].layer[2].RAM	= RAM_VIDEO+0x4000;
-   tc0100scn[0].layer[2].GFX	= GFX_FG0;
-   tc0100scn[0].layer[2].SCR	= RAM_SCROLL+4;
-   tc0100scn[0].layer[2].type	= 1;
-   tc0100scn[0].layer[2].bmp_x	= 32;
-   tc0100scn[0].layer[2].bmp_y	= 32;
-   tc0100scn[0].layer[2].bmp_w	= 320;
-   tc0100scn[0].layer[2].bmp_h	= 224;
-   tc0100scn[0].layer[2].scr_x	= 16;
-   tc0100scn[0].layer[2].scr_y	= 16;
-
-   tc0100scn[0].RAM	= RAM_VIDEO;
-   tc0100scn[0].GFX_FG0 = GFX_FG0;
-   init_tc0100scn(0);
+   setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,GFX_FG0);
    tc0100scn_0_copy_gfx_fg0(ROM+0x011A92, 0x1000);
 
 /*
@@ -696,7 +659,7 @@ static void load_bonzeadv()
    AddWriteByte(0x10C000, 0x10FFFF, NULL, RAM+0x000000);		// MAIN RAM
    AddWriteByte(0xC00000, 0xC0FFFF, NULL, RAM+0x004000);		// SCREEN RAM
    AddWriteByte(0xD00000, 0xD01FFF, NULL, RAM_OBJECT);			// OBJECT RAM
-   AddWriteByte(0x3A0000, 0x3A0001, NULL, RAM+0x020010);		// ???
+   AddWriteBW(0x3A0000, 0x3A0001, NULL, RAM+0x020010);		// ???
    AddWriteByte(0x3E0000, 0x3E0003, tc0140syt_write_main_68k, NULL);	// SOUND
    AddWriteByte(0x800000, 0x800FFF, CChipWriteB, NULL); 		// C-CHIP
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
@@ -722,62 +685,12 @@ static void execute_bonzeadv(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-static void DrawBonzeAdv(void)
-{
-   ClearPaletteMap();
-   if (!init) {
-       init = 1;
-       GFX_BG0_SOLID = gfx_solid[0];
-
-       GFX_SPR_SOLID = gfx_solid[1];
-       GFX_SPR	= gfx[1];
-       tc0002obj.GFX	= GFX_SPR;
-       tc0002obj.MASK	= GFX_SPR_SOLID;
-       tc0100scn[0].layer[0].GFX	= GFX;
-       tc0100scn[0].layer[0].MASK	= GFX_BG0_SOLID;
-       tc0100scn[0].layer[1].GFX	= GFX;
-       tc0100scn[0].layer[1].MASK	= GFX_BG0_SOLID;
-   }
-
-   // Init tc0100scn emulation
-   // ------------------------
-
-   tc0100scn_layer_count = 0;
-   tc0100scn[0].ctrl = ReadWord(RAM_SCROLL+12);
-
-   // Init tc0002obj emulation
-   // ------------------------
-
-   tc0002obj.ctrl = ReadWord(&RAM[0x20010]);
-
-   // BG0
-   // ---
-
-   render_tc0100scn_layer_mapped(0,0,0);
-
-   // BG1+OBJECT
-   // ----------
-
-   if((tc0002obj.ctrl & 0x2000)==0){
-      render_tc0100scn_layer_mapped(0,1,1);
-      render_tc0002obj_mapped();
-   }
-   else{
-      render_tc0002obj_mapped();
-      render_tc0100scn_layer_mapped(0,1,1);
-   }
-
-   // FG0
-   // ---
-
-   render_tc0100scn_layer_mapped(0,2,1);
-}
-
 extern struct GFX_LIST asuka_gfx[]; // asuka.c
+extern void DrawAsuka();
 
 static struct VIDEO_INFO video_bonzeadv =
 {
-   DrawBonzeAdv,
+   DrawAsuka,
    320,
    224,
    32,

@@ -312,7 +312,7 @@ static struct YM2610interface mcatadv_ym2610_interface =
 	{ YM3012_VOL(220,MIXER_PAN_LEFT,220,MIXER_PAN_RIGHT) }
 };
 
-static struct SOUND_INFO sound_mcatadv[] =
+struct SOUND_INFO sound_mcatadv[] =
   {
     { SOUND_YM2610, &mcatadv_ym2610_interface },
     { 0,             NULL,               },
