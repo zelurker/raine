@@ -18,15 +18,17 @@
 
 static struct ROM_INFO rom_bonzeadv[] =
 {
-   {       "b41-01.15", 0x00080000, 0x5d072fa4, 0, 0, 0, },
-   {       "b41-02.7", 0x00080000, 0x29f205d9, 0, 0, 0, },
-   {       "b41-03.1", 0x00080000, 0x736d35d0, 0, 0, 0, },
-   {       "b41-04.48", 0x00080000, 0xc668638f, 0, 0, 0, },
-   {     "b41-09-1.17", 0x00010000, 0xaf821fbc, 0, 0, 0, },
-   {       "b41-10.16", 0x00010000, 0x4ca94d77, 0, 0, 0, },
-   {     "b41-11-1.26", 0x00010000, 0x823fff00, 0, 0, 0, },
-   {       "b41-15.25", 0x00010000, 0xaed7a0d0, 0, 0, 0, },
-   {       "b41-13.20", 0x00010000, 0x9e464254, 0, 0, 0, },
+  { "b41-09-1.17", 0x10000, 0xaf821fbc, REGION_CPU1, 0x00000, LOAD_8_16 },
+  { "b41-11-1.26", 0x10000, 0x823fff00, REGION_CPU1, 0x00001, LOAD_8_16 },
+  { "b41-10.16", 0x10000, 0x4ca94d77, REGION_CPU1, 0x20000, LOAD_8_16 },
+  { "b41-15.25", 0x10000, 0xaed7a0d0, REGION_CPU1, 0x20001, LOAD_8_16 },
+  // Level data :
+  { "b41-01.15", 0x80000, 0x5d072fa4, REGION_CPU1, 0x40000, LOAD_NORMAL },
+
+  { "b41-03.1", 0x80000, 0x736d35d0, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b41-02.7", 0x80000, 0x29f205d9, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "b41-13.20", 0x10000, 0x9e464254, REGION_ROM2, 0, LOAD_NORMAL },
+  { "b41-04.48", 0x80000, 0xc668638f, REGION_SMP1, 0x00000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -106,7 +108,7 @@ static struct DSW_INFO dsw_bonzeadv[] =
    { 0,        0,    NULL,	},
 };
 
-/*
+
 static struct ROMSW_DATA romsw_data_bonze_adventure_0[] =
 {
    { "Taito Japan (Japanese)", 0x00 },
@@ -115,31 +117,24 @@ static struct ROMSW_DATA romsw_data_bonze_adventure_0[] =
    { NULL,		       0    },
 };
 
-static struct ROMSW_INFO bonze_adventure_romsw[] =
+static struct ROMSW_INFO romsw_bonzeadv[] =
 {
    { 0x03FFFF, 0x02, romsw_data_bonze_adventure_0 },
    { 0,        0,    NULL },
 };
-*/
-
-
 
 /*****************
    JIGOKU MEGURI
  *****************/
 
-
 static struct ROM_INFO rom_jigkmgri[] =
 {
-   {       "b41-01.15", 0x00080000, 0x5d072fa4, 0, 0, 0, },
-   {       "b41-02.7", 0x00080000, 0x29f205d9, 0, 0, 0, },
-   {       "b41-03.1", 0x00080000, 0x736d35d0, 0, 0, 0, },
-   {       "b41-04.48", 0x00080000, 0xc668638f, 0, 0, 0, },
-   {     "b41-09-1.17", 0x00010000, 0xaf821fbc, 0, 0, 0, },
-   {       "b41-10.16", 0x00010000, 0x4ca94d77, 0, 0, 0, },
-   {     "b41-11-1.26", 0x00010000, 0x823fff00, 0, 0, 0, },
-   {       "b41-12.25", 0x00010000, 0x40d9c1fc, 0, 0, 0, },
-   {       "b41-13.20", 0x00010000, 0x9e464254, 0, 0, 0, },
+  { "b41-09-1.17", 0x10000, 0xaf821fbc, REGION_CPU1, 0x00000, LOAD_8_16 },
+  { "b41-11-1.26", 0x10000, 0x823fff00, REGION_CPU1, 0x00001, LOAD_8_16 },
+  { "b41-10.16", 0x10000, 0x4ca94d77, REGION_CPU1, 0x20000, LOAD_8_16 },
+  { "b41-12.25", 0x10000, 0x40d9c1fc, REGION_CPU1, 0x20001, LOAD_8_16 },
+  // level data
+  { "b41-01.15", 0x80000, 0x5d072fa4, REGION_CPU1, 0x40000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -177,16 +172,12 @@ static struct ROMSW_INFO jigoku_meguri_romsw[] =
 };
 */
 
-
+static int init;
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
-static UINT8 *GFX_BG0_SOLID;
+static UINT8 *GFX_BG0_SOLID,*GFX_SPR,*GFX_SPR_SOLID;
 
 static UINT8 *RAM_OBJECT;
-static UINT8 *GFX_SPR;
-static UINT8 *GFX_SPR_SOLID;
-
-static UINT8 *GFX_BG0_SOLID;
 
 static UINT8 *CBANK[8];
 static int CChip_Bank=0;
@@ -555,15 +546,12 @@ static void CChipWriteW(UINT32 address, int data)
 
 static void load_bonzeadv()
 {
-   int ta,tb;
+   init = 0;
 
    RAMSize=0x54000;
 
-   if(!(ROM=AllocateMem(0xC0000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
-   if(!(GFX=AllocateMem(0x204000))) return;
-
-   GFX_SPR	= GFX+0x100000;
+   if(!(GFX_FG0=AllocateMem(0x4000))) return;
 
    CBANK[0]=RAM+0x40000;	// C-CHIP BANKS ($800000-$800FFF)
    CBANK[1]=RAM+0x40800;
@@ -574,39 +562,10 @@ static void load_bonzeadv()
    CBANK[6]=RAM+0x43000;
    CBANK[7]=RAM+0x43800;
 
-   if(!load_rom_index(2, ROM, 0x80000)) return; 	// 8x8 TILES
-   tb=0;
-   for(ta=0;ta<0x80000;ta++){
-      GFX[tb++]=ROM[ta^1]>>4;
-      GFX[tb++]=ROM[ta^1]&15;
-   }
-   if(!load_rom_index(1, ROM, 0x80000)) return; 	// 16x16 SPRITES
-   for(ta=0;ta<0x80000;ta++){
-      GFX[tb++]=ROM[ta^1]>>4;
-      GFX[tb++]=ROM[ta^1]&15;
-   }
-
-   if(!load_rom_index(4, RAM+0x00000, 0x10000)) return; // 68000 ROM
-   if(!load_rom_index(5, RAM+0x10000, 0x10000)) return;
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom_index(6, RAM+0x00000, 0x10000)) return;
-   if(!load_rom_index(7, RAM+0x10000, 0x10000)) return;
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
-
-   if(!load_rom_index(0, ROM+0x40000, 0x80000)) return; // LEVEL DATA
-
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x44000;
-   if(!load_rom_index(8, Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
-
-   if(!(PCMROM=AllocateMem(0x80000))) return;
-   if(!load_rom_index(3, PCMROM, 0x80000)) return;	// ADPCM A rom
-   YM2610SetBuffers(PCMROM, PCMROM, 0x080000, 0x080000);
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    AddTaitoYM2610(0x02EE, 0x028D, 0x10000);
 
@@ -615,11 +574,6 @@ static void load_bonzeadv()
    RAM_VIDEO  = RAM+0x04000;
    RAM_SCROLL = RAM+0x20060;
    RAM_OBJECT = RAM+0x14000;
-   GFX_FG0    = GFX+0x200000;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x4000);
-
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x1000);
 
    // Fix SOUND ERROR
 
@@ -655,8 +609,6 @@ static void load_bonzeadv()
    // ------------------------
 
    tc0002obj.RAM	= RAM_OBJECT;
-   tc0002obj.GFX	= GFX_SPR;
-   tc0002obj.MASK	= GFX_SPR_SOLID;
    tc0002obj.bmp_x	= 32;
    tc0002obj.bmp_y	= 32;
    tc0002obj.bmp_w	= 320;
@@ -669,8 +621,6 @@ static void load_bonzeadv()
    // ------------------------
 
    tc0100scn[0].layer[0].RAM	= RAM_VIDEO+0x0000;
-   tc0100scn[0].layer[0].GFX	= GFX;
-   tc0100scn[0].layer[0].MASK	= GFX_BG0_SOLID;
    tc0100scn[0].layer[0].SCR	= RAM_SCROLL+0;
    tc0100scn[0].layer[0].type	= 0;
    tc0100scn[0].layer[0].bmp_x	= 32;
@@ -682,8 +632,6 @@ static void load_bonzeadv()
    tc0100scn[0].layer[0].scr_y	= 16;
 
    tc0100scn[0].layer[1].RAM	= RAM_VIDEO+0x8000;
-   tc0100scn[0].layer[1].GFX	= GFX;
-   tc0100scn[0].layer[1].MASK	= GFX_BG0_SOLID;
    tc0100scn[0].layer[1].SCR	= RAM_SCROLL+2;
    tc0100scn[0].layer[1].type	= 0;
    tc0100scn[0].layer[1].bmp_x	= 32;
@@ -707,7 +655,6 @@ static void load_bonzeadv()
 
    tc0100scn[0].RAM	= RAM_VIDEO;
    tc0100scn[0].GFX_FG0 = GFX_FG0;
-
    init_tc0100scn(0);
    tc0100scn_0_copy_gfx_fg0(ROM+0x011A92, 0x1000);
 
@@ -716,6 +663,8 @@ static void load_bonzeadv()
  */
 
    ByteSwap(ROM,0x40000);
+   // ByteSwap(ROM,0x11a92);
+   // ByteSwap(ROM+0x12a92,0x40000-0x12a92);
    ByteSwap(RAM,0x40000);
 
    AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);		// 68000 ROM
@@ -776,6 +725,19 @@ static void execute_bonzeadv(void)
 static void DrawBonzeAdv(void)
 {
    ClearPaletteMap();
+   if (!init) {
+       init = 1;
+       GFX_BG0_SOLID = gfx_solid[0];
+
+       GFX_SPR_SOLID = gfx_solid[1];
+       GFX_SPR	= gfx[1];
+       tc0002obj.GFX	= GFX_SPR;
+       tc0002obj.MASK	= GFX_SPR_SOLID;
+       tc0100scn[0].layer[0].GFX	= GFX;
+       tc0100scn[0].layer[0].MASK	= GFX_BG0_SOLID;
+       tc0100scn[0].layer[1].GFX	= GFX;
+       tc0100scn[0].layer[1].MASK	= GFX_BG0_SOLID;
+   }
 
    // Init tc0100scn emulation
    // ------------------------
@@ -811,6 +773,7 @@ static void DrawBonzeAdv(void)
    render_tc0100scn_layer_mapped(0,2,1);
 }
 
+extern struct GFX_LIST asuka_gfx[]; // asuka.c
 
 static struct VIDEO_INFO video_bonzeadv =
 {
@@ -818,7 +781,8 @@ static struct VIDEO_INFO video_bonzeadv =
    320,
    224,
    32,
-   VIDEO_ROTATE_NORMAL,
+   VIDEO_ROTATE_NORMAL|VIDEO_ROTATABLE,
+   asuka_gfx
 };
 static struct DIR_INFO dir_jigkmgri[] =
 {
@@ -840,8 +804,9 @@ static struct DIR_INFO dir_bonzeadv[] =
    { "bonzeadv", },
    { NULL, },
 };
-GAME( bonzeadv, "Bonze's Adventure", TAITO, 1988, GAME_PLATFORM,
+GME( bonzeadv, "Bonze's Adventure", TAITO, 1988, GAME_PLATFORM,
 	.long_name_jpn = "’n–‚ÿ‚½‚è American",
+	.romsw = romsw_bonzeadv,
 	.board = "B41",
 );
 

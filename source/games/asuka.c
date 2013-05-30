@@ -132,14 +132,12 @@ static GfxLayout tilelayout =
 	128*8
 };
 
-static struct GFX_LIST gfxdecodeinfo[] =
+struct GFX_LIST asuka_gfx[] =
 {
-	{ REGION_GFX2, &tilelayout }, // 256 color banks
 	{ REGION_GFX1, &charlayout }, // 256 color banks
+	{ REGION_GFX2, &tilelayout }, // 256 color banks
 	{ 0, NULL } /* end of array */
 };
-
-
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -290,12 +288,12 @@ static void DrawAsuka(void)
    ClearPaletteMap();
 
    if (!tc0002obj.MASK) {
-     tc0100scn[0].layer[0].MASK	= gfx_solid[1];
-     tc0100scn[0].layer[1].MASK	= gfx_solid[1];
-     tc0100scn[0].layer[0].GFX	= gfx[1];
-     tc0100scn[0].layer[1].GFX	= gfx[1];
-     tc0002obj.MASK	= gfx_solid[0];
-     tc0002obj.GFX	= gfx[0];
+     tc0100scn[0].layer[0].MASK	= gfx_solid[0];
+     tc0100scn[0].layer[1].MASK	= gfx_solid[0];
+     tc0100scn[0].layer[0].GFX	= gfx[0];
+     tc0100scn[0].layer[1].GFX	= gfx[0];
+     tc0002obj.MASK	= gfx_solid[1];
+     tc0002obj.GFX	= gfx[1];
    }
 
    // Init tc0100scn emulation
@@ -337,7 +335,7 @@ static struct VIDEO_INFO video_asuka =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
-   gfxdecodeinfo
+   asuka_gfx
 };
 static struct DIR_INFO dir_asuka[] =
 {
