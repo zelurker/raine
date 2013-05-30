@@ -1,3 +1,3 @@
 
-int do_video_info(int );
+int do_video(int );
 

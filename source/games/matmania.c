@@ -32,7 +32,7 @@ MAIN BOARD:
 #include "m6502hlp.h"
 #include "dac.h"
 
-  static struct ROM_INFO matmania_roms[] =
+static struct ROM_INFO rom_matmania[] =
     {
       { "k0-03", 0x4000, 0x314ab8a4, REGION_ROM1, 0x0000, LOAD_NORMAL },
       { "k1-03", 0x4000, 0x3b3c3f08, REGION_ROM1, 0x4000, LOAD_NORMAL },
@@ -73,7 +73,7 @@ MAIN BOARD:
       { NULL, 0, 0, 0, 0, 0 }
     };
 
-static struct ROM_INFO excthour_roms[] =
+static struct ROM_INFO rom_excthour[] =
   {
     { "e29", 0x4000, 0xc453e855, REGION_ROM1, 0x00000, LOAD_NORMAL },
     { "e28", 0x4000, 0x17b63708, REGION_ROM1, 0x04000, LOAD_NORMAL },
@@ -114,21 +114,7 @@ static struct ROM_INFO excthour_roms[] =
     { NULL, 0, 0, 0, 0, 0 }
   };
 
-static struct DIR_INFO matmania_dirs[] =
-  {
-    { "matmania" },
-    { NULL }
-  };
-
-static struct DIR_INFO excthour_dirs[] =
-  {
-    { "excthour" },
-    { ROMOF("matmania") },
-    { CLONEOF("matmania"), },
-    { NULL }
-  };
-
-static struct INPUT_INFO matmania_inputs[] =
+static struct INPUT_INFO input_matmania[] =
   {
     INP0( P1_RIGHT, 0x00, 0x01 ),
     INP0( P1_LEFT, 0x00, 0x02 ),
@@ -248,7 +234,7 @@ static struct DSW_DATA dsw_data_matmania_3[] =
     { NULL, 0}
   };
 
-static struct DSW_INFO matmania_dsw[] =
+static struct DSW_INFO dsw_matmania[] =
   {
     { 0x20, 0xff, dsw_data_matmania_2 },
     { 0x30, 0x5f, dsw_data_matmania_3 },
@@ -495,7 +481,7 @@ static struct DACinterface dac_interface =
 	{ 102 | (0x80<<8) }
 };
 
-static struct SOUND_INFO matmania_sound[] =
+static struct SOUND_INFO sound_matmania[] =
   {
     { SOUND_AY8910, &ay8910_interface },
     { SOUND_DAC, &dac_interface },
@@ -612,7 +598,7 @@ static void draw_matmania() {
 
 #define SLICES 15 // speed of the music, 15 is a guess, but it sounds good
 
-static void matmania_frame() {
+static void execute_matmania() {
   int slice;
   stopped_6502 = 0;
   for (slice=0; slice<SLICES; slice++) {
@@ -628,7 +614,7 @@ static void matmania_frame() {
   input_buffer[0x30] ^= 0x80;
 }
 
-static struct VIDEO_INFO matmania_video =
+static struct VIDEO_INFO video_matmania =
 {
   &draw_matmania,
   256,
@@ -638,46 +624,6 @@ static struct VIDEO_INFO matmania_video =
   VIDEO_ROTATABLE,
   matmania_gfxdecodeinfo,
 };
+GMEI( matmania, "Mat Mania", TECHNOS, 1985, GAME_SPORTS);
+CLNEI( excthour, matmania, "Exciting Hour", TECHNOS, 1985, GAME_SPORTS);
 
-
-GAME( excthour,
-   excthour_dirs,
-   excthour_roms,
-   matmania_inputs,
-   matmania_dsw,
-   NULL,
-
-   load_matmania,
-      NULL,
-   &matmania_video,
-   matmania_frame,
-   "excthour",
-   "Exciting Hour",
-   NULL,
-   COMPANY_ID_TECHNOS,
-      NULL,
-      1985,
-      matmania_sound,
-      GAME_SPORTS
-);
-
-GAME( matmania,
-   matmania_dirs,
-   matmania_roms,
-   matmania_inputs,
-   matmania_dsw,
-   NULL,
-
-   load_matmania,
-      NULL,
-   &matmania_video,
-   matmania_frame,
-   "matmania",
-   "Mat Mania",
-   NULL,
-   COMPANY_ID_TECHNOS,
-      NULL,
-      1985,
-      matmania_sound,
-      GAME_SPORTS
-);

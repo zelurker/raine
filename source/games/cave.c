@@ -1,3 +1,7 @@
+#define DRV_DEF_DSW NULL
+#define DRV_DEF_SOUND sound_esprade
+#define DRV_DEF_EXEC execute_esprade
+#define DRV_DEF_INPUT input_esprade
 /******************************************************************************/
 /*                                                                            */
 /*                        CAVE / ATLUS GAMES (C) 1998                         */
@@ -34,7 +38,6 @@
 */
 
 #include "gameinc.h"
-#include "cave.h"
 #include "cat93c46.h"
 #include "mame/handlers.h"
 #include "mame/eeprom.h"
@@ -110,7 +113,7 @@ static UINT8 *RAM_BG2_CTRL;
 static UINT32 xcorrection; // x correction for layers alignement
 
 int get_layer_size(int n) {
-  const VIDEO_INFO *video_info = current_game->video_info;
+  const VIDEO_INFO *video_info = current_game->video;
   const GFX_LIST *gfx_list = video_info->gfx_list;
 
   while (n--) gfx_list++;
@@ -196,20 +199,6 @@ struct
   data8_t data[SOUND_BUFLEN];
 } soundbuf;
 
-struct EEPROM_interface eeprom_interface_93C46 =
-{
-	6,				/* address bits	6 */
-	16,				/* data bits	16 */
-	"*110",			/* read			1 10 aaaaaa */
-	"*101",			/* write		1 01 aaaaaa dddddddddddddddd */
-	"*111",			/* erase		1 11 aaaaaa */
-	"*10000xxxx",	/* lock			1 00 00xxxx */
-	"*10011xxxx",	/* unlock		1 00 11xxxx */
-	1,
-/*	"*10001xxxx"	// write all	1 00 01xxxx dddddddddddddddd */
-/*	"*10010xxxx"	// erase all	1 00 10xxxx */
-};
-
 static UINT32 cave_region_pos;
 static UINT32 cave_region_byte;
 
@@ -229,9 +218,9 @@ static void setup_cave_game() {
   for (i=0; i<3; i++) {
     layer_bitmap[i] = layer_pbitmap[i] = NULL;
   }
-  limitx = current_game->video_info->screen_x + current_game->video_info->border_size+16;
+  limitx = current_game->video->screen_x + current_game->video->border_size+16;
   // +16 because compared to zoomed sprites which have a size of 16 by default
-  gamex = current_game->video_info->screen_x;
+  gamex = current_game->video->screen_x;
   memset(RAM+0x00000,0x00,0x80000);
   AddMemFetch(-1, -1, NULL);
 
@@ -251,13 +240,13 @@ static void setup_cave_game() {
   set_reset_function(install_region);
 }
 
-void sail_soundcmd_w(UINT32 offset,UINT16 data)
+static void sail_soundcmd_w(UINT32 offset,UINT16 data)
 {
   latch = data;
   cpu_int_nmi(CPU_Z80_0);
 }
 
-void sail_soundcmd_wb(UINT32 offset, UINT8 data)
+static void sail_soundcmd_wb(UINT32 offset, UINT8 data)
 {
   if (offset & 1)
     latch = (latch & 0xff) | (data << 8);
@@ -349,159 +338,50 @@ static struct OKIM6295interface okim6295_intf_16kHz_16kHz =
   { 250, 250 }
 };
 
-struct SOUND_INFO donpachi_sound[] =
+static struct SOUND_INFO sound_donpachk[] =
 {
    { SOUND_M6295,  &donpachi_okim6295_interface,  },
    { 0,             NULL,               },
 };
 
-struct SOUND_INFO sailormn_sound[] =
+static struct SOUND_INFO sound_agallet[] =
 {
   { SOUND_YM2151J,	&ym2151_intf_4MHz },
   { SOUND_M6295,	&okim6295_intf_16kHz_16kHz },
    { 0,             NULL,               },
 };
 
-struct SOUND_INFO cave_sound[] =
+static struct SOUND_INFO sound_esprade[] =
 {
    { SOUND_YMZ280B,  &ymz280b_intf,  },
    { 0,             NULL,               },
 };
 
-struct SOUND_INFO hotdogst_sound[] =
+static struct SOUND_INFO sound_hotdogst[] =
 {
    { SOUND_YM2203,  &hotdogst_ym2203_interface,  },
    { SOUND_M6295, &hotdogst_okim6295_interface,},
    { 0,             NULL,               },
 };
 
-static struct DIR_INFO esprade_dirs[] =
-{
-   { "esprade", },
-   { "espradea", },
-   { NULL, },
-};
 
-static struct DIR_INFO espradej_dirs[] =
-{
-   { "espradej", },
-   { ROMOF("esprade") },
-   { CLONEOF("esprade") },
-   { NULL, },
-};
 
-static struct DIR_INFO espradeo_dirs[] =
-{
-   { "espradeo", },
-   { ROMOF("esprade") },
-   { CLONEOF("esprade") },
-   { NULL, },
-};
 
-static struct DIR_INFO hotdogst_dirs[] =
-{
-   { "hotdogst", },
-   { "HotDogStorm" },
-   { NULL, },
-};
 
-static struct DIR_INFO mazinger_dirs[] =
-{
-   { "mazinger", },
-   { "MazingerZ" },
-   { NULL, },
-};
 
-static struct DIR_INFO sailormn_dirs[] =
-{
-  { "sailormn", },
-  { "SailorMoon", },
-  { NULL, },
-};
 
-static struct DIR_INFO sailormo_dirs[] =
-{
-  { "sailormo", },
-  { ROMOF("sailormn") },
-  { CLONEOF("sailormn") },
-  { NULL, },
-};
 
-static struct DIR_INFO agallet_dirs[] =
-{
-  { "agallet", },
-  { "air_gallet" },
-  { NULL, },
-};
 
-static struct DIR_INFO donpachi_dirs[] =
-{
-   { "donpachi", },
-   { NULL, },
-};
 
-static struct DIR_INFO donpachk_dirs[] =
-{
-   { "donpachk", },
-   { "DonPachK", },
-   { ROMOF( "donpachi" ), },
-   { CLONEOF( "donpachi" ) },
-   { NULL, },
-};
 
-static struct DIR_INFO donpachj_dirs[] =
-{
-   { "donpachj", },
-   { ROMOF( "donpachi" ), },
-   { CLONEOF( "donpachi" ) },
-   { NULL, },
-};
 
-static struct DIR_INFO guwange_dirs[] =
-{
-   { "guwange", },
-   { NULL, },
-};
 
-static struct DIR_INFO ddonpach_dirs[] =
-{
-  { "ddonpach", },
-  { NULL, },
-};
 
-static struct DIR_INFO ddonpchj_dirs[] =
-{
-  { "ddonpchj", },
-  { ROMOF( "ddonpach" ), },
-  { CLONEOF( "ddonpach" ) },
-  { NULL, },
-};
 
-static struct DIR_INFO uo_poko_dirs[] =
-{
-   { "uo_poko", },
-   { "uopoko", },
-   { "uopokoj", },
-   { NULL, },
-};
 
-static struct DIR_INFO feveron_dirs[] =
-{
-   { "feveron", },
-   { "dfeveron", },
-   { "dangun_feveron", },
-   { NULL, },
-};
 
-static struct DIR_INFO feversos_dirs[] =
-{
-   { "feversos", },
-   { ROMOF("dfeveron") },
-   { CLONEOF("dfeveron") },
-   { NULL, },
-};
 
-static struct ROM_INFO esprade_roms[] =
+static struct ROM_INFO rom_esprade[] =
 {
   LOAD8_16( REGION_ROM1, 0,  0x00080000,
                  "u42_i.bin",  0x3b510a73,      "u41_i.bin",  0x97c1b649),
@@ -523,7 +403,7 @@ static struct ROM_INFO esprade_roms[] =
    {           NULL,          0,          0, },
 };
 
-static struct ROM_INFO espradeo_roms[] =
+static struct ROM_INFO rom_espradeo[] =
 {
   LOAD8_16( REGION_ROM1, 0,  0x00080000,
                  "u42.bin",  0x0718c7e5,      "u41.bin",  0xdef30539),
@@ -535,7 +415,7 @@ static struct ROM_INFO espradeo_roms[] =
    {           NULL,          0,          0, },
 };
 
-static struct ROM_INFO espradej_roms[] =
+static struct ROM_INFO rom_espradej[] =
 {
   LOAD8_16( REGION_ROM1, 0,  0x00080000,
                  "u42_ver2.bin",  0x75d03c42,      "u41_ver2.bin",  0x734b3ef0),
@@ -547,7 +427,7 @@ static struct ROM_INFO espradej_roms[] =
    {           NULL,          0,          0, },
 };
 
-static struct ROM_INFO donpachi_roms[] =
+static struct ROM_INFO rom_donpachi[] =
 {
    {      "prgu.u29", 0x00080000, 0x89c36802,REGION_ROM1,0,LOAD_SWAP_16 },
 
@@ -568,14 +448,14 @@ static struct ROM_INFO donpachi_roms[] =
 };
 
 
-static struct ROM_INFO donpachj_roms[] =
+static struct ROM_INFO rom_donpachj[] =
 {
    {      "prg.u29", 0x00080000, 0x6be14af6,REGION_ROM1,0,LOAD_SWAP_16 },
    {      "u58.bin", 0x00040000, 0x285379ff,REGION_GFX3,0x000000,LOAD_NORMAL },
    {           NULL,          0,          0, },
 };
 
-static struct ROM_INFO donpachk_roms[] =
+static struct ROM_INFO rom_donpachk[] =
 {
    {      "prgk.u26", 0x00080000, 0xbbaf4c8b,REGION_ROM1,0,LOAD_SWAP_16 },
    {      "u58.bin", 0x00040000, 0x285379ff,REGION_GFX3,0x000000,LOAD_NORMAL },
@@ -584,7 +464,7 @@ static struct ROM_INFO donpachk_roms[] =
 
 #define REGION_SPRITES REGION_GFX4
 
-static struct ROM_INFO guwange_roms[] =
+static struct ROM_INFO rom_guwange[] =
 {
   LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
             "gu-u0127.bin",  0xf86b5293, "gu-u0129.bin",  0x6c0e3b93),
@@ -604,7 +484,7 @@ static struct ROM_INFO guwange_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO guwanges_roms[] = // clone of guwange
+static struct ROM_INFO rom_guwanges[] = // clone of guwange
 {
   LOAD8_16(  REGION_CPU1, 0x000000,  0x080000,
              "gu-u0127b.bin",  0x64667d2e,  "gu-u0129b.bin",  0xa99C6b6c),
@@ -619,7 +499,7 @@ static struct ROM_INFO guwanges_roms[] = // clone of guwange
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO ddonpach_roms[] =
+static struct ROM_INFO rom_ddonpach[] =
 {
   LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
                  "b1.u27",  0xb5cdc8d3,      "b2.u26",  0x6bbb063a),
@@ -639,7 +519,7 @@ static struct ROM_INFO ddonpach_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO ddonpchj_roms[] =
+static struct ROM_INFO rom_ddonpchj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
                  "u27.bin",  0x2432ff9b,      "u26.bin",  0x4f3a914a),
@@ -650,7 +530,7 @@ static struct ROM_INFO ddonpchj_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO hotdogst_roms[] =
+static struct ROM_INFO rom_hotdogst[] =
 {
   LOAD8_16( REGION_ROM1, 0,  0x00080000,
                   "mp3u29",  0x1f4e5479,       "mp4u28",  0x6f1c3c4b),
@@ -671,7 +551,7 @@ static struct ROM_INFO hotdogst_roms[] =
    {           NULL,          0,          0, },
 };
 
-static struct ROM_INFO mazinger_roms[] =
+static struct ROM_INFO rom_mazinger[] =
 {
   { "mzp-0.u24", 0x80000, 0x43a4279f , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "mzs.u21", 0x20000, 0xc5b4f7ed , REGION_ROM2, 0x000, LOAD_NORMAL },
@@ -686,7 +566,7 @@ static struct ROM_INFO mazinger_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO sailormn_roms[] =
+static struct ROM_INFO rom_sailormn[] =
 {
   { "bpsm945a.u45", 0x080000, 0x898c9515 , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "bpsm.u46", 0x200000, 0x32084e80 , REGION_ROM1, 0x200000, LOAD_SWAP_16 },
@@ -717,7 +597,7 @@ static struct ROM_INFO sailormn_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO sailormo_roms[] =
+static struct ROM_INFO rom_sailormo[] =
 {
   { "smprg.u45", 0x080000, 0x234f1152 , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "bpsm.u46", 0x200000, 0x32084e80 , REGION_ROM1, 0x200000, LOAD_SWAP_16 },
@@ -731,7 +611,7 @@ static struct ROM_INFO sailormo_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO agallet_roms[] =
+static struct ROM_INFO rom_agallet[] =
 {
   { "bp962a.u45", 0x080000, 0x24815046 , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "bp962a.u9", 0x80000, 0x06caddbe, REGION_ROM2, 0x4000, LOAD_NORMAL },
@@ -751,7 +631,7 @@ static struct ROM_INFO agallet_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO uo_poko_roms[] =
+static struct ROM_INFO rom_uopoko[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
                 "u26j.bin",  0xe7eec050,     "u25j.bin",  0x68cb6211),
@@ -761,7 +641,7 @@ static struct ROM_INFO uo_poko_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO dfeveron_roms[] =
+static struct ROM_INFO rom_dfeveron[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
                  "cv01-u34.bin",  0xbe87f19d,      "cv01-u33.bin",  0xe53a7db3),
@@ -776,7 +656,7 @@ static struct ROM_INFO dfeveron_roms[] =
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
-static struct ROM_INFO feversos_roms[] =
+static struct ROM_INFO rom_feversos[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
                  "rom2.bin",  0x24ef3ce6,      "rom1.bin",  0x64ff73fd),
@@ -786,7 +666,7 @@ static struct ROM_INFO feversos_roms[] =
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
-static const struct INPUT_INFO cave_68k_inputs[] =
+static const struct INPUT_INFO input_esprade[] =
 {
    INP0( COIN1, 0x000000, 0x01 ),
    INP0( COIN2, 0x000002, 0x01 ),
@@ -814,7 +694,7 @@ static const struct INPUT_INFO cave_68k_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO guwange_inputs[] =
+static struct INPUT_INFO input_guwange[] =
 {
    INP0( COIN1, 0x000003, 0x01 ),
    INP0( COIN2, 0x000003, 0x02 ),
@@ -1016,104 +896,14 @@ static struct GFX_LIST sailormn_gfx[] =
 	{ -1 }
 };
 
-static struct VIDEO_INFO cave_68k_video_r270 =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   cave_gfx,
-};
 
-static struct VIDEO_INFO esprade_video_r270 =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
-   esprade_gfx,
-};
 
-static struct VIDEO_INFO donpachi_video_r270 =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   donpachi_gfx,
-};
 
-static struct VIDEO_INFO hotdogst_video_r270 =
-{
-   draw_cave_68k,
-   384,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   cave_gfx,
-};
 
-static struct VIDEO_INFO mazinger_video =
-{
-   draw_cave_68k,
-   384,
-   240,
-   32,
-   VIDEO_ROTATE_90 |
-   VIDEO_ROTATABLE,
-   mazinger_gfx,
-};
 
-static struct VIDEO_INFO sailormn_video =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   sailormn_gfx,
-};
 
-static struct VIDEO_INFO agallet_video =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   sailormn_gfx,
-};
 
-static struct VIDEO_INFO ddonpach_video =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
-   ddonpach_gfx,
-};
 
-static struct VIDEO_INFO uopoko_video =
-{
-   draw_cave_68k,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
-   uopoko_gfx,
-};
 
 static void clear_cave_68k(void)
 {
@@ -1128,7 +918,7 @@ static void clear_cave_68k(void)
   save_eeprom();
 }
 
-void clear_mazinger(void)
+static void clear_mazinger(void)
 {
    save_eeprom();
 }
@@ -1160,7 +950,7 @@ static void cave_eeprom_w(UINT32 offset, UINT16 data)
 
 static int sailormn_tile_bank = 0;
 
-void sailormn_tilebank_w( int bank )
+static void sailormn_tilebank_w( int bank )
 {
 	if (sailormn_tile_bank != bank)
 	{
@@ -1193,7 +983,7 @@ static void guwange_eeprom_w(UINT32 offset, UINT16 data)
 }
 
 /* Handles writes to the YMZ280B */
-static WRITE16_HANDLER( cave_sound_w )
+static WRITE16_HANDLER( sound_esprade_w )
 {
   if (offset & 2)
     YMZ280B_data_0_w(offset, data & 0xff);
@@ -1227,7 +1017,7 @@ static UINT8 esp_input_rb(UINT32 offset)
   return val;
 }
 
-//AD16_HANDLER( guwange_inputs_r )
+//AD16_HANDLER( input_guwange_r )
 static UINT8 guwange_input_rb(UINT32 offset)
 {
   short val;
@@ -1330,7 +1120,7 @@ static UINT8 cave_default_eeprom_type7[48] =
    0x00,0x02,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0x00,0x00,0xff,0xff,0xff,
    0xff,0xff,0xff};
 
-void load_ddonpach(void)
+static void load_ddonpach(void)
 {
    romset = 1;
 
@@ -1375,7 +1165,7 @@ void load_ddonpach(void)
    AddRWBW(0x100000, 0x10FFFF, NULL, RAM+0x000000);   // 68000 RAM
 
    AddReadWord(0x300002,0x300003,YMZ280B_status_0_r,NULL);
-   AddWriteWord(0x300000, 0x300003, cave_sound_w,NULL);
+   AddWriteWord(0x300000, 0x300003, sound_esprade_w,NULL);
 
    AddRWBW(0x400000, 0x40FFFF, NULL, RAM+0x010000);   // OBJECT RAM
    AddRWBW(0x500000, 0x507FFF, NULL, RAM+0x020000);   // BG0 RAM
@@ -1459,7 +1249,7 @@ static WRITE16_HANDLER( nmk_oki6295_bankswitch_w )
     }
 }
 
-void load_donpachi(void)
+static void load_donpachk(void)
 {
   romset =1; // like ddonpach
   default_eeprom = cave_default_eeprom_type2;
@@ -1617,13 +1407,13 @@ static struct ROMSW_DATA romsw_data_sailormn[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO mazinger_romsw[] =
+static struct ROMSW_INFO romsw_mazinger[] =
 {
   { 0xaa0001, 0x31, romsw_data_mazinger },
   { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO sailormn_romsw[] =
+static struct ROMSW_INFO romsw_agallet[] =
 {
   { 0xaa0001, 0x02, romsw_data_sailormn },
   { 0,        0,    NULL },
@@ -1793,7 +1583,7 @@ static UINT8 soundflags_r(UINT32 offset) {
 
 /* Tiles are 6 bit, 4 bits stored in one rom, 2 bits in the other.
    Expand the 2 bit part into a 4 bit layout, so we can decode it */
-void sailormn_unpack_tiles( const int region )
+static void sailormn_unpack_tiles( const int region )
 {
   unsigned char *src = load_region[region] + (get_region_size(region)/4)*3 - 1;
   unsigned char *dst = load_region[region] + (get_region_size(region)/4)*4 - 2;
@@ -2056,7 +1846,7 @@ static void load_agallet() {
   // xcorrection = 0x12;
 }
 
-void load_hotdogst(void)
+static void load_hotdogst(void)
 {
   UINT8 *Z80RAM;
 
@@ -2164,7 +1954,7 @@ void load_hotdogst(void)
    adpcm_amplify = 2;
 }
 
-void load_esprade(void)
+static void load_esprade(void)
 {
   UINT32 hack_adr;
   romset = 0;
@@ -2215,7 +2005,7 @@ void load_esprade(void)
    AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);         // 68000 ROM
    AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);         // 68000 RAM
    AddReadWord(0x300002,0x300003,YMZ280B_status_0_r,NULL);
-   AddWriteWord(0x300000, 0x300003, cave_sound_w,NULL);
+   AddWriteWord(0x300000, 0x300003, sound_esprade_w,NULL);
 
    AddReadByte(0x400000, 0x40FFFF, NULL, RAM+0x010000);         // OBJECT RAM
    AddReadByte(0x500000, 0x507FFF, NULL, RAM+0x020000);         // BG0 RAM
@@ -2261,7 +2051,7 @@ void load_esprade(void)
    apply_hack(hack_adr,1);
 }
 
-void load_guwange(void)
+static void load_guwange(void)
 {
    // Guwange has exactly the same gfx handling as esprade...
    romset = 0;
@@ -2313,8 +2103,8 @@ void load_guwange(void)
    AddRWBW(0x600000, 0x607FFF, NULL, RAM+0x028000);         // BG1 RAM
    AddRWBW(0x700000, 0x707FFF, NULL, RAM+0x030000);         // BG2 RAM
    AddReadBW(0x800002, 0x800003, YMZ280B_status_0_r, NULL);      // ?
-   AddWriteWord(0x800000, 0x800003, cave_sound_w,NULL);
-   AddWriteByte(0x800000, 0x800003, cave_sound_w, NULL);      // ?
+   AddWriteWord(0x800000, 0x800003, sound_esprade_w,NULL);
+   AddWriteByte(0x800000, 0x800003, sound_esprade_w, NULL);      // ?
    AddRWBW(0x900000, 0x900007, NULL, RAM+0x048080);      // BG0 CTRL RAM
    AddRWBW(0xA00000, 0xA00007, NULL, RAM+0x048088);      // BG1 CTRL RAM
 
@@ -2342,7 +2132,7 @@ void load_guwange(void)
    setup_cave_game();
 }
 
-void load_feveron(void)
+static void load_dfeveron(void)
 {
    romset = 0;
 
@@ -2387,7 +2177,7 @@ void load_feveron(void)
    AddReadBW(0x000000, 0x0FFFFF, NULL, ROM+0x000000);         // 68000 ROM
    AddRWBW(0x100000, 0x10FFFF, NULL, RAM+0x000000);         // 68000 RAM
    AddReadBW(0x300002,0x300003,YMZ280B_status_0_r,NULL);
-   AddWriteBW(0x300000, 0x300003, cave_sound_w,NULL);
+   AddWriteBW(0x300000, 0x300003, sound_esprade_w,NULL);
 
    AddRWBW(0x400000, 0x40FFFF, NULL, RAM+0x010000);         // OBJECT RAM
    AddRWBW(0x500000, 0x507FFF, NULL, RAM+0x020000);         // BG0 RAM
@@ -2438,7 +2228,7 @@ void load_feveron(void)
    setup_cave_game();
 }
 
-void load_uo_poko(void)
+static void load_uopoko(void)
 {
    romset = 0;
 
@@ -2481,7 +2271,7 @@ void load_uo_poko(void)
    AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);         // 68000 ROM
    AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);         // 68000 RAM
    AddReadBW(0x300002,0x300003,YMZ280B_status_0_r,NULL);
-   AddWriteBW(0x300000, 0x300003, cave_sound_w,NULL);
+   AddWriteBW(0x300000, 0x300003, sound_esprade_w,NULL);
 
    AddReadByte(0x400000, 0x40FFFF, NULL, RAM+0x010000);         // OBJECT RAM
    AddReadByte(0x500000, 0x507FFF, NULL, RAM+0x020000);         // BG0 RAM
@@ -2521,7 +2311,7 @@ void load_uo_poko(void)
    setup_cave_game();
 }
 
-void execute_mazinger_frame(void)
+static void execute_mazinger(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(FRAME_68K,60));   // M68000 28MHz (60fps)
 
@@ -2536,7 +2326,7 @@ void execute_mazinger_frame(void)
 
 static UINT8 *RAM_OBJ;
 
-void execute_cave_68k_frame(void)
+static void execute_esprade(void)
 {
    stopped_68k = 0;
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(32,60));
@@ -2602,7 +2392,7 @@ static void blit_cave_layer(int num) {
   }
   RAM_BG += 0x1002; // Start of row fetch data
 
-  switch ((current_game->video_info->flags ^ display_cfg.user_rotate) & 1) {
+  switch ((current_game->video->flags ^ display_cfg.user_rotate) & 1) {
   case 0:
     // no screen rotation
 
@@ -3306,7 +3096,8 @@ static void draw_cave_layer(int num)
   }
 }
 
-void dump_sprite(UINT8 *spr, int size) {
+#if 0
+static void dump_sprite(UINT8 *spr, int size) {
   int max = 0;
   int x,y;
   char len[5],filler[3];
@@ -3333,13 +3124,14 @@ void dump_sprite(UINT8 *spr, int size) {
     spr += size;
   }
 }
+#endif
 
 static UINT8 flip_map[4] =
 {
    0, 2, 1, 3
 };
 
-void draw_cave_68k(void)
+static void draw_cave_68k(void)
 {
    int x,y,ta,size,code,priority,zoomx,zoomy;
    int ww,hh,flip,attr;
@@ -3667,368 +3459,6 @@ void draw_cave_68k(void)
 
 }
 
-GAME( esprade ,
-   esprade_dirs,
-   esprade_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_esprade,
-   clear_cave_68k,
-   &esprade_video_r270,
-   execute_cave_68k_frame,
-   "esprade",
-   "ESP Ra.De. (International - 4/22 98)",
-   "AT-C04",
-   COMPANY_ID_CAVE,
-   NULL,
-   1998,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( espradej ,
-   espradej_dirs,
-   espradej_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_esprade,
-   clear_cave_68k,
-   &esprade_video_r270,
-   execute_cave_68k_frame,
-   "espradej",
-   "ESP Ra.De. (Japan - 4/21 1998)",
-   "AT-C04",
-   COMPANY_ID_CAVE,
-   NULL,
-   1998,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( espradeo ,
-   espradeo_dirs,
-   espradeo_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_esprade,
-   clear_cave_68k,
-   &esprade_video_r270,
-   execute_cave_68k_frame,
-   "espradeo",
-   "ESP Ra.De. (Japan - 4/14 1998)",
-   "AT-C04",
-   COMPANY_ID_CAVE,
-   NULL,
-   1998,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( guwange ,
-   guwange_dirs,
-   guwange_roms,
-   guwange_inputs,
-   NULL,
-   NULL,
-
-   load_guwange,
-   clear_cave_68k,
-   &esprade_video_r270,
-   execute_cave_68k_frame,
-   "guwange",
-   "Guwange",
-   "AT-C05",
-   COMPANY_ID_CAVE,
-   NULL,
-   1999,
-   cave_sound,
-   GAME_SHOOT
-);
-
-#define guwange_dsw NULL
-#define guwange_video esprade_video_r270
-#define execute_guwange execute_cave_68k_frame
-#define guwange_sound cave_sound
-CLONE( guwanges, guwange, "Guwange (Japan, Special Ver. 00/01/01)", COMPANY_ID_CAVE, 2000, GAME_SHOOT);
-
-GAME( ddonpach ,
-   ddonpach_dirs,
-   ddonpach_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_ddonpach,
-   clear_cave_68k,
-   &ddonpach_video,
-   execute_cave_68k_frame,
-   "ddonpach",
-   "Dodonpachi (International)",
-   "AT-C03D2",
-   COMPANY_ID_CAVE,
-   NULL,
-   1997,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( ddonpchj ,
-   ddonpchj_dirs,
-   ddonpchj_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_ddonpach,
-   clear_cave_68k,
-   &ddonpach_video,
-   execute_cave_68k_frame,
-   "ddonpchj",
-   "Dodonpachi (Japan)",
-   "AT-C03D2",
-   COMPANY_ID_CAVE,
-   NULL,
-   1997,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( donpachi ,
-   donpachi_dirs,
-   donpachi_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_donpachi,
-   clear_cave_68k,
-   &donpachi_video_r270,
-   execute_cave_68k_frame,
-   "donpachi",
-   "DonPachi (USA) v1.12",
-   "AT-C01DP-2",
-   COMPANY_ID_CAVE,
-   NULL,
-   1995,
-   donpachi_sound,
-   GAME_SHOOT
-);
-
-GAME( donpachj ,
-   donpachj_dirs,
-   donpachj_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_donpachi,
-   clear_cave_68k,
-   &donpachi_video_r270,
-   execute_cave_68k_frame,
-   "donpachj",
-   "DonPachi (Japan) v1.01",
-   "AT-C01DP-2",
-   COMPANY_ID_CAVE,
-   NULL,
-   1995,
-   donpachi_sound,
-   GAME_SHOOT
-);
-
-GAME( donpachk ,
-   donpachk_dirs,
-   donpachk_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_donpachi,
-   clear_cave_68k,
-   &donpachi_video_r270,
-   execute_cave_68k_frame,
-   "donpachk",
-   "DonPachi (Korean) v1.12",
-   "AT-C01DP-2",
-   COMPANY_ID_CAVE,
-   NULL,
-   1995,
-   donpachi_sound,
-   GAME_SHOOT
-);
-
-GAME( uo_poko ,
-   uo_poko_dirs,
-   uo_poko_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_uo_poko,
-   clear_cave_68k,
-   &uopoko_video,
-   execute_cave_68k_frame,
-   "uopoko",
-   "Uo Poko",
-   NULL,
-   COMPANY_ID_CAVE,
-   "CV-02",
-   1998,
-   cave_sound,
-   GAME_PUZZLE
-);
-
-GAME( feveron ,
-   feveron_dirs,
-   dfeveron_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_feveron,
-   clear_cave_68k,
-   &cave_68k_video_r270,
-   execute_cave_68k_frame,
-   "dfeveron",
-   "Dangun Feveron",
-   NULL,
-   COMPANY_ID_CAVE,
-   "CV-01",
-   1998,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( feversos ,
-   feversos_dirs,
-   feversos_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_feveron,
-   clear_cave_68k,
-   &cave_68k_video_r270,
-   execute_cave_68k_frame,
-   "feversos",
-   "Fever SOS",
-   NULL,
-   COMPANY_ID_CAVE,
-   "CV-01",
-   1998,
-   cave_sound,
-   GAME_SHOOT
-);
-
-GAME( hotdogst ,
-   hotdogst_dirs,
-   hotdogst_roms,
-   cave_68k_inputs,
-   NULL,
-   NULL,
-
-   load_hotdogst,
-   clear_cave_68k,
-   &hotdogst_video_r270,
-   execute_cave_68k_frame,
-   "hotdogst",
-   "Hotdog Storm",
-   "?",
-   COMPANY_ID_MARBLE,
-   NULL,
-   1996,
-   hotdogst_sound,
-   GAME_SHOOT
-);
-
-GAME( mazinger ,
-   mazinger_dirs,
-   mazinger_roms,
-   cave_68k_inputs,
-   NULL,
-   mazinger_romsw,
-
-   load_mazinger,
-   clear_mazinger,
-   &mazinger_video,
-   execute_mazinger_frame,
-   "mazinger",
-   "Mazinger Z",
-   "?",
-   COMPANY_ID_BANPREST,
-   NULL,
-   1994,
-   hotdogst_sound,
-   GAME_SHOOT
-);
-
-GAME( sailormn ,
-   sailormn_dirs,
-   sailormn_roms,
-   cave_68k_inputs,
-   NULL,
-   sailormn_romsw,
-
-   load_sailormn,
-   clear_cave_68k,
-   &sailormn_video,
-   execute_cave_68k_frame,
-   "sailormn",
-   "Pretty Soldier Sailor Moon Ver B",
-   "BP945A",
-   COMPANY_ID_BANPREST,
-   NULL,
-   1995,
-   sailormn_sound,
-   GAME_SHOOT
-);
-
-GAME( sailormo ,
-   sailormo_dirs,
-   sailormo_roms,
-   cave_68k_inputs,
-   NULL,
-   sailormn_romsw,
-
-   load_sailormn,
-   clear_cave_68k,
-   &sailormn_video,
-   execute_cave_68k_frame,
-   "sailormo",
-   "Pretty Soldier Sailor Moon",
-   "BP945A",
-   COMPANY_ID_BANPREST,
-   NULL,
-   1995,
-   sailormn_sound,
-   GAME_SHOOT
-);
-
-GAME( agallet ,
-   agallet_dirs,
-   agallet_roms,
-   cave_68k_inputs,
-   NULL,
-   sailormn_romsw,
-
-   load_agallet,
-   clear_cave_68k,
-   &agallet_video,
-   execute_cave_68k_frame,
-   "agallet",
-   "Air Gallet",
-   "BP962A",
-   COMPANY_ID_BANPREST,
-   NULL,
-   1995,
-   sailormn_sound,
-   GAME_SHOOT
-);
 
 /*
 
@@ -4080,3 +3510,252 @@ byte |     bit(s)     | use
 
 */
 
+static struct VIDEO_INFO video_agallet =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   sailormn_gfx,
+};
+static struct VIDEO_INFO video_ddonpach =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
+   ddonpach_gfx,
+};
+static struct VIDEO_INFO video_dfeveron =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   cave_gfx,
+};
+static struct VIDEO_INFO video_donpachk =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   donpachi_gfx,
+};
+static struct VIDEO_INFO video_esprade =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
+   esprade_gfx,
+};
+static struct VIDEO_INFO video_hotdogst =
+{
+   draw_cave_68k,
+   384,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   cave_gfx,
+};
+static struct VIDEO_INFO video_mazinger =
+{
+   draw_cave_68k,
+   384,
+   240,
+   32,
+   VIDEO_ROTATE_90 |
+   VIDEO_ROTATABLE,
+   mazinger_gfx,
+};
+static struct VIDEO_INFO video_sailormn =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   sailormn_gfx,
+};
+static struct VIDEO_INFO video_uopoko =
+{
+   draw_cave_68k,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
+   uopoko_gfx,
+};
+static struct DIR_INFO dir_agallet[] =
+{
+  { "agallet", },
+  { "air_gallet" },
+  { NULL, },
+};
+GAME( agallet, "Air Gallet", BANPREST, 1995, GAME_SHOOT,
+	.romsw = romsw_agallet,
+	.clear = clear_cave_68k,
+	.video = &video_agallet,
+	.board = "BP962A",
+	.sound = sound_agallet,
+);
+GMEI( ddonpach, "Dodonpachi (International)", CAVE, 1997, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C03D2",
+);
+CLNEI( ddonpchj, ddonpach,"Dodonpachi (Japan)", CAVE, 1997, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C03D2",
+);
+CLNEI( donpachi, donpachk, "DonPachi (USA) v1.12", CAVE, 1995, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C01DP-2",
+	.sound = sound_donpachk,
+);
+CLNEI( donpachj, donpachk, "DonPachi (Japan) v1.01", CAVE, 1995, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C01DP-2",
+	.sound = sound_donpachk,
+);
+static struct DIR_INFO dir_donpachk[] =
+{
+   { "donpachk", },
+   { "DonPachK", },
+   { ROMOF( "donpachi" ), },
+   { CLONEOF( "donpachi" ) },
+   { NULL, },
+};
+GAME( donpachk, "DonPachi (Korean) v1.12", CAVE, 1995, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.video = &video_donpachk,
+	.board = "AT-C01DP-2",
+	.sound = sound_donpachk,
+);
+static struct DIR_INFO dir_esprade[] =
+{
+   { "esprade", },
+   { "espradea", },
+   { NULL, },
+};
+GME( esprade, "ESP Ra.De. (International - 4/22 98)", CAVE, 1998, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C04",
+);
+static struct DIR_INFO dir_espradej[] =
+{
+   { "espradej", },
+   { ROMOF("esprade") },
+   { CLONEOF("esprade") },
+   { NULL, },
+};
+CLNE( espradej,esprade, "ESP Ra.De. (Japan - 4/21 1998)", CAVE, 1998, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C04",
+);
+static struct DIR_INFO dir_espradeo[] =
+{
+   { "espradeo", },
+   { ROMOF("esprade") },
+   { CLONEOF("esprade") },
+   { NULL, },
+};
+CLNE( espradeo,esprade, "ESP Ra.De. (Japan - 4/14 1998)", CAVE, 1998, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "AT-C04",
+);
+static struct DIR_INFO dir_dfeveron[] =
+{
+   { "feveron", },
+   { "dfeveron", },
+   { "dangun_feveron", },
+   { NULL, },
+};
+GAME( dfeveron, "Dangun Feveron", CAVE, 1998, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.video = &video_dfeveron,
+	.board = "CV-01",
+);
+CLNEI( feversos, dfeveron, "Fever SOS", CAVE, 1998, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.board = "CV-01",
+);
+#define video_guwange video_esprade
+GMEI( guwange, "Guwange", CAVE, 1999, GAME_SHOOT,
+	.input = input_guwange,
+	.clear = clear_cave_68k,
+	.board = "AT-C05",
+);
+static struct DIR_INFO dir_hotdogst[] =
+{
+   { "hotdogst", },
+   { "HotDogStorm" },
+   { NULL, },
+};
+GAME( hotdogst, "Hotdog Storm", MARBLE, 1996, GAME_SHOOT,
+	.clear = clear_cave_68k,
+	.video = &video_hotdogst,
+	.sound = sound_hotdogst,
+);
+static struct DIR_INFO dir_mazinger[] =
+{
+   { "mazinger", },
+   { "MazingerZ" },
+   { NULL, },
+};
+GAME( mazinger, "Mazinger Z", BANPREST, 1994, GAME_SHOOT,
+	.romsw = romsw_mazinger,
+	.clear = clear_mazinger,
+	.video = &video_mazinger,
+	.exec = execute_mazinger,
+	.sound = sound_hotdogst,
+);
+static struct DIR_INFO dir_sailormn[] =
+{
+  { "sailormn", },
+  { "SailorMoon", },
+  { NULL, },
+};
+GAME( sailormn, "Pretty Soldier Sailor Moon Ver B", BANPREST, 1995, GAME_SHOOT,
+	.romsw = romsw_agallet,
+	.clear = clear_cave_68k,
+	.video = &video_sailormn,
+	.board = "BP945A",
+	.sound = sound_agallet,
+);
+CLNEI( sailormo, sailormn, "Pretty Soldier Sailor Moon", BANPREST, 1995, GAME_SHOOT,
+	.romsw = romsw_agallet,
+	.clear = clear_cave_68k,
+	.video = &video_sailormn,
+	.board = "BP945A",
+	.sound = sound_agallet,
+);
+static struct DIR_INFO dir_uopoko[] =
+{
+   { "uo_poko", },
+   { "uopoko", },
+   { "uopokoj", },
+   { NULL, },
+};
+GAME( uopoko, "Uo Poko", CAVE, 1998, GAME_PUZZLE,
+	.clear = clear_cave_68k,
+	.video = &video_uopoko,
+	.board = "CV-02",
+);
+
+CLNEI( guwanges, guwange, "Guwange (Japan, Special Ver. 00/01/01)", CAVE,
+		2000, GAME_SHOOT,
+	.video = &video_esprade);

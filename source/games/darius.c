@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "darius.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 #include "2203intf.h"
@@ -13,25 +12,10 @@
 #include "streams.h"
 
 static WRITE_HANDLER( DariusVol );
-int DariusStereo;
 
-static struct DIR_INFO darius_dirs[] =
-{
-   { "dariusj", },
-   { ROMOF("darius"), },
-   { CLONEOF("darius"), },
-   { NULL, },
-};
 
-static struct DIR_INFO dariuso_dirs[] =
-{
-   { "dariuso", },
-   { ROMOF("darius"), },
-   { CLONEOF("darius"), },
-   { NULL, },
-};
 
-static struct ROM_INFO darius_roms[] =
+static struct ROM_INFO rom_dariusj[] =
 {
    { "a96_28-1.152", 0x00010000, 0xfb34d400, 0, 0, 0, },
    { "a96_29-1.185", 0x00010000, 0x75486f62, 0, 0, 0, },
@@ -66,7 +50,7 @@ static struct ROM_INFO darius_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO dariuso_roms[] =
+static struct ROM_INFO rom_dariuso[] =
 {
    {   "a96-28.152", 0x00010000, 0x4721d667, 0, 0, 0, },
    {   "a96-29.185", 0x00010000, 0xf775162b, 0, 0, 0, },
@@ -103,7 +87,7 @@ static struct ROM_INFO dariuso_roms[] =
 
 extern int YM2203_get_stream_num(int); // 2203intf.c
 
-static struct INPUT_INFO darius_inputs[] =
+static struct INPUT_INFO input_darius[] =
 {
    INP1( COIN1, 0x04200C, 0x01 ),
    INP1( COIN2, 0x04200C, 0x02 ),
@@ -176,21 +160,13 @@ static struct DSW_DATA dsw_data_darius_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO darius_dsw[] =
+static struct DSW_INFO dsw_darius[] =
 {
    { 0x042010, 0xFF, dsw_data_darius_0 },
    { 0x042011, 0xFF, dsw_data_darius_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO darius_video =
-{
-   DrawDarius,
-   864,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -251,68 +227,14 @@ static struct MSM5205buffer_interface msm5205_interface =
    MSM5205_MONO,
 };
 
-static struct SOUND_INFO darius_sound[] =
+static struct SOUND_INFO sound_darius[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { SOUND_MSM5205_BUFF, &msm5205_interface,   },
    { 0,             NULL,                 },
 };
 
-GAME( darius ,
-   darius_dirs,
-   darius_roms,
-   darius_inputs,
-   darius_dsw,
-   NULL,
-
-   LoadDarius,
-   ClearDarius,
-   &darius_video,
-   ExecuteDariusFrame,
-   "dariusj",
-   "Darius Japanese",
-   "ダライアス",
-   COMPANY_ID_TAITO,
-   "A96",
-   1986,
-   darius_sound,
-   GAME_SHOOT
-);
-
-void LoadDariuso();
-
-GAME( dariuso ,
-   dariuso_dirs,
-   dariuso_roms,
-   darius_inputs,
-   darius_dsw,
-   NULL,
-
-   LoadDariuso,
-   ClearDarius,
-   &darius_video,
-   ExecuteDariusFrame,
-   "dariuso",
-   "Darius (Old, JPN Ver.)",
-   "ダライアス",
-   COMPANY_ID_TAITO,
-   "A96",
-   1986,
-   darius_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO darius_extra_dirs[] =
-{
-   { "darius_extra", },
-   { "dariusex", },
-   { "dariuse", },
-   { ROMOF("darius"), },
-   { CLONEOF("darius"), },
-   { NULL, },
-};
-
-static struct ROM_INFO darius_extra_roms[] =
+static struct ROM_INFO rom_dariuse[] =
 {
    { "dae-67.bin", 0x00010000, 0xb99aea8c, 0, 0, 0, },
    { "dae-68.bin", 0x00010000, 0xed721127, 0, 0, 0, },
@@ -347,36 +269,7 @@ static struct ROM_INFO darius_extra_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( darius_extra ,
-   darius_extra_dirs,
-   darius_extra_roms,
-   darius_inputs,
-   darius_dsw,
-   NULL,
-
-   LoadDariusExtra,
-   ClearDarius,
-   &darius_video,
-   ExecuteDariusFrame,
-   "dariuse",
-   "Darius (extra)",
-   "ダライアス　エキストラバージョン",
-   COMPANY_ID_TAITO,
-   "A96",
-   1986,
-   darius_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO darius_alt_dirs[] =
-{
-   { "darius_alt", },
-   { "darius", },
-   { "dariusb", },
-   { NULL, },
-};
-
-static struct ROM_INFO darius_alt_roms[] =
+static struct ROM_INFO rom_darius[] =
 {
    {    "da-58.bin", 0x00010000, 0x5f71e697, 0, 0, 0, },
    {    "da-59.bin", 0x00010000, 0x11aab4eb, 0, 0, 0, },
@@ -413,38 +306,12 @@ static struct ROM_INFO darius_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( darius_alt ,
-   darius_alt_dirs,
-   darius_alt_roms,
-   darius_inputs,
-   darius_dsw,
-   NULL,
 
-   LoadDariusAlt,
-   ClearDarius,
-   &darius_video,
-   ExecuteDariusFrame,
-   "darius",
-   "Darius",
-   "ダライアス",
-   COMPANY_ID_TAITO,
-   "A96",
-   1986,
-   darius_sound,
-   GAME_SHOOT
-);
+static void DariusYM2203SetFMPan( UINT16 offset, UINT8 data );
+static void DariusYM2203SetAYPan( UINT16 offset, UINT8 data );
+static void DariusMSM5205SetPan( UINT16 offset, UINT8 data );
 
-void DariusYM2203SetFMPan( UINT16 offset, UINT8 data );
-void DariusYM2203SetAYPan( UINT16 offset, UINT8 data );
-void DariusMSM5205SetPan( UINT16 offset, UINT8 data );
-
-UINT16 DariusRead_YM2203A(UINT16 offset);
-void DariusWrite_YM2203A(UINT16 offset, UINT8 data);
-
-UINT16 DariusRead_YM2203B(UINT16 offset);
-void DariusWrite_YM2203B(UINT16 offset, UINT8 data);
-
-void DariusWrite_ADPCM(UINT16 offset, UINT8 data);
+static void DariusWrite_ADPCM(UINT16 offset, UINT8 data);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG0_SOLID;
@@ -528,9 +395,17 @@ static void darius_ioc_ww(UINT32 address, UINT16 data)
    darius_ioc_wb(address+1, (UINT8) ((data>>0)&0xFF));
 }
 
-static void LoadActual(int romset)
+static void load_darius()
 {
-   int ta,tb,tc;
+   int ta,tb,tc,romset;
+   if (is_current_game("dariusj"))
+       romset = 0;
+   else if (is_current_game("dariuse"))
+       romset = 1;
+   else if (is_current_game("darius"))
+       romset = 2;
+   else if (is_current_game("dariuso"))
+       romset = 3;
 
    RAMSize=0x80000;
 
@@ -738,13 +613,11 @@ static void LoadActual(int romset)
    AddZ80AWriteByte(0xB000, 0xB001, tc0140syt_write_sub_z80,NULL);		// 68000 COMM
    AddZ80AWriteByte(0xD400, 0xD400, DariusWrite_ADPCM,      NULL);		// ADPCM COMM
    AddZ80AWriteByte(0xDC00, 0xDC00, TaitoSoundSetBank,      NULL);		// BANK SELECT
-   if( DariusStereo ){
      AddZ80AWriteByte(0xC000, 0xC000, DariusYM2203SetFMPan,   NULL); /* YM2203 FM #0 pan */
      AddZ80AWriteByte(0xC400, 0xC400, DariusYM2203SetFMPan,   NULL); /* YM2203 FM #1 pan */
      AddZ80AWriteByte(0xC800, 0xC800, DariusYM2203SetAYPan,   NULL); /* YM2203 PSG #0 pan */
      AddZ80AWriteByte(0xCC00, 0xCC00, DariusYM2203SetAYPan,   NULL); /* YM2203 PSG #1 pan */
      AddZ80AWriteByte(0xD000, 0xD000, DariusMSM5205SetPan,    NULL); /* ADPCM pan */
-   }
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);
    AddZ80AWriteByte(-1, -1, NULL, NULL);
 
@@ -763,8 +636,7 @@ static void LoadActual(int romset)
 
    msm5205_interface.rom[0] = PCMROM;
    msm5205_interface.romsize[0] = 0x10000;
-   if( !DariusStereo )  msm5205_interface.updatemode = MSM5205_MONO;
-   else                 msm5205_interface.updatemode = MSM5205_STEREO;
+   msm5205_interface.updatemode = MSM5205_STEREO;
 
    /************************************/
 
@@ -994,32 +866,7 @@ static void LoadActual(int romset)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void LoadDarius(void)
-{
-   LoadActual(0);
-}
-
-void LoadDariusExtra(void)
-{
-   LoadActual(1);
-}
-
-void LoadDariusAlt(void)
-{
-   LoadActual(2);
-}
-
-void LoadDariuso(void)
-{
-   LoadActual(3);
-}
-
-void ClearDarius(void)
-{
-   RemoveTaitoSoundBanking();
-}
-
-void ExecuteDariusFrame(void)
+static void execute_darius(void)
 {
    tcpu=0;
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
@@ -1048,7 +895,7 @@ void ExecuteDariusFrame(void)
 
 }
 
-void DrawDarius(void)
+static void DrawDarius(void)
 {
    int x,y,ta,zz,zzz,zzzz;
    int x16,y16;
@@ -1193,71 +1040,9 @@ void DrawDarius(void)
    }
 }
 
-/*-------[YM2203 PORT]-------*/
-
-UINT16 DariusRead_YM2203A(UINT16 offset)
-{
-#if 1
-  static int aaaa = 0, cnt = 0;
-
-  if( ++cnt > 200 ){
-    aaaa = 255;
-    cnt = 0;
-  } else{
-    aaaa = 0;
-  }
-
-  return(aaaa);
-#else
-  if((offset&1)==0){
-    return  YM2203_status_port_0_r(0);
-  } else{
-    return YM2203_read_port_0_r(0);
-  }
-#endif
-}
-
-void DariusWrite_YM2203A(UINT16 offset, UINT8 data)
-{
-   if((offset&1)==0){
-      YM2203_control_port_0_w(0,data);
-   }
-   else{
-      YM2203_write_port_0_w(0,data);
-   }
-}
-
-/*-------[YM2203 PORT]-------*/
-
-UINT16 DariusRead_YM2203B(UINT16 offset)
-{
-#if 1
-  static int aaaa;
-
-  aaaa^=255;
-  return(aaaa);
-#else
-  if((offset&1)==0){
-    return YM2203_status_port_1_r(0);
-  } else{
-    return YM2203_read_port_1_r(0);
-  }
-#endif
-}
-
-void DariusWrite_YM2203B(UINT16 offset, UINT8 data)
-{
-   if((offset&1)==0){
-      YM2203_control_port_1_w(0,data);
-   }
-   else{
-      YM2203_write_port_1_w(0,data);
-   }
-}
-
 /*-------[ADPCM PORT]-------*/
 
-void DariusWrite_ADPCM(UINT16 offset, UINT8 data)
+static void DariusWrite_ADPCM(UINT16 offset, UINT8 data)
 {
    /*#ifdef RAINE_DEBUG
       print_debug("DariusADPCM(%02x)\n",data);
@@ -1278,7 +1063,7 @@ static int darius_volAY[2];
 static int darius_panFM[2];
 static int darius_panAY[2];
 
-void DariusYM2203SetFMPan( UINT16 offset, UINT8 data ){
+static void DariusYM2203SetFMPan( UINT16 offset, UINT8 data ){
   int cen;
   if( !(offset&0x0400) ){
     /**** make FM0 ****/
@@ -1297,7 +1082,7 @@ void DariusYM2203SetFMPan( UINT16 offset, UINT8 data ){
     //print_ingame(120,"Pan[1]:%02x %s", darius_panFM[1], stream_get_name(YM2203_get_stream_num(1)) );
   }
 }
-void DariusYM2203SetAYPan( UINT16 offset, UINT8 data ){
+static void DariusYM2203SetAYPan( UINT16 offset, UINT8 data ){
   int cen;
   if( !(offset&0x0400) ){
     darius_panAY[0] = (~data)&0xff;
@@ -1333,13 +1118,55 @@ static WRITE_HANDLER( DariusVol ){
   }
 }
 
-void DariusMSM5205SetPan( UINT16 offset, UINT8 data ){
+static void DariusMSM5205SetPan( UINT16 offset, UINT8 data ){
   MSM5205buffer_setpan( 0, data );
 }
 
-
 /**************** end of file ****************/
 
-
-
+static struct VIDEO_INFO video_darius =
+{
+   DrawDarius,
+   864,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+};
+CLNEI( dariusj,darius, "Darius Japanese", TAITO, 1986, GAME_SHOOT,
+	.input = input_darius,
+	.dsw = dsw_darius,
+	.video = &video_darius,
+	.exec = execute_darius,
+	.long_name_jpn = "ダライアス",
+	.board = "A96",
+	.sound = sound_darius,
+);
+static struct DIR_INFO dir_darius[] =
+{
+   { "darius_alt", },
+   { "darius", },
+   { "dariusb", },
+   { NULL, },
+};
+GME( darius, "Darius", TAITO, 1986, GAME_SHOOT,
+	.long_name_jpn = "ダライアス",
+	.board = "A96",
+);
+static struct DIR_INFO dir_dariuse[] =
+{
+   { "darius_extra", },
+   { "dariusex", },
+   { "dariuse", },
+   { ROMOF("darius"), },
+   { CLONEOF("darius"), },
+   { NULL, },
+};
+CLNE( dariuse,darius, "Darius (extra)", TAITO, 1986, GAME_SHOOT,
+	.long_name_jpn = "ダライアス　エキストラバージョン",
+	.board = "A96",
+);
+CLNEI( dariuso,darius, "Darius (Old, JPN Ver.)", TAITO, 1986, GAME_SHOOT,
+	.long_name_jpn = "ダライアス",
+	.board = "A96",
+);
 

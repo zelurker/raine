@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "landmakr.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -13,14 +12,8 @@
 #include "sasound.h"
 #include "emumain.h"
 
-static struct DIR_INFO land_maker_dirs[] =
-{
-   { "land_maker", },
-   { "landmakr", },
-   { NULL, },
-};
 
-static struct ROM_INFO land_maker_roms[] =
+static struct ROM_INFO rom_landmakr[] =
 {
    {    "e61-01.04", 0x00200000, 0x6cdd8311, 0, 0, 0, },
    {    "e61-02.08", 0x00200000, 0x1dc4a164, 0, 0, 0, },
@@ -48,41 +41,13 @@ static struct ROMSW_DATA romsw_data_land_maker_0[] =
    { NULL,                          0    },
 };
 
-static struct ROMSW_INFO land_maker_romsw[] =
+static struct ROMSW_INFO romsw_landmakr[] =
 {
    { 0x1FFFFF, 0x01, romsw_data_land_maker_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO land_maker_video =
-{
-   draw_land_maker,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( land_maker ,
-   land_maker_dirs,
-   land_maker_roms,
-   f3_system_inputs,
-   NULL,
-   land_maker_romsw,
-
-   load_land_maker,
-   clear_land_maker,
-   &land_maker_video,
-   execute_land_maker_frame,
-   "landmakr",
-   "Land Maker",
-   NULL,
-   COMPANY_ID_TAITO,
-   "E61",
-   1998,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -110,7 +75,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void load_land_maker(void)
+static void load_landmakr(void)
 {
    int ta,tb,tc;
 
@@ -300,17 +265,7 @@ void load_land_maker(void)
    setup_sound_68000();
 }
 
-void clear_land_maker(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x200000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
-}
-
-void execute_land_maker_frame(void)
+static void execute_landmakr(void)
 {
   int ta;
   cycles = 1;
@@ -348,7 +303,7 @@ void execute_land_maker_frame(void)
   }
 }
 
-void draw_land_maker(void)
+static void draw_land_maker(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -506,3 +461,26 @@ void draw_land_maker(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_landmakr =
+{
+   draw_land_maker,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_landmakr[] =
+{
+   { "land_maker", },
+   { "landmakr", },
+   { NULL, },
+};
+GAME( landmakr, "Land Maker", TAITO, 1998, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_landmakr,
+	.video = &video_landmakr,
+	.exec = execute_landmakr,
+	.board = "E61",
+	.sound = f3_sound,
+);
+

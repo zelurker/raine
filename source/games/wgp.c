@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*               WORLD GRAND PRIX (C) 1988 TAITO CORPORATION                  */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "wgp.h"
 #include "tc100scn.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
@@ -28,14 +28,8 @@
 
 */
 
-static struct DIR_INFO world_grand_prix_dirs[] =
-{
-   { "world_grand_prix", },
-   { "wgp", },
-   { NULL, },
-};
 
-static struct ROM_INFO world_grand_prix_roms[] =
+static struct ROM_INFO rom_wgp[] =
 {
    {       "c32-01.12", 0x00080000, 0xd27d7d93, 0, 0, 0, },
    {       "c32-02.11", 0x00080000, 0xc5721f3a, 0, 0, 0, },
@@ -57,7 +51,7 @@ static struct ROM_INFO world_grand_prix_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO world_grand_prix_inputs[] =
+static struct INPUT_INFO input_wgp[] =
 {
    INP0( COIN1, 0x06220E, 0x04 ),
    INP0( COIN2, 0x06220E, 0x08 ),
@@ -104,53 +98,17 @@ static struct DSW_DATA dsw_data_world_grand_prix_0[] =
 };
 
 
-static struct DSW_INFO world_grand_prix_dsw[] =
+static struct DSW_INFO dsw_wgp[] =
 {
    { 0x062200, 0xFF, dsw_data_world_grand_prix_0 },
    { 0x062202, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO world_grand_prix_video =
-{
-   DrawWorldGrandPrix,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( world_grand_prix ,
-   world_grand_prix_dirs,
-   world_grand_prix_roms,
-   world_grand_prix_inputs,
-   world_grand_prix_dsw,
-   NULL,
 
-   load_world_grand_prix,
-   ClearWorldGrandPrix,
-   &world_grand_prix_video,
-   ExecuteWorldGrandPrixFrame,
-   "wgp",
-   "World Grand Prix",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C32",
-   1989,
-   taito_ym2610_sound,
-   GAME_RACE | GAME_NOT_WORKING
-);
 
-static struct DIR_INFO world_grand_prix_japanese_dirs[] =
-{
-   { "world_grand_prix_japanese", },
-   { "wgpj", },
-   { ROMOF("wgp"), },
-   { CLONEOF("wgp"), },
-   { NULL, },
-};
-
-static struct ROM_INFO world_grand_prix_japanese_roms[] =
+static struct ROM_INFO rom_wgpj[] =
 {
    {       "c32-01.12", 0x00080000, 0xd27d7d93, 0, 0, 0, },
    {       "c32-02.11", 0x00080000, 0xc5721f3a, 0, 0, 0, },
@@ -172,26 +130,6 @@ static struct ROM_INFO world_grand_prix_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( world_grand_prix_japanese ,
-   world_grand_prix_japanese_dirs,
-   world_grand_prix_japanese_roms,
-   world_grand_prix_inputs,
-   world_grand_prix_dsw,
-   NULL,
-
-   load_world_grand_prix_japanese,
-   ClearWorldGrandPrix,
-   &world_grand_prix_video,
-   ExecuteWorldGrandPrixFrame,
-   "wgpj",
-   "World Grand Prix (Japan)",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C32",
-   1989,
-   taito_ym2610_sound,
-   GAME_RACE | GAME_NOT_WORKING
-);
 
 #define PIV_COUNT	(0x4000)
 #define OBJ_B_COUNT	(0x4000)
@@ -602,17 +540,17 @@ static void load_actual(int romset)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void load_world_grand_prix(void)
+static void load_wgp(void)
 {
    load_actual(0);
 }
 
-void load_world_grand_prix_japanese(void)
+static void load_wgpj(void)
 {
    load_actual(1);
 }
 
-void ClearWorldGrandPrix(void)
+static void ClearWorldGrandPrix(void)
 {
    RemoveTaitoYM2610();
 
@@ -621,7 +559,7 @@ void ClearWorldGrandPrix(void)
    save_debug("GFX.bin",GFX_PIV,0x400000,0);
 }
 
-void ExecuteWorldGrandPrixFrame(void)
+static void execute_wgp(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));		// M68000 12MHz (60fps)
       print_debug("PC0:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
@@ -1091,7 +1029,7 @@ static void render_z_system_sprites(void)
    }
 }
 
-void DrawWorldGrandPrix(void)
+static void DrawWorldGrandPrix(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    //int zy,tb,tb2;
@@ -1268,4 +1206,39 @@ void DrawWorldGrandPrix(void)
    set_col_bank(0);
 }
 
+
+static struct VIDEO_INFO video_wgp =
+{
+   DrawWorldGrandPrix,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_wgp[] =
+{
+   { "world_grand_prix", },
+   { "wgp", },
+   { NULL, },
+};
+GME( wgp, "World Grand Prix", TAITO, 1989, GAME_RACE | GAME_NOT_WORKING,
+	.clear = ClearWorldGrandPrix,
+	.board = "C32",
+);
+static struct DIR_INFO dir_wgpj[] =
+{
+   { "world_grand_prix_japanese", },
+   { "wgpj", },
+   { ROMOF("wgp"), },
+   { CLONEOF("wgp"), },
+   { NULL, },
+};
+GAME(wgpj, "World Grand Prix (Japan)", TAITO, 1989, GAME_RACE | GAME_NOT_WORKING,
+	.input = input_wgp,
+	.dsw = dsw_wgp,
+	.clear = ClearWorldGrandPrix,
+	.video = &video_wgp,
+	.exec = execute_wgp,
+	.board = "C32",
+);
 

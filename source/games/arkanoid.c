@@ -36,7 +36,7 @@ Interesting RAM address from Stephh :
 #include "sasound.h"
 
 // parent set.
-static struct ROM_INFO arkanoid_roms[] =
+static struct ROM_INFO rom_arkanoid[] =
 {
   { "a75_01-1.rom", 0x8000, 0x5bcda3b0 , REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "a75_11.rom", 0x8000, 0xeafd7191 , REGION_ROM1, 0x8000, LOAD_NORMAL },
@@ -50,7 +50,7 @@ static struct ROM_INFO arkanoid_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO arkatour_roms[] =
+static struct ROM_INFO rom_arkatour[] =
 {
   { "t_ark1.bin", 0x8000, 0xe3b8faf5 , REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "t_ark2.bin", 0x8000, 0x326aca4d , REGION_ROM1, 0x8000, LOAD_NORMAL },
@@ -61,7 +61,7 @@ static struct ROM_INFO arkatour_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO arkatayt_roms[] =
+static struct ROM_INFO rom_arkatayt[] =
 {
   { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
   { "arkanoid.1", 0x8000, 0x6e0a2b6f , REGION_ROM1, 0x0000, LOAD_NORMAL },
@@ -69,7 +69,7 @@ static struct ROM_INFO arkatayt_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO arkangc_roms[] =
+static struct ROM_INFO rom_arkangc[] =
 {
   { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
   { "arkgc.1", 0x8000, 0xc54232e6 , REGION_ROM1, 0x0000, LOAD_NORMAL },
@@ -101,7 +101,7 @@ static struct DSW_DATA dsw_data_arkanoid_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO arkanoid_dsw[] =
+static struct DSW_INFO dsw_arkanoid[] =
 {
   { 8, 0xfe, dsw_data_arkanoid_4 },
   { 0, 0, NULL }
@@ -130,13 +130,11 @@ static struct DSW_DATA dsw_data_arknoidj_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO arknoidj_dsw[] =
+static struct DSW_INFO dsw_arknoidj[] =
 {
   { 8, 0x7e, dsw_data_arknoidj_4 },
   { 0, 0, NULL }
 };
-
-#define arkangc_dsw arknoidj_dsw
 
 static struct DSW_DATA dsw_data_arkatayt_4[] =
 {
@@ -161,13 +159,13 @@ static struct DSW_DATA dsw_data_arkatayt_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO arkatayt_dsw[] =
+static struct DSW_INFO dsw_arkatayt[] =
 {
   { 8, 0x5e, dsw_data_arkatayt_4 },
   { 0, 0, NULL }
 };
 
-static struct INPUT_INFO arkanoid_inputs[] =
+static struct INPUT_INFO input_arkanoid[] =
 {
   INP0( P1_START, 0x0000, 0x01 ),
   INP0( P2_START, 0x0000, 0x02 ),
@@ -221,7 +219,7 @@ static struct AY8910interface ay8910_interface =
 	{ 0 }
 };
 
-static struct SOUND_INFO arkanoid_sound[] =
+static struct SOUND_INFO sound_arkanoid[] =
 {
    { SOUND_AY8910,  &ay8910_interface,  },
    { 0,             NULL,               },
@@ -696,7 +694,7 @@ static void draw_arkanoid() {
   }
 }
 
-static struct VIDEO_INFO arkanoid_video =
+static struct VIDEO_INFO video_arkanoid =
 {
    draw_arkanoid,
    256,
@@ -707,29 +705,32 @@ static struct VIDEO_INFO arkanoid_video =
    arkanoid_gfx,
 };
 
-CLONE_DSW( arkatayt,
-	   arkanoid,
-	   "Arkanoid (Tayto bootleg, Japanese)",
-	   COMPANY_ID_BOOTLEG,
-	   1986,
-	   GAME_BREAKOUT);
-
-GME( arkanoid,
+GMEI( arkanoid,
      "Arkanoid",
-     COMPANY_ID_TAITO,
+     TAITO,
      1986,
      GAME_BREAKOUT | GAME_NOT_WORKING);
 
-CLONE_DSW( arkangc,
+CLNEI( arkatayt,
+	   arkanoid,
+	   "Arkanoid (Tayto bootleg, Japanese)",
+	   BOOTLEG,
+	   1986,
+	   GAME_BREAKOUT,
+	   .dsw = dsw_arkatayt);
+
+
+CLNEI( arkangc,
 	   arkanoid,
 	   "Arkanoid (Bootleg, level selection)",
-	   COMPANY_ID_BOOTLEG,
+	   BOOTLEG,
 	   1986,
-	   GAME_BREAKOUT);
+	   GAME_BREAKOUT,
+	   .dsw = dsw_arknoidj);
 
-CLONE( arkatour,
+CLNEI( arkatour,
        arkanoid,
        "Arkanoid Tournamant",
-       COMPANY_ID_TAITO,
+       TAITO,
        1987,
        GAME_BREAKOUT);

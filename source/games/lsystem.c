@@ -1,3 +1,6 @@
+#define DRV_DEF_EXEC execute_kurikint
+#define DRV_DEF_SOUND taito_ym2203_sound
+#define DRV_DEF_VIDEO &video_kurikint
 /******************************************************************************/
 /*                                                                            */
 /*              TAITO L-SYSTEM (C) 1988-1990 TAITO CORPORATION                */
@@ -8,7 +11,6 @@
 // Started to cleanup the code, not sure I'll finish this... !
 
 #include "gameinc.h"
-#include "lsystem.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "2203intf.h"
@@ -27,7 +29,7 @@ static struct ROMSW_DATA romsw_data_fighting_hawk_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO fighting_hawk_romsw[] =
+static struct ROMSW_INFO romsw_fhawk[] =
 {
    { 0x007FFF, 0x01, romsw_data_fighting_hawk_0 },
    { 0,        0,    NULL },
@@ -37,15 +39,8 @@ static struct ROMSW_INFO fighting_hawk_romsw[] =
    AMERICAN HORSESHOES
  ************************/
 
-static struct DIR_INFO american_horseshoes_dirs[] =
-{
-   { "american_horseshoes", },
-   { "amhorse", },
-   { "horshoes", },
-   { NULL, },
-};
 
-static struct ROM_INFO american_horseshoes_roms[] =
+static struct ROM_INFO rom_horshoes[] =
 {
    {   "c47.01", 0x00020000, 0x031c73d8, 0, 0, 0, },
    {   "c47.02", 0x00020000, 0x35f96526, 0, 0, 0, },
@@ -55,7 +50,7 @@ static struct ROM_INFO american_horseshoes_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO american_horseshoes_inputs[] =
+static struct INPUT_INFO input_horshoes[] =
 {
    INP0( COIN1, 0x02C200, 0x02 ),
    INP0( COIN2, 0x02C201, 0x02 ),
@@ -120,7 +115,7 @@ static struct DSW_DATA dsw_data_american_horseshoes_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO american_horseshoes_dsw[] =
+static struct DSW_INFO dsw_horshoes[] =
 {
    { 0x02C202, 0xFF, dsw_data_american_horseshoes_0 },
    { 0x02C203, 0xFF, dsw_data_american_horseshoes_1 },
@@ -176,16 +171,6 @@ static GFX_LIST gfxdecodeinfo2[] =
 	{ -1 }
 };
 
-static struct VIDEO_INFO gfx_info =
-{
-   DrawLSystem,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo2
-};
 
 static gfx_layout bg1_layout =
 {
@@ -206,26 +191,7 @@ static GFX_LIST gfxdecodeinfo[] =
 	{ -1 }
 };
 
-static struct VIDEO_INFO lsystem_video =
-{
-   DrawLSystem,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo
-};
 
-static struct VIDEO_INFO l_system_270_video =
-{
-   DrawLSystem,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 | VIDEO_NEEDS_8BPP |
-   VIDEO_ROTATABLE,
-};
 
 #define LSYS_INT0	1		// Usually does nothing
 #define LSYS_INT1	2		// Usually main int (frame start?)
@@ -257,7 +223,7 @@ static void TrackBall(void)
 
 }
 
-static void execute_lsystem(void)
+static void execute_kurikint(void)
 {
    if(romset==1)
       TrackBall();
@@ -340,39 +306,13 @@ static void execute_lsystem(void)
       Taito2203_Frame();		// Z80 and YM2203
 }
 
-GAME( american_horseshoes ,
-   american_horseshoes_dirs,
-   american_horseshoes_roms,
-   american_horseshoes_inputs,
-   american_horseshoes_dsw,
-   NULL,
-
-   load_american_horseshoes,
-   clear_american_horseshoes,
-   &l_system_270_video,
-   execute_lsystem,
-   "horshoes",
-   "American Horseshoes",
-   "アメリカンホースシュー",
-   COMPANY_ID_TAITO,
-   "C47",
-   1990,
-   taito_ym2203_sound,
-   GAME_SPORTS | GAME_NOT_WORKING
-);
 
 /***************************
    CHAMPION WRESTLER WORLD
  ***************************/
 
-static struct DIR_INFO champion_wrestler_dirs[] =
-{
-   { "champion_wrestler", },
-   { "champwr", },
-   { NULL, },
-};
 
-static struct ROM_INFO champwr_roms[] =
+static struct ROM_INFO rom_champwr[] =
 {
   { "c01-13.rom", 0x20000, 0x7ef47525, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "c01-13.rom", 0x20000, 0x7ef47525, REGION_ROM1, 0x06000, LOAD_NORMAL },
@@ -387,13 +327,13 @@ static struct ROM_INFO champwr_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROMSW_INFO champwr_romsw[] =
+static struct ROMSW_INFO romsw_champwr[] =
 {
    { 0x1025fff, 0x03, romsw_data_fighting_hawk_0 },
    { 0,        0,    NULL },
 };
 
-static struct INPUT_INFO champion_wrestler_inputs[] =
+static struct INPUT_INFO input_champwr[] =
 {
    INP0( COIN1, 0x02C206, 0x02 ),
    INP0( COIN2, 0x02C206, 0x01 ),
@@ -458,48 +398,20 @@ static struct DSW_DATA dsw_data_champion_wrestler_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO champion_wrestler_dsw[] =
+static struct DSW_INFO dsw_champwr[] =
 {
    { 0x02C200, 0xFF, dsw_data_champion_wrestler_0 },
    { 0x02C202, 0xFF, dsw_data_champion_wrestler_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( champion_wrestler ,
-   champion_wrestler_dirs,
-   champwr_roms,
-   champion_wrestler_inputs,
-   champion_wrestler_dsw,
-   champwr_romsw,
-
-   LoadChampionWr,
-   ClearChampionWr,
-   &gfx_info,
-   execute_lsystem,
-   "champwr",
-   "Champion Wrestler",
-   "チャンピオンレスラー",
-   COMPANY_ID_TAITO,
-   "C01",
-   1989,
-   taito_ym2203_sound,
-   GAME_SPORTS
-);
 
 /************************
    CHAMPION WRESTLER US
  ************************/
 
-static struct DIR_INFO champion_wrestler_us_dirs[] =
-{
-   { "champion_wrestler_us", },
-   { "champwru", },
-   { ROMOF("champwr"), },
-   { CLONEOF("champwr"), },
-   { NULL, },
-};
 
-static struct ROM_INFO champwru_roms[] =
+static struct ROM_INFO rom_champwru[] =
 {
   { "c01-12.rom", 0x20000, 0x09f345b3, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "c01-12.rom", 0x20000, 0x09f345b3, REGION_ROM1, 0x06000, LOAD_NORMAL },
@@ -526,48 +438,20 @@ static struct DSW_DATA dsw_data_champion_wrestler_us_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO champion_wrestler_us_dsw[] =
+static struct DSW_INFO dsw_champwru[] =
 {
    { 0x02C200, 0xFF, dsw_data_champion_wrestler_us_0 },
    { 0x02C202, 0xFF, dsw_data_champion_wrestler_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( champion_wrestler_us ,
-   champion_wrestler_us_dirs,
-   champwru_roms,
-   champion_wrestler_inputs,
-   champion_wrestler_us_dsw,
-   NULL,
-
-   LoadChampionWr,
-   ClearChampionWr,
-   &gfx_info,
-   execute_lsystem,
-   "champwru",
-   "Champion Wrestler (US)",
-   "秡粐糜龝礫糜粽禮粱�[ (US)",
-   COMPANY_ID_TAITO,
-   "C01",
-   1989,
-   taito_ym2203_sound,
-   GAME_SPORTS
-);
 
 /***************************
    CHAMPION WRESTLER JAPAN
  ***************************/
 
-static struct DIR_INFO champion_wrestler_jp_dirs[] =
-{
-   { "champion_wrestler_jp", },
-   { "champwrj", },
-   { ROMOF("champwr"), },
-   { CLONEOF("champwr"), },
-   { NULL, },
-};
 
-static struct ROM_INFO champwrj_roms[] =
+static struct ROM_INFO rom_champwrj[] =
 {
   { "c01-06.bin", 0x20000, 0x90fa1409, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "c01-06.bin", 0x20000, 0x90fa1409, REGION_ROM1, 0x06000, LOAD_NORMAL },
@@ -593,45 +477,20 @@ static struct DSW_DATA dsw_data_champion_wrestler_jp_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO champion_wrestler_jp_dsw[] =
+static struct DSW_INFO dsw_champwrj[] =
 {
    { 0x02C200, 0xFF, dsw_data_champion_wrestler_jp_0 },
    { 0x02C202, 0xFF, dsw_data_champion_wrestler_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( champion_wrestler_jp ,
-   champion_wrestler_jp_dirs,
-   champwrj_roms,
-   champion_wrestler_inputs,
-   champion_wrestler_jp_dsw,
-   NULL,
-
-   LoadChampionWr,
-   ClearChampionWr,
-   &gfx_info,
-   execute_lsystem,
-   "champwrj",
-   "Champion Wrestler (Japan)",
-   "秡粐糜龝礫糜粽禮粱�[ (Japan)",
-   COMPANY_ID_TAITO,
-   "C01",
-   1989,
-   taito_ym2203_sound,
-   GAME_SPORTS
-);
 
 /**********
    CACHAT
  **********/
 
-static struct DIR_INFO cachat_dirs[] =
-{
-   { "cachat", },
-   { NULL, },
-};
 
-static struct ROM_INFO cachat_roms[] =
+static struct ROM_INFO rom_cachat[] =
 {
    {         "cac6", 0x00020000, 0x8105cf5f, 0, 0, 0, },
    {         "cac7", 0x00020000, 0x7fb71578, 0, 0, 0, },
@@ -641,7 +500,7 @@ static struct ROM_INFO cachat_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO cachat_inputs[] =
+static struct INPUT_INFO input_cachat[] =
 {
    INP0( COIN1, 0x02C200, 0x04 ),
    INP0( COIN2, 0x02C200, 0x08 ),
@@ -688,7 +547,7 @@ static struct DSW_DATA dsw_data_cachat_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_cachat_1[] =
+static struct DSW_DATA dsw_data_cachat_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -716,47 +575,20 @@ struct DSW_DATA dsw_data_cachat_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO cachat_dsw[] =
+static struct DSW_INFO dsw_cachat[] =
 {
    { 0x02C210, 0xFD, dsw_data_cachat_0 },
    { 0x02C212, 0xFF, dsw_data_cachat_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( cachat ,
-   cachat_dirs,
-   cachat_roms,
-   cachat_inputs,
-   cachat_dsw,
-   NULL,
-
-   load_cachat,
-   clear_cachat,
-   &lsystem_video,
-   execute_lsystem,
-   "cachat",
-   "Cachat",
-   NULL,
-   COMPANY_ID_TAITO,
-   NULL,		// "D??"
-   1993,
-   taito_ym2203_sound,
-   GAME_PUZZLE
-);
 
 /*****************
    FIGHTING HAWK
  *****************/
 
-static struct DIR_INFO fighting_hawk_dirs[] =
-{
-   { "fighting_hawk", },
-   { "fhawk", },
-   { "fhawkj", },
-   { NULL, },
-};
 
-static struct ROM_INFO fighting_hawk_roms[] =
+static struct ROM_INFO rom_fhawk[] =
 {
    {   "b70-01.bin", 0x00080000, 0xfcdf67e2, 0, 0, 0, },
    {   "b70-02.bin", 0x00080000, 0x35f7172e, 0, 0, 0, },
@@ -767,7 +599,7 @@ static struct ROM_INFO fighting_hawk_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO fighting_hawk_inputs[] =
+static struct INPUT_INFO input_fhawk[] =
 {
    INP0( COIN1, 0x02C20E, 0x04 ),
    INP0( COIN2, 0x02C20E, 0x08 ),
@@ -827,48 +659,20 @@ static struct DSW_DATA dsw_data_fighting_hawk_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO fighting_hawk_dsw[] =
+static struct DSW_INFO dsw_fhawk[] =
 {
    { 0x02C200, 0xFE, dsw_data_fighting_hawk_0 },
    { 0x02C202, 0xFF, dsw_data_fighting_hawk_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( fighting_hawk ,
-   fighting_hawk_dirs,
-   fighting_hawk_roms,
-   fighting_hawk_inputs,
-   fighting_hawk_dsw,
-   fighting_hawk_romsw,
-
-   LoadFightingHawk,
-   ClearFightingHawk,
-   &l_system_270_video,
-   execute_lsystem,
-   "fhawk",
-   "Fighting Hawk",
-   "ファイティングホーク",
-   COMPANY_ID_TAITO,
-   "B70",
-   1988,
-   taito_ym2203_sound,
-   GAME_SHOOT
-);
 
 /***************
    KURI KINTON
  ***************/
 
-static struct DIR_INFO kuri_kinton_dirs[] =
-{
-   { "kuri_kinton", },
-   { "kurikina", },
-   { ROMOF("kurikint"), },
-   { CLONEOF("kurikint"), },
-   { NULL, },
-};
 
-static struct ROM_INFO kuri_kinton_roms[] =
+static struct ROM_INFO rom_kurikina[] =
 {
    {   "kk_ic2.rom", 0x00020000, 0x908603f2, 0, 0, 0, },
    {  "b42-07.22", 0x00010000, 0x0f2719c0, 0, 0, 0, },
@@ -884,7 +688,7 @@ static struct ROM_INFO kuri_kinton_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO kuri_kinton_inputs[] =
+static struct INPUT_INFO input_kurikint[] =
 {
    INP1( COIN1, 0x02C20E, 0x04 ),
    INP1( COIN2, 0x02C20E, 0x08 ),
@@ -929,7 +733,7 @@ static struct DSW_DATA dsw_data_kuri_kinton_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kuri_kinton_dsw[] =
+static struct DSW_INFO dsw_kurikina[] =
 {
    { 0x02C200, 0xFF, dsw_data_kuri_kinton_0 },
    { 0x02C202, 0xFF, dsw_data_default_1 },
@@ -945,52 +749,16 @@ static struct ROMSW_DATA romsw_data_kuri_kinton_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO kuri_kinton_romsw[] =
+static struct ROMSW_INFO romsw_kurikint[] =
 {
    { 0x007FFF, 0x02, romsw_data_kuri_kinton_0 },
    { 0,        0,    NULL },
 };
 
-GAME( kuri_kinton ,
-   kuri_kinton_dirs,
-   kuri_kinton_roms,
-   kuri_kinton_inputs,
-   kuri_kinton_dsw,
-   kuri_kinton_romsw,
 
-   LoadKuriKinton,
-   ClearKuriKinton,
-   &lsystem_video,
-   execute_lsystem,
-   "kurikina",
-   "Kuri Kinton (Alternate)",
-   "公李金団 (Alternate)",
-   COMPANY_ID_TAITO,
-   "B42",
-   1988,
-   taito_ym2203_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO kuri_kinton_alt_dirs[] =
-{
-   { "kuri_kinton_alt", },
-   { "kurikint", },
-   { "kurikina", },
-   { NULL, },
-};
 
-static struct DIR_INFO kuri_kinton_jap_dirs[] =
-{
-   { "kuri_kinton_jap", },
-   { "kurikinj", },
-   { "kurikina", },
-   { ROMOF("kurikint"), },
-   { CLONEOF("kurikint"), },
-   { NULL, },
-};
-
-static struct ROM_INFO kuri_kinton_alt_roms[] =
+static struct ROM_INFO rom_kurikint[] =
 {
    {     "b42-09.2", 0x00020000, 0xe97c4394, 0, 0, 0, },
    {  "b42-07.22", 0x00010000, 0x0f2719c0, 0, 0, 0, },
@@ -1000,7 +768,7 @@ static struct ROM_INFO kuri_kinton_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO kuri_kinton_jap_roms[] =
+static struct ROM_INFO rom_kurikinj[] =
 {
    {     "b42_05.2", 0x00020000, 0x077222b8, 0, 0, 0, },
    {  "b42-07.22", 0x00010000, 0x0f2719c0, 0, 0, 0, },
@@ -1029,60 +797,20 @@ static struct DSW_DATA dsw_data_kuri_kinton_alt_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kuri_kinton_alt_dsw[] =
+static struct DSW_INFO dsw_kurikint[] =
 {
    { 0x02C200, 0xFF, dsw_data_kuri_kinton_alt_0 },
    { 0x02C202, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( kuri_kinton_alt ,
-   kuri_kinton_alt_dirs,
-   kuri_kinton_alt_roms,
-   kuri_kinton_inputs,
-   kuri_kinton_alt_dsw,
-   kuri_kinton_romsw,
 
-   LoadKuriKinton_alt,
-   ClearKuriKinton,
-   &lsystem_video,
-   execute_lsystem,
-   "kurikint",
-   "Kuri Kinton",
-   "公李金団",
-   COMPANY_ID_TAITO,
-   "B42",
-   1988,
-   taito_ym2203_sound,
-   GAME_BEAT
-);
-
-GAME( kuri_kinton_jap ,
-   kuri_kinton_jap_dirs,
-   kuri_kinton_jap_roms,
-   kuri_kinton_inputs,
-   kuri_kinton_alt_dsw,
-   kuri_kinton_romsw,
-
-   LoadKuriKinton_jap,
-   ClearKuriKinton,
-   &lsystem_video,
-   execute_lsystem,
-   "kurikinj",
-   "Kuri Kinton (JPN Ver.)",
-   "公李金団 (alternate)",
-   COMPANY_ID_TAITO,
-   "B42",
-   1988,
-   taito_ym2203_sound,
-   GAME_BEAT
-);
 
 /************
    PLOTTING
  ************/
 
-static struct ROM_INFO plotting_roms[] =
+static struct ROM_INFO rom_plotting[] =
 {
   { "ic10", 0x10000, 0xbe240921, REGION_CPU1, 0x00000, LOAD_NORMAL },
   { "b96-07.ic9", 0x10000, 0x0713a387, REGION_GFX1, 0x00000, LOAD_NORMAL },
@@ -1090,7 +818,7 @@ static struct ROM_INFO plotting_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO plottinga_roms[] = // clone of plotting
+static struct ROM_INFO rom_plottinga[] = // clone of plotting
 {
   { "plot01.ic10", 0x10000, 0x5b30bc25, REGION_CPU1, 0x00000, LOAD_NORMAL },
   { "b96-02.ic9", 0x10000, 0x6e0bad2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
@@ -1098,7 +826,7 @@ static struct ROM_INFO plottinga_roms[] = // clone of plotting
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO plottingb_roms[] = // clone of plotting
+static struct ROM_INFO rom_plottingb[] = // clone of plotting
 {
   { "b96-06.ic10", 0x10000, 0xf89a54b1, REGION_CPU1, 0x00000, LOAD_NORMAL },
   { "b96-02.ic9", 0x10000, 0x6e0bad2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
@@ -1106,7 +834,7 @@ static struct ROM_INFO plottingb_roms[] = // clone of plotting
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO plotting_inputs[] =
+static struct INPUT_INFO input_plotting[] =
 {
    INP0( COIN1, 0x02C200, 0x02 ),
    INP0( COIN2, 0x02C201, 0x02 ),
@@ -1167,7 +895,7 @@ static struct DSW_DATA dsw_data_plotting_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO plotting_dsw[] =
+static struct DSW_INFO dsw_plotting[] =
 {
    { 0x02C202, 0xFF, dsw_data_plotting_0 },
    { 0x02C203, 0xFF, dsw_data_plotting_1 },
@@ -1192,14 +920,8 @@ static struct ROMSW_INFO plotting_romsw[] =
    PUZZNIC
  ***********/
 
-static struct DIR_INFO puzznic_dirs[] =
-{
-   { "puzznic", },
-   { "puzznicj", },
-   { NULL, },
-};
 
-static struct ROM_INFO puzznic_roms[] =
+static struct ROM_INFO rom_puzznic[] =
 {
    {      "u09.rom", 0x00020000, 0x3c115f8b, 0, 0, 0, },
    {      "u10.rom", 0x00020000, 0x4264056c, 0, 0, 0, },
@@ -1207,7 +929,7 @@ static struct ROM_INFO puzznic_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO puzznic_inputs[] =
+static struct INPUT_INFO input_puzznic[] =
 {
    INP0( COIN1, 0x02C200, 0x02 ),
    INP0( SERVICE, 0x02C200, 0x01 ),
@@ -1271,7 +993,7 @@ static struct DSW_DATA dsw_data_puzznic_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO puzznic_dsw[] =
+static struct DSW_INFO dsw_puzznic[] =
 {
    { 0x02C202, 0xFE, dsw_data_puzznic_0 },
    { 0x02C203, 0x7F, dsw_data_puzznic_1 },
@@ -1286,44 +1008,19 @@ static struct ROMSW_DATA romsw_data_puzznic_0[] =
    { NULL,                       0    },
 };
 
-static struct ROMSW_INFO puzznic_romsw[] =
+static struct ROMSW_INFO romsw_puzznic[] =
 {
    { 0x007FFF, 0x01, romsw_data_puzznic_0 },
    { 0,        0,    NULL },
 };
 
-GAME( puzznic ,
-   puzznic_dirs,
-   puzznic_roms,
-   puzznic_inputs,
-   puzznic_dsw,
-   puzznic_romsw,
-
-   LoadPuzznic,
-   ClearPuzznic,
-   &lsystem_video,
-   execute_lsystem,
-   "puzznic",
-   "Puzznic",
-   "パズニック",
-   COMPANY_ID_TAITO,
-   "C20",
-   1989,
-   taito_ym2203_sound,
-   GAME_PUZZLE | GAME_ADULT
-);
 
 /**************
    PLAY GIRLS
  **************/
 
-static struct DIR_INFO plgirls_dirs[] =
-{
-   { "plgirls", },
-   { NULL, },
-};
 
-static struct ROM_INFO plgirls_roms[] =
+static struct ROM_INFO rom_plgirls[] =
 {
    {     "pg01.ic7", 0x00040000, 0x79e41e74, 0, 0, 0, },
    {     "pg02.ic9", 0x00040000, 0x3cf05ca9, 0, 0, 0, },
@@ -1331,7 +1028,7 @@ static struct ROM_INFO plgirls_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO plgirls_inputs[] =
+static struct INPUT_INFO input_plgirls[] =
 {
    INP0( COIN1, 0x0A800, 0x04 ),
    INP0( COIN2, 0x0A800, 0x08 ),
@@ -1408,45 +1105,20 @@ static struct DSW_DATA dsw_data_plgirls_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO plgirls_dsw[] =
+static struct DSW_INFO dsw_plgirls[] =
 {
    { 0x02C202, 0xFE, dsw_data_plgirls_0 },
    { 0x02C203, 0x7F, dsw_data_plgirls_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( plgirls ,
-   plgirls_dirs,
-   plgirls_roms,
-   plgirls_inputs,
-   plgirls_dsw,
-   NULL,
-
-   LoadPlgirls,
-   ClearPlgirls,
-   &l_system_270_video,
-   execute_lsystem,
-   "plgirls",
-   "Play Girls",
-   "Play Girls",
-   COMPANY_ID_HOT_B,
-   "???",
-   1992,
-   taito_ym2203_sound,
-   GAME_BREAKOUT | GAME_ADULT
-);
 
 /****************
    PLAY GIRLS 2
  ****************/
 
-static struct DIR_INFO plgirls2_dirs[] =
-{
-   { "plgirls2", },
-   { NULL, },
-};
 
-static struct ROM_INFO plgirls2_roms[] =
+static struct ROM_INFO rom_plgirls2[] =
 {
    {    "cho-h.ic7", 0x00080000, 0x992f99b1, 0, 0, 0, },
    {    "cho-l.ic9", 0x00080000, 0x956384ec, 0, 0, 0, },
@@ -1454,7 +1126,7 @@ static struct ROM_INFO plgirls2_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO plgirls2_inputs[] =
+static struct INPUT_INFO input_plgirls2[] =
 {
    INP0( COIN1, 0x0A800, 0x04 ),
    INP0( COIN2, 0x0A800, 0x08 ),
@@ -1528,46 +1200,20 @@ static struct DSW_DATA dsw_data_plgirls2_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO plgirls2_dsw[] =
+static struct DSW_INFO dsw_plgirls2[] =
 {
    { 0x02C202, 0xFE, dsw_data_plgirls2_0 },
    { 0x02C203, 0x7F, dsw_data_plgirls2_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( plgirls2 ,
-   plgirls2_dirs,
-   plgirls2_roms,
-   plgirls2_inputs,
-   plgirls2_dsw,
-   NULL,
-
-   LoadPlgirls2,
-   ClearPlgirls2,
-   &l_system_270_video,
-   execute_lsystem,
-   "plgirls2",
-   "Play Girls 2",
-   "Play Girls 2",
-   COMPANY_ID_HOT_B,
-   "???",
-   1993,
-   taito_ym2203_sound,
-   GAME_SHOOT | GAME_ADULT
-);
 
 /*************
    PALAMEDES
  *************/
 
-static struct DIR_INFO palamedes_dirs[] =
-{
-   { "palamedes", },
-   { "palamed", },
-   { NULL, },
-};
 
-static struct ROM_INFO palamedes_roms[] =
+static struct ROM_INFO rom_palamed[] =
 {
    {       "c63.02", 0x00020000, 0x55a82bb2, 0, 0, 0, },
    {       "c63.03", 0x00020000, 0xfcd86e44, 0, 0, 0, },
@@ -1575,7 +1221,7 @@ static struct ROM_INFO palamedes_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO palamedes_inputs[] =
+static struct INPUT_INFO input_palamed[] =
 {
    INP0( COIN1, 0x02C200, 0x04 ),
    INP0( COIN2, 0x02C200, 0x08 ),
@@ -1651,7 +1297,7 @@ static struct DSW_DATA dsw_data_palamedes_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO palamedes_dsw[] =
+static struct DSW_INFO dsw_palamed[] =
 {
    { 0x02C210, 0xFF, dsw_data_palamedes_0 },
    { 0x02C212, 0xFF, dsw_data_palamedes_1 },
@@ -1667,45 +1313,19 @@ static struct ROMSW_DATA romsw_data_palamedes_0[] =
    { NULL,                       0    },
 };
 
-static struct ROMSW_INFO palamedes_romsw[] =
+static struct ROMSW_INFO romsw_palamed[] =
 {
    { 0x007FFF, 0x00, romsw_data_palamedes_0 },
    { 0,        0,    NULL },
 };
 
-GAME( palamedes ,
-   palamedes_dirs,
-   palamedes_roms,
-   palamedes_inputs,
-   palamedes_dsw,
-   palamedes_romsw,
-
-   LoadPalamedes,
-   ClearPalamedes,
-   &lsystem_video,
-   execute_lsystem,
-   "palamed",
-   "Palamedes",
-   "パラメデス",
-   COMPANY_ID_TAITO,
-   "C63",
-   1990,
-   taito_ym2203_sound,
-   GAME_PUZZLE
-);
 
 /*************
    CUBYBOP
  *************/
 
-static struct DIR_INFO cubybop_dirs[] =
-{
-   { "cuby_bop", },
-   { "cubybop", },
-   { NULL, },
-};
 
-static struct ROM_INFO cubybop_roms[] =
+static struct ROM_INFO rom_cubybop[] =
 {
    {       "cb06.6", 0x00040000, 0x66b89a85, 0, 0, 0, },
    {       "cb07.7", 0x00040000, 0x3582de99, 0, 0, 0, },
@@ -1715,7 +1335,7 @@ static struct ROM_INFO cubybop_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO cubybop_inputs[] =
+static struct INPUT_INFO input_cubybop[] =
 {
    INP0( COIN1, 0x02C200, 0x04 ),
    INP0( COIN2, 0x02C200, 0x08 ),
@@ -1791,48 +1411,20 @@ static struct DSW_DATA dsw_data_cubybop_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO cubybop_dsw[] =
+static struct DSW_INFO dsw_cubybop[] =
 {
    { 0x02C210, 0xFF, dsw_data_cubybop_0 },
    { 0x02C212, 0xFF, dsw_data_cubybop_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( cuby_bop ,
-   cubybop_dirs,
-   cubybop_roms,
-   cubybop_inputs,
-   cubybop_dsw,
-   NULL,
-
-   load_cuby_bop,
-   clear_cuby_bop,
-   &lsystem_video,
-   execute_lsystem,
-   "cubybop",
-   "Cuby Bop",
-   NULL,
-   COMPANY_ID_TAITO,
-   NULL,
-   1990,
-   taito_ym2203_sound,
-   GAME_PUZZLE
-);
 
 /*************
    TUBE IT
  *************/
 
-static struct DIR_INFO tube_it_dirs[] =
-{
-   { "tube_it", },
-   { "tubeit", },
-   { ROMOF("cachat"), },
-   { CLONEOF("cachat"), },
-   { NULL, },
-};
 
-static struct ROM_INFO tube_it_roms[] =
+static struct ROM_INFO rom_tubeit[] =
 {
    {     "t-i_02.6", 0x00020000, 0x54730669, 0, 0, 0, },
    {     "t-i_03.7", 0x00040000, 0xe1c3fed0, 0, 0, 0, },
@@ -1840,39 +1432,13 @@ static struct ROM_INFO tube_it_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( tube_it ,
-   tube_it_dirs,
-   tube_it_roms,
-   cachat_inputs,
-   cachat_dsw,
-   NULL,
-
-   load_tube_it,
-   clear_tube_it,
-   &lsystem_video,
-   execute_lsystem,
-   "tubeit",
-   "Tube It",
-   NULL,
-   COMPANY_ID_TAITO,
-   NULL,
-   1990,
-   taito_ym2203_sound,
-   GAME_PUZZLE
-);
 
 /***********
    RAIMAIS
  ***********/
 
-static struct DIR_INFO raimais_dirs[] =
-{
-   { "raimais", },
-   { "raimaisj", },
-   { NULL, },
-};
 
-static struct ROM_INFO raimais_roms[] =
+static struct ROM_INFO rom_raimais[] =
 {
    {   "b36-01.bin", 0x00080000, 0x89355cb2, 0, 0, 0, },
    {   "b36-02.bin", 0x00080000, 0xe71da5db, 0, 0, 0, },
@@ -1884,7 +1450,7 @@ static struct ROM_INFO raimais_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO raimais_inputs[] =
+static struct INPUT_INFO input_raimais[] =
 {
    INP1( COIN1, 0x02C20E, 0x04 ),
    INP1( COIN2, 0x02C20E, 0x08 ),
@@ -1953,33 +1519,13 @@ static struct DSW_DATA dsw_data_raimais_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO raimais_dsw[] =
+static struct DSW_INFO dsw_raimais[] =
 {
    { 0x02C200, 0xFE, dsw_data_raimais_0 },
    { 0x02C202, 0x7F, dsw_data_raimais_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( raimais ,
-   raimais_dirs,
-   raimais_roms,
-   raimais_inputs,
-   raimais_dsw,
-   NULL,
-
-   LoadRaimais,
-   ClearRaimais,
-   &lsystem_video,
-   execute_lsystem,
-   "raimais",
-   "Raimais",
-   "レイメイズ",
-   COMPANY_ID_TAITO,
-   "B36",
-   1988,
-   taito_ym2610_sound,
-   GAME_MISC
-);
 
 /*
 
@@ -2149,7 +1695,7 @@ static UINT8 LSystemTileBankRead(UINT16 offset)
 
 static UINT8 Z80BankCount;
 
-void LSystemNewBankWrite(UINT16 offset, UINT8 data)
+static void LSystemNewBankWrite(UINT16 offset, UINT8 data)
 {
   z80_set_bank(1,data);
 }
@@ -2187,7 +1733,7 @@ static void init_bank_rom(UINT8 *src )
 static UINT8 Z802Bank;
 static UINT8 Z802BankCount;
 
-void LSystemSubCpuNewBankWrite(UINT16 offset, UINT8 data)
+static void LSystemSubCpuNewBankWrite(UINT16 offset, UINT8 data)
 {
   Z802Bank = data;
   z80_set_bank(2,data & 0xf);
@@ -2568,7 +2114,7 @@ static void palamedes_led_write(UINT16 offset, UINT8 data)
 
 /******************************************************************************/
 
-void LSystemAddSaveData(void)
+static void LSystemAddSaveData(void)
 {
 	memset(VectorData,0,4);
    AddSaveData(SAVE_USER_0, (UINT8 *) &VectorData,          sizeof(VectorData));
@@ -2611,7 +2157,7 @@ static void DrawNibble(UINT8 *out, int plane, UINT8 c)
       } while(--count);
 }
 
-void LoadRaimais(void)
+static void load_raimais(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -2788,12 +2334,7 @@ void LoadRaimais(void)
    reset_tc0220ioc();
 }
 
-void ClearRaimais(void)
-{
-   RemoveTaitoYM2610();
-}
-
-void load_american_horseshoes(void)
+static void load_horshoes(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -2917,14 +2458,6 @@ void load_american_horseshoes(void)
    GameMouse=1;
 }
 
-void clear_american_horseshoes(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x100000, 0);
-#endif
-}
-
 static void load_plotting(void)
 {
    romset=2;
@@ -3029,7 +2562,7 @@ static void load_plotting(void)
 }
 
 
-void LoadChampionWr(void)
+static void load_champwr(void)
 {
 
    romset=3;
@@ -3159,17 +2692,7 @@ void LoadChampionWr(void)
    reset_tc0220ioc();
 }
 
-void ClearChampionWr(void)
-{
-   RemoveTaitoYM2203();
-
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      //save_debug("GFX.BIN", GFX, 0x300000, 0);
-#endif
-}
-
-void LoadFightingHawk(void)
+static void load_fhawk(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -3340,20 +2863,16 @@ void LoadFightingHawk(void)
    reset_tc0220ioc();
 }
 
-void ClearFightingHawk(void)
+static void load_kurikint()
 {
-   RemoveTaitoYM2203();
-
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
-static void load_kuri_kinton_actual(int romset_2)
-{
-   int ta, tb;
+   int ta, tb,romset_2;
    UINT8 *TMP;
+   if (is_current_game("kurikina"))
+       romset_2 = 0;
+   else if (is_current_game("kurikint"))
+       romset_2 = 1;
+   else if (is_current_game("kurikinj"))
+       romset_2 = 2;
 
    romset=5;
    Z80BankCount=0x40000/0x2000;
@@ -3562,30 +3081,7 @@ static void load_kuri_kinton_actual(int romset_2)
 
 }
 
-void LoadKuriKinton(void)
-{
-   load_kuri_kinton_actual(0);
-}
-
-void LoadKuriKinton_alt(void)
-{
-   load_kuri_kinton_actual(1);
-}
-
-void LoadKuriKinton_jap(void)
-{
-   load_kuri_kinton_actual(2);
-}
-
-void ClearKuriKinton(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
-void LoadPuzznic(void)
+static void load_puzznic(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -3693,15 +3189,7 @@ void LoadPuzznic(void)
    LSystemAddSaveData();
 }
 
-void ClearPuzznic(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x080000, 0);
-#endif
-}
-
-void LoadPlgirls(void)
+static void load_plgirls(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -3815,15 +3303,7 @@ void LoadPlgirls(void)
    //reset_tc0220ioc();
 }
 
-void ClearPlgirls(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x080000, 0);
-#endif
-}
-
-void LoadPlgirls2(void)
+static void load_plgirls2(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -3937,15 +3417,7 @@ void LoadPlgirls2(void)
    //reset_tc0220ioc();
 }
 
-void ClearPlgirls2(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x080000, 0);
-#endif
-}
-
-void LoadPalamedes(void)
+static void load_palamed(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -4057,15 +3529,7 @@ void LoadPalamedes(void)
    reset_tc0220ioc();
 }
 
-void ClearPalamedes(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x080000, 0);
-#endif
-}
-
-void load_cuby_bop(void)
+static void load_cubybop(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -4179,7 +3643,7 @@ void load_cuby_bop(void)
    reset_tc0220ioc();
 }
 
-void clear_cuby_bop(void)
+static void clear_cuby_bop(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -4187,7 +3651,7 @@ void clear_cuby_bop(void)
 #endif
 }
 
-void load_tube_it(void)
+static void load_tubeit(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -4301,15 +3765,7 @@ void load_tube_it(void)
    reset_tc0220ioc();
 }
 
-void clear_tube_it(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x100000, 0);
-#endif
-}
-
-void load_cachat(void)
+static void load_cachat(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -4425,15 +3881,7 @@ void load_cachat(void)
    reset_tc0220ioc();
 }
 
-void clear_cachat(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      //save_debug("GFX.BIN", GFX, 0x100000, 0);
-#endif
-}
-
-void DrawLSystem(void)
+static void DrawLSystem(void)
 {
    int w,x,y,code,ta;
    int zz,zzz,zzzz,x16,y16;
@@ -4665,9 +4113,237 @@ void DrawLSystem(void)
    }
 }
 
-#define lsystem_sound taito_ym2203_sound
+static struct VIDEO_INFO video_champwr =
+{
+   DrawLSystem,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo2
+};
+static struct VIDEO_INFO video_fhawk =
+{
+   DrawLSystem,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 | VIDEO_NEEDS_8BPP |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_kurikint =
+{
+   DrawLSystem,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo
+};
+static struct DIR_INFO dir_horshoes[] =
+{
+   { "american_horseshoes", },
+   { "amhorse", },
+   { "horshoes", },
+   { NULL, },
+};
+GAME( horshoes, "American Horseshoes", TAITO, 1990, GAME_SPORTS | GAME_NOT_WORKING,
+	.input = input_horshoes,
+	.dsw = dsw_horshoes,
+	.video = &video_fhawk,
+	.long_name_jpn = "アメリカンホースシュー",
+	.board = "C47",
+);
+static struct DIR_INFO dir_cachat[] =
+{
+   { "cachat", },
+   { NULL, },
+};
+GAME( cachat, "Cachat", TAITO, 1993, GAME_PUZZLE,
+	.input = input_cachat,
+	.dsw = dsw_cachat,
+);
+static struct DIR_INFO dir_champwr[] =
+{
+   { "champion_wrestler", },
+   { "champwr", },
+   { NULL, },
+};
+GME( champwr, "Champion Wrestler", TAITO, 1989, GAME_SPORTS,
+	.romsw = romsw_champwr,
+	.video = &video_champwr,
+	.long_name_jpn = "チャンピオンレスラー",
+	.board = "C01",
+);
+static struct DIR_INFO dir_champwrj[] =
+{
+   { "champion_wrestler_jp", },
+   { "champwrj", },
+   { ROMOF("champwr"), },
+   { CLONEOF("champwr"), },
+   { NULL, },
+};
+CLNE( champwrj, champwr, "Champion Wrestler (Japan)", TAITO, 1989, GAME_SPORTS,
+	.dsw = dsw_champwrj,
+	.long_name_jpn = "秡粐糜龝礫糜粽禮粱�[ (Japan)",
+	.board = "C01",
+);
+static struct DIR_INFO dir_champwru[] =
+{
+   { "champion_wrestler_us", },
+   { "champwru", },
+   { ROMOF("champwr"), },
+   { CLONEOF("champwr"), },
+   { NULL, },
+};
+CLNE( champwru, champwr, "Champion Wrestler (US)", TAITO, 1989, GAME_SPORTS,
+	.dsw = dsw_champwru,
+	.long_name_jpn = "秡粐糜龝礫糜粽禮粱�[ (US)",
+	.board = "C01",
+);
+static struct DIR_INFO dir_cubybop[] =
+{
+   { "cuby_bop", },
+   { "cubybop", },
+   { NULL, },
+};
+GAME( cubybop, "Cuby Bop", TAITO, 1990, GAME_PUZZLE,
+	.input = input_cubybop,
+	.dsw = dsw_cubybop,
+	.clear = clear_cuby_bop,
+);
+static struct DIR_INFO dir_fhawk[] =
+{
+   { "fighting_hawk", },
+   { "fhawk", },
+   { "fhawkj", },
+   { NULL, },
+};
+GAME( fhawk, "Fighting Hawk", TAITO, 1988, GAME_SHOOT,
+	.input = input_fhawk,
+	.dsw = dsw_fhawk,
+	.romsw = romsw_fhawk,
+	.video = &video_fhawk,
+	.long_name_jpn = "ファイティングホーク",
+	.board = "B70",
+);
+static struct DIR_INFO dir_kurikina[] =
+{
+   { "kuri_kinton", },
+   { "kurikina", },
+   { ROMOF("kurikint"), },
+   { CLONEOF("kurikint"), },
+   { NULL, },
+};
+CLNE( kurikina,kurikint, "Kuri Kinton (Alternate)", TAITO, 1988, GAME_BEAT,
+	.dsw = dsw_kurikina,
+	.long_name_jpn = "公李金団 (Alternate)",
+	.board = "B42",
+);
+static struct DIR_INFO dir_kurikint[] =
+{
+   { "kuri_kinton_alt", },
+   { "kurikint", },
+   { "kurikina", },
+   { NULL, },
+};
+GME( kurikint, "Kuri Kinton", TAITO, 1988, GAME_BEAT,
+	.romsw = romsw_kurikint,
+	.long_name_jpn = "公李金団",
+	.board = "B42",
+);
+static struct DIR_INFO dir_kurikinj[] =
+{
+   { "kuri_kinton_jap", },
+   { "kurikinj", },
+   { "kurikina", },
+   { ROMOF("kurikint"), },
+   { CLONEOF("kurikint"), },
+   { NULL, },
+};
+CLNE( kurikinj,kurikint, "Kuri Kinton (JPN Ver.)", TAITO, 1988, GAME_BEAT,
+	.long_name_jpn = "公李金団 (alternate)",
+	.board = "B42",
+);
+static struct DIR_INFO dir_palamed[] =
+{
+   { "palamedes", },
+   { "palamed", },
+   { NULL, },
+};
+GAME( palamed, "Palamedes", TAITO, 1990, GAME_PUZZLE,
+	.input = input_palamed,
+	.dsw = dsw_palamed,
+	.romsw = romsw_palamed,
+	.long_name_jpn = "パラメデス",
+	.board = "C63",
+);
+static struct DIR_INFO dir_plgirls[] =
+{
+   { "plgirls", },
+   { NULL, },
+};
+GAME( plgirls, "Play Girls", HOT_B, 1992, GAME_BREAKOUT | GAME_ADULT,
+	.input = input_plgirls,
+	.dsw = dsw_plgirls,
+	.video = &video_fhawk,
+	.long_name_jpn = "Play Girls",
+	.board = "???",
+);
+static struct DIR_INFO dir_plgirls2[] =
+{
+   { "plgirls2", },
+   { NULL, },
+};
+GAME( plgirls2, "Play Girls 2", HOT_B, 1993, GAME_SHOOT | GAME_ADULT,
+	.input = input_plgirls2,
+	.dsw = dsw_plgirls2,
+	.video = &video_fhawk,
+);
+static struct DIR_INFO dir_puzznic[] =
+{
+   { "puzznic", },
+   { "puzznicj", },
+   { NULL, },
+};
+GAME( puzznic, "Puzznic", TAITO, 1989, GAME_PUZZLE | GAME_ADULT,
+	.input = input_puzznic,
+	.dsw = dsw_puzznic,
+	.romsw = romsw_puzznic,
+	.long_name_jpn = "パズニック",
+	.board = "C20",
+);
+static struct DIR_INFO dir_raimais[] =
+{
+   { "raimais", },
+   { "raimaisj", },
+   { NULL, },
+};
+GAME( raimais, "Raimais", TAITO, 1988, GAME_MISC,
+	.input = input_raimais,
+	.dsw = dsw_raimais,
+	.long_name_jpn = "レイメイズ",
+	.board = "B36",
+	.sound = taito_ym2610_sound,
+);
+static struct DIR_INFO dir_tubeit[] =
+{
+   { "tube_it", },
+   { "tubeit", },
+   { ROMOF("cachat"), },
+   { CLONEOF("cachat"), },
+   { NULL, },
+};
+GAME( tubeit, "Tube It", TAITO, 1990, GAME_PUZZLE,
+	.input = input_cachat,
+	.dsw = dsw_cachat,
+);
 
-GME_ROMSWD( plotting ,"Plotting",COMPANY_ID_TAITO,1989,GAME_PUZZLE,lsystem);
-CLONE_ROMSWD( plottinga,plotting,"Plotting (World set 2, protected)",COMPANY_ID_TAITO,1989,GAME_PUZZLE,lsystem);
-CLONE_ROMSWD( plottingb,plotting,"Plotting (World set 3, earliest version)",COMPANY_ID_TAITO,1989,GAME_PUZZLE,lsystem);
-
+GMEI( plotting ,"Plotting",TAITO,1989,GAME_PUZZLE,
+	.romsw = plotting_romsw);
+CLNEI( plottinga,plotting,"Plotting (World set 2, protected)",TAITO,1989,GAME_PUZZLE,
+	.romsw = plotting_romsw);
+CLNEI( plottingb,plotting,"Plotting (World set 3, earliest version)",TAITO,1989,GAME_PUZZLE,
+	.romsw = plotting_romsw);

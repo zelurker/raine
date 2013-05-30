@@ -1,3 +1,7 @@
+#define DRV_DEF_DSW NULL
+#define DRV_DEF_LOAD load_pang
+#define DRV_DEF_EXEC execute_pang
+#define DRV_DEF_SOUND sound_pang
 /* Capcom mitchell hardware : z80 games !!!
    This driver is quite a nightmare, congratulations to mame to have emulated it first.
    Kabuki encryption, rom banks, ram banks, code executed in ram, eeprom, and tweaks for
@@ -14,7 +18,7 @@
 #include "blit.h"
 #include "savegame.h"
 
-static struct ROM_INFO pkladies_roms[] =
+static struct ROM_INFO rom_pkladies[] =
 {
   { "pko-prg1.14f", 0x08000, 0x86585a94, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "pko-prg2.15f", 0x10000, 0x86cbe82d, REGION_ROM1, 0x10000, LOAD_NORMAL },
@@ -29,7 +33,7 @@ static struct ROM_INFO pkladies_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO pang_roms[] =
+static struct ROM_INFO rom_pang[] =
 {
   { "pang6.bin", 0x08000, 0x68be52cd, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "pang7.bin", 0x20000, 0x4a2e70f6, REGION_ROM1, 0x10000, LOAD_NORMAL },
@@ -47,7 +51,7 @@ static struct ROM_INFO pang_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO spang_roms[] =
+static struct ROM_INFO rom_spang[] =
 {
   { "spe_06.rom", 0x08000, 0x1af106fb, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "spe_07.rom", 0x20000, 0x208b5f54, REGION_ROM1, 0x10000, LOAD_NORMAL },
@@ -65,7 +69,7 @@ static struct ROM_INFO spang_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO block_roms[] =
+static struct ROM_INFO rom_block[] =
 {
   { "ble_05.rom", 0x08000, 0xc12e7f4c, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "ble_06.rom", 0x20000, 0xcdb13d55, REGION_ROM1, 0x10000, LOAD_NORMAL },
@@ -84,7 +88,7 @@ static struct ROM_INFO block_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO blockj_roms[] =
+static struct ROM_INFO rom_blockj[] =
 {
   { "blj_05.rom", 0x08000, 0x3b55969a, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "ble_06.rom", 0x20000, 0xcdb13d55, REGION_ROM1, 0x10000, LOAD_NORMAL },
@@ -93,7 +97,7 @@ static struct ROM_INFO blockj_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO blockjoy_roms[] =
+static struct ROM_INFO rom_blockjoy[] =
 {
   { "ble_05.bin", 0x08000, 0xfa2a4536, REGION_ROM1, 0x00000, LOAD_NORMAL },
   { "blf_06.bin", 0x20000, 0xe114ebde, REGION_ROM1, 0x10000, LOAD_NORMAL },
@@ -102,7 +106,7 @@ static struct ROM_INFO blockjoy_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO pkladies_inputs[] =
+static struct INPUT_INFO input_pkladies[] =
 {
   INP0( TEST, 0x00, 0x02 ),
 
@@ -145,7 +149,7 @@ static struct INPUT_INFO pkladies_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO pang_inputs[] =
+static struct INPUT_INFO input_pang[] =
 {
   INP0( TEST, 0x00, 0x02 ),
 
@@ -170,7 +174,7 @@ static struct INPUT_INFO pang_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO block_inputs[] =
+static struct INPUT_INFO input_block[] =
 {
   INP0( TEST, 0x00, 0x02 ),
   INP0( P2_START, 0x01, 0x02 ),
@@ -781,7 +785,7 @@ static void draw() {
   }
 }
 
-static struct VIDEO_INFO pang_video =
+static struct VIDEO_INFO video_pang =
 {
    draw,
    384,
@@ -792,7 +796,7 @@ static struct VIDEO_INFO pang_video =
    gfxdecodeinfo,
 };
 
-static struct VIDEO_INFO pkladies_video =
+static struct VIDEO_INFO video_pkladies =
 {
    draw,
    384,
@@ -803,7 +807,7 @@ static struct VIDEO_INFO pkladies_video =
    marukin_gfxdecodeinfo,
 };
 
-static struct VIDEO_INFO block_video =
+static struct VIDEO_INFO video_block =
 {
    draw,
    384,
@@ -830,32 +834,23 @@ static struct OKIM6295interface oki_interface =
 	{ 120 }
 };
 
-struct SOUND_INFO pang_sound[] =
+struct SOUND_INFO sound_pang[] =
 {
   { SOUND_YM2413,  &ym2413_interface },
    { SOUND_M6295,  &oki_interface,  },
    { 0,             NULL,               },
 };
 
-#define pang_dsw NULL
-GME( pang,
+GMEI( pang,
      "Pang (World)",
-     COMPANY_ID_MITCHELL,
+     MITCHELL,
      1989,
      GAME_MISC);
-CLONE(spang, pang, "Super Pang (World 900914)",COMPANY_ID_MITCHELL,1990,GAME_MISC);
+CLNEI(spang, pang, "Super Pang (World 900914)",MITCHELL,1990,GAME_MISC);
 
-#define pkladies_dsw NULL
-#define load_pkladies load_pang
-#define execute_pkladies execute_pang
-#define pkladies_sound pang_sound
-GME( pkladies, "Poker Ladies", COMPANY_ID_MITCHELL, 1989, GAME_MISC);
+GMEI( pkladies, "Poker Ladies", MITCHELL, 1989, GAME_MISC);
 
-#define block_dsw NULL
-#define load_block load_pang
-#define execute_block execute_pang
-#define block_sound pang_sound
-GME( block, "Block Block (World 910910)", COMPANY_ID_CAPCOM, 1991, GAME_BREAKOUT);
-CLONE( blockj, block, "Block Block (Japan 910910)", COMPANY_ID_CAPCOM, 1991, GAME_BREAKOUT);
-CLONE( blockjoy, block, "Block Block (World 911106 Joystick only)", COMPANY_ID_CAPCOM, 1991, GAME_BREAKOUT);
+GMEI( block, "Block Block (World 910910)", CAPCOM, 1991, GAME_BREAKOUT);
+CLNEI( blockj, block, "Block Block (Japan 910910)", CAPCOM, 1991, GAME_BREAKOUT);
+CLNEI( blockjoy, block, "Block Block (World 911106 Joystick only)", CAPCOM, 1991, GAME_BREAKOUT);
 

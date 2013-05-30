@@ -1,3 +1,6 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
+#define DRV_DEF_INPUT input_gigandes
+#define DRV_DEF_EXEC execute_gigandes
 /******************************************************************************/
 /*                                                                            */
 /*                   BALLOON BROS (C) 1992 EAST TECHNOLOGY                    */
@@ -11,22 +14,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "xsystem1.h"
 #include "taitosnd.h"
 #include "setax1.h"
 #include "sasound.h"		// sample support routines
 #include "timer.h"
 
-static struct DIR_INFO balloon_bros_dirs[] =
-{
-   { "balloon_brothers", },
-   { "balloon_bros", },
-   { "ballbros", },
-   { "balloonb", },
-   { NULL, },
-};
 
-static struct ROM_INFO balloon_bros_roms[] =
+static struct ROM_INFO rom_ballbros[] =
 {
    {            "0", 0x00020000, 0x1cc584e5, 0, 0, 0, },
    {            "1", 0x00020000, 0x8196d624, 0, 0, 0, },
@@ -40,7 +34,7 @@ static struct ROM_INFO balloon_bros_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO x_system_inputs[] =
+static struct INPUT_INFO input_gigandes[] =
 {
    INP0( COIN1, 0x020005, 0x01 ),
    INP0( COIN2, 0x020005, 0x02 ),
@@ -68,7 +62,7 @@ static struct INPUT_INFO x_system_inputs[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_balloon_bros_0[] =
+static struct DSW_DATA dsw_data_balloon_bros_0[] =
 {
    { MSG_COIN1,               0x03, 0x04 },
    { MSG_2COIN_1PLAY,         0x01},
@@ -89,7 +83,7 @@ struct DSW_DATA dsw_data_balloon_bros_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_balloon_bros_1[] =
+static struct DSW_DATA dsw_data_balloon_bros_1[] =
 {
    DSW_DEMO_SOUND( 0x00, 0x01),
    DSW_SCREEN( 0x02, 0x00),
@@ -104,61 +98,18 @@ struct DSW_DATA dsw_data_balloon_bros_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO balloon_bros_dsw[] =
+static struct DSW_INFO dsw_ballbros[] =
 {
    { 0x020100, 0xDF, dsw_data_balloon_bros_0 },
    { 0x020102, 0xDE, dsw_data_balloon_bros_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO x_system_video =
-{
-   draw_x_system,
-   384,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO x_system_video_r270 =
-{
-   draw_x_system,
-   384,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-GAME( balloon_bros ,
-   balloon_bros_dirs,
-   balloon_bros_roms,
-   x_system_inputs,
-   balloon_bros_dsw,
-   NULL,
 
-   load_balloon_bros,
-   clear_balloon_bros,
-   &x_system_video,
-   execute_x_system_frame,
-   "ballbros",
-   "Balloon Brothers",
-   "ƒoƒ‹[ƒ“ƒuƒ‰ƒU[ƒY",
-   COMPANY_ID_EAST_TECHNOLOGY,
-   NULL,
-   1992,
-   taito_ym2610_sound,
-   GAME_PUZZLE
-);
 
-static struct DIR_INFO gigandes_dirs[] =
-{
-   { "gigandes", },
-   { NULL, },
-};
-
-static struct ROM_INFO gigandes_roms[] =
+static struct ROM_INFO rom_gigandes[] =
 {
    {            "1", 0x00020000, 0x290c50e0, 0, 0, 0, },
    {            "3", 0x00020000, 0x9cef82af, 0, 0, 0, },
@@ -174,7 +125,7 @@ static struct ROM_INFO gigandes_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_gigandes_0[] =
+static struct DSW_DATA dsw_data_gigandes_0[] =
 {
    { MSG_COIN1,               0x03, 0x04 },
    { MSG_2COIN_1PLAY,         0x01},
@@ -200,7 +151,7 @@ struct DSW_DATA dsw_data_gigandes_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_gigandes_1[] =
+static struct DSW_DATA dsw_data_gigandes_1[] =
 {
    DSW_DEMO_SOUND( 0x00, 0x01),
    DSW_SCREEN( 0x00, 0x02),
@@ -218,41 +169,16 @@ struct DSW_DATA dsw_data_gigandes_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO gigandes_dsw[] =
+static struct DSW_INFO dsw_gigandes[] =
 {
    { 0x020100, 0xDF, dsw_data_gigandes_0 },
    { 0x020102, 0x98, dsw_data_gigandes_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( gigandes ,
-   gigandes_dirs,
-   gigandes_roms,
-   x_system_inputs,
-   gigandes_dsw,
-   NULL,
 
-   load_gigandes,
-   clear_superman,
-   &x_system_video,
-   execute_x_system_frame,
-   "gigandes",
-   "Gigandes",
-   NULL,
-   COMPANY_ID_EAST_TECHNOLOGY,
-   NULL,
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO superman_dirs[] =
-{
-   { "superman", },
-   { NULL, },
-};
-
-static struct ROM_INFO superman_roms[] =
+static struct ROM_INFO rom_superman[] =
 {
    {   "a10_09.bin", 0x00020000, 0x640f1d58, 0, 0, 0, },
    {   "a08_08.bin", 0x00020000, 0x79fc028e, 0, 0, 0, },
@@ -314,7 +240,7 @@ static struct DSW_DATA dsw_data_superman_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO superman_dsw[] =
+static struct DSW_INFO dsw_superman[] =
 {
    { 0x040100, 0xFF, dsw_data_superman_0 },
    { 0x040102, 0xFF, dsw_data_superman_1 },
@@ -327,40 +253,15 @@ static struct ROMSW_DATA romsw_data_superman_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO superman_romsw[] =
+static struct ROMSW_INFO romsw_superman[] =
 {
    { 0x07FFFF, 0x02, romsw_data_superman_0 },
    { 0,        0,    NULL },
 };
 
-GAME( superman ,
-   superman_dirs,
-   superman_roms,
-   x_system_inputs,
-   superman_dsw,
-   superman_romsw,
 
-   load_superman,
-   clear_superman,
-   &x_system_video,
-   execute_x_system_frame,
-   "superman",
-   "Superman",
-   "ƒX[ƒp[ƒ}ƒ“",
-   COMPANY_ID_TAITO,
-   "B61",
-   1988,
-   taito_ym2610_sound,
-   GAME_BEAT | GAME_SHOOT
-);
 
-static struct DIR_INFO twin_hawk_dirs[] =
-{
-   { "twinhawk", },
-   { NULL, },
-};
-
-static struct ROM_INFO twin_hawk_roms[] =
+static struct ROM_INFO rom_twinhawk[] =
 {
    {   "b87-11.bin", 0x00020000, 0xfc84a399, 0, 0, 0, },
    {   "b87-10.bin", 0x00020000, 0x17181706, 0, 0, 0, },
@@ -415,43 +316,16 @@ static struct DSW_DATA dsw_data_twin_hawk_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO twin_hawk_dsw[] =
+static struct DSW_INFO dsw_twinhawk[] =
 {
    { 0x040100, 0xFE, dsw_data_twin_hawk_0 },
    { 0x040102, 0x7F, dsw_data_twin_hawk_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( twinhawk ,
-   twin_hawk_dirs,
-   twin_hawk_roms,
-   x_system_inputs,
-   twin_hawk_dsw,
-   NULL,
 
-   load_twin_hawk,
-   clear_twin_hawk,
-   &x_system_video_r270,
-   execute_x_system_frame,
-   "twinhawk",
-   "Twin Hawk",
-   "µåù•—",
-   COMPANY_ID_TAITO,
-   "B87",
-   1989,
-   taito_ym2151_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO daisenpu_dirs[] =
-{
-   { "daisenpu", },
-   { ROMOF("twinhawk"), },
-   { CLONEOF("twinhawk"), },
-   { NULL, },
-};
-
-static struct ROM_INFO daisenpu_roms[] =
+static struct ROM_INFO rom_daisenpu[] =
 {
    {       "b87-01", 0x00080000, 0x81e82ae1, 0, 0, 0, },
    {       "b87-02", 0x00080000, 0x89ad43a0, 0, 0, 0, },
@@ -479,33 +353,13 @@ static struct DSW_DATA dsw_data_daisenpu_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO daisenpu_dsw[] =
+static struct DSW_INFO dsw_daisenpu[] =
 {
    { 0x040100, 0xFE, dsw_data_daisenpu_0 },
    { 0x040102, 0x7F, dsw_data_twin_hawk_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( daisenpu ,
-   daisenpu_dirs,
-   daisenpu_roms,
-   x_system_inputs,
-   daisenpu_dsw,
-   NULL,
-
-   load_twin_hawk,
-   clear_twin_hawk,
-   &x_system_video_r270,
-   execute_x_system_frame,
-   "daisenpu",
-   "Daisenpu",
-   "µåù•—",
-   COMPANY_ID_TAITO,
-   "B87",
-   1989,
-   taito_ym2151_sound,
-   GAME_SHOOT
-);
 
 static UINT32 romset;
 static UINT32 tile_mask;
@@ -594,7 +448,7 @@ static UINT16 split_dsw_rw(UINT32 address)
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void DecodeXSystemGfx(int tb, int tc, int n)
+static void DecodeXSystemGfx(int tb, int tc, int n)
 {
   if (n==0) {
     GFX_SPR[tb+0] = (((tc&0x80)>>7)<<n);
@@ -618,7 +472,7 @@ void DecodeXSystemGfx(int tb, int tc, int n)
   }
 }
 
-void MemoryMap_68000(void)
+static void MemoryMap_68000(void)
 {
    if ((romset==0) || (romset==2))	// Balloon Bros, Twin Hawk / Daisenpu
      AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);		// 68000 ROM
@@ -666,7 +520,7 @@ void MemoryMap_68000(void)
    AddWriteWord(-1, -1, NULL, NULL);
 }
 
-void load_balloon_bros(void)
+static void load_ballbros(void)
 {
    int ta,tb,tc;
 
@@ -791,7 +645,7 @@ void load_balloon_bros(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_balloon_bros(void)
+static void clear_balloon_bros(void)
 {
    RemoveTaitoYM2610();
 
@@ -801,7 +655,7 @@ void clear_balloon_bros(void)
    #endif
 }
 
-void load_gigandes(void)
+static void load_gigandes(void)
 {
    int ta,tb,tc;
 
@@ -927,7 +781,7 @@ void load_gigandes(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_superman(void)
+static void load_superman(void)
 {
    int ta,tb,tc;
 
@@ -1073,17 +927,7 @@ void load_superman(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_superman(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-   #endif
-}
-
-void load_twin_hawk(void)
+static void load_twinhawk(void)
 {
    int ta,tb,tc;
 
@@ -1237,17 +1081,7 @@ void load_twin_hawk(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_twin_hawk(void)
-{
-   RemoveTaitoYM2151();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x040000,1);
-      //save_debug("RAM.bin",RAM,0x040000,1);
-   #endif
-}
-
-void execute_x_system_frame(void)
+static void execute_gigandes(void)
 {
    if(romset==3)
      cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
@@ -1266,9 +1100,81 @@ void execute_x_system_frame(void)
    execute_z80_audio_frame();
 }
 
-void draw_x_system(void)
+static void draw_x_system(void)
 {
    ClearPaletteMap();
 
    render_seta_x1_68000();
 }
+static struct VIDEO_INFO video_gigandes =
+{
+   draw_x_system,
+   384,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_twinhawk =
+{
+   draw_x_system,
+   384,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ballbros[] =
+{
+   { "balloon_brothers", },
+   { "balloon_bros", },
+   { "ballbros", },
+   { "balloonb", },
+   { NULL, },
+};
+GAME( ballbros, "Balloon Brothers", EAST_TECHNOLOGY, 1992, GAME_PUZZLE,
+	.dsw = dsw_ballbros,
+	.clear = clear_balloon_bros,
+	.video = &video_gigandes,
+	.long_name_jpn = "ƒoƒ‹[ƒ“ƒuƒ‰ƒU[ƒY",
+);
+static struct DIR_INFO dir_daisenpu[] =
+{
+   { "daisenpu", },
+   { ROMOF("twinhawk"), },
+   { CLONEOF("twinhawk"), },
+   { NULL, },
+};
+CLONE(daisenpu, twinhawk, "Daisenpu", TAITO, 1989, GAME_SHOOT,
+	.dsw = dsw_daisenpu,
+	.video = &video_twinhawk,
+	.long_name_jpn = "µåù•—",
+	.board = "B87",
+	.sound = taito_ym2151_sound,
+);
+GMEI( gigandes, "Gigandes", EAST_TECHNOLOGY, 1989, GAME_SHOOT);
+static struct DIR_INFO dir_superman[] =
+{
+   { "superman", },
+   { NULL, },
+};
+GAME( superman, "Superman", TAITO, 1988, GAME_BEAT | GAME_SHOOT,
+	.dsw = dsw_superman,
+	.romsw = romsw_superman,
+	.video = &video_gigandes,
+	.long_name_jpn = "ƒX[ƒp[ƒ}ƒ“",
+	.board = "B61",
+);
+static struct DIR_INFO dir_twinhawk[] =
+{
+   { "twinhawk", },
+   { NULL, },
+};
+GAME( twinhawk, "Twin Hawk", TAITO, 1989, GAME_SHOOT,
+	.dsw = dsw_twinhawk,
+	.video = &video_twinhawk,
+	.long_name_jpn = "µåù•—",
+	.board = "B87",
+	.sound = taito_ym2151_sound,
+);
+

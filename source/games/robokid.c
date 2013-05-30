@@ -5,21 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "robokid.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 #include "2203intf.h"
 #include "decode.h"
 #include "savegame.h"
 
-static struct DIR_INFO atomic_robo_kid_dirs[] =
-{
-   { "atomic_robo_kid", },
-   { "robokid", },
-   { NULL, },
-};
 
-static struct ROM_INFO atomic_robo_kid_roms[] =
+static struct ROM_INFO rom_robokid[] =
 {
    {  "robokid.12a", 0x00010000, 0xe64d1c10, 0, 0, 0, },
    {  "robokid.12c", 0x00010000, 0x0ab45f94, 0, 0, 0, },
@@ -55,7 +48,7 @@ static struct ROM_INFO atomic_robo_kid_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO atomic_robo_kid_inputs[] =
+static struct INPUT_INFO input_robokid[] =
 {
    INP0( COIN1, 0x00DC00, 0x20 ),
    INP0( COIN2, 0x00DC00, 0x40 ),
@@ -81,22 +74,13 @@ static struct INPUT_INFO atomic_robo_kid_inputs[] =
    END_INPUT
 };
 
-static struct DSW_INFO atomic_robo_kid_dsw[] =
+static struct DSW_INFO dsw_robokid[] =
 {
    { 0x00DC03, 0xFF, dsw_data_default_0 },
    { 0x00DC04, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO atomic_robo_kid_video =
-{
-   DrawRoboKid,
-   256,
-   192,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -110,43 +94,15 @@ static struct YM2203interface ym2203_interface =
    { NULL,       NULL       }
 };
 
-static struct SOUND_INFO atomic_robo_kid_sound[] =
+static struct SOUND_INFO sound_robokid[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( atomic_robo_kid ,
-   atomic_robo_kid_dirs,
-   atomic_robo_kid_roms,
-   atomic_robo_kid_inputs,
-   atomic_robo_kid_dsw,
-   NULL,
 
-   LoadRoboKid,
-   ClearRoboKid,
-   &atomic_robo_kid_video,
-   ExecuteRoboKidFrame,
-   "robokid",
-   "Atomic Robo Kid",
-   "アトミックロボキッド",
-   COMPANY_ID_UPL,
-   "UPL-88013",
-   1988,
-   atomic_robo_kid_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO atomic_robo_kid_japanese_dirs[] =
-{
-   { "atomic_robo_kid_japanese", },
-   { "robokidj", },
-   { ROMOF("robokid"), },
-   { CLONEOF("robokid"), },
-   { NULL, },
-};
-
-static struct ROM_INFO atomic_robo_kid_japanese_roms[] =
+static struct ROM_INFO rom_robokidj[] =
 {
    {  "robokid.12a", 0x00010000, 0xe64d1c10, 0, 0, 0, },
    {  "robokid.12c", 0x00010000, 0x0ab45f94, 0, 0, 0, },
@@ -182,26 +138,6 @@ static struct ROM_INFO atomic_robo_kid_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( atomic_robo_kid_japanese ,
-   atomic_robo_kid_japanese_dirs,
-   atomic_robo_kid_japanese_roms,
-   atomic_robo_kid_inputs,
-   atomic_robo_kid_dsw,
-   NULL,
-
-   LoadRoboKid,
-   ClearRoboKid,
-   &atomic_robo_kid_video,
-   ExecuteRoboKidFrame,
-   "robokidj",
-   "Atomic Robo Kid Japanese",
-   "アトミックロボキッド",
-   COMPANY_ID_UPL,
-   "UPL-88013",
-   1988,
-   atomic_robo_kid_sound,
-   GAME_SHOOT
-);
 
 static int romset;
 
@@ -257,7 +193,7 @@ Ninja Kid 2 was seperated, due to several hardware differences.
 /* ROBO KID Z80 ROM BANKING                                                   */
 /******************************************************************************/
 
-void RoboKidBankWrite(UINT16 offset, UINT8 data)
+static void RoboKidBankWrite(UINT16 offset, UINT8 data)
 {
   z80_set_bank(1,data);
 }
@@ -457,7 +393,7 @@ static int MS1DecodeBG0(UINT8 *src, UINT32 size)
 
 /******************************************************************************/
 
-void RoboKidLoadUpdate(void)
+static void RoboKidLoadUpdate(void)
 {
    print_debug("Robokid Load Callback()\n");
 
@@ -470,7 +406,7 @@ void RoboKidLoadUpdate(void)
    }
 }
 
-void LoadRoboKid(void)
+static void load_robokid(void)
 {
    UINT8 *TMP;
 
@@ -670,14 +606,7 @@ void LoadRoboKid(void)
    AddSaveData(SAVE_USER_1, (UINT8 *) &sound_byte,          sizeof(sound_byte));
 }
 
-void ClearRoboKid(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-#endif
-}
-
-void ExecuteRoboKidFrame(void)
+static void execute_robokid(void)
 {
    cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// Main Z80 8MHz (60fps)
    /*#ifdef RAINE_DEBUG
@@ -713,7 +642,7 @@ static UINT16 bg_map[0x10] =
   0x0800+0x0400+0x0100+0x0200,	// 0xF0
 };
 
-void DrawRoboKid(void)
+static void DrawRoboKid(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta;
    int xx,yy,rr;
@@ -1068,3 +997,35 @@ void DrawRoboKid(void)
 nnhv.????.nnnn.nnnn
 
 */
+static struct VIDEO_INFO video_robokid =
+{
+   DrawRoboKid,
+   256,
+   192,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_robokid[] =
+{
+   { "atomic_robo_kid", },
+   { "robokid", },
+   { NULL, },
+};
+GME( robokid, "Atomic Robo Kid", UPL, 1988, GAME_SHOOT,
+	.long_name_jpn = "アトミックロボキッド",
+	.board = "UPL-88013",
+);
+static struct DIR_INFO dir_robokidj[] =
+{
+   { "atomic_robo_kid_japanese", },
+   { "robokidj", },
+   { ROMOF("robokid"), },
+   { CLONEOF("robokid"), },
+   { NULL, },
+};
+CLNE( robokidj,robokid, "Atomic Robo Kid Japanese", UPL, 1988, GAME_SHOOT,
+	.long_name_jpn = "アトミックロボキッド",
+	.board = "UPL-88013",
+);
+

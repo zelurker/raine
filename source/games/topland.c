@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                  TOP LANDING (C) 1990 TAITO CORPORATION                    */
@@ -5,20 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "topland.h"
 #include "tc004vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO top_landing_dirs[] =
-{
-   { "top_landing", },
-   { "topland", },
-   { NULL, },
-};
 
-static struct ROM_INFO top_landing_roms[] =
+static struct ROM_INFO rom_topland[] =
 {
    {  "ic12_22.010", 0x00020000, 0x94279201, 0, 0, 0, },
    {  "ic13_24.010", 0x00020000, 0x845026c5, 0, 0, 0, },
@@ -47,7 +41,7 @@ static struct ROM_INFO top_landing_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO top_landing_inputs[] =
+static struct INPUT_INFO input_topland[] =
 {
    INP1( COIN1, 0x055204, 0x04 ),
    INP1( COIN2, 0x055204, 0x08 ),
@@ -94,7 +88,7 @@ static struct DSW_DATA dsw_data_top_landing_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO top_landing_dsw[] =
+static struct DSW_INFO dsw_topland[] =
 {
    { 0x055200, 0xFF, dsw_data_top_landing_0 },
    { 0x055202, 0xFF, dsw_data_default_1 },
@@ -109,41 +103,13 @@ static struct ROMSW_DATA romsw_data_top_landing_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO top_landing_romsw[] =
+static struct ROMSW_INFO romsw_topland[] =
 {
    { 0x03FFFF, 0x02, romsw_data_top_landing_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO top_landing_video =
-{
-   DrawTopLanding,
-   512,
-   400,
-   64,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( top_landing ,
-   top_landing_dirs,
-   top_landing_roms,
-   top_landing_inputs,
-   top_landing_dsw,
-   top_landing_romsw,
-
-   LoadTopLanding,
-   ClearTopLanding,
-   &top_landing_video,
-   ExecuteTopLandingFrame,
-   "topland",
-   "Top Landing",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B62",
-   1988,
-   taito_ym2610_sound,
-   GAME_MISC | GAME_NOT_WORKING
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_COLOUR;
@@ -172,7 +138,7 @@ static void BadWriteWord(UINT32 address, UINT16 data)
       print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000context.pc);
 }
 
-void LoadTopLanding(void)
+static void load_topland(void)
 {
    int ta,tb,tc;
 
@@ -417,7 +383,7 @@ void LoadTopLanding(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearTopLanding(void)
+static void ClearTopLanding(void)
 {
    RemoveTaitoYM2610();
 
@@ -428,7 +394,7 @@ void ClearTopLanding(void)
 #endif
 }
 
-void ExecuteTopLandingFrame(void)
+static void execute_topland(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -436,7 +402,7 @@ void ExecuteTopLandingFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void DrawTopLanding(void)
+static void DrawTopLanding(void)
 {
    ClearPaletteMap();
 
@@ -506,3 +472,23 @@ IC5_17.010  | ADPCM SAMPLE DATA#5
 IC6_20.764  | DEBUG 68000 ROM(?) (odd)
 
 */
+static struct VIDEO_INFO video_topland =
+{
+   DrawTopLanding,
+   512,
+   400,
+   64,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_topland[] =
+{
+   { "top_landing", },
+   { "topland", },
+   { NULL, },
+};
+GME( topland, "Top Landing", TAITO, 1988, GAME_MISC | GAME_NOT_WORKING,
+	.romsw = romsw_topland,
+	.clear = ClearTopLanding,
+	.board = "B62",
+);
+

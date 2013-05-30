@@ -271,12 +271,12 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 /*    setup sound			  */
 /******************************************/
 
-void init_sound_list(void)
+void init_sound(void)
 {
    SOUND_INFO *sound_src;
    int ta;
 
-   sound_src = (SOUND_INFO*)current_game->sound_list;
+   sound_src = (SOUND_INFO*)current_game->sound;
 
    if(sound_src){
 

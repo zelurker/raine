@@ -5,21 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "arkretrn.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"           // save/load game routines
 #include "sasound.h"
 
-static struct DIR_INFO arkanoid_returns_dirs[] =
-{
-   { "arkanoid_returns", },
-   { "arkretrn", },
-   { NULL, },
-};
 
-static struct ROM_INFO arkanoid_returns_roms[] =
+static struct ROM_INFO rom_arkretrn[] =
 {
    {	   "e36.01", 0x00040000, 0x54b9b2cd, 0, 0, 0, },
    {	   "e36.02", 0x00040000, 0x694eda31, 0, 0, 0, },
@@ -46,41 +39,13 @@ static struct ROMSW_DATA romsw_data_arkanoid_returns_0[] =
    { NULL,		      0    },
 };
 
-static struct ROMSW_INFO arkanoid_returns_romsw[] =
+static struct ROMSW_INFO romsw_arkretrn[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_arkanoid_returns_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO arkanoid_returns_video =
-{
-   DrawArkRetrn,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( arkanoid_returns ,
-   arkanoid_returns_dirs,
-   arkanoid_returns_roms,
-   f3_system_inputs,
-   NULL,
-   arkanoid_returns_romsw,
-
-   LoadArkRetrn,
-   ClearArkRetrn,
-   &arkanoid_returns_video,
-   ExecuteF3SystemFrameB,
-   "arkretrn",
-   "Arkanoid Returns",
-   "アルカノイド　リターンズ",
-   COMPANY_ID_TAITO,
-   "E36",
-   1997,
-   f3_sound,
-   GAME_BREAKOUT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -108,7 +73,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadArkRetrn(void)
+static void load_arkretrn(void)
 {
    int ta,tb,tc;
 
@@ -302,7 +267,7 @@ void LoadArkRetrn(void)
    setup_sound_68000();
 }
 
-void ClearArkRetrn(void)
+static void ClearArkRetrn(void)
 {
    save_eeprom();
 
@@ -313,7 +278,7 @@ void ClearArkRetrn(void)
    #endif
 }
 
-void DrawArkRetrn(void)
+static void DrawArkRetrn(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *MAP;
@@ -498,3 +463,28 @@ void DrawArkRetrn(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_arkretrn =
+{
+   DrawArkRetrn,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_arkretrn[] =
+{
+   { "arkanoid_returns", },
+   { "arkretrn", },
+   { NULL, },
+};
+GAME( arkretrn, "Arkanoid Returns", TAITO, 1997, GAME_BREAKOUT,
+	.input = f3_system_inputs,
+	.romsw = romsw_arkretrn,
+	.clear = ClearArkRetrn,
+	.video = &video_arkretrn,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "アルカノイド　リターンズ",
+	.board = "E36",
+	.sound = f3_sound,
+);
+

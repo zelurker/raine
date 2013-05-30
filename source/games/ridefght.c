@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ridefght.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -13,15 +12,8 @@
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO riding_fight_dirs[] =
-{
-   { "riding_fight", },
-   { "ridefght", },
-   { "ridingf", },
-   { NULL, },
-};
 
-static struct ROM_INFO riding_fight_roms[] =
+static struct ROM_INFO rom_ridingf[] =
 {
    {   "d34-01.66", 0x00200000, 0x7974e6aa, 0, 0, 0, },
    {   "d34-02.67", 0x00200000, 0xf4422370, 0, 0, 0, },
@@ -46,41 +38,13 @@ static struct ROMSW_DATA romsw_data_riding_fight_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO riding_fight_romsw[] =
+static struct ROMSW_INFO romsw_ridingf[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_riding_fight_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO riding_fight_video =
-{
-   DrawRideFght,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( riding_fight ,
-   riding_fight_dirs,
-   riding_fight_roms,
-   f3_system_inputs,
-   NULL,
-   riding_fight_romsw,
-
-   LoadRideFght,
-   ClearRideFght,
-   &riding_fight_video,
-   ExecuteRideFghtFrame,
-   "ridingf",
-   "Riding Fight",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D34",
-   1992,
-   f3_sound,
-   GAME_BEAT | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -98,7 +62,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadRideFght(void)
+static void load_ridingf(void)
 {
    int ta,tb;
 
@@ -237,18 +201,7 @@ void LoadRideFght(void)
    setup_sound_68000();
 }
 
-void ClearRideFght(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-#endif
-}
-
-void ExecuteRideFghtFrame(void)
+static void execute_ridingf(void)
 {
   int ta;
 
@@ -288,7 +241,7 @@ void ExecuteRideFghtFrame(void)
   IntF3System();
 }
 
-void DrawRideFght(void)
+static void DrawRideFght(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -522,3 +475,27 @@ void DrawRideFght(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_ridingf =
+{
+   DrawRideFght,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ridingf[] =
+{
+   { "riding_fight", },
+   { "ridefght", },
+   { "ridingf", },
+   { NULL, },
+};
+GAME( ridingf, "Riding Fight", TAITO, 1992, GAME_BEAT | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs,
+	.romsw = romsw_ridingf,
+	.video = &video_ridingf,
+	.exec = execute_ridingf,
+	.board = "D34",
+	.sound = f3_sound,
+);
+

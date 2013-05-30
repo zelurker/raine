@@ -5,24 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "darius2d.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 
-static struct DIR_INFO darius_2_dual_dirs[] =
-{
-   { "darius_2_dual_screen", },
-   { "darius2d", },
-   { "drius2do", },
-   { ROMOF("darius2"), },
-   { CLONEOF("darius2"), },
-   { NULL, },
-};
 
-static struct ROM_INFO darius_2_dual_roms[] =
+static struct ROM_INFO rom_drius2do[] =
 {
    {       "c07-03.12", 0x00080000, 0x189bafce, 0, 0, 0, },
    {       "c07-04.11", 0x00080000, 0x50421e81, 0, 0, 0, },
@@ -42,7 +32,7 @@ static struct ROM_INFO darius_2_dual_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO darius_2_dual_inputs[] =
+static struct INPUT_INFO input_drius2do[] =
 {
    INP0( COIN1, 0x03B004, 0x04 ),
    INP0( COIN2, 0x03B004, 0x08 ),
@@ -118,7 +108,7 @@ static struct DSW_DATA dsw_data_darius_2_dual_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO darius_2_dual_dsw[] =
+static struct DSW_INFO dsw_drius2do[] =
 {
    { 0x03B000, 0xFF, dsw_data_darius_2_dual_0 },
    { 0x03B002, 0xFF, dsw_data_darius_2_dual_1 },
@@ -132,41 +122,13 @@ static struct ROMSW_DATA romsw_data_darius_2_dual_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO darius_2_dual_romsw[] =
+static struct ROMSW_INFO romsw_drius2do[] =
 {
    { 0x07FFFF, 0x01, romsw_data_darius_2_dual_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO darius_2_dual_video =
-{
-   draw_darius_2_dual,
-   640,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-};
 
-GAME( darius_2_dual ,
-   darius_2_dual_dirs,
-   darius_2_dual_roms,
-   darius_2_dual_inputs,
-   darius_2_dual_dsw,
-   darius_2_dual_romsw,
-
-   load_darius_2_dual,
-   clear_darius_2_dual,
-   &darius_2_dual_video,
-   execute_darius_2_dual_frame,
-   "drius2do",
-   "Darius 2 (dual screen)",
-   "ダライアス２（２苑面）",
-   COMPANY_ID_TAITO,
-   "C07",
-   1989,
-   contcirc_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG0_SOLID;
@@ -176,7 +138,7 @@ static UINT8 *GFX_SPR_SOLID;
 
 static UINT8 *RAM_INPUT;
 
-void load_darius_2_dual(void)
+static void load_drius2do(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -379,7 +341,7 @@ void load_darius_2_dual(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_darius_2_dual(void)
+static void clear_darius_2_dual(void)
 {
    RemoveTaitoYM2610();
 
@@ -390,7 +352,7 @@ void clear_darius_2_dual(void)
 #endif
 }
 
-void execute_darius_2_dual_frame(void)
+static void execute_drius2do(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 4);
@@ -398,7 +360,7 @@ void execute_darius_2_dual_frame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void draw_darius_2_dual(void)
+static void draw_darius_2_dual(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *map;
@@ -557,3 +519,32 @@ void draw_darius_2_dual(void)
 292000 - 293FFF | FG0 (1024x256 - 2 bytes/tile)
 
 */
+static struct VIDEO_INFO video_drius2do =
+{
+   draw_darius_2_dual,
+   640,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_drius2do[] =
+{
+   { "darius_2_dual_screen", },
+   { "darius2d", },
+   { "drius2do", },
+   { ROMOF("darius2"), },
+   { CLONEOF("darius2"), },
+   { NULL, },
+};
+GAME( drius2do, "Darius 2 (dual screen)", TAITO, 1989, GAME_SHOOT,
+	.input = input_drius2do,
+	.dsw = dsw_drius2do,
+	.romsw = romsw_drius2do,
+	.clear = clear_darius_2_dual,
+	.video = &video_drius2do,
+	.exec = execute_drius2do,
+	.long_name_jpn = "ダライアス２（２苑面）",
+	.board = "C07",
+	.sound = contcirc_ym2610_sound,
+);
+

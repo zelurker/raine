@@ -220,7 +220,7 @@ UINT8 rjoy[RJOY_COUNT];
 /*                                                                            */
 /******************************************************************************/
 
-static struct DEF_INPUT def_input_list[KB_DEF_COUNT] =
+static struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
  { KEY_3,       RJOY_1_BUTTON10,"Def Coin A",           },      // KB_DEF_COIN1,
  { KEY_4,       RJOY_2_BUTTON10,"Def Coin B",           },      // KB_DEF_COIN2,
@@ -453,7 +453,7 @@ char *inputlist_getter(int index, int *list_size)
    }
    return NULL;
 }
-static struct DEF_INPUT def_input_list_emu[KB_EMU_DEF_COUNT] =
+static struct DEF_INPUT def_input_emu[KB_EMU_DEF_COUNT] =
 {
  { KEY_0,       0x00,           "Save Screenshot",      },      // KB_EMU_SCREENSHOT,
  { KEY_PGUP,    0x00,           "Increase frameskip",   },      // KB_EMU_INC_FRAMESKIP,
@@ -510,7 +510,7 @@ static void set_key_from_default(INPUT *inp)
 
   else
 
-    inp->Key = def_input_list[inp->default_key & 0xFF].scancode;
+    inp->Key = def_input[inp->default_key & 0xFF].scancode;
 
 }
 
@@ -522,7 +522,7 @@ static void set_joy_from_default(INPUT *inp)
     inp->Joy = 0;
 
   else {
-    inp->Joy = def_input_list[inp->default_key & 0xFF].joycode;
+    inp->Joy = def_input[inp->default_key & 0xFF].joycode;
   }
 
 }
@@ -533,7 +533,7 @@ void init_inputs(void)
 
    InputCount = 0;
 
-   input_src = current_game->input_list;
+   input_src = current_game->input;
 
    if(input_src){
 
@@ -688,9 +688,9 @@ void load_default_keys(char *section)
    use_custom_keys = 0;
 
    for(ta=0;ta<KB_DEF_COUNT;ta++){
-      sprintf(key_name,"%s",def_input_list[ta].name);
+      sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
-      def_input_list[ta].scancode = raine_get_config_int(section,key_name,def_input_list[ta].scancode);
+      def_input[ta].scancode = raine_get_config_int(section,key_name,def_input[ta].scancode);
    }
 }
 
@@ -700,9 +700,9 @@ void save_default_keys(char *section)
    char key_name[64];
 
    for(ta=0;ta<KB_DEF_COUNT;ta++){
-      sprintf(key_name,"%s",def_input_list[ta].name);
+      sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
-      raine_set_config_int(section,key_name,def_input_list[ta].scancode);
+      raine_set_config_int(section,key_name,def_input[ta].scancode);
    }
 }
 
@@ -714,9 +714,9 @@ void load_default_joys(char *section)
    joy_use_custom_keys = 0;
 
    for(ta=0;ta<KB_DEF_COUNT;ta++){
-      sprintf(joy_name,"%s",def_input_list[ta].name);
+      sprintf(joy_name,"%s",def_input[ta].name);
       no_spaces(joy_name);
-      def_input_list[ta].joycode = raine_get_config_int(section,joy_name,def_input_list[ta].joycode);
+      def_input[ta].joycode = raine_get_config_int(section,joy_name,def_input[ta].joycode);
    }
 }
 
@@ -726,9 +726,9 @@ void save_default_joys(char *section)
    char joy_name[64];
 
    for(ta=0;ta<KB_DEF_COUNT;ta++){
-      sprintf(joy_name,"%s",def_input_list[ta].name);
+      sprintf(joy_name,"%s",def_input[ta].name);
       no_spaces(joy_name);
-      raine_set_config_int(section,joy_name,def_input_list[ta].joycode);
+      raine_set_config_int(section,joy_name,def_input[ta].joycode);
    }
 }
 
@@ -738,12 +738,12 @@ void load_emulator_keys(char *section)
    char key_name[64];
 
    for(ta=0;ta<KB_EMU_DEF_COUNT;ta++){
-      sprintf(key_name,"%s",def_input_list_emu[ta].name);
+      sprintf(key_name,"%s",def_input_emu[ta].name);
       no_spaces(key_name);
-      scan = raine_get_config_int(section,key_name,def_input_list_emu[ta].scancode);
+      scan = raine_get_config_int(section,key_name,def_input_emu[ta].scancode);
       if (strncmp(key_name,"Screen_",7) || scan < KEY_LEFT || scan > KEY_DOWN) {
 	// Forces modifiers for scrolling keys (previously in pause only)
-	def_input_list_emu[ta].scancode = scan;
+	def_input_emu[ta].scancode = scan;
       }
    }
 }
@@ -754,9 +754,9 @@ void save_emulator_keys(char *section)
    char key_name[64];
 
    for(ta=0;ta<KB_EMU_DEF_COUNT;ta++){
-      sprintf(key_name,"%s",def_input_list_emu[ta].name);
+      sprintf(key_name,"%s",def_input_emu[ta].name);
       no_spaces(key_name);
-      raine_set_config_int(section,key_name,def_input_list_emu[ta].scancode);
+      raine_set_config_int(section,key_name,def_input_emu[ta].scancode);
    }
 }
 
@@ -766,9 +766,9 @@ void load_emulator_joys(char *section)
    char joy_name[64];
 
    for(ta=0;ta<KB_EMU_DEF_COUNT;ta++){
-      sprintf(joy_name,"%s",def_input_list_emu[ta].name);
+      sprintf(joy_name,"%s",def_input_emu[ta].name);
       no_spaces(joy_name);
-      def_input_list_emu[ta].joycode = raine_get_config_int(section,joy_name,def_input_list_emu[ta].joycode);
+      def_input_emu[ta].joycode = raine_get_config_int(section,joy_name,def_input_emu[ta].joycode);
    }
 }
 
@@ -778,9 +778,9 @@ void save_emulator_joys(char *section)
    char joy_name[64];
 
    for(ta=0;ta<KB_EMU_DEF_COUNT;ta++){
-      sprintf(joy_name,"%s",def_input_list_emu[ta].name);
+      sprintf(joy_name,"%s",def_input_emu[ta].name);
       no_spaces(joy_name);
-      raine_set_config_int(section,joy_name,def_input_list_emu[ta].joycode);
+      raine_set_config_int(section,joy_name,def_input_emu[ta].joycode);
    }
 }
 
@@ -1533,7 +1533,7 @@ static void parse_control_list(CORE_CTRL *ctrl_list)
   // modifiers (ctrl, shift, alt, left & right win, and menu).
   DEF_INPUT *inp;
    while(ctrl_list->proc){
-      inp = &def_input_list_emu[ctrl_list->key & 0xFF];
+      inp = &def_input_emu[ctrl_list->key & 0xFF];
       if(ctrl_list->key & 0x4000){ // ignore status code
 
 	 if((key[inp->scancode & 0xff] && ((key_shifts & 0x3f) == inp->scancode>>8)) ||
@@ -1572,27 +1572,27 @@ void update_gui_inputs(void)
 }
 
 void raine_set_scancode(int index, int code) {
-  def_input_list[index].scancode = code;
+  def_input[index].scancode = code;
 }
 
 void raine_set_emu_scancode(int index, int code) {
-  def_input_list_emu[index].scancode = code;
+  def_input_emu[index].scancode = code;
 }
 
 char* raine_get_key_name(int index) {
-  return def_input_list[index].name;
+  return def_input[index].name;
 }
 
 int raine_get_scancode(int index) {
-  return def_input_list[index].scancode;
+  return def_input[index].scancode;
 }
 
 char* raine_get_emu_key_name(int index) {
-  return def_input_list_emu[index].name;
+  return def_input_emu[index].name;
 }
 
 int raine_get_emu_scancode(int index) {
-  return def_input_list_emu[index].scancode;
+  return def_input_emu[index].scancode;
 }
 
 void raine_increase_auto_rate(int index) {
@@ -1635,19 +1635,19 @@ int raine_get_key(int index) {
    We keep this code only in allegro for now (old compatibility) */
 
 void raine_set_joycode(int index, int code) {
-  def_input_list[index].joycode = code;
+  def_input[index].joycode = code;
 }
 
 void raine_set_emu_joycode(int index, int code) {
-  def_input_list_emu[index].joycode = code;
+  def_input_emu[index].joycode = code;
 }
 
 int raine_get_joycode(int index) {
-  return def_input_list[index].joycode;
+  return def_input[index].joycode;
 }
 
 int raine_get_emu_joycode(int index) {
-  return def_input_list_emu[index].joycode;
+  return def_input_emu[index].joycode;
 }
 
 void raine_set_input_joycode(int index, int code) {

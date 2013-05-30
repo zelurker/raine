@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                     KOSHIEN (C) 1991 TAITO CORPORATION                     */
@@ -5,20 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "koshien.h"
 #include "tc100scn.h"
 #include "tc200obj.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO koshien_dirs[] =
-{
-   { "koshien", },
-   { NULL, },
-};
-
-static struct ROM_INFO koshien_roms[] =
+static struct ROM_INFO rom_koshien[] =
 {
    {   "c81-01.bin", 0x00100000, 0x64b15d2a, 0, 0, 0, },
    {   "c81-02.bin", 0x00100000, 0x962461e8, 0, 0, 0, },
@@ -32,7 +26,7 @@ static struct ROM_INFO koshien_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO koshien_inputs[] =
+static struct INPUT_INFO input_koshien[] =
 {
    INP0( COIN1, 0x03A106, 0x04 ),
    INP0( COIN2, 0x03A106, 0x08 ),
@@ -89,7 +83,7 @@ static struct DSW_DATA dsw_data_koshien_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO koshien_dsw[] =
+static struct DSW_INFO dsw_koshien[] =
 {
    { 0x03A100, 0xFF, dsw_data_koshien_0 },
    { 0x03A102, 0xFF, dsw_data_default_1 },
@@ -104,41 +98,13 @@ static struct ROMSW_DATA romsw_data_koshien_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO koshien_romsw[] =
+static struct ROMSW_INFO romsw_koshien[] =
 {
    { 0x03FFFF, 0x00, romsw_data_koshien_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO koshien_video =
-{
-   draw_koshien,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( koshien ,
-   koshien_dirs,
-   koshien_roms,
-   koshien_inputs,
-   koshien_dsw,
-   koshien_romsw,
-
-   load_koshien,
-   clear_koshien,
-   &koshien_video,
-   execute_koshien_frame,
-   "koshien",
-   "Koshien",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C81",
-   1990,
-   taito_ym2610_sound,
-   GAME_SPORTS
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -153,7 +119,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void load_koshien(void)
+static void load_koshien(void)
 {
    int ta,tb;
 
@@ -370,18 +336,7 @@ void load_koshien(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_koshien(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x300000,0);
-   #endif
-}
-
-void execute_koshien_frame(void)
+static void execute_koshien(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 6);
@@ -390,7 +345,7 @@ void execute_koshien_frame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void draw_koshien(void)
+static void draw_koshien(void)
 {
    ClearPaletteMap();
 
@@ -421,3 +376,16 @@ void draw_koshien(void)
 
    render_tc0100scn_layer_mapped(0,2,1);
 }
+static struct VIDEO_INFO video_koshien =
+{
+   draw_koshien,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+GMEI( koshien, "Koshien", TAITO, 1990, GAME_SPORTS,
+	.romsw = romsw_koshien,
+	.board = "C81",
+);
+

@@ -5,23 +5,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "intcup94.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO international_cup_94_dirs[] =
-{
-   { "international_cup_94", },
-   { "intcup94", },
-   { ROMOF("scfinals"), },
-   { CLONEOF("scfinals"), },
-   { NULL, },
-};
-
-static struct ROM_INFO international_cup_94_roms[] =
+static struct ROM_INFO rom_intcup94[] =
 {
    {   "d49-07", 0x00100000, 0xe5655b8f, 0, 0, 0, },
    {   "d49-02", 0x00200000, 0x1e4c374f, 0, 0, 0, },
@@ -42,36 +32,6 @@ static struct ROM_INFO international_cup_94_roms[] =
               "d78-08",  0xa629d07c,   "d78-09",  0x1f0efe01),
    {           NULL,          0,          0, 0, 0, 0, },
 };
-
-static struct VIDEO_INFO international_cup_94_video =
-{
-   DrawIntCup94,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
-
-GAME( international_cup_94 ,
-   international_cup_94_dirs,
-   international_cup_94_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadIntCup94,
-   ClearIntCup94,
-   &international_cup_94_video,
-   ExecuteF3SystemFrameB,
-   "intcup94",
-   "International Cup 94",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D49",
-   1994,
-   f3_sound,
-   GAME_SPORTS | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -99,7 +59,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadIntCup94(void)
+static void load_intcup94(void)
 {
    int ta,tb,tc;
 
@@ -318,17 +278,7 @@ void LoadIntCup94(void)
    setup_sound_68000();
 }
 
-void ClearIntCup94(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
-}
-
-void DrawIntCup94(void)
+static void DrawIntCup94(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -477,3 +427,27 @@ void DrawIntCup94(void)
       f3video_render_fg0_r180();
    }
 }
+static struct VIDEO_INFO video_intcup94 =
+{
+   DrawIntCup94,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_intcup94[] =
+{
+   { "international_cup_94", },
+   { "intcup94", },
+   { ROMOF("scfinals"), },
+   { CLONEOF("scfinals"), },
+   { NULL, },
+};
+GAME( intcup94, "International Cup 94", TAITO, 1994, GAME_SPORTS | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs,
+	.video = &video_intcup94,
+	.exec = ExecuteF3SystemFrameB,
+	.board = "D49",
+	.sound = f3_sound,
+);
+

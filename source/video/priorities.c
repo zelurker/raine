@@ -63,7 +63,7 @@ BITMAP *pbitmap = NULL; // global, because used by the pdraw functions
 
 void init_pbitmap() {
   // Prepare the mask functions to draw to the priority bitmap
-  const VIDEO_INFO *vid = current_game->video_info;
+  const VIDEO_INFO *vid = current_game->video;
   int x = vid->screen_x + vid->border_size*2, y = vid->screen_y+vid->border_size*2;
   int rotate = vid->flags ^ display_cfg.user_rotate;
 

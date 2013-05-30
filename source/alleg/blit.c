@@ -722,7 +722,7 @@ void ReClipScreen(void)
   GameScreen.yview = oldyview;
 }
 
-void clear_game_screen(int pen)
+void clear_screen(int pen)
 {
    clear_to_color(GameViewBitmap, pen);
 }
@@ -731,7 +731,7 @@ static void SetScreenBitmap(int xfull, int yfull, int xtop, int ytop, int xview,
 {
    const VIDEO_INFO *vid_info;
 
-   vid_info = current_game->video_info;
+   vid_info = current_game->video;
 
    display_cfg.rotate = 0;
    display_cfg.flip = 0;
@@ -868,7 +868,7 @@ void SetupScreenBitmap(void)
 {
    const VIDEO_INFO *vid_info;
 
-   vid_info = current_game->video_info;
+   vid_info = current_game->video;
 
    SetScreenBitmap(
       vid_info->screen_x + vid_info->border_size + vid_info->border_size,
@@ -899,7 +899,7 @@ void SetupScreenBitmap(void)
    InitLUTs();
 
    display_bezel();
-   clear(GameViewBitmap);
+   clear_bitmap(GameViewBitmap);
 
    BlitSource = GameBitmap;
    BlitViewSource = GameViewBitmap;

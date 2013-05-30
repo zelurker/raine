@@ -122,7 +122,7 @@ typedef struct joystick_state {
 joystick_state jstate[MAX_JOY];
 
 // must be global for the controls dialog
-struct DEF_INPUT def_input_list[KB_DEF_COUNT] =
+struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
 #ifdef RAINE_WIN32
  { SDLK_3,       JOY(1,0,10,0), 0, "Def Coin A",           },      // KB_DEF_COIN1,
@@ -347,8 +347,8 @@ int get_console_key() {
   int n;
   int nb = raine_get_emu_nb_ctrl();
   for (n=nb-1; n>=0; n--) {
-    if (!strcmp(def_input_list_emu[n].name,"Console")) {
-      int code = def_input_list_emu[n].scancode;
+    if (!strcmp(def_input_emu[n].name,"Console")) {
+      int code = def_input_emu[n].scancode;
       return code;
     }
   }
@@ -359,7 +359,7 @@ static struct DEF_INPUT_EMU *driver_emu_list = NULL;
 static int driver_nb_emu_inputs;
 
 // must be global for the controls dialog
-struct DEF_INPUT_EMU def_input_list_emu[] =
+struct DEF_INPUT_EMU def_input_emu[] =
 {
  { SDLK_s | (KMOD_LCTRL<<16),       0x00,           "Save Screenshot", key_save_screen     },
  { SDLK_RETURN | (KMOD_LCTRL<<16),       0x00,           "Fullscreen", toggle_fullscreen     },
@@ -403,9 +403,9 @@ int InputCount;			// Number of Inputs in InputList
 static void set_key_from_default(INPUT *inp)
 {
 
-    inp->Key = def_input_list[inp->default_key & 0xFF].scancode;
-    inp->Joy = def_input_list[inp->default_key & 0xFF].joycode;
-    inp->mousebtn = def_input_list[inp->default_key & 0xFF].mousebtn;
+    inp->Key = def_input[inp->default_key & 0xFF].scancode;
+    inp->Joy = def_input[inp->default_key & 0xFF].joycode;
+    inp->mousebtn = def_input[inp->default_key & 0xFF].mousebtn;
 
 }
 
@@ -446,7 +446,7 @@ void init_inputs(void)
 
    InputCount = 0;
 
-   input_src = current_game->input_list;
+   input_src = current_game->input;
 
    if(input_src){
 
@@ -487,7 +487,7 @@ void release_inputs(void)
   nb_valid_inputs = 0;
   ta = 0;
 
-  input_src = current_game->input_list;
+  input_src = current_game->input;
 
   if(input_src && RAM){
     // Check for RAM because if loading a game fails, input_src is defined
@@ -608,14 +608,14 @@ void save_game_keys(char *section)
 	   continue;
          sprintf(key_name,"%s",InputList[ta].InputName);
          no_spaces(key_name);
-	 if (InputList[ta].Key != def_input_list[InputList[ta].default_key & 0xff].scancode)
+	 if (InputList[ta].Key != def_input[InputList[ta].default_key & 0xff].scancode)
 	   raine_set_config_int(section,key_name,InputList[ta].Key);
-	 if (InputList[ta].Joy != def_input_list[InputList[ta].default_key & 0xff].joycode) {
+	 if (InputList[ta].Joy != def_input[InputList[ta].default_key & 0xff].joycode) {
 	   sprintf(other_name,"%s_joystick",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].Joy);
 	 }
 
-	 if (InputList[ta].mousebtn != def_input_list[InputList[ta].default_key & 0xff].mousebtn) {
+	 if (InputList[ta].mousebtn != def_input[InputList[ta].default_key & 0xff].mousebtn) {
 	   sprintf(other_name,"%s_mouse",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].mousebtn);
 	 }
@@ -685,13 +685,13 @@ void load_default_keys(char *section)
    }
 
    for(ta=0;ta<KB_DEF_COUNT;ta++){
-      sprintf(key_name,"%s",def_input_list[ta].name);
+      sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
-      def_input_list[ta].scancode = raine_get_config_int(section,key_name,def_input_list[ta].scancode);
+      def_input[ta].scancode = raine_get_config_int(section,key_name,def_input[ta].scancode);
       sprintf(other_name,"%s_joystick",key_name);
-      def_input_list[ta].joycode = raine_get_config_int(section,other_name,def_input_list[ta].joycode);
+      def_input[ta].joycode = raine_get_config_int(section,other_name,def_input[ta].joycode);
       sprintf(other_name,"%s_mouse",key_name);
-      def_input_list[ta].mousebtn = raine_get_config_int(section,other_name,def_input_list[ta].mousebtn);
+      def_input[ta].mousebtn = raine_get_config_int(section,other_name,def_input[ta].mousebtn);
 
    }
 
@@ -719,13 +719,13 @@ void save_default_keys(char *section)
    }
 
    for(ta=0;ta<KB_DEF_COUNT;ta++){
-      sprintf(key_name,"%s",def_input_list[ta].name);
+      sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
-      raine_set_config_int(section,key_name,def_input_list[ta].scancode);
+      raine_set_config_int(section,key_name,def_input[ta].scancode);
       sprintf(other_name,"%s_joystick",key_name);
-      raine_set_config_int(section,other_name,def_input_list[ta].joycode);
+      raine_set_config_int(section,other_name,def_input[ta].joycode);
       sprintf(other_name,"%s_mouse",key_name);
-      raine_set_config_int(section,other_name,def_input_list[ta].mousebtn);
+      raine_set_config_int(section,other_name,def_input[ta].mousebtn);
    }
 
    for (ta=0; ta<MAX_LAYER_INFO; ta++) {
@@ -735,12 +735,12 @@ void save_default_keys(char *section)
 }
 
 int raine_get_emu_nb_ctrl() {
-  return sizeof(def_input_list_emu)/sizeof(DEF_INPUT_EMU);
+  return sizeof(def_input_emu)/sizeof(DEF_INPUT_EMU);
 }
 
 void load_emulator_keys(char *section) {
   int nb = raine_get_emu_nb_ctrl();
-  load_emu_keys(section,def_input_list_emu,nb); 
+  load_emu_keys(section,def_input_emu,nb); 
 }
 
 void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb) {
@@ -755,9 +755,9 @@ void save_emulator_keys(char *section)
    int nb = raine_get_emu_nb_ctrl();
 
    for(ta=0;ta<nb;ta++){
-      sprintf(key_name,"%s",def_input_list_emu[ta].name);
+      sprintf(key_name,"%s",def_input_emu[ta].name);
       no_spaces(key_name);
-      raine_set_config_int(section,key_name,def_input_list_emu[ta].scancode);
+      raine_set_config_int(section,key_name,def_input_emu[ta].scancode);
    }
 }
 
@@ -768,9 +768,9 @@ void load_emulator_joys(char *section)
    int nb = raine_get_emu_nb_ctrl();
 
    for(ta=0;ta<nb;ta++){
-      sprintf(joy_name,"%s",def_input_list_emu[ta].name);
+      sprintf(joy_name,"%s",def_input_emu[ta].name);
       no_spaces(joy_name);
-      def_input_list_emu[ta].joycode = raine_get_config_int(section,joy_name,def_input_list_emu[ta].joycode);
+      def_input_emu[ta].joycode = raine_get_config_int(section,joy_name,def_input_emu[ta].joycode);
    }
 }
 
@@ -781,9 +781,9 @@ void save_emulator_joys(char *section)
    int nb = raine_get_emu_nb_ctrl();
 
    for(ta=0;ta<nb;ta++){
-      sprintf(joy_name,"%s",def_input_list_emu[ta].name);
+      sprintf(joy_name,"%s",def_input_emu[ta].name);
       no_spaces(joy_name);
-      raine_set_config_int(section,joy_name,def_input_list_emu[ta].joycode);
+      raine_set_config_int(section,joy_name,def_input_emu[ta].joycode);
    }
 }
 
@@ -1031,9 +1031,9 @@ static void add_joy_event(int event) {
 
 static void remove_joy_event(int event) {
   int ta = -1;
-  if (event == def_input_list_emu[6].joycode) {
+  if (event == def_input_emu[6].joycode) {
     // special case for the turbo key this one is a toggle
-    def_input_list_emu[6].proc();
+    def_input_emu[6].proc();
     return;
   }
   do {
@@ -1047,7 +1047,7 @@ static void remove_joy_event(int event) {
 }
 
 static void check_emu_joy_event(int jevent) {
-  DEF_INPUT_EMU *emu = &def_input_list_emu[0];
+  DEF_INPUT_EMU *emu = &def_input_emu[0];
   int nb = raine_get_emu_nb_ctrl();
   while (nb--) {
     if (emu->joycode == jevent) {
@@ -1127,7 +1127,7 @@ static void handle_event(SDL_Event *event) {
       // we check for the keysym + modifiers here
 
       modifier = (event->key.keysym.mod & 0x4fc3);
-      emu_input = &def_input_list_emu[0];
+      emu_input = &def_input_emu[0];
       nb = raine_get_emu_nb_ctrl();
       int handled=0,paused = raine_cfg.req_pause_game;
       if (!check_emu_inputs(emu_input,nb,input,modifier) && driver_nb_emu_inputs)
@@ -1135,7 +1135,7 @@ static void handle_event(SDL_Event *event) {
       if (!handled)
 	handled = check_layer_key(input);
       if (handled && paused && raine_cfg.req_pause_game) {
-	current_game->video_info->draw_game(); // update game bitmap in pause
+	current_game->video->draw_game(); // update game bitmap in pause
 	EndDrawPaused();
 	InitDrawPaused();
       }
@@ -1147,9 +1147,9 @@ static void handle_event(SDL_Event *event) {
       }
       key[input] = 0;
       ta = -1;
-      if (input == def_input_list_emu[6].scancode) {
+      if (input == def_input_emu[6].scancode) {
 	// special case for the turbo key this one is a toggle
-	def_input_list_emu[6].proc();
+	def_input_emu[6].proc();
 	break;
       }
 	

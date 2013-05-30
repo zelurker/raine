@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND f3_sound
 /******************************************************************************/
 /*                                                                            */
 /*                 SUPER CHASE (C) 1992 TAITO CORPORATION                     */
@@ -5,20 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "superchs.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO super_chase_dirs[] =
-{
-   { "super_chase", },
-   { "superchs", },
-   { NULL, },
-};
 
-static struct ROM_INFO super_chase_roms[] =
+static struct ROM_INFO rom_superchs[] =
 {
    {    "d46-01.64", 0x00200000, 0x5c2ae92d, 0, 0, 0, },
    {    "d46-02.65", 0x00200000, 0xa83ca82e, 0, 0, 0, },
@@ -41,7 +35,7 @@ static struct ROM_INFO super_chase_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO super_chase_inputs[] =
+static struct INPUT_INFO input_superchs[] =
 {
 
    INP0( COIN1, 0x069001, 0x80 ),
@@ -66,41 +60,13 @@ static struct ROMSW_DATA romsw_data_super_chase_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO super_chase_romsw[] =
+static struct ROMSW_INFO romsw_superchs[] =
 {
    { 0x0FFFFF, 0x02, romsw_data_super_chase_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO super_chase_video =
-{
-   DrawSuperChase,
-   320,
-   240,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( super_chase ,
-   super_chase_dirs,
-   super_chase_roms,
-   super_chase_inputs,
-   NULL,
-   super_chase_romsw,
-
-   LoadSuperChase,
-   ClearSuperChase,
-   &super_chase_video,
-   ExecuteSuperChaseFrame,
-   "superchs",
-   "Super Chase",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D46",
-   1992,
-   f3_sound,
-   GAME_RACE | GAME_NOT_WORKING
-);
 
 #define OBJ_A_COUNT	(0xF1D0)
 
@@ -142,7 +108,7 @@ static UINT8 *GFX_BG0_SOLID;
 //static UINT8 *GFX_SPR;
 //static UINT8 *GFX_SPR_SOLID;
 
-void AddSCMemoryMap(UINT32 romsize)
+static void AddSCMemoryMap(UINT32 romsize)
 {
    UINT32 ta;
 
@@ -207,7 +173,7 @@ static void ram_comm_ww(UINT32 addr, UINT16 data)
    WriteWord68k(&RAM[0x40000+addr], data);
 }
 
-void LoadSuperChase(void)
+static void load_superchs(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -486,7 +452,7 @@ void LoadSuperChase(void)
    Reset68020();
 }
 
-void ClearSuperChase(void)
+static void ClearSuperChase(void)
 {
    save_eeprom();
 
@@ -497,7 +463,7 @@ void ClearSuperChase(void)
 #endif
 }
 
-void ExecuteSuperChaseFrame(void)
+static void execute_superchs(void)
 {
   int ta;
   cycles = 1;
@@ -528,7 +494,7 @@ void ExecuteSuperChaseFrame(void)
    IntF3System();
 }
 
-void DrawSuperChase(void)
+static void DrawSuperChase(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *map;
@@ -722,3 +688,26 @@ d67-23.rom | 68020 rom (byte#3)
 readme.txt | dumped by aracorn
 
 */
+static struct VIDEO_INFO video_superchs =
+{
+   DrawSuperChase,
+   320,
+   240,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_superchs[] =
+{
+   { "super_chase", },
+   { "superchs", },
+   { NULL, },
+};
+GAME( superchs, "Super Chase", TAITO, 1992, GAME_RACE | GAME_NOT_WORKING,
+	.input = input_superchs,
+	.romsw = romsw_superchs,
+	.clear = ClearSuperChase,
+	.video = &video_superchs,
+	.exec = execute_superchs,
+	.board = "D46",
+);
+

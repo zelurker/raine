@@ -5,22 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ktiger2.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO kyukyoku_tiger_2_dirs[] =
-{
-   { "kyukyoku_tiger_2", },
-   { "ktiger2", },
-   { "tcobra2", },
-   { NULL, },
-};
 
-static struct ROM_INFO kyukyoku_tiger_2_roms[] =
+static struct ROM_INFO rom_ktiger2[] =
 {
    {   "e15-03.bin", 0x00100000, 0xbe45a52f, 0, 0, 0, },
    {   "e15-02.bin", 0x00200000, 0x2ea7f2bd, 0, 0, 0, },
@@ -49,41 +41,13 @@ static struct ROMSW_DATA romsw_data_kyukyoku_tiger_2_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO kyukyoku_tiger_2_romsw[] =
+static struct ROMSW_INFO romsw_ktiger2[] =
 {
    { 0x0FFFFF, 0x01, romsw_data_kyukyoku_tiger_2_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO kyukyoku_tiger_2_video =
-{
-   DrawKyukyokuTiger2,
-   224,
-   320,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( kyukyoku_tiger_2 ,
-   kyukyoku_tiger_2_dirs,
-   kyukyoku_tiger_2_roms,
-   f3_system_inputs,
-   NULL,
-   kyukyoku_tiger_2_romsw,
-
-   LoadKyukyokuTiger2,
-   ClearKyukyokuTiger2,
-   &kyukyoku_tiger_2_video,
-   ExecuteF3SystemFrameB,
-   "ktiger2",
-   "Kyukyoku Tiger 2",
-   NULL,
-   COMPANY_ID_TAITO,
-   "E15",
-   1995,
-   f3_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -111,7 +75,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadKyukyokuTiger2(void)
+static void load_ktiger2(void)
 {
    int ta,tb;
 
@@ -318,7 +282,7 @@ void LoadKyukyokuTiger2(void)
    setup_sound_68000();
 }
 
-void ClearKyukyokuTiger2(void)
+static void ClearKyukyokuTiger2(void)
 {
    save_eeprom();
 
@@ -329,7 +293,7 @@ void ClearKyukyokuTiger2(void)
 #endif
 }
 
-void DrawKyukyokuTiger2(void)
+static void DrawKyukyokuTiger2(void)
 {
    UINT8 *MAP;
    int x16,y16;
@@ -508,3 +472,28 @@ E15-16.BIN  | Sound 68000 odd
 FILE_ID.DIZ | Message of J-Rom
 
 */
+static struct VIDEO_INFO video_ktiger2 =
+{
+   DrawKyukyokuTiger2,
+   224,
+   320,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ktiger2[] =
+{
+   { "kyukyoku_tiger_2", },
+   { "ktiger2", },
+   { "tcobra2", },
+   { NULL, },
+};
+GAME( ktiger2, "Kyukyoku Tiger 2", TAITO, 1995, GAME_SHOOT,
+	.input = f3_system_inputs,
+	.romsw = romsw_ktiger2,
+	.clear = ClearKyukyokuTiger2,
+	.video = &video_ktiger2,
+	.exec = ExecuteF3SystemFrameB,
+	.board = "E15",
+	.sound = f3_sound,
+);
+

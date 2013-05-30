@@ -82,15 +82,8 @@ Bio Ship Paladin    UPL-90062
 
 static int romset,nb_sprites,req_int2;
 
-static struct DIR_INFO bio_ship_paladin_dirs[] =
-{
-   { "bio_ship_paladin", },
-   { "bioship", },
-   { "bshippal", },
-   { NULL, },
-};
 
-static struct ROM_INFO bio_ship_paladin_roms[] =
+static struct ROM_INFO rom_bioship[] =
 {
    {            "1", 0x00020000, 0x820ef303, 0, 0, 0, },
    {            "2", 0x00020000, 0xacf56afb, 0, 0, 0, },
@@ -106,7 +99,7 @@ static struct ROM_INFO bio_ship_paladin_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO nmk_inputs[] =
+static struct INPUT_INFO input_tdragon2[] =
 {
    INP0( COIN1, 0x010000, 0x01 ),
    INP0( COIN2, 0x010000, 0x02 ),
@@ -136,7 +129,7 @@ static struct INPUT_INFO nmk_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO ssmissin_inputs[] =
+static struct INPUT_INFO input_ssmissin[] =
 {
    INP0( COIN1, 0x010000, 0x01 ),
    INP0( COIN2, 0x010000, 0x02 ),
@@ -173,7 +166,7 @@ static struct INPUT_INFO ssmissin_inputs[] =
  * $80002 is still used though, particularly for the hiscore table and to
  * start a game. */
 
-static struct INPUT_INFO tharrier_inputs[] =
+static struct INPUT_INFO input_tforceh[] =
 {
   INP1( COIN1, 0x10000, 0x01 ),
   INP1( COIN2, 0x10000, 0x02 ),
@@ -242,7 +235,7 @@ static struct DSW_DATA dsw_data_ssmissin_8[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO ssmissin_dsw[] =
+static struct DSW_INFO dsw_ssmissin[] =
 {
   { 0x10006, 0xff, dsw_data_ssmissin_2 },
   { 0x10007, 0xe0, dsw_data_ssmissin_8 },
@@ -290,7 +283,7 @@ static struct DSW_DATA dsw_data_bio_ship_paladin_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO bio_ship_paladin_dsw[] =
+static struct DSW_INFO dsw_bioship[] =
 {
    { 0x010008, 0xFF, dsw_data_bio_ship_paladin_0 },
    { 0x01000A, 0xFF, dsw_data_bio_ship_paladin_1 },
@@ -320,7 +313,7 @@ static struct YM2203interface ym2203_nmk004_interface =
 	{ 0 },
 	{ NMK004_irq }
 	/* This irq handler obliges to simulate z80 timers on the 68000.
-	   Easier than what I thought, see execute_nmk004_frame for the gory details ! */
+	   Easier than what I thought, see execute_bioship for the gory details ! */
 };
 
 static struct OKIM6295interface okim6295_interface_dual =
@@ -339,41 +332,34 @@ static struct OKIM6295interface okim6295_interface_ssmissin =
 	{ 255 }				/* volume */
 };
 
-static struct SOUND_INFO macross2_sound[] =
+static struct SOUND_INFO sound_tdragon2[] =
 {
    { SOUND_YM2203,  &ym2203_interface_15, },
    { SOUND_M6295,   &okim6295_interface_dual, },
    { 0,             NULL,                 },
 };
 
-static struct SOUND_INFO macross_sound[] =
+static struct SOUND_INFO sound_hachamf[] =
 {
    { SOUND_YM2203,  &ym2203_nmk004_interface, },
    { SOUND_M6295,   &okim6295_interface_dual, },
    { 0,             NULL,                 },
 };
 
-static struct SOUND_INFO ssmissin_sound[] =
+static struct SOUND_INFO sound_ssmissin[] =
 {
    { SOUND_M6295,   &okim6295_interface_ssmissin, },
    { 0,             NULL,                 },
 };
 
-static struct SOUND_INFO bomb_jack_twin_sound[] =
+static struct SOUND_INFO sound_bjtwin[] =
 {
    { SOUND_M6295,   &okim6295_interface_dual, },
    { 0,             NULL,                 },
 };
 
-static struct DIR_INFO bomb_jack_twin_dirs[] =
-{
-   { "bomb_jack_twin", },
-   { "bjtwin", },
-   { "bjt", },
-   { NULL, },
-};
 
-static struct ROM_INFO bomb_jack_twin_roms[] =
+static struct ROM_INFO rom_bjtwin[] =
 {
    {      "93087-5.bin", 0x00100000, 0xbb06245d, 0, 0, 0, },
    {      "93087-6.bin", 0x00100000, 0x372d46dd, REGION_SOUND1, 0x00000, LOAD_NORMAL, },
@@ -385,7 +371,7 @@ static struct ROM_INFO bomb_jack_twin_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_bomb_jack_twin_0[] =
+static struct DSW_DATA dsw_data_bomb_jack_twin_0[] =
 {
    DSW_SCREEN( 0x01, 0x00),
    { "Start Level",           0x0E, 0x08 },
@@ -410,7 +396,7 @@ struct DSW_DATA dsw_data_bomb_jack_twin_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_bomb_jack_twin_1[] =
+static struct DSW_DATA dsw_data_bomb_jack_twin_1[] =
 {
    DSW_DEMO_SOUND( 0x00, 0x02),
    { MSG_COIN2,               0x1C, 0x08 },
@@ -434,21 +420,15 @@ struct DSW_DATA dsw_data_bomb_jack_twin_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO bomb_jack_twin_dsw[] =
+static struct DSW_INFO dsw_bjtwin[] =
 {
    { 0x010008, 0xFF, dsw_data_bomb_jack_twin_0 },
    { 0x01000A, 0xFF, dsw_data_bomb_jack_twin_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO saboten_bombers_dirs[] =
-{
-   { "saboten_bombers", },
-   { "sabotenb", },
-   { NULL, },
-};
 
-static struct ROM_INFO saboten_bombers_roms[] =
+static struct ROM_INFO rom_sabotenb[] =
 {
    {    "ic100.sb5", 0x00200000, 0xb20f166e, 0, 0, 0, },
    {     "ic30.sb6", 0x00100000, 0x288407af, REGION_SOUND1, 0x00000, LOAD_NORMAL, },
@@ -460,7 +440,7 @@ static struct ROM_INFO saboten_bombers_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_saboten_bombers_0[] =
+static struct DSW_DATA dsw_data_saboten_bombers_0[] =
 {
    DSW_SCREEN( 0x01, 0x00),
    { "Language",              0x02, 0x02 },
@@ -479,7 +459,7 @@ struct DSW_DATA dsw_data_saboten_bombers_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_saboten_bombers_1[] =
+static struct DSW_DATA dsw_data_saboten_bombers_1[] =
 {
    DSW_DEMO_SOUND( 0x00, 0x02),
    { MSG_COIN1,               0xE0, 0x08 }, // Looks ugly and out of order, but it's correct!
@@ -503,43 +483,18 @@ struct DSW_DATA dsw_data_saboten_bombers_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO saboten_bombers_dsw[] =
+static struct DSW_INFO dsw_sabotenb[] =
 {
    { 0x010008, 0xFF, dsw_data_saboten_bombers_0 },
    { 0x01000A, 0xFF, dsw_data_saboten_bombers_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO macross_dirs[] =
-{
-   { "macross", },
-   { "sdf_macross", },
-   { NULL, },
-};
 
-static struct DIR_INFO macross2_dirs[] =
-{
-   { "macross2", },
-   { "sdf_macross2", },
-   { NULL, },
-};
 
-static struct DIR_INFO blkhearj_dirs[] =
-{
-   { "blkhearj", },
-   { "blkheart", },
-   { NULL, },
-};
 
-static struct DIR_INFO blkheart_dirs[] =
-{
-   { "blkheart", },
-   { ROMOF( "blkhearj" ), },
-   { CLONEOF( "blkhearj" ), },
-   { NULL, },
-};
 
-static struct ROM_INFO macross_roms[] =
+static struct ROM_INFO rom_macross[] =
 {
   { "921a03", 0x80000, 0x33318d55 , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "921a02", 0x10000, 0x77c082c7 , REGION_ROM2, 0x00000, LOAD_NORMAL },
@@ -555,7 +510,7 @@ static struct ROM_INFO macross_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO blkheart_roms[] =
+static struct ROM_INFO rom_blkheart[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "blkhrt.7",  0x5bd248c0 , "blkhrt.6",  0x6449e50d ),
@@ -568,7 +523,7 @@ static struct ROM_INFO blkheart_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO blkhearj_roms[] =
+static struct ROM_INFO rom_blkhearj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "7.bin",  0xe0a5c667 , "6.bin",  0x7cce45e8 ),
@@ -581,7 +536,7 @@ static struct ROM_INFO blkhearj_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO macross2_roms[] =
+static struct ROM_INFO rom_macross2[] =
 {
   { "mcrs2j.3", 0x80000, 0x36a618fe , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "mcrs2j.2", 0x20000, 0xb4aa8ac7 , REGION_ROM2, 0x00000, LOAD_NORMAL },
@@ -657,7 +612,7 @@ static struct DSW_DATA dsw_data_macross_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO macross_dsw[] =
+static struct DSW_INFO dsw_tdragon2[] =
 {
    { 0x010008, 0xF7, dsw_data_macross_2 },
    { 0x01000A, 0xFF, dsw_data_macross_3 },
@@ -717,21 +672,15 @@ static struct DSW_DATA dsw_data_blkheart_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO blkheart_dsw[] =
+static struct DSW_INFO dsw_blkheart[] =
 {
    { 0x010008, 0xFF, dsw_data_blkheart_2 },
    { 0x01000A, 0xFF, dsw_data_blkheart_3 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO hacha_mecha_fighter_dirs[] =
-{
-   { "hacha_mecha_fighter", },
-   { "hachamf", },
-   { NULL, },
-};
 
-static struct ROM_INFO hacha_mecha_fighter_roms[] =
+static struct ROM_INFO rom_hachamf[] =
 {
    {   "hmf_02.rom", 0x00080000, 0x3f1e67f2, REGION_SOUND1, 0x20000, LOAD_NORMAL, },
    {   "hmf_03.rom", 0x00080000, 0xb25ed93b, REGION_SOUND2, 0x20000, LOAD_NORMAL, },
@@ -800,20 +749,15 @@ static struct DSW_DATA dsw_data_hachamf_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO hachamf_dsw[] =
+static struct DSW_INFO dsw_hachamf[] =
 {
   { 0x10008, 0xfd, dsw_data_hachamf_2 },
   { 0x10009, 0xff, dsw_data_hachamf_3 },
   { 0, 0, NULL }
 };
 
-static struct DIR_INFO mustang_dirs[] =
-{
-   { "mustang", },
-   { NULL, },
-};
 
-static struct ROM_INFO mustang_roms[] =
+static struct ROM_INFO rom_mustang[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "2.bin",  0xbd9f7c89, "3.bin",  0x0eec36a5),
@@ -880,24 +824,14 @@ static struct DSW_DATA dsw_data_mustang_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO mustang_dsw[] =
+static struct DSW_INFO dsw_mustang[] =
 {
    { 0x010005, 0xFF, dsw_data_tharrier_2 },
    { 0x010004, 0xFF, dsw_data_mustang_3 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO strahl_dirs[] =
-{
-   { "strahl", },
-   { NULL, },
-};
 
-static struct DIR_INFO acrobatm_dirs[] =
-{
-   { "acrobatm", },
-   { NULL, },
-};
 
 static struct DSW_DATA dsw_data_acrobatm_2[] =
 {
@@ -948,14 +882,14 @@ static struct DSW_DATA dsw_data_acrobatm_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO acrobatm_dsw[] =
+static struct DSW_INFO dsw_acrobatm[] =
 {
   { 0x10008, 0xfe, dsw_data_acrobatm_2 },
   { 0x1000a, 0xf7, dsw_data_acrobatm_3 },
   { 0, 0, NULL }
 };
 
-static struct ROM_INFO strahl_roms[] =
+static struct ROM_INFO rom_strahl[] =
 {
    { "str6b1w1.776", 0x00080000, 0xbb1bb155, 0, 0, 0, },
    { "str7b2r0.275", 0x00040000, 0x5769e3e1, 0, 0, 0, },
@@ -971,7 +905,7 @@ static struct ROM_INFO strahl_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO acrobatm_roms[] =
+static struct ROM_INFO rom_acrobatm[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "02_ic100.bin",  0x3fe487f4 , "01_ic101.bin",  0x17175753 ),
@@ -1037,24 +971,15 @@ static struct DSW_DATA dsw_data_strahl_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO strahl_dsw[] =
+static struct DSW_INFO dsw_strahl[] =
 {
    { 0x010008, 0xFF, dsw_data_strahl_2 },
    { 0x01000A, 0xFF, dsw_data_strahl_3 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO task_force_harrier_dirs[] =
-{
-   { "task_force_harrier", },
-   { "tforceh", },
-   { "tskfrceh", },
-   { "tharrier", },
-   { "tharierj", },
-   { NULL, },
-};
 
-static struct ROM_INFO task_force_harrier_roms[] =
+static struct ROM_INFO rom_tforceh[] =
 {
    {            "1", 0x00010000, 0xc7402e4a, 0, 0, 0, },
   LOAD8_16(  REGION_CPU1,  0,  0x00020000,
@@ -1068,22 +993,15 @@ static struct ROM_INFO task_force_harrier_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_INFO tharrier_dsw[] =
+static struct DSW_INFO dsw_tforceh[] =
 {
   { 0x10005, 0xff, dsw_data_tharrier_2 },
   // { 0x10004, 0xff, dsw_data_tharrier_3 }, (not read)
   { 0, 0, NULL }
 };
 
-static struct DIR_INFO thunder_dragon_dirs[] =
-{
-   { "thunder_dragon", },
-   { "tdragon", },
-   { "thunderd", },
-   { NULL, },
-};
 
-static struct ROM_INFO tdragon_roms[] =
+static struct ROM_INFO rom_tdragon[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "thund.8",  0xedd02831, "thund.7",  0x52192fe5),
@@ -1098,7 +1016,7 @@ static struct ROM_INFO tdragon_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO tdragonb_roms[] =
+static struct ROM_INFO rom_tdragonb[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "td_04.bin",  0xe8a62d3e, "td_03.bin",  0x2fa1aa04),
@@ -1114,7 +1032,7 @@ static struct ROM_INFO tdragonb_roms[] =
 };
 
 
-static struct ROM_INFO tdragon2_roms[] =
+static struct ROM_INFO rom_tdragon2[] =
 {
 
   { "6.bin", 0x80000, 0x310d6bca , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
@@ -1138,14 +1056,8 @@ static struct ROM_INFO tdragon2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO tdragon2_dirs[] =
-{
-   { "thunder_dragon2", },
-   { "tdragon2", },
-   { NULL, },
-};
 
-static struct ROM_INFO ssmissin_roms[] =
+static struct ROM_INFO rom_ssmissin[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
             "ssm14.165",  0xeda61b74 , "ssm15.166",  0xaff15927 ),
@@ -1167,11 +1079,6 @@ static struct ROM_INFO ssmissin_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO ssmissin_dirs[] =
-{
-   { "ssmissin", },
-   { NULL, },
-};
 
 static struct DSW_DATA dsw_data_tdragon_2[] =
 {
@@ -1227,7 +1134,7 @@ static struct DSW_DATA dsw_data_tdragon_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO tdragon_dsw[] =
+static struct DSW_INFO dsw_tdragon[] =
 {
   { 0x010008, 0xff, dsw_data_tdragon_2 },
   { 0x01000a, 0xff, dsw_data_tdragon_3 },
@@ -1286,23 +1193,13 @@ static struct DSW_DATA dsw_data_tdragonb_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO tdragonb_dsw[] =
+static struct DSW_INFO dsw_tdragonb[] =
 {
    { 0x010008, 0xFF, dsw_data_tdragonb_2 },
    { 0x01000A, 0xFF, dsw_data_tdragonb_3 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO thunder_dragon_bl_dirs[] =
-{
-   { "thunder_dragon_bl", },
-   { "thndrdbl", },
-   { "tdragonb", },
-   { "thunderd", },
-   { ROMOF("tdragon"), },
-   { CLONEOF("tdragon"), },
-   { NULL, },
-};
 
 static int scr_x;
 static int scr_y;
@@ -1747,7 +1644,7 @@ static void finish_nmk_conf(void)
 UINT16 *mcu_shared_ram;
 UINT16 *work_ram;
 
-void AddNMKMainCPU(UINT32 ram, UINT32 vram)
+static void AddNMKMainCPU(UINT32 ram, UINT32 vram)
 {
   // this function was here to make the memory mapping "general".
   // As a matter of fact, it does not work for all of them (acrobatm and
@@ -1777,7 +1674,7 @@ void AddNMKMainCPU(UINT32 ram, UINT32 vram)
    }
 }
 
-void LoadBombJackTwin(void)
+static void load_bjtwin(void)
 {
    int ta;
 
@@ -1840,7 +1737,7 @@ void LoadBombJackTwin(void)
    finish_nmk_conf();
 }
 
-void LoadSabotenBombers(void)
+static void load_sabotenb(void)
 {
    int ta;
 
@@ -1904,7 +1801,7 @@ void LoadSabotenBombers(void)
    finish_nmk_conf();
 }
 
-void load_macross(void)
+static void load_macross(void)
 {
   //int ta;
 
@@ -2037,13 +1934,13 @@ static void load_blkheart(void)
    finish_nmk_conf();
 }
 
-static void macross2_sound_bank_w(UINT32 offset, UINT16 data) {
+static void sound_tdragon2_bank_w(UINT32 offset, UINT16 data) {
   data &= 7;
   // if (data) data--;
   z80a_set_bank(0,data);
 }
 
-static void ssmissin_sound_bank_w(UINT16 offset, UINT8 data) {
+static void sound_ssmissin_bank_w(UINT16 offset, UINT8 data) {
   unsigned char *rom = load_region[REGION_SOUND1];
   int bank;
 
@@ -2052,22 +1949,22 @@ static void ssmissin_sound_bank_w(UINT16 offset, UINT8 data) {
   memcpy(rom + 0x20000,rom + 0x80000 + bank * 0x20000,0x20000);
 }
 
-static void ssmissin_sound_wb(UINT32 offset, UINT8 data) {
+static void sound_ssmissin_wb(UINT32 offset, UINT8 data) {
   sound_latch = data;
 }
-static void ssmissin_sound_ww(UINT32 offset, UINT16 data) {
+static void sound_ssmissin_ww(UINT32 offset, UINT16 data) {
   sound_latch = data & 0xff;
   if (data & 0x8000)
     cpu_interrupt(CPU_Z80_0, 0x38);
 }
 
-static void ssmissin_sound_frame(void)
+static void sound_ssmissin_frame(void)
 {
 
   cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(4,60));
 }
 
-void load_ssmissin(void)
+static void load_ssmissin(void)
 {
   romset=3;
 
@@ -2110,8 +2007,8 @@ void load_ssmissin(void)
 
    AddReadByte(0x0c000e, 0x0c000f,  NULL, (UINT8*)&latch2);
    // AddReadWord(0xc000e,0xc000f,macross_mcu_r,NULL);
-   AddWriteByte(0xc001e, 0x0c001f, ssmissin_sound_wb, NULL);  // MISC SCREEN RAM
-   AddWriteWord(0xc001e, 0x0c001f, ssmissin_sound_ww, NULL);  // MISC SCREEN RAM
+   AddWriteByte(0xc001e, 0x0c001f, sound_ssmissin_wb, NULL);  // MISC SCREEN RAM
+   AddWriteWord(0xc001e, 0x0c001f, sound_ssmissin_ww, NULL);  // MISC SCREEN RAM
    AddRWBW(0x0c0000, 0x0c001f, NULL, RAM+0x010000);  // controls
    //AddReadWord(0x0c0000, 0x0c001f, NMKVideoRW, NULL);  // controls
    //AddWriteByte(0xc0000, 0x0c001d, NMKVideoWB, NULL);  // MISC SCREEN RAM
@@ -2133,7 +2030,7 @@ void load_ssmissin(void)
    // AddZ80AReadByte(0xa000, 0xa000, NULL, &blank); // nop
    AddZ80AReadByte(0x8000, 0x87ff, NULL, RAM+0x40000);
    AddZ80AWriteByte(0x8000, 0x87ff, NULL, RAM+0x40000);
-   AddZ80AWriteByte(0x9000, 0x9000, ssmissin_sound_bank_w, NULL);
+   AddZ80AWriteByte(0x9000, 0x9000, sound_ssmissin_bank_w, NULL);
    AddZ80AReadByte(0x9800, 0x9800, OKIM6295_status_0_r, NULL);
    AddZ80AWriteByte(0x9800, 0x9800, OKIM6295_data_0_w, NULL);
    AddZ80AReadByte(0xa000, 0xa000, NULL, (UINT8*)&sound_latch);
@@ -2149,7 +2046,7 @@ void load_ssmissin(void)
 
    AddZ80AInit();
 
-   ExecuteSoundFrame=&ssmissin_sound_frame;
+   ExecuteSoundFrame=&sound_ssmissin_frame;
 }
 
 static void memory_map_macross2(int type) {
@@ -2210,7 +2107,7 @@ static void memory_map_macross2(int type) {
    // AddZ80AReadByte(0xa000, 0xa000, NULL, &blank); // nop
    AddZ80AReadByte(0xc000, 0xdfff, NULL, RAM+0x40000);
    AddZ80AWriteByte(0xc000, 0xdfff, NULL, RAM+0x40000);
-   AddZ80AWriteByte(0xe001, 0xe001, macross2_sound_bank_w, NULL);
+   AddZ80AWriteByte(0xe001, 0xe001, sound_tdragon2_bank_w, NULL);
    AddZ80AReadByte(0xf000, 0xf000, NULL, (UINT8*)&sound_latch);
    AddZ80AWriteByte(0xf000, 0xf000, NULL, (UINT8*)&latch2);
 
@@ -2243,7 +2140,7 @@ static void memory_map_macross2(int type) {
    AddSaveData(SAVE_USER_0,&sound_latch,2);
 }
 
-void load_macross2(void)
+static void load_macross2(void)
 {
   romset=3;
 
@@ -2263,7 +2160,7 @@ void load_macross2(void)
    macross2_hack = 1;
 }
 
-void load_tdragon2(void)
+static void load_tdragon2(void)
 {
   romset=3;
 
@@ -2492,7 +2389,7 @@ static void tdragon_mcu_shared_w(UINT32 offset, UINT16 data)
     }
 }
 
-void LoadHachaMechaFighter(void)
+static void load_hachamf(void)
 {
   setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
 
@@ -2561,7 +2458,7 @@ void LoadHachaMechaFighter(void)
    finish_nmk_conf();
 }
 
-void LoadBattleShipP(void)
+static void load_bioship(void)
 {
    int ta;
 
@@ -2645,7 +2542,7 @@ static void test_continue(UINT32 offset, UINT16 data) {
   WriteWord(&RAM[0x906a],1);
 }
 
-void LoadMustang(void)
+static void load_mustang(void)
 {
    setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=8;
@@ -2792,7 +2689,7 @@ static UINT16 soundlatch2_r(UINT32 offset) {
     return latch2;
 }
 
-void LoadTaskForceHarrier(void)
+static void load_tforceh(void)
 {
    romset=4;
    /* The ym2203 depends directly on the z80 frequency, it's a very weird
@@ -2842,7 +2739,7 @@ void LoadTaskForceHarrier(void)
    WriteLong68k(&ROM[0x6dc4],0x80004); // test dsw0 instead of input
    WriteWord68k(&ROM[0x6dcc],0x0100);       // bit0 seems fine
    WriteLong68k(&ROM[0x6DCE],0x660006d2);
-   WriteWord68k(&ROM[0x6dd2],0x604a);  
+   WriteWord68k(&ROM[0x6dd2],0x604a);
 
 /*
  *  StarScream Stuff follows
@@ -2910,7 +2807,7 @@ void LoadTaskForceHarrier(void)
    WriteWord(&RAM[0x10002],0);
 }
 
-void LoadThunderDragon(void)
+static void load_tdragon(void)
 {
    setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=5;
@@ -2982,7 +2879,7 @@ void LoadThunderDragon(void)
    finish_nmk_conf();
 }
 
-void LoadThunderDragonBl(void)
+static void load_tdragonb(void)
 {
    romset=6;
 
@@ -3099,7 +2996,7 @@ void LoadThunderDragonBl(void)
    // ExecuteSoundFrame=&NormalSoundFrame;
 }
 
-void LoadStrahl(void)
+static void load_strahl(void)
 {
    int ta;
 
@@ -3180,7 +3077,7 @@ void LoadStrahl(void)
    req_int2 = 1;
 }
 
-void load_acrobatm(void)
+static void load_acrobatm(void)
 {
    setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=8;
@@ -3248,13 +3145,6 @@ void load_acrobatm(void)
    req_int2 = 1;
 }
 
-void clear_mustang(void)
-{
-  save_debug("ROM.bin",ROM,get_region_size(REGION_ROM1),1);
-  save_debug("RAM.bin",RAM,0x060000,1);
-  save_debug("Z80.bin",Z80ROM,get_region_size(REGION_ROM2),0);
-}
-
 // Int#1 Timer (BPS).
 // Need to hand tune this for Bomb Jack Twin music looping
 
@@ -3273,7 +3163,7 @@ static int int_rate[ROM_COUNT]=
 
 static int tick;
 
-void ExecuteNMKFrame(void)
+static void execute_tdragon2(void)
 {
    cpu_interrupt(CPU_68K_0, 2);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
@@ -3298,7 +3188,7 @@ void ExecuteNMKFrame(void)
 // 12 MHz gives a little plus when there are 2 big ships on screen
 #define FRAME_68K CPU_FRAME_MHz(12,60)
 
-void execute_tharrier(void)
+static void execute_tforceh(void)
 {
    cpu_interrupt(CPU_68K_0, 2);
    static int remaining; // remaining cycles before irq 1
@@ -3465,7 +3355,7 @@ static void mcu_run(UINT8 dsw_setting)
     }
 }
 
-void execute_nmk004_frame(void)
+static void execute_bioship(void)
 {
   int frame = CPU_FRAME_MHz(16,60);
   int cycles;
@@ -3705,7 +3595,7 @@ typedef struct NMKLAYER
 
 static struct NMKLAYER NMKLayers[3];
 
-void RenderNMKLayer(int layer)
+static void RenderNMKLayer(int layer)
 {
    UINT8 *RAM_BG,*SCR_BG,*GFX_BG16,*MSK_BG16;
    UINT8 *GFX_BG8,*MSK_BG8,PAL_BG;
@@ -4240,7 +4130,7 @@ void RenderNMKLayer(int layer)
    }                                            // END 8x8
 }
 
-void DrawNMK(void)
+static void DrawNMK(void)
 {
    int ta,tb;
 
@@ -4302,7 +4192,7 @@ void DrawNMK(void)
    RenderNMKLayer(2);
 }
 
-void DrawMustang(void)
+static void DrawMustang(void)
 {
    int ta,tb;
 
@@ -4345,7 +4235,7 @@ void DrawMustang(void)
 
 // Apparently only 1 bg layer -> index 0
 
-void DrawBombJackTwin(void)
+static void DrawBombJackTwin(void)
 {
    int ta,x,y,zz;
    UINT8 *map;
@@ -4379,7 +4269,7 @@ void DrawBombJackTwin(void)
    RenderNMKSprites(0);
 }
 
-void DrawTaskForceHarrier(void)
+static void DrawTaskForceHarrier(void)
 {
   int ta,tb;
    ClearPaletteMap();
@@ -4421,7 +4311,7 @@ void DrawTaskForceHarrier(void)
    RenderNMKLayer(2);
 }
 
-void DrawThunderDragon(void)
+static void DrawThunderDragon(void)
 {
    int ta,tb;
 
@@ -4481,7 +4371,7 @@ void DrawThunderDragon(void)
    RenderNMKLayer(2);
 }
 
-void DrawStrahl(void)
+static void DrawStrahl(void)
 {
    int ta,tb;
 
@@ -4534,7 +4424,7 @@ void DrawStrahl(void)
    RenderNMKLayer(2);
 }
 
-void draw_macross_2(void)
+static void draw_macross_2(void)
 {
    int ta,tb;
 
@@ -4592,107 +4482,37 @@ void draw_macross_2(void)
 
 // video
 
-static struct VIDEO_INFO bomb_jack_twin_video =
-{
-  DrawBombJackTwin,
-   384,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO saboten_bombers_video =
-{
-   DrawBombJackTwin,
-   384,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO mustang_video =
-{
-   DrawMustang,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO blkheart_video =
-{
-   draw_macross_2,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO tdragon2_video =
-{
-  draw_macross_2,
-   384,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO strahl_video =
-{
-   DrawStrahl,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO task_force_harrier_video =
-{
-   DrawTaskForceHarrier,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO thunder_dragon_video =
-{
-   DrawThunderDragon,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO macross_video =
-{
-   draw_macross_2,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO macross2_video =
-{
-   draw_macross_2,
-   384,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO nmk_video =
+
+
+// Game drivers...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* tdragonb uses the infamous seibu sound system !!! */
+static struct VIDEO_INFO video_bioship =
 {
    DrawNMK,
    256,
@@ -4701,343 +4521,312 @@ static struct VIDEO_INFO nmk_video =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
 };
-
-
-// Game drivers...
-
-GAME( macross ,
-   macross_dirs,
-   macross_roms,
-   nmk_inputs,
-   macross_dsw,
-   NULL,
-
-   load_macross,
-   NULL,
-   &macross_video,
-   execute_nmk004_frame,
-   "macross",
-   "SDF Macross",
-   NULL,
-   COMPANY_ID_BANPREST,
-   NULL,
-   1992,
-   macross_sound,
-   GAME_SHOOT
+static struct VIDEO_INFO video_bjtwin =
+{
+  DrawBombJackTwin,
+   384,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_blkheart =
+{
+   draw_macross_2,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_macross2 =
+{
+   draw_macross_2,
+   384,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_mustang =
+{
+   DrawMustang,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_sabotenb =
+{
+   DrawBombJackTwin,
+   384,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_ssmissin =
+{
+   draw_macross_2,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_strahl =
+{
+   DrawStrahl,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_tdragon =
+{
+   DrawThunderDragon,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_tdragon2 =
+{
+  draw_macross_2,
+   384,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_tforceh =
+{
+   DrawTaskForceHarrier,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_acrobatm[] =
+{
+   { "acrobatm", },
+   { NULL, },
+};
+GAME( acrobatm, "Acrobat Mission", UPL, 1992, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_acrobatm,
+	.video = &video_ssmissin,
+	.exec = execute_bioship,
+	.long_name_jpn = "‚V‚‡‚g‚Î¸[‚Ô",
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_bioship[] =
+{
+   { "bio_ship_paladin", },
+   { "bioship", },
+   { "bshippal", },
+   { NULL, },
+};
+GAME( bioship, "Bio Ship Paladin", UPL, 1990, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_bioship,
+	.video = &video_bioship,
+	.exec = execute_bioship,
+	.long_name_jpn = "ÎF∆Í…ÌËÕ‚S‚È‚Î",
+	.board = "UPL-90062",
+	.sound = sound_hachamf, //sound_bjtwin,
+);
+#define load_blkhearj load_blkheart
+static struct DIR_INFO dir_blkhearj[] =
+{
+   { "blkhearj", },
+   { "blkheart", },
+   { NULL, },
+};
+GAME( blkhearj, "Black Heart (Japan)", UPL, 1991, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_tdragon2,
+	.video = &video_blkheart,
+	.exec = execute_bioship,
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_blkheart[] =
+{
+   { "blkheart", },
+   { ROMOF( "blkhearj" ), },
+   { CLONEOF( "blkhearj" ), },
+   { NULL, },
+};
+GAME( blkheart, "Black Heart", UPL, 1991, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_blkheart,
+	.video = &video_blkheart,
+	.exec = execute_bioship,
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_bjtwin[] =
+{
+   { "bomb_jack_twin", },
+   { "bjtwin", },
+   { "bjt", },
+   { NULL, },
+};
+GAME( bjtwin, "Bomb Jack Twin", NMK, 1993, GAME_PLATFORM,
+	.input = input_tdragon2,
+	.dsw = dsw_bjtwin,
+	.video = &video_bjtwin,
+	.exec = execute_tdragon2,
+	.long_name_jpn = "‚{‚Ù‚W‚‚‚b‚N‚c‚C‚Ù",
+	.sound = sound_bjtwin,
+);
+static struct DIR_INFO dir_hachamf[] =
+{
+   { "hacha_mecha_fighter", },
+   { "hachamf", },
+   { NULL, },
+};
+GAME( hachamf, "Hacha Mecha Fighter", NMK, 1991, GAME_NOT_WORKING,
+	.input = input_tdragon2,
+	.dsw = dsw_hachamf,
+	.video = &video_bioship,
+	.exec = execute_bioship,
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_macross[] =
+{
+   { "macross", },
+   { "sdf_macross", },
+   { NULL, },
+};
+GAME( macross, "SDF Macross", BANPREST, 1992, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_tdragon2,
+	.video = &video_ssmissin,
+	.exec = execute_bioship,
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_macross2[] =
+{
+   { "macross2", },
+   { "sdf_macross2", },
+   { NULL, },
+};
+GAME( macross2, "Macross 2", BANPREST, 1992, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_tdragon2,
+	.video = &video_macross2,
+	.exec = execute_tdragon2,
+	.sound = sound_tdragon2,
+);
+static struct DIR_INFO dir_mustang[] =
+{
+   { "mustang", },
+   { NULL, },
+};
+GAME( mustang, "USAAF Mustang", UPL, 1990, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_mustang,
+	.video = &video_mustang,
+	.exec = execute_bioship,
+	.board = "UPL-90058",
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_sabotenb[] =
+{
+   { "saboten_bombers", },
+   { "sabotenb", },
+   { NULL, },
+};
+GAME( sabotenb, "Saboten Bombers", NMK, 1992, GAME_PLATFORM,
+	.input = input_tdragon2,
+	.dsw = dsw_sabotenb,
+	.video = &video_sabotenb,
+	.exec = execute_tdragon2,
+	.sound = sound_bjtwin,
+);
+static struct DIR_INFO dir_ssmissin[] =
+{
+   { "ssmissin", },
+   { NULL, },
+};
+GAME( ssmissin, "S.S. Mission", COMAD, 1992, GAME_SHOOT,
+	.input = input_ssmissin,
+	.dsw = dsw_ssmissin,
+	.video = &video_ssmissin,
+	.exec = execute_tdragon2,
+	.sound = sound_ssmissin,
+);
+static struct DIR_INFO dir_strahl[] =
+{
+   { "strahl", },
+   { NULL, },
+};
+GAME( strahl, "Strahl", UPL, 1992, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_strahl,
+	.video = &video_strahl,
+	.exec = execute_bioship,
+	.long_name_jpn = "‚V‚‡‚g‚Î¸[‚Ô",
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_tforceh[] =
+{
+   { "task_force_harrier", },
+   { "tforceh", },
+   { "tskfrceh", },
+   { "tharrier", },
+   { "tharierj", },
+   { NULL, },
+};
+GAME( tforceh, "Task Force Harrier", UPL, 1989, GAME_SHOOT,
+	.input = input_tforceh,
+	.dsw = dsw_tforceh,
+	.video = &video_tforceh,
+	.exec = execute_tforceh,
+	.board = "UPL-89050",
+	.sound = sound_tdragon2,
+);
+static struct DIR_INFO dir_tdragon2[] =
+{
+   { "thunder_dragon2", },
+   { "tdragon2", },
+   { NULL, },
+};
+GME( tdragon2, "Thunder Dragon 2", NMK, 1993, GAME_SHOOT);
+static struct DIR_INFO dir_tdragon[] =
+{
+   { "thunder_dragon", },
+   { "tdragon", },
+   { "thunderd", },
+   { NULL, },
+};
+GAME( tdragon, "Thunder Dragon", NMK, 1991, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_tdragon,
+	.video = &video_tdragon,
+	.exec = execute_bioship,
+	.long_name_jpn = "˘Ô˘¥",
+	.sound = sound_hachamf,
+);
+static struct DIR_INFO dir_tdragonb[] =
+{
+   { "thunder_dragon_bl", },
+   { "thndrdbl", },
+   { "tdragonb", },
+   { "thunderd", },
+   { ROMOF("tdragon"), },
+   { CLONEOF("tdragon"), },
+   { NULL, },
+};
+GAME( tdragonb, "Thunder Dragon (bootleg)", BOOTLEG, 1991, GAME_SHOOT,
+	.input = input_tdragon2,
+	.dsw = dsw_tdragonb,
+	.video = &video_tdragon,
+	.exec = execute_tdragon2,
+	.long_name_jpn = "˘Ô˘¥ (bootleg)",
 );
 
-GAME( blkheart ,
-   blkheart_dirs,
-   blkheart_roms,
-   nmk_inputs,
-   blkheart_dsw,
-   NULL,
-
-   load_blkheart,
-   NULL,
-   &blkheart_video,
-   execute_nmk004_frame,
-   "blkheart",
-   "Black Heart",
-   NULL,
-   COMPANY_ID_UPL,
-   NULL,
-   1991,
-      macross_sound,
-   GAME_SHOOT
-);
-
-GAME( blkhearj ,
-   blkhearj_dirs,
-   blkhearj_roms,
-   nmk_inputs,
-   macross_dsw,
-   NULL,
-
-   load_blkheart,
-   NULL,
-   &blkheart_video,
-   execute_nmk004_frame,
-   "blkhearj",
-   "Black Heart (Japan)",
-   NULL,
-   COMPANY_ID_UPL,
-   NULL,
-   1991,
-   macross_sound,
-   GAME_SHOOT
-);
-
-GAME( macross2,
-   macross2_dirs,
-   macross2_roms,
-   nmk_inputs,
-   macross_dsw,
-   NULL,
-
-   load_macross2,
-   clear_mustang,
-   &macross2_video,
-   ExecuteNMKFrame,
-   "macross2",
-   "Macross 2",
-   NULL,
-   COMPANY_ID_BANPREST,
-   NULL,
-   1992,
-   macross2_sound,
-   GAME_SHOOT
-);
-
-GAME( tdragon2,
-   tdragon2_dirs,
-   tdragon2_roms,
-   nmk_inputs,
-   macross_dsw,
-   NULL,
-
-   load_tdragon2,
-   NULL,
-   &tdragon2_video,
-   ExecuteNMKFrame,
-   "tdragon2",
-   "Thunder Dragon 2",
-   NULL,
-   COMPANY_ID_NMK,
-   NULL,
-   1993,
-   macross2_sound,
-   GAME_SHOOT
-);
-
-GAME( ssmissin,
-   ssmissin_dirs,
-   ssmissin_roms,
-   ssmissin_inputs,
-   ssmissin_dsw,
-   NULL,
-
-   load_ssmissin,
-   clear_mustang,
-   &macross_video,
-   ExecuteNMKFrame,
-   "ssmissin",
-   "S.S. Mission",
-   NULL,
-   COMPANY_ID_COMAD,
-   NULL,
-   1992,
-   ssmissin_sound,
-   GAME_SHOOT
-);
-
-GAME( bio_ship_paladin ,
-   bio_ship_paladin_dirs,
-   bio_ship_paladin_roms,
-   nmk_inputs,
-   bio_ship_paladin_dsw,
-   NULL,
-
-   LoadBattleShipP,
-   NULL,
-   &nmk_video,
-   execute_nmk004_frame,
-   "bioship",
-   "Bio Ship Paladin",
-   "ÎF∆Í…ÌËÕ‚S‚È‚Î",
-   COMPANY_ID_UPL,
-   "UPL-90062",
-   1990,
-   macross_sound, //bomb_jack_twin_sound,
-   GAME_SHOOT
-);
-
-GAME( bomb_jack_twin ,
-   bomb_jack_twin_dirs,
-   bomb_jack_twin_roms,
-   nmk_inputs,
-   bomb_jack_twin_dsw,
-   NULL,
-
-   LoadBombJackTwin,
-   NULL,
-   &bomb_jack_twin_video,
-   ExecuteNMKFrame,
-   "bjtwin",
-   "Bomb Jack Twin",
-   "‚{‚Ù‚W‚‚‚b‚N‚c‚C‚Ù",
-   COMPANY_ID_NMK,
-   NULL,
-   1993,
-   bomb_jack_twin_sound,
-   GAME_PLATFORM
-);
-
-GAME( saboten_bombers ,
-   saboten_bombers_dirs,
-   saboten_bombers_roms,
-   nmk_inputs,
-   saboten_bombers_dsw,
-   NULL,
-
-   LoadSabotenBombers,
-   NULL,
-   &saboten_bombers_video,
-   ExecuteNMKFrame,
-   "sabotenb",
-   "Saboten Bombers",
-   "",
-   COMPANY_ID_NMK,
-   NULL,
-   1992,
-   bomb_jack_twin_sound,
-   GAME_PLATFORM
-);
-
-GAME( hacha_mecha_fighter ,
-   hacha_mecha_fighter_dirs,
-   hacha_mecha_fighter_roms,
-   nmk_inputs,
-   hachamf_dsw,
-   NULL,
-
-   LoadHachaMechaFighter,
-   NULL,
-   &nmk_video,
-   execute_nmk004_frame,
-   "hachamf",
-   "Hacha Mecha Fighter",
-   NULL,
-   COMPANY_ID_NMK,
-   NULL,
-   1991,
-   macross_sound,
-   GAME_NOT_WORKING
-);
-
-GAME( mustang ,
-   mustang_dirs,
-   mustang_roms,
-   nmk_inputs,
-   mustang_dsw,
-   NULL,
-
-   LoadMustang,
-   clear_mustang,
-   &mustang_video,
-   execute_nmk004_frame,
-   "mustang",
-   "USAAF Mustang",
-   NULL,
-   COMPANY_ID_UPL,
-   "UPL-90058",
-   1990,
-   macross_sound,
-   GAME_SHOOT
-);
-
-GAME( strahl ,
-   strahl_dirs,
-   strahl_roms,
-   nmk_inputs,
-   strahl_dsw,
-   NULL,
-
-   LoadStrahl,
-   NULL,
-   &strahl_video,
-   execute_nmk004_frame,
-   "strahl",
-   "Strahl",
-   "‚V‚‡‚g‚Î¸[‚Ô",
-   COMPANY_ID_UPL,
-   NULL,
-   1992,
-   macross_sound,
-   GAME_SHOOT
-);
-
-GAME( acrobatm ,
-   acrobatm_dirs,
-   acrobatm_roms,
-   nmk_inputs,
-   acrobatm_dsw,
-   NULL,
-
-   load_acrobatm,
-   clear_mustang,
-   &macross_video,
-   execute_nmk004_frame,
-   "acrobatm",
-   "Acrobat Mission",
-   "‚V‚‡‚g‚Î¸[‚Ô",
-   COMPANY_ID_UPL,
-   NULL,
-   1992,
-   macross_sound,
-   GAME_SHOOT
-);
-
-GAME( task_force_harrier ,
-   task_force_harrier_dirs,
-   task_force_harrier_roms,
-   tharrier_inputs,
-   tharrier_dsw,
-   NULL,
-
-   LoadTaskForceHarrier,
-   NULL,
-   &task_force_harrier_video,
-   execute_tharrier,
-   "tforceh",
-   "Task Force Harrier",
-   NULL,
-   COMPANY_ID_UPL,
-   "UPL-89050",
-   1989,
-   macross2_sound,
-   GAME_SHOOT
-);
-
-GAME( thunder_dragon ,
-   thunder_dragon_dirs,
-   tdragon_roms,
-   nmk_inputs,
-   tdragon_dsw,
-   NULL,
-
-   LoadThunderDragon,
-   NULL,
-   &thunder_dragon_video,
-   execute_nmk004_frame,
-   "tdragon",
-   "Thunder Dragon",
-   "˘Ô˘¥",
-   COMPANY_ID_NMK,
-   NULL,
-   1991,
-   macross_sound,
-   GAME_SHOOT
-);
-
-/* tdragonb uses the infamous seibu sound system !!! */
-GAME( thunder_dragon_bl ,
-   thunder_dragon_bl_dirs,
-   tdragonb_roms,
-   nmk_inputs,
-   tdragonb_dsw,
-   NULL,
-
-   LoadThunderDragonBl,
-   NULL,
-   &thunder_dragon_video,
-   ExecuteNMKFrame,
-   "tdragonb",
-   "Thunder Dragon (bootleg)",
-   "˘Ô˘¥ (bootleg)",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1991,
-   NULL,
-   GAME_SHOOT
-);

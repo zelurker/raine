@@ -1,9 +1,15 @@
+#define DRV_DEF_LOAD load_cps2
+#define DRV_DEF_VIDEO &video_cps1
+#define DRV_DEF_EXEC execute_cps2_frame
+#define DRV_DEF_SOUND sound_qsound
+#define DRV_DEF_INPUT input_p2b6
+#define DRV_DEF_DSW NULL
 /* cps2 drivers, see cps1.c for the code (VERY similar to cps1) */
 
 #include "gameinc.h"
 #include "cps1.h"
 
-static struct ROM_INFO _1944_roms[] =
+static struct ROM_INFO rom_1944[] =
 {
   { "nffu.03", 0x80000, 0x9693cf8f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "nff.04", 0x80000, 0xdba1c66e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -20,7 +26,7 @@ static struct ROM_INFO _1944_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _1944j_roms[] = // clone of _1944
+static struct ROM_INFO rom_1944j[] = // clone of _1944
 {
   { "nffj.03", 0x80000, 0x247521ef, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "nff.04", 0x80000, 0xdba1c66e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -28,7 +34,7 @@ static struct ROM_INFO _1944j_roms[] = // clone of _1944
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _19xx_roms[] =
+static struct ROM_INFO rom_19xx[] =
 {
   { "19xu.03", 0x80000, 0x05955268, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "19xu.04", 0x80000, 0x3111ab7f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -47,7 +53,7 @@ static struct ROM_INFO _19xx_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _19xxj_roms[] = // clone of _19xx
+static struct ROM_INFO rom_19xxj[] = // clone of _19xx
 {
   { "19xj.03a", 0x80000, 0xed08bdd1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "19xj.04a", 0x80000, 0xfb8e3f29, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -57,7 +63,7 @@ static struct ROM_INFO _19xxj_roms[] = // clone of _19xx
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _19xxjr1_roms[] = // clone of _19xx
+static struct ROM_INFO rom_19xxjr1[] = // clone of _19xx
 {
   { "19xj.03", 0x80000, 0x26a381ed, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "19xj.04", 0x80000, 0x30100cca, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -67,7 +73,7 @@ static struct ROM_INFO _19xxjr1_roms[] = // clone of _19xx
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _19xxh_roms[] = // clone of _19xx
+static struct ROM_INFO rom_19xxh[] = // clone of _19xx
 {
   { "19xh.03a", 0x80000, 0x357be2ac, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "19xh.04a", 0x80000, 0xbb13ea3b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -77,7 +83,7 @@ static struct ROM_INFO _19xxh_roms[] = // clone of _19xx
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _19xxb_roms[] = // clone of _19xx
+static struct ROM_INFO rom_19xxb[] = // clone of _19xx
 {
   { "19xb.03a", 0x80000, 0x341bdf4a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "19xb.04a", 0x80000, 0xdff8069e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -87,7 +93,7 @@ static struct ROM_INFO _19xxb_roms[] = // clone of _19xx
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _armwar_roms[] =
+static struct ROM_INFO rom_armwar[] =
 {
   { "pwge.03c", 0x80000, 0x31f74931, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwge.04c", 0x80000, 0x16f34f5f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -110,7 +116,7 @@ static struct ROM_INFO _armwar_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _armwarr1_roms[] = // clone of _armwar
+static struct ROM_INFO rom_armwarr1[] = // clone of _armwar
 {
   { "pwge.03b", 0x80000, 0xe822e3e9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwge.04b", 0x80000, 0x4f89de39, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -123,7 +129,7 @@ static struct ROM_INFO _armwarr1_roms[] = // clone of _armwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _armwaru_roms[] = // clone of _armwar
+static struct ROM_INFO rom_armwaru[] = // clone of _armwar
 {
   { "pwgu.03b", 0x80000, 0x8b95497a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwgu.04b", 0x80000, 0x29eb5661, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -136,7 +142,7 @@ static struct ROM_INFO _armwaru_roms[] = // clone of _armwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _armwaru1_roms[] = // clone of _armwar
+static struct ROM_INFO rom_armwaru1[] = // clone of _armwar
 {
   { "pwgu.03a", 0x80000, 0x73d397b1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwgu.04a", 0x80000, 0x1f1de215, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -149,7 +155,7 @@ static struct ROM_INFO _armwaru1_roms[] = // clone of _armwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pgear_roms[] = // clone of _armwar
+static struct ROM_INFO rom_pgear[] = // clone of _armwar
 {
   { "pwgj.03a", 0x80000, 0xc79c0c02, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwgj.04a", 0x80000, 0x167c6ed8, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -162,7 +168,7 @@ static struct ROM_INFO _pgear_roms[] = // clone of _armwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pgearr1_roms[] = // clone of _armwar
+static struct ROM_INFO rom_pgearr1[] = // clone of _armwar
 {
   { "pwgj.03", 0x80000, 0xf264e74b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwgj.04", 0x80000, 0x23a84983, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -175,7 +181,7 @@ static struct ROM_INFO _pgearr1_roms[] = // clone of _armwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _armwara_roms[] = // clone of _armwar
+static struct ROM_INFO rom_armwara[] = // clone of _armwar
 {
   { "pwga.03a", 0x80000, 0x8d474ab1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pwga.04a", 0x80000, 0x81b5aec7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -188,7 +194,7 @@ static struct ROM_INFO _armwara_roms[] = // clone of _armwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _avsp_roms[] =
+static struct ROM_INFO rom_avsp[] =
 {
   { "avpe.03d", 0x80000, 0x774334a9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "avpe.04d", 0x80000, 0x7fa83769, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -206,7 +212,7 @@ static struct ROM_INFO _avsp_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _avspu_roms[] = // clone of _avsp
+static struct ROM_INFO rom_avspu[] = // clone of _avsp
 {
   { "avpu.03d", 0x80000, 0x42757950, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "avpu.04d", 0x80000, 0x5abcdee6, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -215,7 +221,7 @@ static struct ROM_INFO _avspu_roms[] = // clone of _avsp
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _avspj_roms[] = // clone of _avsp
+static struct ROM_INFO rom_avspj[] = // clone of _avsp
 {
   { "avpj.03d", 0x80000, 0x49799119, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "avpj.04d", 0x80000, 0x8cd2bba8, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -224,7 +230,7 @@ static struct ROM_INFO _avspj_roms[] = // clone of _avsp
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _avspa_roms[] = // clone of _avsp
+static struct ROM_INFO rom_avspa[] = // clone of _avsp
 {
   { "avpa.03d", 0x80000, 0x6c1c1858, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "avpa.04d", 0x80000, 0x94f50b0c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -233,7 +239,7 @@ static struct ROM_INFO _avspa_roms[] = // clone of _avsp
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _avsph_roms[] = // clone of _avsp
+static struct ROM_INFO rom_avsph[] = // clone of _avsp
 {
   { "avph.03d", 0x80000, 0x3e440447, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "avph.04d", 0x80000, 0xaf6fc82f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -242,7 +248,7 @@ static struct ROM_INFO _avsph_roms[] = // clone of _avsp
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _batcir_roms[] =
+static struct ROM_INFO rom_batcir[] =
 {
   { "btce.03", 0x80000, 0xbc60484b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "btce.04", 0x80000, 0x457d55f6, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -261,7 +267,7 @@ static struct ROM_INFO _batcir_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _batcirj_roms[] = // clone of _batcir
+static struct ROM_INFO rom_batcirj[] = // clone of _batcir
 {
   { "btcj.03", 0x80000, 0x6b7e168d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "btcj.04", 0x80000, 0x46ba3467, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -273,7 +279,7 @@ static struct ROM_INFO _batcirj_roms[] = // clone of _batcir
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _batcira_roms[] = // clone of _batcir
+static struct ROM_INFO rom_batcira[] = // clone of _batcir
 {
   { "btca.03", 0x80000, 0x1ad20d87, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "btca.04", 0x80000, 0x2b3f4dbe, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -285,7 +291,7 @@ static struct ROM_INFO _batcira_roms[] = // clone of _batcir
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _choko_roms[] =
+static struct ROM_INFO rom_choko[] =
 {
   { "tkoj.03", 0x80000, 0x11f5452f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "tkoj.04", 0x80000, 0x68655378, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -303,7 +309,7 @@ static struct ROM_INFO _choko_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _csclubj_roms[] = // clone of _csclub
+static struct ROM_INFO rom_csclubj[] = // clone of _csclub
 {
   { "cscj.03", 0x80000, 0xec4ddaa2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cscj.04", 0x80000, 0x60c632bb, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -319,7 +325,7 @@ static struct ROM_INFO _csclubj_roms[] = // clone of _csclub
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _csclub_roms[] =
+static struct ROM_INFO rom_csclub[] =
 {
   { "csce.03a", 0x80000, 0x824082be, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "csce.04a", 0x80000, 0x74e6a4fe, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -351,7 +357,7 @@ static struct ROM_INFO _csclub_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _csclub1_roms[] = // clone of _csclub
+static struct ROM_INFO rom_csclub1[] = // clone of _csclub
 {
   { "csce.03", 0x80000, 0xf2c852ef, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "csce.04", 0x80000, 0x1184530f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -367,7 +373,7 @@ static struct ROM_INFO _csclub1_roms[] = // clone of _csclub
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cscluba_roms[] = // clone of _csclub
+static struct ROM_INFO rom_cscluba[] = // clone of _csclub
 {
   { "csca.03", 0x80000, 0xb6acd708, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "csca.04", 0x80000, 0xd44ae35f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -383,7 +389,7 @@ static struct ROM_INFO _cscluba_roms[] = // clone of _csclub
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _csclubh_roms[] = // clone of _csclub
+static struct ROM_INFO rom_csclubh[] = // clone of _csclub
 {
   { "csch.03", 0x80000, 0x0dd7e46d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "csch.04", 0x80000, 0x486e8143, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -399,7 +405,7 @@ static struct ROM_INFO _csclubh_roms[] = // clone of _csclub
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cybots_roms[] =
+static struct ROM_INFO rom_cybots[] =
 {
   { "cybe.03", 0x80000, 0x234381cd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cybe.04", 0x80000, 0x80691061, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -422,7 +428,7 @@ static struct ROM_INFO _cybots_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cybotsu_roms[] = // clone of _cybots
+static struct ROM_INFO rom_cybotsu[] = // clone of _cybots
 {
   { "cybu.03", 0x80000, 0xdb4da8f4, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cybu.04", 0x80000, 0x1eec68ac, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -435,7 +441,7 @@ static struct ROM_INFO _cybotsu_roms[] = // clone of _cybots
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cybotsj_roms[] = // clone of _cybots
+static struct ROM_INFO rom_cybotsj[] = // clone of _cybots
 {
   { "cybj.03", 0x80000, 0x6096eada, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cybj.04", 0x80000, 0x7b0ffaa9, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -448,7 +454,7 @@ static struct ROM_INFO _cybotsj_roms[] = // clone of _cybots
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtod_roms[] =
+static struct ROM_INFO rom_ddtod[] =
 {
   { "dade.03c", 0x80000, 0x8e73533d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dade.04c", 0x80000, 0x00c2e82e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -467,7 +473,7 @@ static struct ROM_INFO _ddtod_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodr1_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodr1[] = // clone of _ddtod
 {
   { "dade.03a", 0x80000, 0x665a035e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dade.04a", 0x80000, 0x02613207, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -477,7 +483,7 @@ static struct ROM_INFO _ddtodr1_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodu_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodu[] = // clone of _ddtod
 {
   { "dadu.03b", 0x80000, 0xa519905f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dadu.04b", 0x80000, 0x52562d38, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -487,7 +493,7 @@ static struct ROM_INFO _ddtodu_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodur1_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodur1[] = // clone of _ddtod
 {
   { "dadu.03a", 0x80000, 0x4413f177, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dadu.04a", 0x80000, 0x168de230, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -497,7 +503,7 @@ static struct ROM_INFO _ddtodur1_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodj_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodj[] = // clone of _ddtod
 {
   { "dadj.03c", 0x80000, 0x0b1b5798, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dadj.04c", 0x80000, 0xc6a2fbc8, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -507,7 +513,7 @@ static struct ROM_INFO _ddtodj_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodjr1_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodjr1[] = // clone of _ddtod
 {
   { "dadj.03b", 0x80000, 0x87606b85, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dadj.04b", 0x80000, 0x24d49575, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -517,7 +523,7 @@ static struct ROM_INFO _ddtodjr1_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodjr2_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodjr2[] = // clone of _ddtod
 {
   { "dadj.03a", 0x80000, 0x711638dc, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dadj.04a", 0x80000, 0x4869639c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -527,7 +533,7 @@ static struct ROM_INFO _ddtodjr2_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtoda_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtoda[] = // clone of _ddtod
 {
   { "dada.03a", 0x80000, 0xfc6f2dd7, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dada.04a", 0x80000, 0xd4be4009, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -537,7 +543,7 @@ static struct ROM_INFO _ddtoda_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodh_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodh[] = // clone of _ddtod
 {
   { "dadh.03b", 0x80000, 0xae0cb98e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dadh.04b", 0x80000, 0xb5774363, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -547,7 +553,7 @@ static struct ROM_INFO _ddtodh_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsom_roms[] =
+static struct ROM_INFO rom_ddsom[] =
 {
   { "dd2e.03e", 0x80000, 0x449361af, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2e.04e", 0x80000, 0x5b7052b6, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -570,7 +576,7 @@ static struct ROM_INFO _ddsom_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomr1_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomr1[] = // clone of _ddsom
 {
   { "dd2e.03d", 0x80000, 0x6c084ab5, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2e.04d", 0x80000, 0x9b94a947, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -583,7 +589,7 @@ static struct ROM_INFO _ddsomr1_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomr2_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomr2[] = // clone of _ddsom
 {
   { "dd2e.03b", 0x80000, 0xcd2deb66, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2e.04b", 0x80000, 0xbfee43cc, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -596,7 +602,7 @@ static struct ROM_INFO _ddsomr2_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomr3_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomr3[] = // clone of _ddsom
 {
   { "dd2e.03a", 0x80000, 0x6de67678, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2e.04a", 0x80000, 0x0e45739a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -609,7 +615,7 @@ static struct ROM_INFO _ddsomr3_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomu_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomu[] = // clone of _ddsom
 {
   { "dd2u.03g", 0x80000, 0xfb089b39, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2u.04g", 0x80000, 0xcd432b73, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -622,7 +628,7 @@ static struct ROM_INFO _ddsomu_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomur1_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomur1[] = // clone of _ddsom
 {
   { "dd2u.03d", 0x80000, 0x0f700d84, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2u.04d", 0x80000, 0xb99eb254, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -635,7 +641,7 @@ static struct ROM_INFO _ddsomur1_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomj_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomj[] = // clone of _ddsom
 {
   { "dd2j.03g", 0x80000, 0xe6c8c985, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2j.04g", 0x80000, 0x8386c0bd, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -648,7 +654,7 @@ static struct ROM_INFO _ddsomj_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomjr1_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomjr1[] = // clone of _ddsom
 {
   { "dd2j.03b", 0x80000, 0x965d74e5, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2j.04b", 0x80000, 0x958eb8f3, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -661,7 +667,7 @@ static struct ROM_INFO _ddsomjr1_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsoma_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsoma[] = // clone of _ddsom
 {
   { "dd2a.03g", 0x80000, 0x0b4fec22, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2a.04g", 0x80000, 0x055b7019, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -674,7 +680,7 @@ static struct ROM_INFO _ddsoma_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomb_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomb[] = // clone of _ddsom
 {
   { "dd2b.03a", 0x80000, 0xe8ce7fbb, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2b.04a", 0x80000, 0x6b679664, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -687,7 +693,7 @@ static struct ROM_INFO _ddsomb_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dimahoo_roms[] =
+static struct ROM_INFO rom_dimahoo[] =
 {
   { "gmde.03", 0x80000, 0x968fcecd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "gmd.04", 0x80000, 0x37485567, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -703,7 +709,7 @@ static struct ROM_INFO _dimahoo_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dimahoou_roms[] = // clone of _dimahoo
+static struct ROM_INFO rom_dimahoou[] = // clone of _dimahoo
 {
   { "gmdu.03", 0x80000, 0x43bcb15f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "gmd.04", 0x80000, 0x37485567, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -712,7 +718,7 @@ static struct ROM_INFO _dimahoou_roms[] = // clone of _dimahoo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _gmahou_roms[] = // clone of _dimahoo
+static struct ROM_INFO rom_gmahou[] = // clone of _dimahoo
 {
   { "gmdj.03", 0x80000, 0xcd6979e3, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "gmd.04", 0x80000, 0x37485567, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -721,7 +727,7 @@ static struct ROM_INFO _gmahou_roms[] = // clone of _dimahoo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dstlk_roms[] =
+static struct ROM_INFO rom_dstlk[] =
 {
   { "vame.03a", 0x80000, 0x004c9cff, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vame.04a", 0x80000, 0xae413ff2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -744,7 +750,7 @@ static struct ROM_INFO _dstlk_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dstlku_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_dstlku[] = // clone of _dstlk
 {
   { "vamu.03b", 0x80000, 0x68a6343f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vamu.04b", 0x80000, 0x58161453, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -757,7 +763,7 @@ static struct ROM_INFO _dstlku_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dstlkur1_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_dstlkur1[] = // clone of _dstlk
 {
   { "vamu.03a", 0x80000, 0x628899f9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vamu.04a", 0x80000, 0x696d9b25, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -770,7 +776,7 @@ static struct ROM_INFO _dstlkur1_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vampj_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_vampj[] = // clone of _dstlk
 {
   { "vamj.03a", 0x80000, 0xf55d3722, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vamj.04b", 0x80000, 0x4d9c43c4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -783,7 +789,7 @@ static struct ROM_INFO _vampj_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vampja_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_vampja[] = // clone of _dstlk
 {
   { "vamj.03a", 0x80000, 0xf55d3722, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vamj.04a", 0x80000, 0xfdcbdae3, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -796,7 +802,7 @@ static struct ROM_INFO _vampja_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vampjr1_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_vampjr1[] = // clone of _dstlk
 {
   { "vamj.03", 0x80000, 0x8895bf77, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vamj.04", 0x80000, 0x5027db3d, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -809,7 +815,7 @@ static struct ROM_INFO _vampjr1_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dstlka_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_dstlka[] = // clone of _dstlk
 {
   { "vama.03a", 0x80000, 0x294e0bec, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vama.04a", 0x80000, 0xbc18e128, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -822,7 +828,7 @@ static struct ROM_INFO _dstlka_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ecofghtr_roms[] =
+static struct ROM_INFO rom_ecofghtr[] =
 {
   { "uece.03", 0x80000, 0xec2c1137, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "uece.04", 0x80000, 0xb35f99db, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -840,7 +846,7 @@ static struct ROM_INFO _ecofghtr_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ecofghtu_roms[] = // clone of _ecofghtr
+static struct ROM_INFO rom_ecofghtu[] = // clone of _ecofghtr
 {
   { "uecu.03a", 0x80000, 0x22d88a4d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "uecu.04a", 0x80000, 0x6436cfcd, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -849,7 +855,7 @@ static struct ROM_INFO _ecofghtu_roms[] = // clone of _ecofghtr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ecofgtu1_roms[] = // clone of _ecofghtr
+static struct ROM_INFO rom_ecofgtu1[] = // clone of _ecofghtr
 {
   { "uecu.03", 0x80000, 0x6792480c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "uecu.04", 0x80000, 0x95ce69d5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -858,7 +864,7 @@ static struct ROM_INFO _ecofgtu1_roms[] = // clone of _ecofghtr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _uecology_roms[] = // clone of _ecofghtr
+static struct ROM_INFO rom_uecology[] = // clone of _ecofghtr
 {
   { "uecj.03", 0x80000, 0x94c40a4c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "uecj.04", 0x80000, 0x8d6e3a09, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -867,7 +873,7 @@ static struct ROM_INFO _uecology_roms[] = // clone of _ecofghtr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ecofghta_roms[] = // clone of _ecofghtr
+static struct ROM_INFO rom_ecofghta[] = // clone of _ecofghtr
 {
   { "ueca.03", 0x80000, 0xbd4589b1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ueca.04", 0x80000, 0x1d134b7d, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -876,7 +882,7 @@ static struct ROM_INFO _ecofghta_roms[] = // clone of _ecofghtr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _gigawing_roms[] =
+static struct ROM_INFO rom_gigawing[] =
 {
   { "ggwu.03", 0x80000, 0xac725eb2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ggwu.04", 0x80000, 0x392f4118, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -890,7 +896,7 @@ static struct ROM_INFO _gigawing_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _gwingj_roms[] = // clone of _gigawing
+static struct ROM_INFO rom_gwingj[] = // clone of _gigawing
 {
   { "ggwj.03a", 0x80000, 0xfdd23b91, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ggwj.04a", 0x80000, 0x8c6e093c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -898,7 +904,7 @@ static struct ROM_INFO _gwingj_roms[] = // clone of _gigawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _gwinga_roms[] = // clone of _gigawing
+static struct ROM_INFO rom_gwinga[] = // clone of _gigawing
 {
   { "ggwa.03a", 0x80000, 0x116f8837, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ggwa.04a", 0x80000, 0xe6e3f0c4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -906,7 +912,7 @@ static struct ROM_INFO _gwinga_roms[] = // clone of _gigawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _gwingb_roms[] = // clone of _gigawing
+static struct ROM_INFO rom_gwingb[] = // clone of _gigawing
 {
   { "ggwb.03", 0x80000, 0xa1f8a448, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ggwb.04", 0x80000, 0x6a423e76, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -914,7 +920,7 @@ static struct ROM_INFO _gwingb_roms[] = // clone of _gigawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _hsf2_roms[] =
+static struct ROM_INFO rom_hsf2[] =
 {
   { "hs2a.03", 0x80000, 0xd50a17e0, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "hs2a.04", 0x80000, 0xa27f42de, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -933,7 +939,7 @@ static struct ROM_INFO _hsf2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _hsf2j_roms[] = // clone of _hsf2
+static struct ROM_INFO rom_hsf2j[] = // clone of _hsf2
 {
   { "hs2j.03", 0x80000, 0x00738f73, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "hs2j.04", 0x80000, 0x40072c4a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -946,7 +952,7 @@ static struct ROM_INFO _hsf2j_roms[] = // clone of _hsf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _jyangoku_roms[] =
+static struct ROM_INFO rom_jyangoku[] =
 {
   { "majj.03", 0x80000, 0x4614a3b2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "maj1_d.simm1", 0x200000, 0xba0fe27b, REGION_GFX1, 0x0000000, LOAD_8_64 },
@@ -963,7 +969,7 @@ static struct ROM_INFO _jyangoku_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _megaman2_roms[] =
+static struct ROM_INFO rom_megaman2[] =
 {
   { "rm2u.03", 0x80000, 0x8ffc2cd1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rm2u.04", 0x80000, 0xbb30083a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -979,7 +985,7 @@ static struct ROM_INFO _megaman2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _megamn2a_roms[] = // clone of _megaman2
+static struct ROM_INFO rom_megamn2a[] = // clone of _megaman2
 {
   { "rm2a.03", 0x80000, 0x2b330ca7, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rm2a.04", 0x80000, 0x8b47942b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -988,7 +994,7 @@ static struct ROM_INFO _megamn2a_roms[] = // clone of _megaman2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _rckman2j_roms[] = // clone of _megaman2
+static struct ROM_INFO rom_rckman2j[] = // clone of _megaman2
 {
   { "rm2j.03", 0x80000, 0xdbaa1437, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rm2j.04", 0x80000, 0xcf5ba612, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -997,7 +1003,7 @@ static struct ROM_INFO _rckman2j_roms[] = // clone of _megaman2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mmatrix_roms[] =
+static struct ROM_INFO rom_mmatrix[] =
 {
   { "mmxu.03", 0x80000, 0xab65b599, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mmxu.04", 0x80000, 0x0135fc6c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1014,7 +1020,7 @@ static struct ROM_INFO _mmatrix_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mmatrixj_roms[] = // clone of _mmatrix
+static struct ROM_INFO rom_mmatrixj[] = // clone of _mmatrix
 {
   { "mmxj.03", 0x80000, 0x1d5de213, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mmxj.04", 0x80000, 0xd943a339, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1022,7 +1028,7 @@ static struct ROM_INFO _mmatrixj_roms[] = // clone of _mmatrix
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _msh_roms[] =
+static struct ROM_INFO rom_msh[] =
 {
   { "mshe.03e", 0x80000, 0xbd951414, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshe.04e", 0x80000, 0x19dd42f2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1045,7 +1051,7 @@ static struct ROM_INFO _msh_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshu_roms[] = // clone of _msh
+static struct ROM_INFO rom_mshu[] = // clone of _msh
 {
   { "mshu.03", 0x80000, 0xd2805bdd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshu.04", 0x80000, 0x743f96ff, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1058,7 +1064,7 @@ static struct ROM_INFO _mshu_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshj_roms[] = // clone of _msh
+static struct ROM_INFO rom_mshj[] = // clone of _msh
 {
   { "mshj.03g", 0x80000, 0x261f4091, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshj.04g", 0x80000, 0x61d791c6, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1071,7 +1077,7 @@ static struct ROM_INFO _mshj_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshjr1_roms[] = // clone of _msh
+static struct ROM_INFO rom_mshjr1[] = // clone of _msh
 {
   { "mshj.03f", 0x80000, 0xff172fd2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshj.04f", 0x80000, 0xebbb205a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1084,7 +1090,7 @@ static struct ROM_INFO _mshjr1_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _msha_roms[] = // clone of _msh
+static struct ROM_INFO rom_msha[] = // clone of _msh
 {
   { "msha.03e", 0x80000, 0xec84ec44, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "msha.04e", 0x80000, 0x098b8503, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1097,7 +1103,7 @@ static struct ROM_INFO _msha_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshh_roms[] = // clone of _msh
+static struct ROM_INFO rom_mshh[] = // clone of _msh
 {
   { "mshh.03c", 0x80000, 0x8d84b0fa, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshh.04c", 0x80000, 0xd638f601, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1110,7 +1116,7 @@ static struct ROM_INFO _mshh_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshb_roms[] = // clone of _msh
+static struct ROM_INFO rom_mshb[] = // clone of _msh
 {
   { "mshb.03c", 0x80000, 0x19697f74, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshb.04c", 0x80000, 0x95317a6f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1123,7 +1129,7 @@ static struct ROM_INFO _mshb_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsf_roms[] =
+static struct ROM_INFO rom_mshvsf[] =
 {
   { "mvse.03f", 0x80000, 0xb72dc199, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvse.04f", 0x80000, 0x6ef799f9, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1146,7 +1152,7 @@ static struct ROM_INFO _mshvsf_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfu_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfu[] = // clone of _mshvsf
 {
   { "mvsu.03g", 0x80000, 0x0664ab15, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsu.04g", 0x80000, 0x97e060ee, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1159,7 +1165,7 @@ static struct ROM_INFO _mshvsfu_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfu1_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfu1[] = // clone of _mshvsf
 {
   { "mvsu.03d", 0x80000, 0xae60a66a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsu.04d", 0x80000, 0x91f67d8a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1172,7 +1178,7 @@ static struct ROM_INFO _mshvsfu1_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfj_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfj[] = // clone of _mshvsf
 {
   { "mvsj.03i", 0x80000, 0xd8cbb691, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsj.04i", 0x80000, 0x32741ace, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1185,7 +1191,7 @@ static struct ROM_INFO _mshvsfj_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfj1_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfj1[] = // clone of _mshvsf
 {
   { "mvsj.03h", 0x80000, 0xfbe2115f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsj.04h", 0x80000, 0xb528a367, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1198,7 +1204,7 @@ static struct ROM_INFO _mshvsfj1_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfj2_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfj2[] = // clone of _mshvsf
 {
   { "mvsj.03g", 0x80000, 0xfdfa7e26, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsj.04g", 0x80000, 0xc921825f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1211,7 +1217,7 @@ static struct ROM_INFO _mshvsfj2_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfh_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfh[] = // clone of _mshvsf
 {
   { "mvsh.03f", 0x80000, 0x4f60f41e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsh.04f", 0x80000, 0xdc08ec12, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1224,7 +1230,7 @@ static struct ROM_INFO _mshvsfh_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfa_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfa[] = // clone of _mshvsf
 {
   { "mvsa.03f", 0x80000, 0x5b863716, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsa.04f", 0x80000, 0x4886e65f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1237,7 +1243,7 @@ static struct ROM_INFO _mshvsfa_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfa1_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfa1[] = // clone of _mshvsf
 {
   { "mvsa.03", 0x80000, 0x92ef1933, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsa.04", 0x80000, 0x4b24373c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1250,7 +1256,7 @@ static struct ROM_INFO _mshvsfa1_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfb_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfb[] = // clone of _mshvsf
 {
   { "mvsb.03g", 0x80000, 0x143895ef, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsb.04g", 0x80000, 0xdd8a886c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1263,7 +1269,7 @@ static struct ROM_INFO _mshvsfb_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshvsfb1_roms[] = // clone of _mshvsf
+static struct ROM_INFO rom_mshvsfb1[] = // clone of _mshvsf
 {
   { "mvsb.03f", 0x80000, 0x9c4bb950, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvsb.04f", 0x80000, 0xd3320d13, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1276,7 +1282,7 @@ static struct ROM_INFO _mshvsfb1_roms[] = // clone of _mshvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvsc_roms[] =
+static struct ROM_INFO rom_mvsc[] =
 {
   { "mvce.03a", 0x80000, 0x824e4a90, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvce.04a", 0x80000, 0xcac02153, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1299,7 +1305,7 @@ static struct ROM_INFO _mvsc_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscr1_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscr1[] = // clone of _mvsc
 {
   { "mvce.03", 0x80000, 0xe0633fc0, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvce.04", 0x80000, 0xa450a251, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1312,7 +1318,7 @@ static struct ROM_INFO _mvscr1_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscu_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscu[] = // clone of _mvsc
 {
   { "mvcu.03d", 0x80000, 0xc6007557, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvcu.04d", 0x80000, 0x724b2b20, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1325,7 +1331,7 @@ static struct ROM_INFO _mvscu_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscj_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscj[] = // clone of _mvsc
 {
   { "mvcj.03a", 0x80000, 0x3df18879, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvcj.04a", 0x80000, 0x07d212e8, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1338,7 +1344,7 @@ static struct ROM_INFO _mvscj_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscjr1_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscjr1[] = // clone of _mvsc
 {
   { "mvcj.03", 0x80000, 0x2164213f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvcj.04", 0x80000, 0xc905c86f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1351,7 +1357,7 @@ static struct ROM_INFO _mvscjr1_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvsca_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvsca[] = // clone of _mvsc
 {
   { "mvca.03a", 0x80000, 0x2ff4ae25, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvca.04a", 0x80000, 0xf28427ef, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1364,7 +1370,7 @@ static struct ROM_INFO _mvsca_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscar1_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscar1[] = // clone of _mvsc
 {
   { "mvca.03", 0x80000, 0xfe5fa7b9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvca.04", 0x80000, 0x082b701c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1377,7 +1383,7 @@ static struct ROM_INFO _mvscar1_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvsch_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvsch[] = // clone of _mvsc
 {
   { "mvch.03", 0x80000, 0x6a0ec9f7, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvch.04", 0x80000, 0x00f03fa4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1390,7 +1396,7 @@ static struct ROM_INFO _mvsch_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscb_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscb[] = // clone of _mvsc
 {
   { "mvcb.03a", 0x80000, 0x7155953b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvcb.04a", 0x80000, 0xfb117d0e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1403,7 +1409,7 @@ static struct ROM_INFO _mvscb_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mpang_roms[] =
+static struct ROM_INFO rom_mpang[] =
 {
   { "mpne.03c", 0x80000, 0xfe16fc9f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mpne.04c", 0x80000, 0x2cc5ec22, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1421,7 +1427,7 @@ static struct ROM_INFO _mpang_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mpangu_roms[] = // clone of _mpang
+static struct ROM_INFO rom_mpangu[] = // clone of _mpang
 {
   { "mpnu.03", 0x80000, 0x6e7ed03c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mpnu.04", 0x80000, 0xde079131, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1436,14 +1442,14 @@ static struct ROM_INFO _mpangu_roms[] = // clone of _mpang
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mpangj_roms[] = // clone of _mpang
+static struct ROM_INFO rom_mpangj[] = // clone of _mpang
 {
   { "mpnj.03a", 0x80000, 0xbf597b1c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mpnj.04a", 0x80000, 0xf4a3ab0f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nwarr_roms[] =
+static struct ROM_INFO rom_nwarr[] =
 {
   { "vphe.03f", 0x80000, 0xa922c44f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphe.04c", 0x80000, 0x7312d890, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1466,7 +1472,7 @@ static struct ROM_INFO _nwarr_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nwarru_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_nwarru[] = // clone of _nwarr
 {
   { "vphu.03f", 0x80000, 0x85d6a359, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphu.04c", 0x80000, 0xcb7fce77, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1479,7 +1485,7 @@ static struct ROM_INFO _nwarru_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nwarrh_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_nwarrh[] = // clone of _nwarr
 {
   { "vphh.03d", 0x80000, 0x6029c7be, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphh.04a", 0x80000, 0xd26625ee, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1492,7 +1498,7 @@ static struct ROM_INFO _nwarrh_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nwarrb_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_nwarrb[] = // clone of _nwarr
 {
   { "vphb.03d", 0x80000, 0x3a426d3f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphb.04a", 0x80000, 0x51c4bb2f, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1505,7 +1511,7 @@ static struct ROM_INFO _nwarrb_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vhuntj_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_vhuntj[] = // clone of _nwarr
 {
   { "vphj.03f", 0x80000, 0x3de2e333, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphj.04c", 0x80000, 0xc95cf304, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1518,7 +1524,7 @@ static struct ROM_INFO _vhuntj_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vhuntjr1_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_vhuntjr1[] = // clone of _nwarr
 {
   { "vphj.03c", 0x80000, 0x606b682a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphj.04b", 0x80000, 0xa3b40393, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1531,7 +1537,7 @@ static struct ROM_INFO _vhuntjr1_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vhuntjr2_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_vhuntjr2[] = // clone of _nwarr
 {
   { "vphj.03b", 0x80000, 0x679c3fa9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphj.04a", 0x80000, 0xeb6e71e4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1544,7 +1550,7 @@ static struct ROM_INFO _vhuntjr2_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _progear_roms[] =
+static struct ROM_INFO rom_progear[] =
 {
   { "pgau.03", 0x80000, 0x343a783e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pgau.04", 0x80000, 0x16208d79, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1564,21 +1570,21 @@ static struct ROM_INFO _progear_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _progearj_roms[] = // clone of _progear
+static struct ROM_INFO rom_progearj[] = // clone of _progear
 {
   { "pgaj.03", 0x80000, 0x06dbba54, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pgaj.04", 0x80000, 0xa1f1f1bc, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _progeara_roms[] = // clone of _progear
+static struct ROM_INFO rom_progeara[] = // clone of _progear
 {
   { "pgaa.03", 0x80000, 0x25e6e2ce, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pgaa.04", 0x80000, 0x8104307e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pzloop2_roms[] =
+static struct ROM_INFO rom_pzloop2[] =
 {
   { "pl2e.03", 0x80000, 0x3b1285b2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pl2e.04", 0x80000, 0x40a2d647, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1598,7 +1604,7 @@ static struct ROM_INFO _pzloop2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pzloop2j_roms[] = // clone of _pzloop2
+static struct ROM_INFO rom_pzloop2j[] = // clone of _pzloop2
 {
   { "pl2j.03a", 0x80000, 0x0a751bd0, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pl2j.04a", 0x80000, 0xc3f72afe, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1607,7 +1613,7 @@ static struct ROM_INFO _pzloop2j_roms[] = // clone of _pzloop2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _qndream_roms[] =
+static struct ROM_INFO rom_qndream[] =
 {
   { "tqzj.03a", 0x80000, 0x7acf3e30, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "tqzj.04", 0x80000, 0xf1044a87, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1623,7 +1629,7 @@ static struct ROM_INFO _qndream_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ringdest_roms[] =
+static struct ROM_INFO rom_ringdest[] =
 {
   { "smbe.03b", 0x80000, 0xb8016278, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "smbe.04b", 0x80000, 0x18c4c447, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1647,7 +1653,7 @@ static struct ROM_INFO _ringdest_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _smbomb_roms[] = // clone of _ringdest
+static struct ROM_INFO rom_smbomb[] = // clone of _ringdest
 {
   { "smbj.03a", 0x80000, 0x1c5613de, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "smbj.04a", 0x80000, 0x29071ed7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1658,7 +1664,7 @@ static struct ROM_INFO _smbomb_roms[] = // clone of _ringdest
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _smbombr1_roms[] = // clone of _ringdest
+static struct ROM_INFO rom_smbombr1[] = // clone of _ringdest
 {
   { "smbj.03", 0x80000, 0x52eafb10, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "smbj.04", 0x80000, 0xaa6e8078, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1669,7 +1675,7 @@ static struct ROM_INFO _smbombr1_roms[] = // clone of _ringdest
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mmancp2u_roms[] =
+static struct ROM_INFO rom_mmancp2u[] =
 {
   { "rcmu.03b", 0x80000, 0xc39f037f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rcmu.04b", 0x80000, 0xcd6f5e99, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1699,7 +1705,7 @@ static struct ROM_INFO _mmancp2u_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _rmancp2j_roms[] =
+static struct ROM_INFO rom_rmancp2j[] =
 {
   { "rcmj.03a", 0x80000, 0x30559f60, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rcmj.04a", 0x80000, 0x5efc9366, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1729,7 +1735,7 @@ static struct ROM_INFO _rmancp2j_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa_roms[] =
+static struct ROM_INFO rom_sfa[] =
 {
   { "sfze.03d", 0x80000, 0xebf2054d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04b", 0x80000, 0x8b73b0e5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1746,7 +1752,7 @@ static struct ROM_INFO _sfa_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfar1_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfar1[] = // clone of _sfa
 {
   { "sfze.03c", 0x80000, 0xa1b69dd7, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfze.04b", 0x80000, 0xbb90acd5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1756,7 +1762,7 @@ static struct ROM_INFO _sfar1_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfar2_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfar2[] = // clone of _sfa
 {
   { "sfze.03b", 0x80000, 0x2bf5708e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04a", 0x80000, 0x5f99e9a5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1766,7 +1772,7 @@ static struct ROM_INFO _sfar2_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfar3_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfar3[] = // clone of _sfa
 {
   { "sfze.03a", 0x80000, 0xfdbcd434, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04", 0x80000, 0x0c436d30, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1776,7 +1782,7 @@ static struct ROM_INFO _sfar3_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfau_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfau[] = // clone of _sfa
 {
   { "sfzu.03a", 0x80000, 0x49fc7db9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04a", 0x80000, 0x5f99e9a5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1786,7 +1792,7 @@ static struct ROM_INFO _sfau_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfza_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfza[] = // clone of _sfa
 {
   { "sfza.03a", 0x80000, 0xca91bed9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04a", 0x80000, 0x5f99e9a5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1796,7 +1802,7 @@ static struct ROM_INFO _sfza_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzj_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfzj[] = // clone of _sfa
 {
   { "sfzj.03c", 0x80000, 0xf5444120, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04b", 0x80000, 0x8b73b0e5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1806,7 +1812,7 @@ static struct ROM_INFO _sfzj_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzjr1_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfzjr1[] = // clone of _sfa
 {
   { "sfzj.03b", 0x80000, 0x844220c2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04a", 0x80000, 0x5f99e9a5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1816,7 +1822,7 @@ static struct ROM_INFO _sfzjr1_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzjr2_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfzjr2[] = // clone of _sfa
 {
   { "sfzj.03a", 0x80000, 0x3cfce93c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04", 0x80000, 0x0c436d30, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1826,7 +1832,7 @@ static struct ROM_INFO _sfzjr2_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzh_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfzh[] = // clone of _sfa
 {
   { "sfzh.03c", 0x80000, 0xbce635aa, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04a", 0x80000, 0x5f99e9a5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1836,7 +1842,7 @@ static struct ROM_INFO _sfzh_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzb_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfzb[] = // clone of _sfa
 {
   { "sfzb.03g", 0x80000, 0x348862d4, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfzb.04e", 0x80000, 0x8d9b2480, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1846,7 +1852,7 @@ static struct ROM_INFO _sfzb_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzbr1_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfzbr1[] = // clone of _sfa
 {
   { "sfzb.03e", 0x80000, 0xecba89a3, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04b", 0x80000, 0x8b73b0e5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1856,7 +1862,7 @@ static struct ROM_INFO _sfzbr1_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa2_roms[] =
+static struct ROM_INFO rom_sfa2[] =
 {
   { "sz2e.03", 0x80000, 0x1061e6bb, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2e.04", 0x80000, 0x22d17b26, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1877,7 +1883,7 @@ static struct ROM_INFO _sfa2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa2u_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfa2u[] = // clone of _sfa2
 {
   { "sz2u.03", 0x80000, 0x84a09006, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2u.04", 0x80000, 0xac46e5ed, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1888,7 +1894,7 @@ static struct ROM_INFO _sfa2u_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2j_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2j[] = // clone of _sfa2
 {
   { "sz2j.03a", 0x80000, 0x97461e28, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2j.04a", 0x80000, 0xae4851a9, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1899,7 +1905,7 @@ static struct ROM_INFO _sfz2j_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2a_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2a[] = // clone of _sfa2
 {
   { "sz2a.03a", 0x80000, 0x30d2099f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2a.04a", 0x80000, 0x1cc94db1, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1910,7 +1916,7 @@ static struct ROM_INFO _sfz2a_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2b_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2b[] = // clone of _sfa2
 {
   { "sz2b.03b", 0x80000, 0x1ac12812, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2b.04b", 0x80000, 0xe4ffaf68, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1921,7 +1927,7 @@ static struct ROM_INFO _sfz2b_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2br1_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2br1[] = // clone of _sfa2
 {
   { "sz2b.03", 0x80000, 0xe6ce530b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2b.04", 0x80000, 0x1605a0cb, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1932,7 +1938,7 @@ static struct ROM_INFO _sfz2br1_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2h_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2h[] = // clone of _sfa2
 {
   { "sz2h.03", 0x80000, 0xbfeddf5b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2h.04", 0x80000, 0xea5009fb, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1943,7 +1949,7 @@ static struct ROM_INFO _sfz2h_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2n_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2n[] = // clone of _sfa2
 {
   { "sz2n.03", 0x80000, 0x58924741, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2n.04", 0x80000, 0x592a17c5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1954,7 +1960,7 @@ static struct ROM_INFO _sfz2n_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2alj_roms[] = // clone of _sfz2al
+static struct ROM_INFO rom_sfz2alj[] = // clone of _sfz2al
 {
   { "szaj.03a", 0x80000, 0xa3802fe3, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "szaj.04a", 0x80000, 0xe7ca87c7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1965,7 +1971,7 @@ static struct ROM_INFO _sfz2alj_roms[] = // clone of _sfz2al
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2al_roms[] =
+static struct ROM_INFO rom_sfz2al[] =
 {
   { "szaa.03", 0x80000, 0x88e7023e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "szaa.04", 0x80000, 0xae8ec36e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1986,7 +1992,7 @@ static struct ROM_INFO _sfz2al_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2alh_roms[] = // clone of _sfz2al
+static struct ROM_INFO rom_sfz2alh[] = // clone of _sfz2al
 {
   { "szah.03", 0x80000, 0x06f93d1d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "szah.04", 0x80000, 0xe62ee914, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1997,7 +2003,7 @@ static struct ROM_INFO _sfz2alh_roms[] = // clone of _sfz2al
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2alb_roms[] = // clone of _sfz2al
+static struct ROM_INFO rom_sfz2alb[] = // clone of _sfz2al
 {
   { "szab.03", 0x80000, 0xcb436eca, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "szab.04", 0x80000, 0x14534bea, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2008,7 +2014,7 @@ static struct ROM_INFO _sfz2alb_roms[] = // clone of _sfz2al
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa3_roms[] =
+static struct ROM_INFO rom_sfa3[] =
 {
   { "sz3e.03c", 0x80000, 0x9762b206, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3e.04c", 0x80000, 0x5ad3f721, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2031,7 +2037,7 @@ static struct ROM_INFO _sfa3_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa3u_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfa3u[] = // clone of _sfa3
 {
   { "sz3u.03c", 0x80000, 0xe007da2e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3u.04c", 0x80000, 0x5f78f0e7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2044,7 +2050,7 @@ static struct ROM_INFO _sfa3u_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa3ur1_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfa3ur1[] = // clone of _sfa3
 {
   { "sz3u.03", 0x80000, 0xb5984a19, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3u.04", 0x80000, 0x7e8158ba, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2057,7 +2063,7 @@ static struct ROM_INFO _sfa3ur1_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz3j_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfz3j[] = // clone of _sfa3
 {
   { "sz3j.03c", 0x80000, 0xcadf4a51, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3j.04c", 0x80000, 0xfcb31228, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2070,7 +2076,7 @@ static struct ROM_INFO _sfz3j_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz3jr1_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfz3jr1[] = // clone of _sfa3
 {
   { "sz3j.03a", 0x80000, 0x6ee0beae, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3j.04a", 0x80000, 0xa6e2978d, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2083,7 +2089,7 @@ static struct ROM_INFO _sfz3jr1_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz3jr2_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfz3jr2[] = // clone of _sfa3
 {
   { "sz3j.03", 0x80000, 0xf7cb4b13, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3j.04", 0x80000, 0x0846c29d, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2096,7 +2102,7 @@ static struct ROM_INFO _sfz3jr2_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz3a_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfz3a[] = // clone of _sfa3
 {
   { "sz3a.03d", 0x80000, 0xd7e140d6, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3a.04d", 0x80000, 0xe06869a2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2109,7 +2115,7 @@ static struct ROM_INFO _sfz3a_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz3ar1_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfz3ar1[] = // clone of _sfa3
 {
   { "sz3a.03a", 0x80000, 0x29c681fd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3a.04", 0x80000, 0x9ddd1484, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2122,7 +2128,7 @@ static struct ROM_INFO _sfz3ar1_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa3b_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfa3b[] = // clone of _sfa3
 {
   { "sz3b.03", 0x80000, 0x046c9b4d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3b.04", 0x80000, 0xda211919, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2135,7 +2141,7 @@ static struct ROM_INFO _sfa3b_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sgemf_roms[] =
+static struct ROM_INFO rom_sgemf[] =
 {
   { "pcfu.03", 0x80000, 0xac2e8566, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pcf.04", 0x80000, 0xf4314c96, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2155,7 +2161,7 @@ static struct ROM_INFO _sgemf_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pfghtj_roms[] = // clone of _sgemf
+static struct ROM_INFO rom_pfghtj[] = // clone of _sgemf
 {
   { "pcfj.03", 0x80000, 0x681da43e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pcf.04", 0x80000, 0xf4314c96, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2165,7 +2171,7 @@ static struct ROM_INFO _pfghtj_roms[] = // clone of _sgemf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sgemfa_roms[] = // clone of _sgemf
+static struct ROM_INFO rom_sgemfa[] = // clone of _sgemf
 {
   { "pcfa.03", 0x80000, 0xe17c089a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pcf.04", 0x80000, 0xf4314c96, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2175,7 +2181,7 @@ static struct ROM_INFO _sgemfa_roms[] = // clone of _sgemf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sgemfh_roms[] = // clone of _sgemf
+static struct ROM_INFO rom_sgemfh[] = // clone of _sgemf
 {
   { "pcfh.03", 0x80000, 0xe9103347, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pcf.04", 0x80000, 0xf4314c96, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2185,7 +2191,7 @@ static struct ROM_INFO _sgemfh_roms[] = // clone of _sgemf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _spf2t_roms[] =
+static struct ROM_INFO rom_spf2t[] =
 {
   { "pzfu.03a", 0x80000, 0x346e62ef, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pzf.04", 0x80000, 0xb80649e2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2200,7 +2206,7 @@ static struct ROM_INFO _spf2t_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _spf2xj_roms[] = // clone of _spf2t
+static struct ROM_INFO rom_spf2xj[] = // clone of _spf2t
 {
   { "pzfj.03a", 0x80000, 0x2070554a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pzf.04", 0x80000, 0xb80649e2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2208,7 +2214,7 @@ static struct ROM_INFO _spf2xj_roms[] = // clone of _spf2t
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _spf2ta_roms[] = // clone of _spf2t
+static struct ROM_INFO rom_spf2ta[] = // clone of _spf2t
 {
   { "pzfa.03", 0x80000, 0x3cecfa78, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pzf.04", 0x80000, 0xb80649e2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2216,7 +2222,7 @@ static struct ROM_INFO _spf2ta_roms[] = // clone of _spf2t
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2_roms[] =
+static struct ROM_INFO rom_ssf2[] =
 {
   { "ssfe.03", 0x80000, 0xa597745d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfe.04", 0x80000, 0xb082aa67, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2241,7 +2247,7 @@ static struct ROM_INFO _ssf2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2u_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2u[] = // clone of _ssf2
 {
   { "ssfu.03a", 0x80000, 0x72f29c33, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfu.04a", 0x80000, 0x935cea44, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2251,7 +2257,7 @@ static struct ROM_INFO _ssf2u_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2a_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2a[] = // clone of _ssf2
 {
   { "ssfa.03b", 0x80000, 0x83a059bf, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfa.04a", 0x80000, 0x5d873642, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2261,7 +2267,7 @@ static struct ROM_INFO _ssf2a_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2ar1_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2ar1[] = // clone of _ssf2
 {
   { "ssfa.03a", 0x80000, 0xd2a3c520, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfa.04a", 0x80000, 0x5d873642, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2271,7 +2277,7 @@ static struct ROM_INFO _ssf2ar1_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2j_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2j[] = // clone of _ssf2
 {
   { "ssfj.03b", 0x80000, 0x5c2e356d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfj.04a", 0x80000, 0x013bd55c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2281,7 +2287,7 @@ static struct ROM_INFO _ssf2j_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2jr1_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2jr1[] = // clone of _ssf2
 {
   { "ssfj.03a", 0x80000, 0x0bbf1304, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfj.04a", 0x80000, 0x013bd55c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2291,7 +2297,7 @@ static struct ROM_INFO _ssf2jr1_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2jr2_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2jr2[] = // clone of _ssf2
 {
   { "ssfj.03", 0x80000, 0x7eb0efed, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfj.04", 0x80000, 0xd7322164, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2301,7 +2307,7 @@ static struct ROM_INFO _ssf2jr2_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2tb_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2tb[] = // clone of _ssf2
 {
   { "ssfe.3tc", 0x80000, 0x496a8409, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfe.4tc", 0x80000, 0x4b45c18b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2311,7 +2317,7 @@ static struct ROM_INFO _ssf2tb_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2tbr1_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2tbr1[] = // clone of _ssf2
 {
   { "ssfe.3t", 0x80000, 0x1e018e34, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfe.4t", 0x80000, 0xac92efaf, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2321,7 +2327,7 @@ static struct ROM_INFO _ssf2tbr1_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2tbj_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2tbj[] = // clone of _ssf2
 {
   { "ssfj.3t", 0x80000, 0x980d4450, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfj.4t", 0x80000, 0xb4dc1906, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2331,7 +2337,7 @@ static struct ROM_INFO _ssf2tbj_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2t_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2t[] = // clone of _ssf2
 {
   { "sfxe.03c", 0x80000, 0x2fa1f396, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfxe.04a", 0x80000, 0xd0bc29c6, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2347,7 +2353,7 @@ static struct ROM_INFO _ssf2t_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2tu_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2tu[] = // clone of _ssf2
 {
   { "sfxu.03e", 0x80000, 0xd6ff689e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfxu.04a", 0x80000, 0x532b5ffd, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2363,7 +2369,7 @@ static struct ROM_INFO _ssf2tu_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2tur1_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2tur1[] = // clone of _ssf2
 {
   { "sfxu.03c", 0x80000, 0x86e4a335, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfxu.04a", 0x80000, 0x532b5ffd, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2379,7 +2385,7 @@ static struct ROM_INFO _ssf2tur1_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2ta_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2ta[] = // clone of _ssf2
 {
   { "sfxa.03c", 0x80000, 0x04b9ff34, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfxa.04a", 0x80000, 0x16ea5f7a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2395,7 +2401,7 @@ static struct ROM_INFO _ssf2ta_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2xj_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2xj[] = // clone of _ssf2
 {
   { "sfxj.03c", 0x80000, 0xa7417b79, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfxj.04a", 0x80000, 0xaf7767b4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2411,7 +2417,7 @@ static struct ROM_INFO _ssf2xj_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vhunt2_roms[] =
+static struct ROM_INFO rom_vhunt2[] =
 {
   { "vh2j.03a", 0x80000, 0x9ae8f186, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vh2j.04a", 0x80000, 0xe2fabf53, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2434,7 +2440,7 @@ static struct ROM_INFO _vhunt2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vhunt2r1_roms[] = // clone of _vhunt2
+static struct ROM_INFO rom_vhunt2r1[] = // clone of _vhunt2
 {
   { "vh2j.03", 0x80000, 0x1a5feb13, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vh2j.04", 0x80000, 0x434611a5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2447,7 +2453,7 @@ static struct ROM_INFO _vhunt2r1_roms[] = // clone of _vhunt2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsav_roms[] =
+static struct ROM_INFO rom_vsav[] =
 {
   { "vm3e.03d", 0x80000, 0xf5962a8c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vm3e.04d", 0x80000, 0x21b40ea2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2470,7 +2476,7 @@ static struct ROM_INFO _vsav_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsavu_roms[] = // clone of _vsav
+static struct ROM_INFO rom_vsavu[] = // clone of _vsav
 {
   { "vm3u.03d", 0x80000, 0x1f295274, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vm3u.04d", 0x80000, 0xc46adf81, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2483,7 +2489,7 @@ static struct ROM_INFO _vsavu_roms[] = // clone of _vsav
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsavj_roms[] = // clone of _vsav
+static struct ROM_INFO rom_vsavj[] = // clone of _vsav
 {
   { "vm3j.03d", 0x80000, 0x2a2e74a4, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vm3j.04d", 0x80000, 0x1c2427bc, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2496,7 +2502,7 @@ static struct ROM_INFO _vsavj_roms[] = // clone of _vsav
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsava_roms[] = // clone of _vsav
+static struct ROM_INFO rom_vsava[] = // clone of _vsav
 {
   { "vm3a.03d", 0x80000, 0x44c1198f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vm3a.04d", 0x80000, 0x2218b781, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2509,7 +2515,7 @@ static struct ROM_INFO _vsava_roms[] = // clone of _vsav
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsavh_roms[] = // clone of _vsav
+static struct ROM_INFO rom_vsavh[] = // clone of _vsav
 {
   { "vm3h.03a", 0x80000, 0x7cc62df8, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vm3h.04d", 0x80000, 0xd716f3b5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2522,7 +2528,7 @@ static struct ROM_INFO _vsavh_roms[] = // clone of _vsav
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsav2_roms[] =
+static struct ROM_INFO rom_vsav2[] =
 {
   { "vs2j.03", 0x80000, 0x89fd86b4, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vs2j.04", 0x80000, 0x107c091b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2545,7 +2551,7 @@ static struct ROM_INFO _vsav2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcota_roms[] =
+static struct ROM_INFO rom_xmcota[] =
 {
   { "xmne.03e", 0x80000, 0xa9a09b09, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmne.04e", 0x80000, 0x52fa2106, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2568,7 +2574,7 @@ static struct ROM_INFO _xmcota_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotau_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotau[] = // clone of _xmcota
 {
   { "xmnu.03e", 0x80000, 0x0bafeb0e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmnu.04e", 0x80000, 0xc29bdae3, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2581,7 +2587,7 @@ static struct ROM_INFO _xmcotau_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotah_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotah[] = // clone of _xmcota
 {
   { "xmnh.03", 0x80000, 0xe4b85a90, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmnh.04", 0x80000, 0x7dfe1406, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2594,7 +2600,7 @@ static struct ROM_INFO _xmcotah_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotaj_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotaj[] = // clone of _xmcota
 {
   { "xmnj.03d", 0x80000, 0x79086d62, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmnj.04d", 0x80000, 0x38eed613, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2607,7 +2613,7 @@ static struct ROM_INFO _xmcotaj_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotaj1_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotaj1[] = // clone of _xmcota
 {
   { "xmnj.03b", 0x80000, 0xc8175fb3, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmnj.04b", 0x80000, 0x54b3fba3, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2620,7 +2626,7 @@ static struct ROM_INFO _xmcotaj1_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotaj2_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotaj2[] = // clone of _xmcota
 {
   { "xmnj.03a", 0x80000, 0x00761611, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmnj.04a", 0x80000, 0x614d3f60, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2633,7 +2639,7 @@ static struct ROM_INFO _xmcotaj2_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotajr_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotajr[] = // clone of _xmcota
 {
   { "xmno.03a", 0x80000, 0x7ab19acf, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmno.04a", 0x80000, 0x7615dd21, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2648,7 +2654,7 @@ static struct ROM_INFO _xmcotajr_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotaa_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotaa[] = // clone of _xmcota
 {
   { "xmna.03a", 0x80000, 0x7df8b27e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmna.04a", 0x80000, 0xb44e30a7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2661,7 +2667,7 @@ static struct ROM_INFO _xmcotaa_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsf_roms[] =
+static struct ROM_INFO rom_xmvsf[] =
 {
   { "xvse.03f", 0x80000, 0xdb06413f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvse.04f", 0x80000, 0xef015aef, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2683,7 +2689,7 @@ static struct ROM_INFO _xmvsf_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfr1_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfr1[] = // clone of _xmvsf
 {
   { "xvse.03d", 0x80000, 0x5ae5bd3b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvse.04d", 0x80000, 0x5eb9c02e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2695,7 +2701,7 @@ static struct ROM_INFO _xmvsfr1_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfu_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfu[] = // clone of _xmvsf
 {
   { "xvsu.03k", 0x80000, 0x8739ef61, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsu.04k", 0x80000, 0xe11d35c1, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2707,7 +2713,7 @@ static struct ROM_INFO _xmvsfu_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfur1_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfur1[] = // clone of _xmvsf
 {
   { "xvsu.03h", 0x80000, 0x5481155a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsu.04h", 0x80000, 0x1e236388, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2719,7 +2725,7 @@ static struct ROM_INFO _xmvsfur1_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfj_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfj[] = // clone of _xmvsf
 {
   { "xvsj.03i", 0x80000, 0xef24da96, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsj.04i", 0x80000, 0x70a59b35, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2731,7 +2737,7 @@ static struct ROM_INFO _xmvsfj_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfjr1_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfjr1[] = // clone of _xmvsf
 {
   { "xvsj.03d", 0x80000, 0xbeb81de9, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsj.04d", 0x80000, 0x23d11271, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2743,7 +2749,7 @@ static struct ROM_INFO _xmvsfjr1_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfjr2_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfjr2[] = // clone of _xmvsf
 {
   { "xvsj.03c", 0x80000, 0x180656a1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsj.04c", 0x80000, 0x5832811c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2755,7 +2761,7 @@ static struct ROM_INFO _xmvsfjr2_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfa_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfa[] = // clone of _xmvsf
 {
   { "xvsa.03k", 0x80000, 0xd0cca7a8, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsa.04k", 0x80000, 0x8c8e76fd, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2767,7 +2773,7 @@ static struct ROM_INFO _xmvsfa_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfar1_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfar1[] = // clone of _xmvsf
 {
   { "xvsa.03e", 0x80000, 0x9bdde21c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsa.04e", 0x80000, 0x33300edf, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2779,7 +2785,7 @@ static struct ROM_INFO _xmvsfar1_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfh_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfh[] = // clone of _xmvsf
 {
   { "xvsh.03a", 0x80000, 0xd4fffb04, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsh.04a", 0x80000, 0x1b4ea638, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2791,7 +2797,7 @@ static struct ROM_INFO _xmvsfh_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfb_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfb[] = // clone of _xmvsf
 {
   { "xvsb.03h", 0x80000, 0x05baccca, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsb.04h", 0x80000, 0xe350c755, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2803,7 +2809,7 @@ static struct ROM_INFO _xmvsfb_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _1944d_roms[] = // clone of _1944
+static struct ROM_INFO rom_1944d[] = // clone of _1944
 {
   { "nffud.03", 0x80000, 0x28e8aae4, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "nff.04", 0x80000, 0xdba1c66e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2812,7 +2818,7 @@ static struct ROM_INFO _1944d_roms[] = // clone of _1944
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _19xxd_roms[] = // clone of _19xx
+static struct ROM_INFO rom_19xxd[] = // clone of _19xx
 {
   { "19xud.03", 0x80000, 0xf81b60e5, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "19xud.04", 0x80000, 0xcc44638c, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2823,7 +2829,7 @@ static struct ROM_INFO _19xxd_roms[] = // clone of _19xx
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2ad_roms[] = // clone of _sfa2
+static struct ROM_INFO rom_sfz2ad[] = // clone of _sfa2
 {
   { "sz2ad.03a", 0x80000, 0x017f8fab, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz2ad.04a", 0x80000, 0xf50e5ea2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2834,7 +2840,7 @@ static struct ROM_INFO _sfz2ad_roms[] = // clone of _sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _avspd_roms[] = // clone of _avsp
+static struct ROM_INFO rom_avspd[] = // clone of _avsp
 {
   { "avped.03d", 0x80000, 0x66aa8aad, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "avped.04d", 0x80000, 0x579306c2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2844,7 +2850,7 @@ static struct ROM_INFO _avspd_roms[] = // clone of _avsp
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _batcird_roms[] = // clone of _batcir
+static struct ROM_INFO rom_batcird[] = // clone of _batcir
 {
   { "btced.03", 0x80000, 0x0737db6d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "btced.04", 0x80000, 0xef1a8823, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2857,7 +2863,7 @@ static struct ROM_INFO _batcird_roms[] = // clone of _batcir
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddtodd_roms[] = // clone of _ddtod
+static struct ROM_INFO rom_ddtodd[] = // clone of _ddtod
 {
   { "daded.03c", 0x80000, 0x843330f4, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "daded.04c", 0x80000, 0x306f14fc, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2868,7 +2874,7 @@ static struct ROM_INFO _ddtodd_roms[] = // clone of _ddtod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ddsomud_roms[] = // clone of _ddsom
+static struct ROM_INFO rom_ddsomud[] = // clone of _ddsom
 {
   { "dd2ud.03g", 0x80000, 0x816f695a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "dd2ud.04g", 0x80000, 0x7cc81c6b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2882,7 +2888,7 @@ static struct ROM_INFO _ddsomud_roms[] = // clone of _ddsom
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _gwingjd_roms[] = // clone of _gigawing
+static struct ROM_INFO rom_gwingjd[] = // clone of _gigawing
 {
   { "ggwjd.03a", 0x80000, 0xcb1c756e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ggwjd.04a", 0x80000, 0xfa158e04, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2891,7 +2897,7 @@ static struct ROM_INFO _gwingjd_roms[] = // clone of _gigawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _hsf2d_roms[] = // clone of _hsf2
+static struct ROM_INFO rom_hsf2d[] = // clone of _hsf2
 {
   { "hs2ad.03", 0x80000, 0x0153d371, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "hs2ad.04", 0x80000, 0x0276b78a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2905,7 +2911,7 @@ static struct ROM_INFO _hsf2d_roms[] = // clone of _hsf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _megamn2d_roms[] = // clone of _megaman2
+static struct ROM_INFO rom_megamn2d[] = // clone of _megaman2
 {
   { "rm2ud.03", 0x80000, 0xd3635f25, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rm2ud.04", 0x80000, 0x768a1705, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2915,7 +2921,7 @@ static struct ROM_INFO _megamn2d_roms[] = // clone of _megaman2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mvscud_roms[] = // clone of _mvsc
+static struct ROM_INFO rom_mvscud[] = // clone of _mvsc
 {
   { "mvcud.03d", 0x80000, 0x75cde3e5, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mvcud.04d", 0x80000, 0xb32ea484, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2929,7 +2935,7 @@ static struct ROM_INFO _mvscud_roms[] = // clone of _mvsc
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nwarrud_roms[] = // clone of _nwarr
+static struct ROM_INFO rom_nwarrud[] = // clone of _nwarr
 {
   { "vphud.03f", 0x80000, 0x20d4d5a8, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vphud.04c", 0x80000, 0x61be9b42, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2943,7 +2949,7 @@ static struct ROM_INFO _nwarrud_roms[] = // clone of _nwarr
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ringdstd_roms[] = // clone of _ringdest
+static struct ROM_INFO rom_ringdstd[] = // clone of _ringdest
 {
   { "smbed.03b", 0x80000, 0xf6fba4cd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "smbed.04b", 0x80000, 0x193bc493, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2955,7 +2961,7 @@ static struct ROM_INFO _ringdstd_roms[] = // clone of _ringdest
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfad_roms[] = // clone of _sfa
+static struct ROM_INFO rom_sfad[] = // clone of _sfa
 {
   { "sfzed.03d", 0x80000, 0xa1a54827, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfz.04b", 0x80000, 0x8b73b0e5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2966,7 +2972,7 @@ static struct ROM_INFO _sfad_roms[] = // clone of _sfa
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mshud_roms[] = // clone of _msh
+static struct ROM_INFO rom_mshud[] = // clone of _msh
 {
   { "mshud.03", 0x80000, 0xc1d8c4c6, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "mshud.04", 0x80000, 0xe73dda16, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2979,7 +2985,7 @@ static struct ROM_INFO _mshud_roms[] = // clone of _msh
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfz2ald_roms[] = // clone of _sfz2al
+static struct ROM_INFO rom_sfz2ald[] = // clone of _sfz2al
 {
   { "szaad.03", 0x80000, 0x89f9483b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "szaad.04", 0x80000, 0xaef27ae5, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2991,7 +2997,7 @@ static struct ROM_INFO _sfz2ald_roms[] = // clone of _sfz2al
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfa3ud_roms[] = // clone of _sfa3
+static struct ROM_INFO rom_sfa3ud[] = // clone of _sfa3
 {
   { "sz3ud.03c", 0x80000, 0x6db8add7, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sz3ud.04c", 0x80000, 0xd9c65a26, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3005,7 +3011,7 @@ static struct ROM_INFO _sfa3ud_roms[] = // clone of _sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _spf2xjd_roms[] = // clone of _spf2t
+static struct ROM_INFO rom_spf2xjd[] = // clone of _spf2t
 {
   { "pzfjd.03a", 0x80000, 0x5e85ed08, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pzf.04", 0x80000, 0xb80649e2, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3014,7 +3020,7 @@ static struct ROM_INFO _spf2xjd_roms[] = // clone of _spf2t
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _vsavd_roms[] = // clone of _vsav
+static struct ROM_INFO rom_vsavd[] = // clone of _vsav
 {
   { "vm3ed.03d", 0x80000, 0x97d805e3, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vm3ed.04d", 0x80000, 0x5e07fdce, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3028,7 +3034,7 @@ static struct ROM_INFO _vsavd_roms[] = // clone of _vsav
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmcotad_roms[] = // clone of _xmcota
+static struct ROM_INFO rom_xmcotad[] = // clone of _xmcota
 {
   { "xmned.03e", 0x80000, 0xbef56003, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xmned.04e", 0x80000, 0xb1a21fa6, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3042,7 +3048,7 @@ static struct ROM_INFO _xmcotad_roms[] = // clone of _xmcota
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _xmvsfu1d_roms[] = // clone of _xmvsf
+static struct ROM_INFO rom_xmvsfu1d[] = // clone of _xmvsf
 {
   { "xvsud.03h", 0x80000, 0x4e2e76b7, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "xvsud.04h", 0x80000, 0x290c61a7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3055,7 +3061,7 @@ static struct ROM_INFO _xmvsfu1d_roms[] = // clone of _xmvsf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dstlku1d_roms[] = // clone of _dstlk
+static struct ROM_INFO rom_dstlku1d[] = // clone of _dstlk
 {
   { "vamud.03a", 0x80000, 0x47b7a680, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "vamud.04a", 0x80000, 0x3b7a4939, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3068,14 +3074,14 @@ static struct ROM_INFO _dstlku1d_roms[] = // clone of _dstlk
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _progerjd_roms[] = // clone of _progear
+static struct ROM_INFO rom_progerjd[] = // clone of _progear
 {
   { "pgajd.03", 0x80000, 0x4fef676c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pgajd.04", 0x80000, 0xa069bd3b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2ud_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2ud[] = // clone of _ssf2
 {
   { "ssfud.03a", 0x80000, 0xfad5daf8, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfud.04a", 0x80000, 0x0d31af65, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3085,7 +3091,7 @@ static struct ROM_INFO _ssf2ud_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2tbd_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2tbd[] = // clone of _ssf2
 {
   { "ssfed.3tc", 0x80000, 0x5d86caf8, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "ssfed.4tc", 0x80000, 0xf6e1f98d, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3095,7 +3101,7 @@ static struct ROM_INFO _ssf2tbd_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ssf2xjd_roms[] = // clone of _ssf2
+static struct ROM_INFO rom_ssf2xjd[] = // clone of _ssf2
 {
   { "sfxjd.03c", 0x80000, 0x316de996, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfxjd.04a", 0x80000, 0x9bf3bb2e, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3111,7 +3117,7 @@ static struct ROM_INFO _ssf2xjd_roms[] = // clone of _ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sgemfd_roms[] = // clone of _sgemf
+static struct ROM_INFO rom_sgemfd[] = // clone of _sgemf
 {
   { "pcfud.03", 0x80000, 0x8b83674a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "pcfd.04", 0x80000, 0xb58f1d03, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -3121,7 +3127,7 @@ static struct ROM_INFO _sgemfd_roms[] = // clone of _sgemf
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO p4b4_inputs[] =
+static struct INPUT_INFO input_p4b4[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3170,7 +3176,7 @@ static struct INPUT_INFO p4b4_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p4b2_inputs[] =
+static struct INPUT_INFO input_p4b2[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3211,7 +3217,7 @@ static struct INPUT_INFO p4b2_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p3b3_inputs[] =
+static struct INPUT_INFO input_p3b3[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3247,7 +3253,7 @@ static struct INPUT_INFO p3b3_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p2b6_inputs[] =
+static struct INPUT_INFO input_p2b6[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3280,7 +3286,7 @@ static struct INPUT_INFO p2b6_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p2b4_inputs[] =
+static struct INPUT_INFO input_p2b4[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3309,7 +3315,7 @@ static struct INPUT_INFO p2b4_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p2b3_inputs[] =
+static struct INPUT_INFO input_p2b3[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3335,7 +3341,7 @@ static struct INPUT_INFO p2b3_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p2b2_inputs[] =
+static struct INPUT_INFO input_p2b2[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3359,7 +3365,7 @@ static struct INPUT_INFO p2b2_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p2b1_inputs[] =
+static struct INPUT_INFO input_p2b1[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3381,7 +3387,7 @@ static struct INPUT_INFO p2b1_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p1b3_inputs[] =
+static struct INPUT_INFO input_p1b3[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3398,7 +3404,7 @@ static struct INPUT_INFO p1b3_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO p1b2_inputs[] =
+static struct INPUT_INFO input_p1b2[] =
 {
   INP0( P1_RIGHT, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -3414,7 +3420,7 @@ static struct INPUT_INFO p1b2_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO qndream_inputs[] =
+static struct INPUT_INFO input_qndream[] =
 // super bizarre inputs : 4 buttons instead of joystick !
 {
   INP0( P1_B4, 0x00, 0x01 ),
@@ -3436,7 +3442,7 @@ static struct INPUT_INFO qndream_inputs[] =
    END_INPUT
 };
 
-static struct ROMSW_DATA romsw_msh[] =
+static struct ROMSW_DATA romswd_msh[] =
 {
   { "Japan", 0x0},
   { "USA",0x2},
@@ -3447,7 +3453,7 @@ static struct ROMSW_DATA romsw_msh[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_DATA romsw_1944[] =
+static struct ROMSW_DATA romswd_1944[] =
 {
   { "Japan", 0x0},
   { "USA",0x2},
@@ -3458,7 +3464,7 @@ static struct ROMSW_DATA romsw_1944[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_DATA romsw_vhunt2[] =
+static struct ROMSW_DATA romswd_vhunt2[] =
 {
   { "Japan", 0x0},
   { "USA",0x2},
@@ -3470,7 +3476,7 @@ static struct ROMSW_DATA romsw_vhunt2[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_DATA romsw_19xx[] =
+static struct ROMSW_DATA romswd_19xx[] =
 {
   { "Japan", 0x0},
   { "USA", 1 },
@@ -3481,387 +3487,267 @@ static struct ROMSW_DATA romsw_19xx[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_INFO msh_romsw[] =
+static struct ROMSW_INFO romsw_msh[] =
 {
-   { 0xc3, 0x08, romsw_msh },
+   { 0xc3, 0x08, romswd_msh },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO _1944_romsw[] =
+static struct ROMSW_INFO romsw_1944[] =
 {
-   { 0xc3, 0x02, romsw_1944 },
+   { 0xc3, 0x02, romswd_1944 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO vhunt2_romsw[] =
+static struct ROMSW_INFO romsw_vhunt2[] =
 {
-   { 0x10ce, 0x00, romsw_vhunt2 },
+   { 0x10ce, 0x00, romswd_vhunt2 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO _19xx_romsw[] =
+static struct ROMSW_INFO romsw_19xx[] =
 {
-   { 0xc0, 0x00, romsw_19xx },
+   { 0xc0, 0x00, romswd_19xx },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO mpangj_romsw[] =
+static struct ROMSW_INFO romsw_mpangj[] =
 {
-   { 0x7a0, 0x02, romsw_vhunt2 },
+   { 0x7a0, 0x02, romswd_vhunt2 },
    { 0,        0,    NULL },
 };
 
-#define cps2_game(NAME,LONGNAME,YEAR,CTRL,VIDEO, COMPANY, TYPE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   CTRL##_inputs,					\
-   NULL,							\
-   NULL,						\
-							\
-   load_cps2,						\
-   NULL,						\
-   VIDEO,						\
-   execute_cps2_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   qsound_sound,					\
-   TYPE							\
-)
-
-#define cps2_region(NAME,LONGNAME,YEAR,CTRL,VIDEO,COMPANY,TYPE,REGION)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   CTRL##_inputs,					\
-   NULL,							\
-   REGION,						\
-							\
-   load_cps2,						\
-   NULL,						\
-   VIDEO,						\
-   execute_cps2_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   qsound_sound,					\
-   TYPE							\
-)
-
-#define cps2_clone(NAME,LONGNAME,YEAR,CTRL,TYPE,CLONE,VIDEO,COMPANY)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { ROMOF( CLONE ) },					\
-   { CLONEOF( CLONE ) },					\
-   { NULL, },						\
-};						\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   CTRL##_inputs,					\
-   NULL,							\
-   NULL,						\
-							\
-   load_cps2,						\
-   NULL,						\
-   VIDEO,						\
-   execute_cps2_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   qsound_sound,					\
-   TYPE							\
-)
-
-#define cps2_clone_reg(NAME,LONGNAME,YEAR,CTRL,TYPE,CLONE,VIDEO,COMPANY,REGION)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { ROMOF( CLONE ) },					\
-   { CLONEOF( CLONE ) },					\
-   { NULL, },						\
-};						\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   CTRL##_inputs,					\
-   NULL,							\
-   REGION,						\
-							\
-   load_cps2,						\
-   NULL,						\
-   VIDEO,						\
-   execute_cps2_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   qsound_sound,					\
-   TYPE							\
-)
-
-cps2_game( ssf2,  "Super Street Fighter II: The New Challengers (World 930911)", 1993, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( ssf2u,  "Super Street Fighter II: The New Challengers (USA 930911)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2a,  "Super Street Fighter II: The New Challengers (Asia 931005)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2ar1,  "Super Street Fighter II: The New Challengers (Asia 930914)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2j,  "Super Street Fighter II: The New Challengers (Japan 931005)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2jr1,  "Super Street Fighter II: The New Challengers (Japan 930911)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2jr2,  "Super Street Fighter II: The New Challengers (Japan 930910)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2tb,  "Super Street Fighter II: The Tournament Battle (World 931119)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2tbr1,  "Super Street Fighter II: The Tournament Battle (World 930911)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2tbj,  "Super Street Fighter II: The Tournament Battle (Japan 930911)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( ecofghtr,  "Eco Fighters (World 931203)", 1993, p2b3, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps2_clone( ecofghtu,  "Eco Fighters (USA 940215)", 1993, p2b3, GAME_SHOOT, "ecofghtr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ecofgtu1,  "Eco Fighters (USA 931203)", 1993, p2b3, GAME_SHOOT, "ecofghtr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( uecology,  "Ultimate Ecology (Japan 931203)", 1993, p2b3, GAME_SHOOT, "ecofghtr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ecofghta,  "Eco Fighters (Asia 931203)", 1993, p2b3, GAME_SHOOT, "ecofghtr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( ddtod,  "Dungeons & Dragons: Tower of Doom (Euro 940412)", 1993, p4b4, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( ddtodr1,  "Dungeons & Dragons: Tower of Doom (Euro 940113)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtodu,  "Dungeons & Dragons: Tower of Doom (USA 940125)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtodur1,  "Dungeons & Dragons: Tower of Doom (USA 940113)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtodj,  "Dungeons & Dragons: Tower of Doom (Japan 940412)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtodjr1,  "Dungeons & Dragons: Tower of Doom (Japan 940125)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtodjr2,  "Dungeons & Dragons: Tower of Doom (Japan 940113)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtoda,  "Dungeons & Dragons: Tower of Doom (Asia 940113)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddtodh,  "Dungeons & Dragons: Tower of Doom (Hispanic 940125)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2t,  "Super Street Fighter II Turbo (World 940223)", 1994, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2ta,  "Super Street Fighter II Turbo (Asia 940223)", 1994, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2tu,  "Super Street Fighter II Turbo (USA 940323)", 1994, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2tur1,  "Super Street Fighter II Turbo (USA 940223)", 1994, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ssf2xj,  "Super Street Fighter II X: Grand Master Challenge (Japan 940223)", 1994, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( avsp,  "Alien vs. Predator (Euro 940520)", 1994, p3b3, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( avspu,  "Alien vs. Predator (USA 940520)", 1994, p3b3, GAME_BEAT, "avsp", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( avspj,  "Alien vs. Predator (Japan 940520)", 1994, p3b3, GAME_BEAT, "avsp", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( avspa,  "Alien vs. Predator (Asia 940520)", 1994, p3b3, GAME_BEAT, "avsp", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( avsph,  "Alien vs. Predator (Hispanic 940520)", 1994, p3b3, GAME_BEAT, "avsp", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( dstlk,  "Darkstalkers: The Night Warriors (Euro 940705)", 1994, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( dstlku,  "Darkstalkers: The Night Warriors (USA 940818)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( dstlkur1,  "Darkstalkers: The Night Warriors (USA 940705)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( dstlka,  "Darkstalkers: The Night Warriors (Asia 940705)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vampj,  "Vampire: The Night Warriors (Japan 940705)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vampja,  "Vampire: The Night Warriors (Japan 940705 alt)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vampjr1,  "Vampire: The Night Warriors (Japan 940630)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( ringdest,  "Ring of Destruction: Slammasters II (Euro 940902)", 1994, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_SPORTS );
-cps2_clone( smbomb,  "Super Muscle Bomber: The International Blowout (Japan 940831)", 1994, p2b6, GAME_SPORTS, "ringdest", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( smbombr1,  "Super Muscle Bomber: The International Blowout (Japan 940808)", 1994, p2b6, GAME_SPORTS, "ringdest", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( armwar,  "Armored Warriors (Euro 941024)", 1994, p3b3, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps2_clone( armwarr1,  "Armored Warriors (Euro 941011)", 1994, p3b3, GAME_PLATFORM, "armwar", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( armwaru,  "Armored Warriors (USA 941024)", 1994, p3b3, GAME_PLATFORM, "armwar", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( armwaru1,  "Armored Warriors (USA 940920)", 1994, p3b3, GAME_PLATFORM, "armwar", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( pgear,  "Powered Gear: Strategic Variant Armor Equipment (Japan 941024)", 1994, p3b3, GAME_PLATFORM, "armwar", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( pgearr1,  "Powered Gear: Strategic Variant Armor Equipment (Japan 940916)", 1994, p3b3, GAME_PLATFORM, "armwar", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( armwara,  "Armored Warriors (Asia 940920)", 1994, p3b3, GAME_PLATFORM, "armwar", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( xmcota,  "X-Men: Children of the Atom (Euro 950105)", 1994, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( xmcotau,  "X-Men: Children of the Atom (USA 950105)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmcotah,  "X-Men: Children of the Atom (Hispanic 950331)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmcotaj,  "X-Men: Children of the Atom (Japan 941222)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmcotaj1,  "X-Men: Children of the Atom (Japan 941219)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmcotaj2,  "X-Men: Children of the Atom (Japan 941217)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmcotajr,  "X-Men: Children of the Atom (Japan 941208 rent version)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmcotaa,  "X-Men: Children of the Atom (Asia 941217)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( nwarr,  "Night Warriors: Darkstalkers' Revenge (Euro 950316)", 1995, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( nwarru,  "Night Warriors: Darkstalkers' Revenge (USA 950406)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( nwarrh,  "Night Warriors: Darkstalkers' Revenge (Hispanic 950403)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( nwarrb,  "Night Warriors: Darkstalkers' Revenge (Brazil 950403)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vhuntj,  "Vampire Hunter: Darkstalkers' Revenge (Japan 950316)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vhuntjr1,  "Vampire Hunter: Darkstalkers' Revenge (Japan 950307)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vhuntjr2,  "Vampire Hunter: Darkstalkers' Revenge (Japan 950302)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( cybots,  "Cyberbots: Fullmetal Madness (Euro 950424)", 1995, p2b4, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( cybotsu,  "Cyberbots: Fullmetal Madness (USA 950424)", 1995, p2b4, GAME_BEAT, "cybots", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( cybotsj,  "Cyberbots: Fullmetal Madness (Japan 950420)", 1995, p2b4, GAME_BEAT, "cybots", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( sfa,  "Street Fighter Alpha: Warriors' Dreams (Euro 950727)", 1995, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( sfar1,  "Street Fighter Alpha: Warriors' Dreams (Euro 950718)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfar2,  "Street Fighter Alpha: Warriors' Dreams (Euro 950627)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfar3,  "Street Fighter Alpha: Warriors' Dreams (Euro 950605)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfau,  "Street Fighter Alpha: Warriors' Dreams (USA 950627)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfza,  "Street Fighter Zero (Asia 950627)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfzj,  "Street Fighter Zero (Japan 950727)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfzjr1,  "Street Fighter Zero (Japan 950627)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfzjr2,  "Street Fighter Zero (Japan 950605)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfzh,  "Street Fighter Zero (Hispanic 950627)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfzb,  "Street Fighter Zero (Brazil 951109)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfzbr1,  "Street Fighter Zero (Brazil 950727)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mmancp2u,  "Mega Man - The Power Battle (CPS2, USA 951006, SAMPLE Version)", 1995, p2b3, GAME_BEAT, "megaman", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( rmancp2j,  "Rockman: The Power Battle (CPS2, Japan 950922)", 1995, p2b3, GAME_BEAT, "megaman", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_region( msh,  "Marvel Super Heroes (Euro 951024)", 1995, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, msh_romsw );
-cps2_clone( mshu,  "Marvel Super Heroes (USA 951024)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshj,  "Marvel Super Heroes (Japan 951117)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshjr1,  "Marvel Super Heroes (Japan 951024)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( msha,  "Marvel Super Heroes (Asia 951024)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshh,  "Marvel Super Heroes (Hispanic 951117)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshb,  "Marvel Super Heroes (Brazil 951117)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_region( 19xx,  "19XX: The War Against Destiny (USA 951207)", 1996, p2b2, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, _19xx_romsw );
-cps2_clone_reg( 19xxj,  "19XX: The War Against Destiny (Japan 951225)", 1996, p2b2, GAME_SHOOT, "19xx", &cps1_video_270, COMPANY_ID_CAPCOM, _19xx_romsw);
-cps2_clone_reg( 19xxjr1,  "19XX: The War Against Destiny (Japan 951207)", 1996, p2b2, GAME_SHOOT, "19xx", &cps1_video_270, COMPANY_ID_CAPCOM, _19xx_romsw);
-cps2_clone_reg( 19xxh,  "19XX: The War Against Destiny (Hispanic 951218)", 1996, p2b2, GAME_SHOOT, "19xx", &cps1_video_270, COMPANY_ID_CAPCOM, _19xx_romsw);
-cps2_clone( 19xxb,  "19XX: The War Against Destiny (Brazil 951218)", 1996, p2b2, GAME_SHOOT, "19xx", &cps1_video_270, COMPANY_ID_CAPCOM);
-cps2_game( ddsom,  "Dungeons & Dragons: Shadow over Mystara (Euro 960619)", 1996, p4b4, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( ddsomr1,  "Dungeons & Dragons: Shadow over Mystara (Euro 960223)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomr2,  "Dungeons & Dragons: Shadow over Mystara (Euro 960209)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomr3,  "Dungeons & Dragons: Shadow over Mystara (Euro 960208)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomu,  "Dungeons & Dragons: Shadow over Mystara (USA 960619)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomur1,  "Dungeons & Dragons: Shadow over Mystara (USA 960209)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomj,  "Dungeons & Dragons: Shadow over Mystara (Japan 960619)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomjr1,  "Dungeons & Dragons: Shadow over Mystara (Japan 960206)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsoma,  "Dungeons & Dragons: Shadow over Mystara (Asia 960619)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( ddsomb,  "Dungeons & Dragons: Shadow over Mystara (Brazil 960223)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( sfa2,  "Street Fighter Alpha 2 (Euro 960229)", 1996, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( sfa2u,  "Street Fighter Alpha 2 (USA 960306)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2j,  "Street Fighter Zero 2 (Japan 960227)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2a,  "Street Fighter Zero 2 (Asia 960227)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2b,  "Street Fighter Zero 2 (Brazil 960531)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2br1,  "Street Fighter Zero 2 (Brazil 960304)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2h,  "Street Fighter Zero 2 (Hispanic 960304)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2n,  "Street Fighter Zero 2 (Oceania 960229)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( sfz2al,  "Street Fighter Zero 2 Alpha (Asia 960826)", 1996, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( sfz2alj,  "Street Fighter Zero 2 Alpha (Japan 960805)", 1996, p2b6, GAME_BEAT, "sfz2al", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2alh,  "Street Fighter Zero 2 Alpha (Hispanic 960813)", 1996, p2b6, GAME_BEAT, "sfz2al", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz2alb,  "Street Fighter Zero 2 Alpha (Brazil 960813)", 1996, p2b6, GAME_BEAT, "sfz2al", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( spf2t,  "Super Puzzle Fighter II Turbo (USA 960620)", 1996, p2b2, &cps1_video, COMPANY_ID_CAPCOM, GAME_PUZZLE );
-cps2_clone( spf2xj,  "Super Puzzle Fighter II X (Japan 960531)", 1996, p2b2, GAME_PUZZLE, "spf2t", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( spf2ta,  "Super Puzzle Fighter II Turbo (Asia 960529)", 1996, p2b2, GAME_PUZZLE, "spf2t", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( megaman2,  "Mega Man 2: The Power Fighters (USA 960708)", 1996, p2b3, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( megamn2a,  "Mega Man 2: The Power Fighters (Asia 960708)", 1996, p2b3, GAME_BEAT, "megaman2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( rckman2j,  "Rockman 2: The Power Fighters (Japan 960708)", 1996, p2b3, GAME_BEAT, "megaman2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( qndream,  "Quiz Nanairo Dreams: Nijiirochou no Kiseki (Japan 960826)", 1996, qndream, &cps1_video, COMPANY_ID_CAPCOM, GAME_QUIZZ );
-cps2_game( xmvsf,  "X-Men Vs. Street Fighter (Euro 961004)", 1996, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( xmvsfr1,  "X-Men Vs. Street Fighter (Euro 960910)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfu,  "X-Men Vs. Street Fighter (USA 961023)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfur1,  "X-Men Vs. Street Fighter (USA 961004)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfj,  "X-Men Vs. Street Fighter (Japan 961004)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfjr1,  "X-Men Vs. Street Fighter (Japan 960910)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfjr2,  "X-Men Vs. Street Fighter (Japan 960909)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfa,  "X-Men Vs. Street Fighter (Asia 961023)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfar1,  "X-Men Vs. Street Fighter (Asia 960919)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfh,  "X-Men Vs. Street Fighter (Hispanic 961004)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( xmvsfb,  "X-Men Vs. Street Fighter (Brazil 961023)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( batcir,  "Battle Circuit (Euro 970319)", 1997, p4b2, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( batcira,  "Battle Circuit (Asia 970319)", 1997, p4b2, GAME_BEAT, "batcir", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( batcirj,  "Battle Circuit (Japan 970319)", 1997, p4b2, GAME_BEAT, "batcir", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( vsav,  "Vampire Savior: The Lord of Vampire (Euro 970519)", 1997, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( vsavu,  "Vampire Savior: The Lord of Vampire (USA 970519)", 1997, p2b6, GAME_BEAT, "vsav", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vsavj,  "Vampire Savior: The Lord of Vampire (Japan 970519)", 1997, p2b6, GAME_BEAT, "vsav", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vsava,  "Vampire Savior: The Lord of Vampire (Asia 970519)", 1997, p2b6, GAME_BEAT, "vsav", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( vsavh,  "Vampire Savior: The Lord of Vampire (Hispanic 970519)", 1997, p2b6, GAME_BEAT, "vsav", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( mshvsf,  "Marvel Super Heroes Vs. Street Fighter (Euro 970625)", 1997, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( mshvsfu,  "Marvel Super Heroes Vs. Street Fighter (USA 970827)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfu1,  "Marvel Super Heroes Vs. Street Fighter (USA 970625)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfj,  "Marvel Super Heroes Vs. Street Fighter (Japan 970707)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfj1,  "Marvel Super Heroes Vs. Street Fighter (Japan 970702)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfj2,  "Marvel Super Heroes Vs. Street Fighter (Japan 970625)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfh,  "Marvel Super Heroes Vs. Street Fighter (Hispanic 970625)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfa,  "Marvel Super Heroes Vs. Street Fighter (Asia 970625)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfa1,  "Marvel Super Heroes Vs. Street Fighter (Asia 970620)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfb,  "Marvel Super Heroes Vs. Street Fighter (Brazil 970827)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mshvsfb1,  "Marvel Super Heroes Vs. Street Fighter (Brazil 970625)", 1997, p2b6, GAME_BEAT, "mshvsf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( csclub,  "Capcom Sports Club (Euro 971017)", 1997, p2b3, &cps1_video, COMPANY_ID_CAPCOM, GAME_SPORTS );
-cps2_clone( csclub1,  "Capcom Sports Club (Euro 970722)", 1997, p2b3, GAME_SPORTS, "csclub", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( cscluba,  "Capcom Sports Club (Asia 970722)", 1997, p2b3, GAME_SPORTS, "csclub", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( csclubj,  "Capcom Sports Club (Japan 970722)", 1997, p2b3, GAME_SPORTS, "csclub", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( csclubh,  "Capcom Sports Club (Hispanic 970722)", 1997, p2b3, GAME_SPORTS, "csclub", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( sgemf,  "Super Gem Fighter Mini Mix (USA 970904)", 1997, p2b3, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( pfghtj,  "Pocket Fighter (Japan 970904)", 1997, p2b3, GAME_BEAT, "sgemf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sgemfa,  "Super Gem Fighter: Mini Mix (Asia 970904)", 1997, p2b3, GAME_BEAT, "sgemf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sgemfh,  "Super Gem Fighter: Mini Mix (Hispanic 970904)", 1997, p2b3, GAME_BEAT, "sgemf", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_region( vhunt2,  "Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)", 1997, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, vhunt2_romsw );
-cps2_clone( vhunt2r1,  "Vampire Hunter 2: Darkstalkers Revenge (Japan 970913)", 1997, p2b6, GAME_BEAT, "vhunt2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( vsav2,  "Vampire Savior 2: The Lord of Vampire (Japan 970913)", 1997, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_game( mvsc,  "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)", 1998, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( mvscr1,  "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980112)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvscu,  "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvscj,  "Marvel Vs. Capcom: Clash of Super Heroes (Japan 980123)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvscjr1,  "Marvel Vs. Capcom: Clash of Super Heroes (Japan 980112)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvsca,  "Marvel Vs. Capcom: Clash of Super Heroes (Asia 980123)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvscar1,  "Marvel Vs. Capcom: Clash of Super Heroes (Asia 980112)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvsch,  "Marvel Vs. Capcom: Clash of Super Heroes (Hispanic 980123)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( mvscb,  "Marvel Vs. Capcom: Clash of Super Heroes (Brazil 980123)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( sfa3,  "Street Fighter Alpha 3 (Euro 980904)", 1998, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( sfa3u,  "Street Fighter Alpha 3 (USA 980904)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfa3ur1,  "Street Fighter Alpha 3 (USA 980629)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfa3b,  "Street Fighter Alpha 3 (Brazil 980629)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz3j,  "Street Fighter Zero 3 (Japan 980904)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz3jr1,  "Street Fighter Zero 3 (Japan 980727)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz3jr2,  "Street Fighter Zero 3 (Japan 980629)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz3a,  "Street Fighter Zero 3 (Asia 980904)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( sfz3ar1,  "Street Fighter Zero 3 (Asia 980701)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( jyangoku,  "Jyangokushi: Haoh no Saihai (Japan 990527)", 1999, p1b2, &cps1_video, COMPANY_ID_CAPCOM, GAME_PUZZLE );
-cps2_game( hsf2,  "Hyper Street Fighter 2: The Anniversary Edition (Asia 040202)", 2004, p2b6, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps2_clone( hsf2j,  "Hyper Street Fighter 2: The Anniversary Edition (Japan 031222)", 2004, p2b6, GAME_BEAT, "hsf2", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( gigawing,  "Giga Wing (USA 990222)", 1999, p2b2, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps2_clone( gwingj,  "Giga Wing (Japan 990223)", 1999, p2b2, GAME_SHOOT, "gigawing", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( gwinga,  "Giga Wing (Asia 990222)", 1999, p2b2, GAME_SHOOT, "gigawing", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_clone( gwingb,  "Giga Wing (Brazil 990222)", 1999, p2b2, GAME_SHOOT, "gigawing", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_game( mmatrix,  "Mars Matrix: Hyper Solid Shooting (USA 000412)", 2000, p2b1, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps2_clone( mmatrixj,  "Mars Matrix: Hyper Solid Shooting (Japan 000412)", 2000, p2b1, GAME_SHOOT, "mmatrix", &cps1_video, COMPANY_ID_CAPCOM);
-cps2_region( mpang,  "Mighty! Pang (Euro 001010)", 2000, p2b1, &cps1_video, COMPANY_ID_MITCHELL, GAME_SHOOT, mpangj_romsw );
-cps2_clone( mpangu,  "Mighty! Pang (USA 001010)", 2000, p2b1, GAME_SHOOT, "mpang", &cps1_video, COMPANY_ID_MITCHELL);
-cps2_clone_reg( mpangj,  "Mighty! Pang (Japan 001011)", 2000, p2b1, GAME_SHOOT, "mpang", &cps1_video, COMPANY_ID_MITCHELL, mpangj_romsw);
-cps2_game( pzloop2,  "Puzz Loop 2 (Euro 010302)", 2001, p2b1, &cps1_video, COMPANY_ID_MITCHELL, GAME_PUZZLE );
-cps2_clone( pzloop2j,  "Puzz Loop 2 (Japan 010205)", 2001, p2b1, GAME_PUZZLE, "pzloop2", &cps1_video, COMPANY_ID_MITCHELL);
-cps2_game( choko,  "Janpai Puzzle Choukou (Japan 010820)", 2001, p1b3, &cps1_video, COMPANY_ID_MITCHELL, GAME_PUZZLE );
-cps2_game( dimahoo,  "Dimahoo (Euro 000121)", 2000, p2b3, &cps1_video_270, COMPANY_ID_RAIZING, GAME_SHOOT );
-cps2_clone( dimahoou,  "Dimahoo (USA 000121)", 2000, p2b3, GAME_SHOOT, "dimahoo", &cps1_video_270, COMPANY_ID_RAIZING);
-cps2_clone( gmahou,  "Great Mahou Daisakusen (Japan 000121)", 2000, p2b3, GAME_SHOOT, "dimahoo", &cps1_video_270, COMPANY_ID_RAIZING);
-cps2_region( 1944,  "1944: The Loop Master (USA 000620)", 2000, p2b2, &cps1_video, COMPANY_ID_RAIZING, GAME_SHOOT, _1944_romsw );
-cps2_clone( 1944j,  "1944: The Loop Master (Japan 000620)", 2000, p2b2, GAME_SHOOT, "1944", &cps1_video, COMPANY_ID_RAIZING);
-cps2_game( progear,  "Progear (USA 010117)", 2001, p2b3, &cps1_video, COMPANY_ID_CAVE, GAME_SHOOT );
-cps2_clone( progearj,  "Progear no Arashi (Japan 010117)", 2001, p2b3, GAME_SHOOT, "progear", &cps1_video, COMPANY_ID_CAVE);
-cps2_clone( progeara,  "Progear (Asia 010117)", 2001, p2b3, GAME_SHOOT, "progear", &cps1_video, COMPANY_ID_CAVE);
-cps2_clone( ssf2ud,  "Super Street Fighter II: The New Challengers (USA 930911 Phoenix Edition) (bootleg)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( ddtodd,  "Dungeons & Dragons: Tower of Doom (Euro 940412 Phoenix Edition) (bootleg)", 1993, p4b4, GAME_BEAT, "ddtod", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( avspd,  "Alien vs. Predator (Euro 940520 Phoenix Edition) (bootleg)", 1994, p3b3, GAME_BEAT, "avsp", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( dstlku1d,  "Darkstalkers: The Night Warriors (USA 940705 Phoenix Edition) (bootleg)", 1994, p2b6, GAME_BEAT, "dstlk", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( ringdstd,  "Ring of Destruction: Slammasters II (Euro 940902 Phoenix Edition) (bootleg)", 1994, p2b6, GAME_SPORTS, "ringdest", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( xmcotad,  "X-Men: Children of the Atom (Euro 950105 Phoenix Edition) (bootleg)", 1994, p2b6, GAME_BEAT, "xmcota", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( nwarrud,  "Night Warriors: Darkstalkers' Revenge (USA 950406 Phoenix Edition) (bootleg)", 1995, p2b6, GAME_BEAT, "nwarr", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( sfad,  "Street Fighter Alpha: Warriors' Dreams (Euro 950727 Phoenix Edition) (bootleg)", 1995, p2b6, GAME_BEAT, "sfa", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( mshud,  "Marvel Super Heroes (US 951024 Phoenix Edition) (bootleg)", 1995, p2b6, GAME_BEAT, "msh", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( 19xxd,  "19XX: The War Against Destiny (USA 951207 Phoenix Edition) (bootleg)", 1996, p2b2, GAME_SHOOT, "19xx", &cps1_video_270, COMPANY_ID_BOOTLEG);
-cps2_clone( sfz2ad,  "Street Fighter Zero 2 (Asia 960227 Phoenix Edition) (bootleg)", 1996, p2b6, GAME_BEAT, "sfa2", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( spf2xjd,  "Super Puzzle Fighter II X (Japan 960531 Phoenix Edition) (bootleg)", 1996, p2b2, GAME_PUZZLE, "spf2t", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( ddsomud,  "Dungeons & Dragons: Shadow over Mystara (USA 960619 Phoenix Edition) (bootleg)", 1996, p4b4, GAME_BEAT, "ddsom", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( megamn2d,  "Mega Man 2: The Power Fighters (USA 960708 Phoenix Edition) (bootleg)", 1996, p2b3, GAME_BEAT, "megaman2", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( sfz2ald,  "Street Fighter Zero 2 Alpha (Asia 960826 Phoenix Edition) (bootleg)", 1996, p2b6, GAME_BEAT, "sfz2al", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( xmvsfu1d,  "X-Men Vs. Street Fighter (USA 961004 Phoenix Edition) (bootleg)", 1996, p2b6, GAME_BEAT, "xmvsf", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( batcird,  "Battle Circuit (Euro 970319 Phoenix Edition) (bootleg)", 1997, p4b2, GAME_BEAT, "batcir", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( vsavd,  "Vampire Savior: The Lord of Vampire (Euro 970519 Phoenix Edition) (bootleg)", 1997, p2b6, GAME_BEAT, "vsav", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( mvscud,  "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123 Phoenix Edition) (bootleg)", 1998, p2b6, GAME_BEAT, "mvsc", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( sfa3ud,  "Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)", 1998, p2b6, GAME_BEAT, "sfa3", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( gwingjd,  "Giga Wing (Japan 990223 Phoenix Edition) (bootleg)", 1999, p2b2, GAME_SHOOT, "gigawing", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( 1944d,  "1944: The Loop Master (USA 000620 Phoenix Edition) (bootleg)", 2000, p2b2, GAME_SHOOT, "1944", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( progerjd,  "Progear no Arashi (Japan 010117 Phoenix Edition) (bootleg)", 2001, p2b3, GAME_SHOOT, "progear", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( hsf2d,  "Hyper Street Fighter II: The Anniversary Edition (Asia 040202 Phoenix Edition) (bootleg)", 2004, p2b6, GAME_BEAT, "hsf2", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( ssf2tbd,  "Super Street Fighter II: The Tournament Battle (World 931119 Phoenix Edition) (bootleg)", 1993, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( ssf2xjd,  "Super Street Fighter II X: Grand Master Challenge (Japan 940223 Phoenix Edition) (bootleg)", 1994, p2b6, GAME_BEAT, "ssf2", &cps1_video, COMPANY_ID_BOOTLEG);
-cps2_clone( sgemfd,  "Super Gem Fighter Mini Mix (USA 970904 Phoenix Edition) (bootleg)", 1997, p2b3, GAME_BEAT, "sgemf", &cps1_video, COMPANY_ID_BOOTLEG);
+GMEI(ssf2,"Super Street Fighter II: The New Challengers (World 930911)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2u,ssf2,"Super Street Fighter II: The New Challengers (USA 930911)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2a,ssf2,"Super Street Fighter II: The New Challengers (Asia 931005)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2ar1,ssf2,"Super Street Fighter II: The New Challengers (Asia 930914)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2j,ssf2,"Super Street Fighter II: The New Challengers (Japan 931005)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2jr1,ssf2,"Super Street Fighter II: The New Challengers (Japan 930911)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2jr2,ssf2,"Super Street Fighter II: The New Challengers (Japan 930910)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2tb,ssf2,"Super Street Fighter II: The Tournament Battle (World 931119)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2tbr1,ssf2,"Super Street Fighter II: The Tournament Battle (World 930911)",CAPCOM,1993,GAME_BEAT);
+CLNEI(ssf2tbj,ssf2,"Super Street Fighter II: The Tournament Battle (Japan 930911)",CAPCOM,1993,GAME_BEAT);
+GMEI(ecofghtr,"Eco Fighters (World 931203)",CAPCOM,1993,GAME_SHOOT, .input = input_p2b3);
+CLNEI(ecofghtu,ecofghtr,"Eco Fighters (USA 940215)",CAPCOM,1993,GAME_SHOOT, .input = input_p2b3);
+CLNEI(ecofgtu1,ecofghtr,"Eco Fighters (USA 931203)",CAPCOM,1993,GAME_SHOOT, .input = input_p2b3);
+CLNEI(uecology,ecofghtr,"Ultimate Ecology (Japan 931203)",CAPCOM,1993,GAME_SHOOT, .input = input_p2b3);
+CLNEI(ecofghta,ecofghtr,"Eco Fighters (Asia 931203)",CAPCOM,1993,GAME_SHOOT, .input = input_p2b3);
+GMEI(ddtod,"Dungeons & Dragons: Tower of Doom (Euro 940412)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodr1,ddtod,"Dungeons & Dragons: Tower of Doom (Euro 940113)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodu,ddtod,"Dungeons & Dragons: Tower of Doom (USA 940125)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodur1,ddtod,"Dungeons & Dragons: Tower of Doom (USA 940113)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodj,ddtod,"Dungeons & Dragons: Tower of Doom (Japan 940412)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodjr1,ddtod,"Dungeons & Dragons: Tower of Doom (Japan 940125)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodjr2,ddtod,"Dungeons & Dragons: Tower of Doom (Japan 940113)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtoda,ddtod,"Dungeons & Dragons: Tower of Doom (Asia 940113)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddtodh,ddtod,"Dungeons & Dragons: Tower of Doom (Hispanic 940125)",CAPCOM,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(ssf2t,ssf2,"Super Street Fighter II Turbo (World 940223)",CAPCOM,1994,GAME_BEAT);
+CLNEI(ssf2ta,ssf2,"Super Street Fighter II Turbo (Asia 940223)",CAPCOM,1994,GAME_BEAT);
+CLNEI(ssf2tu,ssf2,"Super Street Fighter II Turbo (USA 940323)",CAPCOM,1994,GAME_BEAT);
+CLNEI(ssf2tur1,ssf2,"Super Street Fighter II Turbo (USA 940223)",CAPCOM,1994,GAME_BEAT);
+CLNEI(ssf2xj,ssf2,"Super Street Fighter II X: Grand Master Challenge (Japan 940223)",CAPCOM,1994,GAME_BEAT);
+GMEI(avsp,"Alien vs. Predator (Euro 940520)",CAPCOM,1994,GAME_BEAT, .input = input_p3b3);
+CLNEI(avspu,avsp,"Alien vs. Predator (USA 940520)",CAPCOM,1994,GAME_BEAT, .input = input_p3b3);
+CLNEI(avspj,avsp,"Alien vs. Predator (Japan 940520)",CAPCOM,1994,GAME_BEAT, .input = input_p3b3);
+CLNEI(avspa,avsp,"Alien vs. Predator (Asia 940520)",CAPCOM,1994,GAME_BEAT, .input = input_p3b3);
+CLNEI(avsph,avsp,"Alien vs. Predator (Hispanic 940520)",CAPCOM,1994,GAME_BEAT, .input = input_p3b3);
+GMEI(dstlk,"Darkstalkers: The Night Warriors (Euro 940705)",CAPCOM,1994,GAME_BEAT);
+CLNEI(dstlku,dstlk,"Darkstalkers: The Night Warriors (USA 940818)",CAPCOM,1994,GAME_BEAT);
+CLNEI(dstlkur1,dstlk,"Darkstalkers: The Night Warriors (USA 940705)",CAPCOM,1994,GAME_BEAT);
+CLNEI(dstlka,dstlk,"Darkstalkers: The Night Warriors (Asia 940705)",CAPCOM,1994,GAME_BEAT);
+CLNEI(vampj,dstlk,"Vampire: The Night Warriors (Japan 940705)",CAPCOM,1994,GAME_BEAT);
+CLNEI(vampja,dstlk,"Vampire: The Night Warriors (Japan 940705 alt)",CAPCOM,1994,GAME_BEAT);
+CLNEI(vampjr1,dstlk,"Vampire: The Night Warriors (Japan 940630)",CAPCOM,1994,GAME_BEAT);
+GMEI(ringdest,"Ring of Destruction: Slammasters II (Euro 940902)",CAPCOM,1994,GAME_SPORTS);
+CLNEI(smbomb,ringdest,"Super Muscle Bomber: The International Blowout (Japan 940831)",CAPCOM,1994,GAME_SPORTS);
+CLNEI(smbombr1,ringdest,"Super Muscle Bomber: The International Blowout (Japan 940808)",CAPCOM,1994,GAME_SPORTS);
+GMEI(armwar,"Armored Warriors (Euro 941024)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+CLNEI(armwarr1,armwar,"Armored Warriors (Euro 941011)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+CLNEI(armwaru,armwar,"Armored Warriors (USA 941024)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+CLNEI(armwaru1,armwar,"Armored Warriors (USA 940920)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+CLNEI(pgear,armwar,"Powered Gear: Strategic Variant Armor Equipment (Japan 941024)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+CLNEI(pgearr1,armwar,"Powered Gear: Strategic Variant Armor Equipment (Japan 940916)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+CLNEI(armwara,armwar,"Armored Warriors (Asia 940920)",CAPCOM,1994,GAME_PLATFORM, .input = input_p3b3);
+GMEI(xmcota,"X-Men: Children of the Atom (Euro 950105)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotau,xmcota,"X-Men: Children of the Atom (USA 950105)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotah,xmcota,"X-Men: Children of the Atom (Hispanic 950331)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotaj,xmcota,"X-Men: Children of the Atom (Japan 941222)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotaj1,xmcota,"X-Men: Children of the Atom (Japan 941219)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotaj2,xmcota,"X-Men: Children of the Atom (Japan 941217)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotajr,xmcota,"X-Men: Children of the Atom (Japan 941208 rent version)",CAPCOM,1994,GAME_BEAT);
+CLNEI(xmcotaa,xmcota,"X-Men: Children of the Atom (Asia 941217)",CAPCOM,1994,GAME_BEAT);
+GMEI(nwarr,"Night Warriors: Darkstalkers' Revenge (Euro 950316)",CAPCOM,1995,GAME_BEAT);
+CLNEI(nwarru,nwarr,"Night Warriors: Darkstalkers' Revenge (USA 950406)",CAPCOM,1995,GAME_BEAT);
+CLNEI(nwarrh,nwarr,"Night Warriors: Darkstalkers' Revenge (Hispanic 950403)",CAPCOM,1995,GAME_BEAT);
+CLNEI(nwarrb,nwarr,"Night Warriors: Darkstalkers' Revenge (Brazil 950403)",CAPCOM,1995,GAME_BEAT);
+CLNEI(vhuntj,nwarr,"Vampire Hunter: Darkstalkers' Revenge (Japan 950316)",CAPCOM,1995,GAME_BEAT);
+CLNEI(vhuntjr1,nwarr,"Vampire Hunter: Darkstalkers' Revenge (Japan 950307)",CAPCOM,1995,GAME_BEAT);
+CLNEI(vhuntjr2,nwarr,"Vampire Hunter: Darkstalkers' Revenge (Japan 950302)",CAPCOM,1995,GAME_BEAT);
+GMEI(cybots,"Cyberbots: Fullmetal Madness (Euro 950424)",CAPCOM,1995,GAME_BEAT, .input = input_p2b4);
+CLNEI(cybotsu,cybots,"Cyberbots: Fullmetal Madness (USA 950424)",CAPCOM,1995,GAME_BEAT, .input = input_p2b4);
+CLNEI(cybotsj,cybots,"Cyberbots: Fullmetal Madness (Japan 950420)",CAPCOM,1995,GAME_BEAT, .input = input_p2b4);
+GMEI(sfa,"Street Fighter Alpha: Warriors' Dreams (Euro 950727)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfar1,sfa,"Street Fighter Alpha: Warriors' Dreams (Euro 950718)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfar2,sfa,"Street Fighter Alpha: Warriors' Dreams (Euro 950627)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfar3,sfa,"Street Fighter Alpha: Warriors' Dreams (Euro 950605)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfau,sfa,"Street Fighter Alpha: Warriors' Dreams (USA 950627)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfza,sfa,"Street Fighter Zero (Asia 950627)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfzj,sfa,"Street Fighter Zero (Japan 950727)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfzjr1,sfa,"Street Fighter Zero (Japan 950627)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfzjr2,sfa,"Street Fighter Zero (Japan 950605)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfzh,sfa,"Street Fighter Zero (Hispanic 950627)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfzb,sfa,"Street Fighter Zero (Brazil 951109)",CAPCOM,1995,GAME_BEAT);
+CLNEI(sfzbr1,sfa,"Street Fighter Zero (Brazil 950727)",CAPCOM,1995,GAME_BEAT);
+CLNEI(mmancp2u,megaman,"Mega Man - The Power Battle (CPS2,USA 951006,SAMPLE Version)",CAPCOM,1995,GAME_BEAT, .input = input_p2b3);
+CLNEI(rmancp2j,megaman,"Rockman: The Power Battle (CPS2,Japan 950922)",CAPCOM,1995,GAME_BEAT, .input = input_p2b3);
+GMEI(msh,"Marvel Super Heroes (Euro 951024)",CAPCOM,1995,GAME_BEAT, .romsw = romsw_msh);
+CLNEI(mshu,msh,"Marvel Super Heroes (USA 951024)",CAPCOM,1995,GAME_BEAT);
+CLNEI(mshj,msh,"Marvel Super Heroes (Japan 951117)",CAPCOM,1995,GAME_BEAT);
+CLNEI(mshjr1,msh,"Marvel Super Heroes (Japan 951024)",CAPCOM,1995,GAME_BEAT);
+CLNEI(msha,msh,"Marvel Super Heroes (Asia 951024)",CAPCOM,1995,GAME_BEAT);
+CLNEI(mshh,msh,"Marvel Super Heroes (Hispanic 951117)",CAPCOM,1995,GAME_BEAT);
+CLNEI(mshb,msh,"Marvel Super Heroes (Brazil 951117)",CAPCOM,1995,GAME_BEAT);
+GMEI(19xx,"19XX: The War Against Destiny (USA 951207)",CAPCOM,1996,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b2, .romsw = romsw_19xx);
+CLNEI(19xxj,19xx,"19XX: The War Against Destiny (Japan 951225)",CAPCOM,1996,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b2, .romsw = romsw_19xx);
+CLNEI(19xxjr1,19xx,"19XX: The War Against Destiny (Japan 951207)",CAPCOM,1996,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b2, .romsw = romsw_19xx);
+CLNEI(19xxh,19xx,"19XX: The War Against Destiny (Hispanic 951218)",CAPCOM,1996,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b2, .romsw = romsw_19xx);
+CLNEI(19xxb,19xx,"19XX: The War Against Destiny (Brazil 951218)",CAPCOM,1996,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b2);
+GMEI(ddsom,"Dungeons & Dragons: Shadow over Mystara (Euro 960619)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomr1,ddsom,"Dungeons & Dragons: Shadow over Mystara (Euro 960223)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomr2,ddsom,"Dungeons & Dragons: Shadow over Mystara (Euro 960209)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomr3,ddsom,"Dungeons & Dragons: Shadow over Mystara (Euro 960208)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomu,ddsom,"Dungeons & Dragons: Shadow over Mystara (USA 960619)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomur1,ddsom,"Dungeons & Dragons: Shadow over Mystara (USA 960209)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomj,ddsom,"Dungeons & Dragons: Shadow over Mystara (Japan 960619)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomjr1,ddsom,"Dungeons & Dragons: Shadow over Mystara (Japan 960206)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsoma,ddsom,"Dungeons & Dragons: Shadow over Mystara (Asia 960619)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(ddsomb,ddsom,"Dungeons & Dragons: Shadow over Mystara (Brazil 960223)",CAPCOM,1996,GAME_BEAT, .input = input_p4b4);
+GMEI(sfa2,"Street Fighter Alpha 2 (Euro 960229)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfa2u,sfa2,"Street Fighter Alpha 2 (USA 960306)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2j,sfa2,"Street Fighter Zero 2 (Japan 960227)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2a,sfa2,"Street Fighter Zero 2 (Asia 960227)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2b,sfa2,"Street Fighter Zero 2 (Brazil 960531)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2br1,sfa2,"Street Fighter Zero 2 (Brazil 960304)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2h,sfa2,"Street Fighter Zero 2 (Hispanic 960304)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2n,sfa2,"Street Fighter Zero 2 (Oceania 960229)",CAPCOM,1996,GAME_BEAT);
+GMEI(sfz2al,"Street Fighter Zero 2 Alpha (Asia 960826)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2alj,sfz2al,"Street Fighter Zero 2 Alpha (Japan 960805)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2alh,sfz2al,"Street Fighter Zero 2 Alpha (Hispanic 960813)",CAPCOM,1996,GAME_BEAT);
+CLNEI(sfz2alb,sfz2al,"Street Fighter Zero 2 Alpha (Brazil 960813)",CAPCOM,1996,GAME_BEAT);
+GMEI(spf2t,"Super Puzzle Fighter II Turbo (USA 960620)",CAPCOM,1996,GAME_PUZZLE, .input = input_p2b2);
+CLNEI(spf2xj,spf2t,"Super Puzzle Fighter II X (Japan 960531)",CAPCOM,1996,GAME_PUZZLE, .input = input_p2b2);
+CLNEI(spf2ta,spf2t,"Super Puzzle Fighter II Turbo (Asia 960529)",CAPCOM,1996,GAME_PUZZLE, .input = input_p2b2);
+GMEI(megaman2,"Mega Man 2: The Power Fighters (USA 960708)",CAPCOM,1996,GAME_BEAT, .input = input_p2b3);
+CLNEI(megamn2a,megaman2,"Mega Man 2: The Power Fighters (Asia 960708)",CAPCOM,1996,GAME_BEAT, .input = input_p2b3);
+CLNEI(rckman2j,megaman2,"Rockman 2: The Power Fighters (Japan 960708)",CAPCOM,1996,GAME_BEAT, .input = input_p2b3);
+GMEI(qndream,"Quiz Nanairo Dreams: Nijiirochou no Kiseki (Japan 960826)",CAPCOM,1996,GAME_QUIZZ, .input = input_qndream);
+GMEI(xmvsf,"X-Men Vs. Street Fighter (Euro 961004)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfr1,xmvsf,"X-Men Vs. Street Fighter (Euro 960910)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfu,xmvsf,"X-Men Vs. Street Fighter (USA 961023)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfur1,xmvsf,"X-Men Vs. Street Fighter (USA 961004)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfj,xmvsf,"X-Men Vs. Street Fighter (Japan 961004)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfjr1,xmvsf,"X-Men Vs. Street Fighter (Japan 960910)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfjr2,xmvsf,"X-Men Vs. Street Fighter (Japan 960909)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfa,xmvsf,"X-Men Vs. Street Fighter (Asia 961023)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfar1,xmvsf,"X-Men Vs. Street Fighter (Asia 960919)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfh,xmvsf,"X-Men Vs. Street Fighter (Hispanic 961004)",CAPCOM,1996,GAME_BEAT);
+CLNEI(xmvsfb,xmvsf,"X-Men Vs. Street Fighter (Brazil 961023)",CAPCOM,1996,GAME_BEAT);
+GMEI(batcir,"Battle Circuit (Euro 970319)",CAPCOM,1997,GAME_BEAT, .input = input_p4b2);
+CLNEI(batcira,batcir,"Battle Circuit (Asia 970319)",CAPCOM,1997,GAME_BEAT, .input = input_p4b2);
+CLNEI(batcirj,batcir,"Battle Circuit (Japan 970319)",CAPCOM,1997,GAME_BEAT, .input = input_p4b2);
+GMEI(vsav,"Vampire Savior: The Lord of Vampire (Euro 970519)",CAPCOM,1997,GAME_BEAT);
+CLNEI(vsavu,vsav,"Vampire Savior: The Lord of Vampire (USA 970519)",CAPCOM,1997,GAME_BEAT);
+CLNEI(vsavj,vsav,"Vampire Savior: The Lord of Vampire (Japan 970519)",CAPCOM,1997,GAME_BEAT);
+CLNEI(vsava,vsav,"Vampire Savior: The Lord of Vampire (Asia 970519)",CAPCOM,1997,GAME_BEAT);
+CLNEI(vsavh,vsav,"Vampire Savior: The Lord of Vampire (Hispanic 970519)",CAPCOM,1997,GAME_BEAT);
+GMEI(mshvsf,"Marvel Super Heroes Vs. Street Fighter (Euro 970625)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfu,mshvsf,"Marvel Super Heroes Vs. Street Fighter (USA 970827)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfu1,mshvsf,"Marvel Super Heroes Vs. Street Fighter (USA 970625)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfj,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Japan 970707)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfj1,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Japan 970702)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfj2,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Japan 970625)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfh,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Hispanic 970625)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfa,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Asia 970625)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfa1,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Asia 970620)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfb,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Brazil 970827)",CAPCOM,1997,GAME_BEAT);
+CLNEI(mshvsfb1,mshvsf,"Marvel Super Heroes Vs. Street Fighter (Brazil 970625)",CAPCOM,1997,GAME_BEAT);
+GMEI(csclub,"Capcom Sports Club (Euro 971017)",CAPCOM,1997,GAME_SPORTS, .input = input_p2b3);
+CLNEI(csclub1,csclub,"Capcom Sports Club (Euro 970722)",CAPCOM,1997,GAME_SPORTS, .input = input_p2b3);
+CLNEI(cscluba,csclub,"Capcom Sports Club (Asia 970722)",CAPCOM,1997,GAME_SPORTS, .input = input_p2b3);
+CLNEI(csclubj,csclub,"Capcom Sports Club (Japan 970722)",CAPCOM,1997,GAME_SPORTS, .input = input_p2b3);
+CLNEI(csclubh,csclub,"Capcom Sports Club (Hispanic 970722)",CAPCOM,1997,GAME_SPORTS, .input = input_p2b3);
+GMEI(sgemf,"Super Gem Fighter Mini Mix (USA 970904)",CAPCOM,1997,GAME_BEAT, .input = input_p2b3);
+CLNEI(pfghtj,sgemf,"Pocket Fighter (Japan 970904)",CAPCOM,1997,GAME_BEAT, .input = input_p2b3);
+CLNEI(sgemfa,sgemf,"Super Gem Fighter: Mini Mix (Asia 970904)",CAPCOM,1997,GAME_BEAT, .input = input_p2b3);
+CLNEI(sgemfh,sgemf,"Super Gem Fighter: Mini Mix (Hispanic 970904)",CAPCOM,1997,GAME_BEAT, .input = input_p2b3);
+GMEI(vhunt2,"Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)",CAPCOM,1997,GAME_BEAT, .romsw = romsw_vhunt2);
+CLNEI(vhunt2r1,vhunt2,"Vampire Hunter 2: Darkstalkers Revenge (Japan 970913)",CAPCOM,1997,GAME_BEAT);
+GMEI(vsav2,"Vampire Savior 2: The Lord of Vampire (Japan 970913)",CAPCOM,1997,GAME_BEAT);
+GMEI(mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvscr1,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Euro 980112)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvscu,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (USA 980123)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvscj,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Japan 980123)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvscjr1,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Japan 980112)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvsca,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Asia 980123)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvscar1,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Asia 980112)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvsch,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Hispanic 980123)",CAPCOM,1998,GAME_BEAT);
+CLNEI(mvscb,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (Brazil 980123)",CAPCOM,1998,GAME_BEAT);
+GMEI(sfa3,"Street Fighter Alpha 3 (Euro 980904)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfa3u,sfa3,"Street Fighter Alpha 3 (USA 980904)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfa3ur1,sfa3,"Street Fighter Alpha 3 (USA 980629)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfa3b,sfa3,"Street Fighter Alpha 3 (Brazil 980629)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfz3j,sfa3,"Street Fighter Zero 3 (Japan 980904)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfz3jr1,sfa3,"Street Fighter Zero 3 (Japan 980727)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfz3jr2,sfa3,"Street Fighter Zero 3 (Japan 980629)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfz3a,sfa3,"Street Fighter Zero 3 (Asia 980904)",CAPCOM,1998,GAME_BEAT);
+CLNEI(sfz3ar1,sfa3,"Street Fighter Zero 3 (Asia 980701)",CAPCOM,1998,GAME_BEAT);
+GMEI(jyangoku,"Jyangokushi: Haoh no Saihai (Japan 990527)",CAPCOM,1999,GAME_PUZZLE, .input = input_p1b2);
+GMEI(hsf2,"Hyper Street Fighter 2: The Anniversary Edition (Asia 040202)",CAPCOM,2004,GAME_BEAT);
+CLNEI(hsf2j,hsf2,"Hyper Street Fighter 2: The Anniversary Edition (Japan 031222)",CAPCOM,2004,GAME_BEAT);
+GMEI(gigawing,"Giga Wing (USA 990222)",CAPCOM,1999,GAME_SHOOT, .input = input_p2b2);
+CLNEI(gwingj,gigawing,"Giga Wing (Japan 990223)",CAPCOM,1999,GAME_SHOOT, .input = input_p2b2);
+CLNEI(gwinga,gigawing,"Giga Wing (Asia 990222)",CAPCOM,1999,GAME_SHOOT, .input = input_p2b2);
+CLNEI(gwingb,gigawing,"Giga Wing (Brazil 990222)",CAPCOM,1999,GAME_SHOOT, .input = input_p2b2);
+GMEI(mmatrix,"Mars Matrix: Hyper Solid Shooting (USA 000412)",CAPCOM,2000,GAME_SHOOT, .input = input_p2b1);
+CLNEI(mmatrixj,mmatrix,"Mars Matrix: Hyper Solid Shooting (Japan 000412)",CAPCOM,2000,GAME_SHOOT, .input = input_p2b1);
+GMEI(mpang,"Mighty! Pang (Euro 001010)",MITCHELL,2000,GAME_SHOOT, .input = input_p2b1, .romsw = romsw_mpangj);
+CLNEI(mpangu,mpang,"Mighty! Pang (USA 001010)",MITCHELL,2000,GAME_SHOOT, .input = input_p2b1);
+CLNEI(mpangj,mpang,"Mighty! Pang (Japan 001011)",MITCHELL,2000,GAME_SHOOT, .input = input_p2b1, .romsw = romsw_mpangj);
+GMEI(pzloop2,"Puzz Loop 2 (Euro 010302)",MITCHELL,2001,GAME_PUZZLE, .input = input_p2b1);
+CLNEI(pzloop2j,pzloop2,"Puzz Loop 2 (Japan 010205)",MITCHELL,2001,GAME_PUZZLE, .input = input_p2b1);
+GMEI(choko,"Janpai Puzzle Choukou (Japan 010820)",MITCHELL,2001,GAME_PUZZLE, .input = input_p1b3);
+GMEI(dimahoo,"Dimahoo (Euro 000121)",RAIZING,2000,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b3);
+CLNEI(dimahoou,dimahoo,"Dimahoo (USA 000121)",RAIZING,2000,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b3);
+CLNEI(gmahou,dimahoo,"Great Mahou Daisakusen (Japan 000121)",RAIZING,2000,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b3);
+GMEI(1944,"1944: The Loop Master (USA 000620)",RAIZING,2000,GAME_SHOOT, .input = input_p2b2, .romsw = romsw_1944);
+CLNEI(1944j,1944,"1944: The Loop Master (Japan 000620)",RAIZING,2000,GAME_SHOOT, .input = input_p2b2);
+GMEI(progear,"Progear (USA 010117)",CAVE,2001,GAME_SHOOT, .input = input_p2b3);
+CLNEI(progearj,progear,"Progear no Arashi (Japan 010117)",CAVE,2001,GAME_SHOOT, .input = input_p2b3);
+CLNEI(progeara,progear,"Progear (Asia 010117)",CAVE,2001,GAME_SHOOT, .input = input_p2b3);
+CLNEI(ssf2ud,ssf2,"Super Street Fighter II: The New Challengers (USA 930911 Phoenix Edition) (bootleg)",BOOTLEG,1993,GAME_BEAT);
+CLNEI(ddtodd,ddtod,"Dungeons & Dragons: Tower of Doom (Euro 940412 Phoenix Edition) (bootleg)",BOOTLEG,1993,GAME_BEAT, .input = input_p4b4);
+CLNEI(avspd,avsp,"Alien vs. Predator (Euro 940520 Phoenix Edition) (bootleg)",BOOTLEG,1994,GAME_BEAT, .input = input_p3b3);
+CLNEI(dstlku1d,dstlk,"Darkstalkers: The Night Warriors (USA 940705 Phoenix Edition) (bootleg)",BOOTLEG,1994,GAME_BEAT);
+CLNEI(ringdstd,ringdest,"Ring of Destruction: Slammasters II (Euro 940902 Phoenix Edition) (bootleg)",BOOTLEG,1994,GAME_SPORTS);
+CLNEI(xmcotad,xmcota,"X-Men: Children of the Atom (Euro 950105 Phoenix Edition) (bootleg)",BOOTLEG,1994,GAME_BEAT);
+CLNEI(nwarrud,nwarr,"Night Warriors: Darkstalkers' Revenge (USA 950406 Phoenix Edition) (bootleg)",BOOTLEG,1995,GAME_BEAT);
+CLNEI(sfad,sfa,"Street Fighter Alpha: Warriors' Dreams (Euro 950727 Phoenix Edition) (bootleg)",BOOTLEG,1995,GAME_BEAT);
+CLNEI(mshud,msh,"Marvel Super Heroes (US 951024 Phoenix Edition) (bootleg)",BOOTLEG,1995,GAME_BEAT);
+CLNEI(19xxd,19xx,"19XX: The War Against Destiny (USA 951207 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_SHOOT, .video = &video_cps1_270, .input = input_p2b2);
+CLNEI(sfz2ad,sfa2,"Street Fighter Zero 2 (Asia 960227 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_BEAT);
+CLNEI(spf2xjd,spf2t,"Super Puzzle Fighter II X (Japan 960531 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_PUZZLE, .input = input_p2b2);
+CLNEI(ddsomud,ddsom,"Dungeons & Dragons: Shadow over Mystara (USA 960619 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_BEAT, .input = input_p4b4);
+CLNEI(megamn2d,megaman2,"Mega Man 2: The Power Fighters (USA 960708 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_BEAT, .input = input_p2b3);
+CLNEI(sfz2ald,sfz2al,"Street Fighter Zero 2 Alpha (Asia 960826 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_BEAT);
+CLNEI(xmvsfu1d,xmvsf,"X-Men Vs. Street Fighter (USA 961004 Phoenix Edition) (bootleg)",BOOTLEG,1996,GAME_BEAT);
+CLNEI(batcird,batcir,"Battle Circuit (Euro 970319 Phoenix Edition) (bootleg)",BOOTLEG,1997,GAME_BEAT, .input = input_p4b2);
+CLNEI(vsavd,vsav,"Vampire Savior: The Lord of Vampire (Euro 970519 Phoenix Edition) (bootleg)",BOOTLEG,1997,GAME_BEAT);
+CLNEI(mvscud,mvsc,"Marvel Vs. Capcom: Clash of Super Heroes (USA 980123 Phoenix Edition) (bootleg)",BOOTLEG,1998,GAME_BEAT);
+CLNEI(sfa3ud,sfa3,"Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)",BOOTLEG,1998,GAME_BEAT);
+CLNEI(gwingjd,gigawing,"Giga Wing (Japan 990223 Phoenix Edition) (bootleg)",BOOTLEG,1999,GAME_SHOOT, .input = input_p2b2);
+CLNEI(1944d,1944,"1944: The Loop Master (USA 000620 Phoenix Edition) (bootleg)",BOOTLEG,2000,GAME_SHOOT, .input = input_p2b2);
+CLNEI(progerjd,progear,"Progear no Arashi (Japan 010117 Phoenix Edition) (bootleg)",BOOTLEG,2001,GAME_SHOOT, .input = input_p2b3);
+CLNEI(hsf2d,hsf2,"Hyper Street Fighter II: The Anniversary Edition (Asia 040202 Phoenix Edition) (bootleg)",BOOTLEG,2004,GAME_BEAT);
+CLNEI(ssf2tbd,ssf2,"Super Street Fighter II: The Tournament Battle (World 931119 Phoenix Edition) (bootleg)",BOOTLEG,1993,GAME_BEAT);
+CLNEI(ssf2xjd,ssf2,"Super Street Fighter II X: Grand Master Challenge (Japan 940223 Phoenix Edition) (bootleg)",BOOTLEG,1994,GAME_BEAT);
+CLNEI(sgemfd,sgemf,"Super Gem Fighter Mini Mix (USA 970904 Phoenix Edition) (bootleg)",BOOTLEG,1997,GAME_BEAT, .input = input_p2b3);

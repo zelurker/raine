@@ -493,9 +493,9 @@ static char *gfx_card_getter(int index, int *list_size)
 
    if(index == -4){
 
-     if (current_game && current_game->video_info) {
+     if (current_game && current_game->video) {
        int w,h;
-       get_best_resolution_dlg(current_game->video_info,&w,&h);
+       get_best_resolution_dlg(current_game->video,&w,&h);
 
        switch_gfx_res_data(
          *list_size,
@@ -555,7 +555,7 @@ static char *screen_effect_getter(int index, int *list_size)
      update_eagle();
      if (current_game) {
        int w,h;
-       get_best_resolution_dlg(current_game->video_info,&w,&h);
+       get_best_resolution_dlg(current_game->video,&w,&h);
        select_closest_mode(w,h);
        update_mode_list_dlg();
      }
@@ -576,7 +576,7 @@ static int bpp_radio_proc(int msg, DIALOG *d, int c) {
     update_eagle(); // disable eagle if bpp > 8 (replace by double)
     build_mode_list();
      if (current_game)
-       get_best_resolution_dlg(current_game->video_info,&w,&h);
+       get_best_resolution_dlg(current_game->video,&w,&h);
     switch_gfx_res_data(gfx_mode_dialog[GFX_DRIVER_LIST].d1,w,h);
     update_mode_list_dlg();
   }

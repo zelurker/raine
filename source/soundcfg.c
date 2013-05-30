@@ -1,7 +1,6 @@
 #include "raine.h"
 #include "sasound.h"
 #include "es5506.h"
-#include "games/darius.h"
 
 #ifdef ALLEGRO_SOUND
 int max_mixer_volume;
@@ -68,9 +67,6 @@ void sound_load_cfg() {
    smallest_sound_buffer = raine_get_config_int( "Sound",        "smallest_sound_buffer",0 );
 #endif
 #endif
-#ifndef NEO
-   DariusStereo 	= raine_get_config_int( "Sound",        "DariusStereo",         1); /* 0:monaural 1=stereo */
-#endif
 }
 
 void sound_save_cfg() {
@@ -78,9 +74,6 @@ void sound_save_cfg() {
    raine_set_config_id( 	"Sound",        "sound_card",           sound_card_id(RaineSoundCard));
    raine_set_config_int(	"Sound",        "sample_rate",          audio_sample_rate);
 
-#ifndef NEO
-   raine_set_config_int(	"Sound",        "DariusStereo",         DariusStereo);
-#endif
 #if HAS_ES5505
    raine_set_config_int(	"Sound",        "es5506_voice_filters", es5506_voice_filters);
 #endif

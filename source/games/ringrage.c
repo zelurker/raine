@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ringrage.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -13,14 +12,8 @@
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO ring_rage_dirs[] =
-{
-   { "ring_rage", },
-   { "ringrage", },
-   { NULL, },
-};
 
-static struct ROM_INFO ring_rage_roms[] =
+static struct ROM_INFO rom_ringrage[] =
 {
   { "d21-23.40", 0x40000, 0x14e9ed65, REGION_ROM1, 0x000000, LOAD_8_32 },
   { "d21-22.38", 0x40000, 0x6f8b65b0, REGION_ROM1, 0x000001, LOAD_8_32 },
@@ -47,41 +40,13 @@ static struct ROMSW_DATA romsw_data_ring_rage_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO ring_rage_romsw[] =
+static struct ROMSW_INFO romsw_ringrage[] =
 {
    { 0x07FFFF, 0x03, romsw_data_ring_rage_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO ring_rage_video =
-{
-   DrawRingRage,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( ring_rage ,
-   ring_rage_dirs,
-   ring_rage_roms,
-   f3_system_inputs,
-   NULL,
-   ring_rage_romsw,
-
-   LoadRingRage,
-   ClearRingRage,
-   &ring_rage_video,
-      ExecuteRingRageFrame,
-   "ringrage",
-   "Ring Rage",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D21",
-   1992,
-   f3_sound,
-   GAME_BEAT | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -113,7 +78,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadRingRage(void)
+static void load_ringrage(void)
 {
    int ta,tb,tc;
 
@@ -307,20 +272,8 @@ void LoadRingRage(void)
    setup_sound_68000();
 }
 
-void ClearRingRage(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,get_region_size(REGION_CPU1),0);
-      save_debug("ROM2.bin",M68000ROM,get_region_size(REGION_CPU2),1);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-#endif
-}
-
 extern UINT32 cpu_frame_count;
-void ExecuteRingRageFrame(void)
+static void execute_ringrage(void)
 {
   int ta;
   cycles = 1;
@@ -346,7 +299,7 @@ void ExecuteRingRageFrame(void)
   IntF3System();
 }
 
-void DrawRingRage(void)
+static void DrawRingRage(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -544,4 +497,27 @@ void DrawRingRage(void)
       f3video_render_fg0();
    }
 }
+
+static struct VIDEO_INFO video_ringrage =
+{
+   DrawRingRage,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ringrage[] =
+{
+   { "ring_rage", },
+   { "ringrage", },
+   { NULL, },
+};
+GAME( ringrage, "Ring Rage", TAITO, 1992, GAME_BEAT | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs,
+	.romsw = romsw_ringrage,
+	.video = &video_ringrage,
+	.exec = execute_ringrage,
+	.board = "D21",
+	.sound = f3_sound,
+);
 

@@ -1396,8 +1396,8 @@ static void cps1_init_machine(void)
    max_sprites32 = MIN(max_sprites32,(max_sprites16/4 - base3));
    nb_sprites = gfxrom_bank_mapper(GFXTYPE_SPRITES,sprites_ranges);
 
-   scrwidth = current_game->video_info->screen_x+32;
-   scrheight= current_game->video_info->screen_y+32;
+   scrwidth = current_game->video->screen_x+32;
+   scrheight= current_game->video->screen_y+32;
    /* Put in some defaults */
    /* Apparently some games do not initialise completely and need these */
    /* defaults (captcomm)  */
@@ -1699,7 +1699,7 @@ static void cps2_reset() {
 
   ta=0;
 
-  romsw_src = current_game->romsw_list;
+  romsw_src = current_game->romsw;
 
   // copy the region switch from the data rom to the decoded rom
   if(romsw_src){
@@ -1817,7 +1817,7 @@ void load_common(int cps2)
    UINT32 ta,size;
    UINT32 *dest;
    int size_code;
-   int rotate_screen = (current_game->video_info->flags) & 3;
+   int rotate_screen = (current_game->video->flags) & 3;
    old_palette = NULL;
 
    set_reset_function(cps2_reset);

@@ -60,14 +60,8 @@ static int spr_xoffset, spr_yoffset;
 
 /* Cookie & Bibi Directories and (automatic) Rom loading */
 
-static struct DIR_INFO cookbib_dirs[] =
-{
-   { "cookie_and_bibi", },
-   { "cookbib", },
-   { NULL, },
-};
 
-static struct ROM_INFO cookbib_roms[] =
+static struct ROM_INFO rom_cookbib[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,    0x020000,
             "prg2.ub17",  0x2664a335, "prg1.ub16",  0xcda6335f),
@@ -84,14 +78,8 @@ static struct ROM_INFO cookbib_roms[] =
 };
 
 /* Hatch Catch Directories and (automatic) Rom loading */
-static struct DIR_INFO htchctch_dirs[] =
-{
-   { "hatch_catch", },
-   { "htchctch", },
-   { NULL, },
-};
 
-static struct ROM_INFO htchctch_roms[] =
+static struct ROM_INFO rom_htchctch[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,      0x020000,
             "p04.b17",  0x6991483a, "p03.b16",  0xeff14c40),
@@ -108,14 +96,8 @@ static struct ROM_INFO htchctch_roms[] =
 };
 
 /* Choky Choky Directories and (automatic) Rom loading */
-static struct DIR_INFO chokchok_dirs[] =
-{
-   { "choky_choky", },
-   { "chokchok", },
-   { NULL, },
-};
 
-static struct ROM_INFO chokchok_roms[] =
+static struct ROM_INFO rom_chokchok[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,      0x040000,
             "ub17.bin",  0xecdb45ca, "ub18.bin",  0xb183852a),
@@ -131,7 +113,7 @@ static struct ROM_INFO chokchok_roms[] =
 	{ NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO jumppop_roms[] =
+static struct ROM_INFO rom_jumppop[] =
 {
   { "68k_prg.bin", 0x80000, 0x123536b9, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "z80_prg.bin", 0x40000, 0xa88d4424, REGION_ROM2, 0x00000, LOAD_NORMAL },
@@ -154,7 +136,7 @@ static struct ROM_INFO jumppop_roms[] =
   this caused me no end of pain until checked the code and saw what was going on ;-)
   */
 
-static struct INPUT_INFO cookbib_inputs[] =
+static struct INPUT_INFO input_cookbib[] =
 {
 	INP0( P1_UP, 0x0000, 0x01 ),
 	INP0( P1_DOWN, 0x0000, 0x02 ),
@@ -235,7 +217,7 @@ static struct DSW_DATA dsw_data_cookbib_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO cookbib_dsw[] =
+static struct DSW_INFO dsw_cookbib[] =
 {
   { 0x2, 0xff, dsw_data_cookbib_3 },
   { 0x3, 0x7f, dsw_data_cookbib_4 },
@@ -323,7 +305,7 @@ static struct DSW_DATA dsw_data_htchctch_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO htchctch_dsw[] =
+static struct DSW_INFO dsw_htchctch[] =
 {
   { 0x3, 0x7f, dsw_data_htchctch_4 },
   { 0, 0, NULL }
@@ -381,7 +363,7 @@ static struct DSW_DATA dsw_data_chokchok_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO chokchok_dsw[] =
+static struct DSW_INFO dsw_chokchok[] =
 {
   { 0x2, 0xff, dsw_data_chokchok_3 },
   { 0x3, 0x7f, dsw_data_chokchok_4 },
@@ -410,7 +392,7 @@ static struct OKIM6295interface okim6295_interface =
 	{ 240 }
 };
 
-static struct SOUND_INFO cookbib_sound[] =
+static struct SOUND_INFO sound_cookbib[] =
 {
    { SOUND_YM2151J,  &ym2151_interface,    },
    { SOUND_M6295,    &okim6295_interface   },
@@ -888,27 +870,7 @@ static struct GFX_LIST jumppop_gfx[] =
   { 0,           NULL,           },
 };
 
-static struct VIDEO_INFO cookbib_video =
-{
-   draw_cookbib,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   cookbib_gfx,
-};
 
-static struct VIDEO_INFO jumppop_video =
-{
-   draw_jumppop,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
-   jumppop_gfx,
-};
 
 /* System (execute) */
 
@@ -918,7 +880,7 @@ static struct VIDEO_INFO jumppop_video =
 
 #define FRAME CPU_FRAME_MHz(16,60)
 
-static void execute_cookbib_frame(void)
+static void execute_cookbib(void)
 {
 	cookbib_vblank = 0x00;
 	cpu_execute_cycles(CPU_68K_0, FRAME); // Main 68000
@@ -970,7 +932,7 @@ UINT8 cookbib_inputs_8r (UINT32 offset)
 	return retdata;
 }
 
-UINT16 cookbib_inputs_16r (UINT32 offset)
+UINT16 input_cookbib_16r (UINT32 offset)
 {
 	int retdata;
 	offset &=0xf;// in RAINE the offset contains the complete address
@@ -1039,7 +1001,7 @@ static UINT8 jumppop_z80latch_r(UINT32 offset) {
   return latch;
 }
 
-void load_cookbib(void)
+static void load_cookbib(void)
 {
 	/* In RAINE we allocate one big block of RAM to contain all emulated RAM then set some pointers to it
 
@@ -1191,7 +1153,7 @@ void load_cookbib(void)
 	  AddRWBW     (0x320000, 0x320fff,     NULL,              RAM_PF1         );   // PLAYFIELD 1 DATA
 	  AddRWBW     (0x322000, 0x322fff,     NULL,              RAM_PF2         );   // PLAYFIELD 2 DATA
 	  AddReadByte (0x180000, 0x18000f,     cookbib_inputs_8r, NULL            );   // Inputs
-	  AddReadWord (0x180000, 0x18000f,     cookbib_inputs_16r,NULL            );   // Inputs
+	  AddReadWord (0x180000, 0x18000f,     input_cookbib_16r,NULL            );   // Inputs
 	}
 	AddRWBW     (0x341000, 0x342fff,     NULL,              RAM_EXTRAWORK   );   // EXTRA WORK RAM
 
@@ -1286,68 +1248,8 @@ void load_cookbib(void)
 
 /* Cookie & Bibi / Hatch Catch are Identical Hardware */
 
-GAME( cookbib ,
-   cookbib_dirs,
-   cookbib_roms,
-   cookbib_inputs,
-   cookbib_dsw,
-   NULL,
 
-   load_cookbib,
-   NULL,
-   &cookbib_video,
-   execute_cookbib_frame,
-   "cookbib",
-   "Cookie and Bibi",
-   "SemiCom",
-   COMPANY_ID_SEMICOM,
-   NULL,
-   1995,
-   cookbib_sound,
-   GAME_MISC
-);
 
-GAME( htchctch ,
-   htchctch_dirs,
-   htchctch_roms,
-   cookbib_inputs,
-   htchctch_dsw,
-   NULL,
-
-   load_cookbib,
-   NULL,
-   &cookbib_video,
-   execute_cookbib_frame,
-   "htchctch",
-   "Hatch Catch",
-   "SemiCom",
-   COMPANY_ID_SEMICOM,
-   NULL,
-   1995,
-   cookbib_sound,
-   GAME_MISC
-);
-
-GAME( chokchok ,
-   chokchok_dirs,
-   chokchok_roms,
-   cookbib_inputs,
-   chokchok_dsw,
-   NULL,
-
-   load_cookbib,
-   NULL,
-   &cookbib_video,
-   execute_cookbib_frame,
-   "chokchok",
-   "Choky Choky",
-   "SemiCom",
-   COMPANY_ID_SEMICOM,
-   NULL,
-   1995,
-   cookbib_sound,
-   GAME_MISC
-);
 
 static struct YM3812interface ym3812_interface =
 {
@@ -1372,5 +1274,55 @@ static struct SOUND_INFO jumppop_sound[] =
    { 0,              NULL,                 },
 };
 
-#define load_jumppop load_cookbib
-GME( jumppop, "Jumping Pop", COMPANY_ID_ESD, 2001, GAME_PLATFORM);
+static struct VIDEO_INFO jumppop_video =
+{
+   draw_jumppop,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
+   jumppop_gfx,
+};
+static struct VIDEO_INFO video_cookbib =
+{
+   draw_cookbib,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   cookbib_gfx,
+};
+static struct DIR_INFO dir_chokchok[] =
+{
+   { "choky_choky", },
+   { "chokchok", },
+   { NULL, },
+};
+CLNE( chokchok, cookbib,"Choky Choky", SEMICOM, 1995, GAME_MISC,
+	.dsw = dsw_chokchok,
+);
+static struct DIR_INFO dir_cookbib[] =
+{
+   { "cookie_and_bibi", },
+   { "cookbib", },
+   { NULL, },
+};
+GME( cookbib, "Cookie and Bibi", SEMICOM, 1995, GAME_MISC);
+static struct DIR_INFO dir_htchctch[] =
+{
+   { "hatch_catch", },
+   { "htchctch", },
+   { NULL, },
+};
+CLNE( htchctch, cookbib, "Hatch Catch", SEMICOM, 1995, GAME_MISC,
+	.dsw = dsw_htchctch,
+);
+
+CLNEI( jumppop,cookbib, "Jumping Pop", ESD, 2001, GAME_PLATFORM,
+	.input = jumppop_inputs,
+	.dsw = jumppop_dsw,
+	.exec = execute_jumppop,
+	.video = &jumppop_video,
+	.sound = jumppop_sound);

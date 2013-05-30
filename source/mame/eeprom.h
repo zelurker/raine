@@ -37,6 +37,8 @@ void EEPROM_save(void *file);
 
 void EEPROM_set_data(UINT8 *data, int length);
 
+extern struct EEPROM_interface eeprom_interface_93C46;
+
 #endif
 
 #ifdef __cplusplus

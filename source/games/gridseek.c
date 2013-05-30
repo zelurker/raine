@@ -5,22 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "gridseek.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO grid_seeker_dirs[] =
-{
-   { "grid_seeker", },
-   { "gridseek", },
-   { "gseeker", },
-   { NULL, },
-};
 
-static struct ROM_INFO grid_seeker_roms[] =
+static struct ROM_INFO rom_gseeker[] =
 {
    {   "d40_04.rom", 0x00100000, 0xcd2ac666, 0, 0, 0, },
    {   "d40_02.rom", 0x00100000, 0xed894fe1, 0, 0, 0, },
@@ -47,41 +39,13 @@ static struct ROMSW_DATA romsw_data_grid_seeker_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO grid_seeker_romsw[] =
+static struct ROMSW_INFO romsw_gseeker[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_grid_seeker_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO grid_seeker_video =
-{
-   DrawGridSeeker,
-   224,
-   320,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( grid_seeker ,
-   grid_seeker_dirs,
-   grid_seeker_roms,
-   f3_system_inputs,
-   NULL,
-   grid_seeker_romsw,
-
-   LoadGridSeeker,
-   ClearGridSeeker,
-   &grid_seeker_video,
-   ExecuteF3SystemFrame_NoInt5B,
-   "gseeker",
-   "Grid Seeker",
-   "グリッドシーカー",
-   COMPANY_ID_TAITO,
-   "D40",
-   1992,
-   f3_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -109,7 +73,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadGridSeeker(void)
+static void load_gseeker(void)
 {
    int ta,tb;
 
@@ -319,7 +283,7 @@ void LoadGridSeeker(void)
    setup_sound_68000();
 }
 
-void ClearGridSeeker(void)
+static void ClearGridSeeker(void)
 {
    save_eeprom();
 
@@ -330,7 +294,7 @@ void ClearGridSeeker(void)
 #endif
 }
 
-void DrawGridSeeker(void)
+static void DrawGridSeeker(void)
 {
    UINT8 *MAP;
    int x16,y16;
@@ -517,3 +481,29 @@ void DrawGridSeeker(void)
       f3video_render_fg0_r270();
    }
 }
+static struct VIDEO_INFO video_gseeker =
+{
+   DrawGridSeeker,
+   224,
+   320,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_gseeker[] =
+{
+   { "grid_seeker", },
+   { "gridseek", },
+   { "gseeker", },
+   { NULL, },
+};
+GAME( gseeker, "Grid Seeker", TAITO, 1992, GAME_SHOOT,
+	.input = f3_system_inputs,
+	.romsw = romsw_gseeker,
+	.clear = ClearGridSeeker,
+	.video = &video_gseeker,
+	.exec = ExecuteF3SystemFrame_NoInt5B,
+	.long_name_jpn = "グリッドシーカー",
+	.board = "D40",
+	.sound = f3_sound,
+);
+

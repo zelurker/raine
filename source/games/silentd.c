@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                 SILENT DRAGON (C) 1992 TAITO CORPORATION                   */
@@ -9,20 +10,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "silentd.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 
-static struct DIR_INFO silent_dragon_dirs[] =
-{
-   { "silent_dragon", },
-   { "silentd", },
-   { NULL, },
-};
 
-static struct ROM_INFO silent_dragon_roms[] =
+static struct ROM_INFO rom_silentd[] =
 {
    {   "sd_m05.rom", 0x00100000, 0xe02472c5, 0, 0, 0, },
    {   "sd_m02.rom", 0x00080000, 0xe0de5c39, 0, 0, 0, },
@@ -38,7 +32,7 @@ static struct ROM_INFO silent_dragon_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO silent_dragon_inputs[] =
+static struct INPUT_INFO input_silentd[] =
 {
    INP0( COIN1, 0x025006, 0x10 ),
    INP0( COIN2, 0x025006, 0x20 ),
@@ -145,50 +139,17 @@ static struct DSW_DATA dsw_data_silent_dragon_1[] =
 };
 
 
-static struct DSW_INFO silent_dragon_dsw[] =
+static struct DSW_INFO dsw_silentd[] =
 {
    { 0x025000, 0xFF, dsw_data_silent_dragon_0 },
    { 0x025002, 0x7F, dsw_data_silent_dragon_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO silent_dragon_video =
-{
-   DrawSilentD,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( silent_dragon ,
-   silent_dragon_dirs,
-   silent_dragon_roms,
-   silent_dragon_inputs,
-   silent_dragon_dsw,
-   NULL,
 
-   LoadSilentD,
-   ClearSilentD,
-   &silent_dragon_video,
-   ExecuteSilentDFrame,
-   "silentd",
-   "Silent Dragon",
-   "サイレントドラゴン",
-   COMPANY_ID_TAITO,
-   NULL,
-   1992,
-   taito_ym2610_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO sel_feena_dirs[] =
-{
-   { "selfeena", },
-   { NULL, },
-};
-
-static struct ROM_INFO sel_feena_roms[] =
+static struct ROM_INFO rom_selfeena[] =
 {
    {     "se-02.27", 0x00020000, 0x08f0c8e3, 0, 0, 0, },
    {     "se-01.26", 0x00020000, 0xa06ca64b, 0, 0, 0, },
@@ -199,7 +160,7 @@ static struct ROM_INFO sel_feena_roms[] =
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO sel_feena_inputs[] =
+static struct INPUT_INFO input_ryujin[] =
 {
    INP0( COIN1, 0x025006, 0x10 ),
    INP0( COIN2, 0x025006, 0x20 ),
@@ -265,41 +226,16 @@ static struct DSW_DATA dsw_data_sel_feena_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO sel_feena_dsw[] =
+static struct DSW_INFO dsw_selfeena[] =
 {
    { 0x025000, 0xFF, dsw_data_sel_feena_0 },
    { 0x025002, 0xFF, dsw_data_sel_feena_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( selfeena ,
-   sel_feena_dirs,
-   sel_feena_roms,
-   sel_feena_inputs,
-   sel_feena_dsw,
-   NULL,
 
-   LoadSelFeena,
-   ClearSilentD,
-   &b_system_video,
-   ExecuteSelFeenaFrame,
-   "selfeena",
-   "Sel Feena",
-   NULL,
-   COMPANY_ID_EAST_TECHNOLOGY,
-   NULL,
-   1991,
-   taito_ym2610_sound,
-   GAME_PUZZLE
-);
 
-static struct DIR_INFO ryu_jin_dirs[] =
-{
-   { "ryujin", },
-   { NULL, },
-};
-
-static struct ROM_INFO ryu_jin_roms[] =
+static struct ROM_INFO rom_ryujin[] =
 {
    {     "ruj02.27", 0x00020000, 0x0d223aee, 0, 0, 0, },
    {     "ruj01.26", 0x00020000, 0xc6bcdd1e, 0, 0, 0, },
@@ -331,45 +267,16 @@ static struct DSW_DATA dsw_data_ryu_jin_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ryu_jin_dsw[] =
+static struct DSW_INFO dsw_ryujin[] =
 {
    { 0x025000, 0xFF, dsw_data_sel_feena_0 },
    { 0x025002, 0xFF, dsw_data_ryu_jin_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO ryu_jin_video =
-{
-   DrawRyuJin,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-GAME( ryujin ,
-   ryu_jin_dirs,
-   ryu_jin_roms,
-   sel_feena_inputs,
-   ryu_jin_dsw,
-   NULL,
 
-   LoadRyuJin,
-   ClearSilentD,
-   &ryu_jin_video,
-   ExecuteSelFeenaFrame,
-   "ryujin",
-   "Ryu Jin",
-   NULL,
-   COMPANY_ID_TAITO,
-   NULL,
-   1993,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
-
-void DecodeBSystemGfx(int tb, int tc, int n, int rev)
+static void DecodeBSystemGfx(int tb, int tc, int n, int rev)
 {
   if ((!rev && n==0) || (rev && n==3)) {
     GFX[tb+0] = (((tc&0x80)>>7)<<n);
@@ -403,7 +310,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadSilentD(void)
+static void load_silentd(void)
 {
    int ta,tb,tc;
 
@@ -666,19 +573,7 @@ void LoadSilentD(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearSilentD(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x028000,1);
-      //save_debug("GFX0.bin",GFX_BG0,0x800000,0);
-      //save_debug("GFX2.bin",GFX_BG2,0x040000,0);
-   #endif
-}
-
-void MemoryMap_SelFeena(void)
+static void MemoryMap_SelFeena(void)
 {
    AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadByte(0x100000, 0x103FFF, NULL, RAM+0x000000);			// MAIN RAM
@@ -714,7 +609,7 @@ void MemoryMap_SelFeena(void)
    AddWriteWord(-1, -1, NULL, NULL);
 }
 
-void LoadSelFeena(void)
+static void load_selfeena(void)
 {
    int ta,tb,tc;
 
@@ -862,7 +757,7 @@ void LoadSelFeena(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void LoadRyuJin(void)
+static void load_ryujin(void)
 {
    int ta,tb,tc;
 
@@ -1019,7 +914,7 @@ void LoadRyuJin(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ExecuteSilentDFrame(void)
+static void execute_silentd(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -1035,7 +930,7 @@ void ExecuteSilentDFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void ExecuteSelFeenaFrame(void)
+static void execute_ryujin(void)
 {
    #ifdef RAINE_DEBUG
      vcu_debug_info();
@@ -1049,7 +944,7 @@ void ExecuteSelFeenaFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void DrawSilentD(void)
+static void DrawSilentD(void)
 {
    ClearPaletteMap();
 
@@ -1079,7 +974,7 @@ void DrawSilentD(void)
    vcu_render_bg2();
 }
 
-void DrawRyuJin(void)
+static void DrawRyuJin(void)
 {
    int pri;
 
@@ -1114,3 +1009,42 @@ void DrawRyuJin(void)
 
    vcu_render_bg2();
 }
+static struct VIDEO_INFO video_ryujin =
+{
+   DrawRyuJin,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_silentd =
+{
+   DrawSilentD,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+GMEI( ryujin, "Ryu Jin", TAITO, 1993, GAME_SHOOT);
+static struct DIR_INFO dir_selfeena[] =
+{
+   { "selfeena", },
+   { NULL, },
+};
+GAME( selfeena, "Sel Feena", EAST_TECHNOLOGY, 1991, GAME_PUZZLE,
+	.input = input_ryujin,
+	.dsw = dsw_selfeena,
+	.video = &b_system_video,
+	.exec = execute_ryujin,
+);
+static struct DIR_INFO dir_silentd[] =
+{
+   { "silent_dragon", },
+   { "silentd", },
+   { NULL, },
+};
+GME( silentd, "Silent Dragon", TAITO, 1992, GAME_BEAT,
+	.long_name_jpn = "サイレントドラゴン",
+);
+

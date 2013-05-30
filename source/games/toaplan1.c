@@ -1,3 +1,5 @@
+#define DRV_DEF_INPUT input_outzone
+#define DRV_DEF_SOUND sound_tp1
 /******************************************************************************/
 /*                                                                            */
 /*                          TOAPLAN 68000 SYSTEM#1                            */
@@ -9,23 +11,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "toaplan1.h"
 #include "3812intf.h"
 #include "sasound.h"		// sample support routines
 #include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "profile.h" // fps
 
-static struct DIR_INFO vimana_dirs[] =
-{
-   { "vimana", },
-   { "vimana1", },
-   { ROMOF("vimana"), },
-   { CLONEOF("vimana"), },
-   { NULL, },
-};
 
-static struct ROM_INFO vimana_roms[] =
+static struct ROM_INFO rom_vimana1[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                "vim07.bin",  0x1efaea84,    "vim08.bin",  0xe45b7def),
@@ -38,7 +31,7 @@ static struct ROM_INFO vimana_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO vimana_inputs[] =
+static struct INPUT_INFO input_outzone[] =
 {
    INP1( COIN1, 0x023003, 0x08 ),
    INP1( COIN2, 0x023003, 0x10 ),
@@ -251,7 +244,7 @@ static struct DSW_DATA dsw_data_vimana_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO vimana_dsw[] =
+static struct DSW_INFO dsw_vimana[] =
 {
    { 0x023000, 0x00, dsw_data_hellfire_0 },
    { 0x023001, 0x00, dsw_data_vimana_1 },
@@ -321,60 +314,10 @@ static struct GFX_LIST vimana_gfx[] =
    { 0,           NULL,           },
 };
 
-static struct VIDEO_INFO toaplan1_video =
-{
-   DrawToaplan1,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   toaplan1_gfx,
-};
 
-static struct VIDEO_INFO toaplan1_r270_video =
-{
-   DrawToaplan1,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   toaplan1_gfx,
-};
 
-static struct VIDEO_INFO rally_bike_video =
-{
-   DrawToaplan1,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   rally_bike_gfx,
-};
 
-static struct VIDEO_INFO outzone_video =
-{
-   DrawToaplan1,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   outzone_gfx,
-};
 
-static struct VIDEO_INFO vimana_video =
-{
-   DrawToaplan1,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   vimana_gfx,
-};
 
 static struct YM3812interface ym3812_interface =
 {
@@ -384,41 +327,15 @@ static struct YM3812interface ym3812_interface =
    { z80_irq_handler }
 };
 
-static struct SOUND_INFO toaplan1_sound[] =
+static struct SOUND_INFO sound_tp1[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( vimana ,
-   vimana_dirs,
-   vimana_roms,
-   vimana_inputs,
-   vimana_dsw,
-   NULL,
 
-   load_vimana,
-   clear_vimana,
-   &vimana_video,
-   ExecuteToaplan1Frame,
-   "vimana1",
-   "Vimana",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP019",
-   1991,
-   NULL,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO vimana_alt_dirs[] =
-{
-   { "vimana2", },
-   { "vimana", },
-   { NULL, },
-};
-
-static struct ROM_INFO vimana_alt_roms[] =
+static struct ROM_INFO rom_vimana[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
             "tp019-7a.bin",  0x5a4bf73e, "tp019-8a.bin",  0x03ba27e8),
@@ -431,35 +348,9 @@ static struct ROM_INFO vimana_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( vimana_alt ,
-   vimana_alt_dirs,
-   vimana_alt_roms,
-   vimana_inputs,
-   vimana_dsw,
-   NULL,
 
-   load_vimana,
-   clear_vimana,
-   &vimana_video,
-   ExecuteToaplan1Frame,
-   "vimana",
-   "Vimana (alternate)",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP019",
-   1991,
-   NULL,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO outzone_dirs[] =
-{
-   { "outzone", },
-   { "outzoneb", },
-   { NULL, },
-};
-
-static struct ROM_INFO outzone_roms[] =
+static struct ROM_INFO rom_outzone[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                 "rom7.bin",  0x936e25d8,     "rom8.bin",  0xd19b3ecf),
@@ -512,7 +403,7 @@ static struct DSW_DATA dsw_data_outzone_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO outzone_dsw[] =
+static struct DSW_INFO dsw_outzone[] =
 {
    { 0x023000, 0x00, dsw_data_hellfire_0 },
    { 0x023001, 0x00, dsw_data_outzone_1 },
@@ -520,36 +411,9 @@ static struct DSW_INFO outzone_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( outzone ,
-   outzone_dirs,
-   outzone_roms,
-   vimana_inputs,
-   outzone_dsw,
-   NULL,
 
-   load_outzone,
-   clear_outzone,
-   &outzone_video,
-   ExecuteToaplan1Frame_Sound,
-   "outzone",
-   "Outzone",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP018",
-   1990,
-   toaplan1_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO rally_bike_dirs[] =
-{
-   { "rally_bike", },
-   { "rallybik", },
-   { "rallyb", },
-   { NULL, },
-};
-
-static struct ROM_INFO rally_bike_roms[] =
+static struct ROM_INFO rom_rallybik[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
                "b45-02.rom",  0x383386d7,    "b45-01.rom",  0x7602f6a7),
@@ -589,7 +453,7 @@ static struct DSW_DATA dsw_data_rally_bike_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rally_bike_dsw[] =
+static struct DSW_INFO dsw_rallybik[] =
 {
    { 0x023000, 0x00, dsw_data_rally_bike_0 },
    { 0x023001, 0x00, dsw_data_rally_bike_1 },
@@ -597,35 +461,9 @@ static struct DSW_INFO rally_bike_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( rally_bike ,
-   rally_bike_dirs,
-   rally_bike_roms,
-   vimana_inputs,
-   rally_bike_dsw,
-   NULL,
 
-   load_rally_bike,
-   clear_rally_bike,
-   &rally_bike_video,
-   ExecuteToaplan1Frame_Sound,
-   "rallybik",
-   "Rally Bike",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP012",
-   1988,
-   toaplan1_sound,
-   GAME_RACE | GAME_NOT_WORKING
-);
 
-static struct DIR_INFO zero_wing_dirs[] =
-{
-   { "zero_wing", },
-   { "zerowing", },
-   { NULL, },
-};
-
-static struct ROM_INFO zero_wing_roms[] =
+static struct ROM_INFO rom_zerowing[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
               "o15-11.rom",  0x6ff2b9a0,   "o15-12.rom",  0x9773e60b),
@@ -681,7 +519,7 @@ static struct DSW_DATA dsw_data_zerowing_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO zero_wing_dsw[] =
+static struct DSW_INFO dsw_zerowing[] =
 {
    { 0x023000, 0x01, dsw_data_rally_bike_0 },
    { 0x023001, 0x00, dsw_data_zerowing_1 },
@@ -689,36 +527,9 @@ static struct DSW_INFO zero_wing_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( zero_wing ,
-   zero_wing_dirs,
-   zero_wing_roms,
-   vimana_inputs,
-   zero_wing_dsw,
-   NULL,
 
-   load_zero_wing,
-   clear_zero_wing,
-   &toaplan1_video,
-   ExecuteToaplan1Frame_Sound,
-   "zerowing",
-   "Zero Wing",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP015",
-   1989,
-   toaplan1_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO demons_world_dirs[] =
-{
-   { "demons_world", },
-   { "demonwld", },
-   { "demonwl1", },
-   { NULL, },
-};
-
-static struct ROM_INFO demons_world_roms[] =
+static struct ROM_INFO rom_demonwl1[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                    "rom10",  0x036ee46c,        "rom09",  0xbed746e3),
@@ -775,7 +586,7 @@ static struct DSW_DATA dsw_data_demonwld_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO demons_world_dsw[] =
+static struct DSW_INFO dsw_demonwl1[] =
 {
    { 0x023000, 0x00, dsw_data_hellfire_0 },
    { 0x023001, 0x00, dsw_data_demonwld_1 },
@@ -783,35 +594,9 @@ static struct DSW_INFO demons_world_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( demons_world ,
-   demons_world_dirs,
-   demons_world_roms,
-   vimana_inputs,
-   demons_world_dsw,
-   NULL,
 
-   load_demons_world,
-   clear_demons_world,
-   &toaplan1_video,
-   ExecuteToaplan1Frame_Sound,
-   "demonwl1",
-   "Demon's World",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP016",
-   1989,
-   toaplan1_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO fire_shark_dirs[] =
-{
-   { "fire_shark", },
-   { "fireshrk", },
-   { NULL, },
-};
-
-static struct ROM_INFO fire_shark_roms[] =
+static struct ROM_INFO rom_fireshrk[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
                    "9.bin",  0xf0c70e6f,       "10.bin",  0x9d253d77),
@@ -850,7 +635,7 @@ static struct DSW_DATA dsw_data_fire_shark_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO fire_shark_dsw[] =
+static struct DSW_INFO dsw_fireshrk[] =
 {
    { 0x023000, 0x00, dsw_data_hellfire_0 },
    { 0x023001, 0x00, dsw_data_fire_shark_1 },
@@ -858,38 +643,9 @@ static struct DSW_INFO fire_shark_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( fire_shark ,
-   fire_shark_dirs,
-   fire_shark_roms,
-   vimana_inputs,
-   fire_shark_dsw,
-   NULL,
 
-   load_fire_shark,
-   clear_fire_shark,
-   &toaplan1_r270_video,
-   ExecuteToaplan1Frame,
-   "fireshrk",
-   "Fire Shark",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP017",
-   1990,
-   NULL,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO same_same_same_dirs[] =
-{
-   { "same_same_same", },
-   { "same3", },
-   { "samesame", },
-   { ROMOF("fireshrk"), },
-   { CLONEOF("fireshrk"), },
-   { NULL, },
-};
-
-static struct ROM_INFO same_same_same_roms[] =
+static struct ROM_INFO rom_samesame[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
               "o17_09.bin",  0x3f69e437,   "o17_10.bin",  0x4e723e0a),
@@ -954,7 +710,7 @@ static struct DSW_DATA dsw_data_same_same_same_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO same_same_same_dsw[] =
+static struct DSW_INFO dsw_samesame[] =
 {
    { 0x023000, 0x00, dsw_data_rally_bike_0 },
    { 0x023001, 0x00, dsw_data_samesame_1 },
@@ -962,35 +718,9 @@ static struct DSW_INFO same_same_same_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( same_same_same ,
-   same_same_same_dirs,
-   same_same_same_roms,
-   vimana_inputs,
-   same_same_same_dsw,
-   NULL,
 
-   load_fire_shark,
-   clear_fire_shark,
-   &toaplan1_r270_video,
-   ExecuteToaplan1Frame,
-   "samesame",
-   "Same Same Same",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "TP017",
-   1989,
-   NULL,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO hell_fire_dirs[] =
-{
-   { "hell_fire", },
-   { "hellfire", },
-   { NULL, },
-};
-
-static struct ROM_INFO hell_fire_roms[] =
+static struct ROM_INFO rom_hellfire[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "b90-14.bin",  0x101df9f5,   "b90-15.bin",  0xe67fd452),
@@ -1028,7 +758,7 @@ static struct DSW_DATA dsw_data_hell_fire_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO hell_fire_dsw[] =
+static struct DSW_INFO dsw_hellfire[] =
 {
    { 0x023000, 0x00, dsw_data_hellfire_0 },
    { 0x023001, 0x00, dsw_data_hellfire_1 },
@@ -1036,34 +766,9 @@ static struct DSW_INFO hell_fire_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( hell_fire ,
-   hell_fire_dirs,
-   hell_fire_roms,
-   vimana_inputs,
-   hell_fire_dsw,
-   NULL,
 
-   load_hell_fire,
-   clear_hell_fire,
-   &toaplan1_video,
-   ExecuteToaplan1Frame_Sound,
-   "hellfire",
-   "Hell Fire",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "B90",
-   1989,
-   toaplan1_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO truxton_dirs[] =
-{
-   { "truxton", },
-   { NULL, },
-};
-
-static struct ROM_INFO truxton_roms[] =
+static struct ROM_INFO rom_truxton[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "b65_11.bin",  0x1a62379a,   "b65_10.bin",  0xaff5195d),
@@ -1101,7 +806,7 @@ static struct DSW_DATA dsw_data_truxton_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO truxton_dsw[] =
+static struct DSW_INFO dsw_truxton[] =
 {
    { 0x023003, 0x00, dsw_data_rally_bike_0 },
    { 0x023004, 0x00, dsw_data_truxton_1 },
@@ -1109,26 +814,6 @@ static struct DSW_INFO truxton_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-GAME( truxton ,
-   truxton_dirs,
-   truxton_roms,
-   vimana_inputs,
-   truxton_dsw,
-   NULL,
-
-   load_truxton,
-   clear_truxton,
-   &toaplan1_r270_video,
-   ExecuteToaplan1Frame_Sound,
-   "truxton",
-   "Tatsujin",
-   NULL,
-   COMPANY_ID_TOAPLAN,
-   "B65",
-   1988,
-   toaplan1_sound,
-   GAME_SHOOT
-);
 
 // Store Tiles in priority lists (good idea from Shark!).
 
@@ -1216,7 +901,7 @@ typedef struct TP1VCU				// information about 1 chip
    UINT32 tile_ofs_obj;				// tile offset
 } TP1VCU;
 
-struct TP1VCU tp1vcu[1];			// max 1 chips
+static struct TP1VCU tp1vcu[1];			// max 1 chips
 
 static void init_tp1vcu(UINT32 num)
 {
@@ -1841,7 +1526,7 @@ static void tp1_finish_setup_gfx() {
   set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
 }
 
-void load_vimana()
+static void load_vimana()
 {
    romset = 0;
    scroll_offsx = 0x1ef;
@@ -1940,7 +1625,7 @@ void load_vimana()
 
 }
 
-void load_outzone(void)
+static void load_outzone(void)
 {
    romset = 2;
    scroll_offsx = 0x1ef;
@@ -2065,7 +1750,7 @@ void load_outzone(void)
 
 }
 
-void load_rally_bike(void)
+static void load_rallybik(void)
 {
    romset = 3;
    scroll_offsx = 0x1ef;
@@ -2188,7 +1873,7 @@ void load_rally_bike(void)
 
 }
 
-void load_zero_wing(void)
+static void load_zerowing(void)
 {
    romset = 4;
    scroll_offsx = 0x1ef;
@@ -2315,7 +2000,7 @@ void load_zero_wing(void)
 
 }
 
-void load_demons_world(void)
+static void load_demonwl1(void)
 {
    romset = 5;
    scroll_offsx = 0x1ef;
@@ -2448,7 +2133,7 @@ void load_demons_world(void)
 
 }
 
-void load_fire_shark(void)
+static void load_fireshrk(void)
 {
    romset = 6;
    scroll_offsx = 0x1ef;
@@ -2550,7 +2235,7 @@ void load_fire_shark(void)
 
 }
 
-void load_hell_fire(void)
+static void load_hellfire(void)
 {
    romset = 8;
    scroll_offsx = 0x1ef;
@@ -2683,7 +2368,7 @@ void load_hell_fire(void)
 
 }
 
-void load_truxton(void)
+static void load_truxton(void)
 {
    romset = 9;
    scroll_offsx = 0x1ef;
@@ -2818,26 +2503,7 @@ void load_truxton(void)
 
 }
 
-void ClearToaplan1(void)
-{
-#ifdef RAINE_DEBUG
-  switch(romset){
-      case 3:
-      case 4:
-      case 6:
-      case 7:
-      save_debug("ROM.bin",ROM,0x80000,1);
-      save_debug("RAM.bin",RAM,RAMSize,1);
-      break;
-      default:
-      save_debug("ROM.bin",ROM,0x40000,1);
-      save_debug("RAM.bin",RAM,RAMSize,1);
-      break;
-      }
-#endif
-}
-
-void ExecuteToaplan1Frame(void)
+static void execute_fireshrk(void)
 {
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 16MHz (60fps) (real game is only ??MHz)
    if(want_int) {
@@ -2851,7 +2517,7 @@ void ExecuteToaplan1Frame(void)
    }
 }
 
-void ExecuteToaplan1Frame_Sound(void)
+static void execute_outzone(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 16MHz (60fps) (real game is only ??MHz)
    if(want_int)
@@ -2944,7 +2610,7 @@ static UINT16 vram_ofs[ROM_COUNT][4] =
 #define OBJ_X_MASK	0x1FF
 #define OBJ_Y_MASK	0x1FF
 
-void DrawToaplan1(void)
+static void DrawToaplan1(void)
 {
    int x,y,ta,pri,layer;
    int zz,zzz,zzzz,x16,y16;
@@ -3140,3 +2806,174 @@ void DrawToaplan1(void)
 
    DrawTileQueue();
 }
+static struct VIDEO_INFO video_fireshrk =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   toaplan1_gfx,
+};
+static struct VIDEO_INFO video_hellfire =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   toaplan1_gfx,
+};
+static struct VIDEO_INFO video_outzone =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   outzone_gfx,
+};
+static struct VIDEO_INFO video_rallybik =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   rally_bike_gfx,
+};
+static struct VIDEO_INFO video_vimana =
+{
+   DrawToaplan1,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   vimana_gfx,
+};
+static struct DIR_INFO dir_demonwl1[] =
+{
+   { "demons_world", },
+   { "demonwld", },
+   { "demonwl1", },
+   { NULL, },
+};
+GAME( demonwl1, "Demon's World", TOAPLAN, 1989, GAME_SHOOT,
+	.dsw = dsw_demonwl1,
+	.video = &video_hellfire,
+	.exec = execute_outzone,
+	.board = "TP016",
+);
+static struct DIR_INFO dir_fireshrk[] =
+{
+   { "fire_shark", },
+   { "fireshrk", },
+   { NULL, },
+};
+GME( fireshrk, "Fire Shark", TOAPLAN, 1990, GAME_SHOOT,
+	.board = "TP017",
+	.sound = NULL
+);
+static struct DIR_INFO dir_hellfire[] =
+{
+   { "hell_fire", },
+   { "hellfire", },
+   { NULL, },
+};
+GAME( hellfire, "Hell Fire", TOAPLAN, 1989, GAME_SHOOT,
+	.dsw = dsw_hellfire,
+	.video = &video_hellfire,
+	.exec = execute_outzone,
+	.board = "B90",
+);
+static struct DIR_INFO dir_outzone[] =
+{
+   { "outzone", },
+   { "outzoneb", },
+   { NULL, },
+};
+GME( outzone, "Outzone", TOAPLAN, 1990, GAME_SHOOT,
+	.board = "TP018",
+);
+static struct DIR_INFO dir_rallybik[] =
+{
+   { "rally_bike", },
+   { "rallybik", },
+   { "rallyb", },
+   { NULL, },
+};
+GAME( rallybik, "Rally Bike", TOAPLAN, 1988, GAME_RACE | GAME_NOT_WORKING,
+	.dsw = dsw_rallybik,
+	.video = &video_rallybik,
+	.exec = execute_outzone,
+	.board = "TP012",
+);
+static struct DIR_INFO dir_samesame[] =
+{
+   { "same_same_same", },
+   { "same3", },
+   { "samesame", },
+   { ROMOF("fireshrk"), },
+   { CLONEOF("fireshrk"), },
+   { NULL, },
+};
+CLNE(samesame, fireshrk, "Same Same Same", TOAPLAN, 1989, GAME_SHOOT,
+	.dsw = dsw_samesame,
+	.board = "TP017",
+	.sound = NULL
+);
+static struct DIR_INFO dir_truxton[] =
+{
+   { "truxton", },
+   { NULL, },
+};
+GAME( truxton, "Tatsujin", TOAPLAN, 1988, GAME_SHOOT,
+	.dsw = dsw_truxton,
+	.video = &video_fireshrk,
+	.exec = execute_outzone,
+	.board = "B65",
+);
+static struct DIR_INFO dir_vimana1[] =
+{
+   { "vimana", },
+   { "vimana1", },
+   { ROMOF("vimana"), },
+   { CLONEOF("vimana"), },
+   { NULL, },
+};
+#define execute_vimana execute_fireshrk
+CLNE(vimana1, vimana, "Vimana", TOAPLAN, 1991, GAME_SHOOT,
+	.board = "TP019",
+	.sound = NULL
+);
+static struct DIR_INFO dir_vimana[] =
+{
+   { "vimana2", },
+   { "vimana", },
+   { NULL, },
+};
+GAME( vimana, "Vimana (alternate)", TOAPLAN, 1991, GAME_SHOOT,
+	.dsw = dsw_vimana,
+	.video = &video_vimana,
+	.exec = execute_fireshrk,
+	.board = "TP019",
+	.sound = NULL
+);
+static struct DIR_INFO dir_zerowing[] =
+{
+   { "zero_wing", },
+   { "zerowing", },
+   { NULL, },
+};
+GAME( zerowing, "Zero Wing", TOAPLAN, 1989, GAME_SHOOT,
+	.dsw = dsw_zerowing,
+	.video = &video_hellfire,
+	.exec = execute_outzone,
+	.board = "TP015",
+);
+

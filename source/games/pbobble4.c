@@ -6,21 +6,13 @@
 
 #include "gameinc.h"
 #include "f3system.h"
-#include "pbobble4.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO puzzle_bobble_4_dirs[] =
-{
-   { "puzzle_bobble_4", },
-   { "puzbob4", },
-   { "pbobble4", },
-   { NULL, },
-};
 
-static struct ROM_INFO puzzle_bobble_4_roms[] =
+static struct ROM_INFO rom_pbobble4[] =
 {
    {       "e49.01", 0x00100000, 0xa3dd5f85, 0, 0, 0, },
    {       "e49.02", 0x00100000, 0xc7d2f40b, 0, 0, 0, },
@@ -47,41 +39,13 @@ static struct ROMSW_DATA romsw_data_puzzle_bobble_4_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO puzzle_bobble_4_romsw[] =
+static struct ROMSW_INFO romsw_pbobble4[] =
 {
    { 0x1FFFFF, 0x03, romsw_data_puzzle_bobble_4_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO puzzle_bobble_4_video =
-{
-   DrawPuzzleBobble4,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( puzzle_bobble_4 ,
-   puzzle_bobble_4_dirs,
-   puzzle_bobble_4_roms,
-   f3_system_inputs,
-   NULL,
-   puzzle_bobble_4_romsw,
-
-   LoadPuzzleBobble4,
-   ClearPuzzleBobble4,
-   &puzzle_bobble_4_video,
-   ExecuteF3SystemFrameB,
-   "pbobble4",
-   "Puzzle Bobble 4",
-   NULL,
-   COMPANY_ID_TAITO,
-   "E49",
-   1997,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -109,7 +73,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadPuzzleBobble4(void)
+static void load_pbobble4(void)
 {
    int ta,tb,tc;
 
@@ -307,7 +271,7 @@ void LoadPuzzleBobble4(void)
    setup_sound_68000();
 }
 
-void ClearPuzzleBobble4(void)
+static void ClearPuzzleBobble4(void)
 {
    save_eeprom();
 
@@ -320,7 +284,7 @@ void ClearPuzzleBobble4(void)
 
 static int BGPRI[3];
 
-void DrawPuzzleBobble4(void)
+static void DrawPuzzleBobble4(void)
 {
    UINT8 *MAP;
    int x,y,z,ta,zz,zzz,zzzz,x16,y16;
@@ -581,3 +545,28 @@ What's missing:
 - 1 Mask rom for tiles
 
 */
+static struct VIDEO_INFO video_pbobble4 =
+{
+   DrawPuzzleBobble4,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_pbobble4[] =
+{
+   { "puzzle_bobble_4", },
+   { "puzbob4", },
+   { "pbobble4", },
+   { NULL, },
+};
+GAME( pbobble4, "Puzzle Bobble 4", TAITO, 1997, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_pbobble4,
+	.clear = ClearPuzzleBobble4,
+	.video = &video_pbobble4,
+	.exec = ExecuteF3SystemFrameB,
+	.board = "E49",
+	.sound = f3_sound,
+);
+

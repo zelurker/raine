@@ -384,10 +384,10 @@ static int updated_recording;
 void update_monitoring() {
     if ((recording && updated_recording)) {
 	int i;
-	int w = current_game->video_info->screen_x;
-	int h = current_game->video_info->screen_y - 50;
+	int w = current_game->video->screen_x;
+	int h = current_game->video->screen_y - 50;
 	int pen = makecol(255,255,255);
-	int border=current_game->video_info->border_size;
+	int border=current_game->video->border_size;
 	if (monitoring) {
 	    int h2 = h;
 	    h -= 100;

@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    NINJA KIDS (C) 1990 TAITO CORPORATION                   */
@@ -5,21 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ninjak.h"
 #include "tc100scn.h"
 #include "tc200obj.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 #include "blit.h" // clear_game_screen
 
-static struct DIR_INFO ninja_kids_dirs[] =
-{
-   { "ninja_kids", },
-   { "ninjak", },
-   { NULL, },
-};
 
-static struct ROM_INFO ninja_kids_roms[] =
+static struct ROM_INFO rom_ninjak[] =
 {
    { "c85-04.1", 0x00080000, 0x5afb747e, 0, 0, 0, },
    {    "c85_xx.5", 0x00020000, 0x0ac2cba2, 0, 0, 0, },
@@ -34,7 +28,7 @@ static struct ROM_INFO ninja_kids_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO ninja_kids_inputs[] =
+static struct INPUT_INFO input_ninjak[] =
 {
    INP0( COIN1, 0x02510D, 0x10 ),
    INP0( COIN2, 0x02510D, 0x20 ),
@@ -89,7 +83,7 @@ static struct DSW_DATA dsw_data_ninja_kids_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ninja_kids_dsw[] =
+static struct DSW_INFO dsw_ninjak[] =
 {
    { 0x025101, 0xFF, dsw_data_ninja_kids_0 },
    { 0x025103, 0xFF, dsw_data_default_1 },
@@ -105,41 +99,13 @@ static struct ROMSW_DATA romsw_data_ninja_kids_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO ninja_kids_romsw[] =
+static struct ROMSW_INFO romsw_ninjak[] =
 {
    { 0x03FFFF, 0x03, romsw_data_ninja_kids_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO ninja_kids_video =
-{
-   DrawNinjaK,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( ninja_kids ,
-   ninja_kids_dirs,
-   ninja_kids_roms,
-   ninja_kids_inputs,
-   ninja_kids_dsw,
-   ninja_kids_romsw,
-
-   LoadNinjaK,
-   ClearNinjaK,
-   &ninja_kids_video,
-   ExecuteNinjaKFrame,
-   "ninjak",
-   "Ninja Kids",
-   "ニンジャキッズ",
-   COMPANY_ID_TAITO,
-   "C85",
-   1990,
-   taito_ym2610_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_OBJECT;
@@ -157,7 +123,7 @@ static int BadReadWord(UINT32 address)
    return(0xFFFF);
 }
 
-void LoadNinjaK(void)
+static void load_ninjak(void)
 {
    int ta,tb;
 
@@ -379,18 +345,7 @@ void LoadNinjaK(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearNinjaK(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x080000,1);
-      //save_debug("RAM.bin",RAM,0x02C000,1);
-      //save_debug("GFX.bin",GFX,0x500000,0);
-#endif
-}
-
-void ExecuteNinjaKFrame(void)
+static void execute_ninjak(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -400,7 +355,7 @@ void ExecuteNinjaKFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void DrawNinjaK(void)
+static void DrawNinjaK(void)
 {
    ClearPaletteMap();
 
@@ -490,3 +445,23 @@ Byte | Bit(s) | Function
   F  |........| <Unused>
 
 */
+static struct VIDEO_INFO video_ninjak =
+{
+   DrawNinjaK,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ninjak[] =
+{
+   { "ninja_kids", },
+   { "ninjak", },
+   { NULL, },
+};
+GME( ninjak, "Ninja Kids", TAITO, 1990, GAME_BEAT,
+	.romsw = romsw_ninjak,
+	.long_name_jpn = "ニンジャキッズ",
+	.board = "C85",
+);
+

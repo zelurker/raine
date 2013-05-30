@@ -1305,7 +1305,7 @@ void init_video_core(void)
 
    // convenient screen data
 
-   vid_info = current_game->video_info;
+   vid_info = current_game->video;
 
    disp_x = vid_info->border_size + vid_info->screen_x + vid_info->border_size;
    disp_y = vid_info->border_size + vid_info->screen_y + vid_info->border_size;

@@ -6,20 +6,13 @@
 
 #include "gameinc.h"
 #include "f3system.h"
-#include "pbobble2.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO puzzle_bobble_2_dirs[] =
-{
-   { "puzzle_bobble_2", },
-   { "pbobble2", },
-   { NULL, },
-};
 
-static struct ROM_INFO puzzle_bobble_2_roms[] =
+static struct ROM_INFO rom_pbobble2[] =
 {
    {   "e10-04.rom", 0x00200000, 0x5c0862a6, 0, 0, 0, },
    {   "e10-01.rom", 0x00100000, 0x8c26ff49, 0, 0, 0, },
@@ -45,53 +38,16 @@ static struct ROMSW_DATA romsw_data_puzzle_bobble_2_0[] =
    { NULL,                                0    },
 };
 
-static struct ROMSW_INFO puzzle_bobble_2_romsw[] =
+static struct ROMSW_INFO romsw_pbobble2[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_puzzle_bobble_2_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO puzzle_bobble_2_video =
-{
-   DrawPuzzleBobble2,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( puzzle_bobble_2 ,
-   puzzle_bobble_2_dirs,
-   puzzle_bobble_2_roms,
-   f3_system_inputs,
-   NULL,
-   puzzle_bobble_2_romsw,
 
-   LoadPuzzleBobble2,
-   ClearPuzzleBobble2,
-   &puzzle_bobble_2_video,
-   ExecuteF3SystemFrameB,
-   "pbobble2",
-   "Puzzle Bobble 2",
-   "パズルボブル２",
-   COMPANY_ID_TAITO,
-   "E10",
-   1995,
-   f3_sound,
-   GAME_PUZZLE
-);
 
-static struct DIR_INFO puzzle_bobble_2x_dirs[] =
-{
-   { "puzzle_bobble_2x", },
-   { "puzbob2x", },
-   { "pbobbl2x", },
-   { ROMOF("pbobble2"), },
-   { CLONEOF("pbobble2"), },
-   { NULL, },
-};
-
-static struct ROM_INFO puzzle_bobble_2x_roms[] =
+static struct ROM_INFO rom_pbobbl2x[] =
 {
    {   "e10-01.rom", 0x00100000, 0x8c26ff49, 0, 0, 0, },
    {   "e10-02.rom", 0x00100000, 0xc0564490, 0, 0, 0, },
@@ -117,32 +73,12 @@ static struct ROMSW_DATA romsw_data_puzzle_bobble_2x_0[] =
    { NULL,                                   0    },
 };
 
-static struct ROMSW_INFO puzzle_bobble_2x_romsw[] =
+static struct ROMSW_INFO romsw_pbobbl2x[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_puzzle_bobble_2x_0 },
    { 0,        0,    NULL },
 };
 
-GAME( puzzle_bobble_2x ,
-   puzzle_bobble_2x_dirs,
-   puzzle_bobble_2x_roms,
-   f3_system_inputs,
-   NULL,
-   puzzle_bobble_2x_romsw,
-
-   LoadPuzzleBobble2x,
-   ClearPuzzleBobble2x,
-   &puzzle_bobble_2_video,
-   ExecuteF3SystemFrameB,
-   "pbobbl2x",
-   "Puzzle Bobble 2 (extra)",
-   "パズルボブル２Ｘ",
-   COMPANY_ID_TAITO,
-   "E10",
-   1995,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -171,7 +107,7 @@ static UINT8 *GFX_BG0_PENS;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadPuzzleBobble2(void)
+static void load_pbobble2(void)
 {
    int ta,tb,tc;
 
@@ -359,7 +295,7 @@ void LoadPuzzleBobble2(void)
    setup_sound_68000();
 }
 
-void LoadPuzzleBobble2x(void)
+static void load_pbobbl2x(void)
 {
    int ta,tb,tc;
 
@@ -547,29 +483,7 @@ void LoadPuzzleBobble2x(void)
    setup_sound_68000();
 }
 
-void ClearPuzzleBobble2(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x100000,0);
-      //save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x400000,0);
-#endif
-}
-
-void ClearPuzzleBobble2x(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x100000,0);
-      //save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x400000,0);
-#endif
-}
-
-void DrawPuzzleBobble2(void)
+static void DrawPuzzleBobble2(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y,z;
@@ -871,3 +785,45 @@ Ensoniq 5510
 Ensoniq 5505
 
 */
+static struct VIDEO_INFO video_pbobble2 =
+{
+   DrawPuzzleBobble2,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_pbobble2[] =
+{
+   { "puzzle_bobble_2", },
+   { "pbobble2", },
+   { NULL, },
+};
+GAME( pbobble2, "Puzzle Bobble 2", TAITO, 1995, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_pbobble2,
+	.video = &video_pbobble2,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "パズルボブル２",
+	.board = "E10",
+	.sound = f3_sound,
+);
+static struct DIR_INFO dir_pbobbl2x[] =
+{
+   { "puzzle_bobble_2x", },
+   { "puzbob2x", },
+   { "pbobbl2x", },
+   { ROMOF("pbobble2"), },
+   { CLONEOF("pbobble2"), },
+   { NULL, },
+};
+GAME( pbobbl2x, "Puzzle Bobble 2 (extra)", TAITO, 1995, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_pbobbl2x,
+	.video = &video_pbobble2,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "パズルボブル２Ｘ",
+	.board = "E10",
+	.sound = f3_sound,
+);
+

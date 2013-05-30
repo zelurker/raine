@@ -59,7 +59,7 @@ struct dxsmpinterface dkong_emudx_interface =
     YM3012_VOL(255,MIXER_PAN_LEFT,255,MIXER_PAN_RIGHT)
   };
 
-static struct SOUND_INFO dkong_sound[] =
+static struct SOUND_INFO sound_dkong[] =
 {
   { SOUND_DXSMP, &dkong_emudx_interface, },
   { 0, NULL },
@@ -68,7 +68,7 @@ static struct SOUND_INFO dkong_sound[] =
 // defined in rgui.c for allegro, but it should be generic...
 extern int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, int c1, int c2);
 
-static struct ROM_INFO dkong_roms[] =
+static struct ROM_INFO rom_dkong[] =
 {
   { "c_5et_g.bin", 0x1000, 0xba70b88b, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "c_5ct_g.bin", 0x1000, 0x5ec461ec, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -89,7 +89,7 @@ static struct ROM_INFO dkong_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO dkongex_roms[] =
+static struct ROM_INFO rom_dkongex[] =
 {
   { "cx_5et_g.bin", 0x1000, 0x00b7efaf, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "cx_5ct_g.bin", 0x1000, 0x88af9b69, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -99,7 +99,7 @@ static struct ROM_INFO dkongex_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO dkongjp_roms[] =
+static struct ROM_INFO rom_dkongjp[] =
 {
   { "c_5f_b.bin", 0x1000, 0x424f2b11, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "5g.cpu", 0x1000, 0xd326599b, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -111,7 +111,7 @@ static struct ROM_INFO dkongjp_roms[] =
 };
 
 /*
-static struct ROM_INFO dkongjr_roms[] =
+static struct ROM_INFO rom_dkongjr[] =
 {
   { "dkj.5b", 0x2000, 0xdea28158, REGION_ROM1, 0, LOAD_NORMAL },
   { "dkj.5c", 0x2000, 0x6fb5faf6, REGION_ROM1, 0, LOAD_NORMAL },
@@ -129,7 +129,7 @@ static struct ROM_INFO dkongjr_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO dkong3_roms[] =
+static struct ROM_INFO rom_dkong3[] =
 {
   { "dk3c.7b", 0x2000, 0x38d5f38e, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "dk3c.7c", 0x2000, 0xc9134379, REGION_ROM1, 0x2000, LOAD_NORMAL },
@@ -177,7 +177,7 @@ static struct DSW_DATA dsw_data_dkong_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO dkong_dsw[] =
+static struct DSW_INFO dsw_dkong[] =
 {
   { 0x6, 0x80, dsw_data_dkong_3 },
   { 0, 0, NULL }
@@ -234,7 +234,7 @@ static struct DSW_DATA dsw_data_dkong3_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO dkong3_dsw[] =
+static struct DSW_INFO dsw_dkong3[] =
 {
   { 0x4, 0x00, dsw_data_dkong3_2 },
   { 0x6, 0x00, dsw_data_dkong3_3 },
@@ -242,7 +242,7 @@ static struct DSW_INFO dkong3_dsw[] =
 };
 */
 
-static struct INPUT_INFO dkong_inputs[] =
+static struct INPUT_INFO input_dkong[] =
 {
   INP1( P1_RIGHT, 0x00, 0x01 ),
   INP1( P1_LEFT, 0x00, 0x02 ),
@@ -266,7 +266,7 @@ static struct INPUT_INFO dkong_inputs[] =
    END_INPUT
 };
 
-/* static struct INPUT_INFO dkong3_inputs[] =
+/* static struct INPUT_INFO input_dkong3[] =
 {
   INP1( P1_RIGHT, 0x00, 0x01 ),
   INP1( P1_LEFT, 0x00, 0x02 ),
@@ -932,7 +932,7 @@ static void draw_dkong() {
   }
 }
 
-static struct VIDEO_INFO dkong_video =
+static struct VIDEO_INFO video_dkong =
 {
    draw_dkong,
    256,
@@ -943,11 +943,11 @@ static struct VIDEO_INFO dkong_video =
    gfxdecodeinfo
 };
 
-GME( dkong,
+GMEI( dkong,
      "Donkey Kong",
-     COMPANY_ID_NINTENDO,
+     NINTENDO,
      1981,
      GAME_PLATFORM);
 
-CLONE( dkongjp, dkong, "Donkey Kong (Japan)", COMPANY_ID_NINTENDO, 1981, GAME_PLATFORM);
-CLONE( dkongex, dkong, "Donkey Kong (Foundry)", COMPANY_ID_BOOTLEG, 2001, GAME_PLATFORM);
+CLNEI( dkongjp, dkong, "Donkey Kong (Japan)", NINTENDO, 1981, GAME_PLATFORM);
+CLNEI( dkongex, dkong, "Donkey Kong (Foundry)", BOOTLEG, 2001, GAME_PLATFORM);

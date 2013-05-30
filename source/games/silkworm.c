@@ -1,3 +1,6 @@
+#define DRV_DEF_VIDEO &video_rygar
+#define DRV_DEF_SOUND sound_gemini
+#define DRV_DEF_EXEC execute_gemini
 /***************************************************************************/
 /*                                                                         */
 /*                          SILKWORM (C) 1988 TECMO                        */
@@ -18,7 +21,6 @@
 
 
 #include "gameinc.h"
-#include "silkworm.h"
 #include "taitosnd.h"
 #include "msm5205.h"
 #include "sasound.h"		// sample support routines
@@ -34,14 +36,8 @@ static int sample_size;
    SILKWORM SET 1
  ******************/
 
-static struct DIR_INFO silkworm_dirs[] =
-{
-   { "silkworm", },
-   { "silkworm", },
-   { NULL, },
-};
 
-static struct ROM_INFO silkworm_roms[] =
+static struct ROM_INFO rom_silkworm[] =
 {
    {   "silkworm.4", 0x10000, 0xa5277cce, REGION_CPU1, 0, LOAD_NORMAL },
    {   "silkworm.5", 0x10000, 0xa6c7bb51, REGION_CPU1, 0xc000, LOAD_NORMAL },
@@ -75,7 +71,7 @@ static struct ROM_INFO silkworm_roms[] =
    { KB_DEF_P2_DOWN,      MSG_P2_DOWN,             0x6002, 0x04, BIT_ACTIVE_1 },\
    { KB_DEF_P2_UP,        MSG_P2_UP,               0x6002, 0x08, BIT_ACTIVE_1 },
 
-static struct INPUT_INFO silkworm_inputs[] =
+static struct INPUT_INFO input_silkworm[] =
 {
    JOY_1
    INP1( P1_B1, 0x6001, 0x02 ),
@@ -151,21 +147,13 @@ static struct DSW_DATA dsw_data_silkworm_A[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO silkworm_dsw[] =
+static struct DSW_INFO dsw_silkworm[] =
 {
    { 0x6006, 0x80, dsw_data_silkworm_A },
    { 0x6008, 0x30, dsw_data_silkworm_B },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO silkworm_video =
-{
-   DrawSilkworm,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
 static struct YM3812interface ym3812_interface =
 {
@@ -177,7 +165,7 @@ static struct YM3812interface ym3812_interface =
 
 static int adpcm_pos,adpcm_end;
 
-void sw_adpcm_start(UINT32 address, UINT8 data){
+static void sw_adpcm_start(UINT32 address, UINT8 data){
 	if(RaineSoundCard){
 	  adpcm_pos = data << 8;
 	  if (adpcm_pos > sample_size) {
@@ -186,7 +174,7 @@ void sw_adpcm_start(UINT32 address, UINT8 data){
 	}
 }
 
-void sw_adpcm_end(UINT32 address, UINT8 data){
+static void sw_adpcm_end(UINT32 address, UINT8 data){
   if(RaineSoundCard){
     //		print_ingame(120, "ADPCM End: %i", data);
     adpcm_end = (data + 1) << 8;
@@ -196,7 +184,7 @@ void sw_adpcm_end(UINT32 address, UINT8 data){
   }
 }
 
-void sw_adpcm_volume(UINT32 address, UINT8 data){
+static void sw_adpcm_volume(UINT32 address, UINT8 data){
   if(RaineSoundCard){
     //		print_ingame(120, "ADPCM Volume: %i", data);
     MSM5205_set_volume(0,(data & 0x0f) * 255 / 15);
@@ -245,48 +233,20 @@ static struct MSM5205buffer_interface msm5205_interface =
    MSM5205_MONO,
 };
 
-static struct SOUND_INFO silkworm_sound[] =
+static struct SOUND_INFO sound_gemini[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { SOUND_MSM5205_BUFF, &msm5205_interface },
    { 0,             NULL,                 },
 };
 
-GAME( silkworm ,
-   silkworm_dirs,
-   silkworm_roms,
-   silkworm_inputs,
-   silkworm_dsw,
-   NULL,
-
-   LoadSilkworm,
-   ClearSilkworm,
-   &silkworm_video,
-   ExecuteSilkwormFrame,
-   "silkworm",
-   "Silkworm (Set 1)",
-   NULL,
-   COMPANY_ID_TECMO,
-   "6217",
-   1988,
-   silkworm_sound,
-   GAME_SHOOT
-);
 
 /******************
    SILKWORM SET 2
  ******************/
 
-static struct DIR_INFO silkworm_set2_dirs[] =
-{
-   { "silkworm_set2", },
-   { "silkwrm2", },
-   { ROMOF("silkworm"), },
-   { CLONEOF("silkworm"), },
-   { NULL, },
-};
 
-static struct ROM_INFO silkworm_set2_roms[] =
+static struct ROM_INFO rom_silkwrm2[] =
 {
    {           "r4", 0x10000, 0x6df3df22, REGION_CPU1, 0, LOAD_NORMAL, },   // cpu1
    {   "silkworm.5", 0x10000, 0xa6c7bb51, REGION_CPU1, 0xc000, LOAD_NORMAL, }, // cpu1
@@ -308,38 +268,13 @@ static struct ROM_INFO silkworm_set2_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( silkworm_set2 ,
-   silkworm_set2_dirs,
-   silkworm_set2_roms,
-   silkworm_inputs,
-   silkworm_dsw,
-   NULL,
-
-   LoadSilkworm,
-   ClearSilkworm,
-   &silkworm_video,
-   ExecuteSilkwormFrame,
-   "silkwrm2",
-   "Silkworm (Set 2)",
-   NULL,
-   COMPANY_ID_TECMO,
-   "6217",
-   1988,
-   silkworm_sound,
-   GAME_SHOOT
-);
 
 /******************
        RYGAR
  ******************/
 
-static struct DIR_INFO rygar_dirs[] =
-{
-   { "rygar", },
-   { NULL, },
-};
 
-static struct ROM_INFO rygar_roms[] =
+static struct ROM_INFO rom_rygar[] =
 {
    {         "5.5p", 0x08000, 0x062cd55d, REGION_CPU1, 0, LOAD_NORMAL },
    {   "cpu_5m.bin", 0x04000, 0x7ac5191b, REGION_CPU1, 0x8000, LOAD_NORMAL },
@@ -362,7 +297,7 @@ static struct ROM_INFO rygar_roms[] =
    {           NULL,       0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO rygar_inputs[] =
+static struct INPUT_INFO input_rygar[] =
 {
    JOY_1
    INP1( P1_B1, 0x6001, 0x01 ),
@@ -430,46 +365,20 @@ static struct DSW_DATA dsw_data_rygar_A[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rygar_dsw[] =
+static struct DSW_INFO dsw_rygar[] =
 {
    { 0x6006, 0x40, dsw_data_rygar_A },
    { 0x6008, 0xD0, dsw_data_rygar_B },
    { 0,        0,    NULL,      },
 };
 
-GAME( rygar ,
-   rygar_dirs,
-   rygar_roms,
-   rygar_inputs,
-   rygar_dsw,
-   NULL,
-
-   LoadRygar,
-   ClearSilkworm,
-   &silkworm_video,
-   ExecuteSilkwormFrame,
-   "rygar",
-   "Rygar - Legendary Warrior",
-   NULL,
-   COMPANY_ID_TECMO,
-   "6217",
-   1986,
-   silkworm_sound,
-   GAME_PLATFORM
-);
 
 /******************
     GEMINI WING
  ******************/
 
-static struct DIR_INFO gemini_dirs[] =
-{
-   { "gemini_wing", },
-   { "gemini", },
-   { NULL, },
-};
 
-static struct ROM_INFO gemini_roms[] =
+static struct ROM_INFO rom_gemini[] =
 {
    {   "gw04-5s.rom",  0x10000, 0xff9de855, REGION_CPU1, 0, LOAD_NORMAL },
    {   "gw05-6s.rom",  0x10000, 0x5a6947a9, REGION_CPU1, 0xc000, LOAD_NORMAL },
@@ -491,7 +400,7 @@ static struct ROM_INFO gemini_roms[] =
    {            NULL,        0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO gemini_inputs[] =
+static struct INPUT_INFO input_gemini[] =
 {
    JOY_1
    INP1( P1_B1, 0x6001, 0x02 ),
@@ -566,42 +475,14 @@ static struct DSW_DATA dsw_data_gemini_A[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO gemini_dsw[] =
+static struct DSW_INFO dsw_gemini[] =
 {
    { 0x6006, 0x88, dsw_data_gemini_A },
    { 0x6008, 0x04, dsw_data_gemini_B },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO gemini_video =
-{
-   DrawSilkworm,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_90 | VIDEO_ROTATABLE,
-};
 
-GAME( gemini ,
-   gemini_dirs,
-   gemini_roms,
-   gemini_inputs,
-   gemini_dsw,
-   NULL,
-
-   LoadGeminiWing,
-   ClearSilkworm,
-   &gemini_video,
-   ExecuteSilkwormFrame,
-   "gemini",
-   "Gemini Wing",
-   NULL,
-   COMPANY_ID_TECMO,
-   "6217",
-   1987,
-   silkworm_sound,
-   GAME_SHOOT
-);
 
 /**********************************************************************/
 /**********************************************************************/
@@ -635,7 +516,7 @@ static int   romset;
 /************************************************************************/
 /*	CPU1 write ports									*/
 /************************************************************************/
-void sw_sound_command(UINT32 address, UINT8 data){
+static void sw_sound_command(UINT32 address, UINT8 data){
 	(void)(data);
 	sound_command = data;
 	if(RaineSoundCard){
@@ -644,11 +525,11 @@ void sw_sound_command(UINT32 address, UINT8 data){
 		// print_ingame(120, "CPU1 Writes: %i", sound_command);
 	}
 }
-void sw_flip_screen(UINT32 address, UINT8 data){
+static void sw_flip_screen(UINT32 address, UINT8 data){
 //	print_ingame(120, "Flip screen: %i", data);
 	flip_screen = data;
 }
-void sw_bankswitch(UINT32 address, UINT8 data){
+static void sw_bankswitch(UINT32 address, UINT8 data){
   data >>=3;
   z80a_set_bank(0,data);
 }
@@ -674,13 +555,13 @@ UINT8 sw_dsw_b_hi(UINT32 address){
 /*	CPU2 write ports									*/
 /************************************************************************/
 
-void sw_ym3812_control_port(UINT32 address, UINT8 data){
+static void sw_ym3812_control_port(UINT32 address, UINT8 data){
 	if(RaineSoundCard){
 		YM3812_control_port_0_w(address, data);
 //		print_ingame(120, "YM3812 control: %i", data);
 	}
 }
-void sw_ym3812_write_port(UINT32 address, UINT8 data){
+static void sw_ym3812_write_port(UINT32 address, UINT8 data){
 	if(RaineSoundCard){
 		YM3812_write_port_0_w(address, data);
 //		print_ingame(120, "YM3812 write: %i", data);
@@ -708,7 +589,7 @@ UINT8 sw_soundlatch(UINT32 address){
 /*	GFX LOADING										*/
 /************************************************************************/
 
-void DecodeSilkwormGfx_8x8(char *file, float gfx_offs, int gfx_size){
+static void DecodeSilkwormGfx_8x8(char *file, float gfx_offs, int gfx_size){
 	int ta,tb;
 
 	if(!(load_rom(file, TMP, gfx_size))){
@@ -725,7 +606,7 @@ void DecodeSilkwormGfx_8x8(char *file, float gfx_offs, int gfx_size){
 }
 
 
-void DecodeSilkwormGfx_16x16(char *file, float gfx_offs, UINT32 gfx_size){
+static void DecodeSilkwormGfx_16x16(char *file, float gfx_offs, UINT32 gfx_size){
 	int ta,tb;
 	int i,j;
 
@@ -788,7 +669,7 @@ void DecodeSilkwormGfx_16x16(char *file, float gfx_offs, UINT32 gfx_size){
 
 UINT8 nothing1,nothing2,nothing3;
 
-void MemoryMap_cpu1(void)
+static void MemoryMap_cpu1(void)
 {
    AddZ80AROMBase(RAM1, 0x0038, 0x0066);
 
@@ -827,7 +708,7 @@ void MemoryMap_cpu1(void)
    AddZ80AWritePort(-1, -1, NULL, NULL);
 }
 
-void MemoryMap_cpu2(void)
+static void MemoryMap_cpu2(void)
 {
    AddZ80BROMBase(RAM2, 0x0038, 0x0066);
 
@@ -856,7 +737,7 @@ void MemoryMap_cpu2(void)
    AddZ80BWritePort(-1, -1, NULL, NULL);
 }
 
-void MemoryMap_cpu2_rygar(void)
+static void MemoryMap_cpu2_rygar(void)
 {
    AddZ80BROMBase(RAM2, 0x0038, 0x0066);
 
@@ -893,7 +774,7 @@ void MemoryMap_cpu2_rygar(void)
 #define FRAME_Z80	CPU_FRAME_MHz(6,60)
 #define FRAME_Z80_RYGAR	CPU_FRAME_MHz(4,60)
 
-void LoadSilkworm(void)
+static void load_silkworm(void)
 {
    romset=0;
    RAMSize=0x7000;
@@ -980,7 +861,7 @@ void LoadSilkworm(void)
    setup_z80_frame(CPU_Z80_1,FRAME_Z80);
 }
 
-void LoadRygar(void)
+static void load_rygar(void)
 {
    romset=1;
    RAMSize=0x7000;
@@ -1070,7 +951,7 @@ void LoadRygar(void)
    setup_z80_frame(CPU_Z80_1,FRAME_Z80_RYGAR);
 }
 
-void LoadGeminiWing(void)
+static void load_gemini(void)
 {
    romset=2;
    RAMSize=0x7000;
@@ -1164,7 +1045,7 @@ void LoadGeminiWing(void)
 /************************************************************************/
 /*	GAME CLEAR										*/
 /************************************************************************/
-void ClearSilkworm(void)
+static void ClearSilkworm(void)
 {
   memset(silkworm_adpcm,0,sizeof(silkworm_adpcm));
   save_debug("roma.bin",ROM,get_region_size(REGION_ROM1),0);
@@ -1175,7 +1056,7 @@ void ClearSilkworm(void)
 /*	GAME EXECUTE									*/
 /************************************************************************/
 #if 0
-void ExecuteSilkwormFrame(void)
+static void execute_gemini(void)
 {
    cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(6,60));	// Main Z80 6MHz (60fps)
    cpu_interrupt(CPU_Z80_0, 0x38);					// vbl interrupt
@@ -1194,7 +1075,7 @@ void ExecuteSilkwormFrame(void)
 }
 #else
 
-void ExecuteSilkwormFrame(void)
+static void execute_gemini(void)
 {
   int frame, diff;
   int speed_hack1 = 0,speed_hack2 = 0;
@@ -1323,7 +1204,7 @@ static void silkworm_draw_sprites(int _priority){
 /************************************************************************/
 /*	GAME DRAW										*/
 /************************************************************************/
-void DrawSilkworm(void)
+static void DrawSilkworm(void)
 {
    UINT8 *map;
    int color;
@@ -1433,3 +1314,51 @@ void DrawSilkworm(void)
    silkworm_draw_sprites(0);
 
 }
+static struct VIDEO_INFO video_gemini =
+{
+   DrawSilkworm,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_90 | VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_rygar =
+{
+   DrawSilkworm,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_gemini[] =
+{
+   { "gemini_wing", },
+   { "gemini", },
+   { NULL, },
+};
+GME( gemini, "Gemini Wing", TECMO, 1987, GAME_SHOOT,
+	.clear = ClearSilkworm,
+	.video = &video_gemini,
+	.board = "6217",
+);
+GMEI( rygar, "Rygar - Legendary Warrior", TECMO, 1986, GAME_PLATFORM,
+	.clear = ClearSilkworm,
+	.board = "6217",
+);
+GMEI( silkworm, "Silkworm (Set 1)", TECMO, 1988, GAME_SHOOT,
+	.clear = ClearSilkworm,
+	.board = "6217",
+);
+static struct DIR_INFO dir_silkwrm2[] =
+{
+   { "silkworm_set2", },
+   { "silkwrm2", },
+   { ROMOF("silkworm"), },
+   { CLONEOF("silkworm"), },
+   { NULL, },
+};
+CLNE(silkwrm2, silkworm, "Silkworm (Set 2)", TECMO, 1988, GAME_SHOOT,
+	.clear = ClearSilkworm,
+	.board = "6217",
+);
+

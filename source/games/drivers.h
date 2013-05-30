@@ -1,11 +1,11 @@
 // ainferno.c
-  DRV(air_inferno)
+  DRV(ainferno)
 
 // aquajack.c
-  DRV(aqua_jack)
+  DRV(aquajckj)
 
 // arabianm.c
-  DRV(arabian_magic)
+  DRV(arabianm)
 
 // arkanoid.c
   DRV(arkatayt)
@@ -14,63 +14,63 @@
   DRV(arkatour)
 
 // arkretrn.c
-  DRV(arkanoid_returns)
+  DRV(arkretrn)
 
 // armedf.c
-  DRV(armed_formation)
-  DRV(crazy_climber_2)
+  DRV(armedf)
+  DRV(cclimbr2)
 
 // ashura.c
-  DRV(ashura_blaster)
-  DRV(ashura_blaster_us)
+  DRV(ashura)
+  DRV(ashurau)
 
 // asuka.c
-  DRV(asuka_and_asuka)
+  DRV(asuka)
 
 // biomtoy.c
-  DRV(biomechanical_toy)
-  DRV(maniac_square)
+  DRV(biomtoy)
+  DRV(maniacsq)
 
 // bloodbro.c
-  DRV(blood_bros)
-  DRV(west_story)
+  DRV(bloodbro)
+  DRV(weststry)
 
 // bonzeadv.c
-  DRV(bonze_adventure)
-  DRV(jigoku_meguri)
+  DRV(bonzeadv)
+  DRV(jigkmgri)
 
 // bshark.c
-  DRV(battle_shark)
+  DRV(bshark)
 
 // bsystem.c
-  DRV(quiz_sekai_wa_show_by_shobai)
-  DRV(puzzle_bobble_b_system)
-  DRV(space_invaders_dx)
+  DRV(qzshowby)
+  DRV(pbobble)
+  DRV(spacedxj)
 
 // bubblem.c
-  DRV(bubble_memories)
-  DRV(bubble_memories_jp)
+  DRV(bubblem)
+  DRV(bubblemj)
 
 // bublbobl.c
-  DRV(bubble_bobble)
-  DRV(bubble_bobble_romstar)
-  DRV(bubble_bobble_romstar2)
-  DRV(bobble_bobble)
-  DRV(super_bobble_bobble)
+  DRV(bublbobl)
+  DRV(bublbobr)
+  DRV(bubbobr1)
+  DRV(boblbobl)
+  DRV(sboblbob)
 
 // bubsymph.c
-  DRV(bubble_bobble_2)
-  DRV(bubble_symphony)
-  DRV(bubble_symphony_us)
+  DRV(bublbob2)
+  DRV(bubsymph)
+  DRV(bubsympu)
 
-// cabal.c
-  DRV(cabal)
+// cabalblblbl.c
+  DRV(cabalbl)
 
 // cadash.c
   DRV(cadash)
-  DRV(cadash_french)
-  DRV(cadash_italian)
-  DRV(cadash_japanese)
+  DRV(cadashf)
+  DRV(cadashi)
+  DRV(cadashj)
 
 // cave.c
   DRV(esprade)
@@ -83,8 +83,8 @@
   DRV(donpachi)
   DRV(donpachj)
   DRV(donpachk)
-  DRV(uo_poko)
-  DRV(feveron)
+  DRV(uopoko)
+  DRV(dfeveron)
   DRV(feversos)
   DRV(hotdogst)
   DRV(mazinger)
@@ -93,23 +93,23 @@
   DRV(agallet)
 
 // chaknpop.c
-  DRV(chack_n_pop)
+  DRV(chaknpop)
 
 // chasehq2.c
-  DRV(chase_hq_2_sci)
-  DRV(chase_hq_2_sci_alt)
+  DRV(sci)
+  DRV(sciu)
 
 // chasehq.c
-  DRV(chase_hq)
-  DRV(chase_hq_japanese)
-  DRV(night_striker)
+  DRV(chasehq)
+  DRV(chasehqj)
+  DRV(nightstr)
 
 // cleofort.c
-  DRV(cleopatras_fortune)
+  DRV(cleopatr)
 
 // contcirc.c
-  DRV(continental_circus_us)
-  DRV(continental_circus)
+  DRV(contcrcu)
+  DRV(contcirc)
 
 // cookbib.c
   DRV(cookbib)
@@ -475,39 +475,39 @@
   DRV(sgemfd)
 
 // crimec.c
-  DRV(crime_city)
-  DRV(crime_city_US)
-  DRV(crime_city_jp)
+  DRV(crimec)
+  DRV(crimecu)
+  DRV(crimecj)
 
 // crospang.c
   DRV(crospang)
 
 // ctribebl.c
-  DRV(combatribes)
-  DRV(combatribes_bootleg)
+  DRV(ctribe)
+  DRV(ctribeb)
 
 // cupfinal.c
-  DRV(taito_cup_final)
-  DRV(super_cup_final)
+  DRV(cupfinal)
+  DRV(scfinals)
 
 // dangarb.c
-  DRV(ufo_robo_dangar)
+  DRV(dangarb)
 
 // darius2d.c
-  DRV(darius_2_dual)
+  DRV(drius2do)
 
 // darius.c
   DRV(darius)
   DRV(dariuso)
-  DRV(darius_extra)
-  DRV(darius_alt)
+  DRV(dariuse)
+  DRV(darius)
 
 // dariusg.c
-  DRV(darius_gaiden_extra)
-  DRV(darius_gaiden)
+  DRV(dariusgx)
+  DRV(dariusg)
 
 // deadconx.c
-  DRV(dead_connection)
+  DRV(deadconx)
 
 // diverboy.c
   DRV(diverboy)
@@ -518,18 +518,18 @@
   DRV(dkongex)
 
 // dleague.c
-  DRV(dynamite_leaguem)
+  DRV(dleague)
 
 // doubled3.c
   DRV(ddragon3)
   DRV(ddrago3b)
 
 // eaction2.c
-  DRV(elevator_action_2)
+  DRV(elvact2u)
 
 // earthjkr.c
-  DRV(earth_joker)
-  DRV(maze_of_flott)
+  DRV(earthjkr)
+  DRV(mofflott)
   DRV(galmedes)
   DRV(eto)
 
@@ -542,15 +542,15 @@
   DRV(exzisus)
 
 // f3demo.c
-  DRV(f3_demo_by_antiriad)
+  DRV(f3demo)
 
 // fchamp.c
-  DRV(euro_champ_92)
-  DRV(football_champ)
-  DRV(hat_trick_hero)
+  DRV(euroch92)
+  DRV(footchmp)
+  DRV(hthero)
 
 // flstory.c
-  DRV(fairy_land_story)
+  DRV(flstory)
 
 // frogger.c
   DRV(frogger)
@@ -567,13 +567,13 @@
   DRV(galpanic)
 
 // gcpball.c
-  DRV(grand_cross_pinball)
+  DRV(gcpinbal)
 
 // gekridan.c
-  DRV(gekirindan)
+  DRV(gekirido)
 
 // gridseek.c
-  DRV(grid_seeker)
+  DRV(gseeker)
 
 // gunbird.c
   DRV(gunbird)
@@ -587,18 +587,18 @@
   DRV(tengai)
 
 // gunlock.c
-  DRV(gun_lock)
-  DRV(ray_force)
-  DRV(ray_force_jp)
+  DRV(gunlock)
+  DRV(rayforce)
+  DRV(rayforcj)
 
 // heavyunt.c
-  DRV(heavy_unit)
+  DRV(heavyunt)
 
 // hitice.c
-  DRV(hit_the_ice)
+  DRV(hitice)
 
 // hthero95.c
-  DRV(hat_trick_hero_95)
+  DRV(pwrgoal)
 
 // hyperpcb.c
   DRV(hyperpcb)
@@ -609,65 +609,65 @@
   DRV(moremore)
   DRV(moremorp)
   DRV(finalttr)
-  DRV(snow_bros)
-  DRV(snow_bros_alt)
-  DRV(snow_bros_japanese)
-  DRV(snow_bros_alt_2)
-  DRV(winter_bobble)
+  DRV(snowbros)
+  DRV(snowbroa)
+  DRV(snowbroj)
+  DRV(snowbrob)
+  DRV(wintbob)
 
 // intcup94.c
-  DRV(international_cup_94)
+  DRV(intcup94)
 
 // kaiserkn.c
-  DRV(kaiser_knuckle)
-  DRV(kaiser_knuckle_alt)
+  DRV(kaiserkn)
+  DRV(dankuga)
 
 // konamigx.c
-  DRV(salamander_2)
+  DRV(salmndr2)
 
 // koshien.c
   DRV(koshien)
 
 // ksystem.c
-  DRV(kick_and_run)
-  DRV(kiki_kai_kai)
-  DRV(knight_boy)
+  DRV(kicknrun)
+  DRV(kikikai)
+  DRV(knightb)
 
 // ktiger2.c
-  DRV(kyukyoku_tiger_2)
+  DRV(ktiger2)
 
 // landmakr.c
-  DRV(land_maker)
+  DRV(landmakr)
 
 // lightbr.c
-  DRV(light_bringer)
+  DRV(lightbr)
 
 // lsystem.c
-  DRV(american_horseshoes)
-  DRV(champion_wrestler)
-  DRV(champion_wrestler_us)
-  DRV(champion_wrestler_jp)
+  DRV(horshoes)
+  DRV(champwr)
+  DRV(champwru)
+  DRV(champwrj)
   DRV(cachat)
-  DRV(fighting_hawk)
-  DRV(kuri_kinton)
-  DRV(kuri_kinton_alt)
-  DRV(kuri_kinton_jap)
+  DRV(fhawk)
+  DRV(kurikint)
+  DRV(kurikina)
+  DRV(kurikinj)
   DRV(plotting)
   DRV(plottinga)
   DRV(plottingb)
   DRV(puzznic)
   DRV(plgirls)
   DRV(plgirls2)
-  DRV(palamedes)
-  DRV(cuby_bop)
-  DRV(tube_it)
+  DRV(palamed)
+  DRV(cubybop)
+  DRV(tubeit)
   DRV(raimais)
 
 // macrossp.c
   DRV(macrossp)
 
 // masterw.c
-  DRV(master_of_weapons)
+  DRV(masterw)
 
 // matmania.c
   DRV(excthour)
@@ -679,35 +679,35 @@
   DRV(mcatadvj)
 
 // megasys1.c
-  DRV(chimera_beast)
-  DRV(cybattler)
-  DRV(earth_defence_force)
+  DRV(chimerab)
+  DRV(cybattlr)
+  DRV(edf)
   DRV(hachoo)
-  DRV(kick_off)
-  DRV(legend_of_makai)
-  DRV(makai_densetsu)
-  DRV(plus_alpha)
-  DRV(saint_dragon)
-  DRV(soldam)
-  DRV(iga_ninjyutsuden)
-  DRV(64th_street)
-  DRV(64th_street_japanese)
+  DRV(kickoff)
+  DRV(lomakai)
+  DRV(makaiden)
+  DRV(plusalph)
+  DRV(stdragon)
+  DRV(soldamj)
+  DRV(iganinju)
+  DRV(64street)
+  DRV(64streej)
   DRV(astyanax)
-  DRV(the_lord_of_king)
-  DRV(p47_american)
-  DRV(p47_japanese)
-  DRV(avenging_spirit)
+  DRV(lordofk)
+  DRV(p47)
+  DRV(p47j)
+  DRV(avspirit)
   DRV(phantasm)
   DRV(rodland)
-  DRV(rodlandjb)
+  DRV(rodlndjb)
   DRV(rodlandj)
-  DRV(shingen)
+  DRV(tshingen)
   DRV(tshingna)
-  DRV(peek_a_boo)
+  DRV(peekaboo)
 
 // metalb.c
-  DRV(metal_black)
-  DRV(metal_black_japanese)
+  DRV(metalb)
+  DRV(metalbj)
 
 // mitchell.c
   DRV(pang)
@@ -721,12 +721,12 @@
   DRV(mugsmash)
 
 // ninjak.c
-  DRV(ninja_kids)
+  DRV(ninjak)
 
 // ninjaw.c
-  DRV(ninja_warriors)
-  DRV(ninja_warriors_jp)
-  DRV(darius_2)
+  DRV(ninjaw)
+  DRV(ninjawj)
+  DRV(darius2)
 
 // nmk.c
   DRV(macross)
@@ -735,36 +735,36 @@
   DRV(macross2)
   DRV(tdragon2)
   DRV(ssmissin)
-  DRV(bio_ship_paladin)
-  DRV(bomb_jack_twin)
-  DRV(saboten_bombers)
-  DRV(hacha_mecha_fighter)
+  DRV(bioship)
+  DRV(bjtwin)
+  DRV(sabotenb)
+  DRV(hachamf)
   DRV(mustang)
   DRV(strahl)
   DRV(acrobatm)
-  DRV(task_force_harrier)
-  DRV(thunder_dragon)
-  DRV(thunder_dragon_bl)
+  DRV(tforceh)
+  DRV(tdragon)
+  DRV(tdragonb)
 
 // opwolf3.c
-  DRV(operation_wolf_3)
+  DRV(opwolf3)
 
 // opwolf.c
-  DRV(operation_wolf)
-  DRV(operation_wolf_bootleg)
+  DRV(opwolf)
+  DRV(opwolfb)
 
 // othunder.c
-  DRV(operation_thunderbolt)
+  DRV(othunder)
 
 // pbobble2.c
-  DRV(puzzle_bobble_2)
-  DRV(puzzle_bobble_2x)
+  DRV(pbobble2)
+  DRV(pbobbl2x)
 
 // pbobble3.c
-  DRV(puzzle_bobble_3)
+  DRV(pbobble3)
 
 // pbobble4.c
-  DRV(puzzle_bobble_4)
+  DRV(pbobble4)
 
 // pengo.c
   DRV(puckman)
@@ -787,63 +787,63 @@
   DRV(genix)
 
 // popnpop.c
-  DRV(pop_n_pop)
+  DRV(popnpopj)
 
 // psyforce.c
-  DRV(psychic_force)
+  DRV(psyforce)
 
 // puchicar.c
-  DRV(puchi_carat)
+  DRV(puchicar)
 
 // quizgame.c
-  DRV(quiz_torimonochou)
-  DRV(quiz_hq)
-  DRV(yuyu_no_quiz_de_gogo)
-  DRV(quiz_crayon_shinchan)
-  DRV(quiz_crayon_shinchan_2)
-  DRV(quiz_jinsei_gekijoh)
-  DRV(quiz_chikyu_bouei_gun)
+  DRV(qtorimon)
+  DRV(quizhq)
+  DRV(yuyugogo)
+  DRV(qcrayon)
+  DRV(qcrayon2)
+  DRV(qjinsei)
+  DRV(qzchikyu)
 
 // rainbow.c
-  DRV(jumping_islands)
-  DRV(rainbow_islands)
-  DRV(rainbow_islands_alt)
-  DRV(rainbow_islands_extra)
+  DRV(jumping)
+  DRV(rainbow)
+  DRV(rainbowa)
+  DRV(rainbowe)
 
 // rambo3.c
-  DRV(rambo_3)
-  DRV(rambo_3_alternate)
+  DRV(rambo3)
+  DRV(rambo3a)
 
 // rastan2.c
   DRV(nastar)
-  DRV(rastan_saga_2)
-  DRV(nastar_warrior)
+  DRV(rastsag2)
+  DRV(nastarw)
 
 // rastan.c
   DRV(rastan)
-  DRV(rastan_saga)
-  DRV(rastan_american)
-  DRV(rastan_american_alt)
+  DRV(rastsaga)
+  DRV(rastanu)
+  DRV(rastanu2)
 
 // recordbr.c
-  DRV(record_breaker)
-  DRV(record_breaker_alt)
+  DRV(recordbr)
+  DRV(recordb2)
 
 // ridefght.c
-  DRV(riding_fight)
+  DRV(ridingf)
 
 // ringrage.c
-  DRV(ring_rage)
+  DRV(ringrage)
 
 // robokid.c
-  DRV(atomic_robo_kid)
-  DRV(atomic_robo_kid_japanese)
+  DRV(robokid)
+  DRV(robokidj)
 
 // seta.c
-  DRV(meta_fox)
+  DRV(metafox)
   DRV(arbalest)
   DRV(downtown)
-  DRV(twin_eagle)
+  DRV(twineagl)
   DRV(thunderl)
   DRV(wiggie)
   DRV(umanclub)
@@ -861,182 +861,182 @@
   DRV(daioh)
   DRV(wrofaero)
   DRV(zingzip)
-  DRV(us_classic_golf)
+  DRV(usclssic)
   DRV(tndrcade)
   DRV(calibr50)
 
 // silentd.c
-  DRV(silent_dragon)
+  DRV(silentd)
   DRV(selfeena)
   DRV(ryujin)
 
 // silkworm.c
   DRV(silkworm)
-  DRV(silkworm_set2)
+  DRV(silkwrm2)
   DRV(rygar)
   DRV(gemini)
 
 // spacegun.c
-  DRV(space_gun)
+  DRV(spacegun)
 
 // spcinv95.c
-  DRV(space_invaders_95)
+  DRV(akkanvdr)
 
 // superchs.c
-  DRV(super_chase)
+  DRV(superchs)
 
 // syvalion.c
   DRV(syvalion)
 
 // taito_f2.c
-  DRV(don_doko_don)
-  DRV(mega_blast)
-  DRV(liquid_kids)
-  DRV(majestic_twelve)
-  DRV(super_space_invaders_91)
-  DRV(drift_out)
-  DRV(drive_out)
-  DRV(dino_rex)
+  DRV(dondokdj)
+  DRV(megab)
+  DRV(liquidk)
+  DRV(majest12)
+  DRV(ssi)
+  DRV(driftout)
+  DRV(driveout)
+  DRV(dinorex)
   DRV(f2demo)
-  DRV(thunder_fox)
-  DRV(solitary_fighter)
-  DRV(mahjong_quest)
-  DRV(final_blow)
+  DRV(thundfox)
+  DRV(solfigtr)
+  DRV(mjnquest)
+  DRV(finalb)
   DRV(growl)
-  DRV(gun_frontier)
+  DRV(gunfront)
   DRV(cameltry)
   DRV(camltrua)
   DRV(pulirula)
 
 // tecmosys.c
   DRV(shadoww)
-  DRV(ninja_gaiden)
-  DRV(tecmo_knight)
+  DRV(gaiden)
+  DRV(tknight)
   DRV(shadowwa)
   DRV(ryukendn)
   DRV(wildfang)
 
 // terrac.c
-  DRV(terra_cresta)
+  DRV(terracre)
 
 // terraf.c
   DRV(legion)
-  DRV(terra_force)
+  DRV(terraf)
   DRV(kodure)
 
 // tetrisp2.c
   DRV(tetrisp2)
 
 // tetrist.c
-  DRV(taito_sega_tetris)
+  DRV(tetrist)
 
 // toaplan1.c
   DRV(vimana)
-  DRV(vimana_alt)
+  DRV(vimana1)
   DRV(outzone)
-  DRV(rally_bike)
-  DRV(zero_wing)
-  DRV(demons_world)
-  DRV(fire_shark)
-  DRV(same_same_same)
-  DRV(hell_fire)
+  DRV(rallybik)
+  DRV(zerowing)
+  DRV(demonwl1)
+  DRV(fireshrk)
+  DRV(samesame)
+  DRV(hellfire)
   DRV(truxton)
 
 // toaplan2.c
-  DRV(knuckle_bash)
-  DRV(knuckle_bash2)
-  DRV(fix_eight)
-  DRV(fix_eight_bootleg)
-  DRV(snow_bros_2)
-  DRV(tatsujin_2)
+  DRV(kbash)
+  DRV(kbash2)
+  DRV(fixeight)
+  DRV(fixeighb)
+  DRV(snowbro2)
+  DRV(truxton2)
   DRV(dogyuun)
   DRV(whoopee)
-  DRV(pipi_and_bibi)
-  DRV(teki_paki)
+  DRV(pipibibi)
+  DRV(tekipaki)
   DRV(ghox)
-  DRV(v_five)
-  DRV(grind_stormer)
-  DRV(shippu_mahou_daisakusen)
+  DRV(vfive)
+  DRV(grindstm)
+  DRV(shippumd)
   DRV(kgpe)
   DRV(mahoudai)
   DRV(batrider)
-  DRV(battle_garegga)
-  DRV(battle_garegc)
-  DRV(battle_garegh)
+  DRV(battleg)
+  DRV(bgaregc)
+  DRV(bgaregh)
   DRV(sstriker)
-  DRV(batrider_version_a)
+  DRV(batridra)
   DRV(batsugun)
   DRV(bbakraid)
   DRV(bbakrada)
 
-// toki.c
-  DRV(toki)
+// tokibbbb.c
+  DRV(tokib)
 
 // topland.c
-  DRV(top_landing)
+  DRV(topland)
 
 // topspeed.c
-  DRV(full_throttle)
-  DRV(top_speed)
+  DRV(fullthrl)
+  DRV(topspeed)
 
 // trstars.c
-  DRV(top_ranking_stars)
-  DRV(prime_time_fighters)
+  DRV(trstar)
+  DRV(prmtmfgo)
 
 // twinqix.c
-  DRV(twin_qix)
+  DRV(twinqix)
 
 // undrfire.c
-  DRV(under_fire)
+  DRV(undrfire)
 
 // upl.c
-  DRV(mutant_night)
-  DRV(ark_area)
-  DRV(ninja_kid_2)
-  DRV(omega_fighter)
-  DRV(omega_fighter_japanese)
-  DRV(rad_action)
+  DRV(mnight)
+  DRV(arkarea)
+  DRV(ninjakd2)
+  DRV(omegaf)
+  DRV(omegafs)
+  DRV(rdaction)
 
 // viofight.c
-  DRV(violence_fight)
+  DRV(viofight)
 
 // volfied.c
-  DRV(volfied)
+  DRV(volfiedj)
 
 // warriorb.c
-  DRV(warrior_blade)
+  DRV(warriorb)
 
 // wgp.c
-  DRV(world_grand_prix)
-  DRV(world_grand_prix_japanese)
+  DRV(wgp)
+  DRV(wgpj)
 
 // wrestlef.c
-  DRV(wrestle_fest)
+  DRV(wwfwfsta)
 
 // wwfsstar.c
-  DRV(wwf_super_stars)
+  DRV(wwfsstar)
 
 // xsystem1.c
-  DRV(balloon_bros)
+  DRV(ballbros)
   DRV(gigandes)
   DRV(superman)
   DRV(twinhawk)
   DRV(daisenpu)
 
 // xsystem2.c
-  DRV(arkanoid_2_american)
-  DRV(arkanoid_2_rev_of_doh)
-  DRV(arkanoid_2_japanese)
-  DRV(insector_x)
-  DRV(the_nz_story)
-  DRV(the_nz_story_bootleg)
-  DRV(the_nz_story_extra)
-  DRV(extermination)
+  DRV(arknid2u)
+  DRV(arknoid2)
+  DRV(arknid2j)
+  DRV(insectx)
+  DRV(tnzs)
+  DRV(tnzsb)
+  DRV(tnzs2)
+  DRV(extrmatn)
   DRV(kageki)
-  DRV(chuka_taisen)
-  DRV(dr_toppel_tankentai)
-  DRV(plump_pop)
+  DRV(chukatai)
+  DRV(drtoppel)
+  DRV(plumppop)
 
 // zerozone.c
-  DRV(zero_zone)
+  DRV(zerozone)
 

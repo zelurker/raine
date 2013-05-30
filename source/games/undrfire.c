@@ -5,19 +5,12 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "undrfire.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "savegame.h"
 
-static struct DIR_INFO under_fire_dirs[] =
-{
-   { "under_fire", },
-   { "undrfire", },
-   { NULL, },
-};
 
-static struct ROM_INFO under_fire_roms[] =
+static struct ROM_INFO rom_undrfire[] =
 {
    {   "d67-06", 0x00200000, 0xa2a63488, 0, 0, 0, },
    {   "d67-02", 0x00200000, 0xfceb715e, 0, 0, 0, },
@@ -41,7 +34,7 @@ static struct ROM_INFO under_fire_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO under_fire_inputs[] =
+static struct INPUT_INFO input_undrfire[] =
 {
    INP0( COIN1, 0x069007, 0x04 ),
    INP0( COIN2, 0x069007, 0x08 ),
@@ -64,41 +57,13 @@ static struct ROMSW_DATA romsw_data_under_fire_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO under_fire_romsw[] =
+static struct ROMSW_INFO romsw_undrfire[] =
 {
    { 0x1FFFFF, 0x03, romsw_data_under_fire_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO under_fire_video =
-{
-   DrawUndrFire,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( under_fire ,
-   under_fire_dirs,
-   under_fire_roms,
-   under_fire_inputs,
-   NULL,
-   under_fire_romsw,
-
-   LoadUndrFire,
-   ClearUndrFire,
-   &under_fire_video,
-   ExecuteUndrFireFrame,
-   "undrfire",
-   "Under Fire",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D67",
-   1993,
-   NULL,
-   GAME_SHOOT | GAME_NOT_WORKING
-);
 
 #define OBJ_A_COUNT	(0xF685)
 
@@ -142,7 +107,7 @@ static UINT8 *GFX_BG1_SOLID;
 /* static UINT8 *GFX_SPR; */
 /* static UINT8 *GFX_SPR_SOLID; */
 
-void AddUFMemoryMap(UINT32 romsize)
+static void AddUFMemoryMap(UINT32 romsize)
 {
    UINT32 ta;
 
@@ -185,7 +150,7 @@ void AddUFMemoryMap(UINT32 romsize)
    EEPROM=RAM+0x6B000;		// EEPROM
 }
 
-void LoadUndrFire(void)
+static void load_undrfire(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -435,18 +400,7 @@ void LoadUndrFire(void)
    init_m68k();
 }
 
-void ClearUndrFire(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x200000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX_OBJ_A,OBJ_A_COUNT*0x100,0);
-#endif
-}
-
-void ExecuteUndrFireFrame(void)
+static void execute_undrfire(void)
 {
    Execute68020(800000);
       print_debug("PC:%06x SR:%04x\n",regs.pc,regs.sr);
@@ -456,7 +410,7 @@ void ExecuteUndrFireFrame(void)
    //IntF3System();
 }
 
-void DrawUndrFire(void)
+static void DrawUndrFire(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *map;
@@ -650,3 +604,25 @@ d67-23.rom | 68020 rom (byte#3)
 readme.txt | dumped by aracorn
 
 */
+static struct VIDEO_INFO video_undrfire =
+{
+   DrawUndrFire,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_undrfire[] =
+{
+   { "under_fire", },
+   { "undrfire", },
+   { NULL, },
+};
+GAME( undrfire, "Under Fire", TAITO, 1993, GAME_SHOOT | GAME_NOT_WORKING,
+	.input = input_undrfire,
+	.romsw = romsw_undrfire,
+	.video = &video_undrfire,
+	.exec = execute_undrfire,
+	.board = "D67",
+);
+

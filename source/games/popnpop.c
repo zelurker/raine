@@ -5,22 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "popnpop.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO pop_n_pop_dirs[] =
-{
-   { "pop_n_pop", },
-   { "popnpop", },
-   { "popnpopj", },
-   { NULL, },
-};
 
-static struct ROM_INFO pop_n_pop_roms[] =
+static struct ROM_INFO rom_popnpopj[] =
 {
    {    "e51-12.20", 0x00080000, 0x86a237d5, REGION_ROM1, 0x000000, LOAD_8_32, },
    {    "e51-11.19", 0x00080000, 0x8a49f34f, REGION_ROM1, 0x000001, LOAD_8_32, },
@@ -47,41 +39,13 @@ static struct ROMSW_DATA romsw_data_pop_n_pop_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO pop_n_pop_romsw[] =
+static struct ROMSW_INFO romsw_popnpopj[] =
 {
    { 0x0FFFFF, 0x01, romsw_data_pop_n_pop_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO pop_n_pop_video =
-{
-   draw_pop_n_pop,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( pop_n_pop ,
-   pop_n_pop_dirs,
-   pop_n_pop_roms,
-   f3_system_inputs,
-   NULL,
-   pop_n_pop_romsw,
-
-   load_pop_n_pop,
-   clear_pop_n_pop,
-   &pop_n_pop_video,
-   execute_pop_n_pop_frame,
-   "popnpopj",
-   "Pop'n Pop",
-   "‚Û‚Á‚Õ‚¤‚Û‚Á‚Õ",
-   COMPANY_ID_TAITO,
-   "E51",
-   1997,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -115,7 +79,7 @@ static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 static UINT8 *GFX_SPR_PENS;
 
-void load_pop_n_pop(void)
+static void load_popnpopj(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -304,7 +268,7 @@ void load_pop_n_pop(void)
    setup_sound_68000();
 }
 
-void clear_pop_n_pop(void)
+static void clear_pop_n_pop(void)
 {
    save_eeprom();
 
@@ -315,7 +279,7 @@ void clear_pop_n_pop(void)
 #endif
 }
 
-void execute_pop_n_pop_frame(void)
+static void execute_popnpopj(void)
 {
   int ta;
   Interrupt68020(3);		// Interrupt#3 [Video Start]
@@ -335,7 +299,7 @@ void execute_pop_n_pop_frame(void)
   IntF3System();
 }
 
-void draw_pop_n_pop(void)
+static void draw_pop_n_pop(void)
 {
    UINT8 *map;
    int x,y,ta,zz,zzz,zzzz,x16,y16;
@@ -454,3 +418,29 @@ void draw_pop_n_pop(void)
       f3video_render_fg0_new();
    }
 }
+static struct VIDEO_INFO video_popnpopj =
+{
+   draw_pop_n_pop,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_popnpopj[] =
+{
+   { "pop_n_pop", },
+   { "popnpop", },
+   { "popnpopj", },
+   { NULL, },
+};
+GAME( popnpopj, "Pop'n Pop", TAITO, 1997, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_popnpopj,
+	.clear = clear_pop_n_pop,
+	.video = &video_popnpopj,
+	.exec = execute_popnpopj,
+	.long_name_jpn = "‚Û‚Á‚Õ‚¤‚Û‚Á‚Õ",
+	.board = "E51",
+	.sound = f3_sound,
+);
+

@@ -6,21 +6,13 @@
 
 #include "gameinc.h"
 #include "f3system.h"
-#include "puchicar.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO puchicar_dirs[] =
-{
-   { "puchi_carat", },
-   { "puchicar", },
-   { "puchicrj", },
-   { NULL, },
-};
 
-static struct ROM_INFO puchicar_roms[] =
+static struct ROM_INFO rom_puchicar[] =
 {
   { "e46.16", 0x80000, 0xcf2accdf, REGION_ROM1, 0x000000, LOAD_8_32 },
   { "e46.15", 0x80000, 0xc32c6ed8, REGION_ROM1, 0x000001, LOAD_8_32 },
@@ -55,41 +47,13 @@ static struct ROMSW_DATA romsw_data_puchicar_0[] =
    { NULL,		       0    },
 };
 
-static struct ROMSW_INFO puchicar_romsw[] =
+static struct ROMSW_INFO romsw_puchicar[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_puchicar_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO puchicar_video =
-{
-   DrawPuchiCarat,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( puchi_carat ,
-   puchicar_dirs,
-   puchicar_roms,
-   f3_system_inputs,
-   NULL,
-   puchicar_romsw,
-
-   LoadPuchiCarat,
-   ClearPuchiCarat,
-   &puchicar_video,
-   ExecuteF3SystemFrameB,
-   "puchicar",
-   "Puchi Carat",
-   "プチカラット",
-   COMPANY_ID_TAITO,
-   "E46",
-   1997,
-   f3_sound,
-   GAME_PUZZLE | GAME_BREAKOUT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -117,7 +81,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadPuchiCarat(void)
+static void load_puchicar(void)
 {
    int ta,tb,tc;
 
@@ -310,18 +274,7 @@ void LoadPuchiCarat(void)
    setup_sound_68000();
 }
 
-void ClearPuchiCarat(void)
-{
-   save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-   #endif
-}
-
-void DrawPuchiCarat(void)
+static void DrawPuchiCarat(void)
 {
    int x16,y16;
    int x,y,ta,zz,zzz,zzzz;
@@ -462,3 +415,28 @@ void DrawPuchiCarat(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_puchicar =
+{
+   DrawPuchiCarat,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_puchicar[] =
+{
+   { "puchi_carat", },
+   { "puchicar", },
+   { "puchicrj", },
+   { NULL, },
+};
+GAME( puchicar, "Puchi Carat", TAITO, 1997, GAME_PUZZLE | GAME_BREAKOUT,
+	.input = f3_system_inputs,
+	.romsw = romsw_puchicar,
+	.video = &video_puchicar,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "プチカラット",
+	.board = "E46",
+	.sound = f3_sound,
+);
+

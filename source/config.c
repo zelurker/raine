@@ -215,7 +215,7 @@ int actual_load_neo_game(void)
       init_inputs();
       init_dsw();
       init_romsw();
-      init_sound_list();
+      init_sound();
       reset_game_hardware();
     }
     return 1;
@@ -1037,9 +1037,9 @@ static void GameInfo(GAME_MAIN *game_info)
    int tb,tc,td,romof,cloneof,dup;
    const DIR_INFO *dir_list;
    const ROM_INFO *rom_list, *rom_list_tmp;
-   const DSW_INFO *dsw_list;
+   const DSW_INFO *dsw;
    const VIDEO_INFO *vid_info;
-   const SOUND_INFO *sound_list;
+   const SOUND_INFO *sound;
    GAME_MAIN *game_romof;
    printf("game (\n");
 
@@ -1244,15 +1244,15 @@ static void GameInfo(GAME_MAIN *game_info)
 
    */
 
-   sound_list = game_info->sound_list;
+   sound = game_info->sound;
 
-   if(sound_list){
+   if(sound){
 
-      while(sound_list->interface){
+      while(sound->interface){
 
-         printf(INDENT "chip ( type audio name \"%s\" )\n", get_sound_chip_name(sound_list->type));
+         printf(INDENT "chip ( type audio name \"%s\" )\n", get_sound_chip_name(sound->type));
 
-         sound_list++;
+         sound++;
 
       }
 
@@ -1264,16 +1264,16 @@ static void GameInfo(GAME_MAIN *game_info)
 
    */
 
-   dsw_list = game_info->dsw_list;
+   dsw = game_info->dsw;
 
    tb = 0;
-   if(dsw_list){
+   if(dsw){
 
-      while(dsw_list->data){
+      while(dsw->data){
 
          tb++;
 
-         dsw_list++;
+         dsw++;
 
       }
 
@@ -1293,7 +1293,7 @@ static void GameInfo(GAME_MAIN *game_info)
 
    */
 
-   vid_info = game_info->video_info;
+   vid_info = game_info->video;
 
    printf(INDENT "video ( screen raster ");
 
@@ -1428,7 +1428,7 @@ static void list_game_info(GAME_MAIN *game_info) {
 
 static void dsw_info(GAME_MAIN *game_info)
 {
-   const DSW_INFO *dsw_list;
+   const DSW_INFO *dsw;
    DSW_DATA *dsw_data;
    UINT32 i;
 
@@ -1440,17 +1440,17 @@ static void dsw_info(GAME_MAIN *game_info)
 
    */
 
-   dsw_list = game_info->dsw_list;
+   dsw = game_info->dsw;
 
    i = 0;
 
-   if(dsw_list){
+   if(dsw){
 
-      while(dsw_list->data){
+      while(dsw->data){
 
-         dsw_data = dsw_list->data;
+         dsw_data = dsw->data;
 
-         printf(INDENT "dipswitch ( number %d factory 0x%02x )\n", i, dsw_list->factory_setting);
+         printf(INDENT "dipswitch ( number %d factory 0x%02x )\n", i, dsw->factory_setting);
 
          while(dsw_data->name){
 
@@ -1466,7 +1466,7 @@ static void dsw_info(GAME_MAIN *game_info)
 
          }
 
-         dsw_list++;
+         dsw++;
          i++;
 
       }

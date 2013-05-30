@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND technos_ym2151_m6295_sound
 /******************************************************************************/
 /*                                                                            */
 /*                  WWF SUPER STARS (C) 1989 TECHNOS JAPAN                    */
@@ -5,19 +6,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "wwfsstar.h"
 #include "tchnosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO wwf_super_stars_dirs[] =
-{
-   { "wwf_super_stars", },
-   { "wwfsstar", },
-   { "wwfsstau", },
-   { NULL, },
-};
 
-static struct ROM_INFO wwf_super_stars_roms[] =
+static struct ROM_INFO rom_wwfsstar[] =
 {
    {   "wwfs43.bin", 0x00010000, 0xaafc4a38, 0, 0, 0, },
    {   "24ac-04.34", 0x00020000, 0xee9b850e, 0, 0, 0, },
@@ -69,7 +62,7 @@ static struct ROM_INFO wwf_super_stars_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO wwf_super_stars_inputs[] =
+static struct INPUT_INFO input_wwfsstar[] =
 {
    INP0( COIN1, 0x014008, 0x02 ),
    INP0( COIN2, 0x014008, 0x04 ),
@@ -144,43 +137,14 @@ static struct DSW_DATA dsw_data_wwf_super_stars_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO wwf_super_stars_dsw[] =
+static struct DSW_INFO dsw_wwfsstar[] =
 {
    { 0x014000, 0xFF, dsw_data_wwf_super_stars_0 },
    { 0x014002, 0x7F, dsw_data_wwf_super_stars_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO wwf_super_stars_video =
-{
-   DrawWWFSuperStars,
-   256,
-   256,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( wwf_super_stars ,
-   wwf_super_stars_dirs,
-   wwf_super_stars_roms,
-   wwf_super_stars_inputs,
-   wwf_super_stars_dsw,
-   NULL,
-
-   LoadWWFSuperStars,
-   ClearWWFSuperStars,
-   &wwf_super_stars_video,
-   ExecuteWWFSuperStarsFrame,
-   "wwfsstar",
-   "WWF Superstars",
-   "ＷＷＦスーパースターズ",
-   COMPANY_ID_TECHNOS,
-   "TA-0024",
-   1989,
-   technos_ym2151_m6295_sound,
-   GAME_BEAT
-);
 
 static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR_SOLID;
@@ -239,7 +203,7 @@ static void WWFSuperStarsSpeedPatch(void)
    WriteWord68k(&ROM[0x0F6A+8],0x4E71);
 }
 
-void LoadWWFSuperStars(void)
+static void load_wwfsstar(void)
 {
    int ta,tb,tc,td,te;
 
@@ -576,10 +540,10 @@ void LoadWWFSuperStars(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearWWFSuperStars(void)
+static void ClearWWFSuperStars(void)
 {
    #ifdef RAINE_DEBUG
       save_debug("ROM.bin",ROM,0x040000,1);
@@ -588,7 +552,7 @@ void ClearWWFSuperStars(void)
    #endif
 }
 
-void ExecuteWWFSuperStarsFrame(void)
+static void execute_wwfsstar(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -597,7 +561,7 @@ void ExecuteWWFSuperStarsFrame(void)
    TechnosSoundOld_Frame();		// Z80; YM2151; OKI ADPCM
 }
 
-void DrawWWFSuperStars(void)
+static void DrawWWFSuperStars(void)
 {
    int x,y,ta;
    int zz,zzz,zzzz,x16,y16;
@@ -693,7 +657,7 @@ void DrawWWFSuperStars(void)
 
          }
 
-         y=(y-16)&0x1FF;         
+         y=(y-16)&0x1FF;
 
          if((y>16)&&(y<256+32)){
 
@@ -838,3 +802,25 @@ WWFS50.BIN | 16x16 BG0 TILES (block#2b)
 WWFS51.BIN | 16x16 BG0 TILES (block#1b)
 
 */
+static struct VIDEO_INFO video_wwfsstar =
+{
+   DrawWWFSuperStars,
+   256,
+   256,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_wwfsstar[] =
+{
+   { "wwf_super_stars", },
+   { "wwfsstar", },
+   { "wwfsstau", },
+   { NULL, },
+};
+GME( wwfsstar, "WWF Superstars", TECHNOS, 1989, GAME_BEAT,
+	.clear = ClearWWFSuperStars,
+	.long_name_jpn = "ＷＷＦスーパースターズ",
+	.board = "TA-0024",
+);
+

@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************
  *                                                                            *
  *                    AQUA JACK (C) 1989 TAITO CORPORATION                    *
@@ -11,7 +12,6 @@
 
 
 #include "gameinc.h"
-#include "aquajack.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc150rod.h"
@@ -21,15 +21,8 @@
 #include "zoom/16x8.h"		// 16x8 zoomed sprite routines
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 
-static struct DIR_INFO aqua_jack_dirs[] =
-{
-   { "aqua_jack", },
-   { "aquajack", },
-   { "aquajckj", },
-   { NULL, },
-};
 
-static struct ROM_INFO aqua_jack_roms[] =
+static struct ROM_INFO rom_aquajckj[] =
 {
    {   "b77-01.rom", 0x00080000, 0xcdab000d, 0, 0, 0, },
    {   "b77-02.rom", 0x00080000, 0xdaea0d2e, 0, 0, 0, },
@@ -48,7 +41,7 @@ static struct ROM_INFO aqua_jack_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO aqua_jack_inputs[] =
+static struct INPUT_INFO input_aquajckj[] =
 {
    INP0( COIN1, 0x01F104, 0x04 ),
    INP0( COIN2, 0x01F104, 0x08 ),
@@ -108,7 +101,7 @@ static struct DSW_DATA dsw_data_aqua_jack_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO aqua_jack_dsw[] =
+static struct DSW_INFO dsw_aquajckj[] =
 {
    { 0x01F100, 0xFF, dsw_data_aqua_jack_0 },
    { 0x01F102, 0xFF, dsw_data_aqua_jack_1 },
@@ -123,41 +116,13 @@ static struct ROMSW_DATA romsw_data_aqua_jack_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO aqua_jack_romsw[] =
+static struct ROMSW_INFO romsw_aquajckj[] =
 {
    { 0x03FFFF, 0x01, romsw_data_aqua_jack_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO aqua_jack_video =
-{
-   draw_aqua_jack,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( aqua_jack ,
-   aqua_jack_dirs,
-   aqua_jack_roms,
-   aqua_jack_inputs,
-   aqua_jack_dsw,
-   aqua_jack_romsw,
-
-   load_aqua_jack,
-   clear_aqua_jack,
-   &aqua_jack_video,
-   execute_aqua_jack_frame,
-   "aquajckj",
-   "Aqua Jack",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B77",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT | GAME_PARTIALLY_WORKING
-);
 
 
 #define OBJ_A_COUNT	(0x7FBF)
@@ -182,7 +147,7 @@ static UINT8 *GFX_BG0_SOLID;
 
 static UINT8 *GFX_LINES;
 
-void load_aqua_jack(void)
+static void load_aquajckj(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -752,19 +717,7 @@ void load_aqua_jack(void)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void clear_aqua_jack(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x55B000,0);
-#endif
-}
-
-
-void execute_aqua_jack_frame(void)
+static void execute_aquajckj(void)
 {
 #if 0
    int ta;
@@ -991,7 +944,7 @@ static void render_z_system_sprites(int pri)
    }
 }
 
-void draw_aqua_jack(void)
+static void draw_aqua_jack(void)
 {
    ClearPaletteMap();
 
@@ -1049,3 +1002,23 @@ Byte | Bit(s) | Description
   7  |xxxxxxxx| Sprite Number (Low)
 
 */
+static struct VIDEO_INFO video_aquajckj =
+{
+   draw_aqua_jack,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_aquajckj[] =
+{
+   { "aqua_jack", },
+   { "aquajack", },
+   { "aquajckj", },
+   { NULL, },
+};
+GME( aquajckj, "Aqua Jack", TAITO, 1990, GAME_SHOOT | GAME_PARTIALLY_WORKING,
+	.romsw = romsw_aquajckj,
+	.board = "B77",
+);
+

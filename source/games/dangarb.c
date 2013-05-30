@@ -5,19 +5,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "dangarb.h"
 #include "nichisnd.h"
 #include "blit.h" // clear_game_screen
 
-static struct DIR_INFO ufo_robo_dangar_dirs[] =
-{
-   { "ufo_robo_dangar", },
-   { "dangarb", },
-   { "dangar", },
-   { NULL, },
-};
 
-static struct ROM_INFO ufo_robo_dangar_roms[] =
+static struct ROM_INFO rom_dangarb[] =
 {
    { "dangar01.14f", 0x00008000, 0xd59ed1f1, 0, 0, 0, },
    { "dangar02.15f", 0x00008000, 0xdfdb931c, 0, 0, 0, },
@@ -36,7 +28,7 @@ static struct ROM_INFO ufo_robo_dangar_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO ufo_robo_dangar_inputs[] =
+static struct INPUT_INFO input_dangarb[] =
 {
    INP0( COIN1, 0x00C001, 0x04 ),
    INP0( COIN2, 0x00C001, 0x08 ),
@@ -61,35 +53,7 @@ static struct INPUT_INFO ufo_robo_dangar_inputs[] =
    END_INPUT
 };
 
-static struct VIDEO_INFO ufo_robo_dangar_video =
-{
-   DrawDangarB,
-   224,
-   320,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( ufo_robo_dangar ,
-   ufo_robo_dangar_dirs,
-   ufo_robo_dangar_roms,
-   ufo_robo_dangar_inputs,
-   NULL,
-   NULL,
-
-   LoadDangarB,
-   ClearDangarB,
-   &ufo_robo_dangar_video,
-   ExecuteDangarBFrame,
-   "dangarb",
-   "Dangar - Ufo Robo (bootleg)",
-   NULL,
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1986,
-   nichi_ym3812_sound,
-   GAME_SHOOT | GAME_NOT_WORKING
-);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG1;
@@ -100,7 +64,7 @@ static UINT8 *MSK_BG1;
 static UINT8 *MSK_SPR;
 static UINT8 *MSK_FG0;
 
-void LoadDangarB(void)
+static void load_dangarb(void)
 {
    int ta,tb;
 
@@ -122,7 +86,7 @@ void LoadDangarB(void)
    Z80ROM=RAM+0x040000;
    if(!load_rom("dangar13.b14", Z80ROM+0x00000, 0x04000)) return;
    if(!load_rom("dangar14.b15", Z80ROM+0x04000, 0x08000)) return;
-  
+
    Z80ROM[0x57]=0x00;
    Z80ROM[0x58]=0x00;
 
@@ -211,7 +175,7 @@ void LoadDangarB(void)
 
 }
 
-void ClearDangarB(void)
+static void ClearDangarB(void)
 {
    RemoveNichibutsuYM3526();
 
@@ -220,7 +184,7 @@ void ClearDangarB(void)
    #endif
 }
 
-void ExecuteDangarBFrame(void)
+static void execute_dangarb(void)
 {
    cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(6,60));	// Z80 6MHz (60fps)
    cpu_interrupt(CPU_Z80_0, 1);
@@ -228,7 +192,7 @@ void ExecuteDangarBFrame(void)
    Nichibutsu3526_Frame();		// Z80 and YM3526
 }
 
-void DrawDangarB(void)
+static void DrawDangarB(void)
 {
    UINT8 *map;
    int x,y,ta;
@@ -441,3 +405,26 @@ void DrawDangarB(void)
 
    }
 }
+static struct VIDEO_INFO video_dangarb =
+{
+   DrawDangarB,
+   224,
+   320,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_dangarb[] =
+{
+   { "ufo_robo_dangar", },
+   { "dangarb", },
+   { "dangar", },
+   { NULL, },
+};
+GAME( dangarb, "Dangar - Ufo Robo (bootleg)", NICHIBUTSU, 1986, GAME_SHOOT | GAME_NOT_WORKING,
+	.input = input_dangarb,
+	.clear = ClearDangarB,
+	.video = &video_dangarb,
+	.exec = execute_dangarb,
+	.sound = nichi_ym3812_sound,
+);
+

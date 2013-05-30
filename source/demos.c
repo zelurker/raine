@@ -86,7 +86,7 @@ static void build_offsets_table()
 {
 // builds a table of the offsets of the controls. Easier to handle here.
 // The table must be sorted.
-  const INPUT_INFO *inp=current_game->input_list;
+  const INPUT_INFO *inp=current_game->input;
   int n,found;
   nb = 0;
 

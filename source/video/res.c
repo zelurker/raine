@@ -100,9 +100,9 @@ void update_stretch()
   int w,h,ta,flags;
 
   if (current_game) {
-    w = current_game->video_info->screen_x;
-    h = current_game->video_info->screen_y;
-    flags = current_game->video_info->flags;
+    w = current_game->video->screen_x;
+    h = current_game->video->screen_y;
+    flags = current_game->video->flags;
     if ( flags & VIDEO_ROTATE_90 || flags & VIDEO_ROTATE_270) {
       ta = w; w = h; h = ta; // vertiacal inversion...
     }

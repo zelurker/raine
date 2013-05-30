@@ -5,19 +5,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "konamigx.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 
-static struct DIR_INFO salamander_2_dirs[] =
-{
-   { "salamander_2", },
-   { "salmndr2", },
-   { NULL, },
-};
-
-static struct ROM_INFO salamander_2_roms[] =
+static struct ROM_INFO rom_salmndr2[] =
 {
    { "300-a01.34k", 0x00008000, 0xaeeb5148, 0, 0, 0, },
    { "521-a02.31b", 0x00080000, 0xf6c3a95b, 0, 0, 0, },
@@ -35,37 +27,7 @@ static struct ROM_INFO salamander_2_roms[] =
    {          NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct VIDEO_INFO salamander_2_video =
-{
-   NULL,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
-
-GAME( salamander_2 ,
-   salamander_2_dirs,
-   salamander_2_roms,
-   NULL,
-   NULL,
-   NULL,
-
-   LoadSalamander2,
-   ClearSalamander2,
-   &salamander_2_video,
-   ExecuteSalamander2Frame,
-   "salmndr2",
-   "Salamander 2",
-   NULL,
-   COMPANY_ID_KONAMI,
-   NULL,
-   1995,
-   NULL,
-      GAME_MISC | GAME_NOT_WORKING
-);
-
-void LoadSalamander2(void)
+static void load_salmndr2(void)
 {
    int ta;
 
@@ -116,17 +78,7 @@ void LoadSalamander2(void)
    init_m68k();
 }
 
-void ClearSalamander2(void)
-{
-   //save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x300000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
-}
-
-void ExecuteSalamander2Frame(void)
+static void execute_salmndr2(void)
 {
    Execute68020(CPU_FRAME_MHz(12,60));	// M68020 48MHz (60fps)
 /*
@@ -136,6 +88,22 @@ void ExecuteSalamander2Frame(void)
 */
 }
 
-void DrawSalamander2(void)
+static struct VIDEO_INFO video_salmndr2 =
 {
-}
+   NULL,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_salmndr2[] =
+{
+   { "salamander_2", },
+   { "salmndr2", },
+   { NULL, },
+};
+GAME( salmndr2, "Salamander 2", KONAMI, 1995, GAME_MISC | GAME_NOT_WORKING,
+	.video = &video_salmndr2,
+	.exec = execute_salmndr2,
+);
+

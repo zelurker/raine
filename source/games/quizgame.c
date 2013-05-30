@@ -1,3 +1,5 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
+#define DRV_DEF_EXEC execute_yuyugogo
 /******************************************************************************/
 /*                                                                            */
 /*              QUIZ TORIMONOCHOU (C) 1990 TAITO CORPORATION                  */
@@ -7,7 +9,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "quizgame.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc200obj.h"
@@ -20,14 +21,8 @@
    QUIZ TORIMONOCHOU
  *********************/
 
-static struct DIR_INFO quiz_torimonochou_dirs[] =
-{
-   { "quiz_torimonochou", },
-   { "qtorimon", },
-   { NULL, },
-};
 
-static struct ROM_INFO quiz_torimonochou_roms[] =
+static struct ROM_INFO rom_qtorimon[] =
 {
    {   "c41-01.bin", 0x00020000, 0x39ff043c, 0, 0, 0, },
    {   "c41-02.bin", 0x00020000, 0x05dcd36d, 0, 0, 0, },
@@ -40,7 +35,7 @@ static struct ROM_INFO quiz_torimonochou_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO quiz_torimonochou_inputs[] =
+static struct INPUT_INFO input_qtorimon[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -62,7 +57,7 @@ static struct INPUT_INFO quiz_torimonochou_inputs[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_quiz_torimonochou_0[] =
+static struct DSW_DATA dsw_data_quiz_torimonochou_0[] =
 {
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
@@ -79,7 +74,7 @@ struct DSW_DATA dsw_data_quiz_torimonochou_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_quiz_torimonochou_1[] =
+static struct DSW_DATA dsw_data_quiz_torimonochou_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -97,7 +92,7 @@ struct DSW_DATA dsw_data_quiz_torimonochou_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO quiz_torimonochou_dsw[] =
+static struct DSW_INFO dsw_qtorimon[] =
 {
    { 0x03C000, 0xFF, dsw_data_quiz_torimonochou_0 },
    { 0x03C002, 0xFF, dsw_data_quiz_torimonochou_1 },
@@ -111,54 +106,17 @@ static struct ROMSW_DATA romsw_data_quiz_torimonochou_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO quiz_torimonochou_romsw[] =
+static struct ROMSW_INFO romsw_qtorimon[] =
 {
    { 0x03FFFF, 0x01, romsw_data_quiz_torimonochou_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO quiz_torimonochou_video =
-{
-   draw_quiz_torimonochou,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
-
-GAME( quiz_torimonochou ,
-   quiz_torimonochou_dirs,
-   quiz_torimonochou_roms,
-   quiz_torimonochou_inputs,
-   quiz_torimonochou_dsw,
-   quiz_torimonochou_romsw,
-
-   load_quiz_torimonochou,
-   clear_quiz_torimonochou,
-   &quiz_torimonochou_video,
-   execute_quiz_torimonochou_frame,
-   "qtorimon",
-   "Quiz Torimonochou",
-   "ãÍà›ìºïˇï®í∑",
-   COMPANY_ID_TAITO,
-   "C41",
-   1990,
-   taito_ym2610_sound,
-   GAME_QUIZZ
-);
-
 /***********
    QUIZ HQ
  ***********/
 
-static struct DIR_INFO quiz_hq_dirs[] =
-{
-   { "quiz_hq", },
-   { "quizhq", },
-   { NULL, },
-};
-
-static struct ROM_INFO quiz_hq_roms[] =
+static struct ROM_INFO rom_quizhq[] =
 {
    {   "c53-01.bin", 0x00020000, 0xbf44c93e, 0, 0, 0, },
    {   "c53-02.bin", 0x00020000, 0xd704c6f4, 0, 0, 0, },
@@ -173,7 +131,7 @@ static struct ROM_INFO quiz_hq_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO quiz_hq_inputs[] =
+static struct INPUT_INFO input_quizhq[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -197,7 +155,7 @@ static struct INPUT_INFO quiz_hq_inputs[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_quiz_hq_0[] =
+static struct DSW_DATA dsw_data_quiz_hq_0[] =
 {
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
@@ -215,7 +173,7 @@ struct DSW_DATA dsw_data_quiz_hq_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_quiz_hq_1[] =
+static struct DSW_DATA dsw_data_quiz_hq_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -239,7 +197,7 @@ struct DSW_DATA dsw_data_quiz_hq_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO quiz_hq_dsw[] =
+static struct DSW_INFO dsw_quizhq[] =
 {
    { 0x03C000, 0xFF, dsw_data_quiz_hq_0 },
    { 0x03C002, 0xFF, dsw_data_quiz_hq_1 },
@@ -253,41 +211,13 @@ static struct ROMSW_DATA romsw_data_quiz_hq_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO quiz_hq_romsw[] =
+static struct ROMSW_INFO romsw_quizhq[] =
 {
    { 0x03FFFF, 0x00, romsw_data_quiz_hq_0 },
    { 0,        0,    NULL },
 };
 
-GAME( quiz_hq ,
-   quiz_hq_dirs,
-   quiz_hq_roms,
-   quiz_hq_inputs,
-   quiz_hq_dsw,
-   quiz_hq_romsw,
-
-   load_quiz_hq,
-   clear_quiz_torimonochou,
-   &quiz_torimonochou_video,
-   execute_quiz_torimonochou_frame,
-   "quizhq",
-   "Quiz HQ",
-   "ÉNÉCÉYÇgÇp",
-   COMPANY_ID_TAITO,
-   "C53",
-   1990,
-   taito_ym2610_sound,
-   GAME_QUIZZ
-);
-
-static struct DIR_INFO yuyu_no_quiz_de_gogo_dirs[] =
-{
-   { "yuyu_no_quiz_de_gogo", },
-   { "yuyugogo", },
-   { NULL, },
-};
-
-static struct ROM_INFO yuyu_no_quiz_de_gogo_roms[] =
+static struct ROM_INFO rom_yuyugogo[] =
 {
    {   "c83-01.12", 0x00100000, 0x8bf0d416, 0, 0, 0, },
    {   "c83-02.11", 0x00100000, 0x20bb1c15, 0, 0, 0, },
@@ -300,7 +230,7 @@ static struct ROM_INFO yuyu_no_quiz_de_gogo_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO yuyu_no_quiz_de_gogo_inputs[] =
+static struct INPUT_INFO input_yuyugogo[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -324,7 +254,7 @@ static struct INPUT_INFO yuyu_no_quiz_de_gogo_inputs[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_yuyu_no_quiz_de_gogo_0[] =
+static struct DSW_DATA dsw_data_yuyu_no_quiz_de_gogo_0[] =
 {
    { MSG_DSWA_BIT1,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
@@ -345,7 +275,7 @@ struct DSW_DATA dsw_data_yuyu_no_quiz_de_gogo_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO yuyu_no_quiz_de_gogo_dsw[] =
+static struct DSW_INFO dsw_yuyugogo[] =
 {
    { 0x03C000, 0xFF, dsw_data_yuyu_no_quiz_de_gogo_0 },
    { 0x03C002, 0xFF, dsw_data_default_1 },
@@ -359,50 +289,13 @@ static struct ROMSW_DATA romsw_data_yuyu_no_quiz_de_gogo_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO yuyu_no_quiz_de_gogo_romsw[] =
+static struct ROMSW_INFO romsw_yuyugogo[] =
 {
    { 0x03FFFF, 0x00, romsw_data_yuyu_no_quiz_de_gogo_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO yuyu_no_quiz_de_gogo_video =
-{
-   draw_yuyu_no_quiz_de_gogo,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
-
-GAME( yuyu_no_quiz_de_gogo ,
-   yuyu_no_quiz_de_gogo_dirs,
-   yuyu_no_quiz_de_gogo_roms,
-   yuyu_no_quiz_de_gogo_inputs,
-   yuyu_no_quiz_de_gogo_dsw,
-   yuyu_no_quiz_de_gogo_romsw,
-
-   load_yuyu_no_quiz_de_gogo,
-   clear_quiz_torimonochou,
-   &yuyu_no_quiz_de_gogo_video,
-   execute_quiz_torimonochou_frame,
-   "yuyugogo",
-   "Yuuyu no Quiz de Go!Go!",
-   "Ç‰Ç±Ç‰ÇÃÉNÉCÉYÇ≈ÇfÇnÅIÅ@ÇfÇnÅI",
-   COMPANY_ID_TAITO,
-   "C83",
-   1990,
-   taito_ym2610_sound,
-   GAME_QUIZZ
-);
-
-static struct DIR_INFO quiz_crayon_shinchan_dirs[] =
-{
-   { "quiz_crayon_shinchan", },
-   { "qcrayon", },
-   { NULL, },
-};
-
-static struct ROM_INFO quiz_crayon_shinchan_roms[] =
+static struct ROM_INFO rom_qcrayon[] =
 {
    {       "d55-01", 0x00100000, 0xa8309af4, 0, 0, 0, },
    {       "d55-02", 0x00100000, 0xf3db2f1c, 0, 0, 0, },
@@ -415,7 +308,7 @@ static struct ROM_INFO quiz_crayon_shinchan_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO quiz_crayon_shinchan_inputs[] =
+static struct INPUT_INFO input_qcrayon[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -437,7 +330,7 @@ static struct INPUT_INFO quiz_crayon_shinchan_inputs[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_quiz_crayon_shinchan_0[] =
+static struct DSW_DATA dsw_data_quiz_crayon_shinchan_0[] =
 {
    { MSG_DSWA_BIT1,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
@@ -458,51 +351,14 @@ struct DSW_DATA dsw_data_quiz_crayon_shinchan_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO quiz_crayon_shinchan_dsw[] =
+static struct DSW_INFO dsw_qcrayon[] =
 {
    { 0x03C000, 0xFF, dsw_data_quiz_crayon_shinchan_0 },
    { 0x03C002, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO quiz_crayon_shinchan_video =
-{
-   draw_quiz_crayon_shinchan,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
-
-GAME( quiz_crayon_shinchan ,
-   quiz_crayon_shinchan_dirs,
-   quiz_crayon_shinchan_roms,
-   quiz_crayon_shinchan_inputs,
-   quiz_crayon_shinchan_dsw,
-   NULL,
-
-   load_quiz_crayon_shinchan,
-   clear_quiz_torimonochou,
-   &quiz_crayon_shinchan_video,
-   execute_quiz_torimonochou_frame,
-   "qcrayon",
-   "Quiz Crayon Shinchan",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D55",
-   1993,
-   taito_ym2610_sound,
-   GAME_QUIZZ | GAME_PUZZLE
-);
-
-static struct DIR_INFO quiz_crayon_shinchan_2_dirs[] =
-{
-   { "quiz_crayon_shinchan_2", },
-   { "qcrayon2", },
-   { NULL, },
-};
-
-static struct ROM_INFO quiz_crayon_shinchan_2_roms[] =
+static struct ROM_INFO rom_qcrayon2[] =
 {
    {       "d63-01", 0x00080000, 0x872e38b4, 0, 0, 0, },
    {       "d63-02", 0x00100000, 0x162ae165, 0, 0, 0, },
@@ -514,7 +370,7 @@ static struct ROM_INFO quiz_crayon_shinchan_2_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_quiz_crayon_shinchan_2_0[] =
+static struct DSW_DATA dsw_data_quiz_crayon_shinchan_2_0[] =
 {
    { MSG_DSWA_BIT1,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
@@ -535,42 +391,14 @@ struct DSW_DATA dsw_data_quiz_crayon_shinchan_2_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO quiz_crayon_shinchan_2_dsw[] =
+static struct DSW_INFO dsw_qcrayon2[] =
 {
    { 0x03C000, 0xFF, dsw_data_quiz_crayon_shinchan_2_0 },
    { 0x03C002, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( quiz_crayon_shinchan_2 ,
-   quiz_crayon_shinchan_2_dirs,
-   quiz_crayon_shinchan_2_roms,
-   quiz_crayon_shinchan_inputs,
-   quiz_crayon_shinchan_2_dsw,
-   NULL,
-
-   load_quiz_crayon_shinchan_2,
-   clear_quiz_torimonochou,
-   &quiz_crayon_shinchan_video,
-   execute_quiz_torimonochou_frame,
-   "qcrayon2",
-   "Quiz Crayon Shinchan 2",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D63",
-   1993,
-   taito_ym2610_sound,
-   GAME_QUIZZ
-);
-
-static struct DIR_INFO quiz_jinsei_gekijoh_dirs[] =
-{
-   { "quiz_jinsei_gekijoh", },
-   { "qjinsei", },
-   { NULL, },
-};
-
-static struct ROM_INFO quiz_jinsei_gekijoh_roms[] =
+static struct ROM_INFO rom_qjinsei[] =
 {
    {       "d48-01", 0x00100000, 0x72a94b73, 0, 0, 0, },
    {       "d48-02", 0x00100000, 0xa7b68e63, 0, 0, 0, },
@@ -583,7 +411,7 @@ static struct ROM_INFO quiz_jinsei_gekijoh_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_quiz_jinsei_gekijoh_0[] =
+static struct DSW_DATA dsw_data_quiz_jinsei_gekijoh_0[] =
 {
    { MSG_DSWA_BIT1,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
@@ -604,42 +432,14 @@ struct DSW_DATA dsw_data_quiz_jinsei_gekijoh_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO quiz_jinsei_gekijoh_dsw[] =
+static struct DSW_INFO dsw_qjinsei[] =
 {
    { 0x03C000, 0xFF, dsw_data_quiz_jinsei_gekijoh_0 },
    { 0x03C002, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( quiz_jinsei_gekijoh ,
-   quiz_jinsei_gekijoh_dirs,
-   quiz_jinsei_gekijoh_roms,
-   quiz_crayon_shinchan_inputs,
-   quiz_jinsei_gekijoh_dsw,
-   NULL,
-
-   load_quiz_jinsei_gekijoh,
-   clear_quiz_torimonochou,
-   &quiz_crayon_shinchan_video,
-   execute_quiz_torimonochou_frame,
-   "qjinsei",
-   "Quiz Jinsei Gekijoh",
-   "ÉNÉCÉYêlê∂åÄèÍ",
-   COMPANY_ID_TAITO,
-   "D48",
-   1992,
-   taito_ym2610_sound,
-   GAME_QUIZZ
-);
-
-static struct DIR_INFO quiz_chikyu_bouei_gun_dirs[] =
-{
-   { "quiz_chikyu_bouei_gun", },
-   { "qzchikyu", },
-   { NULL, },
-};
-
-static struct ROM_INFO quiz_chikyu_bouei_gun_roms[] =
+static struct ROM_INFO rom_qzchikyu[] =
 {
    {   "d19-01.21", 0x00100000, 0x6c4342d0, 0, 0, 0, },
    {   "d19-02.10", 0x00100000, 0xf2dce2f2, 0, 0, 0, },
@@ -651,7 +451,7 @@ static struct ROM_INFO quiz_chikyu_bouei_gun_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_quiz_chikyu_bouei_gun_0[] =
+static struct DSW_DATA dsw_data_quiz_chikyu_bouei_gun_0[] =
 {
    { MSG_DSWA_BIT1,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
@@ -673,7 +473,7 @@ struct DSW_DATA dsw_data_quiz_chikyu_bouei_gun_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO quiz_chikyu_bouei_gun_dsw[] =
+static struct DSW_INFO dsw_qzchikyu[] =
 {
    { 0x03C000, 0xFF, dsw_data_quiz_chikyu_bouei_gun_0 },
    { 0x03C002, 0xFF, dsw_data_default_1 },
@@ -687,41 +487,11 @@ static struct ROMSW_DATA romsw_data_quiz_chikyu_bouei_gun_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO quiz_chikyu_bouei_gun_romsw[] =
+static struct ROMSW_INFO romsw_qzchikyu[] =
 {
    { 0x03FFFF, 0x00, romsw_data_quiz_chikyu_bouei_gun_0 },
    { 0,        0,    NULL },
 };
-
-static struct VIDEO_INFO quiz_chikyu_bouei_gun_video =
-{
-   draw_quiz_chikyu_bouei_gun,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
-
-GAME( quiz_chikyu_bouei_gun ,
-   quiz_chikyu_bouei_gun_dirs,
-   quiz_chikyu_bouei_gun_roms,
-   quiz_torimonochou_inputs,
-   quiz_chikyu_bouei_gun_dsw,
-   quiz_chikyu_bouei_gun_romsw,
-
-   load_quiz_chikyu_bouei_gun,
-   clear_quiz_torimonochou,
-   &quiz_chikyu_bouei_gun_video,
-   execute_quiz_torimonochou_frame,
-   "qzchikyu",
-   "Quiz Chikyu Bouei Gun",
-   "ÉNÉCÉYínãÖñhâqåR",
-   COMPANY_ID_TAITO,
-   "D19",
-   1991,
-   taito_ym2610_sound,
-   GAME_QUIZZ
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -736,7 +506,7 @@ static UINT8 *GFX_SPR_SOLID;
 
 static UINT32 romset;
 
-void load_quiz_torimonochou(void)
+static void load_qtorimon(void)
 {
    int ta,tb;
 
@@ -996,7 +766,7 @@ static void quiz_hq_ioc_b_ww(UINT32 offset, UINT16 data)
    tc0220ioc_ww( remap_b_ioc[(offset>>1)&3] , data);
 }
 
-void load_quiz_hq(void)
+static void load_quizhq(void)
 {
    int ta,tb;
 
@@ -1215,7 +985,7 @@ void load_quiz_hq(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_yuyu_no_quiz_de_gogo(void)
+static void load_yuyugogo(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -1434,7 +1204,7 @@ void load_yuyu_no_quiz_de_gogo(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_quiz_crayon_shinchan(void)
+static void load_qcrayon(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -1648,7 +1418,7 @@ void load_quiz_crayon_shinchan(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_quiz_crayon_shinchan_2(void)
+static void load_qcrayon2(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -1858,7 +1628,7 @@ void load_quiz_crayon_shinchan_2(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_quiz_jinsei_gekijoh(void)
+static void load_qjinsei(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -2072,7 +1842,7 @@ void load_quiz_jinsei_gekijoh(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_quiz_chikyu_bouei_gun(void)
+static void load_qzchikyu(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -2276,18 +2046,7 @@ void load_quiz_chikyu_bouei_gun(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_quiz_torimonochou(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x80000,1);
-      save_debug("RAM.bin",RAM,RAMSize,1);
-      //save_debug("GFX.bin",GFX,0x240000,0);
-#endif
-}
-
-void execute_quiz_torimonochou_frame(void)
+static void execute_yuyugogo(void)
 {
 #ifdef RAINE_DEBUG
    print_ingame(10000,"---- ---- ---- ----");
@@ -2328,7 +2087,7 @@ this one has no bg0 gfx
 
 */
 
-void draw_quiz_torimonochou(void)
+static void draw_quiz_torimonochou(void)
 {
    ClearPaletteMap();
 
@@ -2357,7 +2116,7 @@ this one has bg0, and object tile banking
 
 */
 
-void draw_yuyu_no_quiz_de_gogo(void)
+static void draw_yuyu_no_quiz_de_gogo(void)
 {
    ClearPaletteMap();
 
@@ -2396,7 +2155,7 @@ this one has bg0, and an alternate object tile banking
 
 */
 
-void draw_quiz_crayon_shinchan(void)
+static void draw_quiz_crayon_shinchan(void)
 {
    ClearPaletteMap();
 
@@ -2449,7 +2208,7 @@ this one has bg0, and object
 
 */
 
-void draw_quiz_chikyu_bouei_gun(void)
+static void draw_quiz_chikyu_bouei_gun(void)
 {
    ClearPaletteMap();
 
@@ -2479,3 +2238,120 @@ void draw_quiz_chikyu_bouei_gun(void)
 
    render_tc0100scn_layer_mapped(0,2,1);
 }
+static struct VIDEO_INFO video_qcrayon =
+{
+   draw_quiz_crayon_shinchan,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct VIDEO_INFO video_qtorimon =
+{
+   draw_quiz_torimonochou,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct VIDEO_INFO video_qzchikyu =
+{
+   draw_quiz_chikyu_bouei_gun,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct VIDEO_INFO video_yuyugogo =
+{
+   draw_yuyu_no_quiz_de_gogo,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_qzchikyu[] =
+{
+   { "quiz_chikyu_bouei_gun", },
+   { "qzchikyu", },
+   { NULL, },
+};
+GAME( qzchikyu, "Quiz Chikyu Bouei Gun", TAITO, 1991, GAME_QUIZZ,
+	.input = input_qtorimon,
+	.dsw = dsw_qzchikyu,
+	.romsw = romsw_qzchikyu,
+	.video = &video_qzchikyu,
+	.long_name_jpn = "ÉNÉCÉYínãÖñhâqåR",
+	.board = "D19",
+);
+static struct DIR_INFO dir_qcrayon[] =
+{
+   { "quiz_crayon_shinchan", },
+   { "qcrayon", },
+   { NULL, },
+};
+GME( qcrayon, "Quiz Crayon Shinchan", TAITO, 1993, GAME_QUIZZ | GAME_PUZZLE,
+	.board = "D55",
+);
+static struct DIR_INFO dir_qcrayon2[] =
+{
+   { "quiz_crayon_shinchan_2", },
+   { "qcrayon2", },
+   { NULL, },
+};
+GAME( qcrayon2, "Quiz Crayon Shinchan 2", TAITO, 1993, GAME_QUIZZ,
+	.input = input_qcrayon,
+	.dsw = dsw_qcrayon2,
+	.video = &video_qcrayon,
+	.board = "D63",
+);
+static struct DIR_INFO dir_quizhq[] =
+{
+   { "quiz_hq", },
+   { "quizhq", },
+   { NULL, },
+};
+GAME( quizhq, "Quiz HQ", TAITO, 1990, GAME_QUIZZ,
+	.input = input_quizhq,
+	.dsw = dsw_quizhq,
+	.romsw = romsw_quizhq,
+	.video = &video_qtorimon,
+	.long_name_jpn = "ÉNÉCÉYÇgÇp",
+	.board = "C53",
+);
+static struct DIR_INFO dir_qjinsei[] =
+{
+   { "quiz_jinsei_gekijoh", },
+   { "qjinsei", },
+   { NULL, },
+};
+GAME( qjinsei, "Quiz Jinsei Gekijoh", TAITO, 1992, GAME_QUIZZ,
+	.input = input_qcrayon,
+	.dsw = dsw_qjinsei,
+	.video = &video_qcrayon,
+	.long_name_jpn = "ÉNÉCÉYêlê∂åÄèÍ",
+	.board = "D48",
+);
+static struct DIR_INFO dir_qtorimon[] =
+{
+   { "quiz_torimonochou", },
+   { "qtorimon", },
+   { NULL, },
+};
+GME( qtorimon, "Quiz Torimonochou", TAITO, 1990, GAME_QUIZZ,
+	.long_name_jpn = "ãÍà›ìºïˇï®í∑",
+	.romsw = romsw_qtorimon,
+	.board = "C41",
+);
+static struct DIR_INFO dir_yuyugogo[] =
+{
+   { "yuyu_no_quiz_de_gogo", },
+   { "yuyugogo", },
+   { NULL, },
+};
+GME( yuyugogo, "Yuuyu no Quiz de Go!Go!", TAITO, 1990, GAME_QUIZZ,
+	.romsw = romsw_yuyugogo,
+	.long_name_jpn = "Ç‰Ç±Ç‰ÇÃÉNÉCÉYÇ≈ÇfÇnÅIÅ@ÇfÇnÅI",
+	.board = "C83",
+);
+

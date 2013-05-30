@@ -215,29 +215,29 @@ static int do_input(int sel) {
 	"Delete the joystick ctrl|"
 	"Really use ESC here");
       switch(ret) {
-	case 1: def_input_list_emu[sel].scancode = 0; 
+	case 1: def_input_emu[sel].scancode = 0; 
 		free(cols[sel*2+0]);
 		cols[sel*2+0] = strdup("no key");
 		break;
-	case 2: def_input_list_emu[sel].joycode = 0;
+	case 2: def_input_emu[sel].joycode = 0;
 		free(cols[sel*2+1]);
 		cols[sel*2+1] = strdup("");
 		break;
 	case 3:
-		def_input_list_emu[sel].scancode = inp_key;
+		def_input_emu[sel].scancode = inp_key;
 		free(cols[sel*2+0]);
 		cols[sel*2+0] = get_key_name(inp_key);
 		break;
       }
     } else {
-      def_input_list_emu[sel].scancode = inp_key;
+      def_input_emu[sel].scancode = inp_key;
       free(cols[sel*2+0]);
       cols[sel*2+0] = get_key_name(inp_key);
     }
   } else {
-    def_input_list_emu[sel].joycode = inp_joy;
+    def_input_emu[sel].joycode = inp_joy;
     free(cols[sel*2+1]);
-    cols[sel*2+1] = get_joy_name(def_input_list_emu[sel].joycode);
+    cols[sel*2+1] = get_joy_name(def_input_emu[sel].joycode);
   }
   controls->setup_font(40);
   controls->draw();
@@ -287,21 +287,21 @@ static int do_input_ingame(int sel) {
 	case 1: 
 		InputList[sel+base_input].Key = 0;
 		if (!use_custom_keys) 
-		    def_input_list[InputList[sel+base_input].default_key & 0xFF].scancode = 0;
+		    def_input[InputList[sel+base_input].default_key & 0xFF].scancode = 0;
 		free(cols[sel*3+0]);
 		cols[sel*3+0] = strdup("no key");
 		break;
 	case 2: 
 		InputList[sel+base_input].Joy = 0;
 		if (!use_custom_keys) 
-		    def_input_list[InputList[sel+base_input].default_key & 0xFF].joycode = 0;
+		    def_input[InputList[sel+base_input].default_key & 0xFF].joycode = 0;
 		free(cols[sel*3+1]);
 		cols[sel*3+1] = strdup("");
 		break;
 	case 3:
 		InputList[sel+base_input].mousebtn = 0;
 		if (!use_custom_keys) 
-		    def_input_list[InputList[sel+base_input].default_key & 0xFF].mousebtn = 0;
+		    def_input[InputList[sel+base_input].default_key & 0xFF].mousebtn = 0;
 		free(cols[sel*3+2]);
 		cols[sel*3+2] = strdup("");
 		break;
@@ -309,7 +309,7 @@ static int do_input_ingame(int sel) {
     } else {
       InputList[sel+base_input].Key = inp_key;
       if (!use_custom_keys && !base_input) {
-	def_input_list[InputList[sel].default_key & 0xff].scancode = inp_key;
+	def_input[InputList[sel].default_key & 0xff].scancode = inp_key;
 	printf("defaults updated\n");
       } else {
 	printf("defaults not updated use_custom %d base_input %d\n",use_custom_keys,base_input);
@@ -320,13 +320,13 @@ static int do_input_ingame(int sel) {
   } else if (inp_joy) {
     InputList[sel+base_input].Joy = inp_joy;
     if (!use_custom_keys && !base_input)
-      def_input_list[InputList[sel].default_key & 0xff].joycode = inp_joy;
+      def_input[InputList[sel].default_key & 0xff].joycode = inp_joy;
     free(cols[sel*3+1]);
     cols[sel*3+1] = get_joy_name(inp_joy);
   } else if (inp_mouse) {
     InputList[sel+base_input].mousebtn = inp_mouse;
     if (!use_custom_keys && !base_input)
-      def_input_list[InputList[sel].default_key & 0xff].mousebtn = inp_mouse;
+      def_input[InputList[sel].default_key & 0xff].mousebtn = inp_mouse;
     free(cols[sel*3+2]);
     cols[sel*3+2] = get_mouse_name(inp_mouse);
   }
@@ -342,10 +342,10 @@ static int do_emu_controls(int sel) {
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   cols = (char**)malloc(sizeof(char*)*nb*2);
   for (int n=0; n<nb; n++) {
-    menu[n].label = def_input_list_emu[n].name;
+    menu[n].label = def_input_emu[n].name;
     menu[n].menu_func = &do_input;
-    cols[n*2+0] = get_key_name(def_input_list_emu[n].scancode);
-    cols[n*2+1] = get_joy_name(def_input_list_emu[n].joycode);
+    cols[n*2+0] = get_key_name(def_input_emu[n].scancode);
+    cols[n*2+1] = get_joy_name(def_input_emu[n].joycode);
   }
   controls = new TMenuMultiCol("Raine Controls",menu,2,cols);
   controls->execute();

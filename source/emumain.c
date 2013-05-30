@@ -183,7 +183,7 @@ UINT32 run_game_emulation(void)
 
    print_debug("run_game_emulation(): Running main loop...\n");
 
-   vid_info = current_game->video_info;
+   vid_info = current_game->video;
 
    if(!vid_info->draw_game) {
        print_debug("quit game emulation because no draw_game function\n");
@@ -241,7 +241,7 @@ UINT32 run_game_emulation(void)
       cpu_tick++;
       if(cpu_tick>=cpu_fps){
 	 cpu_tick=0;
-	 if(current_game->exec_frame) current_game->exec_frame();
+	 if(current_game->exec) current_game->exec();
       }
 
 #ifdef RDTSC_PROFILE

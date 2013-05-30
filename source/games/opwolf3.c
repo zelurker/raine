@@ -1,3 +1,5 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
+#define DRV_DEF_DSW NULL
 /******************************************************************************/
 /*                                                                            */
 /*                 OPERATION WOLF 3 (C) 1994 TAITO CORPORATION                */
@@ -5,7 +7,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "opwolf3.h"
 #include "taitosnd.h"
 #include "f3system.h"
 #include "tc006vcu.h"
@@ -15,14 +16,8 @@
 #include "sdl/control_internal.h"
 #endif
 
-static struct DIR_INFO operation_wolf_3_dirs[] =
-{
-   { "operation_wolf_3", },
-   { "opwolf3", },
-   { NULL, },
-};
 
-static struct ROM_INFO operation_wolf_3_roms[] =
+static struct ROM_INFO rom_opwolf3[] =
 {
    {  "opw3_01.rom", 0x00200000, 0x115313e0, 0, 0, 0, },
    {  "opw3_02.rom", 0x00200000, 0xaab86332, 0, 0, 0, },
@@ -38,7 +33,7 @@ static struct ROM_INFO operation_wolf_3_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO operation_wolf_3_inputs[] =
+static struct INPUT_INFO input_opwolf3[] =
 {
    INP0( COIN1, 0x069003, 0x10 ),
    INP0( COIN2, 0x069003, 0x20 ),
@@ -77,42 +72,13 @@ static struct ROMSW_DATA romsw_data_operation_wolf_3_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO operation_wolf_3_romsw[] =
+static struct ROMSW_INFO romsw_opwolf3[] =
 {
    { 0x000063, 0x02, romsw_data_operation_wolf_3_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO operation_wolf_3_video =
-{
-   DrawOperationWolf3,
-   320,
-   224,
-   48,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( operation_wolf_3 ,
-   operation_wolf_3_dirs,
-   operation_wolf_3_roms,
-   operation_wolf_3_inputs,
-   NULL,
-   operation_wolf_3_romsw,
-
-   LoadOperationWolf3,
-   ClearOperationWolf3,
-   &operation_wolf_3_video,
-   ExecuteOperationWolf3Frame,
-   "opwolf3",
-   "Operation Wolf 3",
-   NULL,
-   COMPANY_ID_TAITO,
-   NULL,		// "D??"
-   1994,
-   taito_ym2610_sound,
-   GAME_SHOOT | GAME_NOT_WORKING
-);
 
 static void BadWriteByte(UINT32 address, UINT8 data)
 {
@@ -199,7 +165,7 @@ static void opwolf3_adc_req_w(UINT32 offset) {
    cpu_interrupt(CPU_68K_0, 3);
 }
 
-void LoadOperationWolf3(void)
+static void load_opwolf3(void)
 {
    int ta,tb,tc;
    GameMouse = 1;
@@ -426,17 +392,7 @@ void LoadOperationWolf3(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearOperationWolf3(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x200000,1);
-      save_debug("RAM.bin",RAM,0x080000,1);
-#endif
-}
-
-void ExecuteOperationWolf3Frame(void)
+static void execute_opwolf3(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
 
@@ -448,7 +404,7 @@ void ExecuteOperationWolf3Frame(void)
    debug_tc0006vcu();
 }
 
-void DrawOperationWolf3(void)
+static void DrawOperationWolf3(void)
 {
    ClearPaletteMap();
 
@@ -466,3 +422,22 @@ void DrawOperationWolf3(void)
 
    tc0006vcu_render_fg0();
 }
+static struct VIDEO_INFO video_opwolf3 =
+{
+   DrawOperationWolf3,
+   320,
+   224,
+   48,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_opwolf3[] =
+{
+   { "operation_wolf_3", },
+   { "opwolf3", },
+   { NULL, },
+};
+GME( opwolf3, "Operation Wolf 3", TAITO, 1994, GAME_SHOOT | GAME_NOT_WORKING,
+	.romsw = romsw_opwolf3,
+);
+

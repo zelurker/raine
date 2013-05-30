@@ -7,7 +7,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "xsystem2.h"
 #include "setax1.h"
 #include "2203intf.h"
 #include "sasound.h"		// sample support routines
@@ -30,18 +29,8 @@ Supported romsets:
 
 */
 
-static struct DIR_INFO arkanoid_2_american_dirs[] =
-{
-   { "arkanoid_2_american", },
-   { "ark2us", },
-   { "arknid2u", },
-   { "arkanoi2", },
-   { ROMOF("arknoid2"), },
-   { CLONEOF("arknoid2"), },
-   { NULL, },
-};
 
-static struct ROM_INFO arkanoid_2_american_roms[] =
+static struct ROM_INFO rom_arknid2u[] =
 {
    {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
    {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
@@ -54,7 +43,7 @@ static struct ROM_INFO arkanoid_2_american_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO arkanoid_2_inputs[] =
+static struct INPUT_INFO input_arknoid2[] =
 {
    INP0( COIN1, 0x020004, 0x02 ),
    INP0( COIN2, 0x020004, 0x01 ),
@@ -122,7 +111,7 @@ static struct DSW_DATA dsw_data_arkanoid_2_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO arkanoid_2_dsw[] =
+static struct DSW_INFO dsw_arknoid2[] =
 {
    { 0x000000, 0xFF, dsw_data_arkanoid_2_0 },
    { 0x000001, 0x7F, dsw_data_arkanoid_2_1 },
@@ -135,45 +124,9 @@ yes, we have games using every possible orientation
 
 */
 
-static struct VIDEO_INFO tnzs_sys_video =
-{
-   DrawTNZSSystem,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO tnzs_sys_r90_video =
-{
-   DrawTNZSSystem,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_90 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO tnzs_sys_r180_video =
-{
-   DrawTNZSSystem,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_180 |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO tnzs_sys_r270_video =
-{
-   DrawTNZSSystem,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
 #if 0
 static UINT16 input_port_0_r(UINT16 offset) {
@@ -270,48 +223,21 @@ static struct YM2203interface kageki_ym2203_interface =
 	{ 0 } // kageki_csport_w },
 };
 
-static struct SOUND_INFO tnzs_sys_sound[] =
+static struct SOUND_INFO sound_arknoid2[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-static struct SOUND_INFO kageki_sound[] =
+static struct SOUND_INFO sound_kageki[] =
 {
    { SOUND_YM2203,  &kageki_ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( arkanoid_2_american ,
-   arkanoid_2_american_dirs,
-   arkanoid_2_american_roms,
-   arkanoid_2_inputs,
-   arkanoid_2_dsw,
-   NULL,
 
-   LoadArk2DohUS,
-   ClearArk2DohUS,
-   &tnzs_sys_r270_video,
-   ExecuteTNZSSystemFrame,
-   "arknid2u",
-   "Arkanoid 2 American",
-   "アルカノイド　リベンジオブＤＯＨ American",
-   COMPANY_ID_TAITO,
-   "B08",
-   1987,
-   tnzs_sys_sound,
-   GAME_BREAKOUT
-);
 
-static struct DIR_INFO arkanoid_2_rev_of_doh_dirs[] =
-{
-   { "arkanoid_2_rev_of_doh", },
-   { "arkanoi2", },
-   { "arknoid2", },
-   { NULL, },
-};
-
-static struct ROM_INFO arkanoid_2_rev_of_doh_roms[] =
+static struct ROM_INFO rom_arknoid2[] =
 {
    {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
    {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
@@ -324,39 +250,9 @@ static struct ROM_INFO arkanoid_2_rev_of_doh_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( arkanoid_2_rev_of_doh ,
-   arkanoid_2_rev_of_doh_dirs,
-   arkanoid_2_rev_of_doh_roms,
-   arkanoid_2_inputs,
-   arkanoid_2_dsw,
-   NULL,
 
-   LoadArk2Doh,
-   ClearArk2Doh,
-   &tnzs_sys_r270_video,
-   ExecuteTNZSSystemFrame,
-   "arknoid2",
-   "Arkanoid 2 Revenge of Doh",
-   "アルカノイド　リベンジオブＤＯＨ",
-   COMPANY_ID_TAITO,
-   "B08",
-   1987,
-   tnzs_sys_sound,
-   GAME_BREAKOUT
-);
 
-static struct DIR_INFO arkanoid_2_japanese_dirs[] =
-{
-   { "arkanoid_2_japanese", },
-   { "ark2jp", },
-   { "arknid2j", },
-   { "arkanoi2", },
-   { ROMOF("arknoid2"), },
-   { CLONEOF("arknoid2"), },
-   { NULL, },
-};
-
-static struct ROM_INFO arkanoid_2_japanese_roms[] =
+static struct ROM_INFO rom_arknid2j[] =
 {
    {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
    {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
@@ -369,36 +265,9 @@ static struct ROM_INFO arkanoid_2_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( arkanoid_2_japanese ,
-   arkanoid_2_japanese_dirs,
-   arkanoid_2_japanese_roms,
-   arkanoid_2_inputs,
-   arkanoid_2_dsw,
-   NULL,
 
-   LoadArk2DohJP,
-   ClearArk2Doh,
-   &tnzs_sys_r270_video,
-   ExecuteTNZSSystemFrame,
-   "arknid2j",
-   "Arkanoid 2 Japanese",
-   "アルカノイド　リベンジオブＤＯＨ",
-   COMPANY_ID_TAITO,
-   "B08",
-   1987,
-   tnzs_sys_sound,
-   GAME_BREAKOUT
-);
 
-static struct DIR_INFO insector_x_dirs[] =
-{
-   { "insector_x", },
-   { "insectrx", },
-   { "insectx", },
-   { NULL, },
-};
-
-static struct ROM_INFO insector_x_roms[] =
+static struct ROM_INFO rom_insectx[] =
 {
    {   "insector.r16", 0x00080000, 0xdb5a7434, 0, 0, 0, },
    {   "insector.r15", 0x00080000, 0xd00294b1, 0, 0, 0, },
@@ -407,7 +276,7 @@ static struct ROM_INFO insector_x_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO insector_x_inputs[] =
+static struct INPUT_INFO input_insectx[] =
 {
    INP0( COIN1, 0x020004, 0x08 ),
    INP0( COIN2, 0x020004, 0x04 ),
@@ -456,7 +325,7 @@ static struct DSW_DATA dsw_data_insector_x_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO insector_x_dsw[] =
+static struct DSW_INFO dsw_insectx[] =
 {
    { 0x000000, 0xFD, dsw_data_insector_x_0 },
    { 0x000001, 0xFF, dsw_data_default_1 },
@@ -471,43 +340,15 @@ static struct ROMSW_DATA romsw_data_the_nz_story_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO the_nz_story_romsw[] =
+static struct ROMSW_INFO romsw_tnzs[] =
 {
    { 0x2007FFF, 0x03, romsw_data_the_nz_story_0 },
    { 0,        0,    NULL },
 };
 
-GAME( insector_x ,
-   insector_x_dirs,
-   insector_x_roms,
-   insector_x_inputs,
-   insector_x_dsw,
-   NULL,
 
-   LoadInsectorX,
-   ClearInsectorX,
-   &tnzs_sys_r180_video,
-   ExecuteInsectorXFrame,
-   "insectx",
-   "Insector X",
-   "インセクターＸ",
-   COMPANY_ID_TAITO,
-   "B97",
-   1989,
-   tnzs_sys_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO the_nz_story_dirs[] =
-{
-   { "the_nz_story", },
-   { "tnzs", },
-   { "tnzsj", },
-   { "tnzso", },
-   { NULL, },
-};
-
-static struct ROM_INFO the_nz_story_roms[] =
+static struct ROM_INFO rom_tnzs[] =
 {
   { "b53-10.32", 0x20000, 0xa73745c6, REGION_ROM1, 0, LOAD_NORMAL },
   { "b53-11.38", 0x10000, 0x9784d443, REGION_ROM2, 0, LOAD_NORMAL },
@@ -522,7 +363,7 @@ static struct ROM_INFO the_nz_story_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO the_nz_story_inputs[] =
+static struct INPUT_INFO input_tnzs[] =
 {
    INP0( COIN1, 0x020004, 0x01 ),
    INP0( COIN2, 0x020004, 0x02 ),
@@ -593,44 +434,16 @@ static struct DSW_DATA dsw_data_the_nz_story_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO the_nz_story_dsw[] =
+static struct DSW_INFO dsw_tnzs[] =
 {
    { 0x000000, 0xFF, dsw_data_the_nz_story_0 },
    { 0x000001, 0xFF, dsw_data_the_nz_story_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( the_nz_story ,
-   the_nz_story_dirs,
-   the_nz_story_roms,
-   the_nz_story_inputs,
-   the_nz_story_dsw,
-   the_nz_story_romsw,
 
-   LoadTNZS,
-   ClearTNZS,
-   &tnzs_sys_video,
-   ExecuteTNZSSystemFrame,
-   "tnzs",
-   "The New Zealand Story",
-   "ニュージーランドストーリー",
-   COMPANY_ID_TAITO,
-   "B53",
-   1988,
-   tnzs_sys_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO the_nz_story_bootleg_dirs[] =
-{
-   { "the_nz_story_bootleg", },
-   { "tnzsb", },
-   { ROMOF("tnzs"), },
-   { CLONEOF("tnzs"), },
-   { NULL, },
-};
-
-static struct ROM_INFO the_nz_story_bootleg_roms[] =
+static struct ROM_INFO rom_tnzsb[] =
 {
   // Notice : while this code isn't updated to use the new bankswitch it can't
   // use automatic rom loading...
@@ -648,7 +461,7 @@ static struct ROM_INFO the_nz_story_bootleg_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO the_nz_story_bootleg_inputs[] =
+static struct INPUT_INFO input_tnzsb[] =
 {
    INP0( COIN1, 0x020004, 0x10 ),
    INP0( COIN2, 0x020004, 0x20 ),
@@ -686,43 +499,15 @@ static struct YM2203interface ym2203_bootleg_interface =
    {NULL}
 };
 
-static struct SOUND_INFO tnzs_bl_sound[] =
+static struct SOUND_INFO sound_tnzsb[] =
 {
    { SOUND_YM2203,  &ym2203_bootleg_interface, },
    { 0,             NULL,                      },
 };
 
-GAME( the_nz_story_bootleg ,
-   the_nz_story_bootleg_dirs,
-   the_nz_story_bootleg_roms,
-   the_nz_story_bootleg_inputs,
-   the_nz_story_dsw,
-   the_nz_story_romsw,
 
-   LoadTNZSBL,
-   ClearTNZSBL,
-   &tnzs_sys_video,
-   ExecuteTNZSSystemFrame,
-   "tnzsb",
-   "The New Zealand Story (bootleg)",
-   "ニュージーランドストーリー (bootleg)",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1988,
-   tnzs_bl_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO the_nz_story_extra_dirs[] =
-{
-   { "the_nz_story_extra", },
-   { "tnzs2", },
-   { ROMOF("tnzs"), },
-   { CLONEOF("tnzs"), },
-   { NULL, },
-};
-
-static struct ROM_INFO the_nz_story_extra_roms[] =
+static struct ROM_INFO rom_tnzs2[] =
 {
    {   "ns_a13.rom", 0x00020000, 0x7e0bd5bb, 0, 0, 0, },
    {   "ns_e-3.rom", 0x00010000, 0xc7662e96, 0, 0, 0, },
@@ -737,35 +522,9 @@ static struct ROM_INFO the_nz_story_extra_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( the_nz_story_extra ,
-   the_nz_story_extra_dirs,
-   the_nz_story_extra_roms,
-   the_nz_story_inputs,
-   the_nz_story_dsw,
-   the_nz_story_romsw,
 
-   LoadTNZSExtra,
-   ClearTNZSExtra,
-   &tnzs_sys_video,
-   ExecuteTNZSSystemFrame,
-   "tnzs2",
-   "The New Zealand Story (extra)",
-   "ニュージーランドストーリーエキストラ",
-   COMPANY_ID_TAITO,
-   "B53",
-   1988,
-   tnzs_sys_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO extermination_dirs[] =
-{
-   { "extermination", },
-   { "extrmatn", },
-   { NULL, },
-};
-
-static struct ROM_INFO extermination_roms[] =
+static struct ROM_INFO rom_extrmatn[] =
 {
    {   "b06-01.bin", 0x00020000, 0xd2afbf7e, 0, 0, 0, },
    {   "b06-02.bin", 0x00020000, 0xe0c2757a, 0, 0, 0, },
@@ -828,7 +587,7 @@ static struct DSW_DATA dsw_data_extermination_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO extermination_dsw[] =
+static struct DSW_INFO dsw_extrmatn[] =
 {
    { 0x000000, 0xFF, dsw_data_extermination_0 },
    { 0x000001, 0xFF, dsw_data_extermination_1 },
@@ -843,40 +602,15 @@ static struct ROMSW_DATA romsw_data_extermination_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO extermination_romsw[] =
+static struct ROMSW_INFO romsw_extrmatn[] =
 {
    { 0x20001E0, 0x16, romsw_data_extermination_0 },
    { 0,        0,    NULL },
 };
 
-GAME( extermination ,
-   extermination_dirs,
-   extermination_roms,
-   the_nz_story_inputs,
-   extermination_dsw,
-   extermination_romsw,
 
-   LoadExtermination,
-   ClearExtermination,
-   &tnzs_sys_r270_video,
-   ExecuteTNZSSystemFrame,
-   "extrmatn",
-   "Extermination",
-   "エクスターミネーション",
-   COMPANY_ID_TAITO,
-   "B06",
-   1987,
-   tnzs_sys_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO kageki_dirs[] =
-{
-   { "kageki", },
-   { NULL, },
-};
-
-static struct ROM_INFO kageki_roms[] =
+static struct ROM_INFO rom_kageki[] =
 {
    {   "b35-01.13a", 0x00020000, 0x01d83a69, 0, 0, 0, },
    {   "b35-02.12a", 0x00020000, 0xd8af47ac, 0, 0, 0, },
@@ -893,7 +627,7 @@ static struct ROM_INFO kageki_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO kageki_inputs[] =
+static struct INPUT_INFO input_kageki[] =
 {
    INP0( COIN1, 0x020004, 0x10 ),
    INP0( COIN2, 0x020004, 0x20 ),
@@ -940,7 +674,7 @@ static struct DSW_DATA dsw_data_kageki_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kageki_dsw[] =
+static struct DSW_INFO dsw_kageki[] =
 {
    { 0x000000, 0xFF, dsw_data_kageki_0 },
    { 0x000001, 0xFF, dsw_data_default_1 },
@@ -948,36 +682,9 @@ static struct DSW_INFO kageki_dsw[] =
 };
 
 
-GAME( kageki ,
-   kageki_dirs,
-   kageki_roms,
-   kageki_inputs,
-   kageki_dsw,
-   the_nz_story_romsw,	//kageki_romsw,
 
-   load_kageki,
-   clear_kageki,
-   &tnzs_sys_r90_video,
-   ExecuteTNZSSystemFrame,
-   "kageki",
-   "Kageki",
-   "火激",
-   COMPANY_ID_TAITO,
-   "B35",
-   1988,
-   kageki_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO chuka_taisen_dirs[] =
-{
-   { "chuka_taisen", },
-   { "chukatai", },
-   { "chukatsn", },
-   { NULL, },
-};
-
-static struct ROM_INFO chuka_taisen_roms[] =
+static struct ROM_INFO rom_chukatai[] =
 {
    {   "b44-01.a13", 0x00020000, 0xaae7b3d5, 0, 0, 0, },
    {   "b44-02.a12", 0x00020000, 0x7f0b9568, 0, 0, 0, },
@@ -994,7 +701,7 @@ static struct ROM_INFO chuka_taisen_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO chuka_taisen_inputs[] =
+static struct INPUT_INFO input_chukatai[] =
 {
    INP1( COIN1, 0x020004, 0x01 ),
    INP1( COIN2, 0x020004, 0x02 ),
@@ -1043,33 +750,13 @@ static struct DSW_DATA dsw_data_chuka_taisen_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO chuka_taisen_dsw[] =
+static struct DSW_INFO dsw_chukatai[] =
 {
    { 0x000000, 0xFF, dsw_data_chuka_taisen_0 },
    { 0x000001, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( chuka_taisen ,
-   chuka_taisen_dirs,
-   chuka_taisen_roms,
-   chuka_taisen_inputs,
-   chuka_taisen_dsw,
-   the_nz_story_romsw,
-
-   load_chuka_taisen,
-   clear_chuka_taisen,
-   &tnzs_sys_video,
-   ExecuteTNZSSystemFrame,
-   "chukatai",
-   "Chuka Taisen",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B44",
-   1988,
-   tnzs_sys_sound,
-   GAME_SHOOT
-);
 
 static struct ROMSW_DATA romsw_dr_toppel_0[] =
 {
@@ -1079,21 +766,14 @@ static struct ROMSW_DATA romsw_dr_toppel_0[] =
   { NULL, 0 },
 };
 
-static struct ROMSW_INFO dr_toppel_romsw[] =
+static struct ROMSW_INFO romsw_drtoppel[] =
 {
   { 0x2007FFF, 0x03, romsw_dr_toppel_0 }, // Need to be in RAM2!!!
   { 0, 0, NULL },
 };
 
-static struct DIR_INFO dr_toppel_dirs[] =
-{
-   { "dr_toppel_tankentai", },
-   { "dr_toppel", },
-   { "drtoppel", },
-   { NULL, },
-};
 
-static struct ROM_INFO dr_toppel_roms[] =
+static struct ROM_INFO rom_drtoppel[] =
 {
    {   "b19-01.bin", 0x00020000, 0xa7e8a0c1, 0, 0, 0, },
    {   "b19-02.bin", 0x00020000, 0x790ae654, 0, 0, 0, },
@@ -1111,7 +791,7 @@ static struct ROM_INFO dr_toppel_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO dr_toppel_inputs[] =
+static struct INPUT_INFO input_drtoppel[] =
 {
    INP1( COIN1, 0x020004, 0x01 ),
    INP1( COIN2, 0x020004, 0x02 ),
@@ -1183,42 +863,16 @@ static struct DSW_DATA dsw_data_dr_toppel_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dr_toppel_dsw[] =
+static struct DSW_INFO dsw_drtoppel[] =
 {
    { 0x000000, 0xFE, dsw_data_dr_toppel_0 },
    { 0x000001, 0xFF, dsw_data_dr_toppel_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( dr_toppel_tankentai ,
-   dr_toppel_dirs,
-   dr_toppel_roms,
-      dr_toppel_inputs,
-   dr_toppel_dsw,
-   dr_toppel_romsw,
 
-   LoadDrToppel,
-   ClearDrToppel,
-   &tnzs_sys_r90_video,
-   ExecuteTNZSSystemFrame,
-   "drtoppel",
-   "Dr Toppel Tankentai",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B19",
-   1987,
-   tnzs_sys_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO plump_pop_dirs[] =
-{
-   { "plump_pop", },
-   { "plumppop", },
-   { NULL, },
-};
-
-static struct ROM_INFO plump_pop_roms[] =
+static struct ROM_INFO rom_plumppop[] =
 {
    {   "a98-01.bin", 0x00010000, 0xf3033dca, 0, 0, 0, },
    {   "a98-02.bin", 0x00010000, 0xf2d17b0c, 0, 0, 0, },
@@ -1236,7 +890,7 @@ static struct ROM_INFO plump_pop_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO plump_pop_inputs[] =
+static struct INPUT_INFO input_plumppop[] =
 {
    INP0( COIN1, 0x020004, 0x01 ),
    INP0( COIN2, 0x020004, 0x02 ),
@@ -1307,7 +961,7 @@ static struct DSW_DATA dsw_data_plump_pop_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO plump_pop_dsw[] =
+static struct DSW_INFO dsw_plumppop[] =
 {
    { 0x000000, 0xFF, dsw_data_plump_pop_0 },
    { 0x000001, 0xFF, dsw_data_plump_pop_1 },
@@ -1323,32 +977,12 @@ static struct ROMSW_DATA romsw_data_plump_pop_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO plump_pop_romsw[] =
+static struct ROMSW_INFO romsw_plumppop[] =
 {
    { 0x1007FFF, 0x00, romsw_data_plump_pop_0 },
    { 0,        0,    NULL },
 };
 
-GAME( plump_pop ,
-   plump_pop_dirs,
-   plump_pop_roms,
-   plump_pop_inputs,
-   plump_pop_dsw,
-   plump_pop_romsw,
-
-   LoadPlumpPop,
-   ClearPlumpPop,
-   &tnzs_sys_video,
-   ExecuteTNZSSystemFrame,
-   "plumppop",
-   "Plump Pop",
-   NULL,
-   COMPANY_ID_TAITO,
-   "A98",
-   1987,
-   tnzs_sys_sound,
-   GAME_BREAKOUT
-);
 
 static int romset;
 
@@ -1363,7 +997,7 @@ static UINT8 *GFX_BG0_SOLID;
 /******************************************************************************/
 
 static UINT8 ym2203_reg;
-static UINT8 kageki_dsw_bit;
+static UINT8 dsw_kageki_bit;
 
 static UINT8 tnzs_ym2203_rb(UINT16 offset)
 {
@@ -1401,7 +1035,7 @@ static UINT8 kageki_ym2203_rb(UINT16 offset)
    else{
       if(ym2203_reg==0x0e){
          j   = (get_dsw(1)<<8) | get_dsw(0);
-         j >>= kageki_dsw_bit;
+         j >>= dsw_kageki_bit;
          j  &= 0x1111;
 
          i  = (j >>  0) << 0;
@@ -1425,8 +1059,8 @@ static void kageki_ym2203_wb(UINT16 offset, UINT8 data)
    else{
 #if 0
       if(ym2203_reg==0x0f){
-         kageki_dsw_bit  = (data >> 1) & 1;
-         kageki_dsw_bit |= (data << 1) & 2;
+         dsw_kageki_bit  = (data >> 1) & 1;
+         dsw_kageki_bit |= (data << 1) & 2;
       }
       else
 #endif
@@ -1830,17 +1464,17 @@ static void SubBankSwitch_alt(UINT16 offset, UINT8 data)
    z80_set_bank(2,data & 3);
 }
 
-void init_bank_rom(UINT8 *src, UINT8 *dst)
+static void init_bank_rom(UINT8 *src, UINT8 *dst)
 {
   z80_init_banks_area_ofs(1,src,0x20000,0x8000,0x4000,2);
 }
 
-void init_bank_rom2(UINT8 *src)
+static void init_bank_rom2(UINT8 *src)
 {
   z80_init_banks_area(2,src,0x10000,0x8000,0x2000);
 }
 
-void LoadInsectorX(void)
+static void load_insectx(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -2021,7 +1655,7 @@ void LoadInsectorX(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearInsectorX(void)
+static void ClearInsectorX(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -2029,7 +1663,7 @@ void ClearInsectorX(void)
 #endif
 }
 
-void LoadTNZSExtra(void)
+static void load_tnzs2(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -2219,7 +1853,7 @@ void LoadTNZSExtra(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearTNZSExtra(void)
+static void ClearTNZSExtra(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -2446,22 +2080,22 @@ static void load_arkanoid_2_actual(int set)
    GameMouse=1;
 }
 
-void LoadArk2Doh(void)
+static void load_arknoid2(void)
 {
    load_arkanoid_2_actual(0);
 }
 
-void LoadArk2DohUS(void)
+static void load_arknid2u(void)
 {
    load_arkanoid_2_actual(1);
 }
 
-void LoadArk2DohJP(void)
+static void load_arknid2j(void)
 {
    load_arkanoid_2_actual(2);
 }
 
-void ClearArk2Doh(void)
+static void ClearArk2Doh(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -2469,7 +2103,7 @@ void ClearArk2Doh(void)
 #endif
 }
 
-void LoadTNZS(void)
+static void load_tnzs(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -2658,7 +2292,7 @@ void LoadTNZS(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearTNZS(void)
+static void ClearTNZS(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -2666,7 +2300,7 @@ void ClearTNZS(void)
 #endif
 }
 
-void LoadDrToppel(void)
+static void load_drtoppel(void)
 {
    int ta,tb,tc;
    UINT8 *RAM_COLOUR, *TMP;
@@ -2870,14 +2504,14 @@ void LoadDrToppel(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearDrToppel(void)
+static void ClearDrToppel(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
 #endif
 }
 
-void LoadTNZSBL(void)
+static void load_tnzsb(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -3107,7 +2741,7 @@ void LoadTNZSBL(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearTNZSBL(void)
+static void ClearTNZSBL(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -3115,7 +2749,7 @@ void ClearTNZSBL(void)
 #endif
 }
 
-void ClearArk2DohUS(void)
+static void ClearArk2DohUS(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -3123,7 +2757,7 @@ void ClearArk2DohUS(void)
 #endif
 }
 
-void LoadExtermination(void)
+static void load_extrmatn(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -3325,7 +2959,7 @@ void LoadExtermination(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearExtermination(void)
+static void ClearExtermination(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
@@ -3337,7 +2971,7 @@ static UINT16 f6read(UINT16 offset) {
   return 0xff;
 }
 
-void load_kageki(void)
+static void load_kageki(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -3528,14 +3162,14 @@ void load_kageki(void)
    seta_x1.scr_y	= 0;
 }
 
-void clear_kageki(void)
+static void clear_kageki(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
 #endif
 }
 
-void load_chuka_taisen(void)
+static void load_chukatai(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -3770,14 +3404,14 @@ void load_chuka_taisen(void)
 
 }
 
-void clear_chuka_taisen(void)
+static void clear_chuka_taisen(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
 #endif
 }
 
-void LoadPlumpPop(void)
+static void load_plumppop(void)
 {
    int ta,tb,tc;
    UINT8 *TMP, *RAM_COLOUR;
@@ -3978,14 +3612,14 @@ void LoadPlumpPop(void)
    seta_x1.scr_y	= 0;
 }
 
-void ClearPlumpPop(void)
+static void ClearPlumpPop(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.BIN", RAM, RAMSize, 0);
 #endif
 }
 
-void ExecuteTNZSSystemFrame(void)
+static void execute_tnzsb(void)
 {
    static UINT32 coin_flip_a,coin_flip_b;
    static UINT32 coin_store_a,coin_store_b;
@@ -4090,7 +3724,7 @@ void ExecuteTNZSSystemFrame(void)
    }
 }
 
-void ExecuteInsectorXFrame(void)
+static void execute_insectx(void)
 {
    int ta;
 
@@ -4113,10 +3747,260 @@ void ExecuteInsectorXFrame(void)
    cpu_interrupt(CPU_Z80_2, 0x38);
 }
 
-void DrawTNZSSystem(void)
+static void DrawTNZSSystem(void)
 {
    ClearPaletteMap();
 
    render_seta_x1_z80();
 }
+
+static struct VIDEO_INFO video_arknoid2 =
+{
+   DrawTNZSSystem,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_drtoppel =
+{
+   DrawTNZSSystem,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_90 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_insectx =
+{
+   DrawTNZSSystem,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_180 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_tnzsb =
+{
+   DrawTNZSSystem,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_arknid2u[] =
+{
+   { "arkanoid_2_american", },
+   { "ark2us", },
+   { "arknid2u", },
+   { "arkanoi2", },
+   { ROMOF("arknoid2"), },
+   { CLONEOF("arknoid2"), },
+   { NULL, },
+};
+GAME(arknid2u, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
+	.input = input_arknoid2,
+	.dsw = dsw_arknoid2,
+	.clear = ClearArk2DohUS,
+	.video = &video_arknoid2,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ American",
+	.board = "B08",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_arknid2j[] =
+{
+   { "arkanoid_2_japanese", },
+   { "ark2jp", },
+   { "arknid2j", },
+   { "arkanoi2", },
+   { ROMOF("arknoid2"), },
+   { CLONEOF("arknoid2"), },
+   { NULL, },
+};
+GAME(arknid2j, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
+	.input = input_arknoid2,
+	.dsw = dsw_arknoid2,
+	.clear = ClearArk2Doh,
+	.video = &video_arknoid2,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
+	.board = "B08",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_arknoid2[] =
+{
+   { "arkanoid_2_rev_of_doh", },
+   { "arkanoi2", },
+   { "arknoid2", },
+   { NULL, },
+};
+GAME( arknoid2, "Arkanoid 2 Revenge of Doh", TAITO, 1987, GAME_BREAKOUT,
+	.input = input_arknoid2,
+	.dsw = dsw_arknoid2,
+	.clear = ClearArk2Doh,
+	.video = &video_arknoid2,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
+	.board = "B08",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_chukatai[] =
+{
+   { "chuka_taisen", },
+   { "chukatai", },
+   { "chukatsn", },
+   { NULL, },
+};
+GAME( chukatai, "Chuka Taisen", TAITO, 1988, GAME_SHOOT,
+	.input = input_chukatai,
+	.dsw = dsw_chukatai,
+	.romsw = romsw_tnzs,
+	.clear = clear_chuka_taisen,
+	.video = &video_tnzsb,
+	.exec = execute_tnzsb,
+	.board = "B44",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_drtoppel[] =
+{
+   { "dr_toppel_tankentai", },
+   { "dr_toppel", },
+   { "drtoppel", },
+   { NULL, },
+};
+GAME( drtoppel, "Dr Toppel Tankentai", TAITO, 1987, GAME_SHOOT,
+	.input = input_drtoppel,
+	.dsw = dsw_drtoppel,
+	.romsw = romsw_drtoppel,
+	.clear = ClearDrToppel,
+	.video = &video_drtoppel,
+	.exec = execute_tnzsb,
+	.board = "B19",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_extrmatn[] =
+{
+   { "extermination", },
+   { "extrmatn", },
+   { NULL, },
+};
+GAME( extrmatn, "Extermination", TAITO, 1987, GAME_SHOOT,
+	.input = input_tnzs,
+	.dsw = dsw_extrmatn,
+	.romsw = romsw_extrmatn,
+	.clear = ClearExtermination,
+	.video = &video_arknoid2,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "エクスターミネーション",
+	.board = "B06",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_insectx[] =
+{
+   { "insector_x", },
+   { "insectrx", },
+   { "insectx", },
+   { NULL, },
+};
+GAME( insectx, "Insector X", TAITO, 1989, GAME_SHOOT,
+	.input = input_insectx,
+	.dsw = dsw_insectx,
+	.clear = ClearInsectorX,
+	.video = &video_insectx,
+	.exec = execute_insectx,
+	.long_name_jpn = "インセクターＸ",
+	.board = "B97",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_kageki[] =
+{
+   { "kageki", },
+   { NULL, },
+};
+GAME( kageki, "Kageki", TAITO, 1988, GAME_BEAT,
+	.input = input_kageki,
+	.dsw = dsw_kageki,
+	.romsw = romsw_tnzs /*kageki_romsw */,
+	.clear = clear_kageki,
+	.video = &video_drtoppel,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "火激",
+	.board = "B35",
+	.sound = sound_kageki,
+);
+static struct DIR_INFO dir_plumppop[] =
+{
+   { "plump_pop", },
+   { "plumppop", },
+   { NULL, },
+};
+GAME( plumppop, "Plump Pop", TAITO, 1987, GAME_BREAKOUT,
+	.input = input_plumppop,
+	.dsw = dsw_plumppop,
+	.romsw = romsw_plumppop,
+	.clear = ClearPlumpPop,
+	.video = &video_tnzsb,
+	.exec = execute_tnzsb,
+	.board = "A98",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_tnzs[] =
+{
+   { "the_nz_story", },
+   { "tnzs", },
+   { "tnzsj", },
+   { "tnzso", },
+   { NULL, },
+};
+GAME( tnzs, "The New Zealand Story", TAITO, 1988, GAME_PLATFORM,
+	.input = input_tnzs,
+	.dsw = dsw_tnzs,
+	.romsw = romsw_tnzs,
+	.clear = ClearTNZS,
+	.video = &video_tnzsb,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "ニュージーランドストーリー",
+	.board = "B53",
+	.sound = sound_arknoid2,
+);
+static struct DIR_INFO dir_tnzsb[] =
+{
+   { "the_nz_story_bootleg", },
+   { "tnzsb", },
+   { ROMOF("tnzs"), },
+   { CLONEOF("tnzs"), },
+   { NULL, },
+};
+GAME(tnzsb, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
+	.input = input_tnzsb,
+	.dsw = dsw_tnzs,
+	.romsw = romsw_tnzs,
+	.clear = ClearTNZSBL,
+	.video = &video_tnzsb,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "ニュージーランドストーリー (bootleg)",
+	.sound = sound_tnzsb,
+);
+static struct DIR_INFO dir_tnzs2[] =
+{
+   { "the_nz_story_extra", },
+   { "tnzs2", },
+   { ROMOF("tnzs"), },
+   { CLONEOF("tnzs"), },
+   { NULL, },
+};
+GAME(tnzs2, "The New Zealand Story (extra)", TAITO, 1988, GAME_PLATFORM,
+	.input = input_tnzs,
+	.dsw = dsw_tnzs,
+	.romsw = romsw_tnzs,
+	.clear = ClearTNZSExtra,
+	.video = &video_tnzsb,
+	.exec = execute_tnzsb,
+	.long_name_jpn = "ニュージーランドストーリーエキストラ",
+	.board = "B53",
+	.sound = sound_arknoid2,
+);
 

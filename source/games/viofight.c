@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2203_m6295_sound
 /******************************************************************************/
 /*                                                                            */
 /*                 VIOLENCE FIGHT (C)1989 TAITO CORPORATION                   */
@@ -5,20 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "viofight.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO violence_fight_dirs[] =
-{
-   { "violence_fight", },
-   { "viofight", },
-   { NULL, },
-};
 
-static struct ROM_INFO violence_fight_roms[] =
+static struct ROM_INFO rom_viofight[] =
 {
    {   "c16-01.rom", 0x00080000, 0x7059ce83, 0, 0, 0, },
    {   "c16-02.rom", 0x00080000, 0xb458e905, 0, 0, 0, },
@@ -33,7 +27,7 @@ static struct ROM_INFO violence_fight_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_violence_fight_0[] =
+static struct DSW_DATA dsw_data_violence_fight_0[] =
 {
    DSW_CABINET( 0x00, ),
    DSW_SCREEN( 0x02, 0x00),
@@ -52,7 +46,7 @@ struct DSW_DATA dsw_data_violence_fight_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_violence_fight_1[] =
+static struct DSW_DATA dsw_data_violence_fight_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -63,7 +57,7 @@ struct DSW_DATA dsw_data_violence_fight_1[] =
 };
 
 
-static struct DSW_INFO violence_fight_dsw[] =
+static struct DSW_INFO dsw_viofight[] =
 {
    { 0x000000, 0xFF, dsw_data_violence_fight_0 },
    { 0x000002, 0xFF, dsw_data_violence_fight_1 },
@@ -78,32 +72,12 @@ static struct ROMSW_DATA romsw_data_violence_fight_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO violence_fight_romsw[] =
+static struct ROMSW_INFO romsw_viofight[] =
 {
    { 0x100FFFF, 0x03, romsw_data_violence_fight_0 },
    { 0,        0,    NULL },
 };
 
-GAME( violence_fight ,
-   violence_fight_dirs,
-   violence_fight_roms,
-   b_system_inputs_3_button,
-   violence_fight_dsw,
-   violence_fight_romsw,
-
-   LoadViolenceFight,
-   ClearViolenceFight,
-   &b_system_r180_video,
-   ExecuteViolenceFightFrame,
-   "viofight",
-   "Violence Fight",
-   "バイオレンスファイト",
-   COMPANY_ID_TAITO,
-   "C16",
-   1989,
-   taito_ym2203_m6295_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_INPUT;
 static UINT8 *RAM_VIDEO;
@@ -116,7 +90,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadViolenceFight(void)
+static void load_viofight(void)
 {
    int ta,tb,tc;
 
@@ -362,12 +336,12 @@ void LoadViolenceFight(void)
    AddInitMemory();	// Set Starscream mem pointers... 
 }
 
-void ClearViolenceFight(void)
+static void ClearViolenceFight(void)
 {
    RemoveTaitoYM2203();
 }
 
-void ExecuteViolenceFightFrame(void)
+static void execute_viofight(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -379,3 +353,20 @@ void ExecuteViolenceFightFrame(void)
 
    Taito2203_Frame();			// Z80 and YM2203
 }
+static struct DIR_INFO dir_viofight[] =
+{
+   { "violence_fight", },
+   { "viofight", },
+   { NULL, },
+};
+GAME( viofight, "Violence Fight", TAITO, 1989, GAME_BEAT,
+	.input = b_system_inputs_3_button,
+	.dsw = dsw_viofight,
+	.romsw = romsw_viofight,
+	.clear = ClearViolenceFight,
+	.video = &b_system_r180_video,
+	.exec = execute_viofight,
+	.long_name_jpn = "バイオレンスファイト",
+	.board = "C16",
+);
+

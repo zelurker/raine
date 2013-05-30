@@ -5,20 +5,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "hitice.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 
-static struct DIR_INFO hit_the_ice_dirs[] =
-{
-   { "hit_the_ice", },
-   { "hitice", },
-   { NULL, },
-};
 
-static struct ROM_INFO hit_the_ice_roms[] =
+static struct ROM_INFO rom_hitice[] =
 {
    {   "c59-08", 0x00010000, 0xd3cbc10b, 0, 0, 0, },
    {   "c59-02", 0x00080000, 0xaffb5e07, 0, 0, 0, },
@@ -31,7 +24,7 @@ static struct ROM_INFO hit_the_ice_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO hit_the_ice_inputs[] =
+static struct INPUT_INFO input_hitice[] =
 {
    INP0( COIN1, 0x026106, 0x10 ),
    INP0( COIN2, 0x026106, 0x20 ),
@@ -106,7 +99,7 @@ static struct DSW_DATA dsw_data_hit_the_ice_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO hit_the_ice_dsw[] =
+static struct DSW_INFO dsw_hitice[] =
 {
    { 0x026100, 0xFF, dsw_data_hit_the_ice_0 },
    { 0x026102, 0xFF, dsw_data_default_1 },
@@ -122,32 +115,12 @@ static struct ROMSW_DATA romsw_data_hit_the_ice_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO hit_the_ice_romsw[] =
+static struct ROMSW_INFO romsw_hitice[] =
 {
    { 0x05FFFF, 0x02, romsw_data_hit_the_ice_0 },
    { 0,        0,    NULL },
 };
 
-GAME( hit_the_ice ,
-   hit_the_ice_dirs,
-   hit_the_ice_roms,
-   hit_the_ice_inputs,
-   hit_the_ice_dsw,
-   hit_the_ice_romsw,
-
-   LoadHitTheIce,
-   ClearHitTheIce,
-   &b_system_r180_video,
-   ExecuteHitTheIceFrame,
-   "hitice",
-   "Hit the Ice",
-   "ヒットジアイス",
-   COMPANY_ID_WILLIAMS,
-   "C59",
-   1990,
-   taito_ym2203_m6295_sound,
-   GAME_SPORTS
-);
 
 /*
 
@@ -168,7 +141,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadHitTheIce(void)
+static void load_hitice(void)
 {
    int ta,tb,tc;
 
@@ -406,7 +379,7 @@ void LoadHitTheIce(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearHitTheIce(void)
+static void ClearHitTheIce(void)
 {
    RemoveTaitoYM2203();
 
@@ -417,7 +390,7 @@ void ClearHitTheIce(void)
    #endif
 }
 
-void ExecuteHitTheIceFrame(void)
+static void execute_hitice(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -433,3 +406,21 @@ void ExecuteHitTheIceFrame(void)
    cpu_execute_cycles(CPU_Z80_0, (4000000/60)*2);
    cpu_interrupt(CPU_Z80_0, 0x0038);
 }
+static struct DIR_INFO dir_hitice[] =
+{
+   { "hit_the_ice", },
+   { "hitice", },
+   { NULL, },
+};
+GAME( hitice, "Hit the Ice", WILLIAMS, 1990, GAME_SPORTS,
+	.input = input_hitice,
+	.dsw = dsw_hitice,
+	.romsw = romsw_hitice,
+	.clear = ClearHitTheIce,
+	.video = &b_system_r180_video,
+	.exec = execute_hitice,
+	.long_name_jpn = "ヒットジアイス",
+	.board = "C59",
+	.sound = taito_ym2203_m6295_sound,
+);
+

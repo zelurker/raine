@@ -9,7 +9,6 @@
  */
 
 #include "gameinc.h"
-#include "gcpball.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 #include "m6585.h"
@@ -25,15 +24,8 @@ Todo:
 
 */
 
-static struct DIR_INFO grand_cross_pinball_dirs[] =
-{
-   { "grand_cross_pinball", },
-   { "gcpball", },
-   { "gcpinbal", },
-   { NULL, },
-};
 
-static struct ROM_INFO grand_cross_pinball_roms[] =
+static struct ROM_INFO rom_gcpinbal[] =
 {
    {           "u1", 0x00100000, 0xafa459bb, 0, 0, 0, },
    {        "u10.1", 0x00020000, 0x79321550, 0, 0, 0, },
@@ -47,7 +39,7 @@ static struct ROM_INFO grand_cross_pinball_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO grand_cross_pinball_inputs[] =
+static struct INPUT_INFO input_gcpinbal[] =
 {
    INP0( COIN1, 0x016087, 0x01 ),
    INP0( COIN2, 0x016087, 0x02 ),
@@ -118,22 +110,13 @@ static struct DSW_DATA dsw_data_grand_cross_pinball_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO grand_cross_pinball_dsw[] =
+static struct DSW_INFO dsw_gcpinbal[] =
 {
    { 0x016080, 0xFF, dsw_data_grand_cross_pinball_0 },
    { 0x016081, 0xFF, dsw_data_grand_cross_pinball_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO grand_cross_pinball_video =
-{
-   draw_grand_cross_pinball,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
 static struct OKIM6295interface m6295_interface =
 {
@@ -157,33 +140,13 @@ static struct M6585_interface m6585_interface =
    { m6585_romlist_chip_a },		// rom list
 };
 
-static struct SOUND_INFO grand_cross_pinball_sound[] =
+static struct SOUND_INFO sound_gcpinbal[] =
 {
    { SOUND_M6295,   &m6295_interface,     },
    { SOUND_M6585,   &m6585_interface,     },
    { 0,             NULL,                 },
 };
 
-GAME( grand_cross_pinball ,
-   grand_cross_pinball_dirs,
-   grand_cross_pinball_roms,
-   grand_cross_pinball_inputs,
-   grand_cross_pinball_dsw,
-   NULL,
-
-   load_grand_cross_pinball,
-   clear_grand_cross_pinball,
-   &grand_cross_pinball_video,
-   execute_grand_cross_pinball_frame,
-   "gcpinbal",
-   "Grand Cross Pinball",
-   "グランドクロスピンボール",
-   COMPANY_ID_EX_SYSTEM,
-   NULL,
-   1994,
-   grand_cross_pinball_sound,
-   GAME_MISC
-);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG0_SOLID;
@@ -307,7 +270,7 @@ static UINT16 grand_cross_pinball_ioc_rw(UINT32 offset)
 
 #define RAMSize 0x16200
 
-void load_grand_cross_pinball(void)
+static void load_gcpinbal(void)
 {
    int ta,tb,tc;
 
@@ -542,7 +505,7 @@ void load_grand_cross_pinball(void)
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-void clear_grand_cross_pinball(void)
+static void clear_grand_cross_pinball(void)
 {
    save_eeprom();
 
@@ -551,7 +514,7 @@ void clear_grand_cross_pinball(void)
 #endif
 }
 
-void execute_grand_cross_pinball_frame(void)
+static void execute_gcpinbal(void)
 {
    if(!M6585buffer_status(0))
       cpu_interrupt(CPU_68K_0, 3);
@@ -658,7 +621,7 @@ static void draw_grand_cross_pinball_object(void)
       }
 }
 
-void draw_grand_cross_pinball(void)
+static void draw_grand_cross_pinball(void)
 {
    int x16,y16;
    int x,y,zz,zzz,zzzz;
@@ -822,3 +785,24 @@ Byte | Bit(s) | Use
   E  |....xxxx| Colour Bank
 
 */
+static struct VIDEO_INFO video_gcpinbal =
+{
+   draw_grand_cross_pinball,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_gcpinbal[] =
+{
+   { "grand_cross_pinball", },
+   { "gcpball", },
+   { "gcpinbal", },
+   { NULL, },
+};
+GME( gcpinbal, "Grand Cross Pinball", EX_SYSTEM, 1994, GAME_MISC,
+	.clear = clear_grand_cross_pinball,
+	.long_name_jpn = "グランドクロスピンボール",
+);
+

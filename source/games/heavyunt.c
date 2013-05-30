@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "heavyunt.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "2203intf.h"
@@ -36,14 +35,8 @@ port:
 */
 
 
-static struct DIR_INFO heavy_unit_dirs[] =
-{
-   { "heavy_unit", },
-   { "heavyunt", },
-   { NULL, },
-};
 
-static struct ROM_INFO heavy_unit_roms[] =
+static struct ROM_INFO rom_heavyunt[] =
 {
    {       "b73.01", 0x00010000, 0x3a8a4489, 0, 0, 0, },
    {       "b73.02", 0x00010000, 0x025c536c, 0, 0, 0, },
@@ -61,7 +54,7 @@ static struct ROM_INFO heavy_unit_roms[] =
 };
 
 #if 0
-static struct INPUT_INFO heavy_unit_inputs[] =
+static struct INPUT_INFO input_heavy_unit[] =
 {
    INP1( COIN1, 0x020002, 0x10 ),
    INP1( COIN2, 0x020002, 0x20 ),
@@ -114,21 +107,13 @@ static struct DSW_DATA dsw_data_heavy_unit_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO heavy_unit_dsw[] =
+static struct DSW_INFO dsw_heavy_unit[] =
 {
    { 0x020004, 0xFF, dsw_data_heavy_unit_0 },
    { 0x020005, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 #endif
-static struct VIDEO_INFO heavy_unit_video =
-{
-   draw_heavy_unit,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
 #if 0
 static struct ROMSW_DATA romsw_data_heavy_unit_0[] =
@@ -153,40 +138,20 @@ static struct YM2203interface ym2203_interface =
   { NULL }
 };
 
-static struct SOUND_INFO heavy_unit_sound[] =
+static struct SOUND_INFO sound_heavyunt[] =
 {
    { SOUND_YM2203,  &ym2203_interface,  },
    { 0,             NULL,               },
 };
 
 #if 0
-static struct ROMSW_INFO heavy_unit_romsw[] =
+static struct ROMSW_INFO romsw_heavy_unit[] =
 {
    { 0x007FFF, 0x01, romsw_data_heavy_unit_0 },
    { 0,        0,    NULL },
 };
 #endif
 
-GAME( heavy_unit ,
-   heavy_unit_dirs,
-   heavy_unit_roms,
-   NULL, //heavy_unit_inputs,
-   NULL, //heavy_unit_dsw,
-   NULL, //heavy_unit_romsw,
-
-   load_heavy_unit,
-   clear_heavy_unit,
-   &heavy_unit_video,
-   execute_heavy_unit_frame,
-   "heavyunt",
-   "Heavy Unit",
-   NULL,
-   COMPANY_ID_KANEKO,
-   "B73",
-   1988,
-   heavy_unit_sound,
-   GAME_NOT_WORKING
-);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG0_SOLID;
@@ -202,7 +167,7 @@ static UINT8 *RAM_COLOUR;
 /* MAIN Z80 ROM BANKING                                                       */
 /******************************************************************************/
 
-void heavy_unit_bank_w(UINT16 offset, UINT8 data)
+static void heavy_unit_bank_w(UINT16 offset, UINT8 data)
 {
    offset &= 15;
 
@@ -221,7 +186,7 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
 /* SUB Z80 ROM BANKING                                                        */
 /******************************************************************************/
 
-void heavy_unit_sub_bank_w(UINT16 offset, UINT8 data)
+static void heavy_unit_sub_bank_w(UINT16 offset, UINT8 data)
 {
    offset &= 15;
 
@@ -251,7 +216,7 @@ static void init_bank_rom_1(UINT8 *src, UINT8 *dst)
 /* SUB Z80 ROM BANKING                                                        */
 /******************************************************************************/
 
-void heavy_unit_sub2_bank_w(UINT16 offset, UINT8 data)
+static void heavy_unit_sub2_bank_w(UINT16 offset, UINT8 data)
 {
    offset &= 15;
 
@@ -356,7 +321,7 @@ static void heavy_unit_sub_port_wb(UINT16 offset, UINT8 data)
 }
 
 
-static UINT8 heavy_unit_sound_port_rb(UINT16 offset)
+static UINT8 heavyunt_sound_port_rb(UINT16 offset)
 {
    UINT8 ret;
 
@@ -379,7 +344,7 @@ static UINT8 heavy_unit_sound_port_rb(UINT16 offset)
    return ret;
 }
 
-static void heavy_unit_sound_port_wb(UINT16 offset, UINT8 data)
+static void heavyunt_sound_port_wb(UINT16 offset, UINT8 data)
 {
    offset &= 0xFF;
 
@@ -427,7 +392,7 @@ static void DrawNibble(UINT8 *out, int plane, UINT8 c)
       } while(--count);
 }
 
-void load_heavy_unit(void)
+static void load_heavyunt(void)
 {
   int ta,tb,tc;
    UINT8 *TMP;
@@ -543,12 +508,12 @@ void load_heavy_unit(void)
    AddZ80DWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
    AddZ80DWriteByte(-1, -1, NULL, NULL);
 
-   AddZ80DReadPort(0x00, 0xFF, heavy_unit_sound_port_rb,	NULL);		// PORT
+   AddZ80DReadPort(0x00, 0xFF, heavyunt_sound_port_rb,	NULL);		// PORT
    AddZ80DReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
    AddZ80DReadPort(-1, -1, NULL, NULL);
 
    AddZ80DWritePort(0xAA, 0xAA, StopZ80DMode2,			NULL);		// Trap Idle Z80
-   AddZ80DWritePort(0x00, 0xFF, heavy_unit_sound_port_wb,	NULL);		// PORT
+   AddZ80DWritePort(0x00, 0xFF, heavyunt_sound_port_wb,	NULL);		// PORT
    AddZ80DWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
    AddZ80DWritePort(-1, -1, NULL, NULL);
 
@@ -622,7 +587,7 @@ void load_heavy_unit(void)
    InitPaletteMap(RAM_COLOUR, 0x20, 0x10, 0x1000);
 }
 
-void clear_heavy_unit(void)
+static void clear_heavy_unit(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("RAM.bin", RAM, RAMSize, 0);
@@ -630,7 +595,7 @@ void clear_heavy_unit(void)
 #endif
 }
 
-void execute_heavy_unit_frame(void)
+static void execute_heavyunt(void)
 {
    cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// MAIN Z80 8MHz (60fps)
       print_debug("Z80PC_MAIN:%04x\n",z80pc);
@@ -650,7 +615,7 @@ void execute_heavy_unit_frame(void)
    cpu_interrupt(CPU_Z80_3, 0x38);
 }
 
-void draw_heavy_unit(void)
+static void draw_heavy_unit(void)
 {
   int x,y,ta;
   int sx,sy,offs,goffs,gfx_offs,gfx_num,gfx_attr,height,xc,yc;
@@ -833,3 +798,28 @@ DATA RAM (SCREEN RAM)
  1 |xxxxxxxx| Tile (low)
 
 */
+static struct VIDEO_INFO video_heavyunt =
+{
+   draw_heavy_unit,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_heavyunt[] =
+{
+   { "heavy_unit", },
+   { "heavyunt", },
+   { NULL, },
+};
+GAME( heavyunt, "Heavy Unit", KANEKO, 1988, GAME_NOT_WORKING,
+	.input = NULL, //heavy_unit,
+	.dsw = NULL, //heavy_unit,
+	.romsw = NULL, //heavy_unit,
+	.clear = clear_heavy_unit,
+	.video = &video_heavyunt,
+	.exec = execute_heavyunt,
+	.board = "B73",
+	.sound = sound_heavyunt,
+);
+

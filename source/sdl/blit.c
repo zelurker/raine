@@ -170,7 +170,7 @@ void ReClipScreen(void)
     desty = 0;
   }
 #ifndef NEO
-  if(yview2 <= disp_screen_y && xview2 <= disp_screen_x && current_game) 
+  if(yview2 <= disp_screen_y && xview2 <= disp_screen_x && current_game)
     bezel_fix_screen_coordinates(&destx,&desty,xview2,yview2,disp_screen_x,disp_screen_y);
 #endif
   if(yview < disp_screen_y){
@@ -255,7 +255,7 @@ static void SetScreenBitmap(int xfull, int yfull, int xtop, int ytop, int xview,
 {
    const VIDEO_INFO *vid_info;
 
-   vid_info = current_game->video_info;
+   vid_info = current_game->video;
 
    display_cfg.rotate = 0;
    display_cfg.flip = 0;
@@ -347,7 +347,7 @@ void SetupScreenBitmap(void)
  if (!current_game)
    return;
 
- vid_info = current_game->video_info;
+ vid_info = current_game->video;
 
  SetScreenBitmap(
     vid_info->screen_x + vid_info->border_size + vid_info->border_size,
@@ -484,7 +484,7 @@ void SetupScreenBitmap(void)
 
    display_bezel();
 #endif
-   clear(GameViewBitmap);
+   clear_bitmap(GameViewBitmap);
 
    RefreshBuffers=1;
    if (pbitmap)
@@ -733,7 +733,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
       dest = sdl_overlay->pixels[0]; // +y*sdl_overlay->pitches[0];
       /* Principle : when using an overlay, the color format is forced to
        * overlay_format in compat.c so that we are able to use the rgb565_
-       * conversion functions everywhere. 
+       * conversion functions everywhere.
        * Of course if you switch to normal blits after having loaded an emudx
        * game with an overlay enabled, don't complain if the red and blue get
        * inverted. This is an extreme case, and it would be bothersome to work
@@ -777,7 +777,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 	    if (use_scale2x == 1) {
 	      raine_blit_scale2x(source, screen, x1, y1, x2, y2, w, h);
 	    } else if (use_scale2x == 2) {
-	      raine_blit_scale3x(source, screen, x1, y1, x2, y2, w, h); 
+	      raine_blit_scale3x(source, screen, x1, y1, x2, y2, w, h);
 	    }
 	    if (locked) SDL_UnlockSurface(sdl_screen);
 	  }
@@ -801,7 +801,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 			 // Notice : in 32bpp, this thing needs a 16bpp source, so we must
 			 // setup a special format for it in compat.c
 		}
-	    else if (use_scale2x == 2) 
+	    else if (use_scale2x == 2)
 		switch(sdl_screen->format->BitsPerPixel) {
 		case 16: hq3x_16(source,screen,x1,y1,x2,y2,w,h); break;
 		case 32: hq3x_32(source,screen,x1,y1,x2,y2,w,h); break;
@@ -1010,7 +1010,7 @@ void DrawNormal(void)
        }
        break;
 	     }
-     case 3: 
+     case 3:
 	     { // fullheight + double width
 	     int end;
 	     locked = lock_surface(sdl_screen);

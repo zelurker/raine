@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND sound_puckman
 // Pengo driver, taken from mame. Here are the comments in the mame driver :
 // Warning : it's adviced to use 44Khz for sound for this one.
 /* Raine notes : This driver is really full of tricks.
@@ -112,11 +113,6 @@ Issue confirmed, it happens also in the original hardware.
 #include "sdl/dialogs/messagebox.h"
 #endif
 
-static struct DIR_INFO pengo_dirs[] =
-{
-   { "pengo", },
-   { NULL, },
-};
 
 static struct DSW_DATA dsw_data_pengo_2[] =
 {
@@ -184,14 +180,14 @@ static struct DSW_DATA dsw_data_pengo_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO pengo_dsw[] =
+static struct DSW_INFO dsw_pengo[] =
 {
   { 4, 0xb0, dsw_data_pengo_2 },
   { 6, 0xcc, dsw_data_pengo_3 },
   { 0, 0, NULL }
 };
 
-static struct INPUT_INFO pengo_inputs[] =
+static struct INPUT_INFO input_pengo[] =
 {
   INP0( P1_UP, 0x00, 0x01 ),
   INP0( P1_DOWN, 0x00, 0x02 ),
@@ -216,7 +212,7 @@ static struct INPUT_INFO pengo_inputs[] =
   END_INPUT
 };
 
-static struct ROM_INFO pengo_roms[] =
+static struct ROM_INFO rom_pengo[] =
 {
   { "ic8", 0x1000, 0xf37066a8 , REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "ic7", 0x1000, 0xbaf48143 , REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -237,7 +233,7 @@ static struct ROM_INFO pengo_roms[] =
 };
 
 // not encrypted
-static struct ROM_INFO pengo2u_roms[] =
+static struct ROM_INFO rom_pengo2u[] =
 {
   { "pengo.u8", 0x1000, 0x3dfeb20e, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "pengo.u7", 0x1000, 0x1db341bd, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -356,7 +352,7 @@ static void sega_decode(const unsigned char xortable[32][4], UINT8 *dest)
   z80_offdata = rom - dest;
 }
 
-void pengo_decode(void)
+static void pengo_decode(void)
 {
   static const unsigned char xortable[32][4] =
     {
@@ -411,7 +407,7 @@ static struct namco_interface namco_interface =
 	REGION_SOUND1,	/* memory region */
 };
 
-static struct SOUND_INFO namco_sound[] =
+static struct SOUND_INFO sound_puckman[] =
   {
    { SOUND_NAMCO, &namco_interface },
    { 0,             NULL,                 },
@@ -1137,29 +1133,9 @@ static void execute_pengo() {
       cpu_interrupt(CPU_Z80_0, 0x38);
 }
 
-// for the clones definitions
-#define puckman_sound namco_sound
-#define mspacman_sound namco_sound
-#define mspacman_inputs puckman_inputs
-#define pacman_inputs puckman_inputs
-#define load_mspacman load_puckman
-#define load_pacman load_puckman
-#define pacman_video puckman_video
-#define mspacman_video puckman_video
-#define execute_mspacman execute_puckman
-#define pengo_sound namco_sound
-#define pacman_sound namco_sound
-
-#define pacplus_inputs puckman_inputs
-#define pacplus_dsw puckman_dsw
-#define load_pacplus load_puckman
-#define pacplus_video puckman_video
-#define execute_pacplus execute_puckman
-#define pacplus_sound namco_sound
-
 // The pacman driver is very similar. Both pengo and pacman share the same drawing function
 
-static struct ROM_INFO puckman_roms[] =
+static struct ROM_INFO rom_puckman[] =
 {
   { "namcopac.6e", 0x1000, 0xfee263b3, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "namcopac.6f", 0x1000, 0x39d1fc83, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1174,7 +1150,7 @@ static struct ROM_INFO puckman_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO pacman_roms[] =
+static struct ROM_INFO rom_pacman[] =
 {
   { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "pacman.6f", 0x1000, 0x1a6fb2d4, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1183,7 +1159,7 @@ static struct ROM_INFO pacman_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO multi15_roms[] =
+static struct ROM_INFO rom_multi15[] =
 {
   { "mpexe15.bin", 0x80000, 0xeb181a29, REGION_ROM1, 0x10000, LOAD_NORMAL },
   // I load the same rom in gfx1 and gfx2, it's because there are lots of
@@ -1200,7 +1176,7 @@ static struct ROM_INFO multi15_roms[] =
 
 // mspacman is protected, I'll take care of this later...
 
-static struct ROM_INFO mspacman_roms[] =
+static struct ROM_INFO rom_mspacman[] =
 {
   { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "pacman.6f", 0x1000, 0x1a6fb2d4, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1214,7 +1190,7 @@ static struct ROM_INFO mspacman_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO mspacmab_roms[] =
+static struct ROM_INFO rom_mspacmab[] =
 {
   { "boot1", 0x1000, 0xd16b31b7, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "boot2", 0x1000, 0x0d32de5e, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1225,7 +1201,7 @@ static struct ROM_INFO mspacmab_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO mspac6m_roms[] =
+static struct ROM_INFO rom_mspac6m[] =
 {
   { "1.cpu", 0x1000, 0xd16b31b7, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "2.cpu", 0x1000, 0x0d32de5e, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1245,7 +1221,7 @@ static struct ROM_INFO mspac6m_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO mspacpls_roms[] =
+static struct ROM_INFO rom_mspacpls[] =
 {
   { "boot1", 0x1000, 0xd16b31b7, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "mspacatk.2", 0x1000, 0x0af09d31, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1256,7 +1232,7 @@ static struct ROM_INFO mspacpls_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO pacplus_roms[] =
+static struct ROM_INFO rom_pacplus[] =
 {
   { "pacplus.6e", 0x1000, 0xd611ef68, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "pacplus.6f", 0x1000, 0xc7207556, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1269,7 +1245,7 @@ static struct ROM_INFO pacplus_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO puckman_inputs[] =
+static struct INPUT_INFO input_puckman[] =
 {
   INP0( P1_UP, 0x00, 0x01 ),
   INP0( P1_LEFT, 0x00, 0x02 ),
@@ -1356,7 +1332,7 @@ static struct DSW_DATA dsw_data_pacman_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO puckman_dsw[] =
+static struct DSW_INFO dsw_puckman[] =
 {
   { 0x0, 0x10, dsw_data_pacman_0 },
   { 0x2, 0x90, dsw_data_pacman_1 },
@@ -1366,7 +1342,7 @@ static struct DSW_INFO puckman_dsw[] =
 };
 
 // No speed cheat !
-static struct DSW_INFO namcosil_dsw[] =
+static struct DSW_INFO dsw_namcosil[] =
 {
   { 0x0, 0x10, dsw_data_pacman_0 },
   { 0x2, 0x90, dsw_data_pacman_1 },
@@ -1397,7 +1373,7 @@ static struct DSW_DATA dsw_data_mspacman_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO mspacman_dsw[] =
+static struct DSW_INFO dsw_mspacman[] =
 {
   { 0x0, 0x10, dsw_data_pacman_0 },
   { 0x2, 0x90, dsw_data_pacman_1 },
@@ -1407,7 +1383,7 @@ static struct DSW_INFO mspacman_dsw[] =
 };
 
 // No speed cheat for this one ;-(
-static struct DSW_INFO mspacpls_dsw[] =
+static struct DSW_INFO dsw_mspacpls[] =
 {
   { 0x0, 0x10, dsw_data_pacman_0 },
   { 0x2, 0x90, dsw_data_pacman_1 },
@@ -1456,33 +1432,8 @@ static struct GFX_LIST pengo_gfx[] =
 	{ 0, NULL } /* end of array */
 };
 
-static struct VIDEO_INFO pengo_video =
-{
-   draw_pengo,
-   288,
-   224,
-   16,
-   VIDEO_ROTATE_90 |
-   VIDEO_ROTATABLE,
-   pengo_gfx
-};
 
-static struct DIR_INFO puckman_dirs[] =
-{
-  { "puckman" },
-  { NULL }
-};
 
-static struct VIDEO_INFO puckman_video =
-{
-   draw_pengo,
-   288,
-   224,
-   16,
-   VIDEO_ROTATE_90 |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo,
-};
 
 static UINT8 *vector;
 
@@ -1926,32 +1877,7 @@ static void execute_puckman() {
   }
 }
 
-GAME( puckman ,
-   puckman_dirs,
-   puckman_roms,
-   puckman_inputs,
-   puckman_dsw,
-   NULL,
-
-   load_puckman,
-      NULL,
-   &puckman_video,
-   execute_puckman,
-   "puckman",
-   "PuckMan (Japan set 1)",
-   "PuckMan (Japan set 1)",
-   COMPANY_ID_NAMCO,
-   NULL,
-   1980,
-   namco_sound,
-   GAME_MAZE
-);
-
-CLONE( pacman, puckman, "Pac-Man (Midway)", COMPANY_ID_MIDWAY, 1980, GAME_MAZE);
-
-// pacman3d from http://home.kabelfoon.nl/~msilvius/sillyarcade.htm
-
-static struct ROM_INFO pacman3d_roms[] =
+static struct ROM_INFO rom_pacman3d[] =
 {
   { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "pacman3d.6f", 0x1000, 0x96364259, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1962,11 +1888,7 @@ static struct ROM_INFO pacman3d_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLONE( pacman3d, puckman, "Pacman 3D", COMPANY_ID_BOOTLEG,1998, GAME_MAZE);
-
-// namcosil : vertical tunnels ! (same url)
-
-static struct ROM_INFO namcosil_roms[] =
+static struct ROM_INFO rom_namcosil[] =
 {
   { "namcopac.6e", 0x1000, 0xfee263b3, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "namcosil.6f", 0x1000, 0xc5ec2352, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1975,21 +1897,7 @@ static struct ROM_INFO namcosil_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLONE_DSW( namcosil, puckman, "Namco Pacman - Vertical tunnel edition!", COMPANY_ID_BOOTLEG,1998, GAME_MAZE);
-
-// This one is really for mame compatibility only, if we didn't add it then most people
-// would miss some roms since this is the parent set of all mspacman games in mame !
-CLONE_DSW(mspacman, puckman, "Ms. Pac-Man", COMPANY_ID_MIDWAY, 1981, GAME_MAZE | GAME_PARTIALLY_WORKING);
-
-CLONE( mspacmab, mspacman, "Ms. Pac-Man (bootleg)", COMPANY_ID_BOOTLEG, 1981, GAME_MAZE);
-CLONE_DSW( mspacpls, mspacman, "Ms. Pac-Man + (hack)", COMPANY_ID_BOOTLEG, 1981, GAME_MAZE);
-CLONE( mspac6m, pacplus, "Ms. Pac-Man 6 maps (hack)", COMPANY_ID_BOOTLEG, 1981, GAME_MAZE);
-
-CLONE( pacplus, puckman, "Pac-Man Plus", COMPANY_ID_NAMCO, 1982, GAME_MAZE);
-CLONE( multi15, puckman, "MultiPac 1.5", COMPANY_ID_BOOTLEG, 1998, GAME_MAZE);
-
-// See http://www.xensei.com/users/jeffm/www/pacman/xens-revenge/ for this one !
-static struct ROM_INFO xenrev_roms[] =
+static struct ROM_INFO rom_xenrev[] =
 {
   { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "pacman.6f", 0x1000, 0x1a6fb2d4, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -1999,7 +1907,6 @@ static struct ROM_INFO xenrev_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLONE( xenrev, puckman, "Xen's Revenge (hack - hard!)", COMPANY_ID_BOOTLEG, 1998, GAME_MAZE);
 /* Tested hacks from http://www.cis.rit.edu/~jerry/Software/gamehacks/ :
    pengman : pengo is flashing when walking. Too bad. And the map is too weird to play,
    turning is difficult at places. Too bad...
@@ -2007,7 +1914,7 @@ CLONE( xenrev, puckman, "Xen's Revenge (hack - hard!)", COMPANY_ID_BOOTLEG, 1998
    the playability, very important in this kind of game...
 */
 
-static struct ROM_INFO pacman25_roms[] =
+static struct ROM_INFO rom_pacman25[] =
 {
   { "namcopac.6e", 0x1000, 0xfee263b3, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "namcosil.6f", 0x1000, 0xc5ec2352, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -2027,32 +1934,64 @@ static struct ROM_INFO pacman25_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct VIDEO_INFO video_pengo =
+{
+   draw_pengo,
+   288,
+   224,
+   16,
+   VIDEO_ROTATE_90 |
+   VIDEO_ROTATABLE,
+   pengo_gfx
+};
+static struct VIDEO_INFO video_puckman =
+{
+   draw_pengo,
+   288,
+   224,
+   16,
+   VIDEO_ROTATE_90 |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo,
+};
+GMEI( pengo, "Pengo", SEGA, 1982, GAME_MAZE);
+CLNEI( pengo2u, pengo, "Pengo set 2", BOOTLEG, 1982, GAME_MAZE);
+
+GMEI( puckman, "PuckMan (Japan set 1)", NAMCO, 1980, GAME_MAZE);
 // 2004 ? This is the date in the zip file, at least...
 // The asm source is available at the url given above.
 /* Yeah the year is indeed 2004, for the 25th anniversary, but there still is a bug
    with palette selection... anyway it does not make the game unplayable, so I'll keep
    it. */
-CLONE( pacman25, puckman, "25 MAP PAC", COMPANY_ID_BOOTLEG, 2004, GAME_MAZE);
+CLNEI( pacman25, puckman, "25 MAP PAC", BOOTLEG, 2004, GAME_MAZE);
+// See http://www.xensei.com/users/jeffm/www/pacman/xens-revenge/ for this one !
+CLNEI( xenrev, puckman, "Xen's Revenge (hack - hard!)", BOOTLEG, 1998, GAME_MAZE);
+CLNEI( pacman, puckman, "Pac-Man (Midway)", MIDWAY, 1980, GAME_MAZE);
+// pacman3d from http://home.kabelfoon.nl/~msilvius/sillyarcade.htm
+CLNEI( pacman3d, puckman, "Pacman 3D", BOOTLEG,1998, GAME_MAZE);
 
-GAME( pengo ,
-   pengo_dirs,
-   pengo_roms,
-   pengo_inputs,
-   pengo_dsw,
-   NULL,
+// namcosil : vertical tunnels ! (same url)
+CLNEI( namcosil, puckman, "Namco Pacman - Vertical tunnel edition!", BOOTLEG,1998, GAME_MAZE,
+	.dsw = dsw_namcosil);
 
-   load_pengo,
-   NULL,
-   &pengo_video,
-   execute_pengo,
-   "pengo",
-   "Pengo",
-   "Pengo",
-   COMPANY_ID_SEGA,
-   NULL,
-   1982,
-   namco_sound,
-   GAME_MAZE
-);
+// This one is really for mame compatibility only, if we didn't add it then most people
+// would miss some roms since this is the parent set of all mspacman games in mame !
+CLNEI(mspacman, puckman, "Ms. Pac-Man", MIDWAY, 1981, GAME_MAZE | GAME_PARTIALLY_WORKING);
 
-CLONE( pengo2u, pengo, "Pengo set 2", COMPANY_ID_BOOTLEG, 1982, GAME_MAZE);
+#define input_mspacman input_puckman
+#define load_mspacman load_puckman
+#define video_mspacman video_puckman
+#define execute_mspacman execute_puckman
+CLNEI( mspacmab, mspacman, "Ms. Pac-Man (bootleg)", BOOTLEG, 1981, GAME_MAZE);
+CLNEI( mspacpls, mspacman, "Ms. Pac-Man + (hack)", BOOTLEG, 1981, GAME_MAZE,
+	.dsw = dsw_mspacpls);
+#define input_pacplus input_puckman
+#define dsw_pacplus dsw_puckman
+#define load_pacplus load_puckman
+#define video_pacplus video_puckman
+#define execute_pacplus execute_puckman
+CLNEI( mspac6m, pacplus, "Ms. Pac-Man 6 maps (hack)", BOOTLEG, 1981, GAME_MAZE);
+
+CLNEI( pacplus, puckman, "Pac-Man Plus", NAMCO, 1982, GAME_MAZE);
+CLNEI( multi15, puckman, "MultiPac 1.5", BOOTLEG, 1998, GAME_MAZE);
+

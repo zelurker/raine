@@ -5,22 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "gekridan.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO gekirindan_dirs[] =
-{
-   { "gekirindan", },
-   { "gekridan", },
-   { "gekirido", },
-   { NULL, },
-};
 
-static struct ROM_INFO gekirindan_roms[] =
+static struct ROM_INFO rom_gekirido[] =
 {
    {   "e11-01.bin", 0x00200000, 0xc2cd1069, 0, 0, 0, },
    {   "e11-02.bin", 0x00200000, 0x5722a83b, 0, 0, 0, },
@@ -46,41 +38,13 @@ static struct ROMSW_DATA romsw_data_gekirindan_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO gekirindan_romsw[] =
+static struct ROMSW_INFO romsw_gekirido[] =
 {
    { 0x0FFFFF, 0x01, romsw_data_gekirindan_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO gekirindan_video =
-{
-   DrawGekirindan,
-   232,
-   320,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( gekirindan ,
-   gekirindan_dirs,
-   gekirindan_roms,
-   f3_system_inputs,
-   NULL,
-   gekirindan_romsw,
-
-   LoadGekirindan,
-   ClearGekirindan,
-   &gekirindan_video,
-   ExecuteF3SystemFrameB,
-   "gekirido",
-   "Gekirindan",
-   "‹t—Ø’e",
-   COMPANY_ID_TAITO,
-   "E11",
-   1995,
-   f3_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -108,7 +72,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadGekirindan(void)
+static void load_gekirido(void)
 {
    int ta,tb,tc;
 
@@ -333,7 +297,7 @@ void LoadGekirindan(void)
    setup_sound_68000();
 }
 
-void ClearGekirindan(void)
+static void ClearGekirindan(void)
 {
    save_eeprom();
 
@@ -343,7 +307,7 @@ void ClearGekirindan(void)
    #endif
 }
 
-void DrawGekirindan(void)
+static void DrawGekirindan(void)
 {
    UINT8 *MAP;
    int x16,y16;
@@ -499,3 +463,29 @@ void DrawGekirindan(void)
       f3video_render_fg0_r270();
    }
 }
+static struct VIDEO_INFO video_gekirido =
+{
+   DrawGekirindan,
+   232,
+   320,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_gekirido[] =
+{
+   { "gekirindan", },
+   { "gekridan", },
+   { "gekirido", },
+   { NULL, },
+};
+GAME( gekirido, "Gekirindan", TAITO, 1995, GAME_SHOOT,
+	.input = f3_system_inputs,
+	.romsw = romsw_gekirido,
+	.clear = ClearGekirindan,
+	.video = &video_gekirido,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "‹t—Ø’e",
+	.board = "E11",
+	.sound = f3_sound,
+);
+

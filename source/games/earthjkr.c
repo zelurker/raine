@@ -11,7 +11,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "earthjkr.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc002obj.h"
@@ -25,14 +24,8 @@
 
 /******************************************************************************/
 
-static struct DIR_INFO earth_joker_dirs[] =
-{
-   { "earth_joker", },
-   { "earthjkr", },
-   { NULL, },
-};
 
-static struct ROM_INFO earth_joker_roms[] =
+static struct ROM_INFO rom_earthjkr[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                "ej_3b.rom",  0xbdd86fc2,    "ej_3a.rom",  0x9c8050c6),
@@ -45,7 +38,7 @@ static struct ROM_INFO earth_joker_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO earth_joker_inputs[] =
+static struct INPUT_INFO input_mofflott[] =
 {
    INP0( COIN1, 0x01A00E, 0x04 ),
    INP0( COIN2, 0x01A00E, 0x08 ),
@@ -122,53 +115,19 @@ static struct DSW_DATA dsw_data_earth_joker_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO earth_joker_dsw[] =
+static struct DSW_INFO dsw_earthjkr[] =
 {
    { 0x01A000, 0xFF, dsw_data_earth_joker_0 },
    { 0x01A002, 0xEF, dsw_data_earth_joker_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO earth_joker_video =
-{
-   DrawEarthJoker,
-   240,
-   320,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( earth_joker ,
-   earth_joker_dirs,
-   earth_joker_roms,
-   earth_joker_inputs,
-   earth_joker_dsw,
-   NULL,
-
-   LoadEarthJoker,
-   ClearEarthJoker,
-   &earth_joker_video,
-   ExecuteEarthJokerFrame,
-   "earthjkr",
-   "Earth Joker",
-   "アースジョーカー",
-   COMPANY_ID_VISCO,
-   NULL,
-   1993,
-   taito_ym2151_sound,
-   GAME_SHOOT
-);
 
 /******************************************************************************/
 
-static struct DIR_INFO maze_of_flott_dirs[] =
-{
-   { "maze_of_flott", },
-   { "mofflott", },
-   { NULL, },
-};
 
-static struct ROM_INFO maze_of_flott_roms[] =
+static struct ROM_INFO rom_mofflott[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "c17-09.bin",  0x05ee110f,   "c17-08.bin",  0xd0aacffd),
@@ -218,7 +177,7 @@ static struct DSW_DATA dsw_data_maze_of_flott_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO maze_of_flott_dsw[] =
+static struct DSW_INFO dsw_mofflott[] =
 {
    { 0x01A000, 0xFF, dsw_data_maze_of_flott_0 },
    { 0x01A002, 0xFF, dsw_data_maze_of_flott_1 },
@@ -232,7 +191,7 @@ static struct ROMSW_DATA romsw_data_maze_of_flott_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO maze_of_flott_romsw[] =
+static struct ROMSW_INFO romsw_mofflott[] =
 {
    { 0x03FFFF, 0x01, romsw_data_maze_of_flott_0 },
    { 0,        0,    NULL },
@@ -271,43 +230,18 @@ static struct MSM5205buffer_interface msm5205_interface =
    MSM5205_MONO,
 };
 
-static struct SOUND_INFO maze_of_flott_sound[] =
+static struct SOUND_INFO sound_mofflott[] =
 {
    { SOUND_YM2151J, &ym2151_interface,  },
    { SOUND_MSM5205_BUFF, &msm5205_interface, },
    { 0,             NULL,               },
 };
 
-GAME( maze_of_flott ,
-   maze_of_flott_dirs,
-   maze_of_flott_roms,
-   earth_joker_inputs,
-   maze_of_flott_dsw,
-   maze_of_flott_romsw,
-
-   LoadMazeOfFlott,
-   ClearMazeOfFlott,
-   &earth_joker_video,
-   ExecuteEarthJokerFrame,
-   "mofflott",
-   "Maze of Flott",
-   "メイズオブフロット",
-   COMPANY_ID_TAITO,
-   "C17",
-   1989,
-   maze_of_flott_sound,
-   GAME_RACE
-);
 
 /******************************************************************************/
 
-static struct DIR_INFO galmedes_dirs[] =
-{
-   { "galmedes", },
-   { NULL, },
-};
 
-static struct ROM_INFO galmedes_roms[] =
+static struct ROM_INFO rom_galmedes[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
              "gm-prg1.bin",  0x32a70753,  "gm-prg0.bin",  0xfae546a4),
@@ -365,43 +299,18 @@ static struct DSW_DATA dsw_data_galmedes_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO galmedes_dsw[] =
+static struct DSW_INFO dsw_galmedes[] =
 {
    { 0x01A000, 0xF7, dsw_data_galmedes_0 },
    { 0x01A002, 0x7F, dsw_data_galmedes_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( galmedes ,
-   galmedes_dirs,
-   galmedes_roms,
-   earth_joker_inputs,
-   galmedes_dsw,
-   NULL,
-
-   LoadGalmedes,
-   ClearGalmedes,
-   &earth_joker_video,
-   ExecuteEarthJokerFrame,
-   "galmedes",
-   "Galmedes",
-   "ガルメデス",
-   COMPANY_ID_VISCO,
-   NULL,
-   1992,
-   taito_ym2151_sound,
-   GAME_SHOOT
-);
 
 /******************************************************************************/
 
-static struct DIR_INFO eto_dirs[] =
-{
-   { "eto", },
-   { NULL, },
-};
 
-static struct ROM_INFO eto_roms[] =
+static struct ROM_INFO rom_eto[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                 "eto-1.23",  0x44286597,      "eto-0.8",  0x57b79370),
@@ -454,42 +363,14 @@ static struct DSW_DATA dsw_data_eto_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO eto_dsw[] =
+static struct DSW_INFO dsw_eto[] =
 {
    { 0x01A000, 0xFF, dsw_data_eto_0 },
    { 0x01A002, 0xFF, dsw_data_eto_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO eto_video =
-{
-   DrawEto,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( eto ,
-   eto_dirs,
-   eto_roms,
-   earth_joker_inputs,
-   eto_dsw,
-   NULL,
-
-   LoadEto,
-   ClearEto,
-   &eto_video,
-   ExecuteEarthJokerFrame,
-   "eto",
-   "Kokontouzai Eto Monogatari",
-   NULL,
-   COMPANY_ID_VISCO,
-   NULL,
-   1994,
-   taito_ym2151_sound,
-   GAME_PUZZLE
-);
 
 /******************************************************************************/
 
@@ -506,7 +387,7 @@ static UINT8 *GFX_SPR_SOLID;
 
 static int romset;
 
-void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data);
+static void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data);
 
 /*
 
@@ -523,7 +404,7 @@ Problems:
 
 */
 
-void MemoryMap_EarthJoker(void)
+static void MemoryMap_EarthJoker(void)
 {
    AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadByte(0x100000, 0x103FFF, NULL, RAM+0x000000);			// 68000 RAM
@@ -566,7 +447,7 @@ void MemoryMap_EarthJoker(void)
    AddWriteWord(-1, -1, NULL, NULL);
 }
 
-void MemoryMap_Eto(void)
+static void MemoryMap_Eto(void)
 {
    AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadByte(0x200000, 0x203FFF, NULL, RAM+0x000000);			// 68000 RAM
@@ -613,7 +494,7 @@ void MemoryMap_Eto(void)
    AddWriteWord(-1, -1, NULL, NULL);
 }
 
-void AddEarthJoker68k(void)
+static void AddEarthJoker68k(void)
 {
    // Init tc0220ioc emulation
    // ------------------------
@@ -725,7 +606,7 @@ void AddEarthJoker68k(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void LoadEarthJoker(void)
+static void load_earthjkr(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -814,7 +695,7 @@ void LoadEarthJoker(void)
    AddEarthJoker68k();
 }
 
-void LoadMazeOfFlott(void)
+static void load_mofflott(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -918,7 +799,7 @@ void LoadMazeOfFlott(void)
    AddEarthJoker68k();
 }
 
-void LoadGalmedes(void)
+static void load_galmedes(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -995,7 +876,7 @@ void LoadGalmedes(void)
    AddEarthJoker68k();
 }
 
-void LoadEto(void)
+static void load_eto(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -1066,12 +947,7 @@ void LoadEto(void)
    AddEarthJoker68k();
 }
 
-void ClearEarthJoker(void)
-{
-   RemoveTaitoYM2151();
-}
-
-void ExecuteEarthJokerFrame(void)
+static void execute_mofflott(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -1079,7 +955,7 @@ void ExecuteEarthJokerFrame(void)
    Taito2151_Frame();			// Z80 and YM2151
 }
 
-void DrawEarthJoker(void)
+static void DrawEarthJoker(void)
 {
    ClearPaletteMap();
 
@@ -1125,7 +1001,7 @@ void DrawEarthJoker(void)
    render_tc0100scn_layer_mapped_r270(0,2);
 }
 
-void DrawEto(void)
+static void DrawEto(void)
 {
    ClearPaletteMap();
 
@@ -1173,7 +1049,7 @@ void DrawEto(void)
 
 /*-------[Maze of Flott MSM5205 Port]-------*/
 
-void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data)
+static void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data)
 {
   int ta;
 
@@ -1196,3 +1072,70 @@ void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data)
     }
   }
 }
+static struct VIDEO_INFO video_eto =
+{
+   DrawEto,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct VIDEO_INFO video_mofflott =
+{
+   DrawEarthJoker,
+   240,
+   320,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_eto[] =
+{
+   { "eto", },
+   { NULL, },
+};
+GAME( eto, "Kokontouzai Eto Monogatari", VISCO, 1994, GAME_PUZZLE,
+	.input = input_mofflott,
+	.dsw = dsw_eto,
+	.video = &video_eto,
+	.exec = execute_mofflott,
+	.sound = taito_ym2151_sound,
+);
+static struct DIR_INFO dir_galmedes[] =
+{
+   { "galmedes", },
+   { NULL, },
+};
+GAME( galmedes, "Galmedes", VISCO, 1992, GAME_SHOOT,
+	.input = input_mofflott,
+	.dsw = dsw_galmedes,
+	.video = &video_mofflott,
+	.exec = execute_mofflott,
+	.long_name_jpn = "ガルメデス",
+	.sound = taito_ym2151_sound,
+);
+static struct DIR_INFO dir_earthjkr[] =
+{
+   { "earth_joker", },
+   { "earthjkr", },
+   { NULL, },
+};
+GAME( earthjkr, "Earth Joker", VISCO, 1993, GAME_SHOOT,
+	.input = input_mofflott,
+	.dsw = dsw_earthjkr,
+	.video = &video_mofflott,
+	.exec = execute_mofflott,
+	.long_name_jpn = "アースジョーカー",
+	.sound = taito_ym2151_sound,
+);
+static struct DIR_INFO dir_mofflott[] =
+{
+   { "maze_of_flott", },
+   { "mofflott", },
+   { NULL, },
+};
+GME( mofflott, "Maze of Flott", TAITO, 1989, GAME_RACE,
+	.romsw = romsw_mofflott,
+	.long_name_jpn = "メイズオブフロット",
+	.board = "C17",
+);
+

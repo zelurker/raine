@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND nichi_ym3812_sound
 /******************************************************************************/
 /*                                                                            */
 /*                      TERRA FORCE (C) 1987 NICHBUTSU                        */
@@ -9,19 +10,12 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "terraf.h"
 #include "nichisnd.h"
 #include "blit.h" // clear_game_screen
 #include "profile.h" // fps
 
-static struct DIR_INFO terra_force_dirs[] =
-{
-   { "terra_force", },
-   { "terraf", },
-   { NULL, },
-};
 
-static struct ROM_INFO terra_force_roms[] =
+static struct ROM_INFO rom_terraf[] =
 {
    { "terrafor.010", 0x00010000, 0x58b5f43b, 0, 0, 0, },
    { "terrafor.002", 0x00010000, 0x148aa0c5, 0, 0, 0, },
@@ -40,7 +34,7 @@ static struct ROM_INFO terra_force_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO terra_force_inputs[] =
+static struct INPUT_INFO input_legion[] =
 {
    INP0( COIN1, 0x018001, 0x04 ),
    INP0( COIN2, 0x018001, 0x08 ),
@@ -114,29 +108,16 @@ static struct DSW_DATA dsw_data_terra_force_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO terra_force_dsw[] =
+static struct DSW_INFO dsw_terraf[] =
 {
    { 0x018004, 0xAF, dsw_data_terra_force_0 },
    { 0x018006, 0x3F, dsw_data_terra_force_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO terra_force_video =
-{
-   DrawTerraF,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-static struct DIR_INFO legion_dirs[] =
-{
-   { "legion", },
-   { NULL, },
-};
 
-static struct ROM_INFO legion_roms[] =
+static struct ROM_INFO rom_legion[] =
 {
    { "lg1.bin"   , 0x00010000, 0xc4aeb724, 0, 0, 0, },		// main 68000
    { "lg3.bin"   , 0x00010000, 0x777e4935, 0, 0, 0, },
@@ -193,50 +174,17 @@ static struct DSW_DATA dsw_data_legion_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO legion_dsw[] =
+static struct DSW_INFO dsw_legion[] =
 {
    { 0x018004, 0xF7, dsw_data_legion_0 },
    { 0x018006, 0xFF, dsw_data_legion_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO legion_video =
-{
-   DrawTerraF,
-   288,
-   224,
-   32,
-   VIDEO_ROTATE_270 | VIDEO_ROTATABLE,
-};
 
-GAME( legion ,
-   legion_dirs,
-   legion_roms,
-   terra_force_inputs,
-   legion_dsw,
-   NULL,
 
-   LoadLegion,
-   ClearTerraF,
-   &legion_video,
-   ExecuteLegionFrame,
-   "legion",
-   "Legion",
-   NULL,
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1987,
-   nichi_ym3812_sound,
-   GAME_SHOOT|GAME_PARTIALLY_WORKING
-);
 
-static struct DIR_INFO kodure_dirs[] =
-{
-   { "kodure", },
-   { NULL, },
-};
-
-static struct ROM_INFO kodure_roms[] =
+static struct ROM_INFO rom_kodure[] =
 {
    { "kodure8.6e"  , 0x00010000, 0x6bbfb1e6, 0, 0, 0, },	// main 68000
    { "kodure3.6h"  , 0x00010000, 0xf9178ec8, 0, 0, 0, },
@@ -296,7 +244,7 @@ static struct DSW_DATA dsw_data_kodure_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kodure_dsw[] =
+static struct DSW_INFO dsw_kodure[] =
 {
    { 0x018004, 0xEF, dsw_data_kodure_0 },
    { 0x018006, 0xFF, dsw_data_kodure_1 },
@@ -351,7 +299,7 @@ static void terraf_vreg(UINT32 offset, UINT16 data)
     terraf_clear_intro(0x80C0,-1, 0x10);
 }
 
-void LoadTerraF(void)
+static void load_terraf(void)
 {
    int ta,tb;
 
@@ -515,13 +463,6 @@ void LoadTerraF(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearTerraF(void)
-{
-   RemoveNichibutsuYM3526();
-   save_debug("Z80ROM.bin",Z80ROM,0x6000,0);
-   save_debug("ROM.bin",ROM,0x10000,1);
-}
-
 static void legion_vreg(UINT32 offset, UINT16 data)
 {
   VReg = data;
@@ -533,7 +474,7 @@ static void legion_vreg(UINT32 offset, UINT16 data)
   }
 }
 
-void LoadLegion(void)
+static void load_legion(void)
 {
    int ta,tb;
 
@@ -671,7 +612,7 @@ void LoadLegion(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void LoadKodure(void)
+static void load_kodure(void)
 {
    int ta,tb;
 
@@ -810,7 +751,7 @@ void LoadKodure(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ExecuteTerraFFrame(void)
+static void execute_terraf(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
 
@@ -819,7 +760,7 @@ void ExecuteTerraFFrame(void)
    Nichibutsu3526_Frame();		// Z80 and YM3526
 }
 
-void ExecuteKodureFrame(void)
+static void execute_kodure(void)
 {
   // Kodure needs its own cpu frame for the speed hack
   // If the hack happens in an interrupt then the pc must not move (infinite loop).
@@ -833,7 +774,7 @@ void ExecuteKodureFrame(void)
    Nichibutsu3526_Frame();		// Z80 and YM3526
 }
 
-void ExecuteLegionFrame(void)
+static void execute_legion(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60));	// M68000 8MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);
@@ -841,7 +782,7 @@ void ExecuteLegionFrame(void)
    Nichibutsu3526_Frame();		// Z80 and YM3526
 }
 
-void DrawSprites(int priority)
+static void DrawSprites(int priority)
 {
    UINT8 *map;
    int x,y,ta,zz,zzz;
@@ -894,7 +835,7 @@ void DrawSprites(int priority)
    }
 }
 
-void DrawTerraF(void)
+static void DrawTerraF(void)
 {
    UINT8 *map;
    int x,y,ta,zz,zzz,zzzz,x16,y16;
@@ -1076,47 +1017,7 @@ void DrawTerraF(void)
    DrawSprites(0);
 }
 
-GAME( terra_force ,
-   terra_force_dirs,
-   terra_force_roms,
-   terra_force_inputs,
-   terra_force_dsw,
-   NULL,
 
-   LoadTerraF,
-   ClearTerraF,
-   &terra_force_video,
-   ExecuteTerraFFrame,
-   "terraf",
-   "Terra Force",
-   "テラフォース",
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1987,
-   nichi_ym3812_sound,
-   GAME_SHOOT
-);
-
-GAME( kodure ,
-   kodure_dirs,
-   kodure_roms,
-   terra_force_inputs,
-   kodure_dsw,
-   NULL,
-
-   LoadKodure,
-   ClearTerraF,
-   &terra_force_video,
-   ExecuteKodureFrame,
-   "kodure",
-   "Kodure Ookami (Japan)",
-   NULL,
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1987,
-   nichi_ym3812_sound,
-   GAME_BEAT
-);
 
 /*
 
@@ -1135,3 +1036,46 @@ Byte | Bit(s) | Info
 -----+--------+--------------------
 
 */
+static struct VIDEO_INFO video_legion =
+{
+   DrawTerraF,
+   288,
+   224,
+   32,
+   VIDEO_ROTATE_270 | VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_terraf =
+{
+   DrawTerraF,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_kodure[] =
+{
+   { "kodure", },
+   { NULL, },
+};
+GAME( kodure, "Kodure Ookami (Japan)", NICHIBUTSU, 1987, GAME_BEAT,
+	.input = input_legion,
+	.dsw = dsw_kodure,
+	.video = &video_terraf,
+	.exec = execute_kodure,
+);
+GMEI( legion, "Legion", NICHIBUTSU, 1987, GAME_SHOOT|GAME_PARTIALLY_WORKING,
+);
+static struct DIR_INFO dir_terraf[] =
+{
+   { "terra_force", },
+   { "terraf", },
+   { NULL, },
+};
+GAME( terraf, "Terra Force", NICHIBUTSU, 1987, GAME_SHOOT,
+	.input = input_legion,
+	.dsw = dsw_terraf,
+	.video = &video_terraf,
+	.exec = execute_terraf,
+	.long_name_jpn = "テラフォース",
+);
+

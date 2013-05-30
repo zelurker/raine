@@ -90,6 +90,48 @@ typedef struct ROM_PATCH
 
 void patch_rom(UINT8 *src, ROM_PATCH *patch);
 
+// edf, hachoo, iganinju, plusalph, rodland, tshingen
+#define COINAGE_6BITS \
+   { MSG_COIN1,               0x07, 0x08 },\
+   { MSG_3COIN_1PLAY,         0x04 },\
+   { MSG_2COIN_1PLAY,         0x02 },\
+   { MSG_1COIN_1PLAY,         0x07 },\
+   { MSG_1COIN_2PLAY,         0x03 },\
+   { MSG_1COIN_3PLAY,         0x05 },\
+   { MSG_1COIN_4PLAY,         0x01 },\
+   { MSG_1COIN_5PLAY,         0x06 },\
+   { MSG_FREE_PLAY,           0x00 },\
+   { MSG_COIN2,               0x38, 0x08 },\
+   { MSG_4COIN_1PLAY,         0x00 },\
+   { MSG_3COIN_1PLAY,         0x20 },\
+   { MSG_2COIN_1PLAY,         0x10 },\
+   { MSG_1COIN_1PLAY,         0x38 },\
+   { MSG_1COIN_2PLAY,         0x18 },\
+   { MSG_1COIN_3PLAY,         0x28 },\
+   { MSG_1COIN_4PLAY,         0x08 },\
+   { MSG_1COIN_5PLAY,         0x30 },
+
+// lomakai, p47, peekaboo, stdragon, soldamj
+#define COINAGE_6BITS_ALT \
+   { MSG_COIN1,               0x07, 0x08 },\
+   { MSG_4COIN_1PLAY,         0x01 },\
+   { MSG_3COIN_1PLAY,         0x02 },\
+   { MSG_2COIN_1PLAY,         0x03 },\
+   { MSG_1COIN_1PLAY,         0x07 },\
+   { MSG_1COIN_2PLAY,         0x06 },\
+   { MSG_1COIN_3PLAY,         0x05 },\
+   { MSG_1COIN_4PLAY,         0x04 },\
+   { MSG_FREE_PLAY,           0x00 },\
+   { MSG_COIN2,               0x38, 0x08 },\
+   { MSG_4COIN_1PLAY,         0x08 },\
+   { MSG_3COIN_1PLAY,         0x10 },\
+   { MSG_2COIN_1PLAY,         0x18 },\
+   { MSG_1COIN_1PLAY,         0x38 },\
+   { MSG_1COIN_2PLAY,         0x30 },\
+   { MSG_1COIN_3PLAY,         0x28 },\
+   { MSG_1COIN_4PLAY,         0x20 },\
+   { MSG_FREE_PLAY,           0x00 },
+
 /******************************************************************************/
 
 #ifdef __cplusplus

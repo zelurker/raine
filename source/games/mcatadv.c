@@ -81,7 +81,7 @@ Stephh's notes (based on the games M68000 code and some tests) :
 #include "pdraw.h"
 #include "priorities.h"
 
-static struct ROM_INFO mcatadv_roms[] =
+static struct ROM_INFO rom_mcatadv[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
             "mca-u30e",  0xc62fbb65, "mca-u29e",  0xcf21227c),
@@ -101,7 +101,7 @@ static struct ROM_INFO mcatadv_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO mcatadvj_roms[] =
+static struct ROM_INFO rom_mcatadvj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
             "u30.bin",  0x05762f42, "u29.bin",  0x4c59d648),
@@ -117,7 +117,7 @@ static struct ROM_INFO mcatadvj_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO nost_roms[] =
+static struct ROM_INFO rom_nost[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
             "nos-pe-u.bin",  0x4b080149, "nos-po-u.bin",  0x9e3cd6d9),
@@ -137,7 +137,7 @@ static struct ROM_INFO nost_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO mcatadv_inputs[] =
+static struct INPUT_INFO input_mcatadv[] =
 {
   INP0( P1_UP, 0x00, 0x01 ),
   INP0( P1_DOWN, 0x00, 0x02 ),
@@ -206,7 +206,7 @@ static struct DSW_DATA dsw_data_mcatadv_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO mcatadv_dsw[] =
+static struct DSW_INFO dsw_mcatadv[] =
 {
   { 0x5, 0xff, dsw_data_mcatadv_2 },
   { 0x7, 0xff, dsw_data_mcatadv_3 },
@@ -260,7 +260,7 @@ static struct DSW_DATA dsw_data_nost_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO nost_dsw[] =
+static struct DSW_INFO dsw_nost[] =
 {
   { 0x5, 0xff, dsw_data_nost_2 },
   { 0x7, 0xff, dsw_data_nost_3 },
@@ -312,7 +312,7 @@ static struct YM2610interface mcatadv_ym2610_interface =
 	{ YM3012_VOL(220,MIXER_PAN_LEFT,220,MIXER_PAN_RIGHT) }
 };
 
-static struct SOUND_INFO mcatadv_sound[] =
+static struct SOUND_INFO sound_mcatadv[] =
   {
     { SOUND_YM2610, &mcatadv_ym2610_interface },
     { 0,             NULL,               },
@@ -766,47 +766,10 @@ static void draw_mcatadv() {
   memcpy(spriteram_old,ram_spr,spriteram_size);
 }
 
-static struct VIDEO_INFO mcatadv_video =
-  {
-   draw_mcatadv,
-   320,
-   224,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-    mcatadv_gfxdecodeinfo
-  };
 
-static struct VIDEO_INFO nost_video =
-  {
-   draw_mcatadv,
-   320,
-   224,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-    mcatadv_gfxdecodeinfo
-  };
 
-static struct DIR_INFO mcatadv_dirs[] =
-  {
-    { "mcatadv", },
-    { NULL }
-  };
 
-static struct DIR_INFO nost_dirs[] =
-  {
-    { "nost", },
-    { NULL }
-  };
 
-static struct DIR_INFO mcatadvj_dirs[] =
-  {
-    { "mcatadvj", },
-   { ROMOF("mcatadv") },
-   { CLONEOF("mcatadv") },
-    { NULL }
-  };
 
 static void execute_mcatadv() {
   cpu_execute_cycles(CPU_68K_0, frame_68k);
@@ -828,65 +791,32 @@ static void execute_mcatadv() {
   execute_z80_audio_frame();
 }
 
-GAME( mcatadv ,
-   mcatadv_dirs,
-   mcatadv_roms,
-   mcatadv_inputs,
-   mcatadv_dsw,
-   NULL,
 
-   load_mcatadv,
-   NULL,
-   &mcatadv_video,
-   execute_mcatadv,
-   "mcatadv",
-   "Magical Cat Adventure",
-   "Magical Cat Adventure",
-   COMPANY_ID_WINTECHNO,
-   NULL,
-   1993,
-   mcatadv_sound,
-   GAME_PLATFORM
+
+static struct VIDEO_INFO video_mcatadv =
+  {
+   draw_mcatadv,
+   320,
+   224,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+    mcatadv_gfxdecodeinfo
+  };
+static struct VIDEO_INFO video_nost =
+  {
+   draw_mcatadv,
+   320,
+   224,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+    mcatadv_gfxdecodeinfo
+  };
+GMEI( mcatadv, "Magical Cat Adventure", WINTECHNO, 1993, GAME_PLATFORM);
+CLNEI( mcatadvj, mcatadv,"Magical Cat Adventure (jap - harder)", WINTECHNO, 1993, GAME_PLATFORM);
+CLNEI( nost, mcatadv,"Nostradamus", FACE, 1993, GAME_SHOOT,
+	.dsw = dsw_nost,
+	.video = &video_nost,
 );
 
-GAME( nost ,
-   nost_dirs,
-   nost_roms,
-   mcatadv_inputs,
-   nost_dsw,
-   NULL,
-
-   load_mcatadv,
-   NULL,
-   &nost_video,
-   execute_mcatadv,
-   "nost",
-   "Nostradamus",
-   "Nostradamus",
-   COMPANY_ID_FACE,
-   NULL,
-   1993,
-   mcatadv_sound,
-   GAME_SHOOT
-);
-
-GAME( mcatadvj ,
-   mcatadvj_dirs,
-   mcatadvj_roms,
-   mcatadv_inputs,
-   mcatadv_dsw,
-   NULL,
-
-   load_mcatadv,
-   NULL,
-   &mcatadv_video,
-   execute_mcatadv,
-   "mcatadvj",
-   "Magical Cat Adventure (jap - harder)",
-   "Magical Cat Adventure (jap)",
-   COMPANY_ID_WINTECHNO,
-   NULL,
-   1993,
-   mcatadv_sound,
-   GAME_PLATFORM
-);

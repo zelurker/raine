@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND sound_tokib
 /******************************************************************************/
 /*                                                                            */
 /*                       TOKI (C) 1989 DATSU ELECTRON                         */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "toki.h"
 #include "sasound.h"		// sample support routines
 #include "3812intf.h"
 #include "msm5205.h"
@@ -15,14 +15,8 @@
 
 static int current_bank;
 
-static struct DIR_INFO toki_dirs[] =
-{
-   { "toki", },
-   { "tokib", },
-   { NULL, },
-};
 
-static struct ROM_INFO toki_roms[] =
+static struct ROM_INFO rom_tokib[] =
 {
    {      "toki.e9", 0x00010000, 0x82ce27f6, 0, 0, 0, },
    {      "toki.e8", 0x00010000, 0x46a1b821, 0, 0, 0, },
@@ -61,7 +55,7 @@ static struct ROM_INFO toki_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO toki_inputs[] =
+static struct INPUT_INFO input_tokib[] =
 {
    INP0( COIN1, 0x020004, 0x01 ),
    INP0( COIN2, 0x020004, 0x02 ),
@@ -139,21 +133,13 @@ static struct DSW_DATA dsw_data_toki_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO toki_dsw[] =
+static struct DSW_INFO dsw_tokib[] =
 {
    { 0x020000, 0x9F, dsw_data_toki_0 },
    { 0x020001, 0xFB, dsw_data_toki_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO toki_video =
-{
-   DrawToki,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
 static struct YM3812interface ym3812_interface =
 {
@@ -184,33 +170,13 @@ static struct MSM5205buffer_interface msm5205_interface =
    MSM5205_MONO,
 };
 
-static struct SOUND_INFO toki_sound[] =
+static struct SOUND_INFO sound_tokib[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { SOUND_MSM5205_BUFF,  &msm5205_interface, },
    { 0,             NULL,                 },
 };
 
-GAME( toki ,
-   toki_dirs,
-   toki_roms,
-   toki_inputs,
-   toki_dsw,
-   NULL,
-
-   LoadToki,
-   ClearToki,
-   &toki_video,
-   ExecuteTokiFrame,
-   "tokib",
-   "Toki",
-   "ÇiÇïÇiÇïì`ê‡",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1989,
-   toki_sound,
-   GAME_PLATFORM
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *GFX_BG0;
@@ -317,7 +283,7 @@ static void TokiDecode2(char *S,int tb, int td)
    }
 }
 
-void toki_adpcm_control_w(UINT16 adr, UINT8 data)
+static void toki_adpcm_control_w(UINT16 adr, UINT8 data)
 {
   data &= 1;
   if (data != current_bank) {
@@ -348,7 +314,7 @@ static UINT8 myYM3812ReadZ80(UINT32 offset) {
   return ret;
 }
 
-void LoadToki(void)
+static void load_tokib(void)
 {
    int ta,tb,tc,td;
 
@@ -580,16 +546,8 @@ void LoadToki(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearToki(void)
-{
-      save_debug("ROM.bin",ROM,0x060000,1);
-      save_debug("z80ROM.bin",Z80ROM,0x08000,0);
-      //save_debug("RAM.bin",RAM,0x022000,1);
-      //save_debug("GFX.bin",GFX,0x440000,0);
-}
-
 #if 1
-void ExecuteTokiFrame(void)
+static void execute_tokib(void)
 {
    static int ta;
 
@@ -610,7 +568,7 @@ void ExecuteTokiFrame(void)
 
 extern void finish_speed_hack(INT32 diff);
 
-void ExecuteTokiFrame(void)
+static void execute_tokib(void)
 {
   int frame = FRAME_Z80;
   int diff;
@@ -638,7 +596,7 @@ void ExecuteTokiFrame(void)
 }
 #endif
 
-void DrawToki(void)
+static void DrawToki(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta,ofs_x,col_msk;
    UINT8 *map;
@@ -852,3 +810,21 @@ Banks 32-47: Backgound#1
 Banks 48-63: Backgound#2
 
 */
+static struct VIDEO_INFO video_tokib =
+{
+   DrawToki,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_tokib[] =
+{
+   { "toki", },
+   { "tokib", },
+   { NULL, },
+};
+GME( tokib, "Toki", BOOTLEG, 1989, GAME_PLATFORM,
+	.long_name_jpn = "ÇiÇïÇiÇïì`ê‡",
+);
+

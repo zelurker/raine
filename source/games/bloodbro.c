@@ -7,19 +7,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "bloodbro.h"
 #include "sasound.h"		// sample support routines
 #include "3812intf.h"
 #include "savegame.h"		// save/load game routines
 
-static struct DIR_INFO blood_bros_dirs[] =
-{
-   { "blood_bros", },
-   { "bloodbro", },
-   { NULL, },
-};
-
-static struct ROM_INFO blood_bros_roms[] =
+static struct ROM_INFO rom_bloodbro[] =
 {
    {    "bb_03.bin", 0x00020000, 0x18d3c460, 0, 0, 0, },
    {    "bb_01.bin", 0x00020000, 0x2d7e0fdf, 0, 0, 0, },
@@ -34,7 +26,7 @@ static struct ROM_INFO blood_bros_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO blood_bros_inputs[] =
+static struct INPUT_INFO input_bloodbro[] =
 {
    INP0( COIN1, 0x020005, 0x10 ),
    INP0( TILT, 0x020005, 0x01 ),
@@ -116,54 +108,17 @@ static struct DSW_DATA dsw_data_blood_bros_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO blood_bros_dsw[] =
+static struct DSW_INFO dsw_bloodbro[] =
 {
    { 0x020000, 0xFF, dsw_data_blood_bros_0 },
    { 0x020001, 0xFF, dsw_data_blood_bros_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO blood_bros_video =
-{
-   DrawBloodBros,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( blood_bros ,
-   blood_bros_dirs,
-   blood_bros_roms,
-   blood_bros_inputs,
-   blood_bros_dsw,
-   NULL,
 
-   LoadBloodBros,
-   ClearBloodBros,
-   &blood_bros_video,
-   ExecuteBloodBrosFrame,
-   "bloodbro",
-   "Blood Bros",
-   "ブラッドブラザーズ Bootleg",
-   COMPANY_ID_TAD,
-   NULL,
-   1990,
-   NULL,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO west_story_dirs[] =
-{
-   { "west_story", },
-   { "weststry", },
-   { ROMOF("bloodbro"), },
-   { CLONEOF("bloodbro"), },
-   { NULL, },
-};
-
-static struct ROM_INFO west_story_roms[] =
+static struct ROM_INFO rom_weststry[] =
 {
    {     "ws20.bin", 0x00020000, 0xf1245c16, 0, 0, 0, },
    {     "ws21.bin", 0x00020000, 0xe23d7296, 0, 0, 0, },
@@ -194,7 +149,7 @@ static struct ROM_INFO west_story_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO west_story_inputs[] =
+static struct INPUT_INFO input_weststry[] =
 {
    INP0( COIN1, 0x020004, 0x01 ),
    INP0( COIN2, 0x020004, 0x02 ),
@@ -228,32 +183,12 @@ static struct YM3812interface ym3812_interface =
    { NULL }
 };
 
-static struct SOUND_INFO west_story_sound[] =
+static struct SOUND_INFO sound_weststry[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( west_story ,
-   west_story_dirs,
-   west_story_roms,
-   west_story_inputs,
-   blood_bros_dsw,
-   NULL,
-
-   LoadWestStry,
-   ClearWestStry,
-   &blood_bros_video,
-   ExecuteWestStryFrame,
-   "weststry",
-   "West Story",
-   "ブラッドブラザーズ",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1991,
-   west_story_sound,
-   GAME_SHOOT
-);
 
 static int sport;
 
@@ -294,7 +229,7 @@ UINT16 WestStorySoundReadZ80(UINT16 offset)
    return ta;
 }
 
-void WestStorySoundWriteZ80(UINT16 offset, UINT8 data)
+static void WestStorySoundWriteZ80(UINT16 offset, UINT8 data)
 {
    switch(offset&0x1F){
       case 0x08:
@@ -331,7 +266,7 @@ static UINT8 *RAM_SCR;
 
 static int romset;
 
-void LoadWestStry(void)
+static void load_weststry(void)
 {
    int ta,tb,tc;
 
@@ -645,10 +580,10 @@ void LoadWestStry(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearWestStry(void)
+static void ClearWestStry(void)
 {
    /*#ifdef RAINE_DEBUG
       save_debug("ROM.bin",ROM,0x080000,1);
@@ -657,7 +592,7 @@ void ClearWestStry(void)
 #endif*/
 }
 
-void ExecuteWestStryFrame(void)
+static void execute_weststry(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(10,60));	// M68000 10MHz (60fps)
    cpu_interrupt(CPU_68K_0, 6);
@@ -690,7 +625,7 @@ UINT16 BloodBrosSoundReadZ80(UINT16 offset)
    return(ta);
 }
 
-void BloodBrosSoundWriteZ80(UINT16 offset, UINT8 data)
+static void BloodBrosSoundWriteZ80(UINT16 offset, UINT8 data)
 {
    switch(offset&31){
       default:
@@ -699,7 +634,7 @@ void BloodBrosSoundWriteZ80(UINT16 offset, UINT8 data)
    }
 }
 
-void LoadBloodBros(void)
+static void load_bloodbro(void)
 {
    int ta,tb,tc;
 
@@ -960,14 +895,10 @@ void LoadBloodBros(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearBloodBros(void)
-{
-}
-
-void ExecuteBloodBrosFrame(void)
+static void execute_bloodbro(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(10,60));	// M68000 10MHz (60fps)
    cpu_interrupt(CPU_68K_0, 4);
@@ -978,7 +909,7 @@ void ExecuteBloodBrosFrame(void)
    cpu_interrupt(CPU_Z80_0, 0x0018);*/
 }
 
-static void draw_blood_bros_object(int pri) 
+static void draw_blood_bros_object(int pri)
 {
    int x,y,rx,ry,rxx,ryy,ryyy;
    int zz,ta;
@@ -1089,7 +1020,7 @@ static void draw_blood_bros_object(int pri)
 
 }
 
-static void draw_west_story_object(int pri) 
+static void draw_west_story_object(int pri)
 {
    int x,y;
    int zz,ta;
@@ -1166,7 +1097,7 @@ static void draw_west_story_object(int pri)
    }
 }
 
-void DrawBloodBros(void)
+static void DrawBloodBros(void)
 {
    int x,y,x16,y16;
    int zz,zzz,zzzz,ta;
@@ -1344,3 +1275,43 @@ WS25.BIN | 16x16 SPR (0-3)
 WS26.BIN | 16x16 SPR (1-3)
 
 */
+static struct VIDEO_INFO video_weststry =
+{
+   DrawBloodBros,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_bloodbro[] =
+{
+   { "blood_bros", },
+   { "bloodbro", },
+   { NULL, },
+};
+GAME( bloodbro, "Blood Bros", TAD, 1990, GAME_SHOOT,
+	.input = input_bloodbro,
+	.dsw = dsw_bloodbro,
+	.video = &video_weststry,
+	.exec = execute_bloodbro,
+	.long_name_jpn = "ブラッドブラザーズ Bootleg",
+);
+static struct DIR_INFO dir_weststry[] =
+{
+   { "west_story", },
+   { "weststry", },
+   { ROMOF("bloodbro"), },
+   { CLONEOF("bloodbro"), },
+   { NULL, },
+};
+GAME( weststry, "West Story", BOOTLEG, 1991, GAME_SHOOT,
+	.input = input_weststry,
+	.dsw = dsw_bloodbro,
+	.clear = ClearWestStry,
+	.video = &video_weststry,
+	.exec = execute_weststry,
+	.long_name_jpn = "ブラッドブラザーズ",
+	.sound = sound_weststry,
+);
+

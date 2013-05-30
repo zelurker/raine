@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                 TAITO TETRIS (C) 1989 TAITO CORPORATION                    */
@@ -5,22 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "tetrist.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 #include "blit.h"
 
-static struct DIR_INFO taito_sega_tetris_dirs[] =
-{
-   { "taito_tetris", },
-   { "taito_sega_tetris", },
-   { "tetrist", },
-   { "tetris", },
-   { NULL, },
-};
 
-static struct ROM_INFO taito_sega_tetris_roms[] =
+static struct ROM_INFO rom_tetrist[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "c12-03.bin",  0x38f1ed41,   "c12-02.bin",  0xed9530bc),
@@ -30,7 +22,7 @@ static struct ROM_INFO taito_sega_tetris_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO taito_sega_tetris_inputs[] =
+static struct INPUT_INFO input_tetrist[] =
 {
    INP0( COIN1, 0x05800E, 0x04 ),
    INP0( COIN2, 0x05800E, 0x08 ),
@@ -85,46 +77,18 @@ static struct DSW_DATA dsw_data_taito_sega_tetris_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO taito_sega_tetris_dsw[] =
+static struct DSW_INFO dsw_tetrist[] =
 {
    { 0x058000, 0xFF, dsw_data_taito_sega_tetris_0 },
    { 0x058002, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO taito_tetris_video =
-{
-   DrawTaitoTetris,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL|VIDEO_NEEDS_8BPP
-};
 
-GAME( taito_sega_tetris ,
-   taito_sega_tetris_dirs,
-   taito_sega_tetris_roms,
-   taito_sega_tetris_inputs,
-   taito_sega_tetris_dsw,
-   NULL,
-
-   LoadTaitoTetris,
-   ClearTaitoTetris,
-   &taito_tetris_video,
-   ExecuteTaitoTetrisFrame,
-   "tetrist",
-   "Taito Tetris",
-   "テトリス",
-   COMPANY_ID_TAITO,
-   "C12",
-   1989,
-   taito_ym2610_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_INPUT;
 
-void LoadTaitoTetris(void)
+static void load_tetrist(void)
 {
    RAMSize=0x60000+0x10000;
 
@@ -212,15 +176,10 @@ void LoadTaitoTetris(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearTaitoTetris(void)
-{
-   RemoveTaitoYM2610();
-}
-
-void ExecuteTaitoTetrisFrame(void)
+static void execute_tetrist(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);
@@ -229,7 +188,7 @@ void ExecuteTaitoTetrisFrame(void)
    Taito2610_Frame();				// Z80 and YM2610
 }
 
-void DrawTaitoTetris(void)
+static void DrawTaitoTetris(void)
 {
    int x,y,tc,yy;
    int zz;
@@ -264,3 +223,24 @@ void DrawTaitoTetris(void)
    zz+=(512-320);
    }
 }
+static struct VIDEO_INFO video_tetrist =
+{
+   DrawTaitoTetris,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL|VIDEO_NEEDS_8BPP
+};
+static struct DIR_INFO dir_tetrist[] =
+{
+   { "taito_tetris", },
+   { "taito_sega_tetris", },
+   { "tetrist", },
+   { "tetris", },
+   { NULL, },
+};
+GME( tetrist, "Taito Tetris", TAITO, 1989, GAME_PUZZLE,
+	.long_name_jpn = "テトリス",
+	.board = "C12",
+);
+

@@ -7,7 +7,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "bublbobl.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 #include "2203intf.h"
@@ -83,15 +82,8 @@ changes/antiriad:
    BUBBLE BOBBLE
  *****************/
 
-static struct DIR_INFO bubble_bobble_dirs[] =
-{
-   { "bubble_bobble", },
-   { "bublbobl", },
-   { "bublbob1", },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_bobble_roms[] =
+static struct ROM_INFO rom_bublbobl[] =
 {
    {   "a78-05.52", 0x00010000, 0x53f4bc6e, 0, 0, 0, },
    {   "a78-06.51", 0x00008000, 0x32c8305b, 0, 0, 0, },
@@ -114,7 +106,7 @@ static struct ROM_INFO bubble_bobble_roms[] =
 };
 
 #ifndef MAME_MCU
-static struct INPUT_INFO bubble_bobble_inputs[] =
+static struct INPUT_INFO input_bublbobl[] =
 {
    INP1( COIN1, 0x010000, 0xFF ),
    INP1( COIN2, 0x010001, 0xFF ),
@@ -136,7 +128,7 @@ static struct INPUT_INFO bubble_bobble_inputs[] =
    END_INPUT
 };
 #else
-static struct INPUT_INFO bubble_bobble_inputs[] =
+static struct INPUT_INFO input_bublbobl[] =
 {
    INP0( TILT,   0x010000, 1 ),
    INP0( SERVICE,0x010000, 2 ),
@@ -208,7 +200,7 @@ struct DSW_DATA dsw_data_bubble_bobble_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO bubble_bobble_dsw[] =
+static struct DSW_INFO dsw_bublbobl[] =
 {
 #ifndef MAME_MCU
    { 0x010030, 0xFE, dsw_data_bubble_bobble_0 },
@@ -220,15 +212,6 @@ static struct DSW_INFO bubble_bobble_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO bubble_bobble_video =
-{
-   draw_bubble_bobble,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -251,48 +234,20 @@ static struct YM3812interface ym3526_interface =
    { NULL }
 };
 
-static struct SOUND_INFO bubble_bobble_sound[] =
+static struct SOUND_INFO sound_bublbobl[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { SOUND_YM3812,  &ym3526_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( bubble_bobble ,
-   bubble_bobble_dirs,
-   bubble_bobble_roms,
-   bubble_bobble_inputs,
-   bubble_bobble_dsw,
-   NULL,
-
-   load_bubble_bobble,
-   clear_bubble_bobble,
-   &bubble_bobble_video,
-   execute_bubble_bobble_frame,
-   "bublbobl",
-   "Bubble Bobble",
-   "バブルボブル",
-   COMPANY_ID_TAITO,
-   "A78",
-   1986,
-   bubble_bobble_sound,
-   GAME_PLATFORM
-);
 
 /*************************************
    BUBBLE BOBBLE US with mode select
  *************************************/
 
-static struct DIR_INFO bubble_bobble_romstar_dirs[] =
-{
-   { "bubble_bobble_romstar", },
-   { "bublbobr", },
-   { ROMOF("bublbobl"), },
-   { CLONEOF("bublbobl"), },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_bobble_romstar_roms[] =
+static struct ROM_INFO rom_bublbobr[] =
 {
    {       "a78-24.52", 0x00010000, 0xb7afedc4, 0, 0, 0, },
    {       "a78-25.51", 0x00008000, 0x2d901c9d, 0, 0, 0, },
@@ -314,41 +269,13 @@ static struct ROM_INFO bubble_bobble_romstar_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( bubble_bobble_romstar ,
-   bubble_bobble_romstar_dirs,
-   bubble_bobble_romstar_roms,
-   bubble_bobble_inputs,
-   bubble_bobble_dsw,
-   NULL,
-
-   load_bubble_bobble,
-   clear_bubble_bobble,
-   &bubble_bobble_video,
-   execute_bubble_bobble_frame,
-   "bublbobr",
-   "Bubble Bobble (US mode select)",
-   "バブルボブル (US mode select)",
-   COMPANY_ID_TAITO,
-   "A78",
-   1986,
-   bubble_bobble_sound,
-   GAME_PLATFORM
-);
 
 /********************
    BUBBLE BOBBLE US
  ********************/
 
-static struct DIR_INFO bubble_bobble_romstar2_dirs[] =
-{
-   { "bubble_bobble_romstar2", },
-   { "bubbobr1", },
-   { ROMOF("bublbobl"), },
-   { CLONEOF("bublbobl"), },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_bobble_romstar2_roms[] =
+static struct ROM_INFO rom_bubbobr1[] =
 {
    {    "a78-21.52", 0x00010000, 0x2844033d, 0, 0, 0, },
    {   "a78-06.51", 0x00008000, 0x32c8305b, 0, 0, 0, },
@@ -370,41 +297,13 @@ static struct ROM_INFO bubble_bobble_romstar2_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( bubble_bobble_romstar2 ,
-   bubble_bobble_romstar2_dirs,
-   bubble_bobble_romstar2_roms,
-   bubble_bobble_inputs,
-   bubble_bobble_dsw,
-   NULL,
-
-   load_bubble_bobble,
-   clear_bubble_bobble,
-   &bubble_bobble_video,
-   execute_bubble_bobble_frame,
-   "bubbobr1",
-   "Bubble Bobble (US)",
-   "バブルボブル (US)",
-   COMPANY_ID_TAITO,
-   "A78",
-   1986,
-   bubble_bobble_sound,
-   GAME_PLATFORM
-);
 
 /*****************
    BOBBLE BOBBLE
  *****************/
 
-static struct DIR_INFO bobble_bobble_dirs[] =
-{
-   { "bobble_bobble", },
-   { "boblbobl", },
-   { ROMOF("bublbobl"), },
-   { CLONEOF("bublbobl"), },
-   { NULL, },
-};
 
-static struct ROM_INFO bobble_bobble_roms[] =
+static struct ROM_INFO rom_boblbobl[] =
 {
    {          "bb3", 0x00008000, 0x01f81936, 0, 0, 0, },
    {          "bb4", 0x00008000, 0xafda99d8, 0, 0, 0, },
@@ -427,7 +326,7 @@ static struct ROM_INFO bobble_bobble_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO bobble_bobble_inputs[] =
+static struct INPUT_INFO input_sboblbob[] =
 {
    INP0( COIN1, 0x00FF02, 0x08 ),
    INP0( COIN2, 0x00FF02, 0x04 ),
@@ -474,50 +373,19 @@ struct DSW_DATA dsw_data_bobble_bobble_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO bobble_bobble_dsw[] =
+static struct DSW_INFO dsw_boblbobl[] =
 {
    { 0x00FF00, 0xFE, dsw_data_bubble_bobble_0 },
    { 0x00FF01, 0xFF, dsw_data_bobble_bobble_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( bobble_bobble ,
-   bobble_bobble_dirs,
-   bobble_bobble_roms,
-   bobble_bobble_inputs,
-   bobble_bobble_dsw,
-   NULL,
-
-   load_bobble_bobble,
-   clear_bubble_bobble,
-   &bubble_bobble_video,
-   execute_bubble_bobble_frame,
-   "boblbobl",
-   "Bobble Bobble",
-   "ボブルボブル",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1986,
-   bubble_bobble_sound,
-   GAME_PLATFORM
-);
 
 /***********************
    SUPER BOBBLE BOBBLE
  ***********************/
 
-static struct DIR_INFO super_bobble_bobble_dirs[] =
-{
-   { "super_bobble_bobble", },
-   { "sboblbob", },
-   { ROMOF("bublbobl"), },
-   { CLONEOF("bublbobl"), },
-   //{ ROMOF("boblbobl"), },	// mulitple romof/cloneof if we want full merging
-   //{ CLONEOF("boblbobl"), },	// but that will probably break rom merge tools ;)
-   { NULL, },
-};
-
-static struct ROM_INFO super_bobble_bobble_roms[] =
+static struct ROM_INFO rom_sboblbob[] =
 {
    {    "bbb-3.rom", 0x00008000, 0xf304152a, 0, 0, 0, },
    {    "bbb-4.rom", 0x00008000, 0x94c75591, 0, 0, 0, },
@@ -586,33 +454,13 @@ struct DSW_DATA dsw_data_super_bobble_bobble_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO super_bobble_bobble_dsw[] =
+static struct DSW_INFO dsw_sboblbob[] =
 {
    { 0x00FF00, 0xFE, dsw_data_super_bobble_bobble_0 },
    { 0x00FF01, 0xFF, dsw_data_super_bobble_bobble_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( super_bobble_bobble ,
-   super_bobble_bobble_dirs,
-   super_bobble_bobble_roms,
-   bobble_bobble_inputs,
-   super_bobble_bobble_dsw,
-   NULL,
-
-   load_super_bobble_bobble,
-   clear_bubble_bobble,
-   &bubble_bobble_video,
-   execute_bubble_bobble_frame,
-   "sboblbob",
-   "Super Bobble Bobble",
-   "スーパーボブルボブル",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1986,
-   bubble_bobble_sound,
-   GAME_PLATFORM
-);
 
 /******************************************************************************/
 
@@ -655,7 +503,7 @@ UINT8 BubbleBobble_MCU_RDMEM(int a)
 
 void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 {
-#ifdef MAME_MCU 
+#ifdef MAME_MCU
    RAM_MCU[a] = data;
     switch(a) {
     case 0: portA_out = data; break;
@@ -923,7 +771,7 @@ static void SelectNMI(UINT16 offset, UINT8 data)
    switch(offset & 3)
    {
    case 0: RAM[0xfa00] = data; break;
-   case 1: nmi_enable = 1; 
+   case 1: nmi_enable = 1;
 	   if (nmi_pending) {
 	       cpu_int_nmi(CPU_Z80_2);
 	       nmi_pending = 0;
@@ -1009,11 +857,11 @@ static UINT8 HACK[3][2];
 
 static void BublBobl_resetsound(UINT32 offset, UINT8 data) {
     /*
-    if (data) 
+    if (data)
 	cpu_reset(CPU_Z80_2); */
 }
 
-void load_bubble_bobble(void)
+static void load_bublbobl(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -1223,7 +1071,7 @@ void load_bubble_bobble(void)
    FreeMem(TMP);
 }
 
-void load_bobble_bobble(void)
+static void load_boblbobl(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -1452,7 +1300,7 @@ void load_bobble_bobble(void)
    FreeMem(TMP);
 }
 
-void load_super_bobble_bobble(void)
+static void load_sboblbob(void)
 {
    int ta, tb;
    UINT8 *TMP;
@@ -1662,11 +1510,7 @@ void load_super_bobble_bobble(void)
    FreeMem(TMP);
 }
 
-void clear_bubble_bobble(void)
-{
-}
-
-void execute_bubble_bobble_frame(void)
+static void execute_bublbobl(void)
 {
    int ta;
 
@@ -1731,7 +1575,7 @@ void execute_bubble_bobble_frame(void)
 #endif
 }
 
-void draw_bubble_bobble(void)
+static void draw_bubble_bobble(void)
 {
    int ta,x,y;
    UINT8 *map;
@@ -1825,4 +1669,79 @@ void draw_bubble_bobble(void)
       }
    }
 }
+
+static struct VIDEO_INFO video_bublbobl =
+{
+   draw_bubble_bobble,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_boblbobl[] =
+{
+   { "bobble_bobble", },
+   { "boblbobl", },
+   { ROMOF("bublbobl"), },
+   { CLONEOF("bublbobl"), },
+   { NULL, },
+};
+CLNE( boblbobl, bublbobl, "Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
+	.load_game = load_boblbobl,
+	.input = input_sboblbob,
+	.dsw = dsw_boblbobl,
+	.long_name_jpn = "ボブルボブル",
+);
+static struct DIR_INFO dir_bublbobl[] =
+{
+   { "bubble_bobble", },
+   { "bublbobl", },
+   { "bublbob1", },
+   { NULL, },
+};
+GME( bublbobl, "Bubble Bobble", TAITO, 1986, GAME_PLATFORM,
+	.long_name_jpn = "バブルボブル",
+	.board = "A78",
+);
+static struct DIR_INFO dir_bublbobr[] =
+{
+   { "bubble_bobble_romstar", },
+   { "bublbobr", },
+   { ROMOF("bublbobl"), },
+   { CLONEOF("bublbobl"), },
+   { NULL, },
+};
+CLNE( bublbobr, bublbobl, "Bubble Bobble (US mode select)", TAITO, 1986, GAME_PLATFORM,
+	.long_name_jpn = "バブルボブル (US mode select)",
+	.board = "A78",
+);
+static struct DIR_INFO dir_bubbobr1[] =
+{
+   { "bubble_bobble_romstar2", },
+   { "bubbobr1", },
+   { ROMOF("bublbobl"), },
+   { CLONEOF("bublbobl"), },
+   { NULL, },
+};
+CLNE( bubbobr1, bublbobl,"Bubble Bobble (US)", TAITO, 1986, GAME_PLATFORM,
+	.long_name_jpn = "バブルボブル (US)",
+	.board = "A78",
+);
+static struct DIR_INFO dir_sboblbob[] =
+{
+   { "super_bobble_bobble", },
+   { "sboblbob", },
+   { ROMOF("bublbobl"), },
+   { CLONEOF("bublbobl"), },
+   //{ ROMOF("boblbobl"), },	// mulitple romof/cloneof if we want full merging
+   //{ CLONEOF("boblbobl"), },	// but that will probably break rom merge tools ;)
+   { NULL, },
+};
+CLNE( sboblbob, bublbobl,"Super Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
+	.load_game = load_sboblbob,
+	.input = input_sboblbob,
+	.dsw = dsw_sboblbob,
+	.long_name_jpn = "スーパーボブルボブル",
+);
 

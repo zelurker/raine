@@ -812,7 +812,7 @@ void store_picture(gzFile fout) {
      GameViewBitmap->w,GameViewBitmap->h,32,
      0xff0000,0xff00,0xff,0);
    SDL_Rect r;
-   r.x = current_game->video_info->border_size;
+   r.x = current_game->video->border_size;
    r.y = r.x;
    r.w = GameViewBitmap->w;
    r.h = GameViewBitmap->h;

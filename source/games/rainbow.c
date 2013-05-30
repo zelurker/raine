@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2151_sound
 /******************************************************************************/
 /*                                                                            */
 /*              RAINBOW ISLANDS/EXTRA (C) 1988 TAITO CORPORATION              */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "rainbow.h"
 #include "tc100scn.h"
 #include "tc002obj.h"
 #include "sasound.h"		// sample support routines
@@ -13,16 +13,8 @@
 #include "2203intf.h"
 #include "dejap.h" // jumping hack in raine.dat
 
-static struct DIR_INFO jumping_islands_dirs[] =
-{
-   { "jumping_islands", },
-   { "jumping", },
-   { ROMOF("rainbow"), },
-   { CLONEOF("rainbow"), },
-   { NULL, },
-};
 
-static struct ROM_INFO jumping_islands_roms[] =
+static struct ROM_INFO rom_jumping[] =
 {
    {   "ri_m03.rom", 0x00020000, 0x3ebb0fb8, 0, 0, 0, },
    {   "ri_m04.rom", 0x00020000, 0x91625e7f, 0, 0, 0, },
@@ -55,7 +47,7 @@ static struct ROM_INFO jumping_islands_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO jumping_islands_inputs[] =
+static struct INPUT_INFO input_jumping[] =
 {
    INP0( COIN1, 0x01B104, 0x01 ),
    INP0( COIN2, 0x01B104, 0x02 ),
@@ -119,21 +111,13 @@ static struct DSW_DATA dsw_data_jumping_islands_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO jumping_islands_dsw[] =
+static struct DSW_INFO dsw_jumping[] =
 {
    { 0x01B100, 0xFF, dsw_data_jumping_islands_0 },
    { 0x01B102, 0xBF, dsw_data_jumping_islands_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO rainbow_islands_video =
-{
-   DrawRainbow,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -147,43 +131,15 @@ static struct YM2203interface ym2203_interface =
   { NULL, NULL }
 };
 
-struct SOUND_INFO jumping_sound[] =
+static struct SOUND_INFO sound_jumping[] =
 {
    { SOUND_YM2203,  &ym2203_interface,  },
    { 0,             NULL,               },
 };
 
-GAME( jumping_islands ,
-   jumping_islands_dirs,
-   jumping_islands_roms,
-   jumping_islands_inputs,
-   jumping_islands_dsw,
-   NULL,
 
-   LoadJumping,
-   ClearRainbow,
-   &rainbow_islands_video,
-   ExecuteRainbowFrame,
-   "jumping",
-   "Jumping Islands",
-   "ジャンピングアイランド",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1989,
-   jumping_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO rainbow_islands_dirs[] =
-{
-   { "rainbow_islands", },
-   { "rainbow", },
-   { "rainbowo", },
-   { "jumping", },
-   { NULL, },
-};
-
-static struct ROM_INFO rainbow_islands_roms[] =
+static struct ROM_INFO rom_rainbow[] =
 {
    {   "ri_m01.rom", 0x00080000, 0xb76c9168, 0, 0, 0, },
    {   "ri_m02.rom", 0x00080000, 0x1b87ecf0, 0, 0, 0, },
@@ -200,7 +156,7 @@ static struct ROM_INFO rainbow_islands_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO rainbow_islands_inputs[] =
+static struct INPUT_INFO input_rainbow[] =
 {
    INP1( COIN1, 0x020009, 0x01 ),
    INP1( COIN2, 0x020009, 0x02 ),
@@ -270,7 +226,7 @@ static struct DSW_DATA dsw_data_rainbow_islands_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rainbow_islands_dsw[] =
+static struct DSW_INFO dsw_rainbow[] =
 {
    { 0x01B012, 0xFF, dsw_data_rainbow_islands_0 },
    { 0x01B014, 0xBF, dsw_data_rainbow_islands_1 },
@@ -287,43 +243,15 @@ static struct ROMSW_DATA romsw_data_rainbow_islands_0[] =
    { NULL,                        0    },
 };
 
-static struct ROMSW_INFO rainbow_islands_romsw[] =
+static struct ROMSW_INFO romsw_rainbow[] =
 {
    { 0x02FFFF, 0x00, romsw_data_rainbow_islands_0 },
    { 0,        0,    NULL },
 };
 
-GAME( rainbow_islands ,
-   rainbow_islands_dirs,
-   rainbow_islands_roms,
-   rainbow_islands_inputs,
-   rainbow_islands_dsw,
-   rainbow_islands_romsw,
 
-   LoadRainbow,
-   ClearRainbow,
-   &rainbow_islands_video,
-   ExecuteRainbowFrame,
-   "rainbow",
-   "Rainbow Islands",
-   "レインボーアイランド",
-   COMPANY_ID_TAITO,
-   "B22",
-   1987,
-   taito_ym2151_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO rainbow_islands_alt_dirs[] =
-{
-   { "rainbow_islands_alt", },
-   { "rainbowa", },
-   { ROMOF("rainbow"), },
-   { CLONEOF("rainbow"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rainbow_islands_alt_roms[] =
+static struct ROM_INFO rom_rainbowa[] =
 {
    {   "ri_m01.rom", 0x00080000, 0xb76c9168, 0, 0, 0, },
    {   "ri_m02.rom", 0x00080000, 0x1b87ecf0, 0, 0, 0, },
@@ -340,37 +268,9 @@ static struct ROM_INFO rainbow_islands_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( rainbow_islands_alt ,
-   rainbow_islands_alt_dirs,
-   rainbow_islands_alt_roms,
-   rainbow_islands_inputs,
-   rainbow_islands_dsw,
-   rainbow_islands_romsw,
 
-   LoadRainbowA,
-   ClearRainbow,
-   &rainbow_islands_video,
-   ExecuteRainbowFrame,
-   "rainbowa",
-   "Rainbow Islands (alternate)",
-   "レインボーアイランド",
-   COMPANY_ID_TAITO,
-   "B22",
-   1987,
-   taito_ym2151_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO rainbow_islands_extra_dirs[] =
-{
-   { "rainbow_islands_extra", },
-   { "rainbowe", },
-   { ROMOF("rainbow"), },
-   { CLONEOF("rainbow"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rainbow_islands_extra_roms[] =
+static struct ROM_INFO rom_rainbowe[] =
 {
    {   "ri_m01.rom", 0x00080000, 0xb76c9168, 0, 0, 0, },
    {   "ri_m02.rom", 0x00080000, 0x1b87ecf0, 0, 0, 0, },
@@ -387,26 +287,6 @@ static struct ROM_INFO rainbow_islands_extra_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( rainbow_islands_extra ,
-   rainbow_islands_extra_dirs,
-   rainbow_islands_extra_roms,
-   rainbow_islands_inputs,
-   rainbow_islands_dsw,
-   rainbow_islands_romsw,
-
-   LoadRainbowE,
-   ClearRainbow,
-   &rainbow_islands_video,
-   ExecuteRainbowFrame,
-   "rainbowe",
-   "Rainbow Islands (extra)",
-   "レインボーアイランドエキストラ",
-   COMPANY_ID_TAITO,
-   "B22",
-   1988,
-   taito_ym2151_sound,
-   GAME_PLATFORM
-);
 
 #if 0
 static mapper_direct *col_mapper[3] =
@@ -569,10 +449,21 @@ static UINT8 rmap_mask[16] =
    0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0
 };
 
-static void LoadActual(void)
+static void load_rainbow(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
+   if (is_current_game("rainbow")) {
+       romset=0;
+       subset=0;
+   } else if (is_current_game("rainbowa")) {
+       romset=0;
+       subset=1;
+   } else if (is_current_game("rainbowe"))
+       romset=1;
+   else if (is_current_game("jumping"))
+       romset = 2;
+
 // 464 bytes, extracted with hexcat
 UINT8 jumping_hack[] =
 {
@@ -1806,39 +1697,7 @@ UINT8 jump1630_hack[] =
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-void LoadRainbow(void)
-{
-   romset=0;
-   subset=0;
-   LoadActual();
-}
-
-void LoadRainbowA(void)
-{
-   romset=0;
-   subset=1;
-   LoadActual();
-}
-
-void LoadRainbowE(void)
-{
-   romset=1;
-   LoadActual();
-}
-
-void LoadJumping(void)
-{
-   romset=2;
-   LoadActual();
-}
-
-void ClearRainbow(void)
-{
-   if(romset!=2)
-      RemoveTaitoYM2151();
-}
-
-void ExecuteRainbowFrame(void)
+static void execute_rainbow(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));    // M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 4);
@@ -1852,7 +1711,7 @@ void ExecuteRainbowFrame(void)
    }
 }
 
-void DrawRainbow(void)
+static void DrawRainbow(void)
 {
    ClearPaletteMap();
 
@@ -1987,4 +1846,66 @@ RI_M03.ROM | 68000 ROM (block#2, even)
 RI_M04.ROM | 68000 ROM (block#2, odd)
 
 */
+
+static struct VIDEO_INFO video_rainbow =
+{
+   DrawRainbow,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_jumping[] =
+{
+   { "jumping_islands", },
+   { "jumping", },
+   { ROMOF("rainbow"), },
+   { CLONEOF("rainbow"), },
+   { NULL, },
+};
+CLNE( jumping, rainbow, "Jumping Islands", BOOTLEG, 1989, GAME_PLATFORM,
+	.input = input_jumping,
+	.dsw = dsw_jumping,
+	.long_name_jpn = "ジャンピングアイランド",
+	.sound = sound_jumping,
+);
+static struct DIR_INFO dir_rainbow[] =
+{
+   { "rainbow_islands", },
+   { "rainbow", },
+   { "rainbowo", },
+   { "jumping", },
+   { NULL, },
+};
+GME( rainbow, "Rainbow Islands", TAITO, 1987, GAME_PLATFORM,
+	.romsw = romsw_rainbow,
+	.long_name_jpn = "レインボーアイランド",
+	.board = "B22",
+);
+static struct DIR_INFO dir_rainbowa[] =
+{
+   { "rainbow_islands_alt", },
+   { "rainbowa", },
+   { ROMOF("rainbow"), },
+   { CLONEOF("rainbow"), },
+   { NULL, },
+};
+CLNE( rainbowa, rainbow,"Rainbow Islands (alternate)", TAITO, 1987, GAME_PLATFORM,
+	.romsw = romsw_rainbow,
+	.long_name_jpn = "レインボーアイランド",
+	.board = "B22",
+);
+static struct DIR_INFO dir_rainbowe[] =
+{
+   { "rainbow_islands_extra", },
+   { "rainbowe", },
+   { ROMOF("rainbow"), },
+   { CLONEOF("rainbow"), },
+   { NULL, },
+};
+CLNE( rainbowe,rainbow, "Rainbow Islands (extra)", TAITO, 1988, GAME_PLATFORM,
+	.romsw = romsw_rainbow,
+	.long_name_jpn = "レインボーアイランドエキストラ",
+	.board = "B22",
+);
 

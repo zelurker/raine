@@ -5,22 +5,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "hthero95.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 
-static struct DIR_INFO hat_trick_hero_95_dirs[] =
-{
-   { "hat_trick_hero_95", },
-   { "hthero95", },
-   { "hath95", },
-   { "pwrgoal", },
-   { NULL, },
-};
 
-static struct ROM_INFO hat_trick_hero_95_roms[] =
+static struct ROM_INFO rom_pwrgoal[] =
 {
    { "d94-01.bin", 0x00200000, 0x410ffccd, 0, 0, 0, },
    { "d94-02.bin", 0x00200000, 0xf460b9ac, 0, 0, 0, },
@@ -53,41 +44,13 @@ static struct ROMSW_DATA romsw_data_hat_trick_hero_95_0[] =
    { NULL,                      0    },
 };
 
-static struct ROMSW_INFO hat_trick_hero_95_romsw[] =
+static struct ROMSW_INFO romsw_pwrgoal[] =
 {
    { 0x0FFFFF, 0x02, romsw_data_hat_trick_hero_95_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO hat_trick_hero_95_video =
-{
-   draw_hat_trick_hero_95,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( hat_trick_hero_95 ,
-   hat_trick_hero_95_dirs,
-   hat_trick_hero_95_roms,
-   f3_system_inputs_4_player,
-   NULL,
-   hat_trick_hero_95_romsw,
-
-   load_hat_trick_hero_95,
-   clear_hat_trick_hero_95,
-   &hat_trick_hero_95_video,
-   ExecuteF3SystemFrame,
-   "pwrgoal",
-   "Power Goal",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D94",
-   1995,
-   NULL,
-   GAME_SPORTS | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -115,7 +78,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void load_hat_trick_hero_95(void)
+static void load_pwrgoal(void)
 {
    int ta,tb,tc;
 
@@ -353,7 +316,7 @@ void load_hat_trick_hero_95(void)
    init_m68k();
 }
 
-void clear_hat_trick_hero_95(void)
+static void clear_hat_trick_hero_95(void)
 {
    save_eeprom();
 
@@ -363,7 +326,7 @@ void clear_hat_trick_hero_95(void)
 #endif
 }
 
-void draw_hat_trick_hero_95(void)
+static void draw_hat_trick_hero_95(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -512,3 +475,28 @@ void draw_hat_trick_hero_95(void)
       f3video_render_fg0_r180();
    }
 }
+static struct VIDEO_INFO video_pwrgoal =
+{
+   draw_hat_trick_hero_95,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_pwrgoal[] =
+{
+   { "hat_trick_hero_95", },
+   { "hthero95", },
+   { "hath95", },
+   { "pwrgoal", },
+   { NULL, },
+};
+GAME( pwrgoal, "Power Goal", TAITO, 1995, GAME_SPORTS | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs_4_player,
+	.romsw = romsw_pwrgoal,
+	.clear = clear_hat_trick_hero_95,
+	.video = &video_pwrgoal,
+	.exec = ExecuteF3SystemFrame,
+	.board = "D94",
+);
+

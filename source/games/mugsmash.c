@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND technos_ym2151_m6295_sound
 /* Mug Smashers
  (c) Electronic Devices
 
@@ -29,15 +30,9 @@ static UINT8 *RAM_OTHERREGS;
 
 /* Diverboy Directories and (automatic) Rom loading */
 
-static struct DIR_INFO mugsmash_dirs[] =
-{
-   { "mugsmash", },
-   { "mug_smashers", },
-   { NULL, },
-};
 
 
-static struct ROM_INFO mugsmash_roms[] =
+static struct ROM_INFO rom_mugsmash[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,     0x040000,
             "mugs_04.bin",  0x2498fd27, "mugs_05.bin",  0x95efb40b),
@@ -285,20 +280,10 @@ static struct GFX_LIST mugsmash_gfx[] =
 };
 
 
-static struct VIDEO_INFO mugsmash_video =
-{
-   draw_mugsmash,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   mugsmash_gfx,
-};
 
 #define FRAME CPU_FRAME_MHz(12,60)
 
-void execute_mugsmash_frame(void)
+static void execute_mugsmash(void)
 {
 	cpu_execute_cycles(CPU_68K_0, FRAME); // Main 68000
 	cpu_interrupt(CPU_68K_0, 6);
@@ -309,7 +294,7 @@ void execute_mugsmash_frame(void)
 
 /* Inputs + Dips */
 
-static struct INPUT_INFO mugsmash_inputs[] =
+static struct INPUT_INFO input_mugsmash[] =
 {
 	INP0( P1_RIGHT, 0x0000, 0x01 ),
 	INP0( P1_LEFT, 0x0000, 0x02 ),
@@ -396,7 +381,7 @@ static struct DSW_DATA dsw_data_mugsmash_1[] =
    { MSG_ON,                  0x00},
 };
 
-static struct DSW_INFO mugsmash_dsw[] =
+static struct DSW_INFO dsw_mugsmash[] =
 {
   { 0x3, 0xe1, dsw_data_mugsmash_0 },
   { 0x4, 0xe6, dsw_data_mugsmash_1 },
@@ -441,7 +426,7 @@ ADDRESS_MAP_END
 
 
 
-UINT8 mugsmash_inputs_8r (UINT32 offset)
+UINT8 input_mugsmash_8r (UINT32 offset)
 {
 	UINT16 data = 0xff;
 
@@ -479,11 +464,11 @@ UINT8 mugsmash_inputs_8r (UINT32 offset)
 	return data;
 }
 
-UINT16 mugsmash_inputs_16r (UINT32 offset)
+UINT16 input_mugsmash_16r (UINT32 offset)
 {
 	offset &=0x0f;
 
-	return mugsmash_inputs_8r(offset+1)|(mugsmash_inputs_8r(offset)<<8);
+	return input_mugsmash_8r(offset+1)|(input_mugsmash_8r(offset)<<8);
 }
 
 static void WriteOutByte(UINT32 address, UINT8 data)
@@ -504,7 +489,7 @@ static void WriteOutWord(UINT32 address, UINT16 data)
 		TechnosSoundWrite68k(address, (UINT8) (data&0xFF) );
 }
 
-void load_mugsmash(void)
+static void load_mugsmash(void)
 {
 	/* In RAINE we allocate one big block of RAM to contain all emulated RAM then set some pointers to it
 
@@ -585,8 +570,8 @@ void load_mugsmash(void)
 	AddRWBW     (0x100000, 0x1005ff,     NULL,              RAM_PALETTE     );   // PALETTE RAM
 	AddWriteByte(0x140000, 0x14000F,     WriteOutByte,      NULL            );   //
 	AddWriteWord(0x140000, 0x14000F,     WriteOutWord,      NULL            );   //
-	AddReadByte (0x180000, 0x18000f,    mugsmash_inputs_8r, NULL            );   // Inputs
-	AddReadWord (0x180000, 0x18000f,    mugsmash_inputs_16r,NULL            );   // Inputs
+	AddReadByte (0x180000, 0x18000f,    input_mugsmash_8r, NULL            );   // Inputs
+	AddReadWord (0x180000, 0x18000f,    input_mugsmash_16r,NULL            );   // Inputs
 
 	AddRWBW     (0x1c0000, 0x1cffff,     NULL,              RAM_MAIN        );   // MAIN RAM
 	AddRWBW     (0x200000, 0x203fff,     NULL,              RAM_SPRITE      );   // MAIN RAM
@@ -617,24 +602,22 @@ void load_mugsmash(void)
 	set_colour_mapper(&col_map_xrrr_rrgg_gggb_bbbb);  /* rrr_rrgg_gggb_bbbb !! */
 }
 
-GAME( mugsmash ,
-   mugsmash_dirs,
-   mugsmash_roms,
-   mugsmash_inputs,
-   mugsmash_dsw,
-   NULL,
 
-   load_mugsmash,
-   NULL,
-   &mugsmash_video,
-   execute_mugsmash_frame,
-   "mugsmash",
-   "Mug Smashers",
-   "Electronic Devices",
-   COMPANY_ID_TOAPLAN, /* Electronic Devices! */
-   NULL,
-   1990, // or newer
-   technos_ym2151_m6295_sound,
-   GAME_MISC
-);
+static struct VIDEO_INFO video_mugsmash =
+{
+   draw_mugsmash,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   mugsmash_gfx,
+};
+static struct DIR_INFO dir_mugsmash[] =
+{
+   { "mugsmash", },
+   { "mug_smashers", },
+   { NULL, },
+};
+GME( mugsmash, "Mug Smashers", ELECTRONIC_DEVICES,  1990, GAME_MISC);
 

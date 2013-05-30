@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND f3_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    TWIN QIX (C) 1995 TAITO CORPORATION                     */
@@ -5,21 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "twinqix.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO twin_qix_dirs[] =
-{
-   { "twin_qix", },
-   { "twinqix", },
-   { NULL, },
-};
 
-static struct ROM_INFO twin_qix_roms[] =
+static struct ROM_INFO rom_twinqix[] =
 {
    {   "mpr0-0.b63", 0x00040000, 0xa4c44c11, 0, 0, 0, },
    {   "mpr0-1.b62", 0x00040000, 0x531f9447, 0, 0, 0, },
@@ -50,41 +44,13 @@ static struct ROMSW_DATA romsw_data_twin_qix_0[] =
    { NULL,                         0    },
 };
 
-static struct ROMSW_INFO twin_qix_romsw[] =
+static struct ROMSW_INFO romsw_twinqix[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_twin_qix_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO twin_qix_video =
-{
-   DrawTwinQix,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( twin_qix ,
-   twin_qix_dirs,
-   twin_qix_roms,
-   f3_system_inputs,
-   NULL,
-   twin_qix_romsw,
-
-   LoadTwinQix,
-   ClearTwinQix,
-   &twin_qix_video,
-   ExecuteF3SystemFrame_NoInt5,
-   "twinqix",
-   "Twin Qix",
-   "ツインクイックス",
-   COMPANY_ID_TAITO,
-   NULL,		// "E??"
-   1995,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -116,7 +82,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadTwinQix(void)
+static void load_twinqix(void)
 {
    int ta,tb,tc;
 
@@ -248,14 +214,14 @@ void LoadTwinQix(void)
 
    // 68000 code
    M68000ROM = load_region[REGION_ROM2];
-   if(!(PCMROM=AllocateMem(0x600000))) return;   
+   if(!(PCMROM=AllocateMem(0x600000))) return;
    load_be("snd-0.b43",PCMROM,0x80000);
    load_be("snd-14.b10",PCMROM+0x100000,0x80000);
    load_be("snd-1.b44",PCMROM+0x200000,0x80000);
    load_be("snd-15.b11",PCMROM+0x300000,0x80000);
    max_banks_this_game=2; //=memory_region_length(REGION_SOUND1)/0x400000;
    memset(PCMROM+0x400000,0,0x1fffff);
-   
+
    memset(RAM+0x00000,0x00,0x80000);
    memset(RAM+0x69000,0xFF,0x01000);
 
@@ -352,18 +318,7 @@ void LoadTwinQix(void)
    setup_sound_68000();
 }
 
-void ClearTwinQix(void)
-{
-   save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x600000,0);
-   #endif
-}
-
-void DrawTwinQix(void)
+static void DrawTwinQix(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *MAP;
@@ -543,3 +498,26 @@ void DrawTwinQix(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_twinqix =
+{
+   DrawTwinQix,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_twinqix[] =
+{
+   { "twin_qix", },
+   { "twinqix", },
+   { NULL, },
+};
+GAME( twinqix, "Twin Qix", TAITO, 1995, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_twinqix,
+	.video = &video_twinqix,
+	.exec = ExecuteF3SystemFrame_NoInt5,
+	.long_name_jpn = "ツインクイックス",
+	.board = NULL /* "E??" */,
+);
+

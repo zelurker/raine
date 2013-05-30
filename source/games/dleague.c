@@ -5,22 +5,15 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "dleague.h"
 #include "tc004vcu.h"
 #include "tc140syt.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO dynamite_league_dirs[] =
-{
-   { "dynamite_league", },
-   { "dleague", },
-   { NULL, },
-};
 
 // Each LOAD_8_16 in GFX1 is doubled to make padding...
-static struct ROM_INFO dynamite_leaguem_roms[] =
+static struct ROM_INFO rom_dleague[] =
 {
   {"c02-19a.33", 0x00020000, 0x7e904e45, REGION_ROM1, 0x000000, LOAD_8_16,   },
   {"c02-21a.36", 0x00020000, 0x18c8a32b, REGION_ROM1, 0x000001, LOAD_8_16,   },
@@ -61,7 +54,7 @@ static struct ROM_INFO dynamite_leaguem_roms[] =
   {           NULL,          0,          0,           0,        0,           0, },
 };
 
-static struct INPUT_INFO dynamite_league_inputs[] =
+static struct INPUT_INFO input_dleague[] =
 {
    INP0( COIN1, 0x032004, 0x04 ),
    INP0( COIN2, 0x032004, 0x08 ),
@@ -118,7 +111,7 @@ static struct DSW_DATA dsw_data_dynamite_league_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dynamite_league_dsw[] =
+static struct DSW_INFO dsw_dleague[] =
 {
    { 0x032000, 0xFF, dsw_data_dynamite_league_0 },
    { 0x032002, 0xFF, dsw_data_default_1 },
@@ -133,7 +126,7 @@ static struct ROMSW_DATA romsw_data_dynamite_league_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO dynamite_league_romsw[] =
+static struct ROMSW_INFO romsw_dleague[] =
 {
    { 0x05FFFF, 0x00, romsw_data_dynamite_league_0 },
    { 0,        0,    NULL },
@@ -170,36 +163,7 @@ static struct GFX_LIST dleague_gfx[] =
 	{ 0,           NULL        },
 };
 
-static struct VIDEO_INFO dynamite_leaguem_video =
-{
-   DrawDLeague,
-   320,
-   240,
-   64,
-   VIDEO_ROTATE_NORMAL,
-   dleague_gfx,
-};
 
-GAME( dynamite_leaguem ,
-   dynamite_league_dirs,
-   dynamite_leaguem_roms,
-   dynamite_league_inputs,
-   dynamite_league_dsw,
-   dynamite_league_romsw,
-
-   LoadDLeague,
-   ClearDLeague,
-   &dynamite_leaguem_video,
-   ExecuteDLeagueFrame,
-   "dleague",
-   "Dynamite League (Mame)",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C02",
-   1990,
-   taito_ym2610_sound,
-   GAME_SPORTS | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_COLOUR;
@@ -305,7 +269,7 @@ static void setup_dleague() {
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void LoadDLeague(void)
+void load_dleague(void)
 {
    if(!(RAM=AllocateMem(0x80000))) return;
 
@@ -325,7 +289,7 @@ void ClearDLeague(void)
 #endif
 }
 
-void ExecuteDLeagueFrame(void)
+void execute_dleague(void)
 {
    //print_ingame(60,"%04x",ReadWord(&RAM[0x30800]));
 
@@ -370,3 +334,29 @@ void DrawDLeague(void)
 
    //tc0004vcu_render_fg0();
 }
+static struct VIDEO_INFO video_dleague =
+{
+   DrawDLeague,
+   320,
+   240,
+   64,
+   VIDEO_ROTATE_NORMAL,
+   dleague_gfx,
+};
+static struct DIR_INFO dir_dleague[] =
+{
+   { "dynamite_league", },
+   { "dleague", },
+   { NULL, },
+};
+GAME( dleague, "Dynamite League (Mame)", TAITO, 1990, GAME_SPORTS | GAME_PARTIALLY_WORKING,
+	.input = input_dleague,
+	.dsw = dsw_dleague,
+	.romsw = romsw_dleague,
+	.clear = ClearDLeague,
+	.video = &video_dleague,
+	.exec = execute_dleague,
+	.board = "C02",
+	.sound = taito_ym2610_sound,
+);
+

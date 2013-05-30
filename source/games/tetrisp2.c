@@ -17,21 +17,14 @@ static struct YMZ280Binterface ymz280b_intf =
    { NULL }
 };
 
-struct SOUND_INFO tetrisp2_sound[] =
+static struct SOUND_INFO sound_tetrisp2[] =
 {
    { SOUND_YMZ280B,  &ymz280b_intf,  },
    { 0,             NULL,               },
 };
 
-static struct DIR_INFO tetrisp2_dirs[] =
-{
-   { "tetris_2_plus", },
-   { "tetris2p", },
-   { "tetrisp2", },
-   { NULL, },
-};
 
-static struct ROM_INFO tetrisp2_roms[] =
+static struct ROM_INFO rom_tetrisp2[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "t2p_04.rom",  0xe67f9c51, "t2p_01.rom",  0x5020a4ed),
@@ -49,7 +42,7 @@ static struct ROM_INFO tetrisp2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO tetrisp2_inputs[] =
+static struct INPUT_INFO input_tetrisp2[] =
 {
    INP0( COIN1, 0x0a0004, 0x40 ),
    INP0( COIN2, 0x0a0004, 0x80 ),
@@ -129,7 +122,7 @@ static struct DSW_DATA dsw_data_tetrisp2_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO tetrisp2_dsw[] =
+static struct DSW_INFO dsw_tetrisp2[] =
 {
    { 0x0a0008, 0xFF, dsw_data_tetrisp2_0 },
    { 0x0a0009, 0xFF, dsw_data_tetrisp2_1 },
@@ -167,7 +160,7 @@ static struct GFX_LIST tetrisp2_gfx[] =
 	{ 0, NULL }
 };
 
-static void tetrisp2_sound_w(UINT32 offset, UINT16 data)
+static void sound_tetrisp2_w(UINT32 offset, UINT16 data)
 {
   if (offset & 2)	YMZ280B_data_0_w     (offset, data & 0xff);
   else		YMZ280B_register_0_w (offset, data & 0xff);
@@ -290,7 +283,7 @@ static void load_tetrisp2(void)
    AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
    AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x800000, 0x800003, tetrisp2_sound_w, NULL);
+   AddWriteWord(0x800000, 0x800003, sound_tetrisp2_w, NULL);
 
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
@@ -298,7 +291,7 @@ static void load_tetrisp2(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ExecuteTetris2PlusFrame(void)
+static void execute_tetrisp2(void)
 {
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
   cpu_interrupt(CPU_68K_0, 2);
@@ -322,7 +315,7 @@ void ExecuteTetris2PlusFrame(void)
     to screen
 */
 
-void draw_tilemap16(int width, int height, UINT8 *gfx, UINT8 *gfx_solid, int scrollx, int scrolly, UINT8 *ram, int colbase) {
+static void draw_tilemap16(int width, int height, UINT8 *gfx, UINT8 *gfx_solid, int scrollx, int scrolly, UINT8 *ram, int colbase) {
   int x,y, zz, zzz, zzzz, x16, y16;
   UINT16 code;
   UINT8 *map;
@@ -346,7 +339,7 @@ void draw_tilemap16(int width, int height, UINT8 *gfx, UINT8 *gfx_solid, int scr
 }
 
 // This one is not generic, we have only 1 8x8 tilemap
-void draw_tilemap8( UINT8 *gfx, UINT8 *gfx_solid, int scrollx, int scrolly, int colbase) {
+static void draw_tilemap8( UINT8 *gfx, UINT8 *gfx_solid, int scrollx, int scrolly, int colbase) {
   int x,y, zz, zzz, zzzz, x16, y16;
   UINT16 code;
   UINT8 *map;
@@ -566,7 +559,8 @@ Byte | Bit(s) | Use
 
 */
 
-static struct VIDEO_INFO tetrisp2_video =
+
+static struct VIDEO_INFO video_tetrisp2 =
 {
    draw_tetrisp2,
    320,
@@ -576,24 +570,12 @@ static struct VIDEO_INFO tetrisp2_video =
    VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP, // 604 colors on the title screen !
    tetrisp2_gfx,
 };
+static struct DIR_INFO dir_tetrisp2[] =
+{
+   { "tetris_2_plus", },
+   { "tetris2p", },
+   { "tetrisp2", },
+   { NULL, },
+};
+GME( tetrisp2, "Tetris 2 Plus", JALECO, 1996, GAME_PUZZLE);
 
-GAME( tetrisp2 ,
-   tetrisp2_dirs,
-   tetrisp2_roms,
-   tetrisp2_inputs,
-   tetrisp2_dsw,
-   NULL,
-
-   load_tetrisp2,
-   NULL,
-   &tetrisp2_video,
-   ExecuteTetris2PlusFrame,
-   "tetrisp2",
-   "Tetris 2 Plus",
-   NULL,
-   COMPANY_ID_JALECO,
-   NULL,
-   1996,
-   tetrisp2_sound,
-   GAME_PUZZLE
-);

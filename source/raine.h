@@ -19,9 +19,6 @@ extern "C" {
 
 #ifndef SDL
 #include <allegro.h>
-#if ALLEGRO_WIP_VERSION >= 38
-#define clear(x) clear_bitmap(x) // super broken allegro-3.9.38 !!!
-#endif
 #ifdef RAINE_UNIX
 // Well sorry : these are defined only in allegro dos...
 #define GFX_DRIVER_VGA
@@ -378,7 +375,7 @@ typedef struct DIR_CFG
 
 extern struct DIR_CFG dir_cfg;
 
-extern char raine_cpu_model[80]; 
+extern char raine_cpu_model[80];
 #endif
 
 #ifdef __cplusplus

@@ -534,7 +534,7 @@ void f3_reset() {
   f3_slices = 15; // default frame... should be safe !
   RAM[0x69001] &= 0xfd; // clear test bit
   // Then execute 1 frame
-  current_game->exec_frame();
+  current_game->exec();
   RAM[0x69001] |= 2; // and then put back the bit to normal
   // It avoids the stupid message "press the test switch button" when changing
   // the region area of the rom

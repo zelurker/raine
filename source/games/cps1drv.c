@@ -1,3 +1,8 @@
+#define DRV_DEF_LOAD load_cps1
+#define DRV_DEF_VIDEO &video_cps1
+#define DRV_DEF_EXEC execute_cps1_frame
+#define DRV_DEF_SOUND sound_cps1
+#define DRV_DEF_INPUT input_cps1
 /*****************************************************************************/
 /*                                                                           */
 /*                   CAPCOM SYSTEM 1 / CPS1 (C) 1990 CAPCOM                  */
@@ -18,7 +23,7 @@
 // by hand to load_normal, and load the 2 sets one after the other.
 // Updated 1/22/2009 !
 
-static struct ROM_INFO _forgottn_roms[] =
+static struct ROM_INFO rom_forgottn[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "lwu_11a.14f",  0xddf78831, "lwu_15a.14g",  0xf7ce2097),
@@ -37,7 +42,7 @@ static struct ROM_INFO _forgottn_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _lostwrld_roms[] = // clone of _forgottn
+static struct ROM_INFO rom_lostwrld[] = // clone of _forgottn
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "lw_11c.14f",  0x67e42546, "lw_15c.14g",  0x402e2a46),
@@ -49,7 +54,7 @@ static struct ROM_INFO _lostwrld_roms[] = // clone of _forgottn
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ghouls_roms[] =
+static struct ROM_INFO rom_ghouls[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "dme_29.10h",  0x166a58a2, "dme_30.10j",  0x7ac8407a),
@@ -79,7 +84,7 @@ static struct ROM_INFO _ghouls_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ghoulsu_roms[] = // clone of _ghouls
+static struct ROM_INFO rom_ghoulsu[] = // clone of _ghouls
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "dmu_29.10h",  0x334d85b2, "dmu_30.10j",  0xcee8ceb5),
@@ -89,7 +94,7 @@ static struct ROM_INFO _ghoulsu_roms[] = // clone of _ghouls
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _daimakai_roms[] = // clone of _ghouls
+static struct ROM_INFO rom_daimakai[] = // clone of _ghouls
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "dmj_38.12f",  0x82fd1798, "dmj_39.12h",  0x35366ccc),
@@ -134,7 +139,7 @@ static struct ROM_INFO _daimakai_roms[] = // clone of _ghouls
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _daimakr2_roms[] = // clone of _ghouls
+static struct ROM_INFO rom_daimakr2[] = // clone of _ghouls
 {
   { "damj_23.8f", 0x80000, 0xc3b248ec, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "damj_22.7f", 0x80000, 0x595ff2f3, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
@@ -148,7 +153,7 @@ static struct ROM_INFO _daimakr2_roms[] = // clone of _ghouls
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _strider_roms[] =
+static struct ROM_INFO rom_strider[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "strider.30",  0xda997474, "strider.35",  0x5463aaa3),
@@ -167,7 +172,7 @@ static struct ROM_INFO _strider_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _stridrua_roms[] = // clone of _strider
+static struct ROM_INFO rom_stridrua[] = // clone of _strider
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "strid.30",  0x66aec273, "strid.35",  0x50e0e865),
@@ -178,14 +183,14 @@ static struct ROM_INFO _stridrua_roms[] = // clone of _strider
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _striderj_roms[] = // clone of _strider
+static struct ROM_INFO rom_striderj[] = // clone of _strider
 {
   { "sthj23.bin", 0x80000, 0x046e7b12, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "st-14.8h", 0x80000, 0x9b3cfc08, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _stridrja_roms[] = // clone of _strider
+static struct ROM_INFO rom_stridrja[] = // clone of _strider
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sth36.bin",  0x53c7b006, "sth42.bin",  0x4037f65f),
@@ -230,7 +235,7 @@ static struct ROM_INFO _stridrja_roms[] = // clone of _strider
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dynwar_roms[] =
+static struct ROM_INFO rom_dynwar[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "30.11f",  0xf9ec6d68, "35.11h",  0xe41fff2f),
@@ -249,7 +254,7 @@ static struct ROM_INFO _dynwar_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dynwaru_roms[] = // clone of _dynwar
+static struct ROM_INFO rom_dynwaru[] = // clone of _dynwar
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "36",  0x895991d1, "42",  0xc898d2e8),
@@ -294,7 +299,7 @@ static struct ROM_INFO _dynwaru_roms[] = // clone of _dynwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dynwarj_roms[] = // clone of _dynwar
+static struct ROM_INFO rom_dynwarj[] = // clone of _dynwar
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "36.bin",  0x1a516657, "42.bin",  0x12a290a0),
@@ -341,7 +346,7 @@ static struct ROM_INFO _dynwarj_roms[] = // clone of _dynwar
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _willow_roms[] =
+static struct ROM_INFO rom_willow[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "wlu_30.rom",  0xd604dbb1, "willow-u.35",  0x7a791e77),
@@ -365,7 +370,7 @@ static struct ROM_INFO _willow_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _willowj_roms[] = // clone of _willow
+static struct ROM_INFO rom_willowj[] = // clone of _willow
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "wl36.bin",  0x2b0d7cbc, "wl42.bin",  0x1ac39615),
@@ -375,7 +380,7 @@ static struct ROM_INFO _willowj_roms[] = // clone of _willow
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _willowje_roms[] = // clone of _willow
+static struct ROM_INFO rom_willowje[] = // clone of _willow
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "wlu_30.rom",  0xd604dbb1, "wlu_35.rom",  0xdaee72fe),
@@ -385,7 +390,7 @@ static struct ROM_INFO _willowje_roms[] = // clone of _willow
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _unsquad_roms[] =
+static struct ROM_INFO rom_unsquad[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "aru_30.11f",  0x24d8f88d, "aru_35.11h",  0x8b954b59),
@@ -401,7 +406,7 @@ static struct ROM_INFO _unsquad_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _area88_roms[] = // clone of _unsquad
+static struct ROM_INFO rom_area88[] = // clone of _unsquad
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ar_36.12f",  0x65030392, "ar_42.12h",  0xc48170de),
@@ -431,7 +436,7 @@ static struct ROM_INFO _area88_roms[] = // clone of _unsquad
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffight_roms[] =
+static struct ROM_INFO rom_ffight[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ff_36.11f",  0xf9a5ce83, "ff_42.11h",  0x65f11215),
@@ -447,7 +452,7 @@ static struct ROM_INFO _ffight_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffightu_roms[] = // clone of _ffight
+static struct ROM_INFO rom_ffightu[] = // clone of _ffight
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ff_36.11f",  0xf9a5ce83, "ff_42.11h",  0x65f11215),
@@ -457,7 +462,7 @@ static struct ROM_INFO _ffightu_roms[] = // clone of _ffight
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffightua_roms[] = // clone of _ffight
+static struct ROM_INFO rom_ffightua[] = // clone of _ffight
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ffu_36.11f",  0xe2a48af9, "ffu_42.11h",  0xf4bb480e),
@@ -470,7 +475,7 @@ static struct ROM_INFO _ffightua_roms[] = // clone of _ffight
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffightub_roms[] = // clone of _ffight
+static struct ROM_INFO rom_ffightub[] = // clone of _ffight
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ffu30",  0xed988977, "ffu35",  0x07bf1c21),
@@ -492,7 +497,7 @@ static struct ROM_INFO _ffightub_roms[] = // clone of _ffight
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffightj_roms[] = // clone of _ffight
+static struct ROM_INFO rom_ffightj[] = // clone of _ffight
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ff36.bin",  0xf9a5ce83, "ff42.bin",  0x65f11215),
@@ -521,7 +526,7 @@ static struct ROM_INFO _ffightj_roms[] = // clone of _ffight
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffightj1_roms[] = // clone of _ffight
+static struct ROM_INFO rom_ffightj1[] = // clone of _ffight
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ff30-36.rom",  0x088ed1c9, "ff35-42.rom",  0xc4c491e6),
@@ -550,7 +555,7 @@ static struct ROM_INFO _ffightj1_roms[] = // clone of _ffight
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _ffightj2_roms[] = // clone of _ffight
+static struct ROM_INFO rom_ffightj2[] = // clone of _ffight
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ffj_36.12f",  0xe2a48af9, "ffj_42.12h",  0xf4bb480e),
@@ -579,7 +584,7 @@ static struct ROM_INFO _ffightj2_roms[] = // clone of _ffight
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _1941_roms[] =
+static struct ROM_INFO rom_1941[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "41e_30.rom",  0x9deb1e75, "41e_35.rom",  0xd63942b3),
@@ -595,7 +600,7 @@ static struct ROM_INFO _1941_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _1941j_roms[] = // clone of _1941
+static struct ROM_INFO rom_1941j[] = // clone of _1941
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "4136.bin",  0x7fbd42ab, "4142.bin",  0xc7781f89),
@@ -605,7 +610,7 @@ static struct ROM_INFO _1941j_roms[] = // clone of _1941
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mercs_roms[] =
+static struct ROM_INFO rom_mercs[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "so2_30e.11f",  0xe17f9bf7, "so2_35e.11h",  0x78e63575),
@@ -629,7 +634,7 @@ static struct ROM_INFO _mercs_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mercsu_roms[] = // clone of _mercs
+static struct ROM_INFO rom_mercsu[] = // clone of _mercs
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "so2_30.11f",  0xe17f9bf7, "s02_35.11h",  0x4477df61),
@@ -639,7 +644,7 @@ static struct ROM_INFO _mercsu_roms[] = // clone of _mercs
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mercsua_roms[] = // clone of _mercs
+static struct ROM_INFO rom_mercsua[] = // clone of _mercs
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "so2_30a.11f",  0xe4e725d7, "so2_35a.11h",  0xe7843445),
@@ -649,7 +654,7 @@ static struct ROM_INFO _mercsua_roms[] = // clone of _mercs
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mercsj_roms[] = // clone of _mercs
+static struct ROM_INFO rom_mercsj[] = // clone of _mercs
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "so2_36.bin",  0xe17f9bf7, "so2_42.bin",  0x2c3884c6),
@@ -686,7 +691,7 @@ static struct ROM_INFO _mercsj_roms[] = // clone of _mercs
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mtwins_roms[] =
+static struct ROM_INFO rom_mtwins[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "che_30.11f",  0x9a2a2db1, "che_35.11h",  0xa7f96b02),
@@ -702,7 +707,7 @@ static struct ROM_INFO _mtwins_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _chikij_roms[] = // clone of _mtwins
+static struct ROM_INFO rom_chikij[] = // clone of _mtwins
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "chj_36a.bin",  0xec1328d8, "chj_42a.bin",  0x4ae13503),
@@ -731,7 +736,7 @@ static struct ROM_INFO _chikij_roms[] = // clone of _mtwins
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _msword_roms[] =
+static struct ROM_INFO rom_msword[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "mse_30.11f",  0x03fc8dbc, "mse_35.11h",  0xd5bf66cd),
@@ -747,7 +752,7 @@ static struct ROM_INFO _msword_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mswordr1_roms[] = // clone of _msword
+static struct ROM_INFO rom_mswordr1[] = // clone of _msword
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ms_30.11f",  0x21c1f078, "ms_35.11h",  0xa540a73a),
@@ -757,7 +762,7 @@ static struct ROM_INFO _mswordr1_roms[] = // clone of _msword
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mswordu_roms[] = // clone of _msword
+static struct ROM_INFO rom_mswordu[] = // clone of _msword
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "msu_30.11f",  0xd963c816, "msu_35.11h",  0x72f179b3),
@@ -767,7 +772,7 @@ static struct ROM_INFO _mswordu_roms[] = // clone of _msword
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mswordj_roms[] = // clone of _msword
+static struct ROM_INFO rom_mswordj[] = // clone of _msword
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "msj_36.12f",  0x04f0ef50, "msj_42.12h",  0x9fcbb9cd),
@@ -796,7 +801,7 @@ static struct ROM_INFO _mswordj_roms[] = // clone of _msword
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cawing_roms[] =
+static struct ROM_INFO rom_cawing[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "cae_30a.11f",  0x91fceacd, "cae_35a.11h",  0x3ef03083),
@@ -812,7 +817,7 @@ static struct ROM_INFO _cawing_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cawingr1_roms[] = // clone of _cawing
+static struct ROM_INFO rom_cawingr1[] = // clone of _cawing
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "cae_30.11f",  0x23305cd5, "cae_35.11h",  0x69419113),
@@ -822,7 +827,7 @@ static struct ROM_INFO _cawingr1_roms[] = // clone of _cawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cawingu_roms[] = // clone of _cawing
+static struct ROM_INFO rom_cawingu[] = // clone of _cawing
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "cae_30a.11f",  0x91fceacd, "cau_35a.11h",  0xf090d9b2),
@@ -832,7 +837,7 @@ static struct ROM_INFO _cawingu_roms[] = // clone of _cawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cawingj_roms[] = // clone of _cawing
+static struct ROM_INFO rom_cawingj[] = // clone of _cawing
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "caj_36a.12f",  0x91fceacd, "caj_42a.12h",  0x039f8362),
@@ -861,7 +866,7 @@ static struct ROM_INFO _cawingj_roms[] = // clone of _cawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nemo_roms[] =
+static struct ROM_INFO rom_nemo[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "nme_30a.11f",  0xd2c03e56, "nme_35a.11h",  0x5fd31661),
@@ -877,7 +882,7 @@ static struct ROM_INFO _nemo_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _nemoj_roms[] = // clone of _nemo
+static struct ROM_INFO rom_nemoj[] = // clone of _nemo
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "nmj_36a.12f",  0xdaeceabb, "nmj_42a.12h",  0x55024740),
@@ -907,7 +912,7 @@ static struct ROM_INFO _nemoj_roms[] = // clone of _nemo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2_roms[] =
+static struct ROM_INFO rom_sf2[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2e.30g",  0xfe39ee33, "sf2e.37g",  0xfb92cd74),
@@ -932,7 +937,7 @@ static struct ROM_INFO _sf2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2eb_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2eb[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2_30a.bin",  0x57bd7051, "sf2e_37b.rom",  0x62691cdd),
@@ -945,7 +950,7 @@ static struct ROM_INFO _sf2eb_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ua_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2ua[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2u.30a",  0x08beb861, "sf2u.37a",  0xb7638d69),
@@ -958,7 +963,7 @@ static struct ROM_INFO _sf2ua_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ub_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2ub[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2_30a.bin",  0x57bd7051, "sf2u.37b",  0x4a54d479),
@@ -971,7 +976,7 @@ static struct ROM_INFO _sf2ub_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ud_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2ud[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2u.30d",  0x4bb2657c, "sf2u.37d",  0xb33b42f2),
@@ -984,7 +989,7 @@ static struct ROM_INFO _sf2ud_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ue_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2ue[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2u.30e",  0xf37cd088, "sf2u.37e",  0x6c61a513),
@@ -997,7 +1002,7 @@ static struct ROM_INFO _sf2ue_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2uf_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2uf[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2e.30g",  0xfe39ee33, "sf2u.37f",  0x169e7388),
@@ -1010,7 +1015,7 @@ static struct ROM_INFO _sf2uf_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ui_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2ui[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2e.30g",  0xfe39ee33, "sf2u.37i",  0x9df707dd),
@@ -1023,7 +1028,7 @@ static struct ROM_INFO _sf2ui_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2uk_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2uk[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2u.30k",  0x8f66076c, "sf2u.37k",  0x4e1f6a83),
@@ -1036,7 +1041,7 @@ static struct ROM_INFO _sf2uk_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2j_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2j[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2j30.bin",  0x79022b31, "sf2j37.bin",  0x516776ec),
@@ -1049,7 +1054,7 @@ static struct ROM_INFO _sf2j_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ja_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2ja[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2_30a.bin",  0x57bd7051, "sf2j_37a.bin",  0x1e1f6844),
@@ -1062,7 +1067,7 @@ static struct ROM_INFO _sf2ja_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2jc_roms[] = // clone of _sf2
+static struct ROM_INFO rom_sf2jc[] = // clone of _sf2
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "sf2_30c.bin",  0x8add35ec, "sf2j_37c.bin",  0x0d74a256),
@@ -1075,7 +1080,7 @@ static struct ROM_INFO _sf2jc_roms[] = // clone of _sf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _3wonders_roms[] =
+static struct ROM_INFO rom_3wonders[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "rte_30a.11f",  0xef5b8b33, "rte_35a.11h",  0x7d705529),
@@ -1097,7 +1102,7 @@ static struct ROM_INFO _3wonders_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _3wonderu_roms[] = // clone of _3wonders
+static struct ROM_INFO rom_3wonderu[] = // clone of _3wonders
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "3wonders.30",  0x0b156fd8, "3wonders.35",  0x57350bf4),
@@ -1110,7 +1115,7 @@ static struct ROM_INFO _3wonderu_roms[] = // clone of _3wonders
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _wonder3_roms[] = // clone of _3wonders
+static struct ROM_INFO rom_wonder3[] = // clone of 3wonders
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "rtj_36.12f",  0xe3741247, "rtj_42.12h",  0xb4baa117),
@@ -1155,7 +1160,7 @@ static struct ROM_INFO _wonder3_roms[] = // clone of _3wonders
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _3wonderh_roms[] = // clone of _3wonders
+static struct ROM_INFO rom_3wonderh[] = // clone of _3wonders
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "22.bin",  0xe6071884, "26.bin",  0xa28447b7),
@@ -1184,7 +1189,7 @@ static struct ROM_INFO _3wonderh_roms[] = // clone of _3wonders
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _kod_roms[] =
+static struct ROM_INFO rom_kod[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "kod30.rom",  0xc7414fd4, "kod37.rom",  0xa5bf40d2),
@@ -1206,7 +1211,7 @@ static struct ROM_INFO _kod_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _kodu_roms[] = // clone of _kod
+static struct ROM_INFO rom_kodu[] = // clone of _kod
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "kdu-30b.bin",  0x825817f9, "kdu-37b.bin",  0xd2422dfb),
@@ -1222,7 +1227,7 @@ static struct ROM_INFO _kodu_roms[] = // clone of _kod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _kodj_roms[] = // clone of _kod
+static struct ROM_INFO rom_kodj[] = // clone of _kod
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "kd30.bin",  0xebc788ad, "kd37.bin",  0xe55c3529),
@@ -1235,7 +1240,7 @@ static struct ROM_INFO _kodj_roms[] = // clone of _kod
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _captcomm_roms[] =
+static struct ROM_INFO rom_captcomm[] =
 {
   { "cce_23d.rom", 0x80000, 0x19c58ece, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cc_22d.rom", 0x80000, 0xa91949b7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1253,7 +1258,7 @@ static struct ROM_INFO _captcomm_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _captcomu_roms[] = // clone of _captcomm
+static struct ROM_INFO rom_captcomu[] = // clone of _captcomm
 {
   { "23b", 0x80000, 0x03da44fd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "22c", 0x80000, 0x9b82a052, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1262,7 +1267,7 @@ static struct ROM_INFO _captcomu_roms[] = // clone of _captcomm
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _captcomj_roms[] = // clone of _captcomm
+static struct ROM_INFO rom_captcomj[] = // clone of _captcomm
 {
   { "cc23.bin", 0x80000, 0x5b482b62, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cc22.bin", 0x80000, 0x0fd34195, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1271,7 +1276,7 @@ static struct ROM_INFO _captcomj_roms[] = // clone of _captcomm
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _knights_roms[] =
+static struct ROM_INFO rom_knights[] =
 {
   { "kr_23e.rom", 0x80000, 0x1b3997eb, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "kr_22.rom", 0x80000, 0xd0b671a9, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
@@ -1287,14 +1292,14 @@ static struct ROM_INFO _knights_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _knightsu_roms[] = // clone of _knights
+static struct ROM_INFO rom_knightsu[] = // clone of _knights
 {
   { "kru23.rom", 0x80000, 0x252bc2ba, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "kr_22.rom", 0x80000, 0xd0b671a9, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _knightsj_roms[] = // clone of _knights
+static struct ROM_INFO rom_knightsj[] = // clone of _knights
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "krj30.bin",  0xad3d1a8e, "krj37.bin",  0xe694a491),
@@ -1304,7 +1309,7 @@ static struct ROM_INFO _knightsj_roms[] = // clone of _knights
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ce_roms[] =
+static struct ROM_INFO rom_sf2ce[] =
 {
   { "sf2ce.23", 0x80000, 0x3f846b74, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2ce.22", 0x80000, 0x99f1cca4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1324,7 +1329,7 @@ static struct ROM_INFO _sf2ce_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ceua_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2ceua[] = // clone of _sf2ce
 {
   { "s92u-23a", 0x80000, 0xac44415b, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2ce.22", 0x80000, 0x99f1cca4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1332,7 +1337,7 @@ static struct ROM_INFO _sf2ceua_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ceub_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2ceub[] = // clone of _sf2ce
 {
   { "s92-23b", 0x80000, 0x996a3015, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "s92-22b", 0x80000, 0x2bbe15ed, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1340,7 +1345,7 @@ static struct ROM_INFO _sf2ceub_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2ceuc_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2ceuc[] = // clone of _sf2ce
 {
   { "s92-23c", 0x80000, 0x0a8b6aa2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "s92-22c", 0x80000, 0x5fd8630b, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1348,7 +1353,7 @@ static struct ROM_INFO _sf2ceuc_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2cej_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2cej[] = // clone of _sf2ce
 {
   { "s92j_23b.bin", 0x80000, 0x140876c5, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "s92j_22b.bin", 0x80000, 0x2fbb3bfe, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1356,7 +1361,7 @@ static struct ROM_INFO _sf2cej_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2rb_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2rb[] = // clone of _sf2ce
 {
   { "sf2d__23.rom", 0x80000, 0x450532b0, REGION_ROM1, 0x000000, LOAD_NORMAL },
   { "sf2d__22.rom", 0x80000, 0xfe9d9cf5, REGION_ROM1, 0x080000, LOAD_NORMAL },
@@ -1364,7 +1369,7 @@ static struct ROM_INFO _sf2rb_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2rb2_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2rb2[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
             "27.bin",  0x40296ecd, "31.bin",  0x87954a41),
@@ -1378,7 +1383,7 @@ static struct ROM_INFO _sf2rb2_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2rb3_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2rb3[] = // clone of _sf2ce
 {
   { "sf2_ce_rb.23", 0x80000, 0x202f9e50, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2_ce_rb.22", 0x80000, 0x145e5219, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1386,7 +1391,7 @@ static struct ROM_INFO _sf2rb3_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2red_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2red[] = // clone of _sf2ce
 {
   { "sf2red.23", 0x80000, 0x40276abb, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2red.22", 0x80000, 0x18daf387, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1394,7 +1399,7 @@ static struct ROM_INFO _sf2red_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2v004_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2v004[] = // clone of _sf2ce
 {
   { "sf2v004.23", 0x80000, 0x52d19f2c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2v004.22", 0x80000, 0x4b26fde7, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1402,7 +1407,7 @@ static struct ROM_INFO _sf2v004_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2accp2_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2accp2[] = // clone of _sf2ce
 {
   { "sf2ca-23.bin", 0x80000, 0x36c3ba2f, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2ca-22.bin", 0x80000, 0x0550453d, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1412,7 +1417,7 @@ static struct ROM_INFO _sf2accp2_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2m2_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2m2[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "ch222esp",  0x9e6d058a, "ch196esp",  0xed2ff437),
@@ -1420,7 +1425,7 @@ static struct ROM_INFO _sf2m2_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2m4_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2m4[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "u222ne",  0x7133489e, "u196ne",  0xb07a4f90),
@@ -1428,7 +1433,7 @@ static struct ROM_INFO _sf2m4_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2m5_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2m5[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "u222",  0x03991fba, "u196",  0x39f15a1e),
@@ -1436,7 +1441,7 @@ static struct ROM_INFO _sf2m5_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2m6_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2m6[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "u222-6b",  0x0a3692be, "u196-6b",  0x80454da7),
@@ -1444,7 +1449,7 @@ static struct ROM_INFO _sf2m6_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2m7_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2m7[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x40000,
             "u222-2i",  0x1ca7adbd, "u196-2i",  0xf758408c),
@@ -1454,7 +1459,7 @@ static struct ROM_INFO _sf2m7_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2yyc_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2yyc[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "b12.rom",  0x8f742fd5, "b14.rom",  0x8831ec7f),
@@ -1465,7 +1470,7 @@ static struct ROM_INFO _sf2yyc_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2koryu_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2koryu[] = // clone of _sf2ce
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "u222.rom",  0x9236a79a, "u196.rom",  0xb23a869d),
@@ -1474,7 +1479,7 @@ static struct ROM_INFO _sf2koryu_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _varth_roms[] =
+static struct ROM_INFO rom_varth[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "vae_30b.11f",  0xadb8d391, "vae_35b.11h",  0x44e5548f),
@@ -1493,7 +1498,7 @@ static struct ROM_INFO _varth_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _varthr1_roms[] = // clone of _varth
+static struct ROM_INFO rom_varthr1[] = // clone of _varth
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "vae_30a.11f",  0x7fcd0091, "vae_35a.11h",  0x35cf9509),
@@ -1506,14 +1511,14 @@ static struct ROM_INFO _varthr1_roms[] = // clone of _varth
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _varthu_roms[] = // clone of _varth
+static struct ROM_INFO rom_varthu[] = // clone of _varth
 {
   { "vau23a.bin", 0x80000, 0xfbe68726, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "vau22a.bin", 0x80000, 0x0ed71bbd, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _varthj_roms[] = // clone of _varth
+static struct ROM_INFO rom_varthj[] = // clone of _varth
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "vaj_36b.12f",  0x1d798d6a, "vaj_42b.12h",  0x0f720233),
@@ -1542,7 +1547,7 @@ static struct ROM_INFO _varthj_roms[] = // clone of _varth
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _cworld2j_roms[] =
+static struct ROM_INFO rom_cworld2j[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "q536.bin",  0x38a08099, "q542.bin",  0x4d29b3a4),
@@ -1574,7 +1579,7 @@ static struct ROM_INFO _cworld2j_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _wof_roms[] =
+static struct ROM_INFO rom_wof[] =
 {
   { "tk2e_23b.rom", 0x80000, 0x11fb2ed1, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "tk2e_22b.rom", 0x80000, 0x479b3f24, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1592,21 +1597,21 @@ static struct ROM_INFO _wof_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _wofa_roms[] = // clone of _wof
+static struct ROM_INFO rom_wofa[] = // clone of _wof
 {
   { "tk2a_23b.rom", 0x80000, 0x2e024628, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "tk2a_22b.rom", 0x80000, 0x900ad4cd, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _wofu_roms[] = // clone of _wof
+static struct ROM_INFO rom_wofu[] = // clone of _wof
 {
   { "tk2u.23c", 0x80000, 0x29b89c12, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "tk2u.22c", 0x80000, 0xf5af4774, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _wofj_roms[] = // clone of _wof
+static struct ROM_INFO rom_wofj[] = // clone of _wof
 {
   { "tk2j23c.bin", 0x80000, 0x9b215a68, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "tk2j22c.bin", 0x80000, 0xb74b09ac, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1619,8 +1624,8 @@ static struct ROM_INFO _wofj_roms[] = // clone of _wof
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-#define wofhfh_dsw wof_dsw
-static struct ROM_INFO _wofhfh_roms[] = // clone of _wof
+#define dsw_wofhfh dsw_wof
+static struct ROM_INFO rom_wofhfh[] = // clone of _wof
 {
   { "23", 0x80000, 0x6ae4b312, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "22", 0x80000, 0x94e8d01a, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1636,7 +1641,7 @@ static struct ROM_INFO _wofhfh_roms[] = // clone of _wof
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2hf_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2hf[] = // clone of _sf2ce
 {
   { "s92e_23a.bin", 0x80000, 0x2DD72514, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2_22.bin", 0x80000, 0xaea6e035, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1653,7 +1658,7 @@ static struct ROM_INFO _sf2hf_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2t_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2t[] = // clone of _sf2ce
 {
   { "sf2.23", 0x80000, 0x89a1fc38, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sf2_22.bin", 0x80000, 0xaea6e035, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1670,7 +1675,7 @@ static struct ROM_INFO _sf2t_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sf2tj_roms[] = // clone of _sf2ce
+static struct ROM_INFO rom_sf2tj[] = // clone of _sf2ce
 {
   { "s2tj_23.bin", 0x80000, 0xea73b4dc, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "s2t_22.bin", 0x80000, 0xaea6e035, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1687,7 +1692,7 @@ static struct ROM_INFO _sf2tj_roms[] = // clone of _sf2ce
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dino_roms[] =
+static struct ROM_INFO rom_dino[] =
 {
   { "cde_23a.rom", 0x80000, 0x8f4e585e, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cde_22a.rom", 0x80000, 0x9278aa12, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1706,7 +1711,7 @@ static struct ROM_INFO _dino_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dinou_roms[] = // clone of _dino
+static struct ROM_INFO rom_dinou[] = // clone of _dino
 {
   { "cdu.23a", 0x80000, 0x7c2543cd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cdu.22a", 0x80000, 0xfab740a9, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1714,7 +1719,7 @@ static struct ROM_INFO _dinou_roms[] = // clone of _dino
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _dinoj_roms[] = // clone of _dino
+static struct ROM_INFO rom_dinoj[] = // clone of _dino
 {
   { "cdj-23a.8f", 0x80000, 0x5f3ece96, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "cdj-22a.7f", 0x80000, 0xa0d8de29, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1722,7 +1727,7 @@ static struct ROM_INFO _dinoj_roms[] = // clone of _dino
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _punisher_roms[] =
+static struct ROM_INFO rom_punisher[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
             "pse_26.rom",  0x389a99d2, "pse_30.rom",  0x68fb06ac),
@@ -1747,7 +1752,7 @@ static struct ROM_INFO _punisher_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _punishru_roms[] = // clone of _punisher
+static struct ROM_INFO rom_punishru[] = // clone of _punisher
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
             "psu26.rom",  0x9236d121, "psu30.rom",  0x8320e501),
@@ -1761,7 +1766,7 @@ static struct ROM_INFO _punishru_roms[] = // clone of _punisher
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _punishrj_roms[] = // clone of _punisher
+static struct ROM_INFO rom_punishrj[] = // clone of _punisher
 {
   { "psj23.bin", 0x80000, 0x6b2fda52, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "psj22.bin", 0x80000, 0xe01036bc, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -1769,7 +1774,7 @@ static struct ROM_INFO _punishrj_roms[] = // clone of _punisher
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _slammast_roms[] =
+static struct ROM_INFO rom_slammast[] =
 {
   { "mbe_23e.rom", 0x80000, 0x5394057a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   LOAD8_16(  REGION_ROM1,  0x080000,  0x20000,
@@ -1800,7 +1805,7 @@ static struct ROM_INFO _slammast_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _slammasu_roms[] = // clone of _slammast
+static struct ROM_INFO rom_slammasu[] = // clone of _slammast
 {
   { "mbu-23e.rom", 0x80000, 0x224f0062, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   LOAD8_16(  REGION_ROM1,  0x080000,  0x20000,
@@ -1813,7 +1818,7 @@ static struct ROM_INFO _slammasu_roms[] = // clone of _slammast
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mbomberj_roms[] = // clone of _slammast
+static struct ROM_INFO rom_mbomberj[] = // clone of _slammast
 {
   { "mbj23e", 0x80000, 0x0d06036a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   LOAD8_16(  REGION_ROM1,  0x080000,  0x20000,
@@ -1835,7 +1840,7 @@ static struct ROM_INFO _mbomberj_roms[] = // clone of _slammast
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mbombrd_roms[] =
+static struct ROM_INFO rom_mbombrd[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
             "mbd_26.bin",  0x72b7451c, "mbde_30.rom",  0xa036dc16),
@@ -1868,7 +1873,7 @@ static struct ROM_INFO _mbombrd_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _mbombrdj_roms[] = // clone of _mbombrd
+static struct ROM_INFO rom_mbombrdj[] = // clone of _mbombrd
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
             "mbd_26.bin",  0x72b7451c, "mbdj_30.bin",  0xbeff31cf),
@@ -1892,7 +1897,7 @@ static struct ROM_INFO _mbombrdj_roms[] = // clone of _mbombrd
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pnickj_roms[] =
+static struct ROM_INFO rom_pnickj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "pnij36.bin",  0x2d4ffb2b, "pnij42.bin",  0xc085dfaf),
@@ -1918,7 +1923,7 @@ static struct ROM_INFO _pnickj_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _qad_roms[] =
+static struct ROM_INFO rom_qad[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "qdu_36a.12f",  0xde9c24a0, "qdu_42a.12h",  0xcfe36f0c),
@@ -1938,7 +1943,7 @@ static struct ROM_INFO _qad_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _qadj_roms[] = // clone of _qad
+static struct ROM_INFO rom_qadj[] = // clone of _qad
 {
   { "qad23a.bin", 0x80000, 0x4d3553de, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "qad22a.bin", 0x80000, 0x3191ddd0, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
@@ -1951,7 +1956,7 @@ static struct ROM_INFO _qadj_roms[] = // clone of _qad
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _qtono2_roms[] =
+static struct ROM_INFO rom_qtono2[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "tn2j-30.11e",  0x9226eb5e, "tn2j-37.11f",  0xd1d30da1),
@@ -1973,7 +1978,7 @@ static struct ROM_INFO _qtono2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pang3_roms[] =
+static struct ROM_INFO rom_pang3[] =
 {
   { "pa3w-17.11l", 0x80000, 0x12138234, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "pa3w-16.10l", 0x80000, 0xd1ba585c, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
@@ -1985,14 +1990,14 @@ static struct ROM_INFO _pang3_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _pang3j_roms[] = // clone of _pang3
+static struct ROM_INFO rom_pang3j[] = // clone of _pang3
 {
   { "pa3j-17.11l", 0x80000, 0x21f6e51f, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
   { "pa3j-16.10l", 0x80000, 0xca1d7897, REGION_ROM1, 0x80000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _megaman_roms[] =
+static struct ROM_INFO rom_megaman[] =
 {
   { "rcma_23b.rom", 0x80000, 0x61e4a397, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rcma_22b.rom", 0x80000, 0x708268c4, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2015,7 +2020,7 @@ static struct ROM_INFO _megaman_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _rockmanj_roms[] = // clone of _megaman
+static struct ROM_INFO rom_rockmanj[] = // clone of _megaman
 {
   { "rcm23a.bin", 0x80000, 0xefd96cb2, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "rcm22a.bin", 0x80000, 0x8729a689, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2023,7 +2028,7 @@ static struct ROM_INFO _rockmanj_roms[] = // clone of _megaman
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _sfzch_roms[] =
+static struct ROM_INFO rom_sfzch[] =
 {
   { "sfzch23", 0x80000, 0x1140743f , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "sfza22", 0x80000, 0x8d9b2480 , REGION_ROM1, 0x080000, LOAD_SWAP_16 },
@@ -2160,7 +2165,7 @@ static struct DSW_DATA dsw_data_forgottn_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO forgottn_dsw[] =
+static struct DSW_INFO dsw_forgottn[] =
 {
   { 0x2, 0xff, dsw_data_forgottn_1 },
   { 0x4, 0xff, dsw_data_forgottn_2 },
@@ -2211,7 +2216,7 @@ static struct DSW_DATA dsw_data_ghouls_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO ghouls_dsw[] =
+static struct DSW_INFO dsw_ghouls[] =
 {
   { 0x2, 0xff, dsw_data_ghouls_1 },
   { 0x4, 0xff, dsw_data_ghouls_2 },
@@ -2255,7 +2260,7 @@ static struct DSW_DATA dsw_data_ghoulsu_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO ghoulsu_dsw[] =
+static struct DSW_INFO dsw_ghoulsu[] =
 {
   { 0x2, 0xff, dsw_data_ghouls_1 },
   { 0x4, 0xff, dsw_data_ghoulsu_2 },
@@ -2263,7 +2268,7 @@ static struct DSW_INFO ghoulsu_dsw[] =
   { 0, 0, NULL }
 };
 
-static struct DSW_INFO daimakai_dsw[] =
+static struct DSW_INFO dsw_daimakai[] =
 {
   { 0x2, 0xff, dsw_data_ghouls_1 },
   { 0x4, 0xff, dsw_data_ghoulsu_2 },
@@ -2309,7 +2314,7 @@ static struct DSW_DATA dsw_data_strider_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO strider_dsw[] =
+static struct DSW_INFO dsw_strider[] =
 {
   { 0x2, 0xff, dsw_data_ghouls_1 },
   { 0x4, 0x3f, dsw_data_strider_2 },
@@ -2333,7 +2338,7 @@ static struct DSW_DATA dsw_data_stridrua_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO stridrua_dsw[] =
+static struct DSW_INFO dsw_stridrua[] =
 {
   { 0x2, 0xff, dsw_data_ghouls_1 },
   { 0x4, 0x3f, dsw_data_stridrua_2 },
@@ -2383,7 +2388,7 @@ static struct DSW_DATA dsw_data_dynwar_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO dynwar_dsw[] =
+static struct DSW_INFO dsw_dynwar[] =
 {
   { 0x2, 0xff, dsw_data_dynwar_1 },
   { 0x4, 0xff, dsw_data_dynwar_2 },
@@ -2439,7 +2444,7 @@ static struct DSW_DATA dsw_data_willow_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO willow_dsw[] =
+static struct DSW_INFO dsw_willow[] =
 {
   { 0x2, 0xff, dsw_data_willow_1 },
   { 0x4, 0xff, dsw_data_willow_2 },
@@ -2490,7 +2495,7 @@ static struct DSW_DATA dsw_data_unsquad_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO unsquad_dsw[] =
+static struct DSW_INFO dsw_unsquad[] =
 {
   { 0x2, 0xff, dsw_data_unsquad_1 },
   { 0x4, 0xff, dsw_data_unsquad_2 },
@@ -2557,7 +2562,7 @@ static struct DSW_DATA dsw_data_ffight_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO ffight_dsw[] =
+static struct DSW_INFO dsw_ffight[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xf4, dsw_data_ffight_2 },
@@ -2607,7 +2612,7 @@ static struct DSW_DATA dsw_data__1941_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO _1941_dsw[] =
+static struct DSW_INFO dsw_1941[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xff, dsw_data__1941_2 },
@@ -2660,7 +2665,7 @@ static struct DSW_DATA dsw_data_mercs_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO mercs_dsw[] =
+static struct DSW_INFO dsw_mercs[] =
 {
   { 0x2, 0xff, dsw_data_mercs_1 },
   { 0x4, 0xff, dsw_data_mercs_2 },
@@ -2685,7 +2690,7 @@ static struct DSW_DATA dsw_data_mtwins_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO mtwins_dsw[] =
+static struct DSW_INFO dsw_mtwins[] =
 {
   { 0x2, 0xff, dsw_data_mtwins_1 },
   { 0x4, 0xff, dsw_data_mtwins_2 },
@@ -2744,7 +2749,7 @@ static struct DSW_DATA dsw_data_msword_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO msword_dsw[] =
+static struct DSW_INFO dsw_msword[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xbc, dsw_data_msword_2 },
@@ -2774,7 +2779,7 @@ static struct DSW_DATA dsw_data_cawing_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO cawing_dsw[] =
+static struct DSW_INFO dsw_cawing[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xfc, dsw_data_cawing_2 },
@@ -2818,7 +2823,7 @@ static struct DSW_DATA dsw_data_nemo_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO nemo_dsw[] =
+static struct DSW_INFO dsw_nemo[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xff, dsw_data_nemo_2 },
@@ -2837,7 +2842,7 @@ static struct DSW_DATA dsw_data_sf2_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO sf2_dsw[] =
+static struct DSW_INFO dsw_sf2[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xff, dsw_data_sf2_2 },
@@ -2891,7 +2896,7 @@ static struct DSW_DATA dsw_data_sf2j_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO sf2j_dsw[] =
+static struct DSW_INFO dsw_sf2j[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xff, dsw_data_sf2j_2 },
@@ -2959,7 +2964,7 @@ static struct DSW_DATA dsw_data__3wonders_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO _3wonders_dsw[] =
+static struct DSW_INFO dsw_3wonders[] =
 {
   { 0x2, 0xff, dsw_data__3wonders_1 },
   { 0x4, 0x9a, dsw_data__3wonders_2 },
@@ -3004,7 +3009,7 @@ static struct DSW_DATA dsw_data_kod_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO kod_dsw[] =
+static struct DSW_INFO dsw_kod[] =
 {
   { 0x2, 0xff, dsw_data_kod_1 },
   { 0x4, 0xff, dsw_data_kod_2 },
@@ -3032,7 +3037,7 @@ static struct DSW_DATA dsw_data_kodj_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO kodj_dsw[] =
+static struct DSW_INFO dsw_kodj[] =
 {
   { 0x2, 0xff, dsw_data_kod_1 },
   { 0x4, 0xff, dsw_data_kodj_2 },
@@ -3065,7 +3070,7 @@ static struct DSW_DATA dsw_data_captcomm_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO captcomm_dsw[] =
+static struct DSW_INFO dsw_captcomm[] =
 {
   { 0x2, 0xff, dsw_data_mercs_1 },
   { 0x4, 0xf4, dsw_data_captcomm_2 },
@@ -3102,7 +3107,7 @@ static struct DSW_DATA dsw_data_knights_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO knights_dsw[] =
+static struct DSW_INFO dsw_knights[] =
 {
   { 0x2, 0xff, dsw_data_mercs_1 },
   { 0x4, 0xfc, dsw_data_knights_2 },
@@ -3148,7 +3153,7 @@ static struct DSW_DATA dsw_data_varth_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO varth_dsw[] =
+static struct DSW_INFO dsw_varth[] =
 {
   { 0x2, 0xff, dsw_data_ffight_1 },
   { 0x4, 0xff, dsw_data_varth_2 },
@@ -3223,7 +3228,7 @@ static struct DSW_DATA dsw_data_cworld2j_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO cworld2j_dsw[] =
+static struct DSW_INFO dsw_cworld2j[] =
 {
   { 0x2, 0xff, dsw_data_cworld2j_1 },
   { 0x4, 0xfe, dsw_data_cworld2j_2 },
@@ -3250,25 +3255,25 @@ static struct DSW_DATA dsw_data_dino_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO wof_dsw[] =
+static struct DSW_INFO dsw_wof[] =
 {
   { 0x6, 0x08, dsw_data_wof_3 },
   { 0, 0, NULL }
 };
 
-static struct DSW_INFO dino_dsw[] =
+static struct DSW_INFO dsw_dino[] =
 {
   { 0x6, 0x88, dsw_data_dino_3 },
   { 0, 0, NULL }
 };
 
-static struct DSW_INFO punisher_dsw[] =
+static struct DSW_INFO dsw_punisher[] =
 {
   { 0x6, 0x08, dsw_data_wof_3 },
   { 0, 0, NULL }
 };
 
-static struct DSW_INFO slammast_dsw[] =
+static struct DSW_INFO dsw_slammast[] =
 {
   { 0x6, 0x08, dsw_data_wof_3 },
   { 0, 0, NULL }
@@ -3340,7 +3345,7 @@ static struct DSW_DATA dsw_data_pnickj_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO pnickj_dsw[] =
+static struct DSW_INFO dsw_pnickj[] =
 {
   { 0x2, 0xff, dsw_data_pnickj_1 },
   { 0x4, 0xff, dsw_data_pnickj_2 },
@@ -3405,7 +3410,7 @@ static struct DSW_DATA dsw_data_qad_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO qad_dsw[] =
+static struct DSW_INFO dsw_qad[] =
 {
   { 0x2, 0xff, dsw_data_qad_1 },
   { 0x4, 0xf4, dsw_data_qad_2 },
@@ -3434,7 +3439,7 @@ static struct DSW_DATA dsw_data_qadj_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO qadj_dsw[] =
+static struct DSW_INFO dsw_qadj[] =
 {
   { 0x2, 0xff, dsw_data_qad_1 },
   { 0x4, 0xff, dsw_data_qadj_2 },
@@ -3506,7 +3511,7 @@ static struct DSW_DATA dsw_data_qtono2_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO qtono2_dsw[] =
+static struct DSW_INFO dsw_qtono2[] =
 {
   { 0x2, 0xff, dsw_data_qtono2_1 },
   { 0x4, 0xff, dsw_data_qtono2_2 },
@@ -3514,7 +3519,7 @@ static struct DSW_INFO qtono2_dsw[] =
   { 0, 0, NULL }
 };
 
-static struct DSW_INFO pang3_dsw[] =
+static struct DSW_INFO dsw_pang3[] =
 {
   { 0x6, 0x08, dsw_data_wof_3 },
   { 0, 0, NULL }
@@ -3601,7 +3606,7 @@ static struct DSW_DATA dsw_data_megaman_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO megaman_dsw[] =
+static struct DSW_INFO dsw_megaman[] =
 {
   { 0x2, 0xff, dsw_data_megaman_1 },
   { 0x4, 0xfe, dsw_data_megaman_2 },
@@ -3636,7 +3641,7 @@ static struct DSW_DATA dsw_data_rockmanj_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO rockmanj_dsw[] =
+static struct DSW_INFO dsw_rockmanj[] =
 {
   { 0x2, 0xff, dsw_data_megaman_1 },
   { 0x4, 0xfe, dsw_data_rockmanj_2 },
@@ -3647,7 +3652,7 @@ static struct DSW_INFO rockmanj_dsw[] =
 
 // And finally inputs : took the longest one...
 
-static struct INPUT_INFO cps1_inputs[] = // 4 players, 3 buttons
+static struct INPUT_INFO input_cps1[] = // 4 players, 3 buttons
 {
   INP0( COIN1, 0x00, 0x01 ),
   INP0( COIN2, 0x00, 0x02 ),
@@ -3693,7 +3698,7 @@ static struct INPUT_INFO cps1_inputs[] = // 4 players, 3 buttons
    END_INPUT
 };
 
-static struct INPUT_INFO forgottn_inputs[] =
+static struct INPUT_INFO input_forgottn[] =
 {
   INP0( COIN1, 0x00, 0x01 ),
   INP0( COIN2, 0x00, 0x02 ),
@@ -3721,7 +3726,7 @@ static struct INPUT_INFO forgottn_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO sf2_inputs[] = // cps1, 6 buttons
+static struct INPUT_INFO input_sf2[] = // cps1, 6 buttons
 {
   INP0( COIN1, 0x00, 0x01 ),
   INP0( COIN2, 0x00, 0x02 ),
@@ -3753,7 +3758,7 @@ static struct INPUT_INFO sf2_inputs[] = // cps1, 6 buttons
    END_INPUT
 };
 
-static struct INPUT_INFO cps1b4_inputs[] = // cps1, 4 buttons
+static struct INPUT_INFO input_cps1b4[] = // cps1, 4 buttons
 {
   INP0( COIN1, 0x00, 0x01 ),
   INP0( COIN2, 0x00, 0x02 ),
@@ -3783,7 +3788,7 @@ static struct INPUT_INFO cps1b4_inputs[] = // cps1, 4 buttons
    END_INPUT
 };
 
-static struct INPUT_INFO sfzch_inputs[] = // alternate 6 buttons
+static struct INPUT_INFO input_sfzch[] = // alternate 6 buttons
 // The changer version has no coins input. It's used for a button instead.
 {
   INP0( P1_START, 0x00, 0x10 ),
@@ -3823,7 +3828,7 @@ static struct GFX_LIST cps1_gfx[] =
 
 // in fact the video is 512x256 with a border of 16 pixels in height
 // and 64 pixels for the width !
-struct VIDEO_INFO cps1_video =
+struct VIDEO_INFO video_cps1 =
 {
    draw_cps1,
    384,
@@ -3834,7 +3839,7 @@ struct VIDEO_INFO cps1_video =
    cps1_gfx,
 };
 
-struct VIDEO_INFO cps1_video_270 =
+struct VIDEO_INFO video_cps1_270 =
 {
    draw_cps1,
    384,
@@ -3871,7 +3876,7 @@ static struct OKIM6295interface okim6295_interface_7576 =
 	{ 100 }
 };
 
-static struct SOUND_INFO cps1_sound[] =
+static struct SOUND_INFO sound_cps1[] =
 {
    { SOUND_YM2151J,  &ym2151_interface,    },
    { SOUND_M6295, &okim6295_interface_7576     },
@@ -3885,326 +3890,24 @@ static struct QSound_interface qsound_interface =
 	{ 250,250 }
 };
 
-struct SOUND_INFO qsound_sound[2] =
+struct SOUND_INFO sound_qsound[2] =
 {
    { SOUND_QSOUND, &qsound_interface     },
    { 0,              NULL,                 },
 };
 
-static struct SOUND_INFO forgottn_sound[] =
+static struct SOUND_INFO sound_forgottn[] =
 {
    { SOUND_YM2151J,  &ym2151_interface,    },
    { SOUND_M6295, &okim6295_interface_6061     },
    { 0,              NULL,                 },
 };
 
-#define cps1_game(NAME,LONGNAME,YEAR,DSW,VIDEO,COMPANY,TYPE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   cps1_inputs,						\
-   DSW,							\
-   NULL,						\
-							\
-   load_cps1,						\
-   NULL,						\
-   VIDEO,						\
-   execute_cps1_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   cps1_sound,						\
-   TYPE							\
-)
+#define dsw_sfzch NULL
+#define dsw_sf2ce NULL
+#define dsw_mbombrd NULL
 
-#define cps1_clone(NAME,LONGNAME,YEAR,DSW,VIDEO,COMPANY,TYPE,MYCLONE)	\
-								\
-static struct DIR_INFO _##NAME##_dirs[] =			\
-{								\
-   { #NAME, },							\
-   { ROMOF( MYCLONE ) },					\
-   { CLONEOF( MYCLONE ) },					\
-   { NULL, },							\
-};								\
-								\
-GAME( NAME,							\
-   _##NAME##_dirs,						\
-   _##NAME##_roms,							\
-   cps1_inputs,							\
-   DSW,								\
-   NULL,							\
-								\
-   load_cps1,							\
-   NULL,							\
-   VIDEO,							\
-   execute_cps1_frame,						\
-   #NAME,							\
-   LONGNAME,							\
-   NULL,							\
-   COMPANY,						\
-   NULL,							\
-   YEAR,							\
-   cps1_sound,							\
-   TYPE								\
-)
-
-// same thing with 4 buttons
-
-#define cps1b4_game(NAME,LONGNAME,YEAR,DSW,COMPANY,TYPE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   cps1b4_inputs,					\
-   DSW,							\
-   NULL,						\
-							\
-   load_cps1,						\
-   NULL,						\
-   &cps1_video,						\
-   execute_cps1_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   cps1_sound,						\
-   TYPE							\
-)
-
-#define cps1b4_clone(NAME,LONGNAME,YEAR,DSW,COMPANY,TYPE,MYCLONE)	\
-								\
-static struct DIR_INFO _##NAME##_dirs[] =			\
-{								\
-   { #NAME, },							\
-   { ROMOF( MYCLONE ) },					\
-   { CLONEOF( MYCLONE ) },					\
-   { NULL, },							\
-};								\
-								\
-GAME( NAME,							\
-   _##NAME##_dirs,						\
-   _##NAME##_roms,							\
-   cps1b4_inputs,						\
-   DSW,								\
-   NULL,							\
-								\
-   load_cps1,							\
-   NULL,							\
-   &cps1_video,							\
-   execute_cps1_frame,						\
-   #NAME,							\
-   LONGNAME,							\
-   NULL,							\
-   COMPANY,						\
-   NULL,							\
-   YEAR,							\
-   cps1_sound,							\
-   TYPE								\
-)
-
-// Forgottn : only 1 game and 1 clone, and we need all this because of sound
-
-#define forgottn_game(NAME,LONGNAME,YEAR,COMPANY,TYPE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,					\
-   forgottn_inputs,					\
-   forgottn_dsw,					\
-   NULL,						\
-							\
-   load_cps1,						\
-   NULL,						\
-   &cps1_video,						\
-   execute_cps1_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   forgottn_sound,					\
-   TYPE							\
-)
-
-#define forgottn_clone(NAME,LONGNAME,YEAR,COMPANY,TYPE,CLONE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { ROMOF( CLONE ) },					\
-   { CLONEOF( CLONE ) },				\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   cps1_inputs,						\
-   forgottn_dsw,						\
-   NULL,						\
-							\
-   load_cps1,						\
-   NULL,						\
-   &cps1_video,						\
-   execute_cps1_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   forgottn_sound,					\
-   TYPE							\
-)
-
-#define sf2_game(NAME,LONGNAME,YEAR,DSW,COMPANY,TYPE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   sf2_inputs,						\
-   DSW,							\
-   NULL,						\
-							\
-   load_cps1,						\
-   NULL,						\
-   &cps1_video,						\
-   execute_sf2_frame,					\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   cps1_sound,						\
-   TYPE							\
-)
-
-#define sf2_clone(NAME,LONGNAME,YEAR,DSW,COMPANY,TYPE,MYCLONE)	\
-								\
-static struct DIR_INFO _##NAME##_dirs[] =			\
-{								\
-   { #NAME, },							\
-   { ROMOF( MYCLONE ) },					\
-   { CLONEOF( MYCLONE ) },					\
-   { NULL, },							\
-};								\
-								\
-GAME( NAME,							\
-   _##NAME##_dirs,						\
-   _##NAME##_roms,							\
-   sf2_inputs,							\
-   DSW,								\
-   NULL,							\
-								\
-   load_cps1,							\
-   NULL,							\
-   &cps1_video,							\
-   execute_sf2_frame,						\
-   #NAME,							\
-   LONGNAME,							\
-   NULL,							\
-   COMPANY,						\
-   NULL,							\
-   YEAR,							\
-   cps1_sound,							\
-   TYPE								\
-)
-
-// qsound
-
-#define qsound_game(NAME,LONGNAME,YEAR,DSW,COMPANY,TYPE)	\
-							\
-static struct DIR_INFO _##NAME##_dirs[] =		\
-{							\
-   { #NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( NAME,						\
-   _##NAME##_dirs,					\
-   _##NAME##_roms,						\
-   cps1_inputs,						\
-   DSW,							\
-   NULL,						\
-							\
-   load_qsound,						\
-   NULL,					\
-   &cps1_video,						\
-   execute_qsound_frame,				\
-   #NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY,					\
-   NULL,						\
-   YEAR,						\
-   qsound_sound,					\
-   TYPE							\
-)
-
-#define qsound_clone(NAME,LONGNAME,YEAR,DSW,COMPANY,TYPE,MYCLONE)	\
-								\
-static struct DIR_INFO _##NAME##_dirs[] =			\
-{								\
-   { #NAME, },							\
-   { ROMOF( MYCLONE ) },					\
-   { CLONEOF( MYCLONE ) },					\
-   { NULL, },							\
-};								\
-								\
-GAME( NAME,							\
-   _##NAME##_dirs,						\
-   _##NAME##_roms,							\
-   cps1_inputs,							\
-   DSW,								\
-   NULL,							\
-								\
-   load_qsound,							\
-   NULL,							\
-   &cps1_video,							\
-   execute_qsound_frame,					\
-   #NAME,							\
-   LONGNAME,							\
-   NULL,							\
-   COMPANY,						\
-   NULL,							\
-   YEAR,							\
-   qsound_sound,						\
-   TYPE								\
-)
-
-static struct ROMSW_DATA romsw_sfzch[] =
+static struct ROMSW_DATA romswd_sfzch[] =
 {
   { "Japan", 0x0},
   { "USA",0x2},
@@ -4213,158 +3916,130 @@ static struct ROMSW_DATA romsw_sfzch[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_INFO sfzch_romsw[] =
+static struct ROMSW_INFO romsw_sfzch[] =
 {
-   { 0xf41, 0x02, romsw_sfzch },
-   { 0xf47, 0x02, romsw_sfzch },
+   { 0xf41, 0x02, romswd_sfzch },
+   { 0xf47, 0x02, romswd_sfzch },
    { 0,        0,    NULL },
 };
 
-#define sfzch_game(GAMENAME,NAME,LONGNAME,YEAR,TYPE)	\
-							\
-static struct DIR_INFO _##GAMENAME##_dirs[] =		\
-{							\
-   { NAME, },						\
-   { NULL, },						\
-};							\
-							\
-GAME( GAMENAME,						\
-   _##GAMENAME##_dirs,					\
-   _##GAMENAME##_roms,					\
-   sfzch_inputs,					\
-   NULL,						\
-   sfzch_romsw,						\
-							\
-   load_cps1,						\
-   NULL,						\
-   &cps1_video,						\
-   execute_cps1_frame,					\
-   NAME,						\
-   LONGNAME,						\
-   NULL,						\
-   COMPANY_ID_CAPCOM,					\
-   NULL,						\
-   YEAR,						\
-   cps1_sound,						\
-   TYPE							\
-)
-
-forgottn_game( forgottn,  "Forgotten Worlds (US)", 1988, COMPANY_ID_CAPCOM, GAME_SHOOT);
-forgottn_clone( lostwrld,  "Lost Worlds (Japan)", 1988, COMPANY_ID_CAPCOM, GAME_SHOOT, "forgottn" );
-cps1_game( ghouls,  "Ghouls'n Ghosts (World)" , 1988, ghouls_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps1_clone( ghoulsu,  "Ghouls'n Ghosts (US)" , 1988, ghoulsu_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "ghouls" );
-cps1_clone( daimakai,  "Dai Makai-Mura (Japan)" , 1988, daimakai_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "ghouls" );
-cps1_clone( daimakr2,  "Dai Makai-Mura (Japan hack?)" , 1988, daimakai_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "ghouls" );
-cps1_game( strider,  "Strider (US set 1)", 1989, strider_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps1_clone( stridrua,  "Strider (US set 2)", 1989, stridrua_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "strider" );
-cps1_clone( striderj,  "Strider Hiryu (Japan set 1)", 1989, strider_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "strider" );
-cps1_clone( stridrja,  "Strider Hiryu (Japan set 2)", 1989, strider_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "strider" );
-cps1_game( dynwar,  "Dynasty Wars (US set 1)", 1989, dynwar_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps1_clone( dynwaru,  "Dynasty Wars (US set 2)", 1989, dynwar_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "dynwar" );
-cps1_clone( dynwarj,  "Tenchi wo Kurau (Japan)", 1989, dynwar_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "dynwar" );
-cps1_game( willow,  "Willow (US)", 1989, willow_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps1_clone( willowj,  "Willow (Japan, Japanese)", 1989, willow_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "willow" );
-cps1_clone( willowje,  "Willow (Japan, English)", 1989, willow_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "willow" );
-cps1_game( unsquad,  "U.N. Squadron (US)", 1989, unsquad_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps1_clone( area88,  "Area 88 (Japan)", 1989, unsquad_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT, "unsquad" );
-cps1_game( ffight,  "Final Fight (World)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps1_clone( ffightu,  "Final Fight (US)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "ffight" );
-cps1_clone( ffightua,  "Final Fight (US 900112)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "ffight" );
-cps1_clone( ffightub,  "Final Fight (US 900613)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "ffight" );
-cps1_clone( ffightj,  "Final Fight (Japan)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "ffight" );
-cps1_clone( ffightj1,  "Final Fight (Japan 900305)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "ffight" );
-cps1_clone( ffightj2,  "Final Fight (Japan 900112)", 1989, ffight_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "ffight" );
-cps1_game( 1941,  "1941 - Counter Attack (World)", 1990, _1941_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps1_clone( 1941j,  "1941 - Counter Attack (Japan)", 1990, _1941_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "1941" );
-cps1_game( mercs,  "Mercs (World 900302)" , 1990, mercs_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps1_clone( mercsu,  "Mercs (US 900302)", 1990, mercs_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "mercs" );
-cps1_clone( mercsua,  "Mercs (US 900608)", 1990, mercs_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "mercs" );
-cps1_clone( mercsj,  "Senjou no Ookami II (Japan 900302)", 1990, mercs_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "mercs" );
-cps1_game( mtwins,  "Mega Twins (World 900619)", 1990, mtwins_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps1_clone( chikij,  "Chiki Chiki Boys (Japan 900619)", 1990, mtwins_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "mtwins" );
-cps1_game( msword,  "Magic Sword - Heroic Fantasy (World 900725)" , 1990, msword_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps1_clone( mswordr1,  "Magic Sword - Heroic Fantasy (World 900623)" , 1990, msword_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "msword" );
-cps1_clone( mswordu,  "Magic Sword - Heroic Fantasy (US 900725)" , 1990, msword_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "msword" );
-cps1_clone( mswordj,  "Magic Sword (Japan 900623)" , 1990, msword_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "msword" );
-cps1_game( cawing,  "Carrier Air Wing (World 901012)" , 1990, cawing_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps1_clone( cawingr1,  "Carrier Air Wing (World 901009)" , 1990, cawing_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT, "cawing" );
-cps1_clone( cawingu,  "Carrier Air Wing (US 901012)", 1990, cawing_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT, "cawing" );
-cps1_clone( cawingj,  "U.S. Navy (Japan 901012)", 1990, cawing_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_SHOOT, "cawing" );
-cps1_game( nemo,  "Nemo (World 901130)" , 1990, nemo_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM );
-cps1_clone( nemoj,  "Nemo (Japan 901120)", 1990, nemo_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PLATFORM, "nemo" );
-sf2_game( sf2,  "Street Fighter II - The World Warrior (World 910522)" , 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT );
-sf2_clone( sf2eb,  "Street Fighter II - The World Warrior (World 910214)" , 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2ua,  "Street Fighter II - The World Warrior (US 910206)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2ub,  "Street Fighter II - The World Warrior (US 910214)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2ud,  "Street Fighter II - The World Warrior (US 910318)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2ue,  "Street Fighter II - The World Warrior (US 910228)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2uf,  "Street Fighter II - The World Warrior (US 910411)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2ui,  "Street Fighter II - The World Warrior (US 910522)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2uk,  "Street Fighter II - The World Warrior (US 911101)", 1991, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2j,  "Street Fighter II - The World Warrior (Japan 911210)", 1991, sf2j_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2ja,  "Street Fighter II - The World Warrior (Japan 910214)", 1991, sf2j_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-sf2_clone( sf2jc,  "Street Fighter II - The World Warrior (Japan 910306)", 1991, sf2j_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2" );
-cps1_game( 3wonders,  "Three Wonders (World 910520)" , 1991, _3wonders_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_MISC );
-cps1_clone( 3wonderu,  "Three Wonders (US 910520)", 1991, _3wonders_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_MISC, "3wonders" );
-cps1_clone( wonder3,  "Wonder 3 (Japan 910520)", 1991, _3wonders_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_MISC, "3wonders" );
-cps1_clone( 3wonderh, "Three Wonders (hack?)", 1991, _3wonders_dsw, &cps1_video, COMPANY_ID_BOOTLEG, GAME_MISC, "3wonders" );
-cps1_game( kod,  "The King of Dragons (World 910711)" , 1991, kod_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps1_clone( kodu,  "The King of Dragons (US 910910)", 1991, kodj_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "kod" );
-cps1_clone( kodj,  "The King of Dragons (Japan 910805)", 1991, kodj_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "kod" );
-cps1_game( captcomm,  "Captain Commando (World 911014)" , 1991, captcomm_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps1_clone( captcomu,  "Captain Commando (US 910928)", 1991, captcomm_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "captcomm" );
-cps1_clone( captcomj,  "Captain Commando (Japan 911202)", 1991, captcomm_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "captcomm" );
-cps1_game( knights,  "Knights of the Round (World 911127)" , 1991, knights_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps1_clone( knightsu,  "Knights of the Round (US 911127)", 1991, knights_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "knights" );
-cps1_clone( knightsj,  "Knights of the Round (Japan 911127)", 1991, knights_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "knights" );
-sf2_game( sf2ce,  "Street Fighter II' - Champion Edition (World 920313)" , 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT );
-sf2_clone( sf2ceua,  "Street Fighter II' - Champion Edition (US 920313)", 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2ceub,  "Street Fighter II' - Champion Edition (US 920513)", 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2ceuc,  "Street Fighter II' - Champion Edition (US 920803)", 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2cej,  "Street Fighter II' - Champion Edition (Japan 920513)", 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2rb,  "Street Fighter II' - Champion Edition (Rainbow set 1, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2rb2,  "Street Fighter II' - Champion Edition (Rainbow set 2, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2rb3,  "Street Fighter II' - Champion Edition (Rainbow set 3, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2red,  "Street Fighter II' - Champion Edition (Red Wave, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2v004,  "Street Fighter II! - Champion Edition (V004, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2accp2,  "Street Fighter II' - Champion Edition (Accelerator Pt.II, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2m2,  "Street Fighter II' - Champion Edition (M2, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2m4,  "Street Fighter II' - Champion Edition (M4, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2m5,  "Street Fighter II' - Champion Edition (M5, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2m6,  "Street Fighter II' - Champion Edition (M6, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2m7,  "Street Fighter II' - Champion Edition (M7, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2yyc,  "Street Fighter II' - Champion Edition (YYC, bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2koryu,  "Street Fighter II' - Champion Edition (Xiang Long, Chinese bootleg)", 1992, sf2_dsw, COMPANY_ID_BOOTLEG, GAME_BEAT, "sf2ce" );
-cps1_game( varth,  "Varth - Operation Thunderstorm (World 920714)" , 1992, varth_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT );
-cps1_clone( varthr1,  "Varth - Operation Thunderstorm (World 920612)" , 1992, varth_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "varth" );
-cps1_clone( varthu,  "Varth - Operation Thunderstorm (US 920612)", 1992, varth_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "varth" );
-cps1_clone( varthj,  "Varth - Operation Thunderstorm (Japan 920714)", 1992, varth_dsw, &cps1_video_270, COMPANY_ID_CAPCOM, GAME_SHOOT, "varth" );
-cps1_game( cworld2j,  "Capcom World 2 (Japan 920611)", 1992, cworld2j_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_QUIZZ );
-sf2_clone( sf2hf,  "Street Fighter II' - Hyper Fighting (World 921209)", 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2t,  "Street Fighter II' - Hyper Fighting (US 921209)", 1992, sf2_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-sf2_clone( sf2tj,  "Street Fighter II' Turbo - Hyper Fighting (Japan 921209)", 1992, sf2j_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "sf2ce" );
-cps1b4_game( qad,  "Quiz & Dragons (US 920701)", 1992, qad_dsw, COMPANY_ID_CAPCOM, GAME_QUIZZ );
-cps1b4_clone( qadj,  "Quiz & Dragons (Japan 940921)", 1994, qadj_dsw, COMPANY_ID_CAPCOM, GAME_QUIZZ, "qad" );
-cps1b4_game( qtono2,  "Quiz Tonosama no Yabou 2 Zenkoku-ban (Japan 950123)", 1995, qtono2_dsw, COMPANY_ID_CAPCOM, GAME_QUIZZ );
-cps1_game( megaman,  "Mega Man - The Power Battle (CPS1 Asia 951006)", 1995, megaman_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT );
-cps1_clone( rockmanj,  "Rockman - The Power Battle (CPS1 Japan 950922)", 1995, rockmanj_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_BEAT, "megaman" );
-qsound_game( wof,  "Warriors of Fate (World 921002)" , 1992, wof_dsw, COMPANY_ID_CAPCOM, GAME_BEAT );
-qsound_clone( wofa,  "Sangokushi II (Asia 921005)" , 1992, wof_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "wof" );
-qsound_clone( wofu,  "Warriors of Fate (US 921031)" , 1992, wof_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "wof" );
-qsound_clone( wofj,  "Tenchi wo Kurau II - Sekiheki no Tatakai (Japan 921031)", 1992, wof_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "wof" );
-cps1_clone( wofhfh, "Sangokushi II: Huo Fenghuang (Chinese bootleg)", 1999, wofhfh_dsw, &cps1_video, COMPANY_ID_BOOTLEG, GAME_BEAT, "wof" );
-qsound_game( dino,  "Cadillacs and Dinosaurs (World 930201)" , 1993, dino_dsw, COMPANY_ID_CAPCOM, GAME_BEAT );
-qsound_clone( dinou,  "Cadillacs and Dinosaurs (US 930201)", 1993, dino_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "dino" );
-qsound_clone( dinoj,  "Cadillacs Kyouryuu-Shinseiki (Japan 930201)", 1993, dino_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "dino" );
-qsound_game( punisher,  "The Punisher (World 930422)" , 1993, punisher_dsw, COMPANY_ID_CAPCOM, GAME_BEAT );
-qsound_clone( punishru,  "The Punisher (US 930422)", 1993, punisher_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "punisher" );
-qsound_clone( punishrj,  "The Punisher (Japan 930422)", 1993, punisher_dsw, COMPANY_ID_CAPCOM, GAME_BEAT, "punisher" );
-qsound_game( slammast,  "Saturday Night Slam Masters (World 930713)" , 1993, slammast_dsw, COMPANY_ID_CAPCOM, GAME_SPORTS );
-qsound_clone( slammasu,  "Saturday Night Slam Masters (US 930713)", 1993, slammast_dsw, COMPANY_ID_CAPCOM, GAME_SPORTS, "slammast" );
-qsound_clone( mbomberj,  "Muscle Bomber - The Body Explosion (Japan 930713)", 1993, slammast_dsw, COMPANY_ID_CAPCOM, GAME_SPORTS, "slammast" );
-qsound_game( mbombrd,  "Muscle Bomber Duo - Ultimate Team Battle (World 931206)" , 1993, slammast_dsw, COMPANY_ID_CAPCOM, GAME_SPORTS );
-qsound_clone( mbombrdj,  "Muscle Bomber Duo - Heat Up Warriors (Japan 931206)", 1993, slammast_dsw, COMPANY_ID_CAPCOM, GAME_SPORTS, "mbombrd" );
-cps1_game( pnickj,  "Pnickies (Japan 940608)", 1994, pnickj_dsw, &cps1_video, COMPANY_ID_CAPCOM, GAME_PUZZLE );
-cps1_game( pang3,  "Pang! 3 (Euro 950511)", 1995, pang3_dsw, &cps1_video, COMPANY_ID_MITCHELL, GAME_SHOOT );
-cps1_clone( pang3j,  "Pang! 3 (Japan 950511)", 1995, pang3_dsw, &cps1_video, COMPANY_ID_MITCHELL, GAME_SHOOT, "pang3" );
-sfzch_game(sfzch,"sfzch","Street Fighter Zero (Japan CPS Changer)" ,1995,GAME_BEAT);
+GMEI(forgottn,"Forgotten Worlds (US)",CAPCOM,1988,GAME_SHOOT, .input = input_forgottn, .dsw = dsw_forgottn, .sound = sound_forgottn);
+CLNEI(lostwrld,forgottn,"Lost Worlds (Japan)",CAPCOM,1988,GAME_SHOOT, .input = input_forgottn, .dsw = dsw_forgottn, .sound = sound_forgottn);
+GMEI(ghouls,"Ghouls'n Ghosts (World)",CAPCOM,1988,GAME_PLATFORM);
+CLNEI(ghoulsu,ghouls,"Ghouls'n Ghosts (US)",CAPCOM,1988,GAME_PLATFORM, .dsw = dsw_ghoulsu);
+CLNEI(daimakai,ghouls,"Dai Makai-Mura (Japan)",CAPCOM,1988,GAME_PLATFORM, .dsw = dsw_daimakai);
+CLNEI(daimakr2,ghouls,"Dai Makai-Mura (Japan hack?)",CAPCOM,1988,GAME_PLATFORM, .dsw = dsw_daimakai);
+GMEI(strider,"Strider (US set 1)",CAPCOM,1989,GAME_PLATFORM);
+CLNEI(stridrua,strider,"Strider (US set 2)",CAPCOM,1989,GAME_PLATFORM, .dsw = dsw_stridrua);
+CLNEI(striderj,strider,"Strider Hiryu (Japan set 1)",CAPCOM,1989,GAME_PLATFORM);
+CLNEI(stridrja,strider,"Strider Hiryu (Japan set 2)",CAPCOM,1989,GAME_PLATFORM);
+GMEI(dynwar,"Dynasty Wars (US set 1)",CAPCOM,1989,GAME_BEAT);
+CLNEI(dynwaru,dynwar,"Dynasty Wars (US set 2)",CAPCOM,1989,GAME_BEAT);
+CLNEI(dynwarj,dynwar,"Tenchi wo Kurau (Japan)",CAPCOM,1989,GAME_BEAT);
+GMEI(willow,"Willow (US)",CAPCOM,1989,GAME_PLATFORM);
+CLNEI(willowj,willow,"Willow (Japan,Japanese)",CAPCOM,1989,GAME_PLATFORM);
+CLNEI(willowje,willow,"Willow (Japan,English)",CAPCOM,1989,GAME_PLATFORM);
+GMEI(unsquad,"U.N. Squadron (US)",CAPCOM,1989,GAME_SHOOT);
+CLNEI(area88,unsquad,"Area 88 (Japan)",CAPCOM,1989,GAME_SHOOT);
+GMEI(ffight,"Final Fight (World)",CAPCOM,1989,GAME_BEAT);
+CLNEI(ffightu,ffight,"Final Fight (US)",CAPCOM,1989,GAME_BEAT);
+CLNEI(ffightua,ffight,"Final Fight (US 900112)",CAPCOM,1989,GAME_BEAT);
+CLNEI(ffightub,ffight,"Final Fight (US 900613)",CAPCOM,1989,GAME_BEAT);
+CLNEI(ffightj,ffight,"Final Fight (Japan)",CAPCOM,1989,GAME_BEAT);
+CLNEI(ffightj1,ffight,"Final Fight (Japan 900305)",CAPCOM,1989,GAME_BEAT);
+CLNEI(ffightj2,ffight,"Final Fight (Japan 900112)",CAPCOM,1989,GAME_BEAT);
+GMEI(1941,"1941 - Counter Attack (World)",CAPCOM,1990,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(1941j,1941,"1941 - Counter Attack (Japan)",CAPCOM,1990,GAME_SHOOT, .video = &video_cps1_270);
+GMEI(mercs,"Mercs (World 900302)",CAPCOM,1990,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(mercsu,mercs,"Mercs (US 900302)",CAPCOM,1990,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(mercsua,mercs,"Mercs (US 900608)",CAPCOM,1990,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(mercsj,mercs,"Senjou no Ookami II (Japan 900302)",CAPCOM,1990,GAME_SHOOT, .video = &video_cps1_270);
+GMEI(mtwins,"Mega Twins (World 900619)",CAPCOM,1990,GAME_PLATFORM);
+CLNEI(chikij,mtwins,"Chiki Chiki Boys (Japan 900619)",CAPCOM,1990,GAME_PLATFORM);
+GMEI(msword,"Magic Sword - Heroic Fantasy (World 900725)",CAPCOM,1990,GAME_PLATFORM);
+CLNEI(mswordr1,msword,"Magic Sword - Heroic Fantasy (World 900623)",CAPCOM,1990,GAME_PLATFORM);
+CLNEI(mswordu,msword,"Magic Sword - Heroic Fantasy (US 900725)",CAPCOM,1990,GAME_PLATFORM);
+CLNEI(mswordj,msword,"Magic Sword (Japan 900623)",CAPCOM,1990,GAME_PLATFORM);
+GMEI(cawing,"Carrier Air Wing (World 901012)",CAPCOM,1990,GAME_SHOOT);
+CLNEI(cawingr1,cawing,"Carrier Air Wing (World 901009)",CAPCOM,1990,GAME_SHOOT);
+CLNEI(cawingu,cawing,"Carrier Air Wing (US 901012)",CAPCOM,1990,GAME_SHOOT);
+CLNEI(cawingj,cawing,"U.S. Navy (Japan 901012)",CAPCOM,1990,GAME_SHOOT);
+GMEI(nemo,"Nemo (World 901130)",CAPCOM,1990,GAME_PLATFORM);
+CLNEI(nemoj,nemo,"Nemo (Japan 901120)",CAPCOM,1990,GAME_PLATFORM);
+GMEI(sf2,"Street Fighter II - The World Warrior (World 910522)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2eb,sf2,"Street Fighter II - The World Warrior (World 910214)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ua,sf2,"Street Fighter II - The World Warrior (US 910206)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ub,sf2,"Street Fighter II - The World Warrior (US 910214)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ud,sf2,"Street Fighter II - The World Warrior (US 910318)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ue,sf2,"Street Fighter II - The World Warrior (US 910228)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2uf,sf2,"Street Fighter II - The World Warrior (US 910411)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ui,sf2,"Street Fighter II - The World Warrior (US 910522)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2uk,sf2,"Street Fighter II - The World Warrior (US 911101)",CAPCOM,1991,GAME_BEAT, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2j,sf2,"Street Fighter II - The World Warrior (Japan 911210)",CAPCOM,1991,GAME_BEAT, .dsw = dsw_sf2j, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ja,sf2,"Street Fighter II - The World Warrior (Japan 910214)",CAPCOM,1991,GAME_BEAT, .dsw = dsw_sf2j, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2jc,sf2,"Street Fighter II - The World Warrior (Japan 910306)",CAPCOM,1991,GAME_BEAT, .dsw = dsw_sf2j, .input = input_sf2, .exec = execute_sf2_frame);
+GMEI(3wonders,"Three Wonders (World 910520)",CAPCOM,1991,GAME_MISC);
+CLNEI(3wonderu,3wonders,"Three Wonders (US 910520)",CAPCOM,1991,GAME_MISC);
+CLNEI(wonder3,3wonders,"Wonder 3 (Japan 910520)",CAPCOM,1991,GAME_MISC);
+CLNEI(3wonderh,3wonders,"Three Wonders (hack?)",BOOTLEG,1991,GAME_MISC);
+GMEI(kod,"The King of Dragons (World 910711)",CAPCOM,1991,GAME_BEAT);
+CLNEI(kodu,kod,"The King of Dragons (US 910910)",CAPCOM,1991,GAME_BEAT, .dsw = dsw_kodj);
+CLNEI(kodj,kod,"The King of Dragons (Japan 910805)",CAPCOM,1991,GAME_BEAT, .dsw = dsw_kodj);
+GMEI(captcomm,"Captain Commando (World 911014)",CAPCOM,1991,GAME_BEAT);
+CLNEI(captcomu,captcomm,"Captain Commando (US 910928)",CAPCOM,1991,GAME_BEAT);
+CLNEI(captcomj,captcomm,"Captain Commando (Japan 911202)",CAPCOM,1991,GAME_BEAT);
+GMEI(knights,"Knights of the Round (World 911127)",CAPCOM,1991,GAME_BEAT);
+CLNEI(knightsu,knights,"Knights of the Round (US 911127)",CAPCOM,1991,GAME_BEAT);
+CLNEI(knightsj,knights,"Knights of the Round (Japan 911127)",CAPCOM,1991,GAME_BEAT);
+GMEI(sf2ce,"Street Fighter II' - Champion Edition (World 920313)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ceua,sf2ce,"Street Fighter II' - Champion Edition (US 920313)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ceub,sf2ce,"Street Fighter II' - Champion Edition (US 920513)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2ceuc,sf2ce,"Street Fighter II' - Champion Edition (US 920803)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2cej,sf2ce,"Street Fighter II' - Champion Edition (Japan 920513)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2rb,sf2ce,"Street Fighter II' - Champion Edition (Rainbow set 1,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2rb2,sf2ce,"Street Fighter II' - Champion Edition (Rainbow set 2,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2rb3,sf2ce,"Street Fighter II' - Champion Edition (Rainbow set 3,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2red,sf2ce,"Street Fighter II' - Champion Edition (Red Wave,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2v004,sf2ce,"Street Fighter II! - Champion Edition (V004,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2accp2,sf2ce,"Street Fighter II' - Champion Edition (Accelerator Pt.II,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2m2,sf2ce,"Street Fighter II' - Champion Edition (M2,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2m4,sf2ce,"Street Fighter II' - Champion Edition (M4,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2m5,sf2ce,"Street Fighter II' - Champion Edition (M5,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2m6,sf2ce,"Street Fighter II' - Champion Edition (M6,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2m7,sf2ce,"Street Fighter II' - Champion Edition (M7,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2yyc,sf2ce,"Street Fighter II' - Champion Edition (YYC,bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2koryu,sf2ce,"Street Fighter II' - Champion Edition (Xiang Long,Chinese bootleg)",BOOTLEG,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+GMEI(varth,"Varth - Operation Thunderstorm (World 920714)",CAPCOM,1992,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(varthr1,varth,"Varth - Operation Thunderstorm (World 920612)",CAPCOM,1992,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(varthu,varth,"Varth - Operation Thunderstorm (US 920612)",CAPCOM,1992,GAME_SHOOT, .video = &video_cps1_270);
+CLNEI(varthj,varth,"Varth - Operation Thunderstorm (Japan 920714)",CAPCOM,1992,GAME_SHOOT, .video = &video_cps1_270);
+GMEI(cworld2j,"Capcom World 2 (Japan 920611)",CAPCOM,1992,GAME_QUIZZ);
+CLNEI(sf2hf,sf2ce,"Street Fighter II' - Hyper Fighting (World 921209)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2t,sf2ce,"Street Fighter II' - Hyper Fighting (US 921209)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2, .input = input_sf2, .exec = execute_sf2_frame);
+CLNEI(sf2tj,sf2ce,"Street Fighter II' Turbo - Hyper Fighting (Japan 921209)",CAPCOM,1992,GAME_BEAT, .dsw = dsw_sf2j, .input = input_sf2, .exec = execute_sf2_frame);
+GMEI(qad,"Quiz & Dragons (US 920701)",CAPCOM,1992,GAME_QUIZZ, .input = input_cps1b4);
+CLNEI(qadj,qad,"Quiz & Dragons (Japan 940921)",CAPCOM,1994,GAME_QUIZZ, .dsw = dsw_qadj, .input = input_cps1b4);
+GMEI(qtono2,"Quiz Tonosama no Yabou 2 Zenkoku-ban (Japan 950123)",CAPCOM,1995,GAME_QUIZZ, .input = input_cps1b4);
+GMEI(megaman,"Mega Man - The Power Battle (CPS1 Asia 951006)",CAPCOM,1995,GAME_BEAT);
+CLNEI(rockmanj,megaman,"Rockman - The Power Battle (CPS1 Japan 950922)",CAPCOM,1995,GAME_BEAT, .dsw = dsw_rockmanj);
+GMEI(wof,"Warriors of Fate (World 921002)",CAPCOM,1992,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(wofa,wof,"Sangokushi II (Asia 921005)",CAPCOM,1992,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(wofu,wof,"Warriors of Fate (US 921031)",CAPCOM,1992,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(wofj,wof,"Tenchi wo Kurau II - Sekiheki no Tatakai (Japan 921031)",CAPCOM,1992,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(wofhfh,wof,"Sangokushi II: Huo Fenghuang (Chinese bootleg)",BOOTLEG,1999,GAME_BEAT, .dsw = dsw_wofhfh);
+GMEI(dino,"Cadillacs and Dinosaurs (World 930201)",CAPCOM,1993,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(dinou,dino,"Cadillacs and Dinosaurs (US 930201)",CAPCOM,1993,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(dinoj,dino,"Cadillacs Kyouryuu-Shinseiki (Japan 930201)",CAPCOM,1993,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+GMEI(punisher,"The Punisher (World 930422)",CAPCOM,1993,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(punishru,punisher,"The Punisher (US 930422)",CAPCOM,1993,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(punishrj,punisher,"The Punisher (Japan 930422)",CAPCOM,1993,GAME_BEAT, .exec = execute_qsound_frame, .sound = sound_qsound);
+GMEI(slammast,"Saturday Night Slam Masters (World 930713)",CAPCOM,1993,GAME_SPORTS, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(slammasu,slammast,"Saturday Night Slam Masters (US 930713)",CAPCOM,1993,GAME_SPORTS, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(mbomberj,slammast,"Muscle Bomber - The Body Explosion (Japan 930713)",CAPCOM,1993,GAME_SPORTS, .exec = execute_qsound_frame, .sound = sound_qsound);
+GMEI(mbombrd,"Muscle Bomber Duo - Ultimate Team Battle (World 931206)",CAPCOM,1993,GAME_SPORTS, .dsw = dsw_slammast, .exec = execute_qsound_frame, .sound = sound_qsound);
+CLNEI(mbombrdj,mbombrd,"Muscle Bomber Duo - Heat Up Warriors (Japan 931206)",CAPCOM,1993,GAME_SPORTS, .dsw = dsw_slammast, .exec = execute_qsound_frame, .sound = sound_qsound);
+GMEI(pnickj,"Pnickies (Japan 940608)",CAPCOM,1994,GAME_PUZZLE);
+GMEI(pang3,"Pang! 3 (Euro 950511)",MITCHELL,1995,GAME_SHOOT);
+CLNEI(pang3j,pang3,"Pang! 3 (Japan 950511)",MITCHELL,1995,GAME_SHOOT);
+GMEI(sfzch,"Street Fighter Zero (Japan CPS Changer)" ,CAPCOM,1995,GAME_BEAT,
+	.input = input_sfzch, .romsw = romsw_sfzch);

@@ -11,15 +11,8 @@
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO darius_gaiden_dirs[] =
-{
-   { "darius_gaiden", },
-   { "dariusg", },
-   { "dariusgj", },
-   { NULL, },
-};
 
-static struct ROM_INFO darius_gaiden_roms[] =
+static struct ROM_INFO rom_dariusg[] =
 {
    {   "d87-01.bin", 0x00200000, 0x3848a110, 0, 0, 0, },
    {   "d87-02.bin", 0x00200000, 0x9250abae, 0, 0, 0, },
@@ -46,22 +39,14 @@ static struct ROMSW_DATA romsw_data_darius_gaiden_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO darius_gaiden_romsw[] =
+static struct ROMSW_INFO romsw_dariusg[] =
 {
    { 0x1FFFFF, 0x03, romsw_data_darius_gaiden_0 },
    { 0,        0,    NULL },
 };
 
-static struct DIR_INFO darius_gaiden_extra_dirs[] =
-{
-   { "darius_gaiden_extra", },
-   { "dariusgx", },
-   { ROMOF("dariusg"), },
-   { CLONEOF("dariusg"), },
-   { NULL, },
-};
 
-static struct ROM_INFO darius_gaiden_extra_roms[] =
+static struct ROM_INFO rom_dariusgx[] =
 {
    {   "d87-01.bin", 0x00200000, 0x3848a110, 0, 0, 0, },
    {   "d87-02.bin", 0x00200000, 0x9250abae, 0, 0, 0, },
@@ -106,7 +91,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void load_darius_gaiden(int version)
+static void load_darius_gaiden(int version)
 {
    int ta,tb,tc;
 
@@ -307,25 +292,15 @@ void load_darius_gaiden(int version)
    setup_sound_68000();
 }
 
-void load_darius_gaiden0() {
+static void load_dariusg() {
   load_darius_gaiden(0);
 }
 
-void load_darius_gaidenx() {
+static void load_dariusgx() {
   load_darius_gaiden(1);
 }
 
-void clear_darius_gaiden(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x080000,0);
-      save_debug("ROM.bin",ROM,0x200000,0);
-#endif
-}
-
-void draw_darius_gaiden(void)
+static void draw_darius_gaiden(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -512,7 +487,9 @@ void draw_darius_gaiden(void)
    }
 }
 
-static struct VIDEO_INFO darius_gaiden_video =
+
+
+static struct VIDEO_INFO video_dariusg =
 {
    draw_darius_gaiden,
    320,
@@ -520,45 +497,37 @@ static struct VIDEO_INFO darius_gaiden_video =
    64,
    VIDEO_ROTATE_NORMAL,
 };
-
-GAME( darius_gaiden_extra ,
-   darius_gaiden_extra_dirs,
-   darius_gaiden_extra_roms,
-   f3_system_inputs,
-   NULL,
-   darius_gaiden_romsw,
-
-   load_darius_gaidenx,
-   clear_darius_gaiden,
-   &darius_gaiden_video,
-      ExecuteF3SystemFrameB,
-   "dariusgx",
-   "Darius Gaiden Extra",
-   "ダライアス外伝 Extra",
-   COMPANY_ID_TAITO,
-   "D87",
-   1994,
-   f3_sound,
-   GAME_SHOOT
+static struct DIR_INFO dir_dariusg[] =
+{
+   { "darius_gaiden", },
+   { "dariusg", },
+   { "dariusgj", },
+   { NULL, },
+};
+GAME( dariusg, "Darius Gaiden", TAITO, 1994, GAME_SHOOT,
+	.input = f3_system_inputs,
+	.romsw = romsw_dariusg,
+	.video = &video_dariusg,
+	.exec = ExecuteF3SystemFrame,
+	.long_name_jpn = "ダライアス外伝",
+	.board = "D87",
+	.sound = f3_sound,
+);
+static struct DIR_INFO dir_dariusgx[] =
+{
+   { "darius_gaiden_extra", },
+   { "dariusgx", },
+   { ROMOF("dariusg"), },
+   { CLONEOF("dariusg"), },
+   { NULL, },
+};
+GAME( dariusgx, "Darius Gaiden Extra", TAITO, 1994, GAME_SHOOT,
+	.input = f3_system_inputs,
+	.romsw = romsw_dariusg,
+	.video = &video_dariusg,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "ダライアス外伝 Extra",
+	.board = "D87",
+	.sound = f3_sound,
 );
 
-GAME( darius_gaiden ,
-   darius_gaiden_dirs,
-   darius_gaiden_roms,
-   f3_system_inputs,
-   NULL,
-   darius_gaiden_romsw,
-
-   load_darius_gaiden0,
-   clear_darius_gaiden,
-   &darius_gaiden_video,
-      ExecuteF3SystemFrame,
-   "dariusg",
-   "Darius Gaiden",
-   "ダライアス外伝",
-   COMPANY_ID_TAITO,
-   "D87",
-   1994,
-   f3_sound,
-   GAME_SHOOT
-);

@@ -27,7 +27,7 @@ BITMAP *screen;
 UINT32 videoflags;
 static int desktop_w,desktop_h,desktop_bpp;
 static char driver[128];
-const SDL_VideoInfo *video_info;
+const SDL_VideoInfo *video;
 UINT32 screen_flags;
 
 #ifdef RAINE_WIN32
@@ -43,7 +43,7 @@ void setup_video_driver() {
 void adjust_gui_resolution() {
   // To be called just before starting the gui, when already with a video mode
   // 1st keep the current video mode parameters for video info...
-  video_info = SDL_GetVideoInfo();
+  video = SDL_GetVideoInfo();
   screen_flags = sdl_screen->flags;
 
 
@@ -256,7 +256,7 @@ static SDL_Surface *new_set_gfx_mode() {
     videoflags |= SDL_FULLSCREEN;
     videoflags &= ~SDL_RESIZABLE;
   }
-  if (current_game && current_game->video_info->flags & VIDEO_NEEDS_8BPP) {
+  if (current_game && current_game->video->flags & VIDEO_NEEDS_8BPP) {
     bpp = 8;
     /* Actually we could leave the SDL_ANYFORMAT alone and let the
      * SDL_BlitSurface function do the color conversion... The only problem
@@ -497,7 +497,7 @@ void resize() {
 
   if (current_game ) {
     // keep aspect ratio
-    VIDEO_INFO *video = (VIDEO_INFO*)current_game->video_info;
+    VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
 #ifndef NEO
     double ratio = get_bezel_ratio();
     if (ratio < 0)

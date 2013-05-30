@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*									      */
 /*	       BONZE ADVENTURE/JIGOKU (C) 1988 TAITO CORPORATION	      */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "bonzeadv.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc002obj.h"
@@ -16,14 +16,7 @@
    BONZE ADVENTURE
  *******************/
 
-static struct DIR_INFO bonze_adventure_dirs[] =
-{
-   { "bonze_adventure", },
-   { "bonzeadv", },
-   { NULL, },
-};
-
-static struct ROM_INFO bonze_adventure_roms[] =
+static struct ROM_INFO rom_bonzeadv[] =
 {
    {       "b41-01.15", 0x00080000, 0x5d072fa4, 0, 0, 0, },
    {       "b41-02.7", 0x00080000, 0x29f205d9, 0, 0, 0, },
@@ -37,7 +30,7 @@ static struct ROM_INFO bonze_adventure_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO bonze_adventure_inputs[] =
+static struct INPUT_INFO input_bonzeadv[] =
 {
    INP1( COIN1, 0x040009, 0x01 ),
    INP1( COIN2, 0x040009, 0x02 ),
@@ -106,7 +99,7 @@ static struct DSW_DATA dsw_data_bonze_adventure_1[] =
    { NULL,		      0,	 },
 };
 
-static struct DSW_INFO bonze_adventure_dsw[] =
+static struct DSW_INFO dsw_bonzeadv[] =
 {
    { 0x020000, 0xFF, dsw_data_bonze_adventure_0 },
    { 0x020020, 0xBF, dsw_data_bonze_adventure_1 },
@@ -129,51 +122,14 @@ static struct ROMSW_INFO bonze_adventure_romsw[] =
 };
 */
 
-static struct VIDEO_INFO bonze_adventure_video =
-{
-   DrawBonzeAdv,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( bonze_adventure ,
-   bonze_adventure_dirs,
-   bonze_adventure_roms,
-   bonze_adventure_inputs,
-   bonze_adventure_dsw,
-   NULL,
-
-   LoadBonzeAdv,
-   ClearBonzeAdv,
-   &bonze_adventure_video,
-   ExecuteBonzeAdvFrame,
-   "bonzeadv",
-   "Bonze's Adventure",
-   "ínçñÇˇÇΩÇË American",
-   COMPANY_ID_TAITO,
-   "B41",
-   1988,
-   taito_ym2610_sound,
-   GAME_PLATFORM
-);
 
 /*****************
    JIGOKU MEGURI
  *****************/
 
-static struct DIR_INFO jigoku_meguri_dirs[] =
-{
-   { "jigoku_meguri", },
-   { "jigoku", },
-   { "jigkmgri", },     /* Steph 2001.04.20 - added this name because of MAME driver's name */
-   { ROMOF("bonzeadv"), },
-   { CLONEOF("bonzeadv"), },
-   { NULL, },
-};
 
-static struct ROM_INFO jigoku_meguri_roms[] =
+static struct ROM_INFO rom_jigkmgri[] =
 {
    {       "b41-01.15", 0x00080000, 0x5d072fa4, 0, 0, 0, },
    {       "b41-02.7", 0x00080000, 0x29f205d9, 0, 0, 0, },
@@ -206,7 +162,7 @@ static struct DSW_DATA dsw_data_jigoku_meguri_0[] =
    { NULL,		      0,	 },
 };
 
-static struct DSW_INFO jigoku_meguri_dsw[] =
+static struct DSW_INFO dsw_jigkmgri[] =
 {
    { 0x020000, 0xFF, dsw_data_jigoku_meguri_0 },
    { 0x020020, 0xBF, dsw_data_bonze_adventure_1 },
@@ -221,26 +177,6 @@ static struct ROMSW_INFO jigoku_meguri_romsw[] =
 };
 */
 
-GAME( jigoku_meguri ,
-   jigoku_meguri_dirs,
-   jigoku_meguri_roms,
-   bonze_adventure_inputs,
-   jigoku_meguri_dsw,
-   NULL,
-
-   LoadJigoku,
-   ClearBonzeAdv,
-   &bonze_adventure_video,
-   ExecuteBonzeAdvFrame,
-   "jigkmgri",
-   "Jigoku Meguri",
-   "ínçñÇˇÇΩÇË",
-   COMPANY_ID_TAITO,
-   "B41",
-   1988,
-   taito_ym2610_sound,
-   GAME_PLATFORM
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -617,10 +553,9 @@ static void CChipWriteW(UINT32 address, int data)
    CChipWriteB(address+1,data&0xFF);
 }
 
-static void load_actual(int romset)
+static void load_bonzeadv()
 {
    int ta,tb;
-   (void)(romset);
 
    RAMSize=0x54000;
 
@@ -830,22 +765,7 @@ static void load_actual(int romset)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void LoadBonzeAdv(void)
-{
-   load_actual(0);
-}
-
-void LoadJigoku(void)
-{
-   load_actual(1);
-}
-
-void ClearBonzeAdv(void)
-{
-   RemoveTaitoYM2610();
-}
-
-void ExecuteBonzeAdvFrame(void)
+static void execute_bonzeadv(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60)); // M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 4);
@@ -853,7 +773,7 @@ void ExecuteBonzeAdvFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void DrawBonzeAdv(void)
+static void DrawBonzeAdv(void)
 {
    ClearPaletteMap();
 
@@ -891,4 +811,37 @@ void DrawBonzeAdv(void)
    render_tc0100scn_layer_mapped(0,2,1);
 }
 
+
+static struct VIDEO_INFO video_bonzeadv =
+{
+   DrawBonzeAdv,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_jigkmgri[] =
+{
+   { "jigoku_meguri", },
+   { "jigoku", },
+   { "jigkmgri", },     /* Steph 2001.04.20 - added this name because of MAME driver's name */
+   { ROMOF("bonzeadv"), },
+   { CLONEOF("bonzeadv"), },
+   { NULL, },
+};
+CLNE( jigkmgri, bonzeadv, "Jigoku Meguri", TAITO, 1988, GAME_PLATFORM,
+	.dsw = dsw_jigkmgri,
+	.long_name_jpn = "ínçñÇˇÇΩÇË",
+	.board = "B41",
+);
+static struct DIR_INFO dir_bonzeadv[] =
+{
+   { "bonze_adventure", },
+   { "bonzeadv", },
+   { NULL, },
+};
+GAME( bonzeadv, "Bonze's Adventure", TAITO, 1988, GAME_PLATFORM,
+	.long_name_jpn = "ínçñÇˇÇΩÇË American",
+	.board = "B41",
+);
 

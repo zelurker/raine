@@ -47,7 +47,7 @@ void vcu_render_ryujin_bg(int bg, int pri);
 
 /*
 
-video_info interface
+video interface
 
 */
 

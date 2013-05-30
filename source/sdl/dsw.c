@@ -74,7 +74,7 @@ static void my_make_dipswitch_statlist(int reset) {
   const DSW_INFO *dsw_src;
   int index,tb,tc, start = 0;
 
-  dsw_src = current_game->dsw_list;
+  dsw_src = current_game->dsw;
 
   if(dsw_src){
 
@@ -300,7 +300,7 @@ void init_romsw(void)
 
   ta=0;
 
-  romsw_src = current_game->romsw_list;
+  romsw_src = current_game->romsw;
 
   if(romsw_src){
 
@@ -348,7 +348,7 @@ void SetLanguageSwitch(int number)
   const ROMSW_INFO *romsw_src;
   int ta;
 
-  romsw_src = current_game->romsw_list;
+  romsw_src = current_game->romsw;
   ta = 0;
   if(romsw_src){
 

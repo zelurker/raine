@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610b_sound
 /******************************************************************************/
 /*                                                                            */
 /*   CHASE HQ 2: SPECIAL CRIMINAL INVESTIGATION (C) 1989 TAITO CORPORATION    */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "chasehq2.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc150rod.h"
@@ -15,16 +15,8 @@
 #include "zoom/16x8.h"		// 16x8 zoomed sprite routines
 #include "zoom/16x16.h"		// 16x8 zoomed sprite routines
 
-static struct DIR_INFO chase_hq_2_sci_dirs[] =
-{
-   { "chase_hq_2_sci", },
-   { "chasehq2", },
-   { "chase_hq_2", },
-   { "sci", },
-   { NULL, },
-};
 
-static struct ROM_INFO chase_hq_2_sci_roms[] =
+static struct ROM_INFO rom_sci[] =
 {
    {   "c09-01.rom", 0x00080000, 0x64bfea10, 0, 0, 0, },
    {   "c09-02.rom", 0x00080000, 0xa83a0389, 0, 0, 0, },
@@ -49,7 +41,7 @@ static struct ROM_INFO chase_hq_2_sci_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO chase_hq_2_sci_inputs[] =
+static struct INPUT_INFO input_sci[] =
 {
    INP0( COIN1, 0x022804, 0x04 ),
    INP0( COIN2, 0x022804, 0x08 ),
@@ -90,7 +82,7 @@ static struct DSW_DATA dsw_data_chase_hq_2_sci_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_chase_hq_2_sci_1[] =
+static struct DSW_DATA dsw_data_chase_hq_2_sci_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -117,7 +109,7 @@ struct DSW_DATA dsw_data_chase_hq_2_sci_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO chase_hq_2_sci_dsw[] =
+static struct DSW_INFO dsw_sci[] =
 {
    { 0x022800, 0xFF, dsw_data_chase_hq_2_sci_0 },
    { 0x022802, 0xFF, dsw_data_chase_hq_2_sci_1 },
@@ -133,55 +125,16 @@ static struct ROMSW_DATA romsw_data_chase_hq_2_sci_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO chase_hq_2_sci_romsw[] =
+static struct ROMSW_INFO romsw_sci[] =
 {
    { 0x07FFFE, 0x03, romsw_data_chase_hq_2_sci_0 }, // normally, this would be 0x7FFFF
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO chase_hq_2_sci_video =
-{
-   DrawChaseHQ2,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( chase_hq_2_sci ,
-   chase_hq_2_sci_dirs,
-   chase_hq_2_sci_roms,
-   chase_hq_2_sci_inputs,
-   chase_hq_2_sci_dsw,
-   chase_hq_2_sci_romsw,
 
-   LoadChaseHQ2,
-   ClearChaseHQ2,
-   &chase_hq_2_sci_video,
-   ExecuteChaseHQ2Frame,
-   "sci",
-   "Special Criminal Investigation",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C09",
-   1989,
-   taito_ym2610b_sound,
-   GAME_RACE | GAME_PARTIALLY_WORKING
-);
 
-static struct DIR_INFO chase_hq_2_sci_alt_dirs[] =
-{
-   { "chase_hq_2_sci_alt", },
-   { "chashq2a", },
-   { "sciu", },
-   { "chasehq2", },
-   { "chase_hq_2_alt", },
-   { ROMOF("sci"), },
-   { CLONEOF("sci"), },
-   { NULL, },
-};
-
-static struct ROM_INFO chase_hq_2_sci_alt_roms[] =
+static struct ROM_INFO rom_sciu[] =
 {
    {   "c09-01.rom", 0x00080000, 0x64bfea10, 0, 0, 0, },
    {   "c09-02.rom", 0x00080000, 0xa83a0389, 0, 0, 0, },
@@ -206,32 +159,12 @@ static struct ROM_INFO chase_hq_2_sci_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROMSW_INFO chase_hq_2_sci_alt_romsw[] =
+static struct ROMSW_INFO romsw_sciu[] =
 {
    { 0x07FFFE, 0x02, romsw_data_chase_hq_2_sci_0 }, // normally, this would be 0x7FFFF
    { 0,        0,    NULL },
 };
 
-GAME( chase_hq_2_sci_alt ,
-   chase_hq_2_sci_alt_dirs,
-   chase_hq_2_sci_alt_roms,
-   chase_hq_2_sci_inputs,
-   chase_hq_2_sci_dsw,
-   chase_hq_2_sci_alt_romsw,
-
-   LoadChaseHQ2_alt,
-   ClearChaseHQ2,
-   &chase_hq_2_sci_video,
-   ExecuteChaseHQ2Frame,
-   "sciu",
-   "Special Criminal Investigation (alternate)",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C09",
-   1989,
-   taito_ym2610b_sound,
-   GAME_RACE | GAME_PARTIALLY_WORKING
-);
 
 #define OBJ_A_COUNT	(0x748F)
 
@@ -277,7 +210,7 @@ static UINT8 PAL_MAP[0x100] =
    0x1C, 0x1D, 0x1E, 0x1F, 0xC, 0xD, 0xE, 0xF, 0x4, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0,
 };
 
-static void load_actual(int romset)
+static void load_sci()
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -658,28 +591,7 @@ static void load_actual(int romset)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void LoadChaseHQ2(void)
-{
-   load_actual(0);
-}
-
-void LoadChaseHQ2_alt(void)
-{
-   load_actual(1);
-}
-
-void ClearChaseHQ2(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x0A0000,1);
-      save_debug("RAM.bin",RAM,0x050000,1);
-      //save_debug("GFX.bin",GFX,0x100000,0);
-#endif
-}
-
-void ExecuteChaseHQ2Frame(void)
+static void execute_sci(void)
 {
    static int int6_frame;
    int wheel;
@@ -896,7 +808,7 @@ static void render_z_system_sprites(int pri)
    }
 }
 
-void DrawChaseHQ2(void)
+static void DrawChaseHQ2(void)
 {
    ClearPaletteMap();
 
@@ -956,4 +868,40 @@ Byte | Bit(s) | Description
   7  |xxxxxxxx| Sprite Number (Low)
 
 */
+
+static struct VIDEO_INFO video_sci =
+{
+   DrawChaseHQ2,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_sci[] =
+{
+   { "chase_hq_2_sci", },
+   { "chasehq2", },
+   { "chase_hq_2", },
+   { "sci", },
+   { NULL, },
+};
+GME( sci, "Special Criminal Investigation", TAITO, 1989, GAME_RACE | GAME_PARTIALLY_WORKING,
+	.romsw = romsw_sci,
+	.board = "C09",
+);
+static struct DIR_INFO dir_sciu[] =
+{
+   { "chase_hq_2_sci_alt", },
+   { "chashq2a", },
+   { "sciu", },
+   { "chasehq2", },
+   { "chase_hq_2_alt", },
+   { ROMOF("sci"), },
+   { CLONEOF("sci"), },
+   { NULL, },
+};
+CLNE( sciu, sci, "Special Criminal Investigation (alternate)", TAITO, 1989, GAME_RACE | GAME_PARTIALLY_WORKING,
+	.romsw = romsw_sciu,
+	.board = "C09",
+);
 

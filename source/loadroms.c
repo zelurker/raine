@@ -594,13 +594,13 @@ static UINT32 load_rom_region(UINT32 region)
 static UINT32 load_gfx_region(UINT32 region)
 {
    UINT32 reg_size = 0;
-   const VIDEO_INFO *video_info;
+   const VIDEO_INFO *video;
    const GFX_LIST *gfx_list;
    int nb = 0;
    UINT8 *buffer;
 
-   video_info = current_game->video_info;
-   gfx_list = video_info->gfx_list;
+   video = current_game->video;
+   gfx_list = video->gfx_list;
    if (!gfx_list) return 1; // Correct, but nothing to load
 
    // now this function is called after the roms have been loaded in the region...

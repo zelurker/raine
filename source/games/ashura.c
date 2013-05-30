@@ -9,7 +9,6 @@
     names used by Mame 7/22/00   -BaT */
 
 #include "gameinc.h"
-#include "ashura.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
@@ -20,14 +19,8 @@
    ASHURA BLASTER JAPAN
  ************************/
 
-static struct DIR_INFO ashura_blaster_dirs[] =
-{
-   { "ashura_blaster", },
-   { "ashura", },
-   { NULL, },
-};
 
-static struct ROM_INFO ashura_blaster_roms[] =
+static struct ROM_INFO rom_ashura[] =
 {
    {       "c43-03", 0x00080000, 0x426606ba, 0, 0, 0, },
    {       "c43-02", 0x00080000, 0x105722ae, 0, 0, 0, },
@@ -86,57 +79,21 @@ static struct DSW_DATA dsw_data_ashura_blaster_1[] =
 };
 
 
-static struct DSW_INFO ashura_blaster_dsw[] =
+static struct DSW_INFO dsw_ashura[] =
 {
    { 0x000000, 0xFF, dsw_data_ashura_blaster_0 },
    { 0x000002, 0xFF, dsw_data_ashura_blaster_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO ashura_blaster_video =
-{
-   DrawAshuraBlaster,
-   224,
-   320,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( ashura_blaster ,
-   ashura_blaster_dirs,
-   ashura_blaster_roms,
-   b_system_inputs,
-   ashura_blaster_dsw,
-   NULL,
-
-   LoadAshuraBlaster,
-   ClearAshuraBlaster,
-   &ashura_blaster_video,
-   ExecuteAshuraBlasterFrame,
-   "ashura",
-   "Ashura Blaster (Japan)",
-   "ˆ›C—…ƒuƒ‰ƒXƒ^[",
-   COMPANY_ID_TAITO,
-   "C43",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 /*********************
    ASHURA BLASTER US
  *********************/
 
-static struct DIR_INFO ashura_blaster_us_dirs[] =
-{
-   { "ashura_blaster_us", },
-   { "ashurau", },
-   { ROMOF("ashura"), },
-   { CLONEOF("ashura"), },
-   { NULL, },
-};
 
-static struct ROM_INFO ashura_blaster_us_roms[] =
+static struct ROM_INFO rom_ashurau[] =
 {
    {       "c43-03", 0x00080000, 0x426606ba, 0, 0, 0, },
    {       "c43-02", 0x00080000, 0x105722ae, 0, 0, 0, },
@@ -170,33 +127,13 @@ static struct DSW_DATA dsw_data_ashura_blaster_us_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ashura_blaster_us_dsw[] =
+static struct DSW_INFO dsw_ashurau[] =
 {
    { 0x000000, 0xFF, dsw_data_ashura_blaster_us_0 },
    { 0x000002, 0xFF, dsw_data_ashura_blaster_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( ashura_blaster_us ,
-   ashura_blaster_us_dirs,
-   ashura_blaster_us_roms,
-   b_system_inputs,
-   ashura_blaster_us_dsw,
-   NULL,
-
-   LoadAshuraBlaster,
-   ClearAshuraBlaster,
-   &ashura_blaster_video,
-   ExecuteAshuraBlasterFrame,
-   "ashurau",
-   "Ashura Blaster (US)",
-   "ˆ›C—…ƒuƒ‰ƒXƒ^[",
-   COMPANY_ID_TAITO,
-   "C43",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_INPUT;
 static UINT8 *RAM_VIDEO;
@@ -209,11 +146,11 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadAshuraBlaster(void)
+static void load_ashura(void)
 {
    int ta,tb,tc;
 
-   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(5,60));   
+   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(5,60));
 
    if(!(RAM=AllocateMem(0x80000))) return;
    if(!(GFX=AllocateMem(0x240000))) return;
@@ -456,21 +393,10 @@ void LoadAshuraBlaster(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearAshuraBlaster(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x240000,0);
-   #endif
-}
-
-void ExecuteAshuraBlasterFrame(void)
+static void execute_ashura(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -483,7 +409,7 @@ void ExecuteAshuraBlasterFrame(void)
    execute_z80_audio_frame();
 }
 
-void DrawAshuraBlaster(void)
+static void DrawAshuraBlaster(void)
 {
    ClearPaletteMap();
 
@@ -511,3 +437,45 @@ void DrawAshuraBlaster(void)
 
    vcu_render_bg2_r270();
 }
+static struct VIDEO_INFO video_ashurau =
+{
+   DrawAshuraBlaster,
+   224,
+   320,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_ashura[] =
+{
+   { "ashura_blaster", },
+   { "ashura", },
+   { NULL, },
+};
+GAME( ashura, "Ashura Blaster (Japan)", TAITO, 1990, GAME_SHOOT,
+	.input = b_system_inputs,
+	.dsw = dsw_ashura,
+	.video = &video_ashurau,
+	.exec = execute_ashura,
+	.long_name_jpn = "ˆ›C—…ƒuƒ‰ƒXƒ^[",
+	.board = "C43",
+	.sound = taito_ym2610_sound,
+);
+static struct DIR_INFO dir_ashurau[] =
+{
+   { "ashura_blaster_us", },
+   { "ashurau", },
+   { ROMOF("ashura"), },
+   { CLONEOF("ashura"), },
+   { NULL, },
+};
+#define load_ashurau load_ashura
+GAME( ashurau, "Ashura Blaster (US)", TAITO, 1990, GAME_SHOOT,
+	.input = b_system_inputs,
+	.dsw = dsw_ashurau,
+	.video = &video_ashurau,
+	.exec = execute_ashura,
+	.long_name_jpn = "ˆ›C—…ƒuƒ‰ƒXƒ^[",
+	.board = "C43",
+	.sound = taito_ym2610_sound,
+);
+

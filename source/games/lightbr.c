@@ -5,23 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "lightbr.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO light_bringer_dirs[] =
-{
-   { "light_bringer", },
-   { "lightbr", },
-   { "lightb", },
-   { "dungeonm", },
-   { NULL, },
-};
 
-static struct ROM_INFO light_bringer_roms[] =
+static struct ROM_INFO rom_lightbr[] =
 {
    {   "d69-20.bin", 0x00080000, 0x33650fe4, REGION_ROM1, 0x000000, LOAD_8_32, },
    {   "d69-13.bin", 0x00080000, 0xdec2ec17, REGION_ROM1, 0x000001, LOAD_8_32, },
@@ -51,41 +42,13 @@ static struct ROMSW_DATA romsw_data_light_bringer_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO light_bringer_romsw[] =
+static struct ROMSW_INFO romsw_lightbr[] =
 {
    { 0x0FFFFF, 0x01, romsw_data_light_bringer_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO light_bringer_video =
-{
-   draw_light_bringer,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( light_bringer ,
-   light_bringer_dirs,
-   light_bringer_roms,
-   f3_system_inputs,
-   NULL,
-   light_bringer_romsw,
-
-   load_light_bringer,
-   clear_light_bringer,
-   &light_bringer_video,
-   execute_light_bringer_frame,
-   "lightbr",
-   "Light Bringer",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D69",
-   1996,
-   f3_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -119,7 +82,7 @@ static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 static UINT8 *GFX_SPR_PENS;
 
-void load_light_bringer(void)
+static void load_lightbr(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -322,7 +285,7 @@ void load_light_bringer(void)
    setup_sound_68000();
 }
 
-void execute_light_bringer_frame(void)
+static void execute_lightbr(void)
 {
   int ta;
   IntF3System();
@@ -343,17 +306,7 @@ void execute_light_bringer_frame(void)
   }
 }
 
-void clear_light_bringer(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x200000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
-}
-
-void draw_light_bringer(void)
+static void draw_light_bringer(void)
 {
    UINT8 *map;
    int x,y,ta,zz,zzz,zzzz,x16,y16;
@@ -472,3 +425,28 @@ void draw_light_bringer(void)
       f3video_render_fg0_new();
    }
 }
+static struct VIDEO_INFO video_lightbr =
+{
+   draw_light_bringer,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_lightbr[] =
+{
+   { "light_bringer", },
+   { "lightbr", },
+   { "lightb", },
+   { "dungeonm", },
+   { NULL, },
+};
+GAME( lightbr, "Light Bringer", TAITO, 1996, GAME_BEAT,
+	.input = f3_system_inputs,
+	.romsw = romsw_lightbr,
+	.video = &video_lightbr,
+	.exec = execute_lightbr,
+	.board = "D69",
+	.sound = f3_sound,
+);
+

@@ -265,7 +265,7 @@ void sdl_create_overlay( int w, int h) {
     return;
   }
 
-  if (!current_game || !(current_game->video_info->flags & VIDEO_NEEDS_8BPP)) {
+  if (!current_game || !(current_game->video->flags & VIDEO_NEEDS_8BPP)) {
     sdl_overlay = SDL_CreateYUVOverlay( // these bitmaps are ALWAYS in ram
 	w,h,(prefered_yuv_format == 0 ? SDL_YUY2_OVERLAY : SDL_YV12_OVERLAY),
 	sdl_screen);
@@ -381,11 +381,11 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
       
   if (!sdl_overlay && !(sdl_screen->flags & SDL_OPENGL) &&
 	  (!current_game || 
-	   !(current_game->video_info->flags & VIDEO_NEEDS_8BPP))) {
+	   !(current_game->video->flags & VIDEO_NEEDS_8BPP))) {
     /* We start raine in 16bpp for yuv overlays.
      * If a hw yuv overlay can't be created, then adapt to the bpp of the
      * screen to speed up blits */
-    if (current_game->video_info->flags & VIDEO_NEEDS_8BPP)
+    if (current_game->video->flags & VIDEO_NEEDS_8BPP)
       display_cfg.bpp = 8;
     else {
       display_cfg.bpp = sdl_screen->format->BitsPerPixel;

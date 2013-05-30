@@ -4,9 +4,9 @@ extern "C" {
 #endif
 #include "mame/eeprom.h"
 
-struct SOUND_INFO qsound_sound[2];
-struct VIDEO_INFO cps1_video;
-struct VIDEO_INFO cps1_video_270;
+struct SOUND_INFO sound_qsound[2];
+struct VIDEO_INFO video_cps1;
+struct VIDEO_INFO video_cps1_270;
 
 struct EEPROM_interface pang3_eeprom_interface;
 

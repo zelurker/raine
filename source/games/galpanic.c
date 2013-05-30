@@ -28,17 +28,11 @@ missw96 and fantsia2 do not seem to have any service mode ??!
 #include "adpcm.h"
 #include "blit.h"
 
-void   galpanic_closest_colour_init(void);
+static void   galpanic_closest_colour_init(void);
 UINT16 galpanic_closest_colour(int r, int g, int b);
 
-static struct DIR_INFO GalPanic_dirs[] =
-{
-   { "galpanic", 		},
-   { "GalPanic",		},
-   { NULL, },
-};
 
-static struct ROM_INFO galpanic_roms[] =
+static struct ROM_INFO rom_galpanic[] =
 {
   LOAD8_16(  REGION_ROM1,  0,   0x080000,
                  "pm110.4m2",    0xae6b17a8,      "pm109.4m1",    0xb85d792d),
@@ -57,13 +51,8 @@ static struct ROM_INFO galpanic_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO fantasia_dirs[] =
-{
-   { "fantasia", 		},
-   { NULL, }
-};
 
-static struct ROM_INFO fantasia_roms[] =
+static struct ROM_INFO rom_fantasia[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "prog2_16.rom",  0xe27c6c57 , "prog1_13.rom",  0x68d27413 ),
@@ -82,13 +71,8 @@ static struct ROM_INFO fantasia_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO newfant_dirs[] =
-{
-   { "newfant", 		},
-   { NULL, }
-};
 
-static struct ROM_INFO newfant_roms[] =
+static struct ROM_INFO rom_newfant[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "prog2_12.rom",  0xde43a457 , "prog1_07.rom",  0x370b45be ),
@@ -107,13 +91,8 @@ static struct ROM_INFO newfant_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO missw96_dirs[] =
-{
-   { "missw96", 		},
-   { NULL, }
-};
 
-static struct ROM_INFO missw96_roms[] =
+static struct ROM_INFO rom_missw96[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "mw96_10.bin",  0xb1309bb1 , "mw96_06.bin",  0xa5892bb3 ),
@@ -130,13 +109,8 @@ static struct ROM_INFO missw96_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO fantsia2_dirs[] =
-{
-   { "fantsia2", 		},
-   { NULL, }
-};
 
-static struct ROM_INFO fantsia2_roms[] =
+static struct ROM_INFO rom_fantsia2[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "prog2.g17",  0x57c59972 , "prog1.f17",  0xbf2d9a26 ),
@@ -156,7 +130,7 @@ static struct ROM_INFO fantsia2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO GalPanic_inputs[] =
+static struct INPUT_INFO input_newfant[] =
 {
    INP0( COIN1, 0x080005, 0x04 ),
    INP0( COIN2, 0x080005, 0x08 ),
@@ -183,7 +157,7 @@ static struct INPUT_INFO GalPanic_inputs[] =
    END_INPUT
 };
 
-static struct ROMSW_DATA romsw_galpanic[] =
+static struct ROMSW_DATA romswd_galpanic[] =
 {
   { "Japan", 0x1},
   { "US",0x2},
@@ -191,9 +165,9 @@ static struct ROMSW_DATA romsw_galpanic[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_INFO galpanic_romsw[] =
+static struct ROMSW_INFO romsw_galpanic[] =
 {
-   { 0x03ffff, 0x03, romsw_galpanic },
+   { 0x03ffff, 0x03, romswd_galpanic },
    { 0,        0,    NULL },
 };
 
@@ -243,7 +217,7 @@ static struct DSW_DATA dsw_data_galpanic_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO GalPanic_dsw[] =
+static struct DSW_INFO dsw_galpanic[] =
 {
    { 0x080000, 0xFf, dsw_data_galpanic_0 },
    { 0x080002, 0xFF, dsw_data_galpanic_1 },
@@ -296,7 +270,7 @@ static struct DSW_DATA dsw_data_fantasia_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO fantasia_dsw[] =
+static struct DSW_INFO dsw_newfant[] =
 {
    { 0x080000, 0xFf, dsw_data_fantasia_0 },
    { 0x080002, 0xFF, dsw_data_fantasia_1 },
@@ -327,7 +301,7 @@ static struct DSW_DATA dsw_data_missw96_1[] =
 };
 
 // no service mode in missw96 ?!!!
-static struct DSW_INFO missw96_dsw[] =
+static struct DSW_INFO dsw_fantsia2[] =
 {
    { 0x080000, 0xFf, dsw_data_fantasia_0 },
    { 0x080002, 0xFF, dsw_data_missw96_1 },
@@ -361,7 +335,7 @@ static struct OKIM6295interface galpanic_m6295_interface =
 	{ 255 }	/* volume */
 };
 
-static struct SOUND_INFO GalPanic_sound[] =
+static struct SOUND_INFO sound_newfant[] =
 {
    { SOUND_M6295,   &galpanic_m6295_interface,     },
    { 0,             NULL,                 },
@@ -611,7 +585,7 @@ static void load_galpanic_actual(void)
    set_colour_mapper(&col_map_15bit_grbx);
    galpanic_closest_colour_init();
 
-   if (VIDEO_ROTATE( current_game->video_info->flags ) == VIDEO_ROTATE_90) {
+   if (VIDEO_ROTATE( current_game->video->flags ) == VIDEO_ROTATE_90) {
      update_bg = update_bg_rotation;
      update_fg = galpanic_fg_write_w_rot;
      xstart = 224;    xend = 0; xinc = -1;
@@ -732,7 +706,7 @@ static void load_galpanic_actual(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void ExecuteGalPanicFrame(void)
+static void execute_newfant(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));
    cpu_interrupt(CPU_68K_0, 5);					// int5 updates palette
@@ -976,7 +950,7 @@ static void DrawGalPanic(void)
 
 static UINT32 gal_col_diff[128*3];
 
-void galpanic_closest_colour_init(void)
+static void galpanic_closest_colour_init(void)
 {
    int i;
    for(i=1; i<64; i++){
@@ -1034,7 +1008,7 @@ static void load_galpanic() {
   load_galpanic_actual();
 }
 
-static void load_comad() {
+static void load_newfant() {
   draw_sprites = &draw_comad_sprites;
   load_galpanic_actual();
 }
@@ -1043,17 +1017,13 @@ static void load_comad() {
 // if I remove ROTATABLE. I didn't investigate.
 // it's not rotatable because of the fg and bg bitmaps (directly rendered).
 // Adding rotation is possible, but boring, and useless for most people.
-static struct VIDEO_INFO GalPanic_video =
-{
-   DrawGalPanic,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_90 | VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
-   gfxdecodeinfo
-};
 
-static struct VIDEO_INFO missw96_video =
+
+
+
+
+
+static struct VIDEO_INFO video_fantsia2 =
 {
    DrawGalPanic,
    256,
@@ -1062,108 +1032,38 @@ static struct VIDEO_INFO missw96_video =
    VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
    gfxdecodeinfo
 };
-
-GAME( fantasia ,
-   fantasia_dirs,
-   fantasia_roms,
-   GalPanic_inputs,
-   fantasia_dsw,
-   NULL,
-
-   load_comad,
-   NULL,
-   &GalPanic_video,
-   ExecuteGalPanicFrame,
-   "fantasia",
-   "Fantasia",
-   "Fantasia",
-   COMPANY_ID_COMAD,
-   NULL,
-   1994,
-   GalPanic_sound,
-   GAME_ADULT
+static struct VIDEO_INFO video_newfant =
+{
+   DrawGalPanic,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_90 | VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
+   gfxdecodeinfo
+};
+static struct DIR_INFO dir_galpanic[] =
+{
+   { "galpanic", 		},
+   { "GalPanic",		},
+   { NULL, },
+};
+GAME( galpanic, "Gals Panic", KANEKO, 1990, GAME_ADULT,
+	.input = input_newfant,
+	.dsw = dsw_galpanic,
+	.romsw = romsw_galpanic,
+	.video = &video_newfant,
+	.exec = execute_newfant,
+	.long_name_jpn = "Gals Panic",
+	.sound = sound_newfant,
+);
+GMEI( newfant, "New Fantasia", COMAD, 1995, GAME_ADULT);
+CLNEI( fantasia, newfant,"Fantasia", COMAD, 1994, GAME_ADULT);
+CLNEI( fantsia2, newfant, "Fantasia II", COMAD, 1997, GAME_ADULT,
+	.dsw = dsw_fantsia2,
+	.video = &video_fantsia2,
+);
+CLNEI( missw96, newfant,"Miss World '96 Nude", COMAD, 1996, GAME_ADULT,
+	.dsw = dsw_fantsia2,
+	.video = &video_fantsia2,
 );
 
-GAME( newfant ,
-   newfant_dirs,
-   newfant_roms,
-   GalPanic_inputs,
-   fantasia_dsw,
-   NULL,
-
-   load_comad,
-   NULL,
-   &GalPanic_video,
-   ExecuteGalPanicFrame,
-   "newfant",
-   "New Fantasia",
-   "New Fantasia",
-   COMPANY_ID_COMAD,
-   NULL,
-   1995,
-   GalPanic_sound,
-   GAME_ADULT
-);
-
-GAME( missw96 ,
-   missw96_dirs,
-   missw96_roms,
-   GalPanic_inputs,
-   missw96_dsw,
-   NULL,
-
-   load_comad,
-   NULL,
-   &missw96_video,
-   ExecuteGalPanicFrame,
-   "missw96",
-   "Miss World '96 Nude",
-   "Miss World '96 Nude",
-   COMPANY_ID_COMAD,
-   NULL,
-   1996,
-   GalPanic_sound,
-   GAME_ADULT
-);
-
-GAME( fantsia2 ,
-   fantsia2_dirs,
-   fantsia2_roms,
-   GalPanic_inputs,
-   missw96_dsw,
-   NULL,
-
-   load_comad,
-   NULL,
-   &missw96_video,
-   ExecuteGalPanicFrame,
-   "fantsia2",
-   "Fantasia II",
-   "Fantasia II",
-   COMPANY_ID_COMAD,
-   NULL,
-   1997,
-   GalPanic_sound,
-   GAME_ADULT
-);
-
-GAME( galpanic ,
-   GalPanic_dirs,
-   galpanic_roms,
-   GalPanic_inputs,
-   GalPanic_dsw,
-   galpanic_romsw,
-
-   load_galpanic,
-   NULL,
-   &GalPanic_video,
-   ExecuteGalPanicFrame,
-   "galpanic",
-   "Gals Panic",
-   "Gals Panic",
-   COMPANY_ID_KANEKO,
-   NULL,
-   1990,
-   GalPanic_sound,
-   GAME_ADULT
-);

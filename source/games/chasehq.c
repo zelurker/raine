@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610b_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    CHASE HQ (C) 1988 TAITO CORPORATION                     */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "chasehq.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc150rod.h"
@@ -17,14 +17,8 @@
 #include "sdl/control_internal.h" // analog support
 #endif
 
-static struct DIR_INFO chase_hq_dirs[] =
-{
-   { "chase_hq", },
-   { "chasehq", },
-   { NULL, },
-};
 
-static struct ROM_INFO chase_hq_roms[] =
+static struct ROM_INFO rom_chasehq[] =
 {
    {  "b52-28.4", 0x00080000, 0x963bc82b, 0, 0, 0, },
    {  "b52-29.27", 0x00080000, 0x8366d27c, 0, 0, 0, },
@@ -53,7 +47,7 @@ static struct ROM_INFO chase_hq_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO chase_hq_inputs[] =
+static struct INPUT_INFO input_chasehq[] =
 {
    INP1( COIN1, 0x022804, 0x04 ),
    INP1( COIN2, 0x022804, 0x08 ),
@@ -105,7 +99,7 @@ static struct DSW_DATA dsw_data_chase_hq_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_input_fake[] =
+static struct DSW_DATA dsw_input_fake[] =
 {
    { "Gear Mode",             0x01, 0x02 },
    { "Low while pressed",     0x01},
@@ -124,7 +118,7 @@ struct DSW_DATA dsw_input_fake[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_chase_hq_1[] =
+static struct DSW_DATA dsw_data_chase_hq_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -146,7 +140,7 @@ struct DSW_DATA dsw_data_chase_hq_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO chase_hq_dsw[] =
+static struct DSW_INFO dsw_chasehq[] =
 {
    { 0x022800, 0xFD, dsw_data_chase_hq_0 },
    { 0x022802, 0xFF, dsw_data_chase_hq_1 },
@@ -154,46 +148,10 @@ static struct DSW_INFO chase_hq_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO chase_hq_video =
-{
-   DrawChaseHQ,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( chase_hq ,
-   chase_hq_dirs,
-   chase_hq_roms,
-   chase_hq_inputs,
-   chase_hq_dsw,
-   NULL,
 
-   load_chase_hq,
-   clear_chase_hq,
-   &chase_hq_video,
-   ExecuteChaseHQFrame,
-   "chasehq",
-   "Chase HQ",
-   "É`ÉFÉCÉXÇgÇp American",
-   COMPANY_ID_TAITO,
-   "B52",
-   1988,
-   taito_ym2610b_sound,
-   GAME_RACE
-);
 
-static struct DIR_INFO chase_hq_japanese_dirs[] =
-{
-   { "chase_hq_japanese", },
-   { "chasehqj", },
-   { ROMOF("chasehq"), },
-   { CLONEOF("chasehq"), },
-   { NULL, },
-};
-
-static struct ROM_INFO chase_hq_japanese_roms[] =
+static struct ROM_INFO rom_chasehqj[] =
 {
    {  "b52-28.4", 0x00080000, 0x963bc82b, 0, 0, 0, },
    {  "b52-29.27", 0x00080000, 0x8366d27c, 0, 0, 0, },
@@ -223,35 +181,9 @@ static struct ROM_INFO chase_hq_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( chase_hq_japanese ,
-   chase_hq_japanese_dirs,
-   chase_hq_japanese_roms,
-   chase_hq_inputs,
-   chase_hq_dsw,
-   NULL,
 
-   load_chase_hq_japanese,
-   clear_chase_hq,
-   &chase_hq_video,
-   ExecuteChaseHQFrame,
-   "chasehqj",
-   "Chase HQ (Japan)",
-   "É`ÉFÉCÉXÇgÇp",
-   COMPANY_ID_TAITO,
-   "B52",
-   1988,
-   taito_ym2610b_sound,
-   GAME_RACE
-);
 
-static struct DIR_INFO night_striker_dirs[] =
-{
-   { "night_striker", },
-   { "nightstr", },
-   { NULL, },
-};
-
-static struct ROM_INFO night_striker_roms[] =
+static struct ROM_INFO rom_nightstr[] =
 {
    {   "b91-01.bin", 0x00080000, 0x3731d94f, 0, 0, 0, },
    {   "b91-02.bin", 0x00080000, 0x457c64b8, 0, 0, 0, },
@@ -285,7 +217,7 @@ static struct ROM_INFO night_striker_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO night_striker_inputs[] =
+static struct INPUT_INFO input_nightstr[] =
 {
    INP0( COIN1, 0x022804, 0x20 ),
    INP0( COIN2, 0x022804, 0x10 ),
@@ -330,33 +262,13 @@ static struct DSW_DATA dsw_data_night_striker_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO night_striker_dsw[] =
+static struct DSW_INFO dsw_nightstr[] =
 {
    { 0x022800, 0xFF, dsw_data_night_striker_0 },
    { 0x022802, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( night_striker ,
-   night_striker_dirs,
-   night_striker_roms,
-   night_striker_inputs,
-   night_striker_dsw,
-   NULL,
-
-   LoadNightStr,
-   ClearNightStr,
-   &chase_hq_video,
-   ExecuteNightStrFrame,
-   "nightstr",
-   "Night Striker",
-   NULL,
-   COMPANY_ID_TAITO,
-   "b91",
-   1989,
-   taito_ym2610b_sound,
-   GAME_RACE | GAME_SHOOT | GAME_PARTIALLY_WORKING
-);
 
 #define OBJ_A_COUNT	(0x3EE7)
 #define OBJ_B_COUNT	(0x3E87)
@@ -964,17 +876,17 @@ static void load_actual(int set)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void load_chase_hq(void)
+static void load_chasehq(void)
 {
    load_actual(0);
 }
 
-void load_chase_hq_japanese(void)
+static void load_chasehqj(void)
 {
    load_actual(1);
 }
 
-void clear_chase_hq(void)
+static void clear_chase_hq(void)
 {
    RemoveTaitoYM2610();
 
@@ -983,7 +895,7 @@ void clear_chase_hq(void)
 #endif
 }
 
-void LoadNightStr(void)
+static void load_nightstr(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -1489,7 +1401,7 @@ void LoadNightStr(void)
 }
 
 
-void ClearNightStr(void)
+static void ClearNightStr(void)
 {
    RemoveTaitoYM2610();
 
@@ -1500,7 +1412,7 @@ void ClearNightStr(void)
 #endif
 }
 
-void ExecuteNightStrFrame(void)
+static void execute_nightstr(void)
 {
    // Wheel Hack
    static int wx,wy;
@@ -1549,7 +1461,7 @@ void ExecuteNightStrFrame(void)
    //print_ingame(60,"%04x",ReadWord(&RAM[0x39FFE]));
 }
 
-void ExecuteChaseHQFrame(void)
+static void execute_chasehq(void)
 {
 
 /*
@@ -2209,7 +2121,7 @@ static void render_z_system_sprites(int start, int end)
    }
 }
 
-void DrawChaseHQ(void)
+static void DrawChaseHQ(void)
 {
    int y,ta,tb,tb2,zz,zy;
    int mask_count;
@@ -2511,4 +2423,55 @@ Byte | Bit(s) | Description
   7  |xxxxxxxx| Sprite Number (Low)
 
 */
+
+static struct VIDEO_INFO video_nightstr =
+{
+   DrawChaseHQ,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_chasehq[] =
+{
+   { "chase_hq", },
+   { "chasehq", },
+   { NULL, },
+};
+GAME( chasehq, "Chase HQ", TAITO, 1988, GAME_RACE,
+	.input = input_chasehq,
+	.dsw = dsw_chasehq,
+	.clear = clear_chase_hq,
+	.video = &video_nightstr,
+	.exec = execute_chasehq,
+	.long_name_jpn = "É`ÉFÉCÉXÇgÇp American",
+	.board = "B52",
+);
+static struct DIR_INFO dir_chasehqj[] =
+{
+   { "chase_hq_japanese", },
+   { "chasehqj", },
+   { ROMOF("chasehq"), },
+   { CLONEOF("chasehq"), },
+   { NULL, },
+};
+GAME(chasehqj, "Chase HQ (Japan)", TAITO, 1988, GAME_RACE,
+	.input = input_chasehq,
+	.dsw = dsw_chasehq,
+	.clear = clear_chase_hq,
+	.video = &video_nightstr,
+	.exec = execute_chasehq,
+	.long_name_jpn = "É`ÉFÉCÉXÇgÇp",
+	.board = "B52",
+);
+static struct DIR_INFO dir_nightstr[] =
+{
+   { "night_striker", },
+   { "nightstr", },
+   { NULL, },
+};
+GME( nightstr, "Night Striker", TAITO, 1989, GAME_RACE | GAME_SHOOT | GAME_PARTIALLY_WORKING,
+	.clear = ClearNightStr,
+	.board = "b91",
+);
 

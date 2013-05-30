@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                   AIR INFERNO (C) 1990 TAITO CORPORATION                   */
@@ -5,20 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ainferno.h"
 #include "tc004vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO air_inferno_dirs[] =
-{
-   { "air_inferno", },
-   { "ainferno", },
-   { NULL, },
-};
 
-static struct ROM_INFO air_inferno_roms[] =
+static struct ROM_INFO rom_ainferno[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                   "c45-22",  0x50300926,       "c45-20",  0x39b189d9),
@@ -44,7 +38,7 @@ static struct ROM_INFO air_inferno_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO air_inferno_inputs[] =
+static struct INPUT_INFO input_ainferno[] =
 {
    INP1( COIN1, 0x055204, 0x04 ),
    INP1( COIN2, 0x055204, 0x08 ),
@@ -91,7 +85,7 @@ static struct DSW_DATA dsw_data_air_inferno_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO air_inferno_dsw[] =
+static struct DSW_INFO dsw_ainferno[] =
 {
    { 0x055200, 0xFF, dsw_data_air_inferno_0 },
    { 0x055202, 0xFF, dsw_data_default_1 },
@@ -106,41 +100,13 @@ static struct ROMSW_DATA romsw_data_air_inferno_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO air_inferno_romsw[] =
+static struct ROMSW_INFO romsw_ainferno[] =
 {
    { 0x03FFFF, 0x00, romsw_data_air_inferno_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO air_inferno_video =
-{
-   draw_air_inferno,
-   512,
-   400,
-   64,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( air_inferno ,
-   air_inferno_dirs,
-   air_inferno_roms,
-   air_inferno_inputs,
-   air_inferno_dsw,
-   air_inferno_romsw,
-
-   load_air_inferno,
-   clear_air_inferno,
-   &air_inferno_video,
-   exec_air_inferno,
-   "ainferno",
-   "Air Inferno",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C45",
-   1990,
-   taito_ym2610_sound,
-   GAME_MISC | GAME_NOT_WORKING
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_COLOUR;
@@ -169,7 +135,7 @@ static void BadWriteWord(UINT32 address, UINT16 data)
       print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000context.pc);
 }
 
-void load_air_inferno(void)
+static void load_ainferno(void)
 {
    int ta,tb,tc;
 
@@ -400,18 +366,7 @@ void load_air_inferno(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_air_inferno(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x080000,1);
-      //save_debug("GFX.bin",GFX,0x200000,0);
-#endif
-}
-
-void exec_air_inferno(void)
+static void execute_ainferno(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -419,7 +374,7 @@ void exec_air_inferno(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void draw_air_inferno(void)
+static void draw_air_inferno(void)
 {
    ClearPaletteMap();
 
@@ -448,4 +403,23 @@ void draw_air_inferno(void)
 
    //tc0004vcu_render_fg0();
 }
+
+static struct VIDEO_INFO video_ainferno =
+{
+   draw_air_inferno,
+   512,
+   400,
+   64,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_ainferno[] =
+{
+   { "air_inferno", },
+   { "ainferno", },
+   { NULL, },
+};
+GME( ainferno, "Air Inferno", TAITO, 1990, GAME_MISC | GAME_NOT_WORKING,
+	.romsw = romsw_ainferno,
+	.board = "C45",
+);
 

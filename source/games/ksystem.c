@@ -8,7 +8,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ksystem.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "2203intf.h"
@@ -71,14 +70,8 @@ changes/antiriad:
 
 */
 
-static struct DIR_INFO kick_and_run_dirs[] =
-{
-   { "kick_and_run", },
-   { "kicknrun", },
-   { NULL, },
-};
 
-static struct ROM_INFO kick_and_run_roms[] =
+static struct ROM_INFO rom_kicknrun[] =
 {
    {   "a87-02.bin", 0x00008000, 0x64f1a85f, 0, 0, 0, },
    {   "a87-03.bin", 0x00010000, 0xf42e8a88, 0, 0, 0, },
@@ -95,7 +88,7 @@ static struct ROM_INFO kick_and_run_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO kick_and_run_inputs[] =
+static struct INPUT_INFO input_kicknrun[] =
 {
    INP0( COIN1, 0x020005, 0x01 ),
    INP0( COIN2, 0x020005, 0x02 ),
@@ -150,31 +143,14 @@ static struct DSW_DATA dsw_data_kick_and_run_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kick_and_run_dsw[] =
+static struct DSW_INFO dsw_kicknrun[] =
 {
    { 0x020003, 0xFF, dsw_data_kick_and_run_0 },
    { 0x020004, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO kiki_kai_kai_video =
-{
-   DrawKikiKaiKai,
-   256,
-   224,
-   8,
-   VIDEO_ROTATE_90 | VIDEO_NEEDS_8BPP |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO kick_and_run_video =
-{
-   DrawKickRun,
-   256,
-   224,
-   8,
-   VIDEO_ROTATABLE | VIDEO_NEEDS_8BPP,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -188,43 +164,15 @@ static struct YM2203interface ym2203_interface =
    {NULL}
 };
 
-static struct SOUND_INFO kiki_kai_kai_sound[] =
+static struct SOUND_INFO sound_kikikai[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( kick_and_run ,
-   kick_and_run_dirs,
-   kick_and_run_roms,
-   kick_and_run_inputs,
-   kick_and_run_dsw,
-   NULL,
 
-   LoadKickRun,
-   ClearKSystem,
-   &kick_and_run_video,
-   ExecuteKSystemFrame,
-   "kicknrun",
-   "Kick and Run",
-   NULL,
-   COMPANY_ID_TAITO,
-   "A87",
-   1986,
-   kiki_kai_kai_sound,
-   GAME_SPORTS
-);
 
-static struct DIR_INFO kiki_kai_kai_dirs[] =
-{
-   { "kiki_kai_kai", },
-   { "kikikai", },
-   { "kikikaik", },
-   { "knightb", },
-   { NULL, },
-};
-
-static struct ROM_INFO kiki_kai_kai_roms[] =
+static struct ROM_INFO rom_kikikai[] =
 {
    {   "a85-08.rom", 0x00000100, 0xd15f61a8, 0, 0, 0, },
    {   "a85-09.rom", 0x00000100, 0xb931c94d, 0, 0, 0, },
@@ -240,7 +188,7 @@ static struct ROM_INFO kiki_kai_kai_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO kiki_kai_kai_inputs[] =
+static struct INPUT_INFO input_kikikai[] =
 {
    INP0( COIN1, 0x020005, 0x01 ),
    INP0( COIN2, 0x020005, 0x02 ),
@@ -313,44 +261,16 @@ static struct DSW_DATA dsw_data_kiki_kai_kai_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kiki_kai_kai_dsw[] =
+static struct DSW_INFO dsw_kikikai[] =
 {
    { 0x020003, 0xFF, dsw_data_kiki_kai_kai_0 },
    { 0x020004, 0xFF, dsw_data_kiki_kai_kai_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( kiki_kai_kai ,
-   kiki_kai_kai_dirs,
-   kiki_kai_kai_roms,
-   kiki_kai_kai_inputs,
-   kiki_kai_kai_dsw,
-   NULL,
 
-   LoadKikiKaiKai,
-   ClearKSystem,
-   &kiki_kai_kai_video,
-   ExecuteKSystemFrame,
-   "kikikai",
-   "Kiki Kai Kai",
-   NULL,
-   COMPANY_ID_TAITO,
-   "A85",
-   1986,
-   kiki_kai_kai_sound,
-   GAME_PLATFORM
-);
 
-static struct DIR_INFO knight_boy_dirs[] =
-{
-   { "knight_boy", },
-   { "knightb", },
-   { ROMOF("kikikai"), },
-   { CLONEOF("kikikai"), },
-   { NULL, },
-};
-
-static struct ROM_INFO knight_boy_roms[] =
+static struct ROM_INFO rom_knightb[] =
 {
    {  "a85-10.rom", 0x00000100, 0x8fc3fa86, 0, 0, 0, },
    {  "a85-09.rom", 0x00000100, 0xb931c94d, 0, 0, 0, },
@@ -366,26 +286,6 @@ static struct ROM_INFO knight_boy_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( knight_boy ,
-   knight_boy_dirs,
-   knight_boy_roms,
-   kiki_kai_kai_inputs,
-   kiki_kai_kai_dsw,
-   NULL,
-
-   LoadKnightBoy,
-   ClearKSystem,
-   &kiki_kai_kai_video,
-   ExecuteKSystemFrame,
-   "knightb",
-   "Knight Boy",
-   NULL,
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1986,
-   kiki_kai_kai_sound,
-   GAME_PLATFORM
-);
 
 static int romset;
 
@@ -451,7 +351,7 @@ static UINT8 bank_map[8] =
    4,5,6,7,2,3,0,1,
 };
 
-void KSystemNewBankWrite(UINT16 offset, UINT8 data)
+static void KSystemNewBankWrite(UINT16 offset, UINT8 data)
 {
   UINT8 Z80Bank = bank_map[data&7];
   z80_set_bank(1,Z80Bank);
@@ -652,7 +552,7 @@ static void DrawNibble(UINT8 *out, UINT32 plane, UINT8 c)
       } while(--count);
 }
 
-void LoadKikiKaiKai(void)
+static void load_kikikai(void)
 {
    int ta,tb,tc,td;
    UINT8 *TMP;
@@ -827,7 +727,7 @@ void LoadKikiKaiKai(void)
    GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x2000);
 }
 
-void LoadKnightBoy(void)
+static void load_knightb(void)
 {
    int ta,tb,tc,td;
    UINT8 *TMP;
@@ -1002,14 +902,6 @@ void LoadKnightBoy(void)
    GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x2000);
 }
 
-void ClearKSystem(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-      save_debug("GFX.bin", GFX, 0x080000, 0);
-#endif
-}
-
 /* this is a patch for Kicn&Run.
  * it hacks it to accept an MCU from Mexico86.
  * If we ever got a proper K&R dump, we could probably remove this patch.
@@ -1023,7 +915,7 @@ static UINT8 PatchTable[] = {
    0x00, 0xE8, 0xC9
 };
 
-void LoadKickRun(void)
+static void load_kicknrun(void)
 {
    int ta,tb,tc,td;
    UINT8 *TMP;
@@ -1192,7 +1084,7 @@ void LoadKickRun(void)
    GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x2000);
 }
 
-void ExecuteKSystemFrame(void)
+static void execute_kikikai(void)
 {
    int ta;
 
@@ -1250,7 +1142,7 @@ void ExecuteKSystemFrame(void)
    }
 }
 
-void DrawKikiKaiKai(void)
+static void DrawKikiKaiKai(void)
 {
    int x,y,ta;
    int sx,sy,offs,goffs,gfx_offs,gfx_num,gfx_attr,height,xc,yc;
@@ -1342,7 +1234,7 @@ void DrawKikiKaiKai(void)
    }
 }
 
-void DrawKickRun(void)
+static void DrawKickRun(void)
 {
    int x,y,ta;
    int sx,sy,offs,goffs,gfx_offs,gfx_num,gfx_attr,height,xc,yc;
@@ -1448,4 +1340,57 @@ void DrawKickRun(void)
       }
    }
 }
+
+static struct VIDEO_INFO video_kicknrun =
+{
+   DrawKickRun,
+   256,
+   224,
+   8,
+   VIDEO_ROTATABLE | VIDEO_NEEDS_8BPP,
+};
+static struct VIDEO_INFO video_kikikai =
+{
+   DrawKikiKaiKai,
+   256,
+   224,
+   8,
+   VIDEO_ROTATE_90 | VIDEO_NEEDS_8BPP |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_kicknrun[] =
+{
+   { "kick_and_run", },
+   { "kicknrun", },
+   { NULL, },
+};
+GAME( kicknrun, "Kick and Run", TAITO, 1986, GAME_SPORTS,
+	.input = input_kicknrun,
+	.dsw = dsw_kicknrun,
+	.video = &video_kicknrun,
+	.exec = execute_kikikai,
+	.board = "A87",
+	.sound = sound_kikikai,
+);
+static struct DIR_INFO dir_kikikai[] =
+{
+   { "kiki_kai_kai", },
+   { "kikikai", },
+   { "kikikaik", },
+   { "knightb", },
+   { NULL, },
+};
+GME( kikikai, "Kiki Kai Kai", TAITO, 1986, GAME_PLATFORM,
+	.board = "A85",
+);
+static struct DIR_INFO dir_knightb[] =
+{
+   { "knight_boy", },
+   { "knightb", },
+   { ROMOF("kikikai"), },
+   { CLONEOF("kikikai"), },
+   { NULL, },
+};
+CLNE( knightb,kikikai, "Knight Boy", BOOTLEG, 1986, GAME_PLATFORM,
+	.load_game = load_knightb);
 

@@ -10,7 +10,7 @@
 #include "eeprom.h"
 #include "savegame.h" // load_eeprom
 
-static struct ROM_INFO multchmp_roms[] =
+static struct ROM_INFO rom_multchmp[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "multchmp.u02",  0x7da8c0df, "multchmp.u03",  0x5dc62799),
@@ -33,7 +33,7 @@ static struct ROM_INFO multchmp_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO mchampdx_roms[] =
+static struct ROM_INFO rom_mchampdx[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "esd2.cu02",  0x4cca802c, "esd1.cu03",  0x0af1cd0a),
@@ -49,7 +49,7 @@ static struct ROM_INFO mchampdx_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO hedpanic_roms[] =
+static struct ROM_INFO rom_hedpanic[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "esd2",  0x8cccc691, "esd1",  0xd8574925),
@@ -114,14 +114,14 @@ static struct DSW_DATA dsw_data_multchmp_3[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO multchmp_dsw[] =
+static struct DSW_INFO dsw_multchmp[] =
 {
   { 0x4, 0xfb, dsw_data_multchmp_2 },
   { 0x6, 0xff, dsw_data_multchmp_3 },
   { 0, 0, NULL }
 };
 
-static struct INPUT_INFO multchmp_inputs[] =
+static struct INPUT_INFO input_multchmp[] =
 {
   INP0( P1_UP, 0x00, 0x01 ),
   INP0( P1_DOWN, 0x00, 0x02 ),
@@ -144,7 +144,7 @@ static struct INPUT_INFO multchmp_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO hedpanic_inputs[] =
+static struct INPUT_INFO input_mchampdx[] =
 {
   INP0( P1_UP, 0x00, 0x01 ),
   INP0( P1_DOWN, 0x00, 0x02 ),
@@ -530,7 +530,7 @@ static struct OKIM6295interface esd16_okim6295_interface =
 	{ 170 }
 };
 
-static struct SOUND_INFO multchmp_sound[] =
+static struct SOUND_INFO sound_multchmp[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { SOUND_M6295,    &esd16_okim6295_interface   },
@@ -616,7 +616,7 @@ static void draw_multchmp() {
     draw_sprites();
 }
 
-static struct VIDEO_INFO multchmp_video =
+static struct VIDEO_INFO video_multchmp =
 {
    draw_multchmp,
    320,
@@ -627,19 +627,13 @@ static struct VIDEO_INFO multchmp_video =
    esd16_gfxdecodeinfo,
 };
 
-GME( multchmp,
+GMEI( multchmp,
      "Multi Champ (Korea)",
-     COMPANY_ID_ESD,
+     ESD,
      1998,
      GAME_MISC);
 
-static struct DIR_INFO mchampdx_dirs[] =
-{
-   { "mchampdx", },
-   { NULL, },
-};
-
-static struct VIDEO_INFO hedpanic_video =
+static struct VIDEO_INFO video_mchampdx =
 {
    draw_multchmp,
    320,
@@ -649,51 +643,24 @@ static struct VIDEO_INFO hedpanic_video =
    VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
    hedpanic_gfxdecodeinfo,
 };
-
-GAME( mchampdx ,
-   mchampdx_dirs,
-   mchampdx_roms,
-   hedpanic_inputs,
-   NULL,
-   NULL,
-
-   load_multchmp,
-   NULL,
-   &hedpanic_video,
-   execute_multchmp,
-   "mchampdx",
-      "Multi Champ Deluxe",
-      "Multi Champ Deluxe",
-   COMPANY_ID_ESD,
-   NULL,
-   1999,
-   multchmp_sound,
-   GAME_MISC
-);
-
-static struct DIR_INFO hedpanic_dirs[] =
+static struct DIR_INFO dir_hedpanic[] =
 {
    { "hedpanic", },
    { NULL, },
 };
 
-GAME( hedpanic ,
-   hedpanic_dirs,
-   hedpanic_roms,
-   hedpanic_inputs,
-   NULL,
-   NULL,
-
-   load_multchmp,
-   NULL,
-   &hedpanic_video,
-   execute_multchmp,
-   "hedpanic",
-      "Head Panic (Korea?)",
-      "Head Panic (Korea?)",
-   COMPANY_ID_ESD,
-   NULL,
-   2000,
-   multchmp_sound,
-   GAME_MISC
+CLNE( hedpanic, multchmp, "Head Panic (Korea?)", ESD, 2000, GAME_MISC,
+	.input = input_mchampdx,
+	.video = &video_mchampdx,
 );
+
+static struct DIR_INFO dir_mchampdx[] =
+{
+   { "mchampdx", },
+   { NULL, },
+};
+CLNE( mchampdx, multchmp,"Multi Champ Deluxe", ESD, 1999, GAME_MISC,
+	.input = input_mchampdx,
+	.video = &video_mchampdx,
+);
+

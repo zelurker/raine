@@ -57,7 +57,7 @@ extern int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
 // analog_normx & normy are the normalized position of the stick after
 // calibration (between -16384 and +16384 inclusive).
 
-extern struct DEF_INPUT_EMU def_input_list_emu[];
+extern struct DEF_INPUT_EMU def_input_emu[];
 
 // allows drivers to register their own emu keys
 void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb);
@@ -97,7 +97,7 @@ typedef struct DEF_INPUT
    char *name;
 } DEF_INPUT;
 
-extern struct DEF_INPUT def_input_list[KB_DEF_COUNT];
+extern struct DEF_INPUT def_input[KB_DEF_COUNT];
 
 void inputs_preinit();
 void inputs_done();

@@ -193,7 +193,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate );
 
 char *get_sound_chip_name(UINT32 id);
 
-void init_sound_list(void);
+void init_sound(void);
 
 void saDestroySound( int remove_all_resources );
 void saStopSoundEmulators(void);

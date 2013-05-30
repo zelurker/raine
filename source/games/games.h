@@ -1,6 +1,6 @@
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 /******************************************************************************/
 /*                                                                            */
@@ -70,7 +70,9 @@ enum company_num
    COMPANY_ID_MITCHELL,
    COMPANY_ID_SEMICOM,
    COMPANY_ID_ESD,
-   COMPANY_ID_SPACY
+   COMPANY_ID_SPACY,
+   COMPANY_ID_ELECTRONIC_DEVICES,
+   COMPANY_ID_NIX
 };
 
 extern const int nb_companies;
@@ -186,14 +188,14 @@ typedef struct GAME_MAIN
   const char *source_file; // can be initialised with __FILE__
   const DIR_INFO    *dir_list;       // dir list
   const ROM_INFO    *rom_list;       // rom list
-  const INPUT_INFO  *input_list;     // input list
-  const DSW_INFO    *dsw_list;       // dsw list
-  const ROMSW_INFO  *romsw_list;     // romsw list
+  const INPUT_INFO  *input;     // input list
+  const DSW_INFO    *dsw;       // dsw list
+  const ROMSW_INFO  *romsw;     // romsw list
 
   void       (*load_game)();   // Pointer to load/init game function
-  void       (*clear_game)();  // Pointer to clear game function
-  VIDEO_INFO  *video_info;     // video hardware information
-  void       (*exec_frame)();  // Pointer to exec game function
+  void       (*clear)();  // Pointer to clear game function
+  VIDEO_INFO  *video;     // video hardware information
+  void       (*exec)();  // Pointer to exec game function
 
   /*
 
@@ -214,254 +216,12 @@ typedef struct GAME_MAIN
 
   */
 
-  const SOUND_INFO  *sound_list;     // sound list
+  const SOUND_INFO  *sound;     // sound list
   const UINT32 flags;
 } GAME_MAIN;
 
-#define GAME(name,dir,rom,input,dsw,romsw,load,clear,video,exec,main_name, \
-  long_name,long_name_jpn,company,board,year,sound,flags) \
-\
-const struct GAME_MAIN game_##name = \
-{ \
-  __FILE__, /* source_file */ \
-  dir, rom, input,dsw,romsw,load,clear,video,exec,main_name,long_name, \
-  long_name_jpn,company,board,year,sound,flags \
-}
+#include "game_def.h"
 
-#define GME(name,long_name,company,year,flags)        \
-static struct DIR_INFO name##_dirs[] =                \
-{                                                     \
-   { #name, },                                        \
-   { NULL, },                                         \
-};                                                    \
-GAME( name,                                           \
-      name##_dirs,                                    \
-      name##_roms,                                    \
-      name##_inputs,                                  \
-      name##_dsw,                                     \
-      NULL,                                           \
-      load_##name,                                    \
-      NULL,                                           \
-      &name##_video,                                  \
-      execute_##name,                                 \
-      #name,                                          \
-      long_name,                                      \
-      long_name,                                      \
-      company,                                        \
-      NULL,                                           \
-      year,                                           \
-      name##_sound,                                   \
-      flags)
-
-#define GME_DRV(name,long_name,company,year,flags,driver)        \
-static struct DIR_INFO name##_dirs[] =                \
-{                                                     \
-   { #name, },                                        \
-   { NULL, },                                         \
-};                                                    \
-GAME( name,                                           \
-      name##_dirs,                                    \
-      name##_roms,                                    \
-      name##_inputs,                                  \
-      name##_dsw,                                     \
-      NULL,                                           \
-      load_##name,                                    \
-      NULL,                                           \
-      &driver##_video,                                  \
-      execute_##driver,                                 \
-      #name,                                          \
-      long_name,                                      \
-      long_name,                                      \
-      company,                                        \
-      NULL,                                           \
-      year,                                           \
-      driver##_sound,                                   \
-      flags)
-
-#define GME_ROMSW(name,long_name,company,year,flags)    \
-static struct DIR_INFO name##_dirs[] =                  \
-{                                                       \
-   { #name, },                                          \
-   { NULL, },                                           \
-};                                                      \
-GAME( name,                                             \
-      name##_dirs,                                      \
-      name##_roms,                                      \
-      name##_inputs,                                    \
-      name##_dsw,                                       \
-      name##_romsw,                                     \
-      load_##name,                                      \
-      clear_##name,                                     \
-      &name##_video,                                    \
-      execute_##name,                                   \
-      #name,                                            \
-      long_name,                                        \
-      long_name,                                        \
-      company,                                          \
-      NULL,                                             \
-      year,                                             \
-      name##_sound,                                     \
-      flags)
-
-#define GME_ROMSWD(name,long_name,company,year,flags,driver)    \
-static struct DIR_INFO name##_dirs[] =                  \
-{                                                       \
-   { #name, },                                          \
-   { NULL, },                                           \
-};                                                      \
-GAME( name,                                             \
-      name##_dirs,                                      \
-      name##_roms,                                      \
-      name##_inputs,                                    \
-      name##_dsw,                                       \
-      name##_romsw,                                     \
-      load_##name,                                      \
-      NULL,                                     \
-      &driver##_video,                                    \
-      execute_##driver,                                   \
-      #name,                                            \
-      long_name,                                        \
-      long_name,                                        \
-      company,                                          \
-      NULL,                                             \
-      year,                                             \
-      driver##_sound,                                     \
-      flags)
-
-#define CLONE(name, parent,long_name,company,year,flags)          \
-static struct DIR_INFO name##_dirs[] =                            \
-{                                                                 \
-   { #name, },                                                    \
-   { ROMOF( #parent ), },                                         \
-   { CLONEOF( #parent ), },                                       \
-   { NULL, },                                                     \
-};                                                                \
-GAME( name,                                                       \
-      name##_dirs,                                                \
-      name##_roms,                                                \
-      parent##_inputs,                                            \
-      parent##_dsw,                                               \
-      NULL,                                                       \
-      load_##parent,                                              \
-      NULL,                                                       \
-      &parent##_video,                                            \
-      execute_##parent,                                           \
-      #name,                                                      \
-      long_name,                                                  \
-      long_name,                                                  \
-      company,                                                    \
-      NULL,                                                       \
-      year,                                                       \
-      parent##_sound,                                             \
-      flags)
-
-#define CLONE_DSW(name, parent,long_name,company,year,flags)       \
-static struct DIR_INFO name##_dirs[] =                             \
-{                                                                  \
-   { #name, },                                                     \
-   { ROMOF( #parent ), },                                          \
-   { CLONEOF( #parent ), },                                        \
-   { NULL, },                                                      \
-};                                                                 \
-GAME( name,                                                        \
-      name##_dirs,                                                 \
-      name##_roms,                                                 \
-      parent##_inputs,                                             \
-      name##_dsw,                                                  \
-      NULL,                                                        \
-      load_##parent,                                               \
-      NULL,                                                        \
-      &parent##_video,                                             \
-      execute_##parent,                                            \
-      #name,                                                       \
-      long_name,                                                   \
-      long_name,                                                   \
-      company,                                                     \
-      NULL,                                                        \
-      year,                                                        \
-      parent##_sound,                                              \
-      flags)
-
-#define CLONE_LOAD(name, parent, long_name,company,year,flags)     \
-static struct DIR_INFO name##_dirs[] =                             \
-{                                                                  \
-   { #name, },                                                     \
-   { ROMOF( #parent ), },                                          \
-   { CLONEOF( #parent ), },                                        \
-   { NULL, },                                                      \
-};                                                                 \
-GAME( name,                                                        \
-      name##_dirs,                                                 \
-      name##_roms,                                                 \
-      parent##_inputs,                                             \
-      parent##_dsw,                                                \
-      NULL,                                                        \
-      load_##name,                                                 \
-      clear_##parent,                                              \
-      &parent##_video,                                             \
-      execute_##parent,                                            \
-      #name,                                                       \
-      long_name,                                                   \
-      long_name,                                                   \
-      company,                                                     \
-      NULL,                                                        \
-      year,                                                        \
-      parent##_sound,                                              \
-      flags)
-
-#define CLONE_ROMSW(name, parent, long_name,company,year,flags)    \
-static struct DIR_INFO name##_dirs[] =                             \
-{                                                                  \
-   { #name, },                                                     \
-   { ROMOF( #parent ), },                                          \
-   { CLONEOF( #parent ), },                                        \
-   { NULL, },                                                      \
-};                                                                 \
-GAME( name,                                                        \
-      name##_dirs,                                                 \
-      name##_roms,                                                 \
-      parent##_inputs,                                             \
-      parent##_dsw,                                                \
-      parent##_romsw,                                              \
-      load_##parent,                                               \
-      clear_##parent,                                              \
-      &parent##_video,                                             \
-      execute_##parent,                                            \
-      #name,                                                       \
-      long_name,                                                   \
-      long_name,                                                   \
-      company,                                                     \
-      NULL,                                                        \
-      year,                                                        \
-      parent##_sound,                                              \
-      flags)
-
-#define CLONE_ROMSWD(name, parent, long_name,company,year,flags,driver)    \
-static struct DIR_INFO name##_dirs[] =                             \
-{                                                                  \
-   { #name, },                                                     \
-   { ROMOF( #parent ), },                                          \
-   { CLONEOF( #parent ), },                                        \
-   { NULL, },                                                      \
-};                                                                 \
-GAME( name,                                                        \
-      name##_dirs,                                                 \
-      name##_roms,                                                 \
-      parent##_inputs,                                             \
-      parent##_dsw,                                                \
-      parent##_romsw,                                              \
-      load_##parent,                                               \
-      NULL,                                              \
-      &driver##_video,                                             \
-      execute_##driver,                                            \
-      #name,                                                       \
-      long_name,                                                   \
-      long_name,                                                   \
-      company,                                                     \
-      NULL,                                                        \
-      year,                                                        \
-      driver##_sound,                                              \
-      flags)
 /*
 
 the list of all games

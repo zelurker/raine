@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2203_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    VOLFIED (C) 1988 TAITO CORPORATION                      */
@@ -5,19 +6,12 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "volfied.h"
 #include "2203intf.h"
 #include "taitosnd.h"
 #include "blit.h"
 
-static struct DIR_INFO volfied_dirs[] =
-{
-   { "volfied", },
-   { "volfiedj", },
-   { NULL, },
-};
 
-static struct ROM_INFO volfied_roms[] =
+static struct ROM_INFO rom_volfiedj[] =
 {
    {   "c04-06.bin", 0x00008000, 0xb70106b2, 0, 0, 0, },
    { "c04-07-1.bin", 0x00010000, 0x5d9065d5, 0, 0, 0, },
@@ -37,7 +31,7 @@ static struct ROM_INFO volfied_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO volfied_inputs[] =
+static struct INPUT_INFO input_volfiedj[] =
 {
    INP1( COIN1, 0x0B0009, 0x01 ),
    INP1( COIN2, 0x0B0009, 0x02 ),
@@ -105,7 +99,7 @@ static struct DSW_DATA dsw_data_volfied_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO volfied_dsw[] =
+static struct DSW_INFO dsw_volfiedj[] =
 {
    { 0x08A001, 0xFF, dsw_data_volfied_0 },
    { 0x08A000, 0x7F, dsw_data_volfied_1 },
@@ -124,41 +118,13 @@ static struct ROMSW_DATA romsw_data_volfied_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO volfied_romsw[] =
+static struct ROMSW_INFO romsw_volfiedj[] =
 {
    { 0x03FFFF, 0x01, romsw_data_volfied_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO volfied_video =
-{
-   DrawVolfied,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 | VIDEO_ROTATABLE,
-};
 
-GAME( volfied ,
-   volfied_dirs,
-   volfied_roms,
-   volfied_inputs,
-   volfied_dsw,
-   volfied_romsw,
-
-   LoadVolfied,
-   ClearVolfied,
-   &volfied_video,
-   ExecuteVolfiedFrame,
-   "volfiedj",
-   "Volfied",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C04",
-   1989,
-   taito_ym2203_sound,
-   GAME_SHOOT | GAME_NOT_WORKING
-);
 
 static UINT8 *GFX_SPR_SOLID;
 
@@ -251,7 +217,7 @@ static UINT16 pal_test[16]=
    0x7800,
 };
 
-void LoadVolfied(void)
+static void load_volfiedj(void)
 {
    int ta,tb;
 
@@ -448,7 +414,7 @@ void LoadVolfied(void)
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-void ClearVolfied(void)
+static void ClearVolfied(void)
 {
 #ifdef RAINE_DEBUG
       save_debug("ROM.bin",ROM,0x0C0000,1);
@@ -457,7 +423,7 @@ void ClearVolfied(void)
 #endif
 }
 
-void ExecuteVolfiedFrame(void)
+static void execute_volfiedj(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));    // M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 4);
@@ -468,7 +434,7 @@ void ExecuteVolfiedFrame(void)
    cpu_interrupt(CPU_Z80_0, 0x0038);
 }
 
-void DrawVolfied(void)
+static void DrawVolfied(void)
 {
    int x,y,zz;
    UINT8 *BIT;
@@ -598,3 +564,23 @@ COLOUR RAM
 - $200 banks of 16 colours
 
 */
+static struct VIDEO_INFO video_volfiedj =
+{
+   DrawVolfied,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 | VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_volfiedj[] =
+{
+   { "volfied", },
+   { "volfiedj", },
+   { NULL, },
+};
+GME( volfiedj, "Volfied", TAITO, 1989, GAME_SHOOT | GAME_NOT_WORKING,
+	.romsw = romsw_volfiedj,
+	.clear = ClearVolfied,
+	.board = "C04",
+);
+

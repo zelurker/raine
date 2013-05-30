@@ -36,19 +36,10 @@
 #include "sasound.h"
 #include "adpcm.h"
 #include "taitosnd.h"
-#include "biomtoy.h"
 #include "blit.h" // clear_game_screen
 
-static struct DIR_INFO BiomToy_dirs[] =
-{
-   { "biomechanical_toy", },
-   { "Biomechanical_Toy", },
-   { "biomtoy", },
-   { "BiomToy", },
-   { NULL, },
-};
 
-static struct ROM_INFO BiomToy_roms[] =
+static struct ROM_INFO rom_biomtoy[] =
 {
    {          "d18",   0x080000, 0x4569ce64, 0, 0, 0, },
    {          "d16",   0x080000, 0x739449bd, 0, 0, 0, },
@@ -65,7 +56,7 @@ static struct ROM_INFO BiomToy_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO BiomToy_inputs[] =
+static struct INPUT_INFO input_maniacsq[] =
 {
    INP0( COIN1, 0x030004, 0x40 ),
    INP0( COIN2, 0x030004, 0x80 ),
@@ -142,27 +133,12 @@ static struct DSW_DATA dsw_data_BiomToy_1[] =
 };
 
 
-static struct DSW_INFO BiomToy_dsw[] =
+static struct DSW_INFO dsw_biomtoy[] =
 {
    { 0x030002, 0xFF, dsw_data_BiomToy_1 },
    { 0x030000, 0xFF, dsw_data_BiomToy_0 },
    { 0,        0,    NULL,      },
 };
-
-
-static struct VIDEO_INFO BiomToy_video =
-{
-   DrawBiomToy,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
-
-
-void ClearBiomToy(void)
-{
-}
 
 static struct OKIM6295interface m6295_interface =
 {
@@ -172,7 +148,7 @@ static struct OKIM6295interface m6295_interface =
 	{ 255 }				/* volume */
 };
 
-static struct SOUND_INFO BiomToy_sound[] =
+static struct SOUND_INFO sound_maniacsq[] =
 {
    { SOUND_M6295,   &m6295_interface,     },
    { 0,             NULL,                 },
@@ -189,37 +165,10 @@ static UINT8 *RAM_SPR;
 static UINT8 *ADPCM;
 
 
-GAME( biomechanical_toy ,
-   BiomToy_dirs,
-   BiomToy_roms,
-   BiomToy_inputs,
-   BiomToy_dsw,
-   NULL,
-
-   LoadBiomToy,
-   ClearBiomToy,
-   &BiomToy_video,
-   ExecuteBiomToyFrame,
-   "biomtoy",
-   "Biomechanical Toy",
-   "Biomechanical Toy",
-   COMPANY_ID_ZEUS,
-   NULL,
-   1995,
-   BiomToy_sound,
-   GAME_PLATFORM
-);
 
 
-static struct DIR_INFO Maniacsq_dirs[] =
-{
-   { "Maniac_Square", },
-   { "maniacsq", },
-   { "maniacsp", },
-   { NULL, },
-};
 
-static struct ROM_INFO Maniacsq_roms[] =
+static struct ROM_INFO rom_maniacsq[] =
 {
    {          "d18",    0x20000, 0x740ecab2, 0, 0, 0, },
    {          "d16",    0x20000, 0xc6c42729, 0, 0, 0, },
@@ -257,42 +206,14 @@ static struct DSW_DATA dsw_data_Maniacsq_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO Maniacsq_dsw[] =
+static struct DSW_INFO dsw_maniacsq[] =
 {
    { 0x030002, 0xFF, dsw_data_BiomToy_1 },
    { 0x030000, 0xF7, dsw_data_Maniacsq_0 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO Maniacsq_video =
-{
-   DrawManiacsq,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( maniac_square ,
-   Maniacsq_dirs,
-   Maniacsq_roms,
-   BiomToy_inputs,
-   Maniacsq_dsw,
-   NULL,
-
-   LoadManiacsq,
-   ClearBiomToy,
-   &Maniacsq_video,
-   ExecuteManiacsqFrame,
-   "maniacsq",
-   "Maniac Square",
-   "Maniac Square",
-   COMPANY_ID_GAELCO,
-   NULL,
-   1996,
-   BiomToy_sound,
-   GAME_PUZZLE
-);
 
 static void BiomToyDecode(char *S,int tb, int td)
 {
@@ -336,7 +257,7 @@ static void BiomToyDecode(char *S,int tb, int td)
 }
 
 
-void LoadBiomToy(void)
+static void load_biomtoy(void)
 {
    int ta;
 
@@ -476,7 +397,7 @@ static void ManiacsqDecode(char *S, int td)
 }
 
 
-void LoadManiacsq(void)
+static void load_maniacsq(void)
 {
    int ta;
 
@@ -583,7 +504,7 @@ void LoadManiacsq(void)
 }
 
 
-void ExecuteBiomToyFrame(void)
+static void execute_biomtoy(void)
 {
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 12MHz (60fps) but it's smoother with 16MHZ
@@ -591,7 +512,7 @@ void ExecuteBiomToyFrame(void)
 }
 
 
-void ExecuteManiacsqFrame(void)
+static void execute_maniacsq(void)
 {
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));
@@ -599,7 +520,7 @@ void ExecuteManiacsqFrame(void)
 }
 
 
-void DrawBiomToy(void)
+static void DrawBiomToy(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta;
    UINT8 *map;
@@ -743,7 +664,7 @@ void DrawBiomToy(void)
 }
 
 
-void DrawManiacsq(void)
+static void DrawManiacsq(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta;
    UINT8 *map;
@@ -929,3 +850,44 @@ Notes
    same plane with different priorities because swapping layers works good
 
 ************************************************************************************************/
+static struct VIDEO_INFO video_biomtoy =
+{
+   DrawBiomToy,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct VIDEO_INFO video_maniacsq =
+{
+   DrawManiacsq,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_biomtoy[] =
+{
+   { "biomechanical_toy", },
+   { "Biomechanical_Toy", },
+   { "biomtoy", },
+   { "BiomToy", },
+   { NULL, },
+};
+GAME( biomtoy, "Biomechanical Toy", ZEUS, 1995, GAME_PLATFORM,
+	.input = input_maniacsq,
+	.dsw = dsw_biomtoy,
+	.video = &video_biomtoy,
+	.exec = execute_biomtoy,
+	.long_name_jpn = "Biomechanical Toy",
+	.sound = sound_maniacsq,
+);
+static struct DIR_INFO dir_maniacsq[] =
+{
+   { "Maniac_Square", },
+   { "maniacsq", },
+   { "maniacsp", },
+   { NULL, },
+};
+GME( maniacsq, "Maniac Square", GAELCO, 1996, GAME_PUZZLE);
+

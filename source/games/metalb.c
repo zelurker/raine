@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*      METAL BLACK (C) 1991 TAITO CORPORATION (PROJECT: GUN FRONTIER 2)      */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "metalb.h"
 #include "f3system.h"
 #include "tc006vcu.h"
 #include "tc200obj.h"
@@ -13,14 +13,8 @@
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO metal_black_dirs[] =
-{
-   { "metal_black", },
-   { "metalb", },
-   { NULL, },
-};
 
-static struct ROM_INFO metal_black_roms[] =
+static struct ROM_INFO rom_metalb[] =
 {
    {   "d12-01.20", 0x00100000, 0xb81523b9, 0, 0, 0, },
    {   "d12-02.10", 0x00100000, 0x79263e74, 0, 0, 0, },
@@ -35,7 +29,7 @@ static struct ROM_INFO metal_black_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO metal_black_inputs[] =
+static struct INPUT_INFO input_metalb[] =
 {
    INP0( COIN1, 0x00000E, 0x04 ),
    INP0( COIN2, 0x00000E, 0x08 ),
@@ -111,7 +105,7 @@ static struct DSW_DATA dsw_data_metal_black_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO metal_black_dsw[] =
+static struct DSW_INFO dsw_metalb[] =
 {
    { 0x000000, 0xFF, dsw_data_metal_black_0 },
    { 0x000002, 0xFF, dsw_data_metal_black_1 },
@@ -126,53 +120,16 @@ static struct ROMSW_DATA romsw_data_metal_black_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO metal_black_romsw[] =
+static struct ROMSW_INFO romsw_metalb[] =
 {
    { 0x07FFFF, 0x03, romsw_data_metal_black_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO metal_black_video =
-{
-   DrawMetalBlack,
-   320,
-   224,
-   48,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( metal_black ,
-   metal_black_dirs,
-   metal_black_roms,
-   metal_black_inputs,
-   metal_black_dsw,
-   metal_black_romsw,
 
-   LoadMetalBlack,
-   ClearMetalBlack,
-   &metal_black_video,
-   ExecuteMetalBlackFrame,
-   "metalb",
-   "Metal Black",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D16",
-   1991,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO metal_black_japanese_dirs[] =
-{
-   { "metal_black_japanese", },
-   { "metalbj", },
-   { ROMOF("metalb"), },
-   { CLONEOF("metalb"), },
-   { NULL, },
-};
-
-static struct ROM_INFO metal_black_japanese_roms[] =
+static struct ROM_INFO rom_metalbj[] =
 {
    {   "d12-01.20", 0x00100000, 0xb81523b9, 0, 0, 0, },
    {   "d12-02.10", 0x00100000, 0x79263e74, 0, 0, 0, },
@@ -187,32 +144,12 @@ static struct ROM_INFO metal_black_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROMSW_INFO metal_black_japanese_romsw[] =
+static struct ROMSW_INFO romsw_metalbj[] =
 {
    { 0x07FFFF, 0x01, romsw_data_metal_black_0 },
    { 0,        0,    NULL },
 };
 
-GAME( metal_black_japanese ,
-   metal_black_japanese_dirs,
-   metal_black_japanese_roms,
-   metal_black_inputs,
-   metal_black_dsw,
-   metal_black_japanese_romsw,
-
-   LoadMetalBlack,
-   ClearMetalBlack,
-   &metal_black_video,
-   ExecuteMetalBlackFrame,
-   "metalbj",
-   "Metal Black Japanese",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D12",
-   1991,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -254,7 +191,7 @@ static void BadWriteWord(UINT32 address, UINT16 data)
 #endif
 }
 
-void LoadMetalBlack(void)
+static void load_metalb(void)
 {
    int ta,tb;
 
@@ -494,16 +431,7 @@ void LoadMetalBlack(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearMetalBlack(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      //save_debug("RAM.bin",RAM,0x040000,1);
-#endif
-}
-
-void ExecuteMetalBlackFrame(void)
+static void execute_metalb(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
    cpu_interrupt(CPU_68K_0, 6);
@@ -552,7 +480,7 @@ static UINT8 bg_pri[32][4] =
    { 0, 3, 2, 1, },	// 0x1F
 };
 
-void DrawMetalBlack(void)
+static void DrawMetalBlack(void)
 {
    UINT32 i;
 
@@ -575,4 +503,36 @@ void DrawMetalBlack(void)
    tc0006vcu_render_fg0();
 }
 
+
+static struct VIDEO_INFO video_metalb =
+{
+   DrawMetalBlack,
+   320,
+   224,
+   48,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_metalb[] =
+{
+   { "metal_black", },
+   { "metalb", },
+   { NULL, },
+};
+GME( metalb, "Metal Black", TAITO, 1991, GAME_SHOOT,
+	.romsw = romsw_metalb,
+	.board = "D16",
+);
+static struct DIR_INFO dir_metalbj[] =
+{
+   { "metal_black_japanese", },
+   { "metalbj", },
+   { ROMOF("metalb"), },
+   { CLONEOF("metalb"), },
+   { NULL, },
+};
+CLNE( metalbj,metalb, "Metal Black Japanese", TAITO, 1991, GAME_SHOOT,
+	.romsw = romsw_metalbj,
+	.board = "D12",
+);
 

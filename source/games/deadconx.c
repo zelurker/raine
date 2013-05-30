@@ -11,21 +11,14 @@
 */
 
 #include "gameinc.h"
-#include "deadconx.h"
 #include "tc006vcu.h"
 #include "tc200obj.h"
 #include "f3system.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO dead_connection_dirs[] =
-{
-   { "dead_connection", },
-   { "deadconx", },
-   { NULL, },
-};
 
-static struct ROM_INFO dead_connection_roms[] =
+static struct ROM_INFO rom_deadconx[] =
 {
    {   "d28_01.8", 0x00100000, 0x181d7b69, 0, 0, 0, },
    {   "d28_02.9", 0x00100000, 0xd301771c, 0, 0, 0, },
@@ -40,7 +33,7 @@ static struct ROM_INFO dead_connection_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO dead_connection_inputs[] =
+static struct INPUT_INFO input_deadconx[] =
 {
    INP0( COIN1, 0x034104, 0x01 ),
    INP0( COIN2, 0x034104, 0x02 ),
@@ -132,7 +125,7 @@ static struct DSW_DATA dsw_data_dead_connection_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dead_connection_dsw[] =
+static struct DSW_INFO dsw_deadconx[] =
 {
    { 0x034100, 0xFF, dsw_data_dead_connection_0 },
    { 0x034102, 0xFF, dsw_data_dead_connection_1 },
@@ -147,42 +140,13 @@ static struct ROMSW_DATA romsw_data_dead_connection_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO dead_connection_romsw[] =
+static struct ROMSW_INFO romsw_deadconx[] =
 {
    { 0x07FFFF, 0x03, romsw_data_dead_connection_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO dead_connection_video =
-{
-   DrawDeadConnection,
-   320,
-   224,
-   48,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( dead_connection ,
-   dead_connection_dirs,
-   dead_connection_roms,
-   dead_connection_inputs,
-   dead_connection_dsw,
-   dead_connection_romsw,
-
-   LoadDeadConnection,
-   ClearDeadConnection,
-   &dead_connection_video,
-   ExecuteDeadConnectionFrame,
-   "deadconx",
-   "Dead Connection",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D28",
-   1992,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -227,7 +191,7 @@ static void BadWriteWord(UINT32 address, UINT16 data)
 #endif
 }
 
-void LoadDeadConnection(void)
+static void load_deadconx(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -448,7 +412,7 @@ void LoadDeadConnection(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearDeadConnection(void)
+static void ClearDeadConnection(void)
 {
    RemoveTaitoYM2610();
 
@@ -457,7 +421,7 @@ void ClearDeadConnection(void)
 #endif
 }
 
-void ExecuteDeadConnectionFrame(void)
+static void execute_deadconx(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
    cpu_interrupt(CPU_68K_0, 6);
@@ -470,7 +434,7 @@ void ExecuteDeadConnectionFrame(void)
    debug_tc0006vcu();
 }
 
-void DrawDeadConnection(void)
+static void DrawDeadConnection(void)
 {
    ClearPaletteMap();
 
@@ -516,3 +480,29 @@ d28-12.rom | 68000 (block 0; odd)
 -----------+-----------------------
 
 */
+static struct VIDEO_INFO video_deadconx =
+{
+   DrawDeadConnection,
+   320,
+   224,
+   48,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_deadconx[] =
+{
+   { "dead_connection", },
+   { "deadconx", },
+   { NULL, },
+};
+GAME( deadconx, "Dead Connection", TAITO, 1992, GAME_SHOOT,
+	.input = input_deadconx,
+	.dsw = dsw_deadconx,
+	.romsw = romsw_deadconx,
+	.clear = ClearDeadConnection,
+	.video = &video_deadconx,
+	.exec = execute_deadconx,
+	.board = "D28",
+	.sound = taito_ym2610_sound,
+);
+

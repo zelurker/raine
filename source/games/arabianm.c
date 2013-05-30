@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "arabianm.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -13,14 +12,8 @@
 #include "sasound.h"
 extern char mybuff[0x10000];
 
-static struct DIR_INFO arabian_magic_dirs[] =
-{
-   { "arabian_magic", },
-   { "arabianm", },
-   { NULL, },
-};
 
-static struct ROM_INFO arabian_magic_roms[] =
+static struct ROM_INFO rom_arabianm[] =
 {
    {   "d29-06.rom", 0x00080000, 0xeea07bf3, 0, 0, 0, },
    {   "d29-02.rom", 0x00100000, 0xed894fe1, 0, 0, 0, },
@@ -47,41 +40,13 @@ static struct ROMSW_DATA romsw_data_arabian_magic_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO arabian_magic_romsw[] =
+static struct ROMSW_INFO romsw_arabianm[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_arabian_magic_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO arabian_magic_video =
-{
-   draw_arabian_magic,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( arabian_magic ,
-   arabian_magic_dirs,
-   arabian_magic_roms,
-   f3_system_inputs,
-   NULL,
-   arabian_magic_romsw,
-
-   load_arabian_magic,
-   clear_arabian_magic,
-   &arabian_magic_video,
-   ExecuteF3SystemFrame_NoInt5B,
-   "arabianm",
-   "Arabian Magic",
-   "アラビアンマジック",
-   COMPANY_ID_TAITO,
-   "D29",
-   1992,
-   f3_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -109,7 +74,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void load_arabian_magic(void)
+static void load_arabianm(void)
 {
    int ta,tb,tc;
    RAMSize=0x80000;
@@ -303,7 +268,7 @@ void load_arabian_magic(void)
    setup_sound_68000();
 }
 
-void clear_arabian_magic(void)
+static void clear_arabian_magic(void)
 {
    save_eeprom();
 
@@ -314,7 +279,7 @@ void clear_arabian_magic(void)
    #endif
 }
 
-void draw_arabian_magic(void)
+static void draw_arabian_magic(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -508,3 +473,28 @@ void draw_arabian_magic(void)
       f3video_render_fg0_r180();
    }
 }
+static struct VIDEO_INFO video_arabianm =
+{
+   draw_arabian_magic,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_arabianm[] =
+{
+   { "arabian_magic", },
+   { "arabianm", },
+   { NULL, },
+};
+GAME( arabianm, "Arabian Magic", TAITO, 1992, GAME_BEAT,
+	.input = f3_system_inputs,
+	.romsw = romsw_arabianm,
+	.clear = clear_arabian_magic,
+	.video = &video_arabianm,
+	.exec = ExecuteF3SystemFrame_NoInt5B,
+	.long_name_jpn = "アラビアンマジック",
+	.board = "D29",
+	.sound = f3_sound,
+);
+

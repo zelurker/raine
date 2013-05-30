@@ -1,3 +1,6 @@
+#define DRV_DEF_INPUT b_system_inputs
+#define DRV_DEF_SOUND taito_ym2610_sound
+#define DRV_DEF_VIDEO &b_system_video
 /******************************************************************************/
 /*                                                                            */
 /*                  CRIME CITY (C) 1990 TAITO CORPORATION                     */
@@ -5,7 +8,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "crimec.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
@@ -15,14 +17,8 @@
    CRIME CITY
  **************/
 
-static struct DIR_INFO crime_city_dirs[] =
-{
-   { "crime_city", },
-   { "crimec", },
-   { NULL, },
-};
 
-static struct ROM_INFO crime_city_roms[] =
+static struct ROM_INFO rom_crimec[] =
 {
    {   "b99_01.19", 0x00080000, 0xa19e373a, 0, 0, 0, },
    {   "b99_02.18", 0x00080000, 0x2a5d4a26, 0, 0, 0, },
@@ -74,7 +70,7 @@ static struct DSW_DATA dsw_data_crime_city_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO crime_city_dsw[] =
+static struct DSW_INFO dsw_crimec[] =
 {
    { 0x000000, 0xFF, dsw_data_crime_city_0 },
    { 0x000002, 0xFF, dsw_data_crime_city_1 },
@@ -99,41 +95,13 @@ static struct ROMSW_INFO crime_city_romsw[] =
 };
 */
 
-GAME( crime_city ,
-   crime_city_dirs,
-   crime_city_roms,
-   b_system_inputs,
-   crime_city_dsw,
-   NULL,
-
-   LoadCrimeCity,
-   ClearCrimeCity,
-   &b_system_video,
-   ExecuteCrimeCityFrame,
-   "crimec",
-   "Crime City",
-   "‚N‚Î‚C‚«‚V‚e‚B",
-   COMPANY_ID_TAITO,
-   "B99",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 /*****************
    CRIME CITY US
  *****************/
 
-static struct DIR_INFO crime_city_US_dirs[] =
-{
-   { "crime_city_US",   },
-   { "crimecu",         },
-   { ROMOF("crimec"),   },
-   { CLONEOF("crimec"), },
-   { NULL, },
-};
 
-static struct ROM_INFO crime_city_US_roms[] =
+static struct ROM_INFO rom_crimecu[] =
 {
    {   "b99_01.19", 0x00080000, 0xa19e373a, 0, 0, 0, },
    {   "b99_02.18", 0x00080000, 0x2a5d4a26, 0, 0, 0, },
@@ -167,7 +135,7 @@ static struct DSW_DATA dsw_data_crime_city_US_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO crime_city_US_dsw[] =
+static struct DSW_INFO dsw_crimecu[] =
 {
    { 0x000000, 0xFF, dsw_data_crime_city_US_0 },
    { 0x000002, 0xFF, dsw_data_crime_city_1 },
@@ -182,41 +150,13 @@ static struct ROMSW_INFO crime_city_US_romsw[] =
 };
 */
 
-GAME( crime_city_US ,
-   crime_city_US_dirs,
-   crime_city_US_roms,
-   b_system_inputs,
-   crime_city_US_dsw,
-   NULL,
-
-   LoadCrimeCity,
-   ClearCrimeCity,
-   &b_system_video,
-   ExecuteCrimeCityFrame,
-   "crimecu",
-   "Crime City (US)",
-   "‚N‚Î‚C‚«‚V‚e‚B (US)",
-   COMPANY_ID_TAITO,
-   "B99",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 /********************
    CRIME CITY JAPAN
  ********************/
 
-static struct DIR_INFO crime_city_jp_dirs[] =
-{
-   { "crime_city_jp",   },
-   { "crimecj",         },
-   { ROMOF("crimec"),   },
-   { CLONEOF("crimec"), },
-   { NULL, },
-};
 
-static struct ROM_INFO crime_city_jp_roms[] =
+static struct ROM_INFO rom_crimecj[] =
 {
    {   "b99_01.19", 0x00080000, 0xa19e373a, 0, 0, 0, },
    {   "b99_02.18", 0x00080000, 0x2a5d4a26, 0, 0, 0, },
@@ -250,33 +190,13 @@ static struct DSW_DATA dsw_data_crime_city_jp_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO crime_city_jp_dsw[] =
+static struct DSW_INFO dsw_crimecj[] =
 {
    { 0x000000, 0xFF, dsw_data_crime_city_jp_0 },
    { 0x000002, 0xFF, dsw_data_crime_city_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( crime_city_jp ,
-   crime_city_jp_dirs,
-   crime_city_jp_roms,
-   b_system_inputs,
-   crime_city_jp_dsw,
-   NULL,
-
-   LoadCrimeCity,
-   ClearCrimeCity,
-   &b_system_video,
-   ExecuteCrimeCityFrame,
-   "crimecj",
-   "Crime City (Japan)",
-   "‚N‚Î‚C‚«‚V‚e‚B (Japan)",
-   COMPANY_ID_TAITO,
-   "B99",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_INPUT;
 static UINT8 *RAM_VIDEO;
@@ -289,7 +209,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadCrimeCity(void)
+static void load_crimec(void)
 {
    int ta,tb,tc;
 
@@ -552,21 +472,10 @@ void LoadCrimeCity(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearCrimeCity(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x02C000,1);
-      //save_debug("GFX.bin",GFX,0x240000,0);
-   #endif
-}
-
-void ExecuteCrimeCityFrame(void)
+static void execute_crimec(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -578,3 +487,42 @@ void ExecuteCrimeCityFrame(void)
 
    Taito2610_Frame();			// Z80 and YM2610
 }
+static struct DIR_INFO dir_crimec[] =
+{
+   { "crime_city", },
+   { "crimec", },
+   { NULL, },
+};
+GAME( crimec, "Crime City", TAITO, 1989, GAME_SHOOT,
+	.dsw = dsw_crimec,
+	.exec = execute_crimec,
+	.long_name_jpn = "‚N‚Î‚C‚«‚V‚e‚B",
+	.board = "B99",
+);
+static struct DIR_INFO dir_crimecu[] =
+{
+   { "crime_city_US",   },
+   { "crimecu",         },
+   { ROMOF("crimec"),   },
+   { CLONEOF("crimec"), },
+   { NULL, },
+};
+CLNE( crimecu,crimec, "Crime City (US)", TAITO, 1989, GAME_SHOOT,
+	.dsw = dsw_crimecu,
+	.long_name_jpn = "‚N‚Î‚C‚«‚V‚e‚B (US)",
+	.board = "B99",
+);
+static struct DIR_INFO dir_crimecj[] =
+{
+   { "crime_city_jp",   },
+   { "crimecj",         },
+   { ROMOF("crimec"),   },
+   { CLONEOF("crimec"), },
+   { NULL, },
+};
+CLNE( crimecj, crimec, "Crime City (Japan)", TAITO, 1989, GAME_SHOOT,
+	.dsw = dsw_crimecj,
+	.long_name_jpn = "‚N‚Î‚C‚«‚V‚e‚B (Japan)",
+	.board = "B99",
+);
+

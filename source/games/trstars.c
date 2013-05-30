@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND f3_sound
 /******************************************************************************/
 /*                                                                            */
 /*               TOP RANKING STARS (C) 1994 TAITO CORPORATION                 */
@@ -5,22 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "trstars.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO top_ranking_stars_dirs[] =
-{
-   { "top_ranking_stars", },
-   { "trstars", },
-   { "trstar", },
-   { NULL, },
-};
 
-static struct ROM_INFO top_ranking_stars_roms[] =
+static struct ROM_INFO rom_trstar[] =
 {
    { "d53-01.2", 0x00200000, 0x28fd2d9b, 0, 0, 0, },
    { "d53-02.3", 0x00200000, 0x8bd4367a, 0, 0, 0, },
@@ -50,54 +43,16 @@ static struct ROMSW_DATA romsw_data_top_ranking_stars_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO top_ranking_stars_romsw[] =
+static struct ROMSW_INFO romsw_trstar[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_top_ranking_stars_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO top_ranking_stars_video =
-{
-   DrawTRStars,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( top_ranking_stars ,
-   top_ranking_stars_dirs,
-   top_ranking_stars_roms,
-   f3_system_inputs,
-   NULL,
-   top_ranking_stars_romsw,
 
-   LoadTRStars,
-   ClearTRStars,
-   &top_ranking_stars_video,
-   ExecuteTRStarsFrame,
-   "trstar",
-   "Top Ranking Stars",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D53",
-   1994,
-   f3_sound,
-   GAME_BEAT | GAME_PARTIALLY_WORKING
-);
 
-static struct DIR_INFO prime_time_fighters_dirs[] =
-{
-   { "prime_time_fighter", },
-   { "prmtmfgt", },
-   { "prmtmfgo", },
-   { "trstars", },
-   { ROMOF("trstar"), },
-   { CLONEOF("trstar"), },
-   { NULL, },
-};
-
-static struct ROM_INFO prime_time_fighters_roms[] =
+static struct ROM_INFO rom_prmtmfgo[] =
 {
    { "d53-01.2", 0x00200000, 0x28fd2d9b, 0, 0, 0, },
    { "d53-02.3", 0x00200000, 0x8bd4367a, 0, 0, 0, },
@@ -119,32 +74,12 @@ static struct ROM_INFO prime_time_fighters_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROMSW_INFO prime_time_fighters_romsw[] =
+static struct ROMSW_INFO romsw_prmtmfgo[] =
 {
    { 0x0FFFFF, 0x02, romsw_data_top_ranking_stars_0 },
    { 0,        0,    NULL },
 };
 
-GAME( prime_time_fighters ,
-   prime_time_fighters_dirs,
-   prime_time_fighters_roms,
-   f3_system_inputs,
-   NULL,
-   prime_time_fighters_romsw,
-
-   load_prime_time_fighters,
-   ClearTRStars,
-   &top_ranking_stars_video,
-   ExecuteTRStarsFrame,
-   "prmtmfgo",
-   "Prime Time Fighter (Old Version)",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D53",
-   1994,
-   f3_sound,
-   GAME_BEAT | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -387,28 +322,17 @@ static void load_actual(int romset)
    setup_sound_68000();
 }
 
-void LoadTRStars(void)
+static void load_trstar(void)
 {
    load_actual(0);
 }
 
-void load_prime_time_fighters(void)
+static void load_prmtmfgo(void)
 {
    load_actual(1);
 }
 
-void ClearTRStars(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x400000,0);
-#endif
-}
-
-void ExecuteTRStarsFrame(void)
+static void execute_trstar(void)
 {
   int ta;
   cycles = 1;
@@ -428,7 +352,7 @@ void ExecuteTRStarsFrame(void)
   IntF3System();
 }
 
-void DrawTRStars(void)
+static void DrawTRStars(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -630,3 +554,43 @@ void DrawTRStars(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_trstar =
+{
+   DrawTRStars,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_prmtmfgo[] =
+{
+   { "prime_time_fighter", },
+   { "prmtmfgt", },
+   { "prmtmfgo", },
+   { "trstars", },
+   { ROMOF("trstar"), },
+   { CLONEOF("trstar"), },
+   { NULL, },
+};
+GAME(prmtmfgo, "Prime Time Fighter (Old Version)", TAITO, 1994, GAME_BEAT | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs,
+	.romsw = romsw_prmtmfgo,
+	.video = &video_trstar,
+	.exec = execute_trstar,
+	.board = "D53",
+);
+static struct DIR_INFO dir_trstar[] =
+{
+   { "top_ranking_stars", },
+   { "trstars", },
+   { "trstar", },
+   { NULL, },
+};
+GAME( trstar, "Top Ranking Stars", TAITO, 1994, GAME_BEAT | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs,
+	.romsw = romsw_trstar,
+	.video = &video_trstar,
+	.exec = execute_trstar,
+	.board = "D53",
+);
+

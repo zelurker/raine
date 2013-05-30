@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND technos_ym2151_m6295_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    WRESTLEFEST (C) 1991 TECHNOS JAPAN                      */
@@ -6,21 +7,12 @@
 
 #include "gameinc.h"
 #include "sasound.h"		// sample support routines
-#include "wrestlef.h"
 #include "tchnosnd.h"
 #include "adpcm.h"
 #include "blit.h" // clear_game_screen
 
-static struct DIR_INFO wrestle_fest_dirs[] =
-{
-   { "wrestle_fest", },
-   { "wrestlef", },
-   { "wwfwfsta", },
-   { "wwfwfest", },
-   { NULL, },
-};
 
-static struct ROM_INFO wrestle_fest_roms[] =
+static struct ROM_INFO rom_wwfwfsta[] =
 {
    {   "wf_73a.rom", 0x00080000, 0x6c522edb, 0, 0, 0, },
    {    "31a11-2.42", 0x00010000, 0x5ddebfea, 0, 0, 0, },
@@ -40,7 +32,7 @@ static struct ROM_INFO wrestle_fest_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO wrestle_fest_inputs[] =
+static struct INPUT_INFO input_wwfwfsta[] =
 {
    INP0( COIN1, 0x01C021, 0x01 ),
    INP0( COIN2, 0x01C021, 0x02 ),
@@ -129,43 +121,14 @@ static struct DSW_DATA dsw_data_wrestle_fest_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO wrestle_fest_dsw[] =
+static struct DSW_INFO dsw_wwfwfsta[] =
 {
    { 0x01C07E, 0xFF, dsw_data_wrestle_fest_0 },
    { 0x01C07F, 0xFF, dsw_data_wrestle_fest_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO wrestle_fest_video =
-{
-   DrawWrestleF,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( wrestle_fest ,
-   wrestle_fest_dirs,
-   wrestle_fest_roms,
-   wrestle_fest_inputs,
-   wrestle_fest_dsw,
-   NULL,
-
-   LoadWrestleF,
-   ClearWrestleF,
-   &wrestle_fest_video,
-   ExecuteWrestleFFrame,
-   "wwfwfsta",
-   "WWF Wrestlefest",
-   "‚v‚v‚eƒŒƒbƒXƒ‹ƒtƒFƒ‹ƒg",
-   COMPANY_ID_TECHNOS,
-   "TA-0031",
-   1991,
-   technos_ym2151_m6295_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -215,7 +178,7 @@ static void WFSoundWrite(UINT32 address, UINT16 data)
    if(address==0x14000C) TechnosSoundWrite68k(address,data);
 }
 
-void WrestleFSpeedPatch(void)
+static void WrestleFSpeedPatch(void)
 {
    int address;
 
@@ -245,7 +208,7 @@ void WrestleFSpeedPatch(void)
    }
 }
 
-void LoadWrestleF(void)
+static void load_wwfwfsta(void)
 {
    UINT8 *TMP;
    int ta,tb,tc,td,te;
@@ -568,7 +531,7 @@ void LoadWrestleF(void)
        layer_id_data[ta] = add_layer_info(layer_id_name[ta]);
 }
 
-void ClearWrestleF(void)
+static void ClearWrestleF(void)
 {
    #ifdef RAINE_DEBUG
       save_debug("ROM.bin",ROM,0x080000,1);
@@ -576,7 +539,7 @@ void ClearWrestleF(void)
    #endif
 }
 
-void ExecuteWrestleFFrame(void)
+static void execute_wwfwfsta(void)
 {
    int ta;
 
@@ -604,7 +567,7 @@ void ExecuteWrestleFFrame(void)
 }
 
 
-void RenderObject(void)
+static void RenderObject(void)
 {
    int zz,x,y,ta,nn;
    UINT8 *map;
@@ -713,7 +676,7 @@ void RenderObject(void)
    }
 }
 
-void DrawWrestleF(void)
+static void DrawWrestleF(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta,bg_pri;
    UINT8 *map;
@@ -945,3 +908,26 @@ Byte(s)| Bit(s) | Description
  0C-0F |........| Unused
 
 */
+static struct VIDEO_INFO video_wwfwfsta =
+{
+   DrawWrestleF,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_wwfwfsta[] =
+{
+   { "wrestle_fest", },
+   { "wrestlef", },
+   { "wwfwfsta", },
+   { "wwfwfest", },
+   { NULL, },
+};
+GME( wwfwfsta, "WWF Wrestlefest", TECHNOS, 1991, GAME_BEAT,
+	.clear = ClearWrestleF,
+	.long_name_jpn = "‚v‚v‚eƒŒƒbƒXƒ‹ƒtƒFƒ‹ƒg",
+	.board = "TA-0031",
+);
+

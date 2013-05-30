@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND nichi_ym3812_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    TERRA CRESTA (C) 1985 NICHIBUTSU                        */
@@ -5,18 +6,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "terrac.h"
 #include "nichisnd.h"
 #include "blit.h" // clear_game_screen
 
-static struct DIR_INFO terra_cresta_dirs[] =
-{
-   { "terra_cresta", },
-   { "terracre", },
-   { NULL, },
-};
 
-static struct ROM_INFO terra_cresta_roms[] =
+static struct ROM_INFO rom_terracre[] =
 {
    {    "1a_4b.rom", 0x00004000, 0x76f17479, 0, 0, 0, },
    {    "1a_6b.rom", 0x00004000, 0xba4b5822, 0, 0, 0, },
@@ -44,7 +38,7 @@ static struct ROM_INFO terra_cresta_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO terra_cresta_inputs[] =
+static struct INPUT_INFO input_terracre[] =
 {
    INP0( COIN1, 0x004005, 0x04 ),
    INP0( COIN2, 0x004005, 0x08 ),
@@ -106,43 +100,14 @@ static struct DSW_DATA dsw_data_terra_cresta_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO terra_cresta_dsw[] =
+static struct DSW_INFO dsw_terracre[] =
 {
    { 0x004006, 0xFF, dsw_data_terra_cresta_0 },
    { 0x004007, 0xFF, dsw_data_terra_cresta_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO terra_cresta_video =
-{
-   DrawTerraC,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
-GAME( terra_cresta ,
-   terra_cresta_dirs,
-   terra_cresta_roms,
-   terra_cresta_inputs,
-   terra_cresta_dsw,
-   NULL,
-
-   LoadTerraC,
-   ClearTerraC,
-   &terra_cresta_video,
-   ExecuteTerraCFrame,
-   "terracre",
-   "Terra Cresta",
-   "テラクレスタ",
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1985,
-   nichi_ym3812_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_COLOUR;
 static UINT8 *COLTAB;
@@ -156,7 +121,7 @@ static UINT8 *GFX_SPR_SOLID;
 static UINT8 *GFX_FG0;
 static UINT8 *GFX_FG0_SOLID;
 
-void LoadTerraC(void)
+static void load_terracre(void)
 {
    int ta,tb,tc,td;
    int red,green,blue;
@@ -364,18 +329,7 @@ void LoadTerraC(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearTerraC(void)
-{
-   RemoveNichibutsuYM3526();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x020000,1);
-      save_debug("RAM.bin",RAM,0x010000,1);
-      //save_debug("GFX.bin",GFX,0x444000,0);
-   #endif
-}
-
-void ExecuteTerraCFrame(void)
+static void execute_terracre(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 1);
@@ -383,7 +337,7 @@ void ExecuteTerraCFrame(void)
    Nichibutsu3526_Frame();		// Z80 and YM3526
 }
 
-void DrawTerraC(void)
+static void DrawTerraC(void)
 {
    int x,y,ta;
    int zz,zzz,zzzz,x16,y16;
@@ -496,3 +450,22 @@ Byte | Bit(s) | Usage
   7  |xxxxxxxx| SpriteY (low)
 
 */
+static struct VIDEO_INFO video_terracre =
+{
+   DrawTerraC,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_terracre[] =
+{
+   { "terra_cresta", },
+   { "terracre", },
+   { NULL, },
+};
+GME( terracre, "Terra Cresta", NICHIBUTSU, 1985, GAME_SHOOT,
+	.long_name_jpn = "テラクレスタ",
+);
+

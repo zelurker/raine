@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2151_sound
 /******************************************************************************/
 /*                                                                            */
 /*            TOP SPEED / FULL THROTTLE (C) 1986 TAITO CORPORATION            */
@@ -5,24 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "topspeed.h"
 #include "tc100scn.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 #include "zoom/16x8.h"		// 16x8 zoomed sprite routines
 
-static struct DIR_INFO full_throttle_dirs[] =
-{
-   { "full_throttle", },
-   { "fullthr", },
-   { "fullthrl", },
-   { ROMOF("topspeed"), },
-   { CLONEOF("topspeed"), },
-   { NULL, },
-};
 
-static struct ROM_INFO full_throttle_roms[] =
+static struct ROM_INFO rom_fullthrl[] =
 {
    {       "b14-02", 0x00080000, 0x6889186b, 0, 0, 0, },
    {       "b14-01", 0x00080000, 0x84a56f37, 0, 0, 0, },
@@ -43,7 +34,7 @@ static struct ROM_INFO full_throttle_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO full_throttle_inputs[] =
+static struct INPUT_INFO input_topspeed[] =
 {
    INP1( COIN1, 0x055004, 0x08 ),
    INP1( COIN2, 0x055004, 0x04 ),
@@ -192,7 +183,7 @@ static struct DSW_DATA dsw_data_full_throttle_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO full_throttle_dsw[] =
+static struct DSW_INFO dsw_topspeed[] =
 {
    { 0x055000, 0xFF, dsw_data_full_throttle_0 },
    { 0x055002, 0xFF, dsw_data_full_throttle_1 },
@@ -215,44 +206,10 @@ static struct ROMSW_INFO full_throttle_romsw[] =
    { 0,        0,    NULL },
 };
 */
-static struct VIDEO_INFO full_throttle_video =
-{
-   DrawFullThrottle,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( full_throttle ,
-   full_throttle_dirs,
-   full_throttle_roms,
-   full_throttle_inputs,
-   full_throttle_dsw,
-   NULL,
 
-   LoadFullThrottle,
-   ClearFullThrottle,
-   &full_throttle_video,
-   ExecuteFullThrottleFrame,
-   "fullthrl",
-   "Full Throttle",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B14",
-   1987,
-   taito_ym2151_sound,
-   GAME_RACE | GAME_NOT_WORKING
-);
 
-static struct DIR_INFO top_speed_dirs[] =
-{
-   { "top_speed", },
-   { "topspeed", },
-   { NULL, },
-};
-
-static struct ROM_INFO top_speed_roms[] =
+static struct ROM_INFO rom_topspeed[] =
 {
    {       "b14-47.3", 0x00020000, 0xb3a1f75b, 0, 0, 0, },
    {       "b14-07.54", 0x00020000, 0xc6025fff, 0, 0, 0, },
@@ -288,26 +245,6 @@ static struct ROM_INFO top_speed_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( top_speed ,
-   top_speed_dirs,
-   top_speed_roms,
-   full_throttle_inputs,
-   full_throttle_dsw,
-   NULL,
-
-   LoadTopSpeed,
-   ClearTopSpeed,
-   &full_throttle_video,
-   ExecuteFullThrottleFrame,
-   "topspeed",
-   "Top Speed",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B14",
-   1987,
-   taito_ym2151_sound,
-   GAME_RACE | GAME_NOT_WORKING
-);
 
 static int romset;
 
@@ -347,10 +284,14 @@ static int BadReadWord(UINT32 address)
    return(0x5555);
 }
 
-static void LoadActual(void)
+static void load_topspeed(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
+   if (is_current_game("fullthrl"))
+       romset = 0;
+   else if (is_current_game("topspeed"))
+       romset = 1;
 
    if(!(GFX=AllocateMem(0x80000))) return;
 
@@ -848,41 +789,7 @@ static void LoadActual(void)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void LoadFullThrottle(void)
-{
-   romset=0;
-   LoadActual();
-}
-
-void LoadTopSpeed(void)
-{
-   romset=1;
-   LoadActual();
-}
-
-void ClearFullThrottle(void)
-{
-   RemoveTaitoYM2151();
-
-#ifdef RAINE_DEBUG
-      //save_debug("GFX.bin",GFX_OBJ_A,OBJ_A_COUNT*0x80,0);
-      save_debug("ROM.bin",ROM,0x0C0000,1);
-      save_debug("RAM.bin",RAM,RAMSize,1);
-#endif
-}
-
-void ClearTopSpeed(void)
-{
-   RemoveTaitoYM2151();
-
-#ifdef RAINE_DEBUG
-      //save_debug("GFX.bin",GFX_OBJ_A,OBJ_A_COUNT*0x80,0);
-      save_debug("ROM.bin",ROM,0x0C0000,1);
-      save_debug("RAM.bin",RAM,RAMSize,1);
-#endif
-}
-
-void ExecuteFullThrottleFrame(void)
+static void execute_topspeed(void)
 {
 
 /*----[Start of Keyboard Support]-----*/
@@ -1076,7 +983,7 @@ static void render_z_system_sprites(int pri)
    }
 }
 
-void DrawFullThrottle(void)
+static void DrawFullThrottle(void)
 {
    ClearPaletteMap();
 
@@ -1206,4 +1113,34 @@ B14-70   | SUB MC68000 (odd)           [Small Diff: Rom Switch]
 ---------+------------------------------------
 
 */
+
+static struct VIDEO_INFO video_topspeed =
+{
+   DrawFullThrottle,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_fullthrl[] =
+{
+   { "full_throttle", },
+   { "fullthr", },
+   { "fullthrl", },
+   { ROMOF("topspeed"), },
+   { CLONEOF("topspeed"), },
+   { NULL, },
+};
+CLNE(fullthrl, topspeed, "Full Throttle", TAITO, 1987, GAME_RACE | GAME_NOT_WORKING,
+	.board = "B14",
+);
+static struct DIR_INFO dir_topspeed[] =
+{
+   { "top_speed", },
+   { "topspeed", },
+   { NULL, },
+};
+GME( topspeed, "Top Speed", TAITO, 1987, GAME_RACE | GAME_NOT_WORKING,
+	.board = "B14",
+);
 

@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610b_sound
 /******************************************************************************/
 /*                                                                            */
 /*                  BATTLE SHARK (C) 1989 TAITO CORPORATION                   */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "bshark.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc150rod.h"
@@ -18,14 +18,8 @@
 #include "taito_z.h"
 #include "gun.h"
 
-static struct DIR_INFO battle_shark_dirs[] =
-{
-   { "battle_shark", },
-   { "bshark", },
-   { NULL, },
-};
 
-static struct ROM_INFO battle_shark_roms[] =
+static struct ROM_INFO rom_bshark[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c34_71.98",  0xdf1fa629, "c34_69.75",  0xa54c137a),
@@ -47,7 +41,7 @@ static struct ROM_INFO battle_shark_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO battle_shark_inputs[] =
+static struct INPUT_INFO input_bshark[] =
 {
    INP0( COIN1, 0x027014, 0x02 ),
    INP0( COIN2, 0x027014, 0x01 ),
@@ -91,7 +85,7 @@ static struct DSW_DATA dsw_data_battle_shark_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO battle_shark_dsw[] =
+static struct DSW_INFO dsw_bshark[] =
 {
    { 0x027010, 0xFF, dsw_data_battle_shark_0 },
    { 0x027012, 0xFF, dsw_data_default_1 },
@@ -107,42 +101,13 @@ static struct ROMSW_DATA romsw_data_battle_shark_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO battle_shark_romsw[] =
+static struct ROMSW_INFO romsw_bshark[] =
 {
    { 0x07FFFF, 0x02, romsw_data_battle_shark_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO battle_shark_video =
-{
-   DrawBattleShark,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-   taitoz_gfxdecodeinfo
-};
 
-GAME( battle_shark ,
-   battle_shark_dirs,
-   battle_shark_roms,
-   battle_shark_inputs,
-   battle_shark_dsw,
-   battle_shark_romsw,
-
-   LoadBattleShark,
-   ClearBattleShark,
-   &battle_shark_video,
-   ExecuteBattleSharkFrame,
-   "bshark",
-   "Battle Shark",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C34",
-   1989,
-   taito_ym2610b_sound,
-   GAME_SHOOT
-);
 
 #define OBJ_A_COUNT	(0x75C8)
 
@@ -176,7 +141,7 @@ static void YM2610Write68k(UINT32 address, UINT16 data)
    YM2610WriteZ80( (UINT16) ((address&7)>>1), (UINT8) data);
 }
 
-void LoadBattleShark(void)
+static void load_bshark(void)
 {
    UINT8 *ROM2 = load_region[REGION_CPU2];
 
@@ -399,18 +364,9 @@ void LoadBattleShark(void)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void ClearBattleShark(void)
-{
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x100000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x100000,0);
-#endif
-}
-
 static int x1,myy1,x11,myy11;
 
-void ExecuteBattleSharkFrame(void)
+static void execute_bshark(void)
 {
    /*------[Mouse Hack]-------*/
 
@@ -621,7 +577,7 @@ static void render_z_system_sprites(int pri)
    }
 }
 
-void DrawBattleShark(void)
+static void DrawBattleShark(void)
 {
    int x,y;
 
@@ -742,4 +698,24 @@ A00004 == 0001: Port access   (A00000-A00003)
 - Maybe they just left some old code in the rom.
 
 */
+
+static struct VIDEO_INFO video_bshark =
+{
+   DrawBattleShark,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+   taitoz_gfxdecodeinfo
+};
+static struct DIR_INFO dir_bshark[] =
+{
+   { "battle_shark", },
+   { "bshark", },
+   { NULL, },
+};
+GME( bshark, "Battle Shark", TAITO, 1989, GAME_SHOOT,
+	.romsw = romsw_bshark,
+	.board = "C34",
+);
 

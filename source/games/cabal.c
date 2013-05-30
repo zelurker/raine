@@ -5,21 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "cabal.h"
 #include "taitosnd.h"
 #include "2151intf.h"
 #include "smp16bit.h"
 #include "sasound.h"		// sample support routines
 #include "savegame.h"
 
-static struct DIR_INFO cabal_dirs[] =
-{
-   { "cabal", },
-   { "cabalbl", },
-   { NULL, },
-};
 
-static struct ROM_INFO cabal_roms[] =
+static struct ROM_INFO rom_cabalbl[] =
 {
 /*
    { "cabal_01.bin", 0x00010000, 0x55c44764, 0, 0, 0, },
@@ -54,7 +47,7 @@ static struct ROM_INFO cabal_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO cabal_inputs[] =
+static struct INPUT_INFO input_cabalbl[] =
 {
    INP0( COIN1, 0x005404, 0x06 ),
 
@@ -125,21 +118,13 @@ static struct DSW_DATA dsw_data_cabal_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO cabal_dsw[] =
+static struct DSW_INFO dsw_cabalbl[] =
 {
    { 0x005410, 0xFF, dsw_data_cabal_0 },
    { 0x005411, 0xFF, dsw_data_cabal_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO cabal_video =
-{
-   DrawCabal,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
 static struct SMP16_ROM smp16_romlist_chip_a[16];	// Fill in later
 
@@ -162,33 +147,13 @@ static struct YM2151interface ym2151_interface =
    { NULL } //z80_irq_handler }
 };
 
-static struct SOUND_INFO cabal_sound[] =
+static struct SOUND_INFO sound_cabalbl[] =
 {
    { SOUND_YM2151J, &ym2151_interface,    },
    { SOUND_SMP16,   &smp16_interface,     },
    { 0,             NULL,                 },
 };
 
-GAME( cabal ,
-   cabal_dirs,
-   cabal_roms,
-   cabal_inputs,
-   cabal_dsw,
-   NULL,
-
-   LoadCabal,
-   ClearCabal,
-   &cabal_video,
-   ExecuteCabalFrame,
-   "cabalbl",
-   "Cabal (bootleg)",
-   "カバール",
-   COMPANY_ID_TAD,
-   NULL,
-   1988,
-   cabal_sound,
-   GAME_SHOOT
-);
 
 static int sport=0;
 static int sp_status=0xFF;
@@ -243,7 +208,7 @@ UINT8 CabalSoundReadZ80(UINT16 offset)
    return(ta);
 }
 
-void CabalSoundWriteZ80(UINT16 offset, UINT8 data)
+static void CabalSoundWriteZ80(UINT16 offset, UINT8 data)
 {
    switch(offset&15){
       case 0x00:
@@ -260,7 +225,7 @@ void CabalSoundWriteZ80(UINT16 offset, UINT8 data)
    }
 }
 
-void LoadCabal(void)
+static void load_cabalbl(void)
 {
    int ta,tb,tc;
 
@@ -568,19 +533,10 @@ void LoadCabal(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearCabal(void)
-{
-   /*#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x040000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x210000,0);
-#endif*/
-}
-
-void ExecuteCabalFrame(void)
+static void execute_cabalbl(void)
 {
    static int coin_toggle;
 
@@ -613,7 +569,7 @@ void ExecuteCabalFrame(void)
    cpu_int_nmi(CPU_Z80_0);
 }
 
-void DrawCabal(void)
+static void DrawCabal(void)
 {
    int x,y,x16,y16;
    int zz,zzzz,ta;
@@ -700,3 +656,21 @@ void DrawCabal(void)
 5 |xxxxxxxx| X Pos
 
 */
+static struct VIDEO_INFO video_cabalbl =
+{
+   DrawCabal,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_cabalbl[] =
+{
+   { "cabal", },
+   { "cabalbl", },
+   { NULL, },
+};
+GME( cabalbl, "Cabal (bootleg)", TAD, 1988, GAME_SHOOT,
+	.long_name_jpn = "カバール",
+);
+

@@ -1,3 +1,7 @@
+#define DRV_DEF_INPUT f3_system_inputs_6_button
+#define DRV_DEF_DSW NULL
+#define DRV_DEF_EXEC ExecuteF3SystemFrameB
+#define DRV_DEF_SOUND f3_sound
 /******************************************************************************/
 /*                                                                            */
 /*                   KAISER KNUCKLE (C) 1994 TAITO CORPORATION                */
@@ -6,20 +10,12 @@
 
 #include "gameinc.h"
 #include "f3system.h"
-#include "kaiserkn.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO kaiser_knuckle_dirs[] =
-{
-   { "kaiser_knuckle", },
-   { "kaiserkn", },
-   { NULL, },
-};
-
-static struct ROM_INFO kaiser_knuckle_roms[] =
+static struct ROM_INFO rom_kaiserkn[] =
 {
    {   "d84-01.rom", 0x00200000, 0x9ad22149, 0, 0, 0, },
    {   "d84-02.rom", 0x00200000, 0x9e1827e4, 0, 0, 0, },
@@ -59,51 +55,13 @@ static struct ROMSW_DATA romsw_data_kaiser_knuckle_0[] =
    { NULL,                              0    },
 };
 
-static struct ROMSW_INFO kaiser_knuckle_romsw[] =
+static struct ROMSW_INFO romsw_kaiserkn[] =
 {
    { 0x1FFFFF, 0x03, romsw_data_kaiser_knuckle_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO kaiser_knuckle_video =
-{
-   DrawKaiserKnuckle,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
-
-GAME( kaiser_knuckle ,
-   kaiser_knuckle_dirs,
-   kaiser_knuckle_roms,
-   f3_system_inputs_6_button,
-   NULL,
-   kaiser_knuckle_romsw,
-
-   LoadKaiserKnuckle,
-   ClearKaiserKnuckle,
-   &kaiser_knuckle_video,
-   ExecuteF3SystemFrameB,
-   "kaiserkn",
-   "Kaiser Knuckle",
-   "カイザーナックル",
-   COMPANY_ID_TAITO,
-   "D84",
-   1994,
-   f3_sound,
-   GAME_BEAT
-);
-
-static struct DIR_INFO kaiser_knuckle_alt_dirs[] =
-{
-   { "dankuga", },
-   { ROMOF("kaiserkn"), },
-   { CLONEOF("kaiserkn"), },
-   { NULL, },
-};
-
-static struct ROM_INFO kaiser_knuckle_alt_roms[] =
+static struct ROM_INFO rom_dankuga[] =
 {
    {   "d84-01.rom", 0x00200000, 0x9ad22149, 0, 0, 0, },
    {   "d84-02.rom", 0x00200000, 0x9e1827e4, 0, 0, 0, },
@@ -143,32 +101,11 @@ static struct ROMSW_DATA romsw_data_kaiser_knuckle_alt_0[] =
    { NULL,                              0    },
 };
 
-static struct ROMSW_INFO kaiser_knuckle_alt_romsw[] =
+static struct ROMSW_INFO romsw_dankuga[] =
 {
    { 0x1FFFFF, 0x01, romsw_data_kaiser_knuckle_alt_0 },
    { 0,        0,    NULL },
 };
-
-GAME( kaiser_knuckle_alt ,
-   kaiser_knuckle_alt_dirs,
-   kaiser_knuckle_alt_roms,
-   f3_system_inputs_6_button,
-   NULL,
-   kaiser_knuckle_alt_romsw,
-
-   LoadKaiserKnuckle,
-   ClearKaiserKnuckle,
-   &kaiser_knuckle_video,
-   ExecuteF3SystemFrameB,
-   "dankuga",
-   "Dankuga",
-   "カイザーナックル (alternate)",
-   COMPANY_ID_TAITO,
-   "D84",
-   1994,
-   f3_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -197,7 +134,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadKaiserKnuckle(void)
+static void load_kaiserkn(void)
 {
    int ta,tb,tc;
 
@@ -511,16 +448,7 @@ void LoadKaiserKnuckle(void)
    setup_sound_68000();
 }
 
-void ClearKaiserKnuckle(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x200000,0);
-#endif
-}
-
-void DrawKaiserKnuckle(void)
+static void DrawKaiserKnuckle(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -669,3 +597,37 @@ void DrawKaiserKnuckle(void)
       f3video_render_fg0_r180();
    }
 }
+static struct VIDEO_INFO video_kaiserkn =
+{
+   DrawKaiserKnuckle,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_kaiserkn[] =
+{
+   { "kaiser_knuckle", },
+   { "kaiserkn", },
+   { NULL, },
+};
+GAME( kaiserkn, "Kaiser Knuckle", TAITO, 1994, GAME_BEAT,
+	.romsw = romsw_kaiserkn,
+	.video = &video_kaiserkn,
+	.long_name_jpn = "カイザーナックル",
+	.board = "D84",
+);
+static struct DIR_INFO dir_dankuga[] =
+{
+   { "dankuga", },
+   { ROMOF("kaiserkn"), },
+   { CLONEOF("kaiserkn"), },
+   { NULL, },
+};
+CLNE( dankuga,kaiserkn, "Dankuga", TAITO, 1994, GAME_BEAT,
+	.romsw = romsw_dankuga,
+	.video = &video_kaiserkn,
+	.long_name_jpn = "カイザーナックル (alternate)",
+	.board = "D84",
+);
+

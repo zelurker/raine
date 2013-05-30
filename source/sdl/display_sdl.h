@@ -29,7 +29,7 @@ extern int prefered_yuv_format;
 extern int overlays_workarounds;
 #endif
 extern UINT32 screen_flags; // flags of the game screen, before gui adjustement
-extern const SDL_VideoInfo *video_info;
+extern const SDL_VideoInfo *video;
 
 void resize();
 int lock_surface(SDL_Surface *s);

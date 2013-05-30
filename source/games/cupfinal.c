@@ -5,24 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "cupfinal.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO taito_cup_final_dirs[] =
-{
-   { "taito_cup_final", },
-   { "cupfinal", },
-   { "cup_final", },
-   { ROMOF("scfinals"), },
-   { CLONEOF("scfinals"), },
-   { NULL, },
-};
 
-static struct ROM_INFO taito_cup_final_roms[] =
+static struct ROM_INFO rom_cupfinal[] =
 {
    {   "d49-01", 0x00200000, 0x1dc89f1c, 0, 0, 0, },
    {   "d49-02", 0x00200000, 0x1e4c374f, 0, 0, 0, },
@@ -52,51 +42,16 @@ static struct ROMSW_DATA romsw_data_taito_cup_final_0[] =
    { NULL,                                0    },
 };
 
-static struct ROMSW_INFO taito_cup_final_romsw[] =
+static struct ROMSW_INFO romsw_cupfinal[] =
 {
    { 0x07FFFF, 0x03, romsw_data_taito_cup_final_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO taito_cup_final_video =
-{
-   draw_taito_cup_final,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( taito_cup_final ,
-   taito_cup_final_dirs,
-   taito_cup_final_roms,
-   f3_system_inputs_4_player,
-   NULL,
-   taito_cup_final_romsw,
 
-   load_taito_cup_final,
-   clear_taito_cup_final,
-   &taito_cup_final_video,
-   ExecuteF3SystemFrameB,
-   "cupfinal",
-   "Taito Cup Final",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D49",
-   1992,
-   f3_sound,
-   GAME_SPORTS | GAME_PARTIALLY_WORKING
-);
 
-static struct DIR_INFO super_cup_final_dirs[] =
-{
-   { "super_cup_final", },
-   { "scupfinl", },
-   { "scfinals", },
-   { NULL, },
-};
-
-static struct ROM_INFO super_cup_final_roms[] =
+static struct ROM_INFO rom_scfinals[] =
 {
    {   "d49-01", 0x00200000, 0x1dc89f1c, 0, 0, 0, },
    {   "d49-02", 0x00200000, 0x1e4c374f, 0, 0, 0, },
@@ -126,32 +81,12 @@ static struct ROMSW_DATA romsw_data_super_cup_final_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO super_cup_final_romsw[] =
+static struct ROMSW_INFO romsw_scfinals[] =
 {
    { 0x07FFFF, 0x03, romsw_data_super_cup_final_0 },
    { 0,        0,    NULL },
 };
 
-GAME( super_cup_final ,
-   super_cup_final_dirs,
-   super_cup_final_roms,
-   f3_system_inputs_4_player,
-   NULL,
-   super_cup_final_romsw,
-
-   load_super_cup_final,
-   clear_taito_cup_final,
-   &taito_cup_final_video,
-   ExecuteF3SystemFrame,
-   "scfinals",
-   "Super Cup Final",
-   NULL,
-   COMPANY_ID_TAITO,
-   "D68",
-   1993,
-   f3_sound,
-   GAME_SPORTS | GAME_PARTIALLY_WORKING
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -454,17 +389,17 @@ static void load_actual(int romset)
    setup_sound_68000();
 }
 
-void load_taito_cup_final(void)
+static void load_cupfinal(void)
 {
    load_actual(0);
 }
 
-void load_super_cup_final(void)
+static void load_scfinals(void)
 {
    load_actual(1);
 }
 
-void clear_taito_cup_final(void)
+static void clear_taito_cup_final(void)
 {
    save_eeprom();
 
@@ -474,7 +409,7 @@ void clear_taito_cup_final(void)
    #endif
 }
 
-void draw_taito_cup_final(void)
+static void draw_taito_cup_final(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -623,3 +558,46 @@ void draw_taito_cup_final(void)
       f3video_render_fg0_r180();
    }
 }
+static struct VIDEO_INFO video_scfinals =
+{
+   draw_taito_cup_final,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_scfinals[] =
+{
+   { "super_cup_final", },
+   { "scupfinl", },
+   { "scfinals", },
+   { NULL, },
+};
+GAME( scfinals, "Super Cup Final", TAITO, 1993, GAME_SPORTS | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs_4_player,
+	.romsw = romsw_scfinals,
+	.clear = clear_taito_cup_final,
+	.video = &video_scfinals,
+	.exec = ExecuteF3SystemFrame,
+	.board = "D68",
+	.sound = f3_sound,
+);
+static struct DIR_INFO dir_cupfinal[] =
+{
+   { "taito_cup_final", },
+   { "cupfinal", },
+   { "cup_final", },
+   { ROMOF("scfinals"), },
+   { CLONEOF("scfinals"), },
+   { NULL, },
+};
+GAME( cupfinal, "Taito Cup Final", TAITO, 1992, GAME_SPORTS | GAME_PARTIALLY_WORKING,
+	.input = f3_system_inputs_4_player,
+	.romsw = romsw_cupfinal,
+	.clear = clear_taito_cup_final,
+	.video = &video_scfinals,
+	.exec = ExecuteF3SystemFrameB,
+	.board = "D49",
+	.sound = f3_sound,
+);
+

@@ -148,11 +148,11 @@ static void load_game_proc()
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function
 
-    if(display_cfg.auto_mode_change) { // && switch_res(current_game->video_info))){
-      switch_res(current_game->video_info);
+    if(display_cfg.auto_mode_change) { // && switch_res(current_game->video))){
+      switch_res(current_game->video);
     } else {
       print_debug("no resolution switching wanted\n");
-      if (current_game->video_info->flags & VIDEO_NEEDS_8BPP)
+      if (current_game->video->flags & VIDEO_NEEDS_8BPP)
 	bestbpp = 8;
       update_stretch();
     } 
@@ -170,7 +170,7 @@ static void load_game_proc()
 			init_inputs();
       init_dsw();
       init_romsw();
-      init_sound_list();
+      init_sound();
     }
 
 }
@@ -320,7 +320,7 @@ class TMain_menu : public TMenu
       case 1: // game options
         return current_game != NULL;
       case 2: // Region
-        return current_game != NULL && current_game->romsw_list != NULL;
+        return current_game != NULL && current_game->romsw != NULL;
       case 3: // cheats
         return current_game != NULL && (CheatCount > 0
 #ifdef HAS_CONSOLE
@@ -329,7 +329,7 @@ class TMain_menu : public TMenu
 	    );
 #ifndef NEO
       case 4: // dsw
-        return current_game != NULL && current_game->dsw_list != NULL;
+        return current_game != NULL && current_game->dsw != NULL;
 #endif
       default:
 	return 1;
@@ -343,7 +343,7 @@ static void do_main_menu() {
   TMain_menu *main_menu = new TMain_menu("Main menu",main_items);
   int old_region;
   // init romsw
-  if (current_game && current_game->romsw_list) {
+  if (current_game && current_game->romsw) {
     main_items[2].values_list_size = LanguageSw.Count;
     main_items[2].value_int = &region_code;
     old_region = region_code = GetLanguageSwitch();
@@ -354,7 +354,7 @@ static void do_main_menu() {
   }
 
   main_menu->execute();
-  if (current_game && current_game->romsw_list && old_region != region_code)
+  if (current_game && current_game->romsw && old_region != region_code)
       reset_game_hardware();
   delete main_menu;
 }
@@ -451,7 +451,7 @@ void StartGUI(void)
        }
 
        if(current_game && display_cfg.auto_mode_change) { 
-	   switch_res(current_game->video_info);
+	   switch_res(current_game->video);
 	   if (bestw) {
 	       display_cfg.screen_x = bestw;
 	       display_cfg.screen_y = besth;

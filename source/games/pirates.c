@@ -1,3 +1,4 @@
+#define DRV_DEF_DSW NULL
 /**
  Pirates (c)1994 NIX
  Genix (c)1994 NIX
@@ -20,14 +21,8 @@
 #include "savegame.h" // load_eeprom
 #include "decode.h"
 
-static struct DIR_INFO pirates_dirs[] =
-{
-   { "pirates", },
-   { "nix_pirates", },
-   { NULL, },
-};
 
-static struct ROM_INFO pirates_roms[] =
+static struct ROM_INFO rom_pirates[] =
 {
 	/* 68000 Code (encrypted) */
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
@@ -48,14 +43,8 @@ static struct ROM_INFO pirates_roms[] =
 };
 
 
-static struct DIR_INFO genix_dirs[] =
-{
-   { "genix", },
-   { "genix_family", },
-   { NULL, },
-};
 
-static struct ROM_INFO genix_roms[] =
+static struct ROM_INFO rom_genix[] =
 {
 	/* 68000 Code (encrypted) */
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
@@ -100,7 +89,7 @@ static  void pirates_out_w(UINT32 offset, UINT8 data)
   /* bit 7 used (function unknown) */
 }
 
-static struct INPUT_INFO pirates_inputs[] =
+static struct INPUT_INFO input_genix[] =
 {
    INP0( P1_UP, 0x000000, 0x01 ),
    INP0( P1_DOWN, 0x000000, 0x02 ),
@@ -136,7 +125,7 @@ static struct OKIM6295interface m6295_interface =
    { 220 }, // volume - still unused
 };
 
-static struct SOUND_INFO pirates_sound[] =
+static struct SOUND_INFO sound_genix[] =
 {
    { SOUND_M6295,   &m6295_interface,     },
    { 0,             NULL,                 },
@@ -307,7 +296,7 @@ static UINT16 pirates_system_readword(UINT32 offset)
           (pirates_system_readbyte(offset+1) << 0);
 }
 
-void loadpirates_common(void)
+static void loadpirates_common(void)
 {
   InitPaletteMap(pirates_palette_ram, 0x200, 0x10, 0x8000);
   set_colour_mapper(&col_map_xrrr_rrgg_gggb_bbbb);
@@ -333,7 +322,7 @@ void loadpirates_common(void)
   AddReadWord(0x000000, 0x0FFFFF, NULL, ROM);                 			// 68000 ROM
   AddReadWord(0x100000, 0x10FFFF, NULL, pirates_main_ram);                // 68000 RAM
 
-  // AddReadWord(0x300000, 0x300001, pirates_inputs_readword, NULL );        // inputs
+  // AddReadWord(0x300000, 0x300001, input_genix_readword, NULL );        // inputs
   AddReadWord(0x400000, 0x400001, pirates_system_readword, NULL );        // system
 
   AddReadWord(0x500000, 0x5007FF, NULL, pirates_sprite_ram);                 // 68000 RAM
@@ -382,7 +371,7 @@ static UINT16 genix_prot_word_r(UINT32 offset)
           (genix_prot_byte_r(offset+1) << 0);
 }
 
-void Loadpirates(void)
+static void load_genix(void)
 {
   RAMSize = 0x10000 + 0x800 + 0x4000 + 0x8000;
   if(!(RAM=AllocateMem(RAMSize))) return;
@@ -421,20 +410,14 @@ void Loadpirates(void)
   init_tile_cache();
 }
 
-
-void Clearpirates(void)
-{
-   save_debug("ROM.bin",ROM,get_region_size(REGION_ROM1),1);
-}
-
-void ExecutepiratesFrame(void)
+static void execute_genix(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(17,60));  // should be 16mhz...
    cpu_interrupt(CPU_68K_0, 1);
 }
 
 static UINT16 other[65536];
-void Drawpirates(void)
+static void Drawpirates(void)
 {
 
   //	const struct GfxElement *gfx = Machine->gfx[1];
@@ -570,7 +553,9 @@ void Drawpirates(void)
   }
 }
 
-static struct VIDEO_INFO pirates_video =
+
+
+static struct VIDEO_INFO video_genix =
 {
    Drawpirates,
    288,
@@ -580,45 +565,22 @@ static struct VIDEO_INFO pirates_video =
    VIDEO_ROTATABLE,
    pirates_gfx
 };
-
-GAME( pirates ,
-   pirates_dirs,
-   pirates_roms,
-   pirates_inputs,
-   NULL,
-   NULL,
-
-   Loadpirates,
-   Clearpirates,
-   &pirates_video,
-   ExecutepiratesFrame,
-   "pirates",
-   "Pirates",
-   "É[ÉçÉ]Å[Éì",
-   COMPANY_ID_COMAD, // Should be NIX
-   NULL,
-   1994,
-   pirates_sound,
-   GAME_SHOOT
+static struct DIR_INFO dir_genix[] =
+{
+   { "genix", },
+   { "genix_family", },
+   { NULL, },
+};
+GME( genix, "Genix Family", NIX, 1994, GAME_SHOOT,
+	.long_name_jpn = "É[ÉçÉ]Å[Éì",
+);
+static struct DIR_INFO dir_pirates[] =
+{
+   { "pirates", },
+   { "nix_pirates", },
+   { NULL, },
+};
+CLNE( pirates, genix, "Pirates", NIX, 1994, GAME_SHOOT,
+	.long_name_jpn = "É[ÉçÉ]Å[Éì",
 );
 
-GAME( genix ,
-   genix_dirs,
-   genix_roms,
-   pirates_inputs,
-   NULL,
-   NULL,
-
-   Loadpirates,
-   Clearpirates,
-   &pirates_video,
-   ExecutepiratesFrame,
-   "genix",
-   "Genix Family",
-   "É[ÉçÉ]Å[Éì",
-   COMPANY_ID_COMAD, // Should be NIX
-   NULL,
-   1994,
-   pirates_sound,
-   GAME_SHOOT
-);

@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                      RAMBO 3 (C) 1990 TAITO CORPORATION                    */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "rambo3.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
@@ -23,14 +23,8 @@ Monday 22nd May 1989
 
 */
 
-static struct DIR_INFO rambo_3_dirs[] =
-{
-   { "rambo_3", },
-   { "rambo3", },
-   { NULL, },
-};
 
-static struct ROM_INFO rambo_3_roms[] =
+static struct ROM_INFO rom_rambo3[] =
 {
    {    "r3-00.rom", 0x00010000, 0xdf7a6ed6, 0, 0, 0, },
    {    "r3-0e.rom", 0x00010000, 0x3efa4177, 0, 0, 0, },
@@ -60,7 +54,7 @@ static struct ROM_INFO rambo_3_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_INFO rambo_3_dsw[] =
+static struct DSW_INFO dsw_rambo3[] =
 {
    { 0x000000, 0xFF, dsw_data_default_0 },
    { 0x000002, 0xFF, dsw_data_default_1 },
@@ -75,43 +69,15 @@ static struct ROMSW_DATA romsw_data_rambo_3_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO rambo_3_romsw[] =
+static struct ROMSW_INFO romsw_rambo3[] =
 {
    { 0x100FFFF, 0x03, romsw_data_rambo_3_0 },
    { 0,        0,    NULL },
 };
 
-GAME( rambo_3 ,
-   rambo_3_dirs,
-   rambo_3_roms,
-   b_system_inputs,
-   rambo_3_dsw,
-   rambo_3_romsw,
 
-   LoadRambo3,
-   ClearRambo3,
-   &b_system_r180_video,
-   ExecuteRambo3Frame,
-   "rambo3",
-   "Rambo 3",
-   "ÉâÉìÉ{Å[ÇR",
-   COMPANY_ID_TAITO,
-   "B93",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO rambo_3_alternate_dirs[] =
-{
-   { "rambo_3_alternate", },
-   { "rambo3a", },
-   { ROMOF("rambo3"), },
-   { CLONEOF("rambo3"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rambo_3_alternate_roms[] =
+static struct ROM_INFO rom_rambo3a[] =
 {
    { "ramb3-01.bin", 0x00080000, 0xc55fcf54, 0, 0, 0, },
    { "ramb3-02.bin", 0x00080000, 0x9dd014c6, 0, 0, 0, },
@@ -126,7 +92,7 @@ static struct ROM_INFO rambo_3_alternate_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct INPUT_INFO rambo_3_alternate_inputs[] =
+static struct INPUT_INFO input_rambo3a[] =
 {
    INP1( COIN1, 0x000006, 0x10 ),
    INP1( COIN2, 0x000006, 0x20 ),
@@ -183,7 +149,7 @@ static struct DSW_DATA dsw_data_rambo_3_alternate_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rambo_3_alternate_dsw[] =
+static struct DSW_INFO dsw_rambo3a[] =
 {
    { 0x000000, 0xFF, dsw_data_rambo_3_alternate_0 },
    { 0x000002, 0xFF, dsw_data_default_1 },
@@ -200,32 +166,12 @@ static struct ROMSW_DATA romsw_data_rambo_3_alternate_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO rambo_3_alternate_romsw[] =
+static struct ROMSW_INFO romsw_rambo3a[] =
 {
    { 0x03FFFF, 0x02, romsw_data_rambo_3_alternate_0 },
    { 0,        0,    NULL },
 };
 
-GAME( rambo_3_alternate ,
-   rambo_3_alternate_dirs,
-   rambo_3_alternate_roms,
-   rambo_3_alternate_inputs,
-   rambo_3_alternate_dsw,
-   rambo_3_alternate_romsw,
-
-   LoadRambo3_alternate,
-   ClearRambo3,
-   &b_system_r180_video,
-   ExecuteRambo3Frame,
-   "rambo3a",
-   "Rambo 3 (release 2)",
-   "ÉâÉìÉ{Å[ÇR (release 2)",
-   COMPANY_ID_TAITO,
-   "B93",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_INPUT;
 static UINT8 *RAM_VIDEO;
@@ -238,7 +184,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadRambo3(void)
+static void load_rambo3(void)
 {
    int ta,tb,tc;
 
@@ -519,7 +465,7 @@ void LoadRambo3(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void LoadRambo3_alternate(void)
+static void load_rambo3a(void)
 {
    int ta,tb,tc;
 
@@ -765,18 +711,7 @@ void LoadRambo3_alternate(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearRambo3(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      save_debug("GFX.bin",GFX,0x400000,0);
-   #endif
-}
-
-void ExecuteRambo3Frame(void)
+static void execute_rambo3(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -788,3 +723,36 @@ void ExecuteRambo3Frame(void)
    cpu_interrupt(CPU_68K_0, 6);
    Taito2610_Frame();			// Z80 and YM2610
 }
+static struct DIR_INFO dir_rambo3[] =
+{
+   { "rambo_3", },
+   { "rambo3", },
+   { NULL, },
+};
+GAME( rambo3, "Rambo 3", TAITO, 1989, GAME_SHOOT,
+	.input = b_system_inputs,
+	.dsw = dsw_rambo3,
+	.romsw = romsw_rambo3,
+	.video = &b_system_r180_video,
+	.exec = execute_rambo3,
+	.long_name_jpn = "ÉâÉìÉ{Å[ÇR",
+	.board = "B93",
+);
+static struct DIR_INFO dir_rambo3a[] =
+{
+   { "rambo_3_alternate", },
+   { "rambo3a", },
+   { ROMOF("rambo3"), },
+   { CLONEOF("rambo3"), },
+   { NULL, },
+};
+GAME( rambo3a, "Rambo 3 (release 2)", TAITO, 1989, GAME_SHOOT,
+	.input = input_rambo3a,
+	.dsw = dsw_rambo3a,
+	.romsw = romsw_rambo3a,
+	.video = &b_system_r180_video,
+	.exec = execute_rambo3,
+	.long_name_jpn = "ÉâÉìÉ{Å[ÇR (release 2)",
+	.board = "B93",
+);
+

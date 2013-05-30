@@ -1144,8 +1144,10 @@ void AddTaitoSoundBanking(UINT8 *romsrc, UINT32 romsize)
 
 void RemoveTaitoSoundBanking(void)
 {
-   FreeMem(ROMBANK);
-   ROMBANK=NULL;
+    if (ROMBANK) {
+	FreeMem(ROMBANK);
+	ROMBANK=NULL;
+    }
 }
 
 // TaitoSoundSetBank():

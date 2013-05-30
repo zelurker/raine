@@ -19,16 +19,15 @@
 
 */
 
-
+#define DRV_DEF_SOUND taito_ym2610_sound
 #include "gameinc.h"
-#include "fchamp.h"
 #include "tc006vcu.h"
 #include "tc200obj.h"
 #include "f3system.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 
-static struct INPUT_INFO football_champ_inputs[] =
+static struct INPUT_INFO input_footchmp[] =
 {
    INP0( COIN1, 0x032004, 0x01 ),
    INP0( COIN2, 0x032004, 0x02 ),
@@ -184,17 +183,8 @@ static struct DSW_DATA dsw_data_hat_trick_hero_1[] =
    { NULL,                    0,   }, // Bit1 is unused, was bit8 for the "Euro" in Footchamp
 };
 
-static struct VIDEO_INFO football_champ_video =
-{
-   draw_football_champ,
-   320,
-   224,
-   48,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct DSW_INFO euro_champ_92_dsw[] =
+static struct DSW_INFO dsw_euroch92[] =
 {
    { 0x032000, 0xFF, dsw_data_football_champ_0 },	// Needs cionage from Footbal Champ
    { 0x032002, 0xFF, dsw_data_euro_champ_92_1 },	// but DSW1 bit8 is unused
@@ -202,17 +192,8 @@ static struct DSW_INFO euro_champ_92_dsw[] =
 };
 
 
-static struct DIR_INFO euro_champ_92_dirs[] =
-{
-   { "euro_champ_92", },
-   { "euroch92", },
-   { "footchmp", },
-   { ROMOF("footchmp"), },
-   { CLONEOF("footchmp"), },
-   { NULL, },
-};
 
-static struct ROM_INFO euro_champ_92_roms[] =
+static struct ROM_INFO rom_euroch92[] =
 {
    {  "ec92_19.rom", 0x00100000, 0x219141a5, 0, 0, 0, },
    {       "c80-02.10", 0x00100000, 0x060a8b61, 0, 0, 0, },
@@ -227,36 +208,9 @@ static struct ROM_INFO euro_champ_92_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( euro_champ_92 ,
-   euro_champ_92_dirs,
-   euro_champ_92_roms,
-   football_champ_inputs,
-   euro_champ_92_dsw,
-   NULL,
 
-   load_euro_champ_92,
-   clear_football_champ,
-   &football_champ_video,
-   execute_football_champ_frame,
-   "euroch92",
-   "Euro Champ 92",
-   "ハットトリックヒーロー９３",
-   COMPANY_ID_TAITO,
-   "C80",
-   1992,
-   taito_ym2610_sound,
-   GAME_SPORTS
-);
 
-static struct DIR_INFO football_champ_dirs[] =
-{
-   { "football_champ", },
-   { "fchamp", },
-   { "footchmp", },
-   { NULL, },
-};
-
-static struct ROM_INFO football_champ_roms[] =
+static struct ROM_INFO rom_footchmp[] =
 {
    {       "c80-01.9", 0x00100000, 0xf43782e6, 0, 0, 0, },
    {       "c80-02.10", 0x00100000, 0x060a8b61, 0, 0, 0, },
@@ -271,7 +225,7 @@ static struct ROM_INFO football_champ_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_INFO football_champ_dsw[] =
+static struct DSW_INFO dsw_footchmp[] =
 {
    { 0x032000, 0xFF, dsw_data_football_champ_0 },
    { 0x032002, 0xFF, dsw_data_football_champ_1 },
@@ -279,38 +233,9 @@ static struct DSW_INFO football_champ_dsw[] =
 };
 
 
-GAME( football_champ ,
-   football_champ_dirs,
-   football_champ_roms,
-   football_champ_inputs,
-   football_champ_dsw,
-   NULL,
 
-   load_football_champ,
-   clear_football_champ,
-   &football_champ_video,
-   execute_football_champ_frame,
-   "footchmp",
-   "Football Champ",
-   "ハットトリックヒーロー",
-   COMPANY_ID_TAITO,
-   "C80",
-   1990,
-   taito_ym2610_sound,
-   GAME_SPORTS
-);
 
-static struct DIR_INFO hat_trick_hero_dirs[] =
-{
-   { "hat_trick_hero", },
-   { "hthero", },
-   { "fchamp", },
-   { ROMOF("footchmp"), },
-   { CLONEOF("footchmp"), },
-   { NULL, },
-};
-
-static struct ROM_INFO hat_trick_hero_roms[] =
+static struct ROM_INFO rom_hthero[] =
 {
    {       "c80-01.9", 0x00100000, 0xf43782e6, 0, 0, 0, },
    {       "c80-02.10", 0x00100000, 0x060a8b61, 0, 0, 0, },
@@ -325,7 +250,7 @@ static struct ROM_INFO hat_trick_hero_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_INFO hat_trick_hero_dsw[] =
+static struct DSW_INFO dsw_hthero[] =
 {
    { 0x032000, 0xFF, dsw_data_hat_trick_hero_0 },
    { 0x032002, 0xFF, dsw_data_hat_trick_hero_1 },
@@ -333,26 +258,6 @@ static struct DSW_INFO hat_trick_hero_dsw[] =
 };
 
 
-GAME( hat_trick_hero ,
-   hat_trick_hero_dirs,
-   hat_trick_hero_roms,
-   football_champ_inputs,
-   hat_trick_hero_dsw,
-   NULL,
-
-   load_hat_trick_hero,
-   clear_football_champ,
-   &football_champ_video,
-   execute_football_champ_frame,
-   "hthero",
-   "Hat Trick Hero",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C80",
-   1990,
-   taito_ym2610_sound,
-   GAME_SPORTS
-);
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
 static UINT8 *RAM_BG2;
@@ -392,10 +297,17 @@ static void BadWriteWord(UINT32 address, UINT16 data)
 #endif
 }
 
-static void LoadActual(void)
+static void load_footchmp(void)
 {
    int ta,tb;
    UINT8 *TMP;
+
+   if (is_current_game("euroch92"))
+       romset = 0;
+   else if (is_current_game("footchmp"))
+       romset = 1;
+   else if (is_current_game("hthero"))
+       romset = 2;
 
    if(!(GFX=AllocateMem(0x600000))) return;
    if(!(TMP=AllocateMem(0x100000))) return;			// TEMP BUFFER
@@ -532,7 +444,7 @@ static void LoadActual(void)
    RAM_SCR4=RAM+0x34018;
 
    SCR0_XOFS=0x0020;
-   SCR1_XOFS=0x001C;  
+   SCR1_XOFS=0x001C;
    SCR2_XOFS=0x0018;
    SCR3_XOFS=0x0014;
    SCR4_XOFS=0x0022;
@@ -639,38 +551,10 @@ static void LoadActual(void)
    AddWriteWord(0x000000, 0xFFFFFF, BadWriteWord, NULL);		// <bad writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void load_euro_champ_92(void)
-{
-   romset=0;
-   LoadActual();
-}
-
-void load_football_champ(void)
-{
-   romset=1;
-   LoadActual();
-}
-
-void load_hat_trick_hero(void)
-{
-   romset=2;
-   LoadActual();
-}
-
-void clear_football_champ(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-#endif
-}
-
-void execute_football_champ_frame(void)
+static void execute_footchmp(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -685,7 +569,7 @@ void execute_football_champ_frame(void)
 }
 
 
-void draw_football_champ(void)
+static void draw_football_champ(void)
 {
    ClearPaletteMap();
 
@@ -711,3 +595,51 @@ void draw_football_champ(void)
 
    tc0006vcu_render_fg0();
 }
+static struct VIDEO_INFO video_footchmp =
+{
+   draw_football_champ,
+   320,
+   224,
+   48,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_euroch92[] =
+{
+   { "euro_champ_92", },
+   { "euroch92", },
+   { "footchmp", },
+   { ROMOF("footchmp"), },
+   { CLONEOF("footchmp"), },
+   { NULL, },
+};
+CLNE( euroch92, footchmp, "Euro Champ 92", TAITO, 1992, GAME_SPORTS,
+	.dsw = dsw_euroch92,
+	.long_name_jpn = "ハットトリックヒーロー９３",
+	.board = "C80",
+);
+static struct DIR_INFO dir_hthero[] =
+{
+   { "hat_trick_hero", },
+   { "hthero", },
+   { "fchamp", },
+   { ROMOF("footchmp"), },
+   { CLONEOF("footchmp"), },
+   { NULL, },
+};
+CLNE( hthero, footchmp, "Hat Trick Hero", TAITO, 1990, GAME_SPORTS,
+	.dsw = dsw_hthero,
+	.board = "C80",
+);
+static struct DIR_INFO dir_footchmp[] =
+{
+   { "football_champ", },
+   { "fchamp", },
+   { "footchmp", },
+   { NULL, },
+};
+GME( footchmp, "Football Champ", TAITO, 1990, GAME_SPORTS,
+	.long_name_jpn = "ハットトリックヒーロー",
+	.board = "C80",
+);
+

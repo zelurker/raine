@@ -683,8 +683,8 @@ static void build_game_list()
 	(sstatus==1 && (game->flags & GAME_PARTIALLY_WORKING)) ||
 	(sstatus==2 && (game->flags & GAME_NOT_WORKING)))) {
 
-      if (!ssound || (ssound==1 && game->sound_list) || // sound
-	  (ssound==2 && !game->sound_list)) { // no sound
+      if (!ssound || (ssound==1 && game->sound) || // sound
+	  (ssound==2 && !game->sound)) { // no sound
 
 	if (!syear || (syear==1 && (game->year >= 1990)) ||
 	    (syear==2 && (game->year < 1990))) {
@@ -993,7 +993,7 @@ const char *listbox_getter(int index, int *list_size)
 	       pad(game_company_name(my_game_list[ta]->company_id),20));
        sprintf(game_select[GAME_DATA+1].dp,
 	       ipad(my_game_list[ta]->year,20));
-       if (my_game_list[ta]->sound_list)
+       if (my_game_list[ta]->sound)
 	 sprintf(game_select[GAME_DATA+2].dp,"Yes  ");
        else
 	 sprintf(game_select[GAME_DATA+2].dp,"No   ");
@@ -1030,7 +1030,7 @@ const char *listbox_getter(int index, int *list_size)
 	       pad("---",20));
        sprintf(game_select[GAME_DATA+1].dp,
 	       pad("---",20));
-       if (my_game_list[ta]->sound_list)
+       if (my_game_list[ta]->sound)
 	 sprintf(game_select[GAME_DATA+2].dp,"--- ");
        else
 	 sprintf(game_select[GAME_DATA+2].dp,"--- ");
@@ -1141,8 +1141,8 @@ int load_game_proc(int msg, DIALOG *d, int c)
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function
 
-    if(wants_switch_res) // && switch_res(current_game->video_info))){
-      switch_res(current_game->video_info);
+    if(wants_switch_res) // && switch_res(current_game->video))){
+      switch_res(current_game->video);
     else {
       print_debug("no resolution switching wanted\n");
       update_stretch();
@@ -1181,13 +1181,13 @@ int load_game_proc(int msg, DIALOG *d, int c)
 
     if (!(load_error & LOAD_FATAL_ERROR)) {
 
-      if(wants_switch_res) // && switch_res(current_game->video_info))){
-	switch_res(current_game->video_info); // this time for the bezel...
+      if(wants_switch_res) // && switch_res(current_game->video))){
+	switch_res(current_game->video); // this time for the bezel...
 
       init_inputs();
       init_dsw();
       init_romsw();
-      init_sound_list();
+      init_sound();
     }
 
     if(!raine_cfg.no_gui) {	// GUI MODE
@@ -1323,7 +1323,7 @@ void do_load_game(void)
        *cheats = 0;
      }
 
-     if (current_game->romsw_list) {
+     if (current_game->romsw) {
        main_dialog[idx].proc = language_proc;
        strcpy(rom_region,"&Region");
      } else {
@@ -1331,7 +1331,7 @@ void do_load_game(void)
        strcpy(rom_region,"");
      }
 
-     if (current_game->dsw_list) {
+     if (current_game->dsw) {
        main_dialog[idx+1].proc = dsw_select_proc;
        strcpy(dips,"&Dips");
      } else {
@@ -1349,8 +1349,8 @@ void do_load_game(void)
      load_problem[2].dp = load_debug;
      raine_do_dialog(load_problem,-1);
 
-     if (current_game->clear_game)
-       current_game->clear_game();
+     if (current_game->clear)
+       current_game->clear();
 
      ClearDefault();
 
@@ -2357,7 +2357,7 @@ void MakeGUIBack(void)
 
    if(raine_cfg.hide)
    {
-      clear(screen);
+      clear_bitmap(screen);
    }
 
 }

@@ -144,7 +144,7 @@ static void do_capture() {
     if (!capture_mode) return;
     int bpp = display_cfg.bpp;
     display_cfg.bpp = 8;
-    current_game->video_info->flags |= VIDEO_NEEDS_8BPP;
+    current_game->video->flags |= VIDEO_NEEDS_8BPP;
     SetupScreenBitmap();
     set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     one_palette = 1;
@@ -193,7 +193,7 @@ static void do_capture() {
     } while (current_bank < assigned_banks);
     if (capture_mode < 2) one_palette = 0;
     display_cfg.bpp = bpp;
-    current_game->video_info->flags &= ~VIDEO_NEEDS_8BPP;
+    current_game->video->flags &= ~VIDEO_NEEDS_8BPP;
     SetupScreenBitmap();
     set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
 }
@@ -809,9 +809,9 @@ static void restore_bank() {
     neocd_lp.bytes_loaded = 0;
   }
   if (neocd_lp.function) 
-    current_game->exec_frame = &loading_progress_function;
+    current_game->exec = &loading_progress_function;
   else
-    current_game->exec_frame = &execute_neocd;
+    current_game->exec = &execute_neocd;
   // These last 2 should have been saved but I guess I can just reset them...
   last_cdda_cmd = 0;
   last_cdda_track = 0;
@@ -1361,7 +1361,7 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 			}
 			memcpy(pal,pal2,sizeof(SDL_Color)*16);
 			// clear screen with transparent color : color 0.
-			clear_game_screen(0);
+			clear_screen(0);
 		    }
 		} 
 		if (sx+offx < 0) {
@@ -1586,10 +1586,10 @@ static void clear_screen() {
 	    16,
 	    map);
     switch(display_cfg.bpp) {
-    case 8: clear_game_screen(map[15]); break;
+    case 8: clear_screen(map[15]); break;
     case 15:
-    case 16: clear_game_screen(ReadWord(&map[15*2])); break;
-    case 32: clear_game_screen(ReadLong(&map[15*4])); break;
+    case 16: clear_screen(ReadWord(&map[15*2])); break;
+    case 32: clear_screen(ReadLong(&map[15*4])); break;
     }
 }
 
@@ -1756,7 +1756,7 @@ void postprocess_ipl() {
 	  int fps = raine_cfg.show_fps_mode;
 	  raine_cfg.show_fps_mode = 0;
 	  clear_ingame_message_list();
-	  clear_game_screen(0);
+	  clear_screen(0);
 	  DrawNormal();
 	  raine_cfg.show_fps_mode = fps;
   }
@@ -2534,7 +2534,7 @@ void loading_progress_function() {
       case 1:
 	if (!neogeo_cdrom_process_ipl(&neocd_lp)) {
 	  ErrorMsg("Error: Error while processing IPL.TXT.\n");
-	  current_game->exec_frame = &execute_neocd;
+	  current_game->exec = &execute_neocd;
 	  ClearDefault();
 	  return;
 	}

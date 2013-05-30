@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND f3_sound
 /******************************************************************************/
 /*                                                                            */
 /*                SPACE INVADERS 95 (C) 1995 TAITO CORPORATION                */
@@ -5,22 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "spcinv95.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO space_invaders_95_dirs[] =
-{
-   { "space_invaders_95", },
-   { "spcinv95", },
-   { "akkanvdr", },
-   { NULL, },
-};
 
-static struct ROM_INFO space_invaders_95_roms[] =
+static struct ROM_INFO rom_akkanvdr[] =
 {
    {       "e06.05", 0x00200000, 0xf370ff15, 0, 0, 0, },
   LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
@@ -48,41 +41,13 @@ static struct ROMSW_DATA romsw_data_space_invaders_95_0[] =
    { NULL,                                0    },
 };
 
-static struct ROMSW_INFO space_invaders_95_romsw[] =
+static struct ROMSW_INFO romsw_akkanvdr[] =
 {
    { 0x07FFFF, 0x02, romsw_data_space_invaders_95_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO space_invaders_95_video =
-{
-   DrawSpcInv95,
-   224,
-   320,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( space_invaders_95 ,
-   space_invaders_95_dirs,
-   space_invaders_95_roms,
-   f3_system_inputs,
-   NULL,
-   space_invaders_95_romsw,
-
-   LoadSpcInv95,
-   ClearSpcInv95,
-   &space_invaders_95_video,
-   ExecuteF3SystemFrame,
-   "akkanvdr",
-   "Akkanvader",
-   "めっかうべーだー",
-   COMPANY_ID_TAITO,
-   "E06",
-   1995,
-   f3_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -110,7 +75,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadSpcInv95(void)
+static void load_akkanvdr(void)
 {
    int ta,tb,tc;
 
@@ -316,7 +281,7 @@ void LoadSpcInv95(void)
    setup_sound_68000();
 }
 
-void ClearSpcInv95(void)
+static void ClearSpcInv95(void)
 {
    save_eeprom();
 
@@ -326,7 +291,7 @@ void ClearSpcInv95(void)
    #endif
 }
 
-void DrawSpcInv95(void)
+static void DrawSpcInv95(void)
 {
    int x16,y16;
    int x,y,zz,zzz,zzzz;
@@ -485,3 +450,28 @@ void DrawSpcInv95(void)
       f3video_render_fg0_r270();
    }
 }
+static struct VIDEO_INFO video_akkanvdr =
+{
+   DrawSpcInv95,
+   224,
+   320,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_akkanvdr[] =
+{
+   { "space_invaders_95", },
+   { "spcinv95", },
+   { "akkanvdr", },
+   { NULL, },
+};
+GAME( akkanvdr, "Akkanvader", TAITO, 1995, GAME_SHOOT,
+	.input = f3_system_inputs,
+	.romsw = romsw_akkanvdr,
+	.clear = ClearSpcInv95,
+	.video = &video_akkanvdr,
+	.exec = ExecuteF3SystemFrame,
+	.long_name_jpn = "めっかうべーだー",
+	.board = "E06",
+);
+

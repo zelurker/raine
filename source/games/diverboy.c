@@ -25,14 +25,8 @@ static UINT8 *RAM_PALETTE;
 static UINT8 *RAM_UNKNOWN1;
 static UINT8 *RAM_UNKNOWN2;
 
-static struct DIR_INFO diverboy_dirs[] =
-{
-   { "diverboy", },
-   { "diver_boy", },
-   { NULL, },
-};
 
-static struct ROM_INFO diverboy_roms[] =
+static struct ROM_INFO rom_diverboy[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,     0x020000,
             "db_01.bin",  0x6aa11366, "db_02.bin",  0x45f8a673),
@@ -55,7 +49,7 @@ static struct ROM_INFO diverboy_roms[] =
 
 /* if the address (3rd param) here is <0x100 the input is stored in input_buffer..*/
 
-static struct INPUT_INFO diverboy_inputs[] =
+static struct INPUT_INFO input_diverboy[] =
 {
 	INP0( P1_UP, 0x0001, 0x01 ),
 	INP0( P1_DOWN, 0x0001, 0x02 ),
@@ -110,7 +104,7 @@ static struct DSW_DATA dsw_data_diverboy_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO diverboy_dsw[] =
+static struct DSW_INFO dsw_diverboy[] =
 {
   { 0x2, 0xb8, dsw_data_diverboy_1 },
   { 0, 0, NULL }
@@ -126,7 +120,7 @@ static struct OKIM6295interface okim6295_interface =
 	{ 240 }
 };
 
-static struct SOUND_INFO diverboy_sound[] =
+static struct SOUND_INFO sound_diverboy[] =
 {
    { SOUND_M6295,    &okim6295_interface   },
    { 0,              NULL,                 },
@@ -256,16 +250,6 @@ static struct GFX_LIST diverboy_gfx[] =
 };
 
 
-static struct VIDEO_INFO diverboy_video =
-{
-   draw_diverboy,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   diverboy_gfx,
-};
 
 /* System (execute) */
 
@@ -275,7 +259,7 @@ static struct VIDEO_INFO diverboy_video =
 
 #define FRAME CPU_FRAME_MHz(16,60)
 
-void execute_diverboy_frame(void)
+static void execute_diverboy(void)
 {
 	input_buffer[8] &= 0xf7;
 	cpu_execute_cycles(CPU_68K_0, FRAME); // Main 68000
@@ -292,7 +276,7 @@ void execute_diverboy_frame(void)
 
 
 
-void diverboy_sound_w(UINT32 address, UINT32 data)
+static void sound_diverboy_w(UINT32 address, UINT32 data)
 {
  	latch = data;
 // 	printf("diversound %02x\n",data);
@@ -302,7 +286,7 @@ void diverboy_sound_w(UINT32 address, UINT32 data)
 
 }
 
-void diverboy_sample_bank_w ( UINT32 address, UINT32 data)
+static void diverboy_sample_bank_w ( UINT32 address, UINT32 data)
 {
 	data &=0x03;
 	/* saves memory, but not as fast as if we expanded on startup */
@@ -311,7 +295,7 @@ void diverboy_sample_bank_w ( UINT32 address, UINT32 data)
 }
 
 
-void load_diverboy(void)
+static void load_diverboy(void)
 {
 	/* In RAINE we allocate one big block of RAM to contain all emulated RAM then set some pointers to it
 
@@ -435,7 +419,7 @@ void load_diverboy(void)
 	/* Set Up the RAM, we allow all types of READ/WRITE operations */
 	AddRWBW     (0x040000, 0x04ffff,     NULL,              RAM_MAIN        );   // MAIN RAM
 	AddRWBW     (0x080000, 0x083fff,     NULL,              RAM_SPRITE      );   // SPRITE RAM
-	AddWriteWord(0x100000, 0x100001,    diverboy_sound_w,   NULL            );   // sound
+	AddWriteWord(0x100000, 0x100001,    sound_diverboy_w,   NULL            );   // sound
 	AddRWBW     (0x140000, 0x1407ff,     NULL,              RAM_PALETTE     );   // PALETTE RAM
 	AddReadByte (0x180000, 0x18000f,    NULL, input_buffer            );   // Inputs
 	AddReadWord (0x180000, 0x18000f,    NULL, input_buffer            );   // Inputs
@@ -469,23 +453,21 @@ void load_diverboy(void)
 }
 
 
-GAME( diverboy ,
-   diverboy_dirs,
-   diverboy_roms,
-   diverboy_inputs,
-   diverboy_dsw,
-   NULL,
+static struct VIDEO_INFO video_diverboy =
+{
+   draw_diverboy,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   diverboy_gfx,
+};
+static struct DIR_INFO dir_diverboy[] =
+{
+   { "diverboy", },
+   { "diver_boy", },
+   { NULL, },
+};
+GME( diverboy, "Diverboy", ELECTRONIC_DEVICES, 1995, GAME_MISC);
 
-   load_diverboy,
-   NULL,
-   &diverboy_video,
-   execute_diverboy_frame,
-   "diverboy",
-   "Diverboy",
-   "Electronic Devices",
-   COMPANY_ID_TOAPLAN, /* Electronic Devices! */
-   NULL,
-   1995,
-   diverboy_sound,
-   GAME_MISC
-);

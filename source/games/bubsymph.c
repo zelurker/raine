@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "bubsymph.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -16,14 +15,8 @@
    BUBBLE BOBBLE 2
  *******************/
 
-static struct DIR_INFO bubble_bobble_2_dirs[] =
-{
-   { "bubble_bobble_2", },
-   { "bublbob2", },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_bobble_2_roms[] =
+static struct ROM_INFO rom_bublbob2[] =
 {
    {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
    {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
@@ -52,50 +45,14 @@ static struct ROMSW_DATA romsw_data_bubble_bobble_2[] =
 };
 */
 
-static struct VIDEO_INFO bubble_symphony_video =
-{
-   DrawBubbleSymphony,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( bubble_bobble_2 ,
-   bubble_bobble_2_dirs,
-   bubble_bobble_2_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadBubbleSymphony,
-   ClearBubbleSymphony,
-   &bubble_symphony_video,
-   ExecuteF3SystemFrame_NoInt5,
-   "bublbob2",
-   "Bubble Bobble 2",
-   "バブルシンフォニー",
-   COMPANY_ID_TAITO,
-   "D90",
-   1994,
-   f3_sound,
-   GAME_PLATFORM
-);
 
 /*******************
    BUBBLE SYMPHONY
  *******************/
 
-static struct DIR_INFO bubble_symphony_dirs[] =
-{
-   { "bubble_symphony", },
-   { "bubsymph", },
-   { ROMOF("bublbob2"), },
-   { CLONEOF("bublbob2"), },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_symphony_roms[] =
+static struct ROM_INFO rom_bubsymph[] =
 {
    {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
    {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
@@ -114,41 +71,13 @@ static struct ROM_INFO bubble_symphony_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( bubble_symphony ,
-   bubble_symphony_dirs,
-   bubble_symphony_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadBubbleSymphony,
-   ClearBubbleSymphony,
-   &bubble_symphony_video,
-   ExecuteF3SystemFrame_NoInt5,
-   "bubsymph",
-   "Bubble Symphony",
-   "バブルシンフォニー",
-   COMPANY_ID_TAITO,
-   "D90",
-   1994,
-   f3_sound,
-   GAME_PLATFORM
-);
 
 /**********************
    BUBBLE SYMPHONY US
  **********************/
 
-static struct DIR_INFO bubble_symphony_us_dirs[] =
-{
-   { "bubble_symphony_us", },
-   { "bubsympu", },
-   { ROMOF("bublbob2"), },
-   { CLONEOF("bublbob2"), },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_symphony_us_roms[] =
+static struct ROM_INFO rom_bubsympu[] =
 {
    {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
    {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
@@ -167,26 +96,6 @@ static struct ROM_INFO bubble_symphony_us_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( bubble_symphony_us ,
-   bubble_symphony_us_dirs,
-   bubble_symphony_us_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadBubbleSymphony,
-   ClearBubbleSymphony,
-   &bubble_symphony_video,
-   ExecuteF3SystemFrame_NoInt5,
-   "bubsympu",
-   "Bubble Symphony (US)",
-   "バブルシンフォニー (US)",
-   COMPANY_ID_TAITO,
-   "D90",
-   1994,
-   f3_sound,
-   GAME_PLATFORM
-);
 
 
 static UINT8 *RAM_BG0;
@@ -219,7 +128,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadBubbleSymphony(void)
+static void load_bublbob2(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -406,18 +315,7 @@ void LoadBubbleSymphony(void)
    setup_sound_68000();
 }
 
-void ClearBubbleSymphony(void)
-{
-   save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-   #endif
-}
-
-void DrawBubbleSymphony(void)
+static void DrawBubbleSymphony(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *MAP;
@@ -602,3 +500,60 @@ void DrawBubbleSymphony(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_bublbob2 =
+{
+   DrawBubbleSymphony,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_bublbob2[] =
+{
+   { "bubble_bobble_2", },
+   { "bublbob2", },
+   { NULL, },
+};
+#define load_bubsymph load_bublbob2
+#define load_bubsympu load_bublbob2
+GAME( bublbob2, "Bubble Bobble 2", TAITO, 1994, GAME_PLATFORM,
+	.input = f3_system_inputs,
+	.video = &video_bublbob2,
+	.exec = ExecuteF3SystemFrame_NoInt5,
+	.long_name_jpn = "バブルシンフォニー",
+	.board = "D90",
+	.sound = f3_sound,
+);
+static struct DIR_INFO dir_bubsymph[] =
+{
+   { "bubble_symphony", },
+   { "bubsymph", },
+   { ROMOF("bublbob2"), },
+   { CLONEOF("bublbob2"), },
+   { NULL, },
+};
+GAME( bubsymph, "Bubble Symphony", TAITO, 1994, GAME_PLATFORM,
+	.input = f3_system_inputs,
+	.video = &video_bublbob2,
+	.exec = ExecuteF3SystemFrame_NoInt5,
+	.long_name_jpn = "バブルシンフォニー",
+	.board = "D90",
+	.sound = f3_sound,
+);
+static struct DIR_INFO dir_bubsympu[] =
+{
+   { "bubble_symphony_us", },
+   { "bubsympu", },
+   { ROMOF("bublbob2"), },
+   { CLONEOF("bublbob2"), },
+   { NULL, },
+};
+GAME( bubsympu, "Bubble Symphony (US)", TAITO, 1994, GAME_PLATFORM,
+	.input = f3_system_inputs,
+	.video = &video_bublbob2,
+	.exec = ExecuteF3SystemFrame_NoInt5,
+	.long_name_jpn = "バブルシンフォニー (US)",
+	.board = "D90",
+	.sound = f3_sound,
+);
+

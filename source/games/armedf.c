@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND nichi_ym3812_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    ARMED FORMATION (C) 1987 NICHIBUTSU                     */
@@ -9,14 +10,8 @@
 #include "blit.h" // clear_game_screen
 #include "profile.h" // fps
 
-static struct DIR_INFO armed_formation_dirs[] =
-{
-   { "armed_formation", },
-   { "armedf", },
-   { NULL, },
-};
 
-static struct ROM_INFO armedf_roms[] =
+static struct ROM_INFO rom_armedf[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x10000,
             "af_06.rom",  0xc5326603, "af_01.rom",  0x458e9542),
@@ -35,7 +30,7 @@ static struct ROM_INFO armedf_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO cclimbr2_roms[] =
+static struct ROM_INFO rom_cclimbr2[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x10000,
             "4.bin",  0x7922ea14, "1.bin",  0x2ac7ed67),
@@ -104,7 +99,7 @@ static GFX_LIST gfxdecodeinfo[] =
 	{ -1 } /* end of array */
 };
 
-static struct INPUT_INFO armed_formation_inputs[] =
+static struct INPUT_INFO input_armedf[] =
 {
    INP0( COIN1, 0x00C001, 0x04 ),
    INP0( COIN2, 0x00C001, 0x08 ),
@@ -131,7 +126,7 @@ static struct INPUT_INFO armed_formation_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO crazy_climber2_inputs[] =
+static struct INPUT_INFO input_cclimbr2[] =
 {
    INP0( COIN1, 0x018001, 0x04 ),
    INP0( COIN2, 0x018001, 0x08 ),
@@ -209,7 +204,7 @@ static struct DSW_DATA dsw_data_armed_formation_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO armed_formation_dsw[] =
+static struct DSW_INFO dsw_armedf[] =
 {
    { 0x00C004, 0xBF, dsw_data_armed_formation_0 },
    { 0x00C006, 0xCF, dsw_data_armed_formation_1 },
@@ -251,92 +246,25 @@ static struct DSW_DATA dsw_data_crazy_climber2_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO crazy_climber2_dsw[] =
+static struct DSW_INFO dsw_cclimbr2[] =
 {
    { 0x018004, 0xFF, dsw_data_crazy_climber2_0 },
    { 0x018006, 0xFF, dsw_data_crazy_climber2_1 },
    { 0,        0,    NULL,      },
 };
 
-static void LoadArmedF(void);
+static void load_armedf(void);
 static void DrawArmedF(void);
-static void ClearArmedF(void);
-static void ExecuteArmedFFrame(void);
+static void execute_armedf(void);
 
-static struct VIDEO_INFO armed_formation_video =
-{
-   DrawArmedF,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo
-};
 
-static struct VIDEO_INFO cclimber2_video =
-{
-   DrawArmedF,
-   288,
-   224,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo
-};
 
-void ExecuteCC2Frame(void);
+static void execute_cclimbr2(void);
 
-GAME( armed_formation ,
-   armed_formation_dirs,
-   armedf_roms,
-   armed_formation_inputs,
-   armed_formation_dsw,
-   NULL,
 
-   LoadArmedF,
-   ClearArmedF,
-   &armed_formation_video,
-   ExecuteArmedFFrame,
-   "armedf",
-   "Armed Formation",
-   "アームド・フォーメーション",
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1988,
-   nichi_ym3812_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO crazy_climber_2_dirs[] =
-{
-   { "crazy_climber_2", },
-   { "cclimbr2", },
-   { NULL, },
-};
+static void load_cclimbr2(void);
 
-static void load_crazy_climber_2(void);
-
-GAME( crazy_climber_2 ,
-   crazy_climber_2_dirs,
-   cclimbr2_roms,
-   crazy_climber2_inputs,
-   crazy_climber2_dsw,
-   NULL,
-
-   load_crazy_climber_2,
-   ClearArmedF,
-   &cclimber2_video,
-   ExecuteCC2Frame,
-   "cclimbr2",
-   "Crazy Climber 2",
-   NULL,
-   COMPANY_ID_NICHIBUTSU,
-   NULL,
-   1988,
-   nichi_ym3812_sound,
-   GAME_MISC
-);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG1;
@@ -371,12 +299,12 @@ static void finish_conf() {
        GFX[j] ^= 0xffffffff;
    }
    AddInitMemory();	// Set Starscream mem pointers...
-   border = current_game->video_info->border_size;
-   resx = current_game->video_info->screen_x;
-   resy = current_game->video_info->screen_y;
+   border = current_game->video->border_size;
+   resx = current_game->video->screen_x;
+   resy = current_game->video->screen_y;
 }
 
-static void LoadArmedF(void)
+static void load_armedf(void)
 {
    x_res = 320; sp_off = 16;
    fps = 57;
@@ -478,7 +406,7 @@ static void LoadArmedF(void)
    finish_conf();
 }
 
-static void load_crazy_climber_2(void)
+static void load_cclimbr2(void)
 {
    x_res = 288; sp_off = 0;
 
@@ -573,16 +501,7 @@ static void load_crazy_climber_2(void)
    finish_conf();
 }
 
-static void ClearArmedF(void)
-{
-   RemoveNichibutsuYM3526();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("RAM.bin",RAM,0x010000,1);
-   #endif
-}
-
-static void ExecuteArmedFFrame(void)
+static void execute_armedf(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 1);
@@ -593,7 +512,7 @@ static void ExecuteArmedFFrame(void)
      make_dipswitch_bytes();		// fix dsw
 }
 
-void ExecuteCC2Frame(void)
+static void execute_cclimbr2(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);
@@ -831,3 +750,40 @@ static void DrawArmedF(void)
 
    draw_sprites(0);
 }
+static struct VIDEO_INFO video_armedf =
+{
+   DrawArmedF,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo
+};
+static struct VIDEO_INFO video_cclimbr2 =
+{
+   DrawArmedF,
+   288,
+   224,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo
+};
+static struct DIR_INFO dir_armedf[] =
+{
+   { "armed_formation", },
+   { "armedf", },
+   { NULL, },
+};
+GME( armedf, "Armed Formation", NICHIBUTSU, 1988, GAME_SHOOT,
+	.long_name_jpn = "アームド・フォーメーション",
+);
+static struct DIR_INFO dir_cclimbr2[] =
+{
+   { "crazy_climber_2", },
+   { "cclimbr2", },
+   { NULL, },
+};
+GME( cclimbr2, "Crazy Climber 2", NICHIBUTSU, 1988, GAME_MISC);
+

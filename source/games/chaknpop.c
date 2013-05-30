@@ -16,21 +16,14 @@ Todo:
 */
 
 #include "gameinc.h"
-#include "chaknpop.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 #include "2203intf.h"
 #include "decode.h"
 #include "blit.h"
 
-static struct DIR_INFO chack_n_pop_dirs[] =
-{
-   { "chack_n_pop", },
-   { "chaknpop", },
-   { NULL, },
-};
 
-static struct ROM_INFO chack_n_pop_roms[] =
+static struct ROM_INFO rom_chaknpop[] =
 {
    {    "a04-01.28", 0x00002000, 0x386fe1c8, 0, 0, 0, },
    {    "a04-02.27", 0x00002000, 0x5562a6a7, 0, 0, 0, },
@@ -44,7 +37,7 @@ static struct ROM_INFO chack_n_pop_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO chack_n_pop_inputs[] =
+static struct INPUT_INFO input_chaknpop[] =
 {
    INP0( COIN1, 0x010000, 0x40 ),
    INP0( TILT, 0x010000, 0x80 ),
@@ -91,20 +84,12 @@ static struct DSW_DATA dsw_data_chack_n_pop_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO chack_n_pop_dsw[] =
+static struct DSW_INFO dsw_chaknpop[] =
 {
    { 0x010002, 0xFF, dsw_data_chack_n_pop_0 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO chack_n_pop_video =
-{
-   DrawChacknpop,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -118,32 +103,12 @@ static struct YM2203interface ym2203_interface =
   { NULL, NULL }
 };
 
-static struct SOUND_INFO chack_n_pop_sound[] =
+static struct SOUND_INFO sound_chaknpop[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( chack_n_pop ,
-   chack_n_pop_dirs,
-   chack_n_pop_roms,
-   chack_n_pop_inputs,
-   chack_n_pop_dsw,
-   NULL,
-
-   LoadChacknpop,
-   ClearChacknpop,
-   &chack_n_pop_video,
-   ExecuteChacknpopFrame,
-   "chaknpop",
-   "Chack'n Pop",
-   NULL,
-   COMPANY_ID_TAITO,
-   "A04",
-   1983,
-   chack_n_pop_sound,
-   GAME_PLATFORM | GAME_NOT_WORKING
-);
 
 static UINT16 ReadIO(UINT16 offset)
 {
@@ -186,7 +151,7 @@ static void WriteIO(UINT16 offset, UINT8 data)
    }
 }
 
-void LoadChacknpop(void)
+static void load_chaknpop(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -330,22 +295,14 @@ void LoadChacknpop(void)
 
 }
 
-void ClearChacknpop(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, 0x10000, 0);
-      save_debug("GFX.BIN", GFX, 0x20000, 0);
-#endif
-}
-
-void ExecuteChacknpopFrame(void)
+static void execute_chaknpop(void)
 {
    cpu_execute_cycles(CPU_Z80_0, 4000000/60);        // Main Z80
       print_debug("Z80PC0:%04x\n",z80pc);
    cpu_interrupt(CPU_Z80_0, 0x38);
 }
 
-void DrawChacknpop(void)
+static void DrawChacknpop(void)
 {
    int x,y,zz,z,z2;
    UINT8 *BIT;
@@ -425,3 +382,21 @@ void DrawChacknpop(void)
    pal[7].g=0;
    pal[7].b=max;
 }
+static struct VIDEO_INFO video_chaknpop =
+{
+   DrawChacknpop,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP,
+};
+static struct DIR_INFO dir_chaknpop[] =
+{
+   { "chack_n_pop", },
+   { "chaknpop", },
+   { NULL, },
+};
+GME( chaknpop, "Chack'n Pop", TAITO, 1983, GAME_PLATFORM | GAME_NOT_WORKING,
+	.board = "A04",
+);
+

@@ -134,7 +134,7 @@ void render_texture(int linear) {
     glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
 	    GameScreen.xview,GameScreen.yview,0,GL_RGB,
 	    GL_UNSIGNED_SHORT_5_6_5_REV,
-	    sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
+	    sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
 
 
     glBegin(GL_TRIANGLE_STRIP);
@@ -161,7 +161,7 @@ void draw_opengl(int linear) {
 	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
 	glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
 		-(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
-	glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video_info->border_size*2*(1+GameScreen.xfull));
+	glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
     }
 }
 

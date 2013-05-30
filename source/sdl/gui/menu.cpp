@@ -467,7 +467,7 @@ void TMenu::setup_bg_layer(SDL_Surface *bitmap) {
   if (bitmap) {
     int border;
     if (GameBitmap && bitmap == get_surface_from_bmp(GameBitmap))
-      border = current_game->video_info->border_size;
+      border = current_game->video->border_size;
     else
       border = 0;
     double ratio;

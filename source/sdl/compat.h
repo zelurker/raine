@@ -39,8 +39,6 @@ void acquire_bitmap(BITMAP *bmp);
 void release_bitmap(BITMAP *bmp);
 
 void destroy_bitmap(struct BITMAP *bmp);
-// clear is normally useless... Hope so at least (if called after creation)
-#define clear(x)
 
 #define RGB SDL_Color
 
@@ -98,7 +96,7 @@ char *get_filename(char *f);
 void init_joys(); // Does nothing for now
 
 // GUI
-void StartGUI(); 
+void StartGUI();
 
 // Files
 int exists(char *filename);
@@ -110,7 +108,7 @@ void my_get_mouse_mickeys(int *mx, int *my);
 #define allegro_message printf
 
 #ifdef RAINE_DEBUG
-   #define ASSERT(condition)  if (!(condition)) { fprintf(stderr,"assertion failed file %s line %d\n",__FILE__, __LINE__); exit(1); } 
+   #define ASSERT(condition)  if (!(condition)) { fprintf(stderr,"assertion failed file %s line %d\n",__FILE__, __LINE__); exit(1); }
 #else
    #define ASSERT(condition)
 #endif

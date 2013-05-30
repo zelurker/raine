@@ -425,7 +425,7 @@ int about_game_proc(int msg, DIALOG *d, int c)
 
       */
 
-      if (game_info->sound_list) {
+      if (game_info->sound) {
          add_text(text_data,"Audio:\n");
 	 for( j = 0; j < SndMachine->control_max; j++ )
 	    add_text(text_data,"   %s\n",sound_chip_list[ SndMachine->init[j] ]);
@@ -448,7 +448,7 @@ int about_game_proc(int msg, DIALOG *d, int c)
 
       */
 
-      vid_info = game_info->video_info;
+      vid_info = game_info->video;
 
       add_text(text_data,"Video:\n   %d x %d (8bpp)", vid_info->screen_x, vid_info->screen_y);
 

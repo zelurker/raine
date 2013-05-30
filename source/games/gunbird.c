@@ -68,7 +68,7 @@ UINT16 z80_read8000b(UINT16 offset) {
   return z80_8200[offset];
 }
 
-static struct ROMSW_DATA romsw_btlkroad[] =
+static struct ROMSW_DATA romswd_btlkroad[] =
 {
   { "Psikyo (Japan)", 0xf},
   { "Psikyo (Honk Kong)",0xa},
@@ -79,13 +79,13 @@ static struct ROMSW_DATA romsw_btlkroad[] =
   { NULL,                    0    },
 };
 
-static struct ROMSW_INFO btlkroad_romsw[] =
+static struct ROMSW_INFO romsw_btlkroad[] =
 {
-   { 0xc00007, 0x0e, romsw_btlkroad },
+   { 0xc00007, 0x0e, romswd_btlkroad },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_DATA romsw_gunbird[] =
+static struct ROMSW_DATA romswd_gunbird[] =
 {
   { "World", 0xf},
   { "USA",0xe},
@@ -96,31 +96,26 @@ static struct ROMSW_DATA romsw_gunbird[] =
   { NULL,  0    },
 };
 
-static struct ROMSW_DATA romsw_sngkace[] =
+static struct ROMSW_DATA romswd_sngkace[] =
 {
   { "Korea (english text)", 0xd},
   { "Japan (default)",0xf},
   { NULL,                    0    },
 };
 
-static struct ROMSW_INFO gunbird_romsw[] =
+static struct ROMSW_INFO romsw_gunbird[] =
 {
-   { 0xc00007, 0x0f, romsw_gunbird },
+   { 0xc00007, 0x0f, romswd_gunbird },
    { 0,        0,    NULL },
 };
 
-#define s1945_romsw gunbird_romsw
-
-static struct ROMSW_INFO sngkace_romsw[] =
+static struct ROMSW_INFO romsw_sngkace[] =
 {
-   { 0xc00007, 0x0f, romsw_sngkace },
+   { 0xc00007, 0x0f, romswd_sngkace },
    { 0,        0,    NULL },
 };
 
-#define samuraia_romsw sngkace_romsw
-#define tengai_romsw sngkace_romsw
-
-static struct ROM_INFO gunbirdj_roms[] =
+static struct ROM_INFO rom_gunbirdj[] =
 {
   { "1-u46.bin", 0x040000, 0x474abd69 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "2-u39.bin", 0x040000, 0x3e3e661f , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -133,7 +128,7 @@ static struct ROM_INFO gunbirdj_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO gunbird_roms[] =
+static struct ROM_INFO rom_gunbird[] =
 {
   { "4-u46.bin", 0x040000, 0xb78ec99d, REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "5-u39.bin", 0x040000, 0x925f095d, REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -150,7 +145,7 @@ static struct ROM_INFO gunbird_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO gunbirdk_roms[] =
+static struct ROM_INFO rom_gunbirdk[] =
 {
   { "1k-u46.bin", 0x080000, 0x745cee52 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "2k-u39.bin", 0x080000, 0x669632fb , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -165,7 +160,7 @@ static struct ROM_INFO gunbirdk_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO btlkroad_roms[] =
+static struct ROM_INFO rom_btlkroad[] =
 {
   { "4-u46.bin", 0x040000, 0x8a7a28b4 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "5-u39.bin", 0x040000, 0x933561fa , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -183,7 +178,7 @@ static struct ROM_INFO btlkroad_roms[] =
 };
 
 
-static struct INPUT_INFO gunbird_inputs[] =
+static struct INPUT_INFO input_gunbird[] =
 {
    INP0( COIN1, 0x30003, 0x01 ),
    INP1( COIN2, 0x30003, 0x04 ),
@@ -213,10 +208,10 @@ static struct INPUT_INFO gunbird_inputs[] =
    END_INPUT
 };
 
-#define s1945_inputs gunbird_inputs
-#define tengai_inputs gunbird_inputs
+#define input_s1945 input_gunbird
+#define input_tengai input_gunbird
 
-static struct INPUT_INFO btlkroad_inputs[] =
+static struct INPUT_INFO input_btlkroad[] =
 {
    INP0( COIN1, 0x30003, 0x01 ),
    INP0( COIN2, 0x30003, 0x02 ),
@@ -311,19 +306,19 @@ static struct DSW_DATA dsw_data_gunbird_1[] =
 };
 
 
-static struct DSW_INFO gunbird_dsw[] =
+static struct DSW_INFO dsw_gunbird[] =
 {
    { 0x30004, 0xFF, dsw_data_gunbird_1 },
    { 0x30005, 0xFD, dsw_data_gunbird_0 },
    { 0,        0,    NULL,      },
 };
 
-#define btlkroad_dsw gunbird_dsw
-#define samuraia_dsw gunbird_dsw
-#define s1945_dsw gunbird_dsw
-#define tengai_dsw gunbird_dsw
+#define dsw_btlkroad dsw_gunbird
+#define dsw_samuraia dsw_gunbird
+#define dsw_s1945 dsw_gunbird
+#define dsw_tengai dsw_gunbird
 
-static struct VIDEO_INFO gunbird_video =
+static struct VIDEO_INFO video_gunbird =
 {
    DrawGunbird,
    320,
@@ -332,10 +327,10 @@ static struct VIDEO_INFO gunbird_video =
    VIDEO_ROTATE_270 | VIDEO_ROTATABLE
 };
 
-#define samuraia_video gunbird_video
-#define s1945_video gunbird_video
+#define video_samuraia video_gunbird
+#define video_s1945 video_gunbird
 
-static struct VIDEO_INFO btlkroad_video =
+static struct VIDEO_INFO video_btlkroad =
 {
    DrawGunbird,
    320,
@@ -345,7 +340,7 @@ static struct VIDEO_INFO btlkroad_video =
    VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE
 };
 
-#define tengai_video btlkroad_video
+#define video_tengai video_btlkroad
 
 #define clear_gunbird NULL
 #define clear_btlkroad clear_gunbird
@@ -392,56 +387,59 @@ static struct YMF278B_interface ymf278b_interface =
 	{ z80_irq_handler }
 };
 
-struct SOUND_INFO gunbird_sound[] =
+struct SOUND_INFO sound_gunbird[] =
 {
    { SOUND_YM2610,  &ym2610_interface,  },
    { 0,             NULL,               },
 };
 
-#define btlkroad_sound gunbird_sound
-#define samuraia_sound sngkace_sound
+#define sound_btlkroad sound_gunbird
+#define sound_samuraia sound_sngkace
 
-struct SOUND_INFO sngkace_sound[] =
+struct SOUND_INFO sound_sngkace[] =
 {
    { SOUND_YM2610,  &sngkace_ym2610_interface,  },
    { 0,             NULL,               },
 };
 
-struct SOUND_INFO s1945_sound[] =
+struct SOUND_INFO sound_s1945[] =
 {
    { SOUND_YMF278B,  &ymf278b_interface,  },
    { 0,             NULL,               },
 };
 
-#define tengai_sound s1945_sound
+#define sound_tengai sound_s1945
 
-GME_ROMSW( gunbird,
+GMEI( gunbird,
    "Gunbird",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1994,
-   GAME_SHOOT);
+   GAME_SHOOT,
+   .romsw = romsw_gunbird);
 
-CLONE( gunbirdj,
+CLNEI( gunbirdj,
        gunbird,
    "Gunbird (Japan)",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1994,
    GAME_SHOOT);
 
-CLONE_ROMSW( gunbirdk,
+CLNEI( gunbirdk,
        gunbird,
    "Gunbird (Korean version)",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1994,
-   GAME_SHOOT);
+   GAME_SHOOT,
+   .romsw = romsw_gunbird);
 
-GME_ROMSW( btlkroad,
+GMEI( btlkroad,
    "Battle K-Road (Japan)",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1994,
-   GAME_BEAT);
+   GAME_BEAT,
+   .romsw = romsw_btlkroad);
 
-static struct ROM_INFO sngkace_roms[] =
+static struct ROM_INFO rom_sngkace[] =
 {
   { "1-u127.bin", 0x040000, 0x6c45b2f8 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "2-u126.bin", 0x040000, 0x845a6760 , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -452,7 +450,7 @@ static struct ROM_INFO sngkace_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO samuraia_roms[] =
+static struct ROM_INFO rom_samuraia[] =
 {
   { "4-u127.bin", 0x040000, 0x8c9911ca , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "5-u126.bin", 0x040000, 0xd20c3ef0 , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -466,7 +464,7 @@ static struct ROM_INFO samuraia_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO s1945j_roms[] =
+static struct ROM_INFO rom_s1945j[] =
 {
   { "1-u40.bin", 0x040000, 0xc00eb012 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "2-u41.bin", 0x040000, 0x3f5a134b , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -483,7 +481,7 @@ static struct ROM_INFO s1945j_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO s1945_roms[] =
+static struct ROM_INFO rom_s1945[] =
 {
   { "2s.u40", 0x040000, 0x9b10062a , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "3s.u41", 0x040000, 0xf87e871a , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -500,7 +498,7 @@ static struct ROM_INFO s1945_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO tengai_roms[] =
+static struct ROM_INFO rom_tengai[] =
 {
   { "2-u40.bin", 0x080000, 0xab6fe58a , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
   { "3-u41.bin", 0x080000, 0x02e42e39 , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
@@ -519,7 +517,7 @@ static struct ROM_INFO tengai_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO samuraia_inputs[] =
+static struct INPUT_INFO input_samuraia[] =
 {
    INP0( COIN1, 0x30009, 0x01 ),
    INP0( COIN2, 0x30009, 0x02 ),
@@ -549,18 +547,20 @@ static struct INPUT_INFO samuraia_inputs[] =
    END_INPUT
 };
 
-GME_ROMSW( samuraia,
+GMEI( samuraia,
    "Samurai Aces",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1993,
-   GAME_SHOOT);
+   GAME_SHOOT,
+   .romsw = romsw_sngkace);
 
-CLONE_ROMSW( sngkace,
+CLNEI( sngkace,
    samuraia,
    "Sengoku Ace",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1993,
-   GAME_SHOOT);
+   GAME_SHOOT,
+   .romsw = romsw_sngkace);
 
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
@@ -1191,24 +1191,26 @@ void ExecuteFrame_nosound() {
   cpu_interrupt(CPU_M68020_0, 1);
 }
 
-GME_ROMSW( s1945,
+GMEI( s1945,
    "Strikers 1945 (World)",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1995,
-   GAME_SHOOT);
+   GAME_SHOOT,
+   .romsw = romsw_gunbird);
 
-CLONE_LOAD(s1945j,
+CLNEI(s1945j,
 	   s1945,
    "Strikers 1945 (Japan)",
-   COMPANY_ID_PSIKYO,
+   PSIKYO,
    1995,
    GAME_SHOOT);
 
-GME( tengai,
+GMEI( tengai,
        "Tengai/Sengoku Blade:Sengoku Ace II",
-       COMPANY_ID_PSIKYO,
+       PSIKYO,
        1996,
-       GAME_SHOOT);
+       GAME_SHOOT,
+       .romsw = romsw_sngkace);
 
 static void DrawSpritesP()
 {

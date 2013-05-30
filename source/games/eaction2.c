@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "eaction2.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -13,15 +12,6 @@
 #include "sasound.h"
 #include "emumain.h" // reset game hardware
 
-static struct DIR_INFO elevator_action_2_dirs[] =
-{
-   { "elevator_action_2", },
-   { "eaction2", },
-   { "elvact2u", },
-   { "elvactr", },
-   { "elevator_action_returns", },
-   { NULL, },
-};
 
 /* -----------------------------------------------------------------------------
    The old ROM set used by RAINE matches the new set exactly (taken from MAME).
@@ -81,7 +71,7 @@ ea2.b15                 e02-06.43    [odd 1/2]  61.010%     0x43320 onwards is F
 
    ----------------------------------------------------------------------------- */
 
-static struct ROM_INFO elevator_action_2_roms[] =
+static struct ROM_INFO rom_elvact2u[] =
 {
    {    "e02-12.20", 0x00080000, 0xea5f5a32, 0, 0, 0, },
    {    "e02-11.19", 0x00080000, 0xbcced8ff, 0, 0, 0, },
@@ -108,41 +98,13 @@ static struct ROMSW_DATA romsw_data_elevator_action_2_0[] =
    { NULL,                              0    },
 };
 
-static struct ROMSW_INFO elevator_action_2_romsw[] =
+static struct ROMSW_INFO romsw_elvact2u[] =
 {
    { 0x1FFFFF, 0x03, romsw_data_elevator_action_2_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO elevator_action_2_video =
-{
-   DrawEAction2,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( elevator_action_2 ,
-   elevator_action_2_dirs,
-   elevator_action_2_roms,
-   f3_system_inputs,
-   NULL,
-   elevator_action_2_romsw,
-
-   LoadEAction2,
-   ClearEAction2,
-   &elevator_action_2_video,
-   ExecuteF3SystemFrameB,
-   "elvact2u",
-   "Elevator Action 2",
-   "エレベーターアクションリターンズ",
-   COMPANY_ID_TAITO,
-   NULL,		// "D??"
-   1994,
-   f3_sound,
-   GAME_PLATFORM
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -170,7 +132,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadEAction2(void)
+static void load_elvact2u(void)
 {
    int ta,tb,tc;
 
@@ -380,7 +342,7 @@ void LoadEAction2(void)
    setup_sound_68000();
 }
 
-void ClearEAction2(void)
+static void ClearEAction2(void)
 {
    save_eeprom();
 
@@ -391,7 +353,7 @@ void ClearEAction2(void)
 #endif
 }
 
-void DrawEAction2(void)
+static void DrawEAction2(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -574,3 +536,31 @@ void DrawEAction2(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_elvact2u =
+{
+   DrawEAction2,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_elvact2u[] =
+{
+   { "elevator_action_2", },
+   { "eaction2", },
+   { "elvact2u", },
+   { "elvactr", },
+   { "elevator_action_returns", },
+   { NULL, },
+};
+GAME( elvact2u, "Elevator Action 2", TAITO, 1994, GAME_PLATFORM,
+	.input = f3_system_inputs,
+	.romsw = romsw_elvact2u,
+	.clear = ClearEAction2,
+	.video = &video_elvact2u,
+	.exec = ExecuteF3SystemFrameB,
+	.long_name_jpn = "エレベーターアクションリターンズ",
+	.board = NULL,		// "D??",
+	.sound = f3_sound,
+);
+

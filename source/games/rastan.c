@@ -5,8 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "rastan.h"
-#include "rainbow.h"
 #include "tc100scn.h"
 #include "tc002obj.h"
 #include "sasound.h"		// sample support routines
@@ -15,13 +13,8 @@
 #include "2151intf.h"
 #include "timer.h"
 
-static struct DIR_INFO rastan_dirs[] =
-{
-   { "rastan", },
-   { NULL, },
-};
 
-static struct ROM_INFO rastan_roms[] =
+static struct ROM_INFO rom_rastan[] =
 {
   LOAD8_16(  REGION_GFX1,  0x000000,  0x00020000,
              "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
@@ -42,7 +35,7 @@ static struct ROM_INFO rastan_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO rastan_inputs[] =
+static struct INPUT_INFO input_rastan[] =
 {
    INP1( COIN1, 0x01A006, 0x20 ),
    INP1( COIN2, 0x01A006, 0x40 ),
@@ -110,7 +103,7 @@ static struct DSW_DATA dsw_data_rastan_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rastan_dsw[] =
+static struct DSW_INFO dsw_rastan[] =
 {
    { 0x01A008, 0xFF, dsw_data_rastan_0 },
    { 0x01A00A, 0xFF, dsw_data_rastan_1 },
@@ -124,7 +117,7 @@ static struct ROMSW_DATA romsw_data_rastan_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO rastan_romsw[] =
+static struct ROMSW_INFO romsw_rastan[] =
 {
    { 0x05FFFF, 0x01, romsw_data_rastan_0 },
    { 0,        0,    NULL },
@@ -159,15 +152,6 @@ static struct GFX_LIST rastan_gfx[] =
    { 0,           NULL,               },
 };
 
-static struct VIDEO_INFO rastan_video =
-{
-   draw_rastan,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-   rastan_gfx,
-};
 
 static struct YM2151interface ym2151_interface =
 {
@@ -200,44 +184,16 @@ static struct MSM5205buffer_interface msm5205_interface =
    MSM5205_MONO,
 };
 
-static struct SOUND_INFO rastan_sound[] =
+static struct SOUND_INFO sound_rastan[] =
 {
    { SOUND_YM2151J, &ym2151_interface,  },
    { SOUND_MSM5205_BUFF, &msm5205_interface, },
    { 0,             NULL,               },
 };
 
-GAME( rastan ,
-   rastan_dirs,
-   rastan_roms,
-   rastan_inputs,
-   rastan_dsw,
-   rastan_romsw,
 
-   load_rastan,
-   clear_rastan,
-   &rastan_video,
-   execute_rastan_frame,
-   "rastan",
-   "Rastan",
-   "ラスタンサーガ",
-   COMPANY_ID_TAITO,
-   "B04",
-   1987,
-   rastan_sound,
-   GAME_BEAT | GAME_PLATFORM
-);
 
-static struct DIR_INFO rastan_saga_dirs[] =
-{
-   { "rastan_saga", },
-   { "rastsaga", },
-   { ROMOF("rastan"), },
-   { CLONEOF("rastan"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rastan_saga_roms[] =
+static struct ROM_INFO rom_rastsaga[] =
 {
   LOAD8_16(  REGION_GFX1,  0x000000,  0x00020000,
              "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
@@ -277,45 +233,16 @@ static struct DSW_DATA dsw_data_rastan_saga_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rastan_saga_dsw[] =
+static struct DSW_INFO dsw_rastsaga[] =
 {
    { 0x01A008, 0xFF, dsw_data_rastan_saga_0 },
    { 0x01A00A, 0xFF, dsw_data_rastan_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( rastan_saga ,
-   rastan_saga_dirs,
-   rastan_saga_roms,
-   rastan_inputs,
-   rastan_saga_dsw,
-   NULL, // rastan_saga_romsw,
 
-   load_rastan,
-   clear_rastan,
-   &rastan_video,
-   execute_rastan_frame,
-   "rastsaga",
-   "Rastan Saga",
-   "ラスタンサーガ Saga",
-   COMPANY_ID_TAITO,
-   "B04",
-   1987,
-   rastan_sound,
-   GAME_BEAT | GAME_PLATFORM
-);
 
-static struct DIR_INFO rastan_american_dirs[] =
-{
-   { "rastan_american", },
-   { "rastan_usa", },
-   { "rastanu", },
-   { ROMOF("rastan"), },
-   { CLONEOF("rastan"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rastan_american_roms[] =
+static struct ROM_INFO rom_rastanu[] =
 {
   LOAD8_16(  REGION_GFX1,  0x000000,  0x00020000,
              "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
@@ -336,38 +263,9 @@ static struct ROM_INFO rastan_american_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( rastan_american ,
-   rastan_american_dirs,
-   rastan_american_roms,
-   rastan_inputs,
-   rastan_dsw,
-   rastan_romsw,
 
-   load_rastan,
-   clear_rastan,
-   &rastan_video,
-   execute_rastan_frame,
-   "rastanu",
-   "Rastan American",
-   "ラスタンサーガ American",
-   COMPANY_ID_TAITO,
-   "B04",
-   1987,
-   rastan_sound,
-   GAME_BEAT | GAME_PLATFORM
-);
 
-static struct DIR_INFO rastan_american_alt_dirs[] =
-{
-   { "rastan_american_alt", },
-   { "rastan_usa_2", },
-   { "rastanu2", },
-   { ROMOF("rastan"), },
-   { CLONEOF("rastan"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rastan_american_alt_roms[] =
+static struct ROM_INFO rom_rastanu2[] =
 {
   LOAD8_16(  REGION_GFX1,  0x000000,  0x00020000,
              "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
@@ -388,34 +286,14 @@ static struct ROM_INFO rastan_american_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( rastan_american_alt ,
-   rastan_american_alt_dirs,
-   rastan_american_alt_roms,
-   rastan_inputs,
-   rastan_dsw,
-   rastan_romsw,
-
-   load_rastan,
-   clear_rastan,
-   &rastan_video,
-   execute_rastan_frame,
-   "rastanu2",
-   "Rastan American (alternate)",
-   "ラスタンサーガ American (alternate)",
-   COMPANY_ID_TAITO,
-   "B04",
-   1987,
-   rastan_sound,
-   GAME_BEAT | GAME_PLATFORM
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
 static UINT8 *RAM_OBJECT;
 
-void Rastan_M5205_W(UINT16 offset, UINT8 data);
+static void Rastan_M5205_W(UINT16 offset, UINT8 data);
 
-void load_rastan(void)
+static void load_rastan(void)
 {
    RAMSize=0x20000+0x10000;
 
@@ -575,12 +453,7 @@ void load_rastan(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_rastan(void)
-{
-   RemoveTaitoYM2151();
-}
-
-void execute_rastan_frame(void)
+static void execute_rastan(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));    // M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -588,7 +461,7 @@ void execute_rastan_frame(void)
    Taito2151_Frame();			// Z80 and YM2151 and MSM5205
 }
 
-void draw_rastan(void)
+static void draw_rastan(void)
 {
    ClearPaletteMap();
 
@@ -634,7 +507,7 @@ void draw_rastan(void)
 
 /*-------[MSM5205 PORT A]-------*/
 
-void Rastan_M5205_W(UINT16 offset, UINT8 data)
+static void Rastan_M5205_W(UINT16 offset, UINT8 data)
 {
    int ta;
 
@@ -659,4 +532,61 @@ void Rastan_M5205_W(UINT16 offset, UINT8 data)
 
    }
 }
+
+static struct VIDEO_INFO video_rastan =
+{
+   draw_rastan,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+   rastan_gfx,
+};
+GMEI( rastan, "Rastan", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
+	.romsw = romsw_rastan,
+	.long_name_jpn = "ラスタンサーガ",
+	.board = "B04",
+);
+static struct DIR_INFO dir_rastanu[] =
+{
+   { "rastan_american", },
+   { "rastan_usa", },
+   { "rastanu", },
+   { ROMOF("rastan"), },
+   { CLONEOF("rastan"), },
+   { NULL, },
+};
+CLNE( rastanu,rastan, "Rastan American", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
+	.romsw = romsw_rastan,
+	.long_name_jpn = "ラスタンサーガ American",
+	.board = "B04",
+);
+static struct DIR_INFO dir_rastanu2[] =
+{
+   { "rastan_american_alt", },
+   { "rastan_usa_2", },
+   { "rastanu2", },
+   { ROMOF("rastan"), },
+   { CLONEOF("rastan"), },
+   { NULL, },
+};
+CLNE( rastanu2, rastan,"Rastan American (alternate)", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
+	.romsw = romsw_rastan,
+	.long_name_jpn = "ラスタンサーガ American (alternate)",
+	.board = "B04",
+);
+static struct DIR_INFO dir_rastsaga[] =
+{
+   { "rastan_saga", },
+   { "rastsaga", },
+   { ROMOF("rastan"), },
+   { CLONEOF("rastan"), },
+   { NULL, },
+};
+CLNE( rastsaga,rastan, "Rastan Saga", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
+	.dsw = dsw_rastsaga,
+	.romsw = NULL, // rastan_saga_romsw,
+	.long_name_jpn = "ラスタンサーガ Saga",
+	.board = "B04",
+);
 

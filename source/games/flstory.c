@@ -7,21 +7,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "flstory.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "2203intf.h"
 #include "decode.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO fairy_land_story_dirs[] =
-{
-   { "fairy_land_story", },
-   { "flstory", },
-   { NULL, },
-};
 
-static struct ROM_INFO fairy_land_story_roms[] =
+static struct ROM_INFO rom_flstory[] =
 {
    {   "cpu-a45.15", 0x00004000, 0xf03fc969, 0, 0, 0, },
    {   "cpu-a45.16", 0x00004000, 0x311aa82e, 0, 0, 0, },
@@ -39,7 +32,7 @@ static struct ROM_INFO fairy_land_story_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO fairy_land_story_inputs[] =
+static struct INPUT_INFO input_flstory[] =
 {
    INP1( COIN1, 0x020005, 0x01 ),
    INP1( COIN2, 0x020005, 0x02 ),
@@ -94,21 +87,13 @@ static struct DSW_DATA dsw_data_fairy_land_story_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO fairy_land_story_dsw[] =
+static struct DSW_INFO dsw_flstory[] =
 {
    { 0x020003, 0xFF, dsw_data_fairy_land_story_0 },
    { 0x020004, 0xFF, dsw_data_default_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO fairy_land_story_video =
-{
-   DrawFLStory,
-   256,
-   256,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -122,32 +107,12 @@ static struct YM2203interface ym2203_interface =
    {NULL}
 };
 
-static struct SOUND_INFO fairy_land_story_sound[] =
+static struct SOUND_INFO sound_flstory[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( fairy_land_story ,
-   fairy_land_story_dirs,
-   fairy_land_story_roms,
-   fairy_land_story_inputs,
-   fairy_land_story_dsw,
-   NULL,
-
-   LoadFLStory,
-   ClearFLStory,
-   &fairy_land_story_video,
-   ExecuteFLStoryFrame,
-   "flstory",
-   "Fairy Land Story",
-   NULL,
-   COMPANY_ID_TAITO,
-   "A45",
-   1985,
-   fairy_land_story_sound,
-   GAME_PLATFORM | GAME_NOT_WORKING
-);
 
 static int romset;
 
@@ -503,7 +468,7 @@ static void DrawNibble(UINT8 *out, int plane, UINT8 c)
       } while(--count);
 }
 
-void LoadFLStory(void)
+static void load_flstory(void)
 {
    int ta,tb;
    UINT8 *TMP;
@@ -663,16 +628,7 @@ void LoadFLStory(void)
 */
 }
 
-void ClearFLStory(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x040000, 0);
-#endif
-}
-
-
-void ExecuteFLStoryFrame(void)
+static void execute_flstory(void)
 {
 /*
    static int coin_toggle_a,coin_toggle_b;
@@ -711,7 +667,7 @@ void ExecuteFLStoryFrame(void)
    //if((s_stat&0x02)!=0) cpu_int_nmi(CPU_Z80_2);
 }
 
-void DrawFLStory(void)
+static void DrawFLStory(void)
 {
    int x,y,code,ta;
    int zz,zzz,zzzz,x16,y16;
@@ -862,4 +818,22 @@ Byte | Bit(s) | Use
 
 
 */
+
+static struct VIDEO_INFO video_flstory =
+{
+   DrawFLStory,
+   256,
+   256,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP,
+};
+static struct DIR_INFO dir_flstory[] =
+{
+   { "fairy_land_story", },
+   { "flstory", },
+   { NULL, },
+};
+GME( flstory, "Fairy Land Story", TAITO, 1985, GAME_PLATFORM | GAME_NOT_WORKING,
+	.board = "A45",
+);
 

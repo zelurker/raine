@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2151_sound
 /******************************************************************************/
 /*                                                                            */
 /*                 ASUKA & ASUKA (C) 1988 TAITO CORPORATION                   */
@@ -5,21 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "asuka.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc002obj.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 
-static struct DIR_INFO asuka_and_asuka_dirs[] =
-{
-   { "asuka_and_asuka", },
-   { "asuka", },
-   { NULL, },
-};
 
-static struct ROM_INFO asuka_roms[] =
+static struct ROM_INFO rom_asuka[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "asuka_13.rom",  0x855efb3e, "asuka_12.rom",  0x271eeee9),
@@ -33,7 +27,7 @@ static struct ROM_INFO asuka_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO asuka_and_asuka_inputs[] =
+static struct INPUT_INFO input_asuka[] =
 {
    INP0( TILT, 0x01A00E, 0x01 ),
    INP0( SERVICE, 0x01A00E, 0x02 ),
@@ -107,7 +101,7 @@ static struct DSW_DATA dsw_data_asuka_and_asuka_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO asuka_and_asuka_dsw[] =
+static struct DSW_INFO dsw_asuka[] =
 {
    { 0x01A000, 0xFF, dsw_data_asuka_and_asuka_0 },
    { 0x01A002, 0xFF, dsw_data_asuka_and_asuka_1 },
@@ -145,44 +139,14 @@ static struct GFX_LIST gfxdecodeinfo[] =
 	{ 0, NULL } /* end of array */
 };
 
-static struct VIDEO_INFO asuka_and_asuka_video =
-{
-   DrawAsuka,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo
-};
 
-GAME( asuka_and_asuka ,
-   asuka_and_asuka_dirs,
-   asuka_roms,
-   asuka_and_asuka_inputs,
-   asuka_and_asuka_dsw,
-   NULL,
-
-   LoadAsuka,
-   ClearAsuka,
-   &asuka_and_asuka_video,
-   ExecuteAsukaFrame,
-   "asuka",
-   "Asuka and Asuka",
-   "˜ÚíπÅï˜Úíπ",
-   COMPANY_ID_TAITO,
-   NULL,		// "B??"
-   1988,
-   taito_ym2151_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
 static UINT8 *RAM_OBJECT;
 static UINT8 *RAM_INPUT;
 
-void LoadAsuka(void)
+static void load_asuka(void)
 {
    RAMSize=0x38000;
 
@@ -313,12 +277,7 @@ void LoadAsuka(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearAsuka(void)
-{
-   RemoveTaitoYM2151();
-}
-
-void ExecuteAsukaFrame(void)
+static void execute_asuka(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -326,7 +285,7 @@ void ExecuteAsukaFrame(void)
    Taito2151_Frame();			// Z80 and YM2151
 }
 
-void DrawAsuka(void)
+static void DrawAsuka(void)
 {
    ClearPaletteMap();
 
@@ -369,4 +328,24 @@ void DrawAsuka(void)
 }
 
 
+
+static struct VIDEO_INFO video_asuka =
+{
+   DrawAsuka,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo
+};
+static struct DIR_INFO dir_asuka[] =
+{
+   { "asuka_and_asuka", },
+   { "asuka", },
+   { NULL, },
+};
+GME( asuka, "Asuka and Asuka", TAITO, 1988, GAME_SHOOT,
+	.long_name_jpn = "˜ÚíπÅï˜Úíπ",
+);
 

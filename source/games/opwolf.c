@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "opwolf.h"
 #include "tc100scn.h"
 #include "tc002obj.h"
 #include "sasound.h"		// sample support routines
@@ -15,16 +14,8 @@
 #include "gun.h"
 #include "emumain.h"
 
-static struct DIR_INFO operation_wolf_dirs[] =
-{
-   { "operation_wolf", },
-   { "opwolf", },
-   { "opwolfb", },
-   { "opwolfu", },
-   { NULL, },
-};
 
-static struct ROM_INFO operation_wolf_roms[] =
+static struct ROM_INFO rom_opwolf[] =
 {
    {     "opwlf.13", 0x00080000, 0xf6acdab1, 0, 0, 0, },
    {     "opwlf.29", 0x00010000, 0xb71bc44c, 0, 0, 0, },
@@ -38,7 +29,7 @@ static struct ROM_INFO operation_wolf_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO operation_wolf_inputs[] =
+static struct INPUT_INFO input_opwolf[] =
 {
    INP1( COIN1, 0x05C580, 0x04 ),
    INP1( COIN2, 0x05C581, 0x04 ),
@@ -106,7 +97,7 @@ static struct DSW_DATA dsw_data_operation_wolf_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO operation_wolf_dsw[] =
+static struct DSW_INFO dsw_opwolf[] =
 {
    { 0x02B000, 0xBF, dsw_data_operation_wolf_0 },
    { 0x02B002, 0xFF, dsw_data_operation_wolf_1 },
@@ -121,20 +112,12 @@ static struct ROMSW_DATA romsw_data_operation_wolf_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO operation_wolf_romsw[] =
+static struct ROMSW_INFO romsw_opwolf[] =
 {
    { 0x03FFFF, 0x02, romsw_data_operation_wolf_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO operation_wolf_video =
-{
-   DrawOperationWolf,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
 static struct YM2151interface ym2151_interface =
 {
@@ -222,45 +205,16 @@ static struct MSM5205buffer_interface msm5205_interface =
    MSM5205_MONO,
 };
 
-static struct SOUND_INFO opwolf_sound[] =
+static struct SOUND_INFO sound_opwolf[] =
 {
    { SOUND_YM2151J, &ym2151_interface,  },
    { SOUND_MSM5205_BUFF, &msm5205_interface, },
    { 0,             NULL,               },
 };
 
-GAME( operation_wolf ,
-   operation_wolf_dirs,
-   operation_wolf_roms,
-   operation_wolf_inputs,
-   operation_wolf_dsw,
-   operation_wolf_romsw,
 
-   LoadOperationWolf,
-   ClearOperationWolf,
-   &operation_wolf_video,
-   ExecuteOperationWolfFrame,
-   "opwolf",
-   "Operation Wolf",
-   "オペレーションウルフ",
-   COMPANY_ID_TAITO,
-   "B20",
-   1987,
-   opwolf_sound,
-   GAME_SHOOT
-);
 
-static struct DIR_INFO operation_wolf_bootleg_dirs[] =
-{
-   { "operation_wolf_bootleg", },
-   { "opwolfbl", },
-   { "opwolfb", },
-   { ROMOF("opwolf"), },
-   { CLONEOF("opwolf"), },
-   { NULL, },
-};
-
-static struct ROM_INFO operation_wolf_bootleg_roms[] =
+static struct ROM_INFO rom_opwolfb[] =
 {
    {  "opwlfb.01", 0x00010000, 0x0a65f256, 0, 0, 0, },
    {  "opwlfb.02", 0x00010000, 0x6231fdd0, 0, 0, 0, },
@@ -295,26 +249,6 @@ static struct ROM_INFO operation_wolf_bootleg_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( operation_wolf_bootleg ,
-   operation_wolf_bootleg_dirs,
-   operation_wolf_bootleg_roms,
-   operation_wolf_inputs,
-   operation_wolf_dsw,
-   NULL,
-
-   LoadOperationWolfB,
-   ClearOperationWolf,
-   &operation_wolf_video,
-   ExecuteOperationWolfFrame,
-   "opwolfb",
-   "Operation Bear",
-   "オペレーションウルフ (bootleg)",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1987,
-   opwolf_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -326,8 +260,8 @@ static UINT8 *GFX_SPR_SOLID;
 
 static UINT8 *Z80ROM2;
 
-void OpWolfWriteADPCMA(UINT16 offset, UINT8 data);
-void OpWolfWriteADPCMB(UINT16 offset, UINT8 data);
+static void OpWolfWriteADPCMA(UINT16 offset, UINT8 data);
+static void OpWolfWriteADPCMB(UINT16 offset, UINT8 data);
 
 static int romset;	// 0=ORIGINAL; 1=BOOTLEG
 
@@ -385,10 +319,14 @@ static void clear_ram() {
   memset(Z80ROM2+0x8000,0,0x8000);
 }
 
-static void LoadActual(void)
+static void load_opwolf(void)
 {
    UINT8 *TMP;
-   int ta,tb;
+   int ta,tb,romset;
+   if (is_current_game("opwolf"))
+       romset = 0;
+   else if (is_current_game("opwolfb"))
+       romset = 1;
 
    RAMSize=0x60000;
 
@@ -666,30 +604,7 @@ static void LoadActual(void)
    GameMouse=1;
 }
 
-void LoadOperationWolf(void)
-{
-   romset=0;		// Original
-   LoadActual();
-}
-
-void LoadOperationWolfB(void)
-{
-   romset=1;		// Bootleg
-   LoadActual();
-}
-
-void ClearOperationWolf(void)
-{
-   RemoveTaitoYM2151();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x040000,1);
-      save_debug("RAM.bin",RAM,0x050000,1);
-      //save_debug("GFX.bin",GFX,0x200000,0);
-#endif
-}
-
-void ExecuteOperationWolfFrame(void)
+static void execute_opwolf(void)
 {
    /*------[Mouse Hack]-------*/
 
@@ -736,7 +651,7 @@ void ExecuteOperationWolfFrame(void)
 }
 
 
-void DrawOperationWolf(void)
+static void DrawOperationWolf(void)
 {
    int x,y;
 
@@ -834,7 +749,7 @@ void DrawOperationWolf(void)
 
 static int ad[8];
 
-void OpWolfWriteADPCMA(UINT16 offset, UINT8 data)
+static void OpWolfWriteADPCMA(UINT16 offset, UINT8 data)
 {
    int ta=0;
 
@@ -859,7 +774,7 @@ void OpWolfWriteADPCMA(UINT16 offset, UINT8 data)
 
 static int ad2[8];
 
-void OpWolfWriteADPCMB(UINT16 offset, UINT8 data)
+static void OpWolfWriteADPCMB(UINT16 offset, UINT8 data)
 {
    int ta=0;
 
@@ -879,3 +794,37 @@ void OpWolfWriteADPCMB(UINT16 offset, UINT8 data)
 
    }
 }
+static struct VIDEO_INFO video_opwolf =
+{
+   DrawOperationWolf,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_opwolf[] =
+{
+   { "operation_wolf", },
+   { "opwolf", },
+   { "opwolfb", },
+   { "opwolfu", },
+   { NULL, },
+};
+GME( opwolf, "Operation Wolf", TAITO, 1987, GAME_SHOOT,
+	.romsw = romsw_opwolf,
+	.long_name_jpn = "オペレーションウルフ",
+	.board = "B20",
+);
+static struct DIR_INFO dir_opwolfb[] =
+{
+   { "operation_wolf_bootleg", },
+   { "opwolfbl", },
+   { "opwolfb", },
+   { ROMOF("opwolf"), },
+   { CLONEOF("opwolf"), },
+   { NULL, },
+};
+CLNE( opwolfb, opwolf, "Operation Bear", BOOTLEG, 1987, GAME_SHOOT,
+	.long_name_jpn = "オペレーションウルフ (bootleg)",
+);
+

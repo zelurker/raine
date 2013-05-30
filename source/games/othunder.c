@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*              OPERATION THUNDERBOLT (C) 1988 TAITO CORPORATION              */
@@ -6,7 +7,6 @@
 /* Todo : convert to any color depth */
 
 #include "gameinc.h"
-#include "othunder.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc220ioc.h"
@@ -15,14 +15,8 @@
 #include "savegame.h"
 #include "gun.h"
 
-static struct DIR_INFO operation_thunderbolt_dirs[] =
-{
-   { "operation_thunderbolt", },
-   { "othunder", },
-   { NULL, },
-};
 
-static struct ROM_INFO operation_thunderbolt_roms[] =
+static struct ROM_INFO rom_othunder[] =
 {
    {       "b67-02", 0x00080000, 0xc20cd2fb, 0, 0, 0, },
    {       "b67-03", 0x00080000, 0xbc9019ed, 0, 0, 0, },
@@ -40,7 +34,7 @@ static struct ROM_INFO operation_thunderbolt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO operation_thunderbolt_inputs[] =
+static struct INPUT_INFO input_othunder[] =
 {
    INP0( COIN1, 0x028004, 0x08 ),
    INP0( COIN2, 0x028004, 0x04 ),
@@ -115,7 +109,7 @@ static struct DSW_DATA dsw_data_operation_thunderbolt_1[] =
    { "English",               0x00},
    { NULL,                    0,   },
 };
-static struct DSW_INFO operation_thunderbolt_dsw[] =
+static struct DSW_INFO dsw_othunder[] =
 {
    { 0x028000, 0xFF, dsw_data_operation_thunderbolt_0 },
    { 0x028002, 0x7F, dsw_data_operation_thunderbolt_1 },
@@ -130,41 +124,13 @@ static struct ROMSW_DATA romsw_data_operation_thunderbolt_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO operation_thunderbolt_romsw[] =
+static struct ROMSW_INFO romsw_othunder[] =
 {
    { 0x03FFFF, 0x03, romsw_data_operation_thunderbolt_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO operation_thunderbolt_video =
-{
-   DrawOpThunderbolt,
-   320,
-   240,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( operation_thunderbolt ,
-   operation_thunderbolt_dirs,
-   operation_thunderbolt_roms,
-   operation_thunderbolt_inputs,
-   operation_thunderbolt_dsw,
-   operation_thunderbolt_romsw,
-
-   LoadOpThunderbolt,
-   ClearOpThunderbolt,
-   &operation_thunderbolt_video,
-   ExecuteOpThunderboltFrame,
-   "othunder",
-   "Operation Thunderbolt",
-   "オペレーションサンダーボルト",
-   COMPANY_ID_TAITO,
-   "B67",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -178,7 +144,7 @@ static UINT8 *GFX_BG0_SOLID;
 
 static int x1,myy1,x11,myy11,x2,y2;
 
-void LoadOpThunderbolt(void)
+static void load_othunder(void)
 {
    int ta,tb,tc,td,te,tf;
    UINT8 *TMP;
@@ -580,20 +546,7 @@ void LoadOpThunderbolt(void)
    GameMouse=1;
 }
 
-void ClearOpThunderbolt(void)
-{
-   RemoveTaitoYM2610();
-
-   save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x058000,1);
-      //save_debug("GFX.bin",GFX,0x55B000,0);
-   #endif
-}
-
-void ExecuteOpThunderboltFrame(void)
+static void execute_othunder(void)
 {
    /*------[Mouse Hack]-------*/
 
@@ -667,7 +620,7 @@ void ExecuteOpThunderboltFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void DrawOpThunderbolt(void)
+static void DrawOpThunderbolt(void)
 {
    int x,y,z,ta,zz;
    UINT8 *MAP;
@@ -817,3 +770,23 @@ Byte | Bit(s) | Description
   7  |xxxxxxxx| Sprite Number (Low)
 
 */
+static struct VIDEO_INFO video_othunder =
+{
+   DrawOpThunderbolt,
+   320,
+   240,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_othunder[] =
+{
+   { "operation_thunderbolt", },
+   { "othunder", },
+   { NULL, },
+};
+GME( othunder, "Operation Thunderbolt", TAITO, 1989, GAME_SHOOT,
+	.romsw = romsw_othunder,
+	.long_name_jpn = "オペレーションサンダーボルト",
+	.board = "B67",
+);
+

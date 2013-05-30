@@ -1,3 +1,4 @@
+#define DRV_DEF_EXEC execute_hyperpac
 /*
 Hyper Pacman
 
@@ -16,110 +17,7 @@ its like snow bros, but with a bit more ram, more tiles, and different sound har
 #include "savegame.h"
 #include "emumain.h" // set_reset_function
 
-static struct DIR_INFO hyperpac_dirs[] =
-{
-   { "hyper_pacman", },
-   { "hyperpac", },
-   { NULL, },
-};
-
-static struct DIR_INFO hyperpcb_dirs[] =
-{
-   { "hyper_pacman_bootleg", },
-   { "hyperpcb", },
-   { ROMOF("hyperpac") },
-   { CLONEOF("hyperpac") },
-   { NULL, },
-};
-
-static struct DIR_INFO twinkle_dirs[] =
-{
-   { "twinkle", },
-   { NULL, },
-};
-
-static struct DIR_INFO _3in1semi_dirs[] =
-{
-   { "3in1semi", },
-   { "xess_the_new_revolution", },
-   { NULL, },
-};
-
-
-static struct DIR_INFO cookbib2_dirs[] =
-{
-   { "cookie_and_bibi_2", },
-   { "cookbib2", },
-   { NULL, },
-};
-
-static struct DIR_INFO moremore_dirs[] =
-{
-   { "more_more", },
-   { "moremore", },
-   { NULL, },
-};
-
-
-static struct DIR_INFO moremorp_dirs[] =
-{
-   { "more_more_plus", },
-   { "moremorp", },
-   { NULL, },
-};
-
-static struct DIR_INFO finalttr_dirs[] =
-{
-   { "final_tetris", },
-   { "finalttr", },
-   { NULL, },
-};
-
-static struct DIR_INFO snow_bros_dirs[] =
-{
-   { "snow_bros", },
-   { "snowbros", },
-   { NULL, },
-};
-
-static struct DIR_INFO snow_bros_alt_dirs[] =
-{
-   { "snow_bros_alt", },
-   { "snowbroa", },
-   { ROMOF("snowbros"), },
-   { CLONEOF("snowbros"), },
-   { NULL, },
-};
-
-static struct DIR_INFO snow_bros_japanese_dirs[] =
-{
-   { "snow_bros_japanese", },
-   { "snowbroj", },
-   { ROMOF("snowbros"), },
-   { CLONEOF("snowbros"), },
-   { NULL, },
-};
-
-static struct DIR_INFO snow_bros_alt_2_dirs[] =
-{
-   { "snow_bros_alt_2", },
-   { "snowbra2", },
-   { "snowbrob", },
-   { ROMOF("snowbros"), },
-   { CLONEOF("snowbros"), },
-   { NULL, },
-};
-
-static struct DIR_INFO winter_bobble_dirs[] =
-{
-   { "winter_bobble", },
-   { "wintbob", },
-   { ROMOF("snowbros"), },
-   { CLONEOF("snowbros"), },
-   { NULL, },
-};
-
-static struct INPUT_INFO finalttr_inputs[] =
+static struct INPUT_INFO input_finalttr[] =
 {
   INP0( P1_UP, 0x12401, 0x01 ),
   INP0( P1_DOWN, 0x12401, 0x02 ),
@@ -197,7 +95,7 @@ static struct DSW_DATA dsw_data_finalttr_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO finalttr_dsw[] =
+static struct DSW_INFO dsw_finalttr[] =
 {
   { 0x12400, 0xff, dsw_data_finalttr_0 },
   { 0x12402, 0xff, dsw_data_finalttr_1 },
@@ -206,7 +104,7 @@ static struct DSW_INFO finalttr_dsw[] =
 
 static int romset;
 
-static struct ROM_INFO hyperpac_roms[] =
+static struct ROM_INFO rom_hyperpac[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
             "hyperpac.h12",  0x2cf0531a , "hyperpac.i12",  0x9c7d85b8 ),
@@ -218,7 +116,7 @@ static struct ROM_INFO hyperpac_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO twinkle_roms[] =
+static struct ROM_INFO rom_twinkle[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
             "uh12.bin",  0xa99626fe , "ui12.bin",  0x5af73684 ),
@@ -229,7 +127,7 @@ static struct ROM_INFO twinkle_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO _3in1semi_roms[] =
+static struct ROM_INFO rom_3in1semi[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,           0x40000,
             "u52",  0xb0e4a0f7 , "u74",  0x266862c4 ),
@@ -245,7 +143,7 @@ static struct ROM_INFO _3in1semi_roms[] =
 
 
 
-static struct ROM_INFO cookbib2_roms[] =
+static struct ROM_INFO rom_cookbib2[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
             "cookbib2.02",  0xb2909460 , "cookbib2.01",  0x65aafde2 ),
@@ -258,7 +156,7 @@ static struct ROM_INFO cookbib2_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO moremore_roms[] =
+static struct ROM_INFO rom_moremore[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
             "u52.bin",  0xcea4b246 , "u74.bin",  0x2acdcb88 ),
@@ -272,7 +170,7 @@ static struct ROM_INFO moremore_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO moremorp_roms[] =
+static struct ROM_INFO rom_moremorp[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
             "mmp_u52.bin",  0x66baf9b2 , "mmp_u74.bin",  0x7c6fede5 ),
@@ -286,7 +184,7 @@ static struct ROM_INFO moremorp_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO finalttr_roms[] =
+static struct ROM_INFO rom_finalttr[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001, 0x20000,
             "9.5o",  0x58d3640e , "10.7o",  0xeecc83e5 ),
@@ -302,14 +200,14 @@ static struct ROM_INFO finalttr_roms[] =
 
 
 
-static struct ROM_INFO hyperpcb_roms[] =
+static struct ROM_INFO rom_hyperpcb[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
             "hpacuh12.bin",  0x633ab2c6 , "hpacui12.bin",  0x23dc00d1 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO snowbros_roms[] =
+static struct ROM_INFO rom_snowbros[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                  "sn6.bin",  0x4899ddcf,      "sn5.bin",  0xad310d3f),
@@ -324,28 +222,28 @@ static struct ROM_INFO snowbros_roms[] =
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
-static struct ROM_INFO snowbroa_roms[] =
+static struct ROM_INFO rom_snowbroa[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
              "snowbros.3a",  0x10cb37e1,  "snowbros.2a",  0xab91cc1e),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
-static struct ROM_INFO snowbroj_roms[] =
+static struct ROM_INFO rom_snowbroj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "snowbros.3",  0x3f504f9e,   "snowbros.2",  0x854b02bc),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
-static struct ROM_INFO snowbra2_roms[] =
+static struct ROM_INFO rom_snowbrob[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                 "sbros3-a",  0x301627d6,     "sbros2-a",  0xf6689f41),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO wintbob_roms[] =
+static struct ROM_INFO rom_wintbob[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00010000,
                 "wb03.bin",  0xdf56e168,     "wb01.bin",  0x05722f17),
@@ -363,7 +261,7 @@ static struct ROM_INFO wintbob_roms[] =
    {           NULL,          0,          0,           0,        0,         0,   },
 };
 
-static struct INPUT_INFO hyperpac_inputs[] =
+static struct INPUT_INFO input_hyperpac[] =
 {
   INP1( P1_UP, 0x12401, 0x01 ),
   INP1( P1_DOWN, 0x12401, 0x02 ),
@@ -388,7 +286,7 @@ static struct INPUT_INFO hyperpac_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO snow_bros_inputs[] =
+static struct INPUT_INFO input_snowbros[] =
 {
    INP0( COIN1, 0x006405, 0x04 ),
    INP0( COIN2, 0x006405, 0x08 ),
@@ -447,7 +345,7 @@ static struct DSW_DATA dsw_data_hyperpac_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO hyperpac_dsw[] =
+static struct DSW_INFO dsw_hyperpac[] =
 {
   { 0x12400, 0xfe, dsw_data_hyperpac_0 },
   { 0x12402, 0xff, dsw_data_hyperpac_1 },
@@ -501,7 +399,7 @@ static struct DSW_DATA dsw_data_snow_bros_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO snow_bros_dsw[] =
+static struct DSW_INFO dsw_snowbros[] =
 {
    { 0x006400, 0xFF, dsw_data_snow_bros_0 },
    { 0x006402, 0xFF, dsw_data_snow_bros_1 },
@@ -541,7 +439,7 @@ static struct DSW_DATA dsw_data_moremore_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO moremore_dsw[] =
+static struct DSW_INFO dsw_twinkle[] =
 {
   { 0x12400, 0xfe, dsw_data_moremore_0 },
   { 0x12402, 0xff, dsw_data_moremore_1 },
@@ -618,7 +516,7 @@ static struct OKIM6295interface okim6295_interface =
 	{ 240 }
 };
 
-static struct SOUND_INFO hyper_pacman_sound[] =
+static struct SOUND_INFO sound_hyperpac[] =
 {
    { SOUND_YM2151J,  &ym2151_interface,    },
    { SOUND_M6295,  &okim6295_interface    },
@@ -662,7 +560,7 @@ static void soundlatch_w(UINT32 offset, UINT16 data) {
 
 #define Z80_FRAME CPU_FRAME_MHz(4,60)
 
-void load_hyper_pacman(void)
+static void load_hyperpac(void)
 {
    RAMSize=0x30000;
    romset = 0;
@@ -788,7 +686,7 @@ void load_hyper_pacman(void)
 
 #define FRAME CPU_FRAME_MHz(16,60)
 
-void execute_hyper_pacman_frame(void)
+static void execute_hyperpac(void)
 {
   if (RaineSoundCard)
     execute_z80_audio_frame();
@@ -879,38 +777,8 @@ static void draw_hyper_pacman(void)
 
 }
 
-static struct VIDEO_INFO hyper_pacman_video =
-{
-   draw_hyper_pacman,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   hyper_pacman_gfx,
-};
 
-static struct VIDEO_INFO snow_bros_video =
-{
-   draw_hyper_pacman,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   snow_bros_gfx,
-};
 
-static struct VIDEO_INFO winter_bobble_video =
-{
-   draw_hyper_pacman,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   winter_bobble_gfx,
-};
 
 static struct YM3812interface ym3812_interface =
 {
@@ -920,180 +788,20 @@ static struct YM3812interface ym3812_interface =
    { z80_irq_handler }
 };
 
-static struct SOUND_INFO snow_bros_sound[] =
+static struct SOUND_INFO sound_snowbros[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( hyperpcb ,
-   hyperpcb_dirs,
-   hyperpcb_roms,
-   hyperpac_inputs,
-   hyperpac_dsw,
-   NULL,
-
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "hyperpcb",
-   "Hyper Pacman (bootleg)",
-   "SemiCom",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1990,
-   hyper_pacman_sound,
-   GAME_MISC
-);
 
 // necessary because hyperpcb is a clone set in mame, so we need the parent.
-GAME( hyperpac ,
-   hyperpac_dirs,
-   hyperpac_roms,
-   hyperpac_inputs,
-   hyperpac_dsw,
-   NULL,
 
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "hyperpac",
-   "Hyper Pacman",
-   "SemiCom",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1990,
-   hyper_pacman_sound,
-   GAME_MISC
-);
 
-GAME( cookbib2 ,
-   cookbib2_dirs,
-   cookbib2_roms,
-   hyperpac_inputs,
-   hyperpac_dsw,
-   NULL,
 
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "cookbib2",
-   "Cookie and Bibi 2",
-   "SemiCom",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1996,
-   hyper_pacman_sound,
-   GAME_MISC
-);
 
-GAME( twinkle ,
-   twinkle_dirs,
-   twinkle_roms,
-   hyperpac_inputs,
-   moremore_dsw,
-   NULL,
 
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "twinkle",
-   "Twinkle",
-   "SemiCom",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1997,
-   hyper_pacman_sound,
-   GAME_MISC
-);
 
-GAME( 3in1semi ,
-   _3in1semi_dirs,
-   _3in1semi_roms,
-   hyperpac_inputs,
-   moremore_dsw,
-   NULL,
-
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "3in1semi",
-   "Xess - The New Revolution (Semicom 3-in-1)",
-   "SemiCom",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1997,
-   hyper_pacman_sound,
-   GAME_MISC
-);
-
-GAME( moremore ,
-   moremore_dirs,
-   moremore_roms,
-   hyperpac_inputs,
-   moremore_dsw,
-   NULL,
-
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "moremore",
-   "More More",
-   "SemiCom / Exit",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1999,
-   hyper_pacman_sound,
-   GAME_MISC
-);
-
-GAME( moremorp ,
-   moremorp_dirs,
-   moremorp_roms,
-   hyperpac_inputs,
-   hyperpac_dsw,
-   NULL,
-
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "moremorp",
-   "More More Plus",
-   "SemiCom / Exit",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1999,
-   hyper_pacman_sound,
-   GAME_MISC
-);
-
-GAME( finalttr ,
-   finalttr_dirs,
-   finalttr_roms,
-   finalttr_inputs,
-   finalttr_dsw,
-   NULL,
-
-   load_hyper_pacman,
-   NULL,
-   &hyper_pacman_video,
-   execute_hyper_pacman_frame,
-   "finalttr",
-   "Final Tetris",
-   "Jeil Computer System",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1993,
-   hyper_pacman_sound,
-   GAME_MISC
-);
 
 static int sport=0;
 
@@ -1113,7 +821,7 @@ static UINT16 SoundRead(UINT32 offset)
     return 3;           // Z80_OK
 }
 
-void SnowBrosPort4w(UINT16 address, UINT8 data)
+static void SnowBrosPort4w(UINT16 address, UINT8 data)
 {
    sport=data;
 }
@@ -1124,8 +832,7 @@ UINT16 SnowBrosPort4r(UINT16 address)
    return(sport);
 }
 
-
-void load_snow_bros(void)
+static void load_snowbros(void)
 {
    RAMSize=0x8000+0x10000;
 
@@ -1301,111 +1008,6 @@ void load_snow_bros(void)
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-GAME( snow_bros ,
-   snow_bros_dirs,
-   snowbros_roms,
-   snow_bros_inputs,
-   snow_bros_dsw,
-   NULL,
-
-   load_snow_bros,
-   NULL,
-   &snow_bros_video,
-   execute_hyper_pacman_frame,
-   "snowbros",
-   "Snow Bros",
-   "\203x\203m\201{\203u\203\211\203U\201[\203Y American",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1990,
-   snow_bros_sound,
-   GAME_PLATFORM
-);
-
-GAME( snow_bros_alt ,
-   snow_bros_alt_dirs,
-   snowbroa_roms,
-   snow_bros_inputs,
-   snow_bros_dsw,
-   NULL,
-
-   load_snow_bros,
-   NULL,
-   &snow_bros_video,
-   execute_hyper_pacman_frame,
-   "snowbroa",
-   "Snow Bros (alternate)",
-   "\203x\203m\201[\203u\203\211\203U\201[\203Y (alternate)",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1990,
-   snow_bros_sound,
-   GAME_PLATFORM
-);
-
-GAME( snow_bros_japanese ,
-   snow_bros_japanese_dirs,
-   snowbroj_roms,
-   snow_bros_inputs,
-   snow_bros_dsw,
-   NULL,
-
-   load_snow_bros,
-   NULL,
-   &snow_bros_video,
-   execute_hyper_pacman_frame,
-   "snowbroj",
-   "Snow Bros (Japanese)",
-   "\203X\203m\201[\203u\203\211\203U\201[\203Y",
-   COMPANY_ID_TOAPLAN,
-   NULL,
-   1990,
-   snow_bros_sound,
-   GAME_PLATFORM
-);
-
-GAME( snow_bros_alt_2 ,
-   snow_bros_alt_2_dirs,
-   snowbra2_roms,
-   snow_bros_inputs,
-   snow_bros_dsw,
-   NULL,
-
-   load_snow_bros,
-   NULL,
-   &snow_bros_video,
-   execute_hyper_pacman_frame,
-   "snowbrob",
-   "Snow Bros (alternate 2)",
-   "\203X\203m\201[\203u\203\211\203U\201[\203Y (alternate 2)",
-   COMPANY_ID_TOAPLAN,
-   "MIN16-02",
-   1990,
-   snow_bros_sound,
-   GAME_PLATFORM
-);
-
-GAME( winter_bobble ,
-   winter_bobble_dirs,
-   wintbob_roms,
-   snow_bros_inputs,
-   snow_bros_dsw,
-   NULL,
-
-   load_snow_bros,
-   NULL,
-   &winter_bobble_video,
-   execute_hyper_pacman_frame,
-   "wintbob",
-   "Winter Bobble",
-      "\203X\203m\201[\203u\203\211\203U\201[\203Y\201i\212Cµ¯÷Å\201J",
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1990,
-   snow_bros_sound,
-   GAME_PLATFORM
-);
-
 /*
 
  OBJECT RAM
@@ -1431,3 +1033,155 @@ Byte |Bit(s)  | Use
 -----+--------+-----------------------------
 
 */
+static struct VIDEO_INFO video_hyperpac =
+{
+   draw_hyper_pacman,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   hyper_pacman_gfx,
+};
+static struct VIDEO_INFO video_snowbros =
+{
+   draw_hyper_pacman,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   snow_bros_gfx,
+};
+static struct VIDEO_INFO video_wintbob =
+{
+   draw_hyper_pacman,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   winter_bobble_gfx,
+};
+static struct DIR_INFO dir_3in1semi[] =
+{
+   { "3in1semi", },
+   { "xess_the_new_revolution", },
+   { NULL, },
+};
+CLNE( 3in1semi,hyperpac, "Xess - The New Revolution (Semicom 3-in-1)", TOAPLAN, 1997, GAME_MISC,
+	.dsw = dsw_twinkle,
+);
+static struct DIR_INFO dir_cookbib2[] =
+{
+   { "cookie_and_bibi_2", },
+   { "cookbib2", },
+   { NULL, },
+};
+CLNE( cookbib2,hyperpac, "Cookie and Bibi 2", TOAPLAN, 1996, GAME_MISC);
+static struct DIR_INFO dir_finalttr[] =
+{
+   { "final_tetris", },
+   { "finalttr", },
+   { NULL, },
+};
+CLNE( finalttr,hyperpac, "Final Tetris", TOAPLAN, 1993, GAME_MISC,
+	.input = input_finalttr,
+	.dsw = dsw_finalttr,
+);
+static struct DIR_INFO dir_hyperpac[] =
+{
+   { "hyper_pacman", },
+   { "hyperpac", },
+   { NULL, },
+};
+GME( hyperpac, "Hyper Pacman", TOAPLAN, 1990, GAME_MISC);
+static struct DIR_INFO dir_hyperpcb[] =
+{
+   { "hyper_pacman_bootleg", },
+   { "hyperpcb", },
+   { ROMOF("hyperpac") },
+   { CLONEOF("hyperpac") },
+   { NULL, },
+};
+CLNE( hyperpcb,hyperpac, "Hyper Pacman (bootleg)", TOAPLAN, 1990, GAME_MISC);
+static struct DIR_INFO dir_moremore[] =
+{
+   { "more_more", },
+   { "moremore", },
+   { NULL, },
+};
+CLNE( moremore,hyperpac, "More More", TOAPLAN, 1999, GAME_MISC,
+	.dsw = dsw_twinkle);
+static struct DIR_INFO dir_moremorp[] =
+{
+   { "more_more_plus", },
+   { "moremorp", },
+   { NULL, },
+};
+CLNE( moremorp,hyperpac, "More More Plus", TOAPLAN, 1999, GAME_MISC);
+static struct DIR_INFO dir_snowbros[] =
+{
+   { "snow_bros", },
+   { "snowbros", },
+   { NULL, },
+};
+GME( snowbros, "Snow Bros", TOAPLAN, 1990, GAME_PLATFORM,
+	.long_name_jpn = "\203x\203m\201{\203u\203\211\203U\201[\203Y American",
+);
+static struct DIR_INFO dir_snowbroa[] =
+{
+   { "snow_bros_alt", },
+   { "snowbroa", },
+   { ROMOF("snowbros"), },
+   { CLONEOF("snowbros"), },
+   { NULL, },
+};
+CLNE( snowbroa,snowbros, "Snow Bros (alternate)", TOAPLAN, 1990, GAME_PLATFORM,
+	.long_name_jpn = "\203x\203m\201[\203u\203\211\203U\201[\203Y (alternate)",
+);
+static struct DIR_INFO dir_snowbrob[] =
+{
+   { "snow_bros_alt_2", },
+   { "snowbra2", },
+   { "snowbrob", },
+   { ROMOF("snowbros"), },
+   { CLONEOF("snowbros"), },
+   { NULL, },
+};
+CLNE( snowbrob,snowbros, "Snow Bros (alternate 2)", TOAPLAN, 1990, GAME_PLATFORM,
+	.long_name_jpn = "\203X\203m\201[\203u\203\211\203U\201[\203Y (alternate 2)",
+	.board = "MIN16-02",
+);
+static struct DIR_INFO dir_snowbroj[] =
+{
+   { "snow_bros_japanese", },
+   { "snowbroj", },
+   { ROMOF("snowbros"), },
+   { CLONEOF("snowbros"), },
+   { NULL, },
+};
+CLNE( snowbroj, snowbros, "Snow Bros (Japanese)", TOAPLAN, 1990, GAME_PLATFORM,
+	.long_name_jpn = "\203X\203m\201[\203u\203\211\203U\201[\203Y",
+);
+static struct DIR_INFO dir_twinkle[] =
+{
+   { "twinkle", },
+   { NULL, },
+};
+CLNE( twinkle,hyperpac, "Twinkle", TOAPLAN, 1997, GAME_MISC,
+	.dsw = dsw_twinkle,
+);
+static struct DIR_INFO dir_wintbob[] =
+{
+   { "winter_bobble", },
+   { "wintbob", },
+   { ROMOF("snowbros"), },
+   { CLONEOF("snowbros"), },
+   { NULL, },
+};
+CLNE( wintbob,snowbros, "Winter Bobble", BOOTLEG, 1990, GAME_PLATFORM,
+	.video = &video_wintbob,
+	.long_name_jpn = "\203X\203m\201[\203u\203\211\203U\201[\203Y\201i\212Cµ¯÷Å\201J",
+);
+

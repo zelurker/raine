@@ -22,14 +22,8 @@ static UINT8 *RAM_PF2;
 static UINT8 *RAM_PALETTE;
 static UINT8 *RAM_PFCTRL;
 
-static struct DIR_INFO crospang_dirs[] =
-{
-   { "cross_pang", },
-   { "crospang", },
-   { NULL, },
-};
 
-static struct ROM_INFO crospang_roms[] =
+static struct ROM_INFO rom_crospang[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,       0x020000,
             "p2.bin",  0x0947d204, "p1.bin",  0x0bcbbaad),
@@ -44,7 +38,7 @@ static struct ROM_INFO crospang_roms[] =
 { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct INPUT_INFO crospang_inputs[] =
+static struct INPUT_INFO input_crospang[] =
 {
 	INP0( P1_UP, 0x0000, 0x01 ),
 	INP0( P1_DOWN, 0x0000, 0x02 ),
@@ -70,7 +64,7 @@ INP0( COIN3, 0x0003, 0x04 ),
 	END_INPUT
 };
 
-struct DSW_DATA dsw_data_crospang_0[] =
+static struct DSW_DATA dsw_data_crospang_0[] =
 {
 	{ MSG_COINAGE,             0x03,    4 },
 	{ MSG_3COIN_1PLAY,         0x00},
@@ -97,7 +91,7 @@ struct DSW_DATA dsw_data_crospang_0[] =
 	{ NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_crospang_1[] =
+static struct DSW_DATA dsw_data_crospang_1[] =
 {
 	{ MSG_DSWB_BIT1,           0x01,    2 },
 	{ MSG_OFF,                 0x01},
@@ -124,7 +118,7 @@ struct DSW_DATA dsw_data_crospang_1[] =
 	{ MSG_ON,                  0x00},
 };
 
-static struct DSW_INFO crospang_dsw[] =
+static struct DSW_INFO dsw_crospang[] =
 {
   { 0x4, 0x7e, dsw_data_crospang_0 },
   { 0x5, 0xf7, dsw_data_crospang_1 },
@@ -148,7 +142,7 @@ static struct OKIM6295interface okim6295_interface =
 	{ 240 }
 };
 
-static struct SOUND_INFO crospang_sound[] =
+static struct SOUND_INFO sound_crospang[] =
 {
    { SOUND_YM3812,  &ym3812_interface,    },
    { SOUND_M6295,    &okim6295_interface   },
@@ -383,7 +377,7 @@ static void crospang_drawsprites(void)
 }
 
 
-void draw_crospang(void)
+static void draw_crospang(void)
 {
 	int scrollx,scrolly;
 
@@ -404,20 +398,10 @@ void draw_crospang(void)
 }
 
 
-static struct VIDEO_INFO crospang_video =
-{
-   draw_crospang,
-   320,
-   240,
-   BORDER,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   crospang_gfx,
-};
 
 #define FRAME_Z80 CPU_FRAME_MHz(4,60)
 
-void execute_crospang_frame(void)
+static void execute_crospang(void)
 {
   int frame = FRAME_Z80,diff;
   while (frame > 0) {
@@ -428,7 +412,7 @@ void execute_crospang_frame(void)
   cpu_interrupt(CPU_68K_0, 6);
 }
 
-UINT8 crospang_inputs_8r(UINT32 offset)
+UINT8 input_crospang_8r(UINT32 offset)
 {
 	offset &=0x07;
 	offset ^=1;
@@ -437,24 +421,24 @@ UINT8 crospang_inputs_8r(UINT32 offset)
 }
 
 
-UINT16 crospang_inputs_16r(UINT32 offset)
+UINT16 input_crospang_16r(UINT32 offset)
 {
 	offset &=0x0f;
 
-	return crospang_inputs_8r(offset+1)|(crospang_inputs_8r(offset)<<8);
+	return input_crospang_8r(offset+1)|(input_crospang_8r(offset)<<8);
 }
 
-UINT16 crospang_sound_latch;
+UINT16 sound_crospang_latch;
 
 UINT8 crosspang_soundlatch_r (UINT32 offset)
 {
-	return crospang_sound_latch;
+	return sound_crospang_latch;
 }
 
 
-void crospang_sound16_w ( UINT32 offset, UINT16 data )
+static void sound_crospang16_w ( UINT32 offset, UINT16 data )
 {
-	crospang_sound_latch = data;
+	sound_crospang_latch = data;
 
 	// cpu_execute_cycles(CPU_Z80_0, 6000);
 //	printf("sound16_w data %04x\n",data);
@@ -472,7 +456,7 @@ static UINT16 my_speed_hack(UINT32 offset) {
   return ret;
 }
 
-void load_crospang(void)
+static void load_crospang(void)
 {
 	/* In RAINE we allocate one big block of RAM to contain all emulated RAM then set some pointers to it
 
@@ -577,10 +561,10 @@ void load_crospang(void)
 	AddRWBW     (0x200000, 0x2007ff,     NULL,              RAM_PALETTE     );   // PALETTE RAM
 	AddRWBW     (0x210000, 0x2107ff,     NULL,              RAM_SPRITE      );   // SPRITE RAM
 
-	AddWriteWord(0x270000, 0x270001,     crospang_sound16_w,NULL            );   // sound
+	AddWriteWord(0x270000, 0x270001,     sound_crospang16_w,NULL            );   // sound
 
-	AddReadByte (0x280000, 0x28000f,     crospang_inputs_8r, NULL           );   // Inputs
-	AddReadWord (0x280000, 0x28000f,     crospang_inputs_16r,NULL           );   // Inputs
+	AddReadByte (0x280000, 0x28000f,     input_crospang_8r, NULL           );   // Inputs
+	AddReadWord (0x280000, 0x28000f,     input_crospang_16r,NULL           );   // Inputs
 	AddReadWord(0x3253fe,0x3253ff,my_speed_hack, NULL);
 	AddRWBW     (0x320000, 0x32ffff,     NULL,              RAM_MAIN        );   // MAIN RAM
 
@@ -609,23 +593,21 @@ void load_crospang(void)
 
 }
 
-GAME( crospang ,
-   crospang_dirs,
-   crospang_roms,
-   crospang_inputs,
-   crospang_dsw,
-   NULL,
+static struct VIDEO_INFO video_crospang =
+{
+   draw_crospang,
+   320,
+   240,
+   BORDER,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   crospang_gfx,
+};
+static struct DIR_INFO dir_crospang[] =
+{
+   { "cross_pang", },
+   { "crospang", },
+   { NULL, },
+};
+GME( crospang, "Cross Pang", TOAPLAN, 1998, GAME_MISC);
 
-   load_crospang,
-   NULL,
-   &crospang_video,
-   execute_crospang_frame,
-   "crospang",
-   "Cross Pang",
-   "F2 System",
-   COMPANY_ID_TOAPLAN, /* F2 System! */
-   NULL,
-   1998,
-   crospang_sound,
-   GAME_MISC
-);

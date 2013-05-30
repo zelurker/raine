@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610b_sound
 /******************************************************************************/
 /*                                                                            */
 /*                     SPACE GUN (C) 1991 TAITO CORPORATION                   */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "spacegun.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc220ioc.h"
@@ -16,14 +16,8 @@
 #include "sdl/control_internal.h"
 #endif
 
-static struct DIR_INFO space_gun_dirs[] =
-{
-   { "space_gun", },
-   { "spacegun", },
-   { NULL, },
-};
 
-static struct ROM_INFO space_gun_roms[] =
+static struct ROM_INFO rom_spacegun[] =
 {
    {       "c57-16.29", 0x00020000, 0xbfb5d1e7, 0, 0, 0, },
    {       "c57-07.76", 0x00080000, 0xad653dc1, 0, 0, 0, },
@@ -42,7 +36,7 @@ static struct ROM_INFO space_gun_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO space_gun_inputs[] =
+static struct INPUT_INFO input_spacegun[] =
 {
    INP0( COIN1, 0x044004, 0x08 ),
    INP0( COIN2, 0x044004, 0x04 ),
@@ -116,7 +110,7 @@ static struct DSW_DATA dsw_fake_input_behaviour[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO space_gun_dsw[] =
+static struct DSW_INFO dsw_spacegun[] =
 {
    { 0x044000, 0xFF, dsw_data_space_gun_0 },
    { 0x044002, 0xFF, dsw_data_default_1 },
@@ -133,41 +127,13 @@ static struct ROMSW_DATA romsw_data_space_gun_0[] =
    { NULL,                       0    },
 };
 
-static struct ROMSW_INFO space_gun_romsw[] =
+static struct ROMSW_INFO romsw_spacegun[] =
 {
    { 0x07FFFF, 0x03, romsw_data_space_gun_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO space_gun_video =
-{
-   DrawSpaceGun,
-   320,
-   240,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( space_gun ,
-   space_gun_dirs,
-   space_gun_roms,
-   space_gun_inputs,
-   space_gun_dsw,
-   space_gun_romsw,
-
-   LoadSpaceGun,
-   NULL,
-   &space_gun_video,
-   ExecuteSpaceGunFrame,
-   "spacegun",
-   "Space Gun",
-   "‚X‚y¸[‚X‚K‚Ù",
-   COMPANY_ID_TAITO,
-   "C57",
-   1990,
-   taito_ym2610b_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -231,7 +197,7 @@ static void PanWrite(UINT32 address, UINT8 data){
   Pan2610WriteZ80_OffsetVol( (UINT16) ((address&7)>>1) , data );
 }
 
-void LoadSpaceGun(void)
+static void load_spacegun(void)
 {
    int ta,tb,tc,td,te,tf;
    UINT8 *TMP;
@@ -610,7 +576,7 @@ void LoadSpaceGun(void)
 
 static int x1,x2,myy1,y2,x11,myy11;
 
-void ExecuteSpaceGunFrame(void)
+static void execute_spacegun(void)
 {
 
 
@@ -756,7 +722,7 @@ else{
    cpu_interrupt(CPU_68K_1, 5);
 }
 
-void DrawSpaceGun(void)
+static void DrawSpaceGun(void)
 {
    int x,y,ta,zz;
    int zx,zy;
@@ -949,3 +915,23 @@ Byte | Bit(s) | Description
   7  |xxxxxxxx| Sprite Number (Low)
 
 */
+static struct VIDEO_INFO video_spacegun =
+{
+   DrawSpaceGun,
+   320,
+   240,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_spacegun[] =
+{
+   { "space_gun", },
+   { "spacegun", },
+   { NULL, },
+};
+GME( spacegun, "Space Gun", TAITO, 1990, GAME_SHOOT,
+	.romsw = romsw_spacegun,
+	.long_name_jpn = "‚X‚y¸[‚X‚K‚Ù",
+	.board = "C57",
+);
+

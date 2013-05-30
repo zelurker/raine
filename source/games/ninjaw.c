@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                  NINJA WARRIORS (C) 1987 TAITO CORPORATION                 */
@@ -53,7 +54,6 @@ result of the way the hardware works: the colors in each are the same.
 */
 
 #include "gameinc.h"
-#include "ninjaw.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc220ioc.h"
@@ -76,14 +76,8 @@ Todo:
    NINJA WARRIORS
  ******************/
 
-static struct DIR_INFO ninja_warriors_dirs[] =
-{
-   { "ninja_warriors", },
-   { "ninjaw", },
-   { NULL, },
-};
 
-static struct ROM_INFO ninja_warriors_roms[] =
+static struct ROM_INFO rom_ninjaw[] =
 {
    {       "b31_27.31", 0x00010000, 0x2f3ff642, 0, 0, 0, },
    {       "b31_29.34", 0x00010000, 0xf2941a37, 0, 0, 0, },
@@ -113,7 +107,7 @@ static struct ROM_INFO ninja_warriors_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO ninja_warriors_inputs[] =
+static struct INPUT_INFO input_ninjaw[] =
 {
    INP1( COIN1, 0x03B004, 0x04 ),
    INP1( COIN2, 0x03B004, 0x08 ),
@@ -173,7 +167,7 @@ static struct DSW_DATA dsw_data_ninja_warriors_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ninja_warriors_dsw[] =
+static struct DSW_INFO dsw_ninjaw[] =
 {
    { 0x03B000, 0xFF, dsw_data_ninja_warriors_0 },
    { 0x03B002, 0xFF, dsw_data_ninja_warriors_1 },
@@ -198,50 +192,14 @@ static struct ROMSW_INFO ninja_warriors_romsw[] =
 };
 */
 
-static struct VIDEO_INFO ninja_warriors_video =
-{
-   draw_ninja_warriors,
-   864,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( ninja_warriors ,
-   ninja_warriors_dirs,
-   ninja_warriors_roms,
-   ninja_warriors_inputs,
-   ninja_warriors_dsw,
-   NULL,
-
-   load_ninja_warriors,
-   clear_ninja_warriors,
-   &ninja_warriors_video,
-   execute_ninja_warriors_frame,
-   "ninjaw",
-   "Ninja Warriors",
-   "ˆEƒ“‚E‚H¸[‚Ë‚A¸[‚Y",
-   COMPANY_ID_TAITO,
-   "B31",
-   1987,
-   taito_ym2610_sound,
-   GAME_BEAT
-);
 
 /************************
    NINJA WARRIORS JAPAN
  ************************/
 
-static struct DIR_INFO ninja_warriors_jp_dirs[] =
-{
-   { "ninja_warriors_jp", },
-   { "ninjawj", },
-   { ROMOF("ninjaw"), },
-   { CLONEOF("ninjaw"), },
-   { NULL, },
-};
 
-static struct ROM_INFO ninja_warriors_jp_roms[] =
+static struct ROM_INFO rom_ninjawj[] =
 {
    {       "b31_27.31", 0x00010000, 0x2f3ff642, 0, 0, 0, },
    {       "b31_29.34", 0x00010000, 0xf2941a37, 0, 0, 0, },
@@ -291,45 +249,18 @@ static struct DSW_DATA dsw_data_ninja_warriors_jp_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ninja_warriors_jp_dsw[] =
+static struct DSW_INFO dsw_ninjawj[] =
 {
    { 0x03B000, 0xFF, dsw_data_ninja_warriors_jp_0 },
    { 0x03B002, 0xFF, dsw_data_ninja_warriors_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( ninja_warriors_jp ,
-   ninja_warriors_jp_dirs,
-   ninja_warriors_jp_roms,
-   ninja_warriors_inputs,
-   ninja_warriors_jp_dsw,
-   NULL,
-
-   load_ninja_warriors,
-   clear_ninja_warriors,
-   &ninja_warriors_video,
-   execute_ninja_warriors_frame,
-   "ninjawj",
-   "Ninja Warriors (Japan)",
-   "ˆEƒ“‚E‚H¸[‚Ë‚A¸[‚Y (Japan)",
-   COMPANY_ID_TAITO,
-   "B31",
-   1987,
-   taito_ym2610_sound,
-   GAME_BEAT
-);
 
 /************
    DARIUS 2
  ************/
 
-static struct DIR_INFO darius_2_dirs[] =
-{
-   { "darius_2", },
-   { "darius2", },
-   { "darius2d", },
-   { NULL, },
-};
 
 static struct YM2610interface ym2610_interface =
 {
@@ -346,13 +277,13 @@ static struct YM2610interface ym2610_interface =
   { YM3012_VOL(255,OSD_PAN_LEFT,255,OSD_PAN_RIGHT) },
 };
 
-static struct SOUND_INFO darius_ym2610_sound[] =
+static struct SOUND_INFO sound_darius2[] =
 {
    { SOUND_YM2610,  &ym2610_interface,	},
    { 0, 	    NULL,		},
 };
 
-static struct ROM_INFO darius_2_roms[] =
+static struct ROM_INFO rom_darius2[] =
 {
    {       "c07-01", 0x00080000, 0x3cf0f050, 0, 0, 0, },
    {       "c07-02", 0x00080000, 0x75d16d4b, 0, 0, 0, },
@@ -432,7 +363,7 @@ static struct DSW_DATA dsw_data_darius_2_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO darius_2_dsw[] =
+static struct DSW_INFO dsw_darius2[] =
 {
    { 0x03B000, 0xFF, dsw_data_darius_2_0 },
    { 0x03B002, 0xFF, dsw_data_darius_2_1 },
@@ -447,32 +378,12 @@ static struct ROMSW_DATA romsw_data_darius_2_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO darius_2_romsw[] =
+static struct ROMSW_INFO romsw_darius2[] =
 {
    { 0x03FFFF, 0x01, romsw_data_darius_2_0 },
    { 0,        0,    NULL },
 };
 
-GAME( darius_2 ,
-   darius_2_dirs,
-   darius_2_roms,
-   ninja_warriors_inputs,
-   darius_2_dsw,
-   darius_2_romsw,
-
-   load_darius_2,
-   clear_ninja_warriors,
-   &ninja_warriors_video,
-   execute_ninja_warriors_frame,
-   "darius2",
-   "Darius 2",
-   "‚_‚Î‚C‚A‚XÈQ",
-   COMPANY_ID_TAITO,
-   "C07",
-   1989,
-   darius_ym2610_sound,
-   GAME_SHOOT
-);
 
 static int romset;
 
@@ -498,7 +409,7 @@ static void cpua_w(UINT32 offset, UINT16 data) {
   if (data & 1) reset_cpub = 1;
 }
 */
-void load_ninja_warriors(void)
+static void load_ninjaw(void)
 {
    int ta,tb,tc,td;
    UINT8 *TMP;
@@ -741,7 +652,7 @@ void load_ninja_warriors(void)
    ROM[0xC07AD]=0x00;
 
    ROM[0xC07AE]=0x60;
-   ROM[0xC07AF]=0xEE;  
+   ROM[0xC07AF]=0xEE;
    // WriteWord68k(&ROM[0xc0ad4],0x4e71); // fast start, don't wait for the other
 
    memset(RAM+0x00000,0x00,0x80000);
@@ -883,7 +794,7 @@ void load_ninja_warriors(void)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void load_darius_2(void)
+static void load_darius2(void)
 {
    int ta,tb,tc,td;
    UINT8 *TMP;
@@ -1251,18 +1162,7 @@ void load_darius_2(void)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void clear_ninja_warriors(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0xC0000,1);
-      save_debug("ROM2.bin",ROM+0xc0000,0x60000,1);
-      //save_debug("RAM.bin",RAM,0x060000,1);
-   #endif
-}
-
-void execute_ninja_warriors_frame(void)
+static void execute_ninjaw(void)
 {
    cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(12,60));
    cpu_interrupt(CPU_68K_0,4);
@@ -1273,7 +1173,7 @@ void execute_ninja_warriors_frame(void)
    execute_z80_audio_frame();
 }
 
-void draw_ninja_warriors(void)
+static void draw_ninja_warriors(void)
 {
    int x,y,ta,tb,zz,zzz,zzzz,x16,y16,spr_mask;
    UINT8 *map;
@@ -1517,3 +1417,52 @@ void draw_ninja_warriors(void)
 292000 - 293FFF | FG0 (1024x256 - 2 bytes/tile)
 
 */
+static struct VIDEO_INFO video_ninjaw =
+{
+   draw_ninja_warriors,
+   864,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_darius2[] =
+{
+   { "darius_2", },
+   { "darius2", },
+   { "darius2d", },
+   { NULL, },
+};
+GAME( darius2, "Darius 2", TAITO, 1989, GAME_SHOOT,
+	.input = input_ninjaw,
+	.dsw = dsw_darius2,
+	.romsw = romsw_darius2,
+	.video = &video_ninjaw,
+	.exec = execute_ninjaw,
+	.long_name_jpn = "‚_‚Î‚C‚A‚XÈQ",
+	.board = "C07",
+	.sound = sound_darius2,
+);
+static struct DIR_INFO dir_ninjaw[] =
+{
+   { "ninja_warriors", },
+   { "ninjaw", },
+   { NULL, },
+};
+GME( ninjaw, "Ninja Warriors", TAITO, 1987, GAME_BEAT,
+	.long_name_jpn = "ˆEƒ“‚E‚H¸[‚Ë‚A¸[‚Y",
+	.board = "B31",
+);
+static struct DIR_INFO dir_ninjawj[] =
+{
+   { "ninja_warriors_jp", },
+   { "ninjawj", },
+   { ROMOF("ninjaw"), },
+   { CLONEOF("ninjaw"), },
+   { NULL, },
+};
+CLNE( ninjawj,ninjaw, "Ninja Warriors (Japan)", TAITO, 1987, GAME_BEAT,
+	.dsw = dsw_ninjawj,
+	.long_name_jpn = "ˆEƒ“‚E‚H¸[‚Ë‚A¸[‚Y (Japan)",
+	.board = "B31",
+);
+

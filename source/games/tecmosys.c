@@ -1,3 +1,6 @@
+#define DRV_DEF_VIDEO &video_gaiden
+#define DRV_DEF_EXEC execute_gaiden
+#define DRV_DEF_SOUND sound_gaiden
 /******************************************************************************/
 /*                                                                            */
 /*                       NINJA GAIDEN (C)1988 TECMO                           */
@@ -7,14 +10,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "tecmosys.h"
 #include "taitosnd.h"
 #include "2203intf.h"
 #include "sasound.h"		// sample support routines
 #include "adpcm.h"
 #include "timer.h"
 
-static struct ROM_INFO shadoww_roms[] =
+static struct ROM_INFO rom_shadoww[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "shadowa.1",  0x8290d567, "shadowa.2",  0xf3f08921),
@@ -42,7 +44,7 @@ static struct ROM_INFO shadoww_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO shadowwa_roms[] =
+static struct ROM_INFO rom_shadowwa[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "shadoww.1",  0xfefba387, "shadoww.2",  0x9b9d6b18),
@@ -70,7 +72,7 @@ static struct ROM_INFO shadowwa_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO gaiden_roms[] =
+static struct ROM_INFO rom_gaiden[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "gaiden.1",  0xe037ff7c, "gaiden.2",  0x454f7314),
@@ -96,7 +98,7 @@ static struct ROM_INFO gaiden_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO ryukendn_roms[] =
+static struct ROM_INFO rom_ryukendn[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "ryukendn.1",  0x6203a5e2, "ryukendn.2",  0x9e99f522),
@@ -125,7 +127,7 @@ static struct ROM_INFO ryukendn_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO tknight_roms[] =
+static struct ROM_INFO rom_tknight[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "tkni1.bin",  0x9121daa8, "tkni2.bin",  0x6669cd87),
@@ -139,7 +141,7 @@ static struct ROM_INFO tknight_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO wildfang_roms[] =
+static struct ROM_INFO rom_wildfang[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "1.3st",  0xab876c9b, "2.5st",  0x1dc74b3b),
@@ -195,49 +197,11 @@ static struct ROM_INFO raiga_roms[] =
 
 #endif
 
-static struct DIR_INFO shadoww_dirs[] =
-{
-  { "shadoww" },
-  { NULL }
-};
 
-static struct DIR_INFO shadowwa_dirs[] =
-{
-  { "shadowwa" },
-  { ROMOF("shadoww") },
-  { CLONEOF("shadoww"), },
-  { NULL }
-};
 
-static struct DIR_INFO gaiden_dirs[] =
-{
-  { "gaiden" },
-  { ROMOF("shadoww") },
-  { CLONEOF("shadoww"), },
-  { NULL }
-};
 
-static struct DIR_INFO ryukendn_dirs[] =
-{
-  { "ryukendn" },
-  { ROMOF("shadoww") },
-  { CLONEOF("shadoww"), },
-  { NULL }
-};
 
-static struct DIR_INFO wildfang_dirs[] =
-{
-  { "wildfang" },
-  { NULL }
-};
 
-static struct DIR_INFO tknight_dirs[] =
-{
-  { "tknight" },
-  { ROMOF("wildfang") },
-  { CLONEOF("wildfang"), },
-  { NULL }
-};
 
 static GfxLayout tilelayout =
 {
@@ -285,7 +249,7 @@ static struct GFX_LIST gfxdecodeinfo[] =
 	{ 0, NULL } /* end of array */
 };
 
-static struct INPUT_INFO ninja_gaiden_inputs[] =
+static struct INPUT_INFO input_shadoww[] =
 {
    INP0( COIN1, 0x01A000, 0x40 ),
    INP0( COIN2, 0x01A000, 0x80 ),
@@ -361,23 +325,13 @@ static struct DSW_DATA dsw_data_ninja_gaiden_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ninja_gaiden_dsw[] =
+static struct DSW_INFO dsw_shadoww[] =
 {
    { 0x01A005, 0xFF, dsw_data_ninja_gaiden_0 },
    { 0x01A004, 0x7F, dsw_data_ninja_gaiden_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO ninja_gaiden_video =
-{
-   DrawTecmoSys,
-   256,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   gfxdecodeinfo
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -399,14 +353,14 @@ static struct OKIM6295interface m6295_interface =
    { 100 },
 };
 
-static struct SOUND_INFO ninja_gaiden_sound[] =
+static struct SOUND_INFO sound_gaiden[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { SOUND_M6295,   &m6295_interface,     },
    { 0,             NULL,                 },
 };
 
-static struct INPUT_INFO tecmo_knight_inputs[] =
+static struct INPUT_INFO input_wildfang[] =
 {
    INP0( COIN1, 0x01A000, 0x40 ),
    INP0( COIN2, 0x01A000, 0x80 ),
@@ -458,7 +412,7 @@ static struct DSW_DATA dsw_data_tecmo_knight_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO tecmo_knight_dsw[] =
+static struct DSW_INFO dsw_wildfang[] =
 {
    { 0x01A005, 0xFF, dsw_data_ninja_gaiden_0 },
    { 0x01A004, 0x7F, dsw_data_tecmo_knight_1 },
@@ -488,7 +442,7 @@ static UINT16 SoundReadZ80(UINT16 address)
    return sport;
 }
 
-void AddTecmoSound(UINT32 p1, UINT32 p2)
+static void AddTecmoSound(UINT32 p1, UINT32 p2)
 {
 
    // Apply Speed Patch
@@ -584,7 +538,7 @@ static void load_actual() {
    set_colour_mapper(&col_map_xxxx_bbbb_gggg_rrrr);
 }
 
-void LoadNGaiden(void)
+static void load_gaiden(void)
 {
   load_actual();
 
@@ -620,7 +574,7 @@ void LoadNGaiden(void)
    ROM[0x553]=0x60;
 }
 
-void LoadTKnight(void)
+static void load_wildfang(void)
 {
   load_actual();
 
@@ -656,15 +610,7 @@ static void load_shadoww() {
   AddTecmoSound(0, 0);
 }
 
-void ClearTecmoSys(void)
-{
-#ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x040000,1);
-      //save_debug("RAM.bin",RAM,0x020000,1);
-#endif
-}
-
-void ExecuteTecmoSysFrame(void)
+static void execute_gaiden(void)
 {
    RAM[0x1A005] = get_dsw(1);
    RAM[0x1A004] = get_dsw(0);
@@ -890,7 +836,7 @@ static void draw_tecmo_object(int pri)
    }
 }
 
-void TestNearest(int x, int y)
+static void TestNearest(int x, int y)
 {
   if ((x>0)&&(y>0))			// top
     have_gfx_bg1[x-1][y-1]=1;
@@ -926,7 +872,7 @@ void TestNearest(int x, int y)
     have_gfx_bg1[x+1][y-2]=1;
 }
 
-void DrawTecmoSys(void)
+static void DrawTecmoSys(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16, x1,y1;
    UINT8 *MAP,bcol;
@@ -1061,133 +1007,13 @@ void DrawTecmoSys(void)
 
 }
 
-GAME( shadoww ,
-   shadoww_dirs,
-   shadoww_roms,
-   ninja_gaiden_inputs,
-   ninja_gaiden_dsw,
-   NULL,
 
-   load_shadoww,
-   ClearNGaiden,
-   &ninja_gaiden_video,
-   ExecuteTecmoSysFrame,
-   "shadoww",
-   "Shadow Warriors (World set 1)",
-   "Shadow Warriors (World set 1)",
-   COMPANY_ID_TECMO,
-   NULL,
-   1988,
-   ninja_gaiden_sound,
-   GAME_BEAT
-);
 
-GAME( ninja_gaiden ,
-   gaiden_dirs,
-   gaiden_roms,
-   ninja_gaiden_inputs,
-   ninja_gaiden_dsw,
-   NULL,
 
-   LoadNGaiden,
-   ClearNGaiden,
-   &ninja_gaiden_video,
-   ExecuteTecmoSysFrame,
-   "gaiden",
-   "Ninja Gaiden",
-   "者龍剣伝",
-   COMPANY_ID_TECMO,
-   NULL,
-   1988,
-   ninja_gaiden_sound,
-   GAME_BEAT
-);
 
-GAME( tecmo_knight ,
-   tknight_dirs,
-   tknight_roms,
-   tecmo_knight_inputs,
-   tecmo_knight_dsw,
-   NULL,
-
-   LoadTKnight,
-   ClearTKnight,
-   &ninja_gaiden_video,
-   ExecuteTecmoSysFrame,
-   "tknight",
-   "Tecmo Knight",
-   "ワイルドファング",
-   COMPANY_ID_TECMO,
-   NULL,
-   1989,
-   ninja_gaiden_sound,
-   GAME_BEAT
-);
-
-GAME( shadowwa ,
-   shadowwa_dirs,
-   shadowwa_roms,
-   ninja_gaiden_inputs,
-   ninja_gaiden_dsw,
-   NULL,
-
-   load_shadoww,
-   ClearNGaiden,
-   &ninja_gaiden_video,
-   ExecuteTecmoSysFrame,
-   "shadowwa",
-   "Shadow Warriors (World set 2)",
-   "Shadow Warriors (World set 2)",
-   COMPANY_ID_TECMO,
-   NULL,
-   1988,
-   ninja_gaiden_sound,
-   GAME_BEAT
-);
-
-GAME( ryukendn ,
-   ryukendn_dirs,
-   ryukendn_roms,
-   ninja_gaiden_inputs,
-   ninja_gaiden_dsw,
-   NULL,
-
-   load_shadoww,
-   ClearNGaiden,
-   &ninja_gaiden_video,
-   ExecuteTecmoSysFrame,
-   "ryukendn",
-   "Ninja Ryukenden",
-   "Ninja Ryukenden",
-   COMPANY_ID_TECMO,
-   NULL,
-   1989,
-   ninja_gaiden_sound,
-   GAME_BEAT
-);
 
 /* Wild fang is not working because the protection hack for Tknight needs to be adapted.
    It should be easy to do, but I am not in mood. */
-GAME( wildfang ,
-   wildfang_dirs,
-   wildfang_roms,
-   tecmo_knight_inputs,
-   tecmo_knight_dsw,
-   NULL,
-
-   LoadTKnight,
-   ClearTKnight,
-   &ninja_gaiden_video,
-   ExecuteTecmoSysFrame,
-   "wildfang",
-   "Wild Fang (Tecmo Knight)",
-   "ワイルドファング",
-   COMPANY_ID_TECMO,
-   NULL,
-   1989,
-   ninja_gaiden_sound,
-   GAME_BEAT | GAME_NOT_WORKING
-);
 
 /*
 
@@ -1266,3 +1092,30 @@ Byte | Bit(s) | Description
 -----+--------+----------------------------
 
 */
+static struct VIDEO_INFO video_gaiden =
+{
+   DrawTecmoSys,
+   256,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   gfxdecodeinfo
+};
+GMEI( shadoww, "Shadow Warriors (World set 1)", TECMO, 1988, GAME_BEAT,
+	.input = input_shadoww,
+	.dsw = dsw_shadoww,
+);
+CLNEI(gaiden,shadoww, "Ninja Gaiden", TECMO, 1988, GAME_BEAT,
+	.load_game = load_gaiden,
+	.long_name_jpn = "者龍剣伝",
+);
+CLNEI(ryukendn, shadoww, "Ninja Ryukenden", TECMO, 1989, GAME_BEAT);
+CLNEI(shadowwa, shadoww, "Shadow Warriors (World set 2)", TECMO, 1988, GAME_BEAT);
+GMEI( wildfang, "Wild Fang (Tecmo Knight)", TECMO, 1989, GAME_BEAT | GAME_NOT_WORKING,
+	.long_name_jpn = "ワイルドファング",
+);
+CLNEI(tknight, wildfang, "Tecmo Knight", TECMO, 1989, GAME_BEAT,
+	.long_name_jpn = "ワイルドファング",
+);
+

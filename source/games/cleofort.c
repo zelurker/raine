@@ -5,22 +5,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "cleofort.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO cleopatras_fortune_dirs[] =
-{
-   { "cleopatras_fortune", },
-   { "cleofort", },
-   { "cleopatr", },
-   { NULL, },
-};
 
-static struct ROM_INFO cleopatras_fortune_roms[] =
+static struct ROM_INFO rom_cleopatr[] =
 {
    {   "e28-01.bin", 0x00080000, 0x4440e659, 0, 0, 0, },
    {   "e28-02.bin", 0x00080000, 0xb20d47cb, 0, 0, 0, },
@@ -45,41 +37,13 @@ static struct ROMSW_DATA romsw_data_cleopatras_fortune_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO cleopatras_fortune_romsw[] =
+static struct ROMSW_INFO romsw_cleopatr[] =
 {
    { 0x07FFFF, 0x01, romsw_data_cleopatras_fortune_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO cleopatras_fortune_video =
-{
-   DrawCleoFortune,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( cleopatras_fortune ,
-   cleopatras_fortune_dirs,
-   cleopatras_fortune_roms,
-   f3_system_inputs,
-   NULL,
-   cleopatras_fortune_romsw,
-
-   LoadCleoFortune,
-   ClearCleoFortune,
-   &cleopatras_fortune_video,
-   ExecuteCleoFortuneFrame,
-   "cleopatr",
-   "Cleopatra's Fortune",
-   "クレオパトラ・フォーチュン",
-   COMPANY_ID_TAITO,
-   "E28",
-   1996,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -107,7 +71,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadCleoFortune(void)
+static void load_cleopatr(void)
 {
    int ta,tb,tc;
 
@@ -303,7 +267,7 @@ void LoadCleoFortune(void)
    setup_sound_68000();
 }
 
-void ClearCleoFortune(void)
+static void ClearCleoFortune(void)
 {
    save_eeprom();
 
@@ -314,7 +278,7 @@ void ClearCleoFortune(void)
    #endif
 }
 
-void ExecuteCleoFortuneFrame(void)
+static void execute_cleopatr(void)
 {
   int ta;
   cycles = 1;
@@ -333,7 +297,7 @@ void ExecuteCleoFortuneFrame(void)
   IntF3System();
 }
 
-void DrawCleoFortune(void)
+static void DrawCleoFortune(void)
 {
    int x16,y16,zz,zzz,zzzz;
    int ta,x,y;
@@ -456,3 +420,29 @@ void DrawCleoFortune(void)
      set_colour_mapper(&col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb);
    }
 }
+static struct VIDEO_INFO video_cleopatr =
+{
+   DrawCleoFortune,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_cleopatr[] =
+{
+   { "cleopatras_fortune", },
+   { "cleofort", },
+   { "cleopatr", },
+   { NULL, },
+};
+GAME( cleopatr, "Cleopatra's Fortune", TAITO, 1996, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_cleopatr,
+	.clear = ClearCleoFortune,
+	.video = &video_cleopatr,
+	.exec = execute_cleopatr,
+	.long_name_jpn = "クレオパトラ・フォーチュン",
+	.board = "E28",
+	.sound = f3_sound,
+);
+

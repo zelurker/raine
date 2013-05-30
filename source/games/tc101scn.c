@@ -123,7 +123,7 @@ void tc0100scn_gfx_fg0_wb(int chip,UINT32 addr, UINT8 data)
 
    tb=(addr&0xFFE)<<2;
 
-   if (current_game->video_info->flags & VIDEO_ROTATE_180) {
+   if (current_game->video->flags & VIDEO_ROTATE_180) {
      if((addr&1)==0){
        GFX_PTR[tb+7] = (GFX_PTR[tb+0]&0x02)|((data&0x80)>>7);
        GFX_PTR[tb+6] = (GFX_PTR[tb+1]&0x02)|((data&0x40)>>6);
@@ -190,7 +190,7 @@ void tc0100scn_1_gfx_fg0_wb(UINT32 addr, UINT8 data)
 
 void tc0100scn_gfx_fg0_ww(int chip, UINT32 addr, UINT16 data)
 {
-  int rotation = (current_game->video_info->flags & 3);
+  int rotation = (current_game->video->flags & 3);
   UINT8 *RAM_PTR = RAM_FG[chip];
   UINT8 *GFX_PTR = GFX_FG[chip];
    addr&=0xFFE;

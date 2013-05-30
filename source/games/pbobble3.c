@@ -6,20 +6,13 @@
 
 #include "gameinc.h"
 #include "f3system.h"
-#include "pbobble3.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
 
-static struct DIR_INFO puzzle_bobble_3_dirs[] =
-{
-   { "puzzle_bobble_3", },
-   { "pbobble3", },
-   { NULL, },
-};
 
-static struct ROM_INFO puzzle_bobble_3_roms[] =
+static struct ROM_INFO rom_pbobble3[] =
 {
    {   "pb3_02.rom", 0x00100000, 0x437391d3, 0, 0, 0, },
   { "e29-03.rom", 0x200000, 0xa4371658, REGION_SOUND1 , 0x000000, LOAD_BE },
@@ -51,41 +44,13 @@ static struct ROMSW_DATA romsw_data_puzzle_bobble_3_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO puzzle_bobble_3_romsw[] =
+static struct ROMSW_INFO romsw_pbobble3[] =
 {
    { 0x1FFFFF, 0x03, romsw_data_puzzle_bobble_3_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO puzzle_bobble_3_video =
-{
-   DrawPuzzleBobble3,
-   320,
-   232,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( puzzle_bobble_3 ,
-   puzzle_bobble_3_dirs,
-   puzzle_bobble_3_roms,
-   f3_system_inputs,
-   NULL,
-   puzzle_bobble_3_romsw,
-
-   LoadPuzzleBobble3,
-   NULL,
-   &puzzle_bobble_3_video,
-   ExecuteF3SystemFrame_int2,
-   "pbobble3",
-   "Puzzle Bobble 3",
-   "パズルボブル３",
-   COMPANY_ID_TAITO,
-   "E29",
-   1996,
-   f3_sound,
-   GAME_PUZZLE
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -113,7 +78,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadPuzzleBobble3(void)
+static void load_pbobble3(void)
 {
    int ta,tb,tc;
 
@@ -292,7 +257,7 @@ void LoadPuzzleBobble3(void)
    setup_sound_68000();
 }
 
-void DrawPuzzleBobble3(void)
+static void DrawPuzzleBobble3(void)
 {
    int x,y,z,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *MAP;
@@ -502,3 +467,27 @@ void DrawPuzzleBobble3(void)
    }
    }
 }
+static struct VIDEO_INFO video_pbobble3 =
+{
+   DrawPuzzleBobble3,
+   320,
+   232,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_pbobble3[] =
+{
+   { "puzzle_bobble_3", },
+   { "pbobble3", },
+   { NULL, },
+};
+GAME( pbobble3, "Puzzle Bobble 3", TAITO, 1996, GAME_PUZZLE,
+	.input = f3_system_inputs,
+	.romsw = romsw_pbobble3,
+	.video = &video_pbobble3,
+	.exec = ExecuteF3SystemFrame_int2,
+	.long_name_jpn = "パズルボブル３",
+	.board = "E29",
+	.sound = f3_sound,
+);
+

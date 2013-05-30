@@ -42,13 +42,13 @@ static struct ES5506interface es5506_interface =
 	{ 0 }
 };
 
-static struct SOUND_INFO macrossp_sound[] =
+static struct SOUND_INFO sound_macrossp[] =
 {
    { SOUND_ES5506,  &es5506_interface,  },
    { 0,             NULL,               },
 };
 
-static struct ROM_INFO macrossp_roms[] =
+static struct ROM_INFO rom_macrossp[] =
 {
   { "bp964a-c.u1", 0x080000, 0x39da35e7 , REGION_ROM1, 0x000003, LOAD_8_32 },
   { "bp964a-c.u2", 0x080000, 0x86d0ca6a , REGION_ROM1, 0x000002, LOAD_8_32 },
@@ -175,7 +175,7 @@ static struct DSW_DATA dsw_data_macrossp_5[] =
 
 /* These are the only 2 ports listed in service mode. Except for the
    service mode bit, I could not check anything else */
-static struct DSW_INFO macrossp_dsw[] =
+static struct DSW_INFO dsw_macrossp[] =
 {
   { 0x4000c, 0xff, dsw_data_macrossp_4 },
   { 0x4000d, 0xff, dsw_data_macrossp_5 },
@@ -218,13 +218,8 @@ static struct GFX_LIST gfxdecodeinfo[] =
 	{ 0,           NULL,             },
 };
 
-static struct DIR_INFO macrossp_dirs[] =
-  {
-    { "macrossp" },
-    { NULL, },
-  };
 
-static struct INPUT_INFO macrossp_inputs[] =
+static struct INPUT_INFO input_macrossp[] =
 {
   INP0( P1_UP, 0x40001, 0x01 ),
   INP0( P1_DOWN, 0x40001, 0x02 ),
@@ -668,16 +663,6 @@ static void draw_macrossp() {
   draw_text_layer(&layer[3]);
 }
 
-static struct VIDEO_INFO macrossp_video =
-{
-   draw_macrossp,
-   384,
-   240,
-   BORDER,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
-   gfxdecodeinfo,
-};
 
 static void execute_macrossp() {
   cpu_execute_cycles(CPU_M68020_0, CPU_FRAME_MHz(50,60));
@@ -698,23 +683,17 @@ static void clear_macrossp() {
   save_debug("bios.bin",load_region[REGION_USER1],get_region_size(REGION_USER1),0);
 }
 
-GAME( macrossp ,
-   macrossp_dirs,
-   macrossp_roms,
-   macrossp_inputs,
-   macrossp_dsw,
-   NULL,
-
-   load_macrossp,
-   clear_macrossp,
-   &macrossp_video,
-   execute_macrossp,
-   "macrossp",
-   "Macross plus",
-   "Macrossp",
-   COMPANY_ID_BANPREST,
-   NULL,
-   1996,
-   macrossp_sound,
-   GAME_SHOOT
+static struct VIDEO_INFO video_macrossp =
+{
+   draw_macrossp,
+   384,
+   240,
+   BORDER,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
+   gfxdecodeinfo,
+};
+GMEI( macrossp, "Macross plus", BANPREST, 1996, GAME_SHOOT,
+	.clear = clear_macrossp,
 );
+

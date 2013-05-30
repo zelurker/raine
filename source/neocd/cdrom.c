@@ -3,7 +3,7 @@
 #include "sasound.h"
 #include <string.h>
 #include "neocd.h"
-#include "blit.h" // clear_game_screen
+#include "blit.h" // clear_screen
 #include "files.h"
 #include "palette.h"
 #include "newspr.h"
@@ -717,7 +717,7 @@ void neogeo_cdrom_load_title(void)
 
   spr_conv(&buff[0x5a0], GFX, size-0x5a0, video_spr_usage);
 
-  clear_game_screen(0);
+  clear_screen(0);
   ClearPaletteMap();
   Readed = 0;
   for(y=0;y<80;y+=16)
@@ -1150,7 +1150,7 @@ static void init_loading_progress() {
     }
   }
   neocd_lp.file_to_load = 0;
-  current_game->exec_frame = &loading_progress_function;
+  current_game->exec = &loading_progress_function;
   neocd_lp.sectors_to_load = neocd_lp.loaded_sectors = 0;
 }
 
@@ -1324,7 +1324,7 @@ int    neogeo_cdrom_process_ipl(loading_params *param)
   reset_ingame_timer();
   if (param) {
     neocd_lp.function = 0;
-    current_game->exec_frame = &execute_neocd;
+    current_game->exec = &execute_neocd;
     neocd_lp.sectors_to_load = 0;
   }
   postprocess_ipl();
@@ -1416,7 +1416,7 @@ unsigned neogeo_cdrom_test_files(unsigned char *Ptr, loading_params *param)
       memcpy(RAM_PAL,&RAM[0x11be06],0x200);
       restore_fix(1);
       neocd_lp.function = 0;
-      current_game->exec_frame = &execute_neocd;
+      current_game->exec = &execute_neocd;
       neocd_lp.sectors_to_load = 0;
     }
 

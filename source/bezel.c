@@ -297,7 +297,7 @@ void load_bezel() {
 int bezel_fix_screen_size(int *myw,int *myh) {
   /* Tell raine that we need a biger screen to fit the bezel */
   if (!current_game) return 0;
-  int rotate_screen = (current_game->video_info->flags ^ display_cfg.user_rotate) & 3;
+  int rotate_screen = (current_game->video->flags ^ display_cfg.user_rotate) & 3;
   if (rotate_screen == 1 || rotate_screen == 3) {
     int *dupe = myw;
     myw = myh;
@@ -390,7 +390,7 @@ int bezel_fix_screen_size(int *myw,int *myh) {
 void bezel_fix_screen_coordinates(int *destx,int *desty,int viewx,int viewy, int screenx, int screeny) {
   /* This thing is wicked, it can also move the game screen from the center of the
      display... We must recalculate from screenx and screeny to avoid the rounding errors */
-  int rotate_screen = (current_game->video_info->flags ^ display_cfg.user_rotate) & 3;
+  int rotate_screen = (current_game->video->flags ^ display_cfg.user_rotate) & 3;
 
   if (bezel_bitmap) {
     print_debug("bezel: before coords fix %d,%d view %d,%d rotate %d\n",*destx,*desty,viewx,viewy,rotate_screen);
@@ -432,7 +432,7 @@ void display_bezel() {
    * */
 
   if (bezel_bitmap && display_cfg.bpp > 8) {
-    int rotate_screen = (current_game->video_info->flags ^ display_cfg.user_rotate) & 3;
+    int rotate_screen = (current_game->video->flags ^ display_cfg.user_rotate) & 3;
     int bw = bezel_width, bh = bezel_height;
     int multw =1, multh = 1;
     int xoff2,yoff2,destx,desty,xxx,yyy;
@@ -441,8 +441,8 @@ void display_bezel() {
     if (!bw || !bh) {
 	    // if wants_switch_res = 0, then the bezel is not initalised when arriving here...
 	    int x,y;
-	    x = current_game->video_info->screen_x;
-	    y = current_game->video_info->screen_y;
+	    x = current_game->video->screen_x;
+	    y = current_game->video->screen_y;
 	    bezel_fix_screen_size(&x,&y);
 	    bw = bezel_width;
 	    bh = bezel_height;

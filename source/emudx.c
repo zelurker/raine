@@ -94,7 +94,7 @@ void load_emudx(const char *name, int tiles, int sprites,
   emudx_file dat;
   BITMAP *obj,*bmp;
   int i,ta;
-  VIDEO_INFO *video = (VIDEO_INFO*)current_game->video_info;
+  VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
   int dkong_exception = (strstr(name,"dkongg.dx") != NULL);
 
   emudx_nb_tiles = tiles;
@@ -117,8 +117,8 @@ void load_emudx(const char *name, int tiles, int sprites,
      but allegro is too stupid with its automatic color conversion and reports
      8 bpp if the current video mode has 8bpp. Too bad... */
   video->flags |= VIDEO_NEEDS_16BPP;
-  if(wants_switch_res) { // && switch_res(current_game->video_info))){
-    switch_res(current_game->video_info);
+  if(wants_switch_res) { // && switch_res(current_game->video))){
+    switch_res(current_game->video);
   }
   if (display_cfg.bpp != 16) {
     display_cfg.bpp = 16;
@@ -132,7 +132,7 @@ void load_emudx(const char *name, int tiles, int sprites,
     video->screen_x = emudx_oldwidth;
     video->screen_y = emudx_oldheight;
     if(wants_switch_res)
-      switch_res(current_game->video_info);
+      switch_res(current_game->video);
     return;
   }
   video->draw_game = draw_emudx;
@@ -247,7 +247,7 @@ void load_emudx(const char *name, int tiles, int sprites,
 }
 
 void free_emudx() {
-  VIDEO_INFO *video = (VIDEO_INFO*)current_game->video_info;
+  VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
 
   if (emudx_tiles) {
     unsigned int i;
@@ -262,7 +262,7 @@ void free_emudx() {
       video->flags = emudx_oldflags;
       video->draw_game = emudx_olddraw;
     } else
-      printf("can't restore video_info\n");
+      printf("can't restore video\n");
   }
   if (emudx_sprites) {
     FreeMem(emudx_sprites);

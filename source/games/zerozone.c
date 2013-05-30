@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND sound_zerozone
 /******************************************************************************/
 /*                                                                            */
 /*                         ZERO ZONE (C) 1993 COMAD                           */
@@ -5,19 +6,12 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "zerozone.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 #include "adpcm.h"
 
-static struct DIR_INFO zero_zone_dirs[] =
-{
-   { "zero_zone", },
-   { "zerozone", },
-   { NULL, },
-};
 
-static struct ROM_INFO zero_zone_roms[] =
+static struct ROM_INFO rom_zerozone[] =
 {
    {     "zz-2.rom", 0x00020000, 0xc7551e81, 0, 0, 0, },
    {     "zz-1.rom", 0x00008000, 0x223ccce5, 0, 0, 0, },
@@ -28,7 +22,7 @@ static struct ROM_INFO zero_zone_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO zero_zone_inputs[] =
+static struct INPUT_INFO input_zerozone[] =
 {
    INP0( COIN1, 0x010000, 0x01 ),
    INP0( COIN2, 0x010000, 0x02 ),
@@ -79,22 +73,13 @@ static struct DSW_DATA dsw_data_zero_zone_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO zero_zone_dsw[] =
+static struct DSW_INFO dsw_zerozone[] =
 {
    { 0x01000A, 0xFF, dsw_data_default_0 },
    { 0x010009, 0xFF, dsw_data_zero_zone_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO zero_zone_video =
-{
-   DrawZeroZone,
-   368,
-   224,
-   0,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP |
-   VIDEO_ROTATABLE,
-};
 
 static struct OKIM6295interface m6295_interface =
 {
@@ -104,32 +89,12 @@ static struct OKIM6295interface m6295_interface =
    { 220 }, // volume - still unused
 };
 
-static struct SOUND_INFO zero_zone_sound[] =
+static struct SOUND_INFO sound_zerozone[] =
 {
    { SOUND_M6295,   &m6295_interface,     },
    { 0,             NULL,                 },
 };
 
-GAME( zero_zone ,
-   zero_zone_dirs,
-   zero_zone_roms,
-   zero_zone_inputs,
-   zero_zone_dsw,
-   NULL,
-
-   LoadZeroZone,
-   ClearZeroZone,
-   &zero_zone_video,
-   ExecuteZeroZoneFrame,
-   "zerozone",
-   "Zero Zone",
-   "É[ÉçÉ]Å[Éì",
-   COMPANY_ID_COMAD,
-   NULL,
-   1993,
-   zero_zone_sound,
-   GAME_PUZZLE | GAME_ADULT
-);
 
 static gfx_layout zero_zone_bg0 =
 {
@@ -159,7 +124,7 @@ static UINT8 ZeroZoneSoundReadZ80(UINT16 offset)
    return sport;
 }
 
-void LoadZeroZone(void)
+static void load_zerozone(void)
 {
    RAMSize=0x50000;
 
@@ -262,11 +227,11 @@ void LoadZeroZone(void)
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-void ClearZeroZone(void)
+static void ClearZeroZone(void)
 {
 }
 
-void ExecuteZeroZoneFrame(void)
+static void execute_zerozone(void)
 {
    cpu_execute_cycles(CPU_68K_0, 100000);
    cpu_interrupt(CPU_68K_0, 1);
@@ -280,7 +245,7 @@ void ExecuteZeroZoneFrame(void)
    }
 }
 
-void DrawZeroZone(void)
+static void DrawZeroZone(void)
 {
    int ta,yy,tx,ty,zz;
 
@@ -309,3 +274,23 @@ void DrawZeroZone(void)
       }
    }
 }
+static struct VIDEO_INFO video_zerozone =
+{
+   DrawZeroZone,
+   368,
+   224,
+   0,
+   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_zerozone[] =
+{
+   { "zero_zone", },
+   { "zerozone", },
+   { NULL, },
+};
+GME( zerozone, "Zero Zone", COMAD, 1993, GAME_PUZZLE | GAME_ADULT,
+	.clear = ClearZeroZone,
+	.long_name_jpn = "É[ÉçÉ]Å[Éì",
+);
+

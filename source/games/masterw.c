@@ -5,19 +5,12 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "masterw.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 
-static struct DIR_INFO master_of_weapons_dirs[] =
-{
-   { "master_of_weapons", },
-   { "masterw", },
-   { NULL, },
-};
 
-static struct ROM_INFO master_of_weapons_roms[] =
+static struct ROM_INFO rom_masterw[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "b72-06.rom",  0xae848eff,   "b72-12.rom",  0x7176ce70),
@@ -58,7 +51,7 @@ static struct DSW_DATA dsw_data_master_of_weapons_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO master_of_weapons_dsw[] =
+static struct DSW_INFO dsw_masterw[] =
 {
    { 0x000000, 0xFF, dsw_data_master_of_weapons_0 },
    { 0x000002, 0xFF, dsw_data_default_1 },
@@ -73,41 +66,13 @@ static struct ROMSW_DATA romsw_data_master_of_weapons_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO master_of_weapons_romsw[] =
+static struct ROMSW_INFO romsw_masterw[] =
 {
    { 0x03FFFF, 0x03, romsw_data_master_of_weapons_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO master_of_weapons_video =
-{
-   DrawMasterW,
-   224,
-   320,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP,
-};
 
-GAME( master_of_weapons ,
-   master_of_weapons_dirs,
-   master_of_weapons_roms,
-   b_system_inputs,
-   master_of_weapons_dsw,
-   master_of_weapons_romsw,
-
-   LoadMasterW,
-   ClearMasterW,
-   &master_of_weapons_video,
-   ExecuteMasterWFrame,
-   "masterw",
-   "Master of Weapons",
-   "マスターオブウェポン",
-   COMPANY_ID_TAITO,
-   "B72",
-   1989,
-   taito_ym2203_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_INPUT;
 static UINT8 *RAM_VIDEO;
@@ -119,7 +84,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadMasterW(void)
+static void load_masterw(void)
 {
    int ta,tb,tc;
 
@@ -330,7 +295,7 @@ void LoadMasterW(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearMasterW(void)
+static void ClearMasterW(void)
 {
    RemoveTaitoYM2203();
 
@@ -339,7 +304,7 @@ void ClearMasterW(void)
    #endif
 }
 
-void ExecuteMasterWFrame(void)
+static void execute_masterw(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -352,7 +317,7 @@ void ExecuteMasterWFrame(void)
    Taito2203_Frame();
 }
 
-void DrawMasterW(void)
+static void DrawMasterW(void)
 {
    ClearPaletteMap();
 
@@ -382,4 +347,30 @@ void DrawMasterW(void)
 }
 
 
+
+static struct VIDEO_INFO video_masterw =
+{
+   DrawMasterW,
+   224,
+   320,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP,
+};
+static struct DIR_INFO dir_masterw[] =
+{
+   { "master_of_weapons", },
+   { "masterw", },
+   { NULL, },
+};
+GAME( masterw, "Master of Weapons", TAITO, 1989, GAME_SHOOT,
+	.input = b_system_inputs,
+	.dsw = dsw_masterw,
+	.romsw = romsw_masterw,
+	.clear = ClearMasterW,
+	.video = &video_masterw,
+	.exec = execute_masterw,
+	.long_name_jpn = "マスターオブウェポン",
+	.board = "B72",
+	.sound = taito_ym2203_sound,
+);
 

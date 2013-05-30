@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND sound_arkarea
 /******************************************************************************/
 /*                                                                            */
 /*                    UPL Z80B+Z80B+YM2203+YM2203 GAMES                       */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "upl.h"
 #include "taitosnd.h"
 #include "2203intf.h"
 #include "decode.h"
@@ -16,14 +16,8 @@
    MUTANT NIGHT
  ****************/
 
-static struct DIR_INFO mutant_night_dirs[] =
-{
-   { "mutant_night", },
-   { "mnight", },
-   { NULL, },
-};
 
-static struct ROM_INFO mutant_night_roms[] =
+static struct ROM_INFO rom_mnight[] =
 {
    { "mn13-b23.bin", 0x00010000, 0x65714070, 0, 0, 0, },
    { "mn11-b20.bin", 0x00010000, 0x4d37e0f4, 0, 0, 0, },
@@ -41,7 +35,7 @@ static struct ROM_INFO mutant_night_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO mutant_night_inputs[] =
+static struct INPUT_INFO input_arkarea[] =
 {
    INP0( COIN1, 0x00F800, 0x40 ),
    INP0( COIN2, 0x00F800, 0x80 ),
@@ -117,32 +111,14 @@ static struct DSW_DATA dsw_data_mutant_night_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO mutant_night_dsw[] =
+static struct DSW_INFO dsw_mnight[] =
 {
    { 0x00F803, 0xFF, dsw_data_mutant_night_0 },
    { 0x00F804, 0xFF, dsw_data_mutant_night_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO upl_video =
-{
-   DrawUPL,
-   256,
-   192,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-static struct VIDEO_INFO upl_r270_video =
-{
-   draw_omega_fighter,
-   256,
-   192,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
 
 static struct YM2203interface ym2203_interface =
 {
@@ -157,45 +133,19 @@ static struct YM2203interface ym2203_interface =
    { NULL, NULL }
 };
 
-static struct SOUND_INFO upl_sound[] =
+static struct SOUND_INFO sound_arkarea[] =
 {
    { SOUND_YM2203,  &ym2203_interface,    },
    { 0,             NULL,                 },
 };
 
-GAME( mutant_night ,
-   mutant_night_dirs,
-   mutant_night_roms,
-   mutant_night_inputs,
-   mutant_night_dsw,
-   NULL,
-
-   LoadMutantNight,
-   ClearMutantNight,
-   &upl_video,
-   ExecuteUPLFrame,
-   "mnight",
-   "Mutant Night",
-   "ミュータントナイト",
-   COMPANY_ID_UPL,
-   NULL,
-   1987,
-   upl_sound,
-   GAME_SHOOT|GAME_PARTIALLY_WORKING
-);
 
 /************
    ARK AREA
  ************/
 
-static struct DIR_INFO ark_area_dirs[] =
-{
-   { "ark_area", },
-   { "arkarea", },
-   { NULL, },
-};
 
-static struct ROM_INFO ark_area_roms[] =
+static struct ROM_INFO rom_arkarea[] =
 {
    {  "arkarea.001", 0x00010000, 0x09d11ab7, 0, 0, 0, },
    {  "arkarea.002", 0x00010000, 0x051d3482, 0, 0, 0, },
@@ -266,47 +216,20 @@ static struct DSW_DATA dsw_data_ark_area_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ark_area_dsw[] =
+static struct DSW_INFO dsw_arkarea[] =
 {
    { 0x00F803, 0xFF, dsw_data_ark_area_0 },
    { 0x00F804, 0xFF, dsw_data_ark_area_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( ark_area ,
-   ark_area_dirs,
-   ark_area_roms,
-   mutant_night_inputs,
-   ark_area_dsw,
-   NULL,
-
-   load_ark_area,
-   clear_ark_area,
-   &upl_video,
-   ExecuteUPLFrame,
-   "arkarea",
-   "Ark Area",
-   NULL,
-   COMPANY_ID_UPL,
-   NULL,
-   1987,
-   upl_sound,
-   GAME_SHOOT
-);
 
 /***************
    NINJA KID 2
  ***************/
 
-static struct DIR_INFO ninja_kid_2_dirs[] =
-{
-   { "ninja_kid_2", },
-   { "ninjakd2", },
-   { "ninjak2a", },
-   { NULL, },
-};
 
-static struct ROM_INFO ninja_kid_2_roms[] =
+static struct ROM_INFO rom_ninjakd2[] =
 {
    {   "nk2_01.rom", 0x00008000, 0x3cdbb906, 0, 0, 0, },
    {   "nk2_02.rom", 0x00008000, 0xb5ce9a1a, 0, 0, 0, },
@@ -323,7 +246,7 @@ static struct ROM_INFO ninja_kid_2_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO ninja_kid_2_inputs[] =
+static struct INPUT_INFO input_ninjakd2[] =
 {
    INP0( COIN1, 0x00C000, 0x40 ),
    INP0( COIN2, 0x00C000, 0x80 ),
@@ -396,49 +319,20 @@ static struct DSW_DATA dsw_data_ninja_kid_2_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ninja_kid_2_dsw[] =
+static struct DSW_INFO dsw_ninjakd2[] =
 {
    { 0x00C003, 0xFF, dsw_data_ninja_kid_2_0 },
    { 0x00C004, 0xFF, dsw_data_ninja_kid_2_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( ninja_kid_2 ,
-   ninja_kid_2_dirs,
-   ninja_kid_2_roms,
-   ninja_kid_2_inputs,
-   ninja_kid_2_dsw,
-   NULL,
-
-   LoadNinjaKid2,
-   ClearNinjaKid2,
-   &upl_video,
-   ExecuteUPLFrame,
-   "ninjakd2",
-   "Ninja Kid 2",
-   NULL,
-   COMPANY_ID_UPL,
-   NULL,
-   1987,
-   upl_sound,
-   GAME_PLATFORM
-);
 
 /*************************
    OMEGA FIGHTER SPECIAL
  *************************/
 
-static struct DIR_INFO omega_fighter_dirs[] =
-{
-   { "omega_fighter_special", },
-   { "omegafs", },
-   { "omgfigts", },
-   { ROMOF("omegaf"), },
-   { CLONEOF("omegaf"), },
-   { NULL, },
-};
 
-static struct ROM_INFO omega_fighter_roms[] =
+static struct ROM_INFO rom_omegafs[] =
 {
    {   "1back2.15b", 0x00080000, 0x6210ddcc, 0, 0, 0, },
    {   "2back1.27b", 0x00080000, 0x21f8a32e, 0, 0, 0, },
@@ -451,7 +345,7 @@ static struct ROM_INFO omega_fighter_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO omega_fighter_inputs[] =
+static struct INPUT_INFO input_omegaf[] =
 {
    INP0( COIN1, 0x00C000, 0x40 ),
    INP0( COIN2, 0x00C000, 0x80 ),
@@ -523,47 +417,20 @@ static struct DSW_DATA dsw_data_omega_fighter_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO omega_fighter_dsw[] =
+static struct DSW_INFO dsw_omegaf[] =
 {
    { 0x00C003, 0xF9, dsw_data_omega_fighter_0 },
    { 0x00C004, 0xFC, dsw_data_omega_fighter_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( omega_fighter ,
-   omega_fighter_dirs,
-   omega_fighter_roms,
-   omega_fighter_inputs,
-   omega_fighter_dsw,
-   NULL,
-
-   LoadOmegaFighter,
-   ClearOmegaFighter,
-   &upl_r270_video,
-   ExecuteUPLFrame,
-   "omegafs",
-   "Omega Fighter Special",
-   "オメガファイター Special",
-   COMPANY_ID_UPL,
-   "UPL-89016",
-   1989,
-   upl_sound,
-   GAME_SHOOT
-);
 
 /*****************
    OMEGA FIGHTER
  *****************/
 
-static struct DIR_INFO omega_fighter_japanese_dirs[] =
-{
-   { "omega_fighter", },
-   { "omegaf", },
-   { "omgfight", },
-   { NULL, },
-};
 
-static struct ROM_INFO omega_fighter_japanese_roms[] =
+static struct ROM_INFO rom_omegaf[] =
 {
    {   "1back2.15b", 0x00080000, 0x6210ddcc, 0, 0, 0, },
    {   "2back1.27b", 0x00080000, 0x21f8a32e, 0, 0, 0, },
@@ -576,42 +443,13 @@ static struct ROM_INFO omega_fighter_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( omega_fighter_japanese ,
-   omega_fighter_japanese_dirs,
-   omega_fighter_japanese_roms,
-   omega_fighter_inputs,
-   omega_fighter_dsw,
-   NULL,
-
-   LoadOmegaFighter,
-   ClearOmegaFighter,
-   &upl_r270_video,
-   ExecuteUPLFrame,
-   "omegaf",
-   "Omega Fighter",
-   "オメガファイター",
-   COMPANY_ID_UPL,
-   "UPL-89016",
-   1989,
-   upl_sound,
-   GAME_SHOOT
-);
 
 /**************
    RAD ACTION
  **************/
 
-static struct DIR_INFO rad_action_dirs[] =
-{
-   { "rad_action", },
-   { "radactn", },
-   { "rdaction", },
-   { ROMOF("ninjakd2"), },
-   { CLONEOF("ninjakd2"), },
-   { NULL, },
-};
 
-static struct ROM_INFO rad_action_roms[] =
+static struct ROM_INFO rom_rdaction[] =
 {
    {         "1.3u", 0x00008000, 0x5c475611, 0, 0, 0, },
    {   "nk2_10.rom", 0x00010000, 0xc913c4ab, 0, 0, 0, },
@@ -628,26 +466,6 @@ static struct ROM_INFO rad_action_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( rad_action ,
-   rad_action_dirs,
-   rad_action_roms,
-   ninja_kid_2_inputs,
-   ninja_kid_2_dsw,
-   NULL,
-
-   LoadRadAction,
-   ClearRadAction,
-   &upl_video,
-   ExecuteUPLFrame,
-   "rdaction",
-   "Rad Action",
-   NULL,
-   COMPANY_ID_UPL,
-   NULL,
-   1987,
-   upl_sound,
-   GAME_PLATFORM
-);
 
 static int romset;
 
@@ -691,7 +509,7 @@ typedef struct UPL_BG_LAYER			// Information about 1 layer
    UINT8 col_bank;				// Colour Bank Offset
 } UPL_BG_LAYER;
 
-struct UPL_BG_LAYER bg_layers[3];
+static struct UPL_BG_LAYER bg_layers[3];
 
 /*
 
@@ -736,7 +554,7 @@ FA00-FFFF OBJECT
 /* ROBO KID Z80 ROM BANKING                                                   */
 /******************************************************************************/
 
-void UPLBankWrite(UINT16 offset, UINT8 data)
+static void UPLBankWrite(UINT16 offset, UINT8 data)
 {
   z80_set_bank(1,data);
 }
@@ -1044,7 +862,7 @@ static int MS1DecodeBG0_TypeB(UINT8 *src, UINT32 size)
 
 /******************************************************************************/
 
-void LoadNinjaKid2(void)
+static void load_ninjakd2(void)
 {
    UINT8 *TMP;
    int ta;
@@ -1226,14 +1044,7 @@ void LoadNinjaKid2(void)
    mask_spr = 0x10;
 }
 
-void ClearNinjaKid2(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-#endif
-}
-
-void LoadRadAction(void)
+static void load_rdaction(void)
 {
    UINT8 *TMP;
    int ta;
@@ -1414,14 +1225,7 @@ void LoadRadAction(void)
    mask_spr = 0x10;
 }
 
-void ClearRadAction(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-#endif
-}
-
-void LoadMutantNight(void)
+static void load_mnight(void)
 {
    UINT8 *TMP;
    int ta;
@@ -1607,14 +1411,7 @@ void LoadMutantNight(void)
    mask_spr = 0x10;
 }
 
-void ClearMutantNight(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-#endif
-}
-
-void load_ark_area(void)
+static void load_arkarea(void)
 {
    UINT8 *TMP;
    int ta;
@@ -1793,14 +1590,7 @@ void load_ark_area(void)
    mask_spr = 0x10;
 }
 
-void clear_ark_area(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-#endif
-}
-
-void LoadOmegaFighter(void)
+static void load_omegaf(void)
 {
    UINT8 *TMP;
 
@@ -2021,17 +1811,10 @@ void LoadOmegaFighter(void)
    mask_spr = 0x20;
 }
 
-void ClearOmegaFighter(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-#endif
-}
-
 #define FRAME1 CPU_FRAME_MHz(3,60)
 #define FRAME2 CPU_FRAME_MHz(2,60)
 
-void ExecuteUPLFrame(void)
+static void execute_arkarea(void)
 {
   cpu_execute_cycles(CPU_Z80_1, FRAME1);	// Main Z80 12MHz (60fps)
    cpu_execute_cycles(CPU_Z80_2, FRAME2);	// Sub Z80 6MHz (60fps)
@@ -2110,7 +1893,7 @@ static UINT16 bg_map_c[0x10] =
 
 int bg_layer_count;
 
-void DrawUPLLayer(int num)
+static void DrawUPLLayer(int num)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta;
    UINT8 *map;
@@ -2391,7 +2174,7 @@ void DrawUPLLayer(int num)
 
 }
 
-void draw_upl_fg0(void)
+static void draw_upl_fg0(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta;
    UINT8 *map;
@@ -2433,7 +2216,7 @@ void draw_upl_fg0(void)
    END_SCROLL_256x256_2_8();
 }
 
-void DrawUPL(void)
+static void DrawUPL(void)
 {
    int zz,x,y,ta,rr,xx,yy;
    UINT8 *map;
@@ -2626,7 +2409,7 @@ void DrawUPL(void)
    draw_upl_fg0();
 }
 
-void draw_omega_fighter(void)
+static void draw_omega_fighter(void)
 {
    int zz,zzz,zzzz,x16,y16,x,y,ta;
    int xx,yy,rr;
@@ -2963,4 +2746,103 @@ void draw_omega_fighter(void)
    draw_upl_fg0();
 
 }
+
+static struct VIDEO_INFO video_arkarea =
+{
+   DrawUPL,
+   256,
+   192,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_omegaf =
+{
+   draw_omega_fighter,
+   256,
+   192,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_arkarea[] =
+{
+   { "ark_area", },
+   { "arkarea", },
+   { NULL, },
+};
+GME( arkarea, "Ark Area", UPL, 1987, GAME_SHOOT);
+static struct DIR_INFO dir_mnight[] =
+{
+   { "mutant_night", },
+   { "mnight", },
+   { NULL, },
+};
+GAME( mnight, "Mutant Night", UPL, 1987, GAME_SHOOT|GAME_PARTIALLY_WORKING,
+	.input = input_arkarea,
+	.dsw = dsw_mnight,
+	.video = &video_arkarea,
+	.exec = execute_arkarea,
+	.long_name_jpn = "ミュータントナイト",
+);
+static struct DIR_INFO dir_ninjakd2[] =
+{
+   { "ninja_kid_2", },
+   { "ninjakd2", },
+   { "ninjak2a", },
+   { NULL, },
+};
+GAME( ninjakd2, "Ninja Kid 2", UPL, 1987, GAME_PLATFORM,
+	.input = input_ninjakd2,
+	.dsw = dsw_ninjakd2,
+	.video = &video_arkarea,
+	.exec = execute_arkarea,
+);
+static struct DIR_INFO dir_omegafs[] =
+{
+   { "omega_fighter_special", },
+   { "omegafs", },
+   { "omgfigts", },
+   { ROMOF("omegaf"), },
+   { CLONEOF("omegaf"), },
+   { NULL, },
+};
+CLONE(omegafs, omegaf, "Omega Fighter Special", UPL, 1989, GAME_SHOOT,
+	.input = input_omegaf,
+	.dsw = dsw_omegaf,
+	.video = &video_omegaf,
+	.exec = execute_arkarea,
+	.long_name_jpn = "オメガファイター Special",
+	.board = "UPL-89016",
+);
+static struct DIR_INFO dir_omegaf[] =
+{
+   { "omega_fighter", },
+   { "omegaf", },
+   { "omgfight", },
+   { NULL, },
+};
+GAME( omegaf, "Omega Fighter", UPL, 1989, GAME_SHOOT,
+	.input = input_omegaf,
+	.dsw = dsw_omegaf,
+	.video = &video_omegaf,
+	.exec = execute_arkarea,
+	.long_name_jpn = "オメガファイター",
+	.board = "UPL-89016",
+);
+static struct DIR_INFO dir_rdaction[] =
+{
+   { "rad_action", },
+   { "radactn", },
+   { "rdaction", },
+   { ROMOF("ninjakd2"), },
+   { CLONEOF("ninjakd2"), },
+   { NULL, },
+};
+GAME(rdaction, "Rad Action", UPL, 1987, GAME_PLATFORM,
+	.input = input_ninjakd2,
+	.dsw = dsw_ninjakd2,
+	.video = &video_arkarea,
+	.exec = execute_arkarea,
+);
 

@@ -253,7 +253,7 @@ static void my_update_dlg() {
 
 void switch_mixer() {
    VIDEO_INFO *vid_info;
-   vid_info = (VIDEO_INFO*)current_game->video_info;
+   vid_info = (VIDEO_INFO*)current_game->video;
    if (old_draw) { // restores normal screen
      if (player) {
        shutdown_dialog(player);

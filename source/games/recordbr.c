@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                 RECORD BREAKER (C) 1988 TAITO CORPORATION                  */
@@ -5,22 +6,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "recordbr.h"
 #include "tc004vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 
-static struct DIR_INFO record_breaker_dirs[] =
-{
-   { "record_breaker", },
-   { "recordb2", },
-   { ROMOF("recordbr"), },
-   { CLONEOF("recordbr"), },
-   { NULL, },
-};
 
-static struct ROM_INFO record_breaker_roms[] =
+static struct ROM_INFO rom_recordb2[] =
 {
    {   "b56-01.rom", 0x00020000, 0x766b7260, 0, 0, 0, },
    {   "b56-02.rom", 0x00020000, 0xc9566226, 0, 0, 0, },
@@ -40,7 +32,7 @@ static struct ROM_INFO record_breaker_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO record_breaker_inputs[] =
+static struct INPUT_INFO input_recordbr[] =
 {
    INP1( COIN1, 0x032004, 0x04 ),
    INP1( COIN2, 0x032004, 0x08 ),
@@ -95,7 +87,7 @@ static struct DSW_DATA dsw_data_record_breaker_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO record_breaker_dsw[] =
+static struct DSW_INFO dsw_recordbr[] =
 {
    { 0x032000, 0xFF, dsw_data_record_breaker_0 },
    { 0x032002, 0xFF, dsw_data_default_1 },
@@ -110,52 +102,16 @@ static struct ROMSW_DATA romsw_data_record_breaker_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO record_breaker_romsw[] =
+static struct ROMSW_INFO romsw_recordbr[] =
 {
    { 0x07FFFF, 0x03, romsw_data_record_breaker_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO record_breaker_video =
-{
-   DrawRecordBr,
-   320,
-   240,
-   64,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( record_breaker ,
-   record_breaker_dirs,
-   record_breaker_roms,
-   record_breaker_inputs,
-   record_breaker_dsw,
-   record_breaker_romsw,
 
-   LoadRecordBr,
-   ClearRecordBr,
-   &record_breaker_video,
-   ExecuteRecordBrFrame,
-   "recordb2",
-   "Record Breaker (Alternate)",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B56",
-   1988,
-   taito_ym2610_sound,
-   GAME_SPORTS | GAME_NOT_WORKING
-);
 
-static struct DIR_INFO record_breaker_alt_dirs[] =
-{
-   { "record_breaker_alternate", },
-   { "record_breaker_alt", },
-   { "recbralt", },
-   { "recordbr", },
-   { NULL, },
-};
-
-static struct ROM_INFO record_breaker_alt_roms[] =
+static struct ROM_INFO rom_recordbr[] =
 {
    {   "b56-01.rom", 0x00020000, 0x766b7260, 0, 0, 0, },
    {       "b56-02", 0x00020000, 0x68c604ec, 0, 0, 0, },
@@ -175,26 +131,6 @@ static struct ROM_INFO record_breaker_alt_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( record_breaker_alt ,
-   record_breaker_alt_dirs,
-   record_breaker_alt_roms,
-   record_breaker_inputs,
-   record_breaker_dsw,
-   record_breaker_romsw,
-
-   LoadRecordBr,
-   ClearRecordBr,
-   &record_breaker_video,
-   ExecuteRecordBrFrame,
-   "recordbr",
-   "Record Breaker",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B56",
-   1988,
-   taito_ym2610_sound,
-   GAME_SPORTS | GAME_NOT_WORKING
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_COLOUR;
@@ -205,7 +141,7 @@ static UINT8 *GFX_BG0_SOLID;
 
 static UINT8 *GFX_FG0;
 
-void LoadRecordBr(void)
+static void load_recordbr(void)
 {
    int ta,tb,tc;
 
@@ -413,21 +349,10 @@ void LoadRecordBr(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearRecordBr(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x080000,1);
-      //save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x400000,0);
-   #endif
-}
-
-void ExecuteRecordBrFrame(void)
+static void execute_recordbr(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);
@@ -435,7 +360,7 @@ void ExecuteRecordBrFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void DrawRecordBr(void)
+static void DrawRecordBr(void)
 {
    ClearPaletteMap();
 
@@ -464,3 +389,36 @@ void DrawRecordBr(void)
 
    //tc0004vcu_render_fg0();
 }
+static struct VIDEO_INFO video_recordbr =
+{
+   DrawRecordBr,
+   320,
+   240,
+   64,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_recordb2[] =
+{
+   { "record_breaker", },
+   { "recordb2", },
+   { ROMOF("recordbr"), },
+   { CLONEOF("recordbr"), },
+   { NULL, },
+};
+CLNE( recordb2,recordbr, "Record Breaker (Alternate)", TAITO, 1988, GAME_SPORTS | GAME_NOT_WORKING,
+	.romsw = romsw_recordbr,
+	.board = "B56",
+);
+static struct DIR_INFO dir_recordbr[] =
+{
+   { "record_breaker_alternate", },
+   { "record_breaker_alt", },
+   { "recbralt", },
+   { "recordbr", },
+   { NULL, },
+};
+GAME( recordbr, "Record Breaker", TAITO, 1988, GAME_SPORTS | GAME_NOT_WORKING,
+	.romsw = romsw_recordbr,
+	.board = "B56",
+);
+

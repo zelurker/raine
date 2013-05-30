@@ -5,7 +5,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "exzisus.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "2203intf.h"
@@ -28,13 +27,8 @@ B23 = Exzisus (single screen) = romswap update
 
 */
 
-static struct DIR_INFO exzisus_dirs[] =
-{
-   { "exzisus", },
-   { NULL, },
-};
 
-static struct ROM_INFO exzisus_roms[] =
+static struct ROM_INFO rom_exzisus[] =
 {
    {   "b12-12.bin", 0x00010000, 0xa662be67, 0, 0, 0, },
    {   "b12-13.bin", 0x00010000, 0x04a29633, 0, 0, 0, },
@@ -59,7 +53,7 @@ static struct ROM_INFO exzisus_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO exzisus_inputs[] =
+static struct INPUT_INFO input_exzisus[] =
 {
    INP1( COIN1, 0x020002, 0x10 ),
    INP1( COIN2, 0x020002, 0x20 ),
@@ -132,22 +126,13 @@ static struct DSW_DATA dsw_data_exzisus_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO exzisus_dsw[] =
+static struct DSW_INFO dsw_exzisus[] =
 {
    { 0x020004, 0xFF, dsw_data_exzisus_0 },
    { 0x020005, 0xFF, dsw_data_exzisus_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO exzisus_video =
-{
-   draw_exzisus,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
 static struct ROMSW_DATA romsw_data_exzisus_0[] =
 {
@@ -158,32 +143,12 @@ static struct ROMSW_DATA romsw_data_exzisus_0[] =
    { NULL,                       0    },
 };
 
-static struct ROMSW_INFO exzisus_romsw[] =
+static struct ROMSW_INFO romsw_exzisus[] =
 {
    { 0x1007FFF, 0x01, romsw_data_exzisus_0 },
    { 0,        0,    NULL },
 };
 
-GAME( exzisus ,
-   exzisus_dirs,
-   exzisus_roms,
-   exzisus_inputs,
-   exzisus_dsw,
-   exzisus_romsw,
-
-   load_exzisus,
-   clear_exzisus,
-   &exzisus_video,
-   execute_exzisus_frame,
-   "exzisus",
-   "Exzisus",
-   "イグジーザス",
-   COMPANY_ID_TAITO,
-   "B23",
-   1987,
-   taito_ym2151_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG0_SOLID;
@@ -200,7 +165,7 @@ static UINT8 *RAM_COLOUR;
 /* MAIN Z80 ROM BANKING                                                       */
 /******************************************************************************/
 
-void exzisus_bank_w(UINT16 offset, UINT8 data)
+static void exzisus_bank_w(UINT16 offset, UINT8 data)
 {
    offset &= 15;
 
@@ -225,7 +190,7 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
 /* SUB Z80 ROM BANKING                                                        */
 /******************************************************************************/
 
-void exzisus_sub_bank_w(UINT16 offset, UINT8 data)
+static void exzisus_sub_bank_w(UINT16 offset, UINT8 data)
 {
    offset &= 15;
 
@@ -303,7 +268,7 @@ static void DrawNibble(UINT8 *out, UINT32 plane, UINT8 c)
       } while(--count);
 }
 
-void load_exzisus(void)
+static void load_exzisus(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -532,7 +497,7 @@ void load_exzisus(void)
    set_colour_mapper(&col_map_xxxx_rrrr_gggg_bbbb);
 }
 
-void clear_exzisus(void)
+static void clear_exzisus(void)
 {
    RemoveTaitoYM2151();
 
@@ -542,7 +507,7 @@ void clear_exzisus(void)
 #endif
 }
 
-void execute_exzisus_frame(void)
+static void execute_exzisus(void)
 {
    cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Main Z80 8MHz (60fps)
       print_debug("Z80PC_MAIN:%04x\n",z80pc);
@@ -559,7 +524,7 @@ void execute_exzisus_frame(void)
    Taito2151_Frame();
 }
 
-void draw_exzisus(void)
+static void draw_exzisus(void)
 {
    int x,y,ta;
    int sx,sy,offs,goffs,gfx_offs,gfx_num,gfx_attr,height,xc,yc;
@@ -742,3 +707,29 @@ DATA RAM (SCREEN RAM)
  1 |xxxxxxxx| Tile (low)
 
 */
+static struct VIDEO_INFO video_exzisus =
+{
+   draw_exzisus,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_exzisus[] =
+{
+   { "exzisus", },
+   { NULL, },
+};
+GAME( exzisus, "Exzisus", TAITO, 1987, GAME_SHOOT,
+	.input = input_exzisus,
+	.dsw = dsw_exzisus,
+	.romsw = romsw_exzisus,
+	.clear = clear_exzisus,
+	.video = &video_exzisus,
+	.exec = execute_exzisus,
+	.long_name_jpn = "イグジーザス",
+	.board = "B23",
+	.sound = taito_ym2151_sound,
+);
+

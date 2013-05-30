@@ -32,7 +32,7 @@ static int my_toggle_fullscreen(int sel) {
   video_options->draw();
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
-  
+
 static int my_toggle_border(int sel) {
     ScreenChange();
     return 0;
@@ -61,7 +61,7 @@ static menu_item_t blits_options[] =
 {
     { "Change video mode", NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
 	{ "Never", "To match game resolution (low res most of the time)", "To match 2x game resolution" } },
-    { "Scaler", &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 }, 
+    { "Scaler", &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 },
 	{ "None", "Scale2x/3x", "Pixel double", "hq2x/3x" } },
     { "Scanlines", &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
 	{ "Off", "Halfheight", "Fullheight", "Fullheight + Double width" } },
@@ -106,7 +106,7 @@ static menu_item_t ogl_options[] =
     { "Rendering", NULL, &ogl.render, 2, { 0, 1 }, { "DrawPixels (no shaders)", "Texture (possible shaders)" }, },
     { "Double buffer", NULL, &ogl.dbuf, 2, { 0, 1 }, {"No","Yes"} },
     { "Save opengl screenshots", NULL, &ogl.save, 2, {0, 1}, {"No", "Yes"} },
-    { "Shader", &choose_shader,&bidon,1,{0},{ogl.shader}}, 
+    { "Shader", &choose_shader,&bidon,1,{0},{ogl.shader}},
     { "OpenGL overlay interface", NULL, &ogl.overlay, 2, { 0, 1 }, {"No","Yes"} },
     {  NULL },
 };
@@ -146,7 +146,7 @@ static menu_item_t video_items[] =
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
 { "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {"No", "Yes"} },
 { "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
-{ "Video info...", &do_video_info, },
+{ "Video info...", &do_video, },
 { "Renderer options", &renderer_options },
 { "General options:" },
 { "Limit framerate <= 60fps", NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {"No","Yes"} },

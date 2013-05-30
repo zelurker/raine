@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND sound_arbalest
 /******************************************************************************/
 /*                                                                            */
 /*                        LAME SETA GAMES (C) 19xx SETA                       */
@@ -54,59 +55,7 @@
 #endif
 #include "gun.h"
 
-// #include <readline/readline.h>
-
-static struct DIR_INFO meta_fox_dirs[] =
-{
-   { "meta_fox", },
-   { "metafox", },
-   { NULL, },
-};
-
-static struct DIR_INFO arbalest_dirs[] =
-{
-   { "arbalest", },
-   { NULL, },
-};
-
-static struct DIR_INFO drgnunit_dirs[] =
-  {
-    { "drgnunit", },
-    { NULL, },
-  };
-
-static struct DIR_INFO tndrcade_dirs[] =
-  {
-    {"tndrcade",},
-    {NULL,},
-  };
-
-static struct DIR_INFO downtown_dirs[] =
-{
-  { "downtown" },
-  { NULL }
-};
-
-static struct DIR_INFO wits_dirs[] =
-{
-  { "wits" },
-  { NULL }
-};
-
-static struct DIR_INFO thunderl_dirs[] =
-{
-  { "thunderl" },
-  { NULL }
-};
-
-static struct DIR_INFO twin_eagle_dirs[] =
-{
-   { "twin_eagle", },
-   { "twineagl", },
-   { NULL, },
-};
-
-static struct INPUT_INFO seta_inputs[] =
+static struct INPUT_INFO input_arbalest[] =
 {
   INP0( TILT, 0xb000, 0x10 ),
   INP0( SERVICE, 0xb000, 0x20 ),
@@ -132,7 +81,7 @@ static struct INPUT_INFO seta_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO calibr50_inputs[] =
+static struct INPUT_INFO input_calibr50[] =
 {
    INP0( P1_UP, 0xc000, 0x01 ),
    INP0( P1_DOWN, 0xc000, 0x02 ),
@@ -163,7 +112,7 @@ static struct INPUT_INFO calibr50_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO downtown_inputs[] =
+static struct INPUT_INFO input_downtown[] =
 {
   INP0( TILT, 0xb000, 0x10 ),
   INP0( SERVICE, 0xb000, 0x20 ),
@@ -195,7 +144,7 @@ static struct INPUT_INFO downtown_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO twineagl_inputs[] =
+static struct INPUT_INFO input_tndrcade[] =
 {
    INP0( P1_LEFT, 0x0b000, 0x01 ),
    INP0( P1_RIGHT, 0x0b000, 0x02 ),
@@ -224,7 +173,7 @@ static struct INPUT_INFO twineagl_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO thunderl_inputs[] =
+static struct INPUT_INFO input_blandia[] =
 {
    INP0( P1_LEFT, 0x02, 0x01 ),
    INP0( P1_RIGHT, 0x02, 0x02 ),
@@ -278,7 +227,7 @@ static struct INPUT_INFO thunderl_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO usclssic_inputs[] =
+static struct INPUT_INFO input_usclssic[] =
 {
   // the inputs are weird because the first 2 words are used by the trackball
    INP1( P1_B1, 0x03, 0x20 ),
@@ -1155,197 +1104,27 @@ static struct GFX_LIST usclssic_gfxdecodeinfo[] =
 	{ 0, NULL }
 };
 
-static struct VIDEO_INFO usclssic_video =
-{
-  draw_usclssic, // very strange color mapping !!!
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   usclssic_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO metafox_video =
-{
-   draw_metafox,
-   384,
-   224,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   downtown_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO downtown_video =
-{
-   draw_metafox,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   downtown_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO wiggie_video =
-{
-   draw_metafox,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   wiggie_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO wits_video =
-{
-   draw_metafox,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   downtown_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO blandia_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   blandia_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO drgnunit_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   downtown_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO stg_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   downtown_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO eightfrc_video =
-{
-   draw_blandia,
-   384,
-   224,
-   16,
-   VIDEO_ROTATE_90 |
-   VIDEO_ROTATABLE,
-   msgundam_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO gundhara_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   jjsquawk_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO jjsquawk_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   jjsquawk_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO rezon_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-   msgundam_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO wrofaero_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   msgundam_gfxdecodeinfo,
-};
 
-static struct VIDEO_INFO zingzip_video =
-{
-   draw_blandia,
-   384,
-   240,
-   16,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   zingzip_gfxdecodeinfo,
-};
 
-static struct DIR_INFO stg_dirs[] =
-  {
-    { "stg" },
-   { NULL, },
-  };
 
-static struct DIR_INFO wiggie_dirs[] =
-  {
-    { "wiggie" },
-   { NULL, },
-  };
 
-static struct DIR_INFO umanclub_dirs[] =
-  {
-    { "umanclub" },
-   { NULL, },
-  };
 
-static struct DIR_INFO msgundam_dirs[] =
-  {
-    { "msgundam" },
-   { NULL, },
-  };
 
-static struct DIR_INFO neobattl_dirs[] =
-  {
-    { "neobattl" },
-   { NULL, },
-  };
 
-static struct DIR_INFO daioh_dirs[] =
-  {
-    { "daioh" },
-   { NULL, },
-  };
 
-static struct ROM_INFO daioh_roms[] =
+static struct ROM_INFO rom_daioh[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "fg1-001",  0x104ae74a, "fg1-002",  0xe39a4e67),
@@ -1357,7 +1136,7 @@ static struct ROM_INFO daioh_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO neobattl_roms[] =
+static struct ROM_INFO rom_neobattl[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "bp923001.u45",  0x0d0aeb73, "bp923002.u46",  0x9731fbbc),
@@ -1367,7 +1146,7 @@ static struct ROM_INFO neobattl_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO msgundam_roms[] =
+static struct ROM_INFO rom_msgundam[] =
 {
   { "fa003002.u25", 0x080000, 0x1cc72d4c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
   { "fa001001.u20", 0x100000, 0xfca139d0, REGION_ROM1, 0x100000, LOAD_SWAP_16 },
@@ -1379,7 +1158,7 @@ static struct ROM_INFO msgundam_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO umanclub_roms[] =
+static struct ROM_INFO rom_umanclub[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "uw001006.u48",  0x3dae1e9d, "uw001007.u49",  0x5c21e702),
@@ -1389,7 +1168,7 @@ static struct ROM_INFO umanclub_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO wiggie_roms[] =
+static struct ROM_INFO rom_wiggie[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x10000,
             "wiggie.f19",  0x24b58f16, "wiggie.f21",  0x83ba6edb),
@@ -1402,7 +1181,7 @@ static struct ROM_INFO wiggie_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO stg_roms[] =
+static struct ROM_INFO rom_stg[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "att01003.u27",  0x7a640a93, "att01001.u9",  0x4fa88ad3),
@@ -1417,7 +1196,7 @@ static struct ROM_INFO stg_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO drgnunit_roms[] =
+static struct ROM_INFO rom_drgnunit[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "prg-e.bin",  0x728447df, "prg-o.bin",  0xb2f58ecf),
@@ -1448,7 +1227,7 @@ static struct ROM_INFO drgnunit_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO arbalest_roms[] =
+static struct ROM_INFO rom_arbalest[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "uk001.03",  0xee878a2c, "uk001.04",  0x902bb4e3),
@@ -1466,7 +1245,7 @@ static struct ROM_INFO arbalest_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO tndrcade_roms[] =
+static struct ROM_INFO rom_tndrcade[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "ua0-4.1l",  0x73bd63eb, "ua0-2.1h",  0xe96194b1),
@@ -1484,7 +1263,7 @@ static struct ROM_INFO tndrcade_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO metafox_roms[] =
+static struct ROM_INFO rom_metafox[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "p1003161",  0x4fd6e6a1 , "p1004162",  0xb6356c9a ),
@@ -1504,7 +1283,7 @@ static struct ROM_INFO metafox_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO downtown_roms[] =
+static struct ROM_INFO rom_downtown[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "ud2001.000",  0xf1965260, "ud2001.003",  0xe7d5fa5f),
@@ -1521,7 +1300,7 @@ static struct ROM_INFO downtown_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO thunderl_roms[] =
+static struct ROM_INFO rom_thunderl[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x008000,
             "m4",  0x1e6b9462, "m5",  0x7e82793e),
@@ -1534,7 +1313,7 @@ static struct ROM_INFO thunderl_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO wits_roms[] =
+static struct ROM_INFO rom_wits[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x008000,
             "un001001.u1",  0x416c567e, "un001002.u4",  0x497a3fa6),
@@ -1547,7 +1326,7 @@ static struct ROM_INFO wits_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO twineagl_roms[] =
+static struct ROM_INFO rom_twineagl[] =
 {
   { "ua2-1", 0x080000, 0x5c3fe531, REGION_ROM1, 0x000000, LOAD_NORMAL },
   { "ua2-2", 0x002000, 0x783ca84e, REGION_ROM2, 0x000000, LOAD_NORMAL },
@@ -1564,7 +1343,7 @@ static struct ROM_INFO twineagl_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO blandia_roms[] =
+static struct ROM_INFO rom_blandia[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "ux001001.003",  0x2376a1f3, "ux001002.004",  0xb915e172),
@@ -1584,7 +1363,7 @@ static struct ROM_INFO blandia_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO eightfrc_roms[] =
+static struct ROM_INFO rom_eightfrc[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "uy2-u4.u3",  0xf1f249c5, "uy2-u3.u4",  0x6f2d8618),
@@ -1598,7 +1377,7 @@ static struct ROM_INFO eightfrc_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO gundhara_roms[] =
+static struct ROM_INFO rom_gundhara[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "bpgh-003.u3",  0x14e9970a, "bpgh-004.u4",  0x96dfc658),
@@ -1618,7 +1397,7 @@ static struct ROM_INFO gundhara_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO jjsquawk_roms[] =
+static struct ROM_INFO rom_jjsquawk[] =
 {
   LOAD8_16(  REGION_ROM1,  0,  0x80000,
             "jj-rom1.040",  0x7b9af960, "jj-rom2.040",  0x47dd71a3),
@@ -1641,7 +1420,7 @@ static struct ROM_INFO jjsquawk_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rezon_roms[] =
+static struct ROM_INFO rom_rezon[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "us001001.u3",  0xab923052, "us001002.u4",  0x3dafa0d5),
@@ -1656,7 +1435,7 @@ static struct ROM_INFO rezon_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO wrofaero_roms[] =
+static struct ROM_INFO rom_wrofaero[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "u3.bin",  0x9b896a97, "u4.bin",  0xdda84846),
@@ -1669,7 +1448,7 @@ static struct ROM_INFO wrofaero_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO zombraid_roms[] =
+static struct ROM_INFO rom_zombraid[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "fy001003.3",  0x0b34b8f7, "fy001004.4",  0x71bfeb1a),
@@ -1690,62 +1469,16 @@ static struct ROM_INFO zombraid_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO wrofaero_dirs[] =
-{
-  { "wrofaero" },
-  { NULL }
-};
 
-static struct DIR_INFO rezon_dirs[] =
-{
-  { "rezon" },
-  { NULL }
-};
 
-static struct DIR_INFO jjsquawk_dirs[] =
-{
-  { "jjsquawk" },
-  { NULL }
-};
 
-static struct DIR_INFO gundhara_dirs[] =
-{
-  { "gundhara" },
-  { NULL }
-};
 
-static struct DIR_INFO zombraid_dirs[] =
-{
-  { "zombraid" },
-  { NULL }
-};
 
-static struct DIR_INFO eightfrc_dirs[] =
-{
-  { "eightfrc" },
-  { NULL }
-};
 
-static struct DIR_INFO blandia_dirs[] =
-{
-  { "blandia" },
-  { NULL }
-};
 
-static struct DIR_INFO us_classic_golf_dirs[] =
-{
-   { "us_classic_golf", },
-   { "usclssic", },
-   { NULL, },
-};
 
-static struct DIR_INFO calibr50_dirs[] =
-{
-  { "calibr50" },
-  { NULL }
-};
 
-static struct ROM_INFO usclssic_roms[] = {
+static struct ROM_INFO rom_usclssic[] = {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "ue2001.u20",  0x18b41421, "ue2000.u14",  0x69454bc2),
   LOAD8_16(  REGION_ROM1,  0x040000,  0x020000,
@@ -1778,7 +1511,7 @@ static struct ROM_INFO usclssic_roms[] = {
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO calibr50_roms[] =
+static struct ROM_INFO rom_calibr50[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "uh002001.u45",  0xeb92e7ed, "uh002004.u41",  0x5a0ed31e),
@@ -1796,14 +1529,8 @@ static struct ROM_INFO calibr50_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO zingzip_dirs[] =
-{
-   { "zing_zing_zip", },
-   { "zingzip", },
-   { NULL, },
-};
 
-static struct ROM_INFO zingzip_roms[] =
+static struct ROM_INFO rom_zingzip[] =
 {
   LOAD8_16(  REGION_ROM1,  	0x000000,  0x040000,
             "uy001001.3",  0x1a1687ec, "uy001002.4",  0x62e3b0c4),
@@ -1845,14 +1572,9 @@ UINT8 ReadROM(UINT16 offset)
    return M6502ROM[offset&0x7FFF];
 }
 
-void WriteROM(UINT16 offset, UINT8 data)
-{
-   M6502ROM[offset&0x7FFF] = data;
-}
-
 static int old_bank;
 
-void sub_bankswitch(UINT16 adr, UINT8 data) {
+static void sub_bankswitch(UINT16 adr, UINT8 data) {
   int bank = (data >> 4);
   if (bank != old_bank) {
     if (0x4000 * bank + 0x4000 <= get_region_size(REGION_ROM2)) {
@@ -1876,13 +1598,13 @@ static struct x1_010_interface seta_sound_intf_16MHz =
   0x0000,		/* address */
 };
 
-static struct SOUND_INFO seta_sound_16Mhz[] =
+static struct SOUND_INFO sound_arbalest[] =
   {
    { SOUND_X1_010, &seta_sound_intf_16MHz },
    { 0,             NULL,                 },
   };
 
-static struct SOUND_INFO seta_sound_8Mhz[] =
+static struct SOUND_INFO sound_downtown[] =
   {
    { SOUND_X1_010, &seta_sound_intf_8MHz },
    { 0,             NULL,                 },
@@ -1896,7 +1618,7 @@ static struct OKIM6295interface wiggie_okim6295_interface =
 	{ 255 }
 };
 
-static struct SOUND_INFO wiggie_sound[] =
+static struct SOUND_INFO sound_wiggie[] =
   {
    { SOUND_M6295, &wiggie_okim6295_interface },
    { 0,             NULL,                 },
@@ -1932,7 +1654,7 @@ static struct YM3812interface ym3812_interface =
 	{ NULL },
 };
 
-static struct SOUND_INFO tndrcade_sound[] =
+static struct SOUND_INFO sound_tndrcade[] =
   {
    { SOUND_YM2203, &tndrcade_ym2203_interface },
    { SOUND_YM3812, &ym3812_interface },
@@ -2080,7 +1802,7 @@ static struct DSW_DATA dsw_data_daioh_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO daioh_dsw[] =
+static struct DSW_INFO dsw_daioh[] =
 {
   { 0x6, 0xf0, dsw_data_daioh_2 },
   { 0x0, 0x7f, dsw_data_daioh_3 },
@@ -2143,7 +1865,7 @@ static struct DSW_DATA dsw_data_neobattl_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO neobattl_dsw[] =
+static struct DSW_INFO dsw_neobattl[] =
 {
   { 0x0, 0xff, dsw_data_neobattl_3 },
   { 0x1, 0xff, dsw_data_neobattl_4 },
@@ -2209,7 +1931,7 @@ static struct DSW_DATA dsw_data_msgundam_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO msgundam_dsw[] =
+static struct DSW_INFO dsw_msgundam[] =
 {
   { 0x6, 0x80, dsw_data_msgundam_2 },
   { 0x0, 0xff, dsw_data_msgundam_3 },
@@ -2272,7 +1994,7 @@ static struct DSW_DATA dsw_data_umanclub_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO umanclub_dsw[] =
+static struct DSW_INFO dsw_umanclub[] =
 {
   { 0x0, 0xff, dsw_data_umanclub_3 },
   { 0x1, 0xff, dsw_data_umanclub_4 },
@@ -2328,7 +2050,7 @@ static struct DSW_DATA dsw_data_stg_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO stg_dsw[] =
+static struct DSW_INFO dsw_stg[] =
 {
   { 0x0, 0xff, dsw_data_stg_3 },
   { 0x1, 0xff, dsw_data_stg_4 },
@@ -2394,7 +2116,7 @@ static struct DSW_DATA dsw_data_downtown_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO downtown_dsw[] =
+static struct DSW_INFO dsw_downtown[] =
 {
   { 0x0, 0xf6, dsw_data_downtown_3 },
   { 0x1, 0xbf, dsw_data_downtown_4 },
@@ -2450,7 +2172,7 @@ static struct DSW_DATA dsw_data_calibr50_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO calibr50_dsw[] =
+static struct DSW_INFO dsw_calibr50[] =
 {
   { 0x0, 0xfe, dsw_data_calibr50_3 },
   { 0x1, 0xbd, dsw_data_calibr50_4 },
@@ -2505,7 +2227,7 @@ static struct DSW_DATA dsw_data_metafox_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO metafox_dsw[] =
+static struct DSW_INFO dsw_metafox[] =
 {
   { 0x0, 0xfe, dsw_data_metafox_3 },
   { 0x1, 0xbd, dsw_data_metafox_4 },
@@ -2561,7 +2283,7 @@ static struct DSW_DATA dsw_data_arbalest_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO arbalest_dsw[] =
+static struct DSW_INFO dsw_arbalest[] =
 {
   { 0x0, 0xfe, dsw_data_arbalest_3 },
   { 0x1, 0xbf, dsw_data_arbalest_4 },
@@ -2633,7 +2355,7 @@ static struct DSW_DATA dsw_data_drgnunit_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO drgnunit_dsw[] =
+static struct DSW_INFO dsw_drgnunit[] =
 {
   { 0x6, 0xf0, dsw_data_drgnunit_2 },
   { 0x0, 0xfe, dsw_data_drgnunit_3 },
@@ -2682,7 +2404,7 @@ static struct DSW_DATA dsw_data_twineagl_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO twineagl_dsw[] =
+static struct DSW_INFO dsw_twineagl[] =
 {
   { 0x0, 0xf6, dsw_data_twineagl_3 },
   { 0x1, 0xb3, dsw_data_twineagl_4 },
@@ -2762,7 +2484,7 @@ static struct DSW_DATA dsw_data_thunderl_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO thunderl_dsw[] =
+static struct DSW_INFO dsw_thunderl[] =
 {
   { 0x6, 0xe0, dsw_data_thunderl_2 },
   { 0x0, 0xff, dsw_data_thunderl_3 },
@@ -2835,7 +2557,7 @@ static struct DSW_DATA dsw_data_wits_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO wits_dsw[] =
+static struct DSW_INFO dsw_wits[] =
 {
   { 0x6, 0x70, dsw_data_wits_2 },
   { 0x0, 0xff, dsw_data_wits_3 },
@@ -2893,7 +2615,7 @@ static struct DSW_DATA dsw_data_blandia_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO blandia_dsw[] =
+static struct DSW_INFO dsw_blandia[] =
 {
   { 0x0, 0xff, dsw_data_blandia_3 },
   { 0x1, 0xff, dsw_data_blandia_4 },
@@ -2950,7 +2672,7 @@ static struct DSW_DATA dsw_data_eightfrc_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO eightfrc_dsw[] =
+static struct DSW_INFO dsw_eightfrc[] =
 {
   { 0x0, 0xff, dsw_data_eightfrc_3 },
   { 0x1, 0x7b, dsw_data_eightfrc_4 },
@@ -3009,7 +2731,7 @@ static struct DSW_DATA dsw_data_gundhara_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO gundhara_dsw[] =
+static struct DSW_INFO dsw_gundhara[] =
 {
   { 0x0, 0xff, dsw_data_gundhara_3 },
   { 0x1, 0xbf, dsw_data_gundhara_4 },
@@ -3063,7 +2785,7 @@ static struct DSW_DATA dsw_data_zombraid_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO zombraid_dsw[] =
+static struct DSW_INFO dsw_zombraid[] =
 {
   { 0x0, 0xfd, dsw_data_zombraid_3 },
   { 0x1, 0xff, dsw_data_zombraid_4 },
@@ -3119,7 +2841,7 @@ static struct DSW_DATA dsw_data_jjsquawk_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO jjsquawk_dsw[] =
+static struct DSW_INFO dsw_jjsquawk[] =
 {
   { 0x0, 0xbf, dsw_data_jjsquawk_3 },
   { 0x1, 0xff, dsw_data_jjsquawk_4 },
@@ -3173,7 +2895,7 @@ static struct DSW_DATA dsw_data_rezon_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO rezon_dsw[] =
+static struct DSW_INFO dsw_rezon[] =
 {
   { 0x0, 0xff, dsw_data_rezon_3 },
   { 0x1, 0xff, dsw_data_rezon_4 },
@@ -3237,7 +2959,7 @@ static struct DSW_DATA dsw_data_wrofaero_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO wrofaero_dsw[] =
+static struct DSW_INFO dsw_wrofaero[] =
 {
   { 0x0, 0xff, dsw_data_wrofaero_3 },
   { 0x1, 0xff, dsw_data_wrofaero_4 },
@@ -3289,7 +3011,7 @@ static struct DSW_DATA dsw_data_zingzip_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO zingzip_dsw[] =
+static struct DSW_INFO dsw_zingzip[] =
 {
   { 0x0, 0xff, dsw_data_zingzip_3 },
   { 0x1, 0xff, dsw_data_zingzip_4 },
@@ -3344,7 +3066,7 @@ static struct DSW_DATA dsw_data_usclssic_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO usclssic_dsw[] =
+static struct DSW_INFO dsw_usclssic[] =
 {
   { 0x6, 0xff, dsw_data_usclssic_3 },
   { 0x7, 0xfe, dsw_data_usclssic_4 },
@@ -3398,7 +3120,7 @@ static struct DSW_DATA dsw_data_tndrcade_4[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO tndrcade_dsw[] =
+static struct DSW_INFO dsw_tndrcade[] =
 {
   { 0x6, 0xff, dsw_data_tndrcade_3 },
   { 0x7, 0xff, dsw_data_tndrcade_4 },
@@ -3414,9 +3136,9 @@ static UINT8 seta_dsw_r(UINT32 offset) {
 
 static void seta_init() {
   int code_size = get_region_size(REGION_CPU1);
-  limitx = current_game->video_info->screen_x + current_game->video_info->border_size;
-  limity = current_game->video_info->screen_y + current_game->video_info->border_size;
-  visuy = current_game->video_info->screen_y;
+  limitx = current_game->video->screen_x + current_game->video->border_size;
+  limity = current_game->video->screen_y + current_game->video->border_size;
+  visuy = current_game->video->screen_y;
   old_bank = -1;
   latch1 = latch2 = 0xff;
 
@@ -3847,7 +3569,7 @@ static UINT16 usclssic_trackball_xy_r(UINT32 offset)
 	return 0;
 }
 
-static UINT16 usclssic_dsw_r(UINT32 offset) {
+static UINT16 dsw_usclssic_r(UINT32 offset) {
   UINT16 inp = ReadWord(&input_buffer[6]); // dsw
   switch (offset & 6)
     {
@@ -3886,12 +3608,12 @@ static void YM3812_w(UINT32 offset,UINT8 data) {
     YM3812_control_port_0_w(offset,data);
 }
 
-static void wiggie_soundlatch_w(UINT32 offset, UINT8 data) {
+static void sound_wiggielatch_w(UINT32 offset, UINT8 data) {
   latch1 = data;
   cpu_interrupt(CPU_Z80_0, 0x38);
 }
 
-static void LoadMetaFox(void)
+static void load_arbalest(void)
 {
   // One or zero bg layer, 1 optional 6502
 
@@ -4103,7 +3825,7 @@ static void LoadMetaFox(void)
      AddRWBW(0xc00000, 0xc00001, NULL, RAM+0x1a000+0x8000);		// ???
      AddReadBW(0xb00000,0xb0000d, NULL, &input_buffer[2]); // inputs, dsw and protection
      if (is_current_game("wiggie"))
-       AddWriteByte(0xB00008, 0xB00008, wiggie_soundlatch_w, NULL);
+       AddWriteByte(0xB00008, 0xB00008, sound_wiggielatch_w, NULL);
      WriteWord(&input_buffer[0xc+2],0x00dd);
    } else if (is_current_game("umanclub") || is_current_game("neobattl")) {
      AddRWBW(0x200000, 0x20ffff, NULL, RAM+0x1a000);
@@ -4143,7 +3865,7 @@ static void LoadMetaFox(void)
      AddWriteBW(0xb40000, 0xb40007, usclssic_lockout_w, NULL);
      AddReadBW(0xb40010, 0xb40011, NULL, &input_buffer[4]); // coins
      AddWriteBW(0xb40010, 0xb40011, calibr50_soundlatch_w, NULL);
-     AddReadBW(0xb40018, 0xb4001f, usclssic_dsw_r, NULL);
+     AddReadBW(0xb40018, 0xb4001f, dsw_usclssic_r, NULL);
 
      AddRWBW(0x900000, 0x900001, NULL, RAM+0x1a000);		// ?
      finish_conf_68000(0);
@@ -4214,7 +3936,7 @@ static void LoadMetaFox(void)
    finish_conf_68000(0);
 }
 
-void ExecuteMetaFoxFrame(void)
+static void execute_arbalest(void)
 {
   // As often the 68k is supposed to be a 8Mhz but the game seems to push it to its limits
   // at times, so it should be a little smoother at 12 MHz
@@ -4230,7 +3952,7 @@ void ExecuteMetaFoxFrame(void)
   m6502int(1);
 }
 
-void execute_downtown_frame(void)
+static void execute_downtown(void)
 {
   // char *line = NULL,prompt[80];
   // static int dump = 0;
@@ -4313,7 +4035,7 @@ void execute_downtown_frame(void)
 
 #define SLICES 16
 
-static void tndrcade_frame() {
+static void execute_tndrcade() {
   // 68k irq 2, 6502 at 2 Mhz
   int n;
   m6502nmi();
@@ -4327,20 +4049,20 @@ static void tndrcade_frame() {
   cpu_interrupt(CPU_68K_0, 2);
 }
 
-static void execute_one_68k_irq2(void)
+static void execute_thunderl(void)
 {
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60)); // The test mode talks about 16Mhz?
   cpu_interrupt(CPU_68K_0, 2);
 }
 
-static void wiggie_frame(void)
+static void execute_wiggie(void)
 {
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60)); // The test mode talks about 16Mhz?
   cpu_interrupt(CPU_68K_0, 2);
   cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(4,60));
 }
 
-static void execute_one_68k_irq2_and_4(void)
+static void execute_blandia(void)
 {
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60));
   cpu_interrupt(CPU_68K_0, 2);
@@ -4348,7 +4070,7 @@ static void execute_one_68k_irq2_and_4(void)
   cpu_interrupt(CPU_68K_0, 4);
 }
 
-static void execute_one_68k_irq1_and_2(void)
+static void execute_drgnunit(void)
 {
   stopped_68k = 0;
 
@@ -4361,7 +4083,7 @@ static void execute_one_68k_irq1_and_2(void)
   cpu_interrupt(CPU_68K_0, 2);
 }
 
-static void zombraid_frame(void)
+static void execute_zombraid(void)
 {
   // irq 1 + 2 + the mouse
   int mx,my;
@@ -4423,14 +4145,14 @@ static void zombraid_frame(void)
   cpu_interrupt(CPU_68K_0, 2);
 }
 
-static void umanclub_frame() {
+static void execute_umanclub() {
   // The 64 Mhz are necessary to be sure that the whole frame is executed all the time...
   // Need a speed hack for all the games which use this frame.
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(64,60));
   cpu_interrupt(CPU_68K_0, 3);
 }
 
-static void usclssic_frame(void)
+static void execute_usclssic(void)
 {
   int mx,my;
   GetMouseMickeys(&mx,&my);
@@ -4462,7 +4184,7 @@ static void usclssic_frame(void)
   m6502int(1);
 }
 
-static void calibr50_frame(void)
+static void execute_calibr50(void)
 {
   int mx,my,n;
   static int pos1,pos2;
@@ -4510,506 +4232,410 @@ static void calibr50_frame(void)
   }
 }
 
-GAME( meta_fox ,
-   meta_fox_dirs,
-   metafox_roms,
-   seta_inputs,
-   metafox_dsw,
-   NULL,
 
-   LoadMetaFox,
-      NULL,
-   &metafox_video,
-   ExecuteMetaFoxFrame,
-   "metafox",
-   "Meta Fox",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_SHOOT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static struct VIDEO_INFO video_arbalest =
+{
+   draw_metafox,
+   384,
+   224,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   downtown_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_blandia =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   blandia_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_drgnunit =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   downtown_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_eightfrc =
+{
+   draw_blandia,
+   384,
+   224,
+   16,
+   VIDEO_ROTATE_90 |
+   VIDEO_ROTATABLE,
+   msgundam_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_gundhara =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   jjsquawk_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_jjsquawk =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   jjsquawk_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_msgundam =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   msgundam_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_neobattl =
+{
+   draw_metafox,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   downtown_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_stg =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   downtown_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_umanclub =
+{
+   draw_metafox,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   downtown_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_usclssic =
+{
+  draw_usclssic, // very strange color mapping !!!
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   usclssic_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_wiggie =
+{
+   draw_metafox,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   wiggie_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_wrofaero =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   msgundam_gfxdecodeinfo,
+};
+static struct VIDEO_INFO video_zingzip =
+{
+   draw_blandia,
+   384,
+   240,
+   16,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   zingzip_gfxdecodeinfo,
+};
+GMEI( arbalest, "Arbalester", SETA, 1989, GAME_SHOOT);
+static struct DIR_INFO dir_blandia[] =
+{
+  { "blandia" },
+  { NULL }
+};
+GAME( blandia, "Blandia", ALLUMER, 1992, GAME_BEAT,
+	.input = input_blandia,
+	.dsw = dsw_blandia,
+	.video = &video_blandia,
+	.exec = execute_blandia,
+);
+static struct DIR_INFO dir_calibr50[] =
+{
+  { "calibr50" },
+  { NULL }
+};
+CLNE( calibr50, arbalest, "Caliber 50",  SETA, /* depends on the license / country */
+       	1989, GAME_SHOOT,
+	.input = input_calibr50,
+	.dsw = dsw_calibr50,
+	.video = &video_neobattl,
+	.exec = execute_calibr50,
+);
+static struct DIR_INFO dir_daioh[] =
+  {
+    { "daioh" },
+   { NULL, },
+  };
+CLNE( daioh, blandia, "Daioh", ATHENA, 1993, GAME_SHOOT,
+	.dsw = dsw_daioh,
+	.video = &video_wrofaero,
+	.exec = execute_drgnunit,
+);
+static struct DIR_INFO dir_downtown[] =
+{
+  { "downtown" },
+  { NULL }
+};
+CLNE( downtown, arbalest, "DownTown", SETA, 1989, GAME_BEAT,
+	.input = input_downtown,
+	.dsw = dsw_downtown,
+	.video = &video_neobattl,
+	.exec = execute_downtown,
+	.sound = sound_downtown,
+);
+static struct DIR_INFO dir_drgnunit[] =
+  {
+    { "drgnunit", },
+    { NULL, },
+  };
+CLNE( drgnunit, blandia, "Dragon Unit / Castle of Dragon", SETA, 1989, GAME_MISC,
+	.dsw = dsw_drgnunit,
+	.video = &video_drgnunit,
+	.exec = execute_drgnunit,
+);
+static struct DIR_INFO dir_eightfrc[] =
+{
+  { "eightfrc" },
+  { NULL }
+};
+CLNE( eightfrc, blandia, "Eight Forces", TECMO, 1994, GAME_BEAT,
+	.dsw = dsw_eightfrc,
+	.video = &video_eightfrc,
+	.exec = execute_drgnunit,
+);
+static struct DIR_INFO dir_gundhara[] =
+{
+  { "gundhara" },
+  { NULL }
+};
+CLNE( gundhara, blandia, "Gundhara", BANPREST, 1995, GAME_SHOOT,
+	.dsw = dsw_gundhara,
+	.video = &video_gundhara,
+);
+static struct DIR_INFO dir_jjsquawk[] =
+{
+  { "jjsquawk" },
+  { NULL }
+};
+CLNE( jjsquawk, blandia, "J. J. Squawkers", ATHENA, 1993, GAME_PLATFORM,
+	.dsw = dsw_jjsquawk,
+	.video = &video_jjsquawk,
+	.exec = execute_drgnunit,
+);
+static struct DIR_INFO dir_metafox[] =
+{
+   { "meta_fox", },
+   { "metafox", },
+   { NULL, },
+};
+CLNE( metafox, arbalest, "Meta Fox", SETA, 1989, GAME_SHOOT,
+	.dsw = dsw_metafox,
+);
+static struct DIR_INFO dir_msgundam[] =
+  {
+    { "msgundam" },
+   { NULL, },
+  };
+CLNE( msgundam, blandia, "Mobile Suit Gundam", BANPREST, 1993, GAME_SHOOT,
+	.dsw = dsw_msgundam,
+	.video = &video_msgundam,
+);
+static struct DIR_INFO dir_neobattl[] =
+  {
+    { "neobattl" },
+   { NULL, },
+  };
+CLNE( neobattl, arbalest, "SD Gundam Neo Battling (Japan)", BANPREST, 1992, GAME_BEAT,
+	.input = input_blandia,
+	.dsw = dsw_neobattl,
+	.video = &video_neobattl,
+	.exec = execute_umanclub,
+);
+static struct DIR_INFO dir_rezon[] =
+{
+  { "rezon" },
+  { NULL }
+};
+CLNE( rezon, blandia, "Rezon", ALLUMER, 1991, GAME_SHOOT,
+	.dsw = dsw_rezon,
+	.video = &video_msgundam,
+	.exec = execute_umanclub,
+);
+static struct DIR_INFO dir_stg[] =
+  {
+    { "stg" },
+   { NULL, },
+  };
+CLNE( stg, blandia, "Strike Gunner S.T.G", SETA, 1989, GAME_MISC,
+	.dsw = dsw_stg,
+	.video = &video_stg,
+	.exec = execute_drgnunit,
+);
+static struct DIR_INFO dir_thunderl[] =
+{
+  { "thunderl" },
+  { NULL }
+};
+CLNE( thunderl, arbalest, "Thunder & Lightning", SETA, 1989, GAME_BREAKOUT,
+	.input = input_blandia,
+	.dsw = dsw_thunderl,
+	.video = &video_neobattl,
+	.exec = execute_thunderl,
+);
+static struct DIR_INFO dir_tndrcade[] =
+  {
+    {"tndrcade",},
+    {NULL,},
+  };
+CLNE( tndrcade, arbalest, "Thundercade / Twin Formation", SETA, 1987, GAME_SHOOT,
+	.input = input_tndrcade,
+	.dsw = dsw_tndrcade,
+	.exec = execute_tndrcade,
+	.sound = sound_tndrcade,
+);
+static struct DIR_INFO dir_twineagl[] =
+{
+   { "twin_eagle", },
+   { "twineagl", },
+   { NULL, },
+};
+CLNE( twineagl, arbalest, "Twin Eagle", SETA, 1990, GAME_SHOOT,
+	.input = input_tndrcade,
+	.dsw = dsw_twineagl,
+	.video = &video_neobattl,
+);
+static struct DIR_INFO dir_umanclub[] =
+  {
+    { "umanclub" },
+   { NULL, },
+  };
+CLNE( umanclub, arbalest, "Ultraman Club - Tatakae! Ultraman Kyoudai!!", BANPREST, 1992, GAME_BEAT,
+	.input = input_blandia,
+	.dsw = dsw_umanclub,
+	.video = &video_umanclub,
+	.exec = execute_umanclub,
+);
+static struct DIR_INFO dir_usclssic[] =
+{
+   { "us_classic_golf", },
+   { "usclssic", },
+   { NULL, },
+};
+CLNE( usclssic, arbalest, "US Classic Golf", SETA, 1989, GAME_SPORTS,
+	.input = input_usclssic,
+	.dsw = dsw_usclssic,
+	.video = &video_usclssic,
+	.exec = execute_usclssic,
+);
+static struct DIR_INFO dir_wiggie[] =
+  {
+    { "wiggie" },
+   { NULL, },
+  };
+CLNE( wiggie, arbalest, "Wiggie Waggie", BOOTLEG, 1994, GAME_BREAKOUT,
+	.input = input_blandia,
+	.dsw = dsw_thunderl,
+	.video = &video_wiggie,
+	.exec = execute_wiggie,
+	.sound = sound_wiggie,
+);
+static struct DIR_INFO dir_wits[] =
+{
+  { "wits" },
+  { NULL }
+};
+CLNE( wits, arbalest, "Wit's (Japan)", VISCO, 1989, GAME_MISC,
+	.input = input_blandia,
+	.dsw = dsw_wits,
+	.video = &video_umanclub,
+	.exec = execute_thunderl,
+);
+static struct DIR_INFO dir_wrofaero[] =
+{
+  { "wrofaero" },
+  { NULL }
+};
+CLNE( wrofaero, blandia, "War of Aero - Project MEIOU", YANG_CHENG, 1993, GAME_MISC,
+	.dsw = dsw_wrofaero,
+	.video = &video_wrofaero,
+);
+static struct DIR_INFO dir_zingzip[] =
+{
+   { "zing_zing_zip", },
+   { "zingzip", },
+   { NULL, },
+};
+CLNE( zingzip, blandia, "Zing Zing Zip", ALLUMER, 1992, GAME_MISC,
+	.dsw = dsw_zingzip,
+	.video = &video_zingzip,
+	.exec = execute_umanclub,
+);
+static struct DIR_INFO dir_zombraid[] =
+{
+  { "zombraid" },
+  { NULL }
+};
+CLNE( zombraid, blandia, "Zombie Raid (US)", SAMMY, 1995, GAME_SHOOT,
+	.dsw = dsw_zombraid,
+	.video = &video_jjsquawk,
+	.exec = execute_zombraid,
 );
 
-GAME( arbalest ,
-   arbalest_dirs,
-   arbalest_roms,
-   seta_inputs,
-   arbalest_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &metafox_video,
-   ExecuteMetaFoxFrame,
-   "arbalest",
-   "Arbalester",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);
-
-GAME( downtown ,
-   downtown_dirs,
-   downtown_roms,
-   downtown_inputs,
-   downtown_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &downtown_video,
-   execute_downtown_frame,
-   "downtown",
-   "DownTown",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_8Mhz,
-      GAME_BEAT
-);
-
-GAME( twin_eagle ,
-   twin_eagle_dirs,
-   twineagl_roms,
-   twineagl_inputs,
-   twineagl_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &downtown_video,
-   ExecuteMetaFoxFrame,
-   "twineagl",
-   "Twin Eagle",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1990,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);
-
-GAME( thunderl ,
-   thunderl_dirs,
-   thunderl_roms,
-   thunderl_inputs,
-   thunderl_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &downtown_video,
-   execute_one_68k_irq2,
-   "thunderl",
-   "Thunder & Lightning",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_BREAKOUT
-);
-
-GAME( wiggie ,
-   wiggie_dirs,
-   wiggie_roms,
-   thunderl_inputs,
-   thunderl_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &wiggie_video,
-   wiggie_frame,
-   "wiggie",
-   "Wiggie Waggie",
-   NULL,
-   COMPANY_ID_BOOTLEG,
-      NULL,
-      1994,
-      wiggie_sound,
-      GAME_BREAKOUT
-);
-
-GAME( umanclub ,
-   umanclub_dirs,
-   umanclub_roms,
-   thunderl_inputs,
-   umanclub_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &wits_video,
-   umanclub_frame,
-   "umanclub",
-   "Ultraman Club - Tatakae! Ultraman Kyoudai!!",
-   NULL,
-   COMPANY_ID_BANPREST,
-      NULL,
-      1992,
-      seta_sound_16Mhz,
-      GAME_BEAT
-);
-
-GAME( neobattl ,
-   neobattl_dirs,
-   neobattl_roms,
-   thunderl_inputs,
-   neobattl_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &downtown_video,
-   umanclub_frame,
-   "neobattl",
-   "SD Gundam Neo Battling (Japan)",
-   NULL,
-   COMPANY_ID_BANPREST,
-      NULL,
-      1992,
-      seta_sound_16Mhz,
-      GAME_BEAT
-);
-
-GAME( wits ,
-   wits_dirs,
-   wits_roms,
-   thunderl_inputs,
-   wits_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &wits_video,
-   execute_one_68k_irq2,
-   "wits",
-   "Wit's (Japan)",
-   NULL,
-   COMPANY_ID_VISCO,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_MISC
-);
-
-GAME( blandia ,
-   blandia_dirs,
-   blandia_roms,
-   thunderl_inputs,
-   blandia_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &blandia_video,
-   execute_one_68k_irq2_and_4,
-   "blandia",
-   "Blandia",
-   NULL,
-   COMPANY_ID_ALLUMER,
-      NULL,
-      1992,
-      seta_sound_16Mhz,
-      GAME_BEAT
-);
-
-GAME( drgnunit ,
-   drgnunit_dirs,
-   drgnunit_roms,
-   thunderl_inputs,
-   drgnunit_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &drgnunit_video,
-   execute_one_68k_irq1_and_2,
-   "drgnunit",
-   "Dragon Unit / Castle of Dragon",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_MISC
-);
-
-GAME( stg ,
-   stg_dirs,
-   stg_roms,
-   thunderl_inputs,
-   stg_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &stg_video,
-   execute_one_68k_irq1_and_2,
-   "stg",
-   "Strike Gunner S.T.G",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_MISC
-);
-
-GAME( eightfrc ,
-   eightfrc_dirs,
-   eightfrc_roms,
-   thunderl_inputs,
-   eightfrc_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &eightfrc_video,
-   execute_one_68k_irq1_and_2,
-   "eightfrc",
-   "Eight Forces",
-   NULL,
-   COMPANY_ID_TECMO,
-      NULL,
-      1994,
-      seta_sound_16Mhz,
-      GAME_BEAT
-);
-
-GAME( gundhara ,
-   gundhara_dirs,
-   gundhara_roms,
-   thunderl_inputs,
-   gundhara_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &gundhara_video,
-   execute_one_68k_irq2_and_4,
-   "gundhara",
-   "Gundhara",
-   NULL,
-   COMPANY_ID_BANPREST,
-      NULL,
-      1995,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);
-
-GAME( zombraid ,
-   zombraid_dirs,
-   zombraid_roms,
-   thunderl_inputs,
-   zombraid_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &jjsquawk_video,
-   zombraid_frame,
-   "zombraid",
-   "Zombie Raid (US)",
-   NULL,
-   COMPANY_ID_SAMMY,
-   NULL,
-   1995,
-   seta_sound_16Mhz,
-   GAME_SHOOT
-);
-
-GAME( jjsquawk ,
-   jjsquawk_dirs,
-   jjsquawk_roms,
-   thunderl_inputs,
-   jjsquawk_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &jjsquawk_video,
-   execute_one_68k_irq1_and_2,
-   "jjsquawk",
-   "J. J. Squawkers",
-   NULL,
-   COMPANY_ID_ATHENA,
-      NULL,
-      1993,
-      seta_sound_16Mhz,
-      GAME_PLATFORM
-);
-
-GAME( rezon ,
-   rezon_dirs,
-   rezon_roms,
-   thunderl_inputs,
-   rezon_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &rezon_video,
-   umanclub_frame,
-   "rezon",
-   "Rezon",
-   NULL,
-   COMPANY_ID_ALLUMER,
-      NULL,
-      1991,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);
-
-GAME( msgundam ,
-   msgundam_dirs,
-   msgundam_roms,
-   thunderl_inputs,
-   msgundam_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &rezon_video,
-   execute_one_68k_irq2_and_4,
-   "msgundam",
-   "Mobile Suit Gundam",
-   NULL,
-   COMPANY_ID_BANPREST,
-      NULL,
-      1993,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);
-
-GAME( daioh ,
-   daioh_dirs,
-   daioh_roms,
-   thunderl_inputs,
-   daioh_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &wrofaero_video,
-   execute_one_68k_irq1_and_2,
-   "daioh",
-   "Daioh",
-   NULL,
-   COMPANY_ID_ATHENA,
-      NULL,
-      1993,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);
-
-GAME( wrofaero ,
-   wrofaero_dirs,
-   wrofaero_roms,
-   thunderl_inputs,
-   wrofaero_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &wrofaero_video,
-   execute_one_68k_irq2_and_4,
-   "wrofaero",
-   "War of Aero - Project MEIOU",
-   NULL,
-   COMPANY_ID_YANG_CHENG,
-      NULL,
-      1993,
-      seta_sound_16Mhz,
-      GAME_MISC
-);
-
-GAME( zingzip ,
-   zingzip_dirs,
-   zingzip_roms,
-   thunderl_inputs,
-   zingzip_dsw,
-   NULL,
-
-   load_blandia,
-      NULL,
-   &zingzip_video,
-   umanclub_frame,
-   "zingzip",
-   "Zing Zing Zip",
-   NULL,
-   COMPANY_ID_ALLUMER,
-      NULL,
-      1992,
-      seta_sound_16Mhz,
-      GAME_MISC
-);
-
-GAME( us_classic_golf ,
-   us_classic_golf_dirs,
-   usclssic_roms,
-   usclssic_inputs,
-   usclssic_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &usclssic_video,
-   usclssic_frame,
-   "usclssic",
-   "US Classic Golf",
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_SPORTS
-);
-
-GAME( tndrcade ,
-   tndrcade_dirs,
-   tndrcade_roms,
-   twineagl_inputs,
-   tndrcade_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &metafox_video,
-   tndrcade_frame,
-   "tndrcade",
-   "Thundercade / Twin Formation",
-   NULL,
-   COMPANY_ID_SETA,
-   NULL,
-   1987,
-   tndrcade_sound,
-   GAME_SHOOT
-);
-
-GAME( calibr50 ,
-   calibr50_dirs,
-   calibr50_roms,
-   calibr50_inputs,
-   calibr50_dsw,
-   NULL,
-
-   LoadMetaFox,
-      NULL,
-   &downtown_video,
-   calibr50_frame,
-   "calibr50",
-   "Caliber 50", /* depends on the license / country */
-   NULL,
-   COMPANY_ID_SETA,
-      NULL,
-      1989,
-      seta_sound_16Mhz,
-      GAME_SHOOT
-);

@@ -103,7 +103,7 @@ class TMyBitmap : public TBitmap {
     TMyBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
       { myx = myy = 0; }
     virtual int handle_mouse(SDL_Event *event);
-    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions) {
       myx = x; myy =y;
       TBitmap::disp(s,font,x,y,w,h,fg,bg,xoptions);

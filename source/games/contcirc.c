@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND contcirc_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*            CONTINENTAL CIRCUS (C) 1987/1989 TAITO CORPORATION              */
@@ -20,15 +21,8 @@
 
 #include "taito_z.h"
 
-static struct DIR_INFO continental_circus_dirs[] =
-{
-   { "continental_circus", },
-   { "contcirc", },
-   { "ctcircus", },
-   { NULL, },
-};
 
-static struct INPUT_INFO continental_circus_inputs[] =
+static struct INPUT_INFO input_contcirc[] =
 {
    INP1( COIN1, 0x022804, 0x08 ),
    INP1( COIN2, 0x022804, 0x04 ),
@@ -105,7 +99,7 @@ static struct DSW_DATA dsw_data_contcirc_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO continental_circus_dsw[] =
+static struct DSW_INFO dsw_contcirc[] =
 {
    { 0x022800, 0xFF, dsw_data_contcirc_0 },
    { 0x022802, 0xDF, dsw_data_contcirc_1 },
@@ -120,24 +114,14 @@ static struct ROMSW_DATA romsw_data_continental_circus_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO continental_circus_romsw[] =
+static struct ROMSW_INFO romsw_contcirc[] =
 {
    { 0x07FFFF, 0x03, romsw_data_continental_circus_0 },
    { 0,        0,    NULL },
 };
 
-static struct DIR_INFO continental_circus_us_dirs[] =
-{
-   { "continental_circus_us", },
-   { "continental_circus_usernate", },
-   { "contcalt", },
-   { "contcrcu", },
-   { ROMOF("contcirc"), },
-   { CLONEOF("contcirc"), },
-   { NULL, },
-};
 
-static struct ROM_INFO continental_circus_us_roms[] =
+static struct ROM_INFO rom_contcrcu[] =
 {
   // road lines
   { "b33-01.3", 0x80000, 0xf11f2be8, REGION_GFX3, 0x00000, LOAD_NORMAL },
@@ -162,7 +146,7 @@ static struct ROM_INFO continental_circus_us_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO continental_circus_roms[] =
+static struct ROM_INFO rom_contcirc[] =
 {
   // road lines
   { "b33-01.3", 0x80000, 0xf11f2be8, REGION_GFX3, 0x00000, LOAD_NORMAL },
@@ -187,7 +171,7 @@ static struct ROM_INFO continental_circus_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROMSW_INFO continental_circus_us_romsw[] =
+static struct ROMSW_INFO romsw_contcrcu[] =
 {
    { 0x07FFFF, 0x02, romsw_data_continental_circus_0 },
    { 0,        0,    NULL },
@@ -440,30 +424,20 @@ static void load_actual(int romset)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-void load_continental_circus(void)
+static void load_contcirc(void)
 {
    load_actual(0);
 }
 
-void load_continental_circus_us(void)
+static void load_contcrcu(void)
 {
    load_actual(1);
-}
-
-void clear_continental_circus(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-#endif
 }
 
 // Strange non linear mapping for accelerate & brake
 static int accelerate_mapping[] = {0,1,3,2,6,7,5,4,4};
 
-void execute_continental_circus_frame(void)
+static void execute_contcirc(void)
 {
    static int gear=0;
    static int gearflip=1;
@@ -503,7 +477,7 @@ void execute_continental_circus_frame(void)
    RAM_INPUT[0x04] &= 0x1F;
    RAM_INPUT[0x06] &= 0x1F;
 
-   if (using_wheel) { 
+   if (using_wheel) {
 #ifdef SDL
      if (analog_normy < 0)  {
        int pos = -analog_normy/2048;
@@ -514,7 +488,7 @@ void execute_continental_circus_frame(void)
      int pos = joy[0].stick[0].axis[1].pos;
      if (pos < 0)  {
        pos = -pos;
-       if (pos > 63) pos = 63; 
+       if (pos > 63) pos = 63;
        RAM_INPUT[0x04] = (RAM_INPUT[4] & 0x1f) | (accelerate_mapping[((pos >> 3) & 7)]<<5);
      } else
        RAM_INPUT[4] &= 0x1f;
@@ -524,7 +498,7 @@ void execute_continental_circus_frame(void)
    }
     // On the joystick/steering wheel, acceleration is on the axis 1, ranging
     // from 0 to -80 approx...
-    
+
 
    if (using_wheel) { // same thing for the brake
 #ifdef SDL
@@ -536,7 +510,7 @@ void execute_continental_circus_frame(void)
 #else
      int pos = joy[0].stick[0].axis[1].pos;
      if (pos > 0) {
-       if (pos > 63) pos = 63; 
+       if (pos > 63) pos = 63;
        RAM_INPUT[0x06] = (RAM_INPUT[6] & 0x1f) | (accelerate_mapping[((pos >> 3) & 7)]<<5);
      } else
        RAM_INPUT[6] &= 0x1f;
@@ -549,7 +523,7 @@ void execute_continental_circus_frame(void)
    RAM_INPUT[0x10] = 0x00;
    RAM_INPUT[0x12] = 0x00;
 
-  if (using_wheel) { 
+  if (using_wheel) {
      // steering wheel from -127 to +128 mapped to -32,+32
 #ifdef SDL
      RAM_INPUT[0x10] = (-analog_normx)>>9;
@@ -709,7 +683,7 @@ static void render_z_system_sprites(int pri)
    }
 }
 
-void draw_continental_circus(void)
+static void draw_continental_circus(void)
 {
    ClearPaletteMap();
    if (!GFX_BG0_SOLID) {
@@ -764,7 +738,10 @@ void draw_continental_circus(void)
    //tc0150rod_show_palette();
 }
 
-static struct VIDEO_INFO continental_circus_video =
+
+
+
+static struct VIDEO_INFO video_contcirc =
 {
    draw_continental_circus,
    320,
@@ -773,46 +750,33 @@ static struct VIDEO_INFO continental_circus_video =
    VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
    taitoz_gfxdecodeinfo
 };
-
-GAME( continental_circus_us ,
-   continental_circus_us_dirs,
-   continental_circus_us_roms,
-   continental_circus_inputs,
-   continental_circus_dsw,
-   continental_circus_us_romsw,
-
-   load_continental_circus_us,
-   clear_continental_circus,
-   &continental_circus_video,
-   execute_continental_circus_frame,
-   "contcrcu",
-   "Continental Circus (US Set 1)",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B33",
-   1987,
-   contcirc_ym2610_sound,
-   GAME_RACE
+static struct DIR_INFO dir_contcirc[] =
+{
+   { "continental_circus", },
+   { "contcirc", },
+   { "ctcircus", },
+   { NULL, },
+};
+GME( contcirc, "Continental Circus", TAITO, 1989, GAME_RACE,
+	.romsw = romsw_contcirc,
+	.board = "B33",
 );
-
-GAME( continental_circus ,
-   continental_circus_dirs,
-   continental_circus_roms,
-   continental_circus_inputs,
-   continental_circus_dsw,
-   continental_circus_romsw,
-
-   load_continental_circus,
-   clear_continental_circus,
-   &continental_circus_video,
-   execute_continental_circus_frame,
-   "contcirc",
-   "Continental Circus",
-   NULL,
-   COMPANY_ID_TAITO,
-   "B33",
-   1989,
-   contcirc_ym2610_sound,
-   GAME_RACE
+static struct DIR_INFO dir_contcrcu[] =
+{
+   { "continental_circus_us", },
+   { "continental_circus_usernate", },
+   { "contcalt", },
+   { "contcrcu", },
+   { ROMOF("contcirc"), },
+   { CLONEOF("contcirc"), },
+   { NULL, },
+};
+GAME( contcrcu, "Continental Circus (US Set 1)", TAITO, 1987, GAME_RACE,
+	.input = input_contcirc,
+	.dsw = dsw_contcirc,
+	.romsw = romsw_contcrcu,
+	.video = &video_contcirc,
+	.exec = execute_contcirc,
+	.board = "B33",
 );
 

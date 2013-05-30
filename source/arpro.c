@@ -873,8 +873,8 @@ void update_arpro_cheats(void)
 
 	   get_cheat_hex_value(ta,text);
 	   sprintf(text,"%s %s",text,CheatList[ta].info);
-	   textout_fast(text,x+current_game->video_info->border_size,
-			y+current_game->video_info->border_size,
+	   textout_fast(text,x+current_game->video->border_size,
+			y+current_game->video->border_size,
 			get_white_pen());
 	 } else
 	   if(!(type & CHEAT_MASKED)){

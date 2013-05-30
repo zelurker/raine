@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610b_sound
 /******************************************************************************/
 /*									      */
 /*	   QUIZ SEKAI WA SHOW BY SHOBAI (C) 1993 TAITO CORPORATION	      */
@@ -5,7 +6,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "bsystem.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
@@ -14,14 +14,8 @@
 #include "savegame.h"
 #include "blit.h"
 
-static struct DIR_INFO quiz_sekai_wa_show_by_shobai_dirs[] =
-{
-   { "quiz_sekai_wa_show_by_shobai", },
-   { "qzshowby", },
-   { NULL, },
-};
 
-static struct ROM_INFO quiz_sekai_wa_show_by_shobai_roms[] =
+static struct ROM_INFO rom_qzshowby[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00080000,
               "d72-13.bin",  0xa867759f,   "d72-12.bin",  0x522c09a7),
@@ -32,7 +26,7 @@ static struct ROM_INFO quiz_sekai_wa_show_by_shobai_roms[] =
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO quiz_sekai_wa_show_by_shobai_inputs[] =
+static struct INPUT_INFO input_qzshowby[] =
 {
    INP0( COIN1, 0x026003, 0x10 ),
    INP0( COIN2, 0x026003, 0x20 ),
@@ -68,37 +62,9 @@ static struct INPUT_INFO quiz_sekai_wa_show_by_shobai_inputs[] =
    END_INPUT
 };
 
-GAME( quiz_sekai_wa_show_by_shobai ,
-   quiz_sekai_wa_show_by_shobai_dirs,
-   quiz_sekai_wa_show_by_shobai_roms,
-   quiz_sekai_wa_show_by_shobai_inputs,
-   NULL,
-   NULL,
 
-   load_quiz_sekai_wa_show_by_shobai,
-   clear_quiz_sekai_wa_show_by_shobai,
-   &b_system_video,
-   execute_quiz_sekai_wa_show_by_shobai_frame,
-   "qzshowby",
-   "Quiz sekai wa show by shobai",
-   "クイズ菅界はＳｈｏｗ　ｂｙ　ショーバイ",
-   COMPANY_ID_TAITO,
-   "D72",
-   1993,
-   taito_ym2610_sound,
-   GAME_PUZZLE
-);
 
-static struct DIR_INFO puzzle_bobble_b_system_dirs[] =
-{
-   { "puzzle_bobble_b_system", },
-   { "puzbobb", },
-   { "pbobblbs", },
-   { "pbobble", },
-   { NULL, },
-};
-
-static struct ROM_INFO puzzle_bobble_b_system_roms[] =
+static struct ROM_INFO rom_pbobble[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00040000,
              "pb-1c18.bin",  0x5de14f49,   "pb-ic2.bin",  0x2abe07d1),
@@ -109,7 +75,7 @@ static struct ROM_INFO puzzle_bobble_b_system_roms[] =
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO puzzle_bobble_b_system_inputs[] =
+static struct INPUT_INFO input_pbobble[] =
 {
    INP0( COIN1, 0x026002, 0x10 ),
    INP0( COIN2, 0x026002, 0x20 ),
@@ -147,43 +113,16 @@ static struct ROMSW_DATA romsw_data_puzzle_bobble_b_system_0[] =
    { NULL,		      0    },
 };
 
-static struct ROMSW_INFO puzzle_bobble_b_system_romsw[] =
+static struct ROMSW_INFO romsw_pbobble[] =
 {
    { 0x07FFFF, 0x04, romsw_data_puzzle_bobble_b_system_0 },
    { 0,        0,    NULL },
 };
 
 
-GAME( puzzle_bobble_b_system ,
-   puzzle_bobble_b_system_dirs,
-   puzzle_bobble_b_system_roms,
-   puzzle_bobble_b_system_inputs,
-   NULL,
-   puzzle_bobble_b_system_romsw,
 
-   load_puzzle_bobble_b_system,
-   clear_puzzle_bobble_b_system,
-   &b_system_video,
-   execute_puzzle_bobble_b_system_frame,
-   "pbobble",
-   "Puzzle Bobble (b system)",
-   NULL,
-   COMPANY_ID_TAITO,
-   NULL,
-   1994,
-   taito_ym2610_sound,
-   GAME_PUZZLE
-);
 
-static struct DIR_INFO space_invaders_dx_dirs[] =
-{
-   { "space_invaders_dx", },
-   { "spacedx", },
-   { "spacedxj", },
-   { NULL, },
-};
-
-static struct ROM_INFO space_invaders_dx_roms[] =
+static struct ROM_INFO rom_spacedxj[] =
 {
    {	   "d89-06", 0x00040000, 0x7122751e, REGION_ROM1, 0x000000, LOAD_8_16, },
    {	   "d89-05", 0x00040000, 0xbe1638af, REGION_ROM1, 0x000001, LOAD_8_16, },
@@ -194,7 +133,7 @@ static struct ROM_INFO space_invaders_dx_roms[] =
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO space_invaders_dx_inputs[] =
+static struct INPUT_INFO input_spacedxj[] =
 {
    INP0( COIN1, 0x072002, 0x10 ),
    INP0( COIN2, 0x072002, 0x20 ),
@@ -226,41 +165,13 @@ static struct ROMSW_DATA romsw_data_space_invaders_dx_0[] =
    { NULL,		      0    },
 };
 
-static struct ROMSW_INFO space_invaders_dx_romsw[] =
+static struct ROMSW_INFO romsw_spacedxj[] =
 {
    { 0x03FFFF, 0x02, romsw_data_space_invaders_dx_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO space_invaders_dx_video =
-{
-   draw_space_dx,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( space_invaders_dx ,
-   space_invaders_dx_dirs,
-   space_invaders_dx_roms,
-   space_invaders_dx_inputs,
-   NULL,
-   space_invaders_dx_romsw,
-
-   load_space_dx,
-   clear_puzzle_bobble_b_system,
-   &space_invaders_dx_video,
-   execute_space_dx_frame,
-   "spacedxj",
-   "Space Invaders DX",
-   "スペースインベーダーＤＸ",
-   COMPANY_ID_TAITO,
-   "D89",
-   1994,
-   taito_ym2610_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_INPUT;
 static UINT8 *RAM_VIDEO;
@@ -273,7 +184,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void load_quiz_sekai_wa_show_by_shobai(void)
+static void load_qzshowby(void)
 {
    int ta,tb,tc;
 
@@ -502,17 +413,7 @@ void load_quiz_sekai_wa_show_by_shobai(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_quiz_sekai_wa_show_by_shobai(void)
-{
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-#endif
-}
-
-void execute_quiz_sekai_wa_show_by_shobai_frame(void)
+static void execute_qzshowby(void)
 {
 #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -567,7 +468,7 @@ static void pb_input_ww(UINT32 offset, UINT16 data)
    pb_input_wb(offset, data);
 }
 
-void load_puzzle_bobble_b_system(void)
+static void load_pbobble(void)
 {
    int ta,tb,tc;
 
@@ -793,18 +694,7 @@ void load_puzzle_bobble_b_system(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_puzzle_bobble_b_system(void)
-{
-   save_eeprom();
-
-   RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x040000,1);
-#endif
-}
-
-void execute_space_dx_frame(void)
+static void execute_spacedxj(void)
 {
 #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -818,7 +708,7 @@ void execute_space_dx_frame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void execute_puzzle_bobble_b_system_frame(void)
+static void execute_pbobble(void)
 {
 #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -834,7 +724,7 @@ void execute_puzzle_bobble_b_system_frame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void load_space_dx(void)
+static void load_spacedxj(void)
 {
    int ta,tb,tc;
 
@@ -1066,7 +956,7 @@ void load_space_dx(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void draw_space_dx(void)
+static void draw_space_dx(void)
 {
    static int do_clear;
 
@@ -1141,4 +1031,55 @@ void draw_space_dx(void)
    vcu_render_bg2();
 
 }
+
+static struct VIDEO_INFO video_spacedxj =
+{
+   draw_space_dx,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_spacedxj[] =
+{
+   { "space_invaders_dx", },
+   { "spacedx", },
+   { "spacedxj", },
+   { NULL, },
+};
+GAME( spacedxj, "Space Invaders DX", TAITO, 1994, GAME_SHOOT,
+	.input = input_spacedxj,
+	.romsw = romsw_spacedxj,
+	.video = &video_spacedxj,
+	.exec = execute_spacedxj,
+	.long_name_jpn = "スペースインベーダーＤＸ",
+	.board = "D89",
+);
+static struct DIR_INFO dir_qzshowby[] =
+{
+   { "quiz_sekai_wa_show_by_shobai", },
+   { "qzshowby", },
+   { NULL, },
+};
+GAME( qzshowby, "Quiz sekai wa show by shobai", TAITO, 1993, GAME_PUZZLE,
+	.input = input_qzshowby,
+	.video = &b_system_video,
+	.exec = execute_qzshowby,
+	.long_name_jpn = "クイズ菅界はＳｈｏｗ　ｂｙ　ショーバイ",
+	.board = "D72",
+);
+static struct DIR_INFO dir_pbobble[] =
+{
+   { "puzzle_bobble_b_system", },
+   { "puzbobb", },
+   { "pbobblbs", },
+   { "pbobble", },
+   { NULL, },
+};
+GAME( pbobble, "Puzzle Bobble (b system)", TAITO, 1994, GAME_PUZZLE,
+	.input = input_pbobble,
+	.romsw = romsw_pbobble,
+	.video = &b_system_video,
+	.exec = execute_pbobble,
+);
 

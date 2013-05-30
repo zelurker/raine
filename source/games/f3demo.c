@@ -5,54 +5,20 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "f3demo.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
 #include "blit.h" // clear_game_screen
 
-static struct DIR_INFO f3_demo_by_antiriad_dirs[] =
-{
-   { "f3demo", },
-   { NULL, },
-};
 
-static struct ROM_INFO f3_demo_by_antiriad_roms[] =
+static struct ROM_INFO rom_f3demo[] =
 {
    {     "code.bin", 0x0000194c, 0x08587aea, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct VIDEO_INFO f3_demo_by_antiriad_video =
-{
-   DrawF3Demo,
-   320,
-   224,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( f3_demo_by_antiriad ,
-   f3_demo_by_antiriad_dirs,
-   f3_demo_by_antiriad_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadF3Demo,
-   ClearF3Demo,
-   &f3_demo_by_antiriad_video,
-   ExecuteF3DemoFrame,
-   "f3demo",
-   "F3 Demo by Antiriad",
-   NULL,
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1999,
-   NULL,
-   GAME_MISC
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -80,7 +46,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadF3Demo(void)
+static void load_f3demo(void)
 {
    RAMSize=0x80000;
 
@@ -195,17 +161,7 @@ void LoadF3Demo(void)
    init_m68k();
 }
 
-void ClearF3Demo(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
-}
-
-void ExecuteF3DemoFrame(void)
+static void execute_f3demo(void)
 {
    Execute68020(200000);
 
@@ -217,7 +173,7 @@ void ExecuteF3DemoFrame(void)
    IntF3System();
 }
 
-void DrawF3Demo(void)
+static void DrawF3Demo(void)
 {
    ClearPaletteMap();
 
@@ -245,3 +201,22 @@ void DrawF3Demo(void)
       f3video_render_fg0();
    }
 }
+static struct VIDEO_INFO video_f3demo =
+{
+   DrawF3Demo,
+   320,
+   224,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_f3demo[] =
+{
+   { "f3demo", },
+   { NULL, },
+};
+GAME( f3demo, "F3 Demo by Antiriad", BOOTLEG, 1999, GAME_MISC,
+	.input = f3_system_inputs,
+	.video = &video_f3demo,
+	.exec = execute_f3demo,
+);
+

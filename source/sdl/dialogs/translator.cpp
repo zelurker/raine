@@ -528,7 +528,7 @@ static int draw_translator(int sel) {
 	sprite_menu->draw();
 	return 0;
     }
-    clear_game_screen(0);
+    clear_screen(0);
     ClearPaletteMap();
     UINT8 map[16];
 
@@ -922,7 +922,7 @@ static int draw_translator_ss2(int sel) {
 	sprite_menu->draw();
 	return 0;
     }
-    clear_game_screen(0);
+    clear_screen(0);
     ClearPaletteMap();
     UINT8 map[16];
 

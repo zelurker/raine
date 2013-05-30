@@ -14,7 +14,6 @@
 /*                                                                            */
 /******************************************************************************/
 #include "gameinc.h"
-#include "megasys1.h"
 #include "taitosnd.h"
 #include "decode.h"
 #include "sasound.h"
@@ -91,14 +90,8 @@ get all the letters "sa-mu-ra-i", though.
 #define player1_r(a) ReadWord(&RAM[0x14000])
 #define player2_r(a) ReadWord(&RAM[0x14002])
 
-static struct DIR_INFO _64th_street_dirs[] =
-{
-   { "64th_street", },
-   { "64street", },
-   { NULL, },
-};
 
-static struct ROM_INFO _64th_street_roms[] =
+static struct ROM_INFO rom_64street[] =
 {
 	LOAD8_16(REGION_ROM1, 0, 0x040000,
 			"64th_03.rom", 0xed6c6942, "64th_02.rom", 0x0621ed1d),
@@ -115,7 +108,7 @@ static struct ROM_INFO _64th_street_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO megasys_1_inputs[] =
+static struct INPUT_INFO input_lordofk[] =
 {
    INP0( COIN1, 0x010000, 0x40 ),
    INP0( COIN2, 0x010000, 0x80 ),
@@ -190,31 +183,11 @@ static struct DSW_DATA dsw_data_64street_1[] =
    { NULL,                    0,   },
 };
 
-struct DSW_INFO _64th_street_dsw[] =
+static struct DSW_INFO dsw_64street[] =
 {
    { 0x010007, 0xFF, dsw_data_coinage_8bits },
    { 0x010006, 0xBD, dsw_data_64street_1 },
    { 0,        0,    NULL,      },
-};
-
-static struct VIDEO_INFO megasys2_video =
-{
-   DrawMegaSystem2,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
-
-static struct VIDEO_INFO megasys2_r90_video =
-{
-   DrawMegaSystem2,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_90 |
-   VIDEO_ROTATABLE,
 };
 
 static struct YM2151interface ym2151_interface =
@@ -236,23 +209,14 @@ static struct OKIM6295interface m6295_interface =
    { 100, 100 }, // volumes
 };
 
-static struct SOUND_INFO jaleco_ym2151_m6295x2_sound[] =
+static struct SOUND_INFO sound_lordofk[] =
 {
    { SOUND_YM2151J, &ym2151_interface,  },
    { SOUND_M6295,   &m6295_interface,   },
    { 0,             NULL,               },
 };
 
-static struct DIR_INFO _64th_street_japanese_dirs[] =
-{
-   { "64th_street_japanese", },
-   { "64streej", },
-   { ROMOF("64street"), },
-   { CLONEOF("64street"), },
-   { NULL, },
-};
-
-static struct ROM_INFO _64th_street_japanese_roms[] =
+static struct ROM_INFO rom_64streej[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "91105-3.bin",  0xa211a83b , "91105-2.bin",  0x27c1f436 ),
@@ -262,13 +226,7 @@ static struct ROM_INFO _64th_street_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DIR_INFO astyanax_dirs[] =
-{
-   { "astyanax", },
-   { NULL, },
-};
-
-static struct ROM_INFO astyanax_roms[] =
+static struct ROM_INFO rom_astyanax[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "astyan2.bin",  0x1b598dcc , "astyan1.bin",  0x1a1ad3cf ),
@@ -340,44 +298,14 @@ static struct DSW_DATA dsw_data_astyanax_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO astyanax_dsw[] =
+static struct DSW_INFO dsw_astyanax[] =
 {
    { 0x010007, 0xBF, dsw_data_astyanax_0 },
    { 0x010006, 0xFF, dsw_data_astyanax_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO megasys1_video =
-{
-   DrawMegaSystem1,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
-
-static struct VIDEO_INFO megasys1_r270_video =
-{
-   DrawMegaSystem1,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-};
-
-static struct DIR_INFO the_lord_of_king_dirs[] =
-{
-   { "the_lord_of_king", },
-   { "lord_of_king", },
-   { "lordofk", },
-   { ROMOF("astyanax"), },
-   { CLONEOF("astyanax"), },
-   { NULL, },
-};
-
-static struct ROM_INFO the_lord_of_king_roms[] =
+static struct ROM_INFO rom_lordofk[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "lokj02.bin",  0x0d7f9b4a , "lokj01.bin",  0xbed3cb93 ),
@@ -389,14 +317,7 @@ static struct ROM_INFO the_lord_of_king_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DIR_INFO avenging_spirit_dirs[] =
-{
-   { "avenging_spirit", },
-   { "avspirit", },
-   { NULL, },
-};
-
-static struct ROM_INFO avenging_spirit_roms[] =
+static struct ROM_INFO rom_avspirit[] =
 {
   LOAD8_16(  REGION_ROM1,  0,  0x40000,
             "spirit05.rom",  0xb26a341a , "spirit06.rom",  0x609f71fe ),
@@ -428,21 +349,14 @@ static struct DSW_DATA dsw_data_avspirit_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO avenging_spirit_dsw[] =
+static struct DSW_INFO dsw_avspirit[] =
 {
    { 0x010007, 0xFF, dsw_data_coinage_8bits },
    { 0x010006, 0xFD, dsw_data_avspirit_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO chimera_beast_dirs[] =
-{
-   { "chimera_beast", },
-   { "chimerab", },
-   { NULL, },
-};
-
-static struct ROM_INFO chimera_beast_roms[] =
+static struct ROM_INFO rom_chimerab[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "prg3.bin",  0x70f1448f , "prg2.bin",  0x821dbb85 ),
@@ -478,42 +392,14 @@ static struct DSW_DATA dsw_data_chimerab_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO chimera_beast_dsw[] =
+static struct DSW_INFO dsw_chimerab[] =
 {
    { 0x010007, 0xBD, dsw_data_chimerab_0 },
    { 0x010006, 0xFF, dsw_data_coinage_8bits },
    { 0,        0,    NULL,      },
 };
 
-GAME( chimera_beast ,
-   chimera_beast_dirs,
-   chimera_beast_roms,
-   megasys_1_inputs,
-   chimera_beast_dsw,
-   NULL,
-
-   load_chimera_beast,
-   NULL,
-   &megasys2_video,
-   ExecuteMegaSystem2Frame,
-   "chimerab",
-   "Chimera Beast",
-   "‚L‚¸‚Î‚r¸[‚X‚g",
-   COMPANY_ID_JALECO,
-   NULL,
-   1993,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO cybattler_dirs[] =
-{
-   { "cybattler", },
-   { "cybattlr", },
-   { NULL, },
-};
-
-static struct ROM_INFO cybattler_roms[] =
+static struct ROM_INFO rom_cybattlr[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
             "cb_03.rom",  0xbee20587, "cb_02.rom",  0x2ed14c50),
@@ -579,43 +465,14 @@ static struct DSW_DATA dsw_data_cybattler_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO cybattler_dsw[] =
+static struct DSW_INFO dsw_cybattlr[] =
 {
    { 0x010007, 0xFF, dsw_data_cybattler_0 },
    { 0x010006, 0xBF, dsw_data_cybattler_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( cybattler ,
-   cybattler_dirs,
-   cybattler_roms,
-   megasys_1_inputs,
-   cybattler_dsw,
-   NULL,
-
-   LoadCybattler,
-   NULL,
-   &megasys2_r90_video,
-   ExecuteMegaSystem2Frame,
-   "cybattlr",
-   "Cybattler",
-   "‚T‚C‚o‚g‚Î¸[",
-   COMPANY_ID_JALECO,
-   NULL,
-   1993,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO earth_defence_force_dirs[] =
-{
-   { "earth_defense_force", },
-   { "earth_defence_force", },
-   { "edf", },
-   { NULL, },
-};
-
-static struct ROM_INFO earth_defence_force_roms[] =
+static struct ROM_INFO rom_edf[] =
 {
   LOAD8_16(  REGION_ROM1,  0,  0x40000,
             "edf_05.rom",  0x105094d1 , "edf_06.rom",  0x94da2f0c ),
@@ -665,41 +522,14 @@ static struct DSW_DATA dsw_data_edf_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO earth_defence_force_dsw[] =
+static struct DSW_INFO dsw_edf[] =
 {
    { 0x010007, 0xFF, dsw_data_edf_0 },
    { 0x010006, 0xFF, dsw_data_edf_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( earth_defence_force ,
-   earth_defence_force_dirs,
-   earth_defence_force_roms,
-   megasys_1_inputs,
-   earth_defence_force_dsw,
-   NULL,
-
-   LoadEarthDefForce,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "edf",
-   "Earth Defence Force",
-   "Èd¸DÈc¸DÈe",
-   COMPANY_ID_JALECO,
-   NULL,
-   1991,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO hachoo_dirs[] =
-{
-   { "hachoo", },
-   { NULL, },
-};
-
-static struct ROM_INFO hachoo_roms[] =
+static struct ROM_INFO rom_hachoo[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "hacho02.rom",  0x49489c27 , "hacho01.rom",  0x97fc9515 ),
@@ -759,42 +589,14 @@ static struct DSW_DATA dsw_data_hachoo_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO hachoo_dsw[] =
+static struct DSW_INFO dsw_hachoo[] =
 {
    { 0x010007, 0xFF, dsw_data_hachoo_0 },
    { 0x010006, 0xFF, dsw_data_hachoo_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( hachoo ,
-   hachoo_dirs,
-   hachoo_roms,
-   megasys_1_inputs,
-   hachoo_dsw,
-   NULL,
-
-   LoadHachoo,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "hachoo",
-   "Hachoo",
-   "îj∆õ",
-   COMPANY_ID_JALECO,
-   NULL,
-   1989,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
-);
-
-static struct DIR_INFO kick_off_dirs[] =
-{
-   { "kick_off", },
-   { "kickoff", },
-   { NULL, },
-};
-
-static struct ROM_INFO kick_off_roms[] =
+static struct ROM_INFO rom_kickoff[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x010000,
             "kioff03.rom",  0x3b01be65 , "kioff01.rom",  0xae6e68a1 ),
@@ -866,44 +668,14 @@ static struct DSW_DATA dsw_data_kick_off_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO kick_off_dsw[] =
+static struct DSW_INFO dsw_kickoff[] =
 {
    { 0x010007, 0x3F, dsw_data_kick_off_0 },
    { 0x010006, 0xAF, dsw_data_kick_off_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( kick_off ,
-   kick_off_dirs,
-   kick_off_roms,
-   megasys_1_inputs,
-   kick_off_dsw,
-   NULL,
-
-   LoadKickOff,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "kickoff",
-   "Kick Off",
-   NULL,
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SPORTS
-);
-
-static struct DIR_INFO legend_of_makai_dirs[] =
-{
-   { "legend_of_makai", },
-   { "legend_of_makaj", },
-   { "lomakai", },
-   { "lomakaj", },
-   { NULL, },
-};
-
-static struct ROM_INFO legend_of_makai_roms[] =
+static struct ROM_INFO rom_lomakai[] =
 {
   { "lom_01.rom", 0x10000, 0x46e85e90 , REGION_ROM2, 0x0000, LOAD_NORMAL },
    {   "lom_05.rom", 0x00020000, 0xd04fc713, REGION_GFX1 },
@@ -949,21 +721,11 @@ static struct DSW_DATA dsw_data_legend_of_makai_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO legend_of_makai_dsw[] =
+static struct DSW_INFO dsw_lomakai[] =
 {
    { 0x010007, 0xBF, dsw_data_legend_of_makai_0 },
    { 0x010006, 0xEF, dsw_data_legend_of_makai_1 },
    { 0,        0,    NULL,      },
-};
-
-static struct VIDEO_INFO legend_of_makai_video =
-{
-   DrawLegendOfMakaj,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
 };
 
 static struct YM2203interface ym2203_interface =
@@ -979,43 +741,13 @@ static struct YM2203interface ym2203_interface =
    {NULL}
 };
 
-static struct SOUND_INFO jaleco_ym2203_sound[] =
+static struct SOUND_INFO sound_lomakai[] =
 {
    { SOUND_YM2203,  &ym2203_interface,  },
    { 0,             NULL,               },
 };
 
-GAME( legend_of_makai ,
-   legend_of_makai_dirs,
-   legend_of_makai_roms,
-   megasys_1_inputs,
-   legend_of_makai_dsw,
-   NULL,
-
-   LoadLegendOfMakaj,
-   NULL,
-   &legend_of_makai_video,
-   ExecuteMegaSystem1Frame,
-   "lomakai",
-   "Legend of Makai",
-   "˚ÈË@Ù`…Ö",
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2203_sound,
-   GAME_PLATFORM
-);
-
-static struct DIR_INFO makai_densetsu_dirs[] =
-{
-   { "makai_densetsu", },
-   { "makaiden", },
-   { ROMOF("lomakai"), },
-   { CLONEOF("lomakai"), },
-   { NULL, },
-};
-
-static struct ROM_INFO makai_densetsu_roms[] =
+static struct ROM_INFO rom_makaiden[] =
 {
   { "lom_01.rom", 0x10000, 0x46e85e90 , REGION_ROM2, 0x0000, LOAD_NORMAL },
    {   "lom_05.rom", 0x00020000, 0xd04fc713, 0, 0, 0, },
@@ -1026,36 +758,7 @@ static struct ROM_INFO makai_densetsu_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( makai_densetsu ,
-   makai_densetsu_dirs,
-   makai_densetsu_roms,
-   megasys_1_inputs,
-   legend_of_makai_dsw,
-   NULL,
-
-   LoadLegendOfMakaj,
-   NULL,
-   &legend_of_makai_video,
-   ExecuteMegaSystem1Frame,
-   "makaiden",
-   "Makai Densetsu",
-   "˚ÈË@Ù`…Ö",
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2203_sound,
-   GAME_PLATFORM
-);
-
-static struct DIR_INFO p47_american_dirs[] =
-{
-   { "p47", },
-   { "p47_american", },
-   { "p47_usa", },
-   { NULL, },
-};
-
-static struct ROM_INFO p47_american_roms[] =
+static struct ROM_INFO rom_p47[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "p47us3.bin",  0x022e58b8 , "p47us1.bin",  0xed926bd8 ),
@@ -1113,23 +816,14 @@ static struct DSW_DATA dsw_data_p47_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO p47_dsw[] =
+static struct DSW_INFO dsw_p47[] =
 {
    { 0x010007, 0xFF, dsw_data_p47_0 },
    { 0x010006, 0xFF, dsw_data_p47_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO p47_japanese_dirs[] =
-{
-   { "p47_japanese", },
-   { "p47j", },
-   { ROMOF("p47"), },
-   { CLONEOF("p47"), },
-   { NULL, },
-};
-
-static struct ROM_INFO p47_japanese_roms[] =
+static struct ROM_INFO rom_p47j[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "p47j_3.bin",  0x11c655e5 , "p47j_1.bin",  0x0a5998de ),
@@ -1152,14 +846,7 @@ static struct ROM_INFO p47_japanese_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DIR_INFO peek_a_boo_dirs[] =
-{
-   { "peek_a_boo", },
-   { "peekaboo", },
-   { NULL, },
-};
-
-static struct ROM_INFO peek_a_boo_roms[] =
+static struct ROM_INFO rom_peekaboo[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "j3",  0xf5f4cf33 , "j2",  0x7b3d430d ),
@@ -1171,7 +858,7 @@ static struct ROM_INFO peek_a_boo_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO peek_a_boo_inputs[] =
+static struct INPUT_INFO input_peekaboo[] =
 {
    INP0( COIN1, 0x040000, 0x04 ),
    INP0( COIN2, 0x040000, 0x08 ),
@@ -1226,21 +913,11 @@ static struct DSW_DATA dsw_data_peekaboo_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO peek_a_boo_dsw[] =
+static struct DSW_INFO dsw_peekaboo[] =
 {
    { 0x030001, 0xFF, dsw_data_peekaboo_0 },
    { 0x030000, 0x6F, dsw_data_peekaboo_1 },
    { 0,        0,    NULL,      },
-};
-
-static struct VIDEO_INFO peek_a_boo_video =
-{
-   DrawPeekABoo,
-   256,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
 };
 
 static struct OKIM6295interface m6295_interface_D =
@@ -1251,21 +928,13 @@ static struct OKIM6295interface m6295_interface_D =
 	{ 255 }
 };
 
-static struct SOUND_INFO m6295_sound_D[] =
+static struct SOUND_INFO sound_peekaboo[] =
 {
    { SOUND_M6295,   &m6295_interface_D,   },
    { 0,             NULL,               },
 };
 
-static struct DIR_INFO phantasm_dirs[] =
-{
-   { "phantasm", },
-   { ROMOF("avspirit"), },
-   { CLONEOF("avspirit"), },
-   { NULL, },
-};
-
-static struct ROM_INFO phantasm_roms[] =
+static struct ROM_INFO rom_phantasm[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "phntsm02.bin",  0xd96a3584 , "phntsm01.bin",  0xa54b4b87 ),
@@ -1277,15 +946,7 @@ static struct ROM_INFO phantasm_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-
-static struct DIR_INFO plus_alpha_dirs[] =
-{
-   { "plus_alpha", },
-   { "plusalph", },
-   { NULL, },
-};
-
-static struct ROM_INFO plus_alpha_roms[] =
+static struct ROM_INFO rom_plusalph[] =
 {
 	LOAD8_16(REGION_ROM1, 0, 0x020000,
    "pa-rom2.bin", 0x33244799, "pa-rom1.bin", 0xa32fdcae ),
@@ -1345,43 +1006,14 @@ static struct DSW_DATA dsw_data_plusalph_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO plus_alpha_dsw[] =
+static struct DSW_INFO dsw_plusalph[] =
 {
   { 0x10007, 0xff, dsw_data_plusalph_0 },
   { 0x10006, 0xbf, dsw_data_plusalph_1 },
   { 0, 0, NULL }
 };
 
-GAME( plus_alpha ,
-   plus_alpha_dirs,
-   plus_alpha_roms,
-   megasys_1_inputs,
-   plus_alpha_dsw,
-   NULL,
-
-   LoadPlusAlpha,
-   NULL,
-   &megasys1_r270_video,
-   ExecuteMegaSystem1Frame,
-   "plusalph",
-   "Plus Alpha",
-   "‚v‚Î‚X‚A‚Ô‚t‚@",
-   COMPANY_ID_JALECO,
-   NULL,
-   1989,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO rodland_dirs[] =
-{
-   { "rodland", },
-   { "rodland_english", },
-   { "rodlande", },
-   { NULL, },
-};
-
-static struct ROM_INFO rodland_roms[] =
+static struct ROM_INFO rom_rodland[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "rl_02.rom",  0xc7e00593 , "rl_01.rom",  0x2e748ca1 ),
@@ -1429,33 +1061,14 @@ static struct DSW_DATA dsw_data_rodland_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rodland_dsw[] =
+static struct DSW_INFO dsw_rodland[] =
 {
    { 0x010007, 0xBF, dsw_data_rodland_0 },
    { 0x010006, 0xFF, dsw_data_rodland_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO rodlandjb_dirs[] =
-{
-   { "rodland_japaneseb", },
-   { "rodlandjb", },
-   { "rodlndjb", },
-   { ROMOF("rodland"), },
-   { CLONEOF("rodland"), },
-   { NULL, },
-};
-
-static struct DIR_INFO rodlandj_dirs[] =
-{
-   { "rodland_japanese", },
-   { "rodlandj", },
-   { ROMOF("rodland"), },
-   { CLONEOF("rodland"), },
-   { NULL, },
-};
-
-static struct ROM_INFO rodlandjb_roms[] =
+static struct ROM_INFO rom_rodlndjb[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x010000,
             "rl19.bin",  0x028de21f , "rl17.bin",  0x9c720046 ),
@@ -1468,7 +1081,7 @@ static struct ROM_INFO rodlandjb_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO rodlandj_roms[] =
+static struct ROM_INFO rom_rodlandj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "rl_2.bin",  0xb1d2047e , "rl_1.bin",  0x3c47c2a3 ),
@@ -1482,14 +1095,7 @@ static struct ROM_INFO rodlandj_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DIR_INFO saint_dragon_dirs[] =
-{
-   { "saint_dragon", },
-   { "stdragon", },
-   { NULL, },
-};
-
-static struct ROM_INFO saint_dragon_roms[] =
+static struct ROM_INFO rom_stdragon[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
       "jsd-02.bin", 0xcc29ab19, "jsd-01.bin", 0x67429a57),
@@ -1552,42 +1158,14 @@ static struct DSW_DATA dsw_data_saint_dragon_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO saint_dragon_dsw[] =
+static struct DSW_INFO dsw_stdragon[] =
 {
    { 0x010007, 0xFF, dsw_data_saint_dragon_0 },
    { 0x010006, 0xAF, dsw_data_saint_dragon_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( saint_dragon ,
-   saint_dragon_dirs,
-   saint_dragon_roms,
-   megasys_1_inputs,
-   saint_dragon_dsw,
-   NULL,
-
-   LoadSaintDragon,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "stdragon",
-   "Saint Dragon",
-   "ÙV…π˘¥",
-   COMPANY_ID_JALECO,
-   NULL,
-   1989,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO soldam_dirs[] =
-{
-   { "soldam", },
-   { "soldamj", },
-   { NULL, },
-};
-
-static struct ROM_INFO soldam_roms[] =
+static struct ROM_INFO rom_soldamj[] =
 {
   LOAD8_16( REGION_CPU1, 0, 0x00020000,
              "soldam2.bin", 0xc73d29e4,  "soldam1.bin", 0xe7cb0c20),
@@ -1635,7 +1213,7 @@ static struct DSW_DATA dsw_data_soldam_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO soldam_dsw[] =
+static struct DSW_INFO dsw_soldamj[] =
 {
    { 0x010007, 0xFF, dsw_data_soldam_0 },
    { 0x010006, 0xFB, dsw_data_soldam_1 },
@@ -1649,42 +1227,13 @@ static struct ROMSW_DATA romsw_data_soldam_0[] =
    { NULL,              0    },
 };
 
-static struct ROMSW_INFO soldam_romsw[] =
+static struct ROMSW_INFO romsw_soldamj[] =
 {
    { 0x3a9d, 0x02, romsw_data_soldam_0 },
    { 0,        0,    NULL },
 };
 
-GAME( soldam ,
-   soldam_dirs,
-   soldam_roms,
-   megasys_1_inputs,
-   soldam_dsw,
-   soldam_romsw,
-
-   load_soldam,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "soldamj",
-   "Soldam",
-   NULL,
-   COMPANY_ID_JALECO,
-   NULL,
-   1992,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_PUZZLE
-);
-
-static struct DIR_INFO iga_ninjyutsuden_dirs[] =
-{
-   { "iga_ninjyutsuden", },
-   { "iganinju", },
-   { "kazan", },
-   { NULL, },
-};
-
-static struct ROM_INFO iga_ninjyutsuden_roms[] =
+static struct ROM_INFO rom_iganinju[] =
 {
   LOAD8_16( REGION_CPU1, 0, 0x00020000,
              "iga_02.bin", 0xbd00c280,  "iga_01.bin", 0xfa416a9e),
@@ -1732,42 +1281,14 @@ static struct DSW_DATA dsw_data_iganinju_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO iga_ninjyutsuden_dsw[] =
+static struct DSW_INFO dsw_iganinju[] =
 {
    { 0x010007, 0xBF, dsw_data_iganinju_0 },
    { 0x010006, 0xBD, dsw_data_iganinju_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( iga_ninjyutsuden ,
-   iga_ninjyutsuden_dirs,
-   iga_ninjyutsuden_roms,
-   megasys_1_inputs,
-   iga_ninjyutsuden_dsw,
-   NULL,
-
-   load_iga_ninjyutsuden,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "iganinju",
-   "Iga Ninjyutsuden",
-   "ÍêÎàîE≈pÙ`",
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-static struct DIR_INFO shingen_dirs[] =
-{
-   { "shingen", },
-   { "tshingen", },
-   { NULL, },
-};
-
-static struct ROM_INFO shingen_roms[] =
+static struct ROM_INFO rom_tshingen[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "takeda2.bin",  0x6ddfc9f3 , "takeda1.bin",  0x1afc6b7d ),
@@ -1826,23 +1347,14 @@ static struct DSW_DATA dsw_data_shingen_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO shingen_dsw[] =
+static struct DSW_INFO dsw_tshingen[] =
 {
    { 0x010007, 0xFF, dsw_data_shingen_0 },
    { 0x010006, 0xDD, dsw_data_shingen_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct DIR_INFO tshingna_dirs[] =
-{
-   { "tshingna", },
-   { "tshingna", },
-   { ROMOF("tshingen"), },
-   { CLONEOF("tshingen"), },
-   { NULL, },
-};
-
-static struct ROM_INFO tshingna_roms[] =
+static struct ROM_INFO rom_tshingna[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "shing_02.rom",  0xd9ab5b78 , "shing_01.rom",  0xa9d2de20 ),
@@ -1899,7 +1411,7 @@ static UINT16 SoundByte[32];
 static int SoundW, SoundR;
 static int NowReadSound;
 
-void SoundWorkInit( void )
+static void SoundWorkInit( void )
 {
   SoundW = SoundR = 0;
   NowReadSound = 0;
@@ -2239,7 +1751,7 @@ static void AddMS2Controls(void)
    finish_ms1_gfx();
 }
 
-void AddMS1MainCPU(UINT32 ram_addr)
+static void AddMS1MainCPU(UINT32 ram_addr)
 {
    add_68000_rom(0,0x000000,0x05FFFF,ROM+0x000000);                 // 68000 ROM
    add_68000_rom(0,0x080000,0x09FFFF,RAM+0x010000);                // SCREEN RAM
@@ -2251,7 +1763,7 @@ void AddMS1MainCPU(UINT32 ram_addr)
    finish_conf_68000(0);
 }
 
-void AddMS1SoundCPU(UINT32 rom_offset, UINT32 ram_offset, UINT32 ram_addr)
+static void AddMS1SoundCPU(UINT32 rom_offset, UINT32 ram_offset, UINT32 ram_addr)
 {
    if(PCMROM){
      add_68000_rb(1,0x0C0000,0x0CFFFF,M6295_B_Read_68k,NULL);           // OKI M6295 B
@@ -2282,7 +1794,7 @@ void AddMS1SoundCPU(UINT32 rom_offset, UINT32 ram_offset, UINT32 ram_addr)
    finish_conf_68000(1);
 }
 
-void AddMS1SoundCPUHachoo(UINT32 ram_addr)
+static void AddMS1SoundCPUHachoo(UINT32 ram_addr)
 {
    if(PCMROM){
    add_68000_rb(1,0x0A0000,0x0AFFFF,M6295_A_Read_68k,NULL);             // OKI M6295 A
@@ -2413,7 +1925,7 @@ static void load_rodland(void)
    AddMS1Controls();
 }
 
-void LoadSaintDragon(void)
+static void load_stdragon(void)
 {
    romset=1; spr_pri_needed=1;
 
@@ -2470,7 +1982,7 @@ void LoadSaintDragon(void)
    AddMS1Controls();
 }
 
-void load_iga_ninjyutsuden(void)
+static void load_iganinju(void)
 {
    romset=20; spr_pri_needed=0;
 
@@ -2522,7 +2034,7 @@ void load_iga_ninjyutsuden(void)
    AddMS1Controls();
 }
 
-static void LoadP47J(void)
+static void load_p47(void)
 {
    romset=2; spr_pri_needed=0;
 
@@ -2588,7 +2100,7 @@ static void LoadP47J(void)
    AddMS1Controls();
 }
 
-static void LoadPhantasm(void)
+static void load_phantasm(void)
 {
    romset=3; spr_pri_needed=0;
    setup_ms1_gfx();
@@ -2649,7 +2161,7 @@ static void LoadPhantasm(void)
    AddMS1Controls();
 }
 
-void LoadKickOff(void)
+static void load_kickoff(void)
 {
    romset=4; spr_pri_needed=0;
 
@@ -2703,7 +2215,7 @@ void LoadKickOff(void)
    AddMS1Controls();
 }
 
-void LoadHachoo(void)
+static void load_hachoo(void)
 {
    romset=5; spr_pri_needed=0;
 
@@ -2767,7 +2279,7 @@ void LoadHachoo(void)
    AddMS1Controls();
 }
 
-void LoadPlusAlpha(void)
+static void load_plusalph(void)
 {
    romset=6; spr_pri_needed=0;
 
@@ -2829,7 +2341,7 @@ void LoadPlusAlpha(void)
    AddMS1Controls();
 }
 
-static void LoadAvengingSpirit(void)
+static void load_avspirit(void)
 {
    romset=7; spr_pri_needed=0;
    setup_ms1_gfx();
@@ -2907,7 +2419,7 @@ static void LoadAvengingSpirit(void)
    finish_conf_68000(0);
 }
 
-void LoadCybattler(void)
+static void load_cybattlr(void)
 {
    romset=8; spr_pri_needed=0;
    setup_ms1_gfx();
@@ -2985,7 +2497,7 @@ void LoadCybattler(void)
    finish_conf_68000(0);
 }
 
-void unprotect_64thstreet() {
+static void unprotect_64thstreet() {
   /* This function hacks the rom to ignore the protection */
   /* Note that the work of ip_select_r (in mame) is to decode this protection !
      But I could not find how to use this function yet !!! */
@@ -3031,7 +2543,7 @@ void unprotect_64thstreet() {
    WriteLong68k(&ROM[0x804AE],0x00AA0000);      //
 }
 
-static void Load64thStreet(void)
+static void load_64street(void)
 {
    romset=9; spr_pri_needed=0;
 
@@ -3069,7 +2581,7 @@ static void Load64thStreet(void)
    finish_conf_68000(0);
 }
 
-void load_chimera_beast(void)
+static void load_chimerab(void)
 {
    romset=18; spr_pri_needed=0;
    if (!setup_ms1_gfx()) return;
@@ -3148,7 +2660,7 @@ void load_chimera_beast(void)
    finish_conf_68000(0);
 }
 
-void LoadEarthDefForce(void)
+static void load_edf(void)
 {
    romset=10; spr_pri_needed=1;
 
@@ -3246,7 +2758,7 @@ void LoadEarthDefForce(void)
    finish_conf_68000(0);
 }
 
-void LoadShingen(void)
+static void load_tshingen(void)
 {
    romset=11; spr_pri_needed=1;
 
@@ -3308,7 +2820,7 @@ void LoadShingen(void)
    AddMS1Controls();
 }
 
-void LoadLegendOfMakaj(void)
+static void load_lomakai(void)
 {
    romset=12; spr_pri_needed=0;
 
@@ -3431,7 +2943,7 @@ static void load_astyanax(void)
    AddMS1Controls();
 }
 
-void load_soldam(void)
+static void load_soldamj(void)
 {
    romset=21; spr_pri_needed=0;
 
@@ -3499,7 +3011,7 @@ static UINT16 protection_peekaboo_r(UINT32 offset)
 	}
 }
 
-void protection_peekaboo_w(UINT32 offset, UINT16 data)
+static void protection_peekaboo_w(UINT32 offset, UINT16 data)
 {
 	static int bank;
 
@@ -3522,7 +3034,7 @@ void protection_peekaboo_w(UINT32 offset, UINT16 data)
 	cpu_interrupt(CPU_68K_0, 4);
 }
 
-void LoadPeekABoo(void)
+static void load_peekaboo(void)
 {
    UINT8 *TMP;
 
@@ -3601,7 +3113,7 @@ void LoadPeekABoo(void)
    finish_conf_68000(0);
 }
 
-void ExecuteMegaSystem1Frame(void)
+static void execute_lordofk(void)
 {
    //print_ingame(60,"%04x.%04x/%04x/%04x.%04x.%04x",ReadWord(&RAM[0x14000]),ReadWord(&RAM[0x14204]),ReadWord(&RAM[0x1420C]),ReadWord(&RAM[0x1400C]),ReadWord(&RAM[0x14100]),ReadWord(&RAM[0x14300]));
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));
@@ -3611,21 +3123,7 @@ void ExecuteMegaSystem1Frame(void)
 
 }
 
-void ExecuteMegaSystem1FrameKO(void)
-{
-   int ta;
-   //print_ingame(60,"%04x.%04x/%04x/%04x.%04x.%04x",ReadWord(&RAM[0x14000]),ReadWord(&RAM[0x14204]),ReadWord(&RAM[0x1420C]),ReadWord(&RAM[0x1400C]),ReadWord(&RAM[0x14100]),ReadWord(&RAM[0x14300]));
-
-   for(ta=0;ta<4;ta++){
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60)/4);
-   cpu_interrupt(CPU_68K_0, 1);
-   cpu_interrupt(CPU_68K_0, 2);
-   }
-
-   ExecuteSoundFrame();                         // 68000 *or* Z80
-}
-
-void ExecuteMegaSystem2Frame(void)
+static void execute_64street(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
    cpu_interrupt(CPU_68K_0, 4);
@@ -3636,7 +3134,7 @@ void ExecuteMegaSystem2Frame(void)
    ExecuteSoundFrame();
 }
 
-void execute_systemd(void)
+static void execute_peekaboo(void)
 {
    static int px,px2;
    int mx,my;
@@ -4020,7 +3518,7 @@ typedef struct MS1LAYER
 
 static struct MS1LAYER JalecoLayers[3];
 
-void RenderJalecoLayer(int layer)
+static void RenderJalecoLayer(int layer)
 {
    UINT8 *RAM_BG,*SCR_BG,*GFX_BG16,*MSK_BG16;
    UINT8 *GFX_BG8,*MSK_BG8,PAL_BG;
@@ -4587,7 +4085,7 @@ void RenderJalecoLayer(int layer)
 
 }
 
-void BG1ColPatch(void)
+static void BG1ColPatch(void)
 {
    UINT32 ta;
    UINT16 tb;
@@ -4616,7 +4114,7 @@ void BG1ColPatch(void)
 
 }
 
-void DrawMegaSystem1(void)
+static void DrawMegaSystem1(void)
 {
    UINT16 ctrl, ctrl2;
 
@@ -4747,7 +4245,7 @@ void DrawMegaSystem1(void)
 
 }
 
-void DrawMegaSystem2(void)
+static void DrawMegaSystem2(void)
 {
    UINT16 ctrl, ctrl2;
 
@@ -4868,7 +4366,7 @@ void DrawMegaSystem2(void)
 
 }
 
-void DrawLegendOfMakaj(void)
+static void DrawLegendOfMakaj(void)
 {
    ClearPaletteMap();
 
@@ -4912,7 +4410,7 @@ void DrawLegendOfMakaj(void)
    }
 }
 
-void DrawPeekABoo(void)
+static void DrawPeekABoo(void)
 {
    UINT16 ctrl, ctrl2;
 
@@ -5233,299 +4731,422 @@ QUARTEX - THE WOLF KEEPS ON CLIMBING...
 
 */
 
-GAME( 64th_street ,
-   _64th_street_dirs,
-   _64th_street_roms,
-   megasys_1_inputs,
-   _64th_street_dsw,
-   NULL,
-
-   Load64thStreet,
-   NULL,
-   &megasys2_video,
-   ExecuteMegaSystem2Frame,
-   "64street",
-   "64th Street",
-   "ÈUÈSî‘ËX American",
-   COMPANY_ID_JALECO,
-   NULL,
-   1991,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
+static struct VIDEO_INFO video_64street =
+{
+   DrawMegaSystem2,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_cybattlr =
+{
+   DrawMegaSystem2,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_90 |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_lomakai =
+{
+   DrawLegendOfMakaj,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_lordofk =
+{
+   DrawMegaSystem1,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_peekaboo =
+{
+   DrawPeekABoo,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct VIDEO_INFO video_plusalph =
+{
+   DrawMegaSystem1,
+   256,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_64street[] =
+{
+   { "64th_street", },
+   { "64street", },
+   { NULL, },
+};
+GAME( 64street, "64th Street", JALECO, 1991, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_64street,
+	.video = &video_64street,
+	.exec = execute_64street,
+	.long_name_jpn = "ÈUÈSî‘ËX American",
+	.sound = sound_lordofk,
 );
-
-GAME( 64th_street_japanese ,
-   _64th_street_japanese_dirs,
-   _64th_street_japanese_roms,
-   megasys_1_inputs,
-   _64th_street_dsw,
-   NULL,
-
-   Load64thStreet,
-   NULL,
-   &megasys2_video,
-   ExecuteMegaSystem2Frame,
-   "64streej",
-   "64th Street Japanese",
-   "ÈUÈSî‘ËX",
-   COMPANY_ID_JALECO,
-   NULL,
-   1991,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_64streej[] =
+{
+   { "64th_street_japanese", },
+   { "64streej", },
+   { ROMOF("64street"), },
+   { CLONEOF("64street"), },
+   { NULL, },
+};
+CLONE(64streej, 64street, "64th Street Japanese", JALECO, 1991, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_64street,
+	.video = &video_64street,
+	.exec = execute_64street,
+	.long_name_jpn = "ÈUÈSî‘ËX",
+	.sound = sound_lordofk,
 );
-
-GAME( astyanax ,
-   astyanax_dirs,
-   astyanax_roms,
-   megasys_1_inputs,
-   astyanax_dsw,
-   NULL,
-
-   load_astyanax,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "astyanax",
-   "Astyanax",
-   "‚U¸E‚Ï¸[‚h¸E‚I‚u¸E‚L‚Ù‚O American",
-   COMPANY_ID_JALECO,
-   NULL,
-   1989,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_astyanax[] =
+{
+   { "astyanax", },
+   { NULL, },
+};
+GAME( astyanax, "Astyanax", JALECO, 1989, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_astyanax,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚U¸E‚Ï¸[‚h¸E‚I‚u¸E‚L‚Ù‚O American",
+	.sound = sound_lordofk,
 );
-
-GAME( the_lord_of_king ,
-   the_lord_of_king_dirs,
-   the_lord_of_king_roms,
-   megasys_1_inputs,
-   astyanax_dsw,
-   NULL,
-
-   load_astyanax,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "lordofk",
-   "The Lord of King",
-   "‚U¸E‚Ï¸[‚h¸E‚I‚u¸E‚L‚Ù‚O",
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
-);
-
-GAME( p47_american ,
-   p47_american_dirs,
-   p47_american_roms,
-   megasys_1_inputs,
-   p47_dsw,
-   NULL,
-
-   LoadP47J,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "p47",
-   "P47",
-   "ÈoÈSÈV American",
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
-GAME( p47_japanese ,
-   p47_japanese_dirs,
-   p47_japanese_roms,
-   megasys_1_inputs,
-   p47_dsw,
-   NULL,
-
-   LoadP47J,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "p47j",
-   "P47 Japanese",
-   "ÈoÈSÈV",
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_SHOOT
-);
-
+static struct DIR_INFO dir_avspirit[] =
+{
+   { "avenging_spirit", },
+   { "avspirit", },
+   { NULL, },
+};
 // avenging spirit has a different memory map (the first part of the rom
 // is not encrypted, but there is a hole in the middle).
 // The easiest solution is to keep 2 separate loading functions...
-GAME( avenging_spirit ,
-   avenging_spirit_dirs,
-   avenging_spirit_roms,
-   megasys_1_inputs,
-   avenging_spirit_dsw,
-   NULL,
-
-   LoadAvengingSpirit, //LoadPhantasm,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "avspirit",
-   "Avenging Spirit",
-   "‚t‚@‚Ù‚^‚Y‚« American",
-   COMPANY_ID_JALECO,
-   NULL,
-   1991,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_PLATFORM
+GAME( avspirit, "Avenging Spirit", JALECO, 1991, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_avspirit,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚t‚@‚Ù‚^‚Y‚« American",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_chimerab[] =
+{
+   { "chimera_beast", },
+   { "chimerab", },
+   { NULL, },
+};
+GAME( chimerab, "Chimera Beast", JALECO, 1993, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_chimerab,
+	.video = &video_64street,
+	.exec = execute_64street,
+	.long_name_jpn = "‚L‚¸‚Î‚r¸[‚X‚g",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_cybattlr[] =
+{
+   { "cybattler", },
+   { "cybattlr", },
+   { NULL, },
+};
+GAME( cybattlr, "Cybattler", JALECO, 1993, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_cybattlr,
+	.video = &video_cybattlr,
+	.exec = execute_64street,
+	.long_name_jpn = "‚T‚C‚o‚g‚Î¸[",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_edf[] =
+{
+   { "earth_defense_force", },
+   { "earth_defence_force", },
+   { "edf", },
+   { NULL, },
+};
+GAME( edf, "Earth Defence Force", JALECO, 1991, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_edf,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "Èd¸DÈc¸DÈe",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_hachoo[] =
+{
+   { "hachoo", },
+   { NULL, },
+};
+GAME( hachoo, "Hachoo", JALECO, 1989, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_hachoo,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "îj∆õ",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_iganinju[] =
+{
+   { "iga_ninjyutsuden", },
+   { "iganinju", },
+   { "kazan", },
+   { NULL, },
+};
+GAME( iganinju, "Iga Ninjyutsuden", JALECO, 1988, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_iganinju,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "ÍêÎàîE≈pÙ`",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_kickoff[] =
+{
+   { "kick_off", },
+   { "kickoff", },
+   { NULL, },
+};
+GAME( kickoff, "Kick Off", JALECO, 1988, GAME_SPORTS,
+	.input = input_lordofk,
+	.dsw = dsw_kickoff,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_lomakai[] =
+{
+   { "legend_of_makai", },
+   { "legend_of_makaj", },
+   { "lomakai", },
+   { "lomakaj", },
+   { NULL, },
+};
+GAME( lomakai, "Legend of Makai", JALECO, 1988, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_lomakai,
+	.video = &video_lomakai,
+	.exec = execute_lordofk,
+	.long_name_jpn = "˚ÈË@Ù`…Ö",
+	.sound = sound_lomakai,
+);
+static struct DIR_INFO dir_makaiden[] =
+{
+   { "makai_densetsu", },
+   { "makaiden", },
+   { ROMOF("lomakai"), },
+   { CLONEOF("lomakai"), },
+   { NULL, },
+};
+CLONE(makaiden, lomakai, "Makai Densetsu", JALECO, 1988, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_lomakai,
+	.video = &video_lomakai,
+	.exec = execute_lordofk,
+	.long_name_jpn = "˚ÈË@Ù`…Ö",
+	.sound = sound_lomakai,
+);
+static struct DIR_INFO dir_p47[] =
+{
+   { "p47", },
+   { "p47_american", },
+   { "p47_usa", },
+   { NULL, },
+};
+GAME( p47, "P47", JALECO, 1988, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_p47,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "ÈoÈSÈV American",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_p47j[] =
+{
+   { "p47_japanese", },
+   { "p47j", },
+   { ROMOF("p47"), },
+   { CLONEOF("p47"), },
+   { NULL, },
+};
+CLONE(p47j, p47, "P47 Japanese", JALECO, 1988, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_p47,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "ÈoÈSÈV",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_peekaboo[] =
+{
+   { "peek_a_boo", },
+   { "peekaboo", },
+   { NULL, },
+};
+GME( peekaboo, "Peek A Boo", JALECO, 1993, GAME_BREAKOUT);
+static struct DIR_INFO dir_phantasm[] =
+{
+   { "phantasm", },
+   { ROMOF("avspirit"), },
+   { CLONEOF("avspirit"), },
+   { NULL, },
+};
+GAME(phantasm, "Phantasm", JALECO, 1990, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_avspirit,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚t‚@‚Ù‚^‚Y‚«",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_plusalph[] =
+{
+   { "plus_alpha", },
+   { "plusalph", },
+   { NULL, },
+};
+GAME( plusalph, "Plus Alpha", JALECO, 1989, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_plusalph,
+	.video = &video_plusalph,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚v‚Î‚X‚A‚Ô‚t‚@",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_rodland[] =
+{
+   { "rodland", },
+   { "rodland_english", },
+   { "rodlande", },
+   { NULL, },
+};
+GAME( rodland, "Rodland", JALECO, 1990, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_rodland,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚Ï‚b‚h‚Î‚Ù‚h American",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_rodlandj[] =
+{
+   { "rodland_japanese", },
+   { "rodlandj", },
+   { ROMOF("rodland"), },
+   { CLONEOF("rodland"), },
+   { NULL, },
+};
+CLONE(rodlandj, rodland, "Rodland Japanese", JALECO, 1990, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_rodland,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚Ï‚b‚h‚Î‚Ù‚h",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_rodlndjb[] =
+{
+   { "rodland_japaneseb", },
+   { "rodlandjb", },
+   { "rodlndjb", },
+   { ROMOF("rodland"), },
+   { CLONEOF("rodland"), },
+   { NULL, },
+};
+CLONE(rodlndjb, rodland, "Rodland Japanese bootleg", JALECO, 1990, GAME_PLATFORM,
+	.input = input_lordofk,
+	.dsw = dsw_rodland,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚Ï‚b‚h‚Î‚Ù‚h",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_stdragon[] =
+{
+   { "saint_dragon", },
+   { "stdragon", },
+   { NULL, },
+};
+GAME( stdragon, "Saint Dragon", JALECO, 1989, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_stdragon,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "ÙV…π˘¥",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_tshingen[] =
+{
+   { "shingen", },
+   { "tshingen", },
+   { NULL, },
+};
+GAME( tshingen, "Takeda Shingen", JALECO, 1988, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_tshingen,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_soldamj[] =
+{
+   { "soldam", },
+   { "soldamj", },
+   { NULL, },
+};
+GAME( soldamj, "Soldam", JALECO, 1992, GAME_PUZZLE,
+	.input = input_lordofk,
+	.dsw = dsw_soldamj,
+	.romsw = romsw_soldamj,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_lordofk[] =
+{
+   { "the_lord_of_king", },
+   { "lord_of_king", },
+   { "lordofk", },
+   { ROMOF("astyanax"), },
+   { CLONEOF("astyanax"), },
+   { NULL, },
+};
+CLONE(lordofk, astyanax, "The Lord of King", JALECO, 1988, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_astyanax,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.long_name_jpn = "‚U¸E‚Ï¸[‚h¸E‚I‚u¸E‚L‚Ù‚O",
+	.sound = sound_lordofk,
+);
+static struct DIR_INFO dir_tshingna[] =
+{
+   { "tshingna", },
+   { "tshingna", },
+   { ROMOF("tshingen"), },
+   { CLONEOF("tshingen"), },
+   { NULL, },
+};
+CLONE(tshingna, tshingen, "Takeda Shingen (English)", JALECO, 1988, GAME_BEAT,
+	.input = input_lordofk,
+	.dsw = dsw_tshingen,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.sound = sound_lordofk,
 );
 
-GAME( phantasm ,
-   phantasm_dirs,
-   phantasm_roms,
-   megasys_1_inputs,
-   avenging_spirit_dsw,
-   NULL,
-
-   LoadPhantasm,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "phantasm",
-   "Phantasm",
-   "‚t‚@‚Ù‚^‚Y‚«",
-   COMPANY_ID_JALECO,
-   NULL,
-   1990,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_PLATFORM
-);
-
-GAME( rodland ,
-   rodland_dirs,
-   rodland_roms,
-   megasys_1_inputs,
-   rodland_dsw,
-   NULL,
-
-   load_rodland,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "rodland",
-   "Rodland",
-   "‚Ï‚b‚h‚Î‚Ù‚h American",
-   COMPANY_ID_JALECO,
-   NULL,
-   1990,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_PLATFORM
-);
-
-GAME( rodlandjb ,
-   rodlandjb_dirs,
-   rodlandjb_roms,
-   megasys_1_inputs,
-   rodland_dsw,
-   NULL,
-
-   load_rodland,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "rodlndjb",
-   "Rodland Japanese bootleg",
-   "‚Ï‚b‚h‚Î‚Ù‚h",
-   COMPANY_ID_JALECO,
-   NULL,
-   1990,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_PLATFORM
-);
-
-GAME( rodlandj ,
-   rodlandj_dirs,
-   rodlandj_roms,
-   megasys_1_inputs,
-   rodland_dsw,
-   NULL,
-
-   load_rodland,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "rodlandj",
-   "Rodland Japanese",
-   "‚Ï‚b‚h‚Î‚Ù‚h",
-   COMPANY_ID_JALECO,
-   NULL,
-   1990,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_PLATFORM
-);
-
-GAME( shingen ,
-   shingen_dirs,
-   shingen_roms,
-   megasys_1_inputs,
-   shingen_dsw,
-   NULL,
-
-   LoadShingen,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "tshingen",
-   "Takeda Shingen",
-   NULL,
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
-);
-
-GAME( tshingna ,
-   tshingna_dirs,
-   tshingna_roms,
-   megasys_1_inputs,
-   shingen_dsw,
-   NULL,
-
-   LoadShingen,
-   NULL,
-   &megasys1_video,
-   ExecuteMegaSystem1Frame,
-   "tshingna",
-   "Takeda Shingen (English)",
-   NULL,
-   COMPANY_ID_JALECO,
-   NULL,
-   1988,
-   jaleco_ym2151_m6295x2_sound,
-   GAME_BEAT
-);
-
-GAME( peek_a_boo ,
-   peek_a_boo_dirs,
-   peek_a_boo_roms,
-   peek_a_boo_inputs,
-   peek_a_boo_dsw,
-   NULL,
-
-   LoadPeekABoo,
-   NULL,
-   &peek_a_boo_video,
-   execute_systemd,
-   "peekaboo",
-   "Peek A Boo",
-   NULL,
-   COMPANY_ID_JALECO,
-   NULL,
-   1993,
-   m6295_sound_D,
-   GAME_BREAKOUT
-);

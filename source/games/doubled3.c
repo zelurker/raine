@@ -5,19 +5,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "doubled3.h"
 #include "sasound.h"		// sample support routines
 #include "tchnosnd.h"
 
-static struct DIR_INFO ddragon3_dirs[] =
-{
-   { "double_dragon_3", },
-   { "doubled3", },
-   { "ddragon3", },
-   { NULL, },
-};
 
-static struct ROM_INFO ddragon3_roms[] =
+static struct ROM_INFO rom_ddragon3[] =
 {
    {        "30a14", 0x00040000, 0xf42fe016, 0, 0, 0, },
    {        "30a15", 0x00020000, 0xad50e92c, 0, 0, 0, },
@@ -51,7 +43,7 @@ static struct ROM_INFO ddragon3_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO ddragon3_inputs[] =
+static struct INPUT_INFO input_ddragon3[] =
 {
    INP0( COIN1, 0x00C002, 0x01 ),
    INP0( COIN2, 0x00C002, 0x02 ),
@@ -131,52 +123,17 @@ static struct DSW_DATA dsw_data_double_dragon_3_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO ddragon3_dsw[] =
+static struct DSW_INFO dsw_ddragon3[] =
 {
    { 0x00C004, 0xFF, dsw_data_double_dragon_3_0 },
    { 0x00C005, 0x7F, dsw_data_double_dragon_3_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO double_dragon_3_video =
-{
-   DrawDoubleD3,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( ddragon3 ,
-   ddragon3_dirs,
-   ddragon3_roms,
-   ddragon3_inputs,
-   ddragon3_dsw,
-   NULL,
 
-   LoadDoubleD3,
-   ClearDoubleD3,
-   &double_dragon_3_video,
-   ExecuteDoubleD3Frame,
-   "ddragon3",
-   "Double Dragon 3",
-   "ƒ_ƒuƒ‹ƒhƒ‰ƒSƒ“‚R",
-   COMPANY_ID_TECHNOS,
-   "TA-0030",
-   1990,
-   technos_ym2151_m6295_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO ddrago3b_dirs[] =
-{
-   { "ddrago3b", },
-   { ROMOF("ddragon3"), },
-   { CLONEOF("ddragon3"), },
-   { NULL, },
-};
-
-static struct ROM_INFO ddrago3b_roms[] =
+static struct ROM_INFO rom_ddrago3b[] =
 {
    {       "dd3.01", 0x00020000, 0x68321d8b, 0, 0, 0, },
    {       "dd3.02", 0x00020000, 0x38d9ae75, 0, 0, 0, },
@@ -211,7 +168,7 @@ static struct ROM_INFO ddrago3b_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO ddrago3b_inputs[] =
+static struct INPUT_INFO input_ddrago3b[] =
 {
    INP0( COIN1, 0x00C001, 0x01 ),
    INP0( COIN2, 0x00C001, 0x02 ),
@@ -246,33 +203,13 @@ static struct INPUT_INFO ddrago3b_inputs[] =
    END_INPUT
 };
 
-static struct DSW_INFO ddrago3b_dsw[] =
+static struct DSW_INFO dsw_ddrago3b[] =
 {
    { 0x00C010, 0xFF, dsw_data_double_dragon_3_0 },
    { 0x00C011, 0x7F, dsw_data_double_dragon_3_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( ddrago3b ,
-   ddrago3b_dirs,
-   ddrago3b_roms,
-   ddrago3b_inputs,
-   ddrago3b_dsw,
-   NULL,
-
-   LoadDoubleD3,
-   ClearDoubleD3,
-   &double_dragon_3_video,
-   ExecuteDoubleD3bFrame,
-   "ddrago3b",
-   "Double Dragon 3 (bootleg)",
-   "ƒ_ƒuƒ‹ƒhƒ‰ƒSƒ“‚R",
-   COMPANY_ID_TECHNOS,
-   "TA-0030",
-   1990,
-   technos_ym2151_m6295_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -298,7 +235,7 @@ static void DD3bSoundWrite(UINT32 address, UINT8 data)
    if(address==0x140003) TechnosSoundWrite68k(address,data);
 }
 
-void DD3MemoryMap(void)
+static void DD3MemoryMap(void)
 {
    AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadByte(0x1C0000, 0x1C3FFF, NULL, RAM+0x000000);			// 68000 RAM
@@ -340,7 +277,7 @@ void DD3MemoryMap(void)
    AddWriteWord(-1, -1, NULL, NULL);
 }
 
-void DD3bMemoryMap(void)
+static void DD3bMemoryMap(void)
 {
    AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadByte(0x1C0000, 0x1C3FFF, NULL, RAM+0x000000);			// 68000 RAM
@@ -378,7 +315,7 @@ void DD3bMemoryMap(void)
    AddWriteWord(-1, -1, NULL, NULL);
 }
 
-void LoadDoubleD3(void)
+static void load_ddragon3(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -561,11 +498,7 @@ void LoadDoubleD3(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearDoubleD3(void)
-{
-}
-
-void ExecuteDoubleD3Frame(void)
+static void execute_ddragon3(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -574,7 +507,7 @@ void ExecuteDoubleD3Frame(void)
    TechnosSound_Frame();		// Z80; YM2151; OKI ADPCM
 }
 
-void ExecuteDoubleD3bFrame(void)
+static void execute_ddrago3b(void)
 {
    int ta;
 
@@ -802,7 +735,7 @@ static void draw_sprites() {
    }
 }
 
-void DrawDoubleD3(void)
+static void DrawDoubleD3(void)
 {
    ClearPaletteMap();
 
@@ -868,3 +801,33 @@ Byte | Bit(s) | Use
  11  |xxxxxxxx| X (low)
 
 */
+static struct VIDEO_INFO video_ddragon3 =
+{
+   DrawDoubleD3,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ddragon3[] =
+{
+   { "double_dragon_3", },
+   { "doubled3", },
+   { "ddragon3", },
+   { NULL, },
+};
+#define DRV_DEF_SOUND technos_ym2151_m6295_sound
+#include "game_def.h"
+
+GME( ddragon3, "Double Dragon 3", TECHNOS, 1990, GAME_BEAT,
+	.long_name_jpn = "ƒ_ƒuƒ‹ƒhƒ‰ƒSƒ“‚R",
+	.board = "TA-0030",
+);
+
+CLNEI( ddrago3b, ddragon3, "Double Dragon 3 (bootleg)", TECHNOS, 1990, GAME_BEAT,
+	.input = input_ddrago3b,
+	.dsw = dsw_ddrago3b,
+	.exec = execute_ddrago3b,
+	.long_name_jpn = "ƒ_ƒuƒ‹ƒhƒ‰ƒSƒ“‚R",
+	.board = "TA-0030",
+);

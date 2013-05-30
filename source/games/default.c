@@ -32,6 +32,7 @@
 #endif
 #include "blit.h"
 #include "speed_hack.h"
+#include "taitosnd.h"
 
 void LoadDefault(void)
 {
@@ -118,12 +119,13 @@ void LoadDefault(void)
 void ClearDefault(void)
 {
   use_scale2x = 0;
+  RemoveTaitoSoundBanking();
   tc0005rot.RAM = NULL;
   undo_hack();
   save_game_config();
   hs_close();
-  if (current_game->clear_game)
-    current_game->clear_game();
+  if (current_game->clear)
+    current_game->clear();
 
 #ifdef RAINE_DEBUG
   if (load_region[REGION_CPU1]) {

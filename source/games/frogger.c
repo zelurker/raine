@@ -35,7 +35,7 @@ struct star
 };
 static struct star stars[STARS_COUNT];
 
-static struct ROM_INFO frogger_roms[] =
+static struct ROM_INFO rom_frogger[] =
 {
   { "frogger.26", 0x1000, 0x597696d6, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "frogger.27", 0x1000, 0xb6e6fcc3, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -49,7 +49,7 @@ static struct ROM_INFO frogger_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO froggs_roms[] =
+static struct ROM_INFO rom_froggs[] =
 {
   { "frogger.ic5", 0x1000, 0xc4224bc4, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "frogger.ic6", 0x1000, 0x5370ad00, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -58,7 +58,7 @@ static struct ROM_INFO froggs_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO galaxian_roms[] =
+static struct ROM_INFO rom_galaxian[] =
 {
   { "galmidw.u", 0x0800, 0x745e2d61, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "galmidw.v", 0x0800, 0x9c999a40, REGION_ROM1, 0x0800, LOAD_NORMAL },
@@ -71,7 +71,7 @@ static struct ROM_INFO galaxian_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO galapx_roms[] =
+static struct ROM_INFO rom_galapx[] =
 {
   { "galx.u", 0x0800, 0x79e4007d, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "galx.v", 0x0800, 0xbc16064e, REGION_ROM1, 0x0800, LOAD_NORMAL },
@@ -83,7 +83,7 @@ static struct ROM_INFO galapx_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO superg_roms[] =
+static struct ROM_INFO rom_superg[] =
 {
   { "7f.bin", 0x1000, 0x4335b1de, REGION_ROM1, 0x0000, LOAD_NORMAL },
   { "superg.w", 0x0800, 0xddeabdae, REGION_ROM1, 0x1000, LOAD_NORMAL },
@@ -118,7 +118,7 @@ static struct DSW_DATA dsw_data_frogger_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO frogger_dsw[] =
+static struct DSW_INFO dsw_frogger[] =
 {
   { 0x2, 0x00, dsw_data_frogger_1 },
   { 0x4, 0x00, dsw_data_frogger_2 },
@@ -157,7 +157,7 @@ static struct DSW_DATA dsw_data_galaxian_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO galaxian_dsw[] =
+static struct DSW_INFO dsw_galaxian[] =
 {
   { 0x0, 0x00, dsw_data_galaxian_0 },
   { 0x2, 0x00, dsw_data_galaxian_1 },
@@ -179,7 +179,7 @@ static struct DSW_DATA dsw_data_superg_0[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO superg_dsw[] =
+static struct DSW_INFO dsw_superg[] =
 {
   { 0x0, 0x00, dsw_data_galaxian_0 },
   { 0x2, 0x00, dsw_data_galaxian_1 },
@@ -187,7 +187,7 @@ static struct DSW_INFO superg_dsw[] =
   { 0, 0, NULL }
 };
 
-static struct INPUT_INFO frogger_inputs[] =
+static struct INPUT_INFO input_frogger[] =
 {
   INP0( P1_UP, 0x00, 0x01 ),
   INP0( SERVICE, 0x00, 0x04 ),
@@ -211,7 +211,7 @@ static struct INPUT_INFO frogger_inputs[] =
    END_INPUT
 };
 
-static struct INPUT_INFO galaxian_inputs[] =
+static struct INPUT_INFO input_galaxian[] =
 {
   INP1( COIN1, 0x00, 0x01 ),
   INP1( COIN2, 0x00, 0x02 ),
@@ -303,14 +303,14 @@ static struct dxsmpinterface galax_emudx_interface =
     YM3012_VOL(255,MIXER_PAN_LEFT,255,MIXER_PAN_RIGHT)
   };
 
-static struct SOUND_INFO frogger_sound[] =
+static struct SOUND_INFO sound_frogger[] =
 {
    { SOUND_AY8910,  &frogger_ay8910_interface,  },
    { SOUND_DXSMP, &frogger_emudx_interface, },
    { 0,             NULL,               },
 };
 
-static struct SOUND_INFO galaxian_sound[] =
+static struct SOUND_INFO sound_galaxian[] =
 {
   { SOUND_DXSMP, &galax_emudx_interface, },
   { 0, NULL }
@@ -1609,7 +1609,7 @@ static void draw_frogger() {
   }
 }
 
-static struct VIDEO_INFO frogger_video =
+static struct VIDEO_INFO video_frogger =
 {
    draw_frogger,
    256,
@@ -1653,21 +1653,22 @@ static void execute_galaxian() {
     hs_loaded = 0;
 }
 
-GME( frogger,
+GMEI( frogger,
      "Frogger",
-     COMPANY_ID_KONAMI,
+     KONAMI,
      1981,
      GAME_MISC);
-#define load_froggs load_frogger
-CLONE_LOAD( froggs, frogger, "Frogger enhanced hiscore", COMPANY_ID_BOOTLEG,2001,GAME_MISC);
+CLNEI( froggs, frogger, "Frogger enhanced hiscore", BOOTLEG,2001,GAME_MISC,
+	.clear = clear_frogger);
 #define load_galaxian load_frogger
-#define galaxian_video frogger_video
-GME( galaxian,
+#define video_galaxian video_frogger
+GMEI( galaxian,
      "Galaxian (Namco set 1)",
-     COMPANY_ID_NAMCO,
+     NAMCO,
      1979,
      GAME_SHOOT);
-CLONE_DSW(superg, galaxian, "Super galaxians (hack)", COMPANY_ID_BOOTLEG, 1979, GAME_SHOOT);
-#define galapx_dsw superg_dsw
-CLONE_DSW(galapx, galaxian, "Galaxian Part X", COMPANY_ID_BOOTLEG, 1979, GAME_SHOOT);
+CLNEI(superg, galaxian, "Super galaxians (hack)", BOOTLEG, 1979, GAME_SHOOT,
+	.dsw = dsw_superg);
+CLNEI(galapx, galaxian, "Galaxian Part X", BOOTLEG, 1979, GAME_SHOOT,
+	.dsw = dsw_superg);
 

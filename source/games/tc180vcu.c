@@ -220,7 +220,7 @@ void vcu_make_col_bankmap(UINT8 mask, UINT8 ofs_0, UINT8 ofs_1, UINT8 ofs_2, UIN
 
    pixel_bitmap = create_bitmap(tc0180vcu.bmp_w+64,tc0180vcu.bmp_h+64);
 
-   clear(pixel_bitmap);
+   clear_bitmap(pixel_bitmap);
 
    pixel_blit=0;
 
@@ -466,7 +466,7 @@ void vcu_render_obj(UINT32 num)
       pixel_blit=1;
    }
    else{
-      if(pixel_blit) clear(pixel_bitmap);
+      if(pixel_blit) clear_bitmap(pixel_bitmap);
       map_count=0;
       pixel_blit=0;
       memset(mapped,255,256);
@@ -844,7 +844,7 @@ void vcu_render_obj_r270(int pri)
       pixel_blit=1;
    }
    else{
-      if(pixel_blit) clear(pixel_bitmap);
+      if(pixel_blit) clear_bitmap(pixel_bitmap);
       map_count=0;
       pixel_blit=0;
       memset(mapped,255,256);

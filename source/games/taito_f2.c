@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /* Current taito f2 driver - work in progress */
 
 /* Most of this emulation is done by the external video chips :
@@ -99,137 +100,11 @@ The others might use it at one place or another, but it's not easy to find !
 
 static UINT8 *TC0360PRI_regs;
 
-static struct DIR_INFO don_doko_don_dirs[] =
-{
-   { "don_doko_don", },
-   { "dondokod", },
-   { "dondokdj", },
-   { NULL, },
-};
-
-static struct DIR_INFO mega_blast_dirs[] =
-{
-   { "mega_blast", },
-   { "megab", },
-   { "megabl", },
-   { NULL, },
-};
-
-static struct DIR_INFO liquid_kids_dirs[] =
-{
-   { "liquid_kids", },
-   { "liquidk", },
-   { NULL, },
-};
-
 /* Well this clone really looks like the original, but the roms are definetely different
    (see the hack in load_ssi : clearly different for the 2 roms. So well, let's keep it...
 */
-static struct DIR_INFO majestic_twelve_dirs[] =
-{
-   { "majestic_twelve", },
-   { "mj12", },
-   { "majest12", },
-   { ROMOF("ssi"), },
-   { CLONEOF("ssi"), },
-   { NULL, },
-};
 
-static struct DIR_INFO super_space_invaders_91_dirs[] =
-{
-   { "super_space_invaders_91", },
-   { "ssi", },
-   { "space_invaders_91", },
-   { NULL, },
-};
-
-static struct DIR_INFO driftout_dirs[] =
-{
-   { "drift_out", },
-   { "driftout", },
-   { NULL, },
-};
-
-static struct DIR_INFO drive_out_dirs[] =
-{
-   { "drive_out", },
-   { "driveout", },
-   { ROMOF("driftout"), },
-   { CLONEOF("driftout"), },
-   { NULL, },
-};
-
-static struct DIR_INFO thunder_fox_dirs[] =
-{
-   { "thunder_fox", },
-   { "thundfox", },
-   { "thndfoxj", },
-   { NULL, },
-};
-
-static struct DIR_INFO dino_rex_dirs[] =
-{
-   { "dino_rex", },
-   { "dinorex", },
-   { NULL, },
-};
-
-static struct DIR_INFO f2demo_dirs[] =
-{
-   { "f2demo", },
-   { NULL, },
-};
-
-static struct DIR_INFO mahjong_quest_dirs[] =
-{
-   { "mahjong_quest", },
-   { "mjnquest", },
-   { NULL, },
-};
-
-static struct DIR_INFO solitary_fighter_dirs[] =
-{
-   { "solitary_fighter", },
-   { "solfigtr", },
-   { NULL, },
-};
-
-static struct DIR_INFO final_blow_dirs[] =
-{
-   { "final_blow", },
-   { "finalb", },
-   { "finalbl", },
-   { NULL, },
-};
-
-static struct DIR_INFO growl_dirs[] =
-{
-  { "growl" },
-  { NULL }
-};
-
-static struct DIR_INFO gun_frontier_dirs[] =
-{
-   { "gun_frontier", },
-   { "gunfront", },
-   { NULL, },
-};
-
-static struct DIR_INFO cameltry_dirs[] =
-{
-  { "cameltry" },
-  { NULL }
-};
-
-static struct DIR_INFO camltrua_dirs[] =
-{
-  { "camltrua" },
-  { ROMOF("cameltry") },
-  { CLONEOF("cameltry"), },
-  { NULL }
-};
-
-static struct ROM_INFO cameltry_roms[] =
+static struct ROM_INFO rom_cameltry[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c38-11",  0xbe172da0, "c38-14",  0xffa430de),
@@ -242,7 +117,7 @@ static struct ROM_INFO cameltry_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO camltrua_roms[] =
+static struct ROM_INFO rom_camltrua[] =
 {
 	/* empty! */
   { "c38-us.15", 0x10000, 0x0e60faac, REGION_ROM2, 0x00000, LOAD_NORMAL },
@@ -250,7 +125,7 @@ static struct ROM_INFO camltrua_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO gunfront_roms[] =
+static struct ROM_INFO rom_gunfront[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c71-09.42",  0x10a544a2, "c71-08.41",  0xc17dc0a0),
@@ -267,7 +142,7 @@ static struct ROM_INFO gunfront_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO growl_roms[] =
+static struct ROM_INFO rom_growl[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x40000,
             "c74-10.59",  0xca81a20b, "c74-08.61",  0xaa35dd9e),
@@ -283,7 +158,7 @@ static struct ROM_INFO growl_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO finalb_roms[] =
+static struct ROM_INFO rom_finalb[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "b82_09.10",  0x632f1ecd, "b82_17.11",  0xe91b2ec9),
@@ -298,7 +173,7 @@ static struct ROM_INFO finalb_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO solfigtr_roms[] =
+static struct ROM_INFO rom_solfigtr[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x40000,
             "c91-05.59",  0xc1260e7c, "c91-09.61",  0xd82b5266),
@@ -312,7 +187,7 @@ static struct ROM_INFO solfigtr_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO mjnquest_roms[] =
+static struct ROM_INFO rom_mjnquest[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "c77-09",  0x0a005d01, "c77-08",  0x4244f775),
@@ -326,7 +201,7 @@ static struct ROM_INFO mjnquest_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO f2demo_roms[] =
+static struct ROM_INFO rom_f2demo[] =
 {
    {  "lk_obj0.bin", 0x00080000, 0x1bb8aa37, REGION_GFX2, 0, LOAD_NORMAL },
    {  "lk_obj1.bin", 0x00080000, 0x75660aac, REGION_GFX2, 0x80000, LOAD_NORMAL },
@@ -338,7 +213,7 @@ static struct ROM_INFO f2demo_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO dinorex_roms[] =
+static struct ROM_INFO rom_dinorex[] =
 {
   LOAD8_16(  REGION_ROM1,  	0x000000,  0x080000,
             "d39_14.9",  0xe6aafdac, "d39_16.8",  0xcedc8537),
@@ -354,7 +229,7 @@ static struct ROM_INFO dinorex_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO thundfox_roms[] =
+static struct ROM_INFO rom_thundfox[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c28-13-1.51",  0xacb07013, "c28-16-1.40",  0x1e43d55b),
@@ -371,7 +246,7 @@ static struct ROM_INFO thundfox_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO driveout_roms[] =
+static struct ROM_INFO rom_driveout[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
             "driveout.003",  0xdc431e4e, "driveout.002",  0x6f9063f4),
@@ -387,7 +262,7 @@ static struct ROM_INFO driveout_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO driftout_roms[] =
+static struct ROM_INFO rom_driftout[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
             "do_46.rom",  0xf960363e, "do_45.rom",  0xe3fe66b9),
@@ -400,7 +275,7 @@ static struct ROM_INFO driftout_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO ssi_roms[] =
+static struct ROM_INFO rom_ssi[] =
 {
    {  "c64-01.1", 0x00100000, 0xa1b4f486, REGION_GFX2, 0x000000, LOAD_NORMAL, },
    {  "c64-02.2", 0x00020000, 0x3cb0b907, REGION_SMP1, 0x000000, LOAD_NORMAL, },
@@ -410,7 +285,7 @@ static struct ROM_INFO ssi_roms[] =
    {           NULL,          0,          0, 0,           0,        0,           },
 };
 
-static struct ROM_INFO mj12_roms[] =
+static struct ROM_INFO rom_majest12[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "c64_07.10",  0xf29ed5c9,   "c64_08.11",  0xddfd33d5),
@@ -419,7 +294,7 @@ static struct ROM_INFO mj12_roms[] =
    {           NULL,          0,          0, 0,           0,        0,           },
 };
 
-static struct ROM_INFO dondokod_roms[] =
+static struct ROM_INFO rom_dondokdj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "b95-12.bin",  0xd0fce87a, "b95-11-1.bin",  0xdad40cd3),
@@ -434,7 +309,7 @@ static struct ROM_INFO dondokod_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO megab_roms[] =
+static struct ROM_INFO rom_megab[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c11-07.55",  0x11d228b6, "c11-08.39",  0xa79d4dca),
@@ -450,7 +325,7 @@ static struct ROM_INFO megab_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO liquidk_roms[] =
+static struct ROM_INFO rom_liquidk[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c49_09.12",  0x6ae09eb9, "c49_11.14",  0x42d2be6e),
@@ -465,13 +340,8 @@ static struct ROM_INFO liquidk_roms[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct DIR_INFO pulirula_dirs[] =
-{
-   { "pulirula", },
-   { NULL, },
-};
 
-static struct ROM_INFO pulirula_roms[] =
+static struct ROM_INFO rom_pulirula[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x40000,
             "c98-12.rom",  0x816d6cde, "c98-16.rom",  0x59df5c77),
@@ -503,7 +373,7 @@ static struct ROM_INFO koshien_roms[] =
 };
 */
 
-static struct INPUT_INFO don_doko_don_inputs[] =
+static struct INPUT_INFO input_ssi[] =
 {
    INP0( COIN1, 0x03210E, 0x04 ),
    INP0( COIN2, 0x03210E, 0x08 ),
@@ -530,7 +400,7 @@ static struct INPUT_INFO don_doko_don_inputs[] =
 };
 
 // 3 buttons
-static struct INPUT_INFO thunder_fox_inputs[] =
+static struct INPUT_INFO input_solfigtr[] =
 {
    INP0( COIN1, 0x02E20E, 0x04 ),
    INP0( COIN2, 0x02E20E, 0x08 ),
@@ -559,7 +429,7 @@ static struct INPUT_INFO thunder_fox_inputs[] =
 };
 
 // finalb inputs can't have the address of thunder fox, it would be a waste of ram !
-static struct INPUT_INFO final_blow_inputs[] =
+static struct INPUT_INFO input_finalb[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -588,7 +458,7 @@ static struct INPUT_INFO final_blow_inputs[] =
 };
 
 // 4 players
-static struct INPUT_INFO growl_inputs[] =
+static struct INPUT_INFO input_growl[] =
 {
    INP0( COIN1, 0x032384, 0x04 ),
    INP0( COIN2, 0x032384, 0x08 ),
@@ -637,7 +507,7 @@ static struct INPUT_INFO growl_inputs[] =
 };
 
 // mahjong quest inputs (generated by conv_inputs.pl from the mame source...)
-static struct INPUT_INFO mjnquest_inputs[] =
+static struct INPUT_INFO input_mjnquest[] =
 {
   INP0( P1_A, 0x00, 0x01 ),
   INP0( P1_E, 0x00, 0x02 ),
@@ -672,7 +542,7 @@ static struct INPUT_INFO mjnquest_inputs[] =
 };
 
 // And finally cameltry : pad control
-static struct INPUT_INFO camel_try_inputs[] =
+static struct INPUT_INFO input_cameltry[] =
 {
    INP0( TILT, 0x03800E, 0x01 ),
    INP0( SERVICE, 0x03800E, 0x02 ),
@@ -756,7 +626,7 @@ static struct DSW_DATA dsw_data_camel_try_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO camel_try_dsw[] =
+static struct DSW_INFO dsw_cameltry[] =
 {
    { 0x038000, 0xFF, dsw_data_camel_try_0 },
    { 0x038002, 0xFF, dsw_data_camel_try_1 },
@@ -791,7 +661,7 @@ static struct DSW_DATA dsw_data_final_blow_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO final_blow_dsw[] =
+static struct DSW_INFO dsw_finalb[] =
 {
    { 0x3c000, 0xFF, dsw_data_final_blow_0 },
    { 0x3c002, 0xFF, dsw_data_final_blow_1 },
@@ -832,7 +702,7 @@ static struct DSW_DATA dsw_data_dondokod_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO don_doko_don_dsw[] =
+static struct DSW_INFO dsw_dondokdj[] =
 {
    { 0x032100, 0xFF, dsw_data_dondokod_0 },
    { 0x032102, 0xFF, dsw_data_dondokod_1 },
@@ -866,7 +736,7 @@ static struct DSW_DATA dsw_data_gunfront_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO gunfront_dsw[] =
+static struct DSW_INFO dsw_gunfront[] =
 {
   { 0x32100, 0xff, dsw_data_dondokod_0 },
   { 0x32102, 0xff, dsw_data_gunfront_1 },
@@ -915,7 +785,7 @@ static struct DSW_DATA dsw_data_mega_blast_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO mega_blast_dsw[] =
+static struct DSW_INFO dsw_megab[] =
 {
    { 0x03C000, 0xFF, dsw_data_megab_0 },
    { 0x03C002, 0xFF, dsw_data_mega_blast_1 },
@@ -944,7 +814,7 @@ static struct DSW_DATA dsw_data_liquidk_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO liquid_kids_dsw[] =
+static struct DSW_INFO dsw_liquidk[] =
 {
    { 0x032100, 0xFF, dsw_data_megab_0 },
    { 0x032102, 0xFF, dsw_data_liquidk_1 },
@@ -973,7 +843,7 @@ static struct DSW_DATA dsw_data_ssi_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO ssi_dsw[] =
+static struct DSW_INFO dsw_ssi[] =
 {
   { 0x032100, 0xfe, dsw_data_megab_0 },
   { 0x032102, 0xff, dsw_data_ssi_1 },
@@ -1013,7 +883,7 @@ static struct DSW_DATA dsw_data_drift_out_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO drift_out_dsw[] =
+static struct DSW_INFO dsw_driftout[] =
 {
    { 0x032100, 0xFF, dsw_data_drift_out_0 },
    { 0x032102, 0xFF, dsw_data_drift_out_1 },
@@ -1063,7 +933,7 @@ static struct DSW_DATA dsw_data_thunder_fox_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO thunder_fox_dsw[] =
+static struct DSW_INFO dsw_thundfox[] =
 {
    { 0x02e200, 0xFF, dsw_data_thunder_fox_0 },
    { 0x02e202, 0xFF, dsw_data_thunder_fox_1 },
@@ -1088,7 +958,7 @@ static struct DSW_DATA dsw_data_growl_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO growl_dsw[] =
+static struct DSW_INFO dsw_growl[] =
 {
   { 0x32100, 0xff, dsw_data_thunder_fox_0 },
   { 0x32102, 0xff, dsw_data_growl_1 },
@@ -1122,7 +992,7 @@ static struct DSW_DATA dsw_data_dino_rex_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dino_rex_dsw[] =
+static struct DSW_INFO dsw_dinorex[] =
 {
    { 0x032100, 0xFF, dsw_data_thunder_fox_0 },
    { 0x032102, 0xFF, dsw_data_dino_rex_1 },
@@ -1150,7 +1020,7 @@ static struct DSW_DATA dsw_data_solfigtr_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO solfigtr_dsw[] =
+static struct DSW_INFO dsw_solfigtr[] =
 {
   { 0x32100, 0xff, dsw_data_dondokod_0 },
   { 0x32102, 0xff, dsw_data_solfigtr_1 },
@@ -1182,7 +1052,7 @@ static struct DSW_DATA dsw_data_pulirulj_0[] =
 };
 
 // mjnquest has some kind of protection to filter inputs/dsw. I use input_buffer for that
-static struct DSW_INFO mjnquest_dsw[] =
+static struct DSW_INFO dsw_mjnquest[] =
 {
   { 0xe, 0xff, dsw_data_pulirulj_0 },
   { 0x10, 0xff, dsw_data_solfigtr_1 },
@@ -1231,49 +1101,49 @@ static struct ROMSW_DATA romsw_data_camel_try_alt_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO camel_try_romsw[] =
+static struct ROMSW_INFO romsw_cameltry[] =
 {
    { 0x03FFFF, 0x01, romsw_data_camel_try_alt_0 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO growl_romsw[] =
+static struct ROMSW_INFO romsw_growl[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_growl_0 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO thunder_fox_romsw[] =
+static struct ROMSW_INFO romsw_thundfox[] =
 {
    { 0x03FFFF, 0x02, romsw_data_thunder_fox_0 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO don_doko_don_romsw[] =
+static struct ROMSW_INFO romsw_dondokdj[] =
 {
    { 0x077FFF, 0x03, romsw_data_taito_jap_us },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO solfigtr_romsw[] =
+static struct ROMSW_INFO romsw_solfigtr[] =
 {
    { 0x03ffff, 0x03, romsw_data_taito_jap_us },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO mega_blast_romsw[] =
+static struct ROMSW_INFO romsw_f2demo[] =
 {
    { 0x07FFFF, 0x02, romsw_data_thunder_fox_0 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO majestic_twelve_romsw[] =
+static struct ROMSW_INFO romsw_ssi[] =
 {
    { 0x07FFFF, 0x03, romsw_data_majestic_twelve_0 },
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO liquidk_romsw[] =
+static struct ROMSW_INFO romsw_liquidk[] =
 {
    { 0x07FFFF, 0x03, romsw_data_taito_jap_us },
    { 0,        0,    NULL },
@@ -1585,7 +1455,7 @@ static struct YM2203interface ym2203_interface =
 	{ z80_irq_handler }
 };
 
-static struct SOUND_INFO camltrua_sound[] =
+static struct SOUND_INFO sound_camltrua[] =
 {
    { SOUND_YM2203,   &ym2203_interface,	},
    { 0, 	    NULL,		},
@@ -1834,7 +1704,7 @@ static void load_growl() {
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void LoadDonDokoDon(void)
+static void load_dondokdj(void)
 {
    // 68000 Speed Hack
    // ----------------
@@ -2029,7 +1899,7 @@ static void load_finalb() {
 
 static UINT16 mjnquest_input;
 
-static UINT16  mjnquest_dsw_r (UINT32 offset) {
+static UINT16  dsw_mjnquest_r (UINT32 offset) {
   switch (offset&0xf)
     {
     case 0x00:
@@ -2058,7 +1928,7 @@ static UINT16  mjnquest_input_r (UINT32 offset) {
   return 0xff;
 }
 
-static void  mjnquest_inputselect_w (UINT32 offset, UINT16 data) {
+static void  input_mjnquestelect_w (UINT32 offset, UINT16 data) {
   mjnquest_input = (data >> 6);
 }
 
@@ -2122,7 +1992,7 @@ static void load_mjnquest() {
 
    AddRWBW(0x110000, 0x12FFFF, NULL, RAM+0x000000);			// 68000 RAM
    AddReadWord(0x200000, 0x200007, tc0110pcr_rw, NULL);			// COLOR RAM
-   AddReadBW(0x300000, 0x30000f, mjnquest_dsw_r, NULL);
+   AddReadBW(0x300000, 0x30000f, dsw_mjnquest_r, NULL);
    AddReadBW(0x310000, 0x310001, mjnquest_input_r, NULL);
    AddReadByte(0x360000, 0x360003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0x406000, 0x406FFF, tc0100scn_0_gfx_fg0_wb, NULL);	// FG0 GFX RAM
@@ -2136,7 +2006,7 @@ static void load_mjnquest() {
    AddReadWord(-1, -1,NULL, NULL);
 
    AddWriteWord(0x200000, 0x200007, tc0110pcr_ww, NULL);		// COLOR RAM
-   AddWriteWord(0x320000, 0x320001, mjnquest_inputselect_w, NULL);
+   AddWriteWord(0x320000, 0x320001, input_mjnquestelect_w, NULL);
    AddWriteByte(0x360000, 0x360003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteWord(0x380000, 0x380001, NULL, GFX_BANK);			// BANK SWITCH
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
@@ -2552,7 +2422,7 @@ static struct DSW_DATA dsw_data_pulirula_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO pulirula_dsw[] =
+static struct DSW_INFO dsw_pulirula[] =
 {
    { 0x03c000, 0xFF, dsw_data_pulirula_0 },
    { 0x03c002, 0xFF, dsw_data_pulirula_1 },
@@ -2676,7 +2546,7 @@ static struct OKIM6295interface okim6295_interface =
   { 255 }			/* volume ?? */
 };
 
-static SOUND_INFO driveout_sound[] =
+static SOUND_INFO sound_driveout[] =
 {
    { SOUND_M6295,   &okim6295_interface,	},
    { 0, 	    NULL,		},
@@ -2684,7 +2554,7 @@ static SOUND_INFO driveout_sound[] =
 
 static int driveout_sound_latch = 0;
 
-static UINT8 driveout_sound_command_r(UINT32 offset)
+static UINT8 sound_driveout_command_r(UINT32 offset)
 {
   //cpu_set_irq_line(1,0,CLEAR_LINE);
   /*	logerror("sound IRQ OFF (sound command=%02x)\n",driveout_sound_latch); */
@@ -2693,7 +2563,7 @@ static UINT8 driveout_sound_command_r(UINT32 offset)
 
 static int oki_bank = 0;
 
-static void reset_driveout_sound_region(void)
+static void reset_sound_driveout_region(void)
 {
   OKIM6295_set_bank_base(0, ALL_VOICES, oki_bank*0x40000);
 }
@@ -2704,10 +2574,10 @@ static void oki_bank_w(UINT32 offset, UINT8 data)
     {
       oki_bank = (data&3);
     }
-  reset_driveout_sound_region();
+  reset_sound_driveout_region();
 }
 
-static void driveout_sound_command_wb(UINT32 offset, UINT16 data)
+static void sound_driveout_command_wb(UINT32 offset, UINT16 data)
 {
   static int nibble = 0;
   offset &=3;
@@ -2835,7 +2705,7 @@ static void load_driveout() {
   AddZ80AReadByte(0x0000, 0x7FFF, NULL,	Z80ROM);			// BANK ROM
   AddZ80AReadByte(0x8000, 0x87FF, NULL, z80_ram);	// Z80 RAM
   AddZ80AReadByte(0x9800, 0x9801, OKIM6295_status_0_r, NULL);
-  AddZ80AReadByte(0xa000, 0xa000, driveout_sound_command_r, NULL);
+  AddZ80AReadByte(0xa000, 0xa000, sound_driveout_command_r, NULL);
   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
   AddZ80AReadByte(    -1,     -1, NULL, 			NULL);
 
@@ -2855,7 +2725,7 @@ static void load_driveout() {
   AddZ80AInit();
 
   // AddReadByte(0x200000, 0x200003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-  AddWriteByte(0x200000, 0x200003, driveout_sound_command_wb, NULL);	// SOUND COMM
+  AddWriteByte(0x200000, 0x200003, sound_driveout_command_wb, NULL);	// SOUND COMM
 
   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
   AddReadByte(-1, -1, NULL, NULL);
@@ -2966,7 +2836,7 @@ static void load_ssi() {
   AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void LoadMegaBlast(void)
+static void load_megab(void)
 {
   ROM[0x00628]=0x4E;
   ROM[0x00629]=0x71;
@@ -3059,7 +2929,7 @@ static void LoadMegaBlast(void)
   TC0360PRI_regs = RAM+0x039000;
 }
 
-static void LoadLiquidKids(void)
+static void load_liquidk(void)
 {
    // 68000 Speed Hack
    // ----------------
@@ -3169,14 +3039,9 @@ static void LoadLiquidKids(void)
    TC0360PRI_regs = RAM+0x032300;
 }
 
-void clear_taito_f2(void)
-{
-   RemoveTaitoYM2610();
-}
-
 static int last_scr,last_scr2;
 
-void ExecuteDonDokoDonFrame(void)
+static void execute_dondokdj(void)
 {
    tc0005rot_set_bitmap();
 
@@ -3194,7 +3059,7 @@ void ExecuteDonDokoDonFrame(void)
    tc0005rot_unset_bitmap();
 }
 
-static void ExecuteDriftOutFrame(void)
+static void execute_driftout(void)
 {
    tc0005rot_set_bitmap();
 
@@ -3208,7 +3073,7 @@ static void ExecuteDriftOutFrame(void)
    tc0005rot_unset_bitmap();
 }
 
-static void ExecuteDriveOutFrame(void)
+static void execute_driveout(void)
 {
   // rotation frame, no sprites delay
    tc0005rot_set_bitmap();
@@ -3222,7 +3087,7 @@ static void ExecuteDriveOutFrame(void)
    tc0005rot_unset_bitmap();
 }
 
-static void ExecuteLiquidKidsFrame(void)
+static void execute_liquidk(void)
 {
    last_scr=ReadLong(&RAM_OBJECT[0x24]); // Keep Sprites and Scrolling in sync (sprites are 1 frame behind)
 
@@ -3233,7 +3098,7 @@ static void ExecuteLiquidKidsFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-static void execute_demo_frame(void)
+static void execute_f2demo(void)
 {
   // the demo appears too much on the right, but it's based on mame source...
   // It's funny there is such a difference, because we are very similar for the games.
@@ -3255,7 +3120,7 @@ static void execute_demo_frame(void)
      scroll[4]--;
 }
 
-static void ExecuteMegaBlastFrame(void)
+static void execute_megab(void)
 {
   RAM[0x38802]=0x01; // c chip for megab
 
@@ -3267,7 +3132,7 @@ static void ExecuteMegaBlastFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-static void execute_super_space_invaders_frame(void)
+static void execute_ssi(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -3276,7 +3141,7 @@ static void execute_super_space_invaders_frame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-static void execute_f2_simple(void)
+static void execute_mjnquest(void)
 {
   // no delay, no c chip, no rotating tile !
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
@@ -3287,7 +3152,7 @@ static void execute_f2_simple(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-static void execute_f2_spritebank(void)
+static void execute_solfigtr(void)
 {
   // no delay, no c chip, no rotating tile, but sprite banks...
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
@@ -3299,7 +3164,7 @@ static void execute_f2_spritebank(void)
    make_object_bank(GFX_BANK);
 }
 
-static void execute_f2_spritebank_b(void)
+static void execute_growl(void)
 {
   // no delay, no c chip, no rotating tile, but sprite banks...
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
@@ -3311,7 +3176,7 @@ static void execute_f2_spritebank_b(void)
    make_object_bank(GFX_BANK);
 }
 
-static void ExecuteGunFrontFrame(void)
+static void execute_gunfront(void)
 {
   // 68k overclocked because of speed hacks, 2 execute_cycles / frame for sprite sync
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60) - s68000context.odometer);
@@ -3323,7 +3188,7 @@ static void ExecuteGunFrontFrame(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-void execute_camel_try_frame(void)
+static void execute_cameltry(void)
 {
    static int p1_paddle_x,p1_paddle_y;
    static int p2x,p2y;
@@ -3824,7 +3689,7 @@ static void draw_no_pri() {
 }
 
 // and mahjong quest : no priorities at all ?!!
-void draw_mjnquest(void)
+static void draw_mjnquest(void)
 {
    if(ReadWord(&GFX_BANK[0])==0){
       tc0100scn[0].layer[0].GFX  = GFX;
@@ -3842,142 +3707,21 @@ void draw_mjnquest(void)
    draw_no_pri();
 }
 
-static struct VIDEO_INFO f2_180_pri_rot =
-{
-   draw_f2_pri_rot_delay,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_180 | VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO pulirula_video =
-{
-   draw_f2_pri_rot_delay,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO cameltry_video =
-{
-   draw_cameltry,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO f2_180_pri_delay =
-{
-   draw_f2_pri_delay,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_180 | VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO f2_pri =
-{
-   draw_f2_pri,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO mjnquest =
-{
-   draw_mjnquest,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-   mjnquest_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO thundfox =
-{
-   draw_thundfox,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-   thundfox_decodeinfo
-};
 
-static struct VIDEO_INFO finalb =
-{
-   draw_no_pri,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
-   finalb_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO majestic_twelve_video =
-{
-  // this one is particular : only sprites !
-  draw_ssi,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO drift_out_video =
-{
-   draw_f2_pri_rot,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 |VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-static struct VIDEO_INFO gunfront =
-{
-   draw_f2_pri,
-   320,
-   224,
-   32,
-   VIDEO_ROTATE_270 | VIDEO_ROTATABLE,
-   pivot_gfxdecodeinfo
-};
 
-GAME( don_doko_don ,
-   don_doko_don_dirs,
-   dondokod_roms,
-   don_doko_don_inputs,
-   don_doko_don_dsw,
-   don_doko_don_romsw,
-
-   LoadDonDokoDon,
-   clear_taito_f2,
-   &f2_180_pri_rot,
-   ExecuteDonDokoDonFrame,
-   "dondokdj",
-   "Don Doko Don",
-   "ドンドコドン",
-   COMPANY_ID_TAITO,
-   "B95",
-   1989,
-   taito_ym2610_sound,
-   GAME_PLATFORM
-);
 
 // The inputs do not have the same adreses as dondokod. Maybe we should use input_buffer
 // instead of a direct mapping...
-static struct INPUT_INFO mega_blast_inputs[] =
+static struct INPUT_INFO input_megab[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -4003,360 +3747,359 @@ static struct INPUT_INFO mega_blast_inputs[] =
    END_INPUT
 };
 
-GAME( mega_blast ,
-   mega_blast_dirs,
-   megab_roms,
-   mega_blast_inputs,
-   mega_blast_dsw,
-   mega_blast_romsw,
 
-   LoadMegaBlast,
-   clear_taito_f2,
-   &f2_pri,
-   ExecuteMegaBlastFrame,
-   "megab",
-   "Mega Blast",
-   "メガブラスト",
-   COMPANY_ID_TAITO,
-   "C11",
-   1989,
-   taito_ym2610_sound,
-   GAME_SHOOT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static struct VIDEO_INFO video_cameltry =
+{
+   draw_cameltry,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_dondokdj =
+{
+   draw_f2_pri_rot_delay,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_180 | VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_driftout =
+{
+   draw_f2_pri_rot,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 |VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_finalb =
+{
+   draw_no_pri,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   finalb_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_gunfront =
+{
+   draw_f2_pri,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 | VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_liquidk =
+{
+   draw_f2_pri_delay,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_180 | VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_mjnquest =
+{
+   draw_mjnquest,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   mjnquest_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_pulirula =
+{
+   draw_f2_pri_rot_delay,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_solfigtr =
+{
+   draw_f2_pri,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_ssi =
+{
+  // this one is particular : only sprites !
+  draw_ssi,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   pivot_gfxdecodeinfo
+};
+static struct VIDEO_INFO video_thundfox =
+{
+   draw_thundfox,
+   320,
+   224,
+   32,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   thundfox_decodeinfo
+};
+GMEI( cameltry, "Camel Try", TAITO, 1989, GAME_PUZZLE,
+	.romsw = romsw_cameltry,
+	.long_name_jpn = "キャメルトライ",
+	.board = "C38",
 );
-
-GAME( liquid_kids ,
-   liquid_kids_dirs,
-   liquidk_roms,
-   don_doko_don_inputs,
-   liquid_kids_dsw,
-   liquidk_romsw,
-
-   LoadLiquidKids,
-   clear_taito_f2,
-      &f2_180_pri_delay,
-   ExecuteLiquidKidsFrame,
-   "liquidk",
-   "Liquid Kids",
-   "ミズバクｵ蝟`険",
-   COMPANY_ID_TAITO,
-   "C49",
-   1990,
-   taito_ym2610_sound,
-   GAME_PLATFORM
+CLNEI(camltrua,cameltry, "Camel Try (Alternate)", TAITO, 1989, GAME_PUZZLE,
+	.load_game = load_camltrua,
+	.long_name_jpn = "キャメルトライ",
+	.board = "C38",
+	.sound = sound_camltrua,
 );
-
-GAME( majestic_twelve ,
-   majestic_twelve_dirs,
-   mj12_roms,
-   don_doko_don_inputs,
-   ssi_dsw,
-   majestic_twelve_romsw,
-
-   load_ssi,
-   clear_taito_f2,
-   &majestic_twelve_video,
-   execute_super_space_invaders_frame,
-   "majest12",
-   "Majestic Twelve",
-   "マジェスティックトウェルブ",
-   COMPANY_ID_TAITO,
-   "C64",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT
+static struct DIR_INFO dir_dinorex[] =
+{
+   { "dino_rex", },
+   { "dinorex", },
+   { NULL, },
+};
+GAME( dinorex, "Dino Rex", TAITO, 1992, GAME_BEAT,
+	.input = input_ssi,
+	.dsw = dsw_dinorex,
+	.romsw = romsw_dondokdj,
+	.video = &video_solfigtr,
+	.exec = execute_mjnquest,
+	.long_name_jpn = "ダイノレックス",
+	.board = "D39",
 );
-
-GAME( super_space_invaders_91 ,
-   super_space_invaders_91_dirs,
-   ssi_roms,
-   don_doko_don_inputs,
-   ssi_dsw,
-   majestic_twelve_romsw,
-
-   load_ssi,
-   clear_taito_f2,
-   &majestic_twelve_video,
-   execute_super_space_invaders_frame,
-   "ssi",
-   "Super Space Invaders 91",
-   "スーパースペースインベーダー’９１",
-   COMPANY_ID_TAITO,
-   "C64",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT
+static struct DIR_INFO dir_dondokdj[] =
+{
+   { "don_doko_don", },
+   { "dondokod", },
+   { "dondokdj", },
+   { NULL, },
+};
+GAME( dondokdj, "Don Doko Don", TAITO, 1989, GAME_PLATFORM,
+	.input = input_ssi,
+	.dsw = dsw_dondokdj,
+	.romsw = romsw_dondokdj,
+	.video = &video_dondokdj,
+	.exec = execute_dondokdj,
+	.long_name_jpn = "ドンドコドン",
+	.board = "B95",
 );
-
-GAME( drift_out ,
-   driftout_dirs,
-   driftout_roms,
-   don_doko_don_inputs,
-   drift_out_dsw,
-   NULL,
-
-   load_driftout,
-   clear_taito_f2,
-   &drift_out_video,
-   ExecuteDriftOutFrame,
-   "driftout",
-   "Drift Out",
-   "ドリフトアウト",
-   COMPANY_ID_VISCO,
-   NULL,
-   1991,
-   taito_ym2610_sound,
-   GAME_RACE
+static struct DIR_INFO dir_driftout[] =
+{
+   { "drift_out", },
+   { "driftout", },
+   { NULL, },
+};
+GAME( driftout, "Drift Out", VISCO, 1991, GAME_RACE,
+	.input = input_ssi,
+	.dsw = dsw_driftout,
+	.video = &video_driftout,
+	.exec = execute_driftout,
+	.long_name_jpn = "ドリフトアウト",
 );
-
-GAME( drive_out ,
-   drive_out_dirs,
-   driveout_roms,
-   don_doko_don_inputs,
-   drift_out_dsw,
-   NULL,
-
-   load_driveout,
-   clear_taito_f2,
-   &drift_out_video,
-   ExecuteDriveOutFrame,
-   "driveout",
-   "Drive Out",
-   NULL,
-   COMPANY_ID_BOOTLEG,
-   NULL,
-   1991,
-   driveout_sound,
-   GAME_RACE
+static struct DIR_INFO dir_driveout[] =
+{
+   { "drive_out", },
+   { "driveout", },
+   { ROMOF("driftout"), },
+   { CLONEOF("driftout"), },
+   { NULL, },
+};
+GAME(driveout, "Drive Out", BOOTLEG, 1991, GAME_RACE,
+	.input = input_ssi,
+	.dsw = dsw_driftout,
+	.video = &video_driftout,
+	.exec = execute_driveout,
+	.sound = sound_driveout,
 );
-
-GAME( dino_rex ,
-   dino_rex_dirs,
-   dinorex_roms,
-   don_doko_don_inputs,
-   dino_rex_dsw,
-   don_doko_don_romsw,
-
-   load_dinorex,
-   clear_taito_f2,
-   &f2_pri,
-   execute_f2_simple,
-   "dinorex",
-   "Dino Rex",
-   "ダイノレックス",
-   COMPANY_ID_TAITO,
-   "D39",
-   1992,
-   taito_ym2610_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_f2demo[] =
+{
+   { "f2demo", },
+   { NULL, },
+};
+#define input_liquidk input_ssi
+CLNE( f2demo, liquidk, "Demo Taito F2", BOOTLEG, 2000, GAME_MISC,
+	.input = input_ssi,
+	.romsw = romsw_f2demo,
+	.exec = execute_f2demo,
+	.board = "C49",
 );
-
-GAME( f2demo ,
-   f2demo_dirs,
-   f2demo_roms,
-   don_doko_don_inputs,
-   liquid_kids_dsw,
-   mega_blast_romsw,
-
-   LoadLiquidKids,
-   clear_taito_f2,
-      &f2_180_pri_delay,
-   execute_demo_frame,
-   "f2demo",
-   "Demo Taito F2",
-      NULL,
-   COMPANY_ID_BOOTLEG,
-   "C49",
-      2000, // ???
-   taito_ym2610_sound,
-   GAME_MISC
+static struct DIR_INFO dir_finalb[] =
+{
+   { "final_blow", },
+   { "finalb", },
+   { "finalbl", },
+   { NULL, },
+};
+GAME( finalb, "Final Blow", TAITO, 1988, GAME_BEAT,
+	.input = input_finalb,
+	.dsw = dsw_finalb,
+	.romsw = romsw_thundfox,
+	.video = &video_finalb,
+	.exec = execute_mjnquest,
+	.long_name_jpn = "ファイナルブロー",
+	.board = "B82",
 );
-
-GAME( thunder_fox ,
-   thunder_fox_dirs,
-   thundfox_roms,
-   thunder_fox_inputs,
-   thunder_fox_dsw,
-   thunder_fox_romsw,
-
-   load_thundfox,
-   clear_taito_f2,
-   &thundfox,
-   ExecuteLiquidKidsFrame,
-   "thundfox",
-   "Thunder Fox",
-   "サンダーフォックス",
-   COMPANY_ID_TAITO,
-   "C28",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT
+static struct DIR_INFO dir_growl[] =
+{
+  { "growl" },
+  { NULL }
+};
+GAME( growl, "Growl", TAITO, 1990, GAME_BEAT,
+	.input = input_growl,
+	.dsw = dsw_growl,
+	.romsw = romsw_growl,
+	.video = &video_solfigtr,
+	.exec = execute_growl,
+	.long_name_jpn = "ルナーク",
+	.board = "C74",
 );
-
-GAME( solitary_fighter ,
-   solitary_fighter_dirs,
-   solfigtr_roms,
-      thunder_fox_inputs,
-   solfigtr_dsw,
-   solfigtr_romsw,
-
-   load_solfigtr,
-   clear_taito_f2,
-   &f2_pri,
-      execute_f2_spritebank,
-   "solfigtr",
-   "Solitary Fighter",
-   "ダイノレックス",
-   COMPANY_ID_TAITO,
-   "C91",
-   1990,
-   taito_ym2610_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_gunfront[] =
+{
+   { "gun_frontier", },
+   { "gunfront", },
+   { NULL, },
+};
+GAME( gunfront, "Gun Frontier", TAITO, 1990, GAME_SHOOT,
+	.input = input_ssi,
+	.dsw = dsw_gunfront,
+	.romsw = romsw_liquidk,
+	.video = &video_gunfront,
+	.exec = execute_gunfront,
+	.long_name_jpn = "ガンフロンティア",
+	.board = "C71",
 );
-
-GAME( mahjong_quest ,
-   mahjong_quest_dirs,
-   mjnquest_roms,
-   mjnquest_inputs,
-   mjnquest_dsw,
-   NULL,
-
-   load_mjnquest,
-   clear_taito_f2,
-   &mjnquest,
-   execute_f2_simple,
-   "mjnquest",
-   "Mahjong Quest",
-   NULL,
-   COMPANY_ID_TAITO,
-   "C77",
-   1990,
-   taito_ym2610_sound,
-   GAME_PUZZLE
+static struct DIR_INFO dir_liquidk[] =
+{
+   { "liquid_kids", },
+   { "liquidk", },
+   { NULL, },
+};
+GAME( liquidk, "Liquid Kids", TAITO, 1990, GAME_PLATFORM,
+	.input = input_ssi,
+	.dsw = dsw_liquidk,
+	.romsw = romsw_liquidk,
+	.video = &video_liquidk,
+	.exec = execute_liquidk,
+	.long_name_jpn = "ミズバクｵ蝟`険",
+	.board = "C49",
 );
-
-GAME( final_blow ,
-   final_blow_dirs,
-   finalb_roms,
-   final_blow_inputs,
-   final_blow_dsw,
-   thunder_fox_romsw,
-
-   load_finalb,
-   clear_taito_f2,
-   &finalb,
-   execute_f2_simple,
-   "finalb",
-   "Final Blow",
-   "ファイナルブロー",
-   COMPANY_ID_TAITO,
-   "B82",
-   1988,
-   taito_ym2610_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_mjnquest[] =
+{
+   { "mahjong_quest", },
+   { "mjnquest", },
+   { NULL, },
+};
+GAME( mjnquest, "Mahjong Quest", TAITO, 1990, GAME_PUZZLE,
+	.input = input_mjnquest,
+	.dsw = dsw_mjnquest,
+	.video = &video_mjnquest,
+	.exec = execute_mjnquest,
+	.board = "C77",
 );
-
-GAME( growl ,
-   growl_dirs,
-   growl_roms,
-   growl_inputs,
-   growl_dsw,
-   growl_romsw,
-
-   load_growl,
-   clear_taito_f2,
-   &f2_pri,
-   execute_f2_spritebank_b,
-   "growl",
-   "Growl",
-   "ルナーク",
-   COMPANY_ID_TAITO,
-   "C74",
-   1990,
-   taito_ym2610_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_majest12[] =
+{
+   { "majestic_twelve", },
+   { "mj12", },
+   { "majest12", },
+   { ROMOF("ssi"), },
+   { CLONEOF("ssi"), },
+   { NULL, },
+};
+CLNE(majest12, ssi, "Majestic Twelve", TAITO, 1990, GAME_SHOOT,
+	.long_name_jpn = "マジェスティックトウェルブ",
+	.board = "C64",
 );
-
-GAME( gun_frontier ,
-   gun_frontier_dirs,
-   gunfront_roms,
-   don_doko_don_inputs,
-   gunfront_dsw,
-   liquidk_romsw,
-
-   load_gunfront,
-   clear_taito_f2,
-   &gunfront,
-   ExecuteGunFrontFrame,
-   "gunfront",
-   "Gun Frontier",
-   "ガンフロンティア",
-   COMPANY_ID_TAITO,
-   "C71",
-   1990,
-   taito_ym2610_sound,
-   GAME_SHOOT
+static struct DIR_INFO dir_megab[] =
+{
+   { "mega_blast", },
+   { "megab", },
+   { "megabl", },
+   { NULL, },
+};
+GAME( megab, "Mega Blast", TAITO, 1989, GAME_SHOOT,
+	.input = input_megab,
+	.dsw = dsw_megab,
+	.romsw = romsw_f2demo,
+	.video = &video_solfigtr,
+	.exec = execute_megab,
+	.long_name_jpn = "メガブラスト",
+	.board = "C11",
 );
-
-GAME( cameltry ,
-   cameltry_dirs,
-   cameltry_roms,
-   camel_try_inputs,
-   camel_try_dsw,
-   camel_try_romsw,
-
-   load_cameltry,
-   clear_taito_f2,
-   &cameltry_video,
-   execute_camel_try_frame,
-   "cameltry",
-   "Camel Try",
-   "キャメルトライ",
-   COMPANY_ID_TAITO,
-   "C38",
-   1989,
-   taito_ym2610_sound,
-   GAME_PUZZLE
+static struct DIR_INFO dir_pulirula[] =
+{
+   { "pulirula", },
+   { NULL, },
+};
+GAME( pulirula, "Pulirula", TAITO, 1991, GAME_BEAT,
+	.input = input_finalb,
+	.dsw = dsw_pulirula,
+	.romsw = romsw_liquidk,
+	.video = &video_pulirula,
+	.exec = execute_driftout,
+	.long_name_jpn = "プリルラ",
+	.board = "C98",
 );
-
-GAME( camltrua ,
-   camltrua_dirs,
-   camltrua_roms,
-   camel_try_inputs,
-   camel_try_dsw,
-   camel_try_romsw,
-
-   load_camltrua,
-   clear_taito_f2,
-   &cameltry_video,
-   execute_camel_try_frame,
-   "camltrua",
-   "Camel Try (Alternate)",
-   "キャメルトライ",
-   COMPANY_ID_TAITO,
-   "C38",
-   1989,
-   camltrua_sound,
-   GAME_PUZZLE
+static struct DIR_INFO dir_solfigtr[] =
+{
+   { "solitary_fighter", },
+   { "solfigtr", },
+   { NULL, },
+};
+GME( solfigtr, "Solitary Fighter", TAITO, 1990, GAME_BEAT,
+	.romsw = romsw_solfigtr,
+	.long_name_jpn = "ダイノレックス",
+	.board = "C91",
 );
-
-GAME( pulirula ,
-   pulirula_dirs,
-   pulirula_roms,
-   final_blow_inputs,
-   pulirula_dsw,
-   liquidk_romsw,
-
-   load_pulirula,
-   clear_taito_f2,
-   &pulirula_video,
-   ExecuteDriftOutFrame,
-   "pulirula",
-   "Pulirula",
-   "プリルラ",
-   COMPANY_ID_TAITO,
-   "C98",
-   1991,
-   taito_ym2610_sound,
-   GAME_BEAT
+static struct DIR_INFO dir_ssi[] =
+{
+   { "super_space_invaders_91", },
+   { "ssi", },
+   { "space_invaders_91", },
+   { NULL, },
+};
+GME( ssi, "Super Space Invaders 91", TAITO, 1990, GAME_SHOOT,
+	.romsw = romsw_ssi,
+	.long_name_jpn = "スーパースペースインベーダー’９１",
+	.board = "C64",
+);
+static struct DIR_INFO dir_thundfox[] =
+{
+   { "thunder_fox", },
+   { "thundfox", },
+   { "thndfoxj", },
+   { NULL, },
+};
+GAME( thundfox, "Thunder Fox", TAITO, 1990, GAME_SHOOT,
+	.input = input_solfigtr,
+	.dsw = dsw_thundfox,
+	.romsw = romsw_thundfox,
+	.video = &video_thundfox,
+	.exec = execute_liquidk,
+	.long_name_jpn = "サンダーフォックス",
+	.board = "C28",
 );
 

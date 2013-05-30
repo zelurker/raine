@@ -1,3 +1,6 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
+#define DRV_DEF_INPUT b_system_inputs
+#define DRV_DEF_VIDEO &b_system_video
 /******************************************************************************/
 /*                                                                            */
 /*            RASTAN 2/NASTAR WARRIOR (C) 1988 TAITO CORPORATION              */
@@ -5,7 +8,6 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "rastan2.h"
 #include "tc180vcu.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
@@ -16,13 +18,8 @@
    NASTAR
  **********/
 
-static struct DIR_INFO nastar_dirs[] =
-{
-   { "nastar", },
-   { NULL, },
-};
 
-static struct ROM_INFO nastar_roms[] =
+static struct ROM_INFO rom_nastar[] =
 {
    {   "b81-01.bin", 0x00080000, 0xb33f796b, 0, 0, 0, },
    {   "b81-02.bin", 0x00080000, 0x20ec3b86, 0, 0, 0, },
@@ -54,7 +51,7 @@ static struct DSW_DATA dsw_data_nastar_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_nastar_1[] =
+static struct DSW_DATA dsw_data_nastar_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -75,7 +72,7 @@ struct DSW_DATA dsw_data_nastar_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO nastar_dsw[] =
+static struct DSW_INFO dsw_nastar[] =
 {
    { 0x000000, 0xFF, dsw_data_nastar_0 },
    { 0x000002, 0xFF, dsw_data_nastar_1 },
@@ -98,42 +95,13 @@ static struct ROMSW_INFO nastar_romsw[] =
 };
 */
 
-GAME( nastar ,
-   nastar_dirs,
-   nastar_roms,
-   b_system_inputs,
-   nastar_dsw,
-   NULL,
-
-   LoadRastan2,
-   ClearRastan2,
-   &b_system_video,
-   ExecuteRastan2Frame,
-   "nastar",
-   "Nastar",
-   "‚Î‚X‚^‚Ù‚T¸[‚KÈQ",
-   COMPANY_ID_TAITO,
-   "B81",
-   1989,
-   taito_ym2610_sound,
-   GAME_BEAT | GAME_PLATFORM
-);
 
 /*****************
    RASTAN SAGA 2
  *****************/
 
-static struct DIR_INFO rastan_saga_2_dirs[] =
-{
-   { "rastan_saga_2", },
-   { "rastan2", },
-   { "rastsag2", },
-   { ROMOF("nastar"), },
-   { CLONEOF("nastar"), },
-   { NULL, },
-};
 
-static struct ROM_INFO rastan_saga_2_roms[] =
+static struct ROM_INFO rom_rastsag2[] =
 {
    {   "b81-01.bin", 0x00080000, 0xb33f796b, 0, 0, 0, },
    {   "b81-02.bin", 0x00080000, 0x20ec3b86, 0, 0, 0, },
@@ -165,48 +133,20 @@ static struct DSW_DATA dsw_data_rastan_saga_2_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO rastan_saga_2_dsw[] =
+static struct DSW_INFO dsw_rastsag2[] =
 {
    { 0x000000, 0xFF, dsw_data_rastan_saga_2_0 },
    { 0x000002, 0xFF, dsw_data_nastar_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( rastan_saga_2 ,
-   rastan_saga_2_dirs,
-   rastan_saga_2_roms,
-   b_system_inputs,
-   rastan_saga_2_dsw,
-   NULL,
-
-   LoadRastan2,
-   ClearRastan2,
-   &b_system_video,
-   ExecuteRastan2Frame,
-   "rastsag2",
-   "Rastan Saga 2",
-   "‚Î‚X‚^‚Ù‚T¸[‚KÈQ",
-   COMPANY_ID_TAITO,
-   "B81",
-   1988,
-   taito_ym2610_sound,
-   GAME_PLATFORM | GAME_BEAT
-);
 
 /******************
    NASTAR WARRIOR
  ******************/
 
-static struct DIR_INFO nastar_warrior_dirs[] =
-{
-   { "nastar_warrior", },
-   { "nastarw", },
-   { ROMOF("nastar"), },
-   { CLONEOF("nastar"), },
-   { NULL, },
-};
 
-static struct ROM_INFO nastar_warrior_roms[] =
+static struct ROM_INFO rom_nastarw[] =
 {
    {   "b81-01.bin", 0x00080000, 0xb33f796b, 0, 0, 0, },
    {   "b81-02.bin", 0x00080000, 0x20ec3b86, 0, 0, 0, },
@@ -238,33 +178,13 @@ static struct DSW_DATA dsw_data_nastar_warrior_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO nastar_warrior_dsw[] =
+static struct DSW_INFO dsw_nastarw[] =
 {
    { 0x000000, 0xFF, dsw_data_nastar_warrior_0 },
    { 0x000002, 0xFF, dsw_data_nastar_1 },
    { 0,        0,    NULL,      },
 };
 
-GAME( nastar_warrior ,
-   nastar_warrior_dirs,
-   nastar_warrior_roms,
-   b_system_inputs,
-   nastar_warrior_dsw,
-   NULL,
-
-   LoadRastan2,
-   ClearRastan2,
-   &b_system_video,
-   ExecuteRastan2Frame,
-   "nastarw",
-   "Nastar Warrior",
-   "ÉâÉXÉ^ÉìÉTÅ[ÉKÇQ",
-   COMPANY_ID_TAITO,
-   "B81",
-   1989,
-   taito_ym2610_sound,
-   GAME_BEAT | GAME_PLATFORM
-);
 
 
 static UINT8 *RAM_INPUT;
@@ -278,7 +198,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-void LoadRastan2(void)
+static void load_nastar(void)
 {
    int ta,tb,tc;
 
@@ -538,19 +458,7 @@ void LoadRastan2(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-
-void ClearRastan2(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x240000,0);
-   #endif
-}
-
-void ExecuteRastan2Frame(void)
+static void execute_nastar(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -562,3 +470,35 @@ void ExecuteRastan2Frame(void)
 
    execute_z80_audio_frame();
 }
+GMEI( nastar, "Nastar", TAITO, 1989, GAME_BEAT | GAME_PLATFORM,
+	.long_name_jpn = "‚Î‚X‚^‚Ù‚T¸[‚KÈQ",
+	.board = "B81",
+);
+static struct DIR_INFO dir_nastarw[] =
+{
+   { "nastar_warrior", },
+   { "nastarw", },
+   { ROMOF("nastar"), },
+   { CLONEOF("nastar"), },
+   { NULL, },
+};
+CLNE( nastarw,nastar, "Nastar Warrior", TAITO, 1989, GAME_BEAT | GAME_PLATFORM,
+	.dsw = dsw_nastarw,
+	.long_name_jpn = "ÉâÉXÉ^ÉìÉTÅ[ÉKÇQ",
+	.board = "B81",
+);
+static struct DIR_INFO dir_rastsag2[] =
+{
+   { "rastan_saga_2", },
+   { "rastan2", },
+   { "rastsag2", },
+   { ROMOF("nastar"), },
+   { CLONEOF("nastar"), },
+   { NULL, },
+};
+CLNE( rastsag2,nastar, "Rastan Saga 2", TAITO, 1988, GAME_PLATFORM | GAME_BEAT,
+	.dsw = dsw_rastsag2,
+	.long_name_jpn = "‚Î‚X‚^‚Ù‚T¸[‚KÈQ",
+	.board = "B81",
+);
+

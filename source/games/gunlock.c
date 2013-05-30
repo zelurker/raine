@@ -4,8 +4,11 @@
 /*                                                                            */
 /******************************************************************************/
 
+#define DRV_DEF_INPUT f3_system_inputs
+#define DRV_DEF_SOUND f3_sound
+#define DRV_DEF_DSW NULL
+
 #include "gameinc.h"
-#include "gunlock.h"
 #include "f3system.h"
 #include "tc003vcu.h"
 #include "tc200obj.h"
@@ -16,14 +19,8 @@
    GUN LOCK WORLD
  ******************/
 
-static struct DIR_INFO gun_lock_dirs[] =
-{
-   { "gun_lock", },
-   { "gunlock", },
-   { NULL, },
-};
 
-static struct ROM_INFO gun_lock_roms[] =
+static struct ROM_INFO rom_gunlock[] =
 {
    {   "d66-01.rom", 0x00200000, 0x58c92efa, 0, 0, 0, },
    {   "d66-02.rom", 0x00200000, 0xdcdafaab, 0, 0, 0, },
@@ -51,57 +48,21 @@ static struct ROMSW_DATA romsw_data_gun_lock_0[] =
    { NULL,                       0    },
 };
 
-static struct ROMSW_INFO gun_lock_romsw[] =
+static struct ROMSW_INFO romsw_gun_lock[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_gun_lock_0 },
    { 0,        0,    NULL },
 };
 */
 
-static struct VIDEO_INFO gun_lock_video =
-{
-   DrawGunLock,
-   224,
-   320,
-   64,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-};
 
-GAME( gun_lock ,
-   gun_lock_dirs,
-   gun_lock_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadGunLock,
-   ClearGunLock,
-   &gun_lock_video,
-   ExecuteGunLockFrame,
-   "gunlock",
-   "Gun Lock",
-   "レイフォース",
-   COMPANY_ID_TAITO,
-   "D66",
-   1993,
-   f3_sound,
-   GAME_SHOOT
-);
 
 /*****************
    RAY FORCE US
  *****************/
 
-static struct DIR_INFO ray_force_dirs[] =
-{
-   { "ray_force", },
-   { "rayforce", },
-   { ROMOF("gunlock"), },
-   { CLONEOF("gunlock"), },
-   { NULL, },
-};
 
-static struct ROM_INFO ray_force_roms[] =
+static struct ROM_INFO rom_rayforce[] =
 {
    {   "d66-01.rom", 0x00200000, 0x58c92efa, 0, 0, 0, },
    {   "d66-02.rom", 0x00200000, 0xdcdafaab, 0, 0, 0, },
@@ -120,41 +81,13 @@ static struct ROM_INFO ray_force_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( ray_force ,
-   ray_force_dirs,
-   ray_force_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadGunLock,
-   ClearGunLock,
-   &gun_lock_video,
-   ExecuteGunLockFrame,
-   "rayforce",
-   "Ray Force (US)",
-   "レイフォース (US)",
-   COMPANY_ID_TAITO,
-   "D66",
-   1993,
-   f3_sound,
-   GAME_SHOOT
-);
 
 /*******************
    RAY FORCE JAPAN
  *******************/
 
-static struct DIR_INFO ray_force_jp_dirs[] =
-{
-   { "ray_force_jp", },
-   { "rayforcj", },
-   { ROMOF("gunlock"), },
-   { CLONEOF("gunlock"), },
-   { NULL, },
-};
 
-static struct ROM_INFO ray_force_jp_roms[] =
+static struct ROM_INFO rom_rayforcj[] =
 {
    {   "d66-01.rom", 0x00200000, 0x58c92efa, 0, 0, 0, },
    {   "d66-02.rom", 0x00200000, 0xdcdafaab, 0, 0, 0, },
@@ -173,26 +106,6 @@ static struct ROM_INFO ray_force_jp_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( ray_force_jp ,
-   ray_force_jp_dirs,
-   ray_force_jp_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadGunLock,
-   ClearGunLock,
-   &gun_lock_video,
-   ExecuteGunLockFrame,
-   "rayforcj",
-   "Ray Force (Japan)",
-   "レイフォース (Japan)",
-   COMPANY_ID_TAITO,
-   "D66",
-   1993,
-   f3_sound,
-   GAME_SHOOT
-);
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -220,7 +133,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadGunLock(void)
+static void load_gunlock(void)
 {
    int ta,tb,tc;
 
@@ -425,17 +338,7 @@ void LoadGunLock(void)
    setup_sound_68000();
 }
 
-void ClearGunLock(void)
-{
-   save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
-}
-
-void ExecuteGunLockFrame(void)
+static void execute_gunlock(void)
 {
   int ta;
   cycles = 1;
@@ -469,7 +372,7 @@ void ExecuteGunLockFrame(void)
 }
 
 
-void DrawGunLock(void)
+static void DrawGunLock(void)
 {
    UINT8 *MAP;
    int x16,y16;
@@ -652,3 +555,48 @@ void DrawGunLock(void)
       f3video_render_fg0_r270();
    }
 }
+static struct VIDEO_INFO video_gunlock =
+{
+   DrawGunLock,
+   224,
+   320,
+   64,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_gunlock[] =
+{
+   { "gun_lock", },
+   { "gunlock", },
+   { NULL, },
+};
+GAME( gunlock, "Gun Lock", TAITO, 1993, GAME_SHOOT,
+	.video = &video_gunlock,
+	.exec = execute_gunlock,
+	.long_name_jpn = "レイフォース",
+	.board = "D66",
+);
+static struct DIR_INFO dir_rayforcj[] =
+{
+   { "ray_force_jp", },
+   { "rayforcj", },
+   { ROMOF("gunlock"), },
+   { CLONEOF("gunlock"), },
+   { NULL, },
+};
+CLNE( rayforcj, gunlock,"Ray Force (Japan)", TAITO, 1993, GAME_SHOOT,
+	.long_name_jpn = "レイフォース (Japan)",
+	.board = "D66",
+);
+static struct DIR_INFO dir_rayforce[] =
+{
+   { "ray_force", },
+   { "rayforce", },
+   { ROMOF("gunlock"), },
+   { CLONEOF("gunlock"), },
+   { NULL, },
+};
+CLNE( rayforce, gunlock,"Ray Force (US)", TAITO, 1993, GAME_SHOOT,
+	.long_name_jpn = "レイフォース (US)",
+	.board = "D66",
+);
+

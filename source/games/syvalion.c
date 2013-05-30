@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    SYVALION (C) 1988 TAITO CORPORATION                     */
@@ -5,20 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "syvalion.h"
 #include "tc004vcu.h"
 #include "tc220ioc.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
 #include "timer.h"
 
-static struct DIR_INFO syvalion_dirs[] =
-{
-   { "syvalion", },
-   { NULL, },
-};
 
-static struct ROM_INFO syvalion_roms[] =
+static struct ROM_INFO rom_syvalion[] =
 {
    {   "b51-01.bin", 0x00020000, 0x8dab004a, 0, 0, 0, },
    {   "b51-02.bin", 0x00020000, 0x906ba440, 0, 0, 0, },
@@ -46,7 +41,7 @@ static struct ROM_INFO syvalion_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO syvalion_inputs[] =
+static struct INPUT_INFO input_syvalion[] =
 {
    INP1( COIN1, 0x032004, 0x04 ),
    INP1( COIN2, 0x032004, 0x08 ),
@@ -99,7 +94,7 @@ static struct DSW_DATA dsw_data_syvalion_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO syvalion_dsw[] =
+static struct DSW_INFO dsw_syvalion[] =
 {
    { 0x032000, 0xFF, dsw_data_syvalion_0 },
    { 0x032002, 0xFF, dsw_data_default_1 },
@@ -113,41 +108,13 @@ static struct ROMSW_DATA romsw_data_syvalion_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO syvalion_romsw[] =
+static struct ROMSW_INFO romsw_syvalion[] =
 {
    { 0x07FFFF, 0x00, romsw_data_syvalion_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO syvalion_video =
-{
-   DrawSyvalion,
-   512,
-   416,
-   64,
-   VIDEO_ROTATE_NORMAL|VIDEO_NEEDS_8BPP,
-};
 
-GAME( syvalion ,
-   syvalion_dirs,
-   syvalion_roms,
-   syvalion_inputs,
-   syvalion_dsw,
-   syvalion_romsw,
-
-   LoadSyvalion,
-   ClearSyvalion,
-   &syvalion_video,
-   ExecuteSyvalionFrame,
-   "syvalion",
-   "Syvalion",
-   "サイバリオン",
-   COMPANY_ID_TAITO,
-   "B51",
-   1988,
-   taito_ym2610_sound,
-   GAME_PLATFORM
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_COLOUR;
@@ -158,7 +125,7 @@ static UINT8 *GFX_BG0_SOLID;
 
 static UINT8 *GFX_FG0;
 
-void LoadSyvalion(void)
+static void load_syvalion(void)
 {
    int ta,tb,tc;
 
@@ -381,18 +348,7 @@ void LoadSyvalion(void)
    GameMouse=1;
 }
 
-void ClearSyvalion(void)
-{
-   RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x400000,0);
-   #endif
-}
-
-void ExecuteSyvalionFrame(void)
+static void execute_syvalion(void)
 {
    static int p1x,p1y;
 
@@ -431,7 +387,7 @@ void ExecuteSyvalionFrame(void)
    execute_z80_audio_frame();
 }
 
-void DrawSyvalion(void)
+static void DrawSyvalion(void)
 {
    ClearPaletteMap();
 
@@ -460,4 +416,18 @@ void DrawSyvalion(void)
 
    tc0004vcu_render_fg0();
 }
+
+static struct VIDEO_INFO video_syvalion =
+{
+   DrawSyvalion,
+   512,
+   416,
+   64,
+   VIDEO_ROTATE_NORMAL|VIDEO_NEEDS_8BPP,
+};
+GMEI( syvalion, "Syvalion", TAITO, 1988, GAME_PLATFORM,
+	.romsw = romsw_syvalion,
+	.long_name_jpn = "サイバリオン",
+	.board = "B51",
+);
 

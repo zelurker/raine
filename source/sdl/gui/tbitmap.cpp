@@ -11,14 +11,14 @@ TBitmap::TBitmap(menu_item_t *my_menu) : TStatic(my_menu)
   if (!current_game) throw "no current_game";
   bpp = display_cfg.bpp;
   display_cfg.bpp = menu->values_list[2];
-  flags = current_game->video_info->flags;
-  current_game->video_info->flags |= VIDEO_NEEDS_8BPP;
-  width = current_game->video_info->screen_x;
-  height = current_game->video_info->screen_y;
-  border = current_game->video_info->border_size;
-  current_game->video_info->screen_x = get_width();
-  current_game->video_info->screen_y = get_height();
-  current_game->video_info->border_size = 0;
+  flags = current_game->video->flags;
+  current_game->video->flags |= VIDEO_NEEDS_8BPP;
+  width = current_game->video->screen_x;
+  height = current_game->video->screen_y;
+  border = current_game->video->border_size;
+  current_game->video->screen_x = get_width();
+  current_game->video->screen_y = get_height();
+  current_game->video->border_size = 0;
   SetupScreenBitmap();
 
   int n;
@@ -41,10 +41,10 @@ TBitmap::TBitmap(menu_item_t *my_menu) : TStatic(my_menu)
 
 TBitmap::~TBitmap() {
   display_cfg.bpp = bpp;
-  current_game->video_info->flags = flags;
-  current_game->video_info->screen_x = width;
-  current_game->video_info->screen_y = height;
-  current_game->video_info->border_size = border;
+  current_game->video->flags = flags;
+  current_game->video->screen_x = width;
+  current_game->video->screen_y = height;
+  current_game->video->border_size = border;
   SetupScreenBitmap();
 }
 

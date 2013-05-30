@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND technos_ym2151_m6295_sound
 /******************************************************************************/
 /*                                                                            */
 /*              COMBA TRIBES - BOOTLEG (C) 1990 TECHNOS JAPAN                 */
@@ -5,18 +6,11 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "ctribebl.h"
 #include "sasound.h"		// sample support routines
 #include "tchnosnd.h"
 
-static struct DIR_INFO combatribes_dirs[] =
-{
-   { "combatribes", },
-   { "ctribe", },
-   { NULL, },
-};
 
-static struct ROM_INFO combatribes_roms[] =
+static struct ROM_INFO rom_ctribe[] =
 {
    {        "ic-26", 0x00020000, 0xc46b2e63, 0, 0, 0, },
    {   "ct_ep2.rom", 0x00010000, 0x8c2c6dbd, 0, 0, 0, },
@@ -38,7 +32,7 @@ static struct ROM_INFO combatribes_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO combatribes_inputs[] =
+static struct INPUT_INFO input_ctribe[] =
 {
    INP0( COIN1, 0x014001, 0x01 ),
    INP0( COIN2, 0x014001, 0x02 ),
@@ -74,7 +68,7 @@ static struct INPUT_INFO combatribes_inputs[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_combatribes_0[] =
+static struct DSW_DATA dsw_data_combatribes_0[] =
 {
    { MSG_COINAGE,             0x03, 0x04 },
    { MSG_3COIN_1PLAY,         0x00},
@@ -92,7 +86,7 @@ struct DSW_DATA dsw_data_combatribes_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_combatribes_1[] =
+static struct DSW_DATA dsw_data_combatribes_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_EASY,                0x02},
@@ -117,55 +111,17 @@ struct DSW_DATA dsw_data_combatribes_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO combatribes_dsw[] =
+static struct DSW_INFO dsw_ctribe[] =
 {
    { 0x014011, 0xFF, dsw_data_combatribes_0 },
    { 0x014013, 0xBF, dsw_data_combatribes_1 },
    { 0,        0,    NULL,      },
 };
 
-static struct VIDEO_INFO combatribes_video =
-{
-   DrawCombaTribes,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL |
-   VIDEO_ROTATABLE,
-};
 
-GAME( combatribes ,
-   combatribes_dirs,
-   combatribes_roms,
-   combatribes_inputs,
-   combatribes_dsw,
-   NULL,
 
-   LoadCombaTribes,
-   ClearCombaTribes,
-   &combatribes_video,
-   ExecuteCombaTribesFrame,
-   "ctribe",
-   "Combatribes",
-   "ザ・コンバットライブス",
-   COMPANY_ID_TECHNOS,
-   "TA-0028",
-   1990,
-   technos_ym2151_m6295_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO combatribes_bootleg_dirs[] =
-{
-   { "combatribes_bootleg", },
-   { "ctribebl", },
-   { "ctribeb", },
-   { ROMOF("ctribe"), },
-   { CLONEOF("ctribe"), },
-   { NULL, },
-};
-
-static struct ROM_INFO combatribes_bootleg_roms[] =
+static struct ROM_INFO rom_ctribeb[] =
 {
    {   "ct_ep1.rom", 0x00020000, 0x9cfa997f, 0, 0, 0, },
    {   "ct_ep2.rom", 0x00010000, 0x8c2c6dbd, 0, 0, 0, },
@@ -187,26 +143,6 @@ static struct ROM_INFO combatribes_bootleg_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( combatribes_bootleg ,
-   combatribes_bootleg_dirs,
-   combatribes_bootleg_roms,
-   combatribes_inputs,
-   combatribes_dsw,
-   NULL,
-
-   LoadCombaTribes,
-   ClearCombaTribes,
-   &combatribes_video,
-   ExecuteCombaTribesFrame,
-   "ctribeb",
-   "Combatribes (bootleg)",
-   "ザ・コンバットライブス (bootleg)",
-   COMPANY_ID_BOOTLEG,
-   "TA-0028",
-   1990,
-   technos_ym2151_m6295_sound,
-   GAME_BEAT
-);
 
 static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR_SOLID;
@@ -252,7 +188,7 @@ static void CombaTribesSpeedPatch(void)
    }
 }
 
-void LoadCombaTribes(void)
+static void load_ctribe(void)
 {
    int ta,tb,tc;
 
@@ -579,16 +515,7 @@ void LoadCombaTribes(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearCombaTribes(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x060000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x680000,0);
-#endif
-}
-
-void ExecuteCombaTribesFrame(void)
+static void execute_ctribe(void)
 {
    int ta;
 
@@ -614,7 +541,7 @@ void ExecuteCombaTribesFrame(void)
    TechnosSoundOld_Frame();	// Z80; YM2151; OKI ADPCM
 }
 
-void DrawCombaTribes(void)
+static void DrawCombaTribes(void)
 {
    UINT8 *MAP;
    int x,y,ta,tb;
@@ -787,3 +714,36 @@ Byte | Bit(s) | Usage
   F  |........| Unused
 
 */
+static struct VIDEO_INFO video_ctribe =
+{
+   DrawCombaTribes,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+};
+static struct DIR_INFO dir_ctribe[] =
+{
+   { "combatribes", },
+   { "ctribe", },
+   { NULL, },
+};
+GME( ctribe, "Combatribes", TECHNOS, 1990, GAME_BEAT,
+	.long_name_jpn = "ザ・コンバットライブス",
+	.board = "TA-0028",
+);
+static struct DIR_INFO dir_ctribeb[] =
+{
+   { "combatribes_bootleg", },
+   { "ctribebl", },
+   { "ctribeb", },
+   { ROMOF("ctribe"), },
+   { CLONEOF("ctribe"), },
+   { NULL, },
+};
+CLNE( ctribeb, ctribe, "Combatribes (bootleg)", BOOTLEG, 1990, GAME_BEAT,
+	.long_name_jpn = "ザ・コンバットライブス (bootleg)",
+	.board = "TA-0028",
+);
+

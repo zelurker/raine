@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2151_sound
 /******************************************************************************/
 /*                                                                            */
 /*                    CADASH (C) 1988 TAITO CORPORATION                       */
@@ -5,20 +6,14 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "cadash.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc002obj.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 
-static struct DIR_INFO cadash_dirs[] =
-{
-   { "cadash", },
-   { NULL, },
-};
 
-static struct ROM_INFO cadash_roms[] =
+static struct ROM_INFO rom_cadash[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                   "c21-14",  0x5daf13fb,       "c21-16",  0xcbaa2e75),
@@ -31,7 +26,7 @@ static struct ROM_INFO cadash_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO cadash_inputs[] =
+static struct INPUT_INFO input_cadash[] =
 {
    INP0( COIN1, 0x01A00E, 0x01 ),
    INP0( COIN2, 0x01A00E, 0x02 ),
@@ -101,7 +96,7 @@ static struct DSW_DATA dsw_data_cadash_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO cadash_dsw[] =
+static struct DSW_INFO dsw_cadash[] =
 {
    { 0x01A000, 0xFF, dsw_data_cadash_0 },
    { 0x01A002, 0xFF, dsw_data_cadash_1 },
@@ -115,7 +110,7 @@ static struct ROMSW_DATA romsw_data_cadash_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO cadash_romsw[] =
+static struct ROMSW_INFO romsw_cadash[] =
 {
    { 0x07FFFF, 0x03, romsw_data_cadash_0 },
    { 0,        0,    NULL },
@@ -150,48 +145,10 @@ static struct GFX_LIST cadash_gfx[] =
    { 0,           NULL,               },
 };
 
-static struct VIDEO_INFO cadash_video =
-{
-   draw_cadash,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-   cadash_gfx,
-};
 
-GAME( cadash ,
-   cadash_dirs,
-   cadash_roms,
-   cadash_inputs,
-   cadash_dsw,
-   cadash_romsw,
 
-   load_cadash,
-   clear_cadash,
-   &cadash_video,
-   execute_cadash_frame,
-   "cadash",
-   "Cadash (World)",
-   "カダッシュ American",
-   COMPANY_ID_TAITO,
-   "C21",
-   1989,
-   taito_ym2151_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO cadash_french_dirs[] =
-{
-   { "cadash_french", },
-   { "cadashfr", },
-   { "cadashf", },
-   { ROMOF("cadash"), },
-   { CLONEOF("cadash"), },
-   { NULL, },
-};
-
-static struct ROM_INFO cadash_french_roms[] =
+static struct ROM_INFO rom_cadashf[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                   "c21-19",  0x4d70543b,       "c21-21",  0x0e5b9950),
@@ -204,38 +161,9 @@ static struct ROM_INFO cadash_french_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( cadash_french ,
-   cadash_french_dirs,
-   cadash_french_roms,
-   cadash_inputs,
-   cadash_dsw,
-   cadash_romsw,
 
-   load_cadash,
-   clear_cadash,
-   &cadash_video,
-   execute_cadash_frame,
-   "cadashf",
-   "Cadash (France)",
-   "カダッシュ French",
-   COMPANY_ID_TAITO,
-   "C21",
-   1989,
-   taito_ym2151_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO cadash_italian_dirs[] =
-{
-   { "cadash_italian", },
-   { "cadashit", },
-   { "cadashi", },
-   { ROMOF("cadash"), },
-   { CLONEOF("cadash"), },
-   { NULL, },
-};
-
-static struct ROM_INFO cadash_italian_roms[] =
+static struct ROM_INFO rom_cadashi[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                 "c21-14it",  0xd1d9e613,     "c21-16it",  0x142256ef),
@@ -248,37 +176,9 @@ static struct ROM_INFO cadash_italian_roms[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-GAME( cadash_italian ,
-   cadash_italian_dirs,
-   cadash_italian_roms,
-   cadash_inputs,
-   cadash_dsw,
-   cadash_romsw,
 
-   load_cadash,
-   clear_cadash,
-   &cadash_video,
-   execute_cadash_frame,
-   "cadashi",
-   "Cadash (Italy)",
-   "カダッシュ Italian",
-   COMPANY_ID_TAITO,
-   "C21",
-   1989,
-   taito_ym2151_sound,
-   GAME_BEAT
-);
 
-static struct DIR_INFO cadash_japanese_dirs[] =
-{
-   { "cadash_japanese", },
-   { "cadashj", },
-   { ROMOF("cadash"), },
-   { CLONEOF("cadash"), },
-   { NULL, },
-};
-
-static struct ROM_INFO cadash_japanese_roms[] =
+static struct ROM_INFO rom_cadashj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
              "c21-04.11",  0xcc22ebe5,  "c21-06.15",  0x26e03304),
@@ -297,32 +197,12 @@ static struct ROMSW_DATA romsw_data_cadash_japanese_0[] =
    { NULL,                     0    },
 };
 
-static struct ROMSW_INFO cadash_japanese_romsw[] =
+static struct ROMSW_INFO romsw_cadashj[] =
 {
    { 0x07FFFF, 0x01, romsw_data_cadash_japanese_0 },
    { 0,        0,    NULL },
 };
 
-GAME( cadash_japanese ,
-   cadash_japanese_dirs,
-   cadash_japanese_roms,
-   cadash_inputs,
-   cadash_dsw,
-   cadash_japanese_romsw,
-
-   load_cadash,
-   clear_cadash,
-   &cadash_video,
-   execute_cadash_frame,
-   "cadashj",
-   "Cadash (Japan)",
-   "カダッシュ",
-   COMPANY_ID_TAITO,
-   "C21",
-   1989,
-   taito_ym2151_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -330,7 +210,7 @@ static UINT8 *RAM_INPUT;
 
 static UINT8 *RAM_OBJECT;
 
-void load_cadash(void)
+static void load_cadash(void)
 {
    RAMSize=0x34000;
    if(!(RAM=AllocateMem(RAMSize))) return;
@@ -499,16 +379,7 @@ void load_cadash(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void clear_cadash(void)
-{
-   RemoveTaitoYM2151();
-
-   #ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x024000,1);
-   #endif
-}
-
-void execute_cadash_frame(void)
+static void execute_cadash(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -517,7 +388,7 @@ void execute_cadash_frame(void)
    Taito2151_FrameRI();					// Z80 and YM2151
 }
 
-void draw_cadash(void)
+static void draw_cadash(void)
 {
   if (!tc0002obj.MASK) {
     tc0100scn[0].layer[0].MASK	=gfx_solid[0];
@@ -562,4 +433,60 @@ void draw_cadash(void)
 
    render_tc0100scn_layer_mapped(0,2,1);
 }
+
+static struct VIDEO_INFO video_cadash =
+{
+   draw_cadash,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+   cadash_gfx,
+};
+GMEI( cadash, "Cadash (World)", TAITO, 1989, GAME_BEAT,
+	.romsw = romsw_cadash,
+	.long_name_jpn = "カダッシュ American",
+	.board = "C21",
+);
+static struct DIR_INFO dir_cadashf[] =
+{
+   { "cadash_french", },
+   { "cadashfr", },
+   { "cadashf", },
+   { ROMOF("cadash"), },
+   { CLONEOF("cadash"), },
+   { NULL, },
+};
+CLNE( cadashf, cadash, "Cadash (France)", TAITO, 1989, GAME_BEAT,
+	.romsw = romsw_cadash,
+	.long_name_jpn = "カダッシュ French",
+	.board = "C21",
+);
+static struct DIR_INFO dir_cadashi[] =
+{
+   { "cadash_italian", },
+   { "cadashit", },
+   { "cadashi", },
+   { ROMOF("cadash"), },
+   { CLONEOF("cadash"), },
+   { NULL, },
+};
+CLNE( cadashi, cadash,"Cadash (Italy)", TAITO, 1989, GAME_BEAT,
+	.romsw = romsw_cadash,
+	.long_name_jpn = "カダッシュ Italian",
+	.board = "C21",
+);
+static struct DIR_INFO dir_cadashj[] =
+{
+   { "cadash_japanese", },
+   { "cadashj", },
+   { ROMOF("cadash"), },
+   { CLONEOF("cadash"), },
+   { NULL, },
+};
+CLNE( cadashj, cadash, "Cadash (Japan)", TAITO, 1989, GAME_BEAT,
+	.romsw = romsw_cadashj,
+	.long_name_jpn = "カダッシュ",
+	.board = "C21",
+);
 

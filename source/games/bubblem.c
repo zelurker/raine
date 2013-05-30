@@ -15,14 +15,8 @@
    BUBBLEM MEMORIES
  ********************/
 
-static struct DIR_INFO bubble_memories_dirs[] =
-{
-   { "bubble_memories", },
-   { "bubblem", },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_memories_roms[] =
+static struct ROM_INFO rom_bubblem[] =
 {
    {   "e21-07.rom", 0x00100000, 0x7789bf7c, 0, 0, 0, },
    {   "e21-02.rom", 0x00200000, 0xb7cb9232, 0, 0, 0, },
@@ -62,16 +56,8 @@ static struct ROMSW_INFO bubble_memories_romsw[] =
    BUBBLEM MEMORIES JAPAN
  **************************/
 
-static struct DIR_INFO bubble_memories_jp_dirs[] =
-{
-   { "bubble_memories_jp", },
-   { "bubblemj", },
-   { ROMOF("bubblem"), },
-   { CLONEOF("bubblem"), },
-   { NULL, },
-};
 
-static struct ROM_INFO bubble_memories_jp_roms[] =
+static struct ROM_INFO rom_bubblemj[] =
 {
    {   "e21-07.rom", 0x00100000, 0x7789bf7c, 0, 0, 0, },
    {   "e21-02.rom", 0x00200000, 0xb7cb9232, 0, 0, 0, },
@@ -129,7 +115,7 @@ static UINT8 default_eeprom_jp[] = {
   0x30,0x00,0x00,0x03,0x02,0xf7,0xff,0x12,0x22,0x00,0x00,0x00,0x00,0x00,0x00,
   0xeb,0x6c };
 
-void LoadBubbleMemories(int version)
+static void LoadBubbleMemories(int version)
 {
    int ta,tb,tc;
 
@@ -327,26 +313,15 @@ void LoadBubbleMemories(int version)
    setup_sound_68000();
 }
 
-static void LoadBubbleMemoriesw(void) {
+static void load_bubblem(void) {
   LoadBubbleMemories(0);
 }
 
-static void LoadBubbleMemoriesj(void) {
+static void load_bubblemj(void) {
   LoadBubbleMemories(1);
 }
 
-void ClearBubbleMemories(void)
-{
-   save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x200000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-   #endif
-}
-
-void DrawBubbleMemories(void)
+static void DrawBubbleMemories(void)
 {
    int x,y,ta,zz,zzz,zzzz,x16,y16;
    UINT8 *MAP;
@@ -543,7 +518,9 @@ void DrawBubbleMemories(void)
    }
 }
 
-static struct VIDEO_INFO bubble_memories_video =
+
+
+static struct VIDEO_INFO video_bubblem =
 {
    DrawBubbleMemories,
    320,
@@ -551,45 +528,34 @@ static struct VIDEO_INFO bubble_memories_video =
    64,
    VIDEO_ROTATE_NORMAL,
 };
-
-GAME( bubble_memories ,
-   bubble_memories_dirs,
-   bubble_memories_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadBubbleMemoriesw,
-   ClearBubbleMemories,
-   &bubble_memories_video,
-   ExecuteF3SystemFrame_NoInt5,
-   "bubblem",
-   "Bubble Memories",
-   "バブルメモリーズ",
-   COMPANY_ID_TAITO,
-   "E21",
-   1995,
-   f3_sound,
-   GAME_PLATFORM
+static struct DIR_INFO dir_bubblemj[] =
+{
+   { "bubble_memories_jp", },
+   { "bubblemj", },
+   { ROMOF("bubblem"), },
+   { CLONEOF("bubblem"), },
+   { NULL, },
+};
+GAME( bubblemj, "Bubble Memories (Japan)", TAITO, 1995, GAME_PLATFORM,
+	.input = f3_system_inputs,
+	.video = &video_bubblem,
+	.exec = ExecuteF3SystemFrame_NoInt5,
+	.long_name_jpn = "バブルメモリーズ (Japan)",
+	.board = "E21",
+	.sound = f3_sound,
+);
+static struct DIR_INFO dir_bubblem[] =
+{
+   { "bubble_memories", },
+   { "bubblem", },
+   { NULL, },
+};
+GAME( bubblem, "Bubble Memories", TAITO, 1995, GAME_PLATFORM,
+	.input = f3_system_inputs,
+	.video = &video_bubblem,
+	.exec = ExecuteF3SystemFrame_NoInt5,
+	.long_name_jpn = "バブルメモリーズ",
+	.board = "E21",
+	.sound = f3_sound,
 );
 
-GAME( bubble_memories_jp ,
-   bubble_memories_jp_dirs,
-   bubble_memories_jp_roms,
-   f3_system_inputs,
-   NULL,
-   NULL,
-
-   LoadBubbleMemoriesj,
-   ClearBubbleMemories,
-   &bubble_memories_video,
-   ExecuteF3SystemFrame_NoInt5,
-   "bubblemj",
-   "Bubble Memories (Japan)",
-   "バブルメモリーズ (Japan)",
-   COMPANY_ID_TAITO,
-   "E21",
-   1995,
-   f3_sound,
-   GAME_PLATFORM
-);

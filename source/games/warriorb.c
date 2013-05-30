@@ -1,3 +1,4 @@
+#define DRV_DEF_SOUND taito_ym2610b_sound
 /*
 
  ******************************************************************************
@@ -16,7 +17,6 @@
 
 
 #include "gameinc.h"
-#include "warriorb.h"
 #include "tc100scn.h"
 #include "tc110pcr.h"
 #include "tc220ioc.h"
@@ -26,14 +26,8 @@
 
 cache_data bg0,bg1;
 
-static struct DIR_INFO warrior_blade_dirs[] =
-{
-   { "warrior_blade", },
-   { "warriorb", },
-   { NULL, },
-};
 
-static struct ROM_INFO warrior_blade_roms[] =
+static struct ROM_INFO rom_warriorb[] =
 {
    {   "d24-01.11", 0x00100000, 0x326dcca9, 0, 0, 0, },
    {   "d24-02.12", 0x00100000, 0x9f50c271, 0, 0, 0, },
@@ -54,7 +48,7 @@ static struct ROM_INFO warrior_blade_roms[] =
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO warrior_blade_inputs[] =
+static struct INPUT_INFO input_warriorb[] =
 {
    INP0( COIN1, 0x040004, 0x04 ),
    INP0( COIN2, 0x040004, 0x08 ),
@@ -137,7 +131,7 @@ static struct DSW_DATA dsw_data_warrior_blade_1[] =
    { NULL,		      0,	 },
 };
 
-static struct DSW_INFO warrior_blade_dsw[] =
+static struct DSW_INFO dsw_warriorb[] =
 {
    { 0x040000, 0xFF, dsw_data_warrior_blade_0 },
    { 0x040002, 0xFF, dsw_data_warrior_blade_1 },
@@ -152,41 +146,13 @@ static struct ROMSW_DATA romsw_data_warrior_blade_0[] =
    { NULL,		      0    },
 };
 
-static struct ROMSW_INFO warrior_blade_romsw[] =
+static struct ROMSW_INFO romsw_warriorb[] =
 {
    { 0x0FFFFF, 0x01, romsw_data_warrior_blade_0 },
    { 0,        0,    NULL },
 };
 
-static struct VIDEO_INFO warrior_blade_video =
-{
-   DrawWarriorBlade,
-   640,
-   240,
-   32,
-   VIDEO_ROTATE_NORMAL,
-};
 
-GAME( warrior_blade ,
-   warrior_blade_dirs,
-   warrior_blade_roms,
-   warrior_blade_inputs,
-   warrior_blade_dsw,
-   warrior_blade_romsw,
-
-   LoadWarriorBlade,
-   ClearWarriorBlade,
-   &warrior_blade_video,
-   ExecuteWarriorBladeFrame,
-   "warriorb",
-   "Warrior Blade",
-   "‚E‚H‚Ë‚A¸[‚u‚Ó¸[‚h",
-   COMPANY_ID_TAITO,
-   "D24",
-   1991,
-   taito_ym2610b_sound,
-   GAME_BEAT
-);
 
 static UINT8 *RAM_INPUT;
 
@@ -199,7 +165,7 @@ static UINT8 *GFX_BG1_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-void LoadWarriorBlade(void)
+static void load_warriorb(void)
 {
    int ta,tb;
 
@@ -428,7 +394,7 @@ void LoadWarriorBlade(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-void ClearWarriorBlade(void)
+static void ClearWarriorBlade(void)
 {
    RemoveTaitoYM2610();
 
@@ -438,7 +404,7 @@ void ClearWarriorBlade(void)
    #endif
 }
 
-void ExecuteWarriorBladeFrame(void)
+static void execute_warriorb(void)
 {
    //print_ingame(600,"%04x",ReadWord(&RAM[0x4002C]));
 
@@ -451,7 +417,7 @@ void ExecuteWarriorBladeFrame(void)
    execute_z80_audio_frame();
 }
 
-void DrawWarriorBlade(void)
+static void DrawWarriorBlade(void)
 {
    int x,y,ta,tb;
    int zz,zzz,zzzz,x16,y16;
@@ -823,4 +789,25 @@ void DrawWarriorBlade(void)
 
    END_SCROLL_1024x256_2_8();
 }
+
+static struct VIDEO_INFO video_warriorb =
+{
+   DrawWarriorBlade,
+   640,
+   240,
+   32,
+   VIDEO_ROTATE_NORMAL,
+};
+static struct DIR_INFO dir_warriorb[] =
+{
+   { "warrior_blade", },
+   { "warriorb", },
+   { NULL, },
+};
+GME( warriorb, "Warrior Blade", TAITO, 1991, GAME_BEAT,
+	.romsw = romsw_warriorb,
+	.clear = ClearWarriorBlade,
+	.long_name_jpn = "‚E‚H‚Ë‚A¸[‚u‚Ó¸[‚h",
+	.board = "D24",
+);
 

@@ -1069,7 +1069,7 @@ void init_tc0005rot()
 
    pixel_bitmap = create_bitmap_ex(8,512,512);
 
-   clear(pixel_bitmap);
+   clear_bitmap(pixel_bitmap);
    select_drawing_func();
    xmultiply = 5; // TC280GRD
 }
