@@ -32,9 +32,6 @@ static struct ROM_INFO rom_cadashg[] =
   { "c21-25-1.16", 0x20000, 0x24e10611, REGION_CPU1, 0x00001, LOAD_8_16 },
   { "c21-22-1.11", 0x20000, 0xdaf58b2d, REGION_CPU1, 0x40000, LOAD_8_16 },
   { "c21-24-1.15", 0x20000, 0x2359b93e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "c21-02.9", 0x80000, 0x205883b9, REGION_GFX1, 0x00000, LOAD_SWAP_16 },
-  { "c21-01.1", 0x80000, 0x1ff6f39c, REGION_GFX2, 0x00000, LOAD_SWAP_16 },
-  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -163,9 +160,6 @@ static struct ROM_INFO rom_cadashf[] =
                   "c21-19",  0x4d70543b,       "c21-21",  0x0e5b9950),
   LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
                   "c21-18",  0x8a19e59b,       "c21-20",  0xb96acfd9),
-   {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
-   {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -175,9 +169,6 @@ static struct ROM_INFO rom_cadashi[] =
                 "c21-14it",  0xd1d9e613,     "c21-16it",  0x142256ef),
   LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
                 "c21-13it",  0xc9cf6e30,     "c21-17it",  0x641fc9dd),
-   {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
-   {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -187,9 +178,6 @@ static struct ROM_INFO rom_cadashj[] =
              "c21-04.11",  0xcc22ebe5,  "c21-06.15",  0x26e03304),
   LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
              "c21-03.10",  0xc54888ed,  "c21-05.14",  0x834018d2),
-   {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
-   {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
