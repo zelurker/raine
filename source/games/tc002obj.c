@@ -118,15 +118,31 @@ void render_tc0002obj_mapped(void)
    ofs_x     = tc0002obj.bmp_x + tc0002obj.ofs_x;
    ofs_y     = tc0002obj.bmp_y + tc0002obj.ofs_y;
    spr_col   = ( tc0002obj.ctrl << 2) & 0xF0;
+   int flip_screen = tc0002obj.ctrl & 1;
+   int flip;
 
    zz=0x7F8;
    do{
 
-   x=(ofs_x+ReadWord(&RAM_BG[zz+6]))&0x1FF;
+   x=(ReadWord(&RAM_BG[zz+6]))&0x1FF;
+   y=(ReadWord(&RAM_BG[zz+2]))&0x1FF;
+   // Tread coords as signed
+   if (x > 0x140) x -= 0x200;
+   if (y > 0x140) y -= 0x200;
+#if 0
+   if (flip_screen) {
+       x = 320 - x - 16;
+       y = 256 - y - 16;
+       flip = (RAM_BG[1+zz]&0xC0)^0xc0;
+   } else
+#endif
+       flip = RAM_BG[1+zz]&0xC0;
+   x += ofs_x;
+   y += ofs_y;
+
 
    if((x > sx_1) && (x < sx_2)){
 
-   y=(ofs_y+ReadWord(&RAM_BG[zz+2]))&0x1FF;
 
    if((y > sy_1) && (y < sy_2)){
 
@@ -140,7 +156,7 @@ void render_tc0002obj_mapped(void)
          );
 
          if(RAM_MSK[ta]==1){                        // Some pixels; trans
-            switch(RAM_BG[1+zz]&0xC0){
+            switch(flip){
                case 0x00: Draw16x16_Trans_Mapped_Rot(&RAM_GFX[ta<<8],x,y,map);        break;
                case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
                case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
