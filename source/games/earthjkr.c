@@ -21,6 +21,7 @@
 #include "2151intf.h"
 #include "timer.h"
 #include "blit.h" // clear_game_screen
+#include "asuka.h"
 
 /******************************************************************************/
 
@@ -30,11 +31,11 @@ static struct ROM_INFO rom_earthjkr[] =
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                "ej_3b.rom",  0xbdd86fc2,    "ej_3a.rom",  0x9c8050c6),
    {   "ej_30e.rom", 0x00080000, 0x49d1f77f, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-   {     "ej_1.rom", 0x00010000, 0xcb4891db, 0, 0, 0, },
-   {     "ej_2.rom", 0x00010000, 0x42ba2566, 0, 0, 0, },
-   {     "ej_0.rom", 0x00010000, 0xb612086f, 0, 0, 0, },
-   {   "ej_chr.rom", 0x00080000, 0xac675297, 0, 0, 0, },
-   {   "ej_obj.rom", 0x00080000, 0x5f21ac47, 0, 0, 0, },
+  { "ej_chr.rom", 0x80000, 0xac675297, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "ej_obj.rom", 0x80000, 0x5f21ac47, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "ej_1.rom", 0x10000, 0xcb4891db, REGION_GFX2, 0x80000, LOAD_8_16 },
+  { "ej_0.rom", 0x10000, 0xb612086f, REGION_GFX2, 0x80001, LOAD_8_16 },
+  { "ej_2.rom", 0x10000, 0x42ba2566, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -132,12 +133,12 @@ static struct ROM_INFO rom_mofflott[] =
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "c17-09.bin",  0x05ee110f,   "c17-08.bin",  0xd0aacffd),
    {   "c17-03.bin", 0x00080000, 0x27047fc3, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-   {   "c17-06.bin", 0x00010000, 0x5c332125, 0, 0, 0, },
-   {   "c17-07.bin", 0x00010000, 0xcdb7bc2c, 0, 0, 0, },
-   {   "c17-04.bin", 0x00010000, 0xf4250410, 0, 0, 0, },
-   {   "c17-05.bin", 0x00010000, 0x57ac4741, 0, 0, 0, },
-   {   "c17-01.bin", 0x00080000, 0xe9466d42, 0, 0, 0, },
-   {   "c17-02.bin", 0x00080000, 0x8860a8db, 0, 0, 0, },
+  { "c17-01.bin", 0x80000, 0xe9466d42, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "c17-02.bin", 0x80000, 0x8860a8db, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "c17-05.bin", 0x10000, 0x57ac4741, REGION_GFX2, 0x80000, LOAD_8_16 },
+  { "c17-04.bin", 0x10000, 0xf4250410, REGION_GFX2, 0x80001, LOAD_8_16 },
+  { "c17-07.bin", 0x10000, 0xcdb7bc2c, REGION_ROM2, 0, LOAD_NORMAL },
+  { "c17-06.bin", 0x10000, 0x5c332125, REGION_SMP1, 0x00000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -227,6 +228,7 @@ static struct MSM5205buffer_interface msm5205_interface =
    { sizeof(maze_of_flott_adpcm) / sizeof(struct msm5205_adpcm_list) },
    { NULL },
    { 0 },
+   { REGION_SOUND1 },
    MSM5205_MONO,
 };
 
@@ -246,9 +248,9 @@ static struct ROM_INFO rom_galmedes[] =
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
              "gm-prg1.bin",  0x32a70753,  "gm-prg0.bin",  0xfae546a4),
    {   "gm-30.rom", 0x00080000, 0x4da2a407, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-   {   "gm-obj.bin", 0x00080000, 0x7a4a1315, 0, 0, 0, },
-   {   "gm-scn.bin", 0x00080000, 0x3bab0581, 0, 0, 0, },
-   {   "gm-snd.bin", 0x00010000, 0xd6f56c21, 0, 0, 0, },
+  { "gm-scn.bin", 0x80000, 0x3bab0581, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "gm-obj.bin", 0x80000, 0x7a4a1315, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "gm-snd.bin", 0x10000, 0xd6f56c21, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -315,9 +317,9 @@ static struct ROM_INFO rom_eto[] =
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
                 "eto-1.23",  0x44286597,      "eto-0.8",  0x57b79370),
    {     "eto-2.30", 0x00080000, 0x12f46fb5, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-   {      "eto-4.3", 0x00080000, 0xa8768939, 0, 0, 0, },
-   {      "eto-3.6", 0x00080000, 0xdd247397, 0, 0, 0, },
-   {     "eto-5.27", 0x00010000, 0xb3689da0, 0, 0, 0, },
+  { "eto-4.3", 0x80000, 0xa8768939, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "eto-3.6", 0x80000, 0xdd247397, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "eto-5.27", 0x10000, 0xb3689da0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -379,12 +381,6 @@ static UINT8 *RAM_SCROLL;
 static UINT8 *RAM_OBJECT;
 static UINT8 *RAM_INPUT;
 
-static UINT8 *GFX_BG0;
-static UINT8 *GFX_BG0_SOLID;
-
-static UINT8 *GFX_SPR;
-static UINT8 *GFX_SPR_SOLID;
-
 static int romset;
 
 static void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data);
@@ -426,9 +422,9 @@ static void MemoryMap_EarthJoker(void)
 
    AddWriteByte(0x100000, 0x103FFF, NULL, RAM+0x000000);		// 68000 RAM
    AddWriteByte(0xD00000, 0xD007FF, NULL, RAM_OBJECT);			// OBJECT RAM
-   AddWriteByte(0xC06000, 0xC06FFF, tc0100scn_0_gfx_fg0_wb_r270, NULL);	// FG0 GFX RAM
+   AddWriteByte(0xC06000, 0xC06FFF, tc0100scn_0_gfx_fg0_wb, NULL);	// FG0 GFX RAM
    AddWriteByte(0xC00000, 0xC0FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
-   AddWriteByte(0x3A0000, 0x3A0001, NULL, RAM+0x01B010);		// SPRITE CTRL
+   AddWriteBW(0x3A0000, 0x3A0001, NULL, &RAM[0x1b010]);		// SPRITE CTRL
    AddWriteByte(0x400000, 0x40000F, tc0220ioc_wb, NULL);		// INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
    AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
@@ -436,11 +432,10 @@ static void MemoryMap_EarthJoker(void)
 
    AddWriteWord(0x100000, 0x103FFF, NULL, RAM+0x000000);		// 68000 RAM
    AddWriteWord(0xD00000, 0xD007FF, NULL, RAM_OBJECT);			// OBJECT RAM
-   AddWriteWord(0xC06000, 0xC06FFF, tc0100scn_0_gfx_fg0_ww_r270, NULL);	// FG0 GFX RAM
+   AddWriteWord(0xC06000, 0xC06FFF, tc0100scn_0_gfx_fg0_ww, NULL);	// FG0 GFX RAM
    AddWriteWord(0xC00000, 0xC0FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteWord(0x200000, 0x200007, tc0110pcr_ww, NULL);		// COLOUR PORTS
    AddWriteWord(0xC20000, 0xC2000F, NULL, RAM_SCROLL);			// SCROLL RAM
-   AddWriteWord(0x3A0000, 0x3A0001, NULL, RAM+0x01B010);		// SPRITE CTRL
    AddWriteWord(0x400000, 0x40000F, tc0220ioc_ww, NULL);		// INPUT
    AddWriteWord(0x3E0000, 0x3E0003, tc0140syt_write_main_68k, NULL);	// SOUND
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
@@ -507,19 +502,6 @@ static void AddEarthJoker68k(void)
    // ------------------------
 
    tc0002obj.RAM	= RAM_OBJECT;
-   tc0002obj.GFX	= GFX_SPR;
-   tc0002obj.MASK	= GFX_SPR_SOLID;
-   tc0002obj.bmp_x	= 32;
-   tc0002obj.bmp_y	= 32;
-   if (romset==3) {
-     tc0002obj.bmp_w	= 320;
-     tc0002obj.bmp_h	= 240;
-   }
-   else {
-     tc0002obj.bmp_w	= 240;
-     tc0002obj.bmp_h	= 320;
-   }
-   tc0002obj.tile_mask	= 0x1FFF;
    if (romset==3) {
      tc0002obj.ofs_x	= 0;
      tc0002obj.ofs_y	= -8;
@@ -532,65 +514,7 @@ static void AddEarthJoker68k(void)
    // Init tc0100scn emulation
    // ------------------------
 
-   tc0100scn[0].layer[0].RAM	=RAM_VIDEO+0x0000;
-   tc0100scn[0].layer[0].GFX	=GFX_BG0;
-   tc0100scn[0].layer[0].MASK	=GFX_BG0_SOLID;
-   tc0100scn[0].layer[0].SCR	=RAM_SCROLL+0;
-   tc0100scn[0].layer[0].type	=0;
-   tc0100scn[0].layer[0].bmp_x	=32;
-   tc0100scn[0].layer[0].bmp_y	=32;
-   if (romset==3) {
-     tc0100scn[0].layer[0].bmp_w =320;
-     tc0100scn[0].layer[0].bmp_h =240;
-   }
-   else {
-     tc0100scn[0].layer[0].bmp_w =240;
-     tc0100scn[0].layer[0].bmp_h =320;
-   }
-   tc0100scn[0].layer[0].tile_mask=0x3FFF;
-   tc0100scn[0].layer[0].scr_x	=17;
-   tc0100scn[0].layer[0].scr_y	=8;
-
-   tc0100scn[0].layer[1].RAM	=RAM_VIDEO+0x8000;
-   tc0100scn[0].layer[1].GFX	=GFX_BG0;
-   tc0100scn[0].layer[1].MASK	=GFX_BG0_SOLID;
-   tc0100scn[0].layer[1].SCR	=RAM_SCROLL+2;
-   tc0100scn[0].layer[1].type	=0;
-   tc0100scn[0].layer[1].bmp_x	=32;
-   tc0100scn[0].layer[1].bmp_y	=32;
-   if (romset==3) {
-     tc0100scn[0].layer[1].bmp_w =320;
-     tc0100scn[0].layer[1].bmp_h =240;
-   }
-   else {
-     tc0100scn[0].layer[1].bmp_w =240;
-     tc0100scn[0].layer[1].bmp_h =320;
-   }
-   tc0100scn[0].layer[1].tile_mask=0x3FFF;
-   tc0100scn[0].layer[1].scr_x	=17;
-   tc0100scn[0].layer[1].scr_y	=8;
-
-   tc0100scn[0].layer[2].RAM	=RAM_VIDEO+0x4000;
-   tc0100scn[0].layer[2].GFX	=GFX_FG0;
-   tc0100scn[0].layer[2].SCR	=RAM_SCROLL+4;
-   tc0100scn[0].layer[2].type	=2;			// Correct
-   tc0100scn[0].layer[2].bmp_x	=32;
-   tc0100scn[0].layer[2].bmp_y	=32;
-   if (romset==3) {
-     tc0100scn[0].layer[2].bmp_w =320;
-     tc0100scn[0].layer[2].bmp_h =240;
-   }
-   else {
-     tc0100scn[0].layer[2].bmp_w =240;
-     tc0100scn[0].layer[2].bmp_h =320;
-   }
-   tc0100scn[0].layer[2].scr_x	=17;			// Correct
-   tc0100scn[0].layer[2].scr_y	=8;			// Correct
-
-   tc0100scn[0].RAM     = RAM_VIDEO;
-   tc0100scn[0].GFX_FG0 = GFX_FG0;
-
-   init_tc0100scn(0);
+   setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,GFX_FG0,17,8,&RAM[0x1B010]);
 
    ByteSwap(ROM,0x100000);
    ByteSwap(RAM,0x20000);
@@ -608,56 +532,18 @@ static void AddEarthJoker68k(void)
 
 static void load_earthjkr(void)
 {
-   int ta,tb;
-   UINT8 *TMP;
-
    romset=0;
 
    RAMSize=0x38000;
 
-   if(!(TMP=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
-   if(!(GFX=AllocateMem(0x140000+0x100000))) return;
 
-   GFX_SPR	= GFX+0x000000;
-   GFX_BG0	= GFX+0x140000;
-
-   if(!load_rom("ej_chr.rom", TMP, 0x80000)) return;	// 8x8 TILES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_BG0[tb++]=TMP[ta+1]>>4;
-      GFX_BG0[tb++]=TMP[ta+1]&15;
-      GFX_BG0[tb++]=TMP[ta+0]>>4;
-      GFX_BG0[tb++]=TMP[ta+0]&15;
-   }
-   if(!load_rom("ej_obj.rom", TMP, 0x80000)) return;	// 16x16 SPRITES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_SPR[tb++]=TMP[ta+1]>>4;
-      GFX_SPR[tb++]=TMP[ta+1]&15;
-      GFX_SPR[tb++]=TMP[ta+0]>>4;
-      GFX_SPR[tb++]=TMP[ta+0]&15;
-   }
-   if(!load_rom("ej_0.rom", TMP+0x00000, 0x10000)) return;	// 16x16 SPRITES
-   if(!load_rom("ej_1.rom", TMP+0x10000, 0x10000)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0x10000;ta++){
-      GFX_SPR[tb++]=TMP[ta+0x00000]>>4;
-      GFX_SPR[tb++]=TMP[ta+0x00000]&15;
-      GFX_SPR[tb++]=TMP[ta+0x10000]>>4;
-      GFX_SPR[tb++]=TMP[ta+0x10000]&15;
-   }
-
-   FreeMem(TMP);
-
-   Rotate8x8(GFX_BG0,0x4000);
-   Flip8x8_X(GFX_BG0,0x4000);
-   Rotate16x16(GFX_SPR,0x1400);
-   Flip16x16_X(GFX_SPR,0x1400);
+   GFX_FG0 = RAM+0x20000;
 
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x28000;
-   if(!load_rom("ej_2.rom", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    AddTaitoYM2151(0x01AF, 0x0143, 0x10000, NULL, NULL);
 
@@ -675,12 +561,6 @@ static void load_earthjkr(void)
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
    InitPaletteMap(RAM+0x1C000, 0x100, 0x10, 0x8000);
 
-
-   GFX_FG0 = RAM+0x20000;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8  (GFX_BG0, 0x4000);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x1400);
-
    // Speed Hack
    // ----------
 
@@ -697,65 +577,19 @@ static void load_earthjkr(void)
 
 static void load_mofflott(void)
 {
-   int ta,tb;
-   UINT8 *TMP;
 
    romset=1;
 
    RAMSize=0x38000;
 
-   if(!(TMP=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
-   if(!(GFX=AllocateMem(0x140000+0x100000))) return;
-
-   GFX_SPR	= GFX+0x000000;
-   GFX_BG0	= GFX+0x140000;
-
-   if(!load_rom("c17-01.bin", TMP, 0x80000)) return;	// 8x8 TILES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_BG0[tb++]=TMP[ta+1]>>4;
-      GFX_BG0[tb++]=TMP[ta+1]&15;
-      GFX_BG0[tb++]=TMP[ta+0]>>4;
-      GFX_BG0[tb++]=TMP[ta+0]&15;
-   }
-   if(!load_rom("c17-02.bin", TMP, 0x80000)) return;	// 16x16 SPRITES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_SPR[tb++]=TMP[ta+1]>>4;
-      GFX_SPR[tb++]=TMP[ta+1]&15;
-      GFX_SPR[tb++]=TMP[ta+0]>>4;
-      GFX_SPR[tb++]=TMP[ta+0]&15;
-   }
-   if(!load_rom("c17-04.bin", TMP+0x00000, 0x10000)) return;	// 16x16 SPRITES
-   if(!load_rom("c17-05.bin", TMP+0x10000, 0x10000)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0x10000;ta++){
-      GFX_SPR[tb++]=TMP[ta+0x00000]>>4;
-      GFX_SPR[tb++]=TMP[ta+0x00000]&15;
-      GFX_SPR[tb++]=TMP[ta+0x10000]>>4;
-      GFX_SPR[tb++]=TMP[ta+0x10000]&15;
-   }
-
-   FreeMem(TMP);
-
-   Rotate8x8(GFX_BG0,0x4000);
-   Flip8x8_X(GFX_BG0,0x4000);
-   Rotate16x16(GFX_SPR,0x1400);
-   Flip16x16_X(GFX_SPR,0x1400);
 
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x28000;
-   if(!load_rom("c17-07.bin", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
-
-   if(!(PCMROM=AllocateMem(0x10000))) return;
-   if(!load_rom("c17-06.bin", PCMROM, 0x10000)) return;
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    AddTaitoYM2151(0x01C0, 0x01AB, 0x10000, (UINT8 *) Maze_of_Flott_M5205_W, NULL);
-
-   msm5205_interface.rom[0] = PCMROM;
-   msm5205_interface.romsize[0] = 0x10000;
-   msm5205_interface.updatemode = MSM5205_MONO;
 
    /*-----------------------*/
 
@@ -772,9 +606,6 @@ static void load_mofflott(void)
    InitPaletteMap(RAM+0x1C000, 0x100, 0x10, 0x8000);
 
    GFX_FG0 = RAM+0x20000;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8  (GFX_BG0, 0x4000);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x1400);
 
    // Speed Hack
    // ----------
@@ -801,49 +632,16 @@ static void load_mofflott(void)
 
 static void load_galmedes(void)
 {
-   int ta,tb;
-   UINT8 *TMP;
-
    romset=2;
 
    RAMSize=0x38000;
 
-   if(!(TMP=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
-   if(!(GFX=AllocateMem(0x140000+0x100000))) return;
-
-   GFX_SPR	= GFX+0x000000;
-   GFX_BG0	= GFX+0x140000;
-
-   if(!load_rom("gm-scn.bin", TMP, 0x80000)) return;	// 8x8 TILES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_BG0[tb++]=TMP[ta+1]>>4;
-      GFX_BG0[tb++]=TMP[ta+1]&15;
-      GFX_BG0[tb++]=TMP[ta+0]>>4;
-      GFX_BG0[tb++]=TMP[ta+0]&15;
-   }
-   if(!load_rom("gm-obj.bin", TMP, 0x80000)) return;	// 16x16 SPRITES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_SPR[tb++]=TMP[ta+1]>>4;
-      GFX_SPR[tb++]=TMP[ta+1]&15;
-      GFX_SPR[tb++]=TMP[ta+0]>>4;
-      GFX_SPR[tb++]=TMP[ta+0]&15;
-   }
-   memset(GFX_SPR+0x100000,0x00,0x40000);			// <Unused in this game>
-
-   FreeMem(TMP);
-
-   Rotate8x8(GFX_BG0,0x4000);
-   Flip8x8_X(GFX_BG0,0x4000);
-   Rotate16x16(GFX_SPR,0x1400);
-   Flip16x16_X(GFX_SPR,0x1400);
 
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x28000;
-   if(!load_rom("gm-snd.bin", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    AddTaitoYM2151(0x01AF, 0x0143, 0x10000, NULL, NULL);
 
@@ -861,11 +659,7 @@ static void load_galmedes(void)
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
    InitPaletteMap(RAM+0x1C000, 0x100, 0x10, 0x8000);
 
-
    GFX_FG0 = RAM+0x20000;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8  (GFX_BG0, 0x4000);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x1400);
 
    // Speed Hack
    // ----------
@@ -878,44 +672,16 @@ static void load_galmedes(void)
 
 static void load_eto(void)
 {
-   int ta,tb;
-   UINT8 *TMP;
-
    romset=3;
 
    RAMSize=0x38000;
 
-   if(!(TMP=AllocateMem(0x80000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
-   if(!(GFX=AllocateMem(0x140000+0x100000))) return;
-
-   GFX_SPR	= GFX+0x000000;
-   GFX_BG0	= GFX+0x140000;
-
-   if(!load_rom("eto-4.3", TMP, 0x80000)) return;	// 8x8 TILES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_BG0[tb++]=TMP[ta+1]>>4;
-      GFX_BG0[tb++]=TMP[ta+1]&15;
-      GFX_BG0[tb++]=TMP[ta+0]>>4;
-      GFX_BG0[tb++]=TMP[ta+0]&15;
-   }
-   if(!load_rom("eto-3.6", TMP, 0x80000)) return;	// 16x16 SPRITES
-   tb=0;
-   for(ta=0;ta<0x80000;ta+=2){
-      GFX_SPR[tb++]=TMP[ta+1]>>4;
-      GFX_SPR[tb++]=TMP[ta+1]&15;
-      GFX_SPR[tb++]=TMP[ta+0]>>4;
-      GFX_SPR[tb++]=TMP[ta+0]&15;
-   }
-   memset(GFX_SPR+0x100000,0x00,0x40000);			// <Unused in this game>
-
-   FreeMem(TMP);
 
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x28000;
-   if(!load_rom("eto-5.27", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    AddTaitoYM2151(0x01CF, 0x01AB, 0x10000, NULL, NULL);		// 100% not sure
 
@@ -933,11 +699,7 @@ static void load_eto(void)
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
    InitPaletteMap(RAM+0x1C000, 0x100, 0x10, 0x8000);
 
-
    GFX_FG0 = RAM+0x20000;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8  (GFX_BG0, 0x4000);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x1400);
 
    // Speed Hack
    // ----------
@@ -953,98 +715,6 @@ static void execute_mofflott(void)
    cpu_interrupt(CPU_68K_0, 5);
 
    Taito2151_Frame();			// Z80 and YM2151
-}
-
-static void DrawEarthJoker(void)
-{
-   ClearPaletteMap();
-
-   // Init tc0100scn emulation
-   // ------------------------
-
-   tc0100scn_layer_count = 0;
-   tc0100scn[0].ctrl = ReadWord(RAM_SCROLL+12);
-
-   // Init tc0002obj emulation
-   // ------------------------
-
-   tc0002obj.ctrl	= ReadWord(&RAM[0x1B010]);
-
-   // BG0
-   // ---
-
-   render_tc0100scn_layer_mapped_r270(0,0);
-
-   // BG1+OBJECT
-   // ----------
-
-   if((tc0002obj.ctrl & 0x2000)==0){
-      render_tc0100scn_layer_mapped_r270(0,1);
-      if(tc0100scn_layer_count==0){
-      tc0100scn_layer_count = 1;
-      clear_game_screen(0);
-      }
-      render_tc0002obj_mapped_r270();
-   }
-   else{
-      if(tc0100scn_layer_count==0){
-      tc0100scn_layer_count = 1;
-      clear_game_screen(0);
-      }
-      render_tc0002obj_mapped_r270();
-      render_tc0100scn_layer_mapped_r270(0,1);
-   }
-
-   // FG0
-   // ---
-
-   render_tc0100scn_layer_mapped_r270(0,2);
-}
-
-static void DrawEto(void)
-{
-   ClearPaletteMap();
-
-   // Init tc0100scn emulation
-   // ------------------------
-
-   tc0100scn_layer_count = 0;
-   tc0100scn[0].ctrl = ReadWord(RAM_SCROLL+12);
-
-   // Init tc0002obj emulation
-   // ------------------------
-
-   tc0002obj.ctrl	= ReadWord(&RAM[0x1B010]);
-
-   // BG0
-   // ---
-
-   render_tc0100scn_layer_mapped(0,0,0);
-
-   // BG1+OBJECT
-   // ----------
-
-   if((tc0002obj.ctrl & 0x01)==0){
-      render_tc0100scn_layer_mapped(0,1,1);
-      if(tc0100scn_layer_count==0){
-      tc0100scn_layer_count = 1;
-      clear_game_screen(0);
-      }
-      render_tc0002obj_mapped();
-   }
-   else{
-      if(tc0100scn_layer_count==0){
-      tc0100scn_layer_count = 1;
-      clear_game_screen(0);
-      }
-      render_tc0002obj_mapped();
-      render_tc0100scn_layer_mapped(0,1,1);
-   }
-
-   // FG0
-   // ---
-
-   render_tc0100scn_layer_mapped(0,2,1);
 }
 
 /*-------[Maze of Flott MSM5205 Port]-------*/
@@ -1074,19 +744,21 @@ static void Maze_of_Flott_M5205_W(UINT16 offset, UINT8 data)
 }
 static struct VIDEO_INFO video_eto =
 {
-   DrawEto,
+   DrawAsuka,
    320,
    240,
    32,
-   VIDEO_ROTATE_NORMAL,
+   VIDEO_ROTATE_NORMAL|VIDEO_ROTATABLE,
+   asuka_gfx
 };
 static struct VIDEO_INFO video_mofflott =
 {
-   DrawEarthJoker,
-   240,
+   DrawAsuka,
    320,
+   240,
    32,
-   VIDEO_ROTATE_NORMAL,
+   VIDEO_ROTATE_270|VIDEO_ROTATABLE,
+   asuka_gfx
 };
 static struct DIR_INFO dir_eto[] =
 {

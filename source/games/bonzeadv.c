@@ -11,6 +11,7 @@
 #include "tc002obj.h"
 #include "sasound.h"            // sample support routines
 #include "taitosnd.h"
+#include "asuka.h"
 
 // taito_ym2610_sound uses 2 sound regions, we have only 1 here, like mcatadv !
 extern struct SOUND_INFO sound_mcatadv[];
@@ -544,8 +545,6 @@ static void CChipWriteW(UINT32 address, int data)
    CChipWriteB(address+1,data&0xFF);
 }
 
-extern void setup_asuka_layers(UINT8 *RAM_VIDEO, UINT8 *RAM_SCROLL, UINT8 *GFX_FG0); // asuka.c
-
 static void load_bonzeadv()
 {
    RAMSize=0x54000;
@@ -609,16 +608,11 @@ static void load_bonzeadv()
    // ------------------------
 
    tc0002obj.RAM	= RAM_OBJECT;
-   tc0002obj.bmp_x	= 32;
-   tc0002obj.bmp_y	= 32;
-   tc0002obj.bmp_w	= 320;
-   tc0002obj.bmp_h	= 224;
-   tc0002obj.tile_mask	= 0x0FFF;
    tc0002obj.ofs_x	= 0;
    tc0002obj.ofs_y	= -16;
    tc0002obj.MASK = NULL;
 
-   setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,GFX_FG0);
+   setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,GFX_FG0,16,16,&RAM[0x20010]);
    tc0100scn_0_copy_gfx_fg0(ROM+0x011A92, 0x1000);
 
 /*
@@ -626,8 +620,6 @@ static void load_bonzeadv()
  */
 
    ByteSwap(ROM,0x40000);
-   // ByteSwap(ROM,0x11a92);
-   // ByteSwap(ROM+0x12a92,0x40000-0x12a92);
    ByteSwap(RAM,0x40000);
 
    AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);		// 68000 ROM
@@ -684,9 +676,6 @@ static void execute_bonzeadv(void)
 
    Taito2610_Frame();			// Z80 and YM2610
 }
-
-extern struct GFX_LIST asuka_gfx[]; // asuka.c
-extern void DrawAsuka();
 
 static struct VIDEO_INFO video_bonzeadv =
 {

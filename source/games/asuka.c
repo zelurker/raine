@@ -141,49 +141,55 @@ struct GFX_LIST asuka_gfx[] =
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
+static UINT8 *sctrl;
 
-void setup_asuka_layers(UINT8 *rv, UINT8 *rs, UINT8 *gf)
+void setup_asuka_layers(UINT8 *rv, UINT8 *rs, UINT8 *gf, int s_x, int s_y,UINT8 *ctrl)
 {
     RAM_VIDEO = rv;
     RAM_SCROLL = rs;
     GFX_FG0 = gf;
+    VIDEO_INFO *v = current_game->video;
+    sctrl = ctrl;
 
    // Init tc0100scn emulation
    // ------------------------
 
+   tc0002obj.MASK = NULL;
    tc0100scn[0].layer[0].RAM	= RAM_VIDEO+0x0000;
    tc0100scn[0].layer[0].SCR	= RAM_SCROLL+0;
+   tc0100scn[0].layer[1].type	=
    tc0100scn[0].layer[0].type	= 0;
-   tc0100scn[0].layer[0].bmp_x	= 32;
-   tc0100scn[0].layer[0].bmp_y	= 32;
-   tc0100scn[0].layer[0].bmp_w	= 320;
-   tc0100scn[0].layer[0].bmp_h	= 224;
-   tc0100scn[0].layer[0].tile_mask= 0x3FFF;
-   tc0100scn[0].layer[0].scr_x	= 16;
-   tc0100scn[0].layer[0].scr_y	= 16;
+   tc0002obj.bmp_x =
+   tc0100scn[0].layer[1].bmp_x	=
+   tc0100scn[0].layer[0].bmp_x	= v->border_size;
+   tc0100scn[0].layer[1].bmp_y	=
+   tc0002obj.bmp_y =
+   tc0100scn[0].layer[0].bmp_y	= v->border_size;
+   tc0002obj.bmp_w =
+   tc0100scn[0].layer[1].bmp_w	=
+   tc0100scn[0].layer[0].bmp_w	= v->screen_x;
+   tc0002obj.bmp_h =
+   tc0100scn[0].layer[1].bmp_h	=
+   tc0100scn[0].layer[0].bmp_h	= v->screen_y;
+   tc0100scn[0].layer[1].scr_x	=
+   tc0100scn[0].layer[0].scr_x	= s_x;
+   tc0100scn[0].layer[1].scr_y	=
+   tc0100scn[0].layer[0].scr_y	= s_y;
 
    tc0100scn[0].layer[1].RAM	= RAM_VIDEO+0x8000;
    tc0100scn[0].layer[1].SCR	= RAM_SCROLL+2;
-   tc0100scn[0].layer[1].type	= 0;
-   tc0100scn[0].layer[1].bmp_x	= 32;
-   tc0100scn[0].layer[1].bmp_y	= 32;
-   tc0100scn[0].layer[1].bmp_w	= 320;
-   tc0100scn[0].layer[1].bmp_h	= 224;
-   tc0100scn[0].layer[1].tile_mask= 0x3FFF;
-   tc0100scn[0].layer[1].scr_x	= 16;
-   tc0100scn[0].layer[1].scr_y	= 16;
 
    if (GFX_FG0) {
        tc0100scn[0].layer[2].RAM	= RAM_VIDEO+0x4000;
        tc0100scn[0].layer[2].GFX	= GFX_FG0;
        tc0100scn[0].layer[2].SCR	= RAM_SCROLL+4;
        tc0100scn[0].layer[2].type	= 1;
-       tc0100scn[0].layer[2].bmp_x	= 32;
-       tc0100scn[0].layer[2].bmp_y	= 32;
-       tc0100scn[0].layer[2].bmp_w	= 320;
-       tc0100scn[0].layer[2].bmp_h	= 224;
-       tc0100scn[0].layer[2].scr_x	= 16;
-       tc0100scn[0].layer[2].scr_y	= 16;
+       tc0100scn[0].layer[2].bmp_x	= v->border_size;
+       tc0100scn[0].layer[2].bmp_y	= v->border_size;
+       tc0100scn[0].layer[2].bmp_w	= v->screen_x;
+       tc0100scn[0].layer[2].bmp_h	= v->screen_y;
+       tc0100scn[0].layer[2].scr_x	= s_x;
+       tc0100scn[0].layer[2].scr_y	= s_y;
    }
 
    tc0100scn[0].RAM	= RAM_VIDEO;
@@ -232,20 +238,14 @@ static void load_asuka(void)
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    //reset_tc0220ioc();
 
-    setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,NULL);
+    setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,NULL,16,16,&RAM[0x20010]);
 
    // Init tc0002obj emulation
    // ------------------------
 
    tc0002obj.RAM	= RAM_OBJECT;
-   tc0002obj.bmp_x	= 32;
-   tc0002obj.bmp_y	= 32;
-   tc0002obj.bmp_w	= 320;
-   tc0002obj.bmp_h	= 240;
-   tc0002obj.tile_mask	= 0x1FFF;
    tc0002obj.ofs_x	= -16;
    tc0002obj.ofs_y	= 0;
-   tc0002obj.MASK = NULL;
 
 /*
  *  StarScream Stuff follows
@@ -307,6 +307,14 @@ static void execute_asuka(void)
    Taito2151_Frame();			// Z80 and YM2151
 }
 
+static int get_mask(int v) {
+    int m = 1;
+    if (v) v--;
+    while (v >>= 1)
+	m = (m<<1)|1;
+    return m;
+}
+
 void DrawAsuka(void)
 {
    ClearPaletteMap();
@@ -318,6 +326,10 @@ void DrawAsuka(void)
      tc0100scn[0].layer[1].GFX	= gfx[0];
      tc0002obj.MASK	= gfx_solid[1];
      tc0002obj.GFX	= gfx[1];
+     tc0100scn[0].layer[0].tile_mask=
+     tc0100scn[0].layer[1].tile_mask=
+	 get_mask(get_region_size(REGION_GFX1)/64);
+     tc0002obj.tile_mask	= get_mask(get_region_size(REGION_GFX2)/256);
    }
 
    // Init tc0100scn emulation
@@ -329,7 +341,7 @@ void DrawAsuka(void)
    // Init tc0002obj emulation
    // ------------------------
 
-   tc0002obj.ctrl = ReadWord(&RAM[0x20010]);
+   tc0002obj.ctrl = ReadWord(sctrl);
 
    // BG0
    // ---
@@ -358,7 +370,7 @@ void DrawAsuka(void)
 
 
 
-static struct VIDEO_INFO video_asuka =
+struct VIDEO_INFO video_asuka =
 {
    DrawAsuka,
    320,
