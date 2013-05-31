@@ -11,6 +11,7 @@
 #include "tc002obj.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
+#include "asuka.h"
 
 
 static struct ROM_INFO rom_cadash[] =
@@ -21,9 +22,20 @@ static struct ROM_INFO rom_cadash[] =
                   "c21-13",  0x6b9e0ee9,       "c21-17",  0xbf9a578a),
    {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
    {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-   {       "c21-07.57", 0x00008000, 0xf02292bd, 0, 0, 0, },
-   {       "c21-08.38", 0x00010000, 0xdca495a0, 0, 0, 0, },
+  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO rom_cadashg[] =
+{
+  { "c21-23-1.12", 0x20000, 0x30ddbabe, REGION_CPU1, 0x00000, LOAD_8_16 },
+  { "c21-25-1.16", 0x20000, 0x24e10611, REGION_CPU1, 0x00001, LOAD_8_16 },
+  { "c21-22-1.11", 0x20000, 0xdaf58b2d, REGION_CPU1, 0x40000, LOAD_8_16 },
+  { "c21-24-1.15", 0x20000, 0x2359b93e, REGION_CPU1, 0x40001, LOAD_8_16 },
+  { "c21-02.9", 0x80000, 0x205883b9, REGION_GFX1, 0x00000, LOAD_SWAP_16 },
+  { "c21-01.1", 0x80000, 0x1ff6f39c, REGION_GFX2, 0x00000, LOAD_SWAP_16 },
+  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct INPUT_INFO input_cadash[] =
@@ -145,9 +157,6 @@ static struct GFX_LIST cadash_gfx[] =
    { 0,           NULL,               },
 };
 
-
-
-
 static struct ROM_INFO rom_cadashf[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
@@ -156,12 +165,9 @@ static struct ROM_INFO rom_cadashf[] =
                   "c21-18",  0x8a19e59b,       "c21-20",  0xb96acfd9),
    {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
    {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-   {       "c21-07.57", 0x00008000, 0xf02292bd, 0, 0, 0, },
-   {       "c21-08.38", 0x00010000, 0xdca495a0, 0, 0, 0, },
+  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
-
-
 
 static struct ROM_INFO rom_cadashi[] =
 {
@@ -171,12 +177,9 @@ static struct ROM_INFO rom_cadashi[] =
                 "c21-13it",  0xc9cf6e30,     "c21-17it",  0x641fc9dd),
    {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
    {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-   {       "c21-07.57", 0x00008000, 0xf02292bd, 0, 0, 0, },
-   {       "c21-08.38", 0x00010000, 0xdca495a0, 0, 0, 0, },
+  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
-
-
 
 static struct ROM_INFO rom_cadashj[] =
 {
@@ -186,23 +189,9 @@ static struct ROM_INFO rom_cadashj[] =
              "c21-03.10",  0xc54888ed,  "c21-05.14",  0x834018d2),
    {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
    {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
-   {       "c21-07.57", 0x00008000, 0xf02292bd, 0, 0, 0, },
-   {       "c21-08.38", 0x00010000, 0xdca495a0, 0, 0, 0, },
+  { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
-
-static struct ROMSW_DATA romsw_data_cadash_japanese_0[] =
-{
-   { "Taito Japan (notice)",   0x01 },
-   { NULL,                     0    },
-};
-
-static struct ROMSW_INFO romsw_cadashj[] =
-{
-   { 0x07FFFF, 0x01, romsw_data_cadash_japanese_0 },
-   { 0,        0,    NULL },
-};
-
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -218,7 +207,7 @@ static void load_cadash(void)
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x24000;
-   if(!load_rom("c21-08.38", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    AddTaitoYM2151(0x01AF, 0x0143, 0x10000, NULL, NULL);
 
@@ -239,7 +228,7 @@ static void load_cadash(void)
 
    // 68000 Speed Hack
 
-   if(is_current_game("cadashj"))
+   if(is_current_game("cadashj") || is_current_game("cadashg"))
    {
    WriteLong68k(&ROM[0x0132A],0x4EF84F00);
 
@@ -267,59 +256,12 @@ static void load_cadash(void)
 
    // Init tc0100scn emulation
    // ------------------------
-
-   tc0100scn[0].layer[0].RAM	=RAM_VIDEO+0x0000;
-   tc0100scn[0].layer[0].SCR	=RAM_SCROLL+0;
-   tc0100scn[0].layer[0].type	=0;
-   tc0100scn[0].layer[0].bmp_x	=32;
-   tc0100scn[0].layer[0].bmp_y	=32;
-   tc0100scn[0].layer[0].bmp_w	=320;
-   tc0100scn[0].layer[0].bmp_h	=240;
-   //tc0100scn[0].layer[0].mapper	=&Map_12bit_xBGR;
-   tc0100scn[0].layer[0].tile_mask=0x3FFF;
-   tc0100scn[0].layer[0].scr_x	=16;
-   tc0100scn[0].layer[0].scr_y	=8;
-
-   tc0100scn[0].layer[1].RAM	=RAM_VIDEO+0x8000;
-   tc0100scn[0].layer[1].SCR	=RAM_SCROLL+2;
-   tc0100scn[0].layer[1].type	=0;
-   tc0100scn[0].layer[1].bmp_x	=32;
-   tc0100scn[0].layer[1].bmp_y	=32;
-   tc0100scn[0].layer[1].bmp_w	=320;
-   tc0100scn[0].layer[1].bmp_h	=240;
-   //tc0100scn[0].layer[1].mapper	=&Map_12bit_xBGR;
-   tc0100scn[0].layer[1].tile_mask=0x3FFF;
-   tc0100scn[0].layer[1].scr_x	=16;
-   tc0100scn[0].layer[1].scr_y	=8;
-
-   tc0100scn[0].layer[2].RAM	=RAM_VIDEO+0x4000;
-   tc0100scn[0].layer[2].GFX	=GFX_FG0;
-   tc0100scn[0].layer[2].SCR	=RAM_SCROLL+4;
-   tc0100scn[0].layer[2].type	=3;
-   tc0100scn[0].layer[2].bmp_x	=32;
-   tc0100scn[0].layer[2].bmp_y	=32;
-   tc0100scn[0].layer[2].bmp_w	=320;
-   tc0100scn[0].layer[2].bmp_h	=240;
-   //tc0100scn[0].layer[2].mapper	=&Map_12bit_xBGR;
-   tc0100scn[0].layer[2].scr_x	=16;
-   tc0100scn[0].layer[2].scr_y	=8;
-
-   tc0100scn[0].RAM     = RAM_VIDEO;
-   tc0100scn[0].GFX_FG0 = GFX_FG0;
-
-   init_tc0100scn(0);
+   setup_asuka_layers(RAM_VIDEO,RAM_SCROLL,GFX_FG0,16,8,&RAM[0x1b010]);
 
    // Init tc0002obj emulation
    // ------------------------
 
    tc0002obj.RAM	= RAM_OBJECT;
-   tc0002obj.MASK	= NULL;
-   tc0002obj.bmp_x	= 32;
-   tc0002obj.bmp_y	= 32;
-   tc0002obj.bmp_w	= 320;
-   tc0002obj.bmp_h	= 240;
-   //tc0002obj.mapper	= &Map_12bit_xBGR;
-   tc0002obj.tile_mask	= 0x0FFF;
    tc0002obj.ofs_x	= 0;
    tc0002obj.ofs_y	= -8;
 
@@ -388,55 +330,9 @@ static void execute_cadash(void)
    Taito2151_FrameRI();					// Z80 and YM2151
 }
 
-static void draw_cadash(void)
-{
-  if (!tc0002obj.MASK) {
-    tc0100scn[0].layer[0].MASK	=gfx_solid[0];
-    tc0100scn[0].layer[1].MASK	=gfx_solid[0];
-    tc0002obj.MASK	= gfx_solid[1];
-    tc0002obj.GFX	= gfx[1];
-    tc0100scn[0].layer[0].GFX	=gfx[0];
-    tc0100scn[0].layer[1].GFX	=gfx[0];
-  }
-
-  ClearPaletteMap();
-   // Init tc0100scn emulation
-   // ------------------------
-
-   tc0100scn_layer_count = 0;
-   tc0100scn[0].ctrl = ReadWord(RAM_SCROLL+12);
-
-   // Init tc0002obj emulation
-   // ------------------------
-
-   tc0002obj.ctrl = ReadWord(&RAM[0x1B010]);
-
-   // BG0
-   // ---
-
-   render_tc0100scn_layer_mapped(0,0,0);
-
-   // BG1+OBJECT
-   // ----------
-
-   if((tc0002obj.ctrl & 0x2000)==0){
-      render_tc0100scn_layer_mapped(0,1,1);
-      render_tc0002obj_mapped();
-   }
-   else{
-      render_tc0002obj_mapped();
-      render_tc0100scn_layer_mapped(0,1,1);
-   }
-
-   // FG0
-   // ---
-
-   render_tc0100scn_layer_mapped(0,2,1);
-}
-
 static struct VIDEO_INFO video_cadash =
 {
-   draw_cadash,
+   DrawAsuka,
    320,
    240,
    32,
@@ -485,8 +381,8 @@ static struct DIR_INFO dir_cadashj[] =
    { NULL, },
 };
 CLNE( cadashj, cadash, "Cadash (Japan)", TAITO, 1989, GAME_BEAT,
-	.romsw = romsw_cadashj,
 	.long_name_jpn = "カダッシュ",
 	.board = "C21",
 );
+CLNEI( cadashg, cadash, "Cadash (Germany)", TAITO, 1989, GAME_MISC);
 

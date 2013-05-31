@@ -71,6 +71,7 @@
   DRV(cadashf)
   DRV(cadashi)
   DRV(cadashj)
+  DRV(cadashg)
 
 // cave.c
   DRV(esprade)
