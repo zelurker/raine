@@ -27,6 +27,7 @@ struct MSM5205buffer_interface {
   int listsize[MSM5205BF_MAX];
   unsigned char *rom[MSM5205BF_MAX];
   unsigned int  romsize[MSM5205BF_MAX];
+  int region[MSM5205BF_MAX];
   int updatemode;
 };
 

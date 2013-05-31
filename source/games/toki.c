@@ -167,6 +167,7 @@ static struct MSM5205buffer_interface msm5205_interface =
    { sizeof(toki_adpcm) / sizeof(struct msm5205_adpcm_list) },
    { NULL },
    { 0 },
+   { 0 },
    MSM5205_MONO,
 };
 

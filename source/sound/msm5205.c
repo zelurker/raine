@@ -15,6 +15,7 @@
 #include "debug.h"
 #include "ingame.h"
 #include "streams.h"
+#include "loadroms.h"
 
 static struct MSM5205buffer_interface *intf;
 
@@ -233,6 +234,10 @@ int MSM5205buffer_sh_start( struct MSM5205buffer_interface *interface ){
     }
     mp->samp = (M5205_SAMPLE *)malloc( sizeof(M5205_SAMPLE) * intf->listsize[num] );
     decode_table = malloc( (sizeof(unsigned int) * intf->listsize[num] * 3) );
+    if (intf->region[num]) {
+	intf->rom[num] = load_region[intf->region[num]];
+	intf->romsize[num] = get_region_size(intf->region[num]);
+    }
     if( mp->samp != NULL && decode_table != NULL ){
       decode_table_count = 0;
       decode_area  = NULL;
