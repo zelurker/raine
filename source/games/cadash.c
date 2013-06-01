@@ -20,8 +20,8 @@ static struct ROM_INFO rom_cadash[] =
                   "c21-14",  0x5daf13fb,       "c21-16",  0xcbaa2e75),
   LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
                   "c21-13",  0x6b9e0ee9,       "c21-17",  0xbf9a578a),
-   {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_SWAP_16, },
-   {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_SWAP_16, },
+   {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_NORMAL, },
   { "c21-08.38", 0x10000, 0xdca495a0, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -123,35 +123,6 @@ static struct ROMSW_INFO romsw_cadash[] =
 {
    { 0x07FFFF, 0x03, romsw_data_cadash_0 },
    { 0,        0,    NULL },
-};
-
-static gfx_layout cadash_gfx_tiles =
-{
-   8,8,
-   RGN_FRAC(1,1),
-   4,
-   {0,1,2,3},
-   {STEP8(0,4)},
-   {STEP8(0,8*4)},
-   8*8*4
-};
-
-static gfx_layout cadash_gfx_object =
-{
-   16,16,
-   RGN_FRAC(1,1),
-   4,
-   {0,1,2,3},
-   {STEP16(0,4)},
-   {STEP16(0,16*4)},
-   16*16*4
-};
-
-static struct GFX_LIST cadash_gfx[] =
-{
-   { REGION_GFX1, &cadash_gfx_tiles,  },
-   { REGION_GFX2, &cadash_gfx_object, },
-   { 0,           NULL,               },
 };
 
 static struct ROM_INFO rom_cadashf[] =
@@ -325,7 +296,7 @@ static struct VIDEO_INFO video_cadash =
    240,
    32,
    VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
-   cadash_gfx,
+   asuka_gfx,
 };
 GMEI( cadash, "Cadash (World)", TAITO, 1989, GAME_BEAT,
 	.romsw = romsw_cadash,
