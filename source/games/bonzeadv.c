@@ -74,12 +74,12 @@ static struct DSW_DATA dsw_data_bonze_adventure_0[] =
      { MSG_2COIN_1PLAY,	      0x20},
      { MSG_3COIN_1PLAY,	      0x10},
      { MSG_4COIN_1PLAY,	      0x00},
-     { MSG_COIN2, 	      0xC0, 0x04 },
-     { MSG_1COIN_2PLAY,	      0xC0},
-     { MSG_1COIN_3PLAY,	      0x80},
+     { "Price to continue", 	      0xC0, 0x04 },
+     { "Same as start",	      0xC0},
+     { MSG_1COIN_1PLAY,	      0x80},
      { MSG_2COIN_1PLAY,	      0x40},
-     { MSG_2COIN_3PLAY,	      0x00},
-   DSW_DEFAULT_REGION,
+     { MSG_3COIN_1PLAY,	      0x00},
+   DSW_REGION(0), // Japan (old japan from mame !)
      { MSG_COIN1, 	      0x30, 0x04 },
      { MSG_1COIN_1PLAY,	      0x30},
      { MSG_1COIN_2PLAY,	      0x20},
@@ -90,6 +90,17 @@ static struct DSW_DATA dsw_data_bonze_adventure_0[] =
      { MSG_1COIN_2PLAY,	      0x80},
      { MSG_2COIN_1PLAY,	      0x40},
      { MSG_2COIN_3PLAY,	      0x00},
+   DSW_REGION(2), // World
+     { MSG_COIN1, 	      0x30, 0x04 },
+     { MSG_1COIN_1PLAY,	      0x30},
+     { MSG_2COIN_1PLAY,	      0x20},
+     { MSG_3COIN_1PLAY,	      0x10},
+     { MSG_4COIN_1PLAY,	      0x00},
+     { MSG_COIN2, 	      0xC0, 0x04 },
+     { MSG_1COIN_2PLAY,	      0xC0},
+     { MSG_1COIN_3PLAY,	      0x80},
+     { MSG_1COIN_4PLAY,	      0x40},
+     { MSG_1COIN_6PLAY,	      0x00},
    { NULL,		      0,	 },
 };
 
@@ -126,9 +137,9 @@ static struct DSW_INFO dsw_bonzeadv[] =
 
 static struct ROMSW_DATA romsw_data_bonze_adventure_0[] =
 {
-   { "Taito Japan (Japanese)", 0x00 },
+   { "Taito Japan (Jigoku Meguri)", 0x00 },
    { "Taito America",          0x01 },
-   { "Taito Japan (Jigoku Meguri)",            0x02 },
+   { "Taito Japan (World)",            0x02 },
    { NULL,		       0    },
 };
 
