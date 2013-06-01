@@ -81,7 +81,7 @@ void write_gui_config() {
 }
 
 static int set_repeat_rate(int sel) {
-  SDL_EnableKeyRepeat(repeat_delay, 
+  SDL_EnableKeyRepeat(repeat_delay,
 		      repeat_interval);
   return 0;
 }
@@ -155,10 +155,11 @@ static void load_game_proc()
       if (current_game->video->flags & VIDEO_NEEDS_8BPP)
 	bestbpp = 8;
       update_stretch();
-    } 
+    }
 
     progress_count = 0;
     load_items[0].label = "Applying GFX Layouts and stuff..."; // init
+    adjust_gui_resolution();
     loading_dialog = new TDialog("Loading Game",load_items);
     loading_dialog->draw();
 
@@ -269,7 +270,7 @@ static int set_region(int sel) {
 #ifdef NEO
 static int load_neo_game(int sel) {
   char res[1024];
-  char *exts[] = { ".zip", 
+  char *exts[] = { ".zip",
   // I comment out iso, because usually when there is an .iso, there is a cue
   // and it's better to use the cue file (to support the mp3 names of the tosec
   // versions for example !)
@@ -378,7 +379,7 @@ void setup_font()
 }
 
 extern UINT32 videoflags; // sdl/display.c
-int goto_debuger = 0; 
+int goto_debuger = 0;
 
 void StartGUI(void)
 {
@@ -450,7 +451,7 @@ void StartGUI(void)
 	       WantPlay = 0;
        }
 
-       if(current_game && display_cfg.auto_mode_change) { 
+       if(current_game && display_cfg.auto_mode_change) {
 	   switch_res(current_game->video);
 	   if (bestw) {
 	       display_cfg.screen_x = bestw;
@@ -461,14 +462,14 @@ void StartGUI(void)
 
        if(!WantQuit &&
 	       (WantScreen || display_cfg.screen_x != sdl_screen->w ||
-	       display_cfg.screen_y != sdl_screen->h || 
+	       display_cfg.screen_y != sdl_screen->h ||
 	       (display_cfg.bpp != sdl_screen->format->BitsPerPixel && !sdl_overlay) ||
 	       ((videoflags & SDL_DOUBLEBUF) && !(sdl_screen->flags & SDL_DOUBLEBUF)))){
 	   // Are we here for a screenchange?
 	   WantScreen=0;
 	   print_debug("calling ScreenChange from StartGUI, WantScreen=0\n");
 	   ScreenChange();
-       } 
+       }
 
        clear_raine_screen();
 
