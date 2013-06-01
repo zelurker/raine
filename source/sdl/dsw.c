@@ -16,6 +16,7 @@
 #endif
 #include "gui/menu.h"
 #include "dialogs/dlg_dsw.h"
+#include "sdl/dialogs/messagebox.h"
 
 menu_item_t dsw_items[MAX_DSW_SETTINGS];
 
@@ -75,6 +76,7 @@ static void my_make_dipswitch_statlist(int reset) {
   int index,tb,tc, start = 0;
 
   dsw_src = current_game->dsw;
+  int region_executed = 0;
 
   if(dsw_src){
 
@@ -91,8 +93,37 @@ static void my_make_dipswitch_statlist(int reset) {
 	dipswitch[index].value     = dsw_src[index].factory_setting;
 
       tb = 0;
+      int check_region = -1;
+      int region_code = GetLanguageSwitch();
 
       while(dsw_data[tb].name){
+	  if (check_region > -1 && check_region != region_code &&
+		  dsw_data[tb].name[0] != 1) {
+	      // If region is not the one we want, skip until next command
+	      tb++;
+	      continue;
+	  }
+	  if (dsw_data[tb].name[0] == 1) { // Special command
+	      if (!stricmp(&dsw_data[tb].name[1],"region")) {
+		  if (dsw_data[tb].bit_mask == 255 && dsw_data[tb].count == 255 &&
+			  !region_executed)
+		      // Default region
+		      check_region = region_code;
+		  else {
+		      check_region = dsw_data[tb].bit_mask;
+		      region_executed = (check_region == region_code);
+		  }
+	      } else if (!stricmp(&dsw_data[tb].name[1],"endregion"))
+		  check_region = -1;
+	      else {
+		  char buff[80];
+		  snprintf(buff,80,"Unknown dsw command : %s",&dsw_data[tb].name[1]);
+		  MessageBox("dsw",buff,"ok");
+	      }
+	      tb++;
+	      continue;
+	  }
+
 
 	dsw_items[start].label = dsw_data[tb].name;
 	dsw_mask[start]    = dsw_data[tb].bit_mask;
@@ -358,6 +389,7 @@ void SetLanguageSwitch(int number)
       gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.Data[number]);
     }
   }
+  make_dipswitch_statlist();
 }
 
 int GetLanguageSwitch(void)

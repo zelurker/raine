@@ -37,7 +37,6 @@
 
 // bonzeadv.c
   DRV(bonzeadv)
-  DRV(jigkmgri)
 
 // bshark.c
   DRV(bshark)

@@ -68,16 +68,28 @@ static struct DSW_DATA dsw_data_bonze_adventure_0[] =
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
-   { MSG_COIN1, 	      0x30, 0x04 },
-   { MSG_1COIN_1PLAY,	      0x30},
-   { MSG_2COIN_1PLAY,	      0x20},
-   { MSG_3COIN_1PLAY,	      0x10},
-   { MSG_4COIN_1PLAY,	      0x00},
-   { MSG_COIN2, 	      0xC0, 0x04 },
-   { MSG_1COIN_2PLAY,	      0xC0},
-   { MSG_1COIN_3PLAY,	      0x80},
-   { MSG_2COIN_1PLAY,	      0x40},
-   { MSG_2COIN_3PLAY,	      0x00},
+   DSW_REGION(1), // us region
+     { MSG_COIN1, 	      0x30, 0x04 },
+     { MSG_1COIN_1PLAY,	      0x30},
+     { MSG_2COIN_1PLAY,	      0x20},
+     { MSG_3COIN_1PLAY,	      0x10},
+     { MSG_4COIN_1PLAY,	      0x00},
+     { MSG_COIN2, 	      0xC0, 0x04 },
+     { MSG_1COIN_2PLAY,	      0xC0},
+     { MSG_1COIN_3PLAY,	      0x80},
+     { MSG_2COIN_1PLAY,	      0x40},
+     { MSG_2COIN_3PLAY,	      0x00},
+   DSW_DEFAULT_REGION,
+     { MSG_COIN1, 	      0x30, 0x04 },
+     { MSG_1COIN_1PLAY,	      0x30},
+     { MSG_1COIN_2PLAY,	      0x20},
+     { MSG_2COIN_1PLAY,	      0x10},
+     { MSG_2COIN_3PLAY,	      0x00},
+     { MSG_COIN2, 	      0xC0, 0x04 },
+     { MSG_1COIN_1PLAY,	      0xC0},
+     { MSG_1COIN_2PLAY,	      0x80},
+     { MSG_2COIN_1PLAY,	      0x40},
+     { MSG_2COIN_3PLAY,	      0x00},
    { NULL,		      0,	 },
 };
 
@@ -116,7 +128,7 @@ static struct ROMSW_DATA romsw_data_bonze_adventure_0[] =
 {
    { "Taito Japan (Japanese)", 0x00 },
    { "Taito America",          0x01 },
-   { "Taito Japan",            0x02 },
+   { "Taito Japan (Jigoku Meguri)",            0x02 },
    { NULL,		       0    },
 };
 
@@ -125,55 +137,6 @@ static struct ROMSW_INFO romsw_bonzeadv[] =
    { 0x03FFFF, 0x02, romsw_data_bonze_adventure_0 },
    { 0,        0,    NULL },
 };
-
-/*****************
-   JIGOKU MEGURI
- *****************/
-
-static struct ROM_INFO rom_jigkmgri[] =
-{
-  { "b41-09-1.17", 0x10000, 0xaf821fbc, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "b41-11-1.26", 0x10000, 0x823fff00, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "b41-10.16", 0x10000, 0x4ca94d77, REGION_CPU1, 0x20000, LOAD_8_16 },
-  { "b41-12.25", 0x10000, 0x40d9c1fc, REGION_CPU1, 0x20001, LOAD_8_16 },
-  // level data
-  { "b41-01.15", 0x80000, 0x5d072fa4, REGION_CPU1, 0x40000, LOAD_NORMAL },
-   {           NULL,          0,          0, 0, 0, 0, },
-};
-
-static struct DSW_DATA dsw_data_jigoku_meguri_0[] =
-{
-   DSW_CABINET( 0x00, 0x01),
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_TEST_MODE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
-   { MSG_COIN1, 	      0x30, 0x04 },
-   { MSG_1COIN_1PLAY,	      0x30},
-   { MSG_1COIN_2PLAY,	      0x20},
-   { MSG_2COIN_1PLAY,	      0x10},
-   { MSG_2COIN_3PLAY,	      0x00},
-   { MSG_COIN2, 	      0xC0, 0x04 },
-   { MSG_1COIN_1PLAY,	      0xC0},
-   { MSG_1COIN_2PLAY,	      0x80},
-   { MSG_2COIN_1PLAY,	      0x40},
-   { MSG_2COIN_3PLAY,	      0x00},
-   { NULL,		      0,	 },
-};
-
-static struct DSW_INFO dsw_jigkmgri[] =
-{
-   { 0x020000, 0xFF, dsw_data_jigoku_meguri_0 },
-   { 0x020020, 0xBF, dsw_data_bonze_adventure_1 },
-   { 0,        0,    NULL,	},
-};
-
-/*
-static struct ROMSW_INFO jigoku_meguri_romsw[] =
-{
-   { 0x03FFFF, 0x00, romsw_data_bonze_adventure_0 },
-   { 0,        0,    NULL },
-};
-*/
 
 static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_SCROLL;
@@ -686,20 +649,6 @@ static struct VIDEO_INFO video_bonzeadv =
    VIDEO_ROTATE_NORMAL|VIDEO_ROTATABLE,
    asuka_gfx
 };
-static struct DIR_INFO dir_jigkmgri[] =
-{
-   { "jigoku_meguri", },
-   { "jigoku", },
-   { "jigkmgri", },     /* Steph 2001.04.20 - added this name because of MAME driver's name */
-   { ROMOF("bonzeadv"), },
-   { CLONEOF("bonzeadv"), },
-   { NULL, },
-};
-CLNE( jigkmgri, bonzeadv, "Jigoku Meguri", TAITO, 1988, GAME_PLATFORM,
-	.dsw = dsw_jigkmgri,
-	.long_name_jpn = "ínçñÇˇÇΩÇË",
-	.board = "B41",
-);
 static struct DIR_INFO dir_bonzeadv[] =
 {
    { "bonze_adventure", },
@@ -711,4 +660,3 @@ GME( bonzeadv, "Bonze's Adventure", TAITO, 1988, GAME_PLATFORM,
 	.romsw = romsw_bonzeadv,
 	.board = "B41",
 );
-

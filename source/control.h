@@ -441,6 +441,12 @@ extern char MSG_UPRIGHT[];
 extern char MSG_TABLE[];
 extern char MSG_ALT[];
 
+#define DSW_REGION( region ) \
+{ "\x01region", region, 0 }
+
+#define DSW_DEFAULT_REGION \
+{ "\x01region", 255, 255 }
+
 #define DSW_SCREEN( normal, invert)           \
    { MSG_SCREEN,              normal, 0x02 }, \
    { MSG_NORMAL,              normal },       \
