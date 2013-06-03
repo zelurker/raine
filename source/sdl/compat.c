@@ -18,13 +18,13 @@
 #include "sdl/opengl.h"
 #include "loadpng.h"
 
-UINT32 emudx_transp; 
+UINT32 emudx_transp;
 static SDL_PixelFormat overlay_format = {
   NULL,
   16,
   2,
   3, 2, 3, 0,
-  0, 5, 11, 0, 
+  0, 5, 11, 0,
   0x1f, 0x7e0, 0xf800, 0 };
 
 // Just to be bothersome, they chose the other format for 16bpp !!!
@@ -33,7 +33,7 @@ static SDL_PixelFormat hq2x_format = {
   16,
   2,
   3, 2, 3, 0,
-  11, 5, 0, 0, 
+  11, 5, 0, 0,
   0xf800, 0x7e0, 0x1f, 0 };
 
 struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
@@ -52,7 +52,7 @@ struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
       fmt = &hq2x_format;
 
     if (fmt->BitsPerPixel != bpp) {
-      /* SDL interprets each pixel as a 32-bit number, so our masks must depend 
+      /* SDL interprets each pixel as a 32-bit number, so our masks must depend
        * on the endianness (byte order) of the machine
        * (taken from SDL_CreateRGBSurface manual page) */
       switch (bpp) {
@@ -111,7 +111,7 @@ struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
       case 8:
         r = g = b = a = 0;
 	break;
-      } 
+      }
     } else {
       // easiest case, just copy from the video info
       r = fmt->Rmask;
@@ -343,7 +343,7 @@ UINT16 bytes_per_pixel(BITMAP *screen) {
   exit(1);
   return 0;
 }
-  
+
 blit_x2_func *my_blit_x2_y1,*my_blit_x2_y2;
 
 struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, int h) {
@@ -378,9 +378,9 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
     color_format = sdl_game_bitmap->format;
     print_debug("color_format: game bitmap format bpp %d\n",sdl_game_bitmap->format->BitsPerPixel);
   }
-      
+
   if (!sdl_overlay && !(sdl_screen->flags & SDL_OPENGL) &&
-	  (!current_game || 
+	  (!current_game ||
 	   !(current_game->video->flags & VIDEO_NEEDS_8BPP))) {
     /* We start raine in 16bpp for yuv overlays.
      * If a hw yuv overlay can't be created, then adapt to the bpp of the
@@ -392,15 +392,16 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
       if (display_cfg.stretch == 3) // hq2x is in 16bpp source only
 	display_cfg.bpp = 16;
     }
-    if (sdl_screen->flags & SDL_OPENGL) 
-	display_cfg.bpp = 16;
-
+    /*
+       if (sdl_screen->flags & SDL_OPENGL)
+       display_cfg.bpp = 16;
+       */
     print_debug("bpp selected %d\n",display_cfg.bpp);
     if (current_colour_mapper) {
       set_colour_mapper(current_colour_mapper);
       ResetPalette();
-    } 
-  } else if ((sdl_overlay || sdl_screen->flags & SDL_OPENGL) && bpp != 2) {
+    }
+  } else if ((sdl_overlay /* || sdl_screen->flags & SDL_OPENGL */) && bpp != 2) {
     // Overlays are for 16bpp only (the mmx code knows only how to handle
     // 16bpp)
     display_cfg.bpp = 16;

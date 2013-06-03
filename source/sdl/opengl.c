@@ -41,7 +41,7 @@ void ogl_save_png(char *name) {
     glGetIntegerv(GL_VIEWPORT, iViewport);
 
     // How big is the image going to be (targas are tightly packed)
-    // lImageSize = iViewport[2] * 3 * iViewport[3];	
+    // lImageSize = iViewport[2] * 3 * iViewport[3];
 
     s = SDL_CreateRGBSurface(SDL_SWSURFACE,sdl_screen->w,sdl_screen->h,
 	    f->BitsPerPixel,f->Rmask,f->Gmask,f->Bmask,f->Amask);
@@ -69,7 +69,7 @@ void opengl_reshape(int w, int h) {
     gluOrtho2D(0.0f, (GLfloat) w, 0.0, (GLfloat) h);
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();    
+    glLoadIdentity();
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
     if (ogl.render == 1) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -131,11 +131,20 @@ void render_texture(int linear) {
     // glRotatef(90.0,0.0,0.0,1.0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear);
-    glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
-	    GameScreen.xview,GameScreen.yview,0,GL_RGB,
-	    GL_UNSIGNED_SHORT_5_6_5_REV,
-	    sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
-
+    switch (display_cfg.bpp) {
+    case 15:
+    case 16:
+	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
+		GameScreen.xview,GameScreen.yview,0,GL_RGB,
+		GL_UNSIGNED_SHORT_5_6_5_REV,
+		sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
+	break;
+    default:
+	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
+		GameScreen.xview,GameScreen.yview,0,GL_BGRA,
+		GL_UNSIGNED_INT_8_8_8_8_REV,
+		sdl_game_bitmap->pixels+current_game->video->border_size*4*(1+GameScreen.xfull));
+    }
 
     glBegin(GL_TRIANGLE_STRIP);
     glNormal3f(0,0,1.0);
@@ -201,7 +210,7 @@ void opengl_text(char *msg, int x, int y) {
 	    x = sdl_screen->w+x*10;
 	else
 	    x *= 10;
-	if (y < 0) 
+	if (y < 0)
 	    y = sdl_screen->h+y*20;
 	else
 	    y *= 20;
