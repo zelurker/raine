@@ -84,8 +84,6 @@ static struct DSW_INFO dsw_tetrist[] =
    { 0,        0,    NULL,      },
 };
 
-
-
 static UINT8 *RAM_INPUT;
 
 static void load_tetrist(void)
@@ -127,6 +125,8 @@ static void load_tetrist(void)
  *  StarScream Stuff follows
  */
 
+   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
+   InitPaletteMap(RAM+0x11000, 0x100, 0x10, 0x1000);
    ByteSwap(ROM,0x80000);
    ByteSwap(RAM,0x60000);
 
@@ -193,18 +193,29 @@ static void DrawTaitoTetris(void)
    int x,y,tc,yy;
    int zz;
    UINT8 *BIT;
+   UINT8 *map;
 
-   for(tc=0;tc<256;tc++){
-      yy=ReadWord(&RAM[0x11800+tc+tc]);
+
+   if (display_cfg.bpp == 8) {
+       for(tc=0;tc<256;tc++){
+	   yy=ReadWord(&RAM[0x11800+tc+tc]);
 #ifdef SDL
-      pal[tc].r=(yy&0xF000)>>8;
-      pal[tc].g=(yy&0x0F00)>>4;
-      pal[tc].b=(yy&0x00F0)>>0;
+	   pal[tc].r=(yy&0xF000)>>8;
+	   pal[tc].g=(yy&0x0F00)>>4;
+	   pal[tc].b=(yy&0x00F0)>>0;
 #else
-      pal[tc].r=(yy&0xF000)>>10;
-      pal[tc].g=(yy&0x0F00)>>6;
-      pal[tc].b=(yy&0x00F0)>>2;
+	   pal[tc].r=(yy&0xF000)>>10;
+	   pal[tc].g=(yy&0x0F00)>>6;
+	   pal[tc].b=(yy&0x00F0)>>2;
 #endif
+       }
+   } else {
+       ClearPaletteMap();
+       for (tc=0x4f; tc>=0x40; tc--) {
+	   MAP_PAL(tc,
+		   16,
+		   map);
+       }
    }
 
    if((RAM[0x05810F]&0x40)!=0){
@@ -215,10 +226,24 @@ static void DrawTaitoTetris(void)
    }
 
    for(y=0;y<224;y++){
-   BIT=GameViewBitmap->line[y];
-   for(x=0;x<320;x+=2){
-      WriteWord68k(&BIT[x],ReadWord(&RAM[zz]));
-      zz+=2;
+   switch(display_cfg.bpp) {
+   case 8:
+       BIT=GameViewBitmap->line[y];
+       for(x=0;x<320;x+=2){
+	   WriteWord68k(&BIT[x],ReadWord(&RAM[zz]));
+	   zz+=2;
+       }
+       break;
+   case 15:
+   case 16:
+       BIT=GameViewBitmap->line[y];
+       for(x=0;x<320;x++)
+	   WriteWord(&BIT[x*2],ReadWord(&map[RAM[zz++ ^ 1]*2]));
+       break;
+   case 32:
+       BIT=GameViewBitmap->line[y];
+       for(x=0;x<320;x++)
+	   WriteLong(&BIT[x*4],ReadLong(&map[RAM[zz++ ^ 1]*4]));
    }
    zz+=(512-320);
    }
@@ -229,7 +254,7 @@ static struct VIDEO_INFO video_tetrist =
    320,
    224,
    32,
-   VIDEO_ROTATE_NORMAL|VIDEO_NEEDS_8BPP
+   VIDEO_ROTATE_NORMAL
 };
 static struct DIR_INFO dir_tetrist[] =
 {
