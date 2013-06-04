@@ -18,7 +18,7 @@ static struct ROM_INFO rom_tetrist[] =
               "c12-03.bin",  0x38f1ed41,   "c12-02.bin",  0xed9530bc),
   LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
               "c12-05.bin",  0x128e9927,   "c12-04.bin",  0x5da7a319),
-   {   "c12-06.bin", 0x00010000, 0xf2814b38, 0, 0, 0, },
+  { "c12-06.bin", 0x10000, 0xf2814b38, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -95,7 +95,7 @@ static void load_tetrist(void)
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x60000;
-   if(!load_rom("c12-06.bin", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   memcpy(Z80ROM,load_region[REGION_CPU2],0x10000);
 
    if(!(PCMROM=AllocateMem(0x100000))) return;
    memset(PCMROM,0x80,0x100000);
