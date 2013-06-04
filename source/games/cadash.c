@@ -12,6 +12,7 @@
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "asuka.h"
+#include "def_dsw.h"
 
 
 static struct ROM_INFO rom_cadash[] =
@@ -61,21 +62,32 @@ static struct INPUT_INFO input_cadash[] =
    END_INPUT
 };
 
+/* Stephh notes :
+  - Region stored at 0x07fffe.w
+  - Sets :
+      * 'cadash'   : region = 0x0003
+      * 'cadashj'  : region = 0x0001
+      * 'cadashu'  : region = 0x0002
+      * 'cadashfr' : region = 0x0003
+      * 'cadashit' : region = 0x0003
+  - These 5 games are 100% the same, only region differs !
+    However each version requires its specific texts
+  - Coinage relies on the region (code at 0x0013d6) :
+      * 0x0001 (Japan) uses TAITO_COINAGE_JAPAN_OLD_LOC()
+      * 0x0002 (US) uses TAITO_COINAGE_US_LOC()
+      * 0x0003 (World) uses TAITO_COINAGE_WORLD_LOC()
+  - Notice screen only if region = 0x0001 or region = 0x0002
+  - FBI logo only if region = 0x0002
+*/
 static struct DSW_DATA dsw_data_cadash_0[] =
 {
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_TEST_MODE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
-   { MSG_COINAGE,               0x30, 0x04 },
-   { MSG_1COIN_1PLAY,         0x30},
-   { MSG_2COIN_1PLAY,         0x20},
-   { MSG_3COIN_1PLAY,         0x10},
-   { MSG_4COIN_1PLAY,         0x00},
-   { "Continue Cost",         0xC0, 0x04 },
-   { "No Extra",              0xC0},
-   { "Plus 1 Coin",           0x80},
-   { "Plus 2 Coins",          0x40},
-   { "Plus 3 Coins",          0x00},
+    DSW_TAITO_SCREEN_TEST_DEMO,
+    DSW_REGION(1),
+      DSW_TAITO_COINAGE_OLD_JAPAN,
+    DSW_REGION(2),
+      DSW_TAITO_COINAGE_US,
+    DSW_REGION(3),
+      DSW_TAITO_COINAGE_WORLD,
    { NULL,                    0,   },
 };
 
@@ -114,8 +126,9 @@ static struct DSW_INFO dsw_cadash[] =
 
 static struct ROMSW_DATA romsw_data_cadash_0[] =
 {
-   { "Taito America",          0x02 },
-   { "Taito Japan",            0x03 },
+   { "Taito Japan (cadashj)",          0x01 },
+   { "Taito America (cadashu)",          0x02 },
+   { "Taito Japan (World)",            0x03 },
    { NULL,                     0    },
 };
 

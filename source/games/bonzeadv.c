@@ -12,6 +12,7 @@
 #include "sasound.h"            // sample support routines
 #include "taitosnd.h"
 #include "asuka.h"
+#include "def_dsw.h"
 
 // taito_ym2610_sound uses 2 sound regions, we have only 1 here, like mcatadv !
 extern struct SOUND_INFO sound_mcatadv[];
@@ -19,6 +20,37 @@ extern struct SOUND_INFO sound_mcatadv[];
 /*******************
    BONZE ADVENTURE
  *******************/
+/* Stephh's notes (based on the game M68000 code and some tests) :
+
+1) 'bonzeadv', 'jigkmgri' and 'bonzeadvu'
+
+  - Region stored at 0x03fffe.w
+  - Sets :
+      * 'bonzeadv' : region = 0x0002
+      * 'jigkmgri' : region = 0x0000
+      * 'bonzeadvu': region = 0x0001
+  - These 3 games are 100% the same, only region differs !
+  - Coinage relies on the region (code at 0x02d344) :
+      * 0x0000 (Japan) and 0x0001 (US) use TAITO_COINAGE_JAPAN_OLD_LOC()
+      * 0x0002 (World) uses TAITO_COINAGE_WORLD_LOC()
+  - Notice screen only if region = 0x0000
+  - Texts and game name rely on the region :
+      * 0x0000 : most texts in Japanese - game name is "Jigoku Meguri"
+      * other : all texts in English - game name is "Bonze Adventure"
+  - Bonus lives aren't awarded correctly due to bogus code at 0x00961e :
+
+      00961E: 302D 0B7E                  move.w  ($b7e,A5), D0
+      009622: 0240 0018                  andi.w  #$18, D0
+      009626: E648                       lsr.w   #3, D0
+
+    Here is what the correct code should be :
+
+      00961E: 302D 0B7E                  move.w  ($b7e,A5), D0
+      009622: 0240 0030                  andi.w  #$30, D0
+      009626: E848                       lsr.w   #4, D0
+
+  - DSWB bit 7 was previously used to allow map viewing (C-Chip test ?),
+    but it is now unused due to "bra" instruction at 0x007572 */
 
 static struct ROM_INFO rom_bonzeadv[] =
 {
@@ -64,44 +96,12 @@ static struct INPUT_INFO input_bonzeadv[] =
 
 static struct DSW_DATA dsw_data_bonze_adventure_0[] =
 {
-   DSW_CABINET( 0x00, 0x01),
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_TEST_MODE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
-   DSW_REGION(1), // us region
-     { MSG_COIN1, 	      0x30, 0x04 },
-     { MSG_1COIN_1PLAY,	      0x30},
-     { MSG_2COIN_1PLAY,	      0x20},
-     { MSG_3COIN_1PLAY,	      0x10},
-     { MSG_4COIN_1PLAY,	      0x00},
-     { "Price to continue", 	      0xC0, 0x04 },
-     { "Same as start",	      0xC0},
-     { MSG_1COIN_1PLAY,	      0x80},
-     { MSG_2COIN_1PLAY,	      0x40},
-     { MSG_3COIN_1PLAY,	      0x00},
-   DSW_REGION(0), // Japan (old japan from mame !)
-     { MSG_COIN1, 	      0x30, 0x04 },
-     { MSG_1COIN_1PLAY,	      0x30},
-     { MSG_1COIN_2PLAY,	      0x20},
-     { MSG_2COIN_1PLAY,	      0x10},
-     { MSG_2COIN_3PLAY,	      0x00},
-     { MSG_COIN2, 	      0xC0, 0x04 },
-     { MSG_1COIN_1PLAY,	      0xC0},
-     { MSG_1COIN_2PLAY,	      0x80},
-     { MSG_2COIN_1PLAY,	      0x40},
-     { MSG_2COIN_3PLAY,	      0x00},
-   DSW_REGION(2), // World
-     { MSG_COIN1, 	      0x30, 0x04 },
-     { MSG_1COIN_1PLAY,	      0x30},
-     { MSG_2COIN_1PLAY,	      0x20},
-     { MSG_3COIN_1PLAY,	      0x10},
-     { MSG_4COIN_1PLAY,	      0x00},
-     { MSG_COIN2, 	      0xC0, 0x04 },
-     { MSG_1COIN_2PLAY,	      0xC0},
-     { MSG_1COIN_3PLAY,	      0x80},
-     { MSG_1COIN_4PLAY,	      0x40},
-     { MSG_1COIN_6PLAY,	      0x00},
-   { NULL,		      0,	 },
+    DSW_TAITO_SCREEN_TEST_DEMO,
+    DSW_REGION(2), // World region
+      DSW_TAITO_COINAGE_WORLD,
+    DSW_DEFAULT_REGION,                    \
+      DSW_TAITO_COINAGE_OLD_JAPAN,
+    { NULL,		      0,	 },
 };
 
 static struct DSW_DATA dsw_data_bonze_adventure_1[] =

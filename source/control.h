@@ -447,6 +447,9 @@ extern char MSG_ALT[];
 #define DSW_DEFAULT_REGION \
 { "\x01region", 255, 255 }
 
+#define DSW_TEST_DSW(dsw,mask,value) \
+{ "\x01""dsw:"#dsw, mask, value }
+
 #define DSW_SCREEN( normal, invert)           \
    { MSG_SCREEN,              normal, 0x02 }, \
    { MSG_NORMAL,              normal },       \

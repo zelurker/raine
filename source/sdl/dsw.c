@@ -24,6 +24,7 @@ s_dsw dipswitch[MAX_DIPSWITCHES];
 struct ROMSW LanguageSw;	// ROMSwitch for Language Selection (Taito roms)
 
 int dsw_mask[MAX_DSW_SETTINGS], dsw_bitset[MAX_DSW_SETTINGS];
+static int dsw_check_dsw,called_from_statlist;
 
 void write_dsw(int index)
 {
@@ -44,6 +45,9 @@ void write_dsw(int index)
   else
 
     RAM[address] = (RAM[address] & (~mask)) |data;
+  if (dsw_check_dsw && !called_from_statlist)
+      make_dipswitch_statlist();
+
 }
 
 void make_dipswitch_bytes(void)
@@ -74,11 +78,13 @@ static void my_make_dipswitch_statlist(int reset) {
   DSW_DATA *dsw_data;
   const DSW_INFO *dsw_src;
   int index,tb,tc, start = 0;
+  dsw_check_dsw = 0;
 
   dsw_src = current_game->dsw;
   int region_executed = 0;
 
   if(dsw_src){
+      called_from_statlist = 1;
 
     index=0;
 
@@ -93,7 +99,7 @@ static void my_make_dipswitch_statlist(int reset) {
 	dipswitch[index].value     = dsw_src[index].factory_setting;
 
       tb = 0;
-      int check_region = -1;
+      int check_region = -1,check_dsw = -1, check_mask, check_value;;
       int region_code = GetLanguageSwitch();
 
       while(dsw_data[tb].name){
@@ -103,6 +109,17 @@ static void my_make_dipswitch_statlist(int reset) {
 	      tb++;
 	      continue;
 	  }
+	  if (check_dsw > -1 && dsw_data[tb].name[0] != 1) {
+	      dsw_check_dsw = 1;
+	      if ((check_dsw < 0x100 &&
+		  (input_buffer[check_dsw] & check_mask) != check_value) ||
+		  (check_dsw >= 0x100 &&
+		   (RAM[check_dsw] & check_mask) != check_value)) {
+		  tb++;
+		  continue;
+	      }
+	  }
+
 	  if (dsw_data[tb].name[0] == 1) { // Special command
 	      if (!stricmp(&dsw_data[tb].name[1],"region")) {
 		  if (dsw_data[tb].bit_mask == 255 && dsw_data[tb].count == 255 &&
@@ -115,7 +132,12 @@ static void my_make_dipswitch_statlist(int reset) {
 		  }
 	      } else if (!stricmp(&dsw_data[tb].name[1],"endregion"))
 		  check_region = -1;
-	      else {
+	      else if (!strncmp(&dsw_data[tb].name[1],"dsw:",4)) {
+		  check_dsw = atoi(&dsw_data[tb].name[5]);
+		  check_dsw = dsw_src[check_dsw].offset;
+		  check_mask = dsw_data[tb].bit_mask;
+		  check_value = dsw_data[tb].count;
+	      } else {
 		  char buff[80];
 		  snprintf(buff,80,"Unknown dsw command : %s",&dsw_data[tb].name[1]);
 		  MessageBox("dsw",buff,"ok");
@@ -145,6 +167,7 @@ static void my_make_dipswitch_statlist(int reset) {
 
     }
 
+      called_from_statlist = 0;
   }
   dsw_items[start].label = NULL;
 }

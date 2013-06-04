@@ -22,6 +22,7 @@
 #include "timer.h"
 #include "blit.h" // clear_game_screen
 #include "asuka.h"
+#include "def_dsw.h"
 
 /******************************************************************************/
 
@@ -65,27 +66,10 @@ static struct INPUT_INFO input_mofflott[] =
    END_INPUT
 };
 
-#define COINAGE_EARTHJOKER \
-   { MSG_COIN1,               0x30, 0x04 },\
-   { MSG_2COIN_1PLAY,         0x10, 0x00 },\
-   { MSG_1COIN_1PLAY,         0x30, 0x00 },\
-   { MSG_2COIN_3PLAY,         0x00, 0x00 },\
-   { MSG_1COIN_2PLAY,         0x20, 0x00 },\
-   { MSG_COIN2,               0xC0, 0x04 },\
-   { MSG_2COIN_1PLAY,         0x40, 0x00 },\
-   { MSG_1COIN_1PLAY,         0xC0, 0x00 },\
-   { MSG_2COIN_3PLAY,         0x00, 0x00 },\
-   { MSG_1COIN_2PLAY,         0x80, 0x00 },
-
 static struct DSW_DATA dsw_data_earth_joker_0[] =
 {
-   { MSG_UNKNOWN,             0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_SERVICE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
-   COINAGE_EARTHJOKER
+    DSW_TAITO_SCREEN_TEST_DEMO,
+    DSW_TAITO_COINAGE_OLD_JAPAN,
    { NULL,                    0,   },
 };
 
@@ -144,11 +128,11 @@ static struct ROM_INFO rom_mofflott[] =
 
 static struct DSW_DATA dsw_data_maze_of_flott_0[] =
 {
-   DSW_CABINET( 0x01, 0x00),
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_SERVICE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
-   COINAGE_EARTHJOKER
+    DSW_TAITO_CAB_SCREEN_TEST_DEMO,
+    DSW_REGION(3),
+      DSW_TAITO_COINAGE_WORLD,
+    DSW_DEFAULT_REGION,
+      DSW_TAITO_COINAGE_OLD_JAPAN,
    { NULL,                    0,   },
 };
 
@@ -187,8 +171,9 @@ static struct DSW_INFO dsw_mofflott[] =
 
 static struct ROMSW_DATA romsw_data_maze_of_flott_0[] =
 {
-   { "Taito Japan",           0x01 },
+   { "Taito Japan (notice)",           0x01 },
    { "Taito Corporation",     0x02 },
+   { "World", 3 },
    { NULL,                    0    },
 };
 
@@ -256,22 +241,13 @@ static struct ROM_INFO rom_galmedes[] =
 
 static struct DSW_DATA dsw_data_galmedes_0[] =
 {
-   { MSG_UNKNOWN,             0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
    DSW_SCREEN( 0x02, 0x00),
    DSW_SERVICE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x00, 0x08),
-   { MSG_COIN1,               0x30, 0x04 },
-   { "4C/1C (W), 2C/3C (J)"},
-   { "3C/1C (W), 2C/1C (J)",  0x10, 0x00 },
-   { "2C/1C (W), 1C/2C (J)",  0x20, 0x00 },
-   { MSG_1COIN_1PLAY,         0x30},
-   { MSG_COIN2,               0xC0, 0x04 },
-   { "1C/2C (W), 1C/1C (J)",  0xC0, 0x00 },
-   { "1C/3C (W), 1C/2C (J)",  0x80, 0x00 },
-   { "1C/4C (W), 2C/1C (J)",  0x40, 0x00 },
-   { "1C/6C (W), 2C/3C (J)"},
+   DSW_TEST_DSW(1,0x80,0x80),
+   DSW_TAITO_COINAGE_OLD_JAPAN,
+   DSW_TEST_DSW(1,0x80,0x00),
+   DSW_TAITO_COINAGE_WORLD,
    { NULL,                    0,   },
 };
 
@@ -323,20 +299,6 @@ static struct ROM_INFO rom_eto[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_DATA dsw_data_eto_0[] =
-{
-   { MSG_UNKNOWN,             0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_SERVICE( 0x00, 0x04),
-   { MSG_UNKNOWN,             0x08, 0x02 },
-   { MSG_OFF,                 0x08},
-   { MSG_ON,                  0x00},
-   COINAGE_EARTHJOKER
-   { NULL,                    0,   },
-};
-
 static struct DSW_DATA dsw_data_eto_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
@@ -367,7 +329,7 @@ static struct DSW_DATA dsw_data_eto_1[] =
 
 static struct DSW_INFO dsw_eto[] =
 {
-   { 0x01A000, 0xFF, dsw_data_eto_0 },
+   { 0x01A000, 0xFF, dsw_data_earth_joker_0},
    { 0x01A002, 0xFF, dsw_data_eto_1 },
    { 0,        0,    NULL,      },
 };

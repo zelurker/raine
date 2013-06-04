@@ -34,6 +34,7 @@ void Tdlg_dsw::validate_dsw() {
   dipswitch[index].value = (dipswitch[index].value & (~dsw_mask[sel])) |
     dsw_bitset[sel];
   write_dsw(index);
+  draw(); // In case the dsw tests itself (see galmedes)
 }
 
 int do_dlg_dsw(int sel) {

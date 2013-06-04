@@ -11,7 +11,7 @@
 #include "tc002obj.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
-
+#include "def_dsw.h"
 
 static struct ROM_INFO rom_asuka[] =
 {
@@ -56,22 +56,8 @@ static struct INPUT_INFO input_asuka[] =
 
 static struct DSW_DATA dsw_data_asuka_and_asuka_0[] =
 {
-   { MSG_DSWA_BIT1,           0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
-   DSW_SCREEN( 0x02, 0x00),
-   DSW_TEST_MODE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
-   { MSG_COIN1,               0x30, 0x04 },
-   { MSG_1COIN_1PLAY,         0x30},
-   { MSG_1COIN_2PLAY,         0x20},
-   { MSG_2COIN_1PLAY,         0x10},
-   { MSG_2COIN_3PLAY,         0x00},
-   { MSG_COIN2,               0xC0, 0x04 },
-   { MSG_1COIN_1PLAY,         0xC0},
-   { MSG_1COIN_2PLAY,         0x80},
-   { MSG_2COIN_1PLAY,         0x40},
-   { MSG_2COIN_3PLAY,         0x00},
+    DSW_TAITO_SCREEN_TEST_DEMO,
+    DSW_TAITO_COINAGE_OLD_JAPAN,
    { NULL,                    0,   },
 };
 

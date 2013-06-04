@@ -21,6 +21,7 @@
 #include "2203intf.h"
 #include "adpcm.h"
 #include "blit.h" // clear_game_screen
+#include "def_dsw.h"
 
 #define ROM_COUNT       23
 static void (*ExecuteSoundFrame)();	// Pointer to ExecuteSoundFrame rountine (sound cpu work for 1 frame), used for pausegame + playsound
