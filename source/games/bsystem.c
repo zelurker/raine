@@ -184,6 +184,14 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
+static int layer_id_data[4];
+static void init_b() {
+   layer_id_data[0] = add_layer_info("BG0");
+   layer_id_data[1] = add_layer_info("BG1");
+   layer_id_data[2] = add_layer_info("fb");
+   layer_id_data[3] = add_layer_info("BG2");
+}
+
 static void load_qzshowby(void)
 {
    int ta,tb,tc;
@@ -700,10 +708,11 @@ static void execute_spacedxj(void)
    vcu_debug_info();
 #endif
 
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60)); // M68000 12MHz (60fps)
+   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60)-5000); // M68000 12MHz (60fps)
 
-   cpu_interrupt(CPU_68K_0, 5);
    cpu_interrupt(CPU_68K_0, 3);
+   cpu_execute_cycles(CPU_68K_0, 5000); // M68000 12MHz (60fps)
+   cpu_interrupt(CPU_68K_0, 5);
 
    Taito2610_Frame();			// Z80 and YM2610
 }
@@ -879,6 +888,7 @@ static void load_spacedxj(void)
 
    // Speed Hacking
 
+#if 1
    WriteLong68k(&ROM[0x08F2],0x4E714E71);	// nop; nop
    WriteLong68k(&ROM[0x08F6],0x4E714E71);	// nop; nop
    WriteLong68k(&ROM[0x08FA],0x4E714E71);	// nop; nop
@@ -886,6 +896,7 @@ static void load_spacedxj(void)
    WriteLong68k(&ROM[0x05DA],0x13FC0000);	// move.b #$00,$AA0000
    WriteLong68k(&ROM[0x05DE],0x00AA0000);	// (SPEED HACK)
    WriteLong68k(&ROM[0x05E2],0x4E714E71);	// nop; nop
+#endif
 
    // Init tc0180vcu emulation
    // ------------------------
@@ -905,6 +916,7 @@ static void load_spacedxj(void)
    tc0180vcu.scr_y	= 16;
 
    vcu_make_col_bankmap(0x40,0x00,0x40,0x80,0xC0);
+   init_b();
 
 /*
  *  StarScream Stuff follows
@@ -918,7 +930,7 @@ static void load_spacedxj(void)
 
    AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000); 		// 68000 ROM
    AddReadByte(0x900000, 0x90FFFF, NULL, RAM+0x000000); 		// 68000 RAM
-   AddReadByte(0x440000, 0x47FFFF, NULL, RAM+0x010000); 		// SCREEN RAM
+   AddRWBW(0x440000, 0x47FFFF, NULL, RAM+0x10000); 		// SCREEN RAM
    AddReadByte(0x400000, 0x41FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddReadByte(0x800000, 0x801FFF, NULL, RAM_COLOUR);			// COLOR RAM
    AddReadByte(0x500000, 0x50003F, pb_input_rb, NULL);			// input
@@ -928,7 +940,6 @@ static void load_spacedxj(void)
 
    AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000); 		// 68000 ROM
    AddReadWord(0x900000, 0x90FFFF, NULL, RAM+0x000000); 		// 68000 RAM
-   AddReadWord(0x440000, 0x47FFFF, NULL, RAM+0x010000); 		// SCREEN RAM
    AddReadWord(0x400000, 0x41FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddReadWord(0x800000, 0x801FFF, NULL, RAM_COLOUR);			// COLOR RAM
    AddReadWord(0x500000, 0x50003F, pb_input_rw, NULL);			// input
@@ -936,7 +947,6 @@ static void load_spacedxj(void)
    AddReadWord(-1, -1,NULL, NULL);
 
    AddWriteByte(0x900000, 0x90FFFF, NULL, RAM+0x000000);		// 68000 RAM
-   AddWriteByte(0x440000, 0x47FFFF, NULL, RAM+0x010000);		// SCREEN RAM
    AddWriteByte(0x400000, 0x41FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteByte(0x800000, 0x801FFF, NULL, RAM_COLOUR);			// COLOR RAM
    AddWriteByte(0x700000, 0x700003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
@@ -946,7 +956,6 @@ static void load_spacedxj(void)
    AddWriteByte(-1, -1, NULL, NULL);
 
    AddWriteWord(0x900000, 0x90FFFF, NULL, RAM+0x000000);		// 68000 RAM
-   AddWriteWord(0x440000, 0x47FFFF, NULL, RAM+0x010000);		// SCREEN RAM
    AddWriteWord(0x400000, 0x41FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteWord(0x800000, 0x801FFF, NULL, RAM_COLOUR);			// COLOR RAM
    AddWriteWord(0x500000, 0x50003F, pb_input_ww, NULL); 		// input
@@ -956,14 +965,133 @@ static void load_spacedxj(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
+void draw_taitob_fb(int zz, int bank, int control, int priority, int offs_y,
+	int opaque) {
+    int x,y,tc;
+    UINT8 *BIT;
+    UINT8 *map;
+    for (tc=bank+0x1f; tc>=bank; tc--) {
+	MAP_PAL(tc,
+		16,
+		map);
+    }
+
+/*    if (!(control & 0x40)) {
+	zz += 0x20000;
+    } */
+
+    zz += 512*offs_y; // Border
+
+//    if (control & 8) {
+	if (priority)
+	    return;
+	if (opaque) { // 1st layer -> opaque
+	    for(y=0;y<224;y++){
+		BIT=GameViewBitmap->line[y];
+		switch(display_cfg.bpp) {
+		case 8:
+		    for(x=0;x<320;x++){
+			BIT[x]=RAM[zz^1];
+			zz++;
+		    }
+		    break;
+		case 15:
+		case 16:
+		    for(x=0;x<320;x++) {
+			WriteWord(&BIT[x*2],ReadWord(&map[RAM[zz ^ 1]*2]));
+			zz++;
+		    }
+		    break;
+		case 32:
+		    for(x=0;x<320;x++) {
+			WriteLong(&BIT[x*4],ReadLong(&map[RAM[zz ^ 1]*4]));
+			zz++;
+		    }
+		}
+		zz+=(512-320);
+	    }
+	} else {
+	// Draw no priority, color 0 transparent
+	    for(y=0;y<224;y++){
+		BIT=GameViewBitmap->line[y];
+		switch(display_cfg.bpp) {
+		case 8:
+		    for(x=0;x<320;x++){
+			if (RAM[zz^1])
+			    BIT[x]=RAM[zz^1];
+			zz++;
+		    }
+		    break;
+		case 15:
+		case 16:
+		    for(x=0;x<320;x++) {
+			if (RAM[zz ^ 1])
+			    WriteWord(&BIT[x*2],ReadWord(&map[RAM[zz ^ 1]*2]));
+			zz++;
+		    }
+		    break;
+		case 32:
+		    for(x=0;x<320;x++) {
+			if (RAM[zz ^ 1])
+			    WriteLong(&BIT[x*4],ReadLong(&map[RAM[zz ^ 1]*4]));
+			zz++;
+		    }
+		}
+		zz+=(512-320);
+	    }
+	}
+#if 0
+	// Not sure the priority is useful and where.
+	// What is sure is that the drawing is noticeably slower with it !
+    } else {
+	// draw priority
+	UINT8 c;
+	int drawn = 0;
+	for(y=0;y<224;y++){
+	    BIT=GameViewBitmap->line[y];
+	    switch(display_cfg.bpp) {
+	    case 8:
+		for(x=0;x<320;x++){
+		    c = RAM[zz^1];
+		    if (c && (c & 0x10)==priority)
+			BIT[x]=c;
+		    zz++;
+		}
+		break;
+	    case 15:
+	    case 16:
+		for(x=0;x<320;x++) {
+		    c = RAM[zz^1];
+		    if (c && (c & 0x10)==priority)
+			WriteWord(&BIT[x*2],ReadWord(&map[c*2]));
+		    zz++;
+		}
+		break;
+	    case 32:
+		for(x=0;x<320;x++) {
+		    c = RAM[zz^1];
+		    if (c && (c & 0x10)==priority) {
+			WriteLong(&BIT[x*4],ReadLong(&map[c*4]));
+			drawn = 1;
+		    }
+		    zz++;
+		}
+	    }
+	    zz+=(512-320);
+	}
+	printf("priority %d\n",drawn);
+    }
+#endif
+}
+
 static void draw_space_dx(void)
 {
-   static int do_clear;
-
-   int x,y,ta,zz;
-   UINT8 *bit,*map;
-
    ClearPaletteMap();
+   int control = RAM_VIDEO[0x1800F];
+   if (!(control & 0x20)) {
+       clear_game_screen(0);
+       return;
+   }
 
    // Init tc0180vcu emulation
    // ------------------------
@@ -973,66 +1101,42 @@ static void draw_space_dx(void)
    // BG0
    // ---
 
-   vcu_render_bg0();
+   if(check_layer_enabled(layer_id_data[0]))
+       vcu_render_bg0();
+   else
+       clear_game_screen(0);
 
-   // BG0
-   // ---
+#if 0
+   if(check_layer_enabled(layer_id_data[2]))
+       draw_taitob_fb(0x10000, 0x80, RAM_VIDEO[0x1800F], 0x10);
+#endif
 
-   vcu_render_bg1();
+
+   if(check_layer_enabled(layer_id_data[1]))
+       vcu_render_bg1();
 
    // PIXEL
    // -----
 
-   if(1) { // (RAM_VIDEO[0x1800F]&0x80)!=0){
-
-   if((RAM_VIDEO[0x1800F]&0x40)!=0)
-      zz=0x00000;
-   else
-      zz=0x20000;
-
-   zz+=(16*512);
-   zz&=0x3FFFF;
-
-   for(ta=15;ta>=0;ta--){
-
-      MAP_PALETTE_MAPPED_NEW(
-	 ta|0x80,
-	 16,
-	 map
-      );
-
-   }
-
-   for(y=0;y<224;y++){
-   bit = GameViewBitmap->line[y];
-   zz+=0x10000;
-   for(x=0;x<320;x+=2){
-      if(RAM[zz]!=0){bit[x+1] = map[RAM[zz]];}
-      if(RAM[zz+1]!=0){bit[x] = map[RAM[zz+1]];}
-      zz+=2;
-   }
-   zz-=0x10000;
-   zz+=(512-320);
-   zz&=0x3FFFF;
-   }
-
-   do_clear=1;
-   }
-   else{
-      if(do_clear){
-	 do_clear=0;
-	 memset(RAM+0x10000,0x00,0x40000);
-      }
-   }
+   if(check_layer_enabled(layer_id_data[2]))
+       draw_taitob_fb(0x10000, 0x80, control, 0,16,0);
 
    // BG2
    // ---
 
-   vcu_render_bg2();
+   if(check_layer_enabled(layer_id_data[3]))
+       vcu_render_bg2();
+   vcu_render_obj(0x200);
+   if (~control & 0x01) {
+      /* if (!(control & 0x40))
+	   memset(RAM+0x10000+0x20000,0,0x1ffff);
+       else */
+	   memset(RAM+0x10000,0,0x20000);
+   }
 
 }
 
-static struct VIDEO_INFO video_spacedxj =
+struct VIDEO_INFO video_spacedxj =
 {
    draw_space_dx,
    320,
