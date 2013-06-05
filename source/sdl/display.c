@@ -349,8 +349,8 @@ static SDL_Surface *new_set_gfx_mode() {
       }
       SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, (bpp < 32 ? bpp : 24) );
 #endif
-      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf ); 
-      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
+      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
+      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.dbuf );
       SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       // filter out the unused flags
       videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT);
@@ -359,7 +359,7 @@ static SDL_Surface *new_set_gfx_mode() {
 
   if (gui_level) {
       print_debug("limiting flags on gui_level\n");
-      videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL; 
+      videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL;
   }
   if (!sdl_screen || display_cfg.screen_x != sdl_screen->w ||
     display_cfg.screen_y != sdl_screen->h ||
@@ -539,7 +539,7 @@ void resize() {
 	  display_cfg.screen_y = vy*2;
 	if (display_cfg.scanlines == 3 && display_cfg.screen_x < vx*2)
 	  display_cfg.screen_x = vx*2;
-      } 
+      }
     }
     display_cfg.screen_x &= ~1; // even number
     // odd numbers can crash sdl_createyuvoverlay when libefence is in use !
@@ -608,7 +608,7 @@ void clear_bitmap(BITMAP *screen) {
 }
 
 void clear_raine_screen() {
-  if (sdl_screen->flags & SDL_OPENGL) 
+  if (sdl_screen->flags & SDL_OPENGL)
       return;
   clear_bitmap(screen);
   // Needed to clear the gui in normal blits
