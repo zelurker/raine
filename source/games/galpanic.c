@@ -34,16 +34,14 @@ UINT16 galpanic_closest_colour(int r, int g, int b);
 
 static struct ROM_INFO rom_galpanic[] =
 {
-  LOAD8_16(  REGION_ROM1,  0,   0x080000,
-                 "pm110.4m2",    0xae6b17a8,      "pm109.4m1",    0xb85d792d),
   LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
             "pm112.6",  0x7b972b58 , "pm111.5",  0x4eb7298d ),
-  LOAD8_16(  REGION_ROM1,  0x100001,  0x80000,
-            "pm004e.8",  0xd3af52bc , "pm005e.7",  0xd7ec650c ),
-  LOAD8_16(  REGION_ROM1,  0x200001,  0x80000,
-            "pm000e.15",  0x5d220f3f , "pm001e.14",  0x90433eb1 ),
-  LOAD8_16(  REGION_ROM1,  0x300001,  0x80000,
-            "pm002e.17",  0x713ee898 , "pm003e.16",  0x6bb060fd ),
+  LOAD8_16(  REGION_ROM1,  0x100000,  0x80000,
+            "pm005e.7",  0xd7ec650c,"pm004e.8",  0xd3af52bc  ),
+  LOAD8_16(  REGION_ROM1,  0x200000,  0x80000,
+            "pm001e.14",  0x90433eb1, "pm000e.15",  0x5d220f3f ),
+  LOAD8_16(  REGION_ROM1,  0x300000,  0x80000,
+            "pm003e.16",  0x6bb060fd, "pm002e.17",  0x713ee898 ),
   { "pm006e.67", 0x100000, 0x57aec037 , REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "pm008e.l", 0x80000, 0xd9379ba8 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "pm008e.l", 0x80000, 0xd9379ba8 , REGION_SMP1, 0x40000, LOAD_NORMAL },

@@ -1059,16 +1059,16 @@ static struct ROM_INFO rom_tdragon2[] =
 
 static struct ROM_INFO rom_ssmissin[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
-            "ssm14.165",  0xeda61b74 , "ssm15.166",  0xaff15927 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "ssm15.166",  0xaff15927, "ssm14.165",  0xeda61b74  ),
 
   { "ssm16.172", 0x20000, 0x5cf6eb1f , 0 /* REGION_GFX1 */, 0x000000, 0 },
 
   { "ssm17.147", 0x080000, 0xc9c28455 , REGION_GFX2,0x000000, LOAD_NORMAL },
   { "ssm18.148", 0x080000, 0xebfdaad6 , REGION_GFX2,0x080000, LOAD_NORMAL },
 
-  LOAD8_16(  REGION_GFX3, 0x000001,  0x080000,
-            "ssm20.34",  0xa0c16c4d , "ssm19.33",  0xb1943657 ),
+  LOAD8_16(  REGION_GFX3, 0x000000,  0x080000,
+            "ssm19.33",  0xb1943657, "ssm20.34",  0xa0c16c4d ),
 
   { "ssm11.188", 0x08000, 0x8be6dce3 , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "ssm13.190", 0x20000, 0x618f66f0 , REGION_SMP1, 0x00000, LOAD_NORMAL },

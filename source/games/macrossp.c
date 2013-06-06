@@ -55,8 +55,8 @@ static struct ROM_INFO rom_macrossp[] =
   { "bp964a-c.u3", 0x080000, 0xfb895a7b , REGION_ROM1, 0x000001, LOAD_8_32 },
   { "bp964a-c.u4", 0x080000, 0x8c8b966c , REGION_ROM1, 0x000000, LOAD_8_32 },
 
-  LOAD8_16(  REGION_ROM2,  0x000001,  0x080000,
-            "bp964a.u20",  0x12960cbb , "bp964a.u21",  0x87bdd2fc ),
+  LOAD8_16(  REGION_ROM2,  0x000000,  0x080000,
+            "bp964a.u21",  0x87bdd2fc, "bp964a.u20",  0x12960cbb ),
 
   /* Bios : unknown use */
   { "bp964a.u49", 0x020000, 0xad203f76 , REGION_USER1, 0x000000, LOAD_NORMAL },
@@ -77,8 +77,9 @@ static struct ROM_INFO rom_macrossp[] =
 
   { "bp964a.u19", 0x080000, 0x19c7acd9 , REGION_GFX5, 0x000000, LOAD_NORMAL },
 
-  LOAD8_16(  0,  0x000001,  0,
-            "bp964a.u24",  0x93f90336 , NULL,  0),
+  { "bp964a.u24", 0x400000, 0x93f90336 , REGION_SMP1, 0x000001, LOAD_8_16 },
+  // REGION_SMP2 initialised from REGION_SMP1 in the loading function
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 #if 0

@@ -969,8 +969,8 @@ static struct SOUND_INFO sound_whoopee[] =
 
 static struct ROM_INFO rom_pipibibi[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000001,  0x020000,
-            "ppbb06.bin",  0x14c92515, "ppbb05.bin",  0x3d51133c),
+  LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
+            "ppbb05.bin",  0x3d51133c, "ppbb06.bin",  0x14c92515 ),
   { "ppbb08.bin", 0x8000, 0x101c0358, REGION_ROM2, 0x0000, LOAD_NORMAL },
    {   "ppbb01.bin", 0x00080000, 0x0fcae44b, 0, 0, 0, },
    {   "ppbb02.bin", 0x00080000, 0x8bfcdf87, 0, 0, 0, },

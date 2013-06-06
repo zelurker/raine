@@ -1464,9 +1464,9 @@ static struct ROM_INFO rom_sf2yyc[] = // clone of _sf2ce
   LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
             "b12.rom",  0x8f742fd5, "b14.rom",  0x8831ec7f),
   LOAD8_16(  REGION_ROM1,  0x100000,  0x20000,
-            "b11.rom",  0x94a46525, "b11.rom",  0x94a46525),
-  LOAD8_16(  REGION_ROM1,  0x100001,  0x20000,
-            "b13.rom",  0x8fb3dd47, "b13.rom",  0x8fb3dd47),
+            "b11.rom",  0x94a46525,"b13.rom",  0x8fb3dd47 ),
+  LOAD8_16(  REGION_ROM1,  0x140000,  0x20000,
+            "b11.rom",  0x94a46525,"b13.rom",  0x8fb3dd47 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

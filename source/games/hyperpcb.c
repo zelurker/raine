@@ -106,8 +106,8 @@ static int romset;
 
 static struct ROM_INFO rom_hyperpac[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
-            "hyperpac.h12",  0x2cf0531a , "hyperpac.i12",  0x9c7d85b8 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "hyperpac.i12",  0x9c7d85b8, "hyperpac.h12",  0x2cf0531a ),
   { "hyperpac.u1", 0x10000 , 0x03faf88e , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "hyperpac.j15", 0x40000, 0xfb9f468d , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "hyperpac.a4", 0x40000, 0xbd8673da , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -118,8 +118,8 @@ static struct ROM_INFO rom_hyperpac[] =
 
 static struct ROM_INFO rom_twinkle[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
-            "uh12.bin",  0xa99626fe , "ui12.bin",  0x5af73684 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "ui12.bin",  0x5af73684, "uh12.bin",  0xa99626fe  ),
   { "u1.bin",   0x10000, 0xe40481da , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "uj15.bin", 0x40000, 0x0a534b37 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "ua4.bin",  0x80000, 0x6b64bb09 , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -129,8 +129,8 @@ static struct ROM_INFO rom_twinkle[] =
 
 static struct ROM_INFO rom_3in1semi[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,           0x40000,
-            "u52",  0xb0e4a0f7 , "u74",  0x266862c4 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,           0x40000,
+            "u74",  0x266862c4, "u52",  0xb0e4a0f7 ),
   { "u35",          0x10000, 0xe40481da , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "u14",          0x40000, 0xc83c11be , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "u75",          0x80000, 0xb66a0db6 , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -145,8 +145,8 @@ static struct ROM_INFO rom_3in1semi[] =
 
 static struct ROM_INFO rom_cookbib2[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
-            "cookbib2.02",  0xb2909460 , "cookbib2.01",  0x65aafde2 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x40000,
+            "cookbib2.01",  0x65aafde2, "cookbib2.02",  0xb2909460 ),
   { "cookbib2.07", 0x10000, 0xf59f1c9a , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "cookbib2.06", 0x20000, 0x5e6f76b8 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "cookbib2.05", 0x80000, 0x89fb38ce , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -158,8 +158,8 @@ static struct ROM_INFO rom_cookbib2[] =
 
 static struct ROM_INFO rom_moremore[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
-            "u52.bin",  0xcea4b246 , "u74.bin",  0x2acdcb88 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x40000,
+            "u74.bin",  0x2acdcb88,"u52.bin",  0xcea4b246   ),
   { "u35.bin", 0x10000, 0x92dc95fc , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "u14.bin", 0x40000, 0x90580088 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "u75.bin", 0x80000, 0xd671815c , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -172,8 +172,8 @@ static struct ROM_INFO rom_moremore[] =
 
 static struct ROM_INFO rom_moremorp[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x40000,
-            "mmp_u52.bin",  0x66baf9b2 , "mmp_u74.bin",  0x7c6fede5 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x40000,
+            "mmp_u74.bin",  0x7c6fede5, "mmp_u52.bin",  0x66baf9b2 ),
   { "mmp_u35.bin", 0x10000, 0x4d098cad , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "mmp_u14.bin", 0x40000, 0x211a2566 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "mmp_u75.bin", 0x80000, 0xaf9e824e , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -186,8 +186,8 @@ static struct ROM_INFO rom_moremorp[] =
 
 static struct ROM_INFO rom_finalttr[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001, 0x20000,
-            "9.5o",  0x58d3640e , "10.7o",  0xeecc83e5 ),
+  LOAD8_16(  REGION_ROM1,  0x00000, 0x20000,
+            "10.7o",  0xeecc83e5, "9.5o",  0x58d3640e  ),
   { "12.5r",0x10000, 0x4bc21361 , REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "11.7p",0x20000, 0x2e331022 , REGION_SMP1, 0x00000, LOAD_NORMAL },
   { "5.1d", 0x40000, 0x64a450f3 , REGION_GFX1, 0x000000, LOAD_NORMAL },
@@ -202,8 +202,8 @@ static struct ROM_INFO rom_finalttr[] =
 
 static struct ROM_INFO rom_hyperpcb[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00001,  0x20000,
-            "hpacuh12.bin",  0x633ab2c6 , "hpacui12.bin",  0x23dc00d1 ),
+  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+            "hpacui12.bin",  0x23dc00d1, "hpacuh12.bin",  0x633ab2c6 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -250,14 +250,14 @@ static struct ROM_INFO rom_wintbob[] =
   LOAD8_16(  REGION_ROM1,  0x020000,  0x00010000,
                 "wb04.bin",  0x53be758d,     "wb02.bin",  0xfc8e292e),
    {     "wb05.bin", 0x00010000, 0x53fe59df, REGION_ROM2, 0x000000, LOAD_NORMAL, },
-  LOAD8_16(  REGION_GFX1,  0x000001,  0x00010000,
-                "wb06.bin",  0x68204937,     "wb07.bin",  0x53f40978),
-  LOAD8_16(  REGION_GFX1,  0x040001,  0x00010000,
-                "wb08.bin",  0x9497b88c,     "wb09.bin",  0x9be718ca),
-  LOAD8_16(  REGION_GFX1,  0x060000,  0x00010000,
-                "wb10.bin",  0x5fa22b1e,     "wb11.bin",  0x41cb4563),
-  LOAD8_16(  REGION_GFX1,  0x020000,  0x00010000,
-                "wb12.bin",  0xef4e04c7,     "wb13.bin",  0x426921de),
+   {     "wb13.bin", 0x00010000, 0x426921de, REGION_GFX1, 0x000000, LOAD_8_16,   },
+   {     "wb06.bin", 0x00010000, 0x68204937, REGION_GFX1, 0x000001, LOAD_8_16,   },
+   {     "wb12.bin", 0x00010000, 0xef4e04c7, REGION_GFX1, 0x020000, LOAD_8_16,   },
+   {     "wb07.bin", 0x00010000, 0x53f40978, REGION_GFX1, 0x020001, LOAD_8_16,   },
+   {     "wb11.bin", 0x00010000, 0x41cb4563, REGION_GFX1, 0x040000, LOAD_8_16,   },
+   {     "wb08.bin", 0x00010000, 0x9497b88c, REGION_GFX1, 0x040001, LOAD_8_16,   },
+   {     "wb10.bin", 0x00010000, 0x5fa22b1e, REGION_GFX1, 0x060000, LOAD_8_16,   },
+   {     "wb09.bin", 0x00010000, 0x9be718ca, REGION_GFX1, 0x060001, LOAD_8_16,   },
    {           NULL,          0,          0,           0,        0,         0,   },
 };
 
