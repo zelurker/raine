@@ -1438,6 +1438,8 @@ static UINT16 protection_rw(UINT32 offset)
    if (pang3 && offset == 0x7a/2)
       return cps1_eeprom_port_r(0);
 
+   if (offset == 0x28 && is_current_game("avspd"))
+       return 262;
    return cps1_port[offset];
 }
 
@@ -1534,26 +1536,26 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
 
 static UINT16 cps1_ioc_rw(UINT32 offset)
 {
-   offset &= 0x1FF;
-  if(offset < 0x100) {
-     if (offset >= 0x18 && offset<=0x1f) {
-       UINT8 input;
-       offset = (offset - 0x18);
-       input = input_buffer[offset];
-      return input | (input << 8);
-     } else if (offset == 0x52) {
-	return (ReadWord(&input_buffer[5*2]) - dial[0]) & 0xff;
-     } else if (offset == 0x54) {
-       return ((ReadWord(&input_buffer[5*2]) - dial[0]) >> 8) & 0xff;
-     }
+    offset &= 0x1FF;
+    if(offset < 0x100) {
+	if (offset >= 0x18 && offset<=0x1f) {
+	    UINT8 input;
+	    offset = (offset - 0x18);
+	    input = input_buffer[offset];
+	    return input | (input << 8);
+	} else if (offset == 0x52) {
+	    return (ReadWord(&input_buffer[5*2]) - dial[0]) & 0xff;
+	} else if (offset == 0x54) {
+	    return ((ReadWord(&input_buffer[5*2]) - dial[0]) >> 8) & 0xff;
+	}
 
-     else {
-       print_debug("cps1_ioc_rw unmapped %x\n",offset);
-       return 0xFFFF;
-     }
-   } else {
-     return protection_rw((offset - 0x100)>>1);
-   }
+	else {
+	    print_debug("cps1_ioc_rw unmapped %x\n",offset);
+	    return 0xFFFF;
+	}
+    } else {
+	return protection_rw((offset - 0x100)>>1);
+    }
 }
 
 static UINT8 *RAM_SCROLL1,*RAM_SCROLL2,*RAM_SCROLL3;
@@ -2384,7 +2386,7 @@ void load_cps2() {
  the Qsound hardware with an OKI6295 / AD-65 chip.  No known complete dump exists.
 
 */
-    printf("phoenix behaviour, no xor size code %x, rom start %x\n",size_code,*ROM);
+    printf("phoenix behaviour, no xor size code %x\n",size_code);
     AddReadBW(0, size_code-1, NULL, ROM);
   }
 
@@ -3623,7 +3625,7 @@ void draw_cps1(void)
    ClearPaletteMap();
    cps1_layer_enabled[0]=1;
    cps1_layer_enabled[1]=layercontrol & cps1_game_config->layer_enable_mask[0];
-   cps1_layer_enabled[2]=layercontrol & cps1_game_config->layer_enable_mask[1]; 
+   cps1_layer_enabled[2]=layercontrol & cps1_game_config->layer_enable_mask[1];
    cps1_layer_enabled[3]=layercontrol & cps1_game_config->layer_enable_mask[2];
    cps1_stars_enabled	=layercontrol & cps1_game_config->layer_enable_mask[3];
 
