@@ -10,6 +10,7 @@
 #include "68000/starcpu.h"
 #include "sdl/gui.h"
 #include "console/exec.h"
+#include "conf-cpu.h"
 #include "cpumain.h"
 
 static int cpu_id;
@@ -155,14 +156,14 @@ static int add_watch(UINT32 adr, int size, int read, int value=-1) {
     if (read) {
       if (size == 1) {
 	insert_rb(0,0,adr,adr,(void*)exec_watchb,NULL);
-      } else if (size == 2) 
+      } else if (size == 2)
 	insert_rw(0,0,adr,adr+1,(void*)exec_watchw,NULL);
       else
 	insert_rw(0,0,adr,adr+size-1,(void*)exec_watchw,NULL);
     } else {
       if (size == 1) {
 	insert_wb(0,0,adr,adr,(void*)exec_watchb,NULL);
-      } else if (size == 2) 
+      } else if (size == 2)
 	insert_ww(0,0,adr,adr+1,(void*)exec_watchw,NULL);
       else {
 	insert_ww(0,0,adr,adr+size-1,(void*)exec_watchw,NULL);
@@ -189,21 +190,21 @@ static int del_watch(int nb) {
   if (read) {
     if (size == 1) {
       del_rb(0,adr,adr,(void*)exec_watchb,NULL);
-    } else if (size == 2) 
+    } else if (size == 2)
       del_rw(0,adr,adr+1,(void*)exec_watchw,NULL);
     else
       del_rw(0,adr,adr+size-1,(void*)exec_watchw,NULL);
   } else {
     if (size == 1) {
       del_wb(0,adr,adr,(void*)exec_watchb,NULL);
-    } else if (size == 2) 
+    } else if (size == 2)
       del_ww(0,adr,adr+1,(void*)exec_watchw,NULL);
     else {
       del_ww(0,adr,adr+size-1,(void*)exec_watchw,NULL);
       cons->print("added watch, size %d bytes\n",size);
     }
   }
-  if (nb < nb_watch-1) 
+  if (nb < nb_watch-1)
     memmove(&watch[nb],&watch[nb+1],(nb_watch-nb-1)*sizeof(twatch));
   nb_watch--;
   cons->print("watch point #%d deleted",nb);
@@ -227,6 +228,15 @@ int TRaineConsole::run_cmd(char *string) {
 }
 
 void TRaineConsole::execute() {
+#if HAVE_68000
+    if(StarScreamEngine>=1){
+	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
+    } else
+#endif
+#if HAVE_Z80
+   if(MZ80Engine>=1)		// Guess it's a z80 game
+       cpu_id = CPU_Z80_0;
+#endif
   TConsole::execute();
   // Take a snapshot of the ram to be able to look for variations
   for (UINT32 n=0; n<nb_ram; n+=2) {
@@ -487,7 +497,7 @@ void do_regs(int argc, char **argv) {
 }
 
 static void do_poke(int argc, char **argv) {
-  if (argc != 3) 
+  if (argc != 3)
     throw("syntax: poke adr value");
 
   UINT32 adr = parse(argv[1]);
@@ -506,7 +516,7 @@ static void do_poke(int argc, char **argv) {
 }
 
 static void do_save(int argc, char **argv) {
-  if (argc != 4) 
+  if (argc != 4)
     throw("syntax: save name adr_beg adr_end");
 
   UINT32 adr1 = parse(argv[2]);
@@ -523,7 +533,7 @@ static void do_save(int argc, char **argv) {
 }
 
 static void do_restore(int argc, char **argv) {
-  if (argc < 3 || argc > 4) 
+  if (argc < 3 || argc > 4)
     throw("syntax: restore name adr_beg [adr_end]");
 
   UINT32 adr1 = parse(argv[2]);
@@ -585,7 +595,7 @@ static void do_dump(int argc, char **argv) {
 	((search_size[found_search]==1 && (search[found_search]^1) < adr+n) ||
 	(search_size[found_search]>1 && (int)(adr+n - search[found_search]) >= search_size[found_search])))
 	found_search++;
-      if (found_search < nb_search && 
+      if (found_search < nb_search &&
 	((search_size[found_search] == 1 && (search[found_search]^1) == adr+n) ||
 	(search_size[found_search] == 2 && adr+n-search[found_search] <= 1))) {
 	// display it in green (code 2).
@@ -604,9 +614,9 @@ static void do_dump(int argc, char **argv) {
       if (adr+n > ram[block+1]) break;
       UINT8 car = ptr[(adr+n)^1];
       if (car < 32 || car > 127) car = '.';
-      if (tab_found[n]) 
+      if (tab_found[n])
 	sprintf(buff+strlen(buff),"\E[32m%c\E[0m",car);
-      else if (buf && ptr[(adr+n)^1] != buf[(adr+n)^1]) 
+      else if (buf && ptr[(adr+n)^1] != buf[(adr+n)^1])
 	sprintf(buff+strlen(buff),"\E[36m%c\E[0m",car);
       else if (car == '%')
 	strcat(buff,"%%");
@@ -708,7 +718,7 @@ static void add_search(UINT32 n,UINT8 size) {
 	  nb_search-=end-n; \
 	  n--; \
 	} \
-      } 
+      }
 
 #define INC_SRCH_WHAT(op) \
       UINT32 n; \
@@ -733,7 +743,7 @@ static void add_search(UINT32 n,UINT8 size) {
 	  nb_search-=end-n; \
 	  n--; \
 	} \
-      } 
+      }
 
 static void do_search(int argc, char **argv) {
   static UINT32 start,end;
@@ -825,7 +835,7 @@ static void do_search(int argc, char **argv) {
 	}
 	idx = 0;
       }
-    } else if (!strcmp(argv[1],"!=") || 
+    } else if (!strcmp(argv[1],"!=") ||
       !strcmp(argv[1],"<") ||
       !strcmp(argv[1],"<=") ||
       !strcmp(argv[1],">=") ||
@@ -901,7 +911,7 @@ static void do_search(int argc, char **argv) {
     if (argv[1][0] == '"' || argv[1][0] == 0x27 /* ' */) {
       cons->print("incremental searches for strings are not supported");
       return;
-    } else if (!strcmp(argv[1],"!=") || 
+    } else if (!strcmp(argv[1],"!=") ||
       !strcmp(argv[1],"<") ||
       !strcmp(argv[1],"<=") ||
       !strcmp(argv[1],">") ||
@@ -945,7 +955,7 @@ static void do_search(int argc, char **argv) {
 	return;
       }
       if (*argv[1] == '<') {
-	INC_SRCH_WHAT(>=); 
+	INC_SRCH_WHAT(>=);
       } else {
 	INC_SRCH_WHAT(<=);
       }
