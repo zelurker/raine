@@ -461,16 +461,16 @@ void vcu_render_obj(UINT32 num)
    ofs_y     = tc0180vcu.bmp_y - tc0180vcu.scr_y;
 
    if(tc0180vcu.RAM_2){
-   if(ReadWord(&tc0180vcu.RAM_2[0x0E])&0x0100){
-     if (!is_current_game("silentd"))
-      pixel_blit=1;
-   }
-   else{
-      if(pixel_blit) clear_bitmap(pixel_bitmap);
-      map_count=0;
-      pixel_blit=0;
-      memset(mapped,255,256);
-   }
+       if(ReadWord(&tc0180vcu.RAM_2[0x0E])&0x0100){
+	   if (!is_current_game("silentd"))
+	       pixel_blit=1;
+       }
+       else{
+	   if(pixel_blit) clear_bitmap(pixel_bitmap);
+	   map_count=0;
+	   pixel_blit=0;
+	   memset(mapped,255,256);
+       }
    }
    else{
       pixel_blit=0;
@@ -481,7 +481,7 @@ void vcu_render_obj(UINT32 num)
       GameBitmap = pixel_bitmap;
       init_spr16x16asm();
 
-   zz = (num-1)<<4;
+   zz = (0x1980-16);
    do{
 
    x        = (ofs_x+ReadWord(&RAM_BG[zz+4]))&OBJ_X_MASK;
