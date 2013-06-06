@@ -3,7 +3,7 @@
 #include "sasound.h"
 #include <string.h>
 #include "neocd.h"
-#include "blit.h" // clear_screen
+#include "blit.h" // clear_game_screen
 #include "files.h"
 #include "palette.h"
 #include "newspr.h"
@@ -117,7 +117,7 @@ enum{
   P7Z_TYPE,
 };
 
-int nb_tracks; 
+int nb_tracks;
 static int alloc_tracks;
 static char **mp3_track;
 static int *indexes,nb_indexes,alloc_indexes;
@@ -151,7 +151,7 @@ void init_load_type() {
     load_type = ZIP_TYPE;
   if (!stricmp(&neocd_path[strlen(neocd_path)-2],"7z"))
     load_type = P7Z_TYPE;
-  else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"txt")) 
+  else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"txt"))
     load_type = IPL_TYPE;
   else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"cue")) {
     FILE *f = fopen(neocd_path,"r");
@@ -161,7 +161,7 @@ void init_load_type() {
 	char *s;
 	fgets(buff,sizeof(buff),f);
 	buff[255] = 0;
-	if (!*buff) 
+	if (!*buff)
 	  continue;
 	int l = strlen(buff);
 	while (buff[l-1] < 32 && l > 0) {
@@ -211,7 +211,7 @@ void init_load_type() {
 		    break;
 		} else
 		    init_iso_gz();
-	    } else 
+	    } else
 		init_iso();
 	  } else if (!strncmp(end+2,"MP3",3) || !strncmp(end+2,"WAVE",4)) {
 	    if (alloc_tracks == nb_tracks) {
@@ -380,7 +380,7 @@ int get_size(char *filename) {
     switch(load_type) {
 	case ZIP_TYPE: size = size_zipped(neocd_path,filename,0); break;
 	case P7Z_TYPE: size = load_7z(neocd_path,filename,0,0,0,NULL,0); break;
-	case IPL_TYPE: 
+	case IPL_TYPE:
 		       if (!strchr(filename,SLASH[0])) {
 			   char file[1024];
 			   sprintf(file,"%s%s%s",neocd_dir,SLASH,filename);
@@ -548,7 +548,7 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
     current.dest = dest;
     current.conv_off = current.bytes_left = 0;
   }
-      
+
   switch(load_type) {
     case ZIP_TYPE: // return load_zipped(neocd_path, name, size, 0, dest, 1);
       ret = load_zipped_part(neocd_path, name, offset, size, dest);
@@ -556,7 +556,7 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
     case P7Z_TYPE:
       ret = load_7z(neocd_path, name, offset, size, 0, dest, 1);
       break;
-    case IPL_TYPE: 
+    case IPL_TYPE:
 		   if (!strchr(name,SLASH[0])) {
 		     char file[1024];
 		     sprintf(file,"%s%s%s",neocd_dir,SLASH,name);
@@ -717,7 +717,7 @@ void neogeo_cdrom_load_title(void)
 
   spr_conv(&buff[0x5a0], GFX, size-0x5a0, video_spr_usage);
 
-  clear_screen(0);
+  clear_game_screen(0);
   ClearPaletteMap();
   Readed = 0;
   for(y=0;y<80;y+=16)
@@ -1299,7 +1299,7 @@ int    neogeo_cdrom_process_ipl(loading_params *param)
 	  if (param->file_to_load > nb_file) {
 	    nb_file++;
 	    continue;
-	  } 
+	  }
 	  param->file_to_load++;
 	}
 
@@ -1311,7 +1311,7 @@ int    neogeo_cdrom_process_ipl(loading_params *param)
 	  sa_unpause_sound();
 	  FreeMem(buf);
 	  return 0;
-	} 
+	}
 	if (param) {
 	  return 1;
 	}

@@ -3,10 +3,10 @@
  * and got some info from an old version of the ncdz emu (mainly the array
  * to get the short names of the games + the info about loading animations)
  *
- * Notice that the cd audio emulation is based on values in RAM !!! 
+ * Notice that the cd audio emulation is based on values in RAM !!!
  * The upload area which was a big mystery in the psp version is now correct
- * at least for the writes, 
- * 
+ * at least for the writes,
+ *
  */
 
 #include "gameinc.h"
@@ -57,7 +57,7 @@ void debug(int level, const char *format, ...)
 #endif
 
 #define NB_LINES 264 // lines on the screen (including borders)
-#define START_SCREEN 0x10 
+#define START_SCREEN 0x10
 /* This is quite surprising, mame team has made some measurements and it appears that the dev documentation
  * is at least incomplete, or wrong. From the web, it appears there should be :
  From http://wiki.neogeodev.org/index.php?title=Display_timing
@@ -133,7 +133,7 @@ static void next_sprite_block() {
   }
 }
 
-static void draw_sprites_capture(int start, int end, int start_line, 
+static void draw_sprites_capture(int start, int end, int start_line,
 	int end_line);
 
 static FILE *fdata;
@@ -222,11 +222,11 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P1_B2, MSG_P1_B2, 0x00, 0x20, BIT_ACTIVE_0 },
   { KB_DEF_P1_B3, MSG_P1_B3, 0x00, 0x40, BIT_ACTIVE_0 },
   { KB_DEF_P1_B4, MSG_P1_B4, 0x00, 0x80, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1B2,"Player1 A+B", 0, 0x30, BIT_ACTIVE_0 }, 
-  { KB_DEF_P1_B3B4,"Player1 C+D", 0, 0xc0, BIT_ACTIVE_0 }, 
-  { KB_DEF_P1_B2B3,"Player1 B+C", 0, 0x60, BIT_ACTIVE_0 }, 
-  { KB_DEF_P1_B1B2B3,"Player1 A+B+C", 0, 0x70, BIT_ACTIVE_0 }, 
-  { KB_DEF_P1_B2B3B4,"Player1 B+C+D", 0, 0xe0, BIT_ACTIVE_0 }, 
+  { KB_DEF_P1_B1B2,"Player1 A+B", 0, 0x30, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B3B4,"Player1 C+D", 0, 0xc0, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2B3,"Player1 B+C", 0, 0x60, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1B2B3,"Player1 A+B+C", 0, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2B3B4,"Player1 B+C+D", 0, 0xe0, BIT_ACTIVE_0 },
 
   { KB_DEF_P2_UP, MSG_P2_UP, 0x02, 0x01, BIT_ACTIVE_0 },
   { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x02, BIT_ACTIVE_0 },
@@ -236,11 +236,11 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P2_B2, MSG_P2_B2, 0x02, 0x20, BIT_ACTIVE_0 },
   { KB_DEF_P2_B3, MSG_P2_B3, 0x02, 0x40, BIT_ACTIVE_0 },
   { KB_DEF_P2_B4, MSG_P2_B4, 0x02, 0x80, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1B2,"Player2 A+B", 2, 0x30, BIT_ACTIVE_0 }, 
-  { KB_DEF_P2_B3B4,"Player2 C+D", 2, 0xc0, BIT_ACTIVE_0 }, 
-  { KB_DEF_P2_B2B3,"Player2 B+C", 2, 0x60, BIT_ACTIVE_0 }, 
-  { KB_DEF_P2_B1B2B3,"Player2 A+B+C", 2, 0x70, BIT_ACTIVE_0 }, 
-  { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 2, 0xe0, BIT_ACTIVE_0 }, 
+  { KB_DEF_P2_B1B2,"Player2 A+B", 2, 0x30, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B3B4,"Player2 C+D", 2, 0xc0, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2B3,"Player2 B+C", 2, 0x60, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2B3,"Player2 A+B+C", 2, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 2, 0xe0, BIT_ACTIVE_0 },
 
   { KB_DEF_P1_START, MSG_P1_START, 0x04, 0x01, BIT_ACTIVE_0 },
   { KB_DEF_COIN1, MSG_COIN1, 0x04, 0x02, BIT_ACTIVE_0 },
@@ -327,15 +327,15 @@ void setup_neocd_bios() {
 
 #if 0
   WriteWord(&neocd_bios[0xA5B6], 0x4ef9); // reset instruction !
-  WriteWord(&neocd_bios[0xA5B8], 0xc0); 
-  WriteWord(&neocd_bios[0xA5Ba], 0xa822); 
+  WriteWord(&neocd_bios[0xA5B8], 0xc0);
+  WriteWord(&neocd_bios[0xA5Ba], 0xa822);
 #endif
 #endif
 }
 
 static UINT16 result_code,sound_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
 static UINT8 neogeo_memorycard[8192];
-UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage; 
+UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
 
 static UINT8 temp_fix_usage[0x300],saved_fix;
 
@@ -352,7 +352,7 @@ void save_fix(int vidram) {
 
 void restore_fix(int vidram) {
     if (vidram)
-	memcpy(&neogeo_vidram[0x7000],&RAM[0x110804],0x500*2); 
+	memcpy(&neogeo_vidram[0x7000],&RAM[0x110804],0x500*2);
     memcpy(neogeo_fix_memory,&RAM[0x115e06],0x6000);
     memcpy(video_fix_usage,temp_fix_usage,0x300);
     saved_fix = 0;
@@ -379,7 +379,7 @@ static void write_memcard(UINT32 offset, UINT32 data) {
   if ((offset & 1)) {
     memcard_write = 1;
     neogeo_memorycard[(offset & 0x3fff) >> 1] = data;
-  } 
+  }
 }
 
 static void write_memcardw(UINT32 offset, UINT32 data) {
@@ -432,7 +432,7 @@ static int cpu_readcoin(int addr)
      PORT_BIT( 0x0004, IP_ACTIVE_LOW, IPT_SERVICE1 )
      PORT_BIT( 0x0008, IP_ACTIVE_LOW, IPT_UNKNOWN )  // having this ACTIVE_HIGH causes you to start with 2 credits using USA bios roms
      PORT_BIT( 0x0010, IP_ACTIVE_LOW, IPT_UNKNOWN ) // having this ACTIVE_HIGH causes you to start with 2 credits using USA bios roms
-     PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_SPECIAL ) 
+     PORT_BIT( 0x0020, IP_ACTIVE_LOW, IPT_SPECIAL )
      */
     int coinflip = pd4990a_testbit_r(0);
     int databit = pd4990a_databit_r(0);
@@ -492,7 +492,7 @@ static void update_interrupts(void)
 	   // Without this, the stack is filled !!!
 	   debug(DBG_IRQ,"received vbl, still waiting for ack sr=%x\n",s68000context.sr);
 	   return;
-       } 
+       }
     }
 
     if (s68000context.interrupts[0] & (1<<level)) {
@@ -500,7 +500,7 @@ static void update_interrupts(void)
     } else {
 	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000context.sr);
 	cpu_interrupt(CPU_68K_0,level);
-	if (level == 2) 
+	if (level == 2)
 	    irq.wait_for_vbl_ack = 1;
     }
 #if 0
@@ -513,8 +513,8 @@ static void update_interrupts(void)
   }
   else {
 #ifdef RAINE_DEBUG
-    if (s68000context.interrupts[0] & 7) 
-      print_debug("should be cleared. %x\n",s68000context.interrupts[0]); 
+    if (s68000context.interrupts[0] & 7)
+      print_debug("should be cleared. %x\n",s68000context.interrupts[0]);
 #endif
     s68000context.interrupts[0] &= ~7;
     irq.wait_for_vbl_ack = 0;
@@ -605,12 +605,12 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     // Called LSPC in the neogeo api documentation
   switch((offset >> 1) & 7) {
     case 0x00: // Address register
-      video_pointer = data; 
+      video_pointer = data;
       // debug(DBG_IRQ,"set video pointer to %x from %x\n",data,s68000readPC());
       break;
     case 0x01:  // Write data register
       if (raster_frame && scanline > start_line && raster_bitmap &&
-	      scanline < 224+START_SCREEN && 
+	      scanline < 224+START_SCREEN &&
 	      neogeo_vidram[video_pointer] != data) {
 	  // Must draw the upper part of the screen BEFORE changing the sprites
 	  update_raster();
@@ -656,7 +656,7 @@ static UINT16 read_videoreg(UINT32 offset) {
     case 0:
     case 1: return neogeo_vidram[video_pointer];
     case 2: return video_modulo;
-    case 3: 
+    case 3:
 	    /*
 	     * From mame :
 	     *
@@ -808,7 +808,7 @@ static void restore_bank() {
     neocd_lp.file_to_load--;
     neocd_lp.bytes_loaded = 0;
   }
-  if (neocd_lp.function) 
+  if (neocd_lp.function)
     current_game->exec = &loading_progress_function;
   else
     current_game->exec = &execute_neocd;
@@ -1361,9 +1361,9 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 			}
 			memcpy(pal,pal2,sizeof(SDL_Color)*16);
 			// clear screen with transparent color : color 0.
-			clear_screen(0);
+			clear_game_screen(0);
 		    }
-		} 
+		}
 		if (sx+offx < 0) {
 		    printf("bye: %d,%d rzx %d offx %d\n",sx+offx,sy+16,rzx,offx);
 		    exit(1);
@@ -1378,7 +1378,7 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 		    else
 			Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
 		}
-	    } 
+	    }
 	}  // for y
     }  // for count
     if (nb_block <= capture_block && capture_block > 0) {
@@ -1502,7 +1502,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 
 	rzx = zx+1;
 
-	if ( sx >= 0x1F0 ) 
+	if ( sx >= 0x1F0 )
 	    sx -= 0x200;
 
 	// No point doing anything if tile strip is 0
@@ -1564,7 +1564,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 		    Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
 		else
 		    Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
-	    } 
+	    }
 	}  // for y
     }  // for count
 }
@@ -1572,7 +1572,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 static void clear_screen() {
     UINT8 *map;
     if (screen_cleared)
-	return;  
+	return;
     screen_cleared = 1;
     /* Not totally sure the palette can be cleared here and not every
      * time the sprites are drawn during a raster interrupt.
@@ -1586,10 +1586,10 @@ static void clear_screen() {
 	    16,
 	    map);
     switch(display_cfg.bpp) {
-    case 8: clear_screen(map[15]); break;
+    case 8: clear_game_screen(map[15]); break;
     case 15:
-    case 16: clear_screen(ReadWord(&map[15*2])); break;
-    case 32: clear_screen(ReadLong(&map[15*4])); break;
+    case 16: clear_game_screen(ReadWord(&map[15*2])); break;
+    case 32: clear_game_screen(ReadLong(&map[15*4])); break;
     }
 }
 
@@ -1641,14 +1641,14 @@ static void draw_neocd() {
     }
   }
 
-  if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
+  if (check_layer_enabled(layer_id_data[0]) && !fix_disabled)
     video_draw_fix();
 }
 
 void draw_neocd_paused() {
     clear_screen();
     draw_sprites_capture(0,384,0,224);
-    if (check_layer_enabled(layer_id_data[0]) && !fix_disabled) 
+    if (check_layer_enabled(layer_id_data[0]) && !fix_disabled)
 	video_draw_fix();
 }
 
@@ -1721,7 +1721,7 @@ static void neogeo_hreset(void)
   M68000_context[0].areg[7] = 0x10F300;
   M68000_context[0].asp = 0x10F400;
   M68000_context[0].interrupts[0] = 0;
-  s68000SetContext(&M68000_context[0]); 
+  s68000SetContext(&M68000_context[0]);
   if (!neogeo_cdrom_process_ipl(NULL)) {
     ErrorMsg("Error: Error while processing IPL.TXT.\n");
     ClearDefault();
@@ -2244,7 +2244,7 @@ static void write_pal(UINT32 offset, UINT16 data) {
   WriteWord(&RAM_PAL[offset],data);
 /*  get_scanline();
   print_debug("write_pal %x,%x scanline %d\n",offset,data,scanline); */
-} 
+}
 
 /*
 static void write_byte(UINT32 offset, UINT8 data) {
@@ -2285,7 +2285,7 @@ static void load_neocd() {
   if(!(RAM=AllocateMem(RAMSize))) return;
   // if(!(save_ram=(UINT16*)AllocateMem(0x10000))) return; // not to be saved with the ram
   if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
-  if(!(neogeo_fix_memory=AllocateMem(0x20000))) return; 
+  if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
   if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
   if(!(video_spr_usage=AllocateMem(0x800000/0x100))) return;
   if(!(PCMROM=AllocateMem(0x100000))) return;
@@ -2344,8 +2344,8 @@ static void load_neocd() {
   AddRWBW(0, 0x200000, NULL, RAM);
   AddReadBW(0xc00000, 0xc7ffff, NULL,neocd_bios);
   AddReadByte(0x300000, 0x300000, NULL, &input_buffer[1]);
-  AddWriteByte(0x300001, 0x300001, watchdog_w, NULL); 
-  AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL); 
+  AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
+  AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
   AddReadByte(0x340000, 0x340000, NULL, &input_buffer[3]);
   AddReadByte(0x380000, 0x380000, NULL, &input_buffer[5]);
 
@@ -2569,7 +2569,7 @@ void loading_progress_function() {
     RAM[0x10f793^1] = 0;
     neocd_function(0xc0c8b2);
     if (z80_enabled && RaineSoundCard) {
-      execute_z80_audio_frame(); 
+      execute_z80_audio_frame();
     }
   }
 }
@@ -2584,7 +2584,7 @@ void execute_neocd() {
 
   // lab_0432 = cd_test ???
   // printf("765 %x 7656 %x\n",RAM[0x10f765^1],RAM[0x10f656^1]);
-  // printf("cd loaded %x 76b9 %x\n",RAM[0x10fec4^1],RAM[0x76b9]); 
+  // printf("cd loaded %x 76b9 %x\n",RAM[0x10fec4^1],RAM[0x76b9]);
   // RAM[0x10fd97^1] = 15;
 
     int pc;
@@ -2620,7 +2620,7 @@ void execute_neocd() {
 		  if (irq.start > -1000) {
 		      debug(DBG_RASTER,"irq.start %d on vblank (irq.pos %x)\n",irq.start,irq.pos);
 		  }
-	      } 
+	      }
 	  }
 	  if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE)) {
 	      irq.start -= 0x180;
@@ -2730,7 +2730,7 @@ void execute_neocd() {
       // from the cd ?
 	  Stop68000(0,0);
 	  reset_game_hardware();
-  } 
+  }
 }
 
 static void clear_neocd() {
@@ -2749,7 +2749,7 @@ static void clear_neocd() {
   }
 }
 
-struct GAME_MAIN game_neocd = 
+struct GAME_MAIN game_neocd =
 {
   __FILE__, /* source_file */ \
     NULL, // dirs

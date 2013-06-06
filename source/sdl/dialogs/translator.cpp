@@ -97,7 +97,7 @@ static int get_sprite_map(UINT32 n) {
 }
 
 TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
-{ 
+{
     cursorx = cursory = 0;
     printf("clearing colors\n");
     memset(&pal[8],0,sizeof(SDL_Color)*8); // clear parasite colors in font
@@ -127,7 +127,7 @@ TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
 	    used_map++;
 	}
 	printf("used_map %x\n",used_map);
-    } 
+    }
 }
 
 static UINT32 base,offset;
@@ -227,7 +227,7 @@ static void disp_offset() {
 static UINT32 get_entry_offset(UINT32 base, int cur_entry) {
     if (screens) {
 	int ret;
-	if (ReadWord(&RAM[base]) == 0xffff) 
+	if (ReadWord(&RAM[base]) == 0xffff)
 	    ret = ReadWord(&RAM[base+(cur_entry+1)*2])*4;
 	else
 	    ret = ReadWord(&RAM[base+cur_entry*2])*4;
@@ -447,7 +447,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 			}
 		    }
 		    printf("found prevchar %d\n",prevchar);
-		    if (prevchar == 0x27 && 
+		    if (prevchar == 0x27 &&
 			    (unicode == 0x2e || unicode == 0x20))
 			prevchar = 0x2e;
 		    if (prevchar < 127) {
@@ -528,7 +528,7 @@ static int draw_translator(int sel) {
 	sprite_menu->draw();
 	return 0;
     }
-    clear_screen(0);
+    clear_game_screen(0);
     ClearPaletteMap();
     UINT8 map[16];
 
@@ -554,13 +554,13 @@ static int draw_translator(int sel) {
 	    }
 	len = 20*15;
 	return 0;
-    } 
+    }
 
     while ((spriteno = ReadWord(&RAM[base+offset+n])) != 0xffff) {
 	// printf("%d,%d,%x (%x+%x+%x)\n",x,y,spriteno,base,offset,n);
 	if (!spriteno)
 	    spriteno = 0x400; // note (line break)
-	else 
+	else
 	    spriteno += OFFS_SPRITES;
 	// printf("%d,%d,%x\n",x,y,spriteno);
 	if (spriteno < 0x8000)
@@ -848,7 +848,7 @@ int do_msg(int sel) {
  * This time it uses the fix layer so it has a real 8x16 font (made of 2 fix
  * sprites on top of each other). The print function reads a code on a word,
  * puts this word as the value of the first sprite, then puts this code+1 just
- * under the 1st one to make the 8x16 char. 
+ * under the 1st one to make the 8x16 char.
  * Since there is already a font available this time, the code will be easier */
 
 class TTransSS2 : public TTransBitmap {
