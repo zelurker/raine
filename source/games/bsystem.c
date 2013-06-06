@@ -1118,6 +1118,7 @@ static void draw_space_dx(void)
    // PIXEL
    // -----
 
+   vcu_render_obj(0x200);
    if(check_layer_enabled(layer_id_data[2]))
        draw_taitob_fb(0x10000, 0x80, control, 0,16,0);
 
@@ -1126,7 +1127,6 @@ static void draw_space_dx(void)
 
    if(check_layer_enabled(layer_id_data[3]))
        vcu_render_bg2();
-   vcu_render_obj(0x200);
    if (~control & 0x01) {
       /* if (!(control & 0x40))
 	   memset(RAM+0x10000+0x20000,0,0x1ffff);
