@@ -604,6 +604,8 @@
   DRV(hyperpcb)
   DRV(hyperpac)
   DRV(cookbib2)
+  DRV(cookbib3)
+  DRV(toppyrap)
   DRV(twinkle)
   DRV(3in1semi)
   DRV(moremore)

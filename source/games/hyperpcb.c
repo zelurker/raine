@@ -141,7 +141,157 @@ static struct ROM_INFO rom_3in1semi[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_toppyrap[] =
+{
+  { "uh12.bin", 0x40000, 0x6f5ad699, REGION_ROM1, 0x00001, LOAD_8_16 },
+  { "ui12.bin", 0x40000, 0xcaf5a7e1, REGION_ROM1, 0x00000, LOAD_8_16 },
+  { "u1.bin", 0x10000 , 0x07f50947, REGION_ROM2, 0x00000, LOAD_NORMAL },
+	/* this contains the code for 2 of the IRQ functions, but the game only uses one of them, the other is
+       executed from ROM.  The version in ROM is slightly patched version so maybe there is an earlier revision
+       which uses the code provided by the MCU instead */
+  { "protdata.bin", 0x200, 0x0704e6c7, REGION_PROMS, 0x00000, LOAD_NORMAL },
+  { "uj15.bin", 0x20000, 0xa3bacfd7, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  { "ua4.bin", 0x80000, 0xa9577bcf, REGION_GFX1, 0x000000, LOAD_NORMAL },
+  { "ua5.bin", 0x80000, 0x7179d32d, REGION_GFX1, 0x080000, LOAD_NORMAL },
+  { "ua6.bin", 0x80000, 0x4834e5b1, REGION_GFX1, 0x100000, LOAD_NORMAL },
+  { "ua7.bin", 0x80000, 0x663dd099, REGION_GFX1, 0x180000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
 
+static struct DSW_DATA dsw_data_toppyrap_0[] =
+{
+  DSW_DEMO_SOUND( 0x0000, 0x0001 ),
+  { MSG_UNUSED, 0x0002, 2 },
+  { MSG_OFF, 0x0002, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_COINAGE, 0x001c, 8 },
+  { MSG_5COIN_1PLAY, 0x0000, 0x00 },
+  { MSG_4COIN_1PLAY, 0x0004, 0x00 },
+  { MSG_3COIN_1PLAY, 0x0008, 0x00 },
+  { MSG_2COIN_1PLAY, 0x000c, 0x00 },
+  { MSG_1COIN_1PLAY, 0x001c, 0x00 },
+  { MSG_2COIN_3PLAY, 0x0014, 0x00 },
+  { MSG_1COIN_2PLAY, 0x0018, 0x00 },
+  { MSG_1COIN_3PLAY, 0x0010, 0x00 },
+  { MSG_DIFFICULTY, 0x0060, 4 },
+  { MSG_EASY, 0x0000, 0x00 },
+  { MSG_NORMAL, 0x0060, 0x00 },
+  { MSG_HARD, 0x0040, 0x00 },
+  { MSG_HARDEST, 0x0020, 0x00 },
+  DSW_SERVICE( 0, 0x0080 ),
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_toppyrap_1[] =
+{
+  { MSG_LIVES, 0x03, 4 },
+  { "2", 0x00, 0x00 },
+  { "3", 0x03, 0x00 },
+  { "4", 0x02, 0x00 },
+  { "5", 0x01, 0x00 },
+  { "Time", 0x000c, 4 },
+  { "40 Seconds", 0x0004, 0x00 },
+  { "50 Seconds", 0x0008, 0x00 },
+  { "60 Seconds", 0x000c, 0x00 },
+  { "70 Seconds", 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0010, 2 },
+  { MSG_OFF, 0x0010, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { "God Mode", 0x0020, 2 },
+  { MSG_OFF, 0x0020, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { "Internal Test", 0x0040, 2 },
+  { MSG_OFF, 0x0040, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_FREE_PLAY, 0x0080, 2 },
+  { MSG_OFF, 0x0080, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO dsw_toppyrap[] =
+{
+  { 0x12400, 0xfe, dsw_data_toppyrap_0 },
+  { 0x12402, 0xff, dsw_data_toppyrap_1 },
+  { 0, 0, NULL }
+};
+
+static struct ROM_INFO rom_cookbib3[] =
+{
+  { "u52.bin", 0x40000, 0x65134893, REGION_ROM1, 0x00001, LOAD_8_16 },
+  { "u74.bin", 0x40000, 0xc4ab8435, REGION_ROM1, 0x00000, LOAD_8_16 },
+  { "u35.bin", 0x10000, 0x5dfd2a98, REGION_ROM2, 0, LOAD_NORMAL },
+	/* this is not a real rom but instead the data extracted from
+       shared ram, the MCU puts it there */
+	/* the 'empty' pattern continued after 0x200 but the game doesn't use it or attempt to decrypt it */
+  { "protdata.bin", 0x200 , 0xc819b9a8, REGION_PROMS, 0x00000, LOAD_NORMAL },
+  { "u14.bin", 0x20000, 0xe5bf9288, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  { "u75.bin", 0x80000, 0xcbe4d9c8, REGION_GFX1, 0x000000, LOAD_NORMAL },
+  { "u76.bin", 0x80000, 0x1be17b57, REGION_GFX1, 0x080000, LOAD_NORMAL },
+  { "u77.bin", 0x80000, 0x7823600d, REGION_GFX1, 0x100000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct DSW_DATA dsw_data_cookbib3_0[] =
+{
+  DSW_DEMO_SOUND( 0x0000, 0x0001 ),
+  { MSG_COINAGE, 0x000e, 8 },
+  { MSG_5COIN_1PLAY, 0x0000, 0x00 },
+  { MSG_4COIN_1PLAY, 0x0002, 0x00 },
+  { MSG_3COIN_1PLAY, 0x0004, 0x00 },
+  { MSG_2COIN_1PLAY, 0x0006, 0x00 },
+  { MSG_1COIN_1PLAY, 0x000e, 0x00 },
+  { MSG_2COIN_3PLAY, 0x000a, 0x00 },
+  { MSG_1COIN_2PLAY, 0x000c, 0x00 },
+  { MSG_1COIN_3PLAY, 0x0008, 0x00 },
+  { MSG_DIFFICULTY, 0x0070, 8 },
+  { "Level 1", 0x0020, 0x00 },
+  { "Level 2", 0x0010, 0x00 },
+  { "Level 3", 0x0000, 0x00 },
+  { "Level 4", 0x0070, 0x00 },
+  { "Level 5", 0x0060, 0x00 },
+  { "Level 6", 0x0050, 0x00 },
+  { "Level 7", 0x0040, 0x00 },
+  { "Level 8", 0x0030, 0x00 },
+  DSW_SERVICE( 0, 0x0080 ),
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_cookbib3_1[] =
+{
+  { MSG_UNUSED, 0x0001, 2 },
+  { MSG_OFF, 0x0001, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0002, 2 },
+  { MSG_OFF, 0x0002, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0004, 2 },
+  { MSG_OFF, 0x0004, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0008, 2 },
+  { MSG_OFF, 0x0008, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0010, 2 },
+  { MSG_OFF, 0x0010, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0020, 2 },
+  { MSG_OFF, 0x0020, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_UNUSED, 0x0040, 2 },
+  { MSG_OFF, 0x0040, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { MSG_FREE_PLAY, 0x0080, 2 },
+  { MSG_OFF, 0x0080, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO dsw_cookbib3[] =
+{
+  { 0x12400, 0xfe, dsw_data_cookbib3_0 },
+  { 0x12402, 0xff, dsw_data_cookbib3_1 },
+  { 0, 0, NULL }
+};
 
 static struct ROM_INFO rom_cookbib2[] =
 {
@@ -197,8 +347,6 @@ static struct ROM_INFO rom_finalttr[] =
   { "protdata.bin", 0x000200, 0xd5bbb006, REGION_PROMS, 0, LOAD_NORMAL, },
   { NULL, 0, 0, 0, 0, 0 }
 };
-
-
 
 static struct ROM_INFO rom_hyperpcb[] =
 {
@@ -536,6 +684,7 @@ static UINT16 speed_hack(UINT32 offset) {
 static UINT8 *RAM_SPR, *GFX_SPR_SOLID;
 
 static UINT16 semicom_prot_latch = 0x0a0a;
+static UINT16 cookbib3_prot_latch = 0x2a2a;
 
 static void install_protdata() {
   memcpy(RAM+0x2f000,load_region[REGION_PROMS],0x200);
@@ -629,8 +778,12 @@ static void load_hyperpac(void)
    } else if (!strcmp(current_game->main_name,"hyperpcb")) {
      AddReadWord(0x104490, 0x104491, speed_hack, NULL);    // Trap Idle 68000
      vbl = &RAM[0x24490];
-   } else if (!strcmp(current_game->main_name,"cookbib2")) {
+   } else if (!strcmp(current_game->main_name,"cookbib2") ||
+	   is_current_game("toppyrap")) {
      /* this should really be init every reset */
+     set_reset_function(install_protdata);
+   } else if (is_current_game("cookbib3")) {
+     AddReadBW(0x200000, 0x200001, NULL, (UINT8*)&cookbib3_prot_latch);      // extraprot
      set_reset_function(install_protdata);
    } else if (!strcmp(current_game->main_name,"twinkle")) {
      /* this should really be init every reset */
@@ -1078,7 +1231,22 @@ static struct DIR_INFO dir_cookbib2[] =
    { "cookbib2", },
    { NULL, },
 };
-CLNE( cookbib2,hyperpac, "Cookie and Bibi 2", TOAPLAN, 1996, GAME_MISC);
+CLNE( cookbib2,hyperpac, "Cookie and Bibi 2", SEMICOM, 1996, GAME_MISC);
+static struct DIR_INFO dir_cookbib3[] =
+{
+   { "cookie_and_bibi_3", },
+   { "cookbib3", },
+   { NULL, },
+};
+CLNE( cookbib3,hyperpac, "Cookie and Bibi 3", SEMICOM, 1997, GAME_MISC,
+	.dsw = dsw_cookbib3);
+static struct DIR_INFO dir_toppyrap[] =
+{
+   { "toppyrap", },
+   { NULL, },
+};
+CLNE( toppyrap,hyperpac, "Toppy & Rappy", SEMICOM, 1996, GAME_MISC,
+	.dsw = dsw_toppyrap);
 static struct DIR_INFO dir_finalttr[] =
 {
    { "final_tetris", },
