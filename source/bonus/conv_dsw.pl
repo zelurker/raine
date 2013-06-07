@@ -6,6 +6,7 @@
 
 use strict;
 
+my ($on,$off);
 my %raine_dsw =
     (
      "Unknown" => "MSG_UNKNOWN",
@@ -176,6 +177,7 @@ sub value($) {
 
 sub read_next_line() {
   while (<F>) {
+	  s/\r//;
     next if (/^[ \t]*\/\//); # skip // comments
     if (/^[ \t]*\/\*/) { # /* comments
       while (!/\*\//) {
@@ -194,185 +196,195 @@ my %default_macro = ();
 open(F,"<$ARGV[0]") || die "Impossible to open $ARGV[0]";
 my $last_line = "";
 while (read_next_line()) {
-  if (/INPUT_PORTS_START\( (.+?) \)/ || $macro) {
-    if (!$macro) {
-      $name = $1;
-      $name = "_".$name if ($name =~ /^\d/);
-    } else {
-      $macro = 2;
-    }
-    @dsw = ();
-    $nb = -1;
-    $dsw_name = undef;
-    while ($macro == 2 || read_next_line()) {
-      # Normalize spaces to be sure to find same dipswitches
-      s/ ([\,\"\)])/$1/g;
-      s/ +$//;
-      s/ +/ /g;
-      $macro = 1 if ($macro == 2);
-      next if (/^[ \t]*\/\//);
-      s/PORT_CODE.+?\)//; # PORT_CODE not supported (yet) in raine
-      # mame has really crazy syntaxes sometimes !
-      s/PORT_BIT\((.+)IPT_DIPSWITCH_NAME *\) *PORT_NAME\( *(\".+?\")/PORT_DIPNAME\($1$2/;
-      if (/PORT_START/) {
-	update_start();
-	$started = undef;
-      } elsif (/PORT_BITX\([ \t]?(.+)[ \t]?\)/) {
-	# Not sure wether it will be enough...
-	my $args = $1;
-	my ($bit,$def,$function,$name,$rest) = split(/\, ?/,$args);
-	if (value($bit) > 0) { # Be sure it looks like a dipname...
-	  $_ = "PORT_DIPNAME( $bit, $def, $name )";
-	  redo;
-	}
-      } elsif (/PORT_DIPNAME\( ?(.+) ?\)/) {
-	my $args = $1;
-	if ($started) {
-	  $main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
-	  $main_out .= $output;
-	}
-	$started = 1;
-	my $rest;
-	if ((($bit,$def,$function,$rest) = split(/\, ?/,$args))) {
-	  my $bit2 = value($bit);
-	  if ($bit2 > 0xff && !$roll) {
-	    update_start();
-	    $started = 1;
-	    $roll = 1;
-	  }
-	  $bit = "0x".sprintf("%x",$bit2 >> 8) if ($roll);
-	  $function .= ",$rest" if ($rest);
-	  $def = hex($def) if ($def =~ /^0x/);
-	  $def >>=8 if ($roll);
-          $default |= $def;
-	  $output = "";
-	  $length = 0;
-	  if ($function =~ /DEF_STR\( ?(.+?) ?\)/) {
-	    $function = get_raine_dsw($1);
-          }
-	} else {
-	  print STDERR "Parsing error : $args\n";
-	  exit(1);
-	}
-      } elsif (/PORT_SERVICE\( *(.+) *\)/) {
-	my $args = $1;
-	my ($mask,$bit) = split(/\, */,$args);
-	if (!$started) {
-	  $output = "";
-	  $started = 1;
-	}
-	if ($roll) {
-	  $mask = "0x".sprintf("%x",value($mask) >> 8);
-	}
-	$output .= "  { MSG_SERVICE, $mask,2 },\n";
-	if ($bit =~ /IP_ACTIVE_LOW/) {
-	  $output .= "  { MSG_ON, 0,0 },\n";
-	  $output .= "  { MSG_OFF, $mask,0 },\n";
-	  $mask = hex($mask);
-	  $default |= $mask;
-	} elsif ($bit =~ /IP_ACTIVE_HIGH/) {
-	  $output .= "  { MSG_OFF, 0,0 },\n";
-	  $output .= "  { MSG_ON, $mask,0 },\n";
-	} else {
-	  print STDERR "Unknown service port $args ($bit)\n";
-	  exit(1);
-	}
-      } elsif (/PORT_DIPSETTING\( *(.+) *\)/) {
-	my $args = $1;
-	$args =~ s/\)[ \t]*\/[\/\*].+//; # remove comments from the args
-	my ($mask,$f2,$rest) = split(/\, */,$args);
-	my $bit2 = value($mask);
-	$mask = "0x".sprintf("%x",$bit2 >> 8) if ($roll);
-	$f2 .= $rest if ($rest);
-	if ($f2 =~ /DEF_STR\( ?(.+?) ?\)/) {
-	  $f2 = get_raine_dsw($1);
-	}
-	$output .= "  { $f2, $mask, 0x00 },";
-	$output .= "\t// $1" if (/\/\/ (.+)/);
-	$output .= "\n";
-	$length++;
-      } elsif (!/^[ \t]*(\/\*.+)?$/) {
-	# macro
-	my $macro_name = $_;
-	chomp $macro_name;
-	if (!/IPT_UNKNOWN/ && !/PORT/) {
-	  $macro_name =~ s/[ \t]+//g;
-	  if (!defined($default_macro{$macro_name})) {
-	    print STDERR "macro non reconnue $macro_name - je continue\n";
-	  }
-	  $main_out .= $_;
-	  $default |= $default_macro{$macro_name};
-	}
-      } elsif ($started) { # end of the dsw section if started
-	$main_out .= "  { $function, $bit, $length },\n$output";
-	$started = undef;
-      }
-      last if (/PORTS_END/);
-      if ($macro && !(/\\$/)) {
-	last;
-      }
-    } # while (<F>)
-    if ($length) {
-      if ($started) {
-	$main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
-	$main_out .= $output;
-	$output = "";
-	$started = undef;
-      }
+	if (/INPUT_PORTS_START\( (.+?) \)/ || $macro) {
+		if (!$macro) {
+			$name = $1;
+			$name = "_".$name if ($name =~ /^\d/);
+		} else {
+			$macro = 2;
+		}
+		@dsw = ();
+		$nb = -1;
+		$dsw_name = undef;
+		while ($macro == 2 || read_next_line()) {
+			# Normalize spaces to be sure to find same dipswitches
+			s/ ([\,\"\)])/$1/g;
+			s/ +$//;
+			s/ +/ /g;
+			$macro = 1 if ($macro == 2);
+			next if (/^[ \t]*\/\//);
+			s/PORT_CODE.+?\)//; # PORT_CODE not supported (yet) in raine
+			# mame has really crazy syntaxes sometimes !
+			s/PORT_BIT\((.+)IPT_DIPSWITCH_NAME *\) *PORT_NAME\( *(\".+?\")/PORT_DIPNAME\($1$2/;
+			if (/PORT_START/) {
+				update_start();
+				$started = undef;
+			} elsif (/PORT_BITX\([ \t]?(.+)[ \t]?\)/) {
+				# Not sure wether it will be enough...
+				my $args = $1;
+				my ($bit,$def,$function,$name,$rest) = split(/\, ?/,$args);
+				if (value($bit) > 0) { # Be sure it looks like a dipname...
+					$_ = "PORT_DIPNAME( $bit, $def, $name )";
+					redo;
+				}
+			} elsif (/PORT_DIPNAME\( ?(.+) ?\)/) {
+				my $args = $1;
+				if ($started) {
+					if ($function =~ /DEMO_SOUND/) {
+						$main_out .= "  DSW_DEMO_SOUND( $on, $off ),\n";
+					} elsif ($function =~ /SERVICE/) {
+						$main_out .= "  DSW_SERVICE( $on, $off ),\n";
+					} else {
+						$main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
+						$main_out .= $output;
+					}
+				}
+				$started = 1;
+				my $rest;
+				if ((($bit,$def,$function,$rest) = split(/\, ?/,$args))) {
+					my $bit2 = value($bit);
+					if ($bit2 > 0xff && !$roll) {
+						update_start();
+						$started = 1;
+						$roll = 1;
+					}
+					$bit = "0x".sprintf("%x",$bit2 >> 8) if ($roll);
+					$function .= ",$rest" if ($rest);
+					$def = hex($def) if ($def =~ /^0x/);
+					$def >>=8 if ($roll);
+					$default |= $def;
+					$output = "";
+					$length = 0;
+					if ($function =~ /DEF_STR\( ?(.+?) ?\)/) {
+						$function = get_raine_dsw($1);
+					}
+				} else {
+					print STDERR "Parsing error : $args\n";
+					exit(1);
+				}
+			} elsif (/PORT_SERVICE\( *(.+) *\)/) {
+				my $args = $1;
+				my ($mask,$bit) = split(/\, */,$args);
+				if (!$started) {
+					$output = "";
+					$started = 1;
+				}
+				if ($roll) {
+					$mask = "0x".sprintf("%x",value($mask) >> 8);
+				}
+				if ($bit =~ /IP_ACTIVE_LOW/) {
+					$output .= "  DSW_SERVICE( 0, $mask ),\n";
+					$mask = hex($mask);
+					$default |= $mask;
+				} elsif ($bit =~ /IP_ACTIVE_HIGH/) {
+					$output .= "  DSW_SERVICE( $mask, 0 ),\n";
+				} else {
+					print STDERR "Unknown service port $args ($bit)\n";
+					exit(1);
+				}
+			} elsif (/PORT_DIPSETTING\( *(.+) *\)/) {
+				my $args = $1;
+				$args =~ s/\)[ \t]*\/[\/\*].+//; # remove comments from the args
+				my ($mask,$f2,$rest) = split(/\, */,$args);
+				my $bit2 = value($mask);
+				$mask = "0x".sprintf("%x",$bit2 >> 8) if ($roll);
+				$f2 .= $rest if ($rest);
+				if ($f2 =~ /DEF_STR\( ?(.+?) ?\)/) {
+					$f2 = get_raine_dsw($1);
+					if ($f2 eq "MSG_ON") {
+						$on = $mask;
+					} elsif ($f2 eq "MSG_OFF") {
+						$off = $mask;
+					}
+				}
+				$output .= "  { $f2, $mask, 0x00 },";
+				$output .= "\t// $1" if (/\/\/ (.+)/);
+				$output .= "\n";
+				$length++;
+			} elsif (!/^[ \t]*(\/\*.+)?$/) {
+				# macro
+				my $macro_name = $_;
+				$macro_name =~ s/\r//;
+				chomp $macro_name;
+				if (!/IPT_UNKNOWN/ && !/PORT/) {
+					$macro_name =~ s/[ \t]+//g;
+					if (!defined($default_macro{$macro_name})) {
+						print STDERR "macro non reconnue $macro_name - je continue\n";
+					}
+					$main_out .= $_;
+					$default |= $default_macro{$macro_name};
+				}
+			} elsif ($started) { # end of the dsw section if started
+				# difficulty
+				$main_out .= "  { $function, $bit, $length },\n$output";
+				$started = undef;
+			}
+			last if (/PORTS_END/);
+			if ($macro && !(/\\$/)) {
+				last;
+			}
+		} # while (<F>)
+		if ($length) {
+			if ($started) {
+				$main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
+				$main_out .= $output;
+				$output = "";
+				$started = undef;
+			}
 
-      my $found = undef;
-      if (!$macro) {
-	for (my $n=0; $n<=$#tab_data; $n++) {
-	  if ($tab_data[$n] eq $main_out) {
-	    print STDERR "Found $dsw_name = $tab_name[$n]\n";
-	    push @dsw,[$tab_name[$n],$default,$port];
-	    $found = 1;
-	  }
-	}
-      }
-      if ($macro) {
-	print $last_line;
-	$main_out =~ s/\n/\\\n/mg;
-	print "$main_out\n";
-	my $macro_name = $last_line;
-	$macro_name =~ s/^\#define //;
-	$macro_name =~ s/[ \t]+//g;
-	$macro_name =~ s/\\\n//;
-	$default_macro{$macro_name} = $default;
-	$macro = undef;
-	$main_out = "";
-      } elsif (!$found) {
-	push @dsw,[$dsw_name,$default,$port];
-	print "static struct DSW_DATA $dsw_name\[\] =\n{\n";
-	if ($started) {
-	  $main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
-	  $main_out .= $output;
-	}
-	print "$main_out  { NULL, 0, 0}\n};\n\n";
-	push @tab_name,$dsw_name;
-	push @tab_data,$main_out;
-	$main_out = "";
-      }
-    }
-    $started = undef;
-    $port = $port0;
+			my $found = undef;
+			if (!$macro) {
+				for (my $n=0; $n<=$#tab_data; $n++) {
+					if ($tab_data[$n] eq $main_out) {
+						print STDERR "Found $dsw_name = $tab_name[$n]\n";
+						push @dsw,[$tab_name[$n],$default,$port];
+						$found = 1;
+					}
+				}
+			}
+			if ($macro) {
+				print $last_line;
+				$main_out =~ s/\n/\\\n/mg;
+				print "$main_out\n";
+				my $macro_name = $last_line;
+				$macro_name =~ s/^\#define //;
+				$macro_name =~ s/[ \t]+//g;
+				$macro_name =~ s/\\\n//;
+				$default_macro{$macro_name} = $default;
+				$macro = undef;
+				$main_out = "";
+			} elsif (!$found) {
+				push @dsw,[$dsw_name,$default,$port];
+				print "static struct DSW_DATA $dsw_name\[\] =\n{\n";
+				if ($started) {
+					$main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
+					$main_out .= $output;
+				}
+				print "$main_out  { NULL, 0, 0}\n};\n\n";
+				push @tab_name,$dsw_name;
+				push @tab_data,$main_out;
+				$main_out = "";
+			}
+		}
+		$started = undef;
+		$port = $port0;
 
-    # dsw_info
-    if ($#dsw>=0) {
-      print "static struct DSW_INFO $name\_dsw\[\] =\n{\n";
-      for (my $n=0; $n<=$#dsw; $n++) {
-	my ($dname, $def, $port) = @{$dsw[$n]};
-	print "  { ".sprintf("0x%x",$port).", 0x",sprintf("%02x",$def),", $dname },\n";
-      }
-      print "  { 0, 0, NULL }\n";
-      print "};\n\n";
-    }
-  } elsif (/PORT_DIPNAME\(/) {
-    $macro = 1;
-    redo;
-  } else {
-    $last_line = $_;
-  }
+		# dsw_info
+		if ($#dsw>=0) {
+			print "static struct DSW_INFO dsw_$name\[\] =\n{\n";
+			for (my $n=0; $n<=$#dsw; $n++) {
+				my ($dname, $def, $port) = @{$dsw[$n]};
+				print "  { ".sprintf("0x%x",$port).", 0x",sprintf("%02x",$def),", $dname },\n";
+			}
+			print "  { 0, 0, NULL }\n";
+			print "};\n\n";
+		}
+	} elsif (/PORT_DIPNAME\(/) {
+		$macro = 1;
+		redo;
+	} else {
+		$last_line = $_;
+	}
 }
 close(F);
 
