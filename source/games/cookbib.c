@@ -1132,7 +1132,7 @@ static void load_cookbib(void)
 	AddMemFetch (-1, -1, NULL);
 
 	/* ROM for normal READ Operations -- we don't want to allow writing to ROM! */
-	AddReadBW   (0x000000, 0x07ffff,     NULL,              ROM             );   // 68000 ROM
+	AddReadBW   (0x000000, get_region_size(REGION_CPU1)-1,     NULL,              ROM             );   // 68000 ROM
 	/* Set Up the RAM, we allow all types of READ/WRITE operations */
 	AddRWBW     (0x120000, 0x123fff,     NULL,              RAM_MAIN        );   // MAIN RAM
 	AddRWBW     (0x140000, 0x1407ff,     NULL,              RAM_PALETTE     );   // PALETTE RAM
