@@ -66,7 +66,7 @@ while ($_ = shift @file) {
 	} elsif (/ROM_START ?\( ?(.+?) ?\)/) {
 		my $name = $1;
 		$name = "_".$name if ($name =~ /^\d/);
-		print "static struct ROM_INFO $name\_roms\[\] =\n{\n";
+		print "static struct ROM_INFO rom_$name\[\] =\n{\n";
 		my $comment = undef;
 		my $load_be = undef;
 		while ($_ = shift @file) {
@@ -102,18 +102,18 @@ while ($_ = shift @file) {
 						}
 						if ($comment) {
 							print;
-							print STDERR "comment ($region_name): $_";
 							if (/\*\//) {
 								$comment = undef;
 							}
 							next;
 						}
 						if (/^[ \t]*(\/\*)/) {
+							my $sortie = 0;
 							do {
 								print;
-								print STDERR "inside comment ($region_name): $_";
-								last if (/\*\//);
-							} while ($_ = shift @file);
+								$sortie = 1 if (/\*\//);
+							} while (!$sortie && ($_ = shift @file));
+							print STDERR "comment ($region_name): $_";
 							next;
 						}
 
