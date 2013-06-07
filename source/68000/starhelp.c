@@ -38,28 +38,28 @@ extern UINT8 *RAM_PAL;
 
 void s68000_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
   *count = 0;
-  int max = data_count_wb[cpu];
+  int max = data_count_rb[cpu];
   int n;
   for (n=0; n<max; n++) {
-    if (!M68000_dataregion_wb[cpu][n].memorycall &&
-         M68000_dataregion_wb[cpu][n].userdata &&
-         M68000_dataregion_wb[cpu][n].userdata+M68000_dataregion_wb[cpu][n].lowaddr != RAM_PAL &&
-	 (M68000_dataregion_wb[cpu][n].lowaddr & 0xff000000) == 0) {
-	range[(*count)++] = M68000_dataregion_wb[cpu][n].lowaddr;
-	range[(*count)++] = M68000_dataregion_wb[cpu][n].highaddr;
+    if (!M68000_dataregion_rb[cpu][n].memorycall &&
+         M68000_dataregion_rb[cpu][n].userdata &&
+         M68000_dataregion_rb[cpu][n].userdata+M68000_dataregion_rb[cpu][n].lowaddr != RAM_PAL &&
+	 (M68000_dataregion_rb[cpu][n].lowaddr & 0xff000000) == 0) {
+	range[(*count)++] = M68000_dataregion_rb[cpu][n].lowaddr;
+	range[(*count)++] = M68000_dataregion_rb[cpu][n].highaddr;
     }
   }
 }
 
 UINT8 *get_userdata(UINT32 cpu, UINT32 adr) {
-  int max = data_count_wb[cpu];
+  int max = data_count_rb[cpu];
   int n;
   for (n=0; n<max; n++) {
-    if (!M68000_dataregion_wb[cpu][n].memorycall &&
-         M68000_dataregion_wb[cpu][n].userdata &&
-	 M68000_dataregion_wb[cpu][n].lowaddr <= adr &&
-	 M68000_dataregion_wb[cpu][n].highaddr >= adr) {
-      return M68000_dataregion_wb[cpu][n].userdata;
+    if (!M68000_dataregion_rb[cpu][n].memorycall &&
+         M68000_dataregion_rb[cpu][n].userdata &&
+	 M68000_dataregion_rb[cpu][n].lowaddr <= adr &&
+	 M68000_dataregion_rb[cpu][n].highaddr >= adr) {
+      return M68000_dataregion_rb[cpu][n].userdata;
     }
   }
   return NULL;
