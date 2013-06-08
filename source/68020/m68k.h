@@ -20,10 +20,12 @@ struct flag_struct {
 	int :20;
 	unsigned int x:1; /* fifth */
 	int :31;
+};
+
 #if defined( RAINE_WIN32 ) && !defined(__MINGW32__)
-} regflags;
+extern struct flag_struct regflags;
 #else
-} regflags __asm__ ("regflags");
+extern struct flag_struct regflags __asm__ ("regflags");
 #endif
 
 //extern struct flag_struct regflags __asm__ ("regflags");

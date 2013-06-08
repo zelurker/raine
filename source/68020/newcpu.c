@@ -22,6 +22,12 @@
 #include "raine.h"
 #include "savegame.h"
 
+#if defined( RAINE_WIN32 ) && !defined(__MINGW32__)
+struct flag_struct regflags;
+#else
+struct flag_struct regflags __asm__ ("regflags");
+#endif
+
 void (*F3SystemEEPROMAccess)(UINT8 data);
 int areg_byteinc[8] = { 1,1,1,1,1,1,1,2 };
 int imm8_table[8] = { 8,1,2,3,4,5,6,7 };
