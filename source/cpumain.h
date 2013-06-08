@@ -91,6 +91,7 @@ get the pc of a cpu
 */
 
 UINT32 cpu_get_pc(UINT32 cpu_id);
+void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
 
 #ifdef RAINE_DEBUG
 extern UINT32 current_cpu_num[0x10];

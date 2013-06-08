@@ -227,7 +227,7 @@ void do_cond(int argc, char **argv) {
       cons->print("breakpoint %d isn't defined",n);
       return;
     }
-    if (breakp[n].cond) 
+    if (breakp[n].cond)
       free(breakp[n].cond);
     breakp[n].cond = strdup(argv[2]);
     cons->print("condition set for breakpoint %d",n);
@@ -315,7 +315,7 @@ static void set_offs(int adr, int offset, int line) {
   offs[index][n].line = line;
 }
 
-static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr, 
+static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
    char *header)
 {
   char name[1024];
@@ -330,7 +330,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   save_file(name,&ptr[start],end-start);
   ByteSwap(&ptr[start],end-start);
   printf("cmd: %s\n",cmd);
-  if (system(cmd) < 0) 
+  if (system(cmd) < 0)
     throw "can't execute m68kdis !";
   int found_dcw = 0;
   FILE *f = fopen(name2,"r");
@@ -352,7 +352,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   name[strlen(name)] = '.'; // extension back
   name[strlen(name)-1] = 't'; // extension back
   f = fopen(name,"w");
-  if (!f) 
+  if (!f)
     throw "can't create asm temporary file";
   fprintf(f,"%s\n",header);
   FILE *g = fopen(name2,"r");
@@ -454,7 +454,7 @@ void do_list(int argc, char **argv) {
     sprintf(buffadr,"$%x",last_list_adr);
     argv[1] = buffadr;
   }
-    
+
   if (argc == 1) {
     if (pc != s68000context.pc) {
       get_instruction();
@@ -518,7 +518,7 @@ static void disp_instruction() {
   get_instruction();
   if (pc != s68000context.pc)
     cons->print("pc=%x not found in asm file",s68000context.pc);
-  else 
+  else
     cons->print(buff);
 }
 
@@ -547,7 +547,7 @@ void do_irq(int argc, char **argv) {
     cpu_interrupt(CPU_68K_0,irq);
     get_regs(0);
     return;
-  } 
+  }
   if ((s68000context.sr & 0x2700) <= 0x2000)
     throw "not in an irq !";
   int current = s68000context.sr & 0x2700;
@@ -559,7 +559,7 @@ void do_irq(int argc, char **argv) {
 void do_until(int argc, char **argv) {
   if (argc < 2) {
     throw "syntax : until pc";
-  } 
+  }
   UINT32 pc = parse(argv[1]);
   while (s68000context.pc != pc)
     do_cycles(CPU_68K_0);

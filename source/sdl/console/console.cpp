@@ -12,11 +12,13 @@
 #include "console/exec.h"
 #include "conf-cpu.h"
 #include "cpumain.h"
+#include "z80/mz80help.h"
+#include "68020/u020help.h"
 
 static int cpu_id;
 extern void do_if(int argc, char **argv);
-static UINT32 ram[MAX_DATA*2],nb_ram;
-static UINT8 *ram_buf[MAX_DATA],*search_size;
+static UINT32 ram[0x100*2],nb_ram;
+static UINT8 *ram_buf[0x100],*search_size;
 static UINT32 nb_search, nb_alloc_search, *search;
 
 #define MAX_WATCH 10
@@ -39,7 +41,12 @@ UINT8 *get_ptr(UINT32 adr, UINT32 *the_block) {
   }
   if (the_block) *the_block = block;
 
-  return get_userdata(cpu_id & 0xf,ram[block]);
+  switch(cpu_id >> 4){
+  case 1: return get_userdata(cpu_id & 0xf,ram[block]);
+  case 2: return z80_get_userdata(cpu_id & 0xf,ram[block]);
+  case 3: return R24[ram[block]>>16];
+  }
+  return NULL;
 }
 
 typedef int (thandler)(UINT32 offset, UINT32 data);
@@ -228,6 +235,11 @@ int TRaineConsole::run_cmd(char *string) {
 }
 
 void TRaineConsole::execute() {
+#ifndef NO020
+  if (MC68020)
+      cpu_id = CPU_M68020_0;
+  else
+#endif
 #if HAVE_68000
     if(StarScreamEngine>=1){
 	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
@@ -476,7 +488,9 @@ void do_regs(int argc, char **argv) {
   char buf[1024];
   *buf = 0;
   set_regs(cpu_id);
-  if ((cpu_id >> 4) == 1) { // 68k
+  int num = cpu_id & 0xf;
+  switch (cpu_id >> 4) {
+  case 1:
       for (int n=0; n<8; n++) {
 	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,s68000context.dreg[n]);
 	  if (n==3 || n==7) {
@@ -493,6 +507,35 @@ void do_regs(int argc, char **argv) {
       }
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000context.sr,
 	      s68000context.pc);
+      break;
+  case 2:
+      cons->print("\E[36mAF:\E[0m%04x \E[36mBC:\E[0m%04x"
+	      " \E[36mDE:\E[0m%04x \E[36mHL:\E[0m%04x\n",
+	      Z80_context[num].z80af,
+	      Z80_context[num].z80bc,
+	      Z80_context[num].z80de,
+	      Z80_context[num].z80hl);
+      cons->print("\E[36mSP:\E[0m%04x \E[36mPC:\E[0m%04x",
+	      Z80_context[num].z80sp,
+	      Z80_context[num].z80pc);
+      break;
+  case 3:
+      for (int n=0; n<8; n++) {
+	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,regs.regs[n]);
+	  if (n==3 || n==7) {
+	      cons->print(buf);
+	      *buf = 0;
+	  }
+      }
+      for (int n=0; n<8; n++) {
+	  sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,regs.regs[n+8]);
+	  if (n==3 || n==7) {
+	      cons->print(buf);
+	      *buf = 0;
+	  }
+      }
+      cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",regs.sr,regs.pc);
+      break;
   }
 }
 
@@ -1053,7 +1096,7 @@ commands_t commands[] =
 };
 
 int do_console(int sel) {
-    s68000_get_ram(cpu_id & 0xf,ram,&nb_ram);
+    cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;
     if (!cons)
 	cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,1000, commands);

@@ -370,3 +370,18 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 
    return ret;
 }
+
+void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
+    int n;
+    switch(cpu>>4) {
+    case 1: s68000_get_ram(cpu & 0xf,range,count); break;
+    case 2: z80_get_ram(cpu & 0xf, range, count); break;
+    case 3:
+	    for(n=0; n<0x100; n++) {
+		range[n*2] = n<<16;
+		range[n*2+1] = ((n+1)<<16)-1;
+	    }
+	    *count = 0x200;
+    }
+}
+

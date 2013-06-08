@@ -127,6 +127,34 @@ static void add_mz80_memory_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2
    memory_count_rb[cpu]++;
 }
 
+void z80_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
+  *count = 0;
+  int max = memory_count_rb[cpu];
+  int n;
+  for (n=0; n<max; n++) {
+    if (!Z80_memory_rb[cpu][n].memoryCall &&
+         Z80_memory_rb[cpu][n].pUserArea &&
+	 (Z80_memory_rb[cpu][n].lowAddr & 0xff000000) == 0) {
+	range[(*count)++] = Z80_memory_rb[cpu][n].lowAddr;
+	range[(*count)++] = Z80_memory_rb[cpu][n].highAddr;
+    }
+  }
+}
+
+UINT8 *z80_get_userdata(UINT32 cpu, UINT32 adr) {
+  int max = memory_count_rb[cpu];
+  int n;
+  for (n=0; n<max; n++) {
+    if (!Z80_memory_rb[cpu][n].memoryCall &&
+         Z80_memory_rb[cpu][n].pUserArea &&
+	 Z80_memory_rb[cpu][n].lowAddr <= adr &&
+	 Z80_memory_rb[cpu][n].highAddr >= adr) {
+      return Z80_memory_rb[cpu][n].pUserArea;
+    }
+  }
+  return NULL;
+}
+
 static void add_mz80_memory_region_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
    if(!d2){
@@ -804,7 +832,7 @@ void z80_init_banks_area(int cpu,UINT8 *rombase, int rom_size, UINT32 offset,
 
   nb_banks[cpu] = (rom_size - offset)/len2;
   size = nb_banks[cpu] * (offset + len); // must copy the rom for each bank
-  bank_offset[cpu] = offset; 
+  bank_offset[cpu] = offset;
   bank_len[cpu] = len2;
   if (nb_banks[cpu] > MAX_BANKS) {
     allegro_message("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);

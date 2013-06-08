@@ -40,6 +40,8 @@ void AddZ80AWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
   AddZ80BRead(d0,d1,d2,d3); \
   AddZ80BWrite(d0,d1,d2,d3);
 
+void z80_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
+UINT8 *z80_get_userdata(UINT32 cpu, UINT32 adr);
 void AddZ80AReadPort( UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
 void AddZ80AWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
 

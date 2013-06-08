@@ -1,3 +1,5 @@
+#include "z80/mz80help.h"
+#include "68020/u020help.h"
 #include <muParser.h>
 #include <stdio.h>
 #include "sdl/compat.h"
@@ -21,7 +23,7 @@ value_type LogOr(value_type v1, value_type v2) { return int(v1) || int(v2); }
 value_type LogAnd(value_type v1, value_type v2) { return int(v1) && int(v2); }
 value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
-static double sr, pc, a[8], d[8];
+static double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl;
 
 value_type peek(value_type fadr) {
   UINT32 adr = fadr;
@@ -48,25 +50,63 @@ value_type lpeek(value_type fadr) {
 }
 
 void get_regs(int cpu) {
-    if ((cpu >> 4) == 1) { // 68k
+    int num;
+    switch (cpu >> 4) {
+    case 1: // 68k
 	for (int n=0; n<8; n++) {
 	    a[n] = s68000context.areg[n];
 	    d[n] = s68000context.dreg[n];
 	}
 	sr = s68000context.sr;
 	pc = s68000context.pc;
+	break;
+    case 2:
+	num = cpu & 0xf;
+	za = (Z80_context[num].z80af>>8);
+	zf = (Z80_context[num].z80af&0xff);
+	zb = (Z80_context[num].z80bc>>8);
+	zc = (Z80_context[num].z80bc&0xff);
+	zd = (Z80_context[num].z80de>>8);
+	ze = (Z80_context[num].z80de&0xff);
+	zh = (Z80_context[num].z80hl>>8);
+	zl = (Z80_context[num].z80hl&0xff);
+	break;
+    case 3: // 68020
+	for (int n=0; n<8; n++) {
+	    a[n] = regs.regs[n+8];
+	    d[n] = regs.regs[n];
+	}
+	sr = regs.sr;
+	pc = regs.pc;
+	break;
     }
 }
 
 void set_regs(int cpu) {
     int num = cpu & 0xf;
-    if ((cpu >> 4) == 1) { // 68k
+    switch (cpu >> 4) {
+    case 1:
 	for (int n=0; n<8; n++) {
 	    M68000_context[num].areg[n] = s68000context.areg[n] = a[n];
 	    M68000_context[num].dreg[n] = s68000context.dreg[n] = d[n];
 	}
 	M68000_context[num].sr = s68000context.sr = sr;
 	M68000_context[num].pc = s68000context.pc = pc;
+	break;
+    case 2:
+	Z80_context[num].z80af = (int(za)<<8)|int(zf);
+	Z80_context[num].z80bc = (int(zb)<<8)|int(zc);
+	Z80_context[num].z80de = (int(zd)<<8)|int(ze);
+	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
+	break;
+    case 3:
+	for (int n=0; n<8; n++) {
+	    regs.regs[n+8] = a[n];
+	    regs.regs[n] = d[n];
+	}
+	regs.sr = sr;
+	regs.pc = pc;
+	break;
     }
 }
 
@@ -88,8 +128,8 @@ static value_type alert(const char_type *msg_and_btns) {
 static int initialised = 0;
 static mu::Parser p;
 int parser_error;
-static double afValBuf[100];  
-static int iVal = 0;          
+static double afValBuf[100];
+static int iVal = 0;
 
 double* AddVariable(const char *a_szName, void *pUserData)
 {
@@ -101,7 +141,7 @@ double* AddVariable(const char *a_szName, void *pUserData)
   return &afValBuf[iVal-1];
 }
 
-int parse(char *orig) 
+int parse(char *orig)
 {
 //  using namespace mu;
   int res;
@@ -162,10 +202,10 @@ int parse(char *orig)
       p.DefineVar("pc",&pc);
       initialised = 1;
     }
-//    p.DefineVar("a", &fVal); 
-//    p.DefineFun("MyFunc", MyFunction); 
+//    p.DefineVar("a", &fVal);
+//    p.DefineFun("MyFunc", MyFunction);
   try
-  { 
+  {
     p.SetExpr(expr);
     res = p.Eval();
 
