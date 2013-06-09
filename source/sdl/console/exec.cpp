@@ -388,14 +388,14 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
 	end++;
 	*end = 0;
 	memcpy(dest,adr,4);
-	sprintf(&dest[4],":\t");
+	sprintf(&dest[4],"\t");
 	adr += 6;
-	char *pdest = &dest[6];
+	char *pdest = &dest[5];
 	do { // copy opcodes
 	    memcpy(pdest,adr,2);
 	    pdest+=2;
 	    adr += 3;
-	} while (*adr >= '0' && *adr <= '9');
+	} while (adr[-1] != 9);
 	sprintf(pdest,"\t%s",beg);
 	fprintf(f,"%s\n",dest);
 	continue;
