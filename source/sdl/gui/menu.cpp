@@ -3,13 +3,13 @@ I tried to make it work in double buffer mode at first, before realizing it
 creates really too many problems, and it's much easier to simply disable double
 buffer before calling the gui */
 
-/* Very basic menu system, inspired from neocdpsp interface 
+/* Very basic menu system, inspired from neocdpsp interface
  * In fact it has become the core of the new gui system for raine.
  *
  * The idea behind this one is to have something as easy to program as
  * possible (1st goal), usable with any peripheral (2nd), and also nice if
  * possible (3rd !) ;-)
- * 
+ *
  * To achieve this easy programmation, I took some ideas from the guis on psp:
  * a basic "menu" on screen, you can move to any option, pressing a button
  * execute it, and moving right or left changes values in a list of values
@@ -219,7 +219,7 @@ void sort_menu(menu_item_t *menu) {
     }
   }
 }
-	   
+
 static TMenu *caller;
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame) {
@@ -232,15 +232,15 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   font = NULL;
   menu_disp = NULL;
   parent = caller;
-  
+
   if (myfg == -1)
     fg = fg_color;
   else
-    fg = myfg; 
+    fg = myfg;
   if (mybg == -1)
     bg = bg_color;
   else
-    bg = mybg; 
+    bg = mybg;
   if (myfg_frame == -1)
     fg_frame = fgframe_color;
   else
@@ -265,7 +265,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
 
 TMenu::~TMenu() {
   if (child) {
-    for (int n=0; n<nb_items; n++) 
+    for (int n=0; n<nb_items; n++)
       delete child[n];
     free(child);
     child = NULL;
@@ -302,11 +302,11 @@ void TMenu::create_child(int n) {
     child[n] = new TProgressBar(&menu[n]);
   else if (menu[n].values_list_size == ITEM_SLIDER)
     child[n] = new TSlider(&menu[n]);
-  else if (menu[n].values_list_size == ITEM_EDIT) 
+  else if (menu[n].values_list_size == ITEM_EDIT)
     child[n] = new TEdit(&menu[n]);
-  else if (menu[n].values_list_size == ITEM_TBITMAP) 
+  else if (menu[n].values_list_size == ITEM_TBITMAP)
     child[n] = new TBitmap(&menu[n]);
-  else if (menu[n].values_list_size == ITEM_FLOATEDIT) 
+  else if (menu[n].values_list_size == ITEM_FLOATEDIT)
     child[n] = new TFloatEdit(&menu[n]);
 
   else {
@@ -317,7 +317,7 @@ void TMenu::create_child(int n) {
 
 void TMenu::compute_nb_items() {
   if (child) {
-    for (int n=0; n<nb_items; n++) 
+    for (int n=0; n<nb_items; n++)
       if (child[n]) delete child[n];
     free(child);
     child = NULL;
@@ -328,7 +328,7 @@ void TMenu::compute_nb_items() {
     while (menu[nb_items].label) {
       if (can_be_displayed(nb_items)) {
 	nb_disp_items++;
-      } 
+      }
       nb_items++;
     }
     if (menu_disp)
@@ -416,7 +416,7 @@ void TMenu::draw_frame(SDL_Rect *r) {
 
   sprintf(top_string,"%s %s",get_emuname(),title);
   len_top = strlen(top_string);
-  
+
   old_font = font;
   font = NULL;
   /* if (!font) */ setup_font((len_top > len_bot ? len_top : len_bot));
@@ -611,7 +611,7 @@ int TMenu::compute_fglayer_height() {
     do {
       h = 2*HMARGIN + get_fglayer_footer_height();
       skip_fglayer_header(h);
-      for (int n=top; n<top+rows; n++) 
+      for (int n=top; n<top+rows; n++)
 	h += child[menu_disp[n]]->get_height(font);
       if (h > work_area.h)
 	rows--;
@@ -782,7 +782,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
 	SDL_Rect dst;
 	dst.x = fw; dst.y = y; dst.w = w; dst.h = h;
 	SDL_FillRect(fg_layer,&dst,bgsdl);
-      } 
+      }
       disp_menu(index,y,w,h);
       if (nb_to_update == index) {
 	/* If we update just 1 entry, then we must explicitely update
@@ -877,7 +877,7 @@ void TMenu::do_update(SDL_Rect *region) {
   if (emulate_mouse_cursor && cursor) {
     if (!mouse_erased) {
       if (!region || (mousex[flip_page] >= region->x &&
-	    mousex[flip_page] < region->x+region->w && 
+	    mousex[flip_page] < region->x+region->w &&
 	    mousey[flip_page] >= region->y &&
 	    mousey[flip_page] < region->y+region->h))
 	mouse_erased = 1;
@@ -885,12 +885,12 @@ void TMenu::do_update(SDL_Rect *region) {
     if (mouse_erased) {
       r.x = mousex[flip_page];
       r.y = mousey[flip_page];
-	
+
       SDL_BlitSurface(cursor,NULL,sdl_screen,&r);
       mouse_erased = 0;
       drawn_mouse = 1;
     }
-  } 
+  }
   if ( sdl_screen->flags & SDL_DOUBLEBUF ) {
     if (!emulate_mouse_cursor || !cursor)
       SDL_ShowCursor(SDL_ENABLE);
@@ -1257,7 +1257,7 @@ void TMenu::redraw(SDL_Rect *r) {
     }
     SDL_BlitSurface(fg_layer,&from,sdl_screen,r);
     *r = oldr; // preserve region
-  } 
+  }
 }
 
 void TMenu::handle_mouse(SDL_Event *event) {
@@ -1302,7 +1302,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
   }
   if (lift && mx > fgdst.x+fgdst.w-lift->get_width()) {
     lift->handle_mouse(event);
-    return; 
+    return;
   }
   switch (event->type) {
     case SDL_MOUSEMOTION:
@@ -1379,13 +1379,13 @@ void TMenu::handle_joystick(SDL_Event *event) {
       axis_y = 0;
       jmoved = 0;
 
-      if (hat == SDL_HAT_UP) 
+      if (hat == SDL_HAT_UP)
 	axis_y = -1;
       if (hat == SDL_HAT_DOWN)
 	axis_y = 1;
       if (hat == SDL_HAT_LEFT)
 	axis_x = -1;
-      if (hat == SDL_HAT_RIGHT) 
+      if (hat == SDL_HAT_RIGHT)
 	axis_x = 1;
       if (hat) {
 	jmoved = 1;
@@ -1460,7 +1460,7 @@ void TMenu::call_handler() {
     }
     SDL_initFramerate(&fpsm);
     fpsm.use_cpu_frame_count = 0;
-    SDL_setFramerate(&fpsm,30); 
+    SDL_setFramerate(&fpsm,30);
   }
 }
 
@@ -1506,7 +1506,7 @@ void TMenu::execute() {
     sa_pause_sound();
     unicode = SDL_EnableUNICODE(-1);
     if (!unicode) SDL_EnableUNICODE(1);
-    SDL_EnableKeyRepeat(repeat_delay, 
+    SDL_EnableKeyRepeat(repeat_delay,
 	repeat_interval);
     if (sdl_game_bitmap) {
       work_area.x = work_area.y = 0;
@@ -1618,7 +1618,7 @@ void TMenu::execute() {
     update_count++;
     // if we want to handle animations on the bg layer 1 day...
     // update_bg_layer();
-    if (top != oldtop) 
+    if (top != oldtop)
       redraw_fg_layer();
     else if (sel != oldsel) {
       update_fg_layer(oldsel);
@@ -1640,6 +1640,10 @@ void TMenu::execute() {
     caller = parent;
   } else {
     clear_surface(sdl_screen);
+    if ( sdl_screen->flags & SDL_DOUBLEBUF )
+	SDL_Flip(sdl_screen);
+    else
+	SDL_UpdateRect(sdl_screen,0,0,0,0);
     caller = NULL;
   }
   gui_level--;
@@ -1724,7 +1728,7 @@ void TDialog::setup_font(unsigned int len_frame) {
       width_max = w;
     }
     int htotal = (sdl_screen->h-htitle)/(nb_items + 4 + 6); // margin
-    if (rows) 
+    if (rows)
       htotal = (sdl_screen->h-htitle)/rows;
     if (htotal < font->get_font_height() && htotal < font->get_font_width()) {
       delete font;
