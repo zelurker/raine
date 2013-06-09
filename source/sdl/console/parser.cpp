@@ -23,7 +23,7 @@ value_type LogOr(value_type v1, value_type v2) { return int(v1) || int(v2); }
 value_type LogAnd(value_type v1, value_type v2) { return int(v1) && int(v2); }
 value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
-static double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl;
+static double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
 
 value_type peek(value_type fadr) {
   UINT32 adr = fadr;
@@ -62,6 +62,7 @@ void get_regs(int cpu) {
 	break;
     case 2:
 	num = cpu & 0xf;
+	mz80GetContext(&Z80_context[num]);
 	za = (Z80_context[num].z80af>>8);
 	zf = (Z80_context[num].z80af&0xff);
 	zb = (Z80_context[num].z80bc>>8);
@@ -70,6 +71,8 @@ void get_regs(int cpu) {
 	ze = (Z80_context[num].z80de&0xff);
 	zh = (Z80_context[num].z80hl>>8);
 	zl = (Z80_context[num].z80hl&0xff);
+	pc = Z80_context[num].z80pc;
+	iff = Z80_context[num].z80iff;
 	break;
     case 3: // 68020
 	for (int n=0; n<8; n++) {
@@ -98,6 +101,9 @@ void set_regs(int cpu) {
 	Z80_context[num].z80bc = (int(zb)<<8)|int(zc);
 	Z80_context[num].z80de = (int(zd)<<8)|int(ze);
 	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
+	Z80_context[num].z80pc = pc;
+	Z80_context[num].z80iff = iff;
+	mz80SetContext(&Z80_context[num]);
 	break;
     case 3:
 	for (int n=0; n<8; n++) {
@@ -191,14 +197,27 @@ int parse(char *orig)
       p.DefineFun( _T("lpeek"), lpeek, false);
       p.SetVarFactory(AddVariable,&p);
       // p.DefineFun( _T("r"), reg, false);
-      for (int n=0; n<8; n++) {
-	char name[3];
-	sprintf(name,"d%d",n);
-	p.DefineVar(name,&d[n]);
-	sprintf(name,"a%d",n);
-	p.DefineVar(name,&a[n]);
+      int cpu = get_cpu_id();
+      if (cpu == 1 || cpu == 3) {
+	  for (int n=0; n<8; n++) {
+	      char name[3];
+	      sprintf(name,"d%d",n);
+	      p.DefineVar(name,&d[n]);
+	      sprintf(name,"a%d",n);
+	      p.DefineVar(name,&a[n]);
+	  }
+	  p.DefineVar("sr",&sr);
+      } else { // 2 : z80
+	  p.DefineVar("a",&za);
+	  p.DefineVar("b",&zb);
+	  p.DefineVar("c",&zc);
+	  p.DefineVar("d",&zd);
+	  p.DefineVar("e",&ze);
+	  p.DefineVar("f",&zf);
+	  p.DefineVar("h",&zh);
+	  p.DefineVar("l",&zl);
+	  p.DefineVar("iff",&iff);
       }
-      p.DefineVar("sr",&sr);
       p.DefineVar("pc",&pc);
       initialised = 1;
     }

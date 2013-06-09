@@ -40,6 +40,8 @@ static void exec_break() {
 }
 
 void do_break(int argc, char **argv) {
+    if (get_cpu_id() != 1)
+	throw "breakpoints only for 68000 for now";
   if (argc == 1) {
     if (used_break == 0) {
       if (cons) cons->print("no breakpoint");
@@ -141,8 +143,8 @@ int check_breakpoint() {
     return irq;
 }
 
-static int do_cycles(int cpu, int can_be_stopped = 1) {
-  set_regs(0);
+static int do_cycles(int cpu = get_cpu_id(), int can_be_stopped = 1) {
+  set_regs();
   UINT32 cycles = 1, oldpc = cpu_get_pc(cpu);
   do {
     cpu_execute_cycles(cpu,cycles);
@@ -184,7 +186,7 @@ void restore_breakpoints() {
       printf("found breakpoint to restore : %d\n",n);
       // 1 : get the pc out of the breakpoint
       while (s68000context.pc >= breakp[n].adr && s68000context.pc < breakp[n].adr+2) {
-	do_cycles(CPU_68K_0,0);
+	do_cycles(get_cpu_id(),0);
       }
       // 2 : restore it
       UINT32 adr = breakp[n].adr;
@@ -211,7 +213,7 @@ void do_cond(int argc, char **argv) {
     }
     int total = 16000000/60;
     while (total > 0 && !cond) {
-      total -= do_cycles(CPU_68K_0);
+      total -= do_cycles();
       cond = parse(argv[1]);
     }
     if (cond) {
@@ -319,64 +321,111 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
    char *header)
 {
   char name[1024];
-  strcpy(name,name2);
-  name[strlen(name)-2] = 0; // remove extension .s
+  char dir[FILENAME_MAX];
+  getcwd(dir,FILENAME_MAX);
+  // Strip dir: dz80 is totally buggy, if you pass a long filename with dirs
+  // it just can't find it !!!
+  char *pdir = strrchr(name2,'/');
+  strcpy(name,pdir+1);
+  *pdir = 0;
+  chdir(name2);
+  *pdir = '/';
+  sprintf(strrchr(name,'.')+1,"bin"); // new extension, required by dz80
   char cmd[1024];
-  // add the -all option because m68kdis sometimes tries to be too clever
-  // and finds data where there are only instructions (maybe there is another
-  // way to do it, but it's the fastest one).
-  sprintf(cmd,"m68kdis -pc %d -o \"%s\" \"%s\"",start,name2,name);
-  ByteSwap(&ptr[start],end-start);
+  int cpu_id = get_cpu_id()>>4;
+  switch(cpu_id) {
+  case 1: // 68k
+      sprintf(cmd,"m68kdis -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      ByteSwap(&ptr[start],end-start);
+      break;
+  case 3:
+      sprintf(cmd,"m68kdis -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      break;
+  case 2:
+      sprintf(cmd,"dz80 -d \"%s\"",name);
+      break;
+  }
   save_file(name,&ptr[start],end-start);
-  ByteSwap(&ptr[start],end-start);
+  if (cpu_id == 1)
+	  ByteSwap(&ptr[start],end-start);
   printf("cmd: %s\n",cmd);
-  if (system(cmd) < 0)
-    throw "can't execute m68kdis !";
-  int found_dcw = 0;
-  FILE *f = fopen(name2,"r");
-  while (!feof(f) && !found_dcw) {
-      char buff[1024];
-      fgets(buff,1024,f);
-      if (strstr(buff,"DC.W")) {
-	  found_dcw = 1;
-	  break;
-      }
+  if (system(cmd) < 0) {
+      chdir(dir);
+      throw "can't execute m68kdis !";
   }
-  fclose(f);
-#if 0
-  if (found_dcw) {
-      sprintf(cmd,"m68kdis -all -pc %d -o \"%s\" \"%s\"",start,name2,name);
-      system(cmd);
+  sprintf(strrchr(name,'.'),".t");
+  FILE *f = fopen(name,"w");
+  if (!f) {
+      chdir(dir);
+      throw "can't create asm temporary file";
   }
-#endif
-  name[strlen(name)] = '.'; // extension back
-  name[strlen(name)-1] = 't'; // extension back
-  f = fopen(name,"w");
-  if (!f)
-    throw "can't create asm temporary file";
   fprintf(f,"%s\n",header);
   FILE *g = fopen(name2,"r");
   if (!g) {
     fclose(f);
-    throw "m68kdis didn't work as expected !";
+    chdir(dir);
+    throw "couldn't open assembler output !";
   }
   while (!feof(g)) {
     char buf[256];
     myfgets(buf,256,g);
+    if (cpu_id == 2) { // z80
+	// dz80 : filter out lines wihtout assembly
+	char *p = strstr(buf,"; ");
+	if (p && p[6] != 32)
+	    p = NULL;
+	if (!p) continue;
+	// Filter out these stupid X everywhere from dz80 !
+	while ((p = strchr(buf,'X')))
+	    memmove(p,p+1,strlen(p+1)+1);
+	// Reformat the whole line to get :
+	// adr\topcodes (without space)\tinstruction\targument
+	char *beg = strchr(buf,9)+1; // tab before instruction
+	char *adr = strchr(buf,';')+2;
+	char dest[1024];
+	char *end = adr-3;
+	while (*end == 9) end--;
+	end++;
+	*end = 0;
+	memcpy(dest,adr,4);
+	sprintf(&dest[4],":\t");
+	adr += 6;
+	char *pdest = &dest[6];
+	do { // copy opcodes
+	    memcpy(pdest,adr,2);
+	    pdest+=2;
+	    adr += 3;
+	} while (*adr >= '0' && *adr <= '9');
+	sprintf(pdest,"\t%s",beg);
+	fprintf(f,"%s\n",dest);
+	continue;
+    }
     fprintf(f,"%s\n",buf);
   }
   fclose(f);
   fclose(g);
   unlink(name2);
   rename(name,name2);
+  chdir(dir);
 }
 
 static FILE *open_asm(UINT32 target) {
   char str[1024];
   char buf[256];
-  sprintf(str,"%s/prg_%02x.s",get_shared("debug"),target/0x10000);
+  int cpu_id = get_cpu_id();
+  switch(cpu_id>>4) {
+  case 1:
+      sprintf(str,"%s/prg_%02x.s",get_shared("debug"),target/0x10000);
+      break;
+  case 2:
+      sprintf(str,"%s/prg.z80",get_shared("debug"));
+      break;
+  case 3:
+      sprintf(str,"%s/prg020_%02x.s",get_shared("debug"),target/0x10000);
+      break;
+  }
   UINT32 start,end;
-  UINT8 *ptr = get_code_range(0,target,&start,&end);
+  UINT8 *ptr = get_code_range(cpu_id,target,&start,&end);
   if (!ptr)
     throw "no code for this address";
   int min = target/0x10000*0x10000-0x100;
@@ -419,7 +468,7 @@ static FILE *open_asm(UINT32 target) {
   return f;
 }
 
-static void get_instruction(UINT32 target = s68000context.pc) {
+static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
   FILE *f = open_asm(target);
   int line;
   fseek(f,get_offs(target,&line),SEEK_SET);
@@ -449,28 +498,30 @@ void do_list(int argc, char **argv) {
   int offset, line;
   static UINT32 last_list_adr, last_list_pc;
   static char buffadr[10];
-  if (argc == 1 && last_list_adr && last_list_pc == s68000context.pc) {
+  int cpu_id = get_cpu_id();
+  UINT32 pc0 = cpu_get_pc(cpu_id);
+  if (argc == 1 && last_list_adr && last_list_pc == pc0) {
     argc = 2;
     sprintf(buffadr,"$%x",last_list_adr);
     argv[1] = buffadr;
   }
 
   if (argc == 1) {
-    if (pc != s68000context.pc) {
+    if (pc != pc0) {
       get_instruction();
-      if (pc != s68000context.pc) {
-	cons->print("pc=%x not found in asm file",s68000context.pc);
+      if (pc != pc0) {
+	cons->print("pc=%x not found in asm file",pc0);
 	return;
       }
     }
-    offset = get_offs(s68000context.pc,&line);
+    offset = get_offs(pc0,&line);
     int prev_line;
     if (line > 3) {
       prev_line = line-3;
       int actual_line = prev_line;
-      get_line_offset(&actual_line,&offset,s68000context.pc/0x10000);
+      get_line_offset(&actual_line,&offset,pc0/0x10000);
       if (actual_line < prev_line) {
-	FILE *f = open_asm(s68000context.pc);
+	FILE *f = open_asm(pc0);
 	fseek(f,offset,SEEK_SET);
 	myfgets(buff,256,f);
 	while (actual_line < prev_line) {
@@ -499,7 +550,7 @@ void do_list(int argc, char **argv) {
     myfgets(buff,256,f);
     line++;
     sscanf(buff,"%x %x %s %s",&pc,&opcode,instruction,args);
-    if (pc == s68000context.pc)
+    if (pc == pc0)
       cons->print("\E[32m%s\E[0m",buff);
     else
       cons->print("%s",buff);
@@ -510,33 +561,50 @@ void do_list(int argc, char **argv) {
   sscanf(buff,"%x %x %s %s",&pc,&opcode,instruction,args);
   set_offs(pc,offset,line);
   last_list_adr = pc;
-  last_list_pc = s68000context.pc;
+  last_list_pc = pc0;
   fclose(f);
 }
 
 static void disp_instruction() {
   get_instruction();
-  if (pc != s68000context.pc)
-    cons->print("pc=%x not found in asm file",s68000context.pc);
+  UINT32 pc1 = cpu_get_pc(get_cpu_id());
+  if (pc != pc1)
+    cons->print("pc=%x not found in asm file",pc1);
   else
     cons->print(buff);
 }
 
 void do_step(int argc, char **argv) {
   if (argc > 1) throw("syntax : step");
-  do_cycles(CPU_68K_0);
+  do_cycles();
   disp_instruction();
 }
 
 void do_next(int argc, char **argv) {
-  if (pc != s68000context.pc)
+    int cpu = get_cpu_id();
+  UINT32 pc1 = cpu_get_pc(cpu);
+  if (pc != pc1)
     get_instruction();
-  do_cycles(CPU_68K_0);
-  if (!strcasecmp(instruction,"JSR") || !strcasecmp(instruction,"BSR") ||
-      !strcasecmp(instruction,"TRAP")) {
-    while (s68000context.pc != next_pc) {
-      do_cycles(CPU_68K_0);
-    }
+  do_cycles();
+  switch(cpu>>4) {
+  case 1:
+  case 3:
+      if (!strcasecmp(instruction,"JSR") || !strcasecmp(instruction,"BSR") ||
+	      !strcasecmp(instruction,"TRAP")) {
+	  while (cpu_get_pc(cpu) != next_pc) {
+	      do_cycles();
+	  }
+      }
+      break;
+  case 2:
+      if (!strcasecmp(instruction,"CALL")) {
+	  while (cpu_get_pc(cpu) != next_pc) {
+	      do_cycles();
+	  }
+      }
+      break;
+  default:
+      throw "this cpu is not supported";
   }
   disp_instruction();
 }
@@ -552,7 +620,7 @@ void do_irq(int argc, char **argv) {
     throw "not in an irq !";
   int current = s68000context.sr & 0x2700;
   while ((s68000context.sr & 0x2700) == current)
-    do_cycles(CPU_68K_0);
+    do_cycles();
   disp_instruction();
 }
 
@@ -562,7 +630,7 @@ void do_until(int argc, char **argv) {
   }
   UINT32 pc = parse(argv[1]);
   while (s68000context.pc != pc)
-    do_cycles(CPU_68K_0);
+    do_cycles();
   disp_instruction();
 }
 

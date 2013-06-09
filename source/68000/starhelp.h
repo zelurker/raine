@@ -95,8 +95,8 @@ void set_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void set_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 
 void s68000_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
-UINT8 *get_userdata(UINT32 cpu, UINT32 adr);
-UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end);
+UINT8 *s68k_get_userdata(UINT32 cpu, UINT32 adr);
+UINT8 *s68k_get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end);
 void *get_userfunc(UINT32 cpu, int read, int size, int off_start, UINT32 offset);
 
 // misc debuging...

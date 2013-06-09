@@ -21,6 +21,8 @@ static UINT32 ram[0x100*2],nb_ram;
 static UINT8 *ram_buf[0x100],*search_size;
 static UINT32 nb_search, nb_alloc_search, *search;
 
+int get_cpu_id() { return cpu_id; }
+
 #define MAX_WATCH 10
 
 typedef struct {
@@ -41,12 +43,7 @@ UINT8 *get_ptr(UINT32 adr, UINT32 *the_block) {
   }
   if (the_block) *the_block = block;
 
-  switch(cpu_id >> 4){
-  case 1: return get_userdata(cpu_id & 0xf,ram[block]);
-  case 2: return z80_get_userdata(cpu_id & 0xf,ram[block]);
-  case 3: return R24[ram[block]>>16];
-  }
-  return NULL;
+  return get_userdata(cpu_id,ram[block]);
 }
 
 typedef int (thandler)(UINT32 offset, UINT32 data);
@@ -235,20 +232,6 @@ int TRaineConsole::run_cmd(char *string) {
 }
 
 void TRaineConsole::execute() {
-#ifndef NO020
-  if (MC68020)
-      cpu_id = CPU_M68020_0;
-  else
-#endif
-#if HAVE_68000
-    if(StarScreamEngine>=1){
-	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
-    } else
-#endif
-#if HAVE_Z80
-   if(MZ80Engine>=1)		// Guess it's a z80 game
-       cpu_id = CPU_Z80_0;
-#endif
   TConsole::execute();
   // Take a snapshot of the ram to be able to look for variations
   for (UINT32 n=0; n<nb_ram; n+=2) {
@@ -256,7 +239,7 @@ void TRaineConsole::execute() {
     if (!ram_buf[n/2]) {
       ram_buf[n/2] = AllocateMem(size);
     }
-    UINT8 *ptr = get_userdata(0,ram[n]);
+    UINT8 *ptr = get_userdata(cpu_id,ram[n]);
     memcpy(ram_buf[n/2],ptr+ram[n],size);
   }
   pointer_on = 0;
@@ -515,9 +498,10 @@ void do_regs(int argc, char **argv) {
 	      Z80_context[num].z80bc,
 	      Z80_context[num].z80de,
 	      Z80_context[num].z80hl);
-      cons->print("\E[36mSP:\E[0m%04x \E[36mPC:\E[0m%04x",
+      cons->print("\E[36mSP:\E[0m%04x \E[36mPC:\E[0m%04x \E[36mIFF:\E[0m%d",
 	      Z80_context[num].z80sp,
-	      Z80_context[num].z80pc);
+	      Z80_context[num].z80pc,
+	      Z80_context[num].z80iff);
       break;
   case 3:
       for (int n=0; n<8; n++) {
@@ -861,7 +845,7 @@ static void do_search(int argc, char **argv) {
       return;
     }
 
-    ptr = get_userdata(0,ram[block]);
+    ptr = get_userdata(cpu_id,ram[block]);
 
     if (argv[1][0] == '"' || argv[1][0] == 0x27 /* ' */) {
       // search for string
@@ -1096,6 +1080,20 @@ commands_t commands[] =
 };
 
 int do_console(int sel) {
+#ifndef NO020
+  if (MC68020)
+      cpu_id = CPU_M68020_0;
+  else
+#endif
+#if HAVE_68000
+    if(StarScreamEngine>=1){
+	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
+    } else
+#endif
+#if HAVE_Z80
+   if(MZ80Engine>=1)		// Guess it's a z80 game
+       cpu_id = CPU_Z80_0;
+#endif
     cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;
     if (!cons)

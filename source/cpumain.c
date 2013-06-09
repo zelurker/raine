@@ -377,11 +377,51 @@ void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
     case 1: s68000_get_ram(cpu & 0xf,range,count); break;
     case 2: z80_get_ram(cpu & 0xf, range, count); break;
     case 3:
+	    *count = 0;
 	    for(n=0; n<0x100; n++) {
-		range[n*2] = n<<16;
-		range[n*2+1] = ((n+1)<<16)-1;
+		/* Check that this R24 is not already used.
+		 * Otherwise it would be a very unefficient waste of ram ! */
+		int found = 0;
+		int m;
+		for (m=0; m<n; m++) {
+		    if (R24[n] == R24[m]) {
+			found = 1;
+			break;
+		    }
+		}
+		if (!found) {
+		    range[*count++] = n<<16;
+		    range[*count++] = ((n+1)<<16)-1;
+		}
 	    }
-	    *count = 0x200;
     }
+}
+
+UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
+    switch(cpu >> 4) {
+    case 1:
+	s68k_get_code_range(cpu & 0xf, adr, start, end);
+	break;
+    case 2:
+	// For the z80 all the rombase is executable, so...
+	*start = 0;
+	*end = 0xffff;
+	return Z80_context[cpu & 0xf].z80Base;
+    case 3:
+	// For the 020, the whole R24 array is executable, so...
+	*start = (adr>>16)<<16;
+	*end = *start + 0xffff;
+	return R24[adr>>16];
+    }
+    return NULL;
+}
+
+UINT8 *get_userdata(UINT32 cpu, UINT32 adr) {
+    switch(cpu >> 4) {
+    case 1: return s68k_get_userdata(cpu & 0xf,adr);
+    case 2: return z80_get_userdata(cpu & 0xf,adr);
+    case 3: return R24[adr >> 16];
+    }
+    return NULL;
 }
 
