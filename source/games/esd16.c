@@ -41,8 +41,9 @@ static struct ROM_INFO rom_mchampdx[] =
   { "esd3.su06", 0x80000, 0x2c0c8813, REGION_ROM2, 0x8000, LOAD_NORMAL },
   { "rom.ju02", 0x200000, 0x7e87e332, REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "rom.ju01", 0x200000, 0x1a749fc2, REGION_GFX1, 0x200000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
-            "esd5.ju07",  0x6cc871cc, "esd5.ju07",  0x6cc871cc),
+  { "esd5.ju07",0x080000, 0x6cc871cc, REGION_GFX1, 0x400000, LOAD_8_16 },
+  // To emulate the rom_fill :
+  { "esd5.ju07", 0x080000, 0x6cc871cc, REGION_GFX1, 0x500001, LOAD_8_16 },
   LOAD8_16(  REGION_GFX2,  0x000000,  0x200000,
             "rom.fu35",  0xba46f3dc, "rom.fu34",  0x2895cf09),
   { "esd4.su10", 0x80000, 0x14c4a30d, REGION_SMP1, 0x00000, LOAD_NORMAL },
@@ -59,8 +60,8 @@ static struct ROM_INFO rom_hedpanic[] =
 	/* expand this to take up 0x200000 bytes too so we can decode it */
   { "esd7", 0x200000, 0x055d525f, REGION_GFX1, 0x000000, LOAD_NORMAL },
 /* Ignored : 	ROM_FILL( 0x500000, 0x100000, 0 ) */
-  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
-            "esd5",  0xbd785921, "esd5",  0xbd785921),
+  { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x400000, LOAD_8_16 },
+  { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x500001, LOAD_8_16 },
   LOAD8_16(  REGION_GFX2,  0x000000,  0x200000,
             "esd8",  0x23aceb4f, "esd9",  0x76b46cd2),
   { "esd4", 0x080000, 0x5692fe92, REGION_SMP1, 0x000000, LOAD_NORMAL },
@@ -420,7 +421,7 @@ static void load_multchmp() {
 
   // sprites use 16 banks of 32 colors
   // + 2 (?) tilemaps (maybe shared) of 256 colors
-  InitPaletteMap(RAM+0x10000, 24, 32,0x8000);
+  InitPaletteMap(RAM+0x10000, 64, 32,0x8000);
   set_colour_mapper(&col_map_xrrr_rrgg_gggb_bbbb);
 
   AddMemFetch(0x000000,0x07ffff,ROM);
@@ -491,13 +492,9 @@ static void load_multchmp() {
   AddZ80AWritePort(2, 2, OKIM6295_data_0_w, NULL);
   AddZ80AWritePort(5, 5, z80a_set_bank, NULL);
 
-  AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);      // <Bad Reads>
-  AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);      // <Bad Reads>
-  AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);    // <Bad Writes>
-  AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);    // <Bad Writes>
-  AddRWBW(-1, -1, NULL, NULL);
-  AddZ80AReadByte (0x0000, 0xFFFF, DefBadReadZ80,            NULL                     );
-  AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,           NULL                     );
+  finish_conf_68000(0);
+  AddZ80AReadByte (0x0000, 0xFFFF, DefBadReadZ80,            NULL);
+  AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,           NULL);
   AddZ80AReadPort(-1, -1, NULL, NULL);
   AddZ80AWritePort(-1, -1, NULL, NULL);
 
@@ -511,7 +508,7 @@ static void load_multchmp() {
   if (is_current_game("multchmp"))
     draw_sprites = &esd16_draw_sprites;
   else
-    draw_sprites = &hedpanic_draw_sprites;
+    draw_sprites = &hedpanic_draw_sprites; // including mchampdx
 }
 
 static struct YM3812interface ym3812_interface =
