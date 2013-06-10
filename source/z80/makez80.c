@@ -4672,7 +4672,7 @@ static void ReadMemoryByteHandler(void)
 #else
 	fprintf(fp, "           push    edx     ; And our desired address\n");
 #endif
-	
+
 	if (FALSE == bUseStack)
 	{
 		fprintf(fp, "           mov     eax, edx        ; Get our desired address reg\n");
@@ -5325,7 +5325,6 @@ void IntCode(void)
 	fprintf(fp, "\n; Interrupts enabled. Clear IFF1 and IFF2\n\n");
 
 	fprintf(fp, "           and     dword [_z80iff], ~(IFF1 | IFF2);\n\n");
-	fprintf(fp, "           mov     [_z80intPending], byte 0\n");
 	fprintf(fp, "           mov     word [_z80halted], 0   ; We're not halted!\n");
 	fprintf(fp, "\n");
 	fprintf(fp, "           push    ebp\n");

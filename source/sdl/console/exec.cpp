@@ -126,8 +126,8 @@ int check_breakpoint() {
 	UINT8 *ptr = get_userdata(0,breakp[n].adr);
 	WriteWord(&ptr[breakp[n].adr],breakp[n].old);
 	irq = check_irq(breakp[n].adr);
-	if (s68000context.pc == breakp[n].adr+2) {
-	    s68000context.pc = breakp[n].adr;
+	if (pc == breakp[n].adr+2) {
+	    pc = breakp[n].adr;
 	}
 	if (breakp[n].cond) {
 	    get_regs(0);
@@ -185,13 +185,13 @@ void restore_breakpoints() {
     if (ReadWord(&ptr[breakp[n].adr]) == breakp[n].old) {
       printf("found breakpoint to restore : %d\n",n);
       // 1 : get the pc out of the breakpoint
-      while (s68000context.pc >= breakp[n].adr && s68000context.pc < breakp[n].adr+2) {
+      while (pc >= breakp[n].adr && pc < breakp[n].adr+2) {
 	do_cycles(get_cpu_id(),0);
       }
       // 2 : restore it
       UINT32 adr = breakp[n].adr;
       WriteWord(&ptr[adr],0x4e70); // reset
-      printf("breakpoint restored, pc = %x\n",s68000context.pc);
+      printf("breakpoint restored, pc = %x\n",int(pc));
     }
   }
 
@@ -247,7 +247,7 @@ void done_breakpoints() {
 
 static char buff[256];
 static char instruction[20],args[40];
-static UINT32 pc, opcode,next_pc,next_opcode;
+static UINT32 cur_pc, opcode,next_pc,next_opcode;
 
 static int get_offs(int adr, int *line) {
   int n;
@@ -478,13 +478,13 @@ static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
     myfgets(buff,256,f);
     if (buff[0] == ';')
       continue;
-    sscanf(buff,"%x %x %s %s",&pc,&opcode,instruction,args);
-    if (pc >= target) break;
-    if (!(pc & 0xffff)) set_offs(pc,offset,line);
+    sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
+    if (cur_pc >= target) break;
+    if (!(cur_pc & 0xffff)) set_offs(cur_pc,offset,line);
     line++;
   }
-  set_offs(pc,offset,line);
-  if (pc != target)
+  set_offs(cur_pc,offset,line);
+  if (cur_pc != target)
     *buff = 0;
   char buff2[256];
   offset = ftell(f);
@@ -507,9 +507,9 @@ void do_list(int argc, char **argv) {
   }
 
   if (argc == 1) {
-    if (pc != pc0) {
+    if (cur_pc != pc0) {
       get_instruction();
-      if (pc != pc0) {
+      if (cur_pc != pc0) {
 	cons->print("pc=%x not found in asm file",pc0);
 	return;
       }
@@ -524,13 +524,14 @@ void do_list(int argc, char **argv) {
 	FILE *f = open_asm(pc0);
 	fseek(f,offset,SEEK_SET);
 	myfgets(buff,256,f);
+	if (offset == 0)  myfgets(buff,256,f);
 	while (actual_line < prev_line) {
 	  offset = ftell(f);
 	  actual_line++;
 	  myfgets(buff,256,f);
-	  sscanf(buff,"%x %x %s %s",&pc,&opcode,instruction,args);
+	  sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
 	}
-	set_offs(pc,offset,actual_line);
+	set_offs(cur_pc,offset,actual_line);
 	fclose(f);
       }
     } else {
@@ -540,17 +541,18 @@ void do_list(int argc, char **argv) {
   } else if (argc == 2) {
     int target = parse(argv[1]);
     get_instruction(target);
-    offset = get_offs(pc,&line);
+    offset = get_offs(cur_pc,&line);
   }
-  FILE *f = open_asm(pc);
+  FILE *f = open_asm(cur_pc);
   fseek(f,offset,SEEK_SET);
+  if (offset == 0)  myfgets(buff,256,f);
   int n;
   for (n=1; n<=10 && !feof(f); n++) {
     offset = ftell(f);
     myfgets(buff,256,f);
     line++;
-    sscanf(buff,"%x %x %s %s",&pc,&opcode,instruction,args);
-    if (pc == pc0)
+    sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
+    if (cur_pc == pc0)
       cons->print("\E[32m%s\E[0m",buff);
     else
       cons->print("%s",buff);
@@ -558,9 +560,9 @@ void do_list(int argc, char **argv) {
   offset = ftell(f);
   myfgets(buff,256,f);
   line++;
-  sscanf(buff,"%x %x %s %s",&pc,&opcode,instruction,args);
-  set_offs(pc,offset,line);
-  last_list_adr = pc;
+  sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
+  set_offs(cur_pc,offset,line);
+  last_list_adr = cur_pc;
   last_list_pc = pc0;
   fclose(f);
 }
@@ -568,7 +570,7 @@ void do_list(int argc, char **argv) {
 static void disp_instruction() {
   get_instruction();
   UINT32 pc1 = cpu_get_pc(get_cpu_id());
-  if (pc != pc1)
+  if (cur_pc != pc1)
     cons->print("pc=%x not found in asm file",pc1);
   else
     cons->print(buff);
@@ -583,7 +585,7 @@ void do_step(int argc, char **argv) {
 void do_next(int argc, char **argv) {
     int cpu = get_cpu_id();
   UINT32 pc1 = cpu_get_pc(cpu);
-  if (pc != pc1)
+  if (cur_pc != pc1)
     get_instruction();
   do_cycles();
   switch(cpu>>4) {
@@ -610,17 +612,22 @@ void do_next(int argc, char **argv) {
 }
 
 void do_irq(int argc, char **argv) {
+    int cpu_id = get_cpu_id();
   if (argc == 2) {
     int irq = parse(argv[1]);
-    cpu_interrupt(CPU_68K_0,irq);
-    get_regs(0);
+    cpu_interrupt(cpu_id,irq);
+    get_regs(cpu_id);
     return;
   }
-  if ((s68000context.sr & 0x2700) <= 0x2000)
-    throw "not in an irq !";
-  int current = s68000context.sr & 0x2700;
-  while ((s68000context.sr & 0x2700) == current)
-    do_cycles();
+  if (cpu_id == 2 && int(iff) == 0)
+    throw "z80: not in an irq !";
+  if (cpu_id != 2) {
+      if ((int(sr) & 0x2700) <= 0x2000)
+	  throw "not in an irq !";
+      int current = int(sr) & 0x2700;
+      while ((int(sr) & 0x2700) == current)
+	  do_cycles();
+  }
   disp_instruction();
 }
 
@@ -628,8 +635,8 @@ void do_until(int argc, char **argv) {
   if (argc < 2) {
     throw "syntax : until pc";
   }
-  UINT32 pc = parse(argv[1]);
-  while (s68000context.pc != pc)
+  UINT32 target_pc = parse(argv[1]);
+  while (pc != target_pc)
     do_cycles();
   disp_instruction();
 }

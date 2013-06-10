@@ -20,6 +20,7 @@ extern void do_if(int argc, char **argv);
 static UINT32 ram[0x100*2],nb_ram;
 static UINT8 *ram_buf[0x100],*search_size;
 static UINT32 nb_search, nb_alloc_search, *search;
+#define getadr(a) (cpu_id == 1 ? ((a)^1) : (a))
 
 int get_cpu_id() { return cpu_id; }
 
@@ -67,17 +68,17 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 	    }
 	    if (watch[n].value == -1 ||
 		    (!watch[n].read && watch[n].value == data) ||
-		    (watch[n].read && ptr && watch[n].value == ptr[offset ^ 1])) {
+		    (watch[n].read && ptr && watch[n].value == ptr[getadr(offset)])) {
 		watch[n].pc = s68000readPC();
 		Stop68000(0,0);
 		goto_debuger = n+100;
 	    }
 	    if (ptr) {
-		printf("watchb: changing offset %x,%x\n",offset^1,data);
+		printf("watchb: changing offset %x,%x\n",getadr(offset),data);
 		if (!watch[n].read)
-		    ptr[offset ^ 1] = data;
+		    ptr[getadr(offset)] = data;
 		else
-		    return ptr[offset ^ 1];
+		    return ptr[getadr(offset)];
 	    } else if (func) {
 		return (*func)(offset,data);
 	    } else {
@@ -530,10 +531,13 @@ static void do_poke(int argc, char **argv) {
   UINT32 adr = parse(argv[1]);
   UINT32 val  = parse(argv[2]);
   UINT8 *ptr = get_ptr(adr);
-  if (!ptr) return;
+  if (!ptr) throw "poke outside of ram";
 
   if (!strcasecmp(argv[0],"poke")) {
-    ptr[adr^1] = val;
+      if (cpu_id == 1) // 68k
+	  ptr[adr^1] = val;
+      else
+	  ptr[adr] = val;
   } else if (!strcasecmp(argv[0],"dpoke")) {
     WriteWord(&ptr[adr],val);
   } else if (!strcasecmp(argv[0],"lpoke")) {
@@ -596,7 +600,7 @@ static void do_dump(int argc, char **argv) {
 	return;
       }
       dump_search = 1;
-      if (search_size[0] == 1) adr ^= 1;
+      if (search_size[0] == 1 && cpu_id == 1) adr ^= 1;
     } else {
       adr = parse(argv[1]);
     }
@@ -619,31 +623,31 @@ static void do_dump(int argc, char **argv) {
       // search results are in ascending order, so we can maintain
       // found_search, which always points to the next search result to see.
       while (found_search < nb_search &&
-	((search_size[found_search]==1 && (search[found_search]^1) < adr+n) ||
+	((search_size[found_search]==1 && getadr(search[found_search]) < adr+n) ||
 	(search_size[found_search]>1 && (int)(adr+n - search[found_search]) >= search_size[found_search])))
 	found_search++;
       if (found_search < nb_search &&
-	((search_size[found_search] == 1 && (search[found_search]^1) == adr+n) ||
+	((search_size[found_search] == 1 && getadr(search[found_search]) == adr+n) ||
 	(search_size[found_search] == 2 && adr+n-search[found_search] <= 1))) {
 	// display it in green (code 2).
-	sprintf(buff+strlen(buff),"\E[32m%02x\E[0m ",ptr[(adr+n)^1]);
+	sprintf(buff+strlen(buff),"\E[32m%02x\E[0m ",ptr[getadr(adr+n)]);
 	tab_found[n] = 1;
-      } else if (buf && ptr[(adr+n)^1] != buf[(adr+n)^1]) {
+      } else if (buf && ptr[getadr(adr+n)] != buf[getadr(adr+n)]) {
 	// display differences from last console in cyan
-	sprintf(buff+strlen(buff),"\E[36m%02x\E[0m ",ptr[(adr+n)^1]);
+	sprintf(buff+strlen(buff),"\E[36m%02x\E[0m ",ptr[getadr(adr+n)]);
 	tab_found[n] = 0;
       } else {
-	sprintf(buff+strlen(buff),"%02x ",ptr[(adr+n)^1]);
+	sprintf(buff+strlen(buff),"%02x ",ptr[getadr(adr+n)]);
 	tab_found[n] = 0;
       }
     }
     for (int n=0; n<dump_cols; n++) {
       if (adr+n > ram[block+1]) break;
-      UINT8 car = ptr[(adr+n)^1];
+      UINT8 car = ptr[getadr(adr+n)];
       if (car < 32 || car > 127) car = '.';
       if (tab_found[n])
 	sprintf(buff+strlen(buff),"\E[32m%c\E[0m",car);
-      else if (buf && ptr[(adr+n)^1] != buf[(adr+n)^1])
+      else if (buf && ptr[getadr(adr+n)] != buf[getadr(adr+n)])
 	sprintf(buff+strlen(buff),"\E[36m%c\E[0m",car);
       else if (car == '%')
 	strcat(buff,"%%");
@@ -653,12 +657,12 @@ static void do_dump(int argc, char **argv) {
     adr += dump_cols;
     if (dump_search) {
       while (found_search < nb_search &&
-	((search_size[found_search]==1 && (search[found_search]^1) < adr) ||
+	((search_size[found_search]==1 && getadr(search[found_search]) < adr) ||
 	(search_size[found_search]>1 && (int)(adr-search[found_search]) >= search_size[found_search])))
 	found_search++;
       if (found_search < nb_search)
 	adr = search[found_search];
-      if (search_size[found_search] == 1)
+      if (search_size[found_search] == 1 && cpu_id == 1)
 	adr ^= 1;
     }
     cons->print(buff);
@@ -855,7 +859,7 @@ static void do_search(int argc, char **argv) {
       // it's like search byte, but we must invert bytes while progressing
       UINT32 n,idx = 0;
       for (n=start; n<end; n++) {
-	while (ptr[(n+idx)^1] == s[idx])
+	while (ptr[getadr(n+idx)] == s[idx])
 	  idx++;
 	if (idx == len) { // found the string !
 	  add_search(n,1);
@@ -1093,6 +1097,8 @@ int do_console(int sel) {
 #if HAVE_Z80
    if(MZ80Engine>=1)		// Guess it's a z80 game
        cpu_id = CPU_Z80_0;
+  if (!Z80_context[cpu_id].z80Base)
+      cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
 #endif
     cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;
@@ -1108,7 +1114,7 @@ int do_console(int sel) {
 		if (watch[n].read)
 		    cons->print("watch #%d byte at %x has just been read",n,watch[n].adr);
 		else
-		    cons->print("watch #%d: byte at %x changed, new value: %x",n,watch[n].adr,ptr[watch[n].adr ^1]);
+		    cons->print("watch #%d: byte at %x changed, new value: %x",n,watch[n].adr,ptr[getadr(watch[n].adr) ]);
 	    } else { // word
 		if (watch[n].read)
 		    cons->print("watch #%d word at %x has just been read",n,watch[n].adr);

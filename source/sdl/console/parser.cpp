@@ -9,6 +9,7 @@
 #include "console.h"
 #include "raine.h" // ReadWord !
 #include "neocd/neocd.h" // ReadLongSc
+#include "cpumain.h"
 
 /* muParser is specialised in double numbers, so it lacks some basic integer
  * operations, but can be easily extended, so let's go... */
@@ -23,14 +24,17 @@ value_type LogOr(value_type v1, value_type v2) { return int(v1) || int(v2); }
 value_type LogAnd(value_type v1, value_type v2) { return int(v1) && int(v2); }
 value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
-static double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
+double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
 
 value_type peek(value_type fadr) {
   UINT32 adr = fadr;
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) throw "this adr isn't in ram !";
 
-  return ptr[adr ^ 1];
+  if (get_cpu_id() == 1)
+      return ptr[adr ^ 1];
+  else
+      return ptr[adr];
 }
 
 value_type dpeek(value_type fadr) {
@@ -62,7 +66,16 @@ void get_regs(int cpu) {
 	break;
     case 2:
 	num = cpu & 0xf;
+	switch_cpu(cpu);
 	mz80GetContext(&Z80_context[num]);
+	printf("get_regs %d: af %x bc %x de %x hl %x pc %x iff %x\n",num,
+		Z80_context[num].z80af,
+		Z80_context[num].z80bc,
+		Z80_context[num].z80de,
+		Z80_context[num].z80hl,
+		Z80_context[num].z80pc,
+		Z80_context[num].z80iff
+		);
 	za = (Z80_context[num].z80af>>8);
 	zf = (Z80_context[num].z80af&0xff);
 	zb = (Z80_context[num].z80bc>>8);
@@ -103,6 +116,14 @@ void set_regs(int cpu) {
 	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
 	Z80_context[num].z80pc = pc;
 	Z80_context[num].z80iff = iff;
+	printf("set_regs %d: af %x bc %x de %x hl %x pc %x iff %x\n",num,
+		Z80_context[num].z80af,
+		Z80_context[num].z80bc,
+		Z80_context[num].z80de,
+		Z80_context[num].z80hl,
+		Z80_context[num].z80pc,
+		Z80_context[num].z80iff
+		);
 	mz80SetContext(&Z80_context[num]);
 	break;
     case 3:
