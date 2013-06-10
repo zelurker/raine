@@ -24,6 +24,8 @@ my %raine_regions =
 	'"qsound"' => "REGION_SMP1",
 	'"ymsnd"' => "REGION_SMP1",
 	'"audiocpu"' => "REGION_ROM2",
+	'"soundcpu"' => "REGION_ROM2",
+	'"cpu2"' => "REGION_ROM2",
 	'"sprites"' => "REGION_SPRITES",
 	'"layer0"' => "REGION_GFX1",
 	'"layer1"' => "REGION_GFX2",
@@ -113,7 +115,6 @@ while ($_ = shift @file) {
 								print;
 								$sortie = 1 if (/\*\//);
 							} while (!$sortie && ($_ = shift @file));
-							print STDERR "comment ($region_name): $_";
 							next;
 						}
 

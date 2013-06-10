@@ -605,6 +605,7 @@
   DRV(hyperpac)
   DRV(cookbib2)
   DRV(cookbib3)
+  DRV(pzlbreak)
   DRV(toppyrap)
   DRV(twinkle)
   DRV(3in1semi)

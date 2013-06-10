@@ -158,6 +158,20 @@ static struct ROM_INFO rom_toppyrap[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_pzlbreak[] =
+{
+  { "4.uh12", 0x20000, 0xb3f04f80, REGION_CPU1, 0x00001, LOAD_8_16 },
+  { "5.ui12", 0x20000, 0x13c298a0, REGION_CPU1, 0x00000, LOAD_8_16 },
+  { "0.u1", 0x10000 , 0x1ad646b7, REGION_ROM2, 0x00000, LOAD_NORMAL },
+	/* this is not a real rom but instead the data extracted from
+	   shared ram, the MCU puts it there */
+  { "protdata.bin", 0x200, 0x092cb794, REGION_PROMS, 0x00000, LOAD_NORMAL },
+  { "1.uj15", 0x40000, 0xdbfae77c, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  { "2.ua4", 0x80000, 0xd211705a, REGION_GFX1, 0x000000, LOAD_NORMAL },
+  { "3.ua5", 0x80000, 0x6cdb73e9, REGION_GFX1, 0x080000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
 static struct DSW_DATA dsw_data_toppyrap_0[] =
 {
   DSW_DEMO_SOUND( 0x0000, 0x0001 ),
@@ -290,6 +304,13 @@ static struct DSW_INFO dsw_cookbib3[] =
 {
   { 0x12400, 0xfe, dsw_data_cookbib3_0 },
   { 0x12402, 0xff, dsw_data_cookbib3_1 },
+  { 0, 0, NULL }
+};
+
+static struct DSW_INFO dsw_pzlbreak[] =
+{
+  { 0x12400, 0xfe, dsw_data_cookbib3_0 },
+  { 0x12402, 0x80, dsw_data_cookbib3_1 },
   { 0, 0, NULL }
 };
 
@@ -761,6 +782,7 @@ static void load_hyperpac(void)
    AddMemFetch(-1, -1, NULL);
 
    AddReadBW(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   set_reset_function(install_protdata);
    if (!strcmp(current_game->main_name,"hyperpac")) {
      /* Taken from mame... */
      /* simulate RAM initialization done by the protection MCU */
@@ -775,38 +797,33 @@ static void load_hyperpac(void)
      WriteWord(&RAM[0x2e086], 0x3210);
      AddReadWord(0x102290, 0x102291, speed_hack, NULL);    // Trap Idle 68000
      vbl = &RAM[0x22290];
-   } else if (!strcmp(current_game->main_name,"hyperpcb")) {
+   } else if (is_current_game("pzlbreak"))
+       romset = 0xc;
+   else if (!strcmp(current_game->main_name,"hyperpcb")) {
      AddReadWord(0x104490, 0x104491, speed_hack, NULL);    // Trap Idle 68000
      vbl = &RAM[0x24490];
    } else if (!strcmp(current_game->main_name,"cookbib2") ||
 	   is_current_game("toppyrap")) {
      /* this should really be init every reset */
-     set_reset_function(install_protdata);
    } else if (is_current_game("cookbib3")) {
      AddReadBW(0x200000, 0x200001, NULL, (UINT8*)&cookbib3_prot_latch);      // extraprot
-     set_reset_function(install_protdata);
    } else if (!strcmp(current_game->main_name,"twinkle")) {
      /* this should really be init every reset */
-     set_reset_function(install_protdata);
-     romset = 1; // clear screen with pen f0
+     romset = 0xf; // clear screen with pen f0
    } else if (!strcmp(current_game->main_name,"finalttr")) {
      /* this should really be init every reset */
      set_reset_function(finalttr_install_protdata);
-//     romset = 1; // clear screen with pen f0
    } else if (!strcmp(current_game->main_name,"3in1semi")) { // doesn't work??
-     romset = 1; // clear screen with pen f0
+     romset = 0xf; // clear screen with pen f0
      /* this should really be init every reset */
-     set_reset_function(install_protdata);
      AddReadBW(0x200000, 0x200001, NULL, (UINT8*)&semicom_prot_latch);      // extraprot
    } else if (!strcmp(current_game->main_name,"moremore")) {
-     romset = 1; // clear screen with pen f0
+     romset = 0xf; // clear screen with pen f0
      /* this should really be init every reset */
-     set_reset_function(install_protdata);
      AddReadBW(0x200000, 0x200001, NULL, (UINT8*)&semicom_prot_latch);      // extraprot
    } else if (!strcmp(current_game->main_name,"moremorp")) {
-     romset = 1; // clear screen with pen f0
+     romset = 0xf; // clear screen with pen f0
      /* this should really be init every reset */
-     set_reset_function(install_protdata);
      AddReadBW(0x200000, 0x200001, NULL, (UINT8*)&semicom_prot_latch);      // extraprot
      // This game has 3 counters for the 3 interrupts. To guess which is which is not easy!
 /*      AddReadWord(0x1022b2,0x1022b3,speed_hack,NULL); */
@@ -859,10 +876,10 @@ static void draw_hyper_pacman(void)
 
    ClearPaletteMap();
 
-   if (romset == 1) {
+   if (romset) {
      // screen needs clearing with pen 0xf0 for more more plus but not cookie and bibi 2 (see last level)
      MAP_PALETTE_MAPPED_NEW(
-            0xf,
+            romset,
             16,
             map
 	    );
@@ -1247,6 +1264,13 @@ static struct DIR_INFO dir_toppyrap[] =
 };
 CLNE( toppyrap,hyperpac, "Toppy & Rappy", SEMICOM, 1996, GAME_MISC,
 	.dsw = dsw_toppyrap);
+static struct DIR_INFO dir_pzlbreak[] =
+{
+   { "pzlbreak", },
+   { NULL, },
+};
+CLNE( pzlbreak,hyperpac, "Puzzle Break", SEMICOM, 1997, GAME_PUZZLE,
+	.dsw = dsw_pzlbreak);
 static struct DIR_INFO dir_finalttr[] =
 {
    { "final_tetris", },
@@ -1337,7 +1361,7 @@ static struct DIR_INFO dir_twinkle[] =
    { "twinkle", },
    { NULL, },
 };
-CLNE( twinkle,hyperpac, "Twinkle", TOAPLAN, 1997, GAME_MISC,
+CLNE( twinkle,hyperpac, "Twinkle", SEMICOM, 1997, GAME_MISC,
 	.dsw = dsw_twinkle,
 );
 static struct DIR_INFO dir_wintbob[] =
