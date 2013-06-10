@@ -504,6 +504,7 @@ void do_regs(int argc, char **argv) {
 	      Z80_context[num].z80pc,
 	      Z80_context[num].z80iff);
       break;
+#ifndef NO020
   case 3:
       for (int n=0; n<8; n++) {
 	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,regs.regs[n]);
@@ -521,6 +522,7 @@ void do_regs(int argc, char **argv) {
       }
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",regs.sr,regs.pc);
       break;
+#endif
   }
 }
 

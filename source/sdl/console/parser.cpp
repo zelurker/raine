@@ -87,6 +87,7 @@ void get_regs(int cpu) {
 	pc = Z80_context[num].z80pc;
 	iff = Z80_context[num].z80iff;
 	break;
+#ifndef NO020
     case 3: // 68020
 	for (int n=0; n<8; n++) {
 	    a[n] = regs.regs[n+8];
@@ -95,6 +96,7 @@ void get_regs(int cpu) {
 	sr = regs.sr;
 	pc = regs.pc;
 	break;
+#endif
     }
 }
 
@@ -126,6 +128,7 @@ void set_regs(int cpu) {
 		);
 	mz80SetContext(&Z80_context[num]);
 	break;
+#ifndef NO020
     case 3:
 	for (int n=0; n<8; n++) {
 	    regs.regs[n+8] = a[n];
@@ -134,6 +137,7 @@ void set_regs(int cpu) {
 	regs.sr = sr;
 	regs.pc = pc;
 	break;
+#endif
     }
 }
 
