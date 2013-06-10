@@ -1,5 +1,8 @@
 #include <SDL.h>
+#ifndef RAINE_WIN32
+// Go figure : this support is totally broken in windows !!!
 #define GL_GLEXT_PROTOTYPES
+#endif
 #include <SDL_opengl.h>
 #ifdef MessageBox
 #undef MessageBox
@@ -18,6 +21,34 @@
 
 static int modern;
 static GLuint vertexshader; // only one
+#ifdef RAINE_WIN32
+#define glGetProcAddress(name) wglGetProcAddress(name)
+static int no_shader_support = 0;
+static PFNGLCREATEPROGRAMPROC glCreateProgram = 0;
+static PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = 0;
+static PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocation = 0;
+static PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = 0;
+static PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = 0;
+
+static PFNGLVALIDATEPROGRAMPROC glValidateProgram = 0;
+static PFNGLDELETEPROGRAMPROC glDeleteProgram = 0;
+static PFNGLUSEPROGRAMPROC glUseProgram = 0;
+static PFNGLCREATESHADERPROC glCreateShader = 0;
+static PFNGLDELETESHADERPROC glDeleteShader = 0;
+static PFNGLSHADERSOURCEPROC glShaderSource = 0;
+static PFNGLCOMPILESHADERPROC glCompileShader = 0;
+static PFNGLGETSHADERIVPROC glGetShaderiv = 0;
+static PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = 0;
+static PFNGLATTACHSHADERPROC glAttachShader = 0;
+static PFNGLDETACHSHADERPROC glDetachShader = 0;
+static PFNGLLINKPROGRAMPROC glLinkProgram = 0;
+static PFNGLGETPROGRAMIVPROC glGetProgramiv = 0;
+static PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = 0;
+static PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = 0;
+static PFNGLUNIFORM1IPROC glUniform1i = 0;
+static PFNGLUNIFORM2FVPROC glUniform2fv = 0;
+static PFNGLUNIFORM4FVPROC glUniform4fv = 0;
+#endif
 
 static int nb_pass; // number of passes for the shader
 #define MAX_PASS 10
@@ -286,6 +317,46 @@ void read_shader(char *shader) {
     char *vertex_src = NULL, *frag_src = NULL;
     char *buf = my_load_file(shader);
     int vertex_used_src = 0, frag_used_src = 0;
+#ifdef RAINE_WIN32
+    if (no_shader_support) return;
+    if (!glCreateProgram) {
+	//bind shader functions
+	glCreateProgram = (PFNGLCREATEPROGRAMPROC)glGetProcAddress("glCreateProgram");
+	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
+	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
+	glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)glGetProcAddress("glEnableVertexAttribArray");
+	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)glGetProcAddress("glVertexAttribPointer");
+	glValidateProgram = (PFNGLVALIDATEPROGRAMPROC)glGetProcAddress("glValidateProgram");
+	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)glGetProcAddress("glDeleteProgram");
+	glUseProgram = (PFNGLUSEPROGRAMPROC)glGetProcAddress("glUseProgram");
+	glCreateShader = (PFNGLCREATESHADERPROC)glGetProcAddress("glCreateShader");
+	glDeleteShader = (PFNGLDELETESHADERPROC)glGetProcAddress("glDeleteShader");
+	glShaderSource = (PFNGLSHADERSOURCEPROC)glGetProcAddress("glShaderSource");
+	glCompileShader = (PFNGLCOMPILESHADERPROC)glGetProcAddress("glCompileShader");
+	glGetShaderiv = (PFNGLGETSHADERIVPROC)glGetProcAddress("glGetShaderiv");
+	glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)glGetProcAddress("glGetShaderInfoLog");
+	glAttachShader = (PFNGLATTACHSHADERPROC)glGetProcAddress("glAttachShader");
+	glDetachShader = (PFNGLDETACHSHADERPROC)glGetProcAddress("glDetachShader");
+	glLinkProgram = (PFNGLLINKPROGRAMPROC)glGetProcAddress("glLinkProgram");
+	glGetProgramiv = (PFNGLGETPROGRAMIVPROC)glGetProcAddress("glGetProgramiv");
+	glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)glGetProcAddress("glGetProgramInfoLog");
+	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)glGetProcAddress("glGetUniformLocation");
+	glUniform1i = (PFNGLUNIFORM1IPROC)glGetProcAddress("glUniform1i");
+	glUniform2fv = (PFNGLUNIFORM2FVPROC)glGetProcAddress("glUniform2fv");
+	glUniform4fv = (PFNGLUNIFORM4FVPROC)glGetProcAddress("glUniform4fv");
+
+	no_shader_support = glCreateProgram && glUseProgram && glCreateShader
+	    && glDeleteShader && glShaderSource && glCompileShader && glGetShaderiv
+	    && glGetShaderInfoLog && glAttachShader && glDetachShader && glLinkProgram
+	    && glGetProgramiv && glGetProgramInfoLog && glGetUniformLocation
+	    && glUniform1i && glUniform2fv && glUniform4fv;
+	no_shader_support = !no_shader_support;
+    }
+    if (no_shader_support) {
+	MessageBox("Warning","No shader support on your hardware","ok");
+	return;
+    }
+#endif
 
     delete_shaders();
 

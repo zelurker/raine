@@ -9,8 +9,10 @@
 #include "newmem.h"
 #include "raine.h" // ReadWord/WriteWord
 #include "sdl/glsl.h"
+#include "sdl/dialogs/messagebox.h"
 
 static UINT8 *font;
+static int gl_format,gl_type;
 
 void check_error(char *msg) {
 #ifdef RAINE_DEBUG
@@ -88,8 +90,45 @@ static int GetAttribute(int attr, int *value) {
     return ret;
 }
 
+static int broken_gl_format = 0;
+
 void get_ogl_infos() {
     check_error("start ogl_infos");
+    int format_error = 0;
+    switch (sdl_screen->format->BitsPerPixel) {
+    case 16:
+	gl_format = GL_RGB;
+	gl_type = GL_UNSIGNED_SHORT_5_6_5_REV;
+	break;
+    case 32:
+	switch (sdl_screen->format->Bshift) {
+	case 0:
+	    gl_format = GL_BGRA;
+	    gl_type = GL_UNSIGNED_INT_8_8_8_8_REV;
+	    break;
+	case 16:
+	    gl_format = GL_RGBA;
+	    gl_type = GL_UNSIGNED_INT_8_8_8_8_REV;
+	    break;
+	default:
+	    format_error = 1;
+	}
+	break;
+    default:
+	format_error = 1;
+    }
+    if (format_error && !broken_gl_format) {
+	char buff[1024];
+	broken_gl_format = 1;
+	sprintf(buff,"bad screen format, report this to rainemu.com:\n"
+		"bpp : %d rshift %d gshift %d bshift %d",
+		sdl_screen->format->BitsPerPixel,
+		sdl_screen->format->Rshift,
+		sdl_screen->format->Gshift,
+		sdl_screen->format->Bshift);
+	MessageBox("OpenGL error",buff,"ok");
+    }
+
     ogl.info = 1;
     // Slight optimization
     glDisable(GL_DEPTH_TEST);
@@ -140,6 +179,8 @@ void render_texture(int linear) {
 		sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
 	break;
     default:
+	printf("rshift %d bshift %d\n",sdl_screen->format->Rshift,sdl_screen->format->Bshift);
+	if (sdl_screen->format->Bshift == 0)
 	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
 		GameScreen.xview,GameScreen.yview,0,GL_BGRA,
 		GL_UNSIGNED_INT_8_8_8_8_REV,
@@ -170,7 +211,15 @@ void draw_opengl(int linear) {
 	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
 	glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
 		-(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
-	glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
+	switch (display_cfg.bpp) {
+	case 15:
+	case 16:
+	    glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
+	    break;
+	case 32:
+	    glDrawPixels(GameScreen.xview,GameScreen.yview,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
+	    break;
+	}
     }
 }
 

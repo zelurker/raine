@@ -8,7 +8,6 @@
 #include <unistd.h>
 #endif
 #include "sdl/gui/menu.h"
-#include "sdl/dialogs/messagebox.h"
 #ifndef NEO
 #include "bezel.h"
 #endif
