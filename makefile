@@ -14,14 +14,14 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.60.1"
-VERSION_NEO = "1.4.1"
+VERSION = "0.61.0"
+VERSION_NEO = "1.4.2"
 
 # Uncomment to build neoraine instead of raine
-# NEO=1
+NEO=1
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -79,7 +79,7 @@ ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
  ifndef CROSSCOMPILE
   CC=gcc -m32
   CXX=g++ -m32
-  LD=gcc -m32 -L /usr/lib32  
+  LD=gcc -m32 -L /usr/lib32
  else
   LD = gcc
  endif
@@ -155,7 +155,7 @@ ifndef NEO
   INCDIR += \
 	-Isource/6502 \
 	-Isource/68020 \
-	-Isource/m68705 
+	-Isource/m68705
 endif
 
 ifeq ($(OSTYPE),cygwin)
@@ -177,7 +177,7 @@ DEFINE = -D__RAINE__ \
    LIBS = -lz -lalleg $(PNG_LFAGS)
    LIBS_STATIC = -lz -lalleg_s -lkernel32 -luser32 -lgdi32 -lcomdlg32 \
    -lole32 -ldinput -lddraw -ldxguid -lwinmm -ldsound \
-   -L/lib/mingw -lmoldname -lmsvcrt $(PNG_STATIC_LFLAGS) 
+   -L/lib/mingw -lmoldname -lmsvcrt $(PNG_STATIC_LFLAGS)
 
 LIBS_DEBUG = -lz -lalld $(PNG_LFLAGS)
 
@@ -430,16 +430,16 @@ OBJDIRS=$(OBJDIR) \
 	$(VIDEO_CORE)/str \
 	$(OBJDIR)/video/zoom \
 	$(OBJDIR)/math \
-	$(OBJDIR)/games 
+	$(OBJDIR)/games
 
 ifndef NEO
   OBJDIRS += \
 	$(OBJDIR)/68020 \
 	$(OBJDIR)/6502 \
-	$(OBJDIR)/m68705 
+	$(OBJDIR)/m68705
 else
   OBJDIRS += \
-	$(OBJDIR)/neocd 
+	$(OBJDIR)/neocd
 endif
 
 ifdef SDL
@@ -452,7 +452,7 @@ OBJDIRS += \
 
 else
 OBJDIRS += $(OBJDIR)/alleg \
-	$(OBJDIR)/alleg/png 
+	$(OBJDIR)/alleg/png
 ifdef RAINE_DEBUG
 OBJDIRS += $(OBJDIR)/alleg/debug \
 	$(OBJDIR)/alleg/debug/dz80
@@ -540,7 +540,7 @@ CFLAGS += -DNEO
 endif
 
 ifdef SDL
-CFLAGS += -DSDL 
+CFLAGS += -DSDL
 CFLAGS_MCU += -DSDL
 else
 OBJDIRS +=  \
@@ -686,9 +686,9 @@ SOUND= \
 	$(OBJDIR)/sound/emulator.o
 
 2151 = 	$(OBJDIR)/sound/ym2151.o \
-	$(OBJDIR)/sound/2151intf.o 
+	$(OBJDIR)/sound/2151intf.o
 
-2203 = $(OBJDIR)/sound/2203intf.o 
+2203 = $(OBJDIR)/sound/2203intf.o
 
 2413 = $(OBJDIR)/sound/2413intf.o \
 	$(OBJDIR)/sound/ym2413.o
@@ -744,7 +744,7 @@ CONSOLE = \
 	$(OBJDIR)/sdl/gui/tconsole.o \
 	$(OBJDIR)/sdl/console/exec.o
 
-LIBS += -lmuparser  
+LIBS += -lmuparser
 LIBS_DEBUG += -lmuparser
 endif
 
@@ -779,7 +779,7 @@ ifndef NEO
 	$(OBJDIR)/sdl/dialogs/dlg_dsw.o
 else
   GUI += $(OBJDIR)/sdl/dialogs/neocd_options.o \
-	$(OBJDIR)/sdl/dialogs/translator.o 
+	$(OBJDIR)/sdl/dialogs/translator.o
 endif
 
 else
@@ -798,7 +798,7 @@ endif
 ifdef RAINE32
   # There is a specific incompatibility in windows for fnmatch so we need
   # to add this files for fsel
-  GUI += $(OBJDIR)/fnmatch/fnmatch.o 
+  GUI += $(OBJDIR)/fnmatch/fnmatch.o
 endif
 
 # Core
@@ -826,7 +826,7 @@ CORE=	$(OBJDIR)/raine.o \
 
 ifndef NEO
  CORE += $(OBJDIR)/loadroms.o \
-	$(OBJDIR)/bezel.o 
+	$(OBJDIR)/bezel.o
 endif
 
 UNZIP = $(OBJDIR)/mini-unzip/unzip.o \
@@ -855,26 +855,26 @@ P7Z = $(D7Z)/7zAlloc.o \
 ifndef SDL
 CORE += $(OBJDIR)/alleg/jpg/jpeg.o \
 	$(OBJDIR)/alleg/dsw.o \
-	$(OBJDIR)/alleg/png/loadpng.o 
+	$(OBJDIR)/alleg/png/loadpng.o
 
 else
 CORE +=	$(OBJDIR)/sdl/dsw.o $(OBJDIR)/sdl/png.o
 endif
 
 ifndef RAINE_DOS
-CORE += $(OBJDIR)/sdl/SDL_gfx/SDL_framerate.o 
+CORE += $(OBJDIR)/sdl/SDL_gfx/SDL_framerate.o
 endif
 
 ifdef SDL
 CORE += \
 	$(OBJDIR)/sdl/SDL_gfx/SDL_rotozoom.o \
-	$(OBJDIR)/sdl/SDL_gfx/SDL_gfxPrimitives.o 
+	$(OBJDIR)/sdl/SDL_gfx/SDL_gfxPrimitives.o
 endif
 
 # Mame Support (eeprom and handlers for the sound interface)
 
 MAME=	$(OBJDIR)/mame/memory.o \
-	$(OBJDIR)/mame/eeprom.o 
+	$(OBJDIR)/mame/eeprom.o
 
 NEOCD = $(OBJDIR)/neocd/games.o \
 	$(OBJDIR)/neocd/loadroms.o \
@@ -893,12 +893,12 @@ OBJS +=	 \
 	$(UNZIP) \
 	$(MAME) \
 	$(P7Z) \
-	$(GUI) 
+	$(GUI)
 
 ifndef NEO
 OBJS += $(GAMES) \
 	$(SYSDRV) \
-	$(DEBUG) 
+	$(DEBUG)
 endif
 
 ifdef SDL
@@ -952,7 +952,7 @@ CFLAGS +=  -fno-pic
 # CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
 CFLAGS += `sdl-config --cflags` -DDARWIN
 LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
-LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa 
+LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa
 # LIBS += `sdl-config --libs` -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -lSDL_ttf -lmuparser -lSDL_image -framework Cocoa -lstdc++
@@ -1044,7 +1044,7 @@ endif
 
 message:
 ifdef RAINE_DEBUG
-	@echo -n Building Raine, debug version 
+	@echo -n Building Raine, debug version
 else
 	@echo -n Building Raine, Fully optimized version
 endif
@@ -1341,7 +1341,7 @@ endif
 endif
 
 install_dirs:
-	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps 
+	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps
 	$(MD) -p $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir) $(shaders_dir)
 
 $(RAINE_LNG):
