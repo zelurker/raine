@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <muParser.h>
 #include "raine.h"
 #include "version.h"
 #include "tfont.h"
@@ -67,7 +68,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   edit_child = new TEdit(&edit_menu);
   visible = 1;
   interactive = NULL;
-  TConsole::print(EMUNAME " " VERSION);
+  TConsole::print(pretty_emu_name " " VERSION " console based on muParser v%s", mu::Parser().GetVersion().c_str());
   visible = 0;
 }
 
@@ -82,7 +83,7 @@ TConsole::~TConsole() {
 
 /* void TConsole::compute_nb_items() {
   // We must init nb_disp_itmes / menu_disp here
-  nb_disp_items = nb_items; 
+  nb_disp_items = nb_items;
   menu_disp = menu;
 } */
 
@@ -138,7 +139,7 @@ void TConsole::print(const char *format, ...)
     print(string);
     strcpy(string,&s[1]);
   }
-  
+
   // 2 extend tabs
   while ((s = strchr(string,9))) {
     *s = 0;
@@ -201,7 +202,7 @@ void TConsole::post_print() {
 }
 
 int TConsole::get_fglayer_footer_height() {
-  if (font) 
+  if (font)
     return edit_child->get_height(font);
   return 0;
 }
@@ -226,7 +227,7 @@ void TConsole::setup_fg_layer() {
 }
 
 void TConsole::fglayer_footer_update() {
-  static char old[400]; 
+  static char old[400];
   edit_child->update();
   SDL_Rect dst;
   dst.x = myx; dst.y = myy; dst.w = myw; dst.h = myh;

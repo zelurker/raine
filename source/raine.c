@@ -148,16 +148,7 @@ int main(int argc,char *argv[])
    if (isatty(fileno(stdout))) {
      /* Is there a way to do this in windoze ??? Probably not, windows is lame when it
 	comes to redirections (and in many other areas too by the way) */
-     printf("\E[1m "); // bold
-#ifdef NEO
-     printf("Neo");
-#endif
-     printf("\E[31mR"); // red
-     printf("\E[33mA"); // yellow
-     printf("\E[32mI"); // green
-     printf("\E[34mN"); // blue
-     printf("\E[35mE"); // magenta
-     printf("\E[0m"); // reset
+       printf(pretty_emu_name);
    } else {
 #ifdef NEO
      printf("NeoRaine");
@@ -603,7 +594,7 @@ int main(int argc,char *argv[])
 #endif
 
    StartGUI();
-   if (recording) 
+   if (recording)
        end_recording();
 
    sprintf(str,"%sconfig" SLASH "%s", dir_cfg.exe_path, dir_cfg.config_file);
@@ -706,7 +697,7 @@ int main(int argc,char *argv[])
 
    save_default_keys("default_game_key_config");
 
-#ifndef SDL   
+#ifndef SDL
    // JOYSTICK DEFAULT
 
    save_default_joys("default_game_joy_config");

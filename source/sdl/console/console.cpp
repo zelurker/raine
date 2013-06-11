@@ -1086,6 +1086,7 @@ commands_t commands[] =
 };
 
 int do_console(int sel) {
+    cpu_id = 0;
 #ifndef NO020
   if (MC68020)
       cpu_id = CPU_M68020_0;
@@ -1139,6 +1140,25 @@ int do_console(int sel) {
     } else
 	irq = check_breakpoint();
     get_regs(cpu_id);
+    if (cons) {
+	cons->set_visible();
+	char buff[256];
+	switch (cpu_id >> 4) {
+	case 0:
+	    cons->print("no cpu initialised yet"); break;
+	case 1:
+	    sprintf(buff,"using 68000"); break;
+	case 2: sprintf(buff,"using Z80"); break;
+	case 3: sprintf(buff,"using 68020"); break;
+	default:
+		cons->print("unknown cpu");
+		cpu_id = 0;
+	}
+	if (cpu_id) {
+	    sprintf(buff+strlen(buff)-1,"%c",65+(cpu_id & 0xf));
+	    cons->print(buff);
+	}
+    }
     if (goto_debuger >= 0)
 	cons->execute();
     else

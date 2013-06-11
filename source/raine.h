@@ -84,6 +84,22 @@ extern int MC68020;  // 68020 running ???
 extern int x_display;			// Running in XFree ???
 #endif
 
+#ifdef NEO
+#define NEO_STR "Neo"
+#else
+#define NEO_STR ""
+#endif
+
+#define pretty_emu_name      \
+     "\E[1m " /* bold */     \
+     NEO_STR                 \
+     "\E[31mR" /* red */     \
+     "\E[33mA" /* yellow */  \
+     "\E[32mI" /* green */   \
+     "\E[34mN" /* blue */    \
+     "\E[35mE" /* magenta */ \
+     "\E[0m" /* reset */
+
 /*
 
 x86 memory access

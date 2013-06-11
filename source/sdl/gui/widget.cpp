@@ -91,7 +91,7 @@ int TStatic::get_height(TFont *font) {
   return h;
 }
 
-void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h, 
+void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
   int myfg, int mybg, int xoptions) {
   int fg = myfg, bg = mybg;
   char *s = (char*)menu->label;
@@ -117,9 +117,12 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	  fg = (ansi_color[col - 30]<<8) | 255;
 	else if (col >= 40 && col <= 47)
 	  bg = (ansi_color[col - 30]<<8) | 255;
+	else if (col == 1)
+	    font->set_style(TTF_STYLE_BOLD);
 	else if (col == 0) {
 	  fg = myfg;
 	  bg = mybg;
+	  font->set_style(TTF_STYLE_NORMAL);
 	} else if (col == 39)
 	  fg = myfg;
 	else if (col == 49)
@@ -177,7 +180,7 @@ int TOptions::get_list_index() {
 
 int TOptions::get_len_max_options() {
   unsigned int len_max_options = 0;
-  if (menu->values_list_label[0] && 
+  if (menu->values_list_label[0] &&
 	  !strcmp(menu->values_list_label[0],"hidden"))
       return 0;
   if (menu->value_int && menu->values_list_size) {
@@ -205,7 +208,7 @@ int TOptions::get_len_max_options() {
 
 int TOptions::get_width_max_options(TFont *font) {
   int w,h,width_max_options = 0;
-  if (menu->values_list_label[0] && 
+  if (menu->values_list_label[0] &&
 	  !strcmp(menu->values_list_label[0],"hidden"))
       return 0;
   if (menu->value_int && menu->values_list_size) {
@@ -228,10 +231,10 @@ int TOptions::get_width_max_options(TFont *font) {
   return width_max_options;
 }
 
-void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions) {
   TStatic::disp(s,font,x,y,w,h,fg,bg,xoptions);
-  if (menu->values_list_label[0] && 
+  if (menu->values_list_label[0] &&
 	  !strcmp(menu->values_list_label[0],"hidden"))
       return;
 
@@ -261,7 +264,7 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
  * (only 1 button to browse since the right button is to exit and the middle
  * one is not convinient at all for this */
 void TOptions::next_list_item() {
-  if (menu->values_list_size == 3 && 
+  if (menu->values_list_size == 3 &&
 	  (!menu->values_list_label[0] ||
 	   !strcmp(menu->values_list_label[0],"hidden"))) {
     // special interval list
@@ -270,14 +273,14 @@ void TOptions::next_list_item() {
       *(menu->value_int) = menu->values_list[0];
   } else {
     int index = get_list_index();
-    if (index < menu->values_list_size - 1) 
+    if (index < menu->values_list_size - 1)
       index++;
     else
       index = 0; // cycling
     *(menu->value_int) = menu->values_list[index];
   }
 }
-      
+
 void TOptions::prev_list_item() {
   if (menu->values_list_size == 3 &&
 	  (!menu->values_list_label[0] ||
@@ -288,7 +291,7 @@ void TOptions::prev_list_item() {
       *(menu->value_int) = menu->values_list[1];
   } else {
     int index = get_list_index();
-    if (index > 0) 
+    if (index > 0)
       index--;
     else
       index = menu->values_list_size - 1; // cycling

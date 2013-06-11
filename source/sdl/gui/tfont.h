@@ -25,6 +25,7 @@ class TFont {
     virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color);
     virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor);
     virtual void load_font(char *myfont);
+    virtual void set_style(int style) {};
 };
 
 class TFont_ttf :
@@ -41,6 +42,10 @@ class TFont_ttf :
     virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color);
     virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor);
     virtual void load_font(char *myfont);
+    virtual void set_style(int style)
+    {
+	TTF_SetFontStyle(ttf,style);
+    }
 };
 
 #endif

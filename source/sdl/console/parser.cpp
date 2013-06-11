@@ -220,27 +220,24 @@ int parse(char *orig)
       p.DefineFun( _T("lpeek"), lpeek, false);
       p.SetVarFactory(AddVariable,&p);
       // p.DefineFun( _T("r"), reg, false);
-      int cpu = get_cpu_id();
-      if (cpu == 1 || cpu == 3) {
-	  for (int n=0; n<8; n++) {
-	      char name[3];
-	      sprintf(name,"d%d",n);
-	      p.DefineVar(name,&d[n]);
-	      sprintf(name,"a%d",n);
-	      p.DefineVar(name,&a[n]);
-	  }
-	  p.DefineVar("sr",&sr);
-      } else { // 2 : z80
-	  p.DefineVar("a",&za);
-	  p.DefineVar("b",&zb);
-	  p.DefineVar("c",&zc);
-	  p.DefineVar("d",&zd);
-	  p.DefineVar("e",&ze);
-	  p.DefineVar("f",&zf);
-	  p.DefineVar("h",&zh);
-	  p.DefineVar("l",&zl);
-	  p.DefineVar("iff",&iff);
+      for (int n=0; n<8; n++) {
+	  char name[3];
+	  sprintf(name,"d%d",n);
+	  p.DefineVar(name,&d[n]);
+	  sprintf(name,"a%d",n);
+	  p.DefineVar(name,&a[n]);
       }
+      p.DefineVar("sr",&sr);
+      // z80
+      p.DefineVar("a",&za);
+      p.DefineVar("b",&zb);
+      p.DefineVar("c",&zc);
+      p.DefineVar("d",&zd);
+      p.DefineVar("e",&ze);
+      p.DefineVar("f",&zf);
+      p.DefineVar("h",&zh);
+      p.DefineVar("l",&zl);
+      p.DefineVar("iff",&iff);
       p.DefineVar("pc",&pc);
       initialised = 1;
     }
