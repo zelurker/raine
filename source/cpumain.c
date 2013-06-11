@@ -376,22 +376,24 @@ void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
     case 2: z80_get_ram(cpu & 0xf, range, count); break;
 #ifndef NO020
     case 3:
-	    int n;
-	    *count = 0;
-	    for(n=0; n<0x100; n++) {
-		/* Check that this R24 is not already used.
-		 * Otherwise it would be a very unefficient waste of ram ! */
-		int found = 0;
-		int m;
-		for (m=0; m<n; m++) {
-		    if (R24[n] == R24[m]) {
-			found = 1;
-			break;
+	    {
+		int n;
+		*count = 0;
+		for(n=0; n<0x100; n++) {
+		    /* Check that this R24 is not already used.
+		     * Otherwise it would be a very unefficient waste of ram ! */
+		    int found = 0;
+		    int m;
+		    for (m=0; m<n; m++) {
+			if (R24[n] == R24[m]) {
+			    found = 1;
+			    break;
+			}
 		    }
-		}
-		if (!found) {
-		    range[*count++] = n<<16;
-		    range[*count++] = ((n+1)<<16)-1;
+		    if (!found) {
+			range[*count++] = n<<16;
+			range[*count++] = ((n+1)<<16)-1;
+		    }
 		}
 	    }
 	    break;
