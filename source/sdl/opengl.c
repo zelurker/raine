@@ -9,6 +9,9 @@
 #include "newmem.h"
 #include "raine.h" // ReadWord/WriteWord
 #include "sdl/glsl.h"
+#ifdef MessageBox
+#undef MessageBox
+#endif
 #include "sdl/dialogs/messagebox.h"
 
 static UINT8 *font;
