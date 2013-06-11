@@ -1097,10 +1097,11 @@ int do_console(int sel) {
     } else
 #endif
 #if HAVE_Z80
-   if(MZ80Engine>=1)		// Guess it's a z80 game
+   if(MZ80Engine>=1) {		// Guess it's a z80 game
        cpu_id = CPU_Z80_0;
-  if (!Z80_context[cpu_id].z80Base)
-      cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
+       if (!Z80_context[cpu_id].z80Base)
+	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
+   }
 #endif
     cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;

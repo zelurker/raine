@@ -371,12 +371,12 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 }
 
 void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
-    int n;
     switch(cpu>>4) {
     case 1: s68000_get_ram(cpu & 0xf,range,count); break;
     case 2: z80_get_ram(cpu & 0xf, range, count); break;
 #ifndef NO020
     case 3:
+	    int n;
 	    *count = 0;
 	    for(n=0; n<0x100; n++) {
 		/* Check that this R24 is not already used.
@@ -402,7 +402,7 @@ void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
 UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
     switch(cpu >> 4) {
     case 1:
-	s68k_get_code_range(cpu & 0xf, adr, start, end);
+	return s68k_get_code_range(cpu & 0xf, adr, start, end);
 	break;
     case 2:
 	// For the z80 all the rombase is executable, so...
