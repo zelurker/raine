@@ -20,8 +20,6 @@ value_type ror(value_type v1, value_type v2) { return int(rint(v1))>>int(rint(v2
 value_type Or(value_type v1, value_type v2) { return int(v1) | int(v2); }
 value_type And(value_type v1, value_type v2) { return int(v1) & int(v2); }
 value_type Not(value_type v1) { return ~int(rint(v1)); }
-value_type LogOr(value_type v1, value_type v2) { return int(v1) || int(v2); }
-value_type LogAnd(value_type v1, value_type v2) { return int(v1) && int(v2); }
 value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
 double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
@@ -207,14 +205,14 @@ int parse(char *orig)
     strcpy(expr,buff2); // obliged to use another string for the sprintf
   }
 
+  try
+  {
     if (!initialised) {
       p.DefineOprt( _T("<<"), rol, 0);
       p.DefineOprt( _T(">>"), ror, 0);
       p.DefineOprt( _T("|"), Or, 0);
       p.DefineOprt( _T("&"), And, 0);
       p.DefineInfixOprt( _T("~"), Not);
-      p.DefineOprt( _T("||"), LogOr, 0);
-      p.DefineOprt( _T("&&"), LogAnd, 0);
       p.DefineInfixOprt( _T("!"), LogNot);
       p.DefineFun( _T("alert"), alert, false);
       p.DefineFun( _T("dpeek"), dpeek);
@@ -248,8 +246,6 @@ int parse(char *orig)
     }
 //    p.DefineVar("a", &fVal);
 //    p.DefineFun("MyFunc", MyFunction);
-  try
-  {
     p.SetExpr(expr);
     res = p.Eval();
 
