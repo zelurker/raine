@@ -338,7 +338,7 @@ static struct OKIM6295interface okim6295_intf_16kHz_16kHz =
   { 250, 250 }
 };
 
-static struct SOUND_INFO sound_donpachk[] =
+static struct SOUND_INFO sound_donpachi[] =
 {
    { SOUND_M6295,  &donpachi_okim6295_interface,  },
    { 0,             NULL,               },
@@ -1249,7 +1249,7 @@ static WRITE16_HANDLER( nmk_oki6295_bankswitch_w )
     }
 }
 
-static void load_donpachk(void)
+static void load_donpachi(void)
 {
   romset =1; // like ddonpach
   default_eeprom = cave_default_eeprom_type2;
@@ -3540,7 +3540,7 @@ static struct VIDEO_INFO video_dfeveron =
    VIDEO_ROTATABLE,
    cave_gfx,
 };
-static struct VIDEO_INFO video_donpachk =
+static struct VIDEO_INFO video_donpachi =
 {
    draw_cave_68k,
    320,
@@ -3621,15 +3621,15 @@ CLNEI( ddonpchj, ddonpach,"Dodonpachi (Japan)", CAVE, 1997, GAME_SHOOT,
 	.clear = clear_cave_68k,
 	.board = "AT-C03D2",
 );
-CLNEI( donpachi, donpachk, "DonPachi (USA) v1.12", CAVE, 1995, GAME_SHOOT,
+GMEI( donpachi, "DonPachi (USA) v1.12", CAVE, 1995, GAME_SHOOT,
 	.clear = clear_cave_68k,
 	.board = "AT-C01DP-2",
-	.sound = sound_donpachk,
+	.sound = sound_donpachi
 );
-CLNEI( donpachj, donpachk, "DonPachi (Japan) v1.01", CAVE, 1995, GAME_SHOOT,
+CLNEI( donpachj, donpachi, "DonPachi (Japan) v1.01", CAVE, 1995, GAME_SHOOT,
 	.clear = clear_cave_68k,
 	.board = "AT-C01DP-2",
-	.sound = sound_donpachk,
+	.sound = sound_donpachi
 );
 static struct DIR_INFO dir_donpachk[] =
 {
@@ -3639,11 +3639,10 @@ static struct DIR_INFO dir_donpachk[] =
    { CLONEOF( "donpachi" ) },
    { NULL, },
 };
-GAME( donpachk, "DonPachi (Korean) v1.12", CAVE, 1995, GAME_SHOOT,
+CLNE( donpachk, donpachi, "DonPachi (Korean) v1.12", CAVE, 1995, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.video = &video_donpachk,
 	.board = "AT-C01DP-2",
-	.sound = sound_donpachk,
+	.sound = sound_donpachi
 );
 static struct DIR_INFO dir_esprade[] =
 {

@@ -417,7 +417,7 @@ static struct DIR_INFO dir_recordbr[] =
    { "recordbr", },
    { NULL, },
 };
-GAME( recordbr, "Record Breaker", TAITO, 1988, GAME_SPORTS | GAME_NOT_WORKING,
+GME( recordbr, "Record Breaker", TAITO, 1988, GAME_SPORTS | GAME_NOT_WORKING,
 	.romsw = romsw_recordbr,
 	.board = "B56",
 );
