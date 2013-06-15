@@ -145,7 +145,7 @@ void init_load_type() {
     free(mp3_track);
     mp3_track = NULL;
   }
-  nb_tracks = 0;
+  nb_tracks = alloc_tracks = 0;
   nb_indexes = 0;
   if (!stricmp(&neocd_path[strlen(neocd_path)-3],"zip"))
     load_type = ZIP_TYPE;
