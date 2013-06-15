@@ -1,5 +1,7 @@
+#define NOGDI // define this before including windows.h to avoid BITMAP !
 #include <SDL.h>
 #include <SDL_opengl.h>
+#undef WINAPI
 #include "sdl/compat.h"
 #include "blit.h"
 #include "blit_sdl.h"
@@ -176,7 +178,7 @@ void render_texture(int linear) {
 	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
 		GameScreen.xview,GameScreen.yview,0,gl_format,
 		gl_type,
-		sdl_game_bitmap->pixels+current_game->video->border_size*sdl_screen->format->BytesPerPixel*(1+GameScreen.xfull));
+		GameViewBitmap->line[0]);
 
     glBegin(GL_TRIANGLE_STRIP);
     glNormal3f(0,0,1.0);
@@ -202,7 +204,7 @@ void draw_opengl(int linear) {
 	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
 	glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
 		-(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
-	glDrawPixels(GameScreen.xview,GameScreen.yview,gl_format,gl_type,sdl_game_bitmap->pixels+current_game->video->border_size*sdl_screen->format->BytesPerPixel*(1+GameScreen.xfull));
+	glDrawPixels(GameScreen.xview,GameScreen.yview,gl_format,gl_type,GameViewBitmap->line[0]);
     }
 }
 
