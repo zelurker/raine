@@ -152,8 +152,8 @@ static int cdda_play(int track,int loop)
   }
 
   if (str3) {
-    print_debug("cdda play - mp3 found\n");
-    if (str[strlen(str)-1] != SLASH[0])
+    print_debug("cdda play - mp3 found str:%s.\n",str);
+    if (str[0] && str[strlen(str)-1] != SLASH[0])
       strcat(str,SLASH);
     strcat(str,str3);
     load_sample(str);
@@ -251,4 +251,4 @@ void prepare_cdda_save(UINT32 id) {
   AddSaveData(id,(UINT8*)&cdda,sizeof(cdda));
   AddLoadCallback(restore_cdda);
 }
- 
+
