@@ -173,22 +173,10 @@ void render_texture(int linear) {
     // glRotatef(90.0,0.0,0.0,1.0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear);
-    switch (display_cfg.bpp) {
-    case 15:
-    case 16:
 	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
-		GameScreen.xview,GameScreen.yview,0,GL_RGB,
-		GL_UNSIGNED_SHORT_5_6_5_REV,
-		sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
-	break;
-    default:
-	printf("rshift %d bshift %d\n",sdl_screen->format->Rshift,sdl_screen->format->Bshift);
-	if (sdl_screen->format->Bshift == 0)
-	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,
-		GameScreen.xview,GameScreen.yview,0,GL_BGRA,
-		GL_UNSIGNED_INT_8_8_8_8_REV,
-		sdl_game_bitmap->pixels+current_game->video->border_size*4*(1+GameScreen.xfull));
-    }
+		GameScreen.xview,GameScreen.yview,0,gl_format,
+		gl_type,
+		sdl_game_bitmap->pixels+current_game->video->border_size*sdl_screen->format->BytesPerPixel*(1+GameScreen.xfull));
 
     glBegin(GL_TRIANGLE_STRIP);
     glNormal3f(0,0,1.0);
@@ -214,15 +202,7 @@ void draw_opengl(int linear) {
 	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
 	glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
 		-(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
-	switch (display_cfg.bpp) {
-	case 15:
-	case 16:
-	    glDrawPixels(GameScreen.xview,GameScreen.yview,GL_RGB,GL_UNSIGNED_SHORT_5_6_5_REV,sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
-	    break;
-	case 32:
-	    glDrawPixels(GameScreen.xview,GameScreen.yview,GL_BGRA,GL_UNSIGNED_INT_8_8_8_8_REV,sdl_game_bitmap->pixels+current_game->video->border_size*2*(1+GameScreen.xfull));
-	    break;
-	}
+	glDrawPixels(GameScreen.xview,GameScreen.yview,gl_format,gl_type,sdl_game_bitmap->pixels+current_game->video->border_size*sdl_screen->format->BytesPerPixel*(1+GameScreen.xfull));
     }
 }
 
