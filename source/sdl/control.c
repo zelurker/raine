@@ -66,7 +66,7 @@ char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 
 int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
-  analog_maxy,analog_normx,analog_normy, 
+  analog_maxy,analog_normx,analog_normy,
   app_state = SDL_APPMOUSEFOCUS|SDL_APPINPUTFOCUS, pause_on_focus;
 // analog_normx & normy are the normalized position of the stick after
 // calibration (between -16384 and +16384 inclusive).
@@ -243,13 +243,13 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { SDLK_t,    0x00, 0, "Def Button 2 Right",   },      // KB_DEF_B2_R,
 
  { 0,           0, 0, "Player1 B1+B2", }, // p1_b1B2
- { 0,           0, 0, "Player1 B3+B4", }, 
+ { 0,           0, 0, "Player1 B3+B4", },
  { 0,           0, 0, "Player1 B2+B3", },
  { 0,           0, 0, "Player1 B1+B2+B3", },
  { 0,           0, 0, "Player1 B2+B3+B4", },
 
  { 0,           0, 0, "Player2 B1+B2", }, // p2_b1B2
- { 0,           0, 0, "Player2 B3+B4", }, 
+ { 0,           0, 0, "Player2 B3+B4", },
  { 0,           0, 0, "Player2 B2+B3", },
  { 0,           0, 0, "Player2 B1+B2+B3", },
  { 0,           0, 0, "Player2 B2+B3+B4", },
@@ -268,7 +268,7 @@ static void key_save_screen(void)
 
 static void key_quit() {
     // Violent quit, equivalent of closing the window
-    if (recording) 
+    if (recording)
 	end_recording();
     exit(1);
 }
@@ -309,7 +309,7 @@ static void toggle_limit_speed() {
 		display_cfg.limit_speed = 1;
 	}
 }
-  
+
 extern void key_stop_emulation_esc(void);
 extern void key_stop_emulation_tab(void);
 
@@ -623,7 +623,7 @@ void save_game_keys(char *section)
 	   sprintf(other_name,"%s_auto_rate",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].auto_rate);
 	 }
-	 if (InputList[ta].link > ta) { 
+	 if (InputList[ta].link > ta) {
 	   int link = InputList[ta].link;
 	   sprintf(other_name,"%s_link",key_name);
 	   raine_set_config_int(section,other_name,link);
@@ -740,7 +740,7 @@ int raine_get_emu_nb_ctrl() {
 
 void load_emulator_keys(char *section) {
   int nb = raine_get_emu_nb_ctrl();
-  load_emu_keys(section,def_input_emu,nb); 
+  load_emu_keys(section,def_input_emu,nb);
 }
 
 void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb) {
@@ -1152,7 +1152,7 @@ static void handle_event(SDL_Event *event) {
 	def_input_emu[6].proc();
 	break;
       }
-	
+
       do {
 	ta = find_input_from_keysym(input,ta+1);
 	if (ta >= 0) {
@@ -1277,7 +1277,7 @@ static void handle_event(SDL_Event *event) {
 	event->jaxis.axis = base_axis + 1;
 	event->jaxis.value = -32700;
 	handle_event(event);
-      } 
+      }
       if (value & SDL_HAT_DOWN) {
 	event->jaxis.axis = base_axis + 1;
 	event->jaxis.value = 32000;
@@ -1335,7 +1335,7 @@ static void handle_event(SDL_Event *event) {
 	jstate[which].pos_axis[axis] = -1;
 	add_joy_event((jevent = JOY(which,AXIS_LEFT(axis),0,0)));
       } else if (value > 16000 && jstate[which].pos_axis[axis] < 1) {
-	if (jstate[which].pos_axis[axis] == -1) 
+	if (jstate[which].pos_axis[axis] == -1)
 	  remove_joy_event(JOY(which,AXIS_LEFT(axis),0,0));
 	jstate[which].pos_axis[axis] = 1;
 	add_joy_event((jevent = JOY(which,AXIS_RIGHT(axis),0,0)));
@@ -1423,8 +1423,8 @@ void update_inputs(void)
 /******************************************************************************/
 
 #ifdef NEO
-char MSG_COIN1[]        = "Player 1 select";
-char MSG_COIN2[]        = "Player 2 select";
+char MSG_COIN1[]        = "Player1 SELECT";
+char MSG_COIN2[]        = "Player2 SELECT";
 #else
 char MSG_COIN1[]        = "Coin A";
 char MSG_COIN2[]        = "Coin B";
@@ -1738,7 +1738,7 @@ void inputs_preinit() {
 
 void inputs_done() {
   int n;
-  for (n=0; n<SDL_NumJoysticks(); n++) 
+  for (n=0; n<SDL_NumJoysticks(); n++)
     if (joy[n]) {
 	SDL_JoystickClose(joy[n]);
 	free(joy_name[n]);
