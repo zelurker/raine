@@ -15,7 +15,7 @@
 #include "menu.h"
 #include "sdl/display_sdl.h"
 
-int min_font_size = 10;
+int min_font_size = 8;
 static int max_font_size = 30;
 
 void save_font_config() {
@@ -24,7 +24,7 @@ void save_font_config() {
 }
 
 void read_font_config() {
-  min_font_size = raine_get_config_int("GUI", "min_font_size", 9);
+  min_font_size = raine_get_config_int("GUI", "min_font_size", 8);
   max_font_size = raine_get_config_int("GUI", "max_font_size", 30);
 }
 
@@ -256,7 +256,7 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
   sc.r = (color >> 24) & 0xff;
   bg.b = (bgcolor >> 8) & 0xff;
   bg.g = (bgcolor >> 16) & 0xff;
-  bg.r = (bgcolor >> 24) & 0xff; 
+  bg.r = (bgcolor >> 24) & 0xff;
   SDL_Surface *sf = TTF_RenderText_Shaded(ttf,s,sc,bg);
   // SDL_SetColorKey(sf,SDL_SRCCOLORKEY | SDL_RLEACCEL,0);
   dest.x = x; dest.y = y;
