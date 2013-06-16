@@ -44,6 +44,11 @@ static int mbase;		// Which message is top of the list
 // Entry to screen blitting, takes care of pause mode, eagle mode
 
 int req_fwd; // request req_fwd frames forward (in pause)
+static int pause_init;
+
+void uninit_pause() {
+    pause_init = 0;
+}
 
 void BlitScreen(void)
 {
@@ -57,20 +62,18 @@ void BlitScreen(void)
 	 return;
   }
       else{
-	 InitDrawPaused();
+	  if (!pause_init) {
+	      InitDrawPaused();
 
-	 stop_demo();
+	      stop_demo();
+	      pause_init = 1;
+	  }
 
-	 while(raine_cfg.req_pause_game){
+	  DrawPaused();
 
-	    DrawPaused();
+	  update_rjoy_list();
 
-	    update_rjoy_list();
-
-	    update_inputs();
-	 }
-
-	 EndDrawPaused();
+	  update_inputs();
 
 	 return;
 
@@ -190,7 +193,7 @@ void overlay_ingame_interface(int ogl)
    case 0x03:				// Show Profile results (percent)
       for(ta=0;ta<PRO_COUNT;ta++){
       sprintf(fps_buff,"%s: %2d%%",profile_results[ta].name, profile_results[ta].percent);
-      if (ogl) 
+      if (ogl)
 	  opengl_text(fps_buff,-10,-1-ta);
       else
 	  textout_fast(fps_buff,xoff2+xxx-(10*6),yoff2+(ta*8),get_white_pen());

@@ -226,6 +226,7 @@ void EndDrawPaused(void)
 
    reset_ingame_timer();
    restore_ingame_timer(pause_timer);
+   uninit_pause();
 }
 
 void DrawPaused(void)

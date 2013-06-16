@@ -48,6 +48,7 @@ int add_layer_info(char *name);
 int check_layer_enabled(int layer);
 void BlitScreen(void);
 void overlay_ingame_interface(int ogl);
+void uninit_pause();
 
 #ifdef __cplusplus
 }

@@ -298,6 +298,8 @@ extern void cpu_slow_down(); // emumain.c
 static void key_pause_game(void)
 {
 	raine_cfg.req_pause_game ^= 1;
+	if (!raine_cfg.req_pause_game)
+	    EndDrawPaused();
 }
 
 static void toggle_limit_speed() {

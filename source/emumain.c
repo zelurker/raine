@@ -98,7 +98,6 @@ void key_stop_emulation_esc(void)
   if (!old_draw) {
 #endif
     quit_loop = 1;
-    raine_cfg.req_pause_game = 0;
 #ifndef SDL
   }
 #endif
@@ -110,7 +109,6 @@ void key_stop_emulation_tab(void)
   if (!old_draw) {
 #endif
    quit_loop = 2;
-   raine_cfg.req_pause_game = 0;
 #ifndef SDL
   }
 #endif
@@ -133,7 +131,6 @@ UINT32 run_game_emulation(void)
 
    cpu_tick = 0;
    quit_loop = 0;
-   raine_cfg.req_pause_game = 0;
    raine_cfg.req_save_screen = 0;
 
    print_debug("Init Timer...\n");
