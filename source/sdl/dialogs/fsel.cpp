@@ -291,14 +291,13 @@ void TFileSel::compute_nb_items() {
     qsort(&menu[2],nb_files-2,sizeof(menu_item_t),&sort_menu);
     if (oldsel)
 	for (int n=2; n<nb_files; n++)
-	    if (!strcmp(menu[n].label,oldsel)) 
+	    if (!strcmp(menu[n].label,oldsel))
 		sel = n;
     chdir(cwd);
   }
   strcpy(res_file,path);
-  if (path[strlen(path)-1] != SLASH[0]) 
+  if (path[strlen(path)-1] != SLASH[0])
     strcat(res_file,SLASH);
-#ifdef NEO
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
       char *myexts[] = { ".iso", "iso.gz", NULL };
       char **old = ext;
@@ -306,7 +305,6 @@ void TFileSel::compute_nb_items() {
       compute_nb_items();
       ext = old;
   } else
-#endif
       TMenu::compute_nb_items();
 }
 
@@ -338,7 +336,7 @@ void TFileSel::set_dir(char *mypath) {
   set_title(path);
   draw();
   strcpy(res_file,path);
-  if (path[strlen(path)-1] != SLASH[0]) 
+  if (path[strlen(path)-1] != SLASH[0])
     strcat(res_file,SLASH); // To show it's a path more easily
 }
 

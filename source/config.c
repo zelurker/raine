@@ -49,13 +49,11 @@ static void CLI_Help(void)
 	"\n"
 	"Commands:\n"
 	"\n"
-#ifndef NEO
 	"-game/-g [gamename]            : Select a game to load (see game list)\n"
 	"-gamelist/-gl                  : Quick list of all games\n"
 	"-gameinfo/-listinfo <gamename> : List info for a game, or all games\n"
 	"-romcheck/-rc <gamename>       : Check roms are valid for a game, or all games\n"
 	"-romcheck-full/-rcf <gamename> : like romcheck, but load all the games, very slow now\n"
-#endif
 	"-help/-h/-?/--help             : Show command line options and list games\n"
 	"-joystick/-j [type]            : Select joystick type (see list in raine.cfg)\n"
 	"-limitspeed/-l                 : Limit emulation speed to 60fps\n"
@@ -127,7 +125,6 @@ process the -game/-g option
 
 */
 
-#ifndef NEO
 static void CLI_game_load_alt(void)
 {
    int i,found = 0;
@@ -184,7 +181,6 @@ static void CLI_game_load(void)
    }
 
 }
-#else // NEO
 #include "neocd/neocd.h"
 #include "blit.h"
 #include "newspr.h"
@@ -239,8 +235,6 @@ int load_neo_from_name(char *res) {
   }
   return actual_load_neo_game();
 }
-
-#endif // NEO
 
 // CLI_DisableLeds():
 // Disable LED usage
@@ -309,7 +303,7 @@ static void CLI_geometry(void) {
 	    nb = 10*nb+(*s-'0');
 	} else if (*s == 'x') {
 	    size++;
-	    if (size == 1) 
+	    if (size == 1)
 		display_cfg.screen_x = nb;
 	    else
 		printf("geometry: bad syntax : %s\n",ArgList[ArgPosition-1]);
@@ -805,7 +799,6 @@ static void CLI_Joystick(void)
 }
 #endif
 
-#ifndef NEO
 // CLI_game_list():
 // Output list of all games
 
@@ -822,7 +815,6 @@ static void CLI_game_list(void)
 
    exit(0);
 }
-#endif
 
 // CLI_Verbose():
 // Output extra info for some options
@@ -832,7 +824,6 @@ static void CLI_Verbose(void)
    verbose = 1;
 }
 
-#ifndef NEO
 static void CheckGame(GAME_MAIN *game_info, int full_check)
 {
    const DIR_INFO *dir_list;
@@ -1563,7 +1554,6 @@ static void CLI_lsf(void)
    exit(0);
 
 }
-#endif // NEO
 
 // CLI_OPTION:
 // Type for command line process list
@@ -1579,7 +1569,6 @@ typedef struct CLI_OPTION
 
 static CLI_OPTION cli_commands[] =
 {
-#ifndef NEO
    { "-gamelist",	CLI_game_list		},
    { "-gl",		CLI_game_list		},
    { "-gameinfo",	CLI_game_info		},
@@ -1594,7 +1583,6 @@ static CLI_OPTION cli_commands[] =
    { "-listdsw",	CLI_dsw_info		},
    { "-lsf",            CLI_lsf },
    { "-source_file",    CLI_lsf },
-#endif
    { "-help",		CLI_Help		},
    { "-?",		CLI_Help		},
    { "--help",          CLI_Help                },
@@ -1724,17 +1712,19 @@ void parse_command_line(int argc, char *argv[])
        }
 
        }
-       else if (ArgPosition == ArgCount-1) { 
+       else if (ArgPosition == ArgCount-1) {
 
           // allow raine <gamename> (preferred use is raine -game <gamename>)
 
-#ifndef NEO
-          CLI_game_load_alt();
-#else
-	  sdl_init();
-	  backslash(ArgList[ArgPosition]);
-	  load_neo_from_name(ArgList[ArgPosition]);
-#endif
+	   if (is_dir(ArgList[ArgPosition]) || !stricmp(
+		       &ArgList[ArgPosition][strlen(ArgList[ArgPosition])-3],
+		       "iso")) {
+	       // iso or directory, assuming neocd image
+	       sdl_init();
+	       backslash(ArgList[ArgPosition]);
+	       load_neo_from_name(ArgList[ArgPosition]);
+	   } else
+	       CLI_game_load_alt();
 
        }
 
@@ -1817,11 +1807,10 @@ static void load_cheats(char *name) {
     // No cheats found -> try the system wide file
 
     // share_path/config is a nonsense since share_path is already a config/data dir
-#ifndef NEO
-    strcpy(str,get_shared("cheats.cfg"));
-#else
-    strcpy(str,get_shared("neocheats.cfg"));
-#endif
+      if (!strcmp(name,"neocd"))
+	  strcpy(str,get_shared("neocheats.cfg"));
+      else
+	  strcpy(str,get_shared("cheats.cfg"));
     raine_set_config_file(str);
 
     // Load Cheat Settings
@@ -1860,12 +1849,12 @@ void load_game_config(void)
    sprintf(str,"%s:display", current_game->main_name);
    load_screen_settings(str);
 
-#ifndef NEO
-   // Load DSW Settings
+   if (!is_current_long("neocd")) {
+       // Load DSW Settings
 
-   sprintf(str,"%s:dipswitch", current_game->main_name);
-   load_dipswitches(str);
-#endif
+       sprintf(str,"%s:dipswitch", current_game->main_name);
+       load_dipswitches(str);
+   }
 
    // Load ROM Version Settings
 
@@ -1874,24 +1863,23 @@ void load_game_config(void)
 
    // config/cheats.cfg ------------------------------------
 
-#ifndef NEO
-   sprintf(str,"%sconfig/cheats.cfg", dir_cfg.share_path);
-#else
-   sprintf(str,"%sconfig/neocheats.cfg", dir_cfg.share_path);
-#endif
+   if (is_current_long("neocd"))
+       sprintf(str,"%sconfig/neocheats.cfg", dir_cfg.share_path);
+   else
+       sprintf(str,"%sconfig/cheats.cfg", dir_cfg.share_path);
 
    raine_set_config_file(str);
 
    // Load Cheat Settings
 
    load_cheats(current_game->main_name);
-#ifndef NEO
-   if (CheatCount == 0) {
-     char *parent = (char*)parent_name();
-     if (parent != current_game->main_name)
-       load_cheats(parent); // default : if no cheats, try the parent !
+   if (!is_current_long("neocd")) {
+       if (CheatCount == 0) {
+	   char *parent = (char*)parent_name();
+	   if (parent != current_game->main_name)
+	       load_cheats(parent); // default : if no cheats, try the parent !
+       }
    }
-#endif
 
    raine_pop_config_state();
 #ifdef HAS_CONSOLE
@@ -1934,12 +1922,12 @@ void save_game_config(void)
    sprintf(str,"%s:display", current_game->main_name);
    save_screen_settings(str);
 
-#ifndef NEO
-   // Save DSW Settings
+   if (!is_current_long("neocd")) {
+       // Save DSW Settings
 
-   sprintf(str,"%s:dipswitch", current_game->main_name);
-   save_dipswitches(str);
-#endif
+       sprintf(str,"%s:dipswitch", current_game->main_name);
+       save_dipswitches(str);
+   }
 
    // Save ROM Version Settings
 

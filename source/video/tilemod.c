@@ -609,7 +609,6 @@ UINT8 *make_solid_mask(UINT8 *source, UINT32 count, UINT32 size, UINT32 pad_size
    UINT8 *map;
    int nb;
    for (nb=0; nb<MAX_GFX; nb++) {
-#ifndef NEO
      if (source == gfx[nb]) {
        if (gfx_solid[nb]) {
 #ifdef RAINE_DEBUG
@@ -619,7 +618,6 @@ UINT8 *make_solid_mask(UINT8 *source, UINT32 count, UINT32 size, UINT32 pad_size
        }
        break;
      }
-#endif
    }
 
    if(pad_size<count)
@@ -644,16 +642,11 @@ UINT8 *make_solid_mask(UINT8 *source, UINT32 count, UINT32 size, UINT32 pad_size
       if((td==1)&&(te==0)) map[ta]=2;      // All pixels are !0: Draw Solid
    }
 
-#ifndef NEO
    if (nb < MAX_GFX && source == gfx[nb]) {
      gfx_solid[nb] = map;
    }
-#endif
    return map;
 }
-
-#ifndef NEO
-// no regions in neocd
 
 UINT8 *make_solid_region_8x8(UINT32 region) {
   if (load_region[region])
@@ -668,8 +661,6 @@ UINT8 *make_solid_region_16x16(UINT32 region) {
 UINT8 *make_solid_region_16x8(UINT32 region) {
   return make_solid_mask_16x8(load_region[region],get_region_size(region)/(16*8));
 }
-
-#endif
 
 UINT8 *make_solid_mask_8x8(UINT8 *source, UINT32 count)
 {
@@ -891,7 +882,6 @@ typedef struct GFX_ELEMENT
 } GFX_ELEMENT;
 
 
-#ifndef NEO
 static void decodechar(GFX_ELEMENT *gfx, int num, const UINT8 *src, const GFX_LAYOUT *gl)
 {
    int plane,x,y;
@@ -1004,7 +994,6 @@ UINT8 *decode_gfx(const UINT8 *src, const UINT32 src_size, const GFX_LAYOUT *lay
 
    return gfx_data;
 }
-#endif
 
 /*
 

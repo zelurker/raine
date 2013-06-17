@@ -67,13 +67,12 @@ static int draw_sprites(int sel) {
 	if (y+h > GameBitmap->h) break;
       }
     } else if (w == 8 && h == 8) {
-#ifdef NEO
-      // layer 0 is packed in neocd and apparently there is no way to store
-      // this info in tile_list... maybe one day, but until then...
-      Draw8x8_Trans_Packed_Mapped(&gfx[n<<5],x,y,map);
-#else
-      Draw8x8_Trans_Mapped(&gfx[n<<6],x,y,map);
-#endif
+	if (is_current_long("neocd")) {
+	    // layer 0 is packed in neocd and apparently there is no way to store
+	    // this info in tile_list... maybe one day, but until then...
+	    Draw8x8_Trans_Packed_Mapped(&gfx[n<<5],x,y,map);
+	} else
+	    Draw8x8_Trans_Mapped(&gfx[n<<6],x,y,map);
       x += 8;
       if (x+w > GameBitmap->w) {
 	x = 0;

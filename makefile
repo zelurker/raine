@@ -15,13 +15,9 @@
 # version (when the version increases, raine shows the issue dialog on
 # startup
 VERSION = "0.61.2"
-VERSION_NEO = "1.4.3"
-
-# Uncomment to build neoraine instead of raine
-# NEO=1
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -53,18 +49,7 @@ DARWIN=1
 OSTYPE=darwin
 endif
 
-# This stupid DOIT stuff is just to be able to do a OR :
-# if defined(DARWIN) or !defined(NEO)
-# makefile is really limited sometimes...
-# this is needed because darwin is the only place where we install neoraine
-# and raine to separate directories, in this case we must always install
-# everything.
-ifdef DARWIN
 DOIT=1
-endif
-ifndef NEO
-DOIT=1
-endif
 
 ifeq ("$(OSTYPE)","msys")
 MINGDIR=1
@@ -141,22 +126,18 @@ MD =	@mkdir
 # profiling
 # CC =	gcc -pg
 
-INCDIR= \
-	-Isource \
-	-Isource/68000 \
-	-Isource/z80 \
-	-Isource/sound \
-	-Isource/games \
-	-Isource/video \
-	-Isource/mini-unzip \
-	-Isource/mame
-
-ifndef NEO
-  INCDIR += \
-	-Isource/6502 \
-	-Isource/68020 \
+INCDIR=                 \
+    -Isource            \
+    -Isource/68000      \
+    -Isource/z80        \
+    -Isource/sound      \
+    -Isource/games      \
+    -Isource/video      \
+    -Isource/mini-unzip \
+    -Isource/mame       \
+    -Isource/6502       \
+    -Isource/68020      \
 	-Isource/m68705
-endif
 
 ifeq ($(OSTYPE),cygwin)
 
@@ -260,11 +241,7 @@ else
 SDL = 1
 
 ifdef DARWIN
-ifdef NEO
-DESTDIR = NeoRaine.app
-else
 DESTDIR = Raine.app
-endif
    prefix = $(DESTDIR)/Contents
    bindir = $(prefix)/MacOS
    sharedir = $(prefix)/Resources
@@ -385,11 +362,6 @@ OBJDIR = $(OSTYPE)
 ifdef SDL
 OBJDIR = $(OSTYPE)-sdl
 endif
-ifdef NEO
-OBJDIR = neo-$(OSTYPE)-sdl
-RAINE_EXE := neo$(RAINE_EXE)
-VERSION = $(VERSION_NEO)
-endif
 
 include cpuinfo
 
@@ -414,33 +386,27 @@ else
 VIDEO_CORE = $(OBJDIR)/video/c
 endif
 
-OBJDIRS=$(OBJDIR) \
-	$(OBJDIR)/mame \
-	$(OBJDIR)/sound \
-	$(OBJDIR)/68000 \
-	$(OBJDIR)/z80 \
-	$(OBJDIR)/video \
-	$(OBJDIR)/video/c \
-	$(OBJDIR)/video/i386 \
-	$(OBJDIR)/video/i386/newspr2 \
-	$(VIDEO_CORE)/blit_x2 \
-	$(OBJDIR)/mini-unzip \
-	$(OBJDIR)/7z \
-	$(OBJDIR)/video/i386/packed \
-	$(VIDEO_CORE)/str \
-	$(OBJDIR)/video/zoom \
-	$(OBJDIR)/math \
-	$(OBJDIR)/games
-
-ifndef NEO
-  OBJDIRS += \
-	$(OBJDIR)/68020 \
-	$(OBJDIR)/6502 \
-	$(OBJDIR)/m68705
-else
-  OBJDIRS += \
+OBJDIRS=$(OBJDIR)                \
+    $(OBJDIR)/mame               \
+    $(OBJDIR)/sound              \
+    $(OBJDIR)/68000              \
+    $(OBJDIR)/z80                \
+    $(OBJDIR)/video              \
+    $(OBJDIR)/video/c            \
+    $(OBJDIR)/video/i386         \
+    $(OBJDIR)/video/i386/newspr2 \
+    $(VIDEO_CORE)/blit_x2        \
+    $(OBJDIR)/mini-unzip         \
+    $(OBJDIR)/7z                 \
+    $(OBJDIR)/video/i386/packed  \
+    $(VIDEO_CORE)/str            \
+    $(OBJDIR)/video/zoom         \
+    $(OBJDIR)/math               \
+    $(OBJDIR)/games              \
+    $(OBJDIR)/68020              \
+    $(OBJDIR)/6502               \
+    $(OBJDIR)/m68705             \
 	$(OBJDIR)/neocd
-endif
 
 ifdef SDL
 OBJDIRS += \
@@ -533,10 +499,6 @@ endif
 ifdef USE_BEZELS
 CFLAGS += -DUSE_BEZELS=1
 CFLAGS_MCU += -DUSE_BEZELS=1
-endif
-
-ifdef NEO
-CFLAGS += -DNEO
 endif
 
 ifdef SDL
@@ -770,17 +732,12 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/gui/tedit.o \
 	$(OBJDIR)/sdl/gui/tlift.o \
 	$(OBJDIR)/sdl/gui/tbitmap.o \
-	$(CONSOLE)
-
-ifndef NEO
-  GUI += \
+	$(CONSOLE) \
 	$(OBJDIR)/sdl/dialogs/game_selection.o \
 	$(OBJDIR)/sdl/dialogs/romdirs.o \
-	$(OBJDIR)/sdl/dialogs/dlg_dsw.o
-else
-  GUI += $(OBJDIR)/sdl/dialogs/neocd_options.o \
+	$(OBJDIR)/sdl/dialogs/dlg_dsw.o \
+	$(OBJDIR)/sdl/dialogs/neocd_options.o \
 	$(OBJDIR)/sdl/dialogs/translator.o
-endif
 
 else
 GUI=	$(OBJDIR)/alleg/gui/gui.o \
@@ -822,12 +779,10 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/timer.o \
 	$(OBJDIR)/soundcfg.o \
 	$(OBJDIR)/speed_hack.o \
-	$(OBJDIR)/savepng.o
-
-ifndef NEO
- CORE += $(OBJDIR)/loadroms.o \
+	$(OBJDIR)/savepng.o \
+ 	$(OBJDIR)/loadroms.o \
 	$(OBJDIR)/bezel.o
-endif
+
 
 UNZIP = $(OBJDIR)/mini-unzip/unzip.o \
 	$(OBJDIR)/mini-unzip/ioapi.o
@@ -876,15 +831,13 @@ endif
 MAME=	$(OBJDIR)/mame/memory.o \
 	$(OBJDIR)/mame/eeprom.o
 
-NEOCD = $(OBJDIR)/neocd/games.o \
-	$(OBJDIR)/neocd/loadroms.o \
-	$(OBJDIR)/neocd/pd4990a.o \
-	$(OBJDIR)/neocd/cdrom.o \
-	$(OBJDIR)/neocd/cache.o \
-	$(OBJDIR)/neocd/cdda.o \
-	$(OBJDIR)/neocd/iso.o \
-	$(OBJDIR)/neocd/neocd.o \
-	$(OBJDIR)/games/gun.o
+NEOCD =                       \
+    $(OBJDIR)/neocd/pd4990a.o \
+    $(OBJDIR)/neocd/cdrom.o   \
+    $(OBJDIR)/neocd/cache.o   \
+    $(OBJDIR)/neocd/cdda.o    \
+    $(OBJDIR)/neocd/iso.o     \
+	$(OBJDIR)/neocd/neocd.o
 
 OBJS +=	 \
 	$(VIDEO) \
@@ -893,13 +846,11 @@ OBJS +=	 \
 	$(UNZIP) \
 	$(MAME) \
 	$(P7Z) \
-	$(GUI)
-
-ifndef NEO
-OBJS += $(GAMES) \
+	$(GUI) \
+	$(GAMES) \
 	$(SYSDRV) \
-	$(DEBUG)
-endif
+	$(DEBUG) \
+	$(NEOCD)
 
 ifdef SDL
 OBJS +=	$(OBJDIR)/sdl/blit.o \
@@ -961,14 +912,11 @@ SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN -fno-pic
 LFLAGS += -fno-pic -bind_at_load -read_only_relocs suppress
 
-ifdef NEO
 CFLAGS += -I/Library/Frameworks/SDL_sound.framework/Headers
 # LIBS += -lSDL_sound
 LIBS += -framework SDL_sound
-endif
 else
 CFLAGS += `sdl-config --cflags`
-ifdef NEO
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
 ifdef CROSSCOMPILE
@@ -977,16 +925,13 @@ else
 LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libsmpeg.a
 endif
 endif
-endif
 LIBS += `sdl-config --libs` -lSDL_ttf -lSDL_image # -lefence
-ifdef NEO
 ifdef RAINE_UNIX
 LIBS += -lSDL_sound
 else
 # windows
 # and these libs are used by SDL_sound/FLAC
 LIBS += -logg -lvorbisfile -lws2_32
-endif
 endif
 endif
 endif
@@ -1063,11 +1008,7 @@ else
 $(RAINE_EXE):	$(OBJS)
 endif
 
-ifdef NEO
-	@echo Linking NeoRaine...
-else
 	@echo Linking Raine...
-endif
 	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $^ $(LIBS) -lstdc++
 
 $(D7Z)/%.o: source/7z/%.c
@@ -1314,7 +1255,6 @@ ifdef DOIT
 #	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
 endif
 endif
-ifndef NEO
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
@@ -1322,22 +1262,15 @@ ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
-else
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
 ifndef DARWIN
 	$(INSTALL_DATA) neoraine.desktop $(prefix)/share/applications
 endif
 	$(INSTALL_DATA) neoraine.png $(prefix)/share/pixmaps
-endif
 ifdef DARWIN
 	@echo creating package $(DESTDIR)
-ifdef NEO
-	@cp neoraine.plist $(prefix)/Info.plist
-	@cp neocd.icns $(sharedir)
-else
 	@cp Info.plist $(prefix)
 	@cp new_logo.icns $(sharedir)
-endif
 endif
 
 install_dirs:

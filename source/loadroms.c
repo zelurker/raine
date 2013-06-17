@@ -79,6 +79,7 @@ static void free_temp_buffer(void)
 static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 region, const struct DIR_INFO *head, int *number_of_roms ) {
   UINT32 i=0, j=0;
   char *prev_name = NULL;
+  if (!rom_list) return 0;
    while(rom_list->name)
    {
      if(rom_list->region == region)
@@ -160,6 +161,7 @@ UINT32 get_region_size(UINT32 region)
    }
 
    rom_list = current_game->rom_list;
+   if (!rom_list) return 0;
    size = get_region_size_from_rominfo(rom_list,region,current_game->dir_list,&roms_count);
 
    print_debug("region: 0x%02x size: 0x%08x\n", region, size);

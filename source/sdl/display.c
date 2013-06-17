@@ -8,9 +8,7 @@
 #include <unistd.h>
 #endif
 #include "sdl/gui/menu.h"
-#ifndef NEO
 #include "bezel.h"
-#endif
 #include "winpos.h"
 #include "sdl/opengl.h"
 #include "sdl/display_sdl.h"
@@ -497,12 +495,8 @@ void resize() {
   if (current_game ) {
     // keep aspect ratio
     VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
-#ifndef NEO
     double ratio = get_bezel_ratio();
     if (ratio < 0)
-#else
-    double
-#endif
       ratio = video->screen_x*1.0/video->screen_y;
     int vx,vy;
     if (video->flags & VIDEO_ROTATE_90 || (video->flags & 3)==VIDEO_ROTATE_270){
@@ -543,9 +537,7 @@ void resize() {
     display_cfg.screen_x &= ~1; // even number
     // odd numbers can crash sdl_createyuvoverlay when libefence is in use !
 
-#ifndef NEO
     bezel_fix_screen_size(&display_cfg.screen_x,&display_cfg.screen_y);
-#endif
   }
   print_debug("calling ScreenChange from resize\n");
   ScreenChange();

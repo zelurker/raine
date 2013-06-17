@@ -218,10 +218,10 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x00, 0x02, BIT_ACTIVE_0 },
   { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x00, 0x04, BIT_ACTIVE_0 },
   { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x00, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1, MSG_P1_B1, 0x00, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2, MSG_P1_B2, 0x00, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B3, MSG_P1_B3, 0x00, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B4, MSG_P1_B4, 0x00, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1, "Player1 A", 0x00, 0x10, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2, "Player1 B", 0x00, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B3, "Player1 C", 0x00, 0x40, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B4, "Player1 D", 0x00, 0x80, BIT_ACTIVE_0 },
   { KB_DEF_P1_B1B2,"Player1 A+B", 0, 0x30, BIT_ACTIVE_0 },
   { KB_DEF_P1_B3B4,"Player1 C+D", 0, 0xc0, BIT_ACTIVE_0 },
   { KB_DEF_P1_B2B3,"Player1 B+C", 0, 0x60, BIT_ACTIVE_0 },
@@ -232,10 +232,10 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x02, BIT_ACTIVE_0 },
   { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x02, 0x04, BIT_ACTIVE_0 },
   { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x02, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, MSG_P2_B1, 0x02, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2, MSG_P2_B2, 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B3, MSG_P2_B3, 0x02, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B4, MSG_P2_B4, 0x02, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1, "Player2 A", 0x02, 0x10, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2, "Player2 B", 0x02, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B3, "Player2 C", 0x02, 0x40, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B4, "Player2 D", 0x02, 0x80, BIT_ACTIVE_0 },
   { KB_DEF_P2_B1B2,"Player2 A+B", 2, 0x30, BIT_ACTIVE_0 },
   { KB_DEF_P2_B3B4,"Player2 C+D", 2, 0xc0, BIT_ACTIVE_0 },
   { KB_DEF_P2_B2B3,"Player2 B+C", 2, 0x60, BIT_ACTIVE_0 },
@@ -243,9 +243,9 @@ static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
   { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 2, 0xe0, BIT_ACTIVE_0 },
 
   { KB_DEF_P1_START, MSG_P1_START, 0x04, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1, MSG_COIN1, 0x04, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_COIN1, "Player1 SELECT", 0x04, 0x02, BIT_ACTIVE_0 },
   { KB_DEF_P2_START, MSG_P2_START, 0x04, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, MSG_COIN2, 0x04, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_COIN2, "Player2 SELECT", 0x04, 0x08, BIT_ACTIVE_0 },
   // Bit 4 (0x10) is 0 if the memory card is present !!!
   // neogeo doc :
   // bit 5 = mc 2 insertion status (0 = inserted)
@@ -2259,6 +2259,7 @@ static void write_word(UINT32 offset, UINT16 data) {
 */
 
 static void load_neocd() {
+  fps = 59.185606; // As reported in the forum, see
     raster_frame = 0;
     do_not_stop = 0;
   register_driver_emu_keys(list_emu,4);

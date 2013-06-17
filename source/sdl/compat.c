@@ -185,9 +185,7 @@ void sdl_init() {
     if (!init) {
 	init = 1;
 	if ( SDL_Init(SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_JOYSTICK
-#ifdef NEO
 		    |SDL_INIT_CDROM
-#endif
 		    ) < 0 ) {
 	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
 	    exit(2);

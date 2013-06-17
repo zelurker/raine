@@ -22,13 +22,11 @@ int do_dirs(int sel) {
   menu[0].label = "Screenshot dir";
   menu[0].values_list_label[0] = dir_cfg.screen_dir;
 
-#ifndef NEO
   menu[1].label = "Emudx dir";
   menu[1].values_list_label[0] = dir_cfg.emudx_dir;
 
   menu[2].label = "Artwork dir";
   menu[2].values_list_label[0] = dir_cfg.artwork_dir;
-#endif
 
   for (n=0; n< nb; n++) {
     menu[n].value_int = &bidon;

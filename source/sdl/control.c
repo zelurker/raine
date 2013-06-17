@@ -37,9 +37,7 @@
 #include "video/newspr.h" // init_video_core
 #include "control_internal.h"
 #include "display.h"
-#ifndef NEO
 #include "bezel.h"
-#endif
 #ifdef HAS_CONSOLE
 #include "sdl/console/console.h"
 #endif
@@ -1231,11 +1229,9 @@ static void handle_event(SDL_Event *event) {
       reset_ingame_timer();
 
       break;
-#ifndef NEO
     case SDL_VIDEOEXPOSE:
       display_bezel();
       break;
-#endif
     case SDL_JOYHATMOTION:
       /* Hats are a windows speciality. In linux, they are seen as 2 separate
        * axis. Since axis simplify the way to handle them, I don't really see
@@ -1424,13 +1420,8 @@ void update_inputs(void)
 /*                                                                            */
 /******************************************************************************/
 
-#ifdef NEO
-char MSG_COIN1[]        = "Player1 SELECT";
-char MSG_COIN2[]        = "Player2 SELECT";
-#else
 char MSG_COIN1[]        = "Coin A";
 char MSG_COIN2[]        = "Coin B";
-#endif
 char MSG_COIN3[]        = "Coin C";
 char MSG_COIN4[]        = "Coin D";
 
@@ -1451,17 +1442,10 @@ char MSG_P1_DOWN[]      = "Player1 Down";
 char MSG_P1_LEFT[]      = "Player1 Left";
 char MSG_P1_RIGHT[]     = "Player1 Right";
 
-#ifdef NEO
-char MSG_P1_B1[]        = "Player1 A";
-char MSG_P1_B2[]        = "Player1 B";
-char MSG_P1_B3[]        = "Player1 C";
-char MSG_P1_B4[]        = "Player1 D";
-#else
 char MSG_P1_B1[]        = "Player1 Button1";
 char MSG_P1_B2[]        = "Player1 Button2";
 char MSG_P1_B3[]        = "Player1 Button3";
 char MSG_P1_B4[]        = "Player1 Button4";
-#endif
 char MSG_P1_B5[]        = "Player1 Button5";
 char MSG_P1_B6[]        = "Player1 Button6";
 char MSG_P1_B7[]        = "Player1 Button7";
@@ -1474,17 +1458,10 @@ char MSG_P2_DOWN[]      = "Player2 Down";
 char MSG_P2_LEFT[]      = "Player2 Left";
 char MSG_P2_RIGHT[]     = "Player2 Right";
 
-#ifdef NEO
-char MSG_P2_B1[]        = "Player2 A";
-char MSG_P2_B2[]        = "Player2 B";
-char MSG_P2_B3[]        = "Player2 C";
-char MSG_P2_B4[]        = "Player2 D";
-#else
 char MSG_P2_B1[]        = "Player2 Button1";
 char MSG_P2_B2[]        = "Player2 Button2";
 char MSG_P2_B3[]        = "Player2 Button3";
 char MSG_P2_B4[]        = "Player2 Button4";
-#endif
 char MSG_P2_B5[]        = "Player2 Button5";
 char MSG_P2_B6[]        = "Player2 Button6";
 char MSG_P2_B7[]        = "Player2 Button7";

@@ -43,19 +43,10 @@ void sound_load_cfg() {
 #endif
      RaineSoundCard = id;
 
-#ifdef NEO
-  audio_sample_rate = 44100; // with cd tracks, it would be crazy to have
-  // something else here !
-#else
-#if defined(RAINE_WIN32) && !defined(ALLEGRO_SOUND)
    /* It's better to default to 44Khz in sdl in win32 because of the buggy sound drivers
       in this os (they oblige to have quite a big sound buffer, which produces a
       noticeable sound delay at low sampling rates */
    audio_sample_rate= raine_get_config_int( "Sound",        "sample_rate",          44100 );
-#else
-   audio_sample_rate= raine_get_config_int( "Sound",        "sample_rate",          22050 );
-#endif
-#endif
 #if HAS_ES5505
    es5506_voice_filters = raine_get_config_int( "Sound",        "es5506_voice_filters",1 );
 #endif

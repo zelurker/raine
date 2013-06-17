@@ -118,7 +118,7 @@ void render_tc0002obj_mapped(void)
    ofs_x     = tc0002obj.bmp_x + tc0002obj.ofs_x;
    ofs_y     = tc0002obj.bmp_y + tc0002obj.ofs_y;
    spr_col   = ( tc0002obj.ctrl << 2) & 0xF0;
-   int flip_screen = tc0002obj.ctrl & 1;
+   // int flip_screen = tc0002obj.ctrl & 1;
    int flip;
 
    zz=0x7F8;

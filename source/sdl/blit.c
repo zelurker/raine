@@ -9,9 +9,7 @@
 #include "gen_conv.h"
 #include "video/res.h"
 #include "loadpng.h"
-#ifndef NEO
 #include "bezel.h"
-#endif
 #include "video/scale2x.h"
 #include "video/scale3x.h"
 #include "sdl/SDL_gfx/SDL_framerate.h"
@@ -26,9 +24,7 @@
 #include "hq2x.h"
 #include "newspr.h" // init_video_core
 #include "video/priorities.h"
-#ifdef NEO
 #include "neocd/neocd.h"
-#endif
 #include "sdl/opengl.h"
 
 SDL_Surface *sdl_game_bitmap;
@@ -169,10 +165,8 @@ void ReClipScreen(void)
   else{
     desty = 0;
   }
-#ifndef NEO
   if(yview2 <= disp_screen_y && xview2 <= disp_screen_x && current_game)
     bezel_fix_screen_coordinates(&destx,&desty,xview2,yview2,disp_screen_x,disp_screen_y);
-#endif
   if(yview < disp_screen_y){
     yyy = yview;
     yoff2 = GameScreen.ytop;
@@ -234,11 +228,9 @@ void DrawPaused(void)
    cpu_frame_count++;
 
    // blit(pause_buffer, GameBitmap, xoff2, yoff2, xoff2, yoff2, xxx, yyy);
-#ifdef NEO
    if (is_current_game("ssrpg"))
        draw_neocd_paused();
    else
-#endif
        SDL_BlitSurface(
 	       get_surface_from_bmp(pause_buffer), NULL,
 	       get_surface_from_bmp(GameBitmap), NULL);
@@ -424,10 +416,8 @@ void SetupScreenBitmap(void)
      desty2 = 0;
      destx2 = (display_cfg.screen_x - xxx2) /2;
    }
-#ifndef NEO
    bezel_fix_screen_size(&xxx2,&yyy2);
    bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
-#endif
 #ifdef DARWIN
    if (overlays_workarounds) {
        // I have a bug here which makes the overlay invisible if it doesn't start
@@ -473,7 +463,6 @@ void SetupScreenBitmap(void)
      area2.w = xxx;
      area2.h = yyy;
    }
-#ifndef NEO
    if (!sdl_overlay) {
      int x = area2.x, y = area2.y, w = area2.w, h = area2.h;
      // printf("fixing bezel %d %d %d %d - zone du jeu %d %d %d %d scale %d\n",x,y,w,h,xxx,yyy,destx,desty,use_scale2x);
@@ -484,7 +473,6 @@ void SetupScreenBitmap(void)
    }
 
    display_bezel();
-#endif
    clear_bitmap(GameViewBitmap);
 
    RefreshBuffers=1;

@@ -55,14 +55,10 @@ extern "C" {
 // Useful String Constants
 
 #define HANDLE	"Raine Team"    // Credit string
-#ifdef NEO
-#define EMUNAME "NeoRaine"
-#else
 #ifdef RAINE_WIN32
 #define EMUNAME "Raine32"       // Win32/DirectX Name
 #else
 #define EMUNAME "Raine"    // Dos/Linux Name
-#endif
 #endif
 
 #ifdef RAINE_UNIX
@@ -84,15 +80,8 @@ extern int MC68020;  // 68020 running ???
 extern int x_display;			// Running in XFree ???
 #endif
 
-#ifdef NEO
-#define NEO_STR "Neo"
-#else
-#define NEO_STR ""
-#endif
-
 #define pretty_emu_name      \
      "\E[1m " /* bold */     \
-     NEO_STR                 \
      "\E[31mR" /* red */     \
      "\E[33mA" /* yellow */  \
      "\E[32mI" /* green */   \

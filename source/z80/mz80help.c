@@ -27,9 +27,7 @@ puser is relative to 0x0000
 #include "raine.h"
 #include "mz80help.h"
 #include "savegame.h"
-#ifndef NEO
 #include "loadroms.h" // regions definitions
-#endif
 #include "newmem.h"
 #include "cpumain.h" // Z80_0
 #include "version.h" // to force a recompilation if RAINE_DEBUG is defined
@@ -970,9 +968,6 @@ void z80_init_data_banks_area(int cpu,UINT8 *rom,int rom_size,UINT32 offset,
   }
 }
 
-#ifndef NEO
-// no regions in neocd...
-
 void z80_init_banks_gap(int cpu,UINT32 region,UINT32 offset,
 			UINT32 bank_start,UINT16 len) {
   z80_init_banks_area_gap(cpu,load_region[region],get_region_size(region),
@@ -994,7 +989,6 @@ void z80_init_data_banks(int cpu,UINT32 region,UINT32 offset, UINT16 len) {
   z80_init_data_banks_area(cpu,load_region[region],get_region_size(region),
 			   offset,len);
 }
-#endif
 
 void z80_set_bank(int cpu, UINT8 data)
 {

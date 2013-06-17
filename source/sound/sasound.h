@@ -86,14 +86,9 @@ extern UINT8 *PCMROM;			/* hiro-shi */
 /************************************************/
 /*    include some headers                      */
 /************************************************/
-#ifdef NEO
-#define HAS_YM2610 1
-#else
 
 #define HAS_YM2608  0
 #include "conf-sound.h"
-
-#endif // NEO
 
 /*
 
@@ -209,11 +204,9 @@ void saResetPlayChannels( void );
 void sa_pause_sound(void);
 void sa_unpause_sound(void);
 
-#ifdef NEO
 void load_sample(char *filename);
 void init_samples();
 void set_sample_pos(int pos);
-#endif
 
 void end_recording();
 

@@ -18,12 +18,11 @@
 #include "loadroms.h"
 #include "2610intf.h"
 #include "streams.h"
+#include "games.h"
 
 UINT8 *YM2610_Rompointers[2];
 UINT32 YM2610_Romsizes[2];
-#ifdef NEO
 extern UINT8 *neogeo_pcm_memory;
-#endif
 
 #if BUILD_YM2610
 
@@ -128,17 +127,17 @@ int YM2610_sh_start(const struct YM2610interface *msound)
 		}
 		stream[i] = stream_init_multim(YM2610_NUMBUF,name,vol,rate,i,YM2610UpdateOne);
 		/* setup adpcm buffers */
-#ifdef NEO
-		pcmbufa[i] = (void *)PCMROM;
-		pcmsizea[i] = 0x100000;
-		pcmbufb[i] = NULL;
-		pcmsizeb[i] = 0;
-#else
-		pcmbufa[i]  = (void *)(memory_region(intf->pcmroma[i]));
-		pcmsizea[i] = memory_region_length(intf->pcmroma[i]);
-		pcmbufb[i]  = (void *)(memory_region(intf->pcmromb[i]));
-		pcmsizeb[i] = memory_region_length(intf->pcmromb[i]);
-#endif
+		if (is_current_long("neocd")) {
+		    pcmbufa[i] = (void *)PCMROM;
+		    pcmsizea[i] = 0x100000;
+		    pcmbufb[i] = NULL;
+		    pcmsizeb[i] = 0;
+		} else {
+		    pcmbufa[i]  = (void *)(memory_region(intf->pcmroma[i]));
+		    pcmsizea[i] = memory_region_length(intf->pcmroma[i]);
+		    pcmbufb[i]  = (void *)(memory_region(intf->pcmromb[i]));
+		    pcmsizeb[i] = memory_region_length(intf->pcmromb[i]);
+		}
 	}
 
 	/**** initialize YM2610 ****/
@@ -185,17 +184,17 @@ int YM2610B_sh_start(const struct YM2610interface *msound)
 		}
 		stream[i] = stream_init_multim(YM2610_NUMBUF,name,vol,rate,i,YM2610BUpdateOne);
 		/* setup adpcm buffers */
-#ifdef NEO
-		pcmbufa[i] = (void *)PCMROM;
-		pcmsizea[i] = 0x100000;
-		pcmbufb[i] = NULL;
-		pcmsizeb[i] = 0;
-#else
-		pcmbufa[i]  = (void *)(memory_region(intf->pcmroma[i]));
-		pcmsizea[i] = memory_region_length(intf->pcmroma[i]);
-		pcmbufb[i]  = (void *)(memory_region(intf->pcmromb[i]));
-		pcmsizeb[i] = memory_region_length(intf->pcmromb[i]);
-#endif
+		if (is_current_long("neocd")) {
+		    pcmbufa[i] = (void *)PCMROM;
+		    pcmsizea[i] = 0x100000;
+		    pcmbufb[i] = NULL;
+		    pcmsizeb[i] = 0;
+		} else {
+		    pcmbufa[i]  = (void *)(memory_region(intf->pcmroma[i]));
+		    pcmsizea[i] = memory_region_length(intf->pcmroma[i]);
+		    pcmbufb[i]  = (void *)(memory_region(intf->pcmromb[i]));
+		    pcmsizeb[i] = memory_region_length(intf->pcmromb[i]);
+		}
 	}
 
 	/**** initialize YM2610 ****/

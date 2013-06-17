@@ -145,6 +145,11 @@ int is_current_game(char *main_name)
    return (!stricmp(current_game->main_name, main_name));
 }
 
+int is_current_long(char *main_name)
+{
+    if (!current_game) return 0;
+   return (!stricmp(current_game->long_name, main_name));
+}
 /*
 
 Return the name of the parent if current game is a clone
@@ -155,6 +160,7 @@ else return current game name
 const char *parent_name() {
   char *dir;
   const DIR_INFO* dlist = current_game->dir_list;
+  if (!dlist) return current_game->main_name;
   while (dlist->maindir) {
     dir = dlist->maindir;
     if( IS_ROMOF(dir) ){

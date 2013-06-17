@@ -15,15 +15,14 @@ int nb_scripts;
 
 char *get_script_name(int writeable) {
   char base[10];
-#ifdef NEO
-  strcpy(base,"neocd");
-#else
-  strcpy(base,"raine");
-#endif
+   if (is_current_long("neocd"))
+       strcpy(base,"neocd");
+   else
+       strcpy(base,"raine");
   char buf[1024];
   sprintf(buf,"scripts%s%s%s%s.txt",SLASH,base,SLASH,current_game->main_name);
 
-  if (!writeable) 
+  if (!writeable)
     return get_shared(buf);
   // if it must be writable, force the use of the personnal folder, and
   // create the dirs by the way
@@ -126,7 +125,7 @@ void add_scripts(menu_item_t *menu) {
 void update_scripts() {
   for (int n=0; n<nb_scripts; n++) {
     if (script[n].status) {
-      for (int l=0; l<script[n].nb_lines; l++) 
+      for (int l=0; l<script[n].nb_lines; l++)
 	run_console_command(script[n].lines[l]);
       if (!script[n].looping)
 	script[n].status = 0;

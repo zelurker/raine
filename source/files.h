@@ -24,6 +24,7 @@ int save_file(char *filename, UINT8 *source, UINT32 size);
 int unz_locate_file_crc32(unzFile file, UINT32 crc32);
 int unz_locate_file_name(unzFile file, char *name);
 int size_file(char *filename);
+int is_dir(char *name);
 
 #ifdef RAINE_DEBUG
 
@@ -43,9 +44,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 int size_zipped(char *zipfile, char *name, int crc32);
 void backslash(char *s);
 
-#ifdef NEO
 int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned int size, UINT8 *dest);
-#endif
 
 #include <stdio.h>
 // fgets + strips trailing cr and returns length of string

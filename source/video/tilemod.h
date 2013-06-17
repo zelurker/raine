@@ -121,9 +121,7 @@ UINT8 *make_colour_count_16x16(UINT8 *source, UINT32 count);
 UINT8 check_tile_solid(UINT8 *src, UINT32 size);
 void check_tile_rotation(void);
 
-#ifndef NEO
 UINT8 *decode_gfx(const UINT8 *src, const UINT32 src_size, const GFX_LAYOUT *gfx_layout,UINT32 *dest_size);
-#endif
 
 /*
 

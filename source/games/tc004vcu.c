@@ -436,13 +436,11 @@ void tc0004vcu_render_fg0(void)
    UINT8 *map;
 
    UINT8 *RAM_BG;
-   UINT8 *RAM_SCR;
    UINT8 *GFX_BG;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
    RAM_BG    = tc0004vcu.RAM + 0x01000;
-   RAM_SCR   = tc0004vcu.RAM + 0x2080A;
    GFX_BG    = tc0004vcu.GFX_FG0;
 
    bmp_x = tc0004vcu.bmp_x;

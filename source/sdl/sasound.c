@@ -53,14 +53,11 @@
 
 #include "SDL.h"
 #include "SDL_audio.h"
-#ifndef NEO
 #include "dxsmp.h"
-#else
 #include <SDL_sound.h>
 #include "neocd/neocd.h"
 #include "neocd/cdda.h"
 #include "neocd/cdrom.h"
-#endif
 #include "control.h"
 #include "control_internal.h"
 
@@ -210,11 +207,8 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        }
        printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
        opened_audio = 1;
-#ifndef NEO
        read_dx_file();
-#else
        Sound_Init(); // init sdl_sound
-#endif
        strcpy(driver_name,"SDL ");
        SDL_AudioDriverName(&driver_name[4], 32);
        printf("driver name : %s\n",driver_name);
@@ -284,7 +278,6 @@ void saDestroyChannel( int chan )
 
 static int callback_busy;
 
-#ifdef NEO
 static Sound_Sample *sample;
 static FILE *fbin;
 
@@ -431,7 +424,6 @@ void set_sample_pos(int pos) {
     fseek(fbin,pos,SEEK_SET);
   }
 }
-#endif
 
 void saDestroySound( int remove_all_resources )
 {
@@ -449,11 +441,9 @@ void saDestroySound( int remove_all_resources )
 
    if (opened_audio) {
      SDL_CloseAudio();
-#ifdef NEO
-		 if (sample)
-			 Sound_FreeSample(sample);
-		 Sound_Quit();
-#endif
+     if (sample)
+	 Sound_FreeSample(sample);
+     Sound_Quit();
    }
 
    if(remove_all_resources){
@@ -519,7 +509,6 @@ INT16 get_average(signed short *din, int distance, double rapport) {
 // len of the buffer to update in samples
 #define LEN_SAMPLES 2048
 
-#ifdef NEO
 static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
   UINT8 buff[1024];
   int bw = 0;
@@ -533,7 +522,6 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
     cpysize -= chunk;
   }
 }
-#endif
 
 static void my_callback(void *userdata, Uint8 *stream, int len)
 {
@@ -548,7 +536,6 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     // printf("callback frame %d\n",cpu_frame_count);
     // int nb=0;
 
-#ifdef NEO
     // 1. Fill the stream with the sample, if available
     if (sample && cdda.playing == 1 && !done_flag && !mute_music) {
 	int bw = 0; /* bytes written to stream this time through the callback */
@@ -616,7 +603,6 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	callback_busy = 0;
 	return;
     }
-#endif
 
     len /= 2; // 16 bits from now on
 
@@ -633,14 +619,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    int volume = SampleVol[channel];
 	    int vol_l = (255-SamplePan[channel])*volume/255;
 	    int vol_r = (SamplePan[channel])*volume/255;
-#ifdef NEO
 	    vol_l = vol_l*sfx_volume/100;
 	    vol_r = vol_r*sfx_volume/100;
-#endif
 	    if (stream_buffer_pos[channel] < len/2) {
 		// printf("callb: underrun channel %d, wanted %d got %d\n",channel,len/2,stream_buffer_pos[channel]);
 		if (stream_callback[channel] || stream_callback_multi[channel])
-		    stream_update_channel(channel, len/2-stream_buffer_pos[channel]); 
+		    stream_update_channel(channel, len/2-stream_buffer_pos[channel]);
 		else {
 		    printf("buffer underrun channel %d and no callback\n",channel);
 		    continue;
@@ -691,7 +675,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     if (recording) {
 	mixing_buff_len = len;
 	mixing_buff = wstream;
-	if (f_record) 
+	if (f_record)
 	    fwrite(mixing_buff,2,len,f_record);
 	updated_recording++;
     }

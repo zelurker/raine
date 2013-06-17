@@ -19,10 +19,8 @@ extern "C" {
 #include "palette.h"		// colour mapping routines
 #include "scroll.h"		// scroll routines
 #include "cpumain.h"		// generic cpu routines
-#ifndef NEO
 #include "loadroms.h"		// sprite flipping/rotating/masking
 #include "u020help.h"		// M68020 support interface
-#endif
 #include "games.h"		// game struct info
 
 

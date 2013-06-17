@@ -35,12 +35,10 @@
 #endif
 #include "arpro.h" // CheatCount
 
-#ifdef NEO
 #include "neocd/neocd.h"
 #include "blit.h"
 #include "newspr.h"
 #include "neocd/cdrom.h"
-#endif
 #include "str_opaque.h"
 #include "control_internal.h"
 
@@ -53,12 +51,9 @@ int repeat_delay, repeat_interval;
 void read_gui_config() {
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
   repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
-#ifndef NEO
   read_game_list_config();
-#else
 	restore_cdrom_config();
 	restore_neocd_config();
-#endif
   read_font_config();
   read_menu_config();
   opaque_hud = raine_get_config_int("gui","opaque_hud",0);
@@ -68,12 +63,9 @@ void read_gui_config() {
 void write_gui_config() {
   raine_set_config_int("GUI","repeat_delay",repeat_delay);
   raine_set_config_int("GUI","repeat_interval",repeat_interval);
-#ifndef NEO
   save_game_list_config();
-#else
 	save_cdrom_config();
 	save_neocd_config();
-#endif
   save_font_config();
   save_menu_config();
   raine_set_config_int("GUI","opaque_hud",opaque_hud);
@@ -133,7 +125,6 @@ void load_message(char *msg) {
   }
 }
 
-#ifndef NEO
 static void load_game_proc()
 {
     LoadDefault();
@@ -248,7 +239,6 @@ static void do_load_game(void)
 
    free(load_debug);
 }
-#endif // NEO
 
 static int play_game(int sel) {
   WantPlay = 1;
@@ -267,7 +257,6 @@ static int set_region(int sel) {
   return 0;
 }
 
-#ifdef NEO
 static int load_neo_game(int sel) {
   char res[1024];
   char *exts[] = { ".zip",
@@ -280,7 +269,6 @@ static int load_neo_game(int sel) {
   return load_neo_from_name(res);
 }
 
-#endif
 
 extern int do_sound_options(int sel);
 
@@ -290,13 +278,10 @@ static menu_item_t main_items[] =
 { "Game options", &do_game_options },
 { "Region", &set_region, },
 { "Action replay cheats", &do_cheats, },
-#ifndef NEO
 { "Dipswitches", &do_dlg_dsw, },
 { "Change game", &do_game_sel },
-#else
-{ "Load game", &load_neo_game },
+{ "Load neocd game", &load_neo_game },
 { "Neocd options", &do_neocd_options },
-#endif
 { "Video options", &do_video_options },
 { "Sound options", &do_sound_options },
 { "Options", &do_gui_options },
@@ -328,10 +313,8 @@ class TMain_menu : public TMenu
 	    || nb_scripts > 0
 #endif
 	    );
-#ifndef NEO
       case 4: // dsw
         return current_game != NULL && current_game->dsw != NULL;
-#endif
       default:
 	return 1;
     }
@@ -407,9 +390,7 @@ void StartGUI(void)
 	sdl_create_overlay(display_cfg.screen_x,display_cfg.screen_y);
     }
 
-#ifdef NEO
     setup_neocd_bios();
-#endif
 
    while(!WantQuit){		// ----- Main Loop ------
 
@@ -419,11 +400,9 @@ void StartGUI(void)
 
 */
 
-#ifndef NEO
        if(raine_cfg.req_load_game)
 
 	   do_load_game();
-#endif
 
        if(!raine_cfg.no_gui)	// GUI MODE
        {

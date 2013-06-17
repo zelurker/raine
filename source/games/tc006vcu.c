@@ -491,7 +491,7 @@ void tc0006vcu_gfx_fg0_ww(UINT32 addr, UINT16 data)
 
 void tc0006vcu_render_layer(int layer)
 {
-   int zoom,zoom_2,tx,ty,txx,tyy;
+   int zoom,tx,ty,txx,tyy;
    UINT8 *z_data_x,*z_data_y;
 
    int x,y,x16,y16,zzzz,zzz,zz,ta;
@@ -525,7 +525,6 @@ void tc0006vcu_render_layer(int layer)
    if(tc0006vcu_layer_count == 0){
 
    zoom   = RAM_SCR[0x10];
-   zoom_2 = RAM_SCR[0x11];
 
    if((zoom<=0x7F)){
 
@@ -610,7 +609,6 @@ void tc0006vcu_render_layer(int layer)
    else{
 
    zoom   = RAM_SCR[0x10];
-   zoom_2 = RAM_SCR[0x11];
 
    if((zoom<=0x7F)){
 
@@ -729,7 +727,7 @@ void tc0006vcu_render_layer(int layer)
 
 void tc0006vcu_render_layer_1024(int layer)
 {
-   int zoom,zoom_2,tx,ty,txx,tyy;
+   int zoom,tx,ty,txx,tyy;
    UINT8 *z_data_x,*z_data_y;
 
    int x,y,x16,y16,zzzz,zzz,zz,ta;
@@ -763,7 +761,6 @@ void tc0006vcu_render_layer_1024(int layer)
    if(tc0006vcu_layer_count == 0){
 
    zoom   = RAM_SCR[0x10];
-   zoom_2 = RAM_SCR[0x11];
 
    if((zoom<=0x7F)){
 
@@ -849,7 +846,6 @@ void tc0006vcu_render_layer_1024(int layer)
    else{
 
    zoom   = RAM_SCR[0x10];
-   zoom_2 = RAM_SCR[0x11];
 
    if((zoom<=0x7F)){
 

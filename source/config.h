@@ -24,9 +24,7 @@ void save_game_config(void);
 #define MAX_ROMOF 4
 extern char *romof_list[MAX_ROMOF];
 void find_romof(const struct DIR_INFO *dir_list, int *romof);
-#ifdef NEO
 int load_neo_from_name(char *res);
-#endif
 
 #ifdef __cplusplus
 }

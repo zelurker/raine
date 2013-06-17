@@ -58,6 +58,15 @@ char *get_shared(char *name) {
   return shared;
 }
 
+int is_dir(char *name) {
+  struct stat buf;
+  int ret;
+  ret = stat(name,&buf);
+  if (!ret)
+      return S_ISDIR(buf.st_mode);
+  return 0;
+}
+
 void mkdir_rwx(const char *name) {
   char str[256];
   // If path is not absolute (relative then)
@@ -262,7 +271,7 @@ void mputl(int nb, gzFile file) {
   gzwrite(file,&nb,4);
 #endif
 }
-  
+
 int igetl(gzFile file) {
   int nb = 0;
   gzread(file,&nb,4);
@@ -307,7 +316,7 @@ void iputl(int nb, gzFile file) {
   gzwrite(file,&nb,4);
 #endif
 }
-  
+
 void iputw(int nb, gzFile file) {
   // The opposite of mputl -> swap if BIG ENDIAN
   // on 2 bytes this time
@@ -322,7 +331,7 @@ void iputw(int nb, gzFile file) {
   gzwrite(file,&nb,2);
 #endif
 }
-  
+
 int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *dest, int actual_load)
 {
    unzFile uf;
@@ -333,7 +342,6 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
    if(!uf)			// Fail: Unable to find/open zipfile
       return 0;
 
-#ifndef NEO
    err = unz_locate_file_crc32(uf,crc32);
    if(err!=UNZ_OK){
       print_debug("unz_locate_file_crc32(): Error #%d\nNow trying with file name...\n",err);
@@ -343,7 +351,6 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
       if(!uf)			// Fail: Unable to find/open zipfile
          return 0;
-#endif
 
       err = unz_locate_file_name(uf,name);
       if(err!=UNZ_OK){
@@ -358,9 +365,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 	  sprintf(load_debug+strlen(load_debug),
 		  "Bad CRC for ROM %s (%x)\n",name,crc32);
       }
-#ifndef NEO
    }
-#endif
 
    if (!actual_load) {
      unz_file_info info;
@@ -375,7 +380,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
      unzClose(uf);
      return -1;
    }
-  
+
    err = unzOpenCurrentFile(uf);
    if(err!=UNZ_OK){
       print_debug("unzOpenCurrentFile(): Error #%d\n",err);
@@ -392,7 +397,6 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
       return 0;			// Fail: Something internal
    }
 
-#ifndef NEO
    if (err < (signed int)size) {
      load_error |= LOAD_WARNING;
 
@@ -400,7 +404,6 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
        sprintf(load_debug+strlen(load_debug),
 	       "Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,err);
    }
-#endif
 
    err = unzCloseCurrentFile(uf);
    if(err!=UNZ_OK){
@@ -418,7 +421,6 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
    return -1;
 }
 
-#ifdef NEO
 int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned int size, UINT8 *dest)
 {
   static unzFile uf;
@@ -481,7 +483,6 @@ int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned in
   }
   return -1;
 }
-#endif
 
 int myfgets(char *buff, int size, FILE *f) {
   fgets(buff,size,f);
@@ -505,7 +506,6 @@ int size_zipped(char *zipfile, char *name, int crc32)
    if (crc32)
      err = unz_locate_file_crc32(uf,crc32);
    else
-#ifndef NEO
      err = -1;
    if(err!=UNZ_OK){
       print_debug("unz_locate_file_crc32(): Error #%d\nNow trying with file name...\n",err);
@@ -518,9 +518,6 @@ int size_zipped(char *zipfile, char *name, int crc32)
       if(!uf)			// Fail: Unable to find/open zipfile
          return 0;
 
-#else
-{
-#endif
       err = unz_locate_file_name(uf,name);
       if(err!=UNZ_OK){
          print_debug("unz_locate_file_name(): Error #%d\nNow giving up...\n",err);

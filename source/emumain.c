@@ -54,9 +54,7 @@
 #ifndef RAINE_DOS
 #include "sdl/SDL_gfx/SDL_framerate.h"
 #endif
-#ifdef NEO
 #include "neocd/cdda.h"
-#endif
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...
    I can avoid to fix this by just adding these declarations here : */
@@ -196,10 +194,9 @@ UINT32 run_game_emulation(void)
    if(GameSound){
        if(RaineSoundCard) {
 	 saInitSoundCard( RaineSoundCard, audio_sample_rate );
-#ifdef NEO
-	 sa_unpause_sound();
+	 if (is_current_long("neocd"))
+	     sa_unpause_sound();
 	 // restore_cdda();
-#endif
        }
    }
 
@@ -420,12 +417,10 @@ UINT32 run_game_emulation(void)
    DestroyScreenBitmap();
 #endif
 
-#ifdef NEO
-  sa_pause_sound();
-  // do_cdda(2,0); // cdda_pause
-#else
-   saDestroySound(0);
-#endif
+   if (is_current_long("neocd"))
+       sa_pause_sound();
+   else
+       saDestroySound(0);
 
 #ifndef SDL
    clear_keybuf();

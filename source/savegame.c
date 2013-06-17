@@ -31,9 +31,7 @@
 #include "dejap.h" // default eeproms in raine.dat
 #include "hiscore.h"
 #include "newmem.h"
-#ifdef NEO
 #include "neocd/cdda.h"
-#endif
 
 // #include "blit.h"
 // #include "palette.h"
@@ -56,11 +54,9 @@ Todo:
 
 #include "starhelp.h"
 #include "mz80help.h"
-#ifndef NEO
 #include "68020.h"
 #include "m68k.h"
 #include "newcpu.h"
-#endif
 
 #include "config.h"
 #include "memory.h"
@@ -140,7 +136,7 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
       printf("AddSaveData_ext: name overflow: %d: %s\n",strlen(name),name);
       exit(1);
   }
-  
+
   for (n=0; n<SaveDataCount; n++) {
     if (save_data_list[n].id == SAVE_EXT &&
 	    !strcmp(save_data_list[n].name,name)) {
@@ -286,7 +282,7 @@ static struct {
   void (*load)(UINT8 *buff, int len);
   void (*save)(UINT8 **buff, int *len);
 } dyn_callbacks[MAX_DYN];
-  
+
 void AddSaveDynCallbacks(int id,void (*load)(UINT8 *buff, int len),
   void (*save)(UINT8 **buf, int *len)) {
   if (id < MAX_DYN) {
@@ -470,7 +466,7 @@ void NewLoad(gzFile fin)
        t_size = gzgetc(fin);
        gzread(fin,name,t_size);
        name[t_size] = 0;
-       if (endianess_bug) 
+       if (endianess_bug)
 	   t_size = mgetl(fin);
        else
 	   t_size = igetl(fin);
@@ -480,7 +476,7 @@ void NewLoad(gzFile fin)
 	       print_debug("save_file: extended section %s\n",name);
 	       read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
 	       break;
-	   } 
+	   }
        }
        if (ta == SaveDataCount) {
 	   print_debug("save_file: extended section %s not found\n",name);
@@ -488,11 +484,11 @@ void NewLoad(gzFile fin)
        }
        continue;
    }
-   if (endianess_bug) 
+   if (endianess_bug)
        t_size = mgetl(fin);
    else
        t_size = igetl(fin);
-		 
+
    switch(t_id){
       case SAVE_RAM:
 	 if (abs(t_size-RAMSize) > 0x10000) {
@@ -551,7 +547,7 @@ void NewLoad(gzFile fin)
 	      print_debug("save_file: section %c%c%c%c\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff));
                read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
                tb=1;
-            } 
+            }
          }
          if(tb==0){
             print_debug("Unexpected ID in savefile: %08x/%08x\n",t_id,t_size);
@@ -560,7 +556,7 @@ void NewLoad(gzFile fin)
 	      print_debug("early exit for savefile\n");
 	      load_done = 1;
 	    }
-	      
+
          }
       break;
    }
@@ -601,9 +597,7 @@ void do_load_state(char *name) {
       case SAVE_FILE_TYPE_2:
          hs_close();
 	 hs_open();
-#ifdef NEO
 	 cdda_stop();
-#endif
          NewLoad(fin);
 	 // In fact, this hs_load is a problem : normally the hiscores are
 	 // loaded once the memory has been init by the driver. But there is no
@@ -760,7 +754,7 @@ void next_save_slot(void)
       SaveSlot=0;
 
    sprintf(str,"%ssavegame" SLASH "%s.sv%d",dir_cfg.exe_path,current_game->main_name, SaveSlot);
-   if (stat(str,&buf) < 0) 
+   if (stat(str,&buf) < 0)
      sprintf(date,"free");
    else
      strftime(date,sizeof(date),"%x %X",localtime(&buf.st_mtime));

@@ -106,9 +106,7 @@ buffer before calling the gui */
 #include "control.h"
 #include "tbitmap.h"
 #include "sasound.h"
-#ifdef NEO
 #include "neocd/neocd.h"
-#endif
 #include "newmem.h" // GetMemoryPoolSize
 
 static int return_mandatory = 0, use_transparency = 1;
@@ -380,11 +378,7 @@ char* TMenu::get_bot_frame_text() {
   static char game[100];
   sprintf(game,"%s",(current_game ? current_game->long_name :"No game loaded"));
   if (current_game) {
-#ifdef NEO
-    sprintf(&game[strlen(game)]," (%03x:%s)",neocd_id,current_game->main_name);
-#else
     sprintf(&game[strlen(game)]," (%s)",current_game->main_name);
-#endif
     if (size < 1024)
       sprintf(&game[strlen(game)]," (%d Kb)",size);
     else

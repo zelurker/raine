@@ -1,12 +1,3 @@
-ifdef NEO
-
-OBJS += \
-	$(SC000) \
-	$(MZ80) \
-	$(2610) \
-	$(AY8910) \
-	$(NEOCD) 
-else
 OBJS += \
 	$(OBJDIR)/games/ainferno.o \
 	$(OBJDIR)/games/aquajack.o \
@@ -193,4 +184,3 @@ OBJS += \
 	$(X1_010) \
 	$(TOAPLAN2) \
 
-endif
