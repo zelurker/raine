@@ -51,20 +51,44 @@ my (@odd,@even);
 open(F,"<$ARGV[0]") || die "Impossible to open $ARGV[0]";
 my @file = <F>;
 close(F);
-my %def = ();
+my (%def,%args) = ();
 
 while ($_ = shift @file) {
 	chomp;
 	s/\r//;
-	if (/^#define (.+) \\/) {
+	if (/^#define (.+)( .+?)/ || /^#define (.+)/) {
 		my $name = $1;
-		print STDERR "define $name found\n";
-		while ($_ = shift @file) {
-			s/\r$//;
-			my $rep = s/\\$//;
-			$def{$name} .= $_;
-			last if (!$rep);
+		my $fin = $2;
+		my $args = undef;
+		if ($name =~ s/\((.+)\)//) {
+			$args = $1;
 		}
+		$fin =~ s/\r//;
+		my $multi = undef;
+		if ($fin =~ s/\\//) {
+			$multi = 1;
+		}
+		$fin =~ s/^[ \t]*//;
+		$def{$name} = $fin if ($fin);
+
+		print STDERR "define $name found";
+		print STDERR " args $args" if ($args);
+		print STDERR " fin $fin" if ($fin);
+		print STDERR " multi" if ($multi);
+		if ($multi) {
+			while ($_ = shift @file) {
+				s/\r$//;
+				my $rep = s/\\$//;
+				$def{$name} .= $_;
+				$args{$name} = $args;
+				last if (!$rep);
+			}
+		}
+		if (!$def{$name}) {
+			$def{$name} = " ";
+			print STDERR " empty";
+		}
+		print STDERR "\n";
 	} elsif (/ROM_START ?\( ?(.+?) ?\)/) {
 		my $name = $1;
 		$name = "_".$name if ($name =~ /^\d/);
@@ -82,18 +106,8 @@ while ($_ = shift @file) {
 					$size =~ s/^ *//;
 					$region_name = $raine_regions{$region_name} if ($raine_regions{$region_name});
 					if ($region_name !~ /REGION/) {
-						print STDERR "ignoring region_name $region_name from args $args\n";
-						while ($_ = shift @file) {
-							chomp;
-							s/\r//;
-							last if (/^$/);
-							last if (/^ROM_END/);
-						}
-						if (/ROM_END/) {
-							print "  { NULL, 0, 0, 0, 0, 0 }\n";
-							print "};\n\n";
-							last;
-						}
+						$region_name =~ s/"//g;
+						$region_name = uc("region_$region_name");
 					}
 					my ($function,$oldname,$oldsize,$oldbase,$oldcrc,$oldfunc) = undef;
 					while ($_ = shift @file) {
@@ -121,7 +135,8 @@ while ($_ = shift @file) {
 						if (!/ROM_REGION/ && /([\w\d_]+) *\( *(.+) *\)/) {
 							$function = $1;
 							my $args = $2;
-							my ($name,$base,$size,$crc,$attrib) = split(/\, */,$args);
+							my @args = split(/\, */,$args);
+							my ($name,$base,$size,$crc,$attrib) = @args;
 							if ($crc =~ /CRC\((.+?)\)/) {
 								$crc = "0x$1";
 							}
@@ -154,28 +169,19 @@ while ($_ = shift @file) {
 								print "/* Ignored : $_ */\n";
 								$function = $oldfunc;
 								next;
-							} elsif ($function =~ /(NEO_SFIX_128K|NEO_BIOS_)/) {
-								if ($base =~ /CRC\((.+?)\)/) {
-									$crc = "0x$1";
+							} elsif ($def{$function}) {
+								my $xargs = $args{$function};
+								my $def = $def{$function};
+								if ($xargs) {
+									my @xargs = split(/\, */,$xargs);
+									for (my $n=0; $n<= $#xargs; $n++) {
+										$def =~ s/$xargs[$n]/$args[$n]/g;
+									}
 								}
-								if ($function =~ /NEO_SFIX/) {
-									$base = "NEOGEO_REGION_FIXED_LAYER_CARTRIDGE";
-								}
-								$region_name = $base;
-								$base = 0;
-								if ($function =~ /_32K$/) {
-									$size = 0x8000;
-								} elsif ($function =~ /_64K$/) {
-									$size = 0x10000;
-								} elsif ($function =~ /_128K$/) {
-									$size = 0x20000;
-								} elsif ($function =~ /_256K$/) {
-									$size = 0x40000;
-								}
-
-								# print "// $_";
-								print "  { $name,$size,$crc,$region_name,$base,LOAD_NORMAL },\n";
-							} elsif (!($function eq "ROM_CONTINUE")) {
+								unshift @file,split(/\n/,$def);
+								$function = $oldfunc;
+								next;
+							} elsif ($function !~ /(ROM_CONTINUE|ROM_IGNORE)/) {
 								print STDERR "Unknown loading $function from line $_\n";
 								exit(1);
 							}
@@ -219,6 +225,14 @@ while ($_ = shift @file) {
 							print;
 							last if ($oldname);
 						} elsif (!/^[ \t]*$/) { # not an empty line, and unknown
+							s/[ \t]*//g;
+							chomp;
+							next if ($_ eq "NEOGEO_BIOS");
+							if ($def{$_}) {
+								print STDERR "found macro without args $_\n";
+								unshift @file,split(/\n/,$def{$_});
+								next;
+							}
 							print STDERR "weird line $_\n";
 							print;
 						}
@@ -238,13 +252,19 @@ while ($_ = shift @file) {
 				my $line = $_;
 				foreach (keys %def) {
 					if ($line =~ /^[ \t]*$_/) {
+						if ($_ eq "NEOGEO_BIOS") {
+							print STDERR "skipping neogeo_bios\n";
+							last;
+						}
 						print STDERR "found def $_ usage...\n";
 						unshift @file,split(/\n/,$def{$_});
 						last;
 					}
 				}
+				$_ = $line;
 			} # if (/ROM_REGION
 			redo if (/ROM_REGION/); # yet another line...
+			die "line $_\n" if (/NEO_SFIX/);
 		} # while ($_ = shift @file)
 	}
 }
