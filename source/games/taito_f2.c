@@ -2044,7 +2044,7 @@ static void load_dinorex() {
    RAMSize = 0x54000;
 
    // don't know if this color mapper is correct or not... anyway...
-   set_colour_mapper(&col_Map_15bit_RRRRGGGGBBBBRGBx);
+   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
    InitPaletteMap(RAM+0x30000, 0x100, 0x10, 0x8000);
 
    setup_gfx();
