@@ -477,7 +477,7 @@ static void load_opwolf(void)
    if(!load_rom("opwlf_s.10", Z80ROM, 0x10000)) return;		// Z80 SOUND ROM
    }
    else{
-   if(!load_rom("opwlfb.30", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   if(!load_rom("opwlfb.30", Z80ROM, 0x8000)) return;	// Z80 SOUND ROM
    }
 
    tb=16;			// First Sample=1
