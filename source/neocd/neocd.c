@@ -212,7 +212,7 @@ static struct DEF_INPUT_EMU list_emu[] =
 char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
 char neocd_bios_file[FILENAME_MAX];
 
-static struct INPUT_INFO neocd_inputs[] = // 4 players, 3 buttons
+static struct INPUT_INFO neocd_inputs[] = // 2 players, 4 buttons
 {
   { KB_DEF_P1_UP, MSG_P1_UP, 0x00, 0x01, BIT_ACTIVE_0 },
   { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x00, 0x02, BIT_ACTIVE_0 },
@@ -436,7 +436,7 @@ static int cpu_readcoin(int addr)
      */
     int coinflip = pd4990a_testbit_r(0);
     int databit = pd4990a_databit_r(0);
-    return 0xff ^ (coinflip << 6) ^ (databit << 7);
+    return input_buffer[6] ^ (coinflip << 6) ^ (databit << 7);
   }
   {
     int res = result_code;
@@ -2344,7 +2344,8 @@ static void load_neocd() {
 
   AddRWBW(0, 0x200000, NULL, RAM);
   AddReadBW(0xc00000, 0xc7ffff, NULL,neocd_bios);
-  AddReadByte(0x300000, 0x300000, NULL, &input_buffer[1]);
+  AddReadByte(0x300000, 0x300001, NULL, &input_buffer[1]);
+  AddReadByte(0x300080, 0x300081, NULL, &input_buffer[9]);
   AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
   AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
   AddReadByte(0x340000, 0x340000, NULL, &input_buffer[3]);
