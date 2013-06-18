@@ -116,25 +116,8 @@ while (<>) {
 		$rot =~ s/ //g;
 		$machine =~ s/ //g;
 
-		if ($company =~ /Raizing/i) {
-			$company = "COMPANY_ID_RAIZING";
-		} elsif ($company =~ /mitchell/i) {
-			$company = "COMPANY_ID_MITCHELL";
-		} elsif ($company =~ /Cave/) {
-			$company = "COMPANY_ID_CAVE";
-		} elsif ($company =~ /bootleg/i) {
-			$company = "COMPANY_ID_BOOTLEG";
-		} elsif ($company =~ /capcom/i) {
-			$company = "COMPANY_ID_CAPCOM";
-		} elsif ($company =~ /Taito/i) {
-			$company = "COMPANY_ID_TAITO";
-		} elsif ($company =~ /Hot-B/) {
-			$company = "COMPANY_ID_HOT_B";
-		} elsif ($company =~ /Spacy Indust/i) {
-			$company = "COMPANY_ID_SPACY";
-		} else {
-			print STDERR "company unknown yet $company\n";
-		}
+		$company =~ s/ \/.+//;
+		$company = "COMPANY_ID_".uc($company);
 		my $genre = "GAME_MISC"; # get_genre($name);
 #    my $genre = get_genre($name);
 		if ($cps1_mode || $cps2_mode) {
@@ -228,7 +211,7 @@ while (<>) {
 		} else {
 			$name = "_$name" if ($name =~ /^\d/); # stupid digit in front of the name
 			$parent = "_$parent" if ($parent ne "0" && $parent =~ /^\d/); # stupid digit in front of the name
-			print "static struct DIR_INFO $name\_dirs[] =\n";
+			print "static struct DIR_INFO dir_$name\[] =\n";
 			print "{\n";
 			print "  { \"$name\" },\n";
 			if ($parent ne "0") {
