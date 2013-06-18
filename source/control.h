@@ -147,6 +147,13 @@ enum {
    KB_DEF_P2_B1B2B3,
    KB_DEF_P2_B2B3B4,
 
+   KB_DEF_NEXT_GAME,
+   KB_DEF_PREV_GAME,
+
+   // These 2 are special and should not be displayed in the dialogs
+   KB_DEF_UNKNOWN,
+   KB_DEF_SPECIAL,
+
    KB_DEF_END,
 };
 

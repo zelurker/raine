@@ -251,6 +251,12 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { 0,           0, 0, "Player2 B2+B3", },
  { 0,           0, 0, "Player2 B1+B2+B3", },
  { 0,           0, 0, "Player2 B2+B3+B4", },
+
+ { 0,           0, 0, "Next Game", },
+ { 0,           0, 0, "Prev Game", },
+
+ { 0,           0, 0, "", }, // unknown, should be hidden
+ { 0,           0, 0, "", }, // special, should be hidden
 };
 
 /******************************************************************************/
@@ -449,14 +455,15 @@ void init_inputs(void)
    input_src = current_game->input;
 
    if(input_src){
+       int srcCount = InputCount;
 
-     while(input_src[InputCount].name){
+     while(input_src[srcCount].name){
 
-       InputList[InputCount].default_key = input_src[InputCount].default_key;
-       InputList[InputCount].InputName   = input_src[InputCount].name;
-       InputList[InputCount].Address     = input_src[InputCount].offset;
-       InputList[InputCount].Bit         = input_src[InputCount].bit_mask;
-       InputList[InputCount].high_bit    = input_src[InputCount].flags;
+       UINT16 def = InputList[InputCount].default_key = input_src[srcCount].default_key;
+       InputList[InputCount].InputName   = input_src[srcCount].name;
+       InputList[InputCount].Address     = input_src[srcCount].offset;
+       InputList[InputCount].Bit         = input_src[srcCount].bit_mask;
+       InputList[InputCount].high_bit    = input_src[srcCount].flags;
        InputList[InputCount].auto_rate   = 0;
        InputList[InputCount].active_time = 0;
        InputList[InputCount].link = 0;
@@ -465,7 +472,10 @@ void init_inputs(void)
 
        update_input_buffer(InputCount,0); // say input is not valid for now
 
-       InputCount++;
+       srcCount++;
+       if (def != KB_DEF_UNKNOWN && def != KB_DEF_SPECIAL)
+	   // Skip unknown and special inputs after they have been initialized
+	   InputCount++;
      }
 
    }

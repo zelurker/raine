@@ -213,7 +213,7 @@ static void setup_cave_game() {
   int i;
   fps = 15625/271.5;
   init_pbitmap();
-  memset(input_buffer, 0xff, 16);
+  // memset(input_buffer, 0xff, 16);
 
   for (i=0; i<3; i++) {
     layer_bitmap[i] = layer_pbitmap[i] = NULL;
@@ -672,6 +672,8 @@ static const struct INPUT_INFO input_esprade[] =
    INP0( COIN2, 0x000002, 0x01 ),
    INP0( TEST, 0x000000, 0x02 ),
    INP0( SERVICE, 0x000002, 0x02 ),
+   INP0( UNKNOWN, 0, 4), // exit service mode
+   INP0( UNKNOWN, 0, 8), // enter & exit service mode
 
    INP0( P1_START, 0x000001, 0x80 ),
    INP0( P1_UP, 0x000001, 0x01 ),
