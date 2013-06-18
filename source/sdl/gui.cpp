@@ -106,7 +106,7 @@ static int last_tick = 0;
 void load_progress(char *rom,int count)
 {
   int ticks = SDL_GetTicks();
-  if (ticks - last_tick < 16)
+  if (ticks - last_tick < 16 && count < 100)
     return;
   progress_count = count;
   if (loading_dialog) {
@@ -115,7 +115,6 @@ void load_progress(char *rom,int count)
   }
   last_tick = SDL_GetTicks();
 }
-
 
 void load_message(char *msg) {
   load_items[0].label = msg;
