@@ -194,7 +194,7 @@ UINT32 run_game_emulation(void)
    if(GameSound){
        if(RaineSoundCard) {
 	 saInitSoundCard( RaineSoundCard, audio_sample_rate );
-	 if (is_current_long("neocd"))
+	 if (is_neocd())
 	     sa_unpause_sound();
 	 // restore_cdda();
        }
@@ -417,7 +417,7 @@ UINT32 run_game_emulation(void)
    DestroyScreenBitmap();
 #endif
 
-   if (is_current_long("neocd"))
+   if (is_neocd())
        sa_pause_sound();
    else
        saDestroySound(0);

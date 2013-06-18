@@ -127,7 +127,7 @@ int YM2610_sh_start(const struct YM2610interface *msound)
 		}
 		stream[i] = stream_init_multim(YM2610_NUMBUF,name,vol,rate,i,YM2610UpdateOne);
 		/* setup adpcm buffers */
-		if (is_current_long("neocd")) {
+		if (is_neocd()) {
 		    pcmbufa[i] = (void *)PCMROM;
 		    pcmsizea[i] = 0x100000;
 		    pcmbufb[i] = NULL;
@@ -184,7 +184,7 @@ int YM2610B_sh_start(const struct YM2610interface *msound)
 		}
 		stream[i] = stream_init_multim(YM2610_NUMBUF,name,vol,rate,i,YM2610BUpdateOne);
 		/* setup adpcm buffers */
-		if (is_current_long("neocd")) {
+		if (is_neocd()) {
 		    pcmbufa[i] = (void *)PCMROM;
 		    pcmsizea[i] = 0x100000;
 		    pcmbufb[i] = NULL;

@@ -188,5 +188,6 @@ void ClearDefault(void)
 #ifdef HAS_CONSOLE
    done_console();
 #endif
+   clear_regions();
 }
 

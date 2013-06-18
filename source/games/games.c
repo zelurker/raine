@@ -145,10 +145,12 @@ int is_current_game(char *main_name)
    return (!stricmp(current_game->main_name, main_name));
 }
 
-int is_current_long(char *main_name)
+int is_neocd()
 {
     if (!current_game) return 0;
-   return (!stricmp(current_game->long_name, main_name));
+    // A way to recognize a neocd game : no roms !
+    // There shouldn't ever be any other driver without roms !
+    return current_game->rom_list == NULL;
 }
 /*
 

@@ -45,7 +45,7 @@ class TSoundDlg : public TMenu {
       {}
 
     int can_be_selected(int sel) {
-	if (is_current_long("neocd")) {
+	if (is_neocd()) {
 	    if (sel == 1)
 		return 0;
 	}

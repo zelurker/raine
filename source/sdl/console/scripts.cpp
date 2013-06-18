@@ -15,7 +15,7 @@ int nb_scripts;
 
 char *get_script_name(int writeable) {
   char base[10];
-   if (is_current_long("neocd"))
+   if (is_neocd())
        strcpy(base,"neocd");
    else
        strcpy(base,"raine");

@@ -1219,3 +1219,14 @@ void set_region_size(UINT32 region, UINT32 size) {
   region_size[region] = size;
 }
 
+void clear_regions() {
+    int i;
+    for(i = 0; i < REGION_MAX; i++) {
+	if (load_region[i]) {
+	    FreeMem(load_region[i]);
+	    load_region[i] = NULL;
+	    region_size[i] = 0;
+	}
+    }
+}
+

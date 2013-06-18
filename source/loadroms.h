@@ -193,6 +193,7 @@ void load_message(char *);
 // unpacking sprites (2 x 4 bits -> 1 byte)
 void unpack_region_lsb(UINT32 region);
 void set_region_size(UINT32 region, UINT32 size);
+void clear_regions();
 
 #endif // __loadroms_h_
 

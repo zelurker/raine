@@ -1849,7 +1849,7 @@ void load_game_config(void)
    sprintf(str,"%s:display", current_game->main_name);
    load_screen_settings(str);
 
-   if (!is_current_long("neocd")) {
+   if (!is_neocd()) {
        // Load DSW Settings
 
        sprintf(str,"%s:dipswitch", current_game->main_name);
@@ -1863,7 +1863,7 @@ void load_game_config(void)
 
    // config/cheats.cfg ------------------------------------
 
-   if (is_current_long("neocd"))
+   if (is_neocd())
        sprintf(str,"%sconfig/neocheats.cfg", dir_cfg.share_path);
    else
        sprintf(str,"%sconfig/cheats.cfg", dir_cfg.share_path);
@@ -1873,7 +1873,7 @@ void load_game_config(void)
    // Load Cheat Settings
 
    load_cheats(current_game->main_name);
-   if (!is_current_long("neocd")) {
+   if (!is_neocd()) {
        if (CheatCount == 0) {
 	   char *parent = (char*)parent_name();
 	   if (parent != current_game->main_name)
@@ -1922,7 +1922,7 @@ void save_game_config(void)
    sprintf(str,"%s:display", current_game->main_name);
    save_screen_settings(str);
 
-   if (!is_current_long("neocd")) {
+   if (!is_neocd()) {
        // Save DSW Settings
 
        sprintf(str,"%s:dipswitch", current_game->main_name);

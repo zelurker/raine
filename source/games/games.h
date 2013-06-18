@@ -269,7 +269,7 @@ check the current game
 */
 
 int is_current_game(char *main_name);
-int is_current_long(char *main_name);
+int is_neocd();
 
 /*
 
