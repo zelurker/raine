@@ -736,6 +736,18 @@ static void load_hyperpac(void)
    romset = 0;
 
    if(!(RAM=AllocateMem(RAMSize))) return;
+   if (is_current_game("cookbib3")) {
+       // The z80 rom arrives version puzzle, must put it back in right order..
+       Z80ROM = AllocateMem(get_region_size(REGION_ROM2));
+       UINT8 *orig = load_region[REGION_ROM2];
+       memcpy(Z80ROM+0xc000, orig, 0x4000);
+       memcpy(Z80ROM+0x8000, orig+0x4000, 0x4000);
+       memcpy(Z80ROM+0x4000, orig+0x8000, 0x4000);
+       memcpy(Z80ROM+0x0000, orig+0xc000, 0x4000);
+       memcpy(orig, Z80ROM,0x10000);
+       FreeMem(Z80ROM);
+       Z80ROM = orig;
+   }
 
    // Setup Z80 memory map
    // --------------------
