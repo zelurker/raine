@@ -125,7 +125,10 @@ while (<F>) {
 	my $romset_clone = $romsets{$romset};
 	my $romset_parent = $romsets{$parent};
 	chomp;
-	print "$_ // clone of $parent\n";
+	if (!s/\*\//clone of $parent \*\/\n/) {
+		$_ .= " // clone of $parent\n";
+	}
+	print;
 	while (<F>) {
 		if (/\{ ?(.+)\ ?}/) {
 			my $args = $1;

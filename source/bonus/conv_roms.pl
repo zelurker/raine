@@ -89,10 +89,10 @@ while ($_ = shift @file) {
 			print STDERR " empty";
 		}
 		print STDERR "\n";
-	} elsif (/ROM_START ?\( ?(.+?) ?\)/) {
+	} elsif (/ROM_START ?\( ?(.+?) ?\)(.*)/) {
 		my $name = $1;
 		$name = "_".$name if ($name =~ /^\d/);
-		print "static struct ROM_INFO rom_$name\[\] =\n{\n";
+		print "static struct ROM_INFO rom_$name\[\] =$2\n{\n";
 		my $comment = undef;
 		my $load_be = undef;
 		while ($_ = shift @file) {
