@@ -107,6 +107,10 @@ my $main_out="";
 my $dsw_name;
 my $roll = undef;
 
+open(F,"<$ARGV[0]") || die "Impossible to open $ARGV[0]";
+our @file = <F>;
+close(F);
+
 sub update_start() {
   if ($dsw_name) {
     if ($length) {
@@ -176,27 +180,61 @@ sub value($) {
 }
 
 sub read_next_line() {
-  while (<F>) {
-	  s/\r//;
-    next if (/^[ \t]*\/\//); # skip // comments
-    if (/^[ \t]*\/\*/) { # /* comments
-      while (!/\*\//) {
-	$_ = <F>;
-      }
-      s/^.+\*\///; # remove everything until */
-    }
-    last;
-  }
-  return $_;
+	while ($_ = shift @file) {
+		next if (/^[ \t]*\/\//); # skip // comments
+		if (/^[ \t]*\/\*/) { # /* comments
+			while (!/\*\//) {
+				$_ = shift @file;
+			}
+			s/^.+\*\///; # remove everything until */
+		}
+		last;
+	}
+	s/\r//;
+	return $_;
 }
 
 my $macro = undef;
 my %default_macro = ();
 
-open(F,"<$ARGV[0]") || die "Impossible to open $ARGV[0]";
 my $last_line = "";
+my (%def,%args) = ();
 while (read_next_line()) {
-	if (/INPUT_PORTS_START\( (.+?) \)/ || $macro) {
+	if (/^#define (.+?)( .+)/ || /^#define (.+)/) {
+		my $name = $1;
+		$name =~ s/[ \t]+$//;
+		my $fin = $2;
+		my $args = undef;
+		if ($name =~ s/\((.+)\)//) {
+			$args = $1;
+		}
+		$fin =~ s/\r//;
+		my $multi = undef;
+		if ($fin =~ s/\\//) {
+			$multi = 1;
+		}
+		$fin =~ s/^[ \t]*//;
+		$def{$name} = $fin if ($fin);
+
+		print STDERR "define $name found";
+		print STDERR " args $args" if ($args);
+		print STDERR " fin $fin" if ($fin);
+		print STDERR " multi" if ($multi);
+		if ($multi) {
+			while ($_ = shift @file) {
+				s/\r$//;
+				my $rep = s/\\$//;
+				$def{$name} .= $_;
+				$args{$name} = $args;
+				last if (!$rep);
+			}
+		}
+		if (!$def{$name}) {
+			$def{$name} = " ";
+			print STDERR " empty";
+		}
+		print STDERR "\n";
+	} elsif (/INPUT_PORTS_START\( (.+?) \)/ || $macro) {
 		if (!$macro) {
 			$name = $1;
 			$name = "_".$name if ($name =~ /^\d/);
@@ -211,6 +249,8 @@ while (read_next_line()) {
 			s/ ([\,\"\)])/$1/g;
 			s/ +$//;
 			s/ +/ /g;
+			my $location = $1 if (s/PORT_DIPLOCATION\((.+)\)//);
+			$main_out .= "// $location\n" if ($location);
 			$macro = 1 if ($macro == 2);
 			next if (/^[ \t]*\/\//);
 			s/PORT_CODE.+?\)//; # PORT_CODE not supported (yet) in raine
@@ -234,6 +274,8 @@ while (read_next_line()) {
 						$main_out .= "  DSW_DEMO_SOUND( $on, $off ),\n";
 					} elsif ($function =~ /SERVICE/) {
 						$main_out .= "  DSW_SERVICE( $on, $off ),\n";
+					} elsif ($function =~ /TEST/i) {
+						$main_out .= "  DSW_TEST_MODE( $on, $off ),\n";
 					} else {
 						$main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
 						$main_out .= $output;
@@ -308,6 +350,15 @@ while (read_next_line()) {
 				chomp $macro_name;
 				if (!/IPT_UNKNOWN/ && !/PORT/) {
 					$macro_name =~ s/[ \t]+//g;
+					if ($def{$macro_name}) {
+						my $xargs = $args{$macro_name};
+						my $def = $def{$macro_name};
+						if ($xargs) {
+							die "cette macro a des arguments : $macro_name, pas géré\n";
+						}
+						unshift @file,split(/\n/,$def);
+						next;
+					}
 					if (!defined($default_macro{$macro_name})) {
 						print STDERR "macro non reconnue $macro_name - je continue\n";
 					}
