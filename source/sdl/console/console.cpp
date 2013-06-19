@@ -1,7 +1,6 @@
 #include "raine.h"
 #include "console.h"
 #include "starhelp.h"
-#include "neocd/neocd.h" // WriteLongSc
 #include "newmem.h"
 #include "files.h" // get_shared
 #include "games.h"

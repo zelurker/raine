@@ -16,6 +16,10 @@ extern "C" {
 #define MAX_PROGRAM	(4)
 #define MAX_DATA	(32)
 
+// A ReadLong for StarScream (a mix of intel and motorola ways...)
+#define ReadLongSc(a) ((ReadWord(a)<<16) | ReadWord(a+2))
+#define WriteLongSc(a,b) WriteWord(a,(b)>>16); WriteWord(a+2,((b)&0xffff))
+
 extern struct S68000CONTEXT            M68000_context[MAX_68000];
 extern struct STARSCREAM_DATAREGION    M68000_dataregion_ww[MAX_68000][MAX_DATA];
 

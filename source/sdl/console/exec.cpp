@@ -7,7 +7,6 @@
 #include "files.h"
 #include "starhelp.h"
 #include "sdl/gui.h"
-#include "neocd/neocd.h"
 
 #define MAX_BREAK 10
 typedef struct {

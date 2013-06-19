@@ -8,7 +8,6 @@
 #include "starhelp.h"
 #include "console.h"
 #include "raine.h" // ReadWord !
-#include "neocd/neocd.h" // ReadLongSc
 #include "cpumain.h"
 
 /* muParser is specialised in double numbers, so it lacks some basic integer

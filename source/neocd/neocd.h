@@ -4,10 +4,6 @@ extern "C" {
 
 #include "sdl/dialogs/messagebox.h"
 
-// A ReadLong for StarScream (a mix of intel and motorola ways...)
-#define ReadLongSc(a) ((ReadWord(a)<<16) | ReadWord(a+2))
-#define WriteLongSc(a,b) WriteWord(a,(b)>>16); WriteWord(a+2,((b)&0xffff))
-
 #define IRQ1CTRL_AUTOANIM_STOP		0x08
 // Issues an interrupt when counter = 0 :
 #define IRQ1CTRL_ENABLE			0x10

@@ -11,7 +11,7 @@
 #include "neocd/cdrom.h"
 #include "neocd/cache.h"
 #include "files.h"
-#include "starhelp.h" // byteswap
+#include "starhelp.h"
 #if HAS_CONSOLE
 #include "sdl/console/parser.h"
 #endif
