@@ -486,7 +486,7 @@ void update_spr_usage(UINT32 offset, UINT32 size) {
     }
 }
 
-static int load_neocd(char *name, UINT8 *dest, int size) {
+static int load_neocd_file(char *name, UINT8 *dest, int size) {
   int offset = 0,ret;
   UINT8 *Ptr;
   if (name && strstr(name,"spr")) {
@@ -664,7 +664,7 @@ static int load_neocd(char *name, UINT8 *dest, int size) {
 }
 
 void cdrom_load_neocd() {
-  load_neocd(NULL,NULL,0); // continue load, called when cdrom_speed > 0
+  load_neocd_file(NULL,NULL,0); // continue load, called when cdrom_speed > 0
 }
 
 extern UINT8 *RAM_PAL;
@@ -709,7 +709,7 @@ void neogeo_cdrom_load_title(void)
   int old_cdrom = cdrom_speed;
   cdrom_speed = 0;
   current.FileType = -1;
-  load_neocd(file,buff,size);
+  load_neocd_file(file,buff,size);
   cdrom_speed = old_cdrom;
   memcpy(RAM_PAL,buff,0x5a0);
   ByteSwap(RAM_PAL,0x5a0);
@@ -772,7 +772,7 @@ int    neogeo_cdrom_load_prg_file(char *FileName, unsigned int Offset)
   }
 
   current.offset = Offset;
-  if (!load_neocd(FileName,Ptr,size)) {
+  if (!load_neocd_file(FileName,Ptr,size)) {
     print_debug("could not load %s at %x,%x\n",FileName,Offset,size);
     return 0;
   }
@@ -901,7 +901,7 @@ int    neogeo_cdrom_load_fix_file(char *FileName, unsigned int Offset)
 
   buff = (UINT8*)malloc(size);
   current.offset = Offset;
-  if (!load_neocd(FileName,buff,size)) return 0;
+  if (!load_neocd_file(FileName,buff,size)) return 0;
   return size;
 }
 
@@ -939,7 +939,7 @@ int    neogeo_cdrom_load_spr_file(char *FileName, unsigned int Offset)
   print_debug("Loading %s offset %x size %x\n",FileName,Offset*2,size*2);
   buff = malloc(size);
   current.offset = Offset;
-  if (!load_neocd(FileName,buff,size)) return 0;
+  if (!load_neocd_file(FileName,buff,size)) return 0;
   return size;
 }
 
@@ -971,7 +971,7 @@ static int    neogeo_cdrom_load_z80_file(char *FileName, unsigned int Offset)
 
   print_debug("load %s %x,%x\n",FileName,Offset,size);
   current.offset = Offset;
-  if (!load_neocd(FileName,&Z80ROM[Offset],size)) return 0;
+  if (!load_neocd_file(FileName,&Z80ROM[Offset],size)) return 0;
   return size;
 }
 
@@ -1015,7 +1015,7 @@ static int    neogeo_cdrom_load_pat_file(char *FileName, unsigned int Offset, un
 
   buff = (UINT8*)malloc(size);
   current.offset = (((Bank*0x100000) + Offset)/256)&0xFFFF;
-  if (!load_neocd(FileName,buff,size)) return 0;
+  if (!load_neocd_file(FileName,buff,size)) return 0;
   return size;
 }
 
@@ -1052,7 +1052,7 @@ int neogeo_cdrom_load_pcm_file(char *FileName, unsigned int Offset)
   Ptr = PCMROM + Offset;
   print_debug("load %s %x,%x\n",FileName,Offset,size);
   current.offset = Offset;
-  if (!load_neocd(FileName,Ptr,size)) return 0;
+  if (!load_neocd_file(FileName,Ptr,size)) return 0;
   return size;
 }
 
@@ -1215,7 +1215,7 @@ int    neogeo_cdrom_process_ipl(loading_params *param)
     if (!(buf = AllocateMem(size))) return 0;
     memset(buf,0,size);
     current.FileType = -1;
-    if(!load_neocd("ipl.txt",buf,size-1)) {
+    if(!load_neocd_file("ipl.txt",buf,size-1)) {
       ErrorMsg("Could not open IPL.TXT!");
       sa_unpause_sound();
       FreeMem(buf);
