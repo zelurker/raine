@@ -389,8 +389,6 @@ void StartGUI(void)
 	sdl_create_overlay(display_cfg.screen_x,display_cfg.screen_y);
     }
 
-    setup_neocd_bios();
-
    while(!WantQuit){		// ----- Main Loop ------
 
        /*

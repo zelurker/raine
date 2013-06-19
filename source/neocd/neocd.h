@@ -27,6 +27,7 @@ extern UINT8 *neocd_bios;
 void setup_neocd_bios();
 void set_neocd_exit_to(int code);
 void execute_neocd();
+void load_neocd();
 void loading_progress_function();
 void neocd_function(int vector);
 void save_fix(int vidram);

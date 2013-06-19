@@ -1692,7 +1692,6 @@ static void neogeo_hreset(void)
   if (saved_fix)
     restore_fix(0);
   current_neo_frame = FRAME_NEO;
-  region_code = GetLanguageSwitch();
   old_name = current_game->main_name;
   z80_enabled = 0;
   direct_fix = -1;
@@ -1710,27 +1709,30 @@ static void neogeo_hreset(void)
   memset(RAM_PAL+0xff*0x20,0,0x20);
 
   video_modulo = video_pointer = 0;
+  int offs;
+  for (offs=0; offs<8*2; offs += 2)
+      system_control_w( offs, 0x00ff);
 
-  SetLanguageSwitch(region_code);
+  if (is_neocd()) {
+      region_code = GetLanguageSwitch();
+      SetLanguageSwitch(region_code);
 
-  neogeo_cdrom_load_title();
-  WriteLongSc(&RAM[0x11c810], 0xc190e2); // default anime data for load progress
-  // First time init
-  M68000_context[0].pc = 0xc0a822;
-  M68000_context[0].sr = 0x2700;
-  M68000_context[0].areg[7] = 0x10F300;
-  M68000_context[0].asp = 0x10F400;
-  M68000_context[0].interrupts[0] = 0;
-  s68000SetContext(&M68000_context[0]);
-  if (!neogeo_cdrom_process_ipl(NULL)) {
-    ErrorMsg("Error: Error while processing IPL.TXT.\n");
-    ClearDefault();
-    return;
-  }
-
-  // is irq3 really usefull for neocd ??? I couldn't find any game where it
-  // made a difference so far...
-  // s68000interrupt(3, -1);
+      neogeo_cdrom_load_title();
+      WriteLongSc(&RAM[0x11c810], 0xc190e2); // default anime data for load progress
+      // First time init
+      M68000_context[0].pc = 0xc0a822;
+      M68000_context[0].sr = 0x2700;
+      M68000_context[0].areg[7] = 0x10F300;
+      M68000_context[0].asp = 0x10F400;
+      M68000_context[0].interrupts[0] = 0;
+      s68000SetContext(&M68000_context[0]);
+      if (!neogeo_cdrom_process_ipl(NULL)) {
+	  ErrorMsg("Error: Error while processing IPL.TXT.\n");
+	  ClearDefault();
+	  return;
+      }
+  } else
+      cpu_interrupt(CPU_68K_0,3);
 }
 
 void postprocess_ipl() {
@@ -2258,175 +2260,174 @@ static void write_word(UINT32 offset, UINT16 data) {
 }
 */
 
-static void load_neocd() {
-  fps = 59.185606; // As reported in the forum, see
+void load_neocd() {
+    fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
     do_not_stop = 0;
-  register_driver_emu_keys(list_emu,4);
-  layer_id_data[0] = add_layer_info("FIX layer");
-  layer_id_data[1] = add_layer_info("sprites layer");
-  neocd_video.screen_x = 304;
-  offx = 16-8;
-  maxx = 320-8;
-  current_game->long_name = "No game loaded yet";
-  current_game->main_name = "neocd";
-  desired_68k_speed = CPU_FRAME_MHz(24,60);
-  init_cdda();
-  init_load_type();
-  upload_type = 0xff;
-  memcard_write = 0;
-  if (!neocd_bios)
-    setup_neocd_bios(); // game was loaded from command line !
-  clear_file_cache();
-  setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
-  RAMSize = 0x200000 + // main ram
-    0x010000 + // z80 ram
-    0x020000 + // video ram
-    0x2000*2; // palette (2 banks)
-  if(!(RAM=AllocateMem(RAMSize))) return;
-  // if(!(save_ram=(UINT16*)AllocateMem(0x10000))) return; // not to be saved with the ram
-  if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
-  if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
-  if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
-  if(!(video_spr_usage=AllocateMem(0x800000/0x100))) return;
-  if(!(PCMROM=AllocateMem(0x100000))) return;
-  memset(RAM,0,RAMSize);
-  memset(video_fix_usage,0,4096);
-  memset(video_spr_usage,0,0x8000);
-  memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
+    register_driver_emu_keys(list_emu,4);
+    layer_id_data[0] = add_layer_info("FIX layer");
+    layer_id_data[1] = add_layer_info("sprites layer");
+    neocd_video.screen_x = 304;
+    offx = 16-8;
+    maxx = 320-8;
+    current_game->long_name = "No game loaded yet";
+    current_game->main_name = "neocd";
+    desired_68k_speed = CPU_FRAME_MHz(24,60);
+    init_cdda();
+    init_load_type();
+    upload_type = 0xff;
+    memcard_write = 0;
+    setup_neocd_bios();
+    clear_file_cache();
+    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
+    RAMSize = 0x200000 + // main ram
+	0x010000 + // z80 ram
+	0x020000 + // video ram
+	0x2000*2; // palette (2 banks)
+    if(!(RAM=AllocateMem(RAMSize))) return;
+    // if(!(save_ram=(UINT16*)AllocateMem(0x10000))) return; // not to be saved with the ram
+    if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
+    if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
+    if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
+    if(!(video_spr_usage=AllocateMem(0x800000/0x100))) return;
+    if(!(PCMROM=AllocateMem(0x100000))) return;
+    memset(RAM,0,RAMSize);
+    memset(video_fix_usage,0,4096);
+    memset(video_spr_usage,0,0x8000);
+    memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
 
-  // manual init of the layers (for the sprites viewer)
-  tile_list_count = 2;
-  tile_list[0].width = tile_list[0].height = 8;
-  tile_list[0].count = 4096;
-  tile_list[0].data = neogeo_fix_memory;
-  tile_list[0].mask = video_fix_usage;
+    // manual init of the layers (for the sprites viewer)
+    tile_list_count = 2;
+    tile_list[0].width = tile_list[0].height = 8;
+    tile_list[0].count = 4096;
+    tile_list[0].data = neogeo_fix_memory;
+    tile_list[0].mask = video_fix_usage;
 
-  tile_list[1].width = tile_list[1].height = 16;
-  tile_list[1].count = 0x8000;
-  tile_list[1].mask = video_spr_usage;
-  tile_list[1].data = GFX;
+    tile_list[1].width = tile_list[1].height = 16;
+    tile_list[1].count = 0x8000;
+    tile_list[1].mask = video_spr_usage;
+    tile_list[1].data = GFX;
 
-  Z80ROM = &RAM[0x200000];
-  neogeo_vidram = (UINT16*)(RAM + 0x210000);
-  memset(neogeo_vidram,0,0x20000);
-  RAM_PAL = RAM + 0x230000;
+    Z80ROM = &RAM[0x200000];
+    neogeo_vidram = (UINT16*)(RAM + 0x210000);
+    memset(neogeo_vidram,0,0x20000);
+    RAM_PAL = RAM + 0x230000;
 
-  set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
-  InitPaletteMap(RAM_PAL,0x100,0x10,0x8000);
+    set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
+    InitPaletteMap(RAM_PAL,0x100,0x10,0x8000);
 
-  AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
-  AddZ80ARW(0x0000, 0xffff, NULL, Z80ROM);
+    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+    AddZ80ARW(0x0000, 0xffff, NULL, Z80ROM);
 
-  AddZ80AWritePort(4, 4, YM2610_control_port_0_A_w, NULL);
-  AddZ80AWritePort(5, 5, YM2610_data_port_0_A_w, NULL);
-  AddZ80AWritePort(6, 6, YM2610_control_port_0_B_w, NULL);
-  AddZ80AWritePort(7, 7, YM2610_data_port_0_B_w, NULL);
-  /* Port 8 : NMI enable / acknowledge? (the data written doesn't matter)
-   * Metal Slug Passes this 35, then 0 in sequence. After a
-   * mission begins it switches to 1 */
-  AddZ80AWritePort(0xc, 0xc, set_res_code, NULL);
-  AddZ80AWritePort(0, 0xff, DefBadWritePortZ80, NULL);
+    AddZ80AWritePort(4, 4, YM2610_control_port_0_A_w, NULL);
+    AddZ80AWritePort(5, 5, YM2610_data_port_0_A_w, NULL);
+    AddZ80AWritePort(6, 6, YM2610_control_port_0_B_w, NULL);
+    AddZ80AWritePort(7, 7, YM2610_data_port_0_B_w, NULL);
+    /* Port 8 : NMI enable / acknowledge? (the data written doesn't matter)
+     * Metal Slug Passes this 35, then 0 in sequence. After a
+     * mission begins it switches to 1 */
+    AddZ80AWritePort(0xc, 0xc, set_res_code, NULL);
+    AddZ80AWritePort(0, 0xff, DefBadWritePortZ80, NULL);
 
-  AddZ80AReadPort(0, 0, read_sound_cmd, NULL);
-  AddZ80AReadPort(4, 4, YM2610_status_port_0_A_r, NULL);
-  AddZ80AReadPort(5, 5, YM2610_read_port_0_r, NULL);
-  AddZ80AReadPort(6, 6, YM2610_status_port_0_B_r, NULL);
-  AddZ80AReadPort(0, 0xff, DefBadReadPortZ80, NULL);
-  AddZ80AInit();
+    AddZ80AReadPort(0, 0, read_sound_cmd, NULL);
+    AddZ80AReadPort(4, 4, YM2610_status_port_0_A_r, NULL);
+    AddZ80AReadPort(5, 5, YM2610_read_port_0_r, NULL);
+    AddZ80AReadPort(6, 6, YM2610_status_port_0_B_r, NULL);
+    AddZ80AReadPort(0, 0xff, DefBadReadPortZ80, NULL);
+    AddZ80AInit();
 
-  AddMemFetch(0, 0x200000, RAM);
-  AddMemFetch(0xc00000, 0xc7ffff, neocd_bios - 0xc00000);
-  AddMemFetch(-1, -1, NULL);
+    AddMemFetch(0, 0x200000, RAM);
+    AddMemFetch(0xc00000, 0xc7ffff, neocd_bios - 0xc00000);
+    AddMemFetch(-1, -1, NULL);
 
-  AddWriteByte(0x10f6f6, 0x10f6f6, cdda_cmd, NULL);
-  AddWriteByte(0x10F651, 0x10F651, test_end_loading, NULL);
+    AddWriteByte(0x10f6f6, 0x10f6f6, cdda_cmd, NULL);
+    AddWriteByte(0x10F651, 0x10F651, test_end_loading, NULL);
 
-  AddRWBW(0, 0x200000, NULL, RAM);
-  AddReadBW(0xc00000, 0xc7ffff, NULL,neocd_bios);
-  AddReadByte(0x300000, 0x300001, NULL, &input_buffer[1]);
-  AddReadByte(0x300080, 0x300081, NULL, &input_buffer[9]);
-  AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
-  AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
-  AddReadByte(0x340000, 0x340000, NULL, &input_buffer[3]);
-  AddReadByte(0x380000, 0x380000, NULL, &input_buffer[5]);
+    AddRWBW(0, 0x200000, NULL, RAM);
+    AddReadBW(0xc00000, 0xc7ffff, NULL,neocd_bios);
+    AddReadByte(0x300000, 0x300001, NULL, &input_buffer[1]);
+    AddReadByte(0x300080, 0x300081, NULL, &input_buffer[9]);
+    AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
+    AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
+    AddReadByte(0x340000, 0x340000, NULL, &input_buffer[3]);
+    AddReadByte(0x380000, 0x380000, NULL, &input_buffer[5]);
 
-  AddReadByte(0x800000, 0x80ffff, read_memorycard, NULL);
-  AddReadWord(0x800000, 0x80ffff, read_memorycardw, NULL);
-  AddWriteByte(0x800000, 0x80ffff, write_memcard, NULL);
-  AddWriteWord(0x800000, 0x80ffff, write_memcardw, NULL);
+    AddReadByte(0x800000, 0x80ffff, read_memorycard, NULL);
+    AddReadWord(0x800000, 0x80ffff, read_memorycardw, NULL);
+    AddWriteByte(0x800000, 0x80ffff, write_memcard, NULL);
+    AddWriteWord(0x800000, 0x80ffff, write_memcardw, NULL);
 
-  // No byte access supported to the LSPC (neogeo doc)
-  AddReadWord(0x3c0000, 0x3c0007, read_videoreg, NULL);
-  AddWriteWord(0x3c0000, 0x3c000f, write_videoreg, NULL);
+    // No byte access supported to the LSPC (neogeo doc)
+    AddReadWord(0x3c0000, 0x3c0007, read_videoreg, NULL);
+    AddWriteWord(0x3c0000, 0x3c000f, write_videoreg, NULL);
 
-  AddWriteByte(0x320000, 0x320001, write_sound_command, NULL);
-  AddWriteWord(0x320000, 0x320000, write_sound_command_word, NULL);
+    AddWriteByte(0x320000, 0x320001, write_sound_command, NULL);
+    AddWriteWord(0x320000, 0x320000, write_sound_command_word, NULL);
 
-  AddWriteBW(0x3a0000, 0x3a001f, system_control_w, NULL);
-  /* Notes about the palette from neogeo doc :
-   * should be accessed only during vbl to avoid noise on screen, by words
-   * only. Well byte access can be allowed here, it can't harm */
-  AddRWBW(0x400000, 0x401fff, NULL, RAM_PAL);
-  AddWriteWord(0x402000, 0x4fffff, write_pal, NULL); // palette mirror !
-  AddSaveData(SAVE_USER_0, (UINT8*)&palbank, sizeof(palbank));
-  prepare_cdda_save(SAVE_USER_1);
-  AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
-  // I should probably put all these variables in a struct to be cleaner...
-  AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
-  AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
-  AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
-  AddSaveData(SAVE_USER_6, (UINT8*)&video_modulo,sizeof(video_modulo));
-  AddSaveData(SAVE_USER_7, (UINT8*)&video_pointer,sizeof(video_pointer));
-  AddSaveData(SAVE_USER_8, (UINT8*)&direct_fix,sizeof(direct_fix));
-  AddSaveData(SAVE_USER_9, (UINT8*)&spr_disabled,sizeof(spr_disabled));
-  AddSaveData(SAVE_USER_10, (UINT8*)&fix_disabled,sizeof(fix_disabled));
-  AddSaveData(SAVE_USER_11, (UINT8*)&video_enabled,sizeof(video_enabled));
-  prepare_cache_save();
-  AddLoadCallback(restore_bank);
-  // is the save ram usefull ?!??? probably not with neocd...
+    AddWriteBW(0x3a0000, 0x3a001f, system_control_w, NULL);
+    /* Notes about the palette from neogeo doc :
+     * should be accessed only during vbl to avoid noise on screen, by words
+     * only. Well byte access can be allowed here, it can't harm */
+    AddRWBW(0x400000, 0x401fff, NULL, RAM_PAL);
+    AddWriteWord(0x402000, 0x4fffff, write_pal, NULL); // palette mirror !
+    AddSaveData(SAVE_USER_0, (UINT8*)&palbank, sizeof(palbank));
+    prepare_cdda_save(SAVE_USER_1);
+    AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
+    // I should probably put all these variables in a struct to be cleaner...
+    AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
+    AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
+    AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
+    AddSaveData(SAVE_USER_6, (UINT8*)&video_modulo,sizeof(video_modulo));
+    AddSaveData(SAVE_USER_7, (UINT8*)&video_pointer,sizeof(video_pointer));
+    AddSaveData(SAVE_USER_8, (UINT8*)&direct_fix,sizeof(direct_fix));
+    AddSaveData(SAVE_USER_9, (UINT8*)&spr_disabled,sizeof(spr_disabled));
+    AddSaveData(SAVE_USER_10, (UINT8*)&fix_disabled,sizeof(fix_disabled));
+    AddSaveData(SAVE_USER_11, (UINT8*)&video_enabled,sizeof(video_enabled));
+    prepare_cache_save();
+    AddLoadCallback(restore_bank);
+    // is the save ram usefull ?!??? probably not with neocd...
 #if 0
-  AddWriteByte(0xd00000, 0xd0ffff, save_ram_wb, NULL);
-  AddWriteWord(0xd00000, 0xd0ffff, save_ram_ww, NULL);
-  AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)save_ram);
+    AddWriteByte(0xd00000, 0xd0ffff, save_ram_wb, NULL);
+    AddWriteWord(0xd00000, 0xd0ffff, save_ram_ww, NULL);
+    AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)save_ram);
 #endif
-  AddReadBW(0xe00000,0xefffff, read_upload, NULL);
-  AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
-  AddWriteWord(0xe00000,0xefffff, write_upload_word, NULL);
+    AddReadBW(0xe00000,0xefffff, read_upload, NULL);
+    AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
+    AddWriteWord(0xe00000,0xefffff, write_upload_word, NULL);
 
-  // cdrom : there are probably some more adresses of interest in this area
-  // but I found only this one so far (still missing the ones used to control
-  // the cd audio from the bios when exiting from a game).
-  AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
-  AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
-  AddWriteByte(0xff0061,0xff0061, upload_cmd_w, NULL);
-  AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
-  AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
-  AddWriteByte(0xff0105, 0xff0105, upload_type_w, NULL);
-  AddWriteByte(0xff0111, 0xff0111, spr_disable, NULL);
-  AddWriteByte(0xff0115, 0xff0115, fix_disable, NULL);
-  AddWriteByte(0xff0119, 0xff0119, video_enable, NULL);
-  AddWriteByte(0xff016f,0xff016f, disable_irq_w, NULL);
-  AddWriteByte(0xff0183, 0xff0183, z80_enable, NULL);
-  // ff011c seems to be some kind of status, only bit 12 is tested but I
-  // couldn't find what for, it doesn't seem to make any difference...
-  // The ff0100 area seems to be related to the uploads, but there are many
-  // adresses... there might be some kind of locking system, but no dma
-  // apprently, it seems easier to emulate this from the ram area instead of
-  // using these registers directly
+    // cdrom : there are probably some more adresses of interest in this area
+    // but I found only this one so far (still missing the ones used to control
+    // the cd audio from the bios when exiting from a game).
+    AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
+    AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
+    AddWriteByte(0xff0061,0xff0061, upload_cmd_w, NULL);
+    AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
+    AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
+    AddWriteByte(0xff0105, 0xff0105, upload_type_w, NULL);
+    AddWriteByte(0xff0111, 0xff0111, spr_disable, NULL);
+    AddWriteByte(0xff0115, 0xff0115, fix_disable, NULL);
+    AddWriteByte(0xff0119, 0xff0119, video_enable, NULL);
+    AddWriteByte(0xff016f,0xff016f, disable_irq_w, NULL);
+    AddWriteByte(0xff0183, 0xff0183, z80_enable, NULL);
+    // ff011c seems to be some kind of status, only bit 12 is tested but I
+    // couldn't find what for, it doesn't seem to make any difference...
+    // The ff0100 area seems to be related to the uploads, but there are many
+    // adresses... there might be some kind of locking system, but no dma
+    // apprently, it seems easier to emulate this from the ram area instead of
+    // using these registers directly
 
-  AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
-  finish_conf_68000(0);
-  // There doesn't seem to be any irq3 in the neocd, irqs are very different
-  // here
-  // irq3_pending = 1;
+    AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
+    finish_conf_68000(0);
+    // There doesn't seem to be any irq3 in the neocd, irqs are very different
+    // here
+    // irq3_pending = 1;
 
-  init_16x16_zoom();
-  set_reset_function(neogeo_hreset);
-  memset(input_buffer,0xff,4);
-  input_buffer[4] = 0xf; // clear bits for memory card
-  result_code = 0;
-  irq.control = 0;
+    init_16x16_zoom();
+    set_reset_function(neogeo_hreset);
+    memset(input_buffer,0xff,4);
+    input_buffer[4] = 0xf; // clear bits for memory card
+    result_code = 0;
+    irq.control = 0;
 }
 
 static void apply_hack(int pc) {
