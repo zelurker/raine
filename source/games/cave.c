@@ -222,14 +222,8 @@ static void setup_cave_game() {
   // +16 because compared to zoomed sprites which have a size of 16 by default
   gamex = current_game->video->screen_x;
   memset(RAM+0x00000,0x00,0x80000);
-  AddMemFetch(-1, -1, NULL);
 
-  AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);      // <Bad Reads>
-  AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);      // <Bad Reads>
-  AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);      // <Bad Writes>
-  AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);      // <Bad Writes>
-  AddRWBW(-1, -1, NULL, NULL);
-  AddInitMemory();   // Set Starscream mem pointers...
+  finish_conf_68000(0);
   vblank_irq = sound_irq = unknown_irq = 0;
   soundbuf.len = 0;
   AddSaveData(SAVE_USER_1, (UINT8 *)&soundbuf, sizeof(soundbuf));
@@ -1158,12 +1152,9 @@ static void load_ddonpach(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x100000);
    ByteSwap(RAM,0x050012);
 
-   AddMemFetch(0x000000, 0x0FFFFF, ROM+0x000000-0x000000);      // 68000 ROM
-
-   AddReadBW(0x000000, 0x0FFFFF, NULL, ROM+0x000000);   // 68000 ROM
+   Add68000Code(0,0,REGION_CPU1);
    AddRWBW(0x100000, 0x10FFFF, NULL, RAM+0x000000);   // 68000 RAM
 
    AddReadWord(0x300002,0x300003,YMZ280B_status_0_r,NULL);
@@ -1423,7 +1414,7 @@ static struct ROMSW_INFO romsw_agallet[] =
 
 static void load_mazinger()
 {
-  UINT8 *Z80RAM,*ROM2;
+  UINT8 *Z80RAM;
   unsigned char *buffer;
   int len = get_region_size(REGION_GFX4);
   data8_t *src = load_region[REGION_GFX4]; // AllocateMem(len);
@@ -1505,15 +1496,11 @@ static void load_mazinger()
  *  StarScream Stuff follows
  */
 
-   ROM2 = load_region[REGION_ROM3]; // What a funny thing !!!
-   ByteSwap(ROM2,get_region_size(REGION_ROM3));
-   ByteSwap(ROM,get_region_size(REGION_ROM1));
    // ByteSwap(RAM,0x040000);
    // WriteWord(&ROM[0x1d92],0x4e71); // Stupid useless loop...
    AddResetHandler(&quiet_reset_handler);
 
-   AddMemFetch(0x000000, 0x0FFFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddReadBW(0x000000, 0x0fFFFF, NULL, ROM+0x000000);   // 68000 ROM
+   Add68000Code(0,0, REGION_ROM1);
    AddRWBW(0x100000, 0x10FFFF, NULL, RAM+0x000000);   // 68000 RAM
    AddRWBW(0x200000, 0x20fFFF, NULL, RAM+0x010000);   // Sprites
    AddReadBW(0x300000, 0x300007, cave_irq_cause_r, NULL);
@@ -1538,8 +1525,7 @@ static void load_mazinger()
 
    AddRWBW(0xc08000, 0xc0fFFF, NULL, RAM+0x38100);   // COLOR RAM
 
-   AddMemFetch(0xd00000, 0xd7fFFF, ROM2-0xd00000);      // 68000 ROM
-   AddReadBW(0xd00000,0xd7ffff, NULL, ROM2); // 68000 bank!
+   Add68000Code(0, 0xd00000, REGION_ROM3);      // 68000 ROM
 
    AddWriteByte(0xAA0000, 0xAA0000, mystop68k, NULL);   // Trap Idle 68000
    cave_region_pos = 0x05;

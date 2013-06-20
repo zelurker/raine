@@ -8,6 +8,7 @@
 #include "raine.h"
 #include "savegame.h"
 #include "games/default.h"
+#include "loadroms.h"
 
 struct S68000CONTEXT            M68000_context[MAX_68000];
 static struct STARSCREAM_PROGRAMREGION M68000_programregion[MAX_68000][MAX_PROGRAM];
@@ -826,4 +827,15 @@ void finish_conf_68000(int cpu) {
 	   fprintf(stderr,"can't finish conf for 68000 #%d\n",cpu);
 	   exit(1);
    }
+}
+
+void Add68000Code(int cpu, int offset, int region)
+{
+    UINT8 *rom = load_region[region];
+    int end = offset+get_region_size(region)-1;
+    ByteSwap(rom,get_region_size(region));
+    cpu &= 0xf;
+    add_68000_rb(cpu, offset, end, NULL, rom);
+    add_68000_rw(cpu, offset, end, NULL, rom);
+    add_68000_program_region(cpu, offset, end, rom-offset);
 }

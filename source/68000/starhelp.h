@@ -55,6 +55,8 @@ void AddReadWordMC68000B (UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void AddWriteByteMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void AddWriteWordMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 
+void Add68000Code(int cpu, int offset, int region);
+
 /*
  *  Set Memory pointers to our structures...
  */
