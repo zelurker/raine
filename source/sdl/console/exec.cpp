@@ -332,12 +332,25 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   sprintf(strrchr(name,'.')+1,"bin"); // new extension, required by dz80
   char cmd[1024];
   int cpu_id = get_cpu_id()>>4;
+  int has_pc = 0;
+  if (pc >= start && pc < end) {
+      FILE *f = fopen("pc","w");
+      if (f) {
+	  has_pc = 1;
+	  fprintf(f,"%d\n",int(pc));
+	  fclose(f);
+      }
+  }
   switch(cpu_id) {
   case 1: // 68k
-      sprintf(cmd,"m68kdis -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      sprintf(cmd,"m68kdis ");
+      if (has_pc) strcat(cmd," -i pc ");
+      sprintf(cmd+strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
       ByteSwap(&ptr[start],end-start);
       break;
   case 3:
+      sprintf(cmd,"m68kdis ");
+      if (has_pc) strcat(cmd," -i pc ");
       sprintf(cmd,"m68kdis -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
   case 2:
@@ -408,9 +421,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   chdir(dir);
 }
 
-static FILE *open_asm(UINT32 target) {
-  char str[1024];
-  char buf[256];
+static void get_asm_file(char *str, UINT32 target = cpu_get_pc(get_cpu_id())) {
   int cpu_id = get_cpu_id();
   switch(cpu_id>>4) {
   case 1:
@@ -423,6 +434,13 @@ static FILE *open_asm(UINT32 target) {
       sprintf(str,"%s/prg020_%02x.s",get_shared("debug"),target/0x10000);
       break;
   }
+}
+
+static FILE *open_asm(UINT32 target) {
+  char str[1024];
+  char buf[256];
+  int cpu_id = get_cpu_id();
+  get_asm_file(str,target);
   UINT32 start,end;
   UINT8 *ptr = get_code_range(cpu_id,target,&start,&end);
   if (!ptr)
@@ -509,6 +527,12 @@ void do_list(int argc, char **argv) {
     if (cur_pc != pc0) {
       get_instruction();
       if (cur_pc != pc0) {
+	  char str[1024];
+	  get_asm_file(str);
+	  unlink(str);
+	  get_instruction();
+      }
+      if (cur_pc != pc0) {
 	cons->print("pc=%x not found in asm file",pc0);
 	return;
       }
@@ -569,6 +593,12 @@ void do_list(int argc, char **argv) {
 static void disp_instruction() {
   get_instruction();
   UINT32 pc1 = cpu_get_pc(get_cpu_id());
+  if (cur_pc != pc1) {
+      char str[1024];
+      get_asm_file(str);
+      unlink(str);
+      get_instruction();
+  }
   if (cur_pc != pc1)
     cons->print("pc=%x not found in asm file",pc1);
   else
