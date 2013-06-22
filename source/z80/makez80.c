@@ -58,13 +58,16 @@
 #define WORD_ACCESS
 
 // This version uses some code from v3.4...
-#define VERSION 			"3.4raine"
+#define VERSION 			"3.4raine2"
 // Notice : this version is closer to mz80 3.4 now (better !)
 
 // SEPARATION_CODE_DATA : usefull when you need to fetch code from an area
 // and data from another (like in kabuki encryption). It will of course slow
 // down the emulation (a very little).
 #define SEPARATION_CODE_DATA
+/* 3.4raine2 : now supports the variable Z80Has16bitsPorts. Set it to 1 to
+ * enable 16 bits ports (neogeo mainly). in a,(8) is correctly handled as
+ * access to port A*256+8 now when this variable is set to 1 */
 
 #define TRUE				0xff
 #define FALSE				0x0
@@ -93,7 +96,6 @@ UINT8 bNoTiming = FALSE;
 UINT8 bUseStack = FALSE;
 UINT8 bSingleStep = FALSE;
 UINT8 bCurrentMode = TIMING_REGULAR;	// Current timing mode
-UINT8 b16BitIo = FALSE;
 UINT8 bThroughCallHandler = FALSE;
 
 void ProcBegin(UINT32 dwOpcode);
@@ -1326,11 +1328,6 @@ void StandardHeader(void)
 
 	if (bSingleStep)
 		fprintf(fp, "; Single step version (debug)\n");
-
-	if (b16BitIo)
-		fprintf(fp, "; Extended input/output instructions treat (BC) as I/O address\n");
-	else
-		fprintf(fp, "; Extended input/output instructions treat (C) as I/O address\n");
 
 	/* The IFF case : */
 	/* Maybe it would seem easy for an expert of the z80, but I learned */
@@ -2685,6 +2682,10 @@ void InOutHandler(UINT32 dwOpcode)
 	ProcBegin(dwOpcode);
 
 	FetchDataB("dl");
+	fprintf(fp, "           cmp     [Z80Has16bitsPorts],byte 0\n");
+	fprintf(fp, "           je      ignoreal%ld\n",dwGlobalLabel);
+	fprintf(fp,"            mov dh,al\n"); //z80 documented 4.4
+	fprintf(fp, "ignoreal%ld:\n",dwGlobalLabel++);
 
 	if (0xd3 == dwOpcode)
 		WriteValueToIo("dx", "al");
@@ -2980,8 +2981,10 @@ void INIRINDRINIINDHandler(UINT32 dwOpcode)
 	// Fetch what's at (C) and put it in (HL)
 
 	fprintf(fp, "           push    cx      ; Save BC\n");
-	if (b16BitIo == FALSE)
-		fprintf(fp, "           xor     ch, ch ; We want 8 bit ports\n");
+	fprintf(fp, "           cmp     [Z80Has16bitsPorts],byte 1\n");
+	fprintf(fp, "           je      keepch%ld\n",dwTempLabel);
+	fprintf(fp, "           xor     ch, ch ; We want 8 bit ports\n");
+	fprintf(fp, "keepch%ld:\n",dwTempLabel);
 	ReadValueFromIo("cx", "*dl");           // Put our value in DL
 	fprintf(fp, "           pop     cx      ; Restore BC\n");
 
@@ -3036,8 +3039,10 @@ void OTIROTDROUTIOUTDHandler(UINT32 dwOpcode)
 	ReadValueFromMemory("bx", "dl");
 
 	fprintf(fp, "           push    cx      ; Save BC\n");
-	if (b16BitIo == FALSE)
-		fprintf(fp, "           xor     ch, ch  ; No 16 bit for this instruction!\n");
+	fprintf(fp, "           cmp     [Z80Has16bitsPorts],byte 1\n");
+	fprintf(fp, "           je      keepch%ld\n",dwTempLabel);
+	fprintf(fp, "           xor     ch, ch  ; No 16 bit for this instruction!\n");
+	fprintf(fp, "keepch%ld:\n",dwTempLabel);
 	WriteValueToIo("cx", "dl");
 	fprintf(fp, "           pop     cx      ; Restore BC now that it has been \"OUT\"ed\n");
 
@@ -3161,10 +3166,11 @@ void ExtendedOutHandler(UINT32 dwOpcode)
 {
 	ProcBegin(dwOpcode);
 
-	if (b16BitIo == FALSE)
-		fprintf(fp, "           mov     dl, cl  ; Address in DX... (C)\n");
-	else
-		fprintf(fp, "           mov     dx, cx  ; Address in DX... (BC)\n");
+	fprintf(fp, "           mov     dl, cl  ; Address in DX... (C)\n");
+	fprintf(fp, "           cmp     [Z80Has16bitsPorts],byte 0\n");
+	fprintf(fp, "           je      ignorech%ld\n",dwGlobalLabel);
+	fprintf(fp, "           mov     dx, cx  ; Address in DX... (BC)\n");
+	fprintf(fp, "ignorech%ld:\n",dwGlobalLabel++);
 
 	WriteValueToIo("dx", pbMathReg[(dwOpcode >> 3) & 0x07]);
 
@@ -3176,10 +3182,11 @@ void ExtendedInHandler(UINT32 dwOpcode)
 {
 	ProcBegin(dwOpcode);
 
-	if (b16BitIo == FALSE)
-		fprintf(fp, "           mov     dl, cl  ; Address in DX... (C)\n");
-	else
-		fprintf(fp, "           mov     dx, cx  ; Address in DX... (BC)\n");
+	fprintf(fp, "           mov     dl, cl  ; Address in DX... (C)\n");
+	fprintf(fp, "           cmp     [Z80Has16bitsPorts],byte 0\n");
+	fprintf(fp, "           je      ignorech%ld\n",dwGlobalLabel);
+	fprintf(fp, "           mov     dx, cx  ; Address in DX... (BC)\n");
+	fprintf(fp, "ignorech%ld:\n",dwGlobalLabel++);
 
 	ReadValueFromIo("dx", pbMathReg[(dwOpcode >> 3) & 0x07]);
 
@@ -4142,6 +4149,8 @@ void DataSegment(void)
 	fprintf(fp, "           global _cyclesRemaining\n");
 	fprintf(fp, "           global ExitOnEI\n");
 	fprintf(fp, "           global _ExitOnEI\n");
+	fprintf(fp, "           global Z80Has16bitsPorts\n");
+	fprintf(fp, "           global _Z80Has16bitsPorts\n");
 	fprintf(fp, "           global dwElapsedTicks\n");
 	fprintf(fp, "           global _dwElapsedTicks\n");
 	fprintf(fp, "\n");
@@ -4208,6 +4217,8 @@ void DataSegment(void)
 	fprintf(fp, "bEIExit    db      0       ; Are we exiting because of an EI instruction?\n");
 	fprintf(fp,"_ExitOnEI:\n");
 	fprintf(fp,"ExitOnEI         db 0\n");
+	fprintf(fp,"_Z80Has16bitsPorts:         db 0\n");
+	fprintf(fp,"Z80Has16bitsPorts:         db 0\n");
 	fprintf(fp, "_baseFixup dd      0       ; Our base fixup for when we're out of time\n");
 	fprintf(fp, "_z80stoponintend   dd      0       ; int patch\n");
 	fprintf(fp, "\n");
@@ -5598,8 +5609,6 @@ int main(int argc, char **argv)
 			bUseStack = TRUE;
 		if (strcmp("-l", argv[dwLoop]) == 0 || strcmp("-L", argv[dwLoop]) == 0)
 			bPlain = TRUE;
-		if (strcmp("-16", argv[dwLoop]) == 0)
-			b16BitIo = TRUE;
 		if (strcmp("-nt", argv[dwLoop]) == 0)
 		{
 			bNoTiming = TRUE;

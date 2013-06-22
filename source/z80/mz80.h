@@ -137,7 +137,7 @@ extern UINT32 cyclesRemaining; // for the timers
 extern UINT32 _z80iff;
 
 extern UINT32 dwElapsedTicks;
-extern UINT8 ExitOnEI;
+extern UINT8 ExitOnEI,Z80Has16bitsPorts;;
 extern UINT8 *z80Base;		// mz80Base;
 extern INT32 z80_offdata;
 extern UINT32 mz80exec(unsigned long int);
