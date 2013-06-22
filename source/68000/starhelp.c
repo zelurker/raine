@@ -129,6 +129,18 @@ void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
    program_count[cpu]++;
 }
 
+static void set_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
+{
+    int n;
+    for (n=0; n<program_count[cpu]; n++) {
+	if (d0 == M68000_programregion[cpu][n].lowaddr &&
+		d1 == M68000_programregion[cpu][n].highaddr) {
+	    M68000_programregion[cpu][n].offset   = (UINT32) d2;
+	    return;
+	}
+    }
+}
+
 UINT8 *s68k_get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end)
 {
   int n;
@@ -426,6 +438,8 @@ void set_68000_io(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
   set_68000_rw(cpu, d0, d1, d2, d3);
   set_68000_wb(cpu, d0, d1, d2, d3);
   set_68000_ww(cpu, d0, d1, d2, d3);
+  if (!d2)
+      set_68000_program_region(cpu,d0,d1,d3-d0);
 }
 
 void AddMemFetch(UINT32 d0, UINT32 d1, UINT8 *d2)
