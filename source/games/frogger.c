@@ -319,7 +319,7 @@ static struct SOUND_INFO sound_galaxian[] =
 static UINT8 *gfx_ram,*attributes, *spriteram, *bulletsram, *nmi_enable,*spr,
   *flip_screen_x,*flip_screen_y,*stars_enable;
 
-static UINT16 RAM_PAL[(8+1+16)*4];
+static UINT16 mypal[(8+1+16)*4];
 
 static UINT8 *copy_sprites(UINT8 *region) {
   UINT8 *dest = AllocateMem(0x1000);
@@ -1257,13 +1257,13 @@ static void load_frogger() {
     int red = (color_prom[i] & 7);
     int green = (color_prom[i] & 0x38) >> 3;
     int blue = (color_prom[i] & 0xc0) >> 5;
-    RAM_PAL[i] = (blue) | (green<<3) | (red<<6);
+    mypal[i] = (blue) | (green<<3) | (red<<6);
   }
-  RAM_PAL[i] = 0;
-  RAM_PAL[i+1] = 2; // background color for half top of the screen
+  mypal[i] = 0;
+  mypal[i+1] = 2; // background color for half top of the screen
   // bullets
-  RAM_PAL[i+2] = 0 | (7<<3) | (7<<6); // yellow
-  RAM_PAL[i+3] = 7 | (7<<3) | (7<<6); // white
+  mypal[i+2] = 0 | (7<<3) | (7<<6); // yellow
+  mypal[i+3] = 7 | (7<<3) | (7<<6); // white
   // stars
   i+=4;
   *stars_enable = 0;
@@ -1282,7 +1282,7 @@ static void load_frogger() {
     g = map[bits];
     bits = (i >> 4) & 0x03;
     b = map[bits];
-    RAM_PAL[stars_colors_start + i] = b | (g<<3) | (r<<6);
+    mypal[stars_colors_start + i] = b | (g<<3) | (r<<6);
   }
 
   // pre-calculate stars position. I wonder how mame came with this code...
@@ -1319,7 +1319,7 @@ static void load_frogger() {
     }
   }
 
-  InitPaletteMap((UINT8*)RAM_PAL, (8+1+16), 4, 0x200); // 8 banks of 4 colors each : extreme !!! + 1 for bg/bullets, +16 for stars
+  InitPaletteMap((UINT8*)mypal, (8+1+16), 4, 0x200); // 8 banks of 4 colors each : extreme !!! + 1 for bg/bullets, +16 for stars
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
   layer_id_data[0] = add_layer_info("BG");
   layer_id_data[1] = add_layer_info("SPRITES");

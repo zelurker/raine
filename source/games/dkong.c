@@ -320,7 +320,7 @@ static struct GFX_LIST gfxdecodeinfo[] =
 };
 
 static UINT8 *gfx_ram,*spriteram,*interrupt_enable,*palette_bank,*color_codes,*gfx_bg_solid,*gfx_spr_solid,*gfx_bank,*gfx_bg,*gfx_spr;
-static UINT16 RAM_PAL[256];
+static UINT16 mypal[256];
 
 static int sp,mask_bank,spriteram_size,shift_bits,hammer_playing;
 static int roar_counter,repeat_roar;
@@ -778,14 +778,14 @@ static void load_dkong() {
     bit0 = (color_prom[0] >> 0) & 1;
     bit1 = (color_prom[0] >> 1) & 1;
     b = 7 - ((bit0<<1) | (bit1 << 2));
-    RAM_PAL[i] = (b) | (g<<3) | (r<<6);
+    mypal[i] = (b) | (g<<3) | (r<<6);
     color_prom++;
   }
   color_prom += 256;
   /* color_prom now points to the beginning of the character color codes */
   color_codes = color_prom;	/* we'll need it later */
 
-  InitPaletteMap((UINT8*)RAM_PAL, 64, 4, 0x200); // 64 banks of 4 colors
+  InitPaletteMap((UINT8*)mypal, 64, 4, 0x200); // 64 banks of 4 colors
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
 
   gfx_bg = NULL;

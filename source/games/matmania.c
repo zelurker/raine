@@ -242,7 +242,7 @@ static struct DSW_INFO dsw_matmania[] =
   };
 
 static UINT8 *RAM_SPR,*RAM_BG0,*RAM_BG1,*RAM_BG2,*RAM_COL,*RAM_COL2,*RAM_COL3;
-static UINT8 *page_select,*RAM_SCR,*RAM_PAL;
+static UINT8 *page_select,*RAM_SCR;
 static UINT8 *GFX_BG0, *GFX_BG1, *GFX_SPR;
 static UINT8 *GFX_BG0_SOLID, *GFX_BG1_SOLID, *GFX_SPR_SOLID,*RAM2;
 

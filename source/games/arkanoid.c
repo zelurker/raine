@@ -266,7 +266,7 @@ static void arkanoid_d008_w(UINT32 offset, UINT8 data)
 }
 
 static UINT8 *vram,*RAM_SPR,*GFX_BG0_SOLID;
-static UINT8 RAM_PAL[512*2];
+static UINT8 mypal[512*2];
 static UINT32 z80_frame;
 
 // First version of the patch function :
@@ -406,9 +406,9 @@ static void load_arkanoid() {
       /* blue component */
       b = color_prom[i + 2*512] & 0xf;
 
-      WriteWord(&RAM_PAL[i*2],b + (g<<4) + (r<<8));
+      WriteWord(&mypal[i*2],b + (g<<4) + (r<<8));
     }
-  InitPaletteMap(RAM_PAL, 0x40, 8, 0x1000);
+  InitPaletteMap(mypal, 0x40, 8, 0x1000);
   set_colour_mapper(&col_map_xxxx_rrrr_gggg_bbbb);
   GameMouse = 1;
 

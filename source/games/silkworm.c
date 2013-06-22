@@ -502,7 +502,6 @@ static UINT8 *RAM_COLOR_FG;
 static UINT8 *RAM_VIDEO_TX;
 static UINT8 *RAM_COLOR_TX;
 static UINT8 *RAM_SPR;
-static UINT8 *RAM_PAL;
 
 static UINT8 *GFX_CHAR;
 static UINT8 *GFX_CHAR_SOLID;

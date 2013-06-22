@@ -1097,28 +1097,28 @@ int get_pen(int red, int green, int blue, int yy) {
       return result;
 }
 
-void Map_15bit_xRGBRRRRGGGGBBBB_8(UINT32 bank, UINT32 cols)	
-{							
-   UINT16 yy;						
-   UINT16 *ta;						
-   UINT8 *ct,res;					
-                                                        
-   bank_status[bank] = cols;                            
-   ta = (UINT16 *) (RAM_PAL+(bank<<5));                 
-   ct = (UINT8*)coltab[bank];                            
-   do{                                                  
-      yy = (*ta++);                                     
-                                                        
-      res = get_pen(                             
-         ((yy&0x0F00)>>4) | ((yy&0x4000)>>11),           
-         ((yy&0x00F0)>>0) | ((yy&0x2000)>>10),           
-         ((yy&0x000F)<<4) | ((yy&0x1000)>>9),           
+void Map_15bit_xRGBRRRRGGGGBBBB_8(UINT32 bank, UINT32 cols)
+{
+   UINT16 yy;
+   UINT16 *ta;
+   UINT8 *ct,res;
+
+   bank_status[bank] = cols;
+   ta = (UINT16 *) (RAM_PAL+(bank<<5));
+   ct = (UINT8*)coltab[bank];
+   do{
+      yy = (*ta++);
+
+      res = get_pen(
+         ((yy&0x0F00)>>4) | ((yy&0x4000)>>11),
+         ((yy&0x00F0)>>0) | ((yy&0x2000)>>10),
+         ((yy&0x000F)<<4) | ((yy&0x1000)>>9),
 	 yy
-      );                                                
-                                                        
-      *ct++ = res;                                      
-                                                        
-   }while(--cols);                                      
+      );
+
+      *ct++ = res;
+
+   }while(--cols);
 }
 
 // BUILD_MAPPER5(Map_15bit_xRGBRRRRGGGGBBBB_8,UINT8,GET_PEN_FOR_COLOUR_8)

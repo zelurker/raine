@@ -19,7 +19,7 @@ extern "C" {
 
 #include "sdl/compat.h"
 
-#define GET_PEN_FOR_COLOUR_15(red, green, blue, result)                      \
+#define GET_PEN_FOR_COLOUR_15(red, green, blue, result, ...) \
       result = SDL_MapRGB(color_format, red, green, blue)
 
 #define makecol15(r,g,b) SDL_MapRGB(color_format, r, g, b)
@@ -36,25 +36,26 @@ extern "C" {
 
   // Allegro version
 
-#define GET_PEN_FOR_COLOUR_15(red, green, blue, result)                      \
+#define GET_PEN_FOR_COLOUR_15(red, green, blue, result, ...)  \
       result = makecol15((red), (green), (blue));
 // (((red) << 9) | ((green) << 4) | ((blue) >> 1)) & 0x7FFF;
 
-#define GET_PEN_FOR_COLOUR_16(red, green, blue, result)                      \
+#define GET_PEN_FOR_COLOUR_16(red, green, blue, result, ...) \
       result = makecol16((red), (green), (blue));
 //(((red) << 10) | ((green) << 5) | ((blue) >> 1)) & 0xFFFF;
 
 // 24 bits colors are not used anymore
-#define GET_PEN_FOR_COLOUR_24(red, green, blue, result)                      \
+#define GET_PEN_FOR_COLOUR_24(red, green, blue, result, ...)  \
       result = (((blue) << 18) | ((green) << 10) | ((red) << 2)) & 0xFFFFFF;
 
 // the 32 bit version didn't care about rgb order, makecol does.
-#define GET_PEN_FOR_COLOUR_32(red, green, blue, result)                      \
+#define GET_PEN_FOR_COLOUR_32(red, green, blue, result, ... ) \
       result = makecol32((red),(green),(blue));
 
 #endif
 
 extern PALETTE pal;			// 256 Colour palette for the game
+extern UINT8 *RAM_PAL;
 
 typedef void CMAP_FUNC(UINT32 bank, UINT32 cols);
 

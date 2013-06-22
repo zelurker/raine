@@ -250,7 +250,7 @@ static struct INPUT_INFO input_usclssic[] =
 
 static UINT8 *GFX_SPR,latch1;
 static UINT16 latch2; // need 16 bit because direct access (ReadBW)
-static UINT8 *GFX_SPR_SOLID,*RAM_PAL;
+static UINT8 *GFX_SPR_SOLID;
 static UINT8 *RAM_BG0,*RAM_BG1,*RAM_CTRL,*RAM_CTRL2,*RAM_SPR,*RAM_SPR2;
 static int layer_id_data[4],buffered_sprites,fixed_layers,double_mapping;
 

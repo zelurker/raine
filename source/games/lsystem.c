@@ -1882,8 +1882,6 @@ static DEF_INLINE UINT16 LSystem_BG0_Read(UINT16 offset)
 /* L-SYSTEM COLOUR RAM                                                        */
 /******************************************************************************/
 
-static UINT8 *RAM_PAL;		// $200 bytes
-
 static DEF_INLINE void LSystem_PAL_Write(UINT16 offset, UINT8 data)
 {
    RAM_PAL[offset&0x1FF] = data;

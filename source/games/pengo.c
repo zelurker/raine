@@ -440,7 +440,7 @@ static gfx_layout spritelayout =
 	64*8	/* every sprite takes 64 bytes */
 };
 
-static UINT8 *colorram,*videoram,*spriteram,*spriteram_2,RAM_PAL[0x100*4];
+static UINT8 *colorram,*videoram,*spriteram,*spriteram_2,mypal[0x100*4];
 
 static int layer_id_data[2];
 
@@ -587,7 +587,7 @@ static void load_pengo() {
    /* character lookup table */
    /* sprites use the same color lookup table as characters */
    for (i = 0;i < 0x80;i++)
-     WriteWord(&RAM_PAL[i*2], ReadWord(&palette[(*(color_prom++) & 0x0f)*2]));
+     WriteWord(&mypal[i*2], ReadWord(&palette[(*(color_prom++) & 0x0f)*2]));
 
    color_prom += 0x80;
 
@@ -596,16 +596,16 @@ static void load_pengo() {
    for (i = 0;i < 0x80;i++)
      {
        if (*color_prom)
-	 WriteWord(&RAM_PAL[0x80*2+i*2], ReadWord(&palette[((*(color_prom) & 0x0f)+0x10)*2]));
+	 WriteWord(&mypal[0x80*2+i*2], ReadWord(&palette[((*(color_prom) & 0x0f)+0x10)*2]));
        // COLOR(2,i) = (*color_prom & 0x0f) + 0x10;	/* second palette bank */
        else
-	 WriteWord(&RAM_PAL[0x80*2+i*2], 0);
+	 WriteWord(&mypal[0x80*2+i*2], 0);
        // COLOR(2,i) = 0;	/* preserve transparency */
 
        color_prom++;
      }
 
-  InitPaletteMap(RAM_PAL, 0x40, 4, 0x200);
+  InitPaletteMap(mypal, 0x40, 4, 0x200);
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
   layer_id_data[0] = add_layer_info("BG");
   layer_id_data[1] = add_layer_info("SPRITES");
@@ -1745,7 +1745,7 @@ static void load_puckman()
      /* character lookup table */
      /* sprites use the same color lookup table as characters */
      for (i = 0;i < 0x80;i++) {
-       WriteWord(&RAM_PAL[i*2], ReadWord(&palette[(*(color_prom++) & 0x0f)*2]));
+       WriteWord(&mypal[i*2], ReadWord(&palette[(*(color_prom++) & 0x0f)*2]));
      }
 
      color_prom += 0x80;
@@ -1754,9 +1754,9 @@ static void load_puckman()
      for (i = 0;i < 0x80;i++)
      {
        if (*color_prom)
-	 WriteWord(&RAM_PAL[i*2+0x100],ReadWord(&palette[((*color_prom & 0x0f) + 0x10) * 2]));      /* third palette bank */
+	 WriteWord(&mypal[i*2+0x100],ReadWord(&palette[((*color_prom & 0x0f) + 0x10) * 2]));      /* third palette bank */
        else     /* preserve transparency */
-	 WriteWord(&RAM_PAL[0x80*2+i*2], 0);
+	 WriteWord(&mypal[0x80*2+i*2], 0);
 
        color_prom++;
      }
@@ -1766,9 +1766,9 @@ static void load_puckman()
      for (i = 0;i < 0x80;i++)
      {
        if (*color_prom)
-	 WriteWord(&RAM_PAL[i*2+0x200],ReadWord(&palette[((*color_prom & 0x0f) + 0x00) * 2]));      /* third palette bank */
+	 WriteWord(&mypal[i*2+0x200],ReadWord(&palette[((*color_prom & 0x0f) + 0x00) * 2]));      /* third palette bank */
        else     /* preserve transparency */
-	 WriteWord(&RAM_PAL[0x200+i*2], 0);
+	 WriteWord(&mypal[0x200+i*2], 0);
 
        color_prom++;
      }
@@ -1778,9 +1778,9 @@ static void load_puckman()
      for (i = 0;i < 0x80;i++)
      {
        if (*color_prom)
-	 WriteWord(&RAM_PAL[i*2+0x300],ReadWord(&palette[((*color_prom & 0x0f) + 0x30) * 2]));      /* third palette bank */
+	 WriteWord(&mypal[i*2+0x300],ReadWord(&palette[((*color_prom & 0x0f) + 0x30) * 2]));      /* third palette bank */
        else     /* preserve transparency */
-	 WriteWord(&RAM_PAL[0x300+i*2], 0);
+	 WriteWord(&mypal[0x300+i*2], 0);
 
        color_prom++;
      }
@@ -1819,11 +1819,11 @@ static void load_puckman()
      /* character lookup table */
      /* sprites use the same color lookup table as characters */
      for (i = 0;i < 0x80;i++) {
-       WriteWord(&RAM_PAL[i*2], ReadWord(&palette[(*(color_prom++) & 0x0f)*2]));
+       WriteWord(&mypal[i*2], ReadWord(&palette[(*(color_prom++) & 0x0f)*2]));
      }
    }
 
-  InitPaletteMap(RAM_PAL, 0x80, 4, 0x200);
+  InitPaletteMap(mypal, 0x80, 4, 0x200);
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
   layer_id_data[0] = add_layer_info("BG");
   layer_id_data[1] = add_layer_info("SPRITES");

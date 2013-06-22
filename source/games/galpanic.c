@@ -345,7 +345,6 @@ static UINT8 *GFX_SOLID;
 static UINT8 *RAM_SPR;
 static UINT8 *RAM_BG;
 static UINT8 *RAM_FG;
-static UINT8 *RAM_PAL;
 
 static UINT8 *VIDEO_BG;
 static UINT8 *VIDEO_FG;
