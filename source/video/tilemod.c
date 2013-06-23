@@ -1017,4 +1017,12 @@ UINT32 internal_bpp(UINT32 source)
    return dest[((source - 1) >> 3) & 3];
 }
 
+int get_mask(int v) {
+    // Get the mask closest to the value passed
+    int m = 1;
+    if (v) v--;
+    while (v >>= 1)
+	m = (m<<1)|1;
+    return m;
+}
 

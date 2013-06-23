@@ -293,14 +293,6 @@ static void execute_asuka(void)
    Taito2151_Frame();			// Z80 and YM2151
 }
 
-static int get_mask(int v) {
-    int m = 1;
-    if (v) v--;
-    while (v >>= 1)
-	m = (m<<1)|1;
-    return m;
-}
-
 void DrawAsuka(void)
 {
    ClearPaletteMap();

@@ -123,6 +123,8 @@ void check_tile_rotation(void);
 
 UINT8 *decode_gfx(const UINT8 *src, const UINT32 src_size, const GFX_LAYOUT *gfx_layout,UINT32 *dest_size);
 
+int get_mask(int v);
+
 /*
 
 convert real bpp -> internal bpp
