@@ -224,38 +224,38 @@ char neocd_bios_file[FILENAME_MAX];
 
 static struct INPUT_INFO neocd_inputs[] = // 2 players, 4 buttons
 {
-  { KB_DEF_P1_UP, MSG_P1_UP, 0x00, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x00, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x00, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x00, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1, "Player1 A", 0x00, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2, "Player1 B", 0x00, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B3, "Player1 C", 0x00, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B4, "Player1 D", 0x00, 0x80, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1B2,"Player1 A+B", 0, 0x30, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B3B4,"Player1 C+D", 0, 0xc0, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2B3,"Player1 B+C", 0, 0x60, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1B2B3,"Player1 A+B+C", 0, 0x70, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2B3B4,"Player1 B+C+D", 0, 0xe0, BIT_ACTIVE_0 },
+  { KB_DEF_P1_UP, MSG_P1_UP, 0x01, 0x01, BIT_ACTIVE_0 },
+  { KB_DEF_P1_DOWN, MSG_P1_DOWN, 0x01, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_P1_LEFT, MSG_P1_LEFT, 0x01, 0x04, BIT_ACTIVE_0 },
+  { KB_DEF_P1_RIGHT, MSG_P1_RIGHT, 0x01, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1, "Player1 A", 0x01, 0x10, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2, "Player1 B", 0x01, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B3, "Player1 C", 0x01, 0x40, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B4, "Player1 D", 0x01, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1B2,"Player1 A+B", 1, 0x30, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B3B4,"Player1 C+D", 1, 0xc0, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2B3,"Player1 B+C", 1, 0x60, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1B2B3,"Player1 A+B+C", 1, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2B3B4,"Player1 B+C+D", 1, 0xe0, BIT_ACTIVE_0 },
 
-  { KB_DEF_P2_UP, MSG_P2_UP, 0x02, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x02, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x02, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, "Player2 A", 0x02, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2, "Player2 B", 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B3, "Player2 C", 0x02, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B4, "Player2 D", 0x02, 0x80, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1B2,"Player2 A+B", 2, 0x30, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B3B4,"Player2 C+D", 2, 0xc0, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2B3,"Player2 B+C", 2, 0x60, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1B2B3,"Player2 A+B+C", 2, 0x70, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 2, 0xe0, BIT_ACTIVE_0 },
+  { KB_DEF_P2_UP, MSG_P2_UP, 0x03, 0x01, BIT_ACTIVE_0 },
+  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x03, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x03, 0x04, BIT_ACTIVE_0 },
+  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x03, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1, "Player2 A", 0x03, 0x10, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2, "Player2 B", 0x03, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B3, "Player2 C", 0x03, 0x40, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B4, "Player2 D", 0x03, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2,"Player2 A+B", 3, 0x30, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B3B4,"Player2 C+D", 3, 0xc0, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2B3,"Player2 B+C", 3, 0x60, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2B3,"Player2 A+B+C", 3, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 3, 0xe0, BIT_ACTIVE_0 },
 
-  { KB_DEF_P1_START, MSG_P1_START, 0x04, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1, "Player1 SELECT", 0x04, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_START, MSG_P2_START, 0x04, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, "Player2 SELECT", 0x04, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_P1_START, MSG_P1_START, 0x05, 0x01, BIT_ACTIVE_0 },
+  { KB_DEF_COIN1, "Player1 SELECT", 0x05, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_P2_START, MSG_P2_START, 0x05, 0x04, BIT_ACTIVE_0 },
+  { KB_DEF_COIN2, "Player2 SELECT", 0x05, 0x08, BIT_ACTIVE_0 },
   // Bit 4 (0x10) is 0 if the memory card is present !!!
   // neogeo doc :
   // bit 5 = mc 2 insertion status (0 = inserted)
@@ -2567,12 +2567,12 @@ void load_neocd() {
 	Add68000Code(0, 0xc00000, REGION_MAINBIOS);
     }
 
-    AddReadByte(0x300000, 0x300001, NULL, &input_buffer[1]);
-    AddReadByte(0x300080, 0x300081, NULL, &input_buffer[9]);
+    AddReadByte(0x300000, 0x300001, NULL, &input_buffer[0]);
+    AddReadByte(0x300080, 0x300081, NULL, &input_buffer[8]);
     AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
     AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
-    AddReadByte(0x340000, 0x340000, NULL, &input_buffer[3]);
-    AddReadByte(0x380000, 0x380000, NULL, &input_buffer[5]);
+    AddReadByte(0x340000, 0x340000, NULL, &input_buffer[2]);
+    AddReadByte(0x380000, 0x380000, NULL, &input_buffer[4]);
     AddWriteBW(0x380000, 0x39ffff, io_control_w, NULL);
 
     AddReadByte(0x800000, 0x80ffff, read_memorycard, NULL);
@@ -2654,8 +2654,6 @@ void load_neocd() {
 
     init_16x16_zoom();
     set_reset_function(neogeo_hreset);
-    memset(input_buffer,0xff,4);
-    input_buffer[4] = 0xf; // clear bits for memory card
     result_code = 0;
     irq.control = 0;
 }

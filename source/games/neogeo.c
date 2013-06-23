@@ -59,7 +59,7 @@ static struct DSW_DATA dsw_data_neogeo_0[] =
 
 static struct DSW_INFO dsw_neogeo[] =
 {
-  { 0x1, 0xff, dsw_data_neogeo_0 },
+  { 0x0, 0xff, dsw_data_neogeo_0 },
   { 0, 0, NULL }
 };
 
@@ -67,38 +67,38 @@ static struct DSW_INFO dsw_neogeo[] =
  * SELECT, and then input_buffer[6] is used for coins ! */
 static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
 {
-    INP0( P1_UP, 0, 1 ),
-    INP0( P1_DOWN, 0, 2 ),
-    INP0( P1_LEFT, 0, 4 ),
-    INP0( P1_RIGHT, 0, 8 ),
-  { KB_DEF_P1_B1, "Player1 A", 0x00, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2, "Player1 B", 0x00, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B3, "Player1 C", 0x00, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B4, "Player1 D", 0x00, 0x80, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1B2,"Player1 A+B", 0, 0x30, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B3B4,"Player1 C+D", 0, 0xc0, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2B3,"Player1 B+C", 0, 0x60, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B1B2B3,"Player1 A+B+C", 0, 0x70, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2B3B4,"Player1 B+C+D", 0, 0xe0, BIT_ACTIVE_0 },
+    INP0( P1_UP, 1, 1 ),
+    INP0( P1_DOWN, 1, 2 ),
+    INP0( P1_LEFT, 1, 4 ),
+    INP0( P1_RIGHT, 1, 8 ),
+  { KB_DEF_P1_B1, "Player1 A", 0x01, 0x10, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2, "Player1 B", 0x01, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B3, "Player1 C", 0x01, 0x40, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B4, "Player1 D", 0x01, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1B2,"Player1 A+B", 1, 0x30, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B3B4,"Player1 C+D", 1, 0xc0, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2B3,"Player1 B+C", 1, 0x60, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B1B2B3,"Player1 A+B+C", 1, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P1_B2B3B4,"Player1 B+C+D", 1, 0xe0, BIT_ACTIVE_0 },
 
-  { KB_DEF_P2_UP, MSG_P2_UP, 0x02, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x02, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x02, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x02, 0x08, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, "Player2 A", 0x02, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2, "Player2 B", 0x02, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B3, "Player2 C", 0x02, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B4, "Player2 D", 0x02, 0x80, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1B2,"Player2 A+B", 2, 0x30, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B3B4,"Player2 C+D", 2, 0xc0, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2B3,"Player2 B+C", 2, 0x60, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1B2B3,"Player2 A+B+C", 2, 0x70, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 2, 0xe0, BIT_ACTIVE_0 },
+  { KB_DEF_P2_UP, MSG_P2_UP, 0x03, 0x01, BIT_ACTIVE_0 },
+  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x03, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x03, 0x04, BIT_ACTIVE_0 },
+  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x03, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1, "Player2 A", 0x03, 0x10, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2, "Player2 B", 0x03, 0x20, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B3, "Player2 C", 0x03, 0x40, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B4, "Player2 D", 0x03, 0x80, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2,"Player2 A+B", 3, 0x30, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B3B4,"Player2 C+D", 3, 0xc0, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2B3,"Player2 B+C", 3, 0x60, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2B3,"Player2 A+B+C", 3, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 3, 0xe0, BIT_ACTIVE_0 },
 
-  INP0( P1_START, 4, 1 ),
-  { KB_DEF_NEXT_GAME, "Next Game", 0x04, 0x02, BIT_ACTIVE_0 },
-  INP0( P2_START, 4, 4 ),
-  { KB_DEF_PREV_GAME, "Prev Game", 0x04, 0x08, BIT_ACTIVE_0 },
+  INP0( P1_START, 5, 1 ),
+  { KB_DEF_NEXT_GAME, "Next Game", 0x05, 0x02, BIT_ACTIVE_0 },
+  INP0( P2_START, 5, 4 ),
+  { KB_DEF_PREV_GAME, "Prev Game", 0x05, 0x08, BIT_ACTIVE_0 },
   // Bit 4 (0x10) is 0 if the memory card is present !!!
   // neogeo doc :
   // bit 5 = mc 2 insertion status (0 = inserted)
@@ -107,7 +107,7 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
 
   INP0( COIN1, 6, 1 ),
   INP0( COIN2, 6, 2 ),
-  INP0( TEST, 6, 4 ),
+  INP0( SERVICE, 6, 4 ),
   /* having this ACTIVE_HIGH causes you to start with 2 credits using USA bios roms; if ACTIVE_HIGH + IN4 bit 6 ACTIVE_HIGH = AES 'mode' */
   INP0( UNKNOWN, 6, 8 ),
   INP0( UNKNOWN, 6, 0x10 ), // same as previous
@@ -117,10 +117,9 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
 
   INP1( UNKNOWN, 8, 0x3f ),
   /* what is this? If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected */
-  { KB_DEF_SPECIAL, MSG_UNKNOWN, 8, 0x40, BIT_ACTIVE_1 },
-  INP0( SERVICE, 8, 0x80 ), // enter bios
+  { KB_DEF_SPECIAL, MSG_UNKNOWN, 9, 0x40, BIT_ACTIVE_1 },
+  INP0( TEST, 8, 0x80 ), // enter bios
 
-  INP0( TEST, 11, 0x80 ), // well, it works in neogeo test mode at least !
   { 0, NULL,        0,        0,    0            },
 };
 
