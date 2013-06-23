@@ -23,6 +23,7 @@ char *game_type[NB_GAME_TYPE] =
   "Race",
   "Quizz",
   "Maze",
+  "Fight",
 };
 
 char *company_name[] =

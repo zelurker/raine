@@ -164,6 +164,7 @@ main game structure
    one type... Anyway, since I have 32 bits available, I will keep the bits
    definition for now */
 
+// All is 0
 #define GAME_BREAKOUT 1
 #define GAME_SHOOT    2
 #define GAME_BEAT     4
@@ -177,7 +178,7 @@ main game structure
 #define GAME_MAZE    0x400
 #define GAME_FIGHT    0x800
 
-#define NB_GAME_TYPE 12
+#define NB_GAME_TYPE 13
 extern char *game_type[NB_GAME_TYPE];
 
 // Status
