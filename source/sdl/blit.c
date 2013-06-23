@@ -38,7 +38,6 @@ int recording_video = 0,last_video_frame,video_fps;
 RAINEBITMAP GameScreen;
 
 static int destx, desty, xxx, yyy, xoff2, yoff2;
-static BITMAP *pause_buffer;
 static int show_fps_mode_store;
 static UINT32 pause_timer;
 
@@ -186,54 +185,9 @@ void ReClipScreen(void)
       opengl_reshape(sdl_screen->w,sdl_screen->h);
 }
 
-void InitDrawPaused(void)
-{
-   sa_pause_sound();
-
-   show_fps_mode_store=raine_cfg.show_fps_mode;
-   raine_cfg.show_fps_mode=0;
-
-   pause_time = 0;
-
-   raine_cfg.req_pause_scroll = 0;
-
-   pause_buffer = create_bitmap(GameScreen.xfull, GameScreen.yfull);
-   SDL_Surface *s = get_surface_from_bmp(pause_buffer);
-   if (display_cfg.bpp == 8) {
-     SDL_SetPalette(s,SDL_LOGPAL,(SDL_Color*)pal,0,256);
-   }
-
-   SDL_BlitSurface(
-     sdl_game_bitmap, NULL,
-     s,NULL);
-
-   pause_timer = read_ingame_timer();
-}
-
-void EndDrawPaused(void)
-{
-   raine_cfg.show_fps_mode = show_fps_mode_store;
-
-   destroy_bitmap(pause_buffer);
-
-   sa_unpause_sound();
-
-   reset_ingame_timer();
-   restore_ingame_timer(pause_timer);
-   uninit_pause();
-}
-
 void DrawPaused(void)
 {
-   cpu_frame_count++;
-
    // blit(pause_buffer, GameBitmap, xoff2, yoff2, xoff2, yoff2, xxx, yyy);
-   if (is_current_game("ssrpg"))
-       draw_neocd_paused();
-   else
-       SDL_BlitSurface(
-	       get_surface_from_bmp(pause_buffer), NULL,
-	       get_surface_from_bmp(GameBitmap), NULL);
 
    DrawNormal();		// Overlay text interface, blit to screen
 

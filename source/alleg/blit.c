@@ -636,7 +636,9 @@ void EndDrawPaused(void)
 
 void DrawPaused(void)
 {
+#ifdef RAINE_DOS
    cpu_frame_count++;
+#endif
 
    blit(pause_buffer, BlitSource, xoff2, yoff2, xoff2, yoff2, xxx, yyy);
 

@@ -1647,7 +1647,8 @@ void TMenu::execute() {
     SDL_EnableUNICODE(unicode);
     release_inputs();
     ScreenChange();
-    sa_unpause_sound();
+    if (!raine_cfg.req_pause_game)
+	sa_unpause_sound();
   }
   parent = NULL; // to be on the safe side
 }

@@ -43,7 +43,6 @@ static int mbase;		// Which message is top of the list
 // BlitScreen():
 // Entry to screen blitting, takes care of pause mode, eagle mode
 
-int req_fwd; // request req_fwd frames forward (in pause)
 static int pause_init;
 
 void uninit_pause() {
@@ -52,28 +51,17 @@ void uninit_pause() {
 
 void BlitScreen(void)
 {
-  if (req_fwd) { // Fwd n frames
-   req_fwd--;
-   if (!req_fwd)
-     raine_cfg.req_pause_game = 1;
-  }
   if(!raine_cfg.req_pause_game){
 	 DrawNormal();
 	 return;
   }
       else{
 	  if (!pause_init) {
-	      InitDrawPaused();
-
 	      stop_demo();
 	      pause_init = 1;
 	  }
 
 	  DrawPaused();
-
-	  update_rjoy_list();
-
-	  update_inputs();
 
 	 return;
 

@@ -302,8 +302,10 @@ extern void cpu_slow_down(); // emumain.c
 static void key_pause_game(void)
 {
 	raine_cfg.req_pause_game ^= 1;
-	if (!raine_cfg.req_pause_game)
-	    EndDrawPaused();
+	if (raine_cfg.req_pause_game)
+	    sa_pause_sound();
+	else
+	    sa_unpause_sound();
 }
 
 static void toggle_limit_speed() {
@@ -1139,16 +1141,11 @@ static void handle_event(SDL_Event *event) {
       modifier = (event->key.keysym.mod & 0x4fc3);
       emu_input = &def_input_emu[0];
       nb = raine_get_emu_nb_ctrl();
-      int handled=0,paused = raine_cfg.req_pause_game;
+      int handled=0;
       if (!check_emu_inputs(emu_input,nb,input,modifier) && driver_nb_emu_inputs)
 	handled = check_emu_inputs(driver_emu_list,driver_nb_emu_inputs,input,modifier);
       if (!handled)
 	handled = check_layer_key(input);
-      if (handled && paused && raine_cfg.req_pause_game) {
-	current_game->video->draw_game(); // update game bitmap in pause
-	EndDrawPaused();
-	InitDrawPaused();
-      }
       break;
     case SDL_KEYUP:
       input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);

@@ -42,9 +42,6 @@ void ReClipScreen(void);
 
 void clear_game_screen(int pen);
 void DrawNormal(void);
-void InitDrawPaused(void);
-void InitDrawPaused(void);
-void EndDrawPaused(void);
 void DrawPaused(void);
 
 

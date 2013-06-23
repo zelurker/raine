@@ -80,7 +80,7 @@ extern void update_gui_inputs(void);
 UINT32 cpu_fps;
 UINT32 quit_loop;
 
-extern int req_fwd; // ingame.c
+int req_fwd; // ingame.c
 
 void key_pause_fwd()
 {
@@ -185,19 +185,22 @@ UINT32 run_game_emulation(void)
        quit_loop = 1; // I want the game to always draw
    }
 
-   print_debug("Reset ingame timer...\n");
-   reset_ingame_timer(); // For sound we'd better init this here...
+   if (!raine_cfg.req_pause_game) {
+       print_debug("Reset ingame timer...\n");
+       reset_ingame_timer(); // For sound we'd better init this here...
 
-   // Placing sound init just after the timer init should avoid begining
-   // streaming out of a frame limit (it happens sometimes in linux !)
-   print_debug("Init Sound...\n");
-   if(GameSound){
-       if(RaineSoundCard) {
-	 saInitSoundCard( RaineSoundCard, audio_sample_rate );
-	 if (is_neocd())
-	     sa_unpause_sound();
-	 // restore_cdda();
+       // Placing sound init just after the timer init should avoid begining
+       // streaming out of a frame limit (it happens sometimes in linux !)
+       print_debug("Init Sound...\n");
+       if(GameSound){
+	   if(RaineSoundCard) {
+	       saInitSoundCard( RaineSoundCard, audio_sample_rate );
+	       if (is_neocd())
+		   sa_unpause_sound();
+	       // restore_cdda();
+	   }
        }
+       reset_ingame_timer();
    }
 
    // auto-save
@@ -211,7 +214,6 @@ UINT32 run_game_emulation(void)
    fpsm.use_cpu_frame_count = 1;
 #endif
 
-   reset_ingame_timer();
    while(!quit_loop && current_game){
 
      /* Handle sound FIRST : it is the most sensitive part for synchronisatino
@@ -224,7 +226,8 @@ UINT32 run_game_emulation(void)
       if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
 #endif
 
-      saUpdateSound(1);
+      if (!raine_cfg.req_pause_game)
+	  saUpdateSound(1);
 
 #ifdef RDTSC_PROFILE
       if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
@@ -235,7 +238,9 @@ UINT32 run_game_emulation(void)
       cpu_tick++;
       if(cpu_tick>=cpu_fps){
 	 cpu_tick=0;
-	 if(current_game->exec) current_game->exec();
+	 if(current_game->exec && !raine_cfg.req_pause_game) {
+	     current_game->exec();
+	 }
       }
 
 #ifdef RDTSC_PROFILE
@@ -369,6 +374,11 @@ UINT32 run_game_emulation(void)
 
       update_rjoy_list();
 
+      if (req_fwd) { // Fwd n frames
+	  req_fwd--;
+	  if (!req_fwd)
+	      raine_cfg.req_pause_game = 1;
+      }
       update_inputs();
 
 #ifdef RDTSC_PROFILE
@@ -417,10 +427,12 @@ UINT32 run_game_emulation(void)
    DestroyScreenBitmap();
 #endif
 
-   if (is_neocd())
-       sa_pause_sound();
-   else
-       saDestroySound(0);
+   if (!raine_cfg.req_pause_game) {
+       if (is_neocd())
+	   sa_pause_sound();
+       else
+	   saDestroySound(0);
+   }
 
 #ifndef SDL
    clear_keybuf();
