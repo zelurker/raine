@@ -6,6 +6,7 @@
 use strict;
 use LWP::Simple;
 
+$| = 1;
 my $cps2_mode;
 my $cps1_mode;
 
@@ -13,12 +14,9 @@ sub get_genre($) {
 	# get the game genre from maws !
 	my $name = shift;
 
-	my $doc = get "http://www.mameworld.net/maws/romset/$name";
+	my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
 	return "GAME_MISC" if (!$doc);
-	my @lines = split(/\n/,$doc);
-	for (my $n=0; $n<=$#lines; $n++) {
-		if ($lines[$n] =~ />genre</) {
-			$lines[$n+1] =~ />(\w+?)<\/a/;
+	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</) {
 			my $genre = $1;
 			if ($genre =~ /Shoot/) {
 				$genre = "GAME_SHOOT";
@@ -28,16 +26,19 @@ sub get_genre($) {
 				$genre = "GAME_PUZZLE";
 			} elsif ($genre =~ /Quiz/) {
 				$genre = "GAME_QUIZZ";
-			} elsif ($genre =~ /Sports/) {
+			} elsif ($genre =~ /(Sports|Baseball|Golf|Football|Bowling)/) {
 				$genre = "GAME_SPORTS";
 			} elsif ($genre =~ /Platform/) {
 				$genre = "GAME_PLATFORM";
+			} elsif ($genre =~ /Racing/) {
+				$genre = "GAME_RACE";
+			} elsif ($genre =~ /(Fight|Combat)/) {
+				$genre = "GAME_FIGHT";
 			} else {
 				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
 				$genre = "GAME_MISC";
 			}
 			return $genre;
-		}
 	}
 	print STDERR "genre not found in page for $name - using GAME_MISC\n";
 	return "GAME_MISC";
@@ -107,7 +108,7 @@ while (<>) {
 		while ($string =~ s/"(.+?),(.+?)", *"(.+)" *,/"$1\£$2", "$3",/g) {}
 		while ($string =~ s/"(.+?)", *"(.+?),(.+?)" *,/"$1", "$2\£$3",/g) {}
 
-		my ($year,$name,$parent,$machine,$input, $class, $init, $rot,$company,$long_name,$reste) = split(/\,/,$string);
+		my ($year,$name,$parent,$machine,$input, $class, $init, $rot,$company,$long_name,$reste) = split(/\, ?/,$string);
 		$long_name =~ s/\£/\,/g;
 		$company =~ s/\£/\,/g;
 		$name =~ s/ //g;
@@ -117,9 +118,10 @@ while (<>) {
 		$machine =~ s/ //g;
 
 		$company =~ s/ \/.+//;
-		$company = "COMPANY_ID_".uc($company);
-		my $genre = "GAME_MISC"; # get_genre($name);
-#    my $genre = get_genre($name);
+		$company =~ s/"//g;
+		$company = uc($company);
+		my $genre;
+		my $genre = ($parent !~ /^(0|neogeo)$/ ? get_genre($parent) : get_genre($name));
 		if ($cps1_mode || $cps2_mode) {
 			if ($rot eq "ROT0") {
 				$rot = "&cps1_video";
@@ -209,16 +211,9 @@ while (<>) {
 				print "cps2_clone( $name, $long_name, $year, $input, $genre, \"$parent\", $rot, $company);\n";
 			}
 		} else {
-			$name = "_$name" if ($name =~ /^\d/); # stupid digit in front of the name
-			$parent = "_$parent" if ($parent ne "0" && $parent =~ /^\d/); # stupid digit in front of the name
-			print "static struct DIR_INFO dir_$name\[] =\n";
-			print "{\n";
-			print "  { \"$name\" },\n";
 			if ($parent ne "0") {
-				print "  { ROMOF(\"$parent\") },\n  { CLONEOF(\"$parent\"), },\n";
+				print "CLNEI( $name, $parent, $long_name, $company, $year, $genre);\n";
 			}
-			print "  { NULL }\n";
-			print "};\n\n";
 		}
 	}
 }
