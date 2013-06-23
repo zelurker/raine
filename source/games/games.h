@@ -175,6 +175,7 @@ main game structure
 #define GAME_RACE     0x100
 #define GAME_QUIZZ    0x200
 #define GAME_MAZE    0x400
+#define GAME_FIGHT    0x800
 
 #define NB_GAME_TYPE 12
 extern char *game_type[NB_GAME_TYPE];
