@@ -402,7 +402,6 @@ int main(int argc,char *argv[])
 
    for(i = 0; dir_cfg.rom_dir[i]; i ++){
      put_backslash(dir_cfg.rom_dir[i]);
-     strlwr(dir_cfg.rom_dir[i]);
    }
 
 
