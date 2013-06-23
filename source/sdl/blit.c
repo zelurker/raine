@@ -38,8 +38,6 @@ int recording_video = 0,last_video_frame,video_fps;
 RAINEBITMAP GameScreen;
 
 static int destx, desty, xxx, yyy, xoff2, yoff2;
-static int show_fps_mode_store;
-static UINT32 pause_timer;
 
 static void my_save_png(char *full_name) {
     if ((sdl_screen->flags & SDL_OPENGL) && ogl.save)
