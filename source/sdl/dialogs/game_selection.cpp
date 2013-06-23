@@ -27,7 +27,7 @@ static int game_list_mode,company,status = 1,category,driver,clones = 1;
 // The list of driver names, which must follow the alphabetical order of the
 // driver names in options[] below.
 char *drivers[] =
-{ "cave.c", "cps1drv.c", "cps2drv.c", "nmk.c", "gunbird.c", "seta.c",
+{ "cave.c", "cps1drv.c", "cps2drv.c","neogeo.c", "nmk.c", "gunbird.c", "seta.c",
   "taito_f2.c", "lsystem.c", "xsystem2.c", "toaplan1.c", "toaplan2.c" };
 
 static menu_item_t options[] =
@@ -36,8 +36,8 @@ static menu_item_t options[] =
 { "Status", NULL, &status, 4, {0, 1, 2, 3}, {"All status", "Only working games", "Only partially working games", "Only not working games"} },
 { "Category", NULL, &category, NB_GAME_TYPE, }, // this one is finished dynamically
 { "Company", NULL, &company, }, // finished dynamically also
-{ "Driver", NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
-{ "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
+{ "Driver", NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
+{ "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-geo", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
 { "Clones", NULL, &clones, 2, {0, 1 }, { "Without", "With" } },
 { "Rom directories...", &do_romdir },
 { NULL },
@@ -185,7 +185,7 @@ class TGame_sel : public TMenu
 	do_update(&bg);
 	strcpy(current_picture,buffer);
 	return 1;
-      } 
+      }
       return 0;
   }
 
@@ -251,7 +251,7 @@ class TGame_sel : public TMenu
 	current_picture[0] = 0;
 	return;
       }
-    } 
+    }
     TMenu::update_fg_layer(nb_to_update);
   }
   void draw_frame(SDL_Rect *r = NULL);
