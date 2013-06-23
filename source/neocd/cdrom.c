@@ -41,7 +41,7 @@ static char *exts[] = {"prg","fix","spr","z80","pcm","pat","jue"};
     a |= (b & 0x01); \
     b >>= 1; }
 
-void extract8(UINT8 *src, UINT8 *dst)
+static int extract8(UINT8 *src, UINT8 *dst)
 {
   int i;
 
@@ -51,6 +51,7 @@ void extract8(UINT8 *src, UINT8 *dst)
   unsigned char cl = *src;
   unsigned char al, ah;
 
+  int res = 0;
   for(i = 0; i < 4; i++)
   {
     al = ah = 0;
@@ -65,45 +66,124 @@ void extract8(UINT8 *src, UINT8 *dst)
       COPY_BIT(ah, bh)
       COPY_BIT(ah, bl)
 
-      *dst++ = ((ah << 4) | al);
+      if ((*dst++ = al)) res++;
+      if ((*dst++ = ah)) res++;
   }
+  return res;
 }
 
 void spr_conv(UINT8 *src, UINT8 *dst, int len, unsigned char *usage_ptr)
 {
   register int    i;
-  int offset;
 
-  for(i=0;i<len;i+=4) {
-    if((i&0x7f)<64)
-      offset=(i&0xffff80)+((i&0x7f)<<1)+4;
-    else
-      offset=(i&0xffff80)+((i&0x7f)<<1)-128;
+  if (is_neocd()) {
+      UINT32 offset;
+      int res = 0;
+      for(i=0;i<len;i+=4) {
+	  if ((i % 128) == 0 && i) {
+	      if (res == 0) // all transp
+		  *usage_ptr++ = 0;
+	      else if (res == 256)
+		  *usage_ptr++ = 2; // all solid
+	      else
+		  *usage_ptr++ = 1; // semi
+	      res = 0;
+	  }
+	  if((i&0x7f)<64)
+	      offset=(i&0xffffff80)+((i&0x7f)<<1)+4;
+	  else
+	      offset=(i&0xffffff80)+((i&0x7f)<<1)-128;
 
-    extract8(src,dst+offset);
-    src+=4;
+	  res += extract8(src,dst+offset*2);
+	  src+=4;
+      }
+      if (res == 0) // all transp
+	  *usage_ptr++ = 0;
+      else if (res == 256)
+	  *usage_ptr++ = 2; // all solid
+      else
+	  *usage_ptr++ = 1; // semi
+      return;
   }
-  for (i=0; i<len; i+= 128) {
-    int res = 0;
-    int j;
-    for (j=0; j<128; j++) {
-      UINT8 pixel = dst[i+j];
-      if (pixel & 0xf)
-	res++;
-      if (pixel & 0xf0)
-	res++;
-    }
-    if (res == 0) // all transp
-      usage_ptr[i/128] = 0;
-    else if (res == 256)
-      usage_ptr[i/128] = 2; // all solid
-    else
-      usage_ptr[i/128] = 1; // semi
+  int tileno,nb_sprites = get_region_size(REGION_SPRITES)/128;
+
+  for (tileno = 0;tileno < nb_sprites;tileno++)
+  {
+      unsigned char swap[128];
+      UINT8 *gfxdata;
+      int x,y;
+      unsigned int pen;
+
+      gfxdata = &load_region[REGION_SPRITES][128 * tileno];
+
+      memcpy(swap,gfxdata,128);
+
+      for (y = 0;y < 16;y++)
+      {
+	  UINT32 dw;
+
+	  dw = 0;
+	  for (x = 0;x < 8;x++)
+	  {
+	      pen  = ((swap[64 + 4*y + 3] >> x) & 1) << 3;
+	      pen |= ((swap[64 + 4*y + 1] >> x) & 1) << 2;
+	      pen |= ((swap[64 + 4*y + 2] >> x) & 1) << 1;
+	      pen |=	(swap[64 + 4*y	  ] >> x) & 1;
+	      dw |= pen << 4*x;
+	  }
+	  *(gfxdata++) = dw>>0;
+	  *(gfxdata++) = dw>>8;
+	  *(gfxdata++) = dw>>16;
+	  *(gfxdata++) = dw>>24;
+
+	  dw = 0;
+	  for (x = 0;x < 8;x++)
+	  {
+	      pen  = ((swap[4*y + 3] >> x) & 1) << 3;
+	      pen |= ((swap[4*y + 1] >> x) & 1) << 2;
+	      pen |= ((swap[4*y + 2] >> x) & 1) << 1;
+	      pen |=	(swap[4*y	 ] >> x) & 1;
+	      dw |= pen << 4*x;
+	  }
+	  *(gfxdata++) = dw>>0;
+	  *(gfxdata++) = dw>>8;
+	  *(gfxdata++) = dw>>16;
+	  *(gfxdata++) = dw>>24;
+      }
   }
-  // Unpack the sprites
-  for (i=len-1; i>=0; i--) {
-    dst[i*2+1] = dst[i]>>4;
-    dst[i*2] = dst[i] & 0xf;
+  int res = 0;
+  for (i=0; i<len; i+=8) {
+      if (i%(16*8) == 0 && i) {
+	  if (res == 256)
+	      *usage_ptr++ = 2;
+	  else if (res == 0)
+	      *usage_ptr++ = 0;
+	  else
+	      *usage_ptr++ = 1;
+	  res = 0;
+      }
+
+      UINT32 mydword = src[0]|(src[1]<<8)|(src[2]<<16)|(src[3]<<24);
+      if ((*dst++ = (mydword>>0)&0xf)) res++;
+      if ((*dst++ = (mydword>>4)&0xf)) res++;
+      if ((*dst++ = (mydword>>8)&0xf)) res++;
+      if ((*dst++ = (mydword>>12)&0xf)) res++;
+      if ((*dst++ = (mydword>>16)&0xf)) res++;
+      if ((*dst++ = (mydword>>20)&0xf)) res++;
+      if ((*dst++ = (mydword>>24)&0xf)) res++;
+      if ((*dst++ = (mydword>>28)&0xf)) res++;
+
+      mydword = src[4]|(src[5]<<8)|(src[6]<<16)|(src[7]<<24);
+      if ((*dst++ = (mydword>>0)&0xf)) res++;
+      if ((*dst++ = (mydword>>4)&0xf)) res++;
+      if ((*dst++ = (mydword>>8)&0xf)) res++;
+      if ((*dst++ = (mydword>>12)&0xf)) res++;
+      if ((*dst++ = (mydword>>16)&0xf)) res++;
+      if ((*dst++ = (mydword>>20)&0xf)) res++;
+      if ((*dst++ = (mydword>>24)&0xf)) res++;
+      if ((*dst++ = (mydword>>28)&0xf)) res++;
+
+      src += 8;
   }
 }
 

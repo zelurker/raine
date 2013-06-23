@@ -24,6 +24,9 @@ extern struct z80PortRead	Z80_port_rb[MAX_Z80][MAX_Z80_PORT];
 extern struct z80PortWrite	Z80_port_wb[MAX_Z80][MAX_Z80_PORT];
 extern UINT8 *Z80RAM;
 
+// Set a specific data bank (read only), specific to neogeo
+void z80_set_read_db(int cpu, int bank, UINT8 *src);
+
 void AddZ80AROMBase(UINT8 *d0, UINT16 d1, UINT16 d2);
 
 void AddZ80AReadByte( UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);

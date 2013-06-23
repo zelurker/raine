@@ -50,6 +50,7 @@ void LoadDefault(void)
 #endif
 
   ExitOnEI = 0;
+  Z80Has16bitsPorts = 0;
   MouseB = &mouse_b;
   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
   z80_offdata = 0; // code location = data location

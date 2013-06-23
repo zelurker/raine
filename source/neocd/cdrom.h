@@ -27,7 +27,6 @@ void neogeo_cdrom_load_title(void);
 void    fix_conv(UINT8 *Src, UINT8 *Ptr, int Taille, unsigned char *usage_ptr);
 int    neogeo_cdrom_process_ipl(loading_params *params);
 void    neogeo_cdrom_load_files(UINT8 *Ptr);
-void extract8(UINT8 *src, UINT8 *dst);
 void spr_conv(UINT8 *src, UINT8 *dst, int len, unsigned char *usage_ptr);
 void neogeo_cdrom_apply_patch(short *source, int offset);
 int    neogeo_cdrom_load_spr_file(char *FileName, unsigned int Offset);

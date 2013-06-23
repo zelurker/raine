@@ -1049,3 +1049,9 @@ void soundcmd_w_nonmi(UINT32 offset,UINT16 data)
 {
   latch = data;
 }
+
+void z80_set_read_db(int cpu, int bank, UINT8 *src) {
+    Z80_memory_rb[cpu][z80_data[cpu].read_bank.list[bank]].pUserArea =
+	src - Z80_memory_rb[cpu][z80_data[cpu].read_bank.list[bank]].lowAddr;
+}
+

@@ -723,6 +723,11 @@
 // mugsmash.c
   DRV(mugsmash)
 
+    // neogeo.c
+    DRV(neogeo)
+DRV(nam1975)
+    DRV(bstars)
+
 // ninjak.c
   DRV(ninjak)
 

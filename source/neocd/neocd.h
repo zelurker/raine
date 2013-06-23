@@ -22,12 +22,14 @@ extern char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
 extern char neocd_bios_file[FILENAME_MAX];
 extern int sfx_volume, music_volume;
 extern int capture_new_pictures;
+extern struct VIDEO_INFO neocd_video;
 
 extern UINT8 *neocd_bios;
 void setup_neocd_bios();
 void set_neocd_exit_to(int code);
 void execute_neocd();
 void load_neocd();
+void clear_neocd();
 void loading_progress_function();
 void neocd_function(int vector);
 void save_fix(int vidram);

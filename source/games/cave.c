@@ -456,8 +456,6 @@ static struct ROM_INFO rom_donpachk[] =
    {           NULL,          0,          0, },
 };
 
-#define REGION_SPRITES REGION_GFX4
-
 static struct ROM_INFO rom_guwange[] =
 {
   LOAD8_16(  REGION_ROM1,  0x0000000,  0x00080000,
@@ -472,7 +470,7 @@ static struct ROM_INFO rom_guwange[] =
                 "u083.bin",  0xadc4b9c4,     "u082.bin",  0x3d75876c),
   LOAD8_16S(  REGION_GFX4,  0x1000000,  0x00400000,
                 "u086.bin",  0x188e4f81,     "u085.bin",  0xa7d5659e),
-  LOAD8_16S(  REGION_SPRITES, 0x1800000,  0x400000,
+  LOAD8_16S(  REGION_GFX4, 0x1800000,  0x400000,
              "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
    {    "u0462.bin", 0x00400000, 0xb3d75691, REGION_SMP1, 0, LOAD_NORMAL, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -482,13 +480,13 @@ static struct ROM_INFO rom_guwanges[] = // clone of guwange
 {
   LOAD8_16(  REGION_CPU1, 0x000000,  0x080000,
              "gu-u0127b.bin",  0x64667d2e,  "gu-u0129b.bin",  0xa99C6b6c),
-  LOAD8_16S(  REGION_SPRITES, 0x0000000,  0x800000,
+  LOAD8_16S(  REGION_GFX4, 0x0000000,  0x800000,
              "u083.bin",  0xadc4b9c4,  "u082.bin",  0x3d75876c),
-  LOAD8_16S(  REGION_SPRITES, 0x1000000,  0x400000,
+  LOAD8_16S(  REGION_GFX4, 0x1000000,  0x400000,
              "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
 //  sprite bug fix?
 //  ROM_FILL(                    0x1800000, 0x800000, 0xff )
-  LOAD8_16S(  REGION_SPRITES, 0x1800000,  0x400000,
+  LOAD8_16S(  REGION_GFX4, 0x1800000,  0x400000,
              "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
   { NULL, 0, 0, 0, 0, 0 }
 };

@@ -75,6 +75,7 @@ OBJS += \
 	$(OBJDIR)/games/metalb.o \
 	$(OBJDIR)/games/mitchell.o \
 	$(OBJDIR)/games/mugsmash.o \
+	$(OBJDIR)/games/neogeo.o \
 	$(OBJDIR)/games/ninjak.o \
 	$(OBJDIR)/games/ninjaw.o \
 	$(OBJDIR)/games/nmk.o \

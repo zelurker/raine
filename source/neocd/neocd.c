@@ -37,6 +37,7 @@
 #include "sdl/gui.h"
 #include "loadpng.h"
 #include "games/gun.h"
+#include "taitosnd.h"
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
@@ -55,6 +56,8 @@ void debug(int level, const char *format, ...)
     }
 }
 #endif
+
+#define LongSc(a) (is_neocd() ? ReadLongSc(&RAM[a]) : ReadLongSc(&RAM[((a) & 0xffffff)-0x100000]))
 
 #define NB_LINES 264 // lines on the screen (including borders)
 #define START_SCREEN 0x10
@@ -77,17 +80,24 @@ void debug(int level, const char *format, ...)
  reloaded on vblank !
  */
 
+static struct {
+    UINT8 *ram;
+    UINT16 unlock;
+} saveram;
+
 static int capture_mode = 0,start_line,screen_cleared;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0;
-static int one_palette;
+static int one_palette,sprites_mask,nb_sprites;
 static int assigned_banks, current_bank;
+static UINT8 zbank[4],bank_68k;
 int capture_new_pictures;
 static BITMAP *raster_bitmap;
 static void draw_neocd();
 static void draw_sprites(int start, int end, int start_line, int end_line);
+static UINT8 dark_screen; // only neogeo ?
 
-static struct VIDEO_INFO neocd_video =
+struct VIDEO_INFO neocd_video =
 {
   draw_neocd,
   304,
@@ -262,6 +272,10 @@ UINT8 *neocd_bios;
 void setup_neocd_bios() {
   if (neocd_bios)
     return;
+  if (!is_neocd()) {
+      neocd_bios = load_region[REGION_MAINBIOS];
+      return;
+  }
   neocd_bios = malloc(0x80000);
   // unsigned char rom_fix_usage[4096];
   int ret = 0;
@@ -335,7 +349,7 @@ void setup_neocd_bios() {
 
 static UINT16 result_code,sound_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
 static UINT8 neogeo_memorycard[8192];
-UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
+UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
 
 static UINT8 temp_fix_usage[0x300],saved_fix;
 
@@ -459,8 +473,9 @@ static struct {
 
 static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
 	   scanline,watchdog_counter,
-	   // irq3_pending,
-	   display_position_interrupt_pending, vblank_interrupt_pending;
+	   irq3_pending,
+	   display_position_interrupt_pending, vblank_interrupt_pending,
+	   vbl,hbl;
 
 static void get_scanline() {
   if (!raster_frame) {
@@ -474,9 +489,9 @@ static void update_interrupts(void)
 {
   int level = 0;
 
-  if (vblank_interrupt_pending) level = 2;
-  if (display_position_interrupt_pending) level = 1;
-  // if (irq3_pending) level = 3;
+  if (vblank_interrupt_pending) level = vbl;
+  if (display_position_interrupt_pending) level = hbl;
+  if (irq3_pending) level = 3;
 
   /* either set or clear the appropriate lines */
   if (level) {
@@ -484,7 +499,7 @@ static void update_interrupts(void)
 	debug(DBG_IRQ,"update_interrupts: irqs disabled\n");
 	return;
     }
-    if (level == 2) {
+    if (level == vbl) {
 
        if (irq.wait_for_vbl_ack) {
 	   // For some unknown reason this seems to be
@@ -500,7 +515,7 @@ static void update_interrupts(void)
     } else {
 	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000context.sr);
 	cpu_interrupt(CPU_68K_0,level);
-	if (level == 2)
+	if (level == vbl)
 	    irq.wait_for_vbl_ack = 1;
     }
 #if 0
@@ -632,7 +647,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
     case    6:    /* IRQ acknowledge */
-	       // if (data & 0x01) irq3_pending = 0;
+	       if (data & 0x01) irq3_pending = 0;
 	       debug(DBG_IRQ,"irq ack %d\n",data);
 	       if (data & 0x02) display_position_interrupt_pending = 0;
 	       if (data & 0x04) vblank_interrupt_pending = 0;
@@ -739,31 +754,44 @@ static void watchdog_w(UINT32 offset, UINT16 data)
   watchdog_counter = 9;
 }
 
-void neogeo_set_screen_dark(UINT32 bit) {
-  // not supported, is it really usefull ???
-}
-
 #define NEO_VECTORS 0x80
 
 static UINT8 game_vectors[NEO_VECTORS], game_vectors_set;
 
 static void    neogeo_select_bios_vectors (int bit) {
-  if (bit) {
-    print_debug("set game vectors\n");
-    if (game_vectors_set) {
-      print_debug("already set\n");
+    if (is_neocd()) {
+	if (bit) {
+	    print_debug("set game vectors\n");
+	    if (game_vectors_set) {
+		print_debug("already set\n");
+	    } else {
+		memcpy(RAM,game_vectors,NEO_VECTORS);
+		game_vectors_set = 1;
+	    }
+	} else {
+	    if (game_vectors_set) {
+		memcpy(game_vectors,RAM,NEO_VECTORS);
+		game_vectors_set = 0;
+	    }
+	    print_debug("set bios vectors\n");
+	    memcpy(RAM, neocd_bios, NEO_VECTORS);
+	}
+	return;
+    }
+    // In neogeo it's easier for once, game_vectors are set once only
+    if (bit) {
+	if (!game_vectors_set) {
+	    print_debug("set game vectors\n");
+	    memcpy(ROM,game_vectors,NEO_VECTORS);
+	    game_vectors_set = 1;
+	}
     } else {
-      memcpy(RAM,game_vectors,NEO_VECTORS);
-      game_vectors_set = 1;
+	if (game_vectors_set) {
+	    print_debug("set bios vectors\n");
+	    memcpy(ROM, neocd_bios, NEO_VECTORS);
+	    game_vectors_set = 0;
+	}
     }
-  } else {
-    if (game_vectors_set) {
-      memcpy(game_vectors,RAM,NEO_VECTORS);
-      game_vectors_set = 0;
-    }
-    print_debug("set bios vectors\n");
-    memcpy(RAM, neocd_bios, NEO_VECTORS);
-  }
 }
 
 void update_game_vectors() {
@@ -779,16 +807,17 @@ static void neogeo_set_fixed_layer_source(UINT8 data)
   // This is used to select the gfx source (cartridge or bios)
   // so maybe it's not used in the neocd version ?
   fixed_layer_source = data;
-  print_ingame(600,"layer_source %d",data);
 }
 
 static int palbank;
-extern UINT8 *RAM_PAL;
 
 static void neogeo_set_palette_bank(int bit) {
   if (palbank != bit) {
     palbank = bit;
-    RAM_PAL = RAM + 0x230000 + 0x2000*palbank;
+    if (is_neocd())
+	RAM_PAL = RAM + 0x230000 + 0x2000*palbank;
+    else
+	RAM_PAL = RAM + 0x030800 + 0x2000*palbank;
     set_68000_io(0,0x400000, 0x401fff, NULL, RAM_PAL);
     print_debug("palbank %d\n",bit);
   }
@@ -796,26 +825,61 @@ static void neogeo_set_palette_bank(int bit) {
 
 static int last_cdda_cmd, last_cdda_track;
 
+static UINT16 audio_cpu_bank_select(UINT16 offset) {
+    UINT8 *rom = load_region[REGION_CPU2];
+    if (!rom) return 0xffff; // neogeo only
+    UINT16 region = (offset & 0xf) - 8;
+    if (region > 3) {
+	print_debug("audio_cpu_bank_select: bad region %d from offset %x\n",region,offset);
+	return 0xffff;
+    }
+    UINT8 bank = offset >> 8;
+    if (zbank[region] != bank) {
+	zbank[region] = bank;
+	int address_mask = get_region_size(REGION_CPU2) - 1;
+	UINT32 adr = (((bank << (11 + region)) & 0x3ffff) & address_mask);
+	print_debug("audio_cpu_bank_select: adr %x region %d bank %d\n",adr,region,bank);
+	z80_set_read_db(0,(3-region),&rom[adr]);
+    }
+    return 0;
+}
+
+static void z80_set_audio_bank(UINT16 region, UINT16 bank) {
+    audio_cpu_bank_select((bank << 8)|(region+8));
+    return;
+}
+
 static void restore_bank() {
   int new_bank = palbank;
   palbank = -1;
   neogeo_set_palette_bank(new_bank);
   print_debug("palette bank restored %d\n",new_bank);
   // now also restore the loading progress status...
-  neocd_lp.sectors_to_load = 0;
-  if (neocd_lp.bytes_loaded) {
-    // saved in the middle of loading a file, we'd better reload it !
-    neocd_lp.file_to_load--;
-    neocd_lp.bytes_loaded = 0;
+  if (is_neocd()) {
+      neocd_lp.sectors_to_load = 0;
+      if (neocd_lp.bytes_loaded) {
+	  // saved in the middle of loading a file, we'd better reload it !
+	  neocd_lp.file_to_load--;
+	  neocd_lp.bytes_loaded = 0;
+      }
+      if (neocd_lp.function)
+	  current_game->exec = &loading_progress_function;
+      else
+	  current_game->exec = &execute_neocd;
+      // These last 2 should have been saved but I guess I can just reset them...
+      last_cdda_cmd = 0;
+      last_cdda_track = 0;
+      restore_override(0);
+  } else {
+      UINT8 znew[4];
+      int n;
+      memcpy(znew,zbank,4);
+      memset(zbank,0xff,4);
+      for (n=0; n<4; n++)
+	  z80_set_audio_bank(n,znew[n]);
+      game_vectors_set = 1-game_vectors_set;
+      neogeo_select_bios_vectors(1-game_vectors_set);
   }
-  if (neocd_lp.function)
-    current_game->exec = &loading_progress_function;
-  else
-    current_game->exec = &execute_neocd;
-  // These last 2 should have been saved but I guess I can just reset them...
-  last_cdda_cmd = 0;
-  last_cdda_track = 0;
-  restore_override(0);
 }
 
 static void system_control_w(UINT32 offset, UINT16 data)
@@ -826,17 +890,17 @@ static void system_control_w(UINT32 offset, UINT16 data)
   switch (offset & 0x07)
   {
     default:
-    case 0x00: neogeo_set_screen_dark(bit); break;
+    case 0x00: dark_screen = bit; printf("dark_screen %d\n",dark_screen); break;
     case 0x01: neogeo_select_bios_vectors(bit); break;
     case 0x05: neogeo_set_fixed_layer_source(bit); break;
-    // case 0x06: set_save_ram_unlock(bit); break;
+    case 0x06: saveram.unlock = bit; break;
     case 0x07: neogeo_set_palette_bank(bit); break;
 
     case 0x02: /* unknown - HC32 middle pin 1 */ // mc 1 write enable
     case 0x03: /* unknown - uPD4990 pin ? */     // mc 2 write enable
     case 0x04: /* unknown - HC32 middle pin 10 */ // mc register select/normal
 	       // writes 0 here when the memory card has been detected
-	       print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000readPC(), offset & 0x07, bit,data,ReadLongSc(&RAM[s68000context.areg[7]]),ReadLongSc(&RAM[s68000context.areg[7]+4]));
+	       print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000readPC(), offset & 0x07, bit,data,LongSc(s68000context.areg[7]),LongSc(s68000context.areg[7]+4));
 	       break;
   }
 }
@@ -853,12 +917,12 @@ static struct YM2610interface ym2610_interface =
   { 0 },
   { 0 },
   { z80_irq_handler },	/* irq */
-  { 0 },	/* delta_t */
-  { 0 },	/* adpcm */
+  { REGION_YMSND_DELTAT },	/* delta_t */
+  { REGION_SMP1 },	/* adpcm */
   { YM3012_VOL(255,OSD_PAN_LEFT,255,OSD_PAN_RIGHT) },
 };
 
-struct SOUND_INFO neocd_sound[] =
+struct SOUND_INFO sound_neocd[] =
 {
   { SOUND_YM2610,  &ym2610_interface,  },
   { 0,             NULL,               },
@@ -1096,6 +1160,14 @@ void video_draw_fix(void)
   UINT16 code, colour;
   UINT16 *fixarea=&neogeo_vidram[0x7002];
   UINT8 *map;
+  UINT8 *fix_usage = video_fix_usage;;
+  if (!is_neocd()) {
+      if (fixed_layer_source == 0) {
+	  neogeo_fix_memory = load_region[REGION_FIXEDBIOS];
+	  fix_usage = bios_fix_usage;
+      } else
+	  neogeo_fix_memory = load_region[REGION_FIXED];
+  }
 
   for (y=0; y < 28; y++)
   {
@@ -1109,7 +1181,7 @@ void video_draw_fix(void)
       // Since some part of the fix area is in the bios, it would be
       // a mess to convert it to the unpacked version, so I'll keep it packed
       // for now...
-      if(video_fix_usage[code]) {
+      if(fix_usage[code]) {
 	// printf("%d,%d,%x,%x\n",x,y,fixarea[x << 5],0x7002+(x<<5));
 	MAP_PALETTE_MAPPED_NEW(colour,16,map);
 	/*	if (video_fix_usage[code] == 2)
@@ -1394,7 +1466,7 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 	// MESSCONT, but the bytes are swapped...
 	if (!strncmp((char*)&RAM[offs+4],"EMSSOCTN",8))
 	    break;
-    print_ingame(1,"offs: %x [%x] palbank %x",ReadLongSc(&RAM[offs+0x4c]),offs,current_bank);
+    print_ingame(1,"offs: %x [%x] palbank %x",LongSc(offs+0x4c),offs,current_bank);
     if (fdata && sprites) {
 	int nb = nb_sprites-1;
 	int nb2 = nb-1;
@@ -1438,7 +1510,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
     int         sx =0,sy =0,oy =0,rows =0,zx = 1, rzy = 1;
     int         offs,count,y;
     int         tileatr,y_control,zoom_control;
-    UINT16 tileno;
+    UINT32 tileno;
     char         fullmode=0;
     int         rzx=16,zy=0;
     UINT8 *map;
@@ -1525,8 +1597,17 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    // super sidekicks 2 draws the playground with bit $8000 set
 	    // the only way to see the playground is to use and $7fff
 	    // Plus rasters must be enabled
-	    tileno = neogeo_vidram[offs] & 0x7fff;
 	    tileatr = neogeo_vidram[offs+1];
+	    /* So here is the tileatr format :
+	     * bits 0-3 : real attribute bits
+	     * bits 4-6 : high part of tile number in neogeo !
+	     * bits 8-15: color bank */
+	    if (is_neocd())
+		tileno = neogeo_vidram[offs] & sprites_mask;
+	    else {
+		tileno = neogeo_vidram[offs] | ((tileatr << 12) & 0x70000);
+		tileno %= nb_sprites;
+	    }
 	    offs += 2;
 	    if (y)
 		// This is much more accurate for the zoomed bgs in aof/aof2
@@ -1693,7 +1774,6 @@ static void neogeo_hreset(void)
     restore_fix(0);
   current_neo_frame = FRAME_NEO;
   old_name = current_game->main_name;
-  z80_enabled = 0;
   direct_fix = -1;
   fix_disabled = 0;
   spr_disabled = 0;
@@ -1714,6 +1794,7 @@ static void neogeo_hreset(void)
       system_control_w( offs, 0x00ff);
 
   if (is_neocd()) {
+      z80_enabled = 0;
       region_code = GetLanguageSwitch();
       SetLanguageSwitch(region_code);
 
@@ -1731,8 +1812,10 @@ static void neogeo_hreset(void)
 	  ClearDefault();
 	  return;
       }
-  } else
-      cpu_interrupt(CPU_68K_0,3);
+  } else {
+      z80_enabled = 1; // always enabled in neogeo
+      irq3_pending = 1;
+  }
 }
 
 void postprocess_ipl() {
@@ -2232,13 +2315,6 @@ static UINT16 read_reg(UINT32 offset) {
   return 0xffff;
 }
 
-/*
-   static void write_region(UINT32 offset, UINT8 data) {
-   printf("write byte %x,%x from %x\n",offset,data,s68000readPC());
-   RAM[offset ^ 1] = data;
-   }
-   */
-
 static void write_pal(UINT32 offset, UINT16 data) {
   /* There are REALLY mirrors of the palette, used by kof96ng at least,
    * see demo / story */
@@ -2248,17 +2324,77 @@ static void write_pal(UINT32 offset, UINT16 data) {
   print_debug("write_pal %x,%x scanline %d\n",offset,data,scanline); */
 }
 
-/*
-static void write_byte(UINT32 offset, UINT8 data) {
-  printf("writeb %x,%x from %x\n",offset, data,s68000readPC());
-  RAM[offset ^ 1] = data;
+static void set_68k_bank(UINT32 offset, UINT16 data) {
+    if (data != bank_68k) {
+	bank_68k = data;
+	int n = ((data & 7) + 1)*0x100000;
+	if (n > get_region_size(REGION_CPU1)) {
+	    n = 1;
+	    print_debug("set_68k_bank: received data %x too high\n",data);
+	}
+	print_debug("set_68k_bank set bank %d\n",n);
+	UINT8 *adr = load_region[REGION_CPU1]+n;
+	set_68000_io(0,0x200000,0x2fffff, NULL, adr);
+    }
 }
 
-static void write_word(UINT32 offset, UINT16 data) {
-  printf("writew %x,%x from %x a0:%x\n",offset, data,s68000readPC(),s68000context.areg[0]);
-  WriteWord(&RAM[offset],data);
+static void io_control_w(UINT32 offset, UINT32 data) {
+    offset &= 0x7f;
+    switch (offset/2)
+    {
+    /* case 0x00: select_controller(data & 0x00ff); break;
+    case 0x18: if (m_is_mvs) set_output_latch(data & 0x00ff); break;
+    case 0x20: if (m_is_mvs) set_output_data(data & 0x00ff); break; */
+    case 0x28: pd4990a_control_16_w(0, data); break;
+	       //  case 0x30: break; // coin counters
+	       //  case 0x31: break; // coin counters
+	       //  case 0x32: break; // coin lockout
+	       //  case 0x33: break; // coui lockout
+
+    default:
+//	       logerror("PC: %x  Unmapped I/O control write.  Offset: %x  Data: %x\n", space.device().safe_pc(), offset, data);
+	       break;
+    }
 }
-*/
+
+static void save_ram_wb(UINT32 offset, UINT16 data) {
+    if (saveram.unlock) {
+	saveram.ram[(offset & 0xffff) ^ 1] = data;
+    }
+}
+
+static void save_ram_ww(UINT32 offset, UINT16 data) {
+    if (saveram.unlock) {
+	WriteWord(&saveram.ram[offset & 0xffff], data);
+    }
+}
+
+static void write_port(UINT16 offset, UINT8 data) {
+    switch(offset & 0xff) {
+    case 4: YM2610_control_port_0_A_w(offset,data); break;
+    case 5: YM2610_data_port_0_A_w(offset,data); break;
+    case 6: YM2610_control_port_0_B_w(offset,data); break;
+    case 7: YM2610_data_port_0_B_w(offset,data); break;
+    /* Port 8 : NMI enable / acknowledge? (the data written doesn't matter)
+     * Metal Slug Passes this 35, then 0 in sequence. After a
+     * mission begins it switches to 1 */
+    case 0xc: set_res_code(offset,data); break;
+    default: DefBadWritePortZ80(offset,data);
+    }
+}
+
+static UINT16 read_port(UINT16 offset) {
+    switch(offset & 0xff) {
+    case 0: return read_sound_cmd(offset);
+    case 4: return YM2610_status_port_0_A_r(offset);
+    case 5: return YM2610_read_port_0_r(offset);
+    case 6: return YM2610_status_port_0_B_r(offset);
+    default:
+	    if ((offset & 0xf) >= 8 && (offset & 0xf) <= 0xb)
+		return audio_cpu_bank_select(offset); // neogeo only
+	    return DefBadReadPort(offset);
+    }
+}
 
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
@@ -2270,87 +2406,174 @@ void load_neocd() {
     neocd_video.screen_x = 304;
     offx = 16-8;
     maxx = 320-8;
-    current_game->long_name = "No game loaded yet";
-    current_game->main_name = "neocd";
     desired_68k_speed = CPU_FRAME_MHz(24,60);
-    init_cdda();
-    init_load_type();
     upload_type = 0xff;
     memcard_write = 0;
-    setup_neocd_bios();
-    clear_file_cache();
     setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
-    RAMSize = 0x200000 + // main ram
-	0x010000 + // z80 ram
-	0x020000 + // video ram
-	0x2000*2; // palette (2 banks)
-    if(!(RAM=AllocateMem(RAMSize))) return;
-    // if(!(save_ram=(UINT16*)AllocateMem(0x10000))) return; // not to be saved with the ram
-    if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
-    if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
-    if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
-    if(!(video_spr_usage=AllocateMem(0x800000/0x100))) return;
-    if(!(PCMROM=AllocateMem(0x100000))) return;
+    setup_neocd_bios();
+    if (is_neocd()) {
+	current_game->long_name = "No game loaded yet";
+	current_game->main_name = "neocd";
+	RAMSize = 0x200000 + // main ram
+	    0x010000 + // z80 ram
+	    0x020000 + // video ram
+	    0x2000*2; // palette (2 banks)
+	vbl = 2;
+	hbl = 1;
+	init_cdda();
+	init_load_type();
+	clear_file_cache();
+	if(!(RAM=AllocateMem(RAMSize))) return;
+	if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
+	if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
+	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
+	nb_sprites = 0x8000;
+	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
+	if(!(PCMROM=AllocateMem(0x100000))) return;
+	tile_list_count = 2;
+	Z80ROM = &RAM[0x200000];
+	neogeo_vidram = (UINT16*)(RAM + 0x210000);
+	RAM_PAL = RAM + 0x230000;
+	AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+	AddZ80ARW(0x0000, 0xffff, NULL, Z80ROM);
+	memset(video_fix_usage,0,4096);
+	memset(video_spr_usage,0,0x8000);
+	sprites_mask = 0x7fff;
+	set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
+    } else {
+	Z80Has16bitsPorts = 1;
+	RAMSize = 0x10000 + // main ram
+	    0x00800 + // z80 ram
+	    0x020000 + // video ram
+	    0x2000*2; // palette (2 banks)
+	vbl = 1;
+	hbl = 2;
+	if(!(saveram.ram=AllocateMem(0x10000))) return; // not to be saved with the ram
+	saveram.unlock = 0;
+	if(!(RAM=AllocateMem(RAMSize))) return;
+	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
+	if(!(bios_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
+	if (!load_region[REGION_SPRITES]) {
+	    load_region[REGION_SPRITES] = AllocateMem(0x100000);
+	    memset(load_region[REGION_SPRITES],0xff,0x100000);
+	    set_region_size(REGION_SPRITES,0x100000);
+	}
+	if (!load_region[REGION_SMP1]) {
+	    if(!(PCMROM=AllocateMem(0x10000))) return;
+	    memset(PCMROM,0xff,0x10000);
+	    YM2610SetBuffers(PCMROM, PCMROM, 0x10000, 0x10000);
+	}
+	int size = get_region_size(REGION_SPRITES)*2;
+	int size_fixed = 4096*32; // packed 8x8 x 4096
+	if (size < size_fixed) size = size_fixed;
+	UINT8 *tmp = AllocateMem(size);
+	if (load_region[REGION_FIXED]) {
+	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);
+	    fix_conv(tmp, load_region[REGION_FIXED], size_fixed, video_fix_usage);
+	    neogeo_fix_memory = load_region[REGION_FIXED];
+	} else
+	    neogeo_fix_memory = NULL;
+	memcpy(tmp,load_region[REGION_FIXEDBIOS],size_fixed);
+	fix_conv(tmp, load_region[REGION_FIXEDBIOS], size_fixed, bios_fix_usage);
+
+	nb_sprites = get_region_size(REGION_SPRITES)/0x80; // packed 16x16
+	sprites_mask = nb_sprites-1;
+	if (nb_sprites > 0) {
+	    if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
+	    spr_conv(load_region[REGION_SPRITES],tmp,get_region_size(REGION_SPRITES),video_spr_usage);
+	    GFX = tmp;
+	} else {
+	    video_spr_usage = GFX = NULL;
+	}
+	FreeMem(load_region[REGION_SPRITES]);
+	set_region_size(REGION_SPRITES,size);
+	load_region[REGION_SPRITES] = GFX;
+	tile_list_count = 3;
+
+	Z80ROM = load_region[REGION_CPU2];
+	neogeo_vidram = (UINT16*)(RAM + 0x10800);
+	RAM_PAL = RAM + 0x30800;
+	AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+	AddZ80ARead(0, 0x7fff, NULL, Z80ROM);
+	AddZ80ARead(0x8000, 0xbfff, NULL, NULL); // data bank 3
+	AddZ80ARead(0xc000, 0xdfff, NULL, NULL); // data bank 2
+	AddZ80ARead(0xe000, 0xefff, NULL, NULL); // data bank 1
+	AddZ80ARead(0xf000, 0xf7ff, NULL, NULL); // data bank 0
+	AddZ80ARW(0xf800, 0xffff, NULL, RAM + 0x10000);
+
+	z80_set_audio_bank(0,0x1e);
+	z80_set_audio_bank(1,0x0e);
+	z80_set_audio_bank(2,0x06);
+	z80_set_audio_bank(3,0x02);
+	if (!ROM) {
+	    printf("no rom, using bios\n");
+	    ROM = load_region[REGION_MAINBIOS];
+	} else
+	    ByteSwap(ROM,get_region_size(REGION_ROM1));
+	memcpy(game_vectors, ROM, 0x80);
+	// memcpy(ROM,neocd_bios,0x80);
+	game_vectors_set = 1; // For now we are on rom
+	set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
+    }
+
     memset(RAM,0,RAMSize);
-    memset(video_fix_usage,0,4096);
-    memset(video_spr_usage,0,0x8000);
     memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
 
     // manual init of the layers (for the sprites viewer)
-    tile_list_count = 2;
     tile_list[0].width = tile_list[0].height = 8;
     tile_list[0].count = 4096;
     tile_list[0].data = neogeo_fix_memory;
     tile_list[0].mask = video_fix_usage;
 
     tile_list[1].width = tile_list[1].height = 16;
-    tile_list[1].count = 0x8000;
+    tile_list[1].count = nb_sprites;
     tile_list[1].mask = video_spr_usage;
     tile_list[1].data = GFX;
+    if (!is_neocd()) {
+	tile_list[2] = tile_list[0];
+	tile_list[2].mask = bios_fix_usage;
+	tile_list[2].data = load_region[REGION_FIXEDBIOS];
+    }
 
-    Z80ROM = &RAM[0x200000];
-    neogeo_vidram = (UINT16*)(RAM + 0x210000);
     memset(neogeo_vidram,0,0x20000);
-    RAM_PAL = RAM + 0x230000;
 
-    set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     InitPaletteMap(RAM_PAL,0x100,0x10,0x8000);
 
-    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
-    AddZ80ARW(0x0000, 0xffff, NULL, Z80ROM);
+    AddZ80AWritePort(0, 0xffff, write_port, NULL);
 
-    AddZ80AWritePort(4, 4, YM2610_control_port_0_A_w, NULL);
-    AddZ80AWritePort(5, 5, YM2610_data_port_0_A_w, NULL);
-    AddZ80AWritePort(6, 6, YM2610_control_port_0_B_w, NULL);
-    AddZ80AWritePort(7, 7, YM2610_data_port_0_B_w, NULL);
-    /* Port 8 : NMI enable / acknowledge? (the data written doesn't matter)
-     * Metal Slug Passes this 35, then 0 in sequence. After a
-     * mission begins it switches to 1 */
-    AddZ80AWritePort(0xc, 0xc, set_res_code, NULL);
-    AddZ80AWritePort(0, 0xff, DefBadWritePortZ80, NULL);
-
-    AddZ80AReadPort(0, 0, read_sound_cmd, NULL);
-    AddZ80AReadPort(4, 4, YM2610_status_port_0_A_r, NULL);
-    AddZ80AReadPort(5, 5, YM2610_read_port_0_r, NULL);
-    AddZ80AReadPort(6, 6, YM2610_status_port_0_B_r, NULL);
-    AddZ80AReadPort(0, 0xff, DefBadReadPortZ80, NULL);
+    AddZ80AReadPort(0, 0xffff, read_port, NULL);
     AddZ80AInit();
 
-    AddMemFetch(0, 0x200000, RAM);
-    AddMemFetch(0xc00000, 0xc7ffff, neocd_bios - 0xc00000);
-    AddMemFetch(-1, -1, NULL);
+    if (is_neocd()) {
+	AddWriteByte(0x10f6f6, 0x10f6f6, cdda_cmd, NULL);
+	AddWriteByte(0x10F651, 0x10F651, test_end_loading, NULL);
+	AddMemFetch(0, 0x200000, RAM);
+	AddMemFetch(0xc00000, 0xc7ffff, neocd_bios - 0xc00000);
+	AddRWBW(0, 0x200000, NULL, RAM);
+	AddReadBW(0xc00000, 0xc7ffff, NULL,neocd_bios);
+    } else {
+	if (get_region_size(REGION_CPU1) > 0x100000) {
+	    AddMemFetch(0, 0xfffff, ROM);
+	    AddReadBW(0,0xfffff, NULL, ROM);
+	    AddReadBW(0x200000, 0x2fffff, NULL, ROM+0x100000);
+	    bank_68k = 0;
+	} else {
+	    int size = get_region_size(REGION_ROM1);
+	    if (!size) size = get_region_size(REGION_MAINBIOS);
+	    AddMemFetch(0, size-1, ROM);
+	    AddReadBW(0,size-1, NULL, ROM);
+	}
+	AddRWBW(0x100000, 0x10ffff, NULL, RAM);
+	Add68000Code(0, 0xc00000, REGION_MAINBIOS);
+    }
 
-    AddWriteByte(0x10f6f6, 0x10f6f6, cdda_cmd, NULL);
-    AddWriteByte(0x10F651, 0x10F651, test_end_loading, NULL);
-
-    AddRWBW(0, 0x200000, NULL, RAM);
-    AddReadBW(0xc00000, 0xc7ffff, NULL,neocd_bios);
     AddReadByte(0x300000, 0x300001, NULL, &input_buffer[1]);
     AddReadByte(0x300080, 0x300081, NULL, &input_buffer[9]);
     AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
     AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
     AddReadByte(0x340000, 0x340000, NULL, &input_buffer[3]);
     AddReadByte(0x380000, 0x380000, NULL, &input_buffer[5]);
+    AddWriteBW(0x380000, 0x39ffff, io_control_w, NULL);
 
     AddReadByte(0x800000, 0x80ffff, read_memorycard, NULL);
     AddReadWord(0x800000, 0x80ffff, read_memorycardw, NULL);
@@ -2371,56 +2594,63 @@ void load_neocd() {
     AddRWBW(0x400000, 0x401fff, NULL, RAM_PAL);
     AddWriteWord(0x402000, 0x4fffff, write_pal, NULL); // palette mirror !
     AddSaveData(SAVE_USER_0, (UINT8*)&palbank, sizeof(palbank));
-    prepare_cdda_save(SAVE_USER_1);
-    AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
+    if (is_neocd()) {
+	prepare_cdda_save(SAVE_USER_1);
+	AddSaveData(SAVE_USER_2, (UINT8 *)&cdda, sizeof(cdda));
+	AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
+	AddSaveData(SAVE_USER_8, (UINT8*)&direct_fix,sizeof(direct_fix));
+	prepare_cache_save();
+    } else {
+	AddSaveData(SAVE_USER_1,zbank,sizeof(zbank));
+	AddSaveData(SAVE_USER_2,(UINT8*)&saveram,sizeof(saveram));
+    }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
     AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
-    AddSaveData(SAVE_USER_5, (UINT8*)&neocd_lp, sizeof(neocd_lp));
     AddSaveData(SAVE_USER_6, (UINT8*)&video_modulo,sizeof(video_modulo));
     AddSaveData(SAVE_USER_7, (UINT8*)&video_pointer,sizeof(video_pointer));
-    AddSaveData(SAVE_USER_8, (UINT8*)&direct_fix,sizeof(direct_fix));
     AddSaveData(SAVE_USER_9, (UINT8*)&spr_disabled,sizeof(spr_disabled));
     AddSaveData(SAVE_USER_10, (UINT8*)&fix_disabled,sizeof(fix_disabled));
     AddSaveData(SAVE_USER_11, (UINT8*)&video_enabled,sizeof(video_enabled));
-    prepare_cache_save();
+    AddSaveData(SAVE_USER_12, &game_vectors_set,sizeof(game_vectors_set));
     AddLoadCallback(restore_bank);
-    // is the save ram usefull ?!??? probably not with neocd...
-#if 0
-    AddWriteByte(0xd00000, 0xd0ffff, save_ram_wb, NULL);
-    AddWriteWord(0xd00000, 0xd0ffff, save_ram_ww, NULL);
-    AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)save_ram);
-#endif
-    AddReadBW(0xe00000,0xefffff, read_upload, NULL);
-    AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
-    AddWriteWord(0xe00000,0xefffff, write_upload_word, NULL);
+    if (!is_neocd()) {
+	// is the save ram usefull ?!??? probably not with neocd...
+	AddWriteByte(0xd00000, 0xd0ffff, save_ram_wb, NULL);
+	AddWriteWord(0xd00000, 0xd0ffff, save_ram_ww, NULL);
+	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
+	if (get_region_size(REGION_CPU1) > 0x100000)
+	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
+    } else {
+	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
+	AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
+	AddWriteWord(0xe00000,0xefffff, write_upload_word, NULL);
 
-    // cdrom : there are probably some more adresses of interest in this area
-    // but I found only this one so far (still missing the ones used to control
-    // the cd audio from the bios when exiting from a game).
-    AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
-    AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
-    AddWriteByte(0xff0061,0xff0061, upload_cmd_w, NULL);
-    AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
-    AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
-    AddWriteByte(0xff0105, 0xff0105, upload_type_w, NULL);
-    AddWriteByte(0xff0111, 0xff0111, spr_disable, NULL);
-    AddWriteByte(0xff0115, 0xff0115, fix_disable, NULL);
-    AddWriteByte(0xff0119, 0xff0119, video_enable, NULL);
-    AddWriteByte(0xff016f,0xff016f, disable_irq_w, NULL);
-    AddWriteByte(0xff0183, 0xff0183, z80_enable, NULL);
-    // ff011c seems to be some kind of status, only bit 12 is tested but I
-    // couldn't find what for, it doesn't seem to make any difference...
-    // The ff0100 area seems to be related to the uploads, but there are many
-    // adresses... there might be some kind of locking system, but no dma
-    // apprently, it seems easier to emulate this from the ram area instead of
-    // using these registers directly
-
+	// cdrom : there are probably some more adresses of interest in this area
+	// but I found only this one so far (still missing the ones used to control
+	// the cd audio from the bios when exiting from a game).
+	AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
+	AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
+	AddWriteByte(0xff0061,0xff0061, upload_cmd_w, NULL);
+	AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
+	AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
+	AddWriteByte(0xff0105, 0xff0105, upload_type_w, NULL);
+	AddWriteByte(0xff0111, 0xff0111, spr_disable, NULL);
+	AddWriteByte(0xff0115, 0xff0115, fix_disable, NULL);
+	AddWriteByte(0xff0119, 0xff0119, video_enable, NULL);
+	AddWriteByte(0xff016f,0xff016f, disable_irq_w, NULL);
+	AddWriteByte(0xff0183, 0xff0183, z80_enable, NULL);
+	// ff011c seems to be some kind of status, only bit 12 is tested but I
+	// couldn't find what for, it doesn't seem to make any difference...
+	// The ff0100 area seems to be related to the uploads, but there are many
+	// adresses... there might be some kind of locking system, but no dma
+	// apprently, it seems easier to emulate this from the ram area instead of
+	// using these registers directly
+    }
     AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
     finish_conf_68000(0);
     // There doesn't seem to be any irq3 in the neocd, irqs are very different
     // here
-    // irq3_pending = 1;
 
     init_16x16_zoom();
     set_reset_function(neogeo_hreset);
@@ -2736,16 +2966,18 @@ void execute_neocd() {
   }
 }
 
-static void clear_neocd() {
+void clear_neocd() {
   save_memcard();
-  save_debug("neocd.bin",neocd_bios,0x80000,1);
-  save_debug("ram.bin",RAM,0x200000,1);
-  save_debug("z80",Z80ROM,0x10000,0);
-  init_cdda();
+  if (is_neocd()) {
+      save_debug("neocd.bin",neocd_bios,0x80000,1);
+      save_debug("ram.bin",RAM,0x200000,1);
+      save_debug("z80",Z80ROM,0x10000,0);
+      init_cdda();
 #ifdef RAINE_DEBUG
-  if (debug_mode)
-    ByteSwap(neocd_bios,0x80000); // restore the bios for the next game
+      if (debug_mode)
+	  ByteSwap(neocd_bios,0x80000); // restore the bios for the next game
 #endif
+  }
   if (raster_bitmap) {
       destroy_bitmap(raster_bitmap);
       raster_bitmap = NULL;
@@ -2771,7 +3003,7 @@ struct GAME_MAIN game_neocd =
   COMPANY_ID_SNK,
   NULL,
   1998,
-  neocd_sound,
+  sound_neocd,
   GAME_SHOOT
 };
 
