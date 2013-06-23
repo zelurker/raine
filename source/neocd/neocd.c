@@ -1736,7 +1736,8 @@ void draw_neocd_paused() {
 }
 
 void set_neocd_exit_to(int code) {
-  neocd_bios[0xad36] = code;
+    if (neocd_bios)
+	neocd_bios[0xad36] = code;
 }
 
 static void z80_enable(UINT32 offset, UINT8 data) {
@@ -2664,12 +2665,13 @@ void load_neocd() {
 }
 
 static void apply_hack(int pc) {
-  WriteWord(&RAM[pc],0x4239);
-  WriteWord(&RAM[pc+2],0xaa);
-  WriteWord(&RAM[pc+4],0);
-  current_neo_frame = desired_68k_speed;
-  print_ingame(60,"Applied speed hack");
-  print_debug("Applied speed hack at %x\n",pc);
+    UINT8 *RAM = get_userdata(CPU_68K_0,pc);
+    WriteWord(&RAM[pc],0x4239);
+    WriteWord(&RAM[pc+2],0xaa);
+    WriteWord(&RAM[pc+4],0);
+    current_neo_frame = desired_68k_speed;
+    print_ingame(60,"Applied speed hack");
+    print_debug("Applied speed hack at %x\n",pc);
 }
 
 void neocd_function(int vector) {
@@ -2903,6 +2905,7 @@ void execute_neocd() {
 	  static int not_stopped_frames;
 	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
 	      pc = s68000readPC();
+	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
 
 	      if (pc < 0x200000) {
 		  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
