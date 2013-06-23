@@ -743,6 +743,10 @@ DRV(nam1975)
     DRV(burningf)
     DRV(burningfh)
     DRV(lbowling)
+    DRV(gpilots)
+    DRV(gpilotsh)
+    DRV(joyjoy)
+    DRV(lresort)
 
 // ninjak.c
   DRV(ninjak)

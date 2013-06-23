@@ -434,3 +434,58 @@ static struct ROM_INFO rom_lbowling[] = /* MVS AND AES VERSION */
 
 CLNEI( lbowling, neogeo, "League Bowling (NGM-019)(NGH-019)", SNK, 1990, GAME_SPORTS);
 
+static struct ROM_INFO rom_gpilots[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "020-p1.p1", 0x080000, 0xe6f2fe64, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "020-p2.p2", 0x020000, 0xedcb22ac, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  { "020-s1.s1", 0x20000, 0xa6d83d53, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "020-m1.m1", 0x20000, 0x48409377, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "020-v11.v11", 0x100000, 0x1b526c8b, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "020-v12.v12", 0x080000, 0x4a9e6f03, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "020-v21.v21", 0x080000, 0x7abf113d, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
+  { "020-c1.c1", 0x100000, 0xbd6fe78e, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "020-c2.c2", 0x100000, 0x5f4a925c, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "020-c3.c3", 0x100000, 0xd1e42fd0, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "020-c4.c4", 0x100000, 0xedde439b, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_gpilotsh[] = /* AES VERSION (US) clone of gpilots */
+{
+  { "020-hp1.p1", 0x080000, 0x7cdb01ce, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "020-p2.p2", 0x020000, 0xedcb22ac, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( gpilots, neogeo, "Ghost Pilots (NGM-020)(NGH-020)", SNK, 1991, GAME_SHOOT);
+CLNEI( gpilotsh, gpilots, "Ghost Pilots (NGH-020)(US)", SNK, 1991, GAME_SHOOT);
+
+static struct ROM_INFO rom_joyjoy[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "021-p1.p1", 0x080000, 0x39c3478f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "021-s1.s1", 0x20000, 0x6956d778, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "021-m1.m1", 0x40000, 0x5a4be5e8, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "021-v11.v11", 0x080000, 0x66c1e5c4, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "021-v21.v21", 0x080000, 0x8ed20a86, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
+  { "021-c1.c1", 0x080000, 0x509250ec, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "021-c2.c2", 0x080000, 0x09ed5258, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( joyjoy, neogeo, "Puzzled / Joy Joy Kid (NGM-021)(NGH-021)", SNK, 1990, GAME_PUZZLE);
+
+static struct ROM_INFO rom_lresort[] = // clone of neogeo
+{
+  { "024-p1.p1", 0x080000, 0x89c4ab97, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "024-s1.s1", 0x20000, 0x5cef5cc6, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "024-m1.m1", 0x20000, 0xcec19742, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "024-v1.v1", 0x100000, 0xefdfa063, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "024-v2.v2", 0x100000, 0x3c7997c0, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "024-c1.c1", 0x100000, 0x3617c2dc, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "024-c2.c2", 0x100000, 0x3f0a7fd8, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "024-c3.c3", 0x080000, 0xe9f745f8, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "024-c4.c4", 0x080000, 0x7382fefb, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( lresort, neogeo, "Last Resort", SNK, 1992, GAME_SHOOT);

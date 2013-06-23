@@ -1606,7 +1606,9 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 		tileno = neogeo_vidram[offs] & sprites_mask;
 	    else {
 		tileno = neogeo_vidram[offs] | ((tileatr << 12) & 0x70000);
-		tileno %= nb_sprites;
+		/* A sprite_mask is mandatory here, we must just keep the lower
+		 * bits, a division would be incorrect */
+		tileno &= sprites_mask;
 	    }
 	    offs += 2;
 	    if (y)
@@ -2464,6 +2466,9 @@ void load_neocd() {
 	    YM2610SetBuffers(PCMROM, PCMROM, 0x10000, 0x10000);
 	}
 	int size = get_region_size(REGION_SPRITES)*2;
+	nb_sprites = get_region_size(REGION_SPRITES)/0x80; // packed 16x16
+	sprites_mask = get_mask(nb_sprites);
+	if ((sprites_mask + 1)*256 > size) size = (sprites_mask+1)*256;
 	int size_fixed = 4096*32; // packed 8x8 x 4096
 	if (size < size_fixed) size = size_fixed;
 	UINT8 *tmp = AllocateMem(size);
@@ -2476,18 +2481,15 @@ void load_neocd() {
 	memcpy(tmp,load_region[REGION_FIXEDBIOS],size_fixed);
 	fix_conv(tmp, load_region[REGION_FIXEDBIOS], size_fixed, bios_fix_usage);
 
-	nb_sprites = get_region_size(REGION_SPRITES)/0x80; // packed 16x16
-	sprites_mask = nb_sprites-1;
-	if (nb_sprites > 0) {
-	    if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
-	    spr_conv(load_region[REGION_SPRITES],tmp,get_region_size(REGION_SPRITES),video_spr_usage);
-	    GFX = tmp;
-	} else {
-	    video_spr_usage = GFX = NULL;
-	}
+	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
+	spr_conv(load_region[REGION_SPRITES],tmp,get_region_size(REGION_SPRITES),video_spr_usage);
+	GFX = tmp;
 	FreeMem(load_region[REGION_SPRITES]);
 	set_region_size(REGION_SPRITES,size);
 	load_region[REGION_SPRITES] = GFX;
+	if (size > nb_sprites*256) {
+	    memset(&GFX[nb_sprites*256],0,size-nb_sprites*256);
+	}
 	tile_list_count = 3;
 
 	Z80ROM = load_region[REGION_CPU2];
