@@ -747,6 +747,8 @@ DRV(nam1975)
     DRV(gpilotsh)
     DRV(joyjoy)
     DRV(lresort)
+    DRV(eightman)
+    DRV(legendos)
 
 // ninjak.c
   DRV(ninjak)

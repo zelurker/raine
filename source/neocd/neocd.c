@@ -2445,7 +2445,9 @@ void load_neocd() {
     } else {
 	Z80Has16bitsPorts = 1;
 	RAMSize = 0x10000 + // main ram
-	    0x00800 + // z80 ram
+	    0x10000 + // z80 ram
+	    // The whole rom for the z80 because some games jump in ram !!!
+	    // See legendos for an example !
 	    0x020000 + // video ram
 	    0x2000*2; // palette (2 banks)
 	vbl = 1;
@@ -2492,16 +2494,18 @@ void load_neocd() {
 	}
 	tile_list_count = 3;
 
-	Z80ROM = load_region[REGION_CPU2];
-	neogeo_vidram = (UINT16*)(RAM + 0x10800);
-	RAM_PAL = RAM + 0x30800;
+	Z80ROM = RAM + 0x10000;
+	memcpy(Z80ROM, load_region[REGION_CPU2], 0x10000);
+	neogeo_vidram = (UINT16*)(RAM + 0x20000);
+	RAM_PAL = RAM + 0x40000;
 	AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 	AddZ80ARead(0, 0x7fff, NULL, Z80ROM);
 	AddZ80ARead(0x8000, 0xbfff, NULL, NULL); // data bank 3
 	AddZ80ARead(0xc000, 0xdfff, NULL, NULL); // data bank 2
 	AddZ80ARead(0xe000, 0xefff, NULL, NULL); // data bank 1
 	AddZ80ARead(0xf000, 0xf7ff, NULL, NULL); // data bank 0
-	AddZ80ARW(0xf800, 0xffff, NULL, RAM + 0x10000);
+	// legendos jumps to fffd !!! (from c5c after writing result code)
+	AddZ80ARW(0xf800, 0xffff, NULL, Z80ROM + 0xf800);
 
 	z80_set_audio_bank(0,0x1e);
 	z80_set_audio_bank(1,0x0e);
@@ -2518,7 +2522,6 @@ void load_neocd() {
 	set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     }
 
-    memset(RAM,0,RAMSize);
     memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
 
     // manual init of the layers (for the sprites viewer)

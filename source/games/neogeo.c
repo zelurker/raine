@@ -489,3 +489,34 @@ static struct ROM_INFO rom_lresort[] = // clone of neogeo
 };
 
 CLNEI( lresort, neogeo, "Last Resort", SNK, 1992, GAME_SHOOT);
+
+static struct ROM_INFO rom_eightman[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "025-p1.p1", 0x080000, 0x43344cb0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "025-s1.s1", 0x20000, 0xa402202b, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "025-m1.m1", 0x20000, 0x9927034c, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "025-v1.v1", 0x100000, 0x4558558a, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "025-v2.v2", 0x100000, 0xc5e052e9, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "025-c1.c1", 0x100000, 0x555e16a4, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "025-c2.c2", 0x100000, 0xe1ee51c3, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "025-c3.c3", 0x080000, 0x0923d5b0, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "025-c4.c4", 0x080000, 0xe3eca67b, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( eightman, neogeo, "Eight Man (NGM-025)(NGH-025)", SNK, 1991, GAME_BEAT);
+
+static struct ROM_INFO rom_legendos[] = // clone of neogeo
+{
+  { "029-p1.p1", 0x080000, 0x9d563f19, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "029-s1.s1", 0x20000, 0xbcd502f0, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "029-m1.m1", 0x20000, 0x6f2843f0, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "029-v1.v1", 0x100000, 0x85065452, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "029-c1.c1", 0x100000, 0x2f5ab875, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "029-c2.c2", 0x100000, 0x318b2711, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "029-c3.c3", 0x100000, 0x6bc52cb2, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "029-c4.c4", 0x100000, 0x37ef298c, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( legendos, neogeo, "Legend of Success Joe / Ashita no Joe Densetsu", SNK, 1991, GAME_BEAT);
