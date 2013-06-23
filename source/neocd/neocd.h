@@ -16,6 +16,7 @@ extern "C" {
 #define IRQ1CTRL_AUTOLOAD_REPEAT	0x80
 
 extern int neocd_id,allowed_speed_hacks,disable_irq1;
+extern int exit_to_code;
 
 extern UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;
 extern char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];

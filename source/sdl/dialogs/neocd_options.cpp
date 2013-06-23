@@ -9,7 +9,6 @@
 #include "neocd/cache.h"
 #include "games.h"
 
-int exit_to_code = 2;
 static int exit_to(int sel) {
   set_neocd_exit_to(exit_to_code);
   return 0;

@@ -345,6 +345,7 @@ void setup_neocd_bios() {
   WriteWord(&neocd_bios[0xA5Ba], 0xa822);
 #endif
 #endif
+  set_neocd_exit_to(exit_to_code);
 }
 
 static UINT16 result_code,sound_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
@@ -1734,6 +1735,8 @@ void draw_neocd_paused() {
     if (check_layer_enabled(layer_id_data[0]) && !fix_disabled)
 	video_draw_fix();
 }
+
+int exit_to_code = 2;
 
 void set_neocd_exit_to(int code) {
     if (neocd_bios)
