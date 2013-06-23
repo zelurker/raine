@@ -19,6 +19,13 @@
 #define DLOAD(x) DRV_DEF_LOAD
 #endif
 
+#undef PCLEAR
+#ifndef DRV_DEF_CLEAR
+#define PCLEAR NULL
+#else
+#define PCLEAR DRV_DEF_CLEAR
+#endif
+
 #undef DINPUT
 #undef PINPUT
 #ifndef DRV_DEF_INPUT
@@ -76,6 +83,7 @@ const struct GAME_MAIN game_##name =         \
   .source_file = __FILE__, /* source_file */ \
   .dir_list = dir_##name,                    \
   .rom_list = rom_##name,                    \
+    .clear = PCLEAR,                         \
     .load_game = DLOAD(name),                \
     .main_name = #name,                      \
     .long_name = longn,                      \
@@ -129,6 +137,7 @@ const struct GAME_MAIN game_##name =                 \
   .source_file = __FILE__, /* source_file */         \
   .dir_list = dir_##name,                            \
   .rom_list = rom_##name,                            \
+    .clear = PCLEAR,                                 \
     .load_game = DLOAD(parent),                      \
     .main_name = #name,                              \
     .long_name = longn,                              \
@@ -140,7 +149,7 @@ const struct GAME_MAIN game_##name =                 \
     .exec = PEXEC,                                   \
     .sound = PSOUND,                                 \
     .video = PVIDEO,                                 \
-##__VA_ARGS__ };                                     \
+##__VA_ARGS__ };
 
 #define CLONEI(name, parent,longn,company,yr,flg,...)  \
     CREATE_CLONE(name,parent);                         \
@@ -148,23 +157,14 @@ CLONE(name,parent,longn,company,yr,flg,##__VA_ARGS__); \
 
 // Compact clones, try to re-use as many fields as possible...
 #define CLNE(name, parent,longn,company,yr,flg,...) \
-const struct GAME_MAIN game_##name =                \
-{                                                   \
-  .source_file = __FILE__, /* source_file */        \
-  .dir_list = dir_##name,                           \
-  .rom_list = rom_##name,                           \
+CLONE(name, parent,longn,company,yr,flg,	    \
     .input = DINPUT(parent),                        \
     .dsw = DDSW(parent),                            \
     .load_game = DLOAD(parent),                     \
     .video = DVIDEO(parent),                        \
-    .main_name = #name,                             \
-    .long_name = longn,                             \
     .exec = DEXEC(parent),                          \
-    .company_id = COMPANY_ID_##company,             \
-    .year = yr,                                     \
     .sound = DSOUND(parent),                        \
-    .flags = flg,                                   \
-##__VA_ARGS__ };
+##__VA_ARGS__ );
 
 #define CLNEI(name, parent,longn,company,yr,flg,...)  \
     CREATE_CLONE(name,parent);                        \

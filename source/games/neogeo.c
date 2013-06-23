@@ -2,6 +2,7 @@
 #define DRV_DEF_EXEC execute_neocd
 #define DRV_DEF_VIDEO &neocd_video
 #define DRV_DEF_SOUND sound_neocd
+#define DRV_DEF_CLEAR clear_neocd
 
 #include "raine.h"
 #include "games.h"
@@ -121,8 +122,7 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   { 0, NULL,        0,        0,    0            },
 };
 
-GMEI( neogeo, "Neo-geo bios", SNK, 1990, GAME_MISC,
-	.clear = clear_neocd);
+GMEI( neogeo, "Neo-geo bios", SNK, 1990, GAME_MISC);
 
 static struct ROM_INFO rom_nam1975[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -145,8 +145,7 @@ static struct ROM_INFO rom_nam1975[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( nam1975, neogeo, "NAM-1975 (NGM-001)(NGH-001)", SNK, 1990, GAME_SHOOT,
-	.clear = clear_neocd);
+CLNEI( nam1975, neogeo, "NAM-1975 (NGM-001)(NGH-001)", SNK, 1990, GAME_SHOOT);
 
 static struct ROM_INFO rom_bstars[] = /* MVS VERSION clone of neogeo */
 {
@@ -167,5 +166,5 @@ static struct ROM_INFO rom_bstars[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI(bstars, neogeo, "Baseball Stars Professional (NGM-002)", SNK, 1990, GAME_SPORTS,
-	.clear = clear_neocd);
+CLNEI(bstars, neogeo, "Baseball Stars Professional (NGM-002)", SNK, 1990, GAME_SPORTS);
+
