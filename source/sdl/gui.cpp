@@ -52,8 +52,9 @@ void read_gui_config() {
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
   repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
   read_game_list_config();
-	restore_cdrom_config();
-	restore_neocd_config();
+  restore_cdrom_config();
+  restore_neocd_config();
+  read_config_neogeo();
   read_font_config();
   read_menu_config();
   opaque_hud = raine_get_config_int("gui","opaque_hud",0);
@@ -64,8 +65,9 @@ void write_gui_config() {
   raine_set_config_int("GUI","repeat_delay",repeat_delay);
   raine_set_config_int("GUI","repeat_interval",repeat_interval);
   save_game_list_config();
-	save_cdrom_config();
-	save_neocd_config();
+  save_cdrom_config();
+  save_neocd_config();
+  save_config_neogeo();
   save_font_config();
   save_menu_config();
   raine_set_config_int("GUI","opaque_hud",opaque_hud);

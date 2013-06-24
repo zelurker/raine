@@ -12,8 +12,38 @@
 #include "cpumain.h"
 #include "control.h"
 #include "neocd/neocd.h"
+#include "neogeo.h"
+#include "emumain.h" // reset_game_hardware
 
 extern struct SOUND_INFO sound_neocd[];
+
+static struct ROM_INFO rom_bios[] = // struct used to select bios
+{
+  { "sp-s2.sp1", 0x020000, 0x9036d879, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp-s.sp1", 0x020000, 0xc7f2fa45, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp-u2.sp1", 0x020000, 0xe72943de, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp-e.sp1", 0x020000, 0x2723a5b5, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "asia-s3.rom", 0x020000, 0x91b64be3, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "vs-bios.rom", 0x020000, 0xf0e8f27d, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp-j2.sp1", 0x020000, 0xacede59c, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp1.jipan.1024", 0x020000, 0x9fb0abe4, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp-45.sp1", 0x080000, 0x03cc9f6a, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "japan-j3.bin", 0x020000, 0xdff6d41f, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "sp-1v1_3db8c.bin", 0x020000, 0x162f0ebe, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_3_0.rom", 0x020000, 0xa97c89a9, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_2_3.rom", 0x020000, 0x27664eb5, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_2_2.rom", 0x020000, 0x2d50996a, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_2_1.rom", 0x020000, 0x8dabf76b, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_2_0.rom", 0x020000, 0x0c12c2ad, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_1_3.rom", 0x020000, 0xb24b44a0, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_1_2.rom", 0x020000, 0x4fa698e9, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_1_1.rom", 0x020000, 0x5dda0d84, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_1_0.rom", 0x020000, 0x0ce453a0, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "neodebug.rom", 0x020000, 0x698ebb7d, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "neo-epo.sp1", 0x020000, 0xd27a71f1, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "neo-po.sp1", 0x020000, 0x16d0c132, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
 
 struct ROM_INFO rom_neogeo[] =
 {
@@ -23,6 +53,12 @@ struct ROM_INFO rom_neogeo[] =
   { "sfix.sfix", 0x20000, 0xc2ea0cfd, REGION_FIXEDBIOS, 0x000000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
 };
+
+void set_neogeo_bios(int sel) {
+    rom_neogeo[0] = rom_bios[sel];
+    if (current_game && !is_neocd() && current_game->load_game == &load_neocd)
+	reset_game_hardware();
+}
 
 static struct DSW_DATA dsw_data_neogeo_0[] =
 {
@@ -124,6 +160,11 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
 };
 
 GMEI( neogeo, "Neo-geo bios", SNK, 1990, GAME_MISC);
+
+int check_bios_presence(int sel) {
+    return load_rom_dir(dir_neogeo,rom_bios[sel].name,NULL, rom_bios[sel].size,
+		rom_bios[sel].crc32,0);
+}
 
 static struct ROM_INFO rom_nam1975[] = /* MVS AND AES VERSION clone of neogeo */
 {
