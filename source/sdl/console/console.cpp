@@ -19,7 +19,7 @@ extern void do_if(int argc, char **argv);
 static UINT32 ram[0x100*2],nb_ram;
 static UINT8 *ram_buf[0x100],*search_size;
 static UINT32 nb_search, nb_alloc_search, *search;
-#define getadr(a) (cpu_id == 1 ? ((a)^1) : (a))
+#define getadr(a) ((cpu_id>>4) == 1 ? ((a)^1) : (a))
 
 int get_cpu_id() { return cpu_id; }
 
