@@ -945,19 +945,43 @@ static void restore_memcard() {
     fread(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
     fclose(f);
   }
+  sprintf(path,"%ssavedata" SLASH "%s.saveram", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+  f = fopen(path,"rb");
+  if (f) {
+      printf("read saveram\n");
+      fread(saveram.ram, 0x10000, 1, f);
+      fclose(f);
+  }
 }
 
 static void save_memcard() {
-  if (memcard_write) {
     char path[1024];
-    sprintf(path,"%ssavedata" SLASH "%s.bin", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
-    FILE *f = fopen(path,"wb");
-    if (f) {
-      fwrite(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
-      fclose(f);
+    if (memcard_write) {
+	sprintf(path,"%ssavedata" SLASH "%s.bin", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+	FILE *f = fopen(path,"wb");
+	if (f) {
+	    fwrite(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
+	    fclose(f);
+	}
+	memcard_write = 0;
     }
-    memcard_write = 0;
-  }
+    if (!is_neocd()) {
+	char str[16];
+	memcpy(str,saveram.ram+0x10,16);
+	ByteSwap((UINT8*)str,16);
+	str[15] = 0;
+	if (!strcmp(str,"BACKUP RAM OK !")) {
+	    // Quick check the backup ram was really used
+	    // the bios is supposed to write this after testing it
+	    // see http://wiki.neogeodev.org/index.php?title=Backup_RAM
+	    sprintf(path,"%ssavedata" SLASH "%s.saveram", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+	    FILE *f = fopen(path,"wb");
+	    if (f) {
+		fwrite(saveram.ram,0x10000,1,f);
+		fclose(f);
+	    }
+	}
+    }
 }
 
 int neocd_id;
@@ -2460,6 +2484,7 @@ void load_neocd() {
 	hbl = 2;
 	if(!(saveram.ram=AllocateMem(0x10000))) return; // not to be saved with the ram
 	saveram.unlock = 0;
+	restore_memcard();
 	if(!(RAM=AllocateMem(RAMSize))) return;
 	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
 	if(!(bios_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
@@ -2613,8 +2638,6 @@ void load_neocd() {
 	prepare_cache_save();
     } else {
 	AddSaveData(SAVE_USER_1,zbank,sizeof(zbank));
-	AddSaveData(SAVE_USER_2,(UINT8*)&saveram.unlock,sizeof(UINT16));
-	AddSaveData(SAVE_USER_5,saveram.ram,0x10000);
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
