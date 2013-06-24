@@ -32,6 +32,7 @@
 
 #include "deftypes.h"
 #include "pd4990a.h"
+#include <time.h>
 
 
 /* Set the data in the chip to Monday 09/09/73 00:00:00     */
@@ -324,8 +325,20 @@ void pd4990a_control_16_w(UINT32 offset, UINT16 data )
 	pd4990a_serial_control(data&0x7);
 }
 
+static int bcd(int value) {
+  return ((value/10)<<4) | (value % 10);
+}
+
 void pd4990a_init(void)
 {
+    time_t ti = time(NULL);
+    struct tm *t = localtime(&ti);
+    pd4990a.seconds = bcd(t->tm_sec);
+    pd4990a.minutes = bcd(t->tm_min);
+    pd4990a.hours = bcd(t->tm_hour);
+    pd4990a.days = bcd(t->tm_mday);
+    pd4990a.month = bcd(t->tm_mon+1);
+    pd4990a.year = bcd(t->tm_year%100);
 #if 0
 	state_save_register_item("pd4990a", 0, pd4990a.seconds);
 	state_save_register_item("pd4990a", 0, pd4990a.minutes);

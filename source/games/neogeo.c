@@ -149,7 +149,7 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   INP0( UNKNOWN, 6, 0x10 ), // same as previous
   /* what is this? When ACTIVE_HIGH + IN4 bit 6 ACTIVE_LOW MVS-4 slot is detected */
   { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0xc0, BIT_ACTIVE_0 }, // calendar
+  { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0xc0, BIT_ACTIVE_1 }, // calendar
 
   INP1( UNKNOWN, 8, 0x3f ),
   /* what is this? If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected */

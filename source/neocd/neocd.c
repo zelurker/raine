@@ -451,7 +451,7 @@ static int cpu_readcoin(int addr)
      */
     int coinflip = pd4990a_testbit_r(0);
     int databit = pd4990a_databit_r(0);
-    return input_buffer[6] ^ (coinflip << 6) ^ (databit << 7);
+    return input_buffer[6] | (coinflip << 6) | (databit << 7);
   }
   {
     int res = result_code;
