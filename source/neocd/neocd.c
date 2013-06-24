@@ -2611,7 +2611,8 @@ void load_neocd() {
 	prepare_cache_save();
     } else {
 	AddSaveData(SAVE_USER_1,zbank,sizeof(zbank));
-	AddSaveData(SAVE_USER_2,(UINT8*)&saveram,sizeof(saveram));
+	AddSaveData(SAVE_USER_2,(UINT8*)&saveram.unlock,sizeof(UINT16));
+	AddSaveData(SAVE_USER_5,saveram.ram,0x10000);
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
