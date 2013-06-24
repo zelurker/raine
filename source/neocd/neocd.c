@@ -965,7 +965,7 @@ static void save_memcard() {
 	}
 	memcard_write = 0;
     }
-    if (!is_neocd()) {
+    if (!is_neocd() && saveram.ram) {
 	char str[16];
 	memcpy(str,saveram.ram+0x10,16);
 	ByteSwap((UINT8*)str,16);
