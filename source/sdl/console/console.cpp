@@ -617,7 +617,7 @@ static void do_dump(int argc, char **argv) {
   if (buf) buf -= ram[block];
   int tab_found[32];
   for (int l=0; l<8; l++) {
-    char buff[320];
+    char buff[1024];
     sprintf(buff,"%06x ",adr);
     for (int n=0; n<dump_cols; n++) {
       if (adr+n > ram[block+1]) break;
