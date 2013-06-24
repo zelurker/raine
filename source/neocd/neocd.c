@@ -1163,7 +1163,7 @@ void video_draw_fix(void)
   UINT8 *map;
   UINT8 *fix_usage = video_fix_usage;;
   if (!is_neocd()) {
-      if (fixed_layer_source == 0) {
+      if (fixed_layer_source == 0 || !load_region[REGION_FIXED]) {
 	  neogeo_fix_memory = load_region[REGION_FIXEDBIOS];
 	  fix_usage = bios_fix_usage;
       } else
