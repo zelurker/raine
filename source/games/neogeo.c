@@ -595,3 +595,79 @@ static struct ROM_INFO rom_socbrawl[] = /* MVS VERSION clone of neogeo */
 };
 
 CLNEI( socbrawl, neogeo, "Soccer Brawl (NGM-031)", SNK, 1991, GAME_SPORTS);
+
+static struct ROM_INFO rom_socbrawlh[] = /* AES VERSION clone of socbrawl */
+{
+  { "031-p1.p1", 0x080000, 0xa2801c24, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( socbrawlh, socbrawl, "Soccer Brawl (NGH-031)", SNK, 1991, GAME_SPORTS);
+
+static struct ROM_INFO rom_fatfury1[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "033-p1.p1", 0x080000, 0x47ebdc2f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "033-p2.p2", 0x020000, 0xc473af1c, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  { "033-s1.s1", 0x20000, 0x3c3bdf8c, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "033-m1.m1", 0x20000, 0x5be10ffd, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "033-v1.v1", 0x100000, 0x212fd20d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "033-v2.v2", 0x100000, 0xfa2ae47f, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "033-c1.c1", 0x100000, 0x74317e54, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "033-c2.c2", 0x100000, 0x5bb952f3, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "033-c3.c3", 0x100000, 0x9b714a7c, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "033-c4.c4", 0x100000, 0x9397476a, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( fatfury1, neogeo, "Fatal Fury - King of Fighters / Garou Densetsu - shukumei no tatakai (NGM-033)(NGH-033)", SNK, 1991, GAME_BEAT);
+
+static struct ROM_INFO rom_roboarmy[] = // clone of neogeo
+{
+  { "032-p1.p1", 0x080000, 0xcd11cbd4, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "032-s1.s1", 0x20000, 0xac0daa1b, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "032-m1.m1", 0x20000, 0x35ec952d, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "032-v1.v1", 0x100000, 0x63791533, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "032-v2.v2", 0x100000, 0xeb95de70, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "032-c1.c1", 0x100000, 0x97984c6c, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "032-c2.c2", 0x100000, 0x65773122, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "032-c3.c3", 0x080000, 0x40adfccd, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "032-c4.c4", 0x080000, 0x462571de, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( roboarmy, neogeo, "Robo Army", SNK, 1991, GAME_BEAT);
+
+static struct ROM_INFO rom_fbfrenzy[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "034-p1.p1", 0x080000, 0xcdef6b19, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "034-s1.s1", 0x20000, 0x8472ed44, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "034-m1.m1", 0x20000, 0xf41b16b8, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "034-v1.v1", 0x100000, 0x50c9d0dd, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "034-v2.v2", 0x100000, 0x5aa15686, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "034-c1.c1", 0x100000, 0x91c56e78, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "034-c2.c2", 0x100000, 0x9743ea2f, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "034-c3.c3", 0x080000, 0xe5aa65f5, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "034-c4.c4", 0x080000, 0x0eb138cc, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( fbfrenzy, neogeo, "Football Frenzy (NGM-034)(NGH-034)", SNK, 1992, GAME_SPORTS);
+
+static struct ROM_INFO rom_kotm2[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "039-p1.p1", 0x080000, 0xb372d54c, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "039-p2.p2", 0x080000, 0x28661afe, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  { "039-s1.s1", 0x20000, 0x63ee053a, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "039-m1.m1", 0x20000, 0x0c5b2ad5, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "039-v2.v2", 0x200000, 0x86d34b25, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "039-v4.v4", 0x100000, 0x8fa62a0b, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "039-c1.c1", 0x100000, 0x6d1c4aa9, REGION_SPRITES, 0, LOAD_8_16 },
+  { "039-c1.c1", 0x100000, 0x6d1c4aa9, REGION_SPRITES, 0x400000, LOAD_CONTINUE },
+  { "039-c2.c2", 0x100000, 0xf7b75337, REGION_SPRITES, 1, LOAD_8_16 },
+  { "039-c2.c2", 0x100000, 0xf7b75337, REGION_SPRITES, 0x400001, LOAD_CONTINUE },
+  { "039-c3.c3", 0x080000, 0xbfc4f0b2, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "039-c4.c4", 0x080000, 0x81c9c250, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kotm2, neogeo, "King of the Monsters 2 - The Next Thing (NGM-039)(NGH-039)", SNK, 1992, GAME_BEAT);

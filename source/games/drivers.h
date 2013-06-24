@@ -751,6 +751,11 @@ DRV(nam1975)
     DRV(legendos)
     DRV(2020bb)
     DRV(socbrawl)
+    DRV(socbrawlh)
+    DRV(fatfury1)
+    DRV(roboarmy)
+    DRV(fbfrenzy)
+    DRV(kotm2)
 
 // ninjak.c
   DRV(ninjak)
