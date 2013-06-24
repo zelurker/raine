@@ -700,7 +700,7 @@ static UINT16 read_videoreg(UINT32 offset) {
 	    {
 	      get_scanline();
 	      int vcounter = scanline + 0x100;
-	      if (scanline >= 0x200) scanline -= 0x108; // to have the range f8..1ff
+	      if (vcounter >= 0x200) vcounter -= 0x108; // to have the range f8..1ff
 	      // All the dev docs said about this was that the highest bit was 1 for the displayed area
 	      // which is actually wrong ! This counter goes from f8 to 1ff, and the vbl starts at line f0
 	      // ends at line $10, so much more than 8 lines are not visible on screen !
