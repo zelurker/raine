@@ -320,7 +320,7 @@ int insert_ww(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
 int insert_rb(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
   if (data_count_rb[cpu] >= MAX_DATA || !data_count_rb[cpu])
     return 0;
-  if (index < data_count_rb[cpu]-1)
+  if (index < data_count_rb[cpu])
     memmove(&M68000_dataregion_rb[cpu][index+1],
 	&M68000_dataregion_rb[cpu][index],
 	sizeof(struct STARSCREAM_DATAREGION)*(data_count_rb[cpu]-index));
@@ -335,7 +335,7 @@ int insert_rb(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
 int insert_rw(int cpu, int index, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
   if (data_count_rw[cpu] >= MAX_DATA || !data_count_rw[cpu])
     return 0;
-  if (index < data_count_rw[cpu]-1)
+  if (index < data_count_rw[cpu])
     memmove(&M68000_dataregion_rw[cpu][index+1],
 	&M68000_dataregion_rw[cpu][index],
 	sizeof(struct STARSCREAM_DATAREGION)*(data_count_rw[cpu]-index));
@@ -823,13 +823,9 @@ void M68000B_load_update(void)
 
 void finish_conf_68000(int cpu) {
    add_68000_rb(cpu,0x000000, 0xFFFFFFFF, DefBadReadByte, NULL);
-   add_68000_rb(cpu,-1, -1, NULL, NULL);
    add_68000_rw(cpu,0x000000, 0xFFFFFFFF, DefBadReadWord, NULL);
-   add_68000_rw(cpu,-1, -1,NULL, NULL);
    add_68000_wb(cpu,0x000000, 0xFFFFFFFF, DefBadWriteByte, NULL);
-   add_68000_wb(cpu,-1, -1, NULL, NULL);
    add_68000_ww(cpu,0x000000, 0xFFFFFFFF, DefBadWriteWord, NULL);
-   add_68000_ww(cpu,-1, -1, NULL, NULL);
 
    add_68000_program_region(cpu,-1,-1,NULL);
 
