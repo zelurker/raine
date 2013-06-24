@@ -135,6 +135,8 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   { KB_DEF_NEXT_GAME, "Next Game", 0x05, 0x02, BIT_ACTIVE_0 },
   INP0( P2_START, 5, 4 ),
   { KB_DEF_PREV_GAME, "Prev Game", 0x05, 0x08, BIT_ACTIVE_0 },
+  INP1( UNKNOWN, 5, 0x70), // memcard status
+  INP1( UNKNOWN, 5, 0x80), // mvs/aes ?
   // Bit 4 (0x10) is 0 if the memory card is present !!!
   // neogeo doc :
   // bit 5 = mc 2 insertion status (0 = inserted)
