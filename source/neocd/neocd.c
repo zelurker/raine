@@ -903,7 +903,7 @@ static void system_control_w(UINT32 offset, UINT16 data)
     case 0x03: /* unknown - uPD4990 pin ? */     // mc 2 write enable
     case 0x04: /* unknown - HC32 middle pin 10 */ // mc register select/normal
 	       // writes 0 here when the memory card has been detected
-	       print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000readPC(), offset & 0x07, bit,data,LongSc(s68000context.areg[7]),LongSc(s68000context.areg[7]+4));
+	       // print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000readPC(), offset & 0x07, bit,data,LongSc(s68000context.areg[7]),LongSc(s68000context.areg[7]+4));
 	       break;
   }
 }
@@ -2443,6 +2443,7 @@ void load_neocd() {
     memcard_write = 0;
     setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
     setup_neocd_bios();
+    set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     if (is_neocd()) {
 	current_game->long_name = "No game loaded yet";
 	current_game->main_name = "neocd";
@@ -2471,7 +2472,6 @@ void load_neocd() {
 	memset(video_fix_usage,0,4096);
 	memset(video_spr_usage,0,0x8000);
 	sprites_mask = 0x7fff;
-	set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     } else {
 	Z80Has16bitsPorts = 1;
 	RAMSize = 0x10000 + // main ram
@@ -2550,7 +2550,11 @@ void load_neocd() {
 	memcpy(game_vectors, ROM, 0x80);
 	// memcpy(ROM,neocd_bios,0x80);
 	game_vectors_set = 1; // For now we are on rom
-	set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
+	if (is_current_game("ridhero"))
+	    // A strange protection for aes only, it's probably easier to patch
+	    WriteWord(&ROM[0xabba],0x6000);
+	else if (is_current_game("ridheroh"))
+	    WriteWord(&ROM[0xabf0],0x6000);
     }
 
     memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
@@ -2598,6 +2602,8 @@ void load_neocd() {
 	    if (!size) size = get_region_size(REGION_MAINBIOS);
 	    AddMemFetch(0, size-1, ROM);
 	    AddReadBW(0,size-1, NULL, ROM);
+	    // AddMemFetch(0x200000, 0x200000+size-1, ROM-0x200000);
+	    // AddReadBW(0x200000,0x200000+size-1, NULL, ROM);
 	}
 	AddRWBW(0x100000, 0x10ffff, NULL, RAM);
 	Add68000Code(0, 0xc00000, REGION_MAINBIOS);
