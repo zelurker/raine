@@ -563,3 +563,35 @@ static struct ROM_INFO rom_legendos[] = // clone of neogeo
 };
 
 CLNEI( legendos, neogeo, "Legend of Success Joe / Ashita no Joe Densetsu", SNK, 1991, GAME_BEAT);
+
+static struct ROM_INFO rom_2020bb[] = // clone of neogeo
+{
+  { "030-p1.p1", 0x080000, 0xd396c9cb, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "030-s1.s1", 0x20000, 0x7015b8fc, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "030-m1.m1", 0x20000, 0x4cf466ec, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "030-v1.v1", 0x100000, 0xd4ca364e, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "030-v2.v2", 0x100000, 0x54994455, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "030-c1.c1", 0x100000, 0x4f5e19bd, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "030-c2.c2", 0x100000, 0xd6314bf0, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "030-c3.c3", 0x100000, 0x47fddfee, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "030-c4.c4", 0x100000, 0x780d1c4e, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( 2020bb, neogeo, "2020 Super Baseball (set 1)", SNK, 1991, GAME_SPORTS);
+
+static struct ROM_INFO rom_socbrawl[] = /* MVS VERSION clone of neogeo */
+{
+  { "031-pg1.p1", 0x080000, 0x17f034a7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "031-s1.s1", 0x20000, 0x4c117174, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "031-m1.m1", 0x20000, 0xcb37427c, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "031-v1.v1", 0x100000, 0xcc78497e, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "031-v2.v2", 0x100000, 0xdda043c6, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "031-c1.c1", 0x100000, 0xbd0a4eb8, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "031-c2.c2", 0x100000, 0xefde5382, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "031-c3.c3", 0x080000, 0x580f7f33, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "031-c4.c4", 0x080000, 0xed297de8, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( socbrawl, neogeo, "Soccer Brawl (NGM-031)", SNK, 1991, GAME_SPORTS);

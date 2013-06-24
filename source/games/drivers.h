@@ -749,6 +749,8 @@ DRV(nam1975)
     DRV(lresort)
     DRV(eightman)
     DRV(legendos)
+    DRV(2020bb)
+    DRV(socbrawl)
 
 // ninjak.c
   DRV(ninjak)
