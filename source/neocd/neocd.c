@@ -893,7 +893,7 @@ static void system_control_w(UINT32 offset, UINT16 data)
   switch (offset & 0x07)
   {
     default:
-    case 0x00: dark_screen = bit; printf("dark_screen %d\n",dark_screen); break;
+    case 0x00: dark_screen = bit; break;
     case 0x01: neogeo_select_bios_vectors(bit); break;
     case 0x05: neogeo_set_fixed_layer_source(bit); break;
     case 0x06: saveram.unlock = bit; break;
@@ -945,7 +945,7 @@ static void restore_memcard() {
     fread(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
     fclose(f);
   }
-  sprintf(path,"%ssavedata" SLASH "%s.saveram", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+  sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
   f = fopen(path,"rb");
   if (f) {
       printf("read saveram\n");
@@ -974,7 +974,7 @@ static void save_memcard() {
 	    // Quick check the backup ram was really used
 	    // the bios is supposed to write this after testing it
 	    // see http://wiki.neogeodev.org/index.php?title=Backup_RAM
-	    sprintf(path,"%ssavedata" SLASH "%s.saveram", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+	    sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
 	    FILE *f = fopen(path,"wb");
 	    if (f) {
 		fwrite(saveram.ram,0x10000,1,f);
