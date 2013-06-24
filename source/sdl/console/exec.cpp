@@ -39,7 +39,8 @@ static void exec_break() {
 }
 
 void do_break(int argc, char **argv) {
-    if (get_cpu_id() != 1)
+    int cpu_id = get_cpu_id();
+    if (cpu_id >> 4 != 1)
 	throw "breakpoints only for 68000 for now";
   if (argc == 1) {
     if (used_break == 0) {
@@ -59,7 +60,7 @@ void do_break(int argc, char **argv) {
       return;
     }
     int adr = breakp[nb].adr;
-    UINT8 *ptr = get_userdata(0,adr);
+    UINT8 *ptr = get_userdata(cpu_id,adr);
     WriteWord(&ptr[adr],breakp[nb].old); // restore
     if (breakp[nb].cond)
       free(breakp[nb].cond);
@@ -76,7 +77,7 @@ void do_break(int argc, char **argv) {
 	return;
       }
     }
-    UINT8 *ptr = get_userdata(0,adr);
+    UINT8 *ptr = get_userdata(cpu_id,adr);
     if (!ptr) {
       if (cons) cons->print("no data known for this adr");
       return;
@@ -102,8 +103,9 @@ void do_break(int argc, char **argv) {
 // adr (for watch points and breakpoints). Return the irq number or 0
 int check_irq(UINT32 adr) {
     int irq = 0;
+    int cpu_id = get_cpu_id();
     if (s68000context.sr >= 0x2100) {
-	UINT8 *ptr = get_userdata(0,s68000context.areg[7]);
+	UINT8 *ptr = get_userdata(cpu_id,s68000context.areg[7]);
 	UINT32 ret = ((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2]));
 	if (ret == adr+2 || ret == adr) {
 	    WriteLongSc(&ptr[s68000context.areg[7]+2],adr);
@@ -119,10 +121,11 @@ int check_irq(UINT32 adr) {
 
 // return the irq were were in or 0 ir no irq
 int check_breakpoint() {
+    int cpu_id = get_cpu_id();
     int irq = 0;
     if (goto_debuger > 0 && goto_debuger <= MAX_BREAK) {
 	int n = goto_debuger-1;
-	UINT8 *ptr = get_userdata(0,breakp[n].adr);
+	UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
 	WriteWord(&ptr[breakp[n].adr],breakp[n].old);
 	irq = check_irq(breakp[n].adr);
 	if (pc == breakp[n].adr+2) {
@@ -180,7 +183,7 @@ static int used_offs[0x100];
 void restore_breakpoints() {
   int n;
   for (n=0; n<used_break; n++) {
-    UINT8 *ptr = get_userdata(0,breakp[n].adr);
+    UINT8 *ptr = get_userdata(get_cpu_id(),breakp[n].adr);
     if (ReadWord(&ptr[breakp[n].adr]) == breakp[n].old) {
       printf("found breakpoint to restore : %d\n",n);
       // 1 : get the pc out of the breakpoint
