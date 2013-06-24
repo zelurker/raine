@@ -110,7 +110,7 @@ int check_irq(UINT32 adr) {
 	if (ret == adr+2 || ret == adr) {
 	    WriteLongSc(&ptr[s68000context.areg[7]+2],adr);
 	    irq = (s68000context.sr & 0x700) >> 8;
-	    get_regs(0);
+	    get_regs();
 	    do_irq(0,NULL); // get out of the irq...
 	} else
 	    printf("irq detected but address does not match : %x, passed %x\n",
@@ -132,7 +132,7 @@ int check_breakpoint() {
 	    pc = breakp[n].adr;
 	}
 	if (breakp[n].cond) {
-	    get_regs(0);
+	    get_regs();
 	    if (!parse(breakp[n].cond)) {
 		goto_debuger = -1; // breakpoint failed, avoid console
 		return irq;
@@ -168,7 +168,7 @@ static int do_cycles(int cpu = get_cpu_id(), int can_be_stopped = 1) {
       }
     }
   }
-  get_regs(cpu);
+  get_regs();
   return cycles-1;
 }
 

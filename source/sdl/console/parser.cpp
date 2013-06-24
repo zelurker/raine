@@ -55,8 +55,8 @@ void get_regs(int cpu) {
     switch (cpu >> 4) {
     case 1: // 68k
 	for (int n=0; n<8; n++) {
-	    a[n] = s68000context.areg[n];
-	    d[n] = s68000context.dreg[n];
+	    a[n] = (long)s68000context.areg[n];
+	    d[n] = (long)s68000context.dreg[n];
 	}
 	sr = s68000context.sr;
 	pc = s68000context.pc;
@@ -65,14 +65,6 @@ void get_regs(int cpu) {
 	num = cpu & 0xf;
 	switch_cpu(cpu);
 	mz80GetContext(&Z80_context[num]);
-	printf("get_regs %d: af %x bc %x de %x hl %x pc %x iff %x\n",num,
-		Z80_context[num].z80af,
-		Z80_context[num].z80bc,
-		Z80_context[num].z80de,
-		Z80_context[num].z80hl,
-		Z80_context[num].z80pc,
-		Z80_context[num].z80iff
-		);
 	za = (Z80_context[num].z80af>>8);
 	zf = (Z80_context[num].z80af&0xff);
 	zb = (Z80_context[num].z80bc>>8);
@@ -87,8 +79,8 @@ void get_regs(int cpu) {
 #ifndef NO020
     case 3: // 68020
 	for (int n=0; n<8; n++) {
-	    a[n] = regs.regs[n+8];
-	    d[n] = regs.regs[n];
+	    a[n] = (long)regs.regs[n+8];
+	    d[n] = (long)regs.regs[n];
 	}
 	sr = regs.sr;
 	pc = regs.pc;

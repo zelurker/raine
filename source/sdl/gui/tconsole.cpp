@@ -183,7 +183,12 @@ void TConsole::print(const char *format, ...)
     menu_disp = (int*)realloc(menu_disp,sizeof(int)*(nb_disp_items));
     menu_disp[nb_disp_items-1] = nb_disp_items-1;
     if (nb_items == 1 || child != last_child) { // 1st allocation after compute_nb_items
+	int is_zero = (child == NULL);
       child = (TStatic **)realloc(child,sizeof(TStatic*)*nb_alloc);
+      if (is_zero) {
+	  memset(child,0,sizeof(TStatic*)*nb_alloc);
+	  nb_items = 0;
+      }
       last_child = child;
     }
   }
