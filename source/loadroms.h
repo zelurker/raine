@@ -116,6 +116,8 @@ enum region_flags
    LOAD_SWAP_16,
    LOAD8X8_16X16,
    LOAD_8_16S, // 8_16 for sprites (without GfxLayout)
+
+   LOAD_CONTINUE,
 };
 
 #define LOAD8_16(region, offset, size, rom1, crc1, rom2, crc2) \

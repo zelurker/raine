@@ -79,6 +79,7 @@ static void free_temp_buffer(void)
 static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 region, const struct DIR_INFO *head, int *number_of_roms ) {
   UINT32 i=0, j=0;
   char *prev_name = NULL;
+  int last_load = -1,flag;
   if (!rom_list) return 0;
    while(rom_list->name)
    {
@@ -88,7 +89,12 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
 	  (*number_of_roms)++;
 	  prev_name = rom_list->name;
 	}
-	switch(rom_list->flags)
+	flag = rom_list->flags;
+	if (flag == LOAD_CONTINUE) {
+	    flag = last_load;
+	}
+
+	switch(flag)
 	  {
 	  case LOAD_NORMAL:
 	  case LOAD_SWAP_16:
@@ -114,6 +120,7 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
 	    j = rom_list->offset + (rom_list->size * 4) - 6;
             break;
          }
+	last_load = flag;
 
          if(i < j)
          {
@@ -475,15 +482,30 @@ int load_be(char *name, UINT8 *ROM, int size){
   return 1;
 }
 
+static int activate_continue;
+
 static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_INFO *rom_list, const struct DIR_INFO *head) {
-  int found = 0;
+  int found = 0,last_load,flag;
 
    while(rom_list->name)
    {
       if(rom_list->region == region)
       {
+	flag = rom_list->flags;
 	found = 1;
-	switch(rom_list->flags)
+	if (flag == LOAD_CONTINUE && remaining_b) {
+	    activate_continue = 1;
+	    if (last_load == -1) {
+		load_error |= LOAD_FATAL_ERROR;
+		sprintf(load_debug+strlen(load_debug),
+			"Can't use load_continue name %s\n",rom_list->name);
+		return 0;
+	    }
+	    flag = last_load;
+	} else
+	    activate_continue = 0;
+
+	switch(flag)
 	  {
 	  case LOAD_NORMAL:
 	    if(!load_rom(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
@@ -529,6 +551,10 @@ static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_
             break;
 	  }
       }
+      if (remaining_b)
+	  last_load = flag;
+      else
+	  last_load = -1;
 
       rom_list++;
    }
@@ -831,6 +857,25 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
    UINT32     ta,tb,tc;
    int found;
 
+   if (activate_continue) {
+       if (remaining_size >= size) {
+	   memcpy(dest,remaining_b,size);
+	   if (remaining_size > size) {
+	       memcpy(remaining_b,remaining_b+size,remaining_size-size);
+	       remaining_size -= size;
+	   } else {
+	       FreeMem(remaining_b);
+	       remaining_size = 0;
+	       remaining_b = NULL;
+	   }
+       } else {
+	   load_error |= LOAD_FATAL_ERROR;
+	   sprintf(load_debug+strlen(load_debug),
+		   "Remaining size not enough for continue %s\n",rom);
+	   return 0;
+       }
+       return 1;
+   }
 #ifdef SDL
    static char *last_rom;
 

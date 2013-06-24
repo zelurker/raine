@@ -13,6 +13,9 @@ extern "C" {
 #include "deftypes.h"
 #include "unzip.h"
 
+extern UINT8 *remaining_b;
+extern int remaining_size;
+
 void mkdir_rwx(const char *name);
   // returns the correct filename (looks first in the personnal dir, then in the shared
   // system dir).

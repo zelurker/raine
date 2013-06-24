@@ -21,6 +21,8 @@
 #endif
 
 #include "../loadroms.h"
+#include "files.h"
+#include "newmem.h"
 
 #ifdef __GLIBC__
 #if __GLIBC__ >= 2
@@ -203,7 +205,7 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 	 tempSize = 0;
      }
      archiveStream = newstream;
-      
+
      strncpy(oldfile,zipfile,1024);
 
      FileInStream_CreateVTable(&archiveStream);
@@ -258,9 +260,22 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 			&blockIndex, &outBuffer, &outBufferSize,
 			&offset, &outSizeProcessed,
 			&allocImp, &allocTempImp);
-		if (outSizeProcessed >= size)
+		if (outSizeProcessed >= size) {
 		    memcpy(dest,outBuffer+offset+offs,size);
-		else if (outSizeProcessed)
+		    if (outSizeProcessed > size) {
+			if (remaining_b) {
+			    FreeMem(remaining_b);
+			    remaining_b = NULL;
+			}
+			remaining_size = outSizeProcessed - size;
+			remaining_b = AllocateMem(remaining_size);
+			memcpy(remaining_b,outBuffer+offset+offs+size,remaining_size);
+		    } else if (remaining_b) {
+			FreeMem(remaining_b);
+			remaining_size = 0;
+			remaining_b = NULL;
+		    }
+		} else if (outSizeProcessed)
 		    memcpy(dest,outBuffer+offset+offs,outSizeProcessed);
 		if (res == SZ_ERROR_CRC) {
 		    load_error |= LOAD_WARNING;
@@ -269,7 +284,7 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 			sprintf(load_debug+strlen(load_debug),
 				"Got a bad CRC for ROM %s (%x)\n",name,crc32);
 		}
-	    } else 
+	    } else
 		res = SZ_OK;
 	    Buf_Free(&buf, &g_Alloc);
 	    break;

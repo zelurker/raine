@@ -25,6 +25,8 @@
 #include <sys/param.h>
 #endif
 #endif
+#include "newmem.h"
+
 #ifndef BYTE_ORDER
 #error no byte order info sorry
 #endif
@@ -332,6 +334,9 @@ void iputw(int nb, gzFile file) {
 #endif
 }
 
+UINT8 *remaining_b;
+int remaining_size;
+
 int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *dest, int actual_load)
 {
    unzFile uf;
@@ -367,9 +372,9 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
       }
    }
 
+   unz_file_info info;
+   unzGetCurrentFileInfo(uf,&info,NULL,0,NULL,0,NULL,0);
    if (!actual_load) {
-     unz_file_info info;
-     unzGetCurrentFileInfo(uf,&info,NULL,0,NULL,0,NULL,0);
      if (info.uncompressed_size != size) {
        load_error |= LOAD_WARNING;
 
@@ -403,6 +408,20 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
      if (load_debug)
        sprintf(load_debug+strlen(load_debug),
 	       "Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,err);
+   }
+
+   if (size < info.uncompressed_size && err == size) {
+       if (remaining_b) {
+	   FreeMem(remaining_b);
+	   remaining_b = NULL;
+       }
+       remaining_size = info.uncompressed_size - size;
+       remaining_b = AllocateMem(remaining_size);
+       err = unzReadCurrentFile(uf,remaining_b,remaining_size);
+   } else if (remaining_b) {
+       FreeMem(remaining_b);
+       remaining_size = 0;
+       remaining_b = NULL;
    }
 
    err = unzCloseCurrentFile(uf);
