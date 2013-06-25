@@ -671,3 +671,21 @@ static struct ROM_INFO rom_kotm2[] = /* MVS AND AES VERSION clone of neogeo */
 };
 
 CLNEI( kotm2, neogeo, "King of the Monsters 2 - The Next Thing (NGM-039)(NGH-039)", SNK, 1992, GAME_BEAT);
+
+static struct ROM_INFO rom_sengoku2[] = // clone of neogeo
+{
+  { "040-p1.p1", 0x100000, 0x6dde02c2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "040-s1.s1", 0x20000, 0xcd9802a3, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "040-m1.m1", 0x20000, 0xd4de4bca, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "040-v1.v1", 0x200000, 0x71cb4b5d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "040-v2.v2", 0x100000, 0xc5cece01, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "040-c1.c1", 0x100000, 0xfaa8ea99, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "040-c1.c1", 0x100000 , 0xfaa8ea99, REGION_SPRITES, 0x400000, LOAD_CONTINUE },
+  { "040-c2.c2", 0x100000, 0x87d0ec65, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "040-c2.c2", 0x100000 , 0x87d0ec65, REGION_SPRITES, 0x400001, LOAD_CONTINUE },
+  { "040-c3.c3", 0x080000, 0x24b5ba80, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "040-c4.c4", 0x080000, 0x1c9e9930, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( sengoku2, neogeo, "Sengoku 2 / Sengoku Denshou 2", SNK, 1993, GAME_BEAT);

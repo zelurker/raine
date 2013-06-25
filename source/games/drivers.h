@@ -756,6 +756,7 @@ DRV(nam1975)
     DRV(roboarmy)
     DRV(fbfrenzy)
     DRV(kotm2)
+    DRV(sengoku2)
 
 // ninjak.c
   DRV(ninjak)
