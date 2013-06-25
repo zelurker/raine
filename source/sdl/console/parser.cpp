@@ -107,14 +107,6 @@ void set_regs(int cpu) {
 	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
 	Z80_context[num].z80pc = pc;
 	Z80_context[num].z80iff = iff;
-	printf("set_regs %d: af %x bc %x de %x hl %x pc %x iff %x\n",num,
-		Z80_context[num].z80af,
-		Z80_context[num].z80bc,
-		Z80_context[num].z80de,
-		Z80_context[num].z80hl,
-		Z80_context[num].z80pc,
-		Z80_context[num].z80iff
-		);
 	mz80SetContext(&Z80_context[num]);
 	break;
 #ifndef NO020

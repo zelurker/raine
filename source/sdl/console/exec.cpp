@@ -363,10 +363,15 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   save_file(name,&ptr[start],end-start);
   if (cpu_id == 1)
 	  ByteSwap(&ptr[start],end-start);
+  if (used_offs[start/0x10000]) {
+      used_offs[start/0x10000] = 0;
+      free(offs[start/0x10000]);
+      offs[start/0x10000] = NULL;
+  }
   printf("cmd: %s\n",cmd);
   if (system(cmd) < 0) {
       chdir(dir);
-      throw "can't execute m68kdis !";
+      throw "can't execute disassembler !";
   }
   sprintf(strrchr(name,'.'),".t");
   FILE *f = fopen(name,"w");
@@ -413,6 +418,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
 	} while (adr[-1] != 9);
 	sprintf(pdest,"\t%s",beg);
 	fprintf(f,"%s\n",dest);
+	// don't call set_offs here, limited to 100 offsets
 	continue;
     }
     fprintf(f,"%s\n",buf);
@@ -459,19 +465,16 @@ static FILE *open_asm(UINT32 target) {
   int crc = 0;
   UINT32 n;
   char checksum[80];
-  if (!used_offs[target/0x10000]) {
-    // didn't open this range yet, find the crc...
-    for (n=start; n<end; n+=4)
+  for (n=start; n<end; n+=4)
       crc += ReadLong(&ptr[n]);
-    sprintf(checksum,"; crc %x",crc);
-  }
+  sprintf(checksum,"; crc %x",crc);
 
   FILE *f = fopen(str,"rb");
   if (!f) {
     generate_asm(str,start,end,ptr,checksum);
     f = fopen(str,"rb");
     myfgets(buf,256,f);
-  } else if (!used_offs[target/0x10000]) {
+  } else {
     myfgets(buf,256,f);
     if (strcmp(buf,checksum)) {
       // didn't find the right crc at the top, refresh the file
@@ -496,7 +499,7 @@ static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
   while (!feof(f)) {
     offset = ftell(f);
     myfgets(buff,256,f);
-    if (buff[0] == ';')
+    if (buff[0] == ';' || !strchr(buff,9))
       continue;
     sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
     if (cur_pc >= target) break;
@@ -593,7 +596,7 @@ void do_list(int argc, char **argv) {
   fclose(f);
 }
 
-static void disp_instruction() {
+void disp_instruction() {
   get_instruction();
   UINT32 pc1 = cpu_get_pc(get_cpu_id());
   if (cur_pc != pc1) {

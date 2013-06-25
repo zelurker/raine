@@ -1017,8 +1017,62 @@ static void do_search(int argc, char **argv) {
   }
 }
 
+static void do_cpu(int argc, char **argv) {
+    char buff[80];
+    sprintf(buff,"active cpu : ");
+    int has_68020=0, has_68k=0,has_z80=0;
+#ifndef NO020
+  if (MC68020) {
+      strcat(buff,"68020 ");
+      has_68020 = 1;
+  }
+#endif
+#if HAVE_68000
+  if(StarScreamEngine>=1){
+      strcat(buff," 68000a ");
+      has_68k |= 1;
+  }
+  if(StarScreamEngine>=2){
+      strcat(buff," 68000b ");
+      has_68k |= 2;
+  }
+#endif
+#if HAVE_Z80
+   if(MZ80Engine>=1) {		// Guess it's a z80 game
+       for (int n=0; n<4; n++) {
+	   if (Z80_context[n].z80Base) {
+	       sprintf(buff+strlen(buff)," z80%c ",'a'+n);
+	       has_z80 |= (1<<n);
+	   }
+       }
+   }
+#endif
+   cons->print(buff);
+   if (argc > 1) {
+       int old = cpu_id,nb;
+       set_regs();
+       strlwr(argv[1]);
+       if (!strcmp(argv[1],"68020") && has_68020)
+	   cpu_id = CPU_M68020_0;
+       else if (!strncmp(argv[1],"68000",5) &&
+	       (has_68k & (1<<(nb = argv[1][5] - 'a'))))
+	   cpu_id = CPU_68K_0+nb;
+       else if (!strncmp(argv[1],"z80",3) &&
+	       (has_z80 & (1<<(nb = argv[1][3] - 'a'))))
+	   cpu_id = CPU_Z80_0 + nb;
+       else
+	   throw "cpu not recognized or not active";
+       if (cpu_id != old) {
+	   get_regs();
+	   cpu_get_ram(cpu_id,ram,&nb_ram);
+	   disp_instruction();
+       }
+   }
+}
+
 commands_t commands[] =
 {
+    { "cpu", &do_cpu, "cpu [cpu] : show/set active cpu(s)."},
   { "map", &do_map, "map  : show locations of ram in memory map"},
   { "searchw", &do_search, NULL },
   { "searchl", &do_search, NULL },
@@ -1099,7 +1153,7 @@ int do_console(int sel) {
 #if HAVE_Z80
    if(MZ80Engine>=1) {		// Guess it's a z80 game
        cpu_id = CPU_Z80_0;
-       if (!Z80_context[cpu_id].z80Base)
+       if (!Z80_context[0].z80Base)
 	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
    }
 #endif

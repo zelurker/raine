@@ -14,6 +14,7 @@ void do_break(int argc, char **argv);
 void restore_breakpoints();
 void done_breakpoints();
 void do_until(int argc, char **argv);
+void disp_instruction();
 
 #ifdef __cplusplus
 }
