@@ -842,7 +842,16 @@ static UINT16 audio_cpu_bank_select(UINT16 offset) {
 	int address_mask = get_region_size(REGION_CPU2) - 1;
 	UINT32 adr = (((bank << (11 + region)) & 0x3ffff) & address_mask);
 	print_debug("audio_cpu_bank_select: adr %x region %d bank %d\n",adr,region,bank);
-	z80_set_read_db(0,(3-region),&rom[adr]);
+	// z80_set_read_db(0,(3-region),&rom[adr]);
+	/* Sadly, at least some of these banks are code banks, a memcpy seems
+	 * mandatory. A good game to test this : sengoku2, it jumps to a bank
+	 * during its initialisation, before receiving anything from the 68k */
+	switch (3 - region) {
+	case 0: memcpy(Z80ROM+0x8000,&rom[adr],0x4000); break;
+	case 1: memcpy(Z80ROM+0xc000,&rom[adr],0x2000); break;
+	case 2: memcpy(Z80ROM+0xe000,&rom[adr],0x1000); break;
+	case 3: memcpy(Z80ROM+0xf000,&rom[adr],0x0800); break;
+	}
     }
     return 0;
 }
@@ -2530,11 +2539,13 @@ void load_neocd() {
 	neogeo_vidram = (UINT16*)(RAM + 0x20000);
 	RAM_PAL = RAM + 0x40000;
 	AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+	/* If these were data banks, then it would be the map to use...
 	AddZ80ARead(0, 0x7fff, NULL, Z80ROM);
 	AddZ80ARead(0x8000, 0xbfff, NULL, NULL); // data bank 3
 	AddZ80ARead(0xc000, 0xdfff, NULL, NULL); // data bank 2
 	AddZ80ARead(0xe000, 0xefff, NULL, NULL); // data bank 1
-	AddZ80ARead(0xf000, 0xf7ff, NULL, NULL); // data bank 0
+	AddZ80ARead(0xf000, 0xf7ff, NULL, NULL); // data bank 0 */
+	AddZ80ARead(0, 0xf7ff, NULL, Z80ROM);
 	// legendos jumps to fffd !!! (from c5c after writing result code)
 	AddZ80ARW(0xf800, 0xffff, NULL, Z80ROM + 0xf800);
 
@@ -2582,6 +2593,10 @@ void load_neocd() {
     AddZ80AWritePort(0, 0xffff, write_port, NULL);
 
     AddZ80AReadPort(0, 0xffff, read_port, NULL);
+    AddZ80ARead(0,0xffff, DefBadReadZ80, NULL);
+    AddZ80AWrite(0,0xffff, DefBadWriteZ80, NULL);
+    AddZ80AReadPort(0,0xffff, DefBadReadPort, NULL);
+    AddZ80AWritePort(0,0xffff, DefBadWritePort, NULL);
     AddZ80AInit();
 
     if (is_neocd()) {
