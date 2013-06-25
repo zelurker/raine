@@ -10,6 +10,7 @@ my %raine_loads =
 	"ROM_LOAD16_WORD_SWAP" => "LOAD_SWAP_16",
 	"ROM_LOAD32_WORD_SWAP" => "LOAD32_SWAP_16",
 	"ROM_LOAD32_BYTE" => "LOAD_8_32",
+	"ROM_CONTINUE" => "LOAD_CONTINUE",
 );
 
 my %raine_regions =
@@ -45,7 +46,6 @@ my %raine_regions =
 );
 
 my $started = undef;
-my $warncont = undef;
 my (@odd,@even);
 
 open(F,"<$ARGV[0]") || die "Impossible to open $ARGV[0]";
@@ -91,7 +91,6 @@ while ($_ = shift @file) {
 		print STDERR "\n";
 	} elsif (/ROM_START ?\( ?(.+?) ?\)(.*)/) {
 		my $name = $1;
-		$name = "_".$name if ($name =~ /^\d/);
 		print "static struct ROM_INFO rom_$name\[\] =$2\n{\n";
 		my $comment = undef;
 		my $load_be = undef;
@@ -137,6 +136,14 @@ while ($_ = shift @file) {
 							my $args = $2;
 							my @args = split(/\, */,$args);
 							my ($name,$base,$size,$crc,$attrib) = @args;
+							if ($name !~ /"/) {
+								# for continue
+								$size = $base;
+								$base = $name;
+								$name = $oldname;
+								$crc = $oldcrc;
+							}
+
 							if ($crc =~ /CRC\((.+?)\)/) {
 								$crc = "0x$1";
 							}
@@ -185,23 +192,7 @@ while ($_ = shift @file) {
 								print STDERR "Unknown loading $function from line $_\n";
 								exit(1);
 							}
-							if ($function eq "ROM_CONTINUE") {
-								if (!$warncont) {
-									print STDERR "ROM_CONTINUE found. Forcing loading at 0, whole size ($oldsize)...\n";
-									$warncont = 1;
-								}
-								if ($oldsize =~ /^0x/) {
-									$oldsize = hex($oldsize);
-								} elsif (length($oldsize)) {
-									print STDERR "size :$oldsize: ($oldfunc,$oldbase,$oldname) ???\n";
-									exit(1);
-								}
-								$base = hex($base) if ($base =~ /^0x/); # base is size...
-								$oldsize += $base;
-								$oldsize = "0x".sprintf("%x",$oldsize);
-								$oldbase = 0;
-								$function = "LOAD_NORMAL";
-							} else {
+							if ($function ne "ROM_CONTINUE") {
 								if ($oldname) {
 									print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $oldfunc },\n";
 								}
