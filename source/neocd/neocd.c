@@ -2437,6 +2437,45 @@ static UINT16 read_port(UINT16 offset) {
     }
 }
 
+static int fatfury2_prot_data;
+
+static UINT16 fatfury2_prot_rw(UINT32 offset) {
+    UINT16 res = fatfury2_prot_data >> 24;
+    switch(offset & 0xfffff) {
+    case 0x55550:
+    case 0xffff0:
+    case 0x00000:
+    case 0xff000:
+    case 0x36000:
+    case 0x36008: return res;
+    case 0x36004:
+    case 0x3600c: return ((res & 0xf0) >> 4) | ((res & 0x0f) << 4);
+    default:
+		  printf("unknown fatufury2_prot_rw from %x : %x\n",s68000readPC(),offset);
+    }
+    return 0;
+}
+
+static void fatfury2_prot_ww(UINT32 offset, UINT16 data) {
+    switch(offset & 0xfffff) {
+    case 0x11112: fatfury2_prot_data = 0xff000000; break;
+    case 0x33332: fatfury2_prot_data = 0x0000ffff; break;
+    case 0x44442: fatfury2_prot_data = 0x00ff0000; break;
+    case 0x55552: fatfury2_prot_data = 0xff00ff00; break;
+    case 0x56782: fatfury2_prot_data = 0xf05a3601; break;
+    case 0x42812: fatfury2_prot_data = 0x81422418; break;
+    case 0x55550:
+    case 0xffff0:
+    case 0xff000:
+    case 0x36000:
+    case 0x36004:
+    case 0x36008:
+    case 0x3600c: fatfury2_prot_data <<= 8; break;
+    default:
+		  printf("unknown protwrite from %x: %x,%x\n",s68000readPC(),offset,data);
+    }
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -2659,6 +2698,12 @@ void load_neocd() {
 	prepare_cache_save();
     } else {
 	AddSaveData(SAVE_USER_1,zbank,sizeof(zbank));
+	// Place this at end of map to minmize overhead
+	if (is_current_game("fatfury2")) {
+	    AddReadWord(0x200000, 0x2fffff, fatfury2_prot_rw, NULL);
+	    AddWriteWord(0x200000, 0x2fffff, fatfury2_prot_ww, NULL);
+	    AddSaveData(SAVE_USER_2, (UINT8*)&fatfury2_prot_data, sizeof(fatfury2_prot_data));
+	}
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
