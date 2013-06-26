@@ -125,22 +125,25 @@ int check_breakpoint() {
     int irq = 0;
     if (goto_debuger > 0 && goto_debuger <= MAX_BREAK) {
 	int n = goto_debuger-1;
-	UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
-	WriteWord(&ptr[breakp[n].adr],breakp[n].old);
-	irq = check_irq(breakp[n].adr);
-	if (pc == breakp[n].adr+2) {
-	    pc = breakp[n].adr;
-	}
-	if (breakp[n].cond) {
-	    get_regs();
-	    if (!parse(breakp[n].cond)) {
-		goto_debuger = -1; // breakpoint failed, avoid console
-		return irq;
+	if (pc == breakp[n].adr || pc == breakp[n].adr+2) {
+	    UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
+	    WriteWord(&ptr[breakp[n].adr],breakp[n].old);
+	    if (pc == breakp[n].adr+2) {
+		pc = breakp[n].adr;
+		set_regs(cpu_id);
 	    }
+	    irq = check_irq(breakp[n].adr);
+	    if (breakp[n].cond) {
+		get_regs();
+		if (!parse(breakp[n].cond)) {
+		    goto_debuger = -1; // breakpoint failed, avoid console
+		    return irq;
+		}
+	    }
+	    cons->set_visible();
+	    goto_debuger = 0;
+	    cons->print("breakpoint #%d at %x",n,breakp[n].adr);
 	}
-	cons->set_visible();
-	goto_debuger = 0;
-	cons->print("breakpoint #%d at %x",n,breakp[n].adr);
     }
     return irq;
 }

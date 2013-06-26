@@ -1161,6 +1161,7 @@ int do_console(int sel) {
     int irq = 0;
     if (!cons)
 	cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,1000, commands);
+    get_regs(cpu_id); // 1st thing to do here !!!
     if (goto_debuger >= 100) {
 	cons->set_visible();
 	int n = goto_debuger - 100;
@@ -1192,7 +1193,6 @@ int do_console(int sel) {
 	goto_debuger = 0;
     } else
 	irq = check_breakpoint();
-    get_regs(cpu_id);
     if (cons) {
 	cons->set_visible();
 	char buff[256];
