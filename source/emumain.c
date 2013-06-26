@@ -221,33 +221,33 @@ UINT32 run_game_emulation(void)
       * of sync !!! Too bad allegro does not seem to care very much about this
       */
 
+      if (!raine_cfg.req_pause_game) {
 #ifdef RDTSC_PROFILE
-      if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_FRAME);
-      if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
+	  if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_FRAME);
+	  if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
 #endif
 
-      if (!raine_cfg.req_pause_game)
 	  saUpdateSound(1);
 
 #ifdef RDTSC_PROFILE
-      if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
-      if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_CPU);
+	  if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
+	  if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_CPU);
 #endif
-
-      hs_update();
-      cpu_tick++;
-      if(cpu_tick>=cpu_fps){
-	 cpu_tick=0;
-	 if(current_game->exec && !raine_cfg.req_pause_game) {
-	     current_game->exec();
-	 }
-      }
+	  hs_update();
+	  cpu_tick++;
+	  if(cpu_tick>=cpu_fps){
+	      cpu_tick=0;
+	      if(current_game->exec) {
+		  current_game->exec();
+	      }
+	  }
 
 #ifdef RDTSC_PROFILE
-      if(raine_cfg.show_fps_mode>2) {
-	ProfileStop(PRO_CPU);
-      }
+	  if(raine_cfg.show_fps_mode>2) {
+	      ProfileStop(PRO_CPU);
+	  }
 #endif
+      }
 
       draw_screen = 0;
       cpu_frame_count ++;
@@ -274,7 +274,8 @@ UINT32 run_game_emulation(void)
 	if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_RENDER);
 #endif
 
-	vid_info->draw_game();
+	if (!raine_cfg.req_pause_game || RefreshBuffers)
+	    vid_info->draw_game();
 #ifdef RDTSC_PROFILE
 	if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_RENDER);
 #endif
