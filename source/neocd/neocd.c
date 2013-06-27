@@ -517,6 +517,7 @@ static void update_interrupts(void)
       debug(DBG_IRQ,"irq already pending, ignoring...\n");
     } else {
 	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000context.sr);
+	printf("irq %d\n",level);
 	cpu_interrupt(CPU_68K_0,level);
 	if (level == vbl)
 	    irq.wait_for_vbl_ack = 1;
@@ -1718,8 +1719,10 @@ static void draw_neocd() {
   // + an 8x8 text layer (fix) over them
 
   clear_screen();
-  if (!video_enabled)
-    return;
+  if (!video_enabled) {
+      printf("video disabled, bye\n");
+      return;
+  }
 
   int start = 0, end = 0x300 >> 1;
   if (!spr_disabled && start_line < 224) {
@@ -1856,7 +1859,9 @@ static void neogeo_hreset(void)
   } else {
       z80_enabled = 1; // always enabled in neogeo
       irq3_pending = 1;
+      M68000_context[0].areg[7] = 0x10F300; // required for at least fatfury3 !
   }
+  watchdog_counter = 9;
 }
 
 void postprocess_ipl() {
@@ -1866,8 +1871,6 @@ void postprocess_ipl() {
 
   /* read game name */
   neogeo_read_gamename();
-
-  watchdog_counter = 9;
 
   SetLanguageSwitch(region_code);
   if (old_name != current_game->main_name) {

@@ -957,3 +957,76 @@ static struct ROM_INFO rom_savagere[] = // clone of neogeo
 };
 
 CLNEI( savagere, neogeo, "Savage Reign / Fu'un Mokushiroku - kakutou sousei", SNK, 1995, GAME_BEAT);
+
+static struct ROM_INFO rom_ssideki2[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "061-p1.p1", 0x100000, 0x5969e0dc, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "061-s1.s1", 0x20000, 0x226d1b68, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "061-m1.m1", 0x20000, 0x156f6951, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "061-v1.v1", 0x200000, 0xf081c8d3, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "061-v2.v2", 0x200000, 0x7cd63302, REGION_SMP1, 0x200000, LOAD_NORMAL },
+	/* Different layout with 8xC (8 mbit) also exists; naming sheme 061-Cx */
+  { "061-c1-16.c1", 0x200000, 0xa626474f, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "061-c2-16.c2", 0x200000, 0xc3be42ae, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "061-c3-16.c3", 0x200000, 0x2a7b98b9, REGION_SPRITES, 0x400000, LOAD_8_16 },
+  { "061-c4-16.c4", 0x200000, 0xc0be9a1f, REGION_SPRITES, 0x400001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ssideki2, neogeo, "Super Sidekicks 2 - The World Championship / Tokuten Ou 2 - real fight football (NGM-061)(NGH-061)", SNK, 1994, GAME_SPORTS);
+
+static struct ROM_INFO rom_samsho2[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "063-p1.p1", 0x100000, 0x22368892, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "063-p1.p1", 0x100000 , 0x22368892, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "063-s1.s1", 0x20000, 0x64a5cd66, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "063-m1.m1", 0x20000, 0x56675098, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "063-v1.v1", 0x200000, 0x37703f91, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "063-v2.v2", 0x200000, 0x0142bde8, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "063-v3.v3", 0x200000, 0xd07fa5ca, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "063-v4.v4", 0x100000, 0x24aab4bb, REGION_SMP1, 0x600000, LOAD_NORMAL },
+  { "063-c1.c1", 0x200000, 0x86cd307c, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "063-c2.c2", 0x200000, 0xcdfcc4ca, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "063-c3.c3", 0x200000, 0x7a63ccc7, REGION_SPRITES, 0x400000, LOAD_8_16 },
+  { "063-c4.c4", 0x200000, 0x751025ce, REGION_SPRITES, 0x400001, LOAD_8_16 },
+  { "063-c5.c5", 0x200000, 0x20d3a475, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "063-c6.c6", 0x200000, 0xae4c0a88, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { "063-c7.c7", 0x200000, 0x2df3cbcf, REGION_SPRITES, 0xc00000, LOAD_8_16 },
+  { "063-c8.c8", 0x200000, 0x1ffc6dfa, REGION_SPRITES, 0xc00001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsho2, neogeo, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru jigokuhen (NGM-063)(NGH-063)", SNK, 1994, GAME_BEAT);
+
+static struct ROM_INFO rom_samsho2k[] = /* KOREAN VERSION clone of samsho2 */
+{
+  { "063-p1-kan.p1", 0x100000, 0x147cc6d7, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	// the roms below apply as patch over the main program (I haven't checked what they change, the game boots as the Korean version even with just the above program)
+  { "063-p1-kan.p1", 0x100000 , 0x147cc6d7, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "063-ep1-kan.ep1", 0x080000, 0xfa32e2d8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "063-ep2-kan.ep2", 0x080000, 0x70b1a4d9, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  { "063-s1-kan.s1", 0x20000, 0xff08f80b, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsho2k, samsho2, "Saulabi Spirits / Jin Saulabi Tu Hon (Korean release of Samurai Shodown II)", SNK, 1994, GAME_BEAT);
+
+static struct ROM_INFO rom_fatfury3[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "069-p1.p1", 0x100000, 0xa8bcfbbc, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "069-sp2.sp2", 0x200000, 0xdbe963ed, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "069-s1.s1", 0x20000, 0x0b33a800, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "069-m1.m1", 0x20000, 0xfce72926, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "069-v1.v1", 0x400000, 0x2bdbd4db, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "069-v2.v2", 0x400000, 0xa698a487, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "069-v3.v3", 0x200000, 0x581c5304, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "069-c1.c1", 0x400000, 0xe302f93c, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "069-c2.c2", 0x400000, 0x1053a455, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "069-c3.c3", 0x400000, 0x1c0fde2f, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "069-c4.c4", 0x400000, 0xa25fc3d0, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "069-c5.c5", 0x200000, 0xb3ec6fa6, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "069-c6.c6", 0x200000, 0x69210441, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( fatfury3, neogeo, "Fatal Fury 3 - Road to the Final Victory / Garou Densetsu 3 - haruka-naru tatakai (NGM-069)(NGH-069)", SNK, 1995, GAME_BEAT);

@@ -771,6 +771,10 @@ DRV(nam1975)
     DRV(fatfursp)
     DRV(fatfurspa)
     DRV(savagere)
+    DRV(ssideki2)
+    DRV(samsho2)
+    DRV(samsho2k)
+    DRV(fatfury3)
 
 // ninjak.c
   DRV(ninjak)
