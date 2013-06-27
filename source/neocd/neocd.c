@@ -523,7 +523,6 @@ static void update_interrupts(void)
       debug(DBG_IRQ,"irq already pending, ignoring...\n");
     } else {
 	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000context.sr);
-	printf("irq %d\n",level);
 	cpu_interrupt(CPU_68K_0,level);
 	if (level == vbl)
 	    irq.wait_for_vbl_ack = 1;
@@ -2944,12 +2943,22 @@ void execute_neocd() {
       raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
 	      320,224);
   if ((irq.control & (IRQ1CTRL_ENABLE)) && !disable_irq1) {
-      debug(DBG_RASTER,"raster frame\n");
+      debug(DBG_RASTER,"raster frame irq.start %d in lines %d\n",irq.start,irq.start/0x180);
 
 
       raster_frame = 1;
       clear_screen();
       rolled = 0;
+      /* This code is not perfect yet. For now :
+       * ridhero works correctly.
+       * ssideki2/ssideki3 have a bad display at the bottom of the screen as if
+       * the hbl update starts to high and finishes too high. But if you try
+       * to have the hbl starting only on visible screen then ridhero display
+       * becoms unstable.
+       * It's quite a headache... !
+       * For now I leave it like that, ssideki2 and 3 are not perfect, but
+       * ridhero is. There should be a way to have all the games happy, should
+       * spend more time on this one day... ! */
       for (scanline = 0; scanline < NB_LINES; scanline++) {
 	  if (scanline == 0xf0) {
 	      vblank_interrupt_pending = 1;	   /* vertical blank */
@@ -2964,7 +2973,9 @@ void execute_neocd() {
 		  }
 	      }
 	  }
-	  if (irq.start > 0 && (irq.control & IRQ1CTRL_ENABLE)) {
+	  // Must have >= 0 and not > 0 here, or the playground just disappears
+	  // in supersidekick...
+	  if (irq.start >= 0 && (irq.control & IRQ1CTRL_ENABLE)) {
 	      irq.start -= 0x180;
 	      check_hbl();
 	  }

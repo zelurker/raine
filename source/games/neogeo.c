@@ -1030,3 +1030,23 @@ static struct ROM_INFO rom_fatfury3[] = /* MVS AND AES VERSION clone of neogeo *
 };
 
 CLNEI( fatfury3, neogeo, "Fatal Fury 3 - Road to the Final Victory / Garou Densetsu 3 - haruka-naru tatakai (NGM-069)(NGH-069)", SNK, 1995, GAME_BEAT);
+
+static struct ROM_INFO rom_ssideki3[] = // clone of neogeo
+{
+  { "081-p1.p1", 0x100000, 0x6bc27a3d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "081-p1.p1", 0x100000 , 0x6bc27a3d, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "081-s1.s1", 0x20000, 0x7626da34, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "081-m1.m1", 0x20000, 0x82fcd863, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "081-v1.v1", 0x200000, 0x201fa1e1, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "081-v2.v2", 0x200000, 0xacf29d96, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "081-v3.v3", 0x200000, 0xe524e415, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "081-c1.c1", 0x200000, 0x1fb68ebe, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "081-c2.c2", 0x200000, 0xb28d928f, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "081-c3.c3", 0x200000, 0x3b2572e8, REGION_SPRITES, 0x400000, LOAD_8_16 },
+  { "081-c4.c4", 0x200000, 0x47d26a7c, REGION_SPRITES, 0x400001, LOAD_8_16 },
+  { "081-c5.c5", 0x200000, 0x17d42f0d, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "081-c6.c6", 0x200000, 0x6b53fb75, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ssideki3, neogeo, "Super Sidekicks 3 - The Next Glory / Tokuten Ou 3 - eikou e no michi", SNK, 1995, GAME_SPORTS);
