@@ -2657,6 +2657,7 @@ void load_neocd() {
 	if (get_region_size(REGION_CPU1) > 0x100000) {
 	    AddMemFetch(0, 0xfffff, ROM);
 	    AddReadBW(0,0xfffff, NULL, ROM);
+	    AddMemFetch(0x200000, 0x2fffff, ROM+0x100000-0x200000);
 	    AddReadBW(0x200000, 0x2fffff, NULL, ROM+0x100000);
 	    bank_68k = 0;
 	} else {
