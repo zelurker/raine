@@ -1673,7 +1673,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    }
 	    else if (sy > 0x110) sy -= 0x200;
 
-	    if (((tileatr>>8))&&(sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
+	    if ((sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
 	    {
 		MAP_PALETTE_MAPPED_NEW(
 			(tileatr >> 8),
