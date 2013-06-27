@@ -410,8 +410,7 @@ void set_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
     }
   }
   if (i>=data_count_wb[cpu]) {
-    fprintf(stderr,"couldn't set wb %x - %x\n",d0,d1);
-    exit(1);
+    print_debug("couldn't set wb %x - %x\n",d0,d1);
   }
 }
 
@@ -427,8 +426,7 @@ void set_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
     }
   }
   if (i>=data_count_ww[cpu]) {
-    fprintf(stderr,"couldn't set ww %x - %x\n",d0,d1);
-    exit(1);
+    print_debug("couldn't set ww %x - %x\n",d0,d1);
   }
 }
 
