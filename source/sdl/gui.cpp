@@ -54,7 +54,6 @@ void read_gui_config() {
   read_game_list_config();
   restore_cdrom_config();
   restore_neocd_config();
-  read_config_neogeo();
   read_font_config();
   read_menu_config();
   opaque_hud = raine_get_config_int("gui","opaque_hud",0);
@@ -67,7 +66,6 @@ void write_gui_config() {
   save_game_list_config();
   save_cdrom_config();
   save_neocd_config();
-  save_config_neogeo();
   save_font_config();
   save_menu_config();
   raine_set_config_int("GUI","opaque_hud",opaque_hud);
@@ -282,7 +280,7 @@ static menu_item_t main_items[] =
 { "Dipswitches", &do_dlg_dsw, },
 { "Change game", &do_game_sel },
 { "Load neocd game", &load_neo_game },
-{ "Neocd options", &do_neocd_options },
+{ "Neocd/Neogeo options", &do_neocd_options },
 { "Video options", &do_video_options },
 { "Sound options", &do_sound_options },
 { "Options", &do_gui_options },

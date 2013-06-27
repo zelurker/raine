@@ -38,6 +38,7 @@
 #include "loadpng.h"
 #include "games/gun.h"
 #include "taitosnd.h"
+#include "games/neogeo.h"
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
@@ -108,16 +109,21 @@ struct VIDEO_INFO neocd_video =
   NULL,
 };
 
+int neogeo_bios;
+
 void restore_neocd_config() {
   allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
   disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);
   capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
+  neogeo_bios = raine_get_config_int("neogeo","bios",0);
+  set_neogeo_bios(neogeo_bios);
 }
 
 void save_neocd_config() {
   raine_set_config_int("neocd","allowed_speed_hacks",allowed_speed_hacks);
   raine_set_config_int("neocd","disable_irq1",disable_irq1);
   raine_set_config_int("neocd","capture_new_pictures",capture_new_pictures);
+  raine_set_config_int("neogeo","bios",neogeo_bios);
 }
 
 static void toggle_capture_mode() {

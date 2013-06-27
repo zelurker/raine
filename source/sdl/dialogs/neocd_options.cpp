@@ -8,6 +8,59 @@
 #include "SDL_image.h"
 #include "neocd/cache.h"
 #include "games.h"
+#include "games/neogeo.h"
+
+static char *neo_names[] =
+{
+    "Europe MVS (Ver. 2)",
+    "Europe MVS (Ver. 1)",
+    "US MVS (Ver. 2?)",
+    "US MVS (Ver. 1)",
+    "Asia MVS (Ver. 3)",
+    "Japan MVS (Ver. 3)",
+    "Japan MVS (Ver. 2)",
+    "Japan MVS (Ver. 1)",
+    "NEO-MVH MV1C",
+    "Japan MVS (J3)",
+    "Custom Japanese Hotel",
+    "Universe Bios (Hack, Ver. 3.0)",
+    "Universe Bios (Hack, Ver. 2.3)",
+    "Universe Bios (Hack, Ver. 2.2)",
+    "Universe Bios (Hack, Ver. 2.1)",
+    "Universe Bios (Hack, Ver. 2.0)",
+    "Universe Bios (Hack, Ver. 1.3)",
+    "Universe Bios (Hack, Ver. 1.2)",
+    "Universe Bios (Hack, Ver. 1.1)",
+    "Universe Bios (Hack, Ver. 1.0)",
+    // hacks
+    "Debug MVS (Hack?)",
+    "Asia AES",
+    "Japan AES",
+};
+
+static int select_bios(int sel);
+
+static int choose_bios(int sel) {
+    int size = sizeof(neo_names)/sizeof(char*)+1;
+    menu_item_t *menu = (menu_item_t*)malloc(size*sizeof(menu_item_t));
+    memset(menu,0,size*sizeof(menu_item_t));
+    int n;
+    size--;
+    for (n=0; n<size; n++) {
+	menu[n].label = neo_names[n];
+	if (check_bios_presence(n)) {
+	    menu[n].menu_func = &select_bios;
+	}
+    }
+    TMenu *load = new TMenu("Neogeo bios",menu);
+    load->execute();
+    delete load;
+    free(menu);
+    printf("bios %d\n",neogeo_bios);
+    return 0;
+}
+
+static char label[100];
 
 static int exit_to(int sel) {
   set_neocd_exit_to(exit_to_code);
@@ -77,6 +130,7 @@ static int do_update_block(int sel) {
 
 static menu_item_t neocd_menu[] =
 {
+    { "Neogeo bios", &choose_bios,},
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
@@ -87,6 +141,14 @@ static menu_item_t neocd_menu[] =
   { "Capture mode", NULL, &capture_new_pictures, 2, { 0, 1 }, { "Overwrite", "New pictures" }},
   { NULL },
 };
+
+static int select_bios(int sel) {
+    neogeo_bios = sel;
+    sprintf(label,"Neo-geo bios : %s",neo_names[neogeo_bios]);
+    neocd_menu[0].label = (const char*)label;
+    set_neogeo_bios(sel);
+    return 1;
+}
 
 class TNeo_options : public TMenu {
   public:
@@ -99,7 +161,9 @@ class TNeo_options : public TMenu {
       return 1;
     }
 };
+
 int do_neocd_options(int sel) {
+    select_bios(neogeo_bios);
   TMenu *menu = new TNeo_options("Neocd options", neocd_menu);
   menu->execute();
   delete menu;
