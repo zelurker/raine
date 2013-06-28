@@ -52,6 +52,12 @@ char *get_shared(char *name) {
     print_debug("get_shared: using personnal %s\n",shared);
     return shared;
   }
+  sprintf(shared,"%sconfig/%s",dir_cfg.exe_path,name);
+  ret = stat(shared,&buf);
+  if (!ret) {
+    print_debug("get_shared: using personnal %s\n",shared);
+    return shared;
+  }
 #endif
   sprintf(shared, "%s%s", dir_cfg.share_path,name);
   ret = stat(shared,&buf);
