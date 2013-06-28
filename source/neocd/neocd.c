@@ -2494,7 +2494,7 @@ void load_neocd() {
     neocd_video.screen_x = 304;
     offx = 16-8;
     maxx = 320-8;
-    desired_68k_speed = CPU_FRAME_MHz(24,60);
+    desired_68k_speed = CPU_FRAME_MHz(32,60);
     upload_type = 0xff;
     memcard_write = 0;
     setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
@@ -2709,6 +2709,7 @@ void load_neocd() {
 	prepare_cache_save();
     } else {
 	AddSaveData(SAVE_USER_1,zbank,sizeof(zbank));
+	AddSaveData(SAVE_USER_5,(UINT8*)&fixed_layer_source,sizeof(fixed_layer_source));
 	// Place this at end of map to minmize overhead
 	if (is_current_game("fatfury2")) {
 	    AddReadWord(0x200000, 0x2fffff, fatfury2_prot_rw, NULL);

@@ -1807,7 +1807,7 @@ static void load_cheats(char *name) {
     // No cheats found -> try the system wide file
 
     // share_path/config is a nonsense since share_path is already a config/data dir
-      if (!strcmp(name,"neocd"))
+      if (is_neocd() || current_game->load_game == &load_neocd) // neogeo too
 	  strcpy(str,get_shared("neocheats.cfg"));
       else
 	  strcpy(str,get_shared("cheats.cfg"));

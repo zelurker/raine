@@ -74,6 +74,7 @@ enum company_num
    COMPANY_ID_ELECTRONIC_DEVICES,
    COMPANY_ID_NIX,
    COMPANY_ID_ADK,
+   COMPANY_ID_HACK,
 };
 
 extern const int nb_companies;
