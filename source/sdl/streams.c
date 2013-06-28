@@ -216,8 +216,7 @@ void streams_sh_update(void)
 	  SDL_SemWait(sem[channel]);
 	  stream_update_channel(channel, buflen);
 	  SDL_SemPost(sem[channel]);
-      } else
-	  printf("no update channel %d\n",channel);
+      }
 
     } // if (stream_buffer_channel)
   } // for...

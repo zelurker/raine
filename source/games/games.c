@@ -84,6 +84,7 @@ char *company_name[] =
    "Spacy Industrial, Ltd.",
    "Electronic Devices",
    "NIX",
+   "ADK",
 };
 
 const int nb_companies = sizeof(company_name)/4;

@@ -963,7 +963,6 @@ static void restore_memcard() {
   sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
   f = fopen(path,"rb");
   if (f) {
-      printf("read saveram\n");
       fread(saveram.ram, 0x10000, 1, f);
       fclose(f);
   }
@@ -1864,7 +1863,8 @@ static void neogeo_hreset(void)
   } else {
       z80_enabled = 1; // always enabled in neogeo
       irq3_pending = 1;
-      M68000_context[0].areg[7] = 0x10F300; // required for at least fatfury3 !
+      s68000context.areg[7] = M68000_context[0].areg[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
+      s68000context.pc = M68000_context[0].pc = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
   }
   watchdog_counter = 9;
 }
@@ -2669,6 +2669,8 @@ void load_neocd() {
 	    // AddReadBW(0x200000,0x200000+size-1, NULL, ROM);
 	}
 	AddRWBW(0x100000, 0x10ffff, NULL, RAM);
+	// At least trally executes some code in ram when you start a game
+	AddMemFetch(0x100000, 0x10ffff, RAM-0x100000);
 	Add68000Code(0, 0xc00000, REGION_MAINBIOS);
     }
 

@@ -72,7 +72,8 @@ enum company_num
    COMPANY_ID_ESD,
    COMPANY_ID_SPACY,
    COMPANY_ID_ELECTRONIC_DEVICES,
-   COMPANY_ID_NIX
+   COMPANY_ID_NIX,
+   COMPANY_ID_ADK,
 };
 
 extern const int nb_companies;

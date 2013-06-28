@@ -786,6 +786,17 @@ DRV(nam1975)
     DRV(samsho4)
     DRV(samsho4k)
     DRV(rbffspec)
+    DRV(kof97)
+
+    DRV(maglord)
+    DRV(maglordh)
+    DRV(ncombat)
+    DRV(bjourney)
+    DRV(crsword)
+    DRV(trally)
+    DRV(ncommand)
+    DRV(wh1)
+    DRV(wh2)
 
 // ninjak.c
   DRV(ninjak)
