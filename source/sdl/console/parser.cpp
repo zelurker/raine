@@ -28,7 +28,7 @@ value_type peek(value_type fadr) {
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) throw "this adr isn't in ram !";
 
-  if (get_cpu_id() == 1)
+  if ((get_cpu_id()>>4) == 1)
       return ptr[adr ^ 1];
   else
       return ptr[adr];
