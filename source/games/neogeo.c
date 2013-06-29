@@ -55,6 +55,8 @@ struct ROM_INFO rom_neogeo[] =
 };
 
 void set_neogeo_bios(int sel) {
+    if (!strcmp(rom_neogeo[0].name,rom_bios[sel].name))
+	return;
     rom_neogeo[0] = rom_bios[sel];
     if (current_game && !is_neocd() && current_game->load_game == &load_neocd)
 	reset_game_hardware();
@@ -1632,6 +1634,7 @@ static struct ROM_INFO rom_pulstar[] = // clone of neogeo
   { "089-c8.c8", 0x200000, 0xa223572d, REGION_SPRITES, 0x1800001, LOAD_8_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
+
 CLNEI( pulstar, neogeo, "Pulstar", AICOM, 1995, GAME_SHOOT);
 
 static struct ROM_INFO rom_blazstar[] = // clone of neogeo
@@ -1654,3 +1657,24 @@ static struct ROM_INFO rom_blazstar[] = // clone of neogeo
 };
 
 CLNEI( blazstar, neogeo, "Blazing Star", YUMEKOBO, 1998, GAME_SHOOT);
+
+static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX clone of neogeo */
+ /* MVS ONLY RELEASE */{
+  { "255-p1.p1", 0x100000, 0xdfa3c0f3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "255-p2.sp2", 0x400000, 0x42050b80, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+/* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
+  { "255-m1.m1", 0x20000, 0x8efd4014, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "255-v1.v1", 0x400000, 0x5a14543d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "255-v2.v2", 0x200000, 0x6610d91a, REGION_SMP1, 0x400000, LOAD_NORMAL },
+	/* Encrypted */
+  { "255-c1.c1", 0x800000, 0xea06000b, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "255-c2.c2", 0x800000, 0x04e67d79, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "255-c3.c3", 0x800000, 0x60e31e08, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "255-c4.c4", 0x800000, 0x40371d69, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "255-c5.c5", 0x800000, 0x0b2e6adf, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "255-c6.c6", 0x800000, 0xb001bdd3, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( preisle2, neogeo, "Prehistoric Isle 2" , YUMEKOBO, 1999, GAME_SHOOT);
