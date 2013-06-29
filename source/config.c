@@ -1799,25 +1799,12 @@ load_game_config(int game): load game specific settings for a certain game.
 */
 
 static void load_cheats(char *name) {
+    char buff[80];
   load_arpro_cheats(name);
-
-#ifdef RAINE_UNIX
-  char str[256];
-  if (CheatCount == 0) {
-    // No cheats found -> try the system wide file
-
-    // share_path/config is a nonsense since share_path is already a config/data dir
-      if (is_neocd() || current_game->load_game == &load_neocd) // neogeo too
-	  strcpy(str,get_shared("neocheats.cfg"));
-      else
-	  strcpy(str,get_shared("cheats.cfg"));
-    raine_set_config_file(str);
-
-    // Load Cheat Settings
-
-    load_arpro_cheats(name);
+  if (CheatCount == 0 && !is_neocd()) {
+      sprintf(buff,"%s:!neocd",name);
+      load_arpro_cheats(buff);
   }
-#endif
 }
 
 void load_game_config(void)
@@ -1863,11 +1850,10 @@ void load_game_config(void)
 
    // config/cheats.cfg ------------------------------------
 
-   if (is_neocd())
-       sprintf(str,"%sconfig/neocheats.cfg", dir_cfg.share_path);
+   if (is_neocd() || current_game->load_game == &load_neocd)
+       sprintf(str,get_shared("neocheats.cfg"));
    else
-       sprintf(str,"%sconfig/cheats.cfg", dir_cfg.share_path);
-
+       sprintf(str,get_shared("cheats.cfg"));
    raine_set_config_file(str);
 
    // Load Cheat Settings
