@@ -97,6 +97,7 @@ static BITMAP *raster_bitmap;
 static void draw_neocd();
 static void draw_sprites(int start, int end, int start_line, int end_line);
 static UINT8 dark_screen; // only neogeo ?
+static int fc;
 
 struct VIDEO_INFO neocd_video =
 {
@@ -649,8 +650,6 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
 	       neogeo_frame_counter_speed=(data>>8)+1;
 	       // printf("counter speed %d\n",neogeo_frame_counter_speed);
 	       irq.control = data & 0xff;
-	       if ((irq.control & IRQ1CTRL_AUTOANIM_STOP))
-		   neogeo_frame_counter = 0;
 	       debug(DBG_IRQ,"irq.control = %x at line %d\n",data,scanline);
 	       break;
     case    4: neo_irq1pos_w(0,data); /* timer high register */    break;
@@ -714,7 +713,7 @@ static UINT16 read_videoreg(UINT32 offset) {
 	      // ends at line $10, so much more than 8 lines are not visible on screen !
 	      debug(DBG_RASTER,"access vcounter %x frame_counter %x from pc=%x scanline=%d final value %x\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline,(vcounter << 7) | (neogeo_frame_counter & 7));
 
-	      return (vcounter << 7) | (neogeo_frame_counter & 7);
+	      return (vcounter << 7) | ((neogeo_frame_counter-1) & 7);
 	    }
   }
   return 0xffff;
@@ -1033,7 +1032,7 @@ const NEOCD_GAME games[] =
   { "2020bb",     0x0030 },
   { "socbrawl",   0x0031 },
   { "roboarmy",   0x0032 },
-  { "fatfury",    0x0033 },
+  { "fatfury1",    0x0033 },
   { "fbfrenzy",   0x0034 },
   { "crswords",   0x0037 },
   { "rallych",    0x0038 },
@@ -1364,7 +1363,6 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 
 	    if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP)) {
 		if (tileatr&0x8) {
-		    // printf("animation tileno 8\n");
 		    tileno = (tileno&~7)|(neogeo_frame_counter&7);
 		} else if (tileatr&0x4) {
 		    // printf("animation tileno 4\n");
@@ -1718,7 +1716,6 @@ static void clear_screen() {
 }
 
 static void draw_neocd() {
-  static int fc;
   // Apparently there are only sprites to be drawn, zoomable and chainable
   // + an 8x8 text layer (fix) over them
 
@@ -1761,7 +1758,7 @@ static void draw_neocd() {
 
   if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
   {
-    if (fc++ >= neogeo_frame_counter_speed) {
+    if (++fc >= neogeo_frame_counter_speed) {
       neogeo_frame_counter++;
       fc=0;
     }
@@ -2560,6 +2557,7 @@ void load_neocd() {
 	if ((sprites_mask + 1)*256 > size) size = (sprites_mask+1)*256;
 	int size_fixed = 4096*32; // packed 8x8 x 4096
 	if (size < size_fixed) size = size_fixed;
+	nb_sprites = size/0x100;
 	UINT8 *tmp = AllocateMem(size);
 	if (load_region[REGION_FIXED]) {
 	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);
@@ -2726,6 +2724,8 @@ void load_neocd() {
     AddSaveData(SAVE_USER_10, (UINT8*)&fix_disabled,sizeof(fix_disabled));
     AddSaveData(SAVE_USER_11, (UINT8*)&video_enabled,sizeof(video_enabled));
     AddSaveData(SAVE_USER_12, &game_vectors_set,sizeof(game_vectors_set));
+    AddSaveData(SAVE_USER_13, (UINT8*)&fc,sizeof(fc));
+    AddSaveData(SAVE_USER_14, (UINT8*)&neogeo_frame_counter_speed,sizeof(neogeo_frame_counter_speed));
     AddLoadCallback(restore_bank);
     if (!is_neocd()) {
 	// is the save ram usefull ?!??? probably not with neocd...
