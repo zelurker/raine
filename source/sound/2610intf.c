@@ -138,6 +138,11 @@ int YM2610_sh_start(const struct YM2610interface *msound)
 		    pcmbufb[i]  = (void *)(memory_region(intf->pcmromb[i]));
 		    pcmsizeb[i] = memory_region_length(intf->pcmromb[i]);
 		}
+		if (!pcmbufb[i] && pcmbufa[i]) {
+		    // if no deltat, use pcm instead
+		    pcmbufb[i] = pcmbufa[i];
+		    pcmsizeb[i] = pcmsizea[i];
+		}
 	}
 
 	/**** initialize YM2610 ****/
