@@ -33,6 +33,27 @@ typedef struct {
 static twatch watch[MAX_WATCH];
 static int nb_watch;
 
+static void init_cpuid() {
+    cpu_id = 0;
+#ifndef NO020
+  if (MC68020)
+      cpu_id = CPU_M68020_0;
+  else
+#endif
+#if HAVE_68000
+    if(StarScreamEngine>=1){
+	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
+    } else
+#endif
+#if HAVE_Z80
+   if(MZ80Engine>=1) {		// Guess it's a z80 game
+       cpu_id = CPU_Z80_0;
+       if (!Z80_context[0].z80Base)
+	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
+   }
+#endif
+}
+
 UINT8 *get_ptr(UINT32 adr, UINT32 *the_block) {
   UINT32 block;
   for (block=0; block<nb_ram; block+=2) {
@@ -554,7 +575,7 @@ static void do_poke(int argc, char **argv) {
   if (!ptr) throw "poke outside of ram";
 
   if (!strcasecmp(argv[0],"poke")) {
-      if (cpu_id == 1) // 68k
+      if (cpu_id >> 4== 1) // 68k
 	  ptr[adr^1] = val;
       else
 	  ptr[adr] = val;
@@ -620,7 +641,7 @@ static void do_dump(int argc, char **argv) {
 	return;
       }
       dump_search = 1;
-      if (search_size[0] == 1 && cpu_id == 1) adr ^= 1;
+      if (search_size[0] == 1 && cpu_id >> 4 == 1) adr ^= 1;
     } else {
       adr = parse(argv[1]);
     }
@@ -682,7 +703,7 @@ static void do_dump(int argc, char **argv) {
 	found_search++;
       if (found_search < nb_search)
 	adr = search[found_search];
-      if (search_size[found_search] == 1 && cpu_id == 1)
+      if (search_size[found_search] == 1 && cpu_id >> 4 == 1)
 	adr ^= 1;
     }
     cons->print(buff);
@@ -1158,24 +1179,7 @@ commands_t commands[] =
 };
 
 int do_console(int sel) {
-    cpu_id = 0;
-#ifndef NO020
-  if (MC68020)
-      cpu_id = CPU_M68020_0;
-  else
-#endif
-#if HAVE_68000
-    if(StarScreamEngine>=1){
-	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
-    } else
-#endif
-#if HAVE_Z80
-   if(MZ80Engine>=1) {		// Guess it's a z80 game
-       cpu_id = CPU_Z80_0;
-       if (!Z80_context[0].z80Base)
-	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
-   }
-#endif
+    init_cpuid();
     cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;
     if (!cons)
@@ -1265,9 +1269,9 @@ void done_console() {
 
 void run_console_command(char *command) {
   s68000_get_ram(0,ram,&nb_ram);
+  init_cpuid();
   if (!cons)
     cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,50, commands);
-  printf("get_regs\n");
   get_regs(cpu_id);
   cons->run_cmd(command);
   set_regs(cpu_id);
