@@ -59,7 +59,7 @@ void get_regs(int cpu) {
 	    d[n] = (long)s68000context.dreg[n];
 	}
 	sr = s68000context.sr;
-	pc = s68000context.pc;
+	pc = s68000readPC();
 	break;
     case 2:
 	num = cpu & 0xf;

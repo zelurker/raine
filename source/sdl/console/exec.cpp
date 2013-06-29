@@ -48,7 +48,7 @@ void do_break(int argc, char **argv) {
     } else if (cons) {
       int n;
       for (n=0; n<used_break; n++) {
-	cons->print("break #%d at %x",n,breakp[n].adr);
+	cons->print("break #%d at %x cond:%s",n,breakp[n].adr,(breakp[n].cond ? breakp[n].cond : "none"));
       }
     }
   } else if (argc == 3) {

@@ -28,6 +28,7 @@ int get_cpu_id() { return cpu_id; }
 typedef struct {
   UINT32 adr,pc;
   int size,read,value;
+  char *cond;
 } twatch;
 static twatch watch[MAX_WATCH];
 static int nb_watch;
@@ -53,6 +54,7 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
     int n;
     for (n=0; n<nb_watch; n++) {
 	if (offset == watch[n].adr && watch[n].size == 1) {
+	    if (watch[n].cond) get_regs();
 	    UINT8 *ptr = get_ptr(offset,NULL);
 	    thandler *func;
 	    if (!ptr) {
@@ -68,9 +70,11 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 	    if (watch[n].value == -1 ||
 		    (!watch[n].read && watch[n].value == data) ||
 		    (watch[n].read && ptr && watch[n].value == ptr[getadr(offset)])) {
-		watch[n].pc = s68000readPC();
-		Stop68000(0,0);
-		goto_debuger = n+100;
+		if (!watch[n].cond || parse(watch[n].cond)) {
+		    watch[n].pc = s68000readPC();
+		    Stop68000(0,0);
+		    goto_debuger = n+100;
+		}
 	    }
 	    if (ptr) {
 		printf("watchb: changing offset %x,%x\n",getadr(offset),data);
@@ -100,6 +104,7 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data) {
     for (n=0; n<nb_watch; n++) {
 	if (offset >= watch[n].adr && offset < watch[n].adr+watch[n].size &&
 		watch[n].size >= 2) {
+	    if (watch[n].cond) get_regs();
 	    UINT8 *ptr = get_ptr(offset,NULL);
 	    thandler *func;
 	    if (!ptr) {
@@ -115,12 +120,13 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data) {
 	    if (watch[n].value == -1 ||
 		    (!watch[n].read && watch[n].value == data) ||
 		    (watch[n].read && ptr && watch[n].value == ReadWord(&ptr[offset]))) {
-		watch[n].pc = s68000readPC();
-		Stop68000(0,0);
-		goto_debuger = n+100;
+		if (!watch[n].cond || parse(watch[n].cond)) {
+		    watch[n].pc = s68000readPC();
+		    Stop68000(0,0);
+		    goto_debuger = n+100;
+		}
 	    }
 	    if (ptr) {
-		printf("watchw: changing offset %x,%x\n",offset,data);
 		if (!watch[n].read)
 		    WriteWord(&ptr[offset],data);
 		else {
@@ -151,7 +157,8 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data) {
 
 static int add_watch(UINT32 adr, int size, int read, int value=-1) {
   for (int n=0; n<nb_watch; n++) {
-    if (watch[n].adr == adr && watch[n].size == size) {
+    if (watch[n].adr == adr && watch[n].size == size &&
+	    watch[n].read == read) {
       cons->print("this watchpoint already exists (#%d)",n);
       return 0;
     }
@@ -178,6 +185,7 @@ static int add_watch(UINT32 adr, int size, int read, int value=-1) {
     watch[nb_watch].size = size;
     watch[nb_watch].read = read;
     watch[nb_watch].value = value;
+    watch[nb_watch].cond = NULL; // clear cond
     nb_watch++;
     return 1;
   } else
@@ -208,6 +216,8 @@ static int del_watch(int nb) {
       cons->print("added watch, size %d bytes\n",size);
     }
   }
+  if (watch[nb].cond)
+      free(watch[nb].cond);
   if (nb < nb_watch-1)
     memmove(&watch[nb],&watch[nb+1],(nb_watch-nb-1)*sizeof(twatch));
   nb_watch--;
@@ -416,7 +426,7 @@ static void do_watch(int argc, char **argv) {
       return;
     }
     for (int n=0; n<nb_watch; n++) {
-      cons->print("watch #%d: adr:%x size:%d read:%d",n,watch[n].adr,watch[n].size,watch[n].read);
+      cons->print("watch #%d: adr:%x size:%d read:%d cond:%s",n,watch[n].adr,watch[n].size,watch[n].read,(watch[n].cond ? watch[n].cond : "none"));
     }
     return;
   }
@@ -445,6 +455,15 @@ static void do_watch(int argc, char **argv) {
       size = parse(argv[2]);
     if (argc == 4)
       value = parse(argv[3]);
+  }
+  if (!strcasecmp(argv[1],"cond")) {
+      int nb = atoi(argv[2]);
+      if (argc != 4)
+	  throw "syntax : watch cond <nb_watch> <condition>";
+      parse(argv[3]); // to be sure it has no errors
+      watch[nb].cond = strdup(argv[3]);
+      cons->print("ok");
+      return;
   }
   if (size > 2) {
     add_watch(adr,size,read);
