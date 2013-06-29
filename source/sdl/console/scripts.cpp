@@ -136,7 +136,7 @@ void update_scripts() {
 static FILE *fscript;
 
 static void get_script_commands(char *field) {
-  if (*field) {
+  if (strcmp(field,".")) {
     fprintf(fscript,"  %s\n",field);
     cons->print("  %s",field);
     *field = 0;
@@ -157,7 +157,7 @@ static void get_script_mode(char *field) {
   }
   *field = 0;
   fprintf(fscript,"\n");
-  cons->print("now type your commands, a blank line to finish...");
+  cons->print("now type your commands, a . to finish...");
   cons->set_interactive(&get_script_commands);
 }
 
