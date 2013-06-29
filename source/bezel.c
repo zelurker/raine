@@ -6,7 +6,7 @@
    artwork files... */
 
 /* SDL uses this file too, because it seems handy to have tested code to
- * read/write pngs in any depth, and it isn't too hard to adapt to sdl... 
+ * read/write pngs in any depth, and it isn't too hard to adapt to sdl...
  */
 
 #include "unzip.h"
@@ -264,10 +264,10 @@ void load_bezel() {
 		 } else if (depthb==24) {
 		   WriteWord((bezel_bitmap->line[y])+x*3,0);
 		   WriteByte((bezel_bitmap->line[y])+x*3+2,0);
-		 } 
+		 }
 	       }
 	     }
-	   } 
+	   }
 	 } else { // bpp 15 or 16
 	   UINT8 *pixel;
 	   for (y=0; y<bezel_bitmap->h; y++) {
@@ -480,7 +480,7 @@ void display_bezel() {
       /* Here is the difficulty : here the bezel must be entierly independant
        * from the game screen and based only on what we know about overlay_area
        * which is the area to which the game screen is scaled when displayed.
-       * More precisely : 
+       * More precisely :
        * the bezel must be scaled to (w-x)*overlay_width
        * and (h-y)*overlay_height where x,y,w,h are the values of the bezel
        * position parameter */
@@ -510,7 +510,7 @@ void display_bezel() {
 	int res;
 	SDL_Rect area;
 	SDL_Surface *rotated;
-	if (rotate_screen == 3) 
+	if (rotate_screen == 3)
 	  rotated = rotozoomSurfaceXY(get_surface_from_bmp(scaled_bezel), 90.0, 1, 1, 0);
 	else
 	  rotated = rotozoomSurfaceXY(get_surface_from_bmp(scaled_bezel), -90.0, 1, 1, 0);
@@ -520,7 +520,8 @@ void display_bezel() {
 	area.w = rotated->w;
 	area.h = rotated->h;
 	fit_screen(&area);
-	res = SDL_BlitSurface(rotated, NULL, sdl_screen,&area);
+	if (sdl_screen->pixels)
+	    res = SDL_BlitSurface(rotated, NULL, sdl_screen,&area);
 	if (res)
 	  printf("blit returned %d\n",res);
 	SDL_FreeSurface(rotated);
