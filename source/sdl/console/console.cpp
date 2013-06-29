@@ -933,10 +933,10 @@ static void do_search(int argc, char **argv) {
       }
     } else {
       what = parse(argv[1]);
-      if ((what & 0xff) == what && size < 1) {
+      if ((what & 0xff) == what && size <= 1) {
 	// search byte
 	size = 1;
-      } else if ((what & 0xffff) == what && size < 2) {
+      } else if ((what & 0xffff) == what && size <= 2) {
 	// word search
 	if (start & 1) {
 	  cons->print("start adr must be a multiple of 2");
@@ -1012,9 +1012,9 @@ static void do_search(int argc, char **argv) {
       }
     } else {
       what = parse(argv[1]);
-      if ((what & 0xff) == what && size < 1) {
+      if ((what & 0xff) == what && size <= 1) {
 	size = 1;
-      } else if ((what & 0xffff) == what && size < 2) {
+      } else if ((what & 0xffff) == what && size <= 2) {
 	size = 2;
       } else {
 	size = 4;
