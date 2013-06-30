@@ -2284,6 +2284,12 @@ static void write_upload(int offset, int data) {
 static void load_files(UINT32 offset, UINT16 data) {
   offset = ReadLongSc(&RAM[0x10f6a0]);
   print_debug("load_files command %x from %x offset %x\n",data,s68000readPC(),offset);
+  int prev_speed;
+  if ((s68000context.sr & 0xf00) == 0) {
+      prev_speed = cdrom_speed;
+      cdrom_speed = 0;
+  }
+
   if (data == 0x550) {
     if (RAM[0x115a06 ^ 1]>32 && RAM[0x115a06 ^ 1] < 127) {
       neogeo_cdrom_load_files(&RAM[0x115a06]);
@@ -2300,6 +2306,9 @@ static void load_files(UINT32 offset, UINT16 data) {
   } else {
     int nb_sec = ReadLongSc(&RAM[0x10f688]);
     print_debug("load_files: unknown command, name %x 10f6b5 %x sector %x %x %x nb_sec %x\n",RAM[0x115a06^1],RAM[0x10f6b5^1],RAM[0x10f6C8^1],RAM[0x10f6C9^1],RAM[0x10f6Ca^1],nb_sec);
+  }
+  if ((s68000context.sr & 0xf00) == 0) {
+      cdrom_speed = prev_speed;
   }
 }
 
