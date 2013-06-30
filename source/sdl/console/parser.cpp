@@ -198,7 +198,7 @@ int parse(char *orig)
       p.DefineInfixOprt( _T("~"), Not);
       p.DefineInfixOprt( _T("!"), LogNot);
       p.DefineFun( _T("alert"), alert, false);
-      p.DefineFun( _T("dpeek"), dpeek);
+      p.DefineFun( _T("dpeek"), dpeek, false);
       p.DefineFun( _T("peek"), peek, false);
       p.DefineFun( _T("lpeek"), lpeek, false);
       p.SetVarFactory(AddVariable,&p);
