@@ -156,7 +156,7 @@ class TNeo_options : public TMenu {
   {}
     int can_be_displayed(int n) {
       switch(n) {
-      case 2: return (current_game != NULL); // update block
+      case 3: return (current_game != NULL); // update block
       }
       return 1;
     }
