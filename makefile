@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.61.2"
+VERSION = "0.62.0"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -260,7 +260,7 @@ else
    bitmaps_dir = $(rainedata)/bitmaps
    shaders_dir = $(rainedata)/shaders
    fonts_dir = $(rainedata)/fonts
-   scripts_dir = $(rainedata)/scripts/raine
+   scripts_dir = $(rainedata)/scripts/neocd
 endif
    romdir = $(rainedata)/roms
    artdir = $(rainedata)/artwork
@@ -1252,7 +1252,7 @@ ifdef DOIT
 	$(INSTALL_DATA) bitmaps/cursor.png bitmaps/raine_logo.png $(bitmaps_dir)
 	@echo installing shaders in $(shaders_dir)
 	$(INSTALL_DATA) shaders/* $(shaders_dir)
-#	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
+	$(INSTALL_DATA) scripts/neocd/* $(scripts_dir)
 endif
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
