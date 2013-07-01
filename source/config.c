@@ -853,8 +853,13 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
       if(load_rom_dir(dir_list, rom_list->name, ram, rom_list->size, rom_list->crc32,full_check)){
 
          len = rom_size_dir(dir_list, rom_list->name, rom_list->size, rom_list->crc32);
+	 int check_size = rom_list->size;
+	 while (rom_list[1].flags == LOAD_CONTINUE) {
+	     check_size += rom_list[1].size;
+	     rom_list++;
+	 }
 
-         if(len != rom_list->size){
+         if(len != check_size){
 
             sprintf(outbuf+strlen(outbuf), "bad size: 0x%08x\n",len);
             bad_set = 1;

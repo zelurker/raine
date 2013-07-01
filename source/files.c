@@ -381,12 +381,12 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
    unz_file_info info;
    unzGetCurrentFileInfo(uf,&info,NULL,0,NULL,0,NULL,0);
    if (!actual_load) {
-     if (info.uncompressed_size != size) {
+     if (info.uncompressed_size < size) {
        load_error |= LOAD_WARNING;
 
        if (load_debug)
 	 sprintf(load_debug+strlen(load_debug),
-	     "Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,err);
+	     "Bad rom size for %s: tried to read %xh bytes, got %lxh\n",name,size,info.uncompressed_size);
      }
      unzClose(uf);
      return -1;
