@@ -89,7 +89,7 @@ binary-arch: build install
 #	dh_python
 #	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps -- --ignore-missing-info
+	dh_shlibdeps -- --ignore-missing-info -xlibgl1-mesa-glx -xlibglu1-mesa -xlibglu1
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
