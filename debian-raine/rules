@@ -92,7 +92,7 @@ binary-arch: build install
 	dh_shlibdeps -- --ignore-missing-info -xlibgl1-mesa-glx -xlibglu1-mesa -xlibglu1
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- -Zxz
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
