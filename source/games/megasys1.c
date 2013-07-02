@@ -4999,7 +4999,7 @@ static struct DIR_INFO dir_peekaboo[] =
    { "peekaboo", },
    { NULL, },
 };
-GME( peekaboo, "Peek A Boo", JALECO, 1993, GAME_BREAKOUT);
+GME( peekaboo, "Peek A Boo", JALECO, 1993, GAME_BREAKOUT | GAME_PARTIALLY_WORKING);
 static struct DIR_INFO dir_phantasm[] =
 {
    { "phantasm", },
