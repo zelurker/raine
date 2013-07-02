@@ -4127,7 +4127,7 @@ static struct VIDEO_INFO video_fhawk =
    320,
    224,
    32,
-   VIDEO_ROTATE_270 | VIDEO_NEEDS_8BPP |
+   VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
 };
 static struct VIDEO_INFO video_kurikint =
