@@ -242,7 +242,7 @@ static struct DSW_INFO dsw_matmania[] =
   };
 
 static UINT8 *RAM_SPR,*RAM_BG0,*RAM_BG1,*RAM_BG2,*RAM_COL,*RAM_COL2,*RAM_COL3;
-static UINT8 *page_select,*RAM_SCR;
+static UINT8 *page_select,*RAM_SCR,*PAL;
 static UINT8 *GFX_BG0, *GFX_BG1, *GFX_SPR;
 static UINT8 *GFX_BG0_SOLID, *GFX_BG1_SOLID, *GFX_SPR_SOLID,*RAM2;
 
@@ -272,13 +272,13 @@ static void matmania_paletteram_w(UINT32 offset, UINT16 data) {
     RAM[offset] = data;
     offs2 = offset & 0x0f;
 
-    val = RAM_PAL[offs2];
+    val = PAL[offs2];
     r = val & 0xf;
 
-    val = RAM_PAL[offs2 | 0x10];
+    val = PAL[offs2 | 0x10];
     g = val & 0xf;
 
-    val = RAM_PAL[offs2 | 0x20];
+    val = PAL[offs2 | 0x20];
     b = val & 0xf;
 
     private_pal[offs2 + 64] = (r<<8) | (g<<4) | b;
@@ -332,7 +332,7 @@ static void load_matmania() {
   RAM_COL3 = RAM + 0x2600;
 
   RAM_SCR = RAM + 0x3020;
-  RAM_PAL = RAM + 0x3050;
+  PAL = RAM + 0x3050;
 
   GFX_BG0_SOLID = NULL;
 
