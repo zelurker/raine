@@ -1201,8 +1201,8 @@ static void handle_event(SDL_Event *event) {
 
       break;
     case SDL_MOUSEMOTION:
-      mickey_x = event->motion.xrel * GameViewBitmap->w / sdl_screen->w;
-      mickey_y = event->motion.yrel * GameViewBitmap->h / sdl_screen->h;
+      mickey_x = event->motion.xrel;
+      mickey_y = event->motion.yrel;
       mouse_x += mickey_x;
       if (mouse_x > max_x) mouse_x = max_x;
       else if (mouse_x < min_x) mouse_x = min_x;
