@@ -230,7 +230,7 @@ static struct MSM5205buffer_interface msm5205_interface =
    { sizeof(silkworm_adpcm) / sizeof(struct msm5205_adpcm_list) },
    { NULL },
    { 0 },
-   { 0 },
+   { REGION_SOUND1 },
    MSM5205_MONO,
 };
 
@@ -716,9 +716,9 @@ static void MemoryMap_cpu2(void)
    AddZ80BReadByte(0x8000, 0x87FF, NULL,		      RAM+0x5000); // RAM
    AddZ80BReadByte(0xC000, 0xC000, sw_soundlatch,	      NULL);	    // soundlatch
    AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,	      NULL);	    // <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
 
    //AddZ80BWriteByte(0x0000, 0x7FFF, NULL,		      NULL);	    // ROM
+   AddZ80BWriteByte(0x2000, 0x207f, NULL,		      RAM2+0x2000);
    AddZ80BWriteByte(0x8000, 0x87FF, NULL,		      RAM+0x5000); // RAM
    AddZ80BWriteByte(0xA000, 0xA000, sw_ym3812_control_port,   NULL);	    // sound control port
    AddZ80BWriteByte(0xA001, 0xA001, sw_ym3812_write_port,     NULL);	    // sound write port
@@ -780,8 +780,6 @@ static void load_silkworm(void)
    RAMSize=0x7000;
    sample_size = get_region_size(REGION_SOUND1);
    adpcm_pos = adpcm_end = 0;
-   msm5205_interface.rom[0] = load_region[REGION_SOUND1];
-   msm5205_interface.romsize[0] = sample_size;
 
    if(!(RAM=AllocateMem(RAMSize)))			return;
    if(!(GFX=AllocateMem(0x1A0000)))			return;
@@ -814,10 +812,17 @@ static void load_silkworm(void)
 
    // CPU2
 
-   /* SPEED HACK */
-   RAM2[0x00b4] = 0xD3;		// OUTA (AAh)
-   RAM2[0x00b5] = 0xAA;
-   SetStopZ80BMode2(0x00b4);
+   if (is_current_game("silkworm")) {
+       /* SPEED HACK */
+       RAM2[0x00b4] = 0xD3;		// OUTA (AAh)
+       RAM2[0x00b5] = 0xAA;
+       SetStopZ80BMode2(0x00b4);
+   } else {
+       /* SPEED HACK */
+       RAM2[0x00df] = 0xD3;		// OUTA (AAh)
+       RAM2[0x00e0] = 0xAA;
+       SetStopZ80BMode2(0x00df);
+   }
 
    MemoryMap_cpu2();
 
@@ -867,8 +872,6 @@ static void load_rygar(void)
    RAMSize=0x7000;
    sample_size = get_region_size(REGION_SOUND1);
    adpcm_pos = adpcm_end = 0;
-   msm5205_interface.rom[0] = load_region[REGION_SOUND1];
-   msm5205_interface.romsize[0] = sample_size;
 
    if(!(RAM=AllocateMem(RAMSize)))			return;
    if(!(GFX=AllocateMem(0x1A0000)))			return;
@@ -957,8 +960,6 @@ static void load_gemini(void)
    RAMSize=0x7000;
    sample_size = get_region_size(REGION_SOUND1);
    adpcm_pos = adpcm_end = 0;
-   msm5205_interface.rom[0] = load_region[REGION_SOUND1];
-   msm5205_interface.romsize[0] = sample_size;
 
    if(!(RAM=AllocateMem(RAMSize)))			return;
    if(!(GFX=AllocateMem(0x1A0000)))			return;
