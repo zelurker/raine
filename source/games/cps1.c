@@ -1438,8 +1438,14 @@ static UINT16 protection_rw(UINT32 offset)
    if (pang3 && offset == 0x7a/2)
       return cps1_eeprom_port_r(0);
 
-   if (offset == 0x28 && is_current_game("avspd"))
-       return 262;
+   if (offset == 0x28) {
+       static int res;
+       if (res)
+	   res = 0;
+       else
+	   res = 262;
+       return res;
+   }
    return cps1_port[offset];
 }
 
