@@ -172,6 +172,7 @@ void ClearDefault(void)
 
    if(raine_cfg.show_fps_mode==2) raine_cfg.show_fps_mode=0;			// Don't like it running from time=0
 
+   clear_regions();
    FreeMemoryPool();				// Free anything left in the memory pool
 
    LanguageSw.Count = 0;
@@ -189,6 +190,5 @@ void ClearDefault(void)
 #ifdef HAS_CONSOLE
    done_console();
 #endif
-   clear_regions();
 }
 
