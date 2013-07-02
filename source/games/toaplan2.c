@@ -7514,5 +7514,6 @@ CLONEI(sstriker, mahoudai, "Sorcer Striker (World)", TOAPLAN, 1993, GAME_SHOOT,
 	.dsw = sstriker_dsw,
 	.input = input_bgaregh,
 	.video = &video_bgaregh,
+	.exec = execute_kbash,
 	.sound = sound_kbash
 	);
