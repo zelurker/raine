@@ -2858,9 +2858,6 @@ static void load_lomakai(void)
 
    RAMSize=0x40000;
 
-   FreeMem(ROM);
-   ROM = load_region[REGION_CPU1];
-
    // 68000 Speed hack
    // ----------------
 
