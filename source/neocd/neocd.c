@@ -279,12 +279,12 @@ static int layer_id_data[2];
 UINT8 *neocd_bios;
 
 void setup_neocd_bios() {
-  if (neocd_bios)
-    return;
   if (!is_neocd()) {
       neocd_bios = load_region[REGION_MAINBIOS];
       return;
   }
+  if (neocd_bios)
+    return;
   neocd_bios = malloc(0x80000);
   // unsigned char rom_fix_usage[4096];
   int ret = 0;
@@ -1864,6 +1864,8 @@ static void neogeo_hreset(void)
       s68000context.pc = M68000_context[0].pc = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
   }
   watchdog_counter = 9;
+  display_position_interrupt_pending = 0;
+  vblank_interrupt_pending = 0;
 }
 
 void postprocess_ipl() {
