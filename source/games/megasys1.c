@@ -4969,7 +4969,7 @@ static struct DIR_INFO dir_p47[] =
    { "p47_usa", },
    { NULL, },
 };
-GAME( p47, "P47", JALECO, 1988, GAME_SHOOT,
+GAME( p47, "P47", JALECO, 1988, GAME_SHOOT|GAME_NOT_WORKING,
 	.input = input_lordofk,
 	.dsw = dsw_p47,
 	.video = &video_lordofk,
@@ -4985,7 +4985,7 @@ static struct DIR_INFO dir_p47j[] =
    { CLONEOF("p47"), },
    { NULL, },
 };
-CLONE(p47j, p47, "P47 Japanese", JALECO, 1988, GAME_SHOOT,
+CLONE(p47j, p47, "P47 Japanese", JALECO, 1988, GAME_SHOOT|GAME_NOT_WORKING,
 	.input = input_lordofk,
 	.dsw = dsw_p47,
 	.video = &video_lordofk,
