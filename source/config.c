@@ -51,7 +51,7 @@ static void CLI_Help(void)
 	"\n"
 	"-game/-g [gamename]            : Select a game to load (see game list)\n"
 	"-gamelist/-gl                  : Quick list of all games\n"
-	"-gameinfo/-listinfo <gamename> : List info for a game, or all games\n"
+	"-gameinfo/-listinfo|-li <gamename> : List info for a game, or all games\n"
 	"-romcheck/-rc <gamename>       : Check roms are valid for a game, or all games\n"
 	"-romcheck-full/-rcf <gamename> : like romcheck, but load all the games, very slow now\n"
 	"-help/-h/-?/--help             : Show command line options and list games\n"
@@ -824,6 +824,15 @@ static void CLI_Verbose(void)
    verbose = 1;
 }
 
+static int get_rom_size(const ROM_INFO** rom_list) {
+    int check_size = (*rom_list)->size;
+    while ((*rom_list)[1].flags == LOAD_CONTINUE) {
+	check_size += (*rom_list)[1].size;
+	(*rom_list)++;
+    }
+    return check_size;
+}
+
 static void CheckGame(GAME_MAIN *game_info, int full_check)
 {
    const DIR_INFO *dir_list;
@@ -853,13 +862,8 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
       if(load_rom_dir(dir_list, rom_list->name, ram, rom_list->size, rom_list->crc32,full_check)){
 
          len = rom_size_dir(dir_list, rom_list->name, rom_list->size, rom_list->crc32);
-	 int check_size = rom_list->size;
-	 while (rom_list[1].flags == LOAD_CONTINUE) {
-	     check_size += rom_list[1].size;
-	     rom_list++;
-	 }
 
-         if(len != check_size){
+         if(len != get_rom_size(&rom_list)){
 
             sprintf(outbuf+strlen(outbuf), "bad size: 0x%08x\n",len);
             bad_set = 1;
@@ -1165,7 +1169,7 @@ static void GameInfo(GAME_MAIN *game_info)
          }
 
 	if (strcmp(rom_list->name,REGION_EMPTY))
-	  printf(" size %d crc32 %08x )\n", rom_list->size, rom_list->crc32);
+	  printf(" size %d crc32 %08x )\n", get_rom_size(&rom_list), rom_list->crc32);
       }
 
       rom_list++;
@@ -1200,7 +1204,7 @@ static void GameInfo(GAME_MAIN *game_info)
 			the parent. Here the repeating of the name is stupid, but it's
 			for compatibility... */
 		     printf(INDENT "rom ( name %s merge %s", rom_list->name,rom_list->name);
-		     printf(" size %d crc32 %08x )\n", rom_list->size, rom_list->crc32);
+		     printf(" size %d crc32 %08x )\n", get_rom_size(&rom_list), rom_list->crc32);
 		     load_region[rom_list->region] = (UINT8*)rom_list->name; // to avoid duplication
 		   }
 		 }
@@ -1578,6 +1582,7 @@ static CLI_OPTION cli_commands[] =
    { "-gl",		CLI_game_list		},
    { "-gameinfo",	CLI_game_info		},
    { "-listinfo",	CLI_game_info		},
+   { "-li",		CLI_game_info		},
    { "-romcheck",	CLI_game_check		},
    { "-rc",		CLI_game_check		},
    { "-romcheck-full",	CLI_game_check_full	},
