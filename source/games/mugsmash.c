@@ -379,6 +379,7 @@ static struct DSW_DATA dsw_data_mugsmash_1[] =
    { "Freeze",                0x80, 0x02 },
    { MSG_OFF,                 0x80},
    { MSG_ON,                  0x00},
+   { NULL,                    0,   },
 };
 
 static struct DSW_INFO dsw_mugsmash[] =
