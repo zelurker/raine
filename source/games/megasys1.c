@@ -766,15 +766,18 @@ static struct ROM_INFO rom_p47[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
-{ "p47j_12.bin",0x00020000,0x5268395f,REGION_GFX2,0x60000},
   { "p47us16.bin", 0x010000, 0x5a682c8f , REGION_GFX3, 0x000000, LOAD_NORMAL },
-{ "p47j_26.bin",0x00020000,0x4d07581a,REGION_GFX4,0x60000},
-{ "p47j_7.bin",0x00020000,0xf77723b7,REGION_GFX1,0x40000},
-{ "p47j_27.bin",0x00020000,0x9e2bde8e,REGION_GFX4,},
-{ "p47j_18.bin",0x00020000,0x29d8f676,REGION_GFX4,0x20000},
-{ "p47j_23.bin",0x00020000,0x6e9bc864,REGION_GFX2,0x20000},
 { "p47j_5.bin",0x00020000,0xfe65b65c,REGION_GFX1,},
 { "p47j_6.bin",0x00020000,0xe191d2d2,REGION_GFX1,0x20000},
+{ "p47j_7.bin",0x00020000,0xf77723b7,REGION_GFX1,0x40000},
+{ "p47j_23.bin",0x00020000,0x6e9bc864,REGION_GFX2,0x00000},
+{ "p47j_23.bin",0x00020000,0x6e9bc864,REGION_GFX2,0x20000},
+{ "p47j_12.bin",0x00020000,0x5268395f,REGION_GFX2,0x40000},
+{ "p47j_12.bin",0x00020000,0x5268395f,REGION_GFX2,0x60000},
+{ "p47j_27.bin",0x00020000,0x9e2bde8e,REGION_GFX4,},
+{ "p47j_18.bin",0x00020000,0x29d8f676,REGION_GFX4,0x20000},
+{ "p47j_26.bin",0x00020000,0x4d07581a,REGION_GFX4,0x40000},
+{ "p47j_26.bin",0x00020000,0x4d07581a,REGION_GFX4,0x60000},
 { "p47j_10.bin",0x00020000,0xb9d79c1e,REGION_SOUND2,},
 { "p47j_11.bin",0x00020000,0xfa0d1887,REGION_SOUND2,0x20000},
 { "p47j_20.bin",0x00020000,0x2ed53624,REGION_SOUND1,},
@@ -831,19 +834,7 @@ static struct ROM_INFO rom_p47j[] =
   // cpu 2
   LOAD8_16(  REGION_ROM1,  0x060000,  0x010000,
             "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
-{ "p47j_10.bin",0x00020000,0xb9d79c1e,REGION_SOUND2,},
-{ "p47j_11.bin",0x00020000,0xfa0d1887,REGION_SOUND2,0x20000},
-{ "p47j_12.bin",0x00020000,0x5268395f,REGION_GFX2,0x60000},
   { "p47j_16.bin", 0x010000, 0x30e44375 , REGION_GFX3, 0x000000, LOAD_NORMAL },
-{ "p47j_18.bin",0x00020000,0x29d8f676,REGION_GFX4,0x20000},
-{ "p47j_20.bin",0x00020000,0x2ed53624,REGION_SOUND1,},
-{ "p47j_21.bin",0x00020000,0x6f56b56d,REGION_SOUND1,0x20000},
-{ "p47j_23.bin",0x00020000,0x6e9bc864,REGION_GFX2,0x20000},
-{ "p47j_26.bin",0x00020000,0x4d07581a,REGION_GFX4,0x60000},
-{ "p47j_27.bin",0x00020000,0x9e2bde8e,REGION_GFX4,},
-{ "p47j_5.bin",0x00020000,0xfe65b65c,REGION_GFX1,},
-{ "p47j_6.bin",0x00020000,0xe191d2d2,REGION_GFX1,0x20000},
-{ "p47j_7.bin",0x00020000,0xf77723b7,REGION_GFX1,0x40000},
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -2092,7 +2083,6 @@ static void load_p47(void)
  */
 
    ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x40000);
 
    AddMS1MainCPU(0x0F0000);
 
@@ -2223,8 +2213,6 @@ static void load_hachoo(void)
    if(!(RAM=AllocateMem(0x60000))) return;
 
    if (!setup_ms1_gfx()) return;
-
-   FreeMem(ROM);
 
    DecodePlusAlpha(ROM);                                                // Deprotection
 
@@ -4969,7 +4957,7 @@ static struct DIR_INFO dir_p47[] =
    { "p47_usa", },
    { NULL, },
 };
-GAME( p47, "P47", JALECO, 1988, GAME_SHOOT|GAME_NOT_WORKING,
+GAME( p47, "P47", JALECO, 1988, GAME_SHOOT,
 	.input = input_lordofk,
 	.dsw = dsw_p47,
 	.video = &video_lordofk,
@@ -4985,7 +4973,7 @@ static struct DIR_INFO dir_p47j[] =
    { CLONEOF("p47"), },
    { NULL, },
 };
-CLONE(p47j, p47, "P47 Japanese", JALECO, 1988, GAME_SHOOT|GAME_NOT_WORKING,
+CLONE(p47j, p47, "P47 Japanese", JALECO, 1988, GAME_SHOOT,
 	.input = input_lordofk,
 	.dsw = dsw_p47,
 	.video = &video_lordofk,
