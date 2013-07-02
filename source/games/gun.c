@@ -81,7 +81,7 @@ void disp_gun(int nb, int x,int y) {
     sprite_gun[0] = SpriteGun1;
     sprite_gun[1] = SpriteGun2;
 
-    if (display_cfg.bpp == 16) {
+    if (display_cfg.bpp == 16 || display_cfg.bpp == 15) {
       int n;
       update_palette();
       for (n=252; n<=254; n++) {
@@ -95,7 +95,20 @@ void disp_gun(int nb, int x,int y) {
       }
     }
     old_bpp = display_cfg.bpp;
-  }
+  } else if (display_cfg.bpp == 32) {
+      int n;
+      update_palette();
+      for (n=252; n<=254; n++) {
+	UINT32 res;
+	GET_PEN_FOR_COLOUR_32(
+			      pal[n].r,
+			      pal[n].g,
+			      pal[n].b,
+			      res);
+	WriteLong(&map[n*4],res);
+      }
+    }
+    old_bpp = display_cfg.bpp;
 
   switch(display_cfg.bpp) {
   case 8:  Draw16x16_Trans(sprite_gun[nb],x,y,0); update_palette(); break;
