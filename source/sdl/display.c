@@ -633,9 +633,10 @@ int switch_res(const VIDEO_INFO *vid)
      if (display_cfg.bpp < 15)
        bestbpp = 16;
      else bestbpp = 0;
-   } else if (vid->flags & VIDEO_NEEDS_8BPP)
+   } else if (vid->flags & VIDEO_NEEDS_8BPP) {
      bestbpp = 8;
-   else
+     display_cfg.video_mode = 2; // set to normal blits, only possibility here
+   } else
      bestbpp = display_cfg.bpp;
 
    if (!(sdl_screen->flags&SDL_FULLSCREEN)) {

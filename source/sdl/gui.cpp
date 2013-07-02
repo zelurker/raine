@@ -142,8 +142,10 @@ static void load_game_proc()
       switch_res(current_game->video);
     } else {
       print_debug("no resolution switching wanted\n");
-      if (current_game->video->flags & VIDEO_NEEDS_8BPP)
+      if (current_game->video->flags & VIDEO_NEEDS_8BPP) {
 	bestbpp = 8;
+	display_cfg.video_mode = 2; // only possibility for 8bpp
+      }
       update_stretch();
     }
 
