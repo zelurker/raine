@@ -3743,4 +3743,5 @@ GAME( uopoko, "Uo Poko", CAVE, 1998, GAME_PUZZLE,
 
 CLNEI( guwanges, guwange, "Guwange (Japan, Special Ver. 00/01/01)", CAVE,
 		2000, GAME_SHOOT,
+	.input = input_guwange,
 	.video = &video_esprade);
