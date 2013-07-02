@@ -4185,6 +4185,7 @@ static struct DIR_INFO dir_champwrj[] =
 };
 CLNE( champwrj, champwr, "Champion Wrestler (Japan)", TAITO, 1989, GAME_SPORTS,
 	.dsw = dsw_champwrj,
+	.video = &video_champwr,
 	.long_name_jpn = "‚`‚‚‚Ù‚s‚I‚Ù‚Ó‚X‚Î¸[ (Japan)",
 	.board = "C01",
 );
@@ -4198,6 +4199,7 @@ static struct DIR_INFO dir_champwru[] =
 };
 CLNE( champwru, champwr, "Champion Wrestler (US)", TAITO, 1989, GAME_SPORTS,
 	.dsw = dsw_champwru,
+	.video = &video_champwr,
 	.long_name_jpn = "‚`‚‚‚Ù‚s‚I‚Ù‚Ó‚X‚Î¸[ (US)",
 	.board = "C01",
 );
