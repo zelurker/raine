@@ -129,7 +129,6 @@ static void load_tetrist(void)
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
    InitPaletteMap(RAM+0x11000, 0x100, 0x10, 0x1000);
    ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x60000);
 
    AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);	// 68000 ROM
    AddMemFetch(-1, -1, NULL);

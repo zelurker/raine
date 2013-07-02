@@ -976,9 +976,9 @@ void draw_taitob_fb(int zz, int bank, int control, int priority, int offs_y,
 		map);
     }
 
-/*    if (!(control & 0x40)) {
+    if (!(control & 0x40)) {
 	zz += 0x20000;
-    } */
+    }
 
     zz += 512*offs_y; // Border
 
