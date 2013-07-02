@@ -708,8 +708,10 @@ static UINT16 semicom_prot_latch = 0x0a0a;
 static UINT16 cookbib3_prot_latch = 0x2a2a;
 
 static void install_protdata() {
-  memcpy(RAM+0x2f000,load_region[REGION_PROMS],0x200);
-  ByteSwap(RAM+0x02f000,0x200);
+    if (load_region[REGION_PROMS]) {
+	memcpy(RAM+0x2f000,load_region[REGION_PROMS],0x200);
+	ByteSwap(RAM+0x02f000,0x200);
+    }
 }
 
 
@@ -728,7 +730,9 @@ static void soundlatch_w(UINT32 offset, UINT16 data) {
     latch = data;
 }
 
-#define Z80_FRAME CPU_FRAME_MHz(4,60)
+// No idea why I have to put 6 MHz here and not 4, but what is sure is that
+// with 4 the sound dies very quickly while in game in hyperpac and hyperpcb
+#define Z80_FRAME CPU_FRAME_MHz(6,60)
 
 static void load_hyperpac(void)
 {
