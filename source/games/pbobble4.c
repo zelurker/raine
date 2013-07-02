@@ -282,7 +282,7 @@ static void ClearPuzzleBobble4(void)
 #endif
 }
 
-static int BGPRI[3];
+static int BGPRI[4];
 
 static void DrawPuzzleBobble4(void)
 {
