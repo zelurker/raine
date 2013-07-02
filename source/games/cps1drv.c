@@ -3695,6 +3695,8 @@ static struct INPUT_INFO input_cps1[] = // 4 players, 3 buttons
   INP0( P4_B2, 0x0c, 0x20 ),
   INP0( COIN4, 0x0c, 0x40 ),
   INP0( P4_START, 0x0c, 0x80 ),
+
+  INP1( UNKNOWN, 0x15, 0x10 ), // hack for sf2m2, must be at 0
    END_INPUT
 };
 
