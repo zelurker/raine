@@ -2492,6 +2492,17 @@ static void fatfury2_prot_ww(UINT32 offset, UINT16 data) {
     }
 }
 
+static UINT16 read_bios_w(UINT32 offset) {
+    int len = get_region_size(REGION_MAINBIOS);
+    return ReadWord(load_region[REGION_MAINBIOS]+(offset & (len-1)));
+}
+
+static UINT16 read_bios_b(UINT32 offset) {
+    int len = get_region_size(REGION_MAINBIOS);
+    offset ^= 1;
+    return ReadByte(load_region[REGION_MAINBIOS]+(offset & (len-1)));
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -2681,6 +2692,11 @@ void load_neocd() {
 	// At least trally executes some code in ram when you start a game
 	AddMemFetch(0x100000, 0x10ffff, RAM-0x100000);
 	Add68000Code(0, 0xc00000, REGION_MAINBIOS);
+	// The mirror bios seems to be tested by kof97, but it doesn't
+	// seem to do anything with the result anyway.
+	// I keep the code, just in case...
+	AddReadByte(0xc20000,0xcfffff, read_bios_b, NULL);
+	AddReadWord(0xc20000,0xcfffff, read_bios_w, NULL);
     }
 
     AddReadByte(0x300000, 0x300001, NULL, &input_buffer[0]);
@@ -2931,6 +2947,18 @@ void loading_progress_function() {
 }
 
 void execute_neocd() {
+    if (!is_neocd()) {
+	/* watchdog is unreliable in neocd because of the loading functions
+	 * mainly, and seems unused anyway.
+	 * In neogeo it's used by games like kof97 : when it initialises its
+	 * saveram it tries to reset using the watchdog. If that fails, it
+	 * writes 1 to $100 in the saveram and considers the board is a copy
+	 * and you get a protection message, which stays even if you reboot
+	 * the game after that. */
+	watchdog_counter--;
+	if (watchdog_counter == 0) reset_game_hardware();
+    }
+
   /* This code is still more or less experimental
    * the idea is to detect when the hblank interrupt is needed (raster_frame)
    * and to change the handling accordingly to save cycles.
