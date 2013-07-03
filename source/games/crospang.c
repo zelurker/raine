@@ -116,6 +116,7 @@ static struct DSW_DATA dsw_data_crospang_1[] =
 	{ MSG_DSWB_BIT8,           0x80, 0x02 },
 	{ MSG_OFF,                 0x80},
 	{ MSG_ON,                  0x00},
+	{ NULL,                    0,   },
 };
 
 static struct DSW_INFO dsw_crospang[] =
