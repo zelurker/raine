@@ -138,7 +138,7 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   INP0( P2_START, 5, 4 ),
   { KB_DEF_PREV_GAME, "Prev Game", 0x05, 0x08, BIT_ACTIVE_0 },
   INP1( UNKNOWN, 5, 0x70), // memcard status
-  INP1( UNKNOWN, 5, 0x80), // mvs/aes ?
+  INP0( UNKNOWN, 5, 0x80), // mvs/aes ?
   // Bit 4 (0x10) is 0 if the memory card is present !!!
   // neogeo doc :
   // bit 5 = mc 2 insertion status (0 = inserted)
@@ -157,7 +157,7 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
 
   INP1( UNKNOWN, 8, 0x3f ),
   /* what is this? If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected */
-  { KB_DEF_SPECIAL, MSG_UNKNOWN, 9, 0x40, BIT_ACTIVE_1 },
+  { KB_DEF_SPECIAL, MSG_UNKNOWN, 8, 0x40, BIT_ACTIVE_1 },
   INP0( TEST, 8, 0x80 ), // enter bios
 
   { 0, NULL,        0,        0,    0            },
