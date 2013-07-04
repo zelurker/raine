@@ -17,7 +17,10 @@ sub get_genre($) {
 	# my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
 	my $doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
 	if (!$doc) {
-		print STDERR "no info for $name\n";
+		print STDERR "no info for $name, sleep 3 and retry...\n";
+		sleep 3;
+		$doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
+		print STDERR "still no info\n" if (!$doc);
 	}
 	return "GAME_MISC" if (!$doc);
 	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</ || $doc =~ /genre=(.+?)>/) {
@@ -26,7 +29,7 @@ sub get_genre($) {
 				$genre = "GAME_SHOOT";
 			} elsif ($genre =~ /Fight/) {
 				$genre = "GAME_BEAT";
-			} elsif ($genre =~ /Puzzle/) {
+			} elsif ($genre =~ /(Puzzle|Mahjong)/) {
 				$genre = "GAME_PUZZLE";
 			} elsif ($genre =~ /Quiz/) {
 				$genre = "GAME_QUIZZ";
@@ -112,7 +115,8 @@ while (<>) {
 		while ($string =~ s/"(.+?),(.+?)", *"(.+)" *,/"$1\£$2", "$3",/g) {}
 		while ($string =~ s/"(.+?)", *"(.+?),(.+?)" *,/"$1", "$2\£$3",/g) {}
 
-		my ($year,$name,$parent,$machine,$input, $class, $init, $rot,$company,$long_name,$reste) = split(/\, ?/,$string);
+		my ($year,$name,$parent,$machine,$input, $class, $init,
+			$rot,$company,$long_name,$reste) = split(/\, */,$string);
 		$long_name =~ s/\£/\,/g;
 		$company =~ s/\£/\,/g;
 		$name =~ s/ //g;
@@ -204,6 +208,8 @@ while (<>) {
 				$input = "p1b4";
 			} elsif ($input eq "cps2_2p1b" || $input eq "pzloop2") {
 				$input = "p2b1";
+			} elsif ($input eq "cps2_2p6bt") {
+				$input = "p2b6t";
 			} else {
 				print "controls unknown $input\n";
 				exit(1);
@@ -213,7 +219,7 @@ while (<>) {
 		if ($parent ne "0") {
 			print "CLNEI( $name, $parent, $long_name, $company, $year, $genre";
 		} else {
-			print "GMEI( $name, $parent, $long_name, $company, $year, $genre";
+			print "GMEI( $name, $long_name, $company, $year, $genre";
 		}
 		if ($input) {
 			print ",\n  .input = input_$input";

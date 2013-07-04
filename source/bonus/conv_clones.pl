@@ -53,7 +53,7 @@ while (<F>) {
 	  }
   } elsif (/(CLONE|CLNE|CLNEI)\((.+)[$\)]/) {
 	  my $args = $2;
-	  my @args = split /, ?/,$args;
+	  my @args = split /, */,$args;
 	  foreach (@args) {
 		  s/^[ \t]*//;
 		  s/[ \t]*$//;
