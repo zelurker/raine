@@ -86,6 +86,7 @@ char *company_name[] =
    "NIX",
    "ADK",
    "Hack",
+   "Takumi",
 };
 
 const int nb_companies = sizeof(company_name)/4;

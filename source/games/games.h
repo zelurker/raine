@@ -75,6 +75,7 @@ enum company_num
    COMPANY_ID_NIX,
    COMPANY_ID_ADK,
    COMPANY_ID_HACK,
+   COMPANY_ID_TAKUMI,
 };
 
 extern const int nb_companies;
