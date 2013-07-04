@@ -257,6 +257,7 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
 
  { 0,           0, 0, "", }, // unknown, should be hidden
  { 0,           0, 0, "", }, // special, should be hidden
+ { 0,           0, 0, "", }, // unused, should be hidden
 };
 
 /******************************************************************************/
@@ -441,6 +442,69 @@ int valid_inputs[MAX_VALID_INPUTS]; // a list
 static UINT8 autofire_timer[6];
 static UINT8  stick_logic[4];
 
+static void merge_inputs(const INPUT_INFO *input_src) {
+    int srcCount = 0;
+    while(input_src[srcCount].name){
+
+	if (input_src[srcCount].flags == INPUT_INCLUDE) {
+	    merge_inputs((const INPUT_INFO *)input_src[srcCount].name);
+	    srcCount++;
+	    continue;
+	}
+
+	int n,old = -1;
+	// Input overwrite : it happens in case another input is included and
+	// then modified
+	for (n=0; n<InputCount; n++)
+	    if (input_src[srcCount].offset == InputList[n].Address &&
+		    input_src[srcCount].bit_mask & InputList[n].Bit) {
+		old = InputCount;
+		InputCount = n;
+		break;
+	    }
+
+	UINT16 def = InputList[InputCount].default_key = input_src[srcCount].default_key;
+	InputList[InputCount].InputName   = input_src[srcCount].name;
+	InputList[InputCount].Address     = input_src[srcCount].offset;
+	InputList[InputCount].Bit         = input_src[srcCount].bit_mask;
+	InputList[InputCount].high_bit    = input_src[srcCount].flags;
+	InputList[InputCount].auto_rate   = 0;
+	InputList[InputCount].active_time = 0;
+	InputList[InputCount].link = 0;
+
+	set_key_from_default(&InputList[InputCount]);
+
+	update_input_buffer(InputCount,0); // say input is not valid for now
+
+	if (def != KB_DEF_UNKNOWN && def != KB_DEF_SPECIAL &&
+		def != KB_DEF_UNUSED) {
+	    // Skip unknown and special inputs after they have been initialized
+	    InputCount++;
+	} else if (old > -1) {
+	    // input overwritten by a hidden input, we must move the list...
+	    if (old > InputCount+1)
+		memmove(&InputList[InputCount],&InputList[InputCount+1],
+			(old-(InputCount+1))*sizeof(struct INPUT));
+	    old--;
+	}
+	if (old > -1) {
+	    // Check if some other inputs match the bit mask and remove them
+	    for (n=InputCount; n<old; n++) {
+		if (input_src[srcCount].offset == InputList[n].Address &&
+			input_src[srcCount].bit_mask & InputList[n].Bit) {
+		    if (old > n+1)
+			memmove(&InputList[n],&InputList[n+1],
+				(old-(n+1))*sizeof(struct INPUT));
+		    old--;
+		    n--;
+		}
+	    }
+	    InputCount = old;
+	}
+	srcCount++;
+    }
+}
+
 void init_inputs(void)
 {
    const INPUT_INFO *input_src;
@@ -458,28 +522,7 @@ void init_inputs(void)
 
    if(input_src){
        int srcCount = InputCount;
-
-     while(input_src[srcCount].name){
-
-       UINT16 def = InputList[InputCount].default_key = input_src[srcCount].default_key;
-       InputList[InputCount].InputName   = input_src[srcCount].name;
-       InputList[InputCount].Address     = input_src[srcCount].offset;
-       InputList[InputCount].Bit         = input_src[srcCount].bit_mask;
-       InputList[InputCount].high_bit    = input_src[srcCount].flags;
-       InputList[InputCount].auto_rate   = 0;
-       InputList[InputCount].active_time = 0;
-       InputList[InputCount].link = 0;
-
-       set_key_from_default(&InputList[InputCount]);
-
-       update_input_buffer(InputCount,0); // say input is not valid for now
-
-       srcCount++;
-       if (def != KB_DEF_UNKNOWN && def != KB_DEF_SPECIAL)
-	   // Skip unknown and special inputs after they have been initialized
-	   InputCount++;
-     }
-
+       merge_inputs(&input_src[srcCount]);
    }
 
 }

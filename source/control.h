@@ -16,6 +16,7 @@ extern int GameMouse;
 
 #define BIT_ACTIVE_0 (0)
 #define BIT_ACTIVE_1 (1)
+#define INPUT_INCLUDE (2)
 
 /******************************************************************************/
 /*                                                                            */
@@ -153,6 +154,7 @@ enum {
    // These 2 are special and should not be displayed in the dialogs
    KB_DEF_UNKNOWN,
    KB_DEF_SPECIAL,
+   KB_DEF_UNUSED,
 
    KB_DEF_END,
 };
@@ -227,6 +229,7 @@ extern char MSG_TILT[];
 extern char MSG_SERVICE[];
 extern char MSG_TEST[];
 extern char MSG_UNKNOWN[];
+extern char MSG_UNUSED[];
 extern char MSG_YES[];
 extern char MSG_NO[];
 extern char MSG_FREE_PLAY[];
@@ -492,6 +495,8 @@ extern char MSG_ALT[];
    { MSG_ON,              on },        \
    { MSG_OFF,             off }
 
+#define INCL_INP( other ) \
+   { 1, (char*)input_##other, 0, 0, INPUT_INCLUDE }
 #define INP0( input, adr, mask ) \
    { KB_DEF_##input, MSG_##input, adr, mask, BIT_ACTIVE_0 }
 #define INP1( input, adr, mask ) \

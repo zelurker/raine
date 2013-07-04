@@ -349,6 +349,7 @@ static struct DEF_INPUT def_input[KB_DEF_COUNT] =
 
  { 0,           0, 0, "", }, // unknown, should be hidden
  { 0,           0, 0, "", }, // special, should be hidden
+ { 0,           0, 0, "", }, // unused, should be hidden
 };
 
 /******************************************************************************/
