@@ -220,7 +220,6 @@ int main(int argc,char *argv[])
 	   chdir(dir_cfg.exe_path);
 	   strcat(dir_cfg.exe_path,"/");
    }
-   strlwr(dir_cfg.exe_path);
    backslash(dir_cfg.exe_path);
 
    strcpy(dir_cfg.share_path,dir_cfg.exe_path); // avoid useless ifdefs...
