@@ -444,24 +444,30 @@ static UINT8  stick_logic[4];
 
 static void merge_inputs(const INPUT_INFO *input_src) {
     int srcCount = 0;
+    int included = 0;
     while(input_src[srcCount].name){
 
 	if (input_src[srcCount].flags == INPUT_INCLUDE) {
 	    merge_inputs((const INPUT_INFO *)input_src[srcCount].name);
 	    srcCount++;
+	    included = 1;
 	    continue;
 	}
 
 	int n,old = -1;
 	// Input overwrite : it happens in case another input is included and
 	// then modified
-	for (n=0; n<InputCount; n++)
-	    if (input_src[srcCount].offset == InputList[n].Address &&
-		    input_src[srcCount].bit_mask & InputList[n].Bit) {
-		old = InputCount;
-		InputCount = n;
-		break;
-	    }
+	if (included) { // only if some inputs were included
+	    // Otherwise it prevents combinations like A+B in neocd from
+	    // working !
+	    for (n=0; n<InputCount; n++)
+		if (input_src[srcCount].offset == InputList[n].Address &&
+			input_src[srcCount].bit_mask & InputList[n].Bit) {
+		    old = InputCount;
+		    InputCount = n;
+		    break;
+		}
+	}
 
 	UINT16 def = InputList[InputCount].default_key = input_src[srcCount].default_key;
 	InputList[InputCount].InputName   = input_src[srcCount].name;
