@@ -28,7 +28,7 @@ while ($_ = shift @ARGV) {
 
   while (<F>) {
     next if (/\\\r?$/); # macro definition
-    if (/^(GAME|CLONE|CLONE_ROMSW|CLONE_LOAD|CLONE_DSW|GME|GME_ROMSW|cps1_gameb?|cps1_game_270b?|cps1_cloneb?|cps1b4_game|cps1b4_clone|sfzch_game|cps1_clone_270b?|forgottn_game|forgottn_clone|cps2_game|cps2_region|cps2_clone|cps2_clone_no_parent|cps2_clone_reg|cps2_game_270|qsound_game|qsound_clone|sf2_game|sf2_clone)\( ?([a-z0-9A-Z_]+)/) {
+    if (/^(GAME|CLONE|CLNEI|GMEI|GME|CLNE)\( ?([a-z0-9A-Z_]+)/) {
       push @drivers,$2;
     } elsif (/(AddRead|AddWrite)/) {
       $use_68k = 1
@@ -149,7 +149,7 @@ while ($_ = shift @ARGV) {
 push @obj,"f3system.o" if ($use_f3system);
 push @obj, "nichisnd.o" if ($use_nichi);
 if ($use_taitosnd) {
-  push @obj, "taitosnd.o"; 
+  push @obj, "taitosnd.o";
   $tc{"tc140syt.o"} = 1;
 }
 $tc{"tc101scn.o"} = 1 if ($tc{"tc100scn.o"});
@@ -166,7 +166,7 @@ print F "ifdef NEO\n";
 print F "\nOBJS += \\\n";
 print F "\t\$(SC000) \\\n";
 print F "\t\$(MZ80) \\\n";
-print F "\t\$(2610) \\\n"; 
+print F "\t\$(2610) \\\n";
 print G "#ifdef NEO\n";
 print G "#define HAS_YM2610  1\n";
 print G "#define HAS_YM2610B  1\n";
@@ -193,12 +193,12 @@ print G "#define HAS_YM2203  1\n" if ($use_2203);
 print F "\t\$(2413) \\\n" if ($use_2413);
 print G "#define HAS_YM2413 1\n" if ($use_2413);
 if ($use_2610) {
-  print F "\t\$(2610) \\\n"; 
+  print F "\t\$(2610) \\\n";
   print G "#define HAS_YM2610  1\n";
   print G "#define HAS_YM2610B  1\n";
 }
 if ($use_emudx) {
-  print F "\t\$(OBJDIR)/emudx.o \\\n"; 
+  print F "\t\$(OBJDIR)/emudx.o \\\n";
   print G "#define HAS_EMUDX 1\n"; # it should probably be placed elsewhere...
 }
 print F "\t\$(OBJDIR)/cat93c46.o \\\n"if ($use_cat93c46);

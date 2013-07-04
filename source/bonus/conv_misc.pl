@@ -14,9 +14,13 @@ sub get_genre($) {
 	# get the game genre from maws !
 	my $name = shift;
 
-	my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
+	# my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
+	my $doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
+	if (!$doc) {
+		print STDERR "no info for $name\n";
+	}
 	return "GAME_MISC" if (!$doc);
-	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</) {
+	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</ || $doc =~ /genre=(.+?)>/) {
 			my $genre = $1;
 			if ($genre =~ /Shoot/) {
 				$genre = "GAME_SHOOT";
@@ -204,16 +208,16 @@ while (<>) {
 				print "controls unknown $input\n";
 				exit(1);
 			}
-
-			if (!$parent) {
-				print "cps2_game( $name, $long_name, $year, $input, $rot, $company, $genre );\n";
-			} else {
-				print "cps2_clone( $name, $long_name, $year, $input, $genre, \"$parent\", $rot, $company);\n";
-			}
-		} else {
-			if ($parent ne "0") {
-				print "CLNEI( $name, $parent, $long_name, $company, $year, $genre);\n";
-			}
+			$input = undef if ($input eq "p2b6"); # default inputs for driver
 		}
+		if ($parent ne "0") {
+			print "CLNEI( $name, $parent, $long_name, $company, $year, $genre";
+		} else {
+			print "GMEI( $name, $parent, $long_name, $company, $year, $genre";
+		}
+		if ($input) {
+			print ",\n  .input = input_$input";
+		}
+		print ");\n";
 	}
 }

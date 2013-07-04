@@ -58,7 +58,6 @@ while (<F>) {
 		  s/^[ \t]*//;
 		  s/[ \t]*$//;
 	  }
-	  print "args $args\n";
 	  push @clones,[$args[0],$args[1]];
   }
   if (!/\#define/) { # avoid macro definitions
