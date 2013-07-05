@@ -507,7 +507,7 @@ void display_bezel() {
       printf("destx adjusted by %d x %g x %d = %g -> %d rotate_screen %d\n",xxx,y,multw,xxx*y*multw,destx,rotate_screen);
       printf("desty adjusted by %d x %g x %d = %g -> %d\n",yyy,x,multh,yyy*x*multh,desty);
 #ifdef SDL
-	int res;
+	int res = 0;
 	SDL_Rect area;
 	SDL_Surface *rotated;
 	if (rotate_screen == 3)
@@ -533,14 +533,16 @@ void display_bezel() {
       desty += yyy*y*multh;
       destx += xxx*x*multw;
 #ifdef SDL
-      SDL_Rect area;
-      area.x = destx;
-      area.y = desty;
-      area.w = scaled_bezel->w;
-      area.h = scaled_bezel->h;
-      fit_screen(&area);
-      SDL_BlitSurface(get_surface_from_bmp(scaled_bezel),NULL,sdl_screen,NULL);
-      SDL_UpdateRects(sdl_screen,1,&area);
+      if (sdl_screen->pixels) {
+	  SDL_Rect area;
+	  area.x = destx;
+	  area.y = desty;
+	  area.w = scaled_bezel->w;
+	  area.h = scaled_bezel->h;
+	  fit_screen(&area);
+	  SDL_BlitSurface(get_surface_from_bmp(scaled_bezel),NULL,sdl_screen,NULL);
+	  SDL_UpdateRects(sdl_screen,1,&area);
+      }
 #else
       blit(scaled_bezel,screen,0,0,destx,desty,scaled_bezel->w,scaled_bezel->h);
 #endif
