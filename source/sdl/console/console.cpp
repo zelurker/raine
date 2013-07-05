@@ -1235,9 +1235,10 @@ int do_console(int sel) {
 	    cons->print(buff);
 	}
     }
-    if (goto_debuger >= 0)
+    if (goto_debuger >= 0) {
 	cons->execute();
-    else
+	goto_debuger = 0;
+    } else
 	goto_debuger = 0;
     restore_breakpoints();
     set_regs(cpu_id);

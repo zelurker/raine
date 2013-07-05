@@ -357,13 +357,16 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   case 3:
       sprintf(cmd,"m68kdis ");
       if (has_pc) strcat(cmd," -i pc ");
-      sprintf(cmd,"m68kdis -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      sprintf(cmd+strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
   case 2:
       sprintf(cmd,"dz80 -d \"%s\"",name);
       break;
   }
-  save_file(name,&ptr[start],end-start);
+  if (cpu_id == 3)
+      save_file(name,ptr,end-start); // ptr is always at the start for 68020
+  else
+      save_file(name,&ptr[start],end-start);
   if (cpu_id == 1)
 	  ByteSwap(&ptr[start],end-start);
   if (used_offs[start/0x10000]) {
