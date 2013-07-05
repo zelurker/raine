@@ -4178,16 +4178,22 @@ CLNEI( msha, msh, "Marvel Super Heroes (Asia 951024)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( mshh, msh, "Marvel Super Heroes (Hispanic 951117)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( mshb, msh, "Marvel Super Heroes (Brazil 951117)", CAPCOM, 1995, GAME_BEAT);
 GMEI( 19xx, "19XX: The War Against Destiny (USA 951207)", CAPCOM, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2, .romsw = romsw_19xx);
 CLNEI( 19xxa, 19xx, "19XX: The War Against Destiny (Asia 951207)", CAPCOM, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2);
 CLNEI( 19xxj, 19xx, "19XX: The War Against Destiny (Japan 951225)", CAPCOM, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2);
 CLNEI( 19xxjr1, 19xx, "19XX: The War Against Destiny (Japan 951207)", CAPCOM, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2);
 CLNEI( 19xxh, 19xx, "19XX: The War Against Destiny (Hispanic 951218)", CAPCOM, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2);
 CLNEI( 19xxb, 19xx, "19XX: The War Against Destiny (Brazil 951218)", CAPCOM, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2);
 GMEI( ddsom, "Dungeons & Dragons: Shadow over Mystara (Euro 960619)", CAPCOM, 1996, GAME_BEAT,
   .input = input_p4b4);
@@ -4359,10 +4365,13 @@ CLNEI( pzloop2jr1, pzloop2, "Puzz Loop 2 (Japan 010205)", MITCHELL, 2001, GAME_P
 GMEI( choko, "Janpai Puzzle Choukou (Japan 010820)", MITCHELL, 2001, GAME_PUZZLE,
   .input = input_p1b3);
 GMEI( dimahoo, "Dimahoo (Euro 000121)", RAIZING, 2000, GAME_SHOOT,
-  .input = input_p2b3);
+  .input = input_p2b3,
+  .video = &video_cps1_270);
 CLNEI( dimahoou, dimahoo, "Dimahoo (USA 000121)", RAIZING, 2000, GAME_SHOOT,
-  .input = input_p2b3);
+  .input = input_p2b3,
+  .video = &video_cps1_270);
 CLNEI( gmahou, dimahoo, "Great Mahou Daisakusen (Japan 000121)", RAIZING, 2000, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b3);
 GMEI( 1944, "1944: The Loop Master (USA 000620)", RAIZING, 2000, GAME_SHOOT,
   .input = input_p2b2,
@@ -4391,6 +4400,7 @@ CLNEI( nwarrud, nwarr, "Night Warriors: Darkstalkers' Revenge (USA 950406 Phoeni
 CLNEI( sfad, sfa, "Street Fighter Alpha: Warriors' Dreams (Euro 950727 Phoenix Edition) (bootleg)", BOOTLEG, 1995, GAME_BEAT);
 CLNEI( mshud, msh, "Marvel Super Heroes (US 951024 Phoenix Edition) (bootleg)", BOOTLEG, 1995, GAME_BEAT);
 CLNEI( 19xxd, 19xx, "19XX: The War Against Destiny (USA 951207 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b2);
 CLNEI( sfz2ad, sfa2, "Street Fighter Zero 2 (Asia 960227 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT);
 CLNEI( sfz2jd, sfa2, "Street Fighter Zero 2 (Japan 960227 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT);
@@ -4431,6 +4441,7 @@ CLNEI( sgemfd, sgemf, "Super Gem Fighter Mini Mix (USA 970904 Phoenix Edition) (
 CLNEI( mmatrixd, mmatrix, "Mars Matrix: Hyper Solid Shooting (USA 000412 Phoenix Edition) (bootleg)", BOOTLEG, 2000, GAME_SHOOT,
   .input = input_p2b1);
 CLNEI( dimahoud, dimahoo, "Dimahoo (USA 000121 Phoenix Edition) (bootleg)", BOOTLEG, 2000, GAME_SHOOT,
+  .video = &video_cps1_270,
   .input = input_p2b3);
 CLNEI( vhunt2d, vhunt2, "Vampire Hunter 2: Darkstalkers Revenge (Japan 970913 Phoenix Edition) (bootleg)", BOOTLEG, 1997, GAME_BEAT);
 CLNEI( vsav2d, vsav2, "Vampire Savior 2: The Lord of Vampire (Japan 970913 Phoenix Edition) (bootleg)", BOOTLEG, 1997, GAME_BEAT);
