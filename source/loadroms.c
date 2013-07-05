@@ -81,6 +81,8 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
   char *prev_name = NULL;
   int last_load = -1,flag;
   if (!rom_list) return 0;
+  if (region_empty(rom_list,region))
+      return 0;
    while(rom_list->name)
    {
      if(rom_list->region == region)
@@ -130,7 +132,7 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
 
       rom_list++;
    }
-   if (!i && !region_empty(rom_list,region)) {
+   if (!i) {
      char *dir = head[0].maindir;
 
      /* If this region has a length of 0, and we are a romof, then check if the parent
