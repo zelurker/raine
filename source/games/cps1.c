@@ -95,6 +95,7 @@ static UINT8 *GFX_SPR_SOLID;
 static UINT8 *GFX_SPR_SOLID16,*GFX_SPR_SOLID32;
 static UINT8 *cps1_gfxram,*cps1_palette,*old_palette;
 static UINT8 *cps1_buffered_obj;
+static UINT8 space_hack[32];
 static int cps1_last_sprite_offset;	/* Offset of the last sprite */
 static int cps1_layer_enabled[4];	/* Layer enabled [Y/N] */
 static int cps1_stars_enabled;		/* Layer enabled [Y/N] */
@@ -1583,6 +1584,10 @@ void finish_conf_cps1()
    max_hack_counter = 22;
    z80_speed_hack = 0;
 
+   int size_code = get_region_size(REGION_CPU1);
+   AddMemFetch(size_code, size_code+32, space_hack - size_code);
+   printf("space_hack mapped at %x\n",size_code);
+   AddReadBW(size_code, size_code+32, NULL, space_hack);
    AddMemFetch(-1, -1, NULL);
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
    AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
@@ -2477,68 +2482,50 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
   // First find some place at the end of the rom
 
   UINT32 pc,dbf;
-  UINT32 free = get_region_size(REGION_ROM1);
-  int n,n2;
-  free-=24;
-  for (n=0; n<0x20000; n++) {
-    for (n2=0; n2<24 && (ReadWord(&ROM[free+n2]) == 0 ||
-			 ReadWord(&ROM[free+n2]) == 0xffff ||
-			 ReadWord(&ROM[free+n2]) == 0x2800); // 2800 in sf2
-	 n2+=2);
-    if (n2 > 20) break;
-    free-=4;
-  }
-  if (n2 <= 20){
-    print_ingame(300,"No room to insert the speed hack, sorry !");
-    print_debug("Failed speed hack : no room\n");
-    speed_hack = 1;
-    // Default becomes 12 Mhz because some cps1 games use 12 MHz, and I am not
-    // going to make a list -> everyone at 12 MHz at least then.
-    frame_68k = CPU_FRAME_MHz(12,60);
-  } else {
-    if (loop_end < 0x100) {
+  int size_code = get_region_size(REGION_ROM1);
+  UINT32 free = size_code; // space_hack address
+  if (loop_end < 0x100) {
       // just insert some code at the end of the rom...
       int n;
       for (n=0; n<8; n+=2) {
-	pWriteWord(&ROM[free+n],ReadWord(&ROM[loop_start+n]));
+	  pWriteWord(&space_hack[n],ReadWord(&ROM[loop_start+n]));
       }
-      apply_hack(free+8,0);
-      pWriteWord(&ROM[free+14],0x4e75);
+      apply_rom_hack(space_hack,8,0);
+      pWriteWord(&space_hack[14],0x4e75);
 
       pWriteWord(&ROM[loop_start],0x4eb9);
       pWriteWord(&ROM[loop_start+2],(free>>16));
       pWriteWord(&ROM[loop_start+4],(free & 0xffff));
       pWriteWord(&ROM[loop_start+6],0x4e71); // nop
       return;
-    }
-    free+=22;
-    apply_hack(free-12,4);
-    print_ingame(300,"Long hack jump at %x...",loop_end);
-    print_debug("Long hack jump at %x...",loop_end);
-    dbf = ReadWord(&ROM[loop_end]);
-    pWriteWord(&ROM[loop_end],0x4ef9); // jmp start of hack
-    pWriteWord(&ROM[loop_end+2],(free-16) >> 16);
-    pWriteWord(&ROM[loop_end+4],(free-16) & 0xffff);
+  }
+  free+=22;
+  apply_rom_hack(space_hack,22-12,4);
+  print_ingame(300,"Long hack jump at %x...",loop_end);
+  print_debug("Long hack jump at %x to %x...",loop_end,free-16);
+  dbf = ReadWord(&ROM[loop_end]);
+  pWriteWord(&ROM[loop_end],0x4ef9); // jmp start of hack
+  pWriteWord(&ROM[loop_end+2],(free-16) >> 16);
+  pWriteWord(&ROM[loop_end+4],(free-16) & 0xffff);
 
-    pWriteWord(&ROM[free-22],0x4ef9); // jmp back
-    pWriteWord(&ROM[free-20],loop_start >> 16);
-    pWriteWord(&ROM[free-18],loop_start & 0xffff);
-    pWriteWord(&ROM[free-16],dbf);
-    pWriteWord(&ROM[free-14],0xfff8);
-    // free-12...free-8 : speed hack
-    pWriteWord(&ROM[free-6],0x4ef9);
+  pWriteWord(&space_hack[22-22],0x4ef9); // jmp back
+  pWriteWord(&space_hack[22-20],loop_start >> 16);
+  pWriteWord(&space_hack[22-18],loop_start & 0xffff);
+  pWriteWord(&space_hack[22-16],dbf);
+  pWriteWord(&space_hack[22-14],0xfff8);
+  // free-12...free-8 : speed hack
+  pWriteWord(&space_hack[22-6],0x4ef9);
 
-    // Normally the 1st loop is 12 bytes before the 2nd loop
-    if (exit)
+  // Normally the 1st loop is 12 bytes before the 2nd loop
+  if (exit)
       pc = exit;
-    else {
+  else {
       pc = loop_start-12;
       if (ReadWord(&ROM[pc+2]) == 0x422d) // variation
-	pc+=2;
-    }
-    pWriteWord(&ROM[free-4],(pc) >> 16);
-    pWriteWord(&ROM[free-2],(pc) & 0xffff);
+	  pc+=2;
   }
+  pWriteWord(&space_hack[22-4],(pc) >> 16);
+  pWriteWord(&space_hack[22-2],(pc) & 0xffff);
 }
 
 static void dynamic_hack() {
