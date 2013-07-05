@@ -1975,7 +1975,7 @@ void load_common(int cps2)
    AddRWBW(0x900000, 0x92FFFF, NULL, cps1_gfxram);
 
    AddReadBW(0x800000, 0x800001, NULL, &input_buffer[4*2]); // port 4 (ctrl)
-   AddReadBW(0x800010, 0x80001f, NULL, &input_buffer[4*2]); // port 4 (ctrl)
+   AddReadBW(0x800010, 0x800011, NULL, &input_buffer[4*2]); // port 4 (ctrl)
 
    AddReadBW(0x800176, 0x800177, cps1_input2_r, NULL);
    AddReadBW(0x800178, 0x800179, cps1_input3_r, NULL);
