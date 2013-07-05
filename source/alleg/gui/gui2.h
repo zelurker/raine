@@ -168,7 +168,7 @@ static MENU menu[32] =
 DIALOG game_select[] =
 {
    /* (dialog proc)      (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp) */
-   { d_raine_window_proc,5,   00,   312,  230,  GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Change Game"},
+   { d_raine_window_proc,5,   00,   312,  230,  GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Change/Load ROM"},
 
    { d_raine_list_proc,  13,   35,   224,  GLIST_SIZE*8, GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    D_EXIT,  GUI_COL_TEXT_1,  0,    listbox_getter},
    { x_raine_button_proc,13,   189,  48,   16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'L',  D_EXIT,  0,    0,    "&Load"},

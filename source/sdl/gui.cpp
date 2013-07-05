@@ -280,7 +280,7 @@ static menu_item_t main_items[] =
 { "Region", &set_region, },
 { "Action replay cheats", &do_cheats, },
 { "Dipswitches", &do_dlg_dsw, },
-{ "Change game", &do_game_sel },
+{ "Change/Load ROM", &do_game_sel },
 { "Load neocd game", &load_neo_game },
 { "Neocd/Neogeo options", &do_neocd_options },
 { "Video options", &do_video_options },
