@@ -8,6 +8,8 @@
 
 #include "gameinc.h"
 #include "cps1.h"
+#include "sound/adpcm.h"
+#include "sound/sasound.h"
 
 static struct ROM_INFO rom_1944[] =
 {
@@ -1129,9 +1131,24 @@ static struct ROM_INFO rom_megaman2h[] = // clone of megaman2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct OKIM6295interface oki_gigaman2 =
+{
+	1,  /* 1 chip */
+	{ 1061 }, // ???
+	{ REGION_SMP1 },
+	{ 100 }
+};
+
+static struct SOUND_INFO sound_gigaman2[] =
+{
+   { SOUND_M6295, &oki_gigaman2     },
+   { 0,              NULL,                 },
+};
+
 static struct ROM_INFO rom_gigaman2[] = // clone of megaman2
 {
   { "sys_rom1.bin", 0x400000, 0x2eaa5e10, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
   { "cg_rom1.bin", 0x400000, 0xed55a641, REGION_GFX1, 0x0000000, LOAD_NORMAL },
   { "cg_rom2.bin", 0x400000, 0x63918c05, REGION_GFX1, 0x0400000, LOAD_NORMAL },
 	/* No Qsound, OKI instead.. */

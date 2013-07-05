@@ -974,6 +974,27 @@ static const struct gfx_range mapper_QD22B_table[] =
 	{ 0 }
 };
 
+#define mapper_QAD63B   { 0x8000, 0, 0, 0 }, mapper_QAD63B_table
+static const struct gfx_range mapper_QAD63B_table[] =
+{
+	/* type                              start   end     bank */
+	{ GFXTYPE_SCROLL1,                   0x0000, 0x07ff, 0 },
+	{ GFXTYPE_SCROLL3,                   0x0800, 0x1fff, 0 },
+	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x2000, 0x7fff, 0 },
+	{ 0 }
+};
+
+#define mapper_TN2292   { 0x8000, 0x8000, 0, 0 }, mapper_TN2292_table
+static const struct gfx_range mapper_TN2292_table[] =
+{
+	/* type                              start   end     bank */
+	{ GFXTYPE_SCROLL1,                   0x0000, 0x0fff, 0 },
+	{ GFXTYPE_SCROLL3,                   0x1000, 0x3fff, 0 },
+	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x4000, 0x7fff, 0 },
+
+	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x8000, 0xffff, 1 },
+	{ 0 }
+};
 
 #define mapper_qadj	{ 0x8000, 0, 0, 0 }, mapper_qadj_table
 static const struct gfx_range mapper_qadj_table[] =
@@ -1016,6 +1037,15 @@ static const struct gfx_range mapper_RCM63B_table[] =
 	{ 0 }
 };
 
+#define mapper_PKB10B   { 0x8000, 0, 0, 0 }, mapper_PKB10B_table
+static const struct gfx_range mapper_PKB10B_table[] =
+{
+	/* type                              start   end     bank */
+	{ GFXTYPE_SCROLL1,                   0x0000, 0x0fff, 0 },
+	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x1000, 0x5fff, 0 },
+	{ GFXTYPE_SCROLL3,                   0x6000, 0x7fff, 0 },
+	{ 0 }
+};
 
 #define mapper_pnickj	{ 0x8000, 0, 0, 0 }, mapper_pnickj_table
 static const struct gfx_range mapper_pnickj_table[] =
@@ -1065,143 +1095,194 @@ static const struct gfx_range mapper_cps2_table[] =
 
 static struct CPS1config cps1_config_table[]=
 {
-	/* name       CPSB         gfx mapper   in2  in3  out2   kludge */
-	{"forgottn", CPS_B_01,     mapper_LWCHR },
-	{"forgott1", CPS_B_01,     mapper_LW621 },
-	{"lostwrld", CPS_B_01,     mapper_LWCHR },
-	{"ghouls",   CPS_B_01,     mapper_DM620 },
-	{"ghoulsu",  CPS_B_01,     mapper_DM620 },
-	{"daimakai", CPS_B_01,     mapper_DM22A },	// equivalent to DM620
-	{"daimakr2", CPS_B_21_DEF, mapper_DAM63B },	// equivalent to DM620, also CPS_B_21_DEF is equivalent to CPS_B_01
-	{"strider",  CPS_B_01,     mapper_ST24M1 },
-	{"stridrua", CPS_B_01,     mapper_ST24M1 },
-	{"striderj", CPS_B_01,     mapper_ST24M1 },
-	{"stridrja", CPS_B_01,     mapper_ST22B },	// equivalent to ST24M1
-	{"dynwar",   CPS_B_02,     mapper_TK22B },
-	{"dynwaru",  CPS_B_02,     mapper_TK22B },
-	{"dynwarj",  CPS_B_02,     mapper_TK22B },
-	{"willow",   CPS_B_03,     mapper_WL24B },
-	{"willowj",  CPS_B_03,     mapper_WL24B },
-	{"willowje", CPS_B_03,     mapper_WL24B },
-	{"ffight",   CPS_B_04,     mapper_S224B },
-	{"ffightu",  CPS_B_04,     mapper_S224B },
-	{"ffightua", CPS_B_01,     mapper_S224B },
-	{"ffightub", CPS_B_05,     mapper_S224B },
-	{"ffightj",  CPS_B_04,     mapper_S224B },
-	{"ffightj1", CPS_B_02,     mapper_S224B },
-	{"ffightj2", CPS_B_01,     mapper_S224B },
-	{"1941",     CPS_B_05,     mapper_YI24B },
-	{"1941j",    CPS_B_05,     mapper_YI24B },
-	{"unsquad",  CPS_B_11,     mapper_AR24B },	/* CPSB ID not checked, but it's the same as sf2eg */
-	{"area88",   CPS_B_11,     mapper_AR22B },	// equivalent to AR24B
-	{"mercs",    CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
-	{"mercsu",   CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
-	{"mercsua",  CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
-	{"mercsj",   CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
-	{"msword",   CPS_B_13,     mapper_MS24B },	/* CPSB ID not checked, but it's the same as sf2j */
-	{"mswordr1", CPS_B_13,     mapper_MS24B },	/* CPSB ID not checked, but it's the same as sf2j */
-	{"mswordu",  CPS_B_13,     mapper_MS24B },	/* CPSB ID not checked, but it's the same as sf2j */
-	{"mswordj",  CPS_B_13,     mapper_MS24B },	/* CPSB ID not checked, but it's the same as sf2j */
-	{"mtwins",   CPS_B_14,     mapper_CK24B },
-	{"chikij",   CPS_B_14,     mapper_CK24B },
-	{"nemo",     CPS_B_15,     mapper_NM24B },
-	{"nemoj",    CPS_B_15,     mapper_NM24B },
-	{"cawing",   CPS_B_16,     mapper_CA24B },
-	{"cawingr1", CPS_B_16,     mapper_CA24B },
-	{"cawingu",  CPS_B_16,     mapper_CA24B },
-	{"cawingj",  CPS_B_16,     mapper_CA22B },	// equivalent to CA24B
-	{"sf2",      CPS_B_11,     mapper_STF29,  0x36 },
-	{"sf2eb",    CPS_B_17,     mapper_STF29,  0x36 },
-	{"sf2ua",    CPS_B_17,     mapper_STF29,  0x36 },
-	{"sf2ub",    CPS_B_17,     mapper_STF29,  0x36 },
-	{"sf2ud",    CPS_B_05,     mapper_STF29,  0x36 },
-	{"sf2ue",    CPS_B_18,     mapper_STF29,  0x3c },
-	{"sf2uf",    CPS_B_15,     mapper_STF29,  0x36 },
-	{"sf2ui",    CPS_B_14,     mapper_STF29,  0x36 },
-	{"sf2uk",    CPS_B_17,     mapper_STF29,  0x36 }, // check CPS_B
-	{"sf2j",     CPS_B_13,     mapper_STF29,  0x36 },
-	{"sf2ja",    CPS_B_17,     mapper_STF29,  0x36 },
-	{"sf2jc",    CPS_B_12,     mapper_STF29,  0x36 },
+	/* name         CPSB          gfx mapper   in2  in3  out2   kludge */
+	{"forgottn",    CPS_B_01,     mapper_LW621 },
+	{"forgottnu",   CPS_B_01,     mapper_LW621 },
+	{"forgottnu1",  CPS_B_01,     mapper_LWCHR },
+	{"forgottnua",  CPS_B_01,     mapper_LWCHR },
+	{"lostwrld",    CPS_B_01,     mapper_LWCHR },
+	{"lostwrldo",   CPS_B_01,     mapper_LWCHR },
+	{"ghouls",      CPS_B_01,     mapper_DM620 },
+	{"ghoulsu",     CPS_B_01,     mapper_DM620 },
+	{"daimakai",    CPS_B_01,     mapper_DM22A },   // equivalent to DM620
+	{"daimakair",   CPS_B_21_DEF, mapper_DAM63B },  // equivalent to DM620, also CPS_B_21_DEF is equivalent to CPS_B_01
+	{"strider",     CPS_B_01,     mapper_ST24M1 },
+	{"striderua",   CPS_B_01,     mapper_ST24M1 },  // wrong, this set uses ST24B2, still not dumped
+	{"striderj",    CPS_B_01,     mapper_ST22B },   // equivalent to ST24M1
+	{"striderjr",   CPS_B_21_DEF, mapper_ST24M1 },  // wrong, this set uses STH63B, still not dumped
+	{"dynwar",      CPS_B_02,     mapper_TK22B },   // wrong, this set uses TK24B1, dumped but equations still not added
+	{"dynwara",     CPS_B_02,     mapper_TK22B },
+	{"dynwarj",     CPS_B_02,     mapper_TK22B },
+	{"dynwarjr",    CPS_B_21_DEF, mapper_TK22B },   // wrong, this set uses TK163B, still not dumped
+	{"willow",      CPS_B_03,     mapper_WL24B },
+	{"willowo",     CPS_B_03,     mapper_WL24B },
+	{"willowj",     CPS_B_03,     mapper_WL24B },   // wrong, this set uses WL22B, still not dumped
+	{"ffight",      CPS_B_04,     mapper_S224B },
+	{"ffighta",     CPS_B_04,     mapper_S224B },
+	{"ffightu",     CPS_B_04,     mapper_S224B },
+	{"ffightu1",    CPS_B_04,     mapper_S224B },
+	{"ffightua",    CPS_B_01,     mapper_S224B },
+	{"ffightub",    CPS_B_05,     mapper_S224B },
+	{"ffightj",     CPS_B_04,     mapper_S224B },   // wrong, this set uses S222B, still not dumped
+	{"ffightj1",    CPS_B_01,     mapper_S224B },   // wrong, this set uses S222B, still not dumped
+	{"ffightj2",    CPS_B_02,     mapper_S224B },   // wrong, this set uses S222B, still not dumped
+	{"ffightjh",    CPS_B_01,     mapper_S224B },   // wrong, ffightjh hack doesn't even use the S222B PAL, since replaced with a GAL.
+	{"1941",        CPS_B_05,     mapper_YI24B },
+	{"1941r1",      CPS_B_05,     mapper_YI24B },
+	{"1941u",       CPS_B_05,     mapper_YI24B },
+	{"1941j",       CPS_B_05,     mapper_YI24B },   // wrong, this set uses YI22B, still not dumped
+	{"unsquad",     CPS_B_11,     mapper_AR24B },
+	{"area88",      CPS_B_11,     mapper_AR22B },   // equivalent to AR24B
+	{"area88r",     CPS_B_21_DEF, mapper_AR22B },   // wrong, this set uses ARA63B, still not dumped
+	{"mercs",       CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
+	{"mercsu",      CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
+	{"mercsur1",    CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },
+	{"mercsj",      CPS_B_12,     mapper_O224B,  0x36, 0, 0x34 },   // wrong, this set uses O222B, still not dumped
+	{"msword",      CPS_B_13,     mapper_MS24B },
+	{"mswordr1",    CPS_B_13,     mapper_MS24B },
+	{"mswordu",     CPS_B_13,     mapper_MS24B },
+	{"mswordj",     CPS_B_13,     mapper_MS24B },   // wrong, this set uses MS22B, still not dumped
+	{"mtwins",      CPS_B_14,     mapper_CK24B },
+	{"chikij",      CPS_B_14,     mapper_CK24B },   // wrong, this set uses CK22B, still not dumped
+	{"nemo",        CPS_B_15,     mapper_NM24B },
+	{"nemoj",       CPS_B_15,     mapper_NM24B },   // wrong, this set uses NM22B, still not dumped
+	{"cawing",      CPS_B_16,     mapper_CA24B },
+	{"cawingr1",    CPS_B_16,     mapper_CA24B },
+	{"cawingu",     CPS_B_16,     mapper_CA24B },
+	{"cawingj",     CPS_B_16,     mapper_CA22B },   // equivalent to CA24B
+	{"cawingbl",    CPS_B_16,     mapper_CA22B },   // equivalent to CA24B
+	{"sf2",         CPS_B_11,     mapper_STF29,  0x36 },
+	{"sf2eb",       CPS_B_17,     mapper_STF29,  0x36 },
+	{"sf2ee",       CPS_B_18,     mapper_STF29,  0x3c },
+	{"sf2ebbl",     CPS_B_17,     mapper_STF29,  0x36, 0, 0, 1  },
+	{"sf2stt",      CPS_B_17,     mapper_STF29,  0x36, 0, 0, 1  },
+	{"sf2rk",       CPS_B_17,     mapper_STF29,  0x36, 0, 0, 1  },
+	{"sf2ua",       CPS_B_17,     mapper_STF29,  0x36 },
+	{"sf2ub",       CPS_B_17,     mapper_STF29,  0x36 },
+	{"sf2uc",       CPS_B_12,     mapper_STF29,  0x36 },
+	{"sf2ud",       CPS_B_05,     mapper_STF29,  0x36 },
+	{"sf2ue",       CPS_B_18,     mapper_STF29,  0x3c },
+	{"sf2uf",       CPS_B_15,     mapper_STF29,  0x36 },
+	{"sf2ug",       CPS_B_11,     mapper_STF29,  0x36 },
+	{"sf2ui",       CPS_B_14,     mapper_STF29,  0x36 },
+	{"sf2uk",       CPS_B_17,     mapper_STF29,  0x36 },
+	{"sf2j",        CPS_B_13,     mapper_STF29,  0x36 },
+	{"sf2ja",       CPS_B_17,     mapper_STF29,  0x36 },
+	{"sf2jc",       CPS_B_12,     mapper_STF29,  0x36 },
+	{"sf2qp1",      CPS_B_17,     mapper_STF29,  0x36 },
+	{"sf2thndr",    CPS_B_17,     mapper_STF29,  0x36 },
+
 	/* from here onwards the CPS-B board has suicide battery and multiply protection */
-	{"3wonders", CPS_B_21_BT1, mapper_RT24B },
-	{"3wonderu", CPS_B_21_BT1, mapper_RT24B },
-	{"wonder3",  CPS_B_21_BT1, mapper_RT22B },	// equivalent to RT24B
-	{"3wonderh", CPS_B_02    , mapper_RT24B },	/* Not 100% sure of the CPS B-ID */
-	{"kod",      CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
-	{"kodu",     CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
-	{"kodj",     CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
-	{"kodb",     CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },	/* bootleg, doesn't use multiply protection */
-	{"captcomm", CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
-	{"captcomu", CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
-	{"captcomj", CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
-	{"captcomb", CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
-	{"knights",  CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
-	{"knightsu", CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
-	{"knightsj", CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
-	{"sf2ce",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2ceua",  CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2ceub",  CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2ceuc",  CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2cej",   CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2rb",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2rb2",   CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2rb3",   CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2red",   CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2v004",  CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2accp2", CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2m1",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2m2",    CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2m3",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2m4",    HACK_B_1,     mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2m5",    CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2m6",    CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2m7",    CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2yyc",   CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2koryu", CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2mdt",   CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"varth",    CPS_B_04,     mapper_VA63B },	/* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */
-	{"varthr1",  CPS_B_04,     mapper_VA63B },	/* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */
-	{"varthu",   CPS_B_04,     mapper_VA63B },	/* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */
-	{"varthj",   CPS_B_21_BT5, mapper_VA22B },	/* CPSB test has been patched out (72=0001) register is also written to, possibly leftover from development */
-	{"cworld2j", CPS_B_21_BT6, mapper_Q522B,  0x36, 0, 0x34 },	/* (ports 36, 34 probably leftover input code from another game) */
-	{"wof",      CPS_B_21_DEF, mapper_TK263B },	/* bootleg? */
-	{"wofa",     CPS_B_21_DEF, mapper_TK263B },	/* bootleg? */
-	{"wofu",     CPS_B_21_QS1, mapper_TK263B },
-	{"wofj",     CPS_B_21_QS1, mapper_TK263B },
-	{"wofhfh",   CPS_B_21_DEF, mapper_TK263B, 0x36 }, /* Chinese bootleg */
-	{"dino",     CPS_B_21_QS2, mapper_CD63B },	/* layer enable never used */
-	{"dinou",    CPS_B_21_QS2, mapper_CD63B },	/* layer enable never used */
-	{"dinoj",    CPS_B_21_QS2, mapper_CD63B },	/* layer enable never used */
-	{"dinopic",  CPS_B_21_QS2, mapper_CD63B },	/* layer enable never used */
-	{"dinopic2", CPS_B_21_QS2, mapper_CD63B },	/* layer enable never used */
-	{"punisher", CPS_B_21_QS3, mapper_PS63B },
-	{"punishru", CPS_B_21_QS3, mapper_PS63B },
-	{"punishrj", CPS_B_21_QS3, mapper_PS63B },
-	{"punipic",  CPS_B_21_QS3, mapper_PS63B },
-	{"punipic2", CPS_B_21_QS3, mapper_PS63B },
-	{"punipic3", CPS_B_21_QS3, mapper_PS63B },
-	{"slammast", CPS_B_21_QS4, mapper_MB63B },
-	{"slammasu", CPS_B_21_QS4, mapper_MB63B },
-	{"mbomberj", CPS_B_21_QS4, mapper_MB63B },
-	{"mbombrd",  CPS_B_21_QS5, mapper_MB63B },
-	{"mbombrdj", CPS_B_21_QS5, mapper_MB63B },
-	{"sf2hf",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2t",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"sf2tj",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
-	{"qad",      CPS_B_21_BT7, mapper_QD22B,  0x36 },	/* TODO: layer enable (port 36 probably leftover input code from another game) */
-	{"qadj",     CPS_B_21_DEF, mapper_qadj,   0x36, 0x38, 0x34 },	/* (ports 36, 38, 34 probably leftover input code from another game) */
-	{"qtono2",   CPS_B_21_DEF, mapper_qtono2, 0x36, 0x38, 0x34 },	/* (ports 36, 38, 34 probably leftover input code from another game) */
-	{"megaman",  CPS_B_21_DEF, mapper_RCM63B },
-	{"rockmanj", CPS_B_21_DEF, mapper_RCM63B },
-	{"pnickj",   CPS_B_21_DEF, mapper_pnickj },
-	{"pang3",    CPS_B_21_DEF, mapper_pang3 },	/* EEPROM port is among the CPS registers (handled by DRIVER_INIT) */
-	{"pang3j",   CPS_B_21_DEF, mapper_pang3 },	/* EEPROM port is among the CPS registers (handled by DRIVER_INIT) */
-	{"sfzch",    CPS_B_21_DEF, mapper_sfzch },
 
-    /* CPS2 games */
-	{"cps2",     CPS_B_21_DEF, mapper_cps2 },
+	{"3wonders",    CPS_B_21_BT1, mapper_RT24B },
+	{"3wondersu",   CPS_B_21_BT1, mapper_RT24B },
+	{"wonder3",     CPS_B_21_BT1, mapper_RT22B },   // equivalent to RT24B
+	{"3wondersh",   CPS_B_02    , mapper_RT24B },   /* Not 100% sure of the CPS B-ID */
+	{"kod",         CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
+	{"kodr1",       CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
+	{"kodu",        CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
+	{"kodj",        CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },
+	{"kodja",       CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },   // wrong, this set uses KD22B, still not dumped
+	{"kodb",        CPS_B_21_BT2, mapper_KD29B,  0x36, 0, 0x34 },   /* bootleg, doesn't use multiply protection */
+	{"captcomm",    CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"captcommr1",  CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"captcommu",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"captcommj",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"captcommjr1", CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"captcommb",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"knights",     CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
+	{"knightsu",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
+	{"knightsj",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
+	{"knightsja",   CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, this set uses KR22B, still not dumped
+	{"knightsb",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
+	{"sf2ce",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2ceea",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2ceua",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2ceub",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2ceuc",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2ceja",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2cejb",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2cejc",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2rb",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2rb2",      CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2rb3",      CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2red",      CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2v004",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2acc",      CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2acca",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2accp2",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2amf",      CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 }, // probably wrong but this set is not completely dumped anyway
+	{"sf2dkot2",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2m1",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2m2",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2m3",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2m4",       HACK_B_1,     mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2m5",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2m6",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2m7",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+//sf2m8 unsupported
+	{"sf2yyc",      CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2koryu",    CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2mdt",      CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"sf2mdta",     CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
+	{"varth",       CPS_B_04,     mapper_VA63B },   /* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */  // wrong, this set uses VA24B, dumped but equations still not added
+	{"varthr1",     CPS_B_04,     mapper_VA63B },   /* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */  // wrong, this set uses VA24B, dumped but equations still not added
+	{"varthu",      CPS_B_04,     mapper_VA63B },   /* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */
+	{"varthj",      CPS_B_21_BT5, mapper_VA22B },   /* CPSB test has been patched out (72=0001) register is also written to, possibly leftover from development */
+	{"cworld2j",    CPS_B_21_BT6, mapper_Q522B,  0x36, 0, 0x34 },   /* (ports 36, 34 probably leftover input code from another game) */
+	{"wof",         CPS_B_21_QS1, mapper_TK263B },
+	{"wofr1",       CPS_B_21_DEF, mapper_TK263B },
+	{"wofa",        CPS_B_21_DEF, mapper_TK263B },
+	{"wofu",        CPS_B_21_QS1, mapper_TK263B },
+	{"wofj",        CPS_B_21_QS1, mapper_TK263B },
+	{"wofhfh",      CPS_B_21_DEF, mapper_TK263B, 0x36 },    /* Chinese bootleg */
+	{"dino",        CPS_B_21_QS2, mapper_CD63B },   /* layer enable never used */
+	{"dinou",       CPS_B_21_QS2, mapper_CD63B },   /* layer enable never used */
+	{"dinoj",       CPS_B_21_QS2, mapper_CD63B },   /* layer enable never used */
+	{"dinopic",     CPS_B_21_QS2, mapper_CD63B },   /* layer enable never used */
+	{"dinopic2",    CPS_B_21_QS2, mapper_CD63B },   /* layer enable never used */
+	{"dinohunt",    CPS_B_21_DEF, mapper_CD63B },   /* Chinese bootleg */
+	{"punisher",    CPS_B_21_QS3, mapper_PS63B },
+	{"punisheru",   CPS_B_21_QS3, mapper_PS63B },
+	{"punisherh",   CPS_B_21_QS3, mapper_PS63B },
+	{"punisherj",   CPS_B_21_QS3, mapper_PS63B },
+	{"punipic",     CPS_B_21_QS3, mapper_PS63B },
+	{"punipic2",    CPS_B_21_QS3, mapper_PS63B },
+	{"punipic3",    CPS_B_21_QS3, mapper_PS63B },
+	{"punisherbz",  CPS_B_21_DEF, mapper_PS63B },   /* Chinese bootleg */
+	{"slammast",    CPS_B_21_QS4, mapper_MB63B },
+	{"slammastu",   CPS_B_21_QS4, mapper_MB63B },
+	{"mbomberj",    CPS_B_21_QS4, mapper_MB63B },
+	{"mbombrd",     CPS_B_21_QS5, mapper_MB63B },
+	{"mbombrdj",    CPS_B_21_QS5, mapper_MB63B },
+	{"sf2hf",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2hfu",      CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2hfj",      CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"qad",         CPS_B_21_BT7, mapper_QD22B,  0x36 },    /* TODO: layer enable (port 36 probably leftover input code from another game) */
+	{"qadjr",       CPS_B_21_DEF, mapper_QAD63B, 0x36, 0x38, 0x34 },    /* (ports 36, 38, 34 probably leftover input code from another game) */
+	{"qtono2j",     CPS_B_21_DEF, mapper_TN2292, 0x36, 0x38, 0x34 },    /* (ports 36, 38, 34 probably leftover input code from another game) */
+	{"megaman",     CPS_B_21_DEF, mapper_RCM63B },
+	{"megamana",    CPS_B_21_DEF, mapper_RCM63B },
+	{"rockmanj",    CPS_B_21_DEF, mapper_RCM63B },
+	{"pnickj",      CPS_B_21_DEF, mapper_PKB10B },
+	{"pang3",       CPS_B_21_DEF, mapper_pang3 },   /* EEPROM port is among the CPS registers (handled by DRIVER_INIT) */   // should use one of these three CP1B1F,CP1B8K,CP1B9KA still not dumped
+	{"pang3r1",     CPS_B_21_DEF, mapper_pang3 },   /* EEPROM port is among the CPS registers (handled by DRIVER_INIT) */   // should use one of these three CP1B1F,CP1B8K,CP1B9K
+	{"pang3j",      CPS_B_21_DEF, mapper_pang3 },   /* EEPROM port is among the CPS registers (handled by DRIVER_INIT) */   // should use one of these three CP1B1F,CP1B8K,CP1B9K
+	{"pang3b",      CPS_B_21_DEF, mapper_pang3 },   /* EEPROM port is among the CPS registers (handled by DRIVER_INIT) */   // should use one of these three CP1B1F,CP1B8K,CP1B9K
+	{"ganbare",     CPS_B_21_DEF, mapper_sfzch },   // wrong, this set uses GBPR2, still not dumped
 
-	{0}		/* End of table */
+	/* CPS Changer */
+
+	{"sfach",       CPS_B_21_DEF, mapper_sfzch },   // wrong, this set uses an unknown PAL, still not dumped
+	{"sfzbch",      CPS_B_21_DEF, mapper_sfzch },   // wrong, this set uses an unknown PAL, still not dumped
+	{"sfzch",       CPS_B_21_DEF, mapper_sfzch },   // wrong, this set uses an unknown PAL, still not dumped
+	{"wofch",       CPS_B_21_DEF, mapper_TK263B },
+
+	/* CPS2 games */
+
+	{"cps2",        CPS_B_21_DEF, mapper_cps2 },
+
+	{0}     /* End of table */
 };
 
 static UINT16 cps1_port[0x100],scroll2x,scroll2y;
@@ -1672,6 +1753,9 @@ static void qsound_set_z80()
 {
   qsound_sharedram1 = Z80RAM;
   qsound_sharedram2 = Z80RAM + 0x1000;
+  if (is_current_game("gigaman2")) {
+      return;
+  }
   z80_init_data_banks(0,REGION_ROM2,0x0,0x4000); // The rom seems to be counted as banks !
 
   if (cps_version==2) {
@@ -2304,8 +2388,33 @@ void load_cps2() {
   size_code = get_region_size(REGION_ROM1);
   ByteSwap(ROM, size_code );
   cps2crpt();
-  xor = (UINT16*)load_region[REGION_USER1];
-  size_user1 = get_region_size(REGION_USER1);
+  if (is_current_game("gigaman2")) {
+      xor = (UINT16*)ROM;
+      size_user1 = size_code / 2;
+      ROM += size_code/2;
+      size_code /= 2;
+      int length = get_region_size(REGION_GFX1),i;
+      UINT16 *rom = (UINT16*) load_region[REGION_GFX1];
+      UINT16 *buf = (UINT16*)AllocateMem(length*2);
+      memcpy(buf,rom,length);
+      for (i = 0; i < length/2; i++) {
+	  rom[i] = buf[((i & ~7) >> 2) | ((i & 4) << 18) | ((i & 2) >> 1) | ((i & 1) << 21)];
+      }
+      /* Bad hack : apparently the code of the sprites are all outside the
+       * normal range (they have the megaman2 range), and must be anded so that
+       * the game works. Now, until now I could do without anding anything, if
+       * I want to continue, I have to duplicate the sprites here.
+       * It's a wonder so many games finally work without and finally... ! */
+      memcpy(buf,rom,length);
+      memcpy(buf+length/2,rom,length);
+      FreeMem((UINT8*)rom);
+      load_region[REGION_GFX1] = (UINT8*)buf;
+      set_region_size(REGION_GFX1,length*2);
+
+  } else {
+      xor = (UINT16*)load_region[REGION_USER1];
+      size_user1 = get_region_size(REGION_USER1);
+  }
 /*  save_debug("xor",xor,size_user1,1);
   ByteSwap(xor,size_user1); */
 
@@ -2773,9 +2882,11 @@ void execute_cps2_frame(void)
     nb_executed += slices;
   }
 
-  for (n=0; n< slices; n++) {
-    cpu_execute_cycles(CPU_Z80_0, Z80_FRAME/slices);
-    cpu_interrupt(CPU_Z80_0, 0x38);
+  if (Z80ROM) {
+      for (n=0; n< slices; n++) {
+	  cpu_execute_cycles(CPU_Z80_0, Z80_FRAME/slices);
+	  cpu_interrupt(CPU_Z80_0, 0x38);
+      }
   }
   if (!speed_hack) {
     dynamic_hack();
