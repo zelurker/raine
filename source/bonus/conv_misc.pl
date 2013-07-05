@@ -132,9 +132,9 @@ while (<>) {
 		my $genre = ($parent !~ /^(0|neogeo)$/ ? get_genre($parent) : get_genre($name));
 		if ($cps1_mode || $cps2_mode) {
 			if ($rot eq "ROT0") {
-				$rot = "&cps1_video";
+				$rot = undef;
 			} elsif ($rot eq "ROT270") {
-				$rot = "&cps1_video_270";
+				$rot = "&video_cps1_270";
 			} else {
 				die "angle $rot not handled yet, sorry this is a case of error\n";
 			}
@@ -221,9 +221,8 @@ while (<>) {
 		} else {
 			print "GMEI( $name, $long_name, $company, $year, $genre";
 		}
-		if ($input) {
-			print ",\n  .input = input_$input";
-		}
+		print ",\n  .input = input_$input" if ($input);
+		print ",\n  .video = $rot" if ($rot);
 		print ");\n";
 	}
 }
