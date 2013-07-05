@@ -1198,12 +1198,8 @@ GMEI( s1945,
    GAME_SHOOT,
    .romsw = romsw_gunbird);
 
-CLNEI(s1945j,
-	   s1945,
-   "Strikers 1945 (Japan)",
-   PSIKYO,
-   1995,
-   GAME_SHOOT);
+CLNEI(s1945j, s1945, "Strikers 1945 (Japan)", PSIKYO, 1995, GAME_SHOOT,
+	.load_game = &load_s1945j);
 
 GMEI( tengai,
        "Tengai/Sengoku Blade:Sengoku Ace II",
