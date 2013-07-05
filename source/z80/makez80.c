@@ -4217,7 +4217,7 @@ void DataSegment(void)
 	fprintf(fp, "bEIExit    db      0       ; Are we exiting because of an EI instruction?\n");
 	fprintf(fp,"_ExitOnEI:\n");
 	fprintf(fp,"ExitOnEI         db 0\n");
-	fprintf(fp,"_Z80Has16bitsPorts:         db 0\n");
+	fprintf(fp,"_Z80Has16bitsPorts:\n");
 	fprintf(fp,"Z80Has16bitsPorts:         db 0\n");
 	fprintf(fp, "_baseFixup dd      0       ; Our base fixup for when we're out of time\n");
 	fprintf(fp, "_z80stoponintend   dd      0       ; int patch\n");
