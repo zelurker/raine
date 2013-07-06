@@ -363,10 +363,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       sprintf(cmd,"dz80 -d \"%s\"",name);
       break;
   }
-  if (cpu_id == 3)
-      save_file(name,ptr,end-start); // ptr is always at the start for 68020
-  else
-      save_file(name,&ptr[start],end-start);
+  save_file(name,&ptr[start],end-start);
   if (cpu_id == 1)
 	  ByteSwap(&ptr[start],end-start);
   if (used_offs[start/0x10000]) {
