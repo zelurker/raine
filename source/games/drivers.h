@@ -546,7 +546,7 @@
   DRV(darius)
   DRV(dariuso)
   DRV(dariuse)
-  DRV(darius)
+  DRV(dariusj)
 
 // dariusg.c
   DRV(dariusgx)
