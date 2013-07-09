@@ -136,27 +136,33 @@ while ($_ = shift @file) {
 							my $args = $2;
 							my @args = split(/\, */,$args);
 							my ($name,$base,$size,$crc,$attrib) = @args;
+							my $reload = 0;
 							if ($name !~ /"/) {
 								# for continue
-								$size = $base;
-								$base = $name;
-								$name = $oldname;
-								$crc = $oldcrc;
+								if ($function eq "ROM_RELOAD") {
+									$reload = 1;
+									$size = $base;
+									$size =~ s/ +//;
+									$base = $name;
+									$name = $oldname;
+									$crc = $oldcrc;
+									$function = $oldfunc;
+								} else {
+									$size = $base;
+									$base = $name;
+									$name = $oldname;
+									$crc = $oldcrc;
+								}
 							}
 
 							if ($crc =~ /CRC\((.+?)\)/) {
 								$crc = "0x$1";
 							}
 							$size =~ s/^ *//;
-							if ($raine_loads{$function}) {
+							if ($reload) {
+								# just do nothing in this case !
+							} elsif ($raine_loads{$function}) {
 								$function = ($load_be ? "LOAD_BE" : $raine_loads{$function});
-							} elsif ($function eq "ROM_RELOAD") {
-								$size = $base;
-								$size =~ s/ +//;
-								$base = $name;
-								$name = $oldname;
-								$crc = $oldcrc;
-								$function = $oldfunc;
 							} elsif ($function eq "ROMX_LOAD") {
 								my @arg = split(/ *\| */,$attrib);
 								if ($arg[0] eq "ROM_GROUPBYTE") {
