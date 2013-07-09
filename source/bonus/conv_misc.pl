@@ -114,13 +114,20 @@ while (<>) {
 		}
 		print "\n";
 	}
-	if (/^GAME\( (.+) ?\)/) {
-		my $string = $1;
+	if (/^(GAME|CONS)\( (.+) ?\)/) {
+		my $func = $1;
+		my $string = $2;
 		while ($string =~ s/"(.+?),(.+?)", *"(.+)" *,/"$1\£$2", "$3",/g) {}
 		while ($string =~ s/"(.+?)", *"(.+?),(.+?)" *,/"$1", "$2\£$3",/g) {}
 
 		my ($year,$name,$parent,$machine,$input, $class, $init,
 			$rot,$company,$long_name,$reste) = split(/\, */,$string);
+		if ($func eq "CONS") {
+			($year,$name,$parent,undef,$machine,$input, $class, $init,
+				$company,$long_name,$reste) = split(/\, */,$string);
+			$rot = "ROT0";
+		}
+
 		$long_name =~ s/\£/\,/g;
 		$company =~ s/\£/\,/g;
 		$name =~ s/ //g;
