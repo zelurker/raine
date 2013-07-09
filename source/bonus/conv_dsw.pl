@@ -9,19 +9,8 @@ use strict;
 my ($on,$off);
 my %raine_dsw =
     (
-     "Unknown" => "MSG_UNKNOWN",
      "None" => "MSG_UNKNOWN",
-     "Normal" => "MSG_NORMAL",
-     "Hard" => "MSG_HARD",
-     "Alternate" => "MSG_ALTERNATE",
-     "Easy" => "MSG_EASY",
-     "Very_Easy" => "MSG_VERY_EASY",
-     "Very_Hard" => "MSG_VERY_HARD",
-     "Hardest" => "MSG_HARDEST",
-     "Medium" => "MSG_MEDIUM",
 
-     "Off" => "MSG_OFF",
-     "On" => "MSG_ON",
      "Coin_A" => "MSG_COIN1",
      "9C_1C" => "MSG_9COIN_1PLAY",
      "8C_1C" => "MSG_8COIN_1PLAY",
@@ -78,17 +67,9 @@ my %raine_dsw =
      "Coin_B" => "MSG_COIN2",
      "Demo_Sounds" => "MSG_DEMO_SOUND",
      "Flip_Screen" => "MSG_SCREEN",
-     "Cabinet" => "MSG_CABINET",
-     "Upright" => "MSG_UPRIGHT",
      "Cocktail" => "MSG_TABLE",
-     "Difficulty" => "MSG_DIFFICULTY",
      "Bonus_Life" => "MSG_EXTRA_LIFE",
      "Lives" => "MSG_LIVES",
-     "Yes" => "MSG_YES",
-     "No" => "MSG_NO",
-     "Free_Play" => "MSG_FREE_PLAY",
-     "Unused" => "MSG_UNUSED",
-     "Coinage" => "MSG_COINAGE",
      "Service_Mode" => "MSG_SERVICE",
      );
 
@@ -165,7 +146,7 @@ sub get_raine_dsw($) {
     $function = $raine_dsw{$dsw};
   } else {
     print STDERR "warning : Unknown DSW $dsw from $_\n";
-    $function = "\"$dsw\"";
+    $function = "MSG_".uc($dsw);
   }
   $function;
 }
@@ -199,41 +180,45 @@ my %default_macro = ();
 
 my $last_line = "";
 my (%def,%args) = ();
+
+sub define_macro {
+	my $name = $1;
+	my $fin = $2;
+	my $args = undef;
+	if ($name =~ s/\((.+)\)//) {
+		$args = $1;
+	}
+	$fin =~ s/\r//;
+	my $multi = undef;
+	if ($fin =~ s/\\//) {
+		$multi = 1;
+	}
+	$fin =~ s/^[ \t]*//;
+	$def{$name} = $fin if ($fin);
+
+	print STDERR "define $name found";
+	print STDERR " args $args" if ($args);
+	print STDERR " fin $fin" if ($fin);
+	print STDERR " multi" if ($multi);
+	if ($multi) {
+		while ($_ = shift @file) {
+			s/\r$//;
+			my $rep = s/\\$//;
+			$def{$name} .= $_;
+			$args{$name} = $args;
+			last if (!$rep);
+		}
+	}
+	if (!$def{$name}) {
+		$def{$name} = " ";
+		print STDERR " empty";
+	}
+	print STDERR "\n";
+}
+
 while (read_next_line()) {
 	if (/^#define (.+?)( .+)/ || /^#define (.+)/) {
-		my $name = $1;
-		$name =~ s/[ \t]+$//;
-		my $fin = $2;
-		my $args = undef;
-		if ($name =~ s/\((.+)\)//) {
-			$args = $1;
-		}
-		$fin =~ s/\r//;
-		my $multi = undef;
-		if ($fin =~ s/\\//) {
-			$multi = 1;
-		}
-		$fin =~ s/^[ \t]*//;
-		$def{$name} = $fin if ($fin);
-
-		print STDERR "define $name found";
-		print STDERR " args $args" if ($args);
-		print STDERR " fin $fin" if ($fin);
-		print STDERR " multi" if ($multi);
-		if ($multi) {
-			while ($_ = shift @file) {
-				s/\r$//;
-				my $rep = s/\\$//;
-				$def{$name} .= $_;
-				$args{$name} = $args;
-				last if (!$rep);
-			}
-		}
-		if (!$def{$name}) {
-			$def{$name} = " ";
-			print STDERR " empty";
-		}
-		print STDERR "\n";
+		define_macro($1,$2);
 	} elsif (/INPUT_PORTS_START\( (.+?) \)/ || $macro) {
 		if (!$macro) {
 			$name = $1;
@@ -343,27 +328,27 @@ while (read_next_line()) {
 				$output .= "\t// $1" if (/\/\/ (.+)/);
 				$output .= "\n";
 				$length++;
-			} elsif (!/^[ \t]*(\/\*.+)?$/) {
-				# macro
-				my $macro_name = $_;
-				$macro_name =~ s/\r//;
-				chomp $macro_name;
-				if (!/IPT_UNKNOWN/ && !/PORT/) {
-					$macro_name =~ s/[ \t]+//g;
-					if ($def{$macro_name}) {
-						my $xargs = $args{$macro_name};
-						my $def = $def{$macro_name};
-						if ($xargs) {
-							die "cette macro a des arguments : $macro_name, pas géré\n";
+			} elsif (/([A-Z_0-9]+)\((.+)\)/ || /^[\t ]*([A-Z_0-9]+)/) {
+				my ($function,$args) = ($1,$2);
+				my @args = split /, */,$args;
+				foreach (@args) {
+					s/^[ \t]*//;
+					s/[ \t]*$//;
+				}
+				if ($def{$function}) {
+					print STDERR "macro found $function\n";
+					my $xargs = $args{$function};
+					my $def = $def{$function};
+					if ($xargs) {
+						my @xargs = split(/\, */,$xargs);
+						for (my $n=0; $n<= $#xargs; $n++) {
+							$def =~ s/$xargs[$n]/$args[$n]/g;
 						}
-						unshift @file,split(/\n/,$def);
-						next;
 					}
-					if (!defined($default_macro{$macro_name})) {
-						print STDERR "macro non reconnue $macro_name - je continue\n";
-					}
-					$main_out .= $_;
-					$default |= $default_macro{$macro_name};
+					unshift @file,split(/\n/,$def);
+					next;
+				} else {
+					print STDERR "unknown $function\n";
 				}
 			} elsif ($started) { # end of the dsw section if started
 				# difficulty
