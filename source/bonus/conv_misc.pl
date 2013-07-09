@@ -9,11 +9,14 @@ use LWP::Simple;
 $| = 1;
 my $cps2_mode;
 my $cps1_mode;
+my %genre = ();
 
 sub get_genre($) {
 	# get the game genre from maws !
 	my $name = shift;
+	return $genre{$name} if ($genre{$name});
 
+	$genre{$name} = "GAME_MISC"; # default genre
 	# my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
 	my $doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
 	if (!$doc) {
@@ -45,6 +48,7 @@ sub get_genre($) {
 				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
 				$genre = "GAME_MISC";
 			}
+			$genre{$name} = $genre;
 			return $genre;
 	}
 	print STDERR "genre not found in page for $name - using GAME_MISC\n";
@@ -154,29 +158,6 @@ while (<>) {
 			} else {
 				$game = "cps1_";
 			}
-			$input = "_$input" if ($input =~ /^\d/);
-			if (!$parent) {
-				if ($game =~ /cps1_/) {
-					print "cps1_game( $name, $long_name, $year, $input\_dsw, $rot, $company, $genre );\n";
-				} elsif ($game =~ /forgott/) {
-					print "forgottn_game( $name, $long_name, $year, $company, $genre);\n";
-				} else {
-					print $game."game( $name, $long_name, $year, $input\_dsw, $company, $genre );\n";
-				}
-			} else {
-				if ($game =~ /cps1_/) {
-					print "cps1_clone( $name, $long_name, $year, $input\_dsw, $rot, $company, $genre, \"$parent\" );\n";
-				} elsif ($game =~ /forgott/) {
-					print "forgottn_clone( $name, $long_name, $year, $company, $genre, \"$parent\" );\n";
-				} else {
-					if ($game =~ /sf2_/ && $input ne "sf2j") {
-						# only sf2j so far has its own dipswitches, but there are probably others !!!
-						print $game."clone( $name, $long_name, $year, sf2_dsw, $company, $genre, \"$parent\" );\n";
-					} else {
-						print $game."clone( $name, $long_name, $year, $input\_dsw, $company, $genre, \"$parent\" );\n";
-					}
-				}
-			}
 		} elsif ($cps2_mode) {
 			if ($input eq "cps2_2p6b") {
 				$input = "p2b6";
@@ -216,13 +197,40 @@ while (<>) {
 			}
 			$input = undef if ($input eq "p2b6"); # default inputs for driver
 		}
+		# not working, bad clones
+		next if ($cps1_mode && $machine eq "knightsb" || $machine eq "cpspicb");
 		if ($parent ne "0") {
 			print "CLNEI( $name, $parent, $long_name, $company, $year, $genre";
 		} else {
 			print "GMEI( $name, $long_name, $company, $year, $genre";
 		}
-		print ",\n  .input = input_$input" if ($input);
+		print ",\n  .input = input_$input" if ($input && $input ne $name && $input ne $parent);
+		print ", .dsw = dsw_$input" if ($input && $cps1_mode && $input ne
+			$name && $input ne $parent);
 		print ",\n  .video = $rot" if ($rot);
+		if ($cps1_mode) {
+			$_ = $machine;
+			my ($load,$exec) = ();
+			if ($_ eq "cps1_10MHz") {
+				# $load = "load_cps1_10";
+				# default load, driver untouched
+			} elsif (/(cps1_12MHz|wofhfh|pang3)/) {
+				$load = "load_cps1_12";
+			} elsif ($_ eq "qsound") {
+				$load = "load_qsound";
+				$exec = "execute_qsound_frame";
+			} elsif (/^sf2m3$/) {
+				$load = "load_sf2m3";
+			} elsif ($_ eq "ganbare") {
+				$exec = "execute_ganbare";
+			} else {
+				die "unknown machine $_\n";
+			}
+			print ",\n  .load_game = $load" if ($load && $load ne
+				"load_$name" && $load ne "load_$parent");
+			print ",\n  .exec = $exec" if ($exec && $exec ne
+				"execute_$name");
+		}
 		print ");\n";
 	}
 }
