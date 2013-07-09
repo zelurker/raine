@@ -4037,6 +4037,24 @@ static struct ROMSW_INFO romsw_mpangj[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_DATA romswd_phoenix[] =
+{
+  { "Japan", 0x0},
+  { "USA", 1 },
+  { "Euro",0x2},
+  { "Brazil", 0x3},
+  { "Hispanic", 4 },
+  { "Asia", 5 },
+  { NULL,                    0    },
+};
+
+
+static struct ROMSW_INFO romsw_phoenix[] =
+{
+   { 0xfffffe, 0x02, romswd_phoenix },
+   { 0,        0,    NULL },
+};
+
 GMEI( ssf2, "Super Street Fighter II: The New Challengers (World 930911)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2u, ssf2, "Super Street Fighter II: The New Challengers (USA 930911)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2a, ssf2, "Super Street Fighter II: The New Challengers (Asia 931005)", CAPCOM, 1993, GAME_BEAT);
@@ -4439,7 +4457,8 @@ CLNEI( ssf2xjd, ssf2t, "Super Street Fighter II X: Grand Master Challenge (Japan
 CLNEI( sgemfd, sgemf, "Super Gem Fighter Mini Mix (USA 970904 Phoenix Edition) (bootleg)", BOOTLEG, 1997, GAME_BEAT,
   .input = input_p2b3);
 CLNEI( mmatrixd, mmatrix, "Mars Matrix: Hyper Solid Shooting (USA 000412 Phoenix Edition) (bootleg)", BOOTLEG, 2000, GAME_SHOOT,
-  .input = input_p2b1);
+  .input = input_p2b1,
+  .romsw = romsw_phoenix);
 CLNEI( dimahoud, dimahoo, "Dimahoo (USA 000121 Phoenix Edition) (bootleg)", BOOTLEG, 2000, GAME_SHOOT,
   .video = &video_cps1_270,
   .input = input_p2b3);

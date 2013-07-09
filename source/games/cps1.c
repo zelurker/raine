@@ -2573,8 +2573,12 @@ void load_cps2() {
   AddRWBW(0x900000, 0x92FFFF, NULL, cps1_gfxram); // ram + 0x10000
 
   if (xor) AddRWBW(0x400000, 0x40000b, NULL, cps2_output);
-  else
+  else {
     AddRWBW(0xfffff0, 0xfffffb, NULL, cps2_output);
+      // the last byte fffffe actually is the region for at least mmatrixd
+      // doesn't work for 1944d, so maybe it's unique
+    AddReadBW(0xfffffc, 0xffffff, NULL, cps2_output+0xc);
+  }
 
   AddReadWord(0x618000, 0x619fff, qsound_sharedram1_r, NULL); // ram + 0x70000
   AddReadByte(0x618000, 0x619fff, qsound_sharedram1_rb, NULL);
