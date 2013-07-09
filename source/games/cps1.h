@@ -10,10 +10,12 @@ struct VIDEO_INFO video_cps1_270;
 
 struct EEPROM_interface pang3_eeprom_interface;
 
-void load_cps1(void);
+void load_cps1_10(void);
+void load_cps1_12(void);
+void load_sf2m3(void);
+void load_sf2m8(void);
 void clear_cps1(void);
 void execute_cps1_frame(void);
-void execute_sf2_frame(void);
 void draw_cps1(void);
 void load_qsound();
 void load_cps2();

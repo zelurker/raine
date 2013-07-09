@@ -80,7 +80,7 @@
 
 static const int srcwidth = CPS1_SCROLL2_WIDTH * 0x10;
 static const int srcheight = CPS1_SCROLL2_HEIGHT * 0x10;
-static int scroll1xoff,scroll2xoff,scroll3xoff;
+static int scroll1xoff,scroll2xoff,scroll3xoff,sf2m3;
 static const int cps1_scroll1_size=0x4000;
 static const int cps1_scroll2_size=0x4000;
 static const int cps1_scroll3_size=0x4000;
@@ -103,7 +103,7 @@ static int cps1_stars_enabled;		/* Layer enabled [Y/N] */
 static int base1,base3,scrwidth,scrheight;
 static int scrlx,scrly,size_code2,distort_scroll2;
 static UINT32 max_sprites16,max_sprites32,max_sprites8;
-static UINT32 frame_68k; // 68k frame (in Hz)
+static UINT32 frame_68k,default_frame; // 68k frame (in Hz)
 static UINT16 pri_mask[4]; // priority masks (layers)
 
 /********************************************************************
@@ -1100,17 +1100,20 @@ static struct CPS1config cps1_config_table[]=
 	{"forgottnu",   CPS_B_01,     mapper_LW621 },
 	{"forgottnu1",  CPS_B_01,     mapper_LWCHR },
 	{"forgottnua",  CPS_B_01,     mapper_LWCHR },
+	{"forgottnuaa", CPS_B_01,     mapper_LWCHR },
 	{"lostwrld",    CPS_B_01,     mapper_LWCHR },
 	{"lostwrldo",   CPS_B_01,     mapper_LWCHR },
 	{"ghouls",      CPS_B_01,     mapper_DM620 },
 	{"ghoulsu",     CPS_B_01,     mapper_DM620 },
 	{"daimakai",    CPS_B_01,     mapper_DM22A },   // equivalent to DM620
 	{"daimakair",   CPS_B_21_DEF, mapper_DAM63B },  // equivalent to DM620, also CPS_B_21_DEF is equivalent to CPS_B_01
+	{"daimakr2",   CPS_B_21_DEF, mapper_DAM63B },  // equivalent to DM620, also CPS_B_21_DEF is equivalent to CPS_B_01
 	{"strider",     CPS_B_01,     mapper_ST24M1 },
 	{"striderua",   CPS_B_01,     mapper_ST24M1 },  // wrong, this set uses ST24B2, still not dumped
 	{"striderj",    CPS_B_01,     mapper_ST22B },   // equivalent to ST24M1
 	{"striderjr",   CPS_B_21_DEF, mapper_ST24M1 },  // wrong, this set uses STH63B, still not dumped
 	{"dynwar",      CPS_B_02,     mapper_TK22B },   // wrong, this set uses TK24B1, dumped but equations still not added
+	{"dynwaru",     CPS_B_02,     mapper_TK22B },
 	{"dynwara",     CPS_B_02,     mapper_TK22B },
 	{"dynwarj",     CPS_B_02,     mapper_TK22B },
 	{"dynwarjr",    CPS_B_21_DEF, mapper_TK22B },   // wrong, this set uses TK163B, still not dumped
@@ -1175,6 +1178,7 @@ static struct CPS1config cps1_config_table[]=
 	/* from here onwards the CPS-B board has suicide battery and multiply protection */
 
 	{"3wonders",    CPS_B_21_BT1, mapper_RT24B },
+	{"3wondersr1",  CPS_B_21_BT1, mapper_RT24B },
 	{"3wondersu",   CPS_B_21_BT1, mapper_RT24B },
 	{"wonder3",     CPS_B_21_BT1, mapper_RT22B },   // equivalent to RT24B
 	{"3wondersh",   CPS_B_02    , mapper_RT24B },   /* Not 100% sure of the CPS B-ID */
@@ -1194,7 +1198,7 @@ static struct CPS1config cps1_config_table[]=
 	{"knightsu",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
 	{"knightsj",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
 	{"knightsja",   CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, this set uses KR22B, still not dumped
-	{"knightsb",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
+	//{"knightsb",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
 	{"sf2ce",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2ceea",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2ceua",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
@@ -1215,12 +1219,13 @@ static struct CPS1config cps1_config_table[]=
 	{"sf2dkot2",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2m1",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2m2",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-	{"sf2m3",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{"sf2m3",       HACK_B_1,     mapper_S9263B, 0,    0, 0, 2 },
 	{"sf2m4",       HACK_B_1,     mapper_S9263B, 0x36, 0, 0, 1 },
 	{"sf2m5",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
 	{"sf2m6",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
 	{"sf2m7",       CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
-//sf2m8 unsupported
+	{"sf2m8",       HACK_B_1,     mapper_S9263B, 0,    0, 0, 2 },
+	{"sf2dongb",    CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2yyc",      CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
 	{"sf2koryu",    CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
 	{"sf2mdt",      CPS_B_21_DEF, mapper_S9263B, 0x36, 0, 0, 1 },
@@ -1421,6 +1426,8 @@ static void cps1_init_machine(void)
    for (n=0; n<4; n++)
      cps1_game_config->priority[n] |= 0x40;
    cps1_game_config->palette_control |= 0x40;
+   cps1_game_config->in2_addr += 0x140;
+   cps1_game_config->in3_addr += 0x140;
 
    if (is_current_game("forgottn") || is_current_game("forgott1") ||
        is_current_game("lostwrld")) // forgottn has digital input
@@ -1522,6 +1529,8 @@ static UINT16 protection_rw(UINT32 offset)
       return cps1_eeprom_port_r(0);
 
    if (offset == 0x28) {
+       // Hack for the rasters, the phoenix bootlegs wait for scanline 262 here
+       // at boot...
        static int res;
        if (res)
 	   res = 0;
@@ -1541,7 +1550,12 @@ static void protection_ww(UINT32 offset, UINT16 data)
       return;
    }
 
-   cps1_port[offset] = data;
+   if (sf2m3 && offset == 0xc4/2)
+       cps1_port[CPS1_SCROLL3_SCROLLX] = data;
+   else if (sf2m3 && offset >= 0xa0/2)
+       cps1_port[offset - 0xa0/2] = data;
+   else
+       cps1_port[offset] = data;
    //data = COMBINE_DATA(&cps1_port[offset]);
 
 }
@@ -1590,30 +1604,38 @@ static void cps1_ioc_ww(UINT32 offset, UINT16 data)
 
 static UINT16 cps1_input2_r(UINT32 offset)
 {
-  int buttons=input_buffer[5*2];
+  int buttons=input_buffer[4];
 
   return (buttons << 8) | buttons;
 }
 
 static UINT16 cps1_input3_r(UINT32 offset)
 {
-  int buttons=input_buffer[6*2];
+  int buttons=input_buffer[6];
   return (buttons << 8) | buttons;
 }
 
 static UINT8 cps1_ioc_rb(UINT32 offset)
 {
    offset &= 0x1FF;
-   if (offset >= 0x18 && offset <= 0x1f) {
-     UINT8 input;
-     offset = (offset - 0x18) & (~1);
-     input = input_buffer[offset];
-     return input;
-   } else if (offset == 0x177 || offset == 0x1fd)
-     return input_buffer[10]; // input port 2
-   else if (offset == 0x179)
-     return input_buffer[12]; // input port 3
-   else if (offset >= 0x100) {
+   // I love byte accesses using starscream, they require the ^ 1 in the end
+   // and games like sf2ce insist on reading the 2 bytes !
+    if (abs(offset - cps1_game_config->in2_addr) <= 1)
+	return input_buffer[(4+offset - cps1_game_config->in2_addr) ^ 1];
+    else if (abs(offset - cps1_game_config->in3_addr) <= 1)
+	return input_buffer[(6+offset - cps1_game_config->in3_addr) ^ 1];
+    else if (sf2m3 && abs(offset - 0x186) <= 1)
+	return input_buffer[5];
+   if (offset <= 7) {
+       offset = (offset & 1) ^ 1;
+       return input_buffer[2+offset];
+   } else if ((!sf2m3 && offset >= 0x18 && offset <= 0x1f) ||
+	   (sf2m3 && offset >= 0x28 && offset <= 0x2f)) {
+       if (sf2m3) offset -= 0x10;
+       if (!sf2m3 && offset < 0x1a) offset -= 0x18; // input_buffer[0], then dsw
+       offset &= (~1);
+       return input_buffer[offset];
+   }   else if (offset >= 0x100) {
      int ret = protection_rw((offset - 0x100)>>1);
      if (offset & 1) return ret & 0xff;
      else return ret >> 8;
@@ -1626,10 +1648,19 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
 static UINT16 cps1_ioc_rw(UINT32 offset)
 {
     offset &= 0x1FF;
+
     if(offset < 0x100) {
-	if (offset >= 0x18 && offset<=0x1f) {
+	if (offset == cps1_game_config->in2_addr)
+	    return ReadWord(&input_buffer[4]);
+	else if (offset == cps1_game_config->in3_addr)
+	    return ReadWord(&input_buffer[7]); // input port 3
+	if (offset <= 7)
+	    return ReadWord(&input_buffer[2]);
+	else if ((!sf2m3 && offset >= 0x18 && offset <= 0x1f) ||
+		(sf2m3 && offset >= 0x28 && offset <= 0x2f)) {
 	    UINT8 input;
-	    offset = (offset - 0x18);
+	    if (sf2m3) offset -= 0x10;
+	    if (offset < 0x1a) offset -= 0x18; // input_buffer[0], then dsw
 	    input = input_buffer[offset];
 	    return input | (input << 8);
 	} else if (offset == 0x52) {
@@ -1697,8 +1728,13 @@ void finish_conf_cps1()
 	 scroll1xoff = -0x0c;
 	 scroll2xoff = -0x0e;
 	 scroll3xoff = -0x10;
-     }
-     else
+     } else if (cps1_game_config->bootleg_kludge == 2) {
+	 // sf2m3 and co...
+	 cps1_port[CPS1_OBJ_BASE] = 0x9100;
+	 scroll1xoff = -0x0c;
+	 scroll2xoff = -0x10;
+	 scroll3xoff = -0x10;
+     } else
        {
 	 scroll1xoff = 0;
 	 scroll2xoff = 0;
@@ -1803,7 +1839,7 @@ static void cps2_reset() {
   if(romsw_src){
     while(romsw_src[ta].data){
       region = gen_cpu_read_byte(romsw_src[ta].offset);
-      WriteByte(&ROM[romsw_src[ta].offset],region);
+      gen_cpu_write_byte(romsw_src[ta].offset,region);
       ta++;
     }
   }
@@ -2058,12 +2094,6 @@ void load_common(int cps2)
    AddRWBW(0xFF0000, 0xFFFFFF, NULL, RAM+0x000000);		    // 68000 RAM
    AddRWBW(0x900000, 0x92FFFF, NULL, cps1_gfxram);
 
-   AddReadBW(0x800000, 0x800001, NULL, &input_buffer[4*2]); // port 4 (ctrl)
-   AddReadBW(0x800010, 0x800011, NULL, &input_buffer[4*2]); // port 4 (ctrl)
-
-   AddReadBW(0x800176, 0x800177, cps1_input2_r, NULL);
-   AddReadBW(0x800178, 0x800179, cps1_input3_r, NULL);
-   AddReadBW(0x8001fc, 0x8001fd, cps1_input2_r, NULL);
    AddReadBW(0xf1c000, 0xf1c001, cps1_input2_r, NULL);
    AddReadBW(0xf1c002, 0xf1c003, cps1_input3_r, NULL);
 
@@ -2081,29 +2111,19 @@ void load_common(int cps2)
 
 void load_cps1()
 {
-   if (is_current_game("pang3") || is_current_game("pang3j")) {
-     // pang3 arrives in a wrong format because of the rom_continue...
-     // luckily it's a little rom, we can fix it here with no big overhead...
-     UINT8 *tmp;
-     int n;
-     int size = get_region_size(REGION_GFX1);
+    sf2m3 = 0;
+   if (!strncmp(current_game->main_name, "pang3",5)) {
+       // Pang3 & clones
      pang3 = 1;
-     GFX_SPR = load_region[REGION_GFX1];
-     tmp = AllocateMem(size);
-
-     for (n=0; n<0x100000/2; n++){
-       WriteWord(&tmp[n<<3],ReadWord(&GFX_SPR[n<<1]));
-       WriteWord(&tmp[(n<<3)+2],ReadWord(&GFX_SPR[(n<<1)+0x200000]));
-       WriteWord(&tmp[(n<<3)+4],ReadWord(&GFX_SPR[(n<<1)+0x100000]));
-       WriteWord(&tmp[(n<<3)+6],ReadWord(&GFX_SPR[(n<<1)+0x300000]));
-     }
-     memcpy(GFX_SPR,tmp,size);
-
-     FreeMem(tmp);
      EEPROM_init(&pang3_eeprom_interface);
      load_eeprom();
 
+   } else if (is_current_game("wofhfh") || is_current_game("dinohunt") ||
+	   is_current_game("punisherbz")) {
+     EEPROM_init(&qsound_eeprom_interface);
+     load_eeprom();
    }
+
   load_common(0);
 
   cps1_set_z80();
@@ -2111,6 +2131,40 @@ void load_cps1()
   AddMemFetch(0x900000, 0x92ffff, cps1_gfxram+0x000000-0x900000);
   finish_conf_cps1();
   z80a_set_bank(0,0);
+}
+
+void load_cps1_10() {
+    default_frame = CPU_FRAME_MHz(10,60);
+    load_cps1();
+}
+
+void load_cps1_12() {
+    default_frame = CPU_FRAME_MHz(12,60);
+    load_cps1();
+}
+
+void load_sf2m3() {
+    load_cps1_12();
+    sf2m3 = 1;
+}
+
+void load_sf2m8() {
+    UINT8 *grom = load_region[REGION_GFX1];
+    UINT8 *urom = load_region[REGION_USER2];
+    int i = 0x480000, j = 0;
+
+    for (j = 0x20000; j < 0x80000; j+=2)
+    {
+	grom[i++] = urom[j];
+	grom[i++] = urom[j|0x100000];
+	grom[i++] = urom[j|0x000001];
+	grom[i++] = urom[j|0x100001];
+	grom[i++] = urom[j|0x080000];
+	grom[i++] = urom[j|0x180000];
+	grom[i++] = urom[j|0x080001];
+	grom[i++] = urom[j|0x180001];
+    }
+    load_sf2m3();
 }
 
 unsigned char *rom;
@@ -2208,6 +2262,7 @@ void load_qsound()
 {
   const char *name = parent_name();
   load_common(0);
+  default_frame = CPU_FRAME_MHz(12,60);
 
   if (!strncmp(name,"wof",3))
     cps1_decode(0x01234567,0x54163072,0x5151,0x51);
@@ -2787,7 +2842,7 @@ LAB_002F:
     print_ingame(120,"Speed hack not found, slowing down...");
     print_debug("Failed to find speed hack\n");
     speed_hack = 1;
-      frame_68k = CPU_FRAME_MHz(12,60);
+      frame_68k = default_frame;
   }
   if (speed_hack)
     undo_counter = 10;
@@ -2819,19 +2874,6 @@ void execute_cps1_frame(void)
    execute_z80_audio_frame();
 }
 
-void execute_sf2_frame(void)
-{
-  hack_counter = 0;
-
-  cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
-      if (!speed_hack) {
-	dynamic_hack();
-      }
-      cpu_interrupt(CPU_68K_0, 2);
-
-   execute_z80_audio_frame();
-}
-
 #undef SLICES
 #undef Z80_FRAME
 #define SLICES 4
@@ -2852,7 +2894,6 @@ void execute_qsound_frame(void)
   }
   if (!speed_hack) {
     dynamic_hack();
-    //apply_hack(0x918,1);
   }
   cpu_interrupt(CPU_68K_0, 2);
 }
@@ -3336,7 +3377,7 @@ static void render_sprites()
   UINT8 *base,*map;
 
   cps1_find_last_sprite();
-  if (cps1_game_config->bootleg_kludge == 1) {
+  if (cps1_game_config->bootleg_kludge == 1 || cps1_game_config->bootleg_kludge == 2) {
     /* some sf2 hacks draw the sprites in reverse order */
     base = cps1_buffered_obj;
     baseadd = 8;
@@ -3696,10 +3737,10 @@ static void render_cps2_layer(int layer, int priority)
 void draw_cps1(void)
 {
    int layercontrol = cps1_port[cps1_game_config->layer_control/2];
-   int l0 = (layercontrol >> 0x06) & 03,
-     l1 = (layercontrol >> 0x08) & 03,
-     l2 = (layercontrol >> 0x0a) & 03,
-     l3 = (layercontrol >> 0x0c) & 03;
+   int l0 = (layercontrol >> 0x06) & 3,
+     l1 = (layercontrol >> 0x08) & 3,
+     l2 = (layercontrol >> 0x0a) & 3,
+     l3 = (layercontrol >> 0x0c) & 3;
    // UINT8 *map;
 
    // printf("%d %d %d %d\n",l0,l1,l2,l3);
