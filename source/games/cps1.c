@@ -2448,9 +2448,9 @@ void load_cps2() {
       size_user1 = size_code / 2;
       ROM += size_code/2;
       size_code /= 2;
-      int length = get_region_size(REGION_GFX1),i;
+      int length = get_region_size(REGION_GFX1)/2,i;
       UINT16 *rom = (UINT16*) load_region[REGION_GFX1];
-      UINT16 *buf = (UINT16*)AllocateMem(length*2);
+      UINT16 *buf = (UINT16*)AllocateMem(length);
       memcpy(buf,rom,length);
       for (i = 0; i < length/2; i++) {
 	  rom[i] = buf[((i & ~7) >> 2) | ((i & 4) << 18) | ((i & 2) >> 1) | ((i & 1) << 21)];
@@ -2460,12 +2460,9 @@ void load_cps2() {
        * the game works. Now, until now I could do without anding anything, if
        * I want to continue, I have to duplicate the sprites here.
        * It's a wonder so many games finally work without and finally... ! */
-      memcpy(buf,rom,length);
-      memcpy(buf+length/2,rom,length);
-      FreeMem((UINT8*)rom);
-      load_region[REGION_GFX1] = (UINT8*)buf;
-      set_region_size(REGION_GFX1,length*2);
-
+      /* Plus, the end of the 2 graphical roms are just empty... ! */
+      memcpy(rom+length/2,rom,length);
+      FreeMem((UINT8*)buf);
   } else {
       xor = (UINT16*)load_region[REGION_USER1];
       size_user1 = get_region_size(REGION_USER1);

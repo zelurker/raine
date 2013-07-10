@@ -1131,6 +1131,8 @@ static struct ROM_INFO rom_megaman2h[] = // clone of megaman2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+#if 0
+// for now it doesn't work anyway !
 static struct OKIM6295interface oki_gigaman2 =
 {
 	1,  /* 1 chip */
@@ -1144,13 +1146,16 @@ static struct SOUND_INFO sound_gigaman2[] =
    { SOUND_M6295, &oki_gigaman2     },
    { 0,              NULL,                 },
 };
+#endif
 
 static struct ROM_INFO rom_gigaman2[] = // clone of megaman2
 {
   { "sys_rom1.bin", 0x400000, 0x2eaa5e10, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
   { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
   { "cg_rom1.bin", 0x400000, 0xed55a641, REGION_GFX1, 0x0000000, LOAD_NORMAL },
+  { "cg_rom1.bin", 0x400000, 0xed55a641, REGION_GFX1, 0x0800000, LOAD_CONTINUE },
   { "cg_rom2.bin", 0x400000, 0x63918c05, REGION_GFX1, 0x0400000, LOAD_NORMAL },
+  { "cg_rom2.bin", 0x400000, 0x63918c05, REGION_GFX1, 0x0c00000, LOAD_CONTINUE },
 	/* No Qsound, OKI instead.. */
   { "pcm_rom1.bin", 0x800000, 0x41a854ab, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
