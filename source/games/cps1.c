@@ -1384,7 +1384,7 @@ static void cps1_init_machine(void)
    int max_sprites16 = size*2 / 0x100;
    int sf2ee;
    fps = 59.61; // Verified by mame team...
-   memset(input_buffer,0xff,0x20);
+   // memset(input_buffer,0xff,0x20);
    input_buffer[0x15] &= ~16;
    cps1_sound_fade_timer = 0xff;
    size_code2 = get_region_size(REGION_ROM2);
@@ -1513,6 +1513,7 @@ static int pang3;
 
 static UINT16 protection_rw(UINT32 offset)
 {
+    // printf("protection_rw %x\n",offset);
     if (sf2thndr && offset >= 0xc0/2) // mirrored
 	offset -= 0x80/2;
   /* Some games interrogate a couple of registers on bootup. */
@@ -1580,6 +1581,7 @@ static int dial[2]; // forgottn stuff
 static void cps1_ioc_wb(UINT32 offset, UINT8 data)
 {
    offset &= 0x1FF;
+   // printf("ioc_wb %x,%x\n",offset,data);
    if ((offset >= 0x188 && offset <= 0x18f) ||
 	   (sf2m3 && offset >= 0x198 && offset <= 0x19f)) {
      cps1_sound_fade_timer = data;
@@ -1604,6 +1606,7 @@ static void cps1_ioc_wb(UINT32 offset, UINT8 data)
 static void cps1_ioc_ww(UINT32 offset, UINT16 data)
 {
    offset &= 0x1FF;
+   // printf("ioc_ww %x,%x\n",offset,data);
    if ((offset >= 0x188 && offset <= 0x18f) ||
 	   (sf2m3 && offset >= 0x198 && offset <= 0x19f) ) {
      cps1_sound_fade_timer = data & 0xff;
@@ -1637,6 +1640,7 @@ static UINT16 cps1_input3_r(UINT32 offset)
 static UINT8 cps1_ioc_rb(UINT32 offset)
 {
    offset &= 0x1FF;
+    // printf("ioc_rb %x\n",offset);
    // I love byte accesses using starscream, they require the ^ 1 in the end
    // and games like sf2ce insist on reading the 2 bytes !
     if (abs(offset - cps1_game_config->in2_addr) <= 1)
@@ -3911,9 +3915,9 @@ void draw_cps1(void)
      render_layer(l3,0);
      if (l3==0) render_layer(l2,1); // masked
      // delayed sprites
+     if (cps1_game_config->bootleg_kludge)
+	 cps1_port[CPS1_OBJ_BASE] = 0x9100;
      memcpy(cps1_buffered_obj, cps1_base(CPS1_OBJ_BASE, cps1_obj_size),cps1_obj_size);;
    }
-   // No delay version : biger artefacts in sf2t...
-   // cps1_buffered_obj = cps1_base(CPS1_OBJ_BASE, cps1_obj_size);
 }
 

@@ -3814,10 +3814,28 @@ static struct DSW_DATA dsw_data_sf2_2[] =
   { NULL, 0}
 };
 
+static struct DSW_DATA dsw_data_sf2m2_2[] =
+{
+	CPS1_DIFFICULTY_1
+  DSW_UNUSED( 0x00, 0x08),
+  DSW_UNUSED( 0x00, 0x20),
+  DSW_UNUSED( 0x00, 0x40),
+  DSW_UNUSED( 0x00, 0x80),
+  { NULL, 0}
+};
+
 static struct DSW_INFO dsw_sf2[] =
 {
   { 0x1a, 0xff, dsw_data_ffight_1 },
   { 0x1c, 0xff, dsw_data_sf2_2 },
+  { 0x1e, 0x9f, dsw_data_unsquad_3 },
+  { 0, 0, NULL }
+};
+
+static struct DSW_INFO dsw_sf2m2[] =
+{
+  { 0x1a, 0xff, dsw_data_ffight_1 },
+  { 0x1c, 0xef, dsw_data_sf2m2_2 },
   { 0x1e, 0x9f, dsw_data_unsquad_3 },
   { 0, 0, NULL }
 };
@@ -4921,8 +4939,6 @@ static struct INPUT_INFO input_wof[] =
 {
   INCL_INP( cps1_3players ),
 
-  INP0( UNKNOWN, 0x04, 0xff),
-  INP0( UNKNOWN, 0x06, 0xff),
   END_INPUT
 };
 
@@ -4930,8 +4946,6 @@ static struct INPUT_INFO input_dino[] =
 {
   INCL_INP( cps1_3players ),
 
-  INP0( UNKNOWN, 0x04, 0xff),
-  INP0( UNKNOWN, 0x06, 0xff),
   END_INPUT
 };
 
@@ -4973,11 +4987,7 @@ static struct INPUT_INFO input_punisher[] =
   INCL_INP( cps1_2b ),
 
   INP0( UNKNOWN, 0x04, 0xff), // no player 3
-
   INP0( UNKNOWN, 0x06, 0xff), // no player 4
-
-
-
 
   END_INPUT
 };
@@ -5015,13 +5025,6 @@ static struct INPUT_INFO input_slammast[] =
   INP0( P3_B3, 0x02, 0x80),
   INP0( P2_B3, 0x03, 0x40),
   INP0( P4_B3, 0x03, 0x80),
-
-  INP0( UNKNOWN, 0x04, 0xff),
-
-  INP0( UNKNOWN, 0x06, 0xff),
-
-  INP0( UNKNOWN, 0x08, 0xf7),
-
 
   END_INPUT
 };
@@ -5064,7 +5067,6 @@ static struct INPUT_INFO input_pang3[] =
 {
   INCL_INP( cps1_3b ),
 
-  INP0( UNKNOWN, 0x04, 0xff),
   END_INPUT
 };
 
@@ -5436,7 +5438,7 @@ CLNEI( sf2dkot2, sf2ce, "Street Fighter II': Champion Edition (Double K.O. Turbo
   .load_game = load_cps1_12);
 CLNEI( sf2m2, sf2ce, "Street Fighter II': Champion Edition (M2, bootleg)", BOOTLEG, 1992, GAME_BEAT,
   .load_game = load_cps1_12,
-  .input = input_sf2m2);
+  .input = input_sf2m2, .dsw = dsw_sf2m2);
 CLNEI( sf2m3, sf2ce, "Street Fighter II': Champion Edition (M3, bootleg)", BOOTLEG, 1992, GAME_BEAT,
   .input = input_sf2hack,
   .load_game = load_sf2m3);
