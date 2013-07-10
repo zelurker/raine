@@ -3074,6 +3074,77 @@ static struct DSW_INFO dsw_forgottn[] =
   { 0, 0, NULL }
 };
 
+static struct DSW_DATA dsw_data_ganbare_2[] =
+{
+// "SW(A):1"
+// "SW(A):2"
+  { "Medal Setup", 0x01, 2 },
+  { "1 Medal 1 Credit", 0x01, 0x00 },
+  { "Don't use", 0x00, 0x00 },
+// "SW(A):3,4,5"
+  { "Coin Setup", 0x02, 2 },
+  { "100 Yen", 0x02, 0x00 },
+  { "10 Yen", 0x00, 0x00 },
+// "SW(A):6,7"
+  { "Change Setup", 0x1c, 8 },
+  { "12", 0x04, 0x00 },
+  { "11", 0x00, 0x00 },
+  { "10", 0x1c, 0x00 },
+  { "8", 0x18, 0x00 },
+  { "7", 0x14, 0x00 },
+  { "6", 0x10, 0x00 },
+  { "5", 0x0c, 0x00 },
+  { "No change", 0x08, 0x00 },
+// "SW(A):8"
+  { "10 Yen Setup", 0x60, 4 },
+  { MSG_1COIN_1PLAY, 0x60, 0x00 },
+  { MSG_2COIN_1PLAY, 0x40, 0x00 },
+  { MSG_3COIN_1PLAY, 0x20, 0x00 },
+  { "Don't use", 0x00, 0x00 },
+  { "Payout Setup", 0x80, 2 },
+  { "Credit Mode", 0x80, 0x00 },
+  { "Payout Mode", 0x00, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_ganbare_3[] =
+{
+// "SW(B):1,2,3"
+  { "Payout Rate Setup", 0x07, 8 },
+  { "90%", 0x01, 0x00 },
+  { "85%", 0x00, 0x00 },
+  { "80%", 0x07, 0x00 },
+  { "75%", 0x06, 0x00 },
+  { "70%", 0x05, 0x00 },
+  { "65%", 0x04, 0x00 },
+  { "60%", 0x03, 0x00 },
+  { "55%", 0x02, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_data_ganbare_4[] =
+{
+// "SW(C):1,2"
+// "SW(C):7"
+  DSW_DEMO_SOUND( 0x03, 0x00 ),
+// "SW(C):8"
+  { "Clear RAM", 0x40, 2 },
+  { MSG_NO, 0x40, 0x00 },
+  { MSG_YES, 0x00, 0x00 },
+  { "Tes Mode Display", 0x80, 2 },
+  { MSG_OFF, 0x80, 0x00 },
+  { MSG_ON, 0x00, 0x00 },
+  { NULL, 0, 0}
+};
+
+static struct DSW_INFO dsw_ganbare[] =
+{
+  { 0x1a, 0xff, dsw_data_ganbare_2 },
+  { 0x1c, 0x07, dsw_data_ganbare_3 },
+  { 0x1e, 0xc3, dsw_data_ganbare_4 },
+  { 0, 0, NULL }
+};
+
 static struct DSW_DATA dsw_data_ghouls_1[] =
 {
 	CPS1_COINAGE_1
@@ -5498,8 +5569,8 @@ CLNEI( megamana, megaman, "Mega Man: The Power Battle (CPS1, Asia 951006)", CAPC
 CLNEI( rockmanj, megaman, "Rockman: The Power Battle (CPS1, Japan 950922)", CAPCOM, 1995, GAME_BEAT,
   .load_game = load_cps1_12,
   .input = input_rockmanj, .dsw = dsw_rockmanj);
-#define dsw_ganbare NULL // probably some dsw to put here
-GMEI( ganbare, "Ganbare! Marine Kun (Japan 2K0411)", CAPCOM, 2000, GAME_MISC);
+GMEI( ganbare, "Ganbare! Marine Kun (Japan 2K0411)", CAPCOM, 2000, GAME_MISC|GAME_NOT_WORKING,
+	.exec = execute_ganbare, .input = input_ganbare, .dsw = dsw_ganbare);
 GMEI( pang3, "Pang! 3 (Euro 950601)", MITCHELL, 1995, GAME_SHOOT,
   .load_game = load_cps1_12);
 CLNEI( pang3r1, pang3, "Pang! 3 (Euro 950511)", MITCHELL, 1995, GAME_SHOOT,
