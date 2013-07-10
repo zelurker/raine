@@ -16,6 +16,7 @@ void load_sf2m3(void);
 void load_sf2m8(void);
 void clear_cps1(void);
 void execute_cps1_frame(void);
+void execute_ganbare(void);
 void draw_cps1(void);
 void load_qsound();
 void load_cps2();

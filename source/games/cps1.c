@@ -80,7 +80,7 @@
 
 static const int srcwidth = CPS1_SCROLL2_WIDTH * 0x10;
 static const int srcheight = CPS1_SCROLL2_HEIGHT * 0x10;
-static int scroll1xoff,scroll2xoff,scroll3xoff,sf2m3;
+static int scroll1xoff,scroll2xoff,scroll3xoff,sf2m3,sf2thndr;
 static const int cps1_scroll1_size=0x4000;
 static const int cps1_scroll2_size=0x4000;
 static const int cps1_scroll3_size=0x4000;
@@ -1382,12 +1382,15 @@ static void cps1_init_machine(void)
    int n;
    int size = get_region_size(REGION_GFX1); // size of packed region
    int max_sprites16 = size*2 / 0x100;
+   int sf2ee;
    fps = 59.61; // Verified by mame team...
    memset(input_buffer,0xff,0x20);
    input_buffer[0x15] &= ~16;
    cps1_sound_fade_timer = 0xff;
    size_code2 = get_region_size(REGION_ROM2);
 
+   sf2ee = is_current_game("sf2ee");
+   sf2thndr = is_current_game("sf2thndr");
    oldx2 = oldx = 0xffff; // To have scroll1x != oldx
 
    while(pCFG->name)
@@ -1417,17 +1420,21 @@ static void cps1_init_machine(void)
 
    /* Adjust the offsets : mame references some B registers, but I'd like to
     * keep the usual registers, so I must | 0x40 all their offsets... */
-   cps1_game_config->cpsb_addr |= 0x40;
-   cps1_game_config->mult_factor1 |= 0x40;
-   cps1_game_config->mult_factor2 |= 0x40;
-   cps1_game_config->mult_result_lo |= 0x40;
-   cps1_game_config->mult_result_hi |= 0x40;
-   cps1_game_config->layer_control |= 0x40;
+   int offset = 0x40;
+   if (sf2ee)
+       offset = 0xc0;
+   cps1_game_config->cpsb_addr |= offset;
+   cps1_game_config->mult_factor1 |= offset;
+   cps1_game_config->mult_factor2 |= offset;
+   cps1_game_config->mult_result_lo |= offset;
+   cps1_game_config->mult_result_hi |= offset;
+   cps1_game_config->layer_control |= offset;
    for (n=0; n<4; n++)
-     cps1_game_config->priority[n] |= 0x40;
-   cps1_game_config->palette_control |= 0x40;
-   cps1_game_config->in2_addr += 0x140;
-   cps1_game_config->in3_addr += 0x140;
+     cps1_game_config->priority[n] |= offset;
+   cps1_game_config->palette_control |= offset;
+   // The inx_addr must keep the 0x100 offset because they are read as bytes
+   cps1_game_config->in2_addr |= 0x100 + offset;
+   cps1_game_config->in3_addr |= 0x100 + offset;
 
    if (is_current_game("forgottn") || is_current_game("forgott1") ||
        is_current_game("lostwrld")) // forgottn has digital input
@@ -1506,6 +1513,8 @@ static int pang3;
 
 static UINT16 protection_rw(UINT32 offset)
 {
+    if (sf2thndr && offset >= 0xc0/2) // mirrored
+	offset -= 0x80/2;
   /* Some games interrogate a couple of registers on bootup. */
   /* These are CPS1 board B self test checks. They wander from game to */
   /* game. */
@@ -1538,11 +1547,15 @@ static UINT16 protection_rw(UINT32 offset)
 	   res = 262;
        return res;
    }
+
    return cps1_port[offset];
 }
 
 static void protection_ww(UINT32 offset, UINT16 data)
 {
+    if (sf2thndr && offset >= 0xc0/2) // mirrored
+	offset -= 0x80/2;
+   // printf("protection_ww %x,%x\n",offset*2-0x40,data);
    /* Pang 3 EEPROM interface */
    if (pang3 && offset == 0x7a/2)
    {
@@ -1552,10 +1565,12 @@ static void protection_ww(UINT32 offset, UINT16 data)
 
    if (sf2m3 && offset == 0xc4/2)
        cps1_port[CPS1_SCROLL3_SCROLLX] = data;
-   else if (sf2m3 && offset >= 0xa0/2)
+   else if (sf2m3 && offset >= 0xa0/2 && offset < 0xc4/2) {
        cps1_port[offset - 0xa0/2] = data;
-   else
+   } else {
+       // printf("cps1_port_w %x,%x pang3 %x\n",offset*2,data,pang3);
        cps1_port[offset] = data;
+   }
    //data = COMBINE_DATA(&cps1_port[offset]);
 
 }
@@ -1565,9 +1580,11 @@ static int dial[2]; // forgottn stuff
 static void cps1_ioc_wb(UINT32 offset, UINT8 data)
 {
    offset &= 0x1FF;
-   if (offset == 0x189) {
+   if ((offset >= 0x188 && offset <= 0x18f) ||
+	   (sf2m3 && offset >= 0x198 && offset <= 0x19f)) {
      cps1_sound_fade_timer = data;
-   } else if (offset == 0x181) {
+   } else if ((offset >= 0x180 && offset <= 0x187) ||
+	   (sf2m3 && offset >= 0x190 && offset <= 0x197)) {
      soundcmd_wb_nonmi(0,data);
    } else if (offset == 0x41) {
      /* Remarquable : this was probably never tested. dial[0] seems to be the
@@ -1587,9 +1604,11 @@ static void cps1_ioc_wb(UINT32 offset, UINT8 data)
 static void cps1_ioc_ww(UINT32 offset, UINT16 data)
 {
    offset &= 0x1FF;
-   if (offset == 0x188) {
+   if ((offset >= 0x188 && offset <= 0x18f) ||
+	   (sf2m3 && offset >= 0x198 && offset <= 0x19f) ) {
      cps1_sound_fade_timer = data & 0xff;
-   } else if (offset == 0x180) {
+   } else if ((offset >= 0x180 && offset <= 0x187) ||
+	   (sf2m3 && offset >= 0x190 && offset <= 0x197)) {
      soundcmd_wb_nonmi(0,data);
    } else if (offset >= 0x100)
       protection_ww((offset - 0x100)>>1, data);
@@ -1626,6 +1645,8 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
 	return input_buffer[(6+offset - cps1_game_config->in3_addr) ^ 1];
     else if (sf2m3 && abs(offset - 0x186) <= 1)
 	return input_buffer[5];
+    else if (sf2m3 && (offset == 0x10 || offset == 0x11))
+	return input_buffer[2+offset-0x10];
    if (offset <= 7) {
        offset = (offset & 1) ^ 1;
        return input_buffer[2+offset];
@@ -2120,6 +2141,7 @@ void load_cps1()
 
    } else if (is_current_game("wofhfh") || is_current_game("dinohunt") ||
 	   is_current_game("punisherbz")) {
+       pang3 = 1;
      EEPROM_init(&qsound_eeprom_interface);
      load_eeprom();
    }
@@ -2865,6 +2887,21 @@ void execute_cps1_frame(void)
     if (*MouseB & 1) input_buffer[8] &= 0xef;
     if (*MouseB & 2) input_buffer[8] &= 0xdf;
   }
+  cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
+
+  if (!speed_hack) {
+    dynamic_hack();
+  }
+
+   cpu_interrupt(CPU_68K_0, 2);
+   execute_z80_audio_frame();
+}
+
+void execute_ganbare(void)
+{
+  hack_counter = 0;
+  frame_68k = CPU_FRAME_MHz(10,60);
+  cpu_interrupt(CPU_68K_0, 4);
   cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
 
   if (!speed_hack) {
@@ -3742,6 +3779,7 @@ void draw_cps1(void)
      l1 = (layercontrol >> 0x08) & 3,
      l2 = (layercontrol >> 0x0a) & 3,
      l3 = (layercontrol >> 0x0c) & 3;
+   // printf("lctrl %x l0 %x l1 %x l2 %x l3 %x\n",layercontrol,l0,l1,l2,l3);
    // UINT8 *map;
 
    // printf("%d %d %d %d\n",l0,l1,l2,l3);
@@ -3775,6 +3813,7 @@ void draw_cps1(void)
    cps1_layer_enabled[2]=layercontrol & cps1_game_config->layer_enable_mask[1];
    cps1_layer_enabled[3]=layercontrol & cps1_game_config->layer_enable_mask[2];
    cps1_stars_enabled	=layercontrol & cps1_game_config->layer_enable_mask[3];
+   // printf("layer_enabled %d %d %d mask %x\n",cps1_layer_enabled[1],cps1_layer_enabled[2],cps1_layer_enabled[3],cps1_game_config->layer_enable_mask[0]);
 
    /* In the begining, I tried to draw the background with a solid layer... */
    /* Ecept that it does not work because the transparent color should not */
