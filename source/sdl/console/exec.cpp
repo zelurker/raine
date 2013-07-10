@@ -154,7 +154,8 @@ static int do_cycles(int cpu = get_cpu_id(), int can_be_stopped = 1) {
   do {
     cpu_execute_cycles(cpu,cycles);
     cycles++;
-  } while (cpu_get_pc(cpu) == oldpc);
+  } while (cpu_get_pc(cpu) == oldpc && cycles < 1000);
+  get_regs();
   if (can_be_stopped) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) { // we must allow a way to stop
@@ -171,7 +172,6 @@ static int do_cycles(int cpu = get_cpu_id(), int can_be_stopped = 1) {
       }
     }
   }
-  get_regs();
   return cycles-1;
 }
 
