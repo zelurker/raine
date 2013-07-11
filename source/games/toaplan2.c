@@ -1935,7 +1935,7 @@ static struct DSW_DATA dsw_data_batsugun_1[] =
 
 static struct DSW_DATA dsw_data_batsugun_2[] =
 {
-   { "Territory",             0x0F, 0x02 },
+   { "Territory",             0x09, 14 },
    { "Korea (Unite Trading)", 0x00},
    { "Korea",                 0x01},
    { "Hong Kong (Taito)",     0x02},
@@ -1957,7 +1957,7 @@ static struct DSW_INFO dsw_batsugun[] =
 {
    { 0x000003, 0x00, dsw_data_batsugun_0 },
    { 0x000004, 0x00, dsw_data_batsugun_1 },
-   { 0x000005, 0x00, dsw_data_batsugun_2 },
+   { 0x000005, 0x09, dsw_data_batsugun_2 },
    { 0,        0,    NULL,      },
 };
 
