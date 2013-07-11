@@ -15,6 +15,7 @@
  * None of this is complicated, but together it produces a big file... ! */
 
 static UINT32 inp_key,inp_joy,inp_mouse;
+static menu_item_t *menu;
 
 static char *get_joy_name(int code) {
   if (!code)
@@ -34,7 +35,7 @@ static char *get_joy_name(int code) {
   if (!btn) {
     char *direction;
     if (stick & 2) {
-      if (stick & 1) 
+      if (stick & 1)
         direction = "DOWN";
       else
 	direction = "UP";
@@ -50,7 +51,7 @@ static char *get_joy_name(int code) {
   sprintf(&name[strlen(name)],"Btn %d",btn);
   return strdup(name);
 }
-  
+
 static char *get_key_name(int key) {
   char keyname[80];
   keyname[0] = 0;
@@ -203,8 +204,29 @@ static menu_item_t kb_only[] =
 static char **cols;
 static int base_input;
 
+static int get_input_indice(const char *name) {
+  int nb = InputCount;
+  for (int n=0; n<nb; n++)
+      if (!strcmp(InputList[n].InputName,name))
+	  return n;
+  printf("name not found for inputlist : %s\n",name);
+  exit(1);
+  return -1;
+}
+
+static int get_def_indice(const char *name) {
+    int nb = raine_get_emu_nb_ctrl();
+    for (int n=0; n<nb; n++)
+	if (!strcmp(def_input_emu[n].name,name))
+	    return n;
+    printf("not found def_input_emu name : %s\n",name);
+    exit(1);
+    return -1;
+}
+
 static int do_input(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
+  int indice = get_def_indice(menu[sel].label);
   TInput *input = new TInput("Input",menu_input,0,1);
   input->execute();
   delete input;
@@ -215,27 +237,27 @@ static int do_input(int sel) {
 	"Delete the joystick ctrl|"
 	"Really use ESC here");
       switch(ret) {
-	case 1: def_input_emu[sel].scancode = 0; 
+	case 1: def_input_emu[indice].scancode = 0;
 		free(cols[sel*2+0]);
 		cols[sel*2+0] = strdup("no key");
 		break;
-	case 2: def_input_emu[sel].joycode = 0;
+	case 2: def_input_emu[indice].joycode = 0;
 		free(cols[sel*2+1]);
 		cols[sel*2+1] = strdup("");
 		break;
 	case 3:
-		def_input_emu[sel].scancode = inp_key;
+		def_input_emu[indice].scancode = inp_key;
 		free(cols[sel*2+0]);
 		cols[sel*2+0] = get_key_name(inp_key);
 		break;
       }
     } else {
-      def_input_emu[sel].scancode = inp_key;
+      def_input_emu[indice].scancode = inp_key;
       free(cols[sel*2+0]);
       cols[sel*2+0] = get_key_name(inp_key);
     }
   } else {
-    def_input_emu[sel].joycode = inp_joy;
+    def_input_emu[indice].joycode = inp_joy;
     free(cols[sel*2+1]);
     cols[sel*2+1] = get_joy_name(def_input_emu[sel].joycode);
   }
@@ -255,7 +277,7 @@ static int do_kb_input(int sel) {
       int ret = MessageBox("Question","What do you want to do ?",
         "Delete the key");
       switch(ret) {
-	case 1: 
+	case 1:
 		layer_info_list[sel].keycode = 0;
 		free(cols[sel]);
 		cols[sel] = strdup("no key");
@@ -274,6 +296,7 @@ static int do_kb_input(int sel) {
 
 static int do_input_ingame(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
+  int nb = get_input_indice(menu[sel+base_input].label);
   TInput *input = new TInput("Input",menu_input,1,0);
   input->execute();
   delete input;
@@ -284,32 +307,32 @@ static int do_input_ingame(int sel) {
 	"Delete the joystick ctrl|"
 	"Del the mouse button");
       switch(ret) {
-	case 1: 
-		InputList[sel+base_input].Key = 0;
-		if (!use_custom_keys) 
-		    def_input[InputList[sel+base_input].default_key & 0xFF].scancode = 0;
+	case 1:
+		InputList[nb].Key = 0;
+		if (!use_custom_keys)
+		    def_input[InputList[nb].default_key & 0xFF].scancode = 0;
 		free(cols[sel*3+0]);
 		cols[sel*3+0] = strdup("no key");
 		break;
-	case 2: 
-		InputList[sel+base_input].Joy = 0;
-		if (!use_custom_keys) 
-		    def_input[InputList[sel+base_input].default_key & 0xFF].joycode = 0;
+	case 2:
+		InputList[nb].Joy = 0;
+		if (!use_custom_keys)
+		    def_input[InputList[nb].default_key & 0xFF].joycode = 0;
 		free(cols[sel*3+1]);
 		cols[sel*3+1] = strdup("");
 		break;
 	case 3:
-		InputList[sel+base_input].mousebtn = 0;
-		if (!use_custom_keys) 
-		    def_input[InputList[sel+base_input].default_key & 0xFF].mousebtn = 0;
+		InputList[nb].mousebtn = 0;
+		if (!use_custom_keys)
+		    def_input[InputList[nb].default_key & 0xFF].mousebtn = 0;
 		free(cols[sel*3+2]);
 		cols[sel*3+2] = strdup("");
 		break;
       }
     } else {
-      InputList[sel+base_input].Key = inp_key;
+      InputList[nb].Key = inp_key;
       if (!use_custom_keys && !base_input) {
-	def_input[InputList[sel].default_key & 0xff].scancode = inp_key;
+	def_input[InputList[nb].default_key & 0xff].scancode = inp_key;
 	printf("defaults updated\n");
       } else {
 	printf("defaults not updated use_custom %d base_input %d\n",use_custom_keys,base_input);
@@ -318,15 +341,15 @@ static int do_input_ingame(int sel) {
       cols[sel*3+0] = get_key_name(inp_key);
     }
   } else if (inp_joy) {
-    InputList[sel+base_input].Joy = inp_joy;
+    InputList[nb].Joy = inp_joy;
     if (!use_custom_keys && !base_input)
-      def_input[InputList[sel].default_key & 0xff].joycode = inp_joy;
+      def_input[InputList[nb].default_key & 0xff].joycode = inp_joy;
     free(cols[sel*3+1]);
     cols[sel*3+1] = get_joy_name(inp_joy);
   } else if (inp_mouse) {
-    InputList[sel+base_input].mousebtn = inp_mouse;
+    InputList[nb].mousebtn = inp_mouse;
     if (!use_custom_keys && !base_input)
-      def_input[InputList[sel].default_key & 0xff].mousebtn = inp_mouse;
+      def_input[InputList[nb].default_key & 0xff].mousebtn = inp_mouse;
     free(cols[sel*3+2]);
     cols[sel*3+2] = get_mouse_name(inp_mouse);
   }
@@ -338,7 +361,7 @@ static int do_input_ingame(int sel) {
 
 static int do_emu_controls(int sel) {
   int nb = raine_get_emu_nb_ctrl();
-  menu_item_t *menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
+  menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   cols = (char**)malloc(sizeof(char*)*nb*2);
   for (int n=0; n<nb; n++) {
@@ -347,6 +370,20 @@ static int do_emu_controls(int sel) {
     cols[n*2+0] = get_key_name(def_input_emu[n].scancode);
     cols[n*2+1] = get_joy_name(def_input_emu[n].joycode);
   }
+  for (int a=0; a<nb; a++)
+      for (int b=a+1; b<nb; b++)
+	  if (strcmp(menu[b].label,menu[a].label) < 0) {
+	      menu_item_t temp = menu[a];
+	      menu[a] = menu[b];
+	      menu[b] = temp;
+	      char *str = cols[a*2+0];
+	      cols[a*2] = cols[b*2];
+	      cols[b*2] = str;
+	      str = cols[a*2+1];
+	      cols[a*2+1] = cols[b*2+1];
+	      cols[b*2+1] = str;
+	  }
+
   controls = new TMenuMultiCol("Raine Controls",menu,2,cols);
   controls->execute();
   delete controls;
@@ -383,7 +420,7 @@ static int do_layers_controls(int sel) {
 
 static int do_ingame_controls(int sel) {
   int nb = InputCount,mynb;
-  menu_item_t *menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
+  menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   cols = (char**)malloc(sizeof(char*)*nb*3);
   mynb = 0;
@@ -401,6 +438,22 @@ static int do_ingame_controls(int sel) {
       mynb++;
     }
   }
+  for (int a=0; a<nb; a++)
+      for (int b=a+1; b<nb; b++)
+	  if (strcmp(menu[b].label,menu[a].label) < 0) {
+	      menu_item_t temp = menu[a];
+	      menu[a] = menu[b];
+	      menu[b] = temp;
+	      char *str = cols[a*3+0];
+	      cols[a*3] = cols[b*3];
+	      cols[b*3] = str;
+	      str = cols[a*3+1];
+	      cols[a*3+1] = cols[b*3+1];
+	      cols[b*3+1] = str;
+	      str = cols[a*3+2];
+	      cols[a*3+2] = cols[b*3+2];
+	      cols[b*3+2] = str;
+	  }
   controls = new TMenuMultiCol("Ingame Controls",menu,3,cols);
   controls->execute();
   delete controls;
@@ -448,11 +501,11 @@ static int setup_autofire(int sel) {
   for (n=0; n<nb; n++) {
     if ((strstr(InputList[n].InputName,"utton") ||
 	  (InputList[n].default_key >= KB_DEF_P1_B1 &&
-	   InputList[n].default_key <= KB_DEF_P1_B8) || 
+	   InputList[n].default_key <= KB_DEF_P1_B8) ||
 	  (InputList[n].default_key >= KB_DEF_P2_B1 &&
-	   InputList[n].default_key <= KB_DEF_P2_B8) || 
+	   InputList[n].default_key <= KB_DEF_P2_B8) ||
 	  (InputList[n].default_key >= KB_DEF_P3_B1 &&
-	   InputList[n].default_key <= KB_DEF_P3_B8) || 
+	   InputList[n].default_key <= KB_DEF_P3_B8) ||
 	  (InputList[n].default_key >= KB_DEF_P4_B1 &&
 	   InputList[n].default_key <= KB_DEF_P4_B8)) &&
 	  InputList[n].link < n) {
@@ -685,7 +738,7 @@ static int setup_analog(int sel) {
     TMenu *dlg = new TMenu("Select the stick to use...",menu);
     dlg->execute();
     delete dlg;
-    for (n=0; n<nb; n++) 
+    for (n=0; n<nb; n++)
       free((void*)menu[n].label);
     free(menu);
     if (selected == 999) {
@@ -693,7 +746,7 @@ static int setup_analog(int sel) {
       analog_num = -1;
       analog_name[0] = 0;
       return 0;
-    } 
+    }
     analog_stick = selected*2;
   }
   nb = 4;
@@ -707,7 +760,7 @@ static int setup_analog(int sel) {
   cal->execute();
   delete cal;
   free(menu);
-  if (analog_minx >= 0 || analog_miny >= 0 || analog_maxx <= 0 || 
+  if (analog_minx >= 0 || analog_miny >= 0 || analog_maxx <= 0 ||
       analog_maxy <= 0) {
     // calibration not finished -> give up
     analog_num = -1;
