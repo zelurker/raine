@@ -17,9 +17,6 @@
 #include "qsound.h"
 
 // Roms structs (generated 6/1/2004)
-// Except for pang3 : this one uses a CONTINUE_ROM in its gfx1 area.
-// There is no direct equivalent in raine for now. You must change it
-// by hand to load_normal, and load the 2 sets one after the other.
 // Updated 1/22/2009 !
 // Last update : 7/9/2013 !
 

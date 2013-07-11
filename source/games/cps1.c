@@ -1566,7 +1566,7 @@ static void protection_ww(UINT32 offset, UINT16 data)
    }
 
    if (sf2m3 && offset == 0xc4/2)
-       cps1_port[CPS1_SCROLL3_SCROLLX] = data;
+       cps1_port[cps1_game_config->layer_control/2] = data;
    else if (sf2m3 && offset >= 0xa0/2 && offset < 0xc4/2) {
        cps1_port[offset - 0xa0/2] = data;
    } else {
@@ -1651,14 +1651,14 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
     else if (sf2m3 && abs(offset - 0x186) <= 1)
 	return input_buffer[5];
     else if (sf2m3 && (offset == 0x10 || offset == 0x11))
-	return input_buffer[2+offset-0x10];
-   if (offset <= 7) {
+	return input_buffer[(2+offset-0x10)^1];
+   if (offset <= 7 && !sf2m3) {
        offset = (offset & 1) ^ 1;
        return input_buffer[2+offset];
    } else if ((!sf2m3 && offset >= 0x18 && offset <= 0x1f) ||
 	   (sf2m3 && offset >= 0x28 && offset <= 0x2f)) {
        if (sf2m3) offset -= 0x10;
-       if (!sf2m3 && offset < 0x1a) offset -= 0x18; // input_buffer[0], then dsw
+       if (offset < 0x1a) offset -= 0x18; // input_buffer[0], then dsw
        offset &= (~1);
        return input_buffer[offset];
    }   else if (offset >= 0x100) {
