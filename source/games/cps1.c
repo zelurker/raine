@@ -1384,7 +1384,8 @@ static void cps1_init_machine(void)
    int max_sprites16 = size*2 / 0x100;
    int sf2ee;
    fps = 59.61; // Verified by mame team...
-   // memset(input_buffer,0xff,0x20);
+   // memset(&input_buffer[0x1a],0xff,0x20);
+
    input_buffer[0x15] &= ~16;
    cps1_sound_fade_timer = 0xff;
    size_code2 = get_region_size(REGION_ROM2);
@@ -2085,7 +2086,8 @@ void load_common(int cps2)
    size_code = get_region_size(REGION_ROM1);
    ByteSwap(ROM, size_code );
 
-     if (is_current_game("pang3j")) {
+     if (is_current_game("pang3") || is_current_game("pang3r1") ||
+	     is_current_game("pang3j")) {
        // never noticed the encryption !!!
        // this code comes from mame...
 	UINT16 *rom = (UINT16 *)memory_region(REGION_CPU1);

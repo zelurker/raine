@@ -4509,7 +4509,21 @@ static struct DSW_INFO dsw_qtono2[] =
   { 0, 0, NULL }
 };
 
+static struct DSW_DATA dsw_data_pang3[] =
+{ // Sure about test mode, not sure about the other bits...
+  { "Game Mode",    0x80, 2 },
+  { "Game" , 0x80},
+  { "Test" , 0x00},
+  { NULL, 0}
+};
+
 static struct DSW_INFO dsw_pang3[] =
+{
+  { 0x1e, 0xff, dsw_data_pang3 },
+  { 0, 0, NULL }
+};
+
+static struct DSW_INFO dsw_pang3j[] =
 {
   { 0x1e, 0x08, dsw_data_wof_3 },
   { 0, 0, NULL }
@@ -5576,11 +5590,11 @@ GMEI( ganbare, "Ganbare! Marine Kun (Japan 2K0411)", CAPCOM, 2000, GAME_MISC|GAM
 GMEI( pang3, "Pang! 3 (Euro 950601)", MITCHELL, 1995, GAME_SHOOT,
   .load_game = load_cps1_12);
 CLNEI( pang3r1, pang3, "Pang! 3 (Euro 950511)", MITCHELL, 1995, GAME_SHOOT,
-  .load_game = load_cps1_12);
+  .load_game = load_cps1_12, .dsw = dsw_pang3j);
 CLNEI( pang3j, pang3, "Pang! 3: Kaitou Tachi no Karei na Gogo (Japan 950511)", MITCHELL, 1995, GAME_SHOOT,
-  .load_game = load_cps1_12);
+  .load_game = load_cps1_12, .dsw = dsw_pang3j);
 CLNEI( pang3b, pang3, "Pang! 3 (bootleg)", BOOTLEG, 1995, GAME_SHOOT,
-  .load_game = load_cps1_12);
+  .load_game = load_cps1_12, .dsw = dsw_pang3j);
 
 // Home cps changer unit
 
