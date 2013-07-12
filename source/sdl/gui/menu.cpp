@@ -1093,6 +1093,20 @@ int TMenu::get_seldisp() {
   return n;
 }
 
+static int mystrcasestr(const char *s1,const char *s2) {
+    /* Since super mingw doesn't know strcasestr, here is my version */
+    /* returns an int, it's just a boolean */
+    char lower1[256],lower2[256];
+    int n;
+    for (n=0; n<255 && s1[n]; n++)
+	lower1[n] = tolower(s1[n]);
+    lower1[n] = 0;
+    for (n=0; n<255 && s2[n]; n++)
+	lower2[n] = tolower(s2[n]);
+    lower2[n] = 0;
+    return strstr(lower1,lower2) != NULL;
+}
+
 void TMenu::handle_key(SDL_Event *event) {
   int sym,ret;
   if (sel >= 0 && (ret = child[sel]->handle_key(event))) {
@@ -1162,13 +1176,13 @@ void TMenu::handle_key(SDL_Event *event) {
 		n = get_seldisp();
 		for (; n<nb_disp_items; n++) {
 		  if (can_be_selected(menu_disp[n]) &&
-		      !strnicmp(menu[menu_disp[n]].label,keybuf,index))
-		    break;
+		      mystrcasestr(menu[menu_disp[n]].label,keybuf))
+		      break;
 		}
 		if (n == nb_disp_items) { // not found -> restart from 0 then
 		  for (n=0; n<nb_disp_items; n++) {
 		    if (can_be_selected(menu_disp[n]) &&
-			!strnicmp(menu[menu_disp[n]].label,keybuf,index))
+			mystrcasestr(menu[menu_disp[n]].label,keybuf))
 		      break;
 		  }
 		  if (n == nb_disp_items) { // still not found !
