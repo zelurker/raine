@@ -1717,6 +1717,12 @@ static char *layer_id_name[4] =
 
 static int hack_counter,max_hack_counter,z80_speed_hack;
 
+static UINT16 sf2dongb_rw(UINT32 offset) {
+    if (offset == 0x180000 || offset == 0x180000+0x77040)
+	return 0x0210;
+    return 0;
+}
+
 void finish_conf_cps1()
 {
    AddZ80AInit();
@@ -1724,6 +1730,8 @@ void finish_conf_cps1()
    z80_speed_hack = 0;
 
    int size_code = get_region_size(REGION_CPU1);
+   if (is_current_game("sf2dongb"))
+       AddReadWord(0x180000, 0x1fffff, sf2dongb_rw, NULL);
    AddMemFetch(size_code, size_code+32, space_hack - size_code);
    printf("space_hack mapped at %x\n",size_code);
    AddReadBW(size_code, size_code+32, NULL, space_hack);
