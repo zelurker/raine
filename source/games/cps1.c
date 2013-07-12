@@ -1390,7 +1390,7 @@ static void cps1_init_machine(void)
    cps1_sound_fade_timer = 0xff;
    size_code2 = get_region_size(REGION_ROM2);
 
-   sf2ee = is_current_game("sf2ee");
+   sf2ee = is_current_game("sf2ee") || is_current_game("sf2ue");
    sf2thndr = is_current_game("sf2thndr");
    oldx2 = oldx = 0xffff; // To have scroll1x != oldx
 
@@ -1674,6 +1674,7 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
 static UINT16 cps1_ioc_rw(UINT32 offset)
 {
     offset &= 0x1FF;
+    // printf("ioc_rw %x\n",offset);
 
     if(offset < 0x100) {
 	if (offset == cps1_game_config->in2_addr)

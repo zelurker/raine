@@ -5472,7 +5472,7 @@ CLNEI( sf2hfu, sf2hf, "Street Fighter II': Hyper Fighting (USA 921209)", CAPCOM,
   .input = input_sf2, .dsw = dsw_sf2,
   .load_game = load_cps1_12);
 CLNEI( sf2hfj, sf2hf, "Street Fighter II' Turbo: Hyper Fighting (Japan 921209)", CAPCOM, 1992, GAME_BEAT,
-  .dsw = dsw_sf2j,
+  .input = input_sf2, .dsw = dsw_sf2j,
   .load_game = load_cps1_12);
 GMEI( dino, "Cadillacs and Dinosaurs (World 930201)", CAPCOM, 1993, GAME_BEAT,
   .load_game = load_qsound, .sound = sound_qsound,
