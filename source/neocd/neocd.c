@@ -260,9 +260,9 @@ static struct INPUT_INFO neocd_inputs[] = // 2 players, 4 buttons
   { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 3, 0xe0, BIT_ACTIVE_0 },
 
   { KB_DEF_P1_START, MSG_P1_START, 0x05, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_COIN1, "Player1 SELECT", 0x05, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_COIN1, "Player1 Select", 0x05, 0x02, BIT_ACTIVE_0 },
   { KB_DEF_P2_START, MSG_P2_START, 0x05, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_COIN2, "Player2 SELECT", 0x05, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_COIN2, "Player2 Select", 0x05, 0x08, BIT_ACTIVE_0 },
   INP1( UNKNOWN, 5, 0x70), // memcard status
   INP1( UNKNOWN, 5, 0x80), // mvs/aes ?
   // Bit 4 (0x10) is 0 if the memory card is present !!!

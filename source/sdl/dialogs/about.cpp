@@ -128,7 +128,7 @@ static int goto_url(int sel) {
     }
     return 0;
 }
-  
+
 static int about_game(int sel) {
   int nb_lines = 10;
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
@@ -154,7 +154,7 @@ static int about_game(int sel) {
 	  if (*q == '"') {
 	      q++;
 	      end = strchr(q,'"');
-	  } else 
+	  } else
 	      end = strchr(q,' ');
 	  if (end) {
 	      old = *end;
@@ -194,9 +194,9 @@ static int about_game(int sel) {
 	if (!sp)
 	  sp = strchr(s+maxlen,' ');
 	*nl = previous;
-	if (sp && sp <= s+maxlen) 
+	if (sp && sp <= s+maxlen)
 	  nl = sp;
-	else 
+	else
 	  nl = s+maxlen;
 
 	previous = *nl;
@@ -204,7 +204,7 @@ static int about_game(int sel) {
       }
       while ((q = strchr(s,0x92)))
 	*q = 0x27; // fix the stupid non standard ' code from krosoft
-	
+
       menu[used].label = strdup(s);
       menu[used].menu_func = NULL;
       menu[used].values_list_label[0] = NULL;
@@ -221,7 +221,7 @@ end_loop:
       else
 	s = nl;
     }
-  } 
+  }
 
   if (used) {
     menu[used].label = NULL;
@@ -243,7 +243,7 @@ end_loop:
 
 static menu_item_t about_items[] =
 {
-  { EMUNAME" "VERSION" (c)1998-2012 " HANDLE, NULL, NULL },
+  { EMUNAME" "VERSION" (c)1998-2013 " HANDLE, NULL, NULL },
   { "Compiled on " __DATE__ " (" __TIME__ ")", NULL, NULL },
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
