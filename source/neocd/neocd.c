@@ -1842,6 +1842,10 @@ static void neogeo_hreset(void)
       system_control_w( offs, 0x00ff);
 
   if (is_neocd()) {
+      // clear at least the upload data, but I clear everything
+      // for example the 1st request to upload data from kof99 has a size
+      // not initialized
+      memset(RAM,0,RAMSize);
       z80_enabled = 0;
       region_code = GetLanguageSwitch();
       SetLanguageSwitch(region_code);
