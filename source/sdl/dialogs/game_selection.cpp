@@ -358,7 +358,7 @@ void TGame_sel::regen_menu(int free_labels) {
     for (n=0; n<game_count; n++) {
 	if (short_names) {
 	    char buf[256];
-	    snprintf(buf,256,"%s: %s",game_list[n]->main_name,game_list[n]->long_name);
+	    snprintf(buf,256,"\E[31m%s:\E[0m %s",game_list[n]->main_name,game_list[n]->long_name);
 	    buf[255] = 0;
 	    menu[n+NB_OPTIONS].label = strdup(buf);
 	} else
