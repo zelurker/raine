@@ -109,23 +109,26 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
 
 static menu_item_t *menu;
 
-static int goto_url(int sel) {
+static void goto_url(char *url) {
 #ifdef RAINE_UNIX
     // at least when using compiz, you can't switch to any other window while
     // in fullscreen mode, so it's better to leave it first !
     if (display_cfg.fullscreen)
 	toggle_fullscreen();
 #endif
-    if (menu[sel].values_list_label[0]) {
-	char cmd[2048];
+    char cmd[2048];
 #ifdef RAINE_UNIX
-	sprintf(cmd,"www-browser \"%s\" &",menu[sel].values_list_label[0]);
+    sprintf(cmd,"www-browser \"%s\" &",url);
 #else
-	// windows
-	sprintf(cmd,"explorer \"%s\"",menu[sel].values_list_label[0]);
+    // windows
+    sprintf(cmd,"explorer \"%s\"",url);
 #endif
-	system(cmd);
-    }
+    system(cmd);
+}
+
+static int menu_goto_url(int sel) {
+    if (menu[sel].values_list_label[0])
+	goto_url(menu[sel].values_list_label[0]);
     return 0;
 }
 
@@ -173,7 +176,7 @@ static int about_game(int sel) {
 		  *end = 0;
 		  menu[used].label = strdup(q);
 		  *end = old;
-		  menu[used].menu_func = &goto_url;
+		  menu[used].menu_func = &menu_goto_url;
 		  goto end_loop;
 	      }
 	  }
@@ -221,6 +224,14 @@ end_loop:
       else
 	s = nl;
     }
+  } else {
+      int ret = MessageBox("Warning","history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your raine directory\n"
+#ifdef RAINE_UNIX
+	      "in linux ~/.raine or /usr/share/games/raine\n"
+#endif
+	      ,"Open this page now !|Later maybe...");
+      if (ret == 1)
+	  goto_url("http://www.arcade-history.com/index.php?page=download");
   }
 
   if (used) {
