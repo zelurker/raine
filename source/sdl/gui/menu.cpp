@@ -1176,15 +1176,33 @@ void TMenu::handle_key(SDL_Event *event) {
 		n = get_seldisp();
 		for (; n<nb_disp_items; n++) {
 		  if (can_be_selected(menu_disp[n]) &&
-		      mystrcasestr(menu[menu_disp[n]].label,keybuf))
+		      !strncasecmp(menu[menu_disp[n]].label,keybuf,index))
 		      break;
 		}
-		if (n == nb_disp_items) { // not found -> restart from 0 then
+		if (n == nb_disp_items) { // not found -> search substring
+		    for (n=get_seldisp(); n<nb_disp_items; n++) {
+			if (can_be_selected(menu_disp[n]) &&
+				mystrcasestr(menu[menu_disp[n]].label,keybuf))
+			    break;
+		    }
+		    if (n < nb_disp_items)
+			printf("found substring from sel %s %s\n",menu[menu_disp[n]].label,keybuf);
+		} else
+		    printf("found beg of string %s %s\n",menu[menu_disp[n]].label,keybuf);
+
+		if (n == nb_disp_items) { // not found -> restart at 0
 		  for (n=0; n<nb_disp_items; n++) {
 		    if (can_be_selected(menu_disp[n]) &&
-			mystrcasestr(menu[menu_disp[n]].label,keybuf))
+			!strncasecmp(menu[menu_disp[n]].label,keybuf,index))
 		      break;
 		  }
+		  if (n == nb_disp_items) // then substring...
+		    for (n=0; n<nb_disp_items; n++) {
+			if (can_be_selected(menu_disp[n]) &&
+				mystrcasestr(menu[menu_disp[n]].label,keybuf))
+			    break;
+		    }
+
 		  if (n == nb_disp_items) { // still not found !
 		    // Let's say that the new key is the start of a new selection
 		    // then...
