@@ -4722,7 +4722,8 @@ static struct INPUT_INFO input_forgottn[] =
   INCL_INP( cps1_1b ),
 
   INP0( UNKNOWN, 0x00, 0x40),
-
+  INP0( B1_L, 0x02, 0x20 ), // change p1b2 to aim left (up)
+  INP0( B1_R, 0x02, 0x40 ), // p1b3 = aim right (down)
 
   END_INPUT
 };

@@ -1437,8 +1437,8 @@ static void cps1_init_machine(void)
    cps1_game_config->in2_addr |= 0x100 + offset;
    cps1_game_config->in3_addr |= 0x100 + offset;
 
-   if (is_current_game("forgottn") || is_current_game("forgott1") ||
-       is_current_game("lostwrld")) // forgottn has digital input
+   if (!strncmp(gamename,"forgott",7) ||
+       !strncmp(gamename,"lostwrld",8)) // forgottn has digital input
      GameMouse=1;
 
    if (is_current_game("sf2rb"))
@@ -1689,9 +1689,9 @@ static UINT16 cps1_ioc_rw(UINT32 offset)
 	    if (offset < 0x1a) offset -= 0x18; // input_buffer[0], then dsw
 	    input = input_buffer[offset];
 	    return input | (input << 8);
-	} else if (offset == 0x52) {
+	} else if (offset == 0x52 || offset == 0x5a) {
 	    return (ReadWord(&input_buffer[5*2]) - dial[0]) & 0xff;
-	} else if (offset == 0x54) {
+	} else if (offset == 0x54 || offset == 0x5c) {
 	    return ((ReadWord(&input_buffer[5*2]) - dial[0]) >> 8) & 0xff;
 	}
 
@@ -2883,15 +2883,19 @@ void execute_cps1_frame(void)
   hack_counter = 0;
   if (GameMouse) {
     GetMouseMickeys(&mx,&my);
-    if (!(input_buffer[8] & 0x20)) // P1 B2 (unused in this game...)
+    if (!(input_buffer[2] & 0x20)) // P1 B2 (unused in this game...)
       mx = -20;
-    else if (!(input_buffer[8] & 0x40)) { // P1 B3
+    else if (!(input_buffer[2] & 0x40)) { // P1 B3
       mx = 20;
     }
 
     WriteWord(&input_buffer[5*2],mx & 0xfff);
-    if (*MouseB & 1) input_buffer[8] &= 0xef;
-    if (*MouseB & 2) input_buffer[8] &= 0xdf;
+#ifndef SDL
+    // MouseB isn't handled in sdl, instead you can assign mouse buttons to
+    // any control yourself (default mbtn1 = button 1 of course)
+    if (*MouseB & 1) input_buffer[2] &= 0xef;
+    if (*MouseB & 2) input_buffer[2] &= 0xdf;
+#endif
   }
   cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
 
