@@ -826,7 +826,8 @@ static void CLI_Verbose(void)
 
 static int get_rom_size(const ROM_INFO** rom_list) {
     int check_size = (*rom_list)->size;
-    while ((*rom_list)[1].flags == LOAD_CONTINUE) {
+    while ((*rom_list)[1].flags == LOAD_CONTINUE ||
+	    (*rom_list)[1].flags == LOAD_IGNORE) {
 	check_size += (*rom_list)[1].size;
 	(*rom_list)++;
     }

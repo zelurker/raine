@@ -11,6 +11,7 @@ my %raine_loads =
 	"ROM_LOAD32_WORD_SWAP" => "LOAD32_SWAP_16",
 	"ROM_LOAD32_BYTE" => "LOAD_8_32",
 	"ROM_CONTINUE" => "LOAD_CONTINUE",
+	"ROM_IGNORE" => "LOAD_IGNORE",
 );
 
 my %raine_regions =
@@ -147,6 +148,11 @@ while ($_ = shift @file) {
 									$name = $oldname;
 									$crc = $oldcrc;
 									$function = $oldfunc;
+								} elsif ($function eq "ROM_IGNORE") {
+									$size = $name;
+									$base = $oldbase;
+									$name = $oldname;
+									$crc = $oldcrc;
 								} else {
 									$size = $base;
 									$base = $name;
