@@ -280,6 +280,9 @@ UINT8 *neocd_bios;
 
 void setup_neocd_bios() {
   if (!is_neocd()) {
+      if (neocd_bios)
+	  // If defined here, then it's really a neocd bios, not a neogeo one
+	  free(neocd_bios);
       neocd_bios = load_region[REGION_MAINBIOS];
       return;
   }
@@ -3143,6 +3146,9 @@ void clear_neocd() {
       if (debug_mode)
 	  ByteSwap(neocd_bios,0x80000); // restore the bios for the next game
 #endif
+  } else {
+      // Clear neogeo bios
+      neocd_bios = NULL;
   }
   if (raster_bitmap) {
       destroy_bitmap(raster_bitmap);
