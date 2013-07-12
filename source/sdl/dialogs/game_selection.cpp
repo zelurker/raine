@@ -17,12 +17,14 @@
  *  to the big mess that was required to do that in allegro.
  *  It remains relatively easy to read for what it does. */
 
-static int game_list_mode,company,status = 1,category,driver,clones = 1;
+static int game_list_mode,company,status = 1,category,driver,clones = 1,short_names;
 
 // Number of options before the list of games
 // yes I know it's a hack, and not a very good one, but it's much easier
 // than adding a whole new kind of dialog just to handle these sub options
 #define NB_OPTIONS 1
+
+static int change_names(int sel);
 
 // The list of driver names, which must follow the alphabetical order of the
 // driver names in options[] below.
@@ -39,6 +41,7 @@ static menu_item_t options[] =
 { "Driver", NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
 { "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-geo", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
 { "Clones", NULL, &clones, 2, {0, 1 }, { "Without", "With" } },
+{ "Display short names too", &change_names, &short_names, 2, {0, 1}, {"No", "Yes"} },
 { "Rom directories...", &do_romdir },
 { NULL },
 };
@@ -64,10 +67,12 @@ static SDL_Rect get_max_area(SDL_Rect &work_area, SDL_Rect &fgdst) {
 
 void read_game_list_config() {
    game_list_mode	= raine_get_config_int( "GUI", "game_list_mode", 1);
+   short_names	= raine_get_config_int( "GUI", "short_names", 0);
 }
 
 void save_game_list_config() {
    raine_set_config_int(	"GUI", "game_list_mode", game_list_mode);
+   raine_set_config_int(	"GUI", "short_names", short_names);
 }
 
 static int recompute_list();
@@ -81,6 +86,7 @@ class TGame_sel : public TMenu
 
   public:
   TGame_sel(char *title, menu_item_t *items) : TMenu(title,items) {
+      regen_menu(0);
     last_sel = -1;
     current_picture[0] = 0;
     image_counter = 0;
@@ -152,9 +158,9 @@ class TGame_sel : public TMenu
 	}
 	options[3].values_list_label[0] = "All";
 	sort_menu(options);
-	TMenu *menu = new TMenu("Options",options);
-	menu->execute();
-	delete menu;
+	TMenu *mymenu = new TMenu("Options",options);
+	mymenu->execute();
+	delete mymenu;
 	recompute_list();
       }
     }
@@ -257,6 +263,7 @@ class TGame_sel : public TMenu
   void draw_frame(SDL_Rect *r = NULL);
   void draw_top_frame();
   void draw_bot_frame();
+  void regen_menu(int free_labels);
 };
 
 void TGame_sel::draw_top_frame() {
@@ -338,8 +345,41 @@ void TGame_sel::draw_frame(SDL_Rect *r) {
   work_area.h = (base - (h_title));
 }
 
-static menu_item_t *menu;
+void TGame_sel::regen_menu(int free_labels) {
+    int n,freed = 0;
+    if (free_labels)
+	for (n=0; n<game_count; n++)
+	    free((void*)menu[n+NB_OPTIONS].label);
+    if (menu) {
+	free(menu);
+	freed = 1;
+    }
+    menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(game_count+2));
+    for (n=0; n<game_count; n++) {
+	if (short_names) {
+	    char buf[256];
+	    snprintf(buf,256,"%s: %s",game_list[n]->main_name,game_list[n]->long_name);
+	    buf[255] = 0;
+	    menu[n+NB_OPTIONS].label = strdup(buf);
+	} else
+	    menu[n+NB_OPTIONS].label = game_list[n]->long_name;
+      menu[n+NB_OPTIONS].menu_func = NULL;
+      menu[n+NB_OPTIONS].value_int = NULL;
+    }
+    menu[game_count+NB_OPTIONS].label = NULL;
+    menu[0].label = "-- Options --";
+    menu[0].menu_func = NULL;
+    menu[0].value_int = NULL;
+    if (freed)
+	compute_nb_items();
+}
+
 static TGame_sel *game_sel;
+
+static int change_names(int sel) {
+    game_sel->regen_menu(1-short_names);
+    return 0;
+}
 
 int recompute_list() {
   // options
@@ -349,22 +389,7 @@ int recompute_list() {
 }
 
 int do_game_sel(int sel) {
-  if (!menu) {
-    int n;
-    menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(game_count+2));
-    for (n=0; n<game_count; n++) {
-      menu[n+NB_OPTIONS].label = game_list[n]->long_name;
-      menu[n+NB_OPTIONS].menu_func = NULL;
-      menu[n+NB_OPTIONS].value_int = NULL;
-    }
-    menu[game_count+NB_OPTIONS].label = NULL;
-    menu[0].label = "-- Options --";
-    menu[0].menu_func = NULL;
-    menu[0].value_int = NULL;
-
-  }
-
-  game_sel = new TGame_sel("Game selection",menu);
+  game_sel = new TGame_sel("Game selection",NULL);
   game_sel->execute();
   delete game_sel;
   return raine_cfg.req_load_game;

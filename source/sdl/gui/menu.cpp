@@ -1138,14 +1138,14 @@ void TMenu::handle_key(SDL_Event *event) {
 	  exit_menu = can_exit();
 	  break;
 	default:
+	  int unicode = event->key.keysym.unicode;
+	  if (unicode) sym = unicode;
           if (sym >= ' ' && sym <= 'z' && sel >= 0) {
 	    /* sym contains the "raw" key code, in windows it's the letter of
 	     * a qwerty keyboard, ignoring the current keyboard mapping, but
 	     * even in linux with some keyboard mappings in can also become
 	     * the letter of an equivalent qwerty keyboard. So we must use the
 	     * unicode value if available instead... */
-	    int unicode = event->key.keysym.unicode;
-	    if (unicode) sym = unicode;
 	    int index = 0;
 	    while (index < MAX_KEYBUF-1 && keybuf[index])
 	      index++;
