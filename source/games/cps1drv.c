@@ -4849,6 +4849,7 @@ static struct INPUT_INFO input_sf2hack[] =
 static struct INPUT_INFO input_sf2m2[] =
 {
   INCL_INP( sf2hack ),
+  INP1( UNUSED, 0x1c, 0x10), // must be low !
   END_INPUT
 };
 
