@@ -382,6 +382,7 @@ static struct INPUT_INFO input_kbash[] =
    INP1( COIN2, 0x01F018, 0x10 ),
    INP1( TILT, 0x01F018, 0x02 ),
    INP1( SERVICE, 0x01F018, 0x01 ),
+   INP1( TEST, 0x01F018, 0x04 ),
 
    INP1( P1_START, 0x01F018, 0x20 ),
    INP1( P1_UP, 0x01F010, 0x01 ),
@@ -3821,6 +3822,16 @@ static void load_kbash(void)
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                 // SCREEN RAM
    //AddReadByte(0x200000, 0x200003, YM2151Read68k, NULL);              // YM2151
    AddReadByte(0x200004, 0x20000F, NULL, RAM+0x01F004);                 // INPUT
+   if (is_current_game("kbash2")) {
+     AddReadBW(0x200010, 0x20001b, NULL, RAM+0x01F010); // inputs
+     AddReadBW(0x200020, 0x200021, OKIM6295_status_1_r, NULL);
+     AddReadBW(0x200024, 0x200025, OKIM6295_status_0_r, NULL);
+     AddWriteBW(0x200020, 0x200021, OKIM6295_data_1_w, NULL);
+     AddWriteBW(0x200024, 0x200025, OKIM6295_data_0_w, NULL);
+     AddWriteBW(0x200028, 0x200029, oki_bankswitch_w, NULL);
+   } else {
+     AddReadBW(0x208010, 0x20801F, NULL, RAM+0x01F010);                 // INPUT
+   }
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
 
    AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
@@ -3834,6 +3845,10 @@ static void load_kbash(void)
 
    AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    //AddWriteByte(0x200000, 0x200003, YM2151Write68k, NULL);            // YM2151
+   if (is_current_game("kbash")) {
+     AddWriteByte(0x200000, 0x200003, kbash_okisnd_w, NULL);               // M6295
+     AddWriteByte(0x208000, 0x20803F, knuckle_bash_ioc_wb, NULL);         // INPUT
+   }
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
    AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
    AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
@@ -3841,20 +3856,6 @@ static void load_kbash(void)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x208000, 0x20803F, knuckle_bash_ioc_ww, NULL);         // INPUT
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   if (is_current_game("kbash2")) {
-     AddReadBW(0x200010, 0x20001b, NULL, RAM+0x01F010); // inputs
-     AddReadBW(0x200020, 0x200021, OKIM6295_status_1_r, NULL);
-     AddReadBW(0x200024, 0x200025, OKIM6295_status_0_r, NULL);
-     AddWriteBW(0x200020, 0x200021, OKIM6295_data_1_w, NULL);
-     AddWriteBW(0x200024, 0x200025, OKIM6295_data_0_w, NULL);
-     AddWriteBW(0x200028, 0x200029, oki_bankswitch_w, NULL);
-   } else {
-     AddReadBW(0x208010, 0x20801F, NULL, RAM+0x01F010);                 // INPUT
-   }
-   if (is_current_game("kbash")) {
-     AddWriteByte(0x200000, 0x200003, kbash_okisnd_w, NULL);               // M6295
-     AddWriteByte(0x208000, 0x20803F, knuckle_bash_ioc_wb, NULL);         // INPUT
-   }
    AddReadByte(-1, -1, NULL, NULL);
    AddReadWord(-1, -1,NULL, NULL);
    AddWriteByte(-1, -1, NULL, NULL);
