@@ -1164,10 +1164,13 @@ void neogeo_read_gamename(void)
     current_game->main_name = "neocd"; // resets name in case we don't find
   }
   print_debug("main_name %s\n",current_game->main_name);
-  if (memcard_write)
-    save_memcard(); // called after a reset
-  else
-    restore_memcard(); // called after loading
+  if (memcard_write) {
+      print_debug("save_memcard\n");
+      save_memcard(); // called after a reset
+  } else {
+      print_debug("restore_memcard\n");
+      restore_memcard(); // called after loading
+  }
 
   if (neocd_id == 0x48 || neocd_id == 0x0221) {
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
@@ -1679,6 +1682,15 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    }
 	    else if (sy > 0x110) sy -= 0x200;
 
+	    if (is_neocd() && (tileatr>>8) == 0) {
+		// sprites of color 0 are ignored in neocd
+		// it can be seen in last blade 2, character selection screen
+		// there are gray squares if displaying them
+		// on the contrary, they are displayed in neogeo
+		// it can be seen in samsho, the scrolling text disappears
+		// if they are not displayed during attract mode
+		continue;
+	    }
 	    if ((sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
 	    {
 		MAP_PALETTE_MAPPED_NEW(
@@ -1909,12 +1921,13 @@ void postprocess_ipl() {
     offx = 16-8;
     maxx = 320-8;
   }
-  if (cdrom_speed &&
-	  neocd_video.screen_x+2*neocd_video.border_size != GameBitmap->w) {
+  if (cdrom_speed) {
     /* If loading animations are enabled, then the game name is known only after
      * having started the emulation, so we must reset a few parameters at this
      * time */
-    ScreenChange();
+      print_debug("neocd reset params\n");
+    if (neocd_video.screen_x+2*neocd_video.border_size != GameBitmap->w)
+	ScreenChange();
     hs_close();
     hs_open();
     hs_init();
