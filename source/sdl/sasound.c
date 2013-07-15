@@ -393,7 +393,7 @@ void load_sample(char *filename) {
 void init_samples() {
   SDL_PauseAudio(1);
   while (callback_busy) {
-    print_debug("load_sample: callback_busy...\n");
+    print_debug("init_sample: callback_busy...\n");
     SDL_Delay(1);
   }
   if (sample) {
@@ -407,7 +407,7 @@ void init_samples() {
     fclose(fbin);
     fbin = NULL;
   }
-  SDL_PauseAudio(0);
+  if (!pause_sound) SDL_PauseAudio(0);
 }
 
 void set_sample_pos(int pos) {
@@ -429,9 +429,7 @@ void saDestroySound( int remove_all_resources )
 {
    int i;
 
-#ifdef RAINE_DEBUG
    print_debug("saDestroySound: Removing SEAL\n");
-#endif
 
    //pause_raine_ym3812();
 
@@ -440,10 +438,10 @@ void saDestroySound( int remove_all_resources )
       be closed at the end in order to open it again at a more normal frequency later. */
 
    if (opened_audio) {
-     SDL_CloseAudio();
      if (sample)
 	 Sound_FreeSample(sample);
      Sound_Quit();
+     SDL_CloseAudio();
    }
 
    if(remove_all_resources){
@@ -626,7 +624,8 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		if (stream_callback[channel] || stream_callback_multi[channel])
 		    stream_update_channel(channel, len/2-stream_buffer_pos[channel]);
 		else {
-		    printf("buffer underrun channel %d and no callback\n",channel);
+		    print_debug("buffer underrun channel %d and no callback\n",channel);
+		    SDL_SemPost(sem[channel]);
 		    continue;
 		}
 	    }

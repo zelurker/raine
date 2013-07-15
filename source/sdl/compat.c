@@ -324,10 +324,13 @@ void sdl_create_overlay( int w, int h) {
 void destroy_bitmap(BITMAP *bmp) {
   if (bmp) {
     if (bmp->extra) {
-      if (bmp->id == 0) // real bitmap (not sub bitmap)
-	SDL_FreeSurface((SDL_Surface*)bmp->extra);
-      else if (bmp->id == 2) // sdl_overlay
-	SDL_FreeYUVOverlay((SDL_Overlay*)bmp->extra);
+      if (bmp->id == 0) { // real bitmap (not sub bitmap)
+	  print_debug("destroy_bitmap: calling sdl_freesurface\n");
+	  SDL_FreeSurface((SDL_Surface*)bmp->extra);
+      } else if (bmp->id == 2) { // sdl_overlay
+	  print_debug("destroy_bitmap: calling sdl_freeoverlay\n");
+	  SDL_FreeYUVOverlay((SDL_Overlay*)bmp->extra);
+      }
     }
     free(bmp);
   }

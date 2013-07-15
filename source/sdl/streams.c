@@ -124,6 +124,7 @@ void streams_sh_stop(void)
       if(stream_buffer[i]) {
 	  FreeMem(stream_buffer[i]);
 	  SDL_DestroySemaphore(sem[i]);
+	  sem[i] = NULL;
 	  stream_buffer[i] = 0;
 	  stream_callback[i] = NULL;
       }
