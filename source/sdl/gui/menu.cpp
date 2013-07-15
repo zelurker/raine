@@ -1176,28 +1176,32 @@ void TMenu::handle_key(SDL_Event *event) {
 		n = get_seldisp();
 		for (; n<nb_disp_items; n++) {
 		  if (can_be_selected(menu_disp[n]) &&
-		      !strncasecmp(menu[menu_disp[n]].label,keybuf,index))
+		      !strncasecmp(menu[menu_disp[n]].label,keybuf,index)) {
 		      break;
+		  }
 		}
 		if (n == nb_disp_items) { // not found -> search from 0
-		    for (n=0; n<get_seldisp(); n++) {
+		    for (n=0; n<nb_disp_items; n++) {
 			if (can_be_selected(menu_disp[n]) &&
-				!strncasecmp(menu[menu_disp[n]].label,keybuf,index))
+				!strncasecmp(menu[menu_disp[n]].label,keybuf,index)) {
 			    break;
+			}
 		    }
 		}
 
 		if (n == nb_disp_items) { // not found -> search substring
 		    for (n=get_seldisp(); n<nb_disp_items; n++) {
 			if (can_be_selected(menu_disp[n]) &&
-				mystrcasestr(menu[menu_disp[n]].label,keybuf))
+				mystrcasestr(menu[menu_disp[n]].label,keybuf)) {
 			    break;
+			}
 		    }
 		  if (n == nb_disp_items) // and from 0
-		    for (n=0; n<get_seldisp(); n++) {
+		    for (n=0; n<nb_disp_items; n++) {
 			if (can_be_selected(menu_disp[n]) &&
-				mystrcasestr(menu[menu_disp[n]].label,keybuf))
+				mystrcasestr(menu[menu_disp[n]].label,keybuf)) {
 			    break;
+			}
 		    }
 
 		  if (n == nb_disp_items) { // still not found !
