@@ -1656,6 +1656,10 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 		tileno &= sprites_mask;
 	    }
 	    offs += 2;
+	    // Filtering on 0 sprite number is necessary at least for last
+	    // blade 2 : character selection screen. Now there are 2 doubts :
+	    // filter on this or color 0 ? And is it also really used in neogeo?
+	    if (!tileno) continue;
 	    if (y)
 		// This is much more accurate for the zoomed bgs in aof/aof2
 		sy = oy + (((rzy+1)*y)>>4);
@@ -1682,15 +1686,6 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    }
 	    else if (sy > 0x110) sy -= 0x200;
 
-	    if (is_neocd() && (tileatr>>8) == 0) {
-		// sprites of color 0 are ignored in neocd
-		// it can be seen in last blade 2, character selection screen
-		// there are gray squares if displaying them
-		// on the contrary, they are displayed in neogeo
-		// it can be seen in samsho, the scrolling text disappears
-		// if they are not displayed during attract mode
-		continue;
-	    }
 	    if ((sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
 	    {
 		MAP_PALETTE_MAPPED_NEW(
@@ -1838,7 +1833,7 @@ static void neogeo_hreset(void)
   fix_disabled = 0;
   spr_disabled = 0;
   video_enabled = 1;
-  palbank = 0;
+  neogeo_set_palette_bank(0);
   memset(&irq,0,sizeof(irq));
   pd4990a_init();
   pending_command = sound_code = 0;
@@ -1854,10 +1849,7 @@ static void neogeo_hreset(void)
       system_control_w( offs, 0x00ff);
 
   if (is_neocd()) {
-      // clear at least the upload data, but I clear everything
-      // for example the 1st request to upload data from kof99 has a size
-      // not initialized
-      memset(RAM,0,RAMSize);
+      RAM[0x115a06 ^ 1] = 0; // clear "load files" buffer
       z80_enabled = 0;
       region_code = GetLanguageSwitch();
       SetLanguageSwitch(region_code);
