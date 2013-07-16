@@ -425,6 +425,7 @@ static int do_ingame_controls(int sel) {
   cols = (char**)malloc(sizeof(char*)*nb*3);
   mynb = 0;
   base_input = 0;
+  int categ[0x100];
   for (int n=0; n<nb; n++) {
     if ((sel >= 0 && (InputList[n].link == 0 || InputList[n].link > n)) ||
         (sel < 0 && InputList[n].link > 0 && InputList[n].link < n)) {
@@ -435,12 +436,17 @@ static int do_ingame_controls(int sel) {
       cols[mynb*3+0] = get_key_name(InputList[n].Key);
       cols[mynb*3+1] = get_joy_name(InputList[n].Joy);
       cols[mynb*3+2] = get_mouse_name(InputList[n].mousebtn);
+      categ[mynb] = def_input[InputList[n].default_key & 0xff].categ;
       mynb++;
     }
   }
   for (int a=0; a<nb; a++)
       for (int b=a+1; b<nb; b++)
-	  if (strcmp(menu[b].label,menu[a].label) < 0) {
+	  if (categ[b] < categ[a] || (categ[b] == categ[a] &&
+		      strcmp(menu[b].label,menu[a].label) < 0)) {
+	      int truc = categ[a];
+	      categ[a] = categ[b];
+	      categ[b] = truc;
 	      menu_item_t temp = menu[a];
 	      menu[a] = menu[b];
 	      menu[b] = temp;

@@ -123,137 +123,137 @@ joystick_state jstate[MAX_JOY];
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
 #ifdef RAINE_WIN32
- { SDLK_3,       JOY(1,0,10,0), 0, "Def Coin A",           },      // KB_DEF_COIN1,
+ { SDLK_3,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #else
- { SDLK_z,       JOY(1,0,10,0), 0, "Def Coin A",           },      // KB_DEF_COIN1,
+ { SDLK_z,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #endif
- { SDLK_4,       JOY(2,0,10,0), 0, "Def Coin B",           },      // KB_DEF_COIN2,
- { SDLK_7,       JOY(3,0,10,0), 0, "Def Coin C",           },      // KB_DEF_COIN3,
- { SDLK_8,       JOY(4,0,10,0), 0, "Def Coin D",           },      // KB_DEF_COIN4,
+ { SDLK_4,       JOY(2,0,10,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
+ { SDLK_7,       JOY(3,0,10,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
+ { SDLK_8,       JOY(4,0,10,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
 
- { SDLK_t,       0x00, 0, "Def Tilt",             },      // KB_DEF_TILT,
- { SDLK_y,       0x00, 0, "Def Service",          },      // KB_DEF_SERVICE,
- { SDLK_u,       0x00, 0, "Def Test",             },      // KB_DEF_TEST,
+ { SDLK_t,       0x00, 0, "Def Tilt",    SYS      },      // KB_DEF_TILT,
+ { SDLK_y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
+ { SDLK_u,       0x00, 0, "Def Test",    SYS      },      // KB_DEF_TEST,
 
 #ifdef RAINE_WIN32
- { SDLK_1,       JOY(1,0,9,0), 0, "Def P1 Start",         },      // KB_DEF_P1_START,
+ { SDLK_1,       JOY(1,0,9,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
 #else
- { SDLK_a,       JOY(1,0,9,0), 0, "Def P1 Start",         },      // KB_DEF_P1_START,
+ { SDLK_a,       JOY(1,0,9,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
 #endif
 
- { SDLK_UP,      JOY(1,AXIS_LEFT(1),0,0), 0, "Def P1 Up",            },      // KB_DEF_P1_UP,
- { SDLK_DOWN,    JOY(1,AXIS_RIGHT(1),0,0), 0, "Def P1 Down",          },      // KB_DEF_P1_DOWN,
- { SDLK_LEFT,    JOY(1,AXIS_LEFT(0),0,0), 0, "Def P1 Left",          },      // KB_DEF_P1_LEFT,
- { SDLK_RIGHT,   JOY(1,AXIS_RIGHT(0),0,0), 0, "Def P1 Right",         },      // KB_DEF_P1_RIGHT,
+ { SDLK_UP,      JOY(1,AXIS_LEFT(1),0,0), 0, "Def P1 Up",P1D         },      // KB_DEF_P1_UP,
+ { SDLK_DOWN,    JOY(1,AXIS_RIGHT(1),0,0), 0, "Def P1 Down",P1D       },      // KB_DEF_P1_DOWN,
+ { SDLK_LEFT,    JOY(1,AXIS_LEFT(0),0,0), 0, "Def P1 Left",P1D       },      // KB_DEF_P1_LEFT,
+ { SDLK_RIGHT,   JOY(1,AXIS_RIGHT(0),0,0), 0, "Def P1 Right",P1D      },      // KB_DEF_P1_RIGHT,
 
- { SDLK_v,       JOY(1,0,1,0), 1, "Def P1 Button 1",      },      // KB_DEF_P1_B1,
- { SDLK_b,       JOY(1,0,2,0), 3, "Def P1 Button 2",      },      // KB_DEF_P1_B2,
- { SDLK_n,       JOY(1,0,3,0), 2, "Def P1 Button 3",      },      // KB_DEF_P1_B3,
- { SDLK_g,       JOY(1,0,4,0), 0, "Def P1 Button 4",      },      // KB_DEF_P1_B4,
- { SDLK_h,       JOY(1,0,5,0), 0, "Def P1 Button 5",      },      // KB_DEF_P1_B5,
- { SDLK_j,       JOY(1,0,6,0), 0, "Def P1 Button 6",      },      // KB_DEF_P1_B6,
- { SDLK_m,       JOY(1,0,7,0), 0, "Def P1 Button 7",      },      // KB_DEF_P1_B7,
- { SDLK_k,       JOY(1,0,8,0), 0, "Def P1 Button 8",      },      // KB_DEF_P1_B8,
+ { SDLK_v,       JOY(1,0,1,0), 1, "Def P1 Button 1", P1B      },      // KB_DEF_P1_B1,
+ { SDLK_b,       JOY(1,0,2,0), 3, "Def P1 Button 2", P1B      },      // KB_DEF_P1_B2,
+ { SDLK_n,       JOY(1,0,3,0), 2, "Def P1 Button 3", P1B      },      // KB_DEF_P1_B3,
+ { SDLK_g,       JOY(1,0,4,0), 0, "Def P1 Button 4", P1B      },      // KB_DEF_P1_B4,
+ { SDLK_h,       JOY(1,0,5,0), 0, "Def P1 Button 5", P1B      },      // KB_DEF_P1_B5,
+ { SDLK_j,       JOY(1,0,6,0), 0, "Def P1 Button 6", P1B      },      // KB_DEF_P1_B6,
+ { SDLK_m,       JOY(1,0,7,0), 0, "Def P1 Button 7", P1B      },      // KB_DEF_P1_B7,
+ { SDLK_k,       JOY(1,0,8,0), 0, "Def P1 Button 8", P1B      },      // KB_DEF_P1_B8,
 
- { SDLK_2,       JOY(2,0,9,0), 0, "Def P2 Start",         },      // KB_DEF_P2_START,
+ { SDLK_2,       JOY(2,0,9,0), 0, "Def P2 Start", P2S        },      // KB_DEF_P2_START,
 
- { SDLK_s,       JOY(2,AXIS_LEFT(1),0,0), 0, "Def P2 Up",            },      // KB_DEF_P2_UP,
- { SDLK_x,       JOY(2,AXIS_RIGHT(1),0,0), 0, "Def P2 Down",          },      // KB_DEF_P2_DOWN,
- { SDLK_z,       JOY(2,AXIS_LEFT(0),0,0), 0, "Def P2 Left",          },      // KB_DEF_P2_LEFT,
- { SDLK_c,       JOY(2,AXIS_RIGHT(0),0,0), 0, "Def P2 Right",         },      // KB_DEF_P2_RIGHT,
+ { SDLK_s,       JOY(2,AXIS_LEFT(1),0,0), 0, "Def P2 Up", P2D            },      // KB_DEF_P2_UP,
+ { SDLK_x,       JOY(2,AXIS_RIGHT(1),0,0), 0, "Def P2 Down", P2D          },      // KB_DEF_P2_DOWN,
+ { SDLK_z,       JOY(2,AXIS_LEFT(0),0,0), 0, "Def P2 Left", P2D          },      // KB_DEF_P2_LEFT,
+ { SDLK_c,       JOY(2,AXIS_RIGHT(0),0,0), 0, "Def P2 Right", P2D         },      // KB_DEF_P2_RIGHT,
 
- { SDLK_q,       JOY(2,0,1,0), 0, "Def P2 Button 1",      },      // KB_DEF_P2_B1,
- { SDLK_w,       JOY(2,0,2,0), 0, "Def P2 Button 2",      },      // KB_DEF_P2_B2,
- { SDLK_e,       JOY(2,0,3,0), 0, "Def P2 Button 3",      },      // KB_DEF_P2_B3,
- { SDLK_r,       JOY(2,0,4,0), 0, "Def P2 Button 4",      },      // KB_DEF_P2_B4,
- { SDLK_a,       JOY(2,0,5,0), 0, "Def P2 Button 5",      },      // KB_DEF_P2_B5,
- { SDLK_d,       JOY(2,0,6,0), 0, "Def P2 Button 6",      },      // KB_DEF_P2_B6,
- { SDLK_f,       JOY(2,0,7,0), 0, "Def P2 Button 7",      },      // KB_DEF_P2_B7,
- { SDLK_g,       JOY(2,0,8,0), 0, "Def P2 Button 8",      },      // KB_DEF_P2_B8,
+ { SDLK_q,       JOY(2,0,1,0), 0, "Def P2 Button 1", P2B      },      // KB_DEF_P2_B1,
+ { SDLK_w,       JOY(2,0,2,0), 0, "Def P2 Button 2", P2B      },      // KB_DEF_P2_B2,
+ { SDLK_e,       JOY(2,0,3,0), 0, "Def P2 Button 3", P2B      },      // KB_DEF_P2_B3,
+ { SDLK_r,       JOY(2,0,4,0), 0, "Def P2 Button 4", P2B      },      // KB_DEF_P2_B4,
+ { SDLK_a,       JOY(2,0,5,0), 0, "Def P2 Button 5", P2B      },      // KB_DEF_P2_B5,
+ { SDLK_d,       JOY(2,0,6,0), 0, "Def P2 Button 6", P2B      },      // KB_DEF_P2_B6,
+ { SDLK_f,       JOY(2,0,7,0), 0, "Def P2 Button 7", P2B      },      // KB_DEF_P2_B7,
+ { SDLK_g,       JOY(2,0,8,0), 0, "Def P2 Button 8", P2B      },      // KB_DEF_P2_B8,
 
- { SDLK_5,       JOY(3,0,9,0), 0, "Def P3 Start",         },      // KB_DEF_P3_START,
+ { SDLK_5,       JOY(3,0,9,0), 0, "Def P3 Start",P3S         },      // KB_DEF_P3_START,
 
- { 0,       JOY(3,AXIS_LEFT(1),0,0), 0, "Def P3 Up",            },      // KB_DEF_P2_UP,
- { 0,       JOY(3,AXIS_RIGHT(1),0,0), 0, "Def P3 Down",          },      // KB_DEF_P2_DOWN,
- { 0,       JOY(3,AXIS_LEFT(0),0,0), 0, "Def P3 Left",          },      // KB_DEF_P2_LEFT,
- { 0,       JOY(3,AXIS_RIGHT(0),0,0), 0, "Def P3 Right",         },      // KB_DEF_P2_RIGHT,
+ { 0,       JOY(3,AXIS_LEFT(1),0,0), 0, "Def P3 Up", P3D            },      // KB_DEF_P2_UP,
+ { 0,       JOY(3,AXIS_RIGHT(1),0,0), 0, "Def P3 Down", P3D          },      // KB_DEF_P2_DOWN,
+ { 0,       JOY(3,AXIS_LEFT(0),0,0), 0, "Def P3 Left", P3D          },      // KB_DEF_P2_LEFT,
+ { 0,       JOY(3,AXIS_RIGHT(0),0,0), 0, "Def P3 Right", P3D         },      // KB_DEF_P2_RIGHT,
 
- { 0x00,        JOY(3,0,1,0), 0, "Def P3 Button 1",      },      // KB_DEF_P3_B1,
- { 0x00,        JOY(3,0,2,0), 0, "Def P3 Button 2",      },      // KB_DEF_P3_B2,
- { 0x00,        JOY(3,0,3,0), 0, "Def P3 Button 3",      },      // KB_DEF_P3_B3,
- { 0x00,        JOY(3,0,4,0), 0, "Def P3 Button 4",      },      // KB_DEF_P3_B4,
- { 0x00,        JOY(3,0,5,0), 0, "Def P3 Button 5",      },      // KB_DEF_P3_B5,
- { 0x00,        JOY(3,0,6,0), 0, "Def P3 Button 6",      },      // KB_DEF_P3_B6,
- { 0x00,        JOY(3,0,7,0), 0, "Def P3 Button 7",      },      // KB_DEF_P3_B7,
- { 0x00,        JOY(3,0,8,0), 0, "Def P3 Button 8",      },      // KB_DEF_P3_B8,
+ { 0x00,        JOY(3,0,1,0), 0, "Def P3 Button 1", P3B      },      // KB_DEF_P3_B1,
+ { 0x00,        JOY(3,0,2,0), 0, "Def P3 Button 2", P3B      },      // KB_DEF_P3_B2,
+ { 0x00,        JOY(3,0,3,0), 0, "Def P3 Button 3", P3B      },      // KB_DEF_P3_B3,
+ { 0x00,        JOY(3,0,4,0), 0, "Def P3 Button 4", P3B      },      // KB_DEF_P3_B4,
+ { 0x00,        JOY(3,0,5,0), 0, "Def P3 Button 5", P3B      },      // KB_DEF_P3_B5,
+ { 0x00,        JOY(3,0,6,0), 0, "Def P3 Button 6", P3B      },      // KB_DEF_P3_B6,
+ { 0x00,        JOY(3,0,7,0), 0, "Def P3 Button 7", P3B      },      // KB_DEF_P3_B7,
+ { 0x00,        JOY(3,0,8,0), 0, "Def P3 Button 8", P3B      },      // KB_DEF_P3_B8,
 
- { SDLK_6,       JOY(4,0,9,0), 0, "Def P4 Start",         },      // KB_DEF_P4_START,
+ { SDLK_6,       JOY(4,0,9,0), 0, "Def P4 Start", P4S         },      // KB_DEF_P4_START,
 
- { 0,       JOY(4,AXIS_LEFT(1),0,0), 0, "Def P4 Up",            },      // KB_DEF_P2_UP,
- { 0,       JOY(4,AXIS_RIGHT(1),0,0), 0, "Def P4 Down",          },      // KB_DEF_P2_DOWN,
- { 0,       JOY(4,AXIS_LEFT(0),0,0), 0, "Def P4 Left",          },      // KB_DEF_P2_LEFT,
- { 0,       JOY(4,AXIS_RIGHT(0),0,0), 0, "Def P4 Right",         },      // KB_DEF_P2_RIGHT,
+ { 0,       JOY(4,AXIS_LEFT(1),0,0), 0, "Def P4 Up", P4D            },      // KB_DEF_P2_UP,
+ { 0,       JOY(4,AXIS_RIGHT(1),0,0), 0, "Def P4 Down", P4D          },      // KB_DEF_P2_DOWN,
+ { 0,       JOY(4,AXIS_LEFT(0),0,0), 0, "Def P4 Left", P4D          },      // KB_DEF_P2_LEFT,
+ { 0,       JOY(4,AXIS_RIGHT(0),0,0), 0, "Def P4 Right", P4D         },      // KB_DEF_P2_RIGHT,
 
- { 0x00,        JOY(4,0,1,0), 0, "Def P4 Button 1",      },      // KB_DEF_P4_B1,
- { 0x00,        JOY(4,0,2,0), 0, "Def P4 Button 2",      },      // KB_DEF_P4_B2,
- { 0x00,        JOY(4,0,3,0), 0, "Def P4 Button 3",      },      // KB_DEF_P4_B3,
- { 0x00,        JOY(4,0,4,0), 0, "Def P4 Button 4",      },      // KB_DEF_P4_B4,
- { 0x00,        JOY(4,0,5,0), 0, "Def P4 Button 5",      },      // KB_DEF_P4_B5,
- { 0x00,        JOY(4,0,6,0), 0, "Def P4 Button 6",      },      // KB_DEF_P4_B6,
- { 0x00,        JOY(4,0,7,0), 0, "Def P4 Button 7",      },      // KB_DEF_P4_B7,
- { 0x00,        JOY(4,0,8,0), 0, "Def P4 Button 8",      },      // KB_DEF_P4_B8,
+ { 0x00,        JOY(4,0,1,0), 0, "Def P4 Button 1", P4B      },      // KB_DEF_P4_B1,
+ { 0x00,        JOY(4,0,2,0), 0, "Def P4 Button 2", P4B      },      // KB_DEF_P4_B2,
+ { 0x00,        JOY(4,0,3,0), 0, "Def P4 Button 3", P4B      },      // KB_DEF_P4_B3,
+ { 0x00,        JOY(4,0,4,0), 0, "Def P4 Button 4", P4B      },      // KB_DEF_P4_B4,
+ { 0x00,        JOY(4,0,5,0), 0, "Def P4 Button 5", P4B      },      // KB_DEF_P4_B5,
+ { 0x00,        JOY(4,0,6,0), 0, "Def P4 Button 6", P4B      },      // KB_DEF_P4_B6,
+ { 0x00,        JOY(4,0,7,0), 0, "Def P4 Button 7", P4B      },      // KB_DEF_P4_B7,
+ { 0x00,        JOY(4,0,8,0), 0, "Def P4 Button 8", P4B      },      // KB_DEF_P4_B8,
 
- { SDLK_LCTRL,0x00, 0, "Def Flipper 1 Left",   },      // KB_DEF_FLIPPER_1_L,
- { SDLK_RCTRL,0x00, 0, "Def Flipper 1 Right",  },      // KB_DEF_FLIPPER_1_R,
- { SDLK_LSHIFT,  0x00, 0, "Def Flipper 2 Left",   },      // KB_DEF_FLIPPER_2_L,
- { SDLK_RSHIFT,  0x00, 0, "Def Flipper 2 Right",  },      // KB_DEF_FLIPPER_2_R,
- { SDLK_BACKSLASH,0x00, 0, "Def Tilt Left",        },      // KB_DEF_TILT_L,
- { SDLK_SLASH,   0x00, 0, "Def Tilt Right",       },      // KB_DEF_TILT_R,
- { SDLK_z,       0x00, 0, "Def Button 1 Left",    },      // KB_DEF_B1_L,
- { SDLK_e,    0x00, 0, "Def Button 1 Right",   },      // KB_DEF_B1_R,
+ { SDLK_LCTRL,0x00, 0, "Def Flipper 1 Left", P1B   },      // KB_DEF_FLIPPER_1_L,
+ { SDLK_RCTRL,0x00, 0, "Def Flipper 1 Right", P1B  },      // KB_DEF_FLIPPER_1_R,
+ { SDLK_LSHIFT,  0x00, 0, "Def Flipper 2 Left", P2B   },      // KB_DEF_FLIPPER_2_L,
+ { SDLK_RSHIFT,  0x00, 0, "Def Flipper 2 Right", P2B  },      // KB_DEF_FLIPPER_2_R,
+ { SDLK_BACKSLASH,0x00, 0, "Def Tilt Left", SYS        },      // KB_DEF_TILT_L,
+ { SDLK_SLASH,   0x00, 0, "Def Tilt Right", SYS       },      // KB_DEF_TILT_R,
+ { SDLK_z,       0x00, 0, "Def Button 1 Left", P1B    },      // KB_DEF_B1_L,
+ { SDLK_e,    0x00, 0, "Def Button 1 Right", P1B   },      // KB_DEF_B1_R,
 
  // Mahjong controls, at least in mahjong quest...
- { SDLK_a,       0x00, 0, "Def P1 A",             }, // KB_DEF_P1_A
- { SDLK_e,       0x00, 0, "Def P1 E",             }, // KB_DEF_P1_E
- { SDLK_i,       0x00, 0, "Def P1 I",             }, // KB_DEF_P1_I
- { SDLK_m,       0x00, 0, "Def P1 M",             }, // KB_DEF_P1_M
- { SDLK_LCTRL,0x00, 0, "Def P1 Kan",           }, // KB_DEF_P1_KAN
- { SDLK_b,       0x00, 0, "Def P1 B",             }, // KB_DEF_P1_B
- { SDLK_f,       0x00, 0, "Def P1 F",             }, // KB_DEF_P1_F
- { SDLK_j,       0x00, 0, "Def P1 J",             }, // KB_DEF_P1_J
- { SDLK_n,       0x00, 0, "Def P1 N",             }, // KB_DEF_P1_N
- { SDLK_LSHIFT,  0x00, 0, "Def P1 Reach",         }, // KB_DEF_P1_REACH
- { SDLK_c,       0x00, 0, "Def P1 C",             }, // KB_DEF_P1_C
- { SDLK_g,       0x00, 0, "Def P1 G",             }, // KB_DEF_P1_G
- { SDLK_k,       0x00, 0, "Def P1 K",             }, // KB_DEF_P1_K
- { SDLK_SPACE,   0x00, 0, "Def P1 Chi",           }, // KB_DEF_P1_CHI
- { SDLK_z,       0x00, 0, "Def P1 Ron",           }, // KB_DEF_P1_RON,
- { SDLK_d,       0x00, 0, "Def P1 D",             }, // KB_DEF_P1_D
- { SDLK_h,       0x00, 0, "Def P1 H",             }, // KB_DEF_P1_H
- { SDLK_l,       0x00, 0, "Def P1 L",             }, // KB_DEF_P1_L
- { SDLK_LALT,     0x00, 0, "Def P1 Pon",           }, // KB_DEF_P1_PON
+ { SDLK_a,       0x00, 0, "Def P1 A", P1B             }, // KB_DEF_P1_A
+ { SDLK_e,       0x00, 0, "Def P1 E", P1B             }, // KB_DEF_P1_E
+ { SDLK_i,       0x00, 0, "Def P1 I", P1B             }, // KB_DEF_P1_I
+ { SDLK_m,       0x00, 0, "Def P1 M", P1B             }, // KB_DEF_P1_M
+ { SDLK_LCTRL,0x00, 0, "Def P1 Kan", P1B           }, // KB_DEF_P1_KAN
+ { SDLK_b,       0x00, 0, "Def P1 B", P1B             }, // KB_DEF_P1_B
+ { SDLK_f,       0x00, 0, "Def P1 F", P1B             }, // KB_DEF_P1_F
+ { SDLK_j,       0x00, 0, "Def P1 J", P1B             }, // KB_DEF_P1_J
+ { SDLK_n,       0x00, 0, "Def P1 N", P1B             }, // KB_DEF_P1_N
+ { SDLK_LSHIFT,  0x00, 0, "Def P1 Reach", P1B         }, // KB_DEF_P1_REACH
+ { SDLK_c,       0x00, 0, "Def P1 C", P1B             }, // KB_DEF_P1_C
+ { SDLK_g,       0x00, 0, "Def P1 G", P1B             }, // KB_DEF_P1_G
+ { SDLK_k,       0x00, 0, "Def P1 K", P1B             }, // KB_DEF_P1_K
+ { SDLK_SPACE,   0x00, 0, "Def P1 Chi", P1B           }, // KB_DEF_P1_CHI
+ { SDLK_z,       0x00, 0, "Def P1 Ron", P1B           }, // KB_DEF_P1_RON,
+ { SDLK_d,       0x00, 0, "Def P1 D", P1B             }, // KB_DEF_P1_D
+ { SDLK_h,       0x00, 0, "Def P1 H", P1B             }, // KB_DEF_P1_H
+ { SDLK_l,       0x00, 0, "Def P1 L", P1B             }, // KB_DEF_P1_L
+ { SDLK_LALT,     0x00, 0, "Def P1 Pon", P1B           }, // KB_DEF_P1_PON
 
- { 0,           0, 0, "Def Service A", }, // KB_DEF_SERVICE_A
- { 0,           0, 0, "Def Service B", }, // KB_DEF_SERVICE_B
- { 0,           0, 0, "Def Service C", }, // KB_DEF_SERVICE_C
+ { 0,           0, 0, "Def Service A", SYS }, // KB_DEF_SERVICE_A
+ { 0,           0, 0, "Def Service B", SYS }, // KB_DEF_SERVICE_B
+ { 0,           0, 0, "Def Service C", SYS }, // KB_DEF_SERVICE_C
 
- { SDLK_r,       0x00, 0, "Def Button 2 Left",    },      // KB_DEF_B2_L,
- { SDLK_t,    0x00, 0, "Def Button 2 Right",   },      // KB_DEF_B2_R,
+ { SDLK_r,       0x00, 0, "Def Button 2 Left", P2B    },      // KB_DEF_B2_L,
+ { SDLK_t,    0x00, 0, "Def Button 2 Right", P2B   },      // KB_DEF_B2_R,
 
- { 0,           0, 0, "Player1 B1+B2", }, // p1_b1B2
- { 0,           0, 0, "Player1 B3+B4", },
- { 0,           0, 0, "Player1 B2+B3", },
- { 0,           0, 0, "Player1 B1+B2+B3", },
- { 0,           0, 0, "Player1 B2+B3+B4", },
+ { 0,           0, 0, "Player1 B1+B2", P1C }, // p1_b1B2
+ { 0,           0, 0, "Player1 B3+B4", P1C },
+ { 0,           0, 0, "Player1 B2+B3", P1C },
+ { 0,           0, 0, "Player1 B1+B2+B3", P1C },
+ { 0,           0, 0, "Player1 B2+B3+B4", P1C },
 
- { 0,           0, 0, "Player2 B1+B2", }, // p2_b1B2
- { 0,           0, 0, "Player2 B3+B4", },
- { 0,           0, 0, "Player2 B2+B3", },
- { 0,           0, 0, "Player2 B1+B2+B3", },
- { 0,           0, 0, "Player2 B2+B3+B4", },
+ { 0,           0, 0, "Player2 B1+B2", P2C }, // p2_b1B2
+ { 0,           0, 0, "Player2 B3+B4", P2C },
+ { 0,           0, 0, "Player2 B2+B3", P2C },
+ { 0,           0, 0, "Player2 B1+B2+B3", P2C },
+ { 0,           0, 0, "Player2 B2+B3+B4", P2C },
 
- { 0,           0, 0, "Next Game", },
- { 0,           0, 0, "Prev Game", },
+ { 0,           0, 0, "Next Game", SYS },
+ { 0,           0, 0, "Prev Game", SYS },
 
  { 0,           0, 0, "", }, // unknown, should be hidden
  { 0,           0, 0, "", }, // special, should be hidden

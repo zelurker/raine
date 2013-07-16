@@ -80,6 +80,26 @@ typedef struct INPUT
    int link; // linked input : allows to create another input for autofire
 } INPUT;
 
+enum { // categories of inputs
+    P1S = 0x10, // start
+    P1D,  // p1 directions
+    P1B, // buttons
+    P1C, // combinations
+    P2S = 0x20,
+    P2D,
+    P2B, // buttons
+    P2C,
+    P3S = 0x30,
+    P3D,
+    P3B, // buttons
+    P3C,
+    P4S = 0x40,
+    P4D,
+    P4B, // buttons
+    P4C, // comb
+    SYS = 0x100
+};
+
 #define MAX_INPUTS 64
 
 extern struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
@@ -95,6 +115,7 @@ typedef struct DEF_INPUT
    UINT32 joycode;
    UINT32 mousebtn;
    char *name;
+   UINT32 categ;
 } DEF_INPUT;
 
 extern struct DEF_INPUT def_input[KB_DEF_COUNT];
