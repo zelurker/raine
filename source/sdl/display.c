@@ -446,6 +446,7 @@ static SDL_Surface *new_set_gfx_mode() {
   if ((s->flags & SDL_DOUBLEBUF) || emulate_mouse_cursor) {
     SDL_ShowCursor(SDL_DISABLE);
   }
+  if (current_colour_mapper) set_colour_mapper(current_colour_mapper);
   return s;
 }
 
