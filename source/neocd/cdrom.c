@@ -569,6 +569,7 @@ void update_spr_usage(UINT32 offset, UINT32 size) {
 static int load_neocd_file(char *name, UINT8 *dest, int size) {
   int offset = 0,ret;
   UINT8 *Ptr;
+  print_debug("load_neocd_file %s\n",name);
   if (name && strstr(name,"spr")) {
     /* Quick support for override directory :
      * no loading progress for this, and any file in this directory is chosen
@@ -791,8 +792,8 @@ void neogeo_cdrom_load_title(void)
   current.FileType = -1;
   load_neocd_file(file,buff,size);
   cdrom_speed = old_cdrom;
-  memcpy(RAM_PAL,buff,0x5a0);
-  ByteSwap(RAM_PAL,0x5a0);
+  memcpy(RAM_PAL,buff,0x200);
+  ByteSwap(RAM_PAL,0x200);
   print_debug("palette init from title\n");
 
   spr_conv(&buff[0x5a0], GFX, size-0x5a0, video_spr_usage);
