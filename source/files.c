@@ -61,8 +61,18 @@ char *get_shared(char *name) {
 #endif
   sprintf(shared, "%s%s", dir_cfg.share_path,name);
   ret = stat(shared,&buf);
-  if (ret) // still not found
-    strcpy(shared,name); // use current path then
+  if (!ret) {
+    print_debug("get_shared: using shared %s\n",shared);
+    return shared;
+  }
+  sprintf(shared,"%sconfig/%s",dir_cfg.share_path,name);
+  ret = stat(shared,&buf);
+  if (!ret) {
+    print_debug("get_shared: using shared %s\n",shared);
+    return shared;
+  }
+  strcpy(shared,name); // use current path then
+  print_debug("get_shared: using direct name access %s\n",shared);
   return shared;
 }
 
