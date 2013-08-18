@@ -679,8 +679,16 @@ static int load_neocd_file(char *name, UINT8 *dest, int size) {
 	current.conv_off += size_conv;
 	size = size_conv;
       }
+      Offset &= 0x3fffff;
       Ptr = GFX + Offset*2;
-      spr_conv(dest,Ptr,size,video_spr_usage + (Offset>>7));
+      if (Offset+size > 0x400000) {
+	  /* What's loaded after the end of sprites ram appears at the start !
+	   * Can be seen in kof94, how to play */
+	  int size1 = 0x400000-Offset;
+	  spr_conv(dest,Ptr,size1,video_spr_usage + (Offset>>7));
+	  spr_conv(GFX,Ptr+size1,size-size1,video_spr_usage);
+      } else
+	  spr_conv(dest,Ptr,size,video_spr_usage + (Offset>>7));
       break;
     case PRG_TYPE:
       // How did I come with such a non-sense :
@@ -1001,11 +1009,7 @@ int    neogeo_cdrom_load_spr_file(char *FileName, unsigned int Offset)
       return 1;
   }
 
-  if (Offset + size > 0x400000) {
-    print_debug("warn: sprite size correction original:%d new:%d\n",size,0x400000-Offset);
-    size = 0x400000 - Offset;
-    if (size < 0) return 1;
-  }
+  // Do not try to fix the size here, sprites loop around the limit !
   if (file_cache(FileName,Offset*2,size*2,SPR_TYPE)) {
     if (loading_phase == 0)
       total_size++;
