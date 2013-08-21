@@ -4,6 +4,7 @@
 #include "sasound.h"
 #include "streams.h"
 #include <stdlib.h> // exit
+#include <string.h>
 
 static int channel[MAX_DAC];
 static int output[MAX_DAC];
@@ -11,18 +12,31 @@ static int UnsignedVolTable[256];
 static int SignedVolTable[256];
 
 #define MY_BUFF_LEN 512
-static UINT16 my_buff[MY_BUFF_LEN];
+static INT16 my_buff[MY_BUFF_LEN];
 static int my_output_len;
 
 static void DAC_update(int num,INT16 *buffer,int length)
 {
 	INT16 out = output[num];
-	// fprintf(stderr,"dac %x len %d buff len %d\n",out,my_output_len,length);
+	/* The problem : with the new sound code relying entirely on sdl for
+	 * the updates, the sound is not updated in sync with the cpus anymore
+	 * with the consequence that sometimes the dac received 90 commands
+	 * for one update, and next time 0, and then 90 again.
+	 * So we need to keep a few dac commands for next time so that the
+	 * sound is not too distorted... */
 	if (my_output_len) {
 	  int n,n2;
 	  INT16 *buffend = buffer + length,next;
-	  for (n=0; n<my_output_len-1; n++) {
-	    int len = length*(n+1)/my_output_len - length*n/my_output_len;
+	  INT16 *bufstart = buffer;
+	  int max = 43; // This is the number of commands to handle
+	  // It's determined by testing and choosing a value so that the
+	  // buffer doesn't grow too fast. Now I can't test all the games
+	  // so it might create problems in some games. It's tested for
+	  // matmania, and there is a big margin (buffer at around 180
+	  // samples max for a capacity of 512).
+	  if (max > my_output_len-1) max = my_output_len-1;
+	  for (n=0; n<max; n++) {
+	      int len = (n+1)*length/(max)-(buffer-bufstart);
 	    n2 = len;
 	    out = my_buff[n];
 	    next = my_buff[n+1];
@@ -33,8 +47,13 @@ static void DAC_update(int num,INT16 *buffer,int length)
 	    }
 	  }
 	  out = my_buff[my_output_len-1];
-	  while (buffer < buffend) *(buffer++) = out;
-	  my_output_len = 0;
+	  while (buffer < buffend) *(buffer++) = out; // normally useless now
+	  if (my_output_len-1 > max) {
+	      memcpy(&my_buff[0],&my_buff[max],(my_output_len-max)*sizeof(INT16));
+	      my_output_len -= max;
+	  } else {
+	      my_output_len = 0;
+	  }
 	} else
 	  while (length--) *(buffer++) = out;
 }
