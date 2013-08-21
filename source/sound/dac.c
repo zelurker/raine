@@ -28,12 +28,8 @@ static void DAC_update(int num,INT16 *buffer,int length)
 	  int n,n2;
 	  INT16 *buffend = buffer + length,next;
 	  INT16 *bufstart = buffer;
-	  int max = 43; // This is the number of commands to handle
-	  // It's determined by testing and choosing a value so that the
-	  // buffer doesn't grow too fast. Now I can't test all the games
-	  // so it might create problems in some games. It's tested for
-	  // matmania, and there is a big margin (buffer at around 180
-	  // samples max for a capacity of 512).
+	  int max = my_output_len/2;
+	  if (max < 40) max = 40;
 	  if (max > my_output_len-1) max = my_output_len-1;
 	  for (n=0; n<max; n++) {
 	      int len = (n+1)*length/(max)-(buffer-bufstart);
