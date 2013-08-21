@@ -10,6 +10,7 @@
 #include "gui/tfont.h"
 #include "control.h"
 #include "sdl/control_internal.h"
+#include <SDL_sound.h>
 
 class TAbout_menu : public TBitmap_menu
 {
@@ -225,13 +226,16 @@ end_loop:
 	s = nl;
     }
   } else {
-      int ret = MessageBox("Warning","history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your raine directory\n"
+      char *hist = get_shared("history.dat");
+      if (!strcmp(hist,"history.dat")) { // No path info added -> no file !
+	  int ret = MessageBox("Warning","history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your raine directory\n"
 #ifdef RAINE_UNIX
-	      "in linux ~/.raine or /usr/share/games/raine\n"
+		  "in linux ~/.raine or /usr/share/games/raine\n"
 #endif
-	      ,"Open this page now !|Later maybe...");
-      if (ret == 1)
-	  goto_url("http://www.arcade-history.com/index.php?page=download");
+		  ,"Open this page now !|Later maybe...");
+	  if (ret == 1)
+	      goto_url("http://www.arcade-history.com/index.php?page=download");
+      }
   }
 
   if (used) {
@@ -259,14 +263,15 @@ static menu_item_t about_items[] =
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
   { "SDL", },
+  { "sound" },
   { " ", NULL, NULL },
   { "http://rainemu.swishparty.co.uk/", NULL, NULL },
   { " ", NULL, NULL, },
   { "CPU emulators:", NULL, NULL },
   {    "Starscream 0.26r4 by Neill Corlett", },
-  {    "MZ80 3.4raine by Neill Bradley" },
+  {    "MZ80 3.4raine2 by Neill Bradley" },
   {    "M6502 1.6raine2 by Neill Bradley" },
-  {    "UAE 68020 Emulator : old hacked asm version" },
+  {    "UAE 68020 Emulator : old hacked asm version from UAE" },
   {    "MCU 68705: statically recompiled code by Richard Mitton" },
   { "About this game...", &about_game },
   { NULL, NULL, NULL },
@@ -298,15 +303,20 @@ int do_about(int sel) {
     about_menu = new TAbout_menu("About...",about_items, path);
     sprintf(about_cpu, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
-    static char about_sdl[80];
+    char about_sdl[80],about_sound[80];
     const SDL_version *version = SDL_Linked_Version();
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();
+    Sound_Version sound;
+    Sound_GetLinkedVersion(&sound);
     sprintf(about_sdl,"Linked with SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
 	    img->major,img->minor,img->patch,
 	    ttf->major,ttf->minor,ttf->patch);
+    sprintf(about_sound,"SDL_sound-%d.%d.%d",
+	    sound.major,sound.minor,sound.patch);
 
     about_items[4].label = about_sdl;
+    about_items[5].label = about_sound;
 #ifdef RDTSC_PROFILE
   if (cycles_per_second) {
     sprintf(about_cpu,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);
