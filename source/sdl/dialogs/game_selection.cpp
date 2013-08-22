@@ -19,11 +19,6 @@
 
 static int game_list_mode,company,status = 1,category,driver,clones = 1,short_names;
 
-// Number of options before the list of games
-// yes I know it's a hack, and not a very good one, but it's much easier
-// than adding a whole new kind of dialog just to handle these sub options
-#define NB_OPTIONS 1
-
 static int change_names(int sel);
 
 // The list of driver names, which must follow the alphabetical order of the
@@ -44,6 +39,36 @@ static menu_item_t options[] =
 { "Display short names too", &change_names, &short_names, 2, {0, 1}, {"No", "Yes"} },
 { "Rom directories...", &do_romdir },
 { NULL },
+};
+
+static int recompute_list();
+
+static int do_options(int sel) {
+    int n;
+    // init category
+    for (n=0; n<NB_GAME_TYPE; n++) {
+	options[2].values_list[n] = n;
+	options[2].values_list_label[n] = game_type[n];
+    }
+    // init game driver
+    options[3].values_list_size = nb_companies;
+    for (n=0; n<nb_companies; n++) {
+	options[3].values_list[n] = n;
+	options[3].values_list_label[n] = game_company_name(n);
+    }
+    options[3].values_list_label[0] = "All";
+    sort_menu(options);
+    TMenu *mymenu = new TMenu("Options",options);
+    mymenu->execute();
+    delete mymenu;
+    recompute_list();
+    return 0;
+}
+
+static menu_item_t header[] =
+{
+    {  "-- Options --", &do_options },
+    { NULL },
 };
 
 static SDL_Rect get_max_area(SDL_Rect &work_area, SDL_Rect &fgdst) {
@@ -75,8 +100,6 @@ void save_game_list_config() {
    raine_set_config_int(	"GUI", "short_names", short_names);
 }
 
-static int recompute_list();
-
 class TGame_sel : public TMenu
 {
   protected:
@@ -85,26 +108,23 @@ class TGame_sel : public TMenu
     int h_title,h_bot,w_year,h_year,w_categ,h_categ;
 
   public:
-  TGame_sel(char *title, menu_item_t *items) : TMenu(title,items) {
-      regen_menu(0);
-    last_sel = -1;
-    current_picture[0] = 0;
-    image_counter = 0;
-    w_year = h_year = w_categ = h_categ = 0;
-    if (current_game) {
-      for (sel=0; sel<game_count; sel++)
-	if (game_list[sel]->rom_list == current_game->rom_list)
-	  break;
-      if (sel >= game_count) {
-	sel = -1;
-      } else
-	sel += NB_OPTIONS;
+    TGame_sel(char *title, menu_item_t *items) : TMenu(title,items) {
+	regen_menu(0);
+	last_sel = -1;
+	current_picture[0] = 0;
+	image_counter = 0;
+	w_year = h_year = w_categ = h_categ = 0;
+	if (current_game) {
+	    for (sel=0; sel<game_count; sel++)
+		if (game_list[sel]->rom_list == current_game->rom_list)
+		    break;
+	    if (sel >= game_count) {
+		sel = -1;
+	    }
+	}
     }
-  }
 
   int can_be_displayed(int n) {
-    n -= NB_OPTIONS;
-    if (n<0) return 1;
     switch (game_list_mode) {
       case 1: // Available games
         if (!game_exists(game_list,n)) {
@@ -137,32 +157,12 @@ class TGame_sel : public TMenu
   }
 
   void exec_menu_item() {
-    if (sel >= NB_OPTIONS && current_game != game_list[sel-NB_OPTIONS]) {
+    if (!focus && current_game != game_list[sel]) {
       raine_cfg.req_load_game = 1;
-      raine_cfg.req_game_index = sel-NB_OPTIONS;
+      raine_cfg.req_game_index = sel;
       exit_menu = 1;
     } else { // options
       TMenu::exec_menu_item();
-      if (sel == 0) { // options dialog
-	int n;
-	// init category
-	for (n=0; n<NB_GAME_TYPE; n++) {
-	  options[2].values_list[n] = n;
-	  options[2].values_list_label[n] = game_type[n];
-	}
-	// init game driver
-	options[3].values_list_size = nb_companies;
-	for (n=0; n<nb_companies; n++) {
-	  options[3].values_list[n] = n;
-	  options[3].values_list_label[n] = game_company_name(n);
-	}
-	options[3].values_list_label[0] = "All";
-	sort_menu(options);
-	TMenu *mymenu = new TMenu("Options",options);
-	mymenu->execute();
-	delete mymenu;
-	recompute_list();
-      }
     }
   }
 
@@ -196,70 +196,71 @@ class TGame_sel : public TMenu
   }
 
   void update_fg_layer(int nb_to_update) {
-    if (sel != last_sel && sel >= 0) {
-      image_counter = 0;
-      last_sel = sel;
-      draw_bot_frame();
-      if (sdl_screen->flags & SDL_DOUBLEBUF) {
-	do_update(NULL);
-	draw_bot_frame();
-      }
-    } else if (sel >= NB_OPTIONS && ++image_counter == 10) {
-      // Wait at least 10 ticks before updating the picture
-      // it allows the selection to be moved smoothly with the mouse
-      // instead of "jumping" when changing pictures all the time
-      char buffer[256];
-	sprintf(buffer,"%s%s.pcx",dir_cfg.screen_dir,game_list[sel-NB_OPTIONS]->main_name);
-	if (load_picture(nb_to_update,buffer))
-	  return;
-	sprintf(buffer,"%s%s.png",dir_cfg.screen_dir,game_list[sel-NB_OPTIONS]->main_name);
-	if (load_picture(nb_to_update,buffer))
-	  return;
-
-	/* We didn't find any picture for the current game.
-	 * Check if it's a clone, and in this case look for a picture for the
-	 * parent */
-
-	const DIR_INFO *head;
-	char *dir;
-	head = game_list[sel-NB_OPTIONS]->dir_list;
-	for (; head; head++) {
-	  dir = head[0].maindir;
-
-	  if( dir ){
-
-	    if( IS_ROMOF(dir) ){
-
-	      GAME_MAIN *game_romof;
-
-	      game_romof = find_game(dir+1);
-
-	      sprintf(buffer,"%s%s.pcx",dir_cfg.screen_dir,game_romof->main_name);
-	    if (load_picture(nb_to_update,buffer))
+      if (sel != last_sel && sel >= 0) {
+	  image_counter = 0;
+	  last_sel = sel;
+	  draw_bot_frame();
+	  if (sdl_screen->flags & SDL_DOUBLEBUF) {
+	      do_update(NULL);
+	      draw_bot_frame();
+	  }
+      } else if (++image_counter == 10) {
+	  // Wait at least 10 ticks before updating the picture
+	  // it allows the selection to be moved smoothly with the mouse
+	  // instead of "jumping" when changing pictures all the time
+	  char buffer[256];
+	  sprintf(buffer,"%s%s.pcx",dir_cfg.screen_dir,game_list[sel]->main_name);
+	  if (load_picture(nb_to_update,buffer))
+	      return;
+	  sprintf(buffer,"%s%s.png",dir_cfg.screen_dir,game_list[sel]->main_name);
+	  if (load_picture(nb_to_update,buffer))
 	      return;
 
-	    sprintf(buffer,"%s%s.png",dir_cfg.screen_dir,game_romof->main_name);
-	    if (load_picture(nb_to_update,buffer))
+	  /* We didn't find any picture for the current game.
+	   * Check if it's a clone, and in this case look for a picture for the
+	   * parent */
+
+	  const DIR_INFO *head;
+	  char *dir;
+	  head = game_list[sel]->dir_list;
+	  for (; head; head++) {
+	      dir = head[0].maindir;
+
+	      if( dir ){
+
+		  if( IS_ROMOF(dir) ){
+
+		      GAME_MAIN *game_romof;
+
+		      game_romof = find_game(dir+1);
+
+		      sprintf(buffer,"%s%s.pcx",dir_cfg.screen_dir,game_romof->main_name);
+		      if (load_picture(nb_to_update,buffer))
+			  return;
+
+		      sprintf(buffer,"%s%s.png",dir_cfg.screen_dir,game_romof->main_name);
+		      if (load_picture(nb_to_update,buffer))
+			  return;
+		  }
+	      } else
+		  break;
+	  }
+	  // Still here -> no picture at all then !
+	  if (current_picture[0]) { // is there a previously loaded picture ?
+	      // In this case erase it
+	      TMenu::update_fg_layer(nb_to_update);
+	      setup_bg_layer(NULL);
+	      SDL_Rect bg = get_max_area(work_area,fgdst);
+	      update_bg_layer(&bg);
+	      SDL_BlitSurface(fg_layer,NULL,sdl_screen,&fgdst);
+	      do_update(&bg);
+	      current_picture[0] = 0;
 	      return;
 	  }
-	} else
-	  break;
       }
-      // Still here -> no picture at all then !
-      if (current_picture[0]) { // is there a previously loaded picture ?
-	// In this case erase it
-	TMenu::update_fg_layer(nb_to_update);
-	setup_bg_layer(NULL);
-	SDL_Rect bg = get_max_area(work_area,fgdst);
-	update_bg_layer(&bg);
-	SDL_BlitSurface(fg_layer,NULL,sdl_screen,&fgdst);
-	do_update(&bg);
-	current_picture[0] = 0;
-	return;
-      }
-    }
-    TMenu::update_fg_layer(nb_to_update);
+      TMenu::update_fg_layer(nb_to_update);
   }
+
   void draw_frame(SDL_Rect *r = NULL);
   void draw_top_frame();
   void draw_bot_frame();
@@ -276,7 +277,7 @@ void TGame_sel::draw_top_frame() {
     case 1: s = "Avail"; break;
     case 2: s = "Missing"; break;
   }
-  sprintf(mytitle,"%s %d",s,nb_disp_items-NB_OPTIONS);
+  sprintf(mytitle,"%s %d",s,nb_disp_items);
   font->dimensions(mytitle,&w_title,&h_title);
   boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
   font->put_string(fw,0,title,fg_frame,bg_frame);
@@ -301,7 +302,6 @@ void TGame_sel::draw_bot_frame() {
     h_bot = h_categ + h_year;
   }
   int base = sdl_screen->h-h_bot;
-  sel -= NB_OPTIONS;
   boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
   char game_string[80],year_string[80],category_string[80],company_string[80];
   sprintf(game_string,"Game : %s",(sel >= 0 ? game_list[sel]->long_name : "-"));
@@ -325,7 +325,6 @@ void TGame_sel::draw_bot_frame() {
   font->put_string(sdl_screen->w-w_year,base,year_string,fg_frame,bg_frame);
   font->put_string(fw,base+h_year,company_string,fg_frame,bg_frame);
   font->put_string(sdl_screen->w-w_categ,base+h_year,category_string,fg_frame,bg_frame);
-  sel += NB_OPTIONS;
   SDL_Rect area;
   area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = h_bot;
   if (!(sdl_screen->flags & SDL_DOUBLEBUF))
@@ -349,27 +348,24 @@ void TGame_sel::regen_menu(int free_labels) {
     int n,freed = 0;
     if (free_labels)
 	for (n=0; n<game_count; n++)
-	    free((void*)menu[n+NB_OPTIONS].label);
+	    free((void*)menu[n].label);
     if (menu) {
 	free(menu);
 	freed = 1;
     }
-    menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(game_count+2));
+    menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(game_count+1));
     for (n=0; n<game_count; n++) {
 	if (short_names) {
 	    char buf[256];
 	    snprintf(buf,256,"\E[31m%s:\E[0m %s",game_list[n]->main_name,game_list[n]->long_name);
 	    buf[255] = 0;
-	    menu[n+NB_OPTIONS].label = strdup(buf);
+	    menu[n].label = strdup(buf);
 	} else
-	    menu[n+NB_OPTIONS].label = game_list[n]->long_name;
-      menu[n+NB_OPTIONS].menu_func = NULL;
-      menu[n+NB_OPTIONS].value_int = NULL;
+	    menu[n].label = game_list[n]->long_name;
+      menu[n].menu_func = NULL;
+      menu[n].value_int = NULL;
     }
-    menu[game_count+NB_OPTIONS].label = NULL;
-    menu[0].label = "-- Options --";
-    menu[0].menu_func = NULL;
-    menu[0].value_int = NULL;
+    menu[game_count].label = NULL;
     if (freed)
 	compute_nb_items();
 }
@@ -390,6 +386,7 @@ int recompute_list() {
 
 int do_game_sel(int sel) {
   game_sel = new TGame_sel("Game selection",NULL);
+  game_sel->set_header(header);
   game_sel->execute();
   delete game_sel;
   return raine_cfg.req_load_game;

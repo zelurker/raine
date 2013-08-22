@@ -20,13 +20,16 @@
 class TMenu {
   protected:
     TMenu *parent; // implicitely initiealised with caller
-    TStatic **child;
+    TStatic **child,**h_child;
     const char *title;
     FPSmanager fpsm;
-    menu_item_t *menu;
+    /* A header would just be a section of the dialog always visible, no
+     * scrolling */
+    menu_item_t *menu,*header;
+    int focus; // where the focus is : 0 normal dialog, 1 header
     // Index of the current selection or -1 if none, top = 1st index to be
     // displayed (in the menu_disp list now)
-    int sel,top;
+    int sel,top,hsel;
     int fg,bg, // colors for the fg layer
       bgsdl, // still bg color of the fg layer but in sdl format
       fg_frame,bg_frame, // colors for the frames (top & bottom)
@@ -55,6 +58,8 @@ class TMenu {
     // here to easily create objects which inherit from this one
     TMenu(char *my_title, menu_item_t *mymenu,char *myfont = NULL,
       int myfg=-1, int mybg=-1,int myfg_frame=-1,int mybg_frame=-1);
+    void set_header(menu_item_t *myheader);
+    void toggle_header();
     virtual ~TMenu();
     void set_transparency(int transp) { use_transparency = transp; }
     virtual void draw_top_frame();
@@ -86,6 +91,7 @@ class TMenu {
     virtual void next_list_item();
     virtual void prev_list_item();
     virtual void call_handler();
+    virtual void handle_button(SDL_Event *event, int index);
     virtual void handle_mouse(SDL_Event *event);
     virtual void produce_joystick_event();
     virtual void handle_joystick(SDL_Event *event);
@@ -113,6 +119,9 @@ class TMenu {
       return fg;
     }
     virtual void disp_menu(int n,int y,int w,int h);
+    virtual void blit_area(int x,int y,int w,int h);
+    virtual void update_header_entry(int nb);
+    virtual void disp_header(int n,int y,int w,int h);
     int get_list_index(int n);
     void set_title(char *my_title) {
       title = my_title;

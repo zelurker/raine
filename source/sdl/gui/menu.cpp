@@ -221,6 +221,9 @@ void sort_menu(menu_item_t *menu) {
 static TMenu *caller;
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame) {
+    header = NULL;
+    h_child = NULL;
+    focus = 0;
   top = 0;
   sel = -1; // compute first selection later (compute_nb_items)
   child = NULL;
@@ -268,6 +271,13 @@ TMenu::~TMenu() {
     free(child);
     child = NULL;
   }
+  if (h_child) {
+      for (int n=0; header[n].label; n++)
+	  free(h_child[n]);
+      free(h_child);
+      h_child = NULL;
+  }
+
   delete font;
   if (menu_disp)
     free(menu_disp);
@@ -345,6 +355,27 @@ void TMenu::compute_nb_items() {
       }
       n++;
     }
+
+    if (header) {
+	TStatic **old_child = child;
+	menu_item_t *old_menu = menu;
+	int nb;
+	for (nb=0; header[nb].label; nb++);
+	h_child = child = (TStatic **)malloc(sizeof(TStatic*)*nb);
+	menu = header;
+	n = 0;
+	while (menu[n].label) {
+	    create_child(n);
+	    n++;
+	}
+	menu = old_menu;
+	child = old_child;
+	int old = focus;
+	focus = 1;
+	find_new_sel();
+	focus = old;
+    }
+
     if (sel >= nb_items) sel = 0;
   }
 }
@@ -548,6 +579,7 @@ void TMenu::setup_font(unsigned int len_frame) {
   compute_nb_items();
   unsigned int len_max_options = 0,len_max = 0;
   UINT32 len;
+  int nb=0;
   if (nb_items) {
     for (n=0; n<nb_items; n++) {
       len = child[n]->get_len();
@@ -557,6 +589,14 @@ void TMenu::setup_font(unsigned int len_frame) {
       len = child[n]->get_len_max_options();
       if (len > len_max_options)
 	len_max_options = len;
+    }
+    if (header) {
+	for (nb=0; header[nb].label; nb++) {
+	    len = h_child[nb]->get_len();
+	    if (len > len_max) len_max = len;
+	    len = h_child[nb]->get_len_max_options();
+	    if (len > len_max_options) len_max_options = len;
+	}
     }
     len = get_fglayer_footer_len();
     if (len > len_max + len_max_options)
@@ -573,8 +613,8 @@ void TMenu::setup_font(unsigned int len_frame) {
   }
   if (!nb_disp_items) return;
   int hheader = 0;
-  skip_fglayer_header(hheader);
-  h = (sdl_screen->h - 40 - hheader)/(nb_disp_items); // margin
+  if (!header) skip_fglayer_header(hheader);
+  h = (sdl_screen->h - 40 - hheader)/(nb_disp_items+nb); // margin
   h = h*4/9; // This 5/11 is just the result of tests, so that the main
   // menu fits on the screen without scrollbar when loading bublbobl !
   // Actually it's probably dependant of the font (size w != size h).
@@ -692,7 +732,7 @@ void TMenu::disp_menu(int n,int y,int w,int h) {
   int fw = HMARGIN;
   int selcolor;
   int myfg = get_fgcolor(n);
-  if (n == sel) {
+  if ((!focus && n == sel)) {
     selcolor = compute_selcolor();
     child[n]->disp(fg_layer,font,fw,y,w,h,bg,selcolor,xoptions);
   } else {
@@ -700,14 +740,90 @@ void TMenu::disp_menu(int n,int y,int w,int h) {
   }
 }
 
+void TMenu::disp_header(int n,int y,int w,int h) {
+  // Equivalent to disp_menu but for the header
+  // Even if the code is almost the same it would be awkwared to share it
+  // because we must know what is currently drawn to know if the selection must
+  // be drawn or not
+  int fw = HMARGIN;
+  int selcolor;
+  int myfg = get_fgcolor(n);
+  if ((focus && n == hsel)) {
+    selcolor = compute_selcolor();
+    h_child[n]->disp(fg_layer,font,fw,y,w,h,bg,selcolor,xoptions);
+  } else {
+    h_child[n]->disp(fg_layer,font,fw,y,w,h,myfg,0,xoptions);
+  }
+}
+
 void TMenu::display_fglayer_header(int &y) {
-  // No default header
-  // but a border, usefull when dialogs are opaque
+  // a border, usefull when dialogs are opaque
   rectangleColor(fg_layer,0,0,fg_layer->w-1,fg_layer->h-1,fg);
+  if (header) {
+      int w = width_max - HMARGIN;
+
+      for (int n=0; header[n].label; n++) {
+	  int h = h_child[n]->get_height(font);
+	  disp_header(n,y,w,h);
+	  y += h;
+      }
+  }
+}
+
+void TMenu::blit_area(int x,int y,int w,int h) {
+    /* Blit only 1 entry, in this case, update bg, then fg, then screen */
+    SDL_Rect from, to;
+    from.x = x; from.y = y; from.h = h;
+    from.w = w;
+    to.x = fgdst.x+x;
+    to.y = fgdst.y+y;
+    to.w = from.w;
+    to.h = from.h;
+    SDL_Rect tmp = to;
+    if (fg_layer->format->Amask)
+	update_bg_layer(&to);
+    int ret = SDL_BlitSurface(fg_layer,&from,sdl_screen,&tmp);
+    if (ret) {
+	printf("SDL_BlitSurface returned %d\n",ret);
+	char *sdl_error = SDL_GetError( );
+
+	if( sdl_error[0] != '\0' ) {
+	    fprintf(stderr, "update_fg_layer: SDL error '%s'\n", sdl_error);
+	    SDL_ClearError();
+	}
+	exit(1);
+    }
+    do_update(&to);
+}
+
+void TMenu::update_header_entry(int nb) {
+    if (header) {
+	int y = HMARGIN;
+	int w = width_max - HMARGIN;
+	for (int n=0; header[n].label; n++) {
+	  int h = h_child[n]->get_height(font);
+	  if (n == nb) {
+	      // if there is only 1 indice to update, clear the bg for it
+	      SDL_Rect dst;
+	      dst.x = HMARGIN; dst.y = y; dst.w = w; dst.h = h;
+	      SDL_FillRect(fg_layer,&dst,bgsdl);
+	      disp_header(n,y,w,h);
+	      blit_area(HMARGIN,y,w,h);
+	      break;
+	  }
+	  y += h;
+	}
+    }
 }
 
 void TMenu::skip_fglayer_header(int &y) {
   // No default header
+  if (header) {
+      for (int n=0; header[n].label; n++) {
+	  int h = h_child[n]->get_height(font);
+	  y += h;
+      }
+  }
 }
 
 int TMenu::get_fglayer_footer_height() {
@@ -749,6 +865,8 @@ void TMenu::update_fg_layer(int nb_to_update) {
   int y = HMARGIN;
   if (nb_to_update < 0) {
     // Use SDL_FillRect instead of boxColor because we don't want blending here
+    // Clear the whole fg layer here, not related to header, done only if
+    // redrawing everything
     SDL_FillRect(fg_layer,NULL,bgsdl);
     display_fglayer_header(y);
   } else {
@@ -765,6 +883,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
     w -= 20;
   else
     w -= HMARGIN; // the lift should probably use HMARGIN width
+
   for (n=top; n<max; n++) {
     int index = menu_disp[n];
     int h;
@@ -782,29 +901,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
 	/* If we update just 1 entry, then we must explicitely update
 	 * 1st the bg layer for this entry and then blit the fg layer over
 	 * it */
-	SDL_Rect from, to;
-	from.x = fw; from.y = y; from.h = h;
-	from.w = w;
-	to.x = fgdst.x+fw;
-	to.y = fgdst.y+y;
-	to.w = from.w;
-	to.h = from.h;
-	SDL_Rect tmp = to;
-	if (nb_to_update != sel && fg_layer->format->Amask) {
-	  update_bg_layer(&to);
-	}
-	int ret = SDL_BlitSurface(fg_layer,&from,sdl_screen,&tmp);
-	if (ret) {
-	    printf("SDL_BlitSurface returned %d\n",ret);
-	    char *sdl_error = SDL_GetError( );
-
-	    if( sdl_error[0] != '\0' ) {
-		fprintf(stderr, "update_fg_layer: SDL error '%s'\n", sdl_error);
-		SDL_ClearError();
-	    }
-	    exit(1);
-	}
-	do_update(&to);
+	  blit_area(fw,y,w,h);
       }
     }
     y += h;
@@ -981,6 +1078,11 @@ void TMenu::redraw_fg_layer() {
 static int axis_x,axis_y;
 
 void TMenu::reset_top() {
+    if (focus) {
+	if (hsel == -1) return;
+	for (hsel=0; !h_child[hsel]->can_be_selected(); hsel++);
+	return;
+    }
   int seldisp = get_seldisp();
   if (seldisp > top+rows-1)
     top = seldisp-rows+1;
@@ -989,6 +1091,16 @@ void TMenu::reset_top() {
 }
 
 void TMenu::next_sel() {
+    if (focus) {
+	// in the header
+	if (hsel < 0) return;
+	int old = hsel;
+	do {
+	    hsel++;
+	    if (!header[hsel].label) hsel = 0;
+	} while (!h_child[hsel]->can_be_selected() && hsel != old);
+	return;
+    }
   int old_sel = sel;
   do {
     sel++;
@@ -1006,6 +1118,18 @@ void TMenu::next_sel() {
 }
 
 void TMenu::prev_sel() {
+    if (focus) {
+	// in the header
+	if (hsel == -1) return;
+	int nb;
+	for (nb=0; header[nb].label; nb++);
+	int old = hsel;
+	do {
+	    hsel--;
+	    if (hsel < 0) hsel = nb-1;
+	} while (!h_child[hsel]->can_be_selected() && hsel != old);
+	return;
+    }
   int old_sel = sel;
   do {
     sel--;
@@ -1028,6 +1152,13 @@ void TMenu::prev_sel() {
 
 void TMenu::find_new_sel() {
   // Find a new selection in the visible entries when top has just changed
+  if (focus) {
+      for (hsel=0; header[hsel].label && !h_child[hsel]->can_be_selected();
+	      hsel++);
+      if (!header[hsel].label)
+	  hsel = -1;
+      return;
+  }
   for (int n=top; n<top+rows; n++) {
     int index = menu_disp[n];
     if (can_be_selected(index)) {
@@ -1107,9 +1238,20 @@ static int mystrcasestr(const char *s1,const char *s2) {
     return strstr(lower1,lower2) != NULL;
 }
 
+void TMenu::set_header(menu_item_t *myheader) {
+    header = myheader;
+}
+
+void TMenu::toggle_header() {
+    focus ^= 1;
+    update_fg_layer(sel);
+    if (hsel >= 0) update_header_entry(hsel);
+}
+
 void TMenu::handle_key(SDL_Event *event) {
   int sym,ret;
-  if (sel >= 0 && (ret = child[sel]->handle_key(event))) {
+  if ((!focus && sel >= 0 && (ret = child[sel]->handle_key(event))) ||
+	  (focus && hsel >= 0 && (ret = h_child[hsel]->handle_key(event)))) {
     if (ret > 0) call_handler();
     return;
   }
@@ -1150,6 +1292,9 @@ void TMenu::handle_key(SDL_Event *event) {
 	  break;
 	case SDLK_ESCAPE:
 	  exit_menu = can_exit();
+	  break;
+	case SDLK_TAB:
+	  toggle_header();
 	  break;
 	default:
 	  int unicode = event->key.keysym.unicode;
@@ -1287,6 +1432,24 @@ void TMenu::redraw(SDL_Rect *r) {
   }
 }
 
+void TMenu::handle_button(SDL_Event *event, int index) {
+    if (event->type == SDL_MOUSEBUTTONUP ) {
+	switch(event->button.button) {
+	case 1: if ((!focus && index == sel) || (focus && index == hsel))
+		    exec_menu_item();
+	       	break;
+		// Apparently in sdl button 2 is center button, and 3 is right
+		// (hope it's standard in every os !)
+	case 2: if ((!focus && index == sel) || (focus && index == hsel))
+		    prev_list_item();
+	       	break;
+	case 3: exit_menu = can_exit(); break;
+	case 4: prev_page(); break;
+	case 5: next_page(); break;
+	}
+    }
+}
+
 void TMenu::handle_mouse(SDL_Event *event) {
   int mx,my;
   if (event->type == SDL_MOUSEMOTION) {
@@ -1337,8 +1500,27 @@ void TMenu::handle_mouse(SDL_Event *event) {
     case SDL_MOUSEBUTTONDOWN:
       if (my >= fgdst.y && my < fgdst.y+fgdst.h && mx >= fgdst.x && mx < fgdst.x+fgdst.w) {
 	int ystart = fgdst.y + HMARGIN;
-	skip_fglayer_header(ystart);
 	int index,h=0;
+	if (header) {
+	    int n;
+	    for (n=0; header[n].label; n++) {
+		h += h_child[n]->get_height(font);
+		if (ystart + h > my) break;
+	    }
+	    if (header[n].label && h_child[n]->can_be_selected()) {
+		if (!focus) {
+		    toggle_header();
+		}
+		hsel = n;
+		if (h_child[hsel]->handle_mouse(event)) {
+		    call_handler();
+		    return;
+		}
+	    } else if (!header[n].label && focus) {
+		toggle_header();
+	    }
+	} else
+	    skip_fglayer_header(ystart);
 	for (index = 0; index < rows; index++) {
           h += child[index+top]->get_height(font);
 	  if (ystart + h > my)
@@ -1354,17 +1536,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
 	  call_handler();
 	  return;
 	}
-	if (event->type == SDL_MOUSEBUTTONUP ) {
-	  switch(event->button.button) {
-	    case 1: if (index == sel) exec_menu_item(); break;
-	    // Apparently in sdl button 2 is center button, and 3 is right
-	    // (hope it's standard in every os !)
-	    case 2: if (index == sel) prev_list_item(); break;
-	    case 3: exit_menu = can_exit(); break;
-	    case 4: prev_page(); break;
-	    case 5: next_page(); break;
-	  }
-	}
+	handle_button(event,index);
       }
       break;
   }
@@ -1479,28 +1651,40 @@ void TMenu::handle_joystick(SDL_Event *event) {
 }
 
 void TMenu::call_handler() {
-  if (menu[sel].menu_func) {
-    exit_menu = (*menu[sel].menu_func)(sel);
+    int exit = -10;
+    if (focus) {
+	if (header[hsel].menu_func)
+	    exit = (*header[hsel].menu_func)(hsel);
+    } else {
+	if (menu[sel].menu_func)
+	    exit = (*menu[sel].menu_func)(sel);
+    }
+    if (exit != -10) exit_menu = exit; // hack but it should work always
     if (exit_menu) exit_menu = can_exit();
     if (!exit_menu) {
-      draw();
+	draw();
     }
     SDL_initFramerate(&fpsm);
     fpsm.use_cpu_frame_count = 0;
     SDL_setFramerate(&fpsm,30);
-  }
 }
 
 void TMenu::next_list_item() {
-  if (sel >= 0) {
+  if (!focus && sel >= 0) {
     child[sel]->next_list_item();
+    call_handler();
+  } else if (focus && hsel >= 0) {
+    h_child[hsel]->next_list_item();
     call_handler();
   }
 }
 
 void TMenu::prev_list_item() {
-  if (sel >= 0) {
+  if (!focus && sel >= 0) {
     child[sel]->prev_list_item();
+    call_handler();
+  } else if (focus && hsel >= 0) {
+    h_child[hsel]->prev_list_item();
     call_handler();
   }
 }
@@ -1509,6 +1693,15 @@ void TMenu::exec_menu_item() {
   /* Warning : try to never override this function or call the parent
    * because if call_handler is not called then the caller variable is not
    * changed, producing display bugs */
+    if (focus) {
+	if (hsel < 0) return;
+	if (header[hsel].value_int)
+	    next_list_item();
+	else if (header[hsel].menu_func) {
+	    call_handler();
+	}
+	return;
+    }
   if (sel < 0) return;
   if (menu[sel].value_int)
     next_list_item();
@@ -1566,6 +1759,7 @@ void TMenu::execute() {
 
   while (!exit_menu) {
     int oldsel = sel;
+    if (focus) oldsel = hsel;
     int oldtop = top;
     while (SDL_PollEvent(&event)) {
       switch(event.type) {
@@ -1627,9 +1821,15 @@ void TMenu::execute() {
     if (lift) {
       lift->update();
     }
-    if (sel >= 0)
+    if (!focus && sel >= 0)
       child[sel]->update();
+    else if (focus && hsel >= 0)
+	h_child[hsel]->update();
     fglayer_footer_update();
+    if (header)
+	for (int n=0; header[n].label; n++)
+	    h_child[n]->update();
+
     if (jmoved) { // joystick moved, handle auto-repeat...
       if (!phase_repeat) {
         if ((update_count - timer)*fpsm.rateticks >= repeat_delay) {
@@ -1647,13 +1847,20 @@ void TMenu::execute() {
     // update_bg_layer();
     if (top != oldtop)
       redraw_fg_layer();
-    else if (sel != oldsel) {
+    else if (!focus && sel != oldsel) {
       update_fg_layer(oldsel);
       if (sel >= 0 && child[sel]->can_draw_selection())
 	update_fg_layer(sel);
-    } else if (sel >= top && sel <= menu_disp[top+rows-1]) {
+    } else if (focus && hsel != oldsel) {
+      update_header_entry(oldsel);
+      if (hsel >= 0 && h_child[hsel]->can_draw_selection())
+	update_header_entry(hsel);
+    } else if (!focus && (sel >= top && sel <= menu_disp[top+rows-1])) {
       if (child[sel]->can_draw_selection())
        	update_fg_layer(sel);
+    } else if (focus && hsel >= 0) {
+	if (h_child[hsel]->can_draw_selection())
+	    update_header_entry(hsel);
     } else if ((sdl_screen->flags & SDL_DOUBLEBUF) || (emulate_mouse_cursor && cursor)) {
       // If we are using double buffering, then update fg layer even if nothing
       // changes, or we wouldn't be able to see the mouse moving !!!
@@ -1767,7 +1974,6 @@ void TDialog::setup_font(unsigned int len_frame) {
 }
 
 void TDialog::display_fglayer_header(int &y) {
-    TMenu::display_fglayer_header(y);
   if (!parent && !bg_layer) {
     if (!color_format) color_format = sdl_screen->format;
     if (display_cfg.bpp == 8)
@@ -1788,6 +1994,7 @@ void TDialog::display_fglayer_header(int &y) {
     rectangleColor(fg_layer,0,0,fg_layer->w-1,htitle,fg);
     y += htitle + 2;
   }
+  TMenu::display_fglayer_header(y);
 }
 
 void TDialog::skip_fglayer_header(int &y) {
