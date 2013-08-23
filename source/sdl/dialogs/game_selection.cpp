@@ -20,6 +20,7 @@
 static int game_list_mode,company,status = 1,category,driver,clones = 1,short_names;
 
 static int change_names(int sel);
+static char *avail;
 
 // The list of driver names, which must follow the alphabetical order of the
 // driver names in options[] below.
@@ -127,12 +128,12 @@ class TGame_sel : public TMenu
   int can_be_displayed(int n) {
     switch (game_list_mode) {
       case 1: // Available games
-        if (!game_exists(game_list,n)) {
+        if (!avail[n]) {
 	  return 0;
 	}
 	break;
       case 2: // missing games
-        if (game_exists(game_list,n))
+        if (avail[n])
 	  return 0;
 	break;
     }
@@ -385,6 +386,11 @@ int recompute_list() {
 }
 
 int do_game_sel(int sel) {
+    if (!avail) {
+	avail = (char*)malloc(game_count);
+	for (int n=0; n<game_count; n++)
+	    avail[n] = game_exists(game_list,n);
+    }
   game_sel = new TGame_sel("Game selection",NULL);
   game_sel->set_header(header);
   game_sel->execute();
