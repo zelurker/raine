@@ -540,11 +540,25 @@ void TMenu::setup_bg_layer(SDL_Surface *bitmap) {
 
 void TMenu::compute_width_from_font() {
   width_max = 0;
-  int width_max_options = 0,n,w;
+  int width_max_options = 0,hwidth_max_options = 0,n,w;
   // The problem with variable width fonts is that it's not because a string
   // is longer than another that it will require more space on screen
   // so we must restart the loop again and compute the real width on screen
   // for each string !
+  if (header) {
+      for (n=0; header[n].label; n++) {
+	  w = h_child[n]->get_width(font);
+	  if (w > width_max) {
+	      width_max = w;
+	  }
+	  w = h_child[n]->get_width_max_options(font);
+	  if (w > hwidth_max_options)
+	      hwidth_max_options = w;
+      }
+  }
+  width_max += 2*HMARGIN;
+  if (width_max > work_area.w) width_max = work_area.w;
+  hxoptions = width_max;
   for (n=0; n<nb_items; n++) {
     w = child[n]->get_width(font);
     if (w > width_max) {
@@ -557,12 +571,11 @@ void TMenu::compute_width_from_font() {
   w = get_fglayer_footer_width();
   if (w > width_max)
     width_max = w;
-  width_max += 2*HMARGIN;
-  if (width_max > work_area.w) {
-	  width_max = work_area.w;
-  }
+  if (width_max > work_area.w) width_max = work_area.w;
   if (width_max_options > work_area.w)
 	  width_max_options = work_area.w;
+  if (hwidth_max_options > work_area.w)
+	  hwidth_max_options = work_area.w;
   xoptions = width_max;
   if (width_max_options) {
     width_max += width_max_options;
@@ -747,12 +760,12 @@ void TMenu::disp_header(int n,int y,int w,int h) {
   // be drawn or not
   int fw = HMARGIN;
   int selcolor;
-  int myfg = get_fgcolor(n);
+  int myfg = fg; // for now no need to change the header colors...
   if ((focus && n == hsel)) {
     selcolor = compute_selcolor();
-    h_child[n]->disp(fg_layer,font,fw,y,w,h,bg,selcolor,xoptions);
+    h_child[n]->disp(fg_layer,font,fw,y,w,h,bg,selcolor,hxoptions);
   } else {
-    h_child[n]->disp(fg_layer,font,fw,y,w,h,myfg,0,xoptions);
+    h_child[n]->disp(fg_layer,font,fw,y,w,h,myfg,0,hxoptions);
   }
 }
 

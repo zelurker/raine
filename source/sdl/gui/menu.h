@@ -44,7 +44,7 @@ class TMenu {
       width_max,exit_menu;
     int *menu_disp; // indexes of entries which can be displayed
     /* This array of indexes makes all the scrolling stuff much easier */
-    int xoptions; // start x for the options (area on the right)
+    int xoptions,hxoptions; // start x for the options (area on the right)
     int phase_repeat, timer,jmoved; // automatic repeat for joystick
     TFont *font;
     char *font_name;
