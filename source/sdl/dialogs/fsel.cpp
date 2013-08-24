@@ -16,13 +16,13 @@
 class TFileSel : public TMenu
 {
   protected:
-    char path[1024];
-    char *res_file;
     int nb_files;
     char **ext;
     int options;
     char *title2;
   public:
+    char path[FILENAME_MAX];
+    char *res_file;
     TFileSel(char *my_title, char *mypath, char **myext, char *res_str,int opts = 0, char* mytitle2 = NULL);
     virtual char* get_emuname();
     virtual ~TFileSel();
@@ -164,6 +164,7 @@ static int sort_menu(const void *a, const void *b) {
 
 // the only used option for now !
 #define ONLY_DIRS 1
+#define SAVE 2
 
 TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, int opts,char *mytitle2) :
   TMenu(my_title,NULL)
@@ -212,6 +213,25 @@ char* TFileSel::get_emuname() {
     return TMenu::get_emuname();
 }
 
+static char res_file[FILENAME_MAX+1];
+static int ihead;
+
+static int validate_file(int res) {
+    snprintf(dlg->res_file,FILENAME_MAX,"%s%s%s",dlg->path,SLASH,res_file);
+    return 1;
+}
+
+static menu_item_t myheader_save[] = {
+    { "New file", &validate_file, &ihead, ITEM_EDIT, { FILENAME_MAX, 0 }, { res_file } },
+    { "-- Path... ", &do_paths },
+    { NULL }
+};
+
+static menu_item_t myheader[] = {
+    { "-- Path... ", &do_paths },
+    { NULL }
+};
+
 void TFileSel::compute_nb_items() {
   DIR *dir = opendir(path);
   int nb_menu = 10;
@@ -224,16 +244,14 @@ void TFileSel::compute_nb_items() {
     free(menu);
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
   memset(menu,0,sizeof(menu_item_t)*(nb_menu+1));
-  menu[0].label = "-- Path...";
-  menu[0].menu_func = &do_paths;
 
-  menu[1].label = "..";
-  menu[1].menu_func = &exec_dir;
+  menu[0].label = "..";
+  menu[0].menu_func = &exec_dir;
   if (!dir) {
     perror(path);
   } else {
     getcwd(cwd,1024);
-    nb_files = 2;
+    nb_files = 1;
     struct dirent *dent;
     while ((dent = readdir(dir))) {
       if (!strcmp(dent->d_name,".") || !strcmp(dent->d_name,".."))
@@ -256,19 +274,22 @@ void TFileSel::compute_nb_items() {
 	    else if (!stricmp(s,"cue"))
 		found_cue++;
 	}
-	for (s=ext[0], idx=1; s; s=ext[idx++]) {
-	  int l = strlen(s);
-	  if (strchr(s,'*') || strchr(s,'?')) { // pattern search
-	    if (!fnmatch(s,dent->d_name,FNM_CASEFOLD)) {
-	      found = 1;
-	      break;
+	if (ext) {
+	    for (s=ext[0], idx=1; s; s=ext[idx++]) {
+		int l = strlen(s);
+		if (strchr(s,'*') || strchr(s,'?')) { // pattern search
+		    if (!fnmatch(s,dent->d_name,FNM_CASEFOLD)) {
+			found = 1;
+			break;
+		    }
+		} else if (!stricmp(&dent->d_name[strlen(dent->d_name)-(l)],s)) {
+		    // extension only
+		    found = 1;
+		    break;
+		}
 	    }
-	  } else if (!stricmp(&dent->d_name[strlen(dent->d_name)-(l)],s)) {
-	    // extension only
+	} else
 	    found = 1;
-	    break;
-	  }
-	}
 	if (!found) {
 	  // doesn't match the extension given
 	  free((void*)menu[nb_files].label);
@@ -288,9 +309,9 @@ void TFileSel::compute_nb_items() {
     }
     menu[nb_files].label = NULL;
     closedir(dir);
-    qsort(&menu[2],nb_files-2,sizeof(menu_item_t),&sort_menu);
+    qsort(&menu[1],nb_files-1,sizeof(menu_item_t),&sort_menu);
     if (oldsel)
-	for (int n=2; n<nb_files; n++)
+	for (int n=1; n<nb_files; n++)
 	    if (!strcmp(menu[n].label,oldsel))
 		sel = n;
     chdir(cwd);
@@ -298,6 +319,10 @@ void TFileSel::compute_nb_items() {
   strcpy(res_file,path);
   if (path[strlen(path)-1] != SLASH[0])
     strcat(res_file,SLASH);
+  if (options & SAVE)
+      set_header(myheader_save);
+  else
+      set_header(myheader);
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
       char *myexts[] = { ".iso", "iso.gz", NULL };
       char **old = ext;
@@ -383,6 +408,12 @@ int TFileSel::myexec_file(int sel) {
 
 void fsel(char *mypath, char **ext, char *res_str, char *title) {
   dlg = new TFileSel(mypath,mypath,ext,res_str,0,title);
+  dlg->execute();
+  delete dlg;
+}
+
+void fsel_save(char *mypath, char **ext, char *res_str, char *title) {
+  dlg = new TFileSel(mypath,mypath,ext,res_str,SAVE,title);
   dlg->execute();
   delete dlg;
 }
