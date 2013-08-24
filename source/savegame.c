@@ -25,6 +25,7 @@
 // #include "compat.h"
 // #include "sdl/SDL_gfx/SDL_rotozoom.h"
 // #include "sdl/blit_sdl.h"
+#include "dialogs/fsel.h"
 #endif
 
 #include "timer.h" // update_timers
@@ -403,7 +404,7 @@ void GameSave(void)
 
 void GameSaveName(void)
 {
-  char str[256];
+  char str[FILENAME_MAX];
 
    print_debug("BEGIN: GameSaveName()\n");
 
@@ -416,6 +417,13 @@ void GameSaveName(void)
    if (raine_file_select("Save game",str,NULL))
      do_save_state(str);
    release_gui();
+#else
+    char *exts[] = { ".sav", NULL };
+    char res[FILENAME_MAX];
+    *res = 0;
+    fsel(str,exts,res,"Save game");
+    if (*res)
+	do_save_state(str);
 #endif
 }
 
@@ -662,6 +670,13 @@ void GameLoadName(void)
    if (raine_file_select("Load game",str,NULL))
      do_load_state(str);
    release_gui();
+#else
+    char *exts[] = { ".sav", NULL };
+    char res[FILENAME_MAX];
+    *res = 0;
+    fsel(str,exts,res,"Load game");
+    if (*res)
+	do_load_state(str);
 #endif
 }
 

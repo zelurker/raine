@@ -36,7 +36,7 @@ class TEdit : public TStatic
       used_hist = 0;
     }
     void update_cursor();
-    virtual void disp(SDL_Surface *mys, TFont *myfont, int x, int y, int w, int h, 
+    virtual void disp(SDL_Surface *mys, TFont *myfont, int x, int y, int w, int h,
   int fg, int bg, int xoptions);
     virtual int get_height(TFont *font);
     virtual int get_len();
@@ -58,6 +58,7 @@ class TFloatEdit : public TEdit {
     ~TFloatEdit();
     virtual int valid_chars(int sym, int unicode);
     virtual int can_exit();
+    int get_len_max_options() { return 10; } // minimum field size !
 };
 
 #endif

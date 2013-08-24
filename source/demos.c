@@ -11,6 +11,8 @@
 #ifndef SDL
 #include "gui.h"
 #include "rgui.h"
+#else
+#include "dialogs/fsel.h"
 #endif
 
 #include "raine.h"
@@ -34,11 +36,13 @@ static UINT32 current_frame; // Current frame read from the demo file
 #define MAX_OFS 32
 #define MOUSE_ID 50
 static UINT32 offsets[MAX_OFS];
-static UINT8 contents[MAX_OFS];
+static UINT16 contents[MAX_OFS];
 static int oldmx, oldmy,newmx,newmy,oldb,newb; // mouse vars
 
+// These prototypes do not go to savegame.h because it obliges to include zlib.h
+// in savegames.h which produces a collision !
 extern void NewSave(gzFile );
-extern void NewLoad(gzFile *);
+extern void NewLoad(gzFile );
 
 static void demo_mouse_mickeys(int *mx,int *my)
 {
@@ -107,16 +111,16 @@ static void build_offsets_table()
   qsort(offsets,nb,4,cmp_offs);
   // Now init the contents array...
   for (n=0; n<nb; n++)
-    contents[n] = read_input(offsets[n]);
+    contents[n] = 0x100; // impossible value
 }
 
 void GameSaveDemo(void)
 {
-  char str[256];
+  char str[FILENAME_MAX];
 
    print_debug("BEGIN: GameSaveDemo()\n");
 
-   sprintf(str,"demos" SLASH "%s" SLASH,current_game->main_name);
+   sprintf(str,"%s" SLASH "demos" SLASH "%s" SLASH,dir_cfg.exe_path,current_game->main_name);
    mkdir_rwx(str);
    sa_pause_sound();
    stop_cpu_main();
@@ -130,6 +134,18 @@ void GameSaveDemo(void)
      do_save_demo(str);
    }
    release_gui();
+#else
+   char path[FILENAME_MAX];
+   strcpy(path,str);
+   *str = 0;
+   fsel_save(path,NULL,str,"Save demo");
+   if (*str) {
+     recording_demo = 1;
+     GetMouseMickeys = &demo_mouse_mickeys; // obliged to do this even for
+     // recording...
+     build_offsets_table();
+     do_save_demo(str);
+   }
 #endif
    sa_unpause_sound();
    reset_ingame_timer();
@@ -166,7 +182,7 @@ void save_demo_inputs()
     for (n=first; n<=last; n++)
       contents[n] = read_input(offsets[n]);
     gzwrite(fdemo,&contents[first],last-first+1);
-  } else if (mx != oldmx || my != oldmy || mouse_b != oldb) {
+  } else if (GameMouse && (mx != oldmx || my != oldmy || mouse_b != oldb)) {
     mouse_flag = 1;
     iputl(cpu_frame_count,fdemo);
     iputw(MOUSE_ID,fdemo);
@@ -273,7 +289,7 @@ static void do_load_demo(char *str) {
       break;
       case SAVE_FILE_TYPE_1:
       case SAVE_FILE_TYPE_2:
-         NewLoad(&fdemo);
+         NewLoad(fdemo);
       break;
       default:
 	print_ingame(120,"%s is not recognised", disp_str);
@@ -294,6 +310,8 @@ static void do_load_demo(char *str) {
    reading_demo = 1;
    oldmx = oldmy = oldb = 0;
    build_offsets_table();
+   write_demo_inputs(); // when recording the inputs are written immediately
+   // so to keep in sync we must read them from here !
 
    }
    else{
@@ -305,11 +323,11 @@ static void do_load_demo(char *str) {
 
 void GameLoadDemo(void)
 {
-  char str[256];
+  char str[FILENAME_MAX];
 
    print_debug("BEGIN: GameLoadDemo()\n");
 
-   sprintf(str,"demos" SLASH "%s" SLASH,current_game->main_name);
+   sprintf(str,"%s" SLASH "demos" SLASH "%s" SLASH,dir_cfg.exe_path,current_game->main_name);
    sa_pause_sound();
    stop_cpu_main();
 #ifndef SDL
@@ -317,6 +335,13 @@ void GameLoadDemo(void)
    if (raine_file_select("Load demo",str,NULL))
      do_load_demo(str);
    release_gui();
+#else
+   char path[FILENAME_MAX];
+   strcpy(path,str);
+   *str = 0;
+   fsel(path,NULL,str,"Load demo");
+   if (*str)
+     do_load_demo(str);
 #endif
    sa_unpause_sound();
    reset_ingame_timer();

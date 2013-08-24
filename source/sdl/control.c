@@ -386,17 +386,11 @@ struct DEF_INPUT_EMU def_input_emu[] =
  { SDLK_p,       0x00,           "Pause game",           key_pause_game},
  { SDLK_ESCAPE,     0x00,           "Stop emulation",    key_stop_emulation_esc},
  { SDLK_TAB,     0x00,           "Return to gui",        key_stop_emulation_tab},
-#if 0
- { SDLK_UP | (KMOD_CTRL<<16),      0,      "Screen up",  key_pause_scroll_up},
- { SDLK_DOWN | (KMOD_CTRL<<16),    0,    "Screen down",  key_pause_scroll_down},
- { SDLK_LEFT | (KMOD_CTRL<<16),    0,    "Screen left",  key_pause_scroll_left},
- { SDLK_RIGHT | (KMOD_CTRL<<16),   0,   "Screen right",  key_pause_scroll_right},
  // { SDLK_WORLD_18,   0x00,           "Switch Mixer", switch_mixer },
  { SDLK_F2 | (KMOD_CTRL<<16), 0x00, "Save game with name", GameSaveName },
  { SDLK_F4 | (KMOD_CTRL<<16), 0x00, "Load game with name", GameLoadName },
  { SDLK_F2 | (KMOD_SHIFT<<16), 0x00, "Save demo", GameSaveDemo },
  { SDLK_F4 | (KMOD_SHIFT<<16), 0x00, "Load demo", GameLoadDemo },
-#endif
  { SDLK_SPACE, 0x00, "Fwd 1 frame in pause", key_pause_fwd},
 #ifdef HAS_CONSOLE
  { 31 /* TILDE */, 0x00, "Console", call_console},
@@ -1073,6 +1067,7 @@ static void add_joy_event(int event) {
    * it's because there are so many controls that you can very easily
    * map a key which is already used by another unused input and so
    * it's better to trigger them together in this case */
+  if (reading_demo) return;
   do {
     ta = find_input_from_joy(event,ta+1);
     if (ta >= 0) {
@@ -1092,6 +1087,7 @@ static void add_joy_event(int event) {
 
 static void remove_joy_event(int event) {
   int ta = -1;
+  if (reading_demo) return;
   if (event == def_input_emu[6].joycode) {
     // special case for the turbo key this one is a toggle
     def_input_emu[6].proc();
@@ -1168,21 +1164,23 @@ static void handle_event(SDL_Event *event) {
 	input = event->key.keysym.scancode | 0x200;
       }
       key[input] = 1;
-      ta = -1;
-      /* We allow that 1 key is mapped to more than 1 control (loop)
-       * it's because there are so many controls that you can very easily
-       * map a key which is already used by another unused input and so
-       * it's better to trigger them together in this case */
-      do {
-	ta = find_input_from_keysym(input,ta+1);
-	if (ta >= 0) {
-	  autofire_timer[InputList[ta].auto_rate] = 0;
-	  input_valid = is_input_valid(ta);
-	  if (input_valid)
-	    update_input_buffer(ta,input_valid);
-	  valid_inputs[nb_valid_inputs++] = ta;
-	}
-      } while (ta >= 0);
+      if (!reading_demo) {
+	  ta = -1;
+	  /* We allow that 1 key is mapped to more than 1 control (loop)
+	   * it's because there are so many controls that you can very easily
+	   * map a key which is already used by another unused input and so
+	   * it's better to trigger them together in this case */
+	  do {
+	      ta = find_input_from_keysym(input,ta+1);
+	      if (ta >= 0) {
+		  autofire_timer[InputList[ta].auto_rate] = 0;
+		  input_valid = is_input_valid(ta);
+		  if (input_valid)
+		      update_input_buffer(ta,input_valid);
+		  valid_inputs[nb_valid_inputs++] = ta;
+	      }
+	  } while (ta >= 0);
+      }
 
       // Now check the gui inputs, the logic is slightly different since
       // we check for the keysym + modifiers here
@@ -1202,6 +1200,7 @@ static void handle_event(SDL_Event *event) {
 	input = event->key.keysym.scancode | 0x200;
       }
       key[input] = 0;
+      if (reading_demo) break;
       ta = -1;
       if (input == def_input_emu[6].scancode) {
 	// special case for the turbo key this one is a toggle
@@ -1250,6 +1249,7 @@ static void handle_event(SDL_Event *event) {
 
       break;
     case SDL_MOUSEMOTION:
+      if (reading_demo) break;
       mickey_x = event->motion.xrel;
       mickey_y = event->motion.yrel;
       mouse_x += mickey_x;
@@ -1260,6 +1260,7 @@ static void handle_event(SDL_Event *event) {
       else if (mouse_y < min_y) mouse_y = min_y;
       break;
     case SDL_MOUSEBUTTONDOWN:
+      if (reading_demo) break;
       ta = find_input_from_mbtn(event->button.button,0);
       if (ta >= 0) {
 	autofire_timer[InputList[ta].auto_rate] = 0;
@@ -1270,6 +1271,7 @@ static void handle_event(SDL_Event *event) {
       }
       break;
     case SDL_MOUSEBUTTONUP:
+      if (reading_demo) break;
       ta = find_input_from_mbtn(event->button.button,0);
       if (ta >= 0) {
 	update_input_buffer(ta,0);
@@ -1437,7 +1439,7 @@ void update_inputs(void)
 
   if (reading_demo) {
     write_demo_inputs();
-    return;
+    // And we don't return, need to handle inputs to get out of the demo !
   }
 
   // in case nothing moves, reset the mouse mickeys to 0 !

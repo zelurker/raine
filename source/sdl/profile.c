@@ -455,6 +455,7 @@ void reset_rdtsc_timer(UINT64 *last_rdtsc_counter) {
 void restore_ingame_timer(UINT32 timer) {
   pc_timer = timer;
   fpsm.framecount = timer;
+  cpu_frame_count = timer; // when reading a demo !
 }
 
 
