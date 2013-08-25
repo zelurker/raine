@@ -1112,7 +1112,12 @@ void TMenu::next_sel() {
 	int old = hsel;
 	do {
 	    hsel++;
-	    if (!header[hsel].label) hsel = 0;
+	    if (!header[hsel].label) {
+		hsel--;
+		toggle_header();
+		sel = 0;
+		return;
+	    }
 	} while (!h_child[hsel]->can_be_selected() && hsel != old);
 	return;
     }
@@ -1149,6 +1154,14 @@ void TMenu::prev_sel() {
   do {
     sel--;
     if (sel < 0) {
+	if (header) {
+	    sel = 0;
+	    toggle_header();
+	    while (header[hsel].label)
+		hsel++;
+	    hsel--;
+	    return;
+	}
       sel = menu_disp[nb_disp_items - 1];
       break;
     }
