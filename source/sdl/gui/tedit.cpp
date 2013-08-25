@@ -12,6 +12,7 @@ void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
     x = xoptions;
   }
   rectangleColor(s,x,y,x+maxw-1,y+h-1,mymakecol(255,255,255));
+  // boxColor(s,x+1,y+1,x+maxw-3,y+h-3,bg_color);
   if (field[0]) {
       int w,h;
       font->dimensions(field,&w,&h);
@@ -183,7 +184,8 @@ int TEdit::handle_key(SDL_Event *event) {
 	    memmove(&field[pos+1],&field[pos],maxl-pos);
 	    if (unicode) sym = unicode;
 	    field[pos++] = sym;
-	  }
+	  } else if (!valid_chars(sym,unicode))
+	      return 0;
       }
   }
   if (cursor_on) {

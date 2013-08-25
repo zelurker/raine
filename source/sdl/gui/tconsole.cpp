@@ -65,6 +65,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   edit_menu.values_list_label[0] = field;
   edit_menu.values_list[0] = maxlen;
   edit_menu.values_list[1] = 1; // use history
+  edit_menu.values_list[2] = work_area.w*3/4; // width
   edit_child = new TEdit(&edit_menu);
   visible = 1;
   interactive = NULL;
@@ -232,16 +233,12 @@ void TConsole::setup_fg_layer() {
 }
 
 void TConsole::fglayer_footer_update() {
-  static char old[400];
   edit_child->update();
   SDL_Rect dst;
   dst.x = myx; dst.y = myy; dst.w = myw; dst.h = myh;
-  if (strcmp(old,field)) {
-    strcpy(old,field);
-    SDL_FillRect(fg_layer,&dst,bgsdl);
-    edit_child->disp(fg_layer,font,myx,myy,myw,myh,fg,bg,
-	myxoptions);
-  }
+  SDL_FillRect(fg_layer,&dst,bgsdl);
+  edit_child->disp(fg_layer,font,myx,myy,myw,myh,fg,bg,
+	  myxoptions);
   SDL_Rect to;
   to.x = dst.x + fgdst.x; to.y = dst.y+fgdst.y;
   SDL_BlitSurface(fg_layer,&dst,sdl_screen,&to);
