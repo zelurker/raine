@@ -67,9 +67,10 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 /* Edit
  * parameters :
  * values_list_label[0] -> pointer to the resulting string
- * values_list[0] : maxlen 
+ * values_list[0] : maxlen
  * values_list[1] : use history (0/1). If using history the widget captures
- * the up and down keys. */
+ * the up and down keys.
+ * values_list[2] : max width in pixels to display */
 #define ITEM_EDIT (-3)
 
 /* TBitmap (see tbitmap.h) */
@@ -80,7 +81,8 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
  * values_list_label[0] : compatibility with TEdit : dummy string (the limit of C)
  * values_list_label[1] : pointer to the resulting float (overwrite the type)
  * values_list_label[2] and [3] : min max values (in string format)
- * values_list[0] = maxlen */
+ * values_list[0] = maxlen
+ * values_list[2] : max width in pixels to display */
 #define ITEM_FLOATEDIT (-5)
 
 #ifdef __cplusplus

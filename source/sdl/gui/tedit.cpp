@@ -6,38 +6,68 @@ void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
   font = myfont;
   if (*menu->label) {
-    TStatic::disp(s,myfont,x,y,xoptions-x,h,fg,bg,xoptions);
+      // Draw the static without a changing bg
+    TStatic::disp(s,myfont,x,y,xoptions-x,h,mymakecol(255,255,255),0,xoptions);
     w -= xoptions - x;
     x = xoptions;
   }
-  rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));
-  if (field[0])
-    font->surf_string(s,x+1,y+1,field,fg_color,0);
-  myx = x; myy = y; myh = h; mys = s;
+  rectangleColor(s,x,y,x+maxw-1,y+h-1,mymakecol(255,255,255));
+  if (field[0]) {
+      int w,h;
+      font->dimensions(field,&w,&h);
+      // -8 for the size of the cursor in the end..
+      int max = (pos == strlen(field) ? maxw-8 : maxw);
+      if (w > max) {
+	  unsigned int p;
+	  char old = 0;
+	  int end;
+	  for (p=0; p<strlen(field) && p<pos; p++) {
+	      font->dimensions(&field[p],&w,&h);
+	      if (w <= max) break;
+	  }
+	  if (w > max) {
+	      for (end=strlen(field)-1; end>=0; end--) {
+		  old = field[end];
+		  field[end] = 0;
+		  font->dimensions(&field[p],&w,&h);
+		  if (w <= max) break;
+		  field[end] = old;
+	      }
+	  }
+	  font->surf_string(s,x+1,y+1,&field[p],fg_color,0);
+	  if (old) field[end] = old;
+	  old = field[pos]; field[pos] = 0;
+	  font->dimensions(&field[p],&curx,&curh);
+	  curx += x+1;
+	  field[pos] = old;
+      } else {
+	  font->surf_string(s,x+1,y+1,field,fg_color,0);
+	  char old = field[pos]; field[pos] = 0;
+	  font->dimensions(field,&curx,&curh);
+	  curx += x+1;
+	  field[pos] = old;
+      }
+  } else {
+      curx = x+1; curh = h;
+  }
+  cury = y; mys = s;
   if (bg && cursor_on) {
     update_cursor();
   }
 }
 
-void TEdit::update_cursor() {
-  int w;
-  if (old_pos != pos) {
-    char buff[1024];
-    strncpy(buff,field,pos);
-    buff[pos] = 0;
-    int bidon;
-    if (pos > 0)
-      font->dimensions(buff,&w,&bidon);
-    else
-      w = 0;
-    pos_cursor = w;
-    old_pos = pos;
-  } else
-    w = pos_cursor;
-  w += myx+1;
-  // boxColor(s,w,myy+1,w+4,myy+h-1,mymakecol(255,0,255));
+int TEdit::get_width(TFont *font) {
+    if (menu->label) return TStatic::get_width(font);
+    return maxw;
+}
 
-  disp_cursor(mys,w,myy,8,myh);
+int TEdit::get_width_max_options(TFont *font) {
+    if (!menu->label) return 0;
+    return maxw;
+}
+
+void TEdit::update_cursor() {
+  disp_cursor(mys,curx,cury,8,curh);
 }
 
 int TEdit::get_height(TFont *font) {
@@ -61,13 +91,13 @@ void TEdit::update() {
 }
 
 int TEdit::get_len_max_options() {
-    if (*menu->label) 
+    if (*menu->label)
 	return strlen(field);
     return 0;
 }
 
 int TEdit::get_len() {
-    if (*menu->label) 
+    if (*menu->label)
 	return TStatic::get_len();
     return maxl;
 }
@@ -95,6 +125,8 @@ int TEdit::handle_key(SDL_Event *event) {
 	  pos--;
 	}
 	break;
+	case SDLK_ESCAPE:
+	return 0;
 	case SDLK_LEFT:
 	  if (pos) pos--;
 	  break;
@@ -151,8 +183,7 @@ int TEdit::handle_key(SDL_Event *event) {
 	    memmove(&field[pos+1],&field[pos],maxl-pos);
 	    if (unicode) sym = unicode;
 	    field[pos++] = sym;
-	  } else
-	    return 0;
+	  }
       }
   }
   if (cursor_on) {
@@ -177,7 +208,7 @@ void TEdit::add_history() {
     if (history[used_hist])
       free(history[used_hist]);
   }
-  if (used_hist) 
+  if (used_hist)
     memmove(&history[1],&history[0],used_hist*sizeof(char*));
   history[0] = strdup(field);
   used_hist++;
@@ -196,7 +227,7 @@ void TEdit::insert(char *s) {
 
 // TFloatEdit
 
-TFloatEdit::TFloatEdit(menu_item_t *my_menu) : TEdit(my_menu) 
+TFloatEdit::TFloatEdit(menu_item_t *my_menu) : TEdit(my_menu)
 {
     maxl = menu->values_list[0];
     field = (char*)malloc(maxl+1);

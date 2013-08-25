@@ -10,7 +10,7 @@ class TEdit : public TStatic
   protected:
     char *field;
     unsigned int maxl,pos,cursor_on,update_count,old_pos,pos_cursor;
-    int myx,myy,myh;
+    int curx,cury,curh,maxw;
     SDL_Surface *mys;
     TFont *font;
     char *history[MAX_HISTORY];
@@ -21,6 +21,7 @@ class TEdit : public TStatic
     {
       maxl = menu->values_list[0];
       use_hist = menu->values_list[1];
+      maxw = menu->values_list[2];
       cursor_on = 0;
       used_hist = update_count = 0;
       current_hist = -1;
@@ -41,6 +42,8 @@ class TEdit : public TStatic
     virtual int get_height(TFont *font);
     virtual int get_len();
     virtual int get_len_max_options();
+    virtual int get_width(TFont *font);
+    virtual int get_width_max_options(TFont *font);
     // virtual int handle_mouse(SDL_Event *event);
     virtual int handle_key(SDL_Event *event);
     virtual void update();

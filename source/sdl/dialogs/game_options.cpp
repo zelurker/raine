@@ -236,7 +236,7 @@ static menu_item_t game_options[] =
   { "Edit screen", &do_screen },
   { "Edit msg", &do_msg },
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
-  { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10 }, { "", (char*)&fps, "1", "200" } },
+  { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10,0,100 }, { "", (char*)&fps, "1", "200" } },
   { "Reset fps to driver's default value", &reset_fps },
   { "FPS counter", NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
     { "Off", "Immediate FPS", "Average FPS", "Profiler", "Rdtsc Cycles" } },

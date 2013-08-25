@@ -222,7 +222,7 @@ static int validate_file(int res) {
 }
 
 static menu_item_t myheader_save[] = {
-    { "New file", &validate_file, &ihead, ITEM_EDIT, { FILENAME_MAX, 0 }, { res_file } },
+    { "New file", &validate_file, &ihead, ITEM_EDIT, { FILENAME_MAX, 0, 200 }, { res_file } },
     { "-- Path... ", &do_paths },
     { NULL }
 };

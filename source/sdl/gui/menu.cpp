@@ -557,7 +557,6 @@ void TMenu::compute_width_from_font() {
       }
   }
   width_max += 2*HMARGIN;
-  if (width_max > work_area.w) width_max = work_area.w;
   hxoptions = width_max;
   for (n=0; n<nb_items; n++) {
     w = child[n]->get_width(font);
@@ -568,14 +567,17 @@ void TMenu::compute_width_from_font() {
     if (w > width_max_options)
       width_max_options = w;
   }
+  if (width_max > hxoptions) width_max += 2*HMARGIN;
+  if (width_max > work_area.w) width_max = work_area.w;
+  if (hxoptions + hwidth_max_options + HMARGIN > width_max) {
+      width_max = hxoptions + hwidth_max_options + HMARGIN;
+  }
   w = get_fglayer_footer_width();
   if (w > width_max)
     width_max = w;
   if (width_max > work_area.w) width_max = work_area.w;
   if (width_max_options > work_area.w)
 	  width_max_options = work_area.w;
-  if (hwidth_max_options > work_area.w)
-	  hwidth_max_options = work_area.w;
   xoptions = width_max;
   if (width_max_options) {
     width_max += width_max_options;
@@ -1820,7 +1822,7 @@ void TMenu::execute() {
 	 * To be verified : with screen = SWSURFACE, just a do_update should
 	 * be enough */
 	 print_debug("expose event\n");
-	 redraw(NULL);
+	 // redraw(NULL);
 	do_update(NULL);
 	if (sdl_screen->flags & SDL_DOUBLEBUF) {
 	  do_update(NULL);
