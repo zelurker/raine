@@ -221,22 +221,17 @@ int actual_load_neo_game(void)
 
 int load_neo_from_name(char *res) {
   if (res[strlen(res)-1] == SLASH[0]) { // don't load anything with only a path
-      /* I could add here some code to detect if there is :
-       * 1 : a cue file
-       * 2 : or an iso
-       * 3 : or an ipl.txt
-       * and add this file here if it's the case, but this part of the code is
-       * useful only for frontends, and it's not that easy to do from here, so
-       * it's probably much simpler to leave the frontends to pass the correct
-       * file here ! */
     return 0;
   }
   strcpy(neocd_path,res);
   strcpy(neocd_dir,res);
-  char *s = strrchr(neocd_dir,SLASH[0]);
-  if (!s) {
+  if (neocd_path[strlen(res)-1] != SLASH[0]) {
+    char *s = strrchr(neocd_dir,SLASH[0]);
+    if (!s) {
       getcwd(neocd_dir,FILENAME_MAX);
       sprintf(neocd_path,"%s%s%s",neocd_dir,SLASH,res);
+    } else
+      *s = 0;
   }
   return actual_load_neo_game();
 }
@@ -1732,14 +1727,13 @@ void parse_command_line(int argc, char *argv[])
 
           // allow raine <gamename> (preferred use is raine -game <gamename>)
 
-	   char *s = ArgList[ArgPosition];
-	   char *ext = &s[strlen(s)-3];
-	   if (is_dir(s) || (strlen(s) > 3 && (!stricmp(ext,"iso") ||
-			   !stricmp(ext,"cue")))) {
+	   if (is_dir(ArgList[ArgPosition]) || !stricmp(
+		       &ArgList[ArgPosition][strlen(ArgList[ArgPosition])-3],
+		       "iso")) {
 	       // iso or directory, assuming neocd image
 	       sdl_init();
-	       backslash(s);
-	       load_neo_from_name(s);
+	       backslash(ArgList[ArgPosition]);
+	       load_neo_from_name(ArgList[ArgPosition]);
 	   } else
 	       CLI_game_load_alt();
 
