@@ -2654,10 +2654,14 @@ void load_neocd() {
     // manual init of the layers (for the sprites viewer)
     tile_list[0].width = tile_list[0].height = 8;
     tile_list[0].count = 4096;
+    tile_list[0].type = TILE_TYPE_8x8; tile_list[0].rotate = 0;
     tile_list[0].data = neogeo_fix_memory;
     tile_list[0].mask = video_fix_usage;
 
     tile_list[1].width = tile_list[1].height = 16;
+    // The type doesn't make any sense, it's some old code written too fast and
+    // never fixed until now !
+    tile_list[1].type = TILE_TYPE_16x16; tile_list[1].rotate = 0;
     tile_list[1].count = nb_sprites;
     tile_list[1].mask = video_spr_usage;
     tile_list[1].data = GFX;
