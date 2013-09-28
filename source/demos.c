@@ -205,6 +205,7 @@ void stop_demo()
     fdemo = NULL;
     if (reading_demo) {
       reading_demo = 0;
+      ReClipScreen();
       raine_cfg.req_pause_game = 1;
     }
     recording_demo = 0;
@@ -310,6 +311,7 @@ static void do_load_demo(char *str) {
    reading_demo = 1;
    oldmx = oldmy = oldb = 0;
    build_offsets_table();
+   ReClipScreen();
    write_demo_inputs(); // when recording the inputs are written immediately
    // so to keep in sync we must read them from here !
 

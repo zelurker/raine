@@ -26,6 +26,7 @@
 #include "video/priorities.h"
 #include "neocd/neocd.h"
 #include "sdl/opengl.h"
+#include "demos.h"
 
 SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
@@ -108,6 +109,8 @@ void get_overlay_area(int *x, int *y, int *w, int *h) {
 void ReClipScreen(void)
 {
    // clip x
+ int game_x,game_y;
+ double ratio1, ratio2;
 
   // I need to use 2 sets of xview/yview because destx/desty must be calculated
   // taking into account the scaling factor, but the width and height must be
@@ -162,6 +165,116 @@ void ReClipScreen(void)
   else{
     desty = 0;
   }
+
+ if (current_game) {
+     // if (reading_demo) display_cfg.screen_y -= 8;
+     game_x = xxx;
+     game_y = yyy;
+     ratio1 = display_cfg.screen_x*1.0/game_x;
+     ratio2 = display_cfg.screen_y*1.0/game_y;
+     // printf("ratio1 %g ratio2 %g game_x %d game_y %d\n",ratio1,ratio2,game_x,game_y);
+
+     if (sdl_overlay || sdl_screen->flags & SDL_OPENGL) {
+	 if (display_cfg.fix_aspect_ratio ) {
+	     /* Fixing the aspect ratio must be done on the game resolution and not
+	      * on the screen resolution, otherwise the screen size will change
+	      * everytime we return to the game */
+	     if (game_x > game_y) {
+		 double ratio = game_y*1.0/game_x;
+		 double dif_ratio = fabs(ratio-0.75);
+		 if (dif_ratio > 0.001 && dif_ratio < 0.05) {
+		     game_y = 0.75*game_x;
+		     printf("fixing aspect ratio to 0.75 - new res %d x %d\n",game_x,game_y);
+		 }
+	     } else {
+		 double ratio = game_x*1.0/game_x;
+		 double dif_ratio = fabs(ratio-0.75);
+		 if (dif_ratio > 0.001 && dif_ratio < 0.05) {
+		     game_x = 0.75*game_y;
+		     printf("fixing aspect ratio to 0.75 - new res %d x %d\n",game_x,game_y);
+		 }
+	     }
+	 }
+
+	 /* Now fix the aspect ratio of the overlay inside the game screen */
+	 int xxx2,yyy2,destx2,desty2;
+	 if (ratio1 < ratio2) {
+	     xxx2 = display_cfg.screen_x;
+	     yyy2 = round(ratio1 * game_y);
+	     destx2 = 0;
+	     desty2 = (display_cfg.screen_y - yyy2)/2;
+	 } else {
+	     yyy2 = display_cfg.screen_y;
+	     xxx2 = round(ratio2 * game_x);
+	     desty2 = 0;
+	     destx2 = (display_cfg.screen_x - xxx2) /2;
+	 }
+	 bezel_fix_screen_size(&xxx2,&yyy2);
+	 bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
+#ifdef DARWIN
+	 if (overlays_workarounds) {
+	     // I have a bug here which makes the overlay invisible if it doesn't start
+	     // at the top of the screen !!!
+	     // It seems so stupid that it's probably a bug of my video driver, but to
+	     // be sure I'll put a fix here, it's better than a black screen...
+	     area_overlay.x = destx2 = 0;
+	     area_overlay.y = desty2 = 0;
+	 }
+#endif
+	 area_overlay.x = destx2;
+	 area_overlay.y = desty2;
+	 area_overlay.w = xxx2;
+	 area_overlay.h = yyy2;
+	 print_debug("area overlay %d %d %d %d with xxx %d yyy %d display %d %d ratio1 %g ratio2 %g\n",destx2,desty2,xxx2,yyy2,xxx,yyy,display_cfg.screen_x,display_cfg.screen_y,ratio1,ratio2);
+     } else {
+	 if (display_cfg.stretch >= 1 && !display_cfg.scanlines) {
+	     if (ratio1 >= 3.0 && ratio2 >= 3.0 && (display_cfg.stretch == 1 ||
+			 display_cfg.stretch == 3)) {
+		 if (use_scale2x != 2) {
+		     use_scale2x = 2;
+		     return SetupScreenBitmap();
+		 }
+	     } else if (ratio1 >= 2.0 && ratio2 >= 2.0) {
+		 if (use_scale2x != 1) {
+		     use_scale2x = 1;
+		     return SetupScreenBitmap();
+		 }
+	     } else
+		 use_scale2x = 0;
+	 } else
+	     use_scale2x = 0;
+     }
+     area2.x = destx; // x2;
+     area2.y = desty; // y2;
+     if (use_scale2x == 1) {
+	 area2.w = xxx*2;
+	 area2.h = yyy*2;
+     } else if (use_scale2x == 2) {
+	 area2.w = xxx*3;
+	 area2.h = yyy*3;
+     } else {
+	 area2.w = xxx;
+	 area2.h = yyy;
+     }
+     if (!sdl_overlay) {
+	 int x = area2.x, y = area2.y, w = area2.w, h = area2.h;
+	 // printf("fixing bezel %d %d %d %d - zone du jeu %d %d %d %d scale %d\n",x,y,w,h,xxx,yyy,destx,desty,use_scale2x);
+	 bezel_fix_screen_size(&w,&h);
+	 bezel_fix_screen_coordinates(&x,&y,area2.w,area2.h,display_cfg.screen_x,display_cfg.screen_y);
+	 area2.x = x; area2.y = y; // area2.w = w; area2.h = h;
+	 // printf("result bezel %d %d %d %d\n",x,y,w,h);
+     }
+
+     display_bezel();
+     if (GameViewBitmap)
+	 clear_bitmap(GameViewBitmap);
+
+     RefreshBuffers=1;
+     if (pbitmap)
+	 init_pbitmap();
+     // if (reading_demo) display_cfg.screen_y += 8;
+ }
+
   if(yview2 <= disp_screen_y && xview2 <= disp_screen_x && current_game)
     bezel_fix_screen_coordinates(&destx,&desty,xview2,yview2,disp_screen_x,disp_screen_y);
   if(yview < disp_screen_y){
@@ -286,8 +399,7 @@ static void SetScreenBitmap(int xfull, int yfull, int xtop, int ytop, int xview,
 void SetupScreenBitmap(void)
 {
  const VIDEO_INFO *vid_info;
- int game_x,game_y,oldbpp;
- double ratio1, ratio2;
+ int oldbpp;
 
  if (!current_game)
    return;
@@ -326,110 +438,6 @@ void SetupScreenBitmap(void)
    init_video_core(); // GameBitmap just changed -> regen all the functions
    // which depend on it !
  }
-
- game_x = xxx;
- game_y = yyy;
- ratio1 = display_cfg.screen_x*1.0/game_x;
- ratio2 = display_cfg.screen_y*1.0/game_y;
- // printf("ratio1 %g ratio2 %g game_x %d game_y %d\n",ratio1,ratio2,game_x,game_y);
-
- if (sdl_overlay || sdl_screen->flags & SDL_OPENGL) {
-   if (display_cfg.fix_aspect_ratio ) {
-     /* Fixing the aspect ratio must be done on the game resolution and not
-      * on the screen resolution, otherwise the screen size will change
-      * everytime we return to the game */
-     if (game_x > game_y) {
-       double ratio = game_y*1.0/game_x;
-       double dif_ratio = fabs(ratio-0.75);
-       if (dif_ratio > 0.001 && dif_ratio < 0.05) {
-	 game_y = 0.75*game_x;
-	 printf("fixing aspect ratio to 0.75 - new res %d x %d\n",game_x,game_y);
-       }
-     } else {
-       double ratio = game_x*1.0/game_x;
-       double dif_ratio = fabs(ratio-0.75);
-       if (dif_ratio > 0.001 && dif_ratio < 0.05) {
-	 game_x = 0.75*game_y;
-	 printf("fixing aspect ratio to 0.75 - new res %d x %d\n",game_x,game_y);
-       }
-     }
-   }
-
-   /* Now fix the aspect ratio of the overlay inside the game screen */
-   int xxx2,yyy2,destx2,desty2;
-   if (ratio1 < ratio2) {
-     xxx2 = display_cfg.screen_x;
-     yyy2 = round(ratio1 * game_y);
-     destx2 = 0;
-     desty2 = (display_cfg.screen_y - yyy2)/2;
-   } else {
-     yyy2 = display_cfg.screen_y;
-     xxx2 = round(ratio2 * game_x);
-     desty2 = 0;
-     destx2 = (display_cfg.screen_x - xxx2) /2;
-   }
-   bezel_fix_screen_size(&xxx2,&yyy2);
-   bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
-#ifdef DARWIN
-   if (overlays_workarounds) {
-       // I have a bug here which makes the overlay invisible if it doesn't start
-       // at the top of the screen !!!
-       // It seems so stupid that it's probably a bug of my video driver, but to
-       // be sure I'll put a fix here, it's better than a black screen...
-       area_overlay.x = destx2 = 0;
-       area_overlay.y = desty2 = 0;
-   }
-#endif
-   area_overlay.x = destx2;
-   area_overlay.y = desty2;
-   area_overlay.w = xxx2;
-   area_overlay.h = yyy2;
-   print_debug("area overlay %d %d %d %d with xxx %d yyy %d display %d %d ratio1 %g ratio2 %g\n",destx2,desty2,xxx2,yyy2,xxx,yyy,display_cfg.screen_x,display_cfg.screen_y,ratio1,ratio2);
- } else {
-   if (display_cfg.stretch >= 1 && !display_cfg.scanlines) {
-     if (ratio1 >= 3.0 && ratio2 >= 3.0 && (display_cfg.stretch == 1 ||
-					    display_cfg.stretch == 3)) {
-       if (use_scale2x != 2) {
-	   use_scale2x = 2;
-	   return SetupScreenBitmap();
-	 }
-       } else if (ratio1 >= 2.0 && ratio2 >= 2.0) {
-	 if (use_scale2x != 1) {
-	   use_scale2x = 1;
-	   return SetupScreenBitmap();
-	 }
-       } else
-         use_scale2x = 0;
-     } else
-       use_scale2x = 0;
-   }
-   area2.x = destx; // x2;
-   area2.y = desty; // y2;
-   if (use_scale2x == 1) {
-     area2.w = xxx*2;
-     area2.h = yyy*2;
-   } else if (use_scale2x == 2) {
-     area2.w = xxx*3;
-     area2.h = yyy*3;
-   } else {
-     area2.w = xxx;
-     area2.h = yyy;
-   }
-   if (!sdl_overlay) {
-     int x = area2.x, y = area2.y, w = area2.w, h = area2.h;
-     // printf("fixing bezel %d %d %d %d - zone du jeu %d %d %d %d scale %d\n",x,y,w,h,xxx,yyy,destx,desty,use_scale2x);
-     bezel_fix_screen_size(&w,&h);
-     bezel_fix_screen_coordinates(&x,&y,area2.w,area2.h,display_cfg.screen_x,display_cfg.screen_y);
-     area2.x = x; area2.y = y; // area2.w = w; area2.h = h;
-     // printf("result bezel %d %d %d %d\n",x,y,w,h);
-   }
-
-   display_bezel();
-   clear_bitmap(GameViewBitmap);
-
-   RefreshBuffers=1;
-   if (pbitmap)
-     init_pbitmap();
 }
 
 void DestroyScreenBitmap(void)
@@ -892,9 +900,9 @@ void DrawNormal(void)
 
    */
 
-   RefreshBuffers = 0;
    if (sdl_screen->flags & SDL_OPENGL) {
        draw_opengl(1);
+       RefreshBuffers = 0;
        return;
    }
 
@@ -984,6 +992,7 @@ void DrawNormal(void)
 	     break;
 	     }
    }
+   RefreshBuffers = 0;
 }
 
 void clear_game_screen(int pen)
