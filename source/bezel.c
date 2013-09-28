@@ -431,6 +431,7 @@ void display_bezel() {
    * impossible to map the bezel on this surface without having black borders.
    * */
 
+    if (!GameBitmap) return;
   if (bezel_bitmap && display_cfg.bpp > 8) {
     int rotate_screen = (current_game->video->flags ^ display_cfg.user_rotate) & 3;
     int bw = bezel_width, bh = bezel_height;
@@ -450,7 +451,7 @@ void display_bezel() {
     }
     get_screen_coordinates(&xoff2,&yoff2,&destx,&desty,&xxx,&yyy);
 #ifdef SDL
-    if (sdl_overlay) {
+    if (sdl_overlay || sdl_screen->flags & SDL_OPENGL) {
       get_overlay_area(&destx,&desty,&xxx,&yyy);
       printf("get_overlay_area: destx %d desty %d w %d h %d\n",destx,desty,xxx,yyy);
     }
@@ -476,7 +477,7 @@ void display_bezel() {
 
     bw *= multw; bh *= multh;
 #ifdef SDL
-    if (sdl_overlay) {
+    if (sdl_overlay || sdl_screen->flags & SDL_OPENGL) {
       /* Here is the difficulty : here the bezel must be entierly independant
        * from the game screen and based only on what we know about overlay_area
        * which is the area to which the game screen is scaled when displayed.
