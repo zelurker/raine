@@ -253,6 +253,7 @@ void opengl_text(char *msg, int x, int y) {
 
     glPixelStorei(GL_UNPACK_ROW_LENGTH,2);
     glPixelStorei(GL_UNPACK_ALIGNMENT,2);
+    glPixelStorei(GL_UNPACK_LSB_FIRST,0);
     glDisable(GL_TEXTURE_2D);
     glColor3f(1.0f,1.0f,1.0f);
     while (*msg) {
