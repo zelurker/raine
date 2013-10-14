@@ -367,7 +367,7 @@ void TFileSel::set_dir(char *mypath) {
 
 int TFileSel::mychdir(int n) {
     char *old = NULL;
-  if (n == 1) { // ..
+  if (n == 0) { // ..
     char *s = strrchr(path,SLASH[0]);
     if (s) {
       *s = 0;

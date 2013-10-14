@@ -231,7 +231,7 @@ int load_neo_from_name(char *res) {
       getcwd(neocd_dir,FILENAME_MAX);
       sprintf(neocd_path,"%s%s%s",neocd_dir,SLASH,res);
     } else
-      *s = 0;
+      *s = 0; // neocd_dir without ending slash
   }
   return actual_load_neo_game();
 }
