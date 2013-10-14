@@ -367,6 +367,11 @@ int get_console_key() {
 static struct DEF_INPUT_EMU *driver_emu_list = NULL;
 static int driver_nb_emu_inputs;
 
+static void cold_boot() {
+    memset(RAM,0,RAMSize);
+    reset_game_hardware();
+}
+
 // must be global for the controls dialog
 struct DEF_INPUT_EMU def_input_emu[] =
 {
@@ -382,7 +387,7 @@ struct DEF_INPUT_EMU def_input_emu[] =
  { SDLK_F3,      0x00,           "Switch save slot",     next_save_slot},
  { SDLK_F4,      0x00,           "Load game",            GameLoad},
  { SDLK_F11,     0x00,           "Switch fps display",   switch_fps_mode},
- { SDLK_F1,      0x00,           "Reset game",           reset_game_hardware},
+ { SDLK_F1,      0x00,           "Reset game",           cold_boot},
  { SDLK_p,       0x00,           "Pause game",           key_pause_game},
  { SDLK_ESCAPE,     0x00,           "Stop emulation",    key_stop_emulation_esc},
  { SDLK_TAB,     0x00,           "Return to gui",        key_stop_emulation_tab},
