@@ -1659,7 +1659,12 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    // Filtering on 0 sprite number is necessary at least for last
 	    // blade 2 : character selection screen. Now there are 2 doubts :
 	    // filter on this or color 0 ? And is it also really used in neogeo?
-	    if (!tileno) continue;
+	    // Some more about this ugly hack : if testing tileno only, then
+	    // the upper left corner of the N letter of the neogeo logo of the
+	    // unibios screen disappears for king of monsters set 1 !
+	    // Testing tileatr too seems ok for some reason... it's still a hack
+	    // but it seems to work for now...
+	    if (!tileno && !tileatr) continue;
 	    if (y)
 		// This is much more accurate for the zoomed bgs in aof/aof2
 		sy = oy + (((rzy+1)*y)>>4);
@@ -1692,6 +1697,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 			(tileatr >> 8),
 			16,
 			map);
+		if (!tileno) printf("%d,%d,0 attr %x zx %d zy %d\n",sx,sy,tileatr,rzx,zy);
 		if (video_spr_usage[tileno] == 2) // all solid
 		    Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
 		else
