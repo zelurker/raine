@@ -17,7 +17,7 @@
 static struct DACinterface dac_interface =
 {
 	2,	/* 2 channels */
-	{ 250 | (0x80<<8),250 | (0x80<<8) },
+	{ 200 | (0x80<<8),250 | (0x80<<8) },
 };
 
 #else

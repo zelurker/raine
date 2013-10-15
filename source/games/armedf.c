@@ -114,6 +114,7 @@ static struct INPUT_INFO input_armedf[] =
    INP0( P1_RIGHT, 0x00C000, 0x08 ),
    INP0( P1_B1, 0x00C000, 0x10 ),
    INP0( P1_B2, 0x00C000, 0x20 ),
+   INP0( P1_B3, 0x00C000, 0x40 ),
 
    INP0( P2_START, 0x00C001, 0x02 ),
    INP0( P2_UP, 0x00C002, 0x01 ),
@@ -122,6 +123,7 @@ static struct INPUT_INFO input_armedf[] =
    INP0( P2_RIGHT, 0x00C002, 0x08 ),
    INP0( P2_B1, 0x00C002, 0x10 ),
    INP0( P2_B2, 0x00C002, 0x20 ),
+   INP0( P2_B3, 0x00C002, 0x40 ),
 
    END_INPUT
 };
@@ -598,7 +600,7 @@ static void DrawArmedF(void)
    if (check_layer_enabled(layer_id_data[0])) {
      if(ReadWord(&RAM[io_w]) & 0x0200){
 
-     scrolly = ReadWord(&RAM[io_w+2])+112;
+     scrolly = ReadWord(&RAM[io_w+2])+112-16;
      scrollx = ReadWord(&RAM[io_w+4])+16;
 
      MAKE_SCROLL_512x1024_2_16(scrollx,scrolly);
