@@ -1,0 +1,6 @@
+script "P1 invulnerability" always
+  poke $101517 2
+
+script "P1 infinite lives"
+  poke $101276 $99
+
