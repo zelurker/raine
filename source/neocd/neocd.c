@@ -2372,6 +2372,20 @@ void myStop68000(UINT32 adr, UINT8 data) {
     } else
 	do_not_stop = 0;
     rolled = 0;
+#if 0
+    // Finally it's not necessary to clear the bit
+    // for mslug2 here, I keep the code for reference for now
+    if (adr > 0xaa0000) {
+	int mask = ~(1<<data);
+	adr -= 0xaa0000;
+	if (adr & 0x8000)
+	    RAM[s68000context.areg[5]-(adr & 0x7fff)] &= mask;
+	else
+	    RAM[s68000context.areg[5]+(adr & 0x7fff)] &= mask;
+	bclr ^= 1;
+	printf("bclr %d sr %x\n",bclr,s68000context.sr);
+    }
+#endif
 }
 
 static void disable_irq_w(UINT32 offset, UINT8 data) {
@@ -2811,7 +2825,7 @@ void load_neocd() {
 	// apprently, it seems easier to emulate this from the ram area instead of
 	// using these registers directly
     }
-    AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
+    AddWriteByte(0xAA0000, 0xAAffff, myStop68000, NULL);			// Trap Idle 68000
     finish_conf_68000(0);
     // There doesn't seem to be any irq3 in the neocd, irqs are very different
     // here
@@ -2822,14 +2836,14 @@ void load_neocd() {
     irq.control = 0;
 }
 
-static void apply_hack(int pc) {
+static void apply_hack(int pc,char *comment) {
     UINT8 *RAM = get_userdata(CPU_68K_0,pc);
     WriteWord(&RAM[pc],0x4239);
     WriteWord(&RAM[pc+2],0xaa);
     WriteWord(&RAM[pc+4],0);
     current_neo_frame = desired_68k_speed;
-    print_ingame(60,"Applied speed hack");
-    print_debug("Applied speed hack at %x\n",pc);
+    print_ingame(120,"Applied speed hack at %x:%s",pc,comment);
+    print_debug("Applied speed hack at %x:%s\n",pc,comment);
 }
 
 void neocd_function(int vector) {
@@ -3085,6 +3099,7 @@ void execute_neocd() {
 	   * could find places waiting for an hbl and not a vbl if using also
 	   * raster frames */
 	  static int not_stopped_frames;
+	  if (stopped_68k) not_stopped_frames = 0;
 	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
 	      pc = s68000readPC();
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
@@ -3092,40 +3107,57 @@ void execute_neocd() {
 	      if (pc < 0x200000) {
 		  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
 		  not_stopped_frames = 0;
-		  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d) &&
-			  ReadWord(&RAM[pc+4]) == 0x67fa) {
-		      apply_hack(pc);
+		  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d || ReadWord(&RAM[pc]) == 0x4a28) &&
+			  (ReadWord(&RAM[pc+4]) == 0x67fa ||
+			   ReadWord(&RAM[pc+4]) == 0x6bfa)) {
+		      apply_hack(pc,"beq/bmi");
 		  } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
 			  ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
-		      apply_hack(pc);
+		      apply_hack(pc,"tst/bmi");
 		      WriteWord(&RAM[pc+6],0x4e71); // nop
 		  } else if (ReadWord(&RAM[pc]) == 0x6bf8 &&
 			  ReadWord(&RAM[pc-6]) == 0x4a39) {
-		      apply_hack(pc-6);
+		      apply_hack(pc-6,"tst/bmi 2");
 		      WriteWord(&RAM[pc],0x4e71);
 		  } else if (ReadWord(&RAM[pc]) == 0x0839 &&
 			  ReadWord(&RAM[pc+8]) == 0x66f2) {
-		      apply_hack(pc);
+		      apply_hack(pc,"bne");
 		      WriteWord(&RAM[pc+6],0x4e71); // nop
 		      WriteWord(&RAM[pc+8],0x4e71); // nop
 		  } else if ((ReadWord(&RAM[pc]) == 0x67f8 || ReadWord(&RAM[pc]) == 0x66f8) &&
 			  (ReadWord(&RAM[pc-6]) == 0x4a79 ||
 			   ReadWord(&RAM[pc-6]) == 0x4a39)) { // TST / BEQ/BNE
-		      apply_hack(pc-6);
+		      apply_hack(pc-6,"tst/beq/bne");
 		      WriteWord(&RAM[pc],0x4e71); // nop
+#if 1
+		  } else if (ReadWord(&RAM[pc]) == 0x8ad &&
+			  ReadWord(&RAM[pc+6]) == 0x67f8) {
+		      // Very particular : mslug2
+		      // it does bclr #7,adr / beq
+		      // After that it spends a few frames
+		      // inside its vbl irq, then sets this
+		      // bit and exits
+		      char *comment = "mslug2 special";
+		      print_ingame(60,"Applied speed hack at %x:%s",pc,comment);
+		      print_debug("Applied speed hack at %x:%s\n",pc,comment);
+		      WriteWord(&RAM[pc],0x13fc);
+		      int ofs = ReadWord(&RAM[pc+4]);
+		      WriteLongSc(&RAM[pc+4],ofs+0xaa0000);
+		      current_neo_frame = desired_68k_speed;
+#endif
 		  } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
 			  ReadWord(&RAM[pc+8]) == 0x6600 &&
 			  ReadWord(&RAM[pc+10]) == 8 &&
 			  ReadWord(&RAM[pc+16]) == 0x60ee) {
 		      /* This one is quite crazy, for neo drift out... */
-		      apply_hack(pc);
+		      apply_hack(pc,"neodriftout special");
 		      WriteWord(&RAM[pc+6],0x4e71); // nop
 		      WriteWord(&RAM[pc+8],0x6000); // bra
 		  } else if (ReadWord(&RAM[pc]) == 0x67f2 &&
 			  ReadWord(&RAM[pc-6]) == 0x4a39 && // tst.b
 			  ReadWord(&RAM[pc-12]) == 0x5279) { // addq.w
 		      // neo turf masters
-		      apply_hack(pc-6);
+		      apply_hack(pc-6,"neoturf master");
 		      WriteWord(&RAM[pc],0x4e71); // nop
 		  }
 	      }
