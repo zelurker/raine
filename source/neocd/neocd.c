@@ -113,7 +113,9 @@ struct VIDEO_INFO neocd_video =
 int neogeo_bios;
 
 void restore_neocd_config() {
-  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
+  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",32);
+  if (allowed_speed_hacks > 0 && allowed_speed_hacks < 16)
+      allowed_speed_hacks = 32;
   disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);
   capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
   neogeo_bios = raine_get_config_int("neogeo","bios",0);
@@ -2547,7 +2549,7 @@ void load_neocd() {
     neocd_video.screen_x = 304;
     offx = 16-8;
     maxx = 320-8;
-    desired_68k_speed = CPU_FRAME_MHz(32,60);
+    desired_68k_speed = CPU_FRAME_MHz(allowed_speed_hacks,60);
     upload_type = 0xff;
     memcard_write = 0;
     setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
@@ -3099,7 +3101,14 @@ void execute_neocd() {
 	   * could find places waiting for an hbl and not a vbl if using also
 	   * raster frames */
 	  static int not_stopped_frames;
-	  if (stopped_68k) not_stopped_frames = 0;
+	  if (stopped_68k) {
+	      not_stopped_frames--;
+	      if (not_stopped_frames < 0 && current_neo_frame < desired_68k_speed)
+		  // This one is for mslug2, after a game over the game slows
+		  // down again but the speed hacks are still enabled.
+		  // It's the only way I found which works so far... !
+		  current_neo_frame = desired_68k_speed;
+	  }
 	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
 	      pc = s68000readPC();
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);

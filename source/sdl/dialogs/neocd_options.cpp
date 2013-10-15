@@ -136,7 +136,7 @@ static menu_item_t neocd_menu[] =
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
     { "Off", "CD 1x (150 Kb/s)", "2x", "4x", "8x (default)", "16x", "32x", "48x" } },
   { "Update neocd sprite block", &do_update_block },
-  { "Allow speed hacks", NULL, &allowed_speed_hacks, 2, { 0, 1 }, { "No", "Yes" }},
+  { "Allow speed hacks", NULL, &allowed_speed_hacks, 5, { 0, 16, 20, 24, 32 }, { "No", "16 MHz", "20 MHz", "24 MHz", "32 MHz" }},
   { "Raster effects", NULL, &disable_irq1, 2, { 0, 1 }, { "Enabled", "Disabled" }},
   { "Capture mode", NULL, &capture_new_pictures, 2, { 0, 1 }, { "Overwrite", "New pictures" }},
   { NULL },
