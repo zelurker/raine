@@ -39,6 +39,7 @@
 #include "games/gun.h"
 #include "taitosnd.h"
 #include "games/neogeo.h"
+#include "decode.h"
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
@@ -2539,6 +2540,47 @@ static UINT16 read_bios_b(UINT32 offset) {
     return ReadByte(load_region[REGION_MAINBIOS]+(offset & (len-1)));
 }
 
+static void neogeo_bootleg_sx_decrypt(int value )
+{
+	int sx_size = get_region_size(REGION_FIXED);
+	UINT8 *rom = load_region[REGION_FIXED];
+	int i;
+
+	if (value == 1)
+	{
+		UINT8 *buf = AllocateMem(sx_size);
+		memcpy( buf, rom, sx_size );
+
+		for( i = 0; i < sx_size; i += 0x10 )
+		{
+			memcpy( &rom[ i ], &buf[ i + 8 ], 8 );
+			memcpy( &rom[ i + 8 ], &buf[ i ], 8 );
+		}
+		FreeMem(buf);
+	}
+	else if (value == 2)
+	{
+		for( i = 0; i < sx_size; i++ )
+			rom[ i ] = BITSWAP8( rom[ i ], 7, 6, 0, 4, 3, 2, 1, 5 );
+	}
+}
+
+static void neogeo_bootleg_cx_decrypt()
+{
+	int i;
+	int cx_size = get_region_size(REGION_SPRITES);
+	UINT8 *rom = load_region[ REGION_SPRITES ];
+	UINT8 *buf = AllocateMem(cx_size);
+
+	memcpy( buf, rom, cx_size );
+
+	for( i = 0; i < cx_size / 0x40; i++ ){
+		memcpy( &rom[ i * 0x40 ], &buf[ (i ^ 1) * 0x40 ], 0x40 );
+	}
+
+	FreeMem(buf);
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -2616,6 +2658,20 @@ void load_neocd() {
 	int size_fixed = 4096*32; // packed 8x8 x 4096
 	if (size < size_fixed) size = size_fixed;
 	nb_sprites = size/0x100;
+	if (is_current_game("kof97oro")) {
+	    // 1) order of the bytes altered !
+	    load_message("kof97oro decrypt rom...");
+	    UINT16 *tmp = AllocateMem(0x500000);
+	    int i;
+	    for (i=0; i<0x500000/2; i++)
+		tmp[i] = ReadWord(&ROM[(i ^ 0x7ffef)*2]);
+	    memcpy(ROM,tmp,0x500000);
+	    FreeMem(tmp);
+	    load_message("kof97oro decrypt fix...");
+	    neogeo_bootleg_sx_decrypt(1);
+	    load_message("kof97oro decrypt sprites...");
+	    neogeo_bootleg_cx_decrypt();
+	}
 	UINT8 *tmp = AllocateMem(size);
 	if (load_region[REGION_FIXED]) {
 	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);

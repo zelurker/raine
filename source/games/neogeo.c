@@ -248,24 +248,32 @@ static struct ROM_INFO rom_tpgolf[] = /* MVS AND AES VERSION */
 
 CLNEI( tpgolf, neogeo, "Top Player's Golf (NGM-003)(NGH-003)", SNK, 1990, GAME_SPORTS);
 
-static struct ROM_INFO rom_mahretsu[] = /* MVS AND AES VERSION */
+static struct ROM_INFO rom_maglord[] = /* MVS VERSION clone of neogeo */
 {
-  { "004-p1.p1", 0x080000, 0xfc6f53db, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "004-s1.s1", 0x20000, 0x2bd05a06, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "004-m1.m1", 0x20000, 0xc71fbb3b, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "004-v11.v11", 0x080000, 0xb2fb2153, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "004-v12.v12", 0x080000, 0x8503317b, REGION_SMP1, 0x080000, LOAD_NORMAL },
-  { "004-v21.v21", 0x080000, 0x4999fb27, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
-  { "004-v22.v22", 0x080000, 0x776fa2a2, REGION_YMSND_DELTAT, 0x080000, LOAD_NORMAL },
-  { "004-v23.v23", 0x080000, 0xb3e7eeea, REGION_YMSND_DELTAT, 0x100000, LOAD_NORMAL },
-  { "004-c1.c1", 0x80000, 0xf1ae16bc, REGION_SPRITES, 0x000000, LOAD_8_16 },
-  { "004-c2.c2", 0x80000, 0xbdc13520, REGION_SPRITES, 0x000001, LOAD_8_16 },
-  { "004-c3.c3", 0x80000, 0x9c571a37, REGION_SPRITES, 0x100000, LOAD_8_16 },
-  { "004-c4.c4", 0x80000, 0x7e81cb29, REGION_SPRITES, 0x100001, LOAD_8_16 },
+  { "005-pg1.p1", 0x080000, 0xbd0a492d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "005-s1.s1", 0x20000, 0x1c5369a2, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "005-m1.m1", 0x40000, 0x26259f0f, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "005-v11.v11", 0x080000, 0xcc0455fd, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "005-v21.v21", 0x080000, 0xf94ab5b7, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
+  { "005-v22.v22", 0x080000, 0x232cfd04, REGION_YMSND_DELTAT, 0x080000, LOAD_NORMAL },
+  { "005-c1.c1", 0x80000, 0x806aee34, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "005-c2.c2", 0x80000, 0x34aa9a86, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "005-c3.c3", 0x80000, 0xc4c2b926, REGION_SPRITES, 0x100000, LOAD_8_16 },
+  { "005-c4.c4", 0x80000, 0x9c46dcf4, REGION_SPRITES, 0x100001, LOAD_8_16 },
+  { "005-c5.c5", 0x80000, 0x69086dec, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "005-c6.c6", 0x80000, 0xab7ac142, REGION_SPRITES, 0x200001, LOAD_8_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mahretsu, neogeo, "Mahjong Kyo Retsuden (NGM-004)(NGH-004)", SNK, 1990, GAME_MISC);
+static struct ROM_INFO rom_maglordh[] = /* AES VERSION clone of maglord */
+{
+  { "005-p1.p1", 0x080000, 0x599043c5, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( maglord, neogeo, "Magician Lord (NGM-005)", ALPHA, 1990, GAME_PLATFORM);
+
+CLNEI( maglordh, maglord, "Magician Lord (NGH-005)", ALPHA, 1990, GAME_PLATFORM);
 
 static struct ROM_INFO rom_ridhero[] = /* MVS AND AES VERSION */
 {
@@ -335,6 +343,34 @@ static struct ROM_INFO rom_alpham2p[] = /* early prototype - all roms were hand 
 
 CLNEI( alpham2, neogeo, "Alpha Mission II / ASO II - Last Guardian (NGM-007)(NGH-007)", SNK, 1991, GAME_SHOOT);
 CLNEI( alpham2p, alpham2, "Alpha Mission II / ASO II - Last Guardian (prototype)", SNK, 1991, GAME_SHOOT);
+
+static struct ROM_INFO rom_ncombat[] = /* MVS VERSION clone of neogeo */
+{
+  { "009-p1.p1", 0x080000, 0xb45fcfbf, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "009-s1.s1", 0x20000, 0xd49afee8, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "009-m1.m1", 0x20000, 0xb5819863, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "009-v11.v11", 0x080000, 0xcf32a59c, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "009-v12.v12", 0x080000, 0x7b3588b7, REGION_SMP1, 0x080000, LOAD_NORMAL },
+  { "009-v13.v13", 0x080000, 0x505a01b5, REGION_SMP1, 0x100000, LOAD_NORMAL },
+  { "009-v21.v21", 0x080000, 0x365f9011, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
+  { "009-c1.c1", 0x80000, 0x33cc838e, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "009-c2.c2", 0x80000, 0x26877feb, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "009-c3.c3", 0x80000, 0x3b60a05d, REGION_SPRITES, 0x100000, LOAD_8_16 },
+  { "009-c4.c4", 0x80000, 0x39c2d039, REGION_SPRITES, 0x100001, LOAD_8_16 },
+  { "009-c5.c5", 0x80000, 0x67a4344e, REGION_SPRITES, 0x200000, LOAD_8_16 },
+  { "009-c6.c6", 0x80000, 0x2eca8b19, REGION_SPRITES, 0x200001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ncombat, neogeo, "Ninja Combat (NGM-009)", ALPHA, 1990, GAME_BEAT);
+
+static struct ROM_INFO rom_ncombath[] = /* AES VERSION clone of ncombat */
+{
+  { "009-pg1.p1", 0x080000, 0x8e9f0add, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ncombath, ncombat, "Ninja Combat (NGH-009)", ALPHA, 1990, GAME_BEAT);
 
 static struct ROM_INFO rom_cyberlip[] = // clone of neogeo
 {
@@ -1102,6 +1138,23 @@ static struct ROM_INFO rom_samsho3[] = /* MVS VERSION clone of neogeo */
 
 CLNEI( samsho3, neogeo, "Samurai Shodown III / Samurai Spirits - Zankurou Musouken (NGM-087)", SNK, 1995, GAME_BEAT);
 
+static struct ROM_INFO rom_samsho3h[] = /* AES VERSION clone of samsho3 */
+{
+  { "087-pg1.p1", 0x100000, 0x282a336e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "087-p2.sp2", 0x200000, 0x9bbe27e0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_fswords[] = /* KOREAN VERSION clone of samsho3 */
+{
+  { "187-p1k.p1", 0x100000, 0xc8e7c075, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "087-p2.sp2", 0x200000, 0x9bbe27e0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsho3h, samsho3, "Samurai Shodown III / Samurai Spirits - Zankurou Musouken (NGH-087)", SNK, 1995, GAME_BEAT);
+CLNEI( fswords, samsho3, "Fighters Swords (Korean release of Samurai Shodown III)", SNK, 1995, GAME_BEAT);
+
 static struct ROM_INFO rom_rbff1[] = /* MVS AND AES VERSION clone of neogeo */
 {
   { "095-p1.p1", 0x100000, 0x63b4d8ae, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -1167,6 +1220,15 @@ static struct ROM_INFO rom_kof96[] = /* MVS VERSION clone of neogeo */
 };
 
 CLNEI( kof96, neogeo, "The King of Fighters '96 (NGM-214)", SNK, 1996, GAME_BEAT);
+
+static struct ROM_INFO rom_kof96h[] = // clone of kof96
+{
+  { "214-pg1.p1", 0x100000, 0xbd3757c9, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "214-p2.sp2", 0x200000, 0x002ccb73, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof96h, kof96, "The King of Fighters '96 (NGH-214)", SNK, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_ssideki4[] = // clone of neogeo
 {
@@ -1286,54 +1348,46 @@ static struct ROM_INFO rom_kof97[] = /* MVS VERSION clone of neogeo */
 
 CLNEI( kof97, neogeo, "The King of Fighters '97 (NGM-2320)", SNK, 1997, GAME_BEAT);
 
+static struct ROM_INFO rom_kof97h[] = /* AES VERSION clone of kof97 */
+{
+  { "232-pg1.p1", 0x100000, 0x5c2400b7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "232-p2.sp2", 0x400000, 0x158b23f6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof97h, kof97, "The King of Fighters '97 (NGH-2320)", SNK, 1997, GAME_BEAT);
+
+static struct ROM_INFO rom_kof97pls[] = // clone of kof97
+{
+  { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "kf97-p2p.bin", 0x400000, 0x5502b020, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "kf97-s1p.bin", 0x20000, 0x73254270, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof97pls, kof97, "The King of Fighters '97 Plus (bootleg)", BOOTLEG, 1997, GAME_BEAT);
+
+static struct ROM_INFO rom_kof97oro[] = // clone of kof97
+{
+  { "orochi-p1.bin", 0x100000, 0x6dcb2946, REGION_CPU1, 0x0000000, LOAD_SWAP_16 },
+  { "orochi-p21.bin", 0x100000, 0x6e1c4d8c, REGION_CPU1, 0x0200000, LOAD_SWAP_16 },
+  { "orochi-p21.bin", 0x100000 , 0x6e1c4d8c, REGION_CPU1, 0x100000, LOAD_CONTINUE },
+  { "orochi-p29.bin", 0x100000, 0x4c7c0221, REGION_CPU1, 0x0400000, LOAD_SWAP_16 },
+  { "orochi-p29.bin", 0x100000 , 0x4c7c0221, REGION_CPU1, 0x300000, LOAD_CONTINUE },
+  { "orochi-s1.bin", 0x20000, 0x4ee2149a, REGION_FIXED, 0x000000, LOAD_NORMAL },
+	// The C1 and C2 here are reconstructed but very likely to be correct.
+  { "orochi-c1.bin", 0x1000000, 0xf13e841c, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "orochi-c2.bin", 0x1000000, 0x2db1f6d3, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "orochi-c51.bin", 0x0200000, 0xa90340cb, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "orochi-c61.bin", 0x0200000, 0x188e351a, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "orochi-c52.bin", 0x0200000, 0xd4eec50a, REGION_SPRITES, 0x2400000, LOAD_8_16 },
+  { "orochi-c62.bin", 0x0200000, 0x031b1ad5, REGION_SPRITES, 0x2400001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof97oro, kof97, "The King of Fighters '97 Oroshi Plus 2003 (bootleg)", BOOTLEG, 1997, GAME_BEAT);
+
 // Other companies
-
-static struct ROM_INFO rom_maglord[] = /* MVS VERSION clone of neogeo */
-{
-  { "005-pg1.p1", 0x080000, 0xbd0a492d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "005-s1.s1", 0x20000, 0x1c5369a2, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "005-m1.m1", 0x40000, 0x26259f0f, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "005-v11.v11", 0x080000, 0xcc0455fd, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "005-v21.v21", 0x080000, 0xf94ab5b7, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
-  { "005-v22.v22", 0x080000, 0x232cfd04, REGION_YMSND_DELTAT, 0x080000, LOAD_NORMAL },
-  { "005-c1.c1", 0x80000, 0x806aee34, REGION_SPRITES, 0x000000, LOAD_8_16 },
-  { "005-c2.c2", 0x80000, 0x34aa9a86, REGION_SPRITES, 0x000001, LOAD_8_16 },
-  { "005-c3.c3", 0x80000, 0xc4c2b926, REGION_SPRITES, 0x100000, LOAD_8_16 },
-  { "005-c4.c4", 0x80000, 0x9c46dcf4, REGION_SPRITES, 0x100001, LOAD_8_16 },
-  { "005-c5.c5", 0x80000, 0x69086dec, REGION_SPRITES, 0x200000, LOAD_8_16 },
-  { "005-c6.c6", 0x80000, 0xab7ac142, REGION_SPRITES, 0x200001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_maglordh[] = /* AES VERSION clone of maglord */
-{
-  { "005-p1.p1", 0x080000, 0x599043c5, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( maglord, neogeo, "Magician Lord (NGM-005)", ALPHA, 1990, GAME_PLATFORM);
-
-CLNEI( maglordh, maglord, "Magician Lord (NGH-005)", ALPHA, 1990, GAME_PLATFORM);
-
-static struct ROM_INFO rom_ncombat[] = /* MVS VERSION clone of neogeo */
-{
-  { "009-p1.p1", 0x080000, 0xb45fcfbf, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "009-s1.s1", 0x20000, 0xd49afee8, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "009-m1.m1", 0x20000, 0xb5819863, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "009-v11.v11", 0x080000, 0xcf32a59c, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "009-v12.v12", 0x080000, 0x7b3588b7, REGION_SMP1, 0x080000, LOAD_NORMAL },
-  { "009-v13.v13", 0x080000, 0x505a01b5, REGION_SMP1, 0x100000, LOAD_NORMAL },
-  { "009-v21.v21", 0x080000, 0x365f9011, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
-  { "009-c1.c1", 0x80000, 0x33cc838e, REGION_SPRITES, 0x000000, LOAD_8_16 },
-  { "009-c2.c2", 0x80000, 0x26877feb, REGION_SPRITES, 0x000001, LOAD_8_16 },
-  { "009-c3.c3", 0x80000, 0x3b60a05d, REGION_SPRITES, 0x100000, LOAD_8_16 },
-  { "009-c4.c4", 0x80000, 0x39c2d039, REGION_SPRITES, 0x100001, LOAD_8_16 },
-  { "009-c5.c5", 0x80000, 0x67a4344e, REGION_SPRITES, 0x200000, LOAD_8_16 },
-  { "009-c6.c6", 0x80000, 0x2eca8b19, REGION_SPRITES, 0x200001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( ncombat, neogeo, "Ninja Combat (NGM-009)", ALPHA, 1990, GAME_BEAT);
 
 static struct ROM_INFO rom_bjourney[] = /* MVS AND AES VERSION clone of neogeo */
 {
