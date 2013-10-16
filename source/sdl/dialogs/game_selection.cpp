@@ -205,7 +205,7 @@ class TGame_sel : public TMenu
 	      do_update(NULL);
 	      draw_bot_frame();
 	  }
-      } else if (++image_counter == 10) {
+      } else if (++image_counter == 10 && sel >= 0) {
 	  // Wait at least 10 ticks before updating the picture
 	  // it allows the selection to be moved smoothly with the mouse
 	  // instead of "jumping" when changing pictures all the time
@@ -378,18 +378,23 @@ static int change_names(int sel) {
     return 0;
 }
 
+static void compute_avail() {
+    for (int n=0; n<game_count; n++)
+	avail[n] = game_exists(game_list,n);
+}
+
 int recompute_list() {
-  // options
-  game_sel->compute_nb_items();
-  game_sel->draw();
-  return 0;
+    // options
+    compute_avail();
+    game_sel->compute_nb_items();
+    game_sel->draw();
+    return 0;
 }
 
 int do_game_sel(int sel) {
     if (!avail) {
 	avail = (char*)malloc(game_count);
-	for (int n=0; n<game_count; n++)
-	    avail[n] = game_exists(game_list,n);
+	compute_avail();
     }
   game_sel = new TGame_sel("Game selection",NULL);
   game_sel->set_header(header);
