@@ -323,6 +323,7 @@ void TFileSel::compute_nb_items() {
       set_header(myheader_save);
   else
       set_header(myheader);
+  int tmpsel = sel;
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
       char *myexts[] = { ".iso", "iso.gz", NULL };
       char **old = ext;
@@ -331,6 +332,8 @@ void TFileSel::compute_nb_items() {
       ext = old;
   } else
       TMenu::compute_nb_items();
+  if (tmpsel > -1)
+      sel = tmpsel; // blocks find_new_sel from compute_nb_items
 }
 
 TFileSel::~TFileSel() {
@@ -392,11 +395,12 @@ int TFileSel::mychdir(int n) {
       for (n=0; n<nb_items; n++)
 	  if (!strcmp(menu[n].label,old)) {
 	      sel = n;
-	      printf("sel found for ..\n");
 	      break;
 	  }
       free(old);
   }
+  top = 0;
+  if (top + rows - 1 < sel) top = sel-rows+1;
 
   return 0;
 }

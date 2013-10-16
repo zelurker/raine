@@ -1210,15 +1210,6 @@ void TMenu::find_new_sel() {
 	      break;
 	  }
       }
-  else {
-      // Already has a selection, just check it's valid
-      int n;
-      for (n=0; n<nb_disp_items; n++)
-	  if (menu_disp[n] == sel)
-	      break;
-      if (n >= nb_disp_items)
-	  sel = -1;
-  }
   if (sel == -1 && header && !focus) {
       focus = 1;
   }
