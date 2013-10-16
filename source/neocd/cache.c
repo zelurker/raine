@@ -64,7 +64,7 @@ void put_override(int type, char *name, UINT32 size_msg) {
       mkdir_rwx(filename);
       sprintf(&filename[strlen(filename)],SLASH "%s", name);
       UINT8 *src = get_src(type,list[n].offset);
-      if (type == PRG_TYPE) 
+      if (type == PRG_TYPE)
         ByteSwap(src,list[n].len);
       print_debug("write %s len %d\n",list[n].name,list[n].len);
       if (!strncmp(list[n].name,"msg",3) && size_msg) {
@@ -75,7 +75,7 @@ void put_override(int type, char *name, UINT32 size_msg) {
       FILE *f = fopen(filename,"wb");
       fwrite(src,1,list[n].len,f);
       fclose(f);
-      if (type == PRG_TYPE) 
+      if (type == PRG_TYPE)
         ByteSwap(src,list[n].len);
     }
   }
@@ -278,7 +278,7 @@ void cache_set_crc(int offset,int size,int type) {
   if (cache[type]) {
     file_entry *list = cache[type];
     int n = 0;
-    UINT8 *src=NULL;
+    UINT8 *src=NULL,*end;
     unsigned int crc;
 
     while (n < used[type] && (list[n].offset != offset))
@@ -293,11 +293,12 @@ void cache_set_crc(int offset,int size,int type) {
     }
 
     switch(type) {
-      case PRG_TYPE: src= RAM + offset; break;
-      case Z80_TYPE: src= Z80ROM + offset; break;
-      case FIX_TYPE: src= neogeo_fix_memory + offset; break;
-      case SPR_TYPE: src= GFX + offset; break;
-      case PCM_TYPE: src= PCMROM + offset; break;
+      case PRG_TYPE: src= RAM + offset; end = RAM+0x200000; break;
+      case Z80_TYPE: src= Z80ROM + offset; end = Z80ROM+0x10000; break;
+      case FIX_TYPE: src= neogeo_fix_memory + offset;
+		     end = neogeo_fix_memory+0x20000; break;
+      case SPR_TYPE: src= GFX + offset; end = GFX+0x800000; break;
+      case PCM_TYPE: src= PCMROM + offset; end = PCMROM+0x100000; break;
     }
 
     crc = 0;
@@ -309,6 +310,15 @@ void cache_set_crc(int offset,int size,int type) {
       // with the same value... a simple add should be safer (avoid complexity)
       size -= 4;
       src += 4;
+      if (src >= end) {
+	  switch(type) {
+	  case PRG_TYPE: src= RAM ; break;
+	  case Z80_TYPE: src= Z80ROM;  break;
+	  case FIX_TYPE: src= neogeo_fix_memory; break;
+	  case SPR_TYPE: src= GFX; break;
+	  case PCM_TYPE: src= PCMROM; break;
+	  }
+      }
     } while (size>=4);
     list[n].crc = crc;
   }
