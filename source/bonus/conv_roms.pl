@@ -57,14 +57,13 @@ my (%def,%args) = ();
 while ($_ = shift @file) {
 	chomp;
 	s/\r//;
-	if (/^#define (.+)( .+?)/ || /^#define (.+)/) {
+	if (/^#define (.+)( .+)/ || /^#define (.+)/) {
 		my $name = $1;
 		my $fin = $2;
 		my $args = undef;
 		if ($name =~ s/\((.+)\)//) {
 			$args = $1;
 		}
-		$fin =~ s/\r//;
 		my $multi = undef;
 		if ($fin =~ s/\\//) {
 			$multi = 1;
