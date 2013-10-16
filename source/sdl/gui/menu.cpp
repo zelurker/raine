@@ -1862,6 +1862,7 @@ void TMenu::execute() {
       }
       if (exit_menu) break;
     }
+    if (exit_menu) break;
     if (lift) {
       lift->update();
     }
