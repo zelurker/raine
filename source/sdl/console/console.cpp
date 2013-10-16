@@ -268,7 +268,7 @@ void TRaineConsole::execute() {
   for (UINT32 n=0; n<nb_ram; n+=2) {
     int size = ram[n+1]-ram[n]+1;
     if (!ram_buf[n/2]) {
-      ram_buf[n/2] = AllocateMem(size);
+      ram_buf[n/2] = (UINT8*)AllocateMem(size);
     }
     UINT8 *ptr = get_userdata(cpu_id,ram[n]);
     memcpy(ram_buf[n/2],ptr+ram[n],size);

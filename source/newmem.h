@@ -35,9 +35,9 @@ void myfree(void *ptr, char *fname, UINT32 fline);
 
 // ---
 
-UINT8 *AllocateMem(UINT32 size);
+void *AllocateMem(UINT32 size);
 
-void FreeMem(UINT8 *mem);
+void FreeMem(void *mem);
 
 void ResetMemoryPool(void);
 

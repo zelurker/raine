@@ -6,7 +6,7 @@
 #include "debug.h"
 #include "loadroms.h" // load_error
 
-static UINT8 *MemoryPool[256];	// Pointers to allocated memory areas
+static void *MemoryPool[256];	// Pointers to allocated memory areas
 static UINT32 MemSize[256];     // Size of each segment
 static int MemoryPoolCount;	// Number of items in memory pool
 static int MemoryPoolSize;	// Size of all items in memory pool
@@ -20,16 +20,16 @@ static int MemoryPoolSize;	// Size of all items in memory pool
 // Returns a pointer on success, or NULL on failiure. Also generates
 // a raine error message on failure...
 
-UINT8 *AllocateMem(UINT32 size)
+void *AllocateMem(UINT32 size)
 {
-   UINT8 *memptr;
+   void *memptr;
 
    if (size < 8) {
      printf("received size %d\n",size);
      size = 8;
    }
 
-   memptr = (UINT8*) malloc(size);
+   memptr = malloc(size);
 
    if(memptr)
    {
@@ -93,7 +93,7 @@ UINT8 *AllocateMem(UINT32 size)
 // FreeMem():
 // Deallocates a specific memory resource, memptr
 
-void FreeMem(UINT8 *memptr)
+void FreeMem(void *memptr)
 {
    int ta,found=0;
 
