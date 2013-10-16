@@ -10,11 +10,13 @@ $| = 1;
 my $cps2_mode;
 my $cps1_mode;
 my %genre = ();
+dbmopen %genre, "genres",0666;
 
 sub get_genre($) {
 	# get the game genre from maws !
 	my $name = shift;
-	return $genre{$name} if ($genre{$name});
+	return $genre{$name} if ($genre{$name} && $genre{$name} ne "GAME_MISC");
+	print STDERR "no genre for $name...\n";
 
 	$genre{$name} = "GAME_MISC"; # default genre
 	# my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
@@ -40,10 +42,14 @@ sub get_genre($) {
 				$genre = "GAME_SPORTS";
 			} elsif ($genre =~ /Platform/) {
 				$genre = "GAME_PLATFORM";
-			} elsif ($genre =~ /Racing/) {
+			} elsif ($genre =~ /(Racing|Race)/) {
 				$genre = "GAME_RACE";
 			} elsif ($genre =~ /(Fight|Combat)/) {
 				$genre = "GAME_FIGHT";
+			} elsif ($genre =~ /Breakout/) {
+				$genre = "GAME_BREAKOUT";
+			} elsif ($genre =~ /Maze/) {
+				$genre = "GAME_MAZE";
 			} else {
 				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
 				$genre = "GAME_MISC";
@@ -241,3 +247,5 @@ while (<>) {
 		print ");\n";
 	}
 }
+dbmclose %genre;
+
