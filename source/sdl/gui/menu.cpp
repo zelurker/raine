@@ -1300,7 +1300,7 @@ void TMenu::set_header(menu_item_t *myheader) {
 
 void TMenu::toggle_header() {
     if (focus && sel == -1) return;
-    if (!focus && hsel == -1) return;
+    if (!focus && (hsel == -1 || !header)) return;
     focus ^= 1;
     update_fg_layer(sel);
     if (hsel >= 0) update_header_entry(hsel);
