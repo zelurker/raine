@@ -270,6 +270,7 @@ int file_cache(char *filename, int offset, int size,int type) {
   }
 
 void cache_set_crc(int offset,int size,int type) {
+    return; // disabled for now
   /* The problem of neocd is that everything is loaded in ram, which means that it can
      be changed dynamically after it's loaded. Most of the time this is only changed
      by accessing the upload area so we could probably only test the upload area.
