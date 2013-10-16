@@ -1276,6 +1276,16 @@ void TMenu::toggle_header() {
     if (hsel >= 0) update_header_entry(hsel);
 }
 
+static const char *skip_esc(const char *s) {
+    while (*s == 27 && s[1]=='[') {
+	s+=2;
+	while (*s >= '0' && *s <= '9') // color
+	    s++;
+	s++; // mode;
+    }
+    return s;
+}
+
 void TMenu::handle_key(SDL_Event *event) {
   int sym,ret;
   if ((!focus && sel >= 0 && (ret = child[sel]->handle_key(event))) ||
@@ -1348,15 +1358,17 @@ void TMenu::handle_key(SDL_Event *event) {
 		// 1 : find sel in the menu_disp array
 		n = get_seldisp();
 		for (; n<nb_disp_items; n++) {
-		  if (can_be_selected(menu_disp[n]) &&
-		      !strncasecmp(menu[menu_disp[n]].label,keybuf,index)) {
-		      break;
-		  }
+		    const char *s = skip_esc(menu[menu_disp[n]].label);
+		    if (can_be_selected(menu_disp[n]) &&
+			    !strncasecmp(s,keybuf,index)) {
+			break;
+		    }
 		}
 		if (n == nb_disp_items) { // not found -> search from 0
 		    for (n=0; n<nb_disp_items; n++) {
+			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
-				!strncasecmp(menu[menu_disp[n]].label,keybuf,index)) {
+				!strncasecmp(s,keybuf,index)) {
 			    break;
 			}
 		    }
@@ -1364,15 +1376,17 @@ void TMenu::handle_key(SDL_Event *event) {
 
 		if (n == nb_disp_items) { // not found -> search substring
 		    for (n=get_seldisp(); n<nb_disp_items; n++) {
+			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
-				mystrcasestr(menu[menu_disp[n]].label,keybuf)) {
+				mystrcasestr(s,keybuf)) {
 			    break;
 			}
 		    }
 		  if (n == nb_disp_items) // and from 0
 		    for (n=0; n<nb_disp_items; n++) {
+			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
-				mystrcasestr(menu[menu_disp[n]].label,keybuf)) {
+				mystrcasestr(s,keybuf)) {
 			    break;
 			}
 		    }
@@ -1401,16 +1415,18 @@ void TMenu::handle_key(SDL_Event *event) {
 		  // check if another entry matches keybuf
 		  seldisp = n;
 		  for (n=seldisp+1; n<nb_disp_items; n++) {
-		    if (can_be_selected(menu_disp[n]) &&
-			!strnicmp(menu[menu_disp[n]].label,keybuf,index))
-		      break;
+		      const char *s = skip_esc(menu[menu_disp[n]].label);
+		      if (can_be_selected(menu_disp[n]) &&
+			      !strnicmp(s,keybuf,index))
+			  break;
 		  }
 		  if (n == nb_disp_items) {
-		    for (n=0; n<seldisp; n++) {
-		      if (can_be_selected(menu_disp[n]) &&
-			  !strnicmp(menu[menu_disp[n]].label,keybuf,index))
-			break;
-		    }
+		      for (n=0; n<seldisp; n++) {
+			  const char *s = skip_esc(menu[menu_disp[n]].label);
+			  if (can_be_selected(menu_disp[n]) &&
+				  !strnicmp(s,keybuf,index))
+			      break;
+		      }
 		    if (n == seldisp) { // no other entry
 		      exec_menu_item();
 		    }
