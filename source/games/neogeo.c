@@ -1308,6 +1308,9 @@ static struct ROM_INFO rom_zupapa[] = /* Original Version - Encrypted GFX */ /* 
 {
   { "070-p1.p1", 0x100000, 0x5a96203e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do _not_ have an s1 rom, data for it comes from the Cx ROMs */
+  // Dummy region_fixed, overwritten by the decrypt functions but the size is
+  // important
+  { "sfix.sfix", 0x20000, 0xc2ea0cfd, REGION_FIXED, 0x000000, LOAD_NORMAL },
 /* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
   { "070-epr.m1", 0x20000, 0x5a3b3191, REGION_ROM2, 0x00000, LOAD_NORMAL },
 	/* M1 on eprom, correct chip label unknown */
