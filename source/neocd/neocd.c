@@ -1700,7 +1700,6 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 			(tileatr >> 8),
 			16,
 			map);
-		if (!tileno) printf("%d,%d,0 attr %x zx %d zy %d\n",sx,sy,tileatr,rzx,zy);
 		if (video_spr_usage[tileno] == 2) // all solid
 		    Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
 		else
