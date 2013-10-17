@@ -221,6 +221,11 @@ void hs_load (void)
 
 static void hs_save (void)
 {
+    if (!safe_to_load()) {
+	LOG("hiscores: can't save, not safe to load anymore\n");
+	return;
+    }
+
   FILE *f = fopen(myget_filename(), "wb");
   if (f)
     {
