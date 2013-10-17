@@ -368,9 +368,11 @@ static struct DEF_INPUT_EMU *driver_emu_list = NULL;
 static int driver_nb_emu_inputs;
 
 static void cold_boot() {
-    if (Z80ROM - RAM < RAMSize)
+    if (Z80ROM - RAM < RAMSize) {
 	memset(RAM,0,Z80ROM-RAM);
-    else
+	if (Z80ROM + 0x10000 - RAM < RAMSize)
+	    memset(Z80ROM + 0x10000,0,RAMSize - ((Z80ROM + 0x10000) - RAM));
+    } else
 	memset(RAM,0,RAMSize);
     reset_game_hardware();
 }
