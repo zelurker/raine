@@ -43,6 +43,8 @@
 #endif
 #include "sdl/dialogs/cheats.h"
 #include "sound/sasound.h"
+#include "hiscore.h"
+#include "neocd/cdda.h"
 
 /* The difference in the sdl version :
  * instead of looping for every frame in all the available inputs to the game
@@ -368,6 +370,8 @@ static struct DEF_INPUT_EMU *driver_emu_list = NULL;
 static int driver_nb_emu_inputs;
 
 static void cold_boot() {
+    hs_close(); // save hiscores BEFORE erasing the ram !
+    cdda_stop();
     if (Z80ROM - RAM < RAMSize) {
 	memset(RAM,0,Z80ROM-RAM);
 	if (Z80ROM + 0x10000 - RAM < RAMSize)
