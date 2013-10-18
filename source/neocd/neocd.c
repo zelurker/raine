@@ -3212,8 +3212,9 @@ void load_neocd() {
     AddWriteWord(0x800000, 0x80ffff, write_memcardw, NULL);
 
     // No byte access supported to the LSPC (neogeo doc)
-    AddReadWord(0x3c0000, 0x3c0007, read_videoreg, NULL);
-    AddWriteWord(0x3c0000, 0x3c000f, write_videoreg, NULL);
+    // These 2 are mirrored, used by at least puzzledp
+    AddReadWord(0x3c0000, 0x3dffff, read_videoreg, NULL);
+    AddWriteWord(0x3c0000, 0x3dffff, write_videoreg, NULL);
 
     AddWriteByte(0x320000, 0x320001, write_sound_command, NULL);
     AddWriteWord(0x320000, 0x320000, write_sound_command_word, NULL);

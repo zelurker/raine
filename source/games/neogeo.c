@@ -1798,6 +1798,97 @@ static struct ROM_INFO rom_mslug[] =
 
 CLNEI( mslug, neogeo, "Metal Slug - Super Vehicle-001", NAZCA, 1996, GAME_SHOOT);
 
+static struct ROM_INFO rom_puzzledp[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "202-p1.p1", 0x080000, 0x2b61415b, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "202-s1.s1", 0x20000, 0xcd19264f, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "202-m1.m1", 0x20000, 0x9c0291ea, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "202-v1.v1", 0x080000, 0xdebeb8fb, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "202-c1.c1", 0x100000, 0xcc0095ef, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "202-c2.c2", 0x100000, 0x42371307, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( puzzledp, neogeo, "Puzzle De Pon!", TAITO, 1995, GAME_PUZZLE);
+
+static struct ROM_INFO rom_neomrdo[] = /* MVS ONLY RELEASE */
+{
+  { "207-p1.p1", 0x100000, 0x334ea51e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "207-s1.s1", 0x20000, 0x6aebafce, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "207-m1.m1", 0x20000, 0xb5b74a95, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "207-v1.v1", 0x200000, 0x4143c052, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "207-c1.c1", 0x200000, 0xc7541b9d, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "207-c2.c2", 0x200000, 0xf57166d2, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( neomrdo, neogeo, "Neo Mr. Do!", VISCO, 1996, GAME_MAZE);
+
+static struct ROM_INFO rom_sdodgeb[] = /* MVS ONLY RELEASE */
+{
+  { "208-p1.p1", 0x100000, 0x127f3d32, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "208-p1.p1", 0x100000 , 0x127f3d32, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "208-s1.s1", 0x20000, 0x64abd6b3, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "208-m1.m1", 0x20000, 0x0a5f3325, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "208-v1.v1", 0x400000, 0xe7899a24, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "208-c1.c1", 0x400000, 0x93d8619b, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "208-c2.c2", 0x400000, 0x1c737bb6, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "208-c3.c3", 0x200000, 0x14cb1703, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "208-c4.c4", 0x200000, 0xc7165f19, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( sdodgeb, neogeo, "Super Dodge Ball / Kunio no Nekketsu Toukyuu Densetsu", TECHNOS, 1996, GAME_SPORTS);
+
+static struct ROM_INFO rom_goalx3[] = /* MVS ONLY RELEASE */
+{
+  { "209-p1.p1", 0x100000, 0x2a019a79, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "209-p1.p1", 0x100000 , 0x2a019a79, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "209-s1.s1", 0x20000, 0xc0eaad86, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "209-m1.m1", 0x20000, 0xcd758325, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "209-v1.v1", 0x200000, 0xef214212, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "209-c1.c1", 0x400000, 0xb49d980e, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "209-c2.c2", 0x400000, 0x5649b015, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "209-c3.c3", 0x100000, 0x5f91bace, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "209-c4.c4", 0x100000, 0x1e9f76f2, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( goalx3, neogeo, "Goal! Goal! Goal!", VISCO, 1995, GAME_SPORTS);
+
+static struct ROM_INFO rom_overtop[] = // clone of neogeo
+{
+  { "212-p1.p1", 0x100000, 0x16c063a9, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "212-p1.p1", 0x100000 , 0x16c063a9, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "212-s1.s1", 0x20000, 0x481d3ddc, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "212-m1.m1", 0x20000, 0xfcab6191, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "212-v1.v1", 0x400000, 0x013d4ef9, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "212-c1.c1", 0x400000, 0x50f43087, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "212-c2.c2", 0x400000, 0xa5b39807, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "212-c3.c3", 0x400000, 0x9252ea02, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "212-c4.c4", 0x400000, 0x5f41a699, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "212-c5.c5", 0x200000, 0xfc858bef, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "212-c6.c6", 0x200000, 0x0589c15e, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( overtop, neogeo,"Over Top", ADK, 1996, GAME_MISC);
+
+static struct ROM_INFO rom_neodrift[] = /* MVS ONLY RELEASE */
+{
+  { "213-p1.p1", 0x100000, 0xe397d798, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "213-p1.p1", 0x100000, 0xe397d798, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "213-s1.s1", 0x20000, 0xb76b61bc, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "213-m1.m1", 0x20000, 0x200045f1, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "213-v1.v1", 0x200000, 0xa421c076, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "213-v2.v2", 0x200000, 0x233c7dd9, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "213-c1.c1", 0x400000, 0x3edc8bd3, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "213-c2.c2", 0x400000, 0x46ae5f16, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( neodrift, neogeo, "Neo Drift Out - New Technology", VISCO, 1996, GAME_RACE);
+
 static struct ROM_INFO rom_kof96[] = /* MVS VERSION clone of neogeo */
 {
   { "214-p1.p1", 0x100000, 0x52755d74, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -1873,6 +1964,102 @@ static struct ROM_INFO rom_kizuna[] = // clone of neogeo
 
 CLNEI( kizuna, neogeo, "Kizuna Encounter - Super Tag Battle / Fu'un Super Tag Battle", SNK, 1996, GAME_BEAT);
 
+static struct ROM_INFO rom_ninjamas[] =
+{
+  { "217-p1.p1", 0x100000, 0x3e97ed69, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "217-p2.sp2", 0x200000, 0x191fca88, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "217-s1.s1", 0x20000, 0x8ff782f0, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "217-m1.m1", 0x20000, 0xd00fb2af, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "217-v1.v1", 0x400000, 0x1c34e013, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "217-v2.v2", 0x200000, 0x22f1c681, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "217-c1.c1", 0x400000, 0x5fe97bc4, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "217-c2.c2", 0x400000, 0x886e0d66, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "217-c3.c3", 0x400000, 0x59e8525f, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "217-c4.c4", 0x400000, 0x8521add2, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "217-c5.c5", 0x400000, 0xfb1896e5, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "217-c6.c6", 0x400000, 0x1c98c54b, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "217-c7.c7", 0x400000, 0x8b0ede2e, REGION_SPRITES, 0x1800000, LOAD_8_16 },
+  { "217-c8.c8", 0x400000, 0xa085bb61, REGION_SPRITES, 0x1800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ninjamas, neogeo, "Ninja Master's - haoh-ninpo-cho", ADK, 1996, GAME_BEAT);
+
+static struct ROM_INFO rom_ragnagrd[] =
+{
+  { "218-p1.p1", 0x100000, 0xca372303, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "218-p1.p1", 0x100000 , 0xca372303, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "218-s1.s1", 0x20000, 0x7d402f9a, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "218-m1.m1", 0x20000, 0x17028bcf, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "218-v1.v1", 0x400000, 0x61eee7f4, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "218-v2.v2", 0x400000, 0x6104e20b, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "218-c1.c1", 0x400000, 0xc31500a4, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "218-c2.c2", 0x400000, 0x98aba1f9, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "218-c3.c3", 0x400000, 0x833c163a, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "218-c4.c4", 0x400000, 0xc1a30f69, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "218-c5.c5", 0x400000, 0x6b6de0ff, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "218-c6.c6", 0x400000, 0x94beefcf, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "218-c7.c7", 0x400000, 0xde6f9b28, REGION_SPRITES, 0x1800000, LOAD_8_16 },
+  { "218-c8.c8", 0x400000, 0xd9b311f6, REGION_SPRITES, 0x1800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ragnagrd, neogeo, "Ragnagard / Shin-Oh-Ken", SAURUS, 1996, GAME_BEAT);
+
+static struct ROM_INFO rom_pgoal[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "219-p1.p1", 0x100000, 0x6af0e574, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "219-p1.p1", 0x100000 , 0x6af0e574, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "219-s1.s1", 0x20000, 0x002f3c88, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "219-m1.m1", 0x20000, 0x958efdc8, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "219-v1.v1", 0x400000, 0xd0ae33d9, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "219-c1.c1", 0x400000, 0x67fec4dc, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "219-c2.c2", 0x400000, 0x86ed01f2, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "219-c3.c3", 0x200000, 0x5fdad0a5, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "219-c4.c4", 0x200000, 0xf57b4a1c, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( pgoal, neogeo, "Pleasure Goal / Futsal - 5 on 5 Mini Soccer (NGM-219)", SAURUS, 1996, GAME_SPORTS);
+
+static struct ROM_INFO rom_ironclad[] = /* Prototype - crcs should match the ones of the unreleased dump. clone of neogeo */
+{
+  { "proto_220-p1.p1", 0x100000, 0x62a942c6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "proto_220-p1.p1", 0x100000 , 0x62a942c6, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "proto_220-s1.s1", 0x20000, 0x372fe217, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "proto_220-m1.m1", 0x20000, 0x3a08bb63, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "proto_220-v1.v1", 0x400000, 0x8f30a215, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "proto_220-c1.c1", 0x400000, 0x9aa2b7dc, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "proto_220-c2.c2", 0x400000, 0x8a2ad708, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "proto_220-c3.c3", 0x400000, 0xd67fb15a, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "proto_220-c4.c4", 0x400000, 0xe73ea38b, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ironclad, neogeo, "Choutetsu Brikin'ger - Iron clad (Prototype)", SAURUS, 1996, GAME_SHOOT);
+
+static struct ROM_INFO rom_ironclado[] = /* Prototype - bootleg/hack based on later release. clone of ironclad */
+{
+  { "proto_220-p1o.p1", 0x100000, 0xce37e3a0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "proto_220-p1o.p1", 0x100000 , 0xce37e3a0, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ironclado, ironclad, "Choutetsu Brikin'ger - Iron clad (Prototype, bootleg)", BOOTLEG, 1996, GAME_SHOOT);
+
+static struct ROM_INFO rom_magdrop2[] =
+{
+  { "221-p1.p1", 0x80000, 0x7be82353, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "221-s1.s1", 0x20000, 0x2a4063a3, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "221-m1.m1", 0x20000, 0xbddae628, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "221-v1.v1", 0x200000, 0x7e5e53e4, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "221-c1.c1", 0x400000, 0x1f862a14, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "221-c2.c2", 0x400000, 0x14b90536, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( magdrop2, neogeo, "Magical Drop II", DECO, 1996, GAME_PUZZLE);
+
 static struct ROM_INFO rom_samsho4[] = /* MVS AND AES VERSION clone of neogeo */
 {
   { "222-p1.p1", 0x100000, 0x1a5cb56d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -1927,6 +2114,23 @@ static struct ROM_INFO rom_rbffspec[] = // clone of neogeo
 
 CLNEI( rbffspec, neogeo, "Real Bout Fatal Fury Special / Real Bout Garou Densetsu Special", SNK, 1996, GAME_BEAT);
 
+static struct ROM_INFO rom_twinspri[] = // clone of neogeo
+{
+  { "224-p1.p1", 0x100000, 0x7697e445, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "224-p1.p1", 0x100000 , 0x7697e445, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "224-s1.s1", 0x20000, 0xeeed5758, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "224-m1.m1", 0x20000, 0x364d6f96, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "224-v1.v1", 0x400000, 0xff57f088, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "224-v2.v2", 0x200000, 0x7ad26599, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "224-c1.c1", 0x400000, 0xf7da64ab, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "224-c2.c2", 0x400000, 0x4c09bbfb, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "224-c3.c3", 0x100000, 0xc59e4129, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "224-c4.c4", 0x100000, 0xb5532e53, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( twinspri, neogeo,        "Twinkle Star Sprites", ADK, 1996, GAME_SHOOT);
+
 static struct ROM_INFO rom_wakuwak7[] =
 {
   { "225-p1.p1", 0x100000, 0xb14da766, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -1945,6 +2149,36 @@ static struct ROM_INFO rom_wakuwak7[] =
 };
 
 CLNEI( wakuwak7, neogeo, "Waku Waku 7", SUNSOFT, 1996, GAME_BEAT);
+
+static struct ROM_INFO rom_stakwin2[] =
+{
+  { "227-p1.p1", 0x100000, 0xdaf101d2, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "227-p1.p1", 0x100000 , 0xdaf101d2, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "227-s1.s1", 0x20000, 0x2a8c4462, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "227-m1.m1", 0x20000, 0xc8e5e0f9, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "227-v1.v1", 0x400000, 0xb8f24181, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "227-v2.v2", 0x400000, 0xee39e260, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "227-c1.c1", 0x400000, 0x7d6c2af4, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "227-c2.c2", 0x400000, 0x7e402d39, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "227-c3.c3", 0x200000, 0x93dfd660, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "227-c4.c4", 0x200000, 0x7efea43a, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( stakwin2, neogeo, "Stakes Winner 2", SAURUS, 1996, GAME_SPORTS);
+
+static struct ROM_INFO rom_ghostlop[] = /* Prototype clone of neogeo */
+{
+  { "proto_228-p1.p1", 0x100000, 0x6033172e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "proto_228-s1.s1", 0x20000, 0x83c24e81, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "proto_228-m1.m1", 0x20000, 0xfd833b33, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "proto_228-v1.v1", 0x200000, 0xc603fce6, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "proto_228-c1.c1", 0x400000, 0xbfc99efe, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "proto_228-c2.c2", 0x400000, 0x69788082, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ghostlop, neogeo, "Ghostlop (prototype)", DECO, 1996, GAME_PUZZLE);
 
 static struct ROM_INFO rom_kof97[] = /* MVS VERSION clone of neogeo */
 {
@@ -2040,62 +2274,6 @@ static struct ROM_INFO rom_mosyougi[] = // clone of neogeo
 };
 
 CLNEI( mosyougi, neogeo,        "Syougi No Tatsujin - Master of Syougi", ADK, 1995, GAME_PUZZLE);
-
-static struct ROM_INFO rom_overtop[] = // clone of neogeo
-{
-  { "212-p1.p1", 0x100000, 0x16c063a9, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "212-p1.p1", 0x100000 , 0x16c063a9, REGION_CPU1, 0x000000, LOAD_CONTINUE },
-  { "212-s1.s1", 0x20000, 0x481d3ddc, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "212-m1.m1", 0x20000, 0xfcab6191, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "212-v1.v1", 0x400000, 0x013d4ef9, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "212-c1.c1", 0x400000, 0x50f43087, REGION_SPRITES, 0x0000000, LOAD_8_16 },
-  { "212-c2.c2", 0x400000, 0xa5b39807, REGION_SPRITES, 0x0000001, LOAD_8_16 },
-  { "212-c3.c3", 0x400000, 0x9252ea02, REGION_SPRITES, 0x0800000, LOAD_8_16 },
-  { "212-c4.c4", 0x400000, 0x5f41a699, REGION_SPRITES, 0x0800001, LOAD_8_16 },
-  { "212-c5.c5", 0x200000, 0xfc858bef, REGION_SPRITES, 0x1000000, LOAD_8_16 },
-  { "212-c6.c6", 0x200000, 0x0589c15e, REGION_SPRITES, 0x1000001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( overtop, neogeo,"Over Top", ADK, 1996, GAME_MISC);
-
-static struct ROM_INFO rom_ninjamas[] = // clone of neogeo
-{
-  { "217-p1.p1", 0x100000, 0x3e97ed69, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "217-p2.sp2", 0x200000, 0x191fca88, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "217-s1.s1", 0x20000, 0x8ff782f0, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "217-m1.m1", 0x20000, 0xd00fb2af, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "217-v1.v1", 0x400000, 0x1c34e013, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "217-v2.v2", 0x200000, 0x22f1c681, REGION_SMP1, 0x400000, LOAD_NORMAL },
-  { "217-c1.c1", 0x400000, 0x5fe97bc4, REGION_SPRITES, 0x0000000, LOAD_8_16 },
-  { "217-c2.c2", 0x400000, 0x886e0d66, REGION_SPRITES, 0x0000001, LOAD_8_16 },
-  { "217-c3.c3", 0x400000, 0x59e8525f, REGION_SPRITES, 0x0800000, LOAD_8_16 },
-  { "217-c4.c4", 0x400000, 0x8521add2, REGION_SPRITES, 0x0800001, LOAD_8_16 },
-  { "217-c5.c5", 0x400000, 0xfb1896e5, REGION_SPRITES, 0x1000000, LOAD_8_16 },
-  { "217-c6.c6", 0x400000, 0x1c98c54b, REGION_SPRITES, 0x1000001, LOAD_8_16 },
-  { "217-c7.c7", 0x400000, 0x8b0ede2e, REGION_SPRITES, 0x1800000, LOAD_8_16 },
-  { "217-c8.c8", 0x400000, 0xa085bb61, REGION_SPRITES, 0x1800001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( ninjamas, neogeo,        "Ninja Master's - haoh-ninpo-cho", ADK, 1996, GAME_BEAT);
-
-static struct ROM_INFO rom_twinspri[] = // clone of neogeo
-{
-  { "224-p1.p1", 0x100000, 0x7697e445, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "224-p1.p1", 0x100000 , 0x7697e445, REGION_CPU1, 0x000000, LOAD_CONTINUE },
-  { "224-s1.s1", 0x20000, 0xeeed5758, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "224-m1.m1", 0x20000, 0x364d6f96, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "224-v1.v1", 0x400000, 0xff57f088, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "224-v2.v2", 0x200000, 0x7ad26599, REGION_SMP1, 0x400000, LOAD_NORMAL },
-  { "224-c1.c1", 0x400000, 0xf7da64ab, REGION_SPRITES, 0x000000, LOAD_8_16 },
-  { "224-c2.c2", 0x400000, 0x4c09bbfb, REGION_SPRITES, 0x000001, LOAD_8_16 },
-  { "224-c3.c3", 0x100000, 0xc59e4129, REGION_SPRITES, 0x800000, LOAD_8_16 },
-  { "224-c4.c4", 0x100000, 0xb5532e53, REGION_SPRITES, 0x800001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( twinspri, neogeo,        "Twinkle Star Sprites", ADK, 1996, GAME_SHOOT);
 
 static struct ROM_INFO rom_zintrckb[] = // clone of neogeo
 {
