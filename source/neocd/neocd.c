@@ -2034,7 +2034,7 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
   // This is taken care of by irq.disable_w
   int zone = RAM[0x10FEDA ^ 1];
   int bank = RAM[0x10FEDB ^ 1];
-  int offset2,size;
+  UINT32 offset2,size;
   size = ReadLongSc(&RAM[0x10FEFC]);
   if (size == 0 && upload_type != 0xff) {
     zone = get_upload_type();
@@ -2130,8 +2130,8 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
     case    PRG_TYPE:
       if (offset > 0x200000) {
 	// never happens neither
-	printf("upload to outside the ram ??? %x\n",offset);
-	exit(1);
+	print_debug("upload to outside the ram ??? %x\n",offset);
+	break;
       }
       dest = RAM + offset;
       print_debug("upload PRG src %x dest %x size %x\n",ReadLongSc(&RAM[0x10FEF8]),offset,size);
@@ -2169,6 +2169,10 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       break;
     case    FIX_TYPE:
       dest = neogeo_fix_memory + (offset>>1);
+      if ((offset >> 1)+size > 0x20000) {
+	  print_debug("upload outside of fix limits\n");
+	  break;
+      }
       if (ReadLongSc(&RAM[0x10FEF8]) < 0xc00000)
 	ByteSwap(Source,size);
       fix_conv(Source, dest, size, video_fix_usage + (offset>>6));
@@ -2182,6 +2186,11 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       break;
     case    Z80_TYPE:    // Z80
       dest = Z80ROM + (offset>>1);
+      if ((offset >> 1)+size > 0x10000) {
+	  print_debug("upload outside z80 limits\n");
+	  size = 0x10000 - (offset >> 1);
+	  if (size > 0xffff) break;
+      }
       print_debug("upload Z80 dest %x size %x\n",offset>>1,size);
       memcpy(dest,Source,size);
       ByteSwap(dest,size);
@@ -2378,8 +2387,11 @@ void myStop68000(UINT32 adr, UINT8 data) {
     if (!do_not_stop) {
 	Stop68000(0,0);
 	stopped_68k = 1;
-    } else
+	print_debug("mystop68k: normal stop\n");
+    } else {
+	print_debug("mystop68k: do_not_stop\n");
 	do_not_stop = 0;
+    }
     rolled = 0;
 #if 0
     // Finally it's not necessary to clear the bit
@@ -2978,6 +2990,7 @@ void load_neocd() {
     set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     fixed_layer_bank_type = 0;
     if (is_neocd()) {
+	print_debug("loading neocd game\n");
 	current_game->long_name = "No game loaded yet";
 	current_game->main_name = "neocd";
 	RAMSize = 0x200000 + // main ram
@@ -2990,6 +3003,12 @@ void load_neocd() {
 	init_load_type();
 	clear_file_cache();
 	if(!(RAM=AllocateMem(RAMSize))) return;
+	memset(RAM,0,RAMSize); // be sure to start with a clean ram...
+	// Starting with a clean ram here is especially important if we loaded
+	// a neogeo game just before, for example for the default params of the
+	// uploads.
+	// This should be reviewed one of these days, it doesn't pass the test
+	// mode tests for now !
 	if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
 	if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
 	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
@@ -3006,6 +3025,7 @@ void load_neocd() {
 	memset(video_spr_usage,0,0x8000);
 	sprites_mask = 0x7fff;
     } else {
+	print_debug("loading neogeo game %s\n",current_game->main_name);
 	Z80Has16bitsPorts = 1;
 	RAMSize = 0x10000 + // main ram
 	    0x10000 + // z80 ram
@@ -3321,6 +3341,7 @@ void neocd_function(int vector) {
   int pc = cpu_get_pc(CPU_68K_0);
   char buff[6];
   raster_frame = 0;
+  print_debug("neocd_function: initial pc %x, sr %x a7 %x\n",pc,s68000context.sr,s68000context.areg[7]);
   if (pc < 0x200000) {
     memcpy(buff,&RAM[pc],6);
     WriteWord(&RAM[pc],0x4239); // stop 68000 here
@@ -3339,8 +3360,11 @@ void neocd_function(int vector) {
   s68000context.areg[5] = 0x108000;
   if (!s68000context.areg[7]) s68000context.areg[7] = 0x10F300;
   s68000context.areg[7] -= 4*8*2; // ???
+  int old_adr = s68000context.areg[7];
+  int old_val = ReadLongSc(&RAM[old_adr]);
   WriteLongSc(&RAM[s68000context.areg[7]],pc);
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(32,60));
+  WriteLongSc(&RAM[old_adr],old_val);
   if (s68000context.pc != pc+6) {
     print_debug("*** got pc = %x instead of %x after frame 11c810:%x vector was %x\n",s68000context.pc,pc+6,ReadLongSc(&RAM[0x11c810]),adr);
     /* Last blade 2, just before the 1st fight : it tries to access some data
@@ -3369,6 +3393,7 @@ void loading_progress_function() {
     spr_disable(0,1);
     fix_disable(0,0);
     video_enable(0,1);
+    print_debug("loading_progress_function: init, calling neocd_function\n");
     neocd_function(0x11c808);
   }
 
@@ -3415,9 +3440,11 @@ void loading_progress_function() {
     WriteLongSc(&RAM[0x10f690],progress);
     if (progress >= 0x800000)
       WriteLongSc(&RAM[0x10f690],0x800000);
+    print_debug("loading_progress_function: call2 neocd_function\n");
     neocd_function(0x11c80c);
 
     RAM[0x10f793^1] = 0;
+    print_debug("loading_progress_function: call3 neocd_function\n");
     neocd_function(0xc0c8b2);
     if (z80_enabled && RaineSoundCard) {
       execute_z80_audio_frame();
