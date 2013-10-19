@@ -1951,7 +1951,7 @@ void postprocess_ipl() {
  * the sprites memory and the fix memory to initialize them from the cd for
  * example. */
 
-static int upload_type;
+static int upload_type,mx,my;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
 static void upload_type_w(UINT32 offset, UINT8 data) {
@@ -2452,12 +2452,20 @@ static void set_68k_bank(UINT32 offset, UINT16 data) {
     }
 }
 
+static int controller;
+
 static void io_control_w(UINT32 offset, UINT32 data) {
     offset &= 0x7f;
     switch (offset/2)
     {
-    /* case 0x00: select_controller(data & 0x00ff); break;
-    case 0x18: if (m_is_mvs) set_output_latch(data & 0x00ff); break;
+    case 0x00: controller = data & 0x00ff;
+	       /* Used by the trackball to select the axis (X/Y).
+		* Changed more than once / frame, so we must change the input
+		* here */
+	       if (controller) input_buffer[1] = my;
+	       else input_buffer[1] = mx;
+	       break;
+    /* case 0x18: if (m_is_mvs) set_output_latch(data & 0x00ff); break;
     case 0x20: if (m_is_mvs) set_output_data(data & 0x00ff); break; */
     case 0x28: pd4990a_control_16_w(0, data); break;
 	       //  case 0x30: break; // coin counters
@@ -3076,7 +3084,8 @@ void load_neocd() {
 	} else if (is_current_game("zupapa")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0xbd);
-	}
+	} else if (is_current_game("irrmaze"))
+	    GameMouse = 1;
 	UINT8 *tmp = AllocateMem(size);
 	if (load_region[REGION_FIXED]) {
 	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);
@@ -3456,6 +3465,16 @@ void loading_progress_function() {
 }
 
 void execute_neocd() {
+    if (GameMouse) {
+	int dx,dy;
+	GetMouseMickeys(&dx,&dy);
+	mx -= dx; my -= dy;
+	if (!(input_buffer[2] & 1)) my++;
+	if (!(input_buffer[2] & 2)) my--;
+	if (!(input_buffer[2] & 4)) mx++;
+	if (!(input_buffer[2] & 8)) mx--;
+    }
+
     if (!is_neocd()) {
 	/* watchdog is unreliable in neocd because of the loading functions
 	 * mainly, and seems unused anyway.
