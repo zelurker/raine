@@ -1157,6 +1157,14 @@ void TMenu::prev_sel() {
     if (focus) {
 	// in the header
 	if (hsel == -1) return;
+	if (hsel == 0 && nb_disp_items) {
+	    // Headers must feel like the normal dialog, if reaching the top
+	    // we go directly to the end of the normal list
+	    sel = menu_disp[nb_disp_items-1];
+	    toggle_header();
+	    reset_top();
+	    return;
+	}
 	int nb;
 	for (nb=0; header[nb].label; nb++);
 	int old = hsel;
