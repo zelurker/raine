@@ -120,6 +120,7 @@ enum region_flags
 
    LOAD_CONTINUE,
    LOAD_IGNORE,
+   LOAD_FILL,
 };
 
 #define LOAD8_16(region, offset, size, rom1, crc1, rom2, crc2) \
@@ -136,6 +137,9 @@ enum region_flags
 { rom2, size, crc2, region, offset+2, LOAD_16_64 }, \
 { rom3, size, crc3, region, offset+4, LOAD_16_64 }, \
 { rom4, size, crc4, region, offset+6, LOAD_16_64 } \
+
+#define FILL(offset, size, content, region) \
+{ "", size, content, region, offset, LOAD_FILL }
 
 typedef struct ROM_INFO
 {

@@ -856,6 +856,10 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
 
    while(rom_list->name){
 
+       if (rom_list->flags == LOAD_FILL) {
+	   rom_list++;
+	   continue;
+       }
       sprintf(outbuf+strlen(outbuf), "rom:%-12s size:0x%08x crc32:0x%08x -- ",rom_list->name,rom_list->size,rom_list->crc32);
 
       ram = malloc(rom_list->size);

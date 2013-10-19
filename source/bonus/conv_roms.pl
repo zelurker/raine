@@ -12,6 +12,7 @@ my %raine_loads =
 	"ROM_LOAD32_BYTE" => "LOAD_8_32",
 	"ROM_CONTINUE" => "LOAD_CONTINUE",
 	"ROM_IGNORE" => "LOAD_IGNORE",
+	"ROM_FILL" => "LOAD_FILL",
 );
 
 my %raine_regions =
@@ -152,6 +153,10 @@ while ($_ = shift @file) {
 									$base = $oldbase;
 									$name = $oldname;
 									$crc = $oldcrc;
+								} elsif ($function eq "ROM_FILL") {
+									$crc = $size;
+									$size = $base;
+									$base = $name;
 								} else {
 									$size = $base;
 									$base = $name;
@@ -212,7 +217,9 @@ while ($_ = shift @file) {
 							}
 						} elsif (/ROM_REGION/ || # empty line
 							/ROM_END/) {
-							if ($oldname) {
+							if ($function eq "LOAD_FILL") {
+								print"  FILL($oldname,$oldsize,$oldcrc, $region_name),\n";
+							} elsif ($oldname) {
 								print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $function },\n";
 							}
 							last;

@@ -101,6 +101,7 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
 	  case LOAD_NORMAL:
 	  case LOAD_SWAP_16:
 	  case LOAD8X8_16X16:
+	  case LOAD_FILL:
 	    j = rom_list->offset + rom_list->size;
             break;
 	  case LOAD_8_16:
@@ -512,6 +513,9 @@ static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_
 	  case LOAD_NORMAL:
 	    if(!load_rom(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
             break;
+	  case LOAD_FILL:
+	    memset(dest + rom_list->offset,rom_list->crc32, rom_list->size);
+	    break;
 	  case LOAD_8_16S:
 	    if (rom_list->offset & 1){
 	      if(!load_sprite_8_16(rom_list->name, dest + (rom_list->offset & ~1), rom_list->size)) return 0;
