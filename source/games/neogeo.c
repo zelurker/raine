@@ -2180,6 +2180,38 @@ static struct ROM_INFO rom_ghostlop[] = /* Prototype clone of neogeo */
 
 CLNEI( ghostlop, neogeo, "Ghostlop (prototype)", DECO, 1996, GAME_PUZZLE);
 
+static struct ROM_INFO rom_breakers[] = // clone of neogeo
+{
+  { "230-p1.p1", 0x100000, 0xed24a6e6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "230-p1.p1", 0x100000 , 0xed24a6e6, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "230-s1.s1", 0x20000, 0x076fb64c, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "230-m1.m1", 0x20000, 0x3951a1c1, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "230-v1.v1", 0x400000, 0x7f9ed279, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "230-v2.v2", 0x400000, 0x1d43e420, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "230-c1.c1", 0x400000, 0x68d4ae76, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "230-c2.c2", 0x400000, 0xfdee05cd, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "230-c3.c3", 0x400000, 0x645077f3, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "230-c4.c4", 0x400000, 0x63aeb74c, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( breakers, neogeo, "Breakers", VISCO, 1996, GAME_BEAT);
+
+static struct ROM_INFO rom_miexchng[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "231-p1.p1", 0x80000, 0x61be1810, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "231-s1.s1", 0x20000, 0xfe0c0c53, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "231-m1.m1", 0x20000, 0xde41301b, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "231-v1.v1", 0x400000, 0x113fb898, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "231-c1.c1", 0x200000, 0x6c403ba3, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "231-c2.c2", 0x200000, 0x554bcd9b, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "231-c3.c3", 0x100000, 0x4f6f7a63, REGION_SPRITES, 0x400000, LOAD_8_16 },
+  { "231-c4.c4", 0x100000, 0x2e35e71b, REGION_SPRITES, 0x400001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( miexchng, neogeo, "Money Puzzle Exchanger / Money Idol Exchanger", FACE, 1997, GAME_PUZZLE);
+
 static struct ROM_INFO rom_kof97[] = /* MVS VERSION clone of neogeo */
 {
   { "232-p1.p1", 0x100000, 0x7db81ad9, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -2208,6 +2240,77 @@ static struct ROM_INFO rom_kof97h[] = /* AES VERSION clone of kof97 */
 };
 
 CLNEI( kof97h, kof97, "The King of Fighters '97 (NGH-2320)", SNK, 1997, GAME_BEAT);
+
+static struct ROM_INFO rom_magdrop3[] = // clone of neogeo
+{
+  { "233-p1.p1", 0x100000, 0x931e17fa, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "233-s1.s1", 0x20000, 0x7399e68a, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "233-m1.m1", 0x20000, 0x5beaf34e, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "233-v1.v1", 0x400000, 0x58839298, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "233-v2.v2", 0x080000, 0xd5e30df4, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "233-c1.c1", 0x400000, 0x65e3f4c4, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "233-c2.c2", 0x400000, 0x35dea6c9, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "233-c3.c3", 0x400000, 0x0ba2c502, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "233-c4.c4", 0x400000, 0x70dbbd6d, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( magdrop3, neogeo, "Magical Drop III", DECO, 1997, GAME_PUZZLE);
+
+static struct ROM_INFO rom_lastblad[] = /* MVS VERSION clone of neogeo */
+{
+  { "234-p1.p1", 0x100000, 0xe123a5a3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "234-p2.sp2", 0x400000, 0x0fdc289e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "234-s1.s1", 0x20000, 0x95561412, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "234-m1.m1", 0x20000, 0x087628ea, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "234-v1.v1", 0x400000, 0xed66b76f, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "234-v2.v2", 0x400000, 0xa0e7f6e2, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "234-v3.v3", 0x400000, 0xa506e1e2, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "234-v4.v4", 0x400000, 0x0e34157f, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "234-c1.c1", 0x800000, 0x9f7e2bd3, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "234-c2.c2", 0x800000, 0x80623d3c, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "234-c3.c3", 0x800000, 0x91ab1a30, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "234-c4.c4", 0x800000, 0x3d60b037, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "234-c5.c5", 0x400000, 0x1ba80cee, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "234-c6.c6", 0x400000, 0xbeafd091, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_lastbladh[] = /* AES VERSION clone of lastblad */
+{
+  { "234-pg1.p1", 0x100000, 0xcd01c06d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "234-p2.sp2", 0x400000, 0x0fdc289e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( lastblad, neogeo, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi (NGM-2340)", SNK, 1997, GAME_BEAT);
+CLNEI( lastbladh, lastblad, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi (NGH-2340)", SNK, 1997, GAME_BEAT);
+
+static struct ROM_INFO rom_puzzldpr[] = /* MVS ONLY RELEASE clone of puzzledp */
+{
+  { "235-p1.p1", 0x080000, 0xafed5de2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "235-s1.s1", 0x10000, 0x5a68d91e, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  FILL(          0x10000, 0x10000, 0, REGION_FIXED),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( puzzldpr, puzzledp, "Puzzle De Pon! R!", TAITO, 1997, GAME_PUZZLE);
+
+static struct ROM_INFO rom_irrmaze[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "236-p1.p1", 0x100000, 0x4c2ff660, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "236-p1.p1", 0x100000 , 0x4c2ff660, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "236-s1.s1", 0x20000, 0x5d1ca640, REGION_FIXED, 0x000000, LOAD_NORMAL },
+	/* special BIOS with trackball support, we only have one Irritating Maze bios and thats asia */
+  { "236-m1.m1", 0x20000, 0x880a1abd, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "236-v1.v1", 0x200000, 0x5f89c3b4, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "236-v2.v2", 0x100000, 0x1e843567, REGION_YMSND_DELTAT, 0x000000, LOAD_NORMAL },
+  { "236-c1.c1", 0x400000, 0xc1d47902, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "236-c2.c2", 0x400000, 0xe15f972e, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( irrmaze, neogeo, "The Irritating Maze / Ultra Denryu Iraira Bou", SNK, 1997, GAME_PUZZLE);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
