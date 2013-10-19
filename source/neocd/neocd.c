@@ -641,9 +641,11 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
       break;
     case 0x01:  // Write data register
       if (raster_frame && scanline > start_line && raster_bitmap &&
-	      scanline < 224+START_SCREEN &&
+	      // scanline < 224+START_SCREEN &&
 	      neogeo_vidram[video_pointer] != data) {
 	  // Must draw the upper part of the screen BEFORE changing the sprites
+	  // Disabled the scanline test because ghostlop updates its screen
+	  // at line 240 !
 	  update_raster();
       }
       neogeo_vidram[video_pointer] = data;
