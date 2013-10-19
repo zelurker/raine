@@ -1951,7 +1951,7 @@ void postprocess_ipl() {
  * the sprites memory and the fix memory to initialize them from the cd for
  * example. */
 
-static int upload_type,mx,my;
+static int upload_type,mx,my,mx2;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
 static void upload_type_w(UINT32 offset, UINT8 data) {
@@ -2459,11 +2459,23 @@ static void io_control_w(UINT32 offset, UINT32 data) {
     switch (offset/2)
     {
     case 0x00: controller = data & 0x00ff;
+	       printf("controller %d from %x\n",controller,s68000readPC());
 	       /* Used by the trackball to select the axis (X/Y).
 		* Changed more than once / frame, so we must change the input
 		* here */
-	       if (controller) input_buffer[1] = my;
-	       else input_buffer[1] = mx;
+	       if (GameMouse == 1) {
+		   if (controller & 1) input_buffer[1] = my;
+		   else input_buffer[1] = mx;
+	       } else if (GameMouse == 2) {
+		   if (controller & 1) {
+		       input_buffer[1] = input_buffer[2];
+		       input_buffer[3] = input_buffer[4];
+		   } else {
+		       // popbounc completely ignores the pad
+		       // I have absolutely no idea why !!!
+		       input_buffer[1] = mx;
+		   }
+	       }
 	       break;
     /* case 0x18: if (m_is_mvs) set_output_latch(data & 0x00ff); break;
     case 0x20: if (m_is_mvs) set_output_data(data & 0x00ff); break; */
@@ -3086,6 +3098,8 @@ void load_neocd() {
 	    kof99_neogeo_gfx_decrypt(0xbd);
 	} else if (is_current_game("irrmaze"))
 	    GameMouse = 1;
+	else if (is_current_game("popbounc"))
+	    GameMouse = 2; // mouse type 2
 	UINT8 *tmp = AllocateMem(size);
 	if (load_region[REGION_FIXED]) {
 	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);
@@ -3465,7 +3479,7 @@ void loading_progress_function() {
 }
 
 void execute_neocd() {
-    if (GameMouse) {
+    if (GameMouse == 1) {
 	int dx,dy;
 	GetMouseMickeys(&dx,&dy);
 	mx -= dx; my -= dy;
@@ -3473,6 +3487,13 @@ void execute_neocd() {
 	if (!(input_buffer[2] & 2)) my--;
 	if (!(input_buffer[2] & 4)) mx++;
 	if (!(input_buffer[2] & 8)) mx--;
+    } else if (GameMouse == 2) {
+	int dx,dy;
+	GetMouseMickeys(&dx,&dy);
+	mx -= dx;
+	// No need to update manually the trackball
+	// the problem is this game reads directly
+	// the inputs, but not the trackball !!!
     }
 
     if (!is_neocd()) {

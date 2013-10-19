@@ -160,11 +160,12 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   { KB_DEF_SPECIAL, MSG_UNKNOWN, 8, 0x40, BIT_ACTIVE_1 },
   INP0( TEST, 8, 0x80 ), // enter bios
 
-  { 0, NULL,        0,        0,    0            },
+  END_INPUT
 };
 
 static struct INPUT_INFO input_irrmaze[] = // trackball
 {
+    INCL_INP( neogeo ),
     INP0( UNKNOWN, 1, 0xff ), // trackball
 
     INP0( P1_UP, 2, 1 ),
@@ -181,34 +182,29 @@ static struct INPUT_INFO input_irrmaze[] = // trackball
   { KB_DEF_P2_B1, "Player2 A", 0x03, 0x40, BIT_ACTIVE_0 },
   { KB_DEF_P2_B2, "Player2 B", 0x03, 0x80, BIT_ACTIVE_0 },
 
-  INP0( P1_START, 5, 1 ),
-  { KB_DEF_NEXT_GAME, "Next Game", 0x05, 0x02, BIT_ACTIVE_0 },
-  INP0( P2_START, 5, 4 ),
-  { KB_DEF_PREV_GAME, "Prev Game", 0x05, 0x08, BIT_ACTIVE_0 },
-  INP1( UNKNOWN, 5, 0x70), // memcard status
-  INP0( UNKNOWN, 5, 0x80), // mvs/aes ?
-  // Bit 4 (0x10) is 0 if the memory card is present !!!
-  // neogeo doc :
-  // bit 5 = mc 2 insertion status (0 = inserted)
-  // bit 6 write protect 0 = write enable
-  // bit 7 = neogeo mode : 0 = neogeo / 1 = mvs !!!
+  END_INPUT
+};
 
-  INP0( COIN1, 6, 1 ),
-  INP0( COIN2, 6, 2 ),
-  INP0( SERVICE, 6, 4 ),
-  /* having this ACTIVE_HIGH causes you to start with 2 credits using USA bios roms; if ACTIVE_HIGH + IN4 bit 6 ACTIVE_HIGH = AES 'mode' */
-  INP0( UNKNOWN, 6, 8 ),
-  INP0( UNKNOWN, 6, 0x10 ), // same as previous
-  /* what is this? When ACTIVE_HIGH + IN4 bit 6 ACTIVE_LOW MVS-4 slot is detected */
-  { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0xc0, BIT_ACTIVE_1 }, // calendar
+static struct INPUT_INFO input_popbounc[] = // trackball
+{
+    INCL_INP( irrmaze ),
 
-  INP1( UNKNOWN, 8, 0x3f ),
-  /* what is this? If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected */
-  { KB_DEF_SPECIAL, MSG_UNKNOWN, 8, 0x40, BIT_ACTIVE_1 },
-  INP0( TEST, 8, 0x80 ), // enter bios
+    INP0( P1_B1, 2, 0x10 ), // these inputs are transmitted instead of mousey
+    INP0( P1_B2, 2, 0x20 ),
+    INP0( P1_B3, 2, 0x40 ),
+    INP0( P1_B4, 2, 0x80 ),
+    INP0( UNUSED, 3, 0xff ), // trackball p2 / inputs
 
-  { 0, NULL,        0,        0,    0            },
+    INP0( P2_UP, 4, 1 ), // and finally inputs for p2, transmitted when asked
+    INP0( P2_DOWN, 4, 2 ),
+    INP0( P2_LEFT, 4, 4 ),
+    INP0( P2_RIGHT, 4, 8 ),
+    INP0( P2_B1, 4, 0x10 ),
+    INP0( P2_B2, 4, 0x20 ),
+    INP0( P2_B3, 4, 0x40 ),
+    INP0( P2_B4, 4, 0x80 ),
+
+    END_INPUT
 };
 
 GMEI( neogeo, "Neo-geo bios", SNK, 1990, GAME_MISC);
@@ -2360,6 +2356,20 @@ static struct ROM_INFO rom_irrmaze[] = /* MVS ONLY RELEASE clone of neogeo */
 
 CLNEI( irrmaze, neogeo, "The Irritating Maze / Ultra Denryu Iraira Bou", SNK, 1997, GAME_PUZZLE,
 	.input = input_irrmaze);
+
+static struct ROM_INFO rom_popbounc[] = /* MVS ONLY RELEASE */
+{
+  { "237-p1.p1", 0x100000, 0xbe96e44f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "237-s1.s1", 0x20000, 0xb61cf595, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "237-m1.m1", 0x20000, 0xd4c946dd, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "237-v1.v1", 0x200000, 0xedcb1beb, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "237-c1.c1", 0x200000, 0xeda42d66, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "237-c2.c2", 0x200000, 0x5e633c65, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( popbounc, neogeo, "Pop 'n Bounce / Gapporin", VIDEOSYSTEM, 1997, GAME_BREAKOUT,
+	.input = input_popbounc);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {

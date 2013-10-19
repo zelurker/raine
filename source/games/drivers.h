@@ -933,6 +933,7 @@ DRV(nam1975)
     DRV(lastbladh)
     DRV(puzzldpr)
     DRV(irrmaze)
+    DRV(popbounc)
     DRV(kof97pls)
     DRV(kof97oro)
 
