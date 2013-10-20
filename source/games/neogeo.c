@@ -2371,6 +2371,94 @@ static struct ROM_INFO rom_popbounc[] = /* MVS ONLY RELEASE */
 CLNEI( popbounc, neogeo, "Pop 'n Bounce / Gapporin", VIDEOSYSTEM, 1997, GAME_BREAKOUT,
 	.input = input_popbounc);
 
+static struct ROM_INFO rom_shocktro[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "238-p1.p1", 0x100000, 0x5677456f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "238-p2.sp2", 0x400000, 0x5b4a09c5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "238-s1.s1", 0x20000, 0x1f95cedb, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "238-m1.m1", 0x20000, 0x075b9518, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "238-v1.v1", 0x400000, 0x260c0bef, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "238-v2.v2", 0x200000, 0x4ad7d59e, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "238-c1.c1", 0x400000, 0x90c6a181, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "238-c2.c2", 0x400000, 0x888720f0, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "238-c3.c3", 0x400000, 0x2c393aa3, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "238-c4.c4", 0x400000, 0xb9e909eb, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "238-c5.c5", 0x400000, 0xc22c68eb, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "238-c6.c6", 0x400000, 0x119323cd, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "238-c7.c7", 0x400000, 0xa72ce7ed, REGION_SPRITES, 0x1800000, LOAD_8_16 },
+  { "238-c8.c8", 0x400000, 0x1c7c2efb, REGION_SPRITES, 0x1800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( shocktro, neogeo, "Shock Troopers (set 1)", SAURUS, 1997, GAME_SHOOT);
+
+static struct ROM_INFO rom_blazstar[] = // clone of neogeo
+{
+  { "239-p1.p1", 0x100000, 0x183682f8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "239-p2.sp2", 0x200000, 0x9a9f4154, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "239-s1.s1", 0x20000, 0xd56cb498, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "239-m1.m1", 0x20000, 0xd31a3aea, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "239-v1.v1", 0x400000, 0x1b8d5bf7, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "239-v2.v2", 0x400000, 0x74cf0a70, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "239-c1.c1", 0x400000, 0x84f6d584, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "239-c2.c2", 0x400000, 0x05a0cb22, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "239-c3.c3", 0x400000, 0x5fb69c9e, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "239-c4.c4", 0x400000, 0x0be028c4, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "239-c5.c5", 0x400000, 0x74bae5f8, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "239-c6.c6", 0x400000, 0x4e0700d2, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "239-c7.c7", 0x400000, 0x010ff4fd, REGION_SPRITES, 0x1800000, LOAD_8_16 },
+  { "239-c8.c8", 0x400000, 0xdb60460e, REGION_SPRITES, 0x1800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( blazstar, neogeo, "Blazing Star", YUMEKOBO, 1998, GAME_SHOOT);
+
+static struct ROM_INFO rom_rbff2[] = /* MVS VERSION clone of neogeo */
+{
+  { "240-p1.p1", 0x100000, 0x80e41205, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "240-p2.sp2", 0x400000, 0x960aa88d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "240-s1.s1", 0x20000, 0xda3b40de, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "240-m1.m1", 0x40000, 0xed482791, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "240-v1.v1", 0x400000, 0xf796265a, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "240-v2.v2", 0x400000, 0x2cb3f3bb, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "240-v3.v3", 0x400000, 0x8fe1367a, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "240-v4.v4", 0x200000, 0x996704d8, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "240-c1.c1", 0x800000, 0xeffac504, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "240-c2.c2", 0x800000, 0xed182d44, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "240-c3.c3", 0x800000, 0x22e0330a, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "240-c4.c4", 0x800000, 0xc19a07eb, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "240-c5.c5", 0x800000, 0x244dff5a, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "240-c6.c6", 0x800000, 0x4609e507, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_rbff2h[] = /* AES VERSION clone of rbff2 */
+{
+  { "240-pg1.p1", 0x100000, 0xb6969780, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "240-p2.sp2", 0x400000, 0x960aa88d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( rbff2, neogeo, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers (NGM-2400)", SNK, 1998, GAME_BEAT);
+CLNEI( rbff2h, rbff2, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers (NGH-2400)", SNK, 1998, GAME_BEAT);
+
+static struct ROM_INFO rom_mslug2[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "241-p1.p1", 0x100000, 0x2a53c5da, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "241-p2.sp2", 0x200000, 0x38883f44, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "241-s1.s1", 0x20000, 0xf3d32f0f, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "241-m1.m1", 0x20000, 0x94520ebd, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "241-v1.v1", 0x400000, 0x99ec20e8, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "241-v2.v2", 0x400000, 0xecb16799, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "241-c1.c1", 0x800000, 0x394b5e0d, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "241-c2.c2", 0x800000, 0xe5806221, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "241-c3.c3", 0x800000, 0x9f6bfa6f, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "241-c4.c4", 0x800000, 0x7d3e306f, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug2, neogeo, "Metal Slug 2 - Super Vehicle-001/II (NGM-2410)(NGH-2410)", SNK, 1998, GAME_SHOOT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -2449,27 +2537,6 @@ static struct ROM_INFO rom_zintrckb[] = // clone of neogeo
 };
 
 CLNEI( zintrckb, neogeo,             "Zintrick / Oshidashi Zentrix (hack)", HACK, 1996, GAME_MISC);
-
-static struct ROM_INFO rom_blazstar[] = // clone of neogeo
-{
-  { "239-p1.p1", 0x100000, 0x183682f8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "239-p2.sp2", 0x200000, 0x9a9f4154, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "239-s1.s1", 0x20000, 0xd56cb498, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  { "239-m1.m1", 0x20000, 0xd31a3aea, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "239-v1.v1", 0x400000, 0x1b8d5bf7, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "239-v2.v2", 0x400000, 0x74cf0a70, REGION_SMP1, 0x400000, LOAD_NORMAL },
-  { "239-c1.c1", 0x400000, 0x84f6d584, REGION_SPRITES, 0x0000000, LOAD_8_16 },
-  { "239-c2.c2", 0x400000, 0x05a0cb22, REGION_SPRITES, 0x0000001, LOAD_8_16 },
-  { "239-c3.c3", 0x400000, 0x5fb69c9e, REGION_SPRITES, 0x0800000, LOAD_8_16 },
-  { "239-c4.c4", 0x400000, 0x0be028c4, REGION_SPRITES, 0x0800001, LOAD_8_16 },
-  { "239-c5.c5", 0x400000, 0x74bae5f8, REGION_SPRITES, 0x1000000, LOAD_8_16 },
-  { "239-c6.c6", 0x400000, 0x4e0700d2, REGION_SPRITES, 0x1000001, LOAD_8_16 },
-  { "239-c7.c7", 0x400000, 0x010ff4fd, REGION_SPRITES, 0x1800000, LOAD_8_16 },
-  { "239-c8.c8", 0x400000, 0xdb60460e, REGION_SPRITES, 0x1800001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( blazstar, neogeo, "Blazing Star", YUMEKOBO, 1998, GAME_SHOOT);
 
 static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX clone of neogeo */
  /* MVS ONLY RELEASE */{

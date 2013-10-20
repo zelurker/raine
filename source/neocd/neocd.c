@@ -114,9 +114,7 @@ struct VIDEO_INFO neocd_video =
 int neogeo_bios;
 
 void restore_neocd_config() {
-  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",32);
-  if (allowed_speed_hacks > 0 && allowed_speed_hacks < 16)
-      allowed_speed_hacks = 32;
+  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
   disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);
   capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
   neogeo_bios = raine_get_config_int("neogeo","bios",0);
@@ -978,7 +976,7 @@ static void restore_memcard() {
 static void save_memcard() {
     char path[1024];
     if (memcard_write) {
-	sprintf(path,"%ssavedata" SLASH "%s.bin", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+	sprintf(path,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
 	FILE *f = fopen(path,"wb");
 	if (f) {
 	    fwrite(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
@@ -1951,7 +1949,7 @@ void postprocess_ipl() {
  * the sprites memory and the fix memory to initialize them from the cd for
  * example. */
 
-static int upload_type,mx,my,mx2;
+static int upload_type,mx,my;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
 static void upload_type_w(UINT32 offset, UINT8 data) {
@@ -2442,8 +2440,8 @@ static void set_68k_bank(UINT32 offset, UINT16 data) {
     if (data != bank_68k) {
 	bank_68k = data;
 	int n = ((data & 7) + 1)*0x100000;
-	if (n > get_region_size(REGION_CPU1)) {
-	    n = 1;
+	if (n + 0x100000 > get_region_size(REGION_CPU1)) {
+	    n = 0x100000;
 	    print_debug("set_68k_bank: received data %x too high\n",data);
 	}
 	print_debug("set_68k_bank set bank %d\n",n);
@@ -2459,7 +2457,6 @@ static void io_control_w(UINT32 offset, UINT32 data) {
     switch (offset/2)
     {
     case 0x00: controller = data & 0x00ff;
-	       printf("controller %d from %x\n",controller,s68000readPC());
 	       /* Used by the trackball to select the axis (X/Y).
 		* Changed more than once / frame, so we must change the input
 		* here */
@@ -3004,7 +3001,7 @@ void load_neocd() {
     neocd_video.screen_x = 304;
     offx = 16-8;
     maxx = 320-8;
-    desired_68k_speed = CPU_FRAME_MHz(allowed_speed_hacks,60);
+    desired_68k_speed = CPU_FRAME_MHz(32,60);
     upload_type = 0xff;
     memcard_write = 0;
     setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
@@ -3574,12 +3571,14 @@ void execute_neocd() {
 
 	  if (display_position_interrupt_pending || vblank_interrupt_pending) {
 	      if (stopped_68k) {
+		  /* DO NOT EVER allow a speed hack in the middle of a raster
+		   * frame. That is, if the speed hack is installed and hit,
+		   * then it must be executed, but in this case we must make
+		   * sure to loop on it for each scanline, so that any irq can
+		   * be executed */
 		  stopped_68k = 0;
-		  if (!vblank_interrupt_pending) {
-		      // If it's a vbl, we mustn't stop anymore !
-		      s68000context.pc -= 6;
-		      rolled = 1;
-		  }
+		  s68000context.pc -= 6;
+		  rolled = 1;
 	      }
 	      update_interrupts();
 	  }
@@ -3647,22 +3646,11 @@ void execute_neocd() {
 			   ReadWord(&RAM[pc-6]) == 0x4a39)) { // TST / BEQ/BNE
 		      apply_hack(pc-6,"tst/beq/bne");
 		      WriteWord(&RAM[pc],0x4e71); // nop
-#if 1
 		  } else if (ReadWord(&RAM[pc]) == 0x8ad &&
 			  ReadWord(&RAM[pc+6]) == 0x67f8) {
-		      // Very particular : mslug2
-		      // it does bclr #7,adr / beq
-		      // After that it spends a few frames
-		      // inside its vbl irq, then sets this
-		      // bit and exits
-		      char *comment = "mslug2 special";
-		      print_ingame(60,"Applied speed hack at %x:%s",pc,comment);
-		      print_debug("Applied speed hack at %x:%s\n",pc,comment);
-		      WriteWord(&RAM[pc],0x13fc);
-		      int ofs = ReadWord(&RAM[pc+4]);
-		      WriteLongSc(&RAM[pc+4],ofs+0xaa0000);
+		      apply_hack(pc,"mslug2 special");
+		      WriteWord(&RAM[pc+6],0x4e71);
 		      current_neo_frame = desired_68k_speed;
-#endif
 		  } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
 			  ReadWord(&RAM[pc+8]) == 0x6600 &&
 			  ReadWord(&RAM[pc+10]) == 8 &&
