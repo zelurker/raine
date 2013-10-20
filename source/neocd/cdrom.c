@@ -686,7 +686,7 @@ static int load_neocd_file(char *name, UINT8 *dest, int size) {
 	   * Can be seen in kof94, how to play */
 	  int size1 = 0x400000-Offset;
 	  spr_conv(dest,Ptr,size1,video_spr_usage + (Offset>>7));
-	  spr_conv(GFX,Ptr+size1,size-size1,video_spr_usage);
+	  spr_conv(dest + size1,GFX,size-size1,video_spr_usage);
       } else
 	  spr_conv(dest,Ptr,size,video_spr_usage + (Offset>>7));
       break;
