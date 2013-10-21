@@ -10,6 +10,7 @@
 #include "games.h"
 #include "games/neogeo.h"
 #include "68000/starhelp.h"
+#include "neo_softdips.h"
 
 static char *neo_names[] =
 {
@@ -164,6 +165,7 @@ static menu_item_t neocd_menu[] =
 {
     { "Neogeo bios", &choose_bios,},
     { "Neocd bios", &select_neocd_bios, },
+    { "Soft dips", &do_soft_dips, },
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },

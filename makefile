@@ -17,7 +17,7 @@
 VERSION = "0.63.0"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -737,6 +737,7 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/romdirs.o \
 	$(OBJDIR)/sdl/dialogs/dlg_dsw.o \
 	$(OBJDIR)/sdl/dialogs/neocd_options.o \
+	$(OBJDIR)/sdl/dialogs/neo_softdips.o \
 	$(OBJDIR)/sdl/dialogs/translator.o
 
 else
