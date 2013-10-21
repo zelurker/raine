@@ -9,6 +9,7 @@
 #include "neocd/cache.h"
 #include "games.h"
 #include "games/neogeo.h"
+#include "68000/starhelp.h"
 
 static char *neo_names[] =
 {
@@ -152,6 +153,8 @@ static int select_neocd_bios(int sel) {
 	    neocd_bios = NULL;
 	}
 	setup_neocd_bios();
+	if (current_game && is_neocd())
+	    set_68000_io(0,0xc00000,0xc7ffff, NULL, neocd_bios); // reload !
 	select_bios(neogeo_bios);
     }
     return 0;
