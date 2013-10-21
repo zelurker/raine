@@ -1728,6 +1728,14 @@ static void clear_screen() {
      * the palette during an hbl */
     ClearPaletteMap();
     /* Confirmed by neogeo doc : palette 255 for bg */
+    if (neocd_lp.function) {
+	// Loading animations use only 256 colors, so it's impossible that
+	// the screen is cleared with the very last color here...
+	// We'll assume color 0 forced here, never saw a loading animation
+	// with a background which was not black...
+	clear_game_screen(0);
+	return;
+    }
     MAP_PALETTE_MAPPED_NEW(
 	    0xff,
 	    16,
