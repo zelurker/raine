@@ -13,11 +13,11 @@ Taken from xmame 37b7.1
 
 // #define VERBOSE 1
 
+#ifdef RAINE_DEBUG
+#define LOG(x) print_debug("hiscores: %s",x)
+#else
 #if VERBOSE
 #define LOG(x)	fprintf(stderr,x)
-#else
-#ifdef RAINE_DEBUG
-#define LOG(x) print_debug(x)
 #else
 #define LOG(x)
 #endif
@@ -208,9 +208,11 @@ void hs_load (void)
 			enough to be dynamically allocated, but let's
 			avoid memory trashing just in case
 	      */
-	      fread (data, mem_range->num_bytes,1,f);
-
-	      copy_to_memory (mem_range->cpu, mem_range->addr, data, mem_range->num_bytes);
+	      int red = fread (data, 1,mem_range->num_bytes,f);
+	      if (red < mem_range->num_bytes) {
+		  print_debug("hiscores: invalid read, expected %d, got %d\n",mem_range->num_bytes,red);
+	      } else
+		  copy_to_memory (mem_range->cpu, mem_range->addr, data, mem_range->num_bytes);
 	      free (data);
 	    }
 	  mem_range = mem_range->next;
