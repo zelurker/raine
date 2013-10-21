@@ -53,10 +53,10 @@ static int choose_bios(int sel) {
 	}
     }
     TMenu *load = new TMenu("Neogeo bios",menu);
+    load->set_sel(neogeo_bios);
     load->execute();
     delete load;
     free(menu);
-    printf("bios %d\n",neogeo_bios);
     return 0;
 }
 
@@ -128,9 +128,39 @@ static int do_update_block(int sel) {
   return 0;
 }
 
+static int select_neocd_bios(int sel) {
+    char path[FILENAME_MAX];
+    if (*neocd_bios_file) {
+	strcpy(path,neocd_bios_file);
+	char *s = path;
+	char *old;
+	do {
+	    old = s;
+	    s = strstr(s+1,SLASH);
+	} while (s);
+	if (old) *old = 0;
+	else
+	    strcpy(path,".");
+    } else
+	strcpy(path,".");
+
+    char *exts[] = { "bin", "zip", NULL };
+    fsel(path,exts,neocd_bios_file,"Find Neocd bios");
+    if (*neocd_bios_file) {
+	if (neocd_bios) {
+	    free(neocd_bios);
+	    neocd_bios = NULL;
+	}
+	setup_neocd_bios();
+	select_bios(neogeo_bios);
+    }
+    return 0;
+}
+
 static menu_item_t neocd_menu[] =
 {
     { "Neogeo bios", &choose_bios,},
+    { "Neocd bios", &select_neocd_bios, },
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
@@ -145,7 +175,24 @@ static menu_item_t neocd_menu[] =
 static int select_bios(int sel) {
     neogeo_bios = sel;
     sprintf(label,"Neo-geo bios : %s",neo_names[neogeo_bios]);
+    static char label2[180];
+    if (!*neocd_bios_file) {
+	sprintf(label2,"no neocd bios");
+    } else {
+	char *s = neocd_bios_file;
+	char *old;
+	do {
+	    old = s;
+	    s = strstr(s+1,SLASH);
+	} while (s);
+	if (old == neocd_bios_file) s = old;
+	else
+	    s = old+1;
+	sprintf(label2,"Neocd bios : %s",s);
+    }
+
     neocd_menu[0].label = (const char*)label;
+    neocd_menu[1].label = (const char*)label2;
     set_neogeo_bios(sel);
     return 1;
 }

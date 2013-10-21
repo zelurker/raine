@@ -308,7 +308,7 @@ void setup_neocd_bios() {
 	  }
       }
       if (!ret && !tries) {
-	  char *exts[] = { "neocd.*", NULL };
+	  char *exts[] = { "bin", "zip", NULL };
 	  *neocd_bios_file = 0;
 	  fsel(dir_cfg.share_path,exts,neocd_bios_file,"Find Neocd bios");
 	  if (!*neocd_bios_file) break;

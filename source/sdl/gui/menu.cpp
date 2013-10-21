@@ -1099,6 +1099,7 @@ void TMenu::redraw_fg_layer() {
 static int axis_x,axis_y;
 
 void TMenu::reset_top() {
+    if (!rows) return;
     if (focus) {
 	if (hsel == -1) return;
 	for (hsel=0; !h_child[hsel]->can_be_selected(); hsel++);
