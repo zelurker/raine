@@ -162,12 +162,15 @@ static int select_neocd_bios(int sel) {
     return 0;
 }
 
+static int dev_mode;
+
 static menu_item_t neocd_menu[] =
 {
     { "Neogeo bios", &choose_bios,},
     { "Neocd bios", &select_neocd_bios, },
     { "Soft dips", &do_soft_dips, },
     { "Debug dips", &do_debug_dsw, },
+    { "Developper mode", NULL, &dev_mode, 2, {0, 1}, {"No","Yes"} },
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
@@ -210,7 +213,10 @@ class TNeo_options : public TMenu {
   {}
     int can_be_displayed(int n) {
       switch(n) {
-      case 6: return (current_game != NULL); // update block
+      case 2:
+      case 3:
+      case 4: return current_game && current_game->load_game == &load_neocd;
+      case 8: return (current_game != NULL); // update block
       }
       return 1;
     }
@@ -218,8 +224,16 @@ class TNeo_options : public TMenu {
 
 int do_neocd_options(int sel) {
     select_bios(neogeo_bios);
-  TMenu *menu = new TNeo_options("Neocd options", neocd_menu);
-  menu->execute();
-  delete menu;
-  return 0;
+    if (current_game && current_game->load_game == &load_neocd)
+	dev_mode = (is_neocd() ? RAM[0x10fe80 ^ 1] : RAM[0xfe80 ^1]);
+    TMenu *menu = new TNeo_options("Neocd options", neocd_menu);
+    menu->execute();
+    delete menu;
+    if (current_game && current_game->load_game == &load_neocd) {
+	if (is_neocd())
+	    RAM[0x10fe80 ^ 1] = dev_mode;
+	else
+	    RAM[0xfe80 ^1] = dev_mode;
+    }
+    return 0;
 }
