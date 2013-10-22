@@ -4,6 +4,7 @@
 #include "starhelp.h"
 #include "cpumain.h"
 #include "neocd/neocd.h"
+#include "files.h"
 
 static menu_item_t menu[14]; // 14 soft dips max
 
@@ -186,6 +187,11 @@ int do_soft_dips(int sel) {
 		menu[nb].values_list_label[n] = NULL;
 	    }
 	nb++;
+    }
+    if (is_neocd()) {
+	char path[FILENAME_MAX];
+	sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
+	save_file(path,&RAM[0x10fd84],16);
     }
     return 0;
 }

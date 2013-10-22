@@ -87,7 +87,7 @@ static struct {
     UINT16 unlock;
 } saveram;
 
-static int capture_mode = 0,start_line,screen_cleared;
+static int capture_mode = 0,start_line,screen_cleared,load_sdips;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0;
 static int one_palette,sprites_mask,nb_sprites;
@@ -1954,6 +1954,9 @@ void postprocess_ipl() {
   }
   if (cdrom_speed)
     reset_ingame_timer();
+  char path[FILENAME_MAX];
+  sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
+  load_sdips = exists(path);
 }
 
 /* Upload area : this area is NOT in the neogeo cartridge systems
@@ -3696,11 +3699,21 @@ void execute_neocd() {
   }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
-  if (s68000readPC() == 0xc0e602) { // start button
-      // For start, irqs are disabled, maybe it expects them to come back
-      // from the cd ?
+  if (is_neocd()) {
+      if (s68000readPC() == 0xc0e602) { // start button
+	  // For start, irqs are disabled, maybe it expects them to come back
+	  // from the cd ?
 	  Stop68000(0,0);
 	  reset_game_hardware();
+      } else if (load_sdips && ReadLong(&RAM[0x10fd84])) {
+	  /* The soft dips must be initialised only after the bios has moved
+	   * them to ram, which happens only after the 1st cpu frame once the
+	   * game has been loaded, so this is the only place to do it ! */
+	  load_sdips = 0;
+	  char path[FILENAME_MAX];
+	  sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
+	  load_file(path,&RAM[0x10fd84],16);
+      }
   }
 }
 
