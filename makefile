@@ -738,6 +738,7 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/dlg_dsw.o \
 	$(OBJDIR)/sdl/dialogs/neocd_options.o \
 	$(OBJDIR)/sdl/dialogs/neo_softdips.o \
+	$(OBJDIR)/sdl/dialogs/neo_debug_dips.o \
 	$(OBJDIR)/sdl/dialogs/translator.o
 
 else

@@ -11,6 +11,7 @@
 #include "games/neogeo.h"
 #include "68000/starhelp.h"
 #include "neo_softdips.h"
+#include "neo_debug_dips.h"
 
 static char *neo_names[] =
 {
@@ -166,6 +167,7 @@ static menu_item_t neocd_menu[] =
     { "Neogeo bios", &choose_bios,},
     { "Neocd bios", &select_neocd_bios, },
     { "Soft dips", &do_soft_dips, },
+    { "Debug dips", &do_debug_dsw, },
 { "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
   { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
@@ -208,7 +210,7 @@ class TNeo_options : public TMenu {
   {}
     int can_be_displayed(int n) {
       switch(n) {
-      case 3: return (current_game != NULL); // update block
+      case 6: return (current_game != NULL); // update block
       }
       return 1;
     }

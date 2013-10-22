@@ -78,7 +78,7 @@
 
 #define GAME(name,longn,company,yr,flg, ...) \
                                              \
-const struct GAME_MAIN game_##name =         \
+struct GAME_MAIN game_##name =         \
 {                                            \
   .source_file = __FILE__, /* source_file */ \
   .dir_list = dir_##name,                    \
@@ -132,7 +132,7 @@ GME(name,long_name,company,year,flags,##__VA_ARGS__);
 
 // Basic clone, just generate load based on the parent
 #define CLONE(name, parent,longn,company,yr,flg,...) \
-const struct GAME_MAIN game_##name =                 \
+struct GAME_MAIN game_##name =                 \
 {                                                    \
   .source_file = __FILE__, /* source_file */         \
   .dir_list = dir_##name,                            \

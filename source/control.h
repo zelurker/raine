@@ -495,6 +495,11 @@ extern char MSG_ALT[];
    { MSG_ON,              on },        \
    { MSG_OFF,             off }
 
+#define DSW_ON_OFF( msg, on, off )          \
+   { msg,      (off ? off : on), 0x02 },     \
+   { MSG_ON,              on },        \
+   { MSG_OFF,             off }
+
 #define INCL_INP( other ) \
    { 1, (char*)input_##other, 0, 0, INPUT_INCLUDE }
 #define INP0( input, adr, mask ) \
