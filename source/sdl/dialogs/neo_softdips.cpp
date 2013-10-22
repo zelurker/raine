@@ -21,6 +21,12 @@ static char* get_str(int &strings) {
 	memcpy(str,&RAM[strings],12);
     else
 	memcpy(str,&ROM[strings],12);
+
+    for (int n=0; n<12; n++)
+	if (str[n] == 0) {
+	    printf("bad string %s\n",str);
+	    throw 1; // Normally strings are padded with spaces, no 0 !
+	}
     strings += 12;
     ByteSwap((UINT8*)str,12);
     int n = 11;
@@ -102,85 +108,92 @@ int do_soft_dips(int sel) {
     int bcd1,bcd2,val1,val2;
     int nb = 0;
 
-    if ((bcd1 = ReadWord(code)) != 0xffff) {
-	set_bcd(bcd1,nb,strings);
-    }
-    if ((bcd2 = ReadWord(code+2)) != 0xffff) {
-	set_bcd(bcd2,nb,strings);
-    }
-    if ((val1 = ReadCode(code+4)) != 0xff) {
-	// special 1
-	menu[nb].label = get_str(strings);
-	menu[nb].value_int = &val1;
-	menu[nb].values_list_size = 3;
-	menu[nb].values_list[0] = 1;
-	menu[nb].values_list[1] = 99;
-	menu[nb++].values_list[2] = 1;
-    }
-    if ((val2 = ReadCode(code+5)) != 0xff) {
-	// special 2
-	menu[nb].label = get_str(strings);
-	menu[nb].value_int = &val2;
-	menu[nb].values_list_size = 3;
-	menu[nb].values_list[0] = 0;
-	menu[nb].values_list[1] = 100;
-	menu[nb++].values_list[2] = 1;
-    }
-    code += 6;
-    int defs = base + 0x16;
-    int val[10];
-    int x = 0;
-    int choices;
-    while ((choices = get_byte(defs) & 0xf)) {
-	menu[nb].label = get_str(strings);
-	menu[nb].value_int = &val[x];
-	menu[nb].values_list_size = choices;
-	for (int n=0; n<choices; n++) {
-	    menu[nb].values_list[n] = n;
-	    menu[nb].values_list_label[n] = get_str(strings);
+    try {
+	if ((bcd1 = ReadWord(code)) != 0xffff) {
+	    set_bcd(bcd1,nb,strings);
 	}
-	val[x] = ReadCode(code);
-	code++;
-	defs++;
-	x++;
-	if (choices <= 1) {
-	    free((char*)menu[nb].label);
-	    for (int n=0; n<choices; n++)
-		if (menu[nb].values_list_label[n])
-		    free(menu[nb].values_list_label[n]);
-	} else
-	    nb++;
-	if (defs == base + 0x16 + 10) // max nb of entries
-	    break;
-    }
-    TMenu *load = new TMenu("Neogeo bios",menu);
-    load->execute();
-    delete load;
+	if ((bcd2 = ReadWord(code+2)) != 0xffff) {
+	    set_bcd(bcd2,nb,strings);
+	}
+	if ((val1 = ReadCode(code+4)) != 0xff) {
+	    // special 1
+	    menu[nb].label = get_str(strings);
+	    menu[nb].value_int = &val1;
+	    menu[nb].values_list_size = 3;
+	    menu[nb].values_list[0] = 1;
+	    menu[nb].values_list[1] = 99;
+	    menu[nb++].values_list[2] = 1;
+	}
+	if ((val2 = ReadCode(code+5)) != 0xff) {
+	    // special 2
+	    menu[nb].label = get_str(strings);
+	    menu[nb].value_int = &val2;
+	    menu[nb].values_list_size = 3;
+	    menu[nb].values_list[0] = 0;
+	    menu[nb].values_list[1] = 100;
+	    menu[nb++].values_list[2] = 1;
+	}
+	code += 6;
+	int defs = base + 0x16;
+	int val[10];
+	int x = 0;
+	int choices;
+	while ((choices = get_byte(defs) & 0xf)) {
+	    menu[nb].label = get_str(strings);
+	    menu[nb].value_int = &val[x];
+	    menu[nb].values_list_size = choices;
+	    for (int n=0; n<choices; n++) {
+		menu[nb].values_list[n] = n;
+		menu[nb].values_list_label[n] = get_str(strings);
+	    }
+	    val[x] = ReadCode(code);
+	    code++;
+	    defs++;
+	    x++;
+	    if (choices <= 1) {
+		free((char*)menu[nb].label);
+		for (int n=0; n<choices; n++)
+		    if (menu[nb].values_list_label[n])
+			free(menu[nb].values_list_label[n]);
+	    } else
+		nb++;
+	    if (defs == base + 0x16 + 10) // max nb of entries
+		break;
+	}
+	TMenu *load = new TMenu("Neogeo bios",menu);
+	load->execute();
+	delete load;
 
-    // Convert back to the native formats...
-    code = (!is_neocd() ? ram + 0x220 + saveram_offs*16 : &RAM[0x10fd84]);
-    nb = 0;
-    if (bcd1 != 0xffff)
-	get_bcd(nb,code);
-    if (bcd2 != 0xffff)
-	get_bcd(nb,code+2);
-    WriteCode(code+4, val1);
-    WriteCode(code+5, val2);
-    code += 6;
-    defs = base + 0x16;
-    x = 0;
-    while ((choices = get_byte(defs) & 0xf)) {
-	WriteCode(code, val[x++]);
-	code++;
-	if (defs++ == base + 0x16 + 10) // max nb of entries
-	    break;
+	// Convert back to the native formats...
+	code = (!is_neocd() ? ram + 0x220 + saveram_offs*16 : &RAM[0x10fd84]);
+	nb = 0;
+	if (bcd1 != 0xffff)
+	    get_bcd(nb,code);
+	if (bcd2 != 0xffff)
+	    get_bcd(nb,code+2);
+	WriteCode(code+4, val1);
+	WriteCode(code+5, val2);
+	code += 6;
+	defs = base + 0x16;
+	x = 0;
+	while ((choices = get_byte(defs) & 0xf)) {
+	    WriteCode(code, val[x++]);
+	    code++;
+	    if (defs++ == base + 0x16 + 10) // max nb of entries
+		break;
+	}
     }
+    catch(...) { MessageBox("Warning","Bad soft dips","OK"); }
 
     // Free everything !
     nb = 0;
     while (menu[nb].label) {
 	free((void*)menu[nb].label);
 	menu[nb].label = NULL;
+	if (menu[nb].values_list_size == ITEM_EDIT) {
+	    free(menu[nb].values_list_label[0]);
+	    menu[nb].values_list_label[0] = NULL;
+	}
 	for (int n=0; n<menu[nb].values_list_size; n++)
 	    if (menu[nb].values_list_label[n]) {
 		free(menu[nb].values_list_label[n]);
