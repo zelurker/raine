@@ -95,6 +95,7 @@ UINT32 cpu_get_pc(UINT32 cpu_id);
 void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
 UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end);
 UINT8 *get_userdata(UINT32 cpu, UINT32 adr);
+int bcd(int value);
 
 #ifdef RAINE_DEBUG
 extern UINT32 current_cpu_num[0x10];

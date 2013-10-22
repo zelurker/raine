@@ -33,6 +33,7 @@
 #include "deftypes.h"
 #include "pd4990a.h"
 #include <time.h>
+#include "cpumain.h"
 
 
 /* Set the data in the chip to Monday 09/09/73 00:00:00     */
@@ -323,10 +324,6 @@ void pd4990a_serial_control(UINT8 data)
 void pd4990a_control_16_w(UINT32 offset, UINT16 data )
 {
 	pd4990a_serial_control(data&0x7);
-}
-
-static int bcd(int value) {
-  return ((value/10)<<4) | (value % 10);
 }
 
 void pd4990a_init(void)

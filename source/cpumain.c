@@ -433,3 +433,7 @@ UINT8 *get_userdata(UINT32 cpu, UINT32 adr) {
     return NULL;
 }
 
+int bcd(int value) {
+  return ((value/10)<<4) | (value % 10);
+}
+

@@ -2,6 +2,7 @@
 #include "games.h"
 #include "raine.h"
 #include "starhelp.h"
+#include "cpumain.h"
 #include "neocd/neocd.h"
 
 static menu_item_t menu[14]; // 14 soft dips max
@@ -42,10 +43,6 @@ static void set_bcd(int &bcd1,int &nb, int &strings) {
     char buff[6];
     sprintf(buff,"%02d:%02d",high,low);
     menu[nb++].values_list_label[0] = strdup(buff);
-}
-
-static int bcd(int x) {
-    return (x/10)*16+(x%10);
 }
 
 static void get_bcd(int &nb,int code) {
