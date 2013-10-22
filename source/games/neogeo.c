@@ -58,8 +58,11 @@ void set_neogeo_bios(int sel) {
     if (!strcmp(rom_neogeo[0].name,rom_bios[sel].name))
 	return;
     rom_neogeo[0] = rom_bios[sel];
-    if (current_game && !is_neocd() && current_game->load_game == &load_neocd)
-	reset_game_hardware();
+    if (current_game && !is_neocd() && current_game->load_game == &load_neocd){
+	extern int loaded_roms; // from loadroms.c
+	loaded_roms--;
+	load_rom(rom_bios[sel].name,load_region[REGION_MAINBIOS],get_region_size(REGION_MAINBIOS));
+    }
 }
 
 static struct DSW_DATA dsw_data_neogeo_0[] =
