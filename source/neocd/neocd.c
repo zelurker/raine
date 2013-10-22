@@ -113,6 +113,10 @@ struct VIDEO_INFO neocd_video =
 
 int neogeo_bios;
 
+UINT8* get_neogeo_saveram() {
+    return saveram.ram;
+}
+
 void restore_neocd_config() {
   allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
   disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);

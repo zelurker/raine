@@ -26,6 +26,7 @@ extern int capture_new_pictures;
 extern struct VIDEO_INFO neocd_video;
 
 extern UINT8 *neocd_bios;
+UINT8* get_neogeo_saveram();
 void setup_neocd_bios();
 void set_neocd_exit_to(int code);
 void execute_neocd();
