@@ -2462,6 +2462,128 @@ static struct ROM_INFO rom_mslug2[] = /* MVS AND AES VERSION clone of neogeo */
 
 CLNEI( mslug2, neogeo, "Metal Slug 2 - Super Vehicle-001/II (NGM-2410)(NGH-2410)", SNK, 1998, GAME_SHOOT);
 
+static struct ROM_INFO rom_kof98[] = /* encrypted code + protection clone of neogeo */
+ /* MVS VERSION */{
+  { "242-p1.p1", 0x200000, 0x8893df89, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "242-p2.sp2", 0x400000, 0x980aba4c, REGION_CPU1, 0x200000, LOAD_SWAP_16 },
+  { "242-s1.s1", 0x20000, 0x7f7b4805, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "242-m1.m1", 0x40000, 0x4ef7016b, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "242-v1.v1", 0x400000, 0xb9ea8051, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "242-v2.v2", 0x400000, 0xcc11106e, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "242-v3.v3", 0x400000, 0x044ea4e1, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "242-v4.v4", 0x400000, 0x7985ea30, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "242-c1.c1", 0x800000, 0xe564ecd6, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "242-c2.c2", 0x800000, 0xbd959b60, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "242-c3.c3", 0x800000, 0x22127b4f, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "242-c4.c4", 0x800000, 0x0b4fa044, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "242-c5.c5", 0x800000, 0x9d10bed3, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "242-c6.c6", 0x800000, 0xda07b6a2, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "242-c7.c7", 0x800000, 0xf6d7a38a, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "242-c8.c8", 0x800000, 0xc823e045, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof98, neogeo, "The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends (NGM-2420)", SNK, 1998, GAME_BEAT);
+
+static struct ROM_INFO rom_kof98h[] = /* AES VERSION clone of kof98 */
+{
+  { "242-pn1.p1", 0x100000, 0x61ac868a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "242-p2.sp2", 0x400000, 0x980aba4c, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "242-mg1.m1", 0x40000, 0x4e7a6b1b, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof98h, kof98, "The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends (NGH-2420)", SNK, 1998, GAME_BEAT);
+
+static struct ROM_INFO rom_lastbld2[] = /* MVS AND AES VERSION clone of neogeo */
+ /* later revision */{
+  { "243-pg1.p1", 0x100000, 0xaf1e6554, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "243-pg2.sp2", 0x400000, 0xadd4a30b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "243-s1.s1", 0x20000, 0xc9cd2298, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "243-m1.m1", 0x20000, 0xacf12d10, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "243-v1.v1", 0x400000, 0xf7ee6fbb, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "243-v2.v2", 0x400000, 0xaa9e4df6, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "243-v3.v3", 0x400000, 0x4ac750b2, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "243-v4.v4", 0x400000, 0xf5c64ba6, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "243-c1.c1", 0x800000, 0x5839444d, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "243-c2.c2", 0x800000, 0xdd087428, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "243-c3.c3", 0x800000, 0x6054cbe0, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "243-c4.c4", 0x800000, 0x8bd2a9d2, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "243-c5.c5", 0x800000, 0x6a503dcf, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "243-c6.c6", 0x800000, 0xec9c36d0, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( lastbld2, neogeo, "The Last Blade 2 / Bakumatsu Roman - Dai Ni Maku Gekka no Kenshi (NGM-2430)(NGH-2430)", SNK, 1998, GAME_BEAT);
+
+static struct ROM_INFO rom_neocup98[] = // clone of neogeo
+{
+  { "244-p1.p1", 0x100000, 0xf8fdb7a5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "244-p1.p1", 0x100000 , 0xf8fdb7a5, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "244-s1.s1", 0x20000, 0x9bddb697, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "244-m1.m1", 0x20000, 0xa701b276, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "244-v1.v1", 0x400000, 0x79def46d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "244-v2.v2", 0x200000, 0xb231902f, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "244-c1.c1", 0x800000, 0xc7a62b23, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "244-c2.c2", 0x800000, 0x33aa0f35, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( neocup98, neogeo, "Neo-Geo Cup '98 - The Road to the Victory", SNK, 1998, GAME_SPORTS);
+
+static struct ROM_INFO rom_breakrev[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "245-p1.p1", 0x100000, 0xc828876d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "245-p1.p1", 0x100000 , 0xc828876d, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "245-s1.s1", 0x20000, 0xe7660a5d, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "245-m1.m1", 0x20000, 0x00f31c66, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "245-v1.v1", 0x400000, 0xe255446c, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "245-v2.v2", 0x400000, 0x9068198a, REGION_SMP1, 0x400000, LOAD_NORMAL },
+	/* The chip labels and sizes are correct */
+  { "245-c1.c1", 0x400000, 0x68d4ae76, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "245-c2.c2", 0x400000, 0xfdee05cd, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "245-c3.c3", 0x400000, 0x645077f3, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "245-c4.c4", 0x400000, 0x63aeb74c, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "245-c5.c5", 0x400000, 0xb5f40e7f, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "245-c6.c6", 0x400000, 0xd0337328, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( breakrev, neogeo, "Breakers Revenge", VISCO, 1998, GAME_BEAT);
+
+static struct ROM_INFO rom_shocktr2[] = // clone of neogeo
+{
+  { "246-p1.p1", 0x100000, 0x6d4b7781, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "246-p2.sp2", 0x400000, 0x72ea04c3, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "246-s1.s1", 0x20000, 0x2a360637, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "246-m1.m1", 0x20000, 0xd0604ad1, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "246-v1.v1", 0x400000, 0x16986fc6, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "246-v2.v2", 0x400000, 0xada41e83, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "246-v3.v3", 0x200000, 0xa05ba5db, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "246-c1.c1", 0x800000, 0x47ac9ec5, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "246-c2.c2", 0x800000, 0x7bcab64f, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "246-c3.c3", 0x800000, 0xdb2f73e8, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "246-c4.c4", 0x800000, 0x5503854e, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "246-c5.c5", 0x800000, 0x055b3701, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "246-c6.c6", 0x800000, 0x7e2caae1, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( shocktr2, neogeo, "Shock Troopers - 2nd Squad", SAURUS, 1998, GAME_SHOOT);
+
+static struct ROM_INFO rom_flipshot[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "247-p1.p1", 0x100000, 0x95779094, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "247-s1.s1", 0x20000, 0x6300185c, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "247-m1.m1", 0x20000, 0xa9fe0144, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "247-v1.v1", 0x200000, 0x42ec743d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "247-c1.c1", 0x200000, 0xc9eedcb2, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "247-c2.c2", 0x200000, 0x7d6d6e87, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( flipshot, neogeo, "Battle Flip Shot", VISCO, 1998, GAME_MISC);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },

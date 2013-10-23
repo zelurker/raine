@@ -3006,6 +3006,69 @@ static void kof99_neogeo_gfx_decrypt(int extra_xor)
 	neogeo_sfix_decrypt();
 }
 
+/* Kof98 uses an early encryption, quite different from the others */
+static void kof98_decrypt_68k()
+{
+        UINT8 *src = ROM;
+        UINT8 *dst = AllocateMem( 0x200000);
+        int i, j, k;
+        static const UINT32 sec[]={0x000000,0x100000,0x000004,0x100004,0x10000a,
+0x00000a,0x10000e,0x00000e};
+        static const UINT32 pos[]={0x000,0x004,0x00a,0x00e};
+
+        memcpy( dst, src, 0x200000);
+        for( i=0x800; i<0x100000; i+=0x200 )
+        {
+                for( j=0; j<0x100; j+=0x10 )
+                {
+                        for( k=0; k<16; k+=2)
+                        {
+                                memcpy( &src[i+j+k],       &dst[ i+j+sec[k/2]+0x100 ], 2 );
+                                memcpy( &src[i+j+k+0x100], &dst[ i+j+sec[k/2] ],
+					2 );
+                        }
+                        if( i >= 0x080000 && i < 0x0c0000)
+                        {
+                                for( k=0; k<4; k++ )
+                                {
+                                        memcpy( &src[i+j+pos[k]],       &dst[i+j+pos[k]],       2 );
+                                        memcpy( &src[i+j+pos[k]+0x100], &dst[i+j+pos[k]+0x100], 2 );
+                                }
+                        }
+                        else if( i >= 0x0c0000 )
+                        {
+                                for( k=0; k<4; k++ )
+                                {
+                                        memcpy( &src[i+j+pos[k]],       &dst[i+j+pos[k]+0x100], 2 );
+                                        memcpy( &src[i+j+pos[k]+0x100], &dst[i+j+pos[k]],       2 );
+                                }
+                        }
+                }
+                memcpy( &src[i+0x000000], &dst[i+0x000000], 2 );
+                memcpy( &src[i+0x000002], &dst[i+0x100000], 2 );
+                memcpy( &src[i+0x000100], &dst[i+0x000100], 2 );
+                memcpy( &src[i+0x000102], &dst[i+0x100100], 2 );
+        }
+        memmove( &src[0x100000], &src[0x200000], 0x400000 );
+
+        FreeMem( dst);
+}
+
+static void kof98_prot_w(UINT32 offset, UINT16 data) {
+    switch(data) {
+    case 0x90:
+	WriteWord(&ROM[0x100],0xc2);
+	WriteWord(&ROM[0x102],0xfd);
+	break;
+    case 0xf0:
+	WriteWord(&ROM[0x100],0x4e45);
+	WriteWord(&ROM[0x102],0x4f2d);
+	break;
+    default:
+	printf("kof98_prot_w %x\n",data);
+    }
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -3112,6 +3175,8 @@ void load_neocd() {
 	    GameMouse = 1;
 	else if (is_current_game("popbounc"))
 	    GameMouse = 2; // mouse type 2
+	else if (is_current_game("kof98"))
+	    kof98_decrypt_68k();
 	UINT8 *tmp = AllocateMem(size);
 	if (load_region[REGION_FIXED]) {
 	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);
@@ -3123,6 +3188,7 @@ void load_neocd() {
 	fix_conv(tmp, load_region[REGION_FIXEDBIOS], size_fixed, bios_fix_usage);
 
 	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
+	load_message("Sprites conversion...");
 	spr_conv(load_region[REGION_SPRITES],tmp,get_region_size(REGION_SPRITES),video_spr_usage);
 	GFX = tmp;
 	FreeMem(load_region[REGION_SPRITES]);
@@ -3278,7 +3344,8 @@ void load_neocd() {
 	    AddReadWord(0x200000, 0x2fffff, fatfury2_prot_rw, NULL);
 	    AddWriteWord(0x200000, 0x2fffff, fatfury2_prot_ww, NULL);
 	    AddSaveData(SAVE_USER_2, (UINT8*)&fatfury2_prot_data, sizeof(fatfury2_prot_data));
-	}
+	} else if (is_current_game("kof98"))
+	    AddWriteWord(0x20aaaa, 0x20aaab, kof98_prot_w, NULL);
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
