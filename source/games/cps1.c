@@ -1733,7 +1733,7 @@ void finish_conf_cps1()
    if (is_current_game("sf2dongb"))
        AddReadWord(0x180000, 0x1fffff, sf2dongb_rw, NULL);
    AddMemFetch(size_code, size_code+32, space_hack - size_code);
-   printf("space_hack mapped at %x\n",size_code);
+   print_debug("space_hack mapped at %x\n",size_code);
    AddReadBW(size_code, size_code+32, NULL, space_hack);
    AddMemFetch(-1, -1, NULL);
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>

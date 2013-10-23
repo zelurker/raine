@@ -256,7 +256,6 @@ int stream_init(const char *name,int sample_rate,int sample_bits,
 #endif
 
   total_len = (sample_bits/8)*(stream_buffer_len[channel]*16);
-  printf("alloc stream %d\n",total_len);
   if ((stream_buffer[channel] = AllocateMem(total_len)) == 0)
 		return -1;
   sem[channel] = SDL_CreateSemaphore(1);
@@ -297,7 +296,6 @@ int stream_init_multi(int channels,const char **name,int sample_rate,int sample_
 #endif
   total_len = (sample_bits/8)*stream_buffer_len[channel+i]*16;
 
-  printf("alloc stream %d\n",stream_buffer_len[channel]*8);
       if ((stream_buffer[channel+i] = AllocateMem(total_len)) == 0)
 	return -1;
       memset(stream_buffer[channel+i],0,total_len);
