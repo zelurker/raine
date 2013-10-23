@@ -150,6 +150,71 @@ static struct DSW_DATA dsw_alpham2_1[] =
   { NULL, 0, 0}
 };
 
+static struct DSW_DATA dsw_breakers_1[] =
+{
+    DSW_ON_OFF("Debug Menu (req dev mode, coin, p1 start)",1,0),
+    DSW_ON_OFF("Screen Scroll Debug",2,0),
+    DSW_ON_OFF("Kakuto Char No. Disp",4,0),
+    DSW_ON_OFF("Kakuto Trigger Free (rapid fire)",8,0),
+    DSW_ON_OFF("Kakuto Sound Test (not sure how it works)",16,0),
+    DSW_ON_OFF("Obj. Status Debug (not sure how it works)",32,0),
+    DSW_ON_OFF("1-7 Unknown",64,0),
+    DSW_ON_OFF("Task Lsp. Weight Chk",128,0),
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_breakers_2[] =
+{
+    DSW_ON_OFF("for CPU Algo Debug (character data displayed on screen)",1,0),
+    DSW_ON_OFF("Char Select mode (hold ABCD, then hit down to scroll)",2,0),
+    DSW_ON_OFF("Center and Size Display (little ring appears to mark player position)",4,0),
+    DSW_ON_OFF("Hit Area Display",8,0),
+    DSW_ON_OFF("Ougi (pow) Max (unlimited pow)",16,0),
+    DSW_ON_OFF("No Limit Battle (on time/health limits)",32,0),
+    DSW_ON_OFF("Pal Sim (Europe only)",64,0),
+    DSW_ON_OFF("Stop Motion (hit select to pause, start to unpause)",128, 0),
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_doubledr_2[] =
+{
+    DSW_ON_OFF("Slow motion",1,0),
+    DSW_ON_OFF("No damage taken for either character",2,0),
+    DSW_ON_OFF("Full charge for both players",4,0),
+    DSW_ON_OFF("2-4 Unknown",8,0),
+    DSW_ON_OFF("2-5 Unknown",16,0),
+    DSW_ON_OFF("2-6 Unknown",32,0),
+    DSW_ON_OFF("2-7 Unknown",64,0),
+    DSW_ON_OFF("2-8 Unknown",128, 0),
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_fatfury2_1[] =
+{
+    DSW_ON_OFF("1-1 Unknown",1,0),
+    DSW_ON_OFF("1-2 Unknown",2,0),
+    DSW_ON_OFF("CPU vs CPU",4,0),
+    DSW_ON_OFF("1-4 unknown",8,0),
+    DSW_ON_OFF("Alternate character selection screen (enable at title screen)",16,0),
+    DSW_ON_OFF("View characters ending",32,0),
+    DSW_ON_OFF("1-7 unknown",64,0),
+    DSW_ON_OFF("1-8 unknown",128,0),
+  { NULL, 0, 0}
+};
+
+static struct DSW_DATA dsw_fatfury2_2[] =
+{
+    DSW_ON_OFF("Invincible mode",1,0),
+    DSW_ON_OFF("2-2 Unknown",2,0),
+    DSW_ON_OFF("2-3 Unknown",4,0),
+    DSW_ON_OFF("2-4 Unknown",8,0),
+    DSW_ON_OFF("Press A+B+C+D to reduce opponents energy",16,0),
+    DSW_ON_OFF("2-6 Unknown",32,0),
+    DSW_ON_OFF("2-7 Unknown",64,0),
+    DSW_ON_OFF("2-8 Unknown",128, 0),
+  { NULL, 0, 0}
+};
+
 static struct DSW_INFO dsw_debug[] =
 {
   { 0x1, 0, def_0 },
@@ -174,6 +239,14 @@ int do_debug_dsw(int sel) {
 	dsw_debug[0].data = dsw_aof3_2;
     } else if (is_current_game("alpham2")) {
 	dsw_debug[1].data = dsw_alpham2_1;
+    } else if (is_current_game("breakers") || is_current_game("breakrev")) {
+	dsw_debug[1].data = dsw_breakers_1;
+	dsw_debug[0].data = dsw_breakers_2;
+    } else if (is_current_game("doubledr")) {
+	dsw_debug[0].data = dsw_doubledr_2;
+    } else if (is_current_game("fatfury2")) {
+	dsw_debug[1].data = dsw_fatfury2_1;
+	dsw_debug[0].data = dsw_fatfury2_2;
     }
     UINT8 *ram = (is_neocd() ? RAM : ROM);
     int base = ReadLongSc(&ram[0x10e]);
@@ -199,8 +272,8 @@ int do_debug_dsw(int sel) {
     do_dlg_dsw(0);
     current_game->dsw = old;
     init_dsw();
-    printf("au final, debug dsw %x %x, go to %x\n",input_buffer[10],input_buffer[11],base);
     if (!is_neocd()) base &= 0xffff;
+    printf("au final, debug dsw %x %x, go to %x\n",input_buffer[10],input_buffer[11],base);
     RAM[base ^ 1] = input_buffer[10];
     RAM[(base+1) ^ 1] = input_buffer[11];
     return 0;
