@@ -137,9 +137,9 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   { KB_DEF_P2_B2B3B4,"Player2 B+C+D", 3, 0xe0, BIT_ACTIVE_0 },
 
   INP0( P1_START, 5, 1 ),
-  { KB_DEF_NEXT_GAME, "Next Game", 0x05, 0x02, BIT_ACTIVE_0 },
+  { KB_DEF_NEXT_GAME, "Select 1", 0x05, 0x02, BIT_ACTIVE_0 },
   INP0( P2_START, 5, 4 ),
-  { KB_DEF_PREV_GAME, "Prev Game", 0x05, 0x08, BIT_ACTIVE_0 },
+  { KB_DEF_PREV_GAME, "Select 2", 0x05, 0x08, BIT_ACTIVE_0 },
   INP1( UNKNOWN, 5, 0x70), // memcard status
   INP0( UNKNOWN, 5, 0x80), // mvs/aes ?
   // Bit 4 (0x10) is 0 if the memory card is present !!!
@@ -2583,6 +2583,112 @@ static struct ROM_INFO rom_flipshot[] = /* MVS ONLY RELEASE clone of neogeo */
 };
 
 CLNEI( flipshot, neogeo, "Battle Flip Shot", VISCO, 1998, GAME_MISC);
+
+static struct ROM_INFO rom_pbobbl2n[] = /* MVS ONLY RELEASE clone of neogeo */
+{
+  { "248-p1.p1", 0x100000, 0x9d6c0754, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "248-s1.s1", 0x20000, 0x0a3fee41, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "248-m1.m1", 0x20000, 0x883097a9, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "248-v1.v1", 0x400000, 0x57fde1fa, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "248-v2.v2", 0x400000, 0x4b966ef3, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "248-c1.c1", 0x400000, 0xd9115327, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "248-c2.c2", 0x400000, 0x77f9fdac, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { "248-c3.c3", 0x100000, 0x8890bf7c, REGION_SPRITES, 0x800000, LOAD_8_16 },
+  { "248-c4.c4", 0x100000, 0x8efead3f, REGION_SPRITES, 0x800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( pbobbl2n, neogeo, "Puzzle Bobble 2 / Bust-A-Move Again (Neo-Geo)", TAITO, 1999, GAME_PUZZLE);
+
+static struct ROM_INFO rom_ctomaday[] = /* MVS ONLY RELEASE */
+{
+  { "249-p1.p1", 0x100000, 0xc9386118, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "249-p1.p1", 0x100000 , 0xc9386118, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+  { "249-s1.s1", 0x20000, 0xdc9eb372, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "249-m1.m1", 0x20000, 0x80328a47, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "249-v1.v1", 0x400000, 0xde7c8f27, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "249-v2.v2", 0x100000, 0xc8e40119, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "249-c1.c1", 0x400000, 0x041fb8ee, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "249-c2.c2", 0x400000, 0x74f3cdf4, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ctomaday, neogeo, "Captain Tomaday", VISCO, 1999, GAME_SHOOT);
+
+static struct ROM_INFO rom_mslugx[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  { "250-p1.p1", 0x100000, 0x81f1f60b, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "250-p2.ep1", 0x400000, 0x1fda2e12, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "250-s1.s1", 0x20000, 0xfb6f441d, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "250-m1.m1", 0x20000, 0xfd42a842, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "250-v1.v1", 0x400000, 0xc79ede73, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "250-v2.v2", 0x400000, 0xea9aabe1, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "250-v3.v3", 0x200000, 0x2ca65102, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "250-c1.c1", 0x800000, 0x09a52c6f, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "250-c2.c2", 0x800000, 0x31679821, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "250-c3.c3", 0x800000, 0xfd602019, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "250-c4.c4", 0x800000, 0x31354513, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "250-c5.c5", 0x800000, 0xa4b56124, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "250-c6.c6", 0x800000, 0x83e3e69d, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslugx, neogeo, "Metal Slug X - Super Vehicle-001 (NGM-2500)(NGH-2500)", SNK, 1999, GAME_SHOOT);
+
+static struct ROM_INFO rom_kof99[] = /* Original Version - Encrypted Code & GFX clone of neogeo */
+ /* MVS VERSION */{
+  { "ka.neo-sma", 0x040000, 0x7766d09e, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
+  { "251-p1.p1", 0x400000, 0x006e4532, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "251-p2.p2", 0x400000, 0x90175f15, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+ FILL( 0x000000, 0x20000, 0, REGION_FIXED ),
+  { "251-m1.m1", 0x20000, 0x5e74539c, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "251-v1.v1", 0x400000, 0xef2eecc8, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "251-v2.v2", 0x400000, 0x73e211ca, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "251-v3.v3", 0x400000, 0x821901da, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "251-v4.v4", 0x200000, 0xb49e6178, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "251-c1.c1", 0x800000, 0x0f9e93fe, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "251-c2.c2", 0x800000, 0xe71e2ea3, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "251-c3.c3", 0x800000, 0x238755d2, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "251-c4.c4", 0x800000, 0x438c8b22, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "251-c5.c5", 0x800000, 0x0b0abd0a, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "251-c6.c6", 0x800000, 0x65bbf281, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "251-c7.c7", 0x800000, 0xff65f62e, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "251-c8.c8", 0x800000, 0x8d921c68, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof99, neogeo, "The King of Fighters '99 - Millennium Battle (NGM-2510)" , SNK, 1999, GAME_BEAT);
+
+static struct ROM_INFO rom_kof99h[] = /* Original Version - Encrypted Code & GFX clone of kof99 */
+ /* AES VERSION */{
+  { "kc.neo-sma", 0x040000, 0x6c9d0647, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
+  { "251-p1.p1", 0x400000, 0x006e4532, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "251-pg2.p2", 0x400000, 0xd9057f51, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+/* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
+	/* Encrypted */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof99h, kof99, "The King of Fighters '99 - Millennium Battle (NGH-2510)" , SNK, 1999, GAME_BEAT);
+
+static struct ROM_INFO rom_ganryu[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
+{
+  { "252-p1.p1", 0x100000, 0x4b8ac4fb, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "252-p1.p1", 0x100000 , 0x4b8ac4fb, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, REGION_FIXED),
+  { "252-m1.m1", 0x20000, 0x30cc4099, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "252-v1.v1", 0x400000, 0xe5946733, REGION_SMP1, 0x000000, LOAD_NORMAL },
+	/* Encrypted */
+  { "252-c1.c1", 0x800000, 0x50ee7882, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "252-c2.c2", 0x800000, 0x62585474, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( ganryu, neogeo, "Ganryu / Musashi Ganryuki" , VISCO, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {

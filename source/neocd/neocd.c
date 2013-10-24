@@ -1758,7 +1758,6 @@ static void draw_neocd() {
 
   clear_screen();
   if (!video_enabled) {
-      printf("video disabled, bye\n");
       return;
   }
 
@@ -2465,6 +2464,35 @@ static void set_68k_bank(UINT32 offset, UINT16 data) {
     }
 }
 
+static void kof99_bankswitch_w(UINT32 offset, UINT16 data) {
+	int bankaddress;
+	static const int bankoffset[64] =
+	{
+		0x000000, 0x100000, 0x200000, 0x300000,
+		0x3cc000, 0x4cc000, 0x3f2000, 0x4f2000,
+		0x407800, 0x507800, 0x40d000, 0x50d000,
+		0x417800, 0x517800, 0x420800, 0x520800,
+		0x424800, 0x524800, 0x429000, 0x529000,
+		0x42e800, 0x52e800, 0x431800, 0x531800,
+		0x54d000, 0x551000, 0x567000, 0x592800,
+		0x588800, 0x581800, 0x599800, 0x594800,
+		0x598000,   /* rest not used? */
+	};
+
+	/* unscramble bank number */
+	data =
+		(((data>>14)&1)<<0)+
+		(((data>> 6)&1)<<1)+
+		(((data>> 8)&1)<<2)+
+		(((data>>10)&1)<<3)+
+		(((data>>12)&1)<<4)+
+		(((data>> 5)&1)<<5);
+
+	bankaddress = 0x100000 + bankoffset[data];
+
+	set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
+}
+
 static int controller;
 
 static void io_control_w(UINT32 offset, UINT32 data) {
@@ -3054,6 +3082,37 @@ static void kof98_decrypt_68k()
         FreeMem( dst);
 }
 
+static void kof99_decrypt_68k()
+{
+	UINT16 *rom;
+	int i,j;
+
+	rom = (UINT16*)&ROM[0x100000];
+	/* swap data lines on the whole ROMs */
+	for (i = 0;i < 0x800000/2;i++)
+	{
+		rom[i] = BITSWAP16(rom[i],13,7,3,0,9,4,5,6,1,12,8,14,10,11,2,15);
+	}
+
+	/* swap address lines for the banked part */
+	for (i = 0;i < 0x600000/2;i+=0x800/2)
+	{
+		UINT16 buffer[0x800/2];
+		memcpy(buffer,&rom[i],0x800);
+		for (j = 0;j < 0x800/2;j++)
+		{
+			rom[i+j] = buffer[BITSWAP24(j,23,22,21,20,19,18,17,16,15,14,13,12,11,10,6,2,4,9,8,3,1,7,0,5)];
+		}
+	}
+
+	/* swap address lines & relocate fixed part */
+	rom = (UINT16*)ROM;
+	for (i = 0;i < 0x0c0000/2;i++)
+	{
+		rom[i] = rom[0x700000/2 + BITSWAP24(i,23,22,21,20,19,18,11,6,14,17,16,5,8,10,12,0,4,3,2,7,9,15,13,1)];
+	}
+}
+
 static void kof98_prot_w(UINT32 offset, UINT16 data) {
     switch(data) {
     case 0x90:
@@ -3067,6 +3126,54 @@ static void kof98_prot_w(UINT32 offset, UINT16 data) {
     default:
 	printf("kof98_prot_w %x\n",data);
     }
+}
+
+static UINT16 prot,mslugx_command,mslugx_counter,neogeo_rng;
+
+static UINT16 read_rng(UINT32 offset) {
+    	UINT16 old = neogeo_rng;
+
+	UINT16 newbit = ((neogeo_rng >> 2) ^
+						(neogeo_rng >> 3) ^
+						(neogeo_rng >> 5) ^
+						(neogeo_rng >> 6) ^
+						(neogeo_rng >> 7) ^
+						(neogeo_rng >>11) ^
+						(neogeo_rng >>12) ^
+						(neogeo_rng >>15)) & 1;
+
+	neogeo_rng = (neogeo_rng << 1) | newbit;
+
+	return old;
+}
+
+static void mslugx_prot_w(UINT32 offset, UINT16 data) {
+    switch (offset & 0xf) {
+    case 0: mslugx_command = 0; break;
+    case 2:
+    case 4: mslugx_command |= data; break;
+    case 6: break; // finished ?
+    case 0xa: mslugx_command = mslugx_counter = 0; break; // init ?
+    default: print_debug("unknown mslugx_prot_w %x,%x\n",offset,data);
+    }
+}
+
+static UINT16 mslugx_prot_r(UINT32 offset) {
+    UINT16 res;
+    switch(mslugx_command) {
+    case 1: res = (ROM[(0xdedd2 + ((mslugx_counter >> 3) & 0xfff)) ^ 1] >> (~mslugx_counter & 0x07)) & 1;
+	    mslugx_counter++;
+	    break;
+    case 0xfff:
+	    {
+		UINT16 select = ReadWord(&RAM[0xf00a]) - 1;
+		res = (ROM[(0xdedd2 + ((select >> 3) & 0x0fff)) ^ 1] >> (~select & 0x07)) & 1;
+	    }
+	    break;
+    default:
+	    print_debug("unknown mslugx_prot_r pc:%x offset %x\n",s68000readPC(),offset);
+    }
+    return res;
 }
 
 void load_neocd() {
@@ -3177,6 +3284,14 @@ void load_neocd() {
 	    GameMouse = 2; // mouse type 2
 	else if (is_current_game("kof98"))
 	    kof98_decrypt_68k();
+	else if (is_current_game("kof99") || is_current_game("kof99h")) {
+	    fixed_layer_bank_type = 1;
+	    kof99_neogeo_gfx_decrypt(0x00);
+	} else if (is_current_game("ganryu")) {
+	    fixed_layer_bank_type = 1;
+	    kof99_neogeo_gfx_decrypt(0x07);
+	}
+
 	UINT8 *tmp = AllocateMem(size);
 	if (load_region[REGION_FIXED]) {
 	    memcpy(tmp,load_region[REGION_FIXED],size_fixed);
@@ -3223,9 +3338,6 @@ void load_neocd() {
 	    ROM = load_region[REGION_MAINBIOS];
 	} else
 	    ByteSwap(ROM,get_region_size(REGION_ROM1));
-	memcpy(game_vectors, ROM, 0x80);
-	// memcpy(ROM,neocd_bios,0x80);
-	game_vectors_set = 1; // For now we are on rom
 	if (is_current_game("ridhero"))
 	    // A strange protection for aes only, it's probably easier to patch
 	    WriteWord(&ROM[0xabba],0x6000);
@@ -3279,6 +3391,22 @@ void load_neocd() {
 	if (get_region_size(REGION_CPU1) > 0x100000) {
 	    AddMemFetch(0, 0xfffff, ROM);
 	    AddReadBW(0,0xfffff, NULL, ROM);
+	    if (is_current_game("kof99") || is_current_game("kof99h")) {
+		// The 68k decode must be done after the byteswap, lots of
+		// bitswap to decrypt this...
+		kof99_decrypt_68k();
+		prot = 0x9a37;
+		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
+		AddSaveData(SAVE_USER_2,(UINT8*)&neogeo_rng, sizeof(neogeo_rng));
+		neogeo_rng = 0x2345;
+		AddReadBW(0x2ffff8,0x2ffffb, read_rng, NULL);
+	    } else if (is_current_game("mslugx")) {
+		AddSaveData(SAVE_USER_2, (UINT8*)&mslugx_command, sizeof(mslugx_command));
+		AddSaveData(SAVE_USER_3, (UINT8*)&mslugx_counter, sizeof(mslugx_counter));
+		AddReadWord(0x2fffe0, 0x2fffef, mslugx_prot_r, NULL);
+		AddWriteWord(0x2fffe0, 0x2fffef, mslugx_prot_w, NULL);
+	    }
+
 	    AddMemFetch(0x200000, 0x2fffff, ROM+0x100000-0x200000);
 	    AddReadBW(0x200000, 0x2fffff, NULL, ROM+0x100000);
 	    bank_68k = 0;
@@ -3299,6 +3427,9 @@ void load_neocd() {
 	// I keep the code, just in case...
 	AddReadByte(0xc20000,0xcfffff, read_bios_b, NULL);
 	AddReadWord(0xc20000,0xcfffff, read_bios_w, NULL);
+	memcpy(game_vectors, ROM, 0x80);
+	// memcpy(ROM,neocd_bios,0x80);
+	game_vectors_set = 1; // For now we are on rom
     }
 
     AddReadByte(0x300000, 0x300001, NULL, &input_buffer[0]);
@@ -3346,6 +3477,9 @@ void load_neocd() {
 	    AddSaveData(SAVE_USER_2, (UINT8*)&fatfury2_prot_data, sizeof(fatfury2_prot_data));
 	} else if (is_current_game("kof98"))
 	    AddWriteWord(0x20aaaa, 0x20aaab, kof98_prot_w, NULL);
+	else if (is_current_game("kof99") || is_current_game("kof99h")) {
+	    AddWriteWord(0x2ffff0, 0x2ffff1, kof99_bankswitch_w, NULL);
+	}
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
@@ -3733,6 +3867,16 @@ void execute_neocd() {
 		      apply_hack(pc,"mslug2 special");
 		      WriteWord(&RAM[pc+6],0x4e71);
 		      current_neo_frame = desired_68k_speed;
+		  } else if (ReadWord(&RAM[pc]) == 0x6400) {
+		      int ofs = pc+ReadWord(&RAM[pc+2])+2;
+		      if (ReadWord(&RAM[ofs]) == 0x8ad &&
+			      ReadWord(&RAM[ofs+6]) == 0x6700) {
+			  printf("mslugx: applied\n");
+			  apply_hack(ofs,"mslugx special");
+			  WriteWord(&RAM[ofs+6],0x4e71);
+			  WriteWord(&RAM[ofs+8],0x4e71);
+			  current_neo_frame = desired_68k_speed;
+		      }
 		  } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
 			  ReadWord(&RAM[pc+8]) == 0x6600 &&
 			  ReadWord(&RAM[pc+10]) == 8 &&
