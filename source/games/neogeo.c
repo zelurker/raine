@@ -1710,7 +1710,7 @@ static struct ROM_INFO rom_kabukikl[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kabukikl, neogeo, "Far East of Eden - Kabuki Klash / Tengai Makyou - Shin Den", HUDSON, 1995, GAME_BEAT);
+CLNEI( kabukikl, neogeo, "Kabuki Klash - Far East of Eden / Tengai Makyou - Shin Den", HUDSON, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_neobombe[] = /* MVS ONLY RELEASE */
 {
@@ -2083,7 +2083,7 @@ static struct ROM_INFO rom_ironclad[] = /* Prototype - crcs should match the one
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( ironclad, neogeo, "Choutetsu Brikin'ger - Iron clad (Prototype)", SAURUS, 1996, GAME_SHOOT);
+CLNEI( ironclad, neogeo, "Iron clad - Choutetsu Brikin'ger (Prototype)", SAURUS, 1996, GAME_SHOOT);
 
 static struct ROM_INFO rom_ironclado[] = /* Prototype - bootleg/hack based on later release. clone of ironclad */
 {
@@ -2092,7 +2092,7 @@ static struct ROM_INFO rom_ironclado[] = /* Prototype - bootleg/hack based on la
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( ironclado, ironclad, "Choutetsu Brikin'ger - Iron clad (Prototype, bootleg)", BOOTLEG, 1996, GAME_SHOOT);
+CLNEI( ironclado, ironclad, "Iron clad - Choutetsu Brikin'ger (Prototype, bootleg)", BOOTLEG, 1996, GAME_SHOOT);
 
 static struct ROM_INFO rom_magdrop2[] =
 {
@@ -2689,6 +2689,34 @@ static struct ROM_INFO rom_ganryu[] = /* Original Version - Encrypted GFX */ /* 
 };
 
 CLNEI( ganryu, neogeo, "Ganryu / Musashi Ganryuki" , VISCO, 1999, GAME_BEAT);
+
+static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone of neogeo */
+ /* MVS VERSION - later revision */{
+  { "kf.neo-sma", 0x040000, 0x98bc93dc, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
+  { "253-ep1.p1", 0x200000, 0xea3171a4, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "253-ep2.p2", 0x200000, 0x382f704b, REGION_CPU1, 0x300000, LOAD_SWAP_16 },
+  { "253-ep3.p3", 0x200000, 0xe395bfdd, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+  { "253-ep4.p4", 0x200000, 0xda92c08e, REGION_CPU1, 0x700000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, REGION_FIXED),
+  { "253-m1.m1", 0x40000, 0x36a806be, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "253-v1.v1", 0x400000, 0x263e388c, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "253-v2.v2", 0x400000, 0x2c6bc7be, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "253-v3.v3", 0x400000, 0x0425b27d, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "253-v4.v4", 0x400000, 0xa54be8a9, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "253-c1.c1", 0x800000, 0x0603e046, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "253-c2.c2", 0x800000, 0x0917d2a4, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "253-c3.c3", 0x800000, 0x6737c92d, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "253-c4.c4", 0x800000, 0x5ba92ec6, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "253-c5.c5", 0x800000, 0x3eab5557, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "253-c6.c6", 0x800000, 0x308d098b, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "253-c7.c7", 0x800000, 0xc0e995ae, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "253-c8.c8", 0x800000, 0x21a11303, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( garou, neogeo, "Garou - Mark of the Wolves (NGM-2530)" , SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {

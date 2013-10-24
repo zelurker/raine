@@ -951,6 +951,7 @@ DRV(nam1975)
     DRV(kof99)
     DRV(kof99h)
     DRV(ganryu)
+    DRV(garou)
     DRV(kof97pls)
     DRV(kof97oro)
 

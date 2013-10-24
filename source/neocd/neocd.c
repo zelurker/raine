@@ -40,6 +40,7 @@
 #include "taitosnd.h"
 #include "games/neogeo.h"
 #include "decode.h"
+#include "sdl/dialogs/neo_debug_dips.h"
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
@@ -1956,6 +1957,7 @@ void postprocess_ipl() {
   char path[FILENAME_MAX];
   sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
   load_sdips = exists(path);
+  init_debug_dips();
 }
 
 /* Upload area : this area is NOT in the neogeo cartridge systems
@@ -2491,6 +2493,41 @@ static void kof99_bankswitch_w(UINT32 offset, UINT16 data) {
 	bankaddress = 0x100000 + bankoffset[data];
 
 	set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
+}
+
+static void garou_bankswitch_w(UINT32 offset, UINT16 data) {
+    /* thanks to Razoola and Mr K for the info */
+    int bankaddress;
+    static const int bankoffset[64] =
+    {
+	0x000000, 0x100000, 0x200000, 0x300000, // 00
+	0x280000, 0x380000, 0x2d0000, 0x3d0000, // 04
+	0x2f0000, 0x3f0000, 0x400000, 0x500000, // 08
+	0x420000, 0x520000, 0x440000, 0x540000, // 12
+	0x498000, 0x598000, 0x4a0000, 0x5a0000, // 16
+	0x4a8000, 0x5a8000, 0x4b0000, 0x5b0000, // 20
+	0x4b8000, 0x5b8000, 0x4c0000, 0x5c0000, // 24
+	0x4c8000, 0x5c8000, 0x4d0000, 0x5d0000, // 28
+	0x458000, 0x558000, 0x460000, 0x560000, // 32
+	0x468000, 0x568000, 0x470000, 0x570000, // 36
+	0x478000, 0x578000, 0x480000, 0x580000, // 40
+	0x488000, 0x588000, 0x490000, 0x590000, // 44
+	0x5d0000, 0x5d8000, 0x5e0000, 0x5e8000, // 48
+	0x5f0000, 0x5f8000, 0x600000, /* rest not used? */
+    };
+
+    /* unscramble bank number */
+    data =
+	(((data>> 5)&1)<<0)+
+	(((data>> 9)&1)<<1)+
+	(((data>> 7)&1)<<2)+
+	(((data>> 6)&1)<<3)+
+	(((data>>14)&1)<<4)+
+	(((data>>12)&1)<<5);
+
+    bankaddress = 0x100000 + bankoffset[data];
+
+    set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
 }
 
 static int controller;
@@ -3113,6 +3150,38 @@ static void kof99_decrypt_68k()
 	}
 }
 
+static void garou_decrypt_68k() {
+    UINT16 *rom;
+    int i,j;
+
+    /* thanks to Razoola and Mr K for the info */
+    rom = (UINT16 *)&ROM[0x100000];
+    /* swap data lines on the whole ROMs */
+    for (i = 0;i < 0x800000/2;i++)
+    {
+	rom[i] = BITSWAP16(rom[i],13,12,14,10,8,2,3,1,5,9,11,4,15,0,6,7);
+    }
+
+    /* swap address lines & relocate fixed part */
+    rom = (UINT16 *)ROM;
+    for (i = 0;i < 0x0c0000/2;i++)
+    {
+	rom[i] = rom[0x710000/2 + BITSWAP24(i,23,22,21,20,19,18,4,5,16,14,7,9,6,13,17,15,3,1,2,12,11,8,10,0)];
+    }
+
+    /* swap address lines for the banked part */
+    rom = (UINT16 *)&ROM[0x100000];
+    for (i = 0;i < 0x800000/2;i+=0x8000/2)
+    {
+	UINT16 buffer[0x8000/2];
+	memcpy(buffer,&rom[i],0x8000);
+	for (j = 0;j < 0x8000/2;j++)
+	{
+	    rom[i+j] = buffer[BITSWAP24(j,23,22,21,20,19,18,17,16,15,14,9,4,8,3,13,6,2,7,0,12,1,11,10,5)];
+	}
+    }
+}
+
 static void kof98_prot_w(UINT32 offset, UINT16 data) {
     switch(data) {
     case 0x90:
@@ -3290,6 +3359,9 @@ void load_neocd() {
 	} else if (is_current_game("ganryu")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0x07);
+	} else if (is_current_game("garou")) {
+	    fixed_layer_bank_type = 1;
+	    kof99_neogeo_gfx_decrypt(0x06);
 	}
 
 	UINT8 *tmp = AllocateMem(size);
@@ -3343,6 +3415,7 @@ void load_neocd() {
 	    WriteWord(&ROM[0xabba],0x6000);
 	else if (is_current_game("ridheroh"))
 	    WriteWord(&ROM[0xabf0],0x6000);
+	init_debug_dips();
     }
 
     memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
@@ -3391,20 +3464,25 @@ void load_neocd() {
 	if (get_region_size(REGION_CPU1) > 0x100000) {
 	    AddMemFetch(0, 0xfffff, ROM);
 	    AddReadBW(0,0xfffff, NULL, ROM);
+	    neogeo_rng = 0x2345;
+	    prot = 0x9a37;
+	    AddSaveData(SAVE_USER_2,(UINT8*)&neogeo_rng, sizeof(neogeo_rng));
 	    if (is_current_game("kof99") || is_current_game("kof99h")) {
 		// The 68k decode must be done after the byteswap, lots of
 		// bitswap to decrypt this...
 		kof99_decrypt_68k();
-		prot = 0x9a37;
 		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
-		AddSaveData(SAVE_USER_2,(UINT8*)&neogeo_rng, sizeof(neogeo_rng));
-		neogeo_rng = 0x2345;
-		AddReadBW(0x2ffff8,0x2ffffb, read_rng, NULL);
+		AddReadWord(0x2ffff8,0x2ffffb, read_rng, NULL);
 	    } else if (is_current_game("mslugx")) {
 		AddSaveData(SAVE_USER_2, (UINT8*)&mslugx_command, sizeof(mslugx_command));
 		AddSaveData(SAVE_USER_3, (UINT8*)&mslugx_counter, sizeof(mslugx_counter));
 		AddReadWord(0x2fffe0, 0x2fffef, mslugx_prot_r, NULL);
 		AddWriteWord(0x2fffe0, 0x2fffef, mslugx_prot_w, NULL);
+	    } else if (is_current_game("garou")) {
+		garou_decrypt_68k();
+		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
+		AddReadWord(0x2fffcc,0x2fffcd, read_rng, NULL);
+		AddReadWord(0x2ffff0,0x2ffff1, read_rng, NULL);
 	    }
 
 	    AddMemFetch(0x200000, 0x2fffff, ROM+0x100000-0x200000);
@@ -3479,7 +3557,8 @@ void load_neocd() {
 	    AddWriteWord(0x20aaaa, 0x20aaab, kof98_prot_w, NULL);
 	else if (is_current_game("kof99") || is_current_game("kof99h")) {
 	    AddWriteWord(0x2ffff0, 0x2ffff1, kof99_bankswitch_w, NULL);
-	}
+	} else if (is_current_game("garou"))
+	    AddWriteWord(0x2fffc0, 0x2fffc1, garou_bankswitch_w, NULL);
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
