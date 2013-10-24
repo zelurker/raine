@@ -72,15 +72,18 @@ static void get_bcd(int &nb,UINT8 *code) {
 
 static int get_byte(int adr) {
     if (is_neocd()) return RAM[adr ^ 1];
-    else if (adr < 0x100000) return ROM[adr ^ 1];
-    return RAM[(adr ^ 1) & 0xffff];
+    else return ROM[adr ^ 1];
 }
 
 int do_soft_dips(int sel) {
     if (!current_game) return 0;
     if (current_game->load_game != &load_neocd) return 0;
     int base = (is_neocd() ? ReadLongSc(&RAM[0x11e]) : ReadLongSc(&ROM[0x11e]));
-    if (base > 0x200000) return 0;
+    // mslug has a link to an address in its 1st rom bank, > 0x200000
+    if (base > 0x200000) {
+       if (is_neocd()) return 0;
+       base -= 0x100000; // there is a hole between 100000 and 200000 for ram
+    }
     char name[16];
     if (is_neocd())
 	memcpy(name,&RAM[base],16);
@@ -181,6 +184,29 @@ int do_soft_dips(int sel) {
 	    code++;
 	    if (defs++ == base + 0x16 + 10) // max nb of entries
 		break;
+	}
+	if (!is_neocd()) {
+	    // Do it once more like neocd, that is, write to ram
+	    // it allows to have a direct effect instead of having to reload
+	    // the game (or reset it).
+	    code = &RAM[0xfd84];
+	    bcode = code;
+	    nb = 0;
+	    if (bcd1 != 0xffff)
+		get_bcd(nb,code);
+	    if (bcd2 != 0xffff)
+		get_bcd(nb,code+2);
+	    WriteCode(code+4, val1);
+	    WriteCode(code+5, val2);
+	    code += 6;
+	    defs = base + 0x16;
+	    x = 0;
+	    while ((choices = get_byte(defs) & 0xf)) {
+		WriteCode(code, val[x++]);
+		code++;
+		if (defs++ == base + 0x16 + 10) // max nb of entries
+		    break;
+	    }
 	}
     }
     catch(...) { MessageBox("Warning","Bad soft dips","OK"); }
