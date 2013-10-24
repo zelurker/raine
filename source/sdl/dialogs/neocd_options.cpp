@@ -216,7 +216,7 @@ class TNeo_options : public TMenu {
       case 2:
       case 3:
       case 4: return current_game && current_game->load_game == &load_neocd;
-      case 8: return (current_game != NULL); // update block
+      case 7: return (current_game != NULL); // update block
       }
       return 1;
     }
