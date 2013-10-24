@@ -1861,6 +1861,16 @@ void video_enable(UINT32 offset, UINT8 data) {
   video_enabled = data;
 }
 
+static void apply_hack(int pc,char *comment) {
+    UINT8 *RAM = get_userdata(CPU_68K_0,pc);
+    WriteWord(&RAM[pc],0x4239);
+    WriteWord(&RAM[pc+2],0xaa);
+    WriteWord(&RAM[pc+4],0);
+    current_neo_frame = desired_68k_speed;
+    print_ingame(120,"Applied speed hack at %x:%s",pc,comment);
+    print_debug("Applied speed hack at %x:%s\n",pc,comment);
+}
+
 static int frame_count;
 
 static void neogeo_hreset(void)
@@ -1919,6 +1929,16 @@ static void neogeo_hreset(void)
   watchdog_counter = 9;
   display_position_interrupt_pending = 0;
   vblank_interrupt_pending = 0;
+  if (is_current_game("s1945p") && allowed_speed_hacks) {
+      /* This one is special, it tests twice its vbl with a jsr in the middle
+       * so applying automatically a speed hack is impossible here, I disable
+       * the 1st test with a nop and replace the 2nd with a speed hack, and
+       * it's placed here so that it replaces current_neo_frame from the
+       * start */
+      WriteWord(&ROM[0x514c],0x4e71);
+      apply_hack(&ROM[0x5154],"s1945p");
+      WriteWord(&ROM[0x515a],0x4e71);
+  }
 }
 
 void postprocess_ipl() {
@@ -2539,6 +2559,43 @@ static void garou_bankswitch_w(UINT32 offset, UINT16 data) {
 	(((data>> 6)&1)<<3)+
 	(((data>>14)&1)<<4)+
 	(((data>>12)&1)<<5);
+
+    bankaddress = 0x100000 + bankoffset[data];
+
+    set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
+}
+
+static void garouh_bankswitch_w(UINT32 offset, UINT16 data) {
+    /* thanks to Razoola and Mr K for the info */
+    int bankaddress;
+    static const int bankoffset[64] =
+    {
+	0x000000, 0x100000, 0x200000, 0x300000, // 00
+	0x280000, 0x380000, 0x2d0000, 0x3d0000, // 04
+	0x2c8000, 0x3c8000, 0x400000, 0x500000, // 08
+	0x420000, 0x520000, 0x440000, 0x540000, // 12
+	0x598000, 0x698000, 0x5a0000, 0x6a0000, // 16
+	0x5a8000, 0x6a8000, 0x5b0000, 0x6b0000, // 20
+	0x5b8000, 0x6b8000, 0x5c0000, 0x6c0000, // 24
+	0x5c8000, 0x6c8000, 0x5d0000, 0x6d0000, // 28
+	0x458000, 0x558000, 0x460000, 0x560000, // 32
+	0x468000, 0x568000, 0x470000, 0x570000, // 36
+	0x478000, 0x578000, 0x480000, 0x580000, // 40
+	0x488000, 0x588000, 0x490000, 0x590000, // 44
+	0x5d8000, 0x6d8000, 0x5e0000, 0x6e0000, // 48
+	0x5e8000, 0x6e8000, 0x6e8000, 0x000000, // 52
+	0x000000, 0x000000, 0x000000, 0x000000, // 56
+	0x000000, 0x000000, 0x000000, 0x000000, // 60
+    };
+
+    /* unscramble bank number */
+    data =
+	(((data>> 4)&1)<<0)+
+	(((data>> 8)&1)<<1)+
+	(((data>>14)&1)<<2)+
+	(((data>> 2)&1)<<3)+
+	(((data>>11)&1)<<4)+
+	(((data>>13)&1)<<5);
 
     bankaddress = 0x100000 + bankoffset[data];
 
@@ -3197,6 +3254,38 @@ static void garou_decrypt_68k() {
     }
 }
 
+static void garouh_decrypt_68k() {
+    UINT16 *rom;
+    int i,j;
+
+    /* thanks to Razoola and Mr K for the info */
+    rom = (UINT16 *)&ROM[0x100000];
+    /* swap data lines on the whole ROMs */
+    for (i = 0;i < 0x800000/2;i++)
+    {
+	rom[i] = BITSWAP16(rom[i],14,5,1,11,7,4,10,15,3,12,8,13,0,2,9,6);
+    }
+
+    /* swap address lines & relocate fixed part */
+    rom = (UINT16 *)ROM;
+    for (i = 0;i < 0x0c0000/2;i++)
+    {
+	rom[i] = rom[0x7f8000/2 + BITSWAP24(i,23,22,21,20,19,18,5,16,11,2,6,7,17,3,12,8,14,4,0,9,1,10,15,13)];
+    }
+
+    /* swap address lines for the banked part */
+    rom = (UINT16 *)&ROM[0x100000];
+    for (i = 0;i < 0x800000/2;i+=0x8000/2)
+    {
+	UINT16 buffer[0x8000/2];
+	memcpy(buffer,&rom[i],0x8000);
+	for (j = 0;j < 0x8000/2;j++)
+	{
+	    rom[i+j] = buffer[BITSWAP24(j,23,22,21,20,19,18,17,16,15,14,12,8,1,7,11,3,13,10,6,9,5,4,0,2)];
+	}
+    }
+}
+
 static void kof98_prot_w(UINT32 offset, UINT16 data) {
     switch(data) {
     case 0x90:
@@ -3374,9 +3463,12 @@ void load_neocd() {
 	} else if (is_current_game("ganryu")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0x07);
-	} else if (is_current_game("garou")) {
+	} else if (is_current_game("garou") || is_current_game("garouh")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0x06);
+	} else if (is_current_game("s1945p")) {
+	    fixed_layer_bank_type = 1;
+	    kof99_neogeo_gfx_decrypt(0x05);
 	}
 
 	UINT8 *tmp = AllocateMem(size);
@@ -3493,8 +3585,11 @@ void load_neocd() {
 		AddSaveData(SAVE_USER_3, (UINT8*)&mslugx_counter, sizeof(mslugx_counter));
 		AddReadWord(0x2fffe0, 0x2fffef, mslugx_prot_r, NULL);
 		AddWriteWord(0x2fffe0, 0x2fffef, mslugx_prot_w, NULL);
-	    } else if (is_current_game("garou")) {
-		garou_decrypt_68k();
+	    } else if (is_current_game("garou") || is_current_game("garouh")) {
+		if (is_current_game("garou"))
+		    garou_decrypt_68k();
+		else
+		    garouh_decrypt_68k();
 		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
 		AddReadWord(0x2fffcc,0x2fffcd, read_rng, NULL);
 		AddReadWord(0x2ffff0,0x2ffff1, read_rng, NULL);
@@ -3574,6 +3669,8 @@ void load_neocd() {
 	    AddWriteWord(0x2ffff0, 0x2ffff1, kof99_bankswitch_w, NULL);
 	} else if (is_current_game("garou"))
 	    AddWriteWord(0x2fffc0, 0x2fffc1, garou_bankswitch_w, NULL);
+	else if (is_current_game("garouh"))
+	    AddWriteWord(0x2fffc0, 0x2fffc1, garouh_bankswitch_w, NULL);
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
@@ -3628,16 +3725,6 @@ void load_neocd() {
     set_reset_function(neogeo_hreset);
     result_code = 0;
     irq.control = 0;
-}
-
-static void apply_hack(int pc,char *comment) {
-    UINT8 *RAM = get_userdata(CPU_68K_0,pc);
-    WriteWord(&RAM[pc],0x4239);
-    WriteWord(&RAM[pc+2],0xaa);
-    WriteWord(&RAM[pc+4],0);
-    current_neo_frame = desired_68k_speed;
-    print_ingame(120,"Applied speed hack at %x:%s",pc,comment);
-    print_debug("Applied speed hack at %x:%s\n",pc,comment);
 }
 
 void neocd_function(int vector) {
@@ -3963,7 +4050,6 @@ void execute_neocd() {
 			  ReadWord(&RAM[pc+6]) == 0x67f8) {
 		      apply_hack(pc,"mslug2 special");
 		      WriteWord(&RAM[pc+6],0x4e71);
-		      current_neo_frame = desired_68k_speed;
 		  } else if (ReadWord(&RAM[pc]) == 0x6400) {
 		      int ofs = pc+ReadWord(&RAM[pc+2])+2;
 		      if (ReadWord(&RAM[ofs]) == 0x8ad &&

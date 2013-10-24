@@ -2718,6 +2718,43 @@ static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone o
 
 CLNEI( garou, neogeo, "Garou - Mark of the Wolves (NGM-2530)" , SNK, 1999, GAME_BEAT);
 
+static struct ROM_INFO rom_garouh[] = /* Original Version - Encrypted GFX clone of garou */
+ /* MVS AND AES VERSION - earlier revision */{
+  { "ke.neo-sma", 0x040000, 0x96c72233, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
+  { "253-p1.p1", 0x400000, 0x18ae5d7e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "253-p2.p2", 0x400000, 0xafffa779, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+/* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
+	/* Encrypted */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( garouh, garou, "Garou - Mark of the Wolves (NGM-2530)(NGH-2530)" , SNK, 1999, GAME_BEAT);
+
+static struct ROM_INFO rom_s1945p[] = /* Original Version, Encrypted GFX Roms */ /* MVS ONLY RELEASE */
+{
+  { "254-p1.p1", 0x100000, 0xff8efcff, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "254-p2.sp2", 0x400000, 0xefdfd4dd, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, REGION_FIXED),
+  { "254-m1.m1", 0x20000, 0x994b4487, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "254-v1.v1", 0x400000, 0x844f58fb, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "254-v2.v2", 0x400000, 0xd9a248f0, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "254-v3.v3", 0x400000, 0x0b0d2d33, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "254-v4.v4", 0x400000, 0x6d13dc91, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "254-c1.c1", 0x800000, 0xae6fc8ef, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "254-c2.c2", 0x800000, 0x436fa176, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "254-c3.c3", 0x800000, 0xe53ff2dc, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "254-c4.c4", 0x800000, 0x818672f0, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "254-c5.c5", 0x800000, 0x4580eacd, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "254-c6.c6", 0x800000, 0xe34970fc, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "254-c7.c7", 0x800000, 0xf2323239, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "254-c8.c8", 0x800000, 0x66848c7d, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( s1945p, neogeo, "Strikers 1945 Plus" , PSIKYO, 1999, GAME_SHOOT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },

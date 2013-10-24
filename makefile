@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.63.0"
+VERSION = "0.63.1"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -1259,6 +1259,7 @@ endif
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
+	$(INSTALL_DATA) config/debug_dips.txt $(rainedata)
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
 ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
