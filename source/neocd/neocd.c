@@ -933,7 +933,7 @@ static void system_control_w(UINT32 offset, UINT16 data)
   }
 }
 
-static char config_game_name[80];
+static char config_game_name[150];
 
 static struct YM2610interface ym2610_interface =
 {
@@ -1158,7 +1158,6 @@ void neogeo_read_gamename(void)
   if (temp)
     memcpy(config_game_name,&config_game_name[temp],strlen(config_game_name)-temp+1);
   print_debug("game name : %s\n",config_game_name);
-  current_game->long_name = (char*)config_game_name;
 
   neocd_id = ReadWord(&RAM[0x108]);
   // get the short name based on the id. This info is from neocdz...
@@ -1171,6 +1170,22 @@ void neogeo_read_gamename(void)
     print_debug("warning could not find short name for this game\n");
     current_game->main_name = "neocd"; // resets name in case we don't find
   }
+  // Retrieve the long name from the neogeo list instead of the raw name
+  // because it's used to find debug dips...
+  int n;
+  for (n=0; n<game_count; n++)
+      if (!strcmp(game_list[n]->main_name, current_game->main_name)) {
+	  strcpy(config_game_name,game_list[n]->long_name);
+	  if (strlen(config_game_name) > 50) {
+	      char *s = strstr(config_game_name," /");
+	      if (s) *s = 0;
+	      s = strstr(config_game_name," -");
+	      if (s) *s = 0;
+	  }
+	  break;
+      }
+
+  current_game->long_name = (char*)config_game_name;
   print_debug("main_name %s\n",current_game->main_name);
   if (memcard_write) {
       print_debug("save_memcard\n");
