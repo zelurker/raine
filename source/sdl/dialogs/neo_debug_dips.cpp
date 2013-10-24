@@ -42,6 +42,11 @@ static struct DSW_DATA def_1[] =
 };
 
 void init_debug_dips() {
+    // Init the default values...
+    for (int num=0; num<8; num++) {
+	sprintf(high[num],"2-%d Unknown",num+1);
+	sprintf(low[num],"1-%d Unknown",num+1);
+    }
     char ln[200];
     strncpy(ln,current_game->long_name,200);
     ln[199] = 0;
@@ -52,20 +57,18 @@ void init_debug_dips() {
     s = strstr(ln," /"); // Some of the names keep the /, but some don't
     if (s) *s = 0; // for example last blade 2 !
     int len = strlen(ln);
-    if (!strncmp(ln,"The ",4)) {
+    if (!strncasecmp(ln,"The ",4)) {
 	memmove(ln,&ln[4],len-4);
 	len -= 4;
     }
-    int found = 0;
     FILE *f = fopen(get_shared("debug_dips.txt"),"r");
     if (f) {
 	while (!feof(f)) {
 	    char buff[200];
 	    myfgets(buff,200,f);
-	    if (buff[0] == ' ') continue;
+	    if (buff[0] == ' ' || buff[0] == 0) continue;
 	    if (!strncasecmp(ln,buff,len)) {
 		print_debug("init_debug_dips: found name %s\n",buff);
-		found = 1;
 		while (!feof(f)) {
 		    myfgets(buff,200,f);
 		    s = &buff[0];
@@ -85,12 +88,6 @@ void init_debug_dips() {
 	    }
 	}
 	fclose(f);
-    }
-    if (!found) {
-	for (int num=0; num<8; num++) {
-	    sprintf(high[num],"2-%d Unknown",num+1);
-	    sprintf(low[num],"1-%d Unknown",num+1);
-	}
     }
 }
 
