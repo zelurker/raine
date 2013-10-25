@@ -12,8 +12,9 @@
 #include "files.h"
 #include "neo_debug_dips.h"
 
-static char high[8][80];
-static char low[8][80];
+#define LEN 85
+static char high[8][LEN];
+static char low[8][LEN];
 
 static struct DSW_DATA def_0[] =
 {
@@ -63,9 +64,11 @@ void init_debug_dips() {
     }
     FILE *f = fopen(get_shared("debug_dips.txt"),"r");
     if (f) {
+	int is_high = 0,num = -1;
 	while (!feof(f)) {
 	    char buff[200];
 	    myfgets(buff,200,f);
+	    num = -1;
 	    if (buff[0] == ' ' || buff[0] == 0) continue;
 	    if (!strncasecmp(ln,buff,len)) {
 		print_debug("init_debug_dips: found name %s\n",buff);
@@ -77,11 +80,21 @@ void init_debug_dips() {
 		    if ((*s >= '0' && *s <= '9') &&
 			    (s[1] == '-' || s[1] == ':') &&
 			    s[2] >= '0' && s[2] <= '9') {
-			int is_high = (s[0] == '2');
-			int num = s[2] - '0'-1;
+			is_high = (s[0] == '2');
+			num = s[2] - '0'-1;
 
-			if (is_high) strncpy(high[num],buff,80);
-			else strncpy(low[num],buff,80);
+			if (is_high) strncpy(high[num],s,LEN);
+			else strncpy(low[num],s,LEN);
+		    } else if (num >= 0) {
+			s = &buff[0];
+			while (*s == ' ') s++;
+			if (*s > '9') { // the text continues on the line below
+			    s--; // keep the previous space !
+			    char *dest = (is_high ? high[num] : low[num]);
+			    printf("found next string : %s for: %s\n",s,dest);
+			    strncat(dest,s,LEN);
+			    strcpy(&dest[LEN-3],"..");
+			}
 		    }
 		}
 		break;

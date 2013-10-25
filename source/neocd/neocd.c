@@ -1936,7 +1936,7 @@ static void neogeo_hreset(void)
        * it's placed here so that it replaces current_neo_frame from the
        * start */
       WriteWord(&ROM[0x514c],0x4e71);
-      apply_hack(&ROM[0x5154],"s1945p");
+      apply_hack(0x5154,"s1945p");
       WriteWord(&ROM[0x515a],0x4e71);
   }
 }
