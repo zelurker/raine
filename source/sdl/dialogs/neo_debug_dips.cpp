@@ -74,6 +74,7 @@ void init_debug_dips() {
 		print_debug("init_debug_dips: found name %s\n",buff);
 		while (!feof(f)) {
 		    myfgets(buff,200,f);
+		    if (!buff[0]) num = -1;
 		    s = &buff[0];
 		    if (s[0] != ' ' && s[0]) break;
 		    while (*s == ' ') s++;
@@ -91,7 +92,6 @@ void init_debug_dips() {
 			if (*s > '9') { // the text continues on the line below
 			    s--; // keep the previous space !
 			    char *dest = (is_high ? high[num] : low[num]);
-			    printf("found next string : %s for: %s\n",s,dest);
 			    strncat(dest,s,LEN);
 			    strcpy(&dest[LEN-3],"..");
 			}
