@@ -1395,7 +1395,7 @@ void TMenu::handle_key(SDL_Event *event) {
 		    }
 		}
 		if (n == nb_disp_items) { // not found -> search from 0
-		    for (n=0; n<nb_disp_items; n++) {
+		    for (n=0; n<get_seldisp(); n++) {
 			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
 				!strncasecmp(s,keybuf,index)) {
@@ -1769,6 +1769,7 @@ void TMenu::exec_menu_item() {
   /* Warning : try to never override this function or call the parent
    * because if call_handler is not called then the caller variable is not
    * changed, producing display bugs */
+    keybuf[0] = 0; // reset key buffer
     if (focus) {
 	if (hsel < 0) return;
 	if (header[hsel].value_int)
