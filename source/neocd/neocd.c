@@ -229,7 +229,8 @@ static struct DEF_INPUT_EMU list_emu[] =
  { SDLK_c,          0x00, "Capture block", do_capture },
 };
 
-#define FRAME_NEO  CPU_FRAME_MHz(12,60)
+static int frame_neo;
+
 // neocd_path points to a neocd image, neocd_dir is the last path used for
 // neocd files (which is not always an image path).
 char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
@@ -496,11 +497,20 @@ static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
 	   display_position_interrupt_pending, vblank_interrupt_pending,
 	   vbl,hbl;
 
+typedef struct {
+  char *name;
+  int id,width;
+} NEOCD_GAME;
+
+static const NEOCD_GAME *game;
+static int current_neo_frame, desired_68k_speed, stopped_68k,rolled;
+static int do_not_stop;
+
 static void get_scanline() {
   if (!raster_frame) {
     // scanline isn't available, find it
-    int cycles = s68000readOdometer() % FRAME_NEO;
-    scanline = cycles * NB_LINES / FRAME_NEO;
+    int cycles = s68000readOdometer() % current_neo_frame;
+    scanline = cycles * NB_LINES / current_neo_frame;
   }
 }
 
@@ -1013,11 +1023,6 @@ int neocd_id;
  * they are really used by the console, verified on a youtube video for aof3
  * without them, there are some flashing effects */
 
-typedef struct {
-  char *name;
-  int id,width;
-} NEOCD_GAME;
-
 // There seems to be a majority of games using 304x224, so the default value
 // for the width is 304 (when left blank).
 const NEOCD_GAME games[] =
@@ -1125,10 +1130,6 @@ const NEOCD_GAME games[] =
   { "neogeocd",   0x0000 },
   { NULL, 0 }
 };
-
-static const NEOCD_GAME *game;
-static int current_neo_frame, desired_68k_speed, stopped_68k,rolled;
-static int do_not_stop;
 
 // isprint is broken in windows, they allow non printable characters !!!
 #define ischar(x) ((x)>=32) //  && (x)<=127)
@@ -1879,7 +1880,11 @@ static void neogeo_hreset(void)
   frame_count = 0;
   if (saved_fix)
     restore_fix(0);
-  current_neo_frame = FRAME_NEO;
+  frame_neo = CPU_FRAME_MHz(12,60);
+  if (is_current_game("mslug2") && allowed_speed_hacks)
+      frame_neo = CPU_FRAME_MHz(24,60);
+
+  current_neo_frame = frame_neo;;
   old_name = current_game->main_name;
   direct_fix = -1;
   fix_disabled = 0;
@@ -4046,11 +4051,14 @@ void execute_neocd() {
 		  } else if (ReadWord(&RAM[pc]) == 0x4a2d && // TST
 			  ReadWord(&RAM[pc+4]) == 0x66fa) // bne
 		      apply_hack(pc,"garou");
+#if 0
 		  else if (ReadWord(&RAM[pc]) == 0x8ad &&
 			  ReadWord(&RAM[pc+6]) == 0x67f8) {
 		      apply_hack(pc,"mslug2 special");
 		      WriteWord(&RAM[pc+6],0x4e71);
-		  } else if (ReadWord(&RAM[pc]) == 0x6400) {
+		  }
+#endif
+		  else if (ReadWord(&RAM[pc]) == 0x6400) {
 		      int ofs = pc+ReadWord(&RAM[pc+2])+2;
 		      if (ReadWord(&RAM[ofs]) == 0x8ad &&
 			      ReadWord(&RAM[ofs+6]) == 0x6700) {
@@ -4076,10 +4084,10 @@ void execute_neocd() {
 		      WriteWord(&RAM[pc],0x4e71); // nop
 		  }
 	      }
-	  } else if (current_neo_frame > FRAME_NEO && frame_count > 60) {
+	  } else if (current_neo_frame > frame_neo && frame_count > 60) {
 	      // speed hack missed again for some reason (savegames can do that)
 	      if (not_stopped_frames++ >= 10)
-		  current_neo_frame = FRAME_NEO; // search again !
+		  current_neo_frame = frame_neo; // search again !
 	  }
       } // allowed_speed_hacks
   }
