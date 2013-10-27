@@ -170,6 +170,7 @@ static void load_game_proc()
 
 static void do_load_game(void)
 {
+     char neocd_wm_title[160];
 
    /*
 
@@ -225,6 +226,8 @@ static void do_load_game(void)
 
      if (raine_cfg.save_game_screen_settings)
        WantScreen=1;
+     sprintf(neocd_wm_title,"Raine - %s",current_game->long_name);
+     SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
      break;
    case LOAD_FATAL_ERROR:			// FATAL ERROR - REMOVE GAME
    case LOAD_FATAL_ERROR|LOAD_WARNING:
