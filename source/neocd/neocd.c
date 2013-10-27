@@ -4121,6 +4121,7 @@ void execute_neocd() {
 
 void clear_neocd() {
   save_memcard();
+  saved_fix = 0;
   if (is_neocd()) {
       save_debug("neocd.bin",neocd_bios,0x80000,1);
       save_debug("ram.bin",RAM,0x200000,1);
