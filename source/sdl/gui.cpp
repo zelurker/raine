@@ -269,7 +269,7 @@ static int load_neo_game(int sel) {
   // versions for example !)
   // ".iso",
   ".cue", "ipl.txt", "7z", NULL };
-  fsel(neocd_dir,exts,res,"Load neocd game");
+  fsel(neocd_dir,exts,res,"Load NeoCD game");
   return load_neo_from_name(res);
 }
 
@@ -285,7 +285,7 @@ static menu_item_t main_items[] =
 { "Dipswitches", &do_dlg_dsw, },
 { "Change/Load ROM", &do_game_sel },
 { "Load NeoCD game", &load_neo_game },
-{ "NeoCD/NeoGeo options", &do_neocd_options },
+{ "NeoCD/Neo-Geo options", &do_neocd_options },
 { "Video options", &do_video_options },
 { "Sound options", &do_sound_options },
 { "Options", &do_gui_options },

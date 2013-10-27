@@ -55,7 +55,7 @@ static int choose_bios(int sel) {
 	    menu[n].menu_func = &select_bios;
 	}
     }
-    TMenu *load = new TMenu("Neogeo bios",menu);
+    TMenu *load = new TMenu("Neo-Geo bios",menu);
     load->set_sel(neogeo_bios);
     load->execute();
     delete load;
@@ -148,7 +148,7 @@ static int select_neocd_bios(int sel) {
 	strcpy(path,".");
 
     char *exts[] = { "bin", "zip", NULL };
-    fsel(path,exts,neocd_bios_file,"Find Neocd bios");
+    fsel(path,exts,neocd_bios_file,"Find NeoCD bios");
     if (*neocd_bios_file) {
 	if (neocd_bios) {
 	    free(neocd_bios);
@@ -166,8 +166,8 @@ static int dev_mode;
 
 static menu_item_t neocd_menu[] =
 {
-    { "Neogeo bios", &choose_bios,},
-    { "Neocd bios", &select_neocd_bios, },
+    { "Neo-Geo bios", &choose_bios,},
+    { "NeoCD bios", &select_neocd_bios, },
     { "Soft dips", &do_soft_dips, },
     { "Debug dips", &do_debug_dsw, },
     { "Developper mode", NULL, &dev_mode, 2, {0, 1}, {"No","Yes"} },
