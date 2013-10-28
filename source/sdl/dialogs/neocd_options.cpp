@@ -187,7 +187,7 @@ static int select_bios(int sel) {
     sprintf(label,"Neo-geo bios : %s",neo_names[neogeo_bios]);
     static char label2[180];
     if (!*neocd_bios_file) {
-	sprintf(label2,"no neocd bios");
+	sprintf(label2,"No neoCD bios");
     } else {
 	char *s = neocd_bios_file;
 	char *old;
@@ -198,7 +198,7 @@ static int select_bios(int sel) {
 	if (old == neocd_bios_file) s = old;
 	else
 	    s = old+1;
-	sprintf(label2,"Neocd bios : %s",s);
+	sprintf(label2,"NeoCD bios : %s",s);
     }
 
     neocd_menu[0].label = (const char*)label;
@@ -226,7 +226,7 @@ int do_neocd_options(int sel) {
     select_bios(neogeo_bios);
     if (current_game && current_game->load_game == &load_neocd)
 	dev_mode = (is_neocd() ? RAM[0x10fe80 ^ 1] : RAM[0xfe80 ^1]);
-    TMenu *menu = new TNeo_options("Neocd options", neocd_menu);
+    TMenu *menu = new TNeo_options("NeoCD/Neo-Geo options", neocd_menu);
     menu->execute();
     delete menu;
     if (current_game && current_game->load_game == &load_neocd) {

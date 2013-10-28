@@ -27,10 +27,10 @@ menu_item_t sound_menu[] =
 #if HAS_ES5506
   { "ES5506 voice filters", NULL, &es5506_voice_filters, 2, { 0, 1 }, { "No", "Yes" } },
 #endif
-{ "Always stop cd music while loading", NULL, &auto_stop_cdda, 2, { 0, 1 }, { "No", "Yes" } },
-  { "sfx volume", NULL, &sfx_volume, 3, { 0, 200, 10 }, },
-  { "music volume", NULL, &music_volume, 3, { 0, 200, 10 }, },
-  { "audio tracks format", NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { "lsb","msb" }},
+{ "Always stop CD music while loading", NULL, &auto_stop_cdda, 2, { 0, 1 }, { "No", "Yes" } },
+  { "Sfx volume", NULL, &sfx_volume, 3, { 0, 200, 10 }, },
+  { "Music volume", NULL, &music_volume, 3, { 0, 200, 10 }, },
+  { "Audio tracks format", NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { "lsb","msb" }},
   { "Mute SFX", NULL, &mute_sfx, 2, { 0, 1 }, { "No", "Yes" } },
   { "Mute CD", NULL, &mute_music, 2, { 0, 1 }, { "No", "Yes" } },
   { "Default volumes", &set_default_volumes },
