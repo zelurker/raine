@@ -110,12 +110,15 @@ int do_soft_dips(int sel) {
     int strings = base + 0x20;
     int bcd1,bcd2,val1,val2;
     int nb = 0;
+    UINT8 *pbase = (is_neocd() ? &RAM[base+0x10] : &ROM[base + 0x10]);
 
     try {
-	if ((bcd1 = ReadWord(code)) != 0xffff) {
+	if (ReadWord(pbase) != 0xffff) {
+	    bcd1 = ReadWord(code);
 	    set_bcd(bcd1,nb,strings);
 	}
-	if ((bcd2 = ReadWord(code+2)) != 0xffff) {
+	if (ReadWord(pbase+2) != 0xffff) {
+	    bcd2 = ReadWord(code+2);
 	    set_bcd(bcd2,nb,strings);
 	}
 	if ((val1 = ReadCode(code+4)) != 0xff) {
@@ -170,9 +173,9 @@ int do_soft_dips(int sel) {
 	// Convert back to the native formats...
 	code = (!is_neocd() ? ram + 0x220 + saveram_offs*16 : &RAM[0x10fd84]);
 	nb = 0;
-	if (bcd1 != 0xffff)
+	if (ReadWord(pbase) != 0xffff)
 	    get_bcd(nb,code);
-	if (bcd2 != 0xffff)
+	if (ReadWord(pbase+2) != 0xffff)
 	    get_bcd(nb,code+2);
 	WriteCode(code+4, val1);
 	WriteCode(code+5, val2);
