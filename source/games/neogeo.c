@@ -2872,6 +2872,53 @@ static struct ROM_INFO rom_nitd[] = /* Original Version - Encrypted GFX */ /* MV
 
 CLNEI( nitd, neogeo, "Nightmare in the Dark" , ELEVEN, 2000, GAME_PLATFORM);
 
+static struct ROM_INFO rom_sengoku3[] = /* Original Version - Encrypted GFX */
+{
+  { "261-ph1.p1", 0x100000, 0xe0d4bc0a, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "261-ph1.p1", 0x100000 , 0xe0d4bc0a, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0,FIXED ),
+  { "261-m1.m1", 0x80000, 0x7d501c39, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "261-v1.v1", 0x400000, 0x64c30081, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "261-v2.v2", 0x400000, 0x392a9c47, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "261-v3.v3", 0x400000, 0xc1a7ebe3, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "261-v4.v4", 0x200000, 0x9000d085, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "261-c1.c1", 0x800000, 0xded84d9c, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "261-c2.c2", 0x800000, 0xb8eb4348, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "261-c3.c3", 0x800000, 0x84e2034a, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "261-c4.c4", 0x800000, 0x0b45ae53, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( sengoku3, neogeo, "Sengoku 3 / Sengoku Densho 2001" , NOISE, 2001, GAME_BEAT);
+
+static struct ROM_INFO rom_kof2001[] = /* MVS VERSION clone of neogeo */
+{
+  { "262-p1-08-e0.p1", 0x100000, 0x9381750d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+	/* The first/early production run sets have proms with above labels. Some later? sets found have eproms instead of proms */
+  { "262-p2-08-e0.sp2", 0x400000, 0x8e0d8329, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "265-262-m1.m1", 0x40000, 0xa7f8119f, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+  FILL(0x40000, 0x40000, 0, AUDIOCRYPT),
+  { "262-v1-08-e0.v1", 0x400000, 0x83d49ecf, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "262-v2-08-e0.v2", 0x400000, 0x003f1843, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "262-v3-08-e0.v3", 0x400000, 0x2ae38dbe, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "262-v4-08-e0.v4", 0x400000, 0x26ec4dd9, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "262-c1-08-e0.c1", 0x800000, 0x99cc785a, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "262-c2-08-e0.c2", 0x800000, 0x50368cbf, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "262-c3-08-e0.c3", 0x800000, 0xfb14ff87, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "262-c4-08-e0.c4", 0x800000, 0x4397faf8, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "262-c5-08-e0.c5", 0x800000, 0x91f24be4, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "262-c6-08-e0.c6", 0x800000, 0xa31e4403, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "262-c7-08-e0.c7", 0x800000, 0x54d9d1ec, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "262-c8-08-e0.c8", 0x800000, 0x59289a6b, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2001, neogeo, "The King of Fighters 2001 (NGM-262?)" , EOLITH, 2001, GAME_BEAT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },

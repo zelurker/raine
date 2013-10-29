@@ -90,7 +90,9 @@ char *company_name[] =
    "Viccom",
    "Eighting",
    "Saurus",
-   "Eleven / Gavaking"
+   "Eleven / Gavaking",
+   "Noise Factory",
+   "Eolith",
 };
 
 const int nb_companies = sizeof(company_name)/4;

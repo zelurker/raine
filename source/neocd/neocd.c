@@ -3914,6 +3914,8 @@ void load_neocd() {
 	    kof99_neogeo_gfx_decrypt(0xf8);
 	} else if (is_current_game("nitd")) {
 	    kof99_neogeo_gfx_decrypt(0xff);
+	} else if (is_current_game("sengoku3")) {
+	    kof99_neogeo_gfx_decrypt(0xfe);
 	} else if (is_current_game("mslug3") || is_current_game("mslug3h")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0xad);
@@ -3932,6 +3934,10 @@ void load_neocd() {
 	} else if (is_current_game("kof2000")) {
 	    fixed_layer_bank_type = 2;
 	    kof2000_neogeo_gfx_decrypt(0x00);
+	    neogeo_cmc50_m1_decrypt();
+	} else if (is_current_game("kof2001")) {
+	    fixed_layer_bank_type = 1;
+	    kof2000_neogeo_gfx_decrypt(0x1e);
 	    neogeo_cmc50_m1_decrypt();
 	} else if (is_current_game("ganryu")) {
 	    fixed_layer_bank_type = 1;

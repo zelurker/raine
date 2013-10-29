@@ -960,6 +960,8 @@ DRV(nam1975)
     DRV(kof2000)
     DRV(bangbead)
     DRV(nitd)
+    DRV(sengoku3)
+    DRV(kof2001)
     DRV(kof97pls)
     DRV(kof97oro)
 

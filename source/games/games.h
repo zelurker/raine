@@ -79,7 +79,9 @@ enum company_num
    COMPANY_ID_VICCOM,
    COMPANY_ID_EIGHTING,
    COMPANY_ID_SAURUS,
-   COMPANY_ID_ELEVEN
+   COMPANY_ID_ELEVEN,
+   COMPANY_ID_NOISE,
+   COMPANY_ID_EOLITH,
 };
 
 extern const int nb_companies;
