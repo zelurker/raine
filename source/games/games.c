@@ -92,7 +92,8 @@ char *company_name[] =
    "Saurus",
    "Eleven / Gavaking",
    "Noise Factory",
-   "Eolith",
+   "Eolith / SNK",
+   "Mega / Playmore",
 };
 
 const int nb_companies = sizeof(company_name)/4;

@@ -3678,6 +3678,28 @@ static void neogeo_cmc50_m1_decrypt() {
     FreeMem(buffer);
 }
 
+static void neo_pcm2_snk_1999(int value)
+{   /* thanks to Elsemi for the NEO-PCM2 info */
+    UINT16 *rom = (UINT16 *)REG(SMP1);
+    int size = get_region_size(REGION_SMP1);
+    int i, j;
+
+    if( rom != NULL )
+    {   /* swap address lines on the whole ROMs */
+	UINT16 *buffer = (UINT16*)AllocateMem(value / 2);
+
+	for( i = 0; i < size / 2; i += ( value / 2 ) )
+	{
+	    memcpy( buffer, &rom[ i ], value );
+	    for( j = 0; j < (value / 2); j++ )
+	    {
+		rom[ i + j ] = buffer[ j ^ (value/4) ];
+	    }
+	}
+	FreeMem( buffer);
+    }
+}
+
 static void garou_decrypt_68k() {
     UINT16 *rom;
     int i,j;
@@ -3935,10 +3957,15 @@ void load_neocd() {
 	    fixed_layer_bank_type = 2;
 	    kof2000_neogeo_gfx_decrypt(0x00);
 	    neogeo_cmc50_m1_decrypt();
-	} else if (is_current_game("kof2001")) {
+	} else if (is_current_game("kof2001") || is_current_game("kof2001h")) {
 	    fixed_layer_bank_type = 1;
 	    kof2000_neogeo_gfx_decrypt(0x1e);
 	    neogeo_cmc50_m1_decrypt();
+	} else if (is_current_game("mslug4")) {
+	    fixed_layer_bank_type = 1;
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x31);
+	    neo_pcm2_snk_1999(8);
 	} else if (is_current_game("ganryu")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0x07);

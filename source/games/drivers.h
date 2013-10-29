@@ -962,6 +962,8 @@ DRV(nam1975)
     DRV(nitd)
     DRV(sengoku3)
     DRV(kof2001)
+    DRV(kof2001h)
+    DRV(mslug4)
     DRV(kof97pls)
     DRV(kof97oro)
 

@@ -81,7 +81,8 @@ enum company_num
    COMPANY_ID_SAURUS,
    COMPANY_ID_ELEVEN,
    COMPANY_ID_NOISE,
-   COMPANY_ID_EOLITH,
+   COMPANY_ID_EOLITH_S,
+   COMPANY_ID_MEGA_P,
 };
 
 extern const int nb_companies;

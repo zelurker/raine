@@ -2917,7 +2917,40 @@ static struct ROM_INFO rom_kof2001[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2001, neogeo, "The King of Fighters 2001 (NGM-262?)" , EOLITH, 2001, GAME_BEAT);
+CLNEI( kof2001, neogeo, "The King of Fighters 2001 (NGM-262?)" , EOLITH_S, 2001, GAME_BEAT);
+
+static struct ROM_INFO rom_kof2001h[] = /* AES VERSION clone of kof2001 */
+{
+  { "262-pg1.p1", 0x100000, 0x2af7e741, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "262-pg2.sp2", 0x400000, 0x91eea062, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2001h, kof2001, "The King of Fighters 2001 (NGH-2621)" , EOLITH_S, 2001, GAME_BEAT);
+
+static struct ROM_INFO rom_mslug4[] = /* Original Version - Encrypted GFX clone of neogeo */
+ /* MVS VERSION */{
+  { "263-p1.p1", 0x100000, 0x27e4def3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "263-p2.sp2", 0x400000, 0xfdb7aed8, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, FIXED ),
+	/* Encrypted */
+  { "263-m1.m1", 0x20000, 0x46ac8228, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+  FILL(0x20000,0x60000,0,AUDIOCRYPT),
+	/* Encrypted */
+  { "263-v1.v1", 0x800000, 0x01e9b9cd, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "263-v2.v2", 0x800000, 0x4ab2bf81, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "263-c1.c1", 0x800000, 0x84865f8a, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "263-c2.c2", 0x800000, 0x81df97f2, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "263-c3.c3", 0x800000, 0x1a343323, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "263-c4.c4", 0x800000, 0x942cfb44, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "263-c5.c5", 0x800000, 0xa748854f, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "263-c6.c6", 0x800000, 0x5c8ba116, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug4, neogeo, "Metal Slug 4 (NGM-2630)", MEGA_P, 2002, GAME_SHOOT);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
