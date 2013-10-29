@@ -86,6 +86,7 @@ enum region_type
    REGION_YMSND_DELTAT,
    REGION_SPRITES,
    REGION_MAINBIOS,
+   REGION_AUDIOCRYPT,
    REGION_MAX,
 };
 
@@ -99,6 +100,8 @@ enum region_type
 #define REGION_SOUND2 REGION_SMP2
 #define REGION_SOUND3 REGION_SMP3
 #define REGION_SOUND4 REGION_SMP4
+
+#define REG(x) load_region[REGION_##x]
 
 enum region_flags
 {

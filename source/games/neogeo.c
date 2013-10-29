@@ -2803,6 +2803,43 @@ static struct ROM_INFO rom_mslug3[] = /* Original Version - Encrypted Code & GFX
 
 CLNEI( mslug3, neogeo, "Metal Slug 3 (NGM-2560)" , SNK, 2000, GAME_SHOOT);
 
+static struct ROM_INFO rom_mslug3h[] = /* Original Version - Encrypted GFX clone of mslug3 */
+ /* revision 2000.3.17 */ /* AES VERSION */{
+  { "256-ph1.p1", 0x100000, 0x9c42ca85, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "256-ph2.sp2", 0x400000, 0x1f3d8ce8, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug3h, mslug3, "Metal Slug 3 (NGH-2560)" , SNK, 2000, GAME_SHOOT);
+
+static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sound + GFX Roms clone of neogeo */
+ /* MVS AND AES VERSION */{
+  { "neo-sma", 0x040000, 0x71c6e6bb, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
+  { "257-p1.p1", 0x400000, 0x60947b4c, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "257-p2.p2", 0x400000, 0x1b7ec415, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, REGION_FIXED ),
+	/* Encrypted */
+  { "257-m1.m1", 0x40000, 0x4b749113, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+  FILL(0x40000,0x40000, 0, REGION_AUDIOCRYPT),
+
+  { "257-v1.v1", 0x400000, 0x17cde847, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "257-v2.v2", 0x400000, 0x1afb20ff, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "257-v3.v3", 0x400000, 0x4605036a, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "257-v4.v4", 0x400000, 0x764bbd6b, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+  { "257-c1.c1", 0x800000, 0xcef1cdfa, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "257-c2.c2", 0x800000, 0xf7bf0003, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "257-c3.c3", 0x800000, 0x101e6560, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "257-c4.c4", 0x800000, 0xbd2fc1b1, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "257-c5.c5", 0x800000, 0x89775412, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "257-c6.c6", 0x800000, 0xfa7200d5, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "257-c7.c7", 0x800000, 0x7da11fe4, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "257-c8.c8", 0x800000, 0xb1afa60b, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2000, neogeo, "The King of Fighters 2000 (NGM-2570) (NGH-2570)" , SNK, 2000, GAME_BEAT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
