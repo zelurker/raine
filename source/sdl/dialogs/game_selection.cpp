@@ -52,8 +52,8 @@ static int do_options(int sel) {
 	options[2].values_list_label[n] = game_type[n];
     }
     // init game driver
-    options[3].values_list_size = nb_companies;
-    for (n=0; n<nb_companies; n++) {
+    options[3].values_list_size = (nb_companies>64 ? 64 : nb_companies);
+    for (n=0; n<nb_companies && n<64; n++) {
 	options[3].values_list[n] = n;
 	options[3].values_list_label[n] = game_company_name(n);
     }
