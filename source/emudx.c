@@ -122,6 +122,8 @@ void load_emudx(const char *name, int tiles, int sprites,
   }
   if (display_cfg.bpp != 16) {
     display_cfg.bpp = 16;
+    if (display_cfg.video_mode == 0) // opengl
+	display_cfg.video_mode = 1; // use yuv overlay instead
     ScreenChange();
   }
 
@@ -214,7 +216,7 @@ void load_emudx(const char *name, int tiles, int sprites,
       for (sx=0; sx<16*16; sx++)
 	if (src[sx] != 0xf81f) {
 	  dest[sx] = 1;
-	} else 
+	} else
 	  dest[sx] = 0;
     } else {
       memcpy(emudx_sprites + (i-tiles)*0x100*2,bmp->line[0],0x100*2);
