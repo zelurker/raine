@@ -142,7 +142,7 @@ enum region_flags
 { rom4, size, crc4, region, offset+6, LOAD_16_64 } \
 
 #define FILL(offset, size, content, region) \
-{ "", size, content, region, offset, LOAD_FILL }
+{ "", size, content, REGION_##region, offset, LOAD_FILL }
 
 typedef struct ROM_INFO
 {

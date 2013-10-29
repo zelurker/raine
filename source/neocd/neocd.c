@@ -3910,6 +3910,10 @@ void load_neocd() {
 	} else if (is_current_game("zupapa")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0xbd);
+	} else if (is_current_game("bangbead")) {
+	    kof99_neogeo_gfx_decrypt(0xf8);
+	} else if (is_current_game("nitd")) {
+	    kof99_neogeo_gfx_decrypt(0xff);
 	} else if (is_current_game("mslug3") || is_current_game("mslug3h")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0xad);

@@ -2337,7 +2337,7 @@ static struct ROM_INFO rom_puzzldpr[] = /* MVS ONLY RELEASE clone of puzzledp */
 {
   { "235-p1.p1", 0x080000, 0xafed5de2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
   { "235-s1.s1", 0x10000, 0x5a68d91e, REGION_FIXED, 0x000000, LOAD_NORMAL },
-  FILL(          0x10000, 0x10000, 0, REGION_FIXED),
+  FILL(          0x10000, 0x10000, 0, FIXED),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2641,7 +2641,7 @@ static struct ROM_INFO rom_kof99[] = /* Original Version - Encrypted Code & GFX 
   { "251-p1.p1", 0x400000, 0x006e4532, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
   { "251-p2.p2", 0x400000, 0x90175f15, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
- FILL( 0x000000, 0x20000, 0, REGION_FIXED ),
+ FILL( 0x000000, 0x20000, 0, FIXED ),
   { "251-m1.m1", 0x20000, 0x5e74539c, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "251-v1.v1", 0x400000, 0xef2eecc8, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "251-v2.v2", 0x400000, 0x73e211ca, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2679,7 +2679,7 @@ static struct ROM_INFO rom_ganryu[] = /* Original Version - Encrypted GFX */ /* 
   { "252-p1.p1", 0x100000, 0x4b8ac4fb, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
   { "252-p1.p1", 0x100000 , 0x4b8ac4fb, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, REGION_FIXED),
+  FILL( 0x000000, 0x20000, 0, FIXED),
   { "252-m1.m1", 0x20000, 0x30cc4099, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "252-v1.v1", 0x400000, 0xe5946733, REGION_SMP1, 0x000000, LOAD_NORMAL },
 	/* Encrypted */
@@ -2698,7 +2698,7 @@ static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone o
   { "253-ep3.p3", 0x200000, 0xe395bfdd, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
   { "253-ep4.p4", 0x200000, 0xda92c08e, REGION_CPU1, 0x700000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, REGION_FIXED),
+  FILL( 0x000000, 0x80000, 0, FIXED),
   { "253-m1.m1", 0x40000, 0x36a806be, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "253-v1.v1", 0x400000, 0x263e388c, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "253-v2.v2", 0x400000, 0x2c6bc7be, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2736,7 +2736,7 @@ static struct ROM_INFO rom_s1945p[] = /* Original Version, Encrypted GFX Roms */
   { "254-p1.p1", 0x100000, 0xff8efcff, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
   { "254-p2.sp2", 0x400000, 0xefdfd4dd, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, REGION_FIXED),
+  FILL( 0x000000, 0x20000, 0, FIXED),
   { "254-m1.m1", 0x20000, 0x994b4487, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "254-v1.v1", 0x400000, 0x844f58fb, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "254-v2.v2", 0x400000, 0xd9a248f0, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2760,7 +2760,7 @@ static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX */ /*
   { "255-p1.p1", 0x100000, 0xdfa3c0f3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
   { "255-p2.sp2", 0x400000, 0x42050b80, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0,REGION_FIXED ),
+  FILL( 0x000000, 0x20000, 0,FIXED ),
   { "255-m1.m1", 0x20000, 0x8efd4014, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "255-v1.v1", 0x400000, 0x5a14543d, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "255-v2.v2", 0x200000, 0x6610d91a, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2783,7 +2783,7 @@ static struct ROM_INFO rom_mslug3[] = /* Original Version - Encrypted Code & GFX
   { "256-pg1.p1", 0x400000, 0xb07edfd5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
   { "256-pg2.p2", 0x400000, 0x6097c26b, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, REGION_FIXED ),
+  FILL( 0x000000, 0x80000, 0, FIXED ),
   { "256-m1.m1", 0x80000, 0xeaeec116, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "256-v1.v1", 0x400000, 0xf2690241, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "256-v2.v2", 0x400000, 0x7e2a10bd, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2818,10 +2818,10 @@ static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sou
   { "257-p1.p1", 0x400000, 0x60947b4c, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
   { "257-p2.p2", 0x400000, 0x1b7ec415, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, REGION_FIXED ),
+  FILL( 0x000000, 0x80000, 0, FIXED ),
 	/* Encrypted */
   { "257-m1.m1", 0x40000, 0x4b749113, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
-  FILL(0x40000,0x40000, 0, REGION_AUDIOCRYPT),
+  FILL(0x40000,0x40000, 0, AUDIOCRYPT),
 
   { "257-v1.v1", 0x400000, 0x17cde847, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "257-v2.v2", 0x400000, 0x1afb20ff, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2839,6 +2839,38 @@ static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sou
 };
 
 CLNEI( kof2000, neogeo, "The King of Fighters 2000 (NGM-2570) (NGH-2570)" , SNK, 2000, GAME_BEAT);
+
+static struct ROM_INFO rom_bangbead[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
+{
+  { "259-p1.p1", 0x100000, 0x88a37f8b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "259-p1.p1", 0x100000 , 0x88a37f8b, REGION_CPU1, 0x000000, LOAD_CONTINUE },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+  { "259-m1.m1", 0x20000, 0x85668ee9, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "259-v1.v1", 0x400000, 0x088eb8ab, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "259-v2.v2", 0x100000, 0x97528fe9, REGION_SMP1, 0x400000, LOAD_NORMAL },
+	/* Encrypted */
+  { "259-c1.c1", 0x800000, 0x1f537f74, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "259-c2.c2", 0x800000, 0x0efd98ff, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( bangbead, neogeo, "Bang Bead", VISCO, 2000, GAME_SPORTS);
+
+static struct ROM_INFO rom_nitd[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
+{
+  { "260-p1.p1", 0x080000, 0x61361082, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+  { "260-m1.m1", 0x80000, 0x6407c5e5, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "260-v1.v1", 0x400000, 0x24b0480c, REGION_SMP1, 0x000000, LOAD_NORMAL },
+	/* Encrypted */
+  { "260-c1.c1", 0x800000, 0x147b0c7f, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "260-c2.c2", 0x800000, 0xd2b04b0d, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( nitd, neogeo, "Nightmare in the Dark" , ELEVEN, 2000, GAME_PLATFORM);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {

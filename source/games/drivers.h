@@ -958,6 +958,8 @@ DRV(nam1975)
     DRV(mslug3)
     DRV(mslug3h)
     DRV(kof2000)
+    DRV(bangbead)
+    DRV(nitd)
     DRV(kof97pls)
     DRV(kof97oro)
 
