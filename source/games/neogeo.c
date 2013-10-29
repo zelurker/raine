@@ -2698,7 +2698,7 @@ static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone o
   { "253-ep3.p3", 0x200000, 0xe395bfdd, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
   { "253-ep4.p4", 0x200000, 0xda92c08e, REGION_CPU1, 0x700000, LOAD_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, REGION_FIXED),
+  FILL( 0x000000, 0x80000, 0, REGION_FIXED),
   { "253-m1.m1", 0x40000, 0x36a806be, REGION_ROM2, 0x00000, LOAD_NORMAL },
   { "253-v1.v1", 0x400000, 0x263e388c, REGION_SMP1, 0x000000, LOAD_NORMAL },
   { "253-v2.v2", 0x400000, 0x2c6bc7be, REGION_SMP1, 0x400000, LOAD_NORMAL },
@@ -2754,6 +2754,54 @@ static struct ROM_INFO rom_s1945p[] = /* Original Version, Encrypted GFX Roms */
 };
 
 CLNEI( s1945p, neogeo, "Strikers 1945 Plus" , PSIKYO, 1999, GAME_SHOOT);
+
+static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX */ /* MVS ONLY RELEASE */
+{
+  { "255-p1.p1", 0x100000, 0xdfa3c0f3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "255-p2.sp2", 0x400000, 0x42050b80, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0,REGION_FIXED ),
+  { "255-m1.m1", 0x20000, 0x8efd4014, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "255-v1.v1", 0x400000, 0x5a14543d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "255-v2.v2", 0x200000, 0x6610d91a, REGION_SMP1, 0x400000, LOAD_NORMAL },
+	/* Encrypted */
+  { "255-c1.c1", 0x800000, 0xea06000b, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "255-c2.c2", 0x800000, 0x04e67d79, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "255-c3.c3", 0x800000, 0x60e31e08, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "255-c4.c4", 0x800000, 0x40371d69, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "255-c5.c5", 0x800000, 0x0b2e6adf, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "255-c6.c6", 0x800000, 0xb001bdd3, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( preisle2, neogeo, "Prehistoric Isle 2" , YUMEKOBO, 1999, GAME_SHOOT);
+
+static struct ROM_INFO rom_mslug3[] = /* Original Version - Encrypted Code & GFX clone of neogeo */
+ /* revision 2000.4.1 */ /* MVS VERSION */{
+	/* The SMA for this release has a green colour marking; the older revision has a white colour marking */
+  { "neo-sma", 0x040000, 0x9cd55736, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
+  { "256-pg1.p1", 0x400000, 0xb07edfd5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "256-pg2.p2", 0x400000, 0x6097c26b, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, REGION_FIXED ),
+  { "256-m1.m1", 0x80000, 0xeaeec116, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "256-v1.v1", 0x400000, 0xf2690241, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "256-v2.v2", 0x400000, 0x7e2a10bd, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "256-v3.v3", 0x400000, 0x0eaec17c, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "256-v4.v4", 0x400000, 0x9b4b22d4, REGION_SMP1, 0xc00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "256-c1.c1", 0x800000, 0x5a79c34e, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "256-c2.c2", 0x800000, 0x944c362c, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "256-c3.c3", 0x800000, 0x6e69d36f, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "256-c4.c4", 0x800000, 0xb755b4eb, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "256-c5.c5", 0x800000, 0x7aacab47, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "256-c6.c6", 0x800000, 0xc698fd5d, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "256-c7.c7", 0x800000, 0xcfceddd2, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "256-c8.c8", 0x800000, 0x4d9be34c, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug3, neogeo, "Metal Slug 3 (NGM-2560)" , SNK, 2000, GAME_SHOOT);
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
@@ -2834,23 +2882,3 @@ static struct ROM_INFO rom_zintrckb[] = // clone of neogeo
 
 CLNEI( zintrckb, neogeo,             "Zintrick / Oshidashi Zentrix (hack)", HACK, 1996, GAME_MISC);
 
-static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX clone of neogeo */
- /* MVS ONLY RELEASE */{
-  { "255-p1.p1", 0x100000, 0xdfa3c0f3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "255-p2.sp2", 0x400000, 0x42050b80, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-/* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
-  { "255-m1.m1", 0x20000, 0x8efd4014, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "255-v1.v1", 0x400000, 0x5a14543d, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  { "255-v2.v2", 0x200000, 0x6610d91a, REGION_SMP1, 0x400000, LOAD_NORMAL },
-	/* Encrypted */
-  { "255-c1.c1", 0x800000, 0xea06000b, REGION_SPRITES, 0x0000000, LOAD_8_16 },
-  { "255-c2.c2", 0x800000, 0x04e67d79, REGION_SPRITES, 0x0000001, LOAD_8_16 },
-  { "255-c3.c3", 0x800000, 0x60e31e08, REGION_SPRITES, 0x1000000, LOAD_8_16 },
-  { "255-c4.c4", 0x800000, 0x40371d69, REGION_SPRITES, 0x1000001, LOAD_8_16 },
-  { "255-c5.c5", 0x800000, 0x0b2e6adf, REGION_SPRITES, 0x2000000, LOAD_8_16 },
-  { "255-c6.c6", 0x800000, 0xb001bdd3, REGION_SPRITES, 0x2000001, LOAD_8_16 },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-CLNEI( preisle2, neogeo, "Prehistoric Isle 2" , YUMEKOBO, 1999, GAME_SHOOT);

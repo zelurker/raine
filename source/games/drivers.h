@@ -954,6 +954,8 @@ DRV(nam1975)
     DRV(garou)
     DRV(garouh)
     DRV(s1945p)
+    DRV(preisle2)
+    DRV(mslug3)
     DRV(kof97pls)
     DRV(kof97oro)
 

@@ -88,7 +88,8 @@ static struct {
     UINT16 unlock;
 } saveram;
 
-static int capture_mode = 0,start_line,screen_cleared,load_sdips;
+static int capture_mode = 0,start_line,screen_cleared,load_sdips,fix_mask,
+	   fix_banked;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0;
 static int one_palette,sprites_mask,nb_sprites;
@@ -1231,8 +1232,7 @@ void video_draw_fix(void)
   UINT16 *fixarea=&neogeo_vidram[0x7002];
   UINT8 *map;
   UINT8 *fix_usage = video_fix_usage;;
-  // UINT32 mask;
-  // int banked;
+  int garouoffsets[32];
 
   if (!is_neocd()) {
       if (fixed_layer_source == 0 || !load_region[REGION_FIXED]) {
@@ -1241,8 +1241,22 @@ void video_draw_fix(void)
 	  // banked = 0;
       } else {
 	  neogeo_fix_memory = load_region[REGION_FIXED];
-	  // mask = get_region_size(REGION_FIXED)-1;
-	  // banked = mask > 0x1ffff;
+	  if (fix_banked && fixed_layer_bank_type == 1) {
+	      int garoubank = 0;
+	      int k = 0;
+	      int y = 0;
+	      while (y < 32)
+	      {
+		  if (neogeo_vidram[0x7500 + k] == 0x0200 && (neogeo_vidram[0x7580 + k] & 0xff00) == 0xff00)
+		  {
+		      garoubank = neogeo_vidram[0x7580 + k] & 3;
+		      garouoffsets[y++] = garoubank;
+		  }
+		  garouoffsets[y++] = garoubank;
+		  k += 2;
+	      }
+	  }
+
       }
   }
 
@@ -1258,12 +1272,16 @@ void video_draw_fix(void)
       // Since some part of the fix area is in the bios, it would be
       // a mess to convert it to the unpacked version, so I'll keep it packed
       // for now...
+      if (fix_banked && fixed_layer_source) {
+	  switch(fixed_layer_bank_type) {
+	  case 1:
+	      code += 0x1000 * (garouoffsets[(y ) & 31] ^ 3);
+	      break;
+	  }
+      }
       if(fix_usage[code]) {
 	// printf("%d,%d,%x,%x\n",x,y,fixarea[x << 5],0x7002+(x<<5));
 	MAP_PALETTE_MAPPED_NEW(colour,16,map);
-	/*	if (video_fix_usage[code] == 2)
-		Draw8x8_Packed_Mapped_Rot(&neogeo_fix_memory[code<<5],x<<3,y<<3,map);
-		else no opaque version for packed sprites !!! */
 	Draw8x8_Trans_Packed_Mapped_Rot(&neogeo_fix_memory[code<<5],(x<<3)+offx,(y<<3)+16,map);
       }
     }
@@ -1878,6 +1896,8 @@ static void neogeo_hreset(void)
 {
   // The region_code can be set from the gui, even with an empty ram
   frame_count = 0;
+  fix_mask = get_region_size(REGION_FIXED)-1;
+  fix_banked = fix_mask > 0x1ffff;
   if (saved_fix)
     restore_fix(0);
   frame_neo = CPU_FRAME_MHz(12,60);
@@ -2607,6 +2627,40 @@ static void garouh_bankswitch_w(UINT32 offset, UINT16 data) {
     set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
 }
 
+static void mslug3_bankswitch_w(UINT32 offset, UINT16 data) {
+    /* thanks to Razoola and Mr K for the info */
+    int bankaddress;
+    static const int bankoffset[64] =
+    {
+	0x000000, 0x020000, 0x040000, 0x060000, // 00
+	0x070000, 0x090000, 0x0b0000, 0x0d0000, // 04
+	0x0e0000, 0x0f0000, 0x120000, 0x130000, // 08
+	0x140000, 0x150000, 0x180000, 0x190000, // 12
+	0x1a0000, 0x1b0000, 0x1e0000, 0x1f0000, // 16
+	0x200000, 0x210000, 0x240000, 0x250000, // 20
+	0x260000, 0x270000, 0x2a0000, 0x2b0000, // 24
+	0x2c0000, 0x2d0000, 0x300000, 0x310000, // 28
+	0x320000, 0x330000, 0x360000, 0x370000, // 32
+	0x380000, 0x390000, 0x3c0000, 0x3d0000, // 36
+	0x400000, 0x410000, 0x440000, 0x450000, // 40
+	0x460000, 0x470000, 0x4a0000, 0x4b0000, // 44
+	0x4c0000, /* rest not used? */
+    };
+
+    /* unscramble bank number */
+    data =
+	(((data>>14)&1)<<0)+
+	(((data>>12)&1)<<1)+
+	(((data>>15)&1)<<2)+
+	(((data>> 6)&1)<<3)+
+	(((data>> 3)&1)<<4)+
+	(((data>> 9)&1)<<5);
+
+    bankaddress = 0x100000 + bankoffset[data];
+
+    set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
+}
+
 static int controller;
 
 static void io_control_w(UINT32 offset, UINT32 data) {
@@ -3196,6 +3250,38 @@ static void kof98_decrypt_68k()
         FreeMem( dst);
 }
 
+static void mslug3_decrypt_68k() {
+    UINT16 *rom;
+    int i,j;
+
+    /* thanks to Razoola and Mr K for the info */
+    rom = (UINT16 *)&ROM[0x100000];
+    /* swap data lines on the whole ROMs */
+    for (i = 0;i < 0x800000/2;i++)
+    {
+	rom[i] = BITSWAP16(rom[i],4,11,14,3,1,13,0,7,2,8,12,15,10,9,5,6);
+    }
+
+    /* swap address lines & relocate fixed part */
+    rom = (UINT16 *)ROM;
+    for (i = 0;i < 0x0c0000/2;i++)
+    {
+	rom[i] = rom[0x5d0000/2 + BITSWAP24(i,23,22,21,20,19,18,15,2,1,13,3,0,9,6,16,4,11,5,7,12,17,14,10,8)];
+    }
+
+    /* swap address lines for the banked part */
+    rom = (UINT16 *)&ROM[0x100000];
+    for (i = 0;i < 0x800000/2;i+=0x10000/2)
+    {
+	UINT16 buffer[0x10000/2];
+	memcpy(buffer,&rom[i],0x10000);
+	for (j = 0;j < 0x10000/2;j++)
+	{
+	    rom[i+j] = buffer[BITSWAP24(j,23,22,21,20,19,18,17,16,15,2,11,0,14,6,4,13,8,9,3,10,7,5,12,1)];
+	}
+    }
+}
+
 static void kof99_decrypt_68k()
 {
 	UINT16 *rom;
@@ -3421,7 +3507,10 @@ void load_neocd() {
 	saveram.unlock = 0;
 	restore_memcard();
 	if(!(RAM=AllocateMem(RAMSize))) return;
-	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
+	if (load_region[REGION_FIXED]) {
+	    if(!(video_fix_usage=AllocateMem(get_region_size(REGION_FIXED)/32))) return; // 0x20000/32 (packed)
+	} else
+	    if(!(video_fix_usage=AllocateMem(0x20000/32))) return; // 0x20000/32 (packed)
 	if(!(bios_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
 	if (!load_region[REGION_SPRITES]) {
 	    load_region[REGION_SPRITES] = AllocateMem(0x100000);
@@ -3437,7 +3526,7 @@ void load_neocd() {
 	nb_sprites = get_region_size(REGION_SPRITES)/0x80; // packed 16x16
 	sprites_mask = get_mask(nb_sprites);
 	if ((sprites_mask + 1)*256 > size) size = (sprites_mask+1)*256;
-	int size_fixed = 4096*32; // packed 8x8 x 4096
+	int size_fixed = (load_region[REGION_FIXED] ? get_region_size(REGION_FIXED) : 4096*32); // packed 8x8 x 4096
 	if (size < size_fixed) size = size_fixed;
 	nb_sprites = size/0x100;
 	if (is_current_game("kof97oro")) {
@@ -3456,6 +3545,12 @@ void load_neocd() {
 	} else if (is_current_game("zupapa")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0xbd);
+	} else if (is_current_game("mslug3")) {
+	    fixed_layer_bank_type = 1;
+	    kof99_neogeo_gfx_decrypt(0xad);
+	} else if (is_current_game("preisle2")) {
+	    fixed_layer_bank_type = 1;
+	    kof99_neogeo_gfx_decrypt(0x9f);
 	} else if (is_current_game("irrmaze"))
 	    GameMouse = 1;
 	else if (is_current_game("popbounc"))
@@ -3483,8 +3578,8 @@ void load_neocd() {
 	    neogeo_fix_memory = load_region[REGION_FIXED];
 	} else
 	    neogeo_fix_memory = NULL;
-	memcpy(tmp,load_region[REGION_FIXEDBIOS],size_fixed);
-	fix_conv(tmp, load_region[REGION_FIXEDBIOS], size_fixed, bios_fix_usage);
+	memcpy(tmp,load_region[REGION_FIXEDBIOS],0x20000);
+	fix_conv(tmp, load_region[REGION_FIXEDBIOS], 0x20000, bios_fix_usage);
 
 	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
 	load_message("Sprites conversion...");
@@ -3590,6 +3685,10 @@ void load_neocd() {
 		AddSaveData(SAVE_USER_3, (UINT8*)&mslugx_counter, sizeof(mslugx_counter));
 		AddReadWord(0x2fffe0, 0x2fffef, mslugx_prot_r, NULL);
 		AddWriteWord(0x2fffe0, 0x2fffef, mslugx_prot_w, NULL);
+	    } else if (is_current_game("mslug3")) {
+		mslug3_decrypt_68k();
+		AddWriteWord(0x2fffe4, 0x2fffe5, mslug3_bankswitch_w, NULL);
+		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
 	    } else if (is_current_game("garou") || is_current_game("garouh")) {
 		if (is_current_game("garou"))
 		    garou_decrypt_68k();
