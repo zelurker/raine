@@ -9,6 +9,7 @@
  *
  */
 
+#include <SDL_endian.h>
 #include "gameinc.h"
 #include "sdl/dialogs/messagebox.h"
 #include "pd4990a.h"
@@ -41,6 +42,12 @@
 #include "games/neogeo.h"
 #include "decode.h"
 #include "sdl/dialogs/neo_debug_dips.h"
+
+#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  \
+    (SDL_BYTEORDER == SDL_LIL_ENDIAN ?  leval : beval)
+
+#define BYTE_XOR_BE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0))
+#define BYTE_XOR_LE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(0,1))
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
@@ -94,7 +101,7 @@ static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0;
 static int one_palette,sprites_mask,nb_sprites;
 static int assigned_banks, current_bank;
-static UINT8 zbank[4],bank_68k,fixed_layer_bank_type;
+static UINT8 zbank[4],bank_68k,fixed_layer_bank_type,*pvc_cart;
 int capture_new_pictures;
 static BITMAP *raster_bitmap;
 static void draw_neocd();
@@ -3686,7 +3693,7 @@ static void neo_pcm2_snk_1999(int value)
 
     if( rom != NULL )
     {   /* swap address lines on the whole ROMs */
-	UINT16 *buffer = (UINT16*)AllocateMem(value / 2);
+	UINT16 *buffer = (UINT16*)AllocateMem(value);
 
 	for( i = 0; i < size / 2; i += ( value / 2 ) )
 	{
@@ -3764,6 +3771,107 @@ static void garouh_decrypt_68k() {
     }
 }
 
+static void kof2002_decrypt_68k() {
+    int i;
+    static const int sec[]={0x100000,0x280000,0x300000,0x180000,0x000000,0x380000,0x200000,0x080000};
+    UINT8 *src = &ROM[0x100000];
+    UINT8 *dst = AllocateMem(0x400000);
+    memcpy( dst, src, 0x400000 );
+    for( i=0; i<8; ++i )
+    {
+	memcpy( src+i*0x80000, dst+sec[i], 0x80000 );
+    }
+    FreeMem( dst);
+}
+
+static void mslug5_decrypt_68k() {
+    static const UINT8 xor1[ 0x20 ] = { 0xc2, 0x4b, 0x74, 0xfd, 0x0b, 0x34, 0xeb, 0xd7, 0x10, 0x6d, 0xf9, 0xce, 0x5d, 0xd5, 0x61, 0x29, 0xf5, 0xbe, 0x0d, 0x82, 0x72, 0x45, 0x0f, 0x24, 0xb3, 0x34, 0x1b, 0x99, 0xea, 0x09, 0xf3, 0x03 };
+    static const UINT8 xor2[ 0x20 ] = { 0x36, 0x09, 0xb0, 0x64, 0x95, 0x0f, 0x90, 0x42, 0x6e, 0x0f, 0x30, 0xf6, 0xe5, 0x08, 0x30, 0x64, 0x08, 0x04, 0x00, 0x2f, 0x72, 0x09, 0xa0, 0x13, 0xc9, 0x0b, 0xa0, 0x3e, 0xc2, 0x00, 0x40, 0x2b };
+    int i;
+    int ofst;
+    int rom_size = 0x800000;
+    UINT8 *rom = ROM;
+    UINT8 *buf = AllocateMem( rom_size );
+
+    for( i = 0; i < 0x100000; i++ )
+    {
+	rom[ i ] ^= xor1[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+    for( i = 0x100000; i < 0x800000; i++ )
+    {
+	rom[ i ] ^= xor2[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+
+    for( i = 0x100000; i < 0x0800000; i += 4 )
+    {
+	UINT16 rom16;
+	rom16 = rom[BYTE_XOR_LE(i+1)] | rom[BYTE_XOR_LE(i+2)]<<8;
+	rom16 = BITSWAP16( rom16, 15, 14, 13, 12, 10, 11, 8, 9, 6, 7, 4, 5, 3, 2, 1, 0 );
+	rom[BYTE_XOR_LE(i+1)] = rom16&0xff;
+	rom[BYTE_XOR_LE(i+2)] = rom16>>8;
+    }
+    memcpy( buf, rom, rom_size );
+    for( i = 0; i < 0x0100000 / 0x10000; i++ )
+    {
+	ofst = (i & 0xf0) + BITSWAP8( (i & 0x0f), 7, 6, 5, 4, 1, 0, 3, 2 );
+	memcpy( &rom[ i * 0x10000 ], &buf[ ofst * 0x10000 ], 0x10000 );
+    }
+    for( i = 0x100000; i < 0x800000; i += 0x100 )
+    {
+	ofst = (i & 0xf000ff) + ((i & 0x000f00) ^ 0x00700) + (BITSWAP8( ((i & 0x0ff000) >> 12), 5, 4, 7, 6, 1, 0, 3, 2 ) << 12);
+	memcpy( &rom[ i ], &buf[ ofst ], 0x100 );
+    }
+    memcpy( buf, rom, rom_size );
+    memcpy( &rom[ 0x100000 ], &buf[ 0x700000 ], 0x100000 );
+    memcpy( &rom[ 0x200000 ], &buf[ 0x100000 ], 0x600000 );
+    FreeMem( buf );
+}
+
+static void matrim_decrypt_68k() {
+    int i;
+    static const int sec[]={0x100000,0x280000,0x300000,0x180000,0x000000,0x380000,0x200000,0x080000};
+    UINT8 *src = &ROM[0x100000];
+    UINT8 *dst = AllocateMem(0x400000);
+    memcpy( dst, src, 0x400000);
+    for( i=0; i<8; ++i )
+    {
+	memcpy( src+i*0x80000, dst+sec[i], 0x80000 );
+    }
+    FreeMem(dst);
+}
+
+static void neo_pcm2_swap(int value) {
+    static const UINT32 addrs[7][2]={
+	{0x000000,0xa5000},
+	{0xffce20,0x01000},
+	{0xfe2cf6,0x4e001},
+	{0xffac28,0xc2000},
+	{0xfeb2c0,0x0a000},
+	{0xff14ea,0xa7001},
+	{0xffb440,0x02000}};
+    static const UINT8 xordata[7][8]={
+	{0xf9,0xe0,0x5d,0xf3,0xea,0x92,0xbe,0xef},
+	{0xc4,0x83,0xa8,0x5f,0x21,0x27,0x64,0xaf},
+	{0xc3,0xfd,0x81,0xac,0x6d,0xe7,0xbf,0x9e},
+	{0xc3,0xfd,0x81,0xac,0x6d,0xe7,0xbf,0x9e},
+	{0xcb,0x29,0x7d,0x43,0xd2,0x3a,0xc2,0xb4},
+	{0x4b,0xa4,0x63,0x46,0xf0,0x91,0xea,0x62},
+	{0x4b,0xa4,0x63,0x46,0xf0,0x91,0xea,0x62}};
+    UINT8 *src = REG(SMP1);
+    UINT8 *buf = AllocateMem(0x1000000);
+    int i, j, d;
+
+    memcpy(buf,src,0x1000000);
+    for (i=0;i<0x1000000;i++)
+    {
+	j=BITSWAP24(i,23,22,21,20,19,18,17,0,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,16);
+	j=j^addrs[value][1];
+	d=((i+addrs[value][0])&0xffffff);
+	src[j]=buf[d]^xordata[value][j&0x7];
+    }
+    FreeMem( buf);
+}
+
 static void kof98_prot_w(UINT32 offset, UINT16 data) {
     switch(data) {
     case 0x90:
@@ -3825,6 +3933,53 @@ static UINT16 mslugx_prot_r(UINT32 offset) {
 	    print_debug("unknown mslugx_prot_r pc:%x offset %x\n",s68000readPC(),offset);
     }
     return res;
+}
+
+static void pvc_write_unpack_color() {
+    UINT16 pen = ReadWord(pvc_cart+0xff0*2);
+
+    UINT8 b = ((pen & 0x000f) << 1) | ((pen & 0x1000) >> 12);
+    UINT8 g = ((pen & 0x00f0) >> 3) | ((pen & 0x2000) >> 13);
+    UINT8 r = ((pen & 0x0f00) >> 7) | ((pen & 0x4000) >> 14);
+    UINT8 s = (pen & 0x8000) >> 15;
+
+    WriteWord(&pvc_cart[0xff1*2], (g << 8) | b);
+    WriteWord(&pvc_cart[0xff2*2], (s << 8) | r);
+}
+
+static void pvc_write_pack_color() {
+    UINT16 gb = ReadWord(&pvc_cart[0xff4*2]);
+    UINT16 sr = ReadWord(&pvc_cart[0xff5*2]);
+
+    WriteWord(&pvc_cart[0xff6*2], ((gb & 0x001e) >> 1) |
+	    ((gb & 0x1e00) >> 5) |
+	    ((sr & 0x001e) << 7) |
+	    ((gb & 0x0001) << 12) |
+	    ((gb & 0x0100) << 5) |
+	    ((sr & 0x0001) << 14) |
+	    ((sr & 0x0100) << 7));
+}
+
+static void pvc_write_bankswitch() {
+    UINT32 bankaddress;
+
+    bankaddress = ((ReadWord(&pvc_cart[0xff8*2]) >> 8)|
+	    (ReadWord(&pvc_cart[0xff9*2]) << 8));
+    WriteWord(&pvc_cart[0xff8*2], (ReadWord(&pvc_cart[0xff8*2]) & 0xfe00) | 0x00a0);
+    WriteWord(&pvc_cart[0xff9*2], ReadWord(&pvc_cart[0xff9*2]) & 0x7fff);
+    set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress+0x100000]);
+}
+
+static void pvc_prot_w(UINT32 offset, UINT16 data) {
+    offset &= 0x1fff;
+    WriteWord(&pvc_cart[offset],data);
+    offset /= 2;
+    if (offset == 0xff0)
+	pvc_write_unpack_color();
+    else if (offset >= 0xff4 && offset <= 0xff5)
+	pvc_write_pack_color();
+    else if (offset >= 0xff8)
+	pvc_write_bankswitch();
 }
 
 void load_neocd() {
@@ -3957,15 +4112,34 @@ void load_neocd() {
 	    fixed_layer_bank_type = 2;
 	    kof2000_neogeo_gfx_decrypt(0x00);
 	    neogeo_cmc50_m1_decrypt();
+	} else if (is_current_game("kof2002")) {
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0xec);
+	} else if (is_current_game("matrim")) {
+	    fixed_layer_bank_type = 2;
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x6a);
+	} else if (is_current_game("pnyaa")) {
+	    neo_pcm2_snk_1999(4);
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x2e);
+	} else if (is_current_game("mslug5")) {
+	    neo_pcm2_swap(2);
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x19);
 	} else if (is_current_game("kof2001") || is_current_game("kof2001h")) {
 	    fixed_layer_bank_type = 1;
 	    kof2000_neogeo_gfx_decrypt(0x1e);
 	    neogeo_cmc50_m1_decrypt();
-	} else if (is_current_game("mslug4")) {
+	} else if (is_current_game("mslug4") || is_current_game("mslug4h")) {
 	    fixed_layer_bank_type = 1;
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x31);
 	    neo_pcm2_snk_1999(8);
+	} else if (is_current_game("rotd")) {
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x3f);
+	    neo_pcm2_snk_1999(16);
 	} else if (is_current_game("ganryu")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0x07);
@@ -4091,6 +4265,18 @@ void load_neocd() {
 		AddWriteWord(0x2fffec, 0x2fffed, kof2000_bankswitch_w, NULL);
 		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
 		AddReadWord(0x2fffd8,0x2fffdb, read_rng, NULL);
+	    } else if (is_current_game("kof2002")) {
+		kof2002_decrypt_68k();
+		neo_pcm2_swap(0);
+	    } else if (is_current_game("mslug5")) {
+		mslug5_decrypt_68k();
+		if (!(pvc_cart = AllocateMem(0x2000))) return;
+		AddSaveData(SAVE_USER_2,pvc_cart,0x2000);
+		AddReadBW(0x2fe000,0x2fffff,NULL, pvc_cart);
+		AddWriteWord(0x2fe000,0x2fffff,pvc_prot_w, NULL);
+	    } else if (is_current_game("matrim")) {
+		matrim_decrypt_68k();
+		neo_pcm2_swap(1);
 	    } else if (is_current_game("mslugx")) {
 		AddSaveData(SAVE_USER_2, (UINT8*)&mslugx_command, sizeof(mslugx_command));
 		AddSaveData(SAVE_USER_3, (UINT8*)&mslugx_counter, sizeof(mslugx_counter));
@@ -4203,7 +4389,7 @@ void load_neocd() {
 	AddWriteByte(0xd00000, 0xd0ffff, save_ram_wb, NULL);
 	AddWriteWord(0xd00000, 0xd0ffff, save_ram_ww, NULL);
 	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
-	if (get_region_size(REGION_CPU1) > 0x100000)
+	if (get_region_size(REGION_CPU1) > 0x100000 && !is_current_game("mslug5"))
 	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);

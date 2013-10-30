@@ -83,6 +83,11 @@ enum company_num
    COMPANY_ID_NOISE,
    COMPANY_ID_EOLITH_S,
    COMPANY_ID_MEGA_P,
+   COMPANY_ID_EVOGA_P,
+   COMPANY_ID_EOLITH_P,
+   COMPANY_ID_NOISE_ATLUS,
+   COMPANY_ID_AIKY,
+   COMPANY_ID_SNK_PLAYMORE,
 };
 
 extern const int nb_companies;

@@ -94,6 +94,11 @@ char *company_name[] =
    "Noise Factory",
    "Eolith / SNK",
    "Mega / Playmore",
+   "Evoga / Playmore",
+   "Eolith / Playmore",
+   "Noise Factory / Atlus",
+   "Aiky / Taito",
+   "SNK / Playmore",
 };
 
 const int nb_companies = sizeof(company_name)/4;

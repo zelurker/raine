@@ -2952,6 +2952,134 @@ static struct ROM_INFO rom_mslug4[] = /* Original Version - Encrypted GFX clone 
 
 CLNEI( mslug4, neogeo, "Metal Slug 4 (NGM-2630)", MEGA_P, 2002, GAME_SHOOT);
 
+static struct ROM_INFO rom_mslug4h[] = /* Original Version - Encrypted GFX clone of mslug4 */
+ /* AES VERSION */{
+  { "263-ph1.p1", 0x100000, 0xc67f5c8d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "263-ph2.sp2", 0x400000, 0xbc3ec89e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug4h, mslug4, "Metal Slug 4 (NGH-2630)", MEGA_P, 2002, GAME_SHOOT);
+
+static struct ROM_INFO rom_rotd[] = /* Encrypted Set clone of neogeo */
+ /* MVS VERSION */{
+  { "264-p1.p1", 0x800000, 0xb8cc969d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "264-m1.m1", 0x20000, 0x4dbd7b43, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+  FILL(0x20000,0x60000,0,AUDIOCRYPT),
+	/* Encrypted */
+  { "264-v1.v1", 0x800000, 0xfa005812, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "264-v2.v2", 0x800000, 0xc3dc8bf0, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "264-c1.c1", 0x800000, 0x4f148fee, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "264-c2.c2", 0x800000, 0x7cf5ff72, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "264-c3.c3", 0x800000, 0x64d84c98, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "264-c4.c4", 0x800000, 0x2f394a95, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "264-c5.c5", 0x800000, 0x6b99b978, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "264-c6.c6", 0x800000, 0x847d5c7d, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "264-c7.c7", 0x800000, 0x231d681e, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "264-c8.c8", 0x800000, 0xc5edb5c4, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( rotd, neogeo, "Rage of the Dragons (NGM-264?)", EVOGA_P, 2002, GAME_BEAT);
+
+static struct ROM_INFO rom_kof2002[] = /* Encrypted Set clone of neogeo */
+ /* MVS AND AES VERSION */{
+  { "265-p1.p1", 0x100000, 0x9ede7323, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "265-p2.sp2", 0x400000, 0x327266b8, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "265-m1.m1", 0x20000, 0x85aaa632, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+  FILL( 0x20000, 0x60000, 0, AUDIOCRYPT ),
+	/* Encrypted */
+  { "265-v1.v1", 0x800000, 0x15e8f3f5, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "265-v2.v2", 0x800000, 0xda41d6f9, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "265-c1.c1", 0x800000, 0x2b65a656, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "265-c2.c2", 0x800000, 0xadf18983, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "265-c3.c3", 0x800000, 0x875e9fd7, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "265-c4.c4", 0x800000, 0x2da13947, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "265-c5.c5", 0x800000, 0x61bd165d, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "265-c6.c6", 0x800000, 0x03fdd1eb, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "265-c7.c7", 0x800000, 0x1a2749d8, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "265-c8.c8", 0x800000, 0xab0bb549, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2002, neogeo, "The King of Fighters 2002 (NGM-2650)(NGH-2650)" , EOLITH_P, 2002, GAME_BEAT);
+
+static struct ROM_INFO rom_matrim[] = /* Encrypted Set clone of neogeo */
+ /* MVS AND AES VERSION */{
+  { "266-p1.p1", 0x100000, 0x5d4c2dc7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "266-p2.sp2", 0x400000, 0xa14b1906, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, FIXED ),
+	/* Encrypted */
+  { "266-m1.m1", 0x20000, 0x456c3e6c, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+  FILL( 0x020000, 0x60000, 0, AUDIOCRYPT ),
+	/* Encrypted */
+  { "266-v1.v1", 0x800000, 0xa4f83690, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "266-v2.v2", 0x800000, 0xd0f69eda, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "266-c1.c1", 0x800000, 0x505f4e30, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "266-c2.c2", 0x800000, 0x3cb57482, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "266-c3.c3", 0x800000, 0xf1cc6ad0, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "266-c4.c4", 0x800000, 0x45b806b7, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "266-c5.c5", 0x800000, 0x9a15dd6b, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "266-c6.c6", 0x800000, 0x281cb939, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "266-c7.c7", 0x800000, 0x4b71f780, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "266-c8.c8", 0x800000, 0x29873d33, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( matrim, neogeo, "Matrimelee / Shin Gouketsuji Ichizoku Toukon (NGM-2660) (NGH-2660)", NOISE, 2002, GAME_BEAT);
+
+static struct ROM_INFO rom_pnyaa[] = /* Encrypted Set */ /* MVS ONLY RELEASE */
+{
+  { "267-p1.p1", 0x100000, 0x112fe2c0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "267-m1.m1", 0x80000, 0xc7853ccd, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "267-v1.v1", 0x400000, 0xe2e8e917, REGION_SMP1, 0x000000, LOAD_NORMAL },
+	/* Encrypted */
+  { "267-c1.c1", 0x800000, 0x5eebee65, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "267-c2.c2", 0x800000, 0x2b67187b, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( pnyaa, neogeo, "Pochi and Nyaa", AIKY, 2003, GAME_PUZZLE);
+
+static struct ROM_INFO rom_mslug5[] = /* Encrypted Set clone of neogeo */
+ /* MVS VERSION */{
+  { "268-p1cr.p1", 0x400000, 0xd0466792, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "268-p2cr.p2", 0x400000, 0xfbf6b61e, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "268-m1.m1", 0x80000, 0x4a5a6e0e, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "268-v1c.v1", 0x800000, 0xae31d60c, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "268-v2c.v2", 0x800000, 0xc40613ed, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "268-c1c.c1", 0x800000, 0xab7c389a, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "268-c2c.c2", 0x800000, 0x3560881b, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "268-c3c.c3", 0x800000, 0x3af955ea, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "268-c4c.c4", 0x800000, 0xc329c373, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "268-c5c.c5", 0x800000, 0x959c8177, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "268-c6c.c6", 0x800000, 0x010a831b, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "268-c7c.c7", 0x800000, 0x6d72a969, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "268-c8c.c8", 0x800000, 0x551d720e, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug5, neogeo, "Metal Slug 5 (NGM-2680)", SNK_PLAYMORE, 2003, GAME_SHOOT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
