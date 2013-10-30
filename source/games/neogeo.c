@@ -3080,6 +3080,40 @@ static struct ROM_INFO rom_mslug5[] = /* Encrypted Set clone of neogeo */
 
 CLNEI( mslug5, neogeo, "Metal Slug 5 (NGM-2680)", SNK_PLAYMORE, 2003, GAME_SHOOT);
 
+static struct ROM_INFO rom_mslug5h[] = /* Encrypted Set clone of mslug5 */
+ /* AES release of the game but is also found in later MVS carts */{
+  { "268-p1c.p1", 0x400000, 0x3636690a, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "268-p2c.p2", 0x400000, 0x8dfc47a2, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mslug5h, mslug5, "Metal Slug 5 (NGH-2680)", SNK_PLAYMORE, 2003, GAME_SHOOT);
+
+static struct ROM_INFO rom_svc[] = /* Encrypted Set clone of neogeo */
+ /* MVS AND AES VERSION */{
+  { "269-p1.p1", 0x400000, 0x38e2005e, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "269-p2.p2", 0x400000, 0x6d13797c, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, FIXED ),
+	/* Encrypted */
+  { "269-m1.m1", 0x80000, 0xf6819d00, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "269-v1.v1", 0x800000, 0xc659b34c, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "269-v2.v2", 0x800000, 0xdd903835, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "269-c1r.c1", 0x800000, 0x887b4068, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "269-c2r.c2", 0x800000, 0x4e8903e4, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "269-c3r.c3", 0x800000, 0x7d9c55b0, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "269-c4r.c4", 0x800000, 0x8acb5bb6, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "269-c5r.c5", 0x800000, 0x097a4157, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "269-c6r.c6", 0x800000, 0xe19df344, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "269-c7r.c7", 0x800000, 0xd8f0340b, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "269-c8r.c8", 0x800000, 0x2570b71b, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( svc, neogeo, "SNK vs. Capcom - SVC Chaos (NGM-2690)(NGH-2690)", SNK_PLAYMORE, 2003, GAME_BEAT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },

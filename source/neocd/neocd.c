@@ -3982,6 +3982,70 @@ static void pvc_prot_w(UINT32 offset, UINT16 data) {
 	pvc_write_bankswitch();
 }
 
+static void pvc_prot_wb(UINT32 offset, UINT8 data) {
+    offset &= 0x1fff;
+    pvc_cart[offset ^ 1] = data;
+    offset /= 2;
+    if (offset == 0xff0)
+	pvc_write_unpack_color();
+    else if (offset >= 0xff4 && offset <= 0xff5)
+	pvc_write_pack_color();
+    else if (offset >= 0xff8)
+	pvc_write_bankswitch();
+}
+
+static int init_pvc() {
+    if (!(pvc_cart = AllocateMem(0x2000))) return 0;
+    AddSaveData(SAVE_USER_2,pvc_cart,0x2000);
+    AddReadBW(0x2fe000,0x2fffff,NULL, pvc_cart);
+    AddWriteWord(0x2fe000,0x2fffff,pvc_prot_w, NULL);
+    AddWriteByte(0x2fe000,0x2fffff,pvc_prot_wb, NULL);
+    return 1;
+}
+
+static void svc_px_decrypt() {
+    const UINT8 xor1[ 0x20 ] = { 0x3b, 0x6a, 0xf7, 0xb7, 0xe8, 0xa9, 0x20, 0x99, 0x9f, 0x39, 0x34, 0x0c, 0xc3, 0x9a, 0xa5, 0xc8, 0xb8, 0x18, 0xce, 0x56, 0x94, 0x44, 0xe3, 0x7a, 0xf7, 0xdd, 0x42, 0xf0, 0x18, 0x60, 0x92, 0x9f };
+    const UINT8 xor2[ 0x20 ] = { 0x69, 0x0b, 0x60, 0xd6, 0x4f, 0x01, 0x40, 0x1a, 0x9f, 0x0b, 0xf0, 0x75, 0x58, 0x0e, 0x60, 0xb4, 0x14, 0x04, 0x20, 0xe4, 0xb9, 0x0d, 0x10, 0x89, 0xeb, 0x07, 0x30, 0x90, 0x50, 0x0e, 0x20, 0x26 };
+    int i;
+    int ofst;
+    int rom_size = 0x800000;
+    UINT8 *rom = ROM;
+    UINT8 *buf = AllocateMem( rom_size );
+
+    for( i = 0; i < 0x100000; i++ )
+    {
+	rom[ i ] ^= xor1[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+    for( i = 0x100000; i < 0x800000; i++ )
+    {
+	rom[ i ] ^= xor2[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+
+    for( i = 0x100000; i < 0x0800000; i += 4 )
+    {
+	UINT16 rom16;
+	rom16 = rom[BYTE_XOR_LE(i+1)] | rom[BYTE_XOR_LE(i+2)]<<8;
+	rom16 = BITSWAP16( rom16, 15, 14, 13, 12, 10, 11, 8, 9, 6, 7, 4, 5, 3, 2, 1, 0 );
+	rom[BYTE_XOR_LE(i+1)] = rom16&0xff;
+	rom[BYTE_XOR_LE(i+2)] = rom16>>8;
+    }
+    memcpy( buf, rom, rom_size );
+    for( i = 0; i < 0x0100000 / 0x10000; i++ )
+    {
+	ofst = (i & 0xf0) + BITSWAP8( (i & 0x0f), 7, 6, 5, 4, 2, 3, 0, 1 );
+	memcpy( &rom[ i * 0x10000 ], &buf[ ofst * 0x10000 ], 0x10000 );
+    }
+    for( i = 0x100000; i < 0x800000; i += 0x100 )
+    {
+	ofst = (i & 0xf000ff) + ((i & 0x000f00) ^ 0x00a00) + (BITSWAP8( ((i & 0x0ff000) >> 12), 4, 5, 6, 7, 1, 0, 3, 2 ) << 12);
+	memcpy( &rom[ i ], &buf[ ofst ], 0x100 );
+    }
+    memcpy( buf, rom, rom_size );
+    memcpy( &rom[ 0x100000 ], &buf[ 0x700000 ], 0x100000 );
+    memcpy( &rom[ 0x200000 ], &buf[ 0x100000 ], 0x600000 );
+    FreeMem( buf );
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -4123,10 +4187,15 @@ void load_neocd() {
 	    neo_pcm2_snk_1999(4);
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x2e);
-	} else if (is_current_game("mslug5")) {
+	} else if (is_current_game("mslug5") || is_current_game("mslug5h")) {
 	    neo_pcm2_swap(2);
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x19);
+	} else if (is_current_game("svc")) {
+	    neo_pcm2_swap(3);
+	    fixed_layer_bank_type = 2;
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x57);
 	} else if (is_current_game("kof2001") || is_current_game("kof2001h")) {
 	    fixed_layer_bank_type = 1;
 	    kof2000_neogeo_gfx_decrypt(0x1e);
@@ -4268,12 +4337,12 @@ void load_neocd() {
 	    } else if (is_current_game("kof2002")) {
 		kof2002_decrypt_68k();
 		neo_pcm2_swap(0);
-	    } else if (is_current_game("mslug5")) {
+	    } else if (is_current_game("mslug5") || is_current_game("mslug5h")) {
 		mslug5_decrypt_68k();
-		if (!(pvc_cart = AllocateMem(0x2000))) return;
-		AddSaveData(SAVE_USER_2,pvc_cart,0x2000);
-		AddReadBW(0x2fe000,0x2fffff,NULL, pvc_cart);
-		AddWriteWord(0x2fe000,0x2fffff,pvc_prot_w, NULL);
+		if (!init_pvc()) return;
+	    } else if (is_current_game("svc")) {
+		svc_px_decrypt();
+		if (!init_pvc()) return;
 	    } else if (is_current_game("matrim")) {
 		matrim_decrypt_68k();
 		neo_pcm2_swap(1);
@@ -4386,10 +4455,10 @@ void load_neocd() {
     AddLoadCallback(restore_bank);
     if (!is_neocd()) {
 	// is the save ram usefull ?!??? probably not with neocd...
-	AddWriteByte(0xd00000, 0xd0ffff, save_ram_wb, NULL);
-	AddWriteWord(0xd00000, 0xd0ffff, save_ram_ww, NULL);
+	AddWriteByte(0xd00000, 0xdfffff, save_ram_wb, NULL);
+	AddWriteWord(0xd00000, 0xdfffff, save_ram_ww, NULL);
 	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
-	if (get_region_size(REGION_CPU1) > 0x100000 && !is_current_game("mslug5"))
+	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart)
 	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
@@ -4818,6 +4887,10 @@ void execute_neocd() {
 void clear_neocd() {
   save_memcard();
   saved_fix = 0;
+  if (pvc_cart) {
+      FreeMem(pvc_cart);
+      pvc_cart = NULL;
+  }
   if (is_neocd()) {
       save_debug("neocd.bin",neocd_bios,0x80000,1);
       save_debug("ram.bin",RAM,0x200000,1);

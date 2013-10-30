@@ -970,6 +970,8 @@ DRV(nam1975)
     DRV(matrim)
     DRV(pnyaa)
     DRV(mslug5)
+    DRV(mslug5h)
+    DRV(svc)
     DRV(kof97pls)
     DRV(kof97oro)
 
