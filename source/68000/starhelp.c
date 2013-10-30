@@ -155,16 +155,17 @@ UINT8 *s68k_get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end)
 }
 
 // macro to check if a callback needs to be inserted before some data
-#define CHECK_INSERT(type)                                            \
-    if (d3 == NULL) {                                                 \
-        int n;                                                        \
-        for (n=0; n<data_count_##type[cpu]; n++) {                    \
-            if (d0 >= M68000_dataregion_##type[cpu][n].lowaddr &&     \
-                    d1 <= M68000_dataregion_##type[cpu][n].highaddr) {\
-                insert_##type(cpu,n,d0,d1,d2,d3);                     \
-                return;                                               \
-            }                                                         \
-        }                                                             \
+#define CHECK_INSERT(type)                                             \
+    if (d3 == NULL) {                                                  \
+        int n;                                                         \
+        for (n=0; n<data_count_##type[cpu]; n++) {                     \
+            if (d0 >= M68000_dataregion_##type[cpu][n].lowaddr &&      \
+                    d1 <= M68000_dataregion_##type[cpu][n].highaddr) { \
+        printf("*WARNING*: CHECK_INSERT active: %x,%x\n",d0,d1);       \
+                insert_##type(cpu,n,d0,d1,d2,d3);                      \
+                return;                                                \
+            }                                                          \
+        }                                                              \
     }
 
 void add_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
