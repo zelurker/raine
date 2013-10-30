@@ -4105,6 +4105,22 @@ static void kof2003_decrypt_68k() {
     FreeMem( buf );
 }
 
+static UINT16 mirror_ram_rw(UINT32 offset) {
+    return ReadWord(&RAM[offset & 0xffff]);
+}
+
+static UINT8 mirror_ram_rb(UINT32 offset) {
+    return RAM[(offset & 0xffff) ^ 1];
+}
+
+static void mirror_ram_ww(UINT32 offset, UINT16 data) {
+    WriteWord(&RAM[offset & 0xffff],data);
+}
+
+static void mirror_ram_wb(UINT32 offset, UINT8 data) {
+    RAM[(offset & 0xffff) ^ 1] = data;
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -4533,6 +4549,17 @@ void load_neocd() {
 	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
 	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart)
 	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
+	// Mirror ram for some games
+	// The only game so far I saw using this is magdrop2, but only if speed
+	// hacks are forbidden ! Which is really really weird, but anyway
+	// without this mirror and without speed hacks, it crashes during the
+	// 1st attract mode, before the game demo.
+	// I put it completely at the end of the memory map because it seems
+	// to be bogus, and so it shouldn't slow other games
+	AddReadWord(0x110000, 0x1fffff, mirror_ram_rw, NULL);
+	AddReadByte(0x110000, 0x1fffff, mirror_ram_rb, NULL);
+	AddWriteWord(0x110000, 0x1fffff, mirror_ram_ww, NULL);
+	AddWriteByte(0x110000, 0x1fffff, mirror_ram_wb, NULL);
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
 	AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
