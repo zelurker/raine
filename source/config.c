@@ -1145,6 +1145,10 @@ static void GameInfo(GAME_MAIN *game_info)
    rom_list = game_info->rom_list;
    while(rom_list->name){
 
+       if (!*rom_list->name) {
+	   rom_list++;
+	   continue;
+       }
       rom_list_tmp=game_info->rom_list;
       dup=0;
 
