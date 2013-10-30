@@ -87,7 +87,7 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
    {
      if(rom_list->region == region)
       {
-	if (prev_name != rom_list->name) {
+	if (prev_name != rom_list->name && *rom_list->name) {
 	  (*number_of_roms)++;
 	  prev_name = rom_list->name;
 	}
