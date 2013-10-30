@@ -3114,6 +3114,66 @@ static struct ROM_INFO rom_svc[] = /* Encrypted Set clone of neogeo */
 
 CLNEI( svc, neogeo, "SNK vs. Capcom - SVC Chaos (NGM-2690)(NGH-2690)", SNK_PLAYMORE, 2003, GAME_BEAT);
 
+static struct ROM_INFO rom_samsho5[] = /* Encrypted Set clone of neogeo */
+ /* MVS VERSION */{
+  { "270-p1.p1", 0x400000, 0x4a2a09e6, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "270-p2.sp2", 0x400000, 0xe0c74c85, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "270-m1.m1", 0x80000, 0x49c9901a, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "270-v1.v1", 0x800000, 0x62e434eb, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "270-v2.v2", 0x800000, 0x180f3c9a, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "270-c1.c1", 0x800000, 0x14ffffac, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "270-c2.c2", 0x800000, 0x401f7299, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "270-c3.c3", 0x800000, 0x838f0260, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "270-c4.c4", 0x800000, 0x041560a5, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "270-c5.c5", 0x800000, 0xbd30b52d, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "270-c6.c6", 0x800000, 0x86a69c70, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "270-c7.c7", 0x800000, 0xd28fbc3c, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "270-c8.c8", 0x800000, 0x02c530a6, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsho5, neogeo, "Samurai Shodown V / Samurai Spirits Zero (NGM-2700)", SNK_PLAYMORE, 2003, GAME_BEAT);
+
+static struct ROM_INFO rom_samsho5h[] = /* Encrypted Set, Alternate Set clone of samsho5 */
+ /* AES VERSION */{
+  { "270-p1c.p1", 0x400000, 0xbf956089, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "270-p2c.sp2", 0x400000, 0x943a6b1d, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsho5h, samsho5, "Samurai Shodown V / Samurai Spirits Zero (NGH-2700)", SNK_PLAYMORE, 2003, GAME_BEAT);
+
+static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clone of neogeo */
+ /* MVS VERSION */{
+  { "271-p1c.p1", 0x400000, 0x530ecc14, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "271-p2c.p2", 0x400000, 0xfd568da9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  { "271-p3c.p3", 0x100000, 0xaec5b4a9, REGION_CPU1, 0x800000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, FIXED ),
+	/* Encrypted */
+  { "271-m1c.m1", 0x80000, 0xf5515629, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "271-v1c.v1", 0x800000, 0xffa3f8c7, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "271-v2c.v2", 0x800000, 0x5382c7d1, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "271-c1c.c1", 0x800000, 0xb1dc25d0, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "271-c2c.c2", 0x800000, 0xd5362437, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "271-c3c.c3", 0x800000, 0x0a1fbeab, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "271-c4c.c4", 0x800000, 0x87b19a0c, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "271-c5c.c5", 0x800000, 0x704ea371, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "271-c6c.c6", 0x800000, 0x20a1164c, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "271-c7c.c7", 0x800000, 0x189aba7f, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "271-c8c.c8", 0x800000, 0x20ec4fdc, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2003, neogeo, "The King of Fighters 2003 (NGM-2710)", SNK_PLAYMORE, 2003, GAME_BEAT);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },

@@ -3840,6 +3840,20 @@ static void matrim_decrypt_68k() {
     FreeMem(dst);
 }
 
+static void samsho5_decrypt_68k() {
+    int i;
+    static const int sec[]={0x000000,0x080000,0x700000,0x680000,0x500000,0x180000,0x200000,0x480000,0x300000,0x780000,0x600000,0x280000,0x100000,0x580000,0x400000,0x380000};
+    UINT8 *src = ROM;
+    UINT8 *dst = AllocateMem( 0x800000);
+
+    memcpy( dst, src, 0x800000 );
+    for( i=0; i<16; ++i )
+    {
+	memcpy( src+i*0x80000, dst+sec[i], 0x80000 );
+    }
+    FreeMem( dst);
+}
+
 static void neo_pcm2_swap(int value) {
     static const UINT32 addrs[7][2]={
 	{0x000000,0xa5000},
@@ -4046,6 +4060,51 @@ static void svc_px_decrypt() {
     FreeMem( buf );
 }
 
+static void kof2003_decrypt_68k() {
+    const UINT8 xor1[0x20] = { 0x3b, 0x6a, 0xf7, 0xb7, 0xe8, 0xa9, 0x20, 0x99, 0x9f, 0x39, 0x34, 0x0c, 0xc3, 0x9a, 0xa5, 0xc8, 0xb8, 0x18, 0xce, 0x56, 0x94, 0x44, 0xe3, 0x7a, 0xf7, 0xdd, 0x42, 0xf0, 0x18, 0x60, 0x92, 0x9f };
+    const UINT8 xor2[0x20] = { 0x2f, 0x02, 0x60, 0xbb, 0x77, 0x01, 0x30, 0x08, 0xd8, 0x01, 0xa0, 0xdf, 0x37, 0x0a, 0xf0, 0x65, 0x28, 0x03, 0xd0, 0x23, 0xd3, 0x03, 0x70, 0x42, 0xbb, 0x06, 0xf0, 0x28, 0xba, 0x0f, 0xf0, 0x7a };
+    int i;
+    int ofst;
+    int rom_size = 0x900000;
+    UINT8 *rom = ROM;
+    UINT8 *buf = AllocateMem( rom_size );
+
+    for (i = 0; i < 0x100000; i++)
+    {
+	rom[ 0x800000 + i ] ^= rom[ 0x100002 | i ];
+    }
+    for( i = 0; i < 0x100000; i++)
+    {
+	rom[ i ] ^= xor1[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+    for( i = 0x100000; i < 0x800000; i++)
+    {
+	rom[ i ] ^= xor2[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+    for( i = 0x100000; i < 0x800000; i += 4)
+    {
+	UINT16 rom16;
+	rom16 = rom[BYTE_XOR_LE(i+1)] | rom[BYTE_XOR_LE(i+2)]<<8;
+	rom16 = BITSWAP16( rom16, 15, 14, 13, 12, 5, 4, 7, 6, 9, 8, 11, 10, 3, 2, 1, 0 );
+	rom[BYTE_XOR_LE(i+1)] = rom16&0xff;
+	rom[BYTE_XOR_LE(i+2)] = rom16>>8;
+    }
+    for( i = 0; i < 0x0100000 / 0x10000; i++ )
+    {
+	ofst = (i & 0xf0) + BITSWAP8((i & 0x0f), 7, 6, 5, 4, 0, 1, 2, 3);
+	memcpy( &buf[ i * 0x10000 ], &rom[ ofst * 0x10000 ], 0x10000 );
+    }
+    for( i = 0x100000; i < 0x900000; i += 0x100)
+    {
+	ofst = (i & 0xf000ff) + ((i & 0x000f00) ^ 0x00800) + (BITSWAP8( ((i & 0x0ff000) >> 12), 4, 5, 6, 7, 1, 0, 3, 2 ) << 12);
+	memcpy( &buf[ i ], &rom[ ofst ], 0x100 );
+    }
+    memcpy (&rom[0x000000], &buf[0x000000], 0x100000);
+    memcpy (&rom[0x100000], &buf[0x800000], 0x100000);
+    memcpy (&rom[0x200000], &buf[0x100000], 0x700000);
+    FreeMem( buf );
+}
+
 void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
@@ -4196,6 +4255,15 @@ void load_neocd() {
 	    fixed_layer_bank_type = 2;
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x57);
+	} else if (is_current_game("samsho5") || is_current_game("samsho5h")) {
+	    neo_pcm2_swap(4);
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x0f);
+	} else if (is_current_game("kof2003")) {
+	    neo_pcm2_swap(5);
+	    fixed_layer_bank_type = 2;
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x9d);
 	} else if (is_current_game("kof2001") || is_current_game("kof2001h")) {
 	    fixed_layer_bank_type = 1;
 	    kof2000_neogeo_gfx_decrypt(0x1e);
@@ -4342,6 +4410,11 @@ void load_neocd() {
 		if (!init_pvc()) return;
 	    } else if (is_current_game("svc")) {
 		svc_px_decrypt();
+		if (!init_pvc()) return;
+	    } else if (is_current_game("samsho5") || is_current_game("samsho5h")) {
+		samsho5_decrypt_68k();
+	    } else if (is_current_game("kof2003")) {
+		kof2003_decrypt_68k();
 		if (!init_pvc()) return;
 	    } else if (is_current_game("matrim")) {
 		matrim_decrypt_68k();
