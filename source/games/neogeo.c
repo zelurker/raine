@@ -3174,6 +3174,98 @@ static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clon
 
 CLNEI( kof2003, neogeo, "The King of Fighters 2003 (NGM-2710)", SNK_PLAYMORE, 2003, GAME_BEAT);
 
+static struct ROM_INFO rom_kof2003h[] = /* Encrypted Code + Sound + GFX Roms clone of kof2003 */
+ /* AES VERSION */{
+  { "271-p1k.p1", 0x400000, 0xd0d0ae3e, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "271-p2k.p2", 0x400000, 0xfb3f79d9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  { "271-p3k.p3", 0x100000, 0x232702ad, REGION_CPU1, 0x800000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x80000, 0, FIXED ),
+	/* Encrypted */
+  { "271-m1k.m1", 0x80000, 0x48d9affe, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "271-c1k.c1", 0x800000, 0xefb9dd24, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "271-c2k.c2", 0x800000, 0x3fb90447, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "271-c3k.c3", 0x800000, 0x27950f28, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "271-c4k.c4", 0x800000, 0x735177f8, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "271-c5k.c5", 0x800000, 0xa51b7c0f, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "271-c6k.c6", 0x800000, 0xd5cae4e0, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "271-c7k.c7", 0x800000, 0xe65ae2d0, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "271-c8k.c8", 0x800000, 0x312f528c, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2003h, kof2003, "The King of Fighters 2003 (NGH-2710)", SNK_PLAYMORE, 2003, GAME_BEAT);
+
+static struct ROM_INFO rom_samsh5sp[] = /* Encrypted Set clone of neogeo */
+ /* MVS VERSION */{
+  { "272-p1.p1", 0x400000, 0xfb7a6bba, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "272-p2.sp2", 0x400000, 0x63492ea6, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( 0x000000, 0x20000, 0, FIXED ),
+	/* Encrypted */
+  { "272-m1.m1", 0x80000, 0xadeebf40, REGION_AUDIOCRYPT, 0x00000, LOAD_NORMAL },
+	/* Encrypted */
+  { "272-v1.v1", 0x800000, 0x76a94127, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "272-v2.v2", 0x800000, 0x4ba507f1, REGION_SMP1, 0x800000, LOAD_NORMAL },
+	/* Encrypted */
+  { "272-c1.c1", 0x800000, 0x4f97661a, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "272-c2.c2", 0x800000, 0xa3afda4f, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "272-c3.c3", 0x800000, 0x8c3c7502, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "272-c4.c4", 0x800000, 0x32d5e2e2, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "272-c5.c5", 0x800000, 0x6ce085bc, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "272-c6.c6", 0x800000, 0x05c8dc8e, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { "272-c7.c7", 0x800000, 0x1417b742, REGION_SPRITES, 0x3000000, LOAD_8_16 },
+  { "272-c8.c8", 0x800000, 0xd49773cd, REGION_SPRITES, 0x3000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsh5sp, neogeo, "Samurai Shodown V Special / Samurai Spirits Zero Special (NGM-2720)", SNK_PLAYMORE, 2004, GAME_BEAT);
+
+static struct ROM_INFO rom_samsh5sph[] = /* Encrypted Set clone of samsh5sp */
+ /* AES VERSION, 2nd bugfix release */{
+  { "272-p1ca.p1", 0x400000, 0xc30a08dd, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+	/* Correct chip labels unknown */
+  { "272-p2ca.sp2", 0x400000, 0xbd64a518, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsh5sph, samsh5sp, "Samurai Shodown V Special / Samurai Spirits Zero Special (NGH-2720) (2nd release, less censored)", SNK_PLAYMORE, 2004, GAME_BEAT);
+
+static struct ROM_INFO rom_lans2004[] = // clone of shocktr2
+{
+  { "lnsq-p1.bin", 0x200000, 0xb40a879a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "lnsq-p21.bin", 0x200000, 0xecdb2d42, REGION_CPU1, 0x200000, LOAD_SWAP_16 },
+  { "lnsq-p22.bin", 0x200000, 0xfac5e2e7, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  { "lnsq-s1.bin", 0x20000, 0x39e82897, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "lnsq-v1.bin", 0x400000, 0x4408ebc3, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "lnsq-v2.bin", 0x400000, 0x3d953975, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "lnsq-v3.bin", 0x200000, 0x437d1d8e, REGION_SMP1, 0x800000, LOAD_NORMAL },
+  { "lnsq-c1.bin", 0x800000, 0xb83de59f, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "lnsq-c2.bin", 0x800000, 0xe08969fd, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "lnsq-c3.bin", 0x800000, 0x013f2cda, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "lnsq-c4.bin", 0x800000, 0xd8c3a758, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "lnsq-c5.bin", 0x800000, 0x75500b82, REGION_SPRITES, 0x2000000, LOAD_8_16 },
+  { "lnsq-c6.bin", 0x800000, 0x670ac13b, REGION_SPRITES, 0x2000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( lans2004, shocktr2, "Lansquenet 2004 (Shock Troopers - 2nd Squad bootleg)", BOOTLEG, 1998, GAME_SHOOT);
+
+static struct ROM_INFO rom_diggerma[] = /* Unlicensed Prototype, no official game ID # clone of neogeo */
+{
+  { "dig-p1.bin", 0x080000, 0xeda433d7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "dig-s1.bin", 0x10000, 0x75a88c1f, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "dig-m1.bin", 0x10000, 0x833cdf1b, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "dig-m1.bin", 0x10000, 0x833cdf1b, REGION_ROM2, 0x10000, LOAD_NORMAL },
+  { "dig-v1.bin", 0x080000, 0xee15bda4, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "dig-c1.bin", 0x080000, 0x3db0a4ed, REGION_SPRITES, 0x000000, LOAD_8_16 },
+  { "dig-c2.bin", 0x080000, 0x3e632161, REGION_SPRITES, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( diggerma, neogeo, "Digger Man (prototype)", KYLE_HODGETTS, 2000, GAME_MAZE);
+
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
   { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },

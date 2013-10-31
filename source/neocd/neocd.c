@@ -4105,6 +4105,65 @@ static void kof2003_decrypt_68k() {
     FreeMem( buf );
 }
 
+static void kof2003h_decrypt_68k() {
+    const UINT8 xor1[0x20] = { 0xc2, 0x4b, 0x74, 0xfd, 0x0b, 0x34, 0xeb, 0xd7, 0x10, 0x6d, 0xf9, 0xce, 0x5d, 0xd5, 0x61, 0x29, 0xf5, 0xbe, 0x0d, 0x82, 0x72, 0x45, 0x0f, 0x24, 0xb3, 0x34, 0x1b, 0x99, 0xea, 0x09, 0xf3, 0x03 };
+    const UINT8 xor2[0x20] = { 0x2b, 0x09, 0xd0, 0x7f, 0x51, 0x0b, 0x10, 0x4c, 0x5b, 0x07, 0x70, 0x9d, 0x3e, 0x0b, 0xb0, 0xb6, 0x54, 0x09, 0xe0, 0xcc, 0x3d, 0x0d, 0x80, 0x99, 0x87, 0x03, 0x90, 0x82, 0xfe, 0x04, 0x20, 0x18 };
+    int i;
+    int ofst;
+    int rom_size = 0x900000;
+    UINT8 *rom = ROM;
+    UINT8 *buf = AllocateMem( rom_size );
+
+    for (i = 0; i < 0x100000; i++)
+    {
+	rom[ 0x800000 + i ] ^= rom[ 0x100002 | i ];
+    }
+    for( i = 0; i < 0x100000; i++)
+    {
+	rom[ i ] ^= xor1[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+    for( i = 0x100000; i < 0x800000; i++)
+    {
+	rom[ i ] ^= xor2[ (BYTE_XOR_LE(i) % 0x20) ];
+    }
+    for( i = 0x100000; i < 0x800000; i += 4)
+    {
+	UINT16 rom16;
+	rom16 = rom[BYTE_XOR_LE(i+1)] | rom[BYTE_XOR_LE(i+2)]<<8;
+	rom16 = BITSWAP16( rom16, 15, 14, 13, 12, 10, 11, 8, 9, 6, 7, 4, 5, 3, 2, 1, 0 );
+	rom[BYTE_XOR_LE(i+1)] = rom16&0xff;
+	rom[BYTE_XOR_LE(i+2)] = rom16>>8;
+    }
+    for( i = 0; i < 0x0100000 / 0x10000; i++ )
+    {
+	ofst = (i & 0xf0) + BITSWAP8((i & 0x0f), 7, 6, 5, 4, 1, 0, 3, 2);
+	memcpy( &buf[ i * 0x10000 ], &rom[ ofst * 0x10000 ], 0x10000 );
+    }
+    for( i = 0x100000; i < 0x900000; i += 0x100)
+    {
+	ofst = (i & 0xf000ff) + ((i & 0x000f00) ^ 0x00400) + (BITSWAP8( ((i & 0x0ff000) >> 12), 6, 7, 4, 5, 0, 1, 2, 3 ) << 12);
+	memcpy( &buf[ i ], &rom[ ofst ], 0x100 );
+    }
+    memcpy (&rom[0x000000], &buf[0x000000], 0x100000);
+    memcpy (&rom[0x100000], &buf[0x800000], 0x100000);
+    memcpy (&rom[0x200000], &buf[0x100000], 0x700000);
+    FreeMem( buf );
+}
+
+static void samsh5sp_decrypt_68k() {
+    	int i;
+	const int sec[]={0x000000,0x080000,0x500000,0x480000,0x600000,0x580000,0x700000,0x280000,0x100000,0x680000,0x400000,0x780000,0x200000,0x380000,0x300000,0x180000};
+	UINT8 *src = ROM;
+	UINT8 *dst = AllocateMem( 0x800000);
+
+	memcpy( dst, src, 0x800000 );
+	for( i=0; i<16; ++i )
+	{
+		memcpy( src+i*0x80000, dst+sec[i], 0x80000 );
+	}
+	FreeMem( dst);
+}
+
 static UINT16 mirror_ram_rw(UINT32 offset) {
     return ReadWord(&RAM[offset & 0xffff]);
 }
@@ -4119,6 +4178,51 @@ static void mirror_ram_ww(UINT32 offset, UINT16 data) {
 
 static void mirror_ram_wb(UINT32 offset, UINT8 data) {
     RAM[(offset & 0xffff) ^ 1] = data;
+}
+
+static void lans2004_decrypt_68k() {
+    /* Descrambling P ROMs - Thanks to Razoola for the info */
+    int i;
+    UINT8 *src = ROM;
+    UINT16 *rom = (UINT16*)ROM;
+    UINT8 *dst = AllocateMem( 0x600000);
+
+    {
+	static const int sec[] = { 0x3, 0x8, 0x7, 0xC, 0x1, 0xA, 0x6, 0xD };
+
+	for (i = 0; i < 8; i++)
+	    memcpy (dst + i * 0x20000, src + sec[i] * 0x20000, 0x20000);
+
+	memcpy (dst + 0x0BBB00, src + 0x045B00, 0x001710);
+	memcpy (dst + 0x02FFF0, src + 0x1A92BE, 0x000010);
+	memcpy (dst + 0x100000, src + 0x200000, 0x400000);
+	memcpy (src, dst, 0x600000);
+	FreeMem( dst);
+    }
+
+    for (i = 0xBBB00/2; i < 0xBE000/2; i++) {
+	if ((((rom[i]&0xFFBF)==0x4EB9) || ((rom[i]&0xFFBF)==0x43B9)) && (rom[i+1]==0x0000)) {
+	    rom[i + 1] = 0x000B;
+	    rom[i + 2] += 0x6000;
+	}
+    }
+
+    /* Patched by protection chip (Altera) ? */
+    rom[0x2D15C/2] = 0x000B;
+    rom[0x2D15E/2] = 0xBB00;
+    rom[0x2D1E4/2] = 0x6002;
+    rom[0x2EA7E/2] = 0x6002;
+    rom[0xBBCD0/2] = 0x6002;
+    rom[0xBBDF2/2] = 0x6002;
+    rom[0xBBE42/2] = 0x6002;
+}
+
+static void lans2004_vx_decrypt()
+{
+	int i;
+	UINT8 *rom = REG(SMP1);
+	for (i = 0; i < 0xA00000; i++)
+		rom[i] = BITSWAP8(rom[i], 0, 1, 5, 4, 3, 2, 6, 7);
 }
 
 void load_neocd() {
@@ -4275,11 +4379,15 @@ void load_neocd() {
 	    neo_pcm2_swap(4);
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x0f);
-	} else if (is_current_game("kof2003")) {
+	} else if (is_current_game("kof2003") || is_current_game("kof2003h")) {
 	    neo_pcm2_swap(5);
 	    fixed_layer_bank_type = 2;
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x9d);
+	} else if (is_current_game("samsh5sp") || is_current_game("samsh5sph")) {
+	    neo_pcm2_swap(6);
+	    neogeo_cmc50_m1_decrypt();
+	    kof2000_neogeo_gfx_decrypt(0x0d);
 	} else if (is_current_game("kof2001") || is_current_game("kof2001h")) {
 	    fixed_layer_bank_type = 1;
 	    kof2000_neogeo_gfx_decrypt(0x1e);
@@ -4302,6 +4410,9 @@ void load_neocd() {
 	} else if (is_current_game("s1945p")) {
 	    fixed_layer_bank_type = 1;
 	    kof99_neogeo_gfx_decrypt(0x05);
+	} else if (is_current_game("lans2004")) {
+	    neogeo_bootleg_sx_decrypt(1);
+	    neogeo_bootleg_cx_decrypt();
 	}
 
 	UINT8 *tmp = AllocateMem(size);
@@ -4413,6 +4524,9 @@ void load_neocd() {
 		kof99_decrypt_68k();
 		AddReadWord(0x2fe446,0x2fe447, NULL, (UINT8*)&prot);
 		AddReadWord(0x2ffff8,0x2ffffb, read_rng, NULL);
+	    } else if (is_current_game("lans2004")) {
+		lans2004_decrypt_68k();
+		lans2004_vx_decrypt();
 	    } else if (is_current_game("kof2000")) {
 		kof2000_decrypt_68k();
 		AddWriteWord(0x2fffec, 0x2fffed, kof2000_bankswitch_w, NULL);
@@ -4431,6 +4545,11 @@ void load_neocd() {
 		samsho5_decrypt_68k();
 	    } else if (is_current_game("kof2003")) {
 		kof2003_decrypt_68k();
+		if (!init_pvc()) return;
+	    } else if (is_current_game("samsh5sp") || is_current_game("samsh5sph")) {
+		samsh5sp_decrypt_68k();
+	    } else if (is_current_game("kof2003h")) {
+		kof2003h_decrypt_68k();
 		if (!init_pvc()) return;
 	    } else if (is_current_game("matrim")) {
 		matrim_decrypt_68k();
@@ -4479,12 +4598,12 @@ void load_neocd() {
 	game_vectors_set = 1; // For now we are on rom
     }
 
-    AddReadByte(0x300000, 0x300001, NULL, &input_buffer[0]);
+    AddReadBW(0x300000, 0x300001, NULL, &input_buffer[0]);
     AddReadByte(0x300080, 0x300081, NULL, &input_buffer[8]);
     AddWriteByte(0x300001, 0x300001, watchdog_w, NULL);
     AddReadByte(0x320000, 0x320001, cpu_readcoin, NULL);
-    AddReadByte(0x340000, 0x340000, NULL, &input_buffer[2]);
-    AddReadByte(0x380000, 0x380000, NULL, &input_buffer[4]);
+    AddReadBW(0x340000, 0x340000, NULL, &input_buffer[2]);
+    AddReadBW(0x380000, 0x380000, NULL, &input_buffer[4]);
     AddWriteBW(0x380000, 0x39ffff, io_control_w, NULL);
 
     AddReadByte(0x800000, 0x80ffff, read_memorycard, NULL);

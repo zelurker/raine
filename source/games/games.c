@@ -99,6 +99,7 @@ char *company_name[] =
    "Noise Factory / Atlus",
    "Aiky / Taito",
    "SNK / Playmore",
+   "Kyle Hodgetts",
 };
 
 const int nb_companies = sizeof(company_name)/4;
