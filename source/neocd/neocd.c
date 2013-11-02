@@ -2712,16 +2712,19 @@ static void io_control_w(UINT32 offset, UINT32 data) {
 		* Changed more than once / frame, so we must change the input
 		* here */
 	       if (GameMouse == 1) {
-		   if (controller & 1) input_buffer[1] = my;
+		   if (controller == 1) input_buffer[1] = my;
 		   else input_buffer[1] = mx;
 	       } else if (GameMouse == 2) {
-		   if (controller & 1) {
+		   /* Choosing joystick or paddle input is done in the soft
+		    * dips. The best way to handle this would be to test the
+		    * value of the soft dip in ram and return the right input
+		    * here, this way of doing things here is a hack... ! */
+		   if (controller & 0x10) {
 		       input_buffer[1] = input_buffer[2];
 		       input_buffer[3] = input_buffer[4];
 		   } else {
-		       // popbounc completely ignores the pad
-		       // I have absolutely no idea why !!!
 		       input_buffer[1] = mx;
+		       input_buffer[3] = my;
 		   }
 	       }
 	       break;
@@ -4873,10 +4876,12 @@ void execute_neocd() {
     } else if (GameMouse == 2) {
 	int dx,dy;
 	GetMouseMickeys(&dx,&dy);
-	mx -= dx;
-	// No need to update manually the trackball
-	// the problem is this game reads directly
-	// the inputs, but not the trackball !!!
+	mx += dx;
+	if (!(input_buffer[2] & 4)) mx++;
+	if (!(input_buffer[2] & 8)) mx--;
+	// Here, my is mouse x for player 2
+	if (!(input_buffer[4] & 4)) my++;
+	if (!(input_buffer[4] & 8)) my--;
     }
 
     if (!is_neocd()) {

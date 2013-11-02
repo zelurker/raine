@@ -39,6 +39,7 @@ static char *neo_names[] =
     "Debug MVS (Hack?)",
     "Asia AES",
     "Japan AES",
+    "Irrmaze bios",
 };
 
 static int select_bios(int sel);

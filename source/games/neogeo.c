@@ -42,6 +42,7 @@ static struct ROM_INFO rom_bios[] = // struct used to select bios
   { "neodebug.rom", 0x020000, 0x698ebb7d, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "neo-epo.sp1", 0x020000, 0xd27a71f1, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "neo-po.sp1", 0x020000, 0x16d0c132, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "236-bios.sp1", 0x020000, 0x853e6b96, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -192,20 +193,19 @@ static struct INPUT_INFO input_popbounc[] = // trackball
 {
     INCL_INP( irrmaze ),
 
-    INP0( P1_B1, 2, 0x10 ), // these inputs are transmitted instead of mousey
-    INP0( P1_B2, 2, 0x20 ),
+    INP0( P1_B1, 2, 0x90 ), // Actually bit7 is when control = paddle
+    // and bit4 is normal button1 when control = joystick
+    INP0( P1_B2, 2, 0x20 ), // I don't think b2 and b3 are used anyway... !
     INP0( P1_B3, 2, 0x40 ),
-    INP0( P1_B4, 2, 0x80 ),
     INP0( UNUSED, 3, 0xff ), // trackball p2 / inputs
 
-    INP0( P2_UP, 4, 1 ), // and finally inputs for p2, transmitted when asked
+    INP0( P2_UP, 4, 1 ),
     INP0( P2_DOWN, 4, 2 ),
     INP0( P2_LEFT, 4, 4 ),
     INP0( P2_RIGHT, 4, 8 ),
-    INP0( P2_B1, 4, 0x10 ),
+    INP0( P2_B1, 4, 0x90 ),
     INP0( P2_B2, 4, 0x20 ),
     INP0( P2_B3, 4, 0x40 ),
-    INP0( P2_B4, 4, 0x80 ),
 
     END_INPUT
 };
