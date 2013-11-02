@@ -195,9 +195,9 @@ int do_soft_dips(int sel) {
 	    code = &RAM[0xfd84];
 	    bcode = code;
 	    nb = 0;
-	    if (bcd1 != 0xffff)
+	    if (ReadWord(pbase) != 0xffff)
 		get_bcd(nb,code);
-	    if (bcd2 != 0xffff)
+	    if (ReadWord(pbase+2) != 0xffff)
 		get_bcd(nb,code+2);
 	    WriteCode(code+4, val1);
 	    WriteCode(code+5, val2);
