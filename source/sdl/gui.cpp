@@ -264,9 +264,8 @@ static int set_region(int sel) {
 static int load_neo_game(int sel) {
   char res[1024];
   char *exts[] = { ".zip",
-  // I comment out iso, because usually when there is an .iso, there is a cue
-  // and it's better to use the cue file (to support the mp3 names of the tosec
-  // versions for example !)
+      // iso handled specifically by fsel, if no cue is found but iso or iso.gz
+      // is found, then a special list of extensions is used
   // ".iso",
   ".cue", "ipl.txt", "7z", NULL };
   fsel(neocd_dir,exts,res,"Load NeoCD game");

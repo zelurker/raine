@@ -267,9 +267,10 @@ void TFileSel::compute_nb_items() {
       } else if (!(options & ONLY_DIRS)) {
 	menu[nb_files].menu_func = &exec_file;
 	int found = 0,idx;
-	char *s = &dent->d_name[strlen(dent->d_name)-3];
-	if (strlen(dent->d_name) > 3) {
-	    if (!stricmp(s,"iso"))
+	char *s = dent->d_name;
+	if (strlen(s) > 3) {
+	    if (!stricmp(&s[strlen(s)-3],"iso") ||
+		    (strlen(s) > 6 && !stricmp(&s[strlen(s)-6],"iso.gz")))
 		found_iso++;
 	    else if (!stricmp(s,"cue"))
 		found_cue++;
@@ -325,7 +326,7 @@ void TFileSel::compute_nb_items() {
       set_header(myheader);
   int tmpsel = sel;
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
-      char *myexts[] = { ".iso", "iso.gz", NULL };
+      char *myexts[] = { ".iso", "iso.gz", "zip", "7z", NULL };
       char **old = ext;
       ext = myexts;
       compute_nb_items();

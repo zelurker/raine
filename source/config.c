@@ -1734,10 +1734,14 @@ void parse_command_line(int argc, char *argv[])
        else if (ArgPosition == ArgCount-1) {
 
           // allow raine <gamename> (preferred use is raine -game <gamename>)
+	  char *s = ArgList[ArgPosition];
 
-	   if (is_dir(ArgList[ArgPosition]) || !stricmp(
-		       &ArgList[ArgPosition][strlen(ArgList[ArgPosition])-3],
-		       "iso")) {
+	   if (is_dir(ArgList[ArgPosition]) ||
+		   !stricmp(&s[strlen(s)-3],"iso") ||
+		   !stricmp(&s[strlen(s)-6],"iso.gz") ||
+		   !stricmp(&s[strlen(s)-3],"zip") ||
+		   !stricmp(&s[strlen(s)-2],"7z")
+		   ) {
 	       // iso or directory, assuming neocd image
 	       sdl_init();
 	       backslash(ArgList[ArgPosition]);
