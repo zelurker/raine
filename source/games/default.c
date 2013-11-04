@@ -33,6 +33,7 @@
 #include "blit.h"
 #include "speed_hack.h"
 #include "taitosnd.h"
+#include "neocd/cdrom.h"
 
 void LoadDefault(void)
 {
@@ -120,6 +121,8 @@ void LoadDefault(void)
 void ClearDefault(void)
 {
   use_scale2x = 0;
+  neocd_lp.function = 0; // required ONLY when changing region just before
+  // loading another game !!!
   memset(tile_list,0,sizeof(tile_list));
   RemoveTaitoSoundBanking();
   tc0005rot.RAM = NULL;
