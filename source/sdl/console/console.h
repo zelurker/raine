@@ -17,6 +17,7 @@ class TRaineConsole : public TConsole
     {
       pointer_on = 0;
       dump_cols = ((maxlen-7)/4)&~7;
+      use_transparency = 0;
     }
     virtual void  execute();
     virtual void handle_mouse(SDL_Event *event);
