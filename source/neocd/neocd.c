@@ -5111,6 +5111,8 @@ void execute_neocd() {
 void clear_neocd() {
   save_memcard();
   saved_fix = 0;
+  neocd_lp.function = 0; // required ONLY when changing region just before
+  // loading another game !!!
   if (pvc_cart) {
       FreeMem(pvc_cart);
       pvc_cart = NULL;
