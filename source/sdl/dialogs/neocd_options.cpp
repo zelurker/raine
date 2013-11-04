@@ -185,10 +185,10 @@ static menu_item_t neocd_menu[] =
 
 static int select_bios(int sel) {
     neogeo_bios = sel;
-    sprintf(label,"Neo-geo bios : %s",neo_names[neogeo_bios]);
+    sprintf(label,"Neo-Geo bios : %s",neo_names[neogeo_bios]);
     static char label2[180];
     if (!*neocd_bios_file) {
-	sprintf(label2,"No neoCD bios");
+	sprintf(label2,"No NeoCD bios");
     } else {
 	char *s = neocd_bios_file;
 	char *old;

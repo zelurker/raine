@@ -210,7 +210,7 @@ static struct INPUT_INFO input_popbounc[] = // trackball
     END_INPUT
 };
 
-GMEI( neogeo, "Neo-geo bios", SNK, 1990, GAME_MISC);
+GMEI( neogeo, "Neo-Geo bios", SNK, 1990, GAME_MISC);
 
 int check_bios_presence(int sel) {
     return load_rom_dir(dir_neogeo,rom_bios[sel].name,NULL, rom_bios[sel].size,

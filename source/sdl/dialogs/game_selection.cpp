@@ -35,7 +35,7 @@ static menu_item_t options[] =
 { "Category", NULL, &category, NB_GAME_TYPE, }, // this one is finished dynamically
 { "Company", NULL, &company, }, // finished dynamically also
 { "Driver", NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
-{ "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-geo", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
+{ "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-Geo", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
 { "Clones", NULL, &clones, 2, {0, 1 }, { "Without", "With" } },
 { "Display short names too", &change_names, &short_names, 2, {0, 1}, {"No", "Yes"} },
 { "Rom directories...", &do_romdir },
