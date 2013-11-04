@@ -58,9 +58,9 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
       }
       print_menu_string(1,"OpenGL vendor",ogl.vendor);
       print_menu_string(2,"Renderer",ogl.renderer);
-      print_menu_string(3,"version",ogl.version);
+      print_menu_string(3,"Version",ogl.version);
       print_tf_state(4,"OpenGL double buffer", ogl.infos.dbuf);
-      print_tf_state(5,"fsaa (multisampling)", ogl.infos.fsaa_buffers);
+      print_tf_state(5,"FSAA (multisampling)", ogl.infos.fsaa_buffers);
       print_tf_state(6,"Acceleration", ogl.infos.accel);
       print_tf_state(7,"OpenGL VBL (force sync)", ogl.infos.vbl);
       video_menu[8].label = NULL;

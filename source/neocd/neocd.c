@@ -4233,8 +4233,8 @@ void load_neocd() {
     raster_frame = 0;
     do_not_stop = 0;
     register_driver_emu_keys(list_emu,4);
-    layer_id_data[0] = add_layer_info("FIX layer");
-    layer_id_data[1] = add_layer_info("sprites layer");
+    layer_id_data[0] = add_layer_info("Fixed layer");
+    layer_id_data[1] = add_layer_info("Sprites layer");
     neocd_video.screen_x = 304;
     offx = 16-8;
     maxx = 320-8;

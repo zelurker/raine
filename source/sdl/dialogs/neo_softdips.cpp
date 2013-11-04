@@ -166,7 +166,7 @@ int do_soft_dips(int sel) {
 	    if (defs == base + 0x16 + 10) // max nb of entries
 		break;
 	}
-	TMenu *load = new TMenu("Neogeo bios",menu);
+	TMenu *load = new TMenu("Soft dipswitches",menu);
 	load->execute();
 	delete load;
 
