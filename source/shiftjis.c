@@ -3,6 +3,7 @@
 /* sjis_getc:
  *  Reads a character from a shift-jis string.
  */
+#if 0
 static int sjis_getc(AL_CONST char *s)
 {
    int c = *((unsigned char *)(s++));
@@ -87,3 +88,4 @@ static int sjis_isok(int c)
 	(void)(c);
    return TRUE;
 }
+#endif

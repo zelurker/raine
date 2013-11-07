@@ -204,9 +204,11 @@ void saResetPlayChannels( void );
 void sa_pause_sound(void);
 void sa_unpause_sound(void);
 
+#ifndef RAINE_DOS
 void load_sample(char *filename);
 void init_samples();
 void set_sample_pos(int pos);
+#endif
 
 void end_recording();
 

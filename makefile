@@ -66,10 +66,14 @@ ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
   CXX=g++ -m32
   LD=gcc -m32 -L /usr/lib32
  else
+ifndef LD
   LD = gcc
+endif
  endif
 else
+ifndef LD
   LD=gcc
+endif
 endif
 
 ifeq ("$(shell nasm -v)","")

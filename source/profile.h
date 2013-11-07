@@ -44,7 +44,7 @@ extern int use_rdtsc; // Not sure it will be usefull outside allegro...
 
 typedef struct PROFILE_RESULTS
 {
-   UINT8 *name;
+   char *name;
    UINT32 percent;
    UINT32 cycles;
 } PROFILE_RESULTS;

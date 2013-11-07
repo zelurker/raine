@@ -335,11 +335,17 @@ static void CLI_geometry(void) {
 	char buf[80];
 	sprintf(buf,"%d,%d",x,y);
 	raine_set_config_string("Display","position",buf);
+#ifndef RAINE_DOS
 	display_cfg.fullscreen = 0;
 	display_cfg.noborder = 1;
+#endif
 	// I would have used setenv here, but windows doesn't know setenv... !!!
 	static char buffer[100];
+#ifdef RAINE_DOS
+	sprintf(buffer,"SDL_VIDEO_WINDOW_POS=%s",buf);
+#else
 	snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",buf);
+#endif
 	buffer[99] = 0;
 	putenv(buffer);
     }
@@ -1743,7 +1749,9 @@ void parse_command_line(int argc, char *argv[])
 		   !stricmp(&s[strlen(s)-2],"7z")
 		   ) {
 	       // iso or directory, assuming neocd image
+#ifdef RAINE_SDL
 	       sdl_init();
+#endif
 	       backslash(ArgList[ArgPosition]);
 	       load_neo_from_name(ArgList[ArgPosition]);
 	   } else

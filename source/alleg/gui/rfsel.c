@@ -903,3 +903,13 @@ int raine_file_select(char *message, char *path, char *ext)
    #endif
 }
 
+void fsel(char *path, char **exts,char *res, char *msg) {
+  char ext[200];
+  ext[0] = 0;
+  while (*exts)
+      sprintf(&ext[strlen(ext)],"%s;",*exts++);
+  if (ext[0])
+      ext[strlen(ext)-1] = 0; // remove last ;
+  raine_file_select(msg,res,ext);
+}
+

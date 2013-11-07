@@ -1,6 +1,10 @@
 #include <zlib.h>
 #include "raine.h"
+#ifdef RAINE_DOS
+#include "alleg/gui/rgui.h"
+#else
 #include "sdl/dialogs/messagebox.h"
+#endif
 
 /* Extremely simplified iso image handling, can handle only files in the
  * root directory (I don't need anything else !) */

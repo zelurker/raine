@@ -17,7 +17,12 @@
 #include "games.h"
 #include "config.h"
 #include "display.h"
+#ifndef RAINE_DOS
 #include "display_sdl.h"
+#else
+#include <ctype.h>
+#include "alleg/gui/rgui.h"
+#endif
 #include "ingame.h"
 #include "7z.h"
 
@@ -827,10 +832,12 @@ void neogeo_cdrom_load_title(void)
     }
   }
 
+#ifndef RAINE_DOS
   if (sdl_screen->w != display_cfg.screen_x ||
       sdl_screen->h != display_cfg.screen_y ||
       sdl_screen->format->BitsPerPixel != display_cfg.bpp)
     ScreenChange();
+#endif
   DrawNormal();
 }
 

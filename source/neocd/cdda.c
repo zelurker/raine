@@ -17,6 +17,13 @@ struct {
 int sfx_volume,music_volume,neocd_cdda_format;
 int start_index,end_index;
 
+#ifdef RAINE_DOS
+void cdda_stop() {}
+void do_cdda( int command, int track_number_bcd) {}
+void init_cdda() {}
+void prepare_cdda_save(UINT32 id) {}
+#else
+
 static SDL_CD *cdrom;
 
 static char *find_file(char *pattern,char *path){
@@ -251,4 +258,5 @@ void prepare_cdda_save(UINT32 id) {
   AddSaveData(id,(UINT8*)&cdda,sizeof(cdda));
   AddLoadCallback(restore_cdda);
 }
+#endif
 

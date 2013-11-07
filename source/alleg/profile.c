@@ -9,7 +9,7 @@
 #include <sdl/SDL_gfx/SDL_framerate.h>
 #endif
 
-float fps = 60.0;
+float fps = 60.0,default_fps;
 
 int use_rdtsc;
 UINT32 timer_next_update;	// timer_frame_count at next fps() update
@@ -225,7 +225,7 @@ static void update_fps(int quiet)
    case 0x01:
       timer_next_update = read_ingame_timer() + fps;	// set time of next update
       render_start_count = render_frame_count + 1;	// render count at start
-      sprintf(fps_buff,"\?\?/%d",fps);
+      sprintf(fps_buff,"\?\?/%g",fps);
       if(quiet) print_ingame(120,"FPS Counter Enabled");
       return;
    break;
@@ -233,7 +233,7 @@ static void update_fps(int quiet)
       timer_start_count = read_ingame_timer();		// start time
       timer_next_update = timer_start_count + fps;	// set time of next update
       render_start_count = render_frame_count + 1;	// render count at start
-      sprintf(fps_buff,"\?\?/%d",fps);
+      sprintf(fps_buff,"\?\?/%g",fps);
       if(quiet) print_ingame(120,"Average FPS Counter Enabled");
       return;
    break;
@@ -337,7 +337,7 @@ void start_ingame_timer(void)
 
 #ifdef RAINE_DEBUG
       print_debug("Approx CPU Speed: %d MHz\n", cycles_per_second/1000000);
-      print_debug("RDTSC Cycles/frame: %d/%d = %d\n", cycles_per_second, fps, cycles_per_frame);
+      print_debug("RDTSC Cycles/frame: %d/%g = %d\n", cycles_per_second, fps, cycles_per_frame);
 #endif
 
       }

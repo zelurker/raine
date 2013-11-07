@@ -393,7 +393,9 @@ int main(int argc,char *argv[])
    strcpy(neocd_bios_file, raine_get_config_string("neocd", "neocd_bios", ""));
    music_volume = raine_get_config_int("neocd","music_volume",DEFAULT_MUSIC_VOLUME);
    sfx_volume = raine_get_config_int("neocd","sfx_volume",DEFAULT_SFX_VOLUME);
+#ifndef RAINE_DOS
    neocd_cdda_format = raine_get_config_int("neocd","cdda_format",AUDIO_S16LSB);
+#endif
    auto_stop_cdda = raine_get_config_int("neocd","auto_stop_cdda",1);
    mute_sfx = raine_get_config_int("neocd","mute_sfx",0);
    mute_music = raine_get_config_int("neocd","mute_music",0);

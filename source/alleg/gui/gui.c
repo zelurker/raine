@@ -180,8 +180,22 @@ void raine_centre_dialog(DIALOG *dialog)
 
 static DATAFILE *font_data;
 
-static void setup_font()
+void setup_font()
 {
+  if (ingame_font) {
+    return;
+  }
+  ingame_font = (UINT8*)calloc(1,1792);
+  FILE *f = fopen (get_shared("font6x8.bin"), "rb");
+  if (!f)
+    f = fopen(get_shared("fonts/font6x8.bin"),"rb");
+  if (f) {
+   fread(ingame_font,1,1792,f);
+   fclose(f);
+  } else {
+    printf("no font, byebye !\n");
+    exit(1);
+  }
   if(rgui_cfg.font_datafile[0])
      font_data = load_datafile(rgui_cfg.font_datafile);
    if (display_cfg.screen_x >= 640 && display_cfg.screen_y >= 480)

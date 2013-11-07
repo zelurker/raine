@@ -10,6 +10,7 @@
 #include "loadpng.h"
 #include "unzip.h"
 #include "video/palette.h"
+#include <allegro/internal/aintern.h> // fixup_loaded_bitmap !
 
 /* We need internals _color_load_depth and _fixup_loaded_bitmap.  The
  * first can be replaced by the new get_color_depth() function which
@@ -117,7 +118,7 @@ static void generate_332_palette(PALETTE pal)
 
 #define makecol_depth(bpp,r,g,b) makecol15(r,g,b)
 
-#endif 
+#endif
 
 /* really_load_png:
  *  Worker routine, used by load_png and load_memory_png.
@@ -322,7 +323,7 @@ BITMAP *load_png(const char *filename, RGB *pal)
      * the normal method of doing things with libpng).  REQUIRED unless you
      * set up your own error handlers in the png_create_read_struct() earlier.
      */
-    if (setjmp(png_ptr->jmpbuf)) {
+    if (setjmp(png_jmpbuf(png_ptr))) {
 	/* Free all of the memory associated with the png_ptr and info_ptr */
 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 	fclose(fp);
@@ -384,7 +385,7 @@ BITMAP *load_png_from_zip(unzFile uf, RGB *pal)
      * the normal method of doing things with libpng).  REQUIRED unless you
      * set up your own error handlers in the png_create_read_struct() earlier.
      */
-    if (setjmp(png_ptr->jmpbuf)) {
+    if (setjmp(png_jmpbuf(png_ptr))) {
 	/* Free all of the memory associated with the png_ptr and info_ptr */
 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 	/* If we get here, we had a problem reading the file */
@@ -482,7 +483,7 @@ BITMAP *load_memory_png(const void *buffer, int bufsize, RGB *pal)
      * the normal method of doing things with libpng).  REQUIRED unless you
      * set up your own error handlers in the png_create_read_struct() earlier.
      */
-    if (setjmp(png_ptr->jmpbuf)) {
+    if (setjmp(png_jmpbuf(png_ptr))) {
 	/* Free all of the memory associated with the png_ptr and info_ptr */
 	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 	/* If we get here, we had a problem reading the file */

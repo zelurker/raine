@@ -2,7 +2,11 @@
 extern "C" {
 #endif
 
+#ifdef RAINE_DOS
+#include "alleg/gui/rgui.h"
+#else
 #include "sdl/dialogs/messagebox.h"
+#endif
 
 #define IRQ1CTRL_AUTOANIM_STOP		0x08
 // Issues an interrupt when counter = 0 :

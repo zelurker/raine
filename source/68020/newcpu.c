@@ -124,7 +124,7 @@ void DoCycles(void)
 "SMC2:\n"
 	:
 	:
-	: "%eax","%ebx","%ecx","%edx","%esi","%edi","%ebp"
+	: "%eax","%ebx","%ecx","%edx","%esi","%edi"
    );
 }
 #endif

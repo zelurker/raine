@@ -60,6 +60,7 @@ void load_explicit_progress(int current, int max);
 void init_joys();
 void read_gui_config();
 void write_gui_config();
+void setup_font();
 
 #ifdef __cplusplus
 }

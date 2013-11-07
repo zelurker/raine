@@ -9,7 +9,6 @@
  *
  */
 
-#include <SDL_endian.h>
 #include "gameinc.h"
 #include "sdl/dialogs/messagebox.h"
 #include "pd4990a.h"
@@ -33,18 +32,30 @@
 #ifdef RAINE_DEBUG
 #include "sdl/gui.h"
 #endif
+#ifndef RAINE_DOS
 #include "sdl/control_internal.h"
 #include "sdl/dialogs/fsel.h"
 #include "sdl/gui.h"
+#include "sdl/dialogs/neo_debug_dips.h"
+#else
+#include "alleg/gui/rgui.h"
+#endif
 #include "loadpng.h"
 #include "games/gun.h"
 #include "taitosnd.h"
 #include "games/neogeo.h"
 #include "decode.h"
-#include "sdl/dialogs/neo_debug_dips.h"
 
+#ifdef RAINE_DOS
+#ifdef ALLEGRO_LITTLE_ENDIAN
+#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (leval)
+#else
+#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (beval)
+#endif
+#else
 #define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  \
     (SDL_BYTEORDER == SDL_LIL_ENDIAN ?  leval : beval)
+#endif
 
 #define BYTE_XOR_BE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0))
 #define BYTE_XOR_LE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(0,1))
@@ -171,6 +182,7 @@ static FILE *fdata;
 #define MAX_BANKS 256
 static UINT8 banks[MAX_BANKS];
 
+#ifndef RAINE_DOS
 static void do_capture() {
     if (!capture_mode) return;
     int bpp = display_cfg.bpp;
@@ -236,7 +248,7 @@ static struct DEF_INPUT_EMU list_emu[] =
  { SDLK_LEFT,       0x00, "Prev sprite block", prev_sprite_block     },
  { SDLK_c,          0x00, "Capture block", do_capture },
 };
-
+#endif
 static int frame_neo;
 
 // neocd_path points to a neocd image, neocd_dir is the last path used for
@@ -988,11 +1000,14 @@ static void restore_memcard() {
     fread(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
     fclose(f);
   }
-  sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
-  f = fopen(path,"rb");
-  if (f) {
-      fread(saveram.ram, 0x10000, 1, f);
-      fclose(f);
+
+  if (saveram.ram) {
+      sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+      f = fopen(path,"rb");
+      if (f) {
+	  fread(saveram.ram, 0x10000, 1, f);
+	  fclose(f);
+      }
   }
 }
 
@@ -2027,7 +2042,9 @@ void postprocess_ipl() {
   char path[FILENAME_MAX];
   sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
   load_sdips = exists(path);
+#ifndef RAINE_DOS
   init_debug_dips();
+#endif
 }
 
 /* Upload area : this area is NOT in the neogeo cartridge systems
@@ -4232,7 +4249,9 @@ void load_neocd() {
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
     do_not_stop = 0;
+#ifndef RAINE_DOS
     register_driver_emu_keys(list_emu,4);
+#endif
     layer_id_data[0] = add_layer_info("Fixed layer");
     layer_id_data[1] = add_layer_info("Sprites layer");
     neocd_video.screen_x = 304;
@@ -4469,7 +4488,9 @@ void load_neocd() {
 	    WriteWord(&ROM[0xabba],0x6000);
 	else if (is_current_game("ridheroh"))
 	    WriteWord(&ROM[0xabf0],0x6000);
+#ifndef RAINE_DOS
 	init_debug_dips();
+#endif
     }
 
     memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));

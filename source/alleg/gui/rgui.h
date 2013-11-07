@@ -31,6 +31,8 @@ void done_gui_screen();
 int raine_gfx_mode_select(void);
 
 int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, int c1, int c2);
+#define MessageBox(title,msg,button) raine_alert(title,msg,"","",button,"",0,0)
+#define ErrorMsg(msg) MessageBox("Error",msg,"OK")
 int raine_edit_int(char *title, char *s1, char *b1, char *b2, int c1, int c2, int inf, int supp, int def);
 
 char *gfx_card_name(UINT32 index);
@@ -49,6 +51,9 @@ int gfx_card_number(UINT32 index);
 // this one in rfsel.c
 
 int raine_file_select(char *message, char *path, char *ext);
+void fsel(char *path, char **exts,char *res, char *msg);
+#define SDL_WM_SetCaption(s1,s2)
+#define SDL_Color RGB
 
 #define rgui_mouse_x	gui_mouse_x
 #define rgui_mouse_y	gui_mouse_y

@@ -130,9 +130,11 @@ void overlay_ingame_interface(int ogl)
 
 	 MsgList[ta].messagetime -= (INT32) skip_frame_count;
 
+#ifndef RAINE_DOS
 	 if (ogl)
 	     opengl_text(MsgList[ta].message,0,(((MSG_LIST_SIZE-1)-tb)));
 	 else
+#endif
 	     textout_fast(MsgList[ta].message,xoff2,(yoff2+yyy-8)-(((MSG_LIST_SIZE-1)-tb)<<3),get_white_pen());
 
       }
@@ -159,9 +161,11 @@ void overlay_ingame_interface(int ogl)
 	 render_start_count = render_frame_count;			// render count at start
 	 timer_next_update = ta + fps;					// set time of next update
       }
+#ifndef RAINE_DOS
       if (ogl)
 	  opengl_text(fps_buff,-strlen(fps_buff),-1);
       else
+#endif
 	  textout_fast(fps_buff,xoff2+xxx-(strlen(fps_buff)*6),yoff2,get_white_pen());
    break;
    case 0x02:				// Show Average FPS (takes a while to adapt to changes)
@@ -173,26 +177,32 @@ void overlay_ingame_interface(int ogl)
 	      sprintf(fps_buff,"Avg:%02d",round(((render_frame_count-render_start_count)*1.0/(ta-timer_start_count))*fps));
        timer_next_update = ta + fps;					// set time of next update
      }
+#ifndef RAINE_DOS
       if (ogl)
 	  opengl_text(fps_buff,-strlen(fps_buff),-1);
       else
+#endif
 	  textout_fast(fps_buff,xoff2+xxx-(strlen(fps_buff)*6),yoff2,get_white_pen());
      break;
    case 0x03:				// Show Profile results (percent)
       for(ta=0;ta<PRO_COUNT;ta++){
       sprintf(fps_buff,"%s: %2d%%",profile_results[ta].name, profile_results[ta].percent);
+#ifndef RAINE_DOS
       if (ogl)
 	  opengl_text(fps_buff,-10,-1-ta);
       else
+#endif
 	  textout_fast(fps_buff,xoff2+xxx-(10*6),yoff2+(ta*8),get_white_pen());
       }
    break;
    case 0x04:				// Show Profile results (cycles)
       for(ta=0;ta<PRO_COUNT;ta++){
       sprintf(fps_buff,"%s: %6x",profile_results[ta].name, profile_results[ta].cycles);
+#ifndef RAINE_DOS
       if (ogl)
 	  opengl_text(fps_buff,-13,-1-ta);
       else
+#endif
 	  textout_fast(fps_buff,xoff2+xxx-(13*6),yoff2+(ta*8),get_white_pen());
       }
    break;
@@ -208,9 +218,11 @@ void overlay_ingame_interface(int ogl)
 
    if((raine_cfg.req_pause_game) && (!(pause_time & 0x20))) {
 
+#ifndef RAINE_DOS
       if (ogl)
 	  opengl_text("<Paused>",-1000,-1000);
       else
+#endif
 	  textout_fast("<Paused>",xoff2+((xxx-(6*8))>>1),yoff2+((yyy-8)>>1),get_white_pen());
    }
 

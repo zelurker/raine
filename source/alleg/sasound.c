@@ -67,7 +67,7 @@ static int hVoice[NUMVOICES];
 // It just uses "streams" ! What a mess !
 
 static int	   playing[NUMVOICES];
-static UINT16	   *vout[NUMVOICES],*vend[NUMVOICES];
+static INT16	   *vout[NUMVOICES],*vend[NUMVOICES];
 
 int	    audio_sample_rate;
 
@@ -311,7 +311,8 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
   /* This version works at low level, creating a sample, and following its
      advancement directly in the voice_position... */
   int i;
-  unsigned short *dout,*dfin;
+  short *dout;
+  short *dfin;
   signed short *din;
   //fprintf(stderr,"saPlayBuffer %d freq %d bits %d pan %d len %d\n",channel,freq,bits,pan,len);
   if( audio_sample_rate == 0 || channel >= NUMVOICES )	return;
@@ -394,7 +395,7 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
     // should, depending on external factors too like the cpu load.
 
     dout=vout[channel];
-    th_pos = (dout - ((UINT16 *)lpWave[channel]->data)-
+    th_pos = (dout - ((INT16 *)lpWave[channel]->data)-
 	      count*len/2);
     if (th_pos < 0) th_pos += stream_buffer_max * len/2;
 
@@ -544,23 +545,23 @@ char *sound_card_name( int num )
 
 int sound_card_id( int i )
 {
-  _DRIVER_INFO *digi;
+    _DRIVER_INFO *digi;
 
-  if (i<=0)
-    return 0;
-  if (system_driver->digi_drivers)
-    digi = system_driver->digi_drivers();
-  else
-    digi = _digi_driver_list;
+    if (i<=0)
+	return 0;
+    if (system_driver->digi_drivers)
+	digi = system_driver->digi_drivers();
+    else
+	digi = _digi_driver_list;
 
 
-  if (i<RaineSoundCardTotal) {
-    DIGI_DRIVER *driver = digi[i-1].driver;
-    if (driver) {
-      return driver->id;
+    if (i<RaineSoundCardTotal) {
+	DIGI_DRIVER *driver = digi[i-1].driver;
+	if (driver) {
+	    return driver->id;
+	}
     }
-  }
-  return 0;
+    return 0;
 }
 
 /******************************* END OF FILE **********************************/

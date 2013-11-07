@@ -11,6 +11,9 @@
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "sdl/dialogs/messagebox.h"
 #endif
+#ifdef RAINE_DOS
+#include "alleg/gui/rgui.h"
+#endif
 #include "blit.h" // GameBitmap
 #include <unistd.h>
 
@@ -642,7 +645,7 @@ void update_monitoring() {
 #ifdef ALLEGRO_SOUND
 	// update directly in the callback for sdl, it's sometimes called more
 	// often than the video !
-	if (f_record) {
+	if (f_record)
 	    fwrite(mixing_buff,2,mixing_buff_len,f_record);
 	/* This is useless in sdl since eveything is done in the sound handler */
 	memset(mixing_buff,0,mixing_buff_len*2);

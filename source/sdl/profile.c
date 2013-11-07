@@ -29,13 +29,13 @@ UINT32 skip_frame_count;		// number of frames since last video emulation
 
 struct PROFILE_RESULTS profile_results[PRO_COUNT] =
 {
-   { (UINT8*)" Misc", 0, 0 },
-   { (UINT8*)"  Cpu", 0, 0 },
-   { (UINT8*)"Sound", 0, 0 },
-   { (UINT8*)" Draw", 0, 0 },
-   { (UINT8*)" Blit", 0, 0 },
-   { (UINT8*)"  Pal", 0, 0 },
-   { (UINT8*)" Free", 0, 0 },
+   { " Misc", 0, 0 },
+   { "  Cpu", 0, 0 },
+   { "Sound", 0, 0 },
+   { " Draw", 0, 0 },
+   { " Blit", 0, 0 },
+   { "  Pal", 0, 0 },
+   { " Free", 0, 0 },
 };
 
 #ifdef RDTSC_PROFILE

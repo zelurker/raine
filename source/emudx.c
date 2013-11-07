@@ -122,8 +122,10 @@ void load_emudx(const char *name, int tiles, int sprites,
   }
   if (display_cfg.bpp != 16) {
     display_cfg.bpp = 16;
+#ifndef RAINE_DOS
     if (display_cfg.video_mode == 0) // opengl
 	display_cfg.video_mode = 1; // use yuv overlay instead
+#endif
     ScreenChange();
   }
 

@@ -459,7 +459,7 @@ static int raine_set_gfx_mode(int SType,int SX,int SY)
 
 static int new_set_gfx_mode(int SType,int SX,int SY,int SLines)
 {
-  int ta,bpp;
+  int ta;
 
   screen_valid=0;
 

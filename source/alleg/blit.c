@@ -60,16 +60,6 @@ int key_data[MAX_LAYER_INFO]=
 
 static void scroll_async(int page);
 
-typedef struct RAINEBITMAP
-{
-   int xfull;		// Full bitmap width
-   int yfull;		// Full bitmap height
-   int xtop;		// X Offset of viewable area
-   int ytop;		// Y offset of viewable area
-   int xview;		// Viewable bitmap width
-   int yview;		// Viewable bitmap height
-} RAINEBITMAP;
-
 RAINEBITMAP GameScreen;
 
 BITMAP *BlitSource;		// *Full*
@@ -538,7 +528,7 @@ void DrawNormal(void)
 
    */
 
-   overlay_ingame_interface();
+   overlay_ingame_interface(0);
 
    /*
 
@@ -725,7 +715,7 @@ void ReClipScreen(void)
   GameScreen.yview = oldyview;
 }
 
-void clear_screen(int pen)
+void clear_game_screen(int pen)
 {
    clear_to_color(GameViewBitmap, pen);
 }
