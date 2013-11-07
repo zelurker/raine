@@ -136,6 +136,11 @@ enum {
    KB_DEF_B2_L,
    KB_DEF_B2_R,
 
+#ifndef RAINE_DOS
+   // The dos inputs can't handle combinations, all inputs which are not pressed
+   // are cleared at each frame, so all the combinations are cleared and no
+   // button can be pressed in these conditions ! In other words : this code
+   // sucks !
    KB_DEF_P1_B1B2,
    KB_DEF_P1_B3B4,
    KB_DEF_P1_B2B3,
@@ -147,6 +152,7 @@ enum {
    KB_DEF_P2_B2B3,
    KB_DEF_P2_B1B2B3,
    KB_DEF_P2_B2B3B4,
+#endif
 
    KB_DEF_NEXT_GAME,
    KB_DEF_PREV_GAME,

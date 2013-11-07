@@ -332,6 +332,7 @@ static struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { KEY_R,       0x00,           "Def Button 2 Left",    },      // KB_DEF_B2_L,
  { KEY_T,    0x00,           "Def Button 2 Right",   },      // KB_DEF_B2_R,
 
+#ifndef RAINE_DOS
  { 0,           0,  "Player1 B1+B2", }, // p1_b1B2
  { 0,           0,  "Player1 B3+B4", },
  { 0,           0,  "Player1 B2+B3", },
@@ -343,6 +344,7 @@ static struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { 0,           0,  "Player2 B2+B3", },
  { 0,           0,  "Player2 B1+B2+B3", },
  { 0,           0,  "Player2 B2+B3+B4", },
+#endif
 
  { 0,           0,  "Next Game", },
  { 0,           0,  "Prev Game", },
