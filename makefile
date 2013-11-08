@@ -17,10 +17,10 @@
 VERSION = "0.63.2"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
-# VERBOSE = 1
+VERBOSE = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
@@ -66,12 +66,12 @@ ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
   CXX=g++ -m32
   LD=gcc -m32 -L /usr/lib32
  else
-ifndef LD
-  LD = gcc
-endif
+	ifeq ("$(LD)","ld")
+	LD = gcc
+    endif
  endif
 else
-ifndef LD
+ifeq ("$(LD)","ld")
   LD=gcc
 endif
 endif
