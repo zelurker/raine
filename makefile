@@ -67,12 +67,12 @@ ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
   LD=gcc -m32 -L /usr/lib32
  else
 	ifeq ("$(LD)","ld")
-	LD = gcc
+	LD = g++
     endif
  endif
 else
 ifeq ("$(LD)","ld")
-  LD=gcc
+  LD=g++
 endif
 endif
 
@@ -173,13 +173,11 @@ ifdef RAINE32
 
    # MINGW32
 
-LD = gcc
 SDL = 1
    RAINE_EXE = raine32.exe
 ifdef CROSSCOMPILE
 	ASM = @nasm
 	MD = @mkdir
-  LD = $(CC)  -L $(prefix)/$(target)/lib
 else
 ifndef ASM
    ASM = @nasmw.exe # auto-detection broken for mingw !!!
