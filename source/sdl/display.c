@@ -211,6 +211,7 @@ void save_screen_settings(char *section)
 
 static void get_desktop_mode() {
   const SDL_VideoInfo *inf = SDL_GetVideoInfo();
+  if (!inf) return;
   desktop_w = inf->current_w;
   desktop_h = inf->current_h;
   desktop_bpp = inf->vfmt->BitsPerPixel;

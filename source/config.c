@@ -197,6 +197,7 @@ int actual_load_neo_game(void)
       ClearDefault();
     current_game = (GAME_MAIN *)&game_neocd;
     if (!screen) {
+	sdl_init();
       init_display();
       setup_font(); // Usefull even without gui for the messages on screen
     }
