@@ -268,6 +268,12 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 			    remaining_b = NULL;
 			}
 			remaining_size = outSizeProcessed - size;
+			// Shouldn't happen, but it does, found out thanks to
+			// efence. Apparently it's just the remaining_size
+			// which is too big, the buffer is not overloaded at
+			// this point
+			if (remaining_size+offset+offs+size > outBufferSize)
+			    remaining_size = outBufferSize-(offset+offs+size);
 			remaining_b = AllocateMem(remaining_size);
 			memcpy(remaining_b,outBuffer+offset+offs+size,remaining_size);
 		    } else if (remaining_b) {
