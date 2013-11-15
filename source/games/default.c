@@ -33,6 +33,7 @@
 #include "blit.h"
 #include "speed_hack.h"
 #include "taitosnd.h"
+#include "tc200obj.h"
 
 void LoadDefault(void)
 {
@@ -40,6 +41,7 @@ void LoadDefault(void)
 #ifdef RDTSC_PROFILE
   cycles_per_frame = 0; // recalibrate for non 60fps games
 #endif
+  f2_sprites_colors = 16;
   fps = 60.0; // 60 fps (default)
   default_fps = 0.0; // init only by the dialog which allows to change fps
 #if HAS_ADPCM

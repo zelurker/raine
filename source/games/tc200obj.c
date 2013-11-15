@@ -184,7 +184,6 @@ void init_tc0200obj(void)
    sy_2      = tc0200obj.bmp_y + tc0200obj.bmp_h;
    f2_x_offset = tc0200obj.ofs_x;
    f2_sprite_type = tc0200obj.ofs_y;
-   f2_sprites_colors = 16; // most of them except finalb
    //object_id = add_layer_info("TC0200OBJ:OBJECT");
 }
 

@@ -29,6 +29,8 @@ typedef struct TC0200OBJ			// Information about 1 chip
 
 struct TC0200OBJ tc0200obj;
 
+extern UINT16 *f2_sprite_extension,f2_sprites_colors;
+
 void init_tc0200obj(void);
 
 void make_object_bank(UINT8 *src);

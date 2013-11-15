@@ -20,7 +20,7 @@ VERSION = "0.63.2"
 RAINE_DEBUG = 1
 
 # Be verbose ?
-VERBOSE = 1
+# VERBOSE = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1

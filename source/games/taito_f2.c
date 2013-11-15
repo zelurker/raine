@@ -160,12 +160,16 @@ static struct ROM_INFO rom_growl[] =
 
 static struct ROM_INFO rom_finalb[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
-            "b82_09.10",  0x632f1ecd, "b82_17.11",  0xe91b2ec9),
-  LOAD8_16(  REGION_GFX1,  0x00000,  0x20000,
-            "b82-06.19",  0xfc450a25, "b82-07.18",  0xec3df577),
-  LOAD8_16(  REGION_GFX2,  0x000000,  0x80000,
-            "b82-04.4",  0x6346f98e, "b82-03.5",  0xdaa11561),
+  { "b82_09.10", 0x20000, 0x632f1ecd, REGION_ROM1, 0x00000, LOAD_8_16 },
+  { "b82_17.11", 0x20000, 0xe91b2ec9, REGION_ROM1, 0x00001, LOAD_8_16 },
+  { "b82-06.19", 0x20000, 0xfc450a25, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "b82-07.18", 0x20000, 0xec3df577, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "b82-04.4", 0x80000, 0x6346f98e, REGION_GFX2, 0x000000, LOAD_8_16 },
+	/* Note: this is intentional to load at 0x180000, not at 0x100000
+	   because finalb_driver_init will move some bits around before data
+	   will be 'gfxdecoded'. The whole thing is because this data is 2bits-
+	   while above is 4bits-packed format, for a total of 6 bits per pixel. */
+  { "b82-03.5", 0x80000, 0xdaa11561, REGION_GFX2, 0x000001, LOAD_8_16 },
   { "b82-05.3", 0x80000, 0xaa90b93a, REGION_GFX2, 0x180000, LOAD_NORMAL },
   { "b82_10.16", 0x10000, 0xa38aaaed, REGION_ROM2, 0, LOAD_NORMAL },
   { "b82-02.1", 0x80000, 0x5dd06bdd, REGION_SMP1, 0x00000, LOAD_NORMAL },
@@ -1793,9 +1797,7 @@ static void load_dondokdj(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-extern UINT16 *f2_sprite_extension,f2_sprites_colors;
-
-static void load_finalb() {
+void load_finalb() {
   int i;
   unsigned char data;
   unsigned int offset;
