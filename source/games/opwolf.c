@@ -323,7 +323,7 @@ static void clear_ram() {
 static void load_opwolf(void)
 {
    UINT8 *TMP;
-   int ta,tb,romset;
+   int ta,tb;
    if (is_current_game("opwolf"))
        romset = 0;
    else if (is_current_game("opwolfb"))
