@@ -371,9 +371,14 @@ static UINT16 genix_prot_word_r(UINT32 offset)
           (genix_prot_byte_r(offset+1) << 0);
 }
 
+static int layer_bg, layer_sprites,layer_text;
+
 static void load_genix(void)
 {
   RAMSize = 0x10000 + 0x800 + 0x4000 + 0x8000;
+  layer_bg = add_layer_info("bg");
+  layer_sprites = add_layer_info("sprites");
+  layer_text = add_layer_info("text");
   if(!(RAM=AllocateMem(RAMSize))) return;
 
   pirates_main_ram=RAM;
@@ -436,121 +441,126 @@ static void Drawpirates(void)
 
   scroll=-3+(pirates_scroll[0]>>3);
 
-  for(x=0;x<40;x++){
-    for(y=0;y<32;y++){
-      // int added = 0;
-      int sx,sy;
-      zz=0x2a80+(((x+scroll)*32)+y)*4;
-      zzz=0x1380+(((x+scroll)*32)+y)*4;
+  if( check_layer_enabled(layer_bg)) {
+      for(x=0;x<40;x++){
+	  for(y=0;y<32;y++){
+	      // int added = 0;
+	      int sx,sy;
+	      zz=0x2a80+(((x+scroll)*32)+y)*4;
+	      zzz=0x1380+(((x+scroll)*32)+y)*4;
 
-      ta=ReadWord(&pirates_tilemap_ram[zz]);
-      ta2=ReadWord(&pirates_tilemap_ram[zzz]);
-      // if (gfx1_solid[ta]) {
+	      ta=ReadWord(&pirates_tilemap_ram[zz]);
+	      ta2=ReadWord(&pirates_tilemap_ram[zzz]);
+	      // if (gfx1_solid[ta]) {
 
-	MAP_PALETTE_MAPPED_NEW(
-			       ((pirates_tilemap_ram[zz+2])&0x7f)+0x100,
-			       16,
-			       map1
-			       );
+	      MAP_PALETTE_MAPPED_NEW(
+		      ((pirates_tilemap_ram[zz+2])&0x7f)+0x100,
+		      16,
+		      map1
+		      );
 
-	sx = x*8+8-(pirates_scroll[0]&7); sy = y*8+16;
-	if ((tile_cache[ta]) && (cache_map[ta] == map1 && other[ta] == ta2)) {
-	  Move8x8_Rot(tile_cache[ta],sx,sy,NULL);
-	  continue;
-	} else {
-	  Draw8x8_Mapped_Rot(&gfx1[ta<<6],sx,sy,map1);
-	}
+	      sx = x*8+8-(pirates_scroll[0]&7); sy = y*8+16;
+	      if ((tile_cache[ta]) && (cache_map[ta] == map1 && other[ta] == ta2)) {
+		  Move8x8_Rot(tile_cache[ta],sx,sy,NULL);
+		  continue;
+	      } else {
+		  Draw8x8_Mapped_Rot(&gfx1[ta<<6],sx,sy,map1);
+	      }
 
-	if (gfx1_solid[ta2]) {
-	  // if (added) fprintf(stderr,"%x %x\n",ta,ta2);
-	  // if (added) tile_cache[ta] = NULL;
-	  MAP_PALETTE_MAPPED_NEW(
-				 ((pirates_tilemap_ram[zzz+2])&0x7f)+0x80,
-				 16,
-				 map
-				 );
+	      if (gfx1_solid[ta2]) {
+		  // if (added) fprintf(stderr,"%x %x\n",ta,ta2);
+		  // if (added) tile_cache[ta] = NULL;
+		  MAP_PALETTE_MAPPED_NEW(
+			  ((pirates_tilemap_ram[zzz+2])&0x7f)+0x80,
+			  16,
+			  map
+			  );
 
-	  if (gfx1_solid[ta2] == 1) // some transp
-	    Draw8x8_Trans_Mapped_Rot(&gfx1[ta2<<6],x*8+8-(pirates_scroll[0]&7),y*8+16,map);
-	  else {
-	    Draw8x8_Mapped_Rot(&gfx1[ta2<<6],x*8+8-(pirates_scroll[0]&7),y*8+16,map);
-	    add_tile_cache_Rot(NULL,sx,sy,ta);
-	    cache_map[ta] = map1;
+		  if (gfx1_solid[ta2] == 1) // some transp
+		      Draw8x8_Trans_Mapped_Rot(&gfx1[ta2<<6],x*8+8-(pirates_scroll[0]&7),y*8+16,map);
+		  else {
+		      Draw8x8_Mapped_Rot(&gfx1[ta2<<6],x*8+8-(pirates_scroll[0]&7),y*8+16,map);
+		      add_tile_cache_Rot(NULL,sx,sy,ta);
+		      cache_map[ta] = map1;
+		  }
+		  other[ta] = ta2;
+	      }
+	      // }
 	  }
-	  other[ta] = ta2;
-	}
-	// }
-    }
-  }
+      }
+  } else
+      clear_game_screen(0);
 
   /* sprites */
 
-  while( source<finish )
-    {
-      int xpos, ypos, flipxy, code, color;
+  if (check_layer_enabled(layer_sprites))
+      while( source<finish )
+      {
+	  int xpos, ypos, flipxy, code, color;
 
-      xpos = ((source[3]<<8) | source[2]) - 32;
-      ypos = (source[-1]<<8)| source[-2];	// indeed...
+	  xpos = ((source[3]<<8) | source[2]) - 32;
+	  ypos = (source[-1]<<8)| source[-2];	// indeed...
 
-      if (ypos & 0x8000) break;	/* end-of-list marker */
+	  if (ypos & 0x8000) break;	/* end-of-list marker */
 
-      code = ((source[5] <<8) | (source[4])) >> 2;
-      color =source[0] & 0x7f;
-      flipxy =source[4] & 3;
+	  code = ((source[5] <<8) | (source[4])) >> 2;
+	  color =source[0] & 0x7f;
+	  flipxy =source[4] & 3;
 
-      ypos = 0xf2 - ypos;
+	  ypos = 0xf2 - ypos;
 
-      xpos += 32;ypos += 16;
+	  xpos += 32;ypos += 16;
 
-      // add if gfx solid code
+	  // add if gfx solid code
 
-      if ((ypos>=0) && (ypos<224+64) && (xpos>=0) && (xpos<288+64))
-	{
-	  if (gfx2_solid[code]) {
-	    MAP_PALETTE_MAPPED_NEW(
-				   color+0x180,
-				   16,
-				   map
-				   );
+	  if ((ypos>=0) && (ypos<224+64) && (xpos>=0) && (xpos<288+64))
+	  {
+	      if (gfx2_solid[code]) {
+		  MAP_PALETTE_MAPPED_NEW(
+			  color+0x180,
+			  16,
+			  map
+			  );
 
-	    switch (flipxy)
-	      {
+		  switch (flipxy)
+		  {
 
-	      case 0: Draw16x16_Trans_Mapped_Rot(&gfx2[code<<8], xpos, ypos, map); break;
-	      case 2: Draw16x16_Trans_Mapped_FlipY_Rot(&gfx2[code<<8], xpos, ypos, map); break;
-	      case 1: Draw16x16_Trans_Mapped_FlipX_Rot(&gfx2[code<<8], xpos, ypos, map); break;
-	      case 3: Draw16x16_Trans_Mapped_FlipXY_Rot(&gfx2[code<<8], xpos, ypos, map); break;
+		  case 0: Draw16x16_Trans_Mapped_Rot(&gfx2[code<<8], xpos, ypos, map); break;
+		  case 2: Draw16x16_Trans_Mapped_FlipY_Rot(&gfx2[code<<8], xpos, ypos, map); break;
+		  case 1: Draw16x16_Trans_Mapped_FlipX_Rot(&gfx2[code<<8], xpos, ypos, map); break;
+		  case 3: Draw16x16_Trans_Mapped_FlipXY_Rot(&gfx2[code<<8], xpos, ypos, map); break;
+		  }
 	      }
 	  }
-	}
 
-      source+=8;
-    }
+	  source+=8;
+      }
 
 /* this is the text tilemap */
 
 
-  for(x=0;x<36;x++){
-    for(y=0;y<32;y++){
+  if (check_layer_enabled(layer_text))
+      for(x=0;x<36;x++){
+	  for(y=0;y<32;y++){
 
-      zz=0x180+(((x*32)+y)*4);
+	      zz=0x180+(((x*32)+y)*4);
 
-      ta=((pirates_tilemap_ram[zz+1]<<8)|(pirates_tilemap_ram[zz]))&0xFFF;
+	      ta=ReadWord(&pirates_tilemap_ram[zz]);
 
-      if (gfx1_solid[ta]) {
-	MAP_PALETTE_MAPPED_NEW(
-             ((pirates_tilemap_ram[zz+3]<<8)|pirates_tilemap_ram[zz+2])&0x7f,
-            16,
-            map
-	     );
-	if (gfx1_solid[ta] == 1) // some transp
-	  Draw8x8_Trans_Mapped_Rot(&gfx1[ta<<6],x*8+32,y*8+16,map);
-	else
-	  Draw8x8_Mapped_Rot(&gfx1[ta<<6],x*8+32,y*8+16,map);
+	      if (gfx1_solid[ta]) {
+		  MAP_PALETTE_MAPPED_NEW(
+			  ((pirates_tilemap_ram[zz+3]<<8)|pirates_tilemap_ram[zz+2])&0x7f,
+			  16,
+			  map
+			  );
+		  if (gfx1_solid[ta] == 1) // some transp
+		      Draw8x8_Trans_Mapped_Rot(&gfx1[ta<<6],x*8+32,y*8+16,map);
+		  else
+		      Draw8x8_Mapped_Rot(&gfx1[ta<<6],x*8+32,y*8+16,map);
+	      }
+	      // zz+=4;
+	  }
       }
-      // zz+=4;
-    }
-  }
 }
 
 
