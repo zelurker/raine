@@ -1735,14 +1735,8 @@ void finish_conf_cps1()
    AddMemFetch(size_code, size_code+32, space_hack - size_code);
    print_debug("space_hack mapped at %x\n",size_code);
    AddReadBW(size_code, size_code+32, NULL, space_hack);
-   AddMemFetch(-1, -1, NULL);
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
-   AddRWBW(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
    RAM_SCROLL1 = NULL; // Init after the 1st frame...
    AddSaveData(SAVE_USER_1, (UINT8 *)&cps1_port, sizeof(UINT16)*0x100);
    AddSaveData(SAVE_USER_2, (UINT8 *)&latch, sizeof(int));
