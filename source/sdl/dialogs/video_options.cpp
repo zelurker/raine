@@ -54,6 +54,7 @@ static menu_item_t overlays_options[] =
 #ifdef DARWIN
     { "Overlays workarounds", NULL, &overlays_workarounds, 2, { 0, 1}, {"No","Yes"}},
 #endif
+    { "Keep aspect ratio", NULL, &display_cfg.keep_ratio, 2, {0, 1}, {"No","Yes"} },
     {  NULL },
 };
 
@@ -108,6 +109,7 @@ static menu_item_t ogl_options[] =
     { "Save opengl screenshots", NULL, &ogl.save, 2, {0, 1}, {"No", "Yes"} },
     { "Shader", &choose_shader,&bidon,1,{0},{ogl.shader}},
     { "OpenGL overlay interface", NULL, &ogl.overlay, 2, { 0, 1 }, {"No","Yes"} },
+    { "Keep aspect ratio", NULL, &display_cfg.keep_ratio, 2, {0, 1}, {"No","Yes"} },
     {  NULL },
 };
 

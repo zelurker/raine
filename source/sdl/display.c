@@ -127,6 +127,7 @@ void display_read_config() {
    strcpy(ogl.shader, raine_get_config_string("display","ogl_shader","None"));
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
+   display_cfg.keep_ratio = raine_get_config_int("display","keep_ratio",1);
 }
 
 void display_write_config() {
@@ -166,6 +167,7 @@ void display_write_config() {
    raine_set_config_int("display", "double_buffer", display_cfg.double_buffer);
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
+   raine_set_config_int("Display", "keep_ratio", display_cfg.keep_ratio);
 }
 
 // Same thing, but saved as specific game parameters...

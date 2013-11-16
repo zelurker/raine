@@ -315,11 +315,7 @@ typedef struct DISPLAY_CFG
    UINT32 triple_buffer;		// triple buffer mode {0,1}
    UINT32 eagle_fx; 		// use eagle effect {0,1}
 #endif
-   UINT16 stretch;
-   /* Meaning of stretch for SDL :
-    * 0 : no scaling
-    * 1 : use accelerated scale2x to fit the screen
-    * 2 : use slower software scale3x preserving aspect ratio */
+   UINT16 stretch; // see sdl/dialogs/video_options.cpp for meaning
 
 #ifndef SDL
    UINT32 fast_set_pal; 		// fast or slow(compatable) set pal {0,1}
@@ -346,7 +342,7 @@ typedef struct DISPLAY_CFG
    UINT32 bpp;							// colour depth {8,15,16,24,32}
 #ifdef SDL
    UINT32 fix_aspect_ratio; // fix aspect for YUV overlays
-   int fullscreen,double_buffer,noborder;
+   int fullscreen,double_buffer,noborder,keep_ratio;
 #endif
 } DISPLAY_CFG;
 

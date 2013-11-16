@@ -221,10 +221,16 @@ void ReClipScreen(void)
 	     area_overlay.y = desty2 = 0;
 	 }
 #endif
-	 area_overlay.x = destx2;
-	 area_overlay.y = desty2;
-	 area_overlay.w = xxx2;
-	 area_overlay.h = yyy2;
+	 if (display_cfg.keep_ratio) {
+	     area_overlay.x = destx2;
+	     area_overlay.y = desty2;
+	     area_overlay.w = xxx2;
+	     area_overlay.h = yyy2;
+	 } else {
+	     area_overlay.x = area_overlay.y = 0;
+	     area_overlay.w = display_cfg.screen_x;
+	     area_overlay.h = display_cfg.screen_y;
+	 }
 	 print_debug("area overlay %d %d %d %d with xxx %d yyy %d display %d %d ratio1 %g ratio2 %g\n",destx2,desty2,xxx2,yyy2,xxx,yyy,display_cfg.screen_x,display_cfg.screen_y,ratio1,ratio2);
      } else {
 	 if (display_cfg.stretch >= 1 && !display_cfg.scanlines) {
