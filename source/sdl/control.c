@@ -372,7 +372,7 @@ static int driver_nb_emu_inputs;
 static void cold_boot() {
     hs_close(); // save hiscores BEFORE erasing the ram !
     cdda_stop();
-    if (Z80ROM - RAM < RAMSize) {
+    if (Z80ROM > RAM && Z80ROM - RAM < RAMSize) {
 	memset(RAM,0,Z80ROM-RAM);
 	if (Z80ROM + 0x10000 - RAM < RAMSize)
 	    memset(Z80ROM + 0x10000,0,RAMSize - ((Z80ROM + 0x10000) - RAM));
