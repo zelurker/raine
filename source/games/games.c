@@ -100,6 +100,7 @@ char *company_name[] =
    "Aiky / Taito",
    "SNK / Playmore",
    "Kyle Hodgetts",
+   "F2 System",
 };
 
 const int nb_companies = sizeof(company_name)/4;

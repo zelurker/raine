@@ -574,6 +574,7 @@
 
 // crospang.c
   DRV(crospang)
+    DRV(heuksun)
 
 // ctribebl.c
   DRV(ctribe)

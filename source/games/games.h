@@ -89,6 +89,7 @@ enum company_num
    COMPANY_ID_AIKY,
    COMPANY_ID_SNK_PLAYMORE,
    COMPANY_ID_KYLE_HODGETTS,
+   COMPANY_ID_F2,
 };
 
 extern const int nb_companies;
