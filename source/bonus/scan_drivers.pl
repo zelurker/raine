@@ -214,8 +214,11 @@ print F "\t\$(DAC) \\\n" if ($use_dac);
 print G "#define HAS_DAC 1\n" if ($use_dac);
 print F "\t\$(DXSMP) \\\n" if ($use_dxsmp);
 print G "#define HAS_DXSMP 1\n" if ($use_dxsmp);
-print F "\t\$(ENSONIQ) \\\n" if ($use_ensoniq);
-print G "#define HAS_ES5505 1\n" if ($use_ensoniq);
+if ($use_ensoniq) {
+	print F "\t\$(ENSONIQ) \\\n";
+	print G "#define HAS_ES5505 1\n";
+	print G "#define HAS_ES5506 1\n";
+}
 print F "\t\$(M6585) \\\n" if ($use_m6585);
 print G "#define HAS_M6585 1\n" if ($use_m6585);
 print F "\t\$(MSM5205) \\\n" if ($use_msm5205);

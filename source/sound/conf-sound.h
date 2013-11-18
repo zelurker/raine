@@ -10,6 +10,7 @@
 #define HAS_DAC 1
 #define HAS_DXSMP 1
 #define HAS_ES5505 1
+#define HAS_ES5506 1
 #define HAS_M6585 1
 #define HAS_MSM5205_BUFF 1
 #define HAS_NAMCO 1
