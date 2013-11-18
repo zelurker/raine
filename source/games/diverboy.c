@@ -429,20 +429,7 @@ static void load_diverboy(void)
 
 	/* Handler for the Inputs */
 
-	/* Make sure ALL other READS and WRITES (both BYTE and WORD) fall through to the
-	   appropriate Bad Read / Write functions */
-
-	AddReadByte (0x000000, 0xffffff,     DefBadReadByte,    NULL            );   // Unhandled Byte Reads
-	AddReadWord (0x000000, 0xffffff,     DefBadReadWord,    NULL            );   // Unhandled Word Reads
-	AddWriteByte(0x000000, 0xffffff,     DefBadWriteByte,   NULL            );   // Unhandled Byte Writes
-	AddWriteWord(0x000000, 0xffffff,     DefBadWriteWord,   NULL            );   // Unhandled Word Writes
-
-	/* terminate memory list */
-	AddMemFetch (-1,       -1,                              NULL            );
-	AddRWBW     (-1,       -1,           NULL,              NULL            );
-
-	/* Initialize Starscream based on everything we just set up */
-	AddInitMemory();     // Set Starscream mem pointers...
+	finish_conf_68000(0);
 
 	/* Note: In RAINE the palette is handled like this */
 	InitPaletteMap(RAM_PALETTE, 0x40, 0x10, 0x8000);

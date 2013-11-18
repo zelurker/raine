@@ -512,7 +512,6 @@ static void load_tokib(void)
    ByteSwap(RAM,0x20300);
 
    AddMemFetch(0x000000, 0x05FFFF, ROM+0x000000-0x000000);	// 68000 ROM
-   AddMemFetch(-1, -1, NULL);
 
    AddReadByte(0x000000, 0x05FFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadByte(0x060000, 0x07FFFF, NULL, RAM+0x000000);			// 68000 RAM/VRAM/PALETTE/SPRITE
@@ -520,31 +519,20 @@ static void load_tokib(void)
    sound_buff = 0xffff;
    AddReadBW(0xc0000e, 0xc0000f, NULL, (UINT8*)&sound_buff);
    AddReadByte(0x0C0000, 0x0C00FF, NULL, RAM+0x020000);			// DSW/INPUT
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
    AddReadWord(0x000000, 0x05FFFF, NULL, ROM+0x000000);			// 68000 ROM
    AddReadWord(0x060000, 0x07FFFF, NULL, RAM+0x000000);			// 68000 RAM/VRAM/PALETTE/SPRITE
    AddReadWord(0x080000, 0x0800FF, NULL, RAM+0x020200);
    AddReadWord(0x0C0000, 0x0C00FF, NULL, RAM+0x020000);			// DSW/INPUT
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
    AddWriteByte(0xBB0000, 0xBB0001, SoundWrite, NULL);			// Sound Comm
    AddWriteByte(0x060000, 0x07FFFF, NULL, RAM+0x000000);		// 68000 RAM/VRAM/PALETTE/SPRITE
    AddWriteByte(0x080000, 0x0800FF, NULL, RAM+0x020200);
    AddWriteByte(0x0A0000, 0x0A00FF, NULL, RAM+0x020100);
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
-
    AddWriteWord(0x060000, 0x07FFFF, NULL, RAM+0x000000);		// 68000 RAM/VRAM/PALETTE/SPRITE
    AddWriteWord(0x080000, 0x0800FF, NULL, RAM+0x020200);
    AddWriteWord(0x0A0000, 0x0A00FF, NULL, RAM+0x020100);
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
+   finish_conf_68000(0);
 
-   AddInitMemory();	// Set Starscream mem pointers...
 }
 
 #if 1
