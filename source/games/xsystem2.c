@@ -71,7 +71,7 @@ static struct INPUT_INFO input_arknoid2[] =
 
 static struct DSW_DATA dsw_data_arkanoid_2_0[] =
 {
-   DSW_CABINET( 0x00, ),
+   DSW_CABINET( 0x00,1 ),
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),

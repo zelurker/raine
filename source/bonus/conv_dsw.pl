@@ -289,7 +289,7 @@ while (read_next_line()) {
 					print STDERR "Parsing error : $args\n";
 					exit(1);
 				}
-			} elsif (/PORT_SERVICE\( *(.+) *\)/) {
+			} elsif (/PORT_SERVICE.*\( *(.+) *\)/) {
 				my $args = $1;
 				my ($mask,$bit) = split(/\, */,$args);
 				if (!$started) {

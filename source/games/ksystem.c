@@ -216,7 +216,7 @@ static struct INPUT_INFO input_kikikai[] =
 
 static struct DSW_DATA dsw_data_kiki_kai_kai_0[] =
 {
-   DSW_CABINET( 0x01, ),
+   DSW_CABINET( 0x01,0 ),
    { MSG_DSWA_BIT2,           0x02, 0x02 },
    { MSG_OFF,                 0x02},
    { MSG_ON,                  0x00},

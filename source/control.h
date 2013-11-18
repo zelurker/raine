@@ -466,39 +466,39 @@ extern char MSG_ALT[];
 #define DSW_TEST_DSW(dsw,mask,value) \
 { "\x01""dsw:"#dsw, mask, value }
 
-#define DSW_SCREEN( normal, invert)           \
-   { MSG_SCREEN,              normal, 0x02 }, \
-   { MSG_NORMAL,              normal },       \
+#define DSW_SCREEN( normal, invert)                  \
+   { MSG_SCREEN,              normal|invert, 0x02 }, \
+   { MSG_NORMAL,              normal },              \
    { MSG_INVERT,              invert }
 
-#define DSW_DEMO_SOUND( on, off )     \
-   { MSG_DEMO_SOUND,      on, 0x02 }, \
-   { MSG_ON,              on },       \
+#define DSW_DEMO_SOUND( on, off )         \
+   { MSG_DEMO_SOUND,      on|off, 0x02 }, \
+   { MSG_ON,              on },           \
    { MSG_OFF,             off }
 
-#define DSW_TEST_MODE( on, off )       \
-   { MSG_TEST_MODE,      off, 0x02 },  \
-   { MSG_ON,              on },        \
+#define DSW_TEST_MODE( on, off )         \
+   { MSG_TEST_MODE,      on|off, 0x02 }, \
+   { MSG_ON,              on },          \
    { MSG_OFF,             off }
 
 #define DSW_SERVICE( on, off )         \
-   { MSG_SERVICE,      off, 0x02 },    \
+   { MSG_SERVICE,      off|on, 0x02 }, \
    { MSG_ON,              on },        \
    { MSG_OFF,             off }
 
 #define DSW_CONTINUE_PLAY( on, off )       \
-   { MSG_CONTINUE_PLAY,    on, 0x02 },     \
+   { MSG_CONTINUE_PLAY,    on|off, 0x02 }, \
    { MSG_ON,              on },            \
    { MSG_OFF,             off }
 
 #define DSW_CABINET( upright, table )       \
-   { MSG_CABINET,    upright, 0x02 },       \
+   { MSG_CABINET,    upright|table, 0x02 }, \
    { MSG_UPRIGHT,     upright },            \
-   { MSG_TABLE,      table }
+   { MSG_TABLE,      table }                \
 
-#define DSW_UNUSED( on, off )          \
-   { MSG_UNUSED,      off, 0x02 },     \
-   { MSG_ON,              on },        \
+#define DSW_UNUSED( on, off )         \
+   { MSG_UNUSED,      off|on, 0x02 }, \
+   { MSG_ON,              on },       \
    { MSG_OFF,             off }
 
 #define DSW_ON_OFF( msg, on, off )          \

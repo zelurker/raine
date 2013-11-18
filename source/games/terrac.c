@@ -77,7 +77,7 @@ static struct DSW_DATA dsw_data_terra_cresta_0[] =
    { "60,000",                0x08, 0x00 },
    { "90,000"},
    DSW_DEMO_SOUND( 0x10, 0x00),
-   DSW_CABINET( 0x00, ),
+   DSW_CABINET( 0x00,0x20 ),
    { NULL,                    0,   },
 };
 

@@ -29,7 +29,7 @@ static struct ROM_INFO rom_viofight[] =
 
 static struct DSW_DATA dsw_data_violence_fight_0[] =
 {
-   DSW_CABINET( 0x00, ),
+   DSW_CABINET( 0x00,1 ),
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
@@ -333,7 +333,7 @@ static void load_viofight(void)
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
 }
 
 static void ClearViolenceFight(void)
