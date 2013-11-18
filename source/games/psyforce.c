@@ -12,8 +12,8 @@
 
 static struct ROM_INFO rom_psyforce[] =
 {
-   {       "e22-01", 0x00200000, 0x808b8340, 0, 0, 0, },
-   {       "e22-06", 0x00020000, 0x739af589, 0, 0, 0, },
+   {       "e22-01", 0x00200000, 0x808b8340, REGION_SOUND1, 0, 0, },
+   {       "e22-06", 0x00020000, 0x739af589, REGION_CPU2, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -33,15 +33,8 @@ static struct INPUT_INFO input_psyforce[] =
 
 static void load_psyforce(void)
 {
-   if(!(RAM=AllocateMem(0x020000))) return;
    RAMSize=0x20000;
-
-   Z80ROM=RAM+0x00000;
-   if(!load_rom("e22-06", Z80ROM, 0x20000)) return;			// Z80 SOUND ROM
-
-   if(!(PCMROM=AllocateMem(0x200000))) return;
-   if(!load_rom("e22-01", PCMROM, 0x200000)) return;	// ADPCM A rom
-   YM2610SetBuffers(NULL, PCMROM+0x000000, 0, 0x200000);
+   RAM = load_region[REGION_CPU2];
 
    AddTaitoYM2610(0x0198, 0x0168, 0x20000);
 }
@@ -141,13 +134,13 @@ static void draw_psychic_force(void)
    clear_game_screen(0);
 
    clear_ingame_message_list();
-   print_ingame(900,"PSYCHIC FORCE AUDIO BOARD");
-   print_ingame(900,"-------------------------");
-   print_ingame(900," ");
-   print_ingame(900,"Sound Byte:%02x",command);
-   print_ingame(900," ");
-   print_ingame(900,"Joystick: Select Byte");
-   print_ingame(900,"Button: Send Command");
+   print_ingame(1,"PSYCHIC FORCE AUDIO BOARD");
+   print_ingame(1,"-------------------------");
+   print_ingame(1," ");
+   print_ingame(1,"Sound Byte:%02x",command);
+   print_ingame(1," ");
+   print_ingame(1,"Joystick: Select Byte");
+   print_ingame(1,"Button: Send Command");
 }
 static struct VIDEO_INFO video_psyforce =
 {

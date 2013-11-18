@@ -461,7 +461,8 @@ void TaitoYM2610Memmap( void )
   AddZ80AWriteByte(0xC000, 0xDFFF, NULL,			Z80ROM+0x00C000);	// Z80 RAM
   AddZ80AWriteByte(0xE000, 0xE003, YM2610WriteZ80,		NULL);			// YM2610
   AddZ80AWriteByte(0xE200, 0xE201, tc0140syt_write_sub_z80,	NULL);			// 68000 COMM
-  AddZ80AWriteByte(0xE400, 0xE403, Pan2610WriteZ80,		NULL);			// PANNING
+  if (!is_current_game("psyforce"))
+      AddZ80AWriteByte(0xE400, 0xE403, Pan2610WriteZ80,		NULL);			// PANNING
   AddZ80AWriteByte(0xF200, 0xF200, TaitoSoundSetBank,		NULL);			// BANK SELECT
   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);
   AddZ80AWriteByte(    -1,     -1, NULL,			NULL);
@@ -484,49 +485,6 @@ void TaitoYM2610Memmap( void )
 
   tc0140syt_reset();
 }
-
-/*******************************************************/
-/*    YM2610 mem map control (speed patch)	       */
-/*******************************************************/
-void TaitoYM2610MemmapSP( void )
-{
-  AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
-
-  AddZ80AReadByte(0x0000, 0x7FFF, NULL, 			NULL);			// BANK ROM
-  AddZ80AReadByte(0xC000, 0xDFFF, NULL, 			Z80ROM+0x00C000);	// Z80 RAM
-  AddZ80AReadByte(0xE000, 0xE003, YM2610ReadZ80SP,		NULL);			// YM2610
-  AddZ80AReadByte(0xE200, 0xE201, tc0140syt_read_sub_z80,	NULL);			// 68000 COMM
-  AddZ80AReadByte(0xEA00, 0xEA00, TaitoYM2610Test,		NULL);
-  AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
-  AddZ80AReadByte(    -1,     -1, NULL, 			NULL);
-
-  AddZ80AWriteByte(0xC000, 0xDFFF, NULL,			Z80ROM+0x00C000);	// Z80 RAM
-  AddZ80AWriteByte(0xE000, 0xE003, YM2610WriteZ80,		NULL);			// YM2610
-  AddZ80AWriteByte(0xE200, 0xE201, tc0140syt_write_sub_z80,	NULL);			// 68000 COMM
-  AddZ80AWriteByte(0xE400, 0xE403, Pan2610WriteZ80,		NULL);			// PANNING
-  AddZ80AWriteByte(0xF200, 0xF200, TaitoSoundSetBank,		NULL);			// BANK SELECT
-  AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);
-  AddZ80AWriteByte(    -1,     -1, NULL,			NULL);
-
-  AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,		NULL);
-  AddZ80AReadPort(  -1,   -1, NULL,			NULL);
-
-  AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,		NULL);
-  AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,		NULL);
-  AddZ80AWritePort(  -1,   -1, NULL,			NULL);
-
-  AddZ80AInit();
-
-  TaitoSoundSetBank(0,1);
-
-  taitoym2610pan[0] = 0x00;
-  taitoym2610pan[1] = 0xff;
-  taitoym2610pan[2] = 0xff;
-  taitoym2610pan[3] = 0x00;
-
-  tc0140syt_reset();
-}
-
 
 /*******************************************************/
 /*    YM2610 mem map control (normal type)	       */
