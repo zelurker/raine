@@ -44,7 +44,7 @@
 // bsystem.c
   DRV(qzshowby)
   DRV(pbobble)
-  DRV(spacedxj)
+  DRV(spacedx)
 
 // bubblem.c
   DRV(bubblem)

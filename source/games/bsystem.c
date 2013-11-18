@@ -122,7 +122,7 @@ static struct ROMSW_INFO romsw_pbobble[] =
 
 
 
-static struct ROM_INFO rom_spacedxj[] =
+static struct ROM_INFO rom_spacedx[] =
 {
    {	   "d89-06", 0x00040000, 0x7122751e, REGION_ROM1, 0x000000, LOAD_8_16, },
    {	   "d89-05", 0x00040000, 0xbe1638af, REGION_ROM1, 0x000001, LOAD_8_16, },
@@ -133,7 +133,7 @@ static struct ROM_INFO rom_spacedxj[] =
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_spacedxj[] =
+static struct INPUT_INFO input_spacedx[] =
 {
    INP0( COIN1, 0x072002, 0x10 ),
    INP0( COIN2, 0x072002, 0x20 ),
@@ -162,10 +162,11 @@ static struct ROMSW_DATA romsw_data_space_invaders_dx_0[] =
 {
    { "Taito Japan",           0x01 },
    { "Taito America",         0x02 },
+   { "World (no notice)",         0x03 },
    { NULL,		      0    },
 };
 
-static struct ROMSW_INFO romsw_spacedxj[] =
+static struct ROMSW_INFO romsw_spacedx[] =
 {
    { 0x03FFFF, 0x02, romsw_data_space_invaders_dx_0 },
    { 0,        0,    NULL },
@@ -702,7 +703,7 @@ static void load_pbobble(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void execute_spacedxj(void)
+static void execute_spacedx(void)
 {
 #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -733,7 +734,7 @@ static void execute_pbobble(void)
    Taito2610_Frame();			// Z80 and YM2610
 }
 
-static void load_spacedxj(void)
+static void load_spacedx(void)
 {
    int ta,tb,tc;
 
@@ -1136,7 +1137,7 @@ static void draw_space_dx(void)
 
 }
 
-struct VIDEO_INFO video_spacedxj =
+struct VIDEO_INFO video_spacedx =
 {
    draw_space_dx,
    320,
@@ -1144,18 +1145,18 @@ struct VIDEO_INFO video_spacedxj =
    32,
    VIDEO_ROTATE_NORMAL,
 };
-static struct DIR_INFO dir_spacedxj[] =
+static struct DIR_INFO dir_spacedx[] =
 {
    { "space_invaders_dx", },
    { "spacedx", },
    { "spacedxj", },
    { NULL, },
 };
-GAME( spacedxj, "Space Invaders DX", TAITO, 1994, GAME_SHOOT,
-	.input = input_spacedxj,
-	.romsw = romsw_spacedxj,
-	.video = &video_spacedxj,
-	.exec = execute_spacedxj,
+GAME( spacedx, "Space Invaders DX", TAITO, 1994, GAME_SHOOT,
+	.input = input_spacedx,
+	.romsw = romsw_spacedx,
+	.video = &video_spacedx,
+	.exec = execute_spacedx,
 	.long_name_jpn = "スペースインベーダーＤＸ",
 	.board = "D89",
 );
