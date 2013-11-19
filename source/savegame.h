@@ -12,12 +12,10 @@ extern "C" {
 
 // Save/Load Slot number (0..9)
 
-extern int SaveSlot, UseCompression;
+extern int SaveSlot;
 extern UINT8 *default_eeprom;
 extern UINT16 default_eeprom_size;
 extern int savegame_version;
-
-// UseCompression : saved games compressed ?
 
 // Attempt to Save Current Game
 

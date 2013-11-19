@@ -94,7 +94,7 @@ static int alloc_save_list;
 static struct SAVE_DATA *save_data_list;
 
 int SaveDataCount;
-int UseCompression,SaveSlot;
+int SaveSlot;
 int savegame_version;
 
 void reset_savegames() {

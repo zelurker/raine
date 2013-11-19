@@ -359,7 +359,6 @@ int main(int argc,char *argv[])
    raine_cfg.save_game_screen_settings	  = raine_get_config_int(	"General",      "save_game_screen_settings",            0);
 
    raine_cfg.auto_save	= raine_get_config_int( "General", "auto_save", 0);
-   UseCompression	= raine_get_config_int( "General", "UseCompression", 1);
 
    if((use_rdtsc==0)&&(raine_cfg.show_fps_mode>2)) raine_cfg.show_fps_mode=0;
 
@@ -612,7 +611,6 @@ int main(int argc,char *argv[])
 
    raine_set_config_int(	"General",      "save_game_screen_settings", raine_cfg.save_game_screen_settings);
    raine_set_config_int(   "General",      "auto_save",                 raine_cfg.auto_save);
-   raine_set_config_int(   "General",      "UseCompression",            UseCompression);
 
    // DISPLAY
 
