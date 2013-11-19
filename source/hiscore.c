@@ -223,8 +223,8 @@ void hs_load (void)
 
 static void hs_save (void)
 {
-    if (!safe_to_load()) {
-	LOG("hiscores: can't save, not safe to load anymore\n");
+    if (is_neocd() && ReadLongSc(&RAM[0x11e]) > 0xc00000) {
+	LOG("hiscores: neocd in bios, can't save hiscores anymore\n");
 	return;
     }
 
