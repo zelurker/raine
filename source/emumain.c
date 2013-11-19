@@ -186,8 +186,6 @@ UINT32 run_game_emulation(void)
    }
 
    if (!raine_cfg.req_pause_game) {
-       print_debug("Reset ingame timer...\n");
-       reset_ingame_timer(); // For sound we'd better init this here...
 
        // Placing sound init just after the timer init should avoid begining
        // streaming out of a frame limit (it happens sometimes in linux !)
@@ -200,6 +198,7 @@ UINT32 run_game_emulation(void)
 	       // restore_cdda();
 	   }
        }
+       print_debug("Reset ingame timer...\n");
        reset_ingame_timer();
    }
 

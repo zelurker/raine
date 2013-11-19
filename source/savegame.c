@@ -352,6 +352,7 @@ void NewSave(gzFile fout)
    }
 
    mputl(SAVE_END, fout);
+   // File not closed here because of demos which continue to write after this
 }
 
 void do_save_state(char *name) {

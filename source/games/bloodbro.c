@@ -190,15 +190,13 @@ static struct SOUND_INFO sound_weststry[] =
 };
 
 
-static int sport;
-
 static void WriteSound68k(UINT32 address, UINT8 data)
 {
 	(void)(address);
-	sport=data&0xFF;
+	latch=data&0xFF;
       print_debug("68000 Sends:%02x\n",data);
    cpu_int_nmi(CPU_Z80_0);
-   if(sport!=0){
+   if(latch!=0){
    cpu_interrupt(CPU_Z80_0, 0x38);
    }
 }
@@ -217,8 +215,8 @@ UINT16 WestStorySoundReadZ80(UINT16 offset)
       //   return 0xFE;
       //break;
       case 0x13:
-         print_debug("Z80 Receives:%02x\n",sport);
-         return sport;
+         print_debug("Z80 Receives:%02x\n",latch);
+         return latch;
       break;
       default:
          ta = 0xFF;
@@ -613,8 +611,8 @@ UINT16 BloodBrosSoundReadZ80(UINT16 offset)
       break;
       case 0x0A:
          sp_status=0xFF;
-         ta=sport;
-            print_debug("Z80 Receives:%02x\n",sport);
+         ta=latch;
+            print_debug("Z80 Receives:%02x\n",latch);
       break;*/
       default:
          ta=0xFF;

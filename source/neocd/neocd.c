@@ -45,6 +45,7 @@
 #include "taitosnd.h"
 #include "games/neogeo.h"
 #include "decode.h"
+#include "sound/assoc.h"
 
 #ifdef RAINE_DOS
 #ifdef ALLEGRO_LITTLE_ENDIAN
@@ -391,7 +392,7 @@ void setup_neocd_bios() {
   set_neocd_exit_to(exit_to_code);
 }
 
-static UINT16 result_code,sound_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
+static UINT16 result_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
 static UINT8 neogeo_memorycard[8192];
 UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
 
@@ -451,7 +452,7 @@ static void set_res_code(UINT32 offset, UINT16 data) {
 
 static UINT16 read_sound_cmd(UINT32 offset) {
   pending_command = 0;
-  return sound_code;
+  return latch;
 }
 
 static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled;
@@ -459,7 +460,7 @@ static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled;
 static void write_sound_command(UINT32 offset, UINT16 data) {
   if (z80_enabled && RaineSoundCard) {
     pending_command = 1;
-    sound_code = data;
+    latch = data;
     cpu_int_nmi(CPU_Z80_0);
 #if 1
     // Very few games seem to need this, but Ironclad is one of them (you loose
@@ -1942,7 +1943,7 @@ static void neogeo_hreset(void)
   neogeo_set_palette_bank(0);
   memset(&irq,0,sizeof(irq));
   pd4990a_init();
-  pending_command = sound_code = 0;
+  pending_command = latch = 0;
   last_cdda_cmd = 0;
   last_cdda_track = 0;
   /* Clear last bank of palette so that the bg color of screen is black
@@ -4305,6 +4306,7 @@ void load_neocd() {
 	sprites_mask = 0x7fff;
     } else {
 	print_debug("loading neogeo game %s\n",current_game->main_name);
+	supports_sound_assoc = 1;
 	Z80Has16bitsPorts = 1;
 	RAMSize = 0x10000 + // main ram
 	    0x10000 + // z80 ram

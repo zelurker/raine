@@ -644,10 +644,11 @@ endif
 # Sound core
 
 SOUND= \
-	$(OBJDIR)/sound/ymdeltat.o \
-	$(OBJDIR)/sound/fmopl.o \
-	$(OBJDIR)/sound/fm.o \
-	$(OBJDIR)/sound/emulator.o
+    $(OBJDIR)/sound/ymdeltat.o \
+    $(OBJDIR)/sound/fmopl.o    \
+    $(OBJDIR)/sound/fm.o       \
+    $(OBJDIR)/sound/assoc.o    \
+    $(OBJDIR)/sound/emulator.o
 
 2151 = 	$(OBJDIR)/sound/ym2151.o \
 	$(OBJDIR)/sound/2151intf.o
@@ -718,6 +719,7 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/fsel.o \
 	$(OBJDIR)/sdl/dialogs/video_options.o \
 	$(OBJDIR)/sdl/dialogs/sound_options.o \
+	$(OBJDIR)/sdl/dialogs/sound_commands.o \
 	$(OBJDIR)/sdl/dialogs/gui_options.o \
 	$(OBJDIR)/sdl/dialogs/dirs.o \
 	$(OBJDIR)/sdl/dialogs/about.o \

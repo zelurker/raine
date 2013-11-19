@@ -155,16 +155,15 @@ static struct SOUND_INFO sound_cabalbl[] =
 };
 
 
-static int sport=0;
 static int sp_status=0xFF;
 
 static void CabalSoundWrite68k(UINT32 offset, UINT8 data)
 {
    switch(offset&15){
       case 0x01:
-         sport=data;
+         latch=data;
          sp_status=1;
-            print_debug("68000 Sends:%02x\n",sport);
+            print_debug("68000 Sends:%02x\n",latch);
       break;
    }
 }
@@ -196,8 +195,8 @@ UINT8 CabalSoundReadZ80(UINT16 offset)
       break;
       case 0x0A:
          sp_status=0xFF;
-         ta=sport;
-            print_debug("Z80 Receives:%02x\n",sport);
+         ta=latch;
+            print_debug("Z80 Receives:%02x\n",latch);
       break;
       default:
          ta=0xFF;

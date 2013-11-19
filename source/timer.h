@@ -12,6 +12,8 @@ extern "C" {
 #define TIME_IN_USEC(us)      ((double)(us) * (1.0 / 1000000.0))
 #define TIME_IN_NSEC(us)      ((double)(us) * (1.0 / 1000000000.0))
 
+extern UINT32 audio_cpu;
+
 void setup_z80_frame(UINT32 cpu,UINT32 cycles);
 void execute_z80_audio_frame();
 void *timer_adjust(double duration, int param, double period, void (*callback)(int));

@@ -25,6 +25,7 @@
 #include "lspr16.h"
 #include "video/priorities.h"
 #include "zoom/16x16.h"		// 16x8 zoomed sprite routines
+#include "sound/assoc.h"
 
 void load_gunbird(void);
 void execute_gunbird(void);
@@ -829,6 +830,7 @@ static void finish_psikyo_conf() {
 void load_gunbird(void)
 {
    int ta;
+   supports_sound_assoc = 2;
 
    RAMSize = 0x70000;
 

@@ -2,9 +2,9 @@
 /*
 
  SDL_framerate: framerate manager
- 
+
  LGPL (c) A. Schiffler
- 
+
  */
 
 #ifndef _SDL_framerate_h
@@ -47,8 +47,6 @@ extern "C" {
     float SDL_getFramerate(FPSmanager * manager);
     void SDL_framerateDelay(FPSmanager * manager);
 int SDL_get_frame_count(FPSmanager * manager);
-
-#define read_ingame_timer() SDL_get_frame_count(&fpsm)
 
 /* --- */
 

@@ -476,7 +476,6 @@ static UINT8 mcu_port_a, mcu_old_data;
 #endif
 static UINT8 *RAM_MCU, *ROM_2ND, *ROM_SND, *RAM_SND;
 static int nmi_enable, nmi_pending;
-static UINT8 sound_cmd;
 
 void BubbleBobble_mcu(int bih_count);
 void BubbleBobble_mcu_reset(void);
@@ -660,13 +659,13 @@ static void BublBobl_PalRAMWrite(UINT16 addr, UINT8 value)
 static void BublBobl_SoundCmd(UINT16 offset, UINT8 data)
 {
 	(void)(offset);
-   sound_cmd = data;
+   latch = data;
    nmi_pending = 1;
 }
 
 static UINT8 BublBobl_SoundCmd_read(UINT16 offset)
 {
-   return sound_cmd;
+   return latch;
 }
 
 /******************************************************************************/
@@ -819,7 +818,7 @@ static void BublBoblAddSaveData(void)
    AddSaveData(SAVE_USER_3, (UINT8 *)&mcu_port_a,     sizeof(mcu_port_a));
    AddSaveData(SAVE_USER_4, (UINT8 *)&mcu_old_data,   sizeof(mcu_old_data));
 #endif
-   AddSaveData(SAVE_USER_7, (UINT8 *)&sound_cmd,      sizeof(sound_cmd));
+   AddSaveData(SAVE_USER_7, (UINT8 *)&latch,      sizeof(latch));
    AddSaveData(SAVE_USER_8, (UINT8 *)&nmi_enable,     sizeof(nmi_enable));
    AddSaveData(SAVE_USER_9, (UINT8 *)&nmi_pending,    sizeof(nmi_pending));
    AddSaveData(SAVE_USER_10, RAM_MCU,                 0x80);
@@ -996,7 +995,7 @@ static void load_bublbobl(void)
    AddZ80CReadByte(0x8000, 0x8FFF, NULL,              RAM_SND);      // SOUND RAM
    AddZ80CReadByte(0x9000, 0x9001, BB_YM2203Read,     NULL);         // YM2203
    AddZ80CReadByte(0xA000, 0xA000, BB_YM3526Read,     NULL);         // YM3526
-   //AddZ80CReadByte(0xB000, 0xB000, NULL,              &sound_cmd);   // SOUND COMMAND
+   //AddZ80CReadByte(0xB000, 0xB000, NULL,              &latch);   // SOUND COMMAND
    AddZ80CReadByte(0xB000, 0xB000, BublBobl_SoundCmd_read, NULL);   // SOUND COMMAND
    AddZ80CReadByte(0xB001, 0xB001, BB_Unknown,        NULL);         // ???
    AddZ80CReadByte(0xE000, 0xE000, BB_Unknown,        NULL);         // Diagnostic ROM (not used)
@@ -1435,7 +1434,7 @@ static void load_sboblbob(void)
    AddZ80CReadByte(0x8000, 0x8FFF, NULL,              RAM_SND);      // SOUND RAM
    AddZ80CReadByte(0x9000, 0x9001, BB_YM2203Read,     NULL);         // YM2203
    AddZ80CReadByte(0xA000, 0xA000, BB_YM3526Read,     NULL);         // YM3526
-   //AddZ80CReadByte(0xB000, 0xB000, NULL,              &sound_cmd);   // SOUND COMMAND
+   //AddZ80CReadByte(0xB000, 0xB000, NULL,              &latch);   // SOUND COMMAND
    AddZ80CReadByte(0xB000, 0xB000, BublBobl_SoundCmd_read, NULL);   // SOUND COMMAND
    AddZ80CReadByte(0xB001, 0xB001, BB_Unknown,        NULL);         // ???
    AddZ80CReadByte(0xE000, 0xE000, BB_Unknown,        NULL);         // Diagnostic ROM (not used)

@@ -42,7 +42,7 @@ typedef struct {
   UINT32 period;
 } TimerStruct;
 
-static UINT32 audio_cpu;
+UINT32 audio_cpu;
 
 #define MAX_TIMERS 20
 
@@ -66,7 +66,7 @@ void update_timers() {
 }
 
 void z80_irq_handler(int irq) {
-  // print_debug("z80_irq_handler %d\n",irq);
+  // printf("z80_irq_handler %d\n",irq);
   if (irq) {
     if (z80intPending) {
       printf("trop d'ints !!!\n");

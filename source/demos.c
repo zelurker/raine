@@ -39,11 +39,6 @@ static UINT32 offsets[MAX_OFS];
 static UINT16 contents[MAX_OFS];
 static int oldmx, oldmy,newmx,newmy,oldb,newb; // mouse vars
 
-// These prototypes do not go to savegame.h because it obliges to include zlib.h
-// in savegames.h which produces a collision !
-extern void NewSave(gzFile );
-extern void NewLoad(gzFile );
-
 static void demo_mouse_mickeys(int *mx,int *my)
 {
   *mx = oldmx;

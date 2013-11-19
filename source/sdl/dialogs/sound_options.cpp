@@ -6,6 +6,8 @@
 #include "neocd/neocd.h"
 #include "neocd/cdda.h"
 #include "games.h"
+#include "sdl/dialogs/sound_commands.h"
+#include "sound/assoc.h"
 
 static TMenu *menu;
 
@@ -35,6 +37,7 @@ menu_item_t sound_menu[] =
   { "Mute CD", NULL, &mute_music, 2, { 0, 1 }, { "No", "Yes" } },
   { "Default volumes", &set_default_volumes },
   { "Record to raine_sound.wav", NULL, &recording, 3, { 0, 1, 2 }, { "No", "Without monitoring", "With monitoring" } },
+{ "Sound commands...", &do_sound_cmd },
   { NULL },
 };
 
@@ -49,6 +52,8 @@ class TSoundDlg : public TMenu {
 	    if (sel == 1)
 		return 0;
 	}
+	if (sound_menu[sel].menu_func == &do_sound_cmd)
+	    return supports_sound_assoc;
       return TMenu::can_be_selected(sel);
     }
 };
