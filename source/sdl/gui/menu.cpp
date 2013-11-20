@@ -1737,12 +1737,7 @@ void TMenu::call_handler() {
     }
     if (exit != -10) exit_menu = exit; // hack but it should work always
     if (exit_menu) exit_menu = can_exit();
-    if (!exit_menu) {
-	draw();
-    }
-    SDL_initFramerate(&fpsm);
-    fpsm.use_cpu_frame_count = 0;
-    SDL_setFramerate(&fpsm,30);
+    // No need to force a redraw here, it's handled by execute...
 }
 
 void TMenu::next_list_item() {
