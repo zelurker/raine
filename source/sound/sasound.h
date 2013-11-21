@@ -57,16 +57,17 @@ enum {
   SOUND_STREAM_WAIT
 };
 
-
-extern int RaineSoundCardTotal,
-  RaineSoundCard;
+#ifndef SDL
+extern int RaineSoundCardTotal;
+#endif
+extern int RaineSoundCard;
 
 /**** add hiro-shi 10/30/98 ****/
 
 extern int change_sample_rate;
 
 extern int audio_sample_rate;
-extern int recording,mixing_stereo,monitoring;
+extern int recording,monitoring;
 
 #define   SND_CONTROL_MAX   (3)
 

@@ -554,13 +554,8 @@ int main(int argc,char *argv[])
 
 #ifndef SDL
    build_mode_list(); // After the REAL allegro init...
-#endif
-
-   /*----[Sound Initialisation]----------------*/
-
    RaineSoundCardTotal=8;
-
-   // saInitSoundCard( RaineSoundCard, audio_sample_rate );	// hiro-shi (get audio info)
+#endif
 
    /*------------------------------------------*/
 

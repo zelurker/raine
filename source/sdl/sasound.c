@@ -66,8 +66,7 @@ UINT8 *PCMROM;
 
 static char driver_name[40];
 
-int RaineSoundCardTotal,
-  RaineSoundCard;
+int RaineSoundCard;
 
 /* Avoid to uncomment USE_8BITS unless you finish 8bit support... which is
     pretty useless nowdays ! */
@@ -774,8 +773,6 @@ void saResetPlayChannels( void )
 char *sound_card_name( int num )
 {
    int id = sound_card_id(num);
-
-   RaineSoundCardTotal = 2;
 
    if (id == 0)
      return "Silence";
