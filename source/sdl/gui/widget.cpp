@@ -184,24 +184,18 @@ int TOptions::get_len_max_options() {
 	  !strcmp(menu->values_list_label[0],"hidden"))
       return 0;
   if (menu->value_int && menu->values_list_size) {
-    if (menu->values_list_label[0]) { // we have strings for the options
       for (int l=0; l<menu->values_list_size; l++) {
-	const char *s2 = menu->values_list_label[l];
-	unsigned int len2 = strlen(s2);
-	if (len2 > len_max_options) {
-	  len_max_options = len2;
-	}
+	  unsigned int len2;
+	  if (!menu->values_list_label[l]) {
+	      char s2[20];
+	      sprintf(s2,"%d",menu->values_list[l]);
+	      len2 = strlen(s2);
+	  } else
+	      len2 = strlen(menu->values_list_label[l]);
+	  if (len2 > len_max_options) {
+	      len_max_options = len2;
+	  }
       }
-    } else { // we have no strings...
-      for (int l=0; l<menu->values_list_size; l++) {
-	char s2[20];
-	sprintf(s2,"%d",menu->values_list[l]);
-	unsigned int len2 = strlen(s2);
-	if (len2 > len_max_options) {
-	  len_max_options = len2;
-	}
-      }
-    }
   }
   return len_max_options;
 }
@@ -212,21 +206,16 @@ int TOptions::get_width_max_options(TFont *font) {
 	  !strcmp(menu->values_list_label[0],"hidden"))
       return 0;
   if (menu->value_int && menu->values_list_size) {
-    if (menu->values_list_label[0]) { // we have strings for the options
       for (int l=0; l<menu->values_list_size; l++) {
-	font->dimensions(menu->values_list_label[l],&w,&h);
-	if (w > width_max_options)
-	  width_max_options = w;
+	  if (!menu->values_list_label[l]) {
+	      char s2[20];
+	      sprintf(s2,"%d",menu->values_list[l]);
+	      font->dimensions(s2,&w,&h);
+	  } else
+	      font->dimensions(menu->values_list_label[l],&w,&h);
+	  if (w > width_max_options)
+	      width_max_options = w;
       }
-    } else { // we have no strings...
-      for (int l=0; l<menu->values_list_size; l++) {
-	char s2[20];
-	sprintf(s2,"%d",menu->values_list[l]);
-	font->dimensions(s2,&w,&h);
-	if (w > width_max_options)
-	  width_max_options = w;
-      }
-    }
   }
   return width_max_options;
 }
@@ -249,7 +238,7 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
     }
   }
   char *disp_string,buff[10];
-  if (menu->values_list_label[0]) {
+  if (menu->values_list_label[index]) {
     disp_string = menu->values_list_label[index];
   } else {
     // no labels -> display the int value directly
@@ -300,19 +289,18 @@ void TOptions::prev_list_item() {
 }
 
 int TOptions::handle_key_buff(char *buff) {
-  if (menu->values_list_label[0]) {
     // If we are on a list of values, then use the keys to browse
     // the list
     int index = strlen(buff);
     int n;
     for (n=0; n<menu->values_list_size; n++) {
-      if (!strnicmp(menu->values_list_label[n],buff,index))
-	break;
+	if (menu->values_list_label[n] &&
+		!strnicmp(menu->values_list_label[n],buff,index))
+	    break;
     }
     if (n<menu->values_list_size) { // found
-      *(menu->value_int) = n;
-      return 1;
+	*(menu->value_int) = n;
+	return 1;
     }
-  }
-  return 0;
+    return 0;
 }
