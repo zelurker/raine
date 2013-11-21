@@ -20,13 +20,15 @@ extern "C" {
 // converts a gfx to SDL_Color format :
 #define gfx_to_sdlcolor(surf,c) SDL_MapRGBA(surf->format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
 
+#define NB_VALUES 64
+
 typedef struct {
                 const char *label;
                 int (*menu_func)(int);
                 int     *value_int;
                 int     values_list_size;
-                int values_list[64];
-                char* values_list_label[64];
+                int values_list[NB_VALUES];
+                char* values_list_label[NB_VALUES];
 } menu_item_t;
 
 // default colors
