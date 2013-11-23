@@ -1868,9 +1868,6 @@ void TMenu::execute() {
 	    }
 	    draw();
 
-	    SDL_initFramerate(&fpsm);
-	    fpsm.use_cpu_frame_count = 0;
-	    SDL_setFramerate(&fpsm,30);
 	}
 	break;
       case SDL_VIDEOEXPOSE:
@@ -1890,6 +1887,7 @@ void TMenu::execute() {
       }
       if (exit_menu) break;
     }
+    SDL_setFramerate(&fpsm,30);
     if (exit_menu) break;
     if (lift) {
       lift->update();
