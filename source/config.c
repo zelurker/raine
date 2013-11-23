@@ -198,7 +198,9 @@ int actual_load_neo_game(void)
       ClearDefault();
     current_game = (GAME_MAIN *)&game_neocd;
     if (!screen) {
+#ifndef RAINE_DOS
 	sdl_init();
+#endif
       init_display();
       setup_font(); // Usefull even without gui for the messages on screen
     }
@@ -1968,7 +1970,7 @@ void save_game_config(void)
    raine_push_config_state();
 
    // Must always be saved here.
-   sprintf(str,"%sconfig/%s", dir_cfg.exe_path, dir_cfg.cheat_file);
+   sprintf(str,"%sconfig/cheats.cfg", dir_cfg.exe_path);
    raine_set_config_file(str);
 
    // Save Cheat Settings

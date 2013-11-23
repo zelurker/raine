@@ -5,7 +5,6 @@
 #include "confile.h"
 #include "neocd/cdda.h"
 #include "sasound.h"
-#include "sdl/compat.h"
 
 int supports_sound_assoc;
 static char *track[256];

@@ -5013,9 +5013,11 @@ void execute_neocd() {
 	       * It's probably a bug in the timing of instructions in
 	       * starscream, this should be 12 MHz here. */
 	      cpu_execute_cycles(CPU_68K_0,250000/NB_LINES);
+#ifndef RAINE_DOS
 	  if (goto_debuger) {
 	      break;
 	  }
+#endif
       }
       if (rolled && !stopped_68k) {
 	  do_not_stop = 1; // the vbl will end in the next frame

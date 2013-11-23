@@ -167,7 +167,9 @@ extern int goto_debuger;
 
 void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 {
+#ifdef SDL
     if (goto_debuger) return;
+#endif
 
    switch_cpu(cpu_id);
 
