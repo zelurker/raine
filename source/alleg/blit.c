@@ -880,6 +880,8 @@ void SetupScreenBitmap(void)
 	for ds here. It should work in linux, unix, etc... but maybe not in
 	djgpp. If you crash in raine_fast_blit, you'll know where it comes
 	from ! */
+       ds = 3; // must init it here, or the optimizer removes ds as unused
+       // static variable, quite unfortunate !
 #ifndef RAINE_UNIX
      asm(" mov %ds,_ds ");
 #else
