@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TMPLOG=/dev/null
 # Check how to call 'head' and 'tail'. Newer versions spit out warnings
@@ -84,7 +84,7 @@ test "$CC" && _cc="$CC"
   esac
   echores "$cc_version"
   test "$cc_verc_fail" = "no" && break
- done 
+ done
  fi # icc
   if test "$cc_verc_fail" = yes ; then
     cat <<EOF
@@ -493,7 +493,7 @@ EOF
       if not cc_check -march=$proc $cpuopt=$proc; then
         if cc_check -march=i586 $cpuopt=i686; then
           proc=i586-i686
-        else 
+        else
           proc=i586
 	fi
       fi
@@ -546,11 +546,11 @@ EOF
       if test "$host_arch" = "i586-i686"; then
         _march="-march=i586"
         _mcpu="$cpuopt=i686"
-      else      
+      else
         _march="-march=$host_arch"
         _mcpu="$cpuopt=$host_arch"
       fi
-    
+
       proc="$host_arch"
 
       case "$proc" in
@@ -635,7 +635,7 @@ EOF
       cc_check $_mcpu || _mcpu=""
       cc_check $_march $_mcpu || _march=""
     fi
-    
+
     _optimizing=""
 
     echores "$proc"
@@ -650,7 +650,7 @@ EOF
 	karch=`uname -m`
 	case "`echo $karch`" in
 	    sun4) proc=v7 ;;
-	    sun4c) proc=v7 ;; 
+	    sun4c) proc=v7 ;;
 	    sun4d) proc=v8 ;;
 	    sun4m) proc=v8 ;;
 	    sun4u) proc=v9 _vis='yes' _def_vis='#define HAVE_VIS = yes' ;;
@@ -797,7 +797,7 @@ EOF
     _target_arch='TARGET_ARCH_ALPHA = yes'
     iproc='alpha'
     _march=''
-    
+
     echocheck "CPU type"
     cat > $TMPC << EOF
 int main() {
@@ -813,14 +813,14 @@ EOF
 
         0-0)    proc="ev4";   cpu_understands_mvi="0";;
         1-0)    proc="ev5";   cpu_understands_mvi="0";;
-        1-1)    proc="ev56";  cpu_understands_mvi="0";; 
+        1-1)    proc="ev56";  cpu_understands_mvi="0";;
         1-101)  proc="pca56"; cpu_understands_mvi="1";;
         2-303)  proc="ev6";   cpu_understands_mvi="1";;
         2-307)  proc="ev67";  cpu_understands_mvi="1";;
         2-1307) proc="ev68";  cpu_understands_mvi="1";;
     esac
     echores "$proc"
-    
+
     echocheck "GCC & CPU optimization abilities"
     if test "$proc" = "ev68" ; then
       cc_check -mcpu=$proc || proc=ev67
@@ -830,7 +830,7 @@ EOF
     fi
     _mcpu="-mcpu=$proc"
     echores "$proc"
-    
+
     _optimizing="$proc"
 
     echocheck "MVI instruction support in GCC"
