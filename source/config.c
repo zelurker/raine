@@ -29,6 +29,7 @@
 #ifdef HAS_CONSOLE
 #include "sdl/console/scripts.h"
 #endif
+#include "sound/assoc.h"
 
 static int ArgCount;		// Number of arguments in the command line
 static int ArgPosition;		// Current position in the argument list
@@ -1880,6 +1881,9 @@ void load_game_config(void)
    sprintf(str,"%s:romversion", current_game->main_name);
    load_romswitches(str);
 
+   sprintf(str,"%s:assoc", current_game->main_name);
+   load_assoc(str);
+
    // config/cheats.cfg ------------------------------------
 
    if (is_neocd() || current_game->load_game == &load_neocd)
@@ -1952,8 +1956,11 @@ void save_game_config(void)
    sprintf(str,"%s:romversion", current_game->main_name);
    save_romswitches(str);
 
+   sprintf(str,"%s:assoc", current_game->main_name);
+   save_assoc(str);
+
    raine_pop_config_state();
-#if 0
+#ifndef SDL
    // there is no reason to save this in the sdl version since the cheats
    // can't be edited for now from the gui...
    // config/cheats.cfg ------------------------------------

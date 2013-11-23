@@ -616,8 +616,10 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    int volume = SampleVol[channel];
 	    int vol_l = (255-SamplePan[channel])*volume/255;
 	    int vol_r = (SamplePan[channel])*volume/255;
-	    vol_l = vol_l*sfx_volume/100;
-	    vol_r = vol_r*sfx_volume/100;
+	    if (cdda.playing) {
+		vol_l = vol_l*sfx_volume/100;
+		vol_r = vol_r*sfx_volume/100;
+	    }
 	    if (stream_buffer_pos[channel] < len/2) {
 		// printf("callb: underrun channel %d, wanted %d got %d\n",channel,len/2,stream_buffer_pos[channel]);
 		if (stream_callback[channel] || stream_callback_multi[channel])

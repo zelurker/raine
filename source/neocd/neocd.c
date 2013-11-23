@@ -459,9 +459,12 @@ static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled;
 
 static void write_sound_command(UINT32 offset, UINT16 data) {
   if (z80_enabled && RaineSoundCard) {
+    if (handle_sound_cmd(data))
+	return;
     pending_command = 1;
     latch = data;
     cpu_int_nmi(CPU_Z80_0);
+
 #if 1
     // Very few games seem to need this, but Ironclad is one of them (you loose
     // the z80 just after choosing "start game" if you don't do this !)
@@ -4307,6 +4310,8 @@ void load_neocd() {
     } else {
 	print_debug("loading neogeo game %s\n",current_game->main_name);
 	supports_sound_assoc = 1;
+	if (!strstr(current_game->main_name,"mslug"))
+	    supports_sound_assoc = 3;
 	Z80Has16bitsPorts = 1;
 	RAMSize = 0x10000 + // main ram
 	    0x10000 + // z80 ram

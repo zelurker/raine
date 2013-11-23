@@ -648,6 +648,7 @@ static void psikyo_ack_latch_w(UINT32 offset, UINT8 data)
 }
 
 static void setup_z80_gunbird() {
+    supports_sound_assoc = 2;
   setup_z80_mem_gunbird();
 
   // Ports
@@ -668,6 +669,7 @@ static void setup_z80_gunbird() {
 }
 
 void setup_z80_s1945() {
+    supports_sound_assoc = 2;
   setup_z80_mem_gunbird();
 
    // Ports
@@ -693,6 +695,7 @@ void setup_z80_s1945() {
 }
 
 void setup_z80_sngkace() {
+   supports_sound_assoc = 2;
    AddZ80AReadByte(0x0000,0x77ff,NULL,Z80ROM);
    AddZ80AReadByte(0x7800,0x7fff,NULL,Z80RAM+0x7800);
    AddZ80AReadByte(0x8000,0xffff,z80_read8000b,NULL);
@@ -830,7 +833,6 @@ static void finish_psikyo_conf() {
 void load_gunbird(void)
 {
    int ta;
-   supports_sound_assoc = 2;
 
    RAMSize = 0x70000;
 
@@ -1173,10 +1175,12 @@ void execute_gunbird(void)
 	cpu_execute_cycles(CPU_M68020_0, diff *8);	// M68020 32MHz (60fps)
       }
       if (*sound_mem) {
-	latch = oldmem13 = *sound_mem;
-	RAM[0x30009] |= 0x80;
-	*sound_mem = 0; // reset
-	cpu_int_nmi(CPU_Z80_0);
+	  if (!handle_sound_cmd(*sound_mem)) {
+	      latch = oldmem13 = *sound_mem;
+	      RAM[0x30009] |= 0x80;
+	      cpu_int_nmi(CPU_Z80_0);
+	  }
+	  *sound_mem = 0; // reset
       }
       frame -= diff;
     }
