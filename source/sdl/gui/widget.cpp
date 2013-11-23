@@ -227,7 +227,7 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
 	  !strcmp(menu->values_list_label[0],"hidden"))
       return;
 
-  int index;
+  int index = 0;
   if (menu->values_list_size != 3 || menu->values_list_label[0]) {
     index = get_list_index();
     if (index >= menu->values_list_size) { // not found !
