@@ -5,6 +5,9 @@
 #include "confile.h"
 #include "neocd/cdda.h"
 #include "sasound.h"
+#ifdef SDL
+#include "sdl/compat.h" // exists
+#endif
 
 int supports_sound_assoc;
 static char *track[256];
