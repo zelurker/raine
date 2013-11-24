@@ -6,6 +6,7 @@
 #include "games.h" // current_game
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "ingame.h"
+#include "newmem.h"
 
 /* This is currently the bigest file in the dialogs directory.
  * But it's not because of long complicated code, it's just because it does
@@ -296,7 +297,7 @@ static int do_kb_input(int sel) {
 
 static int do_input_ingame(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
-  int nb = get_input_indice(menu[sel+base_input].label);
+  int nb = get_input_indice(menu[sel].label);
   TInput *input = new TInput("Input",menu_input,1,0);
   input->execute();
   delete input;
@@ -440,8 +441,8 @@ static int do_ingame_controls(int sel) {
       mynb++;
     }
   }
-  for (int a=0; a<nb; a++)
-      for (int b=a+1; b<nb; b++)
+  for (int a=0; a<mynb; a++)
+      for (int b=a+1; b<mynb; b++)
 	  if (categ[b] < categ[a] || (categ[b] == categ[a] &&
 		      strcmp(menu[b].label,menu[a].label) < 0)) {
 	      int truc = categ[a];
@@ -582,6 +583,15 @@ static int autofire_controls(int sel) {
       InputList[InputCount].Key = 0;
       InputList[InputCount].Joy = 0;
       InputList[InputCount].mousebtn = 0;
+      /* The name of the input MUST be different from the original input because
+       * it's assigned later using get_input_indice, which finds the indice
+       * based on the name of the input. AllocateMem is a good option here, it's
+       * specific to this driver and will be forgotten when the game is
+       * released */
+      char s[120];
+      sprintf(s,"Autofire %s",InputList[n].InputName);
+      InputList[InputCount].InputName = (char*)AllocateMem(strlen(s)+1);
+      strcpy(InputList[InputCount].InputName,s);
       InputCount++;
     }
   }

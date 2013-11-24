@@ -45,6 +45,7 @@
 #include "sound/sasound.h"
 #include "hiscore.h"
 #include "neocd/cdda.h"
+#include "newmem.h"
 
 /* The difference in the sdl version :
  * instead of looping for every frame in all the available inputs to the game
@@ -649,6 +650,11 @@ void load_game_keys(char *section)
 	  InputList[link].mousebtn = raine_get_config_int(section,other_name,0);
 	  sprintf(other_name,"%s_linked_auto_rate",key_name);
 	  InputList[link].auto_rate = raine_get_config_int(section,other_name,0);
+	  // Different name to allow it to be assigned !
+	  char s[120];
+	  sprintf(s,"Autofire %s",InputList[link].InputName);
+	  InputList[link].InputName = (char*)AllocateMem(strlen(s)+1);
+	  strcpy(InputList[link].InputName,s);
 	  InputCount = link+1;
 	}
       }
