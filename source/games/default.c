@@ -34,11 +34,9 @@
 #include "speed_hack.h"
 #include "taitosnd.h"
 #include "tc200obj.h"
-#include "sound/assoc.h"
 
 void LoadDefault(void)
 {
-    supports_sound_assoc = 0;
   memset(tc0100scn,0,sizeof(tc0100scn));
 #ifdef RDTSC_PROFILE
   cycles_per_frame = 0; // recalibrate for non 60fps games
@@ -151,6 +149,12 @@ void ClearDefault(void)
 #if !defined(NO020) && defined(HAVE_68000)
     if (!MC68020 && load_region[REGION_CPU2]) {
       if(StarScreamEngine>1)
+	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),1);
+      else {
+	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),0);
+      }
+    } else if (MC68020 && load_region[REGION_CPU2]) {
+      if(StarScreamEngine)
 	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),1);
       else {
 	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),0);
