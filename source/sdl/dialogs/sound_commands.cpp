@@ -202,6 +202,7 @@ int do_sound_cmd(int sel) {
     add_value(7);
     add_value(0x11);
 #endif
+    int adr;
     if (get_assoc_type() < 10) add_value(2);
     switch (get_assoc_type()) {
     case 1: // garou
@@ -210,9 +211,14 @@ int do_sound_cmd(int sel) {
 		add_value(n+0x20);
 	}
 	break;
-    case 2: // galaxfg
+    case 2: // galaxyfg
+    case 5: // mutnat
+	if (get_assoc_type() == 2) // galaxyfg
+	    adr = 0x6fb3;
+	else
+	    adr = ReadWord(&Z80ROM[0x189]); // mutnat
 	for (int n=0; n<0x100; n++) {
-	    if (Z80ROM[0x6fb3+n] == 2)
+	    if (Z80ROM[adr+n] == 2)
 		add_value(n);
 	}
 	break;

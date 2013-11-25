@@ -21,11 +21,13 @@ void init_assoc(int kind) {
 	if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24))
 	    type = 1; // garou
 	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17))
-	    type = 2; // galaxfg
+	    type = 2; // galaxyfg
 	else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
 	    type = 3; // sonicwi2/3
 	else if (!strncmp(current_game->main_name,"mslug",5))
 	    type = 4; // mslug, except mslug4/5
+	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0a by MAKOTO",18))
+	    type = 5; // mutnat : variation of galaxyfg
     } else if (kind == 2)
 	type = 10; // gunbird
 }
@@ -87,6 +89,7 @@ static void show(int song) {
 }
 
 int handle_sound_cmd(int cmd) {
+    int adr;
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is music after
@@ -110,7 +113,8 @@ int handle_sound_cmd(int cmd) {
 	else if (show_song && cmd >= 0x20 && cmd < Z80ROM[0x30d])
 	    show(cmd);
 	break;
-    case 2: // galaxfg
+    case 2: // galaxyfg
+    case 5: // mutnat
 	if (cmd == 7) mode = music;
 	else if (cmd == 0x1c) mode = sound;
 	if (mode == sound) {
@@ -118,9 +122,11 @@ int handle_sound_cmd(int cmd) {
 	    if (cmd >= 0x20) mode = music;
 	    return 0;
 	}
-	if (cdda.playing && (cmd == 3 || Z80ROM[0x6fb3 + cmd] == 2))
+	if (type == 2) adr =0x6fb3; // galaxyfg
+	else adr = ReadWord(&Z80ROM[0x189]); // mutnat
+	if (cdda.playing && (cmd == 3 || Z80ROM[adr + cmd] == 2))
 	    cdda.playing = 0;
-	else if (show_song && Z80ROM[0x6fb3 + cmd] == 2)
+	else if (show_song && Z80ROM[adr + cmd] == 2)
 	    show(cmd);
 	break;
     case 1: // garou
