@@ -538,10 +538,12 @@ void do_regs(int argc, char **argv) {
 	      Z80_context[num].z80bc,
 	      Z80_context[num].z80de,
 	      Z80_context[num].z80hl);
-      cons->print("\E[36mSP:\E[0m%04x \E[36mPC:\E[0m%04x \E[36mIFF:\E[0m%d",
+      cons->print("\E[36mSP:\E[0m%04x \E[36mPC:\E[0m%04x \E[36mIFF:\E[0m%d \E[36mIX:%04x \E[36mIY:%04x",
 	      Z80_context[num].z80sp,
 	      Z80_context[num].z80pc,
-	      Z80_context[num].z80iff);
+	      Z80_context[num].z80iff,
+	      Z80_context[num].z80ix,
+	      Z80_context[num].z80iy);
       break;
 #ifndef NO020
   case 3:
