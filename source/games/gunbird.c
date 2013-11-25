@@ -648,7 +648,7 @@ static void psikyo_ack_latch_w(UINT32 offset, UINT8 data)
 }
 
 static void setup_z80_gunbird() {
-    supports_sound_assoc = 2;
+    init_assoc( 2);
   setup_z80_mem_gunbird();
 
   // Ports
@@ -669,7 +669,7 @@ static void setup_z80_gunbird() {
 }
 
 void setup_z80_s1945() {
-    supports_sound_assoc = 2;
+    init_assoc( 2);
   setup_z80_mem_gunbird();
 
    // Ports
@@ -695,7 +695,7 @@ void setup_z80_s1945() {
 }
 
 void setup_z80_sngkace() {
-   supports_sound_assoc = 2;
+   init_assoc( 2);
    AddZ80AReadByte(0x0000,0x77ff,NULL,Z80ROM);
    AddZ80AReadByte(0x7800,0x7fff,NULL,Z80RAM+0x7800);
    AddZ80AReadByte(0x8000,0xffff,z80_read8000b,NULL);

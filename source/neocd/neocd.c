@@ -4309,9 +4309,6 @@ void load_neocd() {
 	sprites_mask = 0x7fff;
     } else {
 	print_debug("loading neogeo game %s\n",current_game->main_name);
-	supports_sound_assoc = 1;
-	if (!strstr(current_game->main_name,"mslug"))
-	    supports_sound_assoc = 3;
 	Z80Has16bitsPorts = 1;
 	RAMSize = 0x10000 + // main ram
 	    0x10000 + // z80 ram
@@ -4714,6 +4711,7 @@ void load_neocd() {
 	AddReadByte(0x110000, 0x1fffff, mirror_ram_rb, NULL);
 	AddWriteWord(0x110000, 0x1fffff, mirror_ram_ww, NULL);
 	AddWriteByte(0x110000, 0x1fffff, mirror_ram_wb, NULL);
+	init_assoc(1);
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
 	AddWriteByte(0xe00000,0xefffff, write_upload, NULL);

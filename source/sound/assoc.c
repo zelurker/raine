@@ -8,9 +8,31 @@
 #ifdef SDL
 #include "sdl/compat.h" // exists
 #endif
+#include "raine.h" // Z80ROM
+#include "games.h" // current_game
+#include "ingame.h" // print_ingame
 
-int supports_sound_assoc;
+static int type;
 static char *track[256];
+int show_song;
+
+void init_assoc(int kind) {
+    if (kind == 1) { // neogeo
+	if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24))
+	    type = 1; // garou
+	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17))
+	    type = 2; // galaxfg
+	else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
+	    type = 3; // sonicwi2/3
+	else if (!strncmp(current_game->main_name,"mslug",5))
+	    type = 4; // mslug, except mslug4/5
+    } else if (kind == 2)
+	type = 10; // gunbird
+}
+
+int get_assoc_type() {
+    return type;
+}
 
 char* get_assoc(int cmd) {
     return track[cmd];
@@ -40,6 +62,7 @@ void save_assoc(char *section) {
 	    del_assoc(cmd);
 	}
     cdda.playing = 0; // just to be sure
+    type = 0;
 }
 
 void load_assoc(char *section) {
@@ -59,8 +82,13 @@ enum {
 };
 static int mode;
 
+static void show(int song) {
+    print_ingame(600,"Song %xh",song);
+}
+
 int handle_sound_cmd(int cmd) {
-    if (supports_sound_assoc == 1) {
+    switch (type) {
+    case 4:
 	// all the mslug games support sound modes. The default is music after
 	// a reset or command 0. Command 3 sets music mode. Command $11 sets
 	// sounds mode, and there are some other unknown commands < 0x20
@@ -68,21 +96,52 @@ int handle_sound_cmd(int cmd) {
 	// numbers, but apparently it's not the case for most of them at least.
 	if (cmd == 0 || cmd == 3) {
 	    mode = music;
-	}
-	if (cmd == 0x11) {
+	} else if (cmd < 0x20 && cmd != 2) {
 	    mode = sound;
 	}
-	if (cdda.playing && (cmd == 1 || cmd == 3))
-	    cdda.playing = 0;
 	if (mode == sound) return 0;
-    } else if (supports_sound_assoc == 3) { // other neogeo games
-	if (cmd == 3) cdda.playing = 0;
+	if (cdda.playing && (cmd == 1 || cmd == 3 || cmd == 2 || cmd >= 0x20))
+	    cdda.playing = 0;
+	if (show_song && cmd >= 0x20) show(cmd);
+	break;
+    case 3: // sonicwi2 / sonicwi3
+	if (cdda.playing && (cmd == 3 || cmd < Z80ROM[0x30d]))
+	    cdda.playing = 0;
+	else if (show_song && cmd >= 0x20 && cmd < Z80ROM[0x30d])
+	    show(cmd);
+	break;
+    case 2: // galaxfg
+	if (cmd == 7) mode = music;
+	else if (cmd == 0x1c) mode = sound;
+	if (mode == sound) {
+	    // mode reset after just 1 byte !
+	    if (cmd >= 0x20) mode = music;
+	    return 0;
+	}
+	if (cdda.playing && (cmd == 3 || Z80ROM[0x6fb3 + cmd] == 2))
+	    cdda.playing = 0;
+	else if (show_song && Z80ROM[0x6fb3 + cmd] == 2)
+	    show(cmd);
+	break;
+    case 1: // garou
+	// Garou has modes + interruptable songs !
+	if (cmd == 7) mode = music;
+	else if (cmd == 0x1c) mode = sound;
+	if (mode == sound) return 0;
+	if (cdda.playing && (cmd == 4 ||
+		    (cmd >= 0x20 && Z80ROM[0x3038 + cmd - 0x20] == 2)))
+	    cdda.playing = 0;
+	else if (show_song && cmd >= 20 && Z80ROM[0x3038 + cmd - 0x20] == 2)
+	    show(cmd);
+	break;
+    default:
+	if (cdda.playing && cmd < 0x40)  // gunbird
+	    cdda.playing = 0;
+	else if (show_song && cmd < 0x40)
+	    show(cmd);
     }
-    if (cdda.playing &&
-	    ((supports_sound_assoc == 2 && cmd <= 0x40) || // gunbird
-	     (supports_sound_assoc != 2 && (cmd >= 0x20 && cmd <= 0x40)))) {
-	cdda.playing = 0;
-    }
+    if (type < 10 && cmd == 2 && show_song)
+	show(cmd);
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
 	// music

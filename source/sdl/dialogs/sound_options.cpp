@@ -53,7 +53,7 @@ class TSoundDlg : public TMenu {
 		return 0;
 	}
 	if (sound_menu[sel].menu_func == &do_sound_cmd)
-	    return supports_sound_assoc;
+	    return get_assoc_type() != 0;
       return TMenu::can_be_selected(sel);
     }
 };

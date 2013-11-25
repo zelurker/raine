@@ -29,11 +29,11 @@ static void send(int cmd) {
 
 static int stop(int sel) {
     int old = command;
-    if (supports_sound_assoc == 2) { // gunbird
+    if (get_assoc_type() == 10) { // gunbird
 	send(1);
-    } else { // default : neogeo
+    } else if (get_assoc_type() < 10) { // default : neogeo
 	send(3); // stop / music mode for mslug
-	if (supports_sound_assoc == 3) { // except mslug/2/3/x/4
+	if (get_assoc_type() != 4) { // except mslug/2/3/x
 	    send(7); // music mode for 3countb and most neogeo games
 	}
     }
@@ -175,42 +175,60 @@ static menu_item_t sound_menu[] =
     { "Stop", &stop },
     { "Associate...", &associate },
     { "Associations", &associations },
+    { "Show song played (10s)", NULL, &show_song, 2, {0,1}, {"No","Yes"}},
   { NULL },
 };
+
+static void add_value(int v) {
+    int n = sound_menu[0].values_list_size++;
+    if (n<NB_VALUES) {
+	sound_menu[0].values_list[n] = v;
+	char hex[4];
+	sprintf(hex,"%xh",v);
+	sound_menu[0].values_list_label[n] = strdup(hex);
+    }
+}
 
 int do_sound_cmd(int sel) {
     if (!GameSound || !RaineSoundCard)
 	return 0;
     int ticks = dwElapsedTicks;
-    int n = 0;
-#ifdef RAINE_DEBUG
     sound_menu[0].values_list_size = 0;
-    sound_menu[0].values_list_size++;
-    sound_menu[0].values_list[n++] = 0;
-    sound_menu[0].values_list_size++;
-    sound_menu[0].values_list[n++] = 1;
-    sound_menu[0].values_list_size++;
-    sound_menu[0].values_list[n++] = 3;
-    sound_menu[0].values_list_size++;
-    sound_menu[0].values_list[n++] = 4;
-    sound_menu[0].values_list_size++;
-    sound_menu[0].values_list[n++] = 7;
-    sound_menu[0].values_list_size++;
-    sound_menu[0].values_list[n++] = 0x11;
+#ifdef RAINE_DEBUG
+    add_value(0);
+    add_value(1);
+    add_value(3);
+    add_value(4);
+    add_value(7);
+    add_value(0x11);
 #endif
-    if (supports_sound_assoc == 1) { // neogeo has music 2 too !
-	sound_menu[0].values_list_size++;
-	sound_menu[0].values_list[n++] = 2;
+    if (get_assoc_type() < 10) add_value(2);
+    switch (get_assoc_type()) {
+    case 1: // garou
+	for (int n=0; n<0xe0; n++) {
+	    if (Z80ROM[0x3038+n] == 2)
+		add_value(n+0x20);
+	}
+	break;
+    case 2: // galaxfg
+	for (int n=0; n<0x100; n++) {
+	    if (Z80ROM[0x6fb3+n] == 2)
+		add_value(n);
+	}
+	break;
+    case 3:  // sonicwi2/3
+	for (int n=0x20; n<Z80ROM[0x30d]; n++)
+	    add_value(n);
+	break;
+    default: // includes mslug and gunbird...
+	for (int n=0x20; n<0x40; n++)
+	    add_value(n);
+	break;
     }
-    for (int x=32; x<=0x3f; x++) {
-	char hex[4];
-	sprintf(hex,"%x",x);
-	sound_menu[0].values_list[n] = x;
-	// It's bothersome to allocate strings just to be able to display in
-	// hex, but here I really don't see how to add the option to have an
-	// hex value in menuitem_t... !
-	sound_menu[0].values_list_label[n++] = strdup(hex);
-	sound_menu[0].values_list_size++;
+
+    if (sound_menu[0].values_list_size >= NB_VALUES) {
+	printf("too many values : %d\n",sound_menu[0].values_list_size);
+	exit(1);
     }
     command = sound_menu[0].values_list[0];
 

@@ -20,7 +20,7 @@ extern "C" {
 // converts a gfx to SDL_Color format :
 #define gfx_to_sdlcolor(surf,c) SDL_MapRGBA(surf->format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
 
-#define NB_VALUES 64
+#define NB_VALUES 75
 
 typedef struct {
                 const char *label;

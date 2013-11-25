@@ -2,13 +2,16 @@
 extern "C" {
 #endif
 
-extern int supports_sound_assoc;
+extern int show_song;
+
+void init_assoc(int kind);
 char* get_assoc(int cmd);
 void del_assoc(int cmd);
 void assoc(int cmd, char *t);
 void save_assoc(char *section);
 void load_assoc(char *section);
 int handle_sound_cmd(int cmd);
+int get_assoc_type();
 
 #ifdef __cplusplus
 }
