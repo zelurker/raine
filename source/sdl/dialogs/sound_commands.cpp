@@ -198,21 +198,20 @@ int do_sound_cmd(int sel) {
     add_value(0);
     add_value(1);
     add_value(3);
-    add_value(4);
     add_value(7);
-    add_value(0x11);
+    add_value(9);
 #endif
     int adr;
     if (get_assoc_type() < 10) add_value(2);
     switch (get_assoc_type()) {
     case 1: // garou
+	adr = get_assoc_adr();
 	for (int n=0; n<0xe0; n++) {
-	    if (Z80ROM[0x3038+n] == 2)
+	    if (Z80ROM[adr+n] == 2)
 		add_value(n+0x20);
 	}
 	break;
     case 2: // galaxyfg
-    case 5: // mutnat
 	adr = get_assoc_adr();
 	for (int n=0; n<0x100; n++) {
 	    if (Z80ROM[adr+n] == 2)

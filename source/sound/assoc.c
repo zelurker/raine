@@ -15,6 +15,12 @@
 static int type,adr;
 static char *track[256];
 int show_song;
+enum {
+    music=0,
+    sound,
+    one_sound
+};
+static int mode;
 
 void init_assoc(int kind) {
     if (kind == 1) { // neogeo
@@ -22,9 +28,7 @@ void init_assoc(int kind) {
 	 * there are some variants, so they must be recognized on something
 	 * else. So I just check the instruction, it must be ld (ld),adr
 	 * ($21) */
-	if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24))
-	    type = 1; // garou
-	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
+	if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
 	    adr =0x1c7; // galaxyfg
 	    if (Z80ROM[adr-1] != 0x21)
 		adr = 0x1d0;
@@ -48,11 +52,40 @@ void init_assoc(int kind) {
 		printf("mutnat variant not recognized\n");
 		return;
 	    }
-	    type = 5; // mutnat : variation of galaxyfg
+	    type = 2; // mutnat : variation of galaxyfg
+	    adr = ReadWord(&Z80ROM[adr]);
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21)) {
+	    adr = 0x14f;
+	    if (Z80ROM[adr-1] != 0x21) {
+		type = 0;
+		printf("kof96 variant not recognized\n");
+		return;
+	    }
+	    type = 1; // kof96 = like garou
+	    adr = ReadWord(&Z80ROM[adr]);
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 1.1 ",21)) {
+	    adr = 0x17d;
+	    if (Z80ROM[adr-1] != 0x21) {
+		type = 0;
+		printf("kof97 variant not recognized\n");
+		return;
+	    }
+	    type = 1; // kof97 = like garou
+	    adr = ReadWord(&Z80ROM[adr]);
+	} else if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.7",24) ||
+		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24)) {
+	    adr = 0x184;
+	    if (Z80ROM[adr-1] != 0x21) {
+		type = 0;
+		printf("kof98/garou variant not recognized\n");
+		return;
+	    }
+	    type = 1; // kof98 / garou
 	    adr = ReadWord(&Z80ROM[adr]);
 	}
     } else if (kind == 2)
 	type = 10; // gunbird
+    if (type == 1) mode = music;
 }
 
 int get_assoc_adr() {
@@ -105,12 +138,6 @@ void load_assoc(char *section) {
     }
 }
 
-enum {
-    music=0,
-    sound
-};
-static int mode;
-
 static void show(int song) {
     print_ingame(600,"Song %xh",song);
 }
@@ -140,7 +167,6 @@ int handle_sound_cmd(int cmd) {
 	    show(cmd);
 	break;
     case 2: // galaxyfg
-    case 5: // mutnat
 	if (cmd == 7) mode = music;
 	else if (cmd == 0x1c) mode = sound;
 	if (mode == sound) {
@@ -155,13 +181,19 @@ int handle_sound_cmd(int cmd) {
 	break;
     case 1: // garou
 	// Garou has modes + interruptable songs !
-	if (cmd == 7) mode = music;
-	else if (cmd == 0x1c) mode = sound;
+	if (cmd >= 6 && cmd <= 9) mode = music;
+	else if (cmd >= 0x15 && cmd < 0x1f) mode = one_sound;
+	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) mode = sound;
 	if (mode == sound) return 0;
+	if (mode == one_sound) {
+	    if (cmd >= 0x20)
+		mode = music;
+	    return 0;
+	}
 	if (cdda.playing && (cmd == 4 ||
-		    (cmd >= 0x20 && Z80ROM[0x3038 + cmd - 0x20] == 2)))
+		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2)))
 	    cdda.playing = 0;
-	else if (show_song && cmd >= 20 && Z80ROM[0x3038 + cmd - 0x20] == 2)
+	else if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
 	    show(cmd);
 	break;
     default:
