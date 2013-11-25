@@ -5,6 +5,7 @@ extern "C" {
 extern int show_song;
 
 void init_assoc(int kind);
+int get_assoc_adr();
 char* get_assoc(int cmd);
 void del_assoc(int cmd);
 void assoc(int cmd, char *t);

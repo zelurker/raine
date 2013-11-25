@@ -12,24 +12,51 @@
 #include "games.h" // current_game
 #include "ingame.h" // print_ingame
 
-static int type;
+static int type,adr;
 static char *track[256];
 int show_song;
 
 void init_assoc(int kind) {
     if (kind == 1) { // neogeo
+	/* Some roms have a version + an author in them, but apparently
+	 * there are some variants, so they must be recognized on something
+	 * else. So I just check the instruction, it must be ld (ld),adr
+	 * ($21) */
 	if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24))
 	    type = 1; // garou
-	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17))
+	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
+	    adr =0x1c7; // galaxyfg
+	    if (Z80ROM[adr-1] != 0x21)
+		adr = 0x1d0;
+	    if (Z80ROM[adr-1] != 0x21) {
+		type = 0;
+		printf("galaxyfg variant not recognized\n");
+		return;
+	    }
 	    type = 2; // galaxyfg
-	else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
+	    adr = ReadWord(&Z80ROM[adr]);
+	} else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
 	    type = 3; // sonicwi2/3
 	else if (!strncmp(current_game->main_name,"mslug",5))
 	    type = 4; // mslug, except mslug4/5
-	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0a by MAKOTO",18))
+	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0a by MAKOTO",18)) {
+	    adr = 0x189; // mutnat
+	    if (Z80ROM[adr-1] != 0x21)
+		adr = 0x173;
+	    if (Z80ROM[adr-1] != 0x21) {
+		type = 0;
+		printf("mutnat variant not recognized\n");
+		return;
+	    }
 	    type = 5; // mutnat : variation of galaxyfg
+	    adr = ReadWord(&Z80ROM[adr]);
+	}
     } else if (kind == 2)
 	type = 10; // gunbird
+}
+
+int get_assoc_adr() {
+    return adr;
 }
 
 int get_assoc_type() {
@@ -89,7 +116,6 @@ static void show(int song) {
 }
 
 int handle_sound_cmd(int cmd) {
-    int adr;
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is music after
@@ -122,8 +148,6 @@ int handle_sound_cmd(int cmd) {
 	    if (cmd >= 0x20) mode = music;
 	    return 0;
 	}
-	if (type == 2) adr =0x6fb3; // galaxyfg
-	else adr = ReadWord(&Z80ROM[0x189]); // mutnat
 	if (cdda.playing && (cmd == 3 || Z80ROM[adr + cmd] == 2))
 	    cdda.playing = 0;
 	else if (show_song && Z80ROM[adr + cmd] == 2)

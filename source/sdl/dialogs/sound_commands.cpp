@@ -213,10 +213,7 @@ int do_sound_cmd(int sel) {
 	break;
     case 2: // galaxyfg
     case 5: // mutnat
-	if (get_assoc_type() == 2) // galaxyfg
-	    adr = 0x6fb3;
-	else
-	    adr = ReadWord(&Z80ROM[0x189]); // mutnat
+	adr = get_assoc_adr();
 	for (int n=0; n<0x100; n++) {
 	    if (Z80ROM[adr+n] == 2)
 		add_value(n);
