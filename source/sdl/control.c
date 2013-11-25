@@ -535,10 +535,8 @@ void init_inputs(void)
 
    input_src = current_game->input;
 
-   if(input_src){
-       int srcCount = InputCount;
-       merge_inputs(&input_src[srcCount]);
-   }
+   if(input_src)
+       merge_inputs(&input_src[InputCount]);
 
 }
 

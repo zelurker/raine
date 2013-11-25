@@ -547,6 +547,91 @@ static void set_joy_from_default(INPUT *inp)
 
 }
 
+static void update_input_buffer(int ta, int input_valid) {
+  UINT8 *buffer;
+
+  if(InputList[ta].Address < 0x100)
+     buffer = input_buffer;
+   else
+     buffer = RAM;
+
+  buffer += InputList[ta].Address;
+
+  if(input_valid ^ InputList[ta].high_bit)
+    *buffer &= ~ InputList[ta].Bit;
+   else
+     *buffer |=   InputList[ta].Bit;
+}
+
+static void merge_inputs(const INPUT_INFO *input_src) {
+    int srcCount = 0;
+    int included = 0;
+    while(input_src[srcCount].name){
+
+	if (input_src[srcCount].flags == INPUT_INCLUDE) {
+	    merge_inputs((const INPUT_INFO *)input_src[srcCount].name);
+	    srcCount++;
+	    included = 1;
+	    continue;
+	}
+
+	int n,old = -1;
+	// Input overwrite : it happens in case another input is included and
+	// then modified
+	if (included) { // only if some inputs were included
+	    // Otherwise it prevents combinations like A+B in neocd from
+	    // working !
+	    for (n=0; n<InputCount; n++)
+		if (input_src[srcCount].offset == InputList[n].Address &&
+			input_src[srcCount].bit_mask & InputList[n].Bit) {
+		    old = InputCount;
+		    InputCount = n;
+		    break;
+		}
+	}
+
+	UINT16 def = InputList[InputCount].default_key = input_src[srcCount].default_key;
+	InputList[InputCount].InputName   = input_src[srcCount].name;
+	InputList[InputCount].Address     = input_src[srcCount].offset;
+	InputList[InputCount].Bit         = input_src[srcCount].bit_mask;
+	InputList[InputCount].high_bit    = input_src[srcCount].flags;
+	InputList[InputCount].auto_rate   = 0;
+	InputList[InputCount].active_time = 0;
+	// InputList[InputCount].link = 0;
+
+	set_key_from_default(&InputList[InputCount]);
+
+	update_input_buffer(InputCount,0); // say input is not valid for now
+
+	if (def != KB_DEF_UNKNOWN && def != KB_DEF_SPECIAL &&
+		def != KB_DEF_UNUSED) {
+	    // Skip unknown and special inputs after they have been initialized
+	    InputCount++;
+	} else if (old > -1) {
+	    // input overwritten by a hidden input, we must move the list...
+	    if (old > InputCount+1)
+		memmove(&InputList[InputCount],&InputList[InputCount+1],
+			(old-(InputCount+1))*sizeof(struct INPUT));
+	    old--;
+	}
+	if (old > -1) {
+	    // Check if some other inputs match the bit mask and remove them
+	    for (n=InputCount; n<old; n++) {
+		if (input_src[srcCount].offset == InputList[n].Address &&
+			input_src[srcCount].bit_mask & InputList[n].Bit) {
+		    if (old > n+1)
+			memmove(&InputList[n],&InputList[n+1],
+				(old-(n+1))*sizeof(struct INPUT));
+		    old--;
+		    n--;
+		}
+	    }
+	    InputCount = old;
+	}
+	srcCount++;
+    }
+}
+
 void init_inputs(void)
 {
    const INPUT_INFO *input_src;
@@ -555,30 +640,8 @@ void init_inputs(void)
 
    input_src = current_game->input;
 
-   if(input_src){
-
-     while(input_src[InputCount].name){
-       if (InputCount >= MAX_INPUTS) {
-	 fprintf(stderr,"too many inputs for this game, byebye !\n");
-	 exit(1);
-       }
-
-       InputList[InputCount].default_key = input_src[InputCount].default_key;
-       InputList[InputCount].InputName   = input_src[InputCount].name;
-       InputList[InputCount].Address     = input_src[InputCount].offset;
-       InputList[InputCount].Bit         = input_src[InputCount].bit_mask;
-       InputList[InputCount].high_bit    = input_src[InputCount].flags;
-       InputList[InputCount].auto_rate   = 0;
-       InputList[InputCount].active_time = 0;
-
-       set_key_from_default(&InputList[InputCount]);
-       set_joy_from_default(&InputList[InputCount]);
-
-       InputCount++;
-     }
-
-   }
-
+   if(input_src)
+       merge_inputs(&input_src[InputCount]);
 }
 
 void reset_game_keys(void)
