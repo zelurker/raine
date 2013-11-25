@@ -16,9 +16,9 @@ static int type,adr;
 static char *track[256];
 int show_song;
 enum {
-    music=0,
-    sound,
-    one_sound
+    MUSIC=0,
+    SOUND,
+    ONE_SOUND
 };
 static int mode;
 
@@ -85,7 +85,7 @@ void init_assoc(int kind) {
 	}
     } else if (kind == 2)
 	type = 10; // gunbird
-    if (type == 1) mode = music;
+    if (type == 1) mode = MUSIC;
 }
 
 int get_assoc_adr() {
@@ -145,17 +145,17 @@ static void show(int song) {
 int handle_sound_cmd(int cmd) {
     switch (type) {
     case 4:
-	// all the mslug games support sound modes. The default is music after
-	// a reset or command 0. Command 3 sets music mode. Command $11 sets
+	// all the mslug games support sound modes. The default is MUSIC after
+	// a reset or command 0. Command 3 sets MUSIC mode. Command $11 sets
 	// sounds mode, and there are some other unknown commands < 0x20
 	// This could get extremely messy if each games had its own mode
 	// numbers, but apparently it's not the case for most of them at least.
 	if (cmd == 0 || cmd == 3) {
-	    mode = music;
+	    mode = MUSIC;
 	} else if (cmd < 0x20 && cmd != 2) {
-	    mode = sound;
+	    mode = SOUND;
 	}
-	if (mode == sound) return 0;
+	if (mode == SOUND) return 0;
 	if (cdda.playing && (cmd == 1 || cmd == 3 || cmd == 2 || cmd >= 0x20))
 	    cdda.playing = 0;
 	if (show_song && cmd >= 0x20) show(cmd);
@@ -167,11 +167,11 @@ int handle_sound_cmd(int cmd) {
 	    show(cmd);
 	break;
     case 2: // galaxyfg
-	if (cmd == 7) mode = music;
-	else if (cmd == 0x1c) mode = sound;
-	if (mode == sound) {
+	if (cmd == 7) mode = MUSIC;
+	else if (cmd == 0x1c) mode = SOUND;
+	if (mode == SOUND) {
 	    // mode reset after just 1 byte !
-	    if (cmd >= 0x20) mode = music;
+	    if (cmd >= 0x20) mode = MUSIC;
 	    return 0;
 	}
 	if (cdda.playing && (cmd == 3 || Z80ROM[adr + cmd] == 2))
@@ -181,13 +181,13 @@ int handle_sound_cmd(int cmd) {
 	break;
     case 1: // garou
 	// Garou has modes + interruptable songs !
-	if (cmd >= 6 && cmd <= 9) mode = music;
-	else if (cmd >= 0x15 && cmd < 0x1f) mode = one_sound;
-	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) mode = sound;
-	if (mode == sound) return 0;
-	if (mode == one_sound) {
+	if (cmd >= 6 && cmd <= 9) mode = MUSIC;
+	else if (cmd >= 0x15 && cmd < 0x1f) mode = ONE_SOUND;
+	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) mode = SOUND;
+	if (mode == SOUND) return 0;
+	if (mode == ONE_SOUND) {
 	    if (cmd >= 0x20)
-		mode = music;
+		mode = MUSIC;
 	    return 0;
 	}
 	if (cdda.playing && (cmd == 4 ||
@@ -206,7 +206,7 @@ int handle_sound_cmd(int cmd) {
 	show(cmd);
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
-	// music
+	// MUSIC
 	if (*track[cmd] && exists(track[cmd])) {
 	    load_sample(track[cmd]);
 	    cdda.playing = 1;
