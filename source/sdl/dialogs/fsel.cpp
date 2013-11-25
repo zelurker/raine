@@ -272,7 +272,7 @@ void TFileSel::compute_nb_items() {
 	    if (!stricmp(&s[strlen(s)-3],"iso") ||
 		    (strlen(s) > 6 && !stricmp(&s[strlen(s)-6],"iso.gz")))
 		found_iso++;
-	    else if (!stricmp(s,"cue"))
+	    else if (!stricmp(&s[strlen(s)-3],"cue"))
 		found_cue++;
 	}
 	if (ext) {
