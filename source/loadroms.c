@@ -882,7 +882,6 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
        }
        return 1;
    }
-#ifdef SDL
    static char *last_rom;
 
    if (last_rom != rom) {
@@ -894,7 +893,6 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
      exit(1);
    }
    load_progress(rom,loaded_roms*100/roms_count);
-#endif
    dir_list = current_game->dir_list;
 
    // locate the full rom info (ie. crc32)
@@ -910,7 +908,7 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
   else
     found = 0;
 
-#if defined(RAINE_DEBUG) && !defined(NEO)
+#if defined(RAINE_DEBUG)
    if (!found)
      {
        load_error |= LOAD_WARNING;
@@ -965,10 +963,6 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
       load_error |= LOAD_FATAL_ERROR;
 
    }
-#ifndef SDL
-   else
-     load_progress();
-#endif
 
    return ta;
 

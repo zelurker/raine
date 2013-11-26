@@ -2057,6 +2057,7 @@ void load_common(int cps2)
    // GFX_SPR = AllocateMem(size);
    FreeMem(GFX_SPR);
    GFX_SPR = load_region[REGION_GFX1] = AllocateMem(max_sprites8*8*8);
+   if (!GFX_SPR) return;
    dest= (UINT32*)GFX_SPR;
 
    for (ta=8+base1 *8*8*2; ta <8+(base1+max_sprites8)*8*8*2; ta+=16) {
@@ -2156,6 +2157,7 @@ void load_cps1()
    }
 
   load_common(0);
+  if (load_error) return;
 
   cps1_set_z80();
 
@@ -2293,6 +2295,7 @@ void load_qsound()
 {
   const char *name = parent_name();
   load_common(0);
+  if (load_error) return;
   default_frame = CPU_FRAME_MHz(12,60);
 
   if (!strncmp(name,"wof",3))
@@ -2482,6 +2485,7 @@ void load_cps2() {
       int length = get_region_size(REGION_GFX1)/2,i;
       UINT16 *rom = (UINT16*) load_region[REGION_GFX1];
       UINT16 *buf = (UINT16*)AllocateMem(length);
+      if (!buf) return;
       memcpy(buf,rom,length);
       for (i = 0; i < length/2; i++) {
 	  rom[i] = buf[((i & ~7) >> 2) | ((i & 4) << 18) | ((i & 2) >> 1) | ((i & 1) << 21)];
@@ -2522,6 +2526,7 @@ void load_cps2() {
   // save_file("xor",xor,size_user1);
 
   load_common(1);
+  if (load_error) return;
   fps = 59.63; // small adjustement for cps2
 
   // ByteSwap((UINT8*)xor, size_user1 );

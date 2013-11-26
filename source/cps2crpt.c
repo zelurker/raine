@@ -679,7 +679,6 @@ static void cps2_decrypt(/* running_machine *machine, */const UINT32 *master_key
 		UINT32 subkey[2];
 		UINT32 key2[4];
 
-#ifdef SDL
 		// in allegro, load_progress is specifically designed for
 		// loaded roms, maybe it should be extended one day...
 		if ((i & 0xff) == 0)
@@ -690,7 +689,6 @@ static void cps2_decrypt(/* running_machine *machine, */const UINT32 *master_key
 			ui_set_startup_text(machine, loadingMessage,FALSE);
 			*/
 		}
-#endif
 
 		// pass the address through FN1
 		seed = feistel(i, fn1_groupA, fn1_groupB,

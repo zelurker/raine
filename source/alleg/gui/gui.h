@@ -55,7 +55,7 @@ void destroy_mapped_bitmap(BITMAP *dest, UINT32 cols);
 void set_gui_palette(void);
 void MakeGUIBack(void);
 void raine_centre_dialog(DIALOG *dialog);
-void load_progress(void);
+void load_progress(char *msg, int progress);
 void load_explicit_progress(int current, int max);
 void init_joys();
 void read_gui_config();

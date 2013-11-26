@@ -1218,7 +1218,7 @@ int x_ctext_proc(int msg, DIALOG *d, int c)
 	 font = d->dp2;
 
       // rtm = text_mode(translate_color(d->bg));
-      gui_textout_ex(screen, raine_translate_text(d->dp), d->x, d->y, fg, gui_bg_color, TRUE);
+      gui_textout_ex(screen, raine_translate_text(d->dp), d->x, d->y, fg, d->bg, TRUE);
       // text_mode(rtm);
 
       font = oldfont;

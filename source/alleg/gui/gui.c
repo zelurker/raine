@@ -1366,16 +1366,20 @@ void do_load_game(void)
    free(load_debug);
 }
 
-void load_progress(void)
+void load_progress(char *msg, int progress)
 {
    if(current_game_rom_load_count < current_game_rom_count)
       current_game_rom_load_count ++;
 
-   loading_dialog[2].d1 = current_game_rom_load_count;
-   loading_dialog[2].d2 = current_game_rom_count;
+   loading_dialog[4].dp = msg;
+   loading_dialog[2].d1 = progress;
+   loading_dialog[2].d2 = 100;
 
    scare_mouse();
+   SEND_MESSAGE(&loading_dialog[0], MSG_DRAW,  0);
+   SEND_MESSAGE(&loading_dialog[1], MSG_DRAW,  0);
    SEND_MESSAGE(&loading_dialog[2], MSG_DRAW,  0);
+   SEND_MESSAGE(&loading_dialog[4], MSG_DRAW,  0);
    unscare_mouse();
 }
 

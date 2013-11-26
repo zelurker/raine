@@ -263,6 +263,7 @@ DIALOG loading_dialog[] =
    { x_ctext_proc,       80,   18,   0,    0,    GUI_COL_TEXT_2,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "", NULL, NULL},
    { d_progress_proc,    16,   32,   128,  8,    GUI_COL_TEXT_2,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    NULL, NULL, NULL},
    { load_game_proc,     0,    0,    0,    0,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    NULL, NULL, NULL},
+   { x_ctext_proc,       80,   32,   0,    0,    GUI_COL_TEXT_2,  -1,  0,    0,       0,    0,    "", NULL, NULL},
    { NULL,               0,    0,    0,    0,    0,               0,                   0,    0,       0,    0,    NULL, NULL, NULL}
 };
 
