@@ -164,6 +164,7 @@ static int associations(int sel) {
 	    free(asso[n].values_list_label[0]);
 	}
 	free(asso);
+	asso = NULL;
     } while (redraw_assoc);
     return 0;
 }
