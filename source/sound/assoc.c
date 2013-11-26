@@ -145,6 +145,13 @@ static void show(int song) {
     print_ingame(600,"Song %xh",song);
 }
 
+static void mute_song() {
+    // It's quite a hassle to change the 2 variables together, but on neocd
+    // active != cdda.playing since they are started by the game itself !
+    active = 0;
+    cdda.playing = 0;
+}
+
 int handle_sound_cmd(int cmd) {
     switch (type) {
     case 4:
@@ -160,12 +167,12 @@ int handle_sound_cmd(int cmd) {
 	}
 	if (mode == SOUND) return 0;
 	if (active && (cmd == 1 || cmd == 3 || cmd == 2 || cmd >= 0x20))
-	    active = 0;
+	    mute_song();
 	if (show_song && cmd >= 0x20) show(cmd);
 	break;
     case 3: // sonicwi2 / sonicwi3
-	if (active && (cmd == 3 || cmd < Z80ROM[0x30d]))
-	    active = 0;
+	if (active && (cmd == 3 || (cmd >= 0x20 && cmd < Z80ROM[0x30d])))
+	    mute_song();
 	else if (show_song && cmd >= 0x20 && cmd < Z80ROM[0x30d])
 	    show(cmd);
 	break;
@@ -178,7 +185,7 @@ int handle_sound_cmd(int cmd) {
 	    return 0;
 	}
 	if (active && (cmd == 3 || Z80ROM[adr + cmd] == 2))
-	    active = 0;
+	    mute_song();
 	else if (show_song && Z80ROM[adr + cmd] == 2)
 	    show(cmd);
 	break;
@@ -195,13 +202,13 @@ int handle_sound_cmd(int cmd) {
 	}
 	if (active && (cmd == 4 ||
 		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2)))
-	    active = 0;
+	    mute_song();
 	else if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
 	    show(cmd);
 	break;
     default:
 	if (active && cmd < 0x40)  // gunbird
-	    active = 0;
+	    mute_song();
 	else if (show_song && cmd < 0x40)
 	    show(cmd);
     }
@@ -213,6 +220,7 @@ int handle_sound_cmd(int cmd) {
 	if (*track[cmd] && exists(track[cmd])) {
 	    load_sample(track[cmd]);
 	    active = 1;
+	    cdda.playing = 1;
 	}
 	return 1;
     }

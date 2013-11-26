@@ -438,11 +438,11 @@ void saDestroySound( int remove_all_resources )
       be closed at the end in order to open it again at a more normal frequency later. */
 
    if (opened_audio) {
-     if (sample) {
+     if (sample && remove_all_resources) {
 	 Sound_FreeSample(sample);
 	 sample = NULL;
+	 Sound_Quit();
      }
-     Sound_Quit();
      SDL_CloseAudio();
    }
 
