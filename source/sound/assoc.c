@@ -12,7 +12,10 @@
 #include "games.h" // current_game
 #include "ingame.h" // print_ingame
 
-static int type,adr;
+// active : same role as cdda.playing, except that neocd and neogeo share the
+// same code, so if we use cdda.playing, neocd tracks are stopped very very
+// quickly !!!
+static int type,adr,active;
 static char *track[256];
 int show_song;
 enum {
@@ -156,13 +159,13 @@ int handle_sound_cmd(int cmd) {
 	    mode = SOUND;
 	}
 	if (mode == SOUND) return 0;
-	if (cdda.playing && (cmd == 1 || cmd == 3 || cmd == 2 || cmd >= 0x20))
-	    cdda.playing = 0;
+	if (active && (cmd == 1 || cmd == 3 || cmd == 2 || cmd >= 0x20))
+	    active = 0;
 	if (show_song && cmd >= 0x20) show(cmd);
 	break;
     case 3: // sonicwi2 / sonicwi3
-	if (cdda.playing && (cmd == 3 || cmd < Z80ROM[0x30d]))
-	    cdda.playing = 0;
+	if (active && (cmd == 3 || cmd < Z80ROM[0x30d]))
+	    active = 0;
 	else if (show_song && cmd >= 0x20 && cmd < Z80ROM[0x30d])
 	    show(cmd);
 	break;
@@ -174,8 +177,8 @@ int handle_sound_cmd(int cmd) {
 	    if (cmd >= 0x20) mode = MUSIC;
 	    return 0;
 	}
-	if (cdda.playing && (cmd == 3 || Z80ROM[adr + cmd] == 2))
-	    cdda.playing = 0;
+	if (active && (cmd == 3 || Z80ROM[adr + cmd] == 2))
+	    active = 0;
 	else if (show_song && Z80ROM[adr + cmd] == 2)
 	    show(cmd);
 	break;
@@ -190,15 +193,15 @@ int handle_sound_cmd(int cmd) {
 		mode = MUSIC;
 	    return 0;
 	}
-	if (cdda.playing && (cmd == 4 ||
+	if (active && (cmd == 4 ||
 		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2)))
-	    cdda.playing = 0;
+	    active = 0;
 	else if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
 	    show(cmd);
 	break;
     default:
-	if (cdda.playing && cmd < 0x40)  // gunbird
-	    cdda.playing = 0;
+	if (active && cmd < 0x40)  // gunbird
+	    active = 0;
 	else if (show_song && cmd < 0x40)
 	    show(cmd);
     }
@@ -209,7 +212,7 @@ int handle_sound_cmd(int cmd) {
 	// MUSIC
 	if (*track[cmd] && exists(track[cmd])) {
 	    load_sample(track[cmd]);
-	    cdda.playing = 1;
+	    active = 1;
 	}
 	return 1;
     }
