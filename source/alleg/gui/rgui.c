@@ -1123,9 +1123,9 @@ static DIALOG alert_dialog[] =
 {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp) */
    { d_raine_window_proc,0,   0,    0,    0,    255,  0,  0,    0,       0,    0,    NULL },
-   { x_ctext_proc,       0,   0,    0,    0,    254,  0,  0,    0,       0,    0,    NULL },
-   { x_ctext_proc,       0,   0,    0,    0,    254,  0,  0,    0,       0,    0,    NULL },
-   { x_ctext_proc,       0,   0,    0,    0,    254,  0,  0,    0,       0,    0,    NULL },
+   { x_ctext_proc,       0,   0,    0,    0,    254,  -1,  0,    0,       0,    0,    NULL },
+   { x_ctext_proc,       0,   0,    0,    0,    254,  -1,  0,    0,       0,    0,    NULL },
+   { x_ctext_proc,       0,   0,    0,    0,    254,  -1,  0,    0,       0,    0,    NULL },
    { d_raine_button_proc,0,   0,    0,    0,    255,  0,  0,    D_EXIT,  0,    0,    NULL },
    { d_raine_button_proc,0,   0,    0,    0,    255,  0,  0,    D_EXIT,  0,    0,    NULL },
    { d_raine_button_proc,0,   0,    0,    0,    255,  0,  0,    D_EXIT,  0,    0,    NULL },
