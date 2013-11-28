@@ -18,7 +18,7 @@ extern int auto_stop_cdda,mute_sfx,mute_music;
 void do_cdda( int command, int track_number_bcd);
 void init_cdda();
 void cdda_stop();
-
+void prepare_cdda_save(UINT32 id);
 
 #ifdef __cplusplus
 }

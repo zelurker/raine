@@ -11,6 +11,7 @@
 #include "raine.h" // Z80ROM
 #include "games.h" // current_game
 #include "ingame.h" // print_ingame
+#include "savegame.h"
 
 // active : same role as cdda.playing, except that neocd and neogeo share the
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
@@ -89,6 +90,10 @@ void init_assoc(int kind) {
     } else if (kind == 2)
 	type = 10; // gunbird
     if (type == 1) mode = MUSIC;
+    if (type) {
+	prepare_cdda_save(ASCII_ID('T','R','C','K'));
+	AddSaveData(ASCII_ID('T','R','C','A'),(UINT8*)&active,sizeof(active));
+    }
 }
 
 int get_assoc_adr() {
@@ -192,12 +197,17 @@ int handle_sound_cmd(int cmd) {
     case 1: // garou
 	// Garou has modes + interruptable songs !
 	if (cmd >= 6 && cmd <= 9) mode = MUSIC;
-	else if (cmd >= 0x15 && cmd < 0x1f) mode = ONE_SOUND;
-	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) mode = SOUND;
+	else if (cmd >= 0x15 && cmd < 0x1f && mode != ONE_SOUND) {
+	    mode = ONE_SOUND;
+	    return 0;
+	}
+	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1 &&
+	       mode != ONE_SOUND)
+	    mode = SOUND;
 	if (mode == SOUND) return 0;
 	if (mode == ONE_SOUND) {
-	    if (cmd >= 0x20)
-		mode = MUSIC;
+	    // Eats the next byte as sound, then switch to music
+	    mode = MUSIC;
 	    return 0;
 	}
 	if (active && (cmd == 4 ||
@@ -218,6 +228,7 @@ int handle_sound_cmd(int cmd) {
 	// An association to an empty track allows to just forbid playing this
 	// MUSIC
 	if (*track[cmd] && exists(track[cmd])) {
+	    cdda.track = cmd; // for restoration
 	    load_sample(track[cmd]);
 	    active = 1;
 	    cdda.playing = 1;

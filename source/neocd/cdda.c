@@ -7,6 +7,8 @@
 #include "savegame.h"
 #include "cdrom.h"
 #include "ingame.h"
+#include "sound/assoc.h"
+#include "games/games.h"
 
 int auto_stop_cdda = 0,mute_sfx = 0, mute_music = 0;
 
@@ -247,7 +249,15 @@ static void restore_cdda() {
     int track = cdda.track;
     int pos = cdda.pos;
     cdda.track = -1;
-    cdda_play(track,cdda.loop);
+    if (is_neocd())
+	cdda_play(track,cdda.loop);
+    else {
+	char *t = get_assoc(track);
+	if (t) {
+	    load_sample(t);
+	    cdda.playing = 1;
+	}
+    }
     set_sample_pos(pos);
   } else if (cdda.playing > 1)
     cdda.playing = 1;
