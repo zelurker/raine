@@ -129,13 +129,21 @@ int menu_asso(int sel) {
 }
 
 static int associations(int sel) {
+    int *loop = NULL;
     do {
 	redraw_assoc = 0;
 	int nb = 0,bidon;
+	asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
+	asso[nb].label = strdup("Track");
+	asso[nb].value_int = &bidon;
+	asso[nb].values_list_size = 1;
+	asso[nb].values_list_label[0] = strdup("File");
+	nb++;
 	for (int cmd=2; cmd<256; cmd++) {
 	    char *s = get_assoc(cmd);
 	    if (s) {
 		asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
+		loop = (int*)realloc(loop,sizeof(int)*(nb+1));
 		char key[4];
 		sprintf(key,"%xh",cmd);
 		asso[nb].label = strdup(key);
@@ -143,6 +151,7 @@ static int associations(int sel) {
 		asso[nb].value_int = &bidon;
 		asso[nb].values_list_size = 1;
 		asso[nb].values_list[0] = cmd;
+		loop[nb] = get_asso_loop(cmd);
 		if (*s) {
 		    char *s2 = strrstr(s,SLASH);
 		    asso[nb++].values_list_label[0] = strdup(s2 ? s2+1 : s);
@@ -156,14 +165,19 @@ static int associations(int sel) {
 	    MessageBox("Error","No associations yet","OK");
 	    return 0;
 	}
-	TMenu *dlg = new TMenu("Sound associations",asso);
+	TMenuPostCb *dlg = new TMenuPostCb("Sound associations",asso,
+		loop,"Loop");
 	dlg->execute();
 	delete dlg;
 	for (int n=0; n<nb; n++) {
+	    int cmd;
+	    sscanf(asso[n].label,"%x",&cmd);
+	    set_asso_loop(cmd,loop[n]);
 	    free((void*)asso[n].label);
 	    free(asso[n].values_list_label[0]);
 	}
 	free(asso);
+	free(loop);
 	asso = NULL;
     } while (redraw_assoc);
     return 0;

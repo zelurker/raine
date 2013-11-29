@@ -17,7 +17,7 @@
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!
 static int type,adr,active;
-static char *track[256];
+static char *track[256],loop[256];
 int show_song;
 enum {
     MUSIC=0,
@@ -96,6 +96,14 @@ void init_assoc(int kind) {
     }
 }
 
+int get_asso_loop(int cmd) {
+    return loop[cmd];
+}
+
+void set_asso_loop(int cmd, int lp) {
+    loop[cmd] = lp;
+}
+
 int get_assoc_adr() {
     return adr;
 }
@@ -129,6 +137,9 @@ void save_assoc(char *section) {
 	    char key[5];
 	    sprintf(key,"%d",cmd);
 	    raine_set_config_string(section,key,track[cmd]);
+	    char name[20];
+	    sprintf(name,"loop%d",cmd);
+	    raine_set_config_int(section,name,get_asso_loop(cmd));
 	    del_assoc(cmd);
 	}
     cdda.playing = 0; // just to be sure
@@ -141,8 +152,13 @@ void load_assoc(char *section) {
 	char key[5];
 	sprintf(key,"%d",cmd);
 	char *s = raine_get_config_string(section,key,NULL);
-	if (s)
+	if (s) {
 	    assoc(cmd,s);
+	    char name[20];
+	    sprintf(name,"loop%d",cmd);
+	    int loop = raine_get_config_int(section,name,0);
+	    set_asso_loop(cmd,loop);
+	}
     }
 }
 
@@ -230,6 +246,7 @@ int handle_sound_cmd(int cmd) {
 	if (*track[cmd] && exists(track[cmd])) {
 	    cdda.track = cmd; // for restoration
 	    load_sample(track[cmd]);
+	    cdda.loop = loop[cmd];
 	    active = 1;
 	    cdda.playing = 1;
 	}

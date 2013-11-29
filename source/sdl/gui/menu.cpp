@@ -2146,3 +2146,67 @@ void TMenuMultiCol::disp_menu(int n,int y,int w,int h) {
   }
 }
 
+// TMenuPostCb
+
+void TMenuPostCb::adjust_len_max_options(unsigned int &len_max_options) {
+    if (*legend)
+	len_max_options += strlen(legend);
+    else
+	len_max_options++;
+}
+
+void TMenuPostCb::compute_width_from_font() {
+  TMenu::compute_width_from_font();
+  int h;
+  pos_cb = width_max;
+  font->dimensions("X",&wcb,&h);
+  if (*legend) {
+      int w;
+      font->dimensions(legend,&w,&h);
+      width_max += w+HMARGIN*2;
+  } else
+      width_max += wcb+HMARGIN*2;
+}
+
+int TMenuPostCb::can_be_selected(int n) {
+    if (n == 0)
+	return 0;
+    return 1;
+}
+
+void TMenuPostCb::disp_menu(int n,int y,int w,int h) {
+  // Just need to add the columns after the normal line
+  TMenu::disp_menu(n,y,w,h);
+  if (n == 0) {
+      font->surf_string(fg_layer,pos_cb,y,legend,fg);
+  } else {
+      int x = pos_cb + HMARGIN;
+      rectangleColor(fg_layer,x,y,x+wcb,y+h-1,fg);
+      if (cb[n]) {
+	  lineColor(fg_layer,x,y,x+wcb,y+h-1,mymakecol(0,255,0));
+	  lineColor(fg_layer,x+wcb,y,x,y+h-1,mymakecol(0,255,0));
+      }
+  }
+}
+
+void TMenuPostCb::handle_key(SDL_Event *event) {
+  if (event->type == SDL_KEYDOWN && event->key.keysym.sym == SDLK_SPACE)
+      cb[sel] ^= 1;
+  else
+      TMenu::handle_key(event);
+}
+
+void TMenuPostCb::handle_button(SDL_Event *event, int index) {
+    if (event->type == SDL_MOUSEBUTTONUP ) {
+	switch(event->button.button) {
+	case 1:
+	    if (event->button.x >= pos_cb + HMARGIN &&
+		    event->button.x < pos_cb + HMARGIN + wcb)
+		cb[index] ^= 1;
+	    break;
+	default:
+	    TMenu::handle_button(event,index);
+	}
+    }
+}
+

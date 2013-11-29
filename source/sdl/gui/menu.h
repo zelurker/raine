@@ -170,6 +170,27 @@ class TMenuMultiCol : public TMenu {
     virtual void disp_menu(int n,int y,int w,int h);
 };
 
+// Version with a check box at the end of every line
+class TMenuPostCb : public TMenu {
+    protected:
+	int *cb,wcb,pos_cb;
+	char *legend;
+    public:
+	TMenuPostCb(char *my_title, menu_item_t *mymenu, int *mycb,char *leg) :
+    TMenu(my_title,mymenu)
+    {
+	cb = mycb;
+	wcb = 0;
+	legend = leg;
+    }
+    virtual void adjust_len_max_options(unsigned int &len_max_options);
+    virtual void compute_width_from_font();
+    virtual void disp_menu(int n,int y,int w,int h);
+    virtual int can_be_selected(int n);
+    virtual void handle_key(SDL_Event *event);
+    virtual void handle_button(SDL_Event *event, int index);
+};
+
 #endif
 
 #endif
