@@ -123,6 +123,8 @@ int menu_asso(int sel) {
     case 3:
 	assoc(cmd,"");
 	break;
+    default:
+	return 0; // cancelled
     }
     redraw_assoc = 1;
     return 1;
@@ -179,6 +181,7 @@ static int associations(int sel) {
 	free(asso);
 	free(loop);
 	asso = NULL;
+	loop = NULL;
     } while (redraw_assoc);
     return 0;
 }
