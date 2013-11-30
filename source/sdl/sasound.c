@@ -288,7 +288,7 @@ typedef struct
 
 static volatile playsound_global_state global_state;
 
-static int done_flag = 0;
+static int done_flag = 0,skip_silence;
 
 static int read_more_data(Sound_Sample *sample)
 {
@@ -312,6 +312,21 @@ static int read_more_data(Sound_Sample *sample)
 		} /* if */
 
 		global_state.decoded_ptr = sample->buffer;
+		if (skip_silence) {
+		    int n = 0;
+		    UINT16 *ptr = (UINT16*)sample->buffer;
+		    while (n < global_state.decoded_bytes/2 &&
+			    ptr[n] == 0 )
+			n += 100;
+		    if (n >= global_state.decoded_bytes/2) {
+			global_state.decoded_bytes = 0; // need more then !
+		    } else {
+			global_state.decoded_ptr = (UINT8*)ptr;
+			global_state.decoded_bytes -= n*2;
+			skip_silence = 0;
+		    }
+		}
+
 		return(read_more_data(sample));  /* handle loops conditions. */
 	} /* if */
 
@@ -386,6 +401,7 @@ void load_sample(char *filename) {
   }
   callback_busy = 0;
   done_flag = 0;
+  skip_silence = cdda.skip_silence;
   SDL_PauseAudio(0);
 }
 

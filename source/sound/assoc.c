@@ -245,6 +245,7 @@ int handle_sound_cmd(int cmd) {
 	// MUSIC
 	if (*track[cmd] && exists(track[cmd])) {
 	    cdda.track = cmd; // for restoration
+	    cdda.skip_silence = 1;
 	    load_sample(track[cmd]);
 	    cdda.loop = loop[cmd];
 	    active = 1;

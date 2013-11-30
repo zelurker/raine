@@ -138,6 +138,7 @@ int menu_asso(int sel) {
 	break;
     case 4:
 	t = get_assoc(cmd);
+	cdda.skip_silence = 1;
 	load_sample(t);
 	cdda.playing = 1;
 	menu = new TSoundCmd("Playback", playback);

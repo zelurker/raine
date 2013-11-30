@@ -13,7 +13,7 @@
 int auto_stop_cdda = 0,mute_sfx = 0, mute_music = 0;
 
 struct {
-  int playing,track,loop,pos;
+  int playing,track,loop,pos,skip_silence;
 } cdda;
 
 int sfx_volume,music_volume,neocd_cdda_format;

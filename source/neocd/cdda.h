@@ -8,7 +8,7 @@ extern "C" {
 #define DEFAULT_MUSIC_VOLUME 60
 
 extern struct {
-  int playing,track,loop,pos;
+  int playing,track,loop,pos,skip_silence;
 } cdda;
 
 extern int start_index, end_index;
