@@ -335,6 +335,7 @@ static int read_more_data(Sound_Sample *sample)
 	if (!cdda.loop)
 		return(0);
 
+	skip_silence = cdda.skip_silence;
 	Sound_Rewind(sample);  /* error is checked in recursion. */
 	cdda.pos = 0;
 
