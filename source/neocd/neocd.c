@@ -341,7 +341,7 @@ void setup_neocd_bios() {
       if (!ret && !tries) {
 	  char *exts[] = { "bin", "zip", NULL };
 	  *neocd_bios_file = 0;
-	  fsel(dir_cfg.share_path,exts,neocd_bios_file,"Find Neocd bios");
+	  fsel(dir_cfg.share_path,exts,neocd_bios_file,"Find NeoCD bios");
 	  if (!*neocd_bios_file) break;
 	  tries++;
       } else
@@ -349,7 +349,7 @@ void setup_neocd_bios() {
   } while (1);
 
   if (!ret) {
-      MessageBox("Fatal error", "Find the neocd bios (neocd.bin).\nAsk Google if you can't find it !","OK");
+      MessageBox("Fatal error", "Find the NeoCD bios (neocd.bin).\nAsk Google if you can't find it !","OK");
       exit(1);
   }
 
