@@ -136,10 +136,10 @@ static int associations(int sel) {
 	redraw_assoc = 0;
 	int nb = 0,bidon;
 	asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
-	asso[nb].label = strdup("Track");
+	asso[nb].label = "Track";
 	asso[nb].value_int = &bidon;
 	asso[nb].values_list_size = 1;
-	asso[nb].values_list_label[0] = strdup("File");
+	asso[nb].values_list_label[0] = "File";
 	nb++;
 	for (int cmd=2; cmd<256; cmd++) {
 	    char *s = get_assoc(cmd);
@@ -171,7 +171,7 @@ static int associations(int sel) {
 		loop,"Loop");
 	dlg->execute();
 	delete dlg;
-	for (int n=0; n<nb; n++) {
+	for (int n=1; n<nb; n++) {
 	    int cmd;
 	    sscanf(asso[n].label,"%x",&cmd);
 	    set_asso_loop(cmd,loop[n]);
