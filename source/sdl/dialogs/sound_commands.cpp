@@ -11,6 +11,7 @@
 #include "files.h"
 #include "sound/assoc.h"
 #include "sdl/dialogs/fsel.h"
+#include "neocd/cdda.h"
 
 static TMenu *menu;
 static int command;
@@ -105,11 +106,23 @@ static int associate(int sel) {
 static menu_item_t *asso = NULL;
 static int redraw_assoc;
 
+static int exit_pb(int sel) {
+    return 1;
+}
+
+menu_item_t playback[] =
+{
+    { "Close this dialog to stop playback (Return, ESC or mouse button)",&exit_pb},
+    { NULL },
+};
+
 int menu_asso(int sel) {
     int cmd = asso[sel].values_list[0];
+    char *t;
     int old;
+    TSoundCmd *menu;
     int nb = MessageBox("Question","What do you want to do ?",
-	    "Change track|Remove association|Silence");
+	    "Change track|Remove association|Silence|Play this track|Test command");
     switch (nb) {
     case 1:
 	old = command;
@@ -122,6 +135,26 @@ int menu_asso(int sel) {
 	break;
     case 3:
 	assoc(cmd,"");
+	break;
+    case 4:
+	t = get_assoc(cmd);
+	load_sample(t);
+	cdda.playing = 1;
+	menu = new TSoundCmd("Playback", playback);
+	menu->execute();
+	delete menu;
+	cdda.playing = 0;
+	break;
+    case 5: // test command
+	old = command;
+	printf("testing %x\n",cmd);
+	command = cmd;
+	test_command(sel);
+	menu = new TSoundCmd("Playback", playback);
+	menu->execute();
+	delete menu;
+	stop(sel);
+	command = old;
 	break;
     default:
 	return 0; // cancelled
