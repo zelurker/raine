@@ -226,7 +226,7 @@ int handle_sound_cmd(int cmd) {
 	    mode = MUSIC;
 	    return 0;
 	}
-	if (active && (cmd == 4 ||
+	if (active && (cmd == 4 || cmd == 3 || cmd == 1 ||
 		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2)))
 	    mute_song();
 	else if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
