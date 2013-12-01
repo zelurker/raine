@@ -145,7 +145,7 @@ int menu_asso(int sel) {
 	menu->execute();
 	delete menu;
 	cdda.playing = 0;
-	break;
+	return 0;
     case 5: // test command
 	old = command;
 	printf("testing %x\n",cmd);
@@ -156,7 +156,7 @@ int menu_asso(int sel) {
 	delete menu;
 	stop(sel);
 	command = old;
-	break;
+	return 0;
     default:
 	return 0; // cancelled
     }
