@@ -1143,7 +1143,6 @@ void TMenu::next_sel() {
     sel++;
     if (sel > menu_disp[nb_disp_items-1]) {
       sel = menu_disp[0];
-      break;
     }
   } while (sel < nb_items && !can_be_selected(sel));
   if (sel == 0 && !can_be_selected(sel)) {
