@@ -220,7 +220,6 @@ int handle_sound_cmd(int cmd) {
 	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1 &&
 	       mode != ONE_SOUND)
 	    mode = SOUND;
-	if (mode == SOUND) return 0;
 	if (mode == ONE_SOUND) {
 	    // Eats the next byte as sound, then switch to music
 	    mode = MUSIC;
@@ -231,6 +230,7 @@ int handle_sound_cmd(int cmd) {
 	    mute_song();
 	else if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
 	    show(cmd);
+	if (mode == SOUND) return 0;
 	break;
     default:
 	if (active && cmd < 0x40)  // gunbird
