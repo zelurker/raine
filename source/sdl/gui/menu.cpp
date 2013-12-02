@@ -1108,8 +1108,13 @@ void TMenu::reset_top() {
   int seldisp = get_seldisp();
   if (seldisp > top+rows-1)
     top = seldisp-rows+1;
-  else if (seldisp < top && seldisp >= 0)
+  else if (seldisp < top && seldisp >= 0) {
     top = seldisp;
+    // In case there are non selectable lines upper, there will be no way
+    // to display them again, so it's better to scroll up more in this case
+    while (top > 0 && !can_be_selected(top-1))
+	top--;
+  }
 }
 
 void TMenu::next_sel() {
