@@ -122,21 +122,21 @@ int menu_asso(int sel) {
     int old;
     TSoundCmd *menu;
     int nb = MessageBox("Question","What do you want to do ?",
-	    "Change track|Remove association|Silence|Play this track|Test command");
+	    "Play this track|Test command|Silence|Change track|Remove association");
     switch (nb) {
-    case 1:
+    case 4: // change track
 	old = command;
 	command = cmd;
 	associate(0);
 	command = old;
 	break;
-    case 2:
+    case 5: // remove assoc
 	del_assoc(cmd);
 	break;
-    case 3:
+    case 3: // silence
 	assoc(cmd,"");
 	break;
-    case 4:
+    case 1: // play
 	t = get_assoc(cmd);
 	cdda.skip_silence = 1;
 	load_sample(t);
@@ -146,7 +146,7 @@ int menu_asso(int sel) {
 	delete menu;
 	cdda.playing = 0;
 	return 0;
-    case 5: // test command
+    case 2: // test command
 	old = command;
 	printf("testing %x\n",cmd);
 	command = cmd;
