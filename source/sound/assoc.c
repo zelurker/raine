@@ -127,6 +127,7 @@ void del_assoc(int cmd) {
     if (track[cmd]) {
 	free(track[cmd]);
 	track[cmd] = NULL;
+	loop[cmd] = 0;
     }
 }
 
