@@ -122,7 +122,7 @@ int menu_asso(int sel) {
     int old;
     TSoundCmd *menu;
     int nb = MessageBox("Question","What do you want to do ?",
-	    "Play this track|Test command|Silence|Change track|Remove association");
+	    "Play track|Test command|Silence track|Change track|Remove association");
     switch (nb) {
     case 4: // change track
 	old = command;
