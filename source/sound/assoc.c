@@ -233,7 +233,8 @@ int handle_sound_cmd(int cmd) {
 	if (active && (cmd == 4 || cmd == 3 || cmd == 1 ||
 		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2)))
 	    mute_song();
-	else if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
+	else if (show_song && mode == MUSIC &&
+		cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
 	    show(cmd);
 	if (mode == SOUND) return 0;
 	break;
