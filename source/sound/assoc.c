@@ -13,6 +13,8 @@
 #include "ingame.h" // print_ingame
 #include "savegame.h"
 
+#define VERBOSE 0
+
 // active : same role as cdda.playing, except that neocd and neogeo share the
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!
@@ -170,11 +172,17 @@ static void show(int song) {
 static void mute_song() {
     // It's quite a hassle to change the 2 variables together, but on neocd
     // active != cdda.playing since they are started by the game itself !
+#if VERBOSE
+    printf("mute song mode %d\n",mode);
+#endif
     active = 0;
     cdda.playing = 0;
 }
 
 int handle_sound_cmd(int cmd) {
+#if VERBOSE
+    printf("cmd %x mode %d\n",cmd,mode);
+#endif
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after
@@ -219,10 +227,11 @@ int handle_sound_cmd(int cmd) {
 	    mode = ONE_SOUND;
 	    return 0;
 	}
-	else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14))
+	else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
 	    // cmd 0xa is one_sound, handled just before
-	    break; // these commands don't seem to do anything !
-	else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1 &&
+	    if (mode == ONE_SOUND) mode = MUSIC;
+	    return 0; // these commands don't seem to do anything !
+	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1 &&
 	       mode != ONE_SOUND)
 	    mode = SOUND;
 	if (mode == ONE_SOUND) {
@@ -249,6 +258,9 @@ int handle_sound_cmd(int cmd) {
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
 	// MUSIC
+#if VERBOSE
+	printf("playing song %x track %s\n",cmd,track[cmd]);
+#endif
 	if (*track[cmd] && exists(track[cmd])) {
 	    cdda.track = cmd; // for restoration
 	    cdda.skip_silence = 1;
