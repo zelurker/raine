@@ -221,6 +221,11 @@ int handle_sound_cmd(int cmd) {
 	break;
     case 1: // garou
 	// Garou has modes + interruptable songs !
+	if (mode == ONE_SOUND) {
+	    // Eats the next byte as sound, then switch to music
+	    mode = MUSIC;
+	    return 0;
+	}
 	if (cmd >= 6 && cmd <= 9) mode = MUSIC;
 	else if ((cmd == 0xa || (cmd >= 0x15 && cmd < 0x1f)) &&
 	       mode != ONE_SOUND) {
@@ -229,23 +234,16 @@ int handle_sound_cmd(int cmd) {
 	}
 	else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
 	    // cmd 0xa is one_sound, handled just before
-	    if (mode == ONE_SOUND) mode = MUSIC;
 	    return 0; // these commands don't seem to do anything !
-	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1 &&
-	       mode != ONE_SOUND)
+	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1)
 	    mode = SOUND;
-	if (mode == ONE_SOUND) {
-	    // Eats the next byte as sound, then switch to music
-	    mode = MUSIC;
-	    return 0;
-	}
-	if (active && (cmd == 4 || cmd == 3 || cmd == 1 ||
-		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2)))
-	    mute_song();
-	else if (show_song && mode == MUSIC &&
-		cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
-	    show(cmd);
 	if (mode == SOUND) return 0;
+	if (active && (cmd == 4 || cmd == 3 || cmd == 1 ||
+		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2))) {
+	    mute_song();
+	}
+	if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
+	    show(cmd);
 	break;
     default:
 	if (active && cmd < 0x40)  // gunbird
