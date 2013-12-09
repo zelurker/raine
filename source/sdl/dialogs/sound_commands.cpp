@@ -121,7 +121,7 @@ int menu_asso(int sel) {
     char *t;
     int old;
     TSoundCmd *menu;
-    int nb = MessageBox("Question","What do you want to do ?",
+    int nb = MessageBox("Choice","Track Options",
 	    "Play track|Test command|Silence track|Change track|Remove association");
     switch (nb) {
     case 4: // change track
@@ -226,7 +226,7 @@ static menu_item_t sound_menu[] =
     { "Test", &test_command },
     { "Stop", &stop },
     { "Associate...", &associate },
-    { "Associations", &associations },
+    { "Manage associations", &associations },
     { "Show song played (10s)", NULL, &show_song, 2, {0,1}, {"No","Yes"}},
     { "Disable associations", NULL, &disable_assoc, 2, {0, 1}, {"No","Yes"}},
   { NULL },
