@@ -20,7 +20,7 @@
 // quickly !!!
 static int type,adr,active;
 static char *track[256],loop[256];
-int show_song;
+int show_song,disable_assoc;
 enum {
     MUSIC=0,
     SOUND,
@@ -183,6 +183,7 @@ int handle_sound_cmd(int cmd) {
 #if VERBOSE
     printf("cmd %x mode %d\n",cmd,mode);
 #endif
+    if (disable_assoc) return 0;
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after

@@ -228,6 +228,7 @@ static menu_item_t sound_menu[] =
     { "Associate...", &associate },
     { "Associations", &associations },
     { "Show song played (10s)", NULL, &show_song, 2, {0,1}, {"No","Yes"}},
+    { "Disable associations", NULL, &disable_assoc, 2, {0, 1}, {"No","Yes"}},
   { NULL },
 };
 
@@ -309,5 +310,7 @@ int do_sound_cmd(int sel) {
 	    free(sound_menu[0].values_list_label[x]);
     }
     dwElapsedTicks = ticks;
+    if (disable_assoc && !is_neocd())
+	cdda.playing = 0;
     return 0;
 }

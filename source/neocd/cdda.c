@@ -9,6 +9,9 @@
 #include "ingame.h"
 #include "sound/assoc.h"
 #include "games/games.h"
+#include "mz80help.h"
+#include "cpumain.h"
+#include "timer.h"
 
 int auto_stop_cdda = 0,mute_sfx = 0, mute_music = 0;
 
@@ -245,6 +248,23 @@ void init_cdda() {
 }
 
 static void restore_cdda() {
+    if (!is_neocd() && disable_assoc) {
+	if (cdda.playing) {
+	    cdda.playing = 0;
+	    latch = 3;
+	    cpu_int_nmi(audio_cpu);
+	    execute_z80_audio_frame();
+	    if (get_assoc_type() != 4) {
+		latch = 7;
+		cpu_int_nmi(audio_cpu);
+		execute_z80_audio_frame();
+	    }
+	    latch = cdda.track;
+	    cpu_int_nmi(audio_cpu);
+	    execute_z80_audio_frame();
+	}
+	return;
+    }
   if (cdda.playing == 1) {
     int track = cdda.track;
     int pos = cdda.pos;
