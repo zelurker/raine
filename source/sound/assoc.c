@@ -136,6 +136,7 @@ void del_assoc(int cmd) {
 
 void save_assoc(char *section) {
     int cmd;
+    raine_clear_config_section(section);
     for (cmd=1; cmd<256; cmd++)
 	if (track[cmd]) {
 	    char key[5];
