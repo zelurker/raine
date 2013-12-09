@@ -61,7 +61,7 @@
 #include "control.h"
 #include "control_internal.h"
 
-int GameSound;
+int GameSound,fadeout,fade_vol;
 UINT8 *PCMROM;
 
 static char driver_name[40];
@@ -348,7 +348,9 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
   // convert the sample by passing a specific format to Sound_NewSample, but
   // since this conversion remains very easy and there shouldn't be any other
   // conversion needed...
-  int n;
+  int n,vol;
+  if (fadeout) vol = fade_vol;
+  else vol = music_volume;
   switch (format)
   {
     case AUDIO_U8:
@@ -365,7 +367,7 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
 
     case AUDIO_S16LSB:
       for (n=0; n<len; n+=2) {
-	INT16 sample = (INT16)(ReadWord(&src[n]))*music_volume/100;
+	INT16 sample = (INT16)(ReadWord(&src[n]))*vol/100;
 	WriteWord(&dst[n],sample);
       }
       break;
@@ -376,7 +378,7 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
 
     case AUDIO_S16MSB:
       for (n=0; n<len; n+=2) {
-	INT16 sample = (INT16)(ReadWord68k(&src[n]))*music_volume/100;
+	INT16 sample = (INT16)(ReadWord68k(&src[n]))*vol/100;
 	WriteWord(&dst[n],sample);
       }
       break;
@@ -407,6 +409,7 @@ void load_sample(char *filename) {
 }
 
 void init_samples() {
+    fadeout = 0;
   SDL_PauseAudio(1);
   while (callback_busy) {
     print_debug("init_sample: callback_busy...\n");
@@ -440,6 +443,11 @@ void set_sample_pos(int pos) {
   } else if (fbin) {
     fseek(fbin,pos,SEEK_SET);
   }
+}
+
+void start_music_fadeout() {
+    fadeout = 1;
+    fade_vol = music_volume;
 }
 
 void saDestroySound( int remove_all_resources )
@@ -554,6 +562,13 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     // int nb=0;
 
     // 1. Fill the stream with the sample, if available
+    if (fadeout) {
+	fade_vol--;
+	if (fade_vol <= 0) {
+	    fadeout = 0;
+	    cdda.playing = 0;
+	}
+    }
     if (sample && cdda.playing == 1 && !done_flag && !mute_music) {
 	int bw = 0; /* bytes written to stream this time through the callback */
 	while (bw < len)
@@ -565,7 +580,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		/* ...there isn't any more data to read! */
 		memset(stream + bw, '\0', len - bw);
 		done_flag = 1;
-		printf("over\n");
+		fadeout = 0;
 		break;
 	    } /* if */
 

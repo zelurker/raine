@@ -24,7 +24,8 @@ int show_song,disable_assoc;
 enum {
     MUSIC=0,
     SOUND,
-    ONE_SOUND
+    ONE_SOUND,
+    FADEOUT
 };
 static int mode;
 
@@ -226,14 +227,22 @@ int handle_sound_cmd(int cmd) {
 	    // Eats the next byte as sound, then switch to music
 	    mode = MUSIC;
 	    return 0;
+	} else if (mode == FADEOUT) {
+	    // argument is probably the speed of the fadeout, but no idea
+	    // how it works exactly...
+	    mode = MUSIC;
+	    start_music_fadeout();
+	    return 0;
 	}
 	if (cmd >= 6 && cmd <= 9) mode = MUSIC;
-	else if ((cmd == 0xa || (cmd >= 0x15 && cmd < 0x1f)) &&
+	else if ((cmd >= 0x15 && cmd < 0x1f) &&
 	       mode != ONE_SOUND) {
 	    mode = ONE_SOUND;
 	    return 0;
-	}
-	else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
+	} else if (cmd == 0xa) {
+	    mode = FADEOUT;
+	    return 0;
+	} else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
 	    // cmd 0xa is one_sound, handled just before
 	    return 0; // these commands don't seem to do anything !
 	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1)

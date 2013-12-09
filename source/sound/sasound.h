@@ -209,6 +209,7 @@ void sa_unpause_sound(void);
 void load_sample(char *filename);
 void init_samples();
 void set_sample_pos(int pos);
+void start_music_fadeout();
 #endif
 
 void end_recording();
