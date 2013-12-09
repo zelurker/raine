@@ -249,20 +249,7 @@ void init_cdda() {
 
 static void restore_cdda() {
     if (!is_neocd() && disable_assoc) {
-	if (cdda.playing) {
-	    cdda.playing = 0;
-	    latch = 3;
-	    cpu_int_nmi(audio_cpu);
-	    execute_z80_audio_frame();
-	    if (get_assoc_type() != 4) {
-		latch = 7;
-		cpu_int_nmi(audio_cpu);
-		execute_z80_audio_frame();
-	    }
-	    latch = cdda.track;
-	    cpu_int_nmi(audio_cpu);
-	    execute_z80_audio_frame();
-	}
+	cdda.playing = 0;
 	return;
     }
   if (cdda.playing == 1) {
