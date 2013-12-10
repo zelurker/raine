@@ -185,7 +185,7 @@ int handle_sound_cmd(int cmd) {
 #if VERBOSE
     printf("cmd %x mode %d\n",cmd,mode);
 #endif
-    if (disable_assoc) return 0;
+    if (disable_assoc || is_neocd() || !type) return 0;
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after
