@@ -121,7 +121,7 @@ int menu_asso(int sel) {
     char *t;
     int old;
     TSoundCmd *menu;
-    int nb = MessageBox("Choice","Track Options",
+    int nb = MessageBox("Choice","Track options",
 	    "Play track|Test command|Silence track|Change track|Remove association");
     switch (nb) {
     case 4: // change track
@@ -254,6 +254,7 @@ int do_sound_cmd(int sel) {
     add_value(7);
     add_value(9);
 #endif
+    add_value(10);
     int adr;
     if (get_assoc_type() < 10) add_value(2);
     switch (get_assoc_type()) {
