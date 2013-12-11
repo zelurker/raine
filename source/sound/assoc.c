@@ -185,7 +185,7 @@ int handle_sound_cmd(int cmd) {
 #if VERBOSE
     printf("cmd %x mode %d\n",cmd,mode);
 #endif
-    if (disable_assoc || is_neocd() || !type) return 0;
+    if (disable_assoc || !type) return 0;
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after
@@ -232,7 +232,20 @@ int handle_sound_cmd(int cmd) {
 	    // argument is probably the speed of the fadeout, but no idea
 	    // how it works exactly...
 	    mode = MUSIC;
-	    start_music_fadeout();
+	    if (cmd) {
+		/* This is extremely approximated, but I can't get the precise
+		 * calculation here, so I took a timer and tried to manually
+		 * measure the time taken for the fadeout. With 10, it's a
+		 * little more than 13s. With 32, it's a little more than 4s,
+		 * But now apparently all the parts of the music don't decrease
+		 * at the same time, so it's just an approximation, but it seems
+		 * ok for now... */
+		double time = 13.0*10/cmd;
+#ifdef RAINE_DEBUG
+		printf("time for fadeout %g from %d\n",time,cmd);
+#endif
+		start_music_fadeout(time);
+	    }
 	    return 0;
 	}
 	if (cmd >= 6 && cmd <= 9) mode = MUSIC;

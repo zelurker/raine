@@ -15,7 +15,7 @@
 #include <unistd.h>
 
 SDL_AudioSpec gotspec;
-SDL_sem *sem[MAX_STREAM_CHANNELS];
+static SDL_sem *sem[MAX_STREAM_CHANNELS];
 int recording =0,monitoring = 1;
 static int mixing_buff_len,total_len;
 static FILE *f_record = NULL;

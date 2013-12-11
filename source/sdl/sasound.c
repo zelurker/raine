@@ -61,7 +61,8 @@
 #include "control.h"
 #include "control_internal.h"
 
-int GameSound,fadeout,fade_vol;
+int GameSound;
+static int fadeout,fade_vol,fade_nb,fade_frame,fade_vol;
 UINT8 *PCMROM;
 
 static char driver_name[40];
@@ -445,9 +446,10 @@ void set_sample_pos(int pos) {
   }
 }
 
-void start_music_fadeout() {
+void start_music_fadeout(double time) {
     fadeout = 1;
-    fade_vol = music_volume;
+    fade_nb = audio_sample_rate/gotspec.samples*time;
+    fade_frame = 0;
 }
 
 void saDestroySound( int remove_all_resources )
@@ -564,6 +566,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     // 1. Fill the stream with the sample, if available
     if (fadeout) {
 	fade_vol--;
+	fade_vol = music_volume-music_volume*fade_frame++/fade_nb;
 	if (fade_vol <= 0) {
 	    fadeout = 0;
 	    cdda.playing = 0;
