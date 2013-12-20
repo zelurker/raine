@@ -231,7 +231,13 @@ int handle_sound_cmd(int cmd) {
 		 * But now apparently all the parts of the music don't decrease
 		 * at the same time, so it's just an approximation, but it seems
 		 * ok for now... */
-		double time = 13.0*10/cmd;
+		// 13s ssems to be only for kof97, kof98 and 99 are more around
+		// 6.5 or 7s... !
+		double time;
+	       if (strstr(current_game->main_name,"kof97"))
+		   time = 13.0*10/cmd;
+	       else
+		   time = 6.5*10/cmd;
 #ifdef RAINE_DEBUG
 		printf("time for fadeout %g from %d\n",time,cmd);
 #endif
