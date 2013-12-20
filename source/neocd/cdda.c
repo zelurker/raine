@@ -259,6 +259,7 @@ static void restore_cdda() {
     if (is_neocd())
 	cdda_play(track,cdda.loop);
     else {
+	last_song = track;
 	char *t = get_assoc(track);
 	if (t) {
 	    load_sample(t);

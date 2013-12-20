@@ -20,7 +20,7 @@
 // quickly !!!
 static int type,adr,active;
 static char *track[256],loop[256];
-int show_song,disable_assoc;
+int show_song,disable_assoc,last_song;
 enum {
     MUSIC=0,
     SOUND,
@@ -275,6 +275,9 @@ int handle_sound_cmd(int cmd) {
 	else if (show_song && cmd < 0x40)
 	    show(cmd);
     }
+    /* At this point all the sound commands have already returned, we are
+     * left with something which is a song number in cmd */
+    last_song = cmd;
     if (type < 10 && cmd == 2 && show_song)
 	show(cmd);
     if (cmd > 1 && track[cmd]) {
