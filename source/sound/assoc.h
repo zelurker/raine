@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-extern int show_song,disable_assoc,last_song;
+extern int disable_assoc,last_song;
 
 void init_assoc(int kind);
 int get_asso_loop(int cmd);

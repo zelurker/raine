@@ -20,7 +20,7 @@
 // quickly !!!
 static int type,adr,active;
 static char *track[256],loop[256];
-int show_song,disable_assoc,last_song;
+int disable_assoc,last_song;
 enum {
     MUSIC=0,
     SOUND,
@@ -167,10 +167,6 @@ void load_assoc(char *section) {
     }
 }
 
-static void show(int song) {
-    print_ingame(600,"Song %xh",song);
-}
-
 static void mute_song() {
     // It's quite a hassle to change the 2 variables together, but on neocd
     // active != cdda.playing since they are started by the game itself !
@@ -201,13 +197,10 @@ int handle_sound_cmd(int cmd) {
 	if (mode == SOUND) return 0;
 	if (active && (cmd == 1 || cmd == 3 || cmd == 2 || cmd >= 0x20))
 	    mute_song();
-	if (show_song && cmd >= 0x20) show(cmd);
 	break;
     case 3: // sonicwi2 / sonicwi3
 	if (active && (cmd == 3 || (cmd >= 0x20 && cmd < Z80ROM[0x30d])))
 	    mute_song();
-	else if (show_song && cmd >= 0x20 && cmd < Z80ROM[0x30d])
-	    show(cmd);
 	break;
     case 2: // galaxyfg
 	if (cmd == 7) mode = MUSIC;
@@ -219,8 +212,6 @@ int handle_sound_cmd(int cmd) {
 	}
 	if (active && (cmd == 3 || Z80ROM[adr + cmd] == 2))
 	    mute_song();
-	else if (show_song && Z80ROM[adr + cmd] == 2)
-	    show(cmd);
 	break;
     case 1: // garou
 	// Garou has modes + interruptable songs !
@@ -266,20 +257,14 @@ int handle_sound_cmd(int cmd) {
 		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2))) {
 	    mute_song();
 	}
-	if (show_song && cmd >= 20 && Z80ROM[adr + cmd - 0x20] == 2)
-	    show(cmd);
 	break;
     default:
 	if (active && cmd < 0x40)  // gunbird
 	    mute_song();
-	else if (show_song && cmd < 0x40)
-	    show(cmd);
     }
     /* At this point all the sound commands have already returned, we are
      * left with something which is a song number in cmd */
     last_song = cmd;
-    if (type < 10 && cmd == 2 && show_song)
-	show(cmd);
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
 	// MUSIC

@@ -227,7 +227,6 @@ static menu_item_t sound_menu[] =
     { "Stop", &stop },
     { "Associate...", &associate },
     { "Manage associations", &associations },
-    { "Show song played (10s)", NULL, &show_song, 2, {0,1}, {"No","Yes"}},
     { "Disable associations", NULL, &disable_assoc, 2, {0, 1}, {"No","Yes"}},
   { NULL },
 };
