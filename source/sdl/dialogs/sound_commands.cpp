@@ -257,6 +257,7 @@ int do_sound_cmd(int sel) {
     add_value(10);
     int adr;
     if (get_assoc_type() < 10) add_value(2);
+    cdda.playing = 0;
     switch (get_assoc_type()) {
     case 1: // garou
 	adr = get_assoc_adr();
