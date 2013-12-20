@@ -727,7 +727,7 @@ void raine_set_config_string(const char *section, const char *name, char *val)
       p = find_config_string(the_config, section_name, name, &prev);
 
       if (p) {
-	 if ((val) && (*val)) {
+	 if (val ) {
 	    /* modify existing variable */
 	   // Well you loose a few bytes by doing so
 	   // but you win so many with one big buff instead of lots of little
@@ -758,7 +758,7 @@ void raine_set_config_string(const char *section, const char *name, char *val)
 	 }
       }
       else {
-	 if ((val) && (*val)) {
+	 if (val) {
 	    /* add a new variable */
 	    if (section_name[0]) {
 	       p = find_config_string(the_config, NULL, section_name, &prev);
