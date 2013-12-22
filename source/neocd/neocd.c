@@ -3917,15 +3917,19 @@ static void neo_pcm2_swap(int value) {
 static void kof98_prot_w(UINT32 offset, UINT16 data) {
     switch(data) {
     case 0x90:
+	print_debug("kof98_prot_w %x 100:%x,%x\n",data,ReadWord(&ROM[0x100]),
+		ReadWord(&ROM[0x102]));
 	WriteWord(&ROM[0x100],0xc2);
 	WriteWord(&ROM[0x102],0xfd);
 	break;
     case 0xf0:
+	print_debug("kof98_prot_w %x 100:%x,%x\n",data,ReadWord(&ROM[0x100]),
+		ReadWord(&ROM[0x102]));
 	WriteWord(&ROM[0x100],0x4e45);
 	WriteWord(&ROM[0x102],0x4f2d);
 	break;
     default:
-	printf("kof98_prot_w %x\n",data);
+	print_debug("kof98_prot_w %x\n",data);
     }
 }
 
@@ -4674,7 +4678,7 @@ void load_neocd() {
 	    AddWriteWord(0x200000, 0x2fffff, fatfury2_prot_ww, NULL);
 	    AddSaveData(SAVE_USER_2, (UINT8*)&fatfury2_prot_data, sizeof(fatfury2_prot_data));
 	} else if (is_current_game("kof98"))
-	    AddWriteWord(0x20aaaa, 0x20aaab, kof98_prot_w, NULL);
+	    AddWriteBW(0x20aaaa, 0x20aaab, kof98_prot_w, NULL);
 	else if (is_current_game("kof99") || is_current_game("kof99h")) {
 	    AddWriteWord(0x2ffff0, 0x2ffff1, kof99_bankswitch_w, NULL);
 	} else if (is_current_game("garou"))
