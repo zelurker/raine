@@ -1065,11 +1065,28 @@ static void key_up(int ta) {
 // update_inputs():
 // Goes through the input list setting/clearing the mapped RAM[] bits
 
+static void add_valid_input(int ta) {
+    if (nb_valid_inputs == MAX_VALID_INPUTS) {
+	fprintf(stderr,"too many valid inputs\n");
+	exit(1);
+    }
+    int n;
+    for (n=0; n<nb_valid_inputs; n++) {
+	if (valid_inputs[n] == ta) {
+	    print_debug("add_valid_input: already have %d\n",ta);
+	    return;
+	}
+    }
+    valid_inputs[nb_valid_inputs++] = ta;
+}
+
 static void remove_valid_input(int ta) {
   // remove an input from the list of valid input when the control is released
   int n;
+  int updated = 0;
   for (n=0; n<nb_valid_inputs; n++) {
     if (valid_inputs[n] == ta) {
+	updated = 1;
       if (n < nb_valid_inputs-1)
 	memmove(&valid_inputs[n],&valid_inputs[n+1],(nb_valid_inputs-1-n)*sizeof(int));
       nb_valid_inputs--;
@@ -1077,6 +1094,9 @@ static void remove_valid_input(int ta) {
     }
   }
   InputList[ta].active_time = 0;
+  if (!updated) {
+      print_debug("remove_valid_input: didn't find %d\n",ta);
+  }
 }
 
 static void add_joy_event(int event) {
@@ -1093,11 +1113,7 @@ static void add_joy_event(int event) {
       int input_valid = is_input_valid(ta);
       update_input_buffer(ta,input_valid);
       if (input_valid) {
-	if (nb_valid_inputs == MAX_VALID_INPUTS) {
-	  fprintf(stderr,"too many valid inputs\n");
-	  exit(1);
-	}
-	valid_inputs[nb_valid_inputs++] = ta;
+	  add_valid_input(ta);
       }
     }
   } while (ta >= 0);
@@ -1193,9 +1209,10 @@ static void handle_event(SDL_Event *event) {
 	      if (ta >= 0) {
 		  autofire_timer[InputList[ta].auto_rate] = 0;
 		  input_valid = is_input_valid(ta);
-		  if (input_valid)
+		  if (input_valid) {
 		      update_input_buffer(ta,input_valid);
-		  valid_inputs[nb_valid_inputs++] = ta;
+		      add_valid_input(ta);
+		  }
 	      }
 	  } while (ta >= 0);
       }
@@ -1242,7 +1259,7 @@ static void handle_event(SDL_Event *event) {
 	  int x;
 
 	  for(x=0;x<InputCount;x++){
-	    if((key[InputList[x].Key])){
+	    if(key[InputList[x].Key]){
 	      int found_valid = 0;
 	      int n;
 	      for (n=0; n<nb_valid_inputs; n++) {
@@ -1256,7 +1273,7 @@ static void handle_event(SDL_Event *event) {
 		if (input_valid) {
 		  // We found a key down which now trigers a valid input !
 		  update_input_buffer(x,input_valid);
-		  valid_inputs[nb_valid_inputs++] = x;
+		  add_valid_input(x);
 		}
 	      }
 	    }
@@ -1285,7 +1302,7 @@ static void handle_event(SDL_Event *event) {
 	input_valid = is_input_valid(ta);
 	update_input_buffer(ta,input_valid);
 	if (input_valid)
-	  valid_inputs[nb_valid_inputs++] = ta;
+	    add_valid_input(ta);
       }
       break;
     case SDL_MOUSEBUTTONUP:
