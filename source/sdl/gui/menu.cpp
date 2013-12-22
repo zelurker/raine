@@ -1107,7 +1107,7 @@ void TMenu::reset_top() {
     }
   int seldisp = get_seldisp();
   if (seldisp > top+rows-1)
-    top = seldisp-rows+1;
+    top = seldisp-rows/2;
   else if (seldisp < top && seldisp >= 0) {
     top = seldisp;
     // In case there are non selectable lines upper, there will be no way
