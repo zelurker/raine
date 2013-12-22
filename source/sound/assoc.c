@@ -142,9 +142,11 @@ void save_assoc(char *section) {
 	    char key[5];
 	    sprintf(key,"%d",cmd);
 	    raine_set_config_string(section,key,track[cmd]);
-	    char name[20];
-	    sprintf(name,"loop%d",cmd);
-	    raine_set_config_int(section,name,get_asso_loop(cmd));
+	    if (get_asso_loop(cmd)) {
+		char name[20];
+		sprintf(name,"loop%d",cmd);
+		raine_set_config_int(section,name,get_asso_loop(cmd));
+	    }
 	    del_assoc(cmd);
 	}
     cdda.playing = 0; // just to be sure
