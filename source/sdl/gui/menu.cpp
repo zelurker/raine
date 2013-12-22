@@ -2205,9 +2205,10 @@ void TMenuPostCb::handle_button(SDL_Event *event, int index) {
 	switch(event->button.button) {
 	case 1:
 	    if (event->button.x >= pos_cb + HMARGIN &&
-		    event->button.x < pos_cb + HMARGIN + wcb)
+		    event->button.x < pos_cb + HMARGIN + wcb) {
 		cb[index] ^= 1;
-	    break;
+		return;
+	    }
 	default:
 	    TMenu::handle_button(event,index);
 	}
