@@ -138,13 +138,15 @@ int menu_asso(int sel) {
 	break;
     case 1: // play
 	t = get_assoc(cmd);
-	cdda.skip_silence = 1;
-	load_sample(t);
-	cdda.playing = 1;
-	menu = new TSoundCmd("Playback", playback);
-	menu->execute();
-	delete menu;
-	cdda.playing = 0;
+	if (t && *t) {
+	    cdda.skip_silence = 1;
+	    load_sample(t);
+	    cdda.playing = 1;
+	    menu = new TSoundCmd("Playback", playback);
+	    menu->execute();
+	    delete menu;
+	    cdda.playing = 0;
+	}
 	return 0;
     case 2: // test command
 	old = command;
