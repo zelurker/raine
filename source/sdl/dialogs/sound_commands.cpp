@@ -166,6 +166,7 @@ int menu_asso(int sel) {
 
 static int associations(int sel) {
     int *loop = NULL;
+    int last_nb = 0, last_sel;
     do {
 	redraw_assoc = 0;
 	int nb = 0,bidon;
@@ -203,7 +204,11 @@ static int associations(int sel) {
 	}
 	TMenuPostCb *dlg = new TMenuPostCb("Sound associations",asso,
 		loop,"Loop");
+	if (last_nb == nb)
+	    dlg->set_sel(last_sel);
 	dlg->execute();
+	last_sel = dlg->get_seldisp();
+	last_nb = nb;
 	delete dlg;
 	for (int n=1; n<nb; n++) {
 	    int cmd;
