@@ -1192,7 +1192,6 @@ void TMenu::prev_sel() {
 	    return;
 	}
       sel = menu_disp[nb_disp_items - 1];
-      break;
     }
   } while (sel >= 0 && !can_be_selected(sel));
   if (!can_be_selected(sel))  {
