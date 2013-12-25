@@ -17,7 +17,7 @@
 VERSION = "0.63.4"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -47,6 +47,18 @@ ifeq ("$(shell uname)","Darwin")
 # Mac os X
 DARWIN=1
 OSTYPE=darwin
+ifndef CC
+	CC=gcc
+endif
+ifndef CXX
+	CXX=g++
+endif
+ifeq ("$(shell sysctl hw.optional.x86_64)","hw.optional.x86_64: 1")
+  CC +=  -m32
+  CXX +=  -m32
+  LD=$(CXX) -m32
+endif
+
 endif
 
 DOIT=1
@@ -56,6 +68,7 @@ MINGDIR=1
 OSTYPE=mingw32
 endif
 
+ifndef DARWIN
 ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
   # autodetect x86_64 arch, and in this case build for 32 bit arch
   # notice that you still need to make a symbolic link for libstdc++.so to
@@ -73,6 +86,7 @@ ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
 else
 ifeq ("$(LD)","ld")
   LD=g++
+endif
 endif
 endif
 
@@ -305,9 +319,13 @@ ifndef SDL
    LIBS_DEBUG = -lz `allegro-config --libs ` `libpng-config --ldflags` -lm
    LIBS_STATIC = -lz `allegro-config --static` `libpng-config --static --ldflags` -lm
 else
-   LIBS = -lz `libpng-config --ldflags` -lGL -lGLU -lm
-   LIBS_DEBUG = -lz `libpng-config --ldflags` -lGL -lGLU -lm
+   LIBS = -lz `libpng-config --ldflags` -lm
+   LIBS_DEBUG = -lz `libpng-config --ldflags` -lm
    LIBS_STATIC = -lz `libpng-config --static --ldflags` -lm
+ifndef DARWIN
+	LIBS += -lGL -lGLU
+	LIBS_DEBUG += -LGL -lGLU
+endif
 endif
 
 ifndef SDL
@@ -438,7 +456,11 @@ endif
 INCDIR += -I/usr/local/include
 ifdef RAINE_UNIX
 	# windows uses /usr/include so it's handy when cross compiling from linux
+ifeq ($(wildcard /usr/include/muParser),)
+	INCDIR += -I/usr/local/include/muParser
+else
 	INCDIR += -I/usr/include/muParser
+endif
 endif
 
 ifdef RAINE_DEBUG
@@ -482,6 +504,13 @@ endif
 # win32 version (no gcc3 for win32 for now).
 #	 -maccumulate-outgoing-args
 #	-pedantic
+endif
+
+ifeq ("$(shell $(CC) --version|grep '^Apple'|sed 's/\(Apple LLVM\).*/\1/')","Apple LLVM")
+	# gcc 4.8 emits warnings for all the game definitions because we
+	# override the definition with the new macros...
+	CFLAGS += -Wno-initializer-overrides \
+			  -Wno-invalid-source-encoding
 endif
 
 ifdef GFX_SVGALIB
@@ -709,8 +738,13 @@ CONSOLE = \
 	$(OBJDIR)/sdl/gui/tconsole.o \
 	$(OBJDIR)/sdl/console/exec.o
 
+ifdef DARWIN
+LIBS += /usr/local/lib/libmuparser.a
+LIBS_DEBUG += /usr/local/lib/libmuparser.a
+else
 LIBS += -lmuparser
 LIBS_DEBUG += -lmuparser
+endif
 endif
 
 ifdef SDL
@@ -903,24 +937,26 @@ else
 OBJS += $(OBJDIR)/sdl/sasound.o
 
 ifdef DARWIN
-# -fno-pic is an OBLGATION in darwin, without it the global variables can't
-# be accessed directly and the asm code can't work anymore
-CFLAGS +=  -fno-pic
-# CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
-CFLAGS += `sdl-config --cflags` -DDARWIN
-LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
-LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa
+# Finally there are some ways to build some fPIC code with darwin and with
+# asm, it just adds some more constraints, mainly saving ebx
+# CFLAGS +=  -fno-pic
+# To build with frameworks...
+CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
+CFLAGS += `sdl-config --cflags` # -DDARWIN
+# LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
+LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
 # LIBS += `sdl-config --libs` -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -lSDL_ttf -lmuparser -lSDL_image -framework Cocoa -lstdc++
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
-CFLAGS_MCU += -DDARWIN -fno-pic
-LFLAGS += -fno-pic -bind_at_load -read_only_relocs suppress
+CFLAGS_MCU += -DDARWIN
+# LFLAGS += -fno-pic -bind_at_load -read_only_relocs suppress
 
-CFLAGS += -I/Library/Frameworks/SDL_sound.framework/Headers
-# LIBS += -lSDL_sound
-LIBS += -framework SDL_sound
+# Better use a static lib for sdl_sound, too many dependancies, and very
+# specific
+LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libogg.a /usr/local/lib/libvorbis.a /usr/local/lib/libvorbisfile.a
+# LIBS += -framework SDL_sound
 else
 CFLAGS += `sdl-config --cflags`
 ifdef RAINE32
@@ -1015,7 +1051,7 @@ $(RAINE_EXE):	$(OBJS)
 endif
 
 	@echo Linking Raine...
-	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $^ $(LIBS) -lstdc++
+	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $^ $(LIBS)
 
 $(D7Z)/%.o: source/7z/%.c
 	@echo Compiling 7z $<...
