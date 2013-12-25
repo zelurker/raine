@@ -52,7 +52,7 @@ void adjust_gui_resolution() {
     sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
 #ifdef DARWIN
-  else if (sdl_overlay && overlays_workarounds) {
+  else if (display_cfg.video_mode == 1 && overlays_workarounds) {
       /* Huge bugs with overlays in darwin, at least on my computer.
        * The menu appears hidden under the overlay when returning to the gui.
        * This should fix it */
