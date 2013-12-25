@@ -49,7 +49,7 @@ static int save_indexed(png_structp png_ptr, BITMAP *bmp)
 }
 
 #ifdef SDL
-inline int getpixel( int depth, unsigned char *pix, int x) {
+static inline int getpixel( int depth, unsigned char *pix, int x) {
   switch(depth) {
     case 15:
     case 16:
@@ -240,7 +240,7 @@ static int really_save_png(FILE *fp, BITMAP *bmp, const RGB *pal)
 
 	for (i = 0; i < 256; i++) {
 #ifdef SDL
-	    palette[i].red   = (pal[i].r);  
+	    palette[i].red   = (pal[i].r);
 	    palette[i].green = (pal[i].g);
 	    palette[i].blue  = (pal[i].b);
 #else

@@ -150,7 +150,7 @@ void DoCycles(void)
 
 #endif
 
-DEF_INLINE void Execute68020(int c)
+void Execute68020(int c)
 {
    cycles=(c>>4);
 #if defined(RAINE_DOS) || defined(RAINE_UNIX) || defined(__MINGW32__)
@@ -241,7 +241,7 @@ void init_m68k(void)
    AddSaveData(SAVE_M68020_0, (UINT8 *) &regs, sizeof(regs));
 }
 
-DEF_INLINE void m68k_do_jsr(uaecptr oldpc, uaecptr dest)
+void m68k_do_jsr(uaecptr oldpc, uaecptr dest)
 {
    m68k_areg(regs, 7) -= 4;
    put_long(m68k_areg(regs, 7), oldpc);
@@ -361,7 +361,7 @@ void Exception(int nr, uaecptr oldpc)
     regs.t1 = regs.t0 = regs.m = 0;
 }
 
-DEF_INLINE void Interrupt020(int nr)
+void Interrupt020(int nr)
 {
     if((nr<8) && (nr>=0)){
     Exception(nr+24,0);
@@ -370,7 +370,7 @@ DEF_INLINE void Interrupt020(int nr)
     }
 }
 
-DEF_INLINE void Interrupt68020(int level)
+void Interrupt68020(int level)
 {
    MakeSR();
    if(level>=((regs.sr&0xf00)>>8)) Exception(level+24,regs.pc);
@@ -708,7 +708,7 @@ void op_illg(uae_u32 opcode)
     Exception(4,0);
 }
 
-DEF_INLINE void Stop68020(void)
+void Stop68020(void)
 {
    cycles=0;
 
@@ -718,3 +718,4 @@ DEF_INLINE void Stop68020(void)
 
       print_debug("[68020 Stopped by User]\n");
 }
+

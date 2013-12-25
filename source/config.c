@@ -10,6 +10,9 @@
 #include <string.h>
 #include <zlib.h>
 #include <dirent.h>
+#ifdef DARWIN
+#include <unistd.h>
+#endif
 
 #include "raine.h"		// General defines and stuff
 #include "gui.h"		// Interface stuff

@@ -920,7 +920,7 @@ static INLINE void FM_BUSY_SET(FM_ST *ST,int busyclock )
 
 
 
-INLINE void FM_KEYON(UINT8 type, FM_CH *CH , int s )
+static INLINE void FM_KEYON(UINT8 type, FM_CH *CH , int s )
 {
 	FM_SLOT *SLOT = &CH->SLOT[s];
 	if( !SLOT->key )
@@ -949,7 +949,7 @@ INLINE void FM_KEYON(UINT8 type, FM_CH *CH , int s )
 	}
 }
 
-INLINE void FM_KEYOFF(FM_CH *CH , int s )
+static INLINE void FM_KEYOFF(FM_CH *CH , int s )
 {
 	FM_SLOT *SLOT = &CH->SLOT[s];
 	if( SLOT->key )

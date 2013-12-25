@@ -11,11 +11,11 @@ UINT8 TechnosSoundReadZ80(UINT16 offset);
 
 void TechnosSoundWrite68k(UINT32 address, UINT16 data);
 
-DEF_INLINE void TechnosSound_Frame(void);
+void TechnosSound_Frame(void);
 
 void AddTechnosSound(UINT32 p1, UINT32 p2, UINT32 romsize, UINT8 *adpcmA, UINT8 *adpcmB, int volume);
 
-DEF_INLINE void TechnosSoundOld_Frame(void);
+void TechnosSoundOld_Frame(void);
 
 void AddTechnosSoundOld(UINT32 p1, UINT32 p2, UINT32 romsize, UINT8 *adpcmA, int volume);
 

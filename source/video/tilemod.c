@@ -868,7 +868,7 @@ GFX ROM decoding (mame style)
 /* #define readbit(src, bitnum)                       \ */
 /*    (src[(bitnum) >> 3] & (0x80 >> ((bitnum) & 7))) \ */
 
-inline int readbit(const UINT8 *src,int bitnum)
+static inline int readbit(const UINT8 *src,int bitnum)
 {
 	return src[bitnum / 8] & (0x80 >> (bitnum % 8));
 }

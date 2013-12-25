@@ -69,7 +69,7 @@ static void YM2151_Init(int volume)
     ym2151_interface.volume[0] = YM3012_VOL(volume,MIXER_PAN_LEFT,volume,MIXER_PAN_RIGHT);
 }
 
-DEF_INLINE void TechnosSound_Frame(void)
+void TechnosSound_Frame(void)
 {
    cpu_execute_cycles(CPU_Z80_0, 4000000/60);        // Sound Z80 xMhz
    cpu_execute_cycles(CPU_Z80_0, 4000000/60);        // Sound Z80 xMhz
@@ -137,7 +137,7 @@ void AddTechnosSound(UINT32 p1, UINT32 p2, UINT32 romsize, UINT8 *adpcmA, UINT8 
    SoundR = 0;
 }
 
-DEF_INLINE void TechnosSoundOld_Frame(void)
+void TechnosSoundOld_Frame(void)
 {
    cpu_execute_cycles(CPU_Z80_0, 4000000/60);        // Sound Z80 xMhz
    cpu_interrupt(CPU_Z80_0, 0x38);
