@@ -73,15 +73,18 @@ static void MyCPUID(UInt32 function, UInt32 *a, UInt32 *b, UInt32 *c, UInt32 *d)
   #else
 
   __asm__ __volatile__ (
-    "cpuid"
+		  "push %%ebx\n\t" // save bx for pic code
+		  "cpuid\n\t"
+		  "movl %%ebx, %%esi \n\t" /* saves what cpuid just put in ebx */
+		  "popl %%ebx \n\t" /* restore the old ebx */
     : "=a" (*a) ,
-      "=b" (*b) ,
+      "=S" (*b) ,
       "=c" (*c) ,
       "=d" (*d)
     : "0" (function)) ;
 
   #endif
-  
+
   #else
 
   int CPUInfo[4];
