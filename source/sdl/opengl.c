@@ -97,76 +97,85 @@ static int GetAttribute(int attr, int *value) {
 
 static int broken_gl_format = 0;
 
+static const char* myglGetString( GLenum id) {
+	const char *s = (const char*)glGetString(id);
+	return (s ? s : "");
+}
+
 void get_ogl_infos() {
-    check_error("start ogl_infos");
-    int format_error = 0;
-    switch (sdl_screen->format->BitsPerPixel) {
-    case 16:
-	gl_format = GL_RGB;
-	gl_type = GL_UNSIGNED_SHORT_5_6_5_REV;
-	break;
-    case 32:
-	switch (sdl_screen->format->Bshift) {
-	case 0:
-	    gl_format = GL_BGRA;
-	    gl_type = GL_UNSIGNED_INT_8_8_8_8_REV;
-	    break;
+	check_error("start ogl_infos");
+	int format_error = 0;
+	switch (sdl_screen->format->BitsPerPixel) {
 	case 16:
-	    gl_format = GL_RGBA;
-	    gl_type = GL_UNSIGNED_INT_8_8_8_8_REV;
-	    break;
+		gl_format = GL_RGB;
+		gl_type = GL_UNSIGNED_SHORT_5_6_5_REV;
+		break;
+	case 32:
+		switch (sdl_screen->format->Bshift) {
+		case 0:
+			gl_format = GL_BGRA;
+			gl_type = GL_UNSIGNED_INT_8_8_8_8_REV;
+			break;
+		case 16:
+			gl_format = GL_RGBA;
+			gl_type = GL_UNSIGNED_INT_8_8_8_8_REV;
+			break;
+		case 24:
+			gl_format = GL_BGRA;
+			gl_type = GL_UNSIGNED_INT_8_8_8_8;
+			break;
+		default:
+			format_error = 1;
+		}
+		break;
 	default:
-	    format_error = 1;
+		format_error = 1;
 	}
-	break;
-    default:
-	format_error = 1;
-    }
-    if (format_error && !broken_gl_format) {
-	char buff[1024];
-	broken_gl_format = 1;
-	sprintf(buff,"bad screen format, report this to rainemu.com:\n"
-		"bpp : %d rshift %d gshift %d bshift %d",
-		sdl_screen->format->BitsPerPixel,
-		sdl_screen->format->Rshift,
-		sdl_screen->format->Gshift,
-		sdl_screen->format->Bshift);
-	MessageBox("OpenGL error",buff,"ok");
-    }
+	if (format_error && !broken_gl_format) {
+		char buff[1024];
+		broken_gl_format = 1;
+		sprintf(buff,"bad screen format, report this to rainemu.com:\n"
+				"bpp : %d rshift %d gshift %d bshift %d",
+				sdl_screen->format->BitsPerPixel,
+				sdl_screen->format->Rshift,
+				sdl_screen->format->Gshift,
+				sdl_screen->format->Bshift);
+		MessageBox("OpenGL error",buff,"ok");
+	}
 
-    ogl.info = 1;
-    // Slight optimization
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_BLEND);
-    glDisable(GL_POLYGON_SMOOTH);
-    glDisable(GL_STENCIL_TEST);
-    if (ogl.render == 1)
-	glEnable(GL_TEXTURE_2D);
-    else
-	glDisable(GL_TEXTURE_2D);
+	ogl.info = 1;
+	// Slight optimization
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_BLEND);
+	glDisable(GL_POLYGON_SMOOTH);
+	glDisable(GL_STENCIL_TEST);
+	if (ogl.render == 1)
+		glEnable(GL_TEXTURE_2D);
+	else
+		glDisable(GL_TEXTURE_2D);
 
 
 
-    if (ogl.render == 1 && strcmp(ogl.shader,"None")) {
-	printf("read_shader...\n");
-	read_shader(ogl.shader);
-    }
-    if (ogl.vendor) {
-	free(ogl.vendor);
-	free(ogl.renderer);
-	free(ogl.version);
-    }
-    ogl.vendor = strdup( (char*)glGetString( GL_VENDOR ) );
-    ogl.renderer = strdup( (char*)glGetString( GL_RENDERER ) );
-    ogl.version = strdup( (char*)glGetString( GL_VERSION ) );
-    GetAttribute( SDL_GL_DOUBLEBUFFER, &ogl.infos.dbuf );
-    GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &ogl.infos.fsaa_buffers );
-    GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &ogl.infos.fsaa_samples );
-    GetAttribute( SDL_GL_ACCELERATED_VISUAL, &ogl.infos.accel );
-    GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
-    check_error("end ogl_infos");
+	if (ogl.render == 1 && strcmp(ogl.shader,"None")) {
+		printf("read_shader...\n");
+		read_shader(ogl.shader);
+	}
+	if (ogl.vendor) {
+		free(ogl.vendor);
+		free(ogl.renderer);
+		free(ogl.version);
+	}
+	ogl.vendor = strdup( (char*)myglGetString( GL_VENDOR ) );
+	ogl.renderer = strdup( (char*)myglGetString( GL_RENDERER ) );
+	ogl.version = strdup( (char*)myglGetString( GL_VERSION ) );
+	GetAttribute( SDL_GL_DOUBLEBUFFER, &ogl.infos.dbuf );
+	GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &ogl.infos.fsaa_buffers );
+	GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &ogl.infos.fsaa_samples );
+	GetAttribute( SDL_GL_ACCELERATED_VISUAL, &ogl.infos.accel );
+	GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
+	check_error("end ogl_infos");
 }
 
 void render_texture(int linear) {
