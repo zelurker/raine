@@ -17,7 +17,7 @@
 VERSION = "0.63.4"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -823,6 +823,9 @@ CORE=	$(OBJDIR)/raine.o \
  	$(OBJDIR)/loadroms.o \
 	$(OBJDIR)/bezel.o
 
+ifdef DARWIN
+	CORE += $(OBJDIR)/SDLMain.o
+endif
 
 UNZIP = $(OBJDIR)/mini-unzip/unzip.o \
 	$(OBJDIR)/mini-unzip/ioapi.o
@@ -942,9 +945,9 @@ ifdef DARWIN
 # CFLAGS +=  -fno-pic
 # To build with frameworks...
 CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
-CFLAGS += `sdl-config --cflags` # -DDARWIN
+CFLAGS += -I/usr/local/include/SDL # -DDARWIN
 # LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
-LIBS += -lSDLmain -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
+LIBS += -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
 # LIBS += `sdl-config --libs` -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -lSDL_ttf -lmuparser -lSDL_image -framework Cocoa -lstdc++
@@ -1087,6 +1090,10 @@ compress: $(RAINE_EXE)
 	   upx -9 $(RAINE_EXE)
 
 # compile object from standard c
+
+$(OBJDIR)/%.o: source/%.m
+	@echo Strange apple nib file $<...
+	$(CCV) $(CFLAGS) -MD -c $< -o $@
 
 $(OBJDIR)/%.o: source/%.c
 	@echo Compiling $<...
