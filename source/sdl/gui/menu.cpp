@@ -939,6 +939,11 @@ void TMenu::update_fg_layer(int nb_to_update) {
 
 void TMenu::update_bg_layer(SDL_Rect *region) {
   SDL_Rect tmp;
+  if (bgdst.w == 0 || bgdst.h == 0) {
+	  // In case a messagebox of error is displayed at the very start
+	  // of the program, then bgdst can be null (dialog)
+	  return;
+  }
   if (region) {
     tmp = *region; // otherwise SDL_BlitSurface changes region
     if (tmp.y < work_area.y) tmp.y = work_area.y;
@@ -1029,25 +1034,25 @@ void TMenu::do_update(SDL_Rect *region) {
     }
     redraw(region);
   } else {
-    if (region) {
-      if (region->x+region->w > sdl_screen->w)
-	region->w = sdl_screen->w - region->x;
-      if (region->y+region->h > sdl_screen->h)
-	region->h = sdl_screen->h - region->y;
-      SDL_UpdateRect(sdl_screen, region->x,region->y,region->w,region->h);
-    } else
-      SDL_UpdateRect(sdl_screen, 0,0,0,0);
-    if (emulate_mouse_cursor && cursor && drawn_mouse) {
-      if (region && (r.x < region->x || r.x >= region->x+region->w ||
-	  r.y < region->y || r.y >= region->y + region->h ||
-	  r.x+r.w > region->x+region->w || r.y+r.h > region->y+region->h)) {
-	r.w = 32;
-	r.h = 32;
-	if (r.x + r.w > sdl_screen->w) r.w = sdl_screen->w - r.x;
-	if (r.y + r.h > sdl_screen->h) r.h = sdl_screen->h - r.y;
-	SDL_UpdateRect(sdl_screen,r.x,r.y,r.w,r.h);
-      }
-    }
+	  if (region) {
+		  if (region->x+region->w > sdl_screen->w)
+			  region->w = sdl_screen->w - region->x;
+		  if (region->y+region->h > sdl_screen->h)
+			  region->h = sdl_screen->h - region->y;
+		  SDL_UpdateRect(sdl_screen, region->x,region->y,region->w,region->h);
+	  } else
+		  SDL_UpdateRect(sdl_screen, 0,0,0,0);
+	  if (emulate_mouse_cursor && cursor && drawn_mouse) {
+		  if (region && (r.x < region->x || r.x >= region->x+region->w ||
+					  r.y < region->y || r.y >= region->y + region->h ||
+					  r.x+r.w > region->x+region->w || r.y+r.h > region->y+region->h)) {
+			  r.w = 32;
+			  r.h = 32;
+			  if (r.x + r.w > sdl_screen->w) r.w = sdl_screen->w - r.x;
+			  if (r.y + r.h > sdl_screen->h) r.h = sdl_screen->h - r.y;
+			  SDL_UpdateRect(sdl_screen,r.x,r.y,r.w,r.h);
+		  }
+	  }
   }
 }
 
