@@ -324,7 +324,7 @@ else
    LIBS_STATIC = -lz `libpng-config --static --ldflags` -lm
 ifndef DARWIN
 	LIBS += -lGL -lGLU
-	LIBS_DEBUG += -LGL -lGLU
+	LIBS_DEBUG += -lGL -lGLU
 endif
 endif
 
