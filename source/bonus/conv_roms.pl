@@ -58,10 +58,18 @@ my (%def,%args) = ();
 while ($_ = shift @file) {
 	chomp;
 	s/\r//;
-	if (/^#define (.+)( .+)/ || /^#define (.+)/) {
+	if (/^#define (.+?)( .+)/ || /^#define (.+)/) {
 		my $name = $1;
 		my $fin = $2;
 		my $args = undef;
+		if ($name =~ /\(/ && $name !~ /\)/) {
+			$name .= $fin;
+			if ($name =~ s/\)([ \t].+)/\)/) {
+				$fin = $1;
+			} else {
+				$fin = "";
+			}
+		}
 		if ($name =~ s/\((.+)\)//) {
 			$args = $1;
 		}
@@ -184,7 +192,7 @@ while ($_ = shift @file) {
 									$function = "LOAD_8_64";
 								} else {
 									print STDERR "ROMX_LOAD: unknown attribute ",join(",",@arg),".\n";
-									exit(1);
+									# exit(1);
 								}
 							} elsif ($function =~ /ROM_(COPY|FILL)/) {
 								chomp;
@@ -204,7 +212,7 @@ while ($_ = shift @file) {
 								unshift @file,split(/\n/,$def);
 								$function = $oldfunc;
 								next;
-							} elsif ($function !~ /(ROM_CONTINUE|ROM_IGNORE)/) {
+							} elsif ($function !~ /(ROM_CONTINUE|ROM_IGNORE|BIOS)/) {
 								print STDERR "Unknown loading $function from line $_\n";
 								exit(1);
 							}
