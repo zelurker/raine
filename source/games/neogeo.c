@@ -3349,3 +3349,15 @@ static struct ROM_INFO rom_zintrckb[] = // clone of neogeo
 
 CLNEI( zintrckb, neogeo,             "Zintrick / Oshidashi Zentrix (hack)", HACK, 1996, GAME_MISC);
 
+static struct ROM_INFO rom_bbbuster[] = /* testing bang bang buster... */
+{
+  { "071-p1.bin", 0x80000, 0x7687197d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "071-s1.bin", 0x20000, 0x44e5f154, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "071-m1.bin", 0x20000, 0x6da739ad, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "071-v1.bin", 0x100000, 0x50feffb0, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "071-c1.bin", 0x200000, 0x23d84a7a, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "071-c2.bin", 0x200000, 0xce7b6248, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( bbbuster, neogeo,             "Bang Bang busters (prototype)", HACK, 1996, GAME_PLATFORM);

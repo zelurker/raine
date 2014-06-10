@@ -999,6 +999,7 @@ DRV(nam1975)
     DRV(zintrckb)
     DRV(viewpoin)
     DRV(blazstar)
+    DRV(bbbuster)
 
 // ninjak.c
   DRV(ninjak)
