@@ -3360,4 +3360,21 @@ static struct ROM_INFO rom_bbbuster[] = /* testing bang bang buster... */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( bbbuster, neogeo,             "Bang Bang busters (prototype)", HACK, 1996, GAME_PLATFORM);
+CLNEI( bbbuster, neogeo, "Bang Bang busters", VISCO, 2000, GAME_PLATFORM); // The rom shows 2000 on title screen, but released in 2010 ?
+
+#if 0
+static struct ROM_INFO rom_totcarib[] = /* testing treasure of the caribeans... */
+{
+  { "totc-p1.bin", 0x100000, 0x99604539, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "totc-s1.bin", 0x20000, 0x0a3fee41, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "totc-m1.bin", 0x20000, 0x18b23ace, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "totc-v1.bin", 0x200000, 0x15c7f9e6, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "totc-v2.bin", 0x200000, 0x1b264559, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "totc-v3.bin", 0x100000, 0x84b62c5d, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "totc-c1.bin", 0x200000, 0xcdd6600f, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "totc-c2.bin", 0x200000, 0xf362c271, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( totcarib, neogeo, "Treasure of the Caribeans", FACE, 2011, GAME_MISC); // 2011, really ???
+#endif
