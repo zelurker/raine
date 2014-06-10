@@ -158,9 +158,10 @@ int iso_size(char *iso, char *name) {
 }
 
 int load_from_iso(char *iso, char *name, unsigned char *dest, int offset, int size) {
-  static int chunk;
+  int chunk = 0;
   if (iso_sector_size > 2048 && offset) {
     // add the number of crc areas crossed
+    chunk = offset % 2048;
     offset += (offset/2048)*(iso_sector_size-2048);
   }
   int len, location;
