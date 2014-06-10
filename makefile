@@ -77,7 +77,7 @@ ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
  ifndef CROSSCOMPILE
   CC=gcc -m32
   CXX=g++ -m32
-  LD=gcc -m32 -L /usr/lib32
+  LD=g++ -m32 -L /usr/lib32
  else
 	ifeq ("$(LD)","ld")
 	LD = g++
