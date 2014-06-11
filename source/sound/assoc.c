@@ -35,6 +35,7 @@ void init_assoc(int kind) {
 	 * there are some variants, so they must be recognized on something
 	 * else. So I just check the instruction, it must be ld (ld),adr
 	 * ($21) */
+	char *err = "";
 	if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
 	    adr =0x1c7; // galaxyfg
 	    if (Z80ROM[adr-1] != 0x21)
@@ -63,31 +64,32 @@ void init_assoc(int kind) {
 	    adr = ReadWord(&Z80ROM[adr]);
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21)) {
 	    adr = 0x14f;
-	    if (Z80ROM[adr-1] != 0x21) {
-		type = 0;
-		printf("kof96 variant not recognized\n");
-		return;
-	    }
-	    type = 1; // kof96 = like garou
-	    adr = ReadWord(&Z80ROM[adr]);
+	    err = "kof96";
+	    type = 1;
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 1.1 ",21)) {
 	    adr = 0x17d;
-	    if (Z80ROM[adr-1] != 0x21) {
-		type = 0;
-		printf("kof97 variant not recognized\n");
-		return;
-	    }
-	    type = 1; // kof97 = like garou
-	    adr = ReadWord(&Z80ROM[adr]);
+	    err = "kof97";
+	    type = 1;
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver(ROM)Ver 1.9 00/03/22",33)) {
+	    adr = 0x184;
+	    err = "kof2k";
+	    type = 1;
 	} else if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.7",24) ||
 		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24)) {
 	    adr = 0x184;
+	    err = "kof98/garou";
+	    type = 1;
+	}
+	if (type == 1) {
+	    // The type 1 are all garou variants, but with a sound table at
+	    // different adresses. The funny thing is that even with the rom
+	    // signature, we have to double check that we really get what we
+	    // expect...
 	    if (Z80ROM[adr-1] != 0x21) {
 		type = 0;
-		printf("kof98/garou variant not recognized\n");
+		printf("%s variant not recognized\n",err);
 		return;
 	    }
-	    type = 1; // kof98 / garou
 	    adr = ReadWord(&Z80ROM[adr]);
 	}
     } else if (kind == 2)
