@@ -940,9 +940,13 @@ void TMenu::update_fg_layer(int nb_to_update) {
 void TMenu::update_bg_layer(SDL_Rect *region) {
   SDL_Rect tmp;
   if (bgdst.w == 0 || bgdst.h == 0) {
-	  // In case a messagebox of error is displayed at the very start
-	  // of the program, then bgdst can be null (dialog)
-	  return;
+      // In case a messagebox of error is displayed at the very start
+      // of the program, then bgdst can be null (dialog)
+      // or a loading progress dialog at start
+      if (region)
+	  boxColor(sdl_screen,region->x,region->y,region->x+region->w-1,
+		  region->y+region->h-1,mymakecol(0,0,0));
+      return;
   }
   if (region) {
     tmp = *region; // otherwise SDL_BlitSurface changes region
