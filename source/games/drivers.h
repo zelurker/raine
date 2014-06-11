@@ -1000,7 +1000,7 @@ DRV(nam1975)
     DRV(viewpoin)
     DRV(blazstar)
     DRV(bbbuster)
-    // DRV(totcarib) 2011 I guess I should wait then !
+    DRV(totcarib)
 
 // ninjak.c
   DRV(ninjak)

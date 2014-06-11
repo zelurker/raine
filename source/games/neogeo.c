@@ -3362,7 +3362,6 @@ static struct ROM_INFO rom_bbbuster[] = /* testing bang bang buster... */
 
 CLNEI( bbbuster, neogeo, "Bang Bang busters", VISCO, 2000, GAME_PLATFORM); // The rom shows 2000 on title screen, but released in 2010 ?
 
-#if 0
 static struct ROM_INFO rom_totcarib[] = /* testing treasure of the caribeans... */
 {
   { "totc-p1.bin", 0x100000, 0x99604539, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
@@ -3377,4 +3376,3 @@ static struct ROM_INFO rom_totcarib[] = /* testing treasure of the caribeans... 
 };
 
 CLNEI( totcarib, neogeo, "Treasure of the Caribeans", FACE, 2011, GAME_MISC); // 2011, really ???
-#endif
