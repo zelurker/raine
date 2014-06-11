@@ -1,8 +1,8 @@
-############################################################################
-##									  ##
-##				RAINE					  ##
-##									  ##
-############################################################################
+########################################
+##                                    ##
+##                RAINE               ##
+##                                    ##
+########################################
 
 ##
 ## type make RAINECPS=1 to build rainecps
@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.63.4"
+VERSION = "0.63.5"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
