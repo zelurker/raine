@@ -265,6 +265,7 @@ int handle_sound_cmd(int cmd) {
 	    // how it works exactly...
 	    mode = MUSIC;
 	    if (cmd) {
+#if 0
 		/* This is extremely approximated, but I can't get the precise
 		 * calculation here, so I took a timer and tried to manually
 		 * measure the time taken for the fadeout. With 10, it's a
@@ -282,7 +283,9 @@ int handle_sound_cmd(int cmd) {
 #ifdef RAINE_DEBUG
 		printf("time for fadeout %g from %d\n",time,cmd);
 #endif
-		start_music_fadeout(time);
+#endif
+		// Varying too much from one game to another, set to 1s for now
+		start_music_fadeout(1.0);
 	    }
 	    return 0;
 	}
