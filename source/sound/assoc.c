@@ -29,8 +29,7 @@ enum {
 };
 static int mode;
 
-static int search(int len, UINT8 *needle) {
-    int n = 0x66;
+static int search(int len, UINT8 *needle, int n) {
     int index = 0;
     while (index < len && n < 0x1000) {
 	if (Z80ROM[n] == needle[index])
@@ -53,13 +52,17 @@ void init_assoc(int kind) {
 	    // Search feb7 followed by ld hl,(adr), we want this adr
 	    // This includes galaxyfg, 3countb fatfury2, fatfury3...
 	    UINT8 needle[3] = { 0xb7,0xfe,0x21 };
-	    int n = search(3,needle);
+	    int n = search(3,needle,0x66);
 	    if (n >= 0x1000) {
 		needle[0] = 0x3f; // search for fe3f then (2nd form !)
 		// This 2nd form is for fightfev
-		n = search(2,needle);
+		n = search(2,needle,0x66);
+		if (n >= 0x1000) {
+		    needle[0] = 0x25; // magdrop3
+		    n = search(2,needle,0x66);
+		}
 		if (n < 0x1000) {
-		    printf("found fe3f at %x\n",n);
+		    printf("found fe%x at %x\n",needle[0],n);
 		    n -= 7;
 		    if (Z80ROM[n-1] != 0x21) {
 			printf("but not 21 !\n");
@@ -79,26 +82,27 @@ void init_assoc(int kind) {
 	} else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
 	    type = 3; // sonicwi2/3
 	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0",7) ||
-		!strncmp((char*)&Z80ROM[0x3e],"Ver 1.5",7)) {
+		!strncmp((char*)&Z80ROM[0x3e],"Ver 1.5",7) ||
+		!strncmp((char*)&Z80ROM[0x3e],"Ver 8.3",7)) {
 	    // Search for fe3b, a ld ld,adr is 6 bytes before
 	    // This includes mutnat, alpham2, blazstar, gpilots, kotm...
+	    // fe25 is for lans2004
 	    UINT8 needle[2] = { 0x3b,0xfe };
-	    int n = search(2,needle);
-	    if (n < 0x1000) {
-		printf("found fe3b at %x\n",n);
+	    if (!strncmp((char*)&Z80ROM[0x3e],"Ver 8.3",7))
+		needle[0] = 0x25;
+	    int n = 0x65;
+	    type = 0;
+	    while ((n = search(2,needle,n+1)) < 0x1000) {
+		printf("found fe%x at %x\n",needle[0],n);
 		if (Z80ROM[n-8] == 0x21) {
 		    type = 2;
-		    printf("found type 2 at adr = %x\n",n-7);
 		    adr = ReadWord(&Z80ROM[n-7]);
-		} else {
-		    printf("but didn't find 21 where expected\n");
-		    type = 0;
+		    printf("found type 2 at adr = %x -> %x\n",n-7,adr);
+		    break;
 		}
-	    } else {
-		type = 0;
-		printf("not found type 2\n");
-	    }
-	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21)) {
+	    } 
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21) ||
+		!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.0 ",21)) {
 	    adr = 0x14f;
 	    err = "kof96";
 	    type = 1;
