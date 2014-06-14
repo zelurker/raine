@@ -1350,21 +1350,27 @@ void TMenu::handle_key(SDL_Event *event) {
       switch(sym) {
 	case SDLK_UP:
 	  prev_sel();
+	  keybuf[0] = 0;
 	  break;
 	case SDLK_DOWN:
 	  next_sel();
+	  keybuf[0] = 0;
 	  break;
 	case SDLK_PAGEDOWN:
 	  next_page();
+	  keybuf[0] = 0;
 	  break;
 	case SDLK_PAGEUP:
 	  prev_page();
+	  keybuf[0] = 0;
 	  break;
 	case SDLK_HOME:
 	  goto_top();
+	  keybuf[0] = 0;
 	  break;
 	case SDLK_END:
 	  goto_end();
+	  keybuf[0] = 0;
 	  break;
 	case SDLK_RIGHT:
 	  next_list_item();
