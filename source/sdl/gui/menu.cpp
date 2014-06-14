@@ -373,6 +373,11 @@ void TMenu::compute_nb_items() {
 	}
 	menu = old_menu;
 	child = old_child;
+	if (top+rows >= nb_disp_items) {
+	    top = 0;
+	    if (rows >= nb_disp_items)
+		rows = 0;
+	}
 	find_new_sel();
     }
 

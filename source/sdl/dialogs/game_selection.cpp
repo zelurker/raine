@@ -115,15 +115,8 @@ class TGame_sel : public TMenu
 	current_picture[0] = 0;
 	image_counter = 0;
 	w_year = h_year = w_categ = h_categ = 0;
-	if (current_game) {
-	    for (sel=0; sel<game_count; sel++)
-		if (game_list[sel]->rom_list == current_game->rom_list)
-		    break;
-	    if (sel >= game_count) {
-		sel = -1;
-	    }
-	}
     }
+    virtual void compute_nb_items();
 
   int can_be_displayed(int n) {
     switch (game_list_mode) {
@@ -267,6 +260,18 @@ class TGame_sel : public TMenu
   void draw_bot_frame();
   void regen_menu(int free_labels);
 };
+
+void TGame_sel::compute_nb_items() {
+    TMenu::compute_nb_items();
+    if (current_game) {
+	for (sel=0; sel<game_count; sel++)
+	    if (game_list[sel]->rom_list == current_game->rom_list)
+		break;
+	if (sel >= game_count) {
+	    sel = -1;
+	}
+    }
+}
 
 void TGame_sel::draw_top_frame() {
   char mytitle[80];
