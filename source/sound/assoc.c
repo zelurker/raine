@@ -29,6 +29,19 @@ enum {
 };
 static int mode;
 
+static int search(int len, UINT8 *needle) {
+    int n = 0x66;
+    int index = 0;
+    while (index < len && n < 0x1000) {
+	if (Z80ROM[n] == needle[index])
+	    index++;
+	else
+	    index = 0;
+	n++;
+    }
+    return n;
+}
+
 void init_assoc(int kind) {
     if (kind == 1) { // neogeo
 	/* Some roms have a version + an author in them, but apparently
@@ -37,31 +50,54 @@ void init_assoc(int kind) {
 	 * ($21) */
 	char *err = "";
 	if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
-	    adr =0x1c7; // galaxyfg
-	    if (Z80ROM[adr-1] != 0x21)
-		adr = 0x1d0;
-	    if (Z80ROM[adr-1] != 0x21) {
-		type = 0;
-		printf("galaxyfg variant not recognized\n");
-		return;
+	    // Search feb7 followed by ld hl,(adr), we want this adr
+	    // This includes galaxyfg, 3countb fatfury2, fatfury3...
+	    UINT8 needle[3] = { 0xb7,0xfe,0x21 };
+	    int n = search(3,needle);
+	    if (n >= 0x1000) {
+		needle[0] = 0x3f; // search for fe3f then (2nd form !)
+		// This 2nd form is for fightfev
+		n = search(2,needle);
+		if (n < 0x1000) {
+		    printf("found fe3f at %x\n",n);
+		    n -= 7;
+		    if (Z80ROM[n-1] != 0x21) {
+			printf("but not 21 !\n");
+			type = 0;
+			return;
+		    }
+		}
 	    }
-	    type = 2; // galaxyfg
-	    adr = ReadWord(&Z80ROM[adr]);
+	    if (n < 0x1000) {
+		type = 2;
+		printf("found type 2 at adr = %x\n",n);
+		adr = ReadWord(&Z80ROM[n]);
+	    } else {
+		type = 0;
+		printf("not found type 2\n");
+	    }
 	} else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
 	    type = 3; // sonicwi2/3
-	else if (!strncmp(current_game->main_name,"mslug",5))
-	    type = 4; // mslug, except mslug4/5
-	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0a by MAKOTO",18)) {
-	    adr = 0x189; // mutnat
-	    if (Z80ROM[adr-1] != 0x21)
-		adr = 0x173;
-	    if (Z80ROM[adr-1] != 0x21) {
+	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0",7) ||
+		!strncmp((char*)&Z80ROM[0x3e],"Ver 1.5",7)) {
+	    // Search for fe3b, a ld ld,adr is 6 bytes before
+	    // This includes mutnat, alpham2, blazstar, gpilots, kotm...
+	    UINT8 needle[2] = { 0x3b,0xfe };
+	    int n = search(2,needle);
+	    if (n < 0x1000) {
+		printf("found fe3b at %x\n",n);
+		if (Z80ROM[n-8] == 0x21) {
+		    type = 2;
+		    printf("found type 2 at adr = %x\n",n-7);
+		    adr = ReadWord(&Z80ROM[n-7]);
+		} else {
+		    printf("but didn't find 21 where expected\n");
+		    type = 0;
+		}
+	    } else {
 		type = 0;
-		printf("mutnat variant not recognized\n");
-		return;
+		printf("not found type 2\n");
 	    }
-	    type = 2; // mutnat : variation of galaxyfg
-	    adr = ReadWord(&Z80ROM[adr]);
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21)) {
 	    adr = 0x14f;
 	    err = "kof96";
@@ -79,7 +115,8 @@ void init_assoc(int kind) {
 	    adr = 0x184;
 	    err = "kof98/garou";
 	    type = 1;
-	}
+	} else if (!strncmp(current_game->main_name,"mslug",5))
+	    type = 4; // mslug, except mslug4/5 (lowest priority)
 	if (type == 1) {
 	    // The type 1 are all garou variants, but with a sound table at
 	    // different adresses. The funny thing is that even with the rom
