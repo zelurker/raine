@@ -258,7 +258,7 @@ end_loop:
 
 static menu_item_t about_items[] =
 {
-  { EMUNAME" "VERSION" (c)1998-2013 " HANDLE, NULL, NULL },
+  { EMUNAME" "VERSION" (c)1998-2014 " HANDLE, NULL, NULL },
   { "Compiled on " __DATE__ " (" __TIME__ ")", NULL, NULL },
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
