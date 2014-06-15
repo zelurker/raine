@@ -1753,7 +1753,8 @@ void parse_command_line(int argc, char *argv[])
 		   !stricmp(&s[strlen(s)-3],"iso") ||
 		   !stricmp(&s[strlen(s)-6],"iso.gz") ||
 		   !stricmp(&s[strlen(s)-3],"zip") ||
-		   !stricmp(&s[strlen(s)-2],"7z")
+		   !stricmp(&s[strlen(s)-2],"7z") ||
+		   !stricmp(&s[strlen(s)-3],"cue")
 		   ) {
 	       // iso or directory, assuming neocd image
 #ifdef RAINE_SDL
