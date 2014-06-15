@@ -373,11 +373,6 @@ void TMenu::compute_nb_items() {
 	}
 	menu = old_menu;
 	child = old_child;
-	if (top+rows >= nb_disp_items) {
-	    top = 0;
-	    if (rows >= nb_disp_items)
-		rows = 0;
-	}
 	find_new_sel();
     }
 
@@ -1115,20 +1110,20 @@ static int axis_x,axis_y;
 void TMenu::reset_top() {
     if (!rows) return;
     if (focus) {
-	if (hsel == -1) return;
-	for (hsel=0; !h_child[hsel]->can_be_selected(); hsel++);
-	return;
+	if (hsel != -1)
+	    for (hsel=0; !h_child[hsel]->can_be_selected(); hsel++);
+	// Don't return here, reset top for the main part too !
     }
-  int seldisp = get_seldisp();
-  if (seldisp > top+rows-1)
-    top = seldisp-rows/2;
-  else if (seldisp < top && seldisp >= 0) {
-    top = seldisp;
-    // In case there are non selectable lines upper, there will be no way
-    // to display them again, so it's better to scroll up more in this case
-    while (top > 0 && !can_be_selected(top-1))
-	top--;
-  }
+    int seldisp = get_seldisp();
+    if (seldisp > top+rows-1)
+	top = seldisp-rows/2;
+    else if (seldisp < top && seldisp >= 0) {
+	top = seldisp;
+	// In case there are non selectable lines upper, there will be no way
+	// to display them again, so it's better to scroll up more in this case
+	while (top > 0 && !can_be_selected(top-1))
+	    top--;
+    }
 }
 
 void TMenu::next_sel() {
