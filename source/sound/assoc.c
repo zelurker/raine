@@ -100,7 +100,7 @@ void init_assoc(int kind) {
 		    printf("found type 2 at adr = %x -> %x\n",n-7,adr);
 		    break;
 		}
-	    } 
+	    }
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21) ||
 		!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.0 ",21)) {
 	    adr = 0x14f;
@@ -301,9 +301,11 @@ int handle_sound_cmd(int cmd) {
 	} else if (cmd == 0xa) {
 	    mode = FADEOUT;
 	    return 0;
+#if 0
 	} else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
 	    // cmd 0xa is one_sound, handled just before
 	    return 0; // these commands don't seem to do anything !
+#endif
 	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1)
 	    mode = SOUND;
 	if (mode == SOUND) return 0;

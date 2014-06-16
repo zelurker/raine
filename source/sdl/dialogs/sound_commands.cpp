@@ -260,7 +260,6 @@ int do_sound_cmd(int sel) {
     add_value(7);
     add_value(9);
 #endif
-    add_value(10);
     int adr;
     if (get_assoc_type() < 10) add_value(2);
     cdda.playing = 0;
