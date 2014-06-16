@@ -80,7 +80,7 @@ binary-arch: build install
 #	dh_installcron
 #	dh_installinfo
 	dh_installman
-	dh_installchangelogs
+#	dh_installchangelogs
 	dh_link
 	dh_strip
 	dh_compress
