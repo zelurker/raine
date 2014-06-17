@@ -18,7 +18,7 @@
 // active : same role as cdda.playing, except that neocd and neogeo share the
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!
-static int type,adr,active;
+static int type,adr,active,end_sound_codes;
 static char *track[256],loop[256];
 int disable_assoc,last_song;
 enum {
@@ -48,6 +48,7 @@ void init_assoc(int kind) {
 	 * else. So I just check the instruction, it must be ld (ld),adr
 	 * ($21) */
 	char *err = "";
+	end_sound_codes = 0x1e; // normal last code for the sounds for type 1
 	if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
 	    // Search feb7 followed by ld hl,(adr), we want this adr
 	    // This includes galaxyfg, 3countb fatfury2, fatfury3...
@@ -114,6 +115,7 @@ void init_assoc(int kind) {
 	    adr = 0x184;
 	    err = "kof2k";
 	    type = 1;
+	    end_sound_codes = 0x1f;
 	} else if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.7",24) ||
 		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24)) {
 	    adr = 0x184;
@@ -294,18 +296,16 @@ int handle_sound_cmd(int cmd) {
 	    return 0;
 	}
 	if (cmd >= 6 && cmd <= 9) mode = MUSIC;
-	else if ((cmd >= 0x15 && cmd < 0x1f) &&
+	else if ((cmd >= 0x15 && cmd <= end_sound_codes) &&
 	       mode != ONE_SOUND) {
 	    mode = ONE_SOUND;
 	    return 0;
 	} else if (cmd == 0xa) {
 	    mode = FADEOUT;
 	    return 0;
-#if 0
 	} else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
 	    // cmd 0xa is one_sound, handled just before
 	    return 0; // these commands don't seem to do anything !
-#endif
 	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1)
 	    mode = SOUND;
 	if (mode == SOUND) return 0;
