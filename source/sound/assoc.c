@@ -28,6 +28,10 @@ enum {
     FADEOUT
 };
 static int mode;
+// use_music : do we use external music ? It's the case if a real association
+// is made or if playing neocd tracks. In this case sfx_volume and music_volume
+// apply, otherwise everything is played at maximum volume.
+int use_music;
 
 static int search(int len, UINT8 *needle, int n) {
     int index = 0;
@@ -169,6 +173,7 @@ void assoc(int cmd, char *t) {
 	if (!(track[cmd] = malloc(FILENAME_MAX+1))) return;
     strncpy(track[cmd],t,FILENAME_MAX);
     track[cmd][FILENAME_MAX] = 0;
+    use_music = 1;
 }
 
 void del_assoc(int cmd) {
@@ -271,7 +276,7 @@ int handle_sound_cmd(int cmd) {
 	    // how it works exactly...
 	    mode = MUSIC;
 	    if (cmd) {
-#if 0
+#if 1
 		/* This is extremely approximated, but I can't get the precise
 		 * calculation here, so I took a timer and tried to manually
 		 * measure the time taken for the fadeout. With 10, it's a
@@ -289,9 +294,10 @@ int handle_sound_cmd(int cmd) {
 #ifdef RAINE_DEBUG
 		printf("time for fadeout %g from %d\n",time,cmd);
 #endif
+		start_music_fadeout(time);
+#else
+		mute_song();
 #endif
-		// Varying too much from one game to another, set to 1s for now
-		start_music_fadeout(1.0);
 	    }
 	    return 0;
 	}

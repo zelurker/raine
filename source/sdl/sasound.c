@@ -60,6 +60,7 @@
 #include "neocd/cdrom.h"
 #include "control.h"
 #include "control_internal.h"
+#include "assoc.h" // just for use_music
 
 int GameSound;
 static int fadeout,fade_vol,fade_nb,fade_frame,fade_vol;
@@ -654,7 +655,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    int volume = SampleVol[channel];
 	    int vol_l = (255-SamplePan[channel])*volume/255;
 	    int vol_r = (SamplePan[channel])*volume/255;
-	    if (cdda.playing) {
+	    if (use_music) {
 		vol_l = vol_l*sfx_volume/100;
 		vol_r = vol_r*sfx_volume/100;
 	    }

@@ -4278,6 +4278,7 @@ void load_neocd() {
     fixed_layer_bank_type = 0;
     if (is_neocd()) {
 	print_debug("loading neocd game\n");
+	use_music = 1;
 	current_game->long_name = "No game loaded yet";
 	current_game->main_name = "neocd";
 	RAMSize = 0x200000 + // main ram
