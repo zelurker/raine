@@ -34,6 +34,7 @@
 #include "speed_hack.h"
 #include "taitosnd.h"
 #include "tc200obj.h"
+#include "assoc.h"
 
 void LoadDefault(void)
 {
@@ -122,6 +123,7 @@ void LoadDefault(void)
 void ClearDefault(void)
 {
   use_scale2x = 0;
+  use_music = 0;
   memset(tile_list,0,sizeof(tile_list));
   RemoveTaitoSoundBanking();
   tc0005rot.RAM = NULL;
