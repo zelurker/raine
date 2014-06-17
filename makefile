@@ -972,7 +972,12 @@ endif
 endif
 LIBS += `sdl-config --libs` -lSDL_ttf -lSDL_image # -lefence
 ifdef RAINE_UNIX
-LIBS += -lSDL_sound
+# Normally here we should have :
+# LIBS += -lSDL_sound
+# but since debian doesn't seem to package the right sdl-sound version 6
+# months after asking, I'll link my static version instead, which asks all
+# the libs debian wants... way too many, but anyway...
+LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -logg -lspeex -lmikmod -lvorbisfile -lmodplug
 else
 # windows
 # and these libs are used by SDL_sound/FLAC
