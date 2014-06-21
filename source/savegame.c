@@ -399,7 +399,10 @@ void GameSave(void)
 
    print_debug("BEGIN: GameSave()\n");
 
-   sprintf(str,"%s.sv%d",current_game->main_name,SaveSlot);
+   if (is_neocd())
+       sprintf(str,"ncd_%s.sv%d",current_game->main_name,SaveSlot);
+   else
+       sprintf(str,"%s.sv%d",current_game->main_name,SaveSlot);
    do_save_state(str);
 }
 
@@ -653,7 +656,10 @@ void GameLoad(void)
 
    print_debug("BEGIN: GameLoad()\n");
 
-   sprintf(str,"%s.sv%d", current_game->main_name, SaveSlot);
+   if (is_neocd())
+       sprintf(str,"ncd_%s.sv%d", current_game->main_name, SaveSlot);
+   else
+       sprintf(str,"%s.sv%d", current_game->main_name, SaveSlot);
    do_load_state(str);
 }
 
