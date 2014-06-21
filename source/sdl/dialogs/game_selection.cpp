@@ -150,13 +150,13 @@ class TGame_sel : public TMenu
     return can_be_displayed(n);
   }
 
-  void exec_menu_item() {
+  void call_handler() {
     if (!focus && current_game != game_list[sel]) {
       raine_cfg.req_load_game = 1;
       raine_cfg.req_game_index = sel;
       exit_menu = 1;
     } else { // options
-      TMenu::exec_menu_item();
+      TMenu::call_handler();
     }
   }
 
