@@ -740,11 +740,8 @@ static struct DSW_INFO dsw_kurikina[] =
    { 0,        0,    NULL,      },
 };
 
-#if 0
-// kuri kinton has its region byte in the middle of the rom data bank, and
-// it's not the last bank ! (probably the 1st one, but not tested).
-// So it's very hard to map, and it's currently broken, so I just comment
-// it out for now...
+/* Kuri kinton has quite a special romsw, it's in the data bank, bank 0xf
+ * See read_kurikint_region and write_kurikint_region */
 static struct ROMSW_DATA romsw_data_kuri_kinton_0[] =
 {
    { "Taito Japan (Notice)",       0x00 },
@@ -759,8 +756,6 @@ static struct ROMSW_INFO romsw_kurikint[] =
    { 0x007FFF, 0x02, romsw_data_kuri_kinton_0 },
    { 0,        0,    NULL },
 };
-#endif
-
 
 static struct ROM_INFO rom_kurikint[] =
 {
@@ -2865,10 +2860,21 @@ static void load_fhawk(void)
    reset_tc0220ioc();
 }
 
+// read/write region from/to bank 0xf !
+static int read_kurikint_region() {
+    return read_z80_bank(1,0xf,0x7fff);
+}
+static void write_kurikint_region(int data) {
+    write_z80_bank(1,0xf,0x7fff,data);
+}
+
 static void load_kurikint()
 {
    int ta, tb,romset_2;
    UINT8 *TMP;
+   read_region_byte = &read_kurikint_region;
+   write_region_byte = &write_kurikint_region;
+
    if (is_current_game("kurikina"))
        romset_2 = 0;
    else if (is_current_game("kurikint"))
@@ -4243,6 +4249,7 @@ static struct DIR_INFO dir_kurikina[] =
 };
 CLNE( kurikina,kurikint, "Kuri Kinton (Alternate)", TAITO, 1988, GAME_BEAT,
 	.dsw = dsw_kurikina,
+	.romsw = romsw_kurikint,
 	.long_name_jpn = "Œö—›‹à’c (Alternate)",
 	.board = "B42",
 );
@@ -4253,7 +4260,7 @@ static struct DIR_INFO dir_kurikint[] =
    { NULL, },
 };
 GME( kurikint, "Kuri Kinton", TAITO, 1988, GAME_BEAT,
-//	.romsw = romsw_kurikint,
+	.romsw = romsw_kurikint,
 	.long_name_jpn = "Œö—›‹à’c",
 	.board = "B42",
 );
@@ -4268,6 +4275,7 @@ static struct DIR_INFO dir_kurikinj[] =
 };
 CLNE( kurikinj,kurikint, "Kuri Kinton (JPN Ver.)", TAITO, 1988, GAME_BEAT,
 	.long_name_jpn = "Œö—›‹à’c (alternate)",
+	.romsw = romsw_kurikint,
 	.board = "B42",
 );
 static struct DIR_INFO dir_palamed[] =

@@ -39,6 +39,8 @@
 void LoadDefault(void)
 {
   memset(tc0100scn,0,sizeof(tc0100scn));
+  read_region_byte = NULL;
+  write_region_byte = NULL;
 #ifdef RDTSC_PROFILE
   cycles_per_frame = 0; // recalibrate for non 60fps games
 #endif

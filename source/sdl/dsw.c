@@ -397,6 +397,9 @@ void AddLanguageSwitch(UINT8 ldata, char *lname)
    LanguageSw.Count++;
 }
 
+void (*write_region_byte)(int data);
+int (*read_region_byte)();
+
 void SetLanguageSwitch(int number)
 {
   const ROMSW_INFO *romsw_src;
@@ -406,11 +409,15 @@ void SetLanguageSwitch(int number)
   ta = 0;
   if(romsw_src){
 
-    while(romsw_src[ta].data){
+      if (write_region_byte)
+	  (*write_region_byte)(LanguageSw.Data[number]);
+      else {
+	  while(romsw_src[ta].data){
 
-      LanguageSw.Address      = romsw_src[ta++].offset;
-      gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.Data[number]);
-    }
+	      LanguageSw.Address      = romsw_src[ta++].offset;
+	      gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.Data[number]);
+	  }
+      }
   }
   make_dipswitch_statlist();
 }
@@ -421,7 +428,10 @@ int GetLanguageSwitch(void)
 
    if(LanguageSw.Address){
 
-      tb = gen_cpu_read_byte_rom(LanguageSw.Address);
+       if (read_region_byte)
+	   tb = (*read_region_byte)();
+       else
+	   tb = gen_cpu_read_byte_rom(LanguageSw.Address);
 
       for(ta=0;ta<LanguageSw.Count;ta++){
           if(LanguageSw.Data[ta]==tb)

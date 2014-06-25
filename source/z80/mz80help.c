@@ -566,6 +566,14 @@ void reset_z80_banks() {
     bank_len[n] = bank_offset[n] = nb_banks[n] = 0;
 }
 
+void write_z80_bank(int cpu, int n, int address, int data) {
+    WriteByte(bank[cpu][n]+address,data);
+}
+
+int read_z80_bank(int cpu, int n, int address) {
+    return *(bank[cpu][n]+address);
+}
+
 static int check_z80_bank_write(int cpu, int index,UINT32 address,UINT8 data) {
   int ta,tb,n;
 

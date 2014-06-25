@@ -34,6 +34,8 @@ typedef struct DSW_INFO
    DSW_DATA *data;              // dsw data list
 } DSW_INFO;
 
+extern void (*write_region_byte)(int data);
+extern int (*read_region_byte)();
 extern  struct DSW_DATA  dsw_data_default_0[];
 extern  struct DSW_DATA  dsw_data_default_1[];
 extern  struct DSW_DATA  dsw_data_default_2[];
