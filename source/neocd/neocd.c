@@ -996,7 +996,7 @@ struct SOUND_INFO sound_neocd[] =
 
 static void restore_memcard() {
   char path[1024];
-  sprintf(path,"%ssavedata" SLASH "%s.bin", dir_cfg.exe_path, current_game->main_name); // 1st try game name in savedata
+  sprintf(path,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
   FILE *f = fopen(path,"rb");
   memcard_write = 0;
   if (!f) {
@@ -5170,6 +5170,10 @@ void clear_neocd() {
   if (raster_bitmap) {
       destroy_bitmap(raster_bitmap);
       raster_bitmap = NULL;
+  }
+  if (saveram.ram) {
+      FreeMem(saveram.ram);
+      saveram.ram = NULL;
   }
 }
 
