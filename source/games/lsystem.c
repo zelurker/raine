@@ -740,6 +740,11 @@ static struct DSW_INFO dsw_kurikina[] =
    { 0,        0,    NULL,      },
 };
 
+#if 0
+// kuri kinton has its region byte in the middle of the rom data bank, and
+// it's not the last bank ! (probably the 1st one, but not tested).
+// So it's very hard to map, and it's currently broken, so I just comment
+// it out for now...
 static struct ROMSW_DATA romsw_data_kuri_kinton_0[] =
 {
    { "Taito Japan (Notice)",       0x00 },
@@ -754,8 +759,7 @@ static struct ROMSW_INFO romsw_kurikint[] =
    { 0x007FFF, 0x02, romsw_data_kuri_kinton_0 },
    { 0,        0,    NULL },
 };
-
-
+#endif
 
 
 static struct ROM_INFO rom_kurikint[] =
@@ -4231,7 +4235,7 @@ GAME( fhawk, "Fighting Hawk", TAITO, 1988, GAME_SHOOT,
 );
 static struct DIR_INFO dir_kurikina[] =
 {
-   { "kuri_kinton", },
+   { "kuri_kinton_alt", },
    { "kurikina", },
    { ROMOF("kurikint"), },
    { CLONEOF("kurikint"), },
@@ -4244,13 +4248,12 @@ CLNE( kurikina,kurikint, "Kuri Kinton (Alternate)", TAITO, 1988, GAME_BEAT,
 );
 static struct DIR_INFO dir_kurikint[] =
 {
-   { "kuri_kinton_alt", },
+   { "kuri_kinton", },
    { "kurikint", },
-   { "kurikina", },
    { NULL, },
 };
 GME( kurikint, "Kuri Kinton", TAITO, 1988, GAME_BEAT,
-	.romsw = romsw_kurikint,
+//	.romsw = romsw_kurikint,
 	.long_name_jpn = "Œö—›‹à’c",
 	.board = "B42",
 );
