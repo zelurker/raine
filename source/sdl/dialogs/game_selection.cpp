@@ -268,7 +268,7 @@ void TGame_sel::compute_nb_items() {
 	    if (game_list[sel]->rom_list == current_game->rom_list)
 		break;
 	if (sel >= game_count) {
-	    sel = -1;
+	    sel = 0;
 	}
     }
 }
