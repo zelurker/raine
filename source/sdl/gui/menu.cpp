@@ -1787,17 +1787,13 @@ void TMenu::exec_menu_item() {
 	if (hsel < 0) return;
 	if (header[hsel].value_int)
 	    next_list_item();
-	else if (header[hsel].menu_func) {
-	    call_handler();
-	}
+	call_handler();
 	return;
     }
   if (sel < 0) return;
   if (menu[sel].value_int)
     next_list_item();
-  else if (menu[sel].menu_func) {
-    call_handler();
-  }
+  call_handler();
 }
 
 static int gui_init;
