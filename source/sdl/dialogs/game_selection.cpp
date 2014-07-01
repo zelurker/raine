@@ -267,9 +267,13 @@ void TGame_sel::compute_nb_items() {
 	for (sel=0; sel<game_count; sel++)
 	    if (game_list[sel]->rom_list == current_game->rom_list)
 		break;
-	if (sel >= game_count) {
+	if (sel >= game_count)
 	    sel = 0;
-	}
+	for (int n=0; n<nb_disp_items; n++)
+	    if (menu_disp[n] >= sel) {
+		sel = menu_disp[n];
+		break;
+	    }
     }
 }
 
