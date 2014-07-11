@@ -20,6 +20,7 @@ extern "C" {
 #define IRQ1CTRL_AUTOLOAD_REPEAT	0x80
 
 extern int neocd_id,allowed_speed_hacks,disable_irq1;
+extern int loading_animation_fix,loading_animation_pal;
 extern int exit_to_code,neogeo_bios;
 
 extern UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage;

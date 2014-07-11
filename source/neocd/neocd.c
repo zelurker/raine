@@ -257,6 +257,7 @@ static int frame_neo;
 char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
 char neocd_bios_file[FILENAME_MAX];
 static int loading_animation,loading_animation_progress,loading_animation_init;
+int loading_animation_fix,loading_animation_pal; // used in cdrom.c
 
 static struct INPUT_INFO neocd_inputs[] = // 2 players, 4 buttons
 {
@@ -402,6 +403,28 @@ void setup_neocd_bios() {
   loading_animation_init += 0xc00000;
   loading_animation_progress += 0xc00000;
   print_debug("Neocd bios :\nloading_animation : %x\nloading_animation_init : %x\nloading_animation_init : %x\n",loading_animation,loading_animation_init,loading_animation_progress);
+
+  // Harder : fix and pal area
+  /* I am not proud of this, but the easiest way to find the palette
+   * is to search for movq #127,d7 / move.l (a0)+,(a1)+ which is what the
+   * bios does to initialize the palette, there are 3 matches, the one we
+   * want is the 2nd one ! */
+  nb = 0;
+  for (n=0; n<0x70000; n+=2) {
+      if (ReadLongSc(&neocd_bios[n]) == 0x7e7f22d8) {
+	  nb++;
+	  if (nb == 2) break;
+      }
+  }
+  loading_animation_pal = ReadLongSc(&neocd_bios[n-0xa])-0xc00000;
+
+  // Now search 2b7c 4000 from here, which will be the fix transfer...
+
+  while (ReadWord(&neocd_bios[n]) != 0x2b7c ||
+	  ReadLongSc(&neocd_bios[n+2]) != 0x4000)
+      n -= 2;
+  loading_animation_fix = ReadLongSc(&neocd_bios[n+0xa])-0xc00000;
+  print_debug("neocd pal %x fix %x\n",loading_animation_pal,loading_animation_fix);
 
 #if 1
   /*** Patch BIOS CDneocd_bios Check ***/

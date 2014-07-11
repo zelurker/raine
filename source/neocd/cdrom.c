@@ -510,7 +510,9 @@ static int check_screen_data(int offset, int type) {
 
 static void install_progress_fix() {
   // Install the fix area from the bios and from logo_x.prg area
-  fix_conv(&neocd_bios[0x7c000], neogeo_fix_memory, 0x4000, video_fix_usage );
+  // fix_conv(&neocd_bios[0x6beb0], neogeo_fix_memory, 0x4000, video_fix_usage );
+  fix_conv(&neocd_bios[loading_animation_fix], neogeo_fix_memory, 0x4000, video_fix_usage );
+  // fix_conv(&neocd_bios[0x7c000], neogeo_fix_memory, 0x4000, video_fix_usage );
   // now upload the fix parts from logo.prg, if any...
   int offset = 0x120002;
   while (offset != -1) {
@@ -1230,7 +1232,9 @@ static void init_loading_progress() {
   memcpy(&RAM[0x11be06],RAM_PAL,0x200);
   // pal = bios pal
   print_debug("pal init from bios\n");
-  memcpy(RAM_PAL,&neocd_bios[0x1701c],0x200);
+  // memcpy(RAM_PAL,&neocd_bios[0x1701c],0x200);
+  // memcpy(RAM_PAL,&neocd_bios[0x20ba2],0x200);
+  memcpy(RAM_PAL,&neocd_bios[loading_animation_pal],0x200);
   int offset = 0x120002;
   while (offset != -1) {
     offset = check_screen_data(offset,2);
