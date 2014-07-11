@@ -624,6 +624,8 @@ void load_game_keys(char *section)
 	int link;
 	if (InputList[ta].link && InputList[ta].link < ta)
 	  continue;
+	if (!InputList[ta].InputName)
+	    continue;
 	sprintf(key_name,"%s",InputList[ta].InputName);
 	no_spaces(key_name);
 	InputList[ta].Key = raine_get_config_int(section,key_name,InputList[ta].Key);
@@ -679,6 +681,8 @@ void save_game_keys(char *section)
       for(ta=0;ta<InputCount;ta++){
 	 if (InputList[ta].link && InputList[ta].link < ta)
 	   continue;
+	 if (!InputList[ta].InputName)
+	    continue;
          sprintf(key_name,"%s",InputList[ta].InputName);
          no_spaces(key_name);
 	 if (InputList[ta].Key != def_input[InputList[ta].default_key & 0xff].scancode)
