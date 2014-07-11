@@ -762,7 +762,7 @@ static void add_search(UINT32 n,UINT8 size) {
       } \
     } \
   } else if (size == 4) { \
-    for (UINT32 n=start; n<end; n+=4) { \
+    for (UINT32 n=start; n<end; n+=2) { \
       if ((UINT32)ReadLongSc(&ptr[n]) op what) { \
         add_search(n,size); \
       } \
