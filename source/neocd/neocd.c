@@ -322,7 +322,7 @@ void setup_neocd_bios() {
   }
   if (neocd_bios)
     return;
-  neocd_bios = malloc(0x80000);
+  neocd_bios = calloc(0x80000,1); // Be sure to have at least 512k
   // unsigned char rom_fix_usage[4096];
   int ret = 0;
   if (!*neocd_bios_file) {
@@ -402,7 +402,7 @@ void setup_neocd_bios() {
   loading_animation_init += 2;
   loading_animation_init += 0xc00000;
   loading_animation_progress += 0xc00000;
-  print_debug("Neocd bios :\nloading_animation : %x\nloading_animation_init : %x\nloading_animation_init : %x\n",loading_animation,loading_animation_init,loading_animation_progress);
+  print_debug("Neocd bios :\nloading_animation : %x\nloading_animation_init : %x\nloading_animation_progress : %x\n",loading_animation,loading_animation_init,loading_animation_progress);
 
   // Harder : fix and pal area
   /* I am not proud of this, but the easiest way to find the palette
@@ -1809,15 +1809,6 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 		tileno &= sprites_mask;
 	    }
 	    offs += 2;
-	    // Filtering on 0 sprite number is necessary at least for last
-	    // blade 2 : character selection screen. Now there are 2 doubts :
-	    // filter on this or color 0 ? And is it also really used in neogeo?
-	    // Some more about this ugly hack : if testing tileno only, then
-	    // the upper left corner of the N letter of the neogeo logo of the
-	    // unibios screen disappears for king of monsters set 1 !
-	    // Testing tileatr too seems ok for some reason... it's still a hack
-	    // but it seems to work for now...
-	    if (!tileno && !tileatr) continue;
 	    if (y)
 		// This is much more accurate for the zoomed bgs in aof/aof2
 		sy = oy + (((rzy+1)*y)>>4);

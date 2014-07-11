@@ -841,6 +841,7 @@ void neogeo_cdrom_load_title(void)
     ScreenChange();
 #endif
   DrawNormal();
+  memset(video_spr_usage,0,size-0x5a0); // Clear the sprite usage !!!
 }
 
 static int loading_phase,total_size;
