@@ -256,6 +256,7 @@ static int frame_neo;
 // neocd files (which is not always an image path).
 char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
 char neocd_bios_file[FILENAME_MAX];
+static int loading_animation,loading_animation_progress,loading_animation_init;
 
 static struct INPUT_INFO neocd_inputs[] = // 2 players, 4 buttons
 {
@@ -354,11 +355,53 @@ void setup_neocd_bios() {
   }
 
   // Check BIOS validity
-  if (ReadWord(&neocd_bios[0xA822]) != 0x4BF9)
+  if (ReadWord(&neocd_bios[0x582]) == 0xf94e) {
+      // Needs a byteswap !
+      ByteSwap(neocd_bios,0x80000);
+  }
+  if (ReadWord(&neocd_bios[0x0582]) != 0x4eF9)
   {
     ErrorMsg("Fatal Error: Invalid BIOS file.");
     exit(1);;
   }
+
+  /* Search the address of loading animations, for this search for 11c817 which
+   * is the address of the value tested in ram. Normally there are 3 matches
+   * for the front and neocdz one. The 3rd one is the one we want... */
+  int nb = 0;
+  int n;
+  for (n=0; n<0x10000; n+=2) {
+      if (ReadLongSc(&neocd_bios[n]) == 0x11c817) {
+	  loading_animation = n;
+	  nb++;
+	  if (nb==3) break;
+      }
+  }
+  if (nb < 3) {
+      ErrorMsg("Couldn't find the loading animations in the bios");
+      exit(1);
+  }
+  loading_animation -= 0xc;
+  loading_animation_progress = loading_animation - 4;
+  loading_animation += 0xc00000;
+
+  // Ok, now we get the adresses of the previous functions, progress being
+  // the 1st, then an unknown one, and then init
+
+  while (ReadWord(&neocd_bios[loading_animation_progress]) != 0x4e75)
+      loading_animation_progress -= 2;
+  loading_animation_init = loading_animation_progress - 2;
+  loading_animation_progress += 2;
+  // skip the next one...
+  while (ReadWord(&neocd_bios[loading_animation_init]) != 0x4e75)
+      loading_animation_init -= 2;
+  loading_animation_init -= 2;
+  while (ReadWord(&neocd_bios[loading_animation_init]) != 0x4e75)
+      loading_animation_init -= 2;
+  loading_animation_init += 2;
+  loading_animation_init += 0xc00000;
+  loading_animation_progress += 0xc00000;
+  print_debug("Neocd bios :\nloading_animation : %x\nloading_animation_init : %x\nloading_animation_init : %x\n",loading_animation,loading_animation_init,loading_animation_progress);
 
 #if 1
   /*** Patch BIOS CDneocd_bios Check ***/
@@ -374,9 +417,14 @@ void setup_neocd_bios() {
 
   // WriteWord(&neocd_bios[0x56a],0x60fe);
   /*** Full reset, please ***/
-  WriteWord(&neocd_bios[0xA87A], 0x4239);
+#if 0
+  // Seems to be called at the beginning of sonicwi2, just after the initial
+  // loading animation, but seems totally useless now.
+  // Disabled for compatibility with other bioses...
+  WriteWord(&neocd_bios[0xA87A], 0x60fe); // 0x4239);
   WriteWord(&neocd_bios[0xA87C], 0x0010);
   WriteWord(&neocd_bios[0xA87E], 0xFDAE);
+#endif
 
   // WriteWord(&neocd_bios[0xd736],0x4e75);
 
@@ -1882,8 +1930,24 @@ void draw_neocd_paused() {
 int exit_to_code = 2;
 
 void set_neocd_exit_to(int code) {
-    if (neocd_bios)
-	neocd_bios[0xad36] = code;
+    if (neocd_bios) {
+	// Apparently the jump table at the beginning of the rom is stable
+	int adr = ReadLongSc(&neocd_bios[0x560]);
+	adr += 0x10;
+	adr -= 0xc00000;
+	int n;
+	for (n=0; n<0x20; n+=2)
+	    if (ReadWord(&neocd_bios[n+adr]) == 0x1b7c &&
+		    ReadWord(&neocd_bios[n+adr+2]) == 2) {
+		adr += n+2;
+		break;
+	    }
+
+	if (ReadWord(&neocd_bios[adr]) != 2)
+	    ErrorMsg("Couldn't find exit code in this bios !");
+	else
+	    neocd_bios[adr] = code;
+    }
 }
 
 static void z80_enable(UINT32 offset, UINT8 data) {
@@ -1967,7 +2031,7 @@ static void neogeo_hreset(void)
       neogeo_cdrom_load_title();
       WriteLongSc(&RAM[0x11c810], 0xc190e2); // default anime data for load progress
       // First time init
-      M68000_context[0].pc = 0xc0a822;
+      M68000_context[0].pc = 0xc00582; // 0xc0a822;
       M68000_context[0].sr = 0x2700;
       M68000_context[0].areg[7] = 0x10F300;
       M68000_context[0].asp = 0x10F400;
@@ -2201,6 +2265,12 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
   if (offset2 > 0xc00000) {
     offset2 -= 0xc00000;
     Source = neocd_bios + offset2;
+    if (offset2 + size > 0x80000) {
+	/* Most noticeable overflow here is with the front loading bios ! */
+	print_debug("bios overflow in upload, got offset %x size %x\n",offset2,size);
+	size = 0x80000-offset2;
+	print_debug("new size %x\n",size);
+    }
   } else if (offset2 < 0x200000)
     Source = RAM + offset2;
   else {
@@ -4767,11 +4837,11 @@ void neocd_function(int vector) {
   if (adr == 0) {
     switch (vector) {
       case 0x11c808: // setup loading screen
-	adr = 0xc0c760;
+	adr = loading_animation_init; // 0xc0c760;
 	print_debug("neocd_function default %x\n",adr);
 	break;
       case 0x11c80c:
-	adr = 0xc0c814; // load screen progress
+	adr = loading_animation_progress; // 0xc0c814; // load screen progress
 	print_debug("neocd_function default %x\n",adr);
 	break;
       default:
@@ -4892,7 +4962,7 @@ void loading_progress_function() {
 
     RAM[0x10f793^1] = 0;
     print_debug("loading_progress_function: call3 neocd_function\n");
-    neocd_function(0xc0c8b2);
+    neocd_function(loading_animation); // 0xc0c8b2);
     if (z80_enabled && RaineSoundCard) {
       execute_z80_audio_frame();
     }
