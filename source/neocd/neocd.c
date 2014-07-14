@@ -1242,6 +1242,7 @@ void neogeo_read_gamename(void)
   int	temp;
 
   int region_code = GetLanguageSwitch();
+  if (region_code > 2) region_code = 2;
   Ptr = RAM + ReadLongSc(&RAM[0x116]+4*region_code);
   memcpy(config_game_name,Ptr,80);
   ByteSwap((UINT8*)config_game_name,80);
@@ -1315,6 +1316,8 @@ static struct ROMSW_DATA romsw_data_neocd[] =
   { "Japan",           0x00 },
   { "USA",             0x01 },
   { "Europe",          0x02 },
+  { "Spain (few games)", 3 },
+  { "Brazil (few games)", 4 },
   { NULL,                    0    },
 };
 
@@ -2618,7 +2621,7 @@ static UINT16 read_reg(UINT32 offset) {
     int region_code = GetLanguageSwitch();
     return 0xff | (region_code << 8);
   }
-  print_debug("RW %x -> ffff\n",offset);
+  print_debug("RW %x -> ffff [pc=%x]\n",offset,s68000readPC());
   return 0xffff;
 }
 
