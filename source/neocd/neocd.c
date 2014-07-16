@@ -258,6 +258,7 @@ char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
 char neocd_bios_file[FILENAME_MAX];
 static int loading_animation,loading_animation_progress,loading_animation_init;
 int loading_animation_fix,loading_animation_pal; // used in cdrom.c
+static int exit_to_adr;
 
 static struct INPUT_INFO neocd_inputs[] = // 2 players, 4 buttons
 {
@@ -425,6 +426,21 @@ void setup_neocd_bios() {
       n -= 2;
   loading_animation_fix = ReadLongSc(&neocd_bios[n+0xa])-0xc00000;
   print_debug("neocd pal %x fix %x\n",loading_animation_pal,loading_animation_fix);
+  // exit_to code
+  exit_to_adr = ReadLongSc(&neocd_bios[0x560]);
+  exit_to_adr += 0x10;
+  exit_to_adr -= 0xc00000;
+  for (n=0; n<0x20; n+=2)
+      if (ReadWord(&neocd_bios[n+exit_to_adr]) == 0x1b7c &&
+	      ReadWord(&neocd_bios[n+exit_to_adr+2]) == 2) {
+	  exit_to_adr += n+2;
+	  break;
+      }
+
+  if (ReadWord(&neocd_bios[exit_to_adr]) != 2) {
+      ErrorMsg("Couldn't find exit code in this bios !");
+      exit_to_adr = 0;
+  }
 
 #if 1
   /*** Patch BIOS CDneocd_bios Check ***/
@@ -1949,21 +1965,10 @@ int exit_to_code = 2;
 void set_neocd_exit_to(int code) {
     if (neocd_bios) {
 	// Apparently the jump table at the beginning of the rom is stable
-	int adr = ReadLongSc(&neocd_bios[0x560]);
-	adr += 0x10;
-	adr -= 0xc00000;
-	int n;
-	for (n=0; n<0x20; n+=2)
-	    if (ReadWord(&neocd_bios[n+adr]) == 0x1b7c &&
-		    ReadWord(&neocd_bios[n+adr+2]) == 2) {
-		adr += n+2;
-		break;
-	    }
-
-	if (ReadWord(&neocd_bios[adr]) != 2)
-	    ErrorMsg("Couldn't find exit code in this bios !");
-	else
-	    neocd_bios[adr] = code;
+	if (exit_to_adr) {
+	    printf("exit_to: old %x, new %x\n",neocd_bios[exit_to_adr],code);
+	    neocd_bios[exit_to_adr] = code;
+	}
     }
 }
 
@@ -2048,6 +2053,7 @@ static void neogeo_hreset(void)
       neogeo_cdrom_load_title();
       WriteLongSc(&RAM[0x11c810], 0xc190e2); // default anime data for load progress
       // First time init
+      // M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
       M68000_context[0].pc = 0xc00582; // 0xc0a822;
       M68000_context[0].sr = 0x2700;
       M68000_context[0].areg[7] = 0x10F300;
@@ -2504,7 +2510,7 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 	    print_debug("unknown fill %x upload_type %x from %x dma %x\n",upload_src,upload_type,s68000readPC(),dma);
 	  }
 	} else {
-	  print_debug("upload: unknown dma %x\n",dma);
+	  print_debug("upload: unknown dma %x from %x\n",dma,s68000readPC());
 	}
       }
     }
