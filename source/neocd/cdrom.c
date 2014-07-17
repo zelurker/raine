@@ -1156,7 +1156,7 @@ static void finish_loading() {
      were able to emulate every hardware address used by the cdrom. But we
      are very far from that, so it's much easier to do all the loading in
      only 1 time, and then call this function as if the bios had done it */
-  spr_disable(0,0);
+  write_reg_b(0xff0111,0); // spr_disable
 
   // This one clears copy protection (extracted from a tutorial on how to crack
   // neogeo cd games !)

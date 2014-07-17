@@ -542,7 +542,8 @@ static UINT16 read_sound_cmd(UINT32 offset) {
   return latch;
 }
 
-static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled;
+static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled,
+	   pcm_bank,spr_bank;
 
 static void write_sound_command(UINT32 offset, UINT16 data) {
   if (z80_enabled && RaineSoundCard) {
@@ -1972,32 +1973,8 @@ void set_neocd_exit_to(int code) {
     }
 }
 
-static void z80_enable(UINT32 offset, UINT8 data) {
-  if (!data) {
-    print_debug("z80_enable: reset z80\n");
-    cpu_reset(CPU_Z80_0);
-    reset_timers();
-    z80_enabled = 0;
-  } else {
-    print_debug("z80_enable: received %x\n",data);
-    z80_enabled = 1;
-  }
-}
-
 static char *old_name;
 static int region_code;
-
-void spr_disable(UINT32 offset, UINT8 data) {
-  spr_disabled = data;
-}
-
-void fix_disable(UINT32 offset, UINT8 data) {
-  fix_disabled = data;
-}
-
-void video_enable(UINT32 offset, UINT8 data) {
-  video_enabled = data;
-}
 
 static void apply_hack(int pc,char *comment) {
     UINT8 *RAM = get_userdata(CPU_68K_0,pc);
@@ -2050,21 +2027,28 @@ static void neogeo_hreset(void)
       region_code = GetLanguageSwitch();
       SetLanguageSwitch(region_code);
 
+#ifndef BOOT_BIOS
       neogeo_cdrom_load_title();
+#endif
       WriteLongSc(&RAM[0x11c810], 0xc190e2); // default anime data for load progress
       // First time init
-      // M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
+#ifdef BOOT_BIOS
+      M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
+#else
       M68000_context[0].pc = 0xc00582; // 0xc0a822;
+#endif
       M68000_context[0].sr = 0x2700;
       M68000_context[0].areg[7] = 0x10F300;
       M68000_context[0].asp = 0x10F400;
       M68000_context[0].interrupts[0] = 0;
       s68000SetContext(&M68000_context[0]);
+#ifndef BOOT_BIOS
       if (!neogeo_cdrom_process_ipl(NULL)) {
 	  ErrorMsg("Error: Error while processing IPL.TXT.\n");
 	  ClearDefault();
 	  return;
       }
+#endif
   } else {
       z80_enabled = 1; // always enabled in neogeo
       irq3_pending = 1;
@@ -2150,9 +2134,29 @@ void postprocess_ipl() {
 static int upload_type,mx,my;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
-static void upload_type_w(UINT32 offset, UINT8 data) {
-  print_debug("upload_type set to %x\n",data);
-  upload_type = data;
+void write_reg_b(UINT32 offset, UINT8 data) {
+    switch(offset) {
+    case 0xff0105: upload_type = data; break;
+    case 0xff0111: spr_disabled = data; break;
+    case 0xff0115: fix_disabled = data; break;
+    case 0xff0119: video_enabled = data; break;
+    case 0xff016f: irq.disable = data; break;
+    case 0xff0183:
+		   if (!data) {
+		       print_debug("z80_enable: reset z80\n");
+		       cpu_reset(CPU_Z80_0);
+		       reset_timers();
+		       z80_enabled = 0;
+		   } else {
+		       print_debug("z80_enable: received %x\n",data);
+		       z80_enabled = 1;
+		   }
+		   break;
+    case 0xff01a1: spr_bank = data; break;
+    case 0xff01a3: pcm_bank = data; break;
+    default:
+		   print_debug("WB %x,%x\n",offset,data);
+    }
 }
 
 static int get_upload_type() {
@@ -2165,6 +2169,7 @@ static int get_upload_type() {
     case 1: zone = PCM_TYPE; break;
     case 4: zone = Z80_TYPE; break;
     case 5: zone = FIX_TYPE; break;
+    default: print_debug("unknown upload type : %d\n",upload_type);
   }
   return zone;
 }
@@ -2176,7 +2181,6 @@ static int read_upload(int offset) {
 
   int zone = RAM[0x10FEDA ^ 1];
   int size = ReadLongSc(&RAM[0x10FEFC]);
-  int bank = RAM[0x10FEDB ^ 1];
   if (size == 0 && upload_type != 0xff) {
     zone = get_upload_type();
     // this thing finally explains what these upload reads/writes occuring
@@ -2197,19 +2201,23 @@ static int read_upload(int offset) {
 
     case FIX_TYPE:
       offset >>=1;
-      // the offsets are not verified, I don't know if this things needs to be
-      // byteswapped or not
-      int offsets[4] = { -16, -24, -0, -8 };
-      if (offset < 23)
-	return neogeo_fix_memory[offset ^ 1] | 0xff00;
-      return neogeo_fix_memory[offset+offsets[offset & 3]] | 0xff00;
+      /* Reading from fix is only done in test mode, so no need to bother
+       * with encoding, just return the fix memory as is */
+      if (offset < 0x20000)
+	  return neogeo_fix_memory[offset] | 0xff00;
+      return 0xffff;
+    case SPR_TYPE:
+      offset += (spr_bank<<20);
+      if (offset < 0x800000) return ReadWord(&GFX[offset]);
+      return 0xffff;
+
     case Z80_TYPE:
       if (offset < 0x20000) {
 	return Z80ROM[offset >> 1];
       }
       return 0xff;
     case PCM_TYPE:
-      offset = (offset>>1) + (bank<<19);
+      offset = (offset>>1) + (pcm_bank<<19);
       if (offset > 0x100000) {
 	print_debug("read_upload: pcm overflow\n");
 	return 0xffff;
@@ -2218,7 +2226,7 @@ static int read_upload(int offset) {
     default:
       //sprintf(mem_str,"read_upload unimplemented zone %x\n",zone);
       //debug_log(mem_str);
-      print_debug("read_upload unmapped zone %x bank %x\n",zone,RAM[0x10FEDB ^ 1]);
+      print_debug("read_upload unmapped zone %x bank %x upload_type %x\n",zone,RAM[0x10FEDB ^ 1],upload_type);
       return -1;
   }
 }
@@ -2243,8 +2251,12 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       offset >>= 1;
       Z80ROM[offset] = data;
       return;
+    } else if (zone == SPR_TYPE) { // used by the custom bios 07Z !
+	offset = (offset & 0xfffff) + (spr_bank << 20);
+	if (offset < 0x800000)
+	    WriteWord(&GFX[offset],data);
     } else if (zone == PCM_TYPE) {
-      offset = ((offset&0xfffff)>>1) + (bank<<19);
+      offset = ((offset&0xfffff)>>1) + (pcm_bank<<19);
       if (offset < 0x100000) {
 	PCMROM[offset] = data;
       } else {
@@ -2344,14 +2356,14 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       break;
 
     case SPR_TYPE: /* SPR */
-      offset += (bank<<20);
+      offset += (spr_bank<<20);
       dest = GFX + offset*2;
-      file_cache("upload",offset*2,size*2,SPR_TYPE); // for the savegames
       if (offset + size > 0x400000) {
 	size = 0x400000 - offset;
 	print_debug("warning: size fixed for sprite upload %d\n",size);
       }
       if (size > 0) {
+	file_cache("upload",offset*2,size*2,SPR_TYPE); // for the savegames
 	ByteSwap(Source,size);
 	spr_conv(Source, dest, size, video_spr_usage+(offset>>7));
 	ByteSwap(Source,size);
@@ -2362,14 +2374,12 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
 
       while (offset > 0x100000 )
       {
-	bank++;
+	spr_bank++;
 	offset -= 0x100000;
       }
 
       WriteLongSc( &RAM[0x10FEF4], offset );
-      RAM[0x10FEDB ^ 1] = (bank>>8)&0xFF;
-      RAM[0x10FEDC ^ 1] = bank&0xFF;
-
+      WriteWord(&RAM[0x10fedb],spr_bank);
       break;
     case    FIX_TYPE:
       dest = neogeo_fix_memory + (offset>>1);
@@ -2401,7 +2411,7 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       WriteLongSc( &RAM[0x10FEF4], offset + (size<<1) );
       break;
     case    PAT_TYPE:    // Z80 patch
-      print_debug("upload PAT offset %x bank %x size %x\n",offset,bank,size);
+      print_debug("upload PAT offset %x size %x\n",offset,size);
       neogeo_cdrom_apply_patch((short*)Source, (((bank*0x100000) + offset)/256)&0xFFFF);
       break;
     case    PCM_TYPE:
@@ -2441,6 +2451,40 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
   upload_type = 0xff; // and be sure to disable this too in this case.
 }
 
+static void do_dma(char *name,UINT8 *dest, int max) {
+    UINT16 dma = ReadWord(&dma_mode[0]);
+    UINT16 upload_fill = ReadWord(&upload_param[8]);
+    int upload_src = ReadLongSc(&upload_param[0]);
+    int upload_len = ReadLongSc(&upload_param[12]);
+    int n;
+    if (dma == 0xfef5) {
+	// fill with address WriteLongSc / all adrs
+	print_debug("%s fill with adr dma %x src %x len %x from %x\n",name,dma,upload_src,upload_len,s68000readPC());
+	if (upload_len > max/4) upload_len = max/4;
+	if (upload_src < 0x200000)
+	    for (n=upload_src; upload_len > 0; n+=4, upload_len--) {
+		WriteLongSc(&dest[n],n);
+	    }
+	else
+	    for (n=0; upload_len > 0; n+=4, upload_len--) {
+		WriteLongSc(&dest[n],upload_src + n);
+	    }
+    } else if (dma == 0xcffd) {
+	// fill with address WriteLong68k / adr * 2
+	print_debug("%s fill with adr dma %x len %x from %x\n",name,dma,upload_len,s68000readPC());
+	if (upload_len > max/4) upload_len = max/4;
+	for (n=0; upload_len > 0; n+=4, upload_len--) {
+	    WriteLong68k(&dest[n],upload_src + n*2);
+	}
+    } else {
+	print_debug("%s fill with %x dma %x src %x len %x from %x\n",name,upload_fill,dma,upload_src,upload_len,s68000readPC());
+	if (upload_len > max/2) upload_len = max/2;
+	for (n=(upload_src < 0x200000 ? upload_src : 0); upload_len > 0; n+=2, upload_len--) {
+	    WriteWord(&dest[n],upload_fill);
+	}
+    }
+}
+
 static void upload_cmd_w(UINT32 offset, UINT8 data) {
   if (data == 0x40) {
     int zone = RAM[0x10FEDA ^ 1];
@@ -2459,55 +2503,29 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
     } else {
       int upload_src = ReadLongSc(&upload_param[0]);
       int upload_len = ReadLongSc(&upload_param[12]);
-      UINT16 upload_fill = ReadWord(&upload_param[8]);
       UINT16 dma = ReadWord(&dma_mode[0]);
-      int n;
       if (upload_len && upload_src) {
-	if (dma == 0xffdd || dma == 0xffcd) {
+	if (dma == 0xffdd || dma == 0xffcd || dma == 0xcffd || dma == 0xfef5) {
 	  // ffdd is fill with data word
 	  // ffcd would be the same ??? not confirmed, see code at c08eca
 	  // for example, it looks very much the same !!!
+	  // cffd is fill with address apparently !
 	  if (upload_src == 0x400000) {
-	    print_debug("upload fill palette len %x fill %x from %x\n",upload_len,upload_fill,s68000readPC());
-	    if (upload_len > 0x1000) {
-	      upload_len = 0x1000;
-	    }
-	    for (n=0; upload_len > 0; n+=2, upload_len--) {
-	      WriteWord(&RAM_PAL[n],upload_fill);
-	    }
+	      do_dma("palette", RAM_PAL, 0x2000);
 	  } else  if (upload_src < 0x200000) {
-	    print_debug("upload fill ram src %x len %x fill %x from %x\n",upload_src,upload_len,upload_fill,s68000readPC());
-	    for (n=0; upload_len > 0; n+=2, upload_len--) {
-	      WriteWord(&RAM[upload_src+n],upload_fill);
-	    }
+	      do_dma("ram",RAM,0x200000);
 	  } else if (upload_src == 0x800000) { // memory card !
-	    print_debug("memory card fill len %x fill %x from %x\n",upload_len,upload_fill,s68000readPC());
-	    if (upload_len > 8192/2) upload_len = 8192/2;
-	    for (n=0; upload_len > 0; n+=2, upload_len--) {
-	      WriteWord(&neogeo_memorycard[n],upload_fill);
-	    }
-	  } else {
-	    print_debug("unknown fill %x upload_type %x from %x\n",upload_src,upload_type,s68000readPC());
-	  }
-	} else if (dma == 0xfef5) {
-	  // fill the area with the address !!!
-	  // this is used only by the bios to test, but anyway it's probably
-	  // better to add the code for it so that I am sure it works...
-	  if (upload_src == 0x400000) {
-	    print_debug("upload fill palette len %x fill %x from %x\n",upload_len,upload_fill,s68000readPC());
-	    if (upload_len > 0x2000/4) {
-	      upload_len = 0x2000/4;
-	    }
-	    for (n=0; upload_len > 0; n+=4, upload_len--) {
-	      WriteLongSc(&RAM_PAL[n],upload_src+n);
-	    }
-	  } else  if (upload_src < 0x200000) {
-	    print_debug("upload fill ram src %x len %x fill %x from %x\n",upload_src,upload_len,upload_fill,s68000readPC());
-	    for (n=0; upload_len > 0; n+=4, upload_len--) {
-	      WriteLongSc(&RAM[upload_src+n],upload_src+n);
-	    }
-	  } else {
-	    print_debug("unknown fill %x upload_type %x from %x dma %x\n",upload_src,upload_type,s68000readPC(),dma);
+	      do_dma("memory card", neogeo_memorycard,8192);
+	  } else if (upload_type == 1) { // pcm fill...
+	      do_dma("pcm",PCMROM,0x100000);
+	  } else if (upload_type == 4) // z80 fill !
+	      do_dma("z80", Z80ROM, 0x10000);
+	  else if (upload_type == 5) // fix
+	      do_dma("fix",neogeo_fix_memory,0x20000);
+	  else if (upload_type == 0) // spr
+	      do_dma("spr",&GFX[spr_bank<<20],0x800000-(spr_bank<<20));
+	  else {
+	    print_debug("unknown fill %x upload_type %x dma %x from %x\n",upload_src,upload_type,dma,s68000readPC());
 	  }
 	} else {
 	  print_debug("upload: unknown dma %x from %x\n",dma,s68000readPC());
@@ -2520,7 +2538,19 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 static void write_upload(int offset, int data) {
   // int zone = RAM[0x10FEDA ^ 1];
   // int size = ReadLongSc(&RAM[0x10FEFC]);
-  write_upload_word(offset,data);
+  if (upload_type == 0) { // spr
+      // the sprites seem to be the only one where the bios dares to write
+      // bytes directly (the bank in the highest bytes of the addresses
+      // actually !).
+      offset &= 0xfffff;
+      offset += (spr_bank<<20);
+      if (offset < 0x800000) {
+	  UINT8 *dest = GFX + (offset ^1);
+	  *dest = data;
+      } else
+	  printf("sprite wb overflow %x\n",offset);
+  } else
+      write_upload_word(offset,data);
 }
 
 static void load_files(UINT32 offset, UINT16 data) {
@@ -2611,11 +2641,6 @@ void myStop68000(UINT32 adr, UINT8 data) {
 	printf("bclr %d sr %x\n",bclr,s68000context.sr);
     }
 #endif
-}
-
-static void disable_irq_w(UINT32 offset, UINT8 data) {
-  irq.disable = data;
-  print_debug("irq.disable %d\n",irq.disable);
 }
 
 static UINT16 read_reg(UINT32 offset) {
@@ -4790,6 +4815,8 @@ void load_neocd() {
     AddSaveData(SAVE_USER_12, &game_vectors_set,sizeof(game_vectors_set));
     AddSaveData(SAVE_USER_13, (UINT8*)&fc,sizeof(fc));
     AddSaveData(SAVE_USER_14, (UINT8*)&neogeo_frame_counter_speed,sizeof(neogeo_frame_counter_speed));
+    AddSaveData(SAVE_USER_15, (UINT8*)&pcm_bank,sizeof(pcm_bank));
+    AddSaveData(SAVE_USER_16, (UINT8*)&spr_bank,sizeof(spr_bank));
     AddLoadCallback(restore_bank);
     if (!is_neocd()) {
 	// is the save ram usefull ?!??? probably not with neocd...
@@ -4823,12 +4850,7 @@ void load_neocd() {
 	AddWriteByte(0xff0061,0xff0061, upload_cmd_w, NULL);
 	AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
 	AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
-	AddWriteByte(0xff0105, 0xff0105, upload_type_w, NULL);
-	AddWriteByte(0xff0111, 0xff0111, spr_disable, NULL);
-	AddWriteByte(0xff0115, 0xff0115, fix_disable, NULL);
-	AddWriteByte(0xff0119, 0xff0119, video_enable, NULL);
-	AddWriteByte(0xff016f,0xff016f, disable_irq_w, NULL);
-	AddWriteByte(0xff0183, 0xff0183, z80_enable, NULL);
+	AddWriteByte(0xff0105, 0xff01a3, write_reg_b, NULL);
 	// ff011c seems to be some kind of status, only bit 12 is tested but I
 	// couldn't find what for, it doesn't seem to make any difference...
 	// The ff0100 area seems to be related to the uploads, but there are many
@@ -4930,9 +4952,9 @@ void loading_progress_function() {
     // loading !
     cdrom_speed = neocd_lp.initial_cdrom_speed;
   if (neocd_lp.file_to_load == 0) { // init
-    spr_disable(0,1);
-    fix_disable(0,0);
-    video_enable(0,1);
+    write_reg_b(0xff0111,1); // spr_disable
+    write_reg_b(0xff0115,0); // fix_disable
+    write_reg_b(0xff0119,1); // video_enable
     print_debug("loading_progress_function: init, calling neocd_function\n");
     neocd_function(0x11c808);
   }
