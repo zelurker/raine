@@ -65,6 +65,8 @@
 #define DBG_IRQ    2
 #define DBG_LEVEL 0
 
+// #define BOOT_BIOS 1
+
 #ifndef RAINE_DEBUG
 #define debug
 #else
@@ -481,7 +483,7 @@ void setup_neocd_bios() {
 
 static UINT16 result_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
 static UINT8 neogeo_memorycard[8192];
-UINT8 *neogeo_fix_memory,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
+UINT8 *neogeo_fix_memory,*native_fix,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
 
 static UINT8 temp_fix_usage[0x300],saved_fix;
 
@@ -543,7 +545,7 @@ static UINT16 read_sound_cmd(UINT32 offset) {
 }
 
 static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled,
-	   pcm_bank,spr_bank;
+	   pcm_bank,spr_bank,fix_min,fix_max;
 
 static void write_sound_command(UINT32 offset, UINT16 data) {
   if (z80_enabled && RaineSoundCard) {
@@ -1992,6 +1994,8 @@ static void neogeo_hreset(void)
 {
   // The region_code can be set from the gui, even with an empty ram
   frame_count = 0;
+  fix_min = 0x20000;
+  fix_max = 0;
   fix_mask = get_region_size(REGION_FIXED)-1;
   fix_banked = fix_mask > 0x1ffff;
   if (saved_fix)
@@ -2134,12 +2138,29 @@ void postprocess_ipl() {
 static int upload_type,mx,my;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
+static void do_fix_conv() {
+    if (fix_max) {
+	// We have something written in the fix area...
+	fix_min = (fix_min/32)*32;
+	fix_max = (fix_max/32)*32+31;
+	fix_conv(native_fix + fix_min,
+	       	neogeo_fix_memory + fix_min, (fix_max-fix_min+1),
+	       	video_fix_usage + (fix_min>>5));
+	fix_min = 0x20000;
+	fix_max = 0;
+    }
+}
+
+static void upload_cmd_w(UINT32 offset, UINT8 data);
+
 void write_reg_b(UINT32 offset, UINT8 data) {
     switch(offset) {
+    case 0xff0061: upload_cmd_w(offset,data); break;
     case 0xff0105: upload_type = data; break;
     case 0xff0111: spr_disabled = data; break;
     case 0xff0115: fix_disabled = data; break;
     case 0xff0119: video_enabled = data; break;
+    case 0xff0149: do_fix_conv(); break;
     case 0xff016f: irq.disable = data; break;
     case 0xff0183:
 		   if (!data) {
@@ -2204,7 +2225,7 @@ static int read_upload(int offset) {
       /* Reading from fix is only done in test mode, so no need to bother
        * with encoding, just return the fix memory as is */
       if (offset < 0x20000)
-	  return neogeo_fix_memory[offset] | 0xff00;
+	  return native_fix[offset] | 0xff00;
       return 0xffff;
     case SPR_TYPE:
       offset += (spr_bank<<20);
@@ -2231,6 +2252,7 @@ static int read_upload(int offset) {
   }
 }
 
+static void write_upload(int offset, int data);
 static void write_upload_word(UINT32 offset, UINT16 data) {
   /* Notice : the uploads are still NOT fully emulated, see the asm code at
    * c00546 for that. Mainly there are 2 methods of transfer depending on the
@@ -2264,29 +2286,8 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       }
       return;
     } else if (zone == FIX_TYPE) {
-      /* This is really a hack. The only game I know which uses direct FIX
-       * writes is overtop... It's silly really ! */
-#if 1
-      offset &= 0x3ffff;
-      offset >>=1;
-      static UINT8 tmp_fix[32];
-      static int fill;
-      fill++;
-      tmp_fix[offset & 0x1f] = data;
-
-      if (direct_fix == -1) {
-	direct_fix = offset;
-	fill = 1;
-      } else if (offset - direct_fix == 31) {
-	print_debug("direct fix conv ok %x fill %d from %x a0:%x\n",direct_fix,fill,s68000readPC(),s68000context.areg[0]);
-	fix_conv(tmp_fix, neogeo_fix_memory + direct_fix, 32, video_fix_usage + (direct_fix>>5));
-	direct_fix = -1;
-      } else if (offset - direct_fix > 32 || offset - direct_fix < 0) {
-	printf("problem receiving direct fix area offset %x direct_fix %x\n",offset,direct_fix);
-	exit(1);
-      }
-#endif
-      return;
+	write_upload(offset,data);
+	return;
     } else {
       print_debug("direct write to zone %d offset/2 = %x???\n",zone,offset/2);
     }
@@ -2549,6 +2550,21 @@ static void write_upload(int offset, int data) {
 	  *dest = data;
       } else
 	  printf("sprite wb overflow %x\n",offset);
+  } else if (upload_type == 5) { // fix
+      offset &= 0x3ffff;
+      offset >>=1;
+      if (offset < 0x20000) {
+	  /* native_fix : it's almost never useful to keep a copy of the
+	   * decoded data, I know no game which requires this.
+	   * It's useful only when using the 007Z bios testing mode, it
+	   * saves its fix area to ram, and then restores it after multiple
+	   * overwrites, the only way the restoration can work is to keep this
+	   * copy here.  It's only 128k, and it's supposed to be this way... */
+	  native_fix[offset] = data;
+	  if (offset < fix_min) fix_min = offset;
+	  if (offset > fix_max) fix_max = offset;
+	  // Converted when a write goes to ff0149, some fix unlock register
+      }
   } else
       write_upload_word(offset,data);
 }
@@ -4417,6 +4433,7 @@ void load_neocd() {
 	// mode tests for now !
 	if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
 	if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
+	if(!(native_fix=AllocateMem(0x20000))) return;
 	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
 	nb_sprites = 0x8000;
 	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
@@ -4847,10 +4864,9 @@ void load_neocd() {
 	// the cd audio from the bios when exiting from a game).
 	AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
 	AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
-	AddWriteByte(0xff0061,0xff0061, upload_cmd_w, NULL);
 	AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
 	AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
-	AddWriteByte(0xff0105, 0xff01a3, write_reg_b, NULL);
+	AddWriteByte(0xff0000, 0xff01a3, write_reg_b, NULL);
 	// ff011c seems to be some kind of status, only bit 12 is tested but I
 	// couldn't find what for, it doesn't seem to make any difference...
 	// The ff0100 area seems to be related to the uploads, but there are many
