@@ -92,6 +92,7 @@ void AddSaveCallback_Internal(void *callback);
 #define SAVE_USER_13       ASCII_ID('U','S','R',0x0D)
 #define SAVE_USER_14       ASCII_ID('U','S','R',0x0E)
 #define SAVE_USER_15       ASCII_ID('U','S','R',0x0F)
+#define SAVE_USER_16       ASCII_ID('U','S','R',0x10)
 
 // INTERNAL: Do not use these in game drivers
 
