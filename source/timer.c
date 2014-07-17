@@ -293,7 +293,6 @@ int execute_one_z80_audio_frame(UINT32 frame) {
     INT32 min_cycles = get_min_cycles(frame);
 
     cpu_execute_cycles(audio_cpu, min_cycles );        // Sound Z80
-    print_debug("z80 audio %x\n",z80pc);
     frame = (dwElapsedTicks - elapsed); // min_cycles;
 #if VERBOSE
     if (abs(frame - min_cycles) > 16)
