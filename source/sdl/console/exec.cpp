@@ -72,7 +72,7 @@ void do_break(int argc, char **argv) {
   } else {
     int adr = parse(argv[1]),n;
     for (n=0; n<used_break; n++) {
-      if (abs(adr-breakp[n].adr)<6) {
+      if (abs(adr-breakp[n].adr)<2) {
 	if (cons) cons->print("already have a breakpoint at %x",breakp[n].adr);
 	return;
       }
