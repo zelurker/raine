@@ -22,7 +22,13 @@ int gzread_callback(void *ptr, size_t size, size_t nmemb, void *stream) {
     return gzread(stream,ptr,size*nmemb); // return value never tested anyway
 }
 
+static FILE *last_file;
+
 void init_iso() {
+    if (last_file) {
+	isof.close(last_file);
+	last_file = NULL;
+    }
     isof.open = (void*)&fopen;
     isof.seek = (void*)&fseek;
     isof.read = (void*)&fread;
@@ -30,6 +36,10 @@ void init_iso() {
 }
 
 void init_iso_gz() {
+    if (last_file) {
+	isof.close(last_file);
+	last_file = NULL;
+    }
     isof.open = (void*)&gzopen;
     isof.seek = (void*)&gzseek;
     isof.read = (void*)&gzread_callback;
@@ -44,7 +54,6 @@ static void myfseek(FILE *f, int pos, int where) {
 }
 
 static char last_name[FILENAME_MAX];
-static FILE *last_file;
 // gz reads are extremely slow if we seek all the time because the buffer
 // becomes useless. So we must at least make a dir cache to avoid to read
 // the root dir all the time
