@@ -2564,18 +2564,6 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 	}
     }
   }
-  // This write makes very little sense
-  // the problem is that I am stuck between 2 ways to do the stuff :
-  // the bios way in this function, nice and all
-  // and the user way in write_upload_word which tries to handle patches
-  // which would be handled by the bios directly otherwise.
-  // So the only way to be sure that there won't be a parasite size when
-  // calling write_upload_word is to clear it here, even if it's horrible
-  //
-  // Maybe later I'll be able to handle directly file loading in the bios
-  // and in this case patches won't need to be handled and this write to ram
-  // here will be removed.
-  WriteLongSc( &RAM[0x10FEFC], 0); // set the size to 0 to avoid to loop
 }
 
 static void write_upload(int offset, int data) {
