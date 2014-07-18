@@ -258,7 +258,8 @@ static int frame_neo;
 // neocd files (which is not always an image path).
 char neocd_path[FILENAME_MAX],neocd_dir[FILENAME_MAX];
 char neocd_bios_file[FILENAME_MAX];
-static int loading_animation,loading_animation_progress,loading_animation_init;
+static int loading_animation,loading_animation_progress,loading_animation_init,
+	   default_anim;
 int loading_animation_fix,loading_animation_pal; // used in cdrom.c
 static int exit_to_adr;
 
@@ -438,6 +439,15 @@ void setup_neocd_bios() {
 	  exit_to_adr += n+2;
 	  break;
       }
+  // Default animation data, it goes to 11c810 so search this...
+  for (n=0x5000; n<0x10000; n+=2) {
+      if (ReadLongSc(&neocd_bios[n]) == 0x11c810 &&
+		  ReadWord(&neocd_bios[n-6]) == 0x23fc)  {
+	  default_anim = ReadLongSc(&neocd_bios[n-4]);
+	  printf("default anim : %x\n",default_anim);
+	  break;
+      }
+  }
 
   if (ReadWord(&neocd_bios[exit_to_adr]) != 2) {
       ErrorMsg("Couldn't find exit code in this bios !");
@@ -2034,7 +2044,7 @@ static void neogeo_hreset(void)
 #ifndef BOOT_BIOS
       neogeo_cdrom_load_title();
 #endif
-      WriteLongSc(&RAM[0x11c810], 0xc190e2); // default anime data for load progress
+      WriteLongSc(&RAM[0x11c810], default_anim); // default anime data for load progress
       // First time init
 #ifdef BOOT_BIOS
       M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
