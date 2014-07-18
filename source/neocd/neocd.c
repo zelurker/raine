@@ -2165,12 +2165,14 @@ void write_reg_b(UINT32 offset, UINT8 data) {
     case 0xff0183:
 		   if (!data) {
 		       print_debug("z80_enable: reset z80\n");
-		       cpu_reset(CPU_Z80_0);
-		       reset_timers();
 		       z80_enabled = 0;
 		   } else {
 		       print_debug("z80_enable: received %x\n",data);
 		       z80_enabled = 1;
+		       /* Reset the z80 when enabled in case its program
+			* was completely changed */
+		       cpu_reset(CPU_Z80_0);
+		       reset_timers();
 		   }
 		   break;
     case 0xff01a1: spr_bank = data; break;
@@ -2452,13 +2454,46 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
   upload_type = 0xff; // and be sure to disable this too in this case.
 }
 
+UINT8 *get_target(UINT32 target) {
+    UINT8 *dst;
+    if (target < 0x200000)
+	dst = &RAM[target];
+    else if (target >= 0x400000 && target <= 0x420000)
+	dst = &RAM_PAL[target-0x400000];
+    else {
+	printf("don't know how to handle target %x\n",target);
+	exit(1);
+    }
+    return dst;
+}
+
 static void do_dma(char *name,UINT8 *dest, int max) {
     UINT16 dma = ReadWord(&dma_mode[0]);
     UINT16 upload_fill = ReadWord(&upload_param[8]);
     int upload_src = ReadLongSc(&upload_param[0]);
     int upload_len = ReadLongSc(&upload_param[12]);
     int n;
-    if (dma == 0xfef5) {
+    if (dma == 0xfe6d) { // transfer in words
+	UINT32 target = ReadLongSc(&upload_param[4]);
+	print_debug("dma transfer from %s (%x) to %x len %x in words from %x\n",name,upload_src,target,upload_len,s68000readPC());
+	if (upload_len > max/2) upload_len = max/2;
+	UINT8 *src = dest;
+	UINT8 *dst = get_target(target);
+	for (n=0; upload_len > 0; n+=2, upload_len--) {
+	    WriteWord(&dst[n],ReadWord(&src[n]));
+	}
+    } else if (dma == 0xf2dd) { // transfer again but words inverted (useless !)
+	// for each word abcd in source, generate abcd and then cdab !
+	UINT32 target = ReadLongSc(&upload_param[4]);
+	print_debug("dma transfer from %s (%x) to %x len %x in words with inversion from %x\n",name,upload_src,target,upload_len,s68000readPC());
+	if (upload_len > max/4) upload_len = max/4;
+	UINT8 *src = dest;
+	UINT8 *dst = get_target(target);
+	for (n=0; upload_len > 0; n+=2, upload_len--) {
+	    WriteWord(&dst[n*2],ReadWord68k(&src[n]));
+	    WriteWord(&dst[n*2+2],ReadWord(&src[n]));
+	}
+    } else if (dma == 0xfef5) {
 	// fill with address WriteLongSc / all adrs
 	print_debug("%s fill with adr dma %x src %x len %x from %x\n",name,dma,upload_src,upload_len,s68000readPC());
 	if (upload_len > max/4) upload_len = max/4;
@@ -2506,7 +2541,8 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
       int upload_len = ReadLongSc(&upload_param[12]);
       UINT16 dma = ReadWord(&dma_mode[0]);
       if (upload_len && upload_src) {
-	if (dma == 0xffdd || dma == 0xffcd || dma == 0xcffd || dma == 0xfef5) {
+	if (dma == 0xffdd || dma == 0xffcd || dma == 0xcffd || dma == 0xfef5 ||
+		dma == 0xfe6d || dma == 0xf2dd) {
 	  // ffdd is fill with data word
 	  // ffcd would be the same ??? not confirmed, see code at c08eca
 	  // for example, it looks very much the same !!!
@@ -2515,9 +2551,12 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 	      do_dma("palette", RAM_PAL, 0x2000);
 	  } else  if (upload_src < 0x200000) {
 	      do_dma("ram",RAM,0x200000);
-	  } else if (upload_src == 0x800000) { // memory card !
+	  } else if (upload_src == 0x800000) // memory card !
 	      do_dma("memory card", neogeo_memorycard,8192);
-	  } else if (upload_type == 1) { // pcm fill...
+	  else if (upload_src >= 0xc00000 && upload_src <= 0xc80000) // move
+	      do_dma("bios",&neocd_bios[upload_src - 0xc00000],
+		      0xc80000-upload_src);
+	  else if (upload_type == 1) { // pcm fill...
 	      do_dma("pcm",PCMROM,0x100000);
 	  } else if (upload_type == 4) // z80 fill !
 	      do_dma("z80", Z80ROM, 0x10000);
@@ -5249,7 +5288,10 @@ void execute_neocd() {
       } // allowed_speed_hacks
   }
   start_line -= START_SCREEN;
-  if (z80_enabled && !irq.disable && RaineSoundCard) {
+  if (z80_enabled /* && !irq.disable */ && RaineSoundCard) {
+      /* Normally irq.disable is an optimization heree,
+       * except that the 007Z bios tests the z80 communication
+       * while irqs are disabled, so it's better to allow this here */
       execute_z80_audio_frame();
   }
   if (!raster_frame) {
