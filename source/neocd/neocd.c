@@ -2186,7 +2186,7 @@ static int get_upload_type() {
   // return a zone type suitable for the upload area from the upload type
   // This upload type is used for reading bytes from the z80 (instead of
   // whole blocks)
-  int zone;
+  int zone = 255;
   switch(upload_type) {
     case 0: zone = SPR_TYPE; break;
     case 1: zone = PCM_TYPE; break;
@@ -2202,14 +2202,7 @@ static int read_upload(int offset) {
    * (offset < 0x200000, zone 0) by the upload area instead of accessing
    * directly... so at least it shows this thing is really used after all ! */
 
-  int zone = RAM[0x10FEDA ^ 1];
-  int size = ReadLongSc(&RAM[0x10FEFC]);
-  if (size == 0 && upload_type != 0xff) {
-    zone = get_upload_type();
-    // this thing finally explains what these upload reads/writes occuring
-    // every frame were for in some games : to communicate with the z80,
-    // certainly to see if it has some cd commands in store.
-  }
+    int zone = get_upload_type();
   // print_debug("read_upload: offset %x offset2 %x offset_dst %x zone %x bank %x size %x pc:%x\n",offset,offset2,offset_dst,zone,bank,size,s68000readPC());
   // int bank = m68k_read_memory_8(0x10FEDB);
   offset &= 0xfffff;
@@ -2279,6 +2272,7 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
 	offset = (offset & 0xfffff) + (spr_bank << 20);
 	if (offset < 0x800000)
 	    WriteWord(&GFX[offset],data);
+	return;
     } else if (zone == PCM_TYPE) {
       offset = ((offset&0xfffff)>>1) + (pcm_bank<<19);
       if (offset < 0x100000) {
@@ -2523,56 +2517,55 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 
 static void upload_cmd_w(UINT32 offset, UINT8 data) {
   if (data == 0x40) {
-    int zone = RAM[0x10FEDA ^ 1];
-    int size = ReadLongSc(&RAM[0x10FEFC]);
-    print_debug("upload dma zone %x from %x size would be %d\n",zone,s68000readPC(),size);
-    if (size) {
-      // Actually this command is used also to clear the palette
-      // using a pattern of 0, and the size is passed directly to the hw
-      // register. I don't bother to emulate this for now since used colors
-      // are of course initialised anyway.
-      // In this case when we arrive here, size=0, and write_upload_word should
-      // not be called.
-      RAM[0x10FEDA ^ 1] = zone ^ 0x10;
-      write_upload_word(0,0);
-      RAM[0x10FEDA ^ 1] = zone;
-    } else {
-      int upload_src = ReadLongSc(&upload_param[0]);
-      int upload_len = ReadLongSc(&upload_param[12]);
-      UINT16 dma = ReadWord(&dma_mode[0]);
-      if (upload_len && upload_src) {
+    int upload_src = ReadLongSc(&upload_param[0]);
+    int upload_len = ReadLongSc(&upload_param[12]);
+    UINT16 dma = ReadWord(&dma_mode[0]);
+    if (upload_len && upload_src) {
 	if (dma == 0xffdd || dma == 0xffcd || dma == 0xcffd || dma == 0xfef5 ||
 		dma == 0xfe6d || dma == 0xf2dd) {
-	  // ffdd is fill with data word
-	  // ffcd would be the same ??? not confirmed, see code at c08eca
-	  // for example, it looks very much the same !!!
-	  // cffd is fill with address apparently !
-	  if (upload_src == 0x400000) {
-	      do_dma("palette", RAM_PAL, 0x2000);
-	  } else  if (upload_src < 0x200000) {
-	      do_dma("ram",RAM,0x200000);
-	  } else if (upload_src == 0x800000) // memory card !
-	      do_dma("memory card", neogeo_memorycard,8192);
-	  else if (upload_src >= 0xc00000 && upload_src <= 0xc80000) // move
-	      do_dma("bios",&neocd_bios[upload_src - 0xc00000],
-		      0xc80000-upload_src);
-	  else if (upload_type == 1) { // pcm fill...
-	      do_dma("pcm",PCMROM,0x100000);
-	  } else if (upload_type == 4) // z80 fill !
-	      do_dma("z80", Z80ROM, 0x10000);
-	  else if (upload_type == 5) // fix
-	      do_dma("fix",neogeo_fix_memory,0x20000);
-	  else if (upload_type == 0) // spr
-	      do_dma("spr",&GFX[spr_bank<<20],0x800000-(spr_bank<<20));
-	  else {
-	    print_debug("unknown fill %x upload_type %x dma %x from %x\n",upload_src,upload_type,dma,s68000readPC());
-	  }
+	    // ffdd is fill with data word
+	    // ffcd would be the same ??? not confirmed, see code at c08eca
+	    // for example, it looks very much the same !!!
+	    // cffd is fill with address apparently !
+	    if (upload_src == 0x400000) {
+		do_dma("palette", RAM_PAL, 0x2000);
+	    } else  if (upload_src < 0x200000) {
+		do_dma("ram",RAM,0x200000);
+	    } else if (upload_src == 0x800000) // memory card !
+		do_dma("memory card", neogeo_memorycard,8192);
+	    else if (upload_src >= 0xc00000 && upload_src <= 0xc80000) // move
+		do_dma("bios",&neocd_bios[upload_src - 0xc00000],
+			0xc80000-upload_src);
+	    else if (upload_type == 1) { // pcm fill...
+		do_dma("pcm",PCMROM,0x100000);
+	    } else if (upload_type == 4) // z80 fill !
+		do_dma("z80", Z80ROM, 0x10000);
+	    else if (upload_type == 5) { // fix
+		do_dma("fix",native_fix,0x20000);
+		fix_min = upload_src & 0xfffff;
+		fix_max = upload_len >> 2;
+	    } else if (upload_type == 0) // spr
+		do_dma("spr",&GFX[spr_bank<<20],0x800000-(spr_bank<<20));
+	    else {
+		print_debug("unknown fill %x upload_type %x dma %x from %x\n",upload_src,upload_type,dma,s68000readPC());
+	    }
 	} else {
-	  print_debug("upload: unknown dma %x from %x\n",dma,s68000readPC());
+	    print_debug("upload: unknown dma %x from %x\n",dma,s68000readPC());
 	}
-      }
     }
   }
+  // This write makes very little sense
+  // the problem is that I am stuck between 2 ways to do the stuff :
+  // the bios way in this function, nice and all
+  // and the user way in write_upload_word which tries to handle patches
+  // which would be handled by the bios directly otherwise.
+  // So the only way to be sure that there won't be a parasite size when
+  // calling write_upload_word is to clear it here, even if it's horrible
+  //
+  // Maybe later I'll be able to handle directly file loading in the bios
+  // and in this case patches won't need to be handled and this write to ram
+  // here will be removed.
+  WriteLongSc( &RAM[0x10FEFC], 0); // set the size to 0 to avoid to loop
 }
 
 static void write_upload(int offset, int data) {
