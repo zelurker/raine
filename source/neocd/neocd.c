@@ -77,8 +77,6 @@
 #define MCARD_SIZE_NEOGEO 0x800
 #define MCARD_SIZE_16BIT  0x20000
 
-static int size_mcard;
-
 void debug(int level, const char *format, ...)
 {
     if (level & DBG_LEVEL) {
@@ -131,6 +129,7 @@ static void draw_neocd();
 static void draw_sprites(int start, int end, int start_line, int end_line);
 static UINT8 dark_screen; // only neogeo ?
 static int fc;
+static int size_mcard;
 
 struct VIDEO_INFO neocd_video =
 {
@@ -536,8 +535,6 @@ static UINT8 read_memorycard(UINT32 offset) {
 	}
 	return 0xff;
     }
-    printf("read %x -> %x\n",offset,
-	    neogeo_memorycard[(offset & (size_mcard-1)) ^ 1]);
 #ifdef NEOGEO_MCARD_16BITS
     return neogeo_memorycard[(offset & (size_mcard-1)) ^ 1];
 #endif
@@ -549,12 +546,6 @@ static UINT8 read_memorycard(UINT32 offset) {
 static UINT16 read_memorycardw(UINT32 offset) {
     if (is_neocd())
 	return 0xff00 | neogeo_memorycard[(offset & 0x3fff) >> 1];
-    printf("readw %x -> %x\n",offset,
-#ifdef NEOGEO_MCARD_16BITS
-	    ReadWord(&neogeo_memorycard[offset & (size_mcard-1)]));
-#else
-    0xff00 |neogeo_memorycard[(offset >> 1) & (size_mcard-1)]);
-#endif
 #ifdef NEOGEO_MCARD_16BITS
     return ReadWord(&neogeo_memorycard[offset & (size_mcard-1)]);
 #endif
@@ -564,7 +555,6 @@ static UINT16 read_memorycardw(UINT32 offset) {
 static int memcard_write;
 
 static void write_memcard(UINT32 offset, UINT32 data) {
-    printf("write %x,%x\n",offset,data);
     if (is_neocd()) {
 	if ((offset & 1)) {
 	    memcard_write = 1;
@@ -585,7 +575,6 @@ static void write_memcard(UINT32 offset, UINT32 data) {
 
 static void write_memcardw(UINT32 offset, UINT32 data) {
     memcard_write = 1;
-    printf("writew %x,%x\n",offset,data);
     if (is_neocd())
 	neogeo_memorycard[(offset & 0x3fff) >> 1] = data;
     else
@@ -1392,11 +1381,21 @@ void neogeo_read_gamename(void)
   game = &games[0];
   while (game->name && game->id != neocd_id)
     game++;
+
+  if (neocd_id == 0x48 || neocd_id == 0x0221) {
+    desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
+    // nor for magical drop 2 (it sets manually the vbl bit for the controls
+    // on the main menu to work, which makes the speed hack much more complex!
+  }
+
+  if (!is_neocd())
+      return; // it's over for neogeo !
+
   if (game->id == neocd_id)
-    current_game->main_name = game->name;
+      current_game->main_name = game->name;
   else {
-    print_debug("warning could not find short name for this game\n");
-    current_game->main_name = "neocd"; // resets name in case we don't find
+      print_debug("warning could not find short name for this game\n");
+      current_game->main_name = "neocd"; // resets name in case we don't find
   }
   // Retrieve the long name from the neogeo list instead of the raw name
   // because it's used to find debug dips...
@@ -1412,28 +1411,19 @@ void neogeo_read_gamename(void)
 	  }
 	  break;
       }
-
-  if (neocd_id == 0x48 || neocd_id == 0x0221) {
-    desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
-    // nor for magical drop 2 (it sets manually the vbl bit for the controls
-    // on the main menu to work, which makes the speed hack much more complex!
+  current_game->long_name = (char*)config_game_name;
+  print_debug("main_name %s\n",current_game->main_name);
+  if (memcard_write) {
+      print_debug("save_memcard\n");
+      save_memcard(); // called after a reset
+  } else {
+      print_debug("restore_memcard\n");
+      restore_memcard(); // called after loading
   }
-
-  if (is_neocd()) { // neogeo wants only the game name and id
-      current_game->long_name = (char*)config_game_name;
-      print_debug("main_name %s\n",current_game->main_name);
-      if (memcard_write) {
-	  print_debug("save_memcard\n");
-	  save_memcard(); // called after a reset
-      } else {
-	  print_debug("restore_memcard\n");
-	  restore_memcard(); // called after loading
-      }
-      /* update window title with game name */
-      char neocd_wm_title[160];
-      sprintf(neocd_wm_title,"NeoRaine - %s",config_game_name);
-      SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
-  }
+  /* update window title with game name */
+  char neocd_wm_title[160];
+  sprintf(neocd_wm_title,"NeoRaine - %s",config_game_name);
+  SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
 }
 
 static struct ROMSW_DATA romsw_data_neocd[] =
