@@ -1107,6 +1107,37 @@ static void restore_memcard() {
     print_debug("memcard read from %s\n",path);
     fread(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
     fclose(f);
+  } else {
+      // Format the memory card : some games like neocd magdrop2 hang instead
+      // of proposing to format the card, and it doesn't seem so hard to do...
+      UINT8 *m = neogeo_memorycard;
+      m[1] = 5; m[0xa] = 0x40; m[0xc] = 2; m[0xd] = m[0xe] = 0x1a;
+      int n;
+      for (n=0x10; n<0x20; n++)
+	  m[n] = 0x20;
+      // 3rd line : bizarre signature...
+      strcpy((char*)&m[0x20],"N@EDOH-LGPETOX\x80\\");
+      m[0x30] = 2;
+      int a = 0, val = 0x80; n = 0x40;
+      do {
+	  if (n == 0x240) {
+	      for (n=0x240; n<=0x24c; n++)
+		  m[n] = m[n+0x80] = 2;
+	      n = 0x340;
+	      a = 6;
+	  }
+	  m[n] = (n < 0x340 ? 0xff : a);
+	  m[n+1] = val;
+	  m[n+2] = a;
+	  val += 4;
+	  m[n+3] = val;
+	  val += 4;
+	  if (val > 0xff) {
+	      val -= 0x100;
+	      a++;
+	  }
+	  n += 4;
+      } while (n < 0x2000);
   }
 
   if (saveram.ram) {
