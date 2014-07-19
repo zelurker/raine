@@ -17,7 +17,7 @@
 VERSION = "0.63.9"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -988,6 +988,9 @@ endif
 endif
 
 all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
+
+byteswap: $(OBJDIR)/byteswap.o
+	gcc -m32 -o byteswap $^
 
 depend:
 	@echo dependencies : if you get an error here, install the required dev package
