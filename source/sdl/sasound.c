@@ -67,6 +67,7 @@ static int fadeout,fade_vol,fade_nb,fade_frame,fade_vol;
 UINT8 *PCMROM;
 
 static char driver_name[40];
+static char track_to_read[FILENAME_MAX];
 
 int RaineSoundCard;
 
@@ -388,47 +389,12 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
 }
 
 void load_sample(char *filename) {
-  init_samples();
-  SDL_PauseAudio(1);
-  while (callback_busy) {
-    print_debug("load_sample: callback_busy2...\n");
-    SDL_Delay(1);
-  }
-  callback_busy = 2;
-  sample = Sound_NewSampleFromFile(filename,
-      NULL,
-      16384);
-  if (!sample) {
-    print_ingame(183, "Audio track unreadable");
-    print_debug("Audio track unreadable : %s\n",filename);
-  } else {
-      print_debug("load_sample %s ok\n",filename);
-  }
-  callback_busy = 0;
-  done_flag = 0;
-  skip_silence = cdda.skip_silence;
-  SDL_PauseAudio(0);
+    cdda.playing = CDDA_LOAD;
+    strcpy(track_to_read,filename);
 }
 
 void init_samples() {
     fadeout = 0;
-  SDL_PauseAudio(1);
-  while (callback_busy) {
-    print_debug("init_sample: callback_busy...\n");
-    SDL_Delay(1);
-  }
-  if (sample) {
-    Sound_FreeSample(sample);
-    sample = NULL;
-  }
-  cdda.pos = 0;
-  global_state.decoded_bytes = 0;
-  global_state.decoded_ptr = NULL;
-  sample = NULL;
-  if (fbin) {
-    fclose(fbin);
-    fbin = NULL;
-  }
   if (!pause_sound) SDL_PauseAudio(0);
 }
 
@@ -551,6 +517,21 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
   }
 }
 
+static void close_sample() {
+  if (sample) {
+    Sound_FreeSample(sample);
+    sample = NULL;
+  }
+  cdda.pos = 0;
+  global_state.decoded_bytes = 0;
+  global_state.decoded_ptr = NULL;
+  sample = NULL;
+  if (fbin) {
+    fclose(fbin);
+    fbin = NULL;
+  }
+}
+
 static void my_callback(void *userdata, Uint8 *stream, int len)
 {
     int i,channel;
@@ -570,10 +551,31 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	fade_vol = music_volume-music_volume*fade_frame++/fade_nb;
 	if (fade_vol <= 0) {
 	    fadeout = 0;
-	    cdda.playing = 0;
+	    if (cdda.playing != CDDA_LOAD) cdda.playing = CDDA_STOP;
 	}
     }
-    if (sample && cdda.playing == 1 && !done_flag && !mute_music) {
+    if (cdda.playing == CDDA_LOAD) {
+	// load a sample
+	cdda.playing = CDDA_PLAY;
+	close_sample();
+	sample = Sound_NewSampleFromFile(track_to_read,
+		NULL,
+		16384);
+	if (!sample) {
+	    print_ingame(183, "Audio track unreadable");
+	    print_debug("Audio track unreadable : %s\n",track_to_read);
+	} else {
+	    print_debug("load_sample %s ok\n",track_to_read);
+	}
+	done_flag = 0;
+	skip_silence = cdda.skip_silence;
+    } else if (cdda.playing == CDDA_STOP && sample) {
+	// Not absolutely sure it's a good idea, some games might want
+	// to restart the track later, but we'll see...
+	close_sample();
+    }
+
+    if (sample && cdda.playing == CDDA_PLAY && !done_flag && !mute_music) {
 	int bw = 0; /* bytes written to stream this time through the callback */
 	while (bw < len)
 	{

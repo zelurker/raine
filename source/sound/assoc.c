@@ -199,7 +199,7 @@ void save_assoc(char *section) {
 	    }
 	    del_assoc(cmd);
 	}
-    cdda.playing = 0; // just to be sure
+    cdda.playing = CDDA_STOP; // just to be sure
     type = 0;
 }
 
@@ -226,7 +226,7 @@ static void mute_song() {
     printf("mute song mode %d\n",mode);
 #endif
     active = 0;
-    cdda.playing = 0;
+    cdda.playing = CDDA_STOP;
 }
 
 int handle_sound_cmd(int cmd) {
@@ -339,7 +339,6 @@ int handle_sound_cmd(int cmd) {
 	    load_sample(track[cmd]);
 	    cdda.loop = loop[cmd];
 	    active = 1;
-	    cdda.playing = 1;
 	}
 	return 1;
     }

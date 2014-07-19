@@ -7,9 +7,17 @@ extern "C" {
 #define DEFAULT_SFX_VOLUME 60
 #define DEFAULT_MUSIC_VOLUME 60
 
-extern struct {
+enum {
+    CDDA_STOP = 0,
+    CDDA_PLAY,
+    CDDA_LOAD,
+    CDDA_PAUSE
+}; // possible values for cdda.playing
+
+typedef struct {
   int playing,track,loop,pos,skip_silence;
-} cdda;
+} cdda_t;
+extern cdda_t cdda;
 
 extern int start_index, end_index;
 extern int neocd_cdda_format;

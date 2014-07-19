@@ -12,12 +12,11 @@
 #include "mz80help.h"
 #include "cpumain.h"
 #include "timer.h"
+#include "cdda.h"
 
 int auto_stop_cdda = 0,mute_sfx = 0, mute_music = 0;
 
-struct {
-  int playing,track,loop,pos,skip_silence;
-} cdda;
+cdda_t cdda;
 
 int sfx_volume,music_volume,neocd_cdda_format;
 int start_index,end_index;
@@ -83,15 +82,14 @@ static char *find_file(char *pattern,char *path){
 
 void cdda_stop() {
   // usefull before loading a game...
-  init_samples();
-  cdda.playing = 0;
+  cdda.playing = CDDA_STOP;
   if (cdrom)
     SDL_CDStop(cdrom);
 }
 
 static void cdda_resume() {
-  if (cdda.playing==2) {//was in pause, so resume & let stop/play again
-    cdda.playing = 1;
+  if (cdda.playing==CDDA_PAUSE) {//was in pause, so resume & let stop/play again
+    cdda.playing = CDDA_PLAY;
     if (cdrom)
       SDL_CDResume(cdrom);
   }
@@ -115,7 +113,7 @@ static int cdda_play(int track,int loop)
 	cdda.loop = -1;
       else
 	cdda.loop = 0;
-      cdda.playing = 1;
+      cdda.playing = CDDA_PLAY;
       return 1;
     }
   }
@@ -158,7 +156,7 @@ static int cdda_play(int track,int loop)
 	cdda.loop = -1;
       else
 	cdda.loop = 0;
-      cdda.playing = 1;
+      cdda.playing = CDDA_PLAY;
       return 1;
     }
   }
@@ -178,7 +176,6 @@ static int cdda_play(int track,int loop)
       set_sample_pos(start_index);
       start_index = end_index = 0;
     }
-    cdda.playing = 1;
     print_debug("playing %s\n",str);
     reset_ingame_timer(); // loading the song can be long, esp from a cd !
   } else {
@@ -193,7 +190,7 @@ static void	cdda_pause(void)
 {
   print_debug("cdda pause\n");
   if (cdda.playing)
-    cdda.playing = 2;
+    cdda.playing = CDDA_PAUSE;
   if (cdrom)
     SDL_CDPause(cdrom);
 }
@@ -215,7 +212,7 @@ void do_cdda( int command, int track_number_bcd)
 	    track_number = ((track_number_bcd>>4)*10) + (track_number_bcd&0x0F);
 	    if ((track_number == 0)&&(!cdda.playing))
 	    {
-	      cdda.playing = 1;
+	      cdda.playing = CDDA_PLAY;
 	    }
 	    else if ((track_number>1)&&(track_number<99))
 	    {
@@ -239,7 +236,6 @@ void do_cdda( int command, int track_number_bcd)
 
 void init_cdda() {
   cdda.playing = cdda.track = 0;
-  init_samples();
   if (cdrom) {
     SDL_CDStop(cdrom);
     SDL_CDClose(cdrom);
@@ -249,10 +245,10 @@ void init_cdda() {
 
 static void restore_cdda() {
     if (!is_neocd() && disable_assoc) {
-	cdda.playing = 0;
+	cdda.playing = CDDA_STOP;
 	return;
     }
-  if (cdda.playing == 1) {
+  if (cdda.playing) { // play, pause or load, any activity
     int track = cdda.track;
     int pos = cdda.pos;
     cdda.track = -1;
@@ -263,12 +259,11 @@ static void restore_cdda() {
 	char *t = get_assoc(track);
 	if (t) {
 	    load_sample(t);
-	    cdda.playing = 1;
 	}
     }
     set_sample_pos(pos);
-  } else if (cdda.playing > 1)
-    cdda.playing = 1;
+  } else if (cdda.playing == CDDA_PAUSE)
+    cdda.playing = CDDA_PLAY;
   print_debug("cdda restored\n");
 }
 
