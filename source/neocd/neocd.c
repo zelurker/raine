@@ -47,6 +47,8 @@
 #include "decode.h"
 #include "sound/assoc.h"
 
+// #define NEOGEO_MCARD_16BITS 1
+
 #ifdef RAINE_DOS
 #ifdef ALLEGRO_LITTLE_ENDIAN
 #define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (leval)
@@ -70,6 +72,13 @@
 #ifndef RAINE_DEBUG
 #define debug
 #else
+
+#define MCARD_SIZE_NEOCD 0x2000
+#define MCARD_SIZE_NEOGEO 0x800
+#define MCARD_SIZE_16BIT  0x20000
+
+static int size_mcard;
+
 void debug(int level, const char *format, ...)
 {
     if (level & DBG_LEVEL) {
@@ -492,7 +501,7 @@ void setup_neocd_bios() {
 }
 
 static UINT16 result_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
-static UINT8 neogeo_memorycard[8192];
+static UINT8 *neogeo_memorycard;
 UINT8 *neogeo_fix_memory,*native_fix,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
 
 static UINT8 temp_fix_usage[0x300],saved_fix;
@@ -521,28 +530,70 @@ void restore_fix(int vidram) {
 // To be tested...
 
 static UINT8 read_memorycard(UINT32 offset) {
-  if ((offset & 1)) {
-    return neogeo_memorycard[(offset & 0x3fff) >> 1];
-  }
-  return 0xff;
+    if (is_neocd()) {
+	if ((offset & 1)) {
+	    return neogeo_memorycard[(offset & 0x3fff) >> 1];
+	}
+	return 0xff;
+    }
+    printf("read %x -> %x\n",offset,
+	    neogeo_memorycard[(offset & (size_mcard-1)) ^ 1]);
+#ifdef NEOGEO_MCARD_16BITS
+    return neogeo_memorycard[(offset & (size_mcard-1)) ^ 1];
+#endif
+    if (offset & 1)
+	return neogeo_memorycard[(offset >> 1) & (size_mcard-1)];
+    return 0xff;
 }
 
 static UINT16 read_memorycardw(UINT32 offset) {
-  return 0xff00 | neogeo_memorycard[(offset & 0x3fff) >> 1];
+    if (is_neocd())
+	return 0xff00 | neogeo_memorycard[(offset & 0x3fff) >> 1];
+    printf("readw %x -> %x\n",offset,
+#ifdef NEOGEO_MCARD_16BITS
+	    ReadWord(&neogeo_memorycard[offset & (size_mcard-1)]));
+#else
+    0xff00 |neogeo_memorycard[(offset >> 1) & (size_mcard-1)]);
+#endif
+#ifdef NEOGEO_MCARD_16BITS
+    return ReadWord(&neogeo_memorycard[offset & (size_mcard-1)]);
+#endif
+    return 0xff00 |neogeo_memorycard[(offset >> 1) & (size_mcard-1)];
 }
 
 static int memcard_write;
 
 static void write_memcard(UINT32 offset, UINT32 data) {
-  if ((offset & 1)) {
+    printf("write %x,%x\n",offset,data);
+    if (is_neocd()) {
+	if ((offset & 1)) {
+	    memcard_write = 1;
+	    neogeo_memorycard[(offset & 0x3fff) >> 1] = data;
+	}
+	return;
+    }
+#ifdef NEOGEO_MCARD_16BITS
     memcard_write = 1;
-    neogeo_memorycard[(offset & 0x3fff) >> 1] = data;
-  }
+    neogeo_memorycard[(offset & (size_mcard-1)) ^ 1] = data;
+#else
+    if ((offset & 1)) {
+	memcard_write = 1;
+	neogeo_memorycard[(offset >> 1) & (size_mcard-1) ] = data;
+    }
+#endif
 }
 
 static void write_memcardw(UINT32 offset, UINT32 data) {
-  memcard_write = 1;
-  neogeo_memorycard[(offset & 0x3fff) >> 1] = data;
+    memcard_write = 1;
+    printf("writew %x,%x\n",offset,data);
+    if (is_neocd())
+	neogeo_memorycard[(offset & 0x3fff) >> 1] = data;
+    else
+#ifdef NEOGEO_MCARD_16BITS
+	WriteWord(&neogeo_memorycard[offset & (size_mcard-1)], data);
+#else
+	neogeo_memorycard[(offset >> 1) & (size_mcard-1)] = data;
+#endif
 }
 
 static void set_res_code(UINT32 offset, UINT16 data) {
@@ -1096,6 +1147,8 @@ struct SOUND_INFO sound_neocd[] =
 
 static void restore_memcard() {
   char path[1024];
+  if (!neogeo_memorycard) return;
+
   sprintf(path,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
   FILE *f = fopen(path,"rb");
   memcard_write = 0;
@@ -1105,11 +1158,13 @@ static void restore_memcard() {
   }
   if (f) {
     print_debug("memcard read from %s\n",path);
-    fread(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
+    fread(neogeo_memorycard,size_mcard,1,f);
     fclose(f);
-  } else {
+  } else if (is_neocd()) {
       // Format the memory card : some games like neocd magdrop2 hang instead
       // of proposing to format the card, and it doesn't seem so hard to do...
+      // I restrict this to neocd, neogeo has 2 possible card types both of
+      // different sizes, so it's unlikely to be compatible !
       UINT8 *m = neogeo_memorycard;
       m[1] = 5; m[0xa] = 0x40; m[0xc] = 2; m[0xd] = m[0xe] = 0x1a;
       int n;
@@ -1156,10 +1211,12 @@ static void save_memcard() {
 	sprintf(path,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
 	FILE *f = fopen(path,"wb");
 	if (f) {
-	    fwrite(neogeo_memorycard,sizeof(neogeo_memorycard),1,f);
+	    fwrite(neogeo_memorycard,size_mcard,1,f);
 	    fclose(f);
 	}
 	memcard_write = 0;
+	FreeMem(neogeo_memorycard);
+	neogeo_memorycard = NULL;
     }
     if (!is_neocd() && saveram.ram) {
 	char str[16];
@@ -1303,7 +1360,10 @@ void neogeo_read_gamename(void)
 
   int region_code = GetLanguageSwitch();
   if (region_code > 2) region_code = 2;
-  Ptr = RAM + ReadLongSc(&RAM[0x116]+4*region_code);
+  if (is_neocd())
+      Ptr = RAM + ReadLongSc(&RAM[0x116]+4*region_code);
+  else
+      Ptr = ROM + ReadLongSc(&ROM[0x116]+4*region_code);
   memcpy(config_game_name,Ptr,80);
   ByteSwap((UINT8*)config_game_name,80);
 
@@ -1313,6 +1373,7 @@ void neogeo_read_gamename(void)
       break;
     }
   }
+  printf("read_game_name %s\n",config_game_name);
   while (config_game_name[temp-1] == ' ')
     temp--;
   config_game_name[temp] = 0;
@@ -1323,7 +1384,10 @@ void neogeo_read_gamename(void)
     memcpy(config_game_name,&config_game_name[temp],strlen(config_game_name)-temp+1);
   print_debug("game name : %s\n",config_game_name);
 
-  neocd_id = ReadWord(&RAM[0x108]);
+  if (is_neocd())
+      neocd_id = ReadWord(&RAM[0x108]);
+  else
+      neocd_id = ReadWord(&ROM[0x108]);
   // get the short name based on the id. This info is from neocdz...
   game = &games[0];
   while (game->name && game->id != neocd_id)
@@ -1349,26 +1413,27 @@ void neogeo_read_gamename(void)
 	  break;
       }
 
-  current_game->long_name = (char*)config_game_name;
-  print_debug("main_name %s\n",current_game->main_name);
-  if (memcard_write) {
-      print_debug("save_memcard\n");
-      save_memcard(); // called after a reset
-  } else {
-      print_debug("restore_memcard\n");
-      restore_memcard(); // called after loading
-  }
-
   if (neocd_id == 0x48 || neocd_id == 0x0221) {
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
     // nor for magical drop 2 (it sets manually the vbl bit for the controls
     // on the main menu to work, which makes the speed hack much more complex!
   }
 
-  /* update window title with game name */
-  char neocd_wm_title[160];
-  sprintf(neocd_wm_title,"NeoRaine - %s",config_game_name);
-  SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
+  if (is_neocd()) { // neogeo wants only the game name and id
+      current_game->long_name = (char*)config_game_name;
+      print_debug("main_name %s\n",current_game->main_name);
+      if (memcard_write) {
+	  print_debug("save_memcard\n");
+	  save_memcard(); // called after a reset
+      } else {
+	  print_debug("restore_memcard\n");
+	  restore_memcard(); // called after loading
+      }
+      /* update window title with game name */
+      char neocd_wm_title[160];
+      sprintf(neocd_wm_title,"NeoRaine - %s",config_game_name);
+      SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
+  }
 }
 
 static struct ROMSW_DATA romsw_data_neocd[] =
@@ -4452,7 +4517,28 @@ static void lans2004_vx_decrypt()
 		rom[i] = BITSWAP8(rom[i], 0, 1, 5, 4, 3, 2, 6, 7);
 }
 
+static UINT16 neogeo_unmapped_r(UINT32 offset) {
+    int pc = s68000readPC();
+    // apparently used at least by magical drop 2, just after entering a name
+    // exactly when the game asks if you want to save !
+    // So the mame guys say that this hardware returns for unmapped memory
+    // what is on the data bus at this present moment, which is usually the
+    // next instruction
+    return ReadWord(&ROM[pc]);
+}
+
 void load_neocd() {
+    if (is_neocd())
+	size_mcard = 0x2000;
+    else {
+#ifdef NEOGEO_MCARD_16BITS
+	size_mcard = 0x20000;
+#else
+	size_mcard = 0x800;
+#endif
+    }
+    if (!(neogeo_memorycard = AllocateMem(size_mcard))) return;
+    memset(neogeo_memorycard,0,size_mcard);
     fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
     do_not_stop = 0;
@@ -4702,8 +4788,6 @@ void load_neocd() {
 #endif
     }
 
-    memset(neogeo_memorycard,0,sizeof(neogeo_memorycard));
-
     // manual init of the layers (for the sprites viewer)
     tile_list[0].width = tile_list[0].height = 8;
     tile_list[0].count = 4096;
@@ -4839,10 +4923,10 @@ void load_neocd() {
     AddReadBW(0x380000, 0x380000, NULL, &input_buffer[4]);
     AddWriteBW(0x380000, 0x39ffff, io_control_w, NULL);
 
-    AddReadByte(0x800000, 0x80ffff, read_memorycard, NULL);
-    AddReadWord(0x800000, 0x80ffff, read_memorycardw, NULL);
-    AddWriteByte(0x800000, 0x80ffff, write_memcard, NULL);
-    AddWriteWord(0x800000, 0x80ffff, write_memcardw, NULL);
+    AddReadByte(0x800000, 0x82ffff, read_memorycard, NULL);
+    AddReadWord(0x800000, 0x82ffff, read_memorycardw, NULL);
+    AddWriteByte(0x800000, 0x82ffff, write_memcard, NULL);
+    AddWriteWord(0x800000, 0x82ffff, write_memcardw, NULL);
 
     // No byte access supported to the LSPC (neogeo doc)
     // These 2 are mirrored, used by at least puzzledp
@@ -4914,7 +4998,10 @@ void load_neocd() {
 	AddReadByte(0x110000, 0x1fffff, mirror_ram_rb, NULL);
 	AddWriteWord(0x110000, 0x1fffff, mirror_ram_ww, NULL);
 	AddWriteByte(0x110000, 0x1fffff, mirror_ram_wb, NULL);
+
+	AddReadBW(0xe00000,0xffffff, neogeo_unmapped_r, NULL);
 	init_assoc(1);
+	neogeo_read_gamename();
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
 	AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
