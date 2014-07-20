@@ -648,7 +648,6 @@ static int cpu_readcoin(int addr)
       if (pending_command)
 	res &= 0x7f;
     }
-    print_debug("read result_code %x sound_card %d\n",res,RaineSoundCard);
 
     return res;
   }
@@ -2062,7 +2061,6 @@ void set_neocd_exit_to(int code) {
     if (neocd_bios) {
 	// Apparently the jump table at the beginning of the rom is stable
 	if (exit_to_adr) {
-	    printf("exit_to: old %x, new %x\n",neocd_bios[exit_to_adr],code);
 	    neocd_bios[exit_to_adr] = code;
 	}
     }
@@ -2374,13 +2372,16 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
     }
 }
 
-UINT8 *get_target(UINT32 target) {
+UINT8 *get_target(UINT32 target,int *size) {
     UINT8 *dst;
     if (target < 0x200000)
 	dst = &RAM[target];
-    else if (target >= 0x400000 && target <= 0x420000)
-	dst = &RAM_PAL[target-0x400000];
-    else if (target >= 0xe00000) {
+    else if (target >= 0x400000 && target < 0x402000) {
+	target -= 0x400000;
+	dst = &RAM_PAL[target];
+	if (target + *size*2 > 0x2000)
+	    *size = (0x2000-target)/2;
+    } else if (target >= 0xe00000) {
 	if (upload_type == 0) { // spr
 	    /* Huge hack !!! */
 	    dst = NULL;
@@ -2388,6 +2389,17 @@ UINT8 *get_target(UINT32 target) {
 	} else if (upload_type == 1) { // pcm
 	    target = ((target & 0xfffff)>>1) + (pcm_bank<<19);
 	    dst = &PCMROM[target];
+	    if (target + *size*2 > 0x100000) {
+		*size = (0x100000-target)/2;
+		print_debug("adjust pcm target size %x\n",*size);
+	    }
+	} else if (upload_type == 5) { // fix
+	    target = (target & 0x3ffff) >> 1;
+	    dst = &neogeo_fix_memory[target];
+	    if (*size + target > 0x20000) { // in bytes for fix...
+		*size = (0x20000 - target);
+		print_debug("adjust fix target size %x\n",*size);
+	    }
 	} else {
 	    printf("can't find target %x upload_type %x\n",target,upload_type);
 	    exit(1);
@@ -2404,15 +2416,17 @@ static void do_dma(char *name,UINT8 *dest, int max) {
     UINT16 upload_fill = ReadWord(&upload_param[8]);
     int upload_src = ReadLongSc(&upload_param[0]);
     int upload_len = ReadLongSc(&upload_param[12]);
+    UINT32 target = ReadLongSc(&upload_param[4]);
     int n;
     int fix = (dest == neogeo_fix_memory); // special case for fix !
-    if (dma == 0xfe6d || dma == 0xfe3d) { // transfer in words
-	UINT32 target = ReadLongSc(&upload_param[4]);
-	print_debug("dma transfer from %s (%x) to %x len %x in words from %x\n",name,upload_src,target,upload_len,s68000readPC());
-	if (upload_len > max/2) upload_len = max/2;
+    if (dma == 0xfe6d || dma == 0xfe3d || dma == 0xe2dd) { // transfer in words
+	print_debug("dma transfer from %s (%x) to %x len %x in words (dma %x) from %x\n",name,upload_src,target,upload_len,dma,s68000readPC());
 	UINT8 *src = dest;
-	if (upload_src < 0x200000) src += upload_src;
-	UINT8 *dst = get_target(target);
+	if (upload_src < 0x200000) {
+	    src += upload_src;
+	    if (upload_src + upload_len*2 > max) upload_len = (max-upload_src)/2;
+	} else if (upload_len > max/2) upload_len = max/2;
+	UINT8 *dst = get_target(target,&upload_len);
 	if (!dst) {
 	    // This is a hack, but for now, I'd prefer to avoid to do the
 	    // reverse conversion of sprites !
@@ -2427,15 +2441,23 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	    spr_conv(src,GFX + offset*2,size,video_spr_usage + (offset >> 7));
 	    ByteSwap(src,size);
 	} else {
-	    if (fix) {
-		for (n=0; upload_len > 0; n+=2, upload_len--) {
-		    write_upload_word(n*2,ReadWord(&src[n])>>8);
-		    write_upload_word(n*2+2,ReadWord(&src[n]));
-		}
-	    } else {
-		for (n=0; upload_len > 0; n+=2, upload_len--) {
-		    WriteWord(&dst[n],ReadWord(&src[n]));
-		}
+	    if (dma == 0xe2dd) {
+		// e2dd seems designed specifically for fix...
+		// used by kof99 for all the loading screens
+		if ((target & 0xe00000) != 0xe00000) {
+		    // Normaly this should go through upload_write,
+		    // I absolutely need something in the upload area here
+		   printf("dma e2dd, target %x upload_type %x\n",target,upload_type);
+		   exit(1);
+	       }
+	       target -= 0xe00000;
+	       for (n=0; upload_len > 0; n+=2, upload_len--) {
+		   write_upload_word(target + n*2,src[n^1]);
+		   write_upload_word(target + n*2+2,src[(n+1)^1]);
+	       }
+	    }
+	    for (n=0; upload_len > 0; n+=2, upload_len--) {
+		WriteWord(&dst[n],ReadWord(&src[n]));
 	    }
 	}
     } else if (dma == 0xf2dd) { // transfer again but words inverted (useless !)
@@ -2444,19 +2466,11 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	print_debug("dma transfer from %s (%x) to %x len %x in words with inversion from %x\n",name,upload_src,target,upload_len,s68000readPC());
 	if (upload_len > max/4) upload_len = max/4;
 	UINT8 *src = dest;
-	UINT8 *dst = get_target(target);
-	if (fix) {
-	    for (n=0; upload_len > 0; n+=2, upload_len--) {
-		write_upload_word((n*2)*2,ReadWord68k(&src[n])>>8);
-		write_upload_word((n*2)*2+2,ReadWord68k(&src[n]));
-		write_upload_word((n*2+2)*2,ReadWord(&src[n])>>8);
-		write_upload_word((n*2+2)*2+2,ReadWord(&src[n]));
-	    }
-	} else {
-	    for (n=0; upload_len > 0; n+=2, upload_len--) {
-		WriteWord(&dst[n*2],ReadWord68k(&src[n]));
-		WriteWord(&dst[n*2+2],ReadWord(&src[n]));
-	    }
+	UINT8 *dst = get_target(target,&upload_len);
+	// Nothing specific for fix here, it would be reading from fix anyway...
+	for (n=0; upload_len > 0; n+=2, upload_len--) {
+	    WriteWord(&dst[n*2],ReadWord68k(&src[n]));
+	    WriteWord(&dst[n*2+2],ReadWord(&src[n]));
 	}
     } else if (dma == 0xfef5) {
 	// fill with address WriteLongSc / all adrs
@@ -2515,7 +2529,8 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
     UINT16 dma = ReadWord(&dma_mode[0]);
     if (upload_len && upload_src) {
 	if (dma == 0xffdd || dma == 0xffcd || dma == 0xcffd || dma == 0xfef5 ||
-		dma == 0xfe6d || dma == 0xf2dd || dma == 0xfe3d) {
+		dma == 0xfe6d || dma == 0xf2dd || dma == 0xfe3d ||
+	       	dma == 0xe2dd) {
 	    // ffdd is fill with data word
 	    // ffcd would be the same ??? not confirmed, see code at c08eca
 	    // for example, it looks very much the same !!!
