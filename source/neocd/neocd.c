@@ -501,7 +501,7 @@ void setup_neocd_bios() {
 
 static UINT16 result_code,pending_command,*neogeo_vidram,video_modulo,video_pointer;
 static UINT8 *neogeo_memorycard;
-UINT8 *neogeo_fix_memory,*native_fix,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
+UINT8 *neogeo_fix_memory,*native_fix,*native_spr,*video_fix_usage,*video_spr_usage,*bios_fix_usage;
 
 static UINT8 temp_fix_usage[0x300],saved_fix;
 
@@ -595,7 +595,7 @@ static UINT16 read_sound_cmd(UINT32 offset) {
 }
 
 static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled,
-	   pcm_bank,spr_bank,fix_min,fix_max;
+	   pcm_bank,spr_bank,fix_cur,fix_write;
 
 static void write_sound_command(UINT32 offset, UINT16 data) {
   if (z80_enabled && RaineSoundCard) {
@@ -1362,7 +1362,6 @@ void neogeo_read_gamename(void)
       break;
     }
   }
-  printf("read_game_name %s\n",config_game_name);
   while (config_game_name[temp-1] == ' ')
     temp--;
   config_game_name[temp] = 0;
@@ -2090,8 +2089,8 @@ static void neogeo_hreset(void)
 {
   // The region_code can be set from the gui, even with an empty ram
   frame_count = 0;
-  fix_min = 0x20000;
-  fix_max = 0;
+  fix_cur = -1;
+  fix_write = 0;
   fix_mask = get_region_size(REGION_FIXED)-1;
   fix_banked = fix_mask > 0x1ffff;
   if (saved_fix)
@@ -2175,9 +2174,6 @@ void postprocess_ipl() {
   // starts. This has to be in a separate function because process_ipl can
   // now be called many times before really finishing to process ipl.txt.
 
-  /* read game name */
-  neogeo_read_gamename();
-
   SetLanguageSwitch(region_code);
   if (old_name != current_game->main_name) {
     load_game_config();
@@ -2235,15 +2231,13 @@ static int upload_type,mx,my;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
 static void do_fix_conv() {
-    if (fix_max) {
+    if (fix_cur > -1) {
 	// We have something written in the fix area...
-	fix_min = (fix_min/32)*32;
-	fix_max = (fix_max/32)*32+31;
-	fix_conv(native_fix + fix_min,
-	       	neogeo_fix_memory + fix_min, (fix_max-fix_min+1),
-	       	video_fix_usage + (fix_min>>5));
-	fix_min = 0x20000;
-	fix_max = 0;
+	fix_conv(native_fix,
+	       	neogeo_fix_memory + fix_cur, 32,
+	       	video_fix_usage + (fix_cur>>5));
+	fix_cur = -1;
+	fix_write = 0;
     }
 }
 
@@ -2313,10 +2307,18 @@ static int read_upload(int offset) {
 
     case FIX_TYPE:
       offset >>=1;
-      /* Reading from fix is only done in test mode, so no need to bother
-       * with encoding, just return the fix memory as is */
-      if (offset < 0x20000)
-	  return native_fix[offset] | 0xff00;
+      if (offset < 0x20000) {
+	  int n = offset / 32 * 32;
+	  if (fix_cur > -1 && fix_cur != n && fix_write) // changed char
+	      do_fix_conv();
+	  if (fix_cur != n) {
+	      fix_cur = n;
+	      fix_inv_conv(neogeo_fix_memory + fix_cur,
+		      native_fix,
+		      32);
+	  }
+	  return native_fix[offset - n] | 0xff00;
+      }
       return 0xffff;
     case SPR_TYPE:
       offset += (spr_bank<<20);
@@ -2345,18 +2347,7 @@ static int read_upload(int offset) {
 
 static void write_upload(int offset, int data);
 static void write_upload_word(UINT32 offset, UINT16 data) {
-  /* Notice : the uploads are still NOT fully emulated, see the asm code at
-   * c00546 for that. Mainly there are 2 methods of transfer depending on the
-   * value of bit 4 of zone. But anyway this code seems to work with all
-   * known games, so it's enough for me... */
-  // Notice that interrupts must be disabled during an upload,
-  // This is taken care of by irq.disable_w
-  int zone = RAM[0x10FEDA ^ 1];
-  int bank = RAM[0x10FEDB ^ 1];
-  UINT32 offset2,size;
-  size = ReadLongSc(&RAM[0x10FEFC]);
-  if (size == 0 && upload_type != 0xff) {
-    zone = get_upload_type();
+    int zone = get_upload_type();
     if (zone == Z80_TYPE) {
       // The z80 seems to be the only interesting area for bytes accesses
       // like this...
@@ -2370,178 +2361,19 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
 	    WriteWord(&GFX[offset],data);
 	return;
     } else if (zone == PCM_TYPE) {
-      offset = ((offset&0xfffff)>>1) + (pcm_bank<<19);
-      if (offset < 0x100000) {
-	PCMROM[offset] = data;
-      } else {
-	print_debug("overflow pcm write %x,%x\n",offset,data);
-      }
-      return;
+	offset = ((offset&0xfffff)>>1) + (pcm_bank<<19);
+	if (offset < 0x100000) {
+	    PCMROM[offset] = data;
+	} else {
+	    print_debug("overflow pcm write %x,%x\n",offset,data);
+	}
+	return;
     } else if (zone == FIX_TYPE) {
 	write_upload(offset,data);
 	return;
     } else {
       print_debug("direct write to zone %d offset/2 = %x???\n",zone,offset/2);
     }
-  }
-  UINT8 *dest,*Source;
-
-  if (size <= 0) {
-    return;
-  }
-  offset2 = ReadLongSc(&RAM[0x10FEF8]);
-  if (offset2 > 0xc00000) {
-    offset2 -= 0xc00000;
-    Source = neocd_bios + offset2;
-    if (offset2 + size > 0x80000) {
-	/* Most noticeable overflow here is with the front loading bios ! */
-	print_debug("bios overflow in upload, got offset %x size %x\n",offset2,size);
-	size = 0x80000-offset2;
-	print_debug("new size %x\n",size);
-    }
-  } else if (offset2 < 0x200000)
-    Source = RAM + offset2;
-  else {
-    // never happens
-    printf("offset source : %x ???\n",offset2);
-    exit(1);
-  }
-  print_debug("upload_word offset direct %x zone %x\n",offset,zone);
-  offset = ReadLongSc(&RAM[0x10FEF4]);
-  // zone 2 starts from the end, but zone 0x12 starts from the start !!!
-  // maybe it happens for the other areas as well (not confirmed yet)
-  if (!(zone & 0x10) && ((zone & 0xf) != PAT_TYPE)) {
-    // PAT_TYPE ignores bit 4, confirmed in bios
-    if ((zone & 0xf) == PCM_TYPE) {
-      if (offset + size*2 > 0x100000) {
-	printf("offset %x + %x*2 > 0x100000\n",offset,size);
-	exit(1);
-      }
-    } else
-      // This offset is to be confirmed, I am not 100% sure that it is
-      // used for all the zones, too lazy to check all the asm code...
-      offset -= size;
-    if (offset & 0xf0000000) {
-      printf("offset < 0, returns... zone %x\n",zone);
-      return;
-    }
-  }
-
-  /* Awkward emulation of the upload area, the area used by the bios to transfer
-   * different types of data to the system.
-   * It's done with the help of some variables in RAM (instead of some hw
-   * registers). Instead of emulating the transfers byte by byte, I try to
-   * processs them as a whole, it makes much more sense for sprites for example
-   * and is also more efficient. It might not work if a game tries to use this
-   * area without using the bios, but I didn't find such a game yet ! */
-
-  switch (zone & 0xf) {
-    case    PRG_TYPE:
-      if (offset > 0x200000) {
-	// never happens neither
-	print_debug("upload to outside the ram ??? %x\n",offset);
-	break;
-      }
-      dest = RAM + offset;
-      print_debug("upload PRG src %x dest %x size %x\n",ReadLongSc(&RAM[0x10FEF8]),offset,size);
-      memcpy(dest, Source, size);
-      WriteLongSc( &RAM[0x10FEF4], offset+size );
-      break;
-
-    case SPR_TYPE: /* SPR */
-      offset += (spr_bank<<20);
-      dest = GFX + offset*2;
-      if (offset + size > 0x400000) {
-	size = 0x400000 - offset;
-	print_debug("warning: size fixed for sprite upload %d\n",size);
-      }
-      if (size > 0) {
-	file_cache("upload",offset*2,size*2,SPR_TYPE); // for the savegames
-	ByteSwap(Source,size);
-	spr_conv(Source, dest, size, video_spr_usage+(offset>>7));
-	ByteSwap(Source,size);
-      }
-      print_debug("upload SPR dest %x size %x\n",offset*2,size);
-
-      offset += size;
-
-      while (offset > 0x100000 )
-      {
-	spr_bank++;
-	offset -= 0x100000;
-      }
-
-      WriteLongSc( &RAM[0x10FEF4], offset );
-      WriteWord(&RAM[0x10fedb],spr_bank);
-      break;
-    case    FIX_TYPE:
-      dest = neogeo_fix_memory + (offset>>1);
-      if ((offset >> 1)+size > 0x20000) {
-	  print_debug("upload outside of fix limits\n");
-	  break;
-      }
-      if (ReadLongSc(&RAM[0x10FEF8]) < 0xc00000)
-	ByteSwap(Source,size);
-      fix_conv(Source, dest, size, video_fix_usage + (offset>>6));
-      if (ReadLongSc(&RAM[0x10FEF8]) < 0xc00000)
-	ByteSwap(Source,size);
-      print_debug("upload FIX dest %x size %x from %x zone %x\n",offset,size,ReadLongSc(&RAM[0x10FEF8]),zone);
-      file_cache("upload",offset/2,size,FIX_TYPE); // for the savegames
-
-      offset += (size<<1);
-      WriteLongSc( &RAM[0x10FEF4], offset);
-      break;
-    case    Z80_TYPE:    // Z80
-      dest = Z80ROM + (offset>>1);
-      if ((offset >> 1)+size > 0x10000) {
-	  print_debug("upload outside z80 limits\n");
-	  size = 0x10000 - (offset >> 1);
-	  if (size > 0xffff) break;
-      }
-      print_debug("upload Z80 dest %x size %x\n",offset>>1,size);
-      memcpy(dest,Source,size);
-      ByteSwap(dest,size);
-      WriteLongSc( &RAM[0x10FEF4], offset + (size<<1) );
-      break;
-    case    PAT_TYPE:    // Z80 patch
-      print_debug("upload PAT offset %x size %x\n",offset,size);
-      neogeo_cdrom_apply_patch((short*)Source, (((bank*0x100000) + offset)/256)&0xFFFF);
-      break;
-    case    PCM_TYPE:
-      offset = (offset>>1) + (bank<<19);
-      file_cache("upload",offset,size,PCM_TYPE);
-      dest = PCMROM + offset;
-      if (offset + size > 0x100000) {
-	print_debug("adjusting size for upload pcm area from %d\n",size);
-	size = 0x100000 - offset;
-      }
-
-      memcpy(dest,Source,size);
-      ByteSwap(dest,size);
-      print_debug("upload PCM offset %x size %x\n",offset,size);
-
-      // Mise à jour des valeurs
-      offset = ReadLongSc(&RAM[ 0x10FEF4] ) + (size<<1);
-
-      while (offset > 0x100000 )
-      {
-	bank++;
-	offset -= 0x100000;
-      }
-
-      WriteLongSc( &RAM[0x10FEF4], offset );
-      RAM[0x10FEDB ^ 1] = (bank>>8)&0xFF;
-      RAM[0x10FEDC ^ 1] = bank&0xFF;
-      break;
-    default:
-      //sprintf(mem_str,"write_upload_word unimplemented zone %x\n",zone);
-      //debug_log(mem_str);
-      print_debug("write_upload_word: unmapped zone %x bank %x\n",zone,bank);
-      break;
-  }
-  WriteLongSc( &RAM[0x10FEFC], 0); // set the size to 0 to avoid to loop
-  print_debug("upload size reset\n");
-  upload_type = 0xff; // and be sure to disable this too in this case.
 }
 
 UINT8 *get_target(UINT32 target) {
@@ -2550,7 +2382,19 @@ UINT8 *get_target(UINT32 target) {
 	dst = &RAM[target];
     else if (target >= 0x400000 && target <= 0x420000)
 	dst = &RAM_PAL[target-0x400000];
-    else {
+    else if (target >= 0xe00000) {
+	if (upload_type == 0) { // spr
+	    /* Huge hack !!! */
+	    dst = NULL;
+	    print_debug("target in sprites\n");
+	} else if (upload_type == 1) { // pcm
+	    target = ((target & 0xfffff)>>1) + (pcm_bank<<19);
+	    dst = &PCMROM[target];
+	} else {
+	    printf("can't find target %x upload_type %x\n",target,upload_type);
+	    exit(1);
+	}
+    } else {
 	printf("don't know how to handle target %x\n",target);
 	exit(1);
     }
@@ -2563,14 +2407,38 @@ static void do_dma(char *name,UINT8 *dest, int max) {
     int upload_src = ReadLongSc(&upload_param[0]);
     int upload_len = ReadLongSc(&upload_param[12]);
     int n;
-    if (dma == 0xfe6d) { // transfer in words
+    int fix = (dest == neogeo_fix_memory); // special case for fix !
+    if (dma == 0xfe6d || dma == 0xfe3d) { // transfer in words
 	UINT32 target = ReadLongSc(&upload_param[4]);
 	print_debug("dma transfer from %s (%x) to %x len %x in words from %x\n",name,upload_src,target,upload_len,s68000readPC());
 	if (upload_len > max/2) upload_len = max/2;
 	UINT8 *src = dest;
+	if (upload_src < 0x200000) src += upload_src;
 	UINT8 *dst = get_target(target);
-	for (n=0; upload_len > 0; n+=2, upload_len--) {
-	    WriteWord(&dst[n],ReadWord(&src[n]));
+	if (!dst) {
+	    // This is a hack, but for now, I'd prefer to avoid to do the
+	    // reverse conversion of sprites !
+	    int offset = (spr_bank<<20) + target - 0xe00000;
+	    int size = upload_len*2;
+	    if (offset + size > 0x400000) {
+		size = 0x400000 - offset;
+		print_debug("spr_conv: size limited\n");
+	    }
+	    print_debug("spr_conv src %x offset %x len %x target %x\n",src-RAM,offset*2,size,target);
+	    ByteSwap(src,size);
+	    spr_conv(src,GFX + offset*2,size,video_spr_usage + (offset >> 7));
+	    ByteSwap(src,size);
+	} else {
+	    if (fix) {
+		for (n=0; upload_len > 0; n+=2, upload_len--) {
+		    write_upload_word(n*2,ReadWord(&src[n])>>8);
+		    write_upload_word(n*2+2,ReadWord(&src[n]));
+		}
+	    } else {
+		for (n=0; upload_len > 0; n+=2, upload_len--) {
+		    WriteWord(&dst[n],ReadWord(&src[n]));
+		}
+	    }
 	}
     } else if (dma == 0xf2dd) { // transfer again but words inverted (useless !)
 	// for each word abcd in source, generate abcd and then cdab !
@@ -2579,9 +2447,18 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	if (upload_len > max/4) upload_len = max/4;
 	UINT8 *src = dest;
 	UINT8 *dst = get_target(target);
-	for (n=0; upload_len > 0; n+=2, upload_len--) {
-	    WriteWord(&dst[n*2],ReadWord68k(&src[n]));
-	    WriteWord(&dst[n*2+2],ReadWord(&src[n]));
+	if (fix) {
+	    for (n=0; upload_len > 0; n+=2, upload_len--) {
+		write_upload_word((n*2)*2,ReadWord68k(&src[n])>>8);
+		write_upload_word((n*2)*2+2,ReadWord68k(&src[n]));
+		write_upload_word((n*2+2)*2,ReadWord(&src[n])>>8);
+		write_upload_word((n*2+2)*2+2,ReadWord(&src[n]));
+	    }
+	} else {
+	    for (n=0; upload_len > 0; n+=2, upload_len--) {
+		WriteWord(&dst[n*2],ReadWord68k(&src[n]));
+		WriteWord(&dst[n*2+2],ReadWord(&src[n]));
+	    }
 	}
     } else if (dma == 0xfef5) {
 	// fill with address WriteLongSc / all adrs
@@ -2592,21 +2469,43 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 		WriteLongSc(&dest[n],n);
 	    }
 	else
-	    for (n=0; upload_len > 0; n+=4, upload_len--) {
-		WriteLongSc(&dest[n],upload_src + n);
+	    if (fix) {
+		for (n=0; upload_len > 0; n+=4, upload_len--) {
+		    write_upload_word(n*2,(upload_src + n) >> 24);
+		    write_upload_word(n*2+2,(upload_src + n) >> 16);
+		    write_upload_word(n*2+4,(upload_src + n) >> 8);
+		    write_upload_word(n*2+6,(upload_src + n));
+		}
+	    } else {
+		for (n=0; upload_len > 0; n+=4, upload_len--) {
+		    WriteLongSc(&dest[n],upload_src + n);
+		}
 	    }
     } else if (dma == 0xcffd) {
 	// fill with address WriteLong68k / adr * 2
 	print_debug("%s fill with adr dma %x len %x from %x\n",name,dma,upload_len,s68000readPC());
 	if (upload_len > max/4) upload_len = max/4;
-	for (n=0; upload_len > 0; n+=4, upload_len--) {
-	    WriteLong68k(&dest[n],upload_src + n*2);
+	if (fix) {
+	    for (n=0; upload_len > 0; n+=4, upload_len--) {
+		write_upload_word(n*2,(upload_src + n*2)>>24);
+		write_upload_word(n*2+2,(upload_src + n*2)>>16);
+		write_upload_word(n*2+4,(upload_src + n*2)>>8);
+		write_upload_word(n*2+6,(upload_src + n*2));
+	    }
+	} else {
+	    for (n=0; upload_len > 0; n+=4, upload_len--) {
+		WriteLong68k(&dest[n],upload_src + n*2);
+	    }
 	}
     } else {
 	print_debug("%s fill with %x dma %x src %x len %x from %x\n",name,upload_fill,dma,upload_src,upload_len,s68000readPC());
 	if (upload_len > max/2) upload_len = max/2;
 	for (n=(upload_src < 0x200000 ? upload_src : 0); upload_len > 0; n+=2, upload_len--) {
-	    WriteWord(&dest[n],upload_fill);
+	    if (fix) {
+		write_upload_word(n*2,upload_fill);
+		write_upload_word(n*2+2,upload_fill);
+	    } else
+		WriteWord(&dest[n],upload_fill);
 	}
     }
 }
@@ -2618,7 +2517,7 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
     UINT16 dma = ReadWord(&dma_mode[0]);
     if (upload_len && upload_src) {
 	if (dma == 0xffdd || dma == 0xffcd || dma == 0xcffd || dma == 0xfef5 ||
-		dma == 0xfe6d || dma == 0xf2dd) {
+		dma == 0xfe6d || dma == 0xf2dd || dma == 0xfe3d) {
 	    // ffdd is fill with data word
 	    // ffcd would be the same ??? not confirmed, see code at c08eca
 	    // for example, it looks very much the same !!!
@@ -2637,9 +2536,7 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 	    } else if (upload_type == 4) // z80 fill !
 		do_dma("z80", Z80ROM, 0x10000);
 	    else if (upload_type == 5) { // fix
-		do_dma("fix",native_fix,0x20000);
-		fix_min = upload_src & 0xfffff;
-		fix_max = upload_len >> 2;
+		do_dma("fix",neogeo_fix_memory,0x20000);
 	    } else if (upload_type == 0) // spr
 		do_dma("spr",&GFX[spr_bank<<20],0x800000-(spr_bank<<20));
 	    else {
@@ -2670,16 +2567,17 @@ static void write_upload(int offset, int data) {
       offset &= 0x3ffff;
       offset >>=1;
       if (offset < 0x20000) {
-	  /* native_fix : it's almost never useful to keep a copy of the
-	   * decoded data, I know no game which requires this.
-	   * It's useful only when using the 007Z bios testing mode, it
-	   * saves its fix area to ram, and then restores it after multiple
-	   * overwrites, the only way the restoration can work is to keep this
-	   * copy here.  It's only 128k, and it's supposed to be this way... */
-	  native_fix[offset] = data;
-	  if (offset < fix_min) fix_min = offset;
-	  if (offset > fix_max) fix_max = offset;
-	  // Converted when a write goes to ff0149, some fix unlock register
+	  int n = offset / 32 * 32;
+	  if (fix_cur > -1 && fix_cur != n && fix_write) // changed char
+	      do_fix_conv();
+	  if (fix_cur != n) {
+	      fix_cur = n;
+	      fix_write = 1;
+	      fix_inv_conv(neogeo_fix_memory + fix_cur,
+		      native_fix,
+		      32);
+	  }
+	  native_fix[offset - n] = data;
       }
   } else
       write_upload_word(offset,data);
@@ -4570,7 +4468,7 @@ void load_neocd() {
 	// mode tests for now !
 	if(!(GFX=AllocateMem(0x800000))) return; // sprites data, not ram (unpacked)
 	if(!(neogeo_fix_memory=AllocateMem(0x20000))) return;
-	if(!(native_fix=AllocateMem(0x20000))) return;
+	if(!(native_fix=AllocateMem(32))) return;
 	if(!(video_fix_usage=AllocateMem(4096))) return; // 0x20000/32 (packed)
 	nb_sprites = 0x8000;
 	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;

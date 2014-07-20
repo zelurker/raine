@@ -878,6 +878,67 @@ int    neogeo_cdrom_load_prg_file(char *FileName, unsigned int Offset)
   return size;
 }
 
+void    fix_inv_conv(UINT8 *Src, UINT8 *Ptr, int Taille)
+{
+    // Does the opposite of fix_conv : from a converted area, recreate the
+    // original data
+    int        i;
+    UINT8 *orig_ptr = Ptr;
+    for(i=Taille;i>0;i-=32) {
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr++;
+
+	*(Ptr+16) = *Src++;
+	*(Ptr+24) = *Src++;
+	*(Ptr) = *Src++;
+	*(Ptr+8) = *Src++;
+	Ptr+=25;
+    }
+    Ptr = orig_ptr;
+    for (i=0; i<Taille; i++) {
+	Ptr[i] = (Ptr[i]>>4) | ((Ptr[i]<<4));
+    }
+}
+
 void    fix_conv(UINT8 *Src, UINT8 *Ptr, int Taille, unsigned char *usage_ptr)
 {
   int        i;

@@ -25,6 +25,7 @@ extern int total_sectors, sectors_to_load,loaded_sectors, cdrom_speed,nb_tracks;
 void init_load_type();
 void neogeo_cdrom_load_title(void);
 void    fix_conv(UINT8 *Src, UINT8 *Ptr, int Taille, unsigned char *usage_ptr);
+void    fix_inv_conv(UINT8 *Src, UINT8 *Ptr, int Taille);
 int    neogeo_cdrom_process_ipl(loading_params *params);
 void    neogeo_cdrom_load_files(UINT8 *Ptr);
 void spr_conv(UINT8 *src, UINT8 *dst, int len, unsigned char *usage_ptr);
