@@ -1204,8 +1204,6 @@ static void save_memcard() {
 	    fclose(f);
 	}
 	memcard_write = 0;
-	FreeMem(neogeo_memorycard);
-	neogeo_memorycard = NULL;
     }
     if (!is_neocd() && saveram.ram) {
 	char str[16];
@@ -5317,6 +5315,8 @@ void execute_neocd() {
 
 void clear_neocd() {
   save_memcard();
+  FreeMem(neogeo_memorycard);
+  neogeo_memorycard = NULL;
   saved_fix = 0;
   neocd_lp.function = 0; // required ONLY when changing region just before
   // loading another game !!!
