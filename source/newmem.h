@@ -43,6 +43,7 @@ void ResetMemoryPool(void);
 
 void FreeMemoryPool(void);
 int GetMemoryPoolSize();
+void ByteSwap(UINT8 *MEM, UINT32 size);
 
 #endif // __newmem_h_
 

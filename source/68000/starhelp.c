@@ -9,6 +9,7 @@
 #include "savegame.h"
 #include "games/default.h"
 #include "loadroms.h"
+#include "newmem.h"
 
 struct S68000CONTEXT            M68000_context[MAX_68000];
 static struct STARSCREAM_PROGRAMREGION M68000_programregion[MAX_68000][MAX_PROGRAM];
@@ -714,14 +715,6 @@ void DefBadWriteByte(UINT32 address, UINT8 data)
 void DefBadWriteWord(UINT32 address, UINT16 data)
 {
       print_debug("WW(%06x,%04x) [%06x]\n",address,data,s68000readPC());
-}
-
-void ByteSwap(UINT8 *MEM, UINT32 size)
-{
-   UINT32 ta;
-   for(ta=0;ta<size;ta+=2){
-      WriteWord(&MEM[ta],ReadWord68k(&MEM[ta]));
-   }
 }
 
 typedef struct OLD_CONTEXT

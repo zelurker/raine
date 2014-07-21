@@ -5,6 +5,7 @@
 #include "cpumain.h"
 #include "exec.h"
 #include "files.h"
+#include "newmem.h"
 #include "starhelp.h"
 #include "sdl/gui.h"
 

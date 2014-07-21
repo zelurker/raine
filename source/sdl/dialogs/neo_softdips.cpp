@@ -2,6 +2,7 @@
 #include "games.h"
 #include "raine.h"
 #include "starhelp.h"
+#include "newmem.h"
 #include "cpumain.h"
 #include "neocd/neocd.h"
 #include "files.h"

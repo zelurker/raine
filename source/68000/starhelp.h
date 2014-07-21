@@ -90,7 +90,6 @@ void DefBadWriteWord(UINT32 address, UINT16 data);
  *  Byte Swapping
  */
 
-void ByteSwap(UINT8 *MEM, UINT32 size);
 void finish_conf_68000(int cpu);
 
 void set_68000_io(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);

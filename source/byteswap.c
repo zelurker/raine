@@ -1,13 +1,6 @@
 #include "raine.h"
 #include "files.h"
-
-void ByteSwap(UINT8 *MEM, UINT32 size)
-{
-   UINT32 ta;
-   for(ta=0;ta<size;ta+=2){
-      WriteWord(&MEM[ta],ReadWord68k(&MEM[ta]));
-   }
-}
+#include "newmem.h"
 
 int main(int argc, char **argv) {
     if (argc == 1) {

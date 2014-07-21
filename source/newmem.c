@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "deftypes.h"
-#include "debug.h"
+#include "raine.h"
 #include "loadroms.h" // load_error
 
 static void *MemoryPool[256];	// Pointers to allocated memory areas
@@ -68,6 +67,7 @@ void *AllocateMem(UINT32 size)
 
       */
 
+#ifndef STANDALONE
       sprintf(
          load_debug+strlen(load_debug),
          "ERROR: Unable to allocate memory\n"
@@ -81,6 +81,7 @@ void *AllocateMem(UINT32 size)
       );
 
       load_error |= LOAD_FATAL_ERROR;
+#endif
 
       // print_debug("alloc_mem(0x%08X) FAILED [0x%02X blocks; 0x%08X total]\n", size, MemoryPoolCount, MemoryPoolSize);
 
@@ -154,6 +155,14 @@ void FreeMemoryPool(void)
    ResetMemoryPool();
 
    //print_debug("END: FreeMemoryPool();\n");
+}
+
+void ByteSwap(UINT8 *MEM, UINT32 size)
+{
+   UINT32 ta;
+   for(ta=0;ta<size;ta+=2){
+      WriteWord(&MEM[ta],ReadWord68k(&MEM[ta]));
+   }
 }
 
 #ifdef MEMORY_DEBUG
