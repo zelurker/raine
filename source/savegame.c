@@ -113,7 +113,7 @@ void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
   }
   for (n=0; n<SaveDataCount; n++) {
-    if (save_data_list[n].id == id) {
+    if (save_data_list[n].id == id && save_data_list[n].source != src) {
 	print_debug("AddSaveData: collision for id %x\n",id);
       save_data_list[n].source = src;
       save_data_list[n].size   = size;
@@ -140,7 +140,8 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
 
   for (n=0; n<SaveDataCount; n++) {
     if (save_data_list[n].id == SAVE_EXT &&
-	    !strcmp(save_data_list[n].name,name)) {
+	    !strcmp(save_data_list[n].name,name) &&
+	    save_data_list[n].source != src) {
 	print_debug("AddSaveData: collision for extended name %s\n",name);
       save_data_list[n].source = src;
       save_data_list[n].size   = size;

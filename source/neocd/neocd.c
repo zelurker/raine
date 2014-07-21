@@ -4203,7 +4203,7 @@ static void pvc_prot_wb(UINT32 offset, UINT8 data) {
 
 static int init_pvc() {
     if (!(pvc_cart = AllocateMem(0x2000))) return 0;
-    AddSaveData(SAVE_USER_2,pvc_cart,0x2000);
+    AddSaveData_ext("pvc",pvc_cart,0x2000);
     AddReadBW(0x2fe000,0x2fffff,NULL, pvc_cart);
     AddWriteWord(0x2fe000,0x2fffff,pvc_prot_w, NULL);
     AddWriteByte(0x2fe000,0x2fffff,pvc_prot_wb, NULL);
@@ -4735,7 +4735,7 @@ void load_neocd() {
 	    AddReadBW(0,0xfffff, NULL, ROM);
 	    neogeo_rng = 0x2345;
 	    prot = 0x9a37;
-	    AddSaveData(SAVE_USER_2,(UINT8*)&neogeo_rng, sizeof(neogeo_rng));
+	    AddSaveData_ext("neogeo_rng",(UINT8*)&neogeo_rng, sizeof(neogeo_rng));
 	    if (is_current_game("kof99") || is_current_game("kof99h")) {
 		// The 68k decode must be done after the byteswap, lots of
 		// bitswap to decrypt this...
@@ -4858,7 +4858,7 @@ void load_neocd() {
 	if (is_current_game("fatfury2")) {
 	    AddReadWord(0x200000, 0x2fffff, fatfury2_prot_rw, NULL);
 	    AddWriteWord(0x200000, 0x2fffff, fatfury2_prot_ww, NULL);
-	    AddSaveData(SAVE_USER_2, (UINT8*)&fatfury2_prot_data, sizeof(fatfury2_prot_data));
+	    AddSaveData_ext("fatfury2_prot_data", (UINT8*)&fatfury2_prot_data, sizeof(fatfury2_prot_data));
 	} else if (is_current_game("kof98"))
 	    AddWriteBW(0x20aaaa, 0x20aaab, kof98_prot_w, NULL);
 	else if (is_current_game("kof99") || is_current_game("kof99h")) {
