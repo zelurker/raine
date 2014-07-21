@@ -12,6 +12,7 @@
 #include "deftypes.h"
 #include <sys/stat.h>
 #include "debug.h"
+#include "files.h"
 #if !defined(RAINE_WIN32) && !defined(stricmp)
 #define stricmp strcasecmp
 #endif
@@ -374,13 +375,6 @@ static void set_config(CONFIG **config, char *data, int length, char *filename)
    }
 }
 
-static int file_size(char *filename) {
-  struct stat buff;
-  if (stat(filename,&buff)<0)
-    buff.st_size = 0;
-  return buff.st_size;
-}
-
 /* load_config_file:
  *  Does the work of loading a config file.
  */
@@ -393,7 +387,7 @@ static void load_config_file(CONFIG **config, char *filename, char *savefile)
       *config = NULL;
    }
 
-   length = file_size(filename);
+   length = size_file(filename);
 
    if (length > 0) {
      FILE *f = fopen(filename, "rb");

@@ -136,24 +136,10 @@ int save_file(char *filename, UINT8 *source, UINT32 size)
 
 int size_file(char *filename)
 {
-   int len;
-   FILE *file_ptr;
-
-   len = 0;
-
-   file_ptr = fopen(filename,"rb");
-
-   if(file_ptr){
-
-      if(!(fseek(file_ptr,0,SEEK_END))){
-         len = ftell(file_ptr);
-         if(len<0) len=0;
-      }
-
-      fclose(file_ptr);
-   }
-
-   return len;
+    struct stat buff;
+    if (stat(filename,&buff)<0)
+	buff.st_size = 0;
+    return buff.st_size;
 }
 
 /*
