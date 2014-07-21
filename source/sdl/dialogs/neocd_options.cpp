@@ -26,6 +26,7 @@ static char *neo_names[] =
     "NEO-MVH MV1C",
     "Japan MVS (J3)",
     "Custom Japanese Hotel",
+    "Universe Bios (Hack, Ver. 3.1)",
     "Universe Bios (Hack, Ver. 3.0)",
     "Universe Bios (Hack, Ver. 2.3)",
     "Universe Bios (Hack, Ver. 2.2)",

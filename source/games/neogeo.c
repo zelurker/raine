@@ -17,6 +17,8 @@
 
 extern struct SOUND_INFO sound_neocd[];
 
+// Bios names are in neocd_options.c in sdl/dialogs, not really convenient
+// but this is not updated often...
 static struct ROM_INFO rom_bios[] = // struct used to select bios
 {
   { "sp-s2.sp1", 0x020000, 0x9036d879, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
@@ -30,6 +32,7 @@ static struct ROM_INFO rom_bios[] = // struct used to select bios
   { "sp-45.sp1", 0x080000, 0x03cc9f6a, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "japan-j3.bin", 0x020000, 0xdff6d41f, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "sp-1v1_3db8c.bin", 0x020000, 0x162f0ebe, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_3_1.rom", 0x020000, 0x0c58093f, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "uni-bios_3_0.rom", 0x020000, 0xa97c89a9, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "uni-bios_2_3.rom", 0x020000, 0x27664eb5, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "uni-bios_2_2.rom", 0x020000, 0x2d50996a, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
