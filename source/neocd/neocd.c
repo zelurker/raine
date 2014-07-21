@@ -1378,10 +1378,12 @@ void neogeo_read_gamename(void)
   while (game->name && game->id != neocd_id)
     game++;
 
-  if (neocd_id == 0x48 || neocd_id == 0x0221) {
+  if (neocd_id == 0x48 || neocd_id == 0x0221 || !strncmp(current_game->main_name,"aof3",4)) {
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
     // nor for magical drop 2 (it sets manually the vbl bit for the controls
     // on the main menu to work, which makes the speed hack much more complex!
+    // And aof3 has a problem on the background on the demo with the water
+    // fall if speed hacks are enabled. Didn't investigate why (neocd & neogeo)
   }
 
   if (!is_neocd())
