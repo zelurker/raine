@@ -989,8 +989,16 @@ endif
 
 all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
 
-byteswap: $(OBJDIR)/byteswap.o
-	gcc -m32 -o byteswap $^
+CFLAGS_BS = -Wall -O2 `sdl-config --cflags` $(INCDIR) -DSTANDALONE -DNO_GZIP -c
+
+byteswap: $(OBJDIR)/byteswap.o $(OBJDIR)/files_b.o
+	gcc -o byteswap $^
+
+$(OBJDIR)/byteswap.o: source/byteswap.c
+	gcc $(CFLAGS_BS) -DSDL -o $@ $<
+
+$(OBJDIR)/files_b.o: source/files.c
+	gcc $(CFLAGS_BS) -DSDL -o $@ $<
 
 depend:
 	@echo dependencies : if you get an error here, install the required dev package

@@ -39,6 +39,7 @@
 #define my_mkdir(name) mkdir(name, 0700)
 #endif
 
+#ifndef STANDALONE
 static char shared[1024];
 
 char *get_shared(char *name) {
@@ -75,6 +76,7 @@ char *get_shared(char *name) {
   print_debug("get_shared: using direct name access %s\n",shared);
   return shared;
 }
+#endif
 
 int is_dir(char *name) {
   struct stat buf;
@@ -88,6 +90,7 @@ int is_dir(char *name) {
 void mkdir_rwx(const char *name) {
   char str[256];
   // If path is not absolute (relative then)
+#ifndef STANDALONE
   if
 #ifndef RAINE_UNIX
   (name[1] != ':' && name[0] != *SLASH)
@@ -97,9 +100,9 @@ void mkdir_rwx(const char *name) {
   {
     sprintf(str,"%s%s",dir_cfg.exe_path,name);
     my_mkdir(str);
-  } else { // absolute path, just do it
+  } else // absolute path, just do it
+#endif
     my_mkdir(name);
-  }
 }
 
 int load_file(char *filename, UINT8 *dest, UINT32 size)
@@ -133,7 +136,6 @@ int save_file(char *filename, UINT8 *source, UINT32 size)
       return 0;		// Failure
    }
 }
-
 int size_file(char *filename)
 {
     struct stat buff;
@@ -142,6 +144,45 @@ int size_file(char *filename)
     return buff.st_size;
 }
 
+#ifdef RAINE_DEBUG
+
+void save_debug(char *name, UINT8 *src, UINT32 size, UINT32 mode)
+{
+   if(debug_mode){
+      char str[256];
+
+      if(src){
+
+#if HAVE_68000
+         if(mode)
+            ByteSwap(src,size);
+#endif
+
+         sprintf(str,"%sdebug/%s", dir_cfg.exe_path, name);
+         save_file(str, src, size);
+
+         print_debug("Debug Save: '%s' saved.\n", name);
+
+      }
+      else{
+
+         print_debug("Debug Save: '%s' is NULL.\n", name);
+
+      }
+
+   }
+
+}
+
+#endif
+
+/* Basic file i/o functions */
+
+#if BYTE_ORDER != LITTLE_ENDIAN && BYTE_ORDER != BIG_ENDIAN
+#error endianess problem (PDP_ENDIAN ?)
+#endif
+
+#ifndef NO_GZIP
 /*
 
 find a file by filename
@@ -207,44 +248,6 @@ int unz_locate_file_crc32(unzFile file, UINT32 crc32)
 
 	return err;
 }
-
-#ifdef RAINE_DEBUG
-
-void save_debug(char *name, UINT8 *src, UINT32 size, UINT32 mode)
-{
-   if(debug_mode){
-      char str[256];
-
-      if(src){
-
-#if HAVE_68000
-         if(mode)
-            ByteSwap(src,size);
-#endif
-
-         sprintf(str,"%sdebug/%s", dir_cfg.exe_path, name);
-         save_file(str, src, size);
-
-         print_debug("Debug Save: '%s' saved.\n", name);
-
-      }
-      else{
-
-         print_debug("Debug Save: '%s' is NULL.\n", name);
-
-      }
-
-   }
-
-}
-
-#endif
-
-/* Basic file i/o functions */
-
-#if BYTE_ORDER != LITTLE_ENDIAN && BYTE_ORDER != BIG_ENDIAN
-#error endianess problem (PDP_ENDIAN ?)
-#endif
 
 int mgetl(gzFile file) {
   char nb[8], dest[4];
@@ -505,14 +508,6 @@ int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned in
   return -1;
 }
 
-int myfgets(char *buff, int size, FILE *f) {
-  fgets(buff,size,f);
-  int len = strlen(buff);
-  while (len > 0 && buff[len-1] < 32)
-    buff[--len] = 0;
-  return len;
-}
-
 int size_zipped(char *zipfile, char *name, int crc32)
 {
    unzFile uf;
@@ -560,6 +555,15 @@ int size_zipped(char *zipfile, char *name, int crc32)
       return file_info.uncompressed_size;
    else
       return 0;
+}
+#endif
+
+int myfgets(char *buff, int size, FILE *f) {
+  fgets(buff,size,f);
+  int len = strlen(buff);
+  while (len > 0 && buff[len-1] < 32)
+    buff[--len] = 0;
+  return len;
 }
 
 void backslash(char *s)
