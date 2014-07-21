@@ -159,6 +159,7 @@ int do_soft_dips(int sel) {
 	    x++;
 	    if (choices <= 1) {
 		free((char*)menu[nb].label);
+		menu[nb].label = NULL; // just in case it's the last one !
 		for (int n=0; n<choices; n++)
 		    if (menu[nb].values_list_label[n])
 			free(menu[nb].values_list_label[n]);

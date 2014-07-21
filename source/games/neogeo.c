@@ -1801,6 +1801,28 @@ static struct ROM_INFO rom_aof3[] = // clone of neogeo
 
 CLNEI( aof3, neogeo, "Art of Fighting 3 - The Path of the Warrior / Art of Fighting - Ryuuko no Ken Gaiden", SNK, 1996, GAME_BEAT);
 
+static struct ROM_INFO rom_aof3k[] = /* KOREAN VERSION */
+{
+  { "196-p1k.p1", 0x100000, 0xa0780789, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  { "096-p2.sp2", 0x200000, 0x4d5a2602, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "096-s1.s1", 0x20000, 0xcc7fd344, REGION_FIXED, 0x000000, LOAD_NORMAL },
+  { "096-m1.m1", 0x20000, 0xcb07b659, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "096-v1.v1", 0x200000, 0xe2c32074, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "096-v2.v2", 0x200000, 0xa290eee7, REGION_SMP1, 0x200000, LOAD_NORMAL },
+  { "096-v3.v3", 0x200000, 0x199d12ea, REGION_SMP1, 0x400000, LOAD_NORMAL },
+  { "096-c1.c1", 0x400000, 0xf17b8d89, REGION_SPRITES, 0x0000000, LOAD_8_16 },
+  { "096-c2.c2", 0x400000, 0x3840c508, REGION_SPRITES, 0x0000001, LOAD_8_16 },
+  { "096-c3.c3", 0x400000, 0x55f9ee1e, REGION_SPRITES, 0x0800000, LOAD_8_16 },
+  { "096-c4.c4", 0x400000, 0x585b7e47, REGION_SPRITES, 0x0800001, LOAD_8_16 },
+  { "096-c5.c5", 0x400000, 0xc75a753c, REGION_SPRITES, 0x1000000, LOAD_8_16 },
+  { "096-c6.c6", 0x400000, 0x9a9d2f7a, REGION_SPRITES, 0x1000001, LOAD_8_16 },
+  { "096-c7.c7", 0x200000, 0x51bd8ab2, REGION_SPRITES, 0x1800000, LOAD_8_16 },
+  { "096-c8.c8", 0x200000, 0x9a34f99c, REGION_SPRITES, 0x1800001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( aof3k, aof3, "Art of Fighting 3 - The Path of the Warrior (Korean release)", SNK, 1996, GAME_BEAT);
+
 static struct ROM_INFO rom_sonicwi3[] =
 {
   { "097-p1.p1", 0x100000, 0x0547121d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
