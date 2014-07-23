@@ -595,7 +595,7 @@ static UINT16 read_sound_cmd(UINT32 offset) {
 }
 
 static int z80_enabled,direct_fix,spr_disabled,fix_disabled,video_enabled,
-	   pcm_bank,spr_bank,fix_cur,fix_write;
+	   pcm_bank,spr_bank,fix_cur,fix_write,spr_min,spr_max;
 
 static void write_sound_command(UINT32 offset, UINT16 data) {
   if (z80_enabled && RaineSoundCard) {
@@ -2089,6 +2089,8 @@ static void neogeo_hreset(void)
   frame_count = 0;
   fix_cur = -1;
   fix_write = 0;
+  spr_min = 0x800000;
+  spr_max = 0;
   fix_mask = get_region_size(REGION_FIXED)-1;
   fix_banked = fix_mask > 0x1ffff;
   if (saved_fix)
@@ -2239,6 +2241,24 @@ static void do_fix_conv() {
     }
 }
 
+static void do_spr_conv() {
+    if (spr_max > 0) {
+	UINT8 *tmp;
+	int len = spr_max-spr_min+1;
+	print_debug("do_spr_conv %x,%x\n",spr_min,spr_max);
+	if (!(tmp = AllocateMem(len))) return;
+	memcpy(tmp,&GFX[spr_min],len);
+	ByteSwap(tmp,len); // a catch : incompatible with starscream
+	spr_conv(tmp,
+		&GFX[spr_min*2],
+		len,
+		video_spr_usage+(spr_min>>7));
+	FreeMem(tmp);
+	spr_max = 0;
+	spr_min = 0x800000;
+    }
+}
+
 static void upload_cmd_w(UINT32 offset, UINT8 data);
 
 void write_reg_b(UINT32 offset, UINT8 data) {
@@ -2248,6 +2268,7 @@ void write_reg_b(UINT32 offset, UINT8 data) {
     case 0xff0111: spr_disabled = data; break;
     case 0xff0115: fix_disabled = data; break;
     case 0xff0119: video_enabled = data; break;
+    case 0xff0141: do_spr_conv(); break;
     case 0xff0149: do_fix_conv(); break;
     case 0xff016f: irq.disable = data; break;
     case 0xff0183:
@@ -2355,8 +2376,11 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       return;
     } else if (zone == SPR_TYPE) { // used by the custom bios 07Z !
 	offset = (offset & 0xfffff) + (spr_bank << 20);
-	if (offset < 0x800000)
+	if (offset < 0x800000) {
+	    if (offset < spr_min) spr_min = offset;
+	    if (offset > spr_max) spr_max = offset;
 	    WriteWord(&GFX[offset],data);
+	}
 	return;
     } else if (zone == PCM_TYPE) {
 	offset = ((offset&0xfffff)>>1) + (pcm_bank<<19);
@@ -2422,44 +2446,36 @@ static void do_dma(char *name,UINT8 *dest, int max) {
     int n;
     int fix = (dest == neogeo_fix_memory); // special case for fix !
     if (dma == 0xfe6d || dma == 0xfe3d || dma == 0xe2dd) { // transfer in words
-	print_debug("dma transfer from %s (%x) to %x len %x in words (dma %x) from %x\n",name,upload_src,target,upload_len,dma,s68000readPC());
+	print_debug("dma transfer from %s (%x) to %x len %x in words (dma %x) from %x type:%x\n",name,upload_src,target,upload_len,dma,s68000readPC(),upload_type);
 	UINT8 *src = dest;
 	if (upload_src < 0x200000) {
 	    src += upload_src;
 	    if (upload_src + upload_len*2 > max) upload_len = (max-upload_src)/2;
 	} else if (upload_len > max/2) upload_len = max/2;
 	UINT8 *dst = get_target(target,&upload_len);
-	if (!dst) {
-	    // This is a hack, but for now, I'd prefer to avoid to do the
-	    // reverse conversion of sprites !
-	    int offset = (spr_bank<<20) + target - 0xe00000;
-	    int size = upload_len*2;
-	    if (offset + size > 0x400000) {
-		size = 0x400000 - offset;
-		print_debug("spr_conv: size limited\n");
+	if (dma == 0xe2dd) {
+	    // e2dd seems designed specifically for fix...
+	    // used by kof99 for all the loading screens
+	    if ((target & 0xe00000) != 0xe00000) {
+		// Normaly this should go through upload_write,
+		// I absolutely need something in the upload area here
+		printf("dma e2dd, target %x upload_type %x\n",target,upload_type);
+		exit(1);
 	    }
-	    print_debug("spr_conv src %x offset %x len %x target %x\n",src-RAM,offset*2,size,target);
-	    ByteSwap(src,size);
-	    spr_conv(src,GFX + offset*2,size,video_spr_usage + (offset >> 7));
-	    ByteSwap(src,size);
-	} else {
-	    if (dma == 0xe2dd) {
-		// e2dd seems designed specifically for fix...
-		// used by kof99 for all the loading screens
-		if ((target & 0xe00000) != 0xe00000) {
-		    // Normaly this should go through upload_write,
-		    // I absolutely need something in the upload area here
-		   printf("dma e2dd, target %x upload_type %x\n",target,upload_type);
-		   exit(1);
-	       }
-	       target -= 0xe00000;
-	       for (n=0; upload_len > 0; n+=2, upload_len--) {
-		   write_upload_word(target + n*2,src[n^1]);
-		   write_upload_word(target + n*2+2,src[(n+1)^1]);
-	       }
+	    target -= 0xe00000;
+	    for (n=0; upload_len > 0; n+=2, upload_len--) {
+		write_upload_word(target + n*2,src[n^1]);
+		write_upload_word(target + n*2+2,src[(n+1)^1]);
 	    }
+	    return;
+	}
+	if (dst) {
 	    for (n=0; upload_len > 0; n+=2, upload_len--) {
 		WriteWord(&dst[n],ReadWord(&src[n]));
+	    }
+	} else { // sprites -> write to upload area
+	    for (n=0; upload_len > 0; n+=2, upload_len--) {
+		write_upload_word(target + n,ReadWord(&src[n]));
 	    }
 	}
     } else if (dma == 0xf2dd) { // transfer again but words inverted (useless !)
@@ -2575,6 +2591,8 @@ static void write_upload(int offset, int data) {
       offset += (spr_bank<<20);
       if (offset < 0x800000) {
 	  UINT8 *dest = GFX + (offset ^1);
+	  if (offset < spr_min) spr_min = offset;
+	  if (offset > spr_max) spr_max = offset;
 	  *dest = data;
       } else
 	  printf("sprite wb overflow %x\n",offset);
