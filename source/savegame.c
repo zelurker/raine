@@ -394,16 +394,20 @@ void do_save_state(char *name) {
    print_debug("END: GameSave()\n");
 }
 
-void GameSave(void)
-{
-   char str[256];
-
-   print_debug("BEGIN: GameSave()\n");
-
+static void get_save_name(char *str) {
    if (is_neocd())
        sprintf(str,"ncd_%s.sv%d",current_game->main_name,SaveSlot);
    else
        sprintf(str,"%s.sv%d",current_game->main_name,SaveSlot);
+}
+
+void GameSave(void)
+{
+   char str[FILENAME_MAX];
+
+   print_debug("BEGIN: GameSave()\n");
+   get_save_name(str);
+
    do_save_state(str);
 }
 
@@ -653,14 +657,11 @@ void do_load_state(char *name) {
 
 void GameLoad(void)
 {
-   char str[256];
+   char str[FILENAME_MAX];
 
    print_debug("BEGIN: GameLoad()\n");
 
-   if (is_neocd())
-       sprintf(str,"ncd_%s.sv%d", current_game->main_name, SaveSlot);
-   else
-       sprintf(str,"%s.sv%d", current_game->main_name, SaveSlot);
+   get_save_name(str);
    do_load_state(str);
 }
 
@@ -770,13 +771,13 @@ void save_eeprom(void)
 void next_save_slot(void)
 {
   struct stat buf;
-  char str[256],date[30];
+  char str[FILENAME_MAX],date[30];
    SaveSlot++;
 
    if(SaveSlot>9)
       SaveSlot=0;
 
-   sprintf(str,"%ssavegame" SLASH "%s.sv%d",dir_cfg.exe_path,current_game->main_name, SaveSlot);
+   get_save_name(str);
    if (stat(str,&buf) < 0)
      sprintf(date,"free");
    else
