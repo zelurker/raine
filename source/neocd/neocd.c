@@ -67,7 +67,7 @@
 #define DBG_IRQ    2
 #define DBG_LEVEL 0
 
-#define BOOT_BIOS 1
+// #define BOOT_BIOS 1
 
 #ifndef RAINE_DEBUG
 #define debug
@@ -671,7 +671,7 @@ typedef struct {
 
 static const NEOCD_GAME *game;
 static int current_neo_frame, desired_68k_speed, stopped_68k,rolled;
-static int do_not_stop;
+static int do_not_stop,end_screen;
 
 static void get_scanline() {
   if (!raster_frame) {
@@ -821,7 +821,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
       break;
     case 0x01:  // Write data register
       if (raster_frame && scanline > start_line && raster_bitmap &&
-	      // scanline < 224+START_SCREEN &&
+	      scanline < end_screen &&
 	      neogeo_vidram[video_pointer] != data) {
 	  // Must draw the upper part of the screen BEFORE changing the sprites
 	  // Disabled the scanline test because ghostlop updates its screen
@@ -4451,6 +4451,10 @@ static UINT16 neogeo_unmapped_r(UINT32 offset) {
 }
 
 void load_neocd() {
+    if (is_current_game("ghostlop"))
+	end_screen = 240+START_SCREEN; // don't know why...
+    else
+	end_screen = 224+START_SCREEN;
     if (is_neocd())
 	size_mcard = 0x2000;
     else {
