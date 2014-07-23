@@ -396,9 +396,9 @@ void do_save_state(char *name) {
 
 static void get_save_name(char *str) {
    if (is_neocd())
-       sprintf(str,"ncd_%s.sv%d",current_game->main_name,SaveSlot);
+       sprintf(str,"%ssavegame" SLASH "ncd_%s.sv%d",dir_cfg.exe_path,current_game->main_name,SaveSlot);
    else
-       sprintf(str,"%s.sv%d",current_game->main_name,SaveSlot);
+       sprintf(str,"%ssavegame" SLASH "%s.sv%d",dir_cfg.exe_path,current_game->main_name,SaveSlot);
 }
 
 void GameSave(void)
