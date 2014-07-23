@@ -67,7 +67,7 @@
 #define DBG_IRQ    2
 #define DBG_LEVEL 0
 
-// #define BOOT_BIOS 1
+#define BOOT_BIOS 1
 
 #ifndef RAINE_DEBUG
 #define debug
@@ -2236,6 +2236,7 @@ static void do_fix_conv() {
 	fix_conv(native_fix,
 	       	neogeo_fix_memory + fix_cur, 32,
 	       	video_fix_usage + (fix_cur>>5));
+	file_cache("upload",fix_cur,32,FIX_TYPE); // for the savegames
 	fix_cur = -1;
 	fix_write = 0;
     }
@@ -2253,6 +2254,7 @@ static void do_spr_conv() {
 		&GFX[spr_min*2],
 		len,
 		video_spr_usage+(spr_min>>7));
+	file_cache("upload",spr_min*2,len*2,SPR_TYPE); // for the savegames
 	FreeMem(tmp);
 	spr_max = 0;
 	spr_min = 0x800000;
@@ -4935,6 +4937,9 @@ void load_neocd() {
 	AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
 	AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
 	AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
+	AddSaveData_ext("upload_param",(UINT8*)&upload_param,sizeof(upload_param));
+	AddSaveData_ext("upload_type",(UINT8*)&upload_type,sizeof(upload_type));
+	AddSaveData_ext("dma_mode",(UINT8*)&dma_mode,sizeof(dma_mode));
 	AddWriteByte(0xff0000, 0xff01a3, write_reg_b, NULL);
 	// ff011c seems to be some kind of status, only bit 12 is tested but I
 	// couldn't find what for, it doesn't seem to make any difference...
