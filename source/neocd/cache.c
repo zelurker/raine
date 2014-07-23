@@ -173,6 +173,13 @@ int file_cache(char *filename, int offset, int size,int type) {
 	int n = 0;
 	while (n < used[type] && list[n].offset < offset)
 	    n++;
+	if (n>0 && list[n-1].offset + list[n-1].len == offset &&
+		!strcmp(list[n-1].name,filename)) { // concat
+	    // works well with upload of course !
+	    list[n-1].len += size;
+	    return 0;
+	}
+
 	if (n == used[type]) { // reached the end of list
 	    use = used[type]++;
 	    if (used[type] >= max[type]) {

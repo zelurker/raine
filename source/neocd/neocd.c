@@ -2388,6 +2388,7 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
 	offset = ((offset&0xfffff)>>1) + (pcm_bank<<19);
 	if (offset < 0x100000) {
 	    PCMROM[offset] = data;
+	    file_cache("upload",offset,1,PCM_TYPE);
 	} else {
 	    print_debug("overflow pcm write %x,%x\n",offset,data);
 	}
