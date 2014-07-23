@@ -623,7 +623,15 @@ void do_load_state(char *name) {
 	 // it seems better to force the loading of the hiscores (if we don't
 	 // force it, then it can't detect if the memory was initialized and
 	 // they are never loaded).
-	 hs_load();
+	 if (is_neocd()) {
+	     // neocd : avoid to load the hiscores if the ram has been
+	     // overwritten by the bios (cd interface for example)
+	     // in this case the pointer to the game name points into the bios!
+	     int region_code = GetLanguageSwitch();
+	     UINT32 Ptr = ReadLongSc(&RAM[0x116]+4*region_code);
+	     if (Ptr < 0x200000) hs_load();
+	 } else
+	     hs_load();
 	 print_ingame(120,"Loaded from: %s", disp_str);
 	 update_timers();
       break;
