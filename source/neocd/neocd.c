@@ -1880,7 +1880,10 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 
 	    if(rows==0x21) rows=0x20;
 	    else if(rzy!=0xff && rows!=0) {
+		int rows0 = rows;
 		rows=((rows*16*256)/(rzy+1) + 15)/16;
+		// Limit for kabuki end credits !
+		if (rows > 3*rows0) rows = 3*rows0;
 	    }
 
 	    if(rows>0x20) rows=0x20;
