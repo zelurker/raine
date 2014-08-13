@@ -1344,7 +1344,7 @@ void neogeo_read_gamename(void)
   unsigned char	*Ptr;
   int	temp;
 
-  int region_code = GetLanguageSwitch();
+  int region_code = input_buffer[10];
   if (region_code > 2) region_code = 2;
   if (is_neocd())
       Ptr = RAM + ReadLongSc(&RAM[0x116]+4*region_code);
@@ -1436,7 +1436,10 @@ static struct ROMSW_DATA romsw_data_neocd[] =
 
 static struct ROMSW_INFO neocd_romsw[] =
 {
-  { /* 6 */ 0x10FD83 , 0x2, romsw_data_neocd },
+    /* Normally the region dip is in ff011c with a special encoding.
+     * Except that since raine doesn't boot the bios it has to place the
+     * value directly in ram. ff011c goes to input_buffer[10] 1st... */
+  { /* 6 */ 0xff011c , 0x2, romsw_data_neocd },
   // { 0xc00401, 0x2, romsw_data_neocd },
   { 0,        0,    NULL },
 };
@@ -2126,8 +2129,13 @@ static void neogeo_hreset(void)
   if (is_neocd()) {
       RAM[0x115a06 ^ 1] = 0; // clear "load files" buffer
       z80_enabled = 0;
-      region_code = GetLanguageSwitch();
-      SetLanguageSwitch(region_code);
+      region_code = input_buffer[10];
+      printf("setlang %x\n",region_code);
+      if (region_code > 2) {
+	  RAM[0x10fec5^1] = region_code - 2;
+	  RAM[0x10fd83^1] = 2;
+      } else
+	  RAM[0x10fd83^1] = region_code;
 
 #ifndef BOOT_BIOS
       neogeo_cdrom_load_title();
@@ -2177,10 +2185,9 @@ void postprocess_ipl() {
   // starts. This has to be in a separate function because process_ipl can
   // now be called many times before really finishing to process ipl.txt.
 
-  SetLanguageSwitch(region_code);
   if (old_name != current_game->main_name) {
     load_game_config();
-    int region2 = GetLanguageSwitch();
+    int region2 = input_buffer[10];
     if (region2 != region_code)
       neogeo_read_gamename();
   }
@@ -2718,7 +2725,9 @@ static UINT16 read_reg(UINT32 offset) {
     // to freeze after a few frames (tested on futsal)
     // return 0xefff;
     // lowest 2 bits are region, region 3 portugal might not be supported
-    int region_code = GetLanguageSwitch();
+    int region_code = input_buffer[10];
+    // region_code is never read from here in raine because the bios is not
+    // booted. I keep the code for reference only.
     return 0xff | (region_code << 8);
   }
   print_debug("RW %x -> ffff [pc=%x]\n",offset,s68000readPC());
@@ -4942,6 +4951,7 @@ void load_neocd() {
 	// but I found only this one so far (still missing the ones used to control
 	// the cd audio from the bios when exiting from a game).
 	AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
+	AddWriteByte(0xff011c, 0xff011c, NULL, &input_buffer[10-1]); // 10 !
 	AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
 	AddWriteWord(0xff0064,0xff0071, NULL, upload_param);
 	AddWriteWord(0xff007e, 0xff008f, NULL, dma_mode);
