@@ -1873,7 +1873,12 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	     * fullmode to 2 (which should not happen normally !), then fix its
 	     * coordinates this way.
 	     * Not generic at all, frustrating, but it works (afaik). */
-	    if (sy > 0x100 && fullmode==2) sy -= 0x200;
+	    /* If fullmode == 1 for this hack, then the bg in "how to play"
+	     * for art of fighting 3 becomes visible so the old test
+	     * fullmode == 2 stays when raster frames are enabled, which is
+	     * the case for ssideki2 and 3 */
+	    if (sy > 0x100 && ((fullmode && !raster_frame) ||
+			(fullmode == 2 && raster_frame))) sy -= 0x200;
 
 	    if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
 	    {
@@ -1883,10 +1888,9 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 
 	    if(rows==0x21) rows=0x20;
 	    else if(rzy!=0xff && rows!=0) {
-		int rows0 = rows;
 		rows=((rows*16*256)/(rzy+1) + 15)/16;
 		// Limit for kabuki end credits !
-		if (rows > 3*rows0) rows = 3*rows0;
+		if (!fullmode && rows > 15) rows = 15;
 	    }
 
 	    if(rows>0x20) rows=0x20;
@@ -2634,7 +2638,10 @@ static void load_files(UINT32 offset, UINT16 data) {
   print_debug("load_files command %x from %x offset %x\n",data,s68000readPC(),offset);
   int hack = 0;
   int prev_speed;
-  if (is_current_game("pulstar") && (s68000context.sr & 0xf00) == 0) {
+  if ((is_current_game("pulstar") || is_current_game("ssideki2")) &&
+	  (s68000context.sr & 0xf00) == 0) {
+      // Disable loading animations in user mode to avoid collisions with
+      // uploads !
       prev_speed = cdrom_speed;
       cdrom_speed = 0;
       hack = 1;
