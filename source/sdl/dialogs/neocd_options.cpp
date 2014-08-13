@@ -151,7 +151,7 @@ static int select_neocd_bios(int sel) {
 
     char *exts[] = { "bin", "zip", NULL };
     fsel(path,exts,neocd_bios_file,"Find NeoCD bios");
-    if (*neocd_bios_file) {
+    if (*neocd_bios_file && is_neocd()) {
 	if (neocd_bios) {
 	    free(neocd_bios);
 	    neocd_bios = NULL;
