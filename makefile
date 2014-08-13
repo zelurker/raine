@@ -69,7 +69,7 @@ OSTYPE=mingw32
 endif
 
 ifndef DARWIN
-ifeq ("$(shell uname -a|sed 's/.*x86_64.*/x86_64/')","x86_64")
+ifeq ("$(shell uname -m)","x86_64")
   # autodetect x86_64 arch, and in this case build for 32 bit arch
   # notice that you still need to make a symbolic link for libstdc++.so to
   # libstdc++.so.6, and make sure that the 32 bit version of all the libraries
@@ -977,7 +977,7 @@ ifdef RAINE_UNIX
 # but since debian doesn't seem to package the right sdl-sound version 6
 # months after asking, I'll link my static version instead, which asks all
 # the libs debian wants... way too many, but anyway...
-ifeq ("$(shell uname -m)","gentoo")
+ifeq ("$(shell uname -n)","gentoo")
 # or the one for gentoo, just link SDL_sound directly !
 LIBS += -lSDL_sound
 else
