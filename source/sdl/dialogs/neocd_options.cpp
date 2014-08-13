@@ -157,10 +157,10 @@ static int select_neocd_bios(int sel) {
 	    neocd_bios = NULL;
 	}
 	setup_neocd_bios();
-	if (current_game && is_neocd())
+	if (current_game)
 	    set_68000_io(0,0xc00000,0xc7ffff, NULL, neocd_bios); // reload !
-	select_bios(neogeo_bios);
     }
+    select_bios(neogeo_bios);
     return 0;
 }
 
