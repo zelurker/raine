@@ -94,7 +94,11 @@ typedef unsigned long long int ZPOS64_T;
 #endif
 #endif
 
-
+#if !defined(OF)
+/* Apparently gentoo decided to change OF to _Z_OF but it should come
+ * from zlib, not from gentoo ! So I put some compatibility layer here... */
+#define OF _Z_OF
+#endif
 
 #ifdef __cplusplus
 extern "C" {
