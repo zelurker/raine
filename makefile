@@ -17,7 +17,7 @@
 VERSION = "0.63.10"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -977,7 +977,12 @@ ifdef RAINE_UNIX
 # but since debian doesn't seem to package the right sdl-sound version 6
 # months after asking, I'll link my static version instead, which asks all
 # the libs debian wants... way too many, but anyway...
-LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -logg -lspeex -lmikmod -lvorbisfile -lmodplug
+ifeq ("$(shell uname -m)","gentoo")
+# or the one for gentoo, just link SDL_sound directly !
+LIBS += -lSDL_sound
+else
+LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -logg -lvorbisfile
+endif
 else
 # windows
 # and these libs are used by SDL_sound/FLAC
