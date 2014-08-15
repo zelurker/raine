@@ -291,9 +291,6 @@ int handle_sound_cmd(int cmd) {
 		   time = 13.0*10/cmd;
 	       else
 		   time = 6.5*10/cmd;
-#ifdef RAINE_DEBUG
-		printf("time for fadeout %g from %d\n",time,cmd);
-#endif
 		start_music_fadeout(time);
 #else
 		mute_song();
@@ -339,7 +336,10 @@ int handle_sound_cmd(int cmd) {
 	    load_sample(track[cmd]);
 	    cdda.loop = loop[cmd];
 	    active = 1;
-	}
+	} else if (*track[cmd])
+	    printf("does not exist %s\n",track[cmd]);
+	else
+	    printf("no assoc for %x\n",cmd);
 	return 1;
     }
     return 0;
