@@ -319,7 +319,7 @@ static int read_more_data(Sound_Sample *sample)
 		    int n = 0;
 		    UINT16 *ptr = (UINT16*)sample->buffer;
 		    while (n < global_state.decoded_bytes/2 &&
-			    ptr[n] == 0 )
+			    ptr[n] < 10 )
 			n += 100;
 		    if (n >= global_state.decoded_bytes/2) {
 			global_state.decoded_bytes = 0; // need more then !
@@ -390,6 +390,7 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
 
 void load_sample(char *filename) {
     cdda.playing = CDDA_LOAD;
+    cdda.pos = 0;
     strcpy(track_to_read,filename);
 }
 
@@ -522,7 +523,7 @@ static void close_sample() {
     Sound_FreeSample(sample);
     sample = NULL;
   }
-  cdda.pos = 0;
+  // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
   global_state.decoded_bytes = 0;
   global_state.decoded_ptr = NULL;
   sample = NULL;
@@ -557,6 +558,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     if (cdda.playing == CDDA_LOAD) {
 	// load a sample
 	cdda.playing = CDDA_PLAY;
+	fadeout = 0;
 	close_sample();
 	sample = Sound_NewSampleFromFile(track_to_read,
 		NULL,
@@ -568,7 +570,10 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    print_debug("load_sample %s ok\n",track_to_read);
 	}
 	done_flag = 0;
-	skip_silence = cdda.skip_silence;
+	if (cdda.pos)
+	    Sound_Seek(sample,cdda.pos*10/(441*4));
+	else
+	    skip_silence = cdda.skip_silence;
     } else if (cdda.playing == CDDA_STOP && sample) {
 	// Not absolutely sure it's a good idea, some games might want
 	// to restart the track later, but we'll see...
