@@ -1338,14 +1338,14 @@ const NEOCD_GAME games[] =
 
 // isprint is broken in windows, they allow non printable characters !!!
 #define ischar(x) ((x)>=32) //  && (x)<=127)
+static char *old_name;
 
 void neogeo_read_gamename(void)
 {
   unsigned char	*Ptr;
   int	temp;
 
-  int region_code = input_buffer[10];
-  if (region_code > 2) region_code = 2;
+  int region_code = 2; // always take region europe for the game name
   if (is_neocd())
       Ptr = RAM + ReadLongSc(&RAM[0x116]+4*region_code);
   else
@@ -1411,6 +1411,19 @@ void neogeo_read_gamename(void)
       }
   current_game->long_name = (char*)config_game_name;
   print_debug("main_name %s\n",current_game->main_name);
+  if (old_name != current_game->main_name) {
+      // reload config only when name changes
+      // to preserve game config like region !
+    load_game_config();
+    old_name = current_game->main_name;
+  }
+  region_code = GetLanguageSwitch();
+  SetLanguageSwitch(region_code); // update input_buffer[10] with it
+  if (region_code > 2) {
+      RAM[0x10fec5^1] = region_code - 2;
+      RAM[0x10fd83^1] = 2;
+  } else
+      RAM[0x10fd83^1] = region_code;
   if (memcard_write) {
       print_debug("save_memcard\n");
       save_memcard(); // called after a reset
@@ -1429,8 +1442,11 @@ static struct ROMSW_DATA romsw_data_neocd[] =
   { "Japan",           0x00 },
   { "USA",             0x01 },
   { "Europe",          0x02 },
-  { "Spain (few games)", 3 },
-  { "Brazil (few games)", 4 },
+  // Extra regions : normally there is the possibility to encode up to 8
+  // regions with the neocdz bios, but they are read by almost all the games
+  // from the neo soft dips. The only game which is an exception afaik is
+  // kof95.
+  { "Portugal (kof95, others ?)", 3 },
   { NULL,                    0    },
 };
 
@@ -2078,9 +2094,6 @@ void set_neocd_exit_to(int code) {
     }
 }
 
-static char *old_name;
-static int region_code;
-
 static void apply_hack(int pc,char *comment) {
     UINT8 *RAM = get_userdata(CPU_68K_0,pc);
     WriteWord(&RAM[pc],0x4239);
@@ -2133,13 +2146,6 @@ static void neogeo_hreset(void)
   if (is_neocd()) {
       RAM[0x115a06 ^ 1] = 0; // clear "load files" buffer
       z80_enabled = 0;
-      region_code = input_buffer[10];
-      printf("setlang %x\n",region_code);
-      if (region_code > 2) {
-	  RAM[0x10fec5^1] = region_code - 2;
-	  RAM[0x10fd83^1] = 2;
-      } else
-	  RAM[0x10fd83^1] = region_code;
 
 #ifndef BOOT_BIOS
       neogeo_cdrom_load_title();
@@ -2189,12 +2195,6 @@ void postprocess_ipl() {
   // starts. This has to be in a separate function because process_ipl can
   // now be called many times before really finishing to process ipl.txt.
 
-  if (old_name != current_game->main_name) {
-    load_game_config();
-    int region2 = input_buffer[10];
-    if (region2 != region_code)
-      neogeo_read_gamename();
-  }
   if (cdrom_speed) {
 	  // Force clearing of the screen to be sure to erase the interface when
 	  // changing the game resolution
