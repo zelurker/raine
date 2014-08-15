@@ -251,10 +251,10 @@ static void restore_cdda() {
   if (cdda.playing) { // play, pause or load, any activity
     int track = cdda.track;
     int pos = cdda.pos;
-    cdda.track = -1;
-    if (is_neocd())
+    if (is_neocd()) {
+	cdda.track = -1;
 	cdda_play(track,cdda.loop);
-    else {
+    } else {
 	last_song = track;
 	char *t = get_assoc(track);
 	if (t) {
