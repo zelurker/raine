@@ -440,8 +440,11 @@ void YM_DELTAT_postload(YM_DELTAT *DELTAT,UINT8 *regs)
 	DELTAT->reg[0] = regs[0];
 
 	/* current rom data */
-	if (DELTAT->memory)
-		DELTAT->now_data = *(DELTAT->memory + (DELTAT->now_addr>>1) );
+	if (DELTAT->memory) {
+	    if (DELTAT->now_addr/2 >= DELTAT->memory_size)
+		DELTAT->now_addr = 0; // not sure how it happens
+	    DELTAT->now_data = *(DELTAT->memory + (DELTAT->now_addr>>1) );
+	}
 
 }
 void YM_DELTAT_savestate(const char *statename,int num,YM_DELTAT *DELTAT)
