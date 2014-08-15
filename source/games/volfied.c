@@ -414,15 +414,6 @@ static void load_volfiedj(void)
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-static void ClearVolfied(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x0C0000,1);
-      save_debug("RAM.bin",RAM,0x0A0000,1);
-      //save_debug("GFX.bin",GFX,0x140000,0);
-#endif
-}
-
 static void execute_volfiedj(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));    // M68000 12MHz (60fps)
@@ -580,7 +571,6 @@ static struct DIR_INFO dir_volfiedj[] =
 };
 GME( volfiedj, "Volfied", TAITO, 1989, GAME_SHOOT | GAME_NOT_WORKING,
 	.romsw = romsw_volfiedj,
-	.clear = ClearVolfied,
 	.board = "C04",
 );
 

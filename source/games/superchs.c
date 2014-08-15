@@ -455,12 +455,6 @@ static void load_superchs(void)
 static void ClearSuperChase(void)
 {
    save_eeprom();
-
-#ifdef RAINE_DEBUG
-   save_debug("ROM.bin",ROM3,0x40000,0);
-      save_debug("RAM.bin",RAM,0x0B0000,0);
-      //save_debug("GFX.bin",GFX_OBJ_A,OBJ_A_COUNT*0x100,0);
-#endif
 }
 
 static void execute_superchs(void)

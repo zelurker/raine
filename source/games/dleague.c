@@ -281,12 +281,6 @@ void load_dleague(void)
 void ClearDLeague(void)
 {
    RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x060000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x500000,0);
-#endif
 }
 
 void execute_dleague(void)

@@ -271,12 +271,6 @@ static void load_popnpopj(void)
 static void clear_pop_n_pop(void)
 {
    save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x200000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-#endif
 }
 
 static void execute_popnpopj(void)

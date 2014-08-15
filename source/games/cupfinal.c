@@ -402,11 +402,6 @@ static void load_scfinals(void)
 static void clear_taito_cup_final(void)
 {
    save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-   #endif
 }
 
 static void draw_taito_cup_final(void)

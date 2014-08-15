@@ -500,11 +500,6 @@ static void load_exzisus(void)
 static void clear_exzisus(void)
 {
    RemoveTaitoYM2151();
-
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-      save_debug("GFX.bin", GFX, 0x200000, 0);
-#endif
 }
 
 static void execute_exzisus(void)

@@ -1655,14 +1655,6 @@ static void load_insectx(void)
    seta_x1.scr_y	= 0;
 }
 
-static void ClearInsectorX(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      //save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
 static void load_tnzs2(void)
 {
    int ta,tb,tc;
@@ -1851,14 +1843,6 @@ static void load_tnzs2(void)
    seta_x1.tile_mask	= 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
-}
-
-static void ClearTNZSExtra(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      //save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
 }
 
 static void load_arkanoid_2_actual(int set)
@@ -2095,14 +2079,6 @@ static void load_arknid2j(void)
    load_arkanoid_2_actual(2);
 }
 
-static void ClearArk2Doh(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
 static void load_tnzs(void)
 {
    int ta,tb,tc;
@@ -2290,14 +2266,6 @@ static void load_tnzs(void)
    seta_x1.tile_mask	= 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
-}
-
-static void ClearTNZS(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
 }
 
 static void load_drtoppel(void)
@@ -2502,13 +2470,6 @@ static void load_drtoppel(void)
    seta_x1.tile_mask    = 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
-}
-
-static void ClearDrToppel(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-#endif
 }
 
 static void load_tnzsb(void)
@@ -2741,22 +2702,6 @@ static void load_tnzsb(void)
    seta_x1.scr_y	= 0;
 }
 
-static void ClearTNZSBL(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
-static void ClearArk2DohUS(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
 static void load_extrmatn(void)
 {
    int ta,tb,tc;
@@ -2959,14 +2904,6 @@ static void load_extrmatn(void)
    seta_x1.scr_y	= 0;
 }
 
-static void ClearExtermination(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
 static UINT16 f6read(UINT16 offset) {
   return 0xff;
 }
@@ -3160,13 +3097,6 @@ static void load_kageki(void)
    seta_x1.tile_mask	= 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
-}
-
-static void clear_kageki(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-#endif
 }
 
 static void load_chukatai(void)
@@ -3404,13 +3334,6 @@ static void load_chukatai(void)
 
 }
 
-static void clear_chuka_taisen(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-#endif
-}
-
 static void load_plumppop(void)
 {
    int ta,tb,tc;
@@ -3612,13 +3535,6 @@ static void load_plumppop(void)
    seta_x1.scr_y	= 0;
 }
 
-static void ClearPlumpPop(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-#endif
-}
-
 static void execute_tnzsb(void)
 {
    static UINT32 coin_flip_a,coin_flip_b;
@@ -3803,7 +3719,6 @@ static struct DIR_INFO dir_arknid2u[] =
 GAME(arknid2u, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_arknoid2,
 	.dsw = dsw_arknoid2,
-	.clear = ClearArk2DohUS,
 	.video = &video_arknoid2,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ American",
@@ -3823,7 +3738,6 @@ static struct DIR_INFO dir_arknid2j[] =
 GAME(arknid2j, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_arknoid2,
 	.dsw = dsw_arknoid2,
-	.clear = ClearArk2Doh,
 	.video = &video_arknoid2,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
@@ -3840,7 +3754,6 @@ static struct DIR_INFO dir_arknoid2[] =
 GAME( arknoid2, "Arkanoid 2 Revenge of Doh", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_arknoid2,
 	.dsw = dsw_arknoid2,
-	.clear = ClearArk2Doh,
 	.video = &video_arknoid2,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
@@ -3858,7 +3771,6 @@ GAME( chukatai, "Chuka Taisen", TAITO, 1988, GAME_SHOOT,
 	.input = input_chukatai,
 	.dsw = dsw_chukatai,
 	.romsw = romsw_tnzs,
-	.clear = clear_chuka_taisen,
 	.video = &video_tnzsb,
 	.exec = execute_tnzsb,
 	.board = "B44",
@@ -3875,7 +3787,6 @@ GAME( drtoppel, "Dr Toppel Tankentai", TAITO, 1987, GAME_SHOOT,
 	.input = input_drtoppel,
 	.dsw = dsw_drtoppel,
 	.romsw = romsw_drtoppel,
-	.clear = ClearDrToppel,
 	.video = &video_drtoppel,
 	.exec = execute_tnzsb,
 	.board = "B19",
@@ -3891,7 +3802,6 @@ GAME( extrmatn, "Extermination", TAITO, 1987, GAME_SHOOT,
 	.input = input_tnzs,
 	.dsw = dsw_extrmatn,
 	.romsw = romsw_extrmatn,
-	.clear = ClearExtermination,
 	.video = &video_arknoid2,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "エクスターミネーション",
@@ -3908,7 +3818,6 @@ static struct DIR_INFO dir_insectx[] =
 GAME( insectx, "Insector X", TAITO, 1989, GAME_SHOOT,
 	.input = input_insectx,
 	.dsw = dsw_insectx,
-	.clear = ClearInsectorX,
 	.video = &video_insectx,
 	.exec = execute_insectx,
 	.long_name_jpn = "インセクターＸ",
@@ -3924,7 +3833,6 @@ GAME( kageki, "Kageki", TAITO, 1988, GAME_BEAT,
 	.input = input_kageki,
 	.dsw = dsw_kageki,
 	.romsw = romsw_tnzs /*kageki_romsw */,
-	.clear = clear_kageki,
 	.video = &video_drtoppel,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "火激",
@@ -3941,7 +3849,6 @@ GAME( plumppop, "Plump Pop", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_plumppop,
 	.dsw = dsw_plumppop,
 	.romsw = romsw_plumppop,
-	.clear = ClearPlumpPop,
 	.video = &video_tnzsb,
 	.exec = execute_tnzsb,
 	.board = "A98",
@@ -3959,7 +3866,6 @@ GAME( tnzs, "The New Zealand Story", TAITO, 1988, GAME_PLATFORM,
 	.input = input_tnzs,
 	.dsw = dsw_tnzs,
 	.romsw = romsw_tnzs,
-	.clear = ClearTNZS,
 	.video = &video_tnzsb,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "ニュージーランドストーリー",
@@ -3978,7 +3884,6 @@ GAME(tnzsb, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
 	.input = input_tnzsb,
 	.dsw = dsw_tnzs,
 	.romsw = romsw_tnzs,
-	.clear = ClearTNZSBL,
 	.video = &video_tnzsb,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "ニュージーランドストーリー (bootleg)",
@@ -3996,7 +3901,6 @@ GAME(tnzs2, "The New Zealand Story (extra)", TAITO, 1988, GAME_PLATFORM,
 	.input = input_tnzs,
 	.dsw = dsw_tnzs,
 	.romsw = romsw_tnzs,
-	.clear = ClearTNZSExtra,
 	.video = &video_tnzsb,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "ニュージーランドストーリーエキストラ",

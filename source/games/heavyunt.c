@@ -587,14 +587,6 @@ static void load_heavyunt(void)
    InitPaletteMap(RAM_COLOUR, 0x20, 0x10, 0x1000);
 }
 
-static void clear_heavy_unit(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin", RAM, RAMSize, 0);
-      //save_debug("GFX.bin", GFX, 0x200000, 0);
-#endif
-}
-
 static void execute_heavyunt(void)
 {
    cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// MAIN Z80 8MHz (60fps)
@@ -816,7 +808,6 @@ GAME( heavyunt, "Heavy Unit", KANEKO, 1988, GAME_NOT_WORKING,
 	.input = NULL, //heavy_unit,
 	.dsw = NULL, //heavy_unit,
 	.romsw = NULL, //heavy_unit,
-	.clear = clear_heavy_unit,
 	.video = &video_heavyunt,
 	.exec = execute_heavyunt,
 	.board = "B73",

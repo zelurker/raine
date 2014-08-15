@@ -298,10 +298,6 @@ static void load_masterw(void)
 static void ClearMasterW(void)
 {
    RemoveTaitoYM2203();
-
-   #ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x040000,1);
-   #endif
 }
 
 static void execute_masterw(void)

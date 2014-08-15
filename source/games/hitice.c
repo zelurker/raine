@@ -382,12 +382,6 @@ static void load_hitice(void)
 static void ClearHitTheIce(void)
 {
    RemoveTaitoYM2203();
-
-   #ifdef RAINE_DEBUG
-      //save_debug("ROM.bin",ROM,0x060000,1);
-      save_debug("RAM.bin",RAM,RAMSize,1);
-      //save_debug("GFX.bin",GFX,0x240000,0);
-   #endif
 }
 
 static void execute_hitice(void)

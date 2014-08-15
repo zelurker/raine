@@ -415,10 +415,6 @@ static void load_deadconx(void)
 static void ClearDeadConnection(void)
 {
    RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x040000,1);
-#endif
 }
 
 static void execute_deadconx(void)

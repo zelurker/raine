@@ -8,7 +8,6 @@ extern "C" {
 #include "raine.h"		// General Raine Stuff
 #include "starhelp.h"		// M68000 support interface
 #include "mz80help.h"		// Z80 support interface
-#include "files.h"		// file access routines
 #include "newspr.h"		// sprite drawing routines
 #include "spr64.h"		// 64x64 sprite routines
 #include "tilemod.h"		// sprite flipping/rotating/masking

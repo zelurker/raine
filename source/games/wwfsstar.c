@@ -543,15 +543,6 @@ static void load_wwfsstar(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void ClearWWFSuperStars(void)
-{
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x040000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x540000,0);
-   #endif
-}
-
 static void execute_wwfsstar(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
@@ -819,7 +810,6 @@ static struct DIR_INFO dir_wwfsstar[] =
    { NULL, },
 };
 GME( wwfsstar, "WWF Superstars", TECHNOS, 1989, GAME_BEAT,
-	.clear = ClearWWFSuperStars,
 	.long_name_jpn = "ＷＷＦスーパースターズ",
 	.board = "TA-0024",
 );

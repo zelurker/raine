@@ -271,12 +271,6 @@ static void load_arabianm(void)
 static void clear_arabian_magic(void)
 {
    save_eeprom();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-   #endif
 }
 
 static void draw_arabian_magic(void)

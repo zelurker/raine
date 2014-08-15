@@ -345,12 +345,6 @@ static void load_elvact2u(void)
 static void ClearEAction2(void)
 {
    save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x200000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x5D4E00,0);
-#endif
 }
 
 static void DrawEAction2(void)

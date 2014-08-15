@@ -386,12 +386,6 @@ static void load_topland(void)
 static void ClearTopLanding(void)
 {
    RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x0C0000,1);
-      save_debug("RAM.bin",RAM,0x080000,1);
-      //save_debug("GFX.bin",GFX,0x200000,0);
-#endif
 }
 
 static void execute_topland(void)

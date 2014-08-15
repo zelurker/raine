@@ -525,18 +525,10 @@ static void load_wwfwfsta(void)
    AddWriteWord(0x100000, 0x1000FF, NULL, RAM+0x02C000);	// SCROLL
    AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers... 
+   AddInitMemory();	// Set Starscream mem pointers...
    adpcm_amplify = 2;
    for (ta=0; ta<4; ta++)
        layer_id_data[ta] = add_layer_info(layer_id_name[ta]);
-}
-
-static void ClearWrestleF(void)
-{
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x080000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-   #endif
 }
 
 static void execute_wwfwfsta(void)
@@ -600,7 +592,7 @@ static void RenderObject(void)
                if(GFX_SPR_SOLID[ta]!=0){			// No pixels; skip
 
                if(GFX_SPR_SOLID[ta]==1) Draw16x16_Trans_Mapped_Rot(&GFX_SPR[ta<<8], x, y, map);
-               else                     Draw16x16_Mapped_Rot(      &GFX_SPR[ta<<8], x, y, map); 
+               else                     Draw16x16_Mapped_Rot(      &GFX_SPR[ta<<8], x, y, map);
 
                }
                }
@@ -618,7 +610,7 @@ static void RenderObject(void)
                if(GFX_SPR_SOLID[ta]!=0){			// No pixels; skip
 
                if(GFX_SPR_SOLID[ta]==1) Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_SPR[ta<<8], x, y, map);
-               else                     Draw16x16_Mapped_FlipY_Rot(      &GFX_SPR[ta<<8], x, y, map); 
+               else                     Draw16x16_Mapped_FlipY_Rot(      &GFX_SPR[ta<<8], x, y, map);
 
                }
                }
@@ -639,7 +631,7 @@ static void RenderObject(void)
                if(GFX_SPR_SOLID[ta]!=0){			// No pixels; skip
 
                if(GFX_SPR_SOLID[ta]==1) Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_SPR[ta<<8], x, y, map);
-               else                     Draw16x16_Mapped_FlipX_Rot(      &GFX_SPR[ta<<8], x, y, map); 
+               else                     Draw16x16_Mapped_FlipX_Rot(      &GFX_SPR[ta<<8], x, y, map);
 
                }
                }
@@ -660,7 +652,7 @@ static void RenderObject(void)
                if(GFX_SPR_SOLID[ta]!=0){			// No pixels; skip
 
                if(GFX_SPR_SOLID[ta]==1) Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_SPR[ta<<8], x, y, map);
-               else                     Draw16x16_Mapped_FlipXY_Rot(      &GFX_SPR[ta<<8], x, y, map); 
+               else                     Draw16x16_Mapped_FlipXY_Rot(      &GFX_SPR[ta<<8], x, y, map);
 
                }
                }
@@ -728,7 +720,7 @@ static void DrawWrestleF(void)
 
    // BG0
    // ---
-  
+
    if(check_layer_enabled(layer_id_data[0])) {
        MAKE_SCROLL_512x512_2_16(
 	       ReadWord(&RAM[0x2C004]),
@@ -926,7 +918,6 @@ static struct DIR_INFO dir_wwfwfsta[] =
    { NULL, },
 };
 GME( wwfwfsta, "WWF Wrestlefest", TECHNOS, 1991, GAME_BEAT,
-	.clear = ClearWrestleF,
 	.long_name_jpn = "‚v‚v‚eƒŒƒbƒXƒ‹ƒtƒFƒ‹ƒg",
 	.board = "TA-0031",
 );

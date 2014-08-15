@@ -890,9 +890,6 @@ static void clear_chase_hq(void)
 {
    RemoveTaitoYM2610();
 
-#ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x040000,1);
-#endif
 }
 
 static void load_nightstr(void)
@@ -1404,12 +1401,6 @@ static void load_nightstr(void)
 static void ClearNightStr(void)
 {
    RemoveTaitoYM2610();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x0C0000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-      //save_debug("GFX.bin",GFX,0x100000,0);
-#endif
 }
 
 static void execute_nightstr(void)

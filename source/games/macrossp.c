@@ -677,13 +677,6 @@ static void execute_macrossp() {
   print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
 }
 
-static void clear_macrossp() {
-  save_debug("ROM.bin",ROM,get_region_size(REGION_ROM1),0);
-  save_debug("ROM2.bin",load_region[REGION_ROM2],
-	     get_region_size(REGION_ROM2),1);
-  save_debug("bios.bin",load_region[REGION_USER1],get_region_size(REGION_USER1),0);
-}
-
 static struct VIDEO_INFO video_macrossp =
 {
    draw_macrossp,
@@ -694,7 +687,5 @@ static struct VIDEO_INFO video_macrossp =
    VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
    gfxdecodeinfo,
 };
-GMEI( macrossp, "Macross plus", BANPREST, 1996, GAME_SHOOT,
-	.clear = clear_macrossp,
-);
+GMEI( macrossp, "Macross plus", BANPREST, 1996, GAME_SHOOT);
 

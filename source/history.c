@@ -1,4 +1,5 @@
 #include "gameinc.h"
+#include "files.h"
 
 char *history = NULL;
 
@@ -49,11 +50,11 @@ void hist_open() {
 	      else
 		sprintf(&history[used],"%s",str);
 	      used += len;
-	    } 
+	    }
 	  } while (1);
 	}
       }
     } // while ...
     fclose(f);
-  } 
+  }
 }

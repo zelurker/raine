@@ -553,10 +553,6 @@ static void load_wgpj(void)
 static void ClearWorldGrandPrix(void)
 {
    RemoveTaitoYM2610();
-
-   //save_debug("ROM.bin",ROM,0x100000,1);
-   save_debug("RAM.bin",RAM,0x070000,1);
-   save_debug("GFX.bin",GFX_PIV,0x400000,0);
 }
 
 static void execute_wgp(void)

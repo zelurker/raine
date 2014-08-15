@@ -319,11 +319,6 @@ static void load_pwrgoal(void)
 static void clear_hat_trick_hero_95(void)
 {
    save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-#endif
 }
 
 static void draw_hat_trick_hero_95(void)

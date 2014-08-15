@@ -42,10 +42,6 @@ static void load_psyforce(void)
 static void clear_psychic_force(void)
 {
    RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("RAM.bin",RAM,0x020000,1);
-   #endif
 }
 
 static UINT32 command;

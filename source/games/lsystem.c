@@ -3651,14 +3651,6 @@ static void load_cubybop(void)
    reset_tc0220ioc();
 }
 
-static void clear_cuby_bop(void)
-{
-#ifdef RAINE_DEBUG
-      save_debug("RAM.BIN", RAM, RAMSize, 0);
-      save_debug("GFX.BIN", GFX, 0x200000, 0);
-#endif
-}
-
 static void load_tubeit(void)
 {
    int ta, tb;
@@ -4222,7 +4214,6 @@ static struct DIR_INFO dir_cubybop[] =
 GAME( cubybop, "Cuby Bop", TAITO, 1990, GAME_PUZZLE,
 	.input = input_cubybop,
 	.dsw = dsw_cubybop,
-	.clear = clear_cuby_bop,
 );
 static struct DIR_INFO dir_fhawk[] =
 {

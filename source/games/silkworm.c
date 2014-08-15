@@ -1049,7 +1049,6 @@ static void load_gemini(void)
 static void ClearSilkworm(void)
 {
   memset(silkworm_adpcm,0,sizeof(silkworm_adpcm));
-  save_debug("roma.bin",ROM,get_region_size(REGION_ROM1),0);
 }
 
 

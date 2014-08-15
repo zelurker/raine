@@ -648,11 +648,6 @@ static void load_ballbros(void)
 static void clear_balloon_bros(void)
 {
    RemoveTaitoYM2610();
-
-   #ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x040000,1);
-      save_debug("RAM.bin",RAM,0x040000,1);
-   #endif
 }
 
 static void load_gigandes(void)

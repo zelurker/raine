@@ -285,12 +285,6 @@ static void load_ktiger2(void)
 static void ClearKyukyokuTiger2(void)
 {
    save_eeprom();
-
-#ifdef RAINE_DEBUG
-      save_debug("ROM.bin",ROM,0x100000,0);
-      save_debug("RAM.bin",RAM,0x080000,0);
-      //save_debug("GFX.bin",GFX,0x64AB00+0x3C2300,0);
-#endif
 }
 
 static void DrawKyukyokuTiger2(void)

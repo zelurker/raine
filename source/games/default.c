@@ -35,6 +35,7 @@
 #include "taitosnd.h"
 #include "tc200obj.h"
 #include "assoc.h"
+#include "files.h"
 
 void LoadDefault(void)
 {

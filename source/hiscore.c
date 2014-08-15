@@ -8,6 +8,7 @@ Taken from xmame 37b7.1
 #include "hiscore.h"
 #include "arpro.h"
 #include "conf-cpu.h"
+#include "files.h"
 
 #define MAX_CONFIG_LINE_SIZE 48
 
