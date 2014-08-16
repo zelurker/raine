@@ -2259,7 +2259,8 @@ static void do_fix_conv() {
 static void do_spr_conv() {
     if (spr_max > 0) {
 	UINT8 *tmp;
-	int len = spr_max-spr_min+1;
+	// +2 for len because these are word offsets and we want bytes
+	int len = spr_max-spr_min+2;
 	print_debug("do_spr_conv %x,%x\n",spr_min,spr_max);
 	if (!(tmp = AllocateMem(len))) return;
 	memcpy(tmp,&GFX[spr_min],len);
