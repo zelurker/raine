@@ -14,14 +14,10 @@ Taken from xmame 37b7.1
 
 // #define VERBOSE 1
 
-#ifdef RAINE_DEBUG
-#define LOG(x) print_debug("hiscores: %s",x)
-#else
-#if VERBOSE
+#if VERBOSE || defined(RAINE_DEBUG)
 #define LOG(x)	fprintf(stderr,x)
 #else
 #define LOG(x)
-#endif
 #endif
 
 static char *db_filename = "hiscore.dat"; /* high score definition file */
@@ -186,7 +182,7 @@ static void hs_free (void)
 static char str[256];
 static char *myget_filename() {
 
-   sprintf(str,"%ssavedata" SLASH "%s.hi", dir_cfg.exe_path, current_game->main_name);
+   sprintf(str,"%ssavedata" SLASH "%s%s.hi", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "-neocd" : ""));
    return str;
 }
 
