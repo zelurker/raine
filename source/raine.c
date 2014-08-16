@@ -315,8 +315,7 @@ int main(int argc,char *argv[])
 #ifdef RAINE_DEBUG
    debug_mode			= raine_get_config_int( "General",      "debug_mode",           0);
    open_debug();
-   char pwd[1024];
-   getcwd(pwd,1024);
+   getcwd(pwd,FILENAME_MAX);
    print_debug("exe_path %s share_path %s pwd %s argv0 %s\n",dir_cfg.exe_path,
 	   dir_cfg.share_path,pwd,argv[0]);
 #endif

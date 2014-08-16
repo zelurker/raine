@@ -40,7 +40,8 @@
 #endif
 
 #ifndef STANDALONE
-static char shared[1024];
+static char shared[FILENAME_MAX];
+char pwd[FILENAME_MAX]; // current working dir, init in main / raine.c
 
 char *get_shared(char *name) {
   struct stat buf;
@@ -73,7 +74,15 @@ char *get_shared(char *name) {
     return shared;
   }
   strcpy(shared,name); // use current path then
-  print_debug("get_shared: using direct name access %s\n",shared);
+  ret = stat(shared,&buf);
+  if (!ret) {
+      print_debug("get_shared: using direct name access %s\n",shared);
+      return shared;
+  }
+  // Extreme case : when loading a neocd game we chdir to the game's directory
+  // so current directory is lost, so we test the initial working directory
+  // here... !
+  sprintf(shared, "%s" SLASH "%s", pwd,name);
   return shared;
 }
 #endif
