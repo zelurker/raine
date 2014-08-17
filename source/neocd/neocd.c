@@ -2637,16 +2637,6 @@ static void write_upload(int offset, int data) {
 static void load_files(UINT32 offset, UINT16 data) {
   offset = ReadLongSc(&RAM[0x10f6a0]);
   print_debug("load_files command %x from %x offset %x\n",data,s68000readPC(),offset);
-  int hack = 0;
-  int prev_speed;
-  if ((is_current_game("pulstar") || is_current_game("ssideki2")) &&
-	  (s68000context.sr & 0xf00) == 0) {
-      // Disable loading animations in user mode to avoid collisions with
-      // uploads !
-      prev_speed = cdrom_speed;
-      cdrom_speed = 0;
-      hack = 1;
-  }
 
   if (data == 0x550) {
     if (RAM[0x115a06 ^ 1]>32 && RAM[0x115a06 ^ 1] < 127) {
@@ -2664,9 +2654,6 @@ static void load_files(UINT32 offset, UINT16 data) {
   } else {
     int nb_sec = ReadLongSc(&RAM[0x10f688]);
     print_debug("load_files: unknown command, name %x 10f6b5 %x sector %x %x %x nb_sec %x\n",RAM[0x115a06^1],RAM[0x10f6b5^1],RAM[0x10f6C8^1],RAM[0x10f6C9^1],RAM[0x10f6Ca^1],nb_sec);
-  }
-  if (hack) {
-      cdrom_speed = prev_speed;
   }
 }
 
@@ -5018,8 +5005,7 @@ void neocd_function(int vector) {
   // function...
   int pc = cpu_get_pc(CPU_68K_0);
   char buff[6];
-  raster_frame = 0;
-  print_debug("neocd_function: initial pc %x, sr %x a7 %x\n",pc,s68000context.sr,s68000context.areg[7]);
+  print_debug("neocd_function: initial pc %x, sr %x a7 %x raster_frame %d\n",pc,s68000context.sr,s68000context.areg[7],raster_frame);
   if (pc < 0x200000) {
     memcpy(buff,&RAM[pc],6);
     WriteWord(&RAM[pc],0x4239); // stop 68000 here
@@ -5036,7 +5022,10 @@ void neocd_function(int vector) {
   s68000GetContext(&M68000_context[0]);
   s68000context.pc = adr;
   s68000context.areg[5] = 0x108000;
-  if (!s68000context.areg[7]) s68000context.areg[7] = 0x10F300;
+  if (!s68000context.areg[7]) {
+      print_debug("neocd_function: setup stack ?\n");
+      s68000context.areg[7] = 0x10F300;
+  }
   s68000context.areg[7] -= 4*8*2; // ???
   int old_adr = s68000context.areg[7];
   int old_val = ReadLongSc(&RAM[old_adr]);
@@ -5239,7 +5228,7 @@ void execute_neocd() {
 	      }
 	      update_interrupts();
 	  }
-	  if (!stopped_68k)
+	  if (!stopped_68k) {
 	      /* Boost cpu frequency, that's 15 Mhz instead of 12.
 	       * Well that's just for the raster frames.
 	       * Without this boost, the display becomes "unstable" on some
@@ -5247,6 +5236,12 @@ void execute_neocd() {
 	       * It's probably a bug in the timing of instructions in
 	       * starscream, this should be 12 MHz here. */
 	      cpu_execute_cycles(CPU_68K_0,250000/NB_LINES);
+	      if (stopped_68k && current_game->exec == &loading_progress_function)
+		  /* If we are starting to load files
+		   * in the middle of a raster frame
+		   * exit immediately !!! */
+		  break;
+	  }
 #ifndef RAINE_DOS
 	  if (goto_debuger) {
 	      break;
