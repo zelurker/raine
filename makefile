@@ -989,7 +989,7 @@ ifeq ("$(shell uname -n)","gentoo")
 # or the one for gentoo, just link SDL_sound directly !
 LIBS += -lSDL_sound
 else
-LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -logg -lvorbisfile
+LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -logg -lvorbisfile -lmikmod
 endif
 else
 # windows
