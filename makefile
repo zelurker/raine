@@ -90,7 +90,15 @@ endif
 endif
 endif
 
-ifeq ("$(shell nasm -v)","")
+WINDRES_V := $(shell windres --version 2>/dev/null)
+ifdef WINDRES_V
+	WINDRES:=windres
+else
+	WINDRES:=$(target)-windres
+endif
+
+NASM_V := $(shell nasm -v 2>/dev/null)
+ifndef NASM_V
 ifdef VERBOSE
 ASM=nasmw
 else
@@ -965,7 +973,7 @@ CFLAGS += `sdl-config --cflags`
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
 ifdef CROSSCOMPILE
-  LIBS += -lSDL_sound -lFLAC -lmodplug
+  LIBS += -lSDL_sound -lFLAC # -lmodplug
 else
 LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libsmpeg.a
 endif
@@ -1053,7 +1061,7 @@ ifdef RAINE32
 # Add a nice little icon...
 
 $(OBJDIR)/raine.res:	source/raine.rc
-	windres -O coff -o $(OBJDIR)/raine.res -i source/raine.rc
+	$(WINDRES) -O coff -o $(OBJDIR)/raine.res -i source/raine.rc
 endif
 
 message:
