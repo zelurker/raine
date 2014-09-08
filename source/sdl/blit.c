@@ -907,7 +907,7 @@ void DrawNormal(void)
    */
 
    if (sdl_screen->flags & SDL_OPENGL) {
-       draw_opengl(1);
+       draw_opengl(ogl.filter);
        RefreshBuffers = 0;
        return;
    }

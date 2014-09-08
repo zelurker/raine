@@ -628,7 +628,7 @@ void draw_shader(int linear)
 	    if (pass[n].filter == 2) // explicit nearest
 		linear = GL_NEAREST;
 	    else
-		linear = GL_LINEAR; // default = linear
+		linear = ogl.filter;
 	    /* Notice : for now all the size/scale/outscale parameters are
 	     * simply ignored, it's because I didn't find any shader using
 	     * them until now */
@@ -638,10 +638,6 @@ void draw_shader(int linear)
 	check_error("ret draw_shader");
 	return;
     }
-    if (linear != 2)
-	linear = GL_LINEAR;
-    else
-	linear = GL_NEAREST;
     render_texture(linear);
     check_error("end draw_shader");
 }

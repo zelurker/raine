@@ -1,3 +1,6 @@
+#define NOGDI // define this before including windows.h to avoid BITMAP !
+#include <SDL_opengl.h>
+#undef WINAPI
 #include <time.h>
 #include "raine.h"
 #include "blit.h"
@@ -124,6 +127,7 @@ void display_read_config() {
    ogl.render = raine_get_config_int("display","ogl_render",0);
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1);
    ogl.save = raine_get_config_int("display","ogl_save",1);
+   ogl.filter = raine_get_config_int("display","ogl_filter",GL_NEAREST);
    strcpy(ogl.shader, raine_get_config_string("display","ogl_shader","None"));
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
@@ -159,6 +163,7 @@ void display_write_config() {
    raine_set_config_int("display", "ogl_render", ogl.render);
    raine_set_config_int("display", "ogl_overlay", ogl.overlay);
    raine_set_config_int("display", "ogl_save", ogl.save);
+   raine_set_config_int("display", "ogl_filter", ogl.filter);
    raine_set_config_string("display", "ogl_shader", ogl.shader);
 #ifdef DARWIN
    raine_set_config_int("display", "overlays_workarounds",overlays_workarounds);

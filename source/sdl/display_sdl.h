@@ -20,6 +20,7 @@ typedef struct {
     struct {
 	int dbuf,fsaa_buffers,fsaa_samples,accel,vbl;
     } infos;
+    int filter;
 } togl_options;
 
 extern togl_options ogl;

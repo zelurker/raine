@@ -1,3 +1,4 @@
+#include <unistd.h> // chdir
 #include "raine.h"
 #include "starhelp.h" // ByteSwap
 #include "sasound.h"
