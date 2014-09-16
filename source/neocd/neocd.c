@@ -748,7 +748,15 @@ static void check_hbl() {
 	} else
 	    irq.start = -1000;
 
-	display_position_interrupt_pending = 1;
+	if (!vblank_interrupt_pending)
+	    /* The vblank_interrupt_pending test is because garou makes a very
+	     * special initialization of the hbl line counter just before
+	     * fighting opponent 6. It's seen as a negative number and so hbl
+	     * on line 0, before the vbl is finished. So this code just
+	     * prevents the hbl to start while the vbl is still active.
+	     * A better fix would be to fix this initialization... later...
+	     */
+	    display_position_interrupt_pending = 1;
     }
 }
 
@@ -1446,7 +1454,7 @@ static struct ROMSW_DATA romsw_data_neocd[] =
   // regions with the neocdz bios, but they are read by almost all the games
   // from the neo soft dips. The only game which is an exception afaik is
   // kof95.
-  { "Portugal (kof95, others ?)", 3 },
+  { "Portuguese (kof95, others ?)", 3 },
   { NULL,                    0    },
 };
 
