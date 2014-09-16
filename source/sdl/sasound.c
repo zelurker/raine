@@ -436,8 +436,8 @@ void saDestroySound( int remove_all_resources )
      if (sample && remove_all_resources) {
 	 Sound_FreeSample(sample);
 	 sample = NULL;
-	 Sound_Quit();
      }
+     Sound_Quit();
      SDL_CloseAudio();
    }
 
