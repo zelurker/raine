@@ -934,7 +934,7 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
 
    if((verbose)||(bad_set))
 
-      printf(outbuf);
+      printf("%s",outbuf);
 
 
    free(outbuf);
@@ -1893,9 +1893,9 @@ void load_game_config(void)
    // config/cheats.cfg ------------------------------------
 
    if (is_neocd() || current_game->load_game == &load_neocd)
-       sprintf(str,get_shared("neocheats.cfg"));
+       sprintf(str,"%s",get_shared("neocheats.cfg"));
    else
-       sprintf(str,get_shared("cheats.cfg"));
+       sprintf(str,"%s",get_shared("cheats.cfg"));
    raine_set_config_file(str);
 
    // Load Cheat Settings

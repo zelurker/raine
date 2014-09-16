@@ -34,7 +34,7 @@ static char debug_name[256];
 void print_debug(const char *format, ...)
 {
   if(debug_mode){
-      
+
       char debug_str[256];
       va_list ap;
       va_start(ap,format);
@@ -51,15 +51,15 @@ void print_debug(const char *format, ...)
       } // else file_debug is stderr
 #else
       if (!file_debug) return;
-#endif      
-      fprintf(file_debug, debug_str);
+#endif
+      fprintf(file_debug, "%s",debug_str);
       //#ifndef RAINE_DOS
       fflush(file_debug);
       // Why does this simple flush not work in win32 ???
       //#endif
 #ifdef RAINE_WIN32
       fclose(file_debug);
-#endif      
+#endif
   }
 }
 
@@ -92,14 +92,14 @@ void open_debug(void)
 #ifdef MEMORY_DEBUG
       InitPurify();
 #endif
-      
+
    }
 }
 
 void close_debug(void)
 {
    if(debug_mode){
-      
+
 #ifdef MEMORY_DEBUG
       DonePurify();
 #endif
@@ -107,7 +107,7 @@ void close_debug(void)
       fclose(file_debug);
       file_debug = NULL;
 #endif
-      
+
    }
 }
 
