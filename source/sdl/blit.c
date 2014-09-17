@@ -902,6 +902,8 @@ void DrawNormal(void)
        overlay_ingame_interface(0);
    else
        overlay_ingame_interface(1);
+   if (sdl_screen->flags & SDL_OPENGL)
+       finish_opengl(); // overlay interface eventually !
 
    /*
 
@@ -920,7 +922,6 @@ void DrawNormal(void)
    if (sdl_screen->flags & SDL_OPENGL) {
        draw_opengl(ogl.filter);
        RefreshBuffers = 0;
-       finish_opengl();
        return;
    }
 
