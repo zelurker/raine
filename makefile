@@ -61,8 +61,6 @@ endif
 
 endif
 
-DOIT=1
-
 ifeq ("$(OSTYPE)","msys")
 MINGDIR=1
 OSTYPE=mingw32
@@ -143,6 +141,10 @@ CCV=@$(CC)
 CXXV=@$(CXX)
 LDV=@$(LD)
 endif
+
+GCC_MAJOR := $(shell $(CC) -dumpversion|sed 's/\..*//')
+GCC_MINOR := $(shell $(CC) -dumpversion|sed 's/.\.\(.\)\..*/\1/')
+GCC_PATCH := $(shell $(CC) -dumpversion|sed 's/.*\.//')
 
 MD =	@mkdir
 
@@ -483,7 +485,7 @@ else
 
 ifdef RAINE32
 # when starting a game -> black screen if -O > 1 (bug in uint64 calculation)
-CFLAGS += -O1
+CFLAGS += -O3
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
 CFLAGS = -O3
@@ -501,7 +503,11 @@ CFLAGS += $(INCDIR) \
 	-fomit-frame-pointer
 
 # This is required for gcc-2.9x (bug in -fomit-frame-pointer)
+ifeq ($(GCC_MAJOR),2)
 CFLAGS_MCU = $(_MARCH) -O3 -fexpensive-optimizations # switches for the 68705 mcus
+else
+CFLAGS_MCU := $(CFLAGS)
+endif
 
 ifdef RAINE_UNIX
 CFLAGS += -pipe
@@ -1004,6 +1010,8 @@ all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
 
 CFLAGS_BS = -Wall -O2 `sdl-config --cflags` $(INCDIR) -DSTANDALONE -DNO_GZIP -c
 
+# Using gcc here instead of $(CC) because we don't want a 32 bit binary in
+# an amd64 arch.
 byteswap: $(OBJDIR)/byteswap.o $(OBJDIR)/files_b.o $(OBJDIR)/newmem_b.o
 	gcc -o byteswap $^
 
@@ -1245,16 +1253,19 @@ endif
 
 # kiki kai kai gcc bug
 
+ifeq ($(GCC_MAJOR), 2)
 $(OBJDIR)/games/kiki_mcu.o: source/games/kiki_mcu.c
-	@echo Compiling $<...
+	@echo Compiling mcu $<...
 	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
 
 # Same for kick and run...
 
 $(OBJDIR)/games/kick_mcu.o: source/games/kick_mcu.c
-	@echo Compiling $<...
+	@echo Compiling mcu $<...
 	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
+endif
 
+ifeq ($(GCC_MAJOR),3)
 # This one happens for gcc < 3.2.1 (even 3.2.0)
 $(OBJDIR)/sound/ymf278b.o: source/sound/ymf278b.c
 	@echo Compiling WITH frame pointer $<...
@@ -1263,6 +1274,7 @@ $(OBJDIR)/sound/ymf278b.o: source/sound/ymf278b.c
 $(OBJDIR)/games/bubl_mcu.o: source/games/bubl_mcu.c
 	@echo "Compiling $< (gcc-3.3 bug work around)..."
 	$(CCV) $(INCDIR) $(DEFINE) $(_MARCH) -c $< -o $@
+endif
 
 # SDL redefines the main function for windows programs, so we need to
 # explicitely compile the cpu emulators without SDL (or link them with it
@@ -1326,7 +1338,6 @@ ifndef SDL
 	$(INSTALL_DATA) $(RAINE_DAT) $(rainedata)
 else
 
-ifdef DOIT
 	@echo installing fonts in $(fonts_dir)
 	$(INSTALL_DATA) fonts/Vera.ttf fonts/10x20.fnt fonts/VeraMono.ttf fonts/font6x8.bin $(fonts_dir)
 	@echo installing bitmaps in $(bitmaps_dir)
@@ -1334,7 +1345,6 @@ ifdef DOIT
 	@echo installing shaders in $(shaders_dir)
 	$(INSTALL_DATA) shaders/* $(shaders_dir)
 	$(INSTALL_DATA) scripts/neocd/* $(scripts_dir)
-endif
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
