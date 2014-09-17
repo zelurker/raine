@@ -908,6 +908,8 @@ void DrawNormal(void)
 
    if (sdl_screen->flags & SDL_OPENGL) {
        draw_opengl(ogl.filter);
+       if ( sdl_screen->flags & SDL_DOUBLEBUF )
+	   SDL_Flip(sdl_screen);
        RefreshBuffers = 0;
        return;
    }
