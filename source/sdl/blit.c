@@ -203,11 +203,24 @@ void ReClipScreen(void)
 	     yyy2 = round(ratio1 * game_y);
 	     destx2 = 0;
 	     desty2 = (display_cfg.screen_y - yyy2)/2;
+	     if (desty2 < 0) {
+		 /* Out of limits, harmless for texture, creates black screen
+		  * in win32 when using drawpixels.
+		  * Anyway should investigate why screen_y < game_y*ratio1
+		  * here one day, all this will be rewritten for sdl2 anyway */
+		 desty2 = 0;
+		 yyy2 = display_cfg.screen_y;
+	     }
 	 } else {
 	     yyy2 = display_cfg.screen_y;
 	     xxx2 = round(ratio2 * game_x);
 	     desty2 = 0;
 	     destx2 = (display_cfg.screen_x - xxx2) /2;
+	     if (destx2 < 0) {
+		 // copy the out of limits code from ratio1 < ratio2
+		 destx2 = 0;
+		 xxx2 = display_cfg.screen_x;
+	     }
 	 }
 	 bezel_fix_screen_size(&xxx2,&yyy2);
 	 bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
@@ -889,8 +902,6 @@ void DrawNormal(void)
        overlay_ingame_interface(0);
    else
        overlay_ingame_interface(1);
-   if (sdl_screen->flags & SDL_OPENGL)
-       finish_opengl();
 
    /*
 
@@ -908,9 +919,8 @@ void DrawNormal(void)
 
    if (sdl_screen->flags & SDL_OPENGL) {
        draw_opengl(ogl.filter);
-       if ( sdl_screen->flags & SDL_DOUBLEBUF )
-	   SDL_Flip(sdl_screen);
        RefreshBuffers = 0;
+       finish_opengl();
        return;
    }
 
