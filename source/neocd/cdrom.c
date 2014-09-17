@@ -398,7 +398,11 @@ void init_load_type() {
 	}
 	load_type = CUE_TYPE;
       }
-    } // if (f)
+    } else { // if (f)
+	char error[4096];
+	sprintf(error,"The file '%s' can't be loaded",neocd_path);
+	MessageBox("Error",error,"ok");
+    }
   } else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"iso")) {
     load_type = ISO_TYPE;
     iso_sector_size = 2048;

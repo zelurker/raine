@@ -232,14 +232,13 @@ int load_neo_from_name(char *res) {
   }
   strcpy(neocd_path,res);
   strcpy(neocd_dir,res);
-  if (neocd_path[strlen(res)-1] != SLASH[0]) {
-    char *s = strrchr(neocd_dir,SLASH[0]);
-    if (!s) {
+  char *s = strrchr(neocd_dir,SLASH[0]);
+  if (!s) {
       getcwd(neocd_dir,FILENAME_MAX);
       sprintf(neocd_path,"%s%s%s",neocd_dir,SLASH,res);
-    } else
+  } else
       *s = 0; // neocd_dir without ending slash
-  }
+  print_debug("load_neo_from_name: file %s neocd_dir %s\n",neocd_path,neocd_dir);
   return actual_load_neo_game();
 }
 

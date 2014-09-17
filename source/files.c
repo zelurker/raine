@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <sys/stat.h> // mkdir
+#include <unistd.h> // mkdir for mingw !
 #include "raine.h"
 #include "unzip.h"
 #include "files.h"
