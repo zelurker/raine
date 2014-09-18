@@ -33,6 +33,9 @@
 #include "sdl/console/scripts.h"
 #endif
 #include "sound/assoc.h"
+#ifdef SDL
+#include "display_sdl.h"
+#endif
 
 static int ArgCount;		// Number of arguments in the command line
 static int ArgPosition;		// Current position in the argument list
@@ -62,8 +65,10 @@ static void CLI_Help(void)
 	"-joystick/-j [type]            : Select joystick type (see list in raine.cfg)\n"
 	"-limitspeed/-l                 : Limit emulation speed to 60fps\n"
 	"-nogui/-n                      : Disable GUI (useful for frontends)\n"
+#ifdef RAINE_DOS
 	"-leds                          : Enable keyboard LED usage\n"
 	"-noleds                        : Disable keyboard LED usage\n"
+#endif
 	"-cont                          : Enable continuous playing\n"
 	"-nocont                        : Disable continuous playing\n"
 	"-autoload                      : Enable auto savegame loading\n"
@@ -71,7 +76,9 @@ static void CLI_Help(void)
 	"-screenx/-sx [width]           : Select screen width\n"
 	"-screeny/-sy [height]          : Select screen height\n"
 	"-geometry [width][xheight][+posx][+posy] : window placement\n"
-	"-screenmode/sm [type]          : Select screen type (see list in raine.cfg)\n"
+#ifndef SDL
+	"-screenmode/sm [type]          : Select screen type (allegro)\n"
+#endif
 	"-fullscreen/fs [0/1]           : Set fullscreen mode on/off\n"
 	"-bpp/-depth [number]           : Select screen colour depth\n"
 	"-rotate/-r [angle]             : Rotate screen 0,90,180 or 270 degrees\n"
@@ -82,13 +89,27 @@ static void CLI_Help(void)
 	"-flipx/-fx                     : Flip screen on x axis\n"
 	"-flipy/-fy                     : Flip screen on y axis\n"
 	"-noflip/-nof                   : Ignore default flipping in game drivers\n"
+#ifndef SDL
 	"-hide                          : Hide the gui (play at work)\n"
+#endif
 	"-listdsw <gamename>            : List dipswitches for a game, or all games\n"
         "-source_file/-lsf <gamename>   : list source file\n"
 	"\n"
 	"Options:\n"
 	"\n"
-	"-verbose                       : Show extra information for some options\n"
+	"-verbose                       : Show extra information for romcheck mainly\n"
+	"\n"
+#ifdef SDL
+	"SDL video options :\n"
+	"\n"
+	"-video/-vm n                   : Video mode : 0 = opengl, 1 = yuv overlays\n"
+	"				  2 = normal blits\n"
+	"OpenGL options :\n"
+	"-render [0|1]                  : Renderer : 0 = DrawPixels, 1 = Texture\n"
+	"-dbuf [0|1]                    : Double buffer : 0 = off, 1 = on\n"
+	"-shader file                   : use file as shader\n"
+	"filter [0|1]                   : opengl filtering, 0 = GL_NEAREST, 1 = GL_LINEAR\n"
+#endif
 	"\n"
 	"Other options are available only from the GUI/config file for now.\n"
 	"\n"
@@ -655,6 +676,7 @@ static void CLI_screen_bpp(void)
    forced_bpp = display_cfg.bpp;
 }
 
+#ifndef SDL
 /*
 
 process -hide
@@ -665,6 +687,7 @@ static void CLI_hide(void)
 {
    raine_cfg.hide = 1;
 }
+#endif
 
 #ifdef RAINE_DOS
 // CLI_Joystick():
@@ -1594,6 +1617,46 @@ typedef struct CLI_OPTION
    void (*Process)();		// Pointer to option process function
 } CLI_OPTION;
 
+#ifdef SDL
+static int intArg(int min, int max, char *errNoArg, char *errOutofLimits) {
+    // Process integer positive arguments, 2 possible error messages
+    int mode = -1;
+    if ((ArgPosition+1) < ArgCount) mode = atoi(ArgList[ArgPosition+1]);
+    else {
+	printf("%s\n",errNoArg);
+	exit(1);
+    }
+    if (mode < min || mode > max) {
+	printf("%s\n",errOutofLimits);
+	exit(1);
+    }
+    return mode;
+}
+
+static void CLI_video_mode(void) {
+    display_cfg.video_mode = intArg(0,2,"video mode number missing !","video_mode must be between 0 & 2 (0 = opengl, 1 = yuv overlays, 2 = normal blits");
+}
+
+static void CLI_render() {
+    ogl.render = intArg(0,1,"missing renderer argument","renderer must be 0 = DrawPixels, or 1 = Texture");
+}
+
+static void CLI_dbuf() {
+    ogl.dbuf = intArg(0,1,"Missing dbuf argument","dbuf must be 0 = off, or 1 = on");
+}
+
+static void CLI_shader() {
+    if ((ArgPosition+1) < ArgCount) strcpy(ogl.shader,ArgList[ArgPosition+1]);
+}
+
+static void CLI_filter() {
+    int filter = intArg(0,1,"Missing filter argument", "filter must be 0 = GL_NEAREST, 1 = GL_LINEAR");
+    // use a function to avoid to include opengl.h in windows which makes
+    // collisions with the old allegro api
+    set_opengl_filter(filter);
+}
+#endif
+
 // Command_Options:
 // List of command line options and their handlers
 
@@ -1658,9 +1721,19 @@ static CLI_OPTION cli_commands[] =
    { "-fy",		CLI_screen_flip_y	},
    { "-noflip",		CLI_screen_no_flip	},
    { "-nof",		CLI_screen_no_flip	},
+#ifndef SDL
    { "-hide",           CLI_hide                },
+#endif
    { "-bpp",            CLI_screen_bpp          },
    { "-depth",          CLI_screen_bpp          },
+#ifdef SDL
+   { "-video",		CLI_video_mode		},
+   { "-vm",		CLI_video_mode		},
+   { "-render",		CLI_render		},
+   { "-dbuf",		CLI_dbuf		},
+   { "-shader",		CLI_shader		},
+   { "-filter",		CLI_filter		},
+#endif
    { NULL,		NULL        		}
 };
 

@@ -124,7 +124,7 @@ void display_read_config() {
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
 #endif
    ogl.dbuf = raine_get_config_int("display","ogl_dbuf",1);
-   ogl.render = raine_get_config_int("display","ogl_render",0);
+   ogl.render = raine_get_config_int("display","ogl_render",1);
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1);
    ogl.save = raine_get_config_int("display","ogl_save",1);
    ogl.filter = raine_get_config_int("display","ogl_filter",GL_NEAREST);
@@ -132,6 +132,13 @@ void display_read_config() {
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
    display_cfg.keep_ratio = raine_get_config_int("display","keep_ratio",1);
+}
+
+void set_opengl_filter(int filter) {
+    if (filter == 1)
+	ogl.filter = GL_LINEAR;
+    else
+	ogl.filter = GL_NEAREST; // default
 }
 
 void display_write_config() {

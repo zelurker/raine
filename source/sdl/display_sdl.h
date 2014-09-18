@@ -35,6 +35,7 @@ extern const SDL_VideoInfo *video;
 void resize();
 int lock_surface(SDL_Surface *s);
 void adjust_gui_resolution();
+void set_opengl_filter(int filter);
 #ifdef RAINE_WIN32
 void setup_video_driver();
 #endif
