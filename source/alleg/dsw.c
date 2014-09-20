@@ -428,13 +428,19 @@ void SetLanguageSwitch(int number)
   ta = 0;
   if(romsw_src){
 
-    while(romsw_src[ta].data){
+      if (write_region_byte)
+	  (*write_region_byte)(LanguageSw.Data[number]);
+      else {
+	  while(romsw_src[ta].data){
 
-      LanguageSw.Address      = romsw_src[ta++].offset;
-      gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.Data[number]);
-    }
+	      LanguageSw.Address      = romsw_src[ta++].offset;
+	      gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.Data[number]);
+	  }
+      }
   }
 }
+
+int override_region;
 
 int GetLanguageSwitch(void)
 {

@@ -24,6 +24,7 @@ s_dsw dipswitch[MAX_DIPSWITCHES];
 struct ROMSW LanguageSw;	// ROMSwitch for Language Selection (Taito roms)
 
 int dsw_mask[MAX_DSW_SETTINGS], dsw_bitset[MAX_DSW_SETTINGS];
+int override_region = -10; // 0 is 1st region, -1 displays values, so -10 here
 static int dsw_check_dsw,called_from_statlist;
 
 void write_dsw(int index)
@@ -407,6 +408,16 @@ void SetLanguageSwitch(int number)
 
   romsw_src = current_game->romsw;
   ta = 0;
+  if (number < 0 || number >= LanguageSw.Count) {
+      char buf[1024];
+      sprintf(buf,"Region out of bounds. Possible values :\n");
+      int n;
+      for (n=0; n<LanguageSw.Count; n++)
+	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.Mode[n]);
+      MessageBox("Warning",buf,"Ok");
+      return;
+  }
+
   if(romsw_src){
 
       if (write_region_byte)
@@ -444,7 +455,9 @@ int GetLanguageSwitch(void)
 
 void load_romswitches(char *section)
 {
-   if(LanguageSw.Address)
+    if (override_region > -10)
+	SetLanguageSwitch(override_region);
+    else if(LanguageSw.Address)
       SetLanguageSwitch( raine_get_config_hex(section,"Version",GetLanguageSwitch()) );
 }
 

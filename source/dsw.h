@@ -39,6 +39,7 @@ extern int (*read_region_byte)();
 extern  struct DSW_DATA  dsw_data_default_0[];
 extern  struct DSW_DATA  dsw_data_default_1[];
 extern  struct DSW_DATA  dsw_data_default_2[];
+extern int override_region;
 
 void RestoreDSWDefault(void);
 

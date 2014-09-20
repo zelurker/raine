@@ -49,6 +49,16 @@ process the -help/-?/--help/-h option
 
 */
 
+void CLI_region() {
+    if ((ArgPosition+1) < ArgCount) {
+	ArgPosition++;
+	override_region = atoi(ArgList[ArgPosition]);
+    } else {
+	printf("-region requires a parameter\n");
+	exit(1);
+    }
+}
+
 static void CLI_Help(void)
 {
    allegro_message(
@@ -93,6 +103,7 @@ static void CLI_Help(void)
 	"-hide                          : Hide the gui (play at work)\n"
 #endif
 	"-listdsw <gamename>            : List dipswitches for a game, or all games\n"
+	"-region n			: set region to number n. Pass -1 for values\n"
         "-source_file/-lsf <gamename>   : list source file\n"
 	"\n"
 	"Options:\n"
@@ -108,7 +119,7 @@ static void CLI_Help(void)
 	"-render [0|1]                  : Renderer : 0 = DrawPixels, 1 = Texture\n"
 	"-dbuf [0|1]                    : Double buffer : 0 = off, 1 = on\n"
 	"-shader file                   : use file as shader\n"
-	"filter [0|1]                   : opengl filtering, 0 = GL_NEAREST, 1 = GL_LINEAR\n"
+	"-filter [0|1]                   : opengl filtering, 0 = GL_NEAREST, 1 = GL_LINEAR\n"
 #endif
 	"\n"
 	"Other options are available only from the GUI/config file for now.\n"
@@ -1621,7 +1632,10 @@ typedef struct CLI_OPTION
 static int intArg(int min, int max, char *errNoArg, char *errOutofLimits) {
     // Process integer positive arguments, 2 possible error messages
     int mode = -1;
-    if ((ArgPosition+1) < ArgCount) mode = atoi(ArgList[ArgPosition+1]);
+    if ((ArgPosition+1) < ArgCount) {
+	ArgPosition++;
+	mode = atoi(ArgList[ArgPosition]);
+    }
     else {
 	printf("%s\n",errNoArg);
 	exit(1);
@@ -1726,6 +1740,7 @@ static CLI_OPTION cli_commands[] =
 #endif
    { "-bpp",            CLI_screen_bpp          },
    { "-depth",          CLI_screen_bpp          },
+   { "-region",		CLI_region },
 #ifdef SDL
    { "-video",		CLI_video_mode		},
    { "-vm",		CLI_video_mode		},
