@@ -7,6 +7,7 @@
 #include "games/games.h"
 #include "config.h"
 #include "hiscore.h"
+#include "history.h"
 #include "games/default.h"
 #include "video/res.h"
 #include "control.h"
@@ -290,6 +291,7 @@ static menu_item_t main_items[] =
 { "Options", &do_gui_options },
 { "Inputs", &do_controls },
 { "About...", &do_about,},
+{ "Show special moves...", &show_moves },
 #ifdef HAS_CONSOLE
 { "Console", &do_console, },
 #endif
@@ -318,6 +320,8 @@ class TMain_menu : public TMenu
 	    );
       case 4: // dsw
         return current_game != NULL && current_game->dsw != NULL;
+      case 13: // special moves
+	  return nb_commands > 0;
       default:
 	return 1;
     }

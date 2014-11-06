@@ -24,6 +24,15 @@ class TAbout_menu : public TBitmap_menu
   virtual void update_fg_layer(int nb_to_update);
 };
 
+class TMoves_menu : public TMenu
+{
+    public:
+	TMoves_menu(char *mytitle, menu_item_t *myitem) : TMenu(mytitle,myitem)
+    {
+	font_name = "VeraMono.ttf";
+    }
+};
+
 TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
   TBitmap_menu(mytitle,myitem,path) {
 
@@ -119,7 +128,9 @@ static void goto_url(char *url) {
 #endif
     char cmd[2048];
 #ifdef RAINE_UNIX
-    sprintf(cmd,"www-browser \"%s\" &",url);
+    // Now use xdg-open instead of www-browser
+    // normally xdg-open knows about urls and lanches the best application...
+    sprintf(cmd,"xdg-open \"%s\" &",url);
 #else
     // windows
     sprintf(cmd,"explorer \"%s\"",url);
@@ -133,14 +144,21 @@ static int menu_goto_url(int sel) {
     return 0;
 }
 
+static int do_command = 0;
+
 static int about_game(int sel) {
   int nb_lines = 10;
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
   int used = 0;
   unsigned int maxlen = sdl_screen->w/(min_font_size); // rough approximation
+  char *buff;
+  if (do_command)
+      buff = commands_buff[sel];
+  else
+      buff = history;
 
-  if (history) {
-    char *s = history;
+  if (buff) {
+    char *s = buff;
     char *nl;
     char previous;
     while ((nl = strchr(s,'\n'))) {
@@ -184,7 +202,7 @@ static int about_game(int sel) {
       }
       if (strlen(s) > maxlen) {
 	char start;
-	if (s > history) {
+	if (s > buff) {
 	  start = s[-1];
 	  s[-1] = 0;
 	}
@@ -192,7 +210,7 @@ static int about_game(int sel) {
 	s[maxlen] = 0;
 	char *sp = strrchr(s,' ');
 	s[maxlen] = old;
-	if (s>history) {
+	if (s>buff) {
 	  s[-1] = start;
 	}
 	if (!sp)
@@ -241,7 +259,11 @@ end_loop:
   if (used) {
     menu[used].label = NULL;
 
-    TMenu *about_menu = new TMenu("About this game",menu);
+    TMenu *about_menu;
+    if (!do_command)
+	about_menu = new TMenu("About this game",menu);
+    else
+	about_menu = new TMoves_menu((char*)menu_commands[sel].label,menu);
     about_menu->execute();
     delete about_menu;
 
@@ -254,6 +276,18 @@ end_loop:
   free(menu);
 
   return 0;
+}
+
+int show_moves(int sel) {
+    do_command = 1;
+    int n;
+    for (n=0; n<nb_commands; n++)
+	menu_commands[n].menu_func = &about_game;
+    TMenu *menu = new TMenu("Special moves...",menu_commands);
+    menu->execute();
+    delete menu;
+    do_command = 0;
+    return 0;
 }
 
 static menu_item_t about_items[] =

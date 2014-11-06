@@ -1582,7 +1582,7 @@ static void multipac_a000_w(UINT32 offset, UINT8 data) {
     hs_open();
     hs_init();
 
-    hist_open();
+    hist_open("history.dat");
     speedcheat_test();
   }
 }

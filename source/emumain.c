@@ -577,7 +577,8 @@ void reset_game_hardware(void)
      hs_open();
      hs_init();
 
-     hist_open();
+     hist_open("history.dat");
+     hist_open("command.dat");
    }
 
    print_debug("reset_game_hardware(): OK\n");

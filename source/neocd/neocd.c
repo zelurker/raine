@@ -2232,7 +2232,8 @@ void postprocess_ipl() {
     hs_close();
     hs_open();
     hs_init();
-    hist_open();
+    hist_open("history.dat");
+    hist_open("command.dat");
   }
   if (cdrom_speed)
     reset_ingame_timer();
