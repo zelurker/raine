@@ -468,7 +468,8 @@ static struct AY8910interface ay8910_interface =
   {
     2,	/* 2 chips */
     1500000,	/* 1.5 MHz?????? */
-    { 66, 66 },
+    { MIXER(66,OSD_PAN_CENTER), // music
+       MIXER(66,OSD_PAN_CENTER) }, // sound effects
     { 0 },
     { 0 },
     { 0 },
