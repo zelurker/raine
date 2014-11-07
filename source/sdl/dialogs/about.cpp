@@ -11,6 +11,8 @@
 #include "control.h"
 #include "sdl/control_internal.h"
 #include <SDL_sound.h>
+#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "games.h"
 
 class TAbout_menu : public TBitmap_menu
 {
@@ -24,13 +26,279 @@ class TAbout_menu : public TBitmap_menu
   virtual void update_fg_layer(int nb_to_update);
 };
 
+// A special TStatic class to be able to display these special sequences for
+// commands...
+class TMoveStatic : public TStatic
+{
+    public:
+    TMoveStatic(menu_item_t *my_menu) : TStatic(my_menu) {}
+    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
+  int fg, int bg, int xoptions);
+};
+
+static int filled_poly;
+static void poly(SDL_Surface *sf,int ox,int oy,int w,int h, int mw,int mh,
+	int col, ...)
+{
+    va_list ap;
+    Sint16 tabx[10],taby[10];
+    va_start(ap,col);
+    int x,y;
+    int nb = 0;
+    do {
+	x = va_arg(ap,int)*w/mw;
+	y = va_arg(ap,int)*h/mh;
+	if (x >= 0) {
+	    if (nb == 10) {
+		printf("poly overflow !\n");
+		exit(1);
+	    }
+	    tabx[nb] = x + ox;
+	    taby[nb++] = y + oy;
+	}
+    } while (x >= 0);
+    va_end(ap);
+    if (filled_poly)
+	filledPolygonColor(sf,tabx,taby,nb,col);
+    else
+	polygonColor(sf,tabx,taby,nb,col);
+}
+
+void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
+  int myfg, int mybg, int xoptions) {
+    int fg = myfg, bg = mybg;
+    char *s = (char*)menu->label;
+    char *old = s;
+    // All the translations are taken from http://home.comcast.net/~plotor/command.html
+    while (*s) {
+	if (*s != '_' && *s != '^') {
+	    s++;
+	    continue;
+	}
+	char pre = *s;
+	if (s > old) {
+	    // Eventually display what's before
+	    *s = 0;
+	    int w,h;
+	    font->dimensions(old,&w,&h);
+	    font->surf_string(sf,x,y,old,fg,bg);
+	    x += w;
+	    *s = pre;
+	}
+	s++;
+	font->dimensions("_A",&w,&h);
+	int r;
+	if (w < h) r = w; else r = h;
+	r/=2;
+	int col = 0;
+	char str[4];
+	TFont *f0 = NULL;
+	str[0] = *s;
+	str[1] = 0;
+	if (pre == '_') {
+	    switch(*s) {
+	    case 'A':
+	    case 'a':
+	    case 'S':
+	    case '5':	col = mymakecol(255,64,64); break;
+	    case 'B':
+	    case 'b':	col = mymakecol(255,238,0); break;
+	    case 'C':
+	    case 'c':	col = mymakecol(0,255,64); break;
+	    case 'D':
+	    case 'd':	col = mymakecol(0,170,255); break;
+	    case 'P':
+	    case 'e':	col = mymakecol(255,0,170); break;
+	    case 'K':
+	    case 'Z':
+	    case 'f':	col = mymakecol(170,0,255); break;
+	    case 'g': col = mymakecol(0,255,204); break;
+	    case 'i': col = mymakecol(255,160,0); break;
+	    case 'G': col = mymakecol(0,170,255); break;
+	    case 'H':
+	    case 'h': col = mymakecol(255,0,255); break;
+	    case 'j': col = mymakecol(190,190,190); break;
+	    }
+	    if (*s >= 'a' && *s <= 'j')
+		sprintf(str,"%d",*s-'a'+1);
+	    else if (*s == 'X')
+		sprintf(str,"TAP");
+	    else if (*s == '^')
+		sprintf(str,"AIR");
+	    else if (*s == '?')
+		sprintf(str,"DIR");
+	    else if (*s == 'M')
+		sprintf(str,"MAX");
+	    else if (*s == 'S')
+		sprintf(str,"St"); // tss...
+
+	    filled_poly = 1;
+
+	} else { // ^
+	    filled_poly = 0;
+	    switch (*s) {
+	    case 'E': col = mymakecol(255,238,0); break;
+	    case 'F': col = mymakecol(255,160,0); break;
+	    case 'G':	col = mymakecol(255,64,64); break;
+	    case 'H': col = mymakecol(190,190,190); break;
+	    case 'I': col = mymakecol(0,255,204); break;
+	    case 'J':	col = mymakecol(0,170,255); break;
+	    case 'T':	col = mymakecol(170,0,255); break;
+	    case 'U':	col = mymakecol(255,0,170); break;
+	    case 'V':	col = mymakecol(170,0,255); break;
+	    }
+	    if (*s >= 'E' && *s <= 'J') {
+		if (!strncmp(current_game->main_name,"sf",2)) {
+		    // Street fighter games
+		    char *keys[] = { "lp","mp","sp","lk","mk","sk" };
+		    sprintf(str,"%s",keys[*s-'E']);
+		} else
+		    sprintf(str,"b%d",*s-'E'+1); // button n for other games
+	    }
+	}
+	if (col)
+	    filledCircleColor(sf, x+w/2, y+h/2, r, col);
+
+	if (strlen(str) > 2) {
+	    // Try to find a font size which fits in this space !
+	    f0 = font;
+	    int h = f0->get_font_height()/2;
+	    do {
+		printf("try font size %d\n",h);
+		font = new TFont_ttf(h,"VeraMono.ttf");
+		int w0,h0;
+		font->dimensions("_A",&w0,&h0);
+		if (w0 > w) {
+		    h--;
+		    delete font;
+		    font = NULL;
+		}
+	    } while (!font);
+	}
+
+	// The coordinates below are supposed to be on & 10x9 matrix, except
+	// that the picture I am using has clearly been resized and so it's
+	// only an approximation...
+	if (*s == '1')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    6,1,
+		    2,6,
+		    1,5,
+		    1,8,
+		    4,8,
+		    3,7,
+		    8,2,
+		    -1,-1);
+	else if (*s == '2')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    2,1,
+		    2,6,
+		    1,6,
+		    3,8,
+		    5,6,
+		    4,6,
+		    4,1,
+		    -1,-1);
+	else if (*s == '3')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    0,2,
+		    5,8,
+		    4,9,
+		    8,9,
+		    8,5,
+		    7,6,
+		    3,1,
+		    -1,-1);
+	else if (*s == '4')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    3,2,
+		    0,5,
+		    3,7,
+		    3,6,
+		    9,6,
+		    9,3,
+		    3,3,
+		    -1,-1);
+	else if (*s == '4')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    3,2,
+		    0,5,
+		    3,7,
+		    3,6,
+		    9,6,
+		    9,3,
+		    3,3,
+		    -1,-1);
+	else if (*s == '6')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    1,3,
+		    6,3,
+		    6,2,
+		    9,5,
+		    6,7,
+		    6,6,
+		    1,6,
+		    -1,-1);
+	else if (*s == '7')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    1,1,
+		    1,5,
+		    2,4,
+		    8,9,
+		    9,7,
+		    4,2,
+		    5,1,
+		    -1,-1);
+	else if (*s == '8')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    2,8,
+		    2,3,
+		    1,3,
+		    3,1,
+		    5,3,
+		    4,3,
+		    4,8,
+		    -1,-1);
+	else if (*s == '9')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    8,1,
+		    8,5,
+		    7,4,
+		    1,9,
+		    0,7,
+		    5,2,
+		    4,1,
+		    -1,-1);
+	else if (str[1] == 0)
+	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
+	else
+	    font->surf_string(sf,x,y,str,(col ? 0 : fg),bg);
+	if (f0) {
+	    delete font;
+	    font = f0;
+	}
+	s++;
+	old = s;
+	x += w;
+    }
+
+    if (*old)
+	font->surf_string(sf,x,y,old,fg,bg);
+}
+
 class TMoves_menu : public TMenu
 {
     public:
 	TMoves_menu(char *mytitle, menu_item_t *myitem) : TMenu(mytitle,myitem)
-    {
-	font_name = "VeraMono.ttf";
-    }
+	{
+	    font_name = "VeraMono.ttf";
+	}
+	void create_child(int n) {
+	    if (!menu[n].value_int)
+		child[n] = new TMoveStatic(&menu[n]);
+	    else
+		TMenu::create_child(n);
+	}
 };
 
 TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
