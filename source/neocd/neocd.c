@@ -2117,7 +2117,8 @@ static int frame_count;
 
 static void neogeo_hreset(void)
 {
-  // The region_code can be set from the gui, even with an empty ram
+    if (strcmp(current_game->main_name,"neocd")) // different
+	save_game_config(); // to save the region when it has just changed !
   frame_count = 0;
   fix_cur = -1;
   fix_write = 0;
