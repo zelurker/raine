@@ -242,6 +242,7 @@ void init_load_type() {
   else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"cue")) {
     FILE *f = fopen(neocd_path,"r");
     if (f) {
+	int current_track = 0;
       while (!feof(f)) {
 	char buff[256],orig[256];
 	char *s;
@@ -334,13 +335,16 @@ void init_load_type() {
 	    MessageBox("Error",msg,"OK");
 	    break;
 	  }
-	} else if (strstr(buff,"TRACK 01")) {
-	  char *slash = strchr(buff,'/');
-	  if (slash) {
-	    iso_sector_size = atoi(slash+1);
-	    print_debug("found sector size %d\n",iso_sector_size);
-	  }
-	} else if ((s = strstr(buff,"INDEX")) && !nb_tracks) {
+	} else if ((s = strstr(buff,"TRACK "))) {
+	    current_track = atoi(s+6);
+	    if (current_track == 1) {
+		char *slash = strchr(buff,'/');
+		if (slash) {
+		    iso_sector_size = atoi(slash+1);
+		    print_debug("found sector size %d\n",iso_sector_size);
+		}
+	    }
+	} else if ((s = strstr(buff,"INDEX")) && !nb_tracks && current_track > 1) {
 	  // found internal audio track
 	  int n;
 	  if (nb_indexes == alloc_indexes) {

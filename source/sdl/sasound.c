@@ -509,11 +509,15 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
   int bw = 0;
   while (cpysize) {
     int chunk = (cpysize < 1024 ? cpysize : 1024);
-    fread(buff,chunk,1,fbin);
+    int red = fread(buff,1,chunk,fbin);
+    if (red != chunk) {
+	printf("read %d expected %d\n",red,chunk);
+	if (red == 0) return;
+    }
     memcpy_with_volume(stream + bw,
 	buff,
-	chunk,neocd_cdda_format);
-    bw += chunk;
+	red,neocd_cdda_format);
+    bw += red;
     cpysize -= chunk;
   }
 }
@@ -617,25 +621,35 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	static int end_pos;
 	if (!cdda.pos) {
 	    fbin = fopen(neocd_path,"rb");
+	    if (!fbin) {
+		printf("could not open neocd_path for music : %s\n",neocd_path);
+		exit(1);
+	    }
+	}
+	if (end_pos == 0) { // new track ?
 	    cdda.pos = start_index*2352;
 	    end_pos = end_index*2352;
 	    fseek(fbin,cdda.pos,SEEK_SET);
 	}
+
 	int cpysize;
 	if (cdda.pos+len < end_pos)
 	    cpysize = len;
 	else
 	    cpysize = end_pos - cdda.pos;
-	cdda.pos += len;
-	len -= cpysize;
+	cdda.pos += cpysize;
 	read_buff(fbin,cpysize,stream);
+	len -= cpysize;
 	if (len) { // more to process...
 	    if (cdda.loop) {
 		cdda.pos = start_index*2352;
 		fseek(fbin,cdda.pos,SEEK_SET);
 		read_buff(fbin,len,stream+cpysize);
-	    } else
+	    } else {
 		memset(stream+cpysize,0,len);
+		start_index = 0; // over for this time !
+		end_pos = 0;
+	    }
 	}
 	len += cpysize; // restore len for the sound effects...
     } else {
