@@ -69,6 +69,8 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     int fg = myfg, bg = mybg;
     char *s = (char*)menu->label;
     char *old = s;
+    int old_min = min_font_size;
+    min_font_size = 1;
     // All the translations are taken from http://home.comcast.net/~plotor/command.html
     while (*s) {
 	if (*s != '_' && *s != '^') {
@@ -164,10 +166,10 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    f0 = font;
 	    int h = f0->get_font_height()/2;
 	    do {
-		printf("try font size %d\n",h);
 		font = new TFont_ttf(h,"VeraMono.ttf");
+		if (h <= 3) break;
 		int w0,h0;
-		font->dimensions("_A",&w0,&h0);
+		font->dimensions(str,&w0,&h0);
 		if (w0 > w) {
 		    h--;
 		    delete font;
@@ -284,6 +286,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 
     if (*old)
 	font->surf_string(sf,x,y,old,fg,bg);
+    min_font_size = old_min;
 }
 
 class TMoves_menu : public TMenu
