@@ -54,12 +54,24 @@ void init_assoc(int kind) {
 	char *err = "";
 	end_sound_codes = 0x1e; // normal last code for the sounds for type 1
 	if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
-	    // Search feb7 followed by ld hl,(adr), we want this adr
+	    // Search 7e: ld a,(hl)
+	    // 32: ld (adr),a
+	    // and 2 bytes further : 21: ld hl,adr2
+	    // and adr2 is the target
+	    // This new patern matches wakuwaku7 and probably some others
+	    // since it's not dependant anymore on any address... !
 	    // This includes galaxyfg, 3countb fatfury2, fatfury3...
-	    UINT8 needle[3] = { 0xb7,0xfe,0x21 };
-	    int n = search(3,needle,0x66);
+	    UINT8 needle[3] = { 0x7e,0x32 };
+	    int n;
+	    n = 0x65;
+	    do {
+	       n = search(2,needle,n+1);
+	    } while (n < 0x1000 && Z80ROM[n+2] != 0x21);
+	    if (n < 0x1000) n += 3;
+
 	    if (n >= 0x1000) {
 		needle[0] = 0x3f; // search for fe3f then (2nd form !)
+		needle[1] = 0xfe;
 		// This 2nd form is for fightfev
 		n = search(2,needle,0x66);
 		if (n >= 0x1000) {
