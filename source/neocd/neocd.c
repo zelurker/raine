@@ -1397,6 +1397,7 @@ void neogeo_read_gamename(void)
   if (!is_neocd())
       return; // it's over for neogeo !
 
+  load_game_config(); // init default region and so on (neocd)
   if (game->id == neocd_id)
       current_game->main_name = game->name;
   else {
@@ -1422,8 +1423,8 @@ void neogeo_read_gamename(void)
   if (old_name != current_game->main_name) {
       // reload config only when name changes
       // to preserve game config like region !
-    load_game_config();
-    old_name = current_game->main_name;
+      load_game_config();
+      old_name = current_game->main_name;
   }
   region_code = GetLanguageSwitch();
   SetLanguageSwitch(region_code); // update input_buffer[10] with it
@@ -5399,6 +5400,10 @@ void clear_neocd() {
       save_debug("ram.bin",RAM,0x200000,1);
       save_debug("z80",Z80ROM,0x10000,0);
       init_cdda();
+      char *old = current_game->main_name;
+      current_game->main_name = "neocd"; // Save romsw to neocd as default
+      save_game_config();
+      current_game->main_name = old;
 #ifdef RAINE_DEBUG
       if (debug_mode)
 	  ByteSwap(neocd_bios,0x80000); // restore the bios for the next game
