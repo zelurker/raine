@@ -54,11 +54,18 @@ void hist_open(char *name) {
 	  // Also clear last element after this one
 	  memset(&menu_commands[nb_commands],0,sizeof(menu_item_t)*2);
 	  if (str[0] == '[') { // name between useless [] apparently...
-	      str[strlen(str)-1] = 0;
+	      char *s = &str[strlen(str)-1];
+	      *s-- = 0;
+	      while (*s == '-') // and a line of - !
+		  *s-- = 0;
 	      menu_commands[nb_commands].label = strdup(str+1);
-	  } else
+	  } else {
 	      // In case some entry doesn't have these []...
+	      char *s = &str[strlen(str)-1];
+	      while (*s == '-') // and a line of - !
+		  *s-- = 0;
 	      menu_commands[nb_commands].label = strdup(str);
+	  }
 	  if (old_size) {
 	      printf("history: subsection inside subsection !\n");
 	      exit(1);

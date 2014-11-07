@@ -37,31 +37,55 @@ class TMoveStatic : public TStatic
 };
 
 static int filled_poly;
-static void poly(SDL_Surface *sf,int ox,int oy,int w,int h, int mw,int mh,
-	int col, ...)
+static void polytab(SDL_Surface *sf,int ox,int oy,int w,int h,int mw,int mh,
+	int nb,Sint16 *tabx,Sint16 *taby, int col)
 {
-    va_list ap;
-    Sint16 tabx[10],taby[10];
-    va_start(ap,col);
-    int x,y;
-    int nb = 0;
-    do {
-	x = va_arg(ap,int)*w/mw;
-	y = va_arg(ap,int)*h/mh;
-	if (x >= 0) {
-	    if (nb == 10) {
-		printf("poly overflow !\n");
-		exit(1);
-	    }
-	    tabx[nb] = x + ox;
-	    taby[nb++] = y + oy;
-	}
-    } while (x >= 0);
-    va_end(ap);
+    int n;
+    for (n=0; n<nb; n++) {
+	tabx[n] = tabx[n]*w/mw+ox;
+	taby[n] = taby[n]*h/mh+oy;
+    }
     if (filled_poly)
 	filledPolygonColor(sf,tabx,taby,nb,col);
     else
 	polygonColor(sf,tabx,taby,nb,col);
+}
+
+static void poly(SDL_Surface *sf,int ox,int oy,int w,int h, int mw,int mh,
+	int col, ...)
+{
+    va_list ap;
+#define PMAX 13
+    Sint16 tabx[PMAX],taby[PMAX];
+    va_start(ap,col);
+    int x,y;
+    int nb = 0;
+    do {
+	x = va_arg(ap,int);
+	y = va_arg(ap,int);
+	if (x >= 0) {
+	    if (nb == PMAX) {
+		printf("poly overflow !\n");
+		exit(1);
+	    }
+	    tabx[nb] = x;
+	    taby[nb++] = y;
+	}
+    } while (x >= 0);
+    va_end(ap);
+    polytab(sf,ox,oy,w,h,mw,mh,nb,tabx,taby,col);
+}
+
+static void mirror(int nb, Sint16 *tab, Sint16 *res)
+{
+    int min = 1000, max = 0;
+    int n;
+    for (n=0; n<nb; n++) {
+	if (tab[n] < min) min = tab[n];
+	if (tab[n] > max) max = tab[n];
+    }
+    for (n=0; n<nb; n++)
+	res[n] = (max+min)-tab[n];
 }
 
 void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
@@ -123,29 +147,36 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    }
 	    if (*s >= 'a' && *s <= 'j')
 		sprintf(str,"%d",*s-'a'+1);
+	    else if (*s == 'L')
+		sprintf(str,">>"); // too many drawings !!!
+	    else if (*s == 'M')
+		sprintf(str,"<<");
 	    else if (*s == 'X')
 		sprintf(str,"TAP");
 	    else if (*s == '^')
 		sprintf(str,"AIR");
 	    else if (*s == '?')
 		sprintf(str,"DIR");
-	    else if (*s == 'M')
-		sprintf(str,"MAX");
 	    else if (*s == 'S')
 		sprintf(str,"St"); // tss...
+	    else if (*s == '.')
+		sprintf(str,"...");
 
 	    filled_poly = 1;
 
 	} else { // ^
 	    filled_poly = 0;
 	    switch (*s) {
+	    case 'S':
 	    case 'E': col = mymakecol(255,238,0); break;
+	    case 's':
 	    case 'F': col = mymakecol(255,160,0); break;
 	    case 'G':	col = mymakecol(255,64,64); break;
 	    case 'H': col = mymakecol(190,190,190); break;
 	    case 'I': col = mymakecol(0,255,204); break;
 	    case 'J':	col = mymakecol(0,170,255); break;
 	    case 'T':	col = mymakecol(170,0,255); break;
+	    case 'W':
 	    case 'U':	col = mymakecol(255,0,170); break;
 	    case 'V':	col = mymakecol(170,0,255); break;
 	    }
@@ -156,7 +187,18 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    sprintf(str,"%s",keys[*s-'E']);
 		} else
 		    sprintf(str,"b%d",*s-'E'+1); // button n for other games
-	    }
+	    } else if (*s == 'T')
+		sprintf(str,"3K");
+	    else if (*s == 'U')
+		sprintf(str,"3P");
+	    else if (*s == 'V')
+		sprintf(str,"2K");
+	    else if (*s == 'W')
+		sprintf(str,"2P");
+	    else if (*s == 'S')
+		sprintf(str,"SE"); // ?!
+	    else if (*s == 'M')
+		sprintf(str,"MAX");
 	}
 	if (col)
 	    filledCircleColor(sf, x+w/2, y+h/2, r, col);
@@ -181,6 +223,21 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	// The coordinates below are supposed to be on & 10x9 matrix, except
 	// that the picture I am using has clearly been resized and so it's
 	// only an approximation...
+
+	// For the arrows they are rotated and mirrored, so I do the rotation/
+	// mirror instead of risking more errors with more coordinates...
+	Sint16 kx[13] = {1,3,6,4,4,7,7,9,9,7,4,2,2};
+	Sint16 ky[13] = {3,1,3,3,5,5,3,3,5,7,7,5,3};
+	Sint16 mkx[13],mky[13];
+	mirror(13,kx,mkx);
+	mirror(13,ky,mky);
+
+	Sint16 ox[10] = {1,3,3,5,5,7,7,5,3,3};
+	Sint16 oy[10] = {6,4,5,5,1,1,5,7,7,8};
+	Sint16 mox[10],moy[10];
+	mirror(10,ox,mox);
+	mirror(10,oy,moy);
+
 	if (*s == '1')
 	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
 		    6,1,
@@ -271,6 +328,30 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    5,2,
 		    4,1,
 		    -1,-1);
+	else if (*s == 'k')
+	    polytab(sf,x,y,w,h,10,9,13,kx,ky,mymakecol(255,255,255));
+	else if (*s == 'm') // horizontal mirror of k (10-x)
+	    polytab(sf,x,y,w,h,10,9,13,mkx,ky,mymakecol(255,255,255));
+	else if (*s == 'l') // vertical mirror of m (8-y)
+	    polytab(sf,x,y,w,h,10,9,13,mkx,mky,mymakecol(255,255,255));
+	else if (*s == 'n') // horizontal mirror of l (10-x)
+	    polytab(sf,x,y,w,h,10,9,13,kx,mky,mymakecol(255,255,255));
+	else if (*s == 'o')
+	    polytab(sf,x,y,w,h,10,9,10,ox,oy,mymakecol(255,255,255));
+	else if (*s == 'p')
+	    polytab(sf,x,y,w,h,10,9,10,moy,ox,mymakecol(255,255,255));
+	else if (*s == 'q')
+	    polytab(sf,x,y,w,h,10,9,10,mox,moy,mymakecol(255,255,255));
+	else if (*s == 'r')
+	    polytab(sf,x,y,w,h,10,9,10,oy,mox,mymakecol(255,255,255));
+	else if (*s == 's')
+	    polytab(sf,x,y,w,h,10,9,10,mox,oy,mymakecol(255,255,255));
+	else if (*s == 't')
+	    polytab(sf,x,y,w,h,10,9,10,oy,ox,mymakecol(255,255,255));
+	else if (*s == 'u')
+	    polytab(sf,x,y,w,h,10,9,10,ox,moy,mymakecol(255,255,255));
+	else if (*s == 'v')
+	    polytab(sf,x,y,w,h,10,9,10,moy,mox,mymakecol(255,255,255));
 	else if (str[1] == 0)
 	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
 	else
