@@ -618,7 +618,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    } /* if */
 	} /* while */
     } else if (start_index && !mute_music && !nb_tracks) { // trying to play a track in a bin file...
-	static int end_pos;
+	static int end_pos,last_start;
 	if (!cdda.pos) {
 	    fbin = fopen(neocd_path,"rb");
 	    if (!fbin) {
@@ -626,10 +626,11 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		exit(1);
 	    }
 	}
-	if (end_pos == 0) { // new track ?
+	if (end_pos == 0 || last_start != start_index) { // new track ?
 	    cdda.pos = start_index*2352;
 	    end_pos = end_index*2352;
 	    fseek(fbin,cdda.pos,SEEK_SET);
+	    last_start = start_index;
 	}
 
 	int cpysize;

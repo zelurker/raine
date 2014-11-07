@@ -242,7 +242,7 @@ void init_load_type() {
   else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"cue")) {
     FILE *f = fopen(neocd_path,"r");
     if (f) {
-	int current_track = 0;
+	int current_track = 0,last_track = 0;
       while (!feof(f)) {
 	char buff[256],orig[256];
 	char *s;
@@ -357,6 +357,7 @@ void init_load_type() {
 	      indexes[n] = 0;
 	    alloc_indexes += 10;
 	  }
+	  int nb_index = atoi(s+6);
 	  int mins = atol(s+9);
 	  int secs = atol(s+9+3);
 	  int frames = atol(s+9+6);
@@ -365,7 +366,16 @@ void init_load_type() {
 	  // so the length translates directly to a number of sector
 	  // (if the data track is in mode1/2048 the 1st index for an audio
 	  // track still gives the correct sector number)
-	  indexes[nb_indexes++] = frames+75*(secs+60*mins);
+	  if (nb_index <= 1) {
+	      // The rule for the indexes seems to be silence = 2s for
+	      // index 0, then index 1 = real beginning.
+	      // So if we have index 1 we overwrite the previous index with it
+	      // but ignore any eventual other indexes !
+	      if (last_track == current_track)
+		  nb_indexes--;
+	      indexes[nb_indexes++] = frames+75*(secs+60*mins);
+	  }
+	  last_track = current_track;
 	  print_debug("added index %02d:%02d:%02d -> %d\n",mins,secs,frames,indexes[nb_indexes-1]);
 	} else if ((s = strstr(buff,"INDEX 01 ")) && nb_tracks) {
 	  // found internal audio track
@@ -380,11 +390,13 @@ void init_load_type() {
 	      indexes[n] = 0;
 	    alloc_indexes = alloc_tracks;
 	  }
+	  int nb_index = atoi(s+6);
 	  int mins = atol(s+9);
 	  int secs = atol(s+9+3);
 	  int frames = atol(s+9+6);
 	  // Here we convert all this to ms only (seek in audio file)
-	  indexes[nb_tracks-1] = (frames*1000/75+(secs+60*mins)*1000)/1000*44100*4;
+	  if (nb_index <= 1)
+	      indexes[nb_tracks-1] = (frames*1000/75+(secs+60*mins)*1000)/1000*44100*4;
 	  nb_indexes = nb_tracks;
 	  print_debug("added index %02d:%02d:%02d -> %d\n",mins,secs,frames,indexes[nb_indexes-1]);
 	}

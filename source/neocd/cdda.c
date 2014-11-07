@@ -235,7 +235,7 @@ void do_cdda( int command, int track_number_bcd)
 }
 
 void init_cdda() {
-  cdda.playing = cdda.track = 0;
+  cdda.playing = cdda.track = cdda.pos = start_index = 0;
   if (cdrom) {
     SDL_CDStop(cdrom);
     SDL_CDClose(cdrom);
