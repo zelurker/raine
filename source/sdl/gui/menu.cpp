@@ -1150,7 +1150,8 @@ void TMenu::next_sel() {
 	  while (header[hsel].label)
 	      hsel++;
 	  hsel--;
-      }
+      } else if (top+rows < nb_disp_items)
+	  top ++;
       return;
   }
   do {
@@ -1189,6 +1190,19 @@ void TMenu::prev_sel() {
 	return;
     }
   int old_sel = sel;
+  if (sel < 0) {
+      if (header) {
+	  sel = 0;
+	  toggle_header();
+	  while (header[hsel].label)
+	      hsel++;
+	  hsel--;
+	  return;
+      }
+      if (top > 0)
+	  top--;
+      return;
+  }
   do {
     sel--;
     if (sel < 0) {
