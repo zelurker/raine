@@ -1347,6 +1347,7 @@ else
 	$(INSTALL_DATA) scripts/neocd/* $(scripts_dir)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
+	sh -c "if [ -f command.dat ]; then install command.dat $(rainedata); fi"
 	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/debug_dips.txt $(rainedata)
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
