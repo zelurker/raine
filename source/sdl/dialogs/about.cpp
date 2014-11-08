@@ -55,7 +55,7 @@ static void poly(SDL_Surface *sf,int ox,int oy,int w,int h, int mw,int mh,
 	int col, ...)
 {
     va_list ap;
-#define PMAX 13
+#define PMAX 16
     Sint16 tabx[PMAX],taby[PMAX];
     va_start(ap,col);
     int x,y;
@@ -95,6 +95,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     char *old = s;
     int old_min = min_font_size;
     min_font_size = 1;
+    font->set_utf(is_utf);
     // All the translations are taken from http://home.comcast.net/~plotor/command.html
     while (*s) {
 	if (*s != '_' && *s != '^') {
@@ -352,6 +353,25 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    polytab(sf,x,y,w,h,10,9,10,ox,moy,mymakecol(255,255,255));
 	else if (*s == 'v')
 	    polytab(sf,x,y,w,h,10,9,10,moy,mox,mymakecol(255,255,255));
+	else if (*s == 'w')
+	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+		    3,8,
+		    1,6,
+		    1,3,
+		    3,1,
+		    6,1,
+		    8,3,
+		    8,5,
+		    10,5,
+		    7,7,
+		    5,5,
+		    7,5,
+		    5,3,
+		    3,3,
+		    3,6,
+		    5,7,
+		    4,8,
+		    -1,-1);
 	else if (str[1] == 0)
 	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
 	else

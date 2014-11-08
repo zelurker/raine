@@ -215,7 +215,11 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
   sc.b = (color >> 8) & 0xff;
   sc.g = (color >> 16) & 0xff;
   sc.r = (color >> 24) & 0xff;
-  SDL_Surface *sf = TTF_RenderText_Solid(ttf,s,sc );
+  SDL_Surface *sf;
+  if (is_utf)
+      sf = TTF_RenderUTF8_Solid(ttf,s,sc );
+  else
+      sf = TTF_RenderText_Solid(ttf,s,sc );
   dest.x = x; dest.y = y;
   SDL_BlitSurface(sf,NULL,surf,&dest);
   SDL_FreeSurface(sf);
@@ -257,7 +261,11 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
   bg.b = (bgcolor >> 8) & 0xff;
   bg.g = (bgcolor >> 16) & 0xff;
   bg.r = (bgcolor >> 24) & 0xff;
-  SDL_Surface *sf = TTF_RenderText_Shaded(ttf,s,sc,bg);
+  SDL_Surface *sf;
+  if (is_utf)
+      sf = TTF_RenderUTF8_Shaded(ttf,s,sc,bg);
+  else
+      sf = TTF_RenderText_Shaded(ttf,s,sc,bg);
   // SDL_SetColorKey(sf,SDL_SRCCOLORKEY | SDL_RLEACCEL,0);
   dest.x = x; dest.y = y;
   SDL_BlitSurface(sf,NULL,surf,&dest);

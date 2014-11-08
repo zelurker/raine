@@ -7,10 +7,9 @@
 class TStatic {
   protected:
     menu_item_t *menu;
+    int is_utf;
   public:
-    TStatic(menu_item_t *my_menu) {
-      menu = my_menu;
-    }
+    TStatic(menu_item_t *my_menu);
     virtual ~TStatic() {} // virtual destructor required so that objects
     // which overload this one can have one !
     virtual int get_len();
@@ -21,7 +20,7 @@ class TStatic {
     virtual int get_width_max_options(TFont *font);
     virtual int get_list_index();
     virtual int get_height(TFont *font);
-    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions);
     virtual void next_list_item();
     virtual void prev_list_item();
@@ -54,7 +53,7 @@ class TProgressBar : public TStatic
   public:
     TProgressBar(menu_item_t *my_menu) : TStatic(my_menu)
     {}
-    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions);
     virtual int get_width(TFont *font);
     virtual int get_height(TFont *font);
@@ -72,7 +71,7 @@ class TOptions : public TStatic
     virtual int get_list_index();
     virtual int get_len_max_options();
     virtual int get_width_max_options(TFont *font);
-    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions);
     virtual void next_list_item();
     virtual void prev_list_item();
