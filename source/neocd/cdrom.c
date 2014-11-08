@@ -242,6 +242,8 @@ void init_load_type() {
   else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"cue")) {
     FILE *f = fopen(neocd_path,"r");
     if (f) {
+	char cue[FILENAME_MAX];
+	strcpy(cue,neocd_path);
 	int current_track = 0,last_track = 0;
       while (!feof(f)) {
 	char buff[256],orig[256];
@@ -290,6 +292,19 @@ void init_load_type() {
 	      break;
 	    }
 	    strcpy(path+1,start+1);
+	    if (!exists(neocd_path)) {
+		// 1st thing to try : some lamers distribute rips where they
+		// rename all the files without editing the cue file.
+		// The only way to find the correct file is to use only
+		// the extension and replace the base part of the filename
+		// with the one of the cue file !
+		// Usually the bin file has the same base filename as the cue
+		// file so it's a reasonable assumption.
+		char ext[4];
+		strcpy(ext,&neocd_path[strlen(neocd_path)-3]);
+		strcpy(neocd_path,cue);
+		strcpy(&neocd_path[strlen(neocd_path)-3],ext);
+	    }
 	    if (!exists(neocd_path)) {
 		strcat(neocd_path,".gz");
 		if (!exists(neocd_path)) {
