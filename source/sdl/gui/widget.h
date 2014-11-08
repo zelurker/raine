@@ -4,6 +4,8 @@
 #include "tfont.h"
 #include "menuitem.h"
 
+extern int test_utf(const char *s);
+
 class TStatic {
   protected:
     menu_item_t *menu;

@@ -402,6 +402,8 @@ void TMenu::draw_top_frame() {
   font->dimensions(title,&w_title,&h_title);
   boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
   font->put_string(HMARGIN,0,get_emuname(),fg_frame,bg_frame);
+  int is_utf = test_utf(title);
+  font->set_utf(is_utf);
   font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
 }
 char* TMenu::get_bot_frame_text() {

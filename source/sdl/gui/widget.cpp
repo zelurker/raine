@@ -49,7 +49,7 @@ static void ansi_font_dim(TFont *font, char *str, int *width, int *height) {
   process_piece(font,old,width,height);
 }
 
-static int test_utf(const char *s) {
+int test_utf(const char *s) {
     if (!s) return 0;
 
     // This code is taken from http://stackoverflow.com/questions/1031645/how-to-detect-utf-8-in-plain-c
