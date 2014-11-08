@@ -1170,7 +1170,9 @@ void TMenu::next_sel() {
   if (sel == 0 && !can_be_selected(sel)) {
     sel = old_sel; // failure to change selection
     if (top+rows < nb_disp_items) top++;
-  } else {
+  } else if (old_sel == sel && top+rows < nb_disp_items)
+      top++;
+  else {
     reset_top();
   }
 }
@@ -1227,7 +1229,9 @@ void TMenu::prev_sel() {
   if (!can_be_selected(sel))  {
     sel = old_sel; // failure to change selection
     if (top > 0) top--;
-  } else {
+  } else if (old_sel == sel && top > 0)
+      top--;
+  else {
     int seldisp = get_seldisp();
     if (seldisp > top+rows-1)
       top = seldisp-rows+1;
