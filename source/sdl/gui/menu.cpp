@@ -409,14 +409,18 @@ void TMenu::draw_top_frame() {
 char* TMenu::get_bot_frame_text() {
   int size = GetMemoryPoolSize()/1024; // Minimum Kb
   static char game[100];
-  sprintf(game,"%s",(current_game ? current_game->long_name :"No game loaded"));
+  snprintf(game,100,"%s",(current_game ? current_game->long_name :"No game loaded"));
   if (current_game) {
-    sprintf(&game[strlen(game)]," (%s)",current_game->main_name);
-    if (size < 1024)
-      sprintf(&game[strlen(game)]," (%d Kb)",size);
-    else
-      sprintf(&game[strlen(game)]," (%d Mb)",size/1024);
+      snprintf(&game[strlen(game)], 100-strlen(game),
+	      " (%s)",current_game->main_name);
+      if (size < 1024)
+	  snprintf(&game[strlen(game)],100-strlen(game),
+		  " (%d Kb)",size);
+      else
+	  snprintf(&game[strlen(game)], 100-strlen(game),
+		  " (%d Mb)",size/1024);
   }
+  game[99] = 0;
   return game;
 }
 
