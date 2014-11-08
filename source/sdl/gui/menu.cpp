@@ -564,7 +564,8 @@ void TMenu::compute_width_from_font() {
   }
   width_max += 2*HMARGIN;
   hxoptions = width_max;
-  for (n=0; n<nb_items; n++) {
+  for (int x=0; x<nb_disp_items; x++) {
+      n = menu_disp[x];
     w = child[n]->get_width(font);
     if (w > width_max) {
       width_max = w;
