@@ -98,7 +98,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     font->set_utf(is_utf);
     // All the translations are taken from http://home.comcast.net/~plotor/command.html
     while (*s) {
-	if (*s != '_' && *s != '^') {
+	if (*s != '_' && *s != '^' && *s != '@') {
 	    s++;
 	    continue;
 	}
@@ -165,7 +165,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 
 	    filled_poly = 1;
 
-	} else { // ^
+	} else if (pre == '^') {
 	    filled_poly = 0;
 	    switch (*s) {
 	    case 'S':
@@ -182,7 +182,8 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    case 'V':	col = mymakecol(170,0,255); break;
 	    }
 	    if (*s >= 'E' && *s <= 'J') {
-		if (!strncmp(current_game->main_name,"sf",2)) {
+		if (!strncmp(current_game->main_name,"sf",2) ||
+			!strncmp(current_game->main_name,"msh",3)) {
 		    // Street fighter games
 		    char *keys[] = { "lp","mp","sp","lk","mk","sk" };
 		    sprintf(str,"%s",keys[*s-'E']);
@@ -200,7 +201,14 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		sprintf(str,"SE"); // ?!
 	    else if (*s == 'M')
 		sprintf(str,"MAX");
+	} else if (pre == '@') {
+	    if (!strncmp(s,"W-button",8)) {
+		sprintf(str,"W");
+		col = mymakecol(255,238,0);
+		s += 7;
+	    }
 	}
+
 	if (col)
 	    filledCircleColor(sf, x+w/2, y+h/2, r, col);
 
@@ -220,7 +228,6 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		}
 	    } while (!font);
 	}
-
 	// The coordinates below are supposed to be on & 10x9 matrix, except
 	// that the picture I am using has clearly been resized and so it's
 	// only an approximation...
@@ -238,6 +245,12 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	Sint16 mox[10],moy[10];
 	mirror(10,ox,mox);
 	mirror(10,oy,moy);
+
+	if (pre == '@') {
+	    // Very special case, W Button, 1 letter.
+	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
+	    goto end_loop;
+	}
 
 	if (*s == '1')
 	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
@@ -380,6 +393,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    delete font;
 	    font = f0;
 	}
+end_loop:
 	s++;
 	old = s;
 	x += w;
