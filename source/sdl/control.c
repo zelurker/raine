@@ -668,8 +668,10 @@ void load_game_keys(char *section)
 	}
       }
    }
+#if 0
   if (driver_nb_emu_inputs)
     load_emu_keys(section,driver_emu_list,driver_nb_emu_inputs);
+#endif
 }
 
 void save_game_keys(char *section)
@@ -730,6 +732,11 @@ void save_game_keys(char *section)
 	 }
       }
    }
+#if 0
+   /* Actually it's saved but they don't show in the inputs in the gui so
+    * they can't be changed ! For now I just comment this out because it also
+    * disables these inputs which is not convenient with the config mess in
+    * neocd... */
    if (driver_nb_emu_inputs) {
      // custom emu keys...
      for(ta=0;ta<driver_nb_emu_inputs;ta++){
@@ -740,6 +747,7 @@ void save_game_keys(char *section)
      driver_nb_emu_inputs = 0;
      driver_emu_list = NULL;
    }
+#endif
 }
 
 void load_default_keys(char *section)
@@ -832,6 +840,11 @@ void load_emulator_keys(char *section) {
 void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb) {
   driver_emu_list = list;
   driver_nb_emu_inputs = nb;
+}
+
+void unregister_driver_emu_keys() {
+    driver_nb_emu_inputs = 0;
+    driver_emu_list = NULL;
 }
 
 void save_emulator_keys(char *section)

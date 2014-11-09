@@ -61,6 +61,7 @@ extern struct DEF_INPUT_EMU def_input_emu[];
 
 // allows drivers to register their own emu keys
 void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb);
+void unregister_driver_emu_keys();
 
 void toggle_fullscreen();
 

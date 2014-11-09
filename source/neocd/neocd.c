@@ -1354,28 +1354,29 @@ void neogeo_read_gamename(void)
   int	temp;
 
   int region_code = 2; // always take region europe for the game name
-  if (is_neocd())
+  if (is_neocd()) {
       Ptr = RAM + ReadLongSc(&RAM[0x116]+4*region_code);
-  else
-      Ptr = ROM + ReadLongSc(&ROM[0x116]+4*region_code);
-  memcpy(config_game_name,Ptr,80);
-  ByteSwap((UINT8*)config_game_name,80);
+/*  else
+      Ptr = ROM + ReadLongSc(&ROM[0x116]+4*region_code); */
+      memcpy(config_game_name,Ptr,80);
+      ByteSwap((UINT8*)config_game_name,80);
 
-  for(temp=0;temp<80;temp++) {
-    if (!ischar(config_game_name[temp])) {
-      config_game_name[temp]=0;
-      break;
-    }
+      for(temp=0;temp<80;temp++) {
+	  if (!ischar(config_game_name[temp])) {
+	      config_game_name[temp]=0;
+	      break;
+	  }
+      }
+      while (config_game_name[temp-1] == ' ')
+	  temp--;
+      config_game_name[temp] = 0;
+      temp = 0;
+      while (config_game_name[temp] == ' ')
+	  temp++;
+      if (temp)
+	  memcpy(config_game_name,&config_game_name[temp],strlen(config_game_name)-temp+1);
+      print_debug("game name : %s\n",config_game_name);
   }
-  while (config_game_name[temp-1] == ' ')
-    temp--;
-  config_game_name[temp] = 0;
-  temp = 0;
-  while (config_game_name[temp] == ' ')
-    temp++;
-  if (temp)
-    memcpy(config_game_name,&config_game_name[temp],strlen(config_game_name)-temp+1);
-  print_debug("game name : %s\n",config_game_name);
 
   if (is_neocd())
       neocd_id = ReadWord(&RAM[0x108]);
@@ -1804,11 +1805,6 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 	print_ingame(1,"block %d",capture_block);
     if (!one_palette)
 	disp_gun(0,mousex+offx+8,mousey+16+8);
-    for (offs = 0x104000; offs <= 0x105000; offs+= 0x100)
-	// MESSCONT, but the bytes are swapped...
-	if (!strncmp((char*)&RAM[offs+4],"EMSSOCTN",8))
-	    break;
-    print_ingame(1,"offs: %x [%x] palbank %x",LongSc(offs+0x4c),offs,current_bank);
     if (fdata && sprites) {
 	int nb = nb_sprites-1;
 	int nb2 = nb-1;
@@ -5325,7 +5321,6 @@ void execute_neocd() {
 		      int ofs = pc+ReadWord(&RAM[pc+2])+2;
 		      if (ReadWord(&RAM[ofs]) == 0x8ad &&
 			      ReadWord(&RAM[ofs+6]) == 0x6700) {
-			  printf("mslugx: applied\n");
 			  apply_hack(ofs,"mslugx special");
 			  WriteWord(&RAM[ofs+6],0x4e71);
 			  WriteWord(&RAM[ofs+8],0x4e71);

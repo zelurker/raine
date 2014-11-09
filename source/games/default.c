@@ -36,6 +36,9 @@
 #include "tc200obj.h"
 #include "assoc.h"
 #include "files.h"
+#ifdef SDL
+#include "control_internal.h"
+#endif
 
 void LoadDefault(void)
 {
@@ -125,6 +128,9 @@ void LoadDefault(void)
 
 void ClearDefault(void)
 {
+#ifdef SDL
+    unregister_driver_emu_keys();
+#endif
   use_scale2x = 0;
   use_music = 0;
   clear_assoc();

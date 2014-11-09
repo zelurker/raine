@@ -209,13 +209,16 @@ void save_assoc(char *section) {
 		sprintf(name,"loop%d",cmd);
 		raine_set_config_int(section,name,get_asso_loop(cmd));
 	    }
-	    del_assoc(cmd);
 	}
 }
 
 void clear_assoc() {
-    cdda.playing = CDDA_STOP; // just to be sure
     type = 0;
+    int cmd;
+    for (cmd=1; cmd<256; cmd++)
+	if (track[cmd]) {
+	    del_assoc(cmd);
+	}
 }
 
 void load_assoc(char *section) {
