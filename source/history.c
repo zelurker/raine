@@ -31,7 +31,6 @@ void hist_open(char *name) {
   if (!f) return;
   while (!feof(f)) {
       myfgets(str,255,f);
-      len = strlen(str)+1;
       // The use of strncmp is to be able to handle crlfs files in unix
       if (!strncmp(str,"$info=",6)) {
 	  if (commands) break; // End of current game
@@ -87,6 +86,15 @@ void hist_open(char *name) {
 	  } else
 	      break; // end of main section in this case !
       } else if((str[0]!='$' || strncmp(str,"$bio",4))) {
+	  char *q = str;
+	  while ((q = strstr(q,"\xc2\x97"))) {
+	      // A stupid utf8 sequence which can't apparently be rendered by
+	      // Vera.. it's simply a kind of '-', but on 2 bytes.
+	      // I hate utf8 !!!
+	      *q++ = '-';
+	      memmove(q,q+1,strlen(q+1)+1);
+	  }
+	  len = strlen(str)+1;
 	  if (used + len >= size) {
 	      size += 1024;
 	      commands = realloc(commands,size);
