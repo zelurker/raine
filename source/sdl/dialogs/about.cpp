@@ -211,9 +211,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    case 'V':	col = mymakecol(170,0,255); break;
 	    }
 	    if (*s >= 'E' && *s <= 'J') {
-		if (!strncmp(current_game->main_name,"sf",2) ||
-			!strncmp(current_game->main_name,"msh",3) ||
-			!strncmp(current_game->main_name,"dstlk",5)) {
+		if (has_input(KB_DEF_P1_B6)) {
 		    // Street fighter games
 		    char *keys[] = { "lp","mp","sp","lk","mk","sk" };
 		    sprintf(str,"%s",keys[*s-'E']);

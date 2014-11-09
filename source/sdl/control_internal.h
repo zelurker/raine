@@ -124,6 +124,7 @@ void inputs_preinit();
 void inputs_done();
 int get_axis_from_hat(int which, int hat);
 int get_console_key();
+int has_input(int inp);
 
 #ifdef __cplusplus
 }

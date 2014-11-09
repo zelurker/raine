@@ -451,6 +451,15 @@ int valid_inputs[MAX_VALID_INPUTS]; // a list
 static UINT8 autofire_timer[6];
 static UINT8  stick_logic[4];
 
+int has_input(int inp) {
+    int n;
+    for (n=0; n<InputCount; n++) {
+	if (InputList[n].default_key == inp)
+	    return 1;
+    }
+    return 0;
+}
+
 static void merge_inputs(const INPUT_INFO *input_src) {
     int srcCount = 0;
     int included = 0;
