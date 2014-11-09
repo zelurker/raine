@@ -36,9 +36,28 @@ class TMoveStatic : public TStatic
   int fg, int bg, int xoptions);
 };
 
-static int filled_poly;
-static void polytab(SDL_Surface *sf,int ox,int oy,int w,int h,int mw,int mh,
-	int nb,Sint16 *tabx,Sint16 *taby, int col)
+// A class to unify all the drawing functions for the command.dat symbols
+// it will allow to share the scaling data without making it permanent
+class TSketcher
+{
+    private:
+	SDL_Surface *sf;
+	int ox,oy,w,h,mw,mh;
+	int filled_poly;
+    public:
+	TSketcher(SDL_Surface *_sf,int _ox,int _oy, int _w,int _h, int _mw, int _mh) {
+	    sf = _sf;
+	    ox = _ox; oy = _oy; w=_w; h=_h; mw=_mw; mh = _mh;
+	}
+	void set_filled_poly(int filled) {
+	    filled_poly = filled;
+	}
+	void polytab(int nb,Sint16 *tabx,Sint16 *taby, int col);
+	void poly(int col, ...);
+	void lineC(int x1,int y1,int x2,int y2,int coul);
+};
+
+void TSketcher::polytab(int nb,Sint16 *tabx,Sint16 *taby, int col)
 {
     int n;
     for (n=0; n<nb; n++) {
@@ -51,8 +70,7 @@ static void polytab(SDL_Surface *sf,int ox,int oy,int w,int h,int mw,int mh,
 	polygonColor(sf,tabx,taby,nb,col);
 }
 
-static void poly(SDL_Surface *sf,int ox,int oy,int w,int h, int mw,int mh,
-	int col, ...)
+void TSketcher::poly(int col, ...)
 {
     va_list ap;
 #define PMAX 16
@@ -73,7 +91,16 @@ static void poly(SDL_Surface *sf,int ox,int oy,int w,int h, int mw,int mh,
 	}
     } while (x >= 0);
     va_end(ap);
-    polytab(sf,ox,oy,w,h,mw,mh,nb,tabx,taby,col);
+    polytab(nb,tabx,taby,col);
+}
+
+void TSketcher::lineC(int x1,int y1,int x2,int y2,int coul)
+{
+    x1 = x1*w/mw+ox;
+    y1 = y1*h/mh+oy;
+    x2 = x2*w/mw+ox;
+    y2 = y2*h/mh+oy;
+    lineColor(sf,x1,y1,x2,y2,coul);
 }
 
 static void mirror(int nb, Sint16 *tab, Sint16 *res)
@@ -96,6 +123,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     int old_min = min_font_size;
     min_font_size = 1;
     font->set_utf(is_utf);
+    int white = mymakecol(255,255,255);
     // All the translations are taken from http://home.comcast.net/~plotor/command.html
     while (*s) {
 	if (*s != '_' && *s != '^' && *s != '@') {
@@ -122,6 +150,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	TFont *f0 = NULL;
 	str[0] = *s;
 	str[1] = 0;
+	TSketcher *d = new TSketcher(sf,x,y,w,h,10,9);
 	if (pre == '_') {
 	    switch(*s) {
 	    case 'A':
@@ -163,10 +192,10 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    else if (*s == '.')
 		sprintf(str,"...");
 
-	    filled_poly = 1;
+	    d->set_filled_poly(1);
 
 	} else if (pre == '^') {
-	    filled_poly = 0;
+	    d->set_filled_poly(0);
 	    switch (*s) {
 	    case 'S':
 	    case 'E': col = mymakecol(255,238,0); break;
@@ -183,7 +212,8 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    }
 	    if (*s >= 'E' && *s <= 'J') {
 		if (!strncmp(current_game->main_name,"sf",2) ||
-			!strncmp(current_game->main_name,"msh",3)) {
+			!strncmp(current_game->main_name,"msh",3) ||
+			!strncmp(current_game->main_name,"dstlk",5)) {
 		    // Street fighter games
 		    char *keys[] = { "lp","mp","sp","lk","mk","sk" };
 		    sprintf(str,"%s",keys[*s-'E']);
@@ -246,6 +276,11 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	mirror(10,ox,mox);
 	mirror(10,oy,moy);
 
+	Sint16 wx[16] = {3,1,1,3,6,8,8,10,7,5,7,5,3,3,5,4};
+	Sint16 wy[16] = {8,6,3,1,1,3,5,5, 7,5,5,3,3,6,7,8},mwx[16],mwy[16];
+	mirror(16,wx,mwx);
+	mirror(16,wy,mwy);
+
 	if (pre == '@') {
 	    // Very special case, W Button, 1 letter.
 	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
@@ -253,7 +288,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	}
 
 	if (*s == '1')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    6,1,
 		    2,6,
 		    1,5,
@@ -263,7 +298,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    8,2,
 		    -1,-1);
 	else if (*s == '2')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    2,1,
 		    2,6,
 		    1,6,
@@ -273,7 +308,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    4,1,
 		    -1,-1);
 	else if (*s == '3')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    0,2,
 		    5,8,
 		    4,9,
@@ -283,7 +318,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    3,1,
 		    -1,-1);
 	else if (*s == '4')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    3,2,
 		    0,5,
 		    3,7,
@@ -293,7 +328,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    3,3,
 		    -1,-1);
 	else if (*s == '4')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    3,2,
 		    0,5,
 		    3,7,
@@ -303,7 +338,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    3,3,
 		    -1,-1);
 	else if (*s == '6')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    1,3,
 		    6,3,
 		    6,2,
@@ -313,7 +348,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    1,6,
 		    -1,-1);
 	else if (*s == '7')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    1,1,
 		    1,5,
 		    2,4,
@@ -323,7 +358,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    5,1,
 		    -1,-1);
 	else if (*s == '8')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    2,8,
 		    2,3,
 		    1,3,
@@ -333,7 +368,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    4,8,
 		    -1,-1);
 	else if (*s == '9')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
+	    d->poly(white,
 		    8,1,
 		    8,5,
 		    7,4,
@@ -343,49 +378,87 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 		    4,1,
 		    -1,-1);
 	else if (*s == 'k')
-	    polytab(sf,x,y,w,h,10,9,13,kx,ky,mymakecol(255,255,255));
+	    d->polytab(13,kx,ky,white);
 	else if (*s == 'm') // horizontal mirror of k (10-x)
-	    polytab(sf,x,y,w,h,10,9,13,mkx,ky,mymakecol(255,255,255));
+	    d->polytab(13,mkx,ky,white);
 	else if (*s == 'l') // vertical mirror of m (8-y)
-	    polytab(sf,x,y,w,h,10,9,13,mkx,mky,mymakecol(255,255,255));
+	    d->polytab(13,mkx,mky,white);
 	else if (*s == 'n') // horizontal mirror of l (10-x)
-	    polytab(sf,x,y,w,h,10,9,13,kx,mky,mymakecol(255,255,255));
+	    d->polytab(13,kx,mky,white);
 	else if (*s == 'o')
-	    polytab(sf,x,y,w,h,10,9,10,ox,oy,mymakecol(255,255,255));
+	    d->polytab(10,ox,oy,white);
 	else if (*s == 'p')
-	    polytab(sf,x,y,w,h,10,9,10,moy,ox,mymakecol(255,255,255));
+	    d->polytab(10,moy,ox,white);
 	else if (*s == 'q')
-	    polytab(sf,x,y,w,h,10,9,10,mox,moy,mymakecol(255,255,255));
+	    d->polytab(10,mox,moy,white);
 	else if (*s == 'r')
-	    polytab(sf,x,y,w,h,10,9,10,oy,mox,mymakecol(255,255,255));
-	else if (*s == 's')
-	    polytab(sf,x,y,w,h,10,9,10,mox,oy,mymakecol(255,255,255));
+	    d->polytab(10,oy,mox,white);
+	else if (*s == 's' && pre == '_')
+	    d->polytab(10,mox,oy,white);
 	else if (*s == 't')
-	    polytab(sf,x,y,w,h,10,9,10,oy,ox,mymakecol(255,255,255));
+	    d->polytab(10,oy,ox,white);
 	else if (*s == 'u')
-	    polytab(sf,x,y,w,h,10,9,10,ox,moy,mymakecol(255,255,255));
+	    d->polytab(10,ox,moy,white);
 	else if (*s == 'v')
-	    polytab(sf,x,y,w,h,10,9,10,moy,mox,mymakecol(255,255,255));
+	    d->polytab(10,moy,mox,white);
 	else if (*s == 'w')
-	    poly(sf,x,y,w,h,10,9,mymakecol(255,255,255),
-		    3,8,
-		    1,6,
+	    d->polytab(16,wx,wy,white);
+	else if (*s == 'x')
+	    d->polytab(16,mwx,mwy,white);
+	else if (*s == 'y')
+	    d->polytab(16,wx,mwy,white);
+	else if (*s == 'z')
+	    d->polytab(16,mwx,wy,white);
+	else if (*s == 'Q')
+	    d->poly(white,
+		    1,1,
 		    1,3,
-		    3,1,
-		    6,1,
-		    8,3,
-		    8,5,
-		    10,5,
-		    7,7,
-		    5,5,
-		    7,5,
-		    5,3,
 		    3,3,
-		    3,6,
-		    5,7,
-		    4,8,
+		    3,4,
+		    1,6,
+		    7,6,
+		    7,7,
+		    9,5,
+		    7,3,
+		    7,4,
+		    4,4,
+		    4,3,
+		    6,1,
 		    -1,-1);
-	else if (str[1] == 0)
+	else if (*s == 'R') // horiz mirror of Q (10-x)
+	    d->poly(white,
+		    9,1,
+		    9,3,
+		    7,3,
+		    7,4,
+		    9,6,
+		    3,6,
+		    3,7,
+		    1,5,
+		    3,3,
+		    3,4,
+		    6,4,
+		    6,3,
+		    4,1,
+		    -1,-1);
+	else if (*s == '-' && pre == '_') { // not used for any raine game afaik
+	    d->lineC(3,1,7,1,white);
+	    d->lineC(3,5,5,3,white);
+	    d->lineC(5,3,7,5,white);
+	    d->lineC(5,3,5,7,white);
+	} else if (*s == '-' && pre == '^') {
+	    d->lineC(1,4,6,4,white);
+	    d->lineC(6,4,4,2,white);
+	    d->lineC(6,4,4,6,white);
+	    d->lineC(8,2,8,6,white);
+	} else if (*s == '=' && pre == '^') {
+	    d->lineC(1,4,6,4,white);
+	    d->lineC(1,4,3,2,white);
+	    d->lineC(1,4,3,6,white);
+	    d->lineC(8,2,8,6,white);
+	} else if (*s == '`' && pre == '_') {
+	    filledCircleColor(sf, x+w/2, y+h/2, w/10, white);
+	} else if (str[1] == 0)
 	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
 	else
 	    font->surf_string(sf,x,y,str,(col ? 0 : fg),bg);
@@ -393,6 +466,8 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    delete font;
 	    font = f0;
 	}
+	delete d;
+
 end_loop:
 	s++;
 	old = s;
