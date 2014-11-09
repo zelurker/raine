@@ -49,6 +49,11 @@ static void ansi_font_dim(TFont *font, char *str, int *width, int *height) {
   process_piece(font,old,width,height);
 }
 
+/* The curse with this function is that it cas only tell if a string is NOT
+ * utf8. It's what is really annoying about utf8 anyway...
+ * So with it most english strings will be seen as utf8.
+ * I'll keep calling it for now anyway just in case but maybe it would be best
+ * to assume everything is utf8 now and never call it ? */
 int test_utf(const char *s) {
     if (!s) return 0;
 

@@ -190,7 +190,10 @@ TFont_ttf::~TFont_ttf() {
 
 void TFont_ttf::dimensions(const char *s,int *w, int *h) {
   if (ttf) {
-    TTF_SizeText(ttf,s,w,h);
+      if (is_utf)
+	  TTF_SizeUTF8(ttf,s,w,h);
+      else
+	  TTF_SizeText(ttf,s,w,h);
   } else {
     TFont::dimensions(s,w,h);
   }
