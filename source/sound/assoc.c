@@ -211,6 +211,9 @@ void save_assoc(char *section) {
 	    }
 	    del_assoc(cmd);
 	}
+}
+
+void clear_assoc() {
     cdda.playing = CDDA_STOP; // just to be sure
     type = 0;
 }

@@ -127,6 +127,7 @@ void ClearDefault(void)
 {
   use_scale2x = 0;
   use_music = 0;
+  clear_assoc();
   memset(tile_list,0,sizeof(tile_list));
   RemoveTaitoSoundBanking();
   tc0005rot.RAM = NULL;

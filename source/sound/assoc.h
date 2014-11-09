@@ -5,6 +5,7 @@ extern "C" {
 extern int disable_assoc,last_song,use_music;
 
 void init_assoc(int kind);
+void clear_assoc();
 int get_asso_loop(int cmd);
 void set_asso_loop(int cmd, int lp);
 int get_assoc_adr();
