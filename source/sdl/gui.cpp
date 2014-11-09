@@ -291,7 +291,7 @@ static menu_item_t main_items[] =
 { "Options", &do_gui_options },
 { "Inputs", &do_controls },
 { "About...", &do_about,},
-{ "Show special moves...", &show_moves },
+{ "Show command.dat info", &show_moves },
 #ifdef HAS_CONSOLE
 { "Console", &do_console, },
 #endif
