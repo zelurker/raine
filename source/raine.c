@@ -161,12 +161,6 @@ int main(int argc,char *argv[])
 #endif
     printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2014(!) " HANDLE);
 
-#ifndef RAINE_DOS
-   printf("\E[0m"); // normal text
-#elif defined(RAINE_UNIX)
-   if (isatty(fileno(stdout)))
-     textcolor(7);
-#endif
    printf("\r\n\r\n");
 
 #ifdef RAINE_DEBUG
@@ -179,16 +173,16 @@ int main(int argc,char *argv[])
 #endif
 
  printf("[PRIVATE BETA VERSION]");
+ printf("\r\n\r\n");
 
+#endif // ifdef RAINE_DEBUG
 
 #ifdef RAINE_DOS
- textcolor(7);
+   printf("\E[0m"); // normal text
 #elif defined(RAINE_UNIX)
- if (isatty(fileno(stdout)))
-   printf("\E[0m"); // back to normal
+   if (isatty(fileno(stdout)))
+       printf("\E[0m"); // normal text
 #endif
- printf("\r\n\r\n");
-#endif // ifdef RAINE_DEBUG
 
  // The cpu detection is not just to print the name of the cpu, it's also to
  // initialize raine_cpu_capabilities so that we can use mmx if available.
