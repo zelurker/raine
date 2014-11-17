@@ -13,6 +13,7 @@
 #include "cpumain.h"
 #include "z80/mz80help.h"
 #include "68020/u020help.h"
+#include "neocd/cache.h"
 
 static int cpu_id;
 extern void do_if(int argc, char **argv);
@@ -715,6 +716,34 @@ static void do_dump(int argc, char **argv) {
   last_dump_search = dump_search;
 }
 
+static void do_loaded(int argc, char **argv) {
+    int offset;
+    int type = 0;
+    if (argc == 3) {
+	type = parse(argv[1]);
+	offset = parse(argv[2]);
+    } else if (argc == 2)
+	offset = parse(argv[1]);
+    else {
+	cons->print("syntax: loaded [type] offset");
+	return;
+    }
+
+    if (!is_neocd()) {
+	cons->print("for neocd only !");
+	return;
+    }
+
+    char *name = NULL;
+    int nb = 0;
+    get_cache_origin(type,offset,&name,&nb);
+    if (!name) {
+	cons->print("unknown");
+	return;
+    }
+    cons->print("%s loaded at %x",name,offset-nb);
+}
+
 static void add_search(UINT32 n,UINT8 size) {
   if (nb_search == nb_alloc_search) {
     nb_alloc_search += 100;
@@ -1177,6 +1206,14 @@ commands_t commands[] =
   { "break", &do_break, "break [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint", },
   { "until", &do_until, "(u)ntil pc : executes cycles until pc reaches value given in parameter. Can be interrupted with ESC or Ctrl-C" },
   { "u", &do_until },
+  { "loaded", &do_loaded, "loaded [type] offset : neocd only, returns what is loaded at this offset", "type is 0 (PRG) if ommited\n"
+      "Oterwise it can be :\n"
+"PRG 0\n"
+"FIX 1\n"
+"SPR 2\n"
+"Z80 3\n"
+"PCM 4\n"
+"PAT 5\n"},
   { NULL, NULL, },
 };
 
