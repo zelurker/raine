@@ -104,7 +104,7 @@ static int find_file(char *iso, char *filename, int *size, int *start) {
 	      if (iso_sector_size > 2048)
 		  isof.seek(f,iso_sector_size - 2048, SEEK_CUR);
 	      isof.read(buff,2048,1,f);
-	      len_dir -= iso_sector_size;
+	      len_dir -= 2048;
 	      if (len_dir) {
 		  ptr = buff;
 		  len_record = *ptr;
@@ -114,6 +114,7 @@ static int find_file(char *iso, char *filename, int *size, int *start) {
 	      // int len_ext = ptr[1];
 	      int location = *((int *)&ptr[2]);
 	      int len_file = *((int *)&ptr[10]);
+	      int file_type = ptr[25];
 	      int len_name = ptr[32];
 	      char name[40];
 	      memcpy(name,&ptr[33],len_name);
@@ -125,7 +126,7 @@ static int find_file(char *iso, char *filename, int *size, int *start) {
 	      if (!name[0] && len_file && !len_dir) {
 		  len_dir = len_file;
 		  // printf("init len_dir %d\n",len_dir);
-	      } else {
+	      } else if (file_type != 2) {
 		  if (nb >= nb_alloc) {
 		      nb_alloc += 10;
 		      dir = realloc(dir,sizeof(tcache)*nb_alloc);
