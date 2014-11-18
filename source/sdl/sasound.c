@@ -90,7 +90,7 @@ static int	   playing[NUMVOICES];
 
 int	    audio_sample_rate;
 
-static int reserved_channel = 0,opened_audio = 0;
+static int reserved_channel = 0,opened_audio = 0,sound_init = 0;
 
 static int stream_buffer_max;
 
@@ -210,7 +210,9 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
        opened_audio = 1;
        read_dx_file();
-       Sound_Init(); // init sdl_sound
+       if (!sound_init)
+	   Sound_Init(); // init sdl_sound
+       sound_init = 1;
        strcpy(driver_name,"SDL ");
        SDL_AudioDriverName(&driver_name[4], 32);
        printf("driver name : %s\n",driver_name);
@@ -420,6 +422,22 @@ void start_music_fadeout(double time) {
     fade_frame = 0;
 }
 
+static void close_sample() {
+  if (sample) {
+    Sound_FreeSample(sample);
+    printf("free sample\n");
+  }
+  // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
+  global_state.decoded_bytes = 0;
+  global_state.decoded_ptr = NULL;
+  sample = NULL;
+  if (fbin) {
+    fclose(fbin);
+    printf("fbin kaput\n");
+    fbin = NULL;
+  }
+}
+
 void saDestroySound( int remove_all_resources )
 {
    int i;
@@ -433,11 +451,13 @@ void saDestroySound( int remove_all_resources )
       be closed at the end in order to open it again at a more normal frequency later. */
 
    if (opened_audio) {
-     if (sample && remove_all_resources) {
-	 Sound_FreeSample(sample);
-	 sample = NULL;
-     }
-     Sound_Quit();
+     if (remove_all_resources)
+	 close_sample();
+     /* Well for some unknown reason calling Sound_Quit and then Sound_Init
+      * later crashes sdl_sound when it was not used the 1st time - on a mixed
+      * mode iso for example. Simply not calling ever sound_quit seems fine. */
+     // int quit = Sound_Quit();
+     // printf("sound_quit %d\n",quit);
      SDL_CloseAudio();
    }
 
@@ -519,21 +539,6 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
 	red,neocd_cdda_format);
     bw += red;
     cpysize -= chunk;
-  }
-}
-
-static void close_sample() {
-  if (sample) {
-    Sound_FreeSample(sample);
-    sample = NULL;
-  }
-  // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
-  global_state.decoded_bytes = 0;
-  global_state.decoded_ptr = NULL;
-  sample = NULL;
-  if (fbin) {
-    fclose(fbin);
-    fbin = NULL;
   }
 }
 
