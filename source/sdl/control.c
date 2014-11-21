@@ -635,7 +635,7 @@ void load_game_keys(char *section)
 	  continue;
 	if (!InputList[ta].InputName)
 	    continue;
-	sprintf(key_name,"%s",InputList[ta].InputName);
+	sprintf(key_name,"%s",def_input[InputList[ta].default_key-0x100].name);
 	no_spaces(key_name);
 	InputList[ta].Key = raine_get_config_int(section,key_name,InputList[ta].Key);
 	sprintf(other_name,"%s_joystick",key_name);
@@ -694,7 +694,7 @@ void save_game_keys(char *section)
 	   continue;
 	 if (!InputList[ta].InputName)
 	    continue;
-         sprintf(key_name,"%s",InputList[ta].InputName);
+	 sprintf(key_name,"%s",def_input[InputList[ta].default_key-0x100].name);
          no_spaces(key_name);
 	 if (InputList[ta].Key != def_input[InputList[ta].default_key & 0xff].scancode)
 	   raine_set_config_int(section,key_name,InputList[ta].Key);
