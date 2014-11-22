@@ -3,9 +3,25 @@
 #include "sdl/dialogs/messagebox.h"
 #include "menu.h"
 
+TEdit::TEdit(menu_item_t *my_menu) : TStatic(my_menu)
+{
+    maxl = menu->values_list[0];
+    use_hist = menu->values_list[1];
+    maxw = menu->values_list[2];
+    cursor_on = 0;
+    used_hist = update_count = 0;
+    current_hist = -1;
+    history[MAX_HISTORY-1] = NULL;
+    pos_cursor = old_pos = 0;
+    field = menu->values_list_label[0];
+    pos = strlen(field);
+    is_utf = 0;
+}
+
 void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
   font = myfont;
+  font->set_utf(is_utf);
   if (*menu->label) {
       // Draw the static without a changing bg
     TStatic::disp(s,myfont,x,y,xoptions-x,h,mymakecol(255,255,255),0,xoptions);

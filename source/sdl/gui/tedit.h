@@ -17,19 +17,7 @@ class TEdit : public TStatic
     int used_hist,current_hist,use_hist;
     char prefix_hist[80];
   public:
-    TEdit(menu_item_t *my_menu) : TStatic(my_menu)
-    {
-      maxl = menu->values_list[0];
-      use_hist = menu->values_list[1];
-      maxw = menu->values_list[2];
-      cursor_on = 0;
-      used_hist = update_count = 0;
-      current_hist = -1;
-      history[MAX_HISTORY-1] = NULL;
-      pos_cursor = old_pos = 0;
-      field = menu->values_list_label[0];
-      pos = strlen(field);
-    }
+    TEdit(menu_item_t *my_menu);
     ~TEdit() {
       for (int n=0; n<used_hist; n++) {
 	free(history[n]);
