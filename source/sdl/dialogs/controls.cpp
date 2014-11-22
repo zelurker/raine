@@ -903,7 +903,7 @@ static int get_inputs(int sel) {
 	return 0;
     }
     selected = -1;
-    TDialog *dlg = new TDialog("Load from which ?",menu);
+    TMenu *dlg = new TMenu("Load from which ?",menu);
     dlg->execute();
     delete dlg;
     if (selected > -1) {
