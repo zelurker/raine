@@ -53,6 +53,8 @@ class TEdit : public TStatic
     virtual int valid_chars(int sym, int unicode);
 };
 
+extern void EditDlg(char *label, char *dest,int max_len);
+
 class TFloatEdit : public TEdit {
   protected:
       float *the_float, min, max;
