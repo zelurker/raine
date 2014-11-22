@@ -133,12 +133,12 @@ void ClearDefault(void)
 #endif
   use_scale2x = 0;
   use_music = 0;
-  clear_assoc();
   memset(tile_list,0,sizeof(tile_list));
   RemoveTaitoSoundBanking();
   tc0005rot.RAM = NULL;
   undo_hack();
   save_game_config();
+  clear_assoc();
   hs_close();
   if (current_game->clear)
     current_game->clear();
