@@ -7,6 +7,8 @@
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "ingame.h"
 #include "newmem.h"
+#include "sdl/gui/tedit.h"
+#include "files.h"
 
 /* This is currently the bigest file in the dialogs directory.
  * But it's not because of long complicated code, it's just because it does
@@ -492,6 +494,8 @@ class TControl : public TMenu {
       }
       if (n == 3) // layers
 	return layer_info_count;
+      if (n >= 7) // all load/save inputs
+	  return use_custom_keys;
       return 1;
     }
 };
@@ -785,6 +789,141 @@ static int setup_analog(int sel) {
   return 0;
 }
 
+static int do_load(int sel) {
+    char str[FILENAME_MAX];
+    menu_item_t *menu = NULL;
+    int nb_used = 0, nb_alloc = 0;
+
+    sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+    FILE *f = fopen(str,"r");
+    while (f && !feof(f)) {
+	myfgets(str,FILENAME_MAX,f);
+	char *s = strstr(str,":keyconfig");
+	if (s && !strncmp(str,"[$",2)) {
+	    if (nb_used == nb_alloc) {
+		nb_alloc += 10;
+		menu = (menu_item_t*)realloc(menu,sizeof(menu_item_t)*(nb_alloc+1));
+		memset(&menu[nb_used],0,sizeof(menu_item_t)*11);
+	    }
+	    *s = 0;
+	    s = &str[2];
+	    while ((s = strchr(s,'_')))
+		*s = ' ';
+	    menu[nb_used].label = strdup(&str[2]);
+	    menu[nb_used++].menu_func = &select_joy;
+	}
+    }
+    if (f) fclose(f);
+    if (!nb_used) {
+	MessageBox("Error","Save 1st some custom inputs using\nSave inputs as");
+	return 0;
+    }
+    selected = -1;
+    TDialog *dlg = new TDialog("Load from which ?",menu);
+    dlg->execute();
+    delete dlg;
+    if (selected > -1) {
+	raine_push_config_state();
+
+	sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+	raine_set_config_file(str);
+
+	sprintf(str,"$%s:keyconfig", menu[selected].label);
+	char *s = str;
+	while ((s = strchr(s,' ')))
+	    *s = '_';
+	printf("loading keys from %s\n",str);
+	load_game_keys(str);
+	raine_pop_config_state();
+    }
+    for (int n=0; n<nb_used; n++)
+	free((void*)menu[n].label);
+    free(menu);
+
+    return 0;
+}
+
+static int do_save(int sel) {
+    char dest[80];
+    dest[0] = 0;
+    EditDlg("Save as ",dest,20);
+    if (dest[0]) {
+	char *s = dest;
+	while ((s = strchr(s,' ')))
+	    *s = '_';
+	// Sections must not contain ' ' !
+	char str[FILENAME_MAX];
+	raine_push_config_state();
+
+	sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+	raine_set_config_file(str);
+
+	// Save Key Settings
+
+	sprintf(str,"$%s:keyconfig", dest);
+	save_game_keys(str);
+	raine_pop_config_state();
+    }
+    return 0;
+}
+
+static int get_inputs(int sel) {
+    // Looks a lot like do_load, except that it loads directly another game
+    // instead, actually a little easier...
+    char str[FILENAME_MAX];
+    menu_item_t *menu = NULL;
+    int nb_used = 0, nb_alloc = 0;
+
+    sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+    FILE *f = fopen(str,"r");
+    char conf[256];
+    conf[0] = 0;
+    while (f && !feof(f)) {
+	myfgets(str,FILENAME_MAX,f);
+	char *s = strstr(str,":keyconfig]");
+	if (s && strncmp(str,"[$",2) && str[0] == '[') {
+	    *s = 0;
+	    strncpy(conf,&str[1],256);
+	    conf[255] = 0;
+	}
+	if (!strcmp(str,"use_custom_keys = 1") && conf[0]) {
+	    if (nb_used == nb_alloc) {
+		nb_alloc += 10;
+		menu = (menu_item_t*)realloc(menu,sizeof(menu_item_t)*(nb_alloc+1));
+		memset(&menu[nb_used],0,sizeof(menu_item_t)*11);
+	    }
+	    menu[nb_used].label = strdup(conf);
+	    conf[0] = 0;
+	    menu[nb_used++].menu_func = &select_joy;
+	}
+    }
+    if (f) fclose(f);
+    if (!nb_used) {
+	MessageBox("Error","No game uses custom inputs in your config file yet");
+	return 0;
+    }
+    selected = -1;
+    TDialog *dlg = new TDialog("Load from which ?",menu);
+    dlg->execute();
+    delete dlg;
+    if (selected > -1) {
+	raine_push_config_state();
+
+	sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+	raine_set_config_file(str);
+
+	sprintf(str,"%s:keyconfig", menu[selected].label);
+	printf("loading keys from %s\n",str);
+	load_game_keys(str);
+	raine_pop_config_state();
+    }
+    for (int n=0; n<nb_used; n++)
+	free((void*)menu[n].label);
+    free(menu);
+
+    return 0;
+}
+
 static menu_item_t controls_menu[] =
 {
   { "Raine controls", &do_emu_controls },
@@ -794,6 +933,9 @@ static menu_item_t controls_menu[] =
   { "Autofire...", &setup_autofire },
   { "Autofire controls", &autofire_controls },
   { "Analog controls...", &setup_analog },
+  { "Load inputs from...", &do_load },
+  { "Save inputs as...", &do_save },
+  { "Get inputs from another game", &get_inputs },
   { NULL },
 };
 
