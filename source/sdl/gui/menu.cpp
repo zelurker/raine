@@ -696,20 +696,19 @@ void TMenu::setup_fg_layer() {
   if (fgdst.y < 0) {
     fgdst.y = 0;
   }
+  if (lift) {
+      delete lift;
+      lift = NULL;
+  }
   if (fg_layer)
     SDL_FreeSurface(fg_layer);
-  if (nb_disp_items > rows && !lift) {
+  if (nb_disp_items > rows) {
     width_max += 10;
     w = width_max;
-    if (!lift) {
-      int y = 0;
-      skip_fglayer_header(y);
-      lift = new TLift(width_max-20,y,h-y-get_fglayer_footer_height()-HMARGIN,
-			&top,&nb_disp_items,&rows,&update_count,fg_layer,cslider_border,cslider_bar,cslider_lift);
-    }
-  } else if (lift && nb_disp_items <= rows) {
-    delete lift;
-    lift = NULL;
+    int y = 0;
+    skip_fglayer_header(y);
+    lift = new TLift(width_max-20,y,h-y-get_fglayer_footer_height()-HMARGIN,
+	    &top,&nb_disp_items,&rows,&update_count,fg_layer,cslider_border,cslider_bar,cslider_lift);
   }
   if (use_transparency)
     fg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA,w,h,
@@ -1250,6 +1249,11 @@ void TMenu::find_new_sel() {
       if (!header[hsel].label)
 	  hsel = -1;
   }
+  if (top > nb_disp_items || top + rows > nb_disp_items)
+      top = 0;
+  if (top + rows > nb_disp_items)
+      rows = nb_disp_items;
+
   if (menu_disp)
       for (int n=top; n<top+rows; n++) {
 	  int index = menu_disp[n];

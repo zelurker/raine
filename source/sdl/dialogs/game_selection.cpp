@@ -344,6 +344,13 @@ void TGame_sel::draw_bot_frame() {
 }
 
 void TGame_sel::draw_frame(SDL_Rect *r) {
+  compute_nb_items();
+  if (font) {
+      // Force the regeneration of the font because it's associated to width_max
+      // and we need to recompute this if the game list changed !
+      delete font;
+      font = NULL;
+  }
   if (!font) setup_font(80);
 
   draw_top_frame();
@@ -397,7 +404,7 @@ static void compute_avail() {
 int recompute_list() {
     // options
     compute_avail();
-    game_sel->compute_nb_items();
+    game_sel->draw_frame();
     game_sel->draw();
     return 0;
 }
