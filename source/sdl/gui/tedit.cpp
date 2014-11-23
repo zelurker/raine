@@ -295,12 +295,72 @@ int TFloatEdit::valid_chars(int sym, int unicode) {
 
 int TFloatEdit::can_exit() {
   sscanf(field,"%f",the_float);
-  if (*the_float < min || *the_float > max) {
+  if (min != max && (*the_float < min || *the_float > max)) {
       char content[80];
       sprintf(content,"The field %g must have a value between %g and %g",*the_float,min,max);
       MessageBox("Error",content);
       return 0;
   }
   return 1;
+}
+
+// THexEdit
+
+static char upcase(char s) {
+    return (s & (~32));
+}
+
+static void copy_hex(char *dest, char *src, int max) {
+    *dest = 0;
+    if (src[0]!='0' || upcase(src[1]) != 'X')
+	strcpy(dest,"0x");
+    strncat(dest,src,max);
+    dest[max-1] = 0;
+}
+
+THexEdit::THexEdit(menu_item_t *my_menu) : TEdit(my_menu)
+{
+    maxl = menu->values_list[0];
+    field = (char*)malloc(maxl+1);
+    the_hex = (UINT32 *)menu->values_list_label[1];
+    char buf[20];
+    copy_hex(buf,menu->values_list_label[2],20);
+    sscanf(buf,"%i",&min);
+    copy_hex(buf,menu->values_list_label[3],20);
+    sscanf(buf,"%i",&max);
+    sprintf(field,"%x",*the_hex);
+    use_hist = 0;
+    pos = strlen(field);
+}
+
+THexEdit::~THexEdit() {
+    free(field);
+}
+
+int THexEdit::valid_chars(int sym, int unicode) {
+    if (unicode && unicode != sym) sym = unicode;
+    return ((sym >= '0' && sym <= '9') || (upcase(sym) >= 'A' && upcase(sym)<='F'));
+}
+
+int THexEdit::handle_key(SDL_Event *event) {
+    int ret = TEdit::handle_key(event);
+    // The handler is called by the dialog when handle_key returns 1, so we do
+    // the conversion just before
+    if (ret == 1) {
+	char buf[20];
+	copy_hex(buf,field,20);
+	sscanf(buf,"%i",the_hex);
+    }
+    return ret;
+}
+
+int THexEdit::can_exit() {
+    if ((*the_hex < min || *the_hex > max) && min != max) {
+	char content[80];
+	sprintf(content,"The field %x must have a value between %x and %x",*the_hex,min,max);
+	MessageBox("Error",content);
+	return 0;
+    }
+    return 1;
 }
 

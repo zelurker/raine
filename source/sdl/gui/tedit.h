@@ -54,4 +54,16 @@ class TFloatEdit : public TEdit {
     int get_len_max_options() { return 10; } // minimum field size !
 };
 
+class THexEdit : public TEdit {
+  protected:
+      UINT32 *the_hex, min, max;
+  public:
+    THexEdit(menu_item_t *my_menu);
+    ~THexEdit();
+    virtual int valid_chars(int sym, int unicode);
+    virtual int can_exit();
+    virtual int handle_key(SDL_Event *event);
+    int get_len_max_options() { return 10; } // minimum field size !
+};
+
 #endif

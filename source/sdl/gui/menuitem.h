@@ -66,7 +66,7 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
  * 5 : color of thumb */
 #define ITEM_SLIDER (-2)
 
-/* Edit
+/* TEdit
  * parameters :
  * values_list_label[0] -> pointer to the resulting string
  * values_list[0] : maxlen
@@ -80,12 +80,21 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 
 /* TFloatEdit
  * parameters :
- * values_list_label[0] : compatibility with TEdit : dummy string (the limit of C)
+ * values_list_label[0] : not used (the field for tedit, useless here).
  * values_list_label[1] : pointer to the resulting float (overwrite the type)
- * values_list_label[2] and [3] : min max values (in string format)
+ * values_list_label[2] and [3] : min max values (in string format, put the same value to skip test)
  * values_list[0] = maxlen
  * values_list[2] : max width in pixels to display */
 #define ITEM_FLOATEDIT (-5)
+
+/* THexEdit same thing as TFloatEdit
+ * parameters :
+ * values_list_label[0] : not used (the field for tedit, useless here).
+ * values_list_label[1] : pointer to the resulting hex (UINT32)
+ * values_list_label[2] and [3] : min max values (in string format, put the same value to skip test)
+ * values_list[0] = maxlen
+ * values_list[2] : max width in pixels to display */
+#define ITEM_HEXEDIT (-6)
 
 #ifdef __cplusplus
 }

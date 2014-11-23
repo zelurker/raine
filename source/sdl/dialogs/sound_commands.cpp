@@ -228,8 +228,13 @@ static int associations(int sel) {
 
 static menu_item_t sound_menu[] =
 {
-    { "Music", NULL, &command, 3, {32, 57, 1} },
+    { "Command", NULL, &command, 3, {32, 57, 1} },
     { "Test", &test_command },
+#ifdef RAINE_DEBUG
+    // There is not much point in having this outside debug builds
+    { "Test this", &test_command, &command, ITEM_HEXEDIT, { 2, 0, 150 },
+       	{ "",(char*)&command,"0","0"} },
+#endif
     { "Stop", &stop },
     { "Associate...", &associate },
     { "Manage associations", &associations },
@@ -252,13 +257,6 @@ int do_sound_cmd(int sel) {
 	return 0;
     int ticks = dwElapsedTicks;
     sound_menu[0].values_list_size = 0;
-#ifdef RAINE_DEBUG
-    add_value(0);
-    add_value(1);
-    add_value(3);
-    add_value(7);
-    add_value(9);
-#endif
     int adr;
     if (get_assoc_type() < 10) add_value(2);
     cdda.playing = CDDA_STOP;
