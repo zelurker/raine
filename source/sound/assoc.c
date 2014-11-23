@@ -25,7 +25,8 @@ enum {
     MUSIC=0,
     SOUND,
     ONE_SOUND,
-    FADEOUT
+    FADEOUT,
+    EAT_TWO
 };
 static int mode;
 // use_music : do we use external music ? It's the case if a real association
@@ -273,14 +274,63 @@ int handle_sound_cmd(int cmd) {
 	    mute_song();
 	break;
     case 2: // galaxyfg
-	if (cmd == 7) mode = MUSIC;
-	else if (cmd == 0x1c) mode = SOUND;
-	if (mode == SOUND) {
-	    // mode reset after just 1 byte !
-	    if (cmd >= 0x20) mode = MUSIC;
+	if (cmd == 3) { // immediate reset
+	    if (active)
+		mute_song();
+	    mode = SOUND;
 	    return 0;
 	}
-	if (active && (cmd == 3 || Z80ROM[adr + cmd] == 2))
+	if (mode == EAT_TWO) {
+	    mode = ONE_SOUND;
+	    return 0;
+	} else if (mode == ONE_SOUND) {
+	    mode = MUSIC;
+	    return 0;
+	}
+
+
+	if (mode == FADEOUT) {
+	    // 0x10 stops it
+	    // 0x11 takes about 8s
+	    // 4 takes about 28s !
+	    // 0x30 takes about 3.5s
+	    double time;
+	    if (cmd == 0x10)
+		mute_song();
+	    else {
+		if (cmd >= 0x11)
+		    time = 8.0*0x11/cmd;
+		else if (cmd >= 4 && cmd <= 0x10)
+		    time = 8.0*0x10/cmd;
+		start_music_fadeout(time);
+	    }
+	    return 0;
+	}
+	int no_return = 0;
+	if (cmd == 4 || cmd == 5 || cmd == 0x10) {
+	    // if music is playing then 4 stops it immediately
+	    // 5 is fading on the currently playing note !slow)
+	    mode = SOUND; // all commands after this are eaten, maybe for sound?
+	    if (active)
+		mute_song();
+	} else if (cmd == 7 || cmd == 8) mode = MUSIC;
+	else if (cmd == 0xa)
+	    mode = FADEOUT;
+	// b, c, d are ignored
+	// e slows down music until the next part where it takes back its
+	// normal speed -> impossible to emulate !
+	else if (cmd == 0x14 && is_current_game("wakuwak7"))
+	    mode = EAT_TWO;
+	else if (Z80ROM[adr + cmd] == 1)
+	    // Note : 1a and 1c and 1e are those which really output sound the
+	    // others just eat the following byte (for wakuwak7)
+	    // I assume the 1 means they eat 1 byte here, but I am not certain
+	    mode = ONE_SOUND;
+	else // all the others are ignored
+	    no_return = 1;
+	if (!no_return)
+	    return 0;
+	if (active && Z80ROM[adr + cmd] == 2)
 	    mute_song();
 	break;
     case 1: // garou
