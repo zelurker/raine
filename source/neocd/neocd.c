@@ -2266,17 +2266,17 @@ static void do_fix_conv() {
 static void do_spr_conv() {
     if (spr_max > 0) {
 	UINT8 *tmp;
-	// +2 for len because these are word offsets and we want bytes
-	int len = spr_max-spr_min+2;
-	print_debug("do_spr_conv %x,%x\n",spr_min,spr_max);
+	int len = (spr_max-spr_min)/2+2;
+	print_debug("do_spr_conv %x,%x len %x\n",spr_min,spr_max,len);
 	if (!(tmp = AllocateMem(len))) return;
-	memcpy(tmp,&GFX[spr_min],len);
-	ByteSwap(tmp,len); // a catch : incompatible with starscream
+	int n;
+	for (n=spr_min; n<=spr_max; n+=4)
+	    WriteWord68k(&tmp[(n-spr_min)/2],ReadWord(&GFX[n]));
 	spr_conv(tmp,
-		&GFX[spr_min*2],
+		&GFX[spr_min],
 		len,
-		video_spr_usage+(spr_min>>7));
-	file_cache("upload",spr_min*2,len*2,SPR_TYPE); // for the savegames
+		video_spr_usage+(spr_min>>8));
+	file_cache("upload",spr_min,len*2,SPR_TYPE); // for the savegames
 	FreeMem(tmp);
 	spr_max = 0;
 	spr_min = 0x800000;
@@ -2399,7 +2399,18 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
       Z80ROM[offset] = data;
       return;
     } else if (zone == SPR_TYPE) { // used by the custom bios 07Z !
-	offset = (offset & 0xfffff) + (spr_bank << 20);
+	offset = ((offset & 0xfffff) + (spr_bank << 20))*2;
+	/* Nice little hack here : the sprites in raine are unpacked, which
+	 * means they take twice the space of the original sprites. So if we
+	 * wrote directly to the offset given it would overwrite sprites
+	 * placed before what the game wants to change.
+	 * Actually this effect doesn't show a lot in real life because most
+	 * games using this are using it from offset 0. I found only samsho3
+	 * using this starting at an offset > 0.
+	 * Anyway the idea is to double the offset here, so it will write
+	 * directly to the sprites to change. Of course it means it will write
+	 * a word ever 4 bytes, so we need to re-convert the buffer to a linear
+	 * one in do_spr_conv */
 	if (offset < 0x800000) {
 	    if (offset < spr_min) spr_min = offset;
 	    if (offset > spr_max) spr_max = offset;
@@ -2614,6 +2625,7 @@ static void write_upload(int offset, int data) {
       // actually !).
       offset &= 0xfffff;
       offset += (spr_bank<<20);
+      offset *= 2;
       if (offset < 0x800000) {
 	  UINT8 *dest = GFX + (offset ^1);
 	  if (offset < spr_min) spr_min = offset;
