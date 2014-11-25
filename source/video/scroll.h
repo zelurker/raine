@@ -126,6 +126,12 @@ extern "C" {
    zzzz|=(zzz&0x0F8)<<4;                     \
    y16=zzz&7;                                \
 
+#define MAKE_SCROLL_512x256_2_8_no16(scr_x,scr_y) \
+   zzz=(scr_x);                                   \
+   zzzz=(zzz&0x1F8)>>2;                           \
+   zzz=(scr_y);                                   \
+   zzzz|=(zzz&0x0F8)<<4;                          \
+
 #define START_SCROLL_512x256_2_8		START_SCROLL_8
 #define START_SCROLL_512x256_2_8_R180		START_SCROLL_8_R180
 #define START_SCROLL_512x256_2_8_R270		START_SCROLL_8_R270
@@ -139,13 +145,11 @@ extern "C" {
 
 // -----------------------------------------------------------------------------
 
-#define MAKE_SCROLL_512x512_1_8(scr_x,scr_y) \
-   zzz=(scr_x);                              \
-   zzzz=(zzz&0x1F8)>>3;                      \
-   x16=zzz&7;                                \
-   zzz=(scr_y);                              \
-   zzzz|=(zzz&0x1F8)<<3;                     \
-   y16=zzz&7;                                \
+#define MAKE_SCROLL_512x512_1_8_no16(scr_x,scr_y) \
+   zzz=(scr_x);                                   \
+   zzzz=(zzz&0x1F8)>>3;                           \
+   zzz=(scr_y);                                   \
+   zzzz|=(zzz&0x1F8)<<3;
 
 #define START_SCROLL_512x512_1_8		START_SCROLL_8
 #define START_SCROLL_512x512_1_8_R180		START_SCROLL_8_R180
@@ -166,7 +170,13 @@ extern "C" {
    x16=zzz&7;                                \
    zzz=(scr_y);                              \
    zzzz|=(zzz&0x1F8)<<4;                     \
-   y16=zzz&7;                                \
+   y16=zzz&7;
+
+#define MAKE_SCROLL_512x512_2_8_no16(scr_x,scr_y) \
+   zzz=(scr_x);                                   \
+   zzzz=(zzz&0x1F8)>>2;                           \
+   zzz=(scr_y);                                   \
+   zzzz|=(zzz&0x1F8)<<4;
 
 #define START_SCROLL_512x512_2_8		START_SCROLL_8
 #define START_SCROLL_512x512_2_8_R180		START_SCROLL_8_R180

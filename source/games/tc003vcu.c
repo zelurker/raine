@@ -140,7 +140,7 @@ Not implemented:
 
 void f3video_render_fg0(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -160,7 +160,7 @@ void f3video_render_fg0(void)
 
    tx = 128-(bmp_w>>2);
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -193,7 +193,7 @@ void f3video_render_fg0(void)
 
 void f3video_render_fg0_new(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -213,7 +213,7 @@ void f3video_render_fg0_new(void)
 
    tx = 128-(bmp_w>>2);
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -246,7 +246,7 @@ void f3video_render_fg0_new(void)
 
 void f3video_render_fg0_r180(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -266,7 +266,7 @@ void f3video_render_fg0_r180(void)
 
    tx = 128-(bmp_w>>2);
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -299,7 +299,7 @@ void f3video_render_fg0_r180(void)
 
 void f3video_render_fg0_r270(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -319,7 +319,7 @@ void f3video_render_fg0_r270(void)
 
    tx = 128-(bmp_h>>2);
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_y,		//-(ReadWord(RAM_SCR+0)),
          scr_x		//-(ReadWord(RAM_SCR+6))
       );
@@ -354,7 +354,7 @@ void f3video_render_fg0_r270(void)
 
 void f3video_render_fg0_gfx2(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -374,7 +374,7 @@ void f3video_render_fg0_gfx2(void)
 
    tx = 128-(bmp_w>>2);
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );

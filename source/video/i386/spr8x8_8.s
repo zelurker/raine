@@ -16,8 +16,8 @@ Transparent Direct-Mapped
 #include "asmdefs.inc"
 
 CODE_SEG
-	
-FUNC(Draw8x8_Mapped)
+
+FUNC(Draw8x8_Mapped_8)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -90,7 +90,7 @@ bitw_00:
 	cmp	$0xDEADBEEF,%esi
 endc_00:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -100,7 +100,7 @@ endc_00:
 	ret                // Arg ! I have nothing rest to pair with the ret
                          // instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw8x8_Mapped_FlipY)
+FUNC(Draw8x8_Mapped_8_FlipY)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -173,7 +173,7 @@ bitw_01:
 	cmp	$0xDEADBEEF,%esi
 endc_01:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -183,7 +183,7 @@ endc_01:
 	ret                // Arg ! I have nothing rest to pair with the ret
                          // instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw8x8_Mapped_FlipX)
+FUNC(Draw8x8_Mapped_8_FlipX)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -256,7 +256,7 @@ bitw_02:
 	cmp	$0xDEADBEEF,%esi
 endc_02:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -266,7 +266,7 @@ endc_02:
 	ret                // Arg ! I have nothing rest to pair with the ret
                          // instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw8x8_Mapped_FlipXY)
+FUNC(Draw8x8_Mapped_8_FlipXY)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -339,7 +339,7 @@ bitw_03:
 	cmp	$0xDEADBEEF,%esi
 endc_03:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -349,7 +349,7 @@ endc_03:
 	ret                // Arg ! I have nothing rest to pair with the ret
                          // instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw8x8_Trans_Mapped)
+FUNC(Draw8x8_Trans_Mapped_8)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -439,7 +439,7 @@ bitw_04:
 	cmp	$0xDEADBEEF,%esi
 endc_04:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -448,7 +448,7 @@ endc_04:
 
 	ret
 
-FUNC(Draw8x8_Trans_Mapped_FlipY)
+FUNC(Draw8x8_Trans_Mapped_8_FlipY)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -538,7 +538,7 @@ bitw_05:
 	cmp	$0xDEADBEEF,%esi
 endc_05:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -547,7 +547,7 @@ endc_05:
 
 	ret
 
-FUNC(Draw8x8_Trans_Mapped_FlipX)
+FUNC(Draw8x8_Trans_Mapped_8_FlipX)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -637,7 +637,7 @@ bitw_06:
 	cmp	$0xDEADBEEF,%esi
 endc_06:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -646,7 +646,7 @@ endc_06:
 
 	ret
 
-FUNC(Draw8x8_Trans_Mapped_FlipXY)
+FUNC(Draw8x8_Trans_Mapped_8_FlipXY)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -736,7 +736,7 @@ bitw_07:
 	cmp	$0xDEADBEEF,%esi
 endc_07:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 
@@ -745,7 +745,7 @@ endc_07:
 
 	ret
 
-FUNC(Draw8x8)
+FUNC(Draw8x8_8)
 
 	pushl	%edi
 	pushl	%esi
@@ -884,7 +884,7 @@ bitw_08:
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_FlipY)
+FUNC(Draw8x8_8_FlipY)
 
 	pushl	%edi
 	pushl	%esi
@@ -902,7 +902,7 @@ blin_09:
 	movl	$0xDEADBEEF,%edx			// screen width
 bitw_09:
 	mov	%ax,%cx				// cmap
-	
+
 	movl	(%esi),%eax
 	movl	4(%esi),%ebx
 	orl	%ecx,%eax
@@ -983,7 +983,7 @@ bitw_09:
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_FlipX)
+FUNC(Draw8x8_8_FlipX)
 
 	pushl	%edi
 	pushl	%esi
@@ -1067,7 +1067,7 @@ bitw_10:
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_FlipXY)
+FUNC(Draw8x8_8_FlipXY)
 
 	pushl	%edi
 	pushl	%esi
@@ -1086,7 +1086,7 @@ blin_11:
 bitw_11:
 	mov	%ax,%cx				// cmap
 	neg	%edx
-	
+
 	movl	(%esi),%eax
 	movl	4(%esi),%ebx
 	orl	%ecx,%eax
@@ -1167,7 +1167,7 @@ bitw_11:
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_Trans)
+FUNC(Draw8x8_Trans_8)
 
 	pushl	%edi
 	pushl	%esi
@@ -1227,13 +1227,13 @@ blin_12:
 bitw_12:
 	decl	%edx
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_Trans_FlipY)
+FUNC(Draw8x8_Trans_8_FlipY)
 
 	pushl	%edi
 	pushl	%esi
@@ -1293,13 +1293,13 @@ blin_13:
 bitw_13:
 	decl	%edx
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_Trans_FlipX)
+FUNC(Draw8x8_Trans_8_FlipX)
 
 	pushl	%edi
 	pushl	%esi
@@ -1359,13 +1359,13 @@ blin_14:
 bitw_14:
 	decl	%edx
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	ret
 
-FUNC(Draw8x8_Trans_FlipXY)
+FUNC(Draw8x8_Trans_8_FlipXY)
 
 	pushl	%edi
 	pushl	%esi
@@ -1425,13 +1425,13 @@ blin_15:
 bitw_15:
 	decl	%edx
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	ret
 
-FUNC(init_spr8x8asm)
+FUNC(init_spr8x8asm_8)
 
 
 	movl	GLOBL(GameBitmap),%eax	// Adress of the GameBitmap's structure

@@ -22,10 +22,10 @@ void new_tile_cache(cache_data *old);
 void new_tile_cachex4(cache_data *old);
 void switch_cache(cache_data *old, cache_data *);
 
-void add_tile_cache(UINT8 *dummy,int x, int y, int ta);
-void add_tile_cache_FlipX(UINT8 *dummy,int x, int y, int ta);
-void add_tile_cache_FlipY(UINT8 *dummy,int x, int y, int ta);
-void add_tile_cache_FlipXY(UINT8 *dummy,int x, int y, int ta);
+void add_tile_cache_8(UINT8 *dummy,int x, int y, int ta);
+void add_tile_cache_8_FlipX(UINT8 *dummy,int x, int y, int ta);
+void add_tile_cache_8_FlipY(UINT8 *dummy,int x, int y, int ta);
+void add_tile_cache_8_FlipXY(UINT8 *dummy,int x, int y, int ta);
 
 void add_tile_cache_16(UINT8 *dummy,int x, int y, int ta);
 void add_tile_cache_16_FlipX(UINT8 *dummy,int x, int y, int ta);

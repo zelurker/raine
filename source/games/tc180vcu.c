@@ -370,7 +370,7 @@ void vcu_render_bg1(void)
 
 void vcu_render_bg2(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -398,7 +398,7 @@ void vcu_render_bg2(void)
 
    tx = 128-(bmp_w>>2);
 
-      MAKE_SCROLL_512x256_2_8(
+      MAKE_SCROLL_512x256_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+2))
       );
@@ -479,7 +479,7 @@ void vcu_render_obj(UINT32 num)
    if(pixel_blit){
       bitmap_store = GameBitmap;
       GameBitmap = pixel_bitmap;
-      init_spr16x16asm();
+      init_spr16x16asm_8();
 
    zz = (0x1980-16);
    do{
@@ -558,7 +558,7 @@ void vcu_render_obj(UINT32 num)
    }
 
       GameBitmap = bitmap_store;
-      init_spr16x16asm();
+      init_spr16x16asm_8();
 
    for(ty=32;(UINT32)ty<32+tc0180vcu.bmp_h;ty++){
    for(tx=32;(UINT32)tx<32+tc0180vcu.bmp_w;tx++){
@@ -749,7 +749,7 @@ void vcu_render_bg1_r270(void)
 
 void vcu_render_bg2_r270(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -777,7 +777,7 @@ void vcu_render_bg2_r270(void)
 
    tx = 128-(bmp_h>>2);
 
-      MAKE_SCROLL_512x256_2_8(
+      MAKE_SCROLL_512x256_2_8_no16(
          scr_y,		//-(ReadWord(RAM_SCR+0)),
          scr_x		//-(ReadWord(RAM_SCR+6))
       );
@@ -860,7 +860,7 @@ void vcu_render_obj_r270(int pri)
 
       bitmap_store = GameBitmap;
       GameBitmap = pixel_bitmap;
-      init_spr16x16asm();
+      init_spr16x16asm_8();
 
    zz = 0x1FF0;
    do{
@@ -943,7 +943,7 @@ void vcu_render_obj_r270(int pri)
    }
 
       GameBitmap = bitmap_store;
-      init_spr16x16asm();
+      init_spr16x16asm_8();
 
    for(ty=32;(UINT32)ty<32+tc0180vcu.bmp_h;ty++){
    for(tx=32;(UINT32)tx<32+tc0180vcu.bmp_w;tx++){

@@ -43,23 +43,23 @@ typedef void draw_func(UINT8 *SPR, int x, int y, UINT8 cmap);
  * You DON'T have to declare anything in newspr.c except this. *
  * But you have to call make_rot_jump or make_rot_jump_16 and init_jump_table ! */
 
-extern draw_func *Draw8x8_Flip_Rot[4];
+extern draw_func *Draw8x8_8_Flip_Rot[4];
 
-#define Draw8x8_flip_Rot(a, b, c, d, e) (*Draw8x8_Flip_Rot[e])(a, b, c, d)
+#define Draw8x8_8_flip_Rot(a, b, c, d, e) (*Draw8x8_8_Flip_Rot[e])(a, b, c, d)
 
-#define Draw8x8_Rot(a, b, c, d)        (*Draw8x8_Flip_Rot[0])(a, b, c, d)
-#define Draw8x8_FlipY_Rot(a, b, c, d)  (*Draw8x8_Flip_Rot[1])(a, b, c, d)
-#define Draw8x8_FlipX_Rot(a, b, c, d)  (*Draw8x8_Flip_Rot[2])(a, b, c, d)
-#define Draw8x8_FlipXY_Rot(a, b, c, d) (*Draw8x8_Flip_Rot[3])(a, b, c, d)
+#define Draw8x8_8_Rot(a, b, c, d)        (*Draw8x8_8_Flip_Rot[0])(a, b, c, d)
+#define Draw8x8_8_FlipY_Rot(a, b, c, d)  (*Draw8x8_8_Flip_Rot[1])(a, b, c, d)
+#define Draw8x8_8_FlipX_Rot(a, b, c, d)  (*Draw8x8_8_Flip_Rot[2])(a, b, c, d)
+#define Draw8x8_8_FlipXY_Rot(a, b, c, d) (*Draw8x8_8_Flip_Rot[3])(a, b, c, d)
 
-extern draw_func *Draw8x8_Trans_Flip_Rot[4];
+extern draw_func *Draw8x8_Trans_8_Flip_Rot[4];
 
-#define Draw8x8_Trans_flip_Rot(a, b, c, d, e) (*Draw8x8_Trans_Flip_Rot[e])(a, b, c, d)
+#define Draw8x8_Trans_8_flip_Rot(a, b, c, d, e) (*Draw8x8_Trans_8_Flip_Rot[e])(a, b, c, d)
 
-#define Draw8x8_Trans_Rot(a, b, c, d)        (*Draw8x8_Trans_Flip_Rot[0])(a, b, c, d)
-#define Draw8x8_Trans_FlipY_Rot(a, b, c, d)  (*Draw8x8_Trans_Flip_Rot[1])(a, b, c, d)
-#define Draw8x8_Trans_FlipX_Rot(a, b, c, d)  (*Draw8x8_Trans_Flip_Rot[2])(a, b, c, d)
-#define Draw8x8_Trans_FlipXY_Rot(a, b, c, d) (*Draw8x8_Trans_Flip_Rot[3])(a, b, c, d)
+#define Draw8x8_Trans_8_Rot(a, b, c, d)        (*Draw8x8_Trans_8_Flip_Rot[0])(a, b, c, d)
+#define Draw8x8_Trans_8_FlipY_Rot(a, b, c, d)  (*Draw8x8_Trans_8_Flip_Rot[1])(a, b, c, d)
+#define Draw8x8_Trans_8_FlipX_Rot(a, b, c, d)  (*Draw8x8_Trans_8_Flip_Rot[2])(a, b, c, d)
+#define Draw8x8_Trans_8_FlipXY_Rot(a, b, c, d) (*Draw8x8_Trans_8_Flip_Rot[3])(a, b, c, d)
 
 extern draw_func *Draw16x16_16_Flip_Rot[4];
 
@@ -273,10 +273,10 @@ extern draw_mapped_zoom_xy_func *Draw16x8_Trans_Mapped_ZoomXY_Flip_Rot[4];
 
 // 64x64 Mapped Sprites
 
-void Draw64x64_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw64x64_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw64x64_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw64x64_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 //16 bpp version
 void Draw64x64_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap);
 void Draw64x64_Mapped_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
@@ -301,40 +301,40 @@ extern draw_mapped_func *Draw64x64_Mapped_Flip_Rot[4];
 
 // 64x64 Transparent Mapped Sprites
 
-void Draw64x64_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw64x64_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw64x64_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw64x64_Trans_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw64x64_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 // no 16bpp version (yet)
 // no 32bpp version (yet)
 
 // Specially for F3 System (pixel layer)
 
-void Draw8xH_Trans_Packed_Mapped_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_8(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_8_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_8_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
 //16 bpp version
-void Draw8xH_Trans_Packed_Mapped_Column_16(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_16_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_16_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_16_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_16(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_16_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_16_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_16_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
 //32 bpp version
-void Draw8xH_Trans_Packed_Mapped_Column_32(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_32_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_32_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
-void Draw8xH_Trans_Packed_Mapped_Column_32_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_32(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_32_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_32_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
+void Draw8xH_Trans_Packed_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap);
 
 // Rot definition
 
-extern drawh_mapped_func *Draw8xH_Trans_Packed_Mapped_Column_Flip_Rot[4];
+extern drawh_mapped_func *Draw8xH_Trans_Packed_Mapped_Flip_Rot[4];
 
-#define Draw8xH_Trans_Packed_Mapped_Column_flip_Rot(a, b, c, d, e,f) (*Draw8xH_Trans_Packed_Mapped_Column_Flip_Rot[f])(a, b, c, d,e)
+#define Draw8xH_Trans_Packed_Mapped_flip_Rot(a, b, c, d, e,f) (*Draw8xH_Trans_Packed_Mapped_Flip_Rot[f])(a, b, c, d,e)
 
-#define Draw8xH_Trans_Packed_Mapped_Column_Rot(a, b, c, d, e)        (*Draw8xH_Trans_Packed_Mapped_Column_Flip_Rot[0])(a, b, c, d, e)
-#define Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(a, b, c, d, e)  (*Draw8xH_Trans_Packed_Mapped_Column_Flip_Rot[1])(a, b, c, d, e)
-#define Draw8xH_Trans_Packed_Mapped_Column_FlipX_Rot(a, b, c, d, e)  (*Draw8xH_Trans_Packed_Mapped_Column_Flip_Rot[2])(a, b, c, d, e)
-#define Draw8xH_Trans_Packed_Mapped_Column_FlipXY_Rot(a, b, c, d, e) (*Draw8xH_Trans_Packed_Mapped_Column_Flip_Rot[3])(a, b, c, d, e)
+#define Draw8xH_Trans_Packed_Mapped_Rot(a, b, c, d, e)        (*Draw8xH_Trans_Packed_Mapped_Flip_Rot[0])(a, b, c, d, e)
+#define Draw8xH_Trans_Packed_Mapped_FlipY_Rot(a, b, c, d, e)  (*Draw8xH_Trans_Packed_Mapped_Flip_Rot[1])(a, b, c, d, e)
+#define Draw8xH_Trans_Packed_Mapped_FlipX_Rot(a, b, c, d, e)  (*Draw8xH_Trans_Packed_Mapped_Flip_Rot[2])(a, b, c, d, e)
+#define Draw8xH_Trans_Packed_Mapped_FlipXY_Rot(a, b, c, d, e) (*Draw8xH_Trans_Packed_Mapped_Flip_Rot[3])(a, b, c, d, e)
 
 void init_newspr2asm();
 void init_newspr2asm_16();

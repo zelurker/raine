@@ -17,22 +17,22 @@ Transparent Direct-Mapped
 
 */
 
-void init_spr16x16asm(void);
+void init_spr16x16asm_8(void);
 void init_spr16x16asm_mask(BITMAP *bitmap);
 
 // 16x16 mapped sprites
 
-void Draw16x16_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw16x16_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw16x16_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw16x16_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 
 // 16x16 mapped transparent sprites
 
-void Draw16x16_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw16x16_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw16x16_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw16x16_Trans_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw16x16_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 
 void init_spr16x16asm_16(void);
 
@@ -87,10 +87,10 @@ void Draw16x16_Mask(UINT8 *SPR, int x, int y, UINT8 cmap);
 
 // 16x16 transparent sprites
 
-void Draw16x16_Trans(UINT8 *SPR, int x, int y, UINT8 cmap);
-void Draw16x16_Trans_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
-void Draw16x16_Trans_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
-void Draw16x16_Trans_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw16x16_Trans_8(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw16x16_Trans_8_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw16x16_Trans_8_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw16x16_Trans_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 
 void Draw16x16_Trans_16(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw16x16_Trans_16_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);

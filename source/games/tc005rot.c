@@ -142,13 +142,13 @@ void tc0005rot_set_bitmap(void)
 {
    bitmap_store = GameBitmap;
    GameBitmap = pixel_bitmap;
-   init_spr8x8asm();
+   init_spr8x8asm_8();
 }
 
 void tc0005rot_unset_bitmap(void)
 {
    GameBitmap = bitmap_store;
-   init_spr8x8asm();
+   init_spr8x8asm_8();
 }
 
 extern int disp_x_8, disp_y_8;
@@ -170,7 +170,7 @@ void tc0005rot_bg0_ww(UINT32 address, UINT16 data)
        // we keep the bank with the pixel data (it's the role of Draw8x8)
 /*        int oldx = disp_x_8, oldy = disp_y_8; */
 /*        disp_x_8 = 512 - 8; disp_y_8 = 512 - 8; */
-       Draw8x8(&GFX_BG[(data&0x3FFF)<<6],(address&0x7E)<<2,((address&0x1F80)>>4),(data>>10)&0x30);
+       Draw8x8_8(&GFX_BG[(data&0x3FFF)<<6],(address&0x7E)<<2,((address&0x1F80)>>4),(data>>10)&0x30);
 /*        disp_x_8 = oldx; disp_y_8 = oldy; */
 
      }
@@ -1095,7 +1095,7 @@ void tc0005rot_refresh_buffer(void)
 
       data = ReadWord(&RAM_BG[address]);
 
-      Draw8x8(&GFX_BG[(data&0x3FFF)<<6],(address&0x7E)<<2,((address&0x1F80)>>4),(data>>10)&0x30);
+      Draw8x8_8(&GFX_BG[(data&0x3FFF)<<6],(address&0x7E)<<2,((address&0x1F80)>>4),(data>>10)&0x30);
 
    }
 

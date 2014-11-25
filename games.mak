@@ -54,7 +54,6 @@ OBJS += \
 	$(OBJDIR)/games/gridseek.o \
 	$(OBJDIR)/games/gunbird.o \
 	$(OBJDIR)/games/gunlock.o \
-	$(OBJDIR)/games/heavyunt.o \
 	$(OBJDIR)/games/hitice.o \
 	$(OBJDIR)/games/hthero95.o \
 	$(OBJDIR)/games/hyperpcb.o \

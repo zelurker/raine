@@ -478,7 +478,7 @@ static void DrawBubbleSymphony(void)
    if(zz<=48){
 
    for(x=56+x16;x<(320+64);x+=8){
-     Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,208,MAP);
+     Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,208,MAP);
       zzzz=(zzzz+0x400)&0xFFFF;
    }
 
@@ -486,8 +486,8 @@ static void DrawBubbleSymphony(void)
    else{
 
    for(x=56+x16;x<(320+64);x+=8){
-     Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,256-zz,MAP);
-     Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(&RAM_BG4[zzzz+((256-zz)<<2)-0x400],x,64+16+(256-zz),208-(256-zz),MAP);
+     Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,256-zz,MAP);
+     Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz+((256-zz)<<2)-0x400],x,64+16+(256-zz),208-(256-zz),MAP);
      zzzz=(zzzz+0x400)&0xFFFF;
    }
 

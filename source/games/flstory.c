@@ -771,8 +771,8 @@ static void DrawFLStory(void)
       code = (ta&0xFF) | ((ta>>6)&0x0300);
 
       switch(ta&0x0800){
-      case 0x0800: Draw8x8(&GFX[code<<6], x, y, (ta>>6)&0x00);       break;
-      case 0x0000: Draw8x8_FlipY(&GFX[code<<6], x, y, (ta>>6)&0x00); break;
+      case 0x0800: Draw8x8_8(&GFX[code<<6], x, y, (ta>>6)&0x00);       break;
+      case 0x0000: Draw8x8_8_FlipY(&GFX[code<<6], x, y, (ta>>6)&0x00); break;
       }
 
    END_SCROLL_256x256_2_8();

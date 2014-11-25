@@ -334,151 +334,151 @@ it's a real macro overload, but rotation overhead is now *very small*
 #define MAKE_ROT_JUMP_16( FUNC, XOFS, YOFS )                                   \
                                                                                \
                                                                                \
-static void FUNC##_R090(UINT8 *SPR, int x, int y, ARGS)                        \
+static void FUNC##_8_R090(UINT8 *SPR, int x, int y, ARGS)                        \
 {                                                                              \
-   FUNC(SPR, YOFS - y, x,          ARGS_2);                                \
+   FUNC##_8(SPR, YOFS - y, x,          ARGS_2);                                \
 }                                                                              \
                                                                                \
-static void FUNC##_R180(UINT8 *SPR, int x, int y, ARGS)                        \
+static void FUNC##_8_R180(UINT8 *SPR, int x, int y, ARGS)                        \
 {                                                                              \
-   FUNC(SPR, XOFS - x, YOFS - y, ARGS_1);                                \
+   FUNC##_8(SPR, XOFS - x, YOFS - y, ARGS_1);                                \
 }                                                                              \
                                                                                \
-static void FUNC##_R270(UINT8 *SPR, int x, int y, ARGS)                        \
+static void FUNC##_8_R270(UINT8 *SPR, int x, int y, ARGS)                        \
 {                                                                              \
-   FUNC(SPR, y,          XOFS - x, ARGS_2);                                \
-}                                                                              \
-                                                                               \
-                                                                               \
-static void FUNC##_R090_X(UINT8 *SPR, int x, int y, ARGS)                      \
-{                                                                              \
-   FUNC##_FlipY(SPR, YOFS - y, x,          ARGS_2);                          \
-}                                                                              \
-                                                                               \
-static void FUNC##_R180_X(UINT8 *SPR, int x, int y, ARGS)                      \
-{                                                                              \
-   FUNC##_FlipX(SPR, XOFS - x, YOFS - y, ARGS_1);                          \
-}                                                                              \
-                                                                               \
-static void FUNC##_R270_X(UINT8 *SPR, int x, int y, ARGS)                      \
-{                                                                              \
-   FUNC##_FlipY(SPR, y,          XOFS - x, ARGS_2);                          \
+   FUNC##_8(SPR, y,          XOFS - x, ARGS_2);                                \
 }                                                                              \
                                                                                \
                                                                                \
-static void FUNC##_R090_Y(UINT8 *SPR, int x, int y, ARGS)                      \
+static void FUNC##_8_R090_X(UINT8 *SPR, int x, int y, ARGS)                      \
 {                                                                              \
-   FUNC##_FlipX(SPR, YOFS - y, x,          ARGS_2);                          \
+   FUNC##_8_FlipY(SPR, YOFS - y, x,          ARGS_2);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R180_Y(UINT8 *SPR, int x, int y, ARGS)                      \
+static void FUNC##_8_R180_X(UINT8 *SPR, int x, int y, ARGS)                      \
 {                                                                              \
-   FUNC##_FlipY(SPR, XOFS - x, YOFS - y, ARGS_1);                          \
+   FUNC##_8_FlipX(SPR, XOFS - x, YOFS - y, ARGS_1);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R270_Y(UINT8 *SPR, int x, int y, ARGS)                      \
+static void FUNC##_8_R270_X(UINT8 *SPR, int x, int y, ARGS)                      \
 {                                                                              \
-   FUNC##_FlipX(SPR, y,          XOFS - x, ARGS_2);                          \
-}                                                                              \
-                                                                               \
-                                                                               \
-static void FUNC##_R090_XY(UINT8 *SPR, int x, int y, ARGS)                     \
-{                                                                              \
-   FUNC##_FlipXY(SPR, YOFS - y, x,          ARGS_2);                         \
-}                                                                              \
-                                                                               \
-static void FUNC##_R180_XY(UINT8 *SPR, int x, int y, ARGS)                     \
-{                                                                              \
-   FUNC##_FlipXY(SPR, XOFS - x, YOFS - y, ARGS_1);                         \
-}                                                                              \
-                                                                               \
-static void FUNC##_R270_XY(UINT8 *SPR, int x, int y, ARGS)                     \
-{                                                                              \
-   FUNC##_FlipXY(SPR, y,          XOFS - x, ARGS_2);                         \
+   FUNC##_8_FlipY(SPR, y,          XOFS - x, ARGS_2);                          \
 }                                                                              \
                                                                                \
                                                                                \
-static void FUNC##_R000_FX(UINT8 *SPR, int x, int y, ARGS)                     \
+static void FUNC##_8_R090_Y(UINT8 *SPR, int x, int y, ARGS)                      \
 {                                                                              \
-   FUNC(SPR, XOFS - x, y,          ARGS_1);                                \
+   FUNC##_8_FlipX(SPR, YOFS - y, x,          ARGS_2);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R090_FX(UINT8 *SPR, int x, int y, ARGS)                     \
+static void FUNC##_8_R180_Y(UINT8 *SPR, int x, int y, ARGS)                      \
 {                                                                              \
-   FUNC(SPR, y,          x,          ARGS_2);                                \
+   FUNC##_8_FlipY(SPR, XOFS - x, YOFS - y, ARGS_1);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R180_FX(UINT8 *SPR, int x, int y, ARGS)                     \
+static void FUNC##_8_R270_Y(UINT8 *SPR, int x, int y, ARGS)                      \
 {                                                                              \
-   FUNC(SPR, x,          YOFS - y, ARGS_1);                                \
-}                                                                              \
-                                                                               \
-static void FUNC##_R270_FX(UINT8 *SPR, int x, int y, ARGS)                     \
-{                                                                              \
-   FUNC(SPR, YOFS - y, XOFS - x, ARGS_2);                                \
+   FUNC##_8_FlipX(SPR, y,          XOFS - x, ARGS_2);                          \
 }                                                                              \
                                                                                \
                                                                                \
-static void FUNC##_R000_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R090_XY(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipX(SPR, XOFS - x, y,          ARGS_1);                          \
+   FUNC##_8_FlipXY(SPR, YOFS - y, x,          ARGS_2);                         \
 }                                                                              \
                                                                                \
-static void FUNC##_R090_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R180_XY(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipY(SPR, y,          x,          ARGS_2);                          \
+   FUNC##_8_FlipXY(SPR, XOFS - x, YOFS - y, ARGS_1);                         \
 }                                                                              \
                                                                                \
-static void FUNC##_R180_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R270_XY(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipX(SPR, x,          YOFS - y, ARGS_1);                          \
-}                                                                              \
-                                                                               \
-static void FUNC##_R270_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
-{                                                                              \
-   FUNC##_FlipY(SPR, YOFS - y, XOFS - x, ARGS_2);                          \
+   FUNC##_8_FlipXY(SPR, y,          XOFS - x, ARGS_2);                         \
 }                                                                              \
                                                                                \
                                                                                \
-static void FUNC##_R000_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R000_FX(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipY(SPR, XOFS - x, y,          ARGS_1);                          \
+   FUNC##_8(SPR, XOFS - x, y,          ARGS_1);                                \
 }                                                                              \
                                                                                \
-static void FUNC##_R090_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R090_FX(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipX(SPR, y,          x,          ARGS_2);                          \
+   FUNC##_8(SPR, y,          x,          ARGS_2);                                \
 }                                                                              \
                                                                                \
-static void FUNC##_R180_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R180_FX(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipY(SPR, x,          YOFS - y, ARGS_1);                          \
+   FUNC##_8(SPR, x,          YOFS - y, ARGS_1);                                \
 }                                                                              \
                                                                                \
-static void FUNC##_R270_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+static void FUNC##_8_R270_FX(UINT8 *SPR, int x, int y, ARGS)                     \
 {                                                                              \
-   FUNC##_FlipX(SPR, YOFS - y, XOFS - x, ARGS_2);                          \
+   FUNC##_8(SPR, YOFS - y, XOFS - x, ARGS_2);                                \
 }                                                                              \
                                                                                \
                                                                                \
-static void FUNC##_R000_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+static void FUNC##_8_R000_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
 {                                                                              \
-   FUNC##_FlipXY(SPR, XOFS - x, y,          ARGS_1);                         \
+   FUNC##_8_FlipX(SPR, XOFS - x, y,          ARGS_1);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R090_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+static void FUNC##_8_R090_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
 {                                                                              \
-   FUNC##_FlipXY(SPR, y,          x,          ARGS_2);                         \
+   FUNC##_8_FlipY(SPR, y,          x,          ARGS_2);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R180_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+static void FUNC##_8_R180_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
 {                                                                              \
-   FUNC##_FlipXY(SPR, x,          YOFS - y, ARGS_1);                         \
+   FUNC##_8_FlipX(SPR, x,          YOFS - y, ARGS_1);                          \
 }                                                                              \
                                                                                \
-static void FUNC##_R270_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+static void FUNC##_8_R270_X_FX(UINT8 *SPR, int x, int y, ARGS)                   \
 {                                                                              \
-   FUNC##_FlipXY(SPR, YOFS - y, XOFS - x, ARGS_2);                         \
+   FUNC##_8_FlipY(SPR, YOFS - y, XOFS - x, ARGS_2);                          \
+}                                                                              \
+                                                                               \
+                                                                               \
+static void FUNC##_8_R000_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+{                                                                              \
+   FUNC##_8_FlipY(SPR, XOFS - x, y,          ARGS_1);                          \
+}                                                                              \
+                                                                               \
+static void FUNC##_8_R090_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+{                                                                              \
+   FUNC##_8_FlipX(SPR, y,          x,          ARGS_2);                          \
+}                                                                              \
+                                                                               \
+static void FUNC##_8_R180_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+{                                                                              \
+   FUNC##_8_FlipY(SPR, x,          YOFS - y, ARGS_1);                          \
+}                                                                              \
+                                                                               \
+static void FUNC##_8_R270_Y_FX(UINT8 *SPR, int x, int y, ARGS)                   \
+{                                                                              \
+   FUNC##_8_FlipX(SPR, YOFS - y, XOFS - x, ARGS_2);                          \
+}                                                                              \
+                                                                               \
+                                                                               \
+static void FUNC##_8_R000_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+{                                                                              \
+   FUNC##_8_FlipXY(SPR, XOFS - x, y,          ARGS_1);                         \
+}                                                                              \
+                                                                               \
+static void FUNC##_8_R090_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+{                                                                              \
+   FUNC##_8_FlipXY(SPR, y,          x,          ARGS_2);                         \
+}                                                                              \
+                                                                               \
+static void FUNC##_8_R180_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+{                                                                              \
+   FUNC##_8_FlipXY(SPR, x,          YOFS - y, ARGS_1);                         \
+}                                                                              \
+                                                                               \
+static void FUNC##_8_R270_XY_FX(UINT8 *SPR, int x, int y, ARGS)                  \
+{                                                                              \
+   FUNC##_8_FlipXY(SPR, YOFS - y, XOFS - x, ARGS_2);                         \
 }                                                                              \
                                                                                \
                                                                                \
@@ -794,28 +794,28 @@ static void FUNC##_init_jump_table(void)                                       \
                                                                                \
    switch(i){                                                                  \
    case 0:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC;                                            \
-      FUNC##_Flip_Rot[1] = &FUNC##_FlipY;                                      \
-      FUNC##_Flip_Rot[2] = &FUNC##_FlipX;                                      \
-      FUNC##_Flip_Rot[3] = &FUNC##_FlipXY;                                     \
+      FUNC##_Flip_Rot[0] = &FUNC##_8;                                            \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_FlipY;                                      \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_FlipX;                                      \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_FlipXY;                                     \
    break;                                                                      \
    case 1:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R090;                                       \
-      FUNC##_Flip_Rot[1] = &FUNC##_R090_Y;                                     \
-      FUNC##_Flip_Rot[2] = &FUNC##_R090_X;                                     \
-      FUNC##_Flip_Rot[3] = &FUNC##_R090_XY;                                    \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R090;                                       \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R090_Y;                                     \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R090_X;                                     \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R090_XY;                                    \
    break;                                                                      \
    case 2:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R180;                                       \
-      FUNC##_Flip_Rot[1] = &FUNC##_R180_Y;                                     \
-      FUNC##_Flip_Rot[2] = &FUNC##_R180_X;                                     \
-      FUNC##_Flip_Rot[3] = &FUNC##_R180_XY;                                    \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R180;                                       \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R180_Y;                                     \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R180_X;                                     \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R180_XY;                                    \
    break;                                                                      \
    case 3:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R270;                                       \
-      FUNC##_Flip_Rot[1] = &FUNC##_R270_Y;                                     \
-      FUNC##_Flip_Rot[2] = &FUNC##_R270_X;                                     \
-      FUNC##_Flip_Rot[3] = &FUNC##_R270_XY;                                    \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R270;                                       \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R270_Y;                                     \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R270_X;                                     \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R270_XY;                                    \
    break;                                                                      \
    };                                                                          \
                                                                                \
@@ -824,28 +824,28 @@ static void FUNC##_init_jump_table(void)                                       \
                                                                                \
    switch(i){                                                                  \
    case 0:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R000_FX;                                    \
-      FUNC##_Flip_Rot[1] = &FUNC##_R000_Y_FX;                                  \
-      FUNC##_Flip_Rot[2] = &FUNC##_R000_X_FX;                                  \
-      FUNC##_Flip_Rot[3] = &FUNC##_R000_XY_FX;                                 \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R000_FX;                                    \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R000_Y_FX;                                  \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R000_X_FX;                                  \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R000_XY_FX;                                 \
    break;                                                                      \
    case 1:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R090_FX;                                    \
-      FUNC##_Flip_Rot[1] = &FUNC##_R090_Y_FX;                                  \
-      FUNC##_Flip_Rot[2] = &FUNC##_R090_X_FX;                                  \
-      FUNC##_Flip_Rot[3] = &FUNC##_R090_XY_FX;                                 \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R090_FX;                                    \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R090_Y_FX;                                  \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R090_X_FX;                                  \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R090_XY_FX;                                 \
    break;                                                                      \
    case 2:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R180_FX;                                    \
-      FUNC##_Flip_Rot[1] = &FUNC##_R180_Y_FX;                                  \
-      FUNC##_Flip_Rot[2] = &FUNC##_R180_X_FX;                                  \
-      FUNC##_Flip_Rot[3] = &FUNC##_R180_XY_FX;                                 \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R180_FX;                                    \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R180_Y_FX;                                  \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R180_X_FX;                                  \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R180_XY_FX;                                 \
    break;                                                                      \
    case 3:                                                                     \
-      FUNC##_Flip_Rot[0] = &FUNC##_R270_FX;                                    \
-      FUNC##_Flip_Rot[1] = &FUNC##_R270_Y_FX;                                  \
-      FUNC##_Flip_Rot[2] = &FUNC##_R270_X_FX;                                  \
-      FUNC##_Flip_Rot[3] = &FUNC##_R270_XY_FX;                                 \
+      FUNC##_Flip_Rot[0] = &FUNC##_8_R270_FX;                                    \
+      FUNC##_Flip_Rot[1] = &FUNC##_8_R270_Y_FX;                                  \
+      FUNC##_Flip_Rot[2] = &FUNC##_8_R270_X_FX;                                  \
+      FUNC##_Flip_Rot[3] = &FUNC##_8_R270_XY_FX;                                 \
    break;                                                                      \
    };                                                                          \
                                                                                \
@@ -1006,9 +1006,9 @@ generate direct mapped routines
 
 */
 
-MAKE_ROT_JUMP( Draw8x8,       disp_x_8, disp_y_8 )
+MAKE_ROT_JUMP( Draw8x8_8,       disp_x_8, disp_y_8 )
 
-MAKE_ROT_JUMP( Draw8x8_Trans, disp_x_8, disp_y_8 )
+MAKE_ROT_JUMP( Draw8x8_Trans_8, disp_x_8, disp_y_8 )
 
   /* Notice : the cmap parameter is not used at all by the Draw16x16_16 functions, but
      removing it would force to create new versions of the macros, a few hundreds lines!*/
@@ -1131,7 +1131,7 @@ MAKE_ROT_JUMP_16( add_tile_cache,       disp_x_8, disp_y_8 )
 #define ARGS_2    height, cmap
 #define CMAP_FUNC drawh_mapped_func
 
-MAKE_ROT_JUMP_16( Draw8xH_Trans_Packed_Mapped_Column,       disp_x_64, disp_y_64 )
+MAKE_ROT_JUMP_16( Draw8xH_Trans_Packed_Mapped,       disp_x_64, disp_y_64 )
 
 /*
 
@@ -1250,30 +1250,30 @@ MAKE_ROT_JUMP_16( pdraw16x16_64_Mapped_back_ZoomXY,       (disp_x - zoom_x), (di
 
 draw_mapped_func *Draw16x16_Mapped_JumpList[4] =
 {
-   Draw16x16_Mapped,
-   Draw16x16_Mapped_FlipY,
-   Draw16x16_Mapped_FlipX,
-   Draw16x16_Mapped_FlipXY,
+   Draw16x16_Mapped_8,
+   Draw16x16_Mapped_8_FlipY,
+   Draw16x16_Mapped_8_FlipX,
+   Draw16x16_Mapped_8_FlipXY,
 };
 
 // X+Y Flipped Display
 
 draw_mapped_func *Draw16x16_Mapped_JumpListR[4] =
 {
-   Draw16x16_Mapped_FlipXY,
-   Draw16x16_Mapped_FlipX,
-   Draw16x16_Mapped_FlipY,
-   Draw16x16_Mapped,
+   Draw16x16_Mapped_8_FlipXY,
+   Draw16x16_Mapped_8_FlipX,
+   Draw16x16_Mapped_8_FlipY,
+   Draw16x16_Mapped_8,
 };
 
 // X+Y Flipped Display
 
 draw_mapped_func *Draw16x16_Trans_Mapped_JumpListR[4] =
 {
-   Draw16x16_Trans_Mapped_FlipXY,
-   Draw16x16_Trans_Mapped_FlipX,
-   Draw16x16_Trans_Mapped_FlipY,
-   Draw16x16_Trans_Mapped,
+   Draw16x16_Trans_Mapped_8_FlipXY,
+   Draw16x16_Trans_Mapped_8_FlipX,
+   Draw16x16_Trans_Mapped_8_FlipY,
+   Draw16x16_Trans_Mapped_8,
 };
 
 
@@ -1324,8 +1324,8 @@ void init_video_core(void)
 
    // rotation jumptables
 
-   Draw8x8_init_jump_table();
-   Draw8x8_Trans_init_jump_table();
+   Draw8x8_8_init_jump_table();
+   Draw8x8_Trans_8_init_jump_table();
    Draw16x16_16_init_jump_table();
    Draw16x16_Trans_16_init_jump_table();
    Draw32x32_16_init_jump_table();
@@ -1391,7 +1391,7 @@ void init_video_core(void)
 
    Draw64x64_Mapped_init_jump_table();
 
-   Draw8xH_Trans_Packed_Mapped_Column_init_jump_table();
+   Draw8xH_Trans_Packed_Mapped_init_jump_table();
 
    // Move
 
@@ -1470,7 +1470,7 @@ void init_video_core(void)
 
    // 8bpp sprites
 
-   init_spr8x8asm();
+   init_spr8x8asm_8();
    init_spr8x8asm_16();
    init_spr8x8asm_32();
 
@@ -1478,17 +1478,17 @@ void init_video_core(void)
    init_spr16x8asm_16();
    init_spr16x8asm_32();
 
-   init_spr16x16asm();
+   init_spr16x16asm_8();
    init_spr16x16asm_16();
    init_spr16x16asm_32();
 
-   init_spr32x32asm();
+   init_spr32x32asm_8();
    init_spr32x32asm_16();
    init_spr32x32asm_32();
 
    // 4bpp sprites
 
-   init_spp8x8asm();
+   init_spp8x8asm_8();
    init_spp8x8asm_16();
    init_spp8x8asm_32();
 

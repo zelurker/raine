@@ -267,9 +267,9 @@ void Draw64x64_Trans_Mapped_Zoom##EXT##_FlipXY(UINT8 *SPR, int x, int y, TYPE *c
    }                                                                                                          \
                                                                                                               \
    }                                                                                                          \
-} 
+}
 
-GEN_FUNCS(,UINT8);
+GEN_FUNCS(_8,UINT8);
 GEN_FUNCS(_16,UINT16);
 GEN_FUNCS(_32,UINT32);
 
@@ -464,9 +464,9 @@ void Draw64x64_Mapped_Zoom2##EXT##_FlipXY(UINT8 *SPR, int x, int y, TYPE *cmap, 
       }                                                                                                          \
       BIT+=GameBitmap->w;                                                                                        \
    }                                                                                                             \
-} 
+}
 
-GEN_FUNCS(,UINT8);
+GEN_FUNCS(_8,UINT8);
 GEN_FUNCS(_16,UINT16);
 GEN_FUNCS(_32,UINT32);
 

@@ -48,7 +48,7 @@ wether a pixel must be drawn or not. They are usually used to draw sprites.
 
 extern BITMAP *BackBitmap;
 #define declare_spr(SIZE)										   \
-void pdraw##SIZE##x##SIZE##_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			   \
+void pdraw##SIZE##x##SIZE##_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -66,7 +66,7 @@ void pdraw##SIZE##x##SIZE##_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
+void pdraw##SIZE##x##SIZE##_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -84,7 +84,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
+void pdraw##SIZE##x##SIZE##_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -101,7 +101,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
+void pdraw##SIZE##x##SIZE##_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -120,7 +120,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,
 													   \
 /* mapped transparent sprites */									   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -138,7 +138,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -156,7 +156,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -173,7 +173,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -496,7 +496,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UIN
 													   \
 /* Background version, see comments at the top of this file */						   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
+void pdraw##SIZE##x##SIZE##_Mapped_back_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -512,7 +512,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_back(UINT8 *SPR, int x, int y, UINT8 *cmap,  
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Mapped_back_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -528,7 +528,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_back_FlipX(UINT8 *SPR, int x, int y, UINT8 *c
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Mapped_back_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -543,7 +543,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_back_FlipY(UINT8 *SPR, int x, int y, UINT8 *c
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Mapped_back_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -560,7 +560,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_back_FlipXY(UINT8 *SPR, int x, int y, UINT8 *
 													   \
 /* mapped transparent sprites */									   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -578,7 +578,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_back(UINT8 *SPR, int x, int y, UINT8 *c
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -596,7 +596,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_FlipX(UINT8 *SPR, int x, int y, UI
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -613,7 +613,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_FlipY(UINT8 *SPR, int x, int y, UI
    }													   \
 }													   \
 													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
 {													   \
    UINT8 *line,*pline;											   \
    int xx,yy;												   \
@@ -923,7 +923,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_32_FlipXY(UINT8 *SPR, int x, int y
 /* bitmap at the same time */
 
 #define declare(SIZE)												\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			\
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -941,7 +941,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap,  
    }														\
 }														\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -959,7 +959,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *c
    }														\
 }														\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -976,7 +976,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *c
    }														\
 }														\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -995,7 +995,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *
 														\
 /* mapped transparent sprites */										\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -1013,7 +1013,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *c
    }														\
 }														\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -1031,7 +1031,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UI
    }														\
 }														\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\
@@ -1048,7 +1048,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UI
    }														\
 }														\
 														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
 {														\
    UINT8 *line,*pline;												\
    int xx,yy;													\

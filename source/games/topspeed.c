@@ -929,9 +929,9 @@ static void render_z_system_sprites(int pri)
                tb=ReadWord(&SPR_MAP[ta])&0x7FFF;
                if(GFX_OBJ_A_SOLID[tb]!=0){			// No pixels; skip
                   if(GFX_OBJ_A_SOLID[tb]==1)			// Some pixels; trans
-                     Draw16x8_Trans_Mapped_ZoomXY(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
+                     Draw16x8_Trans_Mapped_ZoomXY_Rot(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
                   else						// all pixels; solid
-                     Draw16x8_Mapped_ZoomXY(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
+                     Draw16x8_Mapped_ZoomXY_Rot(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
                }
             }
             ta+=2;
@@ -961,9 +961,9 @@ static void render_z_system_sprites(int pri)
                tb=ReadWord(&SPR_MAP[ta])&0x7FFF;
                if(GFX_OBJ_A_SOLID[tb]!=0){			// No pixels; skip
                   if(GFX_OBJ_A_SOLID[tb]==1)			// Some pixels; trans
-                     Draw16x8_Trans_Mapped_ZoomXY_FlipY(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
+                     Draw16x8_Trans_Mapped_ZoomXY_FlipY_Rot(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
                   else						// all pixels; solid
-                     Draw16x8_Mapped_ZoomXY_FlipY(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
+                     Draw16x8_Mapped_ZoomXY_FlipY_Rot(&GFX_OBJ_A[tb<<7],x,y,map,zzx,zzy);
                }
             }
             ta+=2;

@@ -1,7 +1,7 @@
 #include "asmdefs.inc"
 
 CODE_SEG
-	
+
 FUNC(Move8x8_16)
 FUNC(Move8x8_16_FlipX)
 FUNC(Move8x8_16_FlipY)
@@ -18,8 +18,8 @@ blin_00:
 	addl	20(%esp),%edi			// x
 	addl	20(%esp),%edi			// x
 	movl	$8,%ecx
-	
-9:	
+
+9:
 	movsl	// 2 pixels
 	movsl
 	movsl
@@ -37,10 +37,10 @@ bitw_01:
 	popl	%edi
 	ret
 
-FUNC(Move8x8)
-FUNC(Move8x8_FlipX)
-FUNC(Move8x8_FlipY)
-FUNC(Move8x8_FlipXY)
+FUNC(Move8x8_8)
+FUNC(Move8x8_8_FlipX)
+FUNC(Move8x8_8_FlipY)
+FUNC(Move8x8_8_FlipXY)
 
 	pushl	%edi
 	pushl	%esi
@@ -52,8 +52,8 @@ FUNC(Move8x8_FlipXY)
 blin_01:
 	addl	20(%esp),%edi			// x
 	movl	$8,%ecx
-	
-9:	
+
+9:
 	movsl	// 4 pixels !
 	movsl
 
@@ -86,8 +86,8 @@ blin_02:
 	roll	$2,%eax
 	addl	%eax,%edi			// x
 	movl	$8,%ecx
-	
-9:	
+
+9:
 	movsl	// 1 pixel :-(
 	movsl
 	movsl
@@ -97,7 +97,7 @@ blin_02:
 	movsl
 	movsl
 	movsl
-	
+
 	addl	$0xDEADBEEF,%esi	// Next Screen Line
 bitw_04:
 	addl	$0xDEADBEEF,%edi
@@ -109,7 +109,7 @@ bitw_05:
 	popl	%esi
 	popl	%edi
 	ret
-		
+
 FUNC(init_moveasm)
 
 	movl	GLOBL(GameBitmap),%eax
@@ -117,7 +117,7 @@ FUNC(init_moveasm)
 	subl	$8,%eax
 	movl	%eax,bitw_02-4
 	movl	%eax,bitw_03-4
-	
+
 	movl	GLOBL(GameBitmap),%eax
 	movl	(%eax),%eax		// Width
 	addl	%eax,%eax	// double for 16 bits
@@ -130,8 +130,8 @@ FUNC(init_moveasm)
 	roll	$2,%eax	// 4x for 32 bits
 	subl	$32,%eax	// width of a sprite
 	movl	%eax,bitw_04-4
-	movl	%eax,bitw_05-4		
-	
+	movl	%eax,bitw_05-4
+
 	movl	GLOBL(GameBitmap),%eax
 	addl	$64,%eax		// Line 0
 	movl	%eax,blin_00-4

@@ -547,7 +547,7 @@ static int draw_translator(int sel) {
 		spriteno = ReadWord(&RAM[ofs]);
 		if (base < 0x80000) spriteno += 0x1200;
 		if (spriteno < 0x8000)
-		    Draw16x16_Trans_Mapped(&GFX[(spriteno)<<8],x*16,y*16,map);
+		    Draw16x16_Trans_Mapped_8(&GFX[(spriteno)<<8],x*16,y*16,map);
 		if (x == cursorx && y == cursory) {
 		    draw_cursor(x*16,y*16);
 		}
@@ -564,7 +564,7 @@ static int draw_translator(int sel) {
 	    spriteno += OFFS_SPRITES;
 	// printf("%d,%d,%x\n",x,y,spriteno);
 	if (spriteno < 0x8000)
-	    Draw16x16_Trans_Mapped(&GFX[(spriteno)<<8],x,y,map);
+	    Draw16x16_Trans_Mapped_8(&GFX[(spriteno)<<8],x,y,map);
 	if (x == cx && y == cy) {
 	    draw_cursor(x,y);
 	}

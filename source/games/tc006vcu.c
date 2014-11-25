@@ -592,10 +592,10 @@ void tc0006vcu_render_layer(int layer)
 
          ta = ReadWord(&RAM_BG[zz+2]) & tile_mask;
          switch(RAM_BG[zz+1]&0xC0){
-            case 0x00: Draw16x16_64_Mapped_ZoomXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
-            case 0x40: Draw16x16_64_Mapped_ZoomXY_FlipY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-            case 0x80: Draw16x16_64_Mapped_ZoomXY_FlipX(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-            case 0xC0: Draw16x16_64_Mapped_ZoomXY_FlipXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
+            case 0x00: Draw16x16_64_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
+            case 0x40: Draw16x16_64_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+            case 0x80: Draw16x16_64_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+            case 0xC0: Draw16x16_64_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
          }
 
       zz=(zz&0xF80)|((zz+4)&0x7F);
@@ -829,10 +829,10 @@ void tc0006vcu_render_layer_1024(int layer)
          ta = ReadWord(&RAM_BG[zz+2]) & tile_mask;
 
          switch(RAM_BG[zz+1]&0xC0){
-            case 0x00: Draw16x16_64_Mapped_ZoomXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
-            case 0x40: Draw16x16_64_Mapped_ZoomXY_FlipY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-            case 0x80: Draw16x16_64_Mapped_ZoomXY_FlipX(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-            case 0xC0: Draw16x16_64_Mapped_ZoomXY_FlipXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
+            case 0x00: Draw16x16_64_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
+            case 0x40: Draw16x16_64_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+            case 0x80: Draw16x16_64_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+            case 0xC0: Draw16x16_64_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
          }
 
       zz=(zz&0x1F00)|((zz+4)&0xFF);
@@ -934,18 +934,18 @@ void tc0006vcu_render_layer_1024(int layer)
 
          if(RAM_MSK[ta]==1){			// Some pixels; trans
             switch(RAM_BG[zz+1]&0xC0){
-               case 0x00: Draw16x16_64_Trans_Mapped_ZoomXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
-               case 0x40: Draw16x16_64_Trans_Mapped_ZoomXY_FlipY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-               case 0x80: Draw16x16_64_Trans_Mapped_ZoomXY_FlipX(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-               case 0xC0: Draw16x16_64_Trans_Mapped_ZoomXY_FlipXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
+               case 0x00: Draw16x16_64_Trans_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
+               case 0x40: Draw16x16_64_Trans_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+               case 0x80: Draw16x16_64_Trans_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+               case 0xC0: Draw16x16_64_Trans_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
             }
          }
          else{					// all pixels; solid
             switch(RAM_BG[zz+1]&0xC0){
-               case 0x00: Draw16x16_64_Mapped_ZoomXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
-               case 0x40: Draw16x16_64_Mapped_ZoomXY_FlipY(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-               case 0x80: Draw16x16_64_Mapped_ZoomXY_FlipX(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
-               case 0xC0: Draw16x16_64_Mapped_ZoomXY_FlipXY(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
+               case 0x00: Draw16x16_64_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);        break;
+               case 0x40: Draw16x16_64_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+               case 0x80: Draw16x16_64_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy);  break;
+               case 0xC0: Draw16x16_64_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,txx,tyy); break;
             }
          }
 

@@ -59,7 +59,7 @@ static int draw_sprites(int sel) {
     // printf("%d,%d,%x\n",x,y,n);
     tabsprite[no_sprite++] = n;
     if (w == 16 && h == 16) {
-      Draw16x16_Trans_Mapped(&gfx[n<<8],x,y,map);
+      Draw16x16_Trans_Mapped_8(&gfx[n<<8],x,y,map);
       x += 16;
       if (x+w > GameBitmap->w) {
 	x = 0;
@@ -70,9 +70,9 @@ static int draw_sprites(int sel) {
 	if (is_neocd()) {
 	    // layer 0 is packed in neocd and apparently there is no way to store
 	    // this info in tile_list... maybe one day, but until then...
-	    Draw8x8_Trans_Packed_Mapped(&gfx[n<<5],x,y,map);
+	    Draw8x8_Trans_Packed_Mapped_8(&gfx[n<<5],x,y,map);
 	} else
-	    Draw8x8_Trans_Mapped(&gfx[n<<6],x,y,map);
+	    Draw8x8_Trans_Mapped_8(&gfx[n<<6],x,y,map);
       x += 8;
       if (x+w > GameBitmap->w) {
 	x = 0;
@@ -80,7 +80,7 @@ static int draw_sprites(int sel) {
 	if (y+h > GameBitmap->h) break;
       }
     } else if (w == 32 && h == 32) {
-      Draw32x32_Trans_Mapped(&gfx[n<<10],x,y,map);
+      Draw32x32_Trans_Mapped_8(&gfx[n<<10],x,y,map);
       x += 32;
       if (x+w > GameBitmap->w) {
 	x = 0;

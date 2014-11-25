@@ -5,7 +5,7 @@
 /* Alpha blending support - mmx */
 /* This module just handles global variables required by the mmx functions */
 
-static UINT32 alpha;
+static UINT32 alpha,dalpha;
 
 /* The CAPITALS for the global variables are kept because they were like that
    in the original code and I'd like to change it as little as possible */
@@ -26,6 +26,7 @@ UINT64 ADD64 = 0x0040004000400040ll;
 
 void init_alpha(UINT32 my_alpha) {
   alpha = my_alpha;
+  dalpha = 256-alpha;
 
   asm(
 #ifdef RAINE_UNIX
@@ -62,3 +63,26 @@ void init_alpha(UINT32 my_alpha) {
       "finit \n"
       );
 }
+
+void blend_16(UINT16 *dest, UINT16 src) {
+    UINT8 rd,gd,bd,r,g,b;
+    SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
+    SDL_GetRGB(src,color_format,&r,&g,&b);
+    *dest = SDL_MapRGB(color_format,
+	    ((rd * dalpha) >> 8) + ((r * alpha) >> 8),
+	    ((gd * dalpha) >> 8) + ((g * alpha) >> 8),
+	    ((bd * dalpha) >> 8) + ((b * alpha) >> 8));
+}
+
+
+void blend50_16(UINT16 *dest, UINT16 src) {
+    UINT8 rd,gd,bd,r,g,b;
+    SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
+    SDL_GetRGB(src,color_format,&r,&g,&b);
+    *dest = SDL_MapRGB(color_format,
+	    rd/2+r/2,
+	    gd/2+g/2,
+	    bd/2+g);
+}
+
+

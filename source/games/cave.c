@@ -2511,7 +2511,7 @@ extern UINT8 *RAM_PAL;
 static void reset_spr16() {
   switch (display_cfg.bpp) {
   case 8:
-    init_spr16x16asm();
+    init_spr16x16asm_8();
     break;
   case 15:
   case 16:

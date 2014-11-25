@@ -260,13 +260,13 @@ void init_16x16_zoom_64(void)
 
 /******************************************************************************/
 
-void Draw16x16_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8(SPR,x,y,cmap);
       return;
    }
 
@@ -290,13 +290,13 @@ void Draw16x16_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zo
    }
 }
 
-void Draw16x16_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_FlipY(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipY(SPR,x,y,cmap);
       return;
    }
 
@@ -320,13 +320,13 @@ void Draw16x16_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }
 }
 
-void Draw16x16_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_FlipX(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipX(SPR,x,y,cmap);
       return;
    }
 
@@ -350,13 +350,13 @@ void Draw16x16_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }
 }
 
-void Draw16x16_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_FlipXY(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipXY(SPR,x,y,cmap);
       return;
    }
 
@@ -382,13 +382,13 @@ void Draw16x16_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,
 
 /******************************************************************************/
 
-void Draw16x16_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped(SPR,x,y,cmap);
+      Draw16x16_Mapped_8(SPR,x,y,cmap);
       return;
    }
 
@@ -412,14 +412,14 @@ void Draw16x16_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, 
    }
 }
 
-void Draw16x16_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_FlipY(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipY(SPR,x,y,cmap);
       return;
    }
 
@@ -443,13 +443,13 @@ void Draw16x16_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zo
    }
 }
 
-void Draw16x16_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_FlipX(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipX(SPR,x,y,cmap);
       return;
    }
 
@@ -473,13 +473,13 @@ void Draw16x16_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zo
    }
 }
 
-void Draw16x16_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_FlipXY(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipXY(SPR,x,y,cmap);
       return;
    }
 
@@ -754,13 +754,13 @@ void Draw16x16_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap, int zoom_x, i
 
 /******************************************************************************/
 
-void Draw16x16_32_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8(SPR,x,y,cmap);
       return;
    }
 
@@ -784,13 +784,13 @@ void Draw16x16_32_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped_FlipY(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipY(SPR,x,y,cmap);
       return;
    }
 
@@ -814,13 +814,13 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped_FlipX(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipX(SPR,x,y,cmap);
       return;
    }
 
@@ -844,13 +844,13 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped_FlipXY(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipXY(SPR,x,y,cmap);
       return;
    }
 
@@ -876,13 +876,13 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cm
 
 /******************************************************************************/
 
-void Draw16x16_32_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped(SPR,x,y,cmap);
+      Draw16x16_Mapped_8(SPR,x,y,cmap);
       return;
    }
 
@@ -906,13 +906,13 @@ void Draw16x16_32_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_
    }
 }
 
-void Draw16x16_32_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped_FlipY(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipY(SPR,x,y,cmap);
       return;
    }
 
@@ -936,13 +936,13 @@ void Draw16x16_32_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void Draw16x16_32_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped_FlipX(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipX(SPR,x,y,cmap);
       return;
    }
 
@@ -966,13 +966,13 @@ void Draw16x16_32_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void Draw16x16_32_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped_FlipXY(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipXY(SPR,x,y,cmap);
       return;
    }
 
@@ -998,13 +998,13 @@ void Draw16x16_32_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, in
 
 /******************************************************************************/
 
-void Draw16x16_64_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8(SPR,x,y,cmap);
       return;
    }
 
@@ -1028,13 +1028,13 @@ void Draw16x16_64_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped_FlipY(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipY(SPR,x,y,cmap);
       return;
    }
 
@@ -1058,13 +1058,13 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped_FlipX(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipX(SPR,x,y,cmap);
       return;
    }
 
@@ -1088,13 +1088,13 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Trans_Mapped_FlipXY(SPR,x,y,cmap);
+      Draw16x16_Trans_Mapped_8_FlipXY(SPR,x,y,cmap);
       return;
    }
 
@@ -1120,13 +1120,13 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cm
 
 /******************************************************************************/
 
-void Draw16x16_64_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped(SPR,x,y,cmap);
+      Draw16x16_Mapped_8(SPR,x,y,cmap);
       return;
    }
 
@@ -1150,13 +1150,13 @@ void Draw16x16_64_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_
    }
 }
 
-void Draw16x16_64_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped_FlipY(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipY(SPR,x,y,cmap);
       return;
    }
 
@@ -1180,13 +1180,13 @@ void Draw16x16_64_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void Draw16x16_64_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped_FlipX(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipX(SPR,x,y,cmap);
       return;
    }
 
@@ -1210,13 +1210,13 @@ void Draw16x16_64_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void Draw16x16_64_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      Draw16x16_Mapped_FlipXY(SPR,x,y,cmap);
+      Draw16x16_Mapped_8_FlipXY(SPR,x,y,cmap);
       return;
    }
 
@@ -1244,13 +1244,13 @@ void Draw16x16_64_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, in
 
 // pdraw version (priority)
 
-void pdraw16x16_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Trans_Mapped(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1276,13 +1276,13 @@ void pdraw16x16_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int z
    }
 }
 
-void pdraw16x16_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Trans_Mapped_FlipY(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8_FlipY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1308,13 +1308,13 @@ void pdraw16x16_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,
    }
 }
 
-void pdraw16x16_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Trans_Mapped_FlipX(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8_FlipX(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1340,13 +1340,13 @@ void pdraw16x16_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,
    }
 }
 
-void pdraw16x16_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Trans_Mapped_FlipXY(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8_FlipXY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1374,13 +1374,13 @@ void pdraw16x16_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap
 
 /******************************************************************************/
 
-void pdraw16x16_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Mapped(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1406,14 +1406,14 @@ void pdraw16x16_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x,
    }
 }
 
-void pdraw16x16_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Mapped_FlipY(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8_FlipY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1439,13 +1439,13 @@ void pdraw16x16_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int z
    }
 }
 
-void pdraw16x16_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Mapped_FlipX(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8_FlipX(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1471,13 +1471,13 @@ void pdraw16x16_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int z
    }
 }
 
-void pdraw16x16_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x+zoom_y)==32){
-      pdraw16x16_Mapped_FlipXY(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8_FlipXY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1505,13 +1505,13 @@ void pdraw16x16_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int 
 
 // _64
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1537,13 +1537,13 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, in
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_FlipY(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8_FlipY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1569,13 +1569,13 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cm
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_FlipX(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8_FlipX(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1601,13 +1601,13 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cm
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_FlipXY(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_8_FlipXY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1635,13 +1635,13 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *c
 
 /******************************************************************************/
 
-void pdraw16x16_64_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1667,13 +1667,13 @@ void pdraw16x16_64_Mapped_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom
    }
 }
 
-void pdraw16x16_64_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_FlipY(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8_FlipY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1699,13 +1699,13 @@ void pdraw16x16_64_Mapped_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, in
    }
 }
 
-void pdraw16x16_64_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_FlipX(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8_FlipX(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1731,13 +1731,13 @@ void pdraw16x16_64_Mapped_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, in
    }
 }
 
-void pdraw16x16_64_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_FlipXY(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_8_FlipXY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1765,13 +1765,13 @@ void pdraw16x16_64_Mapped_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, i
 
 // back version
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_back(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_back_8(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1797,13 +1797,13 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_back_FlipY(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_back_8_FlipY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1829,13 +1829,13 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_back_FlipX(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_back_8_FlipX(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1861,13 +1861,13 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Trans_Mapped_back_FlipXY(SPR,x,y,cmap,pri);
+      pdraw16x16_Trans_Mapped_back_8_FlipXY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1895,13 +1895,13 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UIN
 
 /******************************************************************************/
 
-void pdraw16x16_64_Mapped_back_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_back(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_back_8(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1927,13 +1927,13 @@ void pdraw16x16_64_Mapped_back_ZoomXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void pdraw16x16_64_Mapped_back_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_back_FlipY(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_back_8_FlipY(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1959,13 +1959,13 @@ void pdraw16x16_64_Mapped_back_ZoomXY_FlipY(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void pdraw16x16_64_Mapped_back_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_back_FlipX(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_back_8_FlipX(SPR,x,y,cmap,pri);
       return;
    }
 
@@ -1991,13 +1991,13 @@ void pdraw16x16_64_Mapped_back_ZoomXY_FlipX(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void pdraw16x16_64_Mapped_back_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
 
    if((zoom_x==16)&&(zoom_y==16)){
-      pdraw16x16_Mapped_back_FlipXY(SPR,x,y,cmap,pri);
+      pdraw16x16_Mapped_back_8_FlipXY(SPR,x,y,cmap,pri);
       return;
    }
 

@@ -7,12 +7,12 @@
 /*
 	Functions for packed sprites (2 pixels/byte)
 */
-	
+
 #include "asmdefs.inc"
 
 CODE_SEG
 
-FUNC(Draw8x8_Trans_Packed_Mapped)
+FUNC(Draw8x8_Trans_Packed_Mapped_8)
 
 	pushl	%ebp
 	pushl	%edi
@@ -37,8 +37,8 @@ blin_04:
 	// So this jump will make the whole thing faster because it will be
 	// aligned...
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -101,14 +101,14 @@ bitw_04:
 	cmp	$0xDEADBEEF,%esi
 endc_04:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_FlipY)
+FUNC(Draw8x8_Trans_Packed_Mapped_8_FlipY)
 
 	pushl	%ebp
 	pushl	%edi
@@ -128,7 +128,7 @@ blin_05:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
+.align	8
 
 9:
 	movl	(%esi),%eax
@@ -192,14 +192,14 @@ bitw_05:
 	cmp	$0xDEADBEEF,%esi
 endc_05:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_FlipX)
+FUNC(Draw8x8_Trans_Packed_Mapped_8_FlipX)
 
 	pushl	%ebp
 	pushl	%edi
@@ -219,8 +219,8 @@ blin_06:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -283,14 +283,14 @@ bitw_06:
 	cmp	$0xDEADBEEF,%esi
 endc_06:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_FlipXY)
+FUNC(Draw8x8_Trans_Packed_Mapped_8_FlipXY)
 
 	pushl	%ebp
 	pushl	%edi
@@ -310,8 +310,8 @@ blin_07:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -374,14 +374,14 @@ bitw_07:
 	cmp	$0xDEADBEEF,%esi
 endc_07:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord)
+FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_8)
 
 	pushl	%ebp
 	pushl	%edi
@@ -401,8 +401,8 @@ blin_12:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -465,14 +465,14 @@ bitw_12:
 	cmp	$0xDEADBEEF,%esi
 endc_12:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_FlipY)
+FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_8_FlipY)
 
 	pushl	%ebp
 	pushl	%edi
@@ -492,8 +492,8 @@ blin_13:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -556,14 +556,14 @@ bitw_13:
 	cmp	$0xDEADBEEF,%esi
 endc_13:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_FlipX)
+FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_8_FlipX)
 
 	pushl	%ebp
 	pushl	%edi
@@ -583,8 +583,8 @@ blin_14:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -647,14 +647,14 @@ bitw_14:
 	cmp	$0xDEADBEEF,%esi
 endc_14:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_FlipXY)
+FUNC(Draw8x8_Trans_Packed_Mapped_SwapWord_8_FlipXY)
 
 	pushl	%ebp
 	pushl	%edi
@@ -674,8 +674,8 @@ blin_15:
 	xorl	%edx,%edx
 	jmp	9f
 
-.align	8	
-	
+.align	8
+
 9:
 	movl	(%esi),%eax
 	testl	%eax,%eax
@@ -738,14 +738,14 @@ bitw_15:
 	cmp	$0xDEADBEEF,%esi
 endc_15:
 	jne	9b
-	
+
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	popl	%ebp
 	ret
 
-FUNC(init_spp8x8asm)
+FUNC(init_spp8x8asm_8)
 
 
 	movl	GLOBL(GameBitmap),%eax

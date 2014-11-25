@@ -678,9 +678,9 @@ static void draw_heavy_unit(void)
             if ((x > -8) && (y > -8) && (x < 256) && (y < 224))
             {
                if(GFX_BG0_SOLID[ta] == 1)
-                  Draw8x8_Trans_Mapped(&GFX_BG0[ta<<6], x+32, y+32, map);
+                  Draw8x8_Trans_Mapped_8(&GFX_BG0[ta<<6], x+32, y+32, map);
                else
-                  Draw8x8_Mapped(&GFX_BG0[ta<<6], x+32, y+32, map);
+                  Draw8x8_Mapped_8(&GFX_BG0[ta<<6], x+32, y+32, map);
             }
             }
          }
@@ -752,9 +752,9 @@ static void draw_heavy_unit(void)
             if ((x > -8) && (y > -8) && (x < 256) && (y < 224))
             {
                if(GFX_BG1_SOLID[ta] == 1)
-                  Draw8x8_Trans_Mapped(&GFX_BG1[ta<<6], x+32, y+32, map);
+                  Draw8x8_Trans_Mapped_8(&GFX_BG1[ta<<6], x+32, y+32, map);
                else
-                  Draw8x8_Mapped(&GFX_BG1[ta<<6], x+32, y+32, map);
+                  Draw8x8_Mapped_8(&GFX_BG1[ta<<6], x+32, y+32, map);
             }
             }
          }

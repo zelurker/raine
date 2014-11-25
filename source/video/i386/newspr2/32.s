@@ -1,5 +1,5 @@
 // See newspr2.s for more comments...
-	
+
 // 32bpp functions
 
 #include "asmdefs.inc"
@@ -7,12 +7,12 @@
 CODE_SEG
 
 //void Draw64x64_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap)
-	
+
 // In the 16bpp and 32bpp versions, I need one more register
 // I can't just swap parts of ax as in the 8bpp version.
 // The best choice seems to be bx so far. It will force to process
 // only 4 pixels at a time, but it isn't a big deal !
-	
+
 #define HANDLE_4_PIXELS( base )						\
 	movl	base(%esi),%eax						;\
 									;\
@@ -55,7 +55,7 @@ CODE_SEG
 	movb	%ah,%dl							;\
 	movl	(%ecx,%edx,4),%ebx					;\
 	movl	%ebx,240-base*4(%edi)
-	
+
 
 FUNC( Draw64x64_Mapped_32 )
 	pushl	%ebp
@@ -72,13 +72,13 @@ blin_00:
 	movl	28(%esp),%eax			// x
 	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
-		
+
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
 	jmp	loop0		// Make sure we are aligned...
 
-.align	8	
+.align	8
 
 loop0:
 
@@ -128,13 +128,13 @@ blin_01:
 	movl	28(%esp),%eax			// x
 	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
-		
+
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
 	jmp	loop01		// Make sure we are aligned...
 
-.align	8	
+.align	8
 
 loop01:
 
@@ -185,13 +185,13 @@ blin_02:
 	movl	28(%esp),%eax			// x
 	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
-		
+
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
 	jmp	loop02		// Make sure we are aligned...
 
-.align	8	
+.align	8
 
 loop02:
 
@@ -242,13 +242,13 @@ blin_03:
 	movl	28(%esp),%eax			// x
 	movl	36(%esp),%ecx			// cmap
 	leal	(%edi,%eax,4),%edi		// x (*4 in 32bpp)
-		
+
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
 	jmp	loop03		// Make sure we are aligned...
 
-.align	8	
+.align	8
 
 loop03:
 
@@ -287,45 +287,45 @@ bitw_03:
 Notice : for now, I don't translate the Trans version of the
 64x64 functions. I am not sure they will be usefull...
 ************************************************************/
-	
+
 // These are functions called by the f3 games (not all of them)
 // They basically draw a sprite of 8 pixels wide and with an arbitrary heigh
-	
-// void Draw8xH_Trans_Packed_Mapped_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+
+// void Draw8xH_Trans_Packed_Mapped(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
 
 // What was supposed to happen has finally happened : I am out of registers!
 // I need to create a counter in memory instead of using ebp for the height
 // of the sprite. cx will be used for reading the palette...
 
 counter:	.long	 0
-		
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_32 )
+
+FUNC( Draw8xH_Trans_Packed_Mapped_32 )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_20:
-	movl	28(%esp),%eax			// +x 
+	movl	28(%esp),%eax			// +x
 	movl	40(%esp),%ebp			// cmap
 	leal	(%edi,%eax,4),%edi		// x doubled in 16bpp
-	
+
 	xorl	%edx,%edx
 
 	// Tsss 2 instructions for memory -> memory transfer...
 	movl	36(%esp),%eax		// Tile Height
 	movl	%eax,counter
-	
+
 	jmp	loop20			// Alignement
 
 .align	8
 
-loop20:	
+loop20:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -393,21 +393,21 @@ bitw_20:
 	popl	%ebp
 	ret
 
-//void Draw8xH_Trans_Packed_Mapped_FlipY_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+//void Draw8xH_Trans_Packed_Mapped_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
 
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_32_FlipY )
+FUNC( Draw8xH_Trans_Packed_Mapped_32_FlipY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	push	%ecx
-		
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_21:
-	movl	28(%esp),%eax			// +x 
+	movl	28(%esp),%eax			// +x
 	movl	40(%esp),%ebp			// cmap
 	leal	(%edi,%eax,4),%edi		// x doubled in 16bpp
 	xorl	%edx,%edx
@@ -418,7 +418,7 @@ blin_21:
 
 .align	8
 
-loop21:	
+loop21:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -487,17 +487,17 @@ bitw_21:
 	popl	%ebp
 	ret
 
-/* The same as the normal Mapped_Column function but :
+/* The same as the normal Mapped function but :
    begins at the last line and goes back to the begining (subl) */
 
-//void Draw8xH_Trans_Packed_Mapped_FlipX_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_32_FlipX )
+//void Draw8xH_Trans_Packed_Mapped_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+FUNC( Draw8xH_Trans_Packed_Mapped_32_FlipX )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	movl	36(%esp),%eax	// Tile Height
@@ -506,7 +506,7 @@ FUNC( Draw8xH_Trans_Packed_Mapped_Column_32_FlipX )
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_22:
-	movl	28(%esp),%eax			// +x 
+	movl	28(%esp),%eax			// +x
 	movl	40(%esp),%ebp			// cmap
 	leal	(%edi,%eax,4),%edi		// x doubled in 16bpp
 	xorl	%edx,%edx
@@ -515,7 +515,7 @@ blin_22:
 
 .align	8
 
-loop22:	
+loop22:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -577,7 +577,7 @@ bitw_22:
 	decl	counter
 	jne	loop22
 
-	popl	%ecx		
+	popl	%ecx
 	popl	%ebx
 	popl	%esi
 	popl	%edi
@@ -588,14 +588,14 @@ bitw_22:
    starts at last line and goes back
    x offsets are taken backward (from 7 to 0) */
 
-//void Draw8xH_Trans_Packed_Mapped_FlipXY_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_32_FlipXY )
+//void Draw8xH_Trans_Packed_Mapped_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+FUNC( Draw8xH_Trans_Packed_Mapped_32_FlipXY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	movl	36(%esp),%eax	// Tile Height
@@ -604,7 +604,7 @@ FUNC( Draw8xH_Trans_Packed_Mapped_Column_32_FlipXY )
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_23:
-	movl	28(%esp),%eax			// +x 
+	movl	28(%esp),%eax			// +x
 	movl	40(%esp),%ebp			// cmap
 	leal	(%edi,%eax,4),%edi		// x doubled in 16bpp
 	xorl	%edx,%edx
@@ -613,7 +613,7 @@ blin_23:
 
 .align	8
 
-loop23:	
+loop23:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -674,8 +674,8 @@ bitw_23:
 
 	decl	counter
 	jne	loop23
-	
-	popl	%ecx		
+
+	popl	%ecx
 	popl	%ebx
 	popl	%esi
 	popl	%edi
@@ -685,34 +685,34 @@ bitw_23:
 FUNC(init_newspr2asm_32)
 	movl	GLOBL(GameBitmap),%eax	// Adress of the GameBitmap's structure
 	movl	(%eax),%eax			// Width
-	addl	%eax,%eax			
+	addl	%eax,%eax
 	addl	%eax,%eax			// *4 for 32bpp
 	movl	%eax,bitw_00-4
 	movl	%eax,bitw_01-4
 	movl	%eax,bitw_02-4
 	movl	%eax,bitw_03-4
-	
+
 	//movl	%eax,bitw_10-4
 	//movl	%eax,bitw_11-4
 	//movl	%eax,bitw_12-4
 	//movl	%eax,bitw_13-4
-	
+
 	movl	%eax,bitw_20-4
 	movl	%eax,bitw_21-4
 	movl	%eax,bitw_22-4
 	movl	%eax,bitw_23-4
-	
+
 	movl	GLOBL(GameBitmap),%eax
 	addl	$64,%eax			// Line 0
 	movl	%eax,blin_00-4
 	movl	%eax,blin_01-4
-	
+
 	//movl	%eax,blin_10-4
 	//movl	%eax,blin_11-4
-	
+
 	movl	%eax,blin_20-4
 	movl	%eax,blin_21-4
-	
+
 	pushl	%eax
 	addl	$63*4,%eax			// Line 63 !!!
 	movl	%eax,blin_02-4
@@ -724,5 +724,5 @@ FUNC(init_newspr2asm_32)
 
 	subl	$1*4,%eax			// This time line 7 really!
 	movl	%eax,blin_22-4
-	movl	%eax,blin_23-4	
+	movl	%eax,blin_23-4
 	ret

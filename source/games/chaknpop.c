@@ -309,10 +309,10 @@ static void DrawChacknpop(void)
 
    zz=0;
    for(y=32;y<256+32;y+=8){
-   for(x=32;x<256+32;x+=8,zz++){
-      z=RAM[zz+0x9000];
-      Draw8x8(&GFX[z<<6],x,y,0);
-   }
+       for(x=32;x<256+32;x+=8,zz++){
+	   z=RAM[zz+0x9000];
+	   Draw8x8_8(&GFX[z<<6],x,y,0);
+       }
    }
 
    zz=(32*240)-1;
@@ -338,10 +338,10 @@ static void DrawChacknpop(void)
       z=RAM[zz+0x9801]&0x3F;
       z |= (((RAM[zz+0x9802]>>3)&3)<<6);
       switch(RAM[zz+0x9801]&0xC0){
-      case 0x00: Draw16x16_Trans(&GFX[(z<<8)+0x10000],x,y,4);        break;
-      case 0x40: Draw16x16_Trans_FlipY(&GFX[(z<<8)+0x10000],x,y,4);  break;
-      case 0x80: Draw16x16_Trans_FlipX(&GFX[(z<<8)+0x10000],x,y,4);  break;
-      case 0xC0: Draw16x16_Trans_FlipXY(&GFX[(z<<8)+0x10000],x,y,4); break;
+      case 0x00: Draw16x16_Trans_8(&GFX[(z<<8)+0x10000],x,y,4);        break;
+      case 0x40: Draw16x16_Trans_8_FlipY(&GFX[(z<<8)+0x10000],x,y,4);  break;
+      case 0x80: Draw16x16_Trans_8_FlipX(&GFX[(z<<8)+0x10000],x,y,4);  break;
+      case 0xC0: Draw16x16_Trans_8_FlipXY(&GFX[(z<<8)+0x10000],x,y,4); break;
       }
    }
 #ifdef SDL

@@ -1222,9 +1222,9 @@ static void DrawKikiKaiKai(void)
             {
                if (GFX_BG0_SOLID[ta] == 1)       // Some pixels; trans
                {
-                  Draw8x8_Trans_Rot(&GFX[ta<<6], x+8, y+8, map);
+                  Draw8x8_Trans_8_Rot(&GFX[ta<<6], x+8, y+8, map);
                } else {                          // all pixels; solid
-                  Draw8x8_Rot(&GFX[ta<<6], x+8, y+8, map);
+                  Draw8x8_8_Rot(&GFX[ta<<6], x+8, y+8, map);
                }
             }
          }
@@ -1324,14 +1324,14 @@ static void DrawKickRun(void)
                if (GFX_BG0_SOLID[ta] == 1)       // Some pixels; trans
                {
                   if (RAM[0xc000+goffs+1] & 0x40)
-                     Draw8x8_Trans_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_Trans_8_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
                   else
-                     Draw8x8_Trans_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_Trans_8_Rot(&GFX[ta<<6], x+8, y+8, map);
                } else {                          // all pixels; solid
                   if (RAM[0xc000+goffs+1] & 0x40)
-                     Draw8x8_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_8_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
                   else
-                     Draw8x8_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_8_Rot(&GFX[ta<<6], x+8, y+8, map);
                }
             }
          }

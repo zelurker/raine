@@ -450,7 +450,7 @@ static void DrawRideFght(void)
    zzzz=zz<<2;
    zzzz+=0x50000;
    for(x=64;x<(320+64);x+=8){
-      Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(&RAM[zzzz],x,64+16,208,MAP);
+      Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM[zzzz],x,64+16,208,MAP);
       zzzz+=0x400;
    }
 
@@ -460,8 +460,8 @@ static void DrawRideFght(void)
    zzzz=zz<<2;
    zzzz+=0x50000;
    for(x=64;x<(320+64);x+=8){
-      Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(&RAM[zzzz],x,64+16,256-zz,MAP);
-      Draw8xH_Trans_Packed_Mapped_Column_FlipY_Rot(&RAM[zzzz+((256-zz)<<2)-0x400],x,64+16+(256-zz),208-(256-zz),MAP);
+      Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM[zzzz],x,64+16,256-zz,MAP);
+      Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM[zzzz+((256-zz)<<2)-0x400],x,64+16+(256-zz),208-(256-zz),MAP);
       zzzz+=0x400;
    }
 

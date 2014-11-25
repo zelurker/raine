@@ -539,7 +539,7 @@ static int draw_emudx_tile;
 #ifdef RAINE_DEBUG
 static void draw_debug_layer() {
   UINT8 code, color;
-  SCROLL_REGS;
+  int x,y,zzzz,zz;
   UINT8 *map,*solid;
   int coul1, coul2,sx,sy;
   char str[4];
@@ -567,7 +567,7 @@ static void draw_debug_layer() {
     solid = gfx_solid[0];
 
     /* No scroll register for this layer (0,0) */
-    MAKE_SCROLL_n_8(256,224,1,0, 0);
+    zzzz=0;
 
     /* These complex looking lines are just the unrolling of START_SCROLL_8(BORDER,BORDER,256,224)
        + the line scroll handling between the fors */
@@ -671,7 +671,7 @@ static void setup_gal_pal() {
 
 static void draw_emudx() {
   UINT8 code,color;
-  SCROLL_REGS;
+  int x,y,zzzz,zz;
   UINT8 *map,*solid;
   int coul1, coul2;
 
@@ -732,7 +732,7 @@ static void draw_emudx() {
     solid = gfx_solid[0];
 
     /* No scroll register for this layer (0,0) */
-    MAKE_SCROLL_n_8(512,448,1,0, 0);
+    zzzz=0;
 
     /* These complex looking lines are just the unrolling of START_SCROLL_8(BORDER,BORDER,256,224)
        + the line scroll handling between the fors */
@@ -893,7 +893,7 @@ static int playing_theme;
 static void draw_emudx_gal() {
   UINT8 color;
   UINT16 code;
-  SCROLL_REGS;
+  int x,y,zzzz,zz;
   UINT8 *solid;
 
   if (gfx_ram[0x194] == 30) {
@@ -938,7 +938,7 @@ static void draw_emudx_gal() {
     solid = gfx_solid[0];
 
     /* No scroll register for this layer (0,0) */
-    MAKE_SCROLL_n_8(512,448,1,0, 0);
+    zzzz=0;
 
     /* These complex looking lines are just the unrolling of START_SCROLL_8(BORDER,BORDER,256,224)
        + the line scroll handling between the fors */
@@ -1412,7 +1412,7 @@ static void draw_frogger() {
      rotated you call it either col or row scroll ! */
 
   UINT8 code, color;
-  SCROLL_REGS;
+  int x,y,zzzz,zz;
   UINT8 *map,*solid;
   int coul1, coul2;
   UINT8 *gfx = load_region[REGION_GFX1];
@@ -1492,7 +1492,7 @@ static void draw_frogger() {
     solid = gfx_solid[0];
 
     /* No scroll register for this layer (0,0) */
-    MAKE_SCROLL_n_8(256,224,1,0, 0);
+    zzzz = 0;
 
     /* These complex looking lines are just the unrolling of START_SCROLL_8(BORDER,BORDER,256,224)
        + the line scroll handling between the fors */

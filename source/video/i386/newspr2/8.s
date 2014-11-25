@@ -1,5 +1,5 @@
 /* Let's convert this to pure asm... */
-	
+
 // Only used Space Gun and othunder
 // In fact the drivers use the zoom and zoom2 functions in spr64.c, which
 // call these functions when no zoom is actually needed !
@@ -14,7 +14,7 @@ CODE_SEG
 // Thanks to the ';' it is much more readable now !
 
 // Notice that emacs takes the ';' as a comment... IT IS NOT a comment !
-	 
+
 #define HANDLE_8_PIXELS( base )						\
 	movl	base(%esi),%eax	;					\
 	movl	base+4(%esi),%ebx;					\
@@ -51,7 +51,7 @@ CODE_SEG
 
 // Now the FlipY version. The same except edi is accessed the other way
 // around...
-	
+
 // I am not sure this macro works actually : it writes 4 pixels in a row
 // without flipping them, but flips groups of 4 pixels. Almost sure it
 // does not work. Might be a good idea to test this, but it will probably
@@ -90,10 +90,10 @@ CODE_SEG
 									\
 	movl	%eax,60-base(%edi);					\
 	movl	%ebx,56-base(%edi)	;
-			
+
 //void Draw64x64_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap)
 
-FUNC( Draw64x64_Mapped )
+FUNC( Draw64x64_Mapped_8 )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
@@ -101,14 +101,14 @@ FUNC( Draw64x64_Mapped )
 	pushl	%ecx
 	// A nice mess to convert to 16bpp with all these registers !
 	// Yes let's remove these and use Draw16x16 instead !!!
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_00:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
@@ -137,11 +137,11 @@ bitw_00:
 	popl	%edi
 	popl	%ebp
 	ret
-	
+
 //void Draw64x64_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap)
 // Exactly the same function as before. It just uses another macro...
-	
-FUNC( Draw64x64_Mapped_FlipY )
+
+FUNC( Draw64x64_Mapped_8_FlipY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
@@ -154,7 +154,7 @@ FUNC( Draw64x64_Mapped_FlipY )
 	movl	0xDEADBEEF(%eax),%edi
 blin_01:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
@@ -188,21 +188,21 @@ bitw_01:
 // void Draw64x64_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap)
 // This time we use the first macro, but we put the results backwards in the
 // screen buffer...
-	
-FUNC( Draw64x64_Mapped_FlipX )
+
+FUNC( Draw64x64_Mapped_8_FlipX )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi	// This time we start at the end
 blin_02:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
@@ -236,27 +236,27 @@ bitw_02:
 //void Draw64x64_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap)
 // Combination of the 2 last functions : backwards, using the 2nd macro !
 
-FUNC( Draw64x64_Mapped_FlipXY )
+FUNC( Draw64x64_Mapped_8_FlipXY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi	// This time we start at the end
 blin_03:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
 	jmp	loop3		// Alignement
 
 .align	8
-loop3:	
+loop3:
 	HANDLE_8_PIXELS_FLIPY(0)
 	HANDLE_8_PIXELS_FLIPY(8)
 	HANDLE_8_PIXELS_FLIPY(16)
@@ -385,22 +385,22 @@ bitw_03:
 	movb	(%ecx,%edx,1),%al ;		\
 	movb	%al,63-base-7(%edi) ;		\
 7:
-		
+
 //void Draw64x64_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap)
-FUNC( Draw64x64_Trans_Mapped )
+FUNC( Draw64x64_Trans_Mapped_8 )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_10:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
@@ -432,20 +432,20 @@ bitw_10:
 	ret
 
 //void Draw64x64_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap)
-FUNC( Draw64x64_Trans_Mapped_FlipY )
+FUNC( Draw64x64_Trans_Mapped_8_FlipY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_11:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
@@ -475,22 +475,22 @@ bitw_11:
 	popl	%edi
 	popl	%ebp
 	ret
-	
+
 // void Draw64x64_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap)
-FUNC( Draw64x64_Trans_Mapped_FlipX )
+FUNC( Draw64x64_Trans_Mapped_8_FlipX )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi	// This time we start at the end
 blin_12:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
@@ -524,27 +524,27 @@ bitw_12:
 //void Draw64x64_Trans_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap)
 // Combination of the 2 last functions : backwards, using the 2nd macro !
 
-FUNC( Draw64x64_Trans_Mapped_FlipXY )
+FUNC( Draw64x64_Trans_Mapped_8_FlipXY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi	// This time we start at the end
 blin_13:
 	movl	36(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	$64,%ebp	// Tile Height
 	jmp	loop13		// Alignement
 
 .align	8
-loop13:	
+loop13:
 	HANDLE_8_PIXELS_TRANSP_FLIPY(0)
 	HANDLE_8_PIXELS_TRANSP_FLIPY(8)
 	HANDLE_8_PIXELS_TRANSP_FLIPY(16)
@@ -572,23 +572,23 @@ bitw_13:
 
 // These are functions called by the f3 games (not all of them)
 // They basically draw a sprite of 8 pixels wide and with an arbitrary heigh
-	
-// void Draw8xH_Trans_Packed_Mapped_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
 
-FUNC( Draw8xH_Trans_Packed_Mapped_Column )
+// void Draw8xH_Trans_Packed_Mapped(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+
+FUNC( Draw8xH_Trans_Packed_Mapped_8 )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_20:
 	movl	40(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	36(%esp),%ebp	// Tile Height
@@ -596,7 +596,7 @@ blin_20:
 
 .align	8
 
-loop20:	
+loop20:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -664,22 +664,22 @@ bitw_20:
 	popl	%ebp
 	ret
 
-//void Draw8xH_Trans_Packed_Mapped_FlipY_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+//void Draw8xH_Trans_Packed_Mapped_FlipY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
 
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_FlipY )
+FUNC( Draw8xH_Trans_Packed_Mapped_8_FlipY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	push	%ecx
-		
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	sall	$2,%eax
 	movl	0xDEADBEEF(%eax),%edi
 blin_21:
 	movl	40(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	movl	36(%esp),%ebp	// Tile Height
@@ -687,7 +687,7 @@ blin_21:
 
 .align	8
 
-loop21:	
+loop21:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -756,17 +756,17 @@ bitw_21:
 	popl	%ebp
 	ret
 
-/* The same as the normal Mapped_Column function but :
+/* The same as the normal Mapped function but :
    begins at the last line and goes back to the begining (subl) */
 
-//void Draw8xH_Trans_Packed_Mapped_FlipX_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_FlipX )
+//void Draw8xH_Trans_Packed_Mapped_FlipX(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+FUNC( Draw8xH_Trans_Packed_Mapped_8_FlipX )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	movl	36(%esp),%ebp	// Tile Height
@@ -775,14 +775,14 @@ FUNC( Draw8xH_Trans_Packed_Mapped_Column_FlipX )
 	movl	0xDEADBEEF(%eax),%edi
 blin_22:
 	movl	40(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	jmp	loop22		// Alignement
 
 .align	8
 
-loop22:	
+loop22:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -844,7 +844,7 @@ bitw_22:
 	decl	%ebp
 	jne	loop22
 
-	popl	%ecx		
+	popl	%ecx
 	popl	%ebx
 	popl	%esi
 	popl	%edi
@@ -855,14 +855,14 @@ bitw_22:
    starts at last line and goes back
    x offsets are taken backward (from 7 to 0) */
 
-//void Draw8xH_Trans_Packed_Mapped_FlipXY_Column(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
-FUNC( Draw8xH_Trans_Packed_Mapped_Column_FlipXY )
+//void Draw8xH_Trans_Packed_Mapped_FlipXY(UINT8 *SPR, int x, int y, int height, UINT8 *cmap)
+FUNC( Draw8xH_Trans_Packed_Mapped_8_FlipXY )
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	pushl	%ecx
-	
+
 	movl	24(%esp),%esi			// source
 	movl	32(%esp),%eax			// y
 	movl	36(%esp),%ebp	// Tile Height
@@ -871,14 +871,14 @@ FUNC( Draw8xH_Trans_Packed_Mapped_Column_FlipXY )
 	movl	0xDEADBEEF(%eax),%edi
 blin_23:
 	movl	40(%esp),%ecx			// cmap
-	addl	28(%esp),%edi			// +x 
+	addl	28(%esp),%edi			// +x
 	xorl	%edx,%edx
 
 	jmp	loop23		// Alignement
 
 .align	8
 
-loop23:	
+loop23:
 	movl	(%esi),%eax
 	testl	%eax,%eax		// Skip Blank Lines
 	jz	8f
@@ -939,8 +939,8 @@ bitw_23:
 
 	decl	%ebp
 	jne	loop23
-	
-	popl	%ecx		
+
+	popl	%ecx
 	popl	%ebx
 	popl	%esi
 	popl	%edi
@@ -954,28 +954,28 @@ FUNC(init_newspr2asm)
 	movl	%eax,bitw_01-4
 	movl	%eax,bitw_02-4
 	movl	%eax,bitw_03-4
-	
+
 	movl	%eax,bitw_10-4
 	movl	%eax,bitw_11-4
 	movl	%eax,bitw_12-4
 	movl	%eax,bitw_13-4
-	
+
 	movl	%eax,bitw_20-4
 	movl	%eax,bitw_21-4
 	movl	%eax,bitw_22-4
 	movl	%eax,bitw_23-4
-	
+
 	movl	GLOBL(GameBitmap),%eax
 	addl	$64,%eax			// Line 0
 	movl	%eax,blin_00-4
 	movl	%eax,blin_01-4
-	
+
 	movl	%eax,blin_10-4
 	movl	%eax,blin_11-4
-	
+
 	movl	%eax,blin_20-4
 	movl	%eax,blin_21-4
-	
+
 	pushl	%eax
 	addl	$63*4,%eax			// Line 63 !!!
 	movl	%eax,blin_02-4
@@ -991,5 +991,5 @@ FUNC(init_newspr2asm)
 	// bitmap+(h-1).
 	// This will work as long as no one passes height=0 !
 	movl	%eax,blin_22-4
-	movl	%eax,blin_23-4	
+	movl	%eax,blin_23-4
 	ret

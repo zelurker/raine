@@ -432,7 +432,7 @@ void tc0004vcu_render_bg1(void)
 
 void tc0004vcu_render_fg0(void)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,ta,tx;
+   int x,y,zzzz,zzz,zz,ta,tx;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -452,7 +452,7 @@ void tc0004vcu_render_fg0(void)
 
    tx = 64-(bmp_w>>3);
 
-      MAKE_SCROLL_512x512_1_8(
+      MAKE_SCROLL_512x512_1_8_no16(
          scr_x, //-(ReadWord(RAM_SCR+0)),
          scr_y  //+(ReadWord(RAM_SCR+4))
       );
@@ -555,18 +555,18 @@ void tc0004vcu_render_obj(void)
 
          if(RAM_MSK[ta]==1){			// Some pixels; trans
             switch(RAM_CH_B[td]&0xC0){
-               case 0x00: Draw16x16_32_Trans_Mapped_ZoomXY(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
-               case 0x40: Draw16x16_32_Trans_Mapped_ZoomXY_FlipY(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0x80: Draw16x16_32_Trans_Mapped_ZoomXY_FlipX(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0xC0: Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
+               case 0x00: Draw16x16_32_Trans_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
+               case 0x40: Draw16x16_32_Trans_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+               case 0x80: Draw16x16_32_Trans_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+               case 0xC0: Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
             }
          }
          else{					// all pixels; solid
             switch(RAM_CH_B[td]&0xC0){
-               case 0x00: Draw16x16_32_Mapped_ZoomXY(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
-               case 0x40: Draw16x16_32_Mapped_ZoomXY_FlipY(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0x80: Draw16x16_32_Mapped_ZoomXY_FlipX(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0xC0: Draw16x16_32_Mapped_ZoomXY_FlipXY(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
+               case 0x00: Draw16x16_32_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
+               case 0x40: Draw16x16_32_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+               case 0x80: Draw16x16_32_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+               case 0xC0: Draw16x16_32_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
             }
          }
 

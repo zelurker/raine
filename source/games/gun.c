@@ -111,7 +111,7 @@ void disp_gun(int nb, int x,int y) {
     old_bpp = display_cfg.bpp;
 
   switch(display_cfg.bpp) {
-  case 8:  Draw16x16_Trans(sprite_gun[nb],x,y,0); update_palette(); break;
+  case 8:  Draw16x16_Trans_8(sprite_gun[nb],x,y,0); update_palette(); break;
   case 15:
   case 16: Draw16x16_Trans_Mapped_16(sprite_gun[nb],x,y,map); break;
   case 32: Draw16x16_Trans_Mapped_32(sprite_gun[nb],x,y,map); break;

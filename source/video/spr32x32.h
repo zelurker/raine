@@ -17,21 +17,21 @@ Transparent Direct-Mapped
 
 */
 
-void init_spr32x32asm(void);
+void init_spr32x32asm_8(void);
 
 // 32x32 mapped sprites
 
-void Draw32x32_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw32x32_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw32x32_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw32x32_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 
 // 32x32 mapped transparent sprites
 
-void Draw32x32_Trans_Mapped(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw32x32_Trans_Mapped_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw32x32_Trans_Mapped_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
-void Draw32x32_Trans_Mapped_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap);
+void Draw32x32_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 
 void init_spr32x32asm_16(void);
 

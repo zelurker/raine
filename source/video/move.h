@@ -16,10 +16,10 @@ void Move8x8_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *map);
 void Move8x8_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *map);
 void Move8x8_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *map);
 
-void Move8x8(UINT8 *SPR, int x, int y, UINT8 *map);
-void Move8x8_FlipX(UINT8 *SPR, int x, int y, UINT8 *map);
-void Move8x8_FlipY(UINT8 *SPR, int x, int y, UINT8 *map);
-void Move8x8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *map);
+void Move8x8_8(UINT8 *SPR, int x, int y, UINT8 *map);
+void Move8x8_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *map);
+void Move8x8_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *map);
+void Move8x8_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *map);
 
 #ifdef __cplusplus
 }

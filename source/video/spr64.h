@@ -8,10 +8,10 @@ extern "C" {
 
 void Init64x64_Table(UINT8 *TPOS);
 
-void Draw64x64_Trans_Mapped_Zoom(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
-void Draw64x64_Trans_Mapped_Zoom_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
-void Draw64x64_Trans_Mapped_Zoom_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
-void Draw64x64_Trans_Mapped_Zoom_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
+void Draw64x64_Trans_Mapped_Zoom_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
+void Draw64x64_Trans_Mapped_Zoom_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
+void Draw64x64_Trans_Mapped_Zoom_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
+void Draw64x64_Trans_Mapped_Zoom_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
 
 void Draw64x64_Trans_Mapped_Zoom_16(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
 void Draw64x64_Trans_Mapped_Zoom_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
@@ -23,15 +23,15 @@ void Draw64x64_Trans_Mapped_Zoom_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,
 void Draw64x64_Trans_Mapped_Zoom_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
 void Draw64x64_Trans_Mapped_Zoom_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom);
 
-void Draw64x64_Mapped_Zoom2(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
-void Draw64x64_Mapped_Zoom2_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
-void Draw64x64_Mapped_Zoom2_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
-void Draw64x64_Mapped_Zoom2_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Mapped_Zoom2_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Mapped_Zoom2_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Mapped_Zoom2_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Mapped_Zoom2_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
 
-void Draw64x64_Trans_Mapped_Zoom2(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
-void Draw64x64_Trans_Mapped_Zoom2_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
-void Draw64x64_Trans_Mapped_Zoom2_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
-void Draw64x64_Trans_Mapped_Zoom2_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Trans_Mapped_Zoom2_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Trans_Mapped_Zoom2_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Trans_Mapped_Zoom2_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
+void Draw64x64_Trans_Mapped_Zoom2_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
 
 void Draw64x64_Mapped_Zoom2_16(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);
 void Draw64x64_Mapped_Zoom2_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoomx, int zoomy);

@@ -17,13 +17,13 @@
 VERSION = "0.63.16"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
 
 # Use asm video core ? (comment to use C core)
-ASM_VIDEO_CORE = 1
+# ASM_VIDEO_CORE = 1
 
 # console ?
 HAS_CONSOLE = 1
@@ -634,30 +634,13 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/scale2x.o \
 	$(OBJDIR)/video/scale3x.o \
 	$(OBJDIR)/video/i386/move.o \
-	$(OBJDIR)/video/i386/newspr2/8.o \
-	$(OBJDIR)/video/i386/newspr2/16.o \
-	$(OBJDIR)/video/i386/newspr2/32.o \
-	$(OBJDIR)/video/i386/packed/8.o \
-	$(OBJDIR)/video/i386/packed/16.o \
-	$(OBJDIR)/video/i386/packed/32.o \
-	$(VIDEO_CORE)/spr8x8_8.o \
-	$(VIDEO_CORE)/spr8_16.o \
-	$(VIDEO_CORE)/spr8_32.o \
 	$(VIDEO_CORE)/str/6x8_8.o \
 	$(VIDEO_CORE)/str/6x8_16.o \
 	$(VIDEO_CORE)/str/6x8_32.o \
 		\
-	$(VIDEO_CORE)/16x16_8.o \
-	$(VIDEO_CORE)/16x16_16.o \
-	$(VIDEO_CORE)/16x16_32.o \
-		\
 	$(VIDEO_CORE)/16x8_8.o \
 	$(VIDEO_CORE)/16x8_16.o \
 	$(VIDEO_CORE)/16x8_32.o \
-		\
-	$(OBJDIR)/video/i386/32x32_8.o \
-	$(OBJDIR)/video/i386/32x32_16.o \
-	$(OBJDIR)/video/i386/32x32_32.o \
 		\
 	$(VIDEO_CORE)/blit_x2/8.o \
 	$(VIDEO_CORE)/blit_x2/16.o \
@@ -675,6 +658,28 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/hq3x32.o \
 	$(OBJDIR)/video/c/str_opaque.o \
 	$(OBJDIR)/video/c/pdraw.o
+
+ifdef ASM_VIDEO_CORE
+    VIDEO += \
+	$(VIDEO_CORE)/spr8x8_8.o \
+	$(VIDEO_CORE)/spr8_16.o \
+	$(VIDEO_CORE)/spr8_32.o \
+	$(VIDEO_CORE)/16x16_8.o \
+	$(VIDEO_CORE)/16x16_16.o \
+	$(VIDEO_CORE)/16x16_32.o \
+	$(OBJDIR)/video/i386/packed/8.o \
+	$(OBJDIR)/video/i386/packed/16.o \
+	$(OBJDIR)/video/i386/packed/32.o \
+	$(OBJDIR)/video/i386/32x32_8.o \
+	$(OBJDIR)/video/i386/32x32_16.o \
+	$(OBJDIR)/video/i386/32x32_32.o \
+	$(OBJDIR)/video/i386/newspr2/8.o \
+	$(OBJDIR)/video/i386/newspr2/16.o \
+	$(OBJDIR)/video/i386/newspr2/32.o \
+
+else
+    VIDEO += $(VIDEO_CORE)/sprites.o
+endif
 
 ifndef SDL
 VIDEO += \
@@ -1083,7 +1088,7 @@ ifdef GFX_SVGALIB
 endif
 	@echo " with $(CC) for $(OSTYPE) CPU=$(CPU)"
 ifndef ASM_VIDEO_CORE
-	@echo "WARNING : move, newspr2, packed, and 32x32 sprites do not exist in the c"
+	@echo "WARNING : move functions do not exist in the c"
 	@echo "          video core. Using the asm functions for these..."
 endif
 

@@ -485,7 +485,7 @@ static void DrawTwinQix(void)
 
    zzzz=0x50000;
    for(x=64;x<(320+64);x+=8){
-      Draw8xH_Trans_Packed_Mapped_Column_Rot(&RAM[zzzz],x,64,224,MAP);
+      Draw8xH_Trans_Packed_Mapped_Rot(&RAM[zzzz],x,64,224,MAP);
       zzzz+=0x400;
    }
    }

@@ -270,7 +270,7 @@ static void DrawZeroZone(void)
    for(tx=0;tx<368;tx+=8,zz+=8){
       for(ty=0;ty<224;ty+=8,zz+=2){
          ta = ReadWord(&RAM[zz]);
-         Draw8x8_Rot(&GFX[(ta&0x0FFF)<<6], tx, ty, (UINT8) ((ta>>8)&0xF0) );
+         Draw8x8_8_Rot(&GFX[(ta&0x0FFF)<<6], tx, ty, (UINT8) ((ta>>8)&0xF0) );
       }
    }
 }

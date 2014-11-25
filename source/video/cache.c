@@ -101,10 +101,10 @@ void FUNC(UINT8 *dummy,int x, int y, int ta) { \
   }  \
 }
 
-map_8bpp(add_tile_cache)
-map_8bpp(add_tile_cache_FlipX)
-map_8bpp(add_tile_cache_FlipY)
-map_8bpp(add_tile_cache_FlipXY)
+map_8bpp(add_tile_cache_8)
+map_8bpp(add_tile_cache_8_FlipX)
+map_8bpp(add_tile_cache_8_FlipY)
+map_8bpp(add_tile_cache_8_FlipXY)
 
 #define map_16bpp( FUNC ) \
 void FUNC(UINT8 *dummy,int x, int y, int ta) { \

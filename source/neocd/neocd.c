@@ -4585,6 +4585,7 @@ void load_neocd() {
 	int size_fixed = (load_region[REGION_FIXED] ? get_region_size(REGION_FIXED) : 4096*32); // packed 8x8 x 4096
 	if (size < size_fixed) size = size_fixed;
 	nb_sprites = size/0x100;
+	printf("nb_sprites %x\n",nb_sprites);
 	if (is_current_game("kof97oro")) {
 	    // 1) order of the bytes altered !
 	    load_message("kof97oro decrypt rom...");

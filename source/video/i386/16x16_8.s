@@ -16,7 +16,7 @@ Transparent Direct-Mapped
 
 */
 
-FUNC(Draw16x16_Mapped)
+FUNC(Draw16x16_Mapped_8)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -132,7 +132,7 @@ endc_00:
 	ret			// Arg ! I have nothing rest to pair with the ret
 				// instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw16x16_Mapped_FlipY)
+FUNC(Draw16x16_Mapped_8_FlipY)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -248,7 +248,7 @@ endc_01:
 	ret			// Arg ! I have nothing rest to pair with the ret
 				// instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw16x16_Mapped_FlipX)
+FUNC(Draw16x16_Mapped_8_FlipX)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -364,7 +364,7 @@ endc_02:
 	ret			// Arg ! I have nothing rest to pair with the ret
 				// instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw16x16_Mapped_FlipXY)
+FUNC(Draw16x16_Mapped_8_FlipXY)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -480,7 +480,7 @@ endc_03:
 	ret			// Arg ! I have nothing rest to pair with the ret
 				// instruction : Here is a waste of 1/2 cycle ... :-)
 
-FUNC(Draw16x16_Trans_Mapped)
+FUNC(Draw16x16_Trans_Mapped_8)
 
 	movl	12(%esp),%eax			// y
 	movl	4(%esp),%edx			// source
@@ -629,7 +629,7 @@ endc_04:
 
 	ret
 
-FUNC(Draw16x16_Trans_Mapped_FlipY)
+FUNC(Draw16x16_Trans_Mapped_8_FlipY)
 
 	pushl	%ebp
 	pushl	%edi
@@ -753,7 +753,7 @@ bitw_05:
 	popl	%ebp
 	ret
 
-FUNC(Draw16x16_Trans_Mapped_FlipX)
+FUNC(Draw16x16_Trans_Mapped_8_FlipX)
 
 	pushl	%ebp
 	pushl	%edi
@@ -877,7 +877,7 @@ bitw_06:
 	popl	%ebp
 	ret
 
-FUNC(Draw16x16_Trans_Mapped_FlipXY)
+FUNC(Draw16x16_Trans_Mapped_8_FlipXY)
 
 	pushl	%ebp
 	pushl	%edi
@@ -1001,7 +1001,7 @@ bitw_07:
 	popl	%ebp
 	ret
 
-FUNC(Draw16x16)
+FUNC(Draw16x16_8)
 
 	pushl	%edi
 	pushl	%esi
@@ -1248,7 +1248,7 @@ bitw_08:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_FlipY)
+FUNC(Draw16x16_8_FlipY)
 
 	pushl	%edi
 	pushl	%esi
@@ -1559,7 +1559,7 @@ bitw_09:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_FlipX)
+FUNC(Draw16x16_8_FlipX)
 
 	pushl	%edi
 	pushl	%esi
@@ -1806,7 +1806,7 @@ bitw_10:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_FlipXY)
+FUNC(Draw16x16_8_FlipXY)
 
 	pushl	%edi
 	pushl	%esi
@@ -2234,7 +2234,7 @@ bitw_16:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_Trans)
+FUNC(Draw16x16_Trans_8)
 
 	pushl	%edi
 	pushl	%esi
@@ -2420,7 +2420,7 @@ bitw_20:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_Trans_FlipY)
+FUNC(Draw16x16_Trans_8_FlipY)
 
 	pushl	%edi
 	pushl	%esi
@@ -2606,7 +2606,7 @@ bitw_21:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_Trans_FlipX)
+FUNC(Draw16x16_Trans_8_FlipX)
 
 	pushl	%edi
 	pushl	%esi
@@ -2792,7 +2792,7 @@ bitw_22:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_Trans_FlipXY)
+FUNC(Draw16x16_Trans_8_FlipXY)
 
 	pushl	%edi
 	pushl	%esi
@@ -2978,7 +2978,7 @@ bitw_23:
 	popl	%edi
 	ret
 
-FUNC(init_spr16x16asm)
+FUNC(init_spr16x16asm_8)
 
 
 	movl	GLOBL(GameBitmap),%eax

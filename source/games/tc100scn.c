@@ -661,7 +661,7 @@ void render_bg0_transparent_mapped_r270(TC0100SCN_LAYER *tc_layer)
 
 void render_fg0_solid_mapped_r270(TC0100SCN_LAYER *tc_layer)
 {
-   int x,y,x16,y16,zzzz,zzz,zz;
+   int x,y,zzzz,zzz,zz;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -680,7 +680,7 @@ void render_fg0_solid_mapped_r270(TC0100SCN_LAYER *tc_layer)
    scr_x = tc_layer->scr_x;
    scr_y = tc_layer->scr_y;
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -708,7 +708,7 @@ void render_fg0_solid_mapped_r270(TC0100SCN_LAYER *tc_layer)
 
 void render_fg0_transparent_mapped_r270(TC0100SCN_LAYER *tc_layer)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,z;
+   int x,y,zzzz,zzz,zz,z;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -727,7 +727,7 @@ void render_fg0_transparent_mapped_r270(TC0100SCN_LAYER *tc_layer)
    scr_x = tc_layer->scr_x;
    scr_y = tc_layer->scr_y;
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -989,7 +989,7 @@ void render_bg0_transparent_mapped_flipy(TC0100SCN_LAYER *tc_layer)
 
 void render_fg0_solid_mapped_flipy(TC0100SCN_LAYER *tc_layer)
 {
-   int x,y,x16,y16,zzzz,zzz,zz;
+   int x,y,zzzz,zzz,zz;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -1008,7 +1008,7 @@ void render_fg0_solid_mapped_flipy(TC0100SCN_LAYER *tc_layer)
    scr_x = tc_layer->scr_x;
    scr_y = tc_layer->scr_y;
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -1035,7 +1035,7 @@ void render_fg0_solid_mapped_flipy(TC0100SCN_LAYER *tc_layer)
 
 void render_fg0_transparent_mapped_flipy(TC0100SCN_LAYER *tc_layer)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,z;
+   int x,y,zzzz,zzz,zz,z;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -1054,7 +1054,7 @@ void render_fg0_transparent_mapped_flipy(TC0100SCN_LAYER *tc_layer)
    scr_x = tc_layer->scr_x;
    scr_y = tc_layer->scr_y;
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -1309,7 +1309,7 @@ void render_bg0_transparent_r180_mapped(TC0100SCN_LAYER *tc_layer)
 
 void render_fg0_solid_r180_mapped(TC0100SCN_LAYER *tc_layer)
 {
-   int x,y,x16,y16,zzzz,zzz,zz;
+   int x,y,zzzz,zzz,zz;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -1328,7 +1328,7 @@ void render_fg0_solid_r180_mapped(TC0100SCN_LAYER *tc_layer)
    scr_x = tc_layer->scr_x;
    scr_y = tc_layer->scr_y;
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
@@ -1356,7 +1356,7 @@ void render_fg0_solid_r180_mapped(TC0100SCN_LAYER *tc_layer)
 
 void render_fg0_transparent_r180_mapped(TC0100SCN_LAYER *tc_layer)
 {
-   int x,y,x16,y16,zzzz,zzz,zz,z;
+   int x,y,zzzz,zzz,zz,z;
    UINT8 *map;
 
    UINT8 *RAM_BG;
@@ -1375,7 +1375,7 @@ void render_fg0_transparent_r180_mapped(TC0100SCN_LAYER *tc_layer)
    scr_x = tc_layer->scr_x;
    scr_y = tc_layer->scr_y;
 
-      MAKE_SCROLL_512x512_2_8(
+      MAKE_SCROLL_512x512_2_8_no16(
          scr_x,		//-(ReadWord(RAM_SCR+0)),
          scr_y		//-(ReadWord(RAM_SCR+6))
       );
