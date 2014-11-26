@@ -799,9 +799,9 @@ static void draw_emudx() {
 		Draw16x16_Mapped_Rot(&char_tab[code<<8],x,sy,(UINT8*)&char_map[32*color]);
 	    } else {
 	      if (solid[code] == 1) // transp
-		Draw16x16_Trans_16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		Draw16x16_Trans_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
 	      else
-		Draw16x16_16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
 	    }
 	  }
 	  else if((((code+3)&3)==3)) {
@@ -817,7 +817,7 @@ static void draw_emudx() {
 	      }
 	    else
 	      {
-		Draw32x32_Trans_16_flip_Rot(&emudx_sprites32[(code/4)<<11],x,sy,0,0);
+		Draw32x32_Trans_flip_Rot(&emudx_sprites32[(code/4)<<11],x,sy,0,0);
 		continue;
 	      }
 	  }
@@ -874,11 +874,11 @@ static void draw_emudx() {
 	    } else {
 	      if (solid[code] == 1) { // transp
 		if (color==2 && (code>27 && code<34)) code +=36;
-		Draw32x32_Trans_16_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+		Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	      } else {// solid
 		if (color==2 && (code>27 && code<34)) code +=36;
 
-		Draw32x32_16_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+		Draw32x32_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	      }
 	    }
 	  }
@@ -975,16 +975,16 @@ static void draw_emudx_gal() {
 				code+=280;
 			code = corresp_tiles[code];
 			if (solid[code0] == 1) // transp
-			  Draw16x16_Trans_16_Rot(&emudx_sprites[code<<9],x,sy,0);
+			  Draw16x16_Trans_Rot(&emudx_sprites[code<<9],x,sy,0);
 			else
-			  Draw16x16_16_Rot(&emudx_sprites[code<<9],x,sy,0);
+			  Draw16x16_Rot(&emudx_sprites[code<<9],x,sy,0);
 		} else {
 		  /* The other stuff, including some blended letters which look
 		   * good this time ! */
 		  if (solid[code] == 1) // transp
-		    Draw16x16_Trans_16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		    Draw16x16_Trans_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
 		  else
-		    Draw16x16_16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		    Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
 		}
 
 		if(code==193) raine_play_sample(explode,200);
@@ -1014,7 +1014,7 @@ static void draw_emudx_gal() {
 #define sbullet 392
 
       sprite = ((offs == 7*4) ? ebullet : sbullet);
-      Draw16x16_Trans_16_Rot(&emudx_sprites[sprite<<9],sx*2+BORDER-16,sy*2+BORDER-48+3,0);
+      Draw16x16_Trans_Rot(&emudx_sprites[sprite<<9],sx*2+BORDER-16,sy*2+BORDER-48+3,0);
     }
   }
 
@@ -1065,9 +1065,9 @@ static void draw_emudx_gal() {
 	    }
 
 	    if (sol == 1) { // transp
-	      Draw32x32_Trans_16_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	    } else {// solid
-	      Draw32x32_16_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+	      Draw32x32_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	    }
 	    if (code == 28)
 	      raine_play_sample(hit,255);

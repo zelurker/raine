@@ -1013,11 +1013,13 @@ MAKE_ROT_JUMP( Draw8x8_Trans_8, disp_x_8, disp_y_8 )
   /* Notice : the cmap parameter is not used at all by the Draw16x16_16 functions, but
      removing it would force to create new versions of the macros, a few hundreds lines!*/
 
-MAKE_ROT_JUMP( Draw16x16_16,       disp_x_16, disp_y_16 )
-MAKE_ROT_JUMP( Draw16x16_Trans_16, disp_x_16, disp_y_16 )
+MAKE_ROT_JUMP_16( Draw16x16,       disp_x_16, disp_y_16 )
+MAKE_ROT_JUMP_16( Draw16x16_Trans, disp_x_16, disp_y_16 )
 
-MAKE_ROT_JUMP( Draw32x32_16,       disp_x_32, disp_y_32 )
-MAKE_ROT_JUMP( Draw32x32_Trans_16, disp_x_32, disp_y_32 )
+// MAKE_ROT_JUMP( Draw32x32_16,       disp_x_32, disp_y_32 )
+// MAKE_ROT_JUMP( Draw32x32_Trans_16, disp_x_32, disp_y_32 )
+MAKE_ROT_JUMP_16( Draw32x32,       disp_x_32, disp_y_32 )
+MAKE_ROT_JUMP_16( Draw32x32_Trans, disp_x_32, disp_y_32 )
 
 MAKE_ROT_JUMP( Draw32x32_Trans_Alpha50_16, disp_x_32, disp_y_32 )
 MAKE_ROT_JUMP( Draw32x32_Trans_Alpha_16, disp_x_32, disp_y_32 )
@@ -1326,10 +1328,10 @@ void init_video_core(void)
 
    Draw8x8_8_init_jump_table();
    Draw8x8_Trans_8_init_jump_table();
-   Draw16x16_16_init_jump_table();
-   Draw16x16_Trans_16_init_jump_table();
-   Draw32x32_16_init_jump_table();
-   Draw32x32_Trans_16_init_jump_table();
+   Draw16x16_init_jump_table();
+   Draw16x16_Trans_init_jump_table();
+   Draw32x32_init_jump_table();
+   Draw32x32_Trans_init_jump_table();
 
    Draw32x32_Trans_Alpha50_16_init_jump_table();
    Draw32x32_Trans_Alpha_16_init_jump_table();

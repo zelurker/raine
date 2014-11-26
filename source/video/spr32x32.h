@@ -67,22 +67,33 @@ void Draw32x32_Trans_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap);
 
 // 32x32 sprites
 
-void Draw32x32(UINT8 *SPR, int x, int y, UINT8 cmap);
-void Draw32x32_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
-void Draw32x32_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
-void Draw32x32_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
-
+void Draw32x32_8(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_8_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_8_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_16(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_16_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_16_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_32(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_32_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_32_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 
 // 32x32 transparent sprites
 
+void Draw32x32_Trans_8(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_8_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_8_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_Trans_16(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_Trans_16_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_Trans_16_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_Trans_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_32(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_32_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_32_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 
   // Transparent, alpha blending 50%
 

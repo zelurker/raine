@@ -598,7 +598,7 @@ static void draw_emudx() {
 	if (code != 0xc0 || curlev == 4)
 	  // only draw the ladders (c0) in level 4.
 	  // The other dx levels have the ladders already drawn.
-	  Draw16x16_Trans_16_Rot(&emudx_sprites[code<<9],x,sy,0);
+	  Draw16x16_Trans_Rot(&emudx_sprites[code<<9],x,sy,0);
       }
     }
     END_SCROLL_n_16(512,512,1);
@@ -645,7 +645,7 @@ static void draw_emudx() {
 		flame = flame_blue;
 	      }
 
-	      Draw32x32_Trans_16_flip_Rot(&emudx_sprites32[code<<11],x,y,0,
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,
 					  ((spriteram[offs + 2] & 0x80)>>7) | ((spriteram[offs + 1] & 0x80)>>6));
 	      draw_trans_sprite(GameBitmap,flame,disp_y_32 - y - 12, x - 8);
 
@@ -657,7 +657,7 @@ static void draw_emudx() {
 		 unnoticable considering the size of the details of the barrel... */
 	      // rotate_sprite(prime_display,sprites[V], x, y-3,itofix(x*2+y*2)); //Our beautiful barrel rolls
 
-	      Draw32x32_Trans_16_flip_Rot(&emudx_sprites32[code<<11],x,y,0,
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,
 					  ((spriteram[offs + 2] & 0x80)>>7) | ((spriteram[offs + 1] & 0x80)>>6));
 	    }
 	  /* consider doing it for x+256,y (warp around probably not necessary here) */

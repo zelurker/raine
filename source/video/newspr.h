@@ -61,41 +61,41 @@ extern draw_func *Draw8x8_Trans_8_Flip_Rot[4];
 #define Draw8x8_Trans_8_FlipX_Rot(a, b, c, d)  (*Draw8x8_Trans_8_Flip_Rot[2])(a, b, c, d)
 #define Draw8x8_Trans_8_FlipXY_Rot(a, b, c, d) (*Draw8x8_Trans_8_Flip_Rot[3])(a, b, c, d)
 
-extern draw_func *Draw16x16_16_Flip_Rot[4];
+extern draw_func *Draw16x16_Flip_Rot[4];
 
-#define Draw16x16_16_flip_Rot(a, b, c, d, e) (*Draw16x16_16_Flip_Rot[e])(a, b, c, d)
+#define Draw16x16_flip_Rot(a, b, c, d, e) (*Draw16x16_Flip_Rot[e])(a, b, c, d)
 
-#define Draw16x16_16_Rot(a, b, c, d)        (*Draw16x16_16_Flip_Rot[0])(a, b, c, d)
-#define Draw16x16_16_FlipY_Rot(a, b, c, d)  (*Draw16x16_16_Flip_Rot[1])(a, b, c, d)
-#define Draw16x16_16_FlipX_Rot(a, b, c, d)  (*Draw16x16_16_Flip_Rot[2])(a, b, c, d)
-#define Draw16x16_16_FlipXY_Rot(a, b, c, d) (*Draw16x16_16_Flip_Rot[3])(a, b, c, d)
+#define Draw16x16_Rot(a, b, c, d)        (*Draw16x16_Flip_Rot[0])(a, b, c, d)
+#define Draw16x16_FlipY_Rot(a, b, c, d)  (*Draw16x16_Flip_Rot[1])(a, b, c, d)
+#define Draw16x16_FlipX_Rot(a, b, c, d)  (*Draw16x16_Flip_Rot[2])(a, b, c, d)
+#define Draw16x16_FlipXY_Rot(a, b, c, d) (*Draw16x16_Flip_Rot[3])(a, b, c, d)
 
-extern draw_func *Draw16x16_Trans_16_Flip_Rot[4];
+extern draw_func *Draw16x16_Trans_Flip_Rot[4];
 
-#define Draw16x16_Trans_16_flip_Rot(a, b, c, d, e) (*Draw16x16_Trans_16_Flip_Rot[e])(a, b, c, d)
+#define Draw16x16_Trans_flip_Rot(a, b, c, d, e) (*Draw16x16_Trans_Flip_Rot[e])(a, b, c, d)
 
-#define Draw16x16_Trans_16_Rot(a, b, c, d)        (*Draw16x16_Trans_16_Flip_Rot[0])(a, b, c, d)
-#define Draw16x16_Trans_16_FlipY_Rot(a, b, c, d)  (*Draw16x16_Trans_16_Flip_Rot[1])(a, b, c, d)
-#define Draw16x16_Trans_16_FlipX_Rot(a, b, c, d)  (*Draw16x16_Trans_16_Flip_Rot[2])(a, b, c, d)
-#define Draw16x16_Trans_16_FlipXY_Rot(a, b, c, d) (*Draw16x16_Trans_16_Flip_Rot[3])(a, b, c, d)
+#define Draw16x16_Trans_Rot(a, b, c, d)        (*Draw16x16_Trans_Flip_Rot[0])(a, b, c, d)
+#define Draw16x16_Trans_FlipY_Rot(a, b, c, d)  (*Draw16x16_Trans_Flip_Rot[1])(a, b, c, d)
+#define Draw16x16_Trans_FlipX_Rot(a, b, c, d)  (*Draw16x16_Trans_Flip_Rot[2])(a, b, c, d)
+#define Draw16x16_Trans_FlipXY_Rot(a, b, c, d) (*Draw16x16_Trans_Flip_Rot[3])(a, b, c, d)
 
-extern draw_func *Draw32x32_16_Flip_Rot[4];
+extern draw_func *Draw32x32_Flip_Rot[4];
 
-#define Draw32x32_16_flip_Rot(a, b, c, d, e) (*Draw32x32_16_Flip_Rot[e])(a, b, c, d)
+#define Draw32x32_flip_Rot(a, b, c, d, e) (*Draw32x32_Flip_Rot[e])(a, b, c, d)
 
-#define Draw32x32_16_Rot(a, b, c, d)        (*Draw32x32_16_Flip_Rot[0])(a, b, c, d)
-#define Draw32x32_16_FlipY_Rot(a, b, c, d)  (*Draw32x32_16_Flip_Rot[1])(a, b, c, d)
-#define Draw32x32_16_FlipX_Rot(a, b, c, d)  (*Draw32x32_16_Flip_Rot[2])(a, b, c, d)
-#define Draw32x32_16_FlipXY_Rot(a, b, c, d) (*Draw32x32_16_Flip_Rot[3])(a, b, c, d)
+#define Draw32x32_Rot(a, b, c, d)        (*Draw32x32_Flip_Rot[0])(a, b, c, d)
+#define Draw32x32_FlipY_Rot(a, b, c, d)  (*Draw32x32_Flip_Rot[1])(a, b, c, d)
+#define Draw32x32_FlipX_Rot(a, b, c, d)  (*Draw32x32_Flip_Rot[2])(a, b, c, d)
+#define Draw32x32_FlipXY_Rot(a, b, c, d) (*Draw32x32_Flip_Rot[3])(a, b, c, d)
 
-extern draw_func *Draw32x32_Trans_16_Flip_Rot[4];
+extern draw_func *Draw32x32_Trans_Flip_Rot[4];
 
-#define Draw32x32_Trans_16_flip_Rot(a, b, c, d, e) (*Draw32x32_Trans_16_Flip_Rot[e])(a, b, c, d)
+#define Draw32x32_Trans_flip_Rot(a, b, c, d, e) (*Draw32x32_Trans_Flip_Rot[e])(a, b, c, d)
 
-#define Draw32x32_Trans_16_Rot(a, b, c, d)        (*Draw32x32_Trans_16_Flip_Rot[0])(a, b, c, d)
-#define Draw32x32_Trans_16_FlipY_Rot(a, b, c, d)  (*Draw32x32_Trans_16_Flip_Rot[1])(a, b, c, d)
-#define Draw32x32_Trans_16_FlipX_Rot(a, b, c, d)  (*Draw32x32_Trans_16_Flip_Rot[2])(a, b, c, d)
-#define Draw32x32_Trans_16_FlipXY_Rot(a, b, c, d) (*Draw32x32_Trans_16_Flip_Rot[3])(a, b, c, d)
+#define Draw32x32_Trans_Rot(a, b, c, d)        (*Draw32x32_Trans_Flip_Rot[0])(a, b, c, d)
+#define Draw32x32_Trans_FlipY_Rot(a, b, c, d)  (*Draw32x32_Trans_Flip_Rot[1])(a, b, c, d)
+#define Draw32x32_Trans_FlipX_Rot(a, b, c, d)  (*Draw32x32_Trans_Flip_Rot[2])(a, b, c, d)
+#define Draw32x32_Trans_FlipXY_Rot(a, b, c, d) (*Draw32x32_Trans_Flip_Rot[3])(a, b, c, d)
 
 extern draw_func *Draw32x32_Trans_Alpha50_16_Flip_Rot[4];
 
