@@ -657,6 +657,7 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/hq3x16.o \
 	$(OBJDIR)/video/hq3x32.o \
 	$(OBJDIR)/video/c/str_opaque.o \
+	$(OBJDIR)/video/c/common.o \
 	$(OBJDIR)/video/c/pdraw.o
 
 ifdef ASM_VIDEO_CORE

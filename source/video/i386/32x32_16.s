@@ -1672,7 +1672,7 @@ FUNC(Draw32x32_16)
 	movl	0xDEADBEEF(%ebx),%edi
 blin_08:
 	addl	20(%esp),%edi			// x
-	addl	20(%esp),%edi			// x doubled normally ???
+	addl	20(%esp),%edi			// x doubled (16 bpp)
 	movl	$32,%ecx
 	movl	$0xDEADBEEF,%edx		// screen width
 bitw_08:

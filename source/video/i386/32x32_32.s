@@ -1678,10 +1678,6 @@ endc_07:
 	popl	%ebp
 	ret
 
-
-// The Draw32x32_32 functions are really uninteresting...
-// If someone else wants to add them, he is welcome to !
-
 FUNC(init_spr32x32asm_32)
 
 

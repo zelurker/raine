@@ -438,15 +438,15 @@ Mike
 
 static UINT16 corresp_tiles[392];
 
-static UINT16 char_map[32*7];
+static UINT16 char_map[32*7*2];
 static UINT8 *char_tab;
 
 static void setup_frog_gfx(void)
 {
   int h[]={1,28,-2,25};
   int a,x=0,chr=0;
-  UINT16 *src;
   UINT8 *dest;
+  int bpp = display_cfg.bpp / 16;
 
   for(a=0;a<256;a++)
     {
@@ -460,30 +460,73 @@ static void setup_frog_gfx(void)
 	}
     }
 
-  if (!(char_tab = AllocateMem(45*256))) return;
+  if (!(char_tab = AllocateMem(45*(256)))) return;
 
   /* This crazy function tries to keep the pseudo 3d mapping for the chars
      This can't be handled by the emudx module because the characters are not contiguous
      I must use the correspondance table here. And moreover they use this pseudo 3d look
      which requires more than 1 color ! */
-  for (chr=0; chr<45; chr++) {
-    if (chr==44)
-      src = (UINT16*)&emudx_sprites[corresp_tiles[0x4e]<<9];
-    else
-      src = (UINT16*)&emudx_sprites[corresp_tiles[chr]<<9];
-    dest = char_tab + chr*16*16;
-    for (a=0; a<0x100; a++) {
-      if (src[a] != emudx_transp) {
-	int red = (src[a] & 0xf800)>>11;
-	if ((src[a] & 0x1f) > red) red = src[a] & 0x1f; // some are mapped to blue...
-	if (!red) red = 1; // avoid transparency !
-	dest[a] = red;
-      } else {
-	dest[a] = 0;
-      }
-    }
-  }
+  switch(bpp) {
+  case 1: // 16 bpp
+      {
+	  UINT16 *src;
 
+	  for (chr=0; chr<45; chr++) {
+	      if (chr==44)
+		  src = (UINT16*)&emudx_sprites[corresp_tiles[0x4e]<<9];
+	      else
+		  src = (UINT16*)&emudx_sprites[corresp_tiles[chr]<<9];
+	      dest = char_tab + chr*16*16;
+	      for (a=0; a<0x100; a++) {
+		  if (src[a] != emudx_transp) {
+		      int red = (src[a] & 0xf800)>>11;
+		      if ((src[a] & 0x1f) > red) red = src[a] & 0x1f; // some are mapped to blue...
+		      if (!red) red = 1; // avoid transparency !
+		      dest[a] = red;
+		  } else {
+		      dest[a] = 0;
+		  }
+	      }
+	  }
+      }
+      break;
+  case 2: // 32 bpp
+      {
+	  UINT32 *src;
+
+#ifdef SDL
+	  int Rshift = color_format->Rshift;
+	  int Rmask = color_format->Rmask;
+	  int Bshift = color_format->Bshift;
+	  int Bmask = color_format->Bmask;
+#else
+	  int Rshift = 16;
+	  int Rmask = 0xff0000;
+	  int Bshift = 0;
+	  int Bmask = 0xff;
+#endif
+
+	  for (chr=0; chr<45; chr++) {
+	      if (chr==44)
+		  src = (UINT32*)&emudx_sprites[corresp_tiles[0x4e]<<10];
+	      else
+		  src = (UINT32*)&emudx_sprites[corresp_tiles[chr]<<10];
+	      dest = char_tab + chr*16*16;
+	      for (a=0; a<0x100; a++) {
+		  if (src[a] != emudx_transp) {
+		      int red = (src[a] & Rmask)>>Rshift;
+		      if (((src[a] & Bmask)>>Bshift) > red)
+			  red = (src[a] & Bmask)>>Bshift; // some are mapped to blue...
+		      red >>=3; // convert to palette indice 0..1f
+		      if (!red) red = 1; // avoid transparency !
+		      dest[a] = red;
+		  } else {
+		      dest[a] = 0;
+		  }
+	      }
+	  }
+      }
+  }
 }
 
 static void setup_gal_gfx(void)
@@ -535,6 +578,7 @@ static void setup_gal_gfx(void)
 #define BORDER 32
 
 static int draw_emudx_tile;
+static int bpp;
 
 #ifdef RAINE_DEBUG
 static void draw_debug_layer() {
@@ -633,7 +677,7 @@ static void setup_frogger_pal() {
       GET_PEN_FOR_COLOUR_15(0,c,c,char_map[a+32*4]); // cyan
       GET_PEN_FOR_COLOUR_15(c,c,0,char_map[a+32*5]); // yellow
       GET_PEN_FOR_COLOUR_15(0,c,0,char_map[a+32*6]); // green
-    } else { // 16
+    } else if (display_cfg.bpp == 16) { // 16
       GET_PEN_FOR_COLOUR_16(c,c,c,char_map[a]); // white
       GET_PEN_FOR_COLOUR_16(c,c,c,char_map[a+32]); // white (undefined in fact)
       GET_PEN_FOR_COLOUR_16(c,0,c,char_map[a+32*2]); // magenta
@@ -641,6 +685,14 @@ static void setup_frogger_pal() {
       GET_PEN_FOR_COLOUR_16(0,c,c,char_map[a+32*4]); // cyan
       GET_PEN_FOR_COLOUR_16(c,c,0,char_map[a+32*5]); // yellow
       GET_PEN_FOR_COLOUR_16(0,c,0,char_map[a+32*6]); // green
+    } else if (display_cfg.bpp == 32) {
+      WriteLong(&char_map[a*2],makecol(c,c,c)); // white
+      WriteLong(&char_map[(a+32)*2],makecol(c,c,c)); // white (undefined in fact)
+      WriteLong(&char_map[(a+32*2)*2],makecol(c,0,c)); // magenta
+      WriteLong(&char_map[(a+32*3)*2],makecol(c,0,0)); // red
+      WriteLong(&char_map[(a+32*4)*2],makecol(0,c,c)); // cyan
+      WriteLong(&char_map[(a+32*5)*2],makecol(c,c,0)); // yellow
+      WriteLong(&char_map[(a+32*6)*2],makecol(0,c,0)); // green
     }
   }
 }
@@ -657,7 +709,7 @@ static void setup_gal_pal() {
       GET_PEN_FOR_COLOUR_15(c,c,0,char_map[a+32*4]); // yellow
       GET_PEN_FOR_COLOUR_15(c,0,0,char_map[a+32*5]); // red
       GET_PEN_FOR_COLOUR_15(0,c,c,char_map[a+32*6]); // cyan
-    } else { // 16
+    } else if (display_cfg.bpp == 16) { // 16
       GET_PEN_FOR_COLOUR_16(c,c,c,char_map[a]); // white
       GET_PEN_FOR_COLOUR_16(c,c,c,char_map[a+32]); // white (undefined in fact)
       GET_PEN_FOR_COLOUR_16(c,0,0,char_map[a+32*2]); // red
@@ -665,6 +717,14 @@ static void setup_gal_pal() {
       GET_PEN_FOR_COLOUR_16(c,c,0,char_map[a+32*4]); // yellow
       GET_PEN_FOR_COLOUR_16(c,0,0,char_map[a+32*5]); // red
       GET_PEN_FOR_COLOUR_16(0,c,c,char_map[a+32*6]); // cyan
+    } else if (display_cfg.bpp == 32) {
+      WriteLong(&char_map[(a)*2],makecol(c,c,c)); // white
+      WriteLong(&char_map[(a+32)*2],makecol(c,c,c)); // white (undefined in fact)
+      WriteLong(&char_map[(a+32*2)*2],makecol(c,0,0)); // red
+      WriteLong(&char_map[(a+32*3)*2],makecol(c,0,c)); // magenta
+      WriteLong(&char_map[(a+32*4)*2],makecol(c,c,0)); // yellow
+      WriteLong(&char_map[(a+32*5)*2],makecol(c,0,0)); // red
+      WriteLong(&char_map[(a+32*6)*2],makecol(0,c,c)); // cyan
     }
   }
 }
@@ -675,7 +735,10 @@ static void draw_emudx() {
   UINT8 *map,*solid;
   int coul1, coul2;
 
-  if (RefreshBuffers) setup_frogger_pal();
+  if (RefreshBuffers) {
+      setup_frogger_pal();
+      bpp = display_cfg.bpp / 16;
+  }
 
 #ifdef RAINE_DEBUG
   if (input_buffer[8] & 8) {
@@ -683,11 +746,6 @@ static void draw_emudx() {
     return;
   }
 #endif
-
-  if (display_cfg.bpp > 16 || display_cfg.bpp < 15) {
-    print_ingame(1,"switch to 16bpp color depth and reload");
-    return;
-  }
 
   if (draw_emudx_tile) {
     blit(emudx_tiles[0], GameBitmap, 0, 0, BORDER, BORDER, 448, 512);
@@ -794,14 +852,14 @@ static void draw_emudx() {
 	      } else if (code == 0x4e) code = 44; // copyright symbol
 
 	      if (solid[code] == 1) // transp
-		Draw16x16_Trans_Mapped_Rot(&char_tab[code<<8],x,sy,(UINT8*)&char_map[32*color]);
+		Draw16x16_Trans_Mapped_Rot(&char_tab[code<<8],x,sy,(UINT8*)&char_map[32*color*bpp]);
 	      else
-		Draw16x16_Mapped_Rot(&char_tab[code<<8],x,sy,(UINT8*)&char_map[32*color]);
+		Draw16x16_Mapped_Rot(&char_tab[code<<8],x,sy,(UINT8*)&char_map[32*color*bpp]);
 	    } else {
 	      if (solid[code] == 1) // transp
-		Draw16x16_Trans_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		Draw16x16_Trans_Rot(&emudx_sprites[corresp_tiles[code]<<(8+bpp)],x,sy,0);
 	      else
-		Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<(8+bpp)],x,sy,0);
 	    }
 	  }
 	  else if((((code+3)&3)==3)) {
@@ -812,12 +870,12 @@ static void draw_emudx() {
 	       in emudx */
 	    if(code>135 && code<156)
 	      {
-		Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code/4)<<11],x,sy,0,0);
+		Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code/4)<<(10+bpp)],x,sy,0,0);
 		continue;
 	      }
 	    else
 	      {
-		Draw32x32_Trans_flip_Rot(&emudx_sprites32[(code/4)<<11],x,sy,0,0);
+		Draw32x32_Trans_flip_Rot(&emudx_sprites32[(code/4)<<(10+bpp)],x,sy,0,0);
 		continue;
 	      }
 	  }
@@ -870,15 +928,15 @@ static void draw_emudx() {
 	  y = (sy-16)*2 + BORDER;
 	  if (x>=0 && y>=0) {
 	    if(code>33 && code<37) {
-	      Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code)<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+	      Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code)<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	    } else {
 	      if (solid[code] == 1) { // transp
 		if (color==2 && (code>27 && code<34)) code +=36;
-		Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+		Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	      } else {// solid
 		if (color==2 && (code>27 && code<34)) code +=36;
 
-		Draw32x32_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+		Draw32x32_flip_Rot(&emudx_sprites32[code<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	      }
 	    }
 	  }
@@ -905,7 +963,10 @@ static void draw_emudx_gal() {
     playing_theme = 0;
   }
 
-  if (RefreshBuffers) setup_gal_pal();
+  if (RefreshBuffers) {
+      setup_gal_pal();
+      bpp = display_cfg.bpp/16;
+  }
 
 #ifdef RAINE_DEBUG
   if (input_buffer[8] & 8) {
@@ -913,11 +974,6 @@ static void draw_emudx_gal() {
     return;
   }
 #endif
-
-  if (display_cfg.bpp > 16 || display_cfg.bpp < 15) {
-    print_ingame(1,"switch to 16bpp color depth and reload");
-    return;
-  }
 
   if (*stars_enable) {
     blit(emudx_tiles[0], GameBitmap, 0, 0, BORDER, BORDER, 448, 512);
@@ -975,16 +1031,16 @@ static void draw_emudx_gal() {
 				code+=280;
 			code = corresp_tiles[code];
 			if (solid[code0] == 1) // transp
-			  Draw16x16_Trans_Rot(&emudx_sprites[code<<9],x,sy,0);
+			  Draw16x16_Trans_Rot(&emudx_sprites[code<<(8+bpp)],x,sy,0);
 			else
-			  Draw16x16_Rot(&emudx_sprites[code<<9],x,sy,0);
+			  Draw16x16_Rot(&emudx_sprites[code<<(8+bpp)],x,sy,0);
 		} else {
 		  /* The other stuff, including some blended letters which look
 		   * good this time ! */
 		  if (solid[code] == 1) // transp
-		    Draw16x16_Trans_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		    Draw16x16_Trans_Rot(&emudx_sprites[corresp_tiles[code]<<(8+bpp)],x,sy,0);
 		  else
-		    Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<9],x,sy,0);
+		    Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<(8+bpp)],x,sy,0);
 		}
 
 		if(code==193) raine_play_sample(explode,200);
@@ -1014,7 +1070,7 @@ static void draw_emudx_gal() {
 #define sbullet 392
 
       sprite = ((offs == 7*4) ? ebullet : sbullet);
-      Draw16x16_Trans_Rot(&emudx_sprites[sprite<<9],sx*2+BORDER-16,sy*2+BORDER-48+3,0);
+      Draw16x16_Trans_Rot(&emudx_sprites[sprite<<(8+bpp)],sx*2+BORDER-16,sy*2+BORDER-48+3,0);
     }
   }
 
@@ -1065,9 +1121,9 @@ static void draw_emudx_gal() {
 	    }
 
 	    if (sol == 1) { // transp
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	    } else {// solid
-	      Draw32x32_flip_Rot(&emudx_sprites32[code<<11],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+	      Draw32x32_flip_Rot(&emudx_sprites32[code<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	    }
 	    if (code == 28)
 	      raine_play_sample(hit,255);
@@ -1347,7 +1403,7 @@ static void load_frogger() {
 	{
 	  load_emudx("froggerg.dx2",1,280,282,351,
 	      0,0, // no chars here, they seem to have coloured tiles for the chars
-	      448,512,0xf81f,draw_emudx);
+	      448,512,makecol(0xff,0,0xff),draw_emudx);
 	  setup_frog_gfx();
 	  draw_emudx_tile = 0;
 	}
@@ -1362,7 +1418,7 @@ static void load_frogger() {
 	{
 	  load_emudx("galdxg.dx2",1,393,395,488,
 	      0,0, // no chars here, they seem to have coloured tiles for the chars
-	      448,512,0xf81f,draw_emudx_gal);
+	      448,512,makecol(0xff,0,0xff),draw_emudx_gal);
 	  setup_gal_gfx();
 	}
     }

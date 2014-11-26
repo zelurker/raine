@@ -870,9 +870,9 @@ static int draw_emudx_tile;
 static int mspacman,use_alpha,inc_alpha;
 
 #define draw_ghost(sx,sy,sprite,flip)				\
-  if (input_buffer[8] & 0x10) {/* mmx alpha blending ? */	\
+  if (bpp == 1 && (input_buffer[8] & 0x10)) {/* mmx alpha blending ? */	\
     Draw32x32_Trans_Alpha_16_flip_Rot(sprite,sx,sy,0,flip);	\
-  } else if (input_buffer[8] & 0x20) {/* 50% alpha blending ? */	\
+  } else if (bpp == 1 && (input_buffer[8] & 0x20)) {/* 50% alpha blending ? */	\
     Draw32x32_Trans_Alpha50_16_flip_Rot(sprite,sx,sy,0,flip);	\
   } else {							\
     Draw32x32_Trans_flip_Rot(sprite,sx,sy,0,flip); \
@@ -882,10 +882,10 @@ static void draw_emudx() {
   int offs;
   UINT8 *solid;
   int bank,col_base;
+  static int bpp;
 
-  if (display_cfg.bpp > 16 || display_cfg.bpp < 15) {
-    print_ingame(1,"switch to 16bpp color depth and reload");
-    return;
+  if (RefreshBuffers) {
+      bpp = display_cfg.bpp / 16;
   }
 
 #ifdef RAINE_DEBUG
@@ -958,7 +958,7 @@ static void draw_emudx() {
 	  if(i<32)
 	    {
 	      if((i%4)==0) {
-		Draw32x32_Trans_flip_Rot(&emudx_sprites32[(i/4)<<11],sx,sy,0,0);
+		Draw32x32_Trans_flip_Rot(&emudx_sprites32[(i/4)<<(10+bpp)],sx,sy,0,0);
 	      }
 	      continue;
 	    }
@@ -976,7 +976,7 @@ static void draw_emudx() {
 	      UINT8 coul = (colorram[offs] & 0x1f)>>1;
 	      code = 0x35;
 	      conv_sprite(code,coul);
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],sx,sy,0,2);
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp)],sx,sy,0,2);
 	      continue;
 	    } else if (code >= 0x21 && code <= 0x23) // end of pacman lives
 	      continue;
@@ -987,7 +987,7 @@ static void draw_emudx() {
 	      UINT8 coul = (colorram[offs] & 0x1f)>>1;
 	      code = 0x20;
 	      conv_sprite(code,coul);
-	      draw_ghost(sx,sy,&emudx_sprites32[code<<11],0);
+	      draw_ghost(sx,sy,&emudx_sprites32[code<<(10+bpp)],0);
 	      continue;
 	    } else if (code >= 0xb0 && code <= 0xb5)
 	      continue; // end of the ghost
@@ -996,7 +996,7 @@ static void draw_emudx() {
 	      UINT8 coul = (colorram[offs] & 0x1f)>>1;
 	      code = 0x2e;
 	      conv_sprite(code,coul);
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],sx,sy,0,2);
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp)],sx,sy,0,2);
 	      continue;
 	    } else if (code >= 0x21 && code <= 0x23) // end of pacman lives
 	      continue;
@@ -1010,9 +1010,9 @@ static void draw_emudx() {
 		continue;
 	    }
 	    if (solid[code] == 1) { // some transp
-	      Draw16x16_Trans_Rot(&emudx_sprites[code<<9],sx,sy,0);
+	      Draw16x16_Trans_Rot(&emudx_sprites[code<<(8+bpp)],sx,sy,0);
 	    } else {
-	      Draw16x16_Rot(&emudx_sprites[code<<9],sx,sy,0);
+	      Draw16x16_Rot(&emudx_sprites[code<<(8+bpp)],sx,sy,0);
 	    }
 	  } else { // special case for characters
 	    UINT8 *map;
@@ -1021,7 +1021,7 @@ static void draw_emudx() {
 			     4,
 			     map
 			     );
-	    map += 2*2; // skip 2 first colors...
+	    map += 2*bpp*2; // skip 2 first colors...
 	    code -= 0x30;
 	    Draw16x16_Trans_Mapped_Rot(&emudx_chars[code<<8],sx,sy,map);
 	  }
@@ -1054,15 +1054,15 @@ static void draw_emudx() {
 	    if (ta >= 0x20 && ta <= 0x27) { // A ghost
 	      // Draw it with 50% alpha blending !!!
 	      conv_sprite(ta,coul);
-	      draw_ghost(sx,sy,&emudx_sprites32[ta<<11],spriteram[offs] & 3);
+	      draw_ghost(sx,sy,&emudx_sprites32[ta<<(10+bpp)],spriteram[offs] & 3);
 	    } else {
 	      conv_sprite(ta,coul);
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[ta<<11],sx,sy,0,spriteram[offs] & 3);
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[ta<<(10+bpp)],sx,sy,0,spriteram[offs] & 3);
 	    }
 	  } else {
 	    conv_sprite(ta,coul);
 	    // All solid, must be rather rare, I think...
-	    Draw32x32_flip_Rot(&emudx_sprites32[ta<<11],sx,sy,0,spriteram[offs] & 3);
+	    Draw32x32_flip_Rot(&emudx_sprites32[ta<<(10+bpp)],sx,sy,0,spriteram[offs] & 3);
 	  }
 	}
       }
@@ -1087,15 +1087,15 @@ static void draw_emudx() {
 	    if (ta >= 0x20 && ta <= 0x27) { // A ghost
 	      // Draw it with 50% alpha blending !!!
 	      conv_sprite(ta,coul);
-	      draw_ghost(sx,sy,&emudx_sprites32[ta<<11],spriteram[offs] & 3);
+	      draw_ghost(sx,sy,&emudx_sprites32[ta<<(10+bpp)],spriteram[offs] & 3);
 	    } else {
 	      conv_sprite(ta,coul);
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[ta<<11],sx,sy,0,spriteram[offs] & 3);
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[ta<<(10+bpp)],sx,sy,0,spriteram[offs] & 3);
 	    }
 	  } else {
 	    conv_sprite(ta,coul);
 	    // All solid, must be rather rare, I think...
-	    Draw32x32_flip_Rot(&emudx_sprites32[ta<<11],sx,sy,0,spriteram[offs] & 3);
+	    Draw32x32_flip_Rot(&emudx_sprites32[ta<<(10+bpp)],sx,sy,0,spriteram[offs] & 3);
 	  }
 	}
       }
@@ -1846,9 +1846,9 @@ static void load_puckman()
 #endif
 	{
 	if (mspacman)
-	  load_emudx(db_filename,4,204,193+13,312+13,0x30+5,0x7f+5,448,576,0xf81f,draw_emudx);
+	  load_emudx(db_filename,4,204,193+13,312+13,0x30+5,0x7f+5,448,576,makecol(0xff,0,0xff),draw_emudx);
 	else
-	  load_emudx(db_filename,11,0xd0,193,312,0x30+12,0x7f+12,448,576, 0xf81f,draw_emudx);
+	  load_emudx(db_filename,11,0xd0,193,312,0x30+12,0x7f+12,448,576, makecol(0xff,0,0xff),draw_emudx);
 	if (raine_cpu_capabilities & CPU_MMX) {
 	  use_alpha = 180;
 	  init_alpha(use_alpha);

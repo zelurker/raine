@@ -983,7 +983,6 @@ static void FUNC##_init_jump_table(void)                                       \
    };                                                                          \
 };                                                                             \
                                                                                \
-
 /*
 
 prepare for mapper direct routines

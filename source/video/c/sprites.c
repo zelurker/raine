@@ -412,119 +412,7 @@ void Draw##SIZE##x##SIZE##_Trans_Packed_Mapped_SwapWord_##BPP##_FlipXY \
       }                                                                \
    }                                                                   \
 }                                                                      \
-                                                                       \
-/* ##SIZE##x##SIZE## sprites */                                        \
-/* These are for emudx */                                              \
-                                                                       \
-void Draw##SIZE##x##SIZE##_##BPP(ARG_DIR)                              \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=0; yy<SIZE; yy++){                                           \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x;              \
-      for(xx=0; xx<SIZE; xx++){                                        \
-         *line++ = ReadWord(SPR); SPR+=(BPP/8);                        \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-void Draw##SIZE##x##SIZE##_##BPP##_FlipX(ARG_DIR)                      \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=SIZE-1; yy>=0; yy--){                                        \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x;              \
-      for(xx=0; xx<SIZE; xx++){                                        \
-         *line++ = ReadWord(SPR); SPR+=(BPP/8);                        \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-void Draw##SIZE##x##SIZE##_##BPP##_FlipY(ARG_DIR)                      \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=0; yy<SIZE; yy++){                                           \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x + 15;         \
-      for(xx=0; xx<SIZE; xx++){                                        \
-         *line-- = ReadWord(SPR); SPR+=(BPP/8);                        \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-void Draw##SIZE##x##SIZE##_##BPP##_FlipXY(ARG_DIR)                     \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=SIZE-1; yy>=0; yy--){                                        \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x + 15;         \
-      for(xx=0; xx<SIZE; xx++){                                        \
-         *line-- = ReadWord(SPR); SPR+=(BPP/8);                        \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-/* ##SIZE##x##SIZE## transparent sprites */                            \
-                                                                       \
-void Draw##SIZE##x##SIZE##_Trans_##BPP(ARG_DIR)                        \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=0; yy<SIZE; yy++){                                           \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x;              \
-      for(xx=0; xx<SIZE; xx++, SPR+=(BPP/8)){                          \
-         if(ReadWord(SPR) != emudx_transp)                             \
-            line[xx] = ReadWord(SPR);                                  \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-void Draw##SIZE##x##SIZE##_Trans_##BPP##_FlipX(ARG_DIR)                \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=SIZE-1; yy>=0; yy--){                                        \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x;              \
-      for(xx=0; xx<SIZE; xx++, SPR+=(BPP/8)){                          \
-         if(ReadWord(SPR) != emudx_transp)                             \
-            line[xx] = ReadWord(SPR);                                  \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-void Draw##SIZE##x##SIZE##_Trans_##BPP##_FlipY(ARG_DIR)                \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=0; yy<SIZE; yy++){                                           \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x;              \
-      for(xx=SIZE-1; xx>=0; xx--, SPR+=(BPP/8)){                       \
-         if(ReadWord(SPR) != emudx_transp)                             \
-            line[xx] = ReadWord(SPR);                                  \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
-                                                                       \
-void Draw##SIZE##x##SIZE##_Trans_##BPP##_FlipXY(ARG_DIR)               \
-{                                                                      \
-   UINT##BPP *line;                                                    \
-   int xx,yy;                                                          \
-                                                                       \
-   for(yy=SIZE-1; yy>=0; yy--){                                        \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x;              \
-      for(xx=SIZE-1; xx>=0; xx--, SPR+=(BPP/8)){                       \
-         if(ReadWord(SPR) != emudx_transp)                             \
-            line[xx] = ReadWord(SPR);                                  \
-      }                                                                \
-   }                                                                   \
-}                                                                      \
+
 
 render(8,8);
 render(8,16);
@@ -541,6 +429,20 @@ render(32,32);
 render(64,8);
 render(64,16);
 render(64,32);
+
+#include "unmapped.h"
+
+unmapped(8,8);
+unmapped_trans(8,8,ReadByte);
+unmapped(16,8);
+unmapped_trans(16,8,ReadByte);
+unmapped(16,16);
+unmapped_trans(16,16,ReadWord);
+unmapped(16,32);
+unmapped_trans(16,32,ReadLong);
+unmapped(32,16);
+unmapped_trans(32,16,ReadWord);
+unmapped(32,8);
 
 #undef render
 #define render(SIZE,BPP)                                         \

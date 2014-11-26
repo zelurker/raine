@@ -113,22 +113,6 @@ void load_emudx(const char *name, int tiles, int sprites,
   video->screen_x = width;
   video->screen_y = height;
 
-  /* I wanted to test the color depth of the 1st bitmap before choosing 16bpp
-     but allegro is too stupid with its automatic color conversion and reports
-     8 bpp if the current video mode has 8bpp. Too bad... */
-  video->flags |= VIDEO_NEEDS_16BPP;
-  if(wants_switch_res) { // && switch_res(current_game->video))){
-    switch_res(current_game->video);
-  }
-  if (display_cfg.bpp != 16) {
-    display_cfg.bpp = 16;
-#ifndef RAINE_DOS
-    if (display_cfg.video_mode == 0) // opengl
-	display_cfg.video_mode = 1; // use yuv overlay instead
-#endif
-    ScreenChange();
-  }
-
   dat = open_emudx_file(name);
 
   if (!dat) {
@@ -143,8 +127,9 @@ void load_emudx(const char *name, int tiles, int sprites,
 
   // one more tile for dkong but different dimensions (so... crazy !!!)
   if (!(emudx_tiles = (BITMAP **)AllocateMem(sizeof(BITMAP*)*tiles))) return;
-  if (!(emudx_sprites = AllocateMem(16*16*2*(sprites)))) return;
-  if (!(emudx_sprites32 = AllocateMem(32*32*2*(sprites32-start_sprites32+1)))) return;
+  int bpp = display_cfg.bpp / 8;
+  if (!(emudx_sprites = AllocateMem(16*16*bpp*(sprites)))) return;
+  if (!(emudx_sprites32 = AllocateMem(32*32*bpp*(sprites32-start_sprites32+1)))) return;
   if (first_char > 0 && last_char > 0) {
     if (!(emudx_chars = AllocateMem(16*16*(last_char-first_char+1)))) return;
   }
@@ -163,7 +148,7 @@ void load_emudx(const char *name, int tiles, int sprites,
   for (i=1; i<=tiles; i++) {
     load_explicit_progress(i,sprites32);
     obj = emudx_bitmap(dat,i);
-    emudx_tiles[i-1] = create_bitmap_ex(16,width,height);
+    emudx_tiles[i-1] = create_bitmap(width,height);
     if (!emudx_tiles[i-1]) {
       printf("failed to alloc bitmap %dx%d\n",obj->w,obj->h);
       exit(1);
@@ -184,65 +169,114 @@ void load_emudx(const char *name, int tiles, int sprites,
        components to be able to draw it in the driver with no change. Too bad I have
        to do it here */
     int x,y,dy;
-    UINT16 *src,*dest;
     obj = emudx_bitmap(dat,261);
-    bmp = create_bitmap_ex(16,96,64);
+    bmp = create_bitmap(96,64);
     stretch_blit(obj,bmp,0,0,obj->w,obj->h,0,0,96,64);
-    for (x=5; x>=0; x--) {
-      for (y=3; y>=0; y--) {
-	dest = (UINT16*)(emudx_sprites+(0x50+(3-y)+(5-x)*4)*0x200);
-	for (dy=0; dy<16; dy++) {
-	  src = (UINT16*)(bmp->line[y*16+dy]+x*16*2);
-	  memcpy(dest+dy*16,src,16*2);
+    switch(display_cfg.bpp) {
+    case 15:
+    case 16:
+	{
+	    UINT16 *src,*dest;
+	    for (x=5; x>=0; x--) {
+		for (y=3; y>=0; y--) {
+		    dest = (UINT16*)(emudx_sprites+(0x50+(3-y)+(5-x)*4)*0x200);
+		    for (dy=0; dy<16; dy++) {
+			src = (UINT16*)(bmp->line[y*16+dy]+x*16*2);
+			memcpy(dest+dy*16,src,16*2);
+		    }
+		}
+	    }
 	}
-      }
+	break;
+    case 32:
+	{
+	    UINT32 *src,*dest;
+	    for (x=5; x>=0; x--) {
+		for (y=3; y>=0; y--) {
+		    dest = (UINT32*)(emudx_sprites+(0x50+(3-y)+(5-x)*4)*0x400);
+		    for (dy=0; dy<16; dy++) {
+			src = (UINT32*)(bmp->line[y*16+dy]+x*16*4);
+			memcpy(dest+dy*16,src,16*4);
+		    }
+		}
+	    }
+	}
+	break;
     }
     destroy_bitmap(obj);
     destroy_bitmap(bmp);
   }
   tiles++; // points to start of sprites;
   load_message("loading EmuDX sprites");
-  bmp = create_bitmap_ex(16,16,16); // 16x16, 16bpp
-  UINT16 transp_sprite[16*16];
-  for (i=0; i<16*16; i++)
-    transp_sprite[i] = 0xf81f;
+  bmp = create_bitmap(16,16); // 16x16, 16bpp
+  UINT8 *transp_sprite = AllocateMem(16*16*bpp);
+  if (!transp_sprite) return;
+  switch(bpp) {
+  case 2:
+      for (i=0; i<16*16; i++)
+	  WriteWord(&transp_sprite[i*2],0xf81f);
+      break;
+  case 4:
+      for (i=0; i<16*16; i++)
+	  WriteLong(&transp_sprite[i*4], 0xff00ff);
+      break;
+  }
   for (i=tiles; i<tiles+sprites; i++) {
-    memcpy(bmp->line[0],transp_sprite,16*16*2);
+    memcpy(bmp->line[0],transp_sprite,16*16*bpp);
     load_explicit_progress(i,sprites32);
     obj = emudx_bitmap(dat,i);
     stretch_blit(obj,bmp,0,0,obj->w,obj->h,0,0,16,16);
     if (i>= first_char && i <= last_char) {
       int sx;
-      UINT16 *src = (UINT16*)bmp->line[0];
-      UINT8 *dest = emudx_chars + (i-first_char)*0x100;
-      for (sx=0; sx<16*16; sx++)
-	if (src[sx] != 0xf81f) {
-	  dest[sx] = 1;
-	} else
-	  dest[sx] = 0;
+      switch(display_cfg.bpp) {
+      case 15:
+      case 16:
+	  {
+	      UINT16 *src = (UINT16*)bmp->line[0];
+	      UINT8 *dest = emudx_chars + (i-first_char)*0x100;
+	      for (sx=0; sx<16*16; sx++)
+		  if (src[sx] != 0xf81f) {
+		      dest[sx] = 1;
+		  } else
+		      dest[sx] = 0;
+	  }
+	  break;
+      case 32:
+	  {
+	      UINT32 *src = (UINT32*)bmp->line[0];
+	      UINT8 *dest = emudx_chars + (i-first_char)*0x100;
+	      for (sx=0; sx<16*16; sx++)
+		  if (src[sx] != 0xff00ff) {
+		      dest[sx] = 1;
+		  } else
+		      dest[sx] = 0;
+	  }
+	  break;
+      }
     } else {
-      memcpy(emudx_sprites + (i-tiles)*0x100*2,bmp->line[0],0x100*2);
+      memcpy(emudx_sprites + (i-tiles)*0x100*bpp,bmp->line[0],0x100*bpp);
     }
     destroy_bitmap(obj);
   }
+  FreeMem(transp_sprite);
   destroy_bitmap(bmp);
   load_message("loading EmuDX big sprites");
-  bmp = create_bitmap_ex(16,32,32); // 32x32, 16bpp
+  bmp = create_bitmap(32,32); // 32x32, 16bpp
   for (i=start_sprites32; i<=sprites32; i++) {
     load_explicit_progress(i,sprites32);
     obj = emudx_bitmap(dat,i);
     if (obj->w != 32 || obj->h != 32) {
       stretch_blit(obj,bmp,0,0,obj->w,obj->h,0,0,32,32);
-      memcpy(emudx_sprites32 + (i-start_sprites32)*0x20*0x20*2,bmp->line[0],0x20*0x20*2);
+      memcpy(emudx_sprites32 + (i-start_sprites32)*0x20*0x20*bpp,bmp->line[0],0x20*0x20*bpp);
     } else {
 #ifdef SDL
       if (get_surface_from_bmp(obj)->format->BitsPerPixel > 16) {
 	SDL_BlitSurface(get_surface_from_bmp(obj),NULL,
 	  get_surface_from_bmp(bmp),NULL);
-	memcpy(emudx_sprites32 + (i-start_sprites32)*0x20*0x20*2,bmp->line[0],0x20*0x20*2);
+	memcpy(emudx_sprites32 + (i-start_sprites32)*0x20*0x20*bpp,bmp->line[0],0x20*0x20*bpp);
       } else
 #endif
-	memcpy(emudx_sprites32 + (i-start_sprites32)*0x20*0x20*2,obj->line[0],0x20*0x20*2);
+	memcpy(emudx_sprites32 + (i-start_sprites32)*0x20*0x20*bpp,obj->line[0],0x20*0x20*bpp);
     }
     destroy_bitmap(obj);
   }

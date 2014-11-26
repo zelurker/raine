@@ -532,6 +532,11 @@ static void draw_emudx() {
   UINT8 *map,*gfx;
   int offs;
   int curlev = 0;
+  static int bpp;
+
+  if (RefreshBuffers) {
+      bpp = display_cfg.bpp / 8;
+  }
 
   if (RAM[0x40]) { // number of lifes > 0 (6228 and 6040 seem to be the same !)
     if (RAM[0x22e]) { // seems to stay at 0 in attract mode...
@@ -591,14 +596,14 @@ static void draw_emudx() {
 			       4,
 			       map
 			       );
-	map += 2*2; // skip 2 first colors...
+	map += 2*bpp; // skip 2 first colors...
 	// code -= 5;
 	Draw16x16_Trans_Mapped_Rot(&emudx_chars[code<<8],x,sy,map);
       } else {
 	if (code != 0xc0 || curlev == 4)
 	  // only draw the ladders (c0) in level 4.
 	  // The other dx levels have the ladders already drawn.
-	  Draw16x16_Trans_Rot(&emudx_sprites[code<<9],x,sy,0);
+	  Draw16x16_Trans_Rot(&emudx_sprites[code<<(8+bpp/2)],x,sy,0);
       }
     }
     END_SCROLL_n_16(512,512,1);
@@ -645,7 +650,7 @@ static void draw_emudx() {
 		flame = flame_blue;
 	      }
 
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp/2)],x,y,0,
 					  ((spriteram[offs + 2] & 0x80)>>7) | ((spriteram[offs + 1] & 0x80)>>6));
 	      draw_trans_sprite(GameBitmap,flame,disp_y_32 - y - 12, x - 8);
 
@@ -657,7 +662,7 @@ static void draw_emudx() {
 		 unnoticable considering the size of the details of the barrel... */
 	      // rotate_sprite(prime_display,sprites[V], x, y-3,itofix(x*2+y*2)); //Our beautiful barrel rolls
 
-	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<11],x,y,0,
+	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp/2)],x,y,0,
 					  ((spriteram[offs + 2] & 0x80)>>7) | ((spriteram[offs + 1] & 0x80)>>6));
 	    }
 	  /* consider doing it for x+256,y (warp around probably not necessary here) */
@@ -805,7 +810,7 @@ static void load_dkong() {
       {
 	load_emudx("dkongg.dx2",4,262-5,262,419,
 		   5,164,
-		   448,512,0xf81f,draw_emudx);
+		   448,512,makecol(0xff,0,0xff),draw_emudx);
 	draw_emudx_tile = 0;
 
 	/* There is a special effect for flames in dkong : the flames are drawn as normal
