@@ -136,24 +136,24 @@ OBJS += \
 	$(OBJDIR)/games/nichisnd.o \
 	$(OBJDIR)/games/taitosnd.o \
 	$(OBJDIR)/games/tchnosnd.o \
+	$(OBJDIR)/games/tc004vcu.o \
+	$(OBJDIR)/games/tc003vcu.o \
+	$(OBJDIR)/games/tc140syt.o \
+	$(OBJDIR)/games/tc100scn.o \
+	$(OBJDIR)/games/tc180vcu.o \
+	$(OBJDIR)/games/cps1.o \
+	$(OBJDIR)/games/tc110pcr.o \
+	$(OBJDIR)/games/tc200obj.o \
 	$(OBJDIR)/games/tc006vcu.o \
 	$(OBJDIR)/games/setax1.o \
-	$(OBJDIR)/games/tc005rot.o \
-	$(OBJDIR)/games/tc220ioc.o \
-	$(OBJDIR)/games/tc140syt.o \
 	$(OBJDIR)/games/tc002obj.o \
 	$(OBJDIR)/games/tc101scn.o \
 	$(OBJDIR)/games/tc150rod.o \
-	$(OBJDIR)/games/tc003vcu.o \
-	$(OBJDIR)/games/tc110pcr.o \
+	$(OBJDIR)/games/tc005rot.o \
 	$(OBJDIR)/games/kiki_mcu.o \
-	$(OBJDIR)/games/tc200obj.o \
-	$(OBJDIR)/games/tc180vcu.o \
 	$(OBJDIR)/games/taito_z.o \
-	$(OBJDIR)/games/tc100scn.o \
-	$(OBJDIR)/games/cps1.o \
+	$(OBJDIR)/games/tc220ioc.o \
 	$(OBJDIR)/games/kick_mcu.o \
-	$(OBJDIR)/games/tc004vcu.o \
 	$(OBJDIR)/games/gun.o \
 
 OBJS += \
@@ -186,3 +186,5 @@ OBJS += \
 	$(YMF278B) \
 	$(X1_010) \
 	$(TOAPLAN2) \
+
+HAS_NEO = 1

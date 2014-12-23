@@ -1,4 +1,5 @@
 #include "profile.h"
+#include "conf-sound.h"
 #include "../gui/menu.h"
 #include "about.h"
 #include <SDL_image.h>
@@ -746,7 +747,7 @@ static menu_item_t about_items[] =
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
   { "SDL", },
-  { "sound" },
+  { "No SDL_sound" },
   { " ", NULL, NULL },
   { "http://rainemu.swishparty.co.uk/", NULL, NULL },
   { " ", NULL, NULL, },
@@ -790,16 +791,18 @@ int do_about(int sel) {
     const SDL_version *version = SDL_Linked_Version();
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();
-    Sound_Version sound;
-    Sound_GetLinkedVersion(&sound);
     sprintf(about_sdl,"Linked with SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
 	    img->major,img->minor,img->patch,
 	    ttf->major,ttf->minor,ttf->patch);
+    about_items[4].label = about_sdl;
+#if HAS_NEO
+    Sound_Version sound;
+    Sound_GetLinkedVersion(&sound);
     sprintf(about_sound,"SDL_sound-%d.%d.%d",
 	    sound.major,sound.minor,sound.patch);
 
-    about_items[4].label = about_sdl;
     about_items[5].label = about_sound;
+#endif
 #ifdef RDTSC_PROFILE
   if (cycles_per_second) {
     sprintf(about_cpu,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);

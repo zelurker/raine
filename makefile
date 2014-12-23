@@ -993,19 +993,24 @@ CFLAGS_MCU += -DDARWIN
 
 # Better use a static lib for sdl_sound, too many dependancies, and very
 # specific
+ifdef HAS_NEO
 LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libogg.a /usr/local/lib/libvorbis.a /usr/local/lib/libvorbisfile.a
+endif
 # LIBS += -framework SDL_sound
 else
 CFLAGS += `sdl-config --cflags`
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
+ifdef HAS_NEO
 ifdef CROSSCOMPILE
   LIBS += -lSDL_sound -lFLAC # -lmodplug
 else
 LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libsmpeg.a
 endif
 endif
+endif
 LIBS += `sdl-config --libs` -lSDL_ttf -lSDL_image # -lefence
+ifdef HAS_NEO
 ifdef RAINE_UNIX
 # Normally here we should have :
 # LIBS += -lSDL_sound
@@ -1023,6 +1028,7 @@ else
 # and these libs are used by SDL_sound/FLAC
 LIBS += -logg -lvorbisfile -lws2_32
 endif
+endif # HAS_NEO
 endif
 endif
 endif

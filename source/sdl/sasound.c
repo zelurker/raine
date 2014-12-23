@@ -212,8 +212,10 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
        opened_audio = 1;
        read_dx_file();
+#if HAS_NEO
        if (!sound_init)
 	   Sound_Init(); // init sdl_sound
+#endif
        sound_init = 1;
        strcpy(driver_name,"SDL ");
        SDL_AudioDriverName(&driver_name[4], 32);
@@ -429,10 +431,12 @@ void start_music_fadeout(double time) {
 }
 
 static void close_sample() {
+#if HAS_NEO
   if (sample) {
     Sound_FreeSample(sample);
     printf("free sample\n");
   }
+#endif
   // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
   global_state.decoded_bytes = 0;
   global_state.decoded_ptr = NULL;

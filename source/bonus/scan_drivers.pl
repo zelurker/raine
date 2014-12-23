@@ -41,7 +41,7 @@ while ($_ = shift @ARGV) {
     } elsif (/decode.h/) {
       $use_decode = 1;
     } elsif (/neocd.h/) {
-	$use_neo = 1;
+		$use_neo = 1;
     } elsif (/cps2crpt.h/) {
       $use_cps2crpt = 1;
     } elsif (/f3system.h/) {
@@ -237,6 +237,8 @@ print G "#define HAS_YMF278B 1\n" if ($use_ymf278b);
 print F "\t\$(X1_010) \\\n" if ($use_x1_010);
 print G "#define HAS_X1_010 1\n" if ($use_x1_010);
 print F "\t\$(TOAPLAN2) \\\n" if ($use_toaplan2);
+print F "\n";
+print F "HAS_NEO = 1\n" if ($use_neo);
 close(F);
 close(G);
 open(F,">source/conf-cpu.h") || die "conf-cpu.h";
