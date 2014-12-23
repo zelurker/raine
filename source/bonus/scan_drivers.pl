@@ -12,7 +12,7 @@ my ($use_68k, $use_z80, $use_6502, $use_020,$use_68705, # cpus
   $use_2151,$use_2203,$use_2413,$use_2610,$use_3812,$use_adpcm,$use_ay8910,
   $use_dac, $use_dxsmp, $use_ensoniq, $use_m6585, $use_msm5205, $use_namco,
   $use_qsound,$use_smp16bit,$use_toaplan2,$use_x1_010,$use_ymf278b,
-  $use_ymz280b,
+  $use_ymz280b,$use_neo,
   $use_f3system,$use_nichi,$use_taitosnd,$use_tchnosnd,
   %tc,$use_gun,$use_emudx,$use_cat93c46,$use_decode, $use_cps2crpt) = undef;
 my @obj = ();
@@ -40,6 +40,8 @@ while ($_ = shift @ARGV) {
       $use_cat93c46 = 1;
     } elsif (/decode.h/) {
       $use_decode = 1;
+    } elsif (/neocd.h/) {
+	$use_neo = 1;
     } elsif (/cps2crpt.h/) {
       $use_cps2crpt = 1;
     } elsif (/f3system.h/) {
@@ -159,24 +161,18 @@ foreach (keys %tc) {
 }
 push @obj, "gun.o" if ($use_gun);
 
+if ($use_neo) {
+    $use_68k = 1;
+    $use_z80 = 1;
+    $use_2610 = 1;
+    $use_ay8910 = 1;
+}
 open(G,">source/sound/conf-sound.h") || die "open conf-sound.h\n";
 open(F,">games.mak") || die "can't write to games.mak\n";
 #   print F "ifdef DRIVER_$name\n";
-print F "ifdef NEO\n";
-print F "\nOBJS += \\\n";
-print F "\t\$(SC000) \\\n";
-print F "\t\$(MZ80) \\\n";
-print F "\t\$(2610) \\\n";
-print G "#ifdef NEO\n";
-print G "#define HAS_YM2610  1\n";
-print G "#define HAS_YM2610B  1\n";
-print F "\t\$(AY8910) \\\n";
-print G "#define HAS_AY8910 1\n";
-print F "\t\$(NEOCD) \n";
-print F "else\n";
-print G "#else\n";
 
 print F "OBJS += \\\n";
+print F "\t\$(NEOCD) \\\n" if ($use_neo);
 foreach (@obj) {
   print F "\t\$(OBJDIR)/games/$_ \\\n";
 }
@@ -186,7 +182,12 @@ print F "\t\$(ASM020) \\\n" if ($use_020);
 print F "\t\$(MZ80) \\\n" if ($use_z80);
 print F "\t\$(M6502) \\\n" if ($use_6502);
 print F "\t\$(M68705) \\\n" if ($use_68705);
+print F "\t\$(ASSOC) \\\n" if ($use_neo);
 print F "\t\$(2151) \\\n" if ($use_2151);
+print G "#define HAS_NEO 1\n" if ($use_neo);
+print G "#define USE_TC200 1\n" if ($tc{"tc200obj.o"});
+print G "#define USE_TC005 1\n" if ($tc{"tc005rot.o"});
+print G "#define USE_TAITOSND 1\n" if ($use_taitosnd);
 print G "#define HAS_YM2151_ALT 1\n" if ($use_2151);
 print F "\t\$(2203) \\\n" if ($use_2203);
 print G "#define HAS_YM2203  1\n" if ($use_2203);
@@ -236,20 +237,12 @@ print G "#define HAS_YMF278B 1\n" if ($use_ymf278b);
 print F "\t\$(X1_010) \\\n" if ($use_x1_010);
 print G "#define HAS_X1_010 1\n" if ($use_x1_010);
 print F "\t\$(TOAPLAN2) \\\n" if ($use_toaplan2);
-print F "\nendif\n";
-print G "#endif\n";
 close(F);
 close(G);
 open(F,">source/conf-cpu.h") || die "conf-cpu.h";
-print F "#ifdef NEO\n";
-print F "#define NO020 1\n";
-print F "#define HAVE_68000 1\n";
-print F "#define HAVE_Z80 1\n";
-print F "#else\n";
 print F "#define NO020 1\n" if (!$use_020);
 print F "#define HAVE_6502 1\n" if ($use_6502);
 print F "#define HAVE_68000 1\n" if ($use_68k);
 print F "#define HAVE_Z80 1\n" if ($use_z80);
-print F "#endif\n";
 close(F);
 
