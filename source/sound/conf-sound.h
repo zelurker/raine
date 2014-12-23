@@ -1,3 +1,7 @@
+#define HAS_NEO 1
+#define USE_TC200 1
+#define USE_TC005 1
+#define USE_TAITOSND 1
 #define HAS_YM2151_ALT 1
 #define HAS_YM2203  1
 #define HAS_YM2413 1

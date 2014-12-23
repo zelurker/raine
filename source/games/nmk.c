@@ -1576,7 +1576,6 @@ static void reset_input_mode() {
   respcount = 0;
   if (romset == 8 || romset == 2 || romset == 7 || romset == 5 || romset == 1) {
     NMK004_init();
-    _z80iff = 1;
   }
 }
 

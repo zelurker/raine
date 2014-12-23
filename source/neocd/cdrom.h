@@ -1,3 +1,5 @@
+#include "conf-sound.h"
+#if HAS_NEO
 #ifndef	CDROM_H
 #define CDROM_H
 #ifdef __cplusplus
@@ -47,5 +49,6 @@ int get_size(char *filename);
 
 #ifdef __cplusplus
 }
+#endif
 #endif
 #endif

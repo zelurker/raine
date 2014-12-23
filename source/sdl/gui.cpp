@@ -53,8 +53,10 @@ void read_gui_config() {
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
   repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
   read_game_list_config();
+#if HAS_NEO
   restore_cdrom_config();
   restore_neocd_config();
+#endif
   read_font_config();
   read_menu_config();
   opaque_hud = raine_get_config_int("gui","opaque_hud",0);
@@ -65,8 +67,10 @@ void write_gui_config() {
   raine_set_config_int("GUI","repeat_delay",repeat_delay);
   raine_set_config_int("GUI","repeat_interval",repeat_interval);
   save_game_list_config();
+#if HAS_NEO
   save_cdrom_config();
   save_neocd_config();
+#endif
   save_font_config();
   save_menu_config();
   raine_set_config_int("GUI","opaque_hud",opaque_hud);
@@ -262,6 +266,7 @@ static int set_region(int sel) {
   return 0;
 }
 
+#if HAS_NEO
 static int load_neo_game(int sel) {
   char res[1024];
   char *exts[] = { ".zip",
@@ -272,7 +277,7 @@ static int load_neo_game(int sel) {
   fsel(neocd_dir,exts,res,"Load NeoCD game");
   return load_neo_from_name(res);
 }
-
+#endif
 
 extern int do_sound_options(int sel);
 
@@ -284,8 +289,10 @@ static menu_item_t main_items[] =
 { "Action replay cheats", &do_cheats, },
 { "Dipswitches", &do_dlg_dsw, },
 { "Change/Load ROM", &do_game_sel },
+#if HAS_NEO
 { "Load NeoCD game", &load_neo_game },
 { "NeoCD/Neo-Geo options", &do_neocd_options },
+#endif
 { "Video options", &do_video_options },
 { "Sound options", &do_sound_options },
 { "Options", &do_gui_options },
@@ -320,9 +327,9 @@ class TMain_menu : public TMenu
 	    );
       case 4: // dsw
         return current_game != NULL && current_game->dsw != NULL;
-      case 13: // special moves
-	  return nb_commands > 0;
       default:
+	if (strstr(main_items[n].label,"Show command.dat"))
+	  return nb_commands > 0;
 	return 1;
     }
   }

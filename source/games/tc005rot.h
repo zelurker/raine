@@ -15,10 +15,10 @@ typedef struct TC0005ROT			// Information about 1 chip
    UINT8 *GFX_ROT;				// GFX BG0
 } TC0005ROT;
 
-struct TC0005ROT tc0005rot;
+extern struct TC0005ROT tc0005rot;
 
 void init_tc0005rot();
-void init_tc430grw(); 
+void init_tc430grw();
 
 void tc0005rot_bg0_ww(UINT32 address, UINT16 data);
 void tc0005rot_set_bitmap();

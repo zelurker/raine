@@ -1,4 +1,5 @@
 OBJS += \
+	$(NEOCD) \
 	$(OBJDIR)/games/ainferno.o \
 	$(OBJDIR)/games/aquajack.o \
 	$(OBJDIR)/games/arabianm.o \
@@ -54,6 +55,7 @@ OBJS += \
 	$(OBJDIR)/games/gridseek.o \
 	$(OBJDIR)/games/gunbird.o \
 	$(OBJDIR)/games/gunlock.o \
+	$(OBJDIR)/games/heavyunt.o \
 	$(OBJDIR)/games/hitice.o \
 	$(OBJDIR)/games/hthero95.o \
 	$(OBJDIR)/games/hyperpcb.o \
@@ -134,24 +136,24 @@ OBJS += \
 	$(OBJDIR)/games/nichisnd.o \
 	$(OBJDIR)/games/taitosnd.o \
 	$(OBJDIR)/games/tchnosnd.o \
-	$(OBJDIR)/games/kick_mcu.o \
-	$(OBJDIR)/games/tc200obj.o \
+	$(OBJDIR)/games/tc006vcu.o \
+	$(OBJDIR)/games/setax1.o \
+	$(OBJDIR)/games/tc005rot.o \
 	$(OBJDIR)/games/tc220ioc.o \
+	$(OBJDIR)/games/tc140syt.o \
+	$(OBJDIR)/games/tc002obj.o \
+	$(OBJDIR)/games/tc101scn.o \
+	$(OBJDIR)/games/tc150rod.o \
+	$(OBJDIR)/games/tc003vcu.o \
 	$(OBJDIR)/games/tc110pcr.o \
 	$(OBJDIR)/games/kiki_mcu.o \
-	$(OBJDIR)/games/tc100scn.o \
+	$(OBJDIR)/games/tc200obj.o \
 	$(OBJDIR)/games/tc180vcu.o \
-	$(OBJDIR)/games/tc005rot.o \
-	$(OBJDIR)/games/tc140syt.o \
-	$(OBJDIR)/games/setax1.o \
-	$(OBJDIR)/games/tc003vcu.o \
-	$(OBJDIR)/games/tc150rod.o \
-	$(OBJDIR)/games/tc101scn.o \
-	$(OBJDIR)/games/tc002obj.o \
 	$(OBJDIR)/games/taito_z.o \
-	$(OBJDIR)/games/tc004vcu.o \
+	$(OBJDIR)/games/tc100scn.o \
 	$(OBJDIR)/games/cps1.o \
-	$(OBJDIR)/games/tc006vcu.o \
+	$(OBJDIR)/games/kick_mcu.o \
+	$(OBJDIR)/games/tc004vcu.o \
 	$(OBJDIR)/games/gun.o \
 
 OBJS += \
@@ -160,6 +162,7 @@ OBJS += \
 	$(MZ80) \
 	$(M6502) \
 	$(M68705) \
+	$(ASSOC) \
 	$(2151) \
 	$(2203) \
 	$(2413) \
@@ -183,4 +186,3 @@ OBJS += \
 	$(YMF278B) \
 	$(X1_010) \
 	$(TOAPLAN2) \
-

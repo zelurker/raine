@@ -67,7 +67,9 @@ static int fadeout,fade_vol,fade_nb,fade_frame,fade_vol;
 UINT8 *PCMROM;
 
 static char driver_name[40];
+#ifdef HAS_NEO
 static char track_to_read[FILENAME_MAX];
+#endif
 
 int RaineSoundCard;
 
@@ -293,6 +295,7 @@ typedef struct
 
 static volatile playsound_global_state global_state;
 
+#if HAS_NEO
 static int done_flag = 0,skip_silence;
 
 static int read_more_data(Sound_Sample *sample)
@@ -395,12 +398,14 @@ void load_sample(char *filename) {
     cdda.pos = 0;
     strcpy(track_to_read,filename);
 }
+#endif
 
 void init_samples() {
     fadeout = 0;
   if (!pause_sound) SDL_PauseAudio(0);
 }
 
+#if HAS_NEO
 void set_sample_pos(int pos) {
   cdda.pos = pos;
   if (start_index && !fbin) {
@@ -415,6 +420,7 @@ void set_sample_pos(int pos) {
     fseek(fbin,pos,SEEK_SET);
   }
 }
+#endif
 
 void start_music_fadeout(double time) {
     fadeout = 1;
@@ -524,6 +530,7 @@ INT16 get_average(signed short *din, int distance, double rapport) {
 // len of the buffer to update in samples
 #define LEN_SAMPLES 2048
 
+#if HAS_NEO
 static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
   UINT8 buff[1024];
   int bw = 0;
@@ -541,6 +548,7 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
     cpysize -= chunk;
   }
 }
+#endif
 
 static void my_callback(void *userdata, Uint8 *stream, int len)
 {
@@ -556,6 +564,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     // int nb=0;
 
     // 1. Fill the stream with the sample, if available
+#if HAS_NEO
     if (fadeout) {
 	fade_vol--;
 	fade_vol = music_volume-music_volume*fade_frame++/fade_nb;
@@ -666,6 +675,9 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	callback_busy = 0;
 	return;
     }
+#else
+	memset(stream,0,len);
+#endif
 
     len /= 2; // 16 bits from now on
 
@@ -682,10 +694,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    int volume = SampleVol[channel];
 	    int vol_l = (255-SamplePan[channel])*volume/255;
 	    int vol_r = (SamplePan[channel])*volume/255;
+#if HAS_NEO
 	    if (use_music) {
 		vol_l = vol_l*sfx_volume/100;
 		vol_r = vol_r*sfx_volume/100;
 	    }
+#endif
 	    if (stream_buffer_pos[channel] < len/2) {
 		// printf("callb: underrun channel %d, wanted %d got %d\n",channel,len/2,stream_buffer_pos[channel]);
 		if (stream_callback[channel] || stream_callback_multi[channel])

@@ -42,7 +42,7 @@ class TCheatDlg : public TMenu
       }
       char cheat_info[256];
 #ifdef HAS_CONSOLE
-      if (CheatCount < 0 && nb_scripts) 
+      if (CheatCount < 0 && nb_scripts)
 	sprintf(cheat_info,"Script");
       else
 #endif

@@ -217,12 +217,15 @@ static void CLI_game_load(void)
    }
 
 }
+#if HAS_NEO
 #include "neocd/neocd.h"
+#endif
 #include "blit.h"
 #include "newspr.h"
 #include "default.h"
 #include "emumain.h"
 
+#if HAS_NEO
 int actual_load_neo_game(void)
 {
   // Here neocd_dir and neocd_path are already initialized...
@@ -273,7 +276,7 @@ int load_neo_from_name(char *res) {
   print_debug("load_neo_from_name: file %s neocd_dir %s\n",neocd_path,neocd_dir);
   return actual_load_neo_game();
 }
-
+#endif
 // CLI_DisableLeds():
 // Disable LED usage
 
@@ -1834,6 +1837,7 @@ void parse_command_line(int argc, char *argv[])
        else if (ArgPosition == ArgCount-1) {
 
           // allow raine <gamename> (preferred use is raine -game <gamename>)
+#if HAS_NEO
 	  char *s = ArgList[ArgPosition];
 
 	   if (is_dir(ArgList[ArgPosition]) ||
@@ -1851,6 +1855,7 @@ void parse_command_line(int argc, char *argv[])
 	       backslash(ArgList[ArgPosition]);
 	       load_neo_from_name(ArgList[ArgPosition]);
 	   } else
+#endif
 	       CLI_game_load_alt();
 
        }
@@ -1975,6 +1980,7 @@ void load_game_config(void)
    sprintf(str,"%s:romversion", current_game->main_name);
    load_romswitches(str);
 
+#if HAS_NEO
    sprintf(str,"%s:assoc", current_game->main_name);
    load_assoc(str);
 
@@ -1983,6 +1989,7 @@ void load_game_config(void)
    if (is_neocd() || current_game->load_game == &load_neocd)
        sprintf(str,"%s",get_shared("neocheats.cfg"));
    else
+#endif
        sprintf(str,"%s",get_shared("cheats.cfg"));
    raine_set_config_file(str);
 
@@ -2050,8 +2057,10 @@ void save_game_config(void)
    sprintf(str,"%s:romversion", current_game->main_name);
    save_romswitches(str);
 
+#if HAS_NEO
    sprintf(str,"%s:assoc", current_game->main_name);
    save_assoc(str);
+#endif
 
    raine_pop_config_state();
 #ifndef SDL

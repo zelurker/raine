@@ -48,7 +48,9 @@ void LoadDefault(void)
 #ifdef RDTSC_PROFILE
   cycles_per_frame = 0; // recalibrate for non 60fps games
 #endif
+#if HAS_TC200
   f2_sprites_colors = 16;
+#endif
   fps = 60.0; // 60 fps (default)
   default_fps = 0.0; // init only by the dialog which allows to change fps
 #if HAS_ADPCM
@@ -132,13 +134,21 @@ void ClearDefault(void)
     unregister_driver_emu_keys();
 #endif
   use_scale2x = 0;
+#if AS_NEO
   use_music = 0;
+#endif
   memset(tile_list,0,sizeof(tile_list));
+#if USE_TAITOSND
   RemoveTaitoSoundBanking();
+#endif
+#if USE_TC005
   tc0005rot.RAM = NULL;
+#endif
   undo_hack();
   save_game_config();
+#if HAS_NEO
   clear_assoc();
+#endif
   hs_close();
   if (current_game->clear)
     current_game->clear();

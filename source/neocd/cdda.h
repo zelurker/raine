@@ -1,3 +1,6 @@
+#include "conf-sound.h"
+
+#ifdef HAS_NEO
 #ifndef	CDDA_H
 #define CDDA_H
 #ifdef __cplusplus
@@ -32,4 +35,4 @@ void prepare_cdda_save(UINT32 id);
 }
 #endif
 #endif
-
+#endif // HAS_NEO

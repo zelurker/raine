@@ -14,7 +14,10 @@
 #include "ingame.h"
 #include "sprite_viewer.h"
 #include "translator.h"
+#include "conf-sound.h"
+#if HAS_NEO
 #include "neocd/cache.h"
+#endif
 #include <math.h>
 
 // #include <SDL/SDL_image.h>
@@ -233,8 +236,10 @@ static menu_item_t game_options[] =
   { "Save game", &my_save },
   { "Graphical layers...", &graphical_layers },
   { "Sprite viewer", &sprite_viewer },
+#if HAS_NEO
   { "Edit screen", &do_screen },
   { "Edit msg", &do_msg },
+#endif
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
   { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10,0,100 }, { "", (char*)&fps, "1", "200" } },
   { "Reset fps to driver's default value", &reset_fps },
@@ -251,6 +256,7 @@ class TGame_options : public TMenu {
       switch(n) {
 	case 3: // graphical layers
 	  return layer_info_count;
+#if HAS_NEO
 	case 5: // screens
 	  if (is_current_game("ssrpg")) {
 	      char name[30];
@@ -261,6 +267,7 @@ class TGame_options : public TMenu {
 	  return 0;
 	case 6: // msg
 	  return current_game && is_current_game("ssrpg");
+#endif
       }
       return 1;
     }

@@ -667,7 +667,10 @@ static UINT32 load_gfx_region(UINT32 region)
       }
 
       if((gfx[nb] = load_region[region] = decode_gfx(buffer, reg_size, gfx_list->layout,&region_size[region]))) {
-	if (buffer != tc0005rot.GFX_ROT) { // if this buffer is used for tc005rot then
+#if USE_TC005
+	if (buffer != tc0005rot.GFX_ROT)
+#endif
+       	{ // if this buffer is used for tc005rot then
 	  // don't rotate !!!
 	  if (gfx_list->layout->width == 16 && gfx_list->layout->height == 16) {
 	    gfx_solid[nb] = make_solid_region_16x16(region);

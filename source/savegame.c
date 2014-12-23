@@ -52,6 +52,7 @@ Todo:
 
 #include "raine.h"
 #include "savegame.h"
+#include "conf-sound.h"
 
 #include "starhelp.h"
 #include "mz80help.h"
@@ -614,7 +615,9 @@ void do_load_state(char *name) {
       case SAVE_FILE_TYPE_2:
          hs_close();
 	 hs_open();
+#if HAS_NEO
 	 cdda_stop();
+#endif
          NewLoad(fin);
 	 // In fact, this hs_load is a problem : normally the hiscores are
 	 // loaded once the memory has been init by the driver. But there is no

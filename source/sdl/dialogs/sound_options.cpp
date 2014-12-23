@@ -11,6 +11,7 @@
 
 static TMenu *menu;
 
+#if HAS_NEO
 static int set_default_volumes(int sel) {
   sfx_volume = DEFAULT_SFX_VOLUME;
   music_volume = DEFAULT_MUSIC_VOLUME;
@@ -18,6 +19,7 @@ static int set_default_volumes(int sel) {
   mute_music = mute_sfx = 0;
   return 0;
 }
+#endif
 
 menu_item_t sound_menu[] =
 {
@@ -29,6 +31,7 @@ menu_item_t sound_menu[] =
 #if HAS_ES5506
   { "ES5506 voice filters", NULL, &es5506_voice_filters, 2, { 0, 1 }, { "No", "Yes" } },
 #endif
+#if HAS_NEO
 { "Always stop CD music while loading", NULL, &auto_stop_cdda, 2, { 0, 1 }, { "No", "Yes" } },
   { "Sfx volume", NULL, &sfx_volume, 3, { 0, 200, 10 }, },
   { "Music volume", NULL, &music_volume, 3, { 0, 200, 10 }, },
@@ -36,8 +39,11 @@ menu_item_t sound_menu[] =
   { "Mute SFX", NULL, &mute_sfx, 2, { 0, 1 }, { "No", "Yes" } },
   { "Mute CD", NULL, &mute_music, 2, { 0, 1 }, { "No", "Yes" } },
   { "Default volumes", &set_default_volumes },
+#endif
   { "Record to raine_sound.wav", NULL, &recording, 3, { 0, 1, 2 }, { "No", "Without monitoring", "With monitoring" } },
+#if HAS_NEO
 { "Sound commands...", &do_sound_cmd },
+#endif
   { NULL },
 };
 
@@ -52,8 +58,10 @@ class TSoundDlg : public TMenu {
 	    if (sel == 1)
 		return 0;
 	}
+#if HAS_NEO
 	if (sound_menu[sel].menu_func == &do_sound_cmd)
 	    return get_assoc_type() != 0;
+#endif
       return TMenu::can_be_selected(sel);
     }
 };

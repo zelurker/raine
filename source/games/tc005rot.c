@@ -125,6 +125,7 @@ R270 Games:
 
 */
 
+struct TC0005ROT tc0005rot;
 static UINT8 *RAM_BG;
 static UINT8 *RAM_SCR;
 static UINT8 *GFX_BG;

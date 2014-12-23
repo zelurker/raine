@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include "conf-cpu.h"
+#include "conf-sound.h"
 #ifndef SDL
 #include "rgui.h" // setup mode lists...
 #include "alleg/gui/gui.h"                // Interface stuff
@@ -381,6 +382,7 @@ int main(int argc,char *argv[])
 #ifndef SDL
    strcpy(dir_cfg.language_file, raine_get_config_string( "Directories", "language_file", "english.cfg"));
 #endif
+#if HAS_NEO
    strcpy(neocd_dir,    raine_get_config_string("neocd", "neocd_dir", dir_cfg.exe_path));
    strcpy(neocd_bios_file, raine_get_config_string("neocd", "neocd_bios", ""));
    music_volume = raine_get_config_int("neocd","music_volume",DEFAULT_MUSIC_VOLUME);
@@ -392,6 +394,7 @@ int main(int argc,char *argv[])
    mute_sfx = raine_get_config_int("neocd","mute_sfx",0);
    mute_music = raine_get_config_int("neocd","mute_music",0);
    allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
+#endif
 
    for(i = 0; dir_cfg.rom_dir[i]; i ++){
      put_backslash(dir_cfg.rom_dir[i]);
@@ -610,6 +613,7 @@ int main(int argc,char *argv[])
    raine_set_config_int(	"Directories",  "long_file_names",      dir_cfg.long_file_names);
 #endif
    raine_set_config_string(	"Directories",  "ScreenShots",          dir_cfg.screen_dir);
+#if HAS_NEO
    raine_set_config_string("neocd", "neocd_dir", neocd_dir);
    raine_set_config_string("neocd", "neocd_bios", neocd_bios_file);
    raine_set_config_int("neocd","music_volume",music_volume);
@@ -619,6 +623,7 @@ int main(int argc,char *argv[])
    raine_set_config_int("neocd","mute_sfx",mute_sfx);
    raine_set_config_int("neocd","mute_music",mute_music);
    raine_set_config_int("neocd","allowed_speed_hacks",allowed_speed_hacks);
+#endif
    raine_set_config_string(	"Directories",  "emudx",          dir_cfg.emudx_dir);
    raine_set_config_string(	"Directories",  "artwork",          dir_cfg.artwork_dir);
    for(i = 0; dir_cfg.rom_dir[i]; i ++){

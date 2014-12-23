@@ -26,7 +26,7 @@ RAINE_DEBUG = 1
 # ASM_VIDEO_CORE = 1
 
 # console ?
-HAS_CONSOLE = 1
+# HAS_CONSOLE = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 USE_BEZELS=1
@@ -157,7 +157,6 @@ MD =	@mkdir
 INCDIR=                 \
     -Isource            \
     -Isource/68000      \
-    -Isource/z80        \
     -Isource/sound      \
     -Isource/games      \
     -Isource/video      \
@@ -166,6 +165,12 @@ INCDIR=                 \
     -Isource/6502       \
     -Isource/68020      \
 	-Isource/m68705
+
+ifdef CZ80
+INCDIR +=  -Isource/cz80
+else
+INCDIR +=  -Isource/z80
+endif
 
 ifeq ($(OSTYPE),cygwin)
 
@@ -420,7 +425,6 @@ OBJDIRS=$(OBJDIR)                \
     $(OBJDIR)/mame               \
     $(OBJDIR)/sound              \
     $(OBJDIR)/68000              \
-    $(OBJDIR)/z80                \
     $(OBJDIR)/video              \
     $(OBJDIR)/video/c            \
     $(OBJDIR)/video/i386         \
@@ -437,6 +441,12 @@ OBJDIRS=$(OBJDIR)                \
     $(OBJDIR)/6502               \
     $(OBJDIR)/m68705             \
 	$(OBJDIR)/neocd
+
+ifdef CZ80
+OBJDIRS += $(OBJDIR)/cz80
+else
+OBJDIRS += $(OBJDIR)/z80
+endif
 
 ifdef SDL
 OBJDIRS += \
@@ -604,8 +614,13 @@ SC000=	$(OBJDIR)/68000/s68000.o \
 
 # MZ80 core
 
+ifdef CZ80
+MZ80= $(OBJDIR)/cz80/cz80.o \
+      $(OBJDIR)/cz80/cz80help.o
+else
 MZ80=	$(OBJDIR)/z80/mz80.o \
 	$(OBJDIR)/z80/mz80help.o
+endif
 
 # network core
 
@@ -696,8 +711,14 @@ SOUND= \
     $(OBJDIR)/sound/ymdeltat.o \
     $(OBJDIR)/sound/fmopl.o    \
     $(OBJDIR)/sound/fm.o       \
-    $(OBJDIR)/sound/assoc.o    \
     $(OBJDIR)/sound/emulator.o
+
+ASSOC = $(OBJDIR)/sound/assoc.o \
+	$(OBJDIR)/sdl/dialogs/sound_commands.o \
+	$(OBJDIR)/sdl/dialogs/neocd_options.o \
+	$(OBJDIR)/sdl/dialogs/neo_softdips.o \
+	$(OBJDIR)/sdl/dialogs/neo_debug_dips.o \
+	$(OBJDIR)/sdl/dialogs/translator.o
 
 2151 = 	$(OBJDIR)/sound/ym2151.o \
 	$(OBJDIR)/sound/2151intf.o
@@ -773,7 +794,6 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/fsel.o \
 	$(OBJDIR)/sdl/dialogs/video_options.o \
 	$(OBJDIR)/sdl/dialogs/sound_options.o \
-	$(OBJDIR)/sdl/dialogs/sound_commands.o \
 	$(OBJDIR)/sdl/dialogs/gui_options.o \
 	$(OBJDIR)/sdl/dialogs/dirs.o \
 	$(OBJDIR)/sdl/dialogs/about.o \
@@ -793,11 +813,7 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(CONSOLE) \
 	$(OBJDIR)/sdl/dialogs/game_selection.o \
 	$(OBJDIR)/sdl/dialogs/romdirs.o \
-	$(OBJDIR)/sdl/dialogs/dlg_dsw.o \
-	$(OBJDIR)/sdl/dialogs/neocd_options.o \
-	$(OBJDIR)/sdl/dialogs/neo_softdips.o \
-	$(OBJDIR)/sdl/dialogs/neo_debug_dips.o \
-	$(OBJDIR)/sdl/dialogs/translator.o
+	$(OBJDIR)/sdl/dialogs/dlg_dsw.o
 
 else
 GUI=	$(OBJDIR)/alleg/gui/gui.o \
@@ -912,8 +928,7 @@ OBJS +=	 \
 	$(GUI) \
 	$(GAMES) \
 	$(SYSDRV) \
-	$(DEBUG) \
-	$(NEOCD)
+	$(DEBUG)
 
 ifdef SDL
 OBJS +=	$(OBJDIR)/sdl/blit.o \
@@ -1200,6 +1215,7 @@ $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
 endif
 	$(OBJDIR)/68000/star.exe -hog $@
 
+ifndef CZ80
 # generate mz80.asm
 
 $(OBJDIR)/z80/mz80.o: $(OBJDIR)/z80/mz80.asm
@@ -1226,6 +1242,8 @@ else
 	$(OBJDIR)/z80/makez80.exe -l -s -cs -x86 $@
 endif
 endif
+
+endif # ifndef CZ80
 
 # generate m6502.asm
 
@@ -1290,9 +1308,11 @@ $(OBJDIR)/68000/star.o: source/68000/star.c
 	@echo Compiling StarScream...
 	$(CCV) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
 
+ifndef CZ80
 $(OBJDIR)/z80/makez80.o: source/z80/makez80.c
 	@echo Compiling mz80...
 	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
+endif
 
 $(OBJDIR)/6502/make6502.o: source/6502/make6502.c
 	@echo Compiling make6502...

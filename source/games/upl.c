@@ -562,17 +562,6 @@ static void UPLBankWrite(UINT16 offset, UINT8 data)
 static void init_bank_rom(UINT8 *src, UINT8 *dst)
 {
   z80_init_banks_area_ofs(1,src,0x40000,0x8000,0x4000,2);
-/*    int ta; */
-
-/*    for(ta=0;ta<0x10;ta++){ */
-/*       ROM_BANK[ta]=NULL; */
-/*    } */
-
-/*    for(ta=0;ta<Z80BankCount;ta++){ */
-/*       ROM_BANK[ta] = dst+(ta*0xC000); */
-/*       memcpy(ROM_BANK[ta]+0x0000,src+0x0000,0x8000); */
-/*       memcpy(ROM_BANK[ta]+0x8000,src+((ta+bank_skip)*0x4000),0x4000); */
-/*    } */
 }
 
 /******************************************************************************/
