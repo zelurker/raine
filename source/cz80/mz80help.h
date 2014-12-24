@@ -72,6 +72,8 @@ int mz80GetCyclesRemaining();
 
 void reset_z80_banks();
 
+extern int latch;
+
 #ifdef __cplusplus
 }
 #endif

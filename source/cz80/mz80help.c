@@ -6,6 +6,7 @@
 #include <SDL_endian.h>
 
 static UINT8 *z80_data[MAX_Z80];
+int latch;
 
 cz80_struc	Z80_context[MAX_Z80];
 struct MemoryReadByte	Z80_memory_rb[MAX_Z80][MAX_Z80_DATA];

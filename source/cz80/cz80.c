@@ -184,8 +184,7 @@ uint8_t FASTCALL Cz80_Interrupt_Ack_Dummy(uint32_t ctx, uint8_t param)
     (void)ctx;
     (void)param;
 
-    // return vector
-    return -1;
+    return param;
 }
 
 void FASTCALL Cz80_RetI_Dummy(uint32_t ctx)
