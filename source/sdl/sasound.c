@@ -54,10 +54,12 @@
 #include "SDL.h"
 #include "SDL_audio.h"
 #include "dxsmp.h"
+#ifdef HAS_NEO
 #include <SDL_sound.h>
 #include "neocd/neocd.h"
 #include "neocd/cdda.h"
 #include "neocd/cdrom.h"
+#endif
 #include "control.h"
 #include "control_internal.h"
 #include "assoc.h" // just for use_music
@@ -286,7 +288,6 @@ void saDestroyChannel( int chan )
 
 static int callback_busy;
 
-static Sound_Sample *sample;
 static FILE *fbin;
 
 typedef struct
@@ -298,6 +299,8 @@ typedef struct
 static volatile playsound_global_state global_state;
 
 #if HAS_NEO
+static Sound_Sample *sample;
+
 static int done_flag = 0,skip_silence;
 
 static int read_more_data(Sound_Sample *sample)
@@ -436,11 +439,11 @@ static void close_sample() {
     Sound_FreeSample(sample);
     printf("free sample\n");
   }
+  sample = NULL;
 #endif
   // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
   global_state.decoded_bytes = 0;
   global_state.decoded_ptr = NULL;
-  sample = NULL;
   if (fbin) {
     fclose(fbin);
     printf("fbin kaput\n");

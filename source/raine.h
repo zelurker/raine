@@ -46,7 +46,9 @@ extern "C" {
 
 #define BGAMES			// Beta/Unreleased games included
 
+#ifndef NO_ASM
 #define RDTSC_PROFILE		// Rdtsc profiling included
+#endif
 
 #ifndef SDL
 #define TRIPLE_BUFFER		// Triple buffer support included
@@ -111,7 +113,7 @@ x86 memory access
 
 static DEF_INLINE UINT32 m680x0_get_word(UINT16 *a)
 {
-#if 0 // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
+#ifdef NO_ASM
    return (((UINT8 *) a)[0] << 8) | (((UINT8 *) a)[1] << 0);
 #else
    UINT32 retval;
@@ -137,7 +139,7 @@ static DEF_INLINE UINT32 m680x0_get_long(UINT32 *a)
 
 static DEF_INLINE void m680x0_put_word(UINT16 *a, UINT32 v)
 {
-#if 0 // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
+#ifdef NO_ASM // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
    ((UINT8 *) a)[0] = (v >> 8) & 0xFF;
    ((UINT8 *) a)[1] = (v >> 0) & 0xFF;
 #else
@@ -147,7 +149,7 @@ static DEF_INLINE void m680x0_put_word(UINT16 *a, UINT32 v)
 }
 static DEF_INLINE void m680x0_put_long(UINT32 *a, UINT32 v)
 {
-#if 0 // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
+#ifdef NO_ASM // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
    ((UINT8 *) a)[0] = (v >>24) & 0xFF;
    ((UINT8 *) a)[1] = (v >>16) & 0xFF;
    ((UINT8 *) a)[2] = (v >> 8) & 0xFF;

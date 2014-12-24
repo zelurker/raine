@@ -22,8 +22,13 @@ RAINE_DEBUG = 1
 # Be verbose ?
 # VERBOSE = 1
 
+# Disable all asm, if you do that you'd better remove the cpu cores which
+# currently exist only in asm. This will also disable the asm_video_core of
+# course
+NO_ASM = 1
+
 # Use asm video core ? (comment to use C core)
-# ASM_VIDEO_CORE = 1
+ASM_VIDEO_CORE = 1
 
 # console ?
 # HAS_CONSOLE = 1
@@ -35,6 +40,10 @@ USE_BEZELS=1
 CZ80 = 1
 
 # end of user options, after this line the real thing starts...
+
+ifdef NO_ASM
+ASM_VIDEO_CORE =
+endif
 
 # Try to detect mingw... If you want to build the dos and the mingw
 # version on the same system you should unset djdir before making
@@ -554,6 +563,11 @@ CFLAGS += -DHAS_CONSOLE
 CFLAGS_MCU += -DHAS_CONSOLE
 endif
 
+ifdef NO_ASM
+CFLAGS += -DNO_ASM
+CFLAGS_MCU += -DNO_ASM
+endif
+
 ifdef CZ80
 CFLAGS += -DHAS_CZ80
 CFLAGS_MCU += -DHAS_CZ80
@@ -656,7 +670,6 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/res.o \
 	$(OBJDIR)/video/scale2x.o \
 	$(OBJDIR)/video/scale3x.o \
-	$(OBJDIR)/video/i386/move.o \
 	$(VIDEO_CORE)/str/6x8_8.o \
 	$(VIDEO_CORE)/str/6x8_16.o \
 	$(VIDEO_CORE)/str/6x8_32.o \
@@ -675,13 +688,17 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/zoom/16x8.o \
 	$(OBJDIR)/video/c/lscroll.o \
 	$(OBJDIR)/video/alpha.o \
-	$(OBJDIR)/video/hq2x16.o \
-	$(OBJDIR)/video/hq2x32.o \
-	$(OBJDIR)/video/hq3x16.o \
-	$(OBJDIR)/video/hq3x32.o \
 	$(OBJDIR)/video/c/str_opaque.o \
 	$(OBJDIR)/video/c/common.o \
 	$(OBJDIR)/video/c/pdraw.o
+
+ifndef NO_ASM
+VIDEO += \
+	$(OBJDIR)/video/hq2x16.o \
+	$(OBJDIR)/video/hq2x32.o \
+	$(OBJDIR)/video/hq3x16.o \
+	$(OBJDIR)/video/hq3x32.o
+endif
 
 ifdef ASM_VIDEO_CORE
     VIDEO += \
@@ -700,6 +717,7 @@ ifdef ASM_VIDEO_CORE
 	$(OBJDIR)/video/i386/newspr2/8.o \
 	$(OBJDIR)/video/i386/newspr2/16.o \
 	$(OBJDIR)/video/i386/newspr2/32.o \
+	$(OBJDIR)/video/i386/move.o \
 
 else
     VIDEO += $(VIDEO_CORE)/sprites.o
@@ -944,11 +962,14 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/winpos.o \
 	$(OBJDIR)/sdl/compat.o \
 	$(OBJDIR)/sdl/control.o \
-	$(OBJDIR)/sdl/gen_conv.o \
 	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/math/matrix.o \
 	$(OBJDIR)/sdl/glsl.o \
 	$(OBJDIR)/sdl/profile.o
+
+ifndef NO_ASM
+OBJS +=  $(OBJDIR)/sdl/gen_conv.o
+endif
 
 else
 OBJS +=	$(OBJDIR)/alleg/blit.o \

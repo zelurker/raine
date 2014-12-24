@@ -3,6 +3,7 @@
 #include "raine.h"
 #include "debug.h"
 #include "savegame.h"
+#include <SDL_endian.h>
 
 static UINT8 *z80_data[MAX_Z80];
 
@@ -61,10 +62,19 @@ static UINT16 my_z80_readw(UINT32 ctx,UINT16 adr) {
 	if (Z80_memory_rb[ctx][n].lowAddr <= adr &&
 		adr <= Z80_memory_rb[ctx][n].highAddr) {
 	    if (Z80_memory_rb[ctx][n].memoryCall)
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		return ((Z80_memory_rb[ctx][n].memoryCall)(adr) << 8)|
+		    (Z80_memory_rb[ctx][n].memoryCall)(adr+1);
+#else
 		return (Z80_memory_rb[ctx][n].memoryCall)(adr) |
 		((Z80_memory_rb[ctx][n].memoryCall)(adr+1) << 8);
+#endif
 	    else
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		return ReadWord68k(&Z80_memory_rb[ctx][n].pUserArea[adr]);
+#else
 		return ReadWord(&Z80_memory_rb[ctx][n].pUserArea[adr]);
+#endif
 	}
     }
     print_debug("Z80BadReadWord(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
@@ -77,10 +87,19 @@ static void my_z80_writew(UINT32 ctx,UINT16 adr,UINT16 data) {
 	if (Z80_memory_wb[ctx][n].lowAddr <= adr &&
 		adr <= Z80_memory_wb[ctx][n].highAddr) {
 	    if (Z80_memory_wb[ctx][n].memoryCall) {
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		(Z80_memory_wb[ctx][n].memoryCall)(adr+1,data & 0xff);
+		(Z80_memory_wb[ctx][n].memoryCall)(adr,data >> 8);
+#else
 		(Z80_memory_wb[ctx][n].memoryCall)(adr,data & 0xff);
 		(Z80_memory_wb[ctx][n].memoryCall)(adr+1,data >> 8);
+#endif
 	    } else
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		WriteWord68k(&Z80_memory_wb[ctx][n].pUserArea[adr], data);
+#else
 		WriteWord(&Z80_memory_wb[ctx][n].pUserArea[adr], data);
+#endif
 	    return;
 	}
     }

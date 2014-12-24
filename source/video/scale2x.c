@@ -715,6 +715,7 @@ static inline void scale2x_8_mmx_border(scale2x_uint8* dst, const scale2x_uint8*
 	/* always do the first and last run */
 	count -= 2*8;
 
+#ifndef NO_ASM
 	__asm__ __volatile__(
 /* first run */
 		/* set the current, current_pre, current_next registers */
@@ -911,6 +912,7 @@ static inline void scale2x_8_mmx_border(scale2x_uint8* dst, const scale2x_uint8*
 		:
 		: "cc"
 	);
+#endif
 }
 
 static inline void scale2x_16_mmx_border(scale2x_uint16* dst, const scale2x_uint16* src0, const scale2x_uint16* src1, const scale2x_uint16* src2, unsigned count)
@@ -921,6 +923,7 @@ static inline void scale2x_16_mmx_border(scale2x_uint16* dst, const scale2x_uint
 	/* always do the first and last run */
 	count -= 2*4;
 
+#ifndef NO_ASM
 	__asm__ __volatile__(
 /* first run */
 		/* set the current, current_pre, current_next registers */
@@ -1117,6 +1120,7 @@ static inline void scale2x_16_mmx_border(scale2x_uint16* dst, const scale2x_uint
 		:
 		: "cc"
 	);
+#endif
 }
 
 static inline void scale2x_32_mmx_border(scale2x_uint32* dst, const scale2x_uint32* src0, const scale2x_uint32* src1, const scale2x_uint32* src2, unsigned count)
@@ -1127,6 +1131,7 @@ static inline void scale2x_32_mmx_border(scale2x_uint32* dst, const scale2x_uint
 	/* always do the first and last run */
 	count -= 2*2;
 
+#ifndef NO_ASM
 	__asm__ __volatile__(
 /* first run */
 		/* set the current, current_pre, current_next registers */
@@ -1323,6 +1328,7 @@ static inline void scale2x_32_mmx_border(scale2x_uint32* dst, const scale2x_uint
 		:
 		: "cc"
 	);
+#endif
 }
 
 /**

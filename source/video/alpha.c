@@ -28,6 +28,7 @@ void init_alpha(UINT32 my_alpha) {
   alpha = my_alpha;
   dalpha = 256-alpha;
 
+#ifndef NO_ASM
   asm(
 #ifdef RAINE_UNIX
       "movd alpha,%mm2    \n" // Copy ALPHA into %mm2
@@ -62,6 +63,7 @@ void init_alpha(UINT32 my_alpha) {
 #endif
       "finit \n"
       );
+#endif
 }
 
 void blend_16(UINT16 *dest, UINT16 src) {

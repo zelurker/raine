@@ -14,6 +14,7 @@
 #define _CZ80_H_
 
 #include <stdint.h>
+#include <SDL_endian.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,6 +41,9 @@ extern "C" {
 
 #define CZ80_FETCH_SFT          (16 - CZ80_FETCH_BITS)
 #define CZ80_FETCH_BANK         (1 << CZ80_FETCH_BITS)
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#define WORDS_BIGENDIAN
+#endif
 
 #ifdef WORDS_BIGENDIAN
 #define CZ80_LITTLE_ENDIAN 0

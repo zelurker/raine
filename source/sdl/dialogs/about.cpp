@@ -11,7 +11,9 @@
 #include "gui/tfont.h"
 #include "control.h"
 #include "sdl/control_internal.h"
+#if HAS_NEO
 #include <SDL_sound.h>
+#endif
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "games.h"
 
@@ -787,7 +789,10 @@ int do_about(int sel) {
     about_menu = new TAbout_menu("About...",about_items, path);
     sprintf(about_cpu, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
-    char about_sdl[80],about_sound[80];
+    char about_sdl[80];
+#if HAS_NEO
+    char about_sound[80];
+#endif
     const SDL_version *version = SDL_Linked_Version();
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();

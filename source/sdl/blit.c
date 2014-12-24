@@ -512,6 +512,7 @@ static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int 
 			  (UINT16) w						\
 			  );
 
+#ifndef NO_ASM
 #ifdef RAINE_DOS
    es = dest->seg;
    asm(" mov %es,_oldes\n mov _es,%es");
@@ -529,6 +530,7 @@ static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int 
      }
      __asm__ __volatile__("finit\n"); // restore fpu status after mmx code
    } else {
+#endif
      switch (display_cfg.bpp) {
      case 8:
        SCALE2X(8,def); break;
@@ -538,9 +540,11 @@ static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int 
      case 32:
        SCALE2X(32,def); break;
      }
+#ifndef NO_ASM
    }
 #ifdef RAINE_DOS
    asm("mov _oldes,%es");
+#endif
 #endif
 }
 
@@ -696,6 +700,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
     // convert source to yuy2 format in the overlay
     unsigned char *src,*dest;
     SDL_LockYUVOverlay(sdl_overlay);
+#ifndef NO_ASM
     if (sdl_overlay->format == SDL_YUY2_OVERLAY) {
       src = GameBitmap->line[GameScreen.ytop]+x1*2;
       dest = sdl_overlay->pixels[0]; // +y*sdl_overlay->pitches[0];
@@ -714,6 +719,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 	    sdl_overlay->pixels[1], // +(y/2)*sdl_overlay->pitches[1],
 	    src, w, sdl_overlay->h, sdl_overlay->pitches[0], sdl_overlay->pitches[1], sdl_game_bitmap->pitch);
     }
+#endif
     SDL_UnlockYUVOverlay(sdl_overlay);
 
     SDL_DisplayYUVOverlay(sdl_overlay,&area_overlay);
@@ -738,6 +744,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 
     if (display_cfg.stretch && use_scale2x) {
       // use_scale2x gives the factor : 1 = 2x, 2 = 3x, etc...
+#ifndef NO_ASM
       switch(display_cfg.stretch) {
 	case 1: // scale2x/3x
 	  locked = lock_surface(sdl_screen);
@@ -779,6 +786,7 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 	  }
 	  break;
       }
+#endif
     } else {
       area1.x = x1;
       area1.y = y1;

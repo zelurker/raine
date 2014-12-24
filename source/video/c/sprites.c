@@ -28,6 +28,7 @@ void init_spr16x16asm_mask(BITMAP *my_bitmap)
 void init_newspr2asm() {}
 void init_newspr2asm_16() {}
 void init_newspr2asm_32() {}
+void init_moveasm() {}
 
 // These args macro to keep the lines of the render macro short, they fit
 // in 80 columns this way which is nicer to read, and it's always the same
@@ -634,3 +635,39 @@ void Draw16x16_Mask_Trans_FlipXY(ARG_DIR)
       }
    }
 }
+
+// The move functions, they just move sprites pre-rendered in a cache to the
+// screen, so cmap is not used and there is no rotation, the 4 functions are
+// the same then...
+
+#undef RENDER
+#define RENDER(bpp) \
+void Move8x8_##bpp(UINT8 *SPR, int x, int y, UINT8 *map) {\
+   UINT##bpp *line;\
+   int xx,yy;\
+\
+   for(yy=0; yy<8; yy++){\
+      line = ((UINT##bpp *)GameBitmap->line[y+yy]) + x;\
+      for(xx=0; xx<8; xx+=4*8/bpp, SPR+=4){\
+	  WriteLong(&line[xx],ReadLong(SPR));\
+      }\
+   }\
+}\
+\
+void Move8x8_##bpp##_FlipX(UINT8 *SPR, int x, int y, UINT8 *map) {\
+    Move8x8_##bpp(SPR,x,y,map);\
+}\
+\
+void Move8x8_##bpp##_FlipY(UINT8 *SPR, int x, int y, UINT8 *map) {\
+    Move8x8_##bpp(SPR,x,y,map);\
+}\
+\
+void Move8x8_##bpp##_FlipXY(UINT8 *SPR, int x, int y, UINT8 *map) {\
+    Move8x8_##bpp(SPR,x,y,map);\
+}
+
+RENDER(8);
+RENDER(16);
+RENDER(32);
+
+

@@ -18,6 +18,7 @@ UINT32 raine_cpu_capabilities;
 /*
  * Generic CPUID function
  */
+#ifndef NO_ASM
 static inline void cpuid(int op, unsigned int *eax, unsigned int *ebx, unsigned int *ecx, unsigned int *edx)
 {
         __asm__("pushl %%ebx \n\t" /* saves ebx */
@@ -103,9 +104,11 @@ static int get_model_name(char *modelname)
 
 	return 1;
 }
+#endif
 
 void get_cpu_name(char *my_model) {
   raine_cpu_capabilities = 0;
+#ifndef NO_ASM
   if (have_cpuid_p()) {
     UINT32 cpu_family,cpuid_level,tfms,cpu_model,junk;
     int cpu_vendor = -1,i;
@@ -155,4 +158,5 @@ void get_cpu_name(char *my_model) {
 	sprintf(my_model,"%s family %d model %d",vendor_id,cpu_family,cpu_model);
     }
   }
+#endif
 }

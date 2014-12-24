@@ -20,7 +20,7 @@ extern int imm8_table[];
 extern int movem_index1[256];
 extern int movem_index2[256];
 extern int movem_next[256];
-#if defined(RAINE_DOS) || defined(RAINE_UNIX)
+#if (defined(RAINE_DOS) || defined(RAINE_UNIX)) && !defined(NO_ASM)
 typedef void cpuop_func(uae_u32) __attribute__ ((regparm (1)));
 #else
 typedef void cpuop_func(uae_u32);

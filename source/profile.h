@@ -28,9 +28,9 @@ extern UINT32 cycles_per_second; // cpu cycles per second
 
 void start_ingame_timer(void);
 void stop_ingame_timer(void);
+double timer_get_time();
 #ifdef RDTSC_PROFILE
 
-double timer_get_time();
 
 extern UINT32 cycles_per_frame;			// cpu cycles per frame, or 0 if not computed
 
