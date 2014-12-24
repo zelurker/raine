@@ -65,10 +65,15 @@ endif
 ifndef CXX
 	CXX=g++
 endif
+	# no need to make a 32 bit binary if disabling asm completely !
 ifeq ("$(shell sysctl hw.optional.x86_64)","hw.optional.x86_64: 1")
+ifndef NO_ASM
   CC +=  -m32
   CXX +=  -m32
   LD=$(CXX) -m32
+else
+    LD=$(CXX)
+endif
 endif
 
 endif
@@ -85,9 +90,13 @@ ifeq ("$(shell uname -m)","x86_64")
   # libstdc++.so.6, and make sure that the 32 bit version of all the libraries
   # are installed in 32 bit (which might be a little tricky at first).
  ifndef CROSSCOMPILE
+ifndef NO_ASM
   CC=gcc -m32
   CXX=g++ -m32
   LD=g++ -m32 -L /usr/lib32
+else
+  LD=g++
+endif
  else
 	ifeq ("$(LD)","ld")
 	LD = g++
