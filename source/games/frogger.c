@@ -273,7 +273,7 @@ static UINT8 frogger_portB_r(UINT32 offset)
 
 	int current_totalcycles;
 
-	current_totalcycles = dwElapsedTicks;
+	current_totalcycles = mz80GetCyclesDone();
 	clock = (clock + (current_totalcycles-last_totalcycles)) % 5120;
 
 	last_totalcycles = current_totalcycles;

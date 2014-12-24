@@ -23,9 +23,13 @@ extern int Z80Has16bitsPorts;
 extern int z80_offdata; // for kabuki encryption, not supported yet
 
 void AddZ80AInit(void);
+void AddZ80BInit(void);
 void AddZ80AROMBase(UINT8 *d0, UINT16 d1, UINT16 d2);
+void AddZ80BROMBase(UINT8 *d0, UINT16 d1, UINT16 d2);
 void AddZ80AReadByte( UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void AddZ80AWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void AddZ80BReadByte( UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
+void AddZ80BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 #define AddZ80ARead AddZ80AReadByte
 #define AddZ80AWrite AddZ80AWriteByte
 #define AddZ80BRead AddZ80BReadByte
@@ -42,6 +46,8 @@ void z80_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
 UINT8 *z80_get_userdata(UINT32 cpu, UINT32 adr);
 void AddZ80AReadPort( UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
 void AddZ80AWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
+void AddZ80BReadPort( UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
+void AddZ80BWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
 
 UINT16 DefBadReadZ80(UINT16 offset);
 void DefBadWriteZ80(UINT16 offset, UINT8 data);
@@ -73,6 +79,10 @@ int mz80GetCyclesRemaining();
 void reset_z80_banks();
 
 extern int latch;
+
+UINT8 soundlatch_lo_r(UINT32 offset);
+
+void StopZ80Mode2(UINT16 address, UINT8 data);
 
 #ifdef __cplusplus
 }

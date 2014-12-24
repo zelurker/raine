@@ -6,7 +6,6 @@
 #include <SDL_endian.h>
 
 static UINT8 *z80_data[MAX_Z80];
-int latch;
 
 cz80_struc	Z80_context[MAX_Z80];
 struct MemoryReadByte	Z80_memory_rb[MAX_Z80][MAX_Z80_DATA];
@@ -26,6 +25,12 @@ static UINT32 port_count_wb[MAX_Z80];
 
 UINT8 *Z80RAM;
 
+int latch;
+
+UINT8 soundlatch_lo_r(UINT32 offset) {
+  return latch & 0xff;
+}
+
 static UINT8 my_z80_readb(UINT32 ctx,UINT16 adr) {
     int n;
     for (n=0; n<memory_count_rb[ctx]; n++) {
@@ -37,7 +42,7 @@ static UINT8 my_z80_readb(UINT32 ctx,UINT16 adr) {
 		return Z80_memory_rb[ctx][n].pUserArea[adr];
 	}
     }
-    print_debug("Z80BadRead(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
+    print_debug("my_Z80BadRead(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
     return(0xFF);
 }
 
@@ -119,7 +124,7 @@ static UINT8 my_z80_port_rb(UINT32 ctx,UINT16 adr) {
 		return Z80_port_rb[ctx][n].pUserArea[adr];
 	}
     }
-    print_debug("Z80BadPortRead(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
+    print_debug("my_Z80BadPortRead(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
     return(0xFF);
 }
 
@@ -152,22 +157,47 @@ static void Z80A_load_update() {
     z80_load_update(0);
 }
 
+static void Z80B_load_update() {
+    z80_load_update(1);
+}
+
+#define SAVE_CZ80_0            ASCII_ID('C','Z','8',0x00)
+#define SAVE_CZ80_1            ASCII_ID('C','Z','8',0x01)
+
 void AddZ80AInit(void)
 {
     Cz80_Set_Ctx(&Z80_context[0],0);
     Z80A_load_update();
 
    AddLoadCallback(Z80A_load_update);
-   AddSaveData(SAVE_Z80_0, (UINT8 *) &Z80_context[0], sizeof(Z80_context[0]));
+   AddSaveData(SAVE_CZ80_0, (UINT8 *) &Z80_context[0], sizeof(Z80_context[0]));
 
-   MZ80Engine=1;
+   if (MZ80Engine < 1) MZ80Engine=1;
+}
+
+void AddZ80BInit(void)
+{
+    Cz80_Set_Ctx(&Z80_context[1],1);
+    Z80B_load_update();
+
+   AddLoadCallback(Z80B_load_update);
+   AddSaveData(SAVE_CZ80_1, (UINT8 *) &Z80_context[1], sizeof(Z80_context[1]));
+
+   if (MZ80Engine < 2) MZ80Engine=2;
 }
 
 void AddZ80AROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 {
     Cz80_Init(&Z80_context[0]);
-    Cz80_Set_Fetch(&Z80_context[0], 0x0000, 0xfFFF, (UINT32*) d0);
+    // Cz80_Set_Fetch(&Z80_context[0], 0x0000, 0xfFFF, (UINT32*) d0);
     z80_data[0] = d0;
+}
+
+void AddZ80BROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
+{
+    Cz80_Init(&Z80_context[1]);
+    // Cz80_Set_Fetch(&Z80_context[0], 0x0000, 0xfFFF, (UINT32*) d0);
+    z80_data[1] = d0;
 }
 
 static void add_mz80_memory_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -281,6 +311,26 @@ void AddZ80AWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
    add_mz80_port_region_wb(0, d0, d1, d2, d3);
 }
 
+void AddZ80BReadPort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
+{
+   add_mz80_port_region_rb(1, d0, d1, d2, d3);
+}
+
+void AddZ80BWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
+{
+   add_mz80_port_region_wb(1, d0, d1, d2, d3);
+}
+
+void AddZ80BReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+{
+   add_mz80_memory_region_rb(1, d0, d1, d2, d3);
+}
+
+void AddZ80BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+{
+   add_mz80_memory_region_wb(1, d0, d1, d2, d3);
+}
+
 static UINT16 StopAddress;
 static UINT16 StopAddressB;
 static UINT16 StopAddressC;
@@ -379,7 +429,6 @@ void mz80GetContext(cz80_struc *c) {
 void mz80SetContext(cz80_struc *c) {
     int current_z80 = c-&Z80_context[0];
     curz = &Z80_context[current_z80];
-    printf("mz80SetContext: current %d\n",current_z80);
 }
 
 void mz80reset(void) {
@@ -433,5 +482,13 @@ int mz80GetCyclesRemaining() {
 }
 
 void reset_z80_banks() {
+}
+
+void StopZ80Mode2(UINT16 address, UINT8 data)
+{
+   print_debug("[StopZ80]\n");
+   if (StopAddress)
+     Cz80_Set_PC(&Z80_context[1],StopAddress);
+   Cz80_Release_Cycle(&Z80_context[1]);
 }
 

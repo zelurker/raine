@@ -25,7 +25,7 @@ RAINE_DEBUG = 1
 # Disable all asm, if you do that you'd better remove the cpu cores which
 # currently exist only in asm. This will also disable the asm_video_core of
 # course
-NO_ASM = 1
+# NO_ASM = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
