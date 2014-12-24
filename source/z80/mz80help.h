@@ -164,6 +164,12 @@ int add_z80_debug_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2);
 void remove_z80_debug_rb(UINT32 cpu, int index);
 void add_z80_port_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2);
 void remove_z80_port_wb(UINT32 cpu, int index);
+UINT32 mz80GetPC();
+UINT8* mz80GetBase(int cpu);
+void mz80ReleaseIRQ(int cpu);
+void mz80ClearTimers();
+UINT32 mz80GetCyclesDone();
+int mz80GetCyclesRemaining();
 
 #endif
 

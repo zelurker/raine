@@ -90,13 +90,6 @@ struct z80PortRead
 	void *pUserArea;
 };
 
-struct z80TrapRec
-{
-  	UINT16 trapAddr;
-	UINT8  skipCnt;
-	UINT8  origIns;
-};
-
 struct mz80context
 {
 	UINT8 *z80Base;

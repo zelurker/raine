@@ -31,6 +31,9 @@ RAINE_DEBUG = 1
 # compile bezels (artwork) support ? (ignored if building neocd)
 USE_BEZELS=1
 
+# use cz80 instead of the usual heavily modyfied asm-only mz80 ?
+CZ80 = 1
+
 # end of user options, after this line the real thing starts...
 
 # Try to detect mingw... If you want to build the dos and the mingw
@@ -551,6 +554,11 @@ CFLAGS += -DHAS_CONSOLE
 CFLAGS_MCU += -DHAS_CONSOLE
 endif
 
+ifdef CZ80
+CFLAGS += -DHAS_CZ80
+CFLAGS_MCU += -DHAS_CZ80
+endif
+
 ifdef USE_BEZELS
 CFLAGS += -DUSE_BEZELS=1
 CFLAGS_MCU += -DUSE_BEZELS=1
@@ -616,7 +624,7 @@ SC000=	$(OBJDIR)/68000/s68000.o \
 
 ifdef CZ80
 MZ80= $(OBJDIR)/cz80/cz80.o \
-      $(OBJDIR)/cz80/cz80help.o
+      $(OBJDIR)/cz80/mz80help.o
 else
 MZ80=	$(OBJDIR)/z80/mz80.o \
 	$(OBJDIR)/z80/mz80help.o

@@ -68,17 +68,14 @@ void update_timers() {
 void z80_irq_handler(int irq) {
   // printf("z80_irq_handler %d\n",irq);
   if (irq) {
-    if (z80intPending) {
-      printf("trop d'ints !!!\n");
-    }
     cpu_interrupt(audio_cpu, 0x38);
   }
 #if 1
-  else if (z80intPending) {
+  else  {
     // When irq=0, normally the irq line goes low.
     // It seems usefull at least for rainbow Island. I should investigate
     // a little more about it one day...
-    z80intPending = 0;
+    mz80ReleaseIRQ(audio_cpu & 0xf);
   }
 #endif
 }
@@ -94,7 +91,7 @@ extern UINT32 pc_timer;
 void reset_timers() {
   free_timer = 0;
   timer_id = 1;
-  dwElapsedTicks = 0;
+  mz80ClearTimers();
   render_frame_count = pc_timer = cpu_frame_count = 0;
   reset_ingame_timer();
 }
@@ -104,7 +101,7 @@ double emu_get_time() {
   // the problem is we guess the running cpu and actually we can only handle the z80
   // if there is no z80 running, we return the time on the real computer, using rdtsc
   if (MZ80Engine) {
-    double time =  (double)dwElapsedTicks/(z80_frame*60);
+    double time =  (double)mz80GetCyclesDone()/(z80_frame*fps);
     return time;
   }
   return timer_get_time();
@@ -116,7 +113,7 @@ double pos_in_frame() {
   // Returns the position in the current frame in % (0 - 1)
   /* This code is unprecise since it should verify which cpu is accessing the
      audio ! (it's supposed to be called only by the audio emulation */
-  double pos = 1.0-(cyclesRemaining*1.0)/CPU_FRAME_MHz(8,60);
+  double pos = 1.0-(mz80GetCyclesRemaining()*1.0)/z80_frame;
   // printf("cycles : %d/%d pos %g\n",cyclesRemaining,z80_frame,pos);
   return pos;
 }
@@ -127,7 +124,7 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
 {
   UINT32 remaining = duration * fps * z80_frame;
   UINT32 cycles_period = period * fps * z80_frame;
-  UINT32 elapsed = dwElapsedTicks;
+  UINT32 elapsed = mz80GetCyclesDone();
 
   called_adjust = 1;
   if (free_timer < MAX_TIMERS) {
@@ -175,7 +172,7 @@ void timer_remove(void *the_timer) {
 }
 
 void triger_timers() {
-  UINT32 elapsed = dwElapsedTicks;
+  UINT32 elapsed = mz80GetCyclesDone();
   int n;
 #if VERBOSE
   int count=0;
@@ -198,10 +195,11 @@ void triger_timers() {
       printf("timer %d elapsed %d diff %d\n",n,elapsed,elapsed - timer[n].cycles);
       count++;
 #endif
-#if 1
+#ifndef HAS_CZ80
       // if here, not while. silentd messes its timers at start and recovers
       // after that, if there is a while here, it's an infinite loop
       // (the logic of the driver might be wrong, but it works this way anyway)
+      // Only for mz80, to be tested in cz80 !
       if (!_z80iff) {
 	// Sometimes 2 timers trigger too close to each other and the z80
 	// needs time to handle the interrupt.
@@ -242,7 +240,7 @@ void triger_timers() {
   if (elapsed > MAX_CYCLES) { // time to reset the cpu...
     for (n=0; n<free_timer; n++)
       timer[n].cycles -= MAX_CYCLES;
-    dwElapsedTicks -= MAX_CYCLES;
+    Z80_context[audio_cpu & 0xf].dwElapsedTicks -= MAX_CYCLES;
   }
 #if VERBOSE
   if (count > 1)
@@ -255,7 +253,7 @@ INT32 get_min_cycles(UINT32 frame) {
   UINT32 elapsed;
   INT32 min_cycles;
 
-  elapsed = dwElapsedTicks;
+  elapsed = mz80GetCyclesDone();
   if (free_timer > 0) {
     min_cycles = timer[0].cycles;
     for (n=1; n<free_timer; n++)
@@ -289,11 +287,11 @@ int execute_one_z80_audio_frame(UINT32 frame) {
       return 0;
 #endif
   if (RaineSoundCard) {
-    UINT32 elapsed = dwElapsedTicks;
+    UINT32 elapsed = mz80GetCyclesDone();
     INT32 min_cycles = get_min_cycles(frame);
 
     cpu_execute_cycles(audio_cpu, min_cycles );        // Sound Z80
-    frame = (dwElapsedTicks - elapsed); // min_cycles;
+    frame = (mz80GetCyclesDone() - elapsed); // min_cycles;
 #if VERBOSE
     if (abs(frame - min_cycles) > 16)
       printf("diff %d (pc %x)\n",dwElapsedTicks - elapsed - min_cycles,z80pc);
@@ -309,7 +307,7 @@ void finish_speed_hack(INT32 diff) {
   INT32 min;
   while (diff > 0) {
     min = get_min_cycles(diff);
-    dwElapsedTicks += min;
+    Z80_context[audio_cpu & 0xf].dwElapsedTicks += min;
     triger_timers();
     diff -= min;
   }

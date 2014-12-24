@@ -683,9 +683,6 @@
   DRV(rayforcj)
   DRV(rayforce)
 
-// heavyunt.c
-  DRV(heavyunt)
-
 // hitice.c
   DRV(hitice)
 

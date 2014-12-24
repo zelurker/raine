@@ -60,7 +60,9 @@ void LoadDefault(void)
   ay8910_amplify = 1;
 #endif
 
+#ifndef HAS_CZ80
   ExitOnEI = 0;
+#endif
   Z80Has16bitsPorts = 0;
   MouseB = &mouse_b;
   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));

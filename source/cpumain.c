@@ -349,7 +349,7 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
    case CPU_Z80_1:
    case CPU_Z80_2:
    case CPU_Z80_3:
-     ret = z80pc;
+     ret = mz80GetPC();
      break;
 #endif
 #ifndef NO020
@@ -419,7 +419,7 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	// For the z80 all the rombase is executable, so...
 	*start = 0;
 	*end = 0xffff;
-	return Z80_context[cpu & 0xf].z80Base;
+	return mz80GetBase(cpu & 0xf);
 #endif
 #ifndef NO020
     case 3:

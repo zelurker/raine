@@ -857,7 +857,7 @@ static void execute_dkong() {
       raine_stop_sample(dkhammer);
     }
   }
-  cpu_execute_cycles(CPU_Z80_0,3072000/60);
+  cpu_execute_cycles(CPU_Z80_0,CPU_FRAME_MHz(61.44/20,60)); // 3072000/60);
   if (*interrupt_enable) {
     cpu_int_nmi(CPU_Z80_0);
   }

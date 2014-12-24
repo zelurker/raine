@@ -1063,3 +1063,26 @@ void z80_set_read_db(int cpu, int bank, UINT8 *src) {
 	src - Z80_memory_rb[cpu][z80_data[cpu].read_bank.list[bank]].lowAddr;
 }
 
+UINT32 mz80GetPC() {
+    return z80pc;
+}
+
+UINT8* mz80GetBase(int cpu) {
+    return Z80_context[cpu & 0xf].z80Base;
+}
+
+void mz80ReleaseIRQ(int cpu) {
+    z80intPending = 0;
+}
+
+void mz80ClearTimers() {
+    dwElapsedTicks = 0;
+}
+
+UINT32 mz80GetCyclesDone() {
+    return dwElapsedTicks;
+}
+
+int mz80GetCyclesRemaining() {
+    return cyclesRemaining;
+}

@@ -523,7 +523,7 @@ void reset_game_hardware(void)
 #endif
 
 #if HAVE_Z80
-   if(MZ80Engine>=1 && Z80_context[0].z80Base){
+   if(MZ80Engine>=1 && mz80GetBase(0)){
       cpu_reset(CPU_Z80_0);
       print_ingame(120,"CPU Z80#0 Reset");
    }
