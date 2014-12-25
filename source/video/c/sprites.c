@@ -643,16 +643,14 @@ void Draw16x16_Mask_Trans_FlipXY(ARG_DIR)
 #undef RENDER
 #define RENDER(bpp)                                                 \
 void Move8x8_##bpp(UINT8 *SPR, int x, int y, UINT8 *map) {          \
-   UINT##bpp *line;                                                 \
-   int xx,yy;                                                       \
+    UINT##bpp *line;                                                \
+    int yy;                                                         \
                                                                     \
-   for(yy=0; yy<8; yy++){                                           \
-      line = ((UINT##bpp *)GameBitmap->line[y+yy]) + x;             \
-      for(xx=0; xx<8; xx+=4*8/bpp, SPR+=4){                         \
-      WriteLong(&line[xx],ReadLong(SPR));                           \
-      }                                                             \
-      SPR += (GameBitmap->w-8)*bpp/8;                               \
-   }                                                                \
+    for(yy=0; yy<8; yy++){                                          \
+    line = ((UINT##bpp *)GameBitmap->line[y+yy]) + x;               \
+    memcpy(&line[0],SPR,8*bpp/8);                                   \
+    SPR += (GameBitmap->w)*bpp/8;                                   \
+    }                                                               \
 }                                                                   \
                                                                     \
 void Move8x8_##bpp##_FlipX(UINT8 *SPR, int x, int y, UINT8 *map) {  \
