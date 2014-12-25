@@ -54,8 +54,9 @@
     CPU->BasePC = (uintptr_t) CPU->Fetch[(A) >> CZ80_FETCH_SFT];  \
     PC = (A) + CPU->BasePC;
 
-#define PRE_IO                  \
-    CPU->CycleIO = CCnt;
+#define PRE_IO           \
+    CPU->CycleIO = CCnt; \
+    CPU->PC = PC;
 
 #define POST_IO                 \
     CCnt = CPU->CycleIO;
