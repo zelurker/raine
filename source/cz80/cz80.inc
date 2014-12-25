@@ -22,20 +22,19 @@
 #endif
 
 #define GET_BYTE                \
-	(((uint8_t *)CPU->BasePC)[PC])
+    (*(uint8_t*)PC)
 
 #define GET_BYTE_S              \
-	(((int8_t *)CPU->BasePC)[PC])
+    (*(int8_t*)PC)
 
 #define GET_WORD                \
-	(((uint8_t *)CPU->BasePC)[PC] |				\
-	 (((uint8_t *)CPU->BasePC)[((PC + 1) & 0xffff)] << 8))
+    ((*(uint8_t*)(PC + 0)) | ((*(uint8_t*)(PC + 1)) << 8))
 
 #define FETCH_BYTE              \
-	(((uint8_t *)CPU->BasePC)[PC++])
+    (*(uint8_t*)PC++)
 
 #define FETCH_BYTE_S            \
-	(((int8_t *)CPU->BasePC)[PC++])
+    (*(int8_t*)PC++)
 
 #define FETCH_WORD(A)           \
     A = GET_WORD;               \
@@ -53,7 +52,7 @@
 
 #define SET_PC(A)               \
     CPU->BasePC = (uintptr_t) CPU->Fetch[(A) >> CZ80_FETCH_SFT];  \
-    PC = ((A) & 0xffff);
+    PC = (A) + CPU->BasePC;
 
 #define PRE_IO                  \
     CPU->CycleIO = CCnt;
@@ -160,7 +159,7 @@
         }                                                   \
                                                             \
         {                                                   \
-            uint16_t src = PC;                              \
+            uint16_t src = zRealPC;                         \
                                                             \
             PUSH_16(src)                                    \
             SET_PC(newPC)                                   \

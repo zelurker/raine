@@ -42,7 +42,7 @@ static UINT8 my_z80_readb(UINT32 ctx,UINT16 adr) {
 		return Z80_memory_rb[ctx][n].pUserArea[adr];
 	}
     }
-    print_debug("my_Z80BadRead(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
+    print_debug("my_Z80BadRead(%04x) [%04x]\n",adr,mz80GetPC());
     return(0xFF);
 }
 
@@ -58,7 +58,7 @@ static void my_z80_writeb(UINT32 ctx,UINT16 adr,UINT8 data) {
 	    return;
 	}
     }
-    print_debug("Z80BadWrite(%04x,%x) [%04x]\n",adr,data,Z80_context[ctx].PC);
+    print_debug("Z80BadWrite(%04x,%x) [%04x]\n",adr,data,mz80GetPC());
 }
 
 // the z80 has the same byte order as the x86, for now I just ignore the order
@@ -83,7 +83,7 @@ static UINT16 my_z80_readw(UINT32 ctx,UINT16 adr) {
 #endif
 	}
     }
-    print_debug("Z80BadReadWord(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
+    print_debug("Z80BadReadWord(%04x) [%04x]\n",adr,mz80GetPC());
     return(0xFFff);
 }
 
@@ -109,7 +109,7 @@ static void my_z80_writew(UINT32 ctx,UINT16 adr,UINT16 data) {
 	    return;
 	}
     }
-    print_debug("Z80BadWriteWord(%04x,%x) [%04x]\n",adr,data,Z80_context[ctx].PC);
+    print_debug("Z80BadWriteWord(%04x,%x) [%04x]\n",adr,data,mz80GetPC());
 }
 
 static UINT8 my_z80_port_rb(UINT32 ctx,UINT16 adr) {
@@ -124,7 +124,7 @@ static UINT8 my_z80_port_rb(UINT32 ctx,UINT16 adr) {
 		return Z80_port_rb[ctx][n].pUserArea[adr];
 	}
     }
-    print_debug("my_Z80BadPortRead(%04x) [%04x]\n",adr,Z80_context[ctx].PC);
+    print_debug("my_Z80BadPortRead(%04x) [%04x]\n",adr,mz80GetPC());
     return(0xFF);
 }
 
@@ -141,7 +141,7 @@ static void my_z80_port_wb(UINT32 ctx,UINT16 adr,UINT8 data) {
 	    return;
 	}
     }
-    print_debug("Z80BadWrite(%04x,%x) [%04x]\n",adr,data,Z80_context[ctx].PC);
+    print_debug("Z80BadWrite(%04x,%x) [%04x]\n",adr,data,mz80GetPC());
 }
 
 static void z80_load_update(int n) {
@@ -453,7 +453,7 @@ UINT32 mz80exec(unsigned long int cycles) {
 }
 
 UINT32 mz80GetPC() {
-    return curz->PC;
+    return curz->PC-curz->BasePC;
 }
 
 UINT8* mz80GetBase(int cpu) {
