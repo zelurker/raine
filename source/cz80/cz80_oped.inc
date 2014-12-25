@@ -14,7 +14,7 @@ switch (Opcode)
 #endif
 
     // ILLEGAL
-    
+
     OPED(0x00):
     OPED(0x01):
     OPED(0x02):
@@ -339,7 +339,7 @@ OP_ADC_HL:
             ((res & 0xFFFF) ? 0 : CZ80_ZF);                             // Z flag
         zHL = res;
         RET(11)
-        
+
 
     OPED(0x72): // SBC  HL,SP
         src = zSP;
@@ -607,7 +607,7 @@ OP_CPXR:
             ((zA ^ val ^ res) & CZ80_HF) | CZ80_NF;
 #endif
 
-        if (zBC)
+        if (CCnt <= -4) // zBC)
         {
             // instruction not yet completed...
             // we will continu it at next CZ80_Exec
