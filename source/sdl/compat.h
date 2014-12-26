@@ -54,12 +54,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
 UINT16 bytes_per_pixel(BITMAP *screen);
 
 #endif
-#ifdef __GLIBC__
-#if __GLIBC__ >= 2
-#define stricmp strcasecmp
-#define strnicmp strncasecmp
-#endif
-#elif defined(DARWIN)
+#ifndef RAINE_WIN32
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
 #endif
