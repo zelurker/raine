@@ -46,7 +46,7 @@ extern "C" {
 
 #define BGAMES			// Beta/Unreleased games included
 
-#ifndef NO_ASM
+#if !defined(NO_ASM) || defined(__MMX__)
 #define RDTSC_PROFILE		// Rdtsc profiling included
 #endif
 
