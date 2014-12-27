@@ -69,7 +69,7 @@ static void do_save_demo(char *str) {
    print_debug("END: GameSaveDemo()\n");
 }
 
-INLINE UINT8 read_input(UINT32 offset)
+static inline UINT8 read_input(UINT32 offset)
 {
   if (offset < 0x100)
     return input_buffer[offset];
