@@ -43,6 +43,7 @@ CZ80 = 1
 
 ifdef NO_ASM
 ASM_VIDEO_CORE =
+CZ80 = 1
 endif
 
 # Try to detect mingw... If you want to build the dos and the mingw
@@ -91,11 +92,11 @@ ifeq ("$(shell uname -m)","x86_64")
   # are installed in 32 bit (which might be a little tricky at first).
  ifndef CROSSCOMPILE
 ifndef NO_ASM
-  CC=gcc -m32
-  CXX=g++ -m32
-  LD=g++ -m32 -L /usr/lib32
+  CC += -m32
+  CXX += -m32
+  LD=$(CXX) -L /usr/lib32
 else
-  LD=g++
+  LD=$(CXX)
 endif
  else
 	ifeq ("$(LD)","ld")
