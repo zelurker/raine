@@ -13,6 +13,10 @@
 #include "cputable.h"
 #include <string.h>
 #include <stdio.h>
+#ifdef SDL
+#include <SDL_cpuinfo.h>
+#endif
+#include "cpuid.h"
 
 UINT32 raine_cpu_capabilities;
 /*
@@ -158,5 +162,8 @@ void get_cpu_name(char *my_model) {
 	sprintf(my_model,"%s family %d model %d",vendor_id,cpu_family,cpu_model);
     }
   }
+#elif defined(SDL)
+  if (SDL_HasRDTSC()) raine_cpu_capabilities |= CPU_TSC;
+  if (SDL_HasMMX()) raine_cpu_capabilities |= CPU_MMX;
 #endif
 }
