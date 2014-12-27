@@ -313,7 +313,7 @@ static SDL_TimerID id;
 void reset_ingame_timer(void)
 {
 #ifdef RDTSC_PROFILE
-  if (!cycles_per_frame)
+  if (use_rdtsc && !cycles_per_frame)
     return;
   if(use_rdtsc){
     RDTSC_64( &last_rdtsc_counter );

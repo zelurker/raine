@@ -8,29 +8,29 @@
 
  Actually the code must be extracted from SDL_gfx to be able to precisely
  compensate when we drop frames (easy to do when rendering 8bpp in 16bpp !)
- 
+
  */
 
 #include "SDL_framerate.h"
 
 extern unsigned int pc_timer,cpu_frame_count;
 
-/* 
+/*
    Initialize the framerate manager
 */
 
 void SDL_initFramerate(FPSmanager * manager)
 {
     /*
-     * Store some sane values 
+     * Store some sane values
      */
     manager->framecount = 0;
     manager->rateticks = (1000.0 / (float) FPS_DEFAULT);
     manager->lastticks = SDL_GetTicks();
 }
 
-/* 
-   Set the framerate in Hz 
+/*
+   Set the framerate in Hz
 */
 
 int SDL_setFramerate(FPSmanager * manager, float frate)
@@ -48,8 +48,8 @@ int SDL_setFramerate(FPSmanager * manager, float frate)
     }
 }
 
-/* 
-  Return the current target framerate in Hz 
+/*
+  Return the current target framerate in Hz
 */
 
 float SDL_getFramerate(FPSmanager * manager)
@@ -72,7 +72,7 @@ int SDL_get_frame_count(FPSmanager * manager) {
   return 0;
 }
 
-/* 
+/*
   Delay execution to maintain a constant framerate. Calculate fps.
 */
 
@@ -86,7 +86,7 @@ void SDL_framerateDelay(FPSmanager * manager)
     Uint32 the_delay;
 
     /*
-     * Next frame 
+     * Next frame
      */
     if (manager->use_cpu_frame_count) {
       manager->framecount = cpu_frame_count;
@@ -95,7 +95,7 @@ void SDL_framerateDelay(FPSmanager * manager)
     }
 
     /*
-     * Get/calc ticks 
+     * Get/calc ticks
      */
     current_ticks = SDL_GetTicks();
     target_ticks = manager->lastticks + (Uint32) ((float) manager->framecount * manager->rateticks);

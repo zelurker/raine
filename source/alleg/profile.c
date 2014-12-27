@@ -353,12 +353,7 @@ void start_ingame_timer(void)
 
 void stop_ingame_timer(void)
 {
-#ifdef RDTSC_PROFILE
-/*     if(use_rdtsc) */
-/*        remove_int(ingame_timer_proc_rdtsc); */
-/*     else */
-#endif
-	   remove_int(ingame_timer_proc_nordtsc);
+    remove_int(ingame_timer_proc_nordtsc);
 
    if(!timer_was_already_installed)
       remove_timer();
@@ -434,7 +429,7 @@ void reset_ingame_timer(void)
 {
 
 #ifdef RDTSC_PROFILE
-  if (!cycles_per_frame)
+  if (use_rdtsc && !cycles_per_frame)
     return;
    if(use_rdtsc){
       RDTSC_64( &last_rdtsc_counter );
