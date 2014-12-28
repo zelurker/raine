@@ -870,7 +870,10 @@ static void draw_emudx() {
 	       in emudx */
 	    if(code>135 && code<156)
 	      {
-		Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code/4)<<(10+bpp)],x,sy,0,0);
+		  if (bpp == 1)
+		      Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code/4)<<(10+bpp)],x,sy,0,0);
+		  else if (bpp == 2)
+		      Draw32x32_Trans_Alpha50_32_flip_Rot(&emudx_sprites32[(code/4)<<(10+bpp)],x,sy,0,0);
 		continue;
 	      }
 	    else
@@ -928,7 +931,10 @@ static void draw_emudx() {
 	  y = (sy-16)*2 + BORDER;
 	  if (x>=0 && y>=0) {
 	    if(code>33 && code<37) {
-	      Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code)<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+		if (bpp == 1)
+		    Draw32x32_Trans_Alpha50_16_flip_Rot(&emudx_sprites32[(code)<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
+		else if (bpp == 2)
+		    Draw32x32_Trans_Alpha50_32_flip_Rot(&emudx_sprites32[(code)<<(10+bpp)],x,y,0,(flipx ? 1 : 0) | (flipy?2:0));
 	    } else {
 	      if (solid[code] == 1) { // transp
 		if (color==2 && (code>27 && code<34)) code +=36;

@@ -733,6 +733,9 @@ else
     VIDEO += $(VIDEO_CORE)/sprites.o
 endif
 
+# common to asm & c : 32bpp version of alpha blending
+VIDEO += $(OBJDIR)/video/c/sprites32_a50.o
+
 ifndef SDL
 VIDEO += \
 	$(OBJDIR)/video/arcmon.o \
