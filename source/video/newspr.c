@@ -1023,6 +1023,7 @@ MAKE_ROT_JUMP_16( Draw32x32_Trans, disp_x_32, disp_y_32 )
 MAKE_ROT_JUMP( Draw32x32_Trans_Alpha50_16, disp_x_32, disp_y_32 )
 MAKE_ROT_JUMP( Draw32x32_Trans_Alpha50_32, disp_x_32, disp_y_32 )
 MAKE_ROT_JUMP( Draw32x32_Trans_Alpha_16, disp_x_32, disp_y_32 )
+MAKE_ROT_JUMP( Draw32x32_Trans_Alpha_32, disp_x_32, disp_y_32 )
 
 MAKE_ROT_JUMP( Draw16x16_Mask_Trans, disp_x_16, disp_y_16 )
 MAKE_ROT_JUMP( Draw16x16_Mask, disp_x_16, disp_y_16 )
@@ -1336,6 +1337,7 @@ void init_video_core(void)
    Draw32x32_Trans_Alpha50_16_init_jump_table();
    Draw32x32_Trans_Alpha50_32_init_jump_table();
    Draw32x32_Trans_Alpha_16_init_jump_table();
+   Draw32x32_Trans_Alpha_32_init_jump_table();
 
    Draw16x16_Mask_Trans_init_jump_table();
    Draw16x16_Mask_init_jump_table();

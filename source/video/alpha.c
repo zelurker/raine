@@ -76,7 +76,6 @@ void blend_16(UINT16 *dest, UINT16 src) {
 	    ((bd * dalpha) >> 8) + ((b * alpha) >> 8));
 }
 
-
 void blend50_16(UINT16 *dest, UINT16 src) {
     UINT8 rd,gd,bd,r,g,b;
     SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
@@ -84,7 +83,26 @@ void blend50_16(UINT16 *dest, UINT16 src) {
     *dest = SDL_MapRGB(color_format,
 	    rd/2+r/2,
 	    gd/2+g/2,
-	    bd/2+g);
+	    bd/2+b/2);
 }
 
+void blend_32(UINT32 *dest, UINT32 src) {
+    UINT8 rd,gd,bd,r,g,b;
+    SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
+    SDL_GetRGB(src,color_format,&r,&g,&b);
+    *dest = SDL_MapRGB(color_format,
+	    ((rd * dalpha) >> 8) + ((r * alpha) >> 8),
+	    ((gd * dalpha) >> 8) + ((g * alpha) >> 8),
+	    ((bd * dalpha) >> 8) + ((b * alpha) >> 8));
+}
+
+void blend50_32(UINT32 *dest, UINT32 src) {
+    UINT8 rd,gd,bd,r,g,b;
+    SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
+    SDL_GetRGB(src,color_format,&r,&g,&b);
+    *dest = SDL_MapRGB(color_format,
+	    rd/2+r/2,
+	    gd/2+g/2,
+	    bd/2+b/2);
+}
 

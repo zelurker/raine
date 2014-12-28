@@ -447,7 +447,7 @@ unmapped(32,8);
 
 #include "alpha50.h"
 
-render(32,16);
+render(32,16,ReadWord);
 
 // Draw16x16_Mask : just one 16x16 opaque block of the same colour
 

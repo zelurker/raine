@@ -1021,245 +1021,46 @@ FUNC(Draw16x16_32)
 	pushl	%ebx
 	movl	16(%esp),%esi			// source
 	movl	24(%esp),%ebx			// y
-	movl	28(%esp),%eax			// cmap
 	sall	$2,%ebx
-	movb	%al,%ah				// cmap
 	movl	0xDEADBEEF(%ebx),%edi
 blin_08:
-	mov	%ax,%cx				// cmap
-	addl	20(%esp),%edi			// x
-	shll	$16,%ecx			// cmap
+	movl	20(%esp),%eax			// x
+	sall	$2,%eax
+	addl	%eax,%edi
+	movl	$16,%ecx
 	movl	$0xDEADBEEF,%edx		// screen width
 bitw_08:
-	mov	%ax,%cx				// cmap
+	movsl // 1 pixel !
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
+	movsl
 
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
 	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
+	decl	%ecx
+	jne	bitw_08
 
 	popl	%ebx
 	popl	%esi
 	popl	%edi
 	ret
+
+#define HANDLE_2_PIXELS(offset)                 \
+        movl        offset(%esi),%eax;          \
+        movl        offset+4(%esi),%ebx;        \
+        movl        %eax,16*4-(offset+4)(%edi); \
+        movl        %ebx,16*4-(offset+8)(%edi);
 
 FUNC(Draw16x16_32_FlipY)
 
@@ -1268,304 +1069,29 @@ FUNC(Draw16x16_32_FlipY)
 	pushl	%ebx
 	movl	16(%esp),%esi			// source
 	movl	24(%esp),%ebx			// y
-	movl	28(%esp),%eax			// cmap
 	sall	$2,%ebx
-	movb	%al,%ah				// cmap
 	movl	0xDEADBEEF(%ebx),%edi
 blin_09:
-	mov	%ax,%cx				// cmap
-	addl	20(%esp),%edi			// x
-	shll	$16,%ecx			// cmap
+	movl	20(%esp),%eax			// x
+	sall	$2,%eax
+	addl	%eax,%edi
+
+	movl	$16,%ecx
 	movl	$0xDEADBEEF,%edx		// screen width
 bitw_09:
-	mov	%ax,%cx				// cmap
+	HANDLE_2_PIXELS(0)
+	HANDLE_2_PIXELS(4*2)
+	HANDLE_2_PIXELS(4*4)
+	HANDLE_2_PIXELS(4*6)
+	HANDLE_2_PIXELS(4*8)
+	HANDLE_2_PIXELS(4*10)
+	HANDLE_2_PIXELS(4*12)
+	HANDLE_2_PIXELS(4*14)
 
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
-	addl	$16,%esi
-	addl	%edx,%edi
-	movl	12(%esi),%eax
-	movl	8(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_0(%edi)
-	movl	%ebx,DEST_2(%edi)
-	movl	4(%esi),%eax
-	movl	(%esi),%ebx
-	orl	%ecx,%eax
-	orl	%ecx,%ebx
-	bswap	%eax
-	bswap	%ebx
-	movl	%eax,DEST_4(%edi)
-	movl	%ebx,DEST_6(%edi)
+	addl	$16*4,%esi		// Next Tile Line
+	addl	%edx,%edi	// Next Screen Line
+	decl	%ecx
+	jne	bitw_09
 
 	popl	%ebx
 	popl	%esi
@@ -1573,6 +1099,7 @@ bitw_09:
 	ret
 
 FUNC(Draw16x16_32_FlipX)
+    ret	// doesn't work for now !
 
 	pushl	%edi
 	pushl	%esi
@@ -1820,6 +1347,7 @@ bitw_10:
 	ret
 
 FUNC(Draw16x16_32_FlipXY)
+    ret // doesn't work
 
 	pushl	%edi
 	pushl	%esi
@@ -2130,6 +1658,7 @@ bitw_11:
 	popl	%edi
 	ret
 
+#undef HANDLE_2_PIXELS
 #define HANDLE_2_PIXELS(offset)  \
     movl    offset(%esi),%eax;   \
     movl    offset+4(%esi),%ebx; \
@@ -2167,7 +1696,7 @@ blin_12:
 	HANDLE_2_PIXELS(12*4)
 	HANDLE_2_PIXELS(14*4)
 7:
-	addl	$16,%esi		// Next Tile Line
+	addl	$16*4,%esi		// Next Tile Line
 	addl	$0xDEADBEEF,%edi	// Next Screen Line
 bitw_12:
 	decl	%edx
@@ -2178,89 +1707,44 @@ bitw_12:
 	popl	%edi
 	ret
 
-FUNC(Draw16x16_Trans_32_FlipY)
+#undef HANDLE_2_PIXELS
+#define HANDLE_2_PIXELS(offset)         \
+    movl    offset(%esi),%eax;          \
+    movl    offset+4(%esi),%ebx;        \
+                                        \
+    cmp    %ecx,%eax;                   \
+    je    7f;                           \
+    mov    %eax,16*4-(offset+4)(%edi);  \
+7:    cmp    %ecx,%ebx;                 \
+    je    7f;                           \
+    movl    %ebx,16*4-(offset+8)(%edi); \
+7:;
 
+FUNC(Draw16x16_Trans_32_FlipY)
 	pushl	%edi
 	pushl	%esi
 	pushl	%ebx
 	movl	16(%esp),%esi			// source
 	movl	24(%esp),%ebx			// y
-	movl	28(%esp),%eax			// cmap
 	sall	$2,%ebx
-	movb	%al,%ah				// cmap
 	movl	0xDEADBEEF(%ebx),%edi
 blin_13:
-	mov	%ax,%cx				// cmap
-	addl	20(%esp),%edi			// x
-	shll	$16,%ecx			// cmap
+	movl	20(%esp),%eax			// x
+	sall    $2,%eax
+	addl	%eax,%edi
 	movl	$16,%edx			// tile height
-	mov	%ax,%cx				// cmap
+	mov	GLOBL(emudx_transp),%ecx
 9:
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,15(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,15-4(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,15-1(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,15-5(%edi)
+	HANDLE_2_PIXELS(0)
+	HANDLE_2_PIXELS(8)
+	HANDLE_2_PIXELS(4*4)
+	HANDLE_2_PIXELS(6*4)
+	HANDLE_2_PIXELS(8*4)
+	HANDLE_2_PIXELS(10*4)
+	HANDLE_2_PIXELS(12*4)
+	HANDLE_2_PIXELS(14*4)
 7:
-	shr	$16,%eax
-	shr	$16,%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,15-2(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,15-6(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,15-3(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,15-7(%edi)
-7:
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,15-8(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,15-12(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,15-9(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,15-13(%edi)
-7:
-	shr	$16,%eax
-	shr	$16,%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,15-10(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,15-14(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,15-11(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,DEST_0(%edi)
-7:
-	addl	$16,%esi		// Next Tile Line
+	addl	$16*4,%esi		// Next Tile Line
 	addl	$0xDEADBEEF,%edi	// Next Screen Line
 bitw_13:
 	decl	%edx
@@ -2269,9 +1753,11 @@ bitw_13:
 	popl	%ebx
 	popl	%esi
 	popl	%edi
+
 	ret
 
 FUNC(Draw16x16_Trans_32_FlipX)
+    ret // doesn't work
 
 	pushl	%edi
 	pushl	%esi
@@ -2369,6 +1855,7 @@ bitw_14:
 	ret
 
 FUNC(Draw16x16_Trans_32_FlipXY)
+    ret // doesn't work
 
 	pushl	%edi
 	pushl	%esi
@@ -2480,7 +1967,10 @@ FUNC(init_spr16x16asm_32)
 	movl	%eax,bitw_05-4
 	movl	%eax,bitw_06-4
 	movl	%eax,bitw_07-4
+	push	%eax
+	subl	$16*4,%eax
 	movl	%eax,bitw_08-4
+	pop	%eax
 	movl	%eax,bitw_09-4
 	movl	%eax,bitw_10-4
 	movl	%eax,bitw_11-4

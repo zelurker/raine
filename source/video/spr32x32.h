@@ -114,6 +114,10 @@ void Draw32x32_Trans_Alpha_16_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_Trans_Alpha_16_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
 void Draw32x32_Trans_Alpha_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 
+void Draw32x32_Trans_Alpha_32(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_Alpha_32_FlipX(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_Alpha_32_FlipY(UINT8 *SPR, int x, int y, UINT8 cmap);
+void Draw32x32_Trans_Alpha_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap);
 #ifdef __cplusplus
 }
 #endif

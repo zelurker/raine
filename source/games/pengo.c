@@ -869,13 +869,27 @@ static int draw_emudx_tile;
 
 static int mspacman,use_alpha,inc_alpha;
 
-#define draw_ghost(sx,sy,sprite,flip)				\
-  if (bpp == 1 && (input_buffer[8] & 0x10)) {/* mmx alpha blending ? */	\
-    Draw32x32_Trans_Alpha_16_flip_Rot(sprite,sx,sy,0,flip);	\
-  } else if (bpp == 1 && (input_buffer[8] & 0x20)) {/* 50% alpha blending ? */	\
-    Draw32x32_Trans_Alpha50_16_flip_Rot(sprite,sx,sy,0,flip);	\
-  } else {							\
-    Draw32x32_Trans_flip_Rot(sprite,sx,sy,0,flip); \
+#define draw_ghost(sx,sy,sprite,flip)                               \
+  if (bpp == 1) {                                                   \
+      if ((input_buffer[8] & 0x10)) {                               \
+          /* mmx alpha blending ? */                                \
+          Draw32x32_Trans_Alpha_16_flip_Rot(sprite,sx,sy,0,flip);   \
+      } else if (bpp == 1 && (input_buffer[8] & 0x20)) {            \
+          /* 50% alpha blending ? */                                \
+          Draw32x32_Trans_Alpha50_16_flip_Rot(sprite,sx,sy,0,flip); \
+      } else {                                                      \
+          Draw32x32_Trans_flip_Rot(sprite,sx,sy,0,flip);            \
+      }                                                             \
+  } else if (bpp == 2) {                                            \
+      if ((input_buffer[8] & 0x10)) {                               \
+          /* mmx alpha blending ? */                                \
+          Draw32x32_Trans_Alpha_32_flip_Rot(sprite,sx,sy,0,flip);   \
+      } else if (bpp == 1 && (input_buffer[8] & 0x20)) {            \
+          /* 50% alpha blending ? */                                \
+          Draw32x32_Trans_Alpha50_32_flip_Rot(sprite,sx,sy,0,flip); \
+      } else {                                                      \
+          Draw32x32_Trans_flip_Rot(sprite,sx,sy,0,flip);            \
+      }                                                             \
   }
 
 static void draw_emudx() {
