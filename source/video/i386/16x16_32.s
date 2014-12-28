@@ -2130,6 +2130,18 @@ bitw_11:
 	popl	%edi
 	ret
 
+#define HANDLE_2_PIXELS(offset)  \
+    movl    offset(%esi),%eax;   \
+    movl    offset+4(%esi),%ebx; \
+                                 \
+    cmp    %ecx,%eax;            \
+    je    7f;                    \
+    mov    %eax,offset(%edi);    \
+7:    cmp    %ecx,%ebx;          \
+    je    7f;                    \
+    movl    %ebx,offset+4(%edi); \
+7:;
+
 FUNC(Draw16x16_Trans_32)
 
 	pushl	%edi
@@ -2140,72 +2152,20 @@ FUNC(Draw16x16_Trans_32)
 	sall	$2,%ebx
 	movl	0xDEADBEEF(%ebx),%edi
 blin_12:
-	addl	20(%esp),%edi			// x
+	movl	20(%esp),%eax			// x
+	sall    $2,%eax
+	addl	%eax,%edi
 	movl	$16,%edx			// tile height
+	mov	GLOBL(emudx_transp),%ecx
 9:
-	movl	(%esi),%eax
-	movl	4(%esi),%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,DEST_0(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,DEST_2(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,1(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,5(%edi)
-7:
-	shr	$16,%eax
-	shr	$16,%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,DEST_1(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,DEST_3(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,3(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,7(%edi)
-7:
-	movl	8(%esi),%eax
-	movl	12(%esi),%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,DEST_4(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,DEST_6(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,9(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,13(%edi)
-7:
-	shr	$16,%eax
-	shr	$16,%ebx
-
-	cmpb	%ch,%al
-	je	7f
-	movb	%al,DEST_5(%edi)
-7:	cmpb	%ch,%bl
-	je	7f
-	movb	%bl,DEST_7(%edi)
-7:	cmpb	%ch,%ah
-	je	7f
-	movb	%ah,11(%edi)
-7:	cmpb	%ch,%bh
-	je	7f
-	movb	%bh,15(%edi)
+	HANDLE_2_PIXELS(0)
+	HANDLE_2_PIXELS(8)
+	HANDLE_2_PIXELS(4*4)
+	HANDLE_2_PIXELS(6*4)
+	HANDLE_2_PIXELS(8*4)
+	HANDLE_2_PIXELS(10*4)
+	HANDLE_2_PIXELS(12*4)
+	HANDLE_2_PIXELS(14*4)
 7:
 	addl	$16,%esi		// Next Tile Line
 	addl	$0xDEADBEEF,%edi	// Next Screen Line
