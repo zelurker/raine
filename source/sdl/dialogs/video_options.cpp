@@ -15,6 +15,7 @@
 #endif
 #include "sdl/dialogs/messagebox.h"
 #include "sdl/dialogs/fsel.h"
+#include "bld.h"
 
 class TVideo : public TMenu
 {
@@ -156,6 +157,7 @@ static menu_item_t video_items[] =
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
 { "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {"No", "Yes"} },
 { "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
+{ "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{"No","Yes"} },
 { "Video info...", &do_video, },
 { "Renderer options", &renderer_options },
 { "General options:" },

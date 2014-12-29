@@ -22,11 +22,15 @@ UINT64 MASKBLUE = 0x001F001F001F001Fll;
 
 UINT64 ADD64 = 0x0040004000400040ll;
 
+void set_alpha(UINT32 my_alpha) {
+  alpha = my_alpha;
+  dalpha = 256-alpha;
+}
+
 /* May Microsoft be cursed for the eternity with its stupid _ everywhere !!! */
 
 void init_alpha(UINT32 my_alpha) {
-  alpha = my_alpha;
-  dalpha = 256-alpha;
+    set_alpha(my_alpha);
 
 #ifndef NO_ASM
   asm(
@@ -104,5 +108,11 @@ void blend50_32(UINT32 *dest, UINT32 src) {
 	    rd/2+r/2,
 	    gd/2+g/2,
 	    bd/2+b/2);
+}
+
+void blend_8(UINT8 *dest, UINT8 src) {
+    // This one is here just for the _Rot functions, it's impossible to do
+    // blending in 8bpp, so just assign src to dest !
+    *dest = src;
 }
 

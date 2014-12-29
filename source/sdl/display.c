@@ -15,6 +15,7 @@
 #include "winpos.h"
 #include "sdl/opengl.h"
 #include "sdl/display_sdl.h"
+#include "bld.h"
 
 togl_options ogl;
 
@@ -119,6 +120,7 @@ void display_read_config() {
    display_cfg.fix_aspect_ratio = raine_get_config_int("display", "fix_aspect_ratio", 1);
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
    display_cfg.double_buffer = raine_get_config_int("display", "double_buffer", 1);
+   use_bld = raine_get_config_int("display","use_bld",1);
    prefered_yuv_format = raine_get_config_int("display","prefered_yuv_format",0);
 #ifdef DARWIN
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
@@ -177,6 +179,7 @@ void display_write_config() {
 #endif
    raine_set_config_int("display", "fullscreen", display_cfg.fullscreen);
    raine_set_config_int("display", "double_buffer", display_cfg.double_buffer);
+   raine_set_config_int("display", "use_bld", use_bld);
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
    raine_set_config_int("Display", "keep_ratio", display_cfg.keep_ratio);

@@ -39,6 +39,7 @@
 #ifdef SDL
 #include "control_internal.h"
 #endif
+#include "bld.h"
 
 void LoadDefault(void)
 {
@@ -132,6 +133,7 @@ void LoadDefault(void)
 
 void ClearDefault(void)
 {
+    free_alpha_tree();
 #ifdef SDL
     unregister_driver_emu_keys();
 #endif

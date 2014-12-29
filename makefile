@@ -31,13 +31,13 @@ RAINE_DEBUG = 1
 ASM_VIDEO_CORE = 1
 
 # console ?
-# HAS_CONSOLE = 1
+HAS_CONSOLE = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 USE_BEZELS=1
 
 # use cz80 instead of the usual heavily modyfied asm-only mz80 ?
-CZ80 = 1
+# CZ80 = 1
 
 # end of user options, after this line the real thing starts...
 
@@ -734,7 +734,8 @@ else
 endif
 
 # common to asm & c : 32bpp version of alpha blending
-VIDEO += $(OBJDIR)/video/c/sprites32_a50.o
+VIDEO += $(OBJDIR)/video/c/sprites32_a50.o \
+	 $(OBJDIR)/video/c/mapped_alpha.o
 
 ifndef SDL
 VIDEO += \
@@ -882,6 +883,7 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/ingame.o \
 	$(OBJDIR)/savegame.o \
 	$(OBJDIR)/arpro.o \
+	$(OBJDIR)/bld.o \
 	$(OBJDIR)/debug.o \
 	$(OBJDIR)/config.o \
 	$(OBJDIR)/confile.o \

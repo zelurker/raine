@@ -1062,6 +1062,8 @@ MAKE_ROT_JUMP_16( Draw16x16_Mapped,       disp_x_16, disp_y_16 )
 
 MAKE_ROT_JUMP_16( Draw16x16_Trans_Mapped, disp_x_16, disp_y_16 )
 
+MAKE_ROT_JUMP_16( Draw16x16_Trans_Mapped_Alpha, disp_x_16, disp_y_16 )
+
 MAKE_ROT_JUMP_16( Draw16x8_Mapped,       disp_x_16, disp_y_8 )
 
 MAKE_ROT_JUMP_16( Draw16x8_Trans_Mapped, disp_x_16, disp_y_8 )
@@ -1247,41 +1249,6 @@ MAKE_ROT_JUMP_16( pdraw16x16_64_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y 
 MAKE_ROT_JUMP_16( pdraw16x16_64_Trans_Mapped_back_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
 MAKE_ROT_JUMP_16( pdraw16x16_64_Mapped_back_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
 
-/******************************************************************************/
-
-// Normal Display
-
-draw_mapped_func *Draw16x16_Mapped_JumpList[4] =
-{
-   Draw16x16_Mapped_8,
-   Draw16x16_Mapped_8_FlipY,
-   Draw16x16_Mapped_8_FlipX,
-   Draw16x16_Mapped_8_FlipXY,
-};
-
-// X+Y Flipped Display
-
-draw_mapped_func *Draw16x16_Mapped_JumpListR[4] =
-{
-   Draw16x16_Mapped_8_FlipXY,
-   Draw16x16_Mapped_8_FlipX,
-   Draw16x16_Mapped_8_FlipY,
-   Draw16x16_Mapped_8,
-};
-
-// X+Y Flipped Display
-
-draw_mapped_func *Draw16x16_Trans_Mapped_JumpListR[4] =
-{
-   Draw16x16_Trans_Mapped_8_FlipXY,
-   Draw16x16_Trans_Mapped_8_FlipX,
-   Draw16x16_Trans_Mapped_8_FlipY,
-   Draw16x16_Trans_Mapped_8,
-};
-
-
-/******************************************************************************/
-
 text_func *textout_fast;
 draw_pixel_func *raine_put_pixel;
 
@@ -1350,6 +1317,7 @@ void init_video_core(void)
 
    Draw16x16_Mapped_init_jump_table();
    Draw16x16_Trans_Mapped_init_jump_table();
+   Draw16x16_Trans_Mapped_Alpha_init_jump_table();
    Draw16x8_Mapped_init_jump_table();
    Draw16x8_Trans_Mapped_init_jump_table();
 

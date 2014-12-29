@@ -37,6 +37,7 @@
 #include "alleg/jpg/jpgalleg.h"
 #include "loadpng.h"
 #include "files.h"
+#include "bld.h"
 
 extern void update_stretch(); // stretch.c
 struct RGUI_CFG rgui_cfg;
@@ -1191,6 +1192,7 @@ int load_game_proc(int msg, DIALOG *d, int c)
       init_dsw();
       init_romsw();
       init_sound();
+      read_bld();
     }
 
     if(!raine_cfg.no_gui) {	// GUI MODE

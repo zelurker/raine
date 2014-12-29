@@ -17,6 +17,7 @@
 #include "ingame.h" // print_ingame
 #include "files.h" // get_shared
 #include "gui.h" // prototypes
+#include "bld.h"
 
 #include "gui/menu.h"
 #include "dialogs/about.h"
@@ -169,6 +170,7 @@ static void load_game_proc()
       init_dsw();
       init_romsw();
       init_sound();
+      read_bld();
     }
 
 }

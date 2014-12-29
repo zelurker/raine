@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "deftypes.h"
 #include "debug.h"
-// #include "ingame.h"
+#include "ingame.h"
 
 UINT8 BubbleBobble_MCU_RDMEM(int a);
 void BubbleBobble_MCU_WRMEM(int a, UINT8 v);

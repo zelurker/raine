@@ -51,6 +51,8 @@
 #include "decode.h"
 #include "cps2crpt.h"
 #include "speed_hack.h"
+#include "bld.h"
+#include "alpha.h"
 
 /* Output ports */
 #define CPS1_OBJ_BASE		0x00	/* Base address of objects */
@@ -3424,6 +3426,14 @@ static void DrawTileQueue(int pri)
   }
 }
 
+static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int flip) {
+    int alpha = get_spr_alpha(code);
+    if (!alpha)
+	return Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
+    set_alpha(alpha);
+    Draw16x16_Trans_Mapped_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
+}
+
 static void render_sprites()
 {
   /* Draw the sprites */
@@ -3489,7 +3499,7 @@ static void render_sprites()
 		sy = (y+nys*16) & 0x1ff;
 		if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16 ) {
 		  if (GFX_SPR_SOLID16[code2])
-		    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx, sy, map,3);
+		    alpha_sprite(code2,sx, sy, map,3);
 		}
 	      }
 	    }
@@ -3502,7 +3512,7 @@ static void render_sprites()
 
 		if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		  if (GFX_SPR_SOLID16[code2])
-		    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx,sy,map,2 );
+		    alpha_sprite(code2,sx,sy,map,2 );
 		}
 	      }
 	    }
@@ -3516,7 +3526,7 @@ static void render_sprites()
 
 		if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		  if (GFX_SPR_SOLID16[code2])
-		    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8], sx,sy,map,1);
+		    alpha_sprite(code2, sx,sy,map,1);
 		}
 	      }
 	    }
@@ -3529,7 +3539,7 @@ static void render_sprites()
 
 		if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		  if (GFX_SPR_SOLID16[code2])
-		    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx,sy, map,0);
+		    alpha_sprite(code2,sx,sy, map,0);
 		}
 	      }
 	    }
@@ -3539,7 +3549,7 @@ static void render_sprites()
 	/* Simple case... 1 sprite does it happen ??? */
 	if (x < scrwidth && y < scrheight && code <= max_sprites16) {
 	  if (GFX_SPR_SOLID16[code])
-	    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], x, y, map,(colour & 0x60)>>5);
+	    alpha_sprite(code, x, y, map,(colour & 0x60)>>5);
 	}
       }
     } // range ok
