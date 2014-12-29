@@ -2718,7 +2718,6 @@ blin_20:
 	addl	20(%esp),%edi			// x
 	addl	20(%esp),%edi			// x doubled !!!
 	movl	$32,%edx			// tile height
-	mov	GLOBL(emudx_transp),%cx
 9:
 	mmx_blender_4(0)
 	mmx_blender_4(8)
@@ -2752,7 +2751,6 @@ FUNC(Draw32x32_Trans_Alpha_16_FlipY)
 blin_21:
 	addl	20(%esp),%edi			// x
 	addl	20(%esp),%edi			// x doubled !
-	mov	GLOBL(emudx_transp),%cx
 	movl	$32,%edx			// tile height
 9:
 	mmx_blender_4_flipy(0)
@@ -2788,7 +2786,6 @@ blin_22:
 	addl	20(%esp),%edi			// x
 	addl	20(%esp),%edi			// x doubled !
 	movl	$32,%edx			// tile height
-	mov	GLOBL(emudx_transp),%cx
 9:
 	mmx_blender_4(0)
 	mmx_blender_4(8)
@@ -2823,7 +2820,6 @@ blin_23:
 	addl	20(%esp),%edi			// x
 	addl	20(%esp),%edi			// x doubled !!!
 	movl	$32,%edx			// tile height
-	mov	GLOBL(emudx_transp),%cx
 9:
 	mmx_blender_4_flipy(0)
 	mmx_blender_4_flipy(8)
