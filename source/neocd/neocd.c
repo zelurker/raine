@@ -46,6 +46,8 @@
 #include "games/neogeo.h"
 #include "decode.h"
 #include "sound/assoc.h"
+#include "bld.h"
+#include "alpha.h"
 
 // #define NEOGEO_MCARD_16BITS 1
 
@@ -1841,6 +1843,20 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
     }
 }
 
+static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int zx,int zy,int flip) {
+    int alpha = get_spr_alpha(code);
+    if (!alpha) {
+	if (video_spr_usage[code] == 2) // all solid
+	    return Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[code<<8],x,y,map,zx,zy,flip);
+	return Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[code<<8],x,y,map,zx,zy,flip);
+    }
+    set_alpha(alpha);
+    if (video_spr_usage[code] == 2) // all solid
+	Draw16x16_Mapped_ZoomXY_Alpha_flip_Rot(&GFX[code<<8],x,y,map,zx,zy,flip);
+    else
+	Draw16x16_Trans_Mapped_ZoomXY_Alpha_flip_Rot(&GFX[code<<8],x,y,map,zx,zy,flip);
+}
+
 static void draw_sprites(int start, int end, int start_line, int end_line) {
     if (!check_layer_enabled(layer_id_data[1])) return;
     if (end_line > 223) end_line = 223;
@@ -1988,10 +2004,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 			(tileatr >> 8),
 			16,
 			map);
-		if (video_spr_usage[tileno] == 2) // all solid
-		    Draw16x16_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
-		else
-		    Draw16x16_Trans_Mapped_ZoomXY_flip_Rot(&GFX[tileno<<8],sx+offx,sy+16,map,rzx,zy,tileatr & 3);
+		alpha_sprite(tileno,sx+offx,sy+16,map,rzx,zy,tileatr & 3);
 	    }
 	}  // for y
     }  // for count
@@ -2232,6 +2245,7 @@ void postprocess_ipl() {
     hs_init();
     hist_open("history.dat");
     hist_open("command.dat");
+    read_bld();
   }
   if (cdrom_speed)
     reset_ingame_timer();

@@ -10,6 +10,7 @@
 #include "priorities.h"
 #include "pdraw.h"
 #include "blit.h"
+#include "alpha.h"
 /*
 
 Not implemented:
@@ -260,248 +261,504 @@ void init_16x16_zoom_64(void)
 
 /******************************************************************************/
 
-void Draw16x16_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_8(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616_dat+(zoom_x<<4);
-      ZZY=zoom_1616_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            if(SSS[ZZX[xx]]!=0) BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
+#undef ARG_ZOOM
+#define ARG_ZOOM UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y
+#undef render
+#define render(SIZE,BPP)                                                  \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_##BPP(ARG_ZOOM)            \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_##BPP(SPR,x,y,cmap);             \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                      \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                      \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            if(SSS[ZZX[xx]]!=0) bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]]; \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_##BPP##_FlipY(ARG_ZOOM)    \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_##BPP##_FlipY(SPR,x,y,cmap);     \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                     \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                      \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            if(SSS[ZZX[xx]]!=0) bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]]; \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_##BPP##_FlipX(ARG_ZOOM)    \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_##BPP##_FlipX(SPR,x,y,cmap);     \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                      \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                     \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            if(SSS[ZZX[xx]]!=0) bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]]; \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_##BPP##_FlipXY(ARG_ZOOM)   \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_##BPP##_FlipXY(SPR,x,y,cmap);    \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                     \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                     \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            if(SSS[ZZX[xx]]!=0) bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]]; \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_##BPP(ARG_ZOOM)                  \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Mapped_##BPP(SPR,x,y,cmap);                   \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                      \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                      \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]];                     \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_##BPP##_FlipY(ARG_ZOOM)          \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Mapped_##BPP##_FlipY(SPR,x,y,cmap);           \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                     \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                      \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]];                     \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_##BPP##_FlipX(ARG_ZOOM)          \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Mapped_##BPP##_FlipX(SPR,x,y,cmap);           \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                      \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                     \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]];                     \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
+}                                                                         \
+                                                                          \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_##BPP##_FlipXY(ARG_ZOOM)         \
+{                                                                         \
+   UINT8 *SSS,*ZZX,*ZZY;                                                  \
+   UINT##BPP *bit;                                                        \
+   int xx,yy;                                                             \
+                                                                          \
+   if((zoom_x+zoom_y)==32){                                               \
+      Draw##SIZE##x##SIZE##_Mapped_##BPP##_FlipXY(SPR,x,y,cmap);          \
+      return;                                                             \
+   }                                                                      \
+                                                                          \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                          \
+                                                                          \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                     \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                     \
+                                                                          \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                            \
+                                                                          \
+      yy=0;                                                               \
+      do{                                                                 \
+         SSS=SPR+(ZZY[yy]<<4);                                            \
+         xx=0;                                                            \
+         do{                                                              \
+            bit[xx]=((UINT##BPP*)cmap)[SSS[ZZX[xx]]];                     \
+         }while((++xx)<zoom_x);                                           \
+         bit+=GameBitmap->w;                                              \
+      }while((++yy)<zoom_y);                                              \
+   }                                                                      \
 }
+render(16,8);
+render(16,16);
+render(16,32);
 
-void Draw16x16_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_8_FlipY(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616r_dat+(zoom_x<<4);
-      ZZY=zoom_1616_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            if(SSS[ZZX[xx]]!=0) BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
+// And now, the Alpha version...
+#undef render
+#define render(SIZE,BPP)                                                      \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_Alpha_##BPP(ARG_ZOOM)          \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_Alpha_##BPP(SPR,x,y,cmap);           \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                          \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                          \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            if(SSS[ZZX[xx]]!=0)                                               \
+                blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);       \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_Alpha_##BPP##_FlipY(ARG_ZOOM)  \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_Alpha_##BPP##_FlipY(SPR,x,y,cmap);   \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                         \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                          \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            if(SSS[ZZX[xx]]!=0)                                               \
+                blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);       \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_Alpha_##BPP##_FlipX(ARG_ZOOM)  \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_Alpha_##BPP##_FlipX(SPR,x,y,cmap);   \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                          \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                         \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            if(SSS[ZZX[xx]]!=0)                                               \
+                blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);       \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Trans_Mapped_ZoomXY_Alpha_##BPP##_FlipXY(ARG_ZOOM) \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Trans_Mapped_Alpha_##BPP##_FlipXY(SPR,x,y,cmap);  \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                         \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                         \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            if(SSS[ZZX[xx]]!=0)                                               \
+                blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);       \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_Alpha_##BPP(ARG_ZOOM)                \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Mapped_Alpha_##BPP(SPR,x,y,cmap);                 \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                          \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                          \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);           \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_Alpha_##BPP##_FlipY(ARG_ZOOM)        \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Mapped_Alpha_##BPP##_FlipY(SPR,x,y,cmap);         \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                         \
+      ZZY=zoom_1616_dat+(zoom_y<<4);                                          \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);           \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_Alpha_##BPP##_FlipX(ARG_ZOOM)        \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Mapped_Alpha_##BPP##_FlipX(SPR,x,y,cmap);         \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616_dat+(zoom_x<<4);                                          \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                         \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);           \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
+}                                                                             \
+                                                                              \
+void Draw##SIZE##x##SIZE##_Mapped_ZoomXY_Alpha_##BPP##_FlipXY(ARG_ZOOM)       \
+{                                                                             \
+   UINT8 *SSS,*ZZX,*ZZY;                                                      \
+   UINT##BPP *bit;                                                            \
+   int xx,yy;                                                                 \
+                                                                              \
+   if((zoom_x+zoom_y)==32){                                                   \
+      Draw##SIZE##x##SIZE##_Mapped_Alpha_##BPP##_FlipXY(SPR,x,y,cmap);        \
+      return;                                                                 \
+   }                                                                          \
+                                                                              \
+   if((zoom_x!=0)&&(zoom_y!=0)){                                              \
+                                                                              \
+      ZZX=zoom_1616r_dat+(zoom_x<<4);                                         \
+      ZZY=zoom_1616r_dat+(zoom_y<<4);                                         \
+                                                                              \
+      bit=((UINT##BPP*)GameBitmap->line[y])+x;                                \
+                                                                              \
+      yy=0;                                                                   \
+      do{                                                                     \
+         SSS=SPR+(ZZY[yy]<<4);                                                \
+         xx=0;                                                                \
+         do{                                                                  \
+            blend_##BPP(&bit[xx],((UINT##BPP*)cmap)[SSS[ZZX[xx]]]);           \
+         }while((++xx)<zoom_x);                                               \
+         bit+=GameBitmap->w;                                                  \
+      }while((++yy)<zoom_y);                                                  \
+   }                                                                          \
 }
-
-void Draw16x16_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_8_FlipX(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616_dat+(zoom_x<<4);
-      ZZY=zoom_1616r_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            if(SSS[ZZX[xx]]!=0) BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
-}
-
-void Draw16x16_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Trans_Mapped_8_FlipXY(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616r_dat+(zoom_x<<4);
-      ZZY=zoom_1616r_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            if(SSS[ZZX[xx]]!=0) BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
-}
-
-/******************************************************************************/
-
-void Draw16x16_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_8(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616_dat+(zoom_x<<4);
-      ZZY=zoom_1616_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
-}
-
-void Draw16x16_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_8_FlipY(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616r_dat+(zoom_x<<4);
-      ZZY=zoom_1616_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
-}
-
-void Draw16x16_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_8_FlipX(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616_dat+(zoom_x<<4);
-      ZZY=zoom_1616r_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
-}
-
-void Draw16x16_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
-{
-   UINT8 *BIT,*SSS,*ZZX,*ZZY;
-   int xx,yy;
-
-   if((zoom_x+zoom_y)==32){
-      Draw16x16_Mapped_8_FlipXY(SPR,x,y,cmap);
-      return;
-   }
-
-   if((zoom_x!=0)&&(zoom_y!=0)){
-
-      ZZX=zoom_1616r_dat+(zoom_x<<4);
-      ZZY=zoom_1616r_dat+(zoom_y<<4);
-
-      BIT=GameBitmap->line[y]+x;
-
-      yy=0;
-      do{
-         SSS=SPR+(ZZY[yy]<<4);
-         xx=0;
-         do{
-            BIT[xx]=cmap[SSS[ZZX[xx]]];
-         }while((++xx)<zoom_x);
-         BIT+=GameBitmap->w;
-      }while((++yy)<zoom_y);
-
-   }
-}
+render(16,8);
+render(16,16);
+render(16,32);
 
 /******************************************************************************/
 
@@ -754,7 +1011,7 @@ void Draw16x16_ZoomXY_FlipXY(UINT8 *SPR, int x, int y, UINT8 cmap, int zoom_x, i
 
 /******************************************************************************/
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -784,7 +1041,7 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -814,7 +1071,7 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipX(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -844,7 +1101,7 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -876,7 +1133,7 @@ void Draw16x16_32_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *
 
 /******************************************************************************/
 
-void Draw16x16_32_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -906,7 +1163,7 @@ void Draw16x16_32_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoo
    }
 }
 
-void Draw16x16_32_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8_FlipY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -936,7 +1193,7 @@ void Draw16x16_32_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void Draw16x16_32_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8_FlipX(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -966,7 +1223,7 @@ void Draw16x16_32_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void Draw16x16_32_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_32_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -998,7 +1255,7 @@ void Draw16x16_32_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, 
 
 /******************************************************************************/
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1028,7 +1285,7 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1058,7 +1315,7 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1088,7 +1345,7 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1120,7 +1377,7 @@ void Draw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *
 
 /******************************************************************************/
 
-void Draw16x16_64_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1150,7 +1407,7 @@ void Draw16x16_64_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoo
    }
 }
 
-void Draw16x16_64_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8_FlipY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1180,7 +1437,7 @@ void Draw16x16_64_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void Draw16x16_64_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8_FlipX(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1210,7 +1467,7 @@ void Draw16x16_64_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void Draw16x16_64_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y)
+void Draw16x16_64_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY;
    int xx,yy;
@@ -1244,7 +1501,7 @@ void Draw16x16_64_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, 
 
 // pdraw version (priority)
 
-void pdraw16x16_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1276,7 +1533,7 @@ void pdraw16x16_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipY(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1308,7 +1565,7 @@ void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipX(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1340,7 +1597,7 @@ void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cma
    }
 }
 
-void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1374,7 +1631,7 @@ void pdraw16x16_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cm
 
 /******************************************************************************/
 
-void pdraw16x16_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1406,7 +1663,7 @@ void pdraw16x16_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_
    }
 }
 
-void pdraw16x16_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8_FlipY(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1439,7 +1696,7 @@ void pdraw16x16_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void pdraw16x16_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8_FlipX(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1471,7 +1728,7 @@ void pdraw16x16_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int
    }
 }
 
-void pdraw16x16_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y,  int pri)
+void pdraw16x16_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM,  int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1505,7 +1762,7 @@ void pdraw16x16_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, in
 
 // _64
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1537,7 +1794,7 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1569,7 +1826,7 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1601,7 +1858,7 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1635,7 +1892,7 @@ void pdraw16x16_64_Trans_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 
 
 /******************************************************************************/
 
-void pdraw16x16_64_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1667,7 +1924,7 @@ void pdraw16x16_64_Mapped_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zo
    }
 }
 
-void pdraw16x16_64_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8_FlipY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1699,7 +1956,7 @@ void pdraw16x16_64_Mapped_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }
 }
 
-void pdraw16x16_64_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8_FlipX(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1731,7 +1988,7 @@ void pdraw16x16_64_Mapped_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, 
    }
 }
 
-void pdraw16x16_64_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_ZoomXY_8_FlipXY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1765,7 +2022,7 @@ void pdraw16x16_64_Mapped_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,
 
 // back version
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1797,7 +2054,7 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1829,7 +2086,7 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UI
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipX(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1861,7 +2118,7 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UI
    }
 }
 
-void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipXY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1895,7 +2152,7 @@ void pdraw16x16_64_Trans_Mapped_back_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, U
 
 /******************************************************************************/
 
-void pdraw16x16_64_Mapped_back_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1927,7 +2184,7 @@ void pdraw16x16_64_Mapped_back_ZoomXY_8(UINT8 *SPR, int x, int y, UINT8 *cmap, i
    }
 }
 
-void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1959,7 +2216,7 @@ void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipX(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;
@@ -1991,7 +2248,7 @@ void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *c
    }
 }
 
-void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap, int zoom_x, int zoom_y, int pri)
+void pdraw16x16_64_Mapped_back_ZoomXY_8_FlipXY(ARG_ZOOM, int pri)
 {
    UINT8 *BIT,*SSS,*ZZX,*ZZY,*pline;
    int xx,yy;

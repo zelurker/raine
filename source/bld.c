@@ -53,11 +53,11 @@ int get_spr_alpha(long value) {
 }
 
 static void free_tree(struct TNode *node) {
-    while (node) {
+    if (node) {
 	if (node->left)
-	    free_alpha_tree(node->left);
+	    free_tree(node->left);
 	if (node->right)
-	    free_alpha_tree(node->right);
+	    free_tree(node->right);
 	free(node);
     }
 }

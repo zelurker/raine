@@ -1208,6 +1208,8 @@ prepare for colour mapped zoom xy routines
 
 MAKE_ROT_JUMP_16( Draw16x16_Trans_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
 MAKE_ROT_JUMP_16( Draw16x16_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
+MAKE_ROT_JUMP_16( Draw16x16_Trans_Mapped_ZoomXY_Alpha,       (disp_x - zoom_x), (disp_y - zoom_y) )
+MAKE_ROT_JUMP_16( Draw16x16_Mapped_ZoomXY_Alpha,       (disp_x - zoom_x), (disp_y - zoom_y) )
 MAKE_ROT_JUMP_16( Draw16x8_Trans_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
 MAKE_ROT_JUMP_16( Draw16x8_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
 MAKE_ROT_JUMP_16( Draw16x16_32_Trans_Mapped_ZoomXY,       (disp_x - zoom_x), (disp_y - zoom_y) )
@@ -1342,6 +1344,8 @@ void init_video_core(void)
 
    Draw16x16_Mapped_ZoomXY_init_jump_table();
    Draw16x16_Trans_Mapped_ZoomXY_init_jump_table();
+   Draw16x16_Mapped_ZoomXY_Alpha_init_jump_table();
+   Draw16x16_Trans_Mapped_ZoomXY_Alpha_init_jump_table();
    Draw64x64_Mapped_Zoom2_init_jump_table();
    Draw64x64_Trans_Mapped_Zoom2_init_jump_table();
    Draw16x8_Mapped_ZoomXY_init_jump_table();
