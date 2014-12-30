@@ -1064,6 +1064,8 @@ MAKE_ROT_JUMP_16( Draw16x16_Trans_Mapped, disp_x_16, disp_y_16 )
 
 MAKE_ROT_JUMP_16( Draw16x16_Trans_Mapped_Alpha, disp_x_16, disp_y_16 )
 
+MAKE_ROT_JUMP_16( Draw16x16_Mapped_Alpha, disp_x_16, disp_y_16 )
+
 MAKE_ROT_JUMP_16( Draw16x8_Mapped,       disp_x_16, disp_y_8 )
 
 MAKE_ROT_JUMP_16( Draw16x8_Trans_Mapped, disp_x_16, disp_y_8 )
@@ -1097,6 +1099,8 @@ MAKE_ROT_JUMP_16( pdraw16x16_Trans_Mapped, disp_x_16, disp_y_16 )
 
 MAKE_ROT_JUMP_16( pdraw16x16_Mapped_back,       disp_x_16, disp_y_16 )
 MAKE_ROT_JUMP_16( pdraw16x16_Trans_Mapped_back, disp_x_16, disp_y_16 )
+MAKE_ROT_JUMP_16( pdraw16x16_Mapped_back_Alpha,       disp_x_16, disp_y_16 )
+MAKE_ROT_JUMP_16( pdraw16x16_Trans_Mapped_back_Alpha, disp_x_16, disp_y_16 )
 
 MAKE_ROT_JUMP_16( pdraw16x16_Mask_Mapped,       disp_x_16, disp_y_16 )
 MAKE_ROT_JUMP_16( pdraw16x16_Mask_Trans_Mapped, disp_x_16, disp_y_16 )
@@ -1320,6 +1324,7 @@ void init_video_core(void)
    Draw16x16_Mapped_init_jump_table();
    Draw16x16_Trans_Mapped_init_jump_table();
    Draw16x16_Trans_Mapped_Alpha_init_jump_table();
+   Draw16x16_Mapped_Alpha_init_jump_table();
    Draw16x8_Mapped_init_jump_table();
    Draw16x8_Trans_Mapped_init_jump_table();
 
@@ -1327,6 +1332,8 @@ void init_video_core(void)
    pdraw16x16_Trans_Mapped_init_jump_table();
    pdraw16x16_Mapped_back_init_jump_table();
    pdraw16x16_Trans_Mapped_back_init_jump_table();
+   pdraw16x16_Mapped_back_Alpha_init_jump_table();
+   pdraw16x16_Trans_Mapped_back_Alpha_init_jump_table();
    pdraw16x16_Mask_Mapped_init_jump_table();
    pdraw16x16_Mask_Trans_Mapped_init_jump_table();
 

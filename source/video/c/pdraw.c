@@ -8,6 +8,8 @@
 #include "raine.h"
 #include "priorities.h"
 #include "blit.h"
+#include "alpha.h"
+#include "pdraw.h"
 
 /*
 
@@ -47,1331 +49,618 @@ wether a pixel must be drawn or not. They are usually used to draw sprites.
  */
 
 extern BITMAP *BackBitmap;
-#define declare_spr(SIZE)										   \
-void pdraw##SIZE##x##SIZE##_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = cmap[ SPR[xx] ];									   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = cmap[ SPR[xx] ];									   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = cmap[ *SPR ];									   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = cmap[ *SPR ];									   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* mapped transparent sprites */									   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx] && pline[xx] <= pri) {								   \
-	   pline[xx] = 0;										   \
-	   line[xx] = cmap[ SPR[xx] ];									   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx] && pline[xx] <= pri) {								   \
-	   pline[xx] = 0;										   \
-	   line[xx] = cmap[ SPR[xx] ];									   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR && pline[xx] <= pri) {									   \
-	   pline[xx] = 0;										   \
-	   line[xx] = cmap[ *SPR ];									   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR && pline[xx] <= pri) {									   \
-	   pline[xx] = 0;										   \
-	   line[xx] = cmap[ *SPR ];									   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* 16bpp */												   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* mapped transparent sprites */									   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx] && pline[xx] <= pri) {								   \
-	   pline[xx] = 0;										   \
-	   line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if(SPR[xx] && pline[xx] <= pri) {								   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if(*SPR && pline[xx] <= pri) {									   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR && pline[xx] <= pri) {									   \
-	   pline[xx] = 0;										   \
-	   line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* 32 bpp */												   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_32(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if (pline[xx] <= pri) {										   \
-	  pline[xx] = 0;										   \
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* mapped transparent sprites */									   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_32(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx] && pline[xx] <= pri) {								   \
-	   pline[xx] = 0;										   \
-	   line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx] && pline[xx] <= pri) {								   \
-	   pline[xx] = 0;										   \
-	   line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR && pline[xx] <= pri) {									   \
-	   pline[xx] = 0;										   \
-	   line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR && pline[xx] <= pri) {									   \
-	   pline[xx] = 0;										   \
-	   line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* Background version, see comments at the top of this file */						   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	pline[xx] = pri;										   \
-	line[xx] = cmap[ SPR[xx] ];									   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	pline[xx] = pri;										   \
-	line[xx] = cmap[ SPR[xx] ];									   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	  pline[xx] = pri;										   \
-	  line[xx] = cmap[ *SPR ];									   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	  pline[xx] = pri;										   \
-	  line[xx] = cmap[ *SPR ];									   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* mapped transparent sprites */									   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx]) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = cmap[ SPR[xx] ];									   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx]) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = cmap[ SPR[xx] ];									   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = cmap[ *SPR ];									   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT8 *line,*pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = GameBitmap->line[y+yy] + x;								   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = cmap[ *SPR ];									   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* 16bpp */												   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_16(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* mapped transparent sprites */									   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_16(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx]) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)  \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	if(SPR[xx]) {											   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];							   \
-	}												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)  \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	if(*SPR) {											   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-	}												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri) \
-{													   \
-   UINT16 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = ((UINT16 *)cmap)[ *SPR ];								   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* 32 bpp */												   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_32(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Mapped_back_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-	  pline[xx] = pri;										   \
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-      }													   \
-   }													   \
-}													   \
-													   \
-/* mapped transparent sprites */									   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_32(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	   \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx]) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)  \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=0; xx<SIZE; xx++){										   \
-         if(SPR[xx]) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];							   \
-	 }												   \
-      }													   \
-      SPR += SIZE;											   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)  \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=0; yy<SIZE; yy++){										   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-	 }												   \
-      }													   \
-   }													   \
-}													   \
-													   \
-void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri) \
-{													   \
-   UINT32 *line;											   \
-   UINT8 *pline;											   \
-   int xx,yy;												   \
-													   \
-   for(yy=(SIZE-1); yy>=0; yy--){									   \
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;							   \
-      pline = pbitmap->line[y+yy] + x;									   \
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){								   \
-         if(*SPR) {											   \
-	   pline[xx] = pri;										   \
-	   line[xx] = ((UINT32 *)cmap)[ *SPR ];								   \
-	 }												   \
-      }													   \
-   }													   \
+#define declare_spr(SIZE,BPP)                                    \
+void pdraw##SIZE##x##SIZE##_Mapped_##BPP(ARG_PRI)                \
+{                                                                \
+   UINT8 *pline;                                                 \
+   UINT##BPP *line;                                              \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=0; yy<SIZE; yy++){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=0; xx<SIZE; xx++){                                  \
+        if (pline[xx] <= pri) {                                  \
+          pline[xx] = 0;                                         \
+          line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];             \
+        }                                                        \
+      }                                                          \
+      SPR += SIZE;                                               \
+   }                                                             \
+}                                                                \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Mapped_##BPP##_FlipX(ARG_PRI)        \
+{                                                                \
+   UINT8 *pline;                                                 \
+   UINT##BPP *line;                                              \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=(SIZE-1); yy>=0; yy--){                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=0; xx<SIZE; xx++){                                  \
+        if (pline[xx] <= pri) {                                  \
+          pline[xx] = 0;                                         \
+          line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];             \
+        }                                                        \
+      }                                                          \
+      SPR += SIZE;                                               \
+   }                                                             \
+}                                                                \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Mapped_##BPP##_FlipY(ARG_PRI)        \
+{                                                                \
+   UINT8 *pline;                                                 \
+   UINT##BPP *line;                                              \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=0; yy<SIZE; yy++){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                       \
+        if (pline[xx] <= pri) {                                  \
+          pline[xx] = 0;                                         \
+          line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                \
+        }                                                        \
+      }                                                          \
+   }                                                             \
+}                                                                \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Mapped_##BPP##_FlipXY(ARG_PRI)       \
+{                                                                \
+   UINT8 *pline;                                                 \
+   UINT##BPP *line;                                              \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=(SIZE-1); yy>=0; yy--){                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                       \
+        if (pline[xx] <= pri) {                                  \
+          pline[xx] = 0;                                         \
+          line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                \
+        }                                                        \
+      }                                                          \
+   }                                                             \
+}                                                                \
+                                                                 \
+/* mapped transparent sprites */                                 \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_##BPP(ARG_PRI)          \
+{                                                                \
+   UINT##BPP *line;                                              \
+   UINT8 *pline;                                                 \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=0; yy<SIZE; yy++){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=0; xx<SIZE; xx++){                                  \
+         if(SPR[xx] && pline[xx] <= pri) {                       \
+           pline[xx] = 0;                                        \
+           line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];            \
+         }                                                       \
+      }                                                          \
+      SPR += SIZE;                                               \
+   }                                                             \
+}                                                                \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_##BPP##_FlipX(ARG_PRI)  \
+{                                                                \
+   UINT##BPP *line;                                              \
+   UINT8 *pline;                                                 \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=(SIZE-1); yy>=0; yy--){                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=0; xx<SIZE; xx++){                                  \
+         if(SPR[xx] && pline[xx] <= pri) {                       \
+           pline[xx] = 0;                                        \
+           line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];            \
+         }                                                       \
+      }                                                          \
+      SPR += SIZE;                                               \
+   }                                                             \
+}                                                                \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_##BPP##_FlipY(ARG_PRI)  \
+{                                                                \
+   UINT##BPP *line;                                              \
+   UINT8 *pline;                                                 \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=0; yy<SIZE; yy++){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                       \
+         if(*SPR && pline[xx] <= pri) {                          \
+           pline[xx] = 0;                                        \
+           line[xx] = ((UINT##BPP *)cmap)[ *SPR ];               \
+         }                                                       \
+      }                                                          \
+   }                                                             \
+}                                                                \
+                                                                 \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_##BPP##_FlipXY(ARG_PRI) \
+{                                                                \
+   UINT##BPP *line;                                              \
+   UINT8 *pline;                                                 \
+   int xx,yy;                                                    \
+                                                                 \
+   for(yy=(SIZE-1); yy>=0; yy--){                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;          \
+      pline = pbitmap->line[y+yy] + x;                           \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                       \
+         if(*SPR && pline[xx] <= pri) {                          \
+           pline[xx] = 0;                                        \
+           line[xx] = ((UINT##BPP *)cmap)[ *SPR ];               \
+         }                                                       \
+      }                                                          \
+   }                                                             \
 }
 
+/* Background version, see comments at the top of this file */
+
+#define declare_back(SIZE,BPP)                                              \
+void pdraw##SIZE##x##SIZE##_Mapped_back_##BPP(ARG_PRI)                      \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+        pline[xx] = pri;                                                    \
+        line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                          \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_##BPP##_FlipX(ARG_PRI)              \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+        pline[xx] = pri;                                                    \
+        line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                          \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_##BPP##_FlipY(ARG_PRI)              \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+        pline[xx] = pri;                                                    \
+        line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                             \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_##BPP##_FlipXY(ARG_PRI)             \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+        pline[xx] = pri;                                                    \
+        line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                             \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+/* mapped transparent sprites */                                            \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_##BPP(ARG_PRI)                \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+         if(SPR[xx]) {                                                      \
+           pline[xx] = pri;                                                 \
+           line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                       \
+         }                                                                  \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_##BPP##_FlipX(ARG_PRI)        \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+         if(SPR[xx]) {                                                      \
+           pline[xx] = pri;                                                 \
+           line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                       \
+         }                                                                  \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_##BPP##_FlipY(ARG_PRI)        \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+         if(*SPR) {                                                         \
+           pline[xx] = pri;                                                 \
+           line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                          \
+         }                                                                  \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_##BPP##_FlipXY(ARG_PRI)       \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+         if(*SPR) {                                                         \
+           pline[xx] = pri;                                                 \
+           line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                          \
+         }                                                                  \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+/* Blended version of these back functions */                               \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_Alpha_##BPP(ARG_PRI)                \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+        pline[xx] = pri;                                                    \
+        blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ SPR[xx] ]);              \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_Alpha_##BPP##_FlipX(ARG_PRI)        \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+        pline[xx] = pri;                                                    \
+        blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ SPR[xx] ]);              \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_Alpha_##BPP##_FlipY(ARG_PRI)        \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+        pline[xx] = pri;                                                    \
+        blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ *SPR ]);                 \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Mapped_back_Alpha_##BPP##_FlipXY(ARG_PRI)       \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+        pline[xx] = pri;                                                    \
+        blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ *SPR ]);                 \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+/* mapped transparent sprites */                                            \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_Alpha_##BPP(ARG_PRI)          \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+         if(SPR[xx]) {                                                      \
+           pline[xx] = pri;                                                 \
+           blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ SPR[xx] ]);           \
+         }                                                                  \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_Alpha_##BPP##_FlipX(ARG_PRI)  \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=0; xx<SIZE; xx++){                                             \
+         if(SPR[xx]) {                                                      \
+           pline[xx] = pri;                                                 \
+           blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ SPR[xx] ]);           \
+         }                                                                  \
+      }                                                                     \
+      SPR += SIZE;                                                          \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_Alpha_##BPP##_FlipY(ARG_PRI)  \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=0; yy<SIZE; yy++){                                                \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+         if(*SPR) {                                                         \
+           pline[xx] = pri;                                                 \
+           blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ *SPR ]);              \
+         }                                                                  \
+      }                                                                     \
+   }                                                                        \
+}                                                                           \
+                                                                            \
+void pdraw##SIZE##x##SIZE##_Trans_Mapped_back_Alpha_##BPP##_FlipXY(ARG_PRI) \
+{                                                                           \
+   UINT8 *pline;                                                            \
+   UINT##BPP *line;                                                         \
+   int xx,yy;                                                               \
+                                                                            \
+   for(yy=(SIZE-1); yy>=0; yy--){                                           \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;                     \
+      pline = pbitmap->line[y+yy] + x;                                      \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                  \
+         if(*SPR) {                                                         \
+           pline[xx] = pri;                                                 \
+           blend_##BPP(&line[xx],((UINT##BPP *)cmap)[ *SPR ]);              \
+         }                                                                  \
+      }                                                                     \
+   }                                                                        \
+}
 
 /* pdrawNNxNN_Mask version : combines pdraw with Draw_Mask, that is : update the screen and the priority */
 /* bitmap at the same time */
 
-#define declare(SIZE)												\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = cmap[ SPR[xx] ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = cmap[ SPR[xx] ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = cmap[ *SPR ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = cmap[ *SPR ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-/* mapped transparent sprites */										\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if(SPR[xx] && pline[xx] <= pri) {									\
-	  line[xx] = cmap[ SPR[xx] ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if(SPR[xx] && pline[xx] <= pri) {									\
-	  line[xx] = cmap[ SPR[xx] ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if(*SPR && pline[xx] <= pri) {										\
-	  line[xx] = cmap[ *SPR ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_8_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT8 *line,*pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = GameBitmap->line[y+yy] + x;									\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if(*SPR && pline[xx] <= pri) {										\
-	  line[xx] = cmap[ *SPR ];										\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-/* 16bpp */													\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-/* mapped transparent sprites */										\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if(SPR[xx] && pline[xx] <= pri) {									\
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_16_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if(SPR[xx] && pline[xx] <= pri) {									\
-	  line[xx] = ((UINT16 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_16_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if(*SPR && pline[xx] <= pri) {										\
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_16_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	\
-{														\
-   UINT16 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT16 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if(*SPR && pline[xx] <= pri) {										\
-	  line[xx] = ((UINT16 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-/* 32 bpp */													\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_32(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)			\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if (pline[xx] <= pri) {											\
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-/* mapped transparent sprites */										\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_32(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)		\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if(SPR[xx] && pline[xx] <= pri) {									\
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_32_FlipX(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=0; xx<SIZE; xx++){											\
-	if(SPR[xx] && pline[xx] <= pri) {									\
-	  line[xx] = ((UINT32 *)cmap)[ SPR[xx] ];								\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-      SPR += SIZE;												\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_32_FlipY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=0; yy<SIZE; yy++){											\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if(*SPR && pline[xx] <= pri) {										\
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
-}														\
-														\
-void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_32_FlipXY(UINT8 *SPR, int x, int y, UINT8 *cmap,  UINT8 pri)	\
-{														\
-   UINT32 *line;												\
-   UINT8 *pline;												\
-   int xx,yy;													\
-														\
-   for(yy=(SIZE-1); yy>=0; yy--){										\
-      line = ((UINT32 *)(GameBitmap->line[y+yy])) + x;								\
-      pline = pbitmap->line[y+yy] + x;										\
-      for(xx=(SIZE-1); xx>=0; xx--,SPR++){									\
-	if(*SPR && pline[xx] <= pri) {										\
-	  line[xx] = ((UINT32 *)cmap)[ *SPR ];									\
-	  pline[xx] = pri;											\
-	}													\
-      }														\
-   }														\
+#undef declare
+#define declare(SIZE,BPP)                                             \
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_##BPP(ARG_PRI)                \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=0; yy<SIZE; yy++){                                          \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=0; xx<SIZE; xx++){                                       \
+        if (pline[xx] <= pri) {                                       \
+          line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                  \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+      SPR += SIZE;                                                    \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_##BPP##_FlipX(ARG_PRI)        \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=(SIZE-1); yy>=0; yy--){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=0; xx<SIZE; xx++){                                       \
+        if (pline[xx] <= pri) {                                       \
+          line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                  \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+      SPR += SIZE;                                                    \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_##BPP##_FlipY(ARG_PRI)        \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=0; yy<SIZE; yy++){                                          \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                            \
+        if (pline[xx] <= pri) {                                       \
+          line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                     \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Mapped_##BPP##_FlipXY(ARG_PRI)       \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=(SIZE-1); yy>=0; yy--){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                            \
+        if (pline[xx] <= pri) {                                       \
+          line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                     \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+/* mapped transparent sprites */                                      \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##BPP(ARG_PRI)          \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=0; yy<SIZE; yy++){                                          \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=0; xx<SIZE; xx++){                                       \
+        if(SPR[xx] && pline[xx] <= pri) {                             \
+          line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                  \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+      SPR += SIZE;                                                    \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##BPP##_FlipX(ARG_PRI)  \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=(SIZE-1); yy>=0; yy--){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=0; xx<SIZE; xx++){                                       \
+        if(SPR[xx] && pline[xx] <= pri) {                             \
+          line[xx] = ((UINT##BPP *)cmap)[ SPR[xx] ];                  \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+      SPR += SIZE;                                                    \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##BPP##_FlipY(ARG_PRI)  \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=0; yy<SIZE; yy++){                                          \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                            \
+        if(SPR[xx] && pline[xx] <= pri) {                             \
+          line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                     \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+   }                                                                  \
+}                                                                     \
+                                                                      \
+void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##BPP##_FlipXY(ARG_PRI) \
+{                                                                     \
+   UINT8 *pline;                                                      \
+   UINT##BPP *line;                                                   \
+   int xx,yy;                                                         \
+                                                                      \
+   for(yy=(SIZE-1); yy>=0; yy--){                                     \
+      line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
+      pline = pbitmap->line[y+yy] + x;                                \
+      for(xx=(SIZE-1); xx>=0; xx--,SPR++){                            \
+        if(SPR[xx] && pline[xx] <= pri) {                             \
+          line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                     \
+          pline[xx] = pri;                                            \
+        }                                                             \
+      }                                                               \
+   }                                                                  \
 }
 
-declare(16);
-declare(8);
-declare(32);
+declare(16,8);
+declare(16,16);
+declare(16,32);
+declare(8,8);
+declare(8,16);
+declare(8,32);
+declare(32,8);
+declare(32,16);
+declare(32,32);
 
-declare_spr(16);
-declare_spr(8);
+declare_spr(16,8);
+declare_spr(16,16);
+declare_spr(16,32);
+declare_spr(8,8);
+declare_spr(8,16);
+declare_spr(8,32);
+declare_back(16,8);
+declare_back(16,16);
+declare_back(16,32);
+

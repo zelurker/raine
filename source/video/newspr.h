@@ -216,6 +216,15 @@ extern draw_mapped_func *Draw16x16_Trans_Mapped_Alpha_Flip_Rot[4];
 #define Draw16x16_Trans_Mapped_Alpha_FlipX_Rot(a, b, c, d)  (*Draw16x16_Trans_Mapped_Alpha_Flip_Rot[2])(a, b, c, d)
 #define Draw16x16_Trans_Mapped_Alpha_FlipXY_Rot(a, b, c, d) (*Draw16x16_Trans_Mapped_Alpha_Flip_Rot[3])(a, b, c, d)
 
+extern draw_mapped_func *Draw16x16_Mapped_Alpha_Flip_Rot[4];
+
+#define Draw16x16_Mapped_Alpha_flip_Rot(a, b, c, d, e) (*Draw16x16_Mapped_Alpha_Flip_Rot[e])(a, b, c, d)
+
+#define Draw16x16_Mapped_Alpha_Rot(a, b, c, d)        (*Draw16x16_Mapped_Alpha_Flip_Rot[0])(a, b, c, d)
+#define Draw16x16_Mapped_Alpha_FlipY_Rot(a, b, c, d)  (*Draw16x16_Mapped_Alpha_Flip_Rot[1])(a, b, c, d)
+#define Draw16x16_Mapped_Alpha_FlipX_Rot(a, b, c, d)  (*Draw16x16_Mapped_Alpha_Flip_Rot[2])(a, b, c, d)
+#define Draw16x16_Mapped_Alpha_FlipXY_Rot(a, b, c, d) (*Draw16x16_Mapped_Alpha_Flip_Rot[3])(a, b, c, d)
+
 extern draw_mapped_func *Draw16x8_Mapped_Flip_Rot[4];
 
 #define Draw16x8_Mapped_flip_Rot(a, b, c, d, e) (*Draw16x8_Mapped_Flip_Rot[e])(a, b, c, d)

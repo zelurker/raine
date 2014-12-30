@@ -1377,6 +1377,8 @@ static int gfxrom_bank_mapper(int type, trange ranges )
   return nb;
 }
 
+static int pbitmap_needed,no_pbitmap = 0;
+
 static void cps1_init_machine(void)
 {
   const char *gamename = current_game->main_name;
@@ -1387,6 +1389,7 @@ static void cps1_init_machine(void)
    int sf2ee;
    fps = 59.61; // Verified by mame team...
    // memset(&input_buffer[0x1a],0xff,0x20);
+   no_pbitmap = !strncmp(gamename,"xmcot",5); // xmcota and clones
 
    input_buffer[0x15] &= ~16;
    cps1_sound_fade_timer = 0xff;
@@ -2407,15 +2410,15 @@ static void cps2_objram_bank_w(UINT32 offset, UINT16 data) {
     set_68000_io( 0,  0x700000, 0x701fff, NULL, cps2_objram2);
 
     set_68000_io( 0,  0x708000, 0x709fff, NULL, cps2_objram1);
-    set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram1);
-    set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram1);
+    // set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram1);
+    // set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram1);
     set_68000_io( 0,  0x70e000, 0x70ffff, NULL, cps2_objram1);
   } else {
     set_68000_io( 0,  0x700000, 0x701fff, NULL, cps2_objram1);
 
     set_68000_io( 0,  0x708000, 0x709fff, NULL, cps2_objram2);
-    set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram2);
-    set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram2);
+    // set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram2);
+    // set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram2);
     set_68000_io( 0,  0x70e000, 0x70ffff, NULL, cps2_objram2);
   }
 }
@@ -2612,7 +2615,7 @@ void load_cps2() {
     AddRWBW(0xfffff0, 0xfffffb, NULL, cps2_output);
       // the last byte fffffe actually is the region for at least mmatrixd
       // doesn't work for 1944d, so maybe it's unique
-    AddReadBW(0xfffffc, 0xffffff, NULL, cps2_output+0xc);
+    AddReadBW(0xfffffc, 0xffffff, NULL, RAM+0x4fffc);
   }
 
   AddReadWord(0x618000, 0x619fff, qsound_sharedram1_r, NULL); // ram + 0x70000
@@ -2627,8 +2630,8 @@ void load_cps2() {
   AddRWBW(0x700000, 0x701fff, NULL, cps2_objram1);
   cps2_objram2 = cps2_objram1 + 0x2000;
   AddRWBW(0x708000, 0x709fff, NULL, cps2_objram2);
-  AddRWBW(0x70a000, 0x70bfff, NULL, cps2_objram2);
-  AddRWBW(0x70c000, 0x70dfff, NULL, cps2_objram2);
+  // AddRWBW(0x70a000, 0x70bfff, NULL, cps2_objram2);
+  // AddRWBW(0x70c000, 0x70dfff, NULL, cps2_objram2);
   AddRWBW(0x70e000, 0x70ffff, NULL, cps2_objram2);
 
   AddReadByte(0x800100, 0x8001FF, cps1_ioc_rb, NULL);			// IOC
@@ -3146,8 +3149,35 @@ static void render_scroll1(int mask)
 
 }
 
-static int pbitmap_needed;
+static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int flip) {
+    int alpha = get_spr_alpha(code);
+    if (!alpha) {
+	if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
+	    return Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
+	return Draw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
+    }
+    set_alpha(alpha);
+    // printf("%x %d\n",code,alpha);
+    if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
+	Draw16x16_Trans_Mapped_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
+    else
+	Draw16x16_Mapped_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
+}
 
+static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,int pri) {
+    int alpha = get_spr_alpha(code);
+    if (!alpha) {
+	if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
+	    return pdraw16x16_Trans_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
+	return pdraw16x16_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
+    }
+    set_alpha(alpha);
+    // printf("pb %x %d\n",code,alpha);
+    if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
+	pdraw16x16_Trans_Mapped_back_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
+    else
+	pdraw16x16_Mapped_back_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
+}
 // cps2 sprites do not use the ranges array
 static void render_cps2_sprites()
 {
@@ -3172,9 +3202,15 @@ static void render_cps2_sprites()
       return;
     }
     // printf("%d,%d %d,%x\n",x,y,priority,code);
-    if (priority < last_prio) {
+    if (priority < last_prio && !no_pbitmap) {
+	// This pbitmap thing is a pain
+	// csclub is one of the game where the pbitmap is the most needed
+	// in the intro, you don't see the light without this.
+	// but xmcota has a problem with it, so for now I have a no_pbitmap
+	// variable, but I am not sure I understood everything there !
       if (GFX_SPR_SOLID16[code]) {
 	pbitmap_needed = 1;
+	// printf("pbitmap needed offset %d<%d priority %d last_priority %d\n",i,cps2_obj_size,priority,last_prio);
 	return;
       }
     } else
@@ -3278,13 +3314,8 @@ static void render_cps2_sprites()
   }
 }
 
-#define draw_sprite(code,x,y,map,flip,priority)						\
-{											\
-    if(GFX_SPR_SOLID16[code]==1)							\
-      pdraw16x16_Trans_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map, flip,priority);	\
-    else										\
-      pdraw16x16_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map, flip,priority);		\
-}
+#define draw_sprite(code,x,y,map,flip,priority)     \
+      alpha_sprite_pb(code,x,y,map, flip,priority);
 
 static void render_cps2_sprites_pbitmap()
 {
@@ -3418,20 +3449,9 @@ static void DrawTileQueue(int pri)
   tile_ptr = first_tile[pri];
   while(tile_ptr->next){
     ta = tile_ptr->tile;
-    if(GFX_SPR_SOLID16[ta]==1)                    // Some pixels; trans
-      Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[ta<<8],tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
-    else
-      Draw16x16_Mapped_flip_Rot(&GFX_SPR16[ta<<8],tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
+    alpha_sprite(ta,tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
     tile_ptr = tile_ptr->next;
   }
-}
-
-static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int flip) {
-    int alpha = get_spr_alpha(code);
-    if (!alpha)
-	return Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
-    set_alpha(alpha);
-    Draw16x16_Trans_Mapped_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
 }
 
 static void render_sprites()
