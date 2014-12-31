@@ -314,6 +314,7 @@ else
    shaders_dir = $(rainedata)/shaders
    fonts_dir = $(rainedata)/fonts
    scripts_dir = $(rainedata)/scripts/neocd
+   bld_dir = $(rainedata)/blend
 endif
    romdir = $(rainedata)/roms
    artdir = $(rainedata)/artwork
@@ -520,7 +521,7 @@ ifdef RAINE32
 CFLAGS += -O3
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
-CFLAGS = -O2
+CFLAGS = -O3
 endif
 
 CFLAGS += $(INCDIR) \
@@ -1421,6 +1422,7 @@ else
 	@echo installing shaders in $(shaders_dir)
 	$(INSTALL_DATA) shaders/* $(shaders_dir)
 	$(INSTALL_DATA) scripts/neocd/* $(scripts_dir)
+	$(INSTALL_DATA) blend/* $(bld_dir)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f command.dat ]; then install command.dat $(rainedata); fi"
@@ -1444,7 +1446,7 @@ endif
 
 install_dirs:
 	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps
-	$(MD) -p $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir) $(shaders_dir)
+	$(MD) -p $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir) $(shaders_dir) $(bld_dir)
 
 $(RAINE_LNG):
 	$(INSTALL_DATA) config/language/$@ $(langdir)
