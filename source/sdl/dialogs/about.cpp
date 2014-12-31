@@ -779,7 +779,14 @@ int do_about(int sel) {
 #else
 	int patchlevel = 0;
 #endif
+#ifdef __clang__
+	major = __clang_major__;
+	minor = __clang_minor__;
+	patchlevel = __clang_patchlevel__;
+	sprintf(gcc_version,"with llvm/clang %d.%d.%d",major,minor,patchlevel);
+#else
 	sprintf(gcc_version,"with gcc %d.%d.%d",major,minor,patchlevel);
+#endif
     }
 #else
     sprintf(gcc_version,"with an unknown gcc ???");
