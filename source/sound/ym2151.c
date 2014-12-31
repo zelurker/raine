@@ -770,7 +770,7 @@ static void init_chip_tables(YM2151 *chip)
 		}														\
 }
 
-INLINE void envelope_KONKOFF(YM2151Operator * op, int v)
+static inline void envelope_KONKOFF(YM2151Operator * op, int v)
 {
 	if (v&0x08)	/* M1 */
 		KEY_ON (op+0, 1)
@@ -843,7 +843,7 @@ static void timer_callback_chip_busy (int n)
 
 
 
-INLINE void set_connect( YM2151Operator *om1, int cha, int v)
+static inline void set_connect( YM2151Operator *om1, int cha, int v)
 {
 	YM2151Operator *om2 = om1+1;
 	YM2151Operator *oc1 = om1+2;
@@ -935,7 +935,7 @@ INLINE void set_connect( YM2151Operator *om1, int cha, int v)
 }
 
 
-INLINE void refresh_EG(YM2151Operator * op)
+static inline void refresh_EG(YM2151Operator * op)
 {
 	UINT32 kc;
 	UINT32 v;

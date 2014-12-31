@@ -1603,7 +1603,7 @@ void ES5505_sh_stop(void)
 
 ***********************************************************************************************/
 
-INLINE void es5505_reg_write_low(struct ES5506Chip *chip, struct ES5506Voice *voice, offs_t offset, UINT16 data, UINT16 mem_mask)
+static inline void es5505_reg_write_low(struct ES5506Chip *chip, struct ES5506Voice *voice, offs_t offset, UINT16 data, UINT16 mem_mask)
 {
   switch (offset)
     {
@@ -1718,7 +1718,7 @@ INLINE void es5505_reg_write_low(struct ES5506Chip *chip, struct ES5506Voice *vo
 }
 
 
-INLINE void es5505_reg_write_high(struct ES5506Chip *chip, struct ES5506Voice *voice, offs_t offset, UINT16 data, UINT16 mem_mask)
+static inline void es5505_reg_write_high(struct ES5506Chip *chip, struct ES5506Voice *voice, offs_t offset, UINT16 data, UINT16 mem_mask)
 {
   //fprintf(stderr,"reg_write_high %x\n",offset);
   switch (offset)
@@ -1793,7 +1793,7 @@ INLINE void es5505_reg_write_high(struct ES5506Chip *chip, struct ES5506Voice *v
 }
 
 
-INLINE void es5505_reg_write_test(struct ES5506Chip *chip, struct ES5506Voice *voice, offs_t offset, UINT16 data, UINT16 mem_mask)
+static inline void es5505_reg_write_test(struct ES5506Chip *chip, struct ES5506Voice *voice, offs_t offset, UINT16 data, UINT16 mem_mask)
 {
   //fprintf(stderr,"writetest offset %x data %x\n",offset,data);
   switch (offset)
