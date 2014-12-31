@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.63.16"
+VERSION = "0.64.00"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -520,7 +520,7 @@ ifdef RAINE32
 CFLAGS += -O3
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
-CFLAGS = -O3
+CFLAGS = -O2
 endif
 
 CFLAGS += $(INCDIR) \
