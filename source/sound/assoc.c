@@ -304,6 +304,7 @@ int handle_sound_cmd(int cmd) {
 		    time = 8.0*0x10/cmd;
 		start_music_fadeout(time);
 	    }
+	    mode = MUSIC;
 	    return 0;
 	}
 	int no_return = 0;
