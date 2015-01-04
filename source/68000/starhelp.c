@@ -411,9 +411,6 @@ void set_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       break;
     }
   }
-  if (i>=data_count_wb[cpu]) {
-    print_debug("couldn't set wb %x - %x\n",d0,d1);
-  }
 }
 
 void set_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -426,9 +423,6 @@ void set_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       M68000_dataregion_ww[cpu][i].userdata = d3 - d0;
       break;
     }
-  }
-  if (i>=data_count_ww[cpu]) {
-    print_debug("couldn't set ww %x - %x\n",d0,d1);
   }
 }
 
