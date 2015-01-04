@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.64.00"
+VERSION = "0.64.01"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -528,8 +528,6 @@ CFLAGS += $(INCDIR) \
 	$(DEFINE) \
 	$(_MARCH) \
 	-Wno-trigraphs \
-	-fschedule-insns2 \
-	-funroll-all-loops \
 	-fexpensive-optimizations \
 	-ffast-math \
 	-w \
