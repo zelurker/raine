@@ -197,7 +197,7 @@ int TEdit::handle_key(SDL_Event *event) {
 	      case SDLK_KP_PLUS: sym = '+'; break;
 	      case SDLK_KP_EQUALS: sym = '='; break;
 	  }
-	  if (pos < maxl && valid_chars(sym,unicode)) {
+	  if (strlen(field) < maxl && valid_chars(sym,unicode)) {
 	    memmove(&field[pos+1],&field[pos],maxl-pos);
 	    if (unicode) sym = unicode;
 	    field[pos++] = sym;
