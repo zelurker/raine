@@ -364,3 +364,47 @@ int THexEdit::can_exit() {
     return 1;
 }
 
+
+TIntEdit::TIntEdit(menu_item_t *my_menu) : TEdit(my_menu)
+{
+    maxl = menu->values_list[0];
+    field = (char*)malloc(maxl+1);
+    if (menu->values_list[3] != menu->values_list[4] &&
+	    (*menu->value_int < menu->values_list[3] ||
+	     *menu->value_int > menu->values_list[4]))
+	*menu->value_int = menu->values_list[3]; // init to min
+    sprintf(field,"%d",*menu->value_int);
+    use_hist = 0;
+    pos = strlen(field);
+}
+
+TIntEdit::~TIntEdit() {
+    free(field);
+}
+
+int TIntEdit::valid_chars(int sym, int unicode) {
+    if (unicode && unicode != sym) sym = unicode;
+    return (sym >= '0' && sym <= '9');
+}
+
+int TIntEdit::handle_key(SDL_Event *event) {
+    int ret = TEdit::handle_key(event);
+    // The handler is called by the dialog when handle_key returns 1, so we do
+    // the conversion just before
+    if (ret == 1) {
+	*menu->value_int = atoi(field);
+    }
+    return ret;
+}
+
+int TIntEdit::can_exit() {
+    *menu->value_int = atoi(field);
+    if ((*menu->value_int < menu->values_list[3] || *menu->value_int > menu->values_list[4]) && menu->values_list[3] != menu->values_list[4]) {
+	char content[80];
+	sprintf(content,"The field %d must have a value between %d and %d",*menu->value_int,menu->values_list[3],menu->values_list[4]);
+	MessageBox("Error",content);
+	return 0;
+    }
+    return 1;
+}
+

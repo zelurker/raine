@@ -318,6 +318,8 @@ void TMenu::create_child(int n) {
     child[n] = new TFloatEdit(&menu[n]);
   else if (menu[n].values_list_size == ITEM_HEXEDIT)
     child[n] = new THexEdit(&menu[n]);
+  else if (menu[n].values_list_size == ITEM_INTEDIT)
+    child[n] = new TIntEdit(&menu[n]);
 
   else {
     printf("unknown extension %d\n",menu[n].values_list_size);

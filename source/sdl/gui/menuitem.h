@@ -96,6 +96,15 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
  * values_list[2] : max width in pixels to display */
 #define ITEM_HEXEDIT (-6)
 
+/* TIntEdit same thing as THexEdit but in decimal
+ * parameters :
+ * value_int is used for the result
+ * values_list_label[0] : unused (the same), but must be initialized ("")
+ * values_list[0] maxlen
+ * values_list[2] max width in pixels
+ * values_list[3] & 4 : min and max, same value to skip test */
+#define ITEM_INTEDIT (-7)
+
 #ifdef __cplusplus
 }
 #endif

@@ -146,6 +146,42 @@ int renderer_options(int sel) {
     return 0;
 }
 
+static int reset_bld;
+
+static int reset_transp(int sel) {
+    // There's a catch here : we want to reset 2 values below, but if we
+    // change them directly here, then the can_exit handler of the 2 intedit
+    // fields will copy back the value displayed when the dialog will close !
+    // So we must set a variable here, and reseting the values after the
+    // dialog has closed !
+    reset_bld = 1;
+    return 1;
+}
+
+static menu_item_t bld_options[] =
+{
+{ "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{"No","Yes"} },
+{ "Reset transparency values to default", &reset_transp },
+{ "Transparency for 1 (25% default)", NULL, &bld1, ITEM_INTEDIT,
+    { 3, 0, 150, 0, 100},{""} },
+{ "Transparency for 2 (50% default)", NULL, &bld2, ITEM_INTEDIT,
+    { 3, 0, 150, 0, 100},{""} },
+{ "You must reload or reset the game if you change the transparency values" },
+{ NULL },
+    };
+
+static int do_bld(int sel) {
+    reset_bld = 0;
+    TMenu *menu = new TMenu("bld options", bld_options);
+    menu->execute();
+    delete menu;
+    if (reset_bld) {
+	bld1 = 25;
+	bld2 = 50;
+    }
+    return 0;
+}
+
 static menu_item_t video_items[] =
 {
 #ifdef RAINE_WIN32
@@ -157,7 +193,7 @@ static menu_item_t video_items[] =
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
 { "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {"No", "Yes"} },
 { "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
-{ "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{"No","Yes"} },
+{ "bld files options...", &do_bld },
 { "Video info...", &do_video, },
 { "Renderer options", &renderer_options },
 { "General options:" },

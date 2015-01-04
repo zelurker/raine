@@ -66,4 +66,14 @@ class THexEdit : public TEdit {
     int get_len_max_options() { return 10; } // minimum field size !
 };
 
+class TIntEdit : public TEdit {
+  public:
+    TIntEdit(menu_item_t *my_menu);
+    ~TIntEdit();
+    virtual int valid_chars(int sym, int unicode);
+    virtual int can_exit();
+    virtual int handle_key(SDL_Event *event);
+    int get_len_max_options() { return 30; } // minimum field size !
+};
+
 #endif
