@@ -1,4 +1,5 @@
 #define NOGDI // define this before including windows.h to avoid BITMAP !
+#define GL_GLEXT_PROTOTYPES
 #include <SDL.h>
 #include <SDL_opengl.h>
 #undef WINAPI
@@ -15,6 +16,10 @@
 #undef MessageBox
 #endif
 #include "sdl/dialogs/messagebox.h"
+#include "str_opaque.h"
+#ifndef GL_PIXEL_UNPACK_BUFFER
+#define GL_PIXEL_UNPACK_BUFFER GL_PIXEL_UNPACK_BUFFER_ARB // ???!
+#endif
 
 static UINT8 *font;
 static int gl_format,gl_type;
@@ -217,6 +222,8 @@ void draw_opengl(int linear) {
     }
 }
 
+static UINT8 *opaque_bmp;
+
 void opengl_text(char *msg, int x, int y) {
     // Display the text using an opengl bitmap based on an sdl_gfx font
     // the coordinates are in characters - 0,0 being bottom left now
@@ -224,6 +231,7 @@ void opengl_text(char *msg, int x, int y) {
     // -y is top alignment
     // and -1000,-1000 is center text
 
+    // static GLuint opaque_buff,gl_font;
     if (!font) {
 	char *name= get_shared("fonts/10x20.fnt");
 	UINT32 size = size_file(name);
@@ -233,6 +241,13 @@ void opengl_text(char *msg, int x, int y) {
 	}
 	font = malloc(size);
 	load_file(name,font,size);
+	opaque_bmp = malloc(20*2*80);
+	memset(opaque_bmp,0xff,20*2*80);
+	/*
+	glGenBuffers(1,&opaque_buff);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER,opaque_buff);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER,20*2*80,opaque_bmp,GL_STATIC_DRAW);
+	*/
 	int i,j;
 	char tmp[20*2];
 	// Maybe the font should also be unpacked to 4 bytes boundary ?
@@ -243,6 +258,11 @@ void opengl_text(char *msg, int x, int y) {
 	    }
 	    memcpy(&font[i*20*2],tmp,20*2);
 	}
+	/*
+	glGenBuffers(1,&gl_font);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER,gl_font);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER,20*2*256,font,GL_STATIC_DRAW);
+	*/
     }
 
     if (x == -1000 && y == -1000) { // center
@@ -264,11 +284,20 @@ void opengl_text(char *msg, int x, int y) {
     glPixelStorei(GL_UNPACK_ALIGNMENT,2);
     glPixelStorei(GL_UNPACK_LSB_FIRST,0);
     glDisable(GL_TEXTURE_2D);
+    if (opaque_hud) {
+	// glColor3f(0.0f,1.0f,0.0f);
+	// glBindBuffer(GL_PIXEL_UNPACK_BUFFER,opaque_buff);
+	glDrawPixels(10*strlen(msg) ,20, GL_COLOR_INDEX,GL_UNSIGNED_BYTE, opaque_bmp);
+    }
+
     glColor3f(1.0f,1.0f,1.0f);
+    // glBindBuffer(GL_PIXEL_UNPACK_BUFFER,gl_font);
+    // GLubyte *zero = 0;
     while (*msg) {
 	glBitmap(10, 20, 0.0, 0.0, 10.0, 0.0, font+*msg*20*2);
 	msg++;
     }
+    // glBindBuffer(GL_PIXEL_UNPACK_BUFFER,0);
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
     glEnable(GL_TEXTURE_2D);
