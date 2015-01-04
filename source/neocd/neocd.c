@@ -124,7 +124,8 @@ static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0;
 static int one_palette,sprites_mask,nb_sprites;
 static int assigned_banks, current_bank;
-static UINT8 zbank[4],bank_68k,fixed_layer_bank_type,*pvc_cart;
+static UINT32 zbank[4];
+static UINT8 bank_68k,fixed_layer_bank_type,*pvc_cart;
 int capture_new_pictures;
 static BITMAP *raster_bitmap;
 static void draw_neocd();
@@ -1040,10 +1041,10 @@ static UINT16 audio_cpu_bank_select(UINT16 offset) {
 	return 0xffff;
     }
     UINT8 bank = offset >> 8;
-    if (zbank[region] != bank) {
-	zbank[region] = bank;
-	int address_mask = get_region_size(REGION_CPU2) - 1;
-	UINT32 adr = (((bank << (11 + region)) & 0x3ffff) & address_mask);
+    int address_mask = get_region_size(REGION_CPU2) - 1;
+    UINT32 adr = ((bank << (11 + region)) & address_mask);
+    if (zbank[region] != adr) {
+	zbank[region] = adr;
 	print_debug("audio_cpu_bank_select: adr %x region %d bank %d\n",adr,region,bank);
 	// z80_set_read_db(0,(3-region),&rom[adr]);
 	/* Sadly, at least some of these banks are code banks, a memcpy seems
@@ -1086,10 +1087,10 @@ static void restore_bank() {
       last_cdda_track = 0;
       restore_override(0);
   } else {
-      UINT8 znew[4];
+      UINT32 znew[4];
       int n;
-      memcpy(znew,zbank,4);
-      memset(zbank,0xff,4);
+      memcpy(znew,zbank,sizeof(znew));
+      memset(zbank,0xff,sizeof(zbank));
       for (n=0; n<4; n++)
 	  z80_set_audio_bank(n,znew[n]);
       game_vectors_set = 1-game_vectors_set;
@@ -4919,7 +4920,7 @@ void load_neocd() {
 	prepare_cache_save();
 	AddSaveData(SAVE_USER_3, (UINT8*)&z80_enabled,sizeof(int));
     } else {
-	AddSaveData(SAVE_USER_1,zbank,sizeof(zbank));
+	AddSaveData(SAVE_USER_1,(UINT8*)zbank,sizeof(zbank));
 	AddSaveData(SAVE_USER_5,(UINT8*)&fixed_layer_source,sizeof(fixed_layer_source));
 	// Place this at end of map to minmize overhead
 	if (is_current_game("fatfury2")) {
