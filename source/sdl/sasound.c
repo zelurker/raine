@@ -463,9 +463,9 @@ void saDestroySound( int remove_all_resources )
       If you load pacman first then the audio will be opened at 96 Khz, so it must
       be closed at the end in order to open it again at a more normal frequency later. */
 
+   if (remove_all_resources)
+       close_sample();
    if (opened_audio) {
-     if (remove_all_resources)
-	 close_sample();
      /* Well for some unknown reason calling Sound_Quit and then Sound_Init
       * later crashes sdl_sound when it was not used the 1st time - on a mixed
       * mode iso for example. Simply not calling ever sound_quit seems fine. */
