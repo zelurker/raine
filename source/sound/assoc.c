@@ -392,6 +392,9 @@ int handle_sound_cmd(int cmd) {
     /* At this point all the sound commands have already returned, we are
      * left with something which is a song number in cmd */
     last_song = cmd;
+#ifdef RAINE_DEBUG
+    print_ingame(180,"playing %x track %s\n",cmd,track[cmd]);
+#endif
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
 	// MUSIC
