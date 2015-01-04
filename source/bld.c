@@ -91,7 +91,7 @@ static struct TNode* sortedArrayToBST(elem arr[], int start, int end)
 
 void read_bld() {
     char bld[FILENAME_MAX];
-    sprintf(bld,"blend/%s.bld",current_game->main_name);
+    sprintf(bld,"blend/%s%s.bld",(is_neocd() ? "neocd/" : ""),current_game->main_name);
     FILE *f = fopen(get_shared(bld),"r");
     if (!f) return ;
     elem *tab = NULL;
