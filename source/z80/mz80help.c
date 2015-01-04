@@ -1083,6 +1083,10 @@ UINT32 mz80GetCyclesDone() {
     return dwElapsedTicks;
 }
 
+void mz80AddCyclesDone(int cycles) {
+    dwElapsedTicks += cycles;
+}
+
 int mz80GetCyclesRemaining() {
     return cyclesRemaining;
 }

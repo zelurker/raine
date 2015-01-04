@@ -240,7 +240,7 @@ void triger_timers() {
   if (elapsed > MAX_CYCLES) { // time to reset the cpu...
     for (n=0; n<free_timer; n++)
       timer[n].cycles -= MAX_CYCLES;
-    Z80_context[audio_cpu & 0xf].dwElapsedTicks -= MAX_CYCLES;
+    mz80AddCyclesDone(-MAX_CYCLES);
   }
 #if VERBOSE
   if (count > 1)
@@ -307,7 +307,7 @@ void finish_speed_hack(INT32 diff) {
   INT32 min;
   while (diff > 0) {
     min = get_min_cycles(diff);
-    Z80_context[audio_cpu & 0xf].dwElapsedTicks += min;
+    mz80AddCyclesDone(min);
     triger_timers();
     diff -= min;
   }

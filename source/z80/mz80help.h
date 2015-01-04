@@ -169,6 +169,7 @@ UINT8* mz80GetBase(int cpu);
 void mz80ReleaseIRQ(int cpu);
 void mz80ClearTimers();
 UINT32 mz80GetCyclesDone();
+void mz80AddCyclesDone(int cycles);
 int mz80GetCyclesRemaining();
 
 #endif
