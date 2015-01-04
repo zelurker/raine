@@ -96,10 +96,8 @@ void read_bld() {
     if (!f) return ;
     elem *tab = NULL;
     int alloc = 0, used = 0, started = 0;
-    if (node) {
-	printf("read_bld: node already allocated !\n");
-	exit(1);
-    }
+    if (node) // in case of reset or change of region !
+	free_tree(node);
     while (!feof(f)) {
 	char buf[80];
 	fgets(buf,80,f);
