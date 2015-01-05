@@ -126,7 +126,7 @@ void read_bld() {
 	    if (a.alpha == 1) // 25% transparent
 		a.alpha = 255*(100-bld1)/100;
 	    else if (a.alpha == 2) // 50% transparent
-		a.alpha = 255*bld2/100;
+		a.alpha = 255*(100-bld2)/100;
 	    else {
 		if (a.alpha != 0) {
 		    printf("read_bld: found a.alpha = %d\n",a.alpha);
