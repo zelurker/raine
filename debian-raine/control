@@ -9,8 +9,9 @@ Vcs-Git: http://rainemu.swishparty.co.uk/git/raine
 Vcs-Browser: http://rainemu.swishparty.co.uk/cgi-bin/gitweb.cgi?p=raine;a=summary
 
 Package: raine
-Architecture: i386 amd64
+Architecture: i386
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: hiscore-raine (>= 20140819), history-raine (>= 1.55), command-raine (>= 20141122), blend-raine (>= 201501)
 Description: Raine arcade emulator
  Raine is an emulator for arcade games from the years 1980-2000.
  It's mainly focused on speed.
