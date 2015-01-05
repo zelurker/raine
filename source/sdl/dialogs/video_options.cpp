@@ -163,10 +163,11 @@ static menu_item_t bld_options[] =
 { "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{"No","Yes"} },
 { "Reset transparency values to default", &reset_transp },
 { "Transparency for 1 (25% default)", NULL, &bld1, ITEM_INTEDIT,
-    { 3, 0, 150, 0, 100},{""} },
+    { 3, 0, 50, 0, 100},{""} },
 { "Transparency for 2 (50% default)", NULL, &bld2, ITEM_INTEDIT,
-    { 3, 0, 150, 0, 100},{""} },
-{ "You must reload or reset the game if you change the transparency values" },
+    { 3, 0, 50, 0, 100},{""} },
+{ "You must reload or reset the game if", },
+{ "you change the transparency values" },
 { NULL },
     };
 
