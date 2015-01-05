@@ -698,14 +698,17 @@ void TMenu::setup_fg_layer() {
   if (fgdst.y < 0) {
     fgdst.y = 0;
   }
+  int had_lift = 0;
   if (lift) {
       delete lift;
+      had_lift = 1;
       lift = NULL;
   }
   if (fg_layer)
     SDL_FreeSurface(fg_layer);
   if (nb_disp_items > rows) {
-    width_max += 10;
+      if (!had_lift)
+	  width_max += 10;
     w = width_max;
     int y = 0;
     skip_fglayer_header(y);
