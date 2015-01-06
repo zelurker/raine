@@ -5,7 +5,28 @@
 #include "games.h"
 #include "files.h"
 
-int use_bld,bld1,bld2;
+int use_bld;
+// The idea was first to allow direct access to these variables from everywhere
+// but in case you want to change the values in real time without having to
+// compute the resulting transparency for each sprite (it's 255*(100-bld)/100)
+// it's better to have functions for that so that we can update whatever we want
+// behind the scene...
+static int bld1,bld2;
+
+static int bld_tab[3];
+
+int get_bld1() { return bld1; }
+int get_bld2() { return bld2; }
+
+void set_bld1(int bld) {
+    bld1 = bld;
+    bld_tab[1] = 255*(100-bld)/100;
+}
+
+void set_bld2(int bld) {
+    bld2 = bld;
+    bld_tab[2] = 255*(100-bld)/100;
+}
 
 /* This balanced binary tree algorythm is taken from
  * http://www.geeksforgeeks.org/sorted-array-to-balanced-bst/
@@ -42,7 +63,7 @@ int get_spr_alpha(long value) {
     struct TNode *nd = node;
     while (nd) {
 	if (nd->data.start <= value && nd->data.end >= value) {
-	    return nd->data.alpha;
+	    return bld_tab[nd->data.alpha];
 	}
 	if (value < nd->data.start)
 	    nd = nd->left;
@@ -123,16 +144,11 @@ void read_bld() {
 		a.alpha = atoi(end+1);
 	    else
 		a.alpha = 0;
-	    if (a.alpha == 1) // 25% transparent
-		a.alpha = 255*(100-bld1)/100;
-	    else if (a.alpha == 2) // 50% transparent
-		a.alpha = 255*(100-bld2)/100;
-	    else {
-		if (a.alpha != 0) {
-		    printf("read_bld: found a.alpha = %d\n",a.alpha);
-		    a.alpha = 0; // otherwise no transparency at all
-		}
+	    if (a.alpha < 0 || a.alpha > 2) {
+		printf("read_bld: found a.alpha = %d\n",a.alpha);
+		a.alpha = 0; // otherwise no transparency at all
 	    }
+	    if (!a.alpha) continue;
 	    if (used == alloc) {
 		alloc += 10;
 		tab = realloc(tab,sizeof(elem )*alloc);

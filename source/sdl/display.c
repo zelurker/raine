@@ -134,8 +134,8 @@ void display_read_config() {
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
    display_cfg.keep_ratio = raine_get_config_int("display","keep_ratio",1);
-   bld1 = raine_get_config_int("display","bld1",25);
-   bld2 = raine_get_config_int("display","bld2",50);
+   set_bld1(raine_get_config_int("display","bld1",25));
+   set_bld2(raine_get_config_int("display","bld2",50));
 }
 
 void set_opengl_filter(int filter) {
@@ -185,8 +185,8 @@ void display_write_config() {
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
    raine_set_config_int("Display", "keep_ratio", display_cfg.keep_ratio);
-   raine_set_config_int("Display", "bld1", bld1);
-   raine_set_config_int("Display", "bld2", bld2);
+   raine_set_config_int("Display", "bld1", get_bld1());
+   raine_set_config_int("Display", "bld2", get_bld2());
 }
 
 // Same thing, but saved as specific game parameters...

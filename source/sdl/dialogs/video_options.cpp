@@ -158,6 +158,8 @@ static int reset_transp(int sel) {
     return 1;
 }
 
+static int bld1,bld2;
+
 static menu_item_t bld_options[] =
 {
 { "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{"No","Yes"} },
@@ -166,13 +168,13 @@ static menu_item_t bld_options[] =
     { 3, 0, 50, 0, 100},{""} },
 { "Transparency for 2 (50% default)", NULL, &bld2, ITEM_INTEDIT,
     { 3, 0, 50, 0, 100},{""} },
-{ "You must reload or reset the game if", },
-{ "you change the transparency values" },
 { NULL },
     };
 
 static int do_bld(int sel) {
     reset_bld = 0;
+    bld1 = get_bld1();
+    bld2 = get_bld2();
     TMenu *menu = new TMenu("bld options", bld_options);
     menu->execute();
     delete menu;
@@ -180,6 +182,8 @@ static int do_bld(int sel) {
 	bld1 = 25;
 	bld2 = 50;
     }
+    set_bld1(bld1);
+    set_bld2(bld2);
     return 0;
 }
 
@@ -194,7 +198,7 @@ static menu_item_t video_items[] =
 { "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
 { "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {"No", "Yes"} },
 { "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
-{ "bld files options...", &do_bld },
+{ "Blend file options...", &do_bld },
 { "Video info...", &do_video, },
 { "Renderer options", &renderer_options },
 { "General options:" },
