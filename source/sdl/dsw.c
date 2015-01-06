@@ -410,7 +410,7 @@ void SetLanguageSwitch(int number)
   ta = 0;
   if (number < 0 || number >= LanguageSw.Count) {
       char buf[1024];
-      sprintf(buf,"Region out of bounds. Possible values :\n");
+      sprintf(buf,"Region out of bounds (%d). Possible values :\n",number);
       int n;
       for (n=0; n<LanguageSw.Count; n++)
 	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.Mode[n]);
