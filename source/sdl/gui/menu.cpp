@@ -1831,7 +1831,9 @@ void TMenu::exec_menu_item() {
   if (sel < 0) return;
   if (menu[sel].value_int)
     next_list_item();
-  else if (menu[sel].menu_func) {
+  else /* if (menu[sel].menu_func)*/ {
+      // call_handler must be called in all cases here if overloaded like for
+      // the game selection dialog !
     call_handler();
   }
 }
