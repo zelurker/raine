@@ -375,12 +375,16 @@ static void cold_boot() {
 #if HAS_NEO
     cdda_stop();
 #endif
-    if (Z80ROM > RAM && Z80ROM - RAM < RAMSize) {
-	memset(RAM,0,Z80ROM-RAM);
-	if (Z80ROM + 0x10000 - RAM < RAMSize)
-	    memset(Z80ROM + 0x10000,0,RAMSize - ((Z80ROM + 0x10000) - RAM));
-    } else
-	memset(RAM,0,RAMSize);
+    if (current_game->input->offset < 0x100 &&
+	    (!current_game->dsw || current_game->dsw->offset < 0x100))  {
+	// Clear the ram only if no inputs and no dsw are stored in ram !
+	if (Z80ROM > RAM && Z80ROM - RAM < RAMSize) {
+	    memset(RAM,0,Z80ROM-RAM);
+	    if (Z80ROM + 0x10000 - RAM < RAMSize)
+		memset(Z80ROM + 0x10000,0,RAMSize - ((Z80ROM + 0x10000) - RAM));
+	} else
+	    memset(RAM,0,RAMSize);
+    }
     reset_game_hardware();
 }
 
