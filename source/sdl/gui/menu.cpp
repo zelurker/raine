@@ -141,7 +141,7 @@ static int toggle_mouse(int sel) {
 menu_item_t menu_options[] =
 {
   { "Return mandatory", NULL, &return_mandatory, 2, { 0, 1 }, { "No", "Yes" }},
-  { "Use transparency", NULL, &use_transparency, 2, { 0, 1 }, { "No", "Yes" }},
+  { "GUI transparency", NULL, &use_transparency, 2, { 0, 1 }, { "No", "Yes" }},
   { "Use custom mouse cursor", &toggle_mouse, &emulate_mouse_cursor, 2,
     { 0,1 }, { "No", "Yes" } },
   { "Minimum GUI resolution = VGA", NULL,&keep_vga, 2, { 0,1 }, { "No","Yes" }},
