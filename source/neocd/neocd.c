@@ -1091,8 +1091,11 @@ static void restore_bank() {
       int n;
       memcpy(znew,zbank,sizeof(znew));
       memset(zbank,0xff,sizeof(zbank));
-      for (n=0; n<4; n++)
-	  z80_set_audio_bank(n,znew[n]);
+      for (n=0; n<4; n++) {
+	  UINT32 bank = znew[n]>>11;
+	  UINT32 region = znew[n]-(bank << 11);
+	  audio_cpu_bank_select((bank << 8)|(region+8));
+      }
       game_vectors_set = 1-game_vectors_set;
       neogeo_select_bios_vectors(1-game_vectors_set);
   }
