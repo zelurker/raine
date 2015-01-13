@@ -17,7 +17,7 @@
 VERSION = "0.64.2"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -353,13 +353,13 @@ endif
 	   -DRAINE_UNIX
 
 ifndef SDL
-   LIBS = -lz `allegro-config --libs` `libpng-config --ldflags` -lm
-   LIBS_DEBUG = -lz `allegro-config --libs ` `libpng-config --ldflags` -lm
-   LIBS_STATIC = -lz `allegro-config --static` `libpng-config --static --ldflags` -lm
+   LIBS = -lz $(shell allegro-config --libs) $(shell libpng-config --ldflags) -lm
+   LIBS_DEBUG = -lz $(shell allegro-config --libs ) $(shell libpng-config --ldflags) -lm
+   LIBS_STATIC = -lz $(shell allegro-config --static) $(shell libpng-config --static --ldflags) -lm
 else
-   LIBS = -lz `libpng-config --ldflags` -lm
-   LIBS_DEBUG = -lz `libpng-config --ldflags` -lm
-   LIBS_STATIC = -lz `libpng-config --static --ldflags` -lm
+   LIBS = -lz $(shell libpng-config --ldflags) -lm
+   LIBS_DEBUG = -lz $(shell libpng-config --ldflags) -lm
+   LIBS_STATIC = -lz $(shell libpng-config --static --ldflags) -lm
 ifndef DARWIN
 	LIBS += -lGL -lGLU
 	LIBS_DEBUG += -lGL -lGLU
@@ -1026,7 +1026,7 @@ CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_
 CFLAGS += -I/usr/local/include/SDL # -DDARWIN
 # LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
 LIBS += -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
-# LIBS += `sdl-config --libs` -lSDL_ttf  -lSDL_image -framework Cocoa
+# LIBS += $(shell sdl-config --libs) -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
 # LIBS += -lSDL_ttf -lmuparser -lSDL_image -framework Cocoa -lstdc++
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
@@ -1041,7 +1041,7 @@ LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/li
 endif
 # LIBS += -framework SDL_sound
 else
-CFLAGS += `sdl-config --cflags`
+CFLAGS += $(shell sdl-config --cflags)
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
 ifdef HAS_NEO
@@ -1052,7 +1052,7 @@ LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/li
 endif
 endif
 endif
-LIBS += `sdl-config --libs` -lSDL_ttf -lSDL_image # -lefence
+LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image # -lefence
 ifdef HAS_NEO
 ifdef RAINE_UNIX
 # Normally here we should have :
@@ -1076,9 +1076,11 @@ endif
 endif
 endif
 
+CFLAGS := $(CFLAGS)
+
 all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
 
-CFLAGS_BS = -Wall -O2 `sdl-config --cflags` $(INCDIR) -DSTANDALONE -DNO_GZIP -c
+CFLAGS_BS := -Wall -O2 $(shell sdl-config --cflags) $(INCDIR) -DSTANDALONE -DNO_GZIP -c
 
 # Using gcc here instead of $(CC) because we don't want a 32 bit binary in
 # an amd64 arch.
@@ -1180,7 +1182,7 @@ tags:
 converter: source/bonus/converter.c
 	$(CCV) $(CFLAGS) -c $< -o $(OBJDIR)/converter.o
 ifdef RAINE_UNIX
-	$(CCV) $(LFLAGS) -g -Wall -Wno-write-strings -o converter $(OBJDIR)/converter.o `allegro-config --libs` -lz
+	$(CCV) $(LFLAGS) -g -Wall -Wno-write-strings -o converter $(OBJDIR)/converter.o $(shell allegro-config --libs) -lz
 else
 	$(CCV) $(LFLAGS) -g -Wall -Wno-write-strings -o converter $(OBJDIR)/converter.o -lalleg -lz
 endif
