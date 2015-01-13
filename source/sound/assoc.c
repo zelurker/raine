@@ -302,6 +302,14 @@ int handle_sound_cmd(int cmd) {
 		    time = 8.0*0x11/cmd;
 		else if (cmd >= 4 && cmd <= 0x10)
 		    time = 8.0*0x10/cmd;
+		if (is_current_game("wakuwak7")) {
+		    /* Well to adapt to the saturn audio tracks we need about
+		     * 3s more. Then these tracks have a recorded fadeout so the
+		     * 2 effects add. There is not much difference between
+		     * 3.0 and 4.0 here, I'll leave 4 to have more margin */
+		    time = 4.0;
+		} else
+		    printf("current track %x\n",cdda.track);
 		start_music_fadeout(time);
 	    }
 	    mode = MUSIC;
