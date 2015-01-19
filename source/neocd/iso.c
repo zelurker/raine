@@ -66,7 +66,7 @@ static int nb_alloc, nb;
 
 static FILE *myopen(char *iso,char *mode) {
     FILE *f;
-    if (!strcmp(last_name,iso))
+    if (!strcmp(last_name,iso) && last_file)
 	f = last_file;
     else {
 	if (last_file) isof.close(last_file);
