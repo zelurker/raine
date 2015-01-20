@@ -1,4 +1,6 @@
+#ifndef ANDROID
 #include "SDL_syswm.h"
+#endif
 #include <stdlib.h>
 
 /* We do this one separately because we need to include windows.h and its
@@ -8,9 +10,11 @@
 extern void raine_set_config_string(const char *section, const char *name, char *val);
 
 void update_window_pos() {
+#ifndef ANDROID
    static SDL_SysWMinfo pInfo;
    SDL_VERSION(&pInfo.version);
    SDL_GetWMInfo(&pInfo);
+#endif
 
 #ifdef RAINE_WIN32
    RECT rcWind;

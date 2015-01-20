@@ -48,7 +48,7 @@ UINT32 audio_cpu;
 
 static TimerStruct timer[MAX_TIMERS];
 static int free_timer = 0; // index of first availale timer
-static int timer_id = 1;   // id of next allocated timer
+static size_t timer_id = 1;   // id of next allocated timer
 static int z80_frame;
 
 void update_timers() {
@@ -147,7 +147,7 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
 
 void timer_remove(void *the_timer) {
   int n;
-  UINT32 id = (UINT32)the_timer;
+  size_t id = (size_t)the_timer;
 #if VERBOSE
   printf("CALLED timer_remove %d\n",id);
 #endif
@@ -162,7 +162,7 @@ void timer_remove(void *the_timer) {
   } else {
 #ifdef RAINE_DEBUG
     // Not exactly sure how it happens, but it happens sometimes...
-    printf("Timer not found %d!\n",id);
+    printf("Timer not found %zd!\n",id);
 #endif
     // exit(1);
   }

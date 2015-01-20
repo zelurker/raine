@@ -1,7 +1,13 @@
 #define NOGDI // define this before including windows.h to avoid BITMAP !
 #define GL_GLEXT_PROTOTYPES
 #include <SDL.h>
+#ifdef ANDROID
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+// #include <GLES2/gl2.h>
+#else
 #include <SDL_opengl.h>
+#endif
 #undef WINAPI
 #include "sdl/compat.h"
 #include "blit.h"
@@ -60,26 +66,40 @@ void ogl_save_png(char *name) {
 
     // Read bits from color buffer
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
+#ifndef ANDROID
+    // Available in GLES3 only, and for now it's hard to get gles3 !
     glPixelStorei(GL_PACK_ROW_LENGTH, 0);
     glPixelStorei(GL_PACK_SKIP_ROWS, 0);
     glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+#endif
 
     // Get the current read buffer setting and save it. Switch to
     // the front buffer and do the read operation. Finally, restore
     // the read buffer state
-    glReadPixels(0, 0, iViewport[2], iViewport[3], (bpp == 32 ? GL_BGRA : GL_BGR), GL_UNSIGNED_BYTE, s->pixels);
+    glReadPixels(0, 0, iViewport[2], iViewport[3],
+#ifdef ANDROID
+	    (bpp == 32 ? GL_RGBA : GL_RGB),
+#else
+	    (bpp == 32 ? GL_BGRA : GL_BGR),
+#endif
+	    GL_UNSIGNED_BYTE, s->pixels);
     save_png_surf_rev(name,s);
 }
 
 void opengl_reshape(int w, int h) {
     glViewport(0, 0, w, h);
     // Reset the coordinate system before modifying
+#ifndef ANDROID
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     // Set the clipping volume
     gluOrtho2D(0.0f, (GLfloat) w, 0.0, (GLfloat) h);
+#else
+    glOrthof(0.0f, (GLfloat) w, 0.0, (GLfloat) h,-1,1); // equiv to gluOrtho2d without -1,1
+#endif
 
+#ifndef ANDROID
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
@@ -87,6 +107,7 @@ void opengl_reshape(int w, int h) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
+#endif
 }
 
 static int GetAttribute(int attr, int *value) {
@@ -113,9 +134,18 @@ void get_ogl_infos() {
 	switch (sdl_screen->format->BitsPerPixel) {
 	case 16:
 		gl_format = GL_RGB;
+#ifdef ANDROID
+		gl_type = GL_UNSIGNED_SHORT_5_6_5;
+#else
 		gl_type = GL_UNSIGNED_SHORT_5_6_5_REV;
+#endif
 		break;
 	case 32:
+#ifdef ANDROID
+		// No such flexibility with opengl/es !
+		gl_format = GL_RGBA;
+		gl_type = GL_UNSIGNED_INT_24_8_OES;
+#else
 		switch (sdl_screen->format->Bshift) {
 		case 0:
 			gl_format = GL_BGRA;
@@ -132,6 +162,7 @@ void get_ogl_infos() {
 		default:
 			format_error = 1;
 		}
+#endif
 		break;
 	default:
 		format_error = 1;
@@ -154,7 +185,9 @@ void get_ogl_infos() {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_ALPHA_TEST);
 	glDisable(GL_BLEND);
+#ifndef ANDROID
 	glDisable(GL_POLYGON_SMOOTH);
+#endif
 	glDisable(GL_STENCIL_TEST);
 	if (ogl.render == 1)
 		glEnable(GL_TEXTURE_2D);

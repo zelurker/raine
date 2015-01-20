@@ -1,5 +1,9 @@
 #define NOGDI // define this before including windows.h to avoid BITMAP !
+#ifdef ANDROID
+#include <GLES/gl.h>
+#else
 #include <SDL_opengl.h>
+#endif
 #undef WINAPI
 #include "../gui/menu.h"
 #include "raine.h" // display_cfg

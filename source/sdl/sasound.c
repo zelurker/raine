@@ -65,12 +65,13 @@
 #include "assoc.h" // just for use_music
 
 int GameSound;
-static int fadeout,fade_vol,fade_nb,fade_frame,fade_vol;
+static int fadeout,fade_nb,fade_frame;
 UINT8 *PCMROM;
 
 static char driver_name[40];
 #ifdef HAS_NEO
 static char track_to_read[FILENAME_MAX];
+static int fade_vol;
 #endif
 
 int RaineSoundCard;

@@ -207,7 +207,7 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	if (col >= 30 && col <= 37)
 	  fg = (ansi_color[col - 30]<<8) | 255;
 	else if (col >= 40 && col <= 47)
-	  bg = (ansi_color[col - 30]<<8) | 255;
+	  bg = (ansi_color[col - 40]<<8) | 255;
 	else if (col == 1)
 	    font->set_style(TTF_STYLE_BOLD);
 	else if (col == 0) {

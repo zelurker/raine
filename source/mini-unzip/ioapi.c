@@ -16,7 +16,7 @@
 
 #include "ioapi.h"
 
-#ifdef DARWIN
+#if defined(DARWIN) || defined(ANDROID)
 #define fopen64 fopen
 #define ftello64 ftello
 #define fseeko64 fseeko

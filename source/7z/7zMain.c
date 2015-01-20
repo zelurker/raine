@@ -29,7 +29,7 @@
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
 #endif
-#elif defined(DARWIN)
+#elif defined(DARWIN) || defined(ANDROID)
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
 #endif
@@ -170,7 +170,7 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
   static UInt32 blockIndex = 0xFFFFFFFF; /* it can have any value before first call (if outBuffer = 0) */
   static size_t outSizeProcessed = 0;
   UInt32 i;
-  UInt32 offset = 0;
+  size_t offset = 0;
   const CSzFileItem *f;
 
   if (!*oldfile) {
@@ -314,7 +314,7 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 
       if (load_debug)
 	  sprintf(load_debug+strlen(load_debug),
-		  "Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,outSizeProcessed);
+		  "Bad rom size for %s: tried to read %xh bytes, got %xh\n",name,size,(UINT32)outSizeProcessed);
   }
   else {
       char buf[80];

@@ -492,3 +492,6 @@ void StopZ80Mode2(UINT16 address, UINT8 data)
    Cz80_Release_Cycle(&Z80_context[1]);
 }
 
+void mz80AddCyclesDone(int cycles) {
+    curz->dwElapsedTicks += cycles;
+}

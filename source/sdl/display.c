@@ -1,5 +1,9 @@
 #define NOGDI // define this before including windows.h to avoid BITMAP !
+#ifdef ANDROID
+#include <GLES/gl.h>
+#else
 #include <SDL_opengl.h>
+#endif
 #undef WINAPI
 #include <time.h>
 #include "raine.h"
@@ -417,7 +421,7 @@ static SDL_Surface *new_set_gfx_mode() {
 #endif
       SDL_Rect **modes = SDL_ListModes(NULL,videoflags);
       if (modes && modes != (SDL_Rect **)-1) {
-	int diffx = 10000, diffy = 10000, selected;
+	int diffx = 10000, diffy = 10000, selected=0;
 	int i;
 	for (i = 0; modes[i]; i++) {
 	  if (

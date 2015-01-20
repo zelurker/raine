@@ -135,7 +135,7 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
   }
   if (strlen(name) > EXT_NAME) {
-      printf("AddSaveData_ext: name overflow: %d: %s\n",strlen(name),name);
+      printf("AddSaveData_ext: name overflow: %zd: %s\n",strlen(name),name);
       exit(1);
   }
 
@@ -491,13 +491,13 @@ void NewLoad(gzFile fin)
        for(ta=0;ta<SaveDataCount;ta++){
 	   if(save_data_list[ta].id == SAVE_EXT &&
 		   !strcmp(save_data_list[ta].name,name)){
-	       print_debug("save_file: extended section %s\n",name);
+	       print_debug("NewLoad: extended section %s\n",name);
 	       read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
 	       break;
 	   }
        }
        if (ta == SaveDataCount) {
-	   print_debug("save_file: extended section %s not found\n",name);
+	   print_debug("NewLoad: extended section %s not found\n",name);
 	   read_safe_data(NULL,0,t_size,fin);
        }
        continue;
@@ -515,11 +515,11 @@ void NewLoad(gzFile fin)
 		 t_size = mgetl(fin);
 		 endianess_bug = 1;
 	 }
-	 print_debug("save_file: SAVE_RAM section\n");
+	 print_debug("NewLoad: SAVE_RAM section\n");
          read_safe_data(RAM,RAMSize,t_size,fin);
       break;
       case SAVE_PICT:
-        print_debug("save_file: SAVE_PICT section\n");
+        print_debug("NewLoad: SAVE_PICT section\n");
         gzseek(fin,t_size,SEEK_CUR);
 	break;
 
@@ -532,14 +532,14 @@ void NewLoad(gzFile fin)
          load_done=1;
       break;
       case SAVE_MOUSE: // Only saved when GameMouse is true
-	print_debug("save_file: SAVE_MOUSE section\n");
+	print_debug("NewLoad: SAVE_MOUSE section\n");
       	p1_trackball_x = t_size & 0xffff;
 	p1_trackball_y = t_size >> 16;
 	break;
       default:
          for (ta=0; ta<MAX_DYN; ta++) {
 	   if (t_id == ASCII_ID('D','Y','N',ta)) {
-	     print_debug("save_file: SAVE_DYN%d section\n",ta);
+	     print_debug("NewLoad: SAVE_DYN%d section\n",ta);
 	     if (dyn_callbacks[ta].load) {
 	       UINT8 *buff = AllocateMem(t_size);
 	       if (buff) {
@@ -562,7 +562,7 @@ void NewLoad(gzFile fin)
          tb=0;
          for(ta=0;ta<SaveDataCount && tb==0;ta++){
             if(save_data_list[ta].id == t_id){
-	      print_debug("save_file: section %c%c%c%c\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff));
+	      print_debug("NewLoad: section %c%c%c%c\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff));
                read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
                tb=1;
             }

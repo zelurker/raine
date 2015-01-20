@@ -83,6 +83,7 @@ extern int latch;
 UINT8 soundlatch_lo_r(UINT32 offset);
 
 void StopZ80Mode2(UINT16 address, UINT8 data);
+void mz80AddCyclesDone(int cycles);
 
 #ifdef __cplusplus
 }

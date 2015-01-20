@@ -470,6 +470,7 @@ void DestroyScreenBitmap(void)
 
 extern void *old_draw; // dlg_sound
 
+#ifndef NO_ASM
 static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
    UINT32 ta;
@@ -627,6 +628,8 @@ static void raine_blit_scale3x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int 
    asm("mov _oldes,%es");
 #endif
 }
+#endif
+
 #if 0
 static void RGBtoYUV(Uint8 *rgb, int *yuv, int monochrome, int luminance)
 {
@@ -988,7 +991,7 @@ void DrawNormal(void)
 	     }
      case 3:
 	     { // fullheight + double width
-	     int end;
+	     int end = 0;
 	     locked = lock_surface(sdl_screen);
 	     if (locked > -1) {
 	       end = MIN(2*yyy,screen->h-1)/2;

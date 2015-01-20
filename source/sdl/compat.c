@@ -38,12 +38,10 @@ static SDL_PixelFormat hq2x_format = {
 
 struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
   // Init a fake bitmap to point to a newly created sdl_surface
-  int r,g,b,a; // masks if necessary...
+  int r=0,g=0,b=0,a=0; // masks if necessary...
   SDL_Surface *s;
 
-  if (bpp == 8) {
-    r = g = b = a = 0; // Useless
-  } else {
+  if (bpp > 8) {
     const SDL_VideoInfo *inf = SDL_GetVideoInfo();
     SDL_PixelFormat *fmt = inf->vfmt;
     if (sdl_overlay) {

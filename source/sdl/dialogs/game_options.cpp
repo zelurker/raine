@@ -96,7 +96,7 @@ static menu_item_t *get_savegames(int for_saving) {
 	  }
 	  saves[used].num = atoi(s);
 	  stat(fpath,&buf);
-	  int ret = strftime(saves[used].date,sizeof(saves[used].date),"%x %X",localtime(&buf.st_mtime));
+	  int ret = strftime(saves[used].date,sizeof(saves[used].date),"%x %X",localtime((const time_t*)&buf.st_mtime));
 	  if (!ret) {
 	    printf("couldn't store date\n");
 	    exit(1);

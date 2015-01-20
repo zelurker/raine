@@ -31,10 +31,10 @@ RAINE_DEBUG = 1
 ASM_VIDEO_CORE = 1
 
 # console ?
-HAS_CONSOLE = 1
+# HAS_CONSOLE = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
-USE_BEZELS=1
+# USE_BEZELS=1
 
 # use cz80 instead of the usual heavily modyfied asm-only mz80 ?
 # CZ80 = 1
@@ -421,7 +421,9 @@ ifdef SDL
 OBJDIR = $(OSTYPE)-sdl
 endif
 
+ifndef NO_ASM
 include cpuinfo
+endif
 
 ifdef X86_64
 OBJDIR := $(OBJDIR)64
@@ -1075,8 +1077,6 @@ endif # HAS_NEO
 endif
 endif
 endif
-
-CFLAGS := $(CFLAGS)
 
 all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
 
