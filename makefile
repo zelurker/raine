@@ -17,7 +17,7 @@
 VERSION = "0.64.2"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -31,7 +31,7 @@ RAINE_DEBUG = 1
 ASM_VIDEO_CORE = 1
 
 # console ?
-# HAS_CONSOLE = 1
+HAS_CONSOLE = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # USE_BEZELS=1

@@ -308,8 +308,7 @@ int handle_sound_cmd(int cmd) {
 		     * 2 effects add. There is not much difference between
 		     * 3.0 and 4.0 here, I'll leave 4 to have more margin */
 		    time = 4.0;
-		} else
-		    printf("current track %x\n",cdda.track);
+		}
 		start_music_fadeout(time);
 	    }
 	    mode = MUSIC;

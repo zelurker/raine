@@ -62,7 +62,7 @@ int use_scale2x;
 void get_best_resolution(const VIDEO_INFO *vid,int *w,int *h) {
   int ta;
   *w = vid->screen_x;
-  *h = vid->screen_y,ta;
+  *h = vid->screen_y;
   bezel_fix_screen_size(w,h);
 
   if (vid->flags & VIDEO_ROTATE_90 || (vid->flags & 3)==VIDEO_ROTATE_270) {
