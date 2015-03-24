@@ -574,8 +574,19 @@ int read_z80_bank(int cpu, int n, int address) {
     return *(bank[cpu][n]+address);
 }
 
+static int allow_wb = 0; // always 0 except when writing region !
+
+void allow_writebank(int allow) {
+    allow_wb = allow;
+}
+
 static int check_z80_bank_write(int cpu, int index,UINT32 address,UINT8 data) {
   int ta,tb,n;
+  /* The allow_wb check is for the hiscores ! They write to ram and usually the
+   * ram is placed after the banks, so allowing to write to banks here messes
+   * things up. So allowing writing to banks only when writing explicitely to
+   * the rom (language dipswitch) */
+  if (!allow_wb) return 0;
 
   // This function writes to a rom bank if needs to.
   // Clearly writing to a place in a bank must be to a prcise bank.
@@ -714,8 +725,9 @@ void WriteMZ80Byte(UINT32 address, UINT8 data)
       else{
          if((address>=Z80_memory_rb[cpu][ta].lowAddr)&&(Z80_memory_rb[cpu][ta].highAddr>=address)){
             if(Z80_memory_rb[cpu][ta].memoryCall==NULL){
-	      if (!check_z80_bank_write(cpu,ta,address,data))
+	      if (!check_z80_bank_write(cpu,ta,address,data)) {
 		WriteByte( ((UINT8 *) Z80_memory_rb[cpu][ta].pUserArea) + address,data);
+	      }
 	      ta=99;
             }
             //else{

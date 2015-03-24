@@ -172,6 +172,8 @@ UINT32 mz80GetCyclesDone();
 void mz80AddCyclesDone(int cycles);
 int mz80GetCyclesRemaining();
 
+void allow_writebank(int allow);
+
 #endif
 
 #ifdef __cplusplus

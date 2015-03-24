@@ -336,7 +336,9 @@ extern void write_z80_to_rom(UINT32 address, UINT8 data);
 
 static void gen_cpu_write_byte_rom(UINT32 address, UINT8 data)
 {
+    allow_writebank(1);
   gen_cpu_write_byte(address,data);
+  allow_writebank(0);
 }
 
 static UINT8 gen_cpu_read_byte_rom(UINT32 address)
