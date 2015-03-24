@@ -104,7 +104,7 @@ while ($_ = shift @file) {
 		my $comment = undef;
 		my $load_be = undef;
 		while ($_ = shift @file) {
-			if (/ROM_REGION\( ?(.+) ?\)/ || /ROM_REGION16_BE\( ?(.+?) ?\)/ || /ROM_REGION16_LE\( ?(.+?) ?\)/) {
+			if (/ROM_REGION *\( ?(.+) ?\)/ || /ROM_REGION16_BE *\( ?(.+?) ?\)/ || /ROM_REGION16_LE *\( ?(.+?) ?\)/) {
 				my $nbx = 0;
 				my $args = $1;
 #	$load_be = 1 if (/ROM_REGION16_BE/);
