@@ -1301,8 +1301,8 @@
   DRV(twinhawk)
 
 // xsystem2.c
-  DRV(arknid2u)
-  DRV(arknid2j)
+  DRV(arknoid2u)
+  DRV(arknoid2j)
   DRV(arknoid2)
   DRV(chukatai)
   DRV(drtoppel)

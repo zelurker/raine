@@ -30,7 +30,7 @@ Supported romsets:
 */
 
 
-static struct ROM_INFO rom_arknid2u[] =
+static struct ROM_INFO rom_arknoid2u[] =
 {
    {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
    {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
@@ -252,7 +252,7 @@ static struct ROM_INFO rom_arknoid2[] =
 
 
 
-static struct ROM_INFO rom_arknid2j[] =
+static struct ROM_INFO rom_arknoid2j[] =
 {
    {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
    {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
@@ -2069,12 +2069,12 @@ static void load_arknoid2(void)
    load_arkanoid_2_actual(0);
 }
 
-static void load_arknid2u(void)
+static void load_arknoid2u(void)
 {
    load_arkanoid_2_actual(1);
 }
 
-static void load_arknid2j(void)
+static void load_arknoid2j(void)
 {
    load_arkanoid_2_actual(2);
 }
@@ -3706,17 +3706,18 @@ static struct VIDEO_INFO video_tnzsb =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
 };
-static struct DIR_INFO dir_arknid2u[] =
+static struct DIR_INFO dir_arknoid2u[] =
 {
    { "arkanoid_2_american", },
    { "ark2us", },
+   { "arknoid2u", },
    { "arknid2u", },
    { "arkanoi2", },
    { ROMOF("arknoid2"), },
    { CLONEOF("arknoid2"), },
    { NULL, },
 };
-GAME(arknid2u, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
+GAME(arknoid2u, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_arknoid2,
 	.dsw = dsw_arknoid2,
 	.video = &video_arknoid2,
@@ -3725,17 +3726,18 @@ GAME(arknid2u, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
 	.board = "B08",
 	.sound = sound_arknoid2,
 );
-static struct DIR_INFO dir_arknid2j[] =
+static struct DIR_INFO dir_arknoid2j[] =
 {
    { "arkanoid_2_japanese", },
    { "ark2jp", },
+   { "arknoid2j", },
    { "arknid2j", },
    { "arkanoi2", },
    { ROMOF("arknoid2"), },
    { CLONEOF("arknoid2"), },
    { NULL, },
 };
-GAME(arknid2j, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
+GAME(arknoid2j, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_arknoid2,
 	.dsw = dsw_arknoid2,
 	.video = &video_arknoid2,
