@@ -219,7 +219,7 @@ void AddLoadCallback_ptr(void *callback,void *arg) {
     save_callback_ptr[savecbptr_count++].arg = arg;
 }
 
-void AddLoadCallback(void *callback)
+void AddLoadCallback(void (*callback)())
 {
     if (find_callback(CALLBACK_LOAD,callback)>0) {
 	print_debug("AddLoadCallback: callback already inserted\n");
@@ -229,7 +229,7 @@ void AddLoadCallback(void *callback)
    save_callback_list[SaveCallbackCount].proc      = callback;
    SaveCallbackCount++;
 }
-void AddSaveCallback(void *callback)
+void AddSaveCallback(void (*callback)())
 {
     if (find_callback(CALLBACK_SAVE,callback)>0) {
 	print_debug("AddSaveCallback: callback already inserted\n");
