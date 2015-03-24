@@ -53,8 +53,8 @@
 // bublbobl.c
   DRV(boblbobl)
   DRV(bublbobl)
-  DRV(bublbobr)
-  DRV(bubbobr1)
+  DRV(bublboblr)
+  DRV(bubboblr1)
   DRV(sboblbob)
 
 // bubsymph.c

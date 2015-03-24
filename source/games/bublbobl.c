@@ -85,23 +85,29 @@ changes/antiriad:
 
 static struct ROM_INFO rom_bublbobl[] =
 {
-   {   "a78-05.52", 0x00010000, 0x53f4bc6e, 0, 0, 0, },
-   {   "a78-06.51", 0x00008000, 0x32c8305b, 0, 0, 0, },
-   {   "a78-07.46", 0x00008000, 0x4f9a26e8, 0, 0, 0, },
-   {   "a78-08.37", 0x00008000, 0xae11a07b, 0, 0, 0, },
-   {   "a78-09.12", 0x00008000, 0x20358c22, 0, 0, 0, },
-   {   "a78-10.13", 0x00008000, 0x930168a9, 0, 0, 0, },
-   {   "a78-11.14", 0x00008000, 0x9773e512, 0, 0, 0, },
-   {   "a78-12.15", 0x00008000, 0xd045549b, 0, 0, 0, },
-   {   "a78-13.16", 0x00008000, 0xd0af35c5, 0, 0, 0, },
-   {   "a78-14.17", 0x00008000, 0x7b5369a8, 0, 0, 0, },
-   {   "a78-15.30", 0x00008000, 0x6b61a413, 0, 0, 0, },
-   {   "a78-16.31", 0x00008000, 0xb5492d97, 0, 0, 0, },
-   {   "a78-17.32", 0x00008000, 0xd69762d5, 0, 0, 0, },
-   {   "a78-18.33", 0x00008000, 0x9f243b68, 0, 0, 0, },
-   {   "a78-19.34", 0x00008000, 0x66e9438c, 0, 0, 0, },
-   {   "a78-20.35", 0x00008000, 0x9ef863ad, 0, 0, 0, },
-   {    "68705.bin", 0x00000800, 0x78caa635, 0, 0, 0, },
+    /* ROMs banked at 8000-bfff */
+    { "a78-06.51", 0x08000, 0x32c8305b, REGION_CPU1, 0x00000, LOAD_NORMAL },
+    /* 20000-2ffff empty */
+    { "a78-05.52", 0x10000, 0x53f4bc6e, REGION_CPU1, 0x08000, LOAD_NORMAL },
+   { "a78-08.37", 0x08000, 0xae11a07b, REGION_ROM2, 0x0000, LOAD_NORMAL },
+   { "a78-07.46", 0x08000, 0x4f9a26e8, REGION_ROM3, 0x0000, LOAD_NORMAL },
+   { "a78-09.12", 0x8000, 0x20358c22, REGION_GFX1, 0x00000, LOAD_NORMAL },
+   { "a78-10.13", 0x8000, 0x930168a9, REGION_GFX1, 0x08000, LOAD_NORMAL },
+   { "a78-11.14", 0x8000, 0x9773e512, REGION_GFX1, 0x10000, LOAD_NORMAL },
+   { "a78-12.15", 0x8000, 0xd045549b, REGION_GFX1, 0x18000, LOAD_NORMAL },
+   { "a78-13.16", 0x8000, 0xd0af35c5, REGION_GFX1, 0x20000, LOAD_NORMAL },
+   { "a78-14.17", 0x8000, 0x7b5369a8, REGION_GFX1, 0x28000, LOAD_NORMAL },
+   /* 0x30000-0x3ffff empty */
+  FILL(          0x30000, 0x10000, 0, GFX1),
+   { "a78-15.30", 0x8000, 0x6b61a413, REGION_GFX1, 0x40000, LOAD_NORMAL },
+   { "a78-16.31", 0x8000, 0xb5492d97, REGION_GFX1, 0x48000, LOAD_NORMAL },
+   { "a78-17.32", 0x8000, 0xd69762d5, REGION_GFX1, 0x50000, LOAD_NORMAL },
+   { "a78-18.33", 0x8000, 0x9f243b68, REGION_GFX1, 0x58000, LOAD_NORMAL },
+   { "a78-19.34", 0x8000, 0x66e9438c, REGION_GFX1, 0x60000, LOAD_NORMAL },
+   { "a78-20.35", 0x8000, 0x9ef863ad, REGION_GFX1, 0x68000, LOAD_NORMAL },
+   /* 0x70000-0x7ffff empty */
+  FILL(          0x70000, 0x10000, 0, GFX1),
+   { "68705.bin", 0x00000800, 0x78caa635, REGION_ROM4, 0, LOAD_NORMAL, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -212,7 +218,6 @@ static struct DSW_INFO dsw_bublbobl[] =
    { 0,        0,    NULL,      },
 };
 
-
 static struct YM2203interface ym2203_interface =
 {
      1,
@@ -247,25 +252,12 @@ static struct SOUND_INFO sound_bublbobl[] =
  *************************************/
 
 
-static struct ROM_INFO rom_bublbobr[] =
+static struct ROM_INFO rom_bublboblr[] =
 {
-   {       "a78-24.52", 0x00010000, 0xb7afedc4, 0, 0, 0, },
-   {       "a78-25.51", 0x00008000, 0x2d901c9d, 0, 0, 0, },
-   {   "a78-07.46", 0x00008000, 0x4f9a26e8, 0, 0, 0, },
-   {   "a78-08.37", 0x00008000, 0xae11a07b, 0, 0, 0, },
-   {   "a78-09.12", 0x00008000, 0x20358c22, 0, 0, 0, },
-   {   "a78-10.13", 0x00008000, 0x930168a9, 0, 0, 0, },
-   {   "a78-11.14", 0x00008000, 0x9773e512, 0, 0, 0, },
-   {   "a78-12.15", 0x00008000, 0xd045549b, 0, 0, 0, },
-   {   "a78-13.16", 0x00008000, 0xd0af35c5, 0, 0, 0, },
-   {   "a78-14.17", 0x00008000, 0x7b5369a8, 0, 0, 0, },
-   {   "a78-15.30", 0x00008000, 0x6b61a413, 0, 0, 0, },
-   {   "a78-16.31", 0x00008000, 0xb5492d97, 0, 0, 0, },
-   {   "a78-17.32", 0x00008000, 0xd69762d5, 0, 0, 0, },
-   {   "a78-18.33", 0x00008000, 0x9f243b68, 0, 0, 0, },
-   {   "a78-19.34", 0x00008000, 0x66e9438c, 0, 0, 0, },
-   {   "a78-20.35", 0x00008000, 0x9ef863ad, 0, 0, 0, },
-   {    "68705.bin", 0x00000800, 0x78caa635, 0, 0, 0, },
+	/* ROMs banked at 8000-bfff */
+  { "a78-25.51", 0x08000, 0x2d901c9d, REGION_CPU1, 0x00000, LOAD_NORMAL },
+	/* 20000-2ffff empty */
+  { "a78-24.52", 0x10000, 0xb7afedc4, REGION_CPU1, 0x8000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -275,25 +267,12 @@ static struct ROM_INFO rom_bublbobr[] =
  ********************/
 
 
-static struct ROM_INFO rom_bubbobr1[] =
+static struct ROM_INFO rom_bubboblr1[] =
 {
-   {    "a78-21.52", 0x00010000, 0x2844033d, 0, 0, 0, },
-   {   "a78-06.51", 0x00008000, 0x32c8305b, 0, 0, 0, },
-   {   "a78-07.46", 0x00008000, 0x4f9a26e8, 0, 0, 0, },
-   {   "a78-08.37", 0x00008000, 0xae11a07b, 0, 0, 0, },
-   {   "a78-09.12", 0x00008000, 0x20358c22, 0, 0, 0, },
-   {   "a78-10.13", 0x00008000, 0x930168a9, 0, 0, 0, },
-   {   "a78-11.14", 0x00008000, 0x9773e512, 0, 0, 0, },
-   {   "a78-12.15", 0x00008000, 0xd045549b, 0, 0, 0, },
-   {   "a78-13.16", 0x00008000, 0xd0af35c5, 0, 0, 0, },
-   {   "a78-14.17", 0x00008000, 0x7b5369a8, 0, 0, 0, },
-   {   "a78-15.30", 0x00008000, 0x6b61a413, 0, 0, 0, },
-   {   "a78-16.31", 0x00008000, 0xb5492d97, 0, 0, 0, },
-   {   "a78-17.32", 0x00008000, 0xd69762d5, 0, 0, 0, },
-   {   "a78-18.33", 0x00008000, 0x9f243b68, 0, 0, 0, },
-   {   "a78-19.34", 0x00008000, 0x66e9438c, 0, 0, 0, },
-   {   "a78-20.35", 0x00008000, 0x9ef863ad, 0, 0, 0, },
-   {    "68705.bin", 0x00000800, 0x78caa635, 0, 0, 0, },
+	/* ROMs banked at 8000-bfff */
+  { "a78-06.51", 0x08000, 0x32c8305b, REGION_CPU1, 0x00000, LOAD_NORMAL },
+	/* 20000-2ffff empty */
+  { "a78-21.52", 0x10000, 0x2844033d, REGION_CPU1, 0x08000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -305,24 +284,10 @@ static struct ROM_INFO rom_bubbobr1[] =
 
 static struct ROM_INFO rom_boblbobl[] =
 {
-   {          "bb3", 0x00008000, 0x01f81936, 0, 0, 0, },
-   {          "bb4", 0x00008000, 0xafda99d8, 0, 0, 0, },
-   {          "bb5", 0x00008000, 0x13118eb1, 0, 0, 0, },
-   {   "a78-07.46", 0x00008000, 0x4f9a26e8, 0, 0, 0, },
-   {   "a78-08.37", 0x00008000, 0xae11a07b, 0, 0, 0, },
-   {   "a78-09.12", 0x00008000, 0x20358c22, 0, 0, 0, },
-   {   "a78-10.13", 0x00008000, 0x930168a9, 0, 0, 0, },
-   {   "a78-11.14", 0x00008000, 0x9773e512, 0, 0, 0, },
-   {   "a78-12.15", 0x00008000, 0xd045549b, 0, 0, 0, },
-   {   "a78-13.16", 0x00008000, 0xd0af35c5, 0, 0, 0, },
-   {   "a78-14.17", 0x00008000, 0x7b5369a8, 0, 0, 0, },
-   {   "a78-15.30", 0x00008000, 0x6b61a413, 0, 0, 0, },
-   {   "a78-16.31", 0x00008000, 0xb5492d97, 0, 0, 0, },
-   {   "a78-17.32", 0x00008000, 0xd69762d5, 0, 0, 0, },
-   {   "a78-18.33", 0x00008000, 0x9f243b68, 0, 0, 0, },
-   {   "a78-19.34", 0x00008000, 0x66e9438c, 0, 0, 0, },
-   {   "a78-20.35", 0x00008000, 0x9ef863ad, 0, 0, 0, },
-   {    "68705.bin", 0x00000800, 0x78caa635, 0, 0, 0, },
+	/* ROMs banked at 8000-bfff */
+  { "bb3", 0x08000, 0x01f81936, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "bb5", 0x08000, 0x13118eb1, REGION_CPU1, 0x08000, LOAD_NORMAL },
+  { "bb4", 0x08000, 0xafda99d8, REGION_CPU1, 0x10000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -387,24 +352,11 @@ static struct DSW_INFO dsw_boblbobl[] =
 
 static struct ROM_INFO rom_sboblbob[] =
 {
-   {    "bbb-3.rom", 0x00008000, 0xf304152a, 0, 0, 0, },
-   {    "bbb-4.rom", 0x00008000, 0x94c75591, 0, 0, 0, },
-   {          "bb5", 0x00008000, 0x13118eb1, 0, 0, 0, },
-   {   "a78-07.46", 0x00008000, 0x4f9a26e8, 0, 0, 0, },
-   {   "a78-08.37", 0x00008000, 0xae11a07b, 0, 0, 0, },
-   {   "a78-09.12", 0x00008000, 0x20358c22, 0, 0, 0, },
-   {   "a78-10.13", 0x00008000, 0x930168a9, 0, 0, 0, },
-   {   "a78-11.14", 0x00008000, 0x9773e512, 0, 0, 0, },
-   {   "a78-12.15", 0x00008000, 0xd045549b, 0, 0, 0, },
-   {   "a78-13.16", 0x00008000, 0xd0af35c5, 0, 0, 0, },
-   {   "a78-14.17", 0x00008000, 0x7b5369a8, 0, 0, 0, },
-   {   "a78-15.30", 0x00008000, 0x6b61a413, 0, 0, 0, },
-   {   "a78-16.31", 0x00008000, 0xb5492d97, 0, 0, 0, },
-   {   "a78-17.32", 0x00008000, 0xd69762d5, 0, 0, 0, },
-   {   "a78-18.33", 0x00008000, 0x9f243b68, 0, 0, 0, },
-   {   "a78-19.34", 0x00008000, 0x66e9438c, 0, 0, 0, },
-   {   "a78-20.35", 0x00008000, 0x9ef863ad, 0, 0, 0, },
-   {    "68705.bin", 0x00000800, 0x78caa635, 0, 0, 0, },
+	/* ROMs banked at 8000-bfff */
+  { "bbb-3.rom", 0x08000, 0xf304152a, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "bb5", 0x08000, 0x13118eb1, REGION_CPU1, 0x08000, LOAD_NORMAL },
+  { "bbb-4.rom", 0x08000, 0x94c75591, REGION_CPU1, 0x10000, LOAD_NORMAL },
+	/* 20000-2ffff empty */
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -466,16 +418,13 @@ static struct DSW_INFO dsw_sboblbob[] =
 
 static UINT8 *RAM_INPUT;
 
-static UINT8 *GFX_BG0;
-static UINT8 *GFX_BG0_SOLID;
-
 static int mcu_addr;
 static UINT8 mcu_latch;
 #ifndef MAME_MCU
 static UINT8 mcu_port_a, mcu_old_data;
 #endif
-static UINT8 *RAM_MCU, *ROM_2ND, *ROM_SND, *RAM_SND;
-static int nmi_enable, nmi_pending;
+static UINT8 *RAM_MCU, *ROM_SND, *RAM_SND;
+static int nmi_enable, nmi_pending,irq_enable;
 
 void BubbleBobble_mcu(int bih_count);
 void BubbleBobble_mcu_reset(void);
@@ -676,16 +625,9 @@ static UINT32 bank_sw;
 
 static void init_bank_rom(UINT8 *src, UINT8 *dst)
 {
-   UINT32 ta;
-
    setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(3,60));
 
-   for(ta=0;ta<4;ta++){
-      ROM_BANK[ta] = dst+(ta*0xC000);
-      memcpy(ROM_BANK[ta]+0x0000,src+0x0000,0x8000);
-      memcpy(ROM_BANK[ta]+0x8000,src+0x8000+(ta*0x4000),0x4000);
-   }
-
+   z80_init_banks(0,REGION_ROM1,0x8000,0x4000);
    bank_sw = 0;
 }
 
@@ -695,7 +637,7 @@ static void BublBobl_BankSwitch(UINT16 addr, UINT8 value)
    if (bank_sw != (UINT32)(value & 3))
    {
       bank_sw = value & 3;
-      Z80ASetBank( ROM_BANK[bank_sw] );
+      z80_set_bank( 0,bank_sw );
    }
 #if 0
    if ((value & 0x10)) {
@@ -826,77 +768,54 @@ static void BublBoblAddSaveData(void)
 
 /******************************************************************************/
 
-static void DrawNibble0(UINT8 *out, UINT8 c)
-{
-   int count, t;
-
-   count = 4;
-   do {
-      t = c & 1;
-      *out = t;
-      out++;
-      c >>= 1;
-   } while(--count);
-}
-
-static void DrawNibble(UINT8 *out, int plane, UINT8 c)
-{
-   int count, t;
-
-   count = 4;
-   do {
-      t = c & 1;
-      *out |= t << plane;
-      out++;
-      c >>= 1;
-   } while(--count);
-}
-
 static UINT8 HACK[3][2];
 
 static void BublBobl_resetsound(UINT32 offset, UINT8 data) {
-    /*
-    if (data)
+    irq_enable = 1;
+/*    if (!data)
 	cpu_reset(CPU_Z80_2); */
 }
 
 static void load_bublbobl(void)
 {
-   int ta, tb;
-   UINT8 *TMP;
-
 /*ﾄﾄﾄﾄ Set up ROM/RAM ﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄ*/
 
    RAMSize=0x10000 + 0x100 + 0x1000;
-
-   if(!(ROM =AllocateMem(0xC000*4))) return;
-
-   if(!(ROM_2ND =AllocateMem(0x10000))) return;
-
-   if(!(ROM_SND =AllocateMem(0x10000))) return;
-
-   if(!(RAM_MCU =AllocateMem(0x800))) return;
 
    if(!(RAM=AllocateMem(RAMSize))) return;
 
    RAM_INPUT = RAM + 0x10000;
    RAM_SND   = RAM + 0x10100;
 
-   if(!(TMP=AllocateMem(0x18000))) return;
-
-   if(!load_rom_index(1,TMP+0x00000, 0x08000)) return;  // Z80 base rom
-   if(!load_rom_index(0,TMP+0x08000, 0x10000)) return;  // Z80 bank rom
-
    // Skip Idle Z80
+   HACK[0][0] = ROM[0x01ED];
+   HACK[0][1] = ROM[0x01EE];
+   ROM[0x01ED]=0xD3;  // OUTA (AAh)
+   ROM[0x01EE]=0xAA;  //
 
-   HACK[0][0] = TMP[0x01ED];
-   HACK[0][1] = TMP[0x01EE];
-   TMP[0x01ED]=0xD3;  // OUTA (AAh)
-   TMP[0x01EE]=0xAA;  //
+   if (is_current_game("boblbobl")) {
+       // it's probably something to avoid to switch to a non existing blank
+       // bank, it could be replaced by a rom_fill with 0, but I'll keep this.
+       ROM[0x9a71 + 0xC000]=0x00;
+       ROM[0x9a72 + 0xC000]=0x00;
+       ROM[0x9a73 + 0xC000]=0x00;
+
+       ROM[0xa4af + 0xC000]=0x00;
+       ROM[0xa4b0 + 0xC000]=0x00;
+       ROM[0xa4b1 + 0xC000]=0x00;
+
+       ROM[0xa55d + 0xC000]=0x00;
+       ROM[0xa55e + 0xC000]=0x00;
+       ROM[0xa55f + 0xC000]=0x00;
+
+       ROM[0xb561 + 0xC000]=0x00;
+       ROM[0xb562 + 0xC000]=0x00;
+       ROM[0xb563 + 0xC000]=0x00;
+   }
 
    SetStopZ80Mode2(0x01ED);
 
-   init_bank_rom(TMP,ROM);
+   init_bank_rom(NULL,ROM);
 
    nmi_enable = 0;
    nmi_pending = 0;
@@ -935,28 +854,24 @@ static void load_bublbobl(void)
 
    AddZ80AInit();
 
-   FreeMem(TMP);
-
-   if(!load_rom("a78-08.37",ROM_2ND,    0x8000)) {return;}  // 2nd Z80 code
-
    // Fix Checksum
 
-   ROM_2ND[0x018C]=0xC9;
+   Z80ROM[0x018C]=0xC9;
 
    // Skip Idle Z80
 
-   HACK[1][0] = ROM_2ND[0x000A];
-   HACK[1][1] = ROM_2ND[0x000B];
-   ROM_2ND[0x000A]=0xD3;  // OUTA (AAh)
-   ROM_2ND[0x000B]=0xAA;  //
+   HACK[1][0] = Z80ROM[0x000A];
+   HACK[1][1] = Z80ROM[0x000B];
+   Z80ROM[0x000A]=0xD3;  // OUTA (AAh)
+   Z80ROM[0x000B]=0xAA;  //
 
    SetStopZ80BMode2(0x000A);
 
    /* 2nd Z80 */
-   AddZ80BROMBase(ROM_2ND, 0x38, 0x66);
+   AddZ80BROMBase(Z80ROM, 0x38, 0x66);
 
    AddZ80BReadByte(0x000a, 0x000b, NULL, HACK[1]); // hide speed hack
-   AddZ80BReadByte(0x0000, 0x7FFF, NULL,                   ROM_2ND+0x0000);  // ROM
+   AddZ80BReadByte(0x0000, 0x7FFF, NULL,                   Z80ROM+0x0000);  // ROM
    AddZ80BReadByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
    AddZ80BReadByte(0x8000, 0xFFFF, DefBadReadZ80,          NULL);  // <bad reads>
    AddZ80BReadByte(-1, -1, NULL, NULL);
@@ -976,7 +891,7 @@ static void load_bublbobl(void)
 
    /* Hell, lets have a 3rd Z80, why not... */
 
-   if(!load_rom("a78-07.46",ROM_SND,    0x8000)) {return;}  // Sound Z80 code
+   ROM_SND = load_region[REGION_ROM3];
 
    // Skip Idle Z80
    // -------------
@@ -1020,493 +935,13 @@ static void load_bublbobl(void)
 
    // MCU
 
-   if(!load_rom("68705.bin", RAM_MCU,    0x800)) return;  // MCU code
+   RAM_MCU = load_region[REGION_ROM4];
 
    mcu_addr = 0;
    BubbleBobble_mcu_reset();
 
-/*ﾄﾄﾄﾄ Set up graphics ﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄ*/
-   if(!(GFX=AllocateMem(0x100000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   GFX_BG0 = GFX+0x000000;
-
-   /*
-    * The hardware has space for 8 pairs of 32K GFX roms.
-    * Bubble Bobble only uses the first 6.
-    */
-
-   if(!load_rom("a78-15.30", TMP+0x00000, 0x8000)) return;	// 8x8 BG0/OBJ
-   if(!load_rom("a78-16.31", TMP+0x08000, 0x8000)) return;
-   if(!load_rom("a78-17.32", TMP+0x10000, 0x8000)) return;
-   if(!load_rom("a78-18.33", TMP+0x18000, 0x8000)) return;
-   if(!load_rom("a78-19.34", TMP+0x20000, 0x8000)) return;
-   if(!load_rom("a78-20.35", TMP+0x28000, 0x8000)) return;
-   memset(TMP+0x30000,0x00,0x10000);				// 2 ROMs empty here
-
-   if(!load_rom("a78-09.12", TMP+0x40000, 0x8000)) return;	// 8x8 BG0/OBJ
-   if(!load_rom("a78-10.13", TMP+0x48000, 0x8000)) return;
-   if(!load_rom("a78-11.14", TMP+0x50000, 0x8000)) return;
-   if(!load_rom("a78-12.15", TMP+0x58000, 0x8000)) return;
-   if(!load_rom("a78-13.16", TMP+0x60000, 0x8000)) return;
-   if(!load_rom("a78-14.17", TMP+0x68000, 0x8000)) return;
-   memset(TMP+0x70000,0x00,0x10000);				// 2 ROMs empty here
-
-   for(ta=0,tb=0;ta<0x40000;ta+=2,tb+=8){
-      DrawNibble0(&GFX[tb+0], TMP[ta+0]&15);
-      DrawNibble0(&GFX[tb+4], TMP[ta+1]&15);
-      DrawNibble(&GFX[tb+0], 1, TMP[ta+0]>>4);
-      DrawNibble(&GFX[tb+4], 1, TMP[ta+1]>>4);
-      DrawNibble(&GFX[tb+0], 2, TMP[ta+0x40000]&15);
-      DrawNibble(&GFX[tb+4], 2, TMP[ta+0x40001]&15);
-      DrawNibble(&GFX[tb+0], 3, TMP[ta+0x40000]>>4);
-      DrawNibble(&GFX[tb+4], 3, TMP[ta+0x40001]>>4);
-   }
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX_BG0, 0x4000);
-
    BublBoblAddSaveData();
-
-   FreeMem(TMP);
-}
-
-static void load_boblbobl(void)
-{
-   int ta, tb;
-   UINT8 *TMP;
-
-/*ﾄﾄﾄﾄ Set up ROM/RAM ﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄ*/
-
-   RAMSize=0x10000 + 0x100 + 0x1000;
-
-   if(!(ROM =AllocateMem(0xC000*4))) return;
-
-   if(!(ROM_2ND =AllocateMem(0x10000))) return;
-
-   if(!(ROM_SND =AllocateMem(0x10000))) return;
-
-   if(!(RAM_MCU =AllocateMem(0x800))) return;
-
-   if(!(RAM=AllocateMem(RAMSize))) return;
-
-   RAM_INPUT = RAM + 0x10000;
-   RAM_SND   = RAM + 0x10100;
-
-   if(!(TMP=AllocateMem(0x18000))) return;
-
-   if(!load_rom("bb3",TMP+0x00000, 0x08000)) return;  // Z80 base rom
-   if(!load_rom("bb5",TMP+0x08000, 0x08000)) return;  // Z80 bank rom
-   if(!load_rom("bb4",TMP+0x10000, 0x08000)) return;  // Z80 bank rom
-
-   // Skip Idle Z80
-
-   HACK[0][0] = TMP[0x01ED];
-   HACK[0][1] = TMP[0x01EE];
-   TMP[0x01ED]=0xD3;  // OUTA (AAh)
-   TMP[0x01EE]=0xAA;  //
-
-   SetStopZ80Mode2(0x01ED);
-
-   // What are these ? Apparently banks modifications ???
-   // Don't know if they are counted in rom checks...
-   TMP[0x9a71 + 0xC000]=0x00;
-   TMP[0x9a72 + 0xC000]=0x00;
-   TMP[0x9a73 + 0xC000]=0x00;
-
-   TMP[0xa4af + 0xC000]=0x00;
-   TMP[0xa4b0 + 0xC000]=0x00;
-   TMP[0xa4b1 + 0xC000]=0x00;
-
-   TMP[0xa55d + 0xC000]=0x00;
-   TMP[0xa55e + 0xC000]=0x00;
-   TMP[0xa55f + 0xC000]=0x00;
-
-   TMP[0xb561 + 0xC000]=0x00;
-   TMP[0xb562 + 0xC000]=0x00;
-   TMP[0xb563 + 0xC000]=0x00;
-
-   init_bank_rom(TMP,ROM);
-
-   nmi_enable = 0;
-   nmi_pending = 0;
-
-   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx_68k); // col_map_12bit_RRRRGGGGBBBBxxxx_Rev );
-   InitPaletteMap(RAM+0xf800, 0x10, 0x10, 0x1000);
-
-   /* Copy ROM code into our virtual image (copy 1st bank as well) */
-   memcpy(RAM+0x0000, ROM, 0xC000);
-   memset(RAM+0xC000, 0x00, 0x4000);
-
-   AddZ80AROMBase(RAM, 0x38, 0x66);
-
-   AddZ80AReadByte(0x01ed, 0x01ee, NULL, HACK[0]); // hide speed hack
-   AddZ80AReadByte(0x0000, 0xBFFF, NULL,                    NULL);         // Z80 ROM (bank switched)
-   AddZ80AReadByte(0xC000, 0xFFFF, NULL,                    RAM+0xC000);   // Z80 RAM
-   AddZ80AReadByte(-1, -1, NULL, NULL);
-
-   AddZ80AWriteByte(0xC000, 0xF7FF, NULL,                   RAM+0xC000);   // Z80 RAM
-   AddZ80AWriteByte(0xFC00, 0xFFFF, NULL,                   RAM+0xFC00);   // Z80/MCU RAM
-   AddZ80AWriteByte(0xF800, 0xF9FF, NULL /* BublBobl_PalRAMWrite */, RAM+0xf800);         // Color RAM
-   AddZ80AWriteByte(0xFB40, 0xFB40, BublBobl_BankSwitch,    NULL);         // Bank switch
-   AddZ80AWriteByte(0xFA00, 0xFA00, BublBobl_SoundCmd,      NULL);         // Sound command
-   AddZ80AWriteByte(0xFA40, 0xFA40, NULL,                   RAM+0xFA40);   // ???
-   AddZ80AWriteByte(0xFA80, 0xFA80, NULL,                   RAM+0xFA80);   // Watchdog
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);         // <bad writes>
-   AddZ80AWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,		NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,			NULL);
-
-   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,		NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,		NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,			NULL);
-
-   AddZ80AInit();
-
-   FreeMem(TMP);
-
-   if(!load_rom("a78-08.37",ROM_2ND,    0x8000)) {return;}  // 2nd Z80 code
-
-   // Fix Checksum
-
-   ROM_2ND[0x018C]=0xC9;
-
-   // Skip Idle Z80
-
-   HACK[1][0] = ROM_2ND[0x000A];
-   HACK[1][0] = ROM_2ND[0x000b];
-
-   ROM_2ND[0x000A]=0xD3;  // OUTA (AAh)
-   ROM_2ND[0x000B]=0xAA;  //
-
-   SetStopZ80BMode2(0x000A);
-
-   /* 2nd Z80 */
-   AddZ80BROMBase(ROM_2ND, 0x38, 0x66);
-
-   AddZ80BReadByte(0x000a, 0x000b, NULL, HACK[1]); // hide speed hack
-   AddZ80BReadByte(0x0000, 0x7FFF, NULL,                   ROM_2ND+0x0000);  // ROM
-   AddZ80BReadByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
-   AddZ80BReadByte(0x8000, 0xFFFF, DefBadReadZ80,          NULL);  // <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
-
-   AddZ80BWriteByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);   // <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
-
-   AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
-
-   AddZ80BInit();
-
-   /* Hell, lets have a 3rd Z80, why not... */
-
-   if(!load_rom("a78-07.46",ROM_SND,    0x8000)) {return;}  // Sound Z80 code
-
-   // Skip Idle Z80
-   // -------------
-
-   HACK[2][0] = ROM_SND[0x0178];
-   HACK[2][1] = ROM_SND[0x0179];
-
-   // ROM_SND[0x0178]=0xD3;  // OUT (AAh), A
-   // ROM_SND[0x0179]=0xAA;  //
-
-   // SetStopZ80CMode2(0x016D);
-
-   AddZ80CROMBase(ROM_SND, 0x38, 0x66);
-
-   AddZ80CReadByte(0x0178, 0x0179, NULL,              HACK[2]);      // ROM
-   AddZ80CReadByte(0x0000, 0x7FFF, NULL,              ROM_SND);      // ROM
-   AddZ80CReadByte(0x8000, 0x8FFF, NULL,              RAM_SND);      // SOUND RAM
-   AddZ80CReadByte(0x9000, 0x9001, BB_YM2203Read,     NULL);         // YM2203
-   AddZ80CReadByte(0xA000, 0xA000, BB_YM3526Read,     NULL);         // YM3526
-   AddZ80CReadByte(0xB000, 0xB000, BublBobl_SoundCmd_read, NULL);    // SOUND COMMAND
-   AddZ80CReadByte(0xB001, 0xB001, BB_Unknown,        NULL);         // ???
-   AddZ80CReadByte(0xE000, 0xE000, BB_Unknown,        NULL);         // Diagnostic ROM (not used)
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,     NULL);         // <bad writes>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
-
-   AddZ80CWriteByte(0x8000, 0x8FFF, NULL,             RAM_SND);      // SOUND RAM
-   AddZ80CWriteByte(0x9000, 0x9001, BB_YM2203Write,   NULL);         // YM2203
-   AddZ80CWriteByte(0xA000, 0xA001, BB_YM3526Write,   NULL);         // YM3526
-   AddZ80CWriteByte(0xB000, 0xB002, SelectNMI,        NULL);         // NMI enable
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,   NULL);         // <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,         NULL);         // <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
-
-   AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,        NULL);         // Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,       NULL);         // <bad reads>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
-
-   // MCU
-
-   if(!load_rom("68705.bin", RAM_MCU,    0x800)) return;  // MCU code
-
-   mcu_addr = 0;
-   BubbleBobble_mcu_reset();
-
-/*ﾄﾄﾄﾄ Set up graphics ﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄ*/
-   if(!(GFX=AllocateMem(0x100000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   GFX_BG0 = GFX+0x000000;
-
-   /*
-    * The hardware has space for 8 pairs of 32K GFX roms.
-    * Bubble Bobble only uses the first 6.
-    */
-
-   if(!load_rom("a78-15.30", TMP+0x00000, 0x8000)) return;	// 8x8 BG0/OBJ
-   if(!load_rom("a78-16.31", TMP+0x08000, 0x8000)) return;
-   if(!load_rom("a78-17.32", TMP+0x10000, 0x8000)) return;
-   if(!load_rom("a78-18.33", TMP+0x18000, 0x8000)) return;
-   if(!load_rom("a78-19.34", TMP+0x20000, 0x8000)) return;
-   if(!load_rom("a78-20.35", TMP+0x28000, 0x8000)) return;
-   memset(TMP+0x30000,0x00,0x10000);				// 2 ROMs empty here
-
-   if(!load_rom("a78-09.12", TMP+0x40000, 0x8000)) return;	// 8x8 BG0/OBJ
-   if(!load_rom("a78-10.13", TMP+0x48000, 0x8000)) return;
-   if(!load_rom("a78-11.14", TMP+0x50000, 0x8000)) return;
-   if(!load_rom("a78-12.15", TMP+0x58000, 0x8000)) return;
-   if(!load_rom("a78-13.16", TMP+0x60000, 0x8000)) return;
-   if(!load_rom("a78-14.17", TMP+0x68000, 0x8000)) return;
-   memset(TMP+0x70000,0x00,0x10000);				// 2 ROMs empty here
-
-   for(ta=0,tb=0;ta<0x40000;ta+=2,tb+=8){
-      DrawNibble0(&GFX[tb+0], TMP[ta+0]&15);
-      DrawNibble0(&GFX[tb+4], TMP[ta+1]&15);
-      DrawNibble(&GFX[tb+0], 1, TMP[ta+0]>>4);
-      DrawNibble(&GFX[tb+4], 1, TMP[ta+1]>>4);
-      DrawNibble(&GFX[tb+0], 2, TMP[ta+0x40000]&15);
-      DrawNibble(&GFX[tb+4], 2, TMP[ta+0x40001]&15);
-      DrawNibble(&GFX[tb+0], 3, TMP[ta+0x40000]>>4);
-      DrawNibble(&GFX[tb+4], 3, TMP[ta+0x40001]>>4);
-   }
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX_BG0, 0x4000);
-
-   BublBoblAddSaveData();
-
-   FreeMem(TMP);
-}
-
-static void load_sboblbob(void)
-{
-   int ta, tb;
-   UINT8 *TMP;
-
-/*ﾄﾄﾄﾄ Set up ROM/RAM ﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄ*/
-
-   RAMSize=0x10000 + 0x100 + 0x1000;
-
-   if(!(ROM =AllocateMem(0xC000*4))) return;
-
-   if(!(ROM_2ND =AllocateMem(0x10000))) return;
-
-   if(!(ROM_SND =AllocateMem(0x10000))) return;
-
-   if(!(RAM_MCU =AllocateMem(0x800))) return;
-
-   if(!(RAM=AllocateMem(RAMSize))) return;
-
-   RAM_INPUT = RAM + 0x10000;
-   RAM_SND   = RAM + 0x10100;
-
-   if(!(TMP=AllocateMem(0x18000))) return;
-
-   if(!load_rom("bbb-3.rom",TMP+0x00000, 0x08000)) return;  // Z80 base rom
-   if(!load_rom("bb5",      TMP+0x08000, 0x08000)) return;  // Z80 bank rom
-   if(!load_rom("bbb-4.rom",TMP+0x10000, 0x08000)) return;  // Z80 bank rom
-
-   // Skip Idle Z80
-
-   HACK[0][0] = TMP[0x01ED];
-   HACK[0][1] = TMP[0x01EE];
-   TMP[0x01ED]=0xD3;  // OUTA (AAh)
-   TMP[0x01EE]=0xAA;  //
-
-   SetStopZ80Mode2(0x01ED);
-
-   init_bank_rom(TMP,ROM);
-
-   nmi_enable = 0;
-   nmi_pending = 0;
-
-   /* Copy ROM code into our virtual image (copy 1st bank as well) */
-   memcpy(RAM+0x0000, ROM, 0xC000);
-   memset(RAM+0xC000, 0x00, 0x4000);
-
-   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx_68k); // col_map_12bit_RRRRGGGGBBBBxxxx_Rev );
-   InitPaletteMap(RAM+0xf800, 0x10, 0x10, 0x1000);
-
-   AddZ80AROMBase(RAM, 0x38, 0x66);
-
-   AddZ80AReadByte(0x01ed, 0x01ee, NULL, HACK[0]); // hide speed hack
-   AddZ80AReadByte(0x0000, 0xBFFF, NULL,                    NULL);         // Z80 ROM (bank switched)
-   AddZ80AReadByte(0xC000, 0xFFFF, NULL,                    RAM+0xC000);   // Z80 RAM
-   AddZ80AReadByte(-1, -1, NULL, NULL);
-
-   AddZ80AWriteByte(0xC000, 0xF7FF, NULL,                   RAM+0xC000);   // Z80 RAM
-   AddZ80AWriteByte(0xFC00, 0xFFFF, NULL,                   RAM+0xFC00);   // Z80/MCU RAM
-   AddZ80AWriteByte(0xF800, 0xF9FF, NULL, /* BublBobl_PalRAMWrite, */   RAM+0xf800);         // Color RAM
-   AddZ80AWriteByte(0xFB40, 0xFB40, BublBobl_BankSwitch,    NULL);         // Bank switch
-   AddZ80AWriteByte(0xFA00, 0xFA00, BublBobl_SoundCmd,      NULL);         // Sound command
-   AddZ80AWriteByte(0xFA40, 0xFA40, NULL,                   RAM+0xFA40);   // ???
-   AddZ80AWriteByte(0xFA80, 0xFA80, NULL,                   RAM+0xFA80);   // Watchdog
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);         // <bad writes>
-   AddZ80AWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,		NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,			NULL);
-
-   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,		NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,		NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,			NULL);
-
-   AddZ80AInit();
-
-   FreeMem(TMP);
-
-   if(!load_rom("a78-08.37",ROM_2ND,    0x8000)) {return;}  // 2nd Z80 code
-
-   // Fix Checksum
-
-   ROM_2ND[0x018C]=0xC9;
-
-   // Skip Idle Z80
-
-   HACK[1][0] = ROM_2ND[0x000A];
-   HACK[1][1] = ROM_2ND[0x000B];
-   ROM_2ND[0x000A]=0xD3;  // OUTA (AAh)
-   ROM_2ND[0x000B]=0xAA;  //
-
-   SetStopZ80BMode2(0x000A);
-
-   /* 2nd Z80 */
-   AddZ80BROMBase(ROM_2ND, 0x38, 0x66);
-
-   AddZ80BReadByte(0x000a, 0x000b, NULL, HACK[1]); // hide speed hack
-   AddZ80BReadByte(0x0000, 0x7FFF, NULL,                   ROM_2ND+0x0000);  // ROM
-   AddZ80BReadByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
-   AddZ80BReadByte(0x8000, 0xFFFF, DefBadReadZ80,          NULL);  // <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
-
-   AddZ80BWriteByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);   // <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
-
-   AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
-
-   AddZ80BInit();
-
-   /* Hell, lets have a 3rd Z80, why not... */
-
-   if(!load_rom("a78-07.46",ROM_SND,    0x8000)) {return;}  // Sound Z80 code
-
-   // Skip Idle Z80
-   // -------------
-
-   HACK[2][0] = ROM_SND[0x0178];
-   HACK[2][1] = ROM_SND[0x0179];
-   ROM_SND[0x0178]=0xD3;  // OUT (AAh), A
-   ROM_SND[0x0179]=0xAA;  //
-
-   SetStopZ80CMode2(0x016D);
-
-   AddZ80CROMBase(ROM_SND, 0x38, 0x66);
-
-   AddZ80CReadByte(0x0178, 0x0179, NULL, HACK[2]); // hide speed hack
-   AddZ80CReadByte(0x0000, 0x7FFF, NULL,              ROM_SND);      // ROM
-   AddZ80CReadByte(0x8000, 0x8FFF, NULL,              RAM_SND);      // SOUND RAM
-   AddZ80CReadByte(0x9000, 0x9001, BB_YM2203Read,     NULL);         // YM2203
-   AddZ80CReadByte(0xA000, 0xA000, BB_YM3526Read,     NULL);         // YM3526
-   //AddZ80CReadByte(0xB000, 0xB000, NULL,              &latch);   // SOUND COMMAND
-   AddZ80CReadByte(0xB000, 0xB000, BublBobl_SoundCmd_read, NULL);   // SOUND COMMAND
-   AddZ80CReadByte(0xB001, 0xB001, BB_Unknown,        NULL);         // ???
-   AddZ80CReadByte(0xE000, 0xE000, BB_Unknown,        NULL);         // Diagnostic ROM (not used)
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,     NULL);         // <bad writes>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
-
-   AddZ80CWriteByte(0x8000, 0x8FFF, NULL,             RAM_SND);      // SOUND RAM
-   AddZ80CWriteByte(0x9000, 0x9001, BB_YM2203Write,   NULL);         // YM2203
-   AddZ80CWriteByte(0xA000, 0xA001, BB_YM3526Write,   NULL);         // YM3526
-   AddZ80CWriteByte(0xB000, 0xB002, SelectNMI,        NULL);         // NMI enable
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,   NULL);         // <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,         NULL);         // <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
-
-   AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,        NULL);         // Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,       NULL);         // <bad reads>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
-
-   // MCU
-
-   if(!load_rom("68705.bin", RAM_MCU,    0x800)) return;  // MCU code
-
-   mcu_addr = 0;
-   BubbleBobble_mcu_reset();
-
-/*ﾄﾄﾄﾄ Set up graphics ﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄﾄ*/
-   if(!(GFX=AllocateMem(0x100000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   GFX_BG0 = GFX+0x000000;
-
-   /*
-    * The hardware has space for 8 pairs of 32K GFX roms.
-    * Bubble Bobble only uses the first 6.
-    */
-
-   if(!load_rom("a78-15.30", TMP+0x00000, 0x8000)) return;	// 8x8 BG0/OBJ
-   if(!load_rom("a78-16.31", TMP+0x08000, 0x8000)) return;
-   if(!load_rom("a78-17.32", TMP+0x10000, 0x8000)) return;
-   if(!load_rom("a78-18.33", TMP+0x18000, 0x8000)) return;
-   if(!load_rom("a78-19.34", TMP+0x20000, 0x8000)) return;
-   if(!load_rom("a78-20.35", TMP+0x28000, 0x8000)) return;
-   memset(TMP+0x30000,0x00,0x10000);				// 2 ROMs empty here
-
-   if(!load_rom("a78-09.12", TMP+0x40000, 0x8000)) return;	// 8x8 BG0/OBJ
-   if(!load_rom("a78-10.13", TMP+0x48000, 0x8000)) return;
-   if(!load_rom("a78-11.14", TMP+0x50000, 0x8000)) return;
-   if(!load_rom("a78-12.15", TMP+0x58000, 0x8000)) return;
-   if(!load_rom("a78-13.16", TMP+0x60000, 0x8000)) return;
-   if(!load_rom("a78-14.17", TMP+0x68000, 0x8000)) return;
-   memset(TMP+0x70000,0x00,0x10000);				// 2 ROMs empty here
-
-   for(ta=0,tb=0;ta<0x40000;ta+=2,tb+=8){
-      DrawNibble0(&GFX[tb+0], TMP[ta+0]&15);
-      DrawNibble0(&GFX[tb+4], TMP[ta+1]&15);
-      DrawNibble(&GFX[tb+0], 1, TMP[ta+0]>>4);
-      DrawNibble(&GFX[tb+4], 1, TMP[ta+1]>>4);
-      DrawNibble(&GFX[tb+0], 2, TMP[ta+0x40000]&15);
-      DrawNibble(&GFX[tb+4], 2, TMP[ta+0x40001]&15);
-      DrawNibble(&GFX[tb+0], 3, TMP[ta+0x40000]>>4);
-      DrawNibble(&GFX[tb+4], 3, TMP[ta+0x40001]>>4);
-   }
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX_BG0, 0x4000);
-
-   BublBoblAddSaveData();
-
-   FreeMem(TMP);
+   printf("gfx : %x\n",get_region_size(REGION_GFX1));
 }
 
 static void execute_bublbobl(void)
@@ -1547,17 +982,26 @@ static void execute_bublbobl(void)
 // #ifndef MAME_MCU
 // // All this part should happen during the mcu irq, no irq here
    print_debug("Z80PC_MAIN:%04x\n",cpu_get_pc(CPU_Z80_0));
-   cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
-   /*
-    * This makes the EXTEND letters random. Neither the game nor the MCU
-    * appears to be doing this (why not???), so we do...
-    */
-   RAM[0xfc7c] ++;
-   RAM[0xfc7c] %= 6;
-// #endif
+   if (irq_enable) {
+       /* There is something weird here. If sending irqs from the start, then
+	* the main cpu does a double initialization, starting the small music
+	* twice. This doesn't happen if the speed hack is enabled !
+	* Now the speed hack shouldn't interfere with this, I should check it
+	* later. Anyway the workaround is to enable irqs only once the reset
+	* command is sent to the audio cpu... for now I use this + the speed
+	* hack without checking why it interferes... */
+       cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
+       /*
+	* This makes the EXTEND letters random. Neither the game nor the MCU
+	* appears to be doing this (why not???), so we do...
+	*/
+       RAM[0xfc7c] ++;
+       RAM[0xfc7c] %= 6;
+       // #endif
 
-   print_debug("Z80PC_SUB:%04x\n",cpu_get_pc(CPU_Z80_1));
-   cpu_interrupt(CPU_Z80_1, 0x38);
+       print_debug("Z80PC_SUB:%04x\n",cpu_get_pc(CPU_Z80_1));
+       cpu_interrupt(CPU_Z80_1, 0x38);
+   }
 
 
 #if 0
@@ -1634,32 +1078,11 @@ static void draw_bubble_bobble(void)
          for (yc=0;yc<height;yc++)
          {
             ta = (ReadWord(&RAM[0xc000+goffs]) & 0x3FF) | ((gfx_attr << 10) & 0x3C00);
+	    x = 32 + (sx + xc * 8);
+	    y = 32 + (((sy + yc * 8) & 0xff) - 16);
+	    drawspr_8x8_flip(0,x,y,ta,((RAM[0xc001 + goffs] >> 2) & 0xF),
+		    (RAM[0xc001+goffs]>>6) & 3);
 
-            if (GFX_BG0_SOLID[ta])        // No pixels; skip
-            {
-	      MAP_PALETTE_MAPPED_NEW(
-			       ((RAM[0xc001 + goffs] >> 2) & 0xF),
-			       16,
-			       map
-			       );
-
-               x = 32 + (sx + xc * 8);
-               y = 32 + (((sy + yc * 8) & 0xff) - 16);
-
-               if((x>16) && (y>16) && (x<256+32) && (y<224+32))
-               {
-                  if(GFX_BG0_SOLID[ta]==1)
-                  {        // Some pixels; trans
-
-                  Draw8x8_Trans_Mapped_flip_Rot(&GFX_BG0[ta<<6], x, y, map, (RAM[0xc001+goffs]>>6) & 3);
-
-                  } else {    // all pixels; solid
-
-                  Draw8x8_Mapped_flip_Rot(&GFX_BG0[ta<<6], x, y, map, (RAM[0xc001+goffs]>>6) & 3);
-
-                  }
-               }
-            }
 
             goffs += 2;
          }
@@ -1669,6 +1092,23 @@ static void draw_bubble_bobble(void)
    }
 }
 
+static gfx_layout charlayout =
+{
+	8, 8,
+	RGN_FRAC(1,2),
+	4,
+	{ 0, 4, RGN_FRAC(1,2), RGN_FRAC(1,2)+4 },
+	{ 3, 2, 1, 0, 8+3, 8+2, 8+1, 8+0 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16 },
+	16*8
+};
+
+static struct GFX_LIST bub_gfx[] =
+{
+    { REGION_GFX1, &charlayout, },
+    { 0, NULL }
+};
+
 static struct VIDEO_INFO video_bublbobl =
 {
    draw_bubble_bobble,
@@ -1677,6 +1117,7 @@ static struct VIDEO_INFO video_bublbobl =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   bub_gfx
 };
 static struct DIR_INFO dir_boblbobl[] =
 {
@@ -1686,12 +1127,6 @@ static struct DIR_INFO dir_boblbobl[] =
    { CLONEOF("bublbobl"), },
    { NULL, },
 };
-CLNE( boblbobl, bublbobl, "Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
-	.load_game = load_boblbobl,
-	.input = input_sboblbob,
-	.dsw = dsw_boblbobl,
-	.long_name_jpn = "ボブルボブル",
-);
 static struct DIR_INFO dir_bublbobl[] =
 {
    { "bubble_bobble", },
@@ -1703,27 +1138,34 @@ GME( bublbobl, "Bubble Bobble", TAITO, 1986, GAME_PLATFORM,
 	.long_name_jpn = "バブルボブル",
 	.board = "A78",
 );
-static struct DIR_INFO dir_bublbobr[] =
+CLNE( boblbobl, bublbobl, "Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
+	.input = input_sboblbob,
+	.dsw = dsw_boblbobl,
+	.long_name_jpn = "ボブルボブル",
+);
+static struct DIR_INFO dir_bublboblr[] =
 {
    { "bubble_bobble_romstar", },
    { "bublbobr", },
+   { "bublboblr", },
    { ROMOF("bublbobl"), },
    { CLONEOF("bublbobl"), },
    { NULL, },
 };
-CLNE( bublbobr, bublbobl, "Bubble Bobble (US mode select)", TAITO, 1986, GAME_PLATFORM,
+CLNE( bublboblr, bublbobl, "Bubble Bobble (US mode select)", TAITO, 1986, GAME_PLATFORM,
 	.long_name_jpn = "バブルボブル (US mode select)",
 	.board = "A78",
 );
-static struct DIR_INFO dir_bubbobr1[] =
+static struct DIR_INFO dir_bubboblr1[] =
 {
    { "bubble_bobble_romstar2", },
    { "bubbobr1", },
+   { "bubbolbr1", },
    { ROMOF("bublbobl"), },
    { CLONEOF("bublbobl"), },
    { NULL, },
 };
-CLNE( bubbobr1, bublbobl,"Bubble Bobble (US)", TAITO, 1986, GAME_PLATFORM,
+CLNE( bubboblr1, bublbobl,"Bubble Bobble (US)", TAITO, 1986, GAME_PLATFORM,
 	.long_name_jpn = "バブルボブル (US)",
 	.board = "A78",
 );
@@ -1738,7 +1180,6 @@ static struct DIR_INFO dir_sboblbob[] =
    { NULL, },
 };
 CLNE( sboblbob, bublbobl,"Super Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
-	.load_game = load_sboblbob,
 	.input = input_sboblbob,
 	.dsw = dsw_sboblbob,
 	.long_name_jpn = "スーパーボブルボブル",

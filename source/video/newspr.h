@@ -379,6 +379,38 @@ void init_newspr2asm_32();
 
 void init_video_core(void);
 
+/* A macro to draw an 8x8 sprite, testing solid, mapping palette, and even
+ * checking clipping, this should have been done a few eons ago !
+ * Used by buble boble driver only for now... */
+#define drawspr_8x8_flip(layer,x,y,ta,color,flip)                 \
+    if (gfx_solid[layer][ta]) /* No pixels; skip */               \
+    {                                                             \
+        MAP_PALETTE_MAPPED_NEW(                                   \
+                color,                                            \
+                16,                                               \
+                map                                               \
+                );                                                \
+                                                                  \
+                                                                  \
+        if((x>current_game->video->border_size-8) &&              \
+                (y>current_game->video->border_size-8) &&         \
+                (x<current_game->video->border_size +             \
+                 current_game->video->screen_x) &&                \
+                (y<current_game->video->border_size +             \
+                 current_game->video->screen_y))                  \
+        {                                                         \
+            if(gfx_solid[layer][ta]==1)                           \
+            {        /* Some pixels; trans */                     \
+                Draw8x8_Trans_Mapped_flip_Rot(&gfx[layer][ta<<6], \
+                        x, y, map, flip);                         \
+            } else {    /* all pixels; solid */                   \
+                Draw8x8_Mapped_flip_Rot(&gfx[layer][ta<<6],       \
+                               x, y, map, flip);                  \
+                                                                  \
+            }                                                     \
+        }                                                         \
+    }
+
 #ifdef __cplusplus
 }
 #endif
