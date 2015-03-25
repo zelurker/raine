@@ -717,6 +717,11 @@ void WriteMZ80Byte(UINT32 address, UINT8 data)
   // and since there are cases where we cant write to ROM
   // we use Z80_memory_rb instead of z80_memory_wb.
 
+  if (address > 0xffff) {
+      check_z80_bank_write(cpu,0,address,data);
+      return;
+  }
+
    for(ta=0;ta<99;ta++){
       if((Z80_memory_rb[cpu][ta].lowAddr)==-1){
          ta=99;
@@ -752,6 +757,8 @@ UINT8 ReadMZ80Byte(UINT32 address)
 {
   int ta,cpu;
   prepare_cpu_adr(&cpu,&address);
+  if (address > 0xffff)
+      return check_z80_bank_read(cpu,0,address);
 
   for(ta=0;ta<99;ta++){
     if((Z80_memory_rb[cpu][ta].lowAddr)==-1){
