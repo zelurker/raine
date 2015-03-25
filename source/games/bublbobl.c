@@ -111,6 +111,46 @@ static struct ROM_INFO rom_bublbobl[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
+static struct ROM_INFO rom_bublcave[] =
+{
+	/* ROMs banked at 8000-bfff */
+  { "a78-06-1.51", 0x08000, 0xe8b9af5e, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "a78-05-1.52", 0x10000, 0xcfe14cb8, REGION_CPU1, 0x08000, LOAD_NORMAL },
+	/* 20000-2ffff empty */
+  FILL(          0x18000, 0x10000, 0, CPU1), // not sure it's used !
+  { "a78-08.37", 0x08000, 0xa9384086, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  // { "a78-01.17", 0x1000, 0xb1bfb53d, REGION_ROM4, 0xf000, LOAD_NORMAL },
+  { "a78-09.12", 0x8000, 0xb90b7eef, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "a78-10.13", 0x8000, 0x4fb22f05, REGION_GFX1, 0x08000, LOAD_NORMAL },
+  { "a78-11.14", 0x8000, 0x9773e512, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  { "a78-12.15", 0x8000, 0xe49eb49e, REGION_GFX1, 0x18000, LOAD_NORMAL },
+  { "a78-13.16", 0x8000, 0x61919734, REGION_GFX1, 0x20000, LOAD_NORMAL },
+  { "a78-14.17", 0x8000, 0x7e3a13bd, REGION_GFX1, 0x28000, LOAD_NORMAL },
+  { "a78-15.30", 0x8000, 0xc253c73a, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  /* 0x30000-0x3ffff empty */
+  FILL(          0x30000, 0x10000, 0, GFX1),
+  { "a78-16.31", 0x8000, 0xe66c92ee, REGION_GFX1, 0x48000, LOAD_NORMAL },
+  { "a78-17.32", 0x8000, 0xd69762d5, REGION_GFX1, 0x50000, LOAD_NORMAL },
+  { "a78-18.33", 0x8000, 0x47ee2544, REGION_GFX1, 0x58000, LOAD_NORMAL },
+  { "a78-19.34", 0x8000, 0x1ceeb1fa, REGION_GFX1, 0x60000, LOAD_NORMAL },
+  { "a78-20.35", 0x8000, 0x64322e24, REGION_GFX1, 0x68000, LOAD_NORMAL },
+	/* 0x70000-0x7ffff empty */
+  FILL(          0x70000, 0x10000, 0, GFX1),
+	/* Located on CPU/Sound Board */
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO rom_bublredux[] =
+{
+	/* ROMs banked at 8000-bfff */
+  { "bb3", 0x08000, 0xb802046d, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "bb5", 0x08000, 0xd29d3444, REGION_CPU1, 0x08000, LOAD_NORMAL },
+  { "bb4", 0x08000, 0x3cbb8b41, REGION_CPU1, 0x10000, LOAD_NORMAL },
+	/* 20000-2ffff empty */
+  FILL(          0x18000, 0x10000, 0, CPU1), // not sure it's used !
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
 #ifndef MAME_MCU
 static struct INPUT_INFO input_bublbobl[] =
 {
@@ -341,7 +381,7 @@ struct DSW_DATA dsw_data_bobble_bobble_1[] =
 static struct DSW_INFO dsw_boblbobl[] =
 {
    { 0x00FF00, 0xFE, dsw_data_bubble_bobble_0 },
-   { 0x00FF01, 0xFF, dsw_data_bobble_bobble_1 },
+   { 0x00FF01, 0x3F, dsw_data_bobble_bobble_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -610,6 +650,7 @@ static void BublBobl_SoundCmd(UINT16 offset, UINT8 data)
 	(void)(offset);
    latch = data;
    nmi_pending = 1;
+   irq_enable = 1;
 }
 
 static UINT8 BublBobl_SoundCmd_read(UINT16 offset)
@@ -771,10 +812,12 @@ static void BublBoblAddSaveData(void)
 static UINT8 HACK[3][2];
 
 static void BublBobl_resetsound(UINT32 offset, UINT8 data) {
-    irq_enable = 1;
+    // irq_enable++;
 /*    if (!data)
 	cpu_reset(CPU_Z80_2); */
 }
+
+static int no_mcu;
 
 static void load_bublbobl(void)
 {
@@ -794,6 +837,7 @@ static void load_bublbobl(void)
    ROM[0x01EE]=0xAA;  //
 
    if (is_current_game("boblbobl")) {
+       no_mcu = 1;
        // it's probably something to avoid to switch to a non existing blank
        // bank, it could be replaced by a rom_fill with 0, but I'll keep this.
        ROM[0x9a71 + 0xC000]=0x00;
@@ -811,7 +855,12 @@ static void load_bublbobl(void)
        ROM[0xb561 + 0xC000]=0x00;
        ROM[0xb562 + 0xC000]=0x00;
        ROM[0xb563 + 0xC000]=0x00;
-   }
+   } else if (is_current_game("sboblbob") || is_current_game("bublredux"))
+       // Not sure if this one needs any bank adjustment, there was never
+       // any before anyway...
+       no_mcu = 1;
+   else
+       no_mcu = 0;
 
    SetStopZ80Mode2(0x01ED);
 
@@ -946,9 +995,10 @@ static void load_bublbobl(void)
 
 static void execute_bublbobl(void)
 {
-   BubbleBobble_mcu(BIH_COUNT);
+   if (!no_mcu)
+       BubbleBobble_mcu(BIH_COUNT);
 
-   if (!irq_enable) {
+   if (!irq_enable ) {
        // Use the old code while the audio cpu is not started
 #define CPU_SLICE 16
 
@@ -1005,17 +1055,21 @@ static void execute_bublbobl(void)
 	* the main cpu does a double initialization, starting the small music
 	* twice. This doesn't happen if the speed hack is enabled !
 	* Now the speed hack shouldn't interfere with this, I should check it
-	* later. Anyway the workaround is to enable irqs only once the reset
-	* command is sent to the audio cpu... for now I use this + the speed
+	* later. Anyway the workaround is to enable irqs only once the audio
+	* cpu starts to receive commands... for now I use this + the speed
 	* hack without checking why it interferes... */
-       cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
+       if (no_mcu)
+	   cpu_interrupt(CPU_Z80_0, 0x38);
+       else
+	   cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
        /*
 	* This makes the EXTEND letters random. Neither the game nor the MCU
 	* appears to be doing this (why not???), so we do...
 	*/
-       RAM[0xfc7c] ++;
-       RAM[0xfc7c] %= 6;
-       // #endif
+       if (!no_mcu) {
+	   RAM[0xfc7c] ++;
+	   RAM[0xfc7c] %= 6;
+       }
 
        cpu_interrupt(CPU_Z80_1, 0x38);
    }
@@ -1172,6 +1226,11 @@ CLNE( bublboblr, bublbobl, "Bubble Bobble (US mode select)", TAITO, 1986, GAME_P
 	.long_name_jpn = "バブルボブル (US mode select)",
 	.board = "A78",
 );
+CLNEI( bublcave, bublbobl, "Bubble Bobble Lost Cave (Ver 1.2)", HACK, 2013, GAME_PLATFORM);
+CLNEI( bublredux, bublbobl, "Bubble Bobble Redux (With Level Skipper)", HACK, 2013, GAME_PLATFORM,
+	.input = input_sboblbob,
+	.dsw = dsw_boblbobl,
+	);
 static struct DIR_INFO dir_bubboblr1[] =
 {
    { "bubble_bobble_romstar2", },
