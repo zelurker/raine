@@ -946,42 +946,60 @@ static void load_bublbobl(void)
 
 static void execute_bublbobl(void)
 {
-   int ta;
-
    BubbleBobble_mcu(BIH_COUNT);
 
+   if (!irq_enable) {
+       // Use the old code while the audio cpu is not started
+#define CPU_SLICE 16
 
-   /*
-    * 4 slices is enough for the orignal, but the bootlegs need more (lousy
-    * programming?)
-    */
-   #define CPU_SLICE 16
+       int ta;
+       for(ta=0;ta<CPU_SLICE;ta++)
+       {
+	   if(cpu_get_pc(CPU_Z80_0) != 0x01ED)
+	   {
+	       cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Main Z80 8MHz (60fps)
+	   }
 
-   for(ta=0;ta<CPU_SLICE;ta++)
-   {
-      if(cpu_get_pc(CPU_Z80_0) != 0x01ED)
-      {
-         cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Main Z80 8MHz (60fps)
-      }
+	   if(cpu_get_pc(CPU_Z80_1) != 0x000A)
+	   {
+	       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
+	   }
 
-      if(cpu_get_pc(CPU_Z80_1) != 0x000A)
-      {
-	cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
-      }
+	   if (nmi_pending && nmi_enable)
+	   {
+	       cpu_int_nmi(CPU_Z80_2);
+	       nmi_pending = 0;
+	   }
+	   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(3,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
 
-      if (nmi_pending && nmi_enable)
-      {
-         cpu_int_nmi(CPU_Z80_2);
-         nmi_pending = 0;
-      }
-      cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(3,60)/CPU_SLICE);  // Sound Z80 8MHz (60fps)
+	   triger_timers();
 
-      triger_timers();
+       }
+   } else {
+       INT32 frame = CPU_FRAME_MHz(3,60); // audio cpu
+       while (frame > 0) {
+	   switch_cpu(CPU_Z80_2);
+	   UINT32 elapsed = execute_one_z80_audio_frame(frame);
+	   if(cpu_get_pc(CPU_Z80_0) != 0x01ED)
+	   {
+	       cpu_execute_cycles(CPU_Z80_0, elapsed*2);  // 6 MHz
+	   }
 
+	   if(cpu_get_pc(CPU_Z80_1) != 0x000A)
+	   {
+	       cpu_execute_cycles(CPU_Z80_1, elapsed*2);  // Sub Z80 6MHz
+	   }
+
+	   if (nmi_pending && nmi_enable)
+	   {
+	       cpu_int_nmi(CPU_Z80_2);
+	       nmi_pending = 0;
+	   }
+	   frame -= elapsed;
+       }
    }
 // #ifndef MAME_MCU
 // // All this part should happen during the mcu irq, no irq here
-   print_debug("Z80PC_MAIN:%04x\n",cpu_get_pc(CPU_Z80_0));
    if (irq_enable) {
        /* There is something weird here. If sending irqs from the start, then
 	* the main cpu does a double initialization, starting the small music
@@ -999,10 +1017,8 @@ static void execute_bublbobl(void)
        RAM[0xfc7c] %= 6;
        // #endif
 
-       print_debug("Z80PC_SUB:%04x\n",cpu_get_pc(CPU_Z80_1));
        cpu_interrupt(CPU_Z80_1, 0x38);
    }
-
 
 #if 0
    // Piece of history, I keep it here !
