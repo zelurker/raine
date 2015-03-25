@@ -58,6 +58,7 @@
   DRV(sboblbob)
   DRV(bublcave)
   DRV(bublredux)
+  DRV(dland)
 
 // bubsymph.c
   DRV(bublbob2)

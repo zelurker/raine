@@ -14,6 +14,7 @@
 #include "savegame.h"
 #include "blit.h" // clear_game_screen
 #include "timer.h"
+#include "decode.h"
 
 /*
 
@@ -109,6 +110,26 @@ static struct ROM_INFO rom_bublbobl[] =
   FILL(          0x70000, 0x10000, 0, GFX1),
    { "68705.bin", 0x00000800, 0x78caa635, REGION_ROM4, 0, LOAD_NORMAL, },
    {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO rom_dland[] =
+{
+	/* ROMs banked at 8000-bfff */
+  { "dl_3.u69", 0x08000, 0x01eb3e4f, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "dl_5.u67", 0x08000, 0x75740b61, REGION_CPU1, 0x08000, LOAD_NORMAL },
+  { "dl_4.u68", 0x08000, 0xc6a3776f, REGION_CPU1, 0x10000, LOAD_NORMAL },
+	/* 20000-2ffff empty */
+  { "dl_6.58", 0x10000, 0x6352d3fa, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "dl_7.59", 0x10000, 0x37a38b69, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  { "dl_8.60", 0x10000, 0x509ee5b1, REGION_GFX1, 0x20000, LOAD_NORMAL },
+	/* 0x30000-0x3ffff empty */
+  FILL(          0x30000, 0x10000, 0, GFX1),
+  { "dl_9.61", 0x10000, 0xae8514d7, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  { "dl_10.62", 0x10000, 0x6d406fb7, REGION_GFX1, 0x50000, LOAD_NORMAL },
+  { "dl_11.63", 0x10000, 0xbdf9c0ab, REGION_GFX1, 0x60000, LOAD_NORMAL },
+	/* 0x70000-0x7ffff empty */
+  FILL(          0x70000, 0x10000, 0, GFX1),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_bublcave[] =
@@ -376,6 +397,59 @@ struct DSW_DATA dsw_data_bobble_bobble_1[] =
    { "Medium",                0x40},
    { MSG_NORMAL,              0x00},
    { NULL,                    0,   },
+};
+
+struct DSW_DATA dsw_data_dland0[] =
+{
+  { "Game", 0x01, 2 },
+  { "Dream Land", 0x01, 0x00 },
+  { "Super Dream Land", 0x00, 0x00 },
+   DSW_SCREEN( 0x02, 0x00),
+   DSW_TEST_MODE( 0x00, 0x04),
+   DSW_DEMO_SOUND( 0x08, 0x00),
+   { MSG_COIN1,               0x30, 0x04 },
+   { MSG_1COIN_1PLAY,         0x30},
+   { MSG_1COIN_2PLAY,         0x20},
+   { MSG_2COIN_1PLAY,         0x10},
+   { MSG_2COIN_3PLAY,         0x00},
+   { MSG_COIN2,               0xC0, 0x04 },
+   { MSG_1COIN_1PLAY,         0xC0},
+   { MSG_1COIN_2PLAY,         0x80},
+   { MSG_2COIN_1PLAY,         0x40},
+   { MSG_2COIN_3PLAY,         0x00},
+   { NULL,                    0,   },
+};
+
+struct DSW_DATA dsw_data_dland1[] =
+{
+   { MSG_DIFFICULTY,          0x03, 0x04 },
+   { MSG_NORMAL,              0x03},
+   { MSG_EASY,                0x02},
+   { MSG_HARD,                0x01},
+   { MSG_HARDEST,             0x00},
+   { MSG_EXTRA_LIFE,          0x0c, 0x04 },
+   { "30k and 100k",          0x0C},
+   { "20k and 80k",           0x08},
+   { "40k and 200k",          0x04},
+   { "50k and 250k",          0x00},
+  { MSG_LIVES, 0x30, 4 },
+  { "1", 0x10, 0x00 },
+  { "2", 0x00, 0x00 },
+  { "3", 0x30, 0x00 },
+  { "100 (Cheat)", 0x20, 0x00 },
+   { "Monster Speed",         0x40, 0x04 },
+   { "Very High",             0xC0},
+   { "High",                  0x80},
+   { "Medium",                0x40},
+   { MSG_NORMAL,              0x00},
+   { NULL,                    0,   },
+};
+
+static struct DSW_INFO dsw_dland[] =
+{
+   { 0x00FF00, 0xFf, dsw_data_dland0 },
+{ 0x00FF01, 0x7f, dsw_data_dland1 },
+   { 0,        0,    NULL,      },
 };
 
 static struct DSW_INFO dsw_boblbobl[] =
@@ -859,7 +933,17 @@ static void load_bublbobl(void)
        // Not sure if this one needs any bank adjustment, there was never
        // any before anyway...
        no_mcu = 1;
-   else
+   else if (is_current_game("dland")) {
+       no_mcu = 1;
+       // rearrange gfx to original format
+       int i;
+       UINT8* src = load_region[REGION_GFX1];
+       for (i = 0; i < 0x40000; i++)
+	   src[i] = BITSWAP8(src[i],7,6,5,4,0,1,2,3);
+
+       for (i = 0x40000; i < 0x80000; i++)
+	   src[i] = BITSWAP8(src[i],7,4,5,6,3,0,1,2);
+   } else
        no_mcu = 0;
 
    SetStopZ80Mode2(0x01ED);
@@ -1212,6 +1296,10 @@ CLNE( boblbobl, bublbobl, "Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
 	.input = input_sboblbob,
 	.dsw = dsw_boblbobl,
 	.long_name_jpn = "ボブルボブル",
+);
+CLNEI( dland, bublbobl, "Dream Land / Super dream land (bootleg of bubble bobble)", BOOTLEG, 1987, GAME_PLATFORM,
+	.input = input_sboblbob,
+	.dsw = dsw_dland,
 );
 static struct DIR_INFO dir_bublboblr[] =
 {
