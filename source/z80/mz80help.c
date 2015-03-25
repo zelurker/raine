@@ -617,8 +617,8 @@ static int check_z80_bank_write(int cpu, int index,UINT32 address,UINT8 data) {
 	  // address -= bank_offset[cpu]; // For data banks
 	  if (bank[cpu][0]) { // rom bank
 	    // for (n=0; n<nb_banks[cpu]; n++) {
-	    n = nb_banks[cpu] - 1;
-	    WriteByte(bank[cpu][n]+address,data);
+	    for (n=0; n<nb_banks[cpu]; n++)
+		WriteByte(bank[cpu][n]+address,data);
 	    // }
 	    return 1;
 	  } else  { // data bank

@@ -145,7 +145,7 @@ static struct ROMSW_DATA romsw_data_exzisus_0[] =
 
 static struct ROMSW_INFO romsw_exzisus[] =
 {
-   { 0x1007FFF, 0x01, romsw_data_exzisus_0 },
+   { 0x2007FFF, 0x01, romsw_data_exzisus_0 },
    { 0,        0,    NULL },
 };
 
@@ -390,7 +390,7 @@ static void load_exzisus(void)
    AddZ80CWritePort(-1, -1, NULL, NULL);
 
    AddZ80CInit();
-
+   exzisus_sub_bank_w(0,0); // pre-init bank !!!
    if(!load_rom("b23-13.bin",RAM3,0x08000)) return;	// Z80 SUB^SUB ROM
    memset(RAM3+0x8000, 0x00, 0x8000);
 
