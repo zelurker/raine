@@ -15,6 +15,7 @@
 #include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "decode.h"
+#include "emumain.h"
 
 /*
 
@@ -893,10 +894,19 @@ static void BublBobl_resetsound(UINT32 offset, UINT8 data) {
 
 static int no_mcu;
 
+static void bubl_reset() {
+    memset(RAM+0xc000, 0, 0x3000); // RAM + common RAM !
+    memset(RAM_SND, 0, 0x1000);
+    irq_enable = 0;
+    nmi_enable = 0;
+    nmi_pending = 0;
+}
+
 static void load_bublbobl(void)
 {
 /*컴컴 Set up ROM/RAM 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴*/
 
+    set_reset_function(bubl_reset);
    RAMSize=0x10000 + 0x100 + 0x1000;
 
    if(!(RAM=AllocateMem(RAMSize))) return;
