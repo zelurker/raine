@@ -1079,7 +1079,7 @@ static void do_search(int argc, char **argv) {
   if (nb_search < 10 && nb_search > 0) {
     cons->print("valid adresses :");
     for (UINT32 n=0; n<nb_search; n++) {
-      cons->print("$%x",search[n]^((what & 0xff)==what ? 1 : 0));
+      cons->print("$%x",((what & 0xff) == what ? getadr(search[n]) : search[n]));
     }
     if (nb_search == 1) {
       nb_search = 0;
