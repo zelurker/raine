@@ -1084,7 +1084,6 @@ static void load_bublbobl(void)
    BubbleBobble_mcu_reset();
 
    BublBoblAddSaveData();
-   printf("gfx : %x\n",get_region_size(REGION_GFX1));
 }
 
 static void execute_bublbobl(void)

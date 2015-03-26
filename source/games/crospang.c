@@ -533,6 +533,8 @@ static void load_crospang(void)
 
 	/* Allocate the RAM */
 	if(!(RAM=AllocateMem(RAMSize))) return;
+	// Without the memset here we can even get a crash at startup !
+	memset(RAM,0,RAMSize);
 
 	/* Set Up the Pointers */
 	RAM_Z80       = &RAM[0x00000];

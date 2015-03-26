@@ -3765,6 +3765,9 @@ static void load_tubeit(void)
    reset_tc0220ioc();
 }
 
+// Cachat supports a region in 7fff (in a bank !), but us region has its fbi
+// screen empty, and us and world look weird on the title screen, so it's
+// probably better to leave the default region (japan)
 static void load_cachat(void)
 {
    int ta, tb;
