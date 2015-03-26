@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.64.2"
+VERSION = "0.64.3"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -53,12 +53,6 @@ ifeq ("$(shell uname)","Linux")
 OSTYPE=linux-gnu
 endif
 
-ifndef $(CC)
-CC=gcc
-endif
-ifndef $(CXX)
-CXX=g++
-endif
 ifeq ($(CC),cc)
 CC=gcc
 endif
@@ -104,12 +98,12 @@ else
 endif
  else
 	ifeq ("$(LD)","ld")
-	LD = g++
+	LD = $(CXX)
     endif
  endif
 else
 ifeq ("$(LD)","ld")
-  LD=g++
+  LD=$(CXX)
 endif
 endif
 endif
