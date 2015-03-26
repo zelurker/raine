@@ -23,8 +23,13 @@ void hist_open(char *name) {
   char *commands = NULL;
   if (strcmp(name,"history.dat")) { // not history.dat -> free old commands
       int n;
-      for (n=0; n<nb_commands; n++)
+      for (n=0; n<nb_commands; n++) {
 	  free(commands_buff[n]);
+	  free((void*)menu_commands[n].label);
+      }
+      if (menu_commands)
+	  free(menu_commands);
+      menu_commands = NULL;
       nb_commands = 0;
   }
   f = fopen (get_shared(name), "r");
