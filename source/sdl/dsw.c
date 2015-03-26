@@ -17,6 +17,7 @@
 #include "gui/menu.h"
 #include "dialogs/dlg_dsw.h"
 #include "sdl/dialogs/messagebox.h"
+#include "mz80help.h"
 
 menu_item_t dsw_items[MAX_DSW_SETTINGS];
 

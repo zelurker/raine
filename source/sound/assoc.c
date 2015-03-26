@@ -340,6 +340,8 @@ int handle_sound_cmd(int cmd) {
 	    return 0;
 	if (active && Z80ROM[adr + cmd] == 2)
 	    mute_song();
+	else if (Z80ROM[adr + cmd] != 2)
+	    return 0; // return if it's not a song
 	break;
     case 1: // garou
 	// Garou has modes + interruptable songs !
