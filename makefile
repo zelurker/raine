@@ -53,6 +53,16 @@ ifeq ("$(shell uname)","Linux")
 OSTYPE=linux-gnu
 endif
 
+ifndef $(CC)
+CC=gcc
+endif
+ifndef $(CXX)
+CXX=g++
+endif
+ifeq ($(CC),cc)
+CC=gcc
+endif
+
 ifeq ("$(shell uname)","FreeBSD")
 OSTYPE=linux-gnu
 endif
@@ -60,12 +70,6 @@ ifeq ("$(shell uname)","Darwin")
 # Mac os X
 DARWIN=1
 OSTYPE=darwin
-ifndef CC
-	CC=gcc
-endif
-ifndef CXX
-	CXX=g++
-endif
 	# no need to make a 32 bit binary if disabling asm completely !
 ifeq ("$(shell sysctl hw.optional.x86_64)","hw.optional.x86_64: 1")
 ifndef NO_ASM
@@ -143,17 +147,8 @@ OSTYPE = mingw32
 endif
 
 RM =	@rm -f
-ifeq ($(CC),)
-CC=gcc
-endif
-ifeq ($(CXX),)
-CXX=g++
-endif
 
 # This test is for stupid win32 gcc ports with bad defaults
-ifeq ($(CC),cc)
-CC=gcc
-endif
 ifdef VERBOSE
 CCV=$(CC)
 CXXV=$(CXX)
