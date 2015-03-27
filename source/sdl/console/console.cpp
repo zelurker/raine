@@ -53,6 +53,7 @@ static void init_cpuid() {
 	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
    }
 #endif
+  switch_cpu(cpu_id);
 }
 
 UINT8 *get_ptr(UINT32 adr, UINT32 *the_block) {
@@ -764,14 +765,14 @@ static void add_search(UINT32 n,UINT8 size) {
       } \
     } \
   } else if (size == 2) { \
-    for (UINT32 n=start; n<end; n+=2) { \
-      if (ReadWord(&ptr[n]) op ReadWord(&ptr[n])) { \
+    for (UINT32 n=start; n<end; n++) { \
+      if (ReadWord(&ptr[n]) op ReadWord(&buf[n])) { \
         add_search(n,size); \
       } \
     } \
   } else if (size == 4) { \
-    for (UINT32 n=start; n<end; n+=4) { \
-      if (ReadLongSc(&ptr[n]) op ReadLongSc(&ptr[n])) { \
+    for (UINT32 n=start; n<end; n++) { \
+      if (ReadLongSc(&ptr[n]) op ReadLongSc(&buf[n])) { \
         add_search(n,size); \
       } \
     } \
@@ -1308,8 +1309,9 @@ void done_console() {
 }
 
 void run_console_command(char *command) {
-  s68000_get_ram(0,ram,&nb_ram);
+    if (!*command) return;
   init_cpuid();
+  cpu_get_ram(cpu_id,ram,&nb_ram);
   if (!cons)
     cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,50, commands);
   get_regs(cpu_id);

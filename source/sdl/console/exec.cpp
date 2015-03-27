@@ -361,7 +361,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       sprintf(cmd+strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
   case 2:
-      sprintf(cmd,"dz80 -d \"%s\"",name);
+      sprintf(cmd,"dz80 -t -d \"%s\"",name);
       break;
   }
   save_file(name,&ptr[start],end-start);

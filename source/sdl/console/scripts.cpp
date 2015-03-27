@@ -104,7 +104,8 @@ void init_scripts() {
 	  script[nb_scripts].lines[l++] = strdup(&buff[n]);
 	}
 	nb_scripts++;
-      } // script line
+      } else // script line
+	  run_console_command(buff);
     } // feof
     fclose(f);
   } // if (f)

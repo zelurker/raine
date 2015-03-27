@@ -64,7 +64,6 @@ void get_regs(int cpu) {
     case 2:
 	num = cpu & 0xf;
 	switch_cpu(cpu);
-	mz80GetContext(&Z80_context[num]);
 	za = (Z80_context[num].z80af>>8);
 	zf = (Z80_context[num].z80af&0xff);
 	zb = (Z80_context[num].z80bc>>8);
@@ -107,7 +106,6 @@ void set_regs(int cpu) {
 	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
 	Z80_context[num].z80pc = pc;
 	Z80_context[num].z80iff = iff;
-	mz80SetContext(&Z80_context[num]);
 	break;
 #ifndef NO020
     case 3:
