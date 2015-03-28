@@ -361,7 +361,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       sprintf(cmd+strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
   case 2:
-      sprintf(cmd,"dz80 -t -d \"%s\"",name);
+      sprintf(cmd,"dz80 \"%s\" prg.z80",name);
       break;
   }
   save_file(name,&ptr[start],end-start);
@@ -393,38 +393,6 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   while (!feof(g)) {
     char buf[256];
     myfgets(buf,256,g);
-    if (cpu_id == 2) { // z80
-	// dz80 : filter out lines wihtout assembly
-	char *p = strstr(buf,"; ");
-	if (p && p[6] != 32)
-	    p = NULL;
-	if (!p) continue;
-	// Filter out these stupid X everywhere from dz80 !
-	while ((p = strchr(buf,'X')))
-	    memmove(p,p+1,strlen(p+1)+1);
-	// Reformat the whole line to get :
-	// adr\topcodes (without space)\tinstruction\targument
-	char *beg = strchr(buf,9)+1; // tab before instruction
-	char *adr = strchr(buf,';')+2;
-	char dest[1024];
-	char *end = adr-3;
-	while (*end == 9) end--;
-	end++;
-	*end = 0;
-	memcpy(dest,adr,4);
-	sprintf(&dest[4],"\t");
-	adr += 6;
-	char *pdest = &dest[5];
-	do { // copy opcodes
-	    memcpy(pdest,adr,2);
-	    pdest+=2;
-	    adr += 3;
-	} while (adr[-1] != 9);
-	sprintf(pdest,"\t%s",beg);
-	fprintf(f,"%s\n",dest);
-	// don't call set_offs here, limited to 100 offsets
-	continue;
-    }
     fprintf(f,"%s\n",buf);
   }
   fclose(f);
@@ -503,7 +471,7 @@ static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
   while (!feof(f)) {
     offset = ftell(f);
     myfgets(buff,256,f);
-    if (buff[0] == ';' || !strchr(buff,9))
+    if (buff[0] == ';')
       continue;
     sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
     if (cur_pc >= target) break;
