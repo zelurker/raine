@@ -755,7 +755,7 @@ static menu_item_t about_items[] =
   { " ", NULL, NULL, },
   { "CPU emulators:", NULL, NULL },
   {    "Starscream 0.26r4 by Neill Corlett", },
-  {    "MZ80 3.4raine2 by Neill Bradley" },
+  {    "MZ80 3.4raine3 by Neill Bradley" },
   {    "M6502 1.6raine2 by Neill Bradley" },
   {    "UAE 68020 Emulator : old hacked asm version from UAE" },
   {    "MCU 68705: statically recompiled code by Richard Mitton" },
