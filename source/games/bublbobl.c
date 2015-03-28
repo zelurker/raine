@@ -165,11 +165,10 @@ static struct ROM_INFO rom_bublcave[] =
 static struct ROM_INFO rom_bublredux[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "bb3", 0x08000, 0xb802046d, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "bb3", 0x08000, 0x198dc44e, REGION_CPU1, 0x00000, LOAD_NORMAL },
   { "bb5", 0x08000, 0xd29d3444, REGION_CPU1, 0x08000, LOAD_NORMAL },
-  { "bb4", 0x08000, 0x3cbb8b41, REGION_CPU1, 0x10000, LOAD_NORMAL },
+  { "bb4", 0x08000, 0x9b819b62, REGION_CPU1, 0x10000, LOAD_NORMAL },
 	/* 20000-2ffff empty */
-  FILL(          0x18000, 0x10000, 0, CPU1), // not sure it's used !
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -208,12 +207,16 @@ static struct INPUT_INFO input_bublbobl[] =
    INP0( P1_B2,    0x010003, 0x10 ),
    INP0( P1_B1,    0x010003, 0x20 ),
    INP0( P1_START, 0x010003, 0x40 ),
+   INP0( UNKNOWN,  0x010003, 0x80),
 
    INP0( P2_LEFT,  0x010004, 1 ),
    INP0( P2_RIGHT, 0x010004, 2 ),
+   // INP0( TILT,     0x010004, 4 ),
+   INP0( SERVICE,  0x010004, 8 ),
    INP0( P2_B2,    0x010004, 0x10 ),
    INP0( P2_B1,    0x010004, 0x20 ),
    INP0( P2_START, 0x010004, 0x40 ),
+   INP0( UNKNOWN,  0x010004, 0x80),
 
    END_INPUT
 };
@@ -524,7 +527,7 @@ struct DSW_DATA dsw_data_super_bobble_bobble_1[] =
 static struct DSW_INFO dsw_sboblbob[] =
 {
    { 0x00FF00, 0xFE, dsw_data_super_bobble_bobble_0 },
-   { 0x00FF01, 0xFF, dsw_data_super_bobble_bobble_1 },
+   { 0x00FF01, 0x3F, dsw_data_super_bobble_bobble_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -739,7 +742,7 @@ static UINT8 BublBobl_SoundCmd_read(UINT16 offset)
 
 static UINT32 bank_sw;
 
-static void init_bank_rom(UINT8 *src, UINT8 *dst)
+static void init_bank_rom()
 {
    setup_z80_frame(CPU_Z80_2,CPU_FRAME_MHz(3,60));
 
@@ -749,18 +752,19 @@ static void init_bank_rom(UINT8 *src, UINT8 *dst)
 
 static void BublBobl_BankSwitch(UINT16 addr, UINT8 value)
 {
-	(void)(addr);
-   if (bank_sw != (UINT32)(value & 3))
+    value = value & 3;
+   if (bank_sw != (UINT32)(value))
    {
-      bank_sw = value & 3;
+      bank_sw = value;
       z80_set_bank( 0,bank_sw );
+      // memcpy(RAM+0x8000,ROM+0x8000+bank_sw*0x4000,0x4000);
    }
 #if 0
-   if ((value & 0x10)) {
+   if (!(value & 0x10)) {
        printf("reset z80b\n");
        cpu_reset(CPU_Z80_1);
    }
-   if ((value & 0x20a)) {
+   if (!(value & 0x20)) {
        printf("reset mcu\n");
        BubbleBobble_mcu_reset();
    }
@@ -886,12 +890,6 @@ static void BublBoblAddSaveData(void)
 
 static UINT8 HACK[3][2];
 
-static void BublBobl_resetsound(UINT32 offset, UINT8 data) {
-    // irq_enable++;
-/*    if (!data)
-	cpu_reset(CPU_Z80_2); */
-}
-
 static int no_mcu;
 
 static void bubl_reset() {
@@ -958,7 +956,7 @@ static void load_bublbobl(void)
 
    SetStopZ80Mode2(0x01ED);
 
-   init_bank_rom(NULL,ROM);
+   init_bank_rom();
 
    nmi_enable = 0;
    nmi_pending = 0;
@@ -974,17 +972,23 @@ static void load_bublbobl(void)
 
    AddZ80AReadByte(0x01ed, 0x01ee, NULL, HACK[0]); // hide speed hack
    AddZ80AReadByte(0x0000, 0xBFFF, NULL,                    NULL);         // Z80 ROM (bank switched)
-   AddZ80AReadByte(0xC000, 0xFFFF, NULL,                    RAM+0xC000);   // Z80 RAM
+   // AddZ80ARead(0xfc22, 0xfc22, read_input, NULL);
+   if (no_mcu)
+       AddZ80AReadByte(0xC000, 0xFF03, NULL,                    RAM+0xC000);   // Z80 RAM
+   else
+       AddZ80AReadByte(0xC000, 0xFFFF, NULL,                    RAM+0xC000);   // Z80 RAM
    AddZ80AReadByte(-1, -1, NULL, NULL);
 
-   AddZ80AWriteByte(0xC000, 0xF7FF, NULL,                   RAM+0xC000);   // Z80 RAM
-   AddZ80AWriteByte(0xFC00, 0xFFFF, NULL,                   RAM+0xFC00);   // Z80/MCU RAM
-   AddZ80AWriteByte(0xF800, 0xF9FF, NULL /* BublBobl_PalRAMWrite */,   RAM+0xf800);         // Color RAM
+   AddZ80AWriteByte(0xC000, 0xF9FF, NULL,                   RAM+0xC000);   // Z80 RAM + palette
+   if (no_mcu)
+       AddZ80AWriteByte(0xFC00, 0xFeFF, NULL,                   RAM+0xFC00);   // mostly ram
+   else
+       AddZ80AWriteByte(0xFC00, 0xFFFF, NULL,                   RAM+0xFC00);   // Z80/MCU RAM
    AddZ80AWriteByte(0xFB40, 0xFB40, BublBobl_BankSwitch,    NULL);         // Bank switch
    AddZ80AWriteByte(0xFA00, 0xFA00, BublBobl_SoundCmd,      NULL);         // Sound command
-   AddZ80AWriteByte(0xFA03, 0xFA03, BublBobl_resetsound,      NULL);         // Sound command
-   AddZ80AWriteByte(0xFA40, 0xFA40, NULL,                   RAM+0xFA40);   // ???
-   AddZ80AWriteByte(0xFA80, 0xFA80, NULL,                   RAM+0xFA80);   // Watchdog
+   // AddZ80AWriteByte(0xFA03, 0xFA03, BublBobl_resetsound,      NULL);
+   // AddZ80AWriteByte(0xFA40, 0xFA40, NULL,                   RAM+0xFA40);   // ???
+   // AddZ80AWriteByte(0xFA80, 0xFA80, NULL,                   RAM+0xFA80);   // Watchdog
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);         // <bad writes>
    AddZ80AWriteByte(-1, -1, NULL, NULL);
 
