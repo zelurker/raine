@@ -6,7 +6,8 @@
 
 typedef struct {
   char *title;
-  int status, looping, nb_lines;
+  // status : 0 = off, 1 = on (in dialog)
+  int status, looping, nb_lines,hidden;
   char **lines;
 } tscript;
 
@@ -22,8 +23,13 @@ char *get_script_name(int writeable) {
   char buf[1024];
   sprintf(buf,"scripts%s%s%s%s.txt",SLASH,base,SLASH,current_game->main_name);
 
+  char *s = get_shared(buf);
+  if (!exists(s)) {
+      sprintf(buf,"scripts%s%s%s%s.txt",SLASH,base,SLASH,parent_name());
+      s = get_shared(buf);
+  }
   if (!writeable)
-    return get_shared(buf);
+    return s;
   // if it must be writable, force the use of the personnal folder, and
   // create the dirs by the way
   static char shared[1024];
@@ -53,11 +59,13 @@ void init_scripts() {
     while (!feof(f)) {
       char buff[1024];
       myfgets(buff,1024,f);
-      if (!strncmp(buff,"script \"",8)) {
+      if (!strncmp(buff,"script \"",8) ||
+	      !strncmp(buff,"hidden \"",8)) {
 	if (nb_scripts == nb_alloc) {
 	  nb_alloc += 10;
 	  script = (tscript *)realloc(script,sizeof(tscript)*nb_alloc);
 	}
+	script[nb_scripts].hidden = !strncmp(buff,"hidden",6);
 	char *t = strchr(buff+8,'"');
 	if (!t) {
 	  print_debug("init_scripts: didn't find closing quote, line %s\n",buff);
@@ -67,7 +75,7 @@ void init_scripts() {
 	*t = 0;
 	script[nb_scripts].title = strdup(buff+8);
 	t++;
-	while (*t == ' ')
+	while (*t == ' ' || *t == '\t')
 	  t++;
 	if (*t) // any word after the script name makes it to loop !
 	  script[nb_scripts].looping = 1;
@@ -105,7 +113,7 @@ void init_scripts() {
 	}
 	nb_scripts++;
       } else // script line
-	  run_console_command(buff);
+	  run_console_command(buff); // pre-init, usually for variables
     } // feof
     fclose(f);
   } // if (f)
@@ -113,25 +121,37 @@ void init_scripts() {
 
 void add_scripts(menu_item_t *menu) {
   for (int n=0; n<nb_scripts; n++) {
-    menu[n].label = script[n].title;
-    menu[n].value_int = &script[n].status;
-    menu[n].values_list_size = 2;
-    menu[n].values_list[0] = 0;
-    menu[n].values_list[1] = 1;
-    menu[n].values_list_label[0] = "Off";
-    menu[n].values_list_label[1] = "On";
+      if (script[n].hidden) continue;
+      menu->label = script[n].title;
+      menu->value_int = &script[n].status;
+      menu->values_list_size = 2;
+      menu->values_list[0] = 0;
+      menu->values_list[1] = 1;
+      menu->values_list_label[0] = "Off";
+      menu->values_list_label[1] = "On";
+      menu++;
   }
 }
 
 void update_scripts() {
-  for (int n=0; n<nb_scripts; n++) {
-    if (script[n].status) {
-      for (int l=0; l<script[n].nb_lines; l++)
-	run_console_command(script[n].lines[l]);
-      if (!script[n].looping)
-	script[n].status = 0;
+    int *status;
+    status = new int[nb_scripts];
+    int n;
+    /* We want that the start_script command starts the script in the next
+     * frame, so we must make a backup of the current status array otherwise
+     * the script is started at the same frame if coming after the current one
+     * */
+    for (n=0; n<nb_scripts; n++)
+	status[n] = script[n].status;
+    for (n=0; n<nb_scripts; n++) {
+	if (status[n]) {
+	    for (int l=0; l<script[n].nb_lines; l++)
+		run_console_command(script[n].lines[l]);
+	    if (!script[n].looping)
+		script[n].status = 0;
+	}
     }
-  }
+    delete status;
 }
 
 static FILE *fscript;
@@ -168,6 +188,18 @@ static void get_script_name(char *field) {
   *field = 0;
   cons->print("Type return for a script which is executed only once, or type any text + return for a script which loops until manually stopped");
   cons->set_interactive(&get_script_mode);
+}
+
+void do_start_script(int argc, char **argv) {
+    if (argc != 2)
+	throw "Syntax : start_script name\n";
+    for (int n=0; n<nb_scripts; n++) {
+	if (!strcmp(script[n].title,argv[1])) {
+	    script[n].status = 1;
+	    return;
+	}
+    }
+    cons->print("Didn't find script %s",argv[1]);
 }
 
 void do_script(int argc, char **argv) {

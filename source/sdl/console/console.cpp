@@ -1176,7 +1176,9 @@ commands_t commands[] =
   "a click on a value of a dump gives you the corresponding adress in the command line. If some search results are in the dump, they appear in green. You can also use 'dump search' to dump the search results (in this mode, all the lines start with a search result). In a dump the numbers which have changed since the last time you called the console and which are not search results are displayed in cyan."},
   { "script", &do_script, "script ['description' [always]]",
   "Record a script, a list of instructions, to be called later, generally as a cheat. You can run this command without parameters, in this case it will just ask for the missing information. Usually you should first test your instructions, and once you are sure they are correct, run this command, and use the history feature of the command to record the right instructions.\n"
-  "Notice that you can edit scripts with a text editor, they are saved in config/neocd/gamename.scr where gamename is the short game name (given on the status line)" },
+  "Notice that you can edit scripts with a text editor, they are saved in scripts/neocd/gamename.txt or scripts/raine/gamename.txt where gamename is the short game name (given on the status line)" },
+  { "start_script", &do_start_script, "start_script \"name\" : enable a script when next frame is drawn",
+      "Equivalent to turn a script on using the cheats dialog (when it's not hidden)" },
   { "regs", &do_regs, "regs : show registers" },
   { "watch", &do_watch, "watch [read] [adr] [size] [value] : adds/lists watchpoints", "when passing adr, adds a watch point on adr (2 actually, 1 for the byte, and 1 for the word), which are trigered everytime something is writen to this adress.\n"
   "Without argument, list the watch points defined.\n"

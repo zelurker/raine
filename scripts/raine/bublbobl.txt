@@ -1,0 +1,13 @@
+nb_monster=$ed3d
+level=$e64b
+timeout=$e0ae
+
+script "skip this level"
+  poke nb_monster 0
+  start_script timeout
+
+hidden "timeout"
+  dpoke timeout 1
+
+
+
