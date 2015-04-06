@@ -4,10 +4,8 @@ timeout=$e0ae
 
 script "skip this level"
   poke nb_monster 0
-  start_script timeout
-
-hidden "timeout"
+#  start_script timeout
   dpoke timeout 1
-
+  poke timeout+2 $e9
 
 
