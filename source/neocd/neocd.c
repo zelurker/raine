@@ -119,7 +119,7 @@ static struct {
 } saveram;
 
 static int capture_mode = 0,start_line,screen_cleared,load_sdips,fix_mask,
-	   fix_banked;
+	   fix_banked,aes;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0;
 static int one_palette,sprites_mask,nb_sprites;
@@ -1487,7 +1487,7 @@ void video_draw_fix(void)
   int garouoffsets[32];
 
   if (!is_neocd()) {
-      if (fixed_layer_source == 0 || !load_region[REGION_FIXED]) {
+      if (!aes && (fixed_layer_source == 0 || !load_region[REGION_FIXED])) {
 	  neogeo_fix_memory = load_region[REGION_FIXEDBIOS];
 	  fix_usage = bios_fix_usage;
 	  // banked = 0;
@@ -2197,6 +2197,11 @@ static void neogeo_hreset(void)
       irq3_pending = 1;
       s68000context.areg[7] = M68000_context[0].areg[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
       s68000context.pc = M68000_context[0].pc = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
+      aes = (neogeo_bios == 22 || neogeo_bios == 23);
+      if (aes)
+	  input_buffer[5] &= 0x7f;
+      else
+	  input_buffer[5] |= 0x80;
   }
   watchdog_counter = 9;
   display_position_interrupt_pending = 0;
