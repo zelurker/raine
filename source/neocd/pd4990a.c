@@ -336,29 +336,5 @@ void pd4990a_init(void)
     pd4990a.days = bcd(t->tm_mday);
     pd4990a.month = (t->tm_mon+1);
     pd4990a.year = bcd(t->tm_year%100);
-#if 0
-	state_save_register_item("pd4990a", 0, pd4990a.seconds);
-	state_save_register_item("pd4990a", 0, pd4990a.minutes);
-	state_save_register_item("pd4990a", 0, pd4990a.hours);
-	state_save_register_item("pd4990a", 0, pd4990a.days);
-	state_save_register_item("pd4990a", 0, pd4990a.month);
-	state_save_register_item("pd4990a", 0, pd4990a.year);
-	state_save_register_item("pd4990a", 0, pd4990a.weekday);
-
-	state_save_register_item("pd4990a", 0, shiftlo);
-	state_save_register_item("pd4990a", 0, shifthi);
-
-	state_save_register_item("pd4990a", 0, retraces);
-	state_save_register_item("pd4990a", 0, testwaits);
-	state_save_register_item("pd4990a", 0, maxwaits);
-	state_save_register_item("pd4990a", 0, testbit);
-
-	state_save_register_item("pd4990a", 0, outputbit);
-	state_save_register_item("pd4990a", 0, bitno);
-	state_save_register_item("pd4990a", 0, reading);
-	state_save_register_item("pd4990a", 0, writting);
-
-	state_save_register_item("pd4990a", 0, clock_line);
-	state_save_register_item("pd4990a", 0, command_line);
-#endif
+    pd4990a.weekday = bcd(t->tm_wday);
 }
