@@ -97,9 +97,12 @@ void init_assoc(int kind) {
 		type = 0;
 		printf("not found type 2\n");
 	    }
-	} else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6))
+	} else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6)) {
 	    type = 3; // sonicwi2/3
-	else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0",7) ||
+#if VERBOSE
+	    printf("assoc: sonicwi2/3 detected\n");
+#endif
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0",7) ||
 		!strncmp((char*)&Z80ROM[0x3e],"Ver 1.5",7) ||
 		!strncmp((char*)&Z80ROM[0x3e],"Ver 8.3",7)) {
 	    // Search for fe3b, a ld ld,adr is 6 bytes before
@@ -272,6 +275,8 @@ int handle_sound_cmd(int cmd) {
     case 3: // sonicwi2 / sonicwi3
 	if (active && (cmd == 3 || (cmd >= 0x20 && cmd < Z80ROM[0x30d])))
 	    mute_song();
+	if (cmd < 0x20 || cmd >= Z80ROM[0x30d])
+	    return 0; // less verbose in debug mode !
 	break;
     case 2: // galaxyfg
 	if (cmd == 3) { // immediate reset
