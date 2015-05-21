@@ -225,6 +225,9 @@ static void hs_save (void)
 	return;
     }
 
+    if (!state.hiscores_have_been_loaded)
+	return;
+
   FILE *f = fopen(myget_filename(), "wb");
   if (f)
     {
