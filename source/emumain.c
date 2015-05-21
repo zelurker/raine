@@ -80,15 +80,7 @@ extern void update_gui_inputs(void);
 UINT32 cpu_fps;
 UINT32 quit_loop;
 
-int req_fwd; // ingame.c
-
-void key_pause_fwd()
-{
-  if (raine_cfg.req_pause_game) {// only makes sense while in pause...
-    req_fwd = 1; // could contain more than 1 frame...
-    raine_cfg.req_pause_game = 0;
-  }
-}
+int req_fwd;
 
 void key_stop_emulation_esc(void)
 {
@@ -376,8 +368,12 @@ UINT32 run_game_emulation(void)
 
       if (req_fwd) { // Fwd n frames
 	  req_fwd--;
-	  if (!req_fwd)
+	  if (!req_fwd) {
+	      // if pause is set, then update_inputs returns immediately, so
+	      // call it before that !
+	      update_inputs();
 	      raine_cfg.req_pause_game = 1;
+	  }
       }
       update_inputs();
 

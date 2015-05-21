@@ -16,8 +16,6 @@ void reset_game_hardware(void);
 
 void set_reset_function(void (*my_func)());
 
-void key_pause_fwd();
-
 #ifdef __cplusplus
 }
 #endif

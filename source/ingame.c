@@ -43,12 +43,6 @@ static int mbase;		// Which message is top of the list
 // BlitScreen():
 // Entry to screen blitting, takes care of pause mode, eagle mode
 
-static int pause_init;
-
-void uninit_pause() {
-    pause_init = 0;
-}
-
 void BlitScreen(void)
 {
   if(!raine_cfg.req_pause_game){
@@ -56,10 +50,6 @@ void BlitScreen(void)
 	 return;
   }
       else{
-	  if (!pause_init) {
-	      stop_demo();
-	      pause_init = 1;
-	  }
 
 	  DrawPaused();
 

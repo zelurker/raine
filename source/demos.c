@@ -176,7 +176,7 @@ void save_demo_inputs()
     iputw(first | (last << 8) | mouse_flag,fdemo);
     for (n=first; n<=last; n++)
       contents[n] = read_input(offsets[n]);
-    gzwrite(fdemo,&contents[first],last-first+1);
+    gzwrite(fdemo,&contents[first],(last-first+1)*2);
   } else if (GameMouse && (mx != oldmx || my != oldmy || mouse_b != oldb)) {
     mouse_flag = 1;
     iputl(cpu_frame_count,fdemo);
@@ -229,6 +229,8 @@ void write_demo_inputs()
 // The counter part of save_demo_inputs
   static int  first,last;  // first and last offsets concerned for the frame.
   int n,mouse_flag = 0;
+    if (raine_cfg.req_pause_game)
+	return;
 
   if (current_frame < cpu_frame_count) {
     // Need to read from the file
@@ -245,7 +247,7 @@ void write_demo_inputs()
       last = n>>8;
       mouse_flag = ((n & 0x80) || (n == MOUSE_ID));
       if (n != MOUSE_ID)
-        gzread(fdemo,&contents[first],last-first+1);
+        gzread(fdemo,&contents[first],(last-first+1)*2);
       if (mouse_flag) {
 	newmx = igetw(fdemo);
 	newmy = igetw(fdemo);
