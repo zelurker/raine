@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*									      */
-/*	   RAINE (680x0 arcade emulation) v0.35 (c) 1998-2014 Raine Team      */
+/*	   RAINE (680x0 arcade emulation) v0.35 (c) 1998-2015 Raine Team      */
 /*									      */
 /******************************************************************************/
 
@@ -160,7 +160,7 @@ int main(int argc,char *argv[])
     // Anyway we should disable the console in windows, it's uggly and broken.
      printf(" RAINE");
 #endif
-    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2014(!) " HANDLE);
+    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2015(!) " HANDLE);
 
    printf("\r\n\r\n");
 
