@@ -783,6 +783,7 @@
   DRV(edf)
   DRV(hachoo)
   DRV(iganinju)
+    DRV(kazan)
   DRV(kickoff)
   DRV(lomakai)
   DRV(makaiden)

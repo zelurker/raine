@@ -196,7 +196,8 @@ static struct YM2151interface ym2151_interface =
   1,                    // 1 chip
   3500000,              // 3.5 MHz
   { YM3012_VOL(200,OSD_PAN_LEFT,200,OSD_PAN_RIGHT) },
-  { NULL },             // sorry, but the adpcm seemed too loud at 96 - Antiriad
+  { NULL },
+  // { test_lordofk },             // sorry, but the adpcm seemed too loud at 96 - Antiriad
   { NULL }              // maybe i tried the wrong games? :).
 };
 
@@ -207,7 +208,7 @@ static struct OKIM6295interface m6295_interface =
      30000 },				// rate
    { REGION_SOUND1,
      REGION_SOUND2 },		// rom list
-   { 100, 100 }, // volumes
+   { 150, 150 }, // volumes
 };
 
 static struct SOUND_INFO sound_lordofk[] =
@@ -1242,6 +1243,33 @@ static struct ROM_INFO rom_iganinju[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
+static struct ROM_INFO rom_kazan[] =
+{
+  { "kazan.2", 0x020000, 0x072aa3d6, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "kazan.1", 0x020000, 0xb9801e2d, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "iga_03.bin", 0x010000, 0xde5937ad, REGION_CPU1, 0x040000, LOAD_8_16 },
+  { "iga_04.bin", 0x010000, 0xafaf0480, REGION_CPU1, 0x040001, LOAD_8_16 },
+  { "iga_05.bin", 0x010000, 0x13580868, REGION_ROM1, 0x060000, LOAD_8_16 },
+  { "iga_06.bin", 0x010000, 0x7904d5dd, REGION_ROM1, 0x060001, LOAD_8_16 },
+  { "kazan.11", 0x020000, 0x08e54137, REGION_GFX1, 0x000000, LOAD_NORMAL },
+  { "kazan.12", 0x020000, 0xe89d58bd, REGION_GFX1, 0x020000, LOAD_NORMAL },
+  { "kazan.15", 0x020000, 0x48b28aa9, REGION_GFX2, 0x000000, LOAD_NORMAL },
+  { "kazan.16", 0x020000, 0x07eab526, REGION_GFX2, 0x020000, LOAD_NORMAL },
+  { "kazan.17", 0x020000, 0x617269ea, REGION_GFX2, 0x040000, LOAD_NORMAL },
+  { "kazan.18", 0x020000, 0x52fc1b4b, REGION_GFX2, 0x060000, LOAD_NORMAL },
+  { "kazan.19", 0x010000, 0xb3a9a4ae, REGION_GFX3, 0x000000, LOAD_NORMAL },
+  { "kazan.20", 0x020000, 0xee5819d8, REGION_GFX4, 0x000000, LOAD_NORMAL },
+  { "kazan.21", 0x020000, 0xabf14d39, REGION_GFX4, 0x020000, LOAD_NORMAL },
+  { "kazan.22", 0x020000, 0x646933c4, REGION_GFX4, 0x040000, LOAD_NORMAL },
+  { "kazan.23", 0x020000, 0x0b531aee, REGION_GFX4, 0x060000, LOAD_NORMAL },
+  { "kazan.9", 0x020000, 0x5c28bd2d, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "kazan.10", 0x010000, 0xcd6c7978, REGION_SMP1, 0x020000, LOAD_NORMAL },
+
+  { "kazan.7", 0x020000, 0x42f228f8, REGION_SMP2, 0x000000, LOAD_NORMAL },
+  { "kazan.8", 0x020000, 0xebd1c883, REGION_SMP2, 0x020000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
 static struct DSW_DATA dsw_data_iganinju_0[] =
 {
    COINAGE_6BITS
@@ -1652,13 +1680,18 @@ static int MS1SoundClock = DEF_MS1_SOUNDCLOCK;
 static void MS1SoundFrame(void)
 {
   int ta;
+#if 0
+    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(7,60));
+    cpu_interrupt(CPU_68K_1, 4);
+#else
   for( ta = MS1SoundLoop; ta > 0; ta-- ){
     cpu_execute_cycles(CPU_68K_1, MS1SoundClock);
 #ifdef RAINE_DEBUG
-       if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+    if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
 #endif
     cpu_interrupt(CPU_68K_1, 4);
   }
+#endif
 }
 
 static void MS2SoundFrame(void)
@@ -4891,7 +4924,6 @@ static struct DIR_INFO dir_iganinju[] =
 {
    { "iga_ninjyutsuden", },
    { "iganinju", },
-   { "kazan", },
    { NULL, },
 };
 GAME( iganinju, "Iga Ninjyutsuden", JALECO, 1988, GAME_SHOOT,
@@ -4902,6 +4934,16 @@ GAME( iganinju, "Iga Ninjyutsuden", JALECO, 1988, GAME_SHOOT,
 	.long_name_jpn = "ÍêÎàîE≈pÙ`",
 	.sound = sound_lordofk,
 );
+CREATE_DIR(kazan);
+#define load_kazan load_iganinju
+GAME(kazan,"Ninja Kazan", JALECO, 1988, GAME_SHOOT,
+	.input = input_lordofk,
+	.dsw = dsw_iganinju,
+	.video = &video_lordofk,
+	.exec = execute_lordofk,
+	.sound = sound_lordofk,
+	);
+
 static struct DIR_INFO dir_kickoff[] =
 {
    { "kick_off", },
