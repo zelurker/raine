@@ -76,6 +76,16 @@
 #define PVIDEO DRV_DEF_VIDEO
 #endif
 
+#define OLD_GAME(name,dir,rom,input,dsw,romsw,load,clear,video,exec,main_name, \
+  long_name,long_name_jpn,company,board,year,sound,flags) \
+\
+const struct GAME_MAIN game_##name = \
+{ \
+  __FILE__, /* source_file */ \
+  dir, rom, input,dsw,romsw,load,clear,video,exec,main_name,long_name, \
+  long_name_jpn,company,board,year,sound,flags \
+}
+
 #define GAME(name,longn,company,yr,flg, ...) \
                                              \
 struct GAME_MAIN game_##name =         \
