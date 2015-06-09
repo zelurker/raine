@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.64.4"
+VERSION = "0.64.5"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -1311,6 +1311,13 @@ else
 	$(OBJDIR)/6502/make6502.exe -s -6510 $@
 endif
 endif
+
+# This one is for a bug in gcc-4.8.3, 4.8.4 and 4.9.2 at least
+# just launch kazan or iganinju, the sound effects are bad while the demo
+# is playing -O is ok, -O1 has already the bug !
+$(OBJDIR)/sound/adpcm.o: source/sound/adpcm.c
+	@echo Compiling mcu $<...
+	$(CCV) -O $(INCDIR) $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -c $< -o $@
 
 # Notice : the following fix is specific to the frame pointer optimisation
 # of gcc 2.81 and higher (< 3.00)
