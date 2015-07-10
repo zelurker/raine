@@ -918,7 +918,7 @@ static struct OKIM6295interface m6295_interface_D =
 	1,
 	{ 12000 },
 	{ REGION_SMP1 },
-	{ 255 }
+	{ 200 }
 };
 
 static struct SOUND_INFO sound_peekaboo[] =
@@ -1667,7 +1667,7 @@ static int setup_ms1_gfx() {
 
    if(!MS1DecodeFG0(REGION_GFX3))return 0;
 
-   if (load_region[REGION_GFX1]) if(!MS1DecodeBG1(REGION_GFX2))return 0;
+   if (load_region[REGION_GFX2]) if(!MS1DecodeBG1(REGION_GFX2))return 0;
 
    if(!MS1DecodeBG0(REGION_GFX1))return 0;
    return 1;
@@ -1890,20 +1890,17 @@ static void load_rodland(void)
      rodlandj_gfx_unmangle(3);
    }
 
-   ROM = load_region[REGION_GFX1];
    for(ta=0;ta<0x10000;ta++){
-	   tb=ROM[ta+0x20000];
-	   tc=ROM[ta+0x30000];
-	   td=ROM[ta+0x40000];
-	   te=ROM[ta+0x50000];
-	   ROM[ta+0x20000]=td;
-	   ROM[ta+0x30000]=tb;
-	   ROM[ta+0x40000]=te;
-	   ROM[ta+0x50000]=tc;
+	   tb=GFX[ta+0x20000];
+	   tc=GFX[ta+0x30000];
+	   td=GFX[ta+0x40000];
+	   te=GFX[ta+0x50000];
+	   GFX[ta+0x20000]=td;
+	   GFX[ta+0x30000]=tb;
+	   GFX[ta+0x40000]=te;
+	   GFX[ta+0x50000]=tc;
    }
    if (!setup_ms1_gfx()) return;
-
-   ROM = load_region[REGION_CPU1];
 
    if (!strcmp(current_game->main_name,"rodland")) // only this one is decoded
      DecodeRodlandE(ROM);       // Deprotection
