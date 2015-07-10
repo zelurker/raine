@@ -1185,7 +1185,7 @@ static void GameInfo(GAME_MAIN *game_info)
 
    /*
 
-   rom ( name %s merge %s size %d crc32 %08x )
+   rom ( name %s merge %s size %d crc32 %08x region %s )
 
    */
 
@@ -1213,8 +1213,6 @@ static void GameInfo(GAME_MAIN *game_info)
 	if (strcmp(rom_list->name,REGION_EMPTY)) {
 	  printf(INDENT "rom ( name %s", rom_list->name);
 	}
-	if (rom_list->region)
-	  load_region[rom_list->region] = (UINT8*)rom_list->name;
 
 	if(romof){
 
@@ -1227,7 +1225,12 @@ static void GameInfo(GAME_MAIN *game_info)
          }
 
 	if (strcmp(rom_list->name,REGION_EMPTY))
-	  printf(" size %d crc32 %08x )\n", get_rom_size(&rom_list), rom_list->crc32);
+	  printf(" size %d crc32 %08x", get_rom_size(&rom_list), rom_list->crc32);
+	if (rom_list->region) {
+	  load_region[rom_list->region] = (UINT8*)rom_list->name;
+	  printf(" region %s",get_region_name(rom_list->region));
+	}
+	printf(" )\n");
       }
 
       rom_list++;
@@ -1262,7 +1265,10 @@ static void GameInfo(GAME_MAIN *game_info)
 			the parent. Here the repeating of the name is stupid, but it's
 			for compatibility... */
 		     printf(INDENT "rom ( name %s merge %s", rom_list->name,rom_list->name);
-		     printf(" size %d crc32 %08x )\n", get_rom_size(&rom_list), rom_list->crc32);
+		     printf(" size %d crc32 %08x", get_rom_size(&rom_list), rom_list->crc32);
+		     if (rom_list->region)
+			 printf(" region %s",get_region_name(rom_list->region));
+		     printf(" )\n");
 		     load_region[rom_list->region] = (UINT8*)rom_list->name; // to avoid duplication
 		   }
 		 }

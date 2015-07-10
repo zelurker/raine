@@ -703,6 +703,35 @@ void decode_region(UINT32 region, const GFX_LAYOUT *gfx_layout) {
 
 extern int call_init_tile_cache;
 
+char *get_region_name(int reg) {
+    static char region[25];
+    if (reg >= REGION_ROM1 && reg <= REGION_ROM4)
+	sprintf(region,"ROM%d",reg-REGION_ROM1+1);
+    else if (reg >= REGION_GFX1 && reg <= REGION_GFX5)
+	sprintf(region,"GFX%d",reg-REGION_GFX1+1);
+    else if (reg >= REGION_SMP1 && reg <= REGION_SMP4)
+	sprintf(region,"SMP%d",reg-REGION_SMP1+1);
+    else if (reg == REGION_PROMS)
+	strcpy(region,"proms");
+    else if (reg == REGION_SPRITES)
+	strcpy(region,"sprites");
+    else if (reg == REGION_FIXED)
+	strcpy(region,"fixed");
+    else if (reg == REGION_FIXEDBIOS)
+	strcpy(region,"bios fixed");
+    else if (reg == REGION_YMSND_DELTAT)
+	strcpy(region,"ym2610 sound (deltat)");
+    else if (reg == REGION_MAINBIOS)
+	strcpy(region,"bios");
+    else if (reg == REGION_AUDIOCRYPT)
+	strcpy(region,"crypted audio");
+    else if (reg >= REGION_USER1 && reg <= REGION_USER2)
+	sprintf(region,"USER%d",reg-REGION_USER1+1);
+    else
+	sprintf(region,"unknown");
+    return region;
+}
+
 void load_game_rom_info(void)
 {
    UINT32 i;

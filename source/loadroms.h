@@ -180,6 +180,7 @@ extern char *alt_names[8]; // used by config.c too... !!!
 UINT32 find_alternative_file_names(const ROM_INFO *rom_info, const DIR_INFO *dir_list);
 
 UINT32 get_region_size(UINT32 region);
+char *get_region_name(int reg);
 
 void load_game_rom_info(void);
 // used to decode a region after manipulating it in the loading function
