@@ -1055,7 +1055,7 @@ ifeq ("$(shell uname -n)","gentoo")
 # or the one for gentoo, just link SDL_sound directly !
 LIBS += -lSDL_sound
 else
-LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -lvorbisfile -lmikmod
+LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -lvorbisfile
 endif
 else
 # windows
@@ -1316,7 +1316,7 @@ endif
 # just launch kazan or iganinju, the sound effects are bad while the demo
 # is playing -O is ok, -O1 has already the bug !
 $(OBJDIR)/sound/adpcm.o: source/sound/adpcm.c
-	@echo Compiling mcu $<...
+	@echo Compiling less optimized $<...
 	$(CCV) -O $(INCDIR) $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -c $< -o $@
 
 # Notice : the following fix is specific to the frame pointer optimisation
