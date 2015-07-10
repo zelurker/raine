@@ -308,7 +308,6 @@ static void load_terraf(void)
 
    RAMSize=0x20100+0x10000;
 
-   fps = 57;
    if(!(ROM=AllocateMem(0x50000))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
    if(!(GFX=AllocateMem(0xD0000))) return;
@@ -1051,6 +1050,8 @@ static struct VIDEO_INFO video_terraf =
    224,
    32,
    VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+   NULL,
+   57
 };
 static struct DIR_INFO dir_kodure[] =
 {

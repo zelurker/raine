@@ -309,7 +309,6 @@ static void finish_conf() {
 static void load_armedf(void)
 {
    x_res = 320; sp_off = 16;
-   fps = 57;
 
    RAMSize=0x40000+0x10000;
    io_w = 0xd000;
@@ -760,7 +759,8 @@ static struct VIDEO_INFO video_armedf =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
-   gfxdecodeinfo
+   gfxdecodeinfo,
+   57
 };
 static struct VIDEO_INFO video_cclimbr2 =
 {

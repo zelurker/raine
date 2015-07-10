@@ -18,6 +18,7 @@
 #include "files.h" // get_shared
 #include "gui.h" // prototypes
 #include "bld.h"
+#include "profile.h" // fps
 
 #include "gui/menu.h"
 #include "dialogs/about.h"
@@ -140,6 +141,9 @@ static void load_game_proc()
     load_debug[0] = 0;
 
     current_game = game_list[raine_cfg.req_game_index];
+    fps = current_game->video->fps;
+    if (fps < 0.1)
+	fps = 60.0; // 60 fps (default)
 
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function

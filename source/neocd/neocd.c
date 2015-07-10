@@ -143,6 +143,7 @@ struct VIDEO_INFO neocd_video =
   VIDEO_ROTATE_NORMAL |
     VIDEO_ROTATABLE,
   NULL,
+  59.185606 // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
 };
 
 int neogeo_bios;
@@ -4516,7 +4517,6 @@ void load_neocd() {
     }
     if (!(neogeo_memorycard = AllocateMem(size_mcard))) return;
     memset(neogeo_memorycard,0,size_mcard);
-    fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
     raster_frame = 0;
     do_not_stop = 0;
 #ifndef RAINE_DOS
@@ -4535,6 +4535,9 @@ void load_neocd() {
     set_colour_mapper(&col_Map_15bit_xRGBRRRRGGGGBBBB);
     fixed_layer_bank_type = 0;
     if (is_neocd()) {
+	fps = 59.185606; // As reported in the forum, see http://rainemu.swishparty.co.uk/msgboard/yabbse/index.php?topic=1299.msg5496#msg5496
+	// the fps info is kept here for neocd because it doesn't use the
+	// standard load_game_proc so it ignores the fps field from video_info
 	print_debug("loading neocd game\n");
 	use_music = 1;
 	current_game->long_name = "No game loaded yet";

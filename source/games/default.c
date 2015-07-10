@@ -52,7 +52,6 @@ void LoadDefault(void)
 #if HAS_TC200
   f2_sprites_colors = 16;
 #endif
-  fps = 60.0; // 60 fps (default)
   default_fps = 0.0; // init only by the dialog which allows to change fps
 #if HAS_ADPCM
   adpcm_amplify = 1;

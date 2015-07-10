@@ -157,6 +157,7 @@ typedef struct VIDEO_INFO
    int        border_size;      // clipping border size
    UINT32      flags;		// extra info
    GFX_LIST  *gfx_list;
+   float fps; // default 60 fps if uninitialized
 } VIDEO_INFO;
 
 #ifdef interface

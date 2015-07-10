@@ -211,7 +211,6 @@ static void install_region() {
 
 static void setup_cave_game() {
   int i;
-  fps = 15625/271.5;
   init_pbitmap();
   // memset(input_buffer, 0xff, 16);
 
@@ -3505,6 +3504,7 @@ static struct VIDEO_INFO video_agallet =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    sailormn_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_ddonpach =
 {
@@ -3515,6 +3515,7 @@ static struct VIDEO_INFO video_ddonpach =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
    ddonpach_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_dfeveron =
 {
@@ -3525,6 +3526,7 @@ static struct VIDEO_INFO video_dfeveron =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    cave_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_donpachi =
 {
@@ -3535,6 +3537,7 @@ static struct VIDEO_INFO video_donpachi =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    donpachi_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_esprade =
 {
@@ -3545,6 +3548,7 @@ static struct VIDEO_INFO video_esprade =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
    esprade_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_hotdogst =
 {
@@ -3555,6 +3559,7 @@ static struct VIDEO_INFO video_hotdogst =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    cave_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_mazinger =
 {
@@ -3565,6 +3570,7 @@ static struct VIDEO_INFO video_mazinger =
    VIDEO_ROTATE_90 |
    VIDEO_ROTATABLE,
    mazinger_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_sailormn =
 {
@@ -3575,6 +3581,7 @@ static struct VIDEO_INFO video_sailormn =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
    sailormn_gfx,
+   15625/271.5
 };
 static struct VIDEO_INFO video_uopoko =
 {
@@ -3585,6 +3592,7 @@ static struct VIDEO_INFO video_uopoko =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE | VIDEO_NEEDS_16BPP,
    uopoko_gfx,
+   15625/271.5
 };
 static struct DIR_INFO dir_agallet[] =
 {

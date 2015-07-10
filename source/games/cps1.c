@@ -1387,7 +1387,6 @@ static void cps1_init_machine(void)
    int size = get_region_size(REGION_GFX1); // size of packed region
    int max_sprites16 = size*2 / 0x100;
    int sf2ee;
-   fps = 59.61; // Verified by mame team...
    // memset(&input_buffer[0x1a],0xff,0x20);
    no_pbitmap = !strncmp(gamename,"xmcot",5); // xmcota and clones
 
@@ -2532,7 +2531,6 @@ void load_cps2() {
 
   load_common(1);
   if (load_error) return;
-  fps = 59.63; // small adjustement for cps2
 
   // ByteSwap((UINT8*)xor, size_user1 );
 

@@ -38,6 +38,7 @@
 #include "loadpng.h"
 #include "files.h"
 #include "bld.h"
+#include "profile.h" // fps
 
 extern void update_stretch(); // stretch.c
 struct RGUI_CFG rgui_cfg;
@@ -1141,6 +1142,10 @@ int load_game_proc(int msg, DIALOG *d, int c)
       current_game = my_game_list[raine_cfg.req_game_index];
     else // uses -g switch
       current_game = game_list[raine_cfg.req_game_index];
+
+    fps = current_game->video->fps;
+    if (fps < 0.1)
+	fps = 60.0; // 60 fps (default)
 
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function

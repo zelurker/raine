@@ -1600,7 +1600,6 @@ static void myStop68000(UINT32 offset, UINT8 data) {
 static void finish_nmk_conf(void)
 {
   int ta;
-  fps = 56;
   req_int2 = 0;
   macross2_hack = 0;
   AddMemFetch(-1, -1, NULL);
@@ -4519,6 +4518,8 @@ static struct VIDEO_INFO video_bioship =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_bjtwin =
 {
@@ -4528,6 +4529,8 @@ static struct VIDEO_INFO video_bjtwin =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_blkheart =
 {
@@ -4537,6 +4540,8 @@ static struct VIDEO_INFO video_blkheart =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   NULL,
+   56.18
 };
 static struct VIDEO_INFO video_macross2 =
 {
@@ -4546,6 +4551,8 @@ static struct VIDEO_INFO video_macross2 =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_mustang =
 {
@@ -4555,6 +4562,8 @@ static struct VIDEO_INFO video_mustang =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_sabotenb =
 {
@@ -4564,6 +4573,8 @@ static struct VIDEO_INFO video_sabotenb =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_ssmissin =
 {
@@ -4573,6 +4584,8 @@ static struct VIDEO_INFO video_ssmissin =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_strahl =
 {
@@ -4582,6 +4595,8 @@ static struct VIDEO_INFO video_strahl =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_tdragon =
 {
@@ -4591,6 +4606,8 @@ static struct VIDEO_INFO video_tdragon =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_tdragon2 =
 {
@@ -4600,6 +4617,8 @@ static struct VIDEO_INFO video_tdragon2 =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct VIDEO_INFO video_tforceh =
 {
@@ -4609,6 +4628,8 @@ static struct VIDEO_INFO video_tforceh =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
+   NULL,
+   56
 };
 static struct DIR_INFO dir_acrobatm[] =
 {

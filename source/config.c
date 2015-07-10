@@ -1384,7 +1384,7 @@ static void GameInfo(GAME_MAIN *game_info)
    }
 
    printf("x %d y %d ", vid_info->screen_x, vid_info->screen_y);
-   printf("freq 60 )\n");
+   printf("freq %g )\n",(vid_info->fps < 0.1 ? 60.0 : vid_info->fps));
 
    /*
 

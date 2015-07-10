@@ -5146,6 +5146,7 @@ struct VIDEO_INFO video_cps1 =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
    cps1_gfx,
+   59.64 // Verified by mame team...
 };
 
 struct VIDEO_INFO video_cps1_270 =
@@ -5157,6 +5158,7 @@ struct VIDEO_INFO video_cps1_270 =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    cps1_gfx,
+   59.64
 };
 
 extern void cps1_irq_handler_mus(int irq);

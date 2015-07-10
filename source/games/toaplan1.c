@@ -1629,7 +1629,6 @@ static void load_outzone(void)
 {
    romset = 2;
    scroll_offsx = 0x1ef;
-   fps = 55.0;
 
    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,fps));
 
@@ -2815,6 +2814,7 @@ static struct VIDEO_INFO video_fireshrk =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    toaplan1_gfx,
+   57.61
 };
 static struct VIDEO_INFO video_hellfire =
 {
@@ -2825,6 +2825,7 @@ static struct VIDEO_INFO video_hellfire =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
    toaplan1_gfx,
+   57.61
 };
 static struct VIDEO_INFO video_outzone =
 {
@@ -2835,6 +2836,7 @@ static struct VIDEO_INFO video_outzone =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    outzone_gfx,
+   55.16
 };
 static struct VIDEO_INFO video_rallybik =
 {
@@ -2845,6 +2847,7 @@ static struct VIDEO_INFO video_rallybik =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    rally_bike_gfx,
+   55.16
 };
 static struct VIDEO_INFO video_vimana =
 {
@@ -2855,6 +2858,7 @@ static struct VIDEO_INFO video_vimana =
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
    vimana_gfx,
+   57.61
 };
 static struct DIR_INFO dir_demonwl1[] =
 {
