@@ -760,11 +760,14 @@ static void BublBobl_BankSwitch(UINT16 addr, UINT8 value)
       // memcpy(RAM+0x8000,ROM+0x8000+bank_sw*0x4000,0x4000);
    }
 #if 0
-   if (!(value & 0x10)) {
-       printf("reset z80b\n");
+   static int reset_mcu, reset_cpub;
+   if ((value & 0x10) != reset_cpub) {
+       reset_cpub = value & 10;
+       printf("reset z80b from %x\n",z80pc);
        cpu_reset(CPU_Z80_1);
    }
-   if (!(value & 0x20)) {
+   if ((value & 0x20) != reset_mcu) {
+       reset_mcu = value & 0x20;
        printf("reset mcu\n");
        BubbleBobble_mcu_reset();
    }
@@ -915,6 +918,7 @@ static void load_bublbobl(void)
    // Skip Idle Z80
    HACK[0][0] = ROM[0x01ED];
    HACK[0][1] = ROM[0x01EE];
+   // Instead of 1ed: jr $1ed (infinite loop)
    ROM[0x01ED]=0xD3;  // OUTA (AAh)
    ROM[0x01EE]=0xAA;  //
 
@@ -1009,6 +1013,7 @@ static void load_bublbobl(void)
 
    HACK[1][0] = Z80ROM[0x000A];
    HACK[1][1] = Z80ROM[0x000B];
+   /* Replaces a jp $a, so this cpu is active only during irq */
    Z80ROM[0x000A]=0xD3;  // OUTA (AAh)
    Z80ROM[0x000B]=0xAA;  //
 
@@ -1019,11 +1024,10 @@ static void load_bublbobl(void)
 
    AddZ80BReadByte(0x000a, 0x000b, NULL, HACK[1]); // hide speed hack
    AddZ80BReadByte(0x0000, 0x7FFF, NULL,                   Z80ROM+0x0000);  // ROM
-   AddZ80BReadByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
+   AddZ80BRW(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
    AddZ80BReadByte(0x8000, 0xFFFF, DefBadReadZ80,          NULL);  // <bad reads>
    AddZ80BReadByte(-1, -1, NULL, NULL);
 
-   AddZ80BWriteByte(0xE000, 0xF7FF, NULL,                   RAM+0xE000);  // COMMON RAM
    AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,         NULL);   // <bad writes>
    AddZ80BWriteByte(-1, -1, NULL, NULL);
 
@@ -1144,10 +1148,23 @@ static void execute_bublbobl(void)
 	   }
 	   frame -= elapsed;
        }
-   }
-// #ifndef MAME_MCU
-// // All this part should happen during the mcu irq, no irq here
-   if (irq_enable) {
+       /* Ok, now dirty hack :
+	* apprently the game can be saturated with bubbles, in this case it
+	* slows down, but then the cpus start to fill their stacks with
+	* interrupts and since the stack is very small, it finally crashes
+	* everything ! I guess there is a problem in the way raine handles
+	* irqs for the z80 here, there should probably never be more than 1
+	* irq waiting, and that's probably the reason why it crashes here.
+	* Anyway the other fix is just to check if the cpus have finished
+	* their normal work, in this case they are back to the pc expected
+	* for the speed hack, and if not add some cycles. It works, it's dirty
+	* and can't be done by the original hardware, but it's quite fun to
+	* have the game never slowing down... I'll keep it for now ! */
+       int round = 0;
+       while(cpu_get_pc(CPU_Z80_0) != 0x01ED && round < 100) {
+	   // printf("pc0 %x round %d sp %x\n",cpu_get_pc(CPU_Z80_0),round++,Z80_context[0].z80sp);
+	   cpu_execute_cycles(CPU_Z80_0,CPU_FRAME_MHz(6,60));
+       }
        /* There is something weird here. If sending irqs from the start, then
 	* the main cpu does a double initialization, starting the small music
 	* twice. This doesn't happen if the speed hack is enabled !
@@ -1168,6 +1185,15 @@ static void execute_bublbobl(void)
 	   RAM[0xfc7c] %= 6;
        }
 
+       round = 0;
+       while(cpu_get_pc(CPU_Z80_1) != 0x000A &&
+	      cpu_get_pc(CPU_Z80_1) != 0x1b3 && round < 100) {
+	   // What's this 1b3 pc ? Apparently it can very rarely stop there
+	   // but didn't find in which conditions. It's better to keep it here
+	   // anyway just in case
+	   // printf("pc1 %x round %d sp %x\n",cpu_get_pc(CPU_Z80_1),round++,Z80_context[1].z80sp);
+	   cpu_execute_cycles(CPU_Z80_1,CPU_FRAME_MHz(6,60));
+       }
        cpu_interrupt(CPU_Z80_1, 0x38);
    }
 
