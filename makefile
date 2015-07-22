@@ -1315,9 +1315,15 @@ endif
 # This one is for a bug in gcc-4.8.3, 4.8.4 and 4.9.2 at least
 # just launch kazan or iganinju, the sound effects are bad while the demo
 # is playing -O is ok, -O1 has already the bug !
+ifndef RAINE_DEBUG
 $(OBJDIR)/sound/adpcm.o: source/sound/adpcm.c
 	@echo Compiling less optimized $<...
-	$(CCV) -O $(INCDIR) $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -c $< -o $@
+	$(CCV) -O $(INCDIR) $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -MD -c $< -o $@
+	@cp $*.d $*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+            rm -f $*.d
+endif
 
 # Notice : the following fix is specific to the frame pointer optimisation
 # of gcc 2.81 and higher (< 3.00)
