@@ -133,6 +133,11 @@ static void draw_sprites(int start, int end, int start_line, int end_line);
 static UINT8 dark_screen; // only neogeo ?
 static int fc;
 static int size_mcard;
+static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
+	   scanline,watchdog_counter,
+	   irq3_pending,
+	   display_position_interrupt_pending, vblank_interrupt_pending,
+	   vbl,hbl;
 
 struct VIDEO_INFO neocd_video =
 {
@@ -662,12 +667,6 @@ static struct {
   int disable,wait_for_vbl_ack; // global / irq2
 } irq;
 
-static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
-	   scanline,watchdog_counter,
-	   irq3_pending,
-	   display_position_interrupt_pending, vblank_interrupt_pending,
-	   vbl,hbl;
-
 typedef struct {
   char *name;
   int id,width;
@@ -675,12 +674,14 @@ typedef struct {
 
 static const NEOCD_GAME *game;
 static int current_neo_frame, desired_68k_speed, stopped_68k,rolled;
-static int do_not_stop,end_screen;
+static int do_not_stop,end_screen,start_frame;
 
 static void get_scanline() {
   if (!raster_frame) {
     // scanline isn't available, find it
-    int cycles = s68000readOdometer() % current_neo_frame;
+    // Use start_frame here because current_eno_frame
+    // can vary when finding a speed hack
+    int cycles = s68000readOdometer() - start_frame;
     scanline = cycles * NB_LINES / current_neo_frame;
   }
 }
@@ -847,7 +848,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
       break;
     case 0x02: video_modulo = data; break; // Automatic increment register
     case 0x03: // Mode register
-	       neogeo_frame_counter_speed=(data>>8)+1;
+	       neogeo_frame_counter_speed=(data>>8);
 	       // printf("counter speed %d\n",neogeo_frame_counter_speed);
 	       irq.control = data & 0xff;
 	       debug(DBG_IRQ,"irq.control = %x at line %d\n",data,scanline);
@@ -913,7 +914,7 @@ static UINT16 read_videoreg(UINT32 offset) {
 	      // ends at line $10, so much more than 8 lines are not visible on screen !
 	      debug(DBG_RASTER,"access vcounter %x frame_counter %x from pc=%x scanline=%d final value %x\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline,(vcounter << 7) | (neogeo_frame_counter & 7));
 
-	      return (vcounter << 7) | ((neogeo_frame_counter-1) & 7);
+	      return (vcounter << 7) | ((neogeo_frame_counter) & 7);
 	    }
   }
   return 0xffff;
@@ -2052,6 +2053,19 @@ static void draw_neocd() {
   // + an 8x8 text layer (fix) over them
 
   clear_screen();
+  // The computation of neogeo_frame_counter MUST happen before drawing the
+  // sprites, it's because it happens for the real hardware during the vbl
+  // and some games like blazstar read it to synchronize animations and
+  // expect a very precise value here !
+  if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
+  {
+      // printf("draw_neocd: frame %d cpu_frame %d raster %d\n",neogeo_frame_counter,cpu_frame_count,raster_frame);
+    if (fc == 0) {
+      neogeo_frame_counter++;
+      fc=neogeo_frame_counter_speed;
+    } else
+	fc--;
+  }
   if (!video_enabled) {
       return;
   }
@@ -2085,14 +2099,6 @@ static void draw_neocd() {
   if (raster_frame && start_line > 0) {
       blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,start_line);
       debug(DBG_RASTER,"draw_neocd: sprites disabled on raster frame blit until line %d\n",start_line);
-  }
-
-  if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP))
-  {
-    if (++fc >= neogeo_frame_counter_speed) {
-      neogeo_frame_counter++;
-      fc=0;
-    }
   }
 
   if (check_layer_enabled(layer_id_data[0]) && !fix_disabled)
@@ -4520,7 +4526,7 @@ void load_neocd() {
     raster_frame = 0;
     do_not_stop = 0;
 #ifndef RAINE_DOS
-    register_driver_emu_keys(list_emu,4);
+    register_driver_emu_keys(list_emu,sizeof(list_emu)/sizeof(list_emu[0]));
 #endif
     layer_id_data[0] = add_layer_info("Fixed layer");
     layer_id_data[1] = add_layer_info("Sprites layer");
@@ -5165,6 +5171,7 @@ void loading_progress_function() {
 }
 
 void execute_neocd() {
+    start_frame = s68000readOdometer();
     if (GameMouse == 1) {
 	int dx,dy;
 	GetMouseMickeys(&dx,&dy);
