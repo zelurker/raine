@@ -88,9 +88,7 @@ void get_screen_coordinates(int *Xoff2,int *Yoff2, int *Destx, int *Desty, int *
 
 void raine_blit_eagle(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
-   UINT32 ta,d_w;
-
-   d_w = dest->w;
+   UINT32 ta;
 
    for(ta=0;ta<(UINT32)(h-1);ta++){
 
@@ -126,9 +124,7 @@ UINT32 es,oldes;
 
 static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
-   UINT32 ta,d_w;
-
-   d_w = dest->w;
+   UINT32 ta;
 
    ta = 0;
    if (d_y >= dest->h) return;
@@ -605,23 +601,6 @@ void InitDrawPaused(void)
 
    pause_timer = read_ingame_timer();
    init_gui_inputs_paused();
-}
-
-void EndDrawPaused(void)
-{
-   init_gui_inputs();
-
-   raine_cfg.show_fps_mode = show_fps_mode_store;
-
-   display_cfg.vsync = VSyncStore;
-
-   destroy_bitmap(pause_buffer);
-
-   sa_unpause_sound();
-
-   reset_ingame_timer();
-   restore_ingame_timer(pause_timer);
-   uninit_pause();
 }
 
 void DrawPaused(void)

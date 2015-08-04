@@ -13,8 +13,11 @@
 #ifdef HAVE_6502
 #include "6502/m6502hlp.h"
 #endif
+#include "gui/rgui.h"
 
 #define MAX_DIPSWITCHES		10
+
+int override_region = -10; // 0 is 1st region, -1 displays values, so -10 here
 
 typedef struct DSW
 {
@@ -419,6 +422,9 @@ void AddLanguageSwitch(UINT8 ldata, char *lname)
    LanguageSw.Count++;
 }
 
+void (*write_region_byte)(int data);
+int (*read_region_byte)();
+
 void SetLanguageSwitch(int number)
 {
   const ROMSW_INFO *romsw_src;
@@ -426,6 +432,16 @@ void SetLanguageSwitch(int number)
 
   romsw_src = current_game->romsw;
   ta = 0;
+  if (number < 0 || number >= LanguageSw.Count) {
+      char buf[1024];
+      sprintf(buf,"Region out of bounds (%d). Possible values :\n",number);
+      int n;
+      for (n=0; n<LanguageSw.Count; n++)
+	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.Mode[n]);
+      MessageBox("Warning",buf,"Ok");
+      return;
+  }
+
   if(romsw_src){
 
       if (write_region_byte)
@@ -438,9 +454,8 @@ void SetLanguageSwitch(int number)
 	  }
       }
   }
+  make_dipswitch_statlist();
 }
-
-int override_region;
 
 int GetLanguageSwitch(void)
 {
@@ -448,7 +463,10 @@ int GetLanguageSwitch(void)
 
    if(LanguageSw.Address){
 
-      tb = gen_cpu_read_byte_rom(LanguageSw.Address);
+       if (read_region_byte)
+	   tb = (*read_region_byte)();
+       else
+	   tb = gen_cpu_read_byte_rom(LanguageSw.Address);
 
       for(ta=0;ta<LanguageSw.Count;ta++){
           if(LanguageSw.Data[ta]==tb)

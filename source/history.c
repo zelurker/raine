@@ -25,11 +25,15 @@ void hist_open(char *name) {
       int n;
       for (n=0; n<nb_commands; n++) {
 	  free(commands_buff[n]);
+#ifdef SDL
 	  free((void*)menu_commands[n].label);
+#endif
       }
+#ifdef SDL
       if (menu_commands)
 	  free(menu_commands);
       menu_commands = NULL;
+#endif
       nb_commands = 0;
   }
   f = fopen (get_shared(name), "r");
@@ -53,22 +57,28 @@ void hist_open(char *name) {
       else if (!strncmp(str,"$cmd",4)) { // subsection
 	  // Specific to command.dat
 	  myfgets(str,255,f);
+#ifdef SDL
 	  menu_commands = realloc(menu_commands,sizeof(menu_item_t)*(nb_commands+2));
+	  memset(&menu_commands[nb_commands],0,sizeof(menu_item_t)*2);
+#endif
 	  commands_buff = realloc(commands_buff,sizeof(char*)*(nb_commands+1));
 	  // Also clear last element after this one
-	  memset(&menu_commands[nb_commands],0,sizeof(menu_item_t)*2);
 	  if (str[0] == '[') { // name between useless [] apparently...
 	      char *s = &str[strlen(str)-1];
 	      *s-- = 0;
 	      while (*s == '-') // and a line of - !
 		  *s-- = 0;
+#ifdef SDL
 	      menu_commands[nb_commands].label = strdup(str+1);
+#endif
 	  } else {
 	      // In case some entry doesn't have these []...
 	      char *s = &str[strlen(str)-1];
 	      while (*s == '-') // and a line of - !
 		  *s-- = 0;
+#ifdef SDL
 	      menu_commands[nb_commands].label = strdup(str);
+#endif
 	  }
 	  if (old_size) {
 	      printf("history: subsection inside subsection !\n");

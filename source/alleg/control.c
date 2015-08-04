@@ -213,7 +213,6 @@ enum {
 
 UINT8 rjoy[RJOY_COUNT];
 
-
 /******************************************************************************/
 /*                                                                            */
 /*                        DEFAULT GAME KEY SETTINGS                           */
@@ -1485,9 +1484,36 @@ static void key_save_screen(void)
    raine_cfg.req_save_screen = 1;
 }
 
+static int pause_frame;
+extern int req_fwd; // emumain.c
+
+static void key_pause_fwd()
+{
+  if (raine_cfg.req_pause_game) {// only makes sense while in pause...
+      cpu_frame_count = pause_frame++;
+      reset_ingame_timer();
+      req_fwd = 1; // could contain more than 1 frame...
+      raine_cfg.req_pause_game = 0;
+  }
+}
+
 static void key_pause_game(void)
 {
-   raine_cfg.req_pause_game = 1;
+	raine_cfg.req_pause_game ^= 1;
+	/* There would also be the possibility to stop cpu_frame_count while
+	 * in pause, but actually the variable has not exactly a good name
+	 * anymore since it's used to count the number of drawn frames and to
+	 * limit the display to 60 fps. So if we stop cpu_frame_count then
+	 * the screen is updated as often as possible while in pause mode,
+	 * which is not a good idea... */
+	if (raine_cfg.req_pause_game) {
+	    sa_pause_sound();
+	    pause_frame = cpu_frame_count;
+	} else {
+	    sa_unpause_sound();
+	    cpu_frame_count = pause_frame; // for the demos eventually
+	    reset_ingame_timer();
+	}
 }
 
 static void key_unpause_game(void)

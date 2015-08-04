@@ -67,6 +67,7 @@
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2
+#define DBG_SPRITES 4
 #define DBG_LEVEL 0
 
 // #define BOOT_BIOS 1
@@ -172,6 +173,7 @@ void save_neocd_config() {
   raine_set_config_int("neogeo","bios",neogeo_bios);
 }
 
+#ifndef RAINE_DOS
 static void toggle_capture_mode() {
   capture_mode++;
   if (capture_mode == 2)
@@ -194,6 +196,7 @@ static void next_sprite_block() {
   case 2: if (current_bank < assigned_banks) current_bank++; break;
   }
 }
+#endif // RAINE_DOS
 
 static void draw_sprites_capture(int start, int end, int start_line,
 	int end_line);
@@ -1889,10 +1892,12 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    zx = (zoom_control >> 8)&0x0F;
 
 	    sy = oy;
+	    debug(DBG_SPRITES,"init sy = oy %d\n",sy);
 	} else {   // nope it is a new block
 	    // Sprite scaling
 	    sx = (neogeo_vidram[0x8400 + count]) >> 7;
 	    sy = 0x1F0 - (y_control >> 7);
+	    debug(DBG_SPRITES,"init sy = 0x1f0 - (y_control >> 7) %d\n",sy);
 	    rows = y_control & 0x3f;
 	    if (rows == 0) continue;
 	    zx = (zoom_control >> 8)&0x0F;
@@ -1921,11 +1926,16 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	     * fullmode == 2 stays when raster frames are enabled, which is
 	     * the case for ssideki2 and 3 */
 	    if (sy > 0x100 && ((fullmode && !raster_frame) ||
-			(fullmode == 2 && raster_frame))) sy -= 0x200;
+			(fullmode == 2 && raster_frame))) {
+		sy -= 0x200;
+		debug(DBG_SPRITES,"corr sy sur fullmode -0x200 -> %d\n",sy);
+	    }
 
 	    if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
 	    {
+		debug(DBG_SPRITES,"loop corr sy now %d\n",sy);
 		while (sy < -16) sy += 2 * (rzy + 1);
+		debug(DBG_SPRITES,"end loop sy %d\n",sy);
 	    }
 	    oy = sy;
 
@@ -1958,6 +1968,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	else
 	    zy = 0;
 
+	debug(DBG_SPRITES,"before row loop sy %d oy %d\n",sy,oy);
 	// rows holds the number of tiles in each vertical multisprite block
 	for (y=0; y < rows ;y++) {
 	    // 100% specific to neocd : maximum possible sprites $80000
@@ -1984,10 +1995,8 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 
 	    if (!(irq.control & IRQ1CTRL_AUTOANIM_STOP)) {
 		if (tileatr&0x8) {
-		    // printf("animation tileno 8\n");
 		    tileno = (tileno&~7)|(neogeo_frame_counter&7);
 		} else if (tileatr&0x4) {
-		    // printf("animation tileno 4\n");
 		    tileno = (tileno&~3)|(neogeo_frame_counter&3);
 		}
 	    }
@@ -1995,6 +2004,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    if (fullmode == 2 || (fullmode == 1 && rzy == 0xff))
 	    {
 		if (sy >= 248) {
+		    debug(DBG_SPRITES,"sy corr 1 old %d new %d\n",sy,sy-2*(rzy+1));
 		    sy -= 2 * (rzy + 1);
 		}
 	    }
@@ -2006,6 +2016,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 
 	    if ((sy<=end_line && sy+zy>=start_line) && video_spr_usage[tileno])
 	    {
+		debug(DBG_SPRITES,"%d,%d,%x zoom %d,%d offs %x\n",sx,sy,tileno,rzx,zy,offs);
 		MAP_PALETTE_MAPPED_NEW(
 			(tileatr >> 8),
 			16,
@@ -2014,6 +2025,7 @@ static void draw_sprites(int start, int end, int start_line, int end_line) {
 	    }
 	}  // for y
     }  // for count
+    debug(DBG_SPRITES,"\n");
 }
 
 static void clear_screen() {

@@ -15,6 +15,12 @@
 
 #define VERBOSE 0
 
+#ifdef RAINE_DOS
+static void start_music_fadeout(double time) {
+    // Does nothing in dos
+}
+#endif
+
 // active : same role as cdda.playing, except that neocd and neogeo share the
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!

@@ -743,12 +743,16 @@ SOUND= \
     $(OBJDIR)/sound/fm.o       \
     $(OBJDIR)/sound/emulator.o
 
-ASSOC = $(OBJDIR)/sound/assoc.o \
+ASSOC = $(OBJDIR)/sound/assoc.o
+
+ifdef SDL
+ASSOC += \
 	$(OBJDIR)/sdl/dialogs/sound_commands.o \
 	$(OBJDIR)/sdl/dialogs/neocd_options.o \
 	$(OBJDIR)/sdl/dialogs/neo_softdips.o \
 	$(OBJDIR)/sdl/dialogs/neo_debug_dips.o \
 	$(OBJDIR)/sdl/dialogs/translator.o
+endif
 
 2151 = 	$(OBJDIR)/sound/ym2151.o \
 	$(OBJDIR)/sound/2151intf.o

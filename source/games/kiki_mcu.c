@@ -3,6 +3,9 @@
 
 #include <stdlib.h>
 #include "deftypes.h"
+#ifndef SDL
+#include "ingame.h"
+#endif
 
 extern UINT8 KSystem_MCU_RDMEM(int a);
 extern void KSystem_MCU_WRMEM(int a, UINT8 v);

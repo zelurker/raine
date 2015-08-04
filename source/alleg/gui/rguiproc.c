@@ -323,7 +323,6 @@ int raine_slider_proc(int msg, DIALOG *d, int c)
    int sfg;                /* slider foreground color */
    int vert = TRUE;        /* flag: is slider vertical? */
    int hh = 7;             /* handle height (width for horizontal sliders) */
-   int hmar;               /* handle margin */
    int slp;                /* slider position */
    int irange;
    int slx, sly, slh, slw;
@@ -344,7 +343,6 @@ int raine_slider_proc(int msg, DIALOG *d, int c)
 	 hh = slhan->w;
    }
 
-   hmar = hh/2;
    irange = (vert) ? d->h : d->w;
    slmax = itofix(irange-hh);
    slratio = slmax / (d->d1);

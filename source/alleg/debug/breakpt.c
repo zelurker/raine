@@ -52,6 +52,7 @@ static void classic_break(UINT16 adr, UINT8 data, struct z80PortWrite *unused)
   mz80ReleaseTimeslice();
 }
 
+#if 0
 static void add_classic_break(UINT16 adr) {
   UINT8 *base = ztx->z80Base;
 
@@ -71,6 +72,7 @@ static void del_classic_break(UINT16 adr) {
       break;
     }
 }
+#endif
 
 void set_breakpoints() {
   int n;

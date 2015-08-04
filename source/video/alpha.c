@@ -72,9 +72,19 @@ void init_alpha(UINT32 my_alpha) {
 
 void blend_16(UINT16 *dest, UINT16 src) {
     UINT8 rd,gd,bd,r,g,b;
+#ifndef SDL
+    rd = getr16(*dest);
+    gd = getg16(*dest);
+    bd = getb16(*dest);
+    r = getr16(src);
+    g = getg16(src);
+    b = getb16(src);
+    *dest = makecol16(
+#else
     SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
     SDL_GetRGB(src,color_format,&r,&g,&b);
     *dest = SDL_MapRGB(color_format,
+#endif
 	    ((rd * dalpha) >> 8) + ((r * alpha) >> 8),
 	    ((gd * dalpha) >> 8) + ((g * alpha) >> 8),
 	    ((bd * dalpha) >> 8) + ((b * alpha) >> 8));
@@ -82,9 +92,19 @@ void blend_16(UINT16 *dest, UINT16 src) {
 
 void blend50_16(UINT16 *dest, UINT16 src) {
     UINT8 rd,gd,bd,r,g,b;
+#ifndef SDL
+    rd = getr16(*dest);
+    gd = getg16(*dest);
+    bd = getb16(*dest);
+    r = getr16(src);
+    g = getg16(src);
+    b = getb16(src);
+    *dest = makecol16(
+#else
     SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
     SDL_GetRGB(src,color_format,&r,&g,&b);
     *dest = SDL_MapRGB(color_format,
+#endif
 	    rd/2+r/2,
 	    gd/2+g/2,
 	    bd/2+b/2);
@@ -92,9 +112,19 @@ void blend50_16(UINT16 *dest, UINT16 src) {
 
 void blend_32(UINT32 *dest, UINT32 src) {
     UINT8 rd,gd,bd,r,g,b;
+#ifndef SDL
+    rd = getr32(*dest);
+    gd = getg32(*dest);
+    bd = getb32(*dest);
+    r = getr32(src);
+    g = getg32(src);
+    b = getb32(src);
+    *dest = makecol32(
+#else
     SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
     SDL_GetRGB(src,color_format,&r,&g,&b);
     *dest = SDL_MapRGB(color_format,
+#endif
 	    ((rd * dalpha) >> 8) + ((r * alpha) >> 8),
 	    ((gd * dalpha) >> 8) + ((g * alpha) >> 8),
 	    ((bd * dalpha) >> 8) + ((b * alpha) >> 8));
@@ -102,9 +132,19 @@ void blend_32(UINT32 *dest, UINT32 src) {
 
 void blend50_32(UINT32 *dest, UINT32 src) {
     UINT8 rd,gd,bd,r,g,b;
+#ifndef SDL
+    rd = getr32(*dest);
+    gd = getg32(*dest);
+    bd = getb32(*dest);
+    r = getr32(src);
+    g = getg32(src);
+    b = getb32(src);
+    *dest = makecol32(
+#else
     SDL_GetRGB(*dest,color_format,&rd,&gd,&bd);
     SDL_GetRGB(src,color_format,&r,&g,&b);
     *dest = SDL_MapRGB(color_format,
+#endif
 	    rd/2+r/2,
 	    gd/2+g/2,
 	    bd/2+b/2);

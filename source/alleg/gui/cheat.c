@@ -336,8 +336,6 @@ char *hex_view_getter(int index, int *list_size)
 
 void do_hex_view(UINT32 offset)
 {
-   int ret;
-
    hex_start = get_search_range_start(offset);
    hex_end   = get_search_range_end  (offset);
    hex_lines = (hex_end + 1) - (hex_start);
@@ -348,7 +346,7 @@ void do_hex_view(UINT32 offset)
    if(hex_view_dialog[2].d1 >= 9)
       hex_view_dialog[2].d2 = hex_view_dialog[2].d1 - 9;
 
-   ret = raine_do_dialog(hex_view_dialog,-1);
+   raine_do_dialog(hex_view_dialog,-1);
 }
 
 static UINT32 *s_list;

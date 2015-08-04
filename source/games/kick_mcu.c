@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include "deftypes.h"
 #include "debug.h"
+#ifndef SDL
+#include "ingame.h"
+#endif
 
 UINT8 KSystem_MCU_RDMEM(int a);
 void KSystem_MCU_WRMEM(int a, UINT8 v);
