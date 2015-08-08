@@ -253,7 +253,7 @@ static int valid_edit(int sel) {
 
 static menu_item_t menu[] =
 {
-  { "label", valid_edit, &bidon, ITEM_EDIT },
+  { _("label"), valid_edit, &bidon, ITEM_EDIT },
   { NULL },
 };
 
@@ -264,7 +264,7 @@ void EditDlg(char *label, char *dest,int max_len) {
     menu[0].values_list[1] = 0; // use_hist
     menu[0].values_list[2] = 12*max_len;
     menu[0].values_list_label[0] = dest;
-    TDialog *dlg = new TDialog("Edition",menu);
+    TDialog *dlg = new TDialog(_("Edition"),menu);
     dlg->execute();
     delete dlg;
     if (!valid_input) dest[0] = 0;

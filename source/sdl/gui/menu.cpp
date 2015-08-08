@@ -140,11 +140,11 @@ static int toggle_mouse(int sel) {
 
 menu_item_t menu_options[] =
 {
-  { "Return mandatory", NULL, &return_mandatory, 2, { 0, 1 }, { "No", "Yes" }},
-  { "GUI transparency", NULL, &use_transparency, 2, { 0, 1 }, { "No", "Yes" }},
-  { "Use custom mouse cursor", &toggle_mouse, &emulate_mouse_cursor, 2,
-    { 0,1 }, { "No", "Yes" } },
-  { "Minimum GUI resolution = VGA", NULL,&keep_vga, 2, { 0,1 }, { "No","Yes" }},
+  { _("Return mandatory"), NULL, &return_mandatory, 2, { 0, 1 }, { _("No"), _("Yes") }},
+  { _("GUI transparency"), NULL, &use_transparency, 2, { 0, 1 }, { _("No"), _("Yes") }},
+  { _("Use custom mouse cursor"), &toggle_mouse, &emulate_mouse_cursor, 2,
+    { 0,1 }, { _("No"), _("Yes") } },
+  { "Minimum GUI resolution = VGA", NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
 };
 
 int fg_color, bg_color,fgframe_color,bgframe_color,cslider_border,
@@ -421,7 +421,7 @@ void TMenu::draw_top_frame() {
 char* TMenu::get_bot_frame_text() {
   int size = GetMemoryPoolSize()/1024; // Minimum Kb
   static char game[100];
-  snprintf(game,100,"%s",(current_game ? current_game->long_name :"No game loaded"));
+  snprintf(game,100,"%s",(current_game ? current_game->long_name :_("No game loaded")));
   if (current_game) {
       snprintf(&game[strlen(game)], 100-strlen(game),
 	      " (%s)",current_game->main_name);

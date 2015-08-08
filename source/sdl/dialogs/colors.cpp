@@ -38,11 +38,11 @@ static int set_gui_color(int sel);
 
 static menu_item_t colors_dlg[] =
 {
-    { "color", NULL, NULL, },
-{  "red", &set_gui_color, &r, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{  "green", &set_gui_color, &g, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{  "blue", &set_gui_color, &b, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
-{  "alpha", &set_gui_color, &a, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+    { _("color"), NULL, NULL, },
+{  _("red"), &set_gui_color, &r, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{  _("green"), &set_gui_color, &g, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{  _("blue"), &set_gui_color, &b, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
+{  _("alpha"), &set_gui_color, &a, ITEM_SLIDER, {255, 16, 300, 0, 0, 0} },
 { NULL, NULL, NULL }
 };
 
@@ -105,12 +105,12 @@ static int change_color(int sel);
 
 static menu_item_t colors_menu[] =
 {
-{  "fg color", &change_color, },
-{  "bg color", &change_color, },
-{  "fg frame color", &change_color, },
-{  "bg frame color", &change_color, },
-{  "bg dialog bar color", &change_color, },
-{ "Revert to...", &set_theme, &theme, 2, { 0, 1 }, { "Blue", "Green" } },
+{  _("fg color"), &change_color, },
+{  _("bg color"), &change_color, },
+{  _("fg frame color"), &change_color, },
+{  _("bg frame color"), &change_color, },
+{  _("bg dialog bar color"), &change_color, },
+{ _("Revert to..."), &set_theme, &theme, 2, { 0, 1 }, { _("Blue"), _("Green") } },
 { NULL, NULL, NULL }
 };
 
@@ -140,7 +140,7 @@ static int change_color(int sel) {
 
 
 int do_colors(int sel) {
-  TMenu *tmenu = new TMenu("Colors",colors_menu);
+  TMenu *tmenu = new TMenu(_("Colors"),colors_menu);
   tmenu->execute();
   delete tmenu;
   return 0;

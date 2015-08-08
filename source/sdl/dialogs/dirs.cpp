@@ -19,13 +19,13 @@ int do_dirs(int sel) {
   int n;
   menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+2));
   memset(menu,0,sizeof(menu_item_t)*(nb+2));
-  menu[0].label = "Screenshot dir";
+  menu[0].label = _("Screenshot dir");
   menu[0].values_list_label[0] = dir_cfg.screen_dir;
 
-  menu[1].label = "Emudx dir";
+  menu[1].label = _("Emudx dir");
   menu[1].values_list_label[0] = dir_cfg.emudx_dir;
 
-  menu[2].label = "Artwork dir";
+  menu[2].label = _("Artwork dir");
   menu[2].values_list_label[0] = dir_cfg.artwork_dir;
 
   for (n=0; n< nb; n++) {
@@ -34,7 +34,7 @@ int do_dirs(int sel) {
     menu[n].values_list[0] = bidon;
     menu[n].menu_func = &do_dir;
   }
-  TMenu *mbox = new TMenu("Directories",menu);
+  TMenu *mbox = new TMenu(_("Directories"),menu);
   mbox->execute();
   delete mbox;
   free(menu);

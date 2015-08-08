@@ -57,7 +57,7 @@ static int choose_bios(int sel) {
 	    menu[n].menu_func = &select_bios;
 	}
     }
-    TMenu *load = new TMenu("Neo-Geo bios",menu);
+    TMenu *load = new TMenu(_("Neo-Geo bios"),menu);
     load->set_sel(neogeo_bios);
     load->execute();
     delete load;
@@ -168,19 +168,19 @@ static int dev_mode;
 
 static menu_item_t neocd_menu[] =
 {
-    { "Neo-Geo bios", &choose_bios,},
-    { "NeoCD bios", &select_neocd_bios, },
-    { "Soft dips", &do_soft_dips, },
-    { "Debug dips", &do_debug_dsw, },
-    { "Developper mode", NULL, &dev_mode, 2, {0, 1}, {"No","Yes"} },
-{ "Exit to", &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
-  {"NeoGeo Logo", "CD Interface", "Test mode", "Config mode" } },
-  { "Loading animations speed", NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
-    { "Off", "CD 1x (150 Kb/s)", "2x", "4x", "8x (default)", "16x", "32x", "48x" } },
-  { "Update neocd sprite block", &do_update_block },
-  { "Allow speed hacks", NULL, &allowed_speed_hacks, 2, { 0, 1 }, { "No", "Yes" }},
-  { "Raster effects", NULL, &disable_irq1, 2, { 0, 1 }, { "Enabled", "Disabled" }},
-  { "Capture mode", NULL, &capture_new_pictures, 2, { 0, 1 }, { "Overwrite", "New pictures" }},
+    { _("Neo-Geo bios"), &choose_bios,},
+    { _("NeoCD bios"), &select_neocd_bios, },
+    { _("Soft dips"), &do_soft_dips, },
+    { _("Debug dips"), &do_debug_dsw, },
+    { _("Developper mode"), NULL, &dev_mode, 2, {0, 1}, {_("No"),_("Yes")} },
+{ _("Exit to"), &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
+  {_("NeoGeo Logo"), _("CD Interface"), _("Test mode"), _("Config mode") } },
+  { _("Loading animations speed"), NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
+    { _("Off"), "CD 1x (150 Kb/s)_(", ")2x_(", ")4x_(", ")8x (default)_(", ")16x_(", ")32x_(", ")48x" } },
+  { _("Update neocd sprite block"), &do_update_block },
+  { _("Allow speed hacks"), NULL, &allowed_speed_hacks, 2, { 0, 1 }, { _("No"), _("Yes") }},
+  { _("Raster effects"), NULL, &disable_irq1, 2, { 0, 1 }, { _("Enabled"), _("Disabled") }},
+  { _("Capture mode"), NULL, &capture_new_pictures, 2, { 0, 1 }, { _("Overwrite"), _("New pictures") }},
   { NULL },
 };
 

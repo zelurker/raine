@@ -713,7 +713,7 @@ end_loop:
 
     TMenu *about_menu;
     if (!do_command)
-	about_menu = new TMenu("About this game",menu);
+	about_menu = new TMenu(_("About this game"),menu);
     else
 	about_menu = new TMoves_menu((char*)menu_commands[sel].label,menu);
     about_menu->execute();
@@ -735,7 +735,7 @@ int show_moves(int sel) {
     int n;
     for (n=0; n<nb_commands; n++)
 	menu_commands[n].menu_func = &about_game;
-    TMenu *menu = new TMenu("Special moves...",menu_commands);
+    TMenu *menu = new TMenu(_("Special moves..."),menu_commands);
     menu->execute();
     delete menu;
     do_command = 0;
@@ -745,7 +745,7 @@ int show_moves(int sel) {
 static menu_item_t about_items[] =
 {
   { EMUNAME" "VERSION" (c)1998-2015 " HANDLE, NULL, NULL },
-  { "Compiled on " __DATE__ " (" __TIME__ ")", NULL, NULL },
+  { "Compiled on " __DATE__ " " __TIME__ , NULL, NULL },
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
   { "SDL", },
@@ -753,13 +753,13 @@ static menu_item_t about_items[] =
   { " ", NULL, NULL },
   { "http://raine.1emulation.com/", NULL, NULL },
   { " ", NULL, NULL, },
-  { "CPU emulators:", NULL, NULL },
-  {    "Starscream 0.26r4 by Neill Corlett", },
-  {    "MZ80 3.4raine3 by Neill Bradley" },
-  {    "M6502 1.6raine2 by Neill Bradley" },
-  {    "UAE 68020 Emulator : old hacked asm version from UAE" },
-  {    "MCU 68705: statically recompiled code by Richard Mitton" },
-  { "About this game...", &about_game },
+  { _("CPU emulators:"), NULL, NULL },
+  {    _("Starscream 0.26r4 by Neill Corlett"), },
+  {    _("MZ80 3.4raine3 by Neill Bradley") },
+  {    _("M6502 1.6raine2 by Neill Bradley") },
+  {    _("UAE 68020 Emulator : old hacked asm version from UAE") },
+  {    _("MCU 68705: statically recompiled code by Richard Mitton") },
+  { _("History..."), &about_game },
   { NULL, NULL, NULL },
 };
 
@@ -793,7 +793,7 @@ int do_about(int sel) {
 #endif
     about_items[2].label = gcc_version;
     sprintf(path,"%s/raine_logo.png",dir);
-    about_menu = new TAbout_menu("About...",about_items, path);
+    about_menu = new TAbout_menu(_("About..."),about_items, path);
     sprintf(about_cpu, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
     char about_sdl[80];

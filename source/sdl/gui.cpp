@@ -87,8 +87,8 @@ static int set_repeat_rate(int sel) {
 
 static menu_item_t gui_options_menu[] =
 {
-{  "Key repeat delay", &set_repeat_rate, &repeat_delay, 11, {0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 } },
-{  "Key repeat interval", &set_repeat_rate, &repeat_interval, 10, { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 } },
+{  _("Key repeat delay"), &set_repeat_rate, &repeat_delay, 11, {0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 } },
+{  _("Key repeat interval"), &set_repeat_rate, &repeat_interval, 10, { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 } },
 };
 
 int add_gui_options(menu_item_t *menu) {
@@ -103,7 +103,7 @@ static int progress_count;
 static menu_item_t load_items[] =
 {
   { "", },
-  { "Progress", NULL, &progress_count, ITEM_PROGRESS_BAR },
+  { _("Progress"), NULL, &progress_count, ITEM_PROGRESS_BAR },
   { "...", },
   { NULL, },
 };
@@ -160,9 +160,9 @@ static void load_game_proc()
     }
 
     progress_count = 0;
-    load_items[0].label = "Applying GFX Layouts and stuff..."; // init
+    load_items[0].label = _("Applying GFX Layouts and stuff..."); // init
     adjust_gui_resolution();
-    loading_dialog = new TDialog("Loading Game",load_items);
+    loading_dialog = new TDialog(_("Loading Game"),load_items);
     loading_dialog->draw();
 
     load_game_rom_info();
@@ -280,7 +280,7 @@ static int load_neo_game(int sel) {
       // is found, then a special list of extensions is used
   // ".iso",
   ".cue", "ipl.txt", "7z", NULL };
-  fsel(neocd_dir,exts,res,"Load NeoCD game");
+  fsel(neocd_dir,exts,res,_("Load NeoCD game"));
   return load_neo_from_name(res);
 }
 #endif
@@ -289,26 +289,26 @@ extern int do_sound_options(int sel);
 
 static menu_item_t main_items[] =
 {
-{ "Play game", &play_game, },
-{ "Game options", &do_game_options },
-{ "Region", &set_region, },
-{ "Action replay cheats", &do_cheats, },
-{ "Dipswitches", &do_dlg_dsw, },
-{ "Change/Load ROM", &do_game_sel },
+{ _("Play game"), &play_game, },
+{ _("Game options"), &do_game_options },
+{ _("Region"), &set_region, },
+{ _("Action replay cheats"), &do_cheats, },
+{ _("Dipswitches"), &do_dlg_dsw, },
+{ _("Change/Load ROM"), &do_game_sel },
 #if HAS_NEO
-{ "Load NeoCD game", &load_neo_game },
-{ "NeoCD/Neo-Geo options", &do_neocd_options },
+{ _("Load NeoCD game"), &load_neo_game },
+{ _("NeoCD/Neo-Geo options"), &do_neocd_options },
 #endif
-{ "Video options", &do_video_options },
-{ "Sound options", &do_sound_options },
-{ "Options", &do_gui_options },
-{ "Inputs", &do_controls },
-{ "About...", &do_about,},
-{ "Show command.dat info", &show_moves },
+{ _("Video options"), &do_video_options },
+{ _("Sound options"), &do_sound_options },
+{ _("Options"), &do_gui_options },
+{ _("Inputs"), &do_controls },
+{ _("About..."), &do_about,},
+{ _("Show command.dat info"), &show_moves },
 #ifdef HAS_CONSOLE
-{ "Console", &do_console, },
+{ _("Console"), &do_console, },
 #endif
-{ "Quit", &quit_raine, },
+{ _("Quit"), &quit_raine, },
 { NULL, NULL, NULL },
 };
 
@@ -344,7 +344,7 @@ class TMain_menu : public TMenu
 static void do_main_menu() {
     if (!sdl_screen->pixels)
 	adjust_gui_resolution();
-  TMain_menu *main_menu = new TMain_menu("Main menu",main_items);
+  TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
   int old_region;
   // init romsw
   if (current_game && current_game->romsw) {

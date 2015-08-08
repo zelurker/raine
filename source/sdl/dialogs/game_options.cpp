@@ -131,7 +131,7 @@ static menu_item_t *get_savegames(int for_saving) {
       static int dummy = 0;
       menu[n].values_list_size = 1;
       menu[n].value_int = &dummy;
-      menu[n].values_list_label[0] = "X";
+      menu[n].values_list_label[0] = _("X");
 #endif
     }
     if (for_saving) {
@@ -181,7 +181,7 @@ static int my_load(int sel) {
     MessageBox("Error","No savegames loadable for this game");
     return 0;
   }
-  TMenu *load = new TMenu("Load game",menu);
+  TMenu *load = new TMenu(_("Load game"),menu);
   load->execute();
   delete load;
   free_saves(menu);
@@ -191,7 +191,7 @@ static int my_load(int sel) {
 static int my_save(int sel) {
   exit_options = 0;
   menu_item_t *menu = get_savegames(1);
-  TMenu *load = new TMenu("Save game",menu);
+  TMenu *load = new TMenu(_("Save game"),menu);
   load->execute();
   delete load;
   free_saves(menu);
@@ -210,10 +210,10 @@ static int graphical_layers(int sel) {
     menu[n].values_list_size = 2;
     menu[n].values_list[0] = 0;
     menu[n].values_list[1] = 1;
-    menu[n].values_list_label[0] = "Off";
-    menu[n].values_list_label[1] = "On";
+    menu[n].values_list_label[0] = _("Off");
+    menu[n].values_list_label[1] = _("On");
   }
-  TMenu *layers = new TMenu("Layers",menu);
+  TMenu *layers = new TMenu(_("Layers"),menu);
   layers->execute();
   delete layers;
   free(menu);
@@ -231,20 +231,20 @@ static int reset_fps(int sel) {
 
 static menu_item_t game_options[] =
 {
-  { "Reset game hardware", &my_reset },
-  { "Load game", &my_load },
-  { "Save game", &my_save },
-  { "Graphical layers...", &graphical_layers },
-  { "Sprite viewer", &sprite_viewer },
+  { _("Reset game hardware"), &my_reset },
+  { _("Load game"), &my_load },
+  { _("Save game"), &my_save },
+  { _("Graphical layers..."), &graphical_layers },
+  { _("Sprite viewer"), &sprite_viewer },
 #if HAS_NEO
-  { "Edit screen", &do_screen },
-  { "Edit msg", &do_msg },
+  { _("Edit screen"), &do_screen },
+  { _("Edit msg"), &do_msg },
 #endif
   { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
-  { "FPS", NULL, &ifps, ITEM_FLOATEDIT, { 10,0,100 }, { "", (char*)&fps, "1", "200" } },
-  { "Reset fps to driver's default value", &reset_fps },
-  { "FPS counter", NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
-    { "Off", "Immediate FPS", "Average FPS", "Profiler", "Rdtsc Cycles" } },
+  { _("FPS"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,100 }, { "", (char*)&fps, "1", "200" } },
+  { _("Reset fps to driver's default value"), &reset_fps },
+  { _("FPS counter"), NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
+    { _("Off"), _("Immediate FPS"), _("Average FPS"), _("Profiler"), _("Rdtsc Cycles") } },
   { NULL }
 };
 
@@ -276,7 +276,7 @@ class TGame_options : public TMenu {
 int do_game_options(int sel) {
     if (fabs(default_fps) < 1e-4)
 	default_fps = fps;
-    TGame_options *menu = new TGame_options("Game options",game_options);
+    TGame_options *menu = new TGame_options(_("Game options"),game_options);
     menu->execute();
     delete menu;
     return exit_options;

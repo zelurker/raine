@@ -60,23 +60,23 @@ static int update_scaler(int sel) {
 
 static menu_item_t overlays_options[] =
 {
-    { "Prefered YUV format", NULL, &prefered_yuv_format, 2, { 0, 1 }, { "YUY2", "YV12 (mpeg)" } },
-    { "Fix aspect ratio to 4:3", NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {"No", "Yes" } },
+    { _("Prefered YUV format"), NULL, &prefered_yuv_format, 2, { 0, 1 }, { _("YUY2"), "YV12 (mpeg)" } },
+    { "Fix aspect ratio to 4:3", NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {_("No"), _("Yes") } },
 #ifdef DARWIN
-    { "Overlays workarounds", NULL, &overlays_workarounds, 2, { 0, 1}, {"No","Yes"}},
+    { _("Overlays workarounds"), NULL, &overlays_workarounds, 2, { 0, 1}, {_("No"),_("Yes")}},
 #endif
-    { "Keep aspect ratio", NULL, &display_cfg.keep_ratio, 2, {0, 1}, {"No","Yes"} },
+    { _("Keep aspect ratio"), NULL, &display_cfg.keep_ratio, 2, {0, 1}, {_("No"),_("Yes")} },
     {  NULL },
 };
 
 static menu_item_t blits_options[] =
 {
-    { "Change video mode", NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
-	{ "Never", "To match game resolution (low res most of the time)", "To match 2x game resolution" } },
-    { "Scaler", &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 },
-	{ "None", "Scale2x/3x", "Pixel double", "hq2x/3x" } },
-    { "Scanlines", &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
-	{ "Off", "Halfheight", "Fullheight", "Fullheight + Double width" } },
+    { _("Change video mode"), NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
+	{ _("Never"), "To match game resolution (low res most of the time)_(", ")To match 2x game resolution" } },
+    { _("Scaler"), &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 },
+	{ _("None"), "Scale2x/3x_(", ")Pixel double_(", ")hq2x/3x" } },
+    { _("Scanlines"), &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
+	{ _("Off"), _("Halfheight"), _("Fullheight"), "Fullheight + Double width" } },
     {  NULL },
 };
 
@@ -115,14 +115,14 @@ static int bidon;
 
 static menu_item_t ogl_options[] =
 {
-    { "Rendering", NULL, &ogl.render, 2, { 0, 1 }, { "DrawPixels (no shaders)", "Texture (possible shaders)" }, },
-    { "Double buffer", NULL, &ogl.dbuf, 2, { 0, 1 }, {"No","Yes"} },
-    { "Save opengl screenshots", NULL, &ogl.save, 2, {0, 1}, {"No", "Yes"} },
-    { "Shader", &choose_shader,&bidon,1,{0},{ogl.shader}},
-    { "OpenGL overlay interface", NULL, &ogl.overlay, 2, { 0, 1 }, {"No","Yes"} },
-    { "Fix aspect ratio to 4:3", NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {"No", "Yes" } },
-    { "Keep aspect ratio", NULL, &display_cfg.keep_ratio, 2, {0, 1}, {"No","Yes"} },
-    { "OpenGL filtering", NULL, &ogl.filter, 2, { GL_NEAREST, GL_LINEAR }, { "Nearest", "Linear" } },
+    { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { "DrawPixels (no shaders)_(", ")Texture (possible shaders)" }, },
+    { _("Double buffer"), NULL, &ogl.dbuf, 2, { 0, 1 }, {_("No"),_("Yes")} },
+    { _("Save opengl screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
+    { _("Shader"), &choose_shader,&bidon,1,{0},{ogl.shader}},
+    { _("OpenGL overlay interface"), NULL, &ogl.overlay, 2, { 0, 1 }, {_("No"),_("Yes")} },
+    { "Fix aspect ratio to 4:3", NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {_("No"), _("Yes") } },
+    { _("Keep aspect ratio"), NULL, &display_cfg.keep_ratio, 2, {0, 1}, {_("No"),_("Yes")} },
+    { _("OpenGL filtering"), NULL, &ogl.filter, 2, { GL_NEAREST, GL_LINEAR }, { _("Nearest"), _("Linear") } },
     {  NULL },
 };
 
@@ -130,16 +130,16 @@ static void preinit_ogl_options() {
     char *p = strrchr(ogl.shader,SLASH[0]);
     if (p) ogl_options[3].values_list_label[0] = p+1;
     else
-	ogl_options[3].values_list_label[0] = "None";
+	ogl_options[3].values_list_label[0] = _("None");
 }
 
 int renderer_options(int sel) {
     TMenu *menu;
     preinit_ogl_options();
     switch(display_cfg.video_mode) {
-    case 0: menu = new TDialog("OpenGL Options", ogl_options); break;
-    case 1: menu = new TDialog("Overlays Options", overlays_options); break;
-    case 2: menu = new TDialog("Blits Options", blits_options); break;
+    case 0: menu = new TDialog(_("OpenGL Options"), ogl_options); break;
+    case 1: menu = new TDialog(_("Overlays Options"), overlays_options); break;
+    case 2: menu = new TDialog(_("Blits Options"), blits_options); break;
     default:
 	    MessageBox("Error","No options for this renderer ? Strange !","OK");
 	    return 0;
@@ -166,8 +166,8 @@ static int bld1,bld2;
 
 static menu_item_t bld_options[] =
 {
-{ "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{"No","Yes"} },
-{ "Reset transparency values to default", &reset_transp },
+{ "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{_("No"),_("Yes")} },
+{ _("Reset transparency values to default"), &reset_transp },
 { "Transparency for 1 (25% default)", NULL, &bld1, ITEM_INTEDIT,
     { 3, 0, 50, 0, 100},{""} },
 { "Transparency for 2 (50% default)", NULL, &bld2, ITEM_INTEDIT,
@@ -179,7 +179,7 @@ static int do_bld(int sel) {
     reset_bld = 0;
     bld1 = get_bld1();
     bld2 = get_bld2();
-    TMenu *menu = new TMenu("bld options", bld_options);
+    TMenu *menu = new TMenu(_("bld options"), bld_options);
     menu->execute();
     delete menu;
     if (reset_bld) {
@@ -194,25 +194,25 @@ static int do_bld(int sel) {
 static menu_item_t video_items[] =
 {
 #ifdef RAINE_WIN32
-{  "SDL video driver", NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
-  { "SDL default (windib since 1.2.10)", "windib (good for ogl)","directx (good for hw overlays/blits)"} },
+{  _("SDL video driver"), NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
+  { "SDL default (windib since 1.2.10)_(", ")windib (good for ogl)_(",")directx (good for hw overlays/blits)"} },
 #endif
-{  "Video renderer", NULL, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
-  { "OpenGL", "YUV overlays","Normal blits"} },
-{ "Fullscreen", &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {"No", "Yes"}},
-{ "Borderless", &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {"No", "Yes"} },
-{ "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {"Never", "When possible", "Even with overlays" } },
-{ "Blend file options...", &do_bld },
-{ "Video info...", &do_video, },
-{ "Renderer options", &renderer_options },
+{  _("Video renderer"), NULL, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
+  { _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
+{ _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
+{ _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
+{ "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
+{ _("Blend file options..."), &do_bld },
+{ _("Video info..."), &do_video, },
+{ _("Renderer options"), &renderer_options },
 { "General options:" },
-{ "Limit framerate <= 60fps", NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {"No","Yes"} },
-{ "Frame skip", NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+{ "Limit framerate <= 60fps", NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {_("No"),_("Yes")} },
+{ _("Frame skip"), NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
   {"Auto", "1", "2", "3", "4", "5", "6", "7", "8", "9" } },
-{ "Screen rotation", NULL, (int*)&display_cfg.user_rotate, 4, {0, 1, 2, 3 },
-  { "None", "90°", "180°", "270°" } },
-{ "Flip screen", NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
-  { "None", "Flip X", "Flip Y", "Flip XY" } },
+{ _("Screen rotation"), NULL, (int*)&display_cfg.user_rotate, 4, {0, 1, 2, 3 },
+  { _("None"), "90°_(", ")180°_(", ")270°" } },
+{ _("Flip screen"), NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
+  { _("None"), _("Flip X"), _("Flip Y"), _("Flip XY") } },
 {  NULL },
 };
 
@@ -222,7 +222,7 @@ int do_video_options(int sel) {
     UINT32 old_driver = display_cfg.video_driver;
 #endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
-    video_options = new TVideo("Video options", video_items);
+    video_options = new TVideo(_("Video options"), video_items);
     video_options->execute();
 #ifdef RAINE_WIN32
     if (old_driver != display_cfg.video_driver) {

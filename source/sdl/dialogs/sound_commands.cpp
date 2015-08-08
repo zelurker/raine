@@ -141,7 +141,7 @@ int menu_asso(int sel) {
 	if (t && *t) {
 	    cdda.skip_silence = 1;
 	    load_sample(t);
-	    menu = new TSoundCmd("Playback", playback);
+	    menu = new TSoundCmd(_("Playback"), playback);
 	    menu->execute();
 	    delete menu;
 	    cdda.playing = CDDA_STOP;
@@ -152,7 +152,7 @@ int menu_asso(int sel) {
 	printf("testing %x\n",cmd);
 	command = cmd;
 	test_command(sel);
-	menu = new TSoundCmd("Playback", playback);
+	menu = new TSoundCmd(_("Playback"), playback);
 	menu->execute();
 	delete menu;
 	stop(sel);
@@ -172,10 +172,10 @@ static int associations(int sel) {
 	redraw_assoc = 0;
 	int nb = 0,bidon;
 	asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
-	asso[nb].label = "Track";
+	asso[nb].label = _("Track");
 	asso[nb].value_int = &bidon;
 	asso[nb].values_list_size = 1;
-	asso[nb].values_list_label[0] = "File";
+	asso[nb].values_list_label[0] = _("File");
 	nb++;
 	for (int cmd=2; cmd<256; cmd++) {
 	    char *s = get_assoc(cmd);
@@ -203,8 +203,8 @@ static int associations(int sel) {
 	    MessageBox("Error","No associations yet","OK");
 	    return 0;
 	}
-	TMenuPostCb *dlg = new TMenuPostCb("Sound associations",asso,
-		loop,"Loop");
+	TMenuPostCb *dlg = new TMenuPostCb(_("Sound associations"),asso,
+		loop,_("Loop"));
 	if (last_nb == nb)
 	    dlg->set_sel(last_sel);
 	dlg->execute();
@@ -228,17 +228,17 @@ static int associations(int sel) {
 
 static menu_item_t sound_menu[] =
 {
-    { "Command", NULL, &command, 3, {32, 57, 1} },
-    { "Test", &test_command },
+    { _("Command"), NULL, &command, 3, {32, 57, 1} },
+    { _("Test"), &test_command },
 #ifdef RAINE_DEBUG
     // There is not much point in having this outside debug builds
-    { "Test this", &test_command, &command, ITEM_HEXEDIT, { 2, 0, 150 },
+    { _("Test this"), &test_command, &command, ITEM_HEXEDIT, { 2, 0, 150 },
        	{ "",(char*)&command,"0","0"} },
 #endif
-    { "Stop", &stop },
-    { "Associate...", &associate },
-    { "Manage associations", &associations },
-    { "Disable associations", NULL, &disable_assoc, 2, {0, 1}, {"No","Yes"}},
+    { _("Stop"), &stop },
+    { _("Associate..."), &associate },
+    { _("Manage associations"), &associations },
+    { _("Disable associations"), NULL, &disable_assoc, 2, {0, 1}, {_("No"),_("Yes")}},
   { NULL },
 };
 
@@ -299,7 +299,7 @@ int do_sound_cmd(int sel) {
     execute_z80_audio_frame(); // start the z80 if it was not already done !
     stop(0);
     command = last_song;
-    menu = new TSoundCmd("Sound commands", sound_menu);
+    menu = new TSoundCmd(_("Sound commands"), sound_menu);
     menu->execute();
     delete menu;
     stop(0);

@@ -8,6 +8,7 @@
 #include "games.h"
 #include "sdl/dialogs/sound_commands.h"
 #include "sound/assoc.h"
+#include "translate.h"
 
 static TMenu *menu;
 
@@ -23,26 +24,25 @@ static int set_default_volumes(int sel) {
 
 menu_item_t sound_menu[] =
 {
-  { "Emulate sound", NULL, &RaineSoundCard, 2, { 0, 1 }, { "No", "Yes" } },
+  { _("Emulate sound"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
   // we are obliged to give labels for the sample rates because a list of
   // 3 values is now considered to be an interval (start, end, step).
-  { "Sample rate", NULL, &audio_sample_rate, 3, { 11025, 22050, 44100 },
-    { "11025", "22050", "44100" } },
+  { _("Sample rate"), NULL, &audio_sample_rate, 3, { 11025, 22050, 44100 }} ,
 #if HAS_ES5506
-  { "ES5506 voice filters", NULL, &es5506_voice_filters, 2, { 0, 1 }, { "No", "Yes" } },
+  { _("ES5506 voice filters"), NULL, &es5506_voice_filters, 2, { 0, 1 }, { _("No"), _("Yes") } },
 #endif
 #if HAS_NEO
-{ "Always stop CD music while loading", NULL, &auto_stop_cdda, 2, { 0, 1 }, { "No", "Yes" } },
-  { "Sfx volume", NULL, &sfx_volume, 3, { 0, 200, 10 }, },
-  { "Music volume", NULL, &music_volume, 3, { 0, 200, 10 }, },
-  { "Audio tracks format", NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { "lsb","msb" }},
-  { "Mute SFX", NULL, &mute_sfx, 2, { 0, 1 }, { "No", "Yes" } },
-  { "Mute CD", NULL, &mute_music, 2, { 0, 1 }, { "No", "Yes" } },
-  { "Default volumes", &set_default_volumes },
+{ _("Always stop CD music while loading"), NULL, &auto_stop_cdda, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Sfx volume"), NULL, &sfx_volume, 3, { 0, 200, 10 }, },
+  { _("Music volume"), NULL, &music_volume, 3, { 0, 200, 10 }, },
+  { _("Audio tracks format"), NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { _("lsb"),_("msb") }},
+  { _("Mute SFX"), NULL, &mute_sfx, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Mute CD"), NULL, &mute_music, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Default volumes"), &set_default_volumes },
 #endif
-  { "Record to raine_sound.wav", NULL, &recording, 3, { 0, 1, 2 }, { "No", "Without monitoring", "With monitoring" } },
+  { _("Record to raine_sound.wav"), NULL, &recording, 3, { 0, 1, 2 }, { _("No"), _("Without monitoring"), _("With monitoring") } },
 #if HAS_NEO
-{ "Sound commands...", &do_sound_cmd },
+{ _("Sound commands..."), &do_sound_cmd },
 #endif
   { NULL },
 };
@@ -68,7 +68,7 @@ class TSoundDlg : public TMenu {
 
 int do_sound_options(int sel) {
     int old = recording;
-  menu = new TSoundDlg("Sound options", sound_menu);
+  menu = new TSoundDlg(_("Sound options"), sound_menu);
   menu->execute();
   delete menu;
   if (recording == 2)

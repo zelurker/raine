@@ -45,10 +45,10 @@ int do_romdir(int sel) {
       menu[n+1].label = dir_cfg.rom_dir[n];
       menu[n+1].menu_func = &do_dir;
     }
-    menu[0].label = "Add rom dir...";
+    menu[0].label = _("Add rom dir...");
     menu[0].menu_func = &add_dir;
 
-    TMenu *mbox = new TMenu("rom dirs",menu);
+    TMenu *mbox = new TMenu(_("rom dirs"),menu);
     mbox->execute();
     delete mbox;
   } while (!end);

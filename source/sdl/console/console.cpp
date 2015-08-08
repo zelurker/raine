@@ -1225,7 +1225,7 @@ int do_console(int sel) {
     cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;
     if (!cons)
-	cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,1000, commands);
+	cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,1000, commands);
     get_regs(cpu_id); // 1st thing to do here !!!
     if (goto_debuger >= 100) {
 	cons->set_visible();
@@ -1315,7 +1315,7 @@ void run_console_command(char *command) {
   init_cpuid();
   cpu_get_ram(cpu_id,ram,&nb_ram);
   if (!cons)
-    cons = new TRaineConsole("Console","", sdl_screen->w/min_font_size-4,50, commands);
+    cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,50, commands);
   get_regs(cpu_id);
   cons->run_cmd(command);
   set_regs(cpu_id);

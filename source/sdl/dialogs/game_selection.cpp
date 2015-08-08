@@ -30,15 +30,15 @@ char *drivers[] =
 
 static menu_item_t options[] =
 {
-{  "Display", NULL, &game_list_mode, 3, {0, 1, 2},{"All games", "Available games", "Missing games"} },
-{ "Status", NULL, &status, 4, {0, 1, 2, 3}, {"All status", "Only working games", "Only partially working games", "Only not working games"} },
-{ "Category", NULL, &category, NB_GAME_TYPE, }, // this one is finished dynamically
-{ "Company", NULL, &company, }, // finished dynamically also
-{ "Driver", NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
-{ "All drivers", "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-Geo", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
-{ "Clones", NULL, &clones, 2, {0, 1 }, { "Without", "With" } },
-{ "Display short names too", &change_names, &short_names, 2, {0, 1}, {"No", "Yes"} },
-{ "Rom directories...", &do_romdir },
+{  _("Display"), NULL, &game_list_mode, 3, {0, 1, 2},{_("All games"), _("Available games"), _("Missing games")} },
+{ _("Status"), NULL, &status, 4, {0, 1, 2, 3}, {_("All status"), _("Only working games"), _("Only partially working games"), _("Only not working games")} },
+{ _("Category"), NULL, &category, NB_GAME_TYPE, }, // this one is finished dynamically
+{ _("Company"), NULL, &company, }, // finished dynamically also
+{ _("Driver"), NULL, &driver, 12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
+{ _("All drivers"), "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-Geo", "NMK", "Psikyo (gunbird)", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
+{ _("Clones"), NULL, &clones, 2, {0, 1 }, { _("Without"), _("With") } },
+{ _("Display short names too"), &change_names, &short_names, 2, {0, 1}, {_("No"), _("Yes")} },
+{ _("Rom directories..."), &do_romdir },
 { NULL },
 };
 
@@ -57,9 +57,9 @@ static int do_options(int sel) {
 	options[3].values_list[n] = n;
 	options[3].values_list_label[n] = game_company_name(n);
     }
-    options[3].values_list_label[0] = "All";
+    options[3].values_list_label[0] = _("All companies");
     sort_menu(options);
-    TMenu *mymenu = new TMenu("Options",options);
+    TMenu *mymenu = new TMenu(_("Options"),options);
     mymenu->execute();
     delete mymenu;
     recompute_list();
@@ -68,7 +68,7 @@ static int do_options(int sel) {
 
 static menu_item_t header[] =
 {
-    {  "-- Options --", &do_options },
+    {  _("-- Options --"), &do_options },
     { NULL },
 };
 
@@ -283,9 +283,9 @@ void TGame_sel::draw_top_frame() {
   int w_title;
   int fw = HMARGIN;
   switch(game_list_mode) {
-    case 0: s = "All"; break;
-    case 1: s = "Avail"; break;
-    case 2: s = "Missing"; break;
+    case 0: s = _("All"); break;
+    case 1: s = _("Avail"); break;
+    case 2: s = _("Missing"); break;
   }
   sprintf(mytitle,"%s %d",s,nb_disp_items);
   font->dimensions(mytitle,&w_title,&h_title);
@@ -296,7 +296,7 @@ void TGame_sel::draw_top_frame() {
 
 void TGame_sel::draw_bot_frame() {
   if (!w_year) {
-    char *year_string = "Year : 2006";
+    char *year_string = _("Year : 2006");
     font->dimensions(year_string,&w_year,&h_year);
     unsigned int max_game_type = 0, nb_max = 0;
     int n;
@@ -307,20 +307,20 @@ void TGame_sel::draw_bot_frame() {
       }
     }
     char scateg[80];
-    sprintf(scateg,"Category : %s",game_type[nb_max]);
+    sprintf(scateg,_("Category : %s"),game_type[nb_max]);
     font->dimensions(scateg,&w_categ,&h_categ);
     h_bot = h_categ + h_year;
   }
   int base = sdl_screen->h-h_bot;
   boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
   char game_string[100],year_string[80],category_string[80],company_string[100];
-  snprintf(game_string,100,"Game : %s",(sel >= 0 ? game_list[sel]->long_name : "-"));
+  snprintf(game_string,100,_("Game : %s"),(sel >= 0 ? game_list[sel]->long_name : "-"));
   game_string[99] = 0;
-  snprintf(company_string,100,"Company : %s",(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
+  snprintf(company_string,100,_("Company : %s"),(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
   company_string[99] = 0;
   if (sel >= 0) {
-    sprintf(year_string,"Year : %d",game_list[sel]->year);
-    sprintf(category_string,"Category : ");
+    sprintf(year_string,_("Year : %d"),game_list[sel]->year);
+    sprintf(category_string,_("Category : "));
     int n;
     for (n=1; n<=NB_GAME_TYPE; n++) {
       if (game_list[sel]->flags & (1<<(n-1))) {
@@ -329,8 +329,8 @@ void TGame_sel::draw_bot_frame() {
       }
     }
   } else {
-    sprintf(year_string,"Year : -");
-    sprintf(category_string,"Category : -");
+    sprintf(year_string,_("Year : -"));
+    sprintf(category_string,_("Category : -"));
   }
   int fw = HMARGIN;
   font->put_string(fw,base,game_string,fg_frame,bg_frame);
@@ -414,7 +414,7 @@ int do_game_sel(int sel) {
 	avail = (char*)malloc(game_count);
 	compute_avail();
     }
-  game_sel = new TGame_sel("Game selection",NULL);
+  game_sel = new TGame_sel(_("Game selection"),NULL);
   game_sel->set_header(header);
   game_sel->execute();
   delete game_sel;

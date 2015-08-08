@@ -31,8 +31,8 @@ void read_font_config() {
 // These lists of 3 values are ranges : min, max, step
 static menu_item_t font_options[] =
 {
-  { "Min font size", NULL, &min_font_size, 3, {8, 20, 1} },
-  { "Max font size", NULL, &max_font_size, 3, {20, 40, 1} },
+  { _("Min font size"), NULL, &min_font_size, 3, {8, 20, 1} },
+  { _("Max font size"), NULL, &max_font_size, 3, {20, 40, 1} },
 };
 
 int add_fonts_gui_options(menu_item_t *menu) {

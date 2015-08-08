@@ -670,15 +670,15 @@ static int insert_code(int sel) {
 
 static menu_item_t msg_menu[] =
 {
-    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { "hidden" } },
-    { "Insert special code...", &insert_code },
+    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { _("hidden") } },
+    { _("Insert special code..."), &insert_code },
     { "", &draw_translator, &base_no, ITEM_TBITMAP, { 320, 256, 8 } },
     { NULL, NULL, NULL }
 };
 
 static menu_item_t screen_menu[] =
 {
-    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { "hidden" } },
+    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { _("hidden") } },
     { "", &draw_translator, &base_no, ITEM_TBITMAP, { 320, 256, 8 } },
     { NULL, NULL, NULL }
 };
@@ -742,7 +742,7 @@ int do_screen(int sel) {
     if (cur_entry > last_entry)
 	cur_entry = 0;
 
-    sprite_menu = new TTransMenu("Edit screen",screen_menu);
+    sprite_menu = new TTransMenu(_("Edit screen"),screen_menu);
     set_entry(0);
     sprite_menu->execute();
     delete sprite_menu;
@@ -807,7 +807,7 @@ int do_msg(int sel) {
     for (x=0; x<n; x++)
 	menu[x].menu_func = &do_exit;
     selected = -1;
-    TMenu *dlg = new TMenu("msg to edit",menu);
+    TMenu *dlg = new TMenu(_("msg to edit"),menu);
     dlg->execute();
     delete dlg;
 
@@ -835,7 +835,7 @@ int do_msg(int sel) {
     if (cur_entry > last_entry)
 	cur_entry = 0;
 
-    sprite_menu = new TTransMenu("Edit msg",msg_menu);
+    sprite_menu = new TTransMenu(_("Edit msg"),msg_menu);
     set_entry(0);
     sprite_menu->execute();
     delete sprite_menu;
@@ -984,7 +984,7 @@ int do_translate_ss2(int sel) {
       validchars['ù'] = 0x3cd+'u'-'a';
       validchars['â'] = validchars['à'] = 0x3cd+'a'-'a'; */
     set_location(0);
-    sprite_menu = new TTransSS2Menu("Translator",sprites_menu);
+    sprite_menu = new TTransSS2Menu(_("Translator"),sprites_menu);
     sprite_menu->execute();
     delete sprite_menu;
     sprite_menu = NULL;

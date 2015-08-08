@@ -127,8 +127,8 @@ void add_scripts(menu_item_t *menu) {
       menu->values_list_size = 2;
       menu->values_list[0] = 0;
       menu->values_list[1] = 1;
-      menu->values_list_label[0] = "Off";
-      menu->values_list_label[1] = "On";
+      menu->values_list_label[0] = _("Off");
+      menu->values_list_label[1] = _("On");
       menu++;
   }
 }

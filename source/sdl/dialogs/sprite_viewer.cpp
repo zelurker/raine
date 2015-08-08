@@ -163,7 +163,7 @@ static int redraw(int sel) {
 
 static menu_item_t sprites_menu[] =
 {
-  { "layer", &redraw, &layer, 1 }, // init in sprite_viewer
+  { _("layer"), &redraw, &layer, 1 }, // init in sprite_viewer
   { "", &draw_sprites, NULL, ITEM_TBITMAP, { 640, 480, 8 } },
   { NULL, NULL, NULL }
 };
@@ -178,7 +178,7 @@ int sprite_viewer(int sel) {
 	tile_list[n].width, tile_list[n].height);
     sprites_menu[0].values_list_label[n] = strdup(buff);
   }
-  sprite_menu = new TSpriteMenu("Sprites viewer",sprites_menu);
+  sprite_menu = new TSpriteMenu(_("Sprites viewer"),sprites_menu);
   sprite_menu->execute();
   delete sprite_menu;
   sprite_menu = NULL;

@@ -39,14 +39,14 @@ static char *get_joy_name(int code) {
     char *direction;
     if (stick & 2) {
       if (stick & 1)
-        direction = "DOWN";
+        direction = _("DOWN");
       else
-	direction = "UP";
+	direction = _("UP");
     } else {
       if (stick & 1)
-	direction = "RIGHT";
+	direction = _("RIGHT");
       else
-	direction = "LEFT";
+	direction = _("LEFT");
     }
     sprintf(&name[strlen(name)],"Stick %d %s",stick/4,direction);
     return strdup(name);
@@ -193,14 +193,14 @@ void TInput::handle_mouse(SDL_Event *event) {
 
 static menu_item_t menu_input[] =
 {
-  { "Press a key, a button, or move a joystick..." },
-  { "or escape to delete this control" },
+  { _("Press a key, a button, or move a joystick...") },
+  { _("or escape to delete this control") },
   { NULL },
 };
 
 static menu_item_t kb_only[] =
 {
-  { "Press a key..." },
+  { _("Press a key...") },
   { NULL },
 };
 
@@ -230,7 +230,7 @@ static int get_def_indice(const char *name) {
 static int do_input(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
   int indice = get_def_indice(menu[sel].label);
-  TInput *input = new TInput("Input",menu_input,0,1);
+  TInput *input = new TInput(_("Input"),menu_input,0,1);
   input->execute();
   delete input;
   if (inp_key) {
@@ -272,7 +272,7 @@ static int do_input(int sel) {
 static int do_kb_input(int sel) {
   // same thing as do_input, but keyboard only (for layers)
   inp_key = inp_joy = inp_mouse = 0;
-  TInput *input = new TInput("Input",kb_only,0,1,0);
+  TInput *input = new TInput(_("Input"),kb_only,0,1,0);
   input->execute();
   delete input;
   if (inp_key) {
@@ -300,7 +300,7 @@ static int do_kb_input(int sel) {
 static int do_input_ingame(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
   int nb = get_input_indice(menu[sel].label);
-  TInput *input = new TInput("Input",menu_input,1,0);
+  TInput *input = new TInput(_("Input"),menu_input,1,0);
   input->execute();
   delete input;
   if (inp_key) {
@@ -387,7 +387,7 @@ static int do_emu_controls(int sel) {
 	      cols[b*2+1] = str;
 	  }
 
-  controls = new TMenuMultiCol("Raine Controls",menu,2,cols);
+  controls = new TMenuMultiCol(_("Raine Controls"),menu,2,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<nb*2; n++) {
@@ -410,7 +410,7 @@ static int do_layers_controls(int sel) {
   }
   // A multi column dialog of only 1 column... oh well it is to copy the way
   // the other inputs dialogs work, and it might be easier this way anyway...
-  controls = new TMenuMultiCol("Raine Controls",menu,1,cols);
+  controls = new TMenuMultiCol(_("Raine Controls"),menu,1,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<nb; n++) {
@@ -463,7 +463,7 @@ static int do_ingame_controls(int sel) {
 	      cols[a*3+2] = cols[b*3+2];
 	      cols[b*3+2] = str;
 	  }
-  controls = new TMenuMultiCol("Ingame Controls",menu,3,cols);
+  controls = new TMenuMultiCol(_("Ingame Controls"),menu,3,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<mynb*3; n++) {
@@ -525,7 +525,7 @@ static int setup_autofire(int sel) {
       menu[mynb].values_list_size = 6;
       for (x=0; x<6; x++)
 	menu[mynb].values_list[x] = x;
-      menu[mynb].values_list_label[0] = "Off";
+      menu[mynb].values_list_label[0] = _("Off");
       menu[mynb].values_list_label[1] = "30 fps";
       menu[mynb].values_list_label[2] = "15 fps";
       menu[mynb].values_list_label[3] = "10 fps";
@@ -539,7 +539,7 @@ static int setup_autofire(int sel) {
     free(menu);
     return 0;
   }
-  TMenu *controls = new TMenu("Autofire...",menu);
+  TMenu *controls = new TMenu(_("Autofire..."),menu);
   controls->execute();
   delete controls;
   // Now we must check if autofire was disabled for a newly created control
@@ -720,10 +720,10 @@ static int setup_analog(int sel) {
     menu[n].label = strdup(joy_name[n]);
     menu[n].menu_func = &select_joy;
   }
-  menu[n].label = "No analog device";
+  menu[n].label = _("No analog device");
   menu[n].menu_func = &select_joy;
   menu[n+1].label = NULL;
-  TMenu *dlg = new TMenu("Select analog device",menu);
+  TMenu *dlg = new TMenu(_("Select analog device"),menu);
   dlg->execute();
   delete dlg;
   if (analog_num != selected) {
@@ -755,7 +755,7 @@ static int setup_analog(int sel) {
       menu[n].menu_func = &select_joy;
     }
     selected = 999;
-    TMenu *dlg = new TMenu("Select the stick to use...",menu);
+    TMenu *dlg = new TMenu(_("Select the stick to use..."),menu);
     dlg->execute();
     delete dlg;
     for (n=0; n<nb; n++)
@@ -772,11 +772,11 @@ static int setup_analog(int sel) {
   nb = 4;
   menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
-  menu[0].label = "Move the stick to all the extreme positions";
+  menu[0].label = _("Move the stick to all the extreme positions");
   menu[1].label = "If it's a steering wheel, then move it to the max";
-  menu[2].label = "left and right positions, and press then release";
-  menu[3].label = "each pedal separately";
-  TCalibrate *cal = new TCalibrate("Calibration",menu);
+  menu[2].label = _("left and right positions, and press then release");
+  menu[3].label = _("each pedal separately");
+  TCalibrate *cal = new TCalibrate(_("Calibration"),menu);
   cal->execute();
   delete cal;
   free(menu);
@@ -926,24 +926,24 @@ static int get_inputs(int sel) {
 
 static menu_item_t controls_menu[] =
 {
-  { "Raine controls", &do_emu_controls },
+  { _("Raine controls"), &do_emu_controls },
   { "", &do_ingame_controls },
-  { "Revert to default game controls", &revert_to_default },
-  { "Video layers", &do_layers_controls },
-  { "Autofire...", &setup_autofire },
-  { "Autofire controls", &autofire_controls },
-  { "Analog controls...", &setup_analog },
-  { "Load inputs from...", &do_load },
-  { "Save inputs as...", &do_save },
-  { "Get inputs from another game", &get_inputs },
+  { _("Revert to default game controls"), &revert_to_default },
+  { _("Video layers"), &do_layers_controls },
+  { _("Autofire..."), &setup_autofire },
+  { _("Autofire controls"), &autofire_controls },
+  { _("Analog controls..."), &setup_analog },
+  { _("Load inputs from..."), &do_load },
+  { _("Save inputs as..."), &do_save },
+  { _("Get inputs from another game"), &get_inputs },
   { NULL },
 };
 
 static int revert_to_default(int sel) {
   reset_game_keys();
   use_custom_keys = 0;
-  controls_menu[1].label = "Edit default game inputs";
-  controls_menu[2].label = "Switch to custom game controls";
+  controls_menu[1].label = _("Edit default game inputs");
+  controls_menu[2].label = _("Switch to custom game controls");
   controls_menu[2].menu_func = &switch_to_custom;
   if (ctrl) ctrl->draw();
   return 0;
@@ -951,8 +951,8 @@ static int revert_to_default(int sel) {
 
 static int switch_to_custom(int sel) {
   use_custom_keys = 1;
-  controls_menu[1].label = "Edit custom game inputs";
-  controls_menu[2].label = "Revert to default game controls";
+  controls_menu[1].label = _("Edit custom game inputs");
+  controls_menu[2].label = _("Revert to default game controls");
   controls_menu[2].menu_func = &revert_to_default;
   if (ctrl) ctrl->draw();
   return 0;
@@ -966,7 +966,7 @@ int do_controls(int sel) {
   } else
     controls_menu[2].label = NULL;
 
-  ctrl = new TControl("Controls", controls_menu);
+  ctrl = new TControl(_("Controls"), controls_menu);
   ctrl->execute();
   delete ctrl;
   ctrl = NULL;

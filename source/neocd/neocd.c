@@ -4558,7 +4558,7 @@ void load_neocd() {
 	// standard load_game_proc so it ignores the fps field from video_info
 	print_debug("loading neocd game\n");
 	use_music = 1;
-	current_game->long_name = "No game loaded yet";
+	current_game->long_name = _("No game loaded yet");
 	current_game->main_name = "neocd";
 	RAMSize = 0x200000 + // main ram
 	    0x010000 + // z80 ram

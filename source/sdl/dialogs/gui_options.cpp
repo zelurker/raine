@@ -6,6 +6,7 @@
 #include "control.h"
 #include "control_internal.h"
 #include "confile.h"
+#include "translate.h"
 
 extern int do_dirs(int sel); // dirs.cpp
 static menu_item_t gui_menu[14];
@@ -15,9 +16,9 @@ TMenu *gui_options;
 
 static menu_item_t color_menu[] =
 {
-{ "Colors...", &do_colors, },
-{ "Opaque HUD", NULL, &opaque_hud, 2, { 0, 1 }, { "No", "Yes" } },
-{ "Pause when focus lost", NULL, &pause_on_focus, 2, { 0, 1 }, { "No", "Yes" }}
+{ _("Colors..."), &do_colors, },
+{ _("Opaque HUD"), NULL, &opaque_hud, 2, { 0, 1 }, { _("No"), _("Yes") } },
+{ _("Pause when focus lost"), NULL, &pause_on_focus, 2, { 0, 1 }, { _("No"), _("Yes") }}
 };
 
 int do_gui_options(int sel) {
@@ -28,9 +29,9 @@ int do_gui_options(int sel) {
   gui_menu[nb++] = color_menu[0];
   gui_menu[nb++] = color_menu[1];
   gui_menu[nb++] = color_menu[2];
-  gui_menu[nb].label = "Directories...";
+  gui_menu[nb].label = _("Directories...");
   gui_menu[nb].menu_func = &do_dirs;
-  gui_options = new TMenu("Options", gui_menu);
+  gui_options = new TMenu(_("Options"), gui_menu);
   gui_options->execute();
   delete gui_options;
 

@@ -9,6 +9,7 @@
 #include "tfont.h"
 #include "tlift.h"
 #include "widget.h"
+#include "translate.h"
 
 /* If values_list_size == 3, and there are no labels for this list, then it's
  * a special interval list. Format { min, max, step }. It's an easy way to

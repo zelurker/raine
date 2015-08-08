@@ -6,6 +6,7 @@
 #ifdef HAS_CONSOLE
 #include "sdl/console/scripts.h"
 #endif
+#include "translate.h"
 
 class TCheatDlg : public TMenu
 {
@@ -101,14 +102,14 @@ int do_cheats(int sel) {
       menu[n].values_list_size = 2;
       menu[n].values_list[0] = 0;
       menu[n].values_list[1] = 1;
-      menu[n].values_list_label[0] = "Off";
-      menu[n].values_list_label[1] = "On";
+      menu[n].values_list_label[0] = _("Off");
+      menu[n].values_list_label[1] = _("On");
     }
   }
 #ifdef HAS_CONSOLE
   add_scripts(&menu[CheatCount]);
 #endif
-  TCheatDlg *cheats = new TCheatDlg("Cheats",menu);
+  TCheatDlg *cheats = new TCheatDlg(_("Cheats"),menu);
   cheats->execute();
   delete cheats;
   for (int n=0; n<CheatCount; n++) {

@@ -149,7 +149,7 @@ static int do_paths(int sel) {
   }
 #endif
   selected_path = -1;
-  TMenu *menu = new TPathDlg((char*)"Path selection",paths->get_menu());
+  TMenu *menu = new TPathDlg((char*)_("Path selection"),paths->get_menu());
   menu->execute();
   if (selected_path >= 0)
     dlg->set_dir((char*)paths->get_menu()[selected_path].label);
@@ -222,13 +222,13 @@ static int validate_file(int res) {
 }
 
 static menu_item_t myheader_save[] = {
-    { "New file", &validate_file, &ihead, ITEM_EDIT, { FILENAME_MAX, 0, 200 }, { res_file } },
-    { "-- Path... ", &do_paths },
+    { _("New file"), &validate_file, &ihead, ITEM_EDIT, { FILENAME_MAX, 0, 200 }, { res_file } },
+    { _("-- Path... "), &do_paths },
     { NULL }
 };
 
 static menu_item_t myheader[] = {
-    { "-- Path... ", &do_paths },
+    { _("-- Path... "), &do_paths },
     { NULL }
 };
 
