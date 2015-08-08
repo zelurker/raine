@@ -215,7 +215,7 @@ int about_proc(int msg, DIALOG *d, int c)
       if (cycles_per_second) sprintf(about7+strlen(about7)," at %d MHz",cycles_per_second/1000000);
 #endif
       sprintf(about8, " ");
-      sprintf(about9, "http://rainemu.swishparty.co.uk/");
+      sprintf(about9, "http://raine.1emulation.com/");
 
       logo = make_mapped_bitmap(RaineData[RaineLogo].dat, &cycle_logo_pal, RaineData[GUIPalette].dat, 7);
 

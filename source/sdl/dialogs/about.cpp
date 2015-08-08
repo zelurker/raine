@@ -751,7 +751,7 @@ static menu_item_t about_items[] =
   { "SDL", },
   { "No SDL_sound" },
   { " ", NULL, NULL },
-  { "http://rainemu.swishparty.co.uk/", NULL, NULL },
+  { "http://raine.1emulation.com/", NULL, NULL },
   { " ", NULL, NULL, },
   { "CPU emulators:", NULL, NULL },
   {    "Starscream 0.26r4 by Neill Corlett", },
