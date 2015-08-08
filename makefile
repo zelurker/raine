@@ -487,7 +487,10 @@ ifdef RAINE32
   OBJDIRS += $(OBJDIR)/fnmatch
 endif
 
+ifndef CROSSCOMPILE
 INCDIR += -I/usr/local/include
+endif
+
 ifdef RAINE_UNIX
 	# windows uses /usr/include so it's handy when cross compiling from linux
 ifeq ($(wildcard /usr/include/muParser),)
@@ -1064,7 +1067,7 @@ endif
 else
 # windows
 # and these libs are used by SDL_sound/FLAC
-LIBS += -logg -lvorbisfile -lws2_32
+LIBS += -logg -lvorbisfile -lws2_32 -lintl
 endif
 endif # HAS_NEO
 endif

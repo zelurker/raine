@@ -54,7 +54,6 @@
 #include "display.h" // setup_gfx_modes
 #include "blit.h"
 #include "cpuid.h"
-#include "locale.h" // international dates
 
 struct RAINE_CFG raine_cfg;
 UINT8 *ingame_font; 	// Raw data for ingame font
@@ -116,7 +115,7 @@ int main(int argc,char *argv[])
    FILE *f;
 #endif
 
-  setlocale(LC_TIME,""); // init locale
+  setlocale(LC_ALL & ~LC_NUMERIC,""); // init locale
 
   /* This just helps some window managers to grab some info from the
    * .desktop file if it exists */
@@ -246,6 +245,10 @@ int main(int argc,char *argv[])
 #endif
 #endif
 #endif
+
+   // i18n : path for catalog file
+   bindtextdomain("raine",get_shared("locale"));
+   textdomain("raine");
 
    // set default screen settings
    setup_gfx_modes();

@@ -229,6 +229,14 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   child = NULL;
   title = my_title;
   menu = my_menu;
+  // Translate the menu...
+  while (menu && menu->label) {
+      menu->label = gettext(menu->label);
+      for (int n=0; n<menu->values_list_size && menu->values_list_label[n]; n++)
+	  menu->values_list_label[n] = gettext(menu->values_list_label[n]);
+      menu++;
+  }
+  menu = my_menu;
   fg_layer = bg_layer = NULL;
   font = NULL;
   menu_disp = NULL;
