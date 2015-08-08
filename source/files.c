@@ -4,6 +4,9 @@
 /*                                                                            */
 /******************************************************************************/
 
+#ifdef RAINE_WIN32
+#include <windows.h>
+#endif
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -77,6 +80,12 @@ char *get_shared(char *name) {
   strcpy(shared,name); // use current path then
   ret = stat(shared,&buf);
   if (!ret) {
+#ifdef RAINE_WIN32
+      char *end;
+      GetFullPathName(name,FILENAME_MAX,shared,&end);
+#else
+      realpath(name,shared);
+#endif
       print_debug("get_shared: using direct name access %s\n",shared);
       return shared;
   }
