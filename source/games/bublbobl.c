@@ -222,7 +222,7 @@ static struct INPUT_INFO input_bublbobl[] =
 };
 #endif
 
-struct DSW_DATA dsw_data_bubble_bobble_0[] =
+static struct DSW_DATA dsw_data_bubble_bobble_0[] =
 {
    { "Mode",              0x05, 0x04 },
    { "Japanese",              0x05},
@@ -245,7 +245,7 @@ struct DSW_DATA dsw_data_bubble_bobble_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_bubble_bobble_1[] =
+static struct DSW_DATA dsw_data_bubble_bobble_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -378,7 +378,7 @@ static struct INPUT_INFO input_sboblbob[] =
    END_INPUT
 };
 
-struct DSW_DATA dsw_data_bobble_bobble_1[] =
+static struct DSW_DATA dsw_data_bobble_bobble_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -403,7 +403,7 @@ struct DSW_DATA dsw_data_bobble_bobble_1[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_dland0[] =
+static struct DSW_DATA dsw_data_dland0[] =
 {
   { "Game", 0x01, 2 },
   { "Dream Land", 0x01, 0x00 },
@@ -424,7 +424,7 @@ struct DSW_DATA dsw_data_dland0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_dland1[] =
+static struct DSW_DATA dsw_data_dland1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -478,7 +478,7 @@ static struct ROM_INFO rom_sboblbob[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-struct DSW_DATA dsw_data_super_bobble_bobble_0[] =
+static struct DSW_DATA dsw_data_super_bobble_bobble_0[] =
 {
    { "Game",                  0x01, 0x02 },
    { "Super Bobble Bobble",   0x00},
@@ -499,7 +499,7 @@ struct DSW_DATA dsw_data_super_bobble_bobble_0[] =
    { NULL,                    0,   },
 };
 
-struct DSW_DATA dsw_data_super_bobble_bobble_1[] =
+static struct DSW_DATA dsw_data_super_bobble_bobble_1[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},

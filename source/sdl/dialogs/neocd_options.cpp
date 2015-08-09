@@ -176,7 +176,7 @@ static menu_item_t neocd_menu[] =
 { _("Exit to"), &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {_("NeoGeo Logo"), _("CD Interface"), _("Test mode"), _("Config mode") } },
   { _("Loading animations speed"), NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
-    { _("Off"), "CD 1x (150 Kb/s)_(", ")2x_(", ")4x_(", ")8x (default)_(", ")16x_(", ")32x_(", ")48x" } },
+    { _("Off"), _("CD 1x (150 Kb/s)"), "2x", "4x", _("8x (default)"), "16x", "32x", "48x" } },
   { _("Update neocd sprite block"), &do_update_block },
   { _("Allow speed hacks"), NULL, &allowed_speed_hacks, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Raster effects"), NULL, &disable_irq1, 2, { 0, 1 }, { _("Enabled"), _("Disabled") }},

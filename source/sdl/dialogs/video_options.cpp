@@ -72,9 +72,9 @@ static menu_item_t overlays_options[] =
 static menu_item_t blits_options[] =
 {
     { _("Change video mode"), NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
-	{ _("Never"), "To match game resolution (low res most of the time)_(", ")To match 2x game resolution" } },
+	{ _("Never"), _("To match game resolution (low res most of the time)"), _("To match 2x game resolution") } },
     { _("Scaler"), &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 },
-	{ _("None"), "Scale2x/3x_(", ")Pixel double_(", ")hq2x/3x" } },
+	{ _("None"), _("Scale2x/3x"), _("Pixel double"), _("hq2x/3x") } },
     { _("Scanlines"), &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
 	{ _("Off"), _("Halfheight"), _("Fullheight"), "Fullheight + Double width" } },
     {  NULL },
@@ -115,7 +115,7 @@ static int bidon;
 
 static menu_item_t ogl_options[] =
 {
-    { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { "DrawPixels (no shaders)_(", ")Texture (possible shaders)" }, },
+    { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { _("DrawPixels (no shaders)"), _("Texture (possible shaders)") }, },
     { _("Double buffer"), NULL, &ogl.dbuf, 2, { 0, 1 }, {_("No"),_("Yes")} },
     { _("Save opengl screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
     { _("Shader"), &choose_shader,&bidon,1,{0},{ogl.shader}},
@@ -195,7 +195,7 @@ static menu_item_t video_items[] =
 {
 #ifdef RAINE_WIN32
 {  _("SDL video driver"), NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
-  { "SDL default (windib since 1.2.10)_(", ")windib (good for ogl)_(",")directx (good for hw overlays/blits)"} },
+  { _("SDL default (windib since 1.2.10)"), _("windib (good for ogl)"),_("directx (good for hw overlays/blits)")} },
 #endif
 {  _("Video renderer"), NULL, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
   { _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
@@ -210,7 +210,7 @@ static menu_item_t video_items[] =
 { _("Frame skip"), NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
   {"Auto", "1", "2", "3", "4", "5", "6", "7", "8", "9" } },
 { _("Screen rotation"), NULL, (int*)&display_cfg.user_rotate, 4, {0, 1, 2, 3 },
-  { _("None"), "90°_(", ")180°_(", ")270°" } },
+  { _("None"), "90°", "180°", "270°" } },
 { _("Flip screen"), NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
   { _("None"), _("Flip X"), _("Flip Y"), _("Flip XY") } },
 {  NULL },

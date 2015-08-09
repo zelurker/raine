@@ -334,7 +334,7 @@ class TMain_menu : public TMenu
       case 4: // dsw
         return current_game != NULL && current_game->dsw != NULL;
       default:
-	if (strstr(main_items[n].label,"Show command.dat"))
+	if (strstr(main_items[n].label,"command.dat"))
 	  return nb_commands > 0;
 	return 1;
     }
