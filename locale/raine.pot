@@ -1,0 +1,1157 @@
+# Raine Translation (base file).
+# Copyright (C) 2015
+# This file is distributed under the same license as the raine package.
+# Emmanuel Anne.
+#
+#,
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-08 22:31+0200\n"
+"PO-Revision-Date: 2015-08-08 22:31+0200\n"
+"Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
+"Language-Team: -\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: source/sdl/dialogs/game_selection.cpp:71
+msgid "-- Options --"
+msgstr ""
+
+#: source/sdl/dialogs/fsel.cpp:226 source/sdl/dialogs/fsel.cpp:231
+msgid "-- Path... "
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "8x (default)"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:716
+msgid "About this game"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:796 source/sdl/gui.cpp:306
+msgid "About..."
+msgstr ""
+
+#: source/sdl/gui.cpp:295
+msgid "Action replay cheats"
+msgstr ""
+
+#: source/sdl/dialogs/romdirs.cpp:48
+msgid "Add rom dir..."
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:286
+msgid "All"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:60
+msgid "All companies"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "All drivers"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:33
+msgid "All games"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:34
+msgid "All status"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:181
+msgid "Allow speed hacks"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:35
+msgid "Always stop CD music while loading"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:935
+msgid "Analog controls..."
+msgstr ""
+
+#: source/sdl/gui.cpp:163
+msgid "Applying GFX Layouts and stuff..."
+msgstr ""
+
+#: source/sdl/dialogs/dirs.cpp:28
+msgid "Artwork dir"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:239
+msgid "Associate..."
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:38
+msgid "Audio tracks format"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:934
+msgid "Autofire controls"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:542 source/sdl/dialogs/controls.cpp:933
+msgid "Autofire..."
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:287
+msgid "Avail"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:33
+msgid "Available games"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:247
+msgid "Average FPS"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:205
+msgid "Blend file options..."
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:142
+msgid "Blits Options"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:113
+msgid "Blue"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:203
+msgid "Borderless"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "CD 1x (150 Kb/s)"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:177
+msgid "CD Interface"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:756
+msgid "CPU emulators:"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:779
+msgid "Calibration"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:183
+msgid "Capture mode"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:35
+msgid "Category"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:323
+#, c-format
+msgid "Category : "
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:310
+#, c-format
+msgid "Category : %s"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:333
+#, c-format
+msgid "Category : -"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:74
+msgid "Change video mode"
+msgstr ""
+
+#: source/sdl/gui.cpp:297
+msgid "Change/Load ROM"
+msgstr ""
+
+#: source/sdl/dialogs/cheats.cpp:112
+msgid "Cheats"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:39
+msgid "Clones"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:143
+msgid "Colors"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:19
+msgid "Colors..."
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:231
+msgid "Command"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:36
+msgid "Company"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:319
+#, c-format
+msgid "Company : %s"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:177
+msgid "Config mode"
+msgstr ""
+
+#: source/sdl/console/console.cpp:1228 source/sdl/console/console.cpp:1318
+#: source/sdl/gui.cpp:309
+msgid "Console"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:969
+msgid "Controls"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:87
+msgid "Currently using hardware accelerated YUY2 overlay"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:85
+msgid "Currently using hardware accelerated YV12 overlay"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:89
+msgid "Currently using scale2x"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:91
+msgid "Currently using scale3x"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:42
+msgid "DOWN"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:174
+msgid "Debug dips"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:41
+msgid "Default volumes"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:175
+msgid "Developper mode"
+msgstr ""
+
+#: source/sdl/dialogs/dlg_dsw.cpp:41 source/sdl/gui.cpp:296
+msgid "Dipswitches"
+msgstr ""
+
+#: source/sdl/dialogs/dirs.cpp:37
+msgid "Directories"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:32
+msgid "Directories..."
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:241
+msgid "Disable associations"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:182
+msgid "Disabled"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:33
+msgid "Display"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:40
+msgid "Display short names too"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:119
+msgid "Double buffer"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:118
+msgid "DrawPixels (no shaders)"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:37
+msgid "Driver"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:32
+msgid "ES5506 voice filters"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:954
+msgid "Edit custom game inputs"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:945
+msgid "Edit default game inputs"
+msgstr ""
+
+#: source/sdl/dialogs/translator.cpp:838
+#: source/sdl/dialogs/game_options.cpp:241
+msgid "Edit msg"
+msgstr ""
+
+#: source/sdl/dialogs/translator.cpp:745
+#: source/sdl/dialogs/game_options.cpp:240
+msgid "Edit screen"
+msgstr ""
+
+#: source/sdl/gui/tedit.cpp:267
+msgid "Edition"
+msgstr ""
+
+#: source/sdl/dialogs/dirs.cpp:25
+msgid "Emudx dir"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:27
+msgid "Emulate sound"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:182
+msgid "Enabled"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:204
+msgid "Even with overlays"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:176
+msgid "Exit to"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:244
+msgid "FPS"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:246
+msgid "FPS counter"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:178
+msgid "File"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:64
+msgid "Fix aspect ratio to 4:3"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:215
+msgid "Flip X"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:215
+msgid "Flip XY"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:215
+msgid "Flip Y"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:214
+msgid "Flip screen"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:210
+msgid "Frame skip"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:79
+msgid "Fullheight"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:202
+msgid "Fullscreen"
+msgstr ""
+
+#: source/sdl/gui/menu.cpp:144
+msgid "GUI transparency"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:317
+#, c-format
+msgid "Game : %s"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:279 source/sdl/gui.cpp:293
+msgid "Game options"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:417
+msgid "Game selection"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:938
+msgid "Get inputs from another game"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:237
+msgid "Graphical layers..."
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:113
+msgid "Green"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:79
+msgid "Halfheight"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:762
+msgid "History..."
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:247
+msgid "Immediate FPS"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:466
+msgid "Ingame Controls"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:233 source/sdl/dialogs/controls.cpp:275
+#: source/sdl/dialogs/controls.cpp:303
+msgid "Input"
+msgstr ""
+
+#: source/sdl/gui.cpp:305
+msgid "Inputs"
+msgstr ""
+
+#: source/sdl/dialogs/translator.cpp:674
+msgid "Insert special code..."
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:68
+#: source/sdl/dialogs/video_options.cpp:124
+msgid "Keep aspect ratio"
+msgstr ""
+
+#: source/sdl/gui.cpp:90
+msgid "Key repeat delay"
+msgstr ""
+
+#: source/sdl/gui.cpp:91
+msgid "Key repeat interval"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:49
+msgid "LEFT"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:216
+msgid "Layers"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:125
+msgid "Linear"
+msgstr ""
+
+#: source/sdl/gui.cpp:283 source/sdl/gui.cpp:299
+msgid "Load NeoCD game"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:184
+#: source/sdl/dialogs/game_options.cpp:235
+msgid "Load game"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:936
+msgid "Load inputs from..."
+msgstr ""
+
+#: source/sdl/gui.cpp:165
+msgid "Loading Game"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:178
+msgid "Loading animations speed"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:207
+msgid "Loop"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:759
+msgid "M6502 1.6raine2 by Neill Bradley"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:761
+msgid "MCU 68705: statically recompiled code by Richard Mitton"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:758
+msgid "MZ80 3.4raine3 by Neill Bradley"
+msgstr ""
+
+#: source/sdl/gui.cpp:347
+msgid "Main menu"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:240
+msgid "Manage associations"
+msgstr ""
+
+#: source/sdl/gui/tfont.cpp:35
+msgid "Max font size"
+msgstr ""
+
+#: source/sdl/gui/tfont.cpp:34
+msgid "Min font size"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:288
+msgid "Missing"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:33
+msgid "Missing games"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:775
+msgid "Move the stick to all the extreme positions"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:37
+msgid "Music volume"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:40
+msgid "Mute CD"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:39
+msgid "Mute SFX"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:125
+msgid "Nearest"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:60
+#: source/sdl/dialogs/neocd_options.cpp:171
+msgid "Neo-Geo bios"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:172
+msgid "NeoCD bios"
+msgstr ""
+
+#: source/sdl/gui.cpp:300
+msgid "NeoCD/Neo-Geo options"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:177
+msgid "NeoGeo Logo"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:75
+#: source/sdl/dialogs/video_options.cpp:204
+msgid "Never"
+msgstr ""
+
+#: source/sdl/dialogs/fsel.cpp:225
+msgid "New file"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:183
+msgid "New pictures"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:20 source/sdl/dialogs/gui_options.cpp:21
+#: source/sdl/dialogs/sound_commands.cpp:241
+#: source/sdl/dialogs/sound_options.cpp:27
+#: source/sdl/dialogs/sound_options.cpp:32
+#: source/sdl/dialogs/sound_options.cpp:35
+#: source/sdl/dialogs/sound_options.cpp:39
+#: source/sdl/dialogs/sound_options.cpp:40
+#: source/sdl/dialogs/sound_options.cpp:43
+#: source/sdl/dialogs/game_selection.cpp:40
+#: source/sdl/dialogs/neocd_options.cpp:175
+#: source/sdl/dialogs/neocd_options.cpp:181
+#: source/sdl/dialogs/video_info.cpp:24
+#: source/sdl/dialogs/video_options.cpp:64
+#: source/sdl/dialogs/video_options.cpp:66
+#: source/sdl/dialogs/video_options.cpp:68
+#: source/sdl/dialogs/video_options.cpp:119
+#: source/sdl/dialogs/video_options.cpp:120
+#: source/sdl/dialogs/video_options.cpp:122
+#: source/sdl/dialogs/video_options.cpp:123
+#: source/sdl/dialogs/video_options.cpp:124
+#: source/sdl/dialogs/video_options.cpp:169
+#: source/sdl/dialogs/video_options.cpp:202
+#: source/sdl/dialogs/video_options.cpp:203
+#: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
+#: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
+#: source/sdl/gui/menu.cpp:147
+msgid "No"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:723
+msgid "No analog device"
+msgstr ""
+
+#: source/sdl/gui/menu.cpp:424
+msgid "No game loaded"
+msgstr ""
+
+#: source/neocd/neocd.c:4561
+msgid "No game loaded yet"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:77
+#: source/sdl/dialogs/video_options.cpp:133
+#: source/sdl/dialogs/video_options.cpp:213
+#: source/sdl/dialogs/video_options.cpp:215
+msgid "None"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:201
+msgid "Normal blits"
+msgstr ""
+
+#: source/sdl/console/scripts.cpp:130 source/sdl/dialogs/cheats.cpp:105
+#: source/sdl/dialogs/game_options.cpp:213
+#: source/sdl/dialogs/game_options.cpp:247 source/sdl/dialogs/controls.cpp:528
+#: source/sdl/dialogs/neocd_options.cpp:179
+#: source/sdl/dialogs/video_options.cpp:79
+msgid "Off"
+msgstr ""
+
+#: source/sdl/console/scripts.cpp:131 source/sdl/dialogs/cheats.cpp:106
+#: source/sdl/dialogs/game_options.cpp:214
+msgid "On"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:34
+msgid "Only not working games"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:34
+msgid "Only partially working games"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:34
+msgid "Only working games"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:20
+msgid "Opaque HUD"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:201
+msgid "OpenGL"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:140
+msgid "OpenGL Options"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:125
+msgid "OpenGL filtering"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:122
+msgid "OpenGL overlay interface"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:34
+#: source/sdl/dialogs/game_selection.cpp:62 source/sdl/gui.cpp:304
+msgid "Options"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:141
+msgid "Overlays Options"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:66
+msgid "Overlays workarounds"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:183
+msgid "Overwrite"
+msgstr ""
+
+#: source/sdl/dialogs/fsel.cpp:152
+msgid "Path selection"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:21
+msgid "Pause when focus lost"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "Pixel double"
+msgstr ""
+
+#: source/sdl/gui.cpp:292
+msgid "Play game"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:144
+#: source/sdl/dialogs/sound_commands.cpp:155
+msgid "Playback"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:63
+msgid "Prefered YUV format"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:196
+msgid "Press a key, a button, or move a joystick..."
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:203
+msgid "Press a key..."
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:247
+msgid "Profiler"
+msgstr ""
+
+#: source/sdl/gui.cpp:106
+msgid "Progress"
+msgstr ""
+
+#: source/sdl/gui.cpp:311
+msgid "Quit"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:47
+msgid "RIGHT"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:390 source/sdl/dialogs/controls.cpp:413
+msgid "Raine Controls"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:929
+msgid "Raine controls"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:182
+msgid "Raster effects"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:247
+msgid "Rdtsc Cycles"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:43
+msgid "Record to raine_sound.wav"
+msgstr ""
+
+#: source/sdl/gui.cpp:294
+msgid "Region"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:207
+msgid "Renderer options"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:118
+msgid "Rendering"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:245
+msgid "Reset fps to driver's default value"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:234
+msgid "Reset game hardware"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:170
+msgid "Reset transparency values to default"
+msgstr ""
+
+#: source/sdl/gui/menu.cpp:143
+msgid "Return mandatory"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:931 source/sdl/dialogs/controls.cpp:955
+msgid "Revert to default game controls"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:113
+msgid "Revert to..."
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:41
+msgid "Rom directories..."
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:198
+msgid "SDL default (windib since 1.2.10)"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:197
+msgid "SDL video driver"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:30
+msgid "Sample rate"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:194
+#: source/sdl/dialogs/game_options.cpp:236
+msgid "Save game"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:937
+msgid "Save inputs as..."
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:120
+msgid "Save opengl screenshots"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "Scale2x/3x"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:76
+msgid "Scaler"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:78
+msgid "Scanlines"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:212
+msgid "Screen rotation"
+msgstr ""
+
+#: source/sdl/dialogs/dirs.cpp:22
+msgid "Screenshot dir"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:726
+msgid "Select analog device"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:758
+msgid "Select the stick to use..."
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:36
+msgid "Sfx volume"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:121
+msgid "Shader"
+msgstr ""
+
+#: source/sdl/gui.cpp:307
+msgid "Show command.dat info"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:173
+msgid "Soft dips"
+msgstr ""
+
+#: source/sdl/dialogs/neo_softdips.cpp:171
+msgid "Soft dipswitches"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:206
+msgid "Sound associations"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:302
+msgid "Sound commands"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:45
+msgid "Sound commands..."
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:71 source/sdl/gui.cpp:303
+msgid "Sound options"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:738
+msgid "Special moves..."
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:238
+msgid "Sprite viewer"
+msgstr ""
+
+#: source/sdl/dialogs/sprite_viewer.cpp:181
+msgid "Sprites viewer"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:757
+msgid "Starscream 0.26r4 by Neill Corlett"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:34
+msgid "Status"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:238
+msgid "Stop"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:946
+msgid "Switch to custom game controls"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:232
+msgid "Test"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:177
+msgid "Test mode"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:235
+msgid "Test this"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:118
+msgid "Texture (possible shaders)"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:75
+msgid "To match 2x game resolution"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:75
+msgid "To match game resolution (low res most of the time)"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:175
+msgid "Track"
+msgstr ""
+
+#: source/sdl/dialogs/translator.cpp:987
+msgid "Translator"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:760
+msgid "UAE 68020 Emulator : old hacked asm version from UAE"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:44
+msgid "UP"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:180
+msgid "Update neocd sprite block"
+msgstr ""
+
+#: source/sdl/gui/menu.cpp:145
+msgid "Use custom mouse cursor"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:93
+msgid "Using unscaled blits"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:98
+msgid "Video info"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:206
+msgid "Video info..."
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:932
+msgid "Video layers"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:225 source/sdl/gui.cpp:302
+msgid "Video options"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:200
+msgid "Video renderer"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:204
+msgid "When possible"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:39
+msgid "With"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:43
+msgid "With monitoring"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:39
+msgid "Without"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:43
+msgid "Without monitoring"
+msgstr ""
+
+#: source/sdl/dialogs/game_options.cpp:134
+msgid "X"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:201
+msgid "YUV overlays"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:63
+msgid "YUY2"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:322
+#, c-format
+msgid "Year : %d"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:332
+#, c-format
+msgid "Year : -"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:299
+msgid "Year : 2006"
+msgstr ""
+
+#: source/sdl/dialogs/gui_options.cpp:20 source/sdl/dialogs/gui_options.cpp:21
+#: source/sdl/dialogs/sound_commands.cpp:241
+#: source/sdl/dialogs/sound_options.cpp:27
+#: source/sdl/dialogs/sound_options.cpp:32
+#: source/sdl/dialogs/sound_options.cpp:35
+#: source/sdl/dialogs/sound_options.cpp:39
+#: source/sdl/dialogs/sound_options.cpp:40
+#: source/sdl/dialogs/game_selection.cpp:40
+#: source/sdl/dialogs/neocd_options.cpp:175
+#: source/sdl/dialogs/neocd_options.cpp:181
+#: source/sdl/dialogs/video_info.cpp:25
+#: source/sdl/dialogs/video_options.cpp:64
+#: source/sdl/dialogs/video_options.cpp:66
+#: source/sdl/dialogs/video_options.cpp:68
+#: source/sdl/dialogs/video_options.cpp:119
+#: source/sdl/dialogs/video_options.cpp:120
+#: source/sdl/dialogs/video_options.cpp:122
+#: source/sdl/dialogs/video_options.cpp:123
+#: source/sdl/dialogs/video_options.cpp:124
+#: source/sdl/dialogs/video_options.cpp:169
+#: source/sdl/dialogs/video_options.cpp:202
+#: source/sdl/dialogs/video_options.cpp:203
+#: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
+#: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
+#: source/sdl/gui/menu.cpp:147
+msgid "Yes"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:45
+msgid "alpha"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:109
+msgid "bg color"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:112
+msgid "bg dialog bar color"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:111
+msgid "bg frame color"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:182
+msgid "bld options"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:44
+msgid "blue"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:41
+msgid "color"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:198
+msgid "directx (good for hw overlays/blits)"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:778
+msgid "each pedal separately"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:108
+msgid "fg color"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:110
+msgid "fg frame color"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:43
+msgid "green"
+msgstr ""
+
+#: source/sdl/dialogs/translator.cpp:673 source/sdl/dialogs/translator.cpp:681
+msgid "hidden"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "hq2x/3x"
+msgstr ""
+
+#: source/sdl/gui/tedit.cpp:256
+msgid "label"
+msgstr ""
+
+#: source/sdl/dialogs/sprite_viewer.cpp:166
+msgid "layer"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:777
+msgid "left and right positions, and press then release"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:38
+msgid "lsb"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:38
+msgid "msb"
+msgstr ""
+
+#: source/sdl/dialogs/translator.cpp:810
+msgid "msg to edit"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:197
+msgid "or escape to delete this control"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:42
+msgid "red"
+msgstr ""
+
+#: source/sdl/dialogs/romdirs.cpp:51
+msgid "rom dirs"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:198
+msgid "windib (good for ogl)"
+msgstr ""
