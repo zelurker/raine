@@ -456,7 +456,8 @@ OBJDIRS=$(OBJDIR)                \
     $(OBJDIR)/6502               \
     $(OBJDIR)/m68705             \
 	$(OBJDIR)/neocd				 \
-	locale/fr/LC_MESSAGES
+	locale/fr/LC_MESSAGES \
+	locale/es/LC_MESSAGES
 
 ifdef CZ80
 OBJDIRS += $(OBJDIR)/cz80
@@ -1076,9 +1077,12 @@ endif
 endif
 endif
 
-all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) locale/fr/LC_MESSAGES/raine.mo
+all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
+	locale/fr/LC_MESSAGES/raine.mo \
+	locale/es/LC_MESSAGES/raine.mo
 
 locale/fr/LC_MESSAGES/raine.mo: locale/french.po
+locale/es/LC_MESSAGES/raine.mo: locale/es.po
 	msgfmt -c -v -o $@ $<
 
 CFLAGS_BS := -Wall -O2 $(shell sdl-config --cflags) $(INCDIR) -DSTANDALONE -DNO_GZIP -c
