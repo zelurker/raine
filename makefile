@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.64.5"
+VERSION = "0.64.6"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -302,6 +302,7 @@ else
    bitmaps_dir = $(rainedata)/bitmaps
    shaders_dir = $(rainedata)/shaders
    fonts_dir = $(rainedata)/fonts
+   langdir = $(rainedata)/locale
    scripts_dir = $(rainedata)/scripts/neocd
 #   bld_dir = $(rainedata)/blend
 endif
@@ -1443,6 +1444,7 @@ ifndef DARWIN
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
+	@cp -rfv locale/* $(langdir)
 ifndef DARWIN
 	$(INSTALL_DATA) neoraine.desktop $(prefix)/share/applications
 endif
