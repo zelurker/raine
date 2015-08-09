@@ -455,7 +455,8 @@ OBJDIRS=$(OBJDIR)                \
     $(OBJDIR)/68020              \
     $(OBJDIR)/6502               \
     $(OBJDIR)/m68705             \
-	$(OBJDIR)/neocd
+	$(OBJDIR)/neocd				 \
+	locale/fr/LC_MESSAGES
 
 ifdef CZ80
 OBJDIRS += $(OBJDIR)/cz80
@@ -1075,7 +1076,10 @@ endif
 endif
 endif
 
-all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE)
+all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) locale/fr/LC_MESSAGES/raine.mo
+
+locale/fr/LC_MESSAGES/raine.mo: locale/french.po
+	msgfmt -c -v -o $@ $<
 
 CFLAGS_BS := -Wall -O2 $(shell sdl-config --cflags) $(INCDIR) -DSTANDALONE -DNO_GZIP -c
 
@@ -1385,9 +1389,6 @@ cpuinfo:
 
 # create directories
 
-dirs:
-	@echo make dirs is no longer necessary, just type make
-
 $(OBJDIRS):
 ifndef OSTYPE
 	@echo Your OSTYPE is not defined.
@@ -1444,7 +1445,7 @@ ifndef DARWIN
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
-	@cp -rfv locale/* $(langdir)
+	@cp -rfv locale/fr $(langdir)
 ifndef DARWIN
 	$(INSTALL_DATA) neoraine.desktop $(prefix)/share/applications
 endif
