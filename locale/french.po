@@ -173,7 +173,7 @@ msgstr "Emulateurs CPU"
 
 #: source/sdl/dialogs/game_options.cpp:243
 msgid "CPU frame skip (1=no skip) "
-msgstr "Nombre d'images sans émulation CPU (1=pas de saut)"
+msgstr "Nombre d'images sans Ã©mulation CPU (1=pas de saut)"
 
 #: source/sdl/dialogs/controls.cpp:779
 msgid "Calibration"
@@ -310,7 +310,7 @@ msgstr "DÃ©sactiver associations"
 
 #: source/sdl/dialogs/video_options.cpp:103
 msgid "Disable shaders ?"
-msgstr "Désactiver les shaders ?"
+msgstr "DÃ©sactiver les shaders ?"
 
 #: source/sdl/dialogs/neocd_options.cpp:182
 msgid "Disabled"
@@ -606,7 +606,7 @@ msgstr "Taille de fonte mini"
 
 #: source/sdl/gui/menu.cpp:147
 msgid "Minimum GUI resolution = VGA"
-msgstr "Résolution minimale du GUI = VGA"
+msgstr "RÃ©solution minimale du GUI = VGA"
 
 #: source/sdl/dialogs/game_selection.cpp:288
 msgid "Missing"
