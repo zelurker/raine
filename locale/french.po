@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1\n"
+"Project-Id-Version: 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-10 07:41+0200\n"
+"PO-Revision-Date: 2015-08-10 19:09+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -17,10 +17,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: source/games/fchamp.c:101 source/games/fchamp.c:127
+#: source/games/fchamp.c:171
+msgid " 2  Minutes"
+msgstr ""
+
+#: source/games/fchamp.c:102 source/games/fchamp.c:128
+#: source/games/fchamp.c:172
+msgid " 3  Minutes"
+msgstr ""
+
 #: source/sdl/dialogs/game_options.cpp:154
 #, c-format
 msgid "%d - Free savegame slot"
 msgstr "%d - Emplacement de sauvegarde libre"
+
+#: source/demos.c:293
+#, c-format
+msgid "%s is not recognised"
+msgstr "%s n'est pas reconnu"
+
+#: source/demos.c:284
+#, c-format
+msgid "%s is too ancient!"
+msgstr "%s est trop ancien !"
+
+#: source/games/cadash.c:108
+msgid "+1 Min"
+msgstr ""
+
+#: source/games/seta.c:3055
+msgid "+10 Yards"
+msgstr ""
+
+#: source/games/seta.c:3056
+msgid "+20 Yards"
+msgstr ""
+
+#: source/games/seta.c:3057
+msgid "+30 Yards"
+msgstr ""
+
+#: source/games/seta.c:3058
+msgid "+40 Yards"
+msgstr ""
+
+#: source/games/seta.c:3059
+msgid "+50 Yards"
+msgstr ""
+
+#: source/games/seta.c:3060
+msgid "+60 Yards"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:71
 msgid "-- Options --"
@@ -30,29 +78,1554 @@ msgstr ""
 msgid "-- Path... "
 msgstr "-- Chemin... "
 
+#: source/games/cadash.c:109
+msgid "-1 Min"
+msgstr ""
+
+#: source/games/cadash.c:110
+msgid "-2 Mins"
+msgstr ""
+
+#: source/games/seta.c:3054
+msgid "-30 Yards"
+msgstr ""
+
+#: source/games/cps1drv.c:3622 source/games/cps1drv.c:3631
+#: source/games/cps1drv.c:3681 source/games/cps1drv.c:3987
+#: source/games/cps1drv.c:4020 source/games/cps1drv.c:4029
+msgid "1 (Easiest)"
+msgstr ""
+
+#: source/games/seta.c:2612 source/games/wrestlef.c:83
+#: source/games/wrestlef.c:86 source/games/wrestlef.c:89
+msgid "1 Coin"
+msgstr ""
+
+#: source/games/ctribebl.c:80 source/games/doubled3.c:89
+msgid "1 Coin to Continue"
+msgstr ""
+
+#: source/sdl/control.c:1719
+msgid "1 Coin/1 Credit"
+msgstr "1 pièce/1 partie"
+
+#: source/games/gcpball.c:75 source/games/gcpball.c:84
+#: source/games/pengo.c:155 source/games/pengo.c:172
+msgid "1 Coin/1 Credit 2/3"
+msgstr "1 pièce/1 partie 2/3"
+
+#: source/games/pengo.c:154 source/games/pengo.c:171
+msgid "1 Coin/1 Credit 4/5"
+msgstr "1 pièce/1 partie 4/5"
+
+#: source/games/gcpball.c:76 source/games/gcpball.c:85
+#: source/games/pengo.c:153 source/games/pengo.c:170
+msgid "1 Coin/1 Credit 5/6"
+msgstr "1 pièce/1 partie 5/6"
+
+#: source/sdl/control.c:1720
+msgid "1 Coin/2 Credits"
+msgstr "1 pièce/2 parties"
+
+#: source/games/pengo.c:158 source/games/pengo.c:175
+msgid "1 Coin/2 Credits 4/9"
+msgstr "1 pièce/2 parties 4/9"
+
+#: source/games/pengo.c:157 source/games/pengo.c:174
+msgid "1 Coin/2 Credits 5/11"
+msgstr "1 pièce/2 parties"
+
+#: source/sdl/control.c:1721
+msgid "1 Coin/3 Credits"
+msgstr "1 pièce/3 parties"
+
+#: source/sdl/control.c:1722
+msgid "1 Coin/4 Credits"
+msgstr "1 pièce/4 parties"
+
+#: source/sdl/control.c:1723
+msgid "1 Coin/5 Credits"
+msgstr "1 pièce/5 parties"
+
+#: source/sdl/control.c:1724
+msgid "1 Coin/6 Credits"
+msgstr "1 pièce/6 parties"
+
+#: source/sdl/control.c:1725
+msgid "1 Coin/7 Credits"
+msgstr "1 pièce/7 parties"
+
+#: source/sdl/control.c:1726
+msgid "1 Coin/8 Credits"
+msgstr "1 pièce/8 parties"
+
+#: source/sdl/control.c:1727
+msgid "1 Coin/9 Credits"
+msgstr "1 pièce/9 parties"
+
+#: source/games/seta.c:2609 source/games/seta.c:2611
+#: source/games/toaplan2.c:1520 source/games/toaplan2.c:1748
+#: source/games/toaplan2.c:6061
+msgid "1 Credit"
+msgstr "1 partie"
+
+#: source/games/taito_f2.c:955
+msgid "1 Credit/2P"
+msgstr ""
+
+#: source/games/taito_f2.c:957
+msgid "1 Credit/4P"
+msgstr ""
+
+#: source/games/cps1drv.c:3793
+msgid "1 Credit/No Continue"
+msgstr ""
+
+#: source/games/cps1drv.c:4252
+msgid "1 Game Match"
+msgstr ""
+
+#: source/games/cps1drv.c:3028
+msgid "1 Medal 1 Credit"
+msgstr ""
+
+#: source/games/lsystem.c:392
+msgid "1 Minute Lenght"
+msgstr ""
+
+#: source/games/deadconx.c:123
+msgid "1 Player"
+msgstr ""
+
+#: source/games/ashura.c:124 source/games/crimec.c:134
+#: source/games/lsystem.c:435 source/games/lsystem.c:875
+#: source/games/rastan2.c:175
+msgid "1 extra coin"
+msgstr ""
+
+#: source/games/seta.c:2342
+msgid "1 of 4 Scenes"
+msgstr ""
+
+#: source/games/seta.c:2343
+msgid "1 of 8 Scenes"
+msgstr ""
+
+#: source/games/cps1drv.c:4060
+msgid "1.200k 3.500k"
+msgstr ""
+
+#: source/games/fchamp.c:104 source/games/fchamp.c:130
+#: source/games/fchamp.c:174
+msgid "1.5 Minutes"
+msgstr ""
+
+#: source/games/cps1drv.c:3033
+msgid "10 Yen"
+msgstr ""
+
+#: source/games/cps1drv.c:3045
+msgid "10 Yen Setup"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:531
+msgid "10 fps"
+msgstr ""
+
+#: source/games/quizgame.c:185
+msgid "10 seconds"
+msgstr ""
+
+#: source/games/bublbobl.c:443
+msgid "100 (Cheat)"
+msgstr ""
+
+#: source/games/cps1drv.c:3032
+msgid "100 Yen"
+msgstr ""
+
+#: source/games/gcpball.c:104
+msgid "1000K"
+msgstr ""
+
+#: source/games/seta.c:2394
+msgid "1000K Only"
+msgstr ""
+
+#: source/games/toaplan2.c:1921
+msgid "1000K only"
+msgstr ""
+
+#: source/games/mcatadv.c:233
+msgid "1000k 2000k"
+msgstr ""
+
+#: source/games/seta.c:1801
+msgid "1000k Only"
+msgstr ""
+
+#: source/games/toaplan2.c:1802
+msgid "1000k and 2000k"
+msgstr ""
+
+#: source/games/toaplan1.c:209 source/games/toaplan1.c:675
+msgid "100K"
+msgstr ""
+
+#: source/games/seta.c:2103 source/games/seta.c:2840 source/games/seta.c:3087
+msgid "100K Only"
+msgstr ""
+
+#: source/games/toaplan1.c:208
+msgid "100K and 250K"
+msgstr ""
+
+#: source/games/toaplan1.c:135 source/games/toaplan1.c:161
+#: source/games/toaplan1.c:185 source/games/toaplan1.c:558
+msgid "100K only"
+msgstr ""
+
+#: source/games/aquajack.c:94 source/games/cps1drv.c:3451
+#: source/games/hyperpcb.c:553 source/games/rastan.c:91 source/games/upl.c:396
+#: source/games/xsystem2.c:100
+msgid "100k"
+msgstr ""
+
+#: source/games/hyperpcb.c:555 source/games/toki.c:124
+#: source/games/xsystem2.c:99
+msgid "100k 200k"
+msgstr ""
+
+#: source/games/ksystem.c:248
+msgid "100k 300k"
+msgstr ""
+
+#: source/games/volfied.c:90
+msgid "100k 500k"
+msgstr ""
+
+#: source/games/nmk.c:866
+msgid "100k and 100k"
+msgstr ""
+
+#: source/games/nmk.c:867
+msgid "100k and 200k"
+msgstr ""
+
+#: source/games/silkworm.c:112
+msgid "100k and 300k"
+msgstr ""
+
+#: source/games/silkworm.c:437 source/games/toaplan2.c:585
+msgid "100k and 500k"
+msgstr ""
+
+#: source/games/exzisus.c:112
+msgid "100k and every 150k"
+msgstr ""
+
+#: source/games/cps1drv.c:3453 source/games/earthjkr.c:263
+#: source/games/megasys1.c:991 source/games/nmk.c:966
+msgid "100k and every 200k"
+msgstr ""
+
+#: source/games/cps1drv.c:3942
+msgid "100k and every 450k"
+msgstr ""
+
+#: source/games/earthjkr.c:149 source/games/rastan2.c:62
+#: source/games/silentd.c:215 source/games/silkworm.c:114
+#: source/games/silkworm.c:330 source/games/silkworm.c:439
+#: source/games/toaplan2.c:438 source/games/toaplan2.c:584
+#: source/games/toaplan2.c:696 source/games/toaplan2.c:1160
+#: source/games/xsystem1.c:307
+msgid "100k only"
+msgstr ""
+
+#: source/games/toaplan2.c:1158
+msgid "100k then every 200k"
+msgstr ""
+
+#: source/games/toaplan2.c:695
+msgid "100k then every 250k"
+msgstr ""
+
+#: source/games/toaplan2.c:1159
+msgid "100k then every 300k"
+msgstr ""
+
+#: source/games/toaplan2.c:437
+msgid "100k then every 400k"
+msgstr ""
+
+#: source/games/xsystem2.c:423 source/games/xsystem2.c:950
+msgid "100k, 250k"
+msgstr ""
+
+#: source/games/silkworm.c:328
+msgid "100k, 300k and 600k"
+msgstr ""
+
+#: source/games/silkworm.c:110
+msgid "100k, 300k and 800k"
+msgstr ""
+
+#: source/games/bloodbro.c:97
+msgid "100k, every 200k"
+msgstr ""
+
+#: source/games/rainbow.c:95 source/games/rainbow.c:210
+msgid "100k/1000k"
+msgstr ""
+
+#: source/games/cps1drv.c:3108 source/games/cps1drv.c:3150
+msgid "10K 30K and every 30K"
+msgstr ""
+
+#: source/games/taito_f2.c:691
+msgid "10k and 100k"
+msgstr ""
+
+#: source/games/taito_f2.c:692
+msgid "10k and 150k"
+msgstr ""
+
+#: source/games/taito_f2.c:693
+msgid "10k and 250k"
+msgstr ""
+
+#: source/games/taito_f2.c:694
+msgid "10k and 350k"
+msgstr ""
+
+#: source/games/taito_f2.c:777
+msgid "10k, 110K, 210K, 310K"
+msgstr ""
+
+#: source/games/hyperpcb.c:81
+msgid "120 Seconds"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:530
+msgid "15 fps"
+msgstr ""
+
+#: source/games/quizgame.c:186
+msgid "15 seconds"
+msgstr ""
+
+#: source/games/hyperpcb.c:82
+msgid "150 Seconds"
+msgstr ""
+
+#: source/games/toaplan2.c:1923
+msgid "1500k only"
+msgstr ""
+
+#: source/games/seta.c:2317
+msgid "150K Every 300K"
+msgstr ""
+
+#: source/games/exzisus.c:113 source/games/rastan.c:92
+msgid "150k"
+msgstr ""
+
+#: source/games/earthjkr.c:264 source/games/exzisus.c:111
+msgid "150k and every 200k"
+msgstr ""
+
+#: source/games/rastan2.c:63
+msgid "150k only"
+msgstr ""
+
+#: source/games/toaplan2.c:912
+msgid "150k then every 200k"
+msgstr ""
+
+#: source/games/seta.c:2519
+msgid "150k, 350k"
+msgstr ""
+
+#: source/games/taito_f2.c:779
+msgid "15K, 145K, 365K, 515K"
+msgstr ""
+
+#: source/games/cps1drv.c:3943 source/games/cps1drv.c:3971
+msgid "160k and every 450k"
+msgstr ""
+
+#: source/games/lsystem.c:1507
+msgid "160k only"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "16x"
+msgstr ""
+
+#: source/games/megasys1.c:296
+msgid "1P/2P Control Flip"
+msgstr ""
+
+#: source/games/rainbow.c:98 source/games/rainbow.c:213
+msgid "1Up"
+msgstr ""
+
+#: source/games/cps1drv.c:3246 source/games/cps1drv.c:3427
+#: source/games/cps1drv.c:3547 source/games/cps1drv.c:3846
+#: source/games/cps1drv.c:3921 source/games/cps1drv.c:4112
+#: source/games/cps1drv.c:4304 source/games/cps1drv.c:4398
+#: source/games/seta.c:2781
+msgid "2 Coins to Start,1 to Continue"
+msgstr ""
+
+#: source/games/cps1drv.c:4489
+msgid "2 Coins to Start1 to Continue"
+msgstr ""
+
+#: source/games/gunbird.c:303 source/sdl/control.c:1729
+msgid "2 Coins/1 Credit"
+msgstr ""
+
+#: source/games/gcpball.c:73 source/games/gcpball.c:82
+msgid "2 Coins/1 Credit 3/2 4/3 6/5"
+msgstr ""
+
+#: source/games/pengo.c:151 source/games/pengo.c:168
+msgid "2 Coins/1 Credit 4/3"
+msgstr ""
+
+#: source/games/pengo.c:150 source/games/pengo.c:167
+msgid "2 Coins/1 Credit 5/3"
+msgstr ""
+
+#: source/sdl/control.c:1730
+msgid "2 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1731
+msgid "2 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1732
+msgid "2 Coins/4 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1733
+msgid "2 Coins/5 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1734
+msgid "2 Coins/6 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1735
+msgid "2 Coins/7 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1736
+msgid "2 Coins/8 Credits"
+msgstr ""
+
+#: source/games/seta.c:2608 source/games/toaplan2.c:1521
+#: source/games/toaplan2.c:1749 source/games/toaplan2.c:6062
+msgid "2 Credits"
+msgstr ""
+
+#: source/games/taito_f2.c:958
+msgid "2 Credits/4P"
+msgstr ""
+
+#: source/games/cps1drv.c:3794
+msgid "2 Credits/Winner Continue"
+msgstr ""
+
+#: source/games/lsystem.c:389
+msgid "2 Minutes"
+msgstr ""
+
+#: source/games/seta.c:2607
+msgid "2 Player Game"
+msgstr ""
+
+#: source/games/taito_f2.c:627 source/games/taito_f2.c:990
+msgid "2 Player Mode"
+msgstr ""
+
+#: source/games/ctribebl.c:110 source/games/doubled3.c:122
+#: source/games/fchamp.c:106 source/games/fchamp.c:132
+#: source/games/fchamp.c:176 source/games/silentd.c:134
+#: source/games/wrestlef.c:111
+msgid "2 Players"
+msgstr ""
+
+#: source/games/cps1drv.c:3792
+msgid "2 Players Game"
+msgstr ""
+
+#: source/games/taito_f2.c:839
+msgid "2 Players Mode"
+msgstr ""
+
+#: source/games/ashura.c:125 source/games/crimec.c:135
+#: source/games/lsystem.c:436 source/games/lsystem.c:876
+#: source/games/rastan2.c:176
+msgid "2 extra coins"
+msgstr ""
+
+#: source/games/fchamp.c:103 source/games/fchamp.c:129
+#: source/games/fchamp.c:173
+msgid "2.5 Minutes"
+msgstr ""
+
+#: source/games/taito_f2.c:625
+msgid "20 sec"
+msgstr ""
+
+#: source/games/lsystem.c:99 source/games/quizgame.c:187
+msgid "20 seconds"
+msgstr ""
+
+#: source/games/armedf.c:182 source/games/terraf.c:84
+msgid "20000, every 60000"
+msgstr ""
+
+#: source/games/armedf.c:183
+msgid "20000, every 80000"
+msgstr ""
+
+#: source/games/terraf.c:85
+msgid "20000, every 90000"
+msgstr ""
+
+#: source/games/cps1drv.c:4061
+msgid "2000k only"
+msgstr ""
+
+#: source/games/seta.c:2725 source/games/toaplan1.c:210
+msgid "200K"
+msgstr ""
+
+#: source/games/seta.c:2726
+msgid "200K Every 200K"
+msgstr ""
+
+#: source/games/seta.c:2318
+msgid "200K Every 400K"
+msgstr ""
+
+#: source/games/toaplan1.c:376
+msgid "200K and 500K"
+msgstr ""
+
+#: source/games/toaplan1.c:492
+msgid "200Kevery 500K"
+msgstr ""
+
+#: source/games/cps1drv.c:3452 source/games/exzisus.c:114
+#: source/games/hyperpcb.c:554 source/games/megasys1.c:1292
+#: source/games/rastan.c:93 source/games/toaplan2.c:1410
+msgid "200k"
+msgstr ""
+
+#: source/games/silkworm.c:329 source/games/toaplan2.c:1409
+msgid "200k and 500k"
+msgstr ""
+
+#: source/games/nmk.c:967
+msgid "200k and every 200k"
+msgstr ""
+
+#: source/games/cps1drv.c:3970
+msgid "200k and every 450k"
+msgstr ""
+
+#: source/games/rastan2.c:64 source/games/silentd.c:216
+#: source/games/silkworm.c:115 source/games/silkworm.c:440
+#: source/games/toaplan1.c:162 source/games/toaplan2.c:439
+#: source/games/toaplan2.c:586 source/games/toaplan2.c:697
+#: source/games/toaplan2.c:804 source/games/toaplan2.c:913
+#: source/games/toaplan2.c:1245
+msgid "200k only"
+msgstr ""
+
+#: source/games/toaplan2.c:911
+msgid "200k then every 300k"
+msgstr ""
+
+#: source/games/xsystem2.c:424 source/games/xsystem2.c:951
+msgid "200k, 300k"
+msgstr ""
+
+#: source/games/toaplan2.c:805
+msgid "200k, 400k and 600k"
+msgstr ""
+
+#: source/games/seta.c:2520
+msgid "200k, 500k"
+msgstr ""
+
+#: source/games/bloodbro.c:98
+msgid "200k, every 300k"
+msgstr ""
+
+#: source/games/cps1drv.c:3204 source/games/cps1drv.c:3252
+msgid "20K & 60K only"
+msgstr ""
+
+#: source/games/cps1drv.c:3202 source/games/cps1drv.c:3250
+msgid "20K 40K then every 60K"
+msgstr ""
+
+#: source/games/cps1drv.c:3109 source/games/cps1drv.c:3151
+msgid "20K 50K and every 70K"
+msgstr ""
+
+#: source/games/arkanoid.c:91
+msgid "20K 60K and every 60K"
+msgstr ""
+
+#: source/games/seta.c:2837
+msgid "20K Every 100K"
+msgstr ""
+
+#: source/games/arkanoid.c:92 source/games/arkanoid.c:122
+msgid "20K only"
+msgstr ""
+
+#: source/games/arkanoid.c:121
+msgid "20K60K and every 60K"
+msgstr ""
+
+#: source/games/megasys1.c:1356 source/games/upl.c:398
+msgid "20k"
+msgstr ""
+
+#: source/games/volfied.c:87
+msgid "20k 40k"
+msgstr ""
+
+#: source/games/darius.c:152
+msgid "20k 80k"
+msgstr ""
+
+#: source/games/cabal.c:106 source/games/upl.c:281
+msgid "20k and 50k"
+msgstr ""
+
 #: source/games/bublbobl.c:257 source/games/bublbobl.c:390
 #: source/games/bublbobl.c:436 source/games/bublbobl.c:511
 msgid "20k and 80k"
-msgstr "20k et 80k"
+msgstr ""
+
+#: source/games/earthjkr.c:147
+msgid "20k and every 50k"
+msgstr ""
+
+#: source/games/taito_f2.c:778
+msgid "20k, 220K, 420K, 620K"
+msgstr ""
+
+#: source/games/taito_f2.c:624
+msgid "25 sec"
+msgstr ""
+
+#: source/games/rastan.c:94
+msgid "250k"
+msgstr ""
+
+#: source/games/rastan2.c:65
+msgid "250k only"
+msgstr ""
+
+#: source/games/frogger.c:106
+msgid "256 (Cheat)"
+msgstr ""
+
+#: source/games/silkworm.c:342
+msgid "2P Start Anytime"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "2x"
+msgstr ""
+
+#: source/games/pengo.c:1337
+msgid "2x Speed Cheat"
+msgstr ""
+
+#: source/games/cps1drv.c:3651
+msgid "3 (2 when continue)"
+msgstr ""
+
+#: source/games/cps1drv.c:3505
+msgid "3 Bars"
+msgstr ""
+
+#: source/games/crospang.c:132
+msgid "3 Chain Reactions"
+msgstr ""
+
+#: source/sdl/control.c:1738
+msgid "3 Coins/1 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1739
+msgid "3 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1740
+msgid "3 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1741
+msgid "3 Coins/4 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1742
+msgid "3 Coins/5 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1743
+msgid "3 Coins/6 Credits"
+msgstr ""
+
+#: source/games/seta.c:2587
+msgid "3 Coins/7 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1744
+msgid "3 Coins/7 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1745
+msgid "3 Coins/8 Credits"
+msgstr ""
+
+#: source/games/cps1drv.c:4253
+msgid "3 Games Match"
+msgstr ""
+
+#: source/games/lsystem.c:388
+msgid "3 Minutes"
+msgstr ""
+
+#: source/games/ctribebl.c:109 source/games/doubled3.c:121
+#: source/games/silentd.c:135
+msgid "3 Players"
+msgstr ""
+
+#: source/games/armedf.c:201 source/games/armedf.c:241
+#: source/games/terraf.c:105
+msgid "3 Times"
+msgstr ""
+
+#: source/games/crimec.c:38 source/games/crimec.c:123
+#: source/games/crimec.c:178
+msgid "3 characters"
+msgstr ""
+
+#: source/games/ashura.c:126 source/games/crimec.c:136
+#: source/games/lsystem.c:437 source/games/lsystem.c:877
+#: source/games/rastan2.c:177
+msgid "3 extra coins"
+msgstr ""
+
+#: source/games/lsystem.c:104
+msgid "3 per Credit"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:529
+msgid "30 fps"
+msgstr ""
+
+#: source/games/taito_f2.c:622
+msgid "30 sec"
+msgstr ""
+
+#: source/games/lsystem.c:98 source/games/lsystem.c:396
+msgid "30 seconds"
+msgstr ""
+
+#: source/games/pengo.c:1344
+msgid "30% (MMX)"
+msgstr ""
+
+#: source/games/armedf.c:224
+msgid "30000 and 100000"
+msgstr ""
+
+#: source/games/armedf.c:226
+msgid "30000 only"
+msgstr ""
+
+#: source/games/terraf.c:145
+msgid "30000, every 100000"
+msgstr ""
+
+#: source/games/gcpball.c:102
+msgid "300K"
+msgstr ""
+
+#: source/games/seta.c:2319
+msgid "300K Every 500K"
+msgstr ""
+
+#: source/games/toaplan1.c:377
+msgid "300K only"
+msgstr ""
+
+#: source/games/seta.c:2271
+msgid "300k & 600k"
+msgstr ""
+
+#: source/games/seta.c:2269
+msgid "300k Only"
+msgstr ""
+
+#: source/games/toaplan2.c:1243
+msgid "300k and 800k"
+msgstr ""
+
+#: source/games/nmk.c:968
+msgid "300k and every 300k"
+msgstr ""
+
+#: source/games/seta.c:1798
+msgid "300k and every 800k"
+msgstr ""
+
+#: source/games/silentd.c:217 source/games/silkworm.c:441
+#: source/games/toaplan2.c:193
+msgid "300k only"
+msgstr ""
+
+#: source/games/toaplan2.c:1244
+msgid "300k then every 800k"
+msgstr ""
+
+#: source/games/seta.c:2521
+msgid "300k, 600k"
+msgstr ""
+
+#: source/games/cps1drv.c:3205 source/games/cps1drv.c:3253
+msgid "30K & 60K only"
+msgstr ""
+
+#: source/games/cps1drv.c:3203 source/games/cps1drv.c:3251
+msgid "30K 50K then every 70K"
+msgstr ""
+
+#: source/games/cps1drv.c:3110 source/games/cps1drv.c:3152
+msgid "30K 60K and every 70K"
+msgstr ""
+
+#: source/games/toaplan1.c:556
+msgid "30Kevery 100K"
+msgstr ""
+
+#: source/games/aquajack.c:95 source/games/megasys1.c:1357
+#: source/games/upl.c:395
+msgid "30k"
+msgstr ""
+
+#: source/games/darius.c:151
+msgid "30k 100k"
+msgstr ""
+
+#: source/games/megasys1.c:286
+msgid "30k 70k.."
+msgstr ""
 
 #: source/games/bublbobl.c:256 source/games/bublbobl.c:389
 #: source/games/bublbobl.c:435 source/games/bublbobl.c:510
+#: source/games/cabal.c:107 source/games/taito_f2.c:803
 msgid "30k and 100k"
 msgstr "30k et 100k"
+
+#: source/games/taito_f2.c:804
+msgid "30k and 150k"
+msgstr ""
+
+#: source/games/upl.c:280
+msgid "30k and 50k"
+msgstr ""
+
+#: source/games/upl.c:69
+msgid "30k and every 50k"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "32x"
+msgstr ""
+
+#: source/games/taito_f2.c:620
+msgid "35 sec"
+msgstr ""
+
+#: source/games/cps1drv.c:3652
+msgid "4 (3 when continue)"
+msgstr ""
+
+#: source/games/cps1drv.c:3625 source/games/cps1drv.c:3634
+#: source/games/cps1drv.c:3684 source/games/cps1drv.c:3990
+#: source/games/cps1drv.c:4023 source/games/cps1drv.c:4032
+msgid "4 (Normal)"
+msgstr ""
+
+#: source/games/cps1drv.c:3506
+msgid "4 Bars"
+msgstr ""
+
+#: source/games/crospang.c:133
+msgid "4 Chain Reactions"
+msgstr ""
+
+#: source/games/opwolf.c:84
+msgid "4 Clips"
+msgstr ""
+
+#: source/sdl/control.c:1747
+msgid "4 Coins/1 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1748
+msgid "4 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1749
+msgid "4 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1750
+msgid "4 Coins/4 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1751
+msgid "4 Coins/5 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1752
+msgid "4 Coins/6 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1753
+msgid "4 Coins/7 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1754
+msgid "4 Coins/8 Credits"
+msgstr ""
+
+#: source/games/taito_f2.c:956
+msgid "4 Credits/4P"
+msgstr ""
+
+#: source/games/lsystem.c:390
+msgid "4 Minutes"
+msgstr ""
+
+#: source/games/fchamp.c:108 source/games/fchamp.c:134
+#: source/games/fchamp.c:178
+msgid "4 Player/2 Cabinets"
+msgstr ""
+
+#: source/games/fchamp.c:109 source/games/fchamp.c:135
+#: source/games/fchamp.c:179
+msgid "4 Player/2 Coin Slot"
+msgstr ""
+
+#: source/games/fchamp.c:107 source/games/fchamp.c:133
+#: source/games/fchamp.c:177
+msgid "4 Player/4 Coin Slot"
+msgstr ""
+
+#: source/games/wrestlef.c:110
+msgid "4 Players"
+msgstr ""
+
+#: source/games/silentd.c:136
+msgid "4 Players / 1 Cab"
+msgstr ""
+
+#: source/games/silentd.c:137
+msgid "4 Players / 2 Cabs"
+msgstr ""
+
+#: source/games/hyperpcb.c:207
+msgid "40 Seconds"
+msgstr ""
+
+#: source/games/taito_f2.c:619 source/games/taito_f2.c:623
+msgid "40 sec"
+msgstr ""
+
+#: source/games/lsystem.c:395
+msgid "40 seconds"
+msgstr ""
+
+#: source/games/armedf.c:184
+msgid "40000, every 60000"
+msgstr ""
+
+#: source/games/armedf.c:185
+msgid "40000, every 80000"
+msgstr ""
+
+#: source/games/seta.c:2727
+msgid "400K"
+msgstr ""
+
+#: source/games/seta.c:2320
+msgid "400K Only"
+msgstr ""
+
+#: source/games/gunbird.c:271 source/games/seta.c:2522
+msgid "400k"
+msgstr ""
+
+#: source/games/silentd.c:218 source/games/toaplan2.c:806
+msgid "400k only"
+msgstr ""
+
+#: source/games/cps1drv.c:3111 source/games/cps1drv.c:3153
+msgid "40K 70K and every 80K"
+msgstr ""
+
+#: source/games/megasys1.c:1358
+msgid "40k"
+msgstr ""
+
+#: source/games/darius.c:153
+msgid "40k 200k"
+msgstr ""
+
+#: source/games/bonzeadv.c:116
+msgid "40k and 100k"
+msgstr ""
 
 #: source/games/bublbobl.c:258 source/games/bublbobl.c:391
 #: source/games/bublbobl.c:437 source/games/bublbobl.c:512
 msgid "40k and 200k"
 msgstr "40k et 200k"
 
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "48x"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "4x"
+msgstr ""
+
+#: source/games/opwolf.c:83
+msgid "5 Clips"
+msgstr ""
+
+#: source/sdl/control.c:1756
+msgid "5 Coins/1 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1757
+msgid "5 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1758
+msgid "5 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1759
+msgid "5 Coins/4 Credits"
+msgstr ""
+
+#: source/games/cps1drv.c:4254
+msgid "5 Games Match"
+msgstr ""
+
+#: source/games/cadash.c:105
+msgid "5 Mins"
+msgstr ""
+
+#: source/games/lsystem.c:391
+msgid "5 Minutes"
+msgstr ""
+
+#: source/games/armedf.c:202 source/games/crimec.c:70
+#: source/games/terraf.c:106
+msgid "5 Times"
+msgstr ""
+
+#: source/games/quizgame.c:184
+msgid "5 seconds"
+msgstr ""
+
+#: source/games/hyperpcb.c:208
+msgid "50 Seconds"
+msgstr ""
+
+#: source/games/taito_f2.c:617
+msgid "50 sec"
+msgstr ""
+
+#: source/games/lsystem.c:393
+msgid "50 seconds"
+msgstr ""
+
+#: source/games/terraf.c:146
+msgid "50000 only"
+msgstr ""
+
+#: source/games/terraf.c:86 source/games/terraf.c:213
+msgid "50000, every 60000"
+msgstr ""
+
+#: source/games/terraf.c:87 source/games/terraf.c:214
+msgid "50000, every 90000"
+msgstr ""
+
+#: source/games/gcpball.c:103 source/games/toaplan1.c:494
+msgid "500K"
+msgstr ""
+
+#: source/games/seta.c:2395
+msgid "500K Every 1500K"
+msgstr ""
+
+#: source/games/seta.c:2393
+msgid "500K Only"
+msgstr ""
+
+#: source/games/toaplan1.c:493
+msgid "500Kevery 1M"
+msgstr ""
+
+#: source/games/mcatadv.c:231
+msgid "500k 1000k"
+msgstr ""
+
+#: source/games/seta.c:1799
+msgid "500k and every 1000k"
+msgstr ""
+
+#: source/games/toaplan2.c:1922
+msgid "500k and every 600k"
+msgstr ""
+
+#: source/games/bloodbro.c:99
+msgid "500k only"
+msgstr ""
+
+#: source/games/seta.c:3084
+msgid "50K  Only"
+msgstr ""
+
+#: source/games/seta.c:2104 source/games/seta.c:3085
+msgid "50K Every 150K"
+msgstr ""
+
+#: source/games/seta.c:2838
+msgid "50K Every 200K"
+msgstr ""
+
+#: source/games/seta.c:2102
+msgid "50K Only"
+msgstr ""
+
+#: source/games/toaplan1.c:557
+msgid "50K and 100K"
+msgstr ""
+
+#: source/games/toaplan1.c:133
+msgid "50K, every 150K"
+msgstr ""
+
+#: source/games/toaplan1.c:184
+msgid "50K, every 200K"
+msgstr ""
+
+#: source/games/toaplan1.c:160
+msgid "50K, every 250K"
+msgstr ""
+
+#: source/games/toaplan1.c:673
+msgid "50Kevery 150K"
+msgstr ""
+
+#: source/games/aquajack.c:92 source/games/megasys1.c:1291
+#: source/games/megasys1.c:1359 source/games/upl.c:397
+#: source/games/xsystem2.c:101
+msgid "50k"
+msgstr ""
+
+#: source/games/ksystem.c:249
+msgid "50k 100k"
+msgstr ""
+
+#: source/games/megasys1.c:287
+msgid "50k 100k.."
+msgstr ""
+
+#: source/games/toki.c:123 source/games/volfied.c:88
+#: source/games/xsystem2.c:102
+msgid "50k 150k"
+msgstr ""
+
+#: source/games/darius.c:154
+msgid "50k 250k"
+msgstr ""
+
+#: source/games/nmk.c:865 source/games/upl.c:282
+msgid "50k and 100k"
+msgstr ""
+
+#: source/games/bonzeadv.c:115 source/games/cabal.c:108
+msgid "50k and 150k"
+msgstr ""
+
+#: source/games/silkworm.c:111 source/games/silkworm.c:435
+msgid "50k and 200k"
+msgstr ""
+
 #: source/games/bublbobl.c:259 source/games/bublbobl.c:392
 #: source/games/bublbobl.c:438 source/games/bublbobl.c:513
+#: source/games/taito_f2.c:805
 msgid "50k and 250k"
 msgstr "50k et 250k"
 
-#: source/games/bublbobl.c:1332 source/games/bublbobl.c:1354
-#: source/games/bublbobl.c:1372
-msgid "A78"
+#: source/games/silkworm.c:436
+msgid "50k and 300k"
+msgstr ""
+
+#: source/games/taito_f2.c:806
+msgid "50k and 350k"
+msgstr ""
+
+#: source/games/earthjkr.c:148
+msgid "50k and every 100k"
+msgstr ""
+
+#: source/games/xsystem1.c:305
+msgid "50k and every 150k"
+msgstr ""
+
+#: source/games/upl.c:70
+msgid "50k and every 80k"
+msgstr ""
+
+#: source/games/silkworm.c:113 source/games/silkworm.c:438
+msgid "50k only"
+msgstr ""
+
+#: source/games/xsystem2.c:422 source/games/xsystem2.c:949
+msgid "50k, 150k"
+msgstr ""
+
+#: source/games/silkworm.c:109 source/games/silkworm.c:327
+msgid "50k, 200k and 500k"
+msgstr ""
+
+#: source/games/crospang.c:108
+msgid "5k 20k 15k+"
+msgstr ""
+
+#: source/games/opwolf.c:81
+msgid "6 Clips"
+msgstr ""
+
+#: source/sdl/control.c:1761
+msgid "6 Coins/1 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1762
+msgid "6 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1763
+msgid "6 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1764
+msgid "6 Coins/4 Credits"
+msgstr ""
+
+#: source/games/cadash.c:104
+msgid "6 Mins"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:533
+msgid "6 fps"
+msgstr ""
+
+#: source/games/cookbib.c:331 source/games/hyperpcb.c:79
+#: source/games/hyperpcb.c:209
+msgid "60 Seconds"
+msgstr ""
+
+#: source/games/taito_f2.c:618
+msgid "60 sec"
+msgstr ""
+
+#: source/games/lsystem.c:394
+msgid "60 seconds"
+msgstr ""
+
+#: source/games/armedf.c:225
+msgid "60000 and 130000"
+msgstr ""
+
+#: source/games/armedf.c:227
+msgid "60000 only"
+msgstr ""
+
+#: source/games/gunbird.c:272
+msgid "600k"
+msgstr ""
+
+#: source/games/cps1drv.c:4059
+msgid "600k 2.000k and 4500k"
+msgstr ""
+
+#: source/games/seta.c:2270
+msgid "600k Only"
+msgstr ""
+
+#: source/games/cps1drv.c:4058
+msgid "600k and every 1.400k"
+msgstr ""
+
+#: source/games/arkanoid.c:151
+msgid "60K only"
+msgstr ""
+
+#: source/games/arkanoid.c:150
+msgid "60K100K and every 60K"
+msgstr ""
+
+#: source/games/bonzeadv.c:117
+msgid "60k and 200k"
+msgstr ""
+
+#: source/games/opwolf.c:82
+msgid "7 Clips"
+msgstr ""
+
+#: source/sdl/control.c:1766
+msgid "7 Coins/1 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1767
+msgid "7 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1768
+msgid "7 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1769
+msgid "7 Coins/4 Credits"
+msgstr ""
+
+#: source/games/cps1drv.c:4255
+msgid "7 Games Match"
+msgstr ""
+
+#: source/games/cadash.c:102
+msgid "7 Mins"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:532
+msgid "7 fps"
+msgstr ""
+
+#: source/games/hyperpcb.c:210
+msgid "70 Seconds"
+msgstr ""
+
+#: source/games/seta.c:2839
+msgid "70K 200K Only"
+msgstr ""
+
+#: source/games/seta.c:3086
+msgid "70K Every 200K"
+msgstr ""
+
+#: source/games/toaplan1.c:207
+msgid "70K and 200K"
+msgstr ""
+
+#: source/games/toaplan1.c:183
+msgid "70K, every 150K"
+msgstr ""
+
+#: source/games/toaplan1.c:134 source/games/toaplan1.c:159
+msgid "70K, every 200K"
+msgstr ""
+
+#: source/games/toaplan1.c:674
+msgid "70Kevery 200K"
+msgstr ""
+
+#: source/games/cabal.c:109 source/games/toki.c:122
+msgid "70k"
+msgstr ""
+
+#: source/games/toki.c:125
+msgid "70k 14k 21k"
+msgstr ""
+
+#: source/games/ksystem.c:246
+msgid "70k 150k"
+msgstr ""
+
+#: source/games/ksystem.c:247
+msgid "70k 200k"
+msgstr ""
+
+#: source/games/volfied.c:89
+msgid "70k 280k"
+msgstr ""
+
+#: source/games/megasys1.c:990
+msgid "70k and every 130k"
+msgstr ""
+
+#: source/games/xsystem1.c:306
+msgid "70k and every 200k"
+msgstr ""
+
+#: source/games/toaplan2.c:694
+msgid "70k then every 200k"
+msgstr ""
+
+#: source/games/xsystem2.c:421 source/games/xsystem2.c:948
+msgid "70k, 200k"
+msgstr ""
+
+#: source/games/cps1drv.c:3629 source/games/cps1drv.c:3638
+#: source/games/cps1drv.c:3688 source/games/cps1drv.c:3994
+#: source/games/cps1drv.c:4027 source/games/cps1drv.c:4036
+msgid "8 (Hardest)"
+msgstr ""
+
+#: source/sdl/control.c:1771
+msgid "8 Coins/1 Credit"
+msgstr ""
+
+#: source/sdl/control.c:1772
+msgid "8 Coins/2 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1773
+msgid "8 Coins/3 Credits"
+msgstr ""
+
+#: source/sdl/control.c:1774
+msgid "8 Coins/4 Credits"
+msgstr ""
+
+#: source/games/cadash.c:103
+msgid "8 Mins"
+msgstr ""
+
+#: source/games/crimec.c:69
+msgid "8 Times"
+msgstr ""
+
+#: source/games/mcatadv.c:232
+msgid "800k 1500k"
+msgstr ""
+
+#: source/games/seta.c:1800
+msgid "800k and 2000k only"
+msgstr ""
+
+#: source/games/aquajack.c:93
+msgid "80k"
+msgstr ""
+
+#: source/games/lsystem.c:1506
+msgid "80k and 160k"
+msgstr ""
+
+#: source/games/bonzeadv.c:118
+msgid "80k and 250k"
+msgstr ""
+
+#: source/games/cps1drv.c:3941 source/games/cps1drv.c:3969
+msgid "80k and every 400k"
+msgstr ""
+
+#: source/games/lsystem.c:1505
+msgid "80k only"
+msgstr ""
+
+#: source/games/crospang.c:109
+msgid "8k 23k 15k+"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "8x (default)"
+msgstr ""
+
+#: source/sdl/control.c:1776
+msgid "9 Coins/1 Credit"
+msgstr ""
+
+#: source/games/lsystem.c:105
+msgid "9 per Credit"
+msgstr ""
+
+#: source/games/cookbib.c:332 source/games/hyperpcb.c:80
+msgid "90 Seconds"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:620
+msgid "<a href="
+msgstr ""
+
+#: source/games/bloodbro.c:82 source/games/rainbow.c:93
+#: source/games/rainbow.c:208 source/games/toaplan1.c:447
+#: source/games/toaplan1.c:629 source/games/toaplan1.c:704
+#: source/games/toaplan1.c:752 source/games/toaplan1.c:800
+msgid "A"
+msgstr ""
+
+#: source/games/frogger.c:115
+msgid "A 1/1 B 1/1 C 1/1"
+msgstr ""
+
+#: source/games/toki.c:101
+msgid "A 1/1 B 1/2"
+msgstr ""
+
+#: source/games/frogger.c:116
+msgid "A 1/1 B 1/6 C 1/1"
+msgstr ""
+
+#: source/games/toki.c:102
+msgid "A 2/1 B 1/3"
+msgstr ""
+
+#: source/games/frogger.c:114
+msgid "A 2/1 B 1/3 C 2/1"
+msgstr ""
+
+#: source/games/frogger.c:113
+msgid "A 2/1 B 2/1 C 2/1"
+msgstr ""
+
+#: source/games/toki.c:103
+msgid "A 3/1 B 1/5"
+msgstr ""
+
+#: source/games/toki.c:104
+msgid "A 5/1 B 1/6"
+msgstr ""
+
+#: source/games/gunbird.c:283
+msgid "A+B/A,B"
+msgstr ""
+
+#: source/games/gunbird.c:284
+msgid "A,B/A"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:716
@@ -67,6 +1640,10 @@ msgstr "A propos..."
 msgid "Acceleration"
 msgstr "Accélération"
 
+#: source/games/chasehq.c:111
+msgid "Accelerator"
+msgstr "Accélérateur"
+
 #: source/sdl/gui.cpp:295
 msgid "Action replay cheats"
 msgstr "Triche action replay"
@@ -78,6 +1655,10 @@ msgstr "Ajouter un répertoire de rom..."
 #: source/sdl/dialogs/game_selection.cpp:286
 msgid "All"
 msgstr "Tous"
+
+#: source/games/toaplan2.c:612
+msgid "All Rights Reserved"
+msgstr "Tous droits réservés"
 
 #: source/sdl/dialogs/game_selection.cpp:60
 msgid "All companies"
@@ -95,17 +1676,90 @@ msgstr "Tous les jeux"
 msgid "All status"
 msgstr "Tous les status"
 
+#: source/games/arkanoid.c:82 source/games/arkanoid.c:112
+#: source/games/arkanoid.c:141 source/games/cps1drv.c:3128
+#: source/games/cps1drv.c:3172 source/games/cps1drv.c:3226
+#: source/games/cps1drv.c:3300 source/games/cps1drv.c:3356
+#: source/games/cps1drv.c:3407 source/games/cps1drv.c:3474
+#: source/games/cps1drv.c:3524 source/games/cps1drv.c:3579
+#: source/games/cps1drv.c:3661 source/games/cps1drv.c:3735
+#: source/games/cps1drv.c:3826 source/games/cps1drv.c:3894
+#: source/games/cps1drv.c:4083 source/games/cps1drv.c:4158
+#: source/games/cps1drv.c:4340 source/games/cps1drv.c:4441
+#: source/games/cps1drv.c:4538 source/games/mugsmash.c:343
+#: source/games/seta.c:2753 source/games/seta.c:3093
+#: source/games/taito_f2.c:812 source/games/taito_f2.c:844
+#: source/games/toaplan1.c:219 source/games/toaplan1.c:504
+#: source/games/toaplan1.c:685
+msgid "Allow Continue"
+msgstr "Autoriser Continue"
+
 #: source/sdl/dialogs/neocd_options.cpp:181
 msgid "Allow speed hacks"
 msgstr "Autoriser les hacks de vitesse"
+
+#: source/games/seta.c:2166 source/games/seta.c:2221 source/games/seta.c:2277
+msgid "Alt License"
+msgstr "License Alt"
+
+#: source/sdl/control.c:1805
+msgid "Alternate"
+msgstr ""
+
+#: source/games/taito_f2.c:842
+msgid "AlternateDual"
+msgstr ""
+
+#: source/games/taito_f2.c:841
+msgid "AlternateSingle"
+msgstr ""
 
 #: source/sdl/dialogs/sound_options.cpp:35
 msgid "Always stop CD music while loading"
 msgstr "Toujours arrêter la musique CD pendant le chargement"
 
+#: source/games/hyperpcb.c:527 source/games/toaplan2.c:824
+#: source/games/toaplan2.c:1098 source/games/toaplan2.c:1177
+msgid "America"
+msgstr "Amérique"
+
+#: source/games/toaplan2.c:1185
+msgid "America (Romstar)"
+msgstr "Amérique (Romstar)"
+
+#: source/games/toaplan2.c:825
+msgid "America - Atari"
+msgstr "Amérique - Atari"
+
+#: source/games/toaplan2.c:1104
+msgid "America - Romstar"
+msgstr "Amérique - Romstar"
+
+#: source/games/toaplan2.c:606
+msgid "America/English"
+msgstr "Amérique/Anglais"
+
+#: source/games/toaplan2.c:1034
+msgid "America/PipiBibi"
+msgstr "Amérique/PipiBibi"
+
+#: source/games/spacegun.c:100
+msgid "Analog Joystick"
+msgstr "Joystick analogique"
+
 #: source/sdl/dialogs/controls.cpp:935
 msgid "Analog controls..."
 msgstr "Contrôles analogiques"
+
+#: source/speed_hack.c:35
+#, c-format
+msgid "Applied speed hack %d at %x"
+msgstr "Hack de vitesse %d appliqué à %x"
+
+#: source/neocd/neocd.c:2144
+#, c-format
+msgid "Applied speed hack at %x:%s"
+msgstr "Appliqué le hack de vitesse à %x:%s"
 
 #: source/sdl/gui.cpp:163
 msgid "Applying GFX Layouts and stuff..."
@@ -115,13 +1769,70 @@ msgstr "Conversion des sprites..."
 msgid "Artwork dir"
 msgstr "Répertoire d'artwork"
 
+#: source/games/wrestlef.c:84 source/games/wrestlef.c:87
+#: source/games/wrestlef.c:90
+msgid "As Start Price"
+msgstr ""
+
+#: source/games/toaplan2.c:218 source/games/toaplan2.c:1812
+msgid "Asia"
+msgstr ""
+
+#: source/games/toaplan2.c:217
+msgid "Asia (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:611
+msgid "Asia/Japanese"
+msgstr ""
+
+#: source/games/toaplan2.c:930
+msgid "Asia/PipiBibi"
+msgstr ""
+
 #: source/sdl/dialogs/sound_commands.cpp:239
 msgid "Associate..."
 msgstr "Associer"
 
+#: source/games/seta.c:2507
+msgid "Athena (Japan Only)"
+msgstr ""
+
+#: source/games/seta.c:2302
+msgid "Athena (Japan)"
+msgstr ""
+
+#: source/games/seta.c:2303
+msgid "Athena / Taito (Japan)"
+msgstr ""
+
+#: source/games/opwolf.c:57
+msgid "Attract Mode"
+msgstr ""
+
+#: source/sdl/sasound.c:593
+msgid "Audio track unreadable"
+msgstr ""
+
 #: source/sdl/dialogs/sound_options.cpp:38
 msgid "Audio tracks format"
 msgstr "Format des pistes audio"
+
+#: source/sdl/dialogs/video_options.cpp:211
+msgid "Auto"
+msgstr ""
+
+#: source/games/seta.c:1777
+msgid "Auto Shot"
+msgstr ""
+
+#: source/games/darius.c:121
+msgid "Auto Turbo Fire"
+msgstr ""
+
+#: source/games/neogeo.c:81
+msgid "Autofire (in some games)"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:934
 msgid "Autofire controls"
@@ -143,6 +1854,65 @@ msgstr "Jeux disponibles"
 msgid "Average FPS"
 msgstr "FPS moyen"
 
+#: source/sdl/profile.c:244
+msgid "Average FPS Counter Enabled"
+msgstr "Compteur de FPS moyen activé"
+
+#: source/games/bloodbro.c:83 source/games/rainbow.c:90
+#: source/games/rainbow.c:205 source/games/toaplan1.c:448
+#: source/games/toaplan1.c:630 source/games/toaplan1.c:705
+#: source/games/toaplan1.c:753 source/games/toaplan1.c:801
+msgid "B"
+msgstr ""
+
+#: source/games/dkong.c:801 source/games/frogger.c:1386
+#: source/games/matmania.c:318 source/games/pengo.c:610
+#: source/games/pengo.c:1842
+msgid "BG"
+msgstr ""
+
+#: source/games/cookbib.c:261
+msgid "BG Type"
+msgstr ""
+
+#: source/games/bsystem.c:190 source/games/f3system.c:657
+#: source/games/lsystem.c:2000 source/games/mcatadv.c:490
+#: source/games/seta.c:3155
+msgid "BG0"
+msgstr ""
+
+#: source/games/bsystem.c:191 source/games/f3system.c:658
+#: source/games/lsystem.c:2002 source/games/mcatadv.c:491
+#: source/games/seta.c:3157
+msgid "BG1"
+msgstr ""
+
+#: source/games/bsystem.c:193 source/games/f3system.c:659
+msgid "BG2"
+msgstr ""
+
+#: source/games/f3system.c:660
+msgid "BG3"
+msgstr ""
+
+#: source/sdl/dialogs/neo_softdips.cpp:217
+msgid "Bad soft dips"
+msgstr "Mauvais dips logiciels"
+
+#: source/games/taito_f2.c:988
+msgid "Best of 3"
+msgstr "Meilleur des 3"
+
+#: source/games/cps1drv.c:3387 source/games/deadconx.c:114
+#: source/games/taito_f2.c:982
+msgid "Big"
+msgstr "Elevé"
+
+#: source/games/cps1drv.c:3388 source/games/deadconx.c:115
+#: source/games/taito_f2.c:983
+msgid "Biggest"
+msgstr "Maxi"
+
 #: source/sdl/dialogs/video_options.cpp:205
 msgid "Blend file options..."
 msgstr "Options des fichiers de transparence..."
@@ -155,9 +1925,97 @@ msgstr "Options des copies graphiques"
 msgid "Blue"
 msgstr "Bleu"
 
+#: source/games/bublbobl.c:485
+msgid "Bobble Bobble"
+msgstr ""
+
+#: source/games/lsystem.c:981 source/games/megasys1.c:986
+msgid "Bombs"
+msgstr ""
+
+#: source/games/bloodbro.c:96 source/games/rainbow.c:94
+#: source/games/rainbow.c:209
+msgid "Bonus"
+msgstr ""
+
+#: source/games/taito_f2.c:776
+msgid "Bonus / K=10,000"
+msgstr ""
+
+#: source/games/aquajack.c:91
+msgid "Bonus Life"
+msgstr ""
+
+#: source/games/crospang.c:131
+msgid "Bonus Power (Bomb)"
+msgstr ""
+
+#: source/games/crospang.c:107
+msgid "Bonus Power (Points)"
+msgstr ""
+
+#: source/games/gunbird.c:270
+msgid "Bonus life"
+msgstr ""
+
 #: source/sdl/dialogs/video_options.cpp:203
 msgid "Borderless"
 msgstr "Sans bord"
+
+#: source/games/fchamp.c:75 source/games/fchamp.c:145
+msgid "Both Teams"
+msgstr ""
+
+#: source/games/chasehq.c:114
+msgid "Brake"
+msgstr ""
+
+#: source/games/othunder.c:94
+msgid "Bullet Mags / Rockets"
+msgstr ""
+
+#: source/games/cps1drv.c:3499
+msgid "Bullet's Speed"
+msgstr ""
+
+#: source/games/othunder.c:99
+msgid "Bullets per Magazine"
+msgstr ""
+
+#: source/sdl/control.c:1656
+msgid "Button 1 Left"
+msgstr ""
+
+#: source/sdl/control.c:1657
+msgid "Button 1 Right"
+msgstr ""
+
+#: source/sdl/control.c:1658
+msgid "Button 2 Left"
+msgstr ""
+
+#: source/sdl/control.c:1659
+msgid "Button 2 Right"
+msgstr ""
+
+#: source/games/cabal.c:89 source/games/megasys1.c:896
+msgid "Buttons"
+msgstr ""
+
+#: source/games/wrestlef.c:82
+msgid "Buy In Price"
+msgstr ""
+
+#: source/games/silkworm.c:473
+msgid "Buy in Final Round"
+msgstr ""
+
+#: source/games/bloodbro.c:84 source/games/rainbow.c:91
+#: source/games/rainbow.c:206 source/games/toaplan1.c:449
+#: source/games/toaplan1.c:631 source/games/toaplan1.c:706
+#: source/games/toaplan1.c:754 source/games/toaplan1.c:802
+msgid "C"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:179
 msgid "CD 1x (150 Kb/s)"
@@ -167,6 +2025,54 @@ msgstr "CD 1x (150 Ko/s)"
 msgid "CD Interface"
 msgstr "Interface CD"
 
+#: source/games/neogeo.c:85
+msgid "COMM Setting (Cabinet No.)"
+msgstr ""
+
+#: source/games/neogeo.c:91
+msgid "COMM Setting (Link Enable)"
+msgstr ""
+
+#: source/emumain.c:546
+msgid "CPU M6502#0 Reset"
+msgstr ""
+
+#: source/emumain.c:553
+msgid "CPU M6502#1 Reset"
+msgstr ""
+
+#: source/emumain.c:560
+msgid "CPU M6502#2 Reset"
+msgstr ""
+
+#: source/emumain.c:506
+msgid "CPU M68000#0 Reset"
+msgstr ""
+
+#: source/emumain.c:510
+msgid "CPU M68000#1 Reset"
+msgstr ""
+
+#: source/emumain.c:517
+msgid "CPU M68020#0 Reset"
+msgstr ""
+
+#: source/emumain.c:524
+msgid "CPU Z80#0 Reset"
+msgstr ""
+
+#: source/emumain.c:528
+msgid "CPU Z80#1 Reset"
+msgstr ""
+
+#: source/emumain.c:532
+msgid "CPU Z80#2 Reset"
+msgstr ""
+
+#: source/emumain.c:536
+msgid "CPU Z80#3 Reset"
+msgstr ""
+
 #: source/sdl/dialogs/about.cpp:756
 msgid "CPU emulators:"
 msgstr "Emulateurs CPU"
@@ -175,13 +2081,46 @@ msgstr "Emulateurs CPU"
 msgid "CPU frame skip (1=no skip) "
 msgstr "Nombre d'images sans émulation CPU (1=pas de saut)"
 
+#: source/sdl/control.c:1802
+msgid "Cabinet"
+msgstr "Borne"
+
+#: source/games/aquajack.c:65
+msgid "Cabinet Moves"
+msgstr "Déplacements borne"
+
+#: source/games/chasehq.c:82 source/games/chasehq2.c:67
+msgid "Cabinet Type"
+msgstr "Type de borne"
+
 #: source/sdl/dialogs/controls.cpp:779
 msgid "Calibration"
+msgstr ""
+
+#: source/sdl/streams.c:438
+#, c-format
+msgid "Can't create %s"
+msgstr "Ne peut créer %s"
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Capcom CPS1"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Capcom CPS2"
+msgstr ""
+
+#: source/neocd/neocd.c:272
+msgid "Capture block"
 msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:183
 msgid "Capture mode"
 msgstr "Mode de capture"
+
+#: source/games/seta.c:2300
+msgid "Castle of Dragon"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:35
 msgid "Category"
@@ -202,6 +2141,22 @@ msgstr "Catégorie : %s"
 msgid "Category : -"
 msgstr "Catégorie : -"
 
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Cave"
+msgstr ""
+
+#: source/games/wrestlef.c:118
+msgid "Championship Games"
+msgstr "Jeux de championnat"
+
+#: source/games/cps1drv.c:3035
+msgid "Change Setup"
+msgstr ""
+
+#: source/sdl/dialogs/romdirs.cpp:12
+msgid "Change dir|Remove dir"
+msgstr "Change répertoire|Retire le répertoire"
+
 #: source/sdl/dialogs/video_options.cpp:74
 msgid "Change video mode"
 msgstr "Changer de mode vidéo"
@@ -210,12 +2165,139 @@ msgstr "Changer de mode vidéo"
 msgid "Change/Load ROM"
 msgstr "Changer/charger une ROM"
 
-#: source/sdl/dialogs/cheats.cpp:112
+#: source/games/chasehq.c:1556 source/games/contcirc.c:456
+#: source/games/contcirc.c:468
+msgid "Changed to High Gear"
+msgstr "Vitesse haute"
+
+#: source/games/chasehq.c:1557 source/games/contcirc.c:458
+#: source/games/contcirc.c:465
+msgid "Changed to Low Gear"
+msgstr "Vitesse basse"
+
+#: source/games/galpanic.c:212
+msgid "Character Test"
+msgstr ""
+
+#: source/sdl/control.c:1793
+msgid "Cheat"
+msgstr ""
+
+#: source/sdl/control.c:442 source/sdl/dialogs/cheats.cpp:111
 msgid "Cheats"
 msgstr "Triche"
 
+#: source/games/nmk.c:385 source/games/toaplan2.c:1431
+#: source/games/toaplan2.c:1850
+msgid "China"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:124
+msgid "Choice"
+msgstr ""
+
+#: source/games/chasehq.c:136 source/games/chasehq2.c:103
+msgid "Clear Damage on Cont."
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:39
 msgid "Clones"
+msgstr ""
+
+#: source/sdl/dialogs/sound_commands.cpp:115
+msgid "Close this dialog to stop playback (Return, ESC or mouse button)"
+msgstr ""
+
+#: source/games/chasehq2.c:68 source/games/contcirc.c:61
+msgid "Cockpit"
+msgstr ""
+
+#: source/games/rainbow.c:69 source/games/rainbow.c:184
+#: source/games/taito_f2.c:992
+msgid "Cocktail"
+msgstr ""
+
+#: source/sdl/control.c:1571
+msgid "Coin A"
+msgstr "Pièce A"
+
+#: source/sdl/control.c:1572
+msgid "Coin B"
+msgstr "Pièce B"
+
+#: source/sdl/control.c:1573
+msgid "Coin C"
+msgstr "Pièce C"
+
+#: source/games/neogeo.c:77
+msgid "Coin Chutes?"
+msgstr ""
+
+#: source/sdl/control.c:1574
+msgid "Coin D"
+msgstr "Pièce D"
+
+#: source/games/bloodbro.c:58 source/games/cabal.c:86
+#: source/games/galpanic.c:255 source/games/galpanic.c:285
+#: source/games/mcatadv.c:169
+msgid "Coin Mode"
+msgstr ""
+
+#: source/games/cps1drv.c:3031
+msgid "Coin Setup"
+msgstr ""
+
+#: source/games/opwolf.c:60
+msgid "Coin Slot A"
+msgstr ""
+
+#: source/games/opwolf.c:65
+msgid "Coin Slot B"
+msgstr ""
+
+#: source/games/cps1drv.c:3557 source/games/cps1drv.c:3914
+#: source/games/cps1drv.c:4037 source/games/cps1drv.c:4221
+#: source/games/silentd.c:130 source/games/terraf.c:162
+#: source/sdl/control.c:1717
+msgid "Coin Slots"
+msgstr ""
+
+#: source/games/bloodbro.c:78
+msgid "Coin Start"
+msgstr ""
+
+#: source/games/doubled3.c:111
+msgid "Coin Statistics"
+msgstr ""
+
+#: source/games/rainbow.c:108 source/games/rainbow.c:223
+msgid "Coin Type"
+msgstr ""
+
+#: source/games/cps1drv.c:4500
+msgid "Coin slots"
+msgstr ""
+
+#: source/sdl/control.c:1584
+msgid "Coinage"
+msgstr ""
+
+#: source/games/gunbird.c:285
+msgid "Coinage A"
+msgstr ""
+
+#: source/games/gunbird.c:294
+msgid "Coinage B"
+msgstr ""
+
+#: source/games/bloodbro.c:61
+msgid "Coinage Mode 1"
+msgstr ""
+
+#: source/games/esd16.c:74 source/games/seta.c:2113 source/games/seta.c:2224
+#: source/games/seta.c:2280 source/games/seta.c:2295 source/games/seta.c:2401
+#: source/games/seta.c:2571
+msgid "Coinage Type"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:143
@@ -226,9 +2308,25 @@ msgstr "Couleurs"
 msgid "Colors..."
 msgstr "Couleurs..."
 
+#: source/games/mugsmash.c:349
+msgid "Colour Test"
+msgstr ""
+
+#: source/games/silentd.c:131
+msgid "Combined"
+msgstr ""
+
 #: source/sdl/dialogs/sound_commands.cpp:231
 msgid "Command"
 msgstr "Commande"
+
+#: source/games/terraf.c:163
+msgid "Common"
+msgstr ""
+
+#: source/games/cadash.c:111
+msgid "Communication"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:36
 msgid "Company"
@@ -238,6 +2336,10 @@ msgstr "Entreprise"
 #, c-format
 msgid "Company : %s"
 msgstr "Entreprise : %s"
+
+#: source/games/rainbow.c:97 source/games/rainbow.c:212
+msgid "Complete Bonus"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:177
 msgid "Config mode"
@@ -252,9 +2354,118 @@ msgstr ""
 msgid "Console"
 msgstr ""
 
+#: source/games/crospang.c:166
+msgid "Constant"
+msgstr ""
+
+#: source/games/opwolf.c:91
+msgid "Cont Discount"
+msgstr ""
+
+#: source/games/fchamp.c:110 source/games/fchamp.c:136
+#: source/games/fchamp.c:180 source/games/hyperpcb.c:565
+#: source/games/rastan.c:100 source/games/seta.c:2610
+#: source/games/toaplan1.c:100 source/games/toaplan1.c:145
+#: source/games/toaplan2.c:1894 source/games/xsystem2.c:108
+msgid "Continue"
+msgstr ""
+
+#: source/games/metalb.c:99 source/games/othunder.c:65
+#: source/games/taito_f2.c:734
+msgid "Continue Mode"
+msgstr ""
+
+#: source/sdl/control.c:1789
+msgid "Continue Play"
+msgstr ""
+
+#: source/games/wrestlef.c:88
+msgid "Continue Price"
+msgstr ""
+
+#: source/games/taito_f2.c:621
+msgid "Continue Time Add"
+msgstr ""
+
+#: source/games/ashura.c:122 source/games/crimec.c:132
+#: source/games/lsystem.c:433 source/games/lsystem.c:873
+#: source/games/rastan2.c:173
+msgid "Continue cost"
+msgstr ""
+
+#: source/games/darius2d.c:66 source/games/ninjaw.c:318
+msgid "Continuous Fire"
+msgstr ""
+
+#: source/games/taito_f2.c:882
+msgid "Control"
+msgstr ""
+
+#: source/games/taito_f2.c:786
+msgid "Control Panel"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:969
 msgid "Controls"
 msgstr "Contrôles"
+
+#: source/games/seta.c:2419
+msgid "Copyright"
+msgstr ""
+
+#: source/neocd/cdrom.c:421
+msgid ""
+"Could not determine sector size from\n"
+"the cue file"
+msgstr ""
+
+#: source/neocd/cdda.c:182
+#, c-format
+msgid "Could not find audio track %d"
+msgstr ""
+
+#: source/neocd/iso.c:87
+#, c-format
+msgid "Couldn't open iso file:|%s"
+msgstr ""
+
+#: source/games/hyperpcb.c:526 source/games/seta.c:1750
+#: source/games/seta.c:2706
+msgid "Country"
+msgstr ""
+
+#: source/games/megasys1.c:1202
+msgid "Cred. Continue (Vs)"
+msgstr ""
+
+#: source/games/megasys1.c:1199
+msgid "Cred. to Start (Vs)"
+msgstr ""
+
+#: source/games/cps1drv.c:3051
+msgid "Credit Mode"
+msgstr ""
+
+#: source/games/upl.c:302
+msgid "Credit Service"
+msgstr ""
+
+#: source/games/seta.c:3023
+msgid "Credits For 9-Hole"
+msgstr ""
+
+#: source/games/seta.c:2648
+msgid "Credits To Start"
+msgstr ""
+
+#: source/games/toaplan2.c:1519 source/games/toaplan2.c:1747
+#: source/games/toaplan2.c:6060
+msgid "Credits to Start"
+msgstr ""
+
+#: source/games/gunbird.c:282
+msgid "Credits/Coinage"
+msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:51
 msgid "Current display"
@@ -276,21 +2487,238 @@ msgstr "Utilisation en cours de scale2x"
 msgid "Currently using scale3x"
 msgstr "Utilisation en cours de scale3x"
 
+#: source/games/bloodbro.c:85 source/games/cps1drv.c:4132
+#: source/games/rainbow.c:92 source/games/rainbow.c:207
+#: source/games/toaplan1.c:450 source/games/toaplan1.c:632
+#: source/games/toaplan1.c:707 source/games/toaplan1.c:755
+#: source/games/toaplan1.c:803
+msgid "D"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:42
 msgid "DOWN"
 msgstr "BAS"
+
+#: source/sdl/control.c:1690
+msgid "DSW A Bit 1"
+msgstr ""
+
+#: source/sdl/control.c:1691
+msgid "DSW A Bit 2"
+msgstr ""
+
+#: source/sdl/control.c:1692
+msgid "DSW A Bit 3"
+msgstr ""
+
+#: source/sdl/control.c:1693
+msgid "DSW A Bit 4"
+msgstr ""
+
+#: source/sdl/control.c:1694
+msgid "DSW A Bit 5"
+msgstr ""
+
+#: source/sdl/control.c:1695
+msgid "DSW A Bit 6"
+msgstr ""
+
+#: source/sdl/control.c:1696
+msgid "DSW A Bit 7"
+msgstr ""
+
+#: source/sdl/control.c:1697
+msgid "DSW A Bit 8"
+msgstr ""
+
+#: source/sdl/control.c:1699
+msgid "DSW B Bit 1"
+msgstr ""
+
+#: source/sdl/control.c:1700
+msgid "DSW B Bit 2"
+msgstr ""
+
+#: source/sdl/control.c:1701
+msgid "DSW B Bit 3"
+msgstr ""
+
+#: source/sdl/control.c:1702
+msgid "DSW B Bit 4"
+msgstr ""
+
+#: source/sdl/control.c:1703
+msgid "DSW B Bit 5"
+msgstr ""
+
+#: source/sdl/control.c:1704
+msgid "DSW B Bit 6"
+msgstr ""
+
+#: source/sdl/control.c:1705
+msgid "DSW B Bit 7"
+msgstr ""
+
+#: source/sdl/control.c:1706
+msgid "DSW B Bit 8"
+msgstr ""
+
+#: source/sdl/control.c:1708
+msgid "DSW C Bit 1"
+msgstr ""
+
+#: source/sdl/control.c:1709
+msgid "DSW C Bit 2"
+msgstr ""
+
+#: source/sdl/control.c:1710
+msgid "DSW C Bit 3"
+msgstr ""
+
+#: source/sdl/control.c:1711
+msgid "DSW C Bit 4"
+msgstr ""
+
+#: source/sdl/control.c:1712
+msgid "DSW C Bit 5"
+msgstr ""
+
+#: source/sdl/control.c:1713
+msgid "DSW C Bit 6"
+msgstr ""
+
+#: source/sdl/control.c:1714
+msgid "DSW C Bit 7"
+msgstr ""
+
+#: source/sdl/control.c:1715
+msgid "DSW C Bit 8"
+msgstr ""
+
+#: source/games/pengo.c:1341
+msgid "DX alpha blending"
+msgstr ""
+
+#: source/games/cps1drv.c:3384 source/games/deadconx.c:111
+#: source/games/taito_f2.c:979
+msgid "Damage"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:174
 msgid "Debug dips"
 msgstr "Dips de débugage"
 
+#: source/sdl/control.c:422
+msgid "Decrease cpu skip"
+msgstr ""
+
+#: source/sdl/control.c:420
+msgid "Decrease frameskip"
+msgstr ""
+
+#: source/games/wwfsstar.c:130
+msgid "Default"
+msgstr ""
+
+#: source/games/megasys1.c:1045
+msgid "Default Episode"
+msgstr ""
+
 #: source/sdl/dialogs/sound_options.cpp:41
 msgid "Default volumes"
 msgstr "Volumes par défaut"
 
+#: source/sdl/dialogs/controls.cpp:281
+msgid "Delete the key"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:309
+msgid "Delete the key|Delete the joystick ctrl|Del the mouse button"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:239
+msgid "Delete the key|Delete the joystick ctrl|Really use ESC here"
+msgstr ""
+
+#: source/games/xsystem1.c:140
+msgid "Demo Game"
+msgstr ""
+
+#: source/sdl/control.c:1787
+msgid "Demo Sound"
+msgstr "Son pendant la démo"
+
+#: source/games/mugsmash.c:360
+msgid "Demo Sounds"
+msgstr ""
+
+#: source/games/toaplan2.c:1848
+msgid "Denmark"
+msgstr ""
+
 #: source/sdl/dialogs/neocd_options.cpp:175
 msgid "Developper mode"
 msgstr "Mode développeur"
+
+#: source/games/mugsmash.c:371 source/sdl/control.c:1795
+msgid "Difficulty"
+msgstr "Difficulté"
+
+#: source/games/cps1drv.c:3872
+msgid "Difficulty (Chariot)"
+msgstr ""
+
+#: source/games/cps1drv.c:3887
+msgid "Difficulty (Don't Pull)"
+msgstr ""
+
+#: source/games/cps1drv.c:3862
+msgid "Difficulty (Midnight Wanderers)"
+msgstr ""
+
+#: source/games/cps1drv.c:3986
+msgid "Difficulty 1"
+msgstr ""
+
+#: source/games/contcirc.c:77
+msgid "Difficulty 1 (time/speed)"
+msgstr ""
+
+#: source/games/cps1drv.c:3995
+msgid "Difficulty 2"
+msgstr ""
+
+#: source/games/contcirc.c:82
+msgid "Difficulty 2 (other cars)"
+msgstr ""
+
+#: source/games/cps1drv.c:3680
+msgid "Difficulty Level (Enemy's Strength)"
+msgstr ""
+
+#: source/games/cps1drv.c:3689
+msgid "Difficulty Level (Player's Strength)"
+msgstr ""
+
+#: source/games/cps1drv.c:3436
+msgid "Difficulty Level 1"
+msgstr ""
+
+#: source/games/cps1drv.c:3445
+msgid "Difficulty Level 2"
+msgstr ""
+
+#: source/games/spacegun.c:101
+msgid "Digital"
+msgstr ""
+
+#: source/games/spacegun.c:95
+msgid "Digital Input Speed"
+msgstr ""
+
+#: source/games/toaplan1.c:97 source/games/toaplan1.c:142
+msgid "Dipsw display"
+msgstr ""
 
 #: source/sdl/dialogs/dlg_dsw.cpp:41 source/sdl/gui.cpp:296
 msgid "Dipswitches"
@@ -304,6 +2732,10 @@ msgstr "Répertoires"
 msgid "Directories..."
 msgstr "Répertoires..."
 
+#: source/sdl/dialogs/romdirs.cpp:12
+msgid "Directory options"
+msgstr "Options de répertoire"
+
 #: source/sdl/dialogs/sound_commands.cpp:241
 msgid "Disable associations"
 msgstr "Désactiver associations"
@@ -316,13 +2748,38 @@ msgstr "Désactiver les shaders ?"
 msgid "Disabled"
 msgstr "Désactivé"
 
+#: source/games/toaplan2.c:410 source/games/toaplan2.c:557
+#: source/games/toaplan2.c:1896
+msgid "Discount"
+msgstr "Remise"
+
 #: source/sdl/dialogs/game_selection.cpp:33
 msgid "Display"
 msgstr "Affichage"
 
+#: source/games/diverboy.c:93
+msgid "Display Copyright"
+msgstr ""
+
+#: source/games/seta.c:2160
+msgid "Display Score"
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:40
 msgid "Display short names too"
 msgstr "Afficher les noms courts aussi"
+
+#: source/games/seta.c:3027
+msgid "Domestic"
+msgstr ""
+
+#: source/games/cps1drv.c:3029 source/games/cps1drv.c:3049
+msgid "Don't use"
+msgstr ""
+
+#: source/games/bloodbro.c:80 source/games/taito_f2.c:787
+msgid "Double"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:119
 msgid "Double buffer"
@@ -332,17 +2789,91 @@ msgstr ""
 msgid "Double buffer enabled"
 msgstr "Double buffer activé"
 
+#: source/games/seta.c:2299
+msgid "Dragon Unit"
+msgstr ""
+
+#: source/games/mugsmash.c:376
+msgid "Draw Objects"
+msgstr ""
+
+#: source/games/mugsmash.c:352
+msgid "Draw SF."
+msgstr ""
+
 #: source/sdl/dialogs/video_options.cpp:118
 msgid "DrawPixels (no shaders)"
 msgstr "Drawpixels (pas de shaders)"
+
+#: source/sdl/control.c:297
+msgid "Drawing All Frames"
+msgstr ""
+
+#: source/sdl/control.c:288 source/sdl/control.c:299
+#, c-format
+msgid "Drawing Every %1d Frames"
+msgstr ""
+
+#: source/games/bublbobl.c:409
+msgid "Dream Land"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:37
 msgid "Driver"
 msgstr ""
 
-#: source/sdl/dialogs/sound_options.cpp:32
+#: source/games/quizgame.c:195 source/games/taito_f2.c:817
+#: source/games/taito_f2.c:935 source/games/taito_f2.c:994
+#: source/games/taito_f2.c:2422
+msgid "Dual"
+msgstr ""
+
+#: source/games/cps1drv.c:4131 source/games/toaplan1.c:451
+#: source/games/toaplan1.c:633 source/games/toaplan1.c:708
+#: source/games/toaplan1.c:756 source/games/toaplan1.c:804
+msgid "E"
+msgstr ""
+
+#: source/games/silkworm.c:596 source/games/silkworm.c:614
+#, c-format
+msgid "ERROR: Unable to load gfx rom: %s"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:31
 msgid "ES5506 voice filters"
 msgstr "Filtres de voix pour l'ES5506"
+
+#: source/games/cps1drv.c:3438
+msgid "Easier"
+msgstr ""
+
+#: source/games/cps1drv.c:3437 source/games/seta.c:2150
+msgid "Easiest"
+msgstr ""
+
+#: source/games/arkanoid.c:88 source/games/arkanoid.c:118
+#: source/games/arkanoid.c:147 source/games/cps1drv.c:3439
+#: source/games/cps1drv.c:3446 source/games/cps1drv.c:3690
+#: source/games/cps1drv.c:3863 source/games/cps1drv.c:3873
+#: source/games/cps1drv.c:3888 source/games/cps1drv.c:3996
+#: source/games/cps1drv.c:4315 source/games/cps1drv.c:4510
+#: source/games/cps1drv.c:4570 source/games/galpanic.c:198
+#: source/games/galpanic.c:228 source/games/hyperpcb.c:496
+#: source/games/matmania.c:188 source/games/mcatadv.c:188
+#: source/games/mugsmash.c:373 source/games/nmk.c:210 source/games/nmk.c:564
+#: source/games/nmk.c:873 source/games/nmk.c:960 source/games/pengo.c:137
+#: source/games/seta.c:1788 source/games/seta.c:1844 source/games/seta.c:1916
+#: source/games/seta.c:1973 source/games/seta.c:2007 source/games/seta.c:2151
+#: source/games/seta.c:2207 source/games/seta.c:2263 source/games/seta.c:2312
+#: source/games/seta.c:2388 source/games/seta.c:2480 source/games/seta.c:2514
+#: source/games/seta.c:2603 source/games/seta.c:2660 source/games/seta.c:2715
+#: source/games/seta.c:2749 source/games/seta.c:2827 source/games/seta.c:2874
+#: source/games/seta.c:2990 source/games/seta.c:3079
+#: source/games/toaplan1.c:202 source/games/toaplan1.c:370
+#: source/games/toaplan1.c:487 source/games/toaplan1.c:551
+#: source/games/toaplan1.c:668 source/sdl/control.c:1796
+msgid "Easy"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:954
 msgid "Edit custom game inputs"
@@ -352,19 +2883,29 @@ msgstr "Editer les contrôles personnalisés"
 msgid "Edit default game inputs"
 msgstr "Editer les contrôles par défaut"
 
-#: source/sdl/dialogs/translator.cpp:838
 #: source/sdl/dialogs/game_options.cpp:241
+#: source/sdl/dialogs/translator.cpp:838
 msgid "Edit msg"
 msgstr ""
 
-#: source/sdl/dialogs/translator.cpp:745
 #: source/sdl/dialogs/game_options.cpp:240
+#: source/sdl/dialogs/translator.cpp:745
 msgid "Edit screen"
 msgstr ""
 
 #: source/sdl/gui/tedit.cpp:267
 msgid "Edition"
 msgstr ""
+
+#: source/games/dkong.c:808 source/games/frogger.c:1407
+#: source/games/frogger.c:1422 source/games/pengo.c:1859
+msgid "EmuDX"
+msgstr ""
+
+#: source/games/dkong.c:808 source/games/frogger.c:1407
+#: source/games/frogger.c:1422 source/games/pengo.c:1859
+msgid "EmuDX support ?"
+msgstr "Mode EmuDX ?"
 
 #: source/sdl/dialogs/dirs.cpp:25
 msgid "Emudx dir"
@@ -374,21 +2915,255 @@ msgstr "Répertoire EmuDX"
 msgid "Emulate sound"
 msgstr "Emuler le son"
 
+#: source/games/contcirc.c:90
+msgid "Enable 3d alternate frames"
+msgstr ""
+
 #: source/sdl/dialogs/neocd_options.cpp:182
 msgid "Enabled"
 msgstr "Activé"
 
-#: source/games/bublbobl.c:229
+#: source/games/pengo.c:1339
+msgid "Enabled Always"
+msgstr "Toujours activé"
+
+#: source/games/pengo.c:1340
+msgid "Enabled with Button"
+msgstr ""
+
+#: source/games/cps1drv.c:4019
+msgid "Enemy's attack frequency"
+msgstr ""
+
+#: source/games/cps1drv.c:4028
+msgid "Enemy's attack power"
+msgstr ""
+
+#: source/games/cps1drv.c:3630
+msgid "Enemy's vitality and attacking power"
+msgstr ""
+
+#: source/games/mcatadv.c:197 source/games/seta.c:2831
+#: source/games/silentd.c:258 source/games/tecmosys.c:315
+msgid "Energy"
+msgstr ""
+
+#: source/games/nmk.c:380
+msgid "England"
+msgstr ""
+
+#: source/games/bublbobl.c:229 source/games/megasys1.c:644
+#: source/games/nmk.c:448 source/games/nmk.c:561 source/games/nmk.c:702
+#: source/games/nmk.c:870 source/games/opwolf.c:96 source/games/othunder.c:109
+#: source/games/rainbow.c:107 source/games/rainbow.c:222
+#: source/games/seta.c:1878 source/games/seta.c:2670
+#: source/games/tetrisp2.c:113 source/games/upl.c:294
+#: source/games/volfied.c:98 source/games/xsystem1.c:94
+#: source/games/xsystem1.c:166
 msgid "English"
 msgstr "Anglais"
+
+#: source/games/seta.c:2163
+msgid "Erase Backup Ram"
+msgstr ""
+
+#: source/neocd/cdrom.c:270 source/neocd/cdrom.c:284 source/neocd/cdrom.c:291
+#: source/neocd/cdrom.c:311 source/neocd/cdrom.c:323 source/neocd/cdrom.c:350
+#: source/neocd/cdrom.c:368 source/neocd/cdrom.c:401 source/neocd/cdrom.c:421
+#: source/neocd/cdrom.c:435 source/neocd/iso.c:88
+#: source/sdl/dialogs/about.cpp:501 source/sdl/dialogs/controls.cpp:538
+#: source/sdl/dialogs/controls.cpp:580 source/sdl/dialogs/controls.cpp:818
+#: source/sdl/dialogs/controls.cpp:902 source/sdl/dialogs/game_options.cpp:181
+#: source/sdl/dialogs/neocd_options.cpp:87
+#: source/sdl/dialogs/neocd_options.cpp:99
+#: source/sdl/dialogs/neocd_options.cpp:117
+#: source/sdl/dialogs/sound_commands.cpp:203
+#: source/sdl/dialogs/video_options.cpp:144 source/sdl/gui/tedit.cpp:301
+#: source/sdl/gui/tedit.cpp:361 source/sdl/gui/tedit.cpp:405
+#: source/sdl/streams.c:439
+msgid "Error"
+msgstr ""
+
+#: source/sdl/glsl.c:515
+msgid "Error linking shader"
+msgstr ""
+
+#: source/sdl/glsl.c:209
+msgid "Errors compiling fragment shader"
+msgstr ""
+
+#: source/games/fchamp.c:113
+msgid "Euro Version"
+msgstr ""
+
+#: source/games/hyperpcb.c:528 source/games/toaplan1.c:228
+#: source/games/toaplan1.c:394 source/games/toaplan1.c:513
+#: source/games/toaplan1.c:514 source/games/toaplan2.c:210
+#: source/games/toaplan2.c:464 source/games/toaplan2.c:826
+#: source/games/toaplan2.c:1099 source/games/toaplan2.c:1178
+#: source/games/toaplan2.c:1319 source/games/toaplan2.c:1429
+#: source/games/toaplan2.c:1810 source/games/toaplan2.c:1949
+msgid "Europe"
+msgstr ""
+
+#: source/games/toaplan2.c:1186
+msgid "Europe (Nova)"
+msgstr ""
+
+#: source/games/toaplan2.c:936
+msgid "Europe (Nova)/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan2.c:1189
+msgid "Europe (Taito Japan)"
+msgstr ""
+
+#: source/games/toaplan2.c:219 source/games/toaplan2.c:1948
+msgid "Europe (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:458
+msgid "Europe, USA (Atari)"
+msgstr ""
+
+#: source/games/toaplan2.c:607
+msgid "Europe/English"
+msgstr ""
+
+#: source/games/toaplan2.c:935 source/games/toaplan2.c:1035
+msgid "Europe/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan2.c:715
+msgid "Europe/Truxton2"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:204
 msgid "Even with overlays"
 msgstr "Même avec les surcouches"
 
+#: source/games/toaplan2.c:1801
+msgid "Every 1000k"
+msgstr ""
+
+#: source/games/ashura.c:66 source/games/earthjkr.c:262 source/games/upl.c:185
+msgid "Every 100k"
+msgstr ""
+
+#: source/games/ashura.c:65
+msgid "Every 150k"
+msgstr ""
+
+#: source/games/toaplan2.c:1839
+msgid "Every 2000k"
+msgstr ""
+
+#: source/games/ashura.c:67 source/games/earthjkr.c:265
+msgid "Every 200k"
+msgstr ""
+
+#: source/games/ashura.c:68
+msgid "Every 250k"
+msgstr ""
+
+#: source/games/toaplan1.c:375
+msgid "Every 300K"
+msgstr ""
+
+#: source/games/toaplan2.c:192 source/games/toaplan2.c:1408
+msgid "Every 300k"
+msgstr ""
+
+#: source/games/darius2d.c:99 source/games/ninjaw.c:351
+#: source/games/toaplan2.c:191
+msgid "Every 500k"
+msgstr ""
+
+#: source/games/upl.c:184
+msgid "Every 50k"
+msgstr ""
+
+#: source/games/terraf.c:215
+msgid "Every 60000"
+msgstr ""
+
+#: source/games/darius2d.c:96 source/games/ninjaw.c:348
+msgid "Every 700k"
+msgstr ""
+
+#: source/games/darius2d.c:97 source/games/ninjaw.c:349
+msgid "Every 800k"
+msgstr ""
+
+#: source/games/terraf.c:216
+msgid "Every 90000"
+msgstr ""
+
+#: source/games/darius2d.c:98 source/games/ninjaw.c:350
+msgid "Every 900k"
+msgstr ""
+
+
 #: source/sdl/dialogs/neocd_options.cpp:176
 msgid "Exit to"
 msgstr "Sortie vers"
+
+#: source/games/cps1drv.c:4129
+msgid "Extend"
+msgstr ""
+
+#: source/games/cps1drv.c:4115
+msgid "Extended Test Mode"
+msgstr ""
+
+#: source/games/crospang.c:115
+msgid "Extra Balls per Move"
+msgstr ""
+
+#: source/games/cadash.c:106
+msgid "Extra Clear Time"
+msgstr ""
+
+#: source/games/gcpball.c:101 source/games/ksystem.c:245
+#: source/games/lsystem.c:1504 source/games/rastan.c:90
+#: source/games/rastan2.c:61 source/games/toaplan1.c:132
+#: source/games/toaplan1.c:158 source/games/toaplan1.c:182
+#: source/games/toki.c:121 source/games/volfied.c:86
+#: source/games/xsystem2.c:98 source/games/xsystem2.c:420
+#: source/games/xsystem2.c:947 source/sdl/control.c:1790
+msgid "Extra Life"
+msgstr "Vie supplémentaire"
+
+#: source/games/hyperpcb.c:552 source/games/terrac.c:73
+msgid "Extra Life at"
+msgstr ""
+
+#: source/games/darius.c:150
+msgid "Extra Ship"
+msgstr ""
+
+#: source/games/toaplan1.c:452 source/games/toaplan1.c:634
+#: source/games/toaplan1.c:709 source/games/toaplan1.c:757
+#: source/games/toaplan1.c:805
+msgid "F"
+msgstr ""
+
+#: source/games/silkworm.c:461
+msgid "F. Round Continue"
+msgstr ""
+
+#: source/games/ctribebl.c:99 source/games/tetrisp2.c:114
+#: source/games/wrestlef.c:93
+msgid "FBI Logo"
+msgstr ""
+
+#: source/games/lsystem.c:2004
+msgid "FG"
+msgstr ""
+
+#: source/games/f3system.c:662
+msgid "FG0"
+msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:244
 msgid "FPS"
@@ -406,9 +3181,33 @@ msgstr ""
 msgid "File"
 msgstr "Fichier"
 
+#: source/games/taito_f2.c:959
+msgid "Final Stage Cont"
+msgstr ""
+
+#: source/neocd/neocd.c:378
+msgid ""
+"Find the NeoCD bios (neocd.bin).\n"
+"Ask Google if you can't find it !"
+msgstr ""
+"Trouve le bios NeoCD (neocd.bin).\n"
+"Demande à Google si tu ne peux pas le trouver !"
+
 #: source/sdl/dialogs/video_options.cpp:64
 msgid "Fix aspect ratio to 4:3"
-msgstr "Arrondir les proportions à 4:3"
+msgstr "Arrondir les proportions Ã  4:3"
+
+#: source/neocd/neocd.c:4543
+msgid "Fixed layer"
+msgstr ""
+
+#: source/games/seta.c:3052
+msgid "Flight Distance"
+msgstr ""
+
+#: source/sdl/control.c:1781
+msgid "Flip Screen"
+msgstr "Ecran Inversé"
 
 #: source/sdl/dialogs/video_options.cpp:215
 msgid "Flip X"
@@ -540,7 +3339,7 @@ msgstr "Couches"
 
 #: source/sdl/dialogs/video_options.cpp:209
 msgid "Limit framerate <= 60fps"
-msgstr "Limiter à 60fps max"
+msgstr "Limiter Ã  60fps max"
 
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "Linear"
@@ -817,7 +3616,7 @@ msgstr "Options des surcouches"
 
 #: source/sdl/dialogs/video_options.cpp:66
 msgid "Overlays workarounds"
-msgstr "Résolutions des problèmes pour les surcouches"
+msgstr "Résolutions des problÃ¨mes pour les surcouches"
 
 #: source/sdl/dialogs/neocd_options.cpp:183
 msgid "Overwrite"
@@ -914,7 +3713,7 @@ msgstr "Rendu"
 
 #: source/sdl/dialogs/game_options.cpp:245
 msgid "Reset fps to driver's default value"
-msgstr "Remettre les fps à la valeur par défaut"
+msgstr "Remettre les fps Ã  la valeur par défaut"
 
 #: source/sdl/dialogs/game_options.cpp:234
 msgid "Reset game hardware"
@@ -934,7 +3733,7 @@ msgstr "Retourner aux contrôles de jeu par défaut"
 
 #: source/sdl/dialogs/colors.cpp:113
 msgid "Revert to..."
-msgstr "Retourner à..."
+msgstr "Retourner Ã ..."
 
 #: source/sdl/dialogs/game_selection.cpp:41
 msgid "Rom directories..."
@@ -971,7 +3770,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:76
 msgid "Scaler"
-msgstr "Mise à l'échelle"
+msgstr "Mise Ã  l'échelle"
 
 #: source/sdl/dialogs/video_options.cpp:78
 msgid "Scanlines"
@@ -991,7 +3790,7 @@ msgstr "Sélectionnes le périphérique analogique"
 
 #: source/sdl/dialogs/controls.cpp:758
 msgid "Select the stick to use..."
-msgstr "Sélectionne le manche à utiliser..."
+msgstr "Sélectionne le manche Ã  utiliser..."
 
 #: source/sdl/dialogs/sound_options.cpp:36
 msgid "Sfx volume"
@@ -1067,7 +3866,7 @@ msgstr "Mode de test"
 
 #: source/sdl/dialogs/sound_commands.cpp:235
 msgid "Test this"
-msgstr "Tester ça"
+msgstr "Tester Ã§a"
 
 #: source/sdl/dialogs/video_options.cpp:118
 msgid "Texture (possible shaders)"
@@ -1109,7 +3908,7 @@ msgstr "HAUT"
 
 #: source/sdl/dialogs/neocd_options.cpp:180
 msgid "Update neocd sprite block"
-msgstr "Met à jour le block de sprites"
+msgstr "Met Ã  jour le block de sprites"
 
 #: source/sdl/dialogs/video_options.cpp:169
 msgid "Use blending files (.bld)"
@@ -1125,12 +3924,12 @@ msgstr "Utiliser le double buffer (ignoré par opengl)"
 
 #: source/sdl/dialogs/video_info.cpp:93
 msgid "Using unscaled blits"
-msgstr "Utiliser des copies graphiques sans mise à l'échelle"
+msgstr "Utiliser des copies graphiques sans mise Ã  l'échelle"
 
 #: source/games/bublbobl.c:399 source/games/bublbobl.c:445
 #: source/games/bublbobl.c:520
 msgid "Very High"
-msgstr "Très haute"
+msgstr "TrÃ¨s haute"
 
 #: source/sdl/dialogs/video_info.cpp:70
 msgid "Video driver name"

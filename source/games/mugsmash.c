@@ -357,7 +357,7 @@ static struct DSW_DATA dsw_data_mugsmash_0[] =
 
 static struct DSW_DATA dsw_data_mugsmash_1[] =
 {
-   { _("Demo Sounds"),           0x01, 0x02 },
+   { MSG_DEMO_SOUND,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
    { MSG_ON,                  0x00},
    { _("Lives"),                 0x06, 0x04 },

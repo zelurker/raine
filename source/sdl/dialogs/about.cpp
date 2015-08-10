@@ -510,7 +510,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
      palette_size = n;
      // printf("preparation on %d colors, total size %d colorkey %d\n",palette_size,4*palette_size*NB_STEPS*palette_size,bmp->format->colorkey);
      if (bmp->format->colorkey != 0) {
-       MessageBox(_("Erreur"),_("raine_logo.png must have the 1st color of the palette\n(color 0) as transparent"));
+       MessageBox(_("Error"),_("raine_logo.png must have the 1st color of the palette\n(color 0) as transparent"));
        CYC = NULL;
      } else {
        CYC = (UINT8 *)malloc(4*palette_size*NB_STEPS*(palette_size-1));
