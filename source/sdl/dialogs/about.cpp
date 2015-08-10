@@ -248,7 +248,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    f0 = font;
 	    int h = f0->get_font_height()/2;
 	    do {
-		font = new TFont_ttf(h,_("VeraMono.ttf"));
+		font = new TFont_ttf(h,"VeraMono.ttf");
 		if (h <= 3) break;
 		int w0,h0;
 		font->dimensions(str,&w0,&h0);
@@ -475,7 +475,7 @@ class TMoves_menu : public TMenu
     public:
 	TMoves_menu(char *mytitle, menu_item_t *myitem) : TMenu(mytitle,myitem)
 	{
-	    font_name = _("VeraMono.ttf");
+	    font_name = "VeraMono.ttf";
 	}
 	void create_child(int n) {
 	    if (!menu[n].value_int)
@@ -617,7 +617,7 @@ static int about_game(int sel) {
       char *q;
       previous = *nl;
       *nl = 0;
-      if ((q=strstr(s,_("<a href=")))) {
+      if ((q=strstr(s,"<a href="))) {
 	  /* Basic parsing for urls. We assume everything is lowercase with
 	   * only 1 space and not more, and everything on 1 line of text.
 	   * I don't was a general html parser here, just something to parse

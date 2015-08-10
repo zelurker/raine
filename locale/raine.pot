@@ -1577,10 +1577,6 @@ msgstr ""
 msgid "90 Seconds"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:620
-msgid "<a href="
-msgstr ""
-
 #: source/games/bloodbro.c:82 source/games/rainbow.c:93
 #: source/games/rainbow.c:208 source/games/toaplan1.c:447
 #: source/games/toaplan1.c:629 source/games/toaplan1.c:704
@@ -2183,7 +2179,7 @@ msgstr ""
 msgid "Cheat"
 msgstr ""
 
-#: source/sdl/control.c:442 source/sdl/dialogs/cheats.cpp:111
+#: source/sdl/dialogs/cheats.cpp:111 source/sdl/control.c:442
 msgid "Cheats"
 msgstr ""
 
@@ -2654,10 +2650,6 @@ msgstr ""
 msgid "Demo Sound"
 msgstr ""
 
-#: source/games/mugsmash.c:360
-msgid "Demo Sounds"
-msgstr ""
-
 #: source/games/toaplan2.c:1848
 msgid "Denmark"
 msgstr ""
@@ -2889,13 +2881,13 @@ msgstr ""
 msgid "Edit default game inputs"
 msgstr ""
 
-#: source/sdl/dialogs/game_options.cpp:241
 #: source/sdl/dialogs/translator.cpp:838
+#: source/sdl/dialogs/game_options.cpp:241
 msgid "Edit msg"
 msgstr ""
 
-#: source/sdl/dialogs/game_options.cpp:240
 #: source/sdl/dialogs/translator.cpp:745
+#: source/sdl/dialogs/game_options.cpp:240
 msgid "Edit screen"
 msgstr ""
 
@@ -2973,22 +2965,18 @@ msgstr ""
 msgid "Erase Backup Ram"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:513
-msgid "Erreur"
-msgstr ""
-
 #: source/neocd/cdrom.c:270 source/neocd/cdrom.c:284 source/neocd/cdrom.c:291
 #: source/neocd/cdrom.c:311 source/neocd/cdrom.c:323 source/neocd/cdrom.c:350
 #: source/neocd/cdrom.c:368 source/neocd/cdrom.c:401 source/neocd/cdrom.c:421
 #: source/neocd/cdrom.c:435 source/neocd/iso.c:88
-#: source/sdl/dialogs/about.cpp:501 source/sdl/dialogs/controls.cpp:538
+#: source/sdl/dialogs/game_options.cpp:181 source/sdl/dialogs/controls.cpp:538
 #: source/sdl/dialogs/controls.cpp:580 source/sdl/dialogs/controls.cpp:818
-#: source/sdl/dialogs/controls.cpp:902 source/sdl/dialogs/game_options.cpp:181
-#: source/sdl/dialogs/neocd_options.cpp:87
+#: source/sdl/dialogs/controls.cpp:902 source/sdl/dialogs/neocd_options.cpp:87
 #: source/sdl/dialogs/neocd_options.cpp:99
 #: source/sdl/dialogs/neocd_options.cpp:117
 #: source/sdl/dialogs/sound_commands.cpp:203
-#: source/sdl/dialogs/video_options.cpp:144 source/sdl/gui/tedit.cpp:301
+#: source/sdl/dialogs/video_options.cpp:144 source/sdl/dialogs/about.cpp:501
+#: source/sdl/dialogs/about.cpp:513 source/sdl/gui/tedit.cpp:301
 #: source/sdl/gui/tedit.cpp:361 source/sdl/gui/tedit.cpp:405
 #: source/sdl/streams.c:439
 msgid "Error"
@@ -3327,7 +3315,7 @@ msgstr ""
 msgid "Fullheight + Double width"
 msgstr ""
 
-#: source/sdl/control.c:418 source/sdl/dialogs/video_options.cpp:202
+#: source/sdl/dialogs/video_options.cpp:202 source/sdl/control.c:418
 msgid "Fullscreen"
 msgstr ""
 
@@ -3958,8 +3946,8 @@ msgstr ""
 msgid "Load from which ?"
 msgstr ""
 
-#: source/sdl/control.c:427 source/sdl/dialogs/game_options.cpp:184
-#: source/sdl/dialogs/game_options.cpp:235
+#: source/sdl/dialogs/game_options.cpp:184
+#: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:427
 msgid "Load game"
 msgstr ""
 
@@ -4259,7 +4247,8 @@ msgstr ""
 msgid "Nitros per Stage"
 msgstr ""
 
-#: source/sdl/control.c:1581 source/sdl/dialogs/game_selection.cpp:40
+#: source/sdl/dialogs/video_info.cpp:24
+#: source/sdl/dialogs/game_selection.cpp:40
 #: source/sdl/dialogs/gui_options.cpp:19 source/sdl/dialogs/gui_options.cpp:20
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
@@ -4270,7 +4259,6 @@ msgstr ""
 #: source/sdl/dialogs/sound_options.cpp:38
 #: source/sdl/dialogs/sound_options.cpp:39
 #: source/sdl/dialogs/sound_options.cpp:42
-#: source/sdl/dialogs/video_info.cpp:24
 #: source/sdl/dialogs/video_options.cpp:64
 #: source/sdl/dialogs/video_options.cpp:66
 #: source/sdl/dialogs/video_options.cpp:68
@@ -4284,7 +4272,7 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:203
 #: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
 #: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
-#: source/sdl/gui/menu.cpp:147
+#: source/sdl/gui/menu.cpp:147 source/sdl/control.c:1581
 msgid "No"
 msgstr ""
 
@@ -4321,7 +4309,7 @@ msgstr ""
 msgid "No change"
 msgstr ""
 
-#: source/sdl/gui/menu.cpp:424
+#: source/sdl/gui/menu.cpp:426
 msgid "No game loaded"
 msgstr ""
 
@@ -4460,12 +4448,11 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: source/sdl/console/scripts.cpp:130 source/sdl/control.c:1778
-#: source/sdl/dialogs/cheats.cpp:104 source/sdl/dialogs/controls.cpp:528
-#: source/sdl/dialogs/game_options.cpp:213
-#: source/sdl/dialogs/game_options.cpp:247
+#: source/sdl/console/scripts.cpp:130 source/sdl/dialogs/game_options.cpp:213
+#: source/sdl/dialogs/game_options.cpp:247 source/sdl/dialogs/cheats.cpp:104
+#: source/sdl/dialogs/controls.cpp:528
 #: source/sdl/dialogs/neocd_options.cpp:179
-#: source/sdl/dialogs/video_options.cpp:79
+#: source/sdl/dialogs/video_options.cpp:79 source/sdl/control.c:1778
 msgid "Off"
 msgstr ""
 
@@ -4474,8 +4461,8 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: source/sdl/console/scripts.cpp:131 source/sdl/control.c:1779
-#: source/sdl/dialogs/cheats.cpp:105 source/sdl/dialogs/game_options.cpp:214
+#: source/sdl/console/scripts.cpp:131 source/sdl/dialogs/game_options.cpp:214
+#: source/sdl/dialogs/cheats.cpp:105 source/sdl/control.c:1779
 msgid "On"
 msgstr ""
 
@@ -5209,8 +5196,8 @@ msgstr ""
 msgid "Save demo"
 msgstr ""
 
-#: source/sdl/control.c:425 source/sdl/dialogs/game_options.cpp:194
-#: source/sdl/dialogs/game_options.cpp:236
+#: source/sdl/dialogs/game_options.cpp:194
+#: source/sdl/dialogs/game_options.cpp:236 source/sdl/control.c:425
 msgid "Save game"
 msgstr ""
 
@@ -5706,8 +5693,8 @@ msgstr ""
 #: source/games/cps1drv.c:4088 source/games/cps1drv.c:4163
 #: source/games/cps1drv.c:4280 source/games/cps1drv.c:4345
 #: source/games/cps1drv.c:4446 source/games/cps1drv.c:4462
-#: source/games/cps1drv.c:4555 source/sdl/control.c:1578
-#: source/sdl/dialogs/sound_commands.cpp:232
+#: source/games/cps1drv.c:4555 source/sdl/dialogs/sound_commands.cpp:232
+#: source/sdl/control.c:1578
 msgid "Test"
 msgstr ""
 
@@ -6152,10 +6139,6 @@ msgstr ""
 msgid "Variable (MMX)"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:251 source/sdl/dialogs/about.cpp:478
-msgid "VeraMono.ttf"
-msgstr ""
-
 #: source/games/toaplan2.c:822 source/games/toaplan2.c:1096
 #: source/sdl/dialogs/video_info.cpp:61
 msgid "Version"
@@ -6246,10 +6229,9 @@ msgstr ""
 msgid "WALTZ0"
 msgstr ""
 
-#: source/sdl/compat.c:283 source/sdl/dialogs/about.cpp:701
 #: source/sdl/dialogs/neo_softdips.cpp:217
-#: source/sdl/dialogs/video_options.cpp:54 source/sdl/dsw.c:420
-#: source/sdl/glsl.c:357
+#: source/sdl/dialogs/video_options.cpp:54 source/sdl/dialogs/about.cpp:701
+#: source/sdl/compat.c:283 source/sdl/dsw.c:420 source/sdl/glsl.c:357
 msgid "Warning"
 msgstr ""
 
@@ -6341,7 +6323,8 @@ msgstr ""
 msgid "Year : 2006"
 msgstr ""
 
-#: source/sdl/control.c:1580 source/sdl/dialogs/game_selection.cpp:40
+#: source/sdl/dialogs/video_info.cpp:25
+#: source/sdl/dialogs/game_selection.cpp:40
 #: source/sdl/dialogs/gui_options.cpp:19 source/sdl/dialogs/gui_options.cpp:20
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
@@ -6351,7 +6334,6 @@ msgstr ""
 #: source/sdl/dialogs/sound_options.cpp:34
 #: source/sdl/dialogs/sound_options.cpp:38
 #: source/sdl/dialogs/sound_options.cpp:39
-#: source/sdl/dialogs/video_info.cpp:25
 #: source/sdl/dialogs/video_options.cpp:64
 #: source/sdl/dialogs/video_options.cpp:66
 #: source/sdl/dialogs/video_options.cpp:68
@@ -6365,7 +6347,7 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:203
 #: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
 #: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
-#: source/sdl/gui/menu.cpp:147
+#: source/sdl/gui/menu.cpp:147 source/sdl/control.c:1580
 msgid "Yes"
 msgstr ""
 
