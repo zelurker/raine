@@ -76,7 +76,7 @@ static menu_item_t blits_options[] =
     { _("Scaler"), &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 },
 	{ _("None"), _("Scale2x/3x"), _("Pixel double"), _("hq2x/3x") } },
     { _("Scanlines"), &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
-	{ _("Off"), _("Halfheight"), _("Fullheight"), "Fullheight + Double width" } },
+	{ _("Off"), _("Halfheight"), _("Fullheight"), _("Fullheight + Double width") } },
     {  NULL },
 };
 
@@ -100,8 +100,8 @@ static int choose_shader(int sel) {
     fsel(dir,exts,ogl.shader,"Select shader");
     if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0] &&
 	    strcmp(old,"None")) { // cancelled ?
-	if (MessageBox("Confirmation","Disable shaders ?","Yes|No") == 1)
-	    strcpy(ogl.shader,"None");
+	if (MessageBox(_("Confirmation"),_("Disable shaders ?"),_("Yes|No")) == 1)
+	    strcpy(ogl.shader,_("None"));
 	else
 	    strcpy(ogl.shader,old);
     } else {
@@ -166,11 +166,11 @@ static int bld1,bld2;
 
 static menu_item_t bld_options[] =
 {
-{ "Use blending files (.bld)",NULL,&use_bld,2,{0,1},{_("No"),_("Yes")} },
+{ _("Use blending files (.bld)"),NULL,&use_bld,2,{0,1},{_("No"),_("Yes")} },
 { _("Reset transparency values to default"), &reset_transp },
-{ "Transparency for 1 (25% default)", NULL, &bld1, ITEM_INTEDIT,
+{ _("Transparency for 1 (25% default)"), NULL, &bld1, ITEM_INTEDIT,
     { 3, 0, 50, 0, 100},{""} },
-{ "Transparency for 2 (50% default)", NULL, &bld2, ITEM_INTEDIT,
+{ _("Transparency for 2 (50% default)"), NULL, &bld2, ITEM_INTEDIT,
     { 3, 0, 50, 0, 100},{""} },
 { NULL },
     };
@@ -201,7 +201,7 @@ static menu_item_t video_items[] =
   { _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
 { _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
 { _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
-{ "Use double buffer (ignored by opengl)", NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
+{ _("Use double buffer (ignored by opengl)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
 { _("Blend file options..."), &do_bld },
 { _("Video info..."), &do_video, },
 { _("Renderer options"), &renderer_options },

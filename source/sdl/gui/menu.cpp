@@ -144,7 +144,7 @@ menu_item_t menu_options[] =
   { _("GUI transparency"), NULL, &use_transparency, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Use custom mouse cursor"), &toggle_mouse, &emulate_mouse_cursor, 2,
     { 0,1 }, { _("No"), _("Yes") } },
-  { "Minimum GUI resolution = VGA", NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
+  { _("Minimum GUI resolution = VGA"), NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
 };
 
 int fg_color, bg_color,fgframe_color,bgframe_color,cslider_border,
@@ -1351,6 +1351,14 @@ static int mystrcasestr(const char *s1,const char *s2) {
 }
 
 void TMenu::set_header(menu_item_t *myheader) {
+    header = myheader;
+    // Translate the header...
+    while (header && header->label) {
+	header->label = gettext(header->label);
+	for (int n=0; n<header->values_list_size && header->values_list_label[n]; n++)
+	    header->values_list_label[n] = gettext(header->values_list_label[n]);
+	header++;
+    }
     header = myheader;
 }
 

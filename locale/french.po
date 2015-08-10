@@ -8,14 +8,19 @@ msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-09 00:07+0200\n"
-"Last-Translator:  <emmanuel.anne@gmail.com>\n"
+"PO-Revision-Date: 2015-08-10 07:41+0200\n"
+"Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: source/sdl/dialogs/game_options.cpp:154
+#, c-format
+msgid "%d - Free savegame slot"
+msgstr "%d - Emplacement de sauvegarde libre"
 
 #: source/sdl/dialogs/game_selection.cpp:71
 msgid "-- Options --"
@@ -57,6 +62,10 @@ msgstr "A propos de ce jeu"
 #: source/sdl/dialogs/about.cpp:796 source/sdl/gui.cpp:306
 msgid "About..."
 msgstr "A propos..."
+
+#: source/sdl/dialogs/video_info.cpp:64
+msgid "Acceleration"
+msgstr "Accélération"
 
 #: source/sdl/gui.cpp:295
 msgid "Action replay cheats"
@@ -162,6 +171,10 @@ msgstr "Interface CD"
 msgid "CPU emulators:"
 msgstr "Emulateurs CPU"
 
+#: source/sdl/dialogs/game_options.cpp:243
+msgid "CPU frame skip (1=no skip) "
+msgstr "Nombre d'images sans �mulation CPU (1=pas de saut)"
+
 #: source/sdl/dialogs/controls.cpp:779
 msgid "Calibration"
 msgstr ""
@@ -230,6 +243,10 @@ msgstr "Entreprise : %s"
 msgid "Config mode"
 msgstr "Mode de configuration"
 
+#: source/sdl/dialogs/video_options.cpp:103
+msgid "Confirmation"
+msgstr ""
+
 #: source/sdl/console/console.cpp:1228 source/sdl/console/console.cpp:1318
 #: source/sdl/gui.cpp:309
 msgid "Console"
@@ -238,6 +255,10 @@ msgstr ""
 #: source/sdl/dialogs/controls.cpp:969
 msgid "Controls"
 msgstr "Contrôles"
+
+#: source/sdl/dialogs/video_info.cpp:51
+msgid "Current display"
+msgstr "Affichage actuel"
 
 #: source/sdl/dialogs/video_info.cpp:87
 msgid "Currently using hardware accelerated YUY2 overlay"
@@ -287,6 +308,10 @@ msgstr "Répertoires..."
 msgid "Disable associations"
 msgstr "Désactiver associations"
 
+#: source/sdl/dialogs/video_options.cpp:103
+msgid "Disable shaders ?"
+msgstr "D�sactiver les shaders ?"
+
 #: source/sdl/dialogs/neocd_options.cpp:182
 msgid "Disabled"
 msgstr "Désactivé"
@@ -302,6 +327,10 @@ msgstr "Afficher les noms courts aussi"
 #: source/sdl/dialogs/video_options.cpp:119
 msgid "Double buffer"
 msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:82
+msgid "Double buffer enabled"
+msgstr "Double buffer activé"
 
 #: source/sdl/dialogs/video_options.cpp:118
 msgid "DrawPixels (no shaders)"
@@ -369,6 +398,10 @@ msgstr ""
 msgid "FPS counter"
 msgstr "Compteur FPS"
 
+#: source/sdl/dialogs/video_info.cpp:63
+msgid "FSAA (multisampling)"
+msgstr ""
+
 #: source/sdl/dialogs/sound_commands.cpp:178
 msgid "File"
 msgstr "Fichier"
@@ -401,6 +434,10 @@ msgstr "Saut d'image"
 msgid "Fullheight"
 msgstr "Toute la hauteur"
 
+#: source/sdl/dialogs/video_options.cpp:79
+msgid "Fullheight + Double width"
+msgstr "Pleine hauteur + double largeur"
+
 #: source/sdl/dialogs/video_options.cpp:202
 msgid "Fullscreen"
 msgstr "Plein écran"
@@ -425,6 +462,10 @@ msgstr "Options de jeux"
 #: source/sdl/dialogs/game_selection.cpp:417
 msgid "Game selection"
 msgstr "Sélection du jeu"
+
+#: source/sdl/dialogs/video_options.cpp:208
+msgid "General options:"
+msgstr "Options générales"
 
 #: source/sdl/dialogs/controls.cpp:938
 msgid "Get inputs from another game"
@@ -497,6 +538,10 @@ msgstr "GAUCHE"
 msgid "Layers"
 msgstr "Couches"
 
+#: source/sdl/dialogs/video_options.cpp:209
+msgid "Limit framerate <= 60fps"
+msgstr "Limiter à 60fps max"
+
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "Linear"
 msgstr "Linéaire"
@@ -559,6 +604,10 @@ msgstr "Moyenne"
 msgid "Min font size"
 msgstr "Taille de fonte mini"
 
+#: source/sdl/gui/menu.cpp:147
+msgid "Minimum GUI resolution = VGA"
+msgstr "R�solution minimale du GUI = VGA"
+
 #: source/sdl/dialogs/game_selection.cpp:288
 msgid "Missing"
 msgstr "Manquant"
@@ -601,9 +650,19 @@ msgstr "Plus proche"
 msgid "Neo-Geo bios"
 msgstr "bios Neo-Geo"
 
+#: source/sdl/dialogs/neocd_options.cpp:189
+#, c-format
+msgid "Neo-Geo bios : %s"
+msgstr "Bios Neo-Geo : %s"
+
 #: source/sdl/dialogs/neocd_options.cpp:172
 msgid "NeoCD bios"
 msgstr "bios NeoCD"
+
+#: source/sdl/dialogs/neocd_options.cpp:203
+#, c-format
+msgid "NeoCD bios : %s"
+msgstr "Bios NeoCD : %s"
 
 #: source/sdl/gui.cpp:300
 msgid "NeoCD/Neo-Geo options"
@@ -655,6 +714,11 @@ msgstr "Nouvelles images"
 msgid "No"
 msgstr "Non"
 
+#: source/sdl/dialogs/neocd_options.cpp:192
+#, c-format
+msgid "No NeoCD bios"
+msgstr "Pas de bios NeoCD"
+
 #: source/sdl/dialogs/controls.cpp:723
 msgid "No analog device"
 msgstr "Pas de périphérique analogique"
@@ -666,6 +730,14 @@ msgstr "Pas de jeu chargé"
 # neocd.c
 msgid "No game loaded yet"
 msgstr "Pas de jeu chargé pour l'instant"
+
+#: source/sdl/dialogs/video_info.cpp:55
+msgid "No opengl info yet, run something first"
+msgstr "Pas encore d'info opengl, lancez un jeu d'abord"
+
+#: source/sdl/dialogs/game_options.cpp:181
+msgid "No savegames loadable for this game"
+msgstr "Pas de sauvegardes chargeable pour ce jeu"
 
 #: source/sdl/dialogs/video_options.cpp:77
 #: source/sdl/dialogs/video_options.cpp:133
@@ -714,6 +786,14 @@ msgstr ""
 msgid "OpenGL Options"
 msgstr "Options OpenGL"
 
+#: source/sdl/dialogs/video_info.cpp:65
+msgid "OpenGL VBL (force sync)"
+msgstr "OpenGL VBL (forcer la synchro)"
+
+#: source/sdl/dialogs/video_info.cpp:62
+msgid "OpenGL double buffer"
+msgstr "Double buffer OpenGL"
+
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "OpenGL filtering"
 msgstr "Filtrage OpenGL"
@@ -721,6 +801,10 @@ msgstr "Filtrage OpenGL"
 #: source/sdl/dialogs/video_options.cpp:122
 msgid "OpenGL overlay interface"
 msgstr "Interface par dessus l'écran OpenGL"
+
+#: source/sdl/dialogs/video_info.cpp:59
+msgid "OpenGL vendor"
+msgstr "Vendeur OpenGL"
 
 #: source/sdl/dialogs/gui_options.cpp:34
 #: source/sdl/dialogs/game_selection.cpp:62 source/sdl/gui.cpp:304
@@ -816,6 +900,10 @@ msgstr "Enregister vers raine_sound.wav"
 msgid "Region"
 msgstr "Région"
 
+#: source/sdl/dialogs/video_info.cpp:60
+msgid "Renderer"
+msgstr "Rendu"
+
 #: source/sdl/dialogs/video_options.cpp:207
 msgid "Renderer options"
 msgstr "Options de rendu"
@@ -876,6 +964,10 @@ msgstr "Sauver les contrôles sous..."
 #: source/sdl/dialogs/video_options.cpp:120
 msgid "Save opengl screenshots"
 msgstr "Capturer l'écran opengl"
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "Scale2x/3x"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:76
 msgid "Scaler"
@@ -997,6 +1089,16 @@ msgstr "Piste"
 msgid "Translator"
 msgstr "Traducteur"
 
+#: source/sdl/dialogs/video_options.cpp:171
+#, c-format
+msgid "Transparency for 1 (25% default)"
+msgstr "Transparence pour 1 (25% normalement)"
+
+#: source/sdl/dialogs/video_options.cpp:173
+#, c-format
+msgid "Transparency for 2 (50% default)"
+msgstr "Transparence pour 2 (50% normalement)"
+
 #: source/sdl/dialogs/about.cpp:760
 msgid "UAE 68020 Emulator : old hacked asm version from UAE"
 msgstr "Emulateur UAE 68020 : vieille version assembleur modifiée d'UAE"
@@ -1009,9 +1111,17 @@ msgstr "HAUT"
 msgid "Update neocd sprite block"
 msgstr "Met à jour le block de sprites"
 
+#: source/sdl/dialogs/video_options.cpp:169
+msgid "Use blending files (.bld)"
+msgstr "Utiliser les fichiers de transparence (.bld)"
+
 #: source/sdl/gui/menu.cpp:145
 msgid "Use custom mouse cursor"
 msgstr "Utiliser un pointeur de souris personnalisé"
+
+#: source/sdl/dialogs/video_options.cpp:204
+msgid "Use double buffer (ignored by opengl)"
+msgstr "Utiliser le double buffer (ignoré par opengl)"
 
 #: source/sdl/dialogs/video_info.cpp:93
 msgid "Using unscaled blits"
@@ -1021,6 +1131,10 @@ msgstr "Utiliser des copies graphiques sans mise à l'échelle"
 #: source/games/bublbobl.c:520
 msgid "Very High"
 msgstr "Très haute"
+
+#: source/sdl/dialogs/video_info.cpp:70
+msgid "Video driver name"
+msgstr "Nom du driver vidéo"
 
 #: source/sdl/dialogs/video_info.cpp:98
 msgid "Video info"
@@ -1116,6 +1230,38 @@ msgstr "Année : 2006"
 msgid "Yes"
 msgstr "Oui"
 
+#: source/sdl/dialogs/video_options.cpp:103
+msgid "Yes|No"
+msgstr "Oui|Non"
+
+#: source/sdl/dialogs/video_info.cpp:81
+msgid "accelerated color fills"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:77
+msgid "accelerated hardware->hardware alpha blits"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:75
+msgid "accelerated hardware->hardware blits"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:76
+msgid "accelerated hardware->hardware colorkey blits"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:80
+msgid "accelerated software->hardware alpha blits"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:78
+msgid "accelerated software->hardware blits"
+msgstr ""
+
+#: source/sdl/dialogs/video_info.cpp:79
+msgid "accelerated software->hardware colorkey blits"
+msgstr ""
+
 #: source/sdl/dialogs/colors.cpp:45
 msgid "alpha"
 msgstr ""
@@ -1164,9 +1310,17 @@ msgstr "Couleur 1er plan des dialogues"
 msgid "green"
 msgstr "vert"
 
+#: source/sdl/dialogs/video_info.cpp:73
+msgid "hardware surface available"
+msgstr "Surface matérielle disponible"
+
 #: source/sdl/dialogs/translator.cpp:673 source/sdl/dialogs/translator.cpp:681
 msgid "hidden"
 msgstr "caché"
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "hq2x/3x"
+msgstr ""
 
 #: source/sdl/gui/tedit.cpp:256
 msgid "label"
@@ -1207,3 +1361,7 @@ msgstr "répertoires de rom"
 #: source/sdl/dialogs/video_options.cpp:198
 msgid "windib (good for ogl)"
 msgstr "windib (bon pour openGL)"
+
+#: source/sdl/dialogs/video_info.cpp:74
+msgid "window manager available"
+msgstr "Gestionnaire de fenêtres disponible"

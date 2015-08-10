@@ -151,7 +151,7 @@ static menu_item_t *get_savegames(int for_saving) {
 	  break;
       }
       saves[used].num = free;
-      sprintf(buff,"%d - Free savegame slot",free);
+      sprintf(buff,_("%d - Free savegame slot"),free);
       menu[used].label = strdup(buff);
       menu[used].menu_func = &saveit;
     }
@@ -178,7 +178,7 @@ static int my_load(int sel) {
   exit_options = 0;
   menu_item_t *menu = get_savegames(0);
   if (!used) {
-    MessageBox("Error","No savegames loadable for this game");
+    MessageBox(_("Error"),_("No savegames loadable for this game"));
     return 0;
   }
   TMenu *load = new TMenu(_("Load game"),menu);
@@ -240,7 +240,7 @@ static menu_item_t game_options[] =
   { _("Edit screen"), &do_screen },
   { _("Edit msg"), &do_msg },
 #endif
-  { "CPU frame skip (1=no skip) ", NULL, &cpu_fps, 3, { 1, 16, 1 } },
+  { _("CPU frame skip (1=no skip) "), NULL, &cpu_fps, 3, { 1, 16, 1 } },
   { _("FPS"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,100 }, { "", (char*)&fps, "1", "200" } },
   { _("Reset fps to driver's default value"), &reset_fps },
   { _("FPS counter"), NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },

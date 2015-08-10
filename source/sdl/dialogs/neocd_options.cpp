@@ -186,10 +186,10 @@ static menu_item_t neocd_menu[] =
 
 static int select_bios(int sel) {
     neogeo_bios = sel;
-    sprintf(label,"Neo-Geo bios : %s",neo_names[neogeo_bios]);
+    sprintf(label,_("Neo-Geo bios : %s"),neo_names[neogeo_bios]);
     static char label2[180];
     if (!*neocd_bios_file) {
-	sprintf(label2,"No NeoCD bios");
+	sprintf(label2,_("No NeoCD bios"));
     } else {
 	char *s = neocd_bios_file;
 	char *old;
@@ -200,7 +200,7 @@ static int select_bios(int sel) {
 	if (old == neocd_bios_file) s = old;
 	else
 	    s = old+1;
-	sprintf(label2,"NeoCD bios : %s",s);
+	sprintf(label2,_("NeoCD bios : %s"),s);
     }
 
     neocd_menu[0].label = (const char*)label;
