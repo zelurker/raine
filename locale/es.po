@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-09 08:43-0300\n"
-"Last-Translator: unknown@unknown.org\n"
-"Language-Team: Spanish\n"
-"Language: es\n"
+"PO-Revision-Date: 2015-08-09 21:50-0300\n"
+"Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
+"Language-Team: -\n"
+"Language: es_419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,6 +25,10 @@ msgstr "-- Opciones --"
 #: source/sdl/dialogs/fsel.cpp:226 source/sdl/dialogs/fsel.cpp:231
 msgid "-- Path... "
 msgstr "-- Directorios..."
+
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "8x (default)"
+msgstr "8x (por defecto)"
 
 #: source/sdl/dialogs/about.cpp:716
 msgid "About this game"
@@ -126,6 +130,10 @@ msgstr "Azul"
 msgid "Borderless"
 msgstr "Sin bordes"
 
+#: source/sdl/dialogs/neocd_options.cpp:179
+msgid "CD 1x (150 Kb/s)"
+msgstr "CD 1x (150 Kb/s)"
+
 #: source/sdl/dialogs/neocd_options.cpp:177
 msgid "CD Interface"
 msgstr "Interfaz de CD"
@@ -187,7 +195,7 @@ msgstr "Colores..."
 
 #: source/sdl/dialogs/sound_commands.cpp:231
 msgid "Command"
-msgstr "Comandos"
+msgstr "Comando"
 
 #: source/sdl/dialogs/game_selection.cpp:36
 msgid "Company"
@@ -275,6 +283,10 @@ msgstr "Visualizar nombres cortos también"
 msgid "Double buffer"
 msgstr "Doble buffer"
 
+#: source/sdl/dialogs/video_options.cpp:118
+msgid "DrawPixels (no shaders)"
+msgstr "Dibujar Pixeles (sin shaders)"
+
 #: source/sdl/dialogs/game_selection.cpp:37
 msgid "Driver"
 msgstr ""
@@ -336,6 +348,10 @@ msgstr "Contador de CPS"
 #: source/sdl/dialogs/sound_commands.cpp:178
 msgid "File"
 msgstr "Archivo"
+
+#: source/sdl/dialogs/video_options.cpp:64
+msgid "Fix aspect ratio to 4:3"
+msgstr "Fijar relación de aspecto a 4:3"
 
 #: source/sdl/dialogs/video_options.cpp:215
 msgid "Flip X"
@@ -544,7 +560,7 @@ msgstr "Opciones NeoCD/Neo-Geo"
 
 #: source/sdl/dialogs/neocd_options.cpp:177
 msgid "NeoGeo Logo"
-msgstr "Logo NeoGeo"
+msgstr "Logo de NeoGeo"
 
 #: source/sdl/dialogs/video_options.cpp:75
 #: source/sdl/dialogs/video_options.cpp:204
@@ -559,12 +575,18 @@ msgstr "Archivo nuevo"
 msgid "New pictures"
 msgstr "Nueva imagen"
 
+#: source/sdl/dialogs/gui_options.cpp:20 source/sdl/dialogs/gui_options.cpp:21
+#: source/sdl/dialogs/sound_commands.cpp:241
+#: source/sdl/dialogs/sound_options.cpp:27
+#: source/sdl/dialogs/sound_options.cpp:32
+#: source/sdl/dialogs/sound_options.cpp:35
+#: source/sdl/dialogs/sound_options.cpp:39
+#: source/sdl/dialogs/sound_options.cpp:40
+#: source/sdl/dialogs/sound_options.cpp:43
+#: source/sdl/dialogs/game_selection.cpp:40
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
-#: source/sdl/dialogs/video_info.cpp:24 source/sdl/dialogs/gui_options.cpp:20
-#: source/sdl/dialogs/gui_options.cpp:21
-#: source/sdl/dialogs/sound_commands.cpp:241
-#: source/sdl/dialogs/video_options.cpp:64
+#: source/sdl/dialogs/video_info.cpp:24 source/sdl/dialogs/video_options.cpp:64
 #: source/sdl/dialogs/video_options.cpp:66
 #: source/sdl/dialogs/video_options.cpp:68
 #: source/sdl/dialogs/video_options.cpp:119
@@ -575,14 +597,7 @@ msgstr "Nueva imagen"
 #: source/sdl/dialogs/video_options.cpp:169
 #: source/sdl/dialogs/video_options.cpp:202
 #: source/sdl/dialogs/video_options.cpp:203
-#: source/sdl/dialogs/video_options.cpp:209
-#: source/sdl/dialogs/sound_options.cpp:27
-#: source/sdl/dialogs/sound_options.cpp:32
-#: source/sdl/dialogs/sound_options.cpp:35
-#: source/sdl/dialogs/sound_options.cpp:39
-#: source/sdl/dialogs/sound_options.cpp:40
-#: source/sdl/dialogs/sound_options.cpp:43
-#: source/sdl/dialogs/game_selection.cpp:40 source/sdl/gui/menu.cpp:143
+#: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
 #: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
 #: source/sdl/gui/menu.cpp:147
 msgid "No"
@@ -611,10 +626,11 @@ msgstr "Ninguno"
 msgid "Normal blits"
 msgstr "Blits normales"
 
-#: source/sdl/console/scripts.cpp:130 source/sdl/dialogs/neocd_options.cpp:179
-#: source/sdl/dialogs/cheats.cpp:105 source/sdl/dialogs/game_options.cpp:213
-#: source/sdl/dialogs/game_options.cpp:247
-#: source/sdl/dialogs/video_options.cpp:79 source/sdl/dialogs/controls.cpp:528
+#: source/sdl/console/scripts.cpp:130 source/sdl/dialogs/cheats.cpp:105
+#: source/sdl/dialogs/game_options.cpp:213
+#: source/sdl/dialogs/game_options.cpp:247 source/sdl/dialogs/controls.cpp:528
+#: source/sdl/dialogs/neocd_options.cpp:179
+#: source/sdl/dialogs/video_options.cpp:79
 msgid "Off"
 msgstr "Apagado"
 
@@ -679,6 +695,10 @@ msgstr "Seleccionar Directorio"
 #: source/sdl/dialogs/gui_options.cpp:21
 msgid "Pause when focus lost"
 msgstr "Pausar al perder foco"
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "Pixel double"
+msgstr "Doblar pixeles"
 
 #: source/sdl/gui.cpp:292
 msgid "Play game"
@@ -777,6 +797,10 @@ msgstr "Revertir a..."
 msgid "Rom directories..."
 msgstr "Directorios con roms..."
 
+#: source/sdl/dialogs/video_options.cpp:198
+msgid "SDL default (windib since 1.2.10)"
+msgstr "SDL por defecto (windib desde 1.2.10)"
+
 #: source/sdl/dialogs/video_options.cpp:197
 msgid "SDL video driver"
 msgstr "Driver de video SDL"
@@ -797,6 +821,10 @@ msgstr "Salvar entradas como..."
 #: source/sdl/dialogs/video_options.cpp:120
 msgid "Save opengl screenshots"
 msgstr "Salvar captura de pantalla opengl"
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "Scale2x/3x"
+msgstr "Escalar 2x/3x"
 
 #: source/sdl/dialogs/video_options.cpp:76
 msgid "Scaler"
@@ -898,13 +926,25 @@ msgstr "Modo prueba"
 msgid "Test this"
 msgstr "Probar esto"
 
+#: source/sdl/dialogs/video_options.cpp:118
+msgid "Texture (possible shaders)"
+msgstr "Textura (posiblemente shaders)"
+
+#: source/sdl/dialogs/video_options.cpp:75
+msgid "To match 2x game resolution"
+msgstr "Coincidir 2x resolución de juego"
+
+#: source/sdl/dialogs/video_options.cpp:75
+msgid "To match game resolution (low res most of the time)"
+msgstr "Coincidir con resolución de juego (baja resolución la mayoria del tiempo)"
+
 #: source/sdl/dialogs/sound_commands.cpp:175
 msgid "Track"
-msgstr "Traductor"
+msgstr "Pista"
 
 #: source/sdl/dialogs/translator.cpp:987
 msgid "Translator"
-msgstr ""
+msgstr "Traductor"
 
 #: source/sdl/dialogs/about.cpp:760
 msgid "UAE 68020 Emulator : old hacked asm version from UAE"
@@ -992,12 +1032,17 @@ msgstr "Año : -"
 msgid "Year : 2006"
 msgstr "Año : 2006"
 
+#: source/sdl/dialogs/gui_options.cpp:20 source/sdl/dialogs/gui_options.cpp:21
+#: source/sdl/dialogs/sound_commands.cpp:241
+#: source/sdl/dialogs/sound_options.cpp:27
+#: source/sdl/dialogs/sound_options.cpp:32
+#: source/sdl/dialogs/sound_options.cpp:35
+#: source/sdl/dialogs/sound_options.cpp:39
+#: source/sdl/dialogs/sound_options.cpp:40
+#: source/sdl/dialogs/game_selection.cpp:40
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
-#: source/sdl/dialogs/video_info.cpp:25 source/sdl/dialogs/gui_options.cpp:20
-#: source/sdl/dialogs/gui_options.cpp:21
-#: source/sdl/dialogs/sound_commands.cpp:241
-#: source/sdl/dialogs/video_options.cpp:64
+#: source/sdl/dialogs/video_info.cpp:25 source/sdl/dialogs/video_options.cpp:64
 #: source/sdl/dialogs/video_options.cpp:66
 #: source/sdl/dialogs/video_options.cpp:68
 #: source/sdl/dialogs/video_options.cpp:119
@@ -1008,13 +1053,7 @@ msgstr "Año : 2006"
 #: source/sdl/dialogs/video_options.cpp:169
 #: source/sdl/dialogs/video_options.cpp:202
 #: source/sdl/dialogs/video_options.cpp:203
-#: source/sdl/dialogs/video_options.cpp:209
-#: source/sdl/dialogs/sound_options.cpp:27
-#: source/sdl/dialogs/sound_options.cpp:32
-#: source/sdl/dialogs/sound_options.cpp:35
-#: source/sdl/dialogs/sound_options.cpp:39
-#: source/sdl/dialogs/sound_options.cpp:40
-#: source/sdl/dialogs/game_selection.cpp:40 source/sdl/gui/menu.cpp:143
+#: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
 #: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
 #: source/sdl/gui/menu.cpp:147
 msgid "Yes"
@@ -1048,6 +1087,10 @@ msgstr "azul"
 msgid "color"
 msgstr ""
 
+#: source/sdl/dialogs/video_options.cpp:198
+msgid "directx (good for hw overlays/blits)"
+msgstr "directx (bueno para superposiciones/blits por hardware)"
+
 #: source/sdl/dialogs/controls.cpp:778
 msgid "each pedal separately"
 msgstr "cada pedal por separado"
@@ -1067,6 +1110,10 @@ msgstr "verde"
 #: source/sdl/dialogs/translator.cpp:673 source/sdl/dialogs/translator.cpp:681
 msgid "hidden"
 msgstr "oculto"
+
+#: source/sdl/dialogs/video_options.cpp:77
+msgid "hq2x/3x"
+msgstr ""
 
 #: source/sdl/gui/tedit.cpp:256
 msgid "label"
@@ -1103,3 +1150,7 @@ msgstr "rojo"
 #: source/sdl/dialogs/romdirs.cpp:51
 msgid "rom dirs"
 msgstr "directorios de roms"
+
+#: source/sdl/dialogs/video_options.cpp:198
+msgid "windib (good for ogl)"
+msgstr "windib (bueno para OpenGL)"
