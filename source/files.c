@@ -50,6 +50,18 @@ char pwd[FILENAME_MAX]; // current working dir, init in main / raine.c
 char *get_shared(char *name) {
   struct stat buf;
   int ret;
+  strcpy(shared,name); // use current path 1st
+  ret = stat(shared,&buf);
+  if (!ret) {
+#ifdef RAINE_WIN32
+      char *end;
+      GetFullPathName(name,FILENAME_MAX,shared,&end);
+#else
+      realpath(name,shared);
+#endif
+      print_debug("get_shared: using direct name access %s\n",shared);
+      return shared;
+  }
 #ifdef RAINE_UNIX
   /* Start by looking in the personnal dir (exe_path) */
   sprintf(shared, "%s%s", dir_cfg.exe_path,name);
@@ -76,18 +88,6 @@ char *get_shared(char *name) {
   if (!ret) {
     print_debug("get_shared: using shared %s\n",shared);
     return shared;
-  }
-  strcpy(shared,name); // use current path then
-  ret = stat(shared,&buf);
-  if (!ret) {
-#ifdef RAINE_WIN32
-      char *end;
-      GetFullPathName(name,FILENAME_MAX,shared,&end);
-#else
-      realpath(name,shared);
-#endif
-      print_debug("get_shared: using direct name access %s\n",shared);
-      return shared;
   }
   // Extreme case : when loading a neocd game we chdir to the game's directory
   // so current directory is lost, so we test the initial working directory
