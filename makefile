@@ -1088,6 +1088,8 @@ locale/raine.pot:
 	rm -f locale/tmp
 
 locale/fr/LC_MESSAGES/raine.mo: locale/french.po
+	msgfmt -c -v -o $@ $<
+
 locale/es/LC_MESSAGES/raine.mo: locale/es.po
 	msgfmt -c -v -o $@ $<
 
