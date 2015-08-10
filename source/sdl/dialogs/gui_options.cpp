@@ -6,7 +6,6 @@
 #include "control.h"
 #include "control_internal.h"
 #include "confile.h"
-#include "translate.h"
 
 extern int do_dirs(int sel); // dirs.cpp
 static menu_item_t gui_menu[14];

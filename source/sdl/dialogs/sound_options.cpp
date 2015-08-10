@@ -8,7 +8,6 @@
 #include "games.h"
 #include "sdl/dialogs/sound_commands.h"
 #include "sound/assoc.h"
-#include "translate.h"
 
 static TMenu *menu;
 

@@ -16,10 +16,7 @@ extern "C" {
 #include <stdarg.h> // this one too by the way (needed by arkanoid.c at least)
 
 #include <string.h>
-#include <libintl.h>
-#include <locale.h> // international dates
-
-#define _(string) gettext(string)
+#include "translate.h"
 
 #ifndef SDL
 #include <allegro.h>

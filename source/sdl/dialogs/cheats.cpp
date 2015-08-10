@@ -6,7 +6,6 @@
 #ifdef HAS_CONSOLE
 #include "sdl/console/scripts.h"
 #endif
-#include "translate.h"
 
 class TCheatDlg : public TMenu
 {

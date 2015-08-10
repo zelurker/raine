@@ -3,6 +3,7 @@
 use strict;
 
 my $file;
+my $func = 0;
 $| = 1;
 while ($file = shift @ARGV) {
 	open(F,"<$file") || die "can't open $file\n";
@@ -14,17 +15,31 @@ while ($file = shift @ARGV) {
 		if (!$active) {
 			if ((/(menu_item_t|DEF_INPUT_EMU|DSW_DATA) .*\=/ && !/;/) || # Declaration of a struct
 				(/\= new /) || # Declaration of an object...
-				(/(print_ingame|print_menu_string|MessageBox|print_tf_state|add_layer_info)/) || # specific function
-				(/ \= "/)) { # Direct string affectation
+				(/\= ?"/ && !/\.[\w_]+ ?\= *"/)) { # Direct string affectation
 				$active = 1;
 			}
 		}
+	   	if (!$func) {
+			if (/(print_ingame|print_menu_string|MessageBox|print_tf_state|add_layer_info) *\(/) { # specific function
+				$func = 1;
+			}
+		}
+
 		# remove eventual _("...") already inserted...
-		$rep -= s/_\("([\w\d ,\(\)\=\<\>\+\'\:\.\-]+)"\)/"$1"/g if ($active);
-		$rep += s/"([\w\d ,\(\)\=\<\>\+\'\:\.\-]+)"/_("$1")/g if ($active);
-		$rep -= s/_\("(\d+)"\)/"$1"/g; # remove numbers only
+		if ($active || ($func && $file =~ /cpp$/)) {
+			$rep -= s/(gettext|_)\("((.|\n)+?)"\)/"$2"/g;
+			$rep += s/"((.|\n)+?)"/_("$1")/g;
+			$rep -= s/_\("([^a-zA-Z]+?)"\)/"$1"/g; # remove no chars
+		} elsif ($func) {
+			$rep -= s/(gettext|_)\("((.|\n)+?)"\)/"$2"/g;
+			$rep += s/"((.|\n)+?)"/gettext("$1")/g;
+			$rep -= s/gettext\("([^a-zA-Z]+?)"\)/"$1"/g; # remove no chars
+		}
+		if (/;/) {
+			$active = 0;
+			$func = 0;
+		}
 		print G;
-		$active = 0 if (/;/);
 	}
 	close(F);
 	if ($rep) {
