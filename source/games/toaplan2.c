@@ -159,13 +159,13 @@ static struct INPUT_INFO input_fixeight[] =
 
 static struct DSW_DATA dsw_data_fix_eight_0[] =
 {
-   { "Max Players",           0x01, 0x02 },
+   { _("Max Players"),           0x01, 0x02 },
    { "2",                     0x00},
    { "3",                     0x01},
    DSW_SCREEN( 0x00, 0x02),
-   { "Shooting Style",        0x04, 0x02 },
-   { "Fully-auto",            0x00},
-   { "Semi-auto",             0x04},
+   { _("Shooting Style"),        0x04, 0x02 },
+   { _("Fully-auto"),            0x00},
+   { _("Semi-auto"),             0x04},
    DSW_DEMO_SOUND( 0x00, 0x08),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x00},
@@ -188,10 +188,10 @@ static struct DSW_DATA dsw_data_fix_eight_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "Every 500k",            0x00},
-   { "Every 300k",            0x04},
-   { "300k only",             0x08},
-   { "None",                  0x0C},
+   { _("Every 500k"),            0x00},
+   { _("Every 300k"),            0x04},
+   { _("300k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -206,21 +206,21 @@ static struct DSW_DATA dsw_data_fix_eight_1[] =
 
 static struct DSW_DATA dsw_data_fix_eight_2[] =
 {
-   { "Territory",             0x0F, 0x0E },     // WHY was there 0x10 ? There are 14 values !
-   { "Europe",                0x09},
-   { "Korea (Taito)",         0x00},
-   { "Korea",                 0x01},
-   { "Hong Kong (Taito)",     0x02},
-   { "Hong Kong",             0x03},
-   { "Taiwan (Taito)",        0x04},
-   { "Taiwan",                0x05},
-   { "Asia (Taito)",          0x06},
-   { "Asia",                  0x07},
-   { "Europe (Taito)",        0x08},
-   { "USA (Taito America)",   0x0A},
-   { "USA",                   0x0B},
-   { "Japan",                 0x0E},
-   { "Japan (Taito)",         0x0F},
+   { _("Territory"),             0x0F, 0x0E },     // WHY was there 0x10 ? There are 14 values !
+   { _("Europe"),                0x09},
+   { _("Korea (Taito)"),         0x00},
+   { _("Korea"),                 0x01},
+   { _("Hong Kong (Taito)"),     0x02},
+   { _("Hong Kong"),             0x03},
+   { _("Taiwan (Taito)"),        0x04},
+   { _("Taiwan"),                0x05},
+   { _("Asia (Taito)"),          0x06},
+   { _("Asia"),                  0x07},
+   { _("Europe (Taito)"),        0x08},
+   { _("USA (Taito America)"),   0x0A},
+   { _("USA"),                   0x0B},
+   { _("Japan"),                 0x0E},
+   { _("Japan (Taito)"),         0x0F},
    { NULL,                    0,   },
 };
 
@@ -407,7 +407,7 @@ static struct INPUT_INFO input_kbash[] =
 
 static struct DSW_DATA dsw_data_knuckle_bash_0[] =
 {
-   { "Discount",              0x01, 0x02 },
+   { _("Discount"),              0x01, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x01},
    DSW_SCREEN( 0x00, 0x02),
@@ -434,16 +434,16 @@ static struct DSW_DATA dsw_data_knuckle_bash_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "100k then every 400k",  0x00},     // "100000 400000" in "test mode"
-   { "100k only",             0x04},
-   { "200k only",             0x08},
-   { "None",                  0x0C},
+   { _("100k then every 400k"),  0x00},     // "100000 400000" in _("test mode")
+   { _("100k only"),             0x04},
+   { _("200k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "2",                     0x00},
    { "4",                     0x10},
    { "3",                     0x20},
    { "1",                     0x30},
-   { MSG_CHEAT,               0x40, 0x02 },     // This has an effect only in "test mode"
+   { MSG_CHEAT,               0x40, 0x02 },     // This has an effect only in _("test mode")
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
    DSW_CONTINUE_PLAY( 0x00, 0x80),
@@ -452,29 +452,29 @@ static struct DSW_DATA dsw_data_knuckle_bash_1[] =
 
 static struct DSW_DATA dsw_data_knuckle_bash_2[] =
 {
-   { "Territory",             0x0F, 0x09 },     // WHY was there 0x10 ? There are 9 values !
-   { "Japan",                 0x00},
-   { "USA, Europe (Atari)",   0x01, 0x00 },
-   { "Europe, USA (Atari)",   0x02, 0x00 },
-   { "Korea",                 0x03},
-   { "Hong Kong",             0x04},
-   { "South East Asia",       0x06},
-   { "Taiwan",                0x07},
-   { "USA",                   0x09},
-   { "Europe",                0x0A},
+   { _("Territory"),             0x0F, 0x09 },     // WHY was there 0x10 ? There are 9 values !
+   { _("Japan"),                 0x00},
+   { _("USA, Europe (Atari)"),   0x01, 0x00 },
+   { _("Europe, USA (Atari)"),   0x02, 0x00 },
+   { _("Korea"),                 0x03},
+   { _("Hong Kong"),             0x04},
+   { _("South East Asia"),       0x06},
+   { _("Taiwan"),                0x07},
+   { _("USA"),                   0x09},
+   { _("Europe"),                0x0A},
    { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_kbash2[] =
 {
-   { "Territory",             0x0F, 0x07 },     // WHY was there 0x10 ? There are 9 values !
-   { "Japan (taito license)",                 0x00},
-   { "Korea (Unite license)", 0x03},
-   { "Hong Kong",             0x04},
-   { "Taiwan",                0x05},
-   { "South East Asia (Charterfield License)",             0x06},
-   { "South East Asia",       0x0e},
-   { "Korea",                0x0b},
+   { _("Territory"),             0x0F, 0x07 },     // WHY was there 0x10 ? There are 9 values !
+   { _("Japan (taito license)"),                 0x00},
+   { _("Korea (Unite license)"), 0x03},
+   { _("Hong Kong"),             0x04},
+   { _("Taiwan"),                0x05},
+   { _("South East Asia (Charterfield License)"),             0x06},
+   { _("South East Asia"),       0x0e},
+   { _("Korea"),                0x0b},
    { NULL,                    0,   },
 };
 
@@ -554,7 +554,7 @@ static struct INPUT_INFO input_snowbro2[] =
 
 static struct DSW_DATA dsw_data_snow_bros_2_0[] =
 {
-   { "Discount",              0x01, 0x02 },
+   { _("Discount"),              0x01, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x01},
    DSW_SCREEN( 0x00, 0x02),
@@ -581,10 +581,10 @@ static struct DSW_DATA dsw_data_snow_bros_2_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "100k only",             0x00},
-   { "100k and 500k",         0x04},     // "100000 500000" in "test mode"
-   { "200k only",             0x08},
-   { "None",                  0x0C},
+   { _("100k only"),             0x00},
+   { _("100k and 500k"),         0x04},     // "100000 500000" in _("test mode")
+   { _("200k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "4",                     0x10},
@@ -593,7 +593,7 @@ static struct DSW_DATA dsw_data_snow_bros_2_1[] =
    { MSG_CHEAT,               0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { "Max Players",           0x80, 0x02 },
+   { _("Max Players"),           0x80, 0x02 },
    { "4",                     0x00},
    { "2",                     0x80},
    { NULL,                    0,   },
@@ -601,15 +601,15 @@ static struct DSW_DATA dsw_data_snow_bros_2_1[] =
 
 static struct DSW_DATA dsw_data_snow_bros_2_2[] =
 {
-   { "Language",              0x1C, 0x07 },     // WHY was there 0x3C ? Bit 5 is used below !
-   { "Japan/Japanese",        0x00},
-   { "America/English",       0x04},
-   { "Europe/English",        0x08},
-   { "Korea/Japanese",        0x0C},
-   { "HongKong/Japanese",     0x10},
-   { "Taiwan/Japanese",       0x14},
-   { "Asia/Japanese",         0x18},
-   { "All Rights Reserved",   0x20, 0x02 },
+   { _("Language"),              0x1C, 0x07 },     // WHY was there 0x3C ? Bit 5 is used below !
+   { _("Japan/Japanese"),        0x00},
+   { _("America/English"),       0x04},
+   { _("Europe/English"),        0x08},
+   { _("Korea/Japanese"),        0x0C},
+   { _("HongKong/Japanese"),     0x10},
+   { _("Taiwan/Japanese"),       0x14},
+   { _("Asia/Japanese"),         0x18},
+   { _("All Rights Reserved"),   0x20, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x20},
    { NULL,                    0,   },
@@ -691,10 +691,10 @@ static struct DSW_DATA dsw_data_tatsujin_2_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "70k then every 200k",   0x00},     // "70000 200000" in "test mode"
-   { "100k then every 250k",  0x04},     // "100000 250000" in "test mode"
-   { "100k only",             0x08},
-   { "200k only",             0x0C},
+   { _("70k then every 200k"),   0x00},     // "70000 200000" in _("test mode")
+   { _("100k then every 250k"),  0x04},     // "100000 250000" in _("test mode")
+   { _("100k only"),             0x08},
+   { _("200k only"),             0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -709,14 +709,14 @@ static struct DSW_DATA dsw_data_tatsujin_2_1[] =
 
 static struct DSW_DATA dsw_data_tatsujin_2_2[] =
 {
-   { "Language",              0x0F, 0x07 },
-   { "Japan/Tatsujin2",       0x00},
-   { "USA/Truxton2",          0x01},
-   { "Europe/Truxton2",       0x02},
-   { "HongKong/Tatsujin2",    0x03},
-   { "Korea/Tatsujin2",       0x04},
-   { "Taiwan/Tatsujin2",      0x05},
-   { "SE Asia/Tatsujin2",     0x06},
+   { _("Language"),              0x0F, 0x07 },
+   { _("Japan/Tatsujin2"),       0x00},
+   { _("USA/Truxton2"),          0x01},
+   { _("Europe/Truxton2"),       0x02},
+   { _("HongKong/Tatsujin2"),    0x03},
+   { _("Korea/Tatsujin2"),       0x04},
+   { _("Taiwan/Tatsujin2"),      0x05},
+   { _("SE Asia/Tatsujin2"),     0x06},
    { NULL,                    0,   },
 };
 
@@ -801,10 +801,10 @@ static struct DSW_DATA dsw_data_dogyuun_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "200k only",             0x00},
-   { "200k, 400k and 600k",   0x04, 0x00 },     // "200000 every - max 3" in "test mode"
-   { "400k only",             0x08},
-   { "None",                  0x0C},
+   { _("200k only"),             0x00},
+   { _("200k, 400k and 600k"),   0x04, 0x00 },     // _("200000 every - max 3") in _("test mode")
+   { _("400k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -819,16 +819,16 @@ static struct DSW_DATA dsw_data_dogyuun_1[] =
 
 static struct DSW_DATA dsw_data_dogyuun_2[] =
 {
-   { "Version",               0x0F, 0x09 },
-   { "Japan",                 0x00},
-   { "America",               0x01},
-   { "America - Atari",       0x02},
-   { "Europe",                0x03},
-   { "Hong Kong",             0x04},
-   { "Korea",                 0x05},
-   { "Taiwan",                0x06},
-   { "SE Asia",               0x08},
-   { "Japan - Taito",         0x0F},
+   { _("Version"),               0x0F, 0x09 },
+   { _("Japan"),                 0x00},
+   { _("America"),               0x01},
+   { _("America - Atari"),       0x02},
+   { _("Europe"),                0x03},
+   { _("Hong Kong"),             0x04},
+   { _("Korea"),                 0x05},
+   { _("Taiwan"),                0x06},
+   { _("SE Asia"),               0x08},
+   { _("Japan - Taito"),         0x0F},
    { NULL,                    0,   },
 };
 
@@ -908,10 +908,10 @@ static struct DSW_DATA dsw_data_whoopee_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "200k then every 300k",  0x00},     // "200000 300000 every" in "test mode"
-   { "150k then every 200k",  0x04},     // "150000 200000 every" in "test mode"
-   { "200k only",             0x08},
-   { "None",                  0x0C},
+   { _("200k then every 300k"),  0x00},     // _("200000 300000 every") in _("test mode")
+   { _("150k then every 200k"),  0x04},     // _("150000 200000 every") in _("test mode")
+   { _("200k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -925,18 +925,18 @@ static struct DSW_DATA dsw_data_whoopee_1[] =
 
 static struct DSW_DATA dsw_data_whoopee_2[] =
 {
-   { "Language",              0x07, 0x08 },     // WHY was there 0x0F ? Bit 3 is used below !
-   { "Japan/Whoopee",         0x00},
-   { "Asia/PipiBibi",         0x01},
-   { "HongKong/PipiBibi",     0x02},
-   { "Taiwan/PipiBibi",       0x03},
-   { "USA/PipiBibi",          0x04},
-   { "USA (Romstar)/PipiBibi",0x05},
-   { "Europe/PipiBibi",       0x06},
-   { "Europe (Nova)/PipiBibi",0x07},
-   { "Nudity",                0x08, 0x02 },
-   { "Low",                   0x00},
-   { "High, but censored",    0x08, 0x00 },
+   { _("Language"),              0x07, 0x08 },     // WHY was there 0x0F ? Bit 3 is used below !
+   { _("Japan/Whoopee"),         0x00},
+   { _("Asia/PipiBibi"),         0x01},
+   { _("HongKong/PipiBibi"),     0x02},
+   { _("Taiwan/PipiBibi"),       0x03},
+   { _("USA/PipiBibi"),          0x04},
+   { _("USA (Romstar)/PipiBibi"),0x05},
+   { _("Europe/PipiBibi"),       0x06},
+   { _("Europe (Nova)/PipiBibi"),0x07},
+   { _("Nudity"),                0x08, 0x02 },
+   { _("Low"),                   0x00},
+   { _("High, but censored"),    0x08, 0x00 },
    { NULL,                    0,   },
 };
 
@@ -1027,17 +1027,17 @@ DSW_SCREEN( 0x00, 0x02),
 
 static struct DSW_DATA dsw_data_pipi_and_bibi_2[] =
 {
-   { "Language",              0x07, 0x07 },     // WHY was there 0x0F ? Bit 3 is used below !
-   { "Japan (Ryouta)/Whoopee",0x00},
-   { "HongKong/PipiBibi",     0x01},
-   { "World/PipiBibi",        0x02},
-   { "America/PipiBibi",      0x04},
-   { "Europe/PipiBibi",       0x05},
-   { "Spain&Portugal/PipiBibi",0x06},
-   { "World (Ryouta)/PipiBibi",0x07},
-   { "Nudity",                0x08, 0x02 },
-   { "Low",                   0x00},
-   { "High, but censored",    0x08, 0x00 },
+   { _("Language"),              0x07, 0x07 },     // WHY was there 0x0F ? Bit 3 is used below !
+   { _("Japan (Ryouta)/Whoopee"),0x00},
+   { _("HongKong/PipiBibi"),     0x01},
+   { _("World/PipiBibi"),        0x02},
+   { _("America/PipiBibi"),      0x04},
+   { _("Europe/PipiBibi"),       0x05},
+   { _("Spain&Portugal/PipiBibi"),0x06},
+   { _("World (Ryouta)/PipiBibi"),0x07},
+   { _("Nudity"),                0x08, 0x02 },
+   { _("Low"),                   0x00},
+   { _("High, but censored"),    0x08, 0x00 },
    { NULL,                    0,   },
 };
 
@@ -1093,17 +1093,17 @@ static struct DSW_DATA dsw_data_teki_paki_1[] =
 
 static struct DSW_DATA dsw_data_teki_paki_2[] =
 {
-   { "Version",               0x0F, 0x0A },
-   { "Japan",                 0x00},
-   { "America",               0x01},
-   { "Europe",                0x02},
-   { "Hong Kong",             0x03},
-   { "Korea",                 0x04},
-   { "Taiwan",                0x05},
-   { "Taiwan - Spacy",        0x06},
-   { "America - Romstar",     0x07},
-   { "Hong Kong - Honest",    0x08},
-   { "Japan - Tecmo",         0x0F},
+   { _("Version"),               0x0F, 0x0A },
+   { _("Japan"),                 0x00},
+   { _("America"),               0x01},
+   { _("Europe"),                0x02},
+   { _("Hong Kong"),             0x03},
+   { _("Korea"),                 0x04},
+   { _("Taiwan"),                0x05},
+   { _("Taiwan - Spacy"),        0x06},
+   { _("America - Romstar"),     0x07},
+   { _("Hong Kong - Honest"),    0x08},
+   { _("Japan - Tecmo"),         0x0F},
    { NULL,                    0,   },
 };
 
@@ -1155,10 +1155,10 @@ static struct DSW_DATA dsw_data_ghox_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "100k then every 200k",  0x00},     // "100000 200000 every" in "test mode"
-   { "100k then every 300k",  0x04},     // "100000 300000 every" in "test mode"
-   { "100k only",             0x08},
-   { "None",                  0x0C},
+   { _("100k then every 200k"),  0x00},     // _("100000 200000 every") in _("test mode")
+   { _("100k then every 300k"),  0x04},     // _("100000 300000 every") in _("test mode")
+   { _("100k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -1172,23 +1172,23 @@ static struct DSW_DATA dsw_data_ghox_1[] =
 
 static struct DSW_DATA dsw_data_ghox_2[] =
 {
-   { "Language",              0x0F, 0x10 },
-   { "Japan",                 0x00},
-   { "America",               0x01},
-   { "Europe",                0x02},
-   { "Hong Kong (Honest)",    0x03},
-   { "Korea",                 0x04},
-   { "Taiwan",                0x05},
-   { "Spain & Portugal (APM)",0x06},
-   { "Italy (Star Elect)",    0x07},
-   { "UK (JP Leisure)",       0x08},
-   { "America (Romstar)",     0x09},
-   { "Europe (Nova)",         0x0A},
-   { "USA (Taito America)",   0x0B},
-   { "USA (Taito Japan)",     0x0C},
-   { "Europe (Taito Japan)",  0x0D},
-   { "Japan (null)",          0x0E},
-   { "Japan (Taito Corp)",    0x0F},
+   { _("Language"),              0x0F, 0x10 },
+   { _("Japan"),                 0x00},
+   { _("America"),               0x01},
+   { _("Europe"),                0x02},
+   { _("Hong Kong (Honest)"),    0x03},
+   { _("Korea"),                 0x04},
+   { _("Taiwan"),                0x05},
+   { _("Spain & Portugal (APM)"),0x06},
+   { _("Italy (Star Elect)"),    0x07},
+   { _("UK (JP Leisure)"),       0x08},
+   { _("America (Romstar)"),     0x09},
+   { _("Europe (Nova)"),         0x0A},
+   { _("USA (Taito America)"),   0x0B},
+   { _("USA (Taito Japan)"),     0x0C},
+   { _("Europe (Taito Japan)"),  0x0D},
+   { _("Japan (null)"),          0x0E},
+   { _("Japan (Taito Corp)"),    0x0F},
    { NULL,                    0,   },
 };
 
@@ -1240,10 +1240,10 @@ static struct DSW_DATA dsw_data_v_five_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "300k and 800k",         0x00},
-   { "300k then every 800k",  0x04},     // "300000 800000 every" in "test mode"
-   { "200k only",             0x08},
-   { "None",                  0x0C},
+   { _("300k and 800k"),         0x00},
+   { _("300k then every 800k"),  0x04},     // _("300000 800000 every") in _("test mode")
+   { _("200k only"),             0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -1258,9 +1258,9 @@ static struct DSW_DATA dsw_data_v_five_1[] =
 
 static struct DSW_DATA dsw_data_v_five_2[] =
 {
-   { "Language",              0x0F, 0x02 },
-   { "Japanese (Toaplan)",    0x00},
-   { "Japanese (Taito)",      0x03},
+   { _("Language"),              0x0F, 0x02 },
+   { _("Japanese (Toaplan)"),    0x00},
+   { _("Japanese (Taito)"),      0x03},
    { NULL,                    0,   },
 };
 
@@ -1307,18 +1307,18 @@ static struct DSW_DATA dsw_data_grind_stormer_0[] =
 
 static struct DSW_DATA dsw_data_grind_stormer_2[] =
 {
-   { "Language",              0x0F, 0x0B },
-   { "Korea, Unite Trading"},
-   { "Korea",                 0x01},
-   { "Hong Kong",             0x02},
-   { "Hong Kong, Charterfield",0x03, 0x00 },
-   { "Taiwan, Anomoto Int.",  0x04, 0x00 },
-   { "Taiwan",                0x05},
-   { "SE Asia, Charterfield", 0x06, 0x00 },
-   { "SE Asia",               0x07},
-   { "Europe",                0x08},
-   { "USA, Sammy Corp.",      0x0A, 0x00 },
-   { "USA",                   0x0B},
+   { _("Language"),              0x0F, 0x0B },
+   { _("Korea, Unite Trading")},
+   { _("Korea"),                 0x01},
+   { _("Hong Kong"),             0x02},
+   { _("Hong Kong, Charterfield"),0x03, 0x00 },
+   { _("Taiwan, Anomoto Int."),  0x04, 0x00 },
+   { _("Taiwan"),                0x05},
+   { _("SE Asia, Charterfield"), 0x06, 0x00 },
+   { _("SE Asia"),               0x07},
+   { _("Europe"),                0x08},
+   { _("USA, Sammy Corp."),      0x0A, 0x00 },
+   { _("USA"),                   0x0B},
    { NULL,                    0,   },
 };
 
@@ -1405,10 +1405,10 @@ static struct DSW_DATA dsw_data_shippu_mahoudai_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "Every 300k",            0x00},
-   { "200k and 500k",         0x04},
-   { "200k",                  0x08},
-   { "None",                  0x0C},
+   { _("Every 300k"),            0x00},
+   { _("200k and 500k"),         0x04},
+   { _("200k"),                  0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -1423,15 +1423,15 @@ static struct DSW_DATA dsw_data_shippu_mahoudai_1[] =
 
 static struct DSW_DATA dsw_data_shippu_mahoudai_2[] =
 {
-   { "Language",              0x0F, 0x08 },
-   { "Japan",                 0x00},
-   { "USA",                   0x02},
-   { "Europe",                0x04},
-   { "South East Asia",       0x06},
-   { "China",                     0x08},
-   { "Korea",                     0x0A},
-   { "Hong Kong",                     0x0C},
-   { "Taiwan",                     0x0E},
+   { _("Language"),              0x0F, 0x08 },
+   { _("Japan"),                 0x00},
+   { _("USA"),                   0x02},
+   { _("Europe"),                0x04},
+   { _("South East Asia"),       0x06},
+   { _("China"),                     0x08},
+   { _("Korea"),                     0x0A},
+   { _("Hong Kong"),                     0x0C},
+   { _("Taiwan"),                     0x0E},
    { NULL,                    0,   },
 };
 
@@ -1516,9 +1516,9 @@ static struct ROM_INFO rom_batrider[] =
 static struct DSW_DATA dsw_data_batrider_0[] =
 {
    DSW_TEST_MODE( 0x01, 0x00),
-   { "Credits to Start",      0x02, 0x02 },     // "Stick Mode" when "Free Play"
-   { "1 Credit",              0x00},     //   - "Normal"
-   { "2 Credits",             0x02},     //   - "Special"
+   { _("Credits to Start"),      0x02, 0x02 },     // _("Stick Mode") when _("Free Play")
+   { _("1 Credit"),              0x00},     //   - _("Normal")
+   { _("2 Credits"),             0x02},     //   - _("Special")
    { MSG_COIN1,               0x1C, 0x08 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x04},
@@ -1537,14 +1537,14 @@ static struct DSW_DATA dsw_data_batrider_0[] =
    { MSG_3COIN_1PLAY,         0xA0},
    { MSG_4COIN_1PLAY,         0xC0},
    { MSG_1COIN_1PLAY,         0xE0},
-/* Dip Switches when "Free Play" :
-   { "Hit Score",             0x20, 0x02 },
+/* Dip Switches when _("Free Play") :
+   { _("Hit Score"),             0x20, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x20},
-   { "Sound Effect",          0x40, 0x02 },
+   { _("Sound Effect"),          0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { "Music",                 0x80, 0x02 },
+   { _("Music"),                 0x80, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x80},
 */
@@ -1558,7 +1558,7 @@ static struct DSW_DATA dsw_data_batrider_1[] =
    { MSG_EASY,                0x01},
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
-   { "Timer",                 0x0C, 0x04 },
+   { _("Timer"),                 0x0C, 0x04 },
    { MSG_NORMAL,              0x00},
    { MSG_EASY,                0x04},
    { MSG_HARD,                0x08},
@@ -1569,10 +1569,10 @@ static struct DSW_DATA dsw_data_batrider_1[] =
    { "2",                     0x20},
    { "1",                     0x30},
    { MSG_EXTRA_LIFE,          0xC0, 0x04 },
-   { "every 1500k",           0x00},
-   { "every 1000k",           0x40},
-   { "every 2000k",           0x80},
-   { "None",                  0xC0},
+   { _("every 1500k"),           0x00},
+   { _("every 1000k"),           0x40},
+   { _("every 2000k"),           0x80},
+   { _("None"),                  0xC0},
    { NULL,                    0,   },
 };
 
@@ -1580,20 +1580,20 @@ static struct DSW_DATA dsw_data_batrider_2[] =
 {
    DSW_SCREEN( 0x00, 0x01),
    DSW_DEMO_SOUND( 0x00, 0x02),
-   { "Stage Edit",            0x04, 0x02 },
+   { _("Stage Edit"),            0x04, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x04},
    DSW_CONTINUE_PLAY( 0x00, 0x08),
    { MSG_CHEAT,               0x10, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x10},
-   { "Guest Player",           0x20, 0x02 },     // "Guest Player" when "Free Play"
+   { _("Guest Player"),           0x20, 0x02 },     // _("Guest Player") when _("Free Play")
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x20},
-   { "Player Select",           0x40, 0x02 },     // "Player Select" when "Free Play"
+   { _("Player Select"),           0x40, 0x02 },     // _("Player Select") when _("Free Play")
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { "Special Course",           0x80, 0x02 },     // "Special Course" when "Free Play"
+   { _("Special Course"),           0x80, 0x02 },     // _("Special Course") when _("Free Play")
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x80},
    { NULL,                    0,   },
@@ -1744,9 +1744,9 @@ static struct ROM_INFO rom_bgaregh[] =
 static struct DSW_DATA dsw_data_battle_garegga_0[] =
 {
    DSW_TEST_MODE( 0x01, 0x00),
-   { "Credits to Start",      0x02, 0x02 },
-   { "1 Credit",              0x00},
-   { "2 Credits",             0x02},
+   { _("Credits to Start"),      0x02, 0x02 },
+   { _("1 Credit"),              0x00},
+   { _("2 Credits"),             0x02},
    { MSG_COIN1,               0x1C, 0x08 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x04},
@@ -1765,14 +1765,14 @@ static struct DSW_DATA dsw_data_battle_garegga_0[] =
    { MSG_3COIN_1PLAY,         0xA0},
    { MSG_4COIN_1PLAY,         0xC0},
    { MSG_1COIN_1PLAY,         0xE0},
-/* Dip Switches when "Free Play" :
-   { "Stick Mode",            0x20, 0x02 },
-   { "Special",               0x00},
-   { "Normal",                0x20},
-   { "Sound Effect",          0x40, 0x02 },
+/* Dip Switches when _("Free Play") :
+   { _("Stick Mode"),            0x20, 0x02 },
+   { _("Special"),               0x00},
+   { _("Normal"),                0x20},
+   { _("Sound Effect"),          0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { "Music",                 0x80, 0x02 },
+   { _("Music"),                 0x80, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x80},
 */
@@ -1795,23 +1795,23 @@ static struct DSW_DATA dsw_data_battle_garegga_1[] =
    { "1",                     0x30},
    { "5",                     0x40},
    { "6",                     0x50},
-   { "Unlimited",             0x60},
-   { "Invincibility",         0x70},
-   { MSG_EXTRA_LIFE,          0x80, 0x02 },     // New values if "Territory" != "Japan" :
-   { "Every 1000k",           0x00},     //   - "Every 2000k"
-   { "1000k and 2000k",       0x80},     //   - "None"
+   { _("Unlimited"),             0x60},
+   { _("Invincibility"),         0x70},
+   { MSG_EXTRA_LIFE,          0x80, 0x02 },     // New values if _("Territory") != _("Japan") :
+   { _("Every 1000k"),           0x00},     //   - _("Every 2000k")
+   { _("1000k and 2000k"),       0x80},     //   - _("None")
    { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_battle_garegga_2[] =
 {
-   { "Territory",             0x03, 0x04 },
-   { "Japan",                 0x00},
-   { "Europe",                0x01},
-   { "USA",                   0x02},
-   { "Asia",                  0x03},
+   { _("Territory"),             0x03, 0x04 },
+   { _("Japan"),                 0x00},
+   { _("Europe"),                0x01},
+   { _("USA"),                   0x02},
+   { _("Asia"),                  0x03},
    DSW_CONTINUE_PLAY( 0x00, 0x04),
-   { "Stage Edit",            0x08, 0x02 },
+   { _("Stage Edit"),            0x08, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x08},
    { NULL,                    0,   },
@@ -1833,23 +1833,23 @@ static struct DSW_DATA dsw_data_battle_garegc_1[] =
    { "1",                     0x30},
    { "5",                     0x40},
    { "6",                     0x50},
-   { "Unlimited",             0x60},
-   { "Invincibility",         0x70},
-   { MSG_EXTRA_LIFE,          0x80, 0x02 },     // New values if "Territory" == "Japan" :
-   { "Every 2000k",           0x00},     //   - "Every 1000k"
-   { "None",                  0x80},     //   - "1000k and 2000k"
+   { _("Unlimited"),             0x60},
+   { _("Invincibility"),         0x70},
+   { MSG_EXTRA_LIFE,          0x80, 0x02 },     // New values if _("Territory") == _("Japan") :
+   { _("Every 2000k"),           0x00},     //   - _("Every 1000k")
+   { _("None"),                  0x80},     //   - _("1000k and 2000k")
    { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_battle_garegc_2[] =
 {
-   { "Territory",             0x03, 0x04 },
-   { "Japan",                 0x00},
-   { "Denmark",               0x01},
-   { "USA",                   0x02},
-   { "China",                 0x03},
+   { _("Territory"),             0x03, 0x04 },
+   { _("Japan"),                 0x00},
+   { _("Denmark"),               0x01},
+   { _("USA"),                   0x02},
+   { _("China"),                 0x03},
    DSW_CONTINUE_PLAY( 0x00, 0x04),
-   { "Stage Edit",            0x08, 0x02 },
+   { _("Stage Edit"),            0x08, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x08},
    { NULL,                    0,   },
@@ -1891,9 +1891,9 @@ static struct ROM_INFO rom_batsugun[] =
 
 static struct DSW_DATA dsw_data_batsugun_0[] =
 {
-   { "Continue",              0x01, 0x02 },
+   { _("Continue"),              0x01, 0x02 },
    { MSG_NORMAL,              0x00},
-   { "Discount",              0x01},
+   { _("Discount"),              0x01},
    DSW_SCREEN( 0x00, 0x02),
    DSW_TEST_MODE( 0x04, 0x00),
    DSW_DEMO_SOUND( 0x00, 0x08),
@@ -1918,10 +1918,10 @@ static struct DSW_DATA dsw_data_batsugun_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { "1000K only",            0x00},
-   { "500k and every 600k",   0x04},
-   { "1500k only",            0x08},
-   { "None",                  0x0C},
+   { _("1000K only"),            0x00},
+   { _("500k and every 600k"),   0x04},
+   { _("1500k only"),            0x08},
+   { _("None"),                  0x0C},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x00},
    { "5",                     0x10},
@@ -1936,21 +1936,21 @@ static struct DSW_DATA dsw_data_batsugun_1[] =
 
 static struct DSW_DATA dsw_data_batsugun_2[] =
 {
-   { "Territory",             0x09, 14 },
-   { "Korea (Unite Trading)", 0x00},
-   { "Korea",                 0x01},
-   { "Hong Kong (Taito)",     0x02},
-   { "Hong Kong",             0x03},
-   { "Taiwan (Taito)",        0x04},
-   { "Taiwan",                0x05},
-   { "South East Asia(Taito)",0x06},
-   { "South East Asia",       0x07},
-   { "Europe (Taito)",        0x08},
-   { "Europe",                0x09},
-   { "USA (Taito)",           0x0A},
-   { "USA",                   0x0B},
-   { "Japan (Taito)",         0x0C},
-   { "Japan",                 0x0E},
+   { _("Territory"),             0x09, 14 },
+   { _("Korea (Unite Trading)"), 0x00},
+   { _("Korea"),                 0x01},
+   { _("Hong Kong (Taito)"),     0x02},
+   { _("Hong Kong"),             0x03},
+   { _("Taiwan (Taito)"),        0x04},
+   { _("Taiwan"),                0x05},
+   { _("South East Asia(Taito)"),0x06},
+   { _("South East Asia"),       0x07},
+   { _("Europe (Taito)"),        0x08},
+   { _("Europe"),                0x09},
+   { _("USA (Taito)"),           0x0A},
+   { _("USA"),                   0x0B},
+   { _("Japan (Taito)"),         0x0C},
+   { _("Japan"),                 0x0E},
    { NULL,                    0,   },
 };
 
@@ -6057,9 +6057,9 @@ static void execute_bbakraid() {
 static struct DSW_DATA dsw_data_bbakraid_0[] =
 {
    DSW_TEST_MODE( 0x01, 0x00),
-   { "Credits to Start",      0x02, 0x02 },
-   { "1 Credit",              0x00},
-   { "2 Credits",             0x02},
+   { _("Credits to Start"),      0x02, 0x02 },
+   { _("1 Credit"),              0x00},
+   { _("2 Credits"),             0x02},
    { MSG_COIN1,               0x1C, 0x08 },
    { MSG_1COIN_1PLAY,         0x00},
    { MSG_1COIN_2PLAY,         0x04},
@@ -6078,17 +6078,17 @@ static struct DSW_DATA dsw_data_bbakraid_0[] =
    { MSG_3COIN_1PLAY,         0xA0},
    { MSG_4COIN_1PLAY,         0xC0},
    { MSG_1COIN_1PLAY,         0xE0},
-/* Dip Switches when "Free Play" :
-   { "Stick Mode",            0x20, 0x02 },
-   { "Normal",                0x00},
-   { "Special",               0x20},
-   { "Hit Score",             0x20, 0x02 },
+/* Dip Switches when _("Free Play") :
+   { _("Stick Mode"),            0x20, 0x02 },
+   { _("Normal"),                0x00},
+   { _("Special"),               0x20},
+   { _("Hit Score"),             0x20, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x20},
-   { "Sound Effect",          0x40, 0x02 },
+   { _("Sound Effect"),          0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
-   { "Music",                 0x80, 0x02 },
+   { _("Music"),                 0x80, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x80},
 */
@@ -6102,7 +6102,7 @@ static struct DSW_DATA dsw_data_bbakraid_1[] =
    { MSG_EASY,                0x01},
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
-   { "Timer",                 0x0C, 0x04 },
+   { _("Timer"),                 0x0C, 0x04 },
    { MSG_NORMAL,              0x00},
    { MSG_EASY,                0x04},
    { MSG_HARD,                0x08},
@@ -6113,10 +6113,10 @@ static struct DSW_DATA dsw_data_bbakraid_1[] =
    { "2",                     0x20},
    { "1",                     0x30},
    { MSG_EXTRA_LIFE,          0xC0, 0x04 },
-   { "every 2000k",           0x00},     // "200000" is displayed in 'bbakraid'
-   { "every 3000k",           0x40},     // "300000" is displayed in 'bbakraid'
-   { "every 4000k",           0x80},     // "400000" is displayed in 'bbakraid'
-   { "None",                  0xC0},
+   { _("every 2000k"),           0x00},     // "200000" is displayed in 'bbakraid'
+   { _("every 3000k"),           0x40},     // "300000" is displayed in 'bbakraid'
+   { _("every 4000k"),           0x80},     // "400000" is displayed in 'bbakraid'
+   { _("None"),                  0xC0},
    { NULL,                    0,   },
 };
 
@@ -6124,16 +6124,16 @@ static struct DSW_DATA dsw_data_bbakraid_2[] =
 {
    DSW_SCREEN( 0x00, 0x01),
    DSW_DEMO_SOUND( 0x00, 0x02),
-   { "Stage Edit",            0x04, 0x02 },
+   { _("Stage Edit"),            0x04, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON ,                 0x04},
    DSW_CONTINUE_PLAY( 0x00, 0x08),
    { MSG_CHEAT,               0x10, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x10},
-   { "Score Ranking",         0x20, 0x02 },     // What is this Dip Switch supposed to do ?
-   { "Save",                  0x00},
-   { "No Save",               0x20},     // I can't confirm this one 8(
+   { _("Score Ranking"),         0x20, 0x02 },     // What is this Dip Switch supposed to do ?
+   { _("Save"),                  0x00},
+   { _("No Save"),               0x20},     // I can't confirm this one 8(
    { MSG_DSWC_BIT7,           0x40, 0x02 },     // Unknown ! Region switch ?
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},

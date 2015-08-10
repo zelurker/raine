@@ -84,7 +84,7 @@ static int do_update_block(int sel) {
     char *name = strrchr(picture,'/');
     SDL_Surface *img = IMG_Load(picture);
     if (img->format->BitsPerPixel != 8) {
-      MessageBox("Error","This picture isn't 8bpp");
+      MessageBox(_("Error"),_("This picture isn't 8bpp"));
       SDL_FreeSurface(img);
       return 0;
     }
@@ -96,7 +96,7 @@ static int do_update_block(int sel) {
     if (!fmap) {
       char error[256];
       sprintf(error,"no map %s",map);
-      MessageBox("Error",error);
+      MessageBox(_("Error"),error);
       return 0;
     }
     char last_name[30];
@@ -114,7 +114,7 @@ static int do_update_block(int sel) {
 	if (!fspr) {
 	  char error[128];
 	  sprintf(error,"could not open %s",path);
-	  MessageBox("Error",path);
+	  MessageBox(_("Error"),path);
 	  break;
 	}
 	printf("%s:\n",spr);
@@ -176,7 +176,7 @@ static menu_item_t neocd_menu[] =
 { _("Exit to"), &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
   {_("NeoGeo Logo"), _("CD Interface"), _("Test mode"), _("Config mode") } },
   { _("Loading animations speed"), NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
-    { _("Off"), _("CD 1x (150 Kb/s)"), "2x", "4x", _("8x (default)"), "16x", "32x", "48x" } },
+    { _("Off"), _("CD 1x (150 Kb/s)"), _("2x"), _("4x"), _("8x (default)"), _("16x"), _("32x"), _("48x") } },
   { _("Update neocd sprite block"), &do_update_block },
   { _("Allow speed hacks"), NULL, &allowed_speed_hacks, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Raster effects"), NULL, &disable_irq1, 2, { 0, 1 }, { _("Enabled"), _("Disabled") }},
@@ -228,7 +228,7 @@ int do_neocd_options(int sel) {
     select_bios(neogeo_bios);
     if (current_game && current_game->load_game == &load_neocd)
 	dev_mode = (is_neocd() ? RAM[0x10fe80 ^ 1] : RAM[0xfe80 ^1]);
-    TMenu *menu = new TNeo_options("NeoCD/Neo-Geo options", neocd_menu);
+    TMenu *menu = new TNeo_options(_("NeoCD/Neo-Geo options"), neocd_menu);
     menu->execute();
     delete menu;
     if (current_game && current_game->load_game == &load_neocd) {

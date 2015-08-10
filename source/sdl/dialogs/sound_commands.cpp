@@ -112,7 +112,7 @@ static int exit_pb(int sel) {
 
 menu_item_t playback[] =
 {
-    { "Close this dialog to stop playback (Return, ESC or mouse button)",&exit_pb},
+    { _("Close this dialog to stop playback (Return, ESC or mouse button)"),&exit_pb},
     { NULL },
 };
 
@@ -121,8 +121,8 @@ int menu_asso(int sel) {
     char *t;
     int old;
     TSoundCmd *menu;
-    int nb = MessageBox("Choice","Track options",
-	    "Play track|Test command|Silence track|Change track|Remove association");
+    int nb = MessageBox(_("Choice"),_("Track options"),
+	    _("Play track|Test command|Silence track|Change track|Remove association"));
     switch (nb) {
     case 4: // change track
 	old = command;
@@ -200,7 +200,7 @@ static int associations(int sel) {
 	asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
 	asso[nb].label = NULL;
 	if (!nb) {
-	    MessageBox("Error","No associations yet","OK");
+	    MessageBox(_("Error"),_("No associations yet"),_("OK"));
 	    return 0;
 	}
 	TMenuPostCb *dlg = new TMenuPostCb(_("Sound associations"),asso,

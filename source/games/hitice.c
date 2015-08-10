@@ -72,7 +72,7 @@ static struct INPUT_INFO input_hitice[] =
 
 static struct DSW_DATA dsw_data_hit_the_ice_0[] =
 {
-   { "Max Players",           0x01, 0x02 },
+   { _("Max Players"),           0x01, 0x02 },
    { "4",                     0x01},
    { "2",                     0x00},
    { MSG_DSWA_BIT2,           0x02, 0x02 },

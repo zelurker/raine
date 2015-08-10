@@ -248,7 +248,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    f0 = font;
 	    int h = f0->get_font_height()/2;
 	    do {
-		font = new TFont_ttf(h,"VeraMono.ttf");
+		font = new TFont_ttf(h,_("VeraMono.ttf"));
 		if (h <= 3) break;
 		int w0,h0;
 		font->dimensions(str,&w0,&h0);
@@ -475,7 +475,7 @@ class TMoves_menu : public TMenu
     public:
 	TMoves_menu(char *mytitle, menu_item_t *myitem) : TMenu(mytitle,myitem)
 	{
-	    font_name = "VeraMono.ttf";
+	    font_name = _("VeraMono.ttf");
 	}
 	void create_child(int n) {
 	    if (!menu[n].value_int)
@@ -498,7 +498,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
 
    if (bmp == NULL || bmp->format->palette == NULL) {
      CYC = NULL;
-     MessageBox("Error","No raine logo, or it's a true color bitmap");
+     MessageBox(_("Error"),_("No raine logo, or it's a true color bitmap"));
    } else {
      palette_size = bmp->format->palette->ncolors;
      SDL_Color *colors = bmp->format->palette->colors;
@@ -510,7 +510,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
      palette_size = n;
      // printf("preparation on %d colors, total size %d colorkey %d\n",palette_size,4*palette_size*NB_STEPS*palette_size,bmp->format->colorkey);
      if (bmp->format->colorkey != 0) {
-       MessageBox("Erreur","raine_logo.png must have the 1st color of the palette\n(color 0) as transparent");
+       MessageBox(_("Erreur"),_("raine_logo.png must have the 1st color of the palette\n(color 0) as transparent"));
        CYC = NULL;
      } else {
        CYC = (UINT8 *)malloc(4*palette_size*NB_STEPS*(palette_size-1));
@@ -617,7 +617,7 @@ static int about_game(int sel) {
       char *q;
       previous = *nl;
       *nl = 0;
-      if ((q=strstr(s,"<a href="))) {
+      if ((q=strstr(s,_("<a href=")))) {
 	  /* Basic parsing for urls. We assume everything is lowercase with
 	   * only 1 space and not more, and everything on 1 line of text.
 	   * I don't was a general html parser here, just something to parse
@@ -698,11 +698,9 @@ end_loop:
   } else {
       char *hist = get_shared("history.dat");
       if (!strcmp(hist,"history.dat")) { // No path info added -> no file !
-	  int ret = MessageBox("Warning","history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your raine directory\n"
-#ifdef RAINE_UNIX
-		  "in linux ~/.raine or /usr/share/games/raine\n"
-#endif
-		  ,"Open this page now !|Later maybe...");
+	  int ret = MessageBox(_("Warning"),_("history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your raine directory\n"
+		  "in linux ~/.raine or /usr/share/games/raine\n")
+		  ,_("Open this page now !|Later maybe..."));
 	  if (ret == 1)
 	      goto_url("http://www.arcade-history.com/index.php?page=download");
       }

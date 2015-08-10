@@ -33,9 +33,9 @@ static struct ROM_INFO rom_crimec[] =
 
 static struct DSW_DATA dsw_data_crime_city_0[] =
 {
-   { "Hiscores",              0x01, 0x02 },
-   { "Scribble",              0x01},
-   { "3 characters",          0x00},
+   { _("Hiscores"),              0x01, 0x02 },
+   { _("Scribble"),              0x01},
+   { _("3 characters"),          0x00},
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
@@ -59,15 +59,15 @@ static struct DSW_DATA dsw_data_crime_city_1[] =
    { MSG_NORMAL,              0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Lives",                 0x30, 0x04 },
+   { _("Lives"),                 0x30, 0x04 },
    { "3",                     0x30},
    { "2",                     0x20},
    { "1",                     0x10},
    { "5",                     0x00},
    { MSG_CONTINUE_PLAY,       0xC0, 0x04 },
    { MSG_ON,                  0xC0},
-   { "8 Times",               0x80},
-   { "5 Times",               0x40},
+   { _("8 Times"),               0x80},
+   { _("5 Times"),               0x40},
    { MSG_OFF,                 0x00},
    { NULL,                    0,   },
 };
@@ -118,9 +118,9 @@ static struct ROM_INFO rom_crimecu[] =
 
 static struct DSW_DATA dsw_data_crime_city_US_0[] =
 {
-   { "Hiscores",              0x01, 0x02 },
-   { "Scribble",              0x01},
-   { "3 characters",          0x00},
+   { _("Hiscores"),              0x01, 0x02 },
+   { _("Scribble"),              0x01},
+   { _("3 characters"),          0x00},
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
@@ -129,11 +129,11 @@ static struct DSW_DATA dsw_data_crime_city_US_0[] =
    { MSG_2COIN_1PLAY,         0x20},
    { MSG_3COIN_1PLAY,         0x10},
    { MSG_4COIN_1PLAY,         0x00},
-   { "Continue cost",         0xC0, 0x04 },
-   { "Same as play",          0xC0},
-   { "1 extra coin",          0x80},
-   { "2 extra coins",         0x40},
-   { "3 extra coins",         0x00},
+   { _("Continue cost"),         0xC0, 0x04 },
+   { _("Same as play"),          0xC0},
+   { _("1 extra coin"),          0x80},
+   { _("2 extra coins"),         0x40},
+   { _("3 extra coins"),         0x00},
    { NULL,                    0,   },
 };
 
@@ -173,9 +173,9 @@ static struct ROM_INFO rom_crimecj[] =
 
 static struct DSW_DATA dsw_data_crime_city_jp_0[] =
 {
-   { "Hiscores",              0x01, 0x02 },
-   { "Scribble",              0x01},
-   { "3 characters",          0x00},
+   { _("Hiscores"),              0x01, 0x02 },
+   { _("Scribble"),              0x01},
+   { _("3 characters"),          0x00},
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),

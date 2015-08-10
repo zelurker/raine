@@ -376,9 +376,9 @@ static int layer_bg, layer_sprites,layer_text;
 static void load_genix(void)
 {
   RAMSize = 0x10000 + 0x800 + 0x4000 + 0x8000;
-  layer_bg = add_layer_info("bg");
-  layer_sprites = add_layer_info("sprites");
-  layer_text = add_layer_info("text");
+  layer_bg = add_layer_info(gettext("bg"));
+  layer_sprites = add_layer_info(gettext("sprites"));
+  layer_text = add_layer_info(gettext("text"));
   if(!(RAM=AllocateMem(RAMSize))) return;
 
   pirates_main_ram=RAM;

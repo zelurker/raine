@@ -79,11 +79,11 @@ static struct DSW_DATA dsw_data_chase_hq_0[] =
    // because some games share dsw with controls, so any value writen to a dsw
    // is now masked with the declared mask. Hence we declare the right dsw here
    // with only 1 possible value
-   { "Cabinet Type",          0x03, 0x01 },	// Motor Enable (?)
-//   { "Upright/Steering Lock", 0x03},
-//   { "Upright No Steer Lock",  0x02},
-   { "Full Throttle Convrt",  0x01},
-//   { "Full Thrtle Dlx Cnvrt", 0x00},
+   { _("Cabinet Type"),          0x03, 0x01 },	// Motor Enable (?)
+//   { _("Upright/Steering Lock"), 0x03},
+//   { _("Upright No Steer Lock"),  0x02},
+   { _("Full Throttle Convrt"),  0x01},
+//   { _("Full Thrtle Dlx Cnvrt"), 0x00},
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
@@ -101,19 +101,19 @@ static struct DSW_DATA dsw_data_chase_hq_0[] =
 
 static struct DSW_DATA dsw_input_fake[] =
 {
-   { "Gear Mode",             0x01, 0x02 },
-   { "Low while pressed",     0x01},
-   { "Toggle",                0x00},
+   { _("Gear Mode"),             0x01, 0x02 },
+   { _("Low while pressed"),     0x01},
+   { _("Toggle"),                0x00},
 #ifndef SDL
-   { "Wheel",                 0x02, 0x02 },
-   { "Keyboard/Digital",      0x02},
-   { "PC Steering Wheel",     0x00},
-   { "Accelerator",           0x04, 0x02 },
-   { "Keyboard/Digital",      0x04},
-   { "PC Pedal (analog)",     0x00},
-   { "Brake",                 0x08, 0x02 },
-   { "Keyboard/Digital",      0x08},
-   { "PC Pedal (analog)",     0x00},
+   { _("Wheel"),                 0x02, 0x02 },
+   { _("Keyboard/Digital"),      0x02},
+   { _("PC Steering Wheel"),     0x00},
+   { _("Accelerator"),           0x04, 0x02 },
+   { _("Keyboard/Digital"),      0x04},
+   { _("PC Pedal (analog)"),     0x00},
+   { _("Brake"),                 0x08, 0x02 },
+   { _("Keyboard/Digital"),      0x08},
+   { _("PC Pedal (analog)"),     0x00},
 #endif
    { NULL,                    0,   },
 };
@@ -125,15 +125,15 @@ static struct DSW_DATA dsw_data_chase_hq_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Start Time",            0x0C, 0x04 },
+   { _("Start Time"),            0x0C, 0x04 },
    { "60",                    0x0C},
    { "70",                    0x08},
    { "65",                    0x04},
    { "55",                    0x00},
-   { "Start Turbos",          0x10, 0x02 },
+   { _("Start Turbos"),          0x10, 0x02 },
    { "3",                     0x10},
    { "5",                     0x00},
-   { "Clear Damage on Cont.", 0x40, 0x02 },
+   { _("Clear Damage on Cont."), 0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
    DSW_CONTINUE_PLAY( 0x80, 0x00),
@@ -795,8 +795,8 @@ static void load_actual(int set)
    init_16x16_zoom();
    zoom16_ofs = make_16x16_zoom_ofs_type1z();
 
-   obj_id = add_layer_info("Zooming Object");
-   rod_id = add_layer_info("Roadscroll");
+   obj_id = add_layer_info(gettext("Zooming Object"));
+   rod_id = add_layer_info(gettext("Roadscroll"));
 
 /*
  *  StarScream Stuff follows
@@ -1313,8 +1313,8 @@ static void load_nightstr(void)
    init_16x16_zoom();
    zoom16_ofs = make_16x16_zoom_ofs_type1z();
 
-   obj_id = add_layer_info("Zooming Object");
-   rod_id = add_layer_info("Roadscroll");
+   obj_id = add_layer_info(gettext("Zooming Object"));
+   rod_id = add_layer_info(gettext("Roadscroll"));
 
 /*
  *  StarScream Stuff follows
@@ -1449,7 +1449,7 @@ static void execute_nightstr(void)
 
    Taito2610_Frame();			// Z80 and YM2610
 
-   //print_ingame(60,"%04x",ReadWord(&RAM[0x39FFE]));
+   //print_ingame(60,gettext("%04x"),ReadWord(&RAM[0x39FFE]));
 }
 
 static void execute_chasehq(void)
@@ -1553,8 +1553,8 @@ else
       if(gearflip==0){
          gearflip=1;
          gear^=1;
-         if(gear==1) print_ingame(60,"Changed to High Gear");
-         else        print_ingame(60,"Changed to Low Gear");
+         if(gear==1) print_ingame(60,gettext("Changed to High Gear"));
+         else        print_ingame(60,gettext("Changed to Low Gear"));
       }
    }
    else{
@@ -1658,7 +1658,7 @@ if (brake >= 0) {RAM[0x022804] = ((RAM[0x022804] & 0x1f) | analog_mask[brake]);}
 
    Taito2610_Frame();				// Z80 and YM2610
 
-   //print_ingame(60,"%04x",ReadWord(&RAM[0x39FFE]));
+   //print_ingame(60,gettext("%04x"),ReadWord(&RAM[0x39FFE]));
 }
 
 static void render_z_system_sprites(int start, int end)
@@ -2172,7 +2172,7 @@ static void DrawChaseHQ(void)
             }
             else{
 
-            //print_ingame(60,"MASK REDUCED");
+            //print_ingame(60,gettext("MASK REDUCED"));
 
             tb2=1;
 
@@ -2226,7 +2226,7 @@ static void DrawChaseHQ(void)
             }
             else{
 
-            //print_ingame(60,"MASK REDUCED");
+            //print_ingame(60,gettext("MASK REDUCED"));
 
             tb=1;
 
@@ -2257,7 +2257,7 @@ static void DrawChaseHQ(void)
 
    }
 
-   //print_ingame(60,"MSK: %04x",mask_count);
+   //print_ingame(60,gettext("MSK: %04x"),mask_count);
    mask_pos[mask_count]   = 0x800;
    mask_pos_y[mask_count] = 0x800;
    }

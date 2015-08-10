@@ -297,7 +297,7 @@ void Pan2610WriteZ80(UINT16 offset, UINT8 data){
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0), vol );
       stream_set_pan( YM2610_get_stream_num(0), pan );
-      //print_ingame(120,"Make ch0 vol:%02x pan:%02x", vol, pan );
+      //print_ingame(120,gettext("Make ch0 vol:%02x pan:%02x"), vol, pan );
     } else{
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0), vol>>1 );
@@ -316,7 +316,7 @@ void Pan2610WriteZ80(UINT16 offset, UINT8 data){
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0)+1, vol );
       stream_set_pan( YM2610_get_stream_num(0)+1, pan );
-      //print_ingame(120,"Make ch1 vol:%02x pan:%02x", vol, pan );
+      //print_ingame(120,gettext("Make ch1 vol:%02x pan:%02x"), vol, pan );
     } else{
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0)+1, vol>>1 );
@@ -347,7 +347,7 @@ void Pan2610WriteZ80_OffsetVol(UINT16 offset, UINT8 data){
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0), vol );
       stream_set_pan( YM2610_get_stream_num(0), pan );
-      //print_ingame(120,"Make ch0 vol:%02x pan:%02x", vol, pan );
+      //print_ingame(120,gettext("Make ch0 vol:%02x pan:%02x"), vol, pan );
     } else{
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0), vol>>1 );
@@ -366,7 +366,7 @@ void Pan2610WriteZ80_OffsetVol(UINT16 offset, UINT8 data){
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0)+1, vol );
       stream_set_pan( YM2610_get_stream_num(0)+1, pan );
-      //print_ingame(120,"Make ch1 vol:%02x pan:%02x", vol, pan );
+      //print_ingame(120,gettext("Make ch1 vol:%02x pan:%02x"), vol, pan );
     } else{
       if (vol == 0x1f) vol = 0xff;
       stream_set_volume( YM2610_get_stream_num(0)+1, vol>>1 );
@@ -620,12 +620,12 @@ void RemoveTaitoYM2610(void)
 
 #if 0
 static void TaitoYM2151WriteBank( int ctw ){
-  //print_ingame(120,"NowBank = %02x", ctw );
+  //print_ingame(120,gettext("NowBank = %02x"), ctw );
   TaitoSoundSetBank( 0, (UINT8) (ctw&0x03) ); /* bank change */
 }
 
 static void TaitoYM2151_irq_handler(void){
-  //print_ingame(120,"IRQ" );
+  //print_ingame(120,gettext("IRQ") );
   //cpu_interrupt(CPU_Z80_0, 0x0038);
 }
 #endif

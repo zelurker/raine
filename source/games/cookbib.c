@@ -187,7 +187,7 @@ static struct INPUT_INFO jumppop_inputs[] =
 
 static struct DSW_DATA dsw_data_cookbib_3[] =
 {
-  { "Stage Skip", 0x80, 2 },
+  { _("Stage Skip"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -210,7 +210,7 @@ static struct DSW_DATA dsw_data_cookbib_4[] =
   { MSG_2COIN_3PLAY, 0x28},
   { MSG_1COIN_2PLAY, 0x18},
   { MSG_1COIN_3PLAY, 0x08},
-  { "VS Round", 0x40, 2 },
+  { _("VS Round"), 0x40, 2 },
   { "3", 0x40},
   { "1", 0x00},
   DSW_DEMO_SOUND( 0x00, 0x80),
@@ -252,13 +252,13 @@ static struct DSW_DATA dsw_data_jumppop_3[] =
 static struct DSW_DATA dsw_data_jumppop_4[] =
 {
   DSW_DEMO_SOUND( 0x0, 0x1),
-  { "Allow_Continue", 0x2, 2 },
+  { MSG_CONTINUE_PLAY, 0x2, 2 },
   { MSG_NO, 0x0},
   { MSG_YES, 0x2},
-  { "Picture Viewer", 0x4, 2 },
+  { _("Picture Viewer"), 0x4, 2 },
   { MSG_OFF, 0x4},
   { MSG_ON, 0x0},
-  { "BG Type", 0x8, 2 },
+  { _("BG Type"), 0x8, 2 },
   { "1", 0x8},
   { "2", 0x0},
   { MSG_DIFFICULTY, 0x30, 4 },
@@ -298,7 +298,7 @@ static struct DSW_DATA dsw_data_htchctch_4[] =
   { MSG_2COIN_3PLAY, 0x28},
   { MSG_1COIN_2PLAY, 0x18},
   { MSG_1COIN_3PLAY, 0x08},
-  { "Stage Skip", 0x40, 2 },
+  { _("Stage Skip"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   DSW_DEMO_SOUND( 0x00, 0x80),
@@ -313,7 +313,7 @@ static struct DSW_INFO dsw_htchctch[] =
 
 static struct DSW_DATA dsw_data_chokchok_3[] =
 {
-  { "VS Round", 0x01, 2 },
+  { _("VS Round"), 0x01, 2 },
   { "3", 0x01},
   { "2", 0x00},
   { MSG_DIFFICULTY, 0x06, 4 },
@@ -327,10 +327,10 @@ static struct DSW_DATA dsw_data_chokchok_3[] =
   { MSG_UNKNOWN, 0x10, 2 },
   { MSG_OFF, 0x10},
   { MSG_ON, 0x00},
-  { "Time", 0x20, 2 },
-  { "60 Seconds", 0x20},
-  { "90 Seconds", 0x00},
-  { "Starting Balls", 0xc0, 4 },
+  { _("Time"), 0x20, 2 },
+  { _("60 Seconds"), 0x20},
+  { _("90 Seconds"), 0x00},
+  { _("Starting Balls"), 0xc0, 4 },
   { "3", 0x00},
   { "4", 0xc0},
   { "5", 0x40},

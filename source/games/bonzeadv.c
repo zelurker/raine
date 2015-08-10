@@ -112,17 +112,17 @@ static struct DSW_DATA dsw_data_bonze_adventure_1[] =
    { MSG_HARD,		      0x01},
    { MSG_HARDEST,	      0x00},
    { MSG_EXTRA_LIFE,	      0x0C, 0x04 },
-   { "50k and 150k",          0x0C},
-   { "40k and 100k",          0x08},
-   { "60k and 200k",          0x04},
-   { "80k and 250k",          0x00},
+   { _("50k and 150k"),          0x0C},
+   { _("40k and 100k"),          0x08},
+   { _("60k and 200k"),          0x04},
+   { _("80k and 250k"),          0x00},
    { MSG_LIVES, 	      0x30, 0x04 },
    { "3",                     0x30},
    { "2",                     0x20},
    { "4",                     0x10},
    { "5",                     0x00},
    DSW_CONTINUE_PLAY( 0x00, 0x40),
-   { "Level test",            0x80, 0x02 },
+   { _("Level test"),            0x80, 0x02 },
    { MSG_OFF,		      0x80},
    { MSG_ON,		      0x00},
    { NULL,		      0,	 },
@@ -176,7 +176,7 @@ static int CChipReadB(UINT32 address)
 	 /*#ifdef RAINE_DEBUG
 	    if(i>0x20){
 	    print_debug("CCRB[%02x][%03x](%02x)\n",CChip_Bank,i,CBANK[CChip_Bank][i]);
-	    print_ingame(60,"CCRB[%02x][%03x](%02x)\n",CChip_Bank,i,CBANK[CChip_Bank][i]);
+	    print_ingame(60,gettext("CCRB[%02x][%03x](%02x)\n"),CChip_Bank,i,CBANK[CChip_Bank][i]);
 	    }
 #endif*/
 	 return(CBANK[CChip_Bank][i]);
@@ -456,7 +456,7 @@ static void CChipWriteB(UINT32 address, int data)
 /*	     if(data==0x55){ */
 /*	     #ifdef RAINE_DEBUG */
 /*		print_debug("LEVELSTART(%02x)\n",ta); */
-/*		print_ingame(60,"LEVELSTART(%02x)",ta); */
+/*		print_ingame(60,gettext("LEVELSTART(%02x)"),ta); */
 /*	     #endif */
 /*	     CBANK[0][0x01F]=0x00; */
 /*	   if(ta<32){ */

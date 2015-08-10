@@ -94,15 +94,15 @@ static struct DSW_DATA dsw_data_american_horseshoes_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Time",                  0x04, 0x02 },
-   { "30 seconds",            0x04},
-   { "20 seconds",            0x00},
+   { _("Time"),                  0x04, 0x02 },
+   { _("30 seconds"),            0x04},
+   { _("20 seconds"),            0x00},
    { MSG_DSWA_BIT4,           0x08, 0x02 },
    { MSG_OFF,                 0x08},
    { MSG_ON,                  0x00},
-   { "Innings",               0x10, 0x02 },
-   { "3 per Credit",          0x10},
-   { "9 per Credit",          0x00},
+   { _("Innings"),               0x10, 0x02 },
+   { _("3 per Credit"),          0x10},
+   { _("9 per Credit"),          0x00},
    { MSG_DSWA_BIT6,           0x20, 0x02 },
    { MSG_OFF,                 0x20},
    { MSG_ON,                  0x00},
@@ -384,16 +384,16 @@ static struct DSW_DATA dsw_data_champion_wrestler_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Time",                  0x0C, 0x04 },
-   { "3 Minutes",             0x0C},
-   { "2 Minutes",             0x08},
-   { "4 Minutes",             0x04},
-   { "5 Minutes",             0x00},
-   { "1 Minute Lenght",       0x30, 0x04 },
-   { "50 seconds",            0x30},
-   { "60 seconds",            0x20},
-   { "40 seconds",            0x10},
-   { "30 seconds",            0x00},
+   { _("Time"),                  0x0C, 0x04 },
+   { _("3 Minutes"),             0x0C},
+   { _("2 Minutes"),             0x08},
+   { _("4 Minutes"),             0x04},
+   { _("5 Minutes"),             0x00},
+   { _("1 Minute Lenght"),       0x30, 0x04 },
+   { _("50 seconds"),            0x30},
+   { _("60 seconds"),            0x20},
+   { _("40 seconds"),            0x10},
+   { _("30 seconds"),            0x00},
    DSW_CONTINUE_PLAY( 0x40, 0x00),
    { NULL,                    0,   },
 };
@@ -430,11 +430,11 @@ static struct DSW_DATA dsw_data_champion_wrestler_us_0[] =
    { MSG_2COIN_1PLAY,         0x20},
    { MSG_3COIN_1PLAY,         0x10},
    { MSG_4COIN_1PLAY,         0x00},
-   { "Continue cost",         0xC0, 0x04 },
-   { "Same as play",          0xC0},
-   { "1 extra coin",          0x80},
-   { "2 extra coins",         0x40},
-   { "3 extra coins",         0x00},
+   { _("Continue cost"),         0xC0, 0x04 },
+   { _("Same as play"),          0xC0},
+   { _("1 extra coin"),          0x80},
+   { _("2 extra coins"),         0x40},
+   { _("3 extra coins"),         0x00},
    { NULL,                    0,   },
 };
 
@@ -651,7 +651,7 @@ static struct DSW_DATA dsw_data_fighting_hawk_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Lives",                 0x30, 0x04 },
+   { _("Lives"),                 0x30, 0x04 },
    { "3",                     0x30},
    { "4",                     0x20},
    { "5",                     0x10},
@@ -859,7 +859,7 @@ static struct INPUT_INFO input_plotting[] =
 
 static struct DSW_DATA dsw_data_plotting_0[] =
 {
-   { "Max Players",           0x01, 0x02 },
+   { _("Max Players"),           0x01, 0x02 },
    { "2",                     0x01},
    { "1",                     0x00},
    DSW_SCREEN( 0x02, 0x00),
@@ -870,11 +870,11 @@ static struct DSW_DATA dsw_data_plotting_0[] =
    { MSG_2COIN_1PLAY,         0x20},
    { MSG_3COIN_1PLAY,         0x10},
    { MSG_4COIN_1PLAY,         0x00},
-   { "Continue cost",         0xC0, 0x04 },
-   { "Same as play",          0xC0},
-   { "1 extra coin",          0x80},
-   { "2 extra coins",         0x40},
-   { "3 extra coins",         0x00},
+   { _("Continue cost"),         0xC0, 0x04 },
+   { _("Same as play"),          0xC0},
+   { _("1 extra coin"),          0x80},
+   { _("2 extra coins"),         0x40},
+   { _("3 extra coins"),         0x00},
    { NULL,                    0,   },
 };
 
@@ -885,7 +885,7 @@ static struct DSW_DATA dsw_data_plotting_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Wild blocks",           0x30, 0x04 },
+   { _("Wild blocks"),           0x30, 0x04 },
    { "2",                     0x30},
    { "1",                     0x20},
    { "3",                     0x10},
@@ -973,22 +973,22 @@ static struct DSW_DATA dsw_data_puzznic_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Retries",               0x0C, 0x04 },
+   { _("Retries"),               0x0C, 0x04 },
    { "2",                     0x0C},
    { "3",                     0x08},
    { "1",                     0x04},
    { "0",                     0x00},
-   { "Bombs",                 0x10, 0x02 },
+   { _("Bombs"),                 0x10, 0x02 },
    { "0",                     0x10},
    { "2",                     0x00},
-   { "Girls",                 0x20, 0x02 },
+   { _("Girls"),                 0x20, 0x02 },
    { MSG_ON,                  0x20},
    { MSG_OFF,                 0x00},
-   { "Terms of Replay",       0xC0, 0x04 },
-   { "Stage Start/Timer Cont",0xC0},
-   { "Stage & Timer Start",   0x80},
-   { "One step back/Time Cnt",0x40},
-   { "No Use",                0x00},
+   { _("Terms of Replay"),       0xC0, 0x04 },
+   { _("Stage Start/Timer Cont"),0xC0},
+   { _("Stage & Timer Start"),   0x80},
+   { _("One step back/Time Cnt"),0x40},
+   { _("No Use"),                0x00},
    { NULL,                    0,   },
 };
 
@@ -1182,7 +1182,7 @@ static struct DSW_DATA dsw_data_plgirls2_1[] =
    { MSG_DSWA_BIT3,           0x04, 0x02 },
    { MSG_OFF,                 0x04},
    { MSG_ON,                  0x00},
-   { "Life",                  0x18, 0x04 },
+   { _("Life"),                  0x18, 0x04 },
    { "4/3/4",                 0x18},
    { "3/2/3",                 0x10},
    { "5/4/5",                 0x08},
@@ -1290,7 +1290,7 @@ static struct DSW_DATA dsw_data_palamedes_1[] =
    { MSG_DSWB_BIT7,           0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
-   { "Versus Mode",           0x80, 0x02 },
+   { _("Versus Mode"),           0x80, 0x02 },
    { MSG_ON,                  0x80},
    { MSG_OFF,                 0x00},
    { NULL,                    0,   },
@@ -1404,7 +1404,7 @@ static struct DSW_DATA dsw_data_cubybop_1[] =
    { MSG_DSWB_BIT7,           0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
-   { "Versus Mode",           0x80, 0x02 },
+   { _("Versus Mode"),           0x80, 0x02 },
    { MSG_ON,                  0x80},
    { MSG_OFF,                 0x00},
    { NULL,                    0,   },
@@ -1501,12 +1501,12 @@ static struct DSW_DATA dsw_data_raimais_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Extra Life",            0x0C, 0x04 },
-   { "80k only",              0x0C},
-   { "80k and 160k",          0x08},
-   { "160k only",             0x04},
-   { "None",                  0x00},
-   { "Lives",                 0x30, 0x04 },
+   { _("Extra Life"),            0x0C, 0x04 },
+   { _("80k only"),              0x0C},
+   { _("80k and 160k"),          0x08},
+   { _("160k only"),             0x04},
+   { _("None"),                  0x00},
+   { _("Lives"),                 0x30, 0x04 },
    { "3",                     0x30},
    { "4",                     0x20},
    { "5",                     0x10},
@@ -1665,7 +1665,7 @@ static void LSystemTileBank2Write(UINT16 offset, UINT8 data)
    ah_gfx_bank = kkk[data];
 
    /*#ifdef RAINE_DEBUG
-   print_ingame(8000,"ah_gfx_bank Bank(%04x,%02x) [%02x]\n",offset,data,ah_gfx_bank);
+   print_ingame(8000,gettext("ah_gfx_bank Bank(%04x,%02x) [%02x]\n"),offset,data,ah_gfx_bank);
 #endif*/
 }
 
@@ -1997,11 +1997,11 @@ static void lsystem_vcu_init(int fg0_size)
    gfx_fg0_dirty_count = 0;
    memset(GFX_FG0_DIRTY,0x00,0x400*4);
    memset(GFX_FG0_SOLID,0x00,0x400);
-   layer_id_data[0] = add_layer_info("BG0");
-   layer_id_data[1] = add_layer_info("OBJ");
-   layer_id_data[2] = add_layer_info("BG1");
-   layer_id_data[3] = add_layer_info("OBJ 2");
-   layer_id_data[4] = add_layer_info("FG");
+   layer_id_data[0] = add_layer_info(gettext("BG0"));
+   layer_id_data[1] = add_layer_info(gettext("OBJ"));
+   layer_id_data[2] = add_layer_info(gettext("BG1"));
+   layer_id_data[3] = add_layer_info(gettext("OBJ 2"));
+   layer_id_data[4] = add_layer_info(gettext("FG"));
    set_colour_mapper(&col_map_xxxx_bbbb_gggg_rrrr);
    InitPaletteMap(RAM_PAL, 0x10, 0x10, 0x8000);
 }

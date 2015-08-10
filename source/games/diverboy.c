@@ -90,7 +90,7 @@ static struct DSW_DATA dsw_data_diverboy_1[] =
   { MSG_LIVES, 0x08, 2 },
   { "2", 0x00},
   { "3", 0x08},
-  { "Display Copyright", 0x10, 2 },
+  { _("Display Copyright"), 0x10, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x10},
   { MSG_DIFFICULTY, 0x60, 4 },

@@ -214,7 +214,7 @@ int do_soft_dips(int sel) {
 	    }
 	}
     }
-    catch(...) { MessageBox("Warning","Bad soft dips","OK"); }
+    catch(...) { MessageBox(_("Warning"),_("Bad soft dips"),_("OK")); }
 
     // Free everything !
     nb = 0;

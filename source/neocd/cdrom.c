@@ -266,8 +266,8 @@ void init_load_type() {
 	      end = strrchr(buff,' ');
 	      if (!end) {
 		  char msg[1024];
-		  sprintf(msg,"Serious cue format error on line %s",orig);
-		  MessageBox("Error",msg,"OK");
+		  sprintf(msg,_("Serious cue format error on line %s"),orig);
+		  MessageBox(gettext("Error"),msg,gettext("OK"));
 		  break;
 	      }
 	      start = buff + 5;
@@ -280,15 +280,15 @@ void init_load_type() {
 	      start = strchr(buff,'"');
 	      if (!start) {
 		  char msg[1024];
-		  sprintf(msg,"cue format error on line : %s",orig);
-		  MessageBox("Error",msg,"OK");
+		  sprintf(msg,_("cue format error on line : %s"),orig);
+		  MessageBox(gettext("Error"),msg,gettext("OK"));
 		  break;
 	      }
 	  }
 	  if (!strncmp(end+2,"BINARY",6)) {
 	    char *path = strrchr(neocd_path,SLASH[0]);
 	    if (!path) {
-	      MessageBox("Error","path format error","OK");
+	      MessageBox(gettext("Error"),gettext("path format error"),gettext("OK"));
 	      break;
 	    }
 	    strcpy(path+1,start+1);
@@ -308,7 +308,7 @@ void init_load_type() {
 	    if (!exists(neocd_path)) {
 		strcat(neocd_path,".gz");
 		if (!exists(neocd_path)) {
-		    MessageBox("Error","can't find iso file","OK");
+		    MessageBox(gettext("Error"),gettext("can't find iso file"),gettext("OK"));
 		    path[1] = 0;
 		    break;
 		} else
@@ -320,7 +320,7 @@ void init_load_type() {
 	      alloc_tracks += 10;
 	      mp3_track = realloc(mp3_track,alloc_tracks*sizeof(char**));
 	      if (!mp3_track) {
-		MessageBox("Error","alloc error","OK");
+		MessageBox(gettext("Error"),gettext("alloc error"),gettext("OK"));
 		break;
 	      }
 	    }
@@ -346,8 +346,8 @@ void init_load_type() {
 	    print_debug("adding mp3 track %s\n",mp3_track[n]);
 	  } else {
 	    char msg[160];
-	    sprintf(msg,"Track format unknown '%s'",end+2);
-	    MessageBox("Error",msg,"OK");
+	    sprintf(msg,_("Track format unknown '%s'"),end+2);
+	    MessageBox(gettext("Error"),msg,gettext("OK"));
 	    break;
 	  }
 	} else if ((s = strstr(buff,"TRACK "))) {
@@ -365,7 +365,7 @@ void init_load_type() {
 	  if (nb_indexes == alloc_indexes) {
 	    indexes = realloc(indexes,(alloc_indexes+10)*sizeof(int));
 	    if (!indexes) {
-	      MessageBox("Error","indexes alloc error","OK");
+	      MessageBox(gettext("Error"),gettext("indexes alloc error"),gettext("OK"));
 	      break;
 	    }
 	    for (n=alloc_indexes; n<alloc_indexes+10; n++)
@@ -398,7 +398,7 @@ void init_load_type() {
 	  if (alloc_indexes < alloc_tracks) {
 	    indexes = realloc(indexes,alloc_tracks*sizeof(int));
 	    if (!indexes) {
-	      MessageBox("Error","indexes alloc error","OK");
+	      MessageBox(gettext("Error"),gettext("indexes alloc error"),gettext("OK"));
 	      break;
 	    }
 	    for (n=alloc_indexes; n<alloc_tracks; n++)
@@ -418,7 +418,7 @@ void init_load_type() {
       } // feof
       fclose(f);
       if (!iso_sector_size) {
-	MessageBox("Error","Could not determine sector size from\nthe cue file","OK");
+	MessageBox(gettext("Error"),gettext("Could not determine sector size from\nthe cue file"),gettext("OK"));
       } else {
 	if (nb_tracks) { // we MUST chdir to the cue directory in this case !
 	  char *path = strrchr(neocd_path,SLASH[0]);
@@ -431,8 +431,8 @@ void init_load_type() {
       }
     } else { // if (f)
 	char error[4096];
-	sprintf(error,"The file '%s' can't be loaded",neocd_path);
-	MessageBox("Error",error,"ok");
+	sprintf(error,_("The file '%s' can't be loaded"),neocd_path);
+	MessageBox(gettext("Error"),error,gettext("ok"));
     }
   } else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"iso")) {
     load_type = ISO_TYPE;
@@ -621,7 +621,7 @@ static int load_neocd_file(char *name, UINT8 *dest, int size) {
     if (f) {
       fread(GFX + current.offset*2,1,size*2,f);
       fclose(f);
-      print_ingame(180,"used override for %s",name);
+      print_ingame(180,gettext("used override for %s"),name);
       free(dest);
       // We must still update usage area, or we'll see nothing !
       cache_set_crc(current.offset*2,size*2,SPR_TYPE);
@@ -634,7 +634,7 @@ static int load_neocd_file(char *name, UINT8 *dest, int size) {
       fread(RAM + current.offset,1,size,f);
       fclose(f);
       ByteSwap(&RAM[current.offset],size);
-      print_ingame(180,"used override for %s",name);
+      print_ingame(180,gettext("used override for %s"),name);
       cache_set_crc(current.offset,size,PRG_TYPE);
       int Offset = current.offset;
       if (Offset <= 0x68 && Offset +current.size >= 0x6c) {

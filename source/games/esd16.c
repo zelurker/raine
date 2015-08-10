@@ -71,7 +71,7 @@ static struct ROM_INFO rom_hedpanic[] =
 static struct DSW_DATA dsw_data_multchmp_2[] =
 {
   DSW_SERVICE( 0, 0x0001),
-  { "Coinage Type", 0x0002, 1 },
+  { _("Coinage Type"), 0x0002, 1 },
   { "1", 0x0002},
   DSW_DEMO_SOUND( 0x0000, 0x0004),
   DSW_SCREEN( 0x0008, 0x0000),
@@ -100,16 +100,16 @@ static struct DSW_DATA dsw_data_multchmp_3[] =
   { "3", 0xc},
   { "4", 0x8},
   { "5", 0x4},
-  { "Selectable Games", 0x10, 2 },
+  { _("Selectable Games"), 0x10, 2 },
   { "3", 0x10},
   { "4", 0x0},
   { MSG_FREE_PLAY, 0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x0},
-  { "Unknown 2-6", 0x40, 2 },
+  { _("Unknown 2-6"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x0},
-  { "Unknown 2-7", 0x80, 2 },
+  { _("Unknown 2-7"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x0},
   { NULL, 0}
@@ -502,9 +502,9 @@ static void load_multchmp() {
   AddInitMemory();   // Set Starscream mem pointers...
   ByteSwap(ROM,get_region_size(REGION_CPU1));
 
-  layer_id_data[0] = add_layer_info("sprites");
-  layer_id_data[1] = add_layer_info("tilemap0");
-  layer_id_data[2] = add_layer_info("tilemap1");
+  layer_id_data[0] = add_layer_info(gettext("sprites"));
+  layer_id_data[1] = add_layer_info(gettext("tilemap0"));
+  layer_id_data[2] = add_layer_info(gettext("tilemap1"));
   if (is_current_game("multchmp"))
     draw_sprites = &esd16_draw_sprites;
   else

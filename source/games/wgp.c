@@ -70,7 +70,7 @@ static struct INPUT_INFO input_wgp[] =
 
 static struct DSW_DATA dsw_data_world_grand_prix_0[] =
 {
-   { "Motor",                 0x01, 0x02 },
+   { _("Motor"),                 0x01, 0x02 },
    { MSG_OFF,                 0x01},
    { MSG_ON,                  0x00},
    { MSG_DSWA_BIT2,           0x02, 0x02 },
@@ -448,8 +448,8 @@ static void load_actual(int romset)
    init_16x16_zoom();
    zoom16_ofs = make_16x16_zoom_ofs_type1z();
 
-   obj_id = add_layer_info("Zooming Object" );
-   rod_id = add_layer_info("Roadscroll"     );
+   obj_id = add_layer_info(gettext("Zooming Object") );
+   rod_id = add_layer_info(gettext("Roadscroll")     );
 
 /*
  *  StarScream Stuff follows

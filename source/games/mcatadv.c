@@ -166,9 +166,9 @@ static struct DSW_DATA dsw_data_mcatadv_2[] =
   DSW_DEMO_SOUND( 0x01, 0x00),
   DSW_SCREEN( 0x02, 0x00),
   DSW_SERVICE( 0, 0x04),
-  { "Coin Mode", 0x08, 2 },
-  { "Mode 1" , 0x08},
-  { "Mode 2" , 0x00},
+  { _("Coin Mode"), 0x08, 2 },
+  { _("Mode 1") , 0x08},
+  { _("Mode 2") , 0x00},
   { MSG_COIN1, 0x30, 4 },
   { MSG_2COIN_1PLAY, 0x10},
   { MSG_1COIN_1PLAY, 0x30},
@@ -185,23 +185,23 @@ static struct DSW_DATA dsw_data_mcatadv_2[] =
 static struct DSW_DATA dsw_data_mcatadv_3[] =
 {
   { MSG_DIFFICULTY, 0x03, 4 },
-  { "Easy" , 0x02},
-  { "Normal" , 0x03},
-  { "Hard" , 0x01},
-  { "Hardest" , 0x00},
+  { _("Easy") , 0x02},
+  { _("Normal") , 0x03},
+  { _("Hard") , 0x01},
+  { _("Hardest") , 0x00},
   { MSG_LIVES, 0x0c, 4 },
   { "2" , 0x04},
   { "3" , 0x0c},
   { "4" , 0x08},
   { "5" , 0x00},
-  { "Energy", 0x30, 4 },
+  { _("Energy"), 0x30, 4 },
   { "3" , 0x30},
   { "4" , 0x20},
   { "5" , 0x10},
   { "8" , 0x00},
   { MSG_CABINET, 0xc0, 3 },
-  { "Upright 1 Player" , 0x40},
-  { "Upright 2 Players" , 0xc0},
+  { _("Upright 1 Player") , 0x40},
+  { _("Upright 2 Players") , 0xc0},
   { MSG_TABLE, 0x80},
   { NULL, 0}
 };
@@ -228,9 +228,9 @@ static struct DSW_DATA dsw_data_nost_2[] =
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x20, 0x00),
   { MSG_EXTRA_LIFE, 0xc0, 4 },
-  { "500k 1000k", 0x80},
-  { "800k 1500k", 0xc0},
-  { "1000k 2000k", 0x40},
+  { _("500k 1000k"), 0x80},
+  { _("800k 1500k"), 0xc0},
+  { _("1000k 2000k"), 0x40},
   { MSG_UNKNOWN, 0x00},
   { NULL, 0}
 };
@@ -487,9 +487,9 @@ static void load_mcatadv() {
 
   AddZ80AInit();
   AddInitMemory();   // Set Starscream mem pointers...
-  layer_id_data[0] = add_layer_info("BG0");
-  layer_id_data[1] = add_layer_info("BG1");
-  layer_id_data[2] = add_layer_info("OBJ");
+  layer_id_data[0] = add_layer_info(gettext("BG0"));
+  layer_id_data[1] = add_layer_info(gettext("BG1"));
+  layer_id_data[2] = add_layer_info(gettext("OBJ"));
 
   setup_z80_frame(CPU_Z80_0,FRAME_Z80);
 }

@@ -141,11 +141,11 @@ static struct DSW_DATA dsw_data_full_throttle_0[] =
 
 // Spinner wheel behaviour is not supported, user is not allowed to change the cabinet.
 
-//   { "Cabinet",               0x03, 0x04 },
-//   { "Wheel",                 0x03},
-//   { "Spinner",               0x02},
-//   { "Spinner + Digital",     0x01},
-//   { "Wheel + Motor",         0x00},
+//   { _("Cabinet"),               0x03, 0x04 },
+//   { _("Wheel"),                 0x03},
+//   { _("Spinner"),               0x02},
+//   { _("Spinner + Digital"),     0x01},
+//   { _("Wheel + Motor"),         0x00},
 
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
@@ -169,12 +169,12 @@ static struct DSW_DATA dsw_data_full_throttle_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Start Time",            0x0C, 0x04 },
+   { _("Start Time"),            0x0C, 0x04 },
    { "60",                    0x0C},
    { "70",                    0x08},
    { "50",                    0x04},
    { "40",                    0x00},
-   { "Nitros per Stage",      0x30, 0x04 },
+   { _("Nitros per Stage"),      0x30, 0x04 },
    { "3",                     0x30},
    { "2",                     0x20},
    { "4",                     0x10},

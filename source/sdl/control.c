@@ -285,7 +285,7 @@ static void frame_skip_up(void)
 {
    if((display_cfg.frame_skip<9) && (display_cfg.frame_skip)){
       display_cfg.frame_skip++;
-      print_ingame(120,"Drawing Every %1d Frames",display_cfg.frame_skip);
+      print_ingame(120,gettext("Drawing Every %1d Frames"),display_cfg.frame_skip);
    }
 }
 
@@ -294,9 +294,9 @@ static void frame_skip_down(void)
    if((display_cfg.frame_skip>1) && (display_cfg.frame_skip)){
       display_cfg.frame_skip--;
       if(display_cfg.frame_skip==1)
-	 print_ingame(120,"Drawing All Frames");
+	 print_ingame(120,gettext("Drawing All Frames"));
       else
-	 print_ingame(120,"Drawing Every %1d Frames",display_cfg.frame_skip);
+	 print_ingame(120,gettext("Drawing Every %1d Frames"),display_cfg.frame_skip);
    }
 }
 
@@ -337,10 +337,10 @@ void key_pause_fwd()
 
 static void toggle_limit_speed() {
 	if(display_cfg.limit_speed){
-		print_ingame(60,"No speed limit !");
+		print_ingame(60,gettext("No speed limit !"));
 		display_cfg.limit_speed = 0;
 	} else {
-		print_ingame(60,"Speed limit %d fps",fps);
+		print_ingame(60,gettext("Speed limit %d fps"),fps);
 		display_cfg.limit_speed = 1;
 	}
 }
@@ -414,33 +414,33 @@ static void cold_boot() {
 // must be global for the controls dialog
 struct DEF_INPUT_EMU def_input_emu[] =
 {
- { SDLK_s | (KMOD_LCTRL<<16),       0x00,           "Save Screenshot", key_save_screen     },
- { SDLK_RETURN | (KMOD_LCTRL<<16),       0x00,           "Fullscreen", toggle_fullscreen     },
- { SDLK_PAGEUP,    0x00,           "Increase frameskip", frame_skip_up  },
- { SDLK_PAGEDOWN,    0x00,           "Decrease frameskip", frame_skip_down  },
- { SDLK_HOME,    0x00,           "Increase cpu skip",    cpu_speed_up},
- { SDLK_END,     0x00,           "Decrease cpu skip",    cpu_slow_down},
+ { SDLK_s | (KMOD_LCTRL<<16),       0x00,           _("Save Screenshot"), key_save_screen     },
+ { SDLK_RETURN | (KMOD_LCTRL<<16),       0x00,           _("Fullscreen"), toggle_fullscreen     },
+ { SDLK_PAGEUP,    0x00,           _("Increase frameskip"), frame_skip_up  },
+ { SDLK_PAGEDOWN,    0x00,           _("Decrease frameskip"), frame_skip_down  },
+ { SDLK_HOME,    0x00,           _("Increase cpu skip"),    cpu_speed_up},
+ { SDLK_END,     0x00,           _("Decrease cpu skip"),    cpu_slow_down},
  // You must keep this one the 6th input, see special handling (KEYUP event)
- { SDLK_DELETE,  0x00,           "Toggle limit speed",   toggle_limit_speed},
- { SDLK_F2,      0x00,           "Save game",            GameSave},
- { SDLK_F3,      0x00,           "Switch save slot",     next_save_slot},
- { SDLK_F4,      0x00,           "Load game",            GameLoad},
- { SDLK_F11,     0x00,           "Switch fps display",   switch_fps_mode},
- { SDLK_F1,      0x00,           "Reset game",           cold_boot},
- { SDLK_p,       0x00,           "Pause game",           key_pause_game},
- { SDLK_ESCAPE,     0x00,           "Stop emulation",    key_stop_emulation_esc},
- { SDLK_TAB,     0x00,           "Return to gui",        key_stop_emulation_tab},
- // { SDLK_WORLD_18,   0x00,           "Switch Mixer", switch_mixer },
- { SDLK_F2 | (KMOD_CTRL<<16), 0x00, "Save game with name", GameSaveName },
- { SDLK_F4 | (KMOD_CTRL<<16), 0x00, "Load game with name", GameLoadName },
- { SDLK_F2 | (KMOD_SHIFT<<16), 0x00, "Save demo", GameSaveDemo },
- { SDLK_F4 | (KMOD_SHIFT<<16), 0x00, "Load demo", GameLoadDemo },
- { SDLK_SPACE, 0x00, "Fwd 1 frame in pause", key_pause_fwd},
+ { SDLK_DELETE,  0x00,           _("Toggle limit speed"),   toggle_limit_speed},
+ { SDLK_F2,      0x00,           _("Save game"),            GameSave},
+ { SDLK_F3,      0x00,           _("Switch save slot"),     next_save_slot},
+ { SDLK_F4,      0x00,           _("Load game"),            GameLoad},
+ { SDLK_F11,     0x00,           _("Switch fps display"),   switch_fps_mode},
+ { SDLK_F1,      0x00,           _("Reset game"),           cold_boot},
+ { SDLK_p,       0x00,           _("Pause game"),           key_pause_game},
+ { SDLK_ESCAPE,     0x00,           _("Stop emulation"),    key_stop_emulation_esc},
+ { SDLK_TAB,     0x00,           _("Return to gui"),        key_stop_emulation_tab},
+ // { SDLK_WORLD_18,   0x00,           _("Switch Mixer"), switch_mixer },
+ { SDLK_F2 | (KMOD_CTRL<<16), 0x00, _("Save game with name"), GameSaveName },
+ { SDLK_F4 | (KMOD_CTRL<<16), 0x00, _("Load game with name"), GameLoadName },
+ { SDLK_F2 | (KMOD_SHIFT<<16), 0x00, _("Save demo"), GameSaveDemo },
+ { SDLK_F4 | (KMOD_SHIFT<<16), 0x00, _("Load demo"), GameLoadDemo },
+ { SDLK_SPACE, 0x00, _("Fwd 1 frame in pause"), key_pause_fwd},
 #ifdef HAS_CONSOLE
- { 31 /* TILDE */, 0x00, "Console", call_console},
+ { 31 /* TILDE */, 0x00, _("Console"), call_console},
 #endif
- { SDLK_c | (KMOD_ALT<<16), 0x00, "Cheats", call_cheats},
- { SDLK_F4 | (KMOD_ALT<<16),       0x00,           "Quit w/o saving", key_quit     },
+ { SDLK_c | (KMOD_ALT<<16), 0x00, _("Cheats"), call_cheats},
+ { SDLK_F4 | (KMOD_ALT<<16),       0x00,           _("Quit w/o saving"), key_quit     },
 };
 
 struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
@@ -1568,241 +1568,241 @@ void update_inputs(void)
 /*                                                                            */
 /******************************************************************************/
 
-char MSG_COIN1[]        = "Coin A";
-char MSG_COIN2[]        = "Coin B";
-char MSG_COIN3[]        = "Coin C";
-char MSG_COIN4[]        = "Coin D";
+char MSG_COIN1[]        = _("Coin A");
+char MSG_COIN2[]        = _("Coin B");
+char MSG_COIN3[]        = _("Coin C");
+char MSG_COIN4[]        = _("Coin D");
 
-char MSG_TILT[]         = "Tilt";
-char MSG_SERVICE[]      = "Service";
-char MSG_TEST[]         = "Test";
-char MSG_UNKNOWN[]      = "Unknown";
-char MSG_YES[] = "Yes";
-char MSG_NO[] = "No";
-char MSG_FREE_PLAY[] = "Free Play";
-char MSG_UNUSED[] = "Unused";
-char MSG_COINAGE[] = "Coinage";
+char MSG_TILT[]         = _("Tilt");
+char MSG_SERVICE[]      = _("Service");
+char MSG_TEST[]         = _("Test");
+char MSG_UNKNOWN[]      = _("Unknown");
+char MSG_YES[] = _("Yes");
+char MSG_NO[] = _("No");
+char MSG_FREE_PLAY[] = _("Free Play");
+char MSG_UNUSED[] = _("Unused");
+char MSG_COINAGE[] = _("Coinage");
 
-char MSG_P1_START[]     = "Player1 Start";
+char MSG_P1_START[]     = _("Player1 Start");
 
-char MSG_P1_UP[]        = "Player1 Up";
-char MSG_P1_DOWN[]      = "Player1 Down";
-char MSG_P1_LEFT[]      = "Player1 Left";
-char MSG_P1_RIGHT[]     = "Player1 Right";
+char MSG_P1_UP[]        = _("Player1 Up");
+char MSG_P1_DOWN[]      = _("Player1 Down");
+char MSG_P1_LEFT[]      = _("Player1 Left");
+char MSG_P1_RIGHT[]     = _("Player1 Right");
 
-char MSG_P1_B1[]        = "Player1 Button1";
-char MSG_P1_B2[]        = "Player1 Button2";
-char MSG_P1_B3[]        = "Player1 Button3";
-char MSG_P1_B4[]        = "Player1 Button4";
-char MSG_P1_B5[]        = "Player1 Button5";
-char MSG_P1_B6[]        = "Player1 Button6";
-char MSG_P1_B7[]        = "Player1 Button7";
-char MSG_P1_B8[]        = "Player1 Button8";
+char MSG_P1_B1[]        = _("Player1 Button1");
+char MSG_P1_B2[]        = _("Player1 Button2");
+char MSG_P1_B3[]        = _("Player1 Button3");
+char MSG_P1_B4[]        = _("Player1 Button4");
+char MSG_P1_B5[]        = _("Player1 Button5");
+char MSG_P1_B6[]        = _("Player1 Button6");
+char MSG_P1_B7[]        = _("Player1 Button7");
+char MSG_P1_B8[]        = _("Player1 Button8");
 
-char MSG_P2_START[]     = "Player2 Start";
+char MSG_P2_START[]     = _("Player2 Start");
 
-char MSG_P2_UP[]        = "Player2 Up";
-char MSG_P2_DOWN[]      = "Player2 Down";
-char MSG_P2_LEFT[]      = "Player2 Left";
-char MSG_P2_RIGHT[]     = "Player2 Right";
+char MSG_P2_UP[]        = _("Player2 Up");
+char MSG_P2_DOWN[]      = _("Player2 Down");
+char MSG_P2_LEFT[]      = _("Player2 Left");
+char MSG_P2_RIGHT[]     = _("Player2 Right");
 
-char MSG_P2_B1[]        = "Player2 Button1";
-char MSG_P2_B2[]        = "Player2 Button2";
-char MSG_P2_B3[]        = "Player2 Button3";
-char MSG_P2_B4[]        = "Player2 Button4";
-char MSG_P2_B5[]        = "Player2 Button5";
-char MSG_P2_B6[]        = "Player2 Button6";
-char MSG_P2_B7[]        = "Player2 Button7";
-char MSG_P2_B8[]        = "Player2 Button8";
+char MSG_P2_B1[]        = _("Player2 Button1");
+char MSG_P2_B2[]        = _("Player2 Button2");
+char MSG_P2_B3[]        = _("Player2 Button3");
+char MSG_P2_B4[]        = _("Player2 Button4");
+char MSG_P2_B5[]        = _("Player2 Button5");
+char MSG_P2_B6[]        = _("Player2 Button6");
+char MSG_P2_B7[]        = _("Player2 Button7");
+char MSG_P2_B8[]        = _("Player2 Button8");
 
-char MSG_P3_START[]     = "Player3 Start";
+char MSG_P3_START[]     = _("Player3 Start");
 
-char MSG_P3_UP[]        = "Player3 Up";
-char MSG_P3_DOWN[]      = "Player3 Down";
-char MSG_P3_LEFT[]      = "Player3 Left";
-char MSG_P3_RIGHT[]     = "Player3 Right";
+char MSG_P3_UP[]        = _("Player3 Up");
+char MSG_P3_DOWN[]      = _("Player3 Down");
+char MSG_P3_LEFT[]      = _("Player3 Left");
+char MSG_P3_RIGHT[]     = _("Player3 Right");
 
-char MSG_P3_B1[]        = "Player3 Button1";
-char MSG_P3_B2[]        = "Player3 Button2";
-char MSG_P3_B3[]        = "Player3 Button3";
-char MSG_P3_B4[]        = "Player3 Button4";
-char MSG_P3_B5[]        = "Player3 Button5";
-char MSG_P3_B6[]        = "Player3 Button6";
-char MSG_P3_B7[]        = "Player3 Button7";
-char MSG_P3_B8[]        = "Player3 Button8";
+char MSG_P3_B1[]        = _("Player3 Button1");
+char MSG_P3_B2[]        = _("Player3 Button2");
+char MSG_P3_B3[]        = _("Player3 Button3");
+char MSG_P3_B4[]        = _("Player3 Button4");
+char MSG_P3_B5[]        = _("Player3 Button5");
+char MSG_P3_B6[]        = _("Player3 Button6");
+char MSG_P3_B7[]        = _("Player3 Button7");
+char MSG_P3_B8[]        = _("Player3 Button8");
 
-char MSG_P4_START[]     = "Player4 Start";
+char MSG_P4_START[]     = _("Player4 Start");
 
-char MSG_P4_UP[]        = "Player4 Up";
-char MSG_P4_DOWN[]      = "Player4 Down";
-char MSG_P4_LEFT[]      = "Player4 Left";
-char MSG_P4_RIGHT[]     = "Player4 Right";
+char MSG_P4_UP[]        = _("Player4 Up");
+char MSG_P4_DOWN[]      = _("Player4 Down");
+char MSG_P4_LEFT[]      = _("Player4 Left");
+char MSG_P4_RIGHT[]     = _("Player4 Right");
 
-char MSG_P4_B1[]        = "Player4 Button1";
-char MSG_P4_B2[]        = "Player4 Button2";
-char MSG_P4_B3[]        = "Player4 Button3";
-char MSG_P4_B4[]        = "Player4 Button4";
-char MSG_P4_B5[]        = "Player4 Button5";
-char MSG_P4_B6[]        = "Player4 Button6";
-char MSG_P4_B7[]        = "Player4 Button7";
-char MSG_P4_B8[]        = "Player4 Button8";
+char MSG_P4_B1[]        = _("Player4 Button1");
+char MSG_P4_B2[]        = _("Player4 Button2");
+char MSG_P4_B3[]        = _("Player4 Button3");
+char MSG_P4_B4[]        = _("Player4 Button4");
+char MSG_P4_B5[]        = _("Player4 Button5");
+char MSG_P4_B6[]        = _("Player4 Button6");
+char MSG_P4_B7[]        = _("Player4 Button7");
+char MSG_P4_B8[]        = _("Player4 Button8");
 
-char MSG_FLIPPER_1_L[]  = "Flipper 1 Left";
-char MSG_FLIPPER_1_R[]  = "Flipper 1 Right";
-char MSG_FLIPPER_2_L[]  = "Flipper 2 Left";
-char MSG_FLIPPER_2_R[]  = "Flipper 2 Right";
-char MSG_TILT_L[]       = "Tilt Left";
-char MSG_TILT_R[]       = "Tilt Right";
-char MSG_B1_L[]         = "Button 1 Left";
-char MSG_B1_R[]         = "Button 1 Right";
-char MSG_B2_L[]         = "Button 2 Left";
-char MSG_B2_R[]         = "Button 2 Right";
+char MSG_FLIPPER_1_L[]  = _("Flipper 1 Left");
+char MSG_FLIPPER_1_R[]  = _("Flipper 1 Right");
+char MSG_FLIPPER_2_L[]  = _("Flipper 2 Left");
+char MSG_FLIPPER_2_R[]  = _("Flipper 2 Right");
+char MSG_TILT_L[]       = _("Tilt Left");
+char MSG_TILT_R[]       = _("Tilt Right");
+char MSG_B1_L[]         = _("Button 1 Left");
+char MSG_B1_R[]         = _("Button 1 Right");
+char MSG_B2_L[]         = _("Button 2 Left");
+char MSG_B2_R[]         = _("Button 2 Right");
 
-char MSG_P1_A[]         = "P1 A";    // Mahjong controls[]; at least in mahjong quest...
-char MSG_P1_E[]         = "P1 E";
-char MSG_P1_I[]         = "P1 I";
-char MSG_P1_M[]         = "P1 M";
-char MSG_P1_KAN[]       = "P1 Kan";
+char MSG_P1_A[]         = _("P1 A");    // Mahjong controls[]; at least in mahjong quest...
+char MSG_P1_E[]         = _("P1 E");
+char MSG_P1_I[]         = _("P1 I");
+char MSG_P1_M[]         = _("P1 M");
+char MSG_P1_KAN[]       = _("P1 Kan");
 
-char MSG_P1_B[]         = "P1 B";
-char MSG_P1_F[]         = "P1 F";
-char MSG_P1_J[]         = "P1 J";
-char MSG_P1_N[]         = "P1 N";
-char MSG_P1_REACH[]     = "P1 Reach";
+char MSG_P1_B[]         = _("P1 B");
+char MSG_P1_F[]         = _("P1 F");
+char MSG_P1_J[]         = _("P1 J");
+char MSG_P1_N[]         = _("P1 N");
+char MSG_P1_REACH[]     = _("P1 Reach");
 
-char MSG_P1_C[]         = "P1 C";
-char MSG_P1_G[]         = "P1 G";
-char MSG_P1_K[]         = "P1 K";
-char MSG_P1_CHI[]       = "P1 Chi";
-char MSG_P1_RON[]       = "P1 Ron";
+char MSG_P1_C[]         = _("P1 C");
+char MSG_P1_G[]         = _("P1 G");
+char MSG_P1_K[]         = _("P1 K");
+char MSG_P1_CHI[]       = _("P1 Chi");
+char MSG_P1_RON[]       = _("P1 Ron");
 
-char MSG_P1_D[]         = "P1 D";
-char MSG_P1_H[]         = "P1 H";
-char MSG_P1_L[]         = "P1 L";
-char MSG_P1_PON[]       = "P1 Pon";
+char MSG_P1_D[]         = _("P1 D");
+char MSG_P1_H[]         = _("P1 H");
+char MSG_P1_L[]         = _("P1 L");
+char MSG_P1_PON[]       = _("P1 Pon");
 
-char *MSG_P1_SERVICE_A  = "Service A";
-char *MSG_P1_SERVICE_B  = "Service B";
-char *MSG_P1_SERVICE_C  = "Service C";
+char *MSG_P1_SERVICE_A  = _("Service A");
+char *MSG_P1_SERVICE_B  = _("Service B");
+char *MSG_P1_SERVICE_C  = _("Service C");
 
 /* DSW SECTION */
 
-char MSG_DSWA_BIT1[]    = "DSW A Bit 1";        // Since most dsw info sheets
-char MSG_DSWA_BIT2[]    = "DSW A Bit 2";        // number the bits 1-8, we will
-char MSG_DSWA_BIT3[]    = "DSW A Bit 3";        // too, although 0-7 is a more
-char MSG_DSWA_BIT4[]    = "DSW A Bit 4";        // correct syntax for progammers.
-char MSG_DSWA_BIT5[]    = "DSW A Bit 5";
-char MSG_DSWA_BIT6[]    = "DSW A Bit 6";
-char MSG_DSWA_BIT7[]    = "DSW A Bit 7";
-char MSG_DSWA_BIT8[]    = "DSW A Bit 8";
+char MSG_DSWA_BIT1[]    = _("DSW A Bit 1");        // Since most dsw info sheets
+char MSG_DSWA_BIT2[]    = _("DSW A Bit 2");        // number the bits 1-8, we will
+char MSG_DSWA_BIT3[]    = _("DSW A Bit 3");        // too, although 0-7 is a more
+char MSG_DSWA_BIT4[]    = _("DSW A Bit 4");        // correct syntax for progammers.
+char MSG_DSWA_BIT5[]    = _("DSW A Bit 5");
+char MSG_DSWA_BIT6[]    = _("DSW A Bit 6");
+char MSG_DSWA_BIT7[]    = _("DSW A Bit 7");
+char MSG_DSWA_BIT8[]    = _("DSW A Bit 8");
 
-char MSG_DSWB_BIT1[]    = "DSW B Bit 1";
-char MSG_DSWB_BIT2[]    = "DSW B Bit 2";
-char MSG_DSWB_BIT3[]    = "DSW B Bit 3";
-char MSG_DSWB_BIT4[]    = "DSW B Bit 4";
-char MSG_DSWB_BIT5[]    = "DSW B Bit 5";
-char MSG_DSWB_BIT6[]    = "DSW B Bit 6";
-char MSG_DSWB_BIT7[]    = "DSW B Bit 7";
-char MSG_DSWB_BIT8[]    = "DSW B Bit 8";
+char MSG_DSWB_BIT1[]    = _("DSW B Bit 1");
+char MSG_DSWB_BIT2[]    = _("DSW B Bit 2");
+char MSG_DSWB_BIT3[]    = _("DSW B Bit 3");
+char MSG_DSWB_BIT4[]    = _("DSW B Bit 4");
+char MSG_DSWB_BIT5[]    = _("DSW B Bit 5");
+char MSG_DSWB_BIT6[]    = _("DSW B Bit 6");
+char MSG_DSWB_BIT7[]    = _("DSW B Bit 7");
+char MSG_DSWB_BIT8[]    = _("DSW B Bit 8");
 
-char MSG_DSWC_BIT1[]    = "DSW C Bit 1";
-char MSG_DSWC_BIT2[]    = "DSW C Bit 2";
-char MSG_DSWC_BIT3[]    = "DSW C Bit 3";
-char MSG_DSWC_BIT4[]    = "DSW C Bit 4";
-char MSG_DSWC_BIT5[]    = "DSW C Bit 5";
-char MSG_DSWC_BIT6[]    = "DSW C Bit 6";
-char MSG_DSWC_BIT7[]    = "DSW C Bit 7";
-char MSG_DSWC_BIT8[]    = "DSW C Bit 8";
+char MSG_DSWC_BIT1[]    = _("DSW C Bit 1");
+char MSG_DSWC_BIT2[]    = _("DSW C Bit 2");
+char MSG_DSWC_BIT3[]    = _("DSW C Bit 3");
+char MSG_DSWC_BIT4[]    = _("DSW C Bit 4");
+char MSG_DSWC_BIT5[]    = _("DSW C Bit 5");
+char MSG_DSWC_BIT6[]    = _("DSW C Bit 6");
+char MSG_DSWC_BIT7[]    = _("DSW C Bit 7");
+char MSG_DSWC_BIT8[]    = _("DSW C Bit 8");
 
-char MSG_COIN_SLOTS[]   = "Coin Slots";
+char MSG_COIN_SLOTS[]   = _("Coin Slots");
 
-char MSG_1COIN_1PLAY[]  = "1 Coin/1 Credit";
-char MSG_1COIN_2PLAY[]  = "1 Coin/2 Credits";
-char MSG_1COIN_3PLAY[]  = "1 Coin/3 Credits";
-char MSG_1COIN_4PLAY[]  = "1 Coin/4 Credits";
-char MSG_1COIN_5PLAY[]  = "1 Coin/5 Credits";
-char MSG_1COIN_6PLAY[]  = "1 Coin/6 Credits";
-char MSG_1COIN_7PLAY[]  = "1 Coin/7 Credits";
-char MSG_1COIN_8PLAY[]  = "1 Coin/8 Credits";
-char MSG_1COIN_9PLAY[]  = "1 Coin/9 Credits";
+char MSG_1COIN_1PLAY[]  = _("1 Coin/1 Credit");
+char MSG_1COIN_2PLAY[]  = _("1 Coin/2 Credits");
+char MSG_1COIN_3PLAY[]  = _("1 Coin/3 Credits");
+char MSG_1COIN_4PLAY[]  = _("1 Coin/4 Credits");
+char MSG_1COIN_5PLAY[]  = _("1 Coin/5 Credits");
+char MSG_1COIN_6PLAY[]  = _("1 Coin/6 Credits");
+char MSG_1COIN_7PLAY[]  = _("1 Coin/7 Credits");
+char MSG_1COIN_8PLAY[]  = _("1 Coin/8 Credits");
+char MSG_1COIN_9PLAY[]  = _("1 Coin/9 Credits");
 
-char MSG_2COIN_1PLAY[]  = "2 Coins/1 Credit";
-char MSG_2COIN_2PLAY[]  = "2 Coins/2 Credits";
-char MSG_2COIN_3PLAY[]  = "2 Coins/3 Credits";
-char MSG_2COIN_4PLAY[]  = "2 Coins/4 Credits";
-char MSG_2COIN_5PLAY[]  = "2 Coins/5 Credits";
-char MSG_2COIN_6PLAY[]  = "2 Coins/6 Credits";
-char MSG_2COIN_7PLAY[]  = "2 Coins/7 Credits";
-char MSG_2COIN_8PLAY[]  = "2 Coins/8 Credits";
+char MSG_2COIN_1PLAY[]  = _("2 Coins/1 Credit");
+char MSG_2COIN_2PLAY[]  = _("2 Coins/2 Credits");
+char MSG_2COIN_3PLAY[]  = _("2 Coins/3 Credits");
+char MSG_2COIN_4PLAY[]  = _("2 Coins/4 Credits");
+char MSG_2COIN_5PLAY[]  = _("2 Coins/5 Credits");
+char MSG_2COIN_6PLAY[]  = _("2 Coins/6 Credits");
+char MSG_2COIN_7PLAY[]  = _("2 Coins/7 Credits");
+char MSG_2COIN_8PLAY[]  = _("2 Coins/8 Credits");
 
-char MSG_3COIN_1PLAY[]  = "3 Coins/1 Credit";
-char MSG_3COIN_2PLAY[]  = "3 Coins/2 Credits";
-char MSG_3COIN_3PLAY[]  = "3 Coins/3 Credits";
-char MSG_3COIN_4PLAY[]  = "3 Coins/4 Credits";
-char MSG_3COIN_5PLAY[]  = "3 Coins/5 Credits";
-char MSG_3COIN_6PLAY[]  = "3 Coins/6 Credits";
-char MSG_3COIN_7PLAY[]  = "3 Coins/7 Credits";
-char MSG_3COIN_8PLAY[]  = "3 Coins/8 Credits";
+char MSG_3COIN_1PLAY[]  = _("3 Coins/1 Credit");
+char MSG_3COIN_2PLAY[]  = _("3 Coins/2 Credits");
+char MSG_3COIN_3PLAY[]  = _("3 Coins/3 Credits");
+char MSG_3COIN_4PLAY[]  = _("3 Coins/4 Credits");
+char MSG_3COIN_5PLAY[]  = _("3 Coins/5 Credits");
+char MSG_3COIN_6PLAY[]  = _("3 Coins/6 Credits");
+char MSG_3COIN_7PLAY[]  = _("3 Coins/7 Credits");
+char MSG_3COIN_8PLAY[]  = _("3 Coins/8 Credits");
 
-char MSG_4COIN_1PLAY[]  = "4 Coins/1 Credit";
-char MSG_4COIN_2PLAY[]  = "4 Coins/2 Credits";
-char MSG_4COIN_3PLAY[]  = "4 Coins/3 Credits";
-char MSG_4COIN_4PLAY[]  = "4 Coins/4 Credits";
-char MSG_4COIN_5PLAY[]  = "4 Coins/5 Credits";
-char MSG_4COIN_6PLAY[]  = "4 Coins/6 Credits";
-char MSG_4COIN_7PLAY[]  = "4 Coins/7 Credits";
-char MSG_4COIN_8PLAY[]  = "4 Coins/8 Credits";
+char MSG_4COIN_1PLAY[]  = _("4 Coins/1 Credit");
+char MSG_4COIN_2PLAY[]  = _("4 Coins/2 Credits");
+char MSG_4COIN_3PLAY[]  = _("4 Coins/3 Credits");
+char MSG_4COIN_4PLAY[]  = _("4 Coins/4 Credits");
+char MSG_4COIN_5PLAY[]  = _("4 Coins/5 Credits");
+char MSG_4COIN_6PLAY[]  = _("4 Coins/6 Credits");
+char MSG_4COIN_7PLAY[]  = _("4 Coins/7 Credits");
+char MSG_4COIN_8PLAY[]  = _("4 Coins/8 Credits");
 
-char MSG_5COIN_1PLAY[]  = "5 Coins/1 Credit";
-char MSG_5COIN_2PLAY[]  = "5 Coins/2 Credits";
-char MSG_5COIN_3PLAY[]  = "5 Coins/3 Credits";
-char MSG_5COIN_4PLAY[]  = "5 Coins/4 Credits";
+char MSG_5COIN_1PLAY[]  = _("5 Coins/1 Credit");
+char MSG_5COIN_2PLAY[]  = _("5 Coins/2 Credits");
+char MSG_5COIN_3PLAY[]  = _("5 Coins/3 Credits");
+char MSG_5COIN_4PLAY[]  = _("5 Coins/4 Credits");
 
-char MSG_6COIN_1PLAY[]  = "6 Coins/1 Credit";
-char MSG_6COIN_2PLAY[]  = "6 Coins/2 Credits";
-char MSG_6COIN_3PLAY[]  = "6 Coins/3 Credits";
-char MSG_6COIN_4PLAY[]  = "6 Coins/4 Credits";
+char MSG_6COIN_1PLAY[]  = _("6 Coins/1 Credit");
+char MSG_6COIN_2PLAY[]  = _("6 Coins/2 Credits");
+char MSG_6COIN_3PLAY[]  = _("6 Coins/3 Credits");
+char MSG_6COIN_4PLAY[]  = _("6 Coins/4 Credits");
 
-char MSG_7COIN_1PLAY[]  = "7 Coins/1 Credit";
-char MSG_7COIN_2PLAY[]  = "7 Coins/2 Credits";
-char MSG_7COIN_3PLAY[]  = "7 Coins/3 Credits";
-char MSG_7COIN_4PLAY[]  = "7 Coins/4 Credits";
+char MSG_7COIN_1PLAY[]  = _("7 Coins/1 Credit");
+char MSG_7COIN_2PLAY[]  = _("7 Coins/2 Credits");
+char MSG_7COIN_3PLAY[]  = _("7 Coins/3 Credits");
+char MSG_7COIN_4PLAY[]  = _("7 Coins/4 Credits");
 
-char MSG_8COIN_1PLAY[]  = "8 Coins/1 Credit";
-char MSG_8COIN_2PLAY[]  = "8 Coins/2 Credits";
-char MSG_8COIN_3PLAY[]  = "8 Coins/3 Credits";
-char MSG_8COIN_4PLAY[]  = "8 Coins/4 Credits";
+char MSG_8COIN_1PLAY[]  = _("8 Coins/1 Credit");
+char MSG_8COIN_2PLAY[]  = _("8 Coins/2 Credits");
+char MSG_8COIN_3PLAY[]  = _("8 Coins/3 Credits");
+char MSG_8COIN_4PLAY[]  = _("8 Coins/4 Credits");
 
-char MSG_9COIN_1PLAY[] = "9 Coins/1 Credit";
+char MSG_9COIN_1PLAY[] = _("9 Coins/1 Credit");
 
-char MSG_OFF[]          = "Off";
-char MSG_ON[]           = "On";
+char MSG_OFF[]          = _("Off");
+char MSG_ON[]           = _("On");
 
-char MSG_SCREEN[]       = "Flip Screen";
-char MSG_NORMAL[]       = "Normal";
-char MSG_INVERT[]       = "Invert";
+char MSG_SCREEN[]       = _("Flip Screen");
+char MSG_NORMAL[]       = _("Normal");
+char MSG_INVERT[]       = _("Invert");
 
-char MSG_TEST_MODE[]    = "Test Mode";
+char MSG_TEST_MODE[]    = _("Test Mode");
 
-char MSG_DEMO_SOUND[]   = "Demo Sound";
+char MSG_DEMO_SOUND[]   = _("Demo Sound");
 
-char MSG_CONTINUE_PLAY[]= "Continue Play";
-char MSG_EXTRA_LIFE[]   = "Extra Life";
-char MSG_LIVES[]        = "Lives";
+char MSG_CONTINUE_PLAY[]= _("Continue Play");
+char MSG_EXTRA_LIFE[]   = _("Extra Life");
+char MSG_LIVES[]        = _("Lives");
 
-char MSG_CHEAT[]        = "Cheat";
+char MSG_CHEAT[]        = _("Cheat");
 
-char MSG_DIFFICULTY[]   = "Difficulty";
-char MSG_EASY[]         = "Easy";
-char MSG_HARD[]         = "Hard";
-char MSG_VERY_HARD[]         = "Very Hard";
-char MSG_HARDEST[]      = "Hardest";
-char MSG_MEDIUM[]       = "Medium";
+char MSG_DIFFICULTY[]   = _("Difficulty");
+char MSG_EASY[]         = _("Easy");
+char MSG_HARD[]         = _("Hard");
+char MSG_VERY_HARD[]         = _("Very Hard");
+char MSG_HARDEST[]      = _("Hardest");
+char MSG_MEDIUM[]       = _("Medium");
 
-char MSG_CABINET[]      = "Cabinet";
-char MSG_UPRIGHT[]      = "Upright";
-char MSG_TABLE[]        = "Table";
-char MSG_ALT[]        = "Alternate";
+char MSG_CABINET[]      = _("Cabinet");
+char MSG_UPRIGHT[]      = _("Upright");
+char MSG_TABLE[]        = _("Table");
+char MSG_ALT[]        = _("Alternate");
 
 /******************************************************************************/
 

@@ -97,22 +97,22 @@ static struct DSW_DATA dsw_data_crospang_0[] =
   { MSG_2COIN_1PLAY, 0x0001, 0x00 },
   { MSG_1COIN_1PLAY, 0x0002, 0x00 },
   { MSG_1COIN_2PLAY, 0x0003, 0x00 },
-// "SW1:5"
+// _("SW1:5")
   { MSG_DIFFICULTY, 0x000c, 4 },
   { MSG_EASY, 0x0008, 0x00 },
   { MSG_MEDIUM, 0x000c, 0x00 },
   { MSG_HARD, 0x0000, 0x00 },
   { MSG_HARDEST, 0x0004, 0x00 },
-// "SW1:6"
-  { "Bonus Power (Points)", 0x0010, 2 },
-  { "5k 20k 15k+", 0x0010, 0x00 },
-  { "8k 23k 15k+", 0x0000, 0x00 },
-// "SW1:7,8"
-  { "Number of Powers", 0x0020, 2 },
+// _("SW1:6")
+  { _("Bonus Power (Points)"), 0x0010, 2 },
+  { _("5k 20k 15k+"), 0x0010, 0x00 },
+  { _("8k 23k 15k+"), 0x0000, 0x00 },
+// _("SW1:7,8")
+  { _("Number of Powers"), 0x0020, 2 },
   { "1", 0x0000, 0x00 },
   { "2", 0x0020, 0x00 },
-// "SW2:1,2"
-  { "Extra Balls per Move", 0x00c0, 4 },
+// _("SW2:1,2")
+  { _("Extra Balls per Move"), 0x00c0, 4 },
   { "1", 0x00c0, 0x00 },
   { "2", 0x0080, 0x00 },
   { "3", 0x0040, 0x00 },
@@ -127,11 +127,11 @@ static struct DSW_DATA dsw_data_crospang_1[] =
   { "7/8", 0x2, 0x00 },
   { "8/9", 0x1, 0x00 },
   { "9/10", 0x0, 0x00 },
-// "SW2:4,5"
-  { "Bonus Power (Bomb)", 0x4, 2 },
-  { "3 Chain Reactions", 0x4, 0x00 },
-  { "4 Chain Reactions", 0x0, 0x00 },
-  { "Minimum Balls per Row", 0x18, 4 },
+// _("SW2:4,5")
+  { _("Bonus Power (Bomb)"), 0x4, 2 },
+  { _("3 Chain Reactions"), 0x4, 0x00 },
+  { _("4 Chain Reactions"), 0x0, 0x00 },
+  { _("Minimum Balls per Row"), 0x18, 4 },
   { "3", 0x18, 0x00 },
   { "4", 0x10, 0x00 },
   { "5", 0x8, 0x00 },
@@ -149,24 +149,24 @@ static struct DSW_INFO dsw_crospang[] =
 
 static struct DSW_DATA dsw_data_heuksun_2[] =
 {
-// "SW1:1,2"
-// "SW1:3,4"
+// _("SW1:1,2")
+// _("SW1:3,4")
   { MSG_COINAGE, 0x0003, 4 },
   { MSG_3COIN_1PLAY, 0x0000, 0x00 },
   { MSG_2COIN_1PLAY, 0x0001, 0x00 },
   { MSG_1COIN_1PLAY, 0x0002, 0x00 },
   { MSG_1COIN_2PLAY, 0x0003, 0x00 },
-// "SW1:5"
+// _("SW1:5")
   { MSG_DIFFICULTY, 0x000c, 4 },
   { MSG_EASY, 0x000c, 0x00 },
   { MSG_MEDIUM, 0x0008, 0x00 },
   { MSG_HARD, 0x0004, 0x00 },
   { MSG_HARDEST, 0x0000, 0x00 },
-  { "Help Penalty (Heuk Sun)", 0x0010, 2 },
-  { "Constant", 0x0010, 0x00 },
-  { "Variable", 0x0000, 0x00 },
+  { _("Help Penalty (Heuk Sun)"), 0x0010, 2 },
+  { _("Constant"), 0x0010, 0x00 },
+  { _("Variable"), 0x0000, 0x00 },
   DSW_SERVICE( 0, 0x0080 ),
-// "SW2:1,2,3,4,5,6,7,8"
+// _("SW2:1,2,3,4,5,6,7,8")
   { NULL, 0, 0}
 };
 

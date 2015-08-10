@@ -71,32 +71,32 @@ void set_neogeo_bios(int sel) {
 
 static struct DSW_DATA dsw_data_neogeo_0[] =
 {
-// "SW:1"
+// _("SW:1")
   DSW_TEST_MODE( 0x0000, 0x0001 ),
-// "SW:2"
-  { "Coin Chutes?", 0x0002, 2 },
+// _("SW:2")
+  { _("Coin Chutes?"), 0x0002, 2 },
   { "1?", 0x0000, 0x00 },
   { "2?", 0x0002, 0x00 },
-// "SW:3"
-  { "Autofire (in some games)", 0x0004, 2 },
+// _("SW:3")
+  { _("Autofire (in some games)"), 0x0004, 2 },
   { MSG_OFF, 0x0004, 0x00 },
   { MSG_ON, 0x0000, 0x00 },
-// "SW:4,5"
-  { "COMM Setting (Cabinet No.)", 0x0018, 4 },
+// _("SW:4,5")
+  { _("COMM Setting (Cabinet No.)"), 0x0018, 4 },
   { "1", 0x0018, 0x00 },
   { "2", 0x0010, 0x00 },
   { "3", 0x0008, 0x00 },
   { "4", 0x0000, 0x00 },
-// "SW:6"
-  { "COMM Setting (Link Enable)", 0x0020, 2 },
+// _("SW:6")
+  { _("COMM Setting (Link Enable)"), 0x0020, 2 },
   { MSG_OFF, 0x0020, 0x00 },
   { MSG_ON, 0x0000, 0x00 },
-// "SW:7"
+// _("SW:7")
   { MSG_FREE_PLAY, 0x0040, 2 },
   { MSG_OFF, 0x0040, 0x00 },
   { MSG_ON, 0x0000, 0x00 },
-// "SW:8"
-  { "Freeze", 0x0080, 2 },
+// _("SW:8")
+  { _("Freeze"), 0x0080, 2 },
   { MSG_OFF, 0x0080, 0x00 },
   { MSG_ON, 0x0000, 0x00 },
   { NULL, 0, 0}

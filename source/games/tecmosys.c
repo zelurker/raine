@@ -308,11 +308,11 @@ static struct DSW_DATA dsw_data_ninja_gaiden_1[] =
    { MSG_UNKNOWN,             0x02, 0x02 },
    { MSG_OFF,                 0x02},
    { MSG_ON,                  0x00},
-   { MSG_DIFFICULTY,          0x0c, 0x03 },	// enemy "recovery" time
+   { MSG_DIFFICULTY,          0x0c, 0x03 },	// enemy _("recovery") time
    { MSG_NORMAL,              0x0c},
    { MSG_HARD,                0x04},
    { MSG_HARDEST,             0x00},
-   { "Energy",                0x30, 0x04 },
+   { _("Energy"),                0x30, 0x04 },
    { "2",                     0x00},
    { "3",                     0x30},
    { "4",                     0x10},
@@ -394,7 +394,7 @@ static struct DSW_DATA dsw_data_tecmo_knight_1[] =
    { MSG_UNKNOWN,             0x02, 0x02 },
    { MSG_OFF,                 0x02},
    { MSG_ON,                  0x00},
-   { MSG_DIFFICULTY,          0x0c, 0x04 },	// enemy "recovery" time
+   { MSG_DIFFICULTY,          0x0c, 0x04 },	// enemy _("recovery") time
    { MSG_EASY,                0x04},
    { MSG_NORMAL,              0x0c},
    { MSG_HARD,                0x08},

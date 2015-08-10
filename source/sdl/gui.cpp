@@ -212,7 +212,7 @@ static void do_load_game(void)
    case LOAD_WARNING:			// WARNING - IT MIGHT RUN OK
 
      strcat(load_debug,"\n\nThe game might not run correctly.");
-     MessageBox("Loading problem", load_debug);
+     MessageBox(_("Loading problem"), load_debug);
 
    case 0x00:				// SUCCESS
      memcpy(&prev_display_cfg, &display_cfg, sizeof(DISPLAY_CFG));
@@ -243,7 +243,7 @@ static void do_load_game(void)
    case LOAD_FATAL_ERROR:			// FATAL ERROR - REMOVE GAME
    case LOAD_FATAL_ERROR|LOAD_WARNING:
 
-     MessageBox("Loading error",load_debug);
+     MessageBox(_("Loading error"),load_debug);
 
      ClearDefault();
 
@@ -504,14 +504,9 @@ void StartGUI(void)
 
 }
 
-int raine_file_select(char *message, char *path, char *ext) {
-  print_ingame(60,"raine_file_select not implemented yet");
-  return 0;
-}
-
 void *old_draw = NULL;
 
 void switch_mixer() {
-  print_ingame(60,"no mixer yet");
+  print_ingame(60,_("no mixer yet"));
 }
 

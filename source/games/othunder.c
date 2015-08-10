@@ -62,7 +62,7 @@ static struct INPUT_INFO input_othunder[] =
 
 static struct DSW_DATA dsw_data_operation_thunderbolt_0[] =
 {
-   { "Continue Mode",         0x02, 0x02 },
+   { _("Continue Mode"),         0x02, 0x02 },
    { MSG_OFF,                 0x02},
    { MSG_ON,                  0x00},
    { MSG_TEST_MODE,           0x04, 0x02 },
@@ -91,22 +91,22 @@ static struct DSW_DATA dsw_data_operation_thunderbolt_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Bullet Mags / Rockets", 0x0c, 0x04 },
+   { _("Bullet Mags / Rockets"), 0x0c, 0x04 },
    { "5 / 3",                 0x0c},
    { "6 / 4",                 0x08},
    { "7 / 5",                 0x04},
    { "8 / 6",                 0x00},
-   { "Bullets per Magazine",  0x30, 0x04 },
+   { _("Bullets per Magazine"),  0x30, 0x04 },
    { "40",                    0x30},
    { "50",                    0x20},
    { "35",                    0x10},
    { "30",                    0x00},
-   { "Half Price Continue",   0x40, 0x02 },
+   { _("Half Price Continue"),   0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
-   { "Game Title Language",   0x80, 0x02 },
-   { "Japanese",              0x80},
-   { "English",               0x00},
+   { _("Game Title Language"),   0x80, 0x02 },
+   { _("Japanese"),              0x80},
+   { _("English"),               0x00},
    { NULL,                    0,   },
 };
 static struct DSW_INFO dsw_othunder[] =

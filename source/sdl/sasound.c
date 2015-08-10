@@ -321,7 +321,7 @@ static int read_more_data(Sound_Sample *sample)
 		global_state.decoded_bytes = Sound_Decode(sample);
 		if (sample->flags & SOUND_SAMPLEFLAG_ERROR)
 		{
-		  print_ingame(60,"Music error: %s",Sound_GetError());
+		  print_ingame(60,gettext("Music error: %s"),Sound_GetError());
 		  printf("Music error: %s",Sound_GetError());
 		} /* if */
 
@@ -368,15 +368,15 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
   switch (format)
   {
     case AUDIO_U8:
-      print_ingame(1,"u8 not supported");
+      print_ingame(1,gettext("u8 not supported"));
       break;
 
     case AUDIO_S8:
-      print_ingame(1,"s8 not supported");
+      print_ingame(1,gettext("s8 not supported"));
       break;
 
     case AUDIO_U16LSB:
-      print_ingame(1,"u16lsb not supported");
+      print_ingame(1,gettext("u16lsb not supported"));
       break;
 
     case AUDIO_S16LSB:
@@ -387,7 +387,7 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
       break;
 
     case AUDIO_U16MSB:
-      print_ingame(1,"u16msb not supported");
+      print_ingame(1,gettext("u16msb not supported"));
       break;
 
     case AUDIO_S16MSB:
@@ -590,7 +590,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		NULL,
 		16384);
 	if (!sample) {
-	    print_ingame(183, "Audio track unreadable");
+	    print_ingame(183, gettext("Audio track unreadable"));
 	    print_debug("Audio track unreadable : %s\n",track_to_read);
 	} else {
 	    print_debug("load_sample %s ok\n",track_to_read);

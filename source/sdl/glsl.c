@@ -16,6 +16,7 @@
 #include "sdl/opengl.h"
 #include "sdl/dialogs/messagebox.h"
 #include "math/matrix.h"
+#include "translate.h"
 
 // glsl shaders
 
@@ -174,7 +175,7 @@ static int attach(GLuint shader) {
 	gl_error = glGetError( );
 	if( gl_error != GL_NO_ERROR ) {
 	    strcpy(ogl.shader,"None");
-	    MessageBox("OpenGL error","error while attaching vertex shader","ok");
+	    MessageBox(gettext("OpenGL error"),gettext("error while attaching vertex shader"),gettext("ok"));
 	    return 0;
 	}
     }
@@ -184,7 +185,7 @@ static int attach(GLuint shader) {
     gl_error = glGetError( );
     if( gl_error != GL_NO_ERROR ) {
 	strcpy(ogl.shader,"None");
-	MessageBox("OpenGL error","error while attaching fragment shader","ok");
+	MessageBox(gettext("OpenGL error"),gettext("error while attaching fragment shader"),gettext("ok"));
 	return 0;
     } else if (vertexshader == shader)
 	pass[nb_pass].vertex = shader;
@@ -205,7 +206,7 @@ static int set_fragment_shader(const char *source) {
 	GLchar *buf = malloc(tmp);
 	glGetShaderInfoLog(fragmentshader, tmp, NULL, buf);
 	strcpy(ogl.shader,"None");
-	MessageBox("Errors compiling fragment shader",buf,"ok");
+	MessageBox(gettext("Errors compiling fragment shader"),buf,gettext("ok"));
 	free(buf);
 	ret = 0;
     } else
@@ -353,7 +354,7 @@ void read_shader(char *shader) {
 	no_shader_support = !no_shader_support;
     }
     if (no_shader_support) {
-	MessageBox("Warning","No shader support on your hardware","ok");
+	MessageBox(gettext("Warning"),gettext("No shader support on your hardware"),gettext("ok"));
 	return;
     }
 #endif
@@ -511,7 +512,7 @@ start_shader:
 		    glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
 		    delete_shaders();
 		    strcpy(ogl.shader,"None");
-		    MessageBox("Error linking shader",buf,"OK");
+		    MessageBox(gettext("Error linking shader"),buf,gettext("OK"));
 		    print_debug("link error : %s\n",buf);
 		    free(buf);
 		    break;

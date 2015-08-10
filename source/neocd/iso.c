@@ -84,8 +84,8 @@ static int find_file(char *iso, char *filename, int *size, int *start) {
   FILE *f = myopen(iso,"rb");
   if (!f) {
     char msg[256];
-    sprintf(msg,"Couldn't open iso file:|%s",iso);
-    MessageBox("Error",msg,"Ok");
+    sprintf(msg,_("Couldn't open iso file:|%s"),iso);
+    MessageBox(gettext("Error"),msg,gettext("Ok"));
     return 0;
   }
   if (!dir) {

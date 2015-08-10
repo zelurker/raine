@@ -654,13 +654,13 @@ void init_f3_system_ioc(UINT32 type)
       p2_trackball_y = 0;
    }
 
-   f3_bg0_id = add_layer_info("BG0");
-   f3_bg1_id = add_layer_info("BG1");
-   f3_bg2_id = add_layer_info("BG2");
-   f3_bg3_id = add_layer_info("BG3");
+   f3_bg0_id = add_layer_info(gettext("BG0"));
+   f3_bg1_id = add_layer_info(gettext("BG1"));
+   f3_bg2_id = add_layer_info(gettext("BG2"));
+   f3_bg3_id = add_layer_info(gettext("BG3"));
 
-   f3_bg5_id = add_layer_info("FG0");
-   f3_bg6_id = add_layer_info("Pixel");
+   f3_bg5_id = add_layer_info(gettext("FG0"));
+   f3_bg6_id = add_layer_info(gettext("Pixel"));
 }
 
 //static int scrsav[16];
@@ -673,7 +673,7 @@ void IntF3System(void)
 */
   int mx,my;
 
-   //print_ingame(600,"%04x",ReadWord68k(&RAM[0x4623E]));
+   //print_ingame(600,gettext("%04x"),ReadWord68k(&RAM[0x4623E]));
 
    // update ioc leds
 

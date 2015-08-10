@@ -235,10 +235,10 @@ static int do_input(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDLK_ESCAPE) {
-      int ret = MessageBox("Question","What do you want to do ?",
-        "Delete the key|"
+      int ret = MessageBox(_("Question"),_("What do you want to do ?"),
+        _("Delete the key|"
 	"Delete the joystick ctrl|"
-	"Really use ESC here");
+	"Really use ESC here"));
       switch(ret) {
 	case 1: def_input_emu[indice].scancode = 0;
 		free(cols[sel*2+0]);
@@ -277,8 +277,8 @@ static int do_kb_input(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDLK_ESCAPE) {
-      int ret = MessageBox("Question","What do you want to do ?",
-        "Delete the key");
+      int ret = MessageBox(_("Question"),_("What do you want to do ?"),
+        _("Delete the key"));
       switch(ret) {
 	case 1:
 		layer_info_list[sel].keycode = 0;
@@ -305,10 +305,10 @@ static int do_input_ingame(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDLK_ESCAPE) {
-      int ret = MessageBox("Question","What do you want to do ?",
-        "Delete the key|"
+      int ret = MessageBox(_("Question"),_("What do you want to do ?"),
+        _("Delete the key|"
 	"Delete the joystick ctrl|"
-	"Del the mouse button");
+	"Del the mouse button"));
       switch(ret) {
 	case 1:
 		InputList[nb].Key = 0;
@@ -526,16 +526,16 @@ static int setup_autofire(int sel) {
       for (x=0; x<6; x++)
 	menu[mynb].values_list[x] = x;
       menu[mynb].values_list_label[0] = _("Off");
-      menu[mynb].values_list_label[1] = "30 fps";
-      menu[mynb].values_list_label[2] = "15 fps";
-      menu[mynb].values_list_label[3] = "10 fps";
-      menu[mynb].values_list_label[4] = "7 fps";
-      menu[mynb].values_list_label[5] = "6 fps";
+      menu[mynb].values_list_label[1] = _("30 fps");
+      menu[mynb].values_list_label[2] = _("15 fps");
+      menu[mynb].values_list_label[3] = _("10 fps");
+      menu[mynb].values_list_label[4] = _("7 fps");
+      menu[mynb].values_list_label[5] = _("6 fps");
       mynb++;
     }
   }
   if (mynb == 0) {
-    MessageBox("Error","No buttons mapped by this game for autofire, sorry !");
+    MessageBox(_("Error"),_("No buttons mapped by this game for autofire, sorry !"));
     free(menu);
     return 0;
   }
@@ -577,7 +577,7 @@ static int autofire_controls(int sel) {
   for (n=0; n<InputCount; n++) {
     if (InputList[n].auto_rate && InputList[n].link == 0) {
       if (InputCount >= MAX_INPUTS-1) {
-	MessageBox("Error","Too many controls have been defined for this game, sorry !");
+	MessageBox(_("Error"),_("Too many controls have been defined for this game, sorry !"));
 	return 0;
       }
       InputList[InputCount] = InputList[n];
@@ -815,11 +815,11 @@ static int do_load(int sel) {
     }
     if (f) fclose(f);
     if (!nb_used) {
-	MessageBox("Error","Save 1st some custom inputs using\nSave inputs as");
+	MessageBox(_("Error"),_("Save 1st some custom inputs using\nSave inputs as"));
 	return 0;
     }
     selected = -1;
-    TDialog *dlg = new TDialog("Load from which ?",menu);
+    TDialog *dlg = new TDialog(_("Load from which ?"),menu);
     dlg->execute();
     delete dlg;
     if (selected > -1) {
@@ -899,11 +899,11 @@ static int get_inputs(int sel) {
     }
     if (f) fclose(f);
     if (!nb_used) {
-	MessageBox("Error","No game uses custom inputs in your config file yet");
+	MessageBox(_("Error"),_("No game uses custom inputs in your config file yet"));
 	return 0;
     }
     selected = -1;
-    TMenu *dlg = new TMenu("Load from which ?",menu);
+    TMenu *dlg = new TMenu(_("Load from which ?"),menu);
     dlg->execute();
     delete dlg;
     if (selected > -1) {

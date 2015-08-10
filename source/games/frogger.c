@@ -103,17 +103,17 @@ static struct DSW_DATA dsw_data_frogger_1[] =
   { "3", 	0x00},
   { "5", 	0x01},
   { "7", 	0x02},
-  { "256 (Cheat)", 	0x03},
+  { _("256 (Cheat)"), 	0x03},
   { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_frogger_2[] =
 {
   { MSG_COINAGE, 0x06, 4 },
-  { "A 2/1 B 2/1 C 2/1", 	0x02},
-  { "A 2/1 B 1/3 C 2/1", 	0x04},
-  { "A 1/1 B 1/1 C 1/1", 	0x00},
-  { "A 1/1 B 1/6 C 1/1", 	0x06},
+  { _("A 2/1 B 2/1 C 2/1"), 	0x02},
+  { _("A 2/1 B 1/3 C 2/1"), 	0x04},
+  { _("A 1/1 B 1/1 C 1/1"), 	0x00},
+  { _("A 1/1 B 1/6 C 1/1"), 	0x06},
   DSW_CABINET( 0x00, 0x08),
   { NULL, 0}
 };
@@ -1383,8 +1383,8 @@ static void load_frogger() {
 
   InitPaletteMap((UINT8*)mypal, (8+1+16), 4, 0x200); // 8 banks of 4 colors each : extreme !!! + 1 for bg/bullets, +16 for stars
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
-  layer_id_data[0] = add_layer_info("BG");
-  layer_id_data[1] = add_layer_info("SPRITES");
+  layer_id_data[0] = add_layer_info(gettext("BG"));
+  layer_id_data[1] = add_layer_info(gettext("SPRITES"));
 
   // The wicked layouts
   load_region[REGION_GFX2] = copy_sprites(load_region[REGION_GFX1]);
@@ -1404,10 +1404,10 @@ static void load_frogger() {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-	if(MessageBox("EmuDX","EmuDX support ?","Yes|No") == 1)
+	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
 	{
-	  load_emudx("froggerg.dx2",1,280,282,351,
+	  load_emudx(gettext("froggerg.dx2"),1,280,282,351,
 	      0,0, // no chars here, they seem to have coloured tiles for the chars
 	      448,512,makecol(0xff,0,0xff),draw_emudx);
 	  setup_frog_gfx();
@@ -1419,10 +1419,10 @@ static void load_frogger() {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-	if(MessageBox("EmuDX","EmuDX support ?","Yes|No") == 1)
+	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
 	{
-	  load_emudx("galdxg.dx2",1,393,395,488,
+	  load_emudx(gettext("galdxg.dx2"),1,393,395,488,
 	      0,0, // no chars here, they seem to have coloured tiles for the chars
 	      448,512,makecol(0xff,0,0xff),draw_emudx_gal);
 	  setup_gal_gfx();

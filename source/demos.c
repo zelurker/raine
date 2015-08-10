@@ -52,18 +52,18 @@ static void do_save_demo(char *str) {
      disp_str = strstr(str,"demos");
      if (!disp_str) disp_str = str;
      if (!(fdemo=gzopen(str,"wb9"))){
-      print_ingame(120,"Unable to save: %s",disp_str);
+      print_ingame(120,gettext("Unable to save: %s"),disp_str);
       return;
      }
 
      NewSave(fdemo);
      iputl(0,fdemo); // Size parameter for END
 
-     print_ingame(120,"Recording demo to: %s",disp_str);
+     print_ingame(120,gettext("Recording demo to: %s"),disp_str);
      start_cpu_main();
    }
    else{
-      print_ingame(120,"Game does not support Saving.");
+      print_ingame(120,gettext("Game does not support Saving."));
    }
 
    print_debug("END: GameSaveDemo()\n");
@@ -273,7 +273,7 @@ static void do_load_demo(char *str) {
    disp_str = strstr(str,"demos");
    if (!disp_str) disp_str = str;
    if(!(fdemo=gzopen(str,"rb"))){
-        print_ingame(120,"Unable to load: %s", disp_str);
+        print_ingame(120,gettext("Unable to load: %s"), disp_str);
         return;
    }
 
@@ -281,7 +281,7 @@ static void do_load_demo(char *str) {
 
    switch(ta){
       case SAVE_FILE_TYPE_0:
-	print_ingame(120,"%s is too ancient!", disp_str);
+	print_ingame(120,gettext("%s is too ancient!"), disp_str);
          gzclose(fdemo);
          return;
       break;
@@ -290,13 +290,13 @@ static void do_load_demo(char *str) {
          NewLoad(fdemo);
       break;
       default:
-	print_ingame(120,"%s is not recognised", disp_str);
+	print_ingame(120,gettext("%s is not recognised"), disp_str);
          gzclose(fdemo);
          return;
       break;
    }
 
-   print_ingame(120,"Playing from: %s", disp_str);
+   print_ingame(120,gettext("Playing from: %s"), disp_str);
 
    RefreshBuffers=1;
 
@@ -314,7 +314,7 @@ static void do_load_demo(char *str) {
 
    }
    else{
-      print_ingame(120,"Game does not support Loading.");
+      print_ingame(120,gettext("Game does not support Loading."));
    }
 
    print_debug("END: GameLoadDemo()\n");

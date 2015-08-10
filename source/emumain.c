@@ -325,7 +325,7 @@ UINT32 run_game_emulation(void)
 	  char buffer[1024];
 	  int lus,n;
 #ifdef SDL
-	  char *extension = "png";
+	  char *extension = _("png");
 #else
 	  char *extension = (display_cfg.screenshot_png ? "png" : "pcx");
 #endif
@@ -461,7 +461,7 @@ void cpu_slow_down(void)
 {
    if(cpu_fps<16){
       cpu_fps++;
-      print_ingame(300,"cpusldn:Running CPU Every %01d Frames",cpu_fps);
+      print_ingame(300,gettext("cpusldn:Running CPU Every %01d Frames"),cpu_fps);
    }
 }
 
@@ -470,9 +470,9 @@ void cpu_speed_up(void)
    if(cpu_fps>1){
       cpu_fps--;
       if(cpu_fps==1)
-	 print_ingame(120,"Running CPU All Frames");
+	 print_ingame(120,gettext("Running CPU All Frames"));
       else
-	 print_ingame(120,"Running CPU Every %01d Frames",cpu_fps);
+	 print_ingame(120,gettext("Running CPU Every %01d Frames"),cpu_fps);
    }
 }
 
@@ -503,37 +503,37 @@ void reset_game_hardware(void)
 #if HAVE_68000
    if(StarScreamEngine>=1){
       cpu_reset(CPU_68K_0);
-      print_ingame(120,"CPU M68000#0 Reset");
+      print_ingame(120,gettext("CPU M68000#0 Reset"));
    }
    if(StarScreamEngine>=2){
       cpu_reset(CPU_68K_1);
-      print_ingame(120,"CPU M68000#1 Reset");
+      print_ingame(120,gettext("CPU M68000#1 Reset"));
    }
 #endif
 
 #ifndef NO020
    if(MC68020){
       cpu_reset(CPU_M68020_0);
-      print_ingame(120,"CPU M68020#0 Reset");
+      print_ingame(120,gettext("CPU M68020#0 Reset"));
    }
 #endif
 
 #if HAVE_Z80
    if(MZ80Engine>=1 && mz80GetBase(0)){
       cpu_reset(CPU_Z80_0);
-      print_ingame(120,"CPU Z80#0 Reset");
+      print_ingame(120,gettext("CPU Z80#0 Reset"));
    }
    if(MZ80Engine>=2){
       cpu_reset(CPU_Z80_1);
-      print_ingame(120,"CPU Z80#1 Reset");
+      print_ingame(120,gettext("CPU Z80#1 Reset"));
    }
    if(MZ80Engine>=3){
       cpu_reset(CPU_Z80_2);
-      print_ingame(120,"CPU Z80#2 Reset");
+      print_ingame(120,gettext("CPU Z80#2 Reset"));
    }
    if(MZ80Engine>=4){
       cpu_reset(CPU_Z80_3);
-      print_ingame(120,"CPU Z80#3 Reset");
+      print_ingame(120,gettext("CPU Z80#3 Reset"));
    }
 #endif
 
@@ -543,21 +543,21 @@ void reset_game_hardware(void)
       m6502reset();
       m6502GetContext(&M6502_context[0]);
 
-      print_ingame(120,"CPU M6502#0 Reset");
+      print_ingame(120,gettext("CPU M6502#0 Reset"));
    }
    if(M6502Engine>=2){
       m6502SetContext(&M6502_context[1]);
       m6502reset();
       m6502GetContext(&M6502_context[1]);
 
-      print_ingame(120,"CPU M6502#1 Reset");
+      print_ingame(120,gettext("CPU M6502#1 Reset"));
    }
    if(M6502Engine>=3){
       m6502SetContext(&M6502_context[2]);
       m6502reset();
       m6502GetContext(&M6502_context[2]);
 
-      print_ingame(120,"CPU M6502#2 Reset");
+      print_ingame(120,gettext("CPU M6502#2 Reset"));
    }
 #endif
 

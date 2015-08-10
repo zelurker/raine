@@ -397,7 +397,7 @@ void update_monitoring() {
 		line(GameBitmap,x+border,h2+border,x+border,h2+y2+border,pen);
 	    }
 	} else
-	    print_ingame(1,"Recording to wav...");
+	    print_ingame(1,gettext("Recording to wav..."));
 	if (!f_record) {
 	    char path[1024];
 	    sprintf(path,"%sraine_sound",dir_cfg.exe_path);
@@ -435,8 +435,8 @@ void update_monitoring() {
 		fwrite(&i,1,4,f_record); // size 2 (offset 40) = filesize - 44 ???
 	    } else {
 		char dir[1024];
-		sprintf(dir,"Can't create %s",path);
-		MessageBox("Error",dir,"OK");
+		sprintf(dir,gettext("Can't create %s"),path);
+		MessageBox(gettext("Error"),dir,gettext("OK"));
 		recording = 0;
 	    }
 	}

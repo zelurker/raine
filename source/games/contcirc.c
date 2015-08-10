@@ -58,7 +58,7 @@ static struct DSW_DATA dsw_data_contcirc_0[] =
 {
   { MSG_CABINET, 0x01, 2 },
   { MSG_UPRIGHT, 0x01},
-  { "Cockpit", 0x00},	// analogue accelerator pedal
+  { _("Cockpit"), 0x00},	// analogue accelerator pedal
   { MSG_UNKNOWN, 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
@@ -74,20 +74,20 @@ static struct DSW_DATA dsw_data_contcirc_0[] =
 
 static struct DSW_DATA dsw_data_contcirc_1[] =
 {
-  { "Difficulty 1 (time/speed)", 0x03, 4 },
+  { _("Difficulty 1 (time/speed)"), 0x03, 4 },
   { MSG_EASY, 0x02},
   { MSG_NORMAL, 0x03},
   { MSG_HARD, 0x01},
   { MSG_HARDEST, 0x00},
-  { "Difficulty 2 (other cars)", 0x0c, 4 },
+  { _("Difficulty 2 (other cars)"), 0x0c, 4 },
   { MSG_EASY, 0x08},
   { MSG_NORMAL, 0x0c},
   { MSG_HARD, 0x04},
   { MSG_HARDEST, 0x00},
-  { "Steering wheel", 0x10, 2 },
-  { "Free", 0x10},
-  { "Locked", 0x00},
-  { "Enable 3d alternate frames", 0x20, 2 },
+  { _("Steering wheel"), 0x10, 2 },
+  { _("Free"), 0x10},
+  { _("Locked"), 0x00},
+  { _("Enable 3d alternate frames"), 0x20, 2 },
   { MSG_OFF, 0x00},
   { MSG_ON, 0x20},
   { MSG_UNKNOWN, 0x40, 2 },
@@ -453,19 +453,19 @@ static void execute_contcirc(void)
          gearflip=1;
          gear^=1;
          if(gear)
-            print_ingame(60,"Changed to High Gear");
+            print_ingame(60,gettext("Changed to High Gear"));
          else
-            print_ingame(60,"Changed to Low Gear");
+            print_ingame(60,gettext("Changed to Low Gear"));
       }
    }
    else{
       gearflip=0;
       if (!(RAM_INPUT[0x25] & 1)) {
 	gear = 0;
-	print_ingame(1,"Changed to Low Gear");
+	print_ingame(1,gettext("Changed to Low Gear"));
       } else if (!(RAM_INPUT[0x25] & 2)) {
 	gear = 1;
-	print_ingame(1,"Changed to High Gear");
+	print_ingame(1,gettext("Changed to High Gear"));
       }
    }
 

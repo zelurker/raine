@@ -266,10 +266,10 @@ static void do_capture() {
 
 static struct DEF_INPUT_EMU list_emu[] =
 {
- { SDLK_BACKSPACE,  0x00, "Toggle capture mode", toggle_capture_mode },
- { SDLK_RIGHT,      0x00, "Next sprite block", next_sprite_block     },
- { SDLK_LEFT,       0x00, "Prev sprite block", prev_sprite_block     },
- { SDLK_c,          0x00, "Capture block", do_capture },
+ { SDLK_BACKSPACE,  0x00, _("Toggle capture mode"), toggle_capture_mode },
+ { SDLK_RIGHT,      0x00, _("Next sprite block"), next_sprite_block     },
+ { SDLK_LEFT,       0x00, _("Prev sprite block"), prev_sprite_block     },
+ { SDLK_c,          0x00, _("Capture block"), do_capture },
 };
 #endif
 static int frame_neo;
@@ -375,7 +375,7 @@ void setup_neocd_bios() {
   } while (1);
 
   if (!ret) {
-      MessageBox("Fatal error", "Find the NeoCD bios (neocd.bin).\nAsk Google if you can't find it !","OK");
+      MessageBox(gettext("Fatal error"), gettext("Find the NeoCD bios (neocd.bin).\nAsk Google if you can't find it !"),gettext("OK"));
       exit(1);
   }
 
@@ -2141,7 +2141,7 @@ static void apply_hack(int pc,char *comment) {
     WriteWord(&RAM[pc+2],0xaa);
     WriteWord(&RAM[pc+4],0);
     current_neo_frame = desired_68k_speed;
-    print_ingame(120,"Applied speed hack at %x:%s",pc,comment);
+    print_ingame(120,gettext("Applied speed hack at %x:%s"),pc,comment);
     print_debug("Applied speed hack at %x:%s\n",pc,comment);
 }
 
@@ -4540,8 +4540,8 @@ void load_neocd() {
 #ifndef RAINE_DOS
     register_driver_emu_keys(list_emu,sizeof(list_emu)/sizeof(list_emu[0]));
 #endif
-    layer_id_data[0] = add_layer_info("Fixed layer");
-    layer_id_data[1] = add_layer_info("Sprites layer");
+    layer_id_data[0] = add_layer_info(gettext("Fixed layer"));
+    layer_id_data[1] = add_layer_info(gettext("Sprites layer"));
     neocd_video.screen_x = 304;
     offx = 16-8;
     maxx = 320-8;

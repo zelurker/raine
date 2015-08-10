@@ -1410,7 +1410,7 @@ static void cps1_init_machine(void)
 
    if (!cps1_game_config->name)
      {
-       gamename="cps2";
+       gamename=_("cps2");
        pCFG=&cps1_config_table[0];
        while(pCFG->name)
 	 {
@@ -2705,7 +2705,7 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
   }
   free+=22;
   apply_rom_hack(space_hack,22-12,4);
-  print_ingame(300,"Long hack jump at %x...",loop_end);
+  print_ingame(300,gettext("Long hack jump at %x..."),loop_end);
   print_debug("Long hack jump at %x to %x...",loop_end,free-16);
   dbf = ReadWord(&ROM[loop_end]);
   pWriteWord(&ROM[loop_end],0x4ef9); // jmp start of hack
@@ -2740,14 +2740,14 @@ static void dynamic_hack() {
   if (!z80_speed_hack) {
     if (Z80ROM[z80pc] == 0xfb && Z80ROM[z80pc+1] == 0x18 && Z80ROM[z80pc+2] == 0xfd) {
       WriteMZ80Byte(z80pc+1,0x76); // halt
-      print_ingame(180,"Z80: applied HALT speed hack");
+      print_ingame(180,gettext("Z80: applied HALT speed hack"));
       z80_speed_hack = 1;
     } else if (ReadLong68k(&Z80ROM[z80pc]) == 0x2102d03a &&
 	       ReadLong68k(&Z80ROM[z80pc+4]) == 0x01d0be28 &&
 	       Z80ROM[z80pc+8] == 0xf7) {
       WriteMZ80Byte(z80pc+7,0xd3); // outa (aa)
       WriteMZ80Byte(z80pc+8,0xaa); // outa (aa)
-      print_ingame(180,"Z80: speed hack applied");
+      print_ingame(180,gettext("Z80: speed hack applied"));
       z80_speed_hack = 1;
     }
   }
@@ -2879,7 +2879,7 @@ LAB_002F:
 	max_hack_counter = 0; // hack counter useless here
       }
   } else {
-    print_ingame(120,"Speed hack not found, slowing down...");
+    print_ingame(120,gettext("Speed hack not found, slowing down..."));
     print_debug("Failed to find speed hack\n");
     speed_hack = 1;
       frame_68k = default_frame;
@@ -3325,7 +3325,7 @@ static void render_cps2_sprites_pbitmap()
   int yoffs = 16-cps2_port(CPS2_OBJ_YOFFS);
   UINT8 *map;
   // cps2_find_last_sprite();
-  // print_ingame(1,"using pbitmap");
+  // print_ingame(1,gettext("using pbitmap"));
 
   // for (i=cps2_last_sprite_offset; i>=0; i-=8) {
   for (i=0; i<cps2_obj_size; i+=8) {
@@ -3606,7 +3606,7 @@ static void cps1_render_scroll2_bitmap(int mask)
     distort_scroll2 = worthit;
 #ifdef RAINE_DEBUG
     if (worthit) {
-      print_ingame(1,"row scroll %d",worthit);
+      print_ingame(1,gettext("row scroll %d"),worthit);
     }
 #endif
   }

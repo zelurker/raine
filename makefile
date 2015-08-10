@@ -1083,7 +1083,7 @@ all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/es/LC_MESSAGES/raine.mo
 
 locale/raine.pot:
-	xgettext --omit-header -C -k_ -d raine -s -o locale/tmp `find source -name '*.c*'`
+	xgettext --omit-header -C -k_ -kgettext -d raine -s -o locale/tmp `find source -name '*.c*'`
 	cat locale/header locale/tmp > locale/raine.pot
 	rm -f locale/tmp
 

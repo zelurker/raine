@@ -9,7 +9,7 @@ static int end;
 
 static int do_dir(int sel) {
   sel--;
-  int ret = MessageBox(dir_cfg.rom_dir[sel],"Directory options","Change dir|Remove dir");
+  int ret = MessageBox(dir_cfg.rom_dir[sel],_("Directory options"),_("Change dir|Remove dir"));
   if (ret == 1) {
     char res[256];
     dsel(dir_cfg.rom_dir[sel],NULL,res,"Rom dir");

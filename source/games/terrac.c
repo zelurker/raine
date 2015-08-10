@@ -65,15 +65,15 @@ static struct INPUT_INFO input_terracre[] =
 
 static struct DSW_DATA dsw_data_terra_cresta_0[] =
 {
-   { "Lives",                 0x03, 0x04 },
+   { _("Lives"),                 0x03, 0x04 },
    { "3",                     0x03},
    { "4",                     0x02},
    { "5",                     0x01},
    { "6",                     0x00},
-   { "Extra Life at",         0x04, 0x02 },
+   { _("Extra Life at"),         0x04, 0x02 },
    { "20,000",                0x04, 0x00 },
    { "50,000"},
-   { "Second Life at",        0x08, 0x02 },
+   { _("Second Life at"),        0x08, 0x02 },
    { "60,000",                0x08, 0x00 },
    { "90,000"},
    DSW_DEMO_SOUND( 0x10, 0x00),

@@ -221,7 +221,7 @@ static struct DSW_DATA dsw_data_dkong3_3[] =
   { "40000", 0x04},
   { "50000", 0x08},
   { MSG_UNKNOWN, 0x0c},
-  { "Additional Bonus", 0x30, 4 },
+  { _("Additional Bonus"), 0x30, 4 },
   { "30000", 0x00},
   { "40000", 0x10},
   { "50000", 0x20},
@@ -798,17 +798,17 @@ static void load_dkong() {
   sp = 0; // no sample playing
   hammer_playing = 0;
 
-  layer_id_data[0] = add_layer_info("BG");
-  layer_id_data[1] = add_layer_info("SPRITES");
+  layer_id_data[0] = add_layer_info(gettext("BG"));
+  layer_id_data[1] = add_layer_info(gettext("SPRITES"));
 
   if (exists_emudx_file("dkongg.dx2") && (is_current_game("dkongjp") || is_current_game("dkong"))) {
 #ifndef SDL
     if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-      if(MessageBox("EmuDX","EmuDX support ?","Yes|No") == 1)
+      if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
       {
-	load_emudx("dkongg.dx2",4,262-5,262,419,
+	load_emudx(gettext("dkongg.dx2"),4,262-5,262,419,
 		   5,164,
 		   448,512,makecol(0xff,0,0xff),draw_emudx);
 	draw_emudx_tile = 0;

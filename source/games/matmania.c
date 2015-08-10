@@ -185,10 +185,10 @@ static struct GFX_LIST matmania_gfxdecodeinfo[] =
 static struct DSW_DATA dsw_data_matmania_2[] =
   {
     { MSG_DIFFICULTY, 0x03, 4 },
-    { "Easy" , 0x03},
-    { "Medium" , 0x02},
-    { "Hard" , 0x01},
-    { "Hardest" , 0x00},
+    { _("Easy") , 0x03},
+    { _("Medium") , 0x02},
+    { _("Hard") , 0x01},
+    { _("Hardest") , 0x00},
     { MSG_UNKNOWN, 0x04, 2 },
     { MSG_OFF, 0x04},
     { MSG_ON, 0x00},
@@ -315,9 +315,9 @@ static void load_matmania() {
   RAMSize = 0x20000;
   if(!(RAM=AllocateMem(RAMSize))) return;
 
-  layer_id_data[0] = add_layer_info("BG");
-  layer_id_data[1] = add_layer_info("SPRITES");
-  layer_id_data[2] = add_layer_info("TEXT");
+  layer_id_data[0] = add_layer_info(gettext("BG"));
+  layer_id_data[1] = add_layer_info(gettext("SPRITES"));
+  layer_id_data[2] = add_layer_info(gettext("TEXT"));
 
   memset(RAM,0,RAMSize);
   RAM2 = RAM + 0x10000;

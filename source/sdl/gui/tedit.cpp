@@ -297,8 +297,8 @@ int TFloatEdit::can_exit() {
   sscanf(field,"%f",the_float);
   if (min != max && (*the_float < min || *the_float > max)) {
       char content[80];
-      sprintf(content,"The field %g must have a value between %g and %g",*the_float,min,max);
-      MessageBox("Error",content);
+      sprintf(content,_("The field %g must have a value between %g and %g"),*the_float,min,max);
+      MessageBox(_("Error"),content);
       return 0;
   }
   return 1;
@@ -357,8 +357,8 @@ int THexEdit::handle_key(SDL_Event *event) {
 int THexEdit::can_exit() {
     if ((*the_hex < min || *the_hex > max) && min != max) {
 	char content[80];
-	sprintf(content,"The field %x must have a value between %x and %x",*the_hex,min,max);
-	MessageBox("Error",content);
+	sprintf(content,_("The field %x must have a value between %x and %x"),*the_hex,min,max);
+	MessageBox(_("Error"),content);
 	return 0;
     }
     return 1;
@@ -401,8 +401,8 @@ int TIntEdit::can_exit() {
     *menu->value_int = atoi(field);
     if ((*menu->value_int < menu->values_list[3] || *menu->value_int > menu->values_list[4]) && menu->values_list[3] != menu->values_list[4]) {
 	char content[80];
-	sprintf(content,"The field %d must have a value between %d and %d",*menu->value_int,menu->values_list[3],menu->values_list[4]);
-	MessageBox("Error",content);
+	sprintf(content,_("The field %d must have a value between %d and %d"),*menu->value_int,menu->values_list[3],menu->values_list[4]);
+	MessageBox(_("Error"),content);
 	return 0;
     }
     return 1;

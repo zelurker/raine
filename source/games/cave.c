@@ -2535,7 +2535,7 @@ static void create_cave_layer(int i, UINT16 *scrolly) {
   }
 
   if (!layer_bitmap[i] || !layer_pbitmap[i]) {
-    print_ingame(10,"Not enough memory for layer bitmap %d",i);
+    print_ingame(10,gettext("Not enough memory for layer bitmap %d"),i);
     *scrolly &= ~0x4000;
     return;
   }
@@ -2601,7 +2601,7 @@ static void draw_cave_layer(int num)
   layer_status = ReadWord(SCR_BG+4);
   if (((layer_status & 0x10))){ // Layer active ?
 #ifdef RAINE_DEBUG
-    print_ingame(1,"layer %d disabled\n",num);
+    print_ingame(1,gettext("layer %d disabled\n"),num);
 #endif
     return;
   }
@@ -2709,14 +2709,14 @@ static void draw_cave_layer(int num)
       // Air Gallet wastes cpu time by enabling the row select bit without actually using
       // it (all the rows point to the usual rows).
 #ifdef RAINE_DEBUG
-      print_ingame(1,"disabling row select (agallet)");
+      print_ingame(1,gettext("disabling row select (agallet)"));
 #endif
       scrolly &= ~0x4000;
     } else {
       create_cave_layer(num,&scrolly);
     // UINT8 *dy = RAM_BG+0x1002+0*4;
 #ifdef RAINE_DEBUG
-      print_ingame(1,"row select layer %d size %d",num,layer_size[num]);
+      print_ingame(1,gettext("row select layer %d size %d"),num,layer_size[num]);
       if (!(scrolly & 0x4000)) fprintf(stderr,"canceled\n");
 #endif
     }
@@ -2727,7 +2727,7 @@ static void draw_cave_layer(int num)
   if(layer_size[num]<16) {
 #ifdef RAINE_DEBUG
     if (row_scroll)
-      print_ingame(1,"row scroll on 8x8 layer unemulated");
+      print_ingame(1,gettext("row scroll on 8x8 layer unemulated"));
 #endif
     if (romset & 2) { // Share colors between sprites & layers
       MAKE_SCROLL_512x512_4_8(scrollx, scrolly);
@@ -2892,7 +2892,7 @@ static void draw_cave_layer(int num)
 #define HEIGHT 512
 #define N 4
 #ifdef RAINE_DEBUG
-      print_ingame(1,"line scroll %d",num);
+      print_ingame(1,gettext("line scroll %d"),num);
 #endif
       for(y=(32-y16);(UINT32)y<(240+32);y+=16){
 	int min = 999, max = -999;
@@ -3014,7 +3014,7 @@ static void draw_cave_layer(int num)
     } // raster effect
 
 #ifdef RAINE_DEBUG
-    print_ingame(1,"no line scroll %d",num);
+    print_ingame(1,gettext("no line scroll %d"),num);
 #endif
 
     if (romset & 2) {

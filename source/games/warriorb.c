@@ -116,10 +116,10 @@ static struct DSW_DATA dsw_data_warrior_blade_1[] =
    { MSG_DSWB_BIT4,	      0x08, 0x02 },
    { MSG_OFF,		      0x08},
    { MSG_ON,		      0x00},
-   { "Power Ups",             0x10, 0x02 },
+   { _("Power Ups"),             0x10, 0x02 },
    { MSG_OFF,		      0x10},
    { MSG_ON,		      0x00},
-   { "Magician",              0x20, 0x02 },
+   { _("Magician"),              0x20, 0x02 },
    { MSG_OFF,		      0x20},
    { MSG_ON,		      0x00},
    { MSG_CONTINUE_PLAY,       0x40, 0x02 },
@@ -406,7 +406,7 @@ static void ClearWarriorBlade(void)
 
 static void execute_warriorb(void)
 {
-   //print_ingame(600,"%04x",ReadWord(&RAM[0x4002C]));
+   //print_ingame(600,gettext("%04x"),ReadWord(&RAM[0x4002C]));
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60)); // M68000 20MHz (60fps)
    /*#ifdef RAINE_DEBUG

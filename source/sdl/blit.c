@@ -92,7 +92,7 @@ static void do_save_screen(void)
        sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
      };
      my_save_png(full_name);
-     print_ingame(120, "Screen Saved to %s", file_name);
+     print_ingame(120, gettext("Screen Saved to %s"), file_name);
    }
 
 }

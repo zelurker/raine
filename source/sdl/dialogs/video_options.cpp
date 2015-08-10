@@ -51,7 +51,7 @@ static int my_toggle_border(int sel) {
 
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
-    MessageBox("Warning","You can't have at the same time a scaler + scanlines,\nChoose 1","Ok");
+    MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose 1"),_("Ok"));
     display_cfg.stretch = 0; // no scaling if scanlines
     video_options->draw();
   }
@@ -60,7 +60,7 @@ static int update_scaler(int sel) {
 
 static menu_item_t overlays_options[] =
 {
-    { _("Prefered YUV format"), NULL, &prefered_yuv_format, 2, { 0, 1 }, { _("YUY2"), "YV12 (mpeg)" } },
+    { _("Prefered YUV format"), NULL, &prefered_yuv_format, 2, { 0, 1 }, { _("YUY2"), _("YV12 (mpeg)") } },
     { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {_("No"), _("Yes") } },
 #ifdef DARWIN
     { _("Overlays workarounds"), NULL, &overlays_workarounds, 2, { 0, 1}, {_("No"),_("Yes")}},
@@ -141,7 +141,7 @@ int renderer_options(int sel) {
     case 1: menu = new TDialog(_("Overlays Options"), overlays_options); break;
     case 2: menu = new TDialog(_("Blits Options"), blits_options); break;
     default:
-	    MessageBox("Error","No options for this renderer ? Strange !","OK");
+	    MessageBox(_("Error"),_("No options for this renderer ? Strange !"),_("OK"));
 	    return 0;
     }
     menu->set_transparency(0);
@@ -208,7 +208,7 @@ static menu_item_t video_items[] =
 { _("General options:") },
 { _("Limit framerate <= 60fps"), NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {_("No"),_("Yes")} },
 { _("Frame skip"), NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-  {"Auto", "1", "2", "3", "4", "5", "6", "7", "8", "9" } },
+  {_("Auto"), "1", "2", "3", "4", "5", "6", "7", "8", "9" } },
 { _("Screen rotation"), NULL, (int*)&display_cfg.user_rotate, 4, {0, 1, 2, 3 },
   { _("None"), "90°", "180°", "270°" } },
 { _("Flip screen"), NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },

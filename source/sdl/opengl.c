@@ -170,13 +170,13 @@ void get_ogl_infos() {
 	if (format_error && !broken_gl_format) {
 		char buff[1024];
 		broken_gl_format = 1;
-		sprintf(buff,"bad screen format, report this to rainemu.com:\n"
-				"bpp : %d rshift %d gshift %d bshift %d",
+		sprintf(buff,_("bad screen format, report this to rainemu.com:\n"
+				"bpp : %d rshift %d gshift %d bshift %d"),
 				sdl_screen->format->BitsPerPixel,
 				sdl_screen->format->Rshift,
 				sdl_screen->format->Gshift,
 				sdl_screen->format->Bshift);
-		MessageBox("OpenGL error",buff,"ok");
+		MessageBox(gettext("OpenGL error"),buff,gettext("ok"));
 	}
 
 	ogl.info = 1;

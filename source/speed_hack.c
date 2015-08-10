@@ -32,7 +32,7 @@ void pWriteWord(UINT8* myadr, UINT16 val) {
 }
 
 void apply_rom_hack(UINT8 *ROM, UINT32 pc, int kind) {
-  print_ingame(180,"Applied speed hack %d at %x",kind,pc);
+  print_ingame(180,gettext("Applied speed hack %d at %x"),kind,pc);
   print_debug("Applied speed hack %d at %x\n",kind,pc);
   speed_hack = 1;
 

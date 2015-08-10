@@ -251,7 +251,7 @@ static struct INPUT_INFO input_btlkroad[] =
 
 static struct DSW_DATA dsw_data_gunbird_0[] =
 {
-   { "Flip screen" ,	      0x01, 0x02 },
+   { _("Flip screen") ,	      0x01, 0x02 },
    { MSG_OFF,		      0x01},
    { MSG_ON,		      0x00},
    { MSG_DEMO_SOUND,          0x02, 0x02 },
@@ -262,14 +262,14 @@ static struct DSW_DATA dsw_data_gunbird_0[] =
    { MSG_NORMAL,              0x0C},
    { MSG_HARD,                0x04},
    { MSG_HARDEST,             0x00},
-   { "Lives",                 0x30, 0x04 },
+   { _("Lives"),                 0x30, 0x04 },
    { "1",                     0x20},
    { "2",                     0x10},
    { "3",                     0x30},
    { "4",                     0x00},
-   { "Bonus life",            0x40, 0x02 },
-   { "400k",                  0x40},
-   { "600k",                  0x00},
+   { _("Bonus life"),            0x40, 0x02 },
+   { _("400k"),                  0x40},
+   { _("600k"),                  0x00},
    { MSG_SERVICE,             0x80, 0x02 },
    { MSG_OFF,                 0x80},
    { MSG_ON,                  0x00},
@@ -279,10 +279,10 @@ static struct DSW_DATA dsw_data_gunbird_0[] =
 
 static struct DSW_DATA dsw_data_gunbird_1[] =
 {
-   { "Credits/Coinage",       0x01, 0x02 },
-   { "A+B/A,B",               0x01, 0x00 },
-   { "A,B/A", 0x00 },
-   { "Coinage A",             0x0E, 0x08 },
+   { _("Credits/Coinage"),       0x01, 0x02 },
+   { _("A+B/A,B"),               0x01, 0x00 },
+   { _("A,B/A"), 0x00 },
+   { _("Coinage A"),             0x0E, 0x08 },
    { MSG_3COIN_1PLAY,         0x0A},
    { MSG_2COIN_1PLAY,         0x0C},
    { MSG_1COIN_1PLAY,         0x0E},
@@ -291,7 +291,7 @@ static struct DSW_DATA dsw_data_gunbird_1[] =
    { MSG_1COIN_4PLAY,         0x04},
    { MSG_1COIN_5PLAY,         0x02},
    { MSG_1COIN_6PLAY,         0x00},
-   { "Coinage B",             0x70, 0x08 },
+   { _("Coinage B"),             0x70, 0x08 },
    { MSG_3COIN_1PLAY,         0x50},
    { MSG_2COIN_1PLAY,         0x60},
    { MSG_1COIN_1PLAY,         0x70},
@@ -300,7 +300,7 @@ static struct DSW_DATA dsw_data_gunbird_1[] =
    { MSG_1COIN_4PLAY,         0x20},
    { MSG_1COIN_5PLAY,         0x10},
    { MSG_1COIN_6PLAY,         0x00},
-   { "2 Coins/1 Credit",      0x80, 0x02 },
+   { _("2 Coins/1 Credit"),      0x80, 0x02 },
    { MSG_OFF,                 0x80},
    { MSG_ON,                  0x00},
    { NULL,                    0,   },
@@ -1356,7 +1356,7 @@ static void DrawSpritesP()
    }
 #if 0
    else
-     print_ingame(1,"sprites disabled");
+     print_ingame(1,gettext("sprites disabled"));
 #endif
 
 }
@@ -1823,7 +1823,7 @@ void DrawGunbird(void)
       }
       if (min || max) { // line scroll effect
 #ifdef RAINE_DEBUG
-	print_ingame(1,"line scroll bg0 %d %d size %d",min,max,(layer0_ctrl & 0xc0) >> 6);
+	print_ingame(1,gettext("line scroll bg0 %d %d size %d"),min,max,(layer0_ctrl & 0xc0) >> 6);
 #endif
 	switch((layer0_ctrl & 0xc0) >> 6) {
 	case 0: scroll_1024_bg0_lscroll(); break;
@@ -1845,7 +1845,7 @@ void DrawGunbird(void)
     }
     else {
       clear_game_screen(0);
-      // print_ingame(1,"BG0 disabled");
+      // print_ingame(1,gettext("BG0 disabled"));
     }
   }
   else {
@@ -1871,11 +1871,11 @@ void DrawGunbird(void)
 	if (max < ta)
 	  max = ta;
       }
-      // print_ingame(1,"line scroll bg1 %d %d size %d",min,max,(layer1_ctrl & 0xc0) >> 6);
+      // print_ingame(1,gettext("line scroll bg1 %d %d size %d"),min,max,(layer1_ctrl & 0xc0) >> 6);
     }
     if (max || min) { // some line scroll...
 #ifdef RAINE_DEBUG
-      print_ingame(1,"line scroll bg1 %d %d size %d",min,max,(layer1_ctrl & 0xc0) >> 6);
+      print_ingame(1,gettext("line scroll bg1 %d %d size %d"),min,max,(layer1_ctrl & 0xc0) >> 6);
 #endif
       switch((layer1_ctrl & 0xc0) >> 6) {
       case 0: scroll_1024_bg1_lscroll(); break;
@@ -1895,7 +1895,7 @@ void DrawGunbird(void)
     }
 #endif
   } else
-    print_ingame(1,"layer 1 disabled");
+    print_ingame(1,gettext("layer 1 disabled"));
 
   if( check_layer_enabled(layer_id_data[2]))
     DrawSpritesP();

@@ -226,14 +226,14 @@ static void update_fps(int quiet)
 
   switch(raine_cfg.show_fps_mode){
   case 0x00:
-    if(quiet) print_ingame(120,"FPS Counter Disabled");
+    if(quiet) print_ingame(120,gettext("FPS Counter Disabled"));
     return;
     break;
   case 0x01:
     timer_next_update = read_ingame_timer() + fps;	// set time of next update
     render_start_count = render_frame_count;	// render count at start
     sprintf(fps_buff,"\?\?/%g",fps);
-    if(quiet) print_ingame(120,"FPS Counter Enabled");
+    if(quiet) print_ingame(120,gettext("FPS Counter Enabled"));
     return;
     break;
   case 0x02:
@@ -241,15 +241,15 @@ static void update_fps(int quiet)
     timer_next_update = timer_start_count + fps;	// set time of next update
     render_start_count = render_frame_count;	// render count at start
     sprintf(fps_buff,"\?\?/%g",fps);
-    if(quiet) print_ingame(120,"Average FPS Counter Enabled");
+    if(quiet) print_ingame(120,gettext("Average FPS Counter Enabled"));
     return;
     break;
   case 0x03:
-    if(quiet) print_ingame(120,"RDTSC Timing Enabled (percentages)");
+    if(quiet) print_ingame(120,gettext("RDTSC Timing Enabled (percentages)"));
     return;
     break;
   case 0x04:
-    if(quiet) print_ingame(120,"RDTSC Timing Enabled (cycles)");
+    if(quiet) print_ingame(120,gettext("RDTSC Timing Enabled (cycles)"));
     return;
     break;
   }

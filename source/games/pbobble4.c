@@ -477,7 +477,7 @@ static void DrawPuzzleBobble4(void)
    }
    }
 
-//     print_ingame(1,"$$$: %04x %04x %04x %04x",BGPRI[0],BGPRI[1],BGPRI[2],BGPRI[3]);
+//     print_ingame(1,gettext("$$$: %04x %04x %04x %04x"),BGPRI[0],BGPRI[1],BGPRI[2],BGPRI[3]);
 
      if((BGPRI[0]!=0)||(BGPRI[1]!=0)||(BGPRI[2]!=0)||(BGPRI[3]!=0))
      {

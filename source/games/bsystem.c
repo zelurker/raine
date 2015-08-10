@@ -187,10 +187,10 @@ static UINT8 *GFX_BG2_SOLID;
 
 static int layer_id_data[4];
 static void init_b() {
-   layer_id_data[0] = add_layer_info("BG0");
-   layer_id_data[1] = add_layer_info("BG1");
-   layer_id_data[2] = add_layer_info("fb");
-   layer_id_data[3] = add_layer_info("BG2");
+   layer_id_data[0] = add_layer_info(gettext("BG0"));
+   layer_id_data[1] = add_layer_info(gettext("BG1"));
+   layer_id_data[2] = add_layer_info(gettext("fb"));
+   layer_id_data[3] = add_layer_info(gettext("BG2"));
 }
 
 static void load_qzshowby(void)

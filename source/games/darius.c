@@ -118,7 +118,7 @@ static struct DSW_DATA dsw_data_darius_0[] =
    { MSG_DSWA_BIT1,           0x01, 0x02 },
    { MSG_OFF,                 0x01},
    { MSG_ON,                  0x00},
-   { "Auto Turbo Fire",       0x02, 0x02 },
+   { _("Auto Turbo Fire"),       0x02, 0x02 },
    { MSG_OFF,                 0x02},
    { MSG_ON,                  0x00},
    { MSG_TEST_MODE,           0x04, 0x02 },
@@ -147,12 +147,12 @@ static struct DSW_DATA dsw_data_darius_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Extra Ship",            0x0C, 0x04 },
-   { "30k 100k",              0x0C},
-   { "20k 80k",               0x08},
-   { "40k 200k",              0x04},
-   { "50k 250k",              0x00},
-   { "Ships",                 0x30, 0x04 },
+   { _("Extra Ship"),            0x0C, 0x04 },
+   { _("30k 100k"),              0x0C},
+   { _("20k 80k"),               0x08},
+   { _("40k 200k"),              0x04},
+   { _("50k 250k"),              0x00},
+   { _("Ships"),                 0x30, 0x04 },
    { "3",                     0x30},
    { "5",                     0x20},
    { "1",                     0x10},
@@ -1073,14 +1073,14 @@ static void DariusYM2203SetFMPan( UINT16 offset, UINT8 data ){
     cen = darius_panFM[0] < 0x80 ? 0x80 - darius_panFM[0] : -(0x80 - darius_panFM[0]);
     data = darius_volFM[0] - ((darius_volFM[0] * cen)>>8);
     //stream_set_volume( YM2203_get_stream_num(0), data );
-    //print_ingame(120,"Pan[0]:%02x %s", darius_panFM[0], stream_get_name(YM2203_get_stream_num(0)) );
+    //print_ingame(120,gettext("Pan[0]:%02x %s"), darius_panFM[0], stream_get_name(YM2203_get_stream_num(0)) );
   } else{
     darius_panFM[1] = (~data)&0xff;
     stream_set_pan( YM2203_get_stream_num(1), darius_panFM[1] );
     cen = darius_panFM[1] < 0x80 ? 0x80 - darius_panFM[1] : -(0x80 - darius_panFM[1]);
     data = darius_volFM[1] - ((darius_volFM[1] * cen)>>8);
     //stream_set_volume( YM2203_get_stream_num(1), data );
-    //print_ingame(120,"Pan[1]:%02x %s", darius_panFM[1], stream_get_name(YM2203_get_stream_num(1)) );
+    //print_ingame(120,gettext("Pan[1]:%02x %s"), darius_panFM[1], stream_get_name(YM2203_get_stream_num(1)) );
   }
 }
 static void DariusYM2203SetAYPan( UINT16 offset, UINT8 data ){
@@ -1105,7 +1105,7 @@ static void DariusYM2203SetAYPan( UINT16 offset, UINT8 data ){
 static WRITE_HANDLER( DariusVol ){
   int cen;
   if( (data&0xf0) == 0xf0 ){
-    //print_ingame(120,"Vol:%02x %s %s", data, stream_get_name(3*2), stream_get_name(3*2+1) );
+    //print_ingame(120,gettext("Vol:%02x %s %s"), data, stream_get_name(3*2), stream_get_name(3*2+1) );
     darius_volFM[0] = DariusVolTable[data&0x0f];
     darius_volFM[1] = darius_volFM[0];
     /**** make FM0 ****/

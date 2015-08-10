@@ -2991,7 +2991,7 @@ static struct DSW_DATA dsw_data_forgottn_2[] =
   DSW_UNUSED( 0x00, 0x10),
   DSW_UNUSED( 0x00, 0x20),
   DSW_SERVICE( 0, 0x40),
-  { "Freeze", 0x80, 2 },
+  { _("Freeze"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -3022,17 +3022,17 @@ static struct DSW_INFO dsw_forgottn[] =
 
 static struct DSW_DATA dsw_data_ganbare_2[] =
 {
-// "SW(A):1"
-// "SW(A):2"
-  { "Medal Setup", 0x01, 2 },
-  { "1 Medal 1 Credit", 0x01, 0x00 },
-  { "Don't use", 0x00, 0x00 },
-// "SW(A):3,4,5"
-  { "Coin Setup", 0x02, 2 },
-  { "100 Yen", 0x02, 0x00 },
-  { "10 Yen", 0x00, 0x00 },
-// "SW(A):6,7"
-  { "Change Setup", 0x1c, 8 },
+// _("SW(A):1")
+// _("SW(A):2")
+  { _("Medal Setup"), 0x01, 2 },
+  { _("1 Medal 1 Credit"), 0x01, 0x00 },
+  { _("Don't use"), 0x00, 0x00 },
+// _("SW(A):3,4,5")
+  { _("Coin Setup"), 0x02, 2 },
+  { _("100 Yen"), 0x02, 0x00 },
+  { _("10 Yen"), 0x00, 0x00 },
+// _("SW(A):6,7")
+  { _("Change Setup"), 0x1c, 8 },
   { "12", 0x04, 0x00 },
   { "11", 0x00, 0x00 },
   { "10", 0x1c, 0x00 },
@@ -3040,23 +3040,23 @@ static struct DSW_DATA dsw_data_ganbare_2[] =
   { "7", 0x14, 0x00 },
   { "6", 0x10, 0x00 },
   { "5", 0x0c, 0x00 },
-  { "No change", 0x08, 0x00 },
-// "SW(A):8"
-  { "10 Yen Setup", 0x60, 4 },
+  { _("No change"), 0x08, 0x00 },
+// _("SW(A):8")
+  { _("10 Yen Setup"), 0x60, 4 },
   { MSG_1COIN_1PLAY, 0x60, 0x00 },
   { MSG_2COIN_1PLAY, 0x40, 0x00 },
   { MSG_3COIN_1PLAY, 0x20, 0x00 },
-  { "Don't use", 0x00, 0x00 },
-  { "Payout Setup", 0x80, 2 },
-  { "Credit Mode", 0x80, 0x00 },
-  { "Payout Mode", 0x00, 0x00 },
+  { _("Don't use"), 0x00, 0x00 },
+  { _("Payout Setup"), 0x80, 2 },
+  { _("Credit Mode"), 0x80, 0x00 },
+  { _("Payout Mode"), 0x00, 0x00 },
   { NULL, 0, 0}
 };
 
 static struct DSW_DATA dsw_data_ganbare_3[] =
 {
-// "SW(B):1,2,3"
-  { "Payout Rate Setup", 0x07, 8 },
+// _("SW(B):1,2,3")
+  { _("Payout Rate Setup"), 0x07, 8 },
   { "90%", 0x01, 0x00 },
   { "85%", 0x00, 0x00 },
   { "80%", 0x07, 0x00 },
@@ -3070,14 +3070,14 @@ static struct DSW_DATA dsw_data_ganbare_3[] =
 
 static struct DSW_DATA dsw_data_ganbare_4[] =
 {
-// "SW(C):1,2"
-// "SW(C):7"
+// _("SW(C):1,2")
+// _("SW(C):7")
   DSW_DEMO_SOUND( 0x03, 0x00 ),
-// "SW(C):8"
-  { "Clear RAM", 0x40, 2 },
+// _("SW(C):8")
+  { _("Clear RAM"), 0x40, 2 },
   { MSG_NO, 0x40, 0x00 },
   { MSG_YES, 0x00, 0x00 },
-  { "Tes Mode Display", 0x80, 2 },
+  { _("Tes Mode Display"), 0x80, 2 },
   { MSG_OFF, 0x80, 0x00 },
   { MSG_ON, 0x00, 0x00 },
   { NULL, 0, 0}
@@ -3095,8 +3095,8 @@ static struct DSW_DATA dsw_data_ghouls_1[] =
 {
 	CPS1_COINAGE_1
   { MSG_CABINET, 0xc0, 2 },
-  { "Upright 2 Players", 0x80 },
-  { "Upright 1 Player", 0xc0 },
+  { _("Upright 2 Players"), 0x80 },
+  { _("Upright 1 Player"), 0xc0 },
   { NULL, 0}
 };
 
@@ -3105,10 +3105,10 @@ static struct DSW_DATA dsw_data_ghouls_2[] =
 	CPS1_DIFFICULTY_2
   DSW_UNUSED( 0x00, 0x08),
   { MSG_EXTRA_LIFE, 0x30, 4 },
-  { "10K30K and every 30K" , 0x20},
-  { "20K50K and every 70K" , 0x10},
-  { "30K60K and every 70K" , 0x30},
-  { "40K70K and every 80K" , 0x00},
+  { _("10K 30K and every 30K") , 0x20},
+  { _("20K 50K and every 70K") , 0x10},
+  { _("30K 60K and every 70K") , 0x30},
+  { _("40K 70K and every 80K") , 0x00},
   DSW_UNUSED( 0x00, 0x40),
   DSW_UNUSED( 0x00, 0x80),
   { NULL, 0}
@@ -3125,12 +3125,12 @@ static struct DSW_DATA dsw_data_ghouls_3[] =
   DSW_UNUSED( 0x00, 0x08),
   DSW_SCREEN( 0x10, 0x00),
   DSW_UNUSED( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3147,12 +3147,12 @@ static struct DSW_DATA dsw_data_ghoulsu_2[] =
 	CPS1_DIFFICULTY_2
   DSW_UNUSED( 0x00, 0x08),
   { MSG_EXTRA_LIFE, 0x30, 4 },
-  { "10K30K and every 30K" , 0x20},
-  { "20K50K and every 70K" , 0x10},
-  { "30K60K and every 70K" , 0x30},
-  { "40K70K and every 80K" , 0x00},
+  { _("10K 30K and every 30K") , 0x20},
+  { _("20K 50K and every 70K") , 0x10},
+  { _("30K 60K and every 70K") , 0x30},
+  { _("40K 70K and every 80K") , 0x00},
   DSW_UNUSED( 0x00, 0x40),
-  { "Freeze", 0x80, 2 },
+  { _("Freeze"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -3169,12 +3169,12 @@ static struct DSW_DATA dsw_data_ghoulsu_3[] =
   DSW_UNUSED( 0x00, 0x08),
   DSW_SCREEN( 0x10, 0x00),
   DSW_UNUSED( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3199,11 +3199,11 @@ static struct DSW_DATA dsw_data_strider_2[] =
 	CPS1_DIFFICULTY_2
   DSW_UNUSED( 0x00, 0x08),
   { MSG_EXTRA_LIFE, 0x30, 4 },
-  { "20K40K then every 60K" , 0x30},
-  { "30K50K then every 70K" , 0x20},
-  { "20K & 60K only" , 0x10},
-  { "30K & 60K only" , 0x00},
-  { "Internal Diff. on Life Loss", 0xc0, 1 },
+  { _("20K 40K then every 60K") , 0x30},
+  { _("30K 50K then every 70K") , 0x20},
+  { _("20K & 60K only") , 0x10},
+  { _("30K & 60K only") , 0x00},
+  { _("Internal Diff. on Life Loss"), 0xc0, 1 },
   { "-3" , 0xc0},
   { NULL, 0}
 };
@@ -3215,7 +3215,7 @@ static struct DSW_DATA dsw_data_strider_3[] =
   { "3" , 0x03},
   { "4" , 0x02},
   { "5" , 0x01},
-  { "Freeze", 0x04, 2 },
+  { _("Freeze"), 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
   { MSG_FREE_PLAY, 0x08, 2 },
@@ -3223,12 +3223,12 @@ static struct DSW_DATA dsw_data_strider_3[] =
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x20, 0x00),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3243,15 +3243,15 @@ static struct DSW_INFO dsw_strider[] =
 static struct DSW_DATA dsw_data_stridrua_2[] =
 {
 	CPS1_DIFFICULTY_2
-  { "2 Coins to Start,1 to Continue", 0x08, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   { MSG_EXTRA_LIFE, 0x30, 4 },
-  { "20K40K then every 60K" , 0x30},
-  { "30K50K then every 70K" , 0x20},
-  { "20K & 60K only" , 0x10},
-  { "30K & 60K only" , 0x00},
-  { "Internal Diff. on Life Loss", 0xc0, 1 },
+  { _("20K 40K then every 60K") , 0x30},
+  { _("30K 50K then every 70K") , 0x20},
+  { _("20K & 60K only") , 0x10},
+  { _("30K & 60K only") , 0x00},
+  { _("Internal Diff. on Life Loss"), 0xc0, 1 },
   { "-3" , 0xc0},
   { NULL, 0}
 };
@@ -3287,22 +3287,22 @@ static struct DSW_DATA dsw_data_dynwar_2[] =
 
 static struct DSW_DATA dsw_data_dynwar_3[] =
 {
-  { "Freeze", 0x01, 2 },
+  { _("Freeze"), 0x01, 2 },
   { MSG_OFF, 0x01},
   { MSG_ON, 0x00},
-  { "Turbo Mode", 0x02, 2 },
+  { _("Turbo Mode"), 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
   DSW_UNUSED( 0x00, 0x04),
   DSW_UNUSED( 0x00, 0x08),
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x20, 0x00),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3318,22 +3318,22 @@ static struct DSW_DATA dsw_data_willow_1[] =
 {
 	CPS1_COINAGE_3
   { MSG_CABINET, 0xc0, 2 },
-  { "Upright 2 Players", 0x80 },
-  { "Upright 1 Player", 0xc0 },
+  { _("Upright 2 Players"), 0x80 },
+  { _("Upright 1 Player"), 0xc0 },
   { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data_willow_2[] =
 {
 	CPS1_DIFFICULTY_2
-  { "Nando Speed", 0x18, 4 },
-  { "Slow" , 0x10},
-  { "Normal" , 0x18},
-  { "Fast" , 0x08},
-  { "Very Fast" , 0x00},
+  { _("Nando Speed"), 0x18, 4 },
+  { _("Slow") , 0x10},
+  { _("Normal") , 0x18},
+  { _("Fast") , 0x08},
+  { _("Very Fast") , 0x00},
   DSW_UNUSED( 0x00, 0x20),
   DSW_UNUSED( 0x00, 0x40),
-  { "Stage Magic Continue", 0x80, 2 },
+  { _("Stage Magic Continue"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -3346,19 +3346,19 @@ static struct DSW_DATA dsw_data_willow_3[] =
   { "2" , 0x03},
   { "3" , 0x01},
   { "4" , 0x00},
-  { "Vitality", 0x0c, 4 },
+  { _("Vitality"), 0x0c, 4 },
   { "2" , 0x00},
   { "3" , 0x0c},
   { "4" , 0x08},
   { "5" , 0x04},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x20, 0x00),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3381,11 +3381,11 @@ static struct DSW_DATA dsw_data_unsquad_1[] =
 static struct DSW_DATA dsw_data_unsquad_2[] =
 {
 	CPS1_DIFFICULTY_1
-  { "Damage", 0x18, 4 },
-  { "Small" , 0x10},
-  { "Normal" , 0x18},
-  { "Big" , 0x08},
-  { "Biggest" , 0x00},
+  { _("Damage"), 0x18, 4 },
+  { _("Small") , 0x10},
+  { _("Normal") , 0x18},
+  { _("Big") , 0x08},
+  { _("Biggest") , 0x00},
   DSW_UNUSED( 0x00, 0x20),
   DSW_UNUSED( 0x00, 0x40),
   DSW_UNUSED( 0x00, 0x80),
@@ -3399,17 +3399,17 @@ static struct DSW_DATA dsw_data_unsquad_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3424,7 +3424,7 @@ static struct DSW_INFO dsw_unsquad[] =
 static struct DSW_DATA dsw_data_ffight_1[] =
 {
 	CPS1_COINAGE_1
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   DSW_UNUSED( 0x00, 0x80),
@@ -3433,25 +3433,25 @@ static struct DSW_DATA dsw_data_ffight_1[] =
 
 static struct DSW_DATA dsw_data_ffight_2[] =
 {
-  { "Difficulty Level 1", 0x07, 8 },
-  { "Easiest" , 0x07},
-  { "Easier" , 0x06},
-  { "Easy" , 0x05},
-  { "Normal" , 0x04},
-  { "Medium" , 0x03},
-  { "Hard" , 0x02},
-  { "Harder" , 0x01},
-  { "Hardest" , 0x00},
-  { "Difficulty Level 2", 0x18, 4 },
-  { "Easy" , 0x18},
-  { "Normal" , 0x10},
-  { "Hard" , 0x08},
-  { "Hardest" , 0x00},
+  { _("Difficulty Level 1"), 0x07, 8 },
+  { _("Easiest") , 0x07},
+  { _("Easier") , 0x06},
+  { _("Easy") , 0x05},
+  { _("Normal") , 0x04},
+  { _("Medium") , 0x03},
+  { _("Hard") , 0x02},
+  { _("Harder") , 0x01},
+  { _("Hardest") , 0x00},
+  { _("Difficulty Level 2"), 0x18, 4 },
+  { _("Easy") , 0x18},
+  { _("Normal") , 0x10},
+  { _("Hard") , 0x08},
+  { _("Hardest") , 0x00},
   { MSG_EXTRA_LIFE, 0x60, 4 },
-  { "100k" , 0x60},
-  { "200k" , 0x40},
-  { "100k and every 200k" , 0x20},
-  { "None" , 0x00},
+  { _("100k") , 0x60},
+  { _("200k") , 0x40},
+  { _("100k and every 200k") , 0x20},
+  { _("None") , 0x00},
   DSW_UNUSED( 0x00, 0x80),
   { NULL, 0}
 };
@@ -3466,17 +3466,17 @@ static struct DSW_DATA dsw_data_ffight_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3491,42 +3491,42 @@ static struct DSW_INFO dsw_ffight[] =
 static struct DSW_DATA dsw_data__1941_2[] =
 {
 	CPS1_DIFFICULTY_1
-  { "Life Bar", 0x18, 4 },
-  { "More Slowly" , 0x18},
-  { "Slowly" , 0x10},
-  { "Quickly" , 0x08},
-  { "More Quickly" , 0x00},
-  { "Bullet's Speed", 0x60, 4 },
-  { "Very Slow" , 0x60},
-  { "Slow" , 0x40},
-  { "Fast" , 0x20},
-  { "Very Fast" , 0x00},
-  { "Initial Vitality", 0x80, 2 },
-  { "3 Bars" , 0x80},
-  { "4 Bars" , 0x00},
+  { _("Life Bar"), 0x18, 4 },
+  { _("More Slowly") , 0x18},
+  { _("Slowly") , 0x10},
+  { _("Quickly") , 0x08},
+  { _("More Quickly") , 0x00},
+  { _("Bullet's Speed"), 0x60, 4 },
+  { _("Very Slow") , 0x60},
+  { _("Slow") , 0x40},
+  { _("Fast") , 0x20},
+  { _("Very Fast") , 0x00},
+  { _("Initial Vitality"), 0x80, 2 },
+  { _("3 Bars") , 0x80},
+  { _("4 Bars") , 0x00},
   { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data__1941_3[] =
 {
-  { "Throttle Game Speed", 0x01, 2 },
+  { _("Throttle Game Speed"), 0x01, 2 },
   { MSG_OFF, 0x00},
   { MSG_ON, 0x01},
   DSW_UNUSED( 0x00, 0x02),
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3544,7 +3544,7 @@ static struct DSW_DATA dsw_data_mercs_1[] =
   DSW_UNUSED( 0x00, 0x08),
   DSW_UNUSED( 0x00, 0x10),
   DSW_UNUSED( 0x00, 0x20),
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   DSW_UNUSED( 0x00, 0x80),
@@ -3554,10 +3554,10 @@ static struct DSW_DATA dsw_data_mercs_1[] =
 static struct DSW_DATA dsw_data_mercs_2[] =
 {
 	CPS1_DIFFICULTY_1
-  { "Coin Slots", 0x08, 2 },
+  { _("Coin Slots"), 0x08, 2 },
   { "1" , 0x00},
   { "3" , 0x08},
-  { "Max Players", 0x10, 2 },
+  { _("Max Players"), 0x10, 2 },
   { "2" , 0x00},
   { "3" , 0x10},
   DSW_UNUSED( 0x00, 0x20),
@@ -3571,12 +3571,12 @@ static struct DSW_DATA dsw_data_mercs_3[] =
   DSW_UNUSED( 0x00, 0x01),
   DSW_UNUSED( 0x00, 0x02),
   DSW_UNUSED( 0x00, 0x04),
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
   DSW_SERVICE( 0, 0x80),
@@ -3618,25 +3618,25 @@ static struct DSW_INFO dsw_mtwins[] =
 
 static struct DSW_DATA dsw_data_msword_2[] =
 {
-  { "Player's vitality consumption", 0x07, 8 },
-  { "1 (Easiest)" , 0x07},
+  { _("Player's vitality consumption"), 0x07, 8 },
+  { _("1 (Easiest)") , 0x07},
   { "2" , 0x06},
   { "3" , 0x05},
-  { "4 (Normal)" , 0x04},
+  { _("4 (Normal)") , 0x04},
   { "5" , 0x03},
   { "6" , 0x02},
   { "7" , 0x01},
-  { "8 (Hardest)" , 0x00},
-  { "Enemy's vitality and attacking power", 0x38, 8 },
-  { "1 (Easiest)" , 0x20},
+  { _("8 (Hardest)") , 0x00},
+  { _("Enemy's vitality and attacking power"), 0x38, 8 },
+  { _("1 (Easiest)") , 0x20},
   { "2" , 0x28},
   { "3" , 0x30},
-  { "4 (Normal)" , 0x38},
+  { _("4 (Normal)") , 0x38},
   { "5" , 0x18},
   { "6" , 0x10},
   { "7" , 0x08},
-  { "8 (Hardest)" , 0x00},
-  { "Stage Select", 0x40, 2 },
+  { _("8 (Hardest)") , 0x00},
+  { _("Stage Select"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   DSW_UNUSED( 0x00, 0x80),
@@ -3645,25 +3645,25 @@ static struct DSW_DATA dsw_data_msword_2[] =
 
 static struct DSW_DATA dsw_data_msword_3[] =
 {
-  { "Vitality Packs", 0x03, 4 },
+  { _("Vitality Packs"), 0x03, 4 },
   { "1" , 0x00},
   { "2" , 0x03},
-  { "3 (2 when continue)" , 0x02},
-  { "4 (3 when continue)" , 0x01},
+  { _("3 (2 when continue)") , 0x02},
+  { _("4 (3 when continue)") , 0x01},
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3677,20 +3677,20 @@ static struct DSW_INFO dsw_msword[] =
 
 static struct DSW_DATA dsw_data_cawing_2[] =
 {
-  { "Difficulty Level (Enemy's Strength)", 0x07, 8 },
-  { "1 (Easiest)" , 0x07},
+  { _("Difficulty Level (Enemy's Strength)"), 0x07, 8 },
+  { _("1 (Easiest)") , 0x07},
   { "2" , 0x06},
   { "3" , 0x05},
-  { "4 (Normal)" , 0x04},
+  { _("4 (Normal)") , 0x04},
   { "5" , 0x03},
   { "6" , 0x02},
   { "7" , 0x01},
-  { "8 (Hardest)" , 0x00},
-  { "Difficulty Level (Player's Strength)", 0x18, 4 },
-  { "Easy" , 0x10},
-  { "Normal" , 0x18},
-  { "Hard" , 0x08},
-  { "Hardest" , 0x00},
+  { _("8 (Hardest)") , 0x00},
+  { _("Difficulty Level (Player's Strength)"), 0x18, 4 },
+  { _("Easy") , 0x10},
+  { _("Normal") , 0x18},
+  { _("Hard") , 0x08},
+  { _("Hardest") , 0x00},
   DSW_UNUSED( 0x00, 0x20),
   DSW_UNUSED( 0x00, 0x40),
   DSW_UNUSED( 0x00, 0x80),
@@ -3708,9 +3708,9 @@ static struct DSW_INFO dsw_cawing[] =
 static struct DSW_DATA dsw_data_nemo_2[] =
 {
 	CPS1_DIFFICULTY_1
-  { "Life Bar", 0x18, 2 },
-  { "Minimun" , 0x00},
-  { "Medium" , 0x18},
+  { _("Life Bar"), 0x18, 2 },
+  { _("Minimun") , 0x00},
+  { _("Medium") , 0x18},
   DSW_UNUSED( 0x00, 0x20),
   DSW_UNUSED( 0x00, 0x40),
   DSW_UNUSED( 0x00, 0x80),
@@ -3727,17 +3727,17 @@ static struct DSW_DATA dsw_data_nemo_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3789,9 +3789,9 @@ static struct DSW_INFO dsw_sf2m2[] =
 static struct DSW_DATA dsw_data_sf2j_2[] =
 {
 	CPS1_DIFFICULTY_1
-  { "2 Players Game", 0x08, 2 },
-  { "1 Credit/No Continue" , 0x08},
-  { "2 Credits/Winner Continue" , 0x00},
+  { _("2 Players Game"), 0x08, 2 },
+  { _("1 Credit/No Continue") , 0x08},
+  { _("2 Credits/Winner Continue") , 0x00},
   { MSG_UNKNOWN, 0x10, 2 },
   { MSG_OFF, 0x10},
   { MSG_ON, 0x00},
@@ -3818,17 +3818,17 @@ static struct DSW_DATA dsw_data_sf2j_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3843,10 +3843,10 @@ static struct DSW_INFO dsw_sf2j[] =
 static struct DSW_DATA dsw_data__3wonders_1[] =
 {
 	CPS1_COINAGE_1
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
-  { "Freeze", 0x80, 2 },
+  { _("Freeze"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -3854,49 +3854,49 @@ static struct DSW_DATA dsw_data__3wonders_1[] =
 
 static struct DSW_DATA dsw_data__3wonders_2[] =
 {
-  { "Lives (Midnight Wanderers)", 0x03, 4 },
+  { _("Lives (Midnight Wanderers)"), 0x03, 4 },
   { "1" , 0x03},
   { "2" , 0x02},
   { "3" , 0x01},
   { "5" , 0x00},
-  { "Difficulty (Midnight Wanderers)", 0x0c, 4 },
-  { "Easy" , 0x0c},
-  { "Normal" , 0x08},
-  { "Hard" , 0x04},
-  { "Hardest" , 0x00},
-  { "Lives (Chariot)", 0x30, 4 },
+  { _("Difficulty (Midnight Wanderers)"), 0x0c, 4 },
+  { _("Easy") , 0x0c},
+  { _("Normal") , 0x08},
+  { _("Hard") , 0x04},
+  { _("Hardest") , 0x00},
+  { _("Lives (Chariot)"), 0x30, 4 },
   { "1" , 0x30},
   { "2" , 0x20},
   { "3" , 0x10},
   { "5" , 0x00},
-  { "Difficulty (Chariot)", 0xc0, 4 },
-  { "Easy" , 0xc0},
-  { "Normal" , 0x80},
-  { "Hard" , 0x40},
-  { "Hardest" , 0x00},
+  { _("Difficulty (Chariot)"), 0xc0, 4 },
+  { _("Easy") , 0xc0},
+  { _("Normal") , 0x80},
+  { _("Hard") , 0x40},
+  { _("Hardest") , 0x00},
   { NULL, 0}
 };
 
 static struct DSW_DATA dsw_data__3wonders_3[] =
 {
-  { "Lives (Don´t Pull)", 0x03, 4 },
+  { _("Lives (Don't Pull)"), 0x03, 4 },
   { "1" , 0x03},
   { "2" , 0x02},
   { "3" , 0x01},
   { "5" , 0x00},
-  { "Difficulty (Don´t Pull)", 0x0c, 4 },
-  { "Easy" , 0x0c},
-  { "Normal" , 0x08},
-  { "Hard" , 0x04},
-  { "Hardest" , 0x00},
+  { _("Difficulty (Don't Pull)"), 0x0c, 4 },
+  { _("Easy") , 0x0c},
+  { _("Normal") , 0x08},
+  { _("Hard") , 0x04},
+  { _("Hardest") , 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -3911,14 +3911,14 @@ static struct DSW_INFO dsw_3wonders[] =
 static struct DSW_DATA dsw_data_kod_1[] =
 {
 	CPS1_COINAGE_2
-  { "Coin Slots", 0x08, 2 },
+  { _("Coin Slots"), 0x08, 2 },
   { "1" , 0x00},
   { "3" , 0x08},
-  { "Max Players", 0x10, 2 },
+  { _("Max Players"), 0x10, 2 },
   { "2" , 0x00},
   { "3" , 0x10},
   DSW_UNUSED( 0x00, 0x20),
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   DSW_UNUSED( 0x00, 0x80),
@@ -3938,10 +3938,10 @@ static struct DSW_DATA dsw_data_kod_2[] =
   { "7" , 0x08},
   { "8" , 0x00},
   { MSG_EXTRA_LIFE, 0xc0, 4 },
-  { "80k and every 400k" , 0x80},
-  { "100k and every 450k" , 0xc0},
-  { "160k and every 450k" , 0x40},
-  { "None" , 0x00},
+  { _("80k and every 400k") , 0x80},
+  { _("100k and every 450k") , 0xc0},
+  { _("160k and every 450k") , 0x40},
+  { _("None") , 0x00},
   { NULL, 0}
 };
 
@@ -3966,10 +3966,10 @@ static struct DSW_DATA dsw_data_kodj_2[] =
   { "7" , 0x08},
   { "8" , 0x00},
   { MSG_EXTRA_LIFE, 0xc0, 4 },
-  { "80k and every 400k" , 0x80},
-  { "200k and every 450k" , 0xc0},
-  { "160k and every 450k" , 0x40},
-  { "None" , 0x00},
+  { _("80k and every 400k") , 0x80},
+  { _("200k and every 450k") , 0xc0},
+  { _("160k and every 450k") , 0x40},
+  { _("None") , 0x00},
   { NULL, 0}
 };
 
@@ -3983,22 +3983,22 @@ static struct DSW_INFO dsw_kodj[] =
 
 static struct DSW_DATA dsw_data_captcomm_2[] =
 {
-  { "Difficulty 1", 0x07, 8 },
-  { "1 (Easiest)" , 0x07},
+  { _("Difficulty 1"), 0x07, 8 },
+  { _("1 (Easiest)") , 0x07},
   { "2" , 0x06},
   { "3" , 0x05},
-  { "4 (Normal)" , 0x04},
+  { _("4 (Normal)") , 0x04},
   { "5" , 0x03},
   { "6" , 0x02},
   { "7" , 0x01},
-  { "8 (Hardest)" , 0x00},
-  { "Difficulty 2", 0x18, 4 },
-  { "Easy" , 0x18},
-  { "Normal" , 0x10},
-  { "Hard" , 0x08},
-  { "Hardest" , 0x00},
+  { _("8 (Hardest)") , 0x00},
+  { _("Difficulty 2"), 0x18, 4 },
+  { _("Easy") , 0x18},
+  { _("Normal") , 0x10},
+  { _("Hard") , 0x08},
+  { _("Hardest") , 0x00},
   DSW_UNUSED( 0x00, 0x20),
-  { "Max Players", 0xc0, 4 },
+  { _("Max Players"), 0xc0, 4 },
   { "1" , 0x40},
   { "2" , 0xc0},
   { "3" , 0x80},
@@ -4016,28 +4016,28 @@ static struct DSW_INFO dsw_captcomm[] =
 
 static struct DSW_DATA dsw_data_knights_2[] =
 {
-  { "Enemy's attack frequency", 0x07, 8 },
-  { "1 (Easiest)" , 0x07},
+  { _("Enemy's attack frequency"), 0x07, 8 },
+  { _("1 (Easiest)") , 0x07},
   { "2" , 0x06},
   { "3" , 0x05},
-  { "4 (Normal)" , 0x04},
+  { _("4 (Normal)") , 0x04},
   { "5" , 0x03},
   { "6" , 0x02},
   { "7" , 0x01},
-  { "8 (Hardest)" , 0x00},
-  { "Enemy's attack power", 0x38, 8 },
-  { "1 (Easiest)" , 0x10},
+  { _("8 (Hardest)") , 0x00},
+  { _("Enemy's attack power"), 0x38, 8 },
+  { _("1 (Easiest)") , 0x10},
   { "2" , 0x08},
   { "3" , 0x00},
-  { "4 (Normal)" , 0x38},
+  { _("4 (Normal)") , 0x38},
   { "5" , 0x30},
   { "6" , 0x28},
   { "7" , 0x20},
-  { "8 (Hardest)" , 0x18},
-  { "Coin Slots", 0x40, 2 },
+  { _("8 (Hardest)") , 0x18},
+  { _("Coin Slots"), 0x40, 2 },
   { "1" , 0x00},
   { "3" , 0x40},
-  { "Max Players", 0x80, 2 },
+  { _("Max Players"), 0x80, 2 },
   { "2" , 0x00},
   { "3" , 0x80},
   { NULL, 0}
@@ -4055,10 +4055,10 @@ static struct DSW_DATA dsw_data_varth_2[] =
 {
 	CPS1_DIFFICULTY_1
   { MSG_EXTRA_LIFE, 0x18, 4 },
-  { "600k and every 1.400k" , 0x18},
-  { "600k 2.000k and 4500k" , 0x10},
-  { "1.200k 3.500k" , 0x08},
-  { "2000k only" , 0x00},
+  { _("600k and every 1.400k") , 0x18},
+  { _("600k 2.000k and 4500k") , 0x10},
+  { _("1.200k 3.500k") , 0x08},
+  { _("2000k only") , 0x00},
   DSW_UNUSED( 0x00, 0x20),
   DSW_UNUSED( 0x00, 0x40),
   DSW_UNUSED( 0x00, 0x80),
@@ -4075,17 +4075,17 @@ static struct DSW_DATA dsw_data_varth_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4109,10 +4109,10 @@ static struct DSW_DATA dsw_data_cworld2j_1[] =
   { MSG_UNKNOWN, 0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x00},
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
-  { "Extended Test Mode", 0x80, 2 },
+  { _("Extended Test Mode"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -4126,10 +4126,10 @@ static struct DSW_DATA dsw_data_cworld2j_2[] =
   { "2" , 0x04},
   { "3" , 0x03},
   { "4" , 0x02},
-  { "Extend", 0x18, 3 },
-  { "N" , 0x18},
-  { "E" , 0x10},
-  { "D" , 0x00},
+  { _("Extend"), 0x18, 3 },
+  { _("N") , 0x18},
+  { _("E") , 0x10},
+  { _("D") , 0x00},
   { MSG_LIVES, 0xe0, 5 },
   { "1" , 0x00},
   { "2" , 0x80},
@@ -4150,17 +4150,17 @@ static struct DSW_DATA dsw_data_cworld2j_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4174,7 +4174,7 @@ static struct DSW_INFO dsw_cworld2j[] =
 
 static struct DSW_DATA dsw_data_wof_3[] =
 {
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -4182,10 +4182,10 @@ static struct DSW_DATA dsw_data_wof_3[] =
 
 static struct DSW_DATA dsw_data_dino_3[] =
 {
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
-  { "TEST MODE", 0x80, 2 },
+  { _("TEST MODE"), 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -4218,7 +4218,7 @@ static struct DSW_INFO dsw_slammast[] =
 static struct DSW_DATA dsw_data_pnickj_1[] =
 {
 	CPS1_COINAGE_2
-  { "Coin Slots", 0x08, 2 },
+  { _("Coin Slots"), 0x08, 2 },
   { "1" , 0x08},
   { "2" , 0x00},
   { MSG_UNKNOWN, 0x10, 2 },
@@ -4248,11 +4248,11 @@ static struct DSW_DATA dsw_data_pnickj_2[] =
   { MSG_UNKNOWN, 0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x00},
-  { "Vs Play Mode", 0xc0, 4 },
-  { "1 Game Match" , 0xc0},
-  { "3 Games Match" , 0x80},
-  { "5 Games Match" , 0x40},
-  { "7 Games Match" , 0x00},
+  { _("Vs Play Mode"), 0xc0, 4 },
+  { _("1 Game Match") , 0xc0},
+  { _("3 Games Match") , 0x80},
+  { _("5 Games Match") , 0x40},
+  { _("7 Games Match") , 0x00},
   { NULL, 0}
 };
 
@@ -4267,7 +4267,7 @@ static struct DSW_DATA dsw_data_pnickj_3[] =
   { MSG_UNKNOWN, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
@@ -4275,9 +4275,9 @@ static struct DSW_DATA dsw_data_pnickj_3[] =
   { MSG_UNKNOWN, 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4301,7 +4301,7 @@ static struct DSW_DATA dsw_data_qad_1[] =
   { MSG_UNKNOWN, 0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x00},
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   DSW_UNUSED( 0x00, 0x80),
@@ -4311,11 +4311,11 @@ static struct DSW_DATA dsw_data_qad_1[] =
 static struct DSW_DATA dsw_data_qad_2[] =
 {
   { MSG_DIFFICULTY, 0x07},
-  { "Wisdom", 0x18, 4 },
-  { "Easy" , 0x18},
-  { "Normal" , 0x10},
-  { "Hard" , 0x08},
-  { "Hardest" , 0x00},
+  { _("Wisdom"), 0x18, 4 },
+  { _("Easy") , 0x18},
+  { _("Normal") , 0x10},
+  { _("Hard") , 0x08},
+  { _("Hardest") , 0x00},
   { MSG_LIVES, 0xe0, 5 },
   { "1" , 0x60},
   { "2" , 0x80},
@@ -4332,17 +4332,17 @@ static struct DSW_DATA dsw_data_qad_3[] =
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x20, 0x00),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4395,7 +4395,7 @@ static struct DSW_DATA dsw_data_qtono2_1[] =
   { MSG_UNKNOWN, 0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x00},
-  { "2 Coins to Start,1 to Continue", 0x40, 2 },
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
   { MSG_UNKNOWN, 0x80, 2 },
@@ -4427,23 +4427,23 @@ static struct DSW_DATA dsw_data_qtono2_3[] =
   { MSG_UNKNOWN, 0x01, 2 },
   { MSG_OFF, 0x01},
   { MSG_ON, 0x00},
-  { "Infinite Lives", 0x02, 2 },
+  { _("Infinite Lives"), 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
   { MSG_FREE_PLAY, 0x04, 2 },
   { MSG_OFF, 0x04},
   { MSG_ON, 0x00},
-  { "Freeze", 0x08, 2 },
+  { _("Freeze"), 0x08, 2 },
   { MSG_OFF, 0x08},
   { MSG_ON, 0x00},
   DSW_SCREEN( 0x10, 0x00),
   DSW_DEMO_SOUND( 0x00, 0x20),
-  { "Allow Continue", 0x40, 2 },
+  { _("Allow Continue"), 0x40, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x40},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4457,9 +4457,9 @@ static struct DSW_INFO dsw_qtono2[] =
 
 static struct DSW_DATA dsw_data_pang3[] =
 { // Sure about test mode, not sure about the other bits...
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4486,7 +4486,7 @@ static struct DSW_DATA dsw_data_megaman_1[] =
   { MSG_4COIN_1PLAY, 0x14},
   { MSG_3COIN_1PLAY, 0x15},
   { MSG_2COIN_1PLAY, 0x16},
-  { "2 Coins to Start1 to Continue" , 0x0e},
+  { _("2 Coins to Start1 to Continue") , 0x0e},
   { MSG_1COIN_1PLAY, 0x1f},
   { MSG_1COIN_1PLAY, 0x1e},
   { MSG_1COIN_3PLAY, 0x1d},
@@ -4497,7 +4497,7 @@ static struct DSW_DATA dsw_data_megaman_1[] =
   { MSG_1COIN_8PLAY, 0x18},
   { MSG_1COIN_9PLAY, 0x17},
   { MSG_FREE_PLAY, 0x0d},
-  { "Coin slots", 0x60},
+  { _("Coin slots"), 0x60},
   { MSG_UNKNOWN, 0x80, 2 },
   { MSG_OFF, 0x80},
   { MSG_ON, 0x00},
@@ -4507,11 +4507,11 @@ static struct DSW_DATA dsw_data_megaman_1[] =
 static struct DSW_DATA dsw_data_megaman_2[] =
 {
   { MSG_DIFFICULTY, 0x03, 4 },
-  { "Easy" , 0x03},
-  { "Normal" , 0x02},
-  { "Hard" , 0x01},
-  { "Hardest" , 0x00},
-  { "Time", 0x0c, 4 },
+  { _("Easy") , 0x03},
+  { _("Normal") , 0x02},
+  { _("Hard") , 0x01},
+  { _("Hardest") , 0x00},
+  { _("Time"), 0x0c, 4 },
   { "100" , 0x0c},
   { "90" , 0x08},
   { "70" , 0x04},
@@ -4522,7 +4522,7 @@ static struct DSW_DATA dsw_data_megaman_2[] =
   { MSG_UNKNOWN, 0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x00},
-  { "Voice", 0x40, 2 },
+  { _("Voice"), 0x40, 2 },
   { MSG_OFF, 0x00},
   { MSG_ON, 0x40},
   { MSG_UNKNOWN, 0x80, 2 },
@@ -4535,7 +4535,7 @@ static struct DSW_DATA dsw_data_megaman_3[] =
 {
   DSW_SCREEN( 0x01, 0x00),
   DSW_DEMO_SOUND( 0x02, 0x00),
-  { "Allow Continue", 0x04, 2 },
+  { _("Allow Continue"), 0x04, 2 },
   { MSG_NO, 0x00},
   { MSG_YES, 0x04},
   { MSG_UNKNOWN, 0x08, 2 },
@@ -4550,9 +4550,9 @@ static struct DSW_DATA dsw_data_megaman_3[] =
   { MSG_UNKNOWN, 0x40, 2 },
   { MSG_OFF, 0x40},
   { MSG_ON, 0x00},
-  { "Game Mode",    0x80, 2 },
-  { "Game" , 0x80},
-  { "Test" , 0x00},
+  { _("Game Mode"),    0x80, 2 },
+  { _("Game") , 0x80},
+  { _("Test") , 0x00},
   { NULL, 0}
 };
 
@@ -4567,11 +4567,11 @@ static struct DSW_INFO dsw_megaman[] =
 static struct DSW_DATA dsw_data_rockmanj_2[] =
 {
   { MSG_DIFFICULTY, 0x03, 4 },
-  { "Easy" , 0x03},
-  { "Normal" , 0x02},
-  { "Hard" , 0x01},
-  { "Hardest" , 0x00},
-  { "Time", 0x0c, 4 },
+  { _("Easy") , 0x03},
+  { _("Normal") , 0x02},
+  { _("Hard") , 0x01},
+  { _("Hardest") , 0x00},
+  { _("Time"), 0x0c, 4 },
   { "100" , 0x0c},
   { "90" , 0x08},
   { "70" , 0x04},

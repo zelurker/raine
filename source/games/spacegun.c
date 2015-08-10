@@ -89,22 +89,22 @@ static struct DSW_DATA dsw_data_space_gun_0[] =
 static struct DSW_DATA dsw_fake_input_behaviour[] =
 {
 
-   { "Mouse Speed",           0x04, 0x02 },
-   { "Slow",                  0x04},
-   { "Fast",                  0x00},
-   { "Digital Input Speed",   0x08, 0x02 },
-   { "Slow",                  0x08},
-   { "Fast",                  0x00},
-   { "P1 Input Control",      0x30, 0x04 },
-   { "Mouse",                 0x30},
-   { "Analog Joystick",       0x20},
-   { "Digital",               0x10},
+   { _("Mouse Speed"),           0x04, 0x02 },
+   { _("Slow"),                  0x04},
+   { _("Fast"),                  0x00},
+   { _("Digital Input Speed"),   0x08, 0x02 },
+   { _("Slow"),                  0x08},
+   { _("Fast"),                  0x00},
+   { _("P1 Input Control"),      0x30, 0x04 },
+   { _("Mouse"),                 0x30},
+   { _("Analog Joystick"),       0x20},
+   { _("Digital"),               0x10},
    { MSG_UNUSED,                0x00},
-   { "Show Crosshair",        0xC0, 0x04 },
-   { "All",                   0xC0},
-   { "Player 1 Only",         0x80},
-   { "Player 2 Only",         0x40},
-   { "None",                  0x00},
+   { _("Show Crosshair"),        0xC0, 0x04 },
+   { _("All"),                   0xC0},
+   { _("Player 1 Only"),         0x80},
+   { _("Player 2 Only"),         0x40},
+   { _("None"),                  0x00},
 
 
    { NULL,                    0,   },
@@ -771,7 +771,7 @@ static void DrawSpaceGun(void)
 
                if(GFX_SPR_SOLID[ta]==0){
                   if((RAM[zz+7]&0x80)==0){
-                     if((RAM[zz+3]&0x40)==0){	
+                     if((RAM[zz+3]&0x40)==0){
 			 Draw64x64_Trans_Mapped_Zoom2_Rot(&GFX_SPR[ta<<12],x,y,MAP,zx,zy);
 		     }
                      else{

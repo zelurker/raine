@@ -130,14 +130,14 @@ static struct DSW_DATA dsw_data_pengo_2[] =
   { "3" , 0x10},
   { "4" , 0x08},
   { "5" , 0x00},
-  { "Rack Test",    0x20, 2 },
+  { _("Rack Test"),    0x20, 2 },
   { MSG_OFF, 0x20},
   { MSG_ON, 0x00},
   { MSG_DIFFICULTY, 0xc0, 4 },
-  { "Easy" , 0xc0},
-  { "Medium" , 0x80},
-  { "Hard" , 0x40},
-  { "Hardest" , 0x00},
+  { _("Easy") , 0xc0},
+  { _("Medium") , 0x80},
+  { _("Hard") , 0x40},
+  { _("Hardest") , 0x00},
   { NULL, 0}
 };
 
@@ -147,15 +147,15 @@ static struct DSW_DATA dsw_data_pengo_3[] =
   { MSG_4COIN_1PLAY, 0x00},
   { MSG_3COIN_1PLAY, 0x08},
   { MSG_2COIN_1PLAY, 0x04},
-  { "2 Coins/1 Credit 5/3" , 0x09},
-  { "2 Coins/1 Credit 4/3" , 0x05},
+  { _("2 Coins/1 Credit 5/3") , 0x09},
+  { _("2 Coins/1 Credit 4/3") , 0x05},
   { MSG_1COIN_1PLAY, 0x0c},
-  { "1 Coin/1 Credit 5/6" , 0x0d},
-  { "1 Coin/1 Credit 4/5" , 0x03},
-  { "1 Coin/1 Credit 2/3" , 0x0b},
+  { _("1 Coin/1 Credit 5/6") , 0x0d},
+  { _("1 Coin/1 Credit 4/5") , 0x03},
+  { _("1 Coin/1 Credit 2/3") , 0x0b},
   { MSG_1COIN_1PLAY, 0x02},
-  { "1 Coin/2 Credits 5/11" , 0x07},
-  { "1 Coin/2 Credits 4/9" , 0x0f},
+  { _("1 Coin/2 Credits 5/11") , 0x07},
+  { _("1 Coin/2 Credits 4/9") , 0x0f},
   { MSG_1COIN_3PLAY, 0x0a},
   { MSG_1COIN_4PLAY, 0x06},
   { MSG_1COIN_5PLAY, 0x0e},
@@ -164,15 +164,15 @@ static struct DSW_DATA dsw_data_pengo_3[] =
   { MSG_4COIN_1PLAY, 0x00},
   { MSG_3COIN_1PLAY, 0x80},
   { MSG_2COIN_1PLAY, 0x40},
-  { "2 Coins/1 Credit 5/3" , 0x90},
-  { "2 Coins/1 Credit 4/3" , 0x50},
+  { _("2 Coins/1 Credit 5/3") , 0x90},
+  { _("2 Coins/1 Credit 4/3") , 0x50},
   { MSG_1COIN_1PLAY, 0xc0},
-  { "1 Coin/1 Credit 5/6" , 0xd0},
-  { "1 Coin/1 Credit 4/5" , 0x30},
-  { "1 Coin/1 Credit 2/3" , 0xb0},
+  { _("1 Coin/1 Credit 5/6") , 0xd0},
+  { _("1 Coin/1 Credit 4/5") , 0x30},
+  { _("1 Coin/1 Credit 2/3") , 0xb0},
   { MSG_1COIN_1PLAY, 0x20},
-  { "1 Coin/2 Credits 5/11" , 0x70},
-  { "1 Coin/2 Credits 4/9" , 0xf0},
+  { _("1 Coin/2 Credits 5/11") , 0x70},
+  { _("1 Coin/2 Credits 4/9") , 0xf0},
   { MSG_1COIN_3PLAY, 0xa0},
   { MSG_1COIN_4PLAY, 0x60},
   { MSG_1COIN_5PLAY, 0xe0},
@@ -607,8 +607,8 @@ static void load_pengo() {
 
   InitPaletteMap(mypal, 0x40, 4, 0x200);
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
-  layer_id_data[0] = add_layer_info("BG");
-  layer_id_data[1] = add_layer_info("SPRITES");
+  layer_id_data[0] = add_layer_info(gettext("BG"));
+  layer_id_data[1] = add_layer_info(gettext("SPRITES"));
   tile_cache_init = 0;
 }
 
@@ -623,7 +623,7 @@ static void draw_debug_tile() {
   int bank,col_base;
 
   if (display_cfg.bpp > 16 || display_cfg.bpp < 15) {
-    print_ingame(1,"switch to 16bpp color depth and reload");
+    print_ingame(1,gettext("switch to 16bpp color depth and reload"));
     return;
   }
 
@@ -1289,7 +1289,7 @@ static struct INPUT_INFO input_puckman[] =
 
 static struct DSW_DATA dsw_data_pacman_0[] =
 {
-  { "Rack Test (Cheat)" , 0x10, 2 },
+  { _("Rack Test (Cheat)") , 0x10, 2 },
   { MSG_OFF, 0x10},
   { MSG_ON, 0x00},
   { NULL, 0}
@@ -1326,7 +1326,7 @@ static struct DSW_DATA dsw_data_pacman_2[] =
   { MSG_DIFFICULTY, 0x40, 2 },
   { MSG_NORMAL, 0x40},
   { MSG_HARD, 0x00},
-  { "Ghost Names" , 0x80, 2 },
+  { _("Ghost Names") , 0x80, 2 },
   { MSG_NORMAL, 0x80},
   { MSG_ALT, 0x00},
   { NULL, 0}
@@ -1334,15 +1334,15 @@ static struct DSW_DATA dsw_data_pacman_2[] =
 
 static struct DSW_DATA dsw_data_pacman_4[] =
 {
-  { "2x Speed Cheat" , 0x06, 3 },
-  { "Disabled" , 0x00},
-  { "Enabled Always" , 0x02},
-  { "Enabled with Button" , 0x04},
-  { "DX alpha blending", 0x30, 4 },
-  { "Variable (MMX)" , 0x10},
+  { _("2x Speed Cheat") , 0x06, 3 },
+  { _("Disabled") , 0x00},
+  { _("Enabled Always") , 0x02},
+  { _("Enabled with Button") , 0x04},
+  { _("DX alpha blending"), 0x30, 4 },
+  { _("Variable (MMX)") , 0x10},
   { "50%" , 0x20},
-  { "30% (MMX)" , 0x30},
-  { "None", 0x00},
+  { _("30% (MMX)") , 0x30},
+  { _("None"), 0x00},
   { NULL, 0}
 };
 
@@ -1839,24 +1839,24 @@ static void load_puckman()
 
   InitPaletteMap(mypal, 0x80, 4, 0x200);
   set_colour_mapper(&col_map_xxxxRrrgggbbb);
-  layer_id_data[0] = add_layer_info("BG");
-  layer_id_data[1] = add_layer_info("SPRITES");
+  layer_id_data[0] = add_layer_info(gettext("BG"));
+  layer_id_data[1] = add_layer_info(gettext("SPRITES"));
   init_tile_cache();
 
   if (is_current_game("pacman") || is_current_game("puckman") || is_current_game("mspacmab")) {
     char *db_filename;
     if (is_current_game("mspacmab")) {
       mspacman = 1;
-      db_filename = "mspacmang.dx2";
+      db_filename = _("mspacmang.dx2");
     } else {
-      db_filename = "pacmang.dx2";
+      db_filename = _("pacmang.dx2");
       mspacman = 0;
     }
     if (exists_emudx_file(db_filename)) {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-      if(MessageBox("EmuDX","EmuDX support ?","Yes|No") == 1)
+      if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
 	{
 	if (mspacman)

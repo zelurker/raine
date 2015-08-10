@@ -106,14 +106,14 @@ static struct INPUT_INFO input_silkworm[] =
 static struct DSW_DATA dsw_data_silkworm_B[] =
 {
    { MSG_EXTRA_LIFE,          0x07, 0x08 },
-   { "50k, 200k and 500k", 0x00 },
-   { "100k, 300k and 800k",   0x01, 0x00 },
-   { "50k and 200k",          0x02},
-   { "100k and 300k",         0x03},
-   { "50k only",              0x04},
-   { "100k only",             0x05},
-   { "200k only",             0x06},
-   { "None",                  0x07},
+   { _("50k, 200k and 500k"), 0x00 },
+   { _("100k, 300k and 800k"),   0x01, 0x00 },
+   { _("50k and 200k"),          0x02},
+   { _("100k and 300k"),         0x03},
+   { _("50k only"),              0x04},
+   { _("100k only"),             0x05},
+   { _("200k only"),             0x06},
+   { _("None"),                  0x07},
    { MSG_UNKNOWN,             0x08, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x08},
@@ -176,7 +176,7 @@ static void sw_adpcm_start(UINT32 address, UINT8 data){
 
 static void sw_adpcm_end(UINT32 address, UINT8 data){
   if(RaineSoundCard){
-    //		print_ingame(120, "ADPCM End: %i", data);
+    //		print_ingame(120, gettext("ADPCM End: %i"), data);
     adpcm_end = (data + 1) << 8;
     if (adpcm_end > sample_size) {
       adpcm_end = adpcm_pos;
@@ -186,7 +186,7 @@ static void sw_adpcm_end(UINT32 address, UINT8 data){
 
 static void sw_adpcm_volume(UINT32 address, UINT8 data){
   if(RaineSoundCard){
-    //		print_ingame(120, "ADPCM Volume: %i", data);
+    //		print_ingame(120, gettext("ADPCM Volume: %i"), data);
     MSM5205_set_volume(0,(data & 0x0f) * 255 / 15);
   }
 }
@@ -324,10 +324,10 @@ static struct INPUT_INFO input_rygar[] =
 static struct DSW_DATA dsw_data_rygar_B[] =
 {
    { MSG_EXTRA_LIFE,          0x03, 0x04 },
-   { "50k, 200k and 500k", 0x00 },
-   { "100k, 300k and 600k",   0x01, 0x00 },
-   { "200k and 500k",         0x02},
-   { "100k only",             0x03},
+   { _("50k, 200k and 500k"), 0x00 },
+   { _("100k, 300k and 600k"),   0x01, 0x00 },
+   { _("200k and 500k"),         0x02},
+   { _("100k only"),             0x03},
    { MSG_UNKNOWN,             0x04, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x04},
@@ -339,7 +339,7 @@ static struct DSW_DATA dsw_data_rygar_B[] =
    { MSG_NORMAL,              0x10},
    { MSG_HARD,                0x20},
    { MSG_HARDEST,             0x30},
-   { "2P Start Anytime",      0x40, 0x02 },
+   { _("2P Start Anytime"),      0x40, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
    { MSG_CONTINUE_PLAY,       0x80, 0x02 },
@@ -432,14 +432,14 @@ static struct DSW_DATA dsw_data_gemini_B[] =
    { MSG_HARD,                0x08},
    { MSG_HARDEST,             0x0c},
    { MSG_EXTRA_LIFE,          0x70, 0x08 },
-   { "50k and 200k",          0x00},
-   { "50k and 300k",          0x10},
-   { "100k and 500k",         0x20},
-   { "50k only",              0x30},
-   { "100k only",             0x40},
-   { "200k only",             0x50},
-   { "300k only",             0x60},
-   { "None",                  0x70},
+   { _("50k and 200k"),          0x00},
+   { _("50k and 300k"),          0x10},
+   { _("100k and 500k"),         0x20},
+   { _("50k only"),              0x30},
+   { _("100k only"),             0x40},
+   { _("200k only"),             0x50},
+   { _("300k only"),             0x60},
+   { _("None"),                  0x70},
    { MSG_DEMO_SOUND,          0x80, 0x02 },
    { MSG_OFF,                 0x80},
    { MSG_ON,                  0x00},
@@ -458,9 +458,9 @@ static struct DSW_DATA dsw_data_gemini_A[] =
    { MSG_1COIN_4PLAY,         0x03},
    { MSG_1COIN_5PLAY,         0x04},
    { MSG_1COIN_6PLAY,         0x05},
-   { "F. Round Continue",     0x08, 0x02 },
-   { "Round 6",               0x00},
-   { "Round 7",               0x08},
+   { _("F. Round Continue"),     0x08, 0x02 },
+   { _("Round 6"),               0x00},
+   { _("Round 7"),               0x08},
    { MSG_COIN2,               0x70, 0x08 },
    { MSG_2COIN_1PLAY,         0x60},
    { MSG_1COIN_1PLAY,         0x00},
@@ -470,7 +470,7 @@ static struct DSW_DATA dsw_data_gemini_A[] =
    { MSG_1COIN_4PLAY,         0x30},
    { MSG_1COIN_5PLAY,         0x40},
    { MSG_1COIN_6PLAY,         0x50},
-   { "Buy in Final Round",    0x80, 0x02 },
+   { _("Buy in Final Round"),    0x80, 0x02 },
    { MSG_YES,                 0x80},
    { MSG_NO,                  0x00},
    { NULL,                    0,   },
@@ -522,11 +522,11 @@ static void sw_sound_command(UINT32 address, UINT8 data){
 	if(RaineSoundCard){
 		nmi_trigger = 1;
 		cpu_int_nmi(CPU_Z80_1);
-		// print_ingame(120, "CPU1 Writes: %i", sound_command);
+		// print_ingame(120, gettext("CPU1 Writes: %i"), sound_command);
 	}
 }
 static void sw_flip_screen(UINT32 address, UINT8 data){
-//	print_ingame(120, "Flip screen: %i", data);
+//	print_ingame(120, gettext("Flip screen: %i"), data);
 	flip_screen = data;
 }
 static void sw_bankswitch(UINT32 address, UINT8 data){
@@ -558,13 +558,13 @@ UINT8 sw_dsw_b_hi(UINT32 address){
 static void sw_ym3812_control_port(UINT32 address, UINT8 data){
 	if(RaineSoundCard){
 		YM3812_control_port_0_w(address, data);
-//		print_ingame(120, "YM3812 control: %i", data);
+//		print_ingame(120, gettext("YM3812 control: %i"), data);
 	}
 }
 static void sw_ym3812_write_port(UINT32 address, UINT8 data){
 	if(RaineSoundCard){
 		YM3812_write_port_0_w(address, data);
-//		print_ingame(120, "YM3812 write: %i", data);
+//		print_ingame(120, gettext("YM3812 write: %i"), data);
 	}
 }
 
@@ -579,7 +579,7 @@ UINT8 sw_soundlatch(UINT32 address){
 		ta = sound_command;
 	nmi_trigger = 0;
 	sound_command = 0;
-//	print_ingame(120, "CPU2 Reads: %i", sound_command);
+//	print_ingame(120, gettext("CPU2 Reads: %i"), sound_command);
 	return ta;
 }
 
@@ -593,7 +593,7 @@ static void DecodeSilkwormGfx_8x8(char *file, float gfx_offs, int gfx_size){
 	int ta,tb;
 
 	if(!(load_rom(file, TMP, gfx_size))){
-		print_ingame(120, "ERROR: Unable to load gfx rom: %s", file);
+		print_ingame(120, gettext("ERROR: Unable to load gfx rom: %s"), file);
 	}else{
 		tb = gfx_offs * 0x20000;
 		for(ta=0; ta<gfx_size; ta++){
@@ -611,7 +611,7 @@ static void DecodeSilkwormGfx_16x16(char *file, float gfx_offs, UINT32 gfx_size)
 	int i,j;
 
 	if(!(load_rom(file, TMP, gfx_size))){
-		print_ingame(120, "ERROR: Unable to load gfx rom: %s", file);
+		print_ingame(120, gettext("ERROR: Unable to load gfx rom: %s"), file);
 	}else{
 		tb = gfx_offs * 0x20000;
 		ta = 0;

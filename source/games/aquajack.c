@@ -62,7 +62,7 @@ static struct INPUT_INFO input_aquajckj[] =
 
 static struct DSW_DATA dsw_data_aqua_jack_0[] =
 {
-   { "Cabinet Moves",         0x01, 0x02 },
+   { _("Cabinet Moves"),         0x01, 0x02 },
    { MSG_YES,                   0x01},
    { MSG_NO,                    0x00},
    DSW_SCREEN( 0x02, 0x00),
@@ -88,12 +88,12 @@ static struct DSW_DATA dsw_data_aqua_jack_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { "Bonus Life",            0x0C, 0x04 },
-   { "50k",                   0x0C},
-   { "80k",                   0x08},
-   { "100k",                  0x04},
-   { "30k",                   0x00},
-   { "Lives",                 0x30, 0x04 },
+   { _("Bonus Life"),            0x0C, 0x04 },
+   { _("50k"),                   0x0C},
+   { _("80k"),                   0x08},
+   { _("100k"),                  0x04},
+   { _("30k"),                   0x00},
+   { _("Lives"),                 0x30, 0x04 },
    { "3",                     0x30},
    { "2",                     0x20},
    { "1",                     0x10},

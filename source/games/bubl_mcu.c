@@ -1610,7 +1610,7 @@ LABEL(3a6):	/* jmp */
 invalid_pc:
 	#ifdef RAINE_DEBUG
 		print_debug("M68705: Invalid jump address (0x%x)\n", m68705.pc);
-		print_ingame(200, "M68705: Invalid jump address (0x%x)\n", m68705.pc);
+		print_ingame(200, gettext("M68705: Invalid jump address (0x%x)\n"), m68705.pc);
 	#endif
 	return;
 #else
@@ -1618,7 +1618,7 @@ invalid_pc:
 
 	#ifdef RAINE_DEBUG
 		print_debug("M68705: Invalid jump address (0x%x)\n", m68705.pc);
-		print_ingame(200, "M68705: Invalid jump address (0x%x)\n", m68705.pc);
+		print_ingame(200, gettext("M68705: Invalid jump address (0x%x)\n"), m68705.pc);
 	#endif
 	return;
         break;

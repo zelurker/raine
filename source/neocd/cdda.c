@@ -179,7 +179,7 @@ static int cdda_play(int track,int loop)
     print_debug("playing %s\n",str);
     reset_ingame_timer(); // loading the song can be long, esp from a cd !
   } else {
-      print_ingame(180,"Could not find audio track %d",track);
+      print_ingame(180,gettext("Could not find audio track %d"),track);
       print_debug("Could not find audio track %d",track);
   }
 

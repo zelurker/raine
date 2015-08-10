@@ -285,7 +285,7 @@ void ClearDLeague(void)
 
 void execute_dleague(void)
 {
-   //print_ingame(60,"%04x",ReadWord(&RAM[0x30800]));
+   //print_ingame(60,gettext("%04x"),ReadWord(&RAM[0x30800]));
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 1);
