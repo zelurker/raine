@@ -3195,7 +3195,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:64
 msgid "Fix aspect ratio to 4:3"
-msgstr "Arrondir les proportions Ã  4:3"
+msgstr "Arrondir les proportions à 4:3"
 
 #: source/neocd/neocd.c:4543
 msgid "Fixed layer"
@@ -3339,7 +3339,7 @@ msgstr "Couches"
 
 #: source/sdl/dialogs/video_options.cpp:209
 msgid "Limit framerate <= 60fps"
-msgstr "Limiter Ã  60fps max"
+msgstr "Limiter à 60fps max"
 
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "Linear"
@@ -3616,7 +3616,7 @@ msgstr "Options des surcouches"
 
 #: source/sdl/dialogs/video_options.cpp:66
 msgid "Overlays workarounds"
-msgstr "Résolutions des problÃ¨mes pour les surcouches"
+msgstr "Résolutions des problèmes pour les surcouches"
 
 #: source/sdl/dialogs/neocd_options.cpp:183
 msgid "Overwrite"
@@ -3713,7 +3713,7 @@ msgstr "Rendu"
 
 #: source/sdl/dialogs/game_options.cpp:245
 msgid "Reset fps to driver's default value"
-msgstr "Remettre les fps Ã  la valeur par défaut"
+msgstr "Remettre les fps à la valeur par défaut"
 
 #: source/sdl/dialogs/game_options.cpp:234
 msgid "Reset game hardware"
@@ -3733,7 +3733,7 @@ msgstr "Retourner aux contrôles de jeu par défaut"
 
 #: source/sdl/dialogs/colors.cpp:113
 msgid "Revert to..."
-msgstr "Retourner Ã ..."
+msgstr "Retourner à..."
 
 #: source/sdl/dialogs/game_selection.cpp:41
 msgid "Rom directories..."
@@ -3770,7 +3770,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:76
 msgid "Scaler"
-msgstr "Mise Ã  l'échelle"
+msgstr "Mise à l'échelle"
 
 #: source/sdl/dialogs/video_options.cpp:78
 msgid "Scanlines"
@@ -3790,7 +3790,7 @@ msgstr "Sélectionnes le périphérique analogique"
 
 #: source/sdl/dialogs/controls.cpp:758
 msgid "Select the stick to use..."
-msgstr "Sélectionne le manche Ã  utiliser..."
+msgstr "Sélectionne le manche à utiliser..."
 
 #: source/sdl/dialogs/sound_options.cpp:36
 msgid "Sfx volume"
@@ -3908,7 +3908,7 @@ msgstr "HAUT"
 
 #: source/sdl/dialogs/neocd_options.cpp:180
 msgid "Update neocd sprite block"
-msgstr "Met Ã  jour le block de sprites"
+msgstr "Met à jour le block de sprites"
 
 #: source/sdl/dialogs/video_options.cpp:169
 msgid "Use blending files (.bld)"
@@ -3924,12 +3924,12 @@ msgstr "Utiliser le double buffer (ignoré par opengl)"
 
 #: source/sdl/dialogs/video_info.cpp:93
 msgid "Using unscaled blits"
-msgstr "Utiliser des copies graphiques sans mise Ã  l'échelle"
+msgstr "Utiliser des copies graphiques sans mise à l'échelle"
 
 #: source/games/bublbobl.c:399 source/games/bublbobl.c:445
 #: source/games/bublbobl.c:520
 msgid "Very High"
-msgstr "TrÃ¨s haute"
+msgstr "Très haute"
 
 #: source/sdl/dialogs/video_info.cpp:70
 msgid "Video driver name"
