@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-10 19:09+0200\n"
+"PO-Revision-Date: 2015-08-11 17:44+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -1577,10 +1577,6 @@ msgstr ""
 msgid "90 Seconds"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:620
-msgid "<a href="
-msgstr ""
-
 #: source/games/bloodbro.c:82 source/games/rainbow.c:93
 #: source/games/rainbow.c:208 source/games/toaplan1.c:447
 #: source/games/toaplan1.c:629 source/games/toaplan1.c:704
@@ -2200,6 +2196,10 @@ msgstr ""
 msgid "Clear Damage on Cont."
 msgstr ""
 
+#: source/games/cps1drv.c:3077
+msgid "Clear RAM"
+msgstr "Effacer la RAM"
+
 #: source/sdl/dialogs/game_selection.cpp:39
 msgid "Clones"
 msgstr ""
@@ -2648,13 +2648,9 @@ msgstr ""
 msgid "Demo Sound"
 msgstr "Son pendant la démo"
 
-#: source/games/mugsmash.c:360
-msgid "Demo Sounds"
-msgstr ""
-
 #: source/games/toaplan2.c:1848
 msgid "Denmark"
-msgstr ""
+msgstr "Danemark"
 
 #: source/sdl/dialogs/neocd_options.cpp:175
 msgid "Developper mode"
@@ -2666,7 +2662,7 @@ msgstr "Difficulté"
 
 #: source/games/cps1drv.c:3872
 msgid "Difficulty (Chariot)"
-msgstr ""
+msgstr "Difficulté (Chariot)"
 
 #: source/games/cps1drv.c:3887
 msgid "Difficulty (Don't Pull)"
@@ -2718,7 +2714,7 @@ msgstr ""
 
 #: source/games/toaplan1.c:97 source/games/toaplan1.c:142
 msgid "Dipsw display"
-msgstr ""
+msgstr "Affichage dips"
 
 #: source/sdl/dialogs/dlg_dsw.cpp:41 source/sdl/gui.cpp:296
 msgid "Dipswitches"
@@ -2965,7 +2961,7 @@ msgstr "Anglais"
 
 #: source/games/seta.c:2163
 msgid "Erase Backup Ram"
-msgstr ""
+msgstr "Efface la RAM de backup"
 
 #: source/neocd/cdrom.c:270 source/neocd/cdrom.c:284 source/neocd/cdrom.c:291
 #: source/neocd/cdrom.c:311 source/neocd/cdrom.c:323 source/neocd/cdrom.c:350
@@ -3103,7 +3099,6 @@ msgstr ""
 msgid "Every 900k"
 msgstr ""
 
-
 #: source/sdl/dialogs/neocd_options.cpp:176
 msgid "Exit to"
 msgstr "Sortie vers"
@@ -3169,6 +3164,14 @@ msgstr ""
 msgid "FPS"
 msgstr ""
 
+#: source/sdl/profile.c:229
+msgid "FPS Counter Disabled"
+msgstr "Compteur FPS inactiv"
+
+#: source/sdl/profile.c:236
+msgid "FPS Counter Enabled"
+msgstr "FPS compteur actif"
+
 #: source/sdl/dialogs/game_options.cpp:246
 msgid "FPS counter"
 msgstr "Compteur FPS"
@@ -3176,6 +3179,30 @@ msgstr "Compteur FPS"
 #: source/sdl/dialogs/video_info.cpp:63
 msgid "FSAA (multisampling)"
 msgstr ""
+
+
+#: source/games/cps1drv.c:3332 source/games/cps1drv.c:3502
+#: source/games/ctribebl.c:98 source/games/darius2d.c:68
+#: source/games/ninjaw.c:320 source/games/spacegun.c:94
+#: source/games/spacegun.c:97 source/games/taito_f2.c:986
+msgid "Fast"
+msgstr "Rapide"
+
+#: source/neocd/neocd.c:378
+msgid "Fatal error"
+msgstr "Erreur fatale"
+
+#: source/games/megasys1.c:899
+msgid "Female & Male"
+msgstr "Homme & Femme"
+
+#: source/games/megasys1.c:898
+msgid "Female & Male (Full)"
+msgstr "Homme & femme (complète)"
+
+#: source/games/megasys1.c:900
+msgid "Female (Full)"
+msgstr "Femme (complète)"
 
 #: source/sdl/dialogs/sound_commands.cpp:178
 msgid "File"
@@ -3225,9 +3252,60 @@ msgstr "Inversion Y"
 msgid "Flip screen"
 msgstr "Inversion de l'écran"
 
+#: source/sdl/control.c:1650
+msgid "Flipper 1 Left"
+msgstr "Flipper 1 gauche"
+
+#: source/sdl/control.c:1651
+msgid "Flipper 1 Right"
+msgstr "Flipper 1 droit"
+
+#: source/sdl/control.c:1652
+msgid "Flipper 2 Left"
+msgstr "Flipper 2 gauche"
+
+#: source/sdl/control.c:1653
+msgid "Flipper 2 Right"
+msgstr "Flipper 2 droit"
+
+#: source/games/seta.c:2416
+msgid "Force 1 Life"
+msgstr ""
+
+#: source/games/seta.c:3028
+msgid "Foreign"
+msgstr ""
+
 #: source/sdl/dialogs/video_options.cpp:210
 msgid "Frame skip"
 msgstr "Saut d'image"
+
+#: source/games/contcirc.c:88
+msgid "Free"
+msgstr "Libre"
+
+#: source/sdl/control.c:1582
+msgid "Free Play"
+msgstr "Jeu gratuit"
+
+#: source/games/cps1drv.c:2994 source/games/cps1drv.c:3155
+#: source/games/cps1drv.c:3218 source/games/cps1drv.c:3290
+#: source/games/cps1drv.c:3402 source/games/cps1drv.c:3469
+#: source/games/cps1drv.c:3519 source/games/cps1drv.c:3574
+#: source/games/cps1drv.c:3656 source/games/cps1drv.c:3730
+#: source/games/cps1drv.c:3821 source/games/cps1drv.c:3849
+#: source/games/cps1drv.c:4078 source/games/cps1drv.c:4153
+#: source/games/cps1drv.c:4177 source/games/cps1drv.c:4185
+#: source/games/cps1drv.c:4270 source/games/cps1drv.c:4335
+#: source/games/cps1drv.c:4436 source/games/megasys1.c:638
+#: source/games/megasys1.c:973 source/games/megasys1.c:1277
+#: source/games/mugsmash.c:379 source/games/neogeo.c:99
+msgid "Freeze"
+msgstr ""
+
+#: source/games/chasehq.c:85
+msgid "Full Throttle Convrt"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:79
 msgid "Fullheight"
@@ -3240,6 +3318,14 @@ msgstr "Pleine hauteur + double largeur"
 #: source/sdl/dialogs/video_options.cpp:202
 msgid "Fullscreen"
 msgstr "Plein écran"
+
+#: source/games/toaplan2.c:167
+msgid "Fully-auto"
+msgstr ""
+
+#: source/sdl/control.c:438
+msgid "Fwd 1 frame in pause"
+msgstr "Avance d'1 image en pause"
 
 #: source/sdl/gui/menu.cpp:144
 msgid "GUI transparency"
@@ -3254,6 +3340,51 @@ msgstr "Jeu"
 msgid "Game : %s"
 msgstr "Jeu : %s"
 
+#: source/games/cps1drv.c:3131 source/games/cps1drv.c:3175
+#: source/games/cps1drv.c:3229 source/games/cps1drv.c:3303
+#: source/games/cps1drv.c:3359 source/games/cps1drv.c:3410
+#: source/games/cps1drv.c:3477 source/games/cps1drv.c:3527
+#: source/games/cps1drv.c:3664 source/games/cps1drv.c:3738
+#: source/games/cps1drv.c:3829 source/games/cps1drv.c:3897
+#: source/games/cps1drv.c:4086 source/games/cps1drv.c:4161
+#: source/games/cps1drv.c:4278 source/games/cps1drv.c:4343
+#: source/games/cps1drv.c:4444 source/games/cps1drv.c:4460
+#: source/games/cps1drv.c:4553
+msgid "Game Mode"
+msgstr "Mode de jeu"
+
+#: source/games/fchamp.c:74 source/games/fchamp.c:144
+msgid "Game Over For"
+msgstr ""
+
+#: source/games/rainbow.c:68 source/games/rainbow.c:183
+#: source/games/taito_f2.c:590 source/games/volfied.c:60
+msgid "Game Style"
+msgstr "Style de jeu"
+
+#: source/games/fchamp.c:100 source/games/fchamp.c:126
+#: source/games/fchamp.c:170 source/games/wwfsstar.c:128
+msgid "Game Time"
+msgstr "Temps de jeu"
+
+#: source/games/othunder.c:107
+msgid "Game Title Language"
+msgstr "Language de l'écran de titre"
+
+#: source/games/deadconx.c:122 source/games/fchamp.c:105
+#: source/games/fchamp.c:131 source/games/fchamp.c:175
+#: source/games/seta.c:3026 source/games/taito_f2.c:954
+msgid "Game Type"
+msgstr ""
+
+#: source/demos.c:317
+msgid "Game does not support Loading."
+msgstr ""
+
+#: source/demos.c:66
+msgid "Game does not support Saving."
+msgstr ""
+
 #: source/sdl/dialogs/game_options.cpp:279 source/sdl/gui.cpp:293
 msgid "Game options"
 msgstr "Options de jeux"
@@ -3262,13 +3393,37 @@ msgstr "Options de jeux"
 msgid "Game selection"
 msgstr "Sélection du jeu"
 
+#: source/games/megasys1.c:1193
+msgid "Games to Play (Vs)"
+msgstr ""
+
+#: source/games/chasehq.c:104
+msgid "Gear Mode"
+msgstr "Passage de vitesse"
+
 #: source/sdl/dialogs/video_options.cpp:208
 msgid "General options:"
 msgstr "Options générales"
 
+#: source/games/nmk.c:381
+msgid "Germany"
+msgstr "Allemagne"
+
 #: source/sdl/dialogs/controls.cpp:938
 msgid "Get inputs from another game"
 msgstr "Récupérer les contrôles d'un autre jeu"
+
+#: source/games/pengo.c:1329
+msgid "Ghost Names"
+msgstr "Noms des fantômes"
+
+#: source/games/lsystem.c:984
+msgid "Girls"
+msgstr "Filles"
+
+#: source/games/hyperpcb.c:214
+msgid "God Mode"
+msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:237
 msgid "Graphical layers..."
@@ -3278,26 +3433,176 @@ msgstr "Couches graphiques"
 msgid "Green"
 msgstr "Vert"
 
+#: source/games/toaplan2.c:1590
+msgid "Guest Player"
+msgstr ""
+
+#: source/games/othunder.c:104
+msgid "Half Price Continue"
+msgstr "Continue à moitié prix"
+
 #: source/sdl/dialogs/video_options.cpp:79
 msgid "Halfheight"
 msgstr "Demie hauteur"
+
+#: source/games/arkanoid.c:89 source/games/arkanoid.c:119
+#: source/games/arkanoid.c:148 source/games/cps1drv.c:3442
+#: source/games/cps1drv.c:3448 source/games/cps1drv.c:3692
+#: source/games/cps1drv.c:3865 source/games/cps1drv.c:3875
+#: source/games/cps1drv.c:3890 source/games/cps1drv.c:3998
+#: source/games/cps1drv.c:4317 source/games/cps1drv.c:4512
+#: source/games/cps1drv.c:4572 source/games/galpanic.c:200
+#: source/games/galpanic.c:230 source/games/hyperpcb.c:498
+#: source/games/matmania.c:190 source/games/mcatadv.c:190
+#: source/games/mugsmash.c:374 source/games/nmk.c:212 source/games/nmk.c:566
+#: source/games/nmk.c:628 source/games/nmk.c:875 source/games/nmk.c:962
+#: source/games/pengo.c:139 source/games/seta.c:1790 source/games/seta.c:1846
+#: source/games/seta.c:1918 source/games/seta.c:1975 source/games/seta.c:2009
+#: source/games/seta.c:2153 source/games/seta.c:2208 source/games/seta.c:2264
+#: source/games/seta.c:2314 source/games/seta.c:2389 source/games/seta.c:2482
+#: source/games/seta.c:2516 source/games/seta.c:2605 source/games/seta.c:2662
+#: source/games/seta.c:2717 source/games/seta.c:2751 source/games/seta.c:2829
+#: source/games/seta.c:2876 source/games/seta.c:2992 source/games/seta.c:3081
+#: source/games/toaplan1.c:204 source/games/toaplan1.c:372
+#: source/games/toaplan1.c:489 source/games/toaplan1.c:553
+#: source/games/toaplan1.c:670 source/sdl/control.c:1797
+msgid "Hard"
+msgstr "Dur"
+
+#: source/games/cps1drv.c:3443 source/games/seta.c:2265
+msgid "Harder"
+msgstr "+ dur"
+
+#: source/games/cps1drv.c:3444 source/games/cps1drv.c:3449
+#: source/games/cps1drv.c:3693 source/games/cps1drv.c:3866
+#: source/games/cps1drv.c:3876 source/games/cps1drv.c:3891
+#: source/games/cps1drv.c:3999 source/games/cps1drv.c:4318
+#: source/games/cps1drv.c:4513 source/games/cps1drv.c:4573
+#: source/games/galpanic.c:201 source/games/galpanic.c:231
+#: source/games/hyperpcb.c:499 source/games/matmania.c:191
+#: source/games/mcatadv.c:191 source/games/nmk.c:213 source/games/nmk.c:567
+#: source/games/nmk.c:876 source/games/nmk.c:963 source/games/pengo.c:140
+#: source/games/seta.c:1791 source/games/seta.c:1847 source/games/seta.c:1919
+#: source/games/seta.c:1976 source/games/seta.c:2010 source/games/seta.c:2209
+#: source/games/seta.c:2266 source/games/seta.c:2315 source/games/seta.c:2390
+#: source/games/seta.c:2483 source/games/seta.c:2517 source/games/seta.c:2606
+#: source/games/seta.c:2663 source/games/seta.c:2718 source/games/seta.c:2752
+#: source/games/seta.c:2830 source/games/seta.c:2877 source/games/seta.c:2993
+#: source/games/seta.c:3082 source/games/toaplan1.c:205
+#: source/games/toaplan1.c:373 source/games/toaplan1.c:490
+#: source/games/toaplan1.c:554 source/games/toaplan1.c:671
+#: source/sdl/control.c:1799
+msgid "Hardest"
+msgstr "Le + dur"
+
+#: source/games/wrestlef.c:113 source/games/wwfsstar.c:134
+msgid "Health For Winning"
+msgstr ""
+
+#: source/games/crospang.c:165
+msgid "Help Penalty (Heuk Sun)"
+msgstr ""
 
 #: source/games/bublbobl.c:400 source/games/bublbobl.c:446
 #: source/games/bublbobl.c:521
 msgid "High"
 msgstr "Haute"
 
+#: source/games/toaplan2.c:939 source/games/toaplan2.c:1040
+msgid "High, but censored"
+msgstr "Haute mais censurée"
+
+#: source/games/crimec.c:36 source/games/crimec.c:121
+#: source/games/crimec.c:176
+msgid "Hiscores"
+msgstr ""
+
 #: source/sdl/dialogs/about.cpp:762
 msgid "History..."
 msgstr "Historique..."
+
+#: source/games/nmk.c:384 source/games/toaplan1.c:231
+#: source/games/toaplan1.c:236 source/games/toaplan1.c:397
+#: source/games/toaplan2.c:214 source/games/toaplan2.c:460
+#: source/games/toaplan2.c:473 source/games/toaplan2.c:827
+#: source/games/toaplan2.c:1100 source/games/toaplan2.c:1313
+#: source/games/toaplan2.c:1433 source/games/toaplan2.c:1943
+msgid "Hong Kong"
+msgstr ""
+
+#: source/games/toaplan2.c:1179
+msgid "Hong Kong (Honest)"
+msgstr ""
+
+#: source/games/toaplan2.c:213 source/games/toaplan2.c:1942
+msgid "Hong Kong (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:1105
+msgid "Hong Kong - Honest"
+msgstr ""
+
+#: source/games/toaplan2.c:1314
+msgid "Hong Kong, Charterfield"
+msgstr ""
+
+#: source/games/toaplan2.c:609
+msgid "HongKong/Japanese"
+msgstr ""
+
+#: source/games/toaplan2.c:931 source/games/toaplan2.c:1032
+msgid "HongKong/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan2.c:716
+msgid "HongKong/Tatsujin2"
+msgstr ""
+
+#: source/games/bublbobl.c:270
+msgid "IC52=256kb, IC53=256kb"
+msgstr ""
+
+#: source/games/bublbobl.c:269
+msgid "IC52=512kb, IC53=none"
+msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:247
 msgid "Immediate FPS"
 msgstr "FPS immédiat"
 
+#: source/sdl/control.c:421
+msgid "Increase cpu skip"
+msgstr "Ralentit le jeu"
+
+#: source/sdl/control.c:419
+msgid "Increase frameskip"
+msgstr "Saute + d'images"
+
+#: source/games/terraf.c:164
+msgid "Individual"
+msgstr "Individuel"
+
+#: source/games/cabal.c:104 source/games/megasys1.c:985
+#: source/games/megasys1.c:1044 source/games/megasys1.c:1289
+#: source/games/megasys1.c:1354
+msgid "Infinite"
+msgstr "Infini"
+
+#: source/games/cps1drv.c:4430
+msgid "Infinite Lives"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:466
 msgid "Ingame Controls"
 msgstr "Contrôles pendant le jeu"
+
+#: source/games/cps1drv.c:3504
+msgid "Initial Vitality"
+msgstr "Vitalité initiale"
+
+#: source/games/lsystem.c:103
+msgid "Innings"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:233 source/sdl/dialogs/controls.cpp:275
 #: source/sdl/dialogs/controls.cpp:303
@@ -3312,9 +3617,133 @@ msgstr "Contrôles"
 msgid "Insert special code..."
 msgstr "Insérer le code spécial..."
 
-#: source/games/bublbobl.c:228
+#: source/games/megasys1.c:461
+msgid "Instructions"
+msgstr ""
+
+#: source/games/cps1drv.c:3206 source/games/cps1drv.c:3254
+msgid "Internal Diff. on Life Loss"
+msgstr ""
+
+#: source/games/hyperpcb.c:217
+msgid "Internal Test"
+msgstr "Test interne"
+
+#: source/sdl/control.c:1783
+msgid "Invert"
+msgstr "Inversion"
+
+#: source/games/toaplan2.c:1799 source/games/toaplan2.c:1837
+#: source/games/xsystem1.c:148
+msgid "Invincibility"
+msgstr "Invincibilité"
+
+#: source/games/armedf.c:244 source/games/earthjkr.c:156
+#: source/games/hyperpcb.c:562 source/games/megasys1.c:695
+#: source/games/megasys1.c:793 source/games/terraf.c:153
+#: source/games/toaplan1.c:168 source/games/toaplan1.c:192
+#: source/games/toaplan1.c:216 source/games/toaplan1.c:384
+#: source/games/toaplan1.c:501 source/games/toaplan1.c:565
+#: source/games/toaplan1.c:682
+msgid "Invulnerability"
+msgstr "Invulnérabilité"
+
+#: source/games/toaplan2.c:1183
+msgid "Italy (Star Elect)"
+msgstr ""
+
+#: source/games/nmk.c:378 source/games/seta.c:2707 source/games/toaplan1.c:230
+#: source/games/toaplan1.c:243 source/games/toaplan1.c:396
+#: source/games/toaplan1.c:516 source/games/toaplan2.c:222
+#: source/games/toaplan2.c:456 source/games/toaplan2.c:823
+#: source/games/toaplan2.c:1097 source/games/toaplan2.c:1176
+#: source/games/toaplan2.c:1427 source/games/toaplan2.c:1809
+#: source/games/toaplan2.c:1847 source/games/toaplan2.c:1953
+msgid "Japan"
+msgstr "Japon"
+
+#: source/games/seta.c:1752
+msgid "Japan (2 buttons)"
+msgstr ""
+
+#: source/games/toaplan2.c:1031
+msgid "Japan (Ryouta)/Whoopee"
+msgstr ""
+
+#: source/games/toaplan2.c:1191
+msgid "Japan (Taito Corp)"
+msgstr ""
+
+#: source/games/toaplan2.c:223 source/games/toaplan2.c:1952
+msgid "Japan (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:1190
+msgid "Japan (null)"
+msgstr ""
+
+#: source/games/toaplan2.c:471
+msgid "Japan (taito license)"
+msgstr ""
+
+#: source/games/toaplan2.c:831
+msgid "Japan - Taito"
+msgstr ""
+
+#: source/games/toaplan2.c:1106
+msgid "Japan - Tecmo"
+msgstr ""
+
+#: source/games/seta.c:2063
+msgid "Japan Only"
+msgstr ""
+
+#: source/games/toaplan2.c:605
+msgid "Japan/Japanese"
+msgstr ""
+
+#: source/games/toaplan1.c:95 source/games/toaplan1.c:576
+msgid "Japan/Taito Corp"
+msgstr ""
+
+#: source/games/toaplan2.c:713
+msgid "Japan/Tatsujin2"
+msgstr ""
+
+#: source/games/toaplan2.c:929
+msgid "Japan/Whoopee"
+msgstr ""
+
+#: source/games/bublbobl.c:228 source/games/earthjkr.c:275
+#: source/games/megasys1.c:643 source/games/nmk.c:447 source/games/nmk.c:562
+#: source/games/nmk.c:703 source/games/nmk.c:871 source/games/opwolf.c:95
+#: source/games/othunder.c:108 source/games/rainbow.c:106
+#: source/games/rainbow.c:221 source/games/seta.c:1879
+#: source/games/tetrisp2.c:112 source/games/upl.c:293
+#: source/games/volfied.c:97 source/games/xsystem1.c:95
+#: source/games/xsystem1.c:167
 msgid "Japanese"
 msgstr "Japonnais"
+
+#: source/games/toaplan2.c:1263
+msgid "Japanese (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:1262
+msgid "Japanese (Toaplan)"
+msgstr ""
+
+#: source/games/seta.c:2185
+msgid "Jordan"
+msgstr ""
+
+#: source/games/megasys1.c:668
+msgid "Joystick"
+msgstr ""
+
+#: source/games/toki.c:106
+msgid "Joysticks"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:68
 #: source/sdl/dialogs/video_options.cpp:124
@@ -3329,13 +3758,128 @@ msgstr "Délai de répétition des touches"
 msgid "Key repeat interval"
 msgstr "Intervalle de répétition des touches"
 
+#: source/games/chasehq.c:109 source/games/chasehq.c:112
+#: source/games/chasehq.c:115
+msgid "Keyboard/Digital"
+msgstr "Clavier/Digital"
+
+#: source/games/nmk.c:382 source/games/toaplan1.c:232
+#: source/games/toaplan1.c:398 source/games/toaplan2.c:212
+#: source/games/toaplan2.c:459 source/games/toaplan2.c:477
+#: source/games/toaplan2.c:828 source/games/toaplan2.c:1101
+#: source/games/toaplan2.c:1180 source/games/toaplan2.c:1312
+#: source/games/toaplan2.c:1432 source/games/toaplan2.c:1941
+msgid "Korea"
+msgstr "Corée"
+
+#: source/games/toaplan2.c:211
+msgid "Korea (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:1940
+msgid "Korea (Unite Trading)"
+msgstr ""
+
+#: source/games/toaplan2.c:472
+msgid "Korea (Unite license)"
+msgstr ""
+
+#: source/games/toaplan2.c:1311
+msgid "Korea, Unite Trading"
+msgstr ""
+
+#: source/games/toaplan2.c:608
+msgid "Korea/Japanese"
+msgstr ""
+
+#: source/games/toaplan2.c:717
+msgid "Korea/Tatsujin2"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:49
 msgid "LEFT"
 msgstr "GAUCHE"
 
+#: source/games/nmk.c:446 source/games/nmk.c:560 source/games/nmk.c:701
+#: source/games/nmk.c:869 source/games/opwolf.c:94 source/games/rainbow.c:105
+#: source/games/rainbow.c:220 source/games/seta.c:1877
+#: source/games/seta.c:2669 source/games/tetrisp2.c:111
+#: source/games/toaplan1.c:436 source/games/toaplan1.c:618
+#: source/games/toaplan1.c:693 source/games/toaplan1.c:741
+#: source/games/toaplan1.c:789 source/games/toaplan2.c:604
+#: source/games/toaplan2.c:712 source/games/toaplan2.c:928
+#: source/games/toaplan2.c:1030 source/games/toaplan2.c:1175
+#: source/games/toaplan2.c:1261 source/games/toaplan2.c:1310
+#: source/games/toaplan2.c:1426 source/games/upl.c:292
+#: source/games/volfied.c:96 source/games/xsystem1.c:93
+#: source/games/xsystem1.c:165
+msgid "Language"
+msgstr ""
+
+#: source/games/cabal.c:94
+msgid "Large"
+msgstr "Grand"
+
 #: source/sdl/dialogs/game_options.cpp:216
 msgid "Layers"
 msgstr "Couches"
+
+#: source/games/hyperpcb.c:262 source/games/hyperpcb.c:591
+msgid "Level 1"
+msgstr "Niveau 1"
+
+#: source/games/hyperpcb.c:263 source/games/hyperpcb.c:592
+msgid "Level 2"
+msgstr "Niveau 2"
+
+#: source/games/hyperpcb.c:264 source/games/hyperpcb.c:593
+msgid "Level 3"
+msgstr "Niveau 3"
+
+#: source/games/hyperpcb.c:265 source/games/hyperpcb.c:594
+msgid "Level 4"
+msgstr "Niveau 4"
+
+#: source/games/hyperpcb.c:266 source/games/hyperpcb.c:595
+msgid "Level 5"
+msgstr "Niveau 5"
+
+#: source/games/hyperpcb.c:267 source/games/hyperpcb.c:596
+msgid "Level 6"
+msgstr "Niveau 6"
+
+#: source/games/hyperpcb.c:268 source/games/hyperpcb.c:597
+msgid "Level 7"
+msgstr "Niveau 7"
+
+#: source/games/hyperpcb.c:269 source/games/hyperpcb.c:598
+msgid "Level 8"
+msgstr "Niveau 8"
+
+#: source/games/bonzeadv.c:125
+msgid "Level test"
+msgstr "Test de niveau"
+
+#: source/games/taito_f2.c:883 source/games/taito_f2.c:885
+msgid "Lever"
+msgstr ""
+
+#: source/games/seta.c:2503
+msgid "License"
+msgstr ""
+
+#: source/games/seta.c:2128 source/games/seta.c:2184 source/games/seta.c:2239
+#: source/games/seta.c:3061 source/games/seta.c:3096
+msgid "Licensed To"
+msgstr ""
+
+#: source/games/lsystem.c:1185
+msgid "Life"
+msgstr "Vie"
+
+#: source/games/cps1drv.c:3494 source/games/cps1drv.c:3711
+msgid "Life Bar"
+msgstr "Barre de vie"
 
 #: source/sdl/dialogs/video_options.cpp:209
 msgid "Limit framerate <= 60fps"
@@ -3345,14 +3889,58 @@ msgstr "Limiter à 60fps max"
 msgid "Linear"
 msgstr "Linéaire"
 
+#: source/games/aquajack.c:96 source/games/bloodbro.c:91
+#: source/games/crimec.c:62 source/games/gcpball.c:87
+#: source/games/gunbird.c:265 source/games/hyperpcb.c:557
+#: source/games/ksystem.c:250 source/games/lsystem.c:654
+#: source/games/lsystem.c:1509 source/games/metalb.c:94
+#: source/games/mugsmash.c:363 source/games/nmk.c:255 source/games/nmk.c:391
+#: source/games/nmk.c:454 source/games/rainbow.c:100
+#: source/games/rainbow.c:215 source/games/rastan.c:95
+#: source/games/rastan2.c:66 source/games/taito_f2.c:729
+#: source/games/taito_f2.c:781 source/games/taito_f2.c:928
+#: source/games/terrac.c:68 source/games/toaplan1.c:137
+#: source/games/toaplan1.c:163 source/games/toaplan1.c:187
+#: source/games/toki.c:116 source/games/volfied.c:91
+#: source/games/xsystem2.c:103 source/games/xsystem2.c:425
+#: source/games/xsystem2.c:852 source/games/xsystem2.c:952
+#: source/sdl/control.c:1791
+msgid "Lives"
+msgstr "Vies"
+
+#: source/games/cps1drv.c:3867
+msgid "Lives (Chariot)"
+msgstr "Vies (Chariot)"
+
+#: source/games/cps1drv.c:3882
+msgid "Lives (Don't Pull)"
+msgstr ""
+
+#: source/games/cps1drv.c:3857
+msgid "Lives (Midnight Wanderers)"
+msgstr ""
+
 #: source/sdl/gui.cpp:299
 msgid "Load NeoCD game"
 msgstr "Charger un jeu NeoCD"
+
+#: source/sdl/control.c:437
+msgid "Load demo"
+msgstr "Charge démo"
+
+#: source/sdl/dialogs/controls.cpp:822 source/sdl/dialogs/controls.cpp:906
+msgid "Load from which ?"
+msgstr "Charger à partir duquel ?"
+
 
 #: source/sdl/dialogs/game_options.cpp:184
 #: source/sdl/dialogs/game_options.cpp:235
 msgid "Load game"
 msgstr "Charger un jeu"
+
+#: source/sdl/control.c:435
+msgid "Load game with name"
+msgstr "Charge sauvegarde nommée"
 
 #: source/sdl/dialogs/controls.cpp:936
 msgid "Load inputs from..."
@@ -3366,13 +3954,50 @@ msgstr "Chargement du jeu"
 msgid "Loading animations speed"
 msgstr "Vitesse des animations de chargement"
 
+#: source/sdl/gui.cpp:246
+msgid "Loading error"
+msgstr "Erreur de chargement"
+
+#: source/sdl/gui.cpp:215
+msgid "Loading problem"
+msgstr "Problème de chargement"
+
+#: source/games/contcirc.c:89
+msgid "Locked"
+msgstr "Verrouillé"
+
+#: source/games/cps1.c:2708
+#, c-format
+msgid "Long hack jump at %x..."
+msgstr "Saut long de hack en %x..."
+
 #: source/sdl/dialogs/sound_commands.cpp:207
 msgid "Loop"
 msgstr "Boucle"
 
+#: source/games/fchamp.c:76 source/games/fchamp.c:146
+msgid "Loser Team Only"
+msgstr ""
+
+#: source/games/chasehq2.c:108 source/games/toaplan2.c:938
+#: source/games/toaplan2.c:1039
+msgid "Low"
+msgstr ""
+
+#: source/games/chasehq.c:105
+msgid "Low while pressed"
+msgstr ""
+
 #: source/sdl/dialogs/about.cpp:759
 msgid "M6502 1.6raine2 by Neill Bradley"
 msgstr "M6502 1.6raine2 par Neill Bradley"
+
+#: source/games/bubl_mcu.c:1613 source/games/bubl_mcu.c:1621
+#: source/games/kick_mcu.c:1198 source/games/kick_mcu.c:1206
+#: source/games/kiki_mcu.c:1555 source/games/kiki_mcu.c:1563
+#, c-format
+msgid "M68705: Invalid jump address (0x%x)\n"
+msgstr ""
 
 #: source/sdl/dialogs/about.cpp:761
 msgid "MCU 68705: statically recompiled code by Richard Mitton"
@@ -3382,6 +4007,14 @@ msgstr "MCU 68705: code recompilé statiquement par Richard Mitton"
 msgid "MZ80 3.4raine3 by Neill Bradley"
 msgstr "MZ80 3.4raine3 par Neill Bradley"
 
+#: source/games/taito_f2.c:2408
+msgid "Magic"
+msgstr "Magie"
+
+#: source/games/warriorb.c:122
+msgid "Magician"
+msgstr "Magicien"
+
 #: source/sdl/gui.cpp:347
 msgid "Main menu"
 msgstr "Menu principal"
@@ -3390,22 +4023,58 @@ msgstr "Menu principal"
 msgid "Manage associations"
 msgstr "Gérer les associations"
 
+#: source/games/cadash.c:115
+msgid "Master"
+msgstr "Maitre"
+
+#: source/games/taito_f2.c:987
+msgid "Match Type"
+msgstr ""
+
+#: source/games/cps1drv.c:3560 source/games/cps1drv.c:3917
+#: source/games/cps1drv.c:4001 source/games/cps1drv.c:4040
+#: source/games/hitice.c:75 source/games/lsystem.c:862
+#: source/games/seta.c:2528 source/games/toaplan2.c:162
+#: source/games/toaplan2.c:596
+msgid "Max Players"
+msgstr "Joueurs max"
+
 #: source/sdl/gui/tfont.cpp:35
 msgid "Max font size"
 msgstr "Taille de fonte maxi"
+
+#: source/games/cps1drv.c:3027
+msgid "Medal Setup"
+msgstr "Réglage médaille"
 
 #: source/games/bublbobl.c:401 source/games/bublbobl.c:447
 #: source/games/bublbobl.c:522
 msgid "Medium"
 msgstr "Moyenne"
 
+#: source/games/seta.c:1924
+msgid "Memory Check"
+msgstr "Vérification mémoire"
+
 #: source/sdl/gui/tfont.cpp:34
 msgid "Min font size"
 msgstr "Taille de fonte mini"
 
+#: source/games/crospang.c:134
+msgid "Minimum Balls per Row"
+msgstr ""
+
 #: source/sdl/gui/menu.cpp:147
 msgid "Minimum GUI resolution = VGA"
 msgstr "Résolution minimale du GUI = VGA"
+
+#: source/games/cps1drv.c:3712
+msgid "Minimun"
+msgstr ""
+
+#: source/games/seta.c:2744
+msgid "Mirror"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:288
 msgid "Missing"
@@ -3419,14 +4088,61 @@ msgstr "Jeux manquants"
 msgid "Mode"
 msgstr ""
 
+#: source/games/galpanic.c:256 source/games/galpanic.c:286
+#: source/games/mcatadv.c:170
+msgid "Mode 1"
+msgstr ""
+
+#: source/games/galpanic.c:257 source/games/galpanic.c:287
+#: source/games/mcatadv.c:171
+msgid "Mode 2"
+msgstr ""
+
+#: source/games/biomtoy.c:193
+msgid "Mono"
+msgstr ""
+
 #: source/games/bublbobl.c:398 source/games/bublbobl.c:444
 #: source/games/bublbobl.c:519
 msgid "Monster Speed"
 msgstr "Vitesse des monstres"
 
+#: source/games/cps1drv.c:3498
+msgid "More Quickly"
+msgstr "+ rapidement"
+
+#: source/games/cps1drv.c:3495
+msgid "More Slowly"
+msgstr ""
+
+#: source/games/wgp.c:73
+msgid "Motor"
+msgstr ""
+
+#: source/games/spacegun.c:99
+msgid "Mouse"
+msgstr ""
+
+#: source/games/spacegun.c:92
+msgid "Mouse Speed"
+msgstr "Vitesse de souris"
+
 #: source/sdl/dialogs/controls.cpp:775
 msgid "Move the stick to all the extreme positions"
 msgstr "Déplacez les manches dans tous les coins"
+
+#: source/games/megasys1.c:894
+msgid "Movement"
+msgstr ""
+
+#: source/games/deadconx.c:124
+msgid "Multiplayer"
+msgstr ""
+
+#: source/sdl/sasound.c:324
+#, c-format
+msgid "Music error: %s"
+msgstr ""
 
 #: source/sdl/dialogs/sound_options.cpp:37
 msgid "Music volume"
@@ -3439,6 +4155,18 @@ msgstr "CD silencieux"
 #: source/sdl/dialogs/sound_options.cpp:39
 msgid "Mute SFX"
 msgstr "Pas d'effets sonores"
+
+#: source/games/cps1drv.c:4130
+msgid "N"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "NMK"
+msgstr ""
+
+#: source/games/cps1drv.c:3329
+msgid "Nando Speed"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "Nearest"
@@ -3471,6 +4199,11 @@ msgstr "Options NeoCD/Neo-Geo"
 msgid "NeoGeo Logo"
 msgstr "Logo NeoGeo"
 
+#: source/games/nmk.c:379
+msgid "Nevada"
+msgstr ""
+
+#: source/games/seta.c:2101 source/games/seta.c:2268 source/games/seta.c:2392
 #: source/sdl/dialogs/video_options.cpp:75
 #: source/sdl/dialogs/video_options.cpp:204
 msgid "Never"
@@ -3483,6 +4216,14 @@ msgstr "Nouveau fichier"
 #: source/sdl/dialogs/neocd_options.cpp:183
 msgid "New pictures"
 msgstr "Nouvelles images"
+
+#: source/neocd/neocd.c:270
+msgid "Next sprite block"
+msgstr ""
+
+#: source/games/topspeed.c:177
+msgid "Nitros per Stage"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
@@ -3513,14 +4254,38 @@ msgstr "Nouvelles images"
 msgid "No"
 msgstr "Non"
 
+#: source/games/taito_f2.c:780
+msgid "No Bonus Lives"
+msgstr "Pas de vies bonus"
+
 #: source/sdl/dialogs/neocd_options.cpp:192
 #, c-format
 msgid "No NeoCD bios"
 msgstr "Pas de bios NeoCD"
 
+#: source/games/toaplan2.c:6136
+msgid "No Save"
+msgstr ""
+
+#: source/games/lsystem.c:991
+msgid "No Use"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:723
 msgid "No analog device"
 msgstr "Pas de périphérique analogique"
+
+#: source/sdl/dialogs/sound_commands.cpp:203
+msgid "No associations yet"
+msgstr "Pas encore d'associations"
+
+#: source/sdl/dialogs/controls.cpp:538
+msgid "No buttons mapped by this game for autofire, sorry !"
+msgstr ""
+
+#: source/games/cps1drv.c:3043
+msgid "No change"
+msgstr "Pas de changement"
 
 #: source/sdl/gui/menu.cpp:424
 msgid "No game loaded"
@@ -3530,13 +4295,37 @@ msgstr "Pas de jeu chargé"
 msgid "No game loaded yet"
 msgstr "Pas de jeu chargé pour l'instant"
 
+#: source/sdl/dialogs/controls.cpp:902
+msgid "No game uses custom inputs in your config file yet"
+msgstr "Aucun jeu n'utilise de contrôles persos dans ta config"
+
+#: source/sdl/compat.c:283
+msgid "No hardware support for overlays"
+msgstr "Pas d'accélération matérielle pour les overlays"
+
 #: source/sdl/dialogs/video_info.cpp:55
 msgid "No opengl info yet, run something first"
 msgstr "Pas encore d'info opengl, lancez un jeu d'abord"
 
+#: source/sdl/dialogs/video_options.cpp:144
+msgid "No options for this renderer ? Strange !"
+msgstr "Pas d'options pour ce rendu ?"
+
+#: source/sdl/dialogs/about.cpp:502
+msgid "No raine logo, or it's a true color bitmap"
+msgstr "Pas de logo pour raine, ou c'est un bitmap true color"
+
 #: source/sdl/dialogs/game_options.cpp:181
 msgid "No savegames loadable for this game"
 msgstr "Pas de sauvegardes chargeable pour ce jeu"
+
+#: source/sdl/glsl.c:357
+msgid "No shader support on your hardware"
+msgstr "Ton matos ne supporte pas les shaders"
+
+#: source/sdl/control.c:340
+msgid "No speed limit !"
+msgstr "Pas de limite de vitesse !"
 
 #: source/sdl/dialogs/video_options.cpp:77
 #: source/sdl/dialogs/video_options.cpp:133
@@ -3545,9 +4334,77 @@ msgstr "Pas de sauvegardes chargeable pour ce jeu"
 msgid "None"
 msgstr "Aucun"
 
+#: source/games/seta.c:2130 source/games/seta.c:3063
+msgid "None (Japan)"
+msgstr ""
+
+#: source/games/cps1drv.c:3331 source/games/cps1drv.c:3386
+#: source/games/cps1drv.c:3440 source/games/cps1drv.c:3447
+#: source/games/cps1drv.c:3691 source/games/cps1drv.c:3864
+#: source/games/cps1drv.c:3874 source/games/cps1drv.c:3889
+#: source/games/cps1drv.c:3997 source/games/cps1drv.c:4316
+#: source/games/cps1drv.c:4511 source/games/cps1drv.c:4571
+#: source/games/galpanic.c:199 source/games/galpanic.c:229
+#: source/games/hyperpcb.c:497 source/games/mcatadv.c:189
+#: source/games/nmk.c:211 source/games/nmk.c:565 source/games/nmk.c:627
+#: source/games/nmk.c:874 source/games/nmk.c:961 source/games/seta.c:1789
+#: source/games/seta.c:1845 source/games/seta.c:1917 source/games/seta.c:1974
+#: source/games/seta.c:2008 source/games/seta.c:2152 source/games/seta.c:2206
+#: source/games/seta.c:2313 source/games/seta.c:2387 source/games/seta.c:2481
+#: source/games/seta.c:2515 source/games/seta.c:2604 source/games/seta.c:2661
+#: source/games/seta.c:2716 source/games/seta.c:2750 source/games/seta.c:2828
+#: source/games/seta.c:2875 source/games/seta.c:2991 source/games/seta.c:3053
+#: source/games/seta.c:3080 source/sdl/control.c:1782
+msgid "Normal"
+msgstr ""
+
 #: source/sdl/dialogs/video_options.cpp:201
 msgid "Normal blits"
 msgstr "Copies graphiques de base"
+
+#: source/games/taito_f2.c:843
+msgid "Not Allowed"
+msgstr "Pas autorisé"
+
+#: source/games/cave.c:2538
+#, c-format
+msgid "Not enough memory for layer bitmap %d"
+msgstr "Pas assez de mémoire pour ce bitmap %d"
+
+#: source/games/hyperpcb.c:556
+msgid "Nothing"
+msgstr "Rien"
+
+#: source/games/megasys1.c:897 source/games/toaplan2.c:937
+#: source/games/toaplan2.c:1038
+msgid "Nudity"
+msgstr "Nudité"
+
+#: source/games/ksystem.c:258
+msgid "Number Match"
+msgstr ""
+
+#: source/games/crospang.c:111
+msgid "Number of Powers"
+msgstr ""
+
+#: source/games/lsystem.c:2001 source/games/mcatadv.c:492
+msgid "OBJ"
+msgstr ""
+
+#: source/games/lsystem.c:2003
+msgid "OBJ 2"
+msgstr ""
+
+#: source/neocd/cdrom.c:270 source/neocd/cdrom.c:284 source/neocd/cdrom.c:291
+#: source/neocd/cdrom.c:311 source/neocd/cdrom.c:323 source/neocd/cdrom.c:350
+#: source/neocd/cdrom.c:368 source/neocd/cdrom.c:401 source/neocd/cdrom.c:421
+#: source/neocd/neocd.c:378 source/sdl/dialogs/neo_softdips.cpp:217
+#: source/sdl/dialogs/sound_commands.cpp:203
+#: source/sdl/dialogs/video_options.cpp:144 source/sdl/glsl.c:515
+#: source/sdl/streams.c:439
+msgid "OK"
+msgstr ""
 
 #: source/sdl/console/scripts.cpp:130 source/sdl/dialogs/neocd_options.cpp:179
 #: source/sdl/dialogs/cheats.cpp:105 source/sdl/dialogs/game_options.cpp:213
@@ -3556,10 +4413,19 @@ msgstr "Copies graphiques de base"
 msgid "Off"
 msgstr "Arrêt"
 
+#: source/neocd/iso.c:88 source/sdl/dialogs/video_options.cpp:54
+#: source/sdl/dsw.c:420
+msgid "Ok"
+msgstr ""
+
 #: source/sdl/console/scripts.cpp:131 source/sdl/dialogs/cheats.cpp:106
 #: source/sdl/dialogs/game_options.cpp:214
 msgid "On"
 msgstr "Marche"
+
+#: source/games/lsystem.c:990
+msgid "One step back/Time Cnt"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:34
 msgid "Only not working games"
@@ -3577,6 +4443,10 @@ msgstr "Seulement les jeux qui marchent"
 msgid "Opaque HUD"
 msgstr "HUD opaque"
 
+#: source/sdl/dialogs/about.cpp:704
+msgid "Open this page now !|Later maybe..."
+msgstr "Ouvre cette page maintenant !|+ tard peut-être..."
+
 #: source/sdl/dialogs/video_options.cpp:201
 msgid "OpenGL"
 msgstr ""
@@ -3592,6 +4462,10 @@ msgstr "OpenGL VBL (forcer la synchro)"
 #: source/sdl/dialogs/video_info.cpp:62
 msgid "OpenGL double buffer"
 msgstr "Double buffer OpenGL"
+
+#: source/sdl/glsl.c:178 source/sdl/glsl.c:188 source/sdl/opengl.c:179
+msgid "OpenGL error"
+msgstr "Erreur OpenGL"
 
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "OpenGL filtering"
@@ -3622,13 +4496,145 @@ msgstr "Résolutions des problèmes pour les surcouches"
 msgid "Overwrite"
 msgstr "Ecraser"
 
+#: source/sdl/control.c:1661
+msgid "P1 A"
+msgstr ""
+
+#: source/sdl/control.c:1667
+msgid "P1 B"
+msgstr ""
+
+#: source/sdl/control.c:1673
+msgid "P1 C"
+msgstr ""
+
+#: source/sdl/control.c:1676
+msgid "P1 Chi"
+msgstr ""
+
+#: source/sdl/control.c:1679
+msgid "P1 D"
+msgstr ""
+
+#: source/sdl/control.c:1662
+msgid "P1 E"
+msgstr ""
+
+#: source/sdl/control.c:1668
+msgid "P1 F"
+msgstr ""
+
+#: source/sdl/control.c:1674
+msgid "P1 G"
+msgstr ""
+
+#: source/sdl/control.c:1680
+msgid "P1 H"
+msgstr ""
+
+#: source/sdl/control.c:1663
+msgid "P1 I"
+msgstr ""
+
+#: source/games/spacegun.c:98
+msgid "P1 Input Control"
+msgstr ""
+
+#: source/games/terraf.c:168
+msgid "P1 Invulnerability"
+msgstr ""
+
+#: source/sdl/control.c:1669
+msgid "P1 J"
+msgstr ""
+
+#: source/sdl/control.c:1675
+msgid "P1 K"
+msgstr ""
+
+#: source/sdl/control.c:1665
+msgid "P1 Kan"
+msgstr ""
+
+#: source/sdl/control.c:1681
+msgid "P1 L"
+msgstr ""
+
+#: source/sdl/control.c:1664
+msgid "P1 M"
+msgstr ""
+
+#: source/sdl/control.c:1670
+msgid "P1 N"
+msgstr ""
+
+#: source/sdl/control.c:1682
+msgid "P1 Pon"
+msgstr ""
+
+#: source/sdl/control.c:1671
+msgid "P1 Reach"
+msgstr ""
+
+#: source/sdl/control.c:1677
+msgid "P1 Ron"
+msgstr ""
+
+#: source/games/terraf.c:171
+msgid "P2 Invulnerability"
+msgstr ""
+
+#: source/games/chasehq.c:113 source/games/chasehq.c:116
+msgid "PC Pedal (analog)"
+msgstr ""
+
+#: source/games/chasehq.c:110
+msgid "PC Steering Wheel"
+msgstr ""
+
+#: source/games/taito_f2.c:884
+msgid "Paddle A"
+msgstr ""
+
+#: source/games/taito_f2.c:886
+msgid "Paddle B"
+msgstr ""
+
+#: source/games/megasys1.c:895
+msgid "Paddles"
+msgstr ""
+
 #: source/sdl/dialogs/fsel.cpp:152
 msgid "Path selection"
 msgstr "Sélection d'un chemin"
 
-#: source/sdl/dialogs/gui_options.cpp:21
+#: source/sdl/control.c:430
+msgid "Pause game"
+msgstr "Pause"
+
+#: source/sdl/dialogs/gui_options.cpp:20
 msgid "Pause when focus lost"
-msgstr "Pause quand la fenêtre devient inactive"
+msgstr "Pause quand on perd le focus"
+
+#: source/games/cps1drv.c:3052
+msgid "Payout Mode"
+msgstr ""
+
+#: source/games/cps1drv.c:3059
+msgid "Payout Rate Setup"
+msgstr ""
+
+#: source/games/cps1drv.c:3050
+msgid "Payout Setup"
+msgstr ""
+
+#: source/games/cookbib.c:258
+msgid "Picture Viewer"
+msgstr "Visualiseur d'image"
+
+#: source/games/f3system.c:663
+msgid "Pixel"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:77
 msgid "Pixel double"
@@ -3638,22 +4644,267 @@ msgstr "Double pixel"
 msgid "Play game"
 msgstr "Jouer au jeu"
 
+#: source/sdl/dialogs/sound_commands.cpp:125
+msgid "Play track|Test command|Silence track|Change track|Remove association"
+msgstr ""
+
 #: source/sdl/dialogs/sound_commands.cpp:144
 #: source/sdl/dialogs/sound_commands.cpp:155
 msgid "Playback"
-msgstr "Lecture audio"
+msgstr ""
+
+#: source/games/spacegun.c:105
+msgid "Player 1 Only"
+msgstr ""
+
+#: source/games/spacegun.c:106
+msgid "Player 2 Only"
+msgstr ""
+
+#: source/games/doubled3.c:105 source/games/silentd.c:121
+msgid "Player Hurt Player"
+msgstr ""
+
+#: source/games/toaplan2.c:1593
+msgid "Player Select"
+msgstr ""
+
+#: source/games/cps1drv.c:3621
+msgid "Player's vitality consumption"
+msgstr ""
+
+#: source/sdl/control.c:1593
+msgid "Player1 Button1"
+msgstr ""
+
+#: source/sdl/control.c:1594
+msgid "Player1 Button2"
+msgstr ""
+
+#: source/sdl/control.c:1595
+msgid "Player1 Button3"
+msgstr ""
+
+#: source/sdl/control.c:1596
+msgid "Player1 Button4"
+msgstr ""
+
+#: source/sdl/control.c:1597
+msgid "Player1 Button5"
+msgstr ""
+
+#: source/sdl/control.c:1598
+msgid "Player1 Button6"
+msgstr ""
+
+#: source/sdl/control.c:1599
+msgid "Player1 Button7"
+msgstr ""
+
+#: source/sdl/control.c:1600
+msgid "Player1 Button8"
+msgstr ""
+
+#: source/sdl/control.c:1589
+msgid "Player1 Down"
+msgstr ""
+
+#: source/sdl/control.c:1590
+msgid "Player1 Left"
+msgstr ""
+
+#: source/sdl/control.c:1591
+msgid "Player1 Right"
+msgstr ""
+
+#: source/sdl/control.c:1586
+msgid "Player1 Start"
+msgstr ""
+
+#: source/sdl/control.c:1588
+msgid "Player1 Up"
+msgstr ""
+
+#: source/sdl/control.c:1609
+msgid "Player2 Button1"
+msgstr ""
+
+#: source/sdl/control.c:1610
+msgid "Player2 Button2"
+msgstr ""
+
+#: source/sdl/control.c:1611
+msgid "Player2 Button3"
+msgstr ""
+
+#: source/sdl/control.c:1612
+msgid "Player2 Button4"
+msgstr ""
+
+#: source/sdl/control.c:1613
+msgid "Player2 Button5"
+msgstr ""
+
+#: source/sdl/control.c:1614
+msgid "Player2 Button6"
+msgstr ""
+
+#: source/sdl/control.c:1615
+msgid "Player2 Button7"
+msgstr ""
+
+#: source/sdl/control.c:1616
+msgid "Player2 Button8"
+msgstr ""
+
+#: source/sdl/control.c:1605
+msgid "Player2 Down"
+msgstr ""
+
+#: source/sdl/control.c:1606
+msgid "Player2 Left"
+msgstr ""
+
+#: source/sdl/control.c:1607
+msgid "Player2 Right"
+msgstr ""
+
+#: source/sdl/control.c:1602
+msgid "Player2 Start"
+msgstr ""
+
+#: source/sdl/control.c:1604
+msgid "Player2 Up"
+msgstr ""
+
+#: source/sdl/control.c:1625
+msgid "Player3 Button1"
+msgstr ""
+
+#: source/sdl/control.c:1626
+msgid "Player3 Button2"
+msgstr ""
+
+#: source/sdl/control.c:1627
+msgid "Player3 Button3"
+msgstr ""
+
+#: source/sdl/control.c:1628
+msgid "Player3 Button4"
+msgstr ""
+
+#: source/sdl/control.c:1629
+msgid "Player3 Button5"
+msgstr ""
+
+#: source/sdl/control.c:1630
+msgid "Player3 Button6"
+msgstr ""
+
+#: source/sdl/control.c:1631
+msgid "Player3 Button7"
+msgstr ""
+
+#: source/sdl/control.c:1632
+msgid "Player3 Button8"
+msgstr ""
+
+#: source/sdl/control.c:1621
+msgid "Player3 Down"
+msgstr ""
+
+#: source/sdl/control.c:1622
+msgid "Player3 Left"
+msgstr ""
+
+#: source/sdl/control.c:1623
+msgid "Player3 Right"
+msgstr ""
+
+#: source/sdl/control.c:1618
+msgid "Player3 Start"
+msgstr ""
+
+#: source/sdl/control.c:1620
+msgid "Player3 Up"
+msgstr ""
+
+#: source/sdl/control.c:1641
+msgid "Player4 Button1"
+msgstr ""
+
+#: source/sdl/control.c:1642
+msgid "Player4 Button2"
+msgstr ""
+
+#: source/sdl/control.c:1643
+msgid "Player4 Button3"
+msgstr ""
+
+#: source/sdl/control.c:1644
+msgid "Player4 Button4"
+msgstr ""
+
+#: source/sdl/control.c:1645
+msgid "Player4 Button5"
+msgstr ""
+
+#: source/sdl/control.c:1646
+msgid "Player4 Button6"
+msgstr ""
+
+#: source/sdl/control.c:1647
+msgid "Player4 Button7"
+msgstr ""
+
+#: source/sdl/control.c:1648
+msgid "Player4 Button8"
+msgstr ""
+
+#: source/sdl/control.c:1637
+msgid "Player4 Down"
+msgstr ""
+
+#: source/sdl/control.c:1638
+msgid "Player4 Left"
+msgstr ""
+
+#: source/sdl/control.c:1639
+msgid "Player4 Right"
+msgstr ""
+
+#: source/sdl/control.c:1634
+msgid "Player4 Start"
+msgstr ""
+
+#: source/sdl/control.c:1636
+msgid "Player4 Up"
+msgstr ""
+
+#: source/demos.c:299
+#, c-format
+msgid "Playing from: %s"
+msgstr ""
+
+#: source/games/warriorb.c:119
+msgid "Power Ups"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:63
 msgid "Prefered YUV format"
-msgstr "Format YUV préféré"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:196
 msgid "Press a key, a button, or move a joystick..."
-msgstr "Presse une touche, un bouton ou déplace un joystick..."
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:203
 msgid "Press a key..."
-msgstr "Presse une touche..."
+msgstr ""
+
+#: source/neocd/neocd.c:271
+msgid "Prev sprite block"
+msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:247
 msgid "Profiler"
@@ -3661,47 +4912,93 @@ msgstr ""
 
 #: source/sdl/gui.cpp:106
 msgid "Progress"
-msgstr "Progression"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Psikyo (gunbird)"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:238 source/sdl/dialogs/controls.cpp:280
+#: source/sdl/dialogs/controls.cpp:308
+msgid "Question"
+msgstr ""
+
+#: source/games/cps1drv.c:3497
+msgid "Quickly"
+msgstr ""
 
 #: source/sdl/gui.cpp:311
 msgid "Quit"
-msgstr "Quitter"
+msgstr ""
+
+#: source/sdl/control.c:443
+msgid "Quit w/o saving"
+msgstr ""
+
+#: source/sdl/profile.c:252
+msgid "RDTSC Timing Enabled (cycles)"
+msgstr ""
+
+#: source/sdl/profile.c:248
+msgid "RDTSC Timing Enabled (percentages)"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:47
 msgid "RIGHT"
-msgstr "DROITE"
+msgstr ""
 
 #: source/games/bublbobl.c:268
 msgid "ROM type"
-msgstr "Type de ROM"
+msgstr ""
+
+#: source/games/pengo.c:133
+msgid "Rack Test"
+msgstr ""
+
+#: source/games/pengo.c:1292
+msgid "Rack Test (Cheat)"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:390 source/sdl/dialogs/controls.cpp:413
 msgid "Raine Controls"
-msgstr "Contrôles de Raine"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:929
 msgid "Raine controls"
-msgstr "Contrôles de Raine"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:182
 msgid "Raster effects"
-msgstr "Effets de raster"
+msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:247
 msgid "Rdtsc Cycles"
-msgstr "Cycles Rdtsc"
+msgstr ""
 
-#: source/sdl/dialogs/sound_options.cpp:43
+#: source/sdl/dialogs/sound_options.cpp:42
 msgid "Record to raine_sound.wav"
-msgstr "Enregister vers raine_sound.wav"
+msgstr ""
+
+#: source/demos.c:62
+#, c-format
+msgid "Recording demo to: %s"
+msgstr ""
+
+#: source/sdl/streams.c:400
+msgid "Recording to wav..."
+msgstr ""
+
+#: source/games/wrestlef.c:85
+msgid "Regain Power Price"
+msgstr ""
 
 #: source/sdl/gui.cpp:294
 msgid "Region"
-msgstr "Région"
+msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:60
 msgid "Renderer"
-msgstr "Rendu"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:207
 msgid "Renderer options"
@@ -3715,6 +5012,10 @@ msgstr "Rendu"
 msgid "Reset fps to driver's default value"
 msgstr "Remettre les fps à la valeur par défaut"
 
+#: source/sdl/control.c:429
+msgid "Reset game"
+msgstr "Reset du jeu"
+
 #: source/sdl/dialogs/game_options.cpp:234
 msgid "Reset game hardware"
 msgstr "Reset matériel"
@@ -3723,9 +5024,21 @@ msgstr "Reset matériel"
 msgid "Reset transparency values to default"
 msgstr "Remettre les valeurs de transparence par défaut"
 
+#: source/games/chasehq2.c:100
+msgid "Responds to Controls"
+msgstr ""
+
+#: source/games/lsystem.c:976
+msgid "Retries"
+msgstr ""
+
 #: source/sdl/gui/menu.cpp:143
 msgid "Return mandatory"
 msgstr "Touche entrée obligatoire"
+
+#: source/sdl/control.c:432
+msgid "Return to gui"
+msgstr "Retour au gui"
 
 #: source/sdl/dialogs/controls.cpp:931 source/sdl/dialogs/controls.cpp:955
 msgid "Revert to default game controls"
@@ -3735,9 +5048,44 @@ msgstr "Retourner aux contrôles de jeu par défaut"
 msgid "Revert to..."
 msgstr "Retourner à..."
 
+#: source/games/chasehq.c:799 source/games/chasehq.c:1317
+#: source/games/wgp.c:452
+msgid "Roadscroll"
+msgstr ""
+
+#: source/games/bloodbro.c:81
+msgid "Rom Option"
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:41
 msgid "Rom directories..."
 msgstr "Répertoires de roms..."
+
+#: source/games/seta.c:2111 source/games/seta.c:2129 source/games/seta.c:2241
+#: source/games/seta.c:2420 source/games/seta.c:2504 source/games/seta.c:3062
+msgid "Romstar"
+msgstr ""
+
+#: source/games/earthjkr.c:94
+msgid "Romstar License"
+msgstr ""
+
+#: source/games/silkworm.c:462
+msgid "Round 6"
+msgstr ""
+
+#: source/games/silkworm.c:463
+msgid "Round 7"
+msgstr ""
+
+#: source/emumain.c:473
+msgid "Running CPU All Frames"
+msgstr ""
+
+#: source/emumain.c:475
+#, c-format
+msgid "Running CPU Every %01d Frames"
+msgstr "Le cpu tourne toutes les %01d images"
 
 #: source/sdl/dialogs/video_options.cpp:198
 msgid "SDL default (windib since 1.2.10)"
@@ -3747,14 +5095,74 @@ msgstr "SDL par défaut (windib depuis 1.2.10)"
 msgid "SDL video driver"
 msgstr "Pilote vidéo SDL"
 
+#: source/games/toaplan2.c:830 source/games/toaplan2.c:1318
+msgid "SE Asia"
+msgstr ""
+
+#: source/games/toaplan2.c:1317
+msgid "SE Asia, Charterfield"
+msgstr ""
+
+#: source/games/toaplan2.c:719
+msgid "SE Asia/Tatsujin2"
+msgstr ""
+
+#: source/games/dkong.c:802 source/games/frogger.c:1387
+#: source/games/matmania.c:319 source/games/pengo.c:611
+#: source/games/pengo.c:1843
+msgid "SPRITES"
+msgstr ""
+
+#: source/games/seta.c:3159 source/games/seta.c:3163 source/games/seta.c:3168
+msgid "SPRITES BG"
+msgstr ""
+
+#: source/games/seta.c:3160 source/games/seta.c:3164 source/games/seta.c:3169
+msgid "SPRITES FG"
+msgstr ""
+
+#: source/games/seta.c:2062
+msgid "Sales"
+msgstr ""
+
+#: source/games/ashura.c:123 source/games/crimec.c:133
+#: source/games/lsystem.c:434 source/games/lsystem.c:874
+#: source/games/rastan2.c:174
+msgid "Same as play"
+msgstr ""
+
 #: source/sdl/dialogs/sound_options.cpp:30
 msgid "Sample rate"
 msgstr "Fréquence audio"
+
+#: source/games/toaplan2.c:6135
+msgid "Save"
+msgstr "Sauve"
+
+#: source/sdl/dialogs/controls.cpp:818
+msgid ""
+"Save 1st some custom inputs using\n"
+"Save inputs as"
+msgstr ""
+"Sauvegarde d'abord des contrôles personnalisés en utilisant\n"
+"Sauver les contrôles sous"
+
+#: source/sdl/control.c:417
+msgid "Save Screenshot"
+msgstr "Capture d'écran"
+
+#: source/sdl/control.c:436
+msgid "Save demo"
+msgstr "Sauve la démo"
 
 #: source/sdl/dialogs/game_options.cpp:194
 #: source/sdl/dialogs/game_options.cpp:236
 msgid "Save game"
 msgstr "Sauver le jeu"
+
+#: source/sdl/control.c:434
+msgid "Save game with name"
+msgstr "Sauver la partie sous..."
 
 #: source/sdl/dialogs/controls.cpp:937
 msgid "Save inputs as..."
@@ -3776,6 +5184,19 @@ msgstr "Mise à l'échelle"
 msgid "Scanlines"
 msgstr ""
 
+#: source/games/seta.c:2154
+msgid "Score Digits"
+msgstr ""
+
+#: source/games/toaplan2.c:6134
+msgid "Score Ranking"
+msgstr ""
+
+#: source/sdl/blit.c:95
+#, c-format
+msgid "Screen Saved to %s"
+msgstr "Ecran sauvé sous %s"
+
 #: source/sdl/dialogs/video_options.cpp:212
 msgid "Screen rotation"
 msgstr "Rotation d'écran"
@@ -3783,6 +5204,15 @@ msgstr "Rotation d'écran"
 #: source/sdl/dialogs/dirs.cpp:22
 msgid "Screenshot dir"
 msgstr "Répertoire de captures d'écran"
+
+#: source/games/crimec.c:37 source/games/crimec.c:122
+#: source/games/crimec.c:177
+msgid "Scribble"
+msgstr ""
+
+#: source/games/terrac.c:76
+msgid "Second Life at"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:726
 msgid "Select analog device"
@@ -3792,6 +5222,63 @@ msgstr "Sélectionnes le périphérique analogique"
 msgid "Select the stick to use..."
 msgstr "Sélectionne le manche à utiliser..."
 
+#: source/games/esd16.c:103
+msgid "Selectable Games"
+msgstr ""
+
+#: source/games/toaplan2.c:168
+msgid "Semi-auto"
+msgstr ""
+
+#: source/games/silentd.c:132
+msgid "Seperate"
+msgstr ""
+
+#: source/neocd/cdrom.c:269
+#, c-format
+msgid "Serious cue format error on line %s"
+msgstr "Erreur sérieuse de format cue en ligne %s"
+
+#: source/sdl/control.c:1577
+msgid "Service"
+msgstr ""
+
+#: source/sdl/control.c:1684
+msgid "Service A"
+msgstr ""
+
+#: source/sdl/control.c:1685
+msgid "Service B"
+msgstr ""
+
+#: source/sdl/control.c:1686
+msgid "Service C"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Seta"
+msgstr ""
+
+#: source/games/seta.c:2421
+msgid "Seta (Romstar License)"
+msgstr ""
+
+#: source/games/seta.c:2422
+msgid "Seta (Visco License)"
+msgstr ""
+
+#: source/games/seta.c:2505
+msgid "Seta U.S.A"
+msgstr ""
+
+#: source/games/seta.c:2305
+msgid "Seta USA / Romstar"
+msgstr ""
+
+#: source/games/seta.c:2304
+msgid "Seta USA / Taito America"
+msgstr ""
+
 #: source/sdl/dialogs/sound_options.cpp:36
 msgid "Sfx volume"
 msgstr "Volume SFX"
@@ -3800,9 +5287,70 @@ msgstr "Volume SFX"
 msgid "Shader"
 msgstr ""
 
+#: source/games/seta.c:2645
+msgid "Shared Credits"
+msgstr ""
+
+#: source/games/taito_f2.c:831
+msgid "Shields"
+msgstr ""
+
+#: source/games/darius.c:155
+msgid "Ships"
+msgstr ""
+
+#: source/games/toaplan2.c:166
+msgid "Shooting Style"
+msgstr ""
+
+#: source/games/quizgame.c:89
+msgid "Show Correct Answer"
+msgstr ""
+
+#: source/games/spacegun.c:103
+msgid "Show Crosshair"
+msgstr ""
+
 #: source/sdl/gui.cpp:307
 msgid "Show command.dat info"
 msgstr "Montrer les infos command.dat"
+
+#: source/games/opwolf.c:59
+msgid "Silence"
+msgstr ""
+
+#: source/games/taito_f2.c:840
+msgid "Simultaneous"
+msgstr ""
+
+#: source/games/metalb.c:102 source/games/taito_f2.c:737
+msgid "Simultaneous Play"
+msgstr ""
+
+#: source/games/quizgame.c:196 source/games/taito_f2.c:628
+#: source/games/taito_f2.c:788 source/games/taito_f2.c:816
+#: source/games/taito_f2.c:936 source/games/taito_f2.c:989
+#: source/games/taito_f2.c:995 source/games/taito_f2.c:2423
+msgid "Single"
+msgstr ""
+
+#: source/games/cadash.c:116
+msgid "Slave"
+msgstr ""
+
+#: source/games/cps1drv.c:3330 source/games/cps1drv.c:3501
+#: source/games/spacegun.c:93 source/games/spacegun.c:96
+msgid "Slow"
+msgstr ""
+
+#: source/games/cps1drv.c:3496
+msgid "Slowly"
+msgstr ""
+
+#: source/games/cabal.c:93 source/games/cps1drv.c:3385
+#: source/games/deadconx.c:113 source/games/taito_f2.c:981
+msgid "Small"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:173
 msgid "Soft dips"
@@ -3811,6 +5359,14 @@ msgstr "Interrupteurs logiciels"
 #: source/sdl/dialogs/neo_softdips.cpp:171
 msgid "Soft dipswitches"
 msgstr "Interrupteurs logiciels"
+
+#: source/games/opwolf.c:58
+msgid "Sound"
+msgstr "Son"
+
+#: source/games/mugsmash.c:346
+msgid "Sound Test"
+msgstr "Test du son"
 
 #: source/sdl/dialogs/sound_commands.cpp:206
 msgid "Sound associations"
@@ -3828,36 +5384,289 @@ msgstr "Commandes sonores..."
 msgid "Sound options"
 msgstr "Options sonores"
 
+#: source/games/biomtoy.c:192
+msgid "Sound type"
+msgstr ""
+
+#: source/games/toaplan2.c:461 source/games/toaplan2.c:476
+#: source/games/toaplan2.c:1430 source/games/toaplan2.c:1947
+msgid "South East Asia"
+msgstr ""
+
+#: source/games/toaplan2.c:475
+msgid "South East Asia (Charterfield License)"
+msgstr ""
+
+#: source/games/toaplan2.c:1946
+msgid "South East Asia(Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:1182
+msgid "Spain & Portugal (APM)"
+msgstr ""
+
+#: source/games/toaplan2.c:1036
+msgid "Spain&Portugal/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan2.c:1596
+msgid "Special Course"
+msgstr ""
+
 #: source/sdl/dialogs/about.cpp:738
 msgid "Special moves..."
 msgstr "Déplacements spéciaux..."
+
+#: source/games/cps1.c:2882
+msgid "Speed hack not found, slowing down..."
+msgstr "Hack de vitesse pas trouvé, on ralentit..."
+
+#: source/sdl/control.c:343
+#, c-format
+msgid "Speed limit %d fps"
+msgstr "Limite de vitesse %d fps"
 
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"
 msgstr "Afficheur de sprite"
 
+#: source/neocd/neocd.c:4544
+msgid "Sprites layer"
+msgstr ""
+
 #: source/sdl/dialogs/sprite_viewer.cpp:181
 msgid "Sprites viewer"
 msgstr "Afficheur de sprite"
+
+#: source/games/lsystem.c:989
+msgid "Stage & Timer Start"
+msgstr ""
+
+#: source/games/seta.c:2914
+msgid "Stage & Weapon Select"
+msgstr ""
+
+#: source/games/ctribebl.c:103 source/games/doubled3.c:114
+msgid "Stage Clear Life"
+msgstr ""
+
+#: source/games/toaplan2.c:1583 source/games/toaplan2.c:1814
+#: source/games/toaplan2.c:1852 source/games/toaplan2.c:6127
+msgid "Stage Edit"
+msgstr ""
+
+#: source/games/cps1drv.c:3336
+msgid "Stage Magic Continue"
+msgstr ""
+
+#: source/games/cps1drv.c:3639 source/games/seta.c:1820
+#: source/games/seta.c:1949
+msgid "Stage Select"
+msgstr ""
+
+#: source/games/cookbib.c:190 source/games/cookbib.c:301
+msgid "Stage Skip"
+msgstr ""
+
+#: source/games/lsystem.c:988
+msgid "Stage Start/Timer Cont"
+msgstr ""
 
 #: source/sdl/dialogs/about.cpp:757
 msgid "Starscream 0.26r4 by Neill Corlett"
 msgstr "Starscream 0.26r4 par Neill Corlett"
 
+#: source/games/opwolf.c:80
+msgid "Start Ammo"
+msgstr "Munitions de départ"
+
+#: source/games/nmk.c:377
+msgid "Start Level"
+msgstr "Niveau de départ"
+
+#: source/games/cadash.c:101 source/games/chasehq.c:128
+#: source/games/chasehq2.c:92 source/games/taito_f2.c:616
+#: source/games/topspeed.c:172
+msgid "Start Time"
+msgstr "Temps de départ"
+
+#: source/games/chasehq.c:133 source/games/chasehq2.c:97
+msgid "Start Turbos"
+msgstr ""
+
+#: source/games/cookbib.c:333
+msgid "Starting Balls"
+msgstr ""
+
+#: source/games/doubled3.c:117
+msgid "Starting Life"
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:34
 msgid "Status"
+msgstr ""
+
+#: source/games/cadash.c:114
+msgid "Status for Comm"
+msgstr ""
+
+#: source/games/contcirc.c:87
+msgid "Steering wheel"
+msgstr "Volant"
+
+#: source/games/biomtoy.c:194
+msgid "Stereo"
 msgstr ""
 
 #: source/sdl/dialogs/sound_commands.cpp:238
 msgid "Stop"
 msgstr "Arrêt"
 
+#: source/sdl/control.c:431
+msgid "Stop emulation"
+msgstr "Arrêter l'émulation"
+
+#: source/games/bublbobl.c:484
+msgid "Super Bobble Bobble"
+msgstr ""
+
+#: source/games/bublbobl.c:410
+msgid "Super Dream Land"
+msgstr ""
+
+#: source/games/wwfsstar.c:125
+msgid "Super Techniques"
+msgstr ""
+
+#: source/sdl/control.c:428
+msgid "Switch fps display"
+msgstr ""
+
+#: source/sdl/control.c:426
+msgid "Switch save slot"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:946
 msgid "Switch to custom game controls"
 msgstr "Passer aux contrôles personnalisés"
 
+#: source/games/cps1drv.c:4188
+msgid "TEST MODE"
+msgstr ""
+
+#: source/games/matmania.c:320
+msgid "TEXT"
+msgstr ""
+
+#: source/games/taito_f2.c:591 source/sdl/control.c:1804
+msgid "Table"
+msgstr ""
+
+#: source/games/seta.c:2112 source/games/seta.c:2240 source/games/seta.c:3064
+msgid "Taito"
+msgstr ""
+
+#: source/games/seta.c:2186 source/games/seta.c:3065
+msgid "Taito America"
+msgstr ""
+
+#: source/games/seta.c:3097
+msgid "Taito America Corp."
+msgstr ""
+
+#: source/games/seta.c:3098
+msgid "Taito Corp. Japan"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Taito F2"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Taito L-System"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Taito X-System 2"
+msgstr ""
+
+#: source/games/toaplan1.c:233 source/games/toaplan1.c:234
+#: source/games/toaplan1.c:399 source/games/toaplan2.c:216
+#: source/games/toaplan2.c:462 source/games/toaplan2.c:474
+#: source/games/toaplan2.c:829 source/games/toaplan2.c:1102
+#: source/games/toaplan2.c:1181 source/games/toaplan2.c:1316
+#: source/games/toaplan2.c:1434 source/games/toaplan2.c:1945
+msgid "Taiwan"
+msgstr ""
+
+#: source/games/toaplan2.c:215 source/games/toaplan2.c:1944
+msgid "Taiwan (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:1103
+msgid "Taiwan - Spacy"
+msgstr ""
+
+#: source/games/toaplan2.c:1315
+msgid "Taiwan, Anomoto Int."
+msgstr ""
+
+#: source/games/toaplan2.c:610
+msgid "Taiwan/Japanese"
+msgstr ""
+
+#: source/games/toaplan2.c:932
+msgid "Taiwan/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan2.c:718
+msgid "Taiwan/Tatsujin2"
+msgstr ""
+
+#: source/games/lsystem.c:987
+msgid "Terms of Replay"
+msgstr ""
+
+#: source/games/toaplan1.c:227 source/games/toaplan1.c:393
+#: source/games/toaplan1.c:512 source/games/toaplan2.c:209
+#: source/games/toaplan2.c:455 source/games/toaplan2.c:470
+#: source/games/toaplan2.c:1808 source/games/toaplan2.c:1846
+#: source/games/toaplan2.c:1939
+msgid "Territory"
+msgstr ""
+
+#: source/games/toaplan1.c:92 source/games/toaplan1.c:574
+msgid "Territory/Copyright"
+msgstr ""
+
+#: source/games/cps1drv.c:3080
+msgid "Tes Mode Display"
+msgstr ""
+
+#: source/games/cps1drv.c:3133 source/games/cps1drv.c:3177
+#: source/games/cps1drv.c:3231 source/games/cps1drv.c:3305
+#: source/games/cps1drv.c:3361 source/games/cps1drv.c:3412
+#: source/games/cps1drv.c:3479 source/games/cps1drv.c:3529
+#: source/games/cps1drv.c:3666 source/games/cps1drv.c:3740
+#: source/games/cps1drv.c:3831 source/games/cps1drv.c:3899
+#: source/games/cps1drv.c:4088 source/games/cps1drv.c:4163
+#: source/games/cps1drv.c:4280 source/games/cps1drv.c:4345
+#: source/games/cps1drv.c:4446 source/games/cps1drv.c:4462
+#: source/games/cps1drv.c:4555 source/sdl/control.c:1578
 #: source/sdl/dialogs/sound_commands.cpp:232
 msgid "Test"
+msgstr ""
+
+#: source/games/bublbobl.c:230
+msgid "Test (grid and input)"
+msgstr "Test (grille et contrôles)"
+
+#: source/games/bublbobl.c:231
+msgid "Test (ram and sound)/pause"
+msgstr "Test (son & ram)/pause"
+
+#: source/sdl/control.c:1785
+msgid "Test Mode"
 msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:177
@@ -3866,11 +5675,88 @@ msgstr "Mode de test"
 
 #: source/sdl/dialogs/sound_commands.cpp:235
 msgid "Test this"
-msgstr "Tester Ã§a"
+msgstr "Tester ça"
+
+#: source/games/megasys1.c:642
+msgid "Text"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:118
 msgid "Texture (possible shaders)"
 msgstr "Texture (shaders possibles)"
+
+#: source/games/nmk.c:383
+msgid "Thailand"
+msgstr ""
+
+#: source/sdl/gui/tedit.cpp:404
+#, c-format
+msgid "The field %d must have a value between %d and %d"
+msgstr "Le champ %d doit avoir une valeur entre %d et %d"
+
+#: source/sdl/gui/tedit.cpp:300
+#, c-format
+msgid "The field %g must have a value between %g and %g"
+msgstr "Le champ %g doit avoir une valeur entre %g et %g"
+
+#: source/sdl/gui/tedit.cpp:360
+#, c-format
+msgid "The field %x must have a value between %x and %x"
+msgstr "Le champ %x doit avoir une valeur entre %x et %x"
+
+#: source/neocd/cdrom.c:434
+#, c-format
+msgid "The file '%s' can't be loaded"
+msgstr "Le fichier '%s' ne peut pas être chargé"
+
+#: source/sdl/dialogs/neocd_options.cpp:87
+msgid "This picture isn't 8bpp"
+msgstr "Cette image n'est pas en 8bpp"
+
+#: source/games/cps1drv.c:3512
+msgid "Throttle Game Speed"
+msgstr ""
+
+#: source/games/seta.c:3105
+msgid "Thundercade"
+msgstr ""
+
+#: source/sdl/control.c:1576
+msgid "Tilt"
+msgstr ""
+
+#: source/sdl/control.c:1654
+msgid "Tilt Left"
+msgstr ""
+
+#: source/sdl/control.c:1655
+msgid "Tilt Right"
+msgstr ""
+
+#: source/games/cookbib.c:330 source/games/cps1drv.c:4514
+#: source/games/cps1drv.c:4574 source/games/hyperpcb.c:78
+#: source/games/hyperpcb.c:206 source/games/lsystem.c:97
+#: source/games/lsystem.c:387 source/games/megasys1.c:650
+#: source/games/quizgame.c:183
+msgid "Time"
+msgstr ""
+
+#: source/games/taito_f2.c:925
+msgid "Time Limit"
+msgstr ""
+
+#: source/games/taito_f2.c:984 source/games/toaplan2.c:1561
+#: source/games/toaplan2.c:6105
+msgid "Timer"
+msgstr ""
+
+#: source/games/ctribebl.c:96
+msgid "Timer Speed"
+msgstr ""
+
+#: source/games/seta.c:2298 source/games/seta.c:3104
+msgid "Title"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:75
 msgid "To match 2x game resolution"
@@ -3880,27 +5766,92 @@ msgstr "2x la résolution du jeu"
 msgid "To match game resolution (low res most of the time)"
 msgstr "Résolution du jeu (basse normalement)"
 
+#: source/games/toaplan1.c:575
+msgid "Toaplan"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Toaplan 1"
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Toaplan 2"
+msgstr ""
+
+#: source/games/taito_f2.c:629
+msgid "Together"
+msgstr ""
+
+#: source/games/chasehq.c:106
+msgid "Toggle"
+msgstr ""
+
+#: source/neocd/neocd.c:269
+msgid "Toggle capture mode"
+msgstr ""
+
+#: source/sdl/control.c:424
+msgid "Toggle limit speed"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:580
+msgid "Too many controls have been defined for this game, sorry !"
+msgstr "Trop de contrôles ont été définis pour ce jeu, désolé !"
+
 #: source/sdl/dialogs/sound_commands.cpp:175
 msgid "Track"
 msgstr "Piste"
+
+#: source/neocd/cdrom.c:349
+#, c-format
+msgid "Track format unknown '%s'"
+msgstr "Format de piste inconnu '%s'"
+
+#: source/sdl/dialogs/sound_commands.cpp:124
+msgid "Track options"
+msgstr "Options de piste"
+
+#: source/games/cabal.c:92
+msgid "Trackball"
+msgstr ""
 
 #: source/sdl/dialogs/translator.cpp:987
 msgid "Translator"
 msgstr "Traducteur"
 
 #: source/sdl/dialogs/video_options.cpp:171
-#, c-format
 msgid "Transparency for 1 (25% default)"
 msgstr "Transparence pour 1 (25% normalement)"
 
 #: source/sdl/dialogs/video_options.cpp:173
-#, c-format
 msgid "Transparency for 2 (50% default)"
 msgstr "Transparence pour 2 (50% normalement)"
+
+#: source/games/cps1drv.c:3293
+msgid "Turbo Mode"
+msgstr ""
+
+#: source/games/seta.c:3106
+msgid "Twin Formation"
+msgstr ""
+
+#: source/games/cabal.c:87 source/games/rainbow.c:109
+#: source/games/rainbow.c:224
+msgid "Type 1"
+msgstr ""
+
+#: source/games/cabal.c:88 source/games/rainbow.c:110
+#: source/games/rainbow.c:225
+msgid "Type 2"
+msgstr ""
 
 #: source/sdl/dialogs/about.cpp:760
 msgid "UAE 68020 Emulator : old hacked asm version from UAE"
 msgstr "Emulateur UAE 68020 : vieille version assembleur modifiée d'UAE"
+
+#: source/games/toaplan2.c:1184
+msgid "UK (JP Leisure)"
+msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:44
 msgid "UP"

@@ -1624,11 +1624,11 @@ msgstr ""
 msgid "A,B/A"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:714
+#: source/sdl/dialogs/about.cpp:715
 msgid "About this game"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:794 source/sdl/gui.cpp:306
+#: source/sdl/dialogs/about.cpp:796 source/sdl/gui.cpp:306
 msgid "About..."
 msgstr ""
 
@@ -2069,7 +2069,7 @@ msgstr ""
 msgid "CPU Z80#3 Reset"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:754
+#: source/sdl/dialogs/about.cpp:756
 msgid "CPU emulators:"
 msgstr ""
 
@@ -2179,7 +2179,7 @@ msgstr ""
 msgid "Cheat"
 msgstr ""
 
-#: source/sdl/dialogs/cheats.cpp:111 source/sdl/control.c:442
+#: source/sdl/control.c:442 source/sdl/dialogs/cheats.cpp:111
 msgid "Cheats"
 msgstr ""
 
@@ -2881,13 +2881,13 @@ msgstr ""
 msgid "Edit default game inputs"
 msgstr ""
 
-#: source/sdl/dialogs/translator.cpp:838
 #: source/sdl/dialogs/game_options.cpp:241
+#: source/sdl/dialogs/translator.cpp:838
 msgid "Edit msg"
 msgstr ""
 
-#: source/sdl/dialogs/translator.cpp:745
 #: source/sdl/dialogs/game_options.cpp:240
+#: source/sdl/dialogs/translator.cpp:745
 msgid "Edit screen"
 msgstr ""
 
@@ -2969,14 +2969,15 @@ msgstr ""
 #: source/neocd/cdrom.c:311 source/neocd/cdrom.c:323 source/neocd/cdrom.c:350
 #: source/neocd/cdrom.c:368 source/neocd/cdrom.c:401 source/neocd/cdrom.c:421
 #: source/neocd/cdrom.c:435 source/neocd/iso.c:88
-#: source/sdl/dialogs/game_options.cpp:181 source/sdl/dialogs/controls.cpp:538
-#: source/sdl/dialogs/controls.cpp:580 source/sdl/dialogs/controls.cpp:818
-#: source/sdl/dialogs/controls.cpp:902 source/sdl/dialogs/neocd_options.cpp:87
+#: source/sdl/dialogs/about.cpp:502 source/sdl/dialogs/about.cpp:514
+#: source/sdl/dialogs/controls.cpp:538 source/sdl/dialogs/controls.cpp:580
+#: source/sdl/dialogs/controls.cpp:818 source/sdl/dialogs/controls.cpp:902
+#: source/sdl/dialogs/game_options.cpp:181
+#: source/sdl/dialogs/neocd_options.cpp:87
 #: source/sdl/dialogs/neocd_options.cpp:99
 #: source/sdl/dialogs/neocd_options.cpp:117
 #: source/sdl/dialogs/sound_commands.cpp:203
-#: source/sdl/dialogs/video_options.cpp:144 source/sdl/dialogs/about.cpp:501
-#: source/sdl/dialogs/about.cpp:513 source/sdl/gui/tedit.cpp:301
+#: source/sdl/dialogs/video_options.cpp:144 source/sdl/gui/tedit.cpp:301
 #: source/sdl/gui/tedit.cpp:361 source/sdl/gui/tedit.cpp:405
 #: source/sdl/streams.c:439
 msgid "Error"
@@ -3315,7 +3316,7 @@ msgstr ""
 msgid "Fullheight + Double width"
 msgstr ""
 
-#: source/sdl/dialogs/video_options.cpp:202 source/sdl/control.c:418
+#: source/sdl/control.c:418 source/sdl/dialogs/video_options.cpp:202
 msgid "Fullscreen"
 msgstr ""
 
@@ -3527,7 +3528,7 @@ msgstr ""
 msgid "Hiscores"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:760
+#: source/sdl/dialogs/about.cpp:762
 msgid "History..."
 msgstr ""
 
@@ -3946,8 +3947,8 @@ msgstr ""
 msgid "Load from which ?"
 msgstr ""
 
-#: source/sdl/dialogs/game_options.cpp:184
-#: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:427
+#: source/sdl/control.c:427 source/sdl/dialogs/game_options.cpp:184
+#: source/sdl/dialogs/game_options.cpp:235
 msgid "Load game"
 msgstr ""
 
@@ -4001,7 +4002,7 @@ msgstr ""
 msgid "Low while pressed"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:757
+#: source/sdl/dialogs/about.cpp:759
 msgid "M6502 1.6raine2 by Neill Bradley"
 msgstr ""
 
@@ -4012,11 +4013,11 @@ msgstr ""
 msgid "M68705: Invalid jump address (0x%x)\n"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:759
+#: source/sdl/dialogs/about.cpp:761
 msgid "MCU 68705: statically recompiled code by Richard Mitton"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:756
+#: source/sdl/dialogs/about.cpp:758
 msgid "MZ80 3.4raine3 by Neill Bradley"
 msgstr ""
 
@@ -4247,8 +4248,7 @@ msgstr ""
 msgid "Nitros per Stage"
 msgstr ""
 
-#: source/sdl/dialogs/video_info.cpp:24
-#: source/sdl/dialogs/game_selection.cpp:40
+#: source/sdl/control.c:1581 source/sdl/dialogs/game_selection.cpp:40
 #: source/sdl/dialogs/gui_options.cpp:19 source/sdl/dialogs/gui_options.cpp:20
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
@@ -4259,6 +4259,7 @@ msgstr ""
 #: source/sdl/dialogs/sound_options.cpp:38
 #: source/sdl/dialogs/sound_options.cpp:39
 #: source/sdl/dialogs/sound_options.cpp:42
+#: source/sdl/dialogs/video_info.cpp:24
 #: source/sdl/dialogs/video_options.cpp:64
 #: source/sdl/dialogs/video_options.cpp:66
 #: source/sdl/dialogs/video_options.cpp:68
@@ -4272,7 +4273,7 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:203
 #: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
 #: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
-#: source/sdl/gui/menu.cpp:147 source/sdl/control.c:1581
+#: source/sdl/gui/menu.cpp:147
 msgid "No"
 msgstr ""
 
@@ -4309,7 +4310,7 @@ msgstr ""
 msgid "No change"
 msgstr ""
 
-#: source/sdl/gui/menu.cpp:426
+#: source/sdl/gui/menu.cpp:427
 msgid "No game loaded"
 msgstr ""
 
@@ -4333,7 +4334,7 @@ msgstr ""
 msgid "No options for this renderer ? Strange !"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:501
+#: source/sdl/dialogs/about.cpp:502
 msgid "No raine logo, or it's a true color bitmap"
 msgstr ""
 
@@ -4448,11 +4449,12 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: source/sdl/console/scripts.cpp:130 source/sdl/dialogs/game_options.cpp:213
-#: source/sdl/dialogs/game_options.cpp:247 source/sdl/dialogs/cheats.cpp:104
-#: source/sdl/dialogs/controls.cpp:528
+#: source/sdl/console/scripts.cpp:130 source/sdl/control.c:1778
+#: source/sdl/dialogs/cheats.cpp:104 source/sdl/dialogs/controls.cpp:528
+#: source/sdl/dialogs/game_options.cpp:213
+#: source/sdl/dialogs/game_options.cpp:247
 #: source/sdl/dialogs/neocd_options.cpp:179
-#: source/sdl/dialogs/video_options.cpp:79 source/sdl/control.c:1778
+#: source/sdl/dialogs/video_options.cpp:79
 msgid "Off"
 msgstr ""
 
@@ -4461,8 +4463,8 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: source/sdl/console/scripts.cpp:131 source/sdl/dialogs/game_options.cpp:214
-#: source/sdl/dialogs/cheats.cpp:105 source/sdl/control.c:1779
+#: source/sdl/console/scripts.cpp:131 source/sdl/control.c:1779
+#: source/sdl/dialogs/cheats.cpp:105 source/sdl/dialogs/game_options.cpp:214
 msgid "On"
 msgstr ""
 
@@ -4486,7 +4488,7 @@ msgstr ""
 msgid "Opaque HUD"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:703
+#: source/sdl/dialogs/about.cpp:704
 msgid "Open this page now !|Later maybe..."
 msgstr ""
 
@@ -5196,8 +5198,8 @@ msgstr ""
 msgid "Save demo"
 msgstr ""
 
-#: source/sdl/dialogs/game_options.cpp:194
-#: source/sdl/dialogs/game_options.cpp:236 source/sdl/control.c:425
+#: source/sdl/control.c:425 source/sdl/dialogs/game_options.cpp:194
+#: source/sdl/dialogs/game_options.cpp:236
 msgid "Save game"
 msgstr ""
 
@@ -5454,7 +5456,7 @@ msgstr ""
 msgid "Special Course"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:736
+#: source/sdl/dialogs/about.cpp:737
 msgid "Special moves..."
 msgstr ""
 
@@ -5513,7 +5515,7 @@ msgstr ""
 msgid "Stage Start/Timer Cont"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:755
+#: source/sdl/dialogs/about.cpp:757
 msgid "Starscream 0.26r4 by Neill Corlett"
 msgstr ""
 
@@ -5693,8 +5695,8 @@ msgstr ""
 #: source/games/cps1drv.c:4088 source/games/cps1drv.c:4163
 #: source/games/cps1drv.c:4280 source/games/cps1drv.c:4345
 #: source/games/cps1drv.c:4446 source/games/cps1drv.c:4462
-#: source/games/cps1drv.c:4555 source/sdl/dialogs/sound_commands.cpp:232
-#: source/sdl/control.c:1578
+#: source/games/cps1drv.c:4555 source/sdl/control.c:1578
+#: source/sdl/dialogs/sound_commands.cpp:232
 msgid "Test"
 msgstr ""
 
@@ -5861,12 +5863,10 @@ msgid "Translator"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:171
-#, c-format
 msgid "Transparency for 1 (25% default)"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:173
-#, c-format
 msgid "Transparency for 2 (50% default)"
 msgstr ""
 
@@ -5888,7 +5888,7 @@ msgstr ""
 msgid "Type 2"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:758
+#: source/sdl/dialogs/about.cpp:760
 msgid "UAE 68020 Emulator : old hacked asm version from UAE"
 msgstr ""
 
@@ -6229,9 +6229,10 @@ msgstr ""
 msgid "WALTZ0"
 msgstr ""
 
+#: source/sdl/compat.c:283 source/sdl/dialogs/about.cpp:702
 #: source/sdl/dialogs/neo_softdips.cpp:217
-#: source/sdl/dialogs/video_options.cpp:54 source/sdl/dialogs/about.cpp:701
-#: source/sdl/compat.c:283 source/sdl/dsw.c:420 source/sdl/glsl.c:357
+#: source/sdl/dialogs/video_options.cpp:54 source/sdl/dsw.c:420
+#: source/sdl/glsl.c:357
 msgid "Warning"
 msgstr ""
 
@@ -6323,8 +6324,7 @@ msgstr ""
 msgid "Year : 2006"
 msgstr ""
 
-#: source/sdl/dialogs/video_info.cpp:25
-#: source/sdl/dialogs/game_selection.cpp:40
+#: source/sdl/control.c:1580 source/sdl/dialogs/game_selection.cpp:40
 #: source/sdl/dialogs/gui_options.cpp:19 source/sdl/dialogs/gui_options.cpp:20
 #: source/sdl/dialogs/neocd_options.cpp:175
 #: source/sdl/dialogs/neocd_options.cpp:181
@@ -6334,6 +6334,7 @@ msgstr ""
 #: source/sdl/dialogs/sound_options.cpp:34
 #: source/sdl/dialogs/sound_options.cpp:38
 #: source/sdl/dialogs/sound_options.cpp:39
+#: source/sdl/dialogs/video_info.cpp:25
 #: source/sdl/dialogs/video_options.cpp:64
 #: source/sdl/dialogs/video_options.cpp:66
 #: source/sdl/dialogs/video_options.cpp:68
@@ -6347,7 +6348,7 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:203
 #: source/sdl/dialogs/video_options.cpp:209 source/sdl/gui/menu.cpp:143
 #: source/sdl/gui/menu.cpp:144 source/sdl/gui/menu.cpp:146
-#: source/sdl/gui/menu.cpp:147 source/sdl/control.c:1580
+#: source/sdl/gui/menu.cpp:147
 msgid "Yes"
 msgstr ""
 
@@ -6545,7 +6546,7 @@ msgstr ""
 msgid "hidden"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:701
+#: source/sdl/dialogs/about.cpp:702
 msgid ""
 "history.dat not found\n"
 "Download it from http://www.arcade-history.com/index.php?page=download\n"
@@ -6648,7 +6649,7 @@ msgstr ""
 msgid "png"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:513
+#: source/sdl/dialogs/about.cpp:514
 msgid ""
 "raine_logo.png must have the 1st color of the palette\n"
 "(color 0) as transparent"
