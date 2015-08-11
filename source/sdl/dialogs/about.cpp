@@ -473,7 +473,8 @@ end_loop:
 class TMoves_menu : public TMenu
 {
     public:
-	TMoves_menu(char *mytitle, menu_item_t *myitem) : TMenu(mytitle,myitem)
+	TMoves_menu(char *mytitle, menu_item_t *myitem) :
+	    TMenu(mytitle,myitem,NULL,-1, -1,-1,-1, /* to_translate */ 0)
 	{
 	    font_name = "VeraMono.ttf";
 	}
@@ -711,7 +712,7 @@ end_loop:
 
     TMenu *about_menu;
     if (!do_command)
-	about_menu = new TMenu(_("About this game"),menu);
+	about_menu = new TMenu(_("About this game"),menu, NULL,-1, -1,-1,-1, /* to_translate */ 0);
     else
 	about_menu = new TMoves_menu((char*)menu_commands[sel].label,menu);
     about_menu->execute();
@@ -733,7 +734,8 @@ int show_moves(int sel) {
     int n;
     for (n=0; n<nb_commands; n++)
 	menu_commands[n].menu_func = &about_game;
-    TMenu *menu = new TMenu(_("Special moves..."),menu_commands);
+    TMenu *menu = new TMenu(_("Special moves..."),menu_commands,
+	   NULL,-1, -1,-1,-1, /* to_translate */ 0);
     menu->execute();
     delete menu;
     do_command = 0;

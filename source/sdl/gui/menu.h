@@ -58,7 +58,8 @@ class TMenu {
     // There is a lot of methods, but most of them are very small and are
     // here to easily create objects which inherit from this one
     TMenu(char *my_title, menu_item_t *mymenu,char *myfont = NULL,
-      int myfg=-1, int mybg=-1,int myfg_frame=-1,int mybg_frame=-1);
+      int myfg=-1, int mybg=-1,int myfg_frame=-1,int mybg_frame=-1,
+      int to_translate=1);
     void set_header(menu_item_t *myheader);
     void toggle_header();
     virtual ~TMenu();

@@ -90,7 +90,7 @@ class TPathDlg : public TMenu
 {
   public:
   TPathDlg(char *my_title, menu_item_t *menu) :
-    TMenu(my_title,menu)
+    TMenu(my_title,menu, NULL,-1, -1,-1,-1, /* to_translate */ 0)
   {}
   char *get_emuname() {
     return dlg->get_emuname();
@@ -167,7 +167,7 @@ static int sort_menu(const void *a, const void *b) {
 #define SAVE 2
 
 TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, int opts,char *mytitle2) :
-  TMenu(my_title,NULL)
+  TMenu(my_title,NULL,NULL,-1, -1,-1,-1, /* to_translate */ 0)
 {
   char *s;
   title2 = mytitle2;
