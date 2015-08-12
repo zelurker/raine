@@ -212,7 +212,7 @@ static struct INPUT_INFO input_bublbobl[] =
    INP0( P2_LEFT,  0x010004, 1 ),
    INP0( P2_RIGHT, 0x010004, 2 ),
    // INP0( TILT,     0x010004, 4 ),
-   INP0( SERVICE,  0x010004, 8 ),
+   // INP0( SERVICE,  0x010004, 8 ),
    INP0( P2_B2,    0x010004, 0x10 ),
    INP0( P2_B1,    0x010004, 0x20 ),
    INP0( P2_START, 0x010004, 0x40 ),
