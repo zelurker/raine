@@ -6664,7 +6664,7 @@ msgstr ""
 
 #: source/games/cave.c:2604
 #, c-format
-msgid "layer %d disabled\n"
+msgid "layer %d disabled"
 msgstr ""
 
 #: source/games/gunbird.c:1898
@@ -6739,10 +6739,6 @@ msgstr ""
 
 #: source/neocd/cdrom.c:291
 msgid "path format error"
-msgstr ""
-
-#: source/emumain.c:328
-msgid "png"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:514

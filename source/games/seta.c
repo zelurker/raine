@@ -2668,7 +2668,7 @@ static struct DSW_DATA dsw_data_eightfrc_4[] =
   { "5" , 0x0},
   { _("Language"), 0x80, 2 },
   { _("English"), 0x00 },
-  { _("Japenese"), 0x80},
+  { _("Japanese"), 0x80},
   { NULL, 0}
 };
 

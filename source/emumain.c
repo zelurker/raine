@@ -325,7 +325,7 @@ UINT32 run_game_emulation(void)
 	  char buffer[1024];
 	  int lus,n;
 #ifdef SDL
-	  char *extension = _("png");
+	  char *extension = "png";
 #else
 	  char *extension = (display_cfg.screenshot_png ? "png" : "pcx");
 #endif

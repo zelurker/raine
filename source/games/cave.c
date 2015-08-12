@@ -2601,7 +2601,7 @@ static void draw_cave_layer(int num)
   layer_status = ReadWord(SCR_BG+4);
   if (((layer_status & 0x10))){ // Layer active ?
 #ifdef RAINE_DEBUG
-    print_ingame(1,gettext("layer %d disabled\n"),num);
+    print_ingame(1,gettext("layer %d disabled"),num);
 #endif
     return;
   }

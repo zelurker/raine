@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.2\n"
+"Project-Id-Version: 0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-11 17:44+0200\n"
+"PO-Revision-Date: 2015-08-12 12:25+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -1761,6 +1761,10 @@ msgstr "Appliqué le hack de vitesse à %x:%s"
 msgid "Applying GFX Layouts and stuff..."
 msgstr "Conversion des sprites..."
 
+#: source/loadroms.c:818
+msgid "Applying graphics layouts..."
+msgstr "Conversions graphiques..."
+
 #: source/sdl/dialogs/dirs.cpp:28
 msgid "Artwork dir"
 msgstr "Répertoire d'artwork"
@@ -2405,7 +2409,9 @@ msgstr ""
 msgid "Control Panel"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:969
+#: source/games/megasys1.c:666 source/games/megasys1.c:719
+#: source/games/megasys1.c:903 source/games/seta.c:2472
+#: source/games/taito_f2.c:934 source/sdl/dialogs/controls.cpp:969
 msgid "Controls"
 msgstr "Contrôles"
 
@@ -2608,6 +2614,10 @@ msgstr ""
 msgid "Debug dips"
 msgstr "Dips de débugage"
 
+#: source/games/cps1.c:2026
+msgid "Decoding GFX layer"
+msgstr "Décodage des graphismes"
+
 #: source/sdl/control.c:422
 msgid "Decrease cpu skip"
 msgstr ""
@@ -2615,6 +2625,30 @@ msgstr ""
 #: source/sdl/control.c:420
 msgid "Decrease frameskip"
 msgstr ""
+
+#: source/games/pirates.c:171
+msgid "Decrypting 68K (Code)"
+msgstr "Décodage 68k (code)"
+
+#: source/games/pirates.c:205
+msgid "Decrypting GFX1 (Tilemaps)"
+msgstr "Décodage GFX1 (surface)"
+
+#: source/games/pirates.c:233
+msgid "Decrypting GFX2 (Sprites)"
+msgstr "Décodage GFX2 (sprites)"
+
+#: source/games/pirates.c:261
+msgid "Decrypting OKI (Sound)"
+msgstr "Décodage OKI (son)"
+
+#: source/cps2crpt.c:687
+msgid "Decrypting rom..."
+msgstr "Décodage de la rom..."
+
+#: source/games/cave.c:1600
+msgid "Decrypting sprites"
+msgstr "Décodage des sprites"
 
 #: source/games/wwfsstar.c:130
 msgid "Default"
@@ -2808,7 +2842,7 @@ msgstr ""
 #: source/sdl/control.c:288 source/sdl/control.c:299
 #, c-format
 msgid "Drawing Every %1d Frames"
-msgstr ""
+msgstr "Dessine chaque %1d images"
 
 #: source/games/bublbobl.c:409
 msgid "Dream Land"
@@ -2817,6 +2851,10 @@ msgstr ""
 #: source/sdl/dialogs/game_selection.cpp:37
 msgid "Driver"
 msgstr ""
+
+#: source/loadroms.c:795
+msgid "Driver loading function..."
+msgstr "Fonction de chargement du driver..."
 
 #: source/games/quizgame.c:195 source/games/taito_f2.c:817
 #: source/games/taito_f2.c:935 source/games/taito_f2.c:994
@@ -3179,7 +3217,6 @@ msgstr "Compteur FPS"
 #: source/sdl/dialogs/video_info.cpp:63
 msgid "FSAA (multisampling)"
 msgstr ""
-
 
 #: source/games/cps1drv.c:3332 source/games/cps1drv.c:3502
 #: source/games/ctribebl.c:98 source/games/darius2d.c:68
@@ -3946,6 +3983,10 @@ msgstr "Charge sauvegarde nommée"
 msgid "Load inputs from..."
 msgstr "Charger les contrôles de..."
 
+#: source/loadroms.c:775
+msgid "Loading CPU code"
+msgstr "Chargement du code du CPU"
+
 #: source/sdl/gui.cpp:165
 msgid "Loading Game"
 msgstr "Chargement du jeu"
@@ -3954,6 +3995,10 @@ msgstr "Chargement du jeu"
 msgid "Loading animations speed"
 msgstr "Vitesse des animations de chargement"
 
+#: source/loadroms.c:780
+msgid "Loading audio regions"
+msgstr "Chargement des régions sonores"
+
 #: source/sdl/gui.cpp:246
 msgid "Loading error"
 msgstr "Erreur de chargement"
@@ -3961,6 +4006,10 @@ msgstr "Erreur de chargement"
 #: source/sdl/gui.cpp:215
 msgid "Loading problem"
 msgstr "Problème de chargement"
+
+#: source/loadroms.c:778
+msgid "Loading video regions"
+msgstr "Chargement des régions vidéos"
 
 #: source/games/contcirc.c:89
 msgid "Locked"
@@ -4171,6 +4220,10 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:125
 msgid "Nearest"
 msgstr "Plus proche"
+
+#: source/sdl/dialogs/game_selection.cpp:38
+msgid "Neo-Geo"
+msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:60
 #: source/sdl/dialogs/neocd_options.cpp:171
@@ -4894,6 +4947,10 @@ msgstr ""
 msgid "Prefered YUV format"
 msgstr ""
 
+#: source/games/cave.c:1627
+msgid "Preparing ROMS (patches...)"
+msgstr "Préparation des ROMs (patches...)"
+
 #: source/sdl/dialogs/controls.cpp:196
 msgid "Press a key, a button, or move a joystick..."
 msgstr ""
@@ -4975,6 +5032,14 @@ msgstr ""
 msgid "Rdtsc Cycles"
 msgstr ""
 
+#: source/games/cps1.c:2034
+msgid "Rebuilding 16x16 layer"
+msgstr "Reconstruction de la couche 16x16"
+
+#: source/games/cps1.c:2058
+msgid "Rebuilding 8x8 layer"
+msgstr "Reconstruction de la couche 8x8"
+
 #: source/sdl/dialogs/sound_options.cpp:42
 msgid "Record to raine_sound.wav"
 msgstr ""
@@ -4995,6 +5060,11 @@ msgstr ""
 #: source/sdl/gui.cpp:294
 msgid "Region"
 msgstr ""
+
+#: source/loadroms.c:912
+#, c-format
+msgid "Remaining size not enough for continue %s\n"
+msgstr "La taille restante pas assez pour continue %s\n"
 
 #: source/sdl/dialogs/video_info.cpp:60
 msgid "Renderer"
@@ -5209,6 +5279,11 @@ msgstr "Répertoire de captures d'écran"
 #: source/games/crimec.c:177
 msgid "Scribble"
 msgstr ""
+
+#: source/loadroms.c:988
+#, c-format
+msgid "Search path:\n"
+msgstr "Répertoires de recherche:\n"
 
 #: source/games/terrac.c:76
 msgid "Second Life at"
@@ -5429,6 +5504,10 @@ msgstr "Limite de vitesse %d fps"
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"
 msgstr "Afficheur de sprite"
+
+#: source/neocd/neocd.c:4744
+msgid "Sprites conversion..."
+msgstr "Conversion des sprites..."
 
 #: source/neocd/neocd.c:4544
 msgid "Sprites layer"
@@ -5709,6 +5788,11 @@ msgstr "Le champ %x doit avoir une valeur entre %x et %x"
 msgid "The file '%s' can't be loaded"
 msgstr "Le fichier '%s' ne peut pas être chargé"
 
+#: source/loadroms.c:813
+#, c-format
+msgid "The game didn't initialise any CPU, this game can't work !\n"
+msgstr "Le jeu n'a initialisé aucun CPU, il ne peut pas marcher !\n"
+
 #: source/sdl/dialogs/neocd_options.cpp:87
 msgid "This picture isn't 8bpp"
 msgstr "Cette image n'est pas en 8bpp"
@@ -5827,6 +5911,10 @@ msgstr "Transparence pour 1 (25% normalement)"
 msgid "Transparency for 2 (50% default)"
 msgstr "Transparence pour 2 (50% normalement)"
 
+#: source/games/cps1.c:2074
+msgid "Transparent masks / rotation"
+msgstr "Masques de transparence / rotation"
+
 #: source/games/cps1drv.c:3293
 msgid "Turbo Mode"
 msgstr ""
@@ -5857,9 +5945,221 @@ msgstr ""
 msgid "UP"
 msgstr "HAUT"
 
+#: source/games/toaplan1.c:229 source/games/toaplan1.c:235
+#: source/games/toaplan1.c:395 source/games/toaplan1.c:515
+msgid "US"
+msgstr ""
+
+#: source/games/toaplan2.c:221 source/games/toaplan2.c:463
+#: source/games/toaplan2.c:1321 source/games/toaplan2.c:1428
+#: source/games/toaplan2.c:1811 source/games/toaplan2.c:1849
+#: source/games/toaplan2.c:1951
+msgid "USA"
+msgstr ""
+
+#: source/games/seta.c:1751
+msgid "USA (6 buttons)"
+msgstr ""
+
+#: source/games/toaplan2.c:934
+msgid "USA (Romstar)/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan2.c:220 source/games/toaplan2.c:1187
+msgid "USA (Taito America)"
+msgstr ""
+
+#: source/games/toaplan2.c:1188
+msgid "USA (Taito Japan)"
+msgstr ""
+
+#: source/games/toaplan2.c:1950
+msgid "USA (Taito)"
+msgstr ""
+
+#: source/games/toaplan2.c:457
+msgid "USA, Europe (Atari)"
+msgstr ""
+
+#: source/games/toaplan2.c:1320
+msgid "USA, Sammy Corp."
+msgstr ""
+
+#: source/games/toaplan2.c:933
+msgid "USA/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan1.c:94
+msgid "USA/Taito America"
+msgstr ""
+
+#: source/games/toaplan1.c:96
+msgid "USA/Taito America (Romstar)"
+msgstr ""
+
+#: source/games/toaplan2.c:714
+msgid "USA/Truxton2"
+msgstr ""
+
+#: source/demos.c:276
+#, c-format
+msgid "Unable to load: %s"
+msgstr "Incapable de charger : %s"
+
+#: source/loadroms.c:986
+#, c-format
+msgid "Unable to open '%s'\n"
+msgstr "Incapable d'ouvrir '%s'\n"
+
+#: source/demos.c:55
+#, c-format
+msgid "Unable to save: %s"
+msgstr "Incapable de sauver : %s"
+
+#: source/games/ksystem.c:255 source/games/toaplan1.c:86
+#: source/games/toaplan1.c:89 source/sdl/control.c:1579
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: source/games/seta.c:2908
+msgid "Unknown 1-1*"
+msgstr ""
+
+#: source/games/seta.c:2011
+msgid "Unknown 1-2"
+msgstr ""
+
+#: source/games/seta.c:2911
+msgid "Unknown 1-2*"
+msgstr ""
+
+#: source/games/seta.c:1920 source/games/seta.c:2014
+msgid "Unknown 1-3"
+msgstr ""
+
+#: source/games/seta.c:2917
+msgid "Unknown 1-4"
+msgstr ""
+
+#: source/games/seta.c:2920
+msgid "Unknown 1-5"
+msgstr ""
+
+#: source/games/seta.c:1927 source/games/seta.c:2022 source/games/seta.c:2326
+#: source/games/seta.c:2923
+msgid "Unknown 1-6"
+msgstr ""
+
+#: source/games/seta.c:2025
+msgid "Unknown 1-7"
+msgstr ""
+
+#: source/games/seta.c:2329 source/games/seta.c:2531
+msgid "Unknown 1-7*"
+msgstr ""
+
+#: source/games/seta.c:2033 source/games/seta.c:2337 source/games/seta.c:2539
+msgid "Unknown 2-0"
+msgstr ""
+
+#: source/games/seta.c:2095
+msgid "Unknown 2-0&1"
+msgstr ""
+
+#: source/games/seta.c:2210
+msgid "Unknown 2-2"
+msgstr ""
+
+#: source/games/seta.c:2937
+msgid "Unknown 2-2&3"
+msgstr ""
+
+#: source/games/seta.c:1946 source/games/seta.c:2543
+msgid "Unknown 2-2*"
+msgstr ""
+
+#: source/games/seta.c:2038 source/games/seta.c:2213
+msgid "Unknown 2-3"
+msgstr ""
+
+#: source/games/seta.c:1952 source/games/seta.c:2244
+msgid "Unknown 2-4"
+msgstr ""
+
+#: source/games/seta.c:1955
+msgid "Unknown 2-5"
+msgstr ""
+
+#: source/games/esd16.c:109 source/games/seta.c:1903 source/games/seta.c:1958
+msgid "Unknown 2-6"
+msgstr ""
+
+#: source/games/esd16.c:112 source/games/seta.c:2047 source/games/seta.c:2169
+#: source/games/seta.c:2816
+msgid "Unknown 2-7"
+msgstr ""
+
+#: source/games/seta.c:2497
+msgid "Unknown 3-4*"
+msgstr ""
+
+#: source/games/seta.c:2500
+msgid "Unknown 3-5*"
+msgstr ""
+
+#: source/games/toaplan2.c:1798 source/games/toaplan2.c:1836
+msgid "Unlimited"
+msgstr ""
+
+#: source/sdl/control.c:1583
+msgid "Unused"
+msgstr ""
+
+#: source/games/mugsmash.c:368
+msgid "Unused 2-4"
+msgstr ""
+
+#: source/games/asuka.c:83
+msgid "Up to Level 2"
+msgstr ""
+
+#: source/games/asuka.c:84
+msgid "Up to Level 3"
+msgstr ""
+
 #: source/sdl/dialogs/neocd_options.cpp:180
 msgid "Update neocd sprite block"
 msgstr "Met à jour le block de sprites"
+
+#: source/games/chasehq2.c:69 source/games/rainbow.c:70
+#: source/games/rainbow.c:185 source/games/taito_f2.c:592
+#: source/games/taito_f2.c:991 source/games/volfied.c:62
+#: source/sdl/control.c:1803
+msgid "Upright"
+msgstr "Droit"
+
+#: source/games/seta.c:2857
+msgid "Upright 1 Controller"
+msgstr "Droit 1 contrôleur"
+
+#: source/games/cps1drv.c:3099 source/games/cps1drv.c:3322
+#: source/games/mcatadv.c:203
+msgid "Upright 1 Player"
+msgstr "Droit, 1 joueur"
+
+#: source/games/seta.c:2858
+msgid "Upright 2 Controllers"
+msgstr "Droit, 2 contrôleurs"
+
+#: source/games/cps1drv.c:3098 source/games/cps1drv.c:3321
+#: source/games/mcatadv.c:204
+msgid "Upright 2 Players"
+msgstr "Droit, 2 joueurs"
+
+#: source/games/quizgame.c:194 source/games/taito_f2.c:815
+#: source/games/taito_f2.c:993 source/games/taito_f2.c:2421
+msgid "Upright Controls"
+msgstr "Contrôles verticaux"
 
 #: source/sdl/dialogs/video_options.cpp:169
 msgid "Use blending files (.bld)"
@@ -5877,10 +6177,47 @@ msgstr "Utiliser le double buffer (ignoré par opengl)"
 msgid "Using unscaled blits"
 msgstr "Utiliser des copies graphiques sans mise à l'échelle"
 
+#: source/games/cookbib.c:213 source/games/cookbib.c:316
+msgid "VS Round"
+msgstr ""
+
+#: source/games/crospang.c:167
+msgid "Variable"
+msgstr ""
+
+#: source/games/pengo.c:1342
+msgid "Variable (MMX)"
+msgstr ""
+
+#: source/games/toaplan2.c:822 source/games/toaplan2.c:1096
+#: source/sdl/dialogs/video_info.cpp:61
+msgid "Version"
+msgstr ""
+
+#: source/games/lsystem.c:1293 source/games/lsystem.c:1407
+msgid "Versus Mode"
+msgstr ""
+
+#: source/games/mugsmash.c:372
+msgid "Very Easy"
+msgstr ""
+
+#: source/games/cps1drv.c:3333 source/games/cps1drv.c:3503
+msgid "Very Fast"
+msgstr ""
+
+#: source/games/mugsmash.c:375 source/sdl/control.c:1798
+msgid "Very Hard"
+msgstr ""
+
 #: source/games/bublbobl.c:399 source/games/bublbobl.c:445
 #: source/games/bublbobl.c:520
 msgid "Very High"
 msgstr "Très haute"
+
+#: source/games/cps1drv.c:3500
+msgid "Very Slow"
+msgstr "Très lent"
 
 #: source/sdl/dialogs/video_info.cpp:70
 msgid "Video driver name"
@@ -5906,9 +6243,69 @@ msgstr "Options vidéo"
 msgid "Video renderer"
 msgstr "Rendu vidéo"
 
+#: source/games/seta.c:2423
+msgid "Visco"
+msgstr ""
+
+#: source/games/seta.c:2506
+msgid "Visco (Japan Only)"
+msgstr ""
+
+#: source/games/cps1drv.c:3349
+msgid "Vitality"
+msgstr "Vitalité"
+
+#: source/games/cps1drv.c:3648
+msgid "Vitality Packs"
+msgstr "Packs de vitalité"
+
+#: source/games/cps1drv.c:4525 source/games/tetrisp2.c:117
+msgid "Voice"
+msgstr "Voix"
+
+#: source/games/chasehq2.c:106
+msgid "Volume of Siren"
+msgstr ""
+
+#: source/games/tetrisp2.c:108
+msgid "Vs Mode Rounds"
+msgstr ""
+
+#: source/games/cps1drv.c:4251
+msgid "Vs Play Mode"
+msgstr ""
+
+#: source/games/seta.c:1724
+msgid "WALTZ0"
+msgstr ""
+
+#: source/sdl/compat.c:283 source/sdl/dialogs/about.cpp:702
+#: source/sdl/dialogs/neo_softdips.cpp:217
+#: source/sdl/dialogs/video_options.cpp:54 source/sdl/dsw.c:420
+#: source/sdl/glsl.c:357
+msgid "Warning"
+msgstr "Avertissement"
+
+#: source/sdl/dialogs/controls.cpp:238 source/sdl/dialogs/controls.cpp:280
+#: source/sdl/dialogs/controls.cpp:308
+msgid "What do you want to do ?"
+msgstr "Que veux-tu faire ?"
+
+#: source/games/chasehq.c:108
+msgid "Wheel"
+msgstr "Volant"
+
 #: source/sdl/dialogs/video_options.cpp:204
 msgid "When possible"
 msgstr "Quand c'est possible"
+
+#: source/games/lsystem.c:888
+msgid "Wild blocks"
+msgstr ""
+
+#: source/games/cps1drv.c:4314
+msgid "Wisdom"
+msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:39
 msgid "With"
@@ -5926,6 +6323,27 @@ msgstr "Sans"
 msgid "Without monitoring"
 msgstr "Sans monitoring"
 
+#: source/games/earthjkr.c:276 source/games/seta.c:2064
+#: source/games/seta.c:2708
+msgid "World"
+msgstr "Monde"
+
+#: source/games/toaplan2.c:1037
+msgid "World (Ryouta)/PipiBibi"
+msgstr ""
+
+#: source/games/seta.c:2110
+msgid "World License"
+msgstr ""
+
+#: source/games/toaplan2.c:1033
+msgid "World/PipiBibi"
+msgstr ""
+
+#: source/games/toaplan1.c:93
+msgid "World/Taito Corp Japan"
+msgstr ""
+
 #: source/sdl/dialogs/game_options.cpp:134
 msgid "X"
 msgstr ""
@@ -5936,6 +6354,10 @@ msgstr "Surcouches YUV"
 
 #: source/sdl/dialogs/video_options.cpp:63
 msgid "YUY2"
+msgstr ""
+
+#: source/sdl/dialogs/video_options.cpp:63
+msgid "YV12 (mpeg)"
 msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:322
@@ -5984,25 +6406,46 @@ msgstr "Oui"
 msgid "Yes|No"
 msgstr "Oui|Non"
 
+#: source/sdl/dialogs/video_options.cpp:54
+msgid ""
+"You can't have at the same time a scaler + scanlines,\n"
+"Choose 1"
+msgstr ""
+"Tu ne peux avoir en même temps une mise à léchelle et des scanlines.\n"
+"Choisis en 1"
+
+#: source/games/cps1.c:2743
+msgid "Z80: applied HALT speed hack"
+msgstr "Z80: applique un speed hack HALT"
+
+#: source/games/cps1.c:2750
+msgid "Z80: speed hack applied"
+msgstr ""
+
+#: source/games/chasehq.c:798 source/games/chasehq.c:1316
+#: source/games/wgp.c:451
+msgid "Zooming Object"
+msgstr "Sprites avec zoom"
+
 #: source/sdl/dialogs/video_info.cpp:81
 msgid "accelerated color fills"
-msgstr ""
+msgstr "Remplissage de couleur accéléré"
 
 #: source/sdl/dialogs/video_info.cpp:77
 msgid "accelerated hardware->hardware alpha blits"
-msgstr ""
+msgstr "Accéléré copies matériel->matériel transparentes"
 
 #: source/sdl/dialogs/video_info.cpp:75
 msgid "accelerated hardware->hardware blits"
-msgstr ""
+msgstr "accéléré copies matériel->matériel "
 
 #: source/sdl/dialogs/video_info.cpp:76
 msgid "accelerated hardware->hardware colorkey blits"
-msgstr ""
+msgstr "accéléré copies matériel->matériel avec couleur transparente"
 
 #: source/sdl/dialogs/video_info.cpp:80
 msgid "accelerated software->hardware alpha blits"
-msgstr ""
+msgstr "accéléré copies logiciel->matériel transparentes"
 
 #: source/sdl/dialogs/video_info.cpp:78
 msgid "accelerated software->hardware blits"
@@ -6012,8 +6455,25 @@ msgstr ""
 msgid "accelerated software->hardware colorkey blits"
 msgstr ""
 
+#: source/neocd/cdrom.c:323
+msgid "alloc error"
+msgstr "Erreur d'allocation"
+
 #: source/sdl/dialogs/colors.cpp:45
 msgid "alpha"
+msgstr ""
+
+#: source/sdl/opengl.c:173
+#, c-format
+msgid ""
+"bad screen format, report this to rainemu.com:\n"
+"bpp : %d rshift %d gshift %d bshift %d"
+msgstr ""
+"mauvais format d'écran, rapportez ça à rainemu.com:\n"
+"bpp : %d rshift %d gshift %d bshift %d"
+
+#: source/games/pirates.c:379
+msgid "bg"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:109
@@ -6036,17 +6496,79 @@ msgstr "Options bld"
 msgid "blue"
 msgstr "bleu"
 
+#: source/neocd/cdrom.c:311
+msgid "can't find iso file"
+msgstr "Ne peut pas trouver le fichier iso"
+
 #: source/sdl/dialogs/colors.cpp:41
 msgid "color"
 msgstr "couleur"
+
+#: source/games/cps1.c:1413
+msgid "cps2"
+msgstr ""
+
+#: source/emumain.c:464
+#, c-format
+msgid "cpusldn:Running CPU Every %01d Frames"
+msgstr "Emulation du CPU toutes les %01d images"
+
+#: source/neocd/cdrom.c:283
+#, c-format
+msgid "cue format error on line : %s"
+msgstr "Erreur de format cue à la ligne : %s"
+
+#: source/neocd/neocd.c:3657
+msgid "decrypting sprites (kof99 type)"
+msgstr "Décryptage des sprites (type kof99)"
 
 #: source/sdl/dialogs/video_options.cpp:198
 msgid "directx (good for hw overlays/blits)"
 msgstr "directx (bon pour les surcouches matérielles/copies de base)"
 
+#: source/games/cave.c:2712
+msgid "disabling row select (agallet)"
+msgstr ""
+
+#: source/sdl/dsw.c:145
+msgid "dsw"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:778
 msgid "each pedal separately"
 msgstr "chaque pédale séparément"
+
+#: source/sdl/glsl.c:188
+msgid "error while attaching fragment shader"
+msgstr "Erreur en attachant le shader de fragment"
+
+#: source/sdl/glsl.c:178
+msgid "error while attaching vertex shader"
+msgstr "Erreur en attachant le shader de vertex"
+
+#: source/games/toaplan2.c:1573
+msgid "every 1000k"
+msgstr "Tous les 1000k"
+
+#: source/games/toaplan2.c:1572
+msgid "every 1500k"
+msgstr "Tous les 1500k"
+
+#: source/games/toaplan2.c:1574 source/games/toaplan2.c:6116
+msgid "every 2000k"
+msgstr "Tous les 2000k"
+
+#: source/games/toaplan2.c:6117
+msgid "every 3000k"
+msgstr "Tous les 3000k"
+
+#: source/games/toaplan2.c:6118
+msgid "every 4000k"
+msgstr "Tous les 4000k"
+
+#: source/games/bsystem.c:192
+msgid "fb"
+msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:108
 msgid "fg color"
@@ -6068,8 +6590,36 @@ msgstr "Surface matérielle disponible"
 msgid "hidden"
 msgstr "caché"
 
+#: source/sdl/dialogs/about.cpp:702
+msgid ""
+"history.dat not found\n"
+"Download it from http://www.arcade-history.com/index.php?page=download\n"
+"and install it in your raine directory\n"
+"in linux ~/.raine or /usr/share/games/raine\n"
+msgstr ""
+"history.dat pas trouvé\n"
+"Téléchargez le de http://www.arcade-history.com/index.php?page=download\n"
+"et installez le dans votre répertoire raine\n"
+"avec linux ~/.raine ou /usr/share/games/raine\n"
+
 #: source/sdl/dialogs/video_options.cpp:77
 msgid "hq2x/3x"
+msgstr ""
+
+#: source/neocd/cdrom.c:368 source/neocd/cdrom.c:401
+msgid "indexes alloc error"
+msgstr ""
+
+#: source/neocd/neocd.c:4641
+msgid "kof97oro decrypt fix..."
+msgstr ""
+
+#: source/neocd/neocd.c:4634
+msgid "kof97oro decrypt rom..."
+msgstr ""
+
+#: source/neocd/neocd.c:4643
+msgid "kof97oro decrypt sprites..."
 msgstr ""
 
 #: source/sdl/gui/tedit.cpp:256
@@ -6080,11 +6630,47 @@ msgstr "étiquette"
 msgid "layer"
 msgstr "couche"
 
+#: source/games/cave.c:2604
+#, c-format
+msgid "layer %d disabled"
+msgstr "Couche %d desactive"
+
+#: source/games/gunbird.c:1898
+msgid "layer 1 disabled"
+msgstr "Couche 1 desactive"
+
 #: source/sdl/dialogs/controls.cpp:777
 msgid "left and right positions, and press then release"
 msgstr "poitions droites et gauche, puis presser et relacher"
 
 #: source/sdl/dialogs/sound_options.cpp:38
+#, c-format
+msgid "line scroll %d"
+msgstr ""
+
+#: source/games/gunbird.c:1826
+#, c-format
+msgid "line scroll bg0 %d %d size %d"
+msgstr ""
+
+#: source/games/gunbird.c:1878
+#, c-format
+msgid "line scroll bg1 %d %d size %d"
+msgstr ""
+
+#: source/emudx.c:263
+msgid "loading EmuDX big sprites"
+msgstr ""
+
+#: source/emudx.c:210
+msgid "loading EmuDX sprites"
+msgstr ""
+
+#: source/emudx.c:147
+msgid "loading EmuDX tiles"
+msgstr ""
+
+#: source/sdl/dialogs/sound_options.cpp:37
 msgid "lsb"
 msgstr ""
 
@@ -6096,9 +6682,42 @@ msgstr ""
 msgid "msg to edit"
 msgstr ""
 
+#: source/games/cave.c:3017
+#, c-format
+msgid "no line scroll %d"
+msgstr ""
+
+#: source/sdl/gui.cpp:510
+msgid "no mixer yet"
+msgstr ""
+
+#: source/games/gcpball.c:105 source/games/toaplan1.c:136
+msgid "none"
+msgstr ""
+
+#: source/neocd/cdrom.c:435 source/sdl/compat.c:283 source/sdl/dsw.c:145
+#: source/sdl/glsl.c:178 source/sdl/glsl.c:188 source/sdl/glsl.c:209
+#: source/sdl/glsl.c:357 source/sdl/opengl.c:179
+msgid "ok"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:197
 msgid "or escape to delete this control"
 msgstr "Ou touche échap pour effacer ce contrôle"
+
+#: source/neocd/cdrom.c:291
+msgid "path format error"
+msgstr "erreur de format de répertoire"
+
+#: source/sdl/dialogs/about.cpp:514
+msgid ""
+"raine_logo.png must have the 1st color of the palette\n"
+"(color 0) as transparent"
+msgstr ""
+
+#: source/neocd/neocd.c:3721
+msgid "recreating fixed layer"
+msgstr "Recréation de la couche de caractères"
 
 #: source/sdl/dialogs/colors.cpp:42
 msgid "red"
@@ -6107,6 +6726,65 @@ msgstr "rouge"
 #: source/sdl/dialogs/romdirs.cpp:51
 msgid "rom dirs"
 msgstr "répertoires de rom"
+
+#: source/games/cps1.c:3609
+#, c-format
+msgid "row scroll %d"
+msgstr ""
+
+#: source/games/cave.c:2730
+msgid "row scroll on 8x8 layer unemulated"
+msgstr ""
+
+#: source/games/cave.c:2719
+#, c-format
+msgid "row select layer %d size %d"
+msgstr ""
+
+#: source/sdl/sasound.c:375
+msgid "s8 not supported"
+msgstr ""
+
+#: source/games/esd16.c:505 source/games/pirates.c:380
+msgid "sprites"
+msgstr ""
+
+#: source/games/gunbird.c:1359
+msgid "sprites disabled"
+msgstr ""
+
+#: source/games/pengo.c:626
+msgid "switch to 16bpp color depth and reload"
+msgstr ""
+
+#: source/games/pirates.c:381
+msgid "text"
+msgstr ""
+
+#: source/games/esd16.c:506
+msgid "tilemap0"
+msgstr ""
+
+#: source/games/esd16.c:507
+msgid "tilemap1"
+msgstr ""
+
+#: source/sdl/sasound.c:379
+msgid "u16lsb not supported"
+msgstr ""
+
+#: source/sdl/sasound.c:390
+msgid "u16msb not supported"
+msgstr ""
+
+#: source/sdl/sasound.c:371
+msgid "u8 not supported"
+msgstr ""
+
+#: source/neocd/cdrom.c:624 source/neocd/cdrom.c:637
+#, c-format
+msgid "used override for %s"
+msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:198
 msgid "windib (good for ogl)"
