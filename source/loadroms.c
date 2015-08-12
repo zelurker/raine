@@ -18,6 +18,9 @@
 #endif
 #include "7z.h"
 
+#undef _
+#define _(string) gettext(string)
+
 UINT8 *GFX,*Z80ROM,*ROM,*PCMROM;
 UINT8 *load_region[REGION_MAX];
 // This is static, because it's accessed by get_region_size,
