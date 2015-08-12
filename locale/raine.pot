@@ -6,10 +6,10 @@
 #,
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.2\n"
+"Project-Id-Version: 0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-10 16:14+0200\n"
+"PO-Revision-Date: 2015-08-11 11:06+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: -\n"
 "Language: en\n"
@@ -1761,6 +1761,10 @@ msgstr ""
 msgid "Applying GFX Layouts and stuff..."
 msgstr ""
 
+#: source/loadroms.c:818
+msgid "Applying graphics layouts..."
+msgstr ""
+
 #: source/sdl/dialogs/dirs.cpp:28
 msgid "Artwork dir"
 msgstr ""
@@ -2610,12 +2614,40 @@ msgstr ""
 msgid "Debug dips"
 msgstr ""
 
+#: source/games/cps1.c:2026
+msgid "Decoding GFX layer"
+msgstr ""
+
 #: source/sdl/control.c:422
 msgid "Decrease cpu skip"
 msgstr ""
 
 #: source/sdl/control.c:420
 msgid "Decrease frameskip"
+msgstr ""
+
+#: source/games/pirates.c:171
+msgid "Decrypting 68K (Code)"
+msgstr ""
+
+#: source/games/pirates.c:205
+msgid "Decrypting GFX1 (Tilemaps)"
+msgstr ""
+
+#: source/games/pirates.c:233
+msgid "Decrypting GFX2 (Sprites)"
+msgstr ""
+
+#: source/games/pirates.c:261
+msgid "Decrypting OKI (Sound)"
+msgstr ""
+
+#: source/cps2crpt.c:687
+msgid "Decrypting rom..."
+msgstr ""
+
+#: source/games/cave.c:1600
+msgid "Decrypting sprites"
 msgstr ""
 
 #: source/games/wwfsstar.c:130
@@ -2818,6 +2850,10 @@ msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:37
 msgid "Driver"
+msgstr ""
+
+#: source/loadroms.c:795
+msgid "Driver loading function..."
 msgstr ""
 
 #: source/games/quizgame.c:195 source/games/taito_f2.c:817
@@ -3960,6 +3996,10 @@ msgstr ""
 msgid "Load inputs from..."
 msgstr ""
 
+#: source/loadroms.c:775
+msgid "Loading CPU code"
+msgstr ""
+
 #: source/sdl/gui.cpp:165
 msgid "Loading Game"
 msgstr ""
@@ -3968,12 +4008,20 @@ msgstr ""
 msgid "Loading animations speed"
 msgstr ""
 
+#: source/loadroms.c:780
+msgid "Loading audio regions"
+msgstr ""
+
 #: source/sdl/gui.cpp:246
 msgid "Loading error"
 msgstr ""
 
 #: source/sdl/gui.cpp:215
 msgid "Loading problem"
+msgstr ""
+
+#: source/loadroms.c:778
+msgid "Loading video regions"
 msgstr ""
 
 #: source/games/contcirc.c:89
@@ -4939,6 +4987,10 @@ msgstr ""
 msgid "Prefered YUV format"
 msgstr ""
 
+#: source/games/cave.c:1627
+msgid "Preparing ROMS (patches...)"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:196
 msgid "Press a key, a button, or move a joystick..."
 msgstr ""
@@ -5020,6 +5072,14 @@ msgstr ""
 msgid "Rdtsc Cycles"
 msgstr ""
 
+#: source/games/cps1.c:2034
+msgid "Rebuilding 16x16 layer"
+msgstr ""
+
+#: source/games/cps1.c:2058
+msgid "Rebuilding 8x8 layer"
+msgstr ""
+
 #: source/sdl/dialogs/sound_options.cpp:42
 msgid "Record to raine_sound.wav"
 msgstr ""
@@ -5039,6 +5099,11 @@ msgstr ""
 
 #: source/sdl/gui.cpp:294
 msgid "Region"
+msgstr ""
+
+#: source/loadroms.c:912
+#, c-format
+msgid "Remaining size not enough for continue %s\n"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:60
@@ -5251,6 +5316,11 @@ msgstr ""
 #: source/games/crimec.c:37 source/games/crimec.c:122
 #: source/games/crimec.c:177
 msgid "Scribble"
+msgstr ""
+
+#: source/loadroms.c:988
+#, c-format
+msgid "Search path:\n"
 msgstr ""
 
 #: source/games/terrac.c:76
@@ -5471,6 +5541,10 @@ msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"
+msgstr ""
+
+#: source/neocd/neocd.c:4744
+msgid "Sprites conversion..."
 msgstr ""
 
 #: source/neocd/neocd.c:4544
@@ -5752,6 +5826,11 @@ msgstr ""
 msgid "The file '%s' can't be loaded"
 msgstr ""
 
+#: source/loadroms.c:813
+#, c-format
+msgid "The game didn't initialise any CPU, this game can't work !\n"
+msgstr ""
+
 #: source/sdl/dialogs/neocd_options.cpp:87
 msgid "This picture isn't 8bpp"
 msgstr ""
@@ -5870,6 +5949,10 @@ msgstr ""
 msgid "Transparency for 2 (50% default)"
 msgstr ""
 
+#: source/games/cps1.c:2074
+msgid "Transparent masks / rotation"
+msgstr ""
+
 #: source/games/cps1drv.c:3293
 msgid "Turbo Mode"
 msgstr ""
@@ -5959,6 +6042,11 @@ msgstr ""
 #: source/demos.c:276
 #, c-format
 msgid "Unable to load: %s"
+msgstr ""
+
+#: source/loadroms.c:986
+#, c-format
+msgid "Unable to open '%s'\n"
 msgstr ""
 
 #: source/demos.c:55
@@ -6466,6 +6554,10 @@ msgstr ""
 msgid "cue format error on line : %s"
 msgstr ""
 
+#: source/neocd/neocd.c:3657
+msgid "decrypting sprites (kof99 type)"
+msgstr ""
+
 #: source/sdl/dialogs/video_options.cpp:198
 msgid "directx (good for hw overlays/blits)"
 msgstr ""
@@ -6562,6 +6654,18 @@ msgstr ""
 msgid "indexes alloc error"
 msgstr ""
 
+#: source/neocd/neocd.c:4641
+msgid "kof97oro decrypt fix..."
+msgstr ""
+
+#: source/neocd/neocd.c:4634
+msgid "kof97oro decrypt rom..."
+msgstr ""
+
+#: source/neocd/neocd.c:4643
+msgid "kof97oro decrypt sprites..."
+msgstr ""
+
 #: source/sdl/gui/tedit.cpp:256
 msgid "label"
 msgstr ""
@@ -6596,6 +6700,18 @@ msgstr ""
 #: source/games/gunbird.c:1878
 #, c-format
 msgid "line scroll bg1 %d %d size %d"
+msgstr ""
+
+#: source/emudx.c:263
+msgid "loading EmuDX big sprites"
+msgstr ""
+
+#: source/emudx.c:210
+msgid "loading EmuDX sprites"
+msgstr ""
+
+#: source/emudx.c:147
+msgid "loading EmuDX tiles"
 msgstr ""
 
 #: source/sdl/dialogs/sound_options.cpp:37
@@ -6653,6 +6769,10 @@ msgstr ""
 msgid ""
 "raine_logo.png must have the 1st color of the palette\n"
 "(color 0) as transparent"
+msgstr ""
+
+#: source/neocd/neocd.c:3721
+msgid "recreating fixed layer"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:42
