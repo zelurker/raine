@@ -29,16 +29,6 @@ class TAbout_menu : public TBitmap_menu
   virtual void update_fg_layer(int nb_to_update);
 };
 
-// A special TStatic class to be able to display these special sequences for
-// commands...
-class TMoveStatic : public TStatic
-{
-    public:
-    TMoveStatic(menu_item_t *my_menu) : TStatic(my_menu) {}
-    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
-  int fg, int bg, int xoptions);
-};
-
 // A class to unify all the drawing functions for the command.dat symbols
 // it will allow to share the scaling data without making it permanent
 class TSketcher
@@ -121,7 +111,9 @@ static void mirror(int nb, Sint16 *tab, Sint16 *res)
 void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
   int myfg, int mybg, int xoptions) {
     int fg = myfg, bg = mybg;
-    char *s = (char*)menu->label;
+    char buff[256];
+    strcpy(buff,menu->label);
+    char *s = buff;
     char *old = s;
     int old_min = min_font_size;
     min_font_size = 1;

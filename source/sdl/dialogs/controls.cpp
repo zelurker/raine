@@ -3,6 +3,7 @@
 #include "control.h"
 #include "sdl/control_internal.h"
 #include "sdl/dialogs/messagebox.h"
+#include "sdl/dialogs/about.h" // TMoveStatic
 #include "games.h" // current_game
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "ingame.h"
@@ -86,7 +87,20 @@ static char *get_mouse_name(int btn) {
   return strdup(text);
 }
 
-static TMenuMultiCol *controls;
+class TMyMenuMultiCol : public TMenuMultiCol
+{
+    public:
+    TMyMenuMultiCol(char *my_title, menu_item_t *mymenu, int nbcol, char **mycols) : TMenuMultiCol(my_title,mymenu,nbcol,mycols)
+    {}
+    void create_child(int n) {
+	if (!menu[n].value_int)
+	    child[n] = new TMoveStatic(&menu[n]);
+	else
+	    TMenu::create_child(n);
+    }
+};
+
+static TMyMenuMultiCol *controls;
 
 class TInput : public TDialog {
   private:
@@ -387,7 +401,7 @@ static int do_emu_controls(int sel) {
 	      cols[b*2+1] = str;
 	  }
 
-  controls = new TMenuMultiCol(_("Raine Controls"),menu,2,cols);
+  controls = new TMyMenuMultiCol(_("Raine Controls"),menu,2,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<nb*2; n++) {
@@ -410,7 +424,7 @@ static int do_layers_controls(int sel) {
   }
   // A multi column dialog of only 1 column... oh well it is to copy the way
   // the other inputs dialogs work, and it might be easier this way anyway...
-  controls = new TMenuMultiCol(_("Raine Controls"),menu,1,cols);
+  controls = new TMyMenuMultiCol(_("Raine Controls"),menu,1,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<nb; n++) {
@@ -434,7 +448,63 @@ static int do_ingame_controls(int sel) {
         (sel < 0 && InputList[n].link > 0 && InputList[n].link < n)) {
       if (sel < 0 && !base_input)
 	base_input = n;
+      switch(InputList[n].default_key) {
+      case KB_DEF_P1_UP:   menu[mynb].label = "Player1 _8"; break;
+      case KB_DEF_P1_DOWN: menu[mynb].label = "Player2 _2"; break;
+      case KB_DEF_P1_LEFT: menu[mynb].label = "Player1 _4"; break;
+      case KB_DEF_P1_RIGHT:menu[mynb].label = "Player1 _6"; break;
+
+      case KB_DEF_P1_B1: menu[mynb].label = "Player1 ^E"; break;
+      case KB_DEF_P1_B2: menu[mynb].label = "Player1 ^F"; break;
+      case KB_DEF_P1_B3: menu[mynb].label = "Player1 ^G"; break;
+      case KB_DEF_P1_B4: menu[mynb].label = "Player1 ^H"; break;
+      case KB_DEF_P1_B5: menu[mynb].label = "Player1 ^I"; break;
+      case KB_DEF_P1_B6: menu[mynb].label = "Player1 ^J"; break;
+
+      case KB_DEF_P1_B1B2:menu[mynb].label = "Player1 ^E^F"; break;
+      case KB_DEF_P1_B3B4:menu[mynb].label = "Player1 ^G^H"; break;
+      case KB_DEF_P1_B2B3:menu[mynb].label = "Player1 ^F^G"; break;
+      case KB_DEF_P1_B1B2B3:menu[mynb].label = "Player1 ^E^F^G"; break;
+      case KB_DEF_P1_B2B3B4:menu[mynb].label = "Player1 ^F^G^H"; break;
+
+      case KB_DEF_P2_UP:   menu[mynb].label = "Player2 _8"; break;
+      case KB_DEF_P2_DOWN: menu[mynb].label = "Player2 _2"; break;
+      case KB_DEF_P2_LEFT: menu[mynb].label = "Player2 _4"; break;
+      case KB_DEF_P2_RIGHT:menu[mynb].label = "Player2 _6"; break;
+
+      case KB_DEF_P2_B1: menu[mynb].label = "Player2 ^E"; break;
+      case KB_DEF_P2_B2: menu[mynb].label = "Player2 ^F"; break;
+      case KB_DEF_P2_B3: menu[mynb].label = "Player2 ^G"; break;
+      case KB_DEF_P2_B4: menu[mynb].label = "Player2 ^H"; break;
+      case KB_DEF_P2_B5: menu[mynb].label = "Player2 ^I"; break;
+      case KB_DEF_P2_B6: menu[mynb].label = "Player2 ^J"; break;
+
+      case KB_DEF_P3_UP:   menu[mynb].label = "Player3 _8"; break;
+      case KB_DEF_P3_DOWN: menu[mynb].label = "Player3 _2"; break;
+      case KB_DEF_P3_LEFT: menu[mynb].label = "Player3 _4"; break;
+      case KB_DEF_P3_RIGHT:menu[mynb].label = "Player3 _6"; break;
+
+      case KB_DEF_P3_B1: menu[mynb].label = "Player3 ^E"; break;
+      case KB_DEF_P3_B2: menu[mynb].label = "Player3 ^F"; break;
+      case KB_DEF_P3_B3: menu[mynb].label = "Player3 ^G"; break;
+      case KB_DEF_P3_B4: menu[mynb].label = "Player3 ^H"; break;
+      case KB_DEF_P3_B5: menu[mynb].label = "Player3 ^I"; break;
+      case KB_DEF_P3_B6: menu[mynb].label = "Player3 ^J"; break;
+
+      case KB_DEF_P4_UP:   menu[mynb].label = "Player4 _8"; break;
+      case KB_DEF_P4_DOWN: menu[mynb].label = "Player4 _2"; break;
+      case KB_DEF_P4_LEFT: menu[mynb].label = "Player4 _4"; break;
+      case KB_DEF_P4_RIGHT:menu[mynb].label = "Player4 _6"; break;
+
+      case KB_DEF_P4_B1: menu[mynb].label = "Player4 ^E"; break;
+      case KB_DEF_P4_B2: menu[mynb].label = "Player4 ^F"; break;
+      case KB_DEF_P4_B3: menu[mynb].label = "Player4 ^G"; break;
+      case KB_DEF_P4_B4: menu[mynb].label = "Player4 ^H"; break;
+      case KB_DEF_P4_B5: menu[mynb].label = "Player4 ^I"; break;
+      case KB_DEF_P4_B6: menu[mynb].label = "Player4 ^J"; break;
+      default:
       menu[mynb].label = InputList[n].InputName;
+      }
       menu[mynb].menu_func = &do_input_ingame;
       cols[mynb*3+0] = get_key_name(InputList[n].Key);
       cols[mynb*3+1] = get_joy_name(InputList[n].Joy);
@@ -463,7 +533,7 @@ static int do_ingame_controls(int sel) {
 	      cols[a*3+2] = cols[b*3+2];
 	      cols[b*3+2] = str;
 	  }
-  controls = new TMenuMultiCol(_("Ingame Controls"),menu,3,cols);
+  controls = new TMyMenuMultiCol(_("Ingame Controls"),menu,3,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<mynb*3; n++) {
