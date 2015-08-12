@@ -230,7 +230,6 @@ static struct DSW_DATA dsw_data_bubble_bobble_0[] =
    { _("Test (grid and input)"), 1 },
    { _("Test (ram and sound)/pause"), 0 },
    DSW_SCREEN( 0x02, 0x00),
-   DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
@@ -1161,9 +1160,10 @@ static void execute_bublbobl(void)
 	* and can't be done by the original hardware, but it's quite fun to
 	* have the game never slowing down... I'll keep it for now ! */
        int round = 0;
-       while(cpu_get_pc(CPU_Z80_0) != 0x01ED && round < 100) {
+       while(cpu_get_pc(CPU_Z80_0) != 0x01ED && round < 10) {
 	   // printf("pc0 %x round %d sp %x\n",cpu_get_pc(CPU_Z80_0),round++,Z80_context[0].z80sp);
 	   cpu_execute_cycles(CPU_Z80_0,CPU_FRAME_MHz(6,60));
+	   round++;
        }
        /* There is something weird here. If sending irqs from the start, then
 	* the main cpu does a double initialization, starting the small music
@@ -1187,12 +1187,13 @@ static void execute_bublbobl(void)
 
        round = 0;
        while(cpu_get_pc(CPU_Z80_1) != 0x000A &&
-	      cpu_get_pc(CPU_Z80_1) != 0x1b3 && round < 100) {
+	      cpu_get_pc(CPU_Z80_1) != 0x1b3 && round < 10) {
 	   // What's this 1b3 pc ? Apparently it can very rarely stop there
 	   // but didn't find in which conditions. It's better to keep it here
 	   // anyway just in case
 	   // printf("pc1 %x round %d sp %x\n",cpu_get_pc(CPU_Z80_1),round++,Z80_context[1].z80sp);
 	   cpu_execute_cycles(CPU_Z80_1,CPU_FRAME_MHz(6,60));
+	   round++;
        }
        cpu_interrupt(CPU_Z80_1, 0x38);
    }
