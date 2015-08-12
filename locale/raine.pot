@@ -228,7 +228,7 @@ msgstr ""
 msgid "10 Yen Setup"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:531
+#: source/sdl/dialogs/controls.cpp:601
 msgid "10 fps"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "10 seconds"
 msgstr ""
 
-#: source/games/bublbobl.c:443
+#: source/games/bublbobl.c:442
 msgid "100 (Cheat)"
 msgstr ""
 
@@ -406,7 +406,7 @@ msgstr ""
 msgid "120 Seconds"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:530
+#: source/sdl/dialogs/controls.cpp:600
 msgid "15 fps"
 msgstr ""
 
@@ -712,8 +712,8 @@ msgstr ""
 msgid "20k and 50k"
 msgstr ""
 
-#: source/games/bublbobl.c:257 source/games/bublbobl.c:390
-#: source/games/bublbobl.c:436 source/games/bublbobl.c:511
+#: source/games/bublbobl.c:256 source/games/bublbobl.c:389
+#: source/games/bublbobl.c:435 source/games/bublbobl.c:510
 msgid "20k and 80k"
 msgstr ""
 
@@ -834,7 +834,7 @@ msgstr ""
 msgid "3 per Credit"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:529
+#: source/sdl/dialogs/controls.cpp:599
 msgid "30 fps"
 msgstr ""
 
@@ -936,8 +936,8 @@ msgstr ""
 msgid "30k 70k.."
 msgstr ""
 
-#: source/games/bublbobl.c:256 source/games/bublbobl.c:389
-#: source/games/bublbobl.c:435 source/games/bublbobl.c:510
+#: source/games/bublbobl.c:255 source/games/bublbobl.c:388
+#: source/games/bublbobl.c:434 source/games/bublbobl.c:509
 #: source/games/cabal.c:107 source/games/taito_f2.c:803
 msgid "30k and 100k"
 msgstr ""
@@ -1103,8 +1103,8 @@ msgstr ""
 msgid "40k and 100k"
 msgstr ""
 
-#: source/games/bublbobl.c:258 source/games/bublbobl.c:391
-#: source/games/bublbobl.c:437 source/games/bublbobl.c:512
+#: source/games/bublbobl.c:257 source/games/bublbobl.c:390
+#: source/games/bublbobl.c:436 source/games/bublbobl.c:511
 msgid "40k and 200k"
 msgstr ""
 
@@ -1284,8 +1284,8 @@ msgstr ""
 msgid "50k and 200k"
 msgstr ""
 
-#: source/games/bublbobl.c:259 source/games/bublbobl.c:392
-#: source/games/bublbobl.c:438 source/games/bublbobl.c:513
+#: source/games/bublbobl.c:258 source/games/bublbobl.c:391
+#: source/games/bublbobl.c:437 source/games/bublbobl.c:512
 #: source/games/taito_f2.c:805
 msgid "50k and 250k"
 msgstr ""
@@ -1350,7 +1350,7 @@ msgstr ""
 msgid "6 Mins"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:533
+#: source/sdl/dialogs/controls.cpp:603
 msgid "6 fps"
 msgstr ""
 
@@ -1431,7 +1431,7 @@ msgstr ""
 msgid "7 Mins"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:532
+#: source/sdl/dialogs/controls.cpp:602
 msgid "7 fps"
 msgstr ""
 
@@ -1624,11 +1624,11 @@ msgstr ""
 msgid "A,B/A"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:715
+#: source/sdl/dialogs/about.cpp:707
 msgid "About this game"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:796 source/sdl/gui.cpp:306
+#: source/sdl/dialogs/about.cpp:788 source/sdl/gui.cpp:306
 msgid "About..."
 msgstr ""
 
@@ -1743,7 +1743,7 @@ msgstr ""
 msgid "Analog Joystick"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:935
+#: source/sdl/dialogs/controls.cpp:1005
 msgid "Analog controls..."
 msgstr ""
 
@@ -1761,7 +1761,7 @@ msgstr ""
 msgid "Applying GFX Layouts and stuff..."
 msgstr ""
 
-#: source/loadroms.c:818
+#: source/loadroms.c:821
 msgid "Applying graphics layouts..."
 msgstr ""
 
@@ -1834,11 +1834,11 @@ msgstr ""
 msgid "Autofire (in some games)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:934
+#: source/sdl/dialogs/controls.cpp:1004
 msgid "Autofire controls"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:542 source/sdl/dialogs/controls.cpp:933
+#: source/sdl/dialogs/controls.cpp:612 source/sdl/dialogs/controls.cpp:1003
 msgid "Autofire..."
 msgstr ""
 
@@ -1895,6 +1895,21 @@ msgstr ""
 msgid "BG3"
 msgstr ""
 
+#: source/files.c:395
+#, c-format
+msgid "Bad CRC for ROM %s (%x)\n"
+msgstr ""
+
+#: source/files.c:407
+#, c-format
+msgid "Bad rom size for %s: tried to read %xh bytes, got %lxh\n"
+msgstr ""
+
+#: source/files.c:434
+#, c-format
+msgid "Bad rom size for %s: tried to read %xh bytes, got %xh\n"
+msgstr ""
+
 #: source/sdl/dialogs/neo_softdips.cpp:217
 msgid "Bad soft dips"
 msgstr ""
@@ -1925,7 +1940,7 @@ msgstr ""
 msgid "Blue"
 msgstr ""
 
-#: source/games/bublbobl.c:485
+#: source/games/bublbobl.c:484
 msgid "Bobble Bobble"
 msgstr ""
 
@@ -2073,7 +2088,7 @@ msgstr ""
 msgid "CPU Z80#3 Reset"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:756
+#: source/sdl/dialogs/about.cpp:748
 msgid "CPU emulators:"
 msgstr ""
 
@@ -2093,7 +2108,7 @@ msgstr ""
 msgid "Cabinet Type"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:779
+#: source/sdl/dialogs/controls.cpp:849
 msgid "Calibration"
 msgstr ""
 
@@ -2411,7 +2426,7 @@ msgstr ""
 
 #: source/games/megasys1.c:666 source/games/megasys1.c:719
 #: source/games/megasys1.c:903 source/games/seta.c:2472
-#: source/games/taito_f2.c:934 source/sdl/dialogs/controls.cpp:969
+#: source/games/taito_f2.c:934 source/sdl/dialogs/controls.cpp:1039
 msgid "Controls"
 msgstr ""
 
@@ -2501,7 +2516,7 @@ msgstr ""
 msgid "D"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:42
+#: source/sdl/dialogs/controls.cpp:43
 msgid "DOWN"
 msgstr ""
 
@@ -2662,15 +2677,15 @@ msgstr ""
 msgid "Default volumes"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:281
+#: source/sdl/dialogs/controls.cpp:295
 msgid "Delete the key"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:309
+#: source/sdl/dialogs/controls.cpp:323
 msgid "Delete the key|Delete the joystick ctrl|Del the mouse button"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:239
+#: source/sdl/dialogs/controls.cpp:253
 msgid "Delete the key|Delete the joystick ctrl|Really use ESC here"
 msgstr ""
 
@@ -2844,7 +2859,7 @@ msgstr ""
 msgid "Drawing Every %1d Frames"
 msgstr ""
 
-#: source/games/bublbobl.c:409
+#: source/games/bublbobl.c:408
 msgid "Dream Land"
 msgstr ""
 
@@ -2852,7 +2867,7 @@ msgstr ""
 msgid "Driver"
 msgstr ""
 
-#: source/loadroms.c:795
+#: source/loadroms.c:798
 msgid "Driver loading function..."
 msgstr ""
 
@@ -2909,11 +2924,11 @@ msgstr ""
 msgid "Easy"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:954
+#: source/sdl/dialogs/controls.cpp:1024
 msgid "Edit custom game inputs"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:945
+#: source/sdl/dialogs/controls.cpp:1015
 msgid "Edit default game inputs"
 msgstr ""
 
@@ -3005,9 +3020,9 @@ msgstr ""
 #: source/neocd/cdrom.c:311 source/neocd/cdrom.c:323 source/neocd/cdrom.c:350
 #: source/neocd/cdrom.c:368 source/neocd/cdrom.c:401 source/neocd/cdrom.c:421
 #: source/neocd/cdrom.c:435 source/neocd/iso.c:88
-#: source/sdl/dialogs/about.cpp:502 source/sdl/dialogs/about.cpp:514
-#: source/sdl/dialogs/controls.cpp:538 source/sdl/dialogs/controls.cpp:580
-#: source/sdl/dialogs/controls.cpp:818 source/sdl/dialogs/controls.cpp:902
+#: source/sdl/dialogs/about.cpp:494 source/sdl/dialogs/about.cpp:506
+#: source/sdl/dialogs/controls.cpp:608 source/sdl/dialogs/controls.cpp:650
+#: source/sdl/dialogs/controls.cpp:888 source/sdl/dialogs/controls.cpp:972
 #: source/sdl/dialogs/game_options.cpp:181
 #: source/sdl/dialogs/neocd_options.cpp:87
 #: source/sdl/dialogs/neocd_options.cpp:99
@@ -3368,7 +3383,7 @@ msgstr ""
 msgid "GUI transparency"
 msgstr ""
 
-#: source/games/bublbobl.c:408 source/games/bublbobl.c:483
+#: source/games/bublbobl.c:407 source/games/bublbobl.c:482
 #: source/games/cps1drv.c:3132 source/games/cps1drv.c:3176
 #: source/games/cps1drv.c:3230 source/games/cps1drv.c:3304
 #: source/games/cps1drv.c:3360 source/games/cps1drv.c:3411
@@ -3456,7 +3471,7 @@ msgstr ""
 msgid "Germany"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:938
+#: source/sdl/dialogs/controls.cpp:1008
 msgid "Get inputs from another game"
 msgstr ""
 
@@ -3550,8 +3565,8 @@ msgstr ""
 msgid "Help Penalty (Heuk Sun)"
 msgstr ""
 
-#: source/games/bublbobl.c:400 source/games/bublbobl.c:446
-#: source/games/bublbobl.c:521
+#: source/games/bublbobl.c:399 source/games/bublbobl.c:445
+#: source/games/bublbobl.c:520
 msgid "High"
 msgstr ""
 
@@ -3564,7 +3579,7 @@ msgstr ""
 msgid "Hiscores"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:762
+#: source/sdl/dialogs/about.cpp:754
 msgid "History..."
 msgstr ""
 
@@ -3605,11 +3620,11 @@ msgstr ""
 msgid "HongKong/Tatsujin2"
 msgstr ""
 
-#: source/games/bublbobl.c:270
+#: source/games/bublbobl.c:269
 msgid "IC52=256kb, IC53=256kb"
 msgstr ""
 
-#: source/games/bublbobl.c:269
+#: source/games/bublbobl.c:268
 msgid "IC52=512kb, IC53=none"
 msgstr ""
 
@@ -3639,7 +3654,7 @@ msgstr ""
 msgid "Infinite Lives"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:466
+#: source/sdl/dialogs/controls.cpp:536
 msgid "Ingame Controls"
 msgstr ""
 
@@ -3651,8 +3666,8 @@ msgstr ""
 msgid "Innings"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:233 source/sdl/dialogs/controls.cpp:275
-#: source/sdl/dialogs/controls.cpp:303
+#: source/sdl/dialogs/controls.cpp:247 source/sdl/dialogs/controls.cpp:289
+#: source/sdl/dialogs/controls.cpp:317
 msgid "Input"
 msgstr ""
 
@@ -3766,7 +3781,7 @@ msgstr ""
 #: source/games/nmk.c:703 source/games/nmk.c:871 source/games/opwolf.c:95
 #: source/games/othunder.c:108 source/games/rainbow.c:106
 #: source/games/rainbow.c:221 source/games/seta.c:1879
-#: source/games/tetrisp2.c:112 source/games/upl.c:293
+#: source/games/seta.c:2671 source/games/tetrisp2.c:112 source/games/upl.c:293
 #: source/games/volfied.c:97 source/games/xsystem1.c:95
 #: source/games/xsystem1.c:167
 msgid "Japanese"
@@ -3778,10 +3793,6 @@ msgstr ""
 
 #: source/games/toaplan2.c:1262
 msgid "Japanese (Toaplan)"
-msgstr ""
-
-#: source/games/seta.c:2671
-msgid "Japenese"
 msgstr ""
 
 #: source/games/seta.c:2185
@@ -3847,7 +3858,7 @@ msgstr ""
 msgid "Korea/Tatsujin2"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:49
+#: source/sdl/dialogs/controls.cpp:50
 msgid "LEFT"
 msgstr ""
 
@@ -3979,7 +3990,7 @@ msgstr ""
 msgid "Load demo"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:822 source/sdl/dialogs/controls.cpp:906
+#: source/sdl/dialogs/controls.cpp:892 source/sdl/dialogs/controls.cpp:976
 msgid "Load from which ?"
 msgstr ""
 
@@ -3992,11 +4003,11 @@ msgstr ""
 msgid "Load game with name"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:936
+#: source/sdl/dialogs/controls.cpp:1006
 msgid "Load inputs from..."
 msgstr ""
 
-#: source/loadroms.c:775
+#: source/loadroms.c:778
 msgid "Loading CPU code"
 msgstr ""
 
@@ -4008,7 +4019,7 @@ msgstr ""
 msgid "Loading animations speed"
 msgstr ""
 
-#: source/loadroms.c:780
+#: source/loadroms.c:783
 msgid "Loading audio regions"
 msgstr ""
 
@@ -4020,7 +4031,7 @@ msgstr ""
 msgid "Loading problem"
 msgstr ""
 
-#: source/loadroms.c:778
+#: source/loadroms.c:781
 msgid "Loading video regions"
 msgstr ""
 
@@ -4050,7 +4061,7 @@ msgstr ""
 msgid "Low while pressed"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:759
+#: source/sdl/dialogs/about.cpp:751
 msgid "M6502 1.6raine2 by Neill Bradley"
 msgstr ""
 
@@ -4061,11 +4072,11 @@ msgstr ""
 msgid "M68705: Invalid jump address (0x%x)\n"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:761
+#: source/sdl/dialogs/about.cpp:753
 msgid "MCU 68705: statically recompiled code by Richard Mitton"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:758
+#: source/sdl/dialogs/about.cpp:750
 msgid "MZ80 3.4raine3 by Neill Bradley"
 msgstr ""
 
@@ -4109,8 +4120,8 @@ msgstr ""
 msgid "Medal Setup"
 msgstr ""
 
-#: source/games/bublbobl.c:401 source/games/bublbobl.c:447
-#: source/games/bublbobl.c:522 source/games/cps1drv.c:3441
+#: source/games/bublbobl.c:400 source/games/bublbobl.c:446
+#: source/games/bublbobl.c:521 source/games/cps1drv.c:3441
 #: source/games/cps1drv.c:3713 source/games/matmania.c:189
 #: source/games/pengo.c:138 source/games/toaplan1.c:203
 #: source/games/toaplan1.c:371 source/games/toaplan1.c:488
@@ -4169,8 +4180,8 @@ msgstr ""
 msgid "Mono"
 msgstr ""
 
-#: source/games/bublbobl.c:398 source/games/bublbobl.c:444
-#: source/games/bublbobl.c:519
+#: source/games/bublbobl.c:397 source/games/bublbobl.c:443
+#: source/games/bublbobl.c:518
 msgid "Monster Speed"
 msgstr ""
 
@@ -4194,7 +4205,7 @@ msgstr ""
 msgid "Mouse Speed"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:775
+#: source/sdl/dialogs/controls.cpp:845
 msgid "Move the stick to all the extreme positions"
 msgstr ""
 
@@ -4342,7 +4353,7 @@ msgstr ""
 msgid "No Use"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:723
+#: source/sdl/dialogs/controls.cpp:793
 msgid "No analog device"
 msgstr ""
 
@@ -4350,7 +4361,7 @@ msgstr ""
 msgid "No associations yet"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:538
+#: source/sdl/dialogs/controls.cpp:608
 msgid "No buttons mapped by this game for autofire, sorry !"
 msgstr ""
 
@@ -4358,7 +4369,7 @@ msgstr ""
 msgid "No change"
 msgstr ""
 
-#: source/sdl/gui/menu.cpp:427
+#: source/sdl/gui/menu.cpp:429
 msgid "No game loaded"
 msgstr ""
 
@@ -4366,7 +4377,7 @@ msgstr ""
 msgid "No game loaded yet"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:902
+#: source/sdl/dialogs/controls.cpp:972
 msgid "No game uses custom inputs in your config file yet"
 msgstr ""
 
@@ -4382,7 +4393,7 @@ msgstr ""
 msgid "No options for this renderer ? Strange !"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:502
+#: source/sdl/dialogs/about.cpp:494
 msgid "No raine logo, or it's a true color bitmap"
 msgstr ""
 
@@ -4498,7 +4509,7 @@ msgid "OK"
 msgstr ""
 
 #: source/sdl/console/scripts.cpp:130 source/sdl/control.c:1778
-#: source/sdl/dialogs/cheats.cpp:104 source/sdl/dialogs/controls.cpp:528
+#: source/sdl/dialogs/cheats.cpp:104 source/sdl/dialogs/controls.cpp:598
 #: source/sdl/dialogs/game_options.cpp:213
 #: source/sdl/dialogs/game_options.cpp:247
 #: source/sdl/dialogs/neocd_options.cpp:179
@@ -4536,7 +4547,7 @@ msgstr ""
 msgid "Opaque HUD"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:704
+#: source/sdl/dialogs/about.cpp:696
 msgid "Open this page now !|Later maybe..."
 msgstr ""
 
@@ -4991,11 +5002,11 @@ msgstr ""
 msgid "Preparing ROMS (patches...)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:196
+#: source/sdl/dialogs/controls.cpp:210
 msgid "Press a key, a button, or move a joystick..."
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:203
+#: source/sdl/dialogs/controls.cpp:217
 msgid "Press a key..."
 msgstr ""
 
@@ -5015,8 +5026,8 @@ msgstr ""
 msgid "Psikyo (gunbird)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:238 source/sdl/dialogs/controls.cpp:280
-#: source/sdl/dialogs/controls.cpp:308
+#: source/sdl/dialogs/controls.cpp:252 source/sdl/dialogs/controls.cpp:294
+#: source/sdl/dialogs/controls.cpp:322
 msgid "Question"
 msgstr ""
 
@@ -5040,11 +5051,11 @@ msgstr ""
 msgid "RDTSC Timing Enabled (percentages)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:47
+#: source/sdl/dialogs/controls.cpp:48
 msgid "RIGHT"
 msgstr ""
 
-#: source/games/bublbobl.c:268
+#: source/games/bublbobl.c:267
 msgid "ROM type"
 msgstr ""
 
@@ -5056,11 +5067,11 @@ msgstr ""
 msgid "Rack Test (Cheat)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:390 source/sdl/dialogs/controls.cpp:413
+#: source/sdl/dialogs/controls.cpp:404 source/sdl/dialogs/controls.cpp:427
 msgid "Raine Controls"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:929
+#: source/sdl/dialogs/controls.cpp:999
 msgid "Raine controls"
 msgstr ""
 
@@ -5101,7 +5112,7 @@ msgstr ""
 msgid "Region"
 msgstr ""
 
-#: source/loadroms.c:912
+#: source/loadroms.c:915
 #, c-format
 msgid "Remaining size not enough for continue %s\n"
 msgstr ""
@@ -5150,7 +5161,7 @@ msgstr ""
 msgid "Return to gui"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:931 source/sdl/dialogs/controls.cpp:955
+#: source/sdl/dialogs/controls.cpp:1001 source/sdl/dialogs/controls.cpp:1025
 msgid "Revert to default game controls"
 msgstr ""
 
@@ -5249,7 +5260,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:818
+#: source/sdl/dialogs/controls.cpp:888
 msgid ""
 "Save 1st some custom inputs using\n"
 "Save inputs as"
@@ -5272,7 +5283,7 @@ msgstr ""
 msgid "Save game with name"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:937
+#: source/sdl/dialogs/controls.cpp:1007
 msgid "Save inputs as..."
 msgstr ""
 
@@ -5318,7 +5329,7 @@ msgstr ""
 msgid "Scribble"
 msgstr ""
 
-#: source/loadroms.c:988
+#: source/loadroms.c:991
 #, c-format
 msgid "Search path:\n"
 msgstr ""
@@ -5327,11 +5338,11 @@ msgstr ""
 msgid "Second Life at"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:726
+#: source/sdl/dialogs/controls.cpp:796
 msgid "Select analog device"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:758
+#: source/sdl/dialogs/controls.cpp:828
 msgid "Select the stick to use..."
 msgstr ""
 
@@ -5526,7 +5537,7 @@ msgstr ""
 msgid "Special Course"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:737
+#: source/sdl/dialogs/about.cpp:729
 msgid "Special moves..."
 msgstr ""
 
@@ -5589,7 +5600,7 @@ msgstr ""
 msgid "Stage Start/Timer Cont"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:757
+#: source/sdl/dialogs/about.cpp:749
 msgid "Starscream 0.26r4 by Neill Corlett"
 msgstr ""
 
@@ -5643,11 +5654,11 @@ msgstr ""
 msgid "Stop emulation"
 msgstr ""
 
-#: source/games/bublbobl.c:484
+#: source/games/bublbobl.c:483
 msgid "Super Bobble Bobble"
 msgstr ""
 
-#: source/games/bublbobl.c:410
+#: source/games/bublbobl.c:409
 msgid "Super Dream Land"
 msgstr ""
 
@@ -5663,7 +5674,7 @@ msgstr ""
 msgid "Switch save slot"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:946
+#: source/sdl/dialogs/controls.cpp:1016
 msgid "Switch to custom game controls"
 msgstr ""
 
@@ -5826,7 +5837,7 @@ msgstr ""
 msgid "The file '%s' can't be loaded"
 msgstr ""
 
-#: source/loadroms.c:813
+#: source/loadroms.c:816
 #, c-format
 msgid "The game didn't initialise any CPU, this game can't work !\n"
 msgstr ""
@@ -5916,7 +5927,7 @@ msgstr ""
 msgid "Toggle limit speed"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:580
+#: source/sdl/dialogs/controls.cpp:650
 msgid "Too many controls have been defined for this game, sorry !"
 msgstr ""
 
@@ -5971,7 +5982,7 @@ msgstr ""
 msgid "Type 2"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:760
+#: source/sdl/dialogs/about.cpp:752
 msgid "UAE 68020 Emulator : old hacked asm version from UAE"
 msgstr ""
 
@@ -5979,7 +5990,7 @@ msgstr ""
 msgid "UK (JP Leisure)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:44
+#: source/sdl/dialogs/controls.cpp:45
 msgid "UP"
 msgstr ""
 
@@ -6044,7 +6055,7 @@ msgstr ""
 msgid "Unable to load: %s"
 msgstr ""
 
-#: source/loadroms.c:986
+#: source/loadroms.c:989
 #, c-format
 msgid "Unable to open '%s'\n"
 msgstr ""
@@ -6248,8 +6259,8 @@ msgstr ""
 msgid "Very Hard"
 msgstr ""
 
-#: source/games/bublbobl.c:399 source/games/bublbobl.c:445
-#: source/games/bublbobl.c:520
+#: source/games/bublbobl.c:398 source/games/bublbobl.c:444
+#: source/games/bublbobl.c:519
 msgid "Very High"
 msgstr ""
 
@@ -6269,7 +6280,7 @@ msgstr ""
 msgid "Video info..."
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:932
+#: source/sdl/dialogs/controls.cpp:1002
 msgid "Video layers"
 msgstr ""
 
@@ -6317,15 +6328,15 @@ msgstr ""
 msgid "WALTZ0"
 msgstr ""
 
-#: source/sdl/compat.c:283 source/sdl/dialogs/about.cpp:702
+#: source/sdl/compat.c:283 source/sdl/dialogs/about.cpp:694
 #: source/sdl/dialogs/neo_softdips.cpp:217
 #: source/sdl/dialogs/video_options.cpp:54 source/sdl/dsw.c:420
 #: source/sdl/glsl.c:357
 msgid "Warning"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:238 source/sdl/dialogs/controls.cpp:280
-#: source/sdl/dialogs/controls.cpp:308
+#: source/sdl/dialogs/controls.cpp:252 source/sdl/dialogs/controls.cpp:294
+#: source/sdl/dialogs/controls.cpp:322
 msgid "What do you want to do ?"
 msgstr ""
 
@@ -6460,6 +6471,11 @@ msgstr ""
 msgid "Z80: speed hack applied"
 msgstr ""
 
+#: source/files.c:459 source/files.c:520
+#, c-format
+msgid "ZIP file damaged for ROM %s\n"
+msgstr ""
+
 #: source/games/chasehq.c:798 source/games/chasehq.c:1316
 #: source/games/wgp.c:451
 msgid "Zooming Object"
@@ -6570,7 +6586,7 @@ msgstr ""
 msgid "dsw"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:778
+#: source/sdl/dialogs/controls.cpp:848
 msgid "each pedal separately"
 msgstr ""
 
@@ -6626,7 +6642,7 @@ msgstr ""
 msgid "hidden"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:702
+#: source/sdl/dialogs/about.cpp:694
 msgid ""
 "history.dat not found\n"
 "Download it from http://www.arcade-history.com/index.php?page=download\n"
@@ -6671,7 +6687,7 @@ msgstr ""
 msgid "layer 1 disabled"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:777
+#: source/sdl/dialogs/controls.cpp:847
 msgid "left and right positions, and press then release"
 msgstr ""
 
@@ -6733,7 +6749,7 @@ msgstr ""
 msgid "ok"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:197
+#: source/sdl/dialogs/controls.cpp:211
 msgid "or escape to delete this control"
 msgstr ""
 
@@ -6741,7 +6757,7 @@ msgstr ""
 msgid "path format error"
 msgstr ""
 
-#: source/sdl/dialogs/about.cpp:514
+#: source/sdl/dialogs/about.cpp:506
 msgid ""
 "raine_logo.png must have the 1st color of the palette\n"
 "(color 0) as transparent"
