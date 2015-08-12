@@ -1847,9 +1847,9 @@ static void load_puckman()
     char *db_filename;
     if (is_current_game("mspacmab")) {
       mspacman = 1;
-      db_filename = _("mspacmang.dx2");
+      db_filename = "mspacmang.dx2";
     } else {
-      db_filename = _("pacmang.dx2");
+      db_filename = "pacmang.dx2";
       mspacman = 0;
     }
     if (exists_emudx_file(db_filename)) {

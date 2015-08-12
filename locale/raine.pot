@@ -6566,10 +6566,6 @@ msgstr ""
 msgid "disabling row select (agallet)"
 msgstr ""
 
-#: source/games/dkong.c:811
-msgid "dkongg.dx2"
-msgstr ""
-
 #: source/sdl/dsw.c:145
 msgid "dsw"
 msgstr ""
@@ -6616,14 +6612,6 @@ msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:110
 msgid "fg frame color"
-msgstr ""
-
-#: source/games/frogger.c:1410
-msgid "froggerg.dx2"
-msgstr ""
-
-#: source/games/frogger.c:1425
-msgid "galdxg.dx2"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:43
@@ -6726,10 +6714,6 @@ msgstr ""
 msgid "msg to edit"
 msgstr ""
 
-#: source/games/pengo.c:1850
-msgid "mspacmang.dx2"
-msgstr ""
-
 #: source/games/cave.c:3017
 #, c-format
 msgid "no line scroll %d"
@@ -6751,10 +6735,6 @@ msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:197
 msgid "or escape to delete this control"
-msgstr ""
-
-#: source/games/pengo.c:1852
-msgid "pacmang.dx2"
 msgstr ""
 
 #: source/neocd/cdrom.c:291

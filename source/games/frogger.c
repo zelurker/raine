@@ -1407,7 +1407,7 @@ static void load_frogger() {
 	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
 	{
-	  load_emudx(gettext("froggerg.dx2"),1,280,282,351,
+	  load_emudx("froggerg.dx2",1,280,282,351,
 	      0,0, // no chars here, they seem to have coloured tiles for the chars
 	      448,512,makecol(0xff,0,0xff),draw_emudx);
 	  setup_frog_gfx();
@@ -1422,7 +1422,7 @@ static void load_frogger() {
 	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
 	{
-	  load_emudx(gettext("galdxg.dx2"),1,393,395,488,
+	  load_emudx("galdxg.dx2",1,393,395,488,
 	      0,0, // no chars here, they seem to have coloured tiles for the chars
 	      448,512,makecol(0xff,0,0xff),draw_emudx_gal);
 	  setup_gal_gfx();

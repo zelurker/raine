@@ -808,7 +808,7 @@ static void load_dkong() {
       if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
       {
-	load_emudx(gettext("dkongg.dx2"),4,262-5,262,419,
+	load_emudx("dkongg.dx2",4,262-5,262,419,
 		   5,164,
 		   448,512,makecol(0xff,0,0xff),draw_emudx);
 	draw_emudx_tile = 0;
