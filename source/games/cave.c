@@ -1597,7 +1597,7 @@ static void init_sailormn_hardware(int type)
   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(8,60));
   set_pulse_time(3); // for coin key...
 
-  load_message("Decrypting sprites");
+  load_message(_("Decrypting sprites"));
   /* decrypt sprites */
 
   if (type == 0) {
@@ -1624,7 +1624,7 @@ static void init_sailormn_hardware(int type)
     romset = 8; // Just a specific bg2, à la sailor moon...
   }
 
-  load_message("Preparing ROMS (patches...)");
+  load_message(_("Preparing ROMS (patches...)"));
   RAMSize=0x80000;
   if(!(RAM=AllocateMem(RAMSize))) return;
 

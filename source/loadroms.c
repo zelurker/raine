@@ -772,12 +772,12 @@ void load_game_rom_info(void)
 	}
    loaded_roms = 0;
 
-   load_message("Loading CPU code");
+   load_message(_("Loading CPU code"));
    for (i=1; i<REGION_MAX; i++) {
      if (i == REGION_GFX1)
-       load_message("Loading video regions");
+       load_message(_("Loading video regions"));
      else if (i == REGION_SMP1)
-       load_message("Loading audio regions");
+       load_message(_("Loading audio regions"));
 
      if(!load_rom_region(i)) return;
    }
@@ -792,7 +792,7 @@ void load_game_rom_info(void)
    Z80ROM = load_region[REGION_ROM2]; // short cut
    PCMROM = load_region[REGION_SOUND1];
 
-   load_message("Driver loading function...");
+   load_message(_("Driver loading function..."));
    current_game->load_game();
    int test = 1;
 #ifndef NO020
@@ -810,12 +810,12 @@ void load_game_rom_info(void)
 
    if (test) {
      sprintf(load_debug+strlen(load_debug),
-       "The game didn't initialise any CPU, this game can't work !\n");
+       _("The game didn't initialise any CPU, this game can't work !\n"));
      load_error |= LOAD_FATAL_ERROR;
      return;
    }
 
-   load_message("Applying graphics layouts...");
+   load_message(_("Applying graphics layouts..."));
    if(!load_gfx_region(REGION_GFX1)) return;
    if(!load_gfx_region(REGION_GFX2)) return;
    if(!load_gfx_region(REGION_GFX3)) return;
@@ -909,7 +909,7 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
        } else {
 	   load_error |= LOAD_FATAL_ERROR;
 	   sprintf(load_debug+strlen(load_debug),
-		   "Remaining size not enough for continue %s\n",rom);
+		   _("Remaining size not enough for continue %s\n"),rom);
 	   return 0;
        }
        return 1;
@@ -983,9 +983,9 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
 
    if(!ta)
    {
-      sprintf(load_debug+strlen(load_debug),"Unable to open '%s'\n",rom);
+      sprintf(load_debug+strlen(load_debug),_("Unable to open '%s'\n"),rom);
       sprintf(load_debug+strlen(load_debug),"\n");
-      sprintf(load_debug+strlen(load_debug),"Search path:\n");
+      sprintf(load_debug+strlen(load_debug),_("Search path:\n"));
       sprintf(load_debug+strlen(load_debug),"\n");
 
       dump_search_path(dir_list);

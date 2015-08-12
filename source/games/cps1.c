@@ -2023,7 +2023,7 @@ void load_common(int cps2)
    GFX_SPR = load_region[REGION_GFX1];
    size = get_region_size(REGION_GFX1); // size of packed region
 
-   load_message("Decoding GFX layer");
+   load_message(_("Decoding GFX layer"));
    if (cps2)
      cps2_gfx_decode();
    else
@@ -2031,7 +2031,7 @@ void load_common(int cps2)
 
    cps1_init_machine();
 
-   load_message("Rebuilding 16x16 layer");
+   load_message(_("Rebuilding 16x16 layer"));
    /* We can't use base2 to save memory on GFX_SPR16 because it's shared with sprites ! */
    // printf("size of GFX_SPR16 %d Mb\n",size*2/1024/1024);
    GFX_SPR16 = AllocateMem(size*2);
@@ -2055,7 +2055,7 @@ void load_common(int cps2)
      GFX_SPR32 = &GFX_SPR16[base3*32*32];
 
    /* rebuild 8x8 sprites */
-   load_message("Rebuilding 8x8 layer");
+   load_message(_("Rebuilding 8x8 layer"));
    /* Reallocating gfx_spr is useless : packed is twice the size, but it skips 8 pixels
       every 16 pixels, so in the end it's exactly the same size ! */
    // GFX_SPR = AllocateMem(size);
@@ -2071,7 +2071,7 @@ void load_common(int cps2)
 
    max_sprites16 = size*2 / 0x100;
 
-   load_message("Transparent masks / rotation");
+   load_message(_("Transparent masks / rotation"));
    GFX_SPR_SOLID = make_solid_mask_8x8(GFX_SPR, max_sprites8);
    GFX_SPR_SOLID16 = make_solid_mask_16x16(GFX_SPR16, max_sprites16);
    GFX_SPR_SOLID32 = make_solid_mask_32x32(GFX_SPR32, max_sprites32);

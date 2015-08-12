@@ -6,7 +6,7 @@
 #include "sasound.h"
 #include "emudx.h"
 #include "unzip.h"
-#include "gui.h" // load_progress
+#include "gui.h" // load_progress (through load_explicit_progress)
 #include "loadpng.h"
 
 /* This is the support for the graphics emudx files. For the sound, see dxsmp.c in the
@@ -144,7 +144,7 @@ void load_emudx(const char *name, int tiles, int sprites,
     ta = width; width = height; height = ta; // vertiacal inversion...
   }
 
-  load_message("loading EmuDX tiles");
+  load_message(_("loading EmuDX tiles"));
   for (i=1; i<=tiles; i++) {
     load_explicit_progress(i,sprites32);
     obj = emudx_bitmap(dat,i);
@@ -207,7 +207,7 @@ void load_emudx(const char *name, int tiles, int sprites,
     destroy_bitmap(bmp);
   }
   tiles++; // points to start of sprites;
-  load_message("loading EmuDX sprites");
+  load_message(_("loading EmuDX sprites"));
   bmp = create_bitmap(16,16); // 16x16, 16bpp
   UINT8 *transp_sprite = AllocateMem(16*16*bpp);
   if (!transp_sprite) return;
@@ -260,7 +260,7 @@ void load_emudx(const char *name, int tiles, int sprites,
   }
   FreeMem(transp_sprite);
   destroy_bitmap(bmp);
-  load_message("loading EmuDX big sprites");
+  load_message(_("loading EmuDX big sprites"));
   bmp = create_bitmap(32,32); // 32x32, 16bpp
   for (i=start_sprites32; i<=sprites32; i++) {
     load_explicit_progress(i,sprites32);

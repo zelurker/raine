@@ -168,7 +168,7 @@ static void pirates_decrypt_68k(void)
     UINT8 *buf, *rom;
     int i;
 
-    load_message("Decrypting 68K (Code)");
+    load_message(_("Decrypting 68K (Code)"));
 
     rom_size = get_region_size(REGION_CPU1);
 
@@ -202,7 +202,7 @@ static void pirates_decrypt_p(void)
     UINT8 *buf, *rom;
     int i;
 
-	load_message("Decrypting GFX1 (Tilemaps)");
+	load_message(_("Decrypting GFX1 (Tilemaps)"));
 
 	rom_size = get_region_size(REGION_GFX1);
 
@@ -230,7 +230,7 @@ static void pirates_decrypt_s(void)
     UINT8 *buf, *rom;
     int i;
 
-	load_message("Decrypting GFX2 (Sprites)");
+	load_message(_("Decrypting GFX2 (Sprites)"));
 
     rom_size = get_region_size(REGION_GFX2);
 
@@ -258,7 +258,7 @@ static void pirates_decrypt_oki(void)
     UINT8 *buf, *rom;
     int i;
 
-	load_message("Decrypting OKI (Sound)");
+    load_message(_("Decrypting OKI (Sound)"));
 
     rom_size = get_region_size(REGION_SOUND1);
 
