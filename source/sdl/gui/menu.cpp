@@ -1470,7 +1470,7 @@ void TMenu::handle_key(SDL_Event *event) {
 		    }
 		}
 		if (n == nb_disp_items) { // not found -> search from 0
-		    for (n=0; n<get_seldisp(); n++) {
+		    for (n=0; n<=get_seldisp(); n++) {
 			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
 				!strncasecmp(s,keybuf,index)) {
