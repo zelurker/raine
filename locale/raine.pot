@@ -331,9 +331,6 @@ msgstr ""
 msgid "2 Coins to Start,1 to Continue"
 msgstr ""
 
-msgid "2 Coins to Start1 to Continue"
-msgstr ""
-
 msgid "2 Coins/1 Credit"
 msgstr ""
 

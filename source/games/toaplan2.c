@@ -1918,7 +1918,7 @@ static struct DSW_DATA dsw_data_batsugun_1[] =
    { MSG_HARD,                0x02},
    { MSG_HARDEST,             0x03},
    { MSG_EXTRA_LIFE,          0x0C, 0x04 },
-   { _("1000K only"),            0x00},
+   { _("1000k only"),            0x00},
    { _("500k and every 600k"),   0x04},
    { _("1500k only"),            0x08},
    { _("None"),                  0x0C},

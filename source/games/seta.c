@@ -1798,7 +1798,7 @@ static struct DSW_DATA dsw_data_daioh_4[] =
   { _("300k and every 800k") , 0x80},
   { _("500k and every 1000k") , 0xc0},
   { _("800k and 2000k only") , 0x40},
-  { _("1000k Only") , 0x0},
+  { _("1000k only") , 0x0},
   { NULL, 0}
 };
 
@@ -2100,7 +2100,7 @@ static struct DSW_DATA dsw_data_downtown_4[] =
   { MSG_EXTRA_LIFE, 0xc, 4 },
   { _("Never") , 0xc},
   { _("50K Only") , 0x8},
-  { _("100K Only") , 0x4},
+  { _("100k only") , 0x4},
   { _("50K Every 150K") , 0x0},
   { MSG_LIVES, 0x30, 4 },
   { "2" , 0x10},
@@ -2391,7 +2391,7 @@ static struct DSW_DATA dsw_data_twineagl_4[] =
   { MSG_EXTRA_LIFE, 0xc, 4 },
   { _("Never") , 0xc},
   { _("500K Only") , 0x8},
-  { _("1000K Only") , 0x4},
+  { _("1000k only") , 0x4},
   { _("500K Every 1500K") , 0x0},
   { MSG_LIVES, 0x30, 4 },
   { "1" , 0x10},
@@ -2837,7 +2837,7 @@ static struct DSW_DATA dsw_data_jjsquawk_4[] =
   { _("20K Every 100K") , 0x80},
   { _("50K Every 200K") , 0xc0},
   { _("70K 200K Only") , 0x40},
-  { _("100K Only") , 0x0},
+  { _("100k only") , 0x0},
   { NULL, 0}
 };
 
@@ -3084,7 +3084,7 @@ static struct DSW_DATA dsw_data_tndrcade_3[] =
   { _("50K  Only") , 0x000c},
   { _("50K Every 150K") , 0x0004},
   { _("70K Every 200K") , 0x0000},
-  { _("100K Only") , 0x0008},
+  { _("100k only") , 0x0008},
   { MSG_LIVES, 0x0030, 4 },
   { "1" , 0x0010},
   { "2" , 0x0000},

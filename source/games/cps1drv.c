@@ -4486,7 +4486,7 @@ static struct DSW_DATA dsw_data_megaman_1[] =
   { MSG_4COIN_1PLAY, 0x14},
   { MSG_3COIN_1PLAY, 0x15},
   { MSG_2COIN_1PLAY, 0x16},
-  { _("2 Coins to Start1 to Continue") , 0x0e},
+  { _("2 Coins to Start,1 to Continue") , 0x0e},
   { MSG_1COIN_1PLAY, 0x1f},
   { MSG_1COIN_1PLAY, 0x1e},
   { MSG_1COIN_3PLAY, 0x1d},
