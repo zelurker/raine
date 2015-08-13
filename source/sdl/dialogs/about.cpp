@@ -596,7 +596,6 @@ static int about_game(int sel) {
   int nb_lines = 10;
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
   int used = 0;
-  unsigned int maxlen = sdl_screen->w/(min_font_size); // rough approximation
   char *buff;
   if (do_command)
       buff = commands_buff[sel];
@@ -607,6 +606,7 @@ static int about_game(int sel) {
     char *s = buff;
     char *nl;
     char previous;
+    TFont_ttf *font = new TFont_ttf(min_font_size);
     while ((nl = strchr(s,'\n'))) {
       char *q;
       previous = *nl;
@@ -646,21 +646,35 @@ static int about_game(int sel) {
 	      }
 	  }
       }
-      if (strlen(s) > maxlen) {
+      int w,h;
+      font->dimensions(s,&w,&h);
+      if (w > sdl_screen->w-50) {
 	char start;
 	if (s > buff) {
 	  start = s[-1];
 	  s[-1] = 0;
 	}
-	char old = s[maxlen];
-	s[maxlen] = 0;
-	char *sp = strrchr(s,' ');
-	s[maxlen] = old;
+	char *old = NULL;
+	char *sp;
+	do {
+	    sp = strrchr(s,' ');
+	    if (sp) {
+		*sp = 0;
+		if (old) *old = ' ';
+		old = sp;
+	    } else
+		break;
+	    font->dimensions(s,&w,&h);
+	} while (w > sdl_screen->w-50);
+
+	int maxlen = strlen(s);
+	if (old)
+	    *old = ' ';
 	if (s>buff) {
 	  s[-1] = start;
 	}
 	if (!sp)
-	  sp = strchr(s+maxlen,' ');
+	  sp = old;
 	*nl = previous;
 	if (sp && sp <= s+maxlen)
 	  nl = sp;
@@ -689,6 +703,7 @@ end_loop:
       else
 	s = nl;
     }
+    delete font;
   } else {
       char *hist = get_shared("history.dat");
       if (!strcmp(hist,"history.dat")) { // No path info added -> no file !

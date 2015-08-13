@@ -14,7 +14,8 @@ char *history = NULL;
 
 void hist_open(char *name) {
   FILE *f;
-  char str[256];
+#define LINE 1024
+  char str[LINE+1];
   int size = 1024;
   int len;
   int used = 0;
@@ -39,7 +40,7 @@ void hist_open(char *name) {
   f = fopen (get_shared(name), "r");
   if (!f) return;
   while (!feof(f)) {
-      myfgets(str,255,f);
+      myfgets(str,LINE,f);
       // The use of strncmp is to be able to handle crlfs files in unix
       if (!strncmp(str,"$info=",6)) {
 	  if (commands) break; // End of current game
@@ -56,7 +57,7 @@ void hist_open(char *name) {
       // After this line we are parsing data for the current loaded game
       else if (!strncmp(str,"$cmd",4)) { // subsection
 	  // Specific to command.dat
-	  myfgets(str,255,f);
+	  myfgets(str,LINE,f);
 #ifdef SDL
 	  menu_commands = realloc(menu_commands,sizeof(menu_item_t)*(nb_commands+2));
 	  memset(&menu_commands[nb_commands],0,sizeof(menu_item_t)*2);
