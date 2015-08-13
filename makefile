@@ -17,7 +17,7 @@
 VERSION = "0.64.6"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -386,7 +386,9 @@ endif
 # seal is dead since the end of 1998, and it's not actievely maintained anymore in raine,
 # so expect problems if you enable this.
 # In dos seal is better to handle pci soundcards.
-# SEAL = 1
+ifdef RAINE_DOS
+SEAL = 1
+endif
 
 ifdef SEAL
 LIBS += -laudio
@@ -1010,6 +1012,7 @@ endif
 
 ifdef SEAL
 OBJS += $(OBJDIR)/seal/sasound.o
+CFLAGS += -DSEAL
 else
 ifdef RAINE_DOS
 OBJS += $(OBJDIR)/alleg/sasound.o

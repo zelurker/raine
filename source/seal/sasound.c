@@ -22,6 +22,7 @@
 
 #define SEAL
 
+int GameSound;
 static UINT8 counter[MAX_STREAM_CHANNELS];
 
 int RaineSoundCardTotal,
@@ -88,7 +89,7 @@ void saSetPan( int channel, int data )
 /*  streams v35x									   */
 /*******************************************************************************************/
 
-#include "streams.c"
+#include "alleg/streams.c"
 
 /*******************************************************************************************/
 /*  sa???Sound										   */

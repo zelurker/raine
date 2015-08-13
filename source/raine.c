@@ -115,7 +115,9 @@ int main(int argc,char *argv[])
    FILE *f;
 #endif
 
+#ifndef RAINE_DOS
   setlocale(LC_ALL & ~LC_NUMERIC,""); // init locale
+#endif
 
   /* This just helps some window managers to grab some info from the
    * .desktop file if it exists */
@@ -247,8 +249,10 @@ int main(int argc,char *argv[])
 #endif
 
    // i18n : path for catalog file
+#ifndef RAINE_DOS
    bindtextdomain("raine",get_shared("locale"));
    textdomain("raine");
+#endif
 
    // set default screen settings
    setup_gfx_modes();

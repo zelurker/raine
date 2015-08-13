@@ -112,6 +112,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
   int myfg, int mybg, int xoptions) {
     int fg = myfg, bg = mybg;
     char buff[256];
+    /* Copy the string to allow to modify it without problem */
     strcpy(buff,menu->label);
     char *s = buff;
     char *old = s;

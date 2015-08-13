@@ -18,12 +18,12 @@
    sample conversion functions (in fact it probably has them internally). So I
    can't convert the samples with allegro as easily, unless I copy the
    conversion code from the sdl source... For now allegro is used only in dos,
-   so it does not seem very important. 
+   so it does not seem very important.
 
    For now the old packfile format is still supported if SDL isn't defined,
    but there doesn't seem to be any reason to keep it... */
 
-#ifndef ALLEGRO_SOUND
+#if !defined( ALLEGRO_SOUND) && !defined(SEAL)
 
 struct wave_spec {
   // to be saved

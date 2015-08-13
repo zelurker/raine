@@ -24,6 +24,7 @@
 #define UINT unsigned int
 #define DWORD int
 
+int GameSound;
 static UINT8 counter[MAX_STREAM_CHANNELS];
 
 int RaineSoundCardTotal,
