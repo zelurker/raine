@@ -449,59 +449,59 @@ static int do_ingame_controls(int sel) {
       if (sel < 0 && !base_input)
 	base_input = n;
       switch(InputList[n].default_key) {
-      case KB_DEF_P1_UP:   menu[mynb].label = "Player1 _8"; break;
-      case KB_DEF_P1_DOWN: menu[mynb].label = "Player2 _2"; break;
-      case KB_DEF_P1_LEFT: menu[mynb].label = "Player1 _4"; break;
-      case KB_DEF_P1_RIGHT:menu[mynb].label = "Player1 _6"; break;
+      case KB_DEF_P1_UP:   menu[mynb].label = _("Player1 _8"); break;
+      case KB_DEF_P1_DOWN: menu[mynb].label = _("Player2 _2"); break;
+      case KB_DEF_P1_LEFT: menu[mynb].label = _("Player1 _4"); break;
+      case KB_DEF_P1_RIGHT:menu[mynb].label = _("Player1 _6"); break;
 
-      case KB_DEF_P1_B1: menu[mynb].label = "Player1 ^E"; break;
-      case KB_DEF_P1_B2: menu[mynb].label = "Player1 ^F"; break;
-      case KB_DEF_P1_B3: menu[mynb].label = "Player1 ^G"; break;
-      case KB_DEF_P1_B4: menu[mynb].label = "Player1 ^H"; break;
-      case KB_DEF_P1_B5: menu[mynb].label = "Player1 ^I"; break;
-      case KB_DEF_P1_B6: menu[mynb].label = "Player1 ^J"; break;
+      case KB_DEF_P1_B1: menu[mynb].label = _("Player1 ^E"); break;
+      case KB_DEF_P1_B2: menu[mynb].label = _("Player1 ^F"); break;
+      case KB_DEF_P1_B3: menu[mynb].label = _("Player1 ^G"); break;
+      case KB_DEF_P1_B4: menu[mynb].label = _("Player1 ^H"); break;
+      case KB_DEF_P1_B5: menu[mynb].label = _("Player1 ^I"); break;
+      case KB_DEF_P1_B6: menu[mynb].label = _("Player1 ^J"); break;
 
-      case KB_DEF_P1_B1B2:menu[mynb].label = "Player1 ^E^F"; break;
-      case KB_DEF_P1_B3B4:menu[mynb].label = "Player1 ^G^H"; break;
-      case KB_DEF_P1_B2B3:menu[mynb].label = "Player1 ^F^G"; break;
-      case KB_DEF_P1_B1B2B3:menu[mynb].label = "Player1 ^E^F^G"; break;
-      case KB_DEF_P1_B2B3B4:menu[mynb].label = "Player1 ^F^G^H"; break;
+      case KB_DEF_P1_B1B2:menu[mynb].label = _("Player1 ^E^F"); break;
+      case KB_DEF_P1_B3B4:menu[mynb].label = _("Player1 ^G^H"); break;
+      case KB_DEF_P1_B2B3:menu[mynb].label = _("Player1 ^F^G"); break;
+      case KB_DEF_P1_B1B2B3:menu[mynb].label = _("Player1 ^E^F^G"); break;
+      case KB_DEF_P1_B2B3B4:menu[mynb].label = _("Player1 ^F^G^H"); break;
 
-      case KB_DEF_P2_UP:   menu[mynb].label = "Player2 _8"; break;
-      case KB_DEF_P2_DOWN: menu[mynb].label = "Player2 _2"; break;
-      case KB_DEF_P2_LEFT: menu[mynb].label = "Player2 _4"; break;
-      case KB_DEF_P2_RIGHT:menu[mynb].label = "Player2 _6"; break;
+      case KB_DEF_P2_UP:   menu[mynb].label = _("Player2 _8"); break;
+      case KB_DEF_P2_DOWN: menu[mynb].label = _("Player2 _2"); break;
+      case KB_DEF_P2_LEFT: menu[mynb].label = _("Player2 _4"); break;
+      case KB_DEF_P2_RIGHT:menu[mynb].label = _("Player2 _6"); break;
 
-      case KB_DEF_P2_B1: menu[mynb].label = "Player2 ^E"; break;
-      case KB_DEF_P2_B2: menu[mynb].label = "Player2 ^F"; break;
-      case KB_DEF_P2_B3: menu[mynb].label = "Player2 ^G"; break;
-      case KB_DEF_P2_B4: menu[mynb].label = "Player2 ^H"; break;
-      case KB_DEF_P2_B5: menu[mynb].label = "Player2 ^I"; break;
-      case KB_DEF_P2_B6: menu[mynb].label = "Player2 ^J"; break;
+      case KB_DEF_P2_B1: menu[mynb].label = _("Player2 ^E"); break;
+      case KB_DEF_P2_B2: menu[mynb].label = _("Player2 ^F"); break;
+      case KB_DEF_P2_B3: menu[mynb].label = _("Player2 ^G"); break;
+      case KB_DEF_P2_B4: menu[mynb].label = _("Player2 ^H"); break;
+      case KB_DEF_P2_B5: menu[mynb].label = _("Player2 ^I"); break;
+      case KB_DEF_P2_B6: menu[mynb].label = _("Player2 ^J"); break;
 
-      case KB_DEF_P3_UP:   menu[mynb].label = "Player3 _8"; break;
-      case KB_DEF_P3_DOWN: menu[mynb].label = "Player3 _2"; break;
-      case KB_DEF_P3_LEFT: menu[mynb].label = "Player3 _4"; break;
-      case KB_DEF_P3_RIGHT:menu[mynb].label = "Player3 _6"; break;
+      case KB_DEF_P3_UP:   menu[mynb].label = _("Player3 _8"); break;
+      case KB_DEF_P3_DOWN: menu[mynb].label = _("Player3 _2"); break;
+      case KB_DEF_P3_LEFT: menu[mynb].label = _("Player3 _4"); break;
+      case KB_DEF_P3_RIGHT:menu[mynb].label = _("Player3 _6"); break;
 
-      case KB_DEF_P3_B1: menu[mynb].label = "Player3 ^E"; break;
-      case KB_DEF_P3_B2: menu[mynb].label = "Player3 ^F"; break;
-      case KB_DEF_P3_B3: menu[mynb].label = "Player3 ^G"; break;
-      case KB_DEF_P3_B4: menu[mynb].label = "Player3 ^H"; break;
-      case KB_DEF_P3_B5: menu[mynb].label = "Player3 ^I"; break;
-      case KB_DEF_P3_B6: menu[mynb].label = "Player3 ^J"; break;
+      case KB_DEF_P3_B1: menu[mynb].label = _("Player3 ^E"); break;
+      case KB_DEF_P3_B2: menu[mynb].label = _("Player3 ^F"); break;
+      case KB_DEF_P3_B3: menu[mynb].label = _("Player3 ^G"); break;
+      case KB_DEF_P3_B4: menu[mynb].label = _("Player3 ^H"); break;
+      case KB_DEF_P3_B5: menu[mynb].label = _("Player3 ^I"); break;
+      case KB_DEF_P3_B6: menu[mynb].label = _("Player3 ^J"); break;
 
-      case KB_DEF_P4_UP:   menu[mynb].label = "Player4 _8"; break;
-      case KB_DEF_P4_DOWN: menu[mynb].label = "Player4 _2"; break;
-      case KB_DEF_P4_LEFT: menu[mynb].label = "Player4 _4"; break;
-      case KB_DEF_P4_RIGHT:menu[mynb].label = "Player4 _6"; break;
+      case KB_DEF_P4_UP:   menu[mynb].label = _("Player4 _8"); break;
+      case KB_DEF_P4_DOWN: menu[mynb].label = _("Player4 _2"); break;
+      case KB_DEF_P4_LEFT: menu[mynb].label = _("Player4 _4"); break;
+      case KB_DEF_P4_RIGHT:menu[mynb].label = _("Player4 _6"); break;
 
-      case KB_DEF_P4_B1: menu[mynb].label = "Player4 ^E"; break;
-      case KB_DEF_P4_B2: menu[mynb].label = "Player4 ^F"; break;
-      case KB_DEF_P4_B3: menu[mynb].label = "Player4 ^G"; break;
-      case KB_DEF_P4_B4: menu[mynb].label = "Player4 ^H"; break;
-      case KB_DEF_P4_B5: menu[mynb].label = "Player4 ^I"; break;
-      case KB_DEF_P4_B6: menu[mynb].label = "Player4 ^J"; break;
+      case KB_DEF_P4_B1: menu[mynb].label = _("Player4 ^E"); break;
+      case KB_DEF_P4_B2: menu[mynb].label = _("Player4 ^F"); break;
+      case KB_DEF_P4_B3: menu[mynb].label = _("Player4 ^G"); break;
+      case KB_DEF_P4_B4: menu[mynb].label = _("Player4 ^H"); break;
+      case KB_DEF_P4_B5: menu[mynb].label = _("Player4 ^I"); break;
+      case KB_DEF_P4_B6: menu[mynb].label = _("Player4 ^J"); break;
       default:
       menu[mynb].label = InputList[n].InputName;
       }
