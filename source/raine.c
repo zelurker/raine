@@ -70,10 +70,6 @@ DECLARE_COLOR_DEPTH_LIST(
 #endif
 #endif
 
-#if HAS_YM3812
-extern int use_emulated_ym3812;
-#endif
-
 /**************************************************************/
 
 #ifdef RAINE_UNIX
@@ -424,11 +420,6 @@ int main(int argc,char *argv[])
 	 audio_sample_rate = 22050;
       else
 	 audio_sample_rate = 44100;
-
-#if HAS_YM3812
-   use_emulated_ym3812	= 1;
-#endif
-
 
    // KEYBOARD DEFAULT
 

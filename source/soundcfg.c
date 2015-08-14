@@ -1,6 +1,7 @@
 #include "raine.h"
 #include "sasound.h"
 #include "es5506.h"
+#include "3812intf.h"
 
 #ifdef ALLEGRO_SOUND
 int max_mixer_volume;
@@ -47,6 +48,7 @@ void sound_load_cfg() {
       in this os (they oblige to have quite a big sound buffer, which produces a
       noticeable sound delay at low sampling rates */
    audio_sample_rate= raine_get_config_int( "Sound",        "sample_rate",          44100 );
+   use_emulated_ym3812  = raine_get_config_int( "Sound",        "YM3812Emulation",      0 );    // 0 = Hardware; 1 = Software
 #if HAS_ES5505
    es5506_voice_filters = raine_get_config_int( "Sound",        "es5506_voice_filters",1 );
 #endif
@@ -64,6 +66,7 @@ void sound_save_cfg() {
    // SOUND
    raine_set_config_id( 	"Sound",        "sound_card",           sound_card_id(RaineSoundCard));
    raine_set_config_int(	"Sound",        "sample_rate",          audio_sample_rate);
+   raine_set_config_int(	"Sound",        "YM3812Emulation",          use_emulated_ym3812);
 
 #if HAS_ES5505
    raine_set_config_int(	"Sound",        "es5506_voice_filters", es5506_voice_filters);

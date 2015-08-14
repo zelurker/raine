@@ -10,6 +10,8 @@ extern "C" {
 #define MAX_3812 2
 #define MAX_8950 MAX_3812
 
+extern int use_emulated_ym3812;
+
 struct YM3812interface
 {
 	int num;

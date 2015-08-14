@@ -8,11 +8,11 @@
 #include "sasound.h"
 #include "streams.h"
 #include "blit.h"
+#include "3812intf.h"
 
-extern int use_emulated_ym3812;
 extern char soundname[96];
 #define SND_RATE_LIST		6
-#ifdef ALLEGRO_SOUND
+#if defined(ALLEGRO_SOUND) || defined(SEAL)
 #define MAX_VOL_BTN  9
 #define RECORD_BTN 10
 #else
@@ -36,6 +36,8 @@ DIALOG sound_setup_dialog[] =
    { x_raine_radio_proc, 8,    124,  64,   9,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    1,    "44100"},
 #ifdef ALLEGRO_SOUND
    { d_raine_check_proc, 100,    94,  200,   9,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       1,    1,    "Max Mixer Volume"},
+#elif defined(SEAL)
+   { d_raine_check_proc, 100,    94,  200,   9,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       1,    1,    "Emulated YM3812"},
 #endif
    { d_raine_check_proc, 100,    104,  200,   9,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       1,    1,    "Record to wav"},
    { x_text_proc,        100,    124,  1,    1,    GUI_COL_TEXT_2,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Recording options:"},
@@ -76,6 +78,9 @@ void get_sound_variables(void)
 
 #ifdef ALLEGRO_SOUND
       sound_setup_dialog[MAX_VOL_BTN].flags=(max_mixer_volume ? D_SELECTED : 0);
+#endif
+#ifdef SEAL
+      sound_setup_dialog[MAX_VOL_BTN].flags=(use_emulated_ym3812 ? D_SELECTED : 0);
 #endif
 
       sound_setup_dialog[RECORD_BTN].flags=(recording ? D_SELECTED : 0);
@@ -118,6 +123,8 @@ void set_sound_variables(UINT8 update)
 
 #ifdef ALLEGRO_SOUND
      max_mixer_volume = sound_setup_dialog[MAX_VOL_BTN].flags & D_SELECTED;
+#elif defined(SEAL)
+     use_emulated_ym3812 = sound_setup_dialog[MAX_VOL_BTN].flags & D_SELECTED;
 #endif
      if (recording)
        end_recording();

@@ -76,7 +76,6 @@ static void timer1_callback (int chip)
 	}
 
 	/* next! */
-	fprintf(stderr,"should not be here\n");
 	st->timer1 = timer_set ((double)st->timer1_val*4*timer_step, chip, timer1_callback);
 }
 
@@ -92,7 +91,6 @@ static void timer2_callback (int chip)
 	}
 
 	/* next! */
-	fprintf(stderr,"should not be here 2\n");
 	st->timer2 = timer_set ((double)st->timer2_val*16*timer_step, chip, timer2_callback);
 }
 
@@ -169,7 +167,6 @@ static void nonemu_YM3812_write_port_w(int chip,int data)
 {
 	NE_OPL_STATE *st = &nonemu_state[chip];
 	int nCh = st->address_register&0x0f;
-	fprintf(stderr,"should not be here 3\n");
 
 #ifdef OPL3CONVERTFREQUENCY
 	if( (nCh<9) )
@@ -408,7 +405,7 @@ static int emu_YM3812_read_port_r(int chip)
 	Begin of YM3812 interface stubs block
  **********************************************************************************************/
 
-int use_emulated_ym3812=0; // define if you have a soundcard with a real
+int use_emulated_ym3812; // define if you have a soundcard with a real
 // fm chip like the 3812 (emulated)
 
 static int OPL_sh_start(const struct YM3812interface *msound)
