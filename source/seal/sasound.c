@@ -158,11 +158,28 @@ int sound_card_id( int i )
 /******************************************/
 
 static int modeb_count;
+static int init_done = 0;
+
+void set_mastervolume(int _attenuation)
+{
+	float volume;
+
+
+	if (_attenuation > 0) _attenuation = 0;
+	if (_attenuation < -32) _attenuation = -32;
+
+	volume = 256.0;	/* range is 0-256 */
+	while (_attenuation++ < 0)
+		volume /= 1.122018454;	/* = (10 ^ (1/20)) = 1dB */
+
+	ASetAudioMixerValue(AUDIO_MIXER_MASTER_VOLUME,volume);
+}
 
 BOOL saInitSoundCard( int soundcard, int sample_rate )
 {
    AUDIOINFO audio_info;
    AUDIOCAPS audio_caps;
+   if (init_done) return FALSE;
 
    int i;
 
@@ -195,20 +212,25 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    // Seal is crap, it clicks, it's slow, it's bugged (why are we ever using it?)
 
    if(audio_sample_rate>44098)
-   audio_sample_rate = 44098;
-
+       // Don't know if it's still relevant with a patched seal
+       // it seems faster with this, so I'll keep it.
+       audio_sample_rate = 44098;
    // Sample Rate
 
    audio_info.nSampleRate = audio_sample_rate;
 
    // Open audio
 
-   if( AOpenAudio(&audio_info) != AUDIO_ERROR_NONE ){
-      print_debug("saInitSoundCard(): Audio Initialization Failed!\n");
+   int rc;
+   if( (rc = AOpenAudio(&audio_info)) != AUDIO_ERROR_NONE ){
+       char szText[1024];
+       AGetErrorText(rc, szText, sizeof(szText) - 1);
+      print_debug("saInitSoundCard(): Audio Initialization Failed: %s\n",szText);
       audio_sample_rate = 0;
       RaineSoundCard = 0;
       return FALSE;
-   }
+   } else
+       print_debug("AOpenAudio ok !\n");
 
    // Find out what seal chose for us
 
@@ -244,10 +266,10 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
       lpWave[i]  = 0;
       playing[i] = 0;
 
-      #ifdef DUMP_CHANNELS
+#ifdef DUMP_CHANNELS
       sprintf(s,"stream%02d.raw",i);
       stream_out[i] = fopen(s,"wb");
-      #endif
+#endif
    }
 
 #ifdef RAINE_DOS
@@ -262,8 +284,12 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 
    //reserved_channel = 0;
 
-   if(!init_sound_emulators())
+   set_mastervolume(0);
+
+   if(!init_sound_emulators()) {
+       init_done = 1;
       return FALSE;
+   }
 
    return TRUE;
 }
@@ -345,6 +371,7 @@ void saDestroySound( int remove_all_resources )
    }
    ACloseVoices();
    ACloseAudio();
+   init_done = 0;
 #ifdef USE_COMPENS
    reset_streams();
 #endif
