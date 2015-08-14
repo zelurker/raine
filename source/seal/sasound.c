@@ -211,10 +211,10 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 
    // Seal is crap, it clicks, it's slow, it's bugged (why are we ever using it?)
 
-   if(audio_sample_rate>44098)
+/*   if(audio_sample_rate>44098)
        // Don't know if it's still relevant with a patched seal
        // it seems faster with this, so I'll keep it.
-       audio_sample_rate = 44098;
+       audio_sample_rate = 44098; */
    // Sample Rate
 
    audio_info.nSampleRate = audio_sample_rate;
