@@ -1462,80 +1462,86 @@ void TMenu::handle_key(SDL_Event *event) {
 		// look for the new selection then, starting at sel
 		// 1 : find sel in the menu_disp array
 		n = get_seldisp();
+		int found = 0;
 		for (; n<nb_disp_items; n++) {
 		    const char *s = skip_esc(menu[menu_disp[n]].label);
 		    if (can_be_selected(menu_disp[n]) &&
 			    !strncasecmp(s,keybuf,index)) {
+			found = 1;
 			break;
 		    }
 		}
-		if (n == nb_disp_items) { // not found -> search from 0
+		if (!found) { // not found -> search from 0
 		    for (n=0; n<=get_seldisp(); n++) {
 			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
 				!strncasecmp(s,keybuf,index)) {
+			    found = 1;
 			    break;
 			}
 		    }
 		}
 
-		if (n == nb_disp_items) { // not found -> search substring
+		if (!found) { // not found -> search substring
 		    for (n=get_seldisp(); n<nb_disp_items; n++) {
 			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
 				mystrcasestr(s,keybuf)) {
+			    found = 1;
 			    break;
 			}
 		    }
-		  if (n == nb_disp_items) // and from 0
+		}
+		if (!found) { // and from 0
 		    for (n=0; n<nb_disp_items; n++) {
 			const char *s = skip_esc(menu[menu_disp[n]].label);
 			if (can_be_selected(menu_disp[n]) &&
 				mystrcasestr(s,keybuf)) {
+			    found = 1;
 			    break;
 			}
 		    }
+		}
 
-		  if (n == nb_disp_items) { // still not found !
+		if (!found) {
 		    // Let's say that the new key is the start of a new selection
 		    // then...
 		    if (index == 1) { // if it's already the 1st one, forget it
-		      keybuf[0] = 0;
-		      break;
+			keybuf[0] = 0;
+			break;
 		    }
 		    // Otherwise just clear keybuf and process this event again
 		    keybuf[0] = 0;
 		    handle_key(event);
 		    break;
-		  }
 		}
 		sel = menu_disp[n];
 		while (sel < menu_disp[top]) {
-		  top--;
+		    top--;
 		}
 		while (top+rows < nb_disp_items && sel >= menu_disp[top+rows]) {
-		  top++;
+		    top++;
 		}
 		if (!return_mandatory) {
-		  // check if another entry matches keybuf
-		  seldisp = n;
-		  for (n=seldisp+1; n<nb_disp_items; n++) {
-		      const char *s = skip_esc(menu[menu_disp[n]].label);
-		      if (can_be_selected(menu_disp[n]) &&
-			      !strnicmp(s,keybuf,index))
-			  break;
-		  }
-		  if (n == nb_disp_items) {
-		      for (n=0; n<seldisp; n++) {
-			  const char *s = skip_esc(menu[menu_disp[n]].label);
-			  if (can_be_selected(menu_disp[n]) &&
-				  !strnicmp(s,keybuf,index))
-			      break;
-		      }
-		    if (n == seldisp) { // no other entry
-		      exec_menu_item();
+		    // check if another entry matches keybuf
+		    seldisp = n;
+		    for (n=seldisp+1; n<nb_disp_items; n++) {
+			const char *s = skip_esc(menu[menu_disp[n]].label);
+			if (can_be_selected(menu_disp[n]) &&
+				!strnicmp(s,keybuf,index))
+			    break;
 		    }
-		  }
+		    if (n == nb_disp_items) {
+			for (n=0; n<seldisp; n++) {
+			    const char *s = skip_esc(menu[menu_disp[n]].label);
+			    if (can_be_selected(menu_disp[n]) &&
+				    !strnicmp(s,keybuf,index))
+				break;
+			}
+			if (n == seldisp) { // no other entry
+			    exec_menu_item();
+			}
+		    }
 		}
 	      }
 	    }
