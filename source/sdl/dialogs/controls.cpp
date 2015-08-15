@@ -435,76 +435,61 @@ static int do_layers_controls(int sel) {
   return 0;
 }
 
+static char* convert_command(char *cmd) {
+    // Convert a standard input string to a command.dat string
+    char buff[40];
+    if (strncmp(cmd,"Player",6) ||
+	    (cmd[7] != ' '))
+	return strdup(cmd);
+    sprintf(buff,_("Player"));
+    char *end = buff+strlen(buff);
+    sprintf(end,"%c ",cmd[6]);
+    end += 2;
+
+    if (!strncmp(&cmd[8],"Button",6) && cmd[14] >= '1' && cmd[14] <= '6')
+	sprintf(end,"^%c",'E'+cmd[14]-'1');
+    else if (!strcmp(&cmd[8],"Up"))
+	sprintf(end,"_8");
+    else if (!strcmp(&cmd[8],"Down"))
+	sprintf(end,"_2");
+    else if (!strcmp(&cmd[8],"Left"))
+	sprintf(end,"_4");
+    else if (!strcmp(&cmd[8],"Right"))
+	sprintf(end,"_6");
+    else if (cmd[9] == 0 && (cmd[8] >= 'A' && cmd[8] <= 'D')) // Single button
+	sprintf(end,"_%c",cmd[8]);
+    else if (!strcmp(&cmd[8],"A+B"))
+	sprintf(end,"_A+_B");
+    else if (!strcmp(&cmd[8],"B+C"))
+	sprintf(end,"_B+_C");
+    else if (!strcmp(&cmd[8],"C+D"))
+	sprintf(end,"_C+_D");
+    else if (!strcmp(&cmd[8],"A+B+C"))
+	sprintf(end,"_A+_B+_C");
+    else if (!strcmp(&cmd[8],"B+C+D"))
+	sprintf(end,"_B+_C+_D");
+    else
+	return strdup(cmd);
+    return strdup(buff);
+}
+
 static int do_ingame_controls(int sel) {
   int nb = InputCount,mynb;
   menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   cols = (char**)malloc(sizeof(char*)*nb*3);
+  char **strings = (char**)malloc(sizeof(char*)*nb);
   mynb = 0;
   base_input = 0;
   int categ[0x100];
-  for (int n=0; n<nb; n++) {
+  int n;
+  for (n=0; n<nb; n++) {
     if ((sel >= 0 && (InputList[n].link == 0 || InputList[n].link > n)) ||
         (sel < 0 && InputList[n].link > 0 && InputList[n].link < n)) {
       if (sel < 0 && !base_input)
 	base_input = n;
-      switch(InputList[n].default_key) {
-      case KB_DEF_P1_UP:   menu[mynb].label = _("Player1 _8"); break;
-      case KB_DEF_P1_DOWN: menu[mynb].label = _("Player2 _2"); break;
-      case KB_DEF_P1_LEFT: menu[mynb].label = _("Player1 _4"); break;
-      case KB_DEF_P1_RIGHT:menu[mynb].label = _("Player1 _6"); break;
-
-      case KB_DEF_P1_B1: menu[mynb].label = _("Player1 ^E"); break;
-      case KB_DEF_P1_B2: menu[mynb].label = _("Player1 ^F"); break;
-      case KB_DEF_P1_B3: menu[mynb].label = _("Player1 ^G"); break;
-      case KB_DEF_P1_B4: menu[mynb].label = _("Player1 ^H"); break;
-      case KB_DEF_P1_B5: menu[mynb].label = _("Player1 ^I"); break;
-      case KB_DEF_P1_B6: menu[mynb].label = _("Player1 ^J"); break;
-
-      case KB_DEF_P1_B1B2:menu[mynb].label = _("Player1 ^E^F"); break;
-      case KB_DEF_P1_B3B4:menu[mynb].label = _("Player1 ^G^H"); break;
-      case KB_DEF_P1_B2B3:menu[mynb].label = _("Player1 ^F^G"); break;
-      case KB_DEF_P1_B1B2B3:menu[mynb].label = _("Player1 ^E^F^G"); break;
-      case KB_DEF_P1_B2B3B4:menu[mynb].label = _("Player1 ^F^G^H"); break;
-
-      case KB_DEF_P2_UP:   menu[mynb].label = _("Player2 _8"); break;
-      case KB_DEF_P2_DOWN: menu[mynb].label = _("Player2 _2"); break;
-      case KB_DEF_P2_LEFT: menu[mynb].label = _("Player2 _4"); break;
-      case KB_DEF_P2_RIGHT:menu[mynb].label = _("Player2 _6"); break;
-
-      case KB_DEF_P2_B1: menu[mynb].label = _("Player2 ^E"); break;
-      case KB_DEF_P2_B2: menu[mynb].label = _("Player2 ^F"); break;
-      case KB_DEF_P2_B3: menu[mynb].label = _("Player2 ^G"); break;
-      case KB_DEF_P2_B4: menu[mynb].label = _("Player2 ^H"); break;
-      case KB_DEF_P2_B5: menu[mynb].label = _("Player2 ^I"); break;
-      case KB_DEF_P2_B6: menu[mynb].label = _("Player2 ^J"); break;
-
-      case KB_DEF_P3_UP:   menu[mynb].label = _("Player3 _8"); break;
-      case KB_DEF_P3_DOWN: menu[mynb].label = _("Player3 _2"); break;
-      case KB_DEF_P3_LEFT: menu[mynb].label = _("Player3 _4"); break;
-      case KB_DEF_P3_RIGHT:menu[mynb].label = _("Player3 _6"); break;
-
-      case KB_DEF_P3_B1: menu[mynb].label = _("Player3 ^E"); break;
-      case KB_DEF_P3_B2: menu[mynb].label = _("Player3 ^F"); break;
-      case KB_DEF_P3_B3: menu[mynb].label = _("Player3 ^G"); break;
-      case KB_DEF_P3_B4: menu[mynb].label = _("Player3 ^H"); break;
-      case KB_DEF_P3_B5: menu[mynb].label = _("Player3 ^I"); break;
-      case KB_DEF_P3_B6: menu[mynb].label = _("Player3 ^J"); break;
-
-      case KB_DEF_P4_UP:   menu[mynb].label = _("Player4 _8"); break;
-      case KB_DEF_P4_DOWN: menu[mynb].label = _("Player4 _2"); break;
-      case KB_DEF_P4_LEFT: menu[mynb].label = _("Player4 _4"); break;
-      case KB_DEF_P4_RIGHT:menu[mynb].label = _("Player4 _6"); break;
-
-      case KB_DEF_P4_B1: menu[mynb].label = _("Player4 ^E"); break;
-      case KB_DEF_P4_B2: menu[mynb].label = _("Player4 ^F"); break;
-      case KB_DEF_P4_B3: menu[mynb].label = _("Player4 ^G"); break;
-      case KB_DEF_P4_B4: menu[mynb].label = _("Player4 ^H"); break;
-      case KB_DEF_P4_B5: menu[mynb].label = _("Player4 ^I"); break;
-      case KB_DEF_P4_B6: menu[mynb].label = _("Player4 ^J"); break;
-      default:
-      menu[mynb].label = InputList[n].InputName;
-      }
+      menu[mynb].label = convert_command(InputList[n].InputName);
+      strings[mynb] = (char*)menu[mynb].label; // keep a copy before translation !
       menu[mynb].menu_func = &do_input_ingame;
       cols[mynb*3+0] = get_key_name(InputList[n].Key);
       cols[mynb*3+1] = get_joy_name(InputList[n].Joy);
@@ -536,10 +521,14 @@ static int do_ingame_controls(int sel) {
   controls = new TMyMenuMultiCol(_("Ingame Controls"),menu,3,cols);
   controls->execute();
   delete controls;
-  for (int n=0; n<mynb*3; n++) {
+  for (n=0; n<mynb*3; n++) {
     free(cols[n]);
   }
   free(cols);
+  for (n=0; n<mynb; n++) {
+      free((void*)strings[n]);
+  }
+  free(strings);
   free(menu);
   return 0;
 }

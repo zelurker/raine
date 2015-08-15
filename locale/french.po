@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-13 15:38+0100\n"
+"PO-Revision-Date: 2015-08-15 08:43+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -3300,57 +3300,6 @@ msgstr ""
 msgid "Player1 Up"
 msgstr ""
 
-#, fuzzy
-msgid "Player1 ^E"
-msgstr "couche"
-
-msgid "Player1 ^E^F"
-msgstr ""
-
-msgid "Player1 ^E^F^G"
-msgstr ""
-
-#, fuzzy
-msgid "Player1 ^F"
-msgstr "couche"
-
-msgid "Player1 ^F^G"
-msgstr ""
-
-msgid "Player1 ^F^G^H"
-msgstr ""
-
-#, fuzzy
-msgid "Player1 ^G"
-msgstr "couche"
-
-msgid "Player1 ^G^H"
-msgstr ""
-
-#, fuzzy
-msgid "Player1 ^H"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player1 ^I"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player1 ^J"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player1 _4"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player1 _6"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player1 _8"
-msgstr "couche"
-
 msgid "Player2 Button1"
 msgstr ""
 
@@ -3389,46 +3338,6 @@ msgstr ""
 
 msgid "Player2 Up"
 msgstr ""
-
-#, fuzzy
-msgid "Player2 ^E"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 ^F"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 ^G"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 ^H"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 ^I"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 ^J"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 _2"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 _4"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 _6"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player2 _8"
-msgstr "couche"
 
 msgid "Player3 Button1"
 msgstr ""
@@ -3469,46 +3378,6 @@ msgstr ""
 msgid "Player3 Up"
 msgstr ""
 
-#, fuzzy
-msgid "Player3 ^E"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 ^F"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 ^G"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 ^H"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 ^I"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 ^J"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 _2"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 _4"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 _6"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player3 _8"
-msgstr "couche"
-
 msgid "Player4 Button1"
 msgstr ""
 
@@ -3547,46 +3416,6 @@ msgstr ""
 
 msgid "Player4 Up"
 msgstr ""
-
-#, fuzzy
-msgid "Player4 ^E"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 ^F"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 ^G"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 ^H"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 ^I"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 ^J"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 _2"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 _4"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 _6"
-msgstr "couche"
-
-#, fuzzy
-msgid "Player4 _8"
-msgstr "couche"
 
 #, c-format
 msgid "Playing from: %s"

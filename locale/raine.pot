@@ -3237,6 +3237,10 @@ msgstr ""
 msgid "Playback"
 msgstr ""
 
+#, c-format
+msgid "Player"
+msgstr ""
+
 msgid "Player 1 Only"
 msgstr ""
 
@@ -3291,48 +3295,6 @@ msgstr ""
 msgid "Player1 Up"
 msgstr ""
 
-msgid "Player1 ^E"
-msgstr ""
-
-msgid "Player1 ^E^F"
-msgstr ""
-
-msgid "Player1 ^E^F^G"
-msgstr ""
-
-msgid "Player1 ^F"
-msgstr ""
-
-msgid "Player1 ^F^G"
-msgstr ""
-
-msgid "Player1 ^F^G^H"
-msgstr ""
-
-msgid "Player1 ^G"
-msgstr ""
-
-msgid "Player1 ^G^H"
-msgstr ""
-
-msgid "Player1 ^H"
-msgstr ""
-
-msgid "Player1 ^I"
-msgstr ""
-
-msgid "Player1 ^J"
-msgstr ""
-
-msgid "Player1 _4"
-msgstr ""
-
-msgid "Player1 _6"
-msgstr ""
-
-msgid "Player1 _8"
-msgstr ""
-
 msgid "Player2 Button1"
 msgstr ""
 
@@ -3370,36 +3332,6 @@ msgid "Player2 Start"
 msgstr ""
 
 msgid "Player2 Up"
-msgstr ""
-
-msgid "Player2 ^E"
-msgstr ""
-
-msgid "Player2 ^F"
-msgstr ""
-
-msgid "Player2 ^G"
-msgstr ""
-
-msgid "Player2 ^H"
-msgstr ""
-
-msgid "Player2 ^I"
-msgstr ""
-
-msgid "Player2 ^J"
-msgstr ""
-
-msgid "Player2 _2"
-msgstr ""
-
-msgid "Player2 _4"
-msgstr ""
-
-msgid "Player2 _6"
-msgstr ""
-
-msgid "Player2 _8"
 msgstr ""
 
 msgid "Player3 Button1"
@@ -3441,36 +3373,6 @@ msgstr ""
 msgid "Player3 Up"
 msgstr ""
 
-msgid "Player3 ^E"
-msgstr ""
-
-msgid "Player3 ^F"
-msgstr ""
-
-msgid "Player3 ^G"
-msgstr ""
-
-msgid "Player3 ^H"
-msgstr ""
-
-msgid "Player3 ^I"
-msgstr ""
-
-msgid "Player3 ^J"
-msgstr ""
-
-msgid "Player3 _2"
-msgstr ""
-
-msgid "Player3 _4"
-msgstr ""
-
-msgid "Player3 _6"
-msgstr ""
-
-msgid "Player3 _8"
-msgstr ""
-
 msgid "Player4 Button1"
 msgstr ""
 
@@ -3508,36 +3410,6 @@ msgid "Player4 Start"
 msgstr ""
 
 msgid "Player4 Up"
-msgstr ""
-
-msgid "Player4 ^E"
-msgstr ""
-
-msgid "Player4 ^F"
-msgstr ""
-
-msgid "Player4 ^G"
-msgstr ""
-
-msgid "Player4 ^H"
-msgstr ""
-
-msgid "Player4 ^I"
-msgstr ""
-
-msgid "Player4 ^J"
-msgstr ""
-
-msgid "Player4 _2"
-msgstr ""
-
-msgid "Player4 _4"
-msgstr ""
-
-msgid "Player4 _6"
-msgstr ""
-
-msgid "Player4 _8"
 msgstr ""
 
 #, c-format
