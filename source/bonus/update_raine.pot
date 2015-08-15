@@ -3,4 +3,4 @@
 # Updates the raine.pot with the files passed as parameter without destroying
 # the existing
 
-xgettext --omit-header -C -k_ -kgettext -d raine -s -o locale/raine.pot -j $*
+xgettext --no-location --omit-header -C -k_ -kgettext -d raine -s -o locale/raine.pot -j $*
