@@ -690,7 +690,8 @@ void load_game_keys(char *section)
 	  InputList[link].auto_rate = raine_get_config_int(section,other_name,0);
 	  // Different name to allow it to be assigned !
 	  char s[120];
-	  sprintf(s,"Autofire %s",InputList[link].InputName);
+	  sprintf(s,"%s %s",gettext("Autofire"),
+		  gettext(InputList[link].InputName));
 	  InputList[link].InputName = (char*)AllocateMem(strlen(s)+1);
 	  strcpy(InputList[link].InputName,s);
 	  InputCount = link+1;
