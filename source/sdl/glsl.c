@@ -59,7 +59,8 @@ typedef struct {
     float outscalex,outscaley;
     int vertex;
     // locations
-    GLint input_size,output_size,texture_size,mvp;
+    GLint input_size,output_size,texture_size,mvp,texture;
+    GLint orig_texture_size,orig_input_size,frame_count;
 
 } tpass;
 
@@ -283,7 +284,7 @@ static GLint get_uniform_loc(GLuint prog, const char *name)
     while (*pref) {
 	sprintf(buf,"%s%s",*pref,name);
 	loc = glGetUniformLocation(prog,buf);
-	if (loc > 0) return loc;
+	if (loc >= 0) return loc;
 	pref++;
     }
     return -1;
@@ -534,6 +535,10 @@ start_shader:
 		pass[n].input_size = get_uniform_loc(glprogram, "InputSize");
 		pass[n].output_size = get_uniform_loc(glprogram, "OutputSize");
 		pass[n].texture_size = get_uniform_loc(glprogram, "TextureSize");
+		pass[n].orig_texture_size = get_uniform_loc(glprogram, "OrigTextureSize");
+		pass[n].orig_input_size = get_uniform_loc(glprogram, "OrigInputSize");
+		pass[n].frame_count = get_uniform_loc(glprogram, "FrameCount");
+		pass[n].texture = get_uniform_loc(glprogram, "Texture");
 		GLint loc = get_attrib_loc(glprogram, "VertexCoord");
 		if (loc > -1) {
 		    printf("VertexCoord... %d,%d\n",area_overlay.w,area_overlay.h);
@@ -602,8 +607,34 @@ void draw_shader(int linear)
 	    }
 #endif
 	    if (pass[n].input_size > -1) {
-		float inputSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+		float inputSize[2];
+		if (n > 0) {
+		    inputSize[0] = (float)area_overlay.w;
+		    inputSize[1] = (float)area_overlay.h;
+		} else {
+		    inputSize[0] = (float)GameScreen.xview;
+		    inputSize[1] = (float)GameScreen.yview;
+		}
 		glUniform2fv(pass[n].input_size, 1, inputSize);
+	    }
+#if 1
+	    if (pass[n].texture > -1) {
+		// Contrary to what I thought what is passed here is not
+		// the texture number used by glBindTexture but rather the
+		// number of the active texture unit, used in a call to
+		// glActiveTexture
+		// This works, but not as it's supposed to do, apparently
+		// for multi-pass shaders I am supposed to switch from 1 texture
+		// unit to another, which is not the case for now, so avoid
+		// these shaders for now !
+
+		// extern GLuint texture; // opengl.c
+		glUniform1i(pass[n].texture, 1);
+	    }
+#endif
+	    if (pass[n].orig_input_size > -1) {
+		float inputSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+		glUniform2fv(pass[n].orig_input_size, 1, inputSize);
 	    }
 	    if (pass[n].output_size > -1) {
 
@@ -625,7 +656,17 @@ void draw_shader(int linear)
 #endif
 		glUniform2fv(pass[n].texture_size, 1, textureSize);
 	    }
+	    if (pass[n].orig_texture_size > -1) {
+		// Not sure how this one evolves for now
+		float textureSize[2] = { (float)GameScreen.xview, (float)GameScreen.yview };
+		glUniform2fv(pass[n].orig_texture_size, 1, textureSize);
+	    }
 
+	    if (pass[n].frame_count > -1) {
+
+		extern UINT32 cpu_frame_count; // profile.c
+		glUniform1i(pass[n].frame_count, cpu_frame_count);
+	    }
 	    if (pass[n].filter == 2) // explicit nearest
 		linear = GL_NEAREST;
 	    else
