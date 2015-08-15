@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-15 08:43+0200\n"
+"PO-Revision-Date: 2015-08-15 14:32+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -333,9 +333,6 @@ msgstr ""
 
 msgid "2 Coins to Start,1 to Continue"
 msgstr "2 pièces pour commencer, 1 pour continuer"
-
-msgid "2 Coins to Start1 to Continue"
-msgstr ""
 
 msgid "2 Coins/1 Credit"
 msgstr ""
@@ -1305,8 +1302,11 @@ msgstr ""
 msgid "Auto Turbo Fire"
 msgstr ""
 
+msgid "Autofire"
+msgstr "Tir automatique"
+
 msgid "Autofire (in some games)"
-msgstr ""
+msgstr "Tir automatique (dans certains jeux)"
 
 msgid "Autofire controls"
 msgstr "Contrôles de tir automatique"
@@ -2991,6 +2991,7 @@ msgstr "Pas encore d'associations"
 
 msgid "No buttons mapped by this game for autofire, sorry !"
 msgstr ""
+"Le tir automatique ne peut être attribué à aucun contrôle de ce jeu, désolé !"
 
 msgid "No change"
 msgstr "Pas de changement"
@@ -3246,6 +3247,10 @@ msgstr ""
 msgid "Playback"
 msgstr ""
 
+#, c-format
+msgid "Player"
+msgstr "Joueur"
+
 msgid "Player 1 Only"
 msgstr ""
 
@@ -3262,28 +3267,28 @@ msgid "Player's vitality consumption"
 msgstr ""
 
 msgid "Player1 Button1"
-msgstr ""
+msgstr "Joueur 1 Bouton 1"
 
 msgid "Player1 Button2"
-msgstr ""
+msgstr "Joueur 1 Bouton 2"
 
 msgid "Player1 Button3"
-msgstr ""
+msgstr "Joueur 1 Bouton 3"
 
 msgid "Player1 Button4"
-msgstr ""
+msgstr "Joueur 1 Bouton 4"
 
 msgid "Player1 Button5"
-msgstr ""
+msgstr "Joueur 1 Bouton 5"
 
 msgid "Player1 Button6"
-msgstr ""
+msgstr "Joueur 1 Bouton 6"
 
 msgid "Player1 Button7"
-msgstr ""
+msgstr "Joueur 1 Bouton 7"
 
 msgid "Player1 Button8"
-msgstr ""
+msgstr "Joueur 1 Bouton 8"
 
 msgid "Player1 Down"
 msgstr ""
@@ -4496,16 +4501,16 @@ msgid "accelerated software->hardware alpha blits"
 msgstr "accéléré copies logiciel->matériel transparentes"
 
 msgid "accelerated software->hardware blits"
-msgstr ""
+msgstr "Copies logiciel -> matériel accélérées"
 
 msgid "accelerated software->hardware colorkey blits"
-msgstr ""
+msgstr "Copies logiciel -> matériel avec couleur transparente accélérées"
 
 msgid "alloc error"
 msgstr "Erreur d'allocation"
 
 msgid "alpha"
-msgstr ""
+msgstr "alpha"
 
 #, c-format
 msgid ""
@@ -4619,7 +4624,7 @@ msgid "hq2x/3x"
 msgstr ""
 
 msgid "indexes alloc error"
-msgstr ""
+msgstr "Erreur d'allocation des indexes"
 
 msgid "kof97oro decrypt fix..."
 msgstr ""
@@ -4659,13 +4664,13 @@ msgid "line scroll bg1 %d %d size %d"
 msgstr ""
 
 msgid "loading EmuDX big sprites"
-msgstr ""
+msgstr "Chargement des gros sprites EmuDX"
 
 msgid "loading EmuDX sprites"
-msgstr ""
+msgstr "Chargement des sprites EmuDX"
 
 msgid "loading EmuDX tiles"
-msgstr ""
+msgstr "Chargement des fonds EmuDX"
 
 msgid "lsb"
 msgstr ""
@@ -4699,6 +4704,8 @@ msgid ""
 "raine_logo.png must have the 1st color of the palette\n"
 "(color 0) as transparent"
 msgstr ""
+"raine_logo.png doit avoir la 1ère couleur de palette\n"
+"(couleur 0) transparente."
 
 msgid "recreating fixed layer"
 msgstr "Recréation de la couche de caractères"
@@ -4727,10 +4734,10 @@ msgid "sprites"
 msgstr ""
 
 msgid "sprites disabled"
-msgstr ""
+msgstr "sprites desactives"
 
 msgid "switch to 16bpp color depth and reload"
-msgstr ""
+msgstr "Passe en 16bpp et recharge"
 
 msgid "text"
 msgstr ""

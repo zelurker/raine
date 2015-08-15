@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-08 22:31+0200\n"
-"PO-Revision-Date: 2015-08-11 11:06+0200\n"
+"PO-Revision-Date: 2015-08-15 14:20+0200\n"
 "Last-Translator: Emmanuel Anne <emmanuel.anne@gmail.com>\n"
 "Language-Team: -\n"
 "Language: en\n"
@@ -1297,6 +1297,9 @@ msgid "Auto Shot"
 msgstr ""
 
 msgid "Auto Turbo Fire"
+msgstr ""
+
+msgid "Autofire"
 msgstr ""
 
 msgid "Autofire (in some games)"

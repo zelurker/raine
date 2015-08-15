@@ -652,7 +652,7 @@ static int autofire_controls(int sel) {
        * specific to this driver and will be forgotten when the game is
        * released */
       char s[120];
-      sprintf(s,"Autofire %s",InputList[n].InputName);
+      sprintf(s,"%s %s",_("Autofire"),_(InputList[n].InputName));
       InputList[InputCount].InputName = (char*)AllocateMem(strlen(s)+1);
       strcpy(InputList[InputCount].InputName,s);
       InputCount++;
