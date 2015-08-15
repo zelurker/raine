@@ -30,6 +30,7 @@ static PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = 0;
 static PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocation = 0;
 static PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = 0;
 static PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = 0;
+static PFNGLACTIVETEXTUREPROC glActiveTexture = 0;
 
 static PFNGLVALIDATEPROGRAMPROC glValidateProgram = 0;
 static PFNGLDELETEPROGRAMPROC glDeleteProgram = 0;
@@ -327,6 +328,7 @@ void read_shader(char *shader) {
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
 	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
 	glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)glGetProcAddress("glEnableVertexAttribArray");
+	glActiveTexture = (PFNGLACTIVETEXTUREPROC)glGetProcAddress("glActiveTexture");
 	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)glGetProcAddress("glVertexAttribPointer");
 	glValidateProgram = (PFNGLVALIDATEPROGRAMPROC)glGetProcAddress("glValidateProgram");
 	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)glGetProcAddress("glDeleteProgram");
@@ -595,6 +597,7 @@ void draw_shader(int linear)
     if (pass[0].glprogram) {
 
 	int n;
+	glActiveTexture(GL_TEXTURE0 + 1); // Used as texture shader parameter !
 	for (n=0; n<=nb_pass; n++) {
 
 	    GLuint glprogram = pass[n].glprogram;

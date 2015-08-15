@@ -108,7 +108,6 @@ void opengl_reshape(int w, int h) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
 #endif
-    glActiveTexture(GL_TEXTURE0 + 1); // Used as texture shader parameter !
 }
 
 static int GetAttribute(int attr, int *value) {
