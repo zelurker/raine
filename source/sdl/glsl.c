@@ -680,6 +680,7 @@ void draw_shader(int linear)
 	    render_texture(linear);
 	}
 	glUseProgram(0); // all shaders off now
+	glActiveTexture(GL_TEXTURE0); // return to default textures for texts
 	check_error("ret draw_shader");
 	return;
     }
