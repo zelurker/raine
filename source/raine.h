@@ -365,8 +365,6 @@ typedef struct DIR_CFG
    char share_path[FILENAME_MAX];		// location of data files
 #ifndef SDL
    char language_file[FILENAME_MAX];		// language translation file (no path)
-#else
-   char shader_dir[FILENAME_MAX];
 #endif
    char screen_dir[FILENAME_MAX];		// screenshot path
    char emudx_dir[FILENAME_MAX];		// screenshot path

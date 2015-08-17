@@ -135,7 +135,7 @@ static char *my_load_file(char *shader) {
 	printf("shader: couldn't find file %s\n",shader);
 	return NULL;
     }
-    char *buf = malloc(size);
+    char *buf = malloc(size+1);
     if (!buf) {
 	printf("shader: couldn't allocate %d bytes\n",size);
 	return NULL;
@@ -145,6 +145,7 @@ static char *my_load_file(char *shader) {
 	free(buf);
 	return NULL;
     }
+    buf[size] = 0;
     return buf;
 }
 
@@ -366,6 +367,20 @@ void read_shader(char *shader) {
 
     if (!buf)
 	return;
+    if (!stricmp(shader+strlen(shader)-5,".glsl")) {
+	vertex_src = buf;
+	if (!set_vertex_shader(vertex_src)) {
+	    delete_shaders();
+	    goto flee;
+	}
+	frag_src = buf;
+	if (!set_fragment_shader(frag_src)) {
+	    delete_shaders();
+	    goto flee;
+	}
+	goto shader_end;
+    }
+
     char *p = buf;
 start_shader:
     p = getstr(buf,"<shader");
@@ -501,6 +516,7 @@ start_shader:
 	    p = getstr(p,"/fragment>");
 	} else if (!mystrcmp(&p,"/shader>")) {
 	    int n;
+shader_end:
 	    print_debug("end of shader\n");
 
 	    for (n=0; n<=nb_pass; n++) {

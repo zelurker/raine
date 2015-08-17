@@ -20,6 +20,7 @@
 #include "sdl/dialogs/messagebox.h"
 #include "sdl/dialogs/fsel.h"
 #include "bld.h"
+#include "files.h"
 
 class TVideo : public TMenu
 {
@@ -86,9 +87,12 @@ static int choose_shader(int sel) {
     // This part is a little tricky because I want the fileselector when I
     // select this, but I don't want the whole path to be displayed, just
     // the filename selected alone. Tricky, but not long... !
-    char *exts[] = { "*.shader", NULL };
-    char dir[FILENAME_MAX],old[FILENAME_MAX];
-    strcpy(dir,dir_cfg.shader_dir);
+    /* Something prevents glsl shaders from working. Tried to convert them from
+     * cg shaders, got an error about "must write to gl_Position" when linking.
+     * So they are disabled for now */
+    char *exts[] = { "*.shader",/* "*.glsl", */ NULL };
+    char *dir,old[FILENAME_MAX];
+    dir = get_shared("shaders");
     strcpy(old,ogl.shader);
     if (!strcmp(ogl.shader,"None"))
 	*ogl.shader = 0;
@@ -101,7 +105,7 @@ static int choose_shader(int sel) {
     if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0] &&
 	    strcmp(old,"None")) { // cancelled ?
 	if (MessageBox(_("Confirmation"),_("Disable shaders ?"),_("Yes|No")) == 1)
-	    strcpy(ogl.shader,_("None"));
+	    strcpy(ogl.shader,"None");
 	else
 	    strcpy(ogl.shader,old);
     } else {
