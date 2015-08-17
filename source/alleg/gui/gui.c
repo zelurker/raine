@@ -39,6 +39,10 @@
 #include "files.h"
 #include "bld.h"
 #include "profile.h" // fps
+#if HAS_NEO
+#include "neocd/cdrom.h"
+#include "neocd/neocd.h"
+#endif
 
 extern void update_stretch(); // stretch.c
 struct RGUI_CFG rgui_cfg;
@@ -88,6 +92,10 @@ void read_gui_config() {
    strcpy(rgui_cfg.bg_image,	 raine_get_config_string( "GUI",        "bg_image",             ""));
 
    strcpy(rgui_cfg.font_datafile,     raine_get_config_string( "GUI",   "font_datafile",                ""));
+#if HAS_NEO
+   restore_cdrom_config();
+   restore_neocd_config();
+#endif
 }
 
 void write_gui_config() {
@@ -108,6 +116,10 @@ void write_gui_config() {
 
    if(rgui_cfg.font_datafile[0])
    raine_set_config_string(	"GUI",          "font_datafile",        rgui_cfg.font_datafile);
+#if HAS_NEO
+  save_cdrom_config();
+  save_neocd_config();
+#endif
 }
 
 /*
@@ -2078,9 +2090,13 @@ int game_setup_proc(int msg, DIALOG *d, int c)
       Unselect_Button(d);
       FadeGUI();
       ret=0;
+      game_setup_dialog[5].flags=(disable_irq1 ? 0 : D_SELECTED);
+      game_setup_dialog[6].flags=(allowed_speed_hacks ? D_SELECTED : 0);
       while((ret!=2)&&(ret!=-1)){
 	 ret = raine_do_dialog(game_setup_dialog,-1);
       }
+      disable_irq1 = !(game_setup_dialog[5].flags & D_SELECTED);
+      allowed_speed_hacks = game_setup_dialog[6].flags & D_SELECTED;
       return D_REDRAW;
    }
    return ret;

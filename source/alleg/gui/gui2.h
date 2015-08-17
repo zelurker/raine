@@ -270,11 +270,13 @@ DIALOG loading_dialog[] =
 DIALOG game_setup_dialog[] =
 {
    /* (dialog proc)      (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp) */
-   { d_raine_window_proc,0,    0,    100,  140,  GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Game Setup"},
+   { d_raine_window_proc,0,    0,    110,  140,  GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Game Setup"},
    { x_text_proc,        8,    16,   0,    8,    GUI_COL_TEXT_2,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Select:"},
    { x_raine_button_proc,8,    96+20,48,   16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'B',  D_EXIT,  0,    0,    "&Back"},
    { game_reset_proc,    8,    16+12,84,   16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'R',  D_EXIT,  0,    0,    "&Reset Game"},
    { actionreplay_proc,  8,    56+12,84,   16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'A',  D_EXIT,  0,    0,    "&Action Replay"},
+   { d_raine_check_proc, 8,    56+28+7,  84,   9,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       1,    1,    "Neogeo Rasters"},
+   { d_raine_check_proc, 8,    56+37+7,  84,   9,    GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    0,       1,    1,    "Speed hacks"},
    { NULL,               0,    0,    0,    0,    0,               0,                   0,    0,       0,    0,    NULL}
 };
 
