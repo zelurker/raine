@@ -392,6 +392,7 @@ endif
 
 ifdef SEAL
 LIBS += -laudio
+LIBS_DEBUG += -laudio
 LIBS_STATIC += -laudio
 ifdef RAINE32
 LIBS += -lmsvcrt \

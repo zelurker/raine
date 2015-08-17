@@ -129,7 +129,10 @@ void _handle_drag_window(DIALOG *dialog)
    int xx   , yy;
    int gx   , gy;
    int count;
+#ifndef SLOW_DRAG
    WINDOW_DATA *wdat;
+   wdat = (WINDOW_DATA *) dialog[0].dp2;
+#endif
 
 
    // Init
@@ -139,8 +142,6 @@ void _handle_drag_window(DIALOG *dialog)
 
    x_ofs = gx - dialog[0].x;
    y_ofs = gy - dialog[0].y;
-
-   wdat = (WINDOW_DATA *) dialog[0].dp2;
 
    while (gui_mouse_b()) {
 

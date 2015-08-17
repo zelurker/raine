@@ -20,8 +20,6 @@
 
 #include <sys/time.h>
 
-#define SEAL
-
 int GameSound;
 static UINT8 counter[MAX_STREAM_CHANNELS];
 
@@ -448,7 +446,7 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
       return;
     }
     dout=(unsigned short *)lpWave[channel]->lpData;
-    dfin=(short*) (((char*)lpWave[channel]->lpData)+fin);
+    dfin=(unsigned short*) (((char*)lpWave[channel]->lpData)+fin);
 #if 1
     memset( dout, 0, fin );
     dout += fin/2;
@@ -467,9 +465,9 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
     init_mixing_buff(len);
 
     if (enh_stereo && SamplePan[channel] == PAN_LEFT)
-      dout=(short*) (((char*)lpWave[channel]->lpData)+len*(MODEB_UPDATE_COUNT+1)); //+len*MODEB_UPDATE_COUNT);
+      dout=(unsigned short*) (((char*)lpWave[channel]->lpData)+len*(MODEB_UPDATE_COUNT+1)); //+len*MODEB_UPDATE_COUNT);
     else
-      dout=(short*) (((char*)lpWave[channel]->lpData)+len*MODEB_UPDATE_COUNT); //+len*MODEB_UPDATE_COUNT);
+      dout=(unsigned short*) (((char*)lpWave[channel]->lpData)+len*MODEB_UPDATE_COUNT); //+len*MODEB_UPDATE_COUNT);
     din = ((signed short*)data);
 #if 1
     memcpy( dout, din, len );
@@ -481,7 +479,7 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
     }
 #endif
     if (dout ==dfin){
-      dout=(short*) (((char*)lpWave[channel]->lpData));
+      dout=(unsigned short*) (((char*)lpWave[channel]->lpData));
     }
 
     update_recording(channel,data);
@@ -493,11 +491,11 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
     saSetPan(channel,SamplePan[channel]);
     APlayVoice( hVoice[channel], lpWave[channel] );
   } else{
-    int pos = 0;
+    long pos = 0;
     int th_pos;
     int count = (enh_stereo && SamplePan[channel] == PAN_LEFT ?
 		 modeb_count + 1 : modeb_count);
-    AGetVoicePosition(hVoice[channel],(unsigned long*)&pos);
+    AGetVoicePosition(hVoice[channel],&pos);
 
     dout=vout[channel];
     th_pos = (dout - ((UINT16 *)lpWave[channel]->lpData)-
@@ -524,7 +522,7 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
 #endif
     update_recording(channel,data);
     if (dout >=dfin){
-      dout=(short*) (((char*)lpWave[channel]->lpData));
+      dout=(unsigned short*) (((char*)lpWave[channel]->lpData));
     }
 #ifdef DUMP_CHANNELS
     fwrite( lpWave[channel]->data+len*s_pos, 1, len, stream_out[channel]);
