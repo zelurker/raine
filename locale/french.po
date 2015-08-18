@@ -3525,7 +3525,7 @@ msgid "Renderer"
 msgstr ""
 
 msgid "Renderer options"
-msgstr "Options de rendu"
+msgstr "Configuration du rendu"
 
 msgid "Rendering"
 msgstr "Rendu"
