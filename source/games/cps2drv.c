@@ -3894,14 +3894,40 @@ static struct INPUT_INFO input_p2b1[] =
 // 2 players, 6 buttons (2 rows of 3 buttons)
 static struct INPUT_INFO input_p2b6[] =
 {
-    INCL_INP( p2b3 ),
-    INP0( P1_B4, 0x02, 0x01 ),
-    INP0( P1_B5, 0x02, 0x02 ),
-    INP0( P1_B6, 0x02, 0x04 ),
-    INP0( P2_B4, 0x02, 0x10 ),
-    INP0( P2_B5, 0x02, 0x20 ),
-    INP0( P2_B6, 0x05, 0x40 ),
-    END_INPUT
+    // Notice : inputs inclusion is incompatible with combinations
+  INP0( P1_RIGHT, 0x00, 0x01 ),
+  INP0( P1_LEFT, 0x00, 0x02 ),
+  INP0( P1_DOWN, 0x00, 0x04 ),
+  INP0( P1_UP, 0x00, 0x08 ),
+  INP0( P1_B1, 0x00, 0x10 ),
+  INP0( P1_B2, 0x00, 0x20 ),
+  INP0( P1_B3, 0x00, 0x40 ),
+  INP0( P2_RIGHT, 0x01, 0x01 ),
+  INP0( P2_LEFT, 0x01, 0x02 ),
+  INP0( P2_DOWN, 0x01, 0x04 ),
+  INP0( P2_UP, 0x01, 0x08 ),
+  INP0( P2_B1, 0x01, 0x10 ),
+  INP0( P2_B2, 0x01, 0x20 ),
+  INP0( P2_B3, 0x01, 0x40 ),
+
+  INP0( TEST, 0x04, 0x02 ),
+  INP0( SERVICE, 0x04, 0x04 ),
+  INP0( P1_START, 0x05, 0x01 ),
+  INP0( P2_START, 0x05, 0x02 ),
+  INP0( COIN1, 0x05, 0x10 ),
+  INP0( COIN2, 0x05, 0x20 ),
+  INP0( P1_B4, 0x02, 0x01 ),
+  INP0( P1_B5, 0x02, 0x02 ),
+  INP0( P1_B6, 0x02, 0x04 ),
+  INP0( P2_B4, 0x02, 0x10 ),
+  INP0( P2_B5, 0x02, 0x20 ),
+  INP0( P2_B6, 0x05, 0x40 ),
+#ifndef RAINE_DOS
+  INP0( P1_B1B2B3, 0, 0x70 ),
+  INP0( P1_B4B5B6, 2, 0x07 ),
+  INP0( P2_B1B2B3, 1, 0x70 ),
+#endif
+  END_INPUT
 };
 
 // 2 players, 6 buttons and 1 unused ticket dispenser...

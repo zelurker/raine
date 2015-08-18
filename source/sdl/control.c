@@ -254,6 +254,7 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { 0,           0, 0, "Player2 B2+B3", P2C },
  { 0,           0, 0, "Player2 B1+B2+B3", P2C },
  { 0,           0, 0, "Player2 B2+B3+B4", P2C },
+ { 0,           0, 0, "Player1 B4+B5+B6", P1C },
 
  { 0,           0, 0, "Next Game", SYS },
  { 0,           0, 0, "Prev Game", SYS },
@@ -1599,6 +1600,10 @@ char MSG_P1_B5[]        = _("Player1 Button5");
 char MSG_P1_B6[]        = _("Player1 Button6");
 char MSG_P1_B7[]        = _("Player1 Button7");
 char MSG_P1_B8[]        = _("Player1 Button8");
+char MSG_P1_AB[]        = _("Player1 A+B");
+char MSG_P1_B1B2[]      = _("Player1 B1+B2");
+char MSG_P1_B1B2B3[]    = _("Player1 B1+B2+B3");
+char MSG_P1_B4B5B6[]    = _("Player1 B4+B5+B6");
 
 char MSG_P2_START[]     = _("Player2 Start");
 
@@ -1615,6 +1620,10 @@ char MSG_P2_B5[]        = _("Player2 Button5");
 char MSG_P2_B6[]        = _("Player2 Button6");
 char MSG_P2_B7[]        = _("Player2 Button7");
 char MSG_P2_B8[]        = _("Player2 Button8");
+
+char MSG_P2_B1B2[]      = _("Player2 B1+B2");
+char MSG_P2_B1B2B3[]    = _("Player2 B1+B2+B3");
+char MSG_P2_AB[]        = _("Player2 A+B");
 
 char MSG_P3_START[]     = _("Player3 Start");
 

@@ -6,6 +6,7 @@
 
 #include "raine.h"
 #include "games.h"
+#include "neocd/neocd.h"
 
 struct GAME_MAIN *current_game;
 int game_count;
@@ -170,6 +171,7 @@ int is_neocd()
     // There shouldn't ever be any other driver without roms !
     return current_game->rom_list == NULL;
 }
+
 /*
 
 Return the name of the parent if current game is a clone

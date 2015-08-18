@@ -343,6 +343,7 @@ static struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { 0,           0,  "Player2 B2+B3", },
  { 0,           0,  "Player2 B1+B2+B3", },
  { 0,           0,  "Player2 B2+B3+B4", },
+ { 0,           0,  "Player1 B4+B5+B6", },
 #endif
 
  { 0,           0,  "Next Game", },

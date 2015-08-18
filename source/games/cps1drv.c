@@ -4619,6 +4619,9 @@ static struct INPUT_INFO input_cps1_3b[] =
   INP0( P1_B1, 0x02, 0x10),
   INP0( P1_B2, 0x02, 0x20),
   INP0( P1_B3, 0x02, 0x40),
+#ifndef RAINE_DOS
+  INP0( P1_B1B2, 2, 0x30),
+#endif
   INP0( UNKNOWN, 0x02, 0x80),
   INP0( P2_RIGHT, 0x03, 0x01),
   INP0( P2_LEFT, 0x03, 0x02),
@@ -4627,6 +4630,9 @@ static struct INPUT_INFO input_cps1_3b[] =
   INP0( P2_B1, 0x03, 0x10),
   INP0( P2_B2, 0x03, 0x20),
   INP0( P2_B3, 0x03, 0x40),
+#ifndef RAINE_DOS
+  INP0( P2_B1B2, 2, 0x30),
+#endif
   INP0( UNKNOWN, 0x03, 0x80),
   END_INPUT
 };
@@ -4689,6 +4695,10 @@ static struct INPUT_INFO input_cps1_6b[] =
   { KB_DEF_P2_B1, "P2 Jab Punch", 0x03, 0x10, BIT_ACTIVE_0 },
   { KB_DEF_P2_B2, "P2 Strong Punch", 0x03, 0x20, BIT_ACTIVE_0 },
   { KB_DEF_P2_B3, "P2 Fierce Punch", 0x03, 0x40, BIT_ACTIVE_0 },
+#ifndef RAINE_DOS
+  { KB_DEF_P1_B1B2B3, "P1 3P", 0x02, 0x70, BIT_ACTIVE_0 },
+  { KB_DEF_P2_B1B2B3, "P2 3P", 0x03, 0x70, BIT_ACTIVE_0 },
+#endif
 
   { KB_DEF_P1_B4, "P1 Short Kick", 0x04, 0x01, BIT_ACTIVE_0 },
   { KB_DEF_P1_B5, "P1 Forward Kick", 0x04, 0x02, BIT_ACTIVE_0 },
@@ -4781,8 +4791,6 @@ static struct INPUT_INFO input_ffight[] =
 {
   INCL_INP( cps1_3b ),
 
-  INP0( P1_B3, 0x02, 0x40),
-  INP0( P2_B3, 0x03, 0x40),
   END_INPUT
 };
 

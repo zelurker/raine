@@ -221,16 +221,6 @@ static menu_item_t kb_only[] =
 static char **cols;
 static int base_input;
 
-static int get_input_indice(const char *name) {
-  int nb = InputCount;
-  for (int n=0; n<nb; n++)
-      if (!strcmp(InputList[n].InputName,name))
-	  return n;
-  printf("name not found for inputlist : %s\n",name);
-  exit(1);
-  return -1;
-}
-
 static int get_def_indice(const char *name) {
     int nb = raine_get_emu_nb_ctrl();
     for (int n=0; n<nb; n++)
@@ -313,7 +303,7 @@ static int do_kb_input(int sel) {
 
 static int do_input_ingame(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
-  int nb = get_input_indice(menu[sel].label);
+  int nb = menu[sel].values_list[0];
   TInput *input = new TInput(_("Input"),menu_input,1,0);
   input->execute();
   delete input;
@@ -438,38 +428,68 @@ static int do_layers_controls(int sel) {
 static char* convert_command(char *cmd) {
     // Convert a standard input string to a command.dat string
     char buff[40];
+    char *start = cmd;
+    buff[0] = 0;
     if (strncmp(cmd,"Player",6) ||
-	    (cmd[7] != ' '))
-	return strdup(cmd);
-    sprintf(buff,_("Player"));
+	    (cmd[7] != ' ')) {
+	if (cmd[0] != 'P' || cmd[1] < '1' || cmd[1] > '4' || cmd[2] != ' ')
+	    return strdup(cmd);
+	else
+	    cmd += 3;
+    } else
+	cmd += 8;
     char *end = buff+strlen(buff);
-    sprintf(end,"%c ",cmd[6]);
+    sprintf(end,_("Player"));
+    end += strlen(end);
+    sprintf(end,"%c ",cmd[-2]);
     end += 2;
 
-    if (!strncmp(&cmd[8],"Button",6) && cmd[14] >= '1' && cmd[14] <= '6')
-	sprintf(end,"^%c",'E'+cmd[14]-'1');
-    else if (!strcmp(&cmd[8],"Up"))
+    // standard controls (b1..b6) ar converted to cps format when displayed
+    // by command.dat processing
+    if (!strncmp(cmd,"Button",6) && cmd[6] >= '1' && cmd[6] <= '6')
+	sprintf(end,"^%c",'E'+cmd[6]-'1');
+    // cps1 6 buttons naming
+    else if (!strcmp(cmd,"Jab Punch"))
+	sprintf(end,"^E");
+    else if (!strcmp(cmd,"Strong Punch"))
+	sprintf(end,"^F");
+    else if (!strcmp(cmd,"Fierce Punch"))
+	sprintf(end,"^G");
+    else if (!strcmp(cmd,"Short Kick"))
+	sprintf(end,"^H");
+    else if (!strcmp(cmd,"Forward Kick"))
+	sprintf(end,"^I");
+    else if (!strcmp(cmd,"Roundhouse Kick"))
+	sprintf(end,"^J");
+    else if (!strcmp(cmd,"3P") || !strcmp(cmd,"B1+B2+B3"))
+	sprintf(end,"^U");
+    else if (!strcmp(cmd,"3K") || !strcmp(cmd,"B4+B5+B6"))
+	sprintf(end,"^T");
+
+    else if (!strcmp(cmd,"Up"))
 	sprintf(end,"_8");
-    else if (!strcmp(&cmd[8],"Down"))
+    else if (!strcmp(cmd,"Down"))
 	sprintf(end,"_2");
-    else if (!strcmp(&cmd[8],"Left"))
+    else if (!strcmp(cmd,"Left"))
 	sprintf(end,"_4");
-    else if (!strcmp(&cmd[8],"Right"))
+    else if (!strcmp(cmd,"Right"))
 	sprintf(end,"_6");
-    else if (cmd[9] == 0 && (cmd[8] >= 'A' && cmd[8] <= 'D')) // Single button
-	sprintf(end,"_%c",cmd[8]);
-    else if (!strcmp(&cmd[8],"A+B"))
+    else if (cmd[1] == 0 && (cmd[0] >= 'A' && cmd[0] <= 'D')) // Single button
+	sprintf(end,"_%c",cmd[0]);
+    else if (!strcmp(cmd,"A+B"))
 	sprintf(end,"_A+_B");
-    else if (!strcmp(&cmd[8],"B+C"))
+    else if (!strcmp(cmd,"B1+B2"))
+	sprintf(end,"^E+^F");
+    else if (!strcmp(cmd,"B+C"))
 	sprintf(end,"_B+_C");
-    else if (!strcmp(&cmd[8],"C+D"))
+    else if (!strcmp(cmd,"C+D"))
 	sprintf(end,"_C+_D");
-    else if (!strcmp(&cmd[8],"A+B+C"))
+    else if (!strcmp(cmd,"A+B+C"))
 	sprintf(end,"_A+_B+_C");
-    else if (!strcmp(&cmd[8],"B+C+D"))
+    else if (!strcmp(cmd,"B+C+D"))
 	sprintf(end,"_B+_C+_D");
     else
-	return strdup(cmd);
+	return strdup(start);
     return strdup(buff);
 }
 
@@ -491,6 +511,7 @@ static int do_ingame_controls(int sel) {
       menu[mynb].label = convert_command(InputList[n].InputName);
       strings[mynb] = (char*)menu[mynb].label; // keep a copy before translation !
       menu[mynb].menu_func = &do_input_ingame;
+      menu[mynb].values_list[0] = n;
       cols[mynb*3+0] = get_key_name(InputList[n].Key);
       cols[mynb*3+1] = get_joy_name(InputList[n].Joy);
       cols[mynb*3+2] = get_mouse_name(InputList[n].mousebtn);
@@ -646,11 +667,6 @@ static int autofire_controls(int sel) {
       InputList[InputCount].Key = 0;
       InputList[InputCount].Joy = 0;
       InputList[InputCount].mousebtn = 0;
-      /* The name of the input MUST be different from the original input because
-       * it's assigned later using get_input_indice, which finds the indice
-       * based on the name of the input. AllocateMem is a good option here, it's
-       * specific to this driver and will be forgotten when the game is
-       * released */
       char s[120];
       sprintf(s,"%s %s",_("Autofire"),_(InputList[n].InputName));
       InputList[InputCount].InputName = (char*)AllocateMem(strlen(s)+1);
