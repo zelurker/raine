@@ -20,6 +20,16 @@
 
 // glsl shaders
 
+struct gl_ortho
+{
+   GLfloat left;
+   GLfloat right;
+   GLfloat bottom;
+   GLfloat top;
+   GLfloat znear;
+   GLfloat zfar;
+};
+static math_matrix mvp;
 static int modern;
 static GLuint vertexshader; // only one
 #ifdef RAINE_WIN32
@@ -61,7 +71,7 @@ typedef struct {
     int vertex;
     // locations
     GLint input_size,output_size,texture_size,mvp,texture;
-    GLint orig_texture_size,orig_input_size,frame_count;
+    GLint orig_texture_size,orig_input_size,frame_count,tex_coord;
 
 } tpass;
 
@@ -196,10 +206,14 @@ static int attach(GLuint shader) {
     return 1;
 }
 
-static int set_fragment_shader(const char *source) {
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+
+static int set_fragment_shader(const char *program) {
     int ret = 1;
+    char *define = "#define FRAGMENT\n";
     GLuint fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentshader, 1, &source, 0);
+    const char *source[] = { define, program };
+    glShaderSource(fragmentshader, ARRAY_SIZE(source), source, NULL);
     glCompileShader(fragmentshader);
 
     GLint tmp;
@@ -219,10 +233,13 @@ static int set_fragment_shader(const char *source) {
     return ret;
 }
 
-static int set_vertex_shader(const char *source) {
+static int set_vertex_shader(const char *program) {
     int ret = 1;
     vertexshader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexshader, 1, &source, 0);
+    char *define = "#define VERTEX\n";
+
+    const char *source[] = { define, program };
+    glShaderSource(vertexshader, ARRAY_SIZE(source), source, NULL);
     print_debug("compiling vertex shader %d\n",vertexshader);
     glCompileShader(vertexshader);
 
@@ -280,7 +297,7 @@ static char *prefix[] = {
 static GLint get_uniform_loc(GLuint prog, const char *name)
 {
     GLint loc = glGetUniformLocation(prog,name);
-    if (loc > 0) return loc;
+    if (loc >= 0) return loc;
     char buf[64];
     char **pref = &prefix[0];
     while (*pref) {
@@ -573,21 +590,20 @@ shader_end:
 		loc = pass[n].mvp = get_uniform_loc(glprogram, "MVPMatrix");
 		if (loc > -1) {
 		    printf("init mvp\n");
-		    math_matrix mat;
-		    matrix_ortho(&mat,area_overlay.x,
+		    struct gl_ortho ortho = {0, 1, 0, 1, -1, 1};
+#if 1
+		    matrix_ortho(&mvp,ortho.left,ortho.right,
+			    ortho.bottom,ortho.top,ortho.znear,ortho.zfar);
+#else
+		    matrix_ortho(&mvp,area_overlay.x,
 			    area_overlay.x+area_overlay.w-1,
 			    area_overlay.y,
 			    area_overlay.y+area_overlay.h-1,
 			    -1,1);
-		    glUniformMatrix4fv(loc, 1, GL_FALSE, mat.data);
+#endif
 		} else
 		    printf("no MVPMatrix: %d\n",loc);
-		loc = get_attrib_loc(glprogram, "TexCoord");
-		if (loc > -1) {
-		    printf("TexCoord...\n");
-		    glEnableVertexAttribArray(loc);
-		    glVertexAttribPointer(loc,2,GL_FLOAT,GL_FALSE,0,tex_coords);
-		}
+		loc = pass[n].tex_coord = get_attrib_loc(glprogram, "TexCoord");
 	    }
 
 	    goto flee;
@@ -619,21 +635,24 @@ void draw_shader(int linear)
 	    GLuint glprogram = pass[n].glprogram;
 	    glUseProgram(glprogram);
 
-#if 0
-	    if (n > 0) {
-		inputSize[0] = (float)area_overlay.w;
-		inputSize[1] = (float)area_overlay.h;
+	    if (pass[n].tex_coord > -1) {
+		glEnableVertexAttribArray(pass[n].tex_coord);
+		glVertexAttribPointer(pass[n].tex_coord,2,GL_FLOAT,GL_FALSE,0,tex_coords);
+		check_error("texcoord");
 	    }
-#endif
+	    if (pass[n].mvp > -1) {
+		glUniformMatrix4fv(pass[n].mvp, 1, GL_FALSE, mvp.data);
+		check_error("mvp init");
+	    }
 	    if (pass[n].input_size > -1) {
 		float inputSize[2];
-		if (n > 0) {
+/*		if (n > 0) {
 		    inputSize[0] = (float)area_overlay.w;
 		    inputSize[1] = (float)area_overlay.h;
-		} else {
+		} else { */
 		    inputSize[0] = (float)GameScreen.xview;
 		    inputSize[1] = (float)GameScreen.yview;
-		}
+		// }
 		glUniform2fv(pass[n].input_size, 1, inputSize);
 	    }
 #if 1

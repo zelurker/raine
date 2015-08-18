@@ -90,7 +90,7 @@ static int choose_shader(int sel) {
     /* Something prevents glsl shaders from working. Tried to convert them from
      * cg shaders, got an error about "must write to gl_Position" when linking.
      * So they are disabled for now */
-    char *exts[] = { "*.shader",/* "*.glsl", */ NULL };
+    char *exts[] = { "*.shader","*.glsl", NULL };
     char *dir,old[FILENAME_MAX];
     dir = get_shared("shaders");
     strcpy(old,ogl.shader);
