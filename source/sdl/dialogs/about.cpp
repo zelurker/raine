@@ -39,6 +39,7 @@ class TSketcher
 	int filled_poly;
     public:
 	TSketcher(SDL_Surface *_sf,int _ox,int _oy, int _w,int _h, int _mw, int _mh) {
+	    // mw & mh : matrix width and height (original drawing)
 	    sf = _sf;
 	    ox = _ox; oy = _oy; w=_w; h=_h; mw=_mw; mh = _mh;
 	}
@@ -137,10 +138,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    *s = pre;
 	}
 	s++;
-	font->dimensions("_A",&w,&h);
-	int r;
-	if (w < h) r = w; else r = h;
-	r/=2;
+	font->dimensions("mp",&w,&h);
 	int col = 0;
 	char str[4];
 	TFont *f0 = NULL;
@@ -233,8 +231,12 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    }
 	}
 
+	// I finally keep a constant base width to have all the circles of the
+	// same size...
+	// font->dimensions(str,&w,&h);
+	// w += 2; // some small margin
 	if (col)
-	    filledCircleColor(sf, x+w/2, y+h/2, r, col);
+	    filledEllipseColor(sf, x+w/2, y+h/2, w/2,h/2, col);
 
 	if (strlen(str) > 2) {
 	    // Try to find a font size which fits in this space !
@@ -442,10 +444,15 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    d->lineC(8,2,8,6,white);
 	} else if (*s == '`' && pre == '_') {
 	    filledCircleColor(sf, x+w/2, y+h/2, w/10, white);
-	} else if (str[1] == 0)
-	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
-	else
-	    font->surf_string(sf,x,y,str,(col ? 0 : fg),bg);
+	} else if (str[1] == 0) {
+	    int ws,hs;
+	    font->dimensions(str,&ws,&hs);
+	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg);
+	} else {
+	    int ws,hs;
+	    font->dimensions(str,&ws,&hs);
+	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg);
+	}
 	if (f0) {
 	    delete font;
 	    font = f0;
@@ -461,6 +468,30 @@ end_loop:
     if (*old)
 	font->surf_string(sf,x,y,old,fg,bg);
     min_font_size = old_min;
+}
+
+int TMoveStatic::get_width(TFont *font) {
+    // Now that commands use soem maximum width (string for mp), there can be
+    // quite a big difference with the width of 2 random characters when there
+    // are 3 buttons to display in the controls, so this function becomes
+    // necessary...
+    int w = TStatic::get_width(font);
+    const char *s = menu->label;
+    int w0,h0;
+    font->dimensions("mp",&w0,&h0);
+    while (*s != '_' && *s != '^' && *s) {
+	s++;
+	if (*s) {
+	    char buf[3];
+	    strncpy(buf,s,2);
+	    buf[2] = 0;
+	    int w1,h1;
+	    font->dimensions(buf,&w1,&h1);
+	    w += w0-w1;
+	    s++;
+	}
+    }
+    return w;
 }
 
 class TMoves_menu : public TMenu
