@@ -383,7 +383,7 @@ void read_shader(char *shader) {
 
     char *p = buf;
 start_shader:
-    p = getstr(buf,"<shader");
+    p = getstr(p,"<shader");
     if (!p) {
 	printf("no shader in file %s\n",shader);
 	goto flee;
