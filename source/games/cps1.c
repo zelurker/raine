@@ -2409,15 +2409,15 @@ static void cps2_objram_bank_w(UINT32 offset, UINT16 data) {
     set_68000_io( 0,  0x700000, 0x701fff, NULL, cps2_objram2);
 
     set_68000_io( 0,  0x708000, 0x709fff, NULL, cps2_objram1);
-    // set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram1);
-    // set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram1);
+    set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram1);
+    set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram1);
     set_68000_io( 0,  0x70e000, 0x70ffff, NULL, cps2_objram1);
   } else {
     set_68000_io( 0,  0x700000, 0x701fff, NULL, cps2_objram1);
 
     set_68000_io( 0,  0x708000, 0x709fff, NULL, cps2_objram2);
-    // set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram2);
-    // set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram2);
+    set_68000_io( 0,  0x70a000, 0x70bfff, NULL, cps2_objram2);
+    set_68000_io( 0,  0x70c000, 0x70dfff, NULL, cps2_objram2);
     set_68000_io( 0,  0x70e000, 0x70ffff, NULL, cps2_objram2);
   }
 }
@@ -2628,8 +2628,8 @@ void load_cps2() {
   AddRWBW(0x700000, 0x701fff, NULL, cps2_objram1);
   cps2_objram2 = cps2_objram1 + 0x2000;
   AddRWBW(0x708000, 0x709fff, NULL, cps2_objram2);
-  // AddRWBW(0x70a000, 0x70bfff, NULL, cps2_objram2);
-  // AddRWBW(0x70c000, 0x70dfff, NULL, cps2_objram2);
+  AddRWBW(0x70a000, 0x70bfff, NULL, cps2_objram2);
+  AddRWBW(0x70c000, 0x70dfff, NULL, cps2_objram2);
   AddRWBW(0x70e000, 0x70ffff, NULL, cps2_objram2);
 
   AddReadByte(0x800100, 0x8001FF, cps1_ioc_rb, NULL);			// IOC
