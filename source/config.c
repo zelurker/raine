@@ -1208,30 +1208,27 @@ static void GameInfo(GAME_MAIN *game_info)
          rom_list_tmp++;
       }
 
-      if (!dup)
-      {
-	if (strcmp(rom_list->name,REGION_EMPTY)) {
+      if (!dup && strcmp(rom_list->name,REGION_EMPTY)) {
 	  printf(INDENT "rom ( name %s", rom_list->name);
-	}
 
-	if(romof){
+	  if(romof){
 
-            tc = find_alternative_file_names(rom_list, game_info->dir_list);
+	      tc = find_alternative_file_names(rom_list, game_info->dir_list);
 
-            for(td=0; td<tc; td++) {
-	      printf(" merge %s", alt_names[td]);
-	    }
+	      for(td=0; td<tc; td++) {
+		  printf(" merge %s", alt_names[td]);
+	      }
 
-         }
+	  }
 
-	if (strcmp(rom_list->name,REGION_EMPTY))
 	  printf(" size %d crc32 %08x", get_rom_size(&rom_list), rom_list->crc32);
-	if (rom_list->region) {
+	  if (rom_list->region) {
+	      load_region[rom_list->region] = (UINT8*)rom_list->name;
+	      printf(" regiona %s",get_region_name(rom_list->region));
+	  }
+	  printf(" )\n");
+      } else if (!dup && rom_list->region)
 	  load_region[rom_list->region] = (UINT8*)rom_list->name;
-	  printf(" region %s",get_region_name(rom_list->region));
-	}
-	printf(" )\n");
-      }
 
       rom_list++;
 
@@ -1257,21 +1254,18 @@ static void GameInfo(GAME_MAIN *game_info)
 		   rom_list_tmp++;
 		 }
 
-	       if (!dup)
-		 {
-		   if (strcmp(rom_list->name,REGION_EMPTY)) {
-		     /* The merge thing is inherited from the old days. Its only
-			purpose is to show at a glance that a rom is inherited from
-			the parent. Here the repeating of the name is stupid, but it's
-			for compatibility... */
-		     printf(INDENT "rom ( name %s merge %s", rom_list->name,rom_list->name);
-		     printf(" size %d crc32 %08x", get_rom_size(&rom_list), rom_list->crc32);
-		     if (rom_list->region)
-			 printf(" region %s",get_region_name(rom_list->region));
-		     printf(" )\n");
-		     load_region[rom_list->region] = (UINT8*)rom_list->name; // to avoid duplication
-		   }
-		 }
+	       if (!dup && strcmp(rom_list->name,REGION_EMPTY) && *rom_list->name) {
+		   /* The merge thing is inherited from the old days. Its only
+		      purpose is to show at a glance that a rom is inherited from
+		      the parent. Here the repeating of the name is stupid, but it's
+		      for compatibility... */
+		   printf(INDENT "rom ( name %s merge %s", rom_list->name,rom_list->name);
+		   printf(" size %d crc32 %08x", get_rom_size(&rom_list), rom_list->crc32);
+		   if (rom_list->region)
+		       printf(" regionb %s",get_region_name(rom_list->region));
+		   printf(" )\n");
+		   load_region[rom_list->region] = (UINT8*)rom_list->name; // to avoid duplication
+	       }
 	     }
 	     rom_list++;
 	   }
