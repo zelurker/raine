@@ -17,7 +17,11 @@ static int set_lang(int sel) {
     case 2: locale = "es_ES.UTF-8"; break;
     default: locale = "C"; break;
     }
-    setenv("LANG",locale,1);
+    // setenv("LANG",locale,1);
+    // windows doesn't even have any setenv function ! So to do the equivalent :
+    static char buf[20];
+    sprintf(buf,"LANG=%s",locale);
+    SDL_putenv(buf);
     setlocale(LC_ALL & ~LC_NUMERIC,locale);
     return 0;
 }
@@ -40,9 +44,13 @@ static menu_item_t color_menu[] =
 
 int do_gui_options(int sel) {
   int nb = 1;
-  char *lang = getenv("LANG");
-  if (strstr(lang,"fr")) lang_int = 1;
-  else if (strstr(lang,"es")) lang_int = 2;
+  char *olang = getenv("LANG");
+  char *lang = NULL;
+  if (olang) {
+      lang = strdup(olang);
+      if (strstr(lang,"fr")) lang_int = 1;
+      else if (strstr(lang,"es")) lang_int = 2;
+  }
 
   nb += add_fonts_gui_options(&gui_menu[nb]);
   nb += add_gui_options(&gui_menu[nb]);
@@ -56,8 +64,13 @@ int do_gui_options(int sel) {
   gui_options->execute();
   delete gui_options;
 
-  if (strcmp(lang,getenv("LANG")))
+  char *lang2 = getenv("LANG");
+  printf("lang %s lang2 %s\n",lang,lang2);
+  if (lang && lang2 && strcmp(lang,getenv("LANG"))) {
+      free(lang);
       return 1; // redraw main menu if locale changes
+  }
+  free(lang);
   return 0;
 }
 
