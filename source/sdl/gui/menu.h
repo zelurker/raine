@@ -31,6 +31,7 @@ class TMenu {
     // Index of the current selection or -1 if none, top = 1st index to be
     // displayed (in the menu_disp list now)
     int sel,top,hsel;
+    int translated;
     int fg,bg, // colors for the fg layer
       bgsdl, // still bg color of the fg layer but in sdl format
       fg_frame,bg_frame, // colors for the frames (top & bottom)

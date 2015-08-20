@@ -229,8 +229,18 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   child = NULL;
   title = my_title;
   menu = my_menu;
+  translated = to_translate;
 
   if (to_translate) {
+      int nb = 0;
+      while (menu->label) {
+	  nb++;
+	  menu++;
+      }
+      int sz = sizeof(menu_item_t)*(nb+1);
+      menu = (menu_item_t *)malloc(sz);
+      memcpy(menu,my_menu,sz);
+      my_menu = menu;
       while (menu && menu->label) {
 	  if (*menu->label) {
 	      menu->label = gettext(menu->label);
@@ -278,6 +288,8 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
 }
 
 TMenu::~TMenu() {
+    if (translated)
+	free(menu);
   if (child) {
     for (int n=0; n<nb_items; n++)
       delete child[n];
