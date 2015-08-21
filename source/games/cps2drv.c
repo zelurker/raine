@@ -3923,8 +3923,10 @@ static struct INPUT_INFO input_p2b6[] =
   INP0( P2_B5, 0x02, 0x20 ),
   INP0( P2_B6, 0x05, 0x40 ),
 #ifndef RAINE_DOS
+  INP0( P1_B1B2, 0, 0x30 ),
   INP0( P1_B1B2B3, 0, 0x70 ),
   INP0( P1_B4B5B6, 2, 0x07 ),
+  INP0( P2_B1B2, 1, 0x30 ),
   INP0( P2_B1B2B3, 1, 0x70 ),
 #endif
   END_INPUT
