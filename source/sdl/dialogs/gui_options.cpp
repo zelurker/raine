@@ -5,7 +5,7 @@
 #include "str_opaque.h"
 #include "control.h"
 #include "control_internal.h"
-#include "confile.h"
+#include "raine.h"
 
 extern int do_dirs(int sel); // dirs.cpp
 static int lang_int;
@@ -23,9 +23,10 @@ static int set_lang(int sel) {
     return 0;
 }
 
-static menu_item_t gui_menu[14] =
+static menu_item_t gui_menu[15] =
 {
 {  _("Language"), &set_lang, &lang_int, 3, {0, 1, 2 }, { "Default (english)", "French","Spanish"} },
+{ _("Save per game screen settings"), NULL, (int*)&raine_cfg.save_game_screen_settings, 2, {0, 1}, _("No"),_("Yes")},
 };
 
 extern int add_gui_options(menu_item_t *menu);
@@ -40,7 +41,7 @@ static menu_item_t color_menu[] =
 };
 
 int do_gui_options(int sel) {
-  int nb = 1;
+  int nb = 2;
   if (strstr(language,"fr")) lang_int = 1;
   else if (strstr(language,"es")) lang_int = 2;
   else lang_int = 0;
