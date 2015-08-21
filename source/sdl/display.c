@@ -201,6 +201,7 @@ void load_screen_settings(char *section)
    // DISPLAY
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
+   display_cfg.frame_skip	= raine_get_config_int( section,        "frame_skip", 0);
 
    display_cfg.stretch = raine_get_config_int( section, "stretch", display_cfg.stretch);
    display_cfg.screen_x = raine_get_config_int(	section, "screen_x", display_cfg.screen_x);
@@ -224,6 +225,7 @@ void save_screen_settings(char *section)
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
 
+   raine_set_config_int(	section, "frame_skip", display_cfg.frame_skip);
    raine_set_config_int(	section, "screen_x", display_cfg.screen_x);
    raine_set_config_int(	section, "stretch", display_cfg.stretch);
    raine_set_config_int(	section, "screen_y", display_cfg.screen_y);
