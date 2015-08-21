@@ -229,9 +229,9 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   child = NULL;
   title = my_title;
   menu = my_menu;
-  translated = to_translate;
+  translated = to_translate && menu;
 
-  if (to_translate) {
+  if (translated) {
       int nb = 0;
       while (menu->label) {
 	  nb++;
