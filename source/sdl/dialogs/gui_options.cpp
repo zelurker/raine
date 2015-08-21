@@ -9,20 +9,17 @@
 
 extern int do_dirs(int sel); // dirs.cpp
 static int lang_int;
+extern "C" void init_lang(); // raine.c
 
 static int set_lang(int sel) {
     char *locale;
     switch(lang_int) {
-    case 1: locale = "fr_FR.UTF-8"; break;
-    case 2: locale = "es_ES.UTF-8"; break;
+    case 1: locale = "fr"; break;
+    case 2: locale = "es"; break;
     default: locale = "C"; break;
     }
-    // setenv("LANG",locale,1);
-    // windows doesn't even have any setenv function ! So to do the equivalent :
-    static char buf[20];
-    sprintf(buf,"LANG=%s",locale);
-    SDL_putenv(buf);
-    setlocale(LC_ALL & ~LC_NUMERIC,locale);
+    strcpy(language,locale);
+    init_lang();
     return 0;
 }
 
@@ -44,13 +41,11 @@ static menu_item_t color_menu[] =
 
 int do_gui_options(int sel) {
   int nb = 1;
-  char *olang = getenv("LANG");
-  char *lang = NULL;
-  if (olang) {
-      lang = strdup(olang);
-      if (strstr(lang,"fr")) lang_int = 1;
-      else if (strstr(lang,"es")) lang_int = 2;
-  }
+  if (strstr(language,"fr")) lang_int = 1;
+  else if (strstr(language,"es")) lang_int = 2;
+  else lang_int = 0;
+  char old_lang[3];
+  strcpy(old_lang,language);
 
   nb += add_fonts_gui_options(&gui_menu[nb]);
   nb += add_gui_options(&gui_menu[nb]);
@@ -64,13 +59,9 @@ int do_gui_options(int sel) {
   gui_options->execute();
   delete gui_options;
 
-  char *lang2 = getenv("LANG");
-  printf("lang %s lang2 %s\n",lang,lang2);
-  if (lang && lang2 && strcmp(lang,getenv("LANG"))) {
-      free(lang);
+  if (strcmp(language,old_lang)) {
       return 1; // redraw main menu if locale changes
   }
-  free(lang);
   return 0;
 }
 

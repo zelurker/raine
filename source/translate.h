@@ -13,5 +13,20 @@
 #define _(string) string
 #endif
 
+#ifdef __cplusplus
+extern "C" {
 #endif
 
+extern char language[3]; // raine.c
+
+#ifdef RAINE_WIN32
+
+char *get_win_lang();
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

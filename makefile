@@ -903,6 +903,10 @@ CORE=	$(OBJDIR)/raine.o \
  	$(OBJDIR)/loadroms.o \
 	$(OBJDIR)/bezel.o
 
+ifdef RAINE32
+    CORE += $(OBJDIR)/translate.o
+endif
+
 ifdef DARWIN
 	CORE += $(OBJDIR)/SDLMain.o
 endif

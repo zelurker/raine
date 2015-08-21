@@ -86,6 +86,40 @@ int x_display = 0;
 char raine_cpu_model[80]; // declared in gui/about.c, not available with sdl...
 #endif
 
+char language[3];
+
+void init_lang() {
+    if (!language[0]) {
+	char *olang = getenv("LANGUAGE");
+	if (!olang) olang = getenv("LANG");
+	language[0] = 0;
+	if (olang) {
+	    strncpy(language,olang,2);
+	    language[2] = 0;
+	}
+#ifdef RAINE_WIN32
+	else
+	    strcpy(language,get_win_lang());
+#endif
+	if (!language[0])
+	    strcpy(language,"C");
+    }
+
+#ifndef RAINE_DOS
+    static char buf[20];
+    sprintf(buf,"LANGUAGE=%s",language);
+#ifdef RAINE_WIN32
+    /* I had SDL_putenv not working in native windows but maybe it was related
+     * to an old dll. Anyway using putenv + an updated dll works so I'll leave
+     * it like this for now ! */
+    putenv(buf);
+#else
+    SDL_putenv(buf);
+#endif
+    setlocale(LC_ALL & ~LC_NUMERIC,"");
+#endif
+}
+
 int main(int argc,char *argv[])
 {
    int i;
@@ -109,10 +143,6 @@ int main(int argc,char *argv[])
    const char **dirp = dirs;
 #ifdef GFX_FBCON
    FILE *f;
-#endif
-
-#ifndef RAINE_DOS
-  setlocale(LC_ALL & ~LC_NUMERIC,""); // init locale
 #endif
 
   /* This just helps some window managers to grab some info from the
@@ -301,6 +331,10 @@ int main(int argc,char *argv[])
    load_main_config();
 
    // RAINE GUI (Allegro...)
+   strncpy(language,	 raine_get_config_string( "General", "language", language), 2);
+   language[2] = 0;
+   init_lang();
+
    read_gui_config();
 
 #ifndef SDL
@@ -683,6 +717,8 @@ int main(int argc,char *argv[])
 #ifndef SDL
    save_joystick_data(str);
 #endif
+   raine_set_config_string("General","language",language);
+
    raine_pop_config_state();
    raine_config_cleanup();
 #ifndef SDL
