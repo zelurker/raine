@@ -64,7 +64,8 @@ void NichiSoundDAC(UINT16 address, UINT8 ta)
 #else
   if(ta<nichi_sample_count) {
     SMP16buffer_request(address&1, ta);
-  } else
+  }// else
+  // fprintf(stderr,"rejecting sample %x (%x)\n",ta,nichi_sample_count);
 #endif
 }
 

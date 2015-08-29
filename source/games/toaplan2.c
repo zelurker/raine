@@ -5226,9 +5226,6 @@ static void bbakraid_nvram_w(UINT16 offset, UINT8 data)
 static UINT8 batrider_ioc_68k_rb(UINT32 offset)
 {
    offset &= 0xFF;
-#if 0
-   if (offset != 7)
-#endif
 
    switch(offset){
       case 0x00:
@@ -5299,9 +5296,6 @@ static UINT16 batrider_ioc_68k_rw(UINT32 offset)
 static void batrider_ioc_68k_wb(UINT32 offset, UINT8 data)
 {
    offset &= 0xFF;
-#if 0
-   if (offset < 0xc0 && offset != 0x1c && offset != 0x1d && offset != 0x82 && offset != 0x83 && offset != 9)
-#endif
 
    switch(offset){
    case 9: // bakraid irq ?

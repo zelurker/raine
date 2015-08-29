@@ -1126,7 +1126,7 @@ void load_actual_s1945(void)
 
      // WriteWord68k(&ROM[0x1a384],0x7f05); // debug
 
-   } else
+   }
 
    FreeMem(TMP);
 }

@@ -1514,10 +1514,6 @@ static UINT8 ym2151_rb(UINT32 address)
   if (ta > 249) res= 1;
   else
     res= 0;
-#if 0
-  if (res)
-  else
-#endif
   return res;
      //}
 }

@@ -397,16 +397,6 @@ static UINT8 *GFX_SPR_SOLID;
 
 static UINT8 *RAM_INPUT;
 
-/*
-static int reset_cpub;
-
-static void cpua_wb(UINT32 offset, UINT8 data) {
-}
-
-static void cpua_w(UINT32 offset, UINT16 data) {
-  if (data & 1) reset_cpub = 1;
-}
-*/
 static void load_ninjaw(void)
 {
    int ta,tb,tc,td;
@@ -721,8 +711,6 @@ static void load_ninjaw(void)
    AddWriteByte(0x260000, 0x263FFF, NULL, RAM+0x034000);		// OBJECT RAM
    AddWriteByte(0x280000, 0x293FFF, NULL, RAM+0x010000);		// SCREEN RAM
    AddWriteByte(0x200000, 0x200003, tc0220ioc_wb_port, NULL);		// INPUT
-   // AddWriteByte(0x210000, 0x210001, cpua_wb, NULL);		// INPUT
-   // AddWriteWord(0x210000, 0x210001, cpua_w, NULL);		// INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
    AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
    AddWriteByte(-1, -1, NULL, NULL);
