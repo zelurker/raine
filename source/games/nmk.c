@@ -2643,7 +2643,6 @@ static UINT8 tharrier_mcu_r(UINT32 offset) {
 	return res;
     }
     else {
-	printf("returning port\n");
 	return RAM[0x10003]; // input_port_read(space->machine, "IN1");
     }
 }

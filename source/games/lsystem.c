@@ -2478,7 +2478,6 @@ static void load_plotting(void)
    // ----------------
 
    if (ReadWord68k(&ROM[0x434]) == 0xc2af) {
-       printf("patching plotting\n");
        ROM[0x434]=0x00;  // NOP
        ROM[0x435]=0x00;  // NOP
        ROM[0x436]=0x00;  // NOP

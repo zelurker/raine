@@ -57,17 +57,14 @@ void NichiSoundDAC(UINT16 address, UINT8 ta)
 {
 #ifdef USE_DAC
 /*   if (ta != 0x80) */
-/*     printf("%x,%x\n",address & 1,ta); */
   if (address & 1)
     DAC_1_signed_data_w(address,ta);
   else
     DAC_0_signed_data_w(address,ta);
 #else
   if(ta<nichi_sample_count) {
-    fprintf(stderr,"playing dac %x\n",ta);
     SMP16buffer_request(address&1, ta);
   } else
-    fprintf(stderr,"rejecting sample %x (%x)\n",ta,nichi_sample_count);
 #endif
 }
 

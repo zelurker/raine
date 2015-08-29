@@ -1779,7 +1779,6 @@ static void cps1_set_z80()
 {
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-/*    fprintf(stderr,"hack enabled\n"); */
 /*    Z80ROM[0x95]=0xD3; // OUTA (AAh) */
 /*    Z80ROM[0x96]=0xAA; // */
 
@@ -1888,7 +1887,6 @@ static void myStop68000(UINT32 adr, UINT8 data) {
 
 /* static void my_stop_z80(UINT32 offset, UINT16 data) { */
 /*   if (Z80RAM[1] == Z80RAM[2]) { */
-/*     // fprintf(stderr,"stop with af %x ram %x\n",Z80_context[0].z80af,Z80RAM[2]); */
 /*     z80pc = 0x8e; */
 /*     mz80ReleaseTimeslice(); */
 /*   } */
@@ -2257,17 +2255,6 @@ static void qsound_sharedram1_wb(UINT32 offset, UINT8 data)
 {
   offset = ((offset & 0x1fff) >> 1);
   qsound_sharedram1[offset] = data;
-/*   printf("ram1_wb %x,%x\n",offset,data); */
-/*   if (offset == 0xf && data == 0) { */
-/*     printf("\n"); */
-/*     if (nb_z80) { */
-/*       cpu_execute_cycles(CPU_Z80_0, (CPU_FRAME_MHz(8,60)/4)); // Z80_FRAME );	     // Sound Z80 */
-/*       cpu_interrupt(CPU_Z80_0, 0x38); */
-/*       nb_z80--; */
-/*     } else { */
-/*       printf("z80 overflow !!!\n"); */
-/*     } */
-/*   } */
 }
 
 static UINT16 qsound_sharedram2_r(UINT32 offset)
@@ -2460,19 +2447,6 @@ void cps2_find_last_sprite(void)    /* Find the offset of last sprite */
 
 static UINT16 *xor;
 
-#if 0
-static UINT8 my_read(UINT32 offset) {
-  printf("read from %x\n",s68000readPC());
-  Stop68000(0,0);
-  return 32;
-}
-
-static void my_write(UINT32 offset,UINT16 data) {
-  printf("write from %x : %x,%x\n",s68000readPC(),offset,data);
-  Stop68000(0,0);
-  WriteWord(&RAM[offset-0xff0000+0x40000],data);
-}
-#endif
 
 void load_cps2() {
   int  size_code, size_user1;
@@ -2598,7 +2572,6 @@ void load_cps2() {
  the Qsound hardware with an OKI6295 / AD-65 chip.  No known complete dump exists.
 
 */
-    printf("phoenix behaviour, no xor size code %x\n",size_code);
     AddReadBW(0, size_code-1, NULL, ROM);
   }
 

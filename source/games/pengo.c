@@ -675,7 +675,6 @@ static void draw_debug_tile() {
       code = videoram[offs];
 
 /*       if ((input_buffer[8] & 1) && code != 0x40) */
-/* 	printf("%d,%d,%x,%x + %x\n",sx,sy,code,col_base,colorram[offs] & 0x1f); */
       /* Tile approximation : starting at code d0 ? */
 /*       if (code >= 0xd0 || code == 0x31) code = 0x40; */
       if (solid[code]) {
@@ -850,7 +849,6 @@ static void draw_pengo() {
 static int draw_emudx_tile;
 
 /* static void disp_sprite(int sx, int sy, int ta,int coul) { */
-/*     printf("%d,%d,%x coul %x\n",sx,sy,ta,coul); */
 /* } */
 
 /* ta >= 8 is not sure, it's to display the fruit bonuses */
@@ -962,7 +960,6 @@ static void draw_emudx() {
       code = videoram[offs];
 
 /*       if ((input_buffer[8] & 1) && code != 0x40) */
-/* 	printf("%d,%d,%x,%x + %x\n",sx,sy,code,col_base,colorram[offs] & 0x1f); */
       /* Tile approximation : starting at code d0 ? */
 /*       if (code >= 0xd0 || code == 0x31) code = 0x40; */
       if (solid[code]) {
@@ -1460,7 +1457,6 @@ static void irq_vector_w(UINT32 offset, UINT16 data)
   // the high adress is register i when the interrupt is called
 
   *vector = data;
-  printf("set vector = %d\n",*vector);
 }
 
 // This one is taken from mame. Amazing to imagine all the time spent searching
@@ -1555,19 +1551,16 @@ static void speedcheat_test() {
     speedadr2 = 0x1ffd; speed2 = 0xbc; nospeed2 = 0xff;
   } else {
     speedcheat = 0;
-    printf("No speed cheat in this rom\n");
   }
 }
 
 static void multipac_a000_w(UINT32 offset, UINT8 data) {
   int adr;
   if (data != multipac_bank) {
-    printf("bank %x\n",data);
     print_debug("bank %x\n",data);
     if (data < 0x20) {
       data = ((data & 0x10) / 0x10 + (data & 0x0f) *2);
       adr = 0x10000 + data * 0x4000;
-      printf("adr %x\n",adr);
     } else {
       data = 0;
       adr = 0x10000;
@@ -1588,7 +1581,6 @@ static void multipac_a000_w(UINT32 offset, UINT8 data) {
       data -= (data - 16)/2;
     if (data <= 24)
       current_game->main_name = multipac_games[data];
-    printf("using game name %d %s\n",data,multipac_games[data]);
     if (!current_game->main_name)
       exit(1);
     *interrupt_enable = 0;
@@ -1604,7 +1596,6 @@ static void multipac_a000_w(UINT32 offset, UINT8 data) {
 static void multipac_color_w(UINT32 offset, UINT8 data) {
    // The colours are currently handled by the graphics banking, but here
    // is an exception
-   printf("multipac_color_w %x\n",data);
    if (data==2) {
       RAM[0x1050]=0; // maps to f000, don't know what it does !!!
    }
@@ -1724,7 +1715,6 @@ static void load_puckman()
      memcpy(&prom[0x10],&prom[0x1020], 0x10);
      memcpy(&prom[0x20],&prom[0x1020], 0x10);
      memcpy(&prom[0x30],&prom[0x1020], 0x10);
-     printf("palette multipac\n");
 
      for (i = 0;i < 64;i++) {
        int bit0,bit1,bit2,r,g,b;

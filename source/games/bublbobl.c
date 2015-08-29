@@ -616,7 +616,6 @@ void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 	    // This part apparently happens during the irq, there is no irq
 	    // for the68705 in raine, so we'll execute all this in the frame...
 		RAM[0xfc7c] = rand()%6;
-		printf("interrupt from mcu !!!\n");
 		cpu_interrupt(CPU_Z80_0, RAM[0xfc00]);
 
 	}
@@ -762,12 +761,10 @@ static void BublBobl_BankSwitch(UINT16 addr, UINT8 value)
    static int reset_mcu, reset_cpub;
    if ((value & 0x10) != reset_cpub) {
        reset_cpub = value & 10;
-       printf("reset z80b from %x\n",z80pc);
        cpu_reset(CPU_Z80_1);
    }
    if ((value & 0x20) != reset_mcu) {
        reset_mcu = value & 0x20;
-       printf("reset mcu\n");
        BubbleBobble_mcu_reset();
    }
 #endif

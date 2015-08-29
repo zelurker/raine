@@ -347,7 +347,6 @@ static UINT8  block_input_r (UINT32 offset) {
 	}
       if (delta > 0x3f) delta = 0x3f;
 /*       if (offset == 0) */
-/* 	printf("return %d << 1 = %d\n",delta,delta << 1); */
       return delta << 2;
     }
   else

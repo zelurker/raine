@@ -1355,7 +1355,6 @@ static void finish_setup_gfx() {
 	 if (gfx3[n] > max)
 	   max = n;
        }
-       printf("max gfx3 %x size %x\n",max,size);
      }
    }
 }

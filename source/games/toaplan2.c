@@ -5161,7 +5161,6 @@ static void bbakraid_z80_port_wb(UINT8 offset, UINT8 data)
       break;
       case 0x88:
          data &= 0x0F;
-	 fprintf(stderr,"switch bank %x\n",data);
          if(br_z80_bank != data){
             br_z80_bank = data;
             Z80ASetBank(BR_Z80_BANK[br_z80_bank]);
@@ -5229,7 +5228,6 @@ static UINT8 batrider_ioc_68k_rb(UINT32 offset)
    offset &= 0xFF;
 #if 0
    if (offset != 7)
-     fprintf(stderr,"batrider_ioc_68k_rb(%02x)\n", offset);
 #endif
 
    switch(offset){
@@ -5272,7 +5270,6 @@ static UINT8 batrider_ioc_68k_rb(UINT32 offset)
      //case 0x12:
    case 0x13:
 /*      if (sound_data[4 | ((offset>>1)&3)]) */
-/*        fprintf(stderr,"bakraid return %x -> %x\n",offset,sound_data[4 | ((offset>>1)&3)]); */
      return sound_data[4 | ((offset>>1)&3)];
      //return bakraid_w13;
 
@@ -5304,7 +5301,6 @@ static void batrider_ioc_68k_wb(UINT32 offset, UINT8 data)
    offset &= 0xFF;
 #if 0
    if (offset < 0xc0 && offset != 0x1c && offset != 0x1d && offset != 0x82 && offset != 0x83 && offset != 9)
-  fprintf(stderr,"batrider_ioc_68k_wb(%02x,%02x) [%x]\n", offset, data,s68000readPC());
 #endif
 
    switch(offset){
@@ -5447,7 +5443,6 @@ static UINT8 batrider_68k_z80rom_rb(UINT32 offset)
 
 static UINT16 batrider_68k_z80rom_rw(UINT32 offset)
 {
-  fprintf(stderr,"offset %x\n",offset);
    offset >>= 1;
    offset  &= 0x3FFFF;
 
@@ -6046,7 +6041,6 @@ static void execute_bbakraid() {
   // Since I don't know anything to z80 asm, I'll leave it for now...
 #if 0
   if (sound_nmi) {
-    fprintf(stderr,"nmi\n");
     cpu_int_nmi(CPU_Z80_0);
     sound_nmi = 0;
   }

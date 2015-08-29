@@ -429,7 +429,6 @@ Mike
     // 6 seems to be a generic command : sent when the game starts, and also when you
     // loose a life...
     latch = data;
-/*     printf("unknown command %x\n",data); */
     cpu_interrupt(CPU_Z80_1,0x38);
     if (data == 13 || data == 14 || data == 16) // game over, music start, all home
       raine_stop_samples();

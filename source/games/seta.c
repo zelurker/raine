@@ -813,12 +813,6 @@ static void draw_usclssic()
   UINT8 *map;
   UINT8 *BG;
   ClearPaletteMap();
-#if 0
-  static int fixed;
-  fixed++;
-  if (fixed > 0xc) fixed = 0;
-  printf("bank %x\n",0x30|fixed);
-#endif
 
   ctrl	=	ReadWord(&RAM_SPR[ 0x600 ]);
   global_flip = (ctrl & 0x40) >> 6;
@@ -3742,9 +3736,6 @@ static void load_arbalest(void)
      AddM6502AWriteByte(    -1,     -1, NULL,                       NULL);
 
 #ifdef RAINE_DEBUG
-     fprintf(stderr,"6502 reset adr = %x\n",ReadWord(&M6502ROM[0xfffc]));
-     fprintf(stderr,"6502 nmi adr = %x\n",ReadWord(&M6502ROM[0xfffa]));
-     fprintf(stderr,"6502 irq adr = %x\n",ReadWord(&M6502ROM[0xfffe]));
 #endif
      AddM6502AInit();
 
@@ -4019,7 +4010,6 @@ static void execute_downtown(void)
     if (dump)
       line = readline(prompt);
   } while (!line || line[0] != 'q');
-  fprintf(stderr,"sortie exec\n");
   }
 #endif
 

@@ -1516,9 +1516,7 @@ static UINT8 ym2151_rb(UINT32 address)
     res= 0;
 #if 0
   if (res)
-  fprintf(stderr,"*%d*\n",res);
   else
-  fprintf(stderr,"%d ",res);
 #endif
   return res;
      //}

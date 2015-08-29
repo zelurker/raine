@@ -178,7 +178,6 @@ INLINE int convert_offset(int offset) {
 READ_HANDLER( f3_68000_share_rb ) {
   int res = f3_shared_ram[convert_offset(offset)];
 #ifdef DUMP
-  fprintf(stderr,"f3_68000_share_r %x(%x)->%x\n",(offset>>1)&0xfff,offset,res);
 #endif
   return res;
 }
@@ -186,7 +185,6 @@ READ_HANDLER( f3_68000_share_rb ) {
 WRITE_HANDLER( f3_68000_share_wb ) {
   f3_shared_ram[convert_offset(offset)]=data;
 #ifdef DUMP
-  fprintf(stderr,"f3_68000_share_w %x,%x\n",(offset>>1)&0xfff,data);
 #endif
 
 }
@@ -197,7 +195,6 @@ WRITE16_HANDLER(f3_68000_share_ww)
   offset &= 0xfff;
   WriteWord68k(f3_shared_ram+offset,data);
 #ifdef DUMP
-  fprintf(stderr,"f3_68000_share_w %x,%x\n",offset,data);
 #endif
   //fprintf(stderr,"f3_68000_share_w %x,%x\n",offset,data);
   //exit(1);
@@ -224,12 +221,10 @@ READ_HANDLER( ES5505_data_0_rb ) {
 }
 
 WRITE_HANDLER( ES5505_data_0_wdebug ) {
-  fprintf(stderr,"ES5505_data_0_wdebug\n");
 }
 
 READ16_HANDLER(f3_68681_rdebug)
 {
-  fprintf(stderr,"f3_68681_rdebug\n");
   return 0;
 }
 
@@ -255,14 +250,12 @@ READ_HANDLER(f3_68681_rb)
     } else
       ret= 0xff;
 #ifdef DUMP
-  fprintf(stderr,"f3_68681_r %x->%x\n",offset,ret);
 #endif
   return ret;
 }
 
 WRITE16_HANDLER(f3_68681_wdebug)
 {
-  fprintf(stderr,"f3_68681_wdebug\n");
 }
 
 void f3_timer_callback() {
@@ -270,7 +263,6 @@ void f3_timer_callback() {
   //if (ReadLong68k(&M68000RAM[vector_reg]) != ReadLong68k(&M68000RAM[0x60+7*4])){
   int vec;
 #ifdef DUMP
-  fprintf(stderr,"setting int7 at %x ram %x s68000context %x\n",vector_reg,ReadLong68k(&M68000RAM[vector_reg*4]),s68000context.interrupts[7]);
 #endif
   vec = ReadLong68k(&M68000RAM[vector_reg*4]);
   /* Only cause IRQ if the mask is set to allow it */
@@ -285,9 +277,7 @@ void f3_timer_callback() {
   }
 #if 0
   else {
-    fprintf(stderr,"vec %x (PC:%x)\n",vec,s68000readPC());
     if (!vec) {
-      fprintf(stderr,"cycles %d slices %d cpt %d frames %d int %d\n",f3_cycles_68000,f3_slices,mycpt,nb_frames,nb_int);
       exit(1);
     }
     mycpt=nb_frames=nb_int=0;
@@ -301,7 +291,6 @@ WRITE_HANDLER(f3_68681_wb)
   offset>>=1;
   offset &= 0x1f;
 #ifdef DUMP
-  fprintf(stderr,"f3_68681_wb %x %x (pc:%x)\n",offset,data,s68000readPC());
 #endif
   switch (offset) {
   case 0x04: /* ACR */
@@ -386,7 +375,6 @@ READ_HANDLER(es5510_dsp_rb)
   int res;
   offset &= 0x1ff;
 #ifdef DUMP
-  fprintf(stderr,"es5510_dsp_rb %x (%d)\n",offset>>1,es_tmp);
 #endif
   if (es_tmp) res =  ReadByte(((char*)es5510_dsp_ram)+offset);
 
@@ -396,7 +384,6 @@ READ_HANDLER(es5510_dsp_rb)
 
   else res= ReadByte(((char*)es5510_dsp_ram)+offset);
 #ifdef DUMP
-  fprintf(stderr,"-> %x\n",res);
 #endif
   return res;
 }
@@ -407,7 +394,6 @@ READ16_HANDLER(es5510_dsp_r)
   offset &= 0x1ff;
   // Normally this code is NEVER called...
 #ifdef DUMP
-  fprintf(stderr,"es5510_dsp_rb %x (%d)\n",offset,es_tmp);
 #endif
   if (es_tmp) return es5510_dsp_ram[offset];
   /*
@@ -435,7 +421,6 @@ WRITE_HANDLER(es5510_dsp_wb){
   UINT8 *snd_mem = PCMROM;
   offset &= 0xfff; // I want the whole offset...
 #ifdef DUMP
-  fprintf(stderr,"es5510_dsp_w %x %x\n",offset>>1,data);
 #endif
 
   //	if (offset>4 && offset!=0x80  && offset!=0xa0  && offset!=0xc0  && offset!=0xe0)
@@ -449,7 +434,6 @@ WRITE_HANDLER(es5510_dsp_wb){
   case 0x02: es5510_gpr_latch=(es5510_gpr_latch&0xffff00)|(data<< 0);
   case 0x03:
 #ifdef DUMP
-    fprintf(stderr,"gpr_latch %x (%x)\n",es5510_gpr_latch,data);
 #endif
     break;
 
@@ -483,7 +467,6 @@ WRITE_HANDLER(es5510_dsp_wb){
 WRITE16_HANDLER(es5510_dsp_w)
 {
   //fprintf(stderr,"%06x: DSP write offset %04x %04x\n",cpu_get_pc(CPU_68K_0),offset,data);
-  fprintf(stderr,"dsp ww\n");
   es5510_dsp_wb(offset,data>>8);
   es5510_dsp_wb(offset+1,data & 0xff);
 }
@@ -504,7 +487,6 @@ static WRITE16_HANDLER( es5505_bank_w )
 
 #if 0
 static WRITE16_HANDLER( volume_control ){
-  fprintf(stderr,"volume_control offset %d data %d\n",offset&0xf,data);
 }
 #endif
 
@@ -517,12 +499,10 @@ READ_HANDLER( trap_rb ) {
 }
 
 WRITE_HANDLER( trap_wb ) {
-  fprintf(stderr,"trap_wb %x,%x\n",offset,data);
   M68000RAM[offset]=data;
 }
 
 WRITE16_HANDLER( trap_ww ) {
-  fprintf(stderr,"trap_ww %x,%x (PC:%x)\n",offset,data,s68000readPC());
   WriteWord68k(&M68000RAM[0x40],data);
 }
 

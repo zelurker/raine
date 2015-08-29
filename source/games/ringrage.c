@@ -287,7 +287,6 @@ static void execute_ringrage(void)
 /*       if (int7_active) { */
 /* 	if (f3_slices == 16) */
 /* 	  f3_slices = 1; */
-/* 	fprintf(stderr,"int7 %d %d\n",cpu_frame_count,f3_slices); */
 /* 	f3_timer_callback(); */
 /*       } */
 /*     } */

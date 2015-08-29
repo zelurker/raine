@@ -452,7 +452,6 @@ static void CChipWriteB(UINT32 address, int data)
 
 	WriteLevelData();
 
-/*	fprintf(stderr,"update level start pos %d\n",ta); */
 /*	     if(data==0x55){ */
 /*	     #ifdef RAINE_DEBUG */
 /*		print_debug("LEVELSTART(%02x)\n",ta); */
@@ -462,7 +461,6 @@ static void CChipWriteB(UINT32 address, int data)
 /*	   if(ta<32){ */
 /*	   CBANK[0][0x023]=CLEV[ta].MapXStart&0xFF; */
 /*	   CBANK[0][0x025]=(CLEV[ta].MapXStart>>8)&0xFF; */
-/*	   fprintf(stderr,"mapstart x %x y %x\n",CLEV[ta].MapXStart,CLEV[ta].MapYStart); */
 /*	   CBANK[0][0x027]=CLEV[ta].MapYStart&0xFF; */
 /*	   CBANK[0][0x029]=(CLEV[ta].MapYStart>>8)&0xFF; */
 

@@ -1080,7 +1080,6 @@ void draw_taitob_fb(int zz, int bank, int control, int priority, int offs_y,
 	    }
 	    zz+=(512-320);
 	}
-	printf("priority %d\n",drawn);
     }
 #endif
 }

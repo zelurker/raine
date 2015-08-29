@@ -401,11 +401,9 @@ static UINT8 *RAM_INPUT;
 static int reset_cpub;
 
 static void cpua_wb(UINT32 offset, UINT8 data) {
-  printf("cpua_wb %x,%x\n",offset,data);
 }
 
 static void cpua_w(UINT32 offset, UINT16 data) {
-  printf("cpua_w %x,%x\n",offset,data);
   if (data & 1) reset_cpub = 1;
 }
 */

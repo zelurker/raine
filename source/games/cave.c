@@ -255,13 +255,11 @@ static void update_irq_state(void)
   if ((vblank_irq || unknown_irq || sound_irq)) { // && irq_counter++<32) {
     // s68000interrupt(1, -1);
 /*     if (s68000context.interrupts[0] & 2) {
-       printf("irq1 already set counter %d..\n",++irq_counter);
      } */
      cpu_interrupt(CPU_68K_0, 1);
   } else {
 #ifdef RAINE_DEBUG
 /*     if (s68000context.interrupts[0] & 2) */
-/*       fprintf(stderr,"should be cleared. %x\n",s68000context.interrupts[0]); */
 #endif
     s68000context.interrupts[0] &= ~2;
     // irq_counter = 0;
@@ -2717,11 +2715,9 @@ static void draw_cave_layer(int num)
     // UINT8 *dy = RAM_BG+0x1002+0*4;
 #ifdef RAINE_DEBUG
       print_ingame(1,gettext("row select layer %d size %d"),num,layer_size[num]);
-      if (!(scrolly & 0x4000)) fprintf(stderr,"canceled\n");
 #endif
     }
 /*     if (row_scroll) */
-/*       fprintf(stderr,"row scroll + select layer %d\n",num); */
   }
 
   if(layer_size[num]<16) {
@@ -3080,36 +3076,6 @@ static void draw_cave_layer(int num)
       blit_cave_layer(num);
   }
 }
-
-#if 0
-static void dump_sprite(UINT8 *spr, int size) {
-  int max = 0;
-  int x,y;
-  char len[5],filler[3];
-  for (x=0; x<size*size; x++) {
-    if (spr[x] > max)
-      max = spr[x];
-  }
-  if (max > 0xf) {
-    strcpy(len,"%02x");
-    strcpy(filler,"  ");
-  } else {
-    strcpy(len,"%x");
-    strcpy(filler," ");
-  }
-
-  for (y=0; y<size; y++) {
-    for (x=0; x<size; x++) {
-      if (spr[x])
-	printf(len,spr[x]);
-      else
-	printf(filler);
-    }
-    printf("\n");
-    spr += size;
-  }
-}
-#endif
 
 static UINT8 flip_map[4] =
 {

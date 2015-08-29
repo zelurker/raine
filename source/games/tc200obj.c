@@ -917,7 +917,6 @@ void render_tc0200obj_mapped(int pri_mask)
        } else
 	 NEW_RAM = tc0200obj.RAM;
 #ifdef VERBOSE
-       fprintf(stderr,"sprites disabled %d\n",disabled);
 #endif
        continue;
      }
@@ -946,7 +945,6 @@ void render_tc0200obj_mapped(int pri_mask)
       }
       if (!( (1<<((color & 0xc0)>>6)) & pri_mask)) {
 #ifdef VERBOSE
-	fprintf(stderr,"sprite ignored (priority)\n");
 #endif
 	continue;
       }
@@ -1073,7 +1071,6 @@ void render_tc0200obj_mapped(int pri_mask)
       if(RAM_MSK[code]==0) {
 #ifdef VERBOSE
 	if (code)
-	  fprintf(stderr,"sprite %x vide\n",code);
 #endif
 	continue;                      // No pixels; skip
       }

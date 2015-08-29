@@ -282,7 +282,6 @@ static void patch(UINT8 *rom, UINT32 nb, ...) {
   for (i=0; i<nb; i++) {
     val = va_arg(ap,int);
     if (rom[i] != val) {
-      fprintf(stderr,"failed at %x, expected %x got %x\n",&rom[i]-Z80ROM,val,rom[i]);
       va_end(ap);
       return;
     }
@@ -310,7 +309,6 @@ static void patchstr(UINT8 *rom, char *as1, char *as2) {
     sscanf(&s1[i*2],"%x",&val);
     s1[(i+1)*2] = old;
     if (rom[i] != val) {
-      fprintf(stderr,"failed at %x, expected %x got %x\n",&rom[i]-Z80ROM,val,rom[i]);
       return;
     }
   }

@@ -1090,7 +1090,6 @@ static void execute_gigandes(void)
 
    if(tc0140syt_want_nmi()!=0) {
      cpu_int_nmi(CPU_Z80_0);
-     printf("nmi\n");
    }
    execute_z80_audio_frame();
 }
