@@ -31,7 +31,6 @@ Tilemap implementation is incomplete
 #include "2151intf.h"
 #include "adpcm.h"
 #include "3812intf.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "savegame.h"
 #include "emumain.h" // set_reset_function
@@ -689,7 +688,7 @@ static void cookbib_drawsprites(int hack_flipx)
 */
 
 
-			if ((ydraw>16)&&(ydraw<240+32))
+			if ((ydraw>16)&&(ydraw<240+32) && spriteno<max_sprites[0])
 			{
 //				print_debug("sprite draw %04x %04x %04x\n",xdraw,ydraw,spriteno);
 
