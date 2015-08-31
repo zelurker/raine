@@ -832,7 +832,6 @@ int do_about(int sel) {
 #endif
     about_items[2].label = gcc_version;
     sprintf(path,"%s/raine_logo.png",dir);
-    about_menu = new TAbout_menu(_("About..."),about_items, path);
     sprintf(about_cpu, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
     char about_sdl[80];
@@ -859,6 +858,7 @@ int do_about(int sel) {
     sprintf(about_cpu,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);
   }
 #endif
+  about_menu = new TAbout_menu(_("About..."),about_items, path);
   about_menu->execute();
   delete about_menu;
   about_menu = NULL;

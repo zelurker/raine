@@ -287,6 +287,10 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   use_transparency = ::use_transparency;
 }
 
+void TMenu::update_label(int nb, char *str) {
+    menu[nb].label = str;
+}
+
 TMenu::~TMenu() {
     if (translated)
 	free(menu);

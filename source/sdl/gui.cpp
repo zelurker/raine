@@ -117,7 +117,7 @@ void load_progress(char *rom,int count)
     return;
   progress_count = count;
   if (loading_dialog) {
-    load_items[2].label = rom;
+    loading_dialog->update_label(2,rom);
     loading_dialog->redraw_fg_layer();
   }
   last_tick = SDL_GetTicks();
@@ -127,7 +127,9 @@ void load_message(char *msg) {
   load_items[0].label = msg;
   load_items[2].label = " ";
   if (loading_dialog) {
-    loading_dialog->redraw_fg_layer();
+      loading_dialog->update_label(0,msg);
+      loading_dialog->update_label(2," ");
+      loading_dialog->redraw_fg_layer();
   }
 }
 
