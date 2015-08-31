@@ -71,7 +71,7 @@ void cdraw##SIZE##x##SIZE##_Mapped_##DEPTH(UINT8 *SPR, int x, int y, UINT8 *cmap
 															     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[xx];													     \
@@ -94,7 +94,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Mapped_##DEPTH(UINT8 *SPR, int x, int y, UINT8
 															     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      pline = ((UINT8 *)(pbitmap->line[dy]))+x + xx ;									     \
@@ -138,7 +138,7 @@ void cdraw##SIZE##x##SIZE##_Mapped_##DEPTH##_FlipX(UINT8 *SPR, int x, int y, UIN
 															     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[xx];													     \
@@ -182,7 +182,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Mapped_##DEPTH##_FlipX(UINT8 *SPR, int x, int 
 															     \
   for(xx=0; xx<=(SIZE-1); xx++){											     \
     dy = y-dx[xx];													     \
-    if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+    if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
       continue;														     \
     }															     \
     spr = &SPR[xx];													     \
@@ -225,7 +225,7 @@ void cdraw##SIZE##x##SIZE##_Mapped_##DEPTH##_FlipY(UINT8 *SPR, int x, int y, UIN
    UINT32 w = GameBitmap->w;												     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -270,7 +270,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Mapped_##DEPTH##_FlipY(UINT8 *SPR, int x, int 
 															     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -313,7 +313,7 @@ void cdraw##SIZE##x##SIZE##_Mapped_##DEPTH##_FlipXY(UINT8 *SPR, int x, int y, UI
    UINT32 w = GameBitmap->w;												     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -358,7 +358,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Mapped_##DEPTH##_FlipXY(UINT8 *SPR, int x, int
 															     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -429,7 +429,7 @@ void cdraw##SIZE##x##SIZE##_Trans_Mapped_##DEPTH(UINT8 *SPR, int x, int y, UINT8
    UINT32 w = GameBitmap->w;												     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[xx];													     \
@@ -452,7 +452,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##DEPTH(UINT8 *SPR, int x, int y,
    UINT32 w = pbitmap->w;												     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[xx];													     \
@@ -524,7 +524,7 @@ void cdraw##SIZE##x##SIZE##_Trans_Mapped_##DEPTH##_FlipX(UINT8 *SPR, int x, int 
 															     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[xx];													     \
@@ -548,7 +548,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##DEPTH##_FlipX(UINT8 *SPR, int x
 															     \
    for(xx=0; xx<=(SIZE-1); xx++){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[xx];													     \
@@ -619,7 +619,7 @@ void cdraw##SIZE##x##SIZE##_Trans_Mapped_##DEPTH##_FlipY(UINT8 *SPR, int x, int 
 															     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -644,7 +644,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##DEPTH##_FlipY(UINT8 *SPR, int x
 															     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -716,7 +716,7 @@ void cdraw##SIZE##x##SIZE##_Trans_Mapped_##DEPTH##_FlipXY(UINT8 *SPR, int x, int
 															     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \
@@ -740,7 +740,7 @@ void pcdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##DEPTH##_FlipXY(UINT8 *SPR, int 
 															     \
    for(xx=(SIZE-1); xx>=0; xx--){											     \
      dy = y-dx[xx];													     \
-     if (dy < (SIZE) || dy > disp_x_##SIZE) {										     \
+     if (dy < (SIZE) || dy > GameBitmap->h-SIZE) {										     \
        continue;													     \
      }															     \
      spr = &SPR[(SIZE-1)-xx];												     \

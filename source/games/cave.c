@@ -2438,18 +2438,28 @@ static void blit_cave_layer(int num) {
     // Vertical screen
     switch(display_cfg.bpp) {
     case 8:
-      for (y=0; y<240; y++) {
-	UINT8 *line,*layer;
-	UINT32 py = ReadWord(RAM_BG+y*4) & 255;
-	if (py >= 240) py %= 240;
-	py += 32;
-	for (x=0+32; x<320+32; x++) {
-	  pbline = plbitmap->line[x]+y;
-	  pline = pbitmap->line[x]+py;
-	  if (*pbline && *pline < *pbline) {
-	    line = GameBitmap->line[x];
-	    layer = lbitmap->line[x];
-	    line[y+32] = layer[py];
+      {
+	int w = GameBitmap->w;
+	for (y=0; y<240; y++) {
+	  UINT16 py = ReadWord(RAM_BG+y*4) & 255;
+	  UINT8 *game_bitmap, *l_bitmap;
+	  UINT8 *p_bitmap,*p_lbitmap;
+	  int dy;
+	  if (py >= 240) py %= 240;
+	  dy = y+32;
+	  py += 32;
+	  game_bitmap = ((UINT8 *)GameBitmap->line[32]) + dy;
+	  l_bitmap = ((UINT8 *)lbitmap->line[32]) + py;
+	  p_lbitmap = plbitmap->line[32]+py;
+	  p_bitmap = pbitmap->line[32]+dy;
+	  for (x=0+32; x<320+32; x++) {
+	    if (*p_lbitmap && *p_bitmap < *p_lbitmap) {
+	      *game_bitmap = *l_bitmap;
+	    }
+	    game_bitmap += w;
+	    l_bitmap += w;
+	    p_lbitmap += w;
+	    p_bitmap += w;
 	  }
 	}
       }
@@ -2483,18 +2493,28 @@ static void blit_cave_layer(int num) {
       }
       break;
     case 32:
-      for (y=0; y<240; y++) {
-	UINT32 *line,*layer;
-	UINT32 py = ReadWord(RAM_BG+y*4) & 255;
-	if (py >= 240) py %= 240;
-	py += 32;
-	for (x=0+32; x<320+32; x++) {
-	  pbline = plbitmap->line[x]+py;
-	  pline = pbitmap->line[x]+y;
-	  if (*pbline && *pline < *pbline) {
-	    line = ((UINT32 *)GameBitmap->line[x]);
-	    layer = ((UINT32 *)lbitmap->line[x]);
-	    line[y+32] = layer[py];
+      {
+	int w = GameBitmap->w;
+	for (y=0; y<240; y++) {
+	  UINT16 py = ReadWord(RAM_BG+y*4) & 255;
+	  UINT32 *game_bitmap, *l_bitmap;
+	  UINT8 *p_bitmap,*p_lbitmap;
+	  int dy;
+	  if (py >= 240) py %= 240;
+	  dy = y+32;
+	  py += 32;
+	  game_bitmap = ((UINT32 *)GameBitmap->line[32]) + dy;
+	  l_bitmap = ((UINT32 *)lbitmap->line[32]) + py;
+	  p_lbitmap = plbitmap->line[32]+py;
+	  p_bitmap = pbitmap->line[32]+dy;
+	  for (x=0+32; x<320+32; x++) {
+	    if (*p_lbitmap && *p_bitmap < *p_lbitmap) {
+	      *game_bitmap = *l_bitmap;
+	    }
+	    game_bitmap += w;
+	    l_bitmap += w;
+	    p_lbitmap += w;
+	    p_bitmap += w;
 	  }
 	}
       }
@@ -2557,10 +2577,10 @@ static void draw_cave_layer(int num)
   UINT8 *map;
   UINT16 scrollx, scrolly,tile_dim,row_scroll,flipx,flipy;
 
-  UINT8 *RAM_BG = NULL;
-  UINT8 *SCR_BG = NULL;
-  UINT8 *MSK_BG = NULL;
-  UINT8 *GFX_BG = NULL;
+  UINT8 *RAM_BG;
+  UINT8 *SCR_BG;
+  UINT8 *MSK_BG;
+  UINT8 *GFX_BG;
   INT16 *offsets;
   UINT16 layer_status;
 
@@ -2899,9 +2919,14 @@ static void draw_cave_layer(int num)
 	}
 
 	dy = RAM_BG+0x1000+(y-32)*4;
-	dy2 = &offsets[y-32 < 0 ? 0 : y-32];
+	if (y < 32) {
+	    dy2 = &offsets[0];
+	    startn = 32-y;
+	} else {
+	    dy2 = &offsets[y-32];
+	    startn =  0;
+	}
 
-	startn = (y < 32 ? 32-y : 0);
 	for (n=startn; n<16; n++) {
 	  INT16 ta = -ReadWord(dy+n*4);
 	  dy2[n]=ta;
