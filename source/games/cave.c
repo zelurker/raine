@@ -2899,7 +2899,7 @@ static void draw_cave_layer(int num)
 	}
 
 	dy = RAM_BG+0x1000+(y-32)*4;
-	dy2 = &offsets[y-32];
+	dy2 = &offsets[y-32 < 0 ? 0 : y-32];
 
 	startn = (y < 32 ? 32-y : 0);
 	for (n=startn; n<16; n++) {

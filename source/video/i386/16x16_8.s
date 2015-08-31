@@ -3026,7 +3026,7 @@ FUNC(init_spr16x16asm_8)
 
 
 FUNC(init_spr16x16asm_mask)
-	movl	%eax,4(%esp) // pbitmap is sent on stack !
+	movl	4(%esp),%eax // pbitmap is sent on stack !
 	movl	(%eax),%eax		// Width
 	movl	%eax,bitw_16-4
 
