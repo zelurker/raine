@@ -415,7 +415,12 @@ OBJDIR = $(OSTYPE)-sdl
 endif
 
 ifndef NO_ASM
+ifndef RAINE_DOS
 include cpuinfo
+else
+_MARCH=-march=pentium -mtune=pentium
+CPU=pentium
+endif
 endif
 
 ifdef X86_64
