@@ -54,8 +54,6 @@ dump channels (debug)
 FILE *stream_out[NUMVOICES];
 #endif
 
-static int samp_modeb_timer;
-
 SoundRec      *SndMachine = NULL, snd_entry;
 
 /* audio related stuff */
@@ -176,7 +174,6 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    }
 
    stream_buffer_max = STREAM_BUFFER_MAXB;
-   samp_modeb_timer = 0;
 
    //reserved_channel = 0;
 
@@ -280,7 +277,6 @@ void sa_pause_sound(void)
    int i;
 
    pause_sound	    = 1;
-   samp_modeb_timer = 0;
 
    //pause_raine_ym3812();
    for( i = 0; i < NUMVOICES; i++ ){

@@ -578,39 +578,8 @@ void DrawNormal(void)
    RefreshBuffers = 0;
 }
 
-static BITMAP *pause_buffer;
-static int show_fps_mode_store;
-static int VSyncStore;
-static UINT32 pause_timer;
-
-void InitDrawPaused(void)
-{
-   sa_pause_sound();
-
-   show_fps_mode_store=raine_cfg.show_fps_mode;
-   raine_cfg.show_fps_mode=0;
-   VSyncStore=display_cfg.vsync;
-   display_cfg.vsync=1;
-
-   pause_time = 0;
-
-   raine_cfg.req_pause_scroll = 0;
-
-   pause_buffer = create_bitmap(GameScreen.xfull, GameScreen.yfull);
-   blit(BlitSource, pause_buffer, 0, 0, 0, 0, GameScreen.xfull, GameScreen.yfull);
-
-   pause_timer = read_ingame_timer();
-   init_gui_inputs_paused();
-}
-
 void DrawPaused(void)
 {
-#ifdef RAINE_DOS
-   cpu_frame_count++;
-#endif
-
-   blit(pause_buffer, BlitSource, xoff2, yoff2, xoff2, yoff2, xxx, yyy);
-
    DrawNormal();		// Overlay text interface, blit to screen
 
    pause_time++;

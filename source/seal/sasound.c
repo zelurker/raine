@@ -49,9 +49,6 @@ always different from the one it *should* be running at.
 
 */
 
-
-static int samp_modeb_timer;
-
 SoundRec      *SndMachine = NULL, snd_entry;
 
 /* audio related stuff */
@@ -278,7 +275,6 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 
    /**** stream buffer mode ****/
    stream_buffer_max = STREAM_BUFFER_MAXB;
-   samp_modeb_timer = 0;
 
    //reserved_channel = 0;
 
@@ -379,7 +375,6 @@ void saDestroySound( int remove_all_resources )
 void sa_pause_sound(void)
 {
    pause_sound	    = 1;
-   samp_modeb_timer = 0;
 
    // pause_raine_ym3812();
 #if 1

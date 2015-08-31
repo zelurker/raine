@@ -440,6 +440,7 @@ void reset_ingame_timer(void)
    SDL_initFramerate(&fpsm);
    SDL_setFramerate(&fpsm,fps);
 #endif
+   pc_timer = cpu_frame_count;
    init_fps();
 }
 

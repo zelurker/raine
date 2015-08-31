@@ -49,13 +49,8 @@ void BlitScreen(void)
 	 DrawNormal();
 	 return;
   }
-      else{
 
-	  DrawPaused();
-
-	 return;
-
-      }
+  DrawPaused();
 }
 
 // print_ingame():

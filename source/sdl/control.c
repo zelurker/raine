@@ -303,38 +303,6 @@ static void frame_skip_down(void)
 
 extern void cpu_speed_up(); // emumain.c
 extern void cpu_slow_down(); // emumain.c
-static int pause_frame;
-
-static void key_pause_game(void)
-{
-	raine_cfg.req_pause_game ^= 1;
-	/* There would also be the possibility to stop cpu_frame_count while
-	 * in pause, but actually the variable has not exactly a good name
-	 * anymore since it's used to count the number of drawn frames and to
-	 * limit the display to 60 fps. So if we stop cpu_frame_count then
-	 * the screen is updated as often as possible while in pause mode,
-	 * which is not a good idea... */
-	if (raine_cfg.req_pause_game) {
-	    sa_pause_sound();
-	    pause_frame = cpu_frame_count;
-	} else {
-	    sa_unpause_sound();
-	    cpu_frame_count = pause_frame; // for the demos eventually
-	    reset_ingame_timer();
-	}
-}
-
-extern int req_fwd; // emumain.c
-
-void key_pause_fwd()
-{
-  if (raine_cfg.req_pause_game) {// only makes sense while in pause...
-      cpu_frame_count = pause_frame++;
-      reset_ingame_timer();
-      req_fwd = 1; // could contain more than 1 frame...
-      raine_cfg.req_pause_game = 0;
-  }
-}
 
 static void toggle_limit_speed() {
 	if(display_cfg.limit_speed){
