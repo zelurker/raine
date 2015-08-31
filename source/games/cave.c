@@ -2545,7 +2545,7 @@ static void create_cave_layer(int i, UINT16 *scrolly) {
   pbitmap = layer_pbitmap[i];
 }
 
-static INT16 offsets_bg0[240],offsets_bg1[240],offsets_bg2[240];
+static INT16 offsets_bg0[256],offsets_bg1[256],offsets_bg2[256];
 
 static void draw_cave_layer(int num)
 {
@@ -2891,7 +2891,7 @@ static void draw_cave_layer(int num)
       print_ingame(1,gettext("line scroll %d"),num);
 #endif
       for(y=(32-y16);(UINT32)y<(240+32);y+=16){
-	int min = 999, max = -999;
+	INT16 min = 999, max = -999;
 	int n,startn;
 	if (y<16) {
 	  zz = zzzz = (zzzz+(WIDTH*N/16))&(WIDTH*HEIGHT*N/(16*16)-1);

@@ -3026,8 +3026,7 @@ FUNC(init_spr16x16asm_8)
 
 
 FUNC(init_spr16x16asm_mask)
-	movl	4(%esp),%eax
-	movl	%eax, GLOBL(pbitmap) // for the ldraw_msk functions (pure C)
+	movl	%eax,4(%esp) // pbitmap is sent on stack !
 	movl	(%eax),%eax		// Width
 	movl	%eax,bitw_16-4
 
