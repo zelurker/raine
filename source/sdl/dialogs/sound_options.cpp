@@ -26,7 +26,8 @@ menu_item_t sound_menu[] =
   { _("Emulate sound"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
   // we are obliged to give labels for the sample rates because a list of
   // 3 values is now considered to be an interval (start, end, step).
-  { _("Sample rate"), NULL, &audio_sample_rate, 3, { 11025, 22050, 44100 }} ,
+  { _("Sample rate"), NULL, &audio_sample_rate, 3, { 11025, 22050, 44100 },
+      { "11025", "22050","44100" }} ,
 #if HAS_ES5506
   { _("ES5506 voice filters"), NULL, &es5506_voice_filters, 2, { 0, 1 }, { _("No"), _("Yes") } },
 #endif
