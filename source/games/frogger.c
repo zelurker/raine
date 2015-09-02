@@ -728,6 +728,8 @@ static void setup_gal_pal() {
   }
 }
 
+static int warned;
+
 static void draw_emudx() {
   UINT8 code,color;
   int x,y,zzzz,zz;
@@ -737,6 +739,12 @@ static void draw_emudx() {
   if (RefreshBuffers) {
       setup_frogger_pal();
       bpp = display_cfg.bpp / 16;
+      if (bpp == 1 && !warned) {
+	  warned = 1;
+#ifndef SDL
+	  raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("Switch to at least 16bpp and reload"),NULL,raine_translate_text("&Ok"),NULL,'O',0);
+#endif
+      }
   }
 
 #ifdef RAINE_DEBUG
@@ -1399,7 +1407,14 @@ static void load_frogger() {
 
   ay8910_amplify = 8;
   if (romset == 0) { // frogger
-    if (exists_emudx_file("froggerg.dx2")) {
+      if (!exists_emudx_file("froggerm.dx2")) {
+#ifndef SDL
+	  raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("Without froggerm.dx2 you will have no sound"),NULL,raine_translate_text("&Ok"),NULL,'O',0);
+#else
+	  MessageBox(gettext("EmuDX"),gettext("Without froggerm.dx2 you will have no sound"),gettext("Ok"));
+#endif
+      }
+      if (exists_emudx_file("froggerg.dx2")) {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else

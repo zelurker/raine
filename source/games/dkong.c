@@ -525,6 +525,7 @@ static void draw_debug_tile() {
 #endif
 
 static int dkong_us; // order of the levels different...
+static int warned;
 
 static void draw_emudx() {
   UINT8 code, color;
@@ -536,6 +537,12 @@ static void draw_emudx() {
 
   if (RefreshBuffers) {
       bpp = display_cfg.bpp / 8;
+      if (bpp == 1 && !warned) {
+	  warned = 1;
+#ifndef SDL
+	  raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("Switch to at least 16bpp and reload"),NULL,raine_translate_text("&Ok"),NULL,'O',0);
+#endif
+      }
   }
 
   if (RAM[0x40]) { // number of lifes > 0 (6228 and 6040 seem to be the same !)
@@ -801,6 +808,13 @@ static void load_dkong() {
   layer_id_data[0] = add_layer_info(gettext("BG"));
   layer_id_data[1] = add_layer_info(gettext("SPRITES"));
 
+  if (!exists_emudx_file("dkongm.dx2") && (is_current_game("dkongjp") || is_current_game("dkong"))) {
+#ifndef SDL
+    raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("Without dkongm.dx2 you will have no sound"),NULL,raine_translate_text("&Ok"),NULL,'O',0);
+#else
+    MessageBox(gettext("EmuDX"),gettext("Without dkongm.dx2 you will have no sound"),gettext("Ok"));
+#endif
+  }
   if (exists_emudx_file("dkongg.dx2") && (is_current_game("dkongjp") || is_current_game("dkong"))) {
 #ifndef SDL
     if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
