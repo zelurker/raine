@@ -168,8 +168,6 @@ static void load_game_proc()
     loading_dialog->draw();
 
     load_game_rom_info();
-    delete loading_dialog;
-    loading_dialog = NULL;
 
     if (!(load_error & LOAD_FATAL_ERROR)) {
 			init_inputs();
@@ -178,7 +176,6 @@ static void load_game_proc()
       init_sound();
       read_bld();
     }
-
 }
 
 static void do_load_game(void)
@@ -237,6 +234,10 @@ static void do_load_game(void)
 
      reset_game_hardware();
 
+     if (loading_dialog) {
+	 delete loading_dialog;
+	 loading_dialog = NULL;
+     }
      if (raine_cfg.save_game_screen_settings)
        WantScreen=1;
      sprintf(neocd_wm_title,"Raine - %s",current_game->long_name);

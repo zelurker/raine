@@ -61,6 +61,7 @@ void init_joys();
 void read_gui_config();
 void write_gui_config();
 void setup_font();
+void load_message(char *msg);
 
 #ifdef __cplusplus
 }
