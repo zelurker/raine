@@ -419,17 +419,17 @@ void update_monitoring() {
 		i=1;  fwrite(&i,1,2,f_record); // codec : pcm
 		// if (mixing_stereo)
 		i=2;
-		fwrite(&i,1,2,f_record); // number of channels
+		fwrite(&i,1,2,f_record); // number of channels (22)
 
-		fwrite(&audio_sample_rate,1,4,f_record);
+		fwrite(&audio_sample_rate,1,4,f_record); // (24)
 		// if (mixing_stereo)
 		i = audio_sample_rate * 4;
 		/* 	else */
 		/* 	  i = audio_sample_rate * 2; */
-		fwrite(&i,1,4,f_record); // bytes / second
+		fwrite(&i,1,4,f_record); // bytes / second (28)
 
-		i=4; fwrite(&i,1,2,f_record); // block alignement ??!!!!
-		i=16; fwrite(&i,1,2,f_record); // bits / sample
+		i=4; fwrite(&i,1,2,f_record); // block alignement ??!!!! (32)
+		i=16; fwrite(&i,1,2,f_record); // bits / sample (34)
 
 		fwrite("data",1,4,f_record);
 		fwrite(&i,1,4,f_record); // size 2 (offset 40) = filesize - 44 ???
