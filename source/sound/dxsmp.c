@@ -8,6 +8,9 @@
 #include "dxsmp.h"
 #include "streams.h"
 #include "zlib.h"
+#include "wav.h"
+#include "gui.h"
+#include "files.h"
 
 /* DX Samples : my first idea was to add these in sasound.c and to mix them
  * after
@@ -22,8 +25,6 @@
 
    For now the old packfile format is still supported if SDL isn't defined,
    but there doesn't seem to be any reason to keep it... */
-
-#if !defined( ALLEGRO_SOUND) && !defined(SEAL)
 
 struct wave_spec {
   // to be saved
@@ -43,24 +44,14 @@ static struct private_data* sample_data;
 
 int raine_nb_samples = 0;
 
-extern SDL_AudioSpec gotspec;
-
 static char dx_file[256];
 
 void read_dx_file() {
   int i,err;
   char buff[80];
-  SDL_AudioCVT  wav_cvt;
-  SDL_AudioSpec wave;
-#ifndef SDL
-  SAMPLE *sample;
-  DATAFILE *dat;
-#else
   unzFile dat;
-  Uint8 *wav_buffer,*buffer;
+  UINT8 *buffer;
   unz_file_info file_info;
-  SDL_RWops *rw;
-#endif
 /*   int start,end; */
 /*   short *src; */
 
@@ -70,16 +61,6 @@ void read_dx_file() {
     return;
   }
 
-#ifndef SDL
-  set_emudx_password();
-  dat = load_datafile(dx_file);
-  packfile_password("");
-
-  raine_nb_samples = 1;
-  while (dat[raine_nb_samples].dat && dat[raine_nb_samples].type == ASCII_ID('S','A','M','P')) {
-    raine_nb_samples++;
-  }
-#else
   dat = unzOpen(dx_file);
   if (!dat) return;
   for (raine_nb_samples=1; raine_nb_samples<32; raine_nb_samples++) {
@@ -88,7 +69,6 @@ void read_dx_file() {
     if (err != UNZ_OK)
       break;
   }
-#endif
   raine_nb_samples--;
 
   emudx_samples = (struct wave_spec*)AllocateMem((raine_nb_samples+1) * sizeof(struct wave_spec));
@@ -98,18 +78,6 @@ void read_dx_file() {
 
   sample_data = (struct private_data*)AllocateMem((raine_nb_samples+1)*sizeof(struct private_data));
   for (i=1; i<=raine_nb_samples; i++) {
-    unsigned int len_in_bytes;
-#ifndef SDL
-    sample = (SAMPLE *)(dat[i].dat);
-
-    wave.freq = sample->freq;
-    wave.format = (sample->bits == 16 ? AUDIO_U16 : AUDIO_U8);
-    wave.samples= sample->len;
-    wave.callback=NULL;
-    wave.userdata = NULL;
-    wave.channels = (sample->stereo ? 2 : 1);
-    wave.silence = 0;
-#else
     sprintf(buff,"%d.wav",i);
     unzLocateFile(dat,buff,2);
 
@@ -117,13 +85,27 @@ void read_dx_file() {
     unzGetCurrentFileInfo(dat,&file_info,NULL,0,NULL,0,NULL,0);
     buffer = malloc(file_info.uncompressed_size);
     unzReadCurrentFile(dat,buffer,file_info.uncompressed_size);
+    emudx_samples[i].pos = emudx_samples[i].playing = 0;
+#ifdef SDL
+  SDL_RWops *rw;
+  unsigned int len_in_bytes;
+  SDL_AudioCVT  wav_cvt;
+  SDL_AudioSpec wave;
+  UINT8 *wav_buffer;
+    extern SDL_AudioSpec gotspec;
+    if (!gotspec.freq) {
+	/* Now read_dx_file is called before the soundcard init, so we
+	 * must put sensible default values here... */
+	gotspec.freq = audio_sample_rate;
+	gotspec.channels = 2;
+	gotspec.format = AUDIO_S16;
+    }
     rw = SDL_RWFromMem(buffer, file_info.uncompressed_size);
     if (!SDL_LoadWAV_RW(rw,1,&wave,&wav_buffer,&len_in_bytes)) {
       printf("couldn't load sample %d: %s\n",i,SDL_GetError());
       exit(1);
     }
     unzCloseCurrentFile(dat);	// Is this needed when open failed?
-#endif
 
     if (SDL_BuildAudioCVT(&wav_cvt,
 			  wave.format, wave.channels, wave.freq,
@@ -132,27 +114,20 @@ void read_dx_file() {
       exit(1);
     }
 
-#ifndef SDL
-    len_in_bytes = sample->len * (sample->bits == 16 ? 2 : 1) * (sample->stereo ? 2 : 1);
-#endif
     wav_cvt.buf = sample_data[i].data = AllocateMem(len_in_bytes*wav_cvt.len_mult);
     sample_data[i].len =len_in_bytes*wav_cvt.len_ratio;
     wav_cvt.len = len_in_bytes;
-#ifdef SDL
     memcpy(sample_data[i].data, wav_buffer, len_in_bytes);
     SDL_FreeWAV(wav_buffer);
-#else
-    memcpy(sample_data[i].data, sample->data, len_in_bytes);
-#endif
-    emudx_samples[i].pos = emudx_samples[i].playing = 0;
 
     SDL_ConvertAudio(&wav_cvt);
-  }
-#ifdef SDL
-  unzClose(dat);
 #else
-  unload_datafile(dat);
+    convert_wav((char*)buffer,file_info.uncompressed_size,
+	    (char**)&sample_data[i].data,&sample_data[i].len);
 #endif
+    free(buffer);
+  }
+  unzClose(dat);
 }
 
 static void dxsmp_update(int num, INT16 **buffer, int length)
@@ -181,7 +156,7 @@ static void dxsmp_update(int num, INT16 **buffer, int length)
       for (i=0; i<len2; i++) {
 	INT16 left = *(din++)*volume/255;
 	INT16 right = *(din++)*volume/255;
-#ifdef TEST_OVERFLOW
+#ifdef RAINE_DEBUG
 	INT32 sample = buffer[0][i]+left;
 	if (sample > 0x7fff) {
 	  printf("overflow left %x\n",sample);
@@ -257,6 +232,7 @@ int dxsmp_sh_start(const struct dxsmpinterface *intf) {
     }
     unzClose(dat);
     strcpy(dx_file,str);
+    read_dx_file();
     if (stream_init_multim(2, stream_names, vol, audio_sample_rate, 0, dxsmp_update) == -1)
       return 1;
 
@@ -283,66 +259,3 @@ void dxsmp_sh_stop() {
 int is_dxsmp_playing(int sample) {
   return emudx_samples[sample].playing;
 }
-#else
-
-// Allegro version, much less precise because I have no conversion functions here !!!
-// not maintained anymore
-
-static DATAFILE *dat = NULL;
-
-int raine_nb_samples;
-
-int dxsmp_sh_start(const struct dxsmpinterface *intf) {
-  char *str;
-
-  if ((str = exists_emudx_file(intf->dx_name))) {
-    set_emudx_password();
-    dat = load_datafile(str);
-    packfile_password("");
-    if (dat) {
-      raine_nb_samples = 1;
-      while (dat[raine_nb_samples].dat && dat[raine_nb_samples].type == ASCII_ID('S','A','M','P')) {
-	raine_nb_samples++;
-      }
-      raine_nb_samples--;
-
-      return 0;
-    }
-  }
-  return 1; // failure
-}
-
-void dxsmp_sh_stop() {
-  raine_stop_samples();
-  raine_nb_samples = 0;
-  if (dat)
-    unload_datafile(dat);
-  dat = NULL;
-}
-
-void raine_stop_sample(int sample) {
-  if (sample > 0 && sample <= raine_nb_samples && dat) {
-    stop_sample(dat[sample].dat);
-  }
-}
-
-void raine_stop_samples() {
-  int i;
-  for (i=1; i<= raine_nb_samples; i++)
-    stop_sample(dat[i].dat);
-}
-
-int is_dxsmp_playing(int sample) {
-  return 0; // can't say this in allegro !!!
-}
-
-void raine_play_sample(int sample, int volume) {
-  if (dat)
-    play_sample(dat[sample].dat,volume,128,1000,FALSE);
-}
-
-void raine_loop_sample(int sample, int volume) {
-  if (dat)
-    play_sample(dat[sample].dat,volume,128,1000,TRUE);
-}
-#endif

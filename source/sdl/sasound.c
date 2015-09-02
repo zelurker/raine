@@ -53,7 +53,6 @@
 
 #include "SDL.h"
 #include "SDL_audio.h"
-#include "dxsmp.h"
 #ifdef HAS_NEO
 #include <SDL_sound.h>
 #include "neocd/neocd.h"
@@ -214,7 +213,6 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        }
        printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
        opened_audio = 1;
-       read_dx_file();
 #if HAS_NEO
        if (!sound_init)
 	   Sound_Init(); // init sdl_sound
