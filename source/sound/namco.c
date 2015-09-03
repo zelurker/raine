@@ -96,7 +96,11 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 	sound_channel *voice;
 	short *mix;
 	int i;
+#if !defined(ALLEGRO_SOUND) && !defined(SEAL)
 	int clen = length*namco_clock/audio_sample_rate;
+#else
+	int clen = length*4;
+#endif
 
 	/* if no sound, we're done */
 	if (sound_enable == 0)
@@ -184,6 +188,7 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 
 	/* mix it down */
 	mix = mixer_buffer;
+#if !defined(ALLEGRO_SOUND)
 	int pos = 0;
 	for (i = 0; i < clen; i++) {
 	    pos = i*audio_sample_rate/namco_clock;
@@ -193,6 +198,10 @@ static void namco_update_mono(int ch, INT16 *buffer, int length)
 	    }
 	    buffer[pos] = mixer_lookup[*mix++];
 	}
+#else
+	for (i = 0; i < length; i++)
+		*buffer++ = mixer_lookup[*mix++];
+#endif
 
 }
 
