@@ -207,9 +207,9 @@ static void my_set_palette_range(const PALETTE p, int from, int to, int vsync) {
    * except that allegro is full of bugs, and if you call that with a screen
    * in 16bpp or more, then this stupid thing will wait for vsync and you'll
    * spend 90% of cpu time in here !!! What a piece of crap... */
-/*  if (from == 0 && to == 255)
+  if (from == 0 && to == 255)
     set_palette(p);
-  else */
+  else
     set_palette_range(p,from,to,vsync);
 }
 
@@ -325,15 +325,12 @@ void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, UINT32 
 	       case 15:
 	       case 16:
 		  raine_blit_x2_y2_16(source, dest, x1, y1, x2*2, (y2*2), w, h);
-		  show_video_bitmap(dest);
 	       break;
 	       case 24:
 		  raine_blit_x2_y2_24(source, dest, x1, y1, x2*2, (y2*2), w, h);
-		  show_video_bitmap(dest);
 	       break;
 	       case 32:
 		  raine_blit_x2_y2_32(source, dest, x1, y1, x2*2, (y2*2), w, h);
-		  show_video_bitmap(dest);
 	       break;
 	    }
 	 }
@@ -347,15 +344,12 @@ void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, UINT32 
 	       case 15:
 	       case 16:
 		  raine_blit_x2_y1_16(source, dest, x1, y1, x2*2, (y2*1), w, h);
-		  // show_video_bitmap(dest);
 	       break;
 	       case 24:
 		  raine_blit_x2_y1_24(source, dest, x1, y1, x2*2, (y2*1), w, h);
-		  show_video_bitmap(dest);
 	       break;
 	       case 32:
 		  raine_blit_x2_y1_32(source, dest, x1, y1, x2*2, (y2*1), w, h);
-		  show_video_bitmap(dest);
 	       break;
 	    }
 	 }
@@ -562,6 +556,12 @@ void DrawNormal(void)
        raine_fast_blit(BlitSource, screen, xoff2, yoff2+i, destx, i*2, xxx, 1);
      break;
    }
+   }
+
+   if (display_cfg.bpp > 8 && display_cfg.vsync) {
+       // on depths > 8, palette is not updated, so vsync must be taken care
+       // of
+       show_video_bitmap(screen);
    }
 
    if (display_cfg.triple_buffer) {
