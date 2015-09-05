@@ -1020,7 +1020,11 @@ static int revert_to_default(int sel) {
   controls_menu[1].label = _("Edit default game inputs");
   controls_menu[2].label = _("Switch to custom game controls");
   controls_menu[2].menu_func = &switch_to_custom;
-  if (ctrl) ctrl->draw();
+  if (ctrl) {
+      ctrl->update_label(1,_("Edit default game inputs"));
+      ctrl->update_label(2,_("Switch to custom game controls"),&switch_to_custom);
+      ctrl->draw();
+  }
   return 0;
 }
 
@@ -1029,7 +1033,11 @@ static int switch_to_custom(int sel) {
   controls_menu[1].label = _("Edit custom game inputs");
   controls_menu[2].label = _("Revert to default game controls");
   controls_menu[2].menu_func = &revert_to_default;
-  if (ctrl) ctrl->draw();
+  if (ctrl) {
+      ctrl->update_label(1,_("Edit custom game inputs"));
+      ctrl->update_label(2,_("Revert to default game controls"),&revert_to_default);
+      ctrl->draw();
+  }
   return 0;
 }
 

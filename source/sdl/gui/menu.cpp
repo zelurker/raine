@@ -287,8 +287,9 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   use_transparency = ::use_transparency;
 }
 
-void TMenu::update_label(int nb, char *str) {
+void TMenu::update_label(int nb, char *str,int (*menu_func)(int)) {
     menu[nb].label = str;
+    if (menu_func) menu[nb].menu_func = menu_func;
 }
 
 TMenu::~TMenu() {
