@@ -25,16 +25,16 @@ int TSlider::get_height(TFont *font) {
   return TStatic::get_height(font)+20;
 }
 
-void TSlider::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+void TSlider::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions) {
   int wl,hl;
   font->dimensions(menu->label,&wl,&hl);
-  font->surf_string(s,(x+w-wl)/2,y,menu->label,fg,bg);
+  font->surf_string(s,(x+w-wl)/2,y,menu->label,fg,bg,w);
 
   y += hl;
   lift->draw(s,x,y,w,20);
 }
-  
+
 int TSlider::handle_mouse(SDL_Event *event)
 {
   return lift->handle_mouse(event);

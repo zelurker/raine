@@ -23,8 +23,8 @@ class TFont {
     virtual void dimensions(const char *s,int *w, int *h);
     virtual void put_string(int x, int y, const char *s, int color);
     virtual void put_string(int x, int y, const char *s, int color, int bgcolor);
-    virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color);
-    virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor);
+    virtual void surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int color, int w = 0);
+    virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor, int w = 0);
     virtual void load_font(char *myfont);
     virtual void set_style(int style) {};
     virtual void set_utf(int utf) {
@@ -43,8 +43,8 @@ class TFont_ttf :
     virtual void dimensions(const char *s, int *w, int *h);
     virtual void put_string(int x, int y, const char *s, int color);
     virtual void put_string(int x, int y, const char *s, int color, int bgcolor);
-    virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color);
-    virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor);
+    virtual void surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int color, int w = 0);
+    virtual void surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor, int w = 0);
     virtual void load_font(char *myfont);
     virtual void set_style(int style)
     {

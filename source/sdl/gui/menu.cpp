@@ -616,14 +616,14 @@ void TMenu::compute_width_from_font() {
   w = get_fglayer_footer_width();
   if (w > width_max)
     width_max = w;
-  if (width_max > work_area.w) width_max = work_area.w;
-  if (width_max_options > work_area.w)
-	  width_max_options = work_area.w;
   xoptions = width_max;
   if (width_max_options) {
     width_max += width_max_options;
     width_max += HMARGIN;
   }
+  if (width_max > work_area.w) width_max = work_area.w;
+  if (width_max_options > work_area.w)
+	  width_max_options = work_area.w;
 }
 
 void TMenu::adjust_len_max_options(unsigned int &len_max_options) {
@@ -2161,7 +2161,7 @@ void TDialog::display_fglayer_header(int &y) {
   }
   if (*title) {
     boxColor(fg_layer,1,1,fg_layer->w-2,htitle-1,bg_dialog_bar);
-    font->surf_string(fg_layer,1,1,title,fg);
+    font->surf_string_tr(fg_layer,1,1,title,fg);
     rectangleColor(fg_layer,0,0,fg_layer->w-1,htitle,fg);
     y += htitle + 2;
   }
@@ -2232,6 +2232,7 @@ void TMenuMultiCol::compute_width_from_font() {
     width_max += wmax+HMARGIN;
   }
   width_max += HMARGIN;
+  if (width_max > work_area.w) width_max = work_area.w;
 }
 
 void TMenuMultiCol::disp_menu(int n,int y,int w,int h) {
@@ -2240,9 +2241,9 @@ void TMenuMultiCol::disp_menu(int n,int y,int w,int h) {
   for (int c=0; c<nb_cols; c++) {
     if (n == sel) {
       int selcolor = compute_selcolor();
-      font->surf_string(fg_layer,colpos[c],y,cols[n*nb_cols+c],bg,selcolor);
+      font->surf_string(fg_layer,colpos[c],y,cols[n*nb_cols+c],bg,selcolor,w-colpos[c]);
     } else
-      font->surf_string(fg_layer,colpos[c],y,cols[n*nb_cols+c],fg);
+      font->surf_string_tr(fg_layer,colpos[c],y,cols[n*nb_cols+c],fg,w-colpos[c]);
   }
 }
 
@@ -2278,7 +2279,7 @@ void TMenuPostCb::disp_menu(int n,int y,int w,int h) {
   // Just need to add the columns after the normal line
   TMenu::disp_menu(n,y,w,h);
   if (n == 0) {
-      font->surf_string(fg_layer,pos_cb,y,legend,fg);
+      font->surf_string_tr(fg_layer,pos_cb,y,legend,fg);
   } else {
       int x = pos_cb + HMARGIN;
       rectangleColor(fg_layer,x,y,x+wcb,y+h-1,fg);

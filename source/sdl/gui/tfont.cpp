@@ -152,22 +152,38 @@ void TFont::dimensions(const char *s, int *w, int *h) {
 }
 
 void TFont::put_string(int x, int y, const char *s, int color) {
-  surf_string(sdl_screen,x,y,s,color);
+  surf_string_tr(sdl_screen,x,y,s,color);
 }
 
 void TFont::put_string(int x, int y, const char *s, int color, int bgcolor) {
-  surf_string(sdl_screen,x,y,s,color,bgcolor);
+  surf_string(sdl_screen,x,y,s,color,bgcolor,0);
 }
 
-void TFont::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color) {
+void TFont::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int color,int w) {
   if (loaded_font)
     gfxPrimitivesSetFont(loaded_font,charWidth,charHeight);
-  stringColor(surf,x,y,s,color);
+  if (charWidth*strlen(s) > (unsigned)w) {
+      int len = w/charWidth;
+      char *dup = strdup(s);
+      dup[len+1] = 0;
+      stringColor(surf,x,y,dup,color);
+      free(dup);
+  } else
+      stringColor(surf,x,y,s,color);
 }
 
-void TFont::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor) {
-  boxColor(surf,x,y,charWidth*strlen(s)+x-1,charHeight+y-1,bgcolor);
-  surf_string(surf,x,y,s,color);
+void TFont::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor, int w) {
+  if (charWidth*strlen(s) > (unsigned)w) {
+      int len = w/charWidth;
+      char *dup = strdup(s);
+      dup[len+1] = 0;
+      boxColor(surf,x,y,charWidth*len+x-1,charHeight+y-1,bgcolor);
+      surf_string_tr(surf,x,y,dup,color);
+      free(dup);
+  } else {
+      boxColor(surf,x,y,charWidth*strlen(s)+x-1,charHeight+y-1,bgcolor);
+      surf_string_tr(surf,x,y,s,color);
+  }
 }
 
 // SDL_ttf
@@ -200,19 +216,19 @@ void TFont_ttf::dimensions(const char *s,int *w, int *h) {
 }
 
 void TFont_ttf::put_string(int x, int y, const char *s, int color) {
-  surf_string(sdl_screen,x,y,s,color);
+  surf_string_tr(sdl_screen,x,y,s,color);
 }
 
 void TFont_ttf::put_string(int x, int y, const char *s, int color, int bgcolor) {
-  surf_string(sdl_screen,x,y,s,color,bgcolor);
+  surf_string(sdl_screen,x,y,s,color,bgcolor,0);
 }
 
-void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color) {
+void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int color,int w) {
+    if (!s[0]) return;
   if (!ttf)
-    return TFont::surf_string(surf,x,y,s,color);
+    return TFont::surf_string_tr(surf,x,y,s,color,w);
   if (!*s)
     return;
-#if 1
   SDL_Rect dest;
   SDL_Color sc;
   sc.b = (color >> 8) & 0xff;
@@ -224,38 +240,22 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
   else
       sf = TTF_RenderText_Solid(ttf,s,sc );
   dest.x = x; dest.y = y;
-  SDL_BlitSurface(sf,NULL,surf,&dest);
+  if (w && w < sf->w) {
+      SDL_Rect src;
+      src.w = w;
+      src.h = sf->h;
+      SDL_BlitSurface(sf,&src,surf,&dest);
+  } else
+      SDL_BlitSurface(sf,NULL,surf,&dest);
   SDL_FreeSurface(sf);
-#else
-  SDL_Color sc;
-  sc.b = (color >> 8) & 0xff;
-  sc.g = (color >> 16) & 0xff;
-  sc.r = (color >> 24) & 0xff;
-  SDL_Surface *sf = TTF_RenderText_Blended(ttf,s,sc);
-#if 0
-  UINT32 *pixels;
-  for (int y=0; y<sf->h; y++) {
-    pixels = ((UINT32 *)sf->pixels) + y*sf->pitch/4;
-    for (int x=0; x<sf->w; x++) {
-      if (*pixels & 0xffffff)
-	*pixels |= 0xff000000;
-      pixels++;
-    }
-  }
-#endif
-
-  SDL_Rect dest;
-  dest.x = x; dest.y = y;
-  SDL_BlitSurface(sf,NULL,surf,&dest);
-  SDL_FreeSurface(sf);
-#endif
 }
 
-void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor) {
+void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor, int w) {
+    if (!s[0]) return;
   if (!ttf)
-    return TFont::surf_string(surf,x,y,s,color,bgcolor);
+    return TFont::surf_string(surf,x,y,s,color,bgcolor,w);
   if (!bgcolor) // 0 is totally transparent in sdl_gfx -> no bg
-    return surf_string(surf,x,y,s,color);
+    return surf_string_tr(surf,x,y,s,color,w);
   SDL_Rect dest;
   SDL_Color sc,bg;
   sc.b = (color >> 8) & 0xff;
@@ -271,7 +271,13 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
       sf = TTF_RenderText_Shaded(ttf,s,sc,bg);
   // SDL_SetColorKey(sf,SDL_SRCCOLORKEY | SDL_RLEACCEL,0);
   dest.x = x; dest.y = y;
-  SDL_BlitSurface(sf,NULL,surf,&dest);
+  if (w && w < sf->w) {
+      SDL_Rect src;
+      src.w = w;
+      src.h = sf->h;
+      SDL_BlitSurface(sf,&src,surf,&dest);
+  } else
+      SDL_BlitSurface(sf,NULL,surf,&dest);
   SDL_FreeSurface(sf);
 }
 

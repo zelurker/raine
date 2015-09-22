@@ -192,7 +192,7 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
       *s = 0;
       int w,h;
       font->dimensions(old,&w,&h);
-      font->surf_string(sf,x,y,old,fg,bg);
+      font->surf_string(sf,x,y,old,fg,bg,w);
       x += w;
       *s = 27;
     }
@@ -224,7 +224,7 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     } while (s[-1] != 'm' && s[-1] != 0);
   }
 
-  font->surf_string(sf,x,y,old,fg,bg);
+  font->surf_string(sf,x,y,old,fg,bg,w);
 }
 
 void TStatic::next_list_item() {}
@@ -246,7 +246,7 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
   sprintf(buff,"%d %%",*(menu->value_int));
   int myw,myh;
   font->dimensions(buff,&myw,&myh);
-  font->surf_string(s,x+(w-myw)/2,y+1,buff,mymakecol(255,255,255));
+  font->surf_string_tr(s,x+(w-myw)/2,y+1,buff,mymakecol(255,255,255));
 }
 
 int TProgressBar::get_width(TFont *font) {
@@ -336,7 +336,7 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
     sprintf(buff,"%d",*(menu->value_int));
     disp_string = buff;
   }
-  font->surf_string(s,xoptions,y,disp_string,fg,bg);
+  font->surf_string(s,xoptions,y,disp_string,fg,bg,w);
 }
 
 /* About cycling of next_list_item and prev_list_item : this is mandatory with

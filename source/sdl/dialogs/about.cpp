@@ -133,7 +133,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    *s = 0;
 	    int w,h;
 	    font->dimensions(old,&w,&h);
-	    font->surf_string(sf,x,y,old,fg,bg);
+	    font->surf_string(sf,x,y,old,fg,bg,w);
 	    x += w;
 	    *s = pre;
 	}
@@ -279,7 +279,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 
 	if (pre == '@') {
 	    // Very special case, W Button, 1 letter.
-	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg);
+	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg,w);
 	    goto end_loop;
 	}
 
@@ -447,11 +447,11 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	} else if (str[1] == 0) {
 	    int ws,hs;
 	    font->dimensions(str,&ws,&hs);
-	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg);
+	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg,w);
 	} else {
 	    int ws,hs;
 	    font->dimensions(str,&ws,&hs);
-	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg);
+	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg,w);
 	}
 	if (f0) {
 	    delete font;
@@ -466,7 +466,7 @@ end_loop:
     }
 
     if (*old)
-	font->surf_string(sf,x,y,old,fg,bg);
+	font->surf_string(sf,x,y,old,fg,bg,w);
     min_font_size = old_min;
 }
 

@@ -52,14 +52,14 @@ void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
 		  field[end] = old;
 	      }
 	  }
-	  font->surf_string(s,x+1,y+1,&field[p],fg_color,0);
+	  font->surf_string(s,x+1,y+1,&field[p],fg_color,0,0);
 	  if (old) field[end] = old;
 	  old = field[pos]; field[pos] = 0;
 	  font->dimensions(&field[p],&curx,&curh);
 	  curx += x+1;
 	  field[pos] = old;
       } else {
-	  font->surf_string(s,x+1,y+1,field,fg_color,0);
+	  font->surf_string(s,x+1,y+1,field,fg_color,0,0);
 	  char old = field[pos]; field[pos] = 0;
 	  font->dimensions(field,&curx,&curh);
 	  curx += x+1;
