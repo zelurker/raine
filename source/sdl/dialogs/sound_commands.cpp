@@ -32,7 +32,9 @@ static int stop(int sel) {
     int old = command;
     if (get_assoc_type() == 10) { // gunbird
 	send(1);
-    } else if (get_assoc_type() < 10) { // default : neogeo
+    } else if (get_assoc_type() == 11) // bublbobl
+	send(0);
+    else if (get_assoc_type() < 10) { // default : neogeo
 	send(3); // stop / music mode for mslug
 	if (get_assoc_type() != 4) { // except mslug/2/3/x
 	    send(7); // music mode for 3countb and most neogeo games
@@ -149,7 +151,6 @@ int menu_asso(int sel) {
 	return 0;
     case 2: // test command
 	old = command;
-	printf("testing %x\n",cmd);
 	command = cmd;
 	test_command(sel);
 	menu = new TSoundCmd(_("Playback"), playback);
@@ -278,6 +279,19 @@ int do_sound_cmd(int sel) {
     case 3:  // sonicwi2/3
 	for (int n=0x20; n<Z80ROM[0x30d]; n++)
 	    add_value(n);
+	break;
+    case 11: // bublbobl !
+	// Not sure I have everything, musics and sounds are mixed !
+	for (int n=7; n<=11; n++)
+	    add_value(n);
+	add_value(0xf);
+	add_value(0x14);
+	add_value(0x18);
+	add_value(0x29);
+	add_value(0x2b);
+	add_value(0x2d);
+	add_value(0x30);
+	add_value(0x32);
 	break;
     default: // includes mslug and gunbird...
 	for (int n=0x20; n<0x40; n++)

@@ -16,6 +16,7 @@
 #include "timer.h"
 #include "decode.h"
 #include "emumain.h"
+#include "assoc.h"
 
 /*
 
@@ -904,6 +905,7 @@ static void load_bublbobl(void)
 /*컴컴 Set up ROM/RAM 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴*/
 
     set_reset_function(bubl_reset);
+    init_assoc( 3);
    RAMSize=0x10000 + 0x100 + 0x1000;
 
    if(!(RAM=AllocateMem(RAMSize))) return;

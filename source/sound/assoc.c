@@ -163,6 +163,8 @@ void init_assoc(int kind) {
 	}
     } else if (kind == 2)
 	type = 10; // gunbird
+    else if (kind == 3) // bublbobl
+	type = 11;
     if (type == 1) mode = MUSIC;
     if (type) {
 	prepare_cdda_save(ASCII_ID('T','R','C','K'));
@@ -406,9 +408,10 @@ int handle_sound_cmd(int cmd) {
 	    mute_song();
 	}
 	break;
-    default:
+    case 10:
 	if (active && cmd < 0x40)  // gunbird
 	    mute_song();
+	break;
     }
     /* At this point all the sound commands have already returned, we are
      * left with something which is a song number in cmd */
