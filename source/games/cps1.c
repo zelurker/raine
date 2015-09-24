@@ -1388,6 +1388,7 @@ static void cps1_init_machine(void)
    int max_sprites16 = size*2 / 0x100;
    int sf2ee;
    // memset(&input_buffer[0x1a],0xff,0x20);
+   input_buffer[5] = 0xff; // for cawing, freezes after loading weapon otherwise
    no_pbitmap = !strncmp(gamename,"xmcot",5); // xmcota and clones
 
    input_buffer[0x15] &= ~16;
