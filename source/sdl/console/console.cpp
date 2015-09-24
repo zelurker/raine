@@ -1273,7 +1273,7 @@ int do_console(int sel) {
 		cpu_id = 0;
 	}
 	if (cpu_id) {
-	    sprintf(buff+strlen(buff)-1,"%c",65+(cpu_id & 0xf));
+	    sprintf(buff+strlen(buff),"%c",65+(cpu_id & 0xf));
 	    cons->print(buff);
 	}
     }
