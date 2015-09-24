@@ -161,6 +161,7 @@ int TStatic::get_len_max_options() {
 
 int TStatic::get_width(TFont *font) {
   int w,h;
+  font->set_utf(is_utf);
   ansi_font_dim(font,(char*)menu->label,&w,&h);
   return w;
 }
