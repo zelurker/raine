@@ -1423,7 +1423,7 @@ vclean:
 
 # Installation part (Only for Unix)
 install: install_dirs $(RAINE_LNG) $(RAINE_EXE)
-	#strip $(RAINE_EXE)
+	strip $(RAINE_EXE)
 ifdef RAINE_UNIX
 	@echo installing $(RAINE_EXE) in $(bindir)
 	$(INSTALL_BIN) $(RAINE_EXE) $(bindir)
