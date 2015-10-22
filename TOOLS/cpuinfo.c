@@ -10,6 +10,11 @@ typedef long long int64_t;
 #include <inttypes.h>
 #endif
 
+#ifdef __APPLE__
+#include <unistd.h>
+#include <string.h>
+#endif
+
 
 typedef struct cpuid_regs {
 	unsigned int eax;
