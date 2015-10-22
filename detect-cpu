@@ -244,7 +244,7 @@ not() {
   # host's CPU/instruction set
    host_arch=`uname -p 2>&1`
    case "$host_arch" in
-   i386|sparc|ppc|alpha|arm|mips|vax)
+   sparc|ppc|alpha|arm|mips|vax)
      ;;
    powerpc) # Darwin returns 'powerpc'
      host_arch=ppc
@@ -309,9 +309,6 @@ elif test -r /compat/linux/proc/cpuinfo && not x86 ; then
   # FreeBSD with Linux emulation /proc mounted,
   # extract CPU information from it
   _cpuinfo="cat /compat/linux/proc/cpuinfo"
-elif darwin && not x86 ; then
-  # use hostinfo on Darwin
-  _cpuinfo="hostinfo"
 elif aix; then
   # use 'lsattr' on AIX
   _cpuinfo="lsattr -E -l proc0 -a type"
@@ -495,7 +492,7 @@ EOF
           proc=i586-i686
         else
           proc=i586
-	fi
+	      fi
       fi
     fi
     if test "$proc" = "prescott" ; then
