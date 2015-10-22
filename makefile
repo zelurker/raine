@@ -47,6 +47,7 @@ HAS_CONSOLE = 1
 ifdef NO_ASM
 ASM_VIDEO_CORE =
 CZ80 = 1
+C68020 = 1
 endif
 
 # Try to detect mingw... If you want to build the dos and the mingw
@@ -76,9 +77,6 @@ ifndef NO_ASM
 else
     LD=$(CXX)
 endif
-# using C video core for the moment
-# pb: how to run self modifying code on OSX ?
-ASM_VIDEO_CORE =
 endif
 
 endif
@@ -294,6 +292,9 @@ else
 SDL = 1
 
 ifdef DARWIN
+# using C video core for the moment
+# pb: how to run self modifying code on OSX ?
+ASM_VIDEO_CORE =
 DESTDIR = Raine.app
    prefix = $(DESTDIR)/Contents
    bindir = $(prefix)/MacOS
@@ -1293,7 +1294,12 @@ else
 $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
 	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o
 endif
-	$(OBJDIR)/68000/star.exe -hog  -addressbits 32 $@
+# Notice : you can pass -addressbits 32 to star.exe to avoid addresses
+# masks and win a few instructions. It works for most games, but not all of
+# them, 1941 is a good example of a game which can't work with that, crash
+# just after the hardware tests, just before the title screen with "pc out
+# of bounds" in the console. So it's not used for now.
+	$(OBJDIR)/68000/star.exe -hog $@
 
 ifndef CZ80
 # generate mz80.asm
@@ -1446,7 +1452,7 @@ vclean:
 
 # Installation part (Only for Unix)
 install: install_dirs $(RAINE_LNG) $(RAINE_EXE)
-	#strip $(RAINE_EXE)
+	strip $(RAINE_EXE)
 ifdef RAINE_UNIX
 	@echo installing $(RAINE_EXE) in $(bindir)
 	$(INSTALL_BIN) $(RAINE_EXE) $(bindir)
