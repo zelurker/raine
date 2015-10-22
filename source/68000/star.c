@@ -24,7 +24,7 @@ Raine version:
 #define VERSION "0.26r4"
 /* 0.26r2 : patch to use the fetch array instead of the memory read arrays
    to access memory in pc relative addressing modes (needed to decrypt cps2) */
-/* 0.26r3 : includes the changes to starscream 0.26c ! 
+/* 0.26r3 : includes the changes to starscream 0.26c !
  * 0.26r4 : the patch of the fetch array of version 0.26r2 didn't check the
  *          limits of the area accessed, and ninjaw tries to access an area
  *          outside of the code area using pc-relative adressing (extremely
@@ -609,10 +609,15 @@ static void gen_interface(void) {
 		emit("dec ebp\n");
 		emit("jnz short .lloop\n");
 	}
-	//emit("cmp edi,__jmptbl+262144\n");
+#ifdef DARWIN
+        /* This is something extremely dangerous related to assembler in
+         * darwin, see details there : http://rayseyfarth.blogspot.fr/2012/09/assembly-language-linux-vs-os-x.html */
 	emit("lea eax,[__jmptbl]\n");
 	emit("add eax,262144\n");
 	emit("cmp edi,eax\n");
+#else
+	emit("cmp edi,__jmptbl+262144\n");
+#endif
 	emit("jne short .decomp\n");
 
 	emit("popad\n");
@@ -1056,7 +1061,7 @@ static void gen_interface(void) {
 	emit("  mov [edi+i+0],eax\n");
 	emit("  mov [edi+i+4],edx\n");
 	emit("%%assign i i+8\n");
-	emit("%%endrep\n"); 
+	emit("%%endrep\n");
 	emit("%%if ((contextend-contextbegin) %% 8)!=0\n");
 	emit("  mov eax,[contextbegin+i+0]\n");
 	emit("  mov [edi+i+0],eax\n");
@@ -1284,7 +1289,7 @@ emit("mov [save_01], dl\n");			// Stef Fix (Gens)
 
 emit("and [__sr + 1], byte 0xF8\n");	// Stef Fix (Gens)
 emit("mov dl, [save_01]\n");			// Stef Fix (Gens)
-	
+
 	emit("sub edi,byte %d\n", cycles);
 
 emit("or [__sr + 1], dl\n");			// Stef Fix (Gens)
@@ -2359,7 +2364,7 @@ static void pcrel_adjust(int size) {
   // emit("add edx, ebp\n");
   emit("cmp edx,[__fetch_region_end]\n");
   emit("jb .oklong\n");
-   
+
   // we are out of bounds, reaches by pc relative an adress which is not in
   // the code area... so let's fall back to a normal read
   emit("call readmemory%s\n", sizename[size]);
@@ -2406,7 +2411,7 @@ static void ea_step_read(int size, enum eamode mode, int reg) {
 		break;
 	case pcdp: case pcxd:
 	  pcrel_adjust(size);
-	  break; 
+	  break;
 	case immd:
 		switch(size) {
 		case 1:
@@ -5097,7 +5102,7 @@ static void decode4(int n) {
 	eadef_control(n, 0xFFC0, 0x4EC0, i_jmp);
 	eadef_control(n, 0xFFC0, 0x4E80, i_jsr);
 	for(main_reg=0;main_reg<8;main_reg++)eadef_control(n,0xFFC0,0x41C0|(main_reg<<9),i_lea);
-	
+
 /******** Stef Fix (Gens) *********/
 
 // old code
@@ -5109,7 +5114,7 @@ static void decode4(int n) {
 	main_size=2;for(main_reg=0;main_reg<8;main_reg++)eadef_data(n,0xFFC0,0x4180|(main_reg<<9),i_chk);
 
 /********     End Fix     *********/
-	
+
 	eadef_control(n,0xFFC0,0x4840,i_pea);
 	for(sizedef = 0; sizedef < 3; sizedef++) {
 		main_size = 1 << sizedef;
@@ -5185,7 +5190,7 @@ static void decode5(int n) {
 /********     End Fix     *********/
 
 	idef(n, 0xFFF8, 0x51C8, i_dbra);
-	
+
 	main_size = 1;
 	for(main_cc = 0x0; main_cc <= 0xF; main_cc++) {
 		eadef_data_alterable(n, 0xFFC0, 0x50C0 | (main_cc << 8),
