@@ -67,15 +67,18 @@ ifeq ("$(shell uname)","Darwin")
 # Mac os X
 DARWIN=1
 OSTYPE=darwin
-	# no need to make a 32 bit binary if disabling asm completely !
+# no need to make a 32 bit binary if disabling asm completely !
 ifeq ("$(shell sysctl hw.optional.x86_64)","hw.optional.x86_64: 1")
 ifndef NO_ASM
-  CC +=  -m32
-  CXX +=  -m32
-  LD=$(CXX) -m32
+	CC +=  -m32
+  	CXX +=  -m32
+  	LD=$(CXX) -m32
 else
     LD=$(CXX)
 endif
+# using C video core for the moment
+# pb: how to run self modifying code on OSX ?
+ASM_VIDEO_CORE =
 endif
 
 endif
@@ -853,13 +856,8 @@ CONSOLE = \
 	$(OBJDIR)/sdl/gui/tconsole.o \
 	$(OBJDIR)/sdl/console/exec.o
 
-ifdef DARWIN
-LIBS += /usr/local/lib/libmuparser.a
-LIBS_DEBUG += /usr/local/lib/libmuparser.a
-else
 LIBS += -lmuparser
 LIBS_DEBUG += -lmuparser
-endif
 endif
 
 ifdef SDL
@@ -1058,29 +1056,14 @@ else
 OBJS += $(OBJDIR)/sdl/sasound.o
 
 ifdef DARWIN
-# Finally there are some ways to build some fPIC code with darwin and with
-# asm, it just adds some more constraints, mainly saving ebx
-# CFLAGS +=  -fno-pic
-# To build with frameworks...
-CFLAGS += -I/Library/Frameworks/SDL.framework/Headers -I/Library/Frameworks/SDL_image.framework/Headers -I/Library/Frameworks/SDL_ttf.framework/Headers -DDARWIN
-CFLAGS += -I/usr/local/include/SDL # -DDARWIN
-# LFLAGS += -Xlinker -warn_commons -Xlinker -commons -Xlinker error -Xlinker -weak_reference_mismatches -Xlinker error -force_flat_namespace -flat_namespace -dead_strip_dylibs
-LIBS += -F/Library/Frameworks -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
-# LIBS += $(shell sdl-config --libs) -lSDL_ttf  -lSDL_image -framework Cocoa
-# LIBS += -L/usr/local/lib -lSDLmain -lSDL  -lSDL_ttf  -lSDL_image -framework Cocoa
-# LIBS += -lSDL_ttf -lmuparser -lSDL_image -framework Cocoa -lstdc++
+# to build with homebrews 3rd party libs
+CFLAGS += $(shell sdl-config --cflags) -DDARWIN
+LIBS += $(shell sdl-config --libs) -lSDL_ttf  -lSDL_image -lSDL_sound -framework OpenGL -lintl
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
-# LFLAGS += -fno-pic -bind_at_load -read_only_relocs suppress
-
-# Better use a static lib for sdl_sound, too many dependancies, and very
-# specific
-ifdef HAS_NEO
-LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libogg.a /usr/local/lib/libvorbis.a /usr/local/lib/libvorbisfile.a
-endif
-# LIBS += -framework SDL_sound
-else
+LFLAGS += -Wl,-no_pie
+else  #DARWIN
 CFLAGS += $(shell sdl-config --cflags)
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
@@ -1089,9 +1072,9 @@ ifdef CROSSCOMPILE
   LIBS += -lSDL_sound -lFLAC # -lmodplug
 else
 LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libsmpeg.a
-endif
-endif
-endif
+endif #CROSSCOMPILE
+endif #HAS_NEO
+endif #RAINE32
 LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image # -lefence
 ifdef HAS_NEO
 ifdef RAINE_UNIX
@@ -1154,13 +1137,7 @@ ifndef RAINE_DOS
 	@echo -n libpng:
 	@libpng-config --version
 	@echo -n SDL:
-ifdef DARWIN
-	@[ -d ~/Library/Frameworks/SDL.framework ]  || [ -d /Library/Frameworks/SDL.framework ] && echo framework ok
-	@echo -n SDL_ttf:
-	@[ -d ~/Library/Frameworks/SDL_ttf.framework ]  || [ -d /Library/Frameworks/SDL_ttf.framework ] && echo framework ok
-else
 	@sdl-config --version
-endif
 endif
 ifdef RAINE_UNIX
 ifndef SDL
@@ -1316,7 +1293,7 @@ else
 $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
 	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o
 endif
-	$(OBJDIR)/68000/star.exe -hog $@
+	$(OBJDIR)/68000/star.exe -hog  -addressbits 32 $@
 
 ifndef CZ80
 # generate mz80.asm
