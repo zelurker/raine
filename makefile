@@ -17,7 +17,7 @@
 VERSION = "0.64.9"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -38,6 +38,9 @@ HAS_CONSOLE = 1
 
 # use cz80 instead of the usual heavily modyfied asm-only mz80 ?
 # CZ80 = 1
+
+# Use C version of 68020 core ? (default is asm, commented out)
+# C68020 = 1
 
 # end of user options, after this line the real thing starts...
 
@@ -174,13 +177,18 @@ INCDIR=                 \
     -Isource/mini-unzip \
     -Isource/mame       \
     -Isource/6502       \
-    -Isource/68020      \
 	-Isource/m68705
 
 ifdef CZ80
 INCDIR +=  -Isource/cz80
 else
 INCDIR +=  -Isource/z80
+endif
+
+ifdef C68020
+INCDIR += -Isource/68020/c
+else
+INCDIR += -Isource/68020
 endif
 
 ifeq ($(OSTYPE),cygwin)
@@ -460,7 +468,6 @@ OBJDIRS=$(OBJDIR)                \
     $(OBJDIR)/video/zoom         \
     $(OBJDIR)/math               \
     $(OBJDIR)/games              \
-    $(OBJDIR)/68020              \
     $(OBJDIR)/6502               \
     $(OBJDIR)/m68705             \
 	$(OBJDIR)/neocd				 \
@@ -471,6 +478,12 @@ ifdef CZ80
 OBJDIRS += $(OBJDIR)/cz80
 else
 OBJDIRS += $(OBJDIR)/z80
+endif
+
+ifdef C68020
+OBJDIRS += $(OBJDIR)/68020/c
+else
+OBJDIRS += $(OBJDIR)/68020
 endif
 
 ifdef SDL
@@ -637,11 +650,21 @@ endif
 
 # ASM 68020 core
 
+ifdef C68020
+ASM020= $(OBJDIR)/68020/c/newcpu.o \
+	$(OBJDIR)/68020/c/readcpu.o \
+	$(OBJDIR)/68020/c/cpustbl.o \
+	$(OBJDIR)/68020/c/cpudefs.o \
+	$(OBJDIR)/68020/c/cpuemu_01.o \
+	$(OBJDIR)/68020/c/cpuemu_02.o \
+	$(OBJDIR)/68020/c/cpuemu_03.o
+else
 ASM020= $(OBJDIR)/68020/newcpu.o \
 	$(OBJDIR)/68020/readcpu.o \
 	$(OBJDIR)/68020/cpustbl.o \
 	$(OBJDIR)/68020/cpudefs.o \
-	$(OBJDIR)/68020/a020core.o \
+	$(OBJDIR)/68020/a020core.o
+endif
 
 # STARSCREAM 68000 core
 

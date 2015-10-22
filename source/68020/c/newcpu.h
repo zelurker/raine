@@ -64,14 +64,19 @@ extern struct regstruct
 
 #define m68k_dreg(r,num) ((r).regs[(num)])
 #define m68k_areg(r,num) (((r).regs + 8)[(num)])
+/*
+UINT8 RR_ROM;
+#define get_ibyte(o) ReadByte68k(((&RR_ROM)+regs.pc+(o)+1))
+#define get_iword(o) ReadWord68k(((&RR_ROM)+regs.pc+(o)))
+#define get_ilong(o) ReadLong68k(((&RR_ROM)+regs.pc+(o)))
+*/
+#define get_ibyte(o) ReadByte68k(&ROM[regs.pc+(o)+1])
+#define get_iword(o) ReadWord68k(&ROM[regs.pc+(o)])
+#define get_ilong(o) ReadLong68k(&ROM[regs.pc+(o)])
 
-#define get_ibyte(o) cpu_readmem24((UINT32)((UINT8 *)(o + 1)))
-#define get_iword(o) cpu_readmem24_word((UINT32)((UINT16 *)(o)))
-#define get_ilong(o) cpu_readmem24_dword((UINT32)((UINT32 *)(o)))
-
-#define get_ibyte_1(o) cpu_readmem24(regs.pc + (o) + 1)
-#define get_iword_1(o) cpu_readmem24_word(regs.pc + (o))
-#define get_ilong_1(o) cpu_readmem24_dword(regs.pc + (o))
+#define get_ibyte_1(o) get_ibyte(o)
+#define get_iword_1(o) get_iword(o)
+#define get_ilong_1(o) get_ilong(o)
 
 #define m68k_incpc(o) (regs.pc += (o))
 
@@ -79,22 +84,22 @@ extern struct regstruct
  * need to handle prefetch.  */
 static DEF_INLINE UINT32 next_ibyte (void)
 {
-    UINT32 r = cpu_readmem24((UINT32)((UINT8 *)(regs.pc + 1)));
+    UINT32 r = get_ibyte(0);
     m68k_incpc (2);
     return r;
 }
 
 static DEF_INLINE UINT32 next_iword (void)
 {
-    UINT32 r = cpu_readmem24_word((UINT32)((UINT16 *)(regs.pc)));
-    m68k_incpc (2);
+    UINT32 r = get_iword(0);
+    m68k_incpc(2);
     return r;
 }
 
 static DEF_INLINE UINT32 next_ilong (void)
 {
-    UINT32 r = cpu_readmem24_dword((UINT32)((UINT16 *)(regs.pc)));;
-    m68k_incpc (4);
+    UINT32 r = get_ilong(0);
+    m68k_incpc(4);
     return r;
 }
 
@@ -112,12 +117,16 @@ static DEF_INLINE CPTR m68k_getpc (void)
 #define m68k_setpc_bcc  m68k_setpc
 #define m68k_setpc_rte  m68k_setpc
 
+#define run_compiled_code() do { } while (0)
+#define compiler_init() do { } while (0)
+#define possible_loadseg() do { } while (0)
+
 static DEF_INLINE void m68k_setstopped (int stop)
 {
-	extern UINT32 cycles;
-    cycles = (stop) ? 0: cycles;
+    regs.stopped = stop;
 }
 
+extern INT32 cycles;
 extern UINT32 get_disp_ea_020 (UINT32 base, UINT32 dp);
 
 typedef void (*output_func_ptr)( const char *, ... );

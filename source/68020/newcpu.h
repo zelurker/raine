@@ -115,34 +115,6 @@ static DEF_INLINE void m68k_setstopped(int stop)
     regs.stopped = stop;
 }
 
-static DEF_INLINE uae_u32 get_disp_ea(uae_u32 base, uae_u32 dp)
-{
-    int reg = (dp >> 12) & 15;
-    uae_s32 regd = regs.regs[reg];
-    if ((dp & 0x800) == 0)
-	regd = (uae_s32)(uae_s16)regd;
-    regd <<= (dp >> 9) & 3;
-    if (dp & 0x100) {
-	uae_s32 outer = 0;
-	if (dp & 0x80) base = 0;
-	if (dp & 0x40) regd = 0;
-
-	if ((dp & 0x30) == 0x20) base += (uae_s32)(uae_s16)nextiword();
-	if ((dp & 0x30) == 0x30) base += nextilong();
-
-	if ((dp & 0x3) == 0x2) outer = (uae_s32)(uae_s16)nextiword();
-	if ((dp & 0x3) == 0x3) outer = nextilong();
-
-	if ((dp & 0x4) == 0) base += regd;
-	if (dp & 0x3) base = get_long (base);
-	if (dp & 0x4) base += regd;
-
-	return base + outer;
-    } else {
-	return base + (uae_s32)((uae_s8)dp) + regd;
-    }
-}
-
 extern UINT32 cycles;
 
 extern void MakeSR(void);

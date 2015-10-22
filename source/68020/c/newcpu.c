@@ -6,10 +6,28 @@
  * (c) 1995 Bernd Schmidt
  */
 
+/* Speed hacks explained for the 68020 :
+   the illegal instruction handler is calling op_illg in this file, passing
+   the illegal instruction. Every instruction on 2 bytes with the 1st being
+   7f is passed to the f3 eeprom handler.
+   If you put :
+   F3SystemEEPROMAccess=&F3SysEEPROMAccessMode2;
+   Then puting opcodes 7f02 in the rom (raine #$02 !!!) will stop the cpu,
+   producing a speed hack. */
+
 #include "raine.h"
 #include "newmem.h"
 #include "readcpu.h"
+#include "68020.h"
 #include "newcpu.h"
+
+void (*F3SystemEEPROMAccess)(UINT8 data);
+struct flag_struct regflags;
+
+/* Normally uae uses cpu_readmem24 and cpu_writemem24 functions to access memory.
+ * Raine converted this to R24 / W24 arrays pointing to regions of 65536 bytes
+ * allocated by the game drivers. Here we just need to declare the arrays */
+UINT8 *R24[0x100], *W24[0x100];
 
 /* Opcode of faulting instruction */
 UINT16 last_op_for_exception_3;
@@ -27,7 +45,7 @@ int movem_next[256];
 
 cpuop_func *cpufunctbl[65536];
 
-int cycles;
+INT32 cycles;
 
 static unsigned long op_illg_1 (UINT32 opcode)
 {
@@ -40,7 +58,7 @@ static void build_cpufunctbl (void)
     int i;
     unsigned long opcode;
     struct cputbl *tbl = op_smalltbl_1;
-	
+
     for (opcode = 0; opcode < 65536; opcode++)
 		cpufunctbl[opcode] = op_illg_1;
     for (i = 0; tbl[i].handler != NULL; i++) {
@@ -49,10 +67,10 @@ static void build_cpufunctbl (void)
     }
     for (opcode = 0; opcode < 65536; opcode++) {
 		cpuop_func *f;
-		
+
 		if (table68k[opcode].mnemo == i_ILLG || table68k[opcode].clev > 2)
 			continue;
-		
+
 		if (table68k[opcode].handler != -1) {
 			f = cpufunctbl[table68k[opcode].handler];
 			if (f == op_illg_1)
@@ -71,7 +89,7 @@ int MC68020 = 0;
 void init_m68k (void)
 {
     int i;
-	
+
     MC68020 = 1;
     for (i = 0 ; i < 256 ; i++) {
 		int j;
@@ -82,10 +100,10 @@ void init_m68k (void)
 		movem_index2[i] = 7-j;
 		movem_next[i] = i & (~(1 << j));
     }
-	
+
     read_table68k ();
     do_merges ();
-	
+
     build_cpufunctbl ();
 }
 
@@ -95,8 +113,6 @@ void m68k_cleanup (void)
 }
 
 struct regstruct regs, lastint_regs;
-static struct regstruct regs_backup[16];
-static int backup_pointer = 0;
 static long int m68kpc_offset;
 int lastint_no;
 
@@ -110,7 +126,7 @@ INT32 ShowEA (int reg, amodes mode, wordsizes size, char *buf, output_func_ptr d
     CPTR addr;
     INT32 offset = 0;
     char buffer[80];
-	
+
     switch (mode){
 	case Dreg:
 		sprintf (buffer,"D%d", reg);
@@ -140,7 +156,7 @@ INT32 ShowEA (int reg, amodes mode, wordsizes size, char *buf, output_func_ptr d
 		dispreg = dp & 0x8000 ? m68k_areg(regs,r) : m68k_dreg(regs,r);
 		if (!(dp & 0x800)) dispreg = (INT32)(INT16)(dispreg);
 		dispreg <<= (dp >> 9) & 3;
-		
+
 		if (dp & 0x100) {
 			INT32 outer = 0, disp = 0;
 			INT32 base = m68k_areg(regs,reg);
@@ -151,16 +167,16 @@ INT32 ShowEA (int reg, amodes mode, wordsizes size, char *buf, output_func_ptr d
 			if ((dp & 0x30) == 0x20) { disp = (INT32)(INT16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
 			if ((dp & 0x30) == 0x30) { disp = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
 			base += disp;
-			
+
 			if ((dp & 0x3) == 0x2) { outer = (INT32)(INT16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
 			if ((dp & 0x3) == 0x3) { outer = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
-			
+
 			if (!(dp & 4)) base += dispreg;
 			if (dp & 3) base = cpu_readmem24_dword(base);
 			if (dp & 4) base += dispreg;
-			
+
 			addr = base + outer;
-			sprintf (buffer,"(%s%c%d.%c*%d+%ld)+%ld == $%08lx", name,
+			sprintf (buffer,"(%s%c%d.%c*%d+%d)+%d == $%08lx", name,
 				dp & 0x8000 ? 'A' : 'D', (int)r, dp & 0x800 ? 'L' : 'W',
 				1 << ((dp >> 9) & 3),
 				disp,outer,
@@ -187,7 +203,7 @@ INT32 ShowEA (int reg, amodes mode, wordsizes size, char *buf, output_func_ptr d
 		dispreg = dp & 0x8000 ? m68k_areg(regs,r) : m68k_dreg(regs,r);
 		if (!(dp & 0x800)) dispreg = (INT32)(INT16)(dispreg);
 		dispreg <<= (dp >> 9) & 3;
-		
+
 		if (dp & 0x100) {
 			INT32 outer = 0,disp = 0;
 			INT32 base = addr;
@@ -198,16 +214,16 @@ INT32 ShowEA (int reg, amodes mode, wordsizes size, char *buf, output_func_ptr d
 			if ((dp & 0x30) == 0x20) { disp = (INT32)(INT16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
 			if ((dp & 0x30) == 0x30) { disp = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
 			base += disp;
-			
+
 			if ((dp & 0x3) == 0x2) { outer = (INT32)(INT16)get_iword_1 (m68kpc_offset); m68kpc_offset += 2; }
 			if ((dp & 0x3) == 0x3) { outer = get_ilong_1 (m68kpc_offset); m68kpc_offset += 4; }
-			
+
 			if (!(dp & 4)) base += dispreg;
 			if (dp & 3) base = cpu_readmem24_dword (base);
 			if (dp & 4) base += dispreg;
-			
+
 			addr = base + outer;
-			sprintf (buffer,"(%s%c%d.%c*%d+%ld)+%ld == $%08lx", name,
+			sprintf (buffer,"(%s%c%d.%c*%d+%d)+%d == $%08lx", name,
 				dp & 0x8000 ? 'A' : 'D', (int)r, dp & 0x800 ? 'L' : 'W',
 				1 << ((dp >> 9) & 3),
 				disp,outer,
@@ -286,17 +302,17 @@ UINT32 get_disp_ea_020 (UINT32 base, UINT32 dp)
 		INT32 outer = 0;
 		if (dp & 0x80) base = 0;
 		if (dp & 0x40) regd = 0;
-		
+
 		if ((dp & 0x30) == 0x20) base += (INT32)(INT16)next_iword();
 		if ((dp & 0x30) == 0x30) base += next_ilong();
-		
+
 		if ((dp & 0x3) == 0x2) outer = (INT32)(INT16)next_iword();
 		if ((dp & 0x3) == 0x3) outer = next_ilong();
-		
+
 		if ((dp & 0x4) == 0) base += regd;
 		if (dp & 0x3) base = cpu_readmem24_dword (base);
 		if (dp & 0x4) base += regd;
-		
+
 		return base + outer;
     } else {
 		return base + (INT32)((INT8)dp) + regd;
@@ -315,7 +331,7 @@ void MakeFromSR (void)
 {
     int oldm = regs.m;
     int olds = regs.s;
-	
+
     regs.t1 = (regs.sr >> 15) & 1;
     regs.t0 = (regs.sr >> 14) & 1;
     regs.s = (regs.sr >> 13) & 1;
@@ -439,7 +455,7 @@ div_unsigned(UINT32 src_hi, UINT32 src_lo, UINT32 div, UINT32 *quot, UINT32 *rem
 {
 	UINT32 q = 0, cbit = 0;
 	int i;
-	
+
 	if (div <= src_hi) {
 		return 1;
 	}
@@ -470,7 +486,7 @@ void m68k_divl (UINT32 opcode, UINT32 src, UINT16 extra, CPTR oldpc)
 		/* signed variant */
 		INT64 a = (INT64)(INT32)m68k_dreg(regs, (extra >> 12) & 7);
 		INT64 quot, rem;
-		
+
 		if (extra & 0x400) {
 			a &= 0xffffffffu;
 			a |= (INT64)m68k_dreg(regs, extra & 7) << 32;
@@ -496,7 +512,7 @@ void m68k_divl (UINT32 opcode, UINT32 src, UINT16 extra, CPTR oldpc)
 		/* unsigned */
 		UINT64 a = (UINT64)(INT32)m68k_dreg(regs, (extra >> 12) & 7);
 		UINT64 quot, rem;
-		
+
 		if (extra & 0x400) {
 			a &= 0xffffffffu;
 			a |= (UINT64)m68k_dreg(regs, extra & 7) << 32;
@@ -526,7 +542,7 @@ mul_unsigned(UINT32 src1, UINT32 src2, UINT32 *dst_hi, UINT32 *dst_lo)
 	UINT32 r2 = (src1 & 0xffff) * ((src2 >> 16) & 0xffff);
 	UINT32 r3 = ((src1 >> 16) & 0xffff) * ((src2 >> 16) & 0xffff);
 	UINT32 lo;
-	
+
 	lo = r0 + ((r1 << 16) & 0xffff0000ul);
 	if (lo < r0) r3++;
 	r0 = lo;
@@ -543,7 +559,7 @@ void m68k_mull (UINT32 opcode, UINT32 src, UINT16 extra)
     if (extra & 0x800) {
 		/* signed variant */
 		UINT64 a = (INT64)(INT32)m68k_dreg(regs, (extra >> 12) & 7);
-		
+
 		a *= (INT64)(INT32)src;
 		SET_VFLG (0);
 		SET_CFLG (0);
@@ -560,7 +576,7 @@ void m68k_mull (UINT32 opcode, UINT32 src, UINT16 extra)
     } else {
 		/* unsigned */
 		UINT64 a = (UINT64)(UINT32)m68k_dreg(regs, (extra >> 12) & 7);
-		
+
 		a *= (UINT64)src;
 		SET_VFLG (0);
 		SET_CFLG (0);
@@ -600,15 +616,33 @@ void Reset68020 (void)
 
 unsigned long op_illg (UINT32 opcode)
 {
-	(void)(opcode);
-    
+    // RAINE #$xx
+
+    if((opcode&0xFF00)==0x7F00){
+       F3SystemEEPROMAccess(opcode&0xFF);
+       m68k_incpc(2);
+       return 4;
+    }
+
+    // LINEF #$xxx
+
+    if((opcode&0xF000)==0xF000){
+	Exception(0xB,0);
+	return 4;
+    }
+
+    // LINEA #$xxx
+
+    if((opcode&0xF000)==0xA000){
+	Exception(0xA,0);
+	return 4;
+    }
+
+    print_debug("[Illegal 68020 Instruction $%08x:%04x]\n",regs.pc,opcode);
+
     Exception (4,0);
     return 4;
 }
-
-static int n_insns = 0, n_spcinsns = 0;
-
-static CPTR last_trace_ad = 0;
 
 void m68k_disasm (CPTR addr, CPTR *nextpc, int cnt, output_func_ptr debug_out)
 {
@@ -632,7 +666,7 @@ void m68k_disasm (CPTR addr, CPTR *nextpc, int cnt, output_func_ptr debug_out)
 		dp = table68k + opcode;
 		for (lookup = lookuptab;lookup->mnemo != dp->mnemo; lookup++)
 			;
-		
+
 		strcpy (instrname, lookup->name);
 		ccpt = strstr (instrname, "cc");
 		if (ccpt != 0) {
@@ -645,7 +679,7 @@ void m68k_disasm (CPTR addr, CPTR *nextpc, int cnt, output_func_ptr debug_out)
 		case sz_long: (*debug_out) (".L "); break;
 		default: (*debug_out) ("   "); break;
 		}
-		
+
 		if (dp->suse) {
 			newpc = m68k_getpc () + m68kpc_offset;
 			newpc += ShowEA (dp->sreg, dp->smode, dp->size, 0, debug_out);
@@ -669,13 +703,16 @@ void m68k_disasm (CPTR addr, CPTR *nextpc, int cnt, output_func_ptr debug_out)
 		*nextpc = m68k_getpc () + m68kpc_offset;
 }
 
+static int stopped_68020;
+
 void Execute68020(int c)
 {
 	UINT32 opcode;
 
-	cycles = (c>>4);
+	cycles = c;
+        stopped_68020 = 0;
 
-    while ( cycles )
+    while ( cycles > 0 && !stopped_68020 )
 	{
 		opcode = get_iword (0);
 		cycles -= (*cpufunctbl[opcode])(opcode);
@@ -686,6 +723,8 @@ void Execute68020(int c)
 		opcode = get_iword (0);
 		cycles -= (*cpufunctbl[opcode])(opcode);
 	}
+    if (stopped_68020)
+        cycles = 0;
 }
 
 void Interrupt68020(int level)
@@ -696,5 +735,8 @@ void Interrupt68020(int level)
 
 void Stop68020(void)
 {
-   cycles=0;
+    stopped_68020 = 1;
+    /* We can't just set the cycles to 0 in the C version because
+     * the cycles are updated at the end of the instruction so a direct
+     * initialization is lost ! */
 }
