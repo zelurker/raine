@@ -42,3 +42,7 @@ Save the file and install muparser
 If you want to compile, install also gcc and nasm
 
 That's it ! Raine should now run on your MacOS. 
+
+### Known bugs
+0.64.9
+Neogeo games should work, but the 68020 core is still crashing
