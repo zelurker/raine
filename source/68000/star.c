@@ -581,10 +581,10 @@ static void gen_interface(void) {
 	begin_source_proc("init");
 
 	emit("pushad\n");
-	emit("mov edi,__jmptbl\n");
-	emit("mov esi,__jmptblcomp\n");
+	emit("lea edi,[__jmptbl]\n");
+	emit("lea esi,[__jmptblcomp]\n");
 	if(cputype == 68010) {
-		emit("mov ebx,__looptbl\n");
+		emit("lea ebx,[__looptbl]\n");
 	}
 	emit(".decomp:\n");
 	emit("lodsd\n");
@@ -609,7 +609,10 @@ static void gen_interface(void) {
 		emit("dec ebp\n");
 		emit("jnz short .lloop\n");
 	}
-	emit("cmp edi,__jmptbl+262144\n");
+	//emit("cmp edi,__jmptbl+262144\n");
+	emit("lea eax,[__jmptbl]\n");
+	emit("add eax,262144\n");
+	emit("cmp edi,eax\n");
 	emit("jne short .decomp\n");
 
 	emit("popad\n");
