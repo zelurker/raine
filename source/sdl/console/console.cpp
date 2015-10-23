@@ -778,26 +778,34 @@ static void add_search(UINT32 n,UINT8 size) {
     } \
   }
 
-#define SEARCH_WHAT(op) \
-  if (size == 1) { \
-    for (UINT32 n=start; n<end; n++) { \
-      if (ptr[n] op what) { \
-        add_search(n,size); \
-      } \
-    } \
-  } else if (size == 2) { \
-    for (UINT32 n=start; n<end; n+=2) { \
-      if (ReadWord(&ptr[n]) op what) { \
-        add_search(n,size); \
-      } \
-    } \
-  } else if (size == 4) { \
-    for (UINT32 n=start; n<end; n+=2) { \
-      if ((UINT32)ReadLongSc(&ptr[n]) op what) { \
-        add_search(n,size); \
-      } \
-    } \
-  }
+#define SEARCH_WHAT(op)                                   \
+  if (size == 1) {                                        \
+    for (UINT32 n=start; n<end; n++) {                    \
+      if (ptr[n] op what) {                               \
+        add_search(n,size);                               \
+      }                                                   \
+    }                                                     \
+  } else if (size == 2) {                                 \
+    for (UINT32 n=start; n<end; n+=2) {                   \
+      if (ReadWord(&ptr[n]) op what) {                    \
+        add_search(n,size);                               \
+      }                                                   \
+    }                                                     \
+  } else if (size == 4) {                                 \
+      if ((cpu_id >> 4) == 3) { /* 68020 ! */             \
+          for (UINT32 n=start; n<end; n+=2) {             \
+              if ((UINT32)ReadLong68k(&ptr[n]) op what) { \
+                  add_search(n,size);                     \
+              }                                           \
+          }                                               \
+      } else {                                            \
+          for (UINT32 n=start; n<end; n+=2) {             \
+              if ((UINT32)ReadLongSc(&ptr[n]) op what) {  \
+                  add_search(n,size);                     \
+              }                                           \
+          }                                               \
+      }                                                   \
+  }                                                       \
 
 #define INC_SRCH_BUF(op) \
       UINT32 n; \
@@ -901,6 +909,16 @@ static void do_search(int argc, char **argv) {
 	  return;
 	}
       }
+    }
+    if ((cpu_id >> 4) == 3) { // 68020
+	// Fix the end of search
+	for (int n=REGION_ROM1; n<=REGION_ROM4; n++)
+	    if (R24[start>>16] == load_region[n]) {
+		end = get_region_size(n);
+		break;
+	    }
+
+	printf("end adjusted %x\n",end);
     }
 
     if (end < start) {
