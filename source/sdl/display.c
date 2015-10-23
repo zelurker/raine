@@ -96,6 +96,9 @@ void adjust_gui_resolution() {
 void display_read_config() {
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
 
+   display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0);
+#ifdef RAINE_WIN32
+   display_cfg.video_driver = raine_get_config_int( "Display", "video_driver", 0);
    char *pos = raine_get_config_string("Display", "position", "");
    if (pos) {
        static char buffer[100];
@@ -103,10 +106,6 @@ void display_read_config() {
        buffer[99] = 0;
        putenv(buffer);
    }
-
-   display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0);
-#ifdef RAINE_WIN32
-   display_cfg.video_driver = raine_get_config_int( "Display", "video_driver", 0);
 #endif
    display_cfg.screen_x = raine_get_config_int( "Display", "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int( "Display", "screen_y", display_cfg.screen_y);

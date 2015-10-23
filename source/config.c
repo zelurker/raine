@@ -381,14 +381,12 @@ static void CLI_geometry(void) {
 	display_cfg.noborder = 1;
 #endif
 	// I would have used setenv here, but windows doesn't know setenv... !!!
+#ifdef RAINE_WIN32
 	static char buffer[100];
-#ifdef RAINE_DOS
-	sprintf(buffer,"SDL_VIDEO_WINDOW_POS=%s",buf);
-#else
 	snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",buf);
-#endif
 	buffer[99] = 0;
 	putenv(buffer);
+#endif
     }
 }
 
