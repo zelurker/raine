@@ -244,6 +244,7 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
       SDL_Rect src;
       src.w = w;
       src.h = sf->h;
+      src.x = src.y = 0;
       SDL_BlitSurface(sf,&src,surf,&dest);
   } else
       SDL_BlitSurface(sf,NULL,surf,&dest);
@@ -275,6 +276,7 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
       SDL_Rect src;
       src.w = w;
       src.h = sf->h;
+      src.x = src.y = 0;
       SDL_BlitSurface(sf,&src,surf,&dest);
   } else
       SDL_BlitSurface(sf,NULL,surf,&dest);
