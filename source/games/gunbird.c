@@ -26,6 +26,7 @@
 #include "video/priorities.h"
 #include "zoom/16x16.h"		// 16x8 zoomed sprite routines
 #include "sound/assoc.h"
+#include "video/pdraw.h"
 
 void load_gunbird(void);
 void execute_gunbird(void);
@@ -735,6 +736,22 @@ static UINT8 s1945j_table[256] = {
 	0x00, 0x00, 0x32, 0x90, 0x00, 0x00, 0xac, 0x64, 0x00, 0x00, 0x2b, 0xc0
 };
 
+static UINT8 *sound_mem,*buf1_spr,*buf2_spr;
+
+static void gunbird_sound(int command) {
+    if (!handle_sound_cmd(command)) {
+	latch = oldmem13 = command;
+	RAM[0x30009] |= 0x80;
+	cpu_int_nmi(CPU_Z80_0);
+	/* Tsss... all this mess with the sound was because I finally noticed
+	 * that you don't hear the character shouting when dying in gunbird...
+	 * So to get this famous missing sound I had to patch the rom to return
+	 * immediately after sending the sound command, and then the z80 needs
+	 * to execute a few cycles here to be sure to have this command ! */
+	cpu_execute_cycles(CPU_Z80_0,700);
+    }
+}
+
 static void s1945_mcu_r(UINT8 data)
 {
   if (data == 3) { // mcu read
@@ -744,6 +761,8 @@ static void s1945_mcu_r(UINT8 data)
     m68k_dreg(regs,0)=mcu_table[ta & 0xff];
   } else if (data == 2) { // speed hack
     Stop68020();
+  } else if (data == 4) { // gunbird sound command !
+      gunbird_sound(m68k_areg(regs,0));
   }
 #if 0
   // All this is debuging stuff. It's useless now, but I leave it here
@@ -772,8 +791,6 @@ static char *layer_id_name[3] =
 {
    "BG0", "BG1", "OBJECT",
 };
-
-static UINT8 *sound_mem,*buf1_spr,*buf2_spr;
 
 static void finish_psikyo_conf() {
   int code_size = get_region_size(REGION_ROM1) >> 16, ta;
@@ -888,12 +905,21 @@ void load_gunbird(void)
      WriteWord68k(&ROM[0x15e7e],0x7F02);		//	raine	#$02 <stop cpu>
      WriteWord68k(&ROM[0x15e70],0x4e71);		//	nop
      WriteWord68k(&ROM[0xc8e],0x6006); // Enable region code
+     WriteWord68k(&ROM[0x14f26],0x7f04); // sound command
+     WriteWord68k(&ROM[0x14f28],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x14f2a],0x4e71); 		//	nop
    } else if (!strcmp(current_game->main_name,"gunbirdj")){
      WriteWord68k(&ROM[0x15eb4],0x7F02);		//	raine	#$02 <stop cpu>
      WriteWord68k(&ROM[0x15ea6],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x14f5c],0x7f04); // sound command
+     WriteWord68k(&ROM[0x14f5e],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x14f60],0x4e71); 		//	nop
    } else { // gunbird world
      WriteWord68k(&ROM[0x15e76],0x7F02);		//	raine	#$02 <stop cpu>
      WriteWord68k(&ROM[0x15e68],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x14f1e],0x7f04); // sound command
+     WriteWord68k(&ROM[0x14f20],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x14f22],0x4e71);		//	nop
    }
 
    FreeMem(TMP);
@@ -953,6 +979,9 @@ void load_btlkroad(void)
   // Main CPU: 68EC020
    // Speed hack
    WriteWord68k(&ROM[0x462],0x7F02);		//	raine	#$02 <stop cpu>
+   WriteWord68k(&ROM[0x53418],0x7f04); // sound command
+   WriteWord68k(&ROM[0x5341a],0x4e71);		//	nop
+   WriteWord68k(&ROM[0x5341c],0x4e71); 		//	nop
 
    FreeMem(TMP);
 }
@@ -1023,6 +1052,15 @@ void load_samuraia(void)
    WriteWord68k(&ROM[0x994],0xe989); // lsl.l #4,d1
    WriteWord68k(&ROM[0x996],0x4e71); // nop
 
+   if (is_current_game("samuraia")) {
+       WriteWord68k(&ROM[0x71096],0x7f04); // sound command
+       WriteWord68k(&ROM[0x71098],0x4e71);		//	nop
+       WriteWord68k(&ROM[0x7109a],0x4e71); 		//	nop
+   } else if (is_current_game("sngkace")) {
+       WriteWord68k(&ROM[0x71020],0x7f04); // sound command
+       WriteWord68k(&ROM[0x71022],0x4e71);		//	nop
+       WriteWord68k(&ROM[0x71024],0x4e71); 		//	nop
+   }
    FreeMem(TMP);
 }
 
@@ -1100,6 +1138,9 @@ void load_actual_s1945(void)
      WriteWord68k(&ROM[0x19540],0x4e71); // disable* mcu test
 
      WriteWord68k(&ROM[0x199ce],0x7F02); // raine #$02 <stop cpu / speed hack>
+     WriteWord68k(&ROM[0x1867c],0x7f04); // sound command
+     WriteWord68k(&ROM[0x1867e],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x18680],0x4e71); 		//	nop
    } else if (!strcmp(current_game->main_name,"s1945")) {
      WriteLong68k(&ROM[0xc464],0x302f0004); // move 4(sp),d0
      WriteWord68k(&ROM[0xc468],0xd079);
@@ -1110,6 +1151,9 @@ void load_actual_s1945(void)
      WriteWord68k(&ROM[0x194dc],0x4e71); // disable* mcu test
 
      WriteWord68k(&ROM[0x1996a],0x7F02); // raine #$02 <stop cpu / speed hack>
+     WriteWord68k(&ROM[0x18618],0x7f04); // sound command
+     WriteWord68k(&ROM[0x1861a],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x1861c],0x4e71); 		//	nop
    } else if (!strcmp(current_game->main_name,"tengai")) {
      WriteWord68k(&ROM[0x190de],0x7000); // moveq #0,d0
      WriteWord68k(&ROM[0x190e0],0x4e75); // rts
@@ -1125,6 +1169,9 @@ void load_actual_s1945(void)
      WriteWord68k(&ROM[0x128e],0x4e71); // raine #$02 <stop cpu / speed hack>
 
      // WriteWord68k(&ROM[0x1a384],0x7f05); // debug
+     WriteWord68k(&ROM[0x1a026],0x7f04); // sound command
+     WriteWord68k(&ROM[0x1a028],0x4e71);		//	nop
+     WriteWord68k(&ROM[0x1a02a],0x4e71); 		//	nop
 
    }
 
@@ -1172,14 +1219,6 @@ void execute_gunbird(void)
       diff = execute_one_z80_audio_frame(frame);
       if (cycles) {// cycles = 0 if we reached the speed hack
 	cpu_execute_cycles(CPU_M68020_0, diff *8);	// M68020 32MHz (60fps)
-      }
-      if (*sound_mem) {
-	  if (!handle_sound_cmd(*sound_mem)) {
-	      latch = oldmem13 = *sound_mem;
-	      RAM[0x30009] |= 0x80;
-	      cpu_int_nmi(CPU_Z80_0);
-	  }
-	  *sound_mem = 0; // reset
       }
       frame -= diff;
     }
@@ -1231,10 +1270,11 @@ static void DrawSpritesP()
          zzzz = (zzz%0x300) << 3;
 
          attr = ReadWord68k(&buf2_spr[zzzz+4]);
-	 if ((attr&0xC0)) {
-	   prio = 1; // over bg, but low priority
+	 // prio = (attr & 0xc0) >> 6;
+	 if ((attr&0xC0) <= 1) {
+	   prio = 2; // always visible
 	 } else {
-	   prio = 2; // high priority always shown
+	   prio = 0; // under layer (bg1 at least)
 	 }
 	 // notice : there are 4 possible priorities for only 2 bg layers !!!
 
@@ -1366,104 +1406,42 @@ static void DrawSpritesP()
 
 static UINT16 tile_bank0, tile_bank1;
 static INT16 offsets[256];
+static UINT16 layer0_ctrl, layer1_ctrl;
 
-static void scroll_2048_bg0() {
+static void scroll_bg0(int width, int height) {
   int zz,zzz,zzzz,x16,y16,x,y,ta;
   UINT8 *map;
-  MAKE_SCROLL_512x2048_2_16(
+  if (!(layer0_ctrl & 2)) // not opaque
+      clear_game_screen(0);
+  MAKE_SCROLL_n_16(width,height,2,
 			    ReadWord68k(&RAM[0x24406]),
 			    ReadWord68k(&RAM[0x24402])
 			    );
 
-  START_SCROLL_512x2048_2_16(32,32,320,224);
+  START_SCROLL_16(32,32,320,224);
 
   ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;
 
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG0[zz] >> 5)|0x80,
-              16,
-              map
-            );
+  MAP_PALETTE_MAPPED_NEW(
+	  (RAM_BG0[zz] >> 5)|0x80,
+	  16,
+	  map
+	  );
 
+  // Layer 0 doesn't change anything to pbitmap
+  if (layer0_ctrl & 2 || GFX_BG0_SOLID[ta] == 2)
       Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
+  else if (GFX_BG0_SOLID[ta]) {
+      Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
+  }
 
-  END_SCROLL_512x2048_2_16();
-}
-
-static void scroll_512_bg0() {
-  int zz,zzz,zzzz,x16,y16,x,y,ta;
-  UINT8 *map;
-  MAKE_SCROLL_2048x512_2_16(
-			    ReadWord68k(&RAM[0x24406]),
-			    ReadWord68k(&RAM[0x24402])
-			    );
-
-  START_SCROLL_2048x512_2_16(32,32,320,224);
-
-  ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;
-
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG0[zz] >> 5)|0x80,
-              16,
-              map
-            );
-
-      Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
-
-  END_SCROLL_2048x512_2_16();
-}
-
-static void scroll_256_bg0() {
-  int zz,zzz,zzzz,x16,y16,x,y,ta;
-  UINT8 *map;
-  MAKE_SCROLL_4096x256_2_16(
-			    ReadWord68k(&RAM[0x24406]),
-			    ReadWord68k(&RAM[0x24402])
-			    );
-
-  START_SCROLL_4096x256_2_16(32,32,320,224);
-
-  ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;
-
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG0[zz] >> 5)|0x80,
-              16,
-              map
-            );
-
-      Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
-
-  END_SCROLL_4096x256_2_16();
-}
-
-static void scroll_1024_bg0() {
-  int zz,zzz,zzzz,x16,y16,x,y,ta;
-  UINT8 *map;
-  MAKE_SCROLL_1024x1024_2_16(
-         ReadWord68k(&RAM[0x24406]),
-         ReadWord68k(&RAM[0x24402])
-	 );
-
-  START_SCROLL_1024x1024_2_16(32,32,320,224);
-
-  ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF) + tile_bank0;
-
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG0[zz] >> 5)|0x80,
-              16,
-              map
-	      );
-
-      Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
-
-  END_SCROLL_1024x1024_2_16();
+  END_SCROLL_n_16(width,height,2);
 }
 
 // geometry of layers for line scroll
 // Please use the Backslashify macro from emacs to edit this code (C-C C-\)
 // This function is quite generic, but I don't see any easy way to make it completely
 // generic (usable directly in another driver...)
-
 
 #define def_bg0_lscroll(WIDTH,HEIGHT,N)						    \
 static void scroll_##HEIGHT##_bg0_lscroll() {					    \
@@ -1549,20 +1527,20 @@ def_bg0_lscroll(2048,512,2);
 def_bg0_lscroll(4096,256,2);
 def_bg0_lscroll(1024,1024,2);
 
-static void scroll_2048_bg1() {
+static void scroll_bg1(int width, int height) {
   int zz,zzz,zzzz,x16,y16,x,y,ta;
   UINT8 *map;
-  MAKE_SCROLL_512x2048_2_16(
+  MAKE_SCROLL_n_16(width,height,2,
 			    ReadWord68k(&RAM[0x2440E]),
 			    ReadWord68k(&RAM[0x2440A])
 			    );
 
 
-  START_SCROLL_512x2048_2_16(32,32,320,224);
+  START_SCROLL_16(32,32,320,224);
 
   ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF) + tile_bank1;
 
-  if( GFX_BG1_SOLID[ta] ){
+  if( GFX_BG1_SOLID[ta] || (layer1_ctrl & 2)){
 
     MAP_PALETTE_MAPPED_NEW(
 			   (RAM_BG1[zz] >> 5)|0xC0,
@@ -1571,114 +1549,17 @@ static void scroll_2048_bg1() {
             );
 
     if(GFX_BG1_SOLID[ta]==1) {
-      Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);
+      // Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
+      // Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);
+      pdraw16x16_Mask_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1);
     } else {
-      Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);
+      pdraw16x16_Mask_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1);
+      // Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
+      // Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);
     }
   }
 
-  END_SCROLL_512x2048_2_16();
-}
-
-static void scroll_1024_bg1() {
-  int zz,zzz,zzzz,x16,y16,x,y,ta;
-  UINT8 *map;
-  MAKE_SCROLL_1024x1024_2_16(
-         ReadWord68k(&RAM[0x2440E]),
-         ReadWord68k(&RAM[0x2440A])
-      );
-
-
-  START_SCROLL_1024x1024_2_16(32,32,320,224);
-
-  ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;
-
-  if( GFX_BG1_SOLID[ta] ){
-
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG1[zz] >> 5)|0xC0,
-              16,
-              map
-            );
-
-    if(GFX_BG1_SOLID[ta]==1) {
-      Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);
-    } else {
-      Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);
-    }
-  }
-
-  END_SCROLL_1024x1024_2_16();
-}
-
-static void scroll_512_bg1() {
-  int zz,zzz,zzzz,x16,y16,x,y,ta;
-  UINT8 *map;
-  MAKE_SCROLL_2048x512_2_16(
-         ReadWord68k(&RAM[0x2440E]),
-         ReadWord68k(&RAM[0x2440A])
-      );
-
-
-  START_SCROLL_2048x512_2_16(32,32,320,224);
-
-  ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;
-
-  if( GFX_BG1_SOLID[ta] ){
-
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG1[zz] >> 5)|0xC0,
-              16,
-              map
-            );
-
-    if(GFX_BG1_SOLID[ta]==1) {
-      Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);
-    } else {
-      Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);
-    }
-  }
-
-  END_SCROLL_2048x512_2_16();
-}
-
-static void scroll_256_bg1() {
-  int zz,zzz,zzzz,x16,y16,x,y,ta;
-  UINT8 *map;
-  MAKE_SCROLL_4096x256_2_16(
-         ReadWord68k(&RAM[0x2440E]),
-         ReadWord68k(&RAM[0x2440A])
-      );
-
-
-  START_SCROLL_4096x256_2_16(32,32,320,224);
-
-  ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;
-
-  if( GFX_BG1_SOLID[ta] ){
-
-    MAP_PALETTE_MAPPED_NEW(
-			   (RAM_BG1[zz] >> 5)|0xC0,
-              16,
-              map
-            );
-
-    if(GFX_BG1_SOLID[ta]==1) {
-      Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);
-    } else {
-      Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);
-    }
-  }
-
-  END_SCROLL_4096x256_2_16();
+  END_SCROLL_n_16(width,height,2);
 }
 
 // Same as def_bg0_lscroll, with transparency this time...
@@ -1786,9 +1667,6 @@ def_bg1_lscroll(4096,256,2);
 
 void DrawGunbird(void)
 {
-
-  UINT8 layer0_ctrl, layer1_ctrl;
-
   ClearPaletteMap();
   tile_bank0 = ((RAM[0x30007] >> 4) & 3) * 0x2000;
   tile_bank1 = ((RAM[0x30007] >> 6) & 3) * 0x2000;
@@ -1798,7 +1676,7 @@ void DrawGunbird(void)
    // ----------
 
   if( check_layer_enabled(layer_id_data[0])) {
-    layer0_ctrl = RAM[0x24413];
+    layer0_ctrl = ReadWord68k(&RAM[0x24412]);
     if(!(layer0_ctrl&1)) {
       int min=0,max=0;
       // linescroll effect is troublesome on bg0
@@ -1833,10 +1711,10 @@ void DrawGunbird(void)
       } else {
 #endif
 	switch((layer0_ctrl & 0xc0) >> 6) {
-	case 0: scroll_1024_bg0(); break;
-	case 1: scroll_512_bg0();  break;
-	case 2: scroll_256_bg0();  break;
-	default:scroll_2048_bg0(); break;
+	case 0: scroll_bg0(1024,1024); break;
+	case 1: scroll_bg0(2048,512);  break;
+	case 2: scroll_bg0(4096,256);  break;
+	default:scroll_bg0(512,2048); break;
 	}
 #if LINE_SCROLL_BG0
       }
@@ -1885,10 +1763,10 @@ void DrawGunbird(void)
     } else { // no line scroll...
 #endif
       switch((layer1_ctrl & 0xc0) >> 6) {
-      case 0: scroll_1024_bg1(); break;
-      case 1: scroll_512_bg1();  break;
-      case 2: scroll_256_bg1();  break;
-      default:scroll_2048_bg1(); break;
+      case 0: scroll_bg1(1024,1024); break;
+      case 1: scroll_bg1(2048,512);  break;
+      case 2: scroll_bg1(4096,256);  break;
+      default:scroll_bg1(512,2048); break;
       }
 #if LINE_SCROLL_BG1
     }
