@@ -584,8 +584,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	cdda.playing = CDDA_PLAY;
 	fadeout = 0;
 	close_sample();
+	Sound_AudioInfo info;
+	info.format = gotspec.format;
+	info.channels = gotspec.channels;
+	info.rate = gotspec.freq;
 	sample = Sound_NewSampleFromFile(track_to_read,
-		NULL,
+		&info,
 		16384);
 	if (!sample) {
 	    print_ingame(183, gettext("Audio track unreadable"));

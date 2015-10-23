@@ -54,10 +54,6 @@ class TSoundDlg : public TMenu {
       {}
 
     int can_be_selected(int sel) {
-	if (is_neocd()) {
-	    if (sel == 1)
-		return 0;
-	}
 #if HAS_NEO
 	if (sound_menu[sel].menu_func == &do_sound_cmd)
 	    return get_assoc_type() != 0;
