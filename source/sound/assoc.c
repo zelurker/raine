@@ -411,6 +411,8 @@ int handle_sound_cmd(int cmd) {
     case 10:
 	if (active && cmd < 0x40)  // gunbird
 	    mute_song();
+	else
+	    return 0;
 	break;
     }
     /* At this point all the sound commands have already returned, we are
