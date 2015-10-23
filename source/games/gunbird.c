@@ -739,6 +739,7 @@ static UINT8 s1945j_table[256] = {
 static UINT8 *sound_mem,*buf1_spr,*buf2_spr;
 
 static void gunbird_sound(int command) {
+    command &= 0xff; // 68020 uses move.l a0,adr here, 3 bytes wasted !
     if (!handle_sound_cmd(command)) {
 	latch = oldmem13 = command;
 	RAM[0x30009] |= 0x80;
@@ -761,9 +762,11 @@ static void s1945_mcu_r(UINT8 data)
     m68k_dreg(regs,0)=mcu_table[ta & 0xff];
   } else if (data == 2) { // speed hack
     Stop68020();
-  } else if (data == 4) { // gunbird sound command !
+  } else if (data == 4)  // gunbird sound command ! (using a0)
       gunbird_sound(m68k_areg(regs,0));
-  }
+  else if (data == 5) // s1945/tengai sound (using d0)
+      gunbird_sound(m68k_dreg(regs,0));
+
 #if 0
   // All this is debuging stuff. It's useless now, but I leave it here
   // commented because it might be usefull another time.
@@ -1138,7 +1141,7 @@ void load_actual_s1945(void)
      WriteWord68k(&ROM[0x19540],0x4e71); // disable* mcu test
 
      WriteWord68k(&ROM[0x199ce],0x7F02); // raine #$02 <stop cpu / speed hack>
-     WriteWord68k(&ROM[0x1867c],0x7f04); // sound command
+     WriteWord68k(&ROM[0x1867c],0x7f05); // sound command
      WriteWord68k(&ROM[0x1867e],0x4e71);		//	nop
      WriteWord68k(&ROM[0x18680],0x4e71); 		//	nop
    } else if (!strcmp(current_game->main_name,"s1945")) {
@@ -1151,7 +1154,7 @@ void load_actual_s1945(void)
      WriteWord68k(&ROM[0x194dc],0x4e71); // disable* mcu test
 
      WriteWord68k(&ROM[0x1996a],0x7F02); // raine #$02 <stop cpu / speed hack>
-     WriteWord68k(&ROM[0x18618],0x7f04); // sound command
+     WriteWord68k(&ROM[0x18618],0x7f05); // sound command
      WriteWord68k(&ROM[0x1861a],0x4e71);		//	nop
      WriteWord68k(&ROM[0x1861c],0x4e71); 		//	nop
    } else if (!strcmp(current_game->main_name,"tengai")) {
@@ -1169,7 +1172,7 @@ void load_actual_s1945(void)
      WriteWord68k(&ROM[0x128e],0x4e71); // raine #$02 <stop cpu / speed hack>
 
      // WriteWord68k(&ROM[0x1a384],0x7f05); // debug
-     WriteWord68k(&ROM[0x1a026],0x7f04); // sound command
+     WriteWord68k(&ROM[0x1a026],0x7f05); // sound command
      WriteWord68k(&ROM[0x1a028],0x4e71);		//	nop
      WriteWord68k(&ROM[0x1a02a],0x4e71); 		//	nop
 
@@ -1443,89 +1446,90 @@ static void scroll_bg0(int width, int height) {
 // This function is quite generic, but I don't see any easy way to make it completely
 // generic (usable directly in another driver...)
 
-#define def_bg0_lscroll(WIDTH,HEIGHT,N)						    \
-static void scroll_##HEIGHT##_bg0_lscroll() {					    \
-  int zz,zzz,zzzz,x16,y16,x,y,ta;						    \
-  UINT8 *map;									    \
-  INT16 scrollx = ReadWord68k(&RAM[0x24406]), scrolly = ReadWord68k(&RAM[0x24402]); \
-  MAKE_SCROLL_##WIDTH##x##HEIGHT##_##N##_16(					    \
-			    scrollx,						    \
-			    scrolly						    \
-			    );							    \
-										    \
-  zz=zzzz;									    \
-  for(y=(32-y16);(UINT32)y<(224+32);y+=16){					    \
-    int min = 999, max = -999;							    \
-    int n;									    \
-    INT16 *offs = &offsets[y-32];							    \
-										    \
-    if (y<32) {									    \
-      zz = zzzz = (zzzz+(WIDTH*N/16))&(WIDTH*HEIGHT*N/(16*16)-1);		    \
-      continue;									    \
-    }										    \
-										    \
-										    \
-    for (n=0; n<16; n++) {							    \
-      ta = offs[n];								    \
-      if (min > ta)								    \
-	min = ta;								    \
-      if (max < ta)								    \
-	max = ta;								    \
-    }										    \
-    if (min) {									    \
-      if (min & 15) /* min is not on the limit of a sprite */			    \
-	min = (min > 0) ? min/16 + 1 : min/16 - 1;				    \
-      else									    \
-	min /= 16;								    \
-    }										    \
-    if (max) {									    \
-      if (max & 15)								    \
-	max = max/16 +1;							    \
-      else									    \
-	max /= 16;								    \
-    }										    \
-    if (max || min) { /* some line scroll for this line */			    \
-										    \
-      /* Start earlier, finish later... */					    \
-      zz=(zz&(WIDTH*HEIGHT*N/(16*16)-WIDTH*N/16))|((zz-max*N)&(WIDTH*N/16-1));	    \
-      for(x=(32-x16-max*16);x<(320+32-min*16);x+=16){				    \
-										    \
-	ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;			    \
-										    \
-	MAP_PALETTE_MAPPED_NEW(							    \
-			   (RAM_BG0[zz] >> 5)|0x80,				    \
-              16,								    \
-              map								    \
-            );									    \
-										    \
-	ldraw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map,offs);		    \
-										    \
-	zz=(zz&(WIDTH*HEIGHT*N/(16*16)-WIDTH*N/16))|((zz+N)&(WIDTH*N/16-1));	    \
-      }										    \
-    } else { /* no line scroll for this line... */				    \
-      for(x=(32-x16);x<(320+32);x+=16){						    \
-										    \
-	ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;			    \
-										    \
-	MAP_PALETTE_MAPPED_NEW(							    \
-  	      (RAM_BG0[zz] >> 5)|0x80,						    \
-              16,								    \
-              map								    \
-            );									    \
-										    \
-	Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);			    \
-	zz=(zz&(WIDTH*HEIGHT*N/(16*16)-WIDTH*N/16))|((zz+N)&(WIDTH*N/16-1));	    \
-      }										    \
-    }										    \
-    /* end of scrol */								    \
-    zz = zzzz = (zzzz+(WIDTH*N/16))&(WIDTH*HEIGHT*N/(16*16)-1);			    \
-  } /* for(y... */								    \
-}
+static void scroll_bg0_lscroll(int width, int height) {
+  int zz,zzz,zzzz,x16,y16,x,y,ta;
+  UINT8 *map;
+  INT16 scrollx = ReadWord68k(&RAM[0x24406]), scrolly = ReadWord68k(&RAM[0x24402]);
+  MAKE_SCROLL_n_16(width,height,2,
+			    scrollx,
+			    scrolly
+			    );
 
-def_bg0_lscroll(512,2048,2);
-def_bg0_lscroll(2048,512,2);
-def_bg0_lscroll(4096,256,2);
-def_bg0_lscroll(1024,1024,2);
+  zz=zzzz;
+  for(y=(32-y16);(UINT32)y<(224+32);y+=16){
+    int min = 999, max = -999;
+    int n;
+    INT16 *offs = &offsets[y-32];
+
+    if (y<32) {
+      zz = zzzz = (zzzz+(width*2/16))&(width*height*2/(16*16)-1);
+      continue;
+    }
+
+
+    for (n=0; n<16; n++) {
+      ta = offs[n];
+      if (min > ta)
+	min = ta;
+      if (max < ta)
+	max = ta;
+    }
+    if (min) {
+      if (min & 15) /* min is not on the limit of a sprite */
+	min = (min > 0) ? min/16 + 1 : min/16 - 1;
+      else
+	min /= 16;
+    }
+    if (max) {
+      if (max & 15)
+	max = max/16 +1;
+      else
+	max /= 16;
+    }
+    if (max || min) { /* some line scroll for this line */
+
+      /* Start earlier, finish later... */
+      zz=(zz&(width*height*2/(16*16)-width*2/16))|((zz-max*2)&(width*2/16-1));
+      for(x=(32-x16-max*16);x<(320+32-min*16);x+=16){
+
+	ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;
+
+	MAP_PALETTE_MAPPED_NEW(
+			   (RAM_BG0[zz] >> 5)|0x80,
+              16,
+              map
+            );
+
+	if (layer0_ctrl & 2 || GFX_BG0_SOLID[ta] == 2)
+	    ldraw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map,offs);
+	else if (GFX_BG0_SOLID[ta] == 1)
+	    ldraw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map,offs);
+
+	zz=(zz&(width*height*2/(16*16)-width*2/16))|((zz+2)&(width*2/16-1));
+      }
+    } else { /* no line scroll for this line... */
+      for(x=(32-x16);x<(320+32);x+=16){
+
+	ta = (ReadWord68k( &RAM_BG0[zz] ) & 0x1FFF)+tile_bank0;
+
+	MAP_PALETTE_MAPPED_NEW(
+  	      (RAM_BG0[zz] >> 5)|0x80,
+              16,
+              map
+            );
+
+	if (layer0_ctrl & 2 || GFX_BG0_SOLID[ta] == 2)
+	    Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
+	else if (GFX_BG0_SOLID[ta]) {
+	    Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8], x, y, map);
+	}
+	zz=(zz&(width*height*2/(16*16)-width*2/16))|((zz+2)&(width*2/16-1));
+      }
+    }
+    /* end of scrol */
+    zz = zzzz = (zzzz+(width*2/16))&(width*height*2/(16*16)-1);
+  } /* for(y... */
+}
 
 static void scroll_bg1(int width, int height) {
   int zz,zzz,zzzz,x16,y16,x,y,ta;
@@ -1548,15 +1552,10 @@ static void scroll_bg1(int width, int height) {
               map
             );
 
-    if(GFX_BG1_SOLID[ta]==1) {
-      // Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      // Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);
+    if(GFX_BG1_SOLID[ta]==2 || (layer1_ctrl & 2))
+      pdraw16x16_Mask_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1); // opaque
+    else
       pdraw16x16_Mask_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1);
-    } else {
-      pdraw16x16_Mask_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1);
-      // Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);
-      // Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);
-    }
   }
 
   END_SCROLL_n_16(width,height,2);
@@ -1564,103 +1563,94 @@ static void scroll_bg1(int width, int height) {
 
 // Same as def_bg0_lscroll, with transparency this time...
 
-#define def_bg1_lscroll(WIDTH,HEIGHT,N)							\
-static void scroll_##HEIGHT##_bg1_lscroll() {						\
-  int zz,zzz,zzzz,x16,y16,x,y,ta;							\
-  UINT8 *map;										\
-  MAKE_SCROLL_##WIDTH##x##HEIGHT##_##N##_16(						\
-			    ReadWord68k(&RAM[0x2440e]),					\
-			    ReadWord68k(&RAM[0x2440a])					\
-			    );								\
-											\
-  zz=zzzz;										\
-  for(y=(32-y16);(UINT32)y<(224+32);y+=16){						\
-    int min = 999, max = -999;								\
-    int n;										\
-    INT16 *offs = &offsets[y-32];								\
-											\
-    if (y<32) {										\
-      /* Next line */									\
-      zz = zzzz = (zzzz+(WIDTH*N/16))&(WIDTH*HEIGHT*N/(16*16)-1);			\
-      continue;										\
-    }											\
-											\
-    for (n=0; n<16; n++) {								\
-      ta = offs[n];									\
-      if (min > ta)									\
-	min = ta;									\
-      if (max < ta)									\
-	max = ta;									\
-    }											\
-    if (min) {										\
-      if (min & 15) /* min is not on the limit of a sprite */				\
-	min = min/16 - 1;								\
-      else										\
-	min /= 16;									\
-    }											\
-    if (max) {										\
-      if (max & 15)									\
-	max = max/16 +1;								\
-      else										\
-	max /= 16;									\
-    }											\
-    if (max || min) { /* some line scroll for this line */				\
-											\
-      /* Start earlier, finish later... */						\
-      zz=(zz&(WIDTH*HEIGHT*N/(16*16)-WIDTH*2/16))|((zz-max*2)&(WIDTH*2/16-1));		\
-      for(x=(32-x16-max*16);x<(320+32-min*16);x+=16){					\
-											\
-	ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;				\
-											\
-	if( GFX_BG1_SOLID[ta] ){							\
-											\
-	  MAP_PALETTE_MAPPED_NEW(							\
-	      (RAM_BG1[zz] >> 5)|0xc0,							\
-              16,									\
-              map									\
-            );										\
-											\
-	  if(GFX_BG1_SOLID[ta]==1) {							\
-	    pldraw16x16_Mask_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map,offs,1);	\
-	  } else {									\
-	    pldraw16x16_Mask_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map,offs,1);		\
-	  }										\
-	}										\
-											\
-	zz=(zz&(WIDTH*HEIGHT*N/(16*16)-WIDTH*N/16))|((zz+N)&(WIDTH*N/16-1));		\
-      }											\
-    } else { /* no line scroll for this line... */					\
-      for(x=(32-x16);x<(320+32);x+=16){							\
-											\
-	ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;				\
-											\
-	if( GFX_BG1_SOLID[ta] ){							\
-	  MAP_PALETTE_MAPPED_NEW(							\
-  	      (RAM_BG1[zz] >> 5)|0xc0,							\
-              16,									\
-              map									\
-            );										\
-											\
-	  if(GFX_BG1_SOLID[ta]==1) {							\
-	    Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);			\
-	    Draw16x16_Mask_Trans_Rot(&GFX_BG1[ta<<8],x,y,1);				\
-	  } else {									\
-	    Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map);				\
-	    Draw16x16_Mask_Rot(&GFX_BG1[ta<<8],x,y,1);					\
-	  }										\
-	}										\
-	zz=(zz&(WIDTH*HEIGHT*N/(16*16)-WIDTH*N/16))|((zz+N)&(WIDTH*N/16-1));		\
-      }											\
-    }											\
-    /* end of scrol */									\
-    zz = zzzz = (zzzz+(WIDTH*N/16))&(WIDTH*HEIGHT*N/(16*16)-1);				\
-  } /* for(y... */									\
-}
+static void scroll_bg1_lscroll(int width,int height) {
+  int zz,zzz,zzzz,x16,y16,x,y,ta;
+  UINT8 *map;
+  MAKE_SCROLL_n_16(width,height,2,
+			    ReadWord68k(&RAM[0x2440e]),
+			    ReadWord68k(&RAM[0x2440a])
+			    );
 
-def_bg1_lscroll(512,2048,2);
-def_bg1_lscroll(1024,1024,2);
-def_bg1_lscroll(2048,512,2);
-def_bg1_lscroll(4096,256,2);
+  zz=zzzz;
+  for(y=(32-y16);(UINT32)y<(224+32);y+=16){
+    int min = 999, max = -999;
+    int n;
+    INT16 *offs = &offsets[y-32];
+
+    if (y<32) {
+      /* Next line */
+      zz = zzzz = (zzzz+(width*2/16))&(width*height*2/(16*16)-1);
+      continue;
+    }
+
+    for (n=0; n<16; n++) {
+      ta = offs[n];
+      if (min > ta)
+	min = ta;
+      if (max < ta)
+	max = ta;
+    }
+    if (min) {
+      if (min & 15) /* min is not on the limit of a sprite */
+	min = min/16 - 1;
+      else
+	min /= 16;
+    }
+    if (max) {
+      if (max & 15)
+	max = max/16 +1;
+      else
+	max /= 16;
+    }
+    if (max || min) { /* some line scroll for this line */
+
+      /* Start earlier, finish later... */
+      zz=(zz&(width*height*2/(16*16)-width*2/16))|((zz-max*2)&(width*2/16-1));
+      for(x=(32-x16-max*16);x<(320+32-min*16);x+=16){
+
+	ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;
+
+	if( GFX_BG1_SOLID[ta] || (layer1_ctrl & 2)){
+
+	  MAP_PALETTE_MAPPED_NEW(
+	      (RAM_BG1[zz] >> 5)|0xc0,
+              16,
+              map
+            );
+
+	  if(GFX_BG1_SOLID[ta]==2 || (layer1_ctrl & 2)) {
+	    pldraw16x16_Mask_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map,offs,1);
+	  } else {
+	    pldraw16x16_Mask_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map,offs,1);
+	  }
+	}
+
+	zz=(zz&(width*height*2/(16*16)-width*2/16))|((zz+2)&(width*2/16-1));
+      }
+    } else { /* no line scroll for this line... */
+      for(x=(32-x16);x<(320+32);x+=16){
+
+	ta = (ReadWord68k( &RAM_BG1[zz] ) & 0x1FFF)+tile_bank1;
+
+	if( GFX_BG1_SOLID[ta] || (layer1_ctrl & 2)){
+	  MAP_PALETTE_MAPPED_NEW(
+  	      (RAM_BG1[zz] >> 5)|0xc0,
+              16,
+              map
+            );
+
+	  if(GFX_BG1_SOLID[ta]==2 || (layer1_ctrl & 2))
+	      pdraw16x16_Mask_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1); // opaque
+	  else
+	      pdraw16x16_Mask_Trans_Mapped_Rot(&GFX_BG1[ta<<8], x, y, map, 1);
+	}
+	zz=(zz&(width*height*2/(16*16)-width*2/16))|((zz+2)&(width*2/16-1));
+      }
+    }
+    /* end of scrol */
+    zz = zzzz = (zzzz+(width*2/16))&(width*height*2/(16*16)-1);
+  } /* for(y... */
+}
 
 #define LINE_SCROLL_BG0 1
 #define LINE_SCROLL_BG1 1
@@ -1703,10 +1693,10 @@ void DrawGunbird(void)
 	print_ingame(1,gettext("line scroll bg0 %d %d size %d"),min,max,(layer0_ctrl & 0xc0) >> 6);
 #endif
 	switch((layer0_ctrl & 0xc0) >> 6) {
-	case 0: scroll_1024_bg0_lscroll(); break;
-	case 1: scroll_512_bg0_lscroll();  break;
-	case 2: scroll_256_bg0_lscroll();  break;
-	default:scroll_2048_bg0_lscroll(); break;
+	case 0: scroll_bg0_lscroll(1024,1024); break;
+	case 1: scroll_bg0_lscroll(2048,512);  break;
+	case 2: scroll_bg0_lscroll(4096,256);  break;
+	default:scroll_bg0_lscroll(512,2048); break;
 	}
       } else {
 #endif
@@ -1755,10 +1745,10 @@ void DrawGunbird(void)
       print_ingame(1,gettext("line scroll bg1 %d %d size %d"),min,max,(layer1_ctrl & 0xc0) >> 6);
 #endif
       switch((layer1_ctrl & 0xc0) >> 6) {
-      case 0: scroll_1024_bg1_lscroll(); break;
-      case 1: scroll_512_bg1_lscroll();  break;
-      case 2: scroll_256_bg1_lscroll();  break;
-      default:scroll_2048_bg1_lscroll(); break;
+      case 0: scroll_bg1_lscroll(1024,1024); break;
+      case 1: scroll_bg1_lscroll(2048,512);  break;
+      case 2: scroll_bg1_lscroll(4096,256);  break;
+      default:scroll_bg1_lscroll(512,2048); break;
       }
     } else { // no line scroll...
 #endif
