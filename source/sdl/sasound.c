@@ -699,7 +699,9 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 
     for (channel=0; channel<NUMVOICES; channel++) {
 	if (stream_buffer[channel]) {
-	    SDL_SemWait(sem[channel]);
+      int num_sem = channel;
+      while (!sem[num_sem]) num_sem--;
+	    SDL_SemWait(sem[num_sem]);
 	    // printf("my_callback chan %d len %d\n",channel,len);
 	    int volume = SampleVol[channel];
 	    int vol_l = (255-SamplePan[channel])*volume/255;
@@ -716,7 +718,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		    stream_update_channel(channel, len/2-stream_buffer_pos[channel]);
 		else {
 		    print_debug("buffer underrun channel %d and no callback\n",channel);
-		    SDL_SemPost(sem[channel]);
+		    SDL_SemPost(sem[num_sem]);
 		    continue;
 		}
 	    }
@@ -757,7 +759,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		memcpy(stream_buffer[channel],stream_buffer[channel]+len,stream_buffer_pos[channel]*2-len);
 		stream_buffer_pos[channel] -= len/2;
 	    }
-	    SDL_SemPost(sem[channel]);
+	    SDL_SemPost(sem[num_sem]);
 	}
     }
 
