@@ -169,7 +169,7 @@ READ16_HANDLER(f3_68000_share_rw)
   return ReadWord68k(f3_shared_ram+(offset & 0xfff));
 }
 
-INLINE int convert_offset(int offset) {
+static INLINE convert_offset(int offset) {
   offset >>=1;
   offset &= 0xfff;
   return offset;

@@ -1096,7 +1096,7 @@ static INLINE void set_ar_ksr(UINT8 type,FM_CH *CH,FM_SLOT *SLOT,int v)
 	}
 
 /* set decay rate */
-INLINE void set_dr(UINT8 type, FM_SLOT *SLOT,int v)
+static INLINE void set_dr(UINT8 type, FM_SLOT *SLOT,int v)
 {
 	SLOT->d1r = (v&0x1f) ? 32 + ((v&0x1f)<<1) : 0;
 
@@ -1113,7 +1113,7 @@ INLINE void set_dr(UINT8 type, FM_SLOT *SLOT,int v)
 }
 
 /* set sustain rate */
-INLINE void set_sr(UINT8 type, FM_SLOT *SLOT,int v)
+static INLINE void set_sr(UINT8 type, FM_SLOT *SLOT,int v)
 {
 	SLOT->d2r = (v&0x1f) ? 32 + ((v&0x1f)<<1) : 0;
 
@@ -1129,7 +1129,7 @@ INLINE void set_sr(UINT8 type, FM_SLOT *SLOT,int v)
 }
 
 /* set release rate */
-INLINE void set_sl_rr(UINT8 type, FM_SLOT *SLOT,int v)
+static INLINE void set_sl_rr(UINT8 type, FM_SLOT *SLOT,int v)
 {
 	SLOT->sl = sl_table[ v>>4 ];
 
@@ -1148,7 +1148,7 @@ INLINE void set_sl_rr(UINT8 type, FM_SLOT *SLOT,int v)
 
 
 
-INLINE signed int op_calc(UINT32 phase, unsigned int env, signed int pm)
+static INLINE signed int op_calc(UINT32 phase, unsigned int env, signed int pm)
 {
 	UINT32 p;
 
@@ -1171,7 +1171,7 @@ static INLINE signed int op_calc1(UINT32 phase, unsigned int env, signed int pm)
 }
 
 /* advance LFO to next sample */
-INLINE void advance_lfo(FM_OPN *OPN)
+static INLINE void advance_lfo(FM_OPN *OPN)
 {
 	UINT8 pos;
 
