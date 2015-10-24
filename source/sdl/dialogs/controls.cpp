@@ -498,7 +498,6 @@ static int do_ingame_controls(int sel) {
   menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   cols = (char**)malloc(sizeof(char*)*nb*3);
-  char **strings = (char**)malloc(sizeof(char*)*nb);
   mynb = 0;
   base_input = 0;
   int categ[0x100];
@@ -509,7 +508,6 @@ static int do_ingame_controls(int sel) {
       if (sel < 0 && !base_input)
 	base_input = n;
       menu[mynb].label = convert_command(InputList[n].InputName);
-      strings[mynb] = (char*)menu[mynb].label; // keep a copy before translation !
       menu[mynb].menu_func = &do_input_ingame;
       menu[mynb].values_list[0] = n;
       cols[mynb*3+0] = get_key_name(InputList[n].Key);
@@ -547,9 +545,8 @@ static int do_ingame_controls(int sel) {
   }
   free(cols);
   for (n=0; n<mynb; n++) {
-      free((void*)strings[n]);
+      free((void*)menu[n].label);
   }
-  free(strings);
   free(menu);
   return 0;
 }
