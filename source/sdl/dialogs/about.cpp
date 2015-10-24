@@ -807,8 +807,7 @@ static char gcc_version[30];
 static char about_cpu[64];
 
 int do_about(int sel) {
-    char *dir = get_shared("bitmaps");
-    char path[256];
+    char *path;
 #ifdef __GNUC__
     {
 	int major = __GNUC__;
@@ -831,7 +830,7 @@ int do_about(int sel) {
     sprintf(gcc_version,"with an unknown gcc ???");
 #endif
     about_items[2].label = gcc_version;
-    sprintf(path,"%s/raine_logo.png",dir);
+    path = get_shared("bitmaps/raine_logo.png");
     sprintf(about_cpu, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
     char about_sdl[80];
