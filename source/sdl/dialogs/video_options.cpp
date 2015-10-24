@@ -116,6 +116,7 @@ static int choose_shader(int sel) {
 }
 
 static int bidon;
+static TMenu *menu;
 
 static menu_item_t ogl_options[] =
 {
@@ -135,10 +136,11 @@ static void preinit_ogl_options() {
     if (p) ogl_options[3].values_list_label[0] = p+1;
     else
 	ogl_options[3].values_list_label[0] = _("None");
+    if (menu)
+	menu->update_list_label(3,0,ogl_options[3].values_list_label[0]);
 }
 
 int renderer_options(int sel) {
-    TMenu *menu;
     preinit_ogl_options();
     switch(display_cfg.video_mode) {
     case 0: menu = new TDialog(_("OpenGL Options"), ogl_options); break;

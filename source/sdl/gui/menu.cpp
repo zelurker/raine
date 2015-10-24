@@ -232,6 +232,22 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   translated = to_translate && menu;
 
   if (translated) {
+      /* Translation problem :
+       * when using _() in the menu_item_t definition, it's called before the
+       * gettext environment is initialized and so it does nothing. The reason
+       * to use it is to mark the text for translation in the .po files. The
+       * solution is to translate everything here.
+       * But now there is the problem of dialogs which allocate dynamically
+       * their entries, even if they are a minority. To avoid to mess things
+       * up I use a copy of the menu_item_t passed. The downside is that it
+       * makes dynamic dialogs harder to handle, explicit calls are needed to
+       * update the strings in the dialogs in this case.
+       * The copy of the menu passed has another advantage : it allows to
+       * change the translated language without restarting since the original
+       * text is preserved... */
+      /* Now this thing is really starting to become bothersome, but for now
+       * I see no way to get back to the easy dyanmic dialogs handling while
+       * keeping the translations ! */
       int nb = 0;
       while (menu->label) {
 	  nb++;
@@ -290,6 +306,10 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
 void TMenu::update_label(int nb, char *str,int (*menu_func)(int)) {
     menu[nb].label = str;
     if (menu_func) menu[nb].menu_func = menu_func;
+}
+
+void TMenu::update_list_label(int nb, int index, char *str) {
+    menu[nb].values_list_label[index] = str;
 }
 
 TMenu::~TMenu() {
