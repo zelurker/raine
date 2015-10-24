@@ -322,7 +322,8 @@ int handle_sound_cmd(int cmd) {
 		     * 3.0 and 4.0 here, I'll leave 4 to have more margin */
 		    time = 4.0;
 		}
-		start_music_fadeout(time);
+		if (active)
+		    start_music_fadeout(time);
 	    }
 	    mode = MUSIC;
 	    return 0;
@@ -382,7 +383,8 @@ int handle_sound_cmd(int cmd) {
 		   time = 13.0*10/cmd;
 	       else
 		   time = 6.5*10/cmd;
-		start_music_fadeout(time);
+	       if (active)
+		   start_music_fadeout(time);
 #else
 		mute_song();
 #endif
