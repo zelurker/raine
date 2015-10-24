@@ -1313,7 +1313,7 @@ static void cps1_find_last_sprite(void)    /* Find the offset of last sprite */
     cps1_last_sprite_offset=cps1_obj_size-8;
 }
 
-INLINE UINT8 *cps1_base(int offset,int boundary)
+static INLINE UINT8 *cps1_base(int offset,int boundary)
 {
 	int base=cps1_port[offset]*256;
 	/*
@@ -1971,7 +1971,7 @@ static int cps2_last_sprite_offset;     /* Offset of the last sprite */
 #define CPS2_OBJ_XOFFS	0x08	/* X offset (usually 0x0040) */
 #define CPS2_OBJ_YOFFS	0x0a	/* Y offset (always 0x0010) */
 
-INLINE UINT16 cps2_port(int offset)
+static INLINE UINT16 cps2_port(int offset)
 {
   return ReadWord(&cps2_output[offset]);
 }
