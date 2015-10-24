@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.64.9"
+VERSION = "0.64.10"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -294,7 +294,9 @@ SDL = 1
 ifdef DARWIN
 # using C video core for the moment
 # pb: how to run self modifying code on OSX ?
+# And same problem for the 68020 apparently !
 ASM_VIDEO_CORE =
+C68020 = 1
 DESTDIR = Raine.app
    prefix = $(DESTDIR)/Contents
    bindir = $(prefix)/MacOS
