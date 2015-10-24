@@ -153,6 +153,7 @@ int renderer_options(int sel) {
     menu->set_transparency(0);
     menu->execute();
     delete menu;
+    menu = NULL;
     return 0;
 }
 
