@@ -2161,8 +2161,6 @@ static void neogeo_hreset(void)
   if (saved_fix)
     restore_fix(0);
   frame_neo = CPU_FRAME_MHz(12,60);
-  if (is_current_game("mslug2") && allowed_speed_hacks)
-      frame_neo = CPU_FRAME_MHz(24,60);
 
   current_neo_frame = frame_neo;;
   old_name = current_game->main_name;
@@ -5335,7 +5333,7 @@ void execute_neocd() {
 		  // It's the only way I found which works so far... !
 		  current_neo_frame = desired_68k_speed;
 	  }
-	  if (!stopped_68k && desired_68k_speed > current_neo_frame && frame_count++ > 60) {
+	  if (!stopped_68k && frame_count++ > 60) {
 	      pc = s68000readPC();
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
 
@@ -5367,13 +5365,11 @@ void execute_neocd() {
 		  } else if (ReadWord(&RAM[pc]) == 0x4a2d && // TST
 			  ReadWord(&RAM[pc+4]) == 0x66fa) // bne
 		      apply_hack(pc,"garou");
-#if 0
 		  else if (ReadWord(&RAM[pc]) == 0x8ad &&
 			  ReadWord(&RAM[pc+6]) == 0x67f8) {
 		      apply_hack(pc,"mslug2 special");
 		      WriteWord(&RAM[pc+6],0x4e71);
 		  }
-#endif
 		  else if (ReadWord(&RAM[pc]) == 0x6400) {
 		      int ofs = pc+ReadWord(&RAM[pc+2])+2;
 		      if (ReadWord(&RAM[ofs]) == 0x8ad &&
@@ -5381,7 +5377,6 @@ void execute_neocd() {
 			  apply_hack(ofs,"mslugx special");
 			  WriteWord(&RAM[ofs+6],0x4e71);
 			  WriteWord(&RAM[ofs+8],0x4e71);
-			  current_neo_frame = desired_68k_speed;
 		      }
 		  } else if ((ReadWord(&RAM[pc]) == 0xc79) &&
 			  ReadWord(&RAM[pc+8]) == 0x6600 &&
