@@ -361,9 +361,15 @@ ifndef SDL
    LIBS_DEBUG = -lz $(shell allegro-config --libs ) $(shell libpng-config --ldflags) -lm
    LIBS_STATIC = -lz $(shell allegro-config --static) $(shell libpng-config --static --ldflags) -lm
 else
+ifdef DARWIN
+   LIBS = -lz /usr/local/lib/libpng.a -lm
+   LIBS_DEBUG = -lz /usr/local/lib/libpng.a -lm
+   LIBS_STATIC = -lz /usr/local/lib/libpng.a -lm
+else
    LIBS = -lz $(shell libpng-config --ldflags) -lm
    LIBS_DEBUG = -lz $(shell libpng-config --ldflags) -lm
    LIBS_STATIC = -lz $(shell libpng-config --static --ldflags) -lm
+endif
 ifndef DARWIN
 	LIBS += -lGL -lGLU
 	LIBS_DEBUG += -lGL -lGLU
@@ -859,8 +865,13 @@ CONSOLE = \
 	$(OBJDIR)/sdl/gui/tconsole.o \
 	$(OBJDIR)/sdl/console/exec.o
 
+ifdef DARWIN
+LIBS += /usr/local/lib/libmuparser.a
+LIBS_DEBUG += /usr/local/lib/libmuparser.a
+else
 LIBS += -lmuparser
 LIBS_DEBUG += -lmuparser
+endif
 endif
 
 ifdef SDL
@@ -1059,9 +1070,11 @@ else
 OBJS += $(OBJDIR)/sdl/sasound.o
 
 ifdef DARWIN
-# to build with homebrews 3rd party libs
-CFLAGS += $(shell sdl-config --cflags) -DDARWIN
-LIBS += $(shell sdl-config --libs) -lSDL_ttf  -lSDL_image -lSDL_sound -framework OpenGL -lintl
+# Official SDL1.2 frameworks (SDL / image / ttf) in /Library/Frameworks
+CFLAGS += -I/usr/local/include/SDL/ -DDARWIN
+LIBS += -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
+# SDL_sound is statically linked from homebrew as gettext, libpng etc.
+LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libintl.a -liconv
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
