@@ -820,7 +820,7 @@ static int offx, maxx;
 static void update_raster() {
     start_line -= START_SCREEN;
     debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
-    draw_sprites(0,384,start_line,scanline-START_SCREEN);
+    draw_sprites(0,381,start_line,scanline-START_SCREEN);
     blit(GameBitmap,raster_bitmap,16,start_line+16,
 	    0,start_line,
 	    neocd_video.screen_x,
@@ -2106,7 +2106,7 @@ static void draw_neocd() {
 	start = 0;
       } while (end != 0);
     } else
-      draw_sprites(0, 384,start_line,224);
+      draw_sprites(0, 381,start_line,224);
   }
   if (raster_frame && start_line > 0) {
       blit(raster_bitmap,GameBitmap,0,0,16,16,neocd_video.screen_x,start_line);
