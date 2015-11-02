@@ -163,9 +163,11 @@ static void load_game_proc()
 
     progress_count = 0;
     load_items[0].label = _("Applying GFX Layouts and stuff..."); // init
-    adjust_gui_resolution();
-    loading_dialog = new TDialog(_("Loading Game"),load_items);
-    loading_dialog->draw();
+    if (!raine_cfg.no_gui) {
+	adjust_gui_resolution();
+	loading_dialog = new TDialog(_("Loading Game"),load_items);
+	loading_dialog->draw();
+    }
 
     load_game_rom_info();
 

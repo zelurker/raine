@@ -119,6 +119,9 @@ void ReClipScreen(void)
 
   xview2 = xview = GameScreen.xview;
   yview2 = yview = GameScreen.yview;
+  // This code is broken, if this function is called just once with -nogui
+  // then yyy isn't initialized... !
+  if (!yyy) yyy = yview;
 
   // bezel_fix_screen_size(&xview,&yview);
 
