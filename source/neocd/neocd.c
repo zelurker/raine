@@ -5362,8 +5362,12 @@ void execute_neocd() {
 			   ReadWord(&RAM[pc-6]) == 0x4a39)) { // TST / BEQ/BNE
 		      apply_hack(pc-6,"tst/beq/bne");
 		      WriteWord(&RAM[pc],0x4e71); // nop
-		  } else if (ReadWord(&RAM[pc]) == 0x4a2d && // TST
+		  } else if (!is_current_game("aof3") &&
+			  ReadWord(&RAM[pc]) == 0x4a2d && // TST
 			  ReadWord(&RAM[pc+4]) == 0x66fa) // bne
+		      // Yeah this speed hack is really too wide, aof3 might
+		      // not be the only game with problems here. Might have
+		      // to change that some day.
 		      apply_hack(pc,"garou");
 		  else if (ReadWord(&RAM[pc]) == 0x8ad &&
 			  ReadWord(&RAM[pc+6]) == 0x67f8) {
