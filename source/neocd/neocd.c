@@ -5365,9 +5365,13 @@ void execute_neocd() {
 		  } else if (!is_current_game("aof3") &&
 			  ReadWord(&RAM[pc]) == 0x4a2d && // TST
 			  ReadWord(&RAM[pc+4]) == 0x66fa) // bne
-		      // Yeah this speed hack is really too wide, aof3 might
-		      // not be the only game with problems here. Might have
-		      // to change that some day.
+		      /* On second look, aof3 has a very specific problem here
+		       * the speed hack is correct but the game checks the
+		       * video pointer position sometimes after this and the
+		       * unexpected value produces a black screen then.
+		       * Probably no solution, this game just can't have a
+		       * speed hack then. This hack should be safe for other
+		       * games though */
 		      apply_hack(pc,"garou");
 		  else if (ReadWord(&RAM[pc]) == 0x8ad &&
 			  ReadWord(&RAM[pc+6]) == 0x67f8) {
