@@ -331,7 +331,7 @@ int main(int argc,char *argv[])
    load_main_config();
 
    // RAINE GUI (Allegro...)
-   strncpy(language,	 raine_get_config_string( "General", "language", language), 2);
+   strncpy(language,	 raine_get_config_string( "General", "language", ""), 2);
    language[2] = 0;
    init_lang();
 
@@ -401,9 +401,16 @@ int main(int argc,char *argv[])
    dir_cfg.long_file_names	= raine_get_config_int( "Directories",  "long_file_names",      1);
 #endif
 
-   strcpy(dir_cfg.screen_dir,	 raine_get_config_string( "Directories", "screenshots",   dir_cfg.screen_dir));
-   strcpy(dir_cfg.emudx_dir,	 raine_get_config_string( "Directories", "emudx",   dir_cfg.emudx_dir));
-   strcpy(dir_cfg.artwork_dir,	 raine_get_config_string( "Directories", "artwork",   dir_cfg.artwork_dir));
+   {
+     char *t;
+     t = raine_get_config_string("Directories", "screenshots", dir_cfg.screen_dir);
+     if (t != dir_cfg.screen_dir) strcpy(dir_cfg.screen_dir, t);
+     t = raine_get_config_string("Directories", "emudx", dir_cfg.emudx_dir);
+     if (t != dir_cfg.emudx_dir) strcpy(dir_cfg.emudx_dir, t);
+     t = raine_get_config_string("Directories", "artwork", dir_cfg.artwork_dir);
+     if (t != dir_cfg.artwork_dir) strcpy(dir_cfg.artwork_dir, t);
+   }
+
    i=0;
    do {
      alloc_romdir(i);
