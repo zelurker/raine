@@ -120,6 +120,13 @@ void init_lang() {
 #endif
 }
 
+static void mystrcpy(char *dst,char *src) {
+    // osx *CRASHES* if you pass src == dst here, even if src[0]=0 !!!
+    // See http://postgresql.nabble.com/OSX-doesn-t-accept-identical-source-target-for-strcpy-anymore-td5776101.html
+    if (src != dst)
+	strcpy(dst,src);
+}
+
 int main(int argc,char *argv[])
 {
    int i;
@@ -331,7 +338,7 @@ int main(int argc,char *argv[])
    load_main_config();
 
    // RAINE GUI (Allegro...)
-   strncpy(language,	 raine_get_config_string( "General", "language", language), 2);
+   strncpy(language,	 raine_get_config_string( "General", "language", ""), 2);
    language[2] = 0;
    init_lang();
 
@@ -401,9 +408,9 @@ int main(int argc,char *argv[])
    dir_cfg.long_file_names	= raine_get_config_int( "Directories",  "long_file_names",      1);
 #endif
 
-   strcpy(dir_cfg.screen_dir,	 raine_get_config_string( "Directories", "screenshots",   dir_cfg.screen_dir));
-   strcpy(dir_cfg.emudx_dir,	 raine_get_config_string( "Directories", "emudx",   dir_cfg.emudx_dir));
-   strcpy(dir_cfg.artwork_dir,	 raine_get_config_string( "Directories", "artwork",   dir_cfg.artwork_dir));
+   mystrcpy(dir_cfg.screen_dir,	 raine_get_config_string( "Directories", "screenshots",   dir_cfg.screen_dir));
+   mystrcpy(dir_cfg.emudx_dir,	 raine_get_config_string( "Directories", "emudx",   dir_cfg.emudx_dir));
+   mystrcpy(dir_cfg.artwork_dir,	 raine_get_config_string( "Directories", "artwork",   dir_cfg.artwork_dir));
    i=0;
    do {
      alloc_romdir(i);
