@@ -3091,6 +3091,9 @@ msgstr "Seulement les jeux qui marchent"
 msgid "Opaque HUD"
 msgstr "HUD opaque"
 
+msgid "No HUD messages"
+msgstr "Pas de messages HUD"
+
 msgid "Open this page now !|Later maybe..."
 msgstr "Ouvre cette page maintenant !|+ tard peut-être..."
 

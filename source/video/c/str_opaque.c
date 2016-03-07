@@ -4,7 +4,7 @@
 #include "video/palette.h"
 #include "blit.h"
 
-int opaque_hud;
+int opaque_hud,silent_hud;
 
 void draw_string_6x8_opaque_32(char *STR, int x, int y, UINT32 cmap)
 {

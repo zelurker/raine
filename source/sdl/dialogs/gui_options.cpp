@@ -34,6 +34,7 @@ TMenu *gui_options;
 static menu_item_t color_menu[] =
 {
 { _("Colors..."), &do_colors, },
+{ _("No HUD messages"), NULL, &silent_hud, 2, {0, 1}, { _("No"), _("Yes") } },
 { _("Opaque HUD"), NULL, &opaque_hud, 2, { 0, 1 }, { _("No"), _("Yes") } },
 { _("Pause when focus lost"), NULL, &pause_on_focus, 2, { 0, 1 }, { _("No"), _("Yes") }}
 };

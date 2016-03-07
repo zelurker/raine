@@ -24,6 +24,8 @@
 #include "sdl/console/scripts.h"
 #endif
 #include "sdl/opengl.h"
+#include "video/str_opaque.h"
+
 char fps_buff[32];		// fps() message string
 
 /**[Message List Stuff]*************************************/
@@ -111,7 +113,7 @@ void overlay_ingame_interface(int ogl)
       if(ta>=MSG_LIST_SIZE)
 	 ta-=MSG_LIST_SIZE;
 
-      if(MsgList[ta].messagetime>0){
+      if(MsgList[ta].messagetime>0 && !silent_hud){
 
 	 MsgList[ta].messagetime -= (INT32) skip_frame_count;
 
