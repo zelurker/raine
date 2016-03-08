@@ -60,6 +60,7 @@ void BlitScreen(void)
 
 void print_ingame(int showtime, const char *format, ...)
 {
+    if (silent_hud) return;
    va_list ap;
    va_start(ap,format);
    vsprintf(MsgList[mbase].message,format,ap);
@@ -106,27 +107,28 @@ void overlay_ingame_interface(int ogl)
    update_scripts();
 #endif
 
-   for(tb=0;tb<MSG_LIST_SIZE;tb++){
+   if (!silent_hud)
+       for(tb=0;tb<MSG_LIST_SIZE;tb++){
 
-      ta=tb+mbase;
+	   ta=tb+mbase;
 
-      if(ta>=MSG_LIST_SIZE)
-	 ta-=MSG_LIST_SIZE;
+	   if(ta>=MSG_LIST_SIZE)
+	       ta-=MSG_LIST_SIZE;
 
-      if(MsgList[ta].messagetime>0 && !silent_hud){
+	   if(MsgList[ta].messagetime>0){
 
-	 MsgList[ta].messagetime -= (INT32) skip_frame_count;
+	       MsgList[ta].messagetime -= (INT32) skip_frame_count;
 
 #ifndef RAINE_DOS
-	 if (ogl)
-	     opengl_text(MsgList[ta].message,0,(((MSG_LIST_SIZE-1)-tb)));
-	 else
+	       if (ogl)
+		   opengl_text(MsgList[ta].message,0,(((MSG_LIST_SIZE-1)-tb)));
+	       else
 #endif
-	     textout_fast(MsgList[ta].message,xoff2,(yoff2+yyy-8)-(((MSG_LIST_SIZE-1)-tb)<<3),get_white_pen());
+		   textout_fast(MsgList[ta].message,xoff2,(yoff2+yyy-8)-(((MSG_LIST_SIZE-1)-tb)<<3),get_white_pen());
 
-      }
+	   }
 
-   }
+       }
 
    /*
 
