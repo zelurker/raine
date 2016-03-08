@@ -5227,7 +5227,6 @@ void execute_neocd() {
 
     int pc;
 
-  stopped_68k = 0;
   screen_cleared = 0;
   start_line = START_SCREEN;
   if (raster_bitmap && bitmap_color_depth(raster_bitmap) !=
@@ -5256,6 +5255,7 @@ void execute_neocd() {
        * For now I leave it like that, ssideki2 and 3 are not perfect, but
        * ridhero is. There should be a way to have all the games happy, should
        * spend more time on this one day... ! */
+      stopped_68k = 0;
       for (scanline = 0; scanline < NB_LINES; scanline++) {
 	  if (scanline == 0xf0) {
 	      vblank_interrupt_pending = 1;	   /* vertical blank */
@@ -5323,9 +5323,11 @@ void execute_neocd() {
        * screen counter until it finds a number between 0 and 2, which is possible only if the vbl is not started at line 0 ! */
       int first_part = current_neo_frame * 0xf0 / NB_LINES; // f0 = start of vbl
       int rest = current_neo_frame - first_part;
-      cpu_execute_cycles(CPU_68K_0, first_part);
+      if (!stopped_68k)
+	  cpu_execute_cycles(CPU_68K_0, first_part);
       vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
       update_interrupts();
+      stopped_68k = 0;
       cpu_execute_cycles(CPU_68K_0, rest);
       if (allowed_speed_hacks) {
 	  /* Speed hacks are searched ONLY in the normal frame because we
