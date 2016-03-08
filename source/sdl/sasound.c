@@ -499,6 +499,9 @@ void sa_pause_sound(void)
 
      //pause_raine_ym3812();
      SDL_PauseAudio(1);
+#ifdef HAS_NEO
+     do_cdda(6,0); // pause cd audio, just in case...
+#endif
    }
 }
 
@@ -508,6 +511,9 @@ void sa_unpause_sound(void)
      if (pause_sound) {
        pause_sound	   = 0;
        SDL_PauseAudio(0);
+#ifdef HAS_NEO
+     do_cdda(3,0); // unpause cd audio, just in case...
+#endif
      }
    }
 }

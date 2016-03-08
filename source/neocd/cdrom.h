@@ -21,6 +21,16 @@ extern "C" {
     int initial_cdrom_speed;
   } loading_params;
 
+extern int get_cd_load_type();
+
+enum{
+  ZIP_TYPE = 0,
+  IPL_TYPE,
+  ISO_TYPE,
+  CUE_TYPE,
+  P7Z_TYPE,
+};
+
 extern loading_params neocd_lp;
 extern int total_sectors, sectors_to_load,loaded_sectors, cdrom_speed,nb_tracks;
 

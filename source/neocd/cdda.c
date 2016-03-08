@@ -58,7 +58,6 @@ static char *find_file(char *pattern,char *path){
       break;
     } else if (*number) {
       // if (strcasestr(dent->d_name,ext))
-      {
 	int len = strlen(number);
 	s = dent->d_name-1;
 	do {
@@ -72,7 +71,6 @@ static char *find_file(char *pattern,char *path){
 	  strcpy(name,dent->d_name);
 	  break;
 	}
-      }
     }
   }
   closedir(dir);
@@ -118,16 +116,19 @@ static int cdda_play(int track,int loop)
     }
   }
   if (!str3) {
-    sprintf(str,"%s%sneocd.mp3",neocd_dir,SLASH);
-    strcpy(str2,"xx.mp3");
-    str2[0]=(((track)/10)%10)+48;
-    str2[1]=((track)%10)+48;
+      if (get_cd_load_type() != IPL_TYPE) {
+	  // Guess the file, but not when reading directly the files !!!
+	  sprintf(str,"%s%sneocd.mp3",neocd_dir,SLASH);
+	  strcpy(str2,"xx.mp3");
+	  str2[0]=(((track)/10)%10)+48;
+	  str2[1]=((track)%10)+48;
 
-    str3=find_file(str2,str);
-    if (!str3) { // try in the same dir
-      strcpy(str,neocd_dir);
-      str3=find_file(str2,str);
-    }
+	  str3=find_file(str2,str);
+	  if (!str3) { // try in the same dir
+	      strcpy(str,neocd_dir);
+	      str3=find_file(str2,str);
+	  }
+      }
   } else if (!strchr(str3,SLASH[0])) // no path in track
     strcpy(str,neocd_dir);
   else
@@ -151,7 +152,7 @@ static int cdda_play(int track,int loop)
     }
     if (cdrom) {
       print_debug("starting direct cdda play track %d\n",track);
-      SDL_CDPlayTracks(cdrom,track,0,1,0);
+      SDL_CDPlayTracks(cdrom,track-1,0,1,0);
       if (loop)
 	cdda.loop = -1;
       else
@@ -192,6 +193,9 @@ static void	cdda_pause(void)
   if (cdda.playing)
     cdda.playing = CDDA_PAUSE;
   if (cdrom)
+      // Notice : pause and resume are totally unreliable with sdl !
+      // All this should be replace by something to access the data on the
+      // tracks directly, but I am not sure it exists a cross platform solution
     SDL_CDPause(cdrom);
 }
 

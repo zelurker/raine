@@ -195,13 +195,7 @@ void spr_conv(UINT8 *src, UINT8 *dst, int len, unsigned char *usage_ptr)
 
 static int load_type;
 
-enum{
-  ZIP_TYPE = 0,
-  IPL_TYPE,
-  ISO_TYPE,
-  CUE_TYPE,
-  P7Z_TYPE,
-};
+int get_cd_load_type() { return load_type; }
 
 int nb_tracks;
 static int alloc_tracks;
