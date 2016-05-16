@@ -557,11 +557,12 @@ shader_end:
 		}
 		glValidateProgram(pass[n].glprogram);
 		glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
-		if (!tmp) {
-		    glGetProgramiv(pass[n].glprogram, GL_INFO_LOG_LENGTH, &tmp);
-		    GLchar *buf = malloc(tmp);
-		    glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
-		    printf("Errors validating shader program %d: %s\n", n,buf);
+		if (tmp && tmp > 1) {
+		    // nvidia drivers <= 355 returned a 1 byte buffer here !
+		    GLchar *buf = calloc(tmp, 1);
+		    GLsizei len;
+		    glGetProgramInfoLog(pass[n].glprogram, tmp, &len, buf);
+		    printf("Errors validating shader program %d: (len %d max %d) %s\n", n,len,tmp,buf);
 		    free(buf);
 		    break;
 		}
