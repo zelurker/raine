@@ -377,86 +377,45 @@ static struct ROM_INFO koshien_roms[] =
 };
 */
 
-static struct INPUT_INFO input_ssi[] =
+static struct INPUT_INFO input_f2b1[] =
 {
-   INP0( COIN1, 0x03210E, 0x04 ),
-   INP0( COIN2, 0x03210E, 0x08 ),
-   INP0( TILT, 0x03210E, 0x01 ),
-   INP0( SERVICE, 0x03210E, 0x02 ),
+   INP0( COIN1, 0xe, 0x04 ),
+   INP0( COIN2, 0xe, 0x08 ),
+   INP0( TILT, 0xe, 0x01 ),
+   INP0( SERVICE, 0xe, 0x02 ),
 
-   INP0( P1_START, 0x032104, 0x80 ),
-   INP0( P1_UP, 0x032104, 0x01 ),
-   INP0( P1_DOWN, 0x032104, 0x02 ),
-   INP0( P1_LEFT, 0x032104, 0x04 ),
-   INP0( P1_RIGHT, 0x032104, 0x08 ),
-   INP0( P1_B1, 0x032104, 0x10 ),
-   INP0( P1_B2, 0x032104, 0x20 ),
+   INP0( P1_START, 0x4, 0x80 ),
+   INP0( P1_UP, 0x4, 0x01 ),
+   INP0( P1_DOWN, 0x4, 0x02 ),
+   INP0( P1_LEFT, 0x4, 0x04 ),
+   INP0( P1_RIGHT, 0x4, 0x08 ),
+   INP0( P1_B1, 0x4, 0x10 ),
 
-   INP0( P2_START, 0x032106, 0x80 ),
-   INP0( P2_UP, 0x032106, 0x01 ),
-   INP0( P2_DOWN, 0x032106, 0x02 ),
-   INP0( P2_LEFT, 0x032106, 0x04 ),
-   INP0( P2_RIGHT, 0x032106, 0x08 ),
-   INP0( P2_B1, 0x032106, 0x10 ),
-   INP0( P2_B2, 0x032106, 0x20 ),
+   INP0( P2_START, 0x6, 0x80 ),
+   INP0( P2_UP, 0x6, 0x01 ),
+   INP0( P2_DOWN, 0x6, 0x02 ),
+   INP0( P2_LEFT, 0x6, 0x04 ),
+   INP0( P2_RIGHT, 0x6, 0x08 ),
+   INP0( P2_B1, 0x6, 0x10 ),
 
    END_INPUT
+};
+
+static struct INPUT_INFO input_f2b2[] =
+{
+    INCL_INP( f2b1 ),
+    INP0( P1_B2, 0x4, 0x20 ),
+    INP0( P2_B2, 0x6, 0x20 ),
+    END_INPUT
 };
 
 // 3 buttons
-static struct INPUT_INFO input_solfigtr[] =
+static struct INPUT_INFO input_f2b3[] =
 {
-   INP0( COIN1, 0x02E20E, 0x04 ),
-   INP0( COIN2, 0x02E20E, 0x08 ),
-   INP0( TILT, 0x02E20E, 0x01 ),
-   INP0( SERVICE, 0x02E20E, 0x02 ),
+   INCL_INP( f2b2 ),
 
-   INP0( P1_START, 0x02E204, 0x80 ),
-   INP0( P1_UP, 0x02E204, 0x01 ),
-   INP0( P1_DOWN, 0x02E204, 0x02 ),
-   INP0( P1_LEFT, 0x02E204, 0x04 ),
-   INP0( P1_RIGHT, 0x02E204, 0x08 ),
-   INP0( P1_B1, 0x02E204, 0x10 ),
-   INP0( P1_B2, 0x02E204, 0x20 ),
-   INP0( P1_B3, 0x02E204, 0x40 ),
-
-   INP0( P2_START, 0x02E206, 0x80 ),
-   INP0( P2_UP, 0x02E206, 0x01 ),
-   INP0( P2_DOWN, 0x02E206, 0x02 ),
-   INP0( P2_LEFT, 0x02E206, 0x04 ),
-   INP0( P2_RIGHT, 0x02E206, 0x08 ),
-   INP0( P2_B1, 0x02E206, 0x10 ),
-   INP0( P2_B2, 0x02E206, 0x20 ),
-   INP0( P2_B3, 0x02E206, 0x40 ),
-
-   END_INPUT
-};
-
-// finalb inputs can't have the address of thunder fox, it would be a waste of ram !
-static struct INPUT_INFO input_finalb[] =
-{
-   INP0( COIN1, 0x03C00E, 0x04 ),
-   INP0( COIN2, 0x03C00E, 0x08 ),
-   INP0( TILT, 0x03C00E, 0x01 ),
-   INP0( SERVICE, 0x03C00E, 0x02 ),
-
-   INP0( P1_START, 0x03C004, 0x80 ),
-   INP0( P1_UP, 0x03C004, 0x01 ),
-   INP0( P1_DOWN, 0x03C004, 0x02 ),
-   INP0( P1_LEFT, 0x03C004, 0x04 ),
-   INP0( P1_RIGHT, 0x03C004, 0x08 ),
-   INP0( P1_B1, 0x03C004, 0x10 ),
-   INP0( P1_B2, 0x03C004, 0x20 ),
-   INP0( P1_B3, 0x03C004, 0x40 ),
-
-   INP0( P2_START, 0x03C006, 0x80 ),
-   INP0( P2_UP, 0x03C006, 0x01 ),
-   INP0( P2_DOWN, 0x03C006, 0x02 ),
-   INP0( P2_LEFT, 0x03C006, 0x04 ),
-   INP0( P2_RIGHT, 0x03C006, 0x08 ),
-   INP0( P2_B1, 0x03C006, 0x10 ),
-   INP0( P2_B2, 0x03C006, 0x20 ),
-   INP0( P2_B3, 0x03C006, 0x40 ),
+   INP0( P1_B3, 0x4, 0x40 ),
+   INP0( P2_B3, 0x6, 0x40 ),
 
    END_INPUT
 };
@@ -545,27 +504,6 @@ static struct INPUT_INFO input_mjnquest[] =
    END_INPUT
 };
 
-// And finally cameltry : pad control
-static struct INPUT_INFO input_cameltry[] =
-{
-   INP0( TILT, 0x03800E, 0x01 ),
-   INP0( SERVICE, 0x03800E, 0x02 ),
-   INP0( COIN1, 0x03800E, 0x04 ),
-   INP0( COIN2, 0x03800E, 0x08 ),
-
-   INP0( P1_START, 0x038004, 0x80 ),
-   INP1( P1_LEFT, 0x038020, 0xFF ),
-   INP1( P1_RIGHT, 0x038021, 0xFF ),
-   INP0( P1_B1, 0x038004, 0x10 ),
-
-   INP0( P2_START, 0x038006, 0x80 ),
-   INP1( P2_LEFT, 0x038030, 0xFF ),
-   INP1( P2_RIGHT, 0x038031, 0xFF ),
-   INP0( P2_B1, 0x038006, 0x10 ),
-
-   END_INPUT
-};
-
 #define TAITO_COINAGE_WORLD_8 \
   { MSG_COIN1, 0x30, 4 },\
   { MSG_4COIN_1PLAY, 0x00, 0x00 },\
@@ -632,8 +570,8 @@ static struct DSW_DATA dsw_data_camel_try_1[] =
 
 static struct DSW_INFO dsw_cameltry[] =
 {
-   { 0x038000, 0xFF, dsw_data_camel_try_0 },
-   { 0x038002, 0xFF, dsw_data_camel_try_1 },
+   { 0x00, 0xFF, dsw_data_camel_try_0 },
+   { 0x02, 0xFF, dsw_data_camel_try_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -667,8 +605,8 @@ static struct DSW_DATA dsw_data_final_blow_1[] =
 
 static struct DSW_INFO dsw_finalb[] =
 {
-   { 0x3c000, 0xFF, dsw_data_final_blow_0 },
-   { 0x3c002, 0xFF, dsw_data_final_blow_1 },
+   { 0x0, 0xFF, dsw_data_final_blow_0 },
+   { 0x2, 0xFF, dsw_data_final_blow_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -708,8 +646,8 @@ static struct DSW_DATA dsw_data_dondokod_1[] =
 
 static struct DSW_INFO dsw_dondokdj[] =
 {
-   { 0x032100, 0xFF, dsw_data_dondokod_0 },
-   { 0x032102, 0xFF, dsw_data_dondokod_1 },
+   { 0x00, 0xFF, dsw_data_dondokod_0 },
+   { 0x02, 0xFF, dsw_data_dondokod_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -742,8 +680,8 @@ static struct DSW_DATA dsw_data_gunfront_1[] =
 
 static struct DSW_INFO dsw_gunfront[] =
 {
-  { 0x32100, 0xff, dsw_data_dondokod_0 },
-  { 0x32102, 0xff, dsw_data_gunfront_1 },
+  { 0x0, 0xff, dsw_data_dondokod_0 },
+  { 0x2, 0xff, dsw_data_gunfront_1 },
   { 0, 0, NULL }
 };
 
@@ -791,8 +729,8 @@ static struct DSW_DATA dsw_data_mega_blast_1[] =
 
 static struct DSW_INFO dsw_megab[] =
 {
-   { 0x03C000, 0xFF, dsw_data_megab_0 },
-   { 0x03C002, 0xFF, dsw_data_mega_blast_1 },
+   { 0x00, 0xFF, dsw_data_megab_0 },
+   { 0x02, 0xFF, dsw_data_mega_blast_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -820,8 +758,8 @@ static struct DSW_DATA dsw_data_liquidk_1[] =
 
 static struct DSW_INFO dsw_liquidk[] =
 {
-   { 0x032100, 0xFF, dsw_data_megab_0 },
-   { 0x032102, 0xFF, dsw_data_liquidk_1 },
+   { 0x00, 0xFF, dsw_data_megab_0 },
+   { 0x02, 0xFF, dsw_data_liquidk_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -849,8 +787,8 @@ static struct DSW_DATA dsw_data_ssi_1[] =
 
 static struct DSW_INFO dsw_ssi[] =
 {
-  { 0x032100, 0xfe, dsw_data_megab_0 },
-  { 0x032102, 0xff, dsw_data_ssi_1 },
+  { 0x00, 0xfe, dsw_data_megab_0 },
+  { 0x02, 0xff, dsw_data_ssi_1 },
   { 0, 0, NULL }
 };
 
@@ -889,8 +827,8 @@ static struct DSW_DATA dsw_data_drift_out_1[] =
 
 static struct DSW_INFO dsw_driftout[] =
 {
-   { 0x032100, 0xFF, dsw_data_drift_out_0 },
-   { 0x032102, 0xFF, dsw_data_drift_out_1 },
+   { 0x00, 0xFF, dsw_data_drift_out_0 },
+   { 0x02, 0xFF, dsw_data_drift_out_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -939,8 +877,8 @@ static struct DSW_DATA dsw_data_thunder_fox_1[] =
 
 static struct DSW_INFO dsw_thundfox[] =
 {
-   { 0x02e200, 0xFF, dsw_data_thunder_fox_0 },
-   { 0x02e202, 0xFF, dsw_data_thunder_fox_1 },
+   { 0x00, 0xFF, dsw_data_thunder_fox_0 },
+   { 0x02, 0xFF, dsw_data_thunder_fox_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -998,8 +936,8 @@ static struct DSW_DATA dsw_data_dino_rex_1[] =
 
 static struct DSW_INFO dsw_dinorex[] =
 {
-   { 0x032100, 0xFF, dsw_data_thunder_fox_0 },
-   { 0x032102, 0xFF, dsw_data_dino_rex_1 },
+   { 0x0, 0xFF, dsw_data_thunder_fox_0 },
+   { 0x2, 0xFF, dsw_data_dino_rex_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -1026,8 +964,8 @@ static struct DSW_DATA dsw_data_solfigtr_1[] =
 
 static struct DSW_INFO dsw_solfigtr[] =
 {
-  { 0x32100, 0xff, dsw_data_dondokod_0 },
-  { 0x32102, 0xff, dsw_data_solfigtr_1 },
+  { 0x0, 0xff, dsw_data_dondokod_0 },
+  { 0x2, 0xff, dsw_data_solfigtr_1 },
   { 0, 0, NULL }
 };
 
@@ -1377,7 +1315,6 @@ static void load_common_cameltry() {
    RAM_ROTATE     = RAM+0x34000;
    RAM_COLOUR     = RAM+0x36000;
    RAM_VIDEO      = RAM+0x20000;
-   RAM_INPUT      = RAM+0x38000;
    RAM_SCROLL     = RAM+0x38200;
    TC0360PRI_regs = RAM+0x38300;
    GFX_FG0        = RAM+0x40000;
@@ -1389,7 +1326,7 @@ static void load_common_cameltry() {
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -1414,7 +1351,7 @@ static void load_common_cameltry() {
    AddWriteWord(0xA00000, 0xA01FFF, tc0005rot_bg0_ww, NULL);		// SCREEN RAM (ROTATE)
    AddRWBW(0xA00000, 0xA01FFF, NULL, RAM_ROTATE);			// SCREEN RAM (ROTATION)
    AddReadByte(0x320000, 0x320003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-   AddReadBW(0x300000, 0x30001F, NULL, RAM_INPUT);			// INPUT RAM
+   AddReadBW(0x300000, 0x30001F, NULL, input_buffer);			// INPUT RAM
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
    AddReadByte(-1, -1, NULL, NULL);
 
@@ -1541,7 +1478,6 @@ static void load_gunfront() {
    RAM_VIDEO      = RAM+0x10000;
    RAM_SCROLL     = RAM+0x32000;
    RAM_OBJECT     = RAM+0x20000;
-   RAM_INPUT      = RAM+0x32100;
    TC0360PRI_regs = RAM+0x32200;
    GFX_FG0        = RAM+0x35000;
    RAMSize = 0x33000;
@@ -1554,7 +1490,7 @@ static void load_gunfront() {
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = 0;	//TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -1574,28 +1510,20 @@ static void load_gunfront() {
    AddRWBW(0x900000, 0x90FFFF, NULL, RAM_OBJECT);			// OBJECT RAM
    AddReadByte(0x300000, 0x30000F, tc0220ioc_rb_bswap, NULL);		// INPUT
    AddReadByte(0x320000, 0x320003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
    AddReadWord(0x200000, 0x201FFF, NULL, RAM+0x030000);			// COLOR RAM
    AddReadWord(0x300000, 0x30000F, tc0220ioc_rw_bswap, NULL);		// INPUT
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1, NULL, NULL);
 
    AddWriteByte(0x320000, 0x320003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0x300000, 0x30000F, tc0220ioc_wb_bswap, NULL);		// INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
    AddWriteWord(0x200000, 0x201FFF, NULL, RAM+0x030000);		// COLOR RAM
    AddWriteWord(0x820000, 0x82000F, NULL, RAM_SCROLL);			// SCROLL RAM
    AddWriteWord(0xB00000, 0xB0001F, NULL, TC0360PRI_regs);		// ??? RAM
    AddWriteWord(0x300000, 0x30000F, tc0220ioc_ww_bswap, NULL);		// INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
+   finish_conf_68000(0);
 
-   AddInitMemory();	// Set Starscream mem pointers...
 }
 
 static void load_growl() {
@@ -1734,7 +1662,6 @@ static void load_dondokdj(void)
    RAM_SCROLL = RAM+0x32000;
    RAM_ROTATE = RAM+0x34000;
    RAM_OBJECT = RAM+0x20000;
-   RAM_INPUT  = RAM+0x32100;
    GFX_FG0    = RAM+0x3C000;
 
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
@@ -1743,7 +1670,7 @@ static void load_dondokdj(void)
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -1768,7 +1695,7 @@ static void load_dondokdj(void)
    AddWriteWord(0x806000, 0x806FFF, tc0100scn_0_gfx_fg0_ww, NULL);	// FG0 GFX RAM
    AddRWBW(0x800000, 0x80FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddRWBW(0x900000, 0x90FFFF, NULL, RAM_OBJECT);			// OBJECT RAM
-   AddReadBW(0x300000, 0x30001F, NULL, RAM_INPUT);			// INPUT
+   AddReadBW(0x300000, 0x30001F, NULL, input_buffer);			// INPUT
    AddReadByte(0x320000, 0x320003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
    AddReadByte(-1, -1, NULL, NULL);
@@ -2037,7 +1964,6 @@ static void load_dinorex() {
    RAM_OBJECT = RAM+0x10000;
    f2_sprite_extension = (UINT16*)(RAM+0x20000);
    RAM_SCROLL = RAM+0x33100;
-   RAM_INPUT  = RAM+0x32100;
    TC0360PRI_regs = RAM+0x34000;
    RAM_VIDEO  = RAM+0x40000;
    GFX_FG0    = RAM+0x50000;
@@ -2053,7 +1979,7 @@ static void load_dinorex() {
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -2076,7 +2002,7 @@ static void load_dinorex() {
    AddWriteWord(0x906000, 0x906FFF, tc0100scn_0_gfx_fg0_ww, NULL);	// FG0 GFX RAM
    AddRWBW(0x900000, 0x90fFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddRWBW(0x500000, 0x501FFF, NULL, RAM+0x030000);			// COLOR RAM
-   AddReadBW(0x300000, 0x30001F, NULL, RAM_INPUT);			// INPUT
+   AddReadBW(0x300000, 0x30001F, NULL, input_buffer);			// INPUT
    AddReadByte(0xA00000, 0xA00003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
    AddRWBW(0x700000, 0x7000FF, NULL, TC0360PRI_regs);
 
@@ -2217,7 +2143,6 @@ static void load_solfigtr() {
    RAM_SCROLL = RAM+0x22000;
    GFX_BANK   = RAM+0x22200;
    GFX_FG0    = RAM+0x23000;
-   RAM_INPUT  = RAM+0x2e200;
    RAM_VIDEO  = RAM+0x30000;
 
    setup_gfx();
@@ -2227,7 +2152,7 @@ static void load_solfigtr() {
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
    InitPaletteMap(RAM_COLOUR, 0x100, 0x10, 0x1000);
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -2288,8 +2213,6 @@ static void load_thundfox(void)
    /*-----[Sound Setup]-----*/
    AddTaitoYM2610(0x023A, 0x01BA, 0x10000);
 
-   RAM_INPUT  = RAM+0x2e200;
-
    RAM_VIDEO  = RAM+0x04000;
    RAM_SCROLL = RAM+0x2E000;
 
@@ -2311,7 +2234,7 @@ static void load_thundfox(void)
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -2350,30 +2273,22 @@ static void load_thundfox(void)
    AddWriteWord(0x506000, 0x506FFF, tc0100scn_1_gfx_fg0_ww, NULL);	// FG1 GFX RAM
    AddRWBW(0x500000, 0x50FFFF, NULL, RAM_VIDEO2);			// SCREEN1 RAM
    AddRWBW(0x600000, 0x607FFF, NULL, RAM_OBJECT);			// OBJECT RAM
-   AddReadBW(0x200000, 0x20000F, NULL, RAM_INPUT);			// INPUT
+   AddReadBW(0x200000, 0x20000F, NULL, input_buffer);			// INPUT
    AddReadByte(0x220000, 0x220003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
 
    AddRWBW(0x800000,0x80001f,NULL,TC0360PRI_regs);
 
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
    AddReadWord(0x100000, 0x101FFF, NULL, RAM+0x02C000);			// COLOR RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
    AddWriteByte(0x220000, 0x220003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0x200000, 0x20000F, tc0220ioc_wb, NULL);		// INPUT RAM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(-1, -1, NULL, NULL);
 
    AddWriteWord(0x100000, 0x101FFF, NULL, RAM+0x02C000);		// COLOR RAM
    AddWriteWord(0x420000, 0x42000F, NULL, RAM_SCROLL);			// SCROLL0 RAM
    AddWriteWord(0x520000, 0x52000F, NULL, RAM_SCROLL2);			// SCROLL1 RAM
    AddWriteWord(0x200000, 0x20000F, tc0220ioc_ww, NULL);		// INPUT RAM
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 static struct DSW_DATA dsw_data_pulirula_0[] =
@@ -2404,11 +2319,10 @@ static struct DSW_DATA dsw_data_pulirula_1[] =
    { MSG_EASY,                0x02},
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
-   { _("Magic"),                 0x0C, 0x04 },
+   { _("Magic"),                 0x0C, 0x03 },
    { "3",                     0x0C},
    { "4",                     0x08},
    { "5",                     0x04},
-// { "5",                     0x00},
    { MSG_LIVES,               0x30, 0x04 },
    { "3",                     0x30},
    { "2",                     0x20},
@@ -2425,8 +2339,8 @@ static struct DSW_DATA dsw_data_pulirula_1[] =
 
 static struct DSW_INFO dsw_pulirula[] =
 {
-   { 0x03c000, 0xFF, dsw_data_pulirula_0 },
-   { 0x03c002, 0xFF, dsw_data_pulirula_1 },
+   { 0x0, 0xFF, dsw_data_pulirula_0 },
+   { 0x2, 0xFF, dsw_data_pulirula_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -2470,7 +2384,6 @@ static void load_pulirula(void)
    TC0360PRI_regs = RAM_SCROLL+0x10;
    RAM_ROTATE = RAM+0x34000;
    f2_sprite_extension = (UINT16*)(RAM+0x37000);
-   RAM_INPUT  = RAM+0x3c000;
    GFX_FG0    = RAM+0x40000;
    RAMSize = 0x40000;
 
@@ -2485,7 +2398,7 @@ static void load_pulirula(void)
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -2510,7 +2423,7 @@ static void load_pulirula(void)
    AddWriteWord(0x600000, 0x603FFF, NULL, (UINT8*)f2_sprite_extension);		// OBJECT EXTRA RAM
    AddWriteWord(0x400000, 0x401fff, tc0005rot_bg0_ww, NULL);		// SCREEN RAM (ROTATE)
    AddRWBW(0x400000, 0x40200F, NULL, RAM_ROTATE);			// SCREEN RAM (ROTATION) + scroll registers
-   AddReadBW(0xB00000, 0xB0000F, NULL, RAM_INPUT);			// INPUT
+   AddReadBW(0xB00000, 0xB0000F, NULL, input_buffer);			// INPUT
    AddRWBW(0x700000, 0x701FFF, NULL, RAM_COLOUR);
    AddReadByte(0x200000, 0x200003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
 
@@ -2519,22 +2432,13 @@ static void load_pulirula(void)
    AddWriteWord(0xa00000,0xa0001f,pri_swap_word, NULL);
    // AddWriteWord(0xa00000,0xa0001f,NULL, TC0360PRI_regs);
 
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
-
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
-
    AddWriteByte(0x200000, 0x200003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0xB00000, 0xB0000F, tc0220ioc_wb, NULL);		// INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(-1, -1, NULL, NULL);
 
    AddWriteWord(0x820000, 0x82000F, NULL, RAM_SCROLL);			// SCROLL0 RAM
    AddWriteWord(0xB00000, 0xB0000F, tc0220ioc_ww, NULL);		// INPUT
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 /* specific sound roms for driveout... */
@@ -2612,7 +2516,7 @@ static void load_common_driftout() {
   RAM_ROTATE = RAM+0x10000;
   GFX_FG0    = RAM+0x21000;
 
-  RAM_INPUT  = RAM+0x32100;
+  RAM_INPUT  = input_buffer;
 
   set_colour_mapper(&col_map_xrrr_rrgg_gggb_bbbb);
   InitPaletteMap(RAM+0x14000, 0x100, 0x10, 0x8000);
@@ -2625,7 +2529,7 @@ static void load_common_driftout() {
 
   // tc0200obj.ofs_x	= 8;
 
-  tc0220ioc.RAM  = RAM_INPUT;
+  tc0220ioc.RAM  = input_buffer;
   tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
   reset_tc0220ioc();
 
@@ -2641,7 +2545,7 @@ static void load_common_driftout() {
    */
 
   AddRWBW(0x300000, 0x30FFFF, NULL, RAM+0x000000);			// 68000 RAM
-  AddReadByte(0xB00000, 0xB0001F, NULL, RAM_INPUT);			// INPUT RAM
+  AddReadByte(0xB00000, 0xB0001F, NULL, input_buffer);			// INPUT RAM
   AddRWBW(0x900000, 0x90fFFF, NULL, RAM_OBJECT);			// OBJECT RAM
   AddRWBW(0x700000, 0x701FFF, NULL, RAM+0x014000);		// COLOR RAM
 
@@ -2786,14 +2690,13 @@ static void load_ssi() {
   AddTaitoYM2610(0x0217, 0x018F, 0x10000);
 
   RAM_OBJECT = RAM+0x10000;
-  RAM_INPUT  = RAM+0x32100;
   GFX_FG0    = RAM+0x3C000;
 
   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
   InitPaletteMap(RAM+0x20000, 0x100, 0x10, 0x1000);
 
   setup_gfx();
-  tc0220ioc.RAM  = RAM_INPUT;
+  tc0220ioc.RAM  = input_buffer;
   tc0220ioc.ctrl = 0;		//TC0220_STOPCPU;
   reset_tc0220ioc();
 
@@ -2803,38 +2706,22 @@ static void load_ssi() {
    *  StarScream Stuff follows
    */
 
-  AddReadByte(0x200000, 0x20FFFF, NULL, RAM+0x000000);			// 68000 RAM
-  AddReadByte(0x100000, 0x10000F, NULL, RAM_INPUT);			// INPUT
+  AddRWBW  (0x200000, 0x20FFFF, NULL, RAM+0x000000);			// 68000 RAM
+  AddReadBW(0x100000, 0x10000F, NULL, input_buffer);			// INPUT
   AddReadByte(0x400000, 0x400003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-  AddReadByte(0x800000, 0x80FFFF, NULL, RAM_OBJECT);			// SPRITE
-  AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-  AddReadByte(-1, -1, NULL, NULL);
+  AddRWBW  (0x800000, 0x80FFFF, NULL, RAM_OBJECT);			// SPRITE
 
-  AddReadWord(0x200000, 0x20FFFF, NULL, RAM+0x000000);			// 68000 RAM
-  AddReadWord(0x800000, 0x80FFFF, NULL, RAM_OBJECT);			// SPRITE
   AddReadWord(0x300000, 0x301FFF, NULL, RAM+0x020000);			// COLOR RAM
-  AddReadWord(0x100000, 0x10000F, NULL, RAM_INPUT);			// INPUT
-  AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-  AddReadWord(-1, -1,NULL, NULL);
 
-  AddWriteByte(0x200000, 0x20FFFF, NULL, RAM+0x000000);		// 68000 RAM
-  AddWriteByte(0x800000, 0x80FFFF, NULL, RAM_OBJECT);			// SPRITE
   AddWriteByte(0x400000, 0x400003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
   AddWriteByte(0x500000, 0x5000FF, NULL, RAM+0x022200);		// ???
   AddWriteByte(0x100000, 0x10000F, tc0220ioc_wb, NULL);		// INPUT
   AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-  AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-  AddWriteByte(-1, -1, NULL, NULL);
 
-  AddWriteWord(0x200000, 0x20FFFF, NULL, RAM+0x000000);		// 68000 RAM
-  AddWriteWord(0x800000, 0x80FFFF, NULL, RAM_OBJECT);			// SPRITE
   AddWriteWord(0x300000, 0x301FFF, NULL, RAM+0x020000);		// COLOR RAM
   AddWriteWord(0x500000, 0x5000FF, NULL, RAM+0x022200);		// ???
   AddWriteWord(0x100000, 0x10000F, tc0220ioc_ww, NULL);		// INPUT
-  AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
-  AddWriteWord(-1, -1, NULL, NULL);
-
-  AddInitMemory();	// Set Starscream mem pointers...
+  finish_conf_68000(0);
 }
 
 static void load_megab(void)
@@ -2865,7 +2752,6 @@ static void load_megab(void)
   RAM_VIDEO  = RAM+0x18000;
   RAM_SCROLL = RAM+0x3C100;
   RAM_OBJECT = RAM+0x10000;
-  RAM_INPUT  = RAM+0x3C000;
   GFX_FG0    = RAM+0x3c200;
 
   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
@@ -2960,7 +2846,6 @@ static void load_liquidk(void)
    RAM_VIDEO  = RAM+0x10000;
    RAM_SCROLL = RAM+0x32000;
    RAM_OBJECT = RAM+0x20000;
-   RAM_INPUT  = RAM+0x32100;
    GFX_FG0    = RAM+0x34000;
 
    setup_gfx();
@@ -2970,7 +2855,7 @@ static void load_liquidk(void)
    // Init tc0220ioc emulation
    // ------------------------
 
-   tc0220ioc.RAM  = RAM_INPUT;
+   tc0220ioc.RAM  = input_buffer;
    tc0220ioc.ctrl = TC0220_STOPCPU;
    reset_tc0220ioc();
 
@@ -2995,24 +2880,17 @@ static void load_liquidk(void)
  *  StarScream Stuff follows
  */
 
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);			// 68000 RAM
+   AddRWBW(0x100000, 0x10FFFF, NULL, RAM+0x000000);			// 68000 RAM
    AddReadByte(0x800000, 0x80FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddReadByte(0x900000, 0x90FFFF, NULL, RAM_OBJECT);			// OBJECT RAM
-   AddReadByte(0x300000, 0x30001F, NULL, RAM_INPUT);			// INPUT
+   AddReadBW(0x300000, 0x30001F, NULL, input_buffer);			// INPUT
    AddReadByte(0x320000, 0x320003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
    AddReadByte(0x400000, 0x40000F, NULL, RAM+0x032200);			// ???
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);			// 68000 RAM
    AddReadWord(0x800000, 0x80FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddReadWord(0x900000, 0x90FFFF, NULL, RAM_OBJECT);			// OBJECT RAM
    AddReadWord(0x200000, 0x201FFF, NULL, RAM+0x030000);			// COLOR RAM
-   AddReadWord(0x300000, 0x30001F, NULL, RAM_INPUT);			// INPUT
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);		// 68000 RAM
    AddWriteByte(0x806000, 0x806FFF, tc0100scn_0_gfx_fg0_wb, NULL);	// FG0 GFX RAM
    AddWriteByte(0x800000, 0x80FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteByte(0x900000, 0x90FFFF, NULL, RAM_OBJECT);			// OBJECT RAM
@@ -3021,10 +2899,7 @@ static void load_liquidk(void)
    AddWriteByte(0x320000, 0x320003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
    AddWriteBW(0xB00000, 0xB000FF, NULL, RAM+0x032300);		// ???
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);		// 68000 RAM
    AddWriteWord(0x806000, 0x806FFF, tc0100scn_0_gfx_fg0_ww, NULL);	// FG0 GFX RAM
    AddWriteWord(0x800000, 0x80FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteWord(0x900000, 0x90FFFF, NULL, RAM_OBJECT);			// OBJECT RAM
@@ -3033,10 +2908,8 @@ static void load_liquidk(void)
    AddWriteWord(0x820000, 0x82000F, NULL, RAM_SCROLL);			// SCROLL RAM
    AddWriteWord(0x380000, 0x38000F, NULL, RAM+0x032180);		// ???
    AddWriteWord(0x600000, 0x60000F, NULL, RAM+0x032280);		// ???
-   // AddWriteWord(0x000000, 0xFFFFFF, BadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
    TC0360PRI_regs = RAM+0x032300;
 }
 
@@ -3207,16 +3080,16 @@ static void execute_cameltry(void)
    p1_paddle_x+=px/4;
    p1_paddle_y+=py/4;
 
-   if(*MouseB&1){RAM_INPUT[0x04]&=0x10^255;}
+   if(*MouseB&1){input_buffer[0x04]&=0x10^255;}
 
-   if((RAM_INPUT[0x20]!=0)&&(p1_paddle_x> -0x40)) p1_paddle_x-=0x08;
-   if((RAM_INPUT[0x21]!=0)&&(p1_paddle_x<  0x3F)) p1_paddle_x+=0x08;
+   if((!(input_buffer[0x4]&4))&&(p1_paddle_x> -0x40)) p1_paddle_x-=0x08;
+   if((!(input_buffer[0x4]&8))&&(p1_paddle_x<  0x3F)) p1_paddle_x+=0x08;
 
-   if((RAM_INPUT[0x30]!=0)&&(p2x> -0x40)) p2x-=0x08;
-   if((RAM_INPUT[0x31]!=0)&&(p2x<  0x3F)) p2x+=0x08;
+   if((!(input_buffer[0x6]&4))&&(p2x> -0x40)) p2x-=0x08;
+   if((!(input_buffer[0x6]&8))&&(p2x<  0x3F)) p2x+=0x08;
 
-   WriteWord(&RAM_INPUT[0x18],p1_paddle_x);
-   WriteWord(&RAM_INPUT[0x1C],p2x);
+   WriteWord(&input_buffer[0x18],p1_paddle_x);
+   WriteWord(&input_buffer[0x1C],p2x);
 
    tc0005rot_set_bitmap();
 
@@ -3866,6 +3739,7 @@ static struct VIDEO_INFO video_thundfox =
    VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
    thundfox_decodeinfo
 };
+#define input_cameltry input_f2b1
 GMEI( cameltry, "Camel Try", TAITO, 1989, GAME_PUZZLE,
 	.romsw = romsw_cameltry,
 	.long_name_jpn = "キャメルトライ",
@@ -3884,7 +3758,7 @@ static struct DIR_INFO dir_dinorex[] =
    { NULL, },
 };
 GAME( dinorex, "Dino Rex", TAITO, 1992, GAME_BEAT,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.dsw = dsw_dinorex,
 	.romsw = romsw_dondokdj,
 	.video = &video_solfigtr,
@@ -3900,7 +3774,7 @@ static struct DIR_INFO dir_dondokdj[] =
    { NULL, },
 };
 GAME( dondokdj, "Don Doko Don", TAITO, 1989, GAME_PLATFORM,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.dsw = dsw_dondokdj,
 	.romsw = romsw_dondokdj,
 	.video = &video_dondokdj,
@@ -3915,7 +3789,7 @@ static struct DIR_INFO dir_driftout[] =
    { NULL, },
 };
 GAME( driftout, "Drift Out", VISCO, 1991, GAME_RACE,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.dsw = dsw_driftout,
 	.video = &video_driftout,
 	.exec = execute_driftout,
@@ -3930,7 +3804,7 @@ static struct DIR_INFO dir_driveout[] =
    { NULL, },
 };
 GAME(driveout, "Drive Out", BOOTLEG, 1991, GAME_RACE,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.dsw = dsw_driftout,
 	.video = &video_driftout,
 	.exec = execute_driveout,
@@ -3941,9 +3815,9 @@ static struct DIR_INFO dir_f2demo[] =
    { "f2demo", },
    { NULL, },
 };
-#define input_liquidk input_ssi
+#define input_liquidk input_f2b2
 CLNE( f2demo, liquidk, "Demo Taito F2", BOOTLEG, 2000, GAME_MISC,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.romsw = romsw_f2demo,
 	.exec = execute_f2demo,
 	.board = "C49",
@@ -3955,8 +3829,8 @@ static struct DIR_INFO dir_finalb[] =
    { "finalbl", },
    { NULL, },
 };
+#define input_finalb input_f2b3
 GAME( finalb, "Final Blow", TAITO, 1988, GAME_BEAT,
-	.input = input_finalb,
 	.dsw = dsw_finalb,
 	.romsw = romsw_thundfox,
 	.video = &video_finalb,
@@ -3985,7 +3859,7 @@ static struct DIR_INFO dir_gunfront[] =
    { NULL, },
 };
 GAME( gunfront, "Gun Frontier", TAITO, 1990, GAME_SHOOT,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.dsw = dsw_gunfront,
 	.romsw = romsw_liquidk,
 	.video = &video_gunfront,
@@ -4000,7 +3874,7 @@ static struct DIR_INFO dir_liquidk[] =
    { NULL, },
 };
 GAME( liquidk, "Liquid Kids", TAITO, 1990, GAME_PLATFORM,
-	.input = input_ssi,
+	.input = input_f2b2,
 	.dsw = dsw_liquidk,
 	.romsw = romsw_liquidk,
 	.video = &video_liquidk,
@@ -4030,6 +3904,7 @@ static struct DIR_INFO dir_majest12[] =
    { CLONEOF("ssi"), },
    { NULL, },
 };
+#define input_ssi input_f2b2
 CLNE(majest12, ssi, "Majestic Twelve", TAITO, 1990, GAME_SHOOT,
 	.long_name_jpn = "マジェスティックトウェルブ",
 	.board = "C64",
@@ -4056,7 +3931,7 @@ static struct DIR_INFO dir_pulirula[] =
    { NULL, },
 };
 GAME( pulirula, "Pulirula", TAITO, 1991, GAME_BEAT,
-	.input = input_finalb,
+	.input = input_f2b3,
 	.dsw = dsw_pulirula,
 	.romsw = romsw_liquidk,
 	.video = &video_pulirula,
@@ -4070,6 +3945,7 @@ static struct DIR_INFO dir_solfigtr[] =
    { "solfigtr", },
    { NULL, },
 };
+#define input_solfigtr input_f2b3
 GME( solfigtr, "Solitary Fighter", TAITO, 1990, GAME_BEAT,
 	.romsw = romsw_solfigtr,
 	.long_name_jpn = "ダイノレックス",
@@ -4095,7 +3971,7 @@ static struct DIR_INFO dir_thundfox[] =
    { NULL, },
 };
 GAME( thundfox, "Thunder Fox", TAITO, 1990, GAME_SHOOT,
-	.input = input_solfigtr,
+	.input = input_f2b3,
 	.dsw = dsw_thundfox,
 	.romsw = romsw_thundfox,
 	.video = &video_thundfox,
