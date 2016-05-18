@@ -2077,6 +2077,7 @@ void TMenu::execute() {
     SDL_EnableKeyRepeat(0,0);
     SDL_EnableUNICODE(unicode);
     release_inputs();
+    print_debug("calling ScreenChange on gui_init==0 (gui execute)\n");
     ScreenChange();
     if (!raine_cfg.req_pause_game)
 	sa_unpause_sound();

@@ -464,6 +464,8 @@ void StartGUI(void)
 	   }
        }
 
+       /*
+	* ScreenChange is now called at the end of execute when exiting from the gui
        if(!WantQuit &&
 	       (WantScreen || display_cfg.screen_x != sdl_screen->w ||
 	       display_cfg.screen_y != sdl_screen->h ||
@@ -473,7 +475,7 @@ void StartGUI(void)
 	   WantScreen=0;
 	   print_debug("calling ScreenChange from StartGUI, WantScreen=0\n");
 	   ScreenChange();
-       }
+       }*/
 
        clear_raine_screen();
 
