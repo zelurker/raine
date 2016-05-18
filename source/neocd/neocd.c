@@ -5325,6 +5325,10 @@ void execute_neocd() {
       int rest = current_neo_frame - first_part;
       if (!stopped_68k)
 	  cpu_execute_cycles(CPU_68K_0, first_part);
+      if (stopped_68k && current_game->exec == &loading_progress_function) {
+	  // It means we started loading things, best to exit this frame now !
+	  return;
+      }
       vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
       update_interrupts();
       stopped_68k = 0;
