@@ -370,7 +370,10 @@ static SDL_Surface *new_set_gfx_mode() {
       SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.dbuf );
       SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       // filter out the unused flags
-      videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT);
+      // for double buffer normally it should have no impact but actually it
+      // hides a frame when returning to the gui from the game when using opengl
+      // so it's better to just disable it here
+      videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT|SDL_DOUBLEBUF);
       videoflags |= SDL_OPENGL;
   }
 
@@ -628,6 +631,7 @@ void clear_raine_screen() {
   clear_bitmap(screen);
   // Needed to clear the gui in normal blits
   if (sdl_screen->flags & SDL_DOUBLEBUF) {
+      printf("flip from clear_raine_screen\n");
     SDL_Flip(sdl_screen);
     clear_bitmap(screen);
     SDL_Flip(sdl_screen);
