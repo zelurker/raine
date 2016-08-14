@@ -5347,7 +5347,7 @@ void execute_neocd() {
 		  current_neo_frame = desired_68k_speed;
 	  }
 	  if (!stopped_68k && frame_count++ > 60) {
-	      pc = s68000readPC();
+	      pc = s68000readPC() & 0xffffff;
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
 
 	      if (pc < 0x200000) {
