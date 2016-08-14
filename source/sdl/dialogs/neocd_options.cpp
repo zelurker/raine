@@ -51,16 +51,21 @@ static int choose_bios(int sel) {
     memset(menu,0,size*sizeof(menu_item_t));
     int n;
     size--;
+    int nb_bios = 0;
     for (n=0; n<size; n++) {
 	menu[n].label = neo_names[n];
 	if (check_bios_presence(n)) {
+	    nb_bios++;
 	    menu[n].menu_func = &select_bios;
 	}
     }
-    TMenu *load = new TMenu(_("Neo-Geo bios"),menu);
-    load->set_sel(neogeo_bios);
-    load->execute();
-    delete load;
+    if (nb_bios) {
+	TMenu *load = new TMenu(_("Neo-Geo bios"),menu);
+	load->set_sel(neogeo_bios);
+	load->execute();
+	delete load;
+    } else
+	MessageBox("Error","Can't find any neogeo bios in your roms.\nSetup your rom directories so that neogeo.zip is loadable","OK");
     free(menu);
     return 0;
 }
