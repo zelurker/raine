@@ -80,11 +80,7 @@ class TConsole : public TDialog
     void end_interactive() {
       interactive = NULL;
     }
-    virtual void  execute()
-    {
-      TDialog::execute();
-      visible = 0;
-    }
+    virtual void  execute();
     virtual int run_cmd(char *field);
     void set_visible() { visible = 1; }
 };

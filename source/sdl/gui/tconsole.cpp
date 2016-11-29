@@ -45,7 +45,6 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   TDialog(my_title,NULL)
 {
   int dummy_int;
-  key_console = get_console_key();
   commands = mycmd;
   nb_alloc = maxlines;
   nb_disp_items = 0;
@@ -392,3 +391,9 @@ int TConsole::handler(int cause) {
   return run_cmd(field);
 }
 
+void TConsole::execute()
+{
+    key_console = get_console_key();
+    TDialog::execute();
+    visible = 0;
+}
