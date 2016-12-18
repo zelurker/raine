@@ -17,7 +17,7 @@
 VERSION = "0.64.13"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -865,13 +865,8 @@ CONSOLE = \
 	$(OBJDIR)/sdl/gui/tconsole.o \
 	$(OBJDIR)/sdl/console/exec.o
 
-ifdef DARWIN
-LIBS += /usr/local/lib/libmuparser.a
-LIBS_DEBUG += /usr/local/lib/libmuparser.a
-else
 LIBS += -lmuparser
 LIBS_DEBUG += -lmuparser
-endif
 endif
 
 ifdef SDL
@@ -1072,9 +1067,9 @@ OBJS += $(OBJDIR)/sdl/sasound.o
 ifdef DARWIN
 # Official SDL1.2 frameworks (SDL / image / ttf) in /Library/Frameworks
 CFLAGS += -I/usr/local/include/SDL/ -DDARWIN
-LIBS += -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
+LIBS += -lSDL -lSDL_ttf -lSDL_image -framework Cocoa -framework OpenGL
 # SDL_sound is statically linked from homebrew as gettext, libpng etc.
-LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libintl.a -liconv
+LIBS += -lSDL_sound -lintl -liconv
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
