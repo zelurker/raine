@@ -394,7 +394,11 @@ struct DEF_INPUT_EMU def_input_emu[] =
  { SDLK_F2,      0x00,           _("Save game"),            GameSave},
  { SDLK_F3,      0x00,           _("Switch save slot"),     next_save_slot},
  { SDLK_F4,      0x00,           _("Load game"),            GameLoad},
+#ifdef DARWIN
+ { SDLK_F12,     0x00,           _("Switch fps display"),   switch_fps_mode},
+#else
  { SDLK_F11,     0x00,           _("Switch fps display"),   switch_fps_mode},
+#endif
  { SDLK_F1,      0x00,           _("Reset game"),           cold_boot},
  { SDLK_p,       0x00,           _("Pause game"),           key_pause_game},
  { SDLK_ESCAPE,     0x00,           _("Stop emulation"),    key_stop_emulation_esc},
