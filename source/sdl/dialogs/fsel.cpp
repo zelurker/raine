@@ -112,13 +112,28 @@ static int do_paths(int sel) {
     char buff[2048];
     while (!feof(f)) {
       fgets(buff,2048,f);
-      if (strncmp(buff,"/dev/",5)) // keep only the /dev entries
+      if (strncmp(buff,"/dev/",5) && !pipe_opened) // keep only the /dev entries
 	continue;
       char *s1 = strchr(buff,' ');
       if (!s1) continue;
       char *s2 = strchr(s1+1,' ');
       if (!s2) continue;
       *s2 = 0;
+      if (pipe_opened && strcmp(s1+1,"on")) {
+	  // Super darwin puts spaces everywhere in its mounts making it hard
+	  // to parse, we'll jump directly to "on" then...
+	  // Plus strnstr seems unreliable !
+	  s1 = s2+1;
+	  while (*s1 && (s1[0] != 'o' || s1[1] != 'n'))
+	      s1++;
+	  if (!*s1) {
+	      s1 = s2;
+	  } else {
+	      s1[2] = 0;
+	      s2 = s1+2;
+	      s1--;
+	  }
+      }
       if (!strcmp(s1+1,"on")) {
 	  // darwin speciality, just ignore it
 	  s1 = s2;
@@ -126,7 +141,9 @@ static int do_paths(int sel) {
 	  if (!s2) continue;
 	  s2[-1] = 0;
       }
-      paths->add_item(s1+1);
+      if (strcmp(s1+1,"/dev")) {
+	  paths->add_item(s1+1);
+      }
     }
     if (pipe_opened)
 	pclose(f);
