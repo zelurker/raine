@@ -368,7 +368,7 @@ static SDL_Surface *new_set_gfx_mode() {
 #endif
       SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
       SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.dbuf );
-      SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+      // SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       // filter out the unused flags
       // for double buffer normally it should have no impact but actually it
       // hides a frame when returning to the gui from the game when using opengl
@@ -462,7 +462,8 @@ static SDL_Surface *new_set_gfx_mode() {
 
   if (s->flags & SDL_OPENGL) {
       get_ogl_infos();
-  }
+  } else if (!display_cfg.video_mode) // asked for opengl, didn't get it...
+      display_cfg.video_mode = 2;
 
 /*  if (!color_format)
     color_format = sdl_screen->format; */
