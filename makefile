@@ -17,7 +17,7 @@
 VERSION = "0.64.13"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -295,8 +295,8 @@ ifdef DARWIN
 # using C video core for the moment
 # pb: how to run self modifying code on OSX ?
 # And same problem for the 68020 apparently !
-ASM_VIDEO_CORE =
-C68020 = 1
+# ASM_VIDEO_CORE =
+# C68020 = 1
 DESTDIR = Raine.app
    prefix = $(DESTDIR)/Contents
    bindir = $(prefix)/MacOS
@@ -1073,7 +1073,7 @@ LIBS += -lSDL_sound -lintl -liconv
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
-LFLAGS += -Wl,-no_pie
+LFLAGS += -Wl,-no_pie,-allow_heap_execute
 else  #DARWIN
 CFLAGS += $(shell sdl-config --cflags)
 ifdef RAINE32
