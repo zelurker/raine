@@ -33,7 +33,7 @@ FUNC(draw_string_6x8_32)
 	movl	0xDEADBEEF(%eax),%edi
 blin_00:
 //	movl	32(%esp),%ecx			// cmap
-	movl	$0x00FFFFFF,%ecx		// cmap
+	movl	$0xFFFFFFFF,%ecx		// cmap
 	addl	24(%esp),%edi			// x
 	addl	24(%esp),%edi			// x
 	addl	24(%esp),%edi			// x
