@@ -1073,7 +1073,7 @@ LIBS += -lSDL_sound -lintl -liconv
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
-LFLAGS += -Wl,-no_pie,-allow_heap_execute
+LFLAGS += -Wl,-no_pie,-allow_heap_execute,-no_compact_unwind
 else  #DARWIN
 CFLAGS += $(shell sdl-config --cflags)
 ifdef RAINE32
