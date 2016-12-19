@@ -4,13 +4,39 @@ RAINE
 OS X requirements
 -----------------
 
-In order to run (and compile) Raine on OS X 10.10.x, you need to install mandatory 3rd party libs:
+In order to run (and compile) Raine on OS X >=10.10.x, you need to install mandatory 3rd party libs:
+
+There are now 2 options to build raine in osx : either build all the needed
+libraries yourself (using homebrew seems to be the best option), or use the
+frameworks available from the raine site, which is the fastest and easiest
+option.
+
+In all the cases, start by getting a fresh copy of raine sources :
+git clone https://github.com/zelurker/raine.git
+git is already available in recent osx versions...
+
+Then if you want the frameworks, just download them from the raine site and
+install them in /Libraries/Frameworks by dragging the directories there.
+Then you can just compile raine normally, telling it to use frameworks. For
+this, either edit the makefile to uncomment the line
+# FRAMEWORK = 1
+before typing make
+or do :
+FRAMEWORK=1 make
+if you want a bundle that you can drag elsewhere, do
+make install
+it will create a bundle in the raine directory, use the finder to install
+it elsewhere.
+
+Now the homebrew solution if you want to build all the required libs :
 
 ### install Homebrew
 Open a terminal and enter the command
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 See http://brew.sh/ how to keep it up to date
-This is a package manager for 3rd party libs
+This is a package manager for 3rd party libs. Its advantage : it maintains
+packages in seaparate directories in the /usr/local tree without requiring
+root authorization (just the 1st time to create the tree).
 
 ### install libs
 To install libs, just type "brew install xxxx --universal" in a terminal
@@ -28,3 +54,17 @@ osx, even Sierra, is totally outdated and broken. So use brew install nasm
 too.
 
 That's it ! Raine should now run on your MacOS.
+
+If you want to convert the shared libs you just built to frameworks, use
+the TOOLS/make_framework.pl script like this :
+otool -L raine|grep local
+it will give you a list of the shared libs it uses from /usr/local
+directory, then call the script passing the libraries one by one on the
+command line. It will automatically create frameworks needed by any shared
+lib, for example sdl_sound can use FLAC, ogg and vorbis libs so it will
+create all these frameworks when calling the script for sdl_sound.
+After this you can move the frameworks to the standard
+/Libraries/Frameworks and update your build to use them by calling
+rm raine
+FRAMEWORK=1 make
+
