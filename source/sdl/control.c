@@ -818,11 +818,13 @@ void save_default_keys(char *section)
    for(ta=0;ta<KB_DEF_COUNT;ta++){
       sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
-      raine_set_config_int(section,key_name,def_input[ta].scancode);
-      sprintf(other_name,"%s_joystick",key_name);
-      raine_set_config_int(section,other_name,def_input[ta].joycode);
-      sprintf(other_name,"%s_mouse",key_name);
-      raine_set_config_int(section,other_name,def_input[ta].mousebtn);
+      if (*key_name) {
+	  raine_set_config_int(section,key_name,def_input[ta].scancode);
+	  sprintf(other_name,"%s_joystick",key_name);
+	  raine_set_config_int(section,other_name,def_input[ta].joycode);
+	  sprintf(other_name,"%s_mouse",key_name);
+	  raine_set_config_int(section,other_name,def_input[ta].mousebtn);
+      }
    }
 
    for (ta=0; ta<MAX_LAYER_INFO; ta++) {

@@ -785,7 +785,8 @@ void save_default_keys(char *section)
    for(ta=0;ta<KB_DEF_COUNT;ta++){
       sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
-      raine_set_config_int(section,key_name,def_input[ta].scancode);
+      if (*key_name)
+	  raine_set_config_int(section,key_name,def_input[ta].scancode);
    }
 }
 
@@ -811,7 +812,8 @@ void save_default_joys(char *section)
    for(ta=0;ta<KB_DEF_COUNT;ta++){
       sprintf(joy_name,"%s",def_input[ta].name);
       no_spaces(joy_name);
-      raine_set_config_int(section,joy_name,def_input[ta].joycode);
+      if (*joy_name)
+	  raine_set_config_int(section,joy_name,def_input[ta].joycode);
    }
 }
 
