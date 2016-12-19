@@ -26,7 +26,7 @@ VERSION = "0.64.13"
 # Actually frameworks are a convenience for end users, to build them use
 # the make_framework.pl script in TOOLS directory to convert the brew
 # shared libs to frameworks and then define FRAMEWORK here
-FRAMEWORK = 1
+# FRAMEWORK = 1
 
 # Disable all asm, if you do that you'd better remove the cpu cores which
 # currently exist only in asm. This will also disable the asm_video_core of
