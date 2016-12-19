@@ -2504,9 +2504,9 @@ static void load_cybattlr(void)
    AddMS2Controls();
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
    add_68000_ram(0,0x1F0000,0x1FFFFF,RAM+0x000000);                // 68000 RAM
+   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                // SCREEN RAM
    add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
-   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    finish_conf_68000(0);
 }
 
@@ -2588,9 +2588,9 @@ static void load_64street(void)
    AddMS2Controls();
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
    add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                 // 68000 RAM
+   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                 // SCREEN RAM
    add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
-   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    finish_conf_68000(0);
 }
 
@@ -2667,9 +2667,9 @@ static void load_chimerab(void)
    add_68000_program_region(0,0xFF0000,0xFFFFFF,RAM+0x000000-0xFF0000);              // 68000 RAM
 
    add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                // 68000 RAM
+   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                // SCREEN RAM
    add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
-   add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    finish_conf_68000(0);
 }
 
