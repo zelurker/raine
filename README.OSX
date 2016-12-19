@@ -6,29 +6,14 @@ OS X requirements
 
 In order to run (and compile) Raine on OS X >=10.10.x, you need to install mandatory 3rd party libs:
 
-There are now 2 options to build raine in osx : either build all the needed
-libraries yourself (using homebrew seems to be the best option), or use the
-frameworks available from the raine site, which is the fastest and easiest
-option.
-
-In all the cases, start by getting a fresh copy of raine sources :
+Start by getting a fresh copy of raine sources :
 git clone https://github.com/zelurker/raine.git
 git is already available in recent osx versions...
 
-Then if you want the frameworks, just download them from the raine site and
-install them in /Libraries/Frameworks by dragging the directories there.
-Then you can just compile raine normally, telling it to use frameworks. For
-this, either edit the makefile to uncomment the line
-# FRAMEWORK = 1
-before typing make
-or do :
-FRAMEWORK=1 make
-if you want a bundle that you can drag elsewhere, do
-make install
-it will create a bundle in the raine directory, use the finder to install
-it elsewhere.
-
-Now the homebrew solution if you want to build all the required libs :
+Now sorry the frameworks uploaded for 0.64.13 can't be used to compile
+raine because they don't include the header files, + using frameworks for
+compilation is really not convenient, so you'll have to install everything
+using homebrew.
 
 ### install Homebrew
 Open a terminal and enter the command
