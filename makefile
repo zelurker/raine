@@ -22,6 +22,12 @@ VERSION = "0.64.13"
 # Be verbose ?
 # VERBOSE = 1
 
+# For osx : use frameworks or brew shared libs ?
+# Actually frameworks are a convenience for end users, to build them use
+# the make_framework.pl script in TOOLS directory to convert the brew
+# shared libs to frameworks and then define FRAMEWORK here
+FRAMEWORK = 1
+
 # Disable all asm, if you do that you'd better remove the cpu cores which
 # currently exist only in asm. This will also disable the asm_video_core of
 # course
@@ -865,7 +871,15 @@ CONSOLE = \
 	$(OBJDIR)/sdl/gui/tconsole.o \
 	$(OBJDIR)/sdl/console/exec.o
 
+ifdef DARWIN
+ifdef FRAMEWORK
+LIBS += -framework muparser
+else
 LIBS += -lmuparser
+endif
+else # DARWIN
+LIBS += -lmuparser
+endif
 LIBS_DEBUG += -lmuparser
 endif
 
@@ -1067,9 +1081,13 @@ OBJS += $(OBJDIR)/sdl/sasound.o
 ifdef DARWIN
 # Official SDL1.2 frameworks (SDL / image / ttf) in /Library/Frameworks
 CFLAGS += -I/usr/local/include/SDL/ -DDARWIN
+ifdef FRAMEWORK
+LIBS += -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
+LIBS += -framework SDL_sound -framework intl -liconv
+else
 LIBS += -lSDL -lSDL_ttf -lSDL_image -framework Cocoa -framework OpenGL
-# SDL_sound is statically linked from homebrew as gettext, libpng etc.
 LIBS += -lSDL_sound -lintl -liconv
+endif
 AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
 SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
