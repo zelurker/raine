@@ -371,6 +371,7 @@ typedef struct DIR_CFG
    char artwork_dir[FILENAME_MAX];		// screenshot path
    char **rom_dir;		// rom paths
    char config_file[FILENAME_MAX];		// config file (no path)
+   char m68kdis[FILENAME_MAX],dz80[FILENAME_MAX];
    UINT32 long_file_names;		// enable long file name support
    UINT32 last_screenshot_num;		// counter for last screenshot
 } DIR_CFG;

@@ -350,18 +350,18 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   }
   switch(cpu_id) {
   case 1: // 68k
-      sprintf(cmd,"m68kdis ");
+      sprintf(cmd,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
       sprintf(cmd+strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
       ByteSwap(&ptr[start],end-start);
       break;
   case 3:
-      sprintf(cmd,"m68kdis ");
+      sprintf(cmd,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
       sprintf(cmd+strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
   case 2:
-      sprintf(cmd,"dz80 \"%s\" prg.z80",name);
+      sprintf(cmd,"%s \"%s\" prg.z80",dir_cfg.dz80,name);
       break;
   }
   save_file(name,&ptr[start],end-start);
@@ -373,9 +373,14 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       offs[start/0x10000] = NULL;
   }
   printf("cmd: %s\n",cmd);
-  if (system(cmd) < 0) {
+  int ret;
+  if ((ret = system(cmd)) < 0) {
       chdir(dir);
       throw "can't execute disassembler !";
+  }
+  if ((ret >> 8) == 127) { // 127 is command not found from shell...
+      chdir(dir);
+      throw "Can't find disassembler - see Options / Directories for m68kdis or dz80";
   }
   sprintf(strrchr(name,'.'),".t");
   FILE *f = fopen(name,"w");

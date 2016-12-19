@@ -258,6 +258,14 @@ int main(int argc,char *argv[])
        // If lauched from a bundle the share path becomes the Ressources dir
        strncpy(dir_cfg.share_path,argv[0],256);
        strcpy(dir_cfg.share_path+(s - argv[0]),"Resources/");
+       strncpy(dir_cfg.m68kdis,argv[0],256);
+       strncpy(dir_cfg.dz80,argv[0],256);
+       strcpy(dir_cfg.m68kdis+(s - argv[0]+6),"m68kdis");
+       strcpy(dir_cfg.dz80+(s - argv[0]+6),"dz80");
+       if (!exists(dir_cfg.m68kdis))
+	   strcpy(dir_cfg.m68kdis,"m68kdis");
+       if (!exists(dir_cfg.dz80))
+	   strcpy(dir_cfg.dz80,"dz80");
    }
 #endif
 
@@ -410,6 +418,10 @@ int main(int argc,char *argv[])
 
    mystrcpy(dir_cfg.screen_dir,	 raine_get_config_string( "Directories", "screenshots",   dir_cfg.screen_dir));
    mystrcpy(dir_cfg.emudx_dir,	 raine_get_config_string( "Directories", "emudx",   dir_cfg.emudx_dir));
+   if (!*dir_cfg.m68kdis)
+       strcpy(dir_cfg.m68kdis, raine_get_config_string( "Directories", "m68kdis", "m68kdis"));
+   if (!*dir_cfg.dz80)
+       strcpy(dir_cfg.dz80, raine_get_config_string( "Directories", "dz80", "dz80"));
    mystrcpy(dir_cfg.artwork_dir,	 raine_get_config_string( "Directories", "artwork",   dir_cfg.artwork_dir));
    i=0;
    do {
@@ -649,6 +661,8 @@ int main(int argc,char *argv[])
    raine_set_config_int(	"Directories",  "long_file_names",      dir_cfg.long_file_names);
 #endif
    raine_set_config_string(	"Directories",  "ScreenShots",          dir_cfg.screen_dir);
+   raine_set_config_string(     "Directories", "m68kdis", dir_cfg.m68kdis);
+   raine_set_config_string(     "Directories", "dz80", dir_cfg.dz80);
 #if HAS_NEO
    raine_set_config_string("neocd", "neocd_dir", neocd_dir);
    raine_set_config_string("neocd", "neocd_bios", neocd_bios_file);
