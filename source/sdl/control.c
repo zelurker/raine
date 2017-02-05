@@ -482,7 +482,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 	    // working !
 	    for (n=0; n<InputCount; n++)
 		if (input_src[srcCount].offset == InputList[n].Address &&
-			input_src[srcCount].bit_mask & InputList[n].Bit) {
+			input_src[srcCount].bit_mask == InputList[n].Bit) {
 		    old = InputCount;
 		    InputCount = n;
 		    break;
