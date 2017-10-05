@@ -73,14 +73,14 @@ void TFont::select_ideal_font(int ideal_width, int ideal_height) {
     // 1st look for height
     while ((entry = readdir(dir))) {
       get_font_dimensions(entry->d_name,&w,&h);
-      if (abs(h-ideal_height) < abs(besth - ideal_height))
+      if (abs((int)h-ideal_height) < abs((int)besth - ideal_height))
 	besth = h;
     }
     rewinddir(dir);
     // Now look for the best width with this height
     while ((entry = readdir(dir))) {
       get_font_dimensions(entry->d_name,&w,&h);
-      if (h == besth && (abs(w-ideal_width) < abs(bestw-ideal_width))) {
+      if (h == besth && (abs((int)w-ideal_width) < abs((int)bestw-ideal_width))) {
 	strcpy(selected, entry->d_name);
 	bestw = w;
       }
