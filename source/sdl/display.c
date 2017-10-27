@@ -375,10 +375,11 @@ static SDL_Surface *new_set_gfx_mode() {
       // so it's better to just disable it here
       videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT|SDL_DOUBLEBUF);
       videoflags |= SDL_OPENGL;
+      print_debug("new_set_gfx_mode: asking for opengl\n");
   }
 
   if (gui_level) {
-      print_debug("limiting flags on gui_level\n");
+      print_debug("new_set_gfx_mode: limiting flags on gui_level\n");
       videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL;
   }
   if (!sdl_screen || display_cfg.screen_x != sdl_screen->w ||
@@ -405,6 +406,7 @@ static SDL_Surface *new_set_gfx_mode() {
       SDL_FreeYUVOverlay(sdl_overlay);
       sdl_overlay = NULL;
     }
+    print_debug("new_set_gfx_mode: SDL_SetVideoMode %d,%d,%d flags %x\n",display_cfg.screen_x,display_cfg.screen_y,bpp,videoflags);
     if ( (s = SDL_SetVideoMode(display_cfg.screen_x, display_cfg.screen_y,
 	    bpp, videoflags)) == NULL ) {
 #ifdef RAINE_DEBUG
@@ -462,8 +464,12 @@ static SDL_Surface *new_set_gfx_mode() {
 
   if (s->flags & SDL_OPENGL) {
       get_ogl_infos();
-  } else if (!display_cfg.video_mode) // asked for opengl, didn't get it...
+      print_debug("new_set_gfx_mode: opengl ok, getting infos\n");
+  } else if (!display_cfg.video_mode && !gui_level) {// asked for opengl, didn't get it...
       display_cfg.video_mode = 2;
+      print_debug("new_set_gfx_mode: did not get opengl, switching to normal blits\n");
+  }
+
 
 /*  if (!color_format)
     color_format = sdl_screen->format; */
