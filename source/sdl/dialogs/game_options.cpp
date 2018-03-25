@@ -220,7 +220,7 @@ static int graphical_layers(int sel) {
   return 0;
 }
 
-extern int cpu_fps; // ingame.c
+extern int cpu_fps; // emumain.c
 
 static int ifps;
 
@@ -241,7 +241,7 @@ static menu_item_t game_options[] =
   { _("Edit msg"), &do_msg },
 #endif
   { _("CPU frame skip (1=no skip) "), NULL, &cpu_fps, 3, { 1, 16, 1 } },
-  { _("FPS"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,100 }, { "", (char*)&fps, "1", "200" } },
+  { _("FPS"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,140 }, { "", (char*)&fps, "1", "200" } },
   { _("Reset fps to driver's default value"), &reset_fps },
   { _("FPS counter"), NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
     { _("Off"), _("Immediate FPS"), _("Average FPS"), _("Profiler"), _("Rdtsc Cycles") } },
