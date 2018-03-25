@@ -20,6 +20,7 @@
 #include "sdl/opengl.h"
 #include "sdl/display_sdl.h"
 #include "bld.h"
+#include "profile.h"
 
 togl_options ogl;
 
@@ -199,6 +200,10 @@ void load_screen_settings(char *section)
    display_cfg.screen_x = raine_get_config_int(	section, "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int(	section, "screen_y", display_cfg.screen_y);
    display_cfg.scanlines = raine_get_config_int(	section, "scanlines", display_cfg.scanlines);
+   char *s = raine_get_config_string(section,"fps","");
+   if (*s) {
+       sscanf(s,"%f",&fps);
+   }
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
 
@@ -222,6 +227,9 @@ void save_screen_settings(char *section)
    raine_set_config_int(	section, "stretch", display_cfg.stretch);
    raine_set_config_int(	section, "screen_y", display_cfg.screen_y);
    raine_set_config_int(	section, "scanlines", display_cfg.scanlines);
+   char buf[40];
+   snprintf(buf,40,"%g",fps);
+   raine_set_config_string(section,"fps",buf);
 
    if(display_cfg.scanlines == 2) display_cfg.screen_y >>= 1;
 
