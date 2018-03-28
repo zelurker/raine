@@ -29,6 +29,20 @@ class TAbout_menu : public TBitmap_menu
   virtual void update_fg_layer(int nb_to_update);
 };
 
+class TAbout : public TMenu
+{
+  public:
+    TAbout(char *my_title, menu_item_t *mymenu,char *myfont = NULL,
+      int myfg=-1, int mybg=-1,int myfg_frame=-1,int mybg_frame=-1,
+      int to_translate=1) : TMenu(my_title,mymenu,myfont,myfg,mybg,myfg_frame,
+	  mybg_frame,to_translate)
+    { cycle_up = cycle_down = 0; }
+    void reset_top() {
+	// top = 0 always with this dialog, ignore any eventual url at the bottom
+	top = 0;
+    }
+};
+
 // A class to unify all the drawing functions for the command.dat symbols
 // it will allow to share the scaling data without making it permanent
 class TSketcher
@@ -751,7 +765,7 @@ end_loop:
 
     TMenu *about_menu;
     if (!do_command)
-	about_menu = new TMenu(_("About this game"),menu, NULL,-1, -1,-1,-1, /* to_translate */ 0);
+	about_menu = new TAbout(_("About this game"),menu, NULL,-1, -1,-1,-1, /* to_translate */ 0);
     else
 	about_menu = new TMoves_menu((char*)menu_commands[sel].label,menu);
     about_menu->execute();
@@ -783,7 +797,7 @@ int show_moves(int sel) {
 
 static menu_item_t about_items[] =
 {
-  { EMUNAME" "VERSION" (c)1998-2015 " HANDLE, NULL, NULL },
+  { EMUNAME " " VERSION " (c)1998-2015 " HANDLE, NULL, NULL },
   { "Compiled on " __DATE__ " " __TIME__ , NULL, NULL },
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
