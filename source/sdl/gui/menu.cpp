@@ -272,6 +272,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   font = NULL;
   menu_disp = NULL;
   parent = caller;
+  cycle_up = cycle_down = 1;
 
   if (myfg == -1)
     fg = fg_color;
@@ -1228,7 +1229,7 @@ void TMenu::next_sel() {
     if (top+rows < nb_disp_items) top++;
   } else if (old_sel == sel && top+rows < nb_disp_items)
       top++;
-  else {
+  else if (cycle_down) {
     reset_top();
   }
 }
@@ -1287,7 +1288,7 @@ void TMenu::prev_sel() {
     if (top > 0) top--;
   } else if (old_sel == sel && top > 0)
       top--;
-  else {
+  else if (cycle_up) {
     int seldisp = get_seldisp();
     if (seldisp > top+rows-1)
       top = seldisp-rows+1;

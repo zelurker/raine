@@ -55,6 +55,7 @@ class TMenu {
     char keybuf[MAX_KEYBUF];
     int mousex[2],mousey[2],flip_page; // must handle the mouse when double buffering
     int use_transparency;
+    int cycle_up, cycle_down; // scrolling loops when reaching top/bottom (default yes)
   public:
     // There is a lot of methods, but most of them are very small and are
     // here to easily create objects which inherit from this one
@@ -110,7 +111,7 @@ class TMenu {
     virtual int can_be_displayed(int n);
     virtual int can_be_selected(int n);
     int get_seldisp();
-    void reset_top();
+    virtual void reset_top();
     virtual void next_sel();
     virtual void prev_sel();
     virtual void next_page();
