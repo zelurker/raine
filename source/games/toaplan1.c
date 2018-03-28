@@ -1062,7 +1062,7 @@ static UINT8 tp1vcu_bg_rb(UINT32 offset)
 
 static UINT32 want_int;
 
-static int x_ofs[4];
+// static int x_ofs[4];
 
 static UINT8 tp_vblank_rb(UINT32 offset)
 {
@@ -2669,11 +2669,10 @@ static void DrawToaplan1(void)
      RAM_BG = tp1vcu[0].VRAM + vram_ofs[romset][layer];
 
      x1 = ReadWord(&tp1vcu[0].SCROLL[0+(layer<<2)])>>7;
-     if (romset == 2) // outzone
-       x1 += scroll_offsx - bg_x_ofs; //  + (6-layer*2);
-     else
-       x1 += scroll_offsx - bg_x_ofs + (6-layer*2);
-     x1 += x_ofs[layer];
+     // There was an exception for outzone (romset 2)
+     // But it's better without it !
+     x1 += scroll_offsx - bg_x_ofs + (6-layer*2);
+     // x1 += x_ofs[layer];
      x1 &= 0x1FF;
 
      y1 = ReadWord(&tp1vcu[0].SCROLL[2+(layer<<2)])>>7;
