@@ -77,7 +77,7 @@ static int is_in_map(UINT32 spr) {
     int x = 0;
     while (combo_loc[x].size) {
 	if (spr >= combo_loc[x].offset &&
-	       	spr < combo_loc[x].offset+combo_loc[x].size);
+	       	spr < combo_loc[x].offset+combo_loc[x].size)
 	    return 1;
 	x++;
     }

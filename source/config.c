@@ -1609,11 +1609,12 @@ static void CLI_lsf(void)
    }
    else{
 
-      for(i=0;i<game_count;i++)
+      for(i=0;i<game_count;i++) {
 
 	   list_game_info(game_list[i]);
 	   printf( INDENT "source file : %s\n",game_list[i]->source_file);
 	   printf(")\n\n");
+      }
    }
 
    exit(0);
