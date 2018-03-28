@@ -1840,11 +1840,11 @@ void parse_command_line(int argc, char *argv[])
 	  char *s = ArgList[ArgPosition];
 
 	   if (is_dir(ArgList[ArgPosition]) ||
-		   !stricmp(&s[strlen(s)-3],"iso") ||
-		   !stricmp(&s[strlen(s)-6],"iso.gz") ||
-		   !stricmp(&s[strlen(s)-3],"zip") ||
-		   !stricmp(&s[strlen(s)-2],"7z") ||
-		   !stricmp(&s[strlen(s)-3],"cue") ||
+		   !stricmp(&s[strlen(s)-4],".iso") ||
+		   !stricmp(&s[strlen(s)-7],".iso.gz") ||
+		   !stricmp(&s[strlen(s)-4],".zip") ||
+		   !stricmp(&s[strlen(s)-3],".7z") ||
+		   !stricmp(&s[strlen(s)-4],".cue") ||
 		   !stricmp(&s[strlen(s)-7],"ipl.txt")
 		   ) {
 	       // iso or directory, assuming neocd image
