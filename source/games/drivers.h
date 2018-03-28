@@ -999,7 +999,7 @@
   DRV(wh2j)
   DRV(mosyougi)
   DRV(zintrckb)
-  DRV(bbbuster)
+  DRV(b2b)
   DRV(totcarib)
 
 // ninjak.c

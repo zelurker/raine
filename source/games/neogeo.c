@@ -3374,7 +3374,7 @@ static struct ROM_INFO rom_zintrckb[] = // clone of neogeo
 
 CLNEI( zintrckb, neogeo,             "Zintrick / Oshidashi Zentrix (hack)", HACK, 1996, GAME_MISC);
 
-static struct ROM_INFO rom_bbbuster[] = /* testing bang bang buster... */
+static struct ROM_INFO rom_b2b[] = /* testing bang bang buster... */
 {
   { "071-p1.bin", 0x80000, 0x7687197d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
   { "071-s1.bin", 0x20000, 0x44e5f154, REGION_FIXED, 0x000000, LOAD_NORMAL },
@@ -3385,7 +3385,7 @@ static struct ROM_INFO rom_bbbuster[] = /* testing bang bang buster... */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( bbbuster, neogeo, "Bang Bang busters", VISCO, 2000, GAME_PLATFORM); // The rom shows 2000 on title screen, but released in 2010 ?
+CLNEI( b2b, neogeo, "Bang Bang busters", VISCO, 2000, GAME_PLATFORM); // The rom shows 2000 on title screen, but released in 2010 ?
 
 static struct ROM_INFO rom_totcarib[] = /* testing treasure of the caribeans... */
 {
