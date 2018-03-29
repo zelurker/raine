@@ -11,64 +11,64 @@ open(F,"<$filename") || die "syntax conv_clones.pl <file name> [ > dest ]\n";
 my $romset;
 my (%romsets,@clones);
 while (<F>) {
-  if (/ROM_INFO/) {
-    if (!/.+ rom_(.+?)\[/) {
-      die "format of ROM_INFO incorrect : $_";
-    } else {
-      $romset = $1;
-      my %regions = ();
-      while (<F>) {
-	if (/\{ ?(.+)\ ?}/) {
-	  my $args = $1;
-	  my ($name,$size,$crc,$region_name,$offset,$method) = split(/\, ?/,$args);
-	  if ($method && $region_name =~ /[a-z]/i) {
-	    push @{$regions{$region_name}},$crc;
-	  }
+	if (/ROM_INFO/) {
+		if (!/.+ rom_(.+?)\[/) {
+			die "format of ROM_INFO incorrect : $_";
+		} else {
+			$romset = $1;
+			my %regions = ();
+			while (<F>) {
+				if (/\{ ?(.+)\ ?}/) {
+					my $args = $1;
+					my ($name,$size,$crc,$region_name,$offset,$method) = split(/\, ?/,$args);
+					if ($method && $region_name =~ /[a-z]/i) {
+						push @{$regions{$region_name}},$crc;
+					}
+				}
+				last if (/\;/);
+			}
+			$romsets{$romset} = \%regions;
+		}
 	}
-	last if (/\;/);
-      }
-      $romsets{$romset} = \%regions;
-    }
-  }
 
-  if (/DIR_INFO/) {
-	  if (!/ dir_(.+)\[/) {
-		  die "format of DIR_INFO incorrect (expected dir_) : $_";
-	  } else {
-		  my $dir_name = $1;
-		  while (<F>) {
-			  if (/\{ ?(.+) ?\}/) {
-				  if (/ROMOF.+\"(.+)\"/) {
-					  push @clones,[$dir_name,$1];
-				  } elsif (!/\(/) {	# No cloneof, romof...
-					  if (/\"(.+)\"/) {	# get name
-						  if (length($1) < length($dir_name)) {
-							  $dir_name = $1;
-						  }
-					  }
-				  }
-			  }
-			  last if (/\;/);
-		  }
-	  }
-  } elsif (/(CLONE|CLNE|CLNEI)\((.+)[$\)]/) {
-	  my $args = $2;
-	  my @args = split /, */,$args;
-	  foreach (@args) {
-		  s/^[ \t]*//;
-		  s/[ \t]*$//;
-	  }
-	  push @clones,[$args[0],$args[1]];
-  }
-  if (!/\#define/) { # avoid macro definitions
+	if (/DIR_INFO/) {
+		if (!/ dir_(.+)\[/) {
+			die "format of DIR_INFO incorrect (expected dir_) : $_";
+		} else {
+			my $dir_name = $1;
+			while (<F>) {
+				if (/\{ ?(.+) ?\}/) {
+					if (/ROMOF.+\"(.+)\"/) {
+						push @clones,[$dir_name,$1];
+					} elsif (!/\(/) {	# No cloneof, romof...
+						if (/\"(.+)\"/) {	# get name
+							if (length($1) < length($dir_name)) {
+								$dir_name = $1;
+							}
+						}
+					}
+				}
+				last if (/\;/);
+			}
+		}
+	} elsif (/(CLONE|CLNE|CLNEI)\((.+)[$\)]/) {
+		my $args = $2;
+		my @args = split /, */,$args;
+		foreach (@args) {
+			s/^[ \t]*//;
+			s/[ \t]*$//;
+		}
+		push @clones,[$args[0],$args[1]];
+	}
+	if (!/\#define/) { # avoid macro definitions
 
-    if (/^CLONE.*\( (.+)\,/) { # limited support for CLONE syntax (games.h)
-      my $name = $1;
-      $_ = <F>;
-      my ($parent) = /[ \t]+(.+)\,/;
-      push @clones,[$name,$parent];
-    }
-  }
+		if (/^CLONE.*\( (.+)\,/) { # limited support for CLONE syntax (games.h)
+			my $name = $1;
+			$_ = <F>;
+			my ($parent) = /[ \t]+(.+)\,/;
+			push @clones,[$name,$parent];
+		}
+	}
 
 } # while (<F>) ...
 close(F);

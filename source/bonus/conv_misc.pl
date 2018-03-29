@@ -4,62 +4,11 @@
 # and GFX_LAYOUT mostly.
 
 use strict;
-use LWP::Simple;
+use genres;
 
 $| = 1;
 my $cps2_mode;
 my $cps1_mode;
-my %genre = ();
-dbmopen %genre, "genres",0666;
-
-sub get_genre($) {
-	# get the game genre from maws !
-	my $name = shift;
-	return $genre{$name} if ($genre{$name} && $genre{$name} ne "GAME_MISC");
-	print STDERR "no genre for $name...\n";
-
-	$genre{$name} = "GAME_MISC"; # default genre
-	# my $doc = get "http://ungr.emuunlim.org/ngmvsgames.php?action=showimage&image=$name";
-	my $doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
-	if (!$doc) {
-		print STDERR "no info for $name, sleep 3 and retry...\n";
-		sleep 3;
-		$doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
-		print STDERR "still no info\n" if (!$doc);
-	}
-	return "GAME_MISC" if (!$doc);
-	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</ || $doc =~ /genre=(.+?)>/) {
-			my $genre = $1;
-			if ($genre =~ /Shoot/) {
-				$genre = "GAME_SHOOT";
-			} elsif ($genre =~ /Fight/) {
-				$genre = "GAME_BEAT";
-			} elsif ($genre =~ /(Puzzle|Mahjong)/) {
-				$genre = "GAME_PUZZLE";
-			} elsif ($genre =~ /Quiz/) {
-				$genre = "GAME_QUIZZ";
-			} elsif ($genre =~ /(Sports|Baseball|Golf|Football|Bowling)/) {
-				$genre = "GAME_SPORTS";
-			} elsif ($genre =~ /Platform/) {
-				$genre = "GAME_PLATFORM";
-			} elsif ($genre =~ /(Racing|Race)/) {
-				$genre = "GAME_RACE";
-			} elsif ($genre =~ /(Fight|Combat)/) {
-				$genre = "GAME_FIGHT";
-			} elsif ($genre =~ /Breakout/) {
-				$genre = "GAME_BREAKOUT";
-			} elsif ($genre =~ /Maze/) {
-				$genre = "GAME_MAZE";
-			} else {
-				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
-				$genre = "GAME_MISC";
-			}
-			$genre{$name} = $genre;
-			return $genre;
-	}
-	print STDERR "genre not found in page for $name - using GAME_MISC\n";
-	return "GAME_MISC";
-}
 
 while (<>) {
 	if (!$cps1_mode && !$cps2_mode) {
@@ -146,7 +95,7 @@ while (<>) {
 		$company =~ s/"//g;
 		$company = uc($company);
 		my $genre;
-		my $genre = ($parent !~ /^(0|neogeo)$/ ? get_genre($parent) : get_genre($name));
+		my $genre = ($parent !~ /^(0|neogeo)$/ ? genres::get_genre($parent) : genres::get_genre($name));
 		if ($cps1_mode || $cps2_mode) {
 			if ($rot eq "ROT0") {
 				$rot = undef;
@@ -247,5 +196,4 @@ while (<>) {
 		print ");\n";
 	}
 }
-dbmclose %genre;
 

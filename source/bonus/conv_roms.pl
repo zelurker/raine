@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use v5.10;
+use genres;
 use strict;
 
 my %raine_loads =
@@ -283,6 +285,33 @@ while ($_ = shift @file) {
 			redo if (/ROM_REGION/); # yet another line...
 			die "line $_\n" if (/NEO_SFIX/);
 		} # while ($_ = shift @file)
+	} elsif (/GAME *\((.+)\)/) {
+		# Basic game handling, it's game_misc and defaults everywhere
+		# handy to convert clones
+		my @args = split /\,/,$1;
+		foreach (@args) {
+			s/^[\t ]*//;
+			s/[\t ]*$//;
+		}
+		foreach (8,9) {
+			my $i = $_;
+			while ($args[$i] !~ /"$/) {
+				$args[$i] .= ",".splice @args,$i+1,1;
+			}
+		}
+
+		my $long = $args[9];
+		$long =~ s/"//g;
+		$args[8] =~ s/"//g;
+		$args[8] =~ s/ [\/\(].+//;
+		$args[8] = uc($args[8]); # companies macros are usually just the name in uppercase, might work...
+		if ($args[2] eq "0" || $args[2] eq "neogeo") { # parent = 0, real game
+			my $genre = genres::get_genre($args[1],$long);
+			say "GMEI( $args[1],$args[9],$args[8],$args[0], $genre );";
+		} else {
+			my $genre = genres::get_genre($args[2],$long);
+			say "CLNEI( $args[1],$args[2],$args[9],$args[8],$args[0], $genre );";
+		}
 	}
 }
 
