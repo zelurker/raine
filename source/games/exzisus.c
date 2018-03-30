@@ -561,9 +561,10 @@ static void draw_exzisus(void)
 
          if(gfx_num & 0x40)
             sx += 16;
-         else
+         else {
             sx  = RAM_BG[offs + 2];
             sx |= (gfx_attr & 0x40) << 2;
+	 }
       }
 
       sy = 256 - height*8 - (RAM_BG[offs + 0]);
@@ -634,9 +635,10 @@ static void draw_exzisus(void)
 
          if(gfx_num & 0x40)
             sx += 16;
-         else
+         else {
             sx  = RAM_BG[offs + 2];
             sx |= (gfx_attr & 0x40) << 2;
+	 }
       }
 
       sy = 256 - height*8 - (RAM_BG[offs + 0]);

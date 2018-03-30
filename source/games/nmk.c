@@ -3676,7 +3676,7 @@ static void RenderNMKLayer(int layer)
 
 	   Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
 	   zz+=2;
-	   if((zz&0x1F)==0) zz+=0xFE0;zz&=bg_size;
+	   if((zz&0x1F)==0) { zz+=0xFE0;zz&=bg_size; }
 	 }
 	 zzzz+=0x20;
 	 if((zzzz&0xFE0)==0){zzzz-=0x1000;}

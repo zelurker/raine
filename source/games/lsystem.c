@@ -228,82 +228,73 @@ static void execute_kurikint(void)
    if(romset==1)
       TrackBall();
 
-      print_debug("Z80PC_MAIN_A:%04x\n",z80pc);
    cpu_execute_cycles(CPU_Z80_1, 16);	// Main Z80 8MHz (60fps)
-      print_debug("Z80PC_MAIN_B:%04x\n",z80pc);
    cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// Main Z80 8MHz (60fps)
-      print_debug("Z80PC_MAIN_0:%04x\n",z80pc);
    if(romset==9)
    {
-   if(VectorData[3] & LSYS_INT2){
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
-   }
+       if(VectorData[3] & LSYS_INT2){
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(1,60));
+       }
    }
    else
    {
-   if(VectorData[3] & LSYS_INT2){
-      cpu_interrupt(CPU_Z80_1, VectorData[2]);
-      cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));
+       if(VectorData[3] & LSYS_INT2){
+	   cpu_interrupt(CPU_Z80_1, VectorData[2]);
+	   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));
+       }
    }
-   }
-      print_debug("Z80PC_MAIN_1:%04x\n",z80pc);
    if(VectorData[3] & LSYS_INT1){
-      cpu_interrupt(CPU_Z80_1, VectorData[1]);
+       cpu_interrupt(CPU_Z80_1, VectorData[1]);
    }
    if(VectorData[3] & LSYS_INT0){
-      cpu_interrupt(CPU_Z80_1, VectorData[0]);
+       cpu_interrupt(CPU_Z80_1, VectorData[0]);
    }
 
    if(romset==0){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
-   //if(z80pc==0x10D) cpu_interrupt(CPU_Z80_0, 0x38);
+       cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
    }
 
    if(romset==3){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
-#endif*/
-   if(z80pc==0x10D) cpu_interrupt(CPU_Z80_2, 0x38);
+       cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+       if(z80pc==0x10D) cpu_interrupt(CPU_Z80_2, 0x38);
    }
 
    if(romset==4){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
+       cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+       /*#ifdef RAINE_DEBUG
+	 print_debug("Z80PC_SUB:%04x\n",z80pc);
 #endif*/
-   if(z80pc==0x025) cpu_interrupt(CPU_Z80_2, 0x38);
+       if(z80pc==0x025) cpu_interrupt(CPU_Z80_2, 0x38);
    }
 
    if(romset==5){
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC_SUB:%04x\n",z80pc);
+       cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
+       /*#ifdef RAINE_DEBUG
+	 print_debug("Z80PC_SUB:%04x\n",z80pc);
 #endif*/
-   if(z80pc==0x11B) cpu_interrupt(CPU_Z80_2, 0x38);
+       if(z80pc==0x11B) cpu_interrupt(CPU_Z80_2, 0x38);
    }
 
    if(romset==0)
-      Taito2610_Frame();		// Z80 and YM2610
+       Taito2610_Frame();		// Z80 and YM2610
 
    if((romset==3)||(romset==4))
-      Taito2203_Frame();		// Z80 and YM2203
+       Taito2203_Frame();		// Z80 and YM2203
 }
 
 

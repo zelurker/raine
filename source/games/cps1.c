@@ -89,7 +89,6 @@ static const int cps1_scroll3_size=0x4000;
 static const int cps1_obj_size    =0x0800;
 static const int cps1_other_size  =0x0800;
 #define cps1_palette_entries (32*8)  /* Number colour schemes in palette */
-static const int cps1_palette_size=cps1_palette_entries*32; /* Size of palette RAM */
 
 static UINT8 *qsound_sharedram1,*qsound_sharedram2;
 static UINT8 *GFX_SPR,*GFX_SPR16,*GFX_SPR32;
@@ -998,30 +997,6 @@ static const struct gfx_range mapper_TN2292_table[] =
 	{ 0 }
 };
 
-#define mapper_qadj	{ 0x8000, 0, 0, 0 }, mapper_qadj_table
-static const struct gfx_range mapper_qadj_table[] =
-{
-	/* type                              start   end     bank */
-	{ GFXTYPE_SCROLL1,                   0x0000, 0x07ff, 0 },
-	{ GFXTYPE_SCROLL3,                   0x0800, 0x1fff, 0 },
-	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x2000, 0x7fff, 0 },
-	{ 0 }
-};
-
-
-#define mapper_qtono2	{ 0x8000, 0x8000, 0, 0 }, mapper_qtono2_table
-static const struct gfx_range mapper_qtono2_table[] =
-{
-	/* type                              start   end     bank */
-	{ GFXTYPE_SCROLL1,                   0x0000, 0x0fff, 0 },
-	{ GFXTYPE_SCROLL3,                   0x1000, 0x3fff, 0 },
-	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x4000, 0x7fff, 0 },
-
-	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x8000, 0xffff, 1 },
-	{ 0 }
-};
-
-
 #define mapper_RCM63B	{ 0x8000, 0x8000, 0x8000, 0x8000 }, mapper_RCM63B_table
 static const struct gfx_range mapper_RCM63B_table[] =
 {
@@ -1049,15 +1024,6 @@ static const struct gfx_range mapper_PKB10B_table[] =
 	{ 0 }
 };
 
-#define mapper_pnickj	{ 0x8000, 0, 0, 0 }, mapper_pnickj_table
-static const struct gfx_range mapper_pnickj_table[] =
-{
-	/* type                              start   end     bank */
-	{ GFXTYPE_SCROLL1,                   0x0000, 0x0fff, 0 },
-	{ GFXTYPE_SPRITES | GFXTYPE_SCROLL2, 0x1000, 0x5fff, 0 },
-	{ GFXTYPE_SCROLL3,                   0x6000, 0x7fff, 0 },
-	{ 0 }
-};
 
 
 #define mapper_pang3	{ 0x8000, 0x8000, 0, 0 }, mapper_pang3_table

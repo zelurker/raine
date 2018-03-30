@@ -1213,10 +1213,13 @@
   DRV(tetrist)
 
 // toaplan1.c
-  DRV(demonwl1)
+  DRV(demonwld)
+  DRV(demonwld2)
   DRV(fireshrk)
   DRV(hellfire)
   DRV(outzone)
+  DRV(outzoneh)
+  DRV(outzonec)
   DRV(rallybik)
   DRV(samesame)
   DRV(truxton)
