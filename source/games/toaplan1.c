@@ -246,21 +246,21 @@ static struct DSW_DATA dsw_data_vimana_2[] =
 
 static struct DSW_INFO dsw_vimana[] =
 {
-   { 0x023000, 0x00, dsw_data_hellfire_0 },
-   { 0x023001, 0x00, dsw_data_vimana_1 },
-   { 0x023002, 0x02, dsw_data_vimana_2 },
+   { 0, 0x00, dsw_data_hellfire_0 },
+   { 1, 0x00, dsw_data_vimana_1 },
+   { 2, 0x02, dsw_data_vimana_2 },
    { 0,        0,    NULL,      },
 };
 
 static gfx_layout tilelayout =
 {
-	8,8,	/* 8x8 */
-	16384,	/* 16384 tiles */
-	4,		/* 4 bits per pixel */
-	{ 3*8*0x20000, 2*8*0x20000, 1*8*0x20000, 0*8*0x20000 },
-	{ 0, 1, 2, 3, 4, 5, 6, 7 },
-	{ 0, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38 },
-	64
+        8,8,            /* 8x8 */
+        RGN_FRAC(1,2),  /* 16384/32768 tiles */
+        4,              /* 4 bits per pixel */
+        { RGN_FRAC(1,2)+8, RGN_FRAC(1,2), 8, 0 },
+        { 0, 1, 2, 3, 4, 5, 6, 7 },
+        { 0, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16 },
+        16*8            /* every tile takes 16 consecutive bytes */
 };
 
 static gfx_layout rallybik_spr_layout =
@@ -298,13 +298,6 @@ static struct GFX_LIST rally_bike_gfx[] =
    { REGION_GFX1, &tilelayout,           },
    { REGION_GFX2, &rallybik_spr_layout,  },
    { 0,           NULL,                  },
-};
-
-static struct GFX_LIST outzone_gfx[] =
-{
-   { REGION_GFX1, &vm_tilelayout, },
-   { REGION_GFX2, &tilelayout,    },
-   { 0,           NULL,           },
 };
 
 static struct GFX_LIST vimana_gfx[] =
@@ -348,20 +341,34 @@ static struct ROM_INFO rom_vimana[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-
-
 static struct ROM_INFO rom_outzone[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-                "rom7.bin",  0x936e25d8,     "rom8.bin",  0xd19b3ecf),
-   {     "rom5.bin", 0x00080000, 0xc64ec7b6, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {     "rom6.bin", 0x00080000, 0x64b6c5ac, REGION_GFX1, 0x080000, LOAD_NORMAL, },
-   {     "rom2.bin", 0x00020000, 0x6bb72d16, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {     "rom1.bin", 0x00020000, 0x0934782d, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {     "rom3.bin", 0x00020000, 0xec903c07, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {     "rom4.bin", 0x00020000, 0x50cbf1a8, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {     "rom9.bin", 0x00008000, 0x73d8e235, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "prg2.bin", 0x20000, 0x9704db16, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "prg1.bin", 0x20000, 0x127a38d7, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "rom9.bin", 0x8000, 0x73d8e235, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { "rom5.bin", 0x80000, 0xc64ec7b6, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "rom6.bin", 0x80000, 0x64b6c5ac, REGION_GFX1, 0x80000, LOAD_NORMAL },
+  { "rom2.bin", 0x20000, 0x6bb72d16, REGION_GFX2, 0x00000, LOAD_8_16 },
+  { "rom1.bin", 0x20000, 0x0934782d, REGION_GFX2, 0x00001, LOAD_8_16 },
+  { "rom3.bin", 0x20000, 0xec903c07, REGION_GFX2, 0x40000, LOAD_8_16 },
+  { "rom4.bin", 0x20000, 0x50cbf1a8, REGION_GFX2, 0x40001, LOAD_8_16 },
+//  { "tp018_10.bpr", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
+//  { "tp018_11.bpr", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_outzoneh[] = // clone of outzone
+{
+  { "tp018_7.bin", 0x20000, 0x0c2ac02d, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "tp018_8.bin", 0x20000, 0xca7e48aa, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_outzonec[] =                   /* From board serial number 2122 clone of outzone */
+{
+  { "rom7.bin", 0x20000, 0x936e25d8, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "rom8.bin", 0x20000, 0xd19b3ecf, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_outzone_1[] =
@@ -405,30 +412,28 @@ static struct DSW_DATA dsw_data_outzone_2[] =
 
 static struct DSW_INFO dsw_outzone[] =
 {
-   { 0x023000, 0x00, dsw_data_hellfire_0 },
-   { 0x023001, 0x00, dsw_data_outzone_1 },
-   { 0x023002, 0x02, dsw_data_outzone_2 },
+   { 0, 0x00, dsw_data_hellfire_0 },
+   { 1, 0x00, dsw_data_outzone_1 },
+   { 2, 0x02, dsw_data_outzone_2 },
    { 0,        0,    NULL,      },
 };
 
-
-
 static struct ROM_INFO rom_rallybik[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
-               "b45-02.rom",  0x383386d7,    "b45-01.rom",  0x7602f6a7),
-  LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
-               "b45-04.rom",  0xe9b005b1,    "b45-03.rom",  0x555344ce),
-   {    "b45-09.bin", 0x00020000, 0x1dc7b010, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {    "b45-08.bin", 0x00020000, 0xfab661ba, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {    "b45-07.bin", 0x00020000, 0xcd3748b4, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {    "b45-06.bin", 0x00020000, 0x144b085c, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {    "b45-11.rom", 0x00010000, 0x0d56e8bb, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {    "b45-10.rom", 0x00010000, 0xdbb7c57e, REGION_GFX2, 0x010000, LOAD_NORMAL, },
-   {    "b45-12.rom", 0x00010000, 0xcf5aae4e, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {    "b45-13.rom", 0x00010000, 0x1683b07c, REGION_GFX2, 0x030000, LOAD_NORMAL, },
-   {    "b45-05.rom", 0x00004000, 0x10814601, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "b45-02.rom", 0x08000, 0x383386d7, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "b45-01.rom", 0x08000, 0x7602f6a7, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "b45-04.rom", 0x20000, 0xe9b005b1, REGION_CPU1, 0x040000, LOAD_8_16 },
+  { "b45-03.rom", 0x20000, 0x555344ce, REGION_CPU1, 0x040001, LOAD_8_16 },
+  { "b45-05.rom", 0x4000, 0x10814601, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { "b45-09.bin", 0x20000, 0x1dc7b010, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "b45-08.bin", 0x20000, 0xfab661ba, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "b45-07.bin", 0x20000, 0xcd3748b4, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "b45-06.bin", 0x20000, 0x144b085c, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "b45-11.rom", 0x10000, 0x0d56e8bb, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "b45-10.rom", 0x10000, 0xdbb7c57e, REGION_GFX2, 0x10000, LOAD_NORMAL },
+  { "b45-12.rom", 0x10000, 0xcf5aae4e, REGION_GFX2, 0x20000, LOAD_NORMAL },
+  { "b45-13.rom", 0x10000, 0x1683b07c, REGION_GFX2, 0x30000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_rally_bike_2[] =
@@ -455,30 +460,28 @@ static struct DSW_DATA dsw_data_rally_bike_2[] =
 
 static struct DSW_INFO dsw_rallybik[] =
 {
-   { 0x023000, 0x00, dsw_data_rally_bike_0 },
-   { 0x023001, 0x00, dsw_data_rally_bike_1 },
-   { 0x023002, 0x00, dsw_data_rally_bike_2 },
+   { 0, 0x00, dsw_data_rally_bike_0 },
+   { 1, 0x00, dsw_data_rally_bike_1 },
+   { 2, 0x00, dsw_data_rally_bike_2 },
    { 0,        0,    NULL,      },
 };
 
-
-
-static struct ROM_INFO rom_zerowing[] =
+static struct ROM_INFO rom_zerowing[] = /* 2 player simultaneous version */
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
-              "o15-11.rom",  0x6ff2b9a0,   "o15-12.rom",  0x9773e60b),
-  LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
-              "o15-09.rom",  0x13764e95,   "o15-10.rom",  0x351ba71a),
-   {   "o15-05.rom", 0x00020000, 0x4e5dd246, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {   "o15-06.rom", 0x00020000, 0xc8c6d428, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {   "o15-07.rom", 0x00020000, 0xefc40e99, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {   "o15-08.rom", 0x00020000, 0x1b019eab, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {   "o15-03.rom", 0x00020000, 0x7f245fd3, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {   "o15-04.rom", 0x00020000, 0x0b1a1289, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {   "o15-01.rom", 0x00020000, 0x70570e43, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {   "o15-02.rom", 0x00020000, 0x724b487f, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {   "o15-13.rom", 0x00008000, 0xe7b72383, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "o15-11ii.bin", 0x08000, 0xe697ecb9, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "o15-12ii.bin", 0x08000, 0xb29ee3ad, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "o15-09.rom", 0x20000, 0x13764e95, REGION_CPU1, 0x040000, LOAD_8_16 },
+  { "o15-10.rom", 0x20000, 0x351ba71a, REGION_CPU1, 0x040001, LOAD_8_16 },
+  { "o15-13.rom", 0x8000, 0xe7b72383, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { "o15-05.rom", 0x20000, 0x4e5dd246, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "o15-06.rom", 0x20000, 0xc8c6d428, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "o15-07.rom", 0x20000, 0xefc40e99, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "o15-08.rom", 0x20000, 0x1b019eab, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "o15-03.rom", 0x20000, 0x7f245fd3, REGION_GFX2, 0x00000, LOAD_8_16 },
+  { "o15-04.rom", 0x20000, 0x0b1a1289, REGION_GFX2, 0x00001, LOAD_8_16 },
+  { "o15-01.rom", 0x20000, 0x70570e43, REGION_GFX2, 0x40000, LOAD_8_16 },
+  { "o15-02.rom", 0x20000, 0x724b487f, REGION_GFX2, 0x40001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_zerowing_1[] =
@@ -521,28 +524,34 @@ static struct DSW_DATA dsw_data_zerowing_2[] =
 
 static struct DSW_INFO dsw_zerowing[] =
 {
-   { 0x023000, 0x01, dsw_data_rally_bike_0 },
-   { 0x023001, 0x00, dsw_data_zerowing_1 },
-   { 0x023002, 0x02, dsw_data_zerowing_2 },
+   { 0, 0x01, dsw_data_rally_bike_0 },
+   { 1, 0x00, dsw_data_zerowing_1 },
+   { 2, 0x02, dsw_data_zerowing_2 },
    { 0,        0,    NULL,      },
 };
 
-
-
-static struct ROM_INFO rom_demonwl1[] =
+static struct ROM_INFO rom_demonwld[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-                   "rom10",  0x036ee46c,        "rom09",  0xbed746e3),
-   {        "rom05", 0x00020000, 0x6506c982, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {        "rom07", 0x00020000, 0xa3a0d993, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {        "rom06", 0x00020000, 0x4fc5e5f3, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {        "rom08", 0x00020000, 0xeb53ab09, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {        "rom01", 0x00020000, 0x1b3724e9, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {        "rom02", 0x00020000, 0x7b20a44d, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {        "rom03", 0x00020000, 0x2cacdcd0, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {        "rom04", 0x00020000, 0x76fd3201, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {        "rom11", 0x00008000, 0x397eca1b, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "o16-10.v2", 0x20000, 0xca8194f3, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "o16-09.v2", 0x20000, 0x7baea7ba, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "rom11.v2", 0x8000, 0xdbe08c85, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { "rom05", 0x20000, 0x6506c982, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "rom07", 0x20000, 0xa3a0d993, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "rom06", 0x20000, 0x4fc5e5f3, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "rom08", 0x20000, 0xeb53ab09, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "rom01", 0x20000, 0x1b3724e9, REGION_GFX2, 0x00000, LOAD_8_16 },
+  { "rom02", 0x20000, 0x7b20a44d, REGION_GFX2, 0x00001, LOAD_8_16 },
+  { "rom03", 0x20000, 0x2cacdcd0, REGION_GFX2, 0x40000, LOAD_8_16 },
+  { "rom04", 0x20000, 0x76fd3201, REGION_GFX2, 0x40001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_demonwld2[] = // clone of demonwld
+{
+  { "o16-10.rom", 0x20000, 0x036ee46c, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "o16-09.rom", 0x20000, 0xbed746e3, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "rom11", 0x8000, 0x397eca1b, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_demonwld_1[] =
@@ -586,31 +595,41 @@ static struct DSW_DATA dsw_data_demonwld_2[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO dsw_demonwl1[] =
+static struct DSW_INFO dsw_demonwld[] =
 {
-   { 0x023000, 0x00, dsw_data_hellfire_0 },
-   { 0x023001, 0x00, dsw_data_demonwld_1 },
-   { 0x023002, 0x01, dsw_data_demonwld_2 },
+   { 0, 0x00, dsw_data_hellfire_0 },
+   { 1, 0x00, dsw_data_demonwld_1 },
+   { 2, 0x01, dsw_data_demonwld_2 },
    { 0,        0,    NULL,      },
 };
 
-
+static struct ROM_INFO rom_samesame[] = // clone of fireshrk
+{
+  { "o17_09.8j", 0x08000, 0x3f69e437, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "o17_10.8l", 0x08000, 0x4e723e0a, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "o17_11.7j", 0x20000, 0xbe07d101, REGION_CPU1, 0x040000, LOAD_8_16 },
+  { "o17_12.7l", 0x20000, 0xef698811, REGION_CPU1, 0x040001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
+};
 
 static struct ROM_INFO rom_fireshrk[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
-                   "9.bin",  0xf0c70e6f,       "10.bin",  0x9d253d77),
-  LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
-                  "11.bin",  0x6beac378,       "12.bin",  0x6adb6eb5),
-   {   "o17_05.bin", 0x00020000, 0x565315f8, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {   "o17_06.bin", 0x00020000, 0x95262d4c, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {   "o17_07.bin", 0x00020000, 0x4c4b735c, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {   "o17_08.bin", 0x00020000, 0x95c6586c, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {   "o17_01.bin", 0x00020000, 0xea12e491, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {   "o17_02.bin", 0x00020000, 0x32a13a9f, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {   "o17_03.bin", 0x00020000, 0x68723dc9, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {   "o17_04.bin", 0x00020000, 0xfe0ecb13, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "09.8j", 0x08000, 0xf0c70e6f, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "10.8l", 0x08000, 0x9d253d77, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "o17_11ii.7j", 0x20000, 0x6beac378, REGION_CPU1, 0x040000, LOAD_8_16 },
+  { "o17_12ii.7l", 0x20000, 0x6adb6eb5, REGION_CPU1, 0x040001, LOAD_8_16 },
+  { "hd647180.017", 0x08000, 0x43523032, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "o17_05.12j", 0x20000, 0x565315f8, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "o17_06.13j", 0x20000, 0x95262d4c, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "o17_07.12l", 0x20000, 0x4c4b735c, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "o17_08.13l", 0x20000, 0x95c6586c, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "o17_01.1d", 0x20000, 0xea12e491, REGION_GFX2, 0x00000, LOAD_8_16 },
+  { "o17_02.3d", 0x20000, 0x32a13a9f, REGION_GFX2, 0x00001, LOAD_8_16 },
+  { "o17_03.5d", 0x20000, 0x68723dc9, REGION_GFX2, 0x40000, LOAD_8_16 },
+  { "o17_04.7d", 0x20000, 0xfe0ecb13, REGION_GFX2, 0x40001, LOAD_8_16 },
+//  { "prom14.25b", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
+//  { "prom15.20c", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_fire_shark_2[] =
@@ -637,29 +656,10 @@ static struct DSW_DATA dsw_data_fire_shark_2[] =
 
 static struct DSW_INFO dsw_fireshrk[] =
 {
-   { 0x023000, 0x00, dsw_data_hellfire_0 },
-   { 0x023001, 0x00, dsw_data_fire_shark_1 },
-   { 0x023002, 0x00, dsw_data_fire_shark_2 },
+   { 0, 0x00, dsw_data_hellfire_0 },
+   { 1, 0x00, dsw_data_fire_shark_1 },
+   { 2, 0x00, dsw_data_fire_shark_2 },
    { 0,        0,    NULL,      },
-};
-
-
-
-static struct ROM_INFO rom_samesame[] =
-{
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00008000,
-              "o17_09.bin",  0x3f69e437,   "o17_10.bin",  0x4e723e0a),
-  LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
-              "o17_11.bin",  0xbe07d101,   "o17_12.bin",  0xef698811),
-   {   "o17_05.bin", 0x00020000, 0x565315f8, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {   "o17_06.bin", 0x00020000, 0x95262d4c, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {   "o17_07.bin", 0x00020000, 0x4c4b735c, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {   "o17_08.bin", 0x00020000, 0x95c6586c, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {   "o17_01.bin", 0x00020000, 0xea12e491, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {   "o17_02.bin", 0x00020000, 0x32a13a9f, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {   "o17_03.bin", 0x00020000, 0x68723dc9, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {   "o17_04.bin", 0x00020000, 0xfe0ecb13, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct DSW_DATA dsw_data_samesame_1[] =
@@ -712,105 +712,77 @@ static struct DSW_DATA dsw_data_same_same_same_2[] =
 
 static struct DSW_INFO dsw_samesame[] =
 {
-   { 0x023000, 0x00, dsw_data_rally_bike_0 },
-   { 0x023001, 0x00, dsw_data_samesame_1 },
-   { 0x023002, 0xf0, dsw_data_same_same_same_2 },
+   { 0, 0x00, dsw_data_rally_bike_0 },
+   { 1, 0x00, dsw_data_samesame_1 },
+   { 2, 0xf0, dsw_data_same_same_same_2 },
    { 0,        0,    NULL,      },
 };
 
-
-
 static struct ROM_INFO rom_hellfire[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-              "b90-14.bin",  0x101df9f5,   "b90-15.bin",  0xe67fd452),
-   {   "b90-04.bin", 0x00020000, 0xea6150fc, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {   "b90-05.bin", 0x00020000, 0xbb52c507, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {   "b90-06.bin", 0x00020000, 0xcf5b0252, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {   "b90-07.bin", 0x00020000, 0xb98af263, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {   "b90-11.bin", 0x00020000, 0xc33e543c, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {   "b90-10.bin", 0x00020000, 0x35fd1092, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {   "b90-09.bin", 0x00020000, 0xcf01009e, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {   "b90-08.bin", 0x00020000, 0x3404a5e3, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {   "b90-03.bin", 0x00008000, 0x4058fa67, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "b90_14.0", 0x20000, 0x101df9f5, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "b90_15.1", 0x20000, 0xe67fd452, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "b90_03.2", 0x8000, 0x4058fa67, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { "b90_04.3", 0x20000, 0xea6150fc, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "b90_05.4", 0x20000, 0xbb52c507, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "b90_06.5", 0x20000, 0xcf5b0252, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "b90_07.6", 0x20000, 0xb98af263, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "b90_11.10", 0x20000, 0xc33e543c, REGION_GFX2, 0x00000, LOAD_8_16 },
+  { "b90_10.9", 0x20000, 0x35fd1092, REGION_GFX2, 0x00001, LOAD_8_16 },
+  { "b90_09.8", 0x20000, 0xcf01009e, REGION_GFX2, 0x40000, LOAD_8_16 },
+  { "b90_08.7", 0x20000, 0x3404a5e3, REGION_GFX2, 0x40001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_hell_fire_2[] =
 {
-   { _("Language"),              0x0F, 0x10 },
-   { "0",                     0x00},
-   { "1",                     0x01},
-   { "2",                     0x02},
-   { "3",                     0x03},
-   { "4",                     0x04},
-   { "5",                     0x05},
-   { "6",                     0x06},
-   { "7",                     0x07},
-   { "8",                     0x08},
-   { "9",                     0x09},
-   { _("A"),                     0x0A},
-   { _("B"),                     0x0B},
-   { _("C"),                     0x0C},
-   { _("D"),                     0x0D},
-   { _("E"),                     0x0E},
-   { _("F"),                     0x0F},
+   { _("Territory"),   0x03, 3 },
+   { _("Europe") , 0x02},
+   { _("US") , 0x01},
+   { _("Japan") , 0x00},
    { NULL,                    0,   },
 };
 
 static struct DSW_INFO dsw_hellfire[] =
 {
-   { 0x023000, 0x00, dsw_data_hellfire_0 },
-   { 0x023001, 0x00, dsw_data_hellfire_1 },
-   { 0x023002, 0x00, dsw_data_hell_fire_2 },
+   { 0, 0x00, dsw_data_hellfire_0 },
+   { 1, 0x00, dsw_data_hellfire_1 },
+   { 2, 0x02, dsw_data_hell_fire_2 },
    { 0,        0,    NULL,      },
 };
 
-
-
 static struct ROM_INFO rom_truxton[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-              "b65_11.bin",  0x1a62379a,   "b65_10.bin",  0xaff5195d),
-   {   "b65_08.bin", 0x00020000, 0xd2315b37, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {   "b65_07.bin", 0x00020000, 0xfb83252a, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {   "b65_06.bin", 0x00020000, 0x36cedcbe, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {   "b65_05.bin", 0x00020000, 0x81cd95f1, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {   "b65_04.bin", 0x00020000, 0x8c6ff461, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {   "b65_03.bin", 0x00020000, 0x58b1350b, REGION_GFX2, 0x020000, LOAD_NORMAL, },
-   {   "b65_02.bin", 0x00020000, 0x1dd55161, REGION_GFX2, 0x040000, LOAD_NORMAL, },
-   {   "b65_01.bin", 0x00020000, 0xe974937f, REGION_GFX2, 0x060000, LOAD_NORMAL, },
-   {   "b65_09.bin", 0x00008000, 0xf1c0f410, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "b65_11.bin", 0x20000, 0x1a62379a, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "b65_10.bin", 0x20000, 0xaff5195d, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "b65_09.bin", 0x4000, 0x1bdd4ddc, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  { "b65_08.bin", 0x20000, 0xd2315b37, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "b65_07.bin", 0x20000, 0xfb83252a, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "b65_06.bin", 0x20000, 0x36cedcbe, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "b65_05.bin", 0x20000, 0x81cd95f1, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "b65_04.bin", 0x20000, 0x8c6ff461, REGION_GFX2, 0x00000, LOAD_8_16 },
+  { "b65_03.bin", 0x20000, 0x58b1350b, REGION_GFX2, 0x00001, LOAD_8_16 },
+  { "b65_02.bin", 0x20000, 0x1dd55161, REGION_GFX2, 0x40000, LOAD_8_16 },
+  { "b65_01.bin", 0x20000, 0xe974937f, REGION_GFX2, 0x40001, LOAD_8_16 },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_truxton_2[] =
 {
-   { _("Language"),              0x0F, 0x10 },
-   { "0",                     0x00},
-   { "1",                     0x01},
-   { "2",                     0x02},
-   { "3",                     0x03},
-   { "4",                     0x04},
-   { "5",                     0x05},
-   { "6",                     0x06},
-   { "7",                     0x07},
-   { "8",                     0x08},
-   { "9",                     0x09},
-   { _("A"),                     0x0A},
-   { _("B"),                     0x0B},
-   { _("C"),                     0x0C},
-   { _("D"),                     0x0D},
-   { _("E"),                     0x0E},
-   { _("F"),                     0x0F},
+  { _("Territory"), 0x07, 6 },
+  { _("Europe") , 0x02},
+  { _("US") , 0x05},
+  { _("USA Romstar License") , 0x01},
+  { _("Japan") , 0x00},
+  // higher bits unused
    { NULL,                    0,   },
 };
 
 static struct DSW_INFO dsw_truxton[] =
 {
-   { 0x023003, 0x00, dsw_data_rally_bike_0 },
-   { 0x023004, 0x00, dsw_data_truxton_1 },
-   { 0x023005, 0x00, dsw_data_truxton_2 },
+   { 3, 0x00, dsw_data_rally_bike_0 },
+   { 4, 0x00, dsw_data_truxton_1 },
+   { 5, 0x02, dsw_data_truxton_2 },
    { 0,        0,    NULL,      },
 };
 
@@ -878,8 +850,6 @@ static UINT8 *GFX_BG0_SOLID;
 
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
-
-static UINT16 scroll_offsx;
 
 /******************************************************************************/
 /*  VCU CHIP                                                                  */
@@ -1117,7 +1087,7 @@ static void tp_vblank_ww(UINT32 offset, UINT16 data)
 }
 
 static int bg_x_ofs;
-static int bg_y_ofs;
+static int bg_y_ofs,dy;
 
 static void tp1vcu_ofsreg_ww(UINT32 offset, UINT16 data)
 {
@@ -1234,7 +1204,7 @@ static UINT8 tp1_z80_rb(UINT32 offset)
    offset  &= 0xFFF;
    offset >>= 1;
 
-   return Z80ROM[0x8000 + offset];
+   return Z80RAM[ offset];
 }
 
 static UINT16 tp1_z80_rw(UINT32 offset)
@@ -1242,7 +1212,7 @@ static UINT16 tp1_z80_rw(UINT32 offset)
    offset  &= 0xFFF;
    offset >>= 1;
 
-   return (UINT16) (Z80ROM[0x8000 + offset]);
+   return (UINT16) (Z80RAM[ offset]);
 }
 
 static void tp1_z80_wb(UINT32 offset, UINT8 data)
@@ -1250,7 +1220,7 @@ static void tp1_z80_wb(UINT32 offset, UINT8 data)
    offset  &= 0xFFF;
    offset >>= 1;
 
-   Z80ROM[0x8000 + offset] = data;
+   Z80RAM[ offset] = data;
 }
 
 static void tp1_z80_ww(UINT32 offset, UINT16 data)
@@ -1258,7 +1228,7 @@ static void tp1_z80_ww(UINT32 offset, UINT16 data)
    offset  &= 0xFFF;
    offset >>= 1;
 
-   Z80ROM[0x8000 + offset] = (UINT8) (data&0xFF);
+   Z80RAM[ offset] = (UINT8) (data&0xFF);
 }
 
 static UINT8 zero_wing_port_rb(UINT16 offset)
@@ -1397,7 +1367,8 @@ static UINT8 outzone_port_rb(UINT16 offset)
 {
    switch(offset&0xFF){
       case 0x00:
-         return YM3812ReadZ80(0);
+      case 1:
+         return YM3812ReadZ80(offset);
       break;
       case 0x08:
          return get_dsw(0);
@@ -1494,6 +1465,7 @@ static char *layer_id_name[5] =
 static int tp1_setup_gfx() {
   GFX_BG0 = NULL;
   if(!(TileQueue = (struct TILE_Q *) AllocateMem(sizeof(TILE_Q)*MAX_TILES)))return -1;
+  AddResetHandler(&quiet_reset_handler);
   return 0;
 }
 
@@ -1529,7 +1501,7 @@ static void tp1_finish_setup_gfx() {
 static void load_vimana()
 {
    romset = 0;
-   scroll_offsx = 0x1ef;
+   dy = 0;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -1628,11 +1600,13 @@ static void load_vimana()
 static void load_outzone(void)
 {
    romset = 2;
-   scroll_offsx = 0x1ef;
+   dy = 0;
 
    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,fps));
 
    if(!(RAM=AllocateMem(0x80000)))return;
+   Z80RAM = RAM + 0x40000;
+   memset(Z80RAM,0,0x8000);
    if (tp1_setup_gfx()) return;
 
    memset(RAM+0x00000,0x00,0x40000);
@@ -1640,8 +1614,6 @@ static void load_outzone(void)
 
    /* Sound Setup */
 
-   Z80ROM=RAM+0x40000;
-   if(!load_rom("rom9.bin", Z80ROM, 0x08000)) return;
 /*
    // Fix Checksum
 
@@ -1661,28 +1633,19 @@ static void load_outzone(void)
 
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
-
-   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+   AddZ80AReadByte(0x0000, 0x7fff, NULL,                Z80ROM+0x0000); // Z80 ROM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
 
    AddZ80AReadPort(0x00, 0xFF, outzone_port_rb,         NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, outzone_port_wb,        NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
 
-   AddZ80AInit();
+   finish_conf_z80_ports(0);
 
    // Kill the annoying reset instruction
 
-   WriteWord68k(&ROM[0x124bc],0x4E71);          // nop
+   // WriteWord68k(&ROM[0x13930],0x4E71);          // nop
 /*
    // Something failed a test
 
@@ -1698,61 +1661,37 @@ static void load_outzone(void)
  */
 
    ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x240000, 0x243FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x304000, 0x3047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x306000, 0x3067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_rom(0,0,0x3ffff, ROM);
+   add_68000_ram(0,0x240000, 0x243fff,RAM);
+   add_68000_ram(0,0x304000, 0x3047FF,RAM + 0x10000);
+   add_68000_ram(0,0x306000, 0x3067FF,RAM + 0x10800);
    AddReadByte(0x100000, 0x10000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x200000, 0x20001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x300000, 0x30000F, tp_vblank_rb, NULL);                 // VSYNC
    AddReadByte(0x140000, 0x140FFF, tp1_z80_rb, NULL);                   // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x240000, 0x243FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x304000, 0x3047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x306000, 0x3067FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0x100000, 0x10000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x200000, 0x20001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x300000, 0x30000F, tp_vblank_rw, NULL);                 // VSYNC
    AddReadWord(0x140000, 0x140FFF, tp1_z80_rw, NULL);                   // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x240000, 0x243FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x304000, 0x3047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x306000, 0x3067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x300000, 0x30000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0x140000, 0x140FFF, tp1_z80_wb, NULL);                  // SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x240000, 0x243FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x304000, 0x3047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x306000, 0x3067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0x100000, 0x10000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x200000, 0x20001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x300000, 0x30000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x140000, 0x140FFF, tp1_z80_ww, NULL);                  // SOUND COMM
    AddWriteWord(0x340000, 0x340003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   finish_conf_68000(0);
 }
 
 static void load_rallybik(void)
 {
    romset = 3;
-   scroll_offsx = 0x1ef;
+   dy = 0;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -1760,10 +1699,7 @@ static void load_rallybik(void)
    memset(RAM+0x00000,0x00,0x40000);
    RAMSize=0x40000+0x10000;
 
-   /* Sound Setup */
-
-   Z80ROM=RAM+0x40000;
-   if(!load_rom("b45-05.rom", Z80ROM, 0x08000)) return;
+   Z80RAM=RAM+0x40000;
 /*
    // Fix Checksum
 
@@ -1783,24 +1719,14 @@ static void load_rallybik(void)
 
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
-
-   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+   AddZ80AReadByte(0x0000, 0x7fff, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
 
    AddZ80AReadPort(0x00, 0xFF, truxton_port_rb,         NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, truxton_port_wb,        NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
-
-   AddZ80AInit();
+   finish_conf_z80_ports(0);
 
    // Something failed a test
 
@@ -1875,7 +1801,7 @@ static void load_rallybik(void)
 static void load_zerowing(void)
 {
    romset = 4;
-   scroll_offsx = 0x1ef;
+   dy = 16;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -1883,10 +1809,7 @@ static void load_zerowing(void)
    RAMSize=0x40000+0x10000;
    memset(RAM+0x00000,0x00,RAMSize);
 
-   /* Sound Setup */
-
-   Z80ROM=RAM+0x40000;
-   if(!load_rom("o15-13.rom", Z80ROM, 0x08000)) return;
+   Z80RAM=RAM+0x40000;
 /*
    // Fix Checksum
 
@@ -1906,103 +1829,73 @@ static void load_zerowing(void)
 
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
-
-   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+   AddZ80AReadByte(0x0000, 0x7fFF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
 
    AddZ80AReadPort(0x00, 0xFF, zero_wing_port_rb,       NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, zero_wing_port_wb,      NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
+   finish_conf_z80_ports(0);
 
-   AddZ80AInit();
-
+   // Actually the game works very well without these hacks now, even the speed hack is not really needed...
+   // But speed hacks are fun ! ;-)
+#if 1
    // Kill the annoying reset instruction
 
-   WriteWord68k(&ROM[0x0023C],0x4E71);          // nop
+   WriteWord68k(&ROM[0x00236],0x4E71);          // nop
 
    // Fix rom checksum
 
-   WriteLong68k(&ROM[0x004DA],0x4E714E71);      // nop
+   WriteLong68k(&ROM[0x00568],0x4E714E71);      // nop
 
    // Fix sound error
 
-   WriteLong68k(&ROM[0x004E6],0x4E714E71);      // nop
-   WriteLong68k(&ROM[0x0050C],0x4E714E71);      // nop
+   // WriteLong68k(&ROM[0x004E6],0x4E714E71);      // nop
+   // WriteLong68k(&ROM[0x0050C],0x4E714E71);      // nop
 
    // 68000 speed hack
 
-   WriteLong68k(&ROM[0x17918],0x13FC0000);
-   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+   WriteLong68k(&ROM[0x5a0a],0x13FC0000);
+   WriteLong68k(&ROM[0x5a0a+4],0x00AA0000);
+#endif
 
 /*
  *  StarScream Stuff follows
  */
 
    ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_rom(0,0x000000, 0x07FFFF, ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0x080000, 0x083FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x404000, 0x4047FF, RAM+0x010000);                 // COLOR RAM
+   add_68000_ram(0,0x406000, 0x4067FF, RAM+0x010800);                 // COLOR RAM
    AddReadByte(0x4C0000, 0x4C000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x480000, 0x48001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x400000, 0x40000F, tp_vblank_rb, NULL);                 // VSYNC
    AddReadByte(0x440000, 0x440FFF, tp1_z80_rb, NULL);                   // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0x4C0000, 0x4C000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x480000, 0x48001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x400000, 0x40000F, tp_vblank_rw, NULL);                 // VSYNC
    AddReadWord(0x440000, 0x440FFF, tp1_z80_rw, NULL);                   // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x400000, 0x40000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0x440000, 0x440FFF, tp1_z80_wb, NULL);                  // SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0x4C0000, 0x4C000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x480000, 0x48001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x400000, 0x40000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x440000, 0x440FFF, tp1_z80_ww, NULL);                  // SOUND COMM
    AddWriteWord(0x0c0000, 0x0c0003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   finish_conf_68000(0);
 }
 
-static void load_demonwl1(void)
+static void load_demonwld(void)
 {
    romset = 5;
-   scroll_offsx = 0x1ef;
+   dy = 16;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -2012,8 +1905,7 @@ static void load_demonwl1(void)
 
    /* Sound Setup */
 
-   Z80ROM=RAM+0x40000;
-   if(!load_rom("rom11", Z80ROM, 0x08000)) return;
+   Z80RAM=RAM+0x40000;
 /*
    // Fix Checksum
 
@@ -2033,24 +1925,14 @@ static void load_demonwl1(void)
 
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
-
-   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+   AddZ80AReadByte(0x0000, 0x7fff, NULL,                Z80ROM+0x0000); // Z80 ROM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
 
    AddZ80AReadPort(0x00, 0xFF, demons_world_port_rb,    NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, demons_world_port_wb,   NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
-
-   AddZ80AInit();
+   finish_conf_z80_ports(0);
 
    // Kill the annoying reset instruction
 /*
@@ -2060,82 +1942,67 @@ static void load_demonwl1(void)
 
    WriteLong68k(&ROM[0x004DA],0x4E714E71);      // nop
 */
-   // Fix sound error
+    if (is_current_game("demonwld2")) {
+	// 68000 speed hack
 
-   WriteLong68k(&ROM[0x0188C],0x4E714E71);      // nop
-   WriteLong68k(&ROM[0x018B2],0x4E714E71);      // nop
+	WriteLong68k(&ROM[0x454a],0x13FC0000);
+	WriteLong68k(&ROM[0x454a+4],0x00AA0000);
 
-/*
-   // 68000 speed hack
+	// Fix protection/mcu?
+	// Yeah that's what mame calls a "dsp"
+	// never saw such a useless dsp !
+	// In this case it's a very low level mcu, a shame for a so-called dsp !
 
-   WriteLong68k(&ROM[0x17918],0x13FC0000);
-   WriteLong68k(&ROM[0x1791C],0x00AA0000);
-*/
-   // Fix protection/mcu?
-
-   WriteWord68k(&ROM[0x0181C],0x4E71);
-   WriteWord68k(&ROM[0x01824],0x600A);
+	WriteWord68k(&ROM[0x0181C],0x4E71);
+	WriteWord68k(&ROM[0x01824],0x600A);
+    } else if (is_current_game("demonwld")) {
+	// dsp
+	WriteWord68k(&ROM[0x01430],0x4E71);
+	WriteWord68k(&ROM[0x01438],0x600A);
+	// checksum
+	WriteWord68k(&ROM[0x0145e],0x4E71);
+	WriteWord68k(&ROM[0x01474],0x6020);
+	// speed hack
+	WriteLong68k(&ROM[0x439c],0x13FC0000);
+	WriteLong68k(&ROM[0x439c+4],0x00AA0000);
+    }
 
 /*
  *  StarScream Stuff follows
  */
 
    ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_rom(0,0x000000, 0x03FFFF, ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0xC00000, 0xC03FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x404000, 0x4047FF, RAM+0x010000);                 // COLOR RAM
+   add_68000_ram(0,0x406000, 0x4067FF, RAM+0x010800);                 // COLOR RAM
    AddReadByte(0xA00000, 0xA0000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x800000, 0x80001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x400000, 0x40000F, tp_vblank_rb, NULL);                 // VSYNC
    AddReadByte(0x600000, 0x600FFF, tp1_z80_rb, NULL);                   // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0xA00000, 0xA0000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x800000, 0x80001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x400000, 0x40000F, tp_vblank_rw, NULL);                 // VSYNC
    AddReadWord(0x600000, 0x600FFF, tp1_z80_rw, NULL);                   // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x400000, 0x40000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0x600000, 0x600FFF, tp1_z80_wb, NULL);                  // SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0xC00000, 0xC03FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0xA00000, 0xA0000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x800000, 0x80001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x400000, 0x40000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x600000, 0x600FFF, tp1_z80_ww, NULL);                  // SOUND COMM
    AddWriteWord(0xE00000, 0xE00003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   finish_conf_68000(0);
 }
 
 static void load_fireshrk(void)
 {
    romset = 6;
-   scroll_offsx = 0x1ef;
+   dy = 0;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -2183,61 +2050,37 @@ static void load_fireshrk(void)
  */
 
    ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   add_68000_rom(0,0x000000, 0x07FFFF, ROM+0x000000);                 // 68000 ROM
    //AddReadBW(0x000000, 0x00ffff, NULL, ROM+0x000000);                 // 68000 ROM
    //AddReadBW(0x040000, 0x07FFFF, NULL, ROM+0x040000);                 // 68000 ROM
-   AddReadByte(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x104000, 0x1047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x106000, 0x1067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_ram(0,0x0C0000, 0x0C3FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x104000, 0x1047FF, RAM+0x010000);                 // COLOR RAM
+   add_68000_ram(0,0x106000, 0x1067FF, RAM+0x010800);                 // COLOR RAM
    AddReadByte(0x1C0000, 0x1C000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x180000, 0x18001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x100000, 0x100001, tp_vblank_rb, NULL);                 // VSYNC
    AddReadByte(0x140000, 0x140FFF, fshark_z80_rb, NULL);                // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x104000, 0x1047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x106000, 0x1067FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0x1C0000, 0x1C000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x180000, 0x18001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x100000, 0x10000F, tp_vblank_rw, NULL);                 // VSYNC
    AddReadWord(0x140000, 0x140FFF, fshark_z80_rw, NULL);                // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x104000, 0x1047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x106000, 0x1067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x100000, 0x10000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x0C0000, 0x0C3FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x104000, 0x1047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x106000, 0x1067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0x1C0000, 0x1C000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x180000, 0x18001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x100000, 0x10000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x080000, 0x080007, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   finish_conf_68000(0);
 }
 
 static void load_hellfire(void)
 {
    romset = 8;
-   scroll_offsx = 0x1ef;
+   dy = 16;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -2247,8 +2090,7 @@ static void load_hellfire(void)
 
    /* Sound Setup */
 
-   Z80ROM=RAM+0x40000;
-   if(!load_rom("b90-03.bin", Z80ROM, 0x08000)) return;
+   Z80RAM=RAM+0x40000;
 /*
    // Fix Checksum
 
@@ -2268,24 +2110,14 @@ static void load_hellfire(void)
 
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x87FF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,       NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                NULL);
-
-   AddZ80AWriteByte(0x8000, 0x87FF, NULL,               Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,     NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,               NULL);
+   AddZ80AReadByte(0x0000, 0x7fFF, NULL,                Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
 
    AddZ80AReadPort(0x00, 0xFF, hell_fire_port_rb,       NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, hell_fire_port_wb,      NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
-
-   AddZ80AInit();
+   finish_conf_z80_ports(0);
 
    // Kill the annoying reset instruction
 /*
@@ -2316,61 +2148,37 @@ static void load_hellfire(void)
  */
 
    ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x040000, 0x043FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x084000, 0x0847FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x086000, 0x0867FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_rom(0,0x000000, 0x03FFFF, ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0x040000, 0x043FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x084000, 0x0847FF, RAM+0x010000);                 // COLOR RAM
+   add_68000_ram(0,0x086000, 0x0867FF, RAM+0x010800);                 // COLOR RAM
    AddReadByte(0x140000, 0x14000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x100000, 0x10001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x080000, 0x08000F, tp_vblank_rb, NULL);                 // VSYNC
    AddReadByte(0x0C0000, 0x0C0FFF, tp1_z80_rb, NULL);                   // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x040000, 0x043FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x084000, 0x0847FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x086000, 0x0867FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0x140000, 0x14000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x100000, 0x10001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x080000, 0x08000F, tp_vblank_rw, NULL);                 // VSYNC
    AddReadWord(0x0C0000, 0x0C0FFF, tp1_z80_rw, NULL);                   // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x040000, 0x043FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x084000, 0x0847FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x086000, 0x0867FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x080000, 0x08000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0x0C0000, 0x0C0FFF, tp1_z80_wb, NULL);                  // SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x040000, 0x043FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x084000, 0x0847FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x086000, 0x0867FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0x140000, 0x14000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x100000, 0x10001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x080000, 0x08000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x0C0000, 0x0C0FFF, tp1_z80_ww, NULL);                  // SOUND COMM
    AddWriteWord(0x180000, 0x180003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+    finish_conf_68000(0);
 }
 
 static void load_truxton(void)
 {
    romset = 9;
-   scroll_offsx = 0x1ef;
+   dy = 0;
 
    if(!(RAM=AllocateMem(0x80000)))return;
    if (tp1_setup_gfx()) return;
@@ -2380,8 +2188,7 @@ static void load_truxton(void)
 
    /* Sound Setup */
 
-   Z80ROM=RAM+0x40000;
-   if(!load_rom("b65_09.bin", Z80ROM, 0x08000)) return;
+   Z80RAM=RAM+0x40000;
 /*
    // Fix Checksum
 
@@ -2401,24 +2208,15 @@ static void load_truxton(void)
 
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x87FF, NULL,                        Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,               NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                        NULL);
-
-   AddZ80AWriteByte(0x8000, 0x87FF, NULL,                       Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,                       NULL);
+   AddZ80AReadByte(0x0000, 0x7fff, NULL,                        Z80ROM+0x0000); // Z80 ROM/RAM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
 
    AddZ80AReadPort(0x00, 0xFF, truxton_port_rb,         NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, truxton_port_wb,        NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
 
-   AddZ80AInit();
+   finish_conf_z80_ports(0);
 
    // 68000 speed hack
 
@@ -2451,55 +2249,31 @@ static void load_truxton(void)
  */
 
    ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x20000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x144000, 0x1447FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x146000, 0x1467FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_rom(0,0x000000, 0x03FFFF, ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0x080000, 0x083FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x144000, 0x1447FF, RAM+0x010000);                 // COLOR RAM
+   add_68000_ram(0,0x146000, 0x1467FF, RAM+0x010800);                 // COLOR RAM
    AddReadByte(0x0C0000, 0x0C000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x100000, 0x10001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x140000, 0x14000F, tp_vblank_rb, NULL);                 // VSYNC
    AddReadByte(0x180000, 0x180FFF, tp1_z80_rb, NULL);                   // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x144000, 0x1447FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x146000, 0x1467FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0x0C0000, 0x0C000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x100000, 0x10001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x140000, 0x14000F, tp_vblank_rw, NULL);                 // VSYNC
    AddReadWord(0x180000, 0x180FFF, tp1_z80_rw, NULL);                   // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x144000, 0x1447FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x146000, 0x1467FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x140000, 0x14000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0x180000, 0x180FFF, tp1_z80_wb, NULL);                  // SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x083FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x144000, 0x1447FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x146000, 0x1467FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0x0C0000, 0x0C000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x100000, 0x10001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x140000, 0x14000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x180000, 0x180FFF, tp1_z80_ww, NULL);                  // SOUND COMM
    AddWriteWord(0x1C0000, 0x1C0003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   finish_conf_68000(0);
 }
 
 static void execute_fireshrk(void)
@@ -2519,8 +2293,9 @@ static void execute_fireshrk(void)
 static void execute_outzone(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 16MHz (60fps) (real game is only ??MHz)
-   if(want_int)
+   if(want_int){
       cpu_interrupt(CPU_68K_0, 4);
+   }
 
    execute_z80_audio_frame();
 }
@@ -2671,12 +2446,12 @@ static void DrawToaplan1(void)
      x1 = ReadWord(&tp1vcu[0].SCROLL[0+(layer<<2)])>>7;
      // There was an exception for outzone (romset 2)
      // But it's better without it !
-     x1 += scroll_offsx - bg_x_ofs + (6-layer*2);
+     x1 += 0x1ef + 6-2*layer - bg_x_ofs;
      // x1 += x_ofs[layer];
      x1 &= 0x1FF;
 
      y1 = ReadWord(&tp1vcu[0].SCROLL[2+(layer<<2)])>>7;
-     y1 += (0x101 - bg_y_ofs);
+     y1 += (0x101 - bg_y_ofs) + dy;
      y1 &= 0x1FF;
 
      //-(scr_ofs[romset][0+(layer<<1)]),
@@ -2764,7 +2539,7 @@ static void DrawToaplan1(void)
 	 ta = (ReadWord(&RAM_BG[zz+0])&tile_mask);
 
 	 x = ((ReadWord(&RAM_BG[zz+4])>>7)+32) & OBJ_X_MASK;
-	 y = ((ReadWord(&RAM_BG[zz+6])>>7)+32) & OBJ_Y_MASK;
+	 y = ((ReadWord(&RAM_BG[zz+6])>>7)+32-dy) & OBJ_Y_MASK;
 
 	 MAP_PALETTE_MAPPED_NEW(
 				(ctrl&0x3F)|0x40,
@@ -2834,7 +2609,7 @@ static struct VIDEO_INFO video_outzone =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
-   outzone_gfx,
+   toaplan1_gfx,
    55.16
 };
 static struct VIDEO_INFO video_rallybik =
@@ -2859,19 +2634,18 @@ static struct VIDEO_INFO video_vimana =
    vimana_gfx,
    57.61
 };
-static struct DIR_INFO dir_demonwl1[] =
+static struct DIR_INFO dir_demonwld[] =
 {
    { "demons_world", },
    { "demonwld", },
-   { "demonwl1", },
    { NULL, },
 };
-GAME( demonwl1, "Demon's World", TOAPLAN, 1989, GAME_SHOOT,
-	.dsw = dsw_demonwl1,
-	.video = &video_hellfire,
-	.exec = execute_outzone,
+#define video_demonwld video_hellfire
+#define execute_demonwld execute_outzone
+GME( demonwld, "Demon's World / Horror story (set 1)", TOAPLAN, 1989, GAME_SHOOT,
 	.board = "TP016",
 );
+CLNEI( demonwld2,demonwld,"Demon's World / Horror Story (set 3/old raine version)",TOAPLAN,1989, GAME_PLATFORM );
 static struct DIR_INFO dir_fireshrk[] =
 {
    { "fire_shark", },
@@ -2894,15 +2668,11 @@ GAME( hellfire, "Hell Fire", TOAPLAN, 1989, GAME_SHOOT,
 	.exec = execute_outzone,
 	.board = "B90",
 );
-static struct DIR_INFO dir_outzone[] =
-{
-   { "outzone", },
-   { "outzoneb", },
-   { NULL, },
-};
-GME( outzone, "Outzone", TOAPLAN, 1990, GAME_SHOOT,
-	.board = "TP018",
-);
+GMEI( outzone,"Out Zone",TOAPLAN,1990, GAME_SHOOT,
+	.board = "TP018",);
+CLNEI( outzoneh,outzone,"Out Zone (harder)",TOAPLAN,1990, GAME_SHOOT );
+CLNEI( outzonec,outzone,"Out Zone (oldest set)",TOAPLAN,1990, GAME_SHOOT );
+// CLNEI( outzonecv,outzone,"Out Zone (Zero Wing TP-015 PCB conversion)",TOAPLAN,1990, GAME_SHOOT );
 static struct DIR_INFO dir_rallybik[] =
 {
    { "rally_bike", },
@@ -2973,7 +2743,7 @@ static struct DIR_INFO dir_zerowing[] =
    { "zerowing", },
    { NULL, },
 };
-GAME( zerowing, "Zero Wing", TOAPLAN, 1989, GAME_SHOOT,
+GAME( zerowing, "Zero Wing (2p set)", TOAPLAN, 1989, GAME_SHOOT,
 	.dsw = dsw_zerowing,
 	.video = &video_hellfire,
 	.exec = execute_outzone,
