@@ -2462,6 +2462,11 @@ static void DrawToaplan1(void)
 				MAP
 				);
 
+	 // priority : it's in the 4 highest bits, here bit 0 is kept to make the difference between
+	 // layers (bit0 = 1) and sprites (bit0 = 0)
+	 // this way sprites of same priority are drawn behind layers, it shows when entering a highscore in hellfire
+	 // the letters are in a layer, and a sprite with the same priority serves as a cursor. Here if you draw the sprite over the layer, you hide the character.
+	 // So I draw the layer on top, didn't find any place where it's a problem yet, there shouldn't be any.
 	 pri = ((pri >> 11) & 0x1E)|1;
 	 QueueTile(ta, x, y, MAP, pri);
 #if 0
@@ -2663,7 +2668,7 @@ static struct DIR_INFO dir_truxton[] =
    { "truxton", },
    { NULL, },
 };
-GAME( truxton, "Tatsujin", TOAPLAN, 1988, GAME_SHOOT,
+GAME( truxton, "Truxton / Tatsujin", TOAPLAN, 1988, GAME_SHOOT,
 	.dsw = dsw_truxton,
 	.video = &video_fireshrk,
 	.exec = execute_outzone,
