@@ -261,17 +261,6 @@ static gfx_layout rallybik_spr_layout =
 	32*8	/* every sprite takes 32 consecutive bytes */
 };
 
-static gfx_layout vm_tilelayout =
-{
-	8,8,	/* 8x8 */
-	32768,	/* 32768 tiles */
-	4,		/* 4 bits per pixel */
-	{ 8*0x80000+8, 8*0x80000, 8, 0 },
-	{ 0, 1, 2, 3, 4, 5, 6, 7 },
-	{ 0, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70 },
-	128
-};
-
 static struct GFX_LIST toaplan1_gfx[] =
 {
    { REGION_GFX1, &tilelayout, },
@@ -314,14 +303,6 @@ static struct ROM_INFO rom_vimana[] =         /* From board serial number 1547.0
   { "vim2.bin", 0x80000, 0x1dbfc118, REGION_GFX2, 0x80000, LOAD_NORMAL },
   { "tp019-09.bpr", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
   { "tp019-10.bpr", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_vimanan[] = // clone of vimana
-{
-  { "tp019-07.rom", 0x20000, 0x78888ff2, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "tp019-08.rom", 0x20000, 0x6cd2dc3c, REGION_CPU1, 0x000001, LOAD_8_16 },
-	/* sound CPU is a HD647180 (Z180) with internal ROM */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1095,59 +1076,6 @@ static void tp1vcu_ofsreg_ww(UINT32 offset, UINT16 data)
   }
 }
 
-
-/******************************************************************************/
-/*  Z80 CUSTOM (not dumped)                                                   */
-/******************************************************************************/
-
-static UINT8 vimana_z80_rb(UINT32 offset)
-{
-   UINT16 ret;
-
-   offset |= 1;
-
-   switch(offset&0xFF){
-      case 0x01:                        // sound comm?
-         ret = 0xFF;
-      break;
-      case 0x03:                        // sound comm?
-         ret = 0x00;
-      break;
-      case 0x05:                        // credits
-         ret = 0x01;
-      break;
-      case 0x07:                        // dswa
-         ret = get_dsw(0);
-      break;
-      case 0x09:                        // misc input
-         ret = RAM[0x023003];
-      break;
-      case 0x0B:                        // p1 input
-	  ret = RAM[0x023004];
-      break;
-      case 0x0D:                        // p2 input
-         ret = RAM[0x023005];
-      break;
-      case 0x0F:                        // dswb
-         ret = get_dsw(1);
-      break;
-      case 0x11:                        // dswc
-         ret = get_dsw(2);
-      break;
-      default:
-         ret = 0x00;
-         print_debug("vimana_z80_rb(%04x)\n", offset&0xFF);
-      break;
-   }
-
-   return ret;
-}
-
-static UINT16 vimana_z80_rw(UINT32 offset)
-{
-   return (UINT16) (vimana_z80_rb(offset|1));
-}
-
 static UINT8 fshark_z80_rb(UINT32 offset)
 {
    UINT16 ret;
@@ -1315,29 +1243,21 @@ static UINT8 truxton_port_rb(UINT16 offset)
 {
    switch(offset&0xFF){
       case 0x00:
-         return RAM[0x023004];
-      break;
+         return RAM[0x023004]; // p1
       case 0x10:
-         return RAM[0x023005];
-      break;
+         return RAM[0x023005]; // p2
       case 0x20:
-         return RAM[0x023003];
-      break;
+         return RAM[0x023003]; // system
       case 0x40:
          return get_dsw(0);
-      break;
       case 0x50:
          return get_dsw(1);
-      break;
       case 0x60:
          return YM3812ReadZ80(0);
-      break;
       case 0x70:
          return get_dsw(2);
-      break;
       default:
          return 0xFF;
-      break;
    }
 }
 
@@ -1350,6 +1270,33 @@ static void truxton_port_wb(UINT16 offset, UINT8 data)
    case 0x61:
      YM3812WriteZ80(1,data);
      break;
+   default:
+     break;
+   }
+}
+
+static UINT8 vimana_port_rb(UINT16 offset)
+{
+   switch(offset&0xFF){
+      case 0x60: return get_dsw(1) ^ 255;
+      case 0x66: return (get_dsw(2) ^ 255)|0xc0;
+      case 0x80: return RAM[0x023004]; // p1
+      case 0x81: return RAM[0x023005]; // p2
+      case 0x82: return get_dsw(0);
+      case 0x83: return RAM[0x023003]; // system
+      case 0x87: return YM3812ReadZ80(0);
+      case 0x8f: return YM3812ReadZ80(1);
+      default:
+         return 0xFF;
+      break;
+   }
+}
+
+static void vimana_port_wb(UINT16 offset, UINT8 data)
+{
+   switch(offset&0xFF){
+   case 0x87: YM3812WriteZ80(0,data); break;
+   case 0x8f: YM3812WriteZ80(1,data); break;
    default:
      break;
    }
@@ -1500,38 +1447,54 @@ static void load_vimana()
 
    memset(RAM+0x00000,0x00,0x40000);
    RAMSize=0x40000+0x10000;
+   Z80RAM = RAM + 0x40000;
+   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,fps));
+
+   // It's a z180, not a z80, but it's worth a try... !
+   AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+
+   AddZ80AReadByte(0x0000, 0x7fff, NULL,                Z80ROM+0x0000); // Z80 ROM
+   AddZ80ARW(0x8000, 0x87ff, NULL, Z80RAM);
+   AddZ80ARW(0xfe00, 0xffff, NULL, Z80RAM+0x800); // more ram
+
+   AddZ80AReadPort(0x00, 0xFF, vimana_port_rb,         NULL);
+
+   AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
+   AddZ80AWritePort(0x00, 0xFF, vimana_port_wb,        NULL);
+
+   finish_conf_z80_ports(0);
 
    if(is_current_game("vimanaj"))
    {
 
-   // Kill the annoying reset instruction
+       // Kill the annoying reset instruction
 
-   WriteWord68k(&ROM[0x1A830],0x4E71);          // nop
+       WriteWord68k(&ROM[0x1A830],0x4E71);          // nop
 
-   // Something failed a test
+       // Something failed a test
 
-   WriteWord68k(&ROM[0x1AA3E],0x4E71);          // nop
+       WriteWord68k(&ROM[0x1AA3E],0x4E71);          // nop
 
-   // 68000 speed hack
+       // 68000 speed hack
 
-   WriteLong68k(&ROM[0x17918],0x13FC0000);
-   WriteLong68k(&ROM[0x1791C],0x00AA0000);
+       WriteLong68k(&ROM[0x17918],0x13FC0000);
+       WriteLong68k(&ROM[0x1791C],0x00AA0000);
 
    }
-   else{
+   else{ // vimana
 
-   // Kill the annoying reset instruction
+       // Kill the annoying reset instruction
 
-   WriteWord68k(&ROM[0x1ab1c],0x4E71);          // nop
+       WriteWord68k(&ROM[0x1ab1c],0x4E71);          // nop
 
-   // Something failed a test
+       // Something failed a test
 
-   WriteWord68k(&ROM[0x1ad2a],0x4E71);          // nop
+       WriteWord68k(&ROM[0x1ad2a],0x4E71);          // nop
 
-   // 68000 speed hack
+       // 68000 speed hack
 
-   WriteLong68k(&ROM[0x17c04],0x13FC0000);
-   WriteLong68k(&ROM[0x17c08],0x00AA0000);
+       WriteLong68k(&ROM[0x17c04],0x13FC0000);
+       WriteLong68k(&ROM[0x17c08],0x00AA0000);
 
    }
 
@@ -1540,53 +1503,33 @@ static void load_vimana()
  */
 
    ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x480000, 0x483FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
+   add_68000_rom(0, 0x000000, 0x03FFFF, ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0, 0x480000, 0x483FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0, 0x404000, 0x4047FF, RAM+0x010000);                 // COLOR RAM
+   add_68000_ram(0, 0x406000, 0x4067FF, RAM+0x010800);                 // COLOR RAM
    AddReadByte(0x0C0000, 0x0C000F, tp1vcu_obj_rb, NULL);                // OBJECT
    AddReadByte(0x4C0000, 0x4C001F, tp1vcu_bg_rb, NULL);                 // LAYER
    AddReadByte(0x400000, 0x40000F, tp_vblank_rb, NULL);                 // VSYNC
-   AddReadByte(0x440000, 0x440FFF, vimana_z80_rb, NULL);                // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
+   // AddReadByte(0x440000, 0x440FFF, vimana_z80_rb, NULL);                // SOUND COMM
+   AddReadByte(0x440000, 0x4407FF, tp1_z80_rb, NULL);                // SOUND COMM
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x480000, 0x483FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                 // COLOR RAM
-   AddReadWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                 // COLOR RAM
    AddReadWord(0x0C0000, 0x0C000F, tp1vcu_obj_rw, NULL);                // OBJECT
    AddReadWord(0x4C0000, 0x4C001F, tp1vcu_bg_rw, NULL);                 // LAYER
    AddReadWord(0x400000, 0x40000F, tp_vblank_rw, NULL);                 // VSYNC
-   AddReadWord(0x440000, 0x440FFF, vimana_z80_rw, NULL);                // SOUND COMM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
+   // AddReadWord(0x440000, 0x440FFF, vimana_z80_rw, NULL);                // SOUND COMM
+   AddReadWord(0x440000, 0x4407FF, tp1_z80_rw, NULL);                // SOUND COMM
 
-   AddWriteByte(0x480000, 0x483FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteByte(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteByte(0x400000, 0x40000F, tp_vblank_wb, NULL);                // VSYNC
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
+   AddWriteByte(0x440000, 0x4407FF, tp1_z80_wb, NULL);                // SOUND COMM
 
-   AddWriteWord(0x480000, 0x483FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x404000, 0x4047FF, NULL, RAM+0x010000);                // COLOR RAM
-   AddWriteWord(0x406000, 0x4067FF, NULL, RAM+0x010800);                // COLOR RAM
    AddWriteWord(0x0C0000, 0x0C000F, tp1vcu_obj_ww, NULL);               // OBJECT
    AddWriteWord(0x4C0000, 0x4C001F, tp1vcu_bg_ww, NULL);                // LAYER
    AddWriteWord(0x400000, 0x40000F, tp_vblank_ww, NULL);                // VSYNC
    AddWriteWord(0x080000, 0x080003, tp1vcu_ofsreg_ww, NULL);            // OFFSET
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   AddWriteWord(0x440000, 0x4407FF, tp1_z80_ww, NULL);                // SOUND COMM
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
 static void load_outzone(void)
@@ -2450,6 +2393,15 @@ static void DrawToaplan1(void)
   xxxx xxxx x--- ---- ---- ---- ---- ---- = X position
   ---- ---- ---- ---- yyyy yyyy y--- ---- = Y position
   ---- ---- -??? ???? ---- ---- -??? ???? = Unknown / Unused
+
+  And the layers :
+  0         1         2         3
+  ---- ---- ---- ---- -ttt tttt tttt tttt = Tile number (0 - $7fff)
+  ---- ---- ---- ---- h--- ---- ---- ---- = Hidden
+  ---- ---- --cc cccc ---- ---- ---- ---- = Color (0 - $3f)
+  pppp ---- ---- ---- ---- ---- ---- ---- = Priority (0-$f)
+  ---- ???? ??-- ---- ---- ---- ---- ---- = Unknown / Unused
+
    */
 
    for(layer=0; layer<4; layer++){
@@ -2717,24 +2669,22 @@ GAME( truxton, "Tatsujin", TOAPLAN, 1988, GAME_SHOOT,
 	.exec = execute_outzone,
 	.board = "B65",
 );
-#define execute_vimana execute_fireshrk
+#define execute_vimana execute_outzone
 #define video_vimana video_fireshrk
-CLNEI(vimanaj, vimana, "Vimana (Japan)", TOAPLAN, 1991, GAME_SHOOT,
-	.board = "TP019",
-	.sound = NULL
-);
 static struct DIR_INFO dir_vimana[] =
 {
    { "vimana2", },
    { "vimana", },
    { NULL, },
 };
-GAME( vimana, "Vimana (alternate)", TOAPLAN, 1991, GAME_SHOOT,
+GAME( vimana, "Vimana (world set 1)", TOAPLAN, 1991, GAME_SHOOT,
 	.dsw = dsw_vimana,
 	.video = &video_fireshrk,
-	.exec = execute_fireshrk,
+	.exec = execute_outzone,
 	.board = "TP019",
-	.sound = NULL
+);
+CLNEI(vimanaj, vimana, "Vimana (Japan)", TOAPLAN, 1991, GAME_SHOOT,
+	.board = "TP019",
 );
 static struct DIR_INFO dir_zerowing[] =
 {
