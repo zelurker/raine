@@ -107,6 +107,11 @@ int check_irq(UINT32 adr) {
     int cpu_id = get_cpu_id();
     if (s68000context.sr >= 0x2100) {
 	UINT8 *ptr = get_userdata(cpu_id,s68000context.areg[7]);
+	if (!ptr) {
+	    do_irq(0,NULL);
+	    printf("didn't get memory pointer for a7, you are on your own...");
+	    return 0;
+	}
 	UINT32 ret = ((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2]));
 	if (ret == adr+2 || ret == adr) {
 	    WriteLongSc(&ptr[s68000context.areg[7]+2],adr);
