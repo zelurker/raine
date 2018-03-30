@@ -17,20 +17,6 @@
 #include "timer.h"
 #include "profile.h" // fps
 
-
-static struct ROM_INFO rom_vimana1[] =
-{
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-               "vim07.bin",  0x1efaea84,    "vim08.bin",  0xe45b7def),
-   {     "vim6.bin", 0x00020000, 0x2886878d, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {     "vim5.bin", 0x00020000, 0x61a63d7a, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {     "vim4.bin", 0x00020000, 0xb0515768, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {     "vim3.bin", 0x00020000, 0x0b539131, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {     "vim1.bin", 0x00080000, 0xcdde26cd, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {     "vim2.bin", 0x00080000, 0x1dbfc118, REGION_GFX2, 0x080000, LOAD_NORMAL, },
-   {           NULL,          0,          0, 0, 0, 0, },
-};
-
 static struct INPUT_INFO input_outzone[] =
 {
    INP1( COIN1, 0x023003, 0x08 ),
@@ -300,18 +286,6 @@ static struct GFX_LIST rally_bike_gfx[] =
    { 0,           NULL,                  },
 };
 
-static struct GFX_LIST vimana_gfx[] =
-{
-   { REGION_GFX1, &tilelayout,    },
-   { REGION_GFX2, &vm_tilelayout, },
-   { 0,           NULL,           },
-};
-
-
-
-
-
-
 static struct YM3812interface ym3812_interface =
 {
    1,              // 1 chip
@@ -326,19 +300,37 @@ static struct SOUND_INFO sound_tp1[] =
    { 0,             NULL,                 },
 };
 
-
-
-static struct ROM_INFO rom_vimana[] =
+static struct ROM_INFO rom_vimana[] =         /* From board serial number 1547.04 (July '94) */
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-            "tp019-7a.bin",  0x5a4bf73e, "tp019-8a.bin",  0x03ba27e8),
-   {     "vim6.bin", 0x00020000, 0x2886878d, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {     "vim5.bin", 0x00020000, 0x61a63d7a, REGION_GFX1, 0x020000, LOAD_NORMAL, },
-   {     "vim4.bin", 0x00020000, 0xb0515768, REGION_GFX1, 0x040000, LOAD_NORMAL, },
-   {     "vim3.bin", 0x00020000, 0x0b539131, REGION_GFX1, 0x060000, LOAD_NORMAL, },
-   {     "vim1.bin", 0x00080000, 0xcdde26cd, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {     "vim2.bin", 0x00080000, 0x1dbfc118, REGION_GFX2, 0x080000, LOAD_NORMAL, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "tp019-7a.bin", 0x20000, 0x5a4bf73e, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "tp019-8a.bin", 0x20000, 0x03ba27e8, REGION_CPU1, 0x000001, LOAD_8_16 },
+	/* sound CPU is a HD647180 (Z180) with internal ROM */
+  { "hd647180.019", 0x08000, 0x41a97ebe, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "vim6.bin", 0x20000, 0x2886878d, REGION_GFX1, 0x00000, LOAD_8_16 },
+  { "vim5.bin", 0x20000, 0x61a63d7a, REGION_GFX1, 0x00001, LOAD_8_16 },
+  { "vim4.bin", 0x20000, 0xb0515768, REGION_GFX1, 0x40000, LOAD_8_16 },
+  { "vim3.bin", 0x20000, 0x0b539131, REGION_GFX1, 0x40001, LOAD_8_16 },
+  { "vim1.bin", 0x80000, 0xcdde26cd, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  { "vim2.bin", 0x80000, 0x1dbfc118, REGION_GFX2, 0x80000, LOAD_NORMAL },
+  { "tp019-09.bpr", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
+  { "tp019-10.bpr", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_vimanan[] = // clone of vimana
+{
+  { "tp019-07.rom", 0x20000, 0x78888ff2, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "tp019-08.rom", 0x20000, 0x6cd2dc3c, REGION_CPU1, 0x000001, LOAD_8_16 },
+	/* sound CPU is a HD647180 (Z180) with internal ROM */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_vimanaj[] = // clone of vimana
+{
+  { "vim07.bin", 0x20000, 0x1efaea84, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "vim08.bin", 0x20000, 0xe45b7def, REGION_CPU1, 0x000001, LOAD_8_16 },
+	/* sound CPU is a HD647180 (Z180) with internal ROM */
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_outzone[] =
@@ -1509,7 +1501,7 @@ static void load_vimana()
    memset(RAM+0x00000,0x00,0x40000);
    RAMSize=0x40000+0x10000;
 
-   if(is_current_game("vimana1"))
+   if(is_current_game("vimanaj"))
    {
 
    // Kill the annoying reset instruction
@@ -2322,21 +2314,46 @@ static DEF_INLINE void QueueTile(int tile, int x, int y, UINT8 *map, int pri)
    last_tile       = last_tile+1;
 }
 
+// static int wanted_pri = -1;
+
 static void DrawTileQueue(void)
 {
    struct TILE_Q *tile_ptr;
    UINT32 ta,pri,pri_start;
+#if 0
+   static int pressed;
+   int pri_end;
+
+   if (pressed && !key[SDLK_F10]) {
+       pressed = 0;
+   } else if (!pressed && key[SDLK_F10]) {
+       pressed = 1;
+       wanted_pri++;
+       if (wanted_pri >= MAX_PRI)
+	   wanted_pri = -1;
+       print_ingame(60,"wanted_pri : %d",wanted_pri);
+   }
+#endif
 
    // priority 0 is for "off" sprites.
    if (romset == 2) // but outzone does not have sprites turned off !
      pri_start = 0;
    else
      pri_start = 2;
+#if 0
+   if (wanted_pri == -1)
+       pri_end = MAX_PRI;
+   else if (wanted_pri >= 0 && wanted_pri < MAX_PRI) {
+       pri_start = pri_end = wanted_pri;
+       pri_end++;
+   }
+#endif
+
    for(pri=pri_start; pri<MAX_PRI; pri++)
    {
       tile_ptr = prilist[pri];
 
-      if(!(pri & 1))
+      if((pri & 1))
       {
          while(tile_ptr){
             ta = tile_ptr->tile;
@@ -2493,7 +2510,7 @@ static void DrawToaplan1(void)
 				MAP
 				);
 
-	 pri = (pri >> 11) & 0x1E;
+	 pri = ((pri >> 11) & 0x1E)|1;
 	 QueueTile(ta, x, y, MAP, pri);
 #if 0
        } else {
@@ -2550,7 +2567,7 @@ static void DrawToaplan1(void)
 	 xxx = (pri>>0) & 0x0F;
 	 yyy = (pri>>4) & 0x0F;
 
-	 pri = ((ctrl >> 11) & 0x1E) | 1;
+	 pri = ((ctrl >> 11) & 0x1E);
 
 	 xxxx=x;
 	 while((--yyy)>=0){
@@ -2622,17 +2639,6 @@ static struct VIDEO_INFO video_rallybik =
    VIDEO_ROTATABLE,
    rally_bike_gfx,
    55.16
-};
-static struct VIDEO_INFO video_vimana =
-{
-   DrawToaplan1,
-   320,
-   240,
-   32,
-   VIDEO_ROTATE_270 |
-   VIDEO_ROTATABLE,
-   vimana_gfx,
-   57.61
 };
 static struct DIR_INFO dir_demonwld[] =
 {
@@ -2711,16 +2717,9 @@ GAME( truxton, "Tatsujin", TOAPLAN, 1988, GAME_SHOOT,
 	.exec = execute_outzone,
 	.board = "B65",
 );
-static struct DIR_INFO dir_vimana1[] =
-{
-   { "vimana", },
-   { "vimana1", },
-   { ROMOF("vimana"), },
-   { CLONEOF("vimana"), },
-   { NULL, },
-};
 #define execute_vimana execute_fireshrk
-CLNE(vimana1, vimana, "Vimana", TOAPLAN, 1991, GAME_SHOOT,
+#define video_vimana video_fireshrk
+CLNEI(vimanaj, vimana, "Vimana (Japan)", TOAPLAN, 1991, GAME_SHOOT,
 	.board = "TP019",
 	.sound = NULL
 );
@@ -2732,7 +2731,7 @@ static struct DIR_INFO dir_vimana[] =
 };
 GAME( vimana, "Vimana (alternate)", TOAPLAN, 1991, GAME_SHOOT,
 	.dsw = dsw_vimana,
-	.video = &video_vimana,
+	.video = &video_fireshrk,
 	.exec = execute_fireshrk,
 	.board = "TP019",
 	.sound = NULL

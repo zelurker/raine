@@ -1223,7 +1223,7 @@
   DRV(rallybik)
   DRV(samesame)
   DRV(truxton)
-  DRV(vimana1)
+  DRV(vimanaj)
   DRV(vimana)
   DRV(zerowing)
 
