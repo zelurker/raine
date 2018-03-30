@@ -1060,25 +1060,17 @@ static void load_snowbros(void)
    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
    AddZ80AReadByte(0x0000, 0x87FF, NULL,                        Z80ROM+0x0000); // Z80 ROM/RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,               NULL);
-   AddZ80AReadByte(    -1,     -1, NULL,                        NULL);
 
    AddZ80AWriteByte(0x8000, 0x87FF, NULL,                       Z80ROM+0x8000); // Z80 RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
-   AddZ80AWriteByte(    -1,     -1, NULL,                       NULL);
 
    AddZ80AReadPort(0x02, 0x02, YM3812ReadZ80,           NULL);
    AddZ80AReadPort(0x04, 0x04, SnowBrosPort4r,          NULL);
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0x02, 0x03, YM3812WriteZ80,         NULL);
    AddZ80AWritePort(0x04, 0x04, SnowBrosPort4w,         NULL);
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
 
-   AddZ80AInit();
+   finish_conf_z80(0);
 
    RAM_SPR = RAM+0x004000;
    GFX_SPR_SOLID = NULL;
@@ -1133,13 +1125,10 @@ static void load_snowbros(void)
 
    ByteSwap(ROM,get_region_size(REGION_CPU1));
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x103FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x700000, 0x701FFF, NULL, RAM+0x004000);                 // SPRITE RAM
-   AddReadByte(0x600000, 0x6003FF, NULL, RAM+0x006000);                 // COLOUR RAM
+   add_68000_rom(0,0x000000, 0x03FFFF, ROM+0x000000);                 // 68000 ROM
+   add_68000_ram(0,0x100000, 0x103FFF, RAM+0x000000);                 // 68000 RAM
+   add_68000_ram(0,0x700000, 0x701FFF, RAM+0x004000);                 // SPRITE RAM
+   add_68000_ram(0,0x600000, 0x6003FF, RAM+0x006000);                 // COLOUR RAM
    AddReadByte(0x500000, 0x50000F, NULL, RAM+0x006400);                 // INPUT
    AddReadByte(0x200000, 0x200001, NULL, RAM+0x006410);                 // ???
    AddReadByte(0x300000, 0x300001, SoundRead, NULL);                    // SOUND COMM
@@ -1147,13 +1136,7 @@ static void load_snowbros(void)
    AddReadByte(0x800000, 0x800001, NULL, RAM+0x006416);                 // (Interrupt Repsonse)
    AddReadByte(0x900000, 0x900001, NULL, RAM+0x006418);                 // (Interrupt Repsonse)
    AddReadByte(0xA00000, 0xA00001, NULL, RAM+0x00641A);                 // (Interrupt Repsonse)
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);      // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x103FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x700000, 0x701FFF, NULL, RAM+0x004000);
-   AddReadWord(0x600000, 0x6003FF, NULL, RAM+0x006000);
    AddReadWord(0x500000, 0x50000F, NULL, RAM+0x006400);
    AddReadWord(0x200000, 0x200001, NULL, RAM+0x006410);
    AddReadWord(0x300000, 0x300001, SoundRead, NULL);
@@ -1161,12 +1144,7 @@ static void load_snowbros(void)
    AddReadWord(0x800000, 0x800001, NULL, RAM+0x006416);
    AddReadWord(0x900000, 0x900001, NULL, RAM+0x006418);
    AddReadWord(0xA00000, 0xA00001, NULL, RAM+0x00641A);
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);      // <Bad Reads>
-   AddReadWord(-1, -1, NULL, NULL);
 
-   AddWriteByte(0x100000, 0x103FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x700000, 0x701FFF, NULL, RAM+0x004000);
-   AddWriteByte(0x600000, 0x6003FF, NULL, RAM+0x006000);
    AddWriteByte(0x500000, 0x50000F, NULL, RAM+0x006400);
    AddWriteByte(0x200000, 0x200001, NULL, RAM+0x006410);
    AddWriteByte(0x300000, 0x300001, SoundWrite, NULL);
@@ -1175,12 +1153,7 @@ static void load_snowbros(void)
    AddWriteByte(0x900000, 0x900001, NULL, RAM+0x006418);
    AddWriteByte(0xA00000, 0xA00001, NULL, RAM+0x00641A);
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);      // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x103FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x700000, 0x701FFF, NULL, RAM+0x004000);
-   AddWriteWord(0x600000, 0x6003FF, NULL, RAM+0x006000);
    AddWriteWord(0x500000, 0x50000F, NULL, RAM+0x006400);
    AddWriteWord(0x200000, 0x200001, NULL, RAM+0x006410);
    AddWriteWord(0x300000, 0x300001, SoundWrite, NULL);
@@ -1188,10 +1161,8 @@ static void load_snowbros(void)
    AddWriteWord(0x800000, 0x800001, NULL, RAM+0x006416);
    AddWriteWord(0x900000, 0x900001, NULL, RAM+0x006418);
    AddWriteWord(0xA00000, 0xA00001, NULL, RAM+0x00641A);
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);      // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
+   finish_conf_68000(0);
 
-   AddInitMemory();     // Set Starscream mem pointers...
 }
 
 /*
