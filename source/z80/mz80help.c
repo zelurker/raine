@@ -1109,3 +1109,22 @@ void mz80AddCyclesDone(int cycles) {
 int mz80GetCyclesRemaining() {
     return cyclesRemaining;
 }
+
+void finish_conf_z80(int cpu) {
+   add_mz80_memory_region_rb(cpu,0x0000, 0xFFFF, DefBadReadZ80, NULL);
+   add_mz80_memory_region_wb(cpu,0x0000, 0xFFFF, DefBadWriteZ80, NULL);
+
+   switch(cpu) {
+   case 0: AddZ80AInit(); break;
+   case 1: AddZ80BInit(); break;
+   case 2: AddZ80CInit(); break;
+   case 3: AddZ80DInit(); break;
+   }
+}
+
+void finish_conf_z80_ports(int cpu) {
+   add_mz80_port_region_rb(cpu, 0x00, 0xFF, DefBadReadPortZ80, NULL);
+   add_mz80_port_region_wb(cpu, 0x00, 0xFF, DefBadWritePortZ80, NULL);
+   finish_conf_z80(cpu);
+}
+

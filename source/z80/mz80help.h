@@ -107,6 +107,9 @@ void DefBadWriteZ80(UINT16 offset, UINT8 data);
 UINT16 DefBadReadPortZ80(UINT16 offset);
 void DefBadWritePortZ80(UINT16 offset, UINT8 data);
 
+void finish_conf_z80(int cpu);
+void finish_conf_z80_ports(int cpu);
+
 #define DefBadReadPort DefBadReadPortZ80
 #define DefBadWritePort DefBadWritePortZ80
 
