@@ -37,6 +37,8 @@ void AddZ80AWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 #define AddZ80AWrite AddZ80AWriteByte
 #define AddZ80BRead AddZ80BReadByte
 #define AddZ80BWrite AddZ80BWriteByte
+#define AddZ80CRead AddZ80CReadByte
+#define AddZ80CWrite AddZ80CWriteByte
 #define AddZ80ARW(d0,d1,d2,d3) \
   AddZ80ARead(d0,d1,d2,d3); \
   AddZ80AWrite(d0,d1,d2,d3);
@@ -67,6 +69,10 @@ void AddZ80CReadByte( UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void AddZ80CWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void AddZ80CReadPort( UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
 void AddZ80CWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3);
+
+#define AddZ80CRW(d0,d1,d2,d3) \
+  AddZ80CRead(d0,d1,d2,d3); \
+  AddZ80CWrite(d0,d1,d2,d3);
 
 void AddZ80CInit(void);
 
