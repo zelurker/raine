@@ -1317,7 +1317,7 @@
   DRV(insectx)
   DRV(kageki)
   DRV(plumppop)
-  DRV(tnzs)
+  DRV(tnzsjo)
   DRV(tnzsb)
   DRV(tnzs2)
 

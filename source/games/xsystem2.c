@@ -29,19 +29,16 @@ Supported romsets:
 
 */
 
-
-static struct ROM_INFO rom_arknoid2u[] =
+static struct ROM_INFO rom_arknoid2u[] = // clone of arknoid2
 {
-   {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
-   {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
-   {   "b08-03.7a", 0x00020000, 0x274a795f, 0, 0, 0, },
-   {   "b08-04.4a", 0x00020000, 0x9754f703, 0, 0, 0, },
-   {   "b08-07.16f", 0x00000200, 0xea34d9f7, 0, 0, 0, },
-   {   "b08-08.15f", 0x00000200, 0xa4f7ebd9, 0, 0, 0, },
-   {   "b08_11.11c", 0x00010000, 0x99555231, 0, 0, 0, },
-   {   "b08_12.3e", 0x00010000, 0xdc84e27d, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+	/* 0x10000 - 0x1ffff empty */
+  { "b08__11.11c", 0x10000, 0x99555231, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  FILL(            0x10000, 0x10000, 0, CPU1),
+  { "b08__12.3e", 0x10000, 0xdc84e27d, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
+
+// arknoid2b is not a japan clone, but a world clone, 3 bytes only differ from the world set, forget it !
 
 static struct INPUT_INFO input_arknoid2[] =
 {
@@ -239,33 +236,24 @@ static struct SOUND_INFO sound_kageki[] =
 
 static struct ROM_INFO rom_arknoid2[] =
 {
-   {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
-   {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
-   {   "b08-03.7a", 0x00020000, 0x274a795f, 0, 0, 0, },
-   {   "b08-04.4a", 0x00020000, 0x9754f703, 0, 0, 0, },
-   {   "b08-07.16f", 0x00000200, 0xea34d9f7, 0, 0, 0, },
-   {   "b08-08.15f", 0x00000200, 0xa4f7ebd9, 0, 0, 0, },
-   {    "b08_05.11c", 0x00010000, 0x136edf9d, 0, 0, 0, },
-   {    "b08_13.3e", 0x00010000, 0xe8035ef1, 0, 0, 0, },
+  { "b08__05.11c", 0x10000, 0x136edf9d, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  FILL(            0x10000, 0x10000, 0, CPU1),
+  { "b08__13.3e", 0x10000, 0xe8035ef1, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  { "b08-01.13a", 0x20000, 0x2ccc86b4, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b08-02.10a", 0x20000, 0x056a985f, REGION_GFX1, 0x20000, LOAD_NORMAL },
+  { "b08-03.7a", 0x20000, 0x274a795f, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  { "b08-04.4a", 0x20000, 0x9754f703, REGION_GFX1, 0x60000, LOAD_NORMAL },
+  { "b08-08.15f", 0x200, 0xa4f7ebd9, REGION_PROMS, 0x00000, LOAD_NORMAL },
+  { "b08-07.16f", 0x200, 0xea34d9f7, REGION_PROMS, 0x00200, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-
-
-static struct ROM_INFO rom_arknoid2j[] =
+static struct ROM_INFO rom_arknoid2j[] = // clone of arknoid2
 {
-   {   "b08-01.13a", 0x00020000, 0x2ccc86b4, 0, 0, 0, },
-   {   "b08-02.10a", 0x00020000, 0x056a985f, 0, 0, 0, },
-   {   "b08-03.7a", 0x00020000, 0x274a795f, 0, 0, 0, },
-   {   "b08-04.4a", 0x00020000, 0x9754f703, 0, 0, 0, },
-   {   "b08-07.16f", 0x00000200, 0xea34d9f7, 0, 0, 0, },
-   {   "b08-08.15f", 0x00000200, 0xa4f7ebd9, 0, 0, 0, },
-   {    "b08_05.11c", 0x00010000, 0x136edf9d, 0, 0, 0, },
-   {       "b08_06.3e", 0x00010000, 0xadfcd40c, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+	/* 0x10000 - 0x1ffff empty */
+  { "b08_06.3e", 0x10000, 0xadfcd40c, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
-
-
 
 static struct ROM_INFO rom_insectx[] =
 {
@@ -340,27 +328,18 @@ static struct ROMSW_DATA romsw_data_the_nz_story_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO romsw_tnzs[] =
+static struct ROMSW_INFO romsw_tnzsb[] =
 {
    { 0x2007FFF, 0x03, romsw_data_the_nz_story_0 },
    { 0,        0,    NULL },
 };
 
-
-
-static struct ROM_INFO rom_tnzs[] =
+static struct ROM_INFO rom_tnzsjo[] = // clone of tnzs
 {
-  { "b53-10.32", 0x20000, 0xa73745c6, REGION_ROM1, 0, LOAD_NORMAL },
-  { "b53-11.38", 0x10000, 0x9784d443, REGION_ROM2, 0, LOAD_NORMAL },
-   { "b53-08.8", 0x00020000, 0xc3519c2a, 0, 0, 0, },
-   { "b53-07.7", 0x00020000, 0x2bf199e8, 0, 0, 0, },
-   { "b53-06.6", 0x00020000, 0x92f35ed9, 0, 0, 0, },
-   { "b53-05.5", 0x00020000, 0xedbb9581, 0, 0, 0, },
-   { "b53-02.2", 0x00020000, 0x095d0dc0, 0, 0, 0, },
-   { "b53-01.1", 0x00020000, 0x9800c54d, 0, 0, 0, },
-   { "b53-04.4", 0x00020000, 0x59d2aef6, 0, 0, 0, },
-   { "b53-03.3", 0x00020000, 0x74acfb9b, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "b53-10.27c1001d.u32", 0x20000, 0xa73745c6, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  // { "b53-14.u38", 0x10000, 0xf269c5f1, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "b53-14.u38", 0x10000, 0x9784d443, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct INPUT_INFO input_tnzs[] =
@@ -391,12 +370,14 @@ static struct INPUT_INFO input_tnzs[] =
 
 static struct DSW_DATA dsw_data_the_nz_story_0[] =
 {
-   { MSG_DSWA_BIT1,           0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
+  { MSG_CABINET, 0x01, 2 },
+  { MSG_UPRIGHT, 0x00, 0x00 },
+  { MSG_TABLE, 0x01, 0x00 },
    DSW_SCREEN( 0x02, 0x00),
    DSW_TEST_MODE( 0x00, 0x04),
-   DSW_DEMO_SOUND( 0x08, 0x00),
+  { "Invulnerability (Debug)", 0x08, 2 },
+  { MSG_OFF, 0x08, 0x00 },
+  { MSG_ON, 0x00, 0x00 },
    { MSG_COIN1,               0x30, 0x04 },
    { MSG_1COIN_1PLAY,         0x30},
    { MSG_2COIN_1PLAY,         0x20},
@@ -434,7 +415,7 @@ static struct DSW_DATA dsw_data_the_nz_story_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_tnzs[] =
+static struct DSW_INFO dsw_tnzsb[] =
 {
    { 0x000000, 0xFF, dsw_data_the_nz_story_0 },
    { 0x000001, 0xFF, dsw_data_the_nz_story_1 },
@@ -445,19 +426,17 @@ static struct DSW_INFO dsw_tnzs[] =
 
 static struct ROM_INFO rom_tnzsb[] =
 {
-  // Notice : while this code isn't updated to use the new bankswitch it can't
-  // use automatic rom loading...
-  { "nzsb5324.bin", 0x20000, 0xd66824c6, 0, 0, 0}, // REGION_ROM1, 0, LOAD_NORMAL },
-  { "nzsb5325.bin", 0x10000, 0xd6ac4e71, 0, 0, 0}, // REGION_ROM2, 0, LOAD_NORMAL },
-   { "nzsb5326.bin", 0x00010000, 0xcfd5649c, 0, 0, 0, },
-   { "b53-08.8", 0x00020000, 0xc3519c2a, 0, 0, 0, },
-   { "b53-07.7", 0x00020000, 0x2bf199e8, 0, 0, 0, },
-   { "b53-06.6", 0x00020000, 0x92f35ed9, 0, 0, 0, },
-   { "b53-05.5", 0x00020000, 0xedbb9581, 0, 0, 0, },
-   { "b53-02.2", 0x00020000, 0x095d0dc0, 0, 0, 0, },
-   { "b53-01.1", 0x00020000, 0x9800c54d, 0, 0, 0, },
-   { "b53-04.4", 0x00020000, 0x59d2aef6, 0, 0, 0, },
-   { "b53-03.3", 0x00020000, 0x74acfb9b, 0, 0, 0, },
+  { "nzsb5324.bin", 0x20000, 0xd66824c6, REGION_ROM1, 0, LOAD_NORMAL },
+  { "nzsb5325.bin", 0x10000, 0xd6ac4e71, REGION_ROM2, 0, LOAD_NORMAL },
+   { "nzsb5326.bin", 0x00010000, 0xcfd5649c, REGION_CPU3, 0, LOAD_NORMAL, },
+  { "b53-16.ic7", 0x20000, 0xc3519c2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b53-17.ic8", 0x20000, 0x2bf199e8, REGION_GFX1, 0x20000, LOAD_NORMAL },
+  { "b53-18.ic9", 0x20000, 0x92f35ed9, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  { "b53-19.ic10", 0x20000, 0xedbb9581, REGION_GFX1, 0x60000, LOAD_NORMAL },
+  { "b53-22.ic11", 0x20000, 0x59d2aef6, REGION_GFX1, 0x80000, LOAD_NORMAL },
+  { "b53-23.ic13", 0x20000, 0x74acfb9b, REGION_GFX1, 0xa0000, LOAD_NORMAL },
+  { "b53-20.ic12", 0x20000, 0x095d0dc0, REGION_GFX1, 0xc0000, LOAD_NORMAL },
+  { "b53-21.ic14", 0x20000, 0x9800c54d, REGION_GFX1, 0xe0000, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -505,24 +484,21 @@ static struct SOUND_INFO sound_tnzsb[] =
    { 0,             NULL,                      },
 };
 
-
-
-static struct ROM_INFO rom_tnzs2[] =
+static struct ROM_INFO rom_tnzs2[] = // prototype (location test?) version; has different rom labels, and the Seta X1-001 chip has prototype markings revealing it was fabbed by Yamaha, as 'YM3906' // clone of tnzs
 {
-   {   "ns_a13.rom", 0x00020000, 0x7e0bd5bb, 0, 0, 0, },
-   {   "ns_e-3.rom", 0x00010000, 0xc7662e96, 0, 0, 0, },
-   {  "ns_c-11.rom", 0x00020000, 0x3c1dae7b, 0, 0, 0, },
-   {   "ns_a12.rom", 0x00020000, 0x95880726, 0, 0, 0, },
-   {   "ns_a10.rom", 0x00020000, 0x2bc4c053, 0, 0, 0, },
-   {   "ns_a08.rom", 0x00020000, 0x8ff8d88c, 0, 0, 0, },
-   {   "ns_a07.rom", 0x00020000, 0x291bcaca, 0, 0, 0, },
-   {   "ns_a05.rom", 0x00020000, 0x6e762e20, 0, 0, 0, },
-   {   "ns_a04.rom", 0x00020000, 0xe1fd1b9d, 0, 0, 0, },
-   {   "ns_a02.rom", 0x00020000, 0x2ab06bda, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  { "c-11__6-24__1959h.d27c1000d-15.u32", 0x20000, 0x3c1dae7b, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "e-3__6-24__c4ach.tmm27512d-20.u38", 0x10000, 0xc7662e96, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  { "a13__03e8.d27c1000d-15.a13", 0x20000, 0x7e0bd5bb, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "a12__f4ec.d27c1000d-15.a12", 0x20000, 0x95880726, REGION_GFX1, 0x20000, LOAD_NORMAL },
+  { "a10__f2b5.d27c1000d-15.a10", 0x20000, 0x2bc4c053, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  { "a08__bd49.d27c1000d-15.a8", 0x20000, 0x8ff8d88c, REGION_GFX1, 0x60000, LOAD_NORMAL },
+  { "a07__d5f3.d27c1000d-15.a7", 0x20000, 0x291bcaca, REGION_GFX1, 0x80000, LOAD_NORMAL },
+  { "a05__662a.d27c1000d-15.a5", 0x20000, 0x6e762e20, REGION_GFX1, 0xa0000, LOAD_NORMAL },
+  { "a04__0c21.d27c1000d-15.a4", 0x20000, 0xe1fd1b9d, REGION_GFX1, 0xc0000, LOAD_NORMAL },
+  { "a02__904f.d27c1000d-15.a2", 0x20000, 0x2ab06bda, REGION_GFX1, 0xe0000, LOAD_NORMAL },
+	/* these are probably shared with extermination except for u35 */
+  { NULL, 0, 0, 0, 0, 0 }
 };
-
-
 
 static struct ROM_INFO rom_extrmatn[] =
 {
@@ -625,32 +601,6 @@ static struct ROM_INFO rom_kageki[] =
    {   "b35-16.11c", 0x00010000, 0xa4e6fd58, 0, 0, 0, },
    {   "b35-17.43e", 0x00010000, 0xfdd9c246, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
-};
-
-static struct INPUT_INFO input_kageki[] =
-{
-   INP0( COIN1, 0x020004, 0x10 ),
-   INP0( COIN2, 0x020004, 0x20 ),
-   INP0( TILT, 0x020004, 0x02 ),
-   INP0( SERVICE, 0x020004, 0x01 ),
-
-   INP0( P1_START, 0x020002, 0x80 ),
-   INP0( P1_UP, 0x020002, 0x04 ),
-   INP0( P1_DOWN, 0x020002, 0x08 ),
-   INP0( P1_LEFT, 0x020002, 0x01 ),
-   INP0( P1_RIGHT, 0x020002, 0x02 ),
-   INP0( P1_B1, 0x020002, 0x10 ),
-   INP0( P1_B2, 0x020002, 0x20 ),
-
-   INP0( P2_START, 0x020003, 0x80 ),
-   INP0( P2_UP, 0x020003, 0x04 ),
-   INP0( P2_DOWN, 0x020003, 0x08 ),
-   INP0( P2_LEFT, 0x020003, 0x01 ),
-   INP0( P2_RIGHT, 0x020003, 0x02 ),
-   INP0( P2_B1, 0x020003, 0x10 ),
-   INP0( P2_B2, 0x020003, 0x20 ),
-
-   END_INPUT
 };
 
 static struct DSW_DATA dsw_data_kageki_0[] =
@@ -1655,199 +1605,9 @@ static void load_insectx(void)
    seta_x1.scr_y	= 0;
 }
 
-static void load_tnzs2(void)
-{
-   int ta,tb,tc;
-   UINT8 *TMP;
-
-   romset=1;
-
-   RAMSize=0x10000+0x10000+0x10+(0xC000*2);
-
-   if(!(ROM =AllocateMem(0xC000*6))) return;
-
-   if(!(RAM=AllocateMem(RAMSize))) return;
-
-   RAM2     = RAM+0x10000;
-   RAM_BANK = RAM+0x10000+0x10000+0x10;
-
-   memset(RAM+0x00000, 0x00, RAMSize);
-
-   if(!(TMP=AllocateMem(0x20000))) return;
-
-   if(!load_rom("ns_c-11.rom", TMP, 0x20000)) return;	// Z80 MAIN ROM
-
-   // Skip Idle Z80
-   // -------------
-
-   TMP[0x0AE9]=0xC9;  // ret
-
-   TMP[0x0294]=0xD3;  // OUTA (AAh)
-   TMP[0x0295]=0xAA;  //
-
-   SetStopZ80BMode2(0x028B);
-
-   init_bank_rom(TMP,ROM);
-
-   memcpy(RAM,TMP,0x10000);
-   AddZ80BROMBase(RAM, 0x0038, 0x0066);
-
-   AddZ80BReadByte(0x0000, 0xBFFF, NULL,			NULL);		// BANK ROM/RAM
-   AddZ80BReadByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BReadByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
-
-   AddZ80BWriteByte(0x8000, 0xBFFF, NULL,			NULL);		// BANK RAM
-   AddZ80BWriteByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BWriteByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BWriteByte(0xF600, 0xF600, MainBankSwitch,		NULL);		// ROM BANK
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
-
-   AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
-
-   AddZ80BInit();
-
-   if(!load_rom("ns_e-3.rom", TMP, 0x10000)) return;	// Z80 SUB ROM
-
-   // Skip Idle Z80
-   // -------------
-
-   TMP[0x013E]=0xD3;  // OUTA (AAh)
-   TMP[0x013F]=0xAA;  //
-
-   SetStopZ80CMode2(0x0139);
-
-   init_bank_rom2(TMP);
-
-   memcpy(RAM2,TMP,0x10000);
-   AddZ80CROMBase(RAM2, 0x0038, 0x0066);
-
-   AddZ80CReadByte(0x0000, 0x9FFF, NULL,			NULL);		// BANK ROM
-   AddZ80CReadByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CReadByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
-   AddZ80CReadByte(0xB000, 0xB001, tnzs_ym2203_rb,		NULL);		// YM2203/DSW
-   AddZ80CReadByte(0xC000, 0xC001, mcu_tnzs_read,		NULL);		// INPUT
-   AddZ80CReadByte(0xF000, 0xF003, NULL,			RAM2+0x00F000);	// ???
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
-
-   AddZ80CWriteByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CWriteByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
-   AddZ80CWriteByte(0xA000, 0xA000, SubBankSwitch,		NULL);		// ROM BANK
-   AddZ80CWriteByte(0xB000, 0xB001, tnzs_ym2203_wb,		NULL);		// YM2203/DSW
-   AddZ80CWriteByte(0xC000, 0xC001, mcu_tnzs_write,		NULL);		// INPUT
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
-
-   AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,			NULL);		// Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad writes>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
-   z80_set_bank(2,0);
-
-   FreeMem(TMP);
-   mcu_type = MCU_TNZS;
-
-   /*-----------------------*/
-
-   if(!(GFX=AllocateMem(0x200000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   if(!load_rom("ns_a13.rom", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("ns_a12.rom", TMP+0x20000, 0x20000)) return;
-   if(!load_rom("ns_a10.rom", TMP+0x40000, 0x20000)) return;
-   if(!load_rom("ns_a08.rom", TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]=((tc&0x80)>>7)<<0;
-      GFX[tb+1]=((tc&0x40)>>6)<<0;
-      GFX[tb+2]=((tc&0x20)>>5)<<0;
-      GFX[tb+3]=((tc&0x10)>>4)<<0;
-      GFX[tb+4]=((tc&0x08)>>3)<<0;
-      GFX[tb+5]=((tc&0x04)>>2)<<0;
-      GFX[tb+6]=((tc&0x02)>>1)<<0;
-      GFX[tb+7]=((tc&0x01)>>0)<<0;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<1;
-      GFX[tb+1]|=((tc&0x40)>>6)<<1;
-      GFX[tb+2]|=((tc&0x20)>>5)<<1;
-      GFX[tb+3]|=((tc&0x10)>>4)<<1;
-      GFX[tb+4]|=((tc&0x08)>>3)<<1;
-      GFX[tb+5]|=((tc&0x04)>>2)<<1;
-      GFX[tb+6]|=((tc&0x02)>>1)<<1;
-      GFX[tb+7]|=((tc&0x01)>>0)<<1;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-   if(!load_rom("ns_a07.rom", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("ns_a05.rom", TMP+0x20000, 0x20000)) return;
-   if(!load_rom("ns_a04.rom", TMP+0x40000, 0x20000)) return;
-   if(!load_rom("ns_a02.rom", TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]|=((tc&0x80)>>7)<<2;
-      GFX[tb+1]|=((tc&0x40)>>6)<<2;
-      GFX[tb+2]|=((tc&0x20)>>5)<<2;
-      GFX[tb+3]|=((tc&0x10)>>4)<<2;
-      GFX[tb+4]|=((tc&0x08)>>3)<<2;
-      GFX[tb+5]|=((tc&0x04)>>2)<<2;
-      GFX[tb+6]|=((tc&0x02)>>1)<<2;
-      GFX[tb+7]|=((tc&0x01)>>0)<<2;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<3;
-      GFX[tb+1]|=((tc&0x40)>>6)<<3;
-      GFX[tb+2]|=((tc&0x20)>>5)<<3;
-      GFX[tb+3]|=((tc&0x10)>>4)<<3;
-      GFX[tb+4]|=((tc&0x08)>>3)<<3;
-      GFX[tb+5]|=((tc&0x04)>>2)<<3;
-      GFX[tb+6]|=((tc&0x02)>>1)<<3;
-      GFX[tb+7]|=((tc&0x01)>>0)<<3;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_16x16(GFX, 0x2000);
-
-   InitPaletteMap(RAM+0xF800, 0x20, 0x10, 0x8000);
-
-   set_colour_mapper(&col_map_xrrr_rrgg_gggb_bbbb);
-
-   // Init seta_x1 emulation
-   // ----------------------
-
-   seta_x1.RAM_A	= RAM+0x0C000;
-   seta_x1.RAM_B	= RAM+0x0F000;
-   seta_x1.GFX		= GFX;
-   seta_x1.MASK		= GFX_BG0_SOLID;
-   seta_x1.bmp_x	= 32;
-   seta_x1.bmp_y	= 32;
-   seta_x1.bmp_w	= 256;
-   seta_x1.bmp_h	= 224;
-   seta_x1.tile_mask	= 0x1FFF;
-   seta_x1.scr_x	= 0;
-   seta_x1.scr_y	= 0;
-}
-
 static void load_arkanoid_2_actual(int set)
 {
-   int ta,tb,tc;
+   int ta;
    UINT8 *TMP;
 
    romset=2;
@@ -1855,8 +1615,6 @@ static void load_arkanoid_2_actual(int set)
 
    RAMSize=0x10000+0x10000+0x10+(0xC000*2);
 
-   if(!(ROM =AllocateMem(0xC000*6))) return;
-
    if(!(RAM=AllocateMem(RAMSize))) return;
 
    RAM2     = RAM+0x10000;
@@ -1864,10 +1622,7 @@ static void load_arkanoid_2_actual(int set)
 
    memset(RAM+0x00000, 0x00, RAMSize);
 
-   if(!(TMP=AllocateMem(0x20000))) return;
-
-   if(!load_rom_index(6, TMP, 0x10000)) return;	// Z80 MAIN ROM
-   memset(TMP+0x10000,0x00,0x10000);
+   TMP = load_region[REGION_ROM1];;	// Z80 MAIN ROM
 
    if((set==0)||(set==2)){
 
@@ -1899,32 +1654,20 @@ static void load_arkanoid_2_actual(int set)
 
    init_bank_rom(TMP,ROM);
 
-   memcpy(RAM,TMP,0x10000);
-   AddZ80BROMBase(RAM, 0x0038, 0x0066);
+   AddZ80BROMBase(TMP, 0x0038, 0x0066);
 
    AddZ80BReadByte(0x0000, 0xBFFF, NULL,			NULL);		// BANK ROM/RAM
-   AddZ80BReadByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BReadByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
+   AddZ80BRW(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
+   // Palette is actually read-only in arkanoid2, initialized from the proms
+   AddZ80BRead(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
 
    AddZ80BWriteByte(0x8000, 0xBFFF, NULL,			NULL);		// BANK RAM
-   AddZ80BWriteByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BWriteByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
    AddZ80BWriteByte(0xF600, 0xF600, MainBankSwitch,		NULL);		// ROM BANK
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
 
    AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
+   finish_conf_z80(1);
 
-   AddZ80BInit();
-
-   if(!load_rom_index(7, TMP, 0x10000)) return;		// Z80 SUB ROM
+   TMP = load_region[REGION_CPU2];		// Z80 SUB ROM
 
    // Skip Idle Z80
    // -------------
@@ -1938,109 +1681,29 @@ static void load_arkanoid_2_actual(int set)
 
    init_bank_rom2(TMP);
 
-   memcpy(RAM2,TMP,0x10000);
-   AddZ80CROMBase(RAM2, 0x0038, 0x0066);
+   AddZ80CROMBase(TMP, 0x0038, 0x0066);
 
    AddZ80CReadByte(0x0000, 0x9FFF, NULL,			NULL);		// BANK ROM
-   AddZ80CReadByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CReadByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
+   AddZ80CRW(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
+   AddZ80CRW(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
    AddZ80CReadByte(0xB000, 0xB001, tnzs_ym2203_rb,		NULL);		// YM2203/DSW
    AddZ80CReadByte(0xC000, 0xC001, a2_io_read,			NULL);		// INPUT
    AddZ80CReadByte(0xF000, 0xF003, NULL,			RAM2+0x00F000);	// ???
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
 
-   AddZ80CWriteByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CWriteByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
    AddZ80CWriteByte(0xA000, 0xA000, SubBankSwitch,		NULL);		// ROM BANK
    AddZ80CWriteByte(0xB000, 0xB001, tnzs_ym2203_wb,		NULL);		// YM2203/DSW
    AddZ80CWriteByte(0xC000, 0xC001, a2_io_write,		NULL);		// INPUT
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
 
    AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,			NULL);		// Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad writes>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
-
-   FreeMem(TMP);
+   finish_conf_z80(2);
 
    /*-----------------------*/
 
-   if(!(GFX=AllocateMem(0x200000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   if(!load_rom_index(4, TMP+0x000, 0x200)) return;	// COLOR ROM
-   if(!load_rom_index(5, TMP+0x200, 0x200)) return;	// COLOR ROM
+   TMP = load_region[REGION_PROMS]; // palette actually !
    for(ta=0;ta<512;ta++){
-   RAM[ta+ta+0xF800]=TMP[ta+0x000];
-   RAM[ta+ta+0xF801]=TMP[ta+0x200];
+       RAM[ta+ta+0xF800]=TMP[ta+0x200];
+       RAM[ta+ta+0xF801]=TMP[ta+0x000];
    }
-
-   if(!load_rom_index(0, TMP+0x00000, 0x20000)) return;
-   if(!load_rom_index(0, TMP+0x20000, 0x20000)) return;
-   if(!load_rom_index(1, TMP+0x40000, 0x20000)) return;
-   if(!load_rom_index(1, TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]=((tc&0x80)>>7)<<0;
-      GFX[tb+1]=((tc&0x40)>>6)<<0;
-      GFX[tb+2]=((tc&0x20)>>5)<<0;
-      GFX[tb+3]=((tc&0x10)>>4)<<0;
-      GFX[tb+4]=((tc&0x08)>>3)<<0;
-      GFX[tb+5]=((tc&0x04)>>2)<<0;
-      GFX[tb+6]=((tc&0x02)>>1)<<0;
-      GFX[tb+7]=((tc&0x01)>>0)<<0;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<1;
-      GFX[tb+1]|=((tc&0x40)>>6)<<1;
-      GFX[tb+2]|=((tc&0x20)>>5)<<1;
-      GFX[tb+3]|=((tc&0x10)>>4)<<1;
-      GFX[tb+4]|=((tc&0x08)>>3)<<1;
-      GFX[tb+5]|=((tc&0x04)>>2)<<1;
-      GFX[tb+6]|=((tc&0x02)>>1)<<1;
-      GFX[tb+7]|=((tc&0x01)>>0)<<1;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-   if(!load_rom_index(2, TMP+0x00000, 0x20000)) return;
-   if(!load_rom_index(2, TMP+0x20000, 0x20000)) return;
-   if(!load_rom_index(3, TMP+0x40000, 0x20000)) return;
-   if(!load_rom_index(3, TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]|=((tc&0x80)>>7)<<2;
-      GFX[tb+1]|=((tc&0x40)>>6)<<2;
-      GFX[tb+2]|=((tc&0x20)>>5)<<2;
-      GFX[tb+3]|=((tc&0x10)>>4)<<2;
-      GFX[tb+4]|=((tc&0x08)>>3)<<2;
-      GFX[tb+5]|=((tc&0x04)>>2)<<2;
-      GFX[tb+6]|=((tc&0x02)>>1)<<2;
-      GFX[tb+7]|=((tc&0x01)>>0)<<2;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<3;
-      GFX[tb+1]|=((tc&0x40)>>6)<<3;
-      GFX[tb+2]|=((tc&0x20)>>5)<<3;
-      GFX[tb+3]|=((tc&0x10)>>4)<<3;
-      GFX[tb+4]|=((tc&0x08)>>3)<<3;
-      GFX[tb+5]|=((tc&0x04)>>2)<<3;
-      GFX[tb+6]|=((tc&0x02)>>1)<<3;
-      GFX[tb+7]|=((tc&0x01)>>0)<<3;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_16x16(GFX, 0x2000);
 
    InitPaletteMap(RAM+0xF800, 0x20, 0x10, 0x8000);
 
@@ -2051,13 +1714,6 @@ static void load_arkanoid_2_actual(int set)
 
    seta_x1.RAM_A	= RAM+0x0C000;
    seta_x1.RAM_B	= RAM+0x0F000;
-   seta_x1.GFX		= GFX;
-   seta_x1.MASK		= GFX_BG0_SOLID;
-   seta_x1.bmp_x	= 32;
-   seta_x1.bmp_y	= 32;
-   seta_x1.bmp_w	= 224;
-   seta_x1.bmp_h	= 256;
-   seta_x1.tile_mask	= 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
 
@@ -2079,16 +1735,12 @@ static void load_arknoid2j(void)
    load_arkanoid_2_actual(2);
 }
 
-static void load_tnzs(void)
+static void load_tnzsjo(void)
 {
-   int ta,tb,tc;
-   UINT8 *TMP;
-
    romset=3;
 
+   printf("load_tnzsjo\n");
    RAMSize=0x10000+0x10000+0x10+(0xC000*2);
-
-   // if(!(ROM =AllocateMem(0xC000*6))) return;
 
    if(!(RAM=AllocateMem(RAMSize))) return;
 
@@ -2097,17 +1749,24 @@ static void load_tnzs(void)
 
    memset(RAM+0x00000, 0x00, RAMSize);
 
-   // if(!load_rom("b53_10.32", TMP, 0x20000)) return;	// Z80 MAIN ROM
-
    // Skip Idle Z80
    // -------------
 
-   ROM[0x0CB6]=0xC9;  // ret
+   if (is_current_game("tnzs2")) {
+       ROM[0x0AE9]=0xC9;  // ret
 
-   ROM[0x02E3]=0xD3;  // OUTA (AAh)
-   ROM[0x02E4]=0xAA;  //
+       ROM[0x0294]=0xD3;  // OUTA (AAh)
+       ROM[0x0295]=0xAA;  //
 
-   SetStopZ80BMode2(0x02DA);
+       SetStopZ80BMode2(0x028B);
+   } else {
+       ROM[0x0CB6]=0xC9;  // ret
+
+       ROM[0x02E3]=0xD3;  // OUTA (AAh)
+       ROM[0x02E4]=0xAA;  //
+
+       SetStopZ80BMode2(0x02DA);
+   }
 
    // init_bank_rom(TMP,ROM);
    // z80_init_banks(1,REGION_ROM1,0x8000,0x4000);
@@ -2117,136 +1776,54 @@ static void load_tnzs(void)
    AddZ80BROMBase(ROM, 0x0038, 0x0066);
 
    AddZ80BReadByte(0x0000, 0xBFFF, NULL,			NULL);		// BANK ROM/RAM
-   AddZ80BReadByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BReadByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
+   AddZ80BRW(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
+   AddZ80BRW(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
 
    AddZ80BWriteByte(0x8000, 0xBFFF, NULL,			NULL);		// BANK RAM
-   AddZ80BWriteByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BWriteByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
    AddZ80BWriteByte(0xF600, 0xF600, MainBankSwitch,		NULL);		// ROM BANK
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
 
    AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
-
-   AddZ80BInit();
+   finish_conf_z80(1);
 
    // Skip Idle Z80
    // -------------
 
-   Z80ROM[0x0692]=0xC9;  // ret
+   if (is_current_game("tnzs2")) {
+       Z80ROM[0x013E]=0xD3;  // OUTA (AAh)
+       Z80ROM[0x013F]=0xAA;  //
 
-   Z80ROM[0x0018]=0xD3;  // OUTA (AAh)
-   Z80ROM[0x0019]=0xAA;  //
+       SetStopZ80CMode2(0x0139);
+   } else {
+       Z80ROM[0x0692]=0xC9;  // ret
 
-   SetStopZ80CMode2(0x0013);
+       Z80ROM[0x0018]=0xD3;  // OUTA (AAh)
+       Z80ROM[0x0019]=0xAA;  //
 
-   // init_bank_rom2(TMP);
+       SetStopZ80CMode2(0x0013);
+   }
+
    z80_init_banks(2,REGION_ROM2,0x8000,0x2000);
 
    memcpy(RAM2,Z80ROM,0x10000);
    AddZ80CROMBase(Z80ROM, 0x0038, 0x0066);
 
    AddZ80CReadByte(0x0000, 0x9FFF, NULL,			NULL);		// BANK ROM
-   AddZ80CReadByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CReadByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
+   AddZ80CRW(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
+   AddZ80CRW(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
    AddZ80CReadByte(0xB000, 0xB001, tnzs_ym2203_rb,		NULL);		// YM2203/DSW
    AddZ80CReadByte(0xC000, 0xC001, mcu_tnzs_read,		NULL);		// INPUT
    AddZ80CReadByte(0xF000, 0xF003, NULL,			RAM2+0x00F000);	// ???
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
 
-   AddZ80CWriteByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CWriteByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
    AddZ80CWriteByte(0xA000, 0xA000, SubBankSwitch,		NULL);		// ROM BANK
    AddZ80CWriteByte(0xB000, 0xB001, tnzs_ym2203_wb,		NULL);		// YM2203/DSW
    AddZ80CWriteByte(0xC000, 0xC001, mcu_tnzs_write,		NULL);		// INPUT
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);	// <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
 
    AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,			NULL);	// Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);	// <bad writes>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
+   finish_conf_z80(2);
 
    mcu_type = MCU_TNZS;
 
    /*-----------------------*/
-
-   if(!(GFX=AllocateMem(0x200000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   if(!load_rom("b53-08.8", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("b53-07.7", TMP+0x20000, 0x20000)) return;
-   if(!load_rom("b53-06.6", TMP+0x40000, 0x20000)) return;
-   if(!load_rom("b53-05.5", TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]=((tc&0x80)>>7)<<0;
-      GFX[tb+1]=((tc&0x40)>>6)<<0;
-      GFX[tb+2]=((tc&0x20)>>5)<<0;
-      GFX[tb+3]=((tc&0x10)>>4)<<0;
-      GFX[tb+4]=((tc&0x08)>>3)<<0;
-      GFX[tb+5]=((tc&0x04)>>2)<<0;
-      GFX[tb+6]=((tc&0x02)>>1)<<0;
-      GFX[tb+7]=((tc&0x01)>>0)<<0;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<1;
-      GFX[tb+1]|=((tc&0x40)>>6)<<1;
-      GFX[tb+2]|=((tc&0x20)>>5)<<1;
-      GFX[tb+3]|=((tc&0x10)>>4)<<1;
-      GFX[tb+4]|=((tc&0x08)>>3)<<1;
-      GFX[tb+5]|=((tc&0x04)>>2)<<1;
-      GFX[tb+6]|=((tc&0x02)>>1)<<1;
-      GFX[tb+7]|=((tc&0x01)>>0)<<1;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-   if(!load_rom("b53-04.4", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("b53-03.3", TMP+0x20000, 0x20000)) return;
-   if(!load_rom("b53-02.2", TMP+0x40000, 0x20000)) return;
-   if(!load_rom("b53-01.1", TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]|=((tc&0x80)>>7)<<2;
-      GFX[tb+1]|=((tc&0x40)>>6)<<2;
-      GFX[tb+2]|=((tc&0x20)>>5)<<2;
-      GFX[tb+3]|=((tc&0x10)>>4)<<2;
-      GFX[tb+4]|=((tc&0x08)>>3)<<2;
-      GFX[tb+5]|=((tc&0x04)>>2)<<2;
-      GFX[tb+6]|=((tc&0x02)>>1)<<2;
-      GFX[tb+7]|=((tc&0x01)>>0)<<2;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<3;
-      GFX[tb+1]|=((tc&0x40)>>6)<<3;
-      GFX[tb+2]|=((tc&0x20)>>5)<<3;
-      GFX[tb+3]|=((tc&0x10)>>4)<<3;
-      GFX[tb+4]|=((tc&0x08)>>3)<<3;
-      GFX[tb+5]|=((tc&0x04)>>2)<<3;
-      GFX[tb+6]|=((tc&0x02)>>1)<<3;
-      GFX[tb+7]|=((tc&0x01)>>0)<<3;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_16x16(GFX, 0x2000);
 
    InitPaletteMap(RAM+0xF800, 0x20, 0x10, 0x8000);
 
@@ -2257,13 +1834,6 @@ static void load_tnzs(void)
 
    seta_x1.RAM_A	= RAM+0x0C000;
    seta_x1.RAM_B	= RAM+0x0F000;
-   seta_x1.GFX		= GFX;
-   seta_x1.MASK		= GFX_BG0_SOLID;
-   seta_x1.bmp_x	= 32;
-   seta_x1.bmp_y	= 32;
-   seta_x1.bmp_w	= 256;
-   seta_x1.bmp_h	= 224;
-   seta_x1.tile_mask	= 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
 }
@@ -2474,27 +2044,20 @@ static void load_drtoppel(void)
 
 static void load_tnzsb(void)
 {
-   int ta,tb,tc;
    UINT8 *TMP;
 
    romset=6;
 
-   RAMSize=0x10000+0x10000+0x10+(0xC000*2)+0x10000;
-
-   if(!(ROM =AllocateMem(0xC000*6))) return;
+   RAMSize=0x10000+0x10000+0x10+(0xC000*2)+0x2000;
 
    if(!(RAM=AllocateMem(RAMSize))) return;
 
    RAM2     = RAM+0x10000;
    RAM3     = RAM+0x10000+0x10000+0x10+(0xC000*2);
-   RAM_BANK = RAM+0x10000+0x10000+0x10;
 
    memset(RAM+0x00000, 0x00, RAMSize);
 
-   if(!(TMP=AllocateMem(0x20000))) return;
-
-   if(!load_rom("nzsb5326.bin", TMP, 0x10000)) return;	// EXTRA SOUND Z80
-
+   TMP = load_region[REGION_CPU3];
    TMP[0x0072]=0x00;
    TMP[0x0073]=0x00;
 
@@ -2508,35 +2071,22 @@ static void load_tnzsb(void)
 
    SetStopZ80Mode2(0x016C);
 
-   memcpy(RAM3,TMP,0x10000);
-   AddZ80AROMBase(RAM3, 0x0038, 0x0066);
+   AddZ80AROMBase(TMP, 0x0038, 0x0066);
 
-   AddZ80AReadByte(0x0000, 0x7FFF, NULL,			RAM3+0x0000);	// ROM
-   AddZ80AReadByte(0xC000, 0xDFFF, NULL,			RAM3+0xC000);	// RAM
-   AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80AReadByte(-1, -1, NULL, NULL);
-
-   AddZ80AWriteByte(0xC000, 0xDFFF, NULL,			RAM3+0xC000);	// RAM
-   AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80AWriteByte(-1, -1, NULL, NULL);
+   AddZ80AReadByte(0x0000, 0x7FFF, NULL,			TMP+0x0000);	// ROM
+   AddZ80ARW(0xC000, 0xDFFF, NULL,			RAM3+0x000);	// RAM
 
    AddZ80AReadPort(0x00, 0x01, tnzs_ym2203_rb,	        NULL);		// YM2203
    AddZ80AReadPort(0x02, 0x02, tnzs_b1_sound_rb,	        NULL);		// YM2203
-   AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80AReadPort(-1, -1, NULL, NULL);
 
    AddZ80AWritePort(0x00, 0x01, tnzs_ym2203_wb,	        NULL);		// YM2203
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,			NULL);		// Trap Idle Z80
-   AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80AWritePort(-1, -1, NULL, NULL);
-
-   AddZ80AInit();
-
-   if(!load_rom("nzsb5324.bin", TMP, 0x20000)) return;	// Z80 MAIN ROM
+   finish_conf_z80(0);
 
    // Skip Idle Z80
    // -------------
 
+   TMP = load_region[REGION_CPU1];
    TMP[0x0CB4]=0xC9;  // ret
 
    TMP[0x02D8]=0xD3;  // OUTA (AAh)
@@ -2546,32 +2096,19 @@ static void load_tnzsb(void)
 
    init_bank_rom(TMP,ROM);
 
-   memcpy(RAM,TMP,0x10000);
-   AddZ80BROMBase(RAM, 0x0038, 0x0066);
+   AddZ80BROMBase(TMP, 0x0038, 0x0066);
 
    AddZ80BReadByte(0x0000, 0xBFFF, NULL,			NULL);		// BANK ROM/RAM
-   AddZ80BReadByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BReadByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
+   AddZ80BRW(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
+   AddZ80BRW(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
 
    AddZ80BWriteByte(0x8000, 0xBFFF, NULL,			NULL);		// BANK RAM
-   AddZ80BWriteByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BWriteByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
    AddZ80BWriteByte(0xF600, 0xF600, MainBankSwitch,		NULL);		// ROM BANK
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
 
    AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
+   finish_conf_z80(1);
 
-   AddZ80BInit();
-
-   if(!load_rom("nzsb5325.bin", TMP, 0x10000)) return;		// Z80 SUB ROM
+   TMP = load_region[REGION_CPU2];
 
    // Skip Idle Z80
    // -------------
@@ -2585,102 +2122,23 @@ static void load_tnzsb(void)
 
    init_bank_rom2(TMP);
 
-   memcpy(RAM2,TMP,0x10000);
-   AddZ80CROMBase(RAM2, 0x0038, 0x0066);
+   AddZ80CROMBase(TMP, 0x0038, 0x0066);
 
    AddZ80CReadByte(0x0000, 0x9FFF, NULL,			NULL);		// BANK ROM
-   AddZ80CReadByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CReadByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
-   AddZ80CReadByte(0xF000, 0xF3FF, NULL,			RAM+0x00F800);	// COLOR RAM
+   AddZ80CRW(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
+   AddZ80CRW(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
+   AddZ80CRW(0xF000, 0xF3FF, NULL,			RAM+0x00F800);	// COLOR RAM
    AddZ80CReadByte(0xB002, 0xB003, TNZSSystemDSWRead,	        NULL);		// DSW
    AddZ80CReadByte(0xC000, 0xC002, TNZSSystemInputRead,		NULL);		// INPUT
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
 
-   AddZ80CWriteByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CWriteByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
-   AddZ80CWriteByte(0xF000, 0xF3FF, NULL,			RAM+0x00F800);	// COLOR RAM
    AddZ80CWriteByte(0xA000, 0xA000, SubBankSwitch_alt,		NULL);		// ROM BANK
    AddZ80CWriteByte(0xB004, 0xB004, tnzs_b1_sound_wb,	        NULL);		// IO
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
 
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);	// <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
 
    AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,			NULL);	// Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);	// <bad writes>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
-
-   FreeMem(TMP);
+   finish_conf_z80(2);
 
    /*-----------------------*/
-
-   if(!(GFX=AllocateMem(0x200000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   if(!load_rom("b53-08.8", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("b53-07.7", TMP+0x20000, 0x20000)) return;
-   if(!load_rom("b53-06.6", TMP+0x40000, 0x20000)) return;
-   if(!load_rom("b53-05.5", TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]=((tc&0x80)>>7)<<0;
-      GFX[tb+1]=((tc&0x40)>>6)<<0;
-      GFX[tb+2]=((tc&0x20)>>5)<<0;
-      GFX[tb+3]=((tc&0x10)>>4)<<0;
-      GFX[tb+4]=((tc&0x08)>>3)<<0;
-      GFX[tb+5]=((tc&0x04)>>2)<<0;
-      GFX[tb+6]=((tc&0x02)>>1)<<0;
-      GFX[tb+7]=((tc&0x01)>>0)<<0;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<1;
-      GFX[tb+1]|=((tc&0x40)>>6)<<1;
-      GFX[tb+2]|=((tc&0x20)>>5)<<1;
-      GFX[tb+3]|=((tc&0x10)>>4)<<1;
-      GFX[tb+4]|=((tc&0x08)>>3)<<1;
-      GFX[tb+5]|=((tc&0x04)>>2)<<1;
-      GFX[tb+6]|=((tc&0x02)>>1)<<1;
-      GFX[tb+7]|=((tc&0x01)>>0)<<1;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-   if(!load_rom("b53-04.4", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("b53-03.3", TMP+0x20000, 0x20000)) return;
-   if(!load_rom("b53-02.2", TMP+0x40000, 0x20000)) return;
-   if(!load_rom("b53-01.1", TMP+0x60000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x40000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]|=((tc&0x80)>>7)<<2;
-      GFX[tb+1]|=((tc&0x40)>>6)<<2;
-      GFX[tb+2]|=((tc&0x20)>>5)<<2;
-      GFX[tb+3]|=((tc&0x10)>>4)<<2;
-      GFX[tb+4]|=((tc&0x08)>>3)<<2;
-      GFX[tb+5]|=((tc&0x04)>>2)<<2;
-      GFX[tb+6]|=((tc&0x02)>>1)<<2;
-      GFX[tb+7]|=((tc&0x01)>>0)<<2;
-      tc=TMP[ta+0x40000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<3;
-      GFX[tb+1]|=((tc&0x40)>>6)<<3;
-      GFX[tb+2]|=((tc&0x20)>>5)<<3;
-      GFX[tb+3]|=((tc&0x10)>>4)<<3;
-      GFX[tb+4]|=((tc&0x08)>>3)<<3;
-      GFX[tb+5]|=((tc&0x04)>>2)<<3;
-      GFX[tb+6]|=((tc&0x02)>>1)<<3;
-      GFX[tb+7]|=((tc&0x01)>>0)<<3;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_16x16(GFX, 0x2000);
 
    InitPaletteMap(RAM+0xF800, 0x20, 0x10, 0x8000);
 
@@ -2691,13 +2149,6 @@ static void load_tnzsb(void)
 
    seta_x1.RAM_A	= RAM+0x0C000;
    seta_x1.RAM_B	= RAM+0x0F000;
-   seta_x1.GFX		= GFX;
-   seta_x1.MASK		= GFX_BG0_SOLID;
-   seta_x1.bmp_x	= 32;
-   seta_x1.bmp_y	= 32;
-   seta_x1.bmp_w	= 256;
-   seta_x1.bmp_h	= 224;
-   seta_x1.tile_mask	= 0x1FFF;
    seta_x1.scr_x	= 0;
    seta_x1.scr_y	= 0;
 }
@@ -3665,11 +3116,56 @@ static void execute_insectx(void)
 
 static void DrawTNZSSystem(void)
 {
+    if (!seta_x1.GFX) {
+	seta_x1.GFX		= gfx[0];
+	seta_x1.MASK		= gfx_solid[0];
+	seta_x1.bmp_x	= current_game->video->border_size;
+	seta_x1.bmp_y	= current_game->video->border_size;
+	seta_x1.bmp_w	= current_game->video->screen_x;
+	seta_x1.bmp_h	= current_game->video->screen_y;
+	seta_x1.tile_mask	= get_region_size(REGION_GFX1)-1;
+	printf("init seta border %d res %d %d mask %x\n",seta_x1.bmp_x,seta_x1.bmp_w,seta_x1.bmp_h,seta_x1.tile_mask);
+    }
    ClearPaletteMap();
 
    render_seta_x1_z80();
 }
 
+static gfx_layout tnzs_charlayout =
+{
+	16,16,
+	RGN_FRAC(1,4),
+	4,
+	{ RGN_FRAC(3,4), RGN_FRAC(2,4), RGN_FRAC(1,4), RGN_FRAC(0,4) },
+	{ 0, 1, 2, 3, 4, 5, 6, 7,
+			8*8+0, 8*8+1, 8*8+2, 8*8+3, 8*8+4, 8*8+5, 8*8+6, 8*8+7 },
+	{ 0*8, 1*8, 2*8, 3*8, 4*8, 5*8, 6*8, 7*8,
+			16*8, 17*8, 18*8, 19*8, 20*8, 21*8, 22*8, 23*8 },
+	32*8
+};
+
+static gfx_layout insectx_charlayout =
+{
+	16,16,
+	8192,
+	4,
+	{ 8, 0, 8192*64*8+8, 8192*64*8 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7,
+			8*16+0, 8*16+1, 8*16+2, 8*16+3, 8*16+4, 8*16+5, 8*16+6, 8*16+7 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
+		16*16, 17*16, 18*16, 19*16, 20*16, 21*16, 22*16, 23*16 },
+	64*8
+};
+
+static struct GFX_LIST tnzs_gfx[] =
+{
+   { REGION_GFX1, &tnzs_charlayout, },
+   { 0,           NULL,        },
+};
+
+// static GFXDECODE_START( insectx )
+// 	GFXDECODE_ENTRY( "gfx1", 0, insectx_charlayout, 0, 32 )
+// GFXDECODE_END
 static struct VIDEO_INFO video_arknoid2 =
 {
    DrawTNZSSystem,
@@ -3678,6 +3174,7 @@ static struct VIDEO_INFO video_arknoid2 =
    32,
    VIDEO_ROTATE_270 |
    VIDEO_ROTATABLE,
+   tnzs_gfx
 };
 static struct VIDEO_INFO video_drtoppel =
 {
@@ -3705,47 +3202,8 @@ static struct VIDEO_INFO video_tnzsb =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   tnzs_gfx
 };
-static struct DIR_INFO dir_arknoid2u[] =
-{
-   { "arkanoid_2_american", },
-   { "ark2us", },
-   { "arknoid2u", },
-   { "arknid2u", },
-   { "arkanoi2", },
-   { ROMOF("arknoid2"), },
-   { CLONEOF("arknoid2"), },
-   { NULL, },
-};
-GAME(arknoid2u, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
-	.input = input_arknoid2,
-	.dsw = dsw_arknoid2,
-	.video = &video_arknoid2,
-	.exec = execute_tnzsb,
-	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ American",
-	.board = "B08",
-	.sound = sound_arknoid2,
-);
-static struct DIR_INFO dir_arknoid2j[] =
-{
-   { "arkanoid_2_japanese", },
-   { "ark2jp", },
-   { "arknoid2j", },
-   { "arknid2j", },
-   { "arkanoi2", },
-   { ROMOF("arknoid2"), },
-   { CLONEOF("arknoid2"), },
-   { NULL, },
-};
-GAME(arknoid2j, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
-	.input = input_arknoid2,
-	.dsw = dsw_arknoid2,
-	.video = &video_arknoid2,
-	.exec = execute_tnzsb,
-	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
-	.board = "B08",
-	.sound = sound_arknoid2,
-);
 static struct DIR_INFO dir_arknoid2[] =
 {
    { "arkanoid_2_rev_of_doh", },
@@ -3753,14 +3211,20 @@ static struct DIR_INFO dir_arknoid2[] =
    { "arknoid2", },
    { NULL, },
 };
-GAME( arknoid2, "Arkanoid 2 Revenge of Doh", TAITO, 1987, GAME_BREAKOUT,
-	.input = input_arknoid2,
-	.dsw = dsw_arknoid2,
-	.video = &video_arknoid2,
-	.exec = execute_tnzsb,
+#define execute_arknoid2 execute_tnzsb
+GME( arknoid2, "Arkanoid 2 Revenge of Doh", TAITO, 1987, GAME_BREAKOUT,
 	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
 	.board = "B08",
-	.sound = sound_arknoid2,
+);
+CLNEI(arknoid2u, arknoid2, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
+	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ American",
+	.load_game = load_arknoid2u,
+	.board = "B08",
+);
+CLNEI(arknoid2j, arknoid2, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
+	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
+	.load_game = load_arknoid2j,
+	.board = "B08",
 );
 static struct DIR_INFO dir_chukatai[] =
 {
@@ -3772,7 +3236,7 @@ static struct DIR_INFO dir_chukatai[] =
 GAME( chukatai, "Chuka Taisen", TAITO, 1988, GAME_SHOOT,
 	.input = input_chukatai,
 	.dsw = dsw_chukatai,
-	.romsw = romsw_tnzs,
+	.romsw = romsw_tnzsb,
 	.video = &video_tnzsb,
 	.exec = execute_tnzsb,
 	.board = "B44",
@@ -3832,9 +3296,9 @@ static struct DIR_INFO dir_kageki[] =
    { NULL, },
 };
 GAME( kageki, "Kageki", TAITO, 1988, GAME_BEAT,
-	.input = input_kageki,
+	.input = input_tnzsb,
 	.dsw = dsw_kageki,
-	.romsw = romsw_tnzs /*kageki_romsw */,
+	.romsw = romsw_tnzsb /*kageki_romsw */,
 	.video = &video_drtoppel,
 	.exec = execute_tnzsb,
 	.long_name_jpn = "火激",
@@ -3856,57 +3320,32 @@ GAME( plumppop, "Plump Pop", TAITO, 1987, GAME_BREAKOUT,
 	.board = "A98",
 	.sound = sound_arknoid2,
 );
-static struct DIR_INFO dir_tnzs[] =
-{
-   { "the_nz_story", },
-   { "tnzs", },
-   { "tnzsj", },
-   { "tnzso", },
-   { NULL, },
-};
-GAME( tnzs, "The New Zealand Story", TAITO, 1988, GAME_PLATFORM,
-	.input = input_tnzs,
-	.dsw = dsw_tnzs,
-	.romsw = romsw_tnzs,
-	.video = &video_tnzsb,
-	.exec = execute_tnzsb,
-	.long_name_jpn = "ニュージーランドストーリー",
-	.board = "B53",
-	.sound = sound_arknoid2,
-);
 static struct DIR_INFO dir_tnzsb[] =
 {
    { "the_nz_story_bootleg", },
    { "tnzsb", },
-   { ROMOF("tnzs"), },
-   { CLONEOF("tnzs"), },
+   { "tnzs", },
    { NULL, },
 };
-GAME(tnzsb, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
-	.input = input_tnzsb,
-	.dsw = dsw_tnzs,
-	.romsw = romsw_tnzs,
-	.video = &video_tnzsb,
-	.exec = execute_tnzsb,
+GME(tnzsb, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
 	.long_name_jpn = "ニュージーランドストーリー (bootleg)",
-	.sound = sound_tnzsb,
+);
+#define load_tnzsb load_tnzsjo
+CLNEI( tnzsjo, tnzsb, "The New Zealand Story (old tnzs raine set)", TAITO, 1988, GAME_PLATFORM,
+	.long_name_jpn = "ニュージーランドストーリー",
+	.input = input_tnzs,
+	.board = "B53",
+	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_tnzs2[] =
 {
    { "the_nz_story_extra", },
    { "tnzs2", },
-   { ROMOF("tnzs"), },
-   { CLONEOF("tnzs"), },
+   { "tnzsop", },
    { NULL, },
 };
-GAME(tnzs2, "The New Zealand Story (extra)", TAITO, 1988, GAME_PLATFORM,
-	.input = input_tnzs,
-	.dsw = dsw_tnzs,
-	.romsw = romsw_tnzs,
-	.video = &video_tnzsb,
-	.exec = execute_tnzsb,
+CLNE(tnzs2, tnzsb, "The New Zealand Story (extra)", TAITO, 1988, GAME_PLATFORM,
 	.long_name_jpn = "ニュージーランドストーリーエキストラ",
-	.board = "B53",
-	.sound = sound_arknoid2,
-);
+	.input = input_tnzs,
+     );
 
