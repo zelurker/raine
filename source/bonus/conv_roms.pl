@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 use v5.10;
-use genres;
+use source::bonus::genres;
 use strict;
 
 my %raine_loads =

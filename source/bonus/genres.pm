@@ -1,6 +1,7 @@
 package genres;
 
 use LWP::Simple;
+use v5.10;
 use strict;
 
 our %genre = ();
@@ -26,8 +27,7 @@ sub get_genre($$) {
 		$doc = get "https://en.wikipedia.org/wiki/$long";
 	}
 	if (!$doc) {
-		print STDERR "no info for $name, sleep 3 and retry...\n";
-		sleep 3;
+		print STDERR "no info for $name, trying arcadehits http://www.arcadehits.net/index.php?p=roms&jeu=$name..\n";
 		$doc = get "http://www.arcadehits.net/index.php?p=roms&jeu=$name";
 		print STDERR "still no info\n" if (!$doc);
 	}
@@ -64,7 +64,7 @@ sub get_genre($$) {
 	open(F,">doc.html");
 	print F $doc;
 	close(F);
-	die "genre not found in page for $name - using GAME_MISC\n";
+	say STDERR "genre not found in page for $name - using GAME_MISC\n";
 	return "GAME_MISC";
 }
 
