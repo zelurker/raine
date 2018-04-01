@@ -1190,6 +1190,9 @@ static void load_ddonpach(void)
 
      pWriteWord(&ROM[0x53f6],0x4e71);
      pWriteWord(&ROM[0x5400],0x6008);
+
+     // remove pause between letters on copyright screen
+     pWriteWord(&ROM[0x56dc2],0x4e75);
    } else { // international version (new set)
      apply_hack(0x571b2,1);
 
@@ -1197,6 +1200,9 @@ static void load_ddonpach(void)
 
      pWriteWord(&ROM[0x53ea],0x4e71);
      pWriteWord(&ROM[0x53f4],0x6008);
+
+     // remove pause between letters on copyright screen
+     pWriteWord(&ROM[0x5717a],0x4e75);
    }
 
    // WriteWord(&ROM[0x56e00],0x4e71);
