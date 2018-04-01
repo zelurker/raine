@@ -409,9 +409,6 @@ static struct DSW_DATA dsw_data_the_nz_story_1[] =
    { "5",                     0x10},
    { "4",                     0x00},
    DSW_CONTINUE_PLAY( 0x40, 0x00),
-   { MSG_DSWB_BIT8,           0x80, 0x02 },
-   { MSG_OFF,                 0x80},
-   { MSG_ON,                  0x00},
    { NULL,                    0,   },
 };
 
@@ -502,15 +499,15 @@ static struct ROM_INFO rom_tnzs2[] = // prototype (location test?) version; has 
 
 static struct ROM_INFO rom_extrmatn[] =
 {
-   {   "b06-01.bin", 0x00020000, 0xd2afbf7e, 0, 0, 0, },
-   {   "b06-02.bin", 0x00020000, 0xe0c2757a, 0, 0, 0, },
-   {   "b06-03.bin", 0x00020000, 0xee80ab9d, 0, 0, 0, },
-   {   "b06-04.bin", 0x00020000, 0x3697ace4, 0, 0, 0, },
-   {   "b06-06.bin", 0x00010000, 0x744f2c84, 0, 0, 0, },
-   {   "b06-08.bin", 0x00000200, 0x10c9aac3, 0, 0, 0, },
-   {   "b06-09.bin", 0x00000200, 0xf388b361, 0, 0, 0, },
-   {   "b06-20.bin", 0x00010000, 0x04e3fc1f, 0, 0, 0, },
-   {   "b06-21.bin", 0x00010000, 0x1614d6a2, 0, 0, 0, },
+  { "b06-20.11c", 0x10000, 0x04e3fc1f, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  { "b06-21.9c", 0x10000, 0x1614d6a2, REGION_CPU1, 0x10000, LOAD_NORMAL },
+  { "b06-22.4e", 0x10000, 0x744f2c84, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  { "b06-01.13a", 0x20000, 0xd2afbf7e, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  { "b06-02.10a", 0x20000, 0xe0c2757a, REGION_GFX1, 0x20000, LOAD_NORMAL },
+  { "b06-03.7a", 0x20000, 0xee80ab9d, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  { "b06-04.4a", 0x20000, 0x3697ace4, REGION_GFX1, 0x60000, LOAD_NORMAL },
+  { "b06-09.15f", 0x200, 0xf388b361, REGION_PROMS, 0x00000, LOAD_NORMAL },
+  { "b06-08.17f", 0x200, 0x10c9aac3, REGION_PROMS, 0x00200, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1626,30 +1623,48 @@ static void load_arkanoid_2_actual(int set)
 
    if((set==0)||(set==2)){
 
-   // Skip Idle Z80
-   // -------------
+       // Skip Idle Z80
+       // -------------
 
-   TMP[0x2605]=0x18;  // jr xx
+       TMP[0x2605]=0x18;  // jr xx
 
-   TMP[0x2630]=0xD3;  // OUTA (AAh)
-   TMP[0x2631]=0xAA;  //
+       TMP[0x2630]=0xD3;  // OUTA (AAh)
+       TMP[0x2631]=0xAA;  //
 
-   SetStopZ80BMode2(0x2625);
+       SetStopZ80BMode2(0x2625);
 
-   }
+   } else if(set==1){
 
-   if(set==1){
+       // Skip Idle Z80
+       // -------------
 
-   // Skip Idle Z80
-   // -------------
+       TMP[0x2591]=0x18;  // jr xx
 
-   TMP[0x2591]=0x18;  // jr xx
+       TMP[0x25BC]=0xD3;  // OUTA (AAh)
+       TMP[0x25BD]=0xAA;  //
 
-   TMP[0x25BC]=0xD3;  // OUTA (AAh)
-   TMP[0x25BD]=0xAA;  //
+       SetStopZ80BMode2(0x25B1);
 
-   SetStopZ80BMode2(0x25B1);
+   } else if (set == 3) { // extrmatn
+       // Fix SUB WAIT
 
+       TMP[0x02d2]=0x00;
+       TMP[0x02d3]=0x00;
+
+       // Fix HW ERROR
+
+       TMP[0x032b]=0xC9;
+
+       // Fix ROM ERROR
+
+       TMP[0x08dc]=0xC9;
+
+       // Skip Idle Z80
+
+       TMP[0x4219]=0xD3;  // OUTA (AAh)
+       TMP[0x421A]=0xAA;  //
+
+       SetStopZ80BMode2(0x4219);
    }
 
    init_bank_rom(TMP,ROM);
@@ -1672,12 +1687,21 @@ static void load_arkanoid_2_actual(int set)
    // Skip Idle Z80
    // -------------
 
-   TMP[0x0A9A]=0x18;  // jr xx
+   if (set == 3) { // extrmatn
+       // Skip Idle Z80
 
-   TMP[0x0B71]=0xD3;  // OUTA (AAh)
-   TMP[0x0B72]=0xAA;  //
+       TMP[0x0140]=0xD3;  // OUTA (AAh)
+       TMP[0x0141]=0xAA;  //
 
-   SetStopZ80CMode2(0x0B71);
+       SetStopZ80CMode2(0x013B);
+   } else {
+       TMP[0x0A9A]=0x18;  // jr xx
+
+       TMP[0x0B71]=0xD3;  // OUTA (AAh)
+       TMP[0x0B72]=0xAA;  //
+
+       SetStopZ80CMode2(0x0B71);
+   }
 
    init_bank_rom2(TMP);
 
@@ -1687,12 +1711,20 @@ static void load_arkanoid_2_actual(int set)
    AddZ80CRW(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
    AddZ80CRW(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
    AddZ80CReadByte(0xB000, 0xB001, tnzs_ym2203_rb,		NULL);		// YM2203/DSW
-   AddZ80CReadByte(0xC000, 0xC001, a2_io_read,			NULL);		// INPUT
+   if (set == 3) // extrmatn
+       AddZ80CReadByte(0xC000, 0xC001, mcu_tnzs_read,		NULL);		// INPUT
+   else
+       AddZ80CReadByte(0xC000, 0xC001, a2_io_read,			NULL);		// INPUT
    AddZ80CReadByte(0xF000, 0xF003, NULL,			RAM2+0x00F000);	// ???
 
    AddZ80CWriteByte(0xA000, 0xA000, SubBankSwitch,		NULL);		// ROM BANK
    AddZ80CWriteByte(0xB000, 0xB001, tnzs_ym2203_wb,		NULL);		// YM2203/DSW
-   AddZ80CWriteByte(0xC000, 0xC001, a2_io_write,		NULL);		// INPUT
+   if (set == 3) { // extrmatn
+       AddZ80CWriteByte(0xC000, 0xC001, mcu_tnzs_write,		NULL);		// INPUT
+       mcu_type = MCU_EXTRMATN;
+       romset = 5;
+   } else
+       AddZ80CWriteByte(0xC000, 0xC001, a2_io_write,		NULL);		// INPUT
 
    AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,			NULL);		// Trap Idle Z80
    finish_conf_z80(2);
@@ -1739,7 +1771,6 @@ static void load_tnzsjo(void)
 {
    romset=3;
 
-   printf("load_tnzsjo\n");
    RAMSize=0x10000+0x10000+0x10+(0xC000*2);
 
    if(!(RAM=AllocateMem(RAMSize))) return;
@@ -2155,204 +2186,7 @@ static void load_tnzsb(void)
 
 static void load_extrmatn(void)
 {
-   int ta,tb,tc;
-   UINT8 *TMP;
-
-   romset=5;
-
-   RAMSize=0x10000+0x10000+0x10+(0xC000*2);
-
-   if(!(ROM =AllocateMem(0xC000*6))) return;
-
-   if(!(RAM=AllocateMem(RAMSize))) return;
-
-   RAM2     = RAM+0x10000;
-   RAM_BANK = RAM+0x10000+0x10000+0x10;
-
-   memset(RAM+0x00000, 0x00, RAMSize);
-
-   if(!(TMP=AllocateMem(0x20000))) return;
-
-   if(!load_rom("b06-20.bin", TMP+0x00000, 0x10000)) return;	// Z80 MAIN ROM
-   if(!load_rom("b06-21.bin", TMP+0x10000, 0x10000)) return;	// Z80 MAIN ROM
-
-   // Fix SUB WAIT
-
-   TMP[0x02d2]=0x00;
-   TMP[0x02d3]=0x00;
-
-   // Fix HW ERROR
-
-   TMP[0x032b]=0xC9;
-
-   // Fix ROM ERROR
-
-   TMP[0x08dc]=0xC9;
-
-   // Skip Idle Z80
-
-   TMP[0x4219]=0xD3;  // OUTA (AAh)
-   TMP[0x421A]=0xAA;  //
-
-   SetStopZ80BMode2(0x4219);
-
-   init_bank_rom(TMP,ROM);
-
-   memcpy(RAM,TMP,0x10000);
-   AddZ80BROMBase(RAM, 0x0038, 0x0066);
-
-   AddZ80BReadByte(0x0000, 0xBFFF, NULL,			NULL);		// BANK ROM/RAM
-   AddZ80BReadByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BReadByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80BReadByte(-1, -1, NULL, NULL);
-
-   AddZ80BWriteByte(0x8000, 0xBFFF, NULL,			NULL);		// BANK RAM
-   AddZ80BWriteByte(0xC000, 0xF3FF, NULL,			RAM+0x00C000);	// OBJECT RAM/WORK RAM/VDC RAM
-   AddZ80BWriteByte(0xF800, 0xFBFF, NULL,			RAM+0x00F800);	// COLOR RAM
-   AddZ80BWriteByte(0xF600, 0xF600, MainBankSwitch,		NULL);		// ROM BANK
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80BWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80BReadPort(-1, -1, NULL, NULL);
-
-   AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);		// Trap Idle Z80
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad reads>
-   AddZ80BWritePort(-1, -1, NULL, NULL);
-
-   AddZ80BInit();
-
-   if(!load_rom("b06-06.bin", TMP, 0x10000)) return;		// Z80 SUB ROM
-
-   // Skip Idle Z80
-
-   TMP[0x0140]=0xD3;  // OUTA (AAh)
-   TMP[0x0141]=0xAA;  //
-
-   SetStopZ80CMode2(0x013B);
-
-   init_bank_rom2(TMP);
-
-   memcpy(RAM2,TMP,0x10000);
-   AddZ80CROMBase(RAM2, 0x0038, 0x0066);
-
-   AddZ80CReadByte(0x0000, 0x9FFF, NULL,			NULL);		// BANK ROM
-   AddZ80CReadByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CReadByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
-   AddZ80CReadByte(0xB000, 0xB001, tnzs_ym2203_rb,		NULL);		// YM2203/DSW
-   AddZ80CReadByte(0xC000, 0xC001, mcu_tnzs_read,		NULL);		// INPUT
-   AddZ80CReadByte(0xF000, 0xF003, NULL,			RAM2+0x00F000);	// ???
-   AddZ80CReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80CReadByte(-1, -1, NULL, NULL);
-
-   AddZ80CWriteByte(0xD000, 0xDFFF, NULL,			RAM2+0x00D000);	// WORK RAM
-   AddZ80CWriteByte(0xE000, 0xEFFF, NULL,			RAM +0x00E000);	// COMMON RAM
-   AddZ80CWriteByte(0xA000, 0xA000, SubBankSwitch,		NULL);		// ROM BANK
-   AddZ80CWriteByte(0xB000, 0xB001, tnzs_ym2203_wb,		NULL);		// YM2203/DSW
-   AddZ80CWriteByte(0xC000, 0xC001, mcu_tnzs_write,		NULL);		// INPUT
-   AddZ80CWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80CWriteByte(-1, -1, NULL, NULL);
-
-   AddZ80CReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);		// <bad reads>
-   AddZ80CReadPort(-1, -1, NULL, NULL);
-
-   AddZ80CWritePort(0xAA, 0xAA, StopZ80CMode2,			NULL);		// Trap Idle Z80
-   AddZ80CWritePort(0x00, 0xFF, DefBadWriteZ80,			NULL);		// <bad writes>
-   AddZ80CWritePort(-1, -1, NULL, NULL);
-
-   AddZ80CInit();
-
-   FreeMem(TMP);
-   mcu_type = MCU_EXTRMATN;
-
-   /*-----------------------*/
-
-   if(!(GFX=AllocateMem(0x200000))) return;
-   if(!(TMP=AllocateMem(0x080000))) return;
-
-   if(!load_rom("b06-08.bin", TMP+0x000, 0x200)) return;	// COLOR ROM
-   if(!load_rom("b06-09.bin", TMP+0x200, 0x200)) return;	// COLOR ROM
-   for(ta=0;ta<512;ta++){
-   RAM[ta+ta+0xF800]=TMP[ta+0x000];
-   RAM[ta+ta+0xF801]=TMP[ta+0x200];
-   }
-
-   if(!load_rom("b06-01.bin", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("b06-02.bin", TMP+0x20000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x20000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]=((tc&0x80)>>7)<<0;
-      GFX[tb+1]=((tc&0x40)>>6)<<0;
-      GFX[tb+2]=((tc&0x20)>>5)<<0;
-      GFX[tb+3]=((tc&0x10)>>4)<<0;
-      GFX[tb+4]=((tc&0x08)>>3)<<0;
-      GFX[tb+5]=((tc&0x04)>>2)<<0;
-      GFX[tb+6]=((tc&0x02)>>1)<<0;
-      GFX[tb+7]=((tc&0x01)>>0)<<0;
-      tc=TMP[ta+0x20000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<1;
-      GFX[tb+1]|=((tc&0x40)>>6)<<1;
-      GFX[tb+2]|=((tc&0x20)>>5)<<1;
-      GFX[tb+3]|=((tc&0x10)>>4)<<1;
-      GFX[tb+4]|=((tc&0x08)>>3)<<1;
-      GFX[tb+5]|=((tc&0x04)>>2)<<1;
-      GFX[tb+6]|=((tc&0x02)>>1)<<1;
-      GFX[tb+7]|=((tc&0x01)>>0)<<1;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-   if(!load_rom("b06-03.bin", TMP+0x00000, 0x20000)) return;
-   if(!load_rom("b06-04.bin", TMP+0x20000, 0x20000)) return;
-   tb=0;
-   for(ta=0;ta<0x20000;ta++){
-      tc=TMP[ta];
-      GFX[tb+0]|=((tc&0x80)>>7)<<2;
-      GFX[tb+1]|=((tc&0x40)>>6)<<2;
-      GFX[tb+2]|=((tc&0x20)>>5)<<2;
-      GFX[tb+3]|=((tc&0x10)>>4)<<2;
-      GFX[tb+4]|=((tc&0x08)>>3)<<2;
-      GFX[tb+5]|=((tc&0x04)>>2)<<2;
-      GFX[tb+6]|=((tc&0x02)>>1)<<2;
-      GFX[tb+7]|=((tc&0x01)>>0)<<2;
-      tc=TMP[ta+0x20000];
-      GFX[tb+0]|=((tc&0x80)>>7)<<3;
-      GFX[tb+1]|=((tc&0x40)>>6)<<3;
-      GFX[tb+2]|=((tc&0x20)>>5)<<3;
-      GFX[tb+3]|=((tc&0x10)>>4)<<3;
-      GFX[tb+4]|=((tc&0x08)>>3)<<3;
-      GFX[tb+5]|=((tc&0x04)>>2)<<3;
-      GFX[tb+6]|=((tc&0x02)>>1)<<3;
-      GFX[tb+7]|=((tc&0x01)>>0)<<3;
-      tb+=16;
-      if((tb&0x7F)==0){tb-=0x78;}
-      else{if((tb&0x7F)==8){tb-=0x08;}}
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_16x16(GFX, 0x2000);
-
-   InitPaletteMap(RAM+0xF800, 0x20, 0x10, 0x8000);
-
-   set_colour_mapper(&col_map_xrrr_rrgg_gggb_bbbb);
-
-   // Init seta_x1 emulation
-   // ----------------------
-
-   seta_x1.RAM_A	= RAM+0x0C000;
-   seta_x1.RAM_B	= RAM+0x0F000;
-   seta_x1.GFX		= GFX;
-   seta_x1.MASK		= GFX_BG0_SOLID;
-   seta_x1.bmp_x	= 32;
-   seta_x1.bmp_y	= 32;
-   seta_x1.bmp_w	= 224;
-   seta_x1.bmp_h	= 256;
-   seta_x1.tile_mask	= 0x1FFF;
-   seta_x1.scr_x	= 0;
-   seta_x1.scr_y	= 0;
+   load_arkanoid_2_actual(3);
 }
 
 static UINT16 f6read(UINT16 offset) {
@@ -3124,7 +2958,9 @@ static void DrawTNZSSystem(void)
 	seta_x1.bmp_w	= current_game->video->screen_x;
 	seta_x1.bmp_h	= current_game->video->screen_y;
 	seta_x1.tile_mask	= get_region_size(REGION_GFX1)-1;
+#ifdef RAINE_DEBUG
 	printf("init seta border %d res %d %d mask %x\n",seta_x1.bmp_x,seta_x1.bmp_w,seta_x1.bmp_h,seta_x1.tile_mask);
+#endif
     }
    ClearPaletteMap();
 
@@ -3262,6 +3098,7 @@ static struct DIR_INFO dir_extrmatn[] =
 {
    { "extermination", },
    { "extrmatn", },
+   { "extrmatnu", }, // us set for mame
    { NULL, },
 };
 GAME( extrmatn, "Extermination", TAITO, 1987, GAME_SHOOT,
