@@ -512,12 +512,12 @@ void ScreenChange(void)
       s = new_set_gfx_mode();	// Revert to old mode
    }
    else{
-     SetupScreenBitmap();
       if (prev_display_cfg.bpp != display_cfg.bpp) {
-	if (current_colour_mapper){
-	  set_colour_mapper(current_colour_mapper);
-	  ResetPalette();
-	}
+	  SetupScreenBitmap();
+	  if (current_colour_mapper){
+	      set_colour_mapper(current_colour_mapper);
+	      ResetPalette();
+	  }
       }
    }
    if (screen) free(screen);

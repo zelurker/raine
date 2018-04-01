@@ -1987,6 +1987,7 @@ void TMenu::execute() {
 		delete font;
 		font = NULL;
 	    }
+	    setup_bg_layer(sdl_game_bitmap);
 	    draw();
 
 	}
