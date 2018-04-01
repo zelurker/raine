@@ -648,6 +648,7 @@ static void draw_emudx() {
 	      // flame effects
 	      // int col = ((color >> 1) & 0x03) | ((color << 2) & 0x04);
 	      BITMAP *flame = flame_red;
+	      (void)flame; // used only by allegro, no warning this way
 	      if(subcol==0 && (code==61 || code==62)) {
 		code+=28; // Fire that fears (1st level)
 		flame = flame_blue;
