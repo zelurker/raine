@@ -106,7 +106,7 @@ while ($_ = shift @file) {
 		my $comment = undef;
 		my $load_be = undef;
 		while ($_ = shift @file) {
-			if (/ROM_REGION *\( ?(.+) ?\)/ || /ROM_REGION16_BE *\( ?(.+?) ?\)/ || /ROM_REGION16_LE *\( ?(.+?) ?\)/) {
+			if (/ROM_REGION *\( ?(.+?) ?\)/ || /ROM_REGION16_BE *\( ?(.+?) ?\)/ || /ROM_REGION16_LE *\( ?(.+?) ?\)/) {
 				my $nbx = 0;
 				my $args = $1;
 #	$load_be = 1 if (/ROM_REGION16_BE/);
@@ -114,12 +114,13 @@ while ($_ = shift @file) {
 				@even = ();
 				if ((my ($size,$region_name,$thing) = split(/\, */,$args))) {
 					$size =~ s/^ *//;
+					$region_name =~ s/ \| .+//;
 					$region_name = $raine_regions{$region_name} if ($raine_regions{$region_name});
 					if ($region_name !~ /REGION/) {
 						$region_name =~ s/"//g;
 						$region_name = uc("region_$region_name");
 					}
-					my ($function,$oldname,$oldsize,$oldbase,$oldcrc,$oldfunc) = undef;
+					my ($function,$oldname,$oldsize,$oldbase,$oldcrc,$oldfunc,$oldsuf,$suffix) = undef;
 					while ($_ = shift @file) {
 						s/\r//; # Very important here !
 						if (/^[ \t]*\/\*.+\*\/[ \t]*$/ || /^[ \t]*\/\//) {
@@ -142,9 +143,10 @@ while ($_ = shift @file) {
 							next;
 						}
 
-						if (!/ROM_REGION/ && /([\w\d_]+) *\( *(.+) *\)/) {
+						if (!/ROM_REGION/ && /([\w\d_]+) *\( *(.+?) \)/) {
 							$function = $1;
 							my $args = $2;
+							$suffix = $3 if (/([\w\d_]+) *\( *(.+?) \)[ \t]*(\/[\/\*].+)/);
 							my @args = split(/\, */,$args);
 							my ($name,$base,$size,$crc,$attrib) = @args;
 							my $reload = 0;
@@ -220,17 +222,17 @@ while ($_ = shift @file) {
 							}
 							if ($function ne "ROM_CONTINUE") {
 								if ($oldname) {
-									print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $oldfunc },\n";
+									print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $oldfunc }, $oldsuf\n";
 								}
-								($oldname,$oldsize,$oldbase,$oldcrc,$oldfunc) =
-								($name,$size,$base,$crc,$function);
+								($oldname,$oldsize,$oldbase,$oldcrc,$oldfunc,$oldsuf) =
+								($name,$size,$base,$crc,$function,$suffix);
 							}
 						} elsif (/ROM_REGION/ || # empty line
 							/ROM_END/) {
 							if ($function eq "LOAD_FILL") {
 								print"  FILL($oldname,$oldsize,$oldcrc, $region_name),\n";
 							} elsif ($oldname) {
-								print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $function },\n";
+								print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $function }, $oldsuf\n";
 							}
 							last;
 						} elsif (/^[ \t]*\/\*/ && !/\*\//) {
@@ -293,25 +295,30 @@ while ($_ = shift @file) {
 			s/^[\t ]*//;
 			s/[\t ]*$//;
 		}
-		foreach (8,9) {
+		my $rot;
+		for ($rot = 0; $rot <= $#args; $rot++) {
+			last if ($args[$rot] =~ /ROT\d/);
+		}
+		foreach ($rot+1,$rot+2) {
 			my $i = $_;
 			while ($args[$i] !~ /"$/) {
 				$args[$i] .= ",".splice @args,$i+1,1;
 			}
 		}
 
-		my $long = $args[9];
+		my $long = $args[$rot+2];
 		$long =~ s/"//g;
-		$args[8] =~ s/"//g;
-		$args[8] =~ s/ [\/\(].+//;
-		$args[8] = uc($args[8]); # companies macros are usually just the name in uppercase, might work...
+		$args[$rot+1] =~ s/"//g;
+		$args[$rot+1] =~ s/ [\/\(].+//;
+		$args[$rot+1] = uc($args[$rot+1]); # companies macros are usually just the name in uppercase, might work...
 		if ($args[2] eq "0" || $args[2] eq "neogeo") { # parent = 0, real game
 			my $genre = genres::get_genre($args[1],$long);
-			say "GMEI( $args[1],$args[9],$args[8],$args[0], $genre );";
+			say "GMEI( $args[1],$args[$rot+2],$args[$rot+1],$args[0], $genre );";
 		} else {
 			my $genre = genres::get_genre($args[2],$long);
-			say "CLNEI( $args[1],$args[2],$args[9],$args[8],$args[0], $genre );";
+			say "CLNEI( $args[1],$args[2],$args[$rot+2],$args[$rot+1],$args[0], $genre );";
 		}
 	}
 }
+
 

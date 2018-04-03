@@ -3,9 +3,10 @@ package genres;
 use LWP::Simple;
 use v5.10;
 use strict;
+use GDBM_File;
 
-our %genre = ();
-dbmopen %genre, "genres",0666;
+our %genre;
+dbmopen %genre, "genres",0666 or die "dbmopen problem : $!";
 
 sub get_genre($$) {
 	# get the game genre from maws !
@@ -32,11 +33,12 @@ sub get_genre($$) {
 		print STDERR "still no info\n" if (!$doc);
 	}
 	return "GAME_MISC" if (!$doc);
-	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</ || $doc =~ /genre=(.+?)>/ || $doc =~ /title="Video game genre".+?title="(.+?)"/s) {
+	if ($doc =~ /Genre : (.+?)\</ || $doc =~ /Genre:<\/b\> (.+?)\</ || $doc =~ /title="Video game genre".+?title="(.+?)"/s) {
 			my $genre = $1;
-			if ($genre =~ /Shoot/) {
+			say STDERR "genre found : $genre";
+			if ($genre =~ /Shoot/i) {
 				$genre = "GAME_SHOOT";
-			} elsif ($genre =~ /Fight/) {
+			} elsif ($genre =~ /Fight/i) {
 				$genre = "GAME_BEAT";
 			} elsif ($genre =~ /(Puzzle|Mahjong)/) {
 				$genre = "GAME_PUZZLE";
@@ -57,15 +59,20 @@ sub get_genre($$) {
 			} else {
 				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
 				$genre = "GAME_MISC";
+				open(F,">doc.html");
+				print F $doc;
+				close(F);
+				exit(0);
 			}
 			$genre{$name} = $genre;
 			return $genre;
 	}
-	open(F,">doc.html");
-	print F $doc;
-	close(F);
 	say STDERR "genre not found in page for $name - using GAME_MISC\n";
 	return "GAME_MISC";
+}
+
+END {
+	dbmclose %genre;
 }
 
 1;
