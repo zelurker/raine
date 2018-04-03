@@ -229,13 +229,16 @@ while (read_next_line()) {
 		@dsw = ();
 		$nb = -1;
 		$dsw_name = undef;
+		my $location = "";
 		while ($macro == 2 || read_next_line()) {
 			# Normalize spaces to be sure to find same dipswitches
 			s/ ([\,\"\)])/$1/g;
 			s/ +$//;
 			s/ +/ /g;
-			my $location = $1 if (s/PORT_DIPLOCATION\((.+)\)//);
-			$main_out .= "// $location\n" if ($location);
+			if (s/PORT_DIPLOCATION\((.+)\)//) {
+				$main_out .= "  // $location\n" if ($location);
+				$location = $1;
+			}
 			$macro = 1 if ($macro == 2);
 			next if (/^[ \t]*\/\//);
 			s/PORT_CODE.+?\)//; # PORT_CODE not supported (yet) in raine
@@ -256,15 +259,21 @@ while (read_next_line()) {
 				my $args = $1;
 				if ($started) {
 					if ($function =~ /DEMO_SOUND/) {
-						$main_out .= "  DSW_DEMO_SOUND( $on, $off ),\n";
+						$main_out .= "  DSW_DEMO_SOUND( $on, $off ),";
 					} elsif ($function =~ /SERVICE/) {
-						$main_out .= "  DSW_SERVICE( $on, $off ),\n";
+						$main_out .= "  DSW_SERVICE( $on, $off ),";
 					} elsif ($function =~ /TEST/i) {
-						$main_out .= "  DSW_TEST_MODE( $on, $off ),\n";
+						$main_out .= "  DSW_TEST_MODE( $on, $off ),";
 					} else {
-						$main_out .= "  { $function, $bit, $length },\n" if ($length >= 1);
+						if ($length >= 1) {
+							$main_out .= "  { $function, $bit, $length },\n";
+						}
+						chomp $output;
 						$main_out .= $output;
 					}
+					$main_out .= "\n";
+					$main_out .= "  // $location\n" if ($location);
+					$location = undef;
 				}
 				$started = 1;
 				my $rest;
