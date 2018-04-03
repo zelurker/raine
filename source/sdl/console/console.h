@@ -15,6 +15,7 @@ class TRaineConsole : public TConsole
   public:
     TRaineConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd) : TConsole(my_title,init_label,maxlen,maxlines,mycmd)
     {
+	load_history();
       pointer_on = 0;
       dump_cols = ((maxlen-7)/4)&~7;
       use_transparency = 0;
@@ -39,6 +40,7 @@ extern "C" {
 #endif
 
 int do_console(int sel);
+void preinit_console();
 void done_console();
 void run_console_command(char *command);
 void do_regs(int argc, char **argv);

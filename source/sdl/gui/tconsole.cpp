@@ -9,6 +9,7 @@
 #include "sdl/control_internal.h"
 #include "tconsole.h"
 #include "sdl/dialogs/messagebox.h"
+#include "games.h"
 
 void split_command(char *field, char **argv, int *argc, int max) {
   char *s = field;
@@ -79,6 +80,21 @@ TConsole::~TConsole() {
   free(menu);
   delete edit_child;
   delete field;
+}
+
+void TConsole::save_history() {
+    char buf[FILENAME_MAX];
+    sprintf(buf,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
+    edit_child->save_history(buf);
+}
+
+void TConsole::load_history() {
+    printf("load_history\n");
+    if (current_game) {
+	char buf[FILENAME_MAX];
+	sprintf(buf,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
+	edit_child->load_history(buf);
+    }
 }
 
 /* void TConsole::compute_nb_items() {

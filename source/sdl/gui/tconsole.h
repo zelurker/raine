@@ -63,6 +63,8 @@ class TConsole : public TDialog
     ~TConsole();
     // virtual void compute_nb_items();
     virtual void print(const char *format, ...);
+    virtual void save_history();
+    virtual void load_history();
     virtual void post_print(); // easier than overloading print
     virtual void setup_fg_layer();
     virtual int get_fglayer_footer_height();

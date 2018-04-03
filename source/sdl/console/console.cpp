@@ -1309,10 +1309,18 @@ int do_console(int sel) {
     return 0;
 }
 
+void preinit_console() {
+    if (cons) {
+	delete cons;
+	cons = NULL;
+    }
+}
+
 void done_console() {
   if (cons) {
-    delete cons;
-    cons = NULL;
+      cons->save_history();
+      delete cons;
+      cons = NULL;
   }
   if (search) {
     nb_search = nb_alloc_search = 0;

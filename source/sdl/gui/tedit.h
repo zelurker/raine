@@ -18,12 +18,10 @@ class TEdit : public TStatic
     char prefix_hist[80];
   public:
     TEdit(menu_item_t *my_menu);
-    ~TEdit() {
-      for (int n=0; n<used_hist; n++) {
-	free(history[n]);
-      }
-      used_hist = 0;
-    }
+    ~TEdit();
+    void free_history();
+    void load_history(char *name);
+    void save_history(char *name);
     void update_cursor();
     virtual void disp(SDL_Surface *mys, TFont *myfont, int x, int y, int w, int h,
   int fg, int bg, int xoptions);

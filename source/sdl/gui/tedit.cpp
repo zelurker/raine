@@ -2,6 +2,7 @@
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "sdl/dialogs/messagebox.h"
 #include "menu.h"
+#include "files.h"
 
 TEdit::TEdit(menu_item_t *my_menu) : TStatic(my_menu)
 {
@@ -16,6 +17,18 @@ TEdit::TEdit(menu_item_t *my_menu) : TStatic(my_menu)
     field = menu->values_list_label[0];
     pos = strlen(field);
     is_utf = 0;
+}
+
+TEdit::~TEdit()
+{
+    free_history();
+}
+
+void TEdit::free_history() {
+    for (int n=0; n<used_hist; n++) {
+	free(history[n]);
+    }
+    used_hist = 0;
 }
 
 void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
@@ -231,6 +244,35 @@ void TEdit::add_history() {
     memmove(&history[1],&history[0],used_hist*sizeof(char*));
   history[0] = strdup(field);
   used_hist++;
+}
+
+void TEdit::save_history(char *name) {
+    if (!use_hist) return;
+    FILE *f = fopen(name,"w");
+    if (f) {
+	for (int n=0; n<used_hist; n++)
+	    fprintf(f,"%s\n",history[n]);
+	fclose(f);
+    }
+}
+
+void TEdit::load_history(char *name) {
+    if (!use_hist) return;
+    FILE *f = fopen(name,"r");
+    if (f) {
+	free_history();
+	while (!feof(f)) {
+	    myfgets(prefix_hist,80,f);
+	    if (*prefix_hist) {
+		if (used_hist == MAX_HISTORY) {
+		    used_hist--;
+		    free(history[used_hist]);
+		}
+		history[used_hist++] = strdup(prefix_hist);
+	    }
+	}
+	fclose(f);
+    }
 }
 
 void TEdit::insert(char *s) {

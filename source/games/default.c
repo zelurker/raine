@@ -128,6 +128,9 @@ void LoadDefault(void)
 
    reset_layer_switches();
    set_reset_function(NULL);
+#ifdef HAS_CONSOLE
+   preinit_console();
+#endif
 }
 
 void ClearDefault(void)
@@ -219,7 +222,6 @@ void ClearDefault(void)
 #if USE_BEZELS
    clear_bezel();
 #endif
-   current_game = NULL;
    DestroyScreenBitmap();
 #ifdef HAS_CONSOLE
    done_console();
