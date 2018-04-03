@@ -247,7 +247,7 @@ void TEdit::add_history() {
 }
 
 void TEdit::save_history(char *name) {
-    if (!use_hist) return;
+    if (!use_hist || !used_hist) return;
     FILE *f = fopen(name,"w");
     if (f) {
 	for (int n=0; n<used_hist; n++)
