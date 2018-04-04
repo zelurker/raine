@@ -55,7 +55,7 @@ int Dasm6805 (unsigned char *base, char *buf, int pc)
 	int code = *base++;
 	char *opptr = opcode_strings[code];
 	char opstr[20];
-	char *p, *s;
+	char *p;
 
 	strcpy (opstr, opptr);
 	p = opstr + 3;
@@ -65,7 +65,7 @@ int Dasm6805 (unsigned char *base, char *buf, int pc)
 		{
 			if (code < 0x10)
 			{
-            sprintf (buf, "%-7s$%02x, $%04x", opstr, *base, (pc + 3 + *(signed char *)&base[1]) & 0xffff);
+			    sprintf (buf, "%-7s$%02x, $%04x", opstr, *base, (pc + 3 + *(signed char *)&base[1]) & 0xffff);
 				return 3;
 			}
 			if (code < 0x20)
@@ -86,7 +86,6 @@ int Dasm6805 (unsigned char *base, char *buf, int pc)
 		}
 	}
 
-	s = p - 1;
 	*p++ = 0;
 	if (*p == 'i')
 	{

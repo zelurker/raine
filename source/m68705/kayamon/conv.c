@@ -1,5 +1,5 @@
 /* This converts a M68705 disassembly to a .c file
- 
+
    Don't talk to me about:
     * The state of this code
     * Text file parsing
@@ -115,7 +115,7 @@ void NextLine(FILE *file)
    int c;
    do {
       c = fgetc(file);
-   } while(c != '\n' && c != EOF && c != NULL);
+   } while(c != '\n' && c != EOF && c != 0);
 }
 
 FILE *MakeJumpTable(char *filename)
@@ -489,27 +489,27 @@ int main(int argc, char *argv[])
       {
          GetParam1(FALSE);
          tmp[0] = buf[4];
-         tmp[1] = NULL;
+         tmp[1] = 0;
          BSET(param1, tmp);
       } else if (!strncmp(buf, "bclr", 4))
       {
          GetParam1(FALSE);
          tmp[0] = buf[4];
-         tmp[1] = NULL;
+         tmp[1] = 0;
          BCLR(param1, tmp);
       } else if (!strncmp(buf, "brclr", 5))
       {
          GetParam1(FALSE);
          GetParam2(FALSE);
          tmp[0] = buf[5];
-         tmp[1] = NULL;
+         tmp[1] = 0;
          BRCLR(param1, tmp); JUMP_IMM(param2);
       } else if (!strncmp(buf, "brset", 5))
       {
          GetParam1(FALSE);
          GetParam2(FALSE);
          tmp[0] = buf[5];
-         tmp[1] = NULL;
+         tmp[1] = 0;
          BRSET(param1, tmp); JUMP_IMM(param2);
       } else if (!strcmp(buf, "bih"))
       {
