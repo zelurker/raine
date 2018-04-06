@@ -17,7 +17,7 @@
 
 static int cpu_id;
 extern void do_if(int argc, char **argv);
-static UINT32 ram[0x100*2],nb_ram;
+static UINT32 ram[0x100*2],ram_size[0x100],nb_ram;
 static UINT8 *ram_buf[0x100],*search_size;
 static UINT32 nb_search, nb_alloc_search, *search;
 #define getadr(a) ((cpu_id>>4) == 1 ? ((a)^1) : (a))
@@ -268,9 +268,14 @@ void TRaineConsole::execute() {
   TConsole::execute();
   // Take a snapshot of the ram to be able to look for variations
   for (UINT32 n=0; n<nb_ram; n+=2) {
-    int size = ram[n+1]-ram[n]+1;
-    if (!ram_buf[n/2]) {
-      ram_buf[n/2] = (UINT8*)AllocateMem(size);
+    UINT32 size = ram[n+1]-ram[n]+1;
+    if (!ram_buf[n/2] || ram_size[n/2] < size) {
+	if (ram_buf[n/2]) {
+	    FreeMem(ram_buf[n/2]);
+	}
+	ram_buf[n/2] = (UINT8*)AllocateMem(size);
+	if (ram_size[n/2] < size)
+	    ram_size[n/2] = size;
     }
     UINT8 *ptr = get_userdata(cpu_id,ram[n]);
     memcpy(ram_buf[n/2],ptr+ram[n],size);
