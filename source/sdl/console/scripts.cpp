@@ -135,6 +135,7 @@ void add_scripts(menu_item_t *menu) {
 
 void update_scripts() {
     int *status;
+    if (!nb_scripts) return;
     status = new int[nb_scripts];
     int n;
     /* We want that the start_script command starts the script in the next

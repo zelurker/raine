@@ -629,15 +629,19 @@ void do_next(int argc, char **argv) {
 }
 
 void do_irq(int argc, char **argv) {
-    int cpu_id = get_cpu_id();
+    int cpu_id = get_cpu_id()>>4;
   if (argc == 2) {
     int irq = parse(argv[1]);
     cpu_interrupt(cpu_id,irq);
     get_regs(cpu_id);
     return;
   }
-  if (cpu_id == 2 && int(iff) == 0)
-    throw "z80: not in an irq !";
+  if (cpu_id == 2) {
+      if ((int(iff)&1))
+	  throw "z80: not in an irq !";
+      while (!((int) iff) & 1)
+	  do_cycles();
+  }
   if (cpu_id != 2) {
       if ((int(sr) & 0x2700) <= 0x2000)
 	  throw "not in an irq !";
