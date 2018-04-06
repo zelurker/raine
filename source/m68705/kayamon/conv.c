@@ -48,11 +48,19 @@ void DoParam(char *str, int rdmem)
       if (*p == '$') p++;
       hex = strtoul(p, NULL, 16);
 
+#if 0
       if (mem)
       {
          fprintf(out, "\taddr = x + 0x%.3x;\n", hex);
          sprintf(str, "MCU_RDMEM(addr)");
       } else sprintf(str, "0x%.3x", hex);
+#else
+      fprintf(out, "\taddr = x + 0x%.3x;\n", hex);
+      if (mem)
+	  sprintf(str, "MCU_RDMEM(addr)");
+      else
+	  sprintf(str, "addr");
+#endif
    } else if (!strncmp(p, "(x)", 3))
    {
       if (mem)
@@ -403,7 +411,7 @@ int main(int argc, char *argv[])
       } else if (!strcmp(buf, "asrx"))
       {
          fprintf(out, "\tflag_c = x & 0x01;\n"
-                      "\tx = ((BYTE)x) >> 1;\n");
+                      "\tx = ((UINT8)x) >> 1;\n");
          SET_NZ("x");
       } else if (!strcmp(buf, "lsra"))
       {
