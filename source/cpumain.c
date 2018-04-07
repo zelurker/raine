@@ -419,7 +419,13 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	// For the z80 all the rombase is executable, so...
 	*start = 0;
 	*end = 0xffff;
-	return mz80GetBase(cpu & 0xf);
+	UINT8 *base = mz80GetBase(cpu & 0xf);
+	for (int n=REGION_CPU1; n<=REGION_CPU4; n++)
+	    if (base == load_region[n]) {
+		*end = get_region_size(n)-1;
+		break;
+	    }
+	return base;
 #endif
 #ifndef NO020
     case 3:
