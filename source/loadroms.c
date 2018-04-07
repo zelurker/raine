@@ -632,13 +632,37 @@ static UINT32 load_gfx_region(UINT32 region)
 {
    UINT32 reg_size = 0;
    const VIDEO_INFO *video;
-   const GFX_LIST *gfx_list;
+   GFX_LIST *gfx_list;
    int nb = 0;
    UINT8 *buffer;
 
    video = current_game->video;
    gfx_list = video->gfx_list;
    if (!gfx_list) return 1; // Correct, but nothing to load
+   for (nb=1; gfx_list[nb].region; nb++) {
+       for (int nb2=0; nb2<nb; nb2++) {
+	   int region = gfx_list[nb].region;
+	   if (gfx_list[nb2].region == region) {
+	       int newr = gfx_list[nb].region+1;
+	       while (load_region[newr] && newr <= REGION_GFX5)
+		   newr++;
+	       if (load_region[newr]) {
+		   printf("duplicate region, and no more free region !\n");
+		   exit(1);
+	       }
+	       load_region[newr] = AllocateMem(get_region_size(region));
+	       if (!load_region[newr]) {
+		   printf("can't allocate new region !\n");
+		   exit(1);
+	       }
+	       memcpy(load_region[newr],load_region[region],region_size[region]);
+	       region_size[newr] = region_size[region];
+	       gfx_list[nb].region = newr;
+	   }
+       }
+   }
+   nb = 0;
+
 
    // now this function is called after the roms have been loaded in the region...
    buffer = load_region[region];
