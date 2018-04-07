@@ -531,13 +531,13 @@ void StopZ80DMode2(UINT16 address, UINT8 data)
 
 UINT16 DefBadReadZ80(UINT16 offset)
 {
-  print_debug("Z80BadRead(%04x) [%04x]\n",offset,z80pc);
+  print_debug("Z80BadRead(%04x) [%04x] z80:%d\n",offset,z80pc,current_cpu_num[CPU_Z80_0>>4]);
    return(0xFF);
 }
 
 UINT16 DefBadReadPortZ80(UINT16 offset)
 {
-  print_debug("Z80BadReadPort(%04x) [%04x]\n",offset,z80pc);
+  print_debug("Z80BadReadPort(%04x) [%04x] z80:%d\n",offset,z80pc,current_cpu_num[CPU_Z80_0>>4]);
    return(0xFF);
 }
 
@@ -548,7 +548,7 @@ void DefBadWriteZ80(UINT16 offset, UINT8 data)
 
 void DefBadWritePortZ80(UINT16 offset, UINT8 data)
 {
-  print_debug("Z80BadWritePort(%04x,%02x) [%04x]\n",offset,data,z80pc);
+  print_debug("Z80BadWritePort(%04x,%02x) [%04x] z80:%d\n",offset,data,z80pc,current_cpu_num[CPU_Z80_0>>4]);
 }
 
 // rom bankswitch code base on regions
