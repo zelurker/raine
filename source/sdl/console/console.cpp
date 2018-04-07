@@ -1158,6 +1158,7 @@ static void do_cpu(int argc, char **argv) {
        else
 	   throw "cpu not recognized or not active";
        if (cpu_id != old) {
+	   switch_cpu(cpu_id);
 	   get_regs();
 	   cpu_get_ram(cpu_id,ram,&nb_ram);
 	   disp_instruction();
