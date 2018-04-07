@@ -89,7 +89,6 @@ void TConsole::save_history() {
 }
 
 void TConsole::load_history() {
-    printf("load_history\n");
     if (current_game) {
 	char buf[FILENAME_MAX];
 	sprintf(buf,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);

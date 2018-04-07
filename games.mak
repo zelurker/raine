@@ -48,6 +48,7 @@ OBJS += \
 	$(OBJDIR)/games/f3demo.o \
 	$(OBJDIR)/games/fchamp.o \
 	$(OBJDIR)/games/flstory.o \
+	$(OBJDIR)/games/fl_mcu.o \
 	$(OBJDIR)/games/frogger.o \
 	$(OBJDIR)/games/galpanic.o \
 	$(OBJDIR)/games/gcpball.o \
@@ -57,6 +58,7 @@ OBJS += \
 	$(OBJDIR)/games/gunlock.o \
 	$(OBJDIR)/games/hitice.o \
 	$(OBJDIR)/games/hthero95.o \
+	$(OBJDIR)/games/hvyunit.o \
 	$(OBJDIR)/games/hyperpcb.o \
 	$(OBJDIR)/games/intcup94.o \
 	$(OBJDIR)/games/kaiserkn.o \

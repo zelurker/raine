@@ -692,6 +692,9 @@
 // hthero95.c
   DRV(pwrgoal)
 
+// hvyunit.c
+  DRV(hvyunit)
+
 // hyperpcb.c
   DRV(3in1semi)
   DRV(cookbib2)
