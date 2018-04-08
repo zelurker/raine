@@ -222,6 +222,7 @@ void flstory_mcu(int bih_count)
 		{ 0x0e4, &&L0x0e4 },
 		{ 0x0ea, &&L0x0ea },
 		{ 0x0ed, &&L0x0ed },
+		{ 0x100, &&L0x100 },
 		{ 0x109, &&L0x109 },
 		{ 0x115, &&L0x115 },
 		{ 0x116, &&L0x116 },
@@ -230,7 +231,9 @@ void flstory_mcu(int bih_count)
 		{ 0x143, &&L0x143 },
 		{ 0x146, &&L0x146 },
 		{ 0x148, &&L0x148 },
+		{ 0x155, &&L0x155 },
 		{ 0x159, &&L0x159 },
+		{ 0x15f, &&L0x15f },
 		{ 0x161, &&L0x161 },
 		{ 0x16d, &&L0x16d },
 		{ 0x17e, &&L0x17e },
@@ -238,10 +241,12 @@ void flstory_mcu(int bih_count)
 		{ 0x195, &&L0x195 },
 		{ 0x19b, &&L0x19b },
 		{ 0x1b3, &&L0x1b3 },
+		{ 0x1c2, &&L0x1c2 },
 		{ 0x1c4, &&L0x1c4 },
 		{ 0x1d9, &&L0x1d9 },
 		{ 0x1e1, &&L0x1e1 },
 		{ 0x1ea, &&L0x1ea },
+		{ 0x1f3, &&L0x1f3 },
 		{ 0x1fd, &&L0x1fd },
 		{ 0x205, &&L0x205 },
 		{ 0x35d, &&L0x35d },
@@ -661,7 +666,7 @@ L0x0ed:	/* stx */
 	SET_NZ(x);
 	MCU_WRMEM(x, x);
 
-//L0x100:	/* ldx */
+L0x100:	/* ldx */
 	x = 0x030;
 	SET_NZ(x);
 
@@ -841,7 +846,7 @@ L0x148:	/* lda */
 	PULLWORD(m68705.pc);
 	JUMP(m68705.pc);
 
-//L0x155:	/* ldx */
+L0x155:	/* ldx */
 	x = 0x039;
 	SET_NZ(x);
 
@@ -869,7 +874,7 @@ L0x159:	/* clr */
 	PULLWORD(m68705.pc);
 	JUMP(m68705.pc);
 
-//L0x15f:	/* ldx */
+L0x15f:	/* ldx */
 	x = 0x039;
 	SET_NZ(x);
 
@@ -1084,7 +1089,7 @@ L0x1b3:	/* lda */
 	PULLWORD(m68705.pc);
 	JUMP(m68705.pc);
 
-//L0x1c2:	/* ldx */
+L0x1c2:	/* ldx */
 	x = 0x039;
 	SET_NZ(x);
 
@@ -1196,7 +1201,7 @@ L0x1ea:	/* txa */
 	PULLWORD(m68705.pc);
 	JUMP(m68705.pc);
 
-//L0x1f3:	/* ldx */
+L0x1f3:	/* ldx */
 	addr = 0x031;
 	x = MCU_RDMEM(0x031);
 	SET_NZ(x);
@@ -2359,13 +2364,27 @@ L0x593:	/* jsr */
 	    if (ram_mcu[0x18] == 0xcc) {
 		addr = (ram_mcu[0x19]<<8)|ram_mcu[0x1a];
 		printf("jump from ram to %x\n",addr);
-		if (addr == 0x120)
+		if (addr == 0x120) // 2
 		    JUMP_IMM(0x120);
-		else if (addr == 0x12f)
+		else if (addr == 0x12f) // 3
 		    JUMP_IMM(0x12f);
+		else if (addr == 0x155) // 4
+		    JUMP_IMM(0x155);
+		else if (addr == 0x15f) // 5
+		    JUMP_IMM(0x15f);
+		else if (addr == 0x1c2) // 6
+		    JUMP_IMM(0x1c2);
+		else if (addr == 0x1f3) // 6
+		    JUMP_IMM(0x1f3);
 		else if (addr == 0x420)
 		    JUMP_IMM(0x420);
+		else if (addr == 0x570) // index 0 from table at $740
+		    JUMP_IMM(0x570);
+		else if (addr == 0x100) // 1
+		    JUMP_IMM(0x100);
 		else {
+		    // the other addresses are filled with 33d, which is not code
+		    // so this part the else here should never be hit anymore !
 		    printf("addr unknown !\n");
 		    exit(1);
 		}
