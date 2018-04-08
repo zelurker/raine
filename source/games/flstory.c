@@ -7,13 +7,13 @@
 /******************************************************************************/
 
 #include "gameinc.h"
-#include "tc220ioc.h"
-#include "taitosnd.h"
-#include "2151intf.h"
 #include "ay8910.h"
+#include "msm5232.h"
 #include "sasound.h"		// sample support routines
 #include "m68705.h"
 #include "emumain.h"
+#include "streams.h"
+#include "dac.h"
 
 /* This hardware is a nuisance :
  * a 68705 used only for protection, it doesn't even access any input, + its synchronization is weird, and it obliged me to patch a bug in the 68705 recompiler.
@@ -163,19 +163,100 @@ static struct DSW_INFO dsw_flstory[] =
   { 0, 0, NULL }
 };
 
-static struct YM2151interface ym2151_interface =
+static int vol_ctrl[16];
+
+static void mixer_init()
+{
+	int i;
+
+	double db			= 0.0;
+	double db_step		= 1.50;	/* 1.50 dB step (at least, maybe more) */
+	double db_step_inc	= 0.125;
+	for (i=0; i<16; i++)
+	{
+		double max = 100.0 / pow(10.0, db/20.0 );
+		vol_ctrl[ 15-i ] = max;
+		/*logerror("vol_ctrl[%x] = %i (%f dB)\n",15-i,vol_ctrl[ 15-i ],db);*/
+		db += db_step;
+		db_step += db_step_inc;
+	}
+
+	/* for (i=0; i<8; i++)
+		logerror("SOUND Chan#%i name=%s\n", i, mixer_get_name(i) ); */
+/*
+  channels 0-2 AY#0
+  channels 3,4 MSM5232 group1,group2
+*/
+}
+
+static UINT8 snd_ctrl0=0;
+static UINT8 snd_ctrl1=0;
+static UINT8 snd_ctrl2=0;
+static UINT8 snd_ctrl3=0;
+
+static void sound_control_0_w(UINT32 offset,UINT8 data)
+{
+	snd_ctrl0 = data & 0xff;
+//	usrintf_showmessage("SND0 0=%02x 1=%02x 2=%02x 3=%02x", snd_ctrl0, snd_ctrl1, snd_ctrl2, snd_ctrl3);
+
+	/* this definitely controls main melody voice on 2'-1 and 4'-1 outputs */
+	stream_set_volume (3, vol_ctrl[ (snd_ctrl0>>4) & 15 ]);	/* group1 from msm5232 */
+
+}
+static void sound_control_1_w(UINT32 offset,UINT8 data)
+{
+	snd_ctrl1 = data & 0xff;
+//	usrintf_showmessage("SND1 0=%02x 1=%02x 2=%02x 3=%02x", snd_ctrl0, snd_ctrl1, snd_ctrl2, snd_ctrl3);
+	stream_set_volume (4, vol_ctrl[ (snd_ctrl1>>4) & 15 ]);	/* group2 from msm5232 */
+}
+
+static void sound_control_2_w(UINT32 offset,UINT8 data)
+{
+	int i;
+
+	snd_ctrl2 = data & 0xff;
+//	usrintf_showmessage("SND2 0=%02x 1=%02x 2=%02x 3=%02x", snd_ctrl0, snd_ctrl1, snd_ctrl2, snd_ctrl3);
+
+	for (i=0; i<3; i++)
+		stream_set_volume (i, vol_ctrl[ (snd_ctrl2>>4) & 15 ]);	/* ym2149f all */
+}
+
+static void sound_control_3_w(UINT32 offset,UINT8 data) /* unknown */
+{
+	snd_ctrl3 = data & 0xff;
+//	usrintf_showmessage("SND3 0=%02x 1=%02x 2=%02x 3=%02x", snd_ctrl0, snd_ctrl1, snd_ctrl2, snd_ctrl3);
+}
+
+static struct AY8910interface ay8910_interface =
+{
+	1,	/* 1 chip */
+	8000000/4,	/* ??? */
+	{ 10 },
+	{ 0 },
+	{ 0 },
+	{ sound_control_2_w },
+	{ sound_control_3_w }
+};
+
+static struct MSM5232interface msm5232_interface =
+{
+	1, /* number of chips */
+	2000000, /* 2 MHz ?*/
+	{ { 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6 } },	/* 1.0 uF capacitors (verified on real PCB) */
+	{ 100 }	/* ? */
+};
+
+static struct DACinterface dac_interface =
 {
 	1,
-	4000000,		/* ? */
-	{ YM3012_VOL(76,MIXER_PAN_LEFT,76,MIXER_PAN_RIGHT) },
-	{ NULL, /* sound_irq_gen */ },	/* irq handler */
-	{ 0 }			/* port_write */
+	{ 22 }
 };
 
 static struct SOUND_INFO sound_flstory[] =
 {
-   { SOUND_YM2151J,  &ym2151_interface,    },
-   // { SOUND_YM2203,  &ym2203_interface,    },
+    { SOUND_AY8910,&ay8910_interface, }, // used for the sound effects during game (jump, shoot, etc...)
+    { SOUND_MSM5232, &msm5232_interface, }, // music
+    { SOUND_DAC, &dac_interface, }, // actually unknown, not even sure it works !
    { 0,             NULL,                 },
 };
 
@@ -218,15 +299,22 @@ Todo:
 /******************************************************************************/
 
 extern int goto_debuger;
+static int nmi_pending;
 static void FLStorySoundWriteMain(UINT16 offset, UINT8 data)
 {
     RAM[0xd403] = 1; // pending
+    printf("main sends %x\n",data);
     RAM[0xd402] = data;
     if (*nmi_enable) {
+	printf("nmi\n");
 	cpu_int_nmi(CPU_Z80_1);
 	// goto_debuger = 1;
-	// cpu_execute_cycles(CPU_Z80_1,500);
+	cpu_execute_cycles(CPU_Z80_1,500);
+	switch_cpu(CPU_Z80_0);
 	// StopZ80(0,0);
+    } else {
+	nmi_pending = 1;
+	printf("nmi pending\n");
     }
 }
 
@@ -234,6 +322,7 @@ static UINT8 FLStorySoundReadMain(UINT16 offset)
 {
     if ((offset & 1) == 0) {
 	RAM[0xd401] = 0; // not pending
+	printf("main reading %x\n",RAM[0xd400]);
 	return RAM[0xd400]; // latch
     }
     return RAM[0xd403] | (RAM[0xd401] << 1); // status
@@ -243,11 +332,13 @@ static void FLStorySoundWriteSub(UINT16 offset, UINT8 data)
 {
     RAM[0xd401] = 1; // pending
     RAM[0xd400] = data;
+    printf("to main %x\n",data);
 }
 
 static UINT8 FLStorySoundReadSub(UINT16 offset)
 {
     RAM[0xd403] = 0;
+    printf("sub read latch %x\n",RAM[0xd402]);
     return RAM[0xd402];
 }
 
@@ -291,6 +382,12 @@ static void write_palette(UINT32 offset,UINT8 data) {
 
 static void nmi_enable_w(UINT32 offset, UINT8 data) {
     *nmi_enable = 1;
+    if (nmi_pending) {
+	nmi_pending = 0;
+	printf("delayed nmi\n");
+	cpu_int_nmi(CPU_Z80_1);
+
+    }
 }
 static void nmi_disable_w(UINT32 offset, UINT8 data) {
     *nmi_enable = 0;
@@ -306,6 +403,7 @@ static UINT8 read_nop(UINT32 offset) {
 static void myreset() {
    flstory_mcu_reset(load_region[REGION_ROM3]);
    *fl_mcu_started = *nmi_enable = 0;
+   mixer_init();
 }
 
 static void load_flstory(void)
@@ -398,6 +496,8 @@ static void load_flstory(void)
    // Skip Idle Z80
    // -------------
 
+   // The speed hack seems to kill the dac handling when booting
+   // but then for now it crashes the game on "bad sound pcb"
    ROM2[0x0167]=0xD3;  // OUTA (AAh)
    ROM2[0x0168]=0xAA;  //
 
@@ -409,16 +509,23 @@ static void load_flstory(void)
    AddZ80BROMBase(ROM2, 0x0038, 0x0066);
 
    AddZ80BRead(0x0000, 0x3FFF, NULL,			ROM2);	// Z80 ROM
-   AddZ80BRW(0xC000, 0xC7FF, NULL,			RAM2);	// WORK RAM
+   // AddZ80BRW(0xC000, 0xC7FF, NULL,			RAM2);	// WORK RAM
+   // AddZ80BRead(0xc300, 0xc300,
+   // AddZ80BWrite(0xc300, 0xc300, write_c300, NULL);
+   AddZ80BRW(0xc000, 0xc7ff, NULL,	RAM2+0xc000);	// WORK RAM
    AddZ80BReadByte(0xD800, 0xD800, FLStorySoundReadSub,		NULL);	// SOUND COMM
    AddZ80BRead(0xda00, 0xda00, read_nop, NULL);
    AddZ80BRead(0xde00, 0xde00, read_nop, NULL);
 
    AddZ80BWrite(0xc800,0xc800, AY8910_control_port_0_w, NULL);
    AddZ80BWrite(0xc801,0xc801, AY8910_write_port_0_w, NULL);
+   AddZ80BWrite(0xca00,0xca0d, MSM5232_0_w, NULL);
+   AddZ80BWrite(0xcc00,0xcc00, sound_control_0_w, NULL);
+   AddZ80BWrite(0xce00,0xce00, sound_control_1_w, NULL);
+   AddZ80BWrite(0xd800, 0xD800, FLStorySoundWriteSub,	NULL);	// SOUND COMM
    AddZ80BWrite(0xda00, 0xda00, nmi_enable_w, NULL);
    AddZ80BWrite(0xdc00, 0xdc00, nmi_disable_w, NULL);
-   AddZ80BWriteByte(0xD800, 0xD800, FLStorySoundWriteSub,	NULL);	// SOUND COMM
+   // AddZ80BWrite(0xde00, 0xde00, DAC_0_signed_data_w, NULL);
    AddZ80BWrite(0xde00, 0xde00, dummy_write, NULL); // a dac ?
 
    AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,			NULL);	// Trap Idle Z80
@@ -438,7 +545,7 @@ static void execute_flstory(void)
    cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(3,60));	// Main Z80 6MHz (60fps)  10533000/2/60
 
    if (!goto_debuger) {
-       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(2,60));	// Sub Z80 4MHz (60fps)
+       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(3,60));	// Sub Z80 4MHz (60fps)
        cpu_interrupt(CPU_Z80_1, 0x38);
 
        cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(3,60));	// Main Z80 6MHz (60fps)  10533000/2/60
@@ -446,7 +553,7 @@ static void execute_flstory(void)
    }
 
    if (!goto_debuger) {
-       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(2,60));	// Sub Z80 4MHz (60fps)
+       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(3,60));	// Sub Z80 4MHz (60fps)
        cpu_interrupt(CPU_Z80_1, 0x38);
    }
 
@@ -658,7 +765,7 @@ static struct DIR_INFO dir_flstory[] =
    { "flstory", },
    { NULL, },
 };
-GME( flstory, "The FairyLand Story", TAITO, 1985, GAME_PLATFORM | GAME_NOT_WORKING,
+GME( flstory, "The FairyLand Story", TAITO, 1985, GAME_PLATFORM,
 	.board = "A45",
 );
 
