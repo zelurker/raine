@@ -184,7 +184,6 @@ void flstory_MCU_WRMEM(int offset, UINT8 data) {
     else if (offset < 0x80) ram_mcu[offset] = data;
     else {
 	printf("flstory_mcu_wrmem: %x,%x\n",offset,data);
-	exit(1);
     }
 }
 
@@ -234,6 +233,8 @@ void flstory_mcu(int bih_count)
 		{ 0x109, &&L0x109 },
 		{ 0x115, &&L0x115 },
 		{ 0x116, &&L0x116 },
+		{ 0x120, &&L0x120 },
+		{ 0x12f, &&L0x12f },
 		{ 0x143, &&L0x143 },
 		{ 0x146, &&L0x146 },
 		{ 0x148, &&L0x148 },
@@ -308,7 +309,9 @@ void flstory_mcu(int bih_count)
 		{ 0x3f8, &&L0x3f8 },
 		{ 0x40a, &&L0x40a },
 		{ 0x40e, &&L0x40e },
-		{ 0x424, &&L0x424 },
+		{ 0x420, &&L0x420 },
+		{ 0x425, &&L0x425 },
+		{ 0x429, &&L0x429 },
 		{ 0x42c, &&L0x42c },
 		{ 0x430, &&L0x430 },
 		{ 0x433, &&L0x433 },
@@ -817,7 +820,7 @@ L0x116:	/* dec */
 	PULLWORD(m68705.pc);
 	JUMP(m68705.pc);
 
-//L0x120:	/* lda */
+L0x120:	/* lda */
 	addr = 0x030;
 	a = MCU_RDMEM(0x030);
 	SET_NZ(a);
@@ -849,7 +852,7 @@ L0x116:	/* dec */
 	PULLWORD(m68705.pc);
 	JUMP(m68705.pc);
 
-//L0x12f:	/* ldx */
+L0x12f:	/* ldx */
 	addr = 0x031;
 	x = MCU_RDMEM(0x031);
 	SET_NZ(x);
@@ -2733,24 +2736,23 @@ L0x40e:	/* brset0 */
 	BRSET(0x000, 0)
 	JUMP_IMM(0x3c7);
 
-//L0x421:	/* brclr1 */
-	BRCLR(0x0c7, 1)
-	JUMP_IMM(0x424);
-
-L0x424:	/* neg */
-	addr = x + 0x0a6;
-	NEG(temp, MCU_RDMEM(addr));
-	SET_NZ(temp);
-	MCU_WRMEM(addr, temp);
-
-//L0x426:	/* bclr3 */
-	BCLR(0x0ad, 3);
-
-//L0x428:	/* clra */
-	a = 0;
+L0x420:	/* lda */
+	a = 0x003;
 	SET_NZ(a);
 
-//L0x429:	/* jsr */
+// L0x422:	/* sta */
+	SET_NZ(a);
+	MCU_WRMEM(0x060, a);
+
+L0x425:	/* lda */
+	a = 0x017;
+	SET_NZ(a);
+
+// L0x427:	/* bsr */
+	PUSHWORD(0x429);
+	JUMP_IMM(0x478);
+
+L0x429:	/* jsr */
 	PUSHWORD(0x42c);
 	JUMP_IMM(0x4fc);
 
@@ -2794,7 +2796,7 @@ L0x43b:	/* decx */
 
 //L0x440:	/* bne */
 	IF_CC_NZ()
-	goto invalid_pc;
+	JUMP_IMM(0x425);
 
 //L0x442:	/* ldx */
 	x = 0x007;
@@ -3520,7 +3522,25 @@ L0x57d:	/* nop */
 
 L0x593:	/* jsr */
 	PUSHWORD(0x595);
-	goto invalid_pc;
+	{
+	    if (ram_mcu[0x18] == 0xcc) {
+		addr = (ram_mcu[0x19]<<8)|ram_mcu[0x1a];
+		printf("jump from ram to %x\n",addr);
+		if (addr == 0x120)
+		    JUMP_IMM(0x120);
+		else if (addr == 0x12f)
+		    JUMP_IMM(0x12f);
+		else if (addr == 0x420)
+		    JUMP_IMM(0x420);
+		else {
+		    printf("addr unknown !\n");
+		    exit(1);
+		}
+	    } else {
+		printf("code in mcu ram 0x18 unknown : %x\n",ram_mcu[0x18]);
+		goto invalid_pc;
+	    }
+	}
 
 L0x595:	/* sei */
 	m68705.flag_i = 1;
@@ -4741,6 +4761,8 @@ L0x7f9:	/* brset0 */
 
 invalid_pc:
 	print_debug("M68705: Invalid jump address (0x%x)\n", m68705.pc);
+	printf("M68705: Invalid jump address (0x%x)\n", m68705.pc);
 	print_ingame(200, "M68705: Invalid jump address (0x%x)\n", m68705.pc);
+	exit(1);
 	return;
 }
