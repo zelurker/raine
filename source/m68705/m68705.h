@@ -96,7 +96,7 @@ void M68705_Unpack(const M68705_JumpTable *table, void *invalid);
 #define IF_CC_NN() if (!(flag_n & 0x80))
 #define IF_CC_NZ() if (flag_z)
 #define IF_CC_NH() if (!(flag_h & 0x10))
-#define IF_CC_HI() if (!(flag_c && !flag_z))
+#define IF_CC_HI() if (!flag_c && flag_z)
 #define IF_CC_Nint() if (!m68705.flag_i)
 
 #define BSET(addr, bit) MCU_WRMEM(addr, MCU_RDMEM(addr) | (1 << (bit)))
