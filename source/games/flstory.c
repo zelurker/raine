@@ -222,9 +222,7 @@ static void FLStorySoundWriteMain(UINT16 offset, UINT8 data)
 {
     RAM[0xd403] = 1; // pending
     RAM[0xd402] = data;
-    printf("latch d402 = %x\n",data);
     if (*nmi_enable) {
-	printf("nmi z80_1\n");
 	cpu_int_nmi(CPU_Z80_1);
 	// goto_debuger = 1;
 	// cpu_execute_cycles(CPU_Z80_1,500);
@@ -236,7 +234,6 @@ static UINT8 FLStorySoundReadMain(UINT16 offset)
 {
     if ((offset & 1) == 0) {
 	RAM[0xd401] = 0; // not pending
-	printf("return latch d400\n");
 	return RAM[0xd400]; // latch
     }
     return RAM[0xd403] | (RAM[0xd401] << 1); // status
@@ -251,7 +248,6 @@ static void FLStorySoundWriteSub(UINT16 offset, UINT8 data)
 static UINT8 FLStorySoundReadSub(UINT16 offset)
 {
     RAM[0xd403] = 0;
-    printf("read sub %x\n",RAM[0xd402]);
     return RAM[0xd402];
 }
 
@@ -280,17 +276,17 @@ static void write_scrolly(UINT32 offset, UINT8 data) {
 static UINT8 read_palette(UINT32 offset) {
     int pal_bank = (RAM[0xdf03] & 0x20) >> 5;
     if (offset >= 0xde00)
-	return RAM[pal_bank*0x100+1+(offset & 0xff)*2];
-    return RAM[pal_bank*0x100+(offset & 0xff)*2];
+	return RAM[pal_bank*0x200+1+(offset & 0xff)*2];
+    return RAM[pal_bank*0x200+(offset & 0xff)*2];
 }
 
 static void write_palette(UINT32 offset,UINT8 data) {
     int pal_bank = (RAM[0xdf03] & 0x20) >> 5;
     bank_status[pal_bank*0x10+((offset>>4)&0xf)] = 0;
     if (offset >= 0xde00)
-	RAM[pal_bank*0x100+1+(offset & 0xff)*2] = data;
+	RAM[pal_bank*0x200+1+(offset & 0xff)*2] = data;
     else
-	RAM[pal_bank*0x100+(offset & 0xff)*2] = data;
+	RAM[pal_bank*0x200+(offset & 0xff)*2] = data;
 }
 
 static void nmi_enable_w(UINT32 offset, UINT8 data) {
@@ -459,7 +455,6 @@ static void execute_flstory(void)
 	* To avoid to loose the rom crc I must launch it only after receiving the
 	* 1st commands from the z80 ! */
        flstory_mcu(1);
-       // printf("68705: %x\n",m68705.pc);
    }
 }
 
@@ -469,18 +464,18 @@ static void draw_flstory(void)
    int zz,zzz,zzzz,x16,y16;
    UINT8 *map;
    int char_bank, flipscreen,attr;
-   // printf("gfx status %x mask %x\n",RAM[0xdf03],mask);
 
    flipscreen  = (~RAM[0xdf03] & 0x01);
    char_bank = (RAM[0xdf03] & 0x10) >> 4;
 
    // BG1/FG0
    // -------
-   if (RefreshBuffers)
+   if (RefreshBuffers) {
        // RefreshBuffers in case of loading a savegame for example
        // since for once color banks are updated with the palette
        // they need to be cleared upon loading a save
        ClearPaletteMap();
+   }
 
    MAKE_SCROLL_n_8(256,256,2,
       0,
@@ -492,13 +487,15 @@ static void draw_flstory(void)
       ta = RAM[0xC000+zz];
       attr = RAM[0xC000+zz+1];
       ta += ((attr & 0xc0) << 2) + 0x400 + 0x800 * char_bank;
-      MAP_PALETTE_MAPPED_NEW(
-	      attr & 0xf,
-	      16,
-	      map
-	      );
+      if ((attr & 0x20)==0) {
+	  MAP_PALETTE_MAPPED_NEW(
+		  attr & 0xf,
+		  16,
+		  map
+		  );
 
-      Draw8x8_Mapped_Rot(&GFX[(ta<<6)], x, y, map);
+	  Draw8x8_Mapped_Rot(&GFX[(ta<<6)], x, y, map);
+      }
 
    END_SCROLL_256x256_2_8();
 
@@ -528,20 +525,55 @@ static void draw_flstory(void)
 	       MAP_PAL((ram_spr[offs+1] & 0x0f)|0x10,
 		       16,
 		       map);
-	       // printf("%d,%d,%x pr %x\n",sx,sy,code,pr);
-	       if (gfx2_solid[code] == 1) // some transp
+	       // printf("%d,%d,%x bank %x pr %x\n",sx,sy,code,ram_spr[offs+1] & 0x0f,pr);
+	       if (gfx2_solid[code] == 1) {// some transp
 		   Draw16x16_Trans_Mapped_flip_Rot(&gfx2[code << 8],
 			   sx+32,sy+16,
 			   map,
 			   flipx+(flipy<<1));
-	       else
+		   if (sx < 16)
+		       Draw16x16_Trans_Mapped_flip_Rot(&gfx2[code << 8],
+			       256+32+sx,sy+16,
+			       map,
+			       flipx+(flipy<<1));
+	       } else {
 		   Draw16x16_Mapped_flip_Rot(&gfx2[code << 8],
 			   sx+32,sy+16,
 			   map,
 			   flipx+(flipy<<1));
+		   if (sx < 16)
+		       Draw16x16_Mapped_flip_Rot(&gfx2[code << 8],
+			       256+32+sx,sy+16,
+			       map,
+			       flipx+(flipy<<1));
+	       }
 	   }
        }
    }
+   // printf("\n");
+   // The layer seems super weird, there is some sort of priority field (attr & 0x20)
+   // but the tiles with this bit set have a strange transparency
+   // drawing everything opaque seems to work for now.
+   // Notice these tiles have priority over sprites
+   // This shows for example during intro : the dragon 1st appears on the left of the screen, but hidden by these priorities
+   // it allows him to 1st appear smoothly from the right and disappear to the left
+   // without priorities it's already on the left of the screen when the intro starts
+   START_SCROLL_256x256_2_8_R180(32,16,256,256);
+
+      ta = RAM[0xC000+zz];
+      attr = RAM[0xC000+zz+1];
+      ta += ((attr & 0xc0) << 2) + 0x400 + 0x800 * char_bank;
+      if (attr & 0x20) {
+	  MAP_PALETTE_MAPPED_NEW(
+		  attr & 0xf,
+		  16,
+		  map
+		  );
+
+	  Draw8x8_Mapped_Rot(&GFX[(ta<<6)], x, y, map);
+      }
+
+   END_SCROLL_256x256_2_8();
 }
 
 /*
