@@ -83,7 +83,11 @@ extern int latch;
 UINT8 soundlatch_lo_r(UINT32 offset);
 
 void StopZ80Mode2(UINT16 address, UINT8 data);
+void StopZ80BMode2(UINT16 address, UINT8 data);
+void StopZ80CMode2(UINT16 address, UINT8 data);
 void mz80AddCyclesDone(int cycles);
+void finish_conf_z80(int cpu);
+void allow_writebank(int allow);
 
 #ifdef __cplusplus
 }

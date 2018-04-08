@@ -163,6 +163,8 @@ static void Z80B_load_update() {
 
 #define SAVE_CZ80_0            ASCII_ID('C','Z','8',0x00)
 #define SAVE_CZ80_1            ASCII_ID('C','Z','8',0x01)
+#define SAVE_CZ80_2            ASCII_ID('C','Z','8',0x02)
+#define SAVE_CZ80_3            ASCII_ID('C','Z','8',0x03)
 
 void AddZ80AInit(void)
 {
@@ -184,6 +186,28 @@ void AddZ80BInit(void)
    AddSaveData(SAVE_CZ80_1, (UINT8 *) &Z80_context[1], sizeof(Z80_context[1]));
 
    if (MZ80Engine < 2) MZ80Engine=2;
+}
+
+void AddZ80CInit(void)
+{
+    Cz80_Set_Ctx(&Z80_context[2],2);
+    Z80B_load_update();
+
+   AddLoadCallback(Z80B_load_update);
+   AddSaveData(SAVE_CZ80_2, (UINT8 *) &Z80_context[2], sizeof(Z80_context[2]));
+
+   if (MZ80Engine < 3) MZ80Engine=2;
+}
+
+void AddZ80DInit(void)
+{
+    Cz80_Set_Ctx(&Z80_context[3],3);
+    Z80B_load_update();
+
+   AddLoadCallback(Z80B_load_update);
+   AddSaveData(SAVE_CZ80_3, (UINT8 *) &Z80_context[3], sizeof(Z80_context[3]));
+
+   if (MZ80Engine < 4) MZ80Engine=2;
 }
 
 void AddZ80AROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
@@ -488,10 +512,46 @@ void StopZ80Mode2(UINT16 address, UINT8 data)
 {
    print_debug("[StopZ80]\n");
    if (StopAddress)
-     Cz80_Set_PC(&Z80_context[1],StopAddress);
+     Cz80_Set_PC(&Z80_context[0],StopAddress);
+   Cz80_Release_Cycle(&Z80_context[0]);
+}
+
+void StopZ80BMode2(UINT16 address, UINT8 data)
+{
+   print_debug("[StopZ80B]\n");
+   if (StopAddressB)
+     Cz80_Set_PC(&Z80_context[1],StopAddressB);
    Cz80_Release_Cycle(&Z80_context[1]);
+}
+
+void StopZ80CMode2(UINT16 address, UINT8 data)
+{
+   print_debug("[StopZ80B]\n");
+   if (StopAddressB)
+     Cz80_Set_PC(&Z80_context[2],StopAddressB);
+   Cz80_Release_Cycle(&Z80_context[2]);
 }
 
 void mz80AddCyclesDone(int cycles) {
     curz->dwElapsedTicks += cycles;
 }
+
+void finish_conf_z80(int cpu) {
+   add_mz80_memory_region_rb(cpu,0x0000, 0xFFFF, DefBadReadZ80, NULL);
+   add_mz80_memory_region_wb(cpu,0x0000, 0xFFFF, DefBadWriteZ80, NULL);
+
+   switch(cpu) {
+   case 0: AddZ80AInit(); break;
+   case 1: AddZ80BInit(); break;
+   case 2: AddZ80CInit(); break;
+   case 3: AddZ80DInit(); break;
+   }
+}
+
+static int allow_wb = 0; // always 0 except when writing region !
+
+void allow_writebank(int allow) {
+    allow_wb = allow;
+    // Not handled for now
+}
+
