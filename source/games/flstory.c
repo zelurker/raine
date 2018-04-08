@@ -303,10 +303,8 @@ static int nmi_pending;
 static void FLStorySoundWriteMain(UINT16 offset, UINT8 data)
 {
     RAM[0xd403] = 1; // pending
-    printf("main sends %x\n",data);
     RAM[0xd402] = data;
     if (*nmi_enable) {
-	printf("nmi\n");
 	cpu_int_nmi(CPU_Z80_1);
 	// goto_debuger = 1;
 	cpu_execute_cycles(CPU_Z80_1,500);
@@ -314,7 +312,6 @@ static void FLStorySoundWriteMain(UINT16 offset, UINT8 data)
 	// StopZ80(0,0);
     } else {
 	nmi_pending = 1;
-	printf("nmi pending\n");
     }
 }
 
@@ -322,7 +319,6 @@ static UINT8 FLStorySoundReadMain(UINT16 offset)
 {
     if ((offset & 1) == 0) {
 	RAM[0xd401] = 0; // not pending
-	printf("main reading %x\n",RAM[0xd400]);
 	return RAM[0xd400]; // latch
     }
     return RAM[0xd403] | (RAM[0xd401] << 1); // status
@@ -332,13 +328,11 @@ static void FLStorySoundWriteSub(UINT16 offset, UINT8 data)
 {
     RAM[0xd401] = 1; // pending
     RAM[0xd400] = data;
-    printf("to main %x\n",data);
 }
 
 static UINT8 FLStorySoundReadSub(UINT16 offset)
 {
     RAM[0xd403] = 0;
-    printf("sub read latch %x\n",RAM[0xd402]);
     return RAM[0xd402];
 }
 
@@ -384,7 +378,6 @@ static void nmi_enable_w(UINT32 offset, UINT8 data) {
     *nmi_enable = 1;
     if (nmi_pending) {
 	nmi_pending = 0;
-	printf("delayed nmi\n");
 	cpu_int_nmi(CPU_Z80_1);
 
     }
@@ -570,7 +563,7 @@ static void draw_flstory(void)
    int x,y,ta;
    int zz,zzz,zzzz,x16,y16;
    UINT8 *map;
-   int char_bank, flipscreen,attr;
+   int char_bank, flipscreen,attr,flip;
 
    flipscreen  = (~RAM[0xdf03] & 0x01);
    char_bank = (RAM[0xdf03] & 0x10) >> 4;
@@ -595,13 +588,14 @@ static void draw_flstory(void)
       attr = RAM[0xC000+zz+1];
       ta += ((attr & 0xc0) << 2) + 0x400 + 0x800 * char_bank;
       if ((attr & 0x20)==0) {
+	  flip = ((attr >> 3) & 3) ^ 3;
 	  MAP_PALETTE_MAPPED_NEW(
 		  attr & 0xf,
 		  16,
 		  map
 		  );
 
-	  Draw8x8_Mapped_Rot(&GFX[(ta<<6)], x, y, map);
+	  Draw8x8_Mapped_flip_Rot(&GFX[(ta<<6)], x, y, map,flip);
       }
 
    END_SCROLL_256x256_2_8();
@@ -671,13 +665,14 @@ static void draw_flstory(void)
       attr = RAM[0xC000+zz+1];
       ta += ((attr & 0xc0) << 2) + 0x400 + 0x800 * char_bank;
       if (attr & 0x20) {
+	  flip = ((attr >> 3) & 3) ^ 3;
 	  MAP_PALETTE_MAPPED_NEW(
 		  attr & 0xf,
 		  16,
 		  map
 		  );
 
-	  Draw8x8_Mapped_Rot(&GFX[(ta<<6)], x, y, map);
+	  Draw8x8_Mapped_flip_Rot(&GFX[(ta<<6)], x, y, map,flip);
       }
 
    END_SCROLL_256x256_2_8();
