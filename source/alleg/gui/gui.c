@@ -1321,6 +1321,10 @@ void do_load_game(void)
 
      reset_game_hardware();
 
+#ifdef HAS_CONSOLE
+     init_scripts(); // must be called AFTER reset_game_hardware
+#endif
+
      {
        char name[40];
 

@@ -63,6 +63,8 @@ void get_regs(int cpu) {
 	break;
     case 2:
 	num = cpu & 0xf;
+	switch_cpu(cpu+1);
+	switch_cpu(cpu);
 	za = (Z80_context[num].z80af>>8);
 	zf = (Z80_context[num].z80af&0xff);
 	zb = (Z80_context[num].z80bc>>8);

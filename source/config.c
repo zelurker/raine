@@ -2004,9 +2004,6 @@ void load_game_config(void)
    }
 
    raine_pop_config_state();
-#ifdef HAS_CONSOLE
-   init_scripts();
-#endif
 }
 
 /*
