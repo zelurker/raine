@@ -117,6 +117,9 @@ enum inittype
 #if HAS_MSM5205_BUFF
   SOUND_MSM5205_BUFF,
 #endif
+#if HAS_MSM5232
+  SOUND_MSM5232,
+#endif
 #if HAS_ADPCM
   SOUND_M6295,
 #endif

@@ -4,6 +4,7 @@
 #include "2610intf.h"
 #include "adpcm.h"
 #include "msm5205.h"
+#include "msm5232.h"
 #include "ay8910.h"
 #include "3812intf.h"
 #include "smp16bit.h"
@@ -41,6 +42,9 @@ struct SOUND_CHIP sound_chip_list[] = // Not static for dlg_about.c
 #endif
 #if HAS_MSM5205_BUFF
    { "msm5205_BUFF",    MSM5205buffer_sh_stop, },
+#endif
+#if HAS_MSM5232
+   { "msm5232",    MSM5232_sh_stop, },
 #endif
 #if HAS_ADPCM
    { "m6295",      OKIM6295_sh_stop,   },
@@ -146,6 +150,11 @@ int init_sound_emulators(void)
 #if HAS_MSM5205_BUFF
 	case SOUND_MSM5205_BUFF:
 	  i = MSM5205buffer_sh_start( SndMachine->intf[j] );
+	break;
+#endif
+#if HAS_MSM5232
+	case SOUND_MSM5232:
+	  i = MSM5232_sh_start( SndMachine->intf[j] );
 	break;
 #endif
 #if HAS_ADPCM

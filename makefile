@@ -838,6 +838,8 @@ M6585 = $(OBJDIR)/sound/m6585.o
 
 MSM5205 = $(OBJDIR)/sound/msm5205.o
 
+MSM5232 = $(OBJDIR)/sound/msm5232.o
+
 NAMCO = $(OBJDIR)/sound/namco.o
 
 QSOUND = $(OBJDIR)/sound/qsound.o

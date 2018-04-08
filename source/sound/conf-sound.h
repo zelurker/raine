@@ -17,6 +17,7 @@
 #define HAS_ES5506 1
 #define HAS_M6585 1
 #define HAS_MSM5205_BUFF 1
+#define HAS_MSM5232 1
 #define HAS_NAMCO 1
 #define HAS_QSOUND 1
 #define HAS_SMP16 1
