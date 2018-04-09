@@ -174,7 +174,7 @@ static void mixer_init()
 	double db_step_inc	= 0.125;
 	for (i=0; i<16; i++)
 	{
-		double max = 100.0 / pow(10.0, db/20.0 );
+		double max = 255.0 / pow(10.0, db/20.0 );
 		vol_ctrl[ 15-i ] = max;
 		/*logerror("vol_ctrl[%x] = %i (%f dB)\n",15-i,vol_ctrl[ 15-i ],db);*/
 		db += db_step;
@@ -218,7 +218,9 @@ static void sound_control_2_w(UINT32 offset,UINT8 data)
 //	usrintf_showmessage("SND2 0=%02x 1=%02x 2=%02x 3=%02x", snd_ctrl0, snd_ctrl1, snd_ctrl2, snd_ctrl3);
 
 	for (i=0; i<3; i++)
-		stream_set_volume (i, vol_ctrl[ (snd_ctrl2>>4) & 15 ]);	/* ym2149f all */
+		//stream_set_volume (i, vol_ctrl[ (snd_ctrl2>>4) & 15 ]);	/* ym2149f all */
+	    // the ay8910 is too loud, I divide it by 2 (>>5)
+		stream_set_volume (i, vol_ctrl[ (snd_ctrl2>>5) & 15 ]);	/* ym2149f all */
 }
 
 static void sound_control_3_w(UINT32 offset,UINT8 data) /* unknown */

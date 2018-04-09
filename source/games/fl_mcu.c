@@ -2363,7 +2363,6 @@ L0x593:	/* jsr */
 	{
 	    if (ram_mcu[0x18] == 0xcc) {
 		addr = (ram_mcu[0x19]<<8)|ram_mcu[0x1a];
-		printf("jump from ram to %x\n",addr);
 		if (addr == 0x120) // 2
 		    JUMP_IMM(0x120);
 		else if (addr == 0x12f) // 3
@@ -2385,6 +2384,7 @@ L0x593:	/* jsr */
 		else {
 		    // the other addresses are filled with 33d, which is not code
 		    // so this part the else here should never be hit anymore !
+		    printf("jump from ram to %x\n",addr);
 		    printf("addr unknown !\n");
 		    exit(1);
 		}
