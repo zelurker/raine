@@ -233,7 +233,7 @@ static struct AY8910interface ay8910_interface =
 {
 	1,	/* 1 chip */
 	8000000/4,	/* ??? */
-	{ 10 },
+	{ MIXER(10,OSD_PAN_CENTER) },
 	{ 0 },
 	{ 0 },
 	{ sound_control_2_w },
@@ -245,7 +245,7 @@ static struct MSM5232interface msm5232_interface =
 	1, /* number of chips */
 	2000000, /* 2 MHz ?*/
 	{ { 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6 } },	/* 1.0 uF capacitors (verified on real PCB) */
-	{ 100 }	/* ? */
+	{ MIXER(100, OSD_PAN_CENTER) },
 };
 
 static struct DACinterface dac_interface =
