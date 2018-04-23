@@ -10,7 +10,7 @@ mirror -R ."|lftp 1emulation
 mkdir -p unstable/main/
 ln -s ~/dist unstable/main/binary-i386
 apt-ftparchive -o APT::FTPArchive::Release::Suite=unstable -o APT::FTPArchive::Release::Label="Unofficial rainemu packages" -o APT::FTPArchive::Release::Architectures=i386 release unstable > ../Release
-gpg --default-key 6DCD5D36 --sign -ba -o ../Release.gpg ../Release
+gpg --pinentry-mode loopback --default-key 6DCD5D36 --sign -ba -o ../Release.gpg ../Release
 echo "cd archive/debian/dists/unstable
 mput ../Release*
 lcd ~/raine/debian
