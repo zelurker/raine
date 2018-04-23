@@ -16,7 +16,7 @@ Description: Raine arcade emulator
  Raine is an emulator for arcade games from the years 1980-2000.
  It's mainly focused on speed.
  It requires roms to work, but you can get a totally free rom from
- http://www.rainemu.com/html/archive/f2demo.zip (just to see it
+ http://raine.1emulation.com/download/extras.html (just to see it
  working).
- CPUs emulated : 68000, 68020, Z80 and 6502.
+ CPUs emulated : 68000, 68020, Z80 and 6502, + some crazy recompilation for the 68706
 
