@@ -22,6 +22,8 @@ void hist_open(char *name) {
   int old_size = 0,old_use;
   char *old_commands;
   char *commands = NULL;
+  const char *parent = parent_name();
+  int len_parent = strlen(parent);
   if (strcmp(name,"history.dat")) { // not history.dat -> free old commands
       int n;
       for (n=0; n<nb_commands; n++) {
@@ -44,13 +46,26 @@ void hist_open(char *name) {
       // The use of strncmp is to be able to handle crlfs files in unix
       if (!strncmp(str,"$info=",6)) {
 	  if (commands) break; // End of current game
-	  char *s = strstr(str,current_game->main_name);
-	  int len = strlen(current_game->main_name);
-	  // $info can contain a list of clones, so search the game name inside
-	  if (s && (*(s-1)=='=' || *(s-1)==',' || *(s-1) == ' ') &&
-		  (*(s+len)==',' || *(s+len)==' ' || s[len]==0)) { // found it
-	      commands = malloc(size);
-	      *commands = 0;
+	  const char *target = current_game->main_name;
+	  char *s = strstr(str,target);
+	  int len = strlen(target);
+	  if (!s) {
+	      target = parent;
+	      s = strstr(str,parent);
+	      len = len_parent;
+	  }
+	  // There can be cases where clones include the parent name
+	  // like kurikinta for kurikint. So we must check all occurences
+	  // of kurikint here.
+	  while (s) {
+	      // $info can contain a list of clones, so search the game name inside
+	      if (s && (*(s-1)=='=' || *(s-1)==',' || *(s-1) == ' ') &&
+		      (*(s+len)==',' || *(s+len)==' ' || s[len]==0)) { // found it
+		  commands = malloc(size);
+		  *commands = 0;
+		  break;
+	      }
+	      s = strstr(s+1,target);
 	  }
       } else if (!commands)
 	  continue;
