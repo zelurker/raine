@@ -24,6 +24,12 @@ while (<F>) {
 	chomp;
 	s/\r//;
 	if (/^\$info\=(.+)/) {
+		if (/tnzs,/) {
+			$_ .= "tnzsb,tnzs2,";
+		} elsif (/=bgaregga,/) {
+			$_ .= "battleg,";
+		}
+		/^\$info\=(.+)/;
 		my $list = $1;
 		my @list = split /\,/,$list;
 		$skip = 1;
