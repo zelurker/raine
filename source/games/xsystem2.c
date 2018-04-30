@@ -2980,6 +2980,7 @@ static gfx_layout tnzs_charlayout =
 	32*8
 };
 
+#if 0
 static gfx_layout insectx_charlayout =
 {
 	16,16,
@@ -2992,6 +2993,7 @@ static gfx_layout insectx_charlayout =
 		16*16, 17*16, 18*16, 19*16, 20*16, 21*16, 22*16, 23*16 },
 	64*8
 };
+#endif
 
 static struct GFX_LIST tnzs_gfx[] =
 {
