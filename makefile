@@ -1225,7 +1225,7 @@ $(RAINE_EXE):	$(OBJS)
 endif
 
 	@echo Linking Raine...
-	$(LDV) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $^ $(LIBS)
+	$(LDV) $(LDFLAGS) $(LFLAGS) -g -Wall -Wno-write-strings -o $(RAINE_EXE) $^ $(LIBS)
 
 $(D7Z)/%.o: source/7z/%.c
 	@echo Compiling 7z $<...
