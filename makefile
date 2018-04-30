@@ -1109,13 +1109,7 @@ endif #RAINE32
 LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image # -lefence
 ifdef HAS_NEO
 ifdef RAINE_UNIX
-# Normally here we should have :
-# LIBS += -lSDL_sound
-# but since debian doesn't seem to package the right sdl-sound version 6
-# months after asking, I'll link my static version instead, which asks all
-# the libs debian wants... way too many, but anyway...
-ifeq ("$(shell uname -n)","gentoo")
-# or the one for gentoo, just link SDL_sound directly !
+ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
 LIBS += -lSDL_sound
 else
 LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -lvorbisfile
@@ -1175,6 +1169,11 @@ ifndef SDL
 	@echo -n allegro:
 	@allegro-config --version
 endif
+endif
+ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
+	@echo using system SDL_sound (check that it uses libmpg123)...
+else
+	@echo using local static SDL_sound
 endif
 
 source/version.h: makefile
