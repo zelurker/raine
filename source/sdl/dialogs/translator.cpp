@@ -137,7 +137,7 @@ TTransBitmap::~TTransBitmap() {
     if (font) free(font);
     if (map) {
 	char path[1024];
-	sprintf(path,"%ssavedata/ssrpg.map",dir_cfg.exe_path);
+	snprintf(path,1024,"%ssavedata/ssrpg.map",dir_cfg.exe_path);
 	FILE *f = fopen(path,"wb");
 	int size = get_map_size();
 	if (f) {
@@ -150,17 +150,17 @@ TTransBitmap::~TTransBitmap() {
 	    MessageBox("Confirmation","Save the changes ?","Yes|No")==1) {
 	char path[1024];
 	printf("Saving the changes...\n");
-	sprintf(path,"%soverride",dir_cfg.exe_path);
+	snprintf(path,1024,"%soverride",dir_cfg.exe_path);
 	mkdir_rwx(path);
-	sprintf(path,"/%s",current_game->main_name);
+	snprintf(path,1024,"/%s",current_game->main_name);
 	mkdir_rwx(path);
 	int n = 0;
 	while (combo_loc[n].offset) {
 	    if (n == 0)
-		sprintf(path,"%soverride/%s/combos.spr",dir_cfg.exe_path,
+		snprintf(path,1024,"%soverride/%s/combos.spr",dir_cfg.exe_path,
 			current_game->main_name);
 	    else
-		sprintf(path,"%soverride/%s/combos%d.spr",dir_cfg.exe_path,
+		snprintf(path,1024,"%soverride/%s/combos%d.spr",dir_cfg.exe_path,
 			current_game->main_name,n);
 	    printf("saving %s size %d\n",path,combo_loc[n].size*0x100);
 	    save_file(path,&GFX[combo_loc[n].offset*0x100],

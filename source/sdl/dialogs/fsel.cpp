@@ -274,7 +274,7 @@ void TFileSel::compute_nb_items() {
       if (!strcmp(dent->d_name,".") || !strcmp(dent->d_name,".."))
 	continue;
       menu[nb_files].label = strdup(dent->d_name);
-      sprintf(tmp_path,"%s%s%s",path,SLASH,dent->d_name);
+      snprintf(tmp_path,1024,"%s%s%s",path,SLASH,dent->d_name);
       /* The big stupidity of readdir is that it doesn't set d_type (posix
        * compliant !!!).  */
       struct stat buf;

@@ -23,14 +23,14 @@ static char str[256];
 
 char *exists_emudx_file(const char *db_filename) {
   FILE *f;
-  sprintf(str,"%s%s", dir_cfg.emudx_dir,db_filename);
+  snprintf(str,256,"%s%s", dir_cfg.emudx_dir,db_filename);
   f = fopen(str,"rb");
   if (!f) {
     strcpy(str,db_filename);
     f = fopen(str,"rb");
   }
   if (!f) {
-    sprintf(str,"%s%s", dir_cfg.share_path,db_filename);
+    snprintf(str,256,"%s%s", dir_cfg.share_path,db_filename);
     f = fopen(str,"rb");
   }
   if (f) {

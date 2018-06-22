@@ -1897,7 +1897,7 @@ void load_main_config(void)
 
    // config/raine.cfg -------------------------------------
 
-   sprintf(str,"%sconfig/%s", dir_cfg.exe_path, dir_cfg.config_file);
+   snprintf(str,256,"%sconfig/%s", dir_cfg.exe_path, dir_cfg.config_file);
    raine_set_config_file(str);
 }
 
@@ -1915,7 +1915,7 @@ void save_main_config(void)
 
    raine_push_config_state();
 
-   sprintf(str,"%sconfig/%s", dir_cfg.exe_path, dir_cfg.config_file);
+   snprintf(str,256,"%sconfig/%s", dir_cfg.exe_path, dir_cfg.config_file);
    raine_set_config_file(str);
 
 
@@ -1947,7 +1947,7 @@ void load_game_config(void)
 
    raine_push_config_state();
 
-   sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+   snprintf(str,256,"%sconfig/games.cfg", dir_cfg.exe_path);
    raine_set_config_file(str);
 
    // Load Key Settings
@@ -2021,7 +2021,7 @@ void save_game_config(void)
 
    raine_push_config_state();
 
-   sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+   snprintf(str,256,"%sconfig/games.cfg", dir_cfg.exe_path);
    raine_set_config_file(str);
 
    // Save Key Settings

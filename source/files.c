@@ -64,13 +64,13 @@ char *get_shared(char *name) {
   }
 #ifdef RAINE_UNIX
   /* Start by looking in the personnal dir (exe_path) */
-  sprintf(shared, "%s%s", dir_cfg.exe_path,name);
+  snprintf(shared,FILENAME_MAX, "%s%s", dir_cfg.exe_path,name);
   ret = stat(shared,&buf);
   if (!ret) {
     print_debug("get_shared: using personnal %s\n",shared);
     return shared;
   }
-  sprintf(shared,"%sconfig/%s",dir_cfg.exe_path,name);
+  snprintf(shared,FILENAME_MAX,"%sconfig/%s",dir_cfg.exe_path,name);
   ret = stat(shared,&buf);
   if (!ret) {
     print_debug("get_shared: using personnal %s\n",shared);
@@ -83,7 +83,7 @@ char *get_shared(char *name) {
     print_debug("get_shared: using shared %s\n",shared);
     return shared;
   }
-  sprintf(shared,"%sconfig/%s",dir_cfg.share_path,name);
+  snprintf(shared,FILENAME_MAX,"%sconfig/%s",dir_cfg.share_path,name);
   ret = stat(shared,&buf);
   if (!ret) {
     print_debug("get_shared: using shared %s\n",shared);
@@ -117,7 +117,7 @@ void mkdir_rwx(const char *name) {
   (name[0] != *SLASH)
 #endif
   {
-    sprintf(str,"%s%s",dir_cfg.exe_path,name);
+    snprintf(str,256,"%s%s",dir_cfg.exe_path,name);
     my_mkdir(str);
   } else // absolute path, just do it
 #endif
@@ -177,7 +177,7 @@ void save_debug(char *name, UINT8 *src, UINT32 size, UINT32 mode)
             ByteSwap(src,size);
 #endif
 
-         sprintf(str,"%sdebug/%s", dir_cfg.exe_path, name);
+         snprintf(str,256,"%sdebug/%s", dir_cfg.exe_path, name);
          save_file(str, src, size);
 
          print_debug("Debug Save: '%s' saved.\n", name);

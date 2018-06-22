@@ -182,7 +182,7 @@ static void hs_free (void)
 static char str[256];
 static char *myget_filename() {
 
-   sprintf(str,"%ssavedata" SLASH "%s%s.hi", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "-neocd" : ""));
+   snprintf(str,256,"%ssavedata" SLASH "%s%s.hi", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "-neocd" : ""));
    return str;
 }
 

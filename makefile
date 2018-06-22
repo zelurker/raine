@@ -17,7 +17,7 @@
 VERSION = "0.64.15"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -543,8 +543,8 @@ endif
 endif
 
 ifdef RAINE_DEBUG
-CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
-CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-format-truncation -Wno-write-strings -g -DRAINE_DEBUG
+CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-format-truncation -Wno-write-strings -g -DRAINE_DEBUG
 
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for

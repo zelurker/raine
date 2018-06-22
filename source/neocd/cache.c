@@ -106,7 +106,7 @@ int find_spec(char *spec, char *name, UINT32 *offset, UINT32 *size) {
 
 char *get_override(char *name) {
     static char filename[1024];
-    sprintf(filename,"%s/override/%s/%s",dir_cfg.exe_path,
+    snprintf(filename,1024,"%s/override/%s/%s",dir_cfg.exe_path,
 	    current_game->main_name,name);
     return filename;
 }

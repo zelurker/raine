@@ -21,9 +21,9 @@ class TCheatDlg : public TMenu
       boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
       char cheat_info[256];
       if (sel < CheatCount) {
-	sprintf(cheat_info,"Info: %s",CheatList[sel].info);
+	snprintf(cheat_info,256,"Info: %s",CheatList[sel].info);
       } else {
-	sprintf(cheat_info,"Script");
+	snprintf(cheat_info,256,"Script");
       }
       font->put_string(HMARGIN,base,cheat_info,fg_frame,bg_frame);
       if (!(sdl_screen->flags & SDL_DOUBLEBUF)) {

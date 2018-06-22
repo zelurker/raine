@@ -114,7 +114,7 @@ void load_bezel() {
   alphafile[0] = 0;
 
   clear_bezel();
-  sprintf(name,"%s%s.zip",dir_cfg.artwork_dir,current_game->main_name);
+  snprintf(name,256,"%s%s.zip",dir_cfg.artwork_dir,current_game->main_name);
   strcpy(game_name,current_game->main_name);
 
    uf = unzOpen(get_shared(name));
@@ -135,7 +135,7 @@ void load_bezel() {
 	   game_romof = find_game(dir+1);
 
 	   strcpy(game_name,game_romof->main_name);
-	   sprintf(name,"%s%s.zip",dir_cfg.artwork_dir,game_name);
+	   snprintf(name,256,"%s%s.zip",dir_cfg.artwork_dir,game_name);
 	   uf = unzOpen(get_shared(name));
 	   if (uf) break;
 	 }

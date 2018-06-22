@@ -20,12 +20,12 @@ char *get_script_name(int writeable) {
        strcpy(base,"neocd");
    else
        strcpy(base,"raine");
-  char buf[1024];
-  sprintf(buf,"scripts%s%s%s%s.txt",SLASH,base,SLASH,current_game->main_name);
+  char buf[FILENAME_MAX];
+  snprintf(buf,FILENAME_MAX,"scripts%s%s%s%s.txt",SLASH,base,SLASH,current_game->main_name);
 
   char *s = get_shared(buf);
   if (!exists(s)) {
-      sprintf(buf,"scripts%s%s%s%s.txt",SLASH,base,SLASH,parent_name());
+      snprintf(buf,FILENAME_MAX,"scripts%s%s%s%s.txt",SLASH,base,SLASH,parent_name());
       s = get_shared(buf);
   }
   if (!writeable)
@@ -33,11 +33,11 @@ char *get_script_name(int writeable) {
   // if it must be writable, force the use of the personnal folder, and
   // create the dirs by the way
   static char shared[1024];
-  sprintf(shared, "%sscripts", dir_cfg.exe_path);
+  snprintf(shared,1024, "%sscripts", dir_cfg.exe_path);
   mkdir_rwx(shared);
-  sprintf(shared+strlen(shared),"%s%s",SLASH,base);
+  snprintf(shared+strlen(shared),1024-strlen(shared),"%s%s",SLASH,base);
   mkdir_rwx(shared);
-  sprintf(shared+strlen(shared),"%s%s.txt",SLASH,current_game->main_name);
+  snprintf(shared+strlen(shared),1024-strlen(shared),"%s%s.txt",SLASH,current_game->main_name);
   return shared;
 }
 

@@ -866,7 +866,7 @@ static int do_load(int sel) {
     menu_item_t *menu = NULL;
     int nb_used = 0, nb_alloc = 0;
 
-    sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+    snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
     FILE *f = fopen(str,"r");
     while (f && !feof(f)) {
 	myfgets(str,FILENAME_MAX,f);
@@ -897,10 +897,10 @@ static int do_load(int sel) {
     if (selected > -1) {
 	raine_push_config_state();
 
-	sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+	snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
 	raine_set_config_file(str);
 
-	sprintf(str,"$%s:keyconfig", menu[selected].label);
+	snprintf(str,FILENAME_MAX,"$%s:keyconfig", menu[selected].label);
 	char *s = str;
 	while ((s = strchr(s,' ')))
 	    *s = '_';
@@ -927,7 +927,7 @@ static int do_save(int sel) {
 	char str[FILENAME_MAX];
 	raine_push_config_state();
 
-	sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+	snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
 	raine_set_config_file(str);
 
 	// Save Key Settings
@@ -946,7 +946,7 @@ static int get_inputs(int sel) {
     menu_item_t *menu = NULL;
     int nb_used = 0, nb_alloc = 0;
 
-    sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+    snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
     FILE *f = fopen(str,"r");
     char conf[256];
     conf[0] = 0;
@@ -981,10 +981,10 @@ static int get_inputs(int sel) {
     if (selected > -1) {
 	raine_push_config_state();
 
-	sprintf(str,"%sconfig/games.cfg", dir_cfg.exe_path);
+	snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
 	raine_set_config_file(str);
 
-	sprintf(str,"%s:keyconfig", menu[selected].label);
+	snprintf(str,FILENAME_MAX,"%s:keyconfig", menu[selected].label);
 	printf("loading keys from %s\n",str);
 	load_game_keys(str);
 	raine_pop_config_state();

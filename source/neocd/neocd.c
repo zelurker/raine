@@ -222,9 +222,9 @@ static void do_capture() {
 	// it's to clear both palettes in double buffer mode
 	char filename[256];
 	if (current_bank > -1)
-	    sprintf(filename,"%ssavedata" SLASH "block%d-%d.map", dir_cfg.exe_path, capture_block,(capture_mode == 2 ? current_bank : current_bank+1));
+	    snprintf(filename,256,"%ssavedata" SLASH "block%d-%d.map", dir_cfg.exe_path, capture_block,(capture_mode == 2 ? current_bank : current_bank+1));
 	else
-	    sprintf(filename,"%ssavedata" SLASH "block%d.map", dir_cfg.exe_path, capture_block);
+	    snprintf(filename,256,"%ssavedata" SLASH "block%d.map", dir_cfg.exe_path, capture_block);
 	fdata = fopen(filename,"w");
 	draw_sprites_capture(0,384,0,224);
 	memset(&pal[16],1,sizeof(pal)-16*sizeof(SDL_Color));
@@ -237,9 +237,9 @@ static void do_capture() {
 	 * with the native neocd colors so there should be no color collision with
 	 * it */
 	if (current_bank > 0)
-	    sprintf(filename,"%sblock%d-%d.png",dir_cfg.screen_dir,capture_block,current_bank);
+	    snprintf(filename,256,"%sblock%d-%d.png",dir_cfg.screen_dir,capture_block,current_bank);
 	else
-	    sprintf(filename,"%sblock%d.png",dir_cfg.screen_dir,capture_block);
+	    snprintf(filename,256,"%sblock%d.png",dir_cfg.screen_dir,capture_block);
 	fdata = fopen(filename,"rb");
 	if (fdata && capture_new_pictures) {
 	    fclose(fdata);
@@ -1156,11 +1156,11 @@ static void restore_memcard() {
   char path[1024];
   if (!neogeo_memorycard) return;
 
-  sprintf(path,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
+  snprintf(path,1024,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
   FILE *f = fopen(path,"rb");
   memcard_write = 0;
   if (!f) {
-    sprintf(path,"%s%smemcard.bin",neocd_dir,SLASH); // otherwise try this
+    snprintf(path,1024,"%s%smemcard.bin",neocd_dir,SLASH); // otherwise try this
     f = fopen(path,"rb");
   }
   if (f) {
@@ -1203,7 +1203,7 @@ static void restore_memcard() {
   }
 
   if (saveram.ram) {
-      sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+      snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
       f = fopen(path,"rb");
       if (f) {
 	  fread(saveram.ram, 0x10000, 1, f);
@@ -1215,7 +1215,7 @@ static void restore_memcard() {
 static void save_memcard() {
     char path[1024];
     if (memcard_write) {
-	sprintf(path,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
+	snprintf(path,1024,"%ssavedata" SLASH "%s%s.bin", dir_cfg.exe_path, current_game->main_name,(is_neocd() ? "" : "-neogeo")); // 1st try game name in savedata
 	FILE *f = fopen(path,"wb");
 	if (f) {
 	    fwrite(neogeo_memorycard,size_mcard,1,f);
@@ -1232,7 +1232,7 @@ static void save_memcard() {
 	    // Quick check the backup ram was really used
 	    // the bios is supposed to write this after testing it
 	    // see http://wiki.neogeodev.org/index.php?title=Backup_RAM
-	    sprintf(path,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+	    snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
 	    FILE *f = fopen(path,"wb");
 	    if (f) {
 		fwrite(saveram.ram,0x10000,1,f);
@@ -2276,7 +2276,7 @@ void postprocess_ipl() {
   if (cdrom_speed)
     reset_ingame_timer();
   char path[FILENAME_MAX];
-  sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
+  snprintf(path,FILENAME_MAX,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
   load_sdips = exists(path);
 #ifndef RAINE_DOS
   init_debug_dips();
@@ -5443,7 +5443,7 @@ void execute_neocd() {
 	   * game has been loaded, so this is the only place to do it ! */
 	  load_sdips = 0;
 	  char path[FILENAME_MAX];
-	  sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
+	  snprintf(path,FILENAME_MAX,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
 	  load_file(path,&RAM[0x10fd84],16);
       }
   }

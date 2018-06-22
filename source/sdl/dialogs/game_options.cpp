@@ -65,7 +65,7 @@ static int sort_saves(const void *a, const void *b) {
 
 static menu_item_t *get_savegames(int for_saving) {
   char fdir[1024];
-  sprintf(fdir,"%ssavegame",dir_cfg.exe_path);
+  snprintf(fdir,1024,"%ssavegame",dir_cfg.exe_path);
   DIR *dir = opendir(fdir);
 
   allocated = used = 0;

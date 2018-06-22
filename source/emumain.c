@@ -362,10 +362,10 @@ UINT32 run_game_emulation(void)
 #endif
 
 	  last_video_frame = current_video_frame;
-	  sprintf(full_name2,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count,extension);
+	  snprintf(full_name2,256,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count,extension);
 	  n = 1;
 	  do {
-	    sprintf(full_name1,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count-(n++),extension);
+	    snprintf(full_name1,256,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count-(n++),extension);
 	    f = fopen(full_name1,"rb");
 	  } while (!f && n < 15);
 	  if (f) {

@@ -240,9 +240,6 @@ logerror("EEPROM write bit %d\n",bit);
 
 static void EEPROM_reset(void)
 {
-if (serial_count)
-  //logerror("EEPROM reset, buffer = %s\n",serial_buffer);
-
 	serial_count = 0;
 	sending = 0;
 	reset_delay = 0;	/* delay a little before returning setting data to 1 (needed by wbeachvl) */

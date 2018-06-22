@@ -203,10 +203,10 @@ class TGame_sel : public TMenu
 	  // it allows the selection to be moved smoothly with the mouse
 	  // instead of "jumping" when changing pictures all the time
 	  char buffer[256];
-	  sprintf(buffer,"%s%s.pcx",dir_cfg.screen_dir,game_list[sel]->main_name);
+	  snprintf(buffer,256,"%s%s.pcx",dir_cfg.screen_dir,game_list[sel]->main_name);
 	  if (load_picture(nb_to_update,buffer))
 	      return;
-	  sprintf(buffer,"%s%s.png",dir_cfg.screen_dir,game_list[sel]->main_name);
+	  snprintf(buffer,256,"%s%s.png",dir_cfg.screen_dir,game_list[sel]->main_name);
 	  if (load_picture(nb_to_update,buffer))
 	      return;
 
@@ -228,11 +228,11 @@ class TGame_sel : public TMenu
 
 		      game_romof = find_game(dir+1);
 
-		      sprintf(buffer,"%s%s.pcx",dir_cfg.screen_dir,game_romof->main_name);
+		      snprintf(buffer,256,"%s%s.pcx",dir_cfg.screen_dir,game_romof->main_name);
 		      if (load_picture(nb_to_update,buffer))
 			  return;
 
-		      sprintf(buffer,"%s%s.png",dir_cfg.screen_dir,game_romof->main_name);
+		      snprintf(buffer,256,"%s%s.png",dir_cfg.screen_dir,game_romof->main_name);
 		      if (load_picture(nb_to_update,buffer))
 			  return;
 		  }
@@ -287,7 +287,7 @@ void TGame_sel::draw_top_frame() {
     case 1: s = _("Avail"); break;
     case 2: s = _("Missing"); break;
   }
-  sprintf(mytitle,"%s %d",s,nb_disp_items);
+  snprintf(mytitle,80,"%s %d",s,nb_disp_items);
   font->dimensions(mytitle,&w_title,&h_title);
   boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
   font->put_string(fw,0,title,fg_frame,bg_frame);
@@ -307,7 +307,7 @@ void TGame_sel::draw_bot_frame() {
       }
     }
     char scateg[80];
-    sprintf(scateg,_("Category : %s"),game_type[nb_max]);
+    snprintf(scateg,80,_("Category : %s"),game_type[nb_max]);
     font->dimensions(scateg,&w_categ,&h_categ);
     h_bot = h_categ + h_year;
   }
@@ -319,7 +319,7 @@ void TGame_sel::draw_bot_frame() {
   snprintf(company_string,100,_("Company : %s"),(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
   company_string[99] = 0;
   if (sel >= 0) {
-    sprintf(year_string,_("Year : %d"),game_list[sel]->year);
+    snprintf(year_string,80,_("Year : %d"),game_list[sel]->year);
     sprintf(category_string,_("Category : "));
     int n;
     for (n=1; n<=NB_GAME_TYPE; n++) {

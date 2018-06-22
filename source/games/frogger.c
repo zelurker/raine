@@ -1151,7 +1151,7 @@ static UINT8 *ram_hiscores;
 
 static char *myget_filename() {
   static char str[1024];
-  sprintf(str,"%ssavedata" SLASH "%s.ram", dir_cfg.exe_path, current_game->main_name);
+  snprintf(str,1024,"%ssavedata" SLASH "%s.ram", dir_cfg.exe_path, current_game->main_name);
   return str;
 }
 

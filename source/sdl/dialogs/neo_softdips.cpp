@@ -234,7 +234,7 @@ int do_soft_dips(int sel) {
     }
     if (is_neocd()) {
 	char path[FILENAME_MAX];
-	sprintf(path,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
+	snprintf(path,FILENAME_MAX,"%ssavedata" SLASH "%s.sdips", dir_cfg.exe_path, current_game->main_name);
 	save_file(path,&RAM[0x10fd84],16);
     }
     return 0;

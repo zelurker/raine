@@ -69,9 +69,9 @@ void open_debug(void)
 
       char str[256];
 
-      sprintf(str,"%sdebug",dir_cfg.exe_path);
+      snprintf(str,256,"%sdebug",dir_cfg.exe_path);
       mkdir_rwx(str);
-      sprintf(str,"%sdebug/debug.txt",dir_cfg.exe_path);
+      snprintf(str,256,"%sdebug/debug.txt",dir_cfg.exe_path);
 
       if (debug_mode < 2) {
 	if(!(file_debug=fopen(str,"w"))){

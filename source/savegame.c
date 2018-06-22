@@ -365,7 +365,7 @@ void do_save_state(char *name) {
      if (strstr(name,SLASH)) // The name is already a path
        strcpy(str,name);
      else
-       sprintf(str,"%ssavegame" SLASH "%s",dir_cfg.exe_path,name);
+       snprintf(str,256,"%ssavegame" SLASH "%s",dir_cfg.exe_path,name);
      disp_str = strstr(str,"savegame");
      if (!disp_str) disp_str = str;
      if (!(fout=gzopen(str,"wb9"))){
@@ -592,7 +592,7 @@ void do_load_state(char *name) {
      if (strstr(name,SLASH)) // The name is already a path
        strcpy(str,name);
      else
-       sprintf(str,"%ssavegame" SLASH "%s",dir_cfg.exe_path,name);
+       snprintf(str,256,"%ssavegame" SLASH "%s",dir_cfg.exe_path,name);
    disp_str = strstr(str,"savegame");
    if (!disp_str) disp_str = str;
    if(!(fin=gzopen(str,"rb"))){
@@ -754,7 +754,7 @@ int load_eeprom(void)
 
    for(ta=0;ta<eeprom_count;ta++){
 
-   sprintf(str,"%ssavedata" SLASH "%s%s", dir_cfg.exe_path, current_game->main_name, epr_ext[ta]);
+   snprintf(str,256,"%ssavedata" SLASH "%s%s", dir_cfg.exe_path, current_game->main_name, epr_ext[ta]);
    ret = load_file(str, eeprom_list[ta].source, eeprom_list[ta].size);
    if(!ret){
      memset(eeprom_list[ta].source,0xff,eeprom_list[ta].size);
@@ -774,7 +774,7 @@ void save_eeprom(void)
    int ta;
 
    for(ta=0;ta<eeprom_count;ta++){
-      sprintf(str,"%ssavedata" SLASH "%s%s", dir_cfg.exe_path, current_game->main_name, epr_ext[ta]);
+      snprintf(str,256,"%ssavedata" SLASH "%s%s", dir_cfg.exe_path, current_game->main_name, epr_ext[ta]);
       save_file(str, eeprom_list[ta].source, eeprom_list[ta].size);
    }
 }

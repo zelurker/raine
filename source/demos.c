@@ -115,7 +115,7 @@ void GameSaveDemo(void)
 
    print_debug("BEGIN: GameSaveDemo()\n");
 
-   sprintf(str,"%s" SLASH "demos" SLASH "%s" SLASH,dir_cfg.exe_path,current_game->main_name);
+   snprintf(str,FILENAME_MAX,"%s" SLASH "demos" SLASH "%s" SLASH,dir_cfg.exe_path,current_game->main_name);
    mkdir_rwx(str);
    sa_pause_sound();
    stop_cpu_main();
@@ -326,7 +326,7 @@ void GameLoadDemo(void)
 
    print_debug("BEGIN: GameLoadDemo()\n");
 
-   sprintf(str,"%s" SLASH "demos" SLASH "%s" SLASH,dir_cfg.exe_path,current_game->main_name);
+   snprintf(str,FILENAME_MAX,"%s" SLASH "demos" SLASH "%s" SLASH,dir_cfg.exe_path,current_game->main_name);
    sa_pause_sound();
    stop_cpu_main();
 #ifndef SDL

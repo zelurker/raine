@@ -355,18 +355,18 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   }
   switch(cpu_id) {
   case 1: // 68k
-      sprintf(cmd,"%s ",dir_cfg.m68kdis);
+      snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
       sprintf(cmd+strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
       ByteSwap(&ptr[start],end-start);
       break;
   case 3:
-      sprintf(cmd,"%s ",dir_cfg.m68kdis);
+      snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
-      sprintf(cmd+strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      snprintf(cmd+strlen(cmd),1024-strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
   case 2:
-      sprintf(cmd,"%s \"%s\" prg.z80",dir_cfg.dz80,name);
+      snprintf(cmd,1024,"%s \"%s\" prg.z80",dir_cfg.dz80,name);
       break;
   }
   save_file(name,&ptr[start],end-start);

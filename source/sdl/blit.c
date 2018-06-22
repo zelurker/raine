@@ -61,16 +61,16 @@ static void do_save_screen(void)
 
    */
 
-   sprintf(file_name, "%s.%s", current_game->main_name,extension);
+   snprintf(file_name, 32,"%s.%s", current_game->main_name,extension);
 
-   sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
+   snprintf(full_name, 256,"%s%s", dir_cfg.screen_dir, file_name);
 
 
    if (recording_video) {
      int current_video_frame = cpu_frame_count*video_fps / fps;
 
      if (current_video_frame != last_video_frame) {
-       sprintf(full_name,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count,extension);
+       snprintf(full_name,256,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count,extension);
        my_save_png(full_name);
        last_video_frame = current_video_frame;
      }
@@ -86,10 +86,10 @@ static void do_save_screen(void)
        if(dir_cfg.last_screenshot_num > 999)
 	 return;
        if(dir_cfg.long_file_names)
-	 sprintf(file_name, "%s_%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
+	 snprintf(file_name,32, "%s_%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
        else
-	 sprintf(file_name, "%.5s%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
-       sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
+	 snprintf(file_name,32, "%.5s%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
+       snprintf(full_name,256, "%s%s", dir_cfg.screen_dir, file_name);
      };
      my_save_png(full_name);
      print_ingame(120, gettext("Screen Saved to %s"), file_name);

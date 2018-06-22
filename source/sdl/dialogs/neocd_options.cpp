@@ -79,7 +79,7 @@ static int exit_to(int sel) {
 
 static int do_update_block(int sel) {
   char fdir[1024];
-  sprintf(fdir,"%s",dir_cfg.screen_dir);
+  snprintf(fdir,1024,"%s",dir_cfg.screen_dir);
   char picture[256];
   *picture = 0;
   char *exts[] = { "block*png", NULL };
@@ -95,7 +95,7 @@ static int do_update_block(int sel) {
     }
     int pitch = img->pitch;
     if (!name) return 0;
-    sprintf(map,"%ssavedata" SLASH "%s",dir_cfg.exe_path,name);
+    snprintf(map,256,"%ssavedata" SLASH "%s",dir_cfg.exe_path,name);
     strcpy(&map[strlen(map)-3],"map");
     FILE *fmap = fopen(map,"rb");
     if (!fmap) {

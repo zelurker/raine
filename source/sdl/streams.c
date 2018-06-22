@@ -400,7 +400,7 @@ void update_monitoring() {
 	    print_ingame(1,gettext("Recording to wav..."));
 	if (!f_record) {
 	    char path[1024];
-	    sprintf(path,"%sraine_sound",dir_cfg.exe_path);
+	    snprintf(path,1024,"%sraine_sound",dir_cfg.exe_path);
 	    int l = strlen(path);
 	    strcat(path,".wav");
 	    int num = 0;

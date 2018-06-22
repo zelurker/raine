@@ -107,7 +107,7 @@ void init_lang() {
 
 #ifndef RAINE_DOS
     static char buf[20];
-    sprintf(buf,"LANGUAGE=%s",language);
+    snprintf(buf,20,"LANGUAGE=%s",language);
 #ifdef RAINE_WIN32
     /* I had SDL_putenv not working in native windows but maybe it was related
      * to an old dll. Anyway using putenv + an updated dll works so I'll leave
@@ -336,10 +336,10 @@ int main(int argc,char *argv[])
    sprintf(dir_cfg.emudx_dir,"%semudx" SLASH, dir_cfg.share_path);
    sprintf(dir_cfg.artwork_dir,"%sartwork" SLASH, dir_cfg.share_path);
    init_rom_dir();
-   sprintf(str,"%sroms" SLASH, dir_cfg.exe_path);
+   snprintf(str,256,"%sroms" SLASH, dir_cfg.exe_path);
    add_rom_dir(str);
 #ifdef RAINE_UNIX
-   sprintf(str,"%sroms" SLASH, dir_cfg.share_path);
+   snprintf(str,256,"%sroms" SLASH, dir_cfg.share_path);
    add_rom_dir(str);
 #endif
 
@@ -504,7 +504,7 @@ int main(int argc,char *argv[])
 
    // JOYSTICK ALLEGRO
 
-   sprintf(str,"%sconfig" SLASH "%s",dir_cfg.exe_path, dir_cfg.config_file);
+   snprintf(str,256,"%sconfig" SLASH "%s",dir_cfg.exe_path, dir_cfg.config_file);
 
    init_game_list();
 
@@ -611,7 +611,7 @@ int main(int argc,char *argv[])
    if (recording)
        end_recording();
 
-   sprintf(str,"%sconfig" SLASH "%s", dir_cfg.exe_path, dir_cfg.config_file);
+   snprintf(str,256,"%sconfig" SLASH "%s", dir_cfg.exe_path, dir_cfg.config_file);
 #ifndef SDL
 #ifdef RAINE_UNIX
    save_file(str, RaineData[ConfigUnix].dat, RaineData[ConfigUnix].size);
@@ -629,7 +629,7 @@ int main(int argc,char *argv[])
 
    raine_push_config_state();
 
-   sprintf(str,"%sconfig" SLASH "%s", dir_cfg.exe_path, dir_cfg.config_file);
+   snprintf(str,256,"%sconfig" SLASH "%s", dir_cfg.exe_path, dir_cfg.config_file);
    raine_set_config_file(str);
 
 #ifdef RAINE_DEBUG
@@ -721,7 +721,7 @@ int main(int argc,char *argv[])
 
    save_emulator_joys("emulator_joy_config");
 
-   sprintf(str,"%sconfig" SLASH "%s",dir_cfg.exe_path, dir_cfg.config_file);
+   snprintf(str,256,"%sconfig" SLASH "%s",dir_cfg.exe_path, dir_cfg.config_file);
 
    // RAINE GUI
 
