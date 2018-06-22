@@ -674,6 +674,20 @@ static void draw_flstory(void)
 		  map
 		  );
 
+	  /* This is a simplification of the crazy priority system for this game :
+	   * it aims at working around the impossibility to draw sprites offscreen
+	   * since x is on 1 byte and the screen is 256 pixels wide.
+	   * But it's super weird, the transparent colors change for the "on top"
+	   * sprites, and they really require a priority bitmap.
+	   * The *much* easier way is to draw the top sprites opaque.
+	   * It works almost everywhere, the only place I found where it doesn't work
+	   * is when inserting a coin on the title screen, the character sprite which
+	   * appears between the letters is half hidden.
+	   * That's not too bad for such a simplification, and with that the dragon
+	   * animation during attract mode is working fine !
+	   * Notice : I also tried to draw sprites with high priority above this layer
+	   * but it breaks the dragon animation in this case, so that's really the best
+	   * solution without a priority bitmap ! */
 	  Draw8x8_Mapped_flip_Rot(&GFX[(ta<<6)], x, y, map,flip);
       }
 
