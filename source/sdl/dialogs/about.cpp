@@ -868,7 +868,7 @@ int do_about(int sel) {
 #endif
 #ifdef RDTSC_PROFILE
   if (cycles_per_second) {
-    sprintf(about_cpu,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);
+    snprintf(about_cpu,64,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);
   }
 #endif
   about_menu = new TAbout_menu(_("About..."),about_items, path);
