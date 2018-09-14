@@ -105,6 +105,12 @@ static int get_model_name(char *modelname)
 	     while ( q <= &modelname[48] )
 		  *q++ = '\0';	/* Zero-pad the rest */
 	}
+	// And remove eventual spaces at the end...
+	p = q = &modelname[strlen(modelname)-1];
+	while (*p == ' ' && p > &modelname[0])
+	    p--;
+	if (p != q)
+	    p[1] = 0;
 
 	return 1;
 }
