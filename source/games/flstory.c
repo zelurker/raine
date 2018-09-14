@@ -300,7 +300,6 @@ Todo:
 
 /******************************************************************************/
 
-extern int goto_debuger;
 static int nmi_pending;
 static void FLStorySoundWriteMain(UINT16 offset, UINT8 data)
 {
@@ -308,7 +307,6 @@ static void FLStorySoundWriteMain(UINT16 offset, UINT8 data)
     RAM[0xd402] = data;
     if (*nmi_enable) {
 	cpu_int_nmi(CPU_Z80_1);
-	// goto_debuger = 1;
 	cpu_execute_cycles(CPU_Z80_1,500);
 	switch_cpu(CPU_Z80_0);
 	// StopZ80(0,0);
@@ -539,18 +537,14 @@ static void execute_flstory(void)
 {
    cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(3,60));	// Main Z80 6MHz (60fps)  10533000/2/60
 
-   if (!goto_debuger) {
-       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(3,60));	// Sub Z80 4MHz (60fps)
-       cpu_interrupt(CPU_Z80_1, 0x38);
+   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(3,60));	// Sub Z80 4MHz (60fps)
+   cpu_interrupt(CPU_Z80_1, 0x38);
 
-       cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(3,60));	// Main Z80 6MHz (60fps)  10533000/2/60
-       cpu_interrupt(CPU_Z80_0, 0x38);
-   }
+   cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(3,60));	// Main Z80 6MHz (60fps)  10533000/2/60
+   cpu_interrupt(CPU_Z80_0, 0x38);
 
-   if (!goto_debuger) {
-       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(3,60));	// Sub Z80 4MHz (60fps)
-       cpu_interrupt(CPU_Z80_1, 0x38);
-   }
+   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(3,60));	// Sub Z80 4MHz (60fps)
+   cpu_interrupt(CPU_Z80_1, 0x38);
 
    if (*fl_mcu_started) {
        /* There is a synchronization problem between the main z80 and the 68705
