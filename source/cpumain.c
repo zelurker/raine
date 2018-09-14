@@ -420,7 +420,8 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	*start = 0;
 	*end = 0xffff;
 	UINT8 *base = mz80GetBase(cpu & 0xf);
-	for (int n=REGION_CPU1; n<=REGION_CPU4; n++)
+	int n;
+	for (n=REGION_CPU1; n<=REGION_CPU4; n++)
 	    if (base == load_region[n]) {
 		*end = get_region_size(n)-1;
 		break;

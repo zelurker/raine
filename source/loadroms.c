@@ -639,8 +639,9 @@ static UINT32 load_gfx_region(UINT32 region)
    video = current_game->video;
    gfx_list = video->gfx_list;
    if (!gfx_list) return 1; // Correct, but nothing to load
+   int nb2;
    for (nb=1; gfx_list[nb].region; nb++) {
-       for (int nb2=0; nb2<nb; nb2++) {
+       for (nb2=0; nb2<nb; nb2++) {
 	   int region = gfx_list[nb].region;
 	   if (gfx_list[nb2].region == region) {
 	       int newr = gfx_list[nb].region+1;
