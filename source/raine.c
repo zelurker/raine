@@ -196,7 +196,7 @@ int main(int argc,char *argv[])
 #endif
     printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2015(!) " HANDLE);
 
-   printf("\r\n\r\n");
+   printf("\n\n");
 
 #ifdef RAINE_DEBUG
 
@@ -208,7 +208,7 @@ int main(int argc,char *argv[])
 #endif
 
  printf("[PRIVATE BETA VERSION]");
- printf("\r\n\r\n");
+ printf("\n\n");
 
 #endif // ifdef RAINE_DEBUG
 
