@@ -214,12 +214,14 @@ UINT32 run_game_emulation(void)
        // streaming out of a frame limit (it happens sometimes in linux !)
        print_debug("Init Sound...\n");
        if(GameSound){
-	   if(RaineSoundCard) {
+	   // if(RaineSoundCard) {
+	   // Call saInitSoundCard, and thus init_sound_emulators even if sound is disabled
+	   // this fixes the rare game drivers which can't work without sound, like acrobat mission
 	       saInitSoundCard( RaineSoundCard, audio_sample_rate );
 	       if (is_neocd())
 		   sa_unpause_sound();
 	       // restore_cdda();
-	   }
+	   // }
        }
        print_debug("Reset ingame timer...\n");
        reset_ingame_timer();
@@ -522,10 +524,10 @@ void reset_game_hardware(void)
    clear_ingame_message_list();
 
    // Must be restarted here in case we are called from a game hardware
-   if(GameSound && RaineSoundCard){
+   // if(GameSound && RaineSoundCard){
      init_sound_emulators();
      sa_unpause_sound();
-   }
+   // }
 
    start_cpu_main();
 
