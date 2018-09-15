@@ -30,7 +30,7 @@ char about8[64];
 char about9[64];
 
 #define WIDTH 300
-#define MAX_LEN 16000
+#define MAX_LEN 32000
 
 static int len;
 
@@ -386,9 +386,10 @@ int about_game_proc(int msg, DIALOG *d, int c)
 
       game_info = current_game;
 
-      if (history)
-	strcpy(text_data,history);
-      else
+      if (history) {
+	strncpy(text_data,history,MAX_LEN);
+	text_data[MAX_LEN-1] = 0;
+      } else
 	text_data[0] = 0;
       len = strlen(text_data);
 
