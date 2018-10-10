@@ -125,7 +125,7 @@ static DEF_INLINE UINT32 m680x0_get_word(UINT16 *a)
 
 static DEF_INLINE UINT32 m680x0_get_long(UINT32 *a)
 {
-#if 0 // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
+#ifdef NO_ASM // !defined(RAINE_DOS) && !defined(RAINE_UNIX)
    return (((UINT8 *) a)[0] << 24) | (((UINT8 *) a)[1] << 16) | (((UINT8 *) a)[2] << 8) | (((UINT8 *) a)[3] << 0);
 #else
    UINT32 retval;
