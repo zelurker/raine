@@ -640,7 +640,7 @@ static UINT32 load_gfx_region(UINT32 region)
    gfx_list = video->gfx_list;
    if (!gfx_list) return 1; // Correct, but nothing to load
    int nb2;
-   for (nb=1; gfx_list[nb].region; nb++) {
+   for (nb=1; gfx_list[nb].region > 0 && gfx_list[nb].region < REGION_MAX; nb++) {
        for (nb2=0; nb2<nb; nb2++) {
 	   int region = gfx_list[nb].region;
 	   if (gfx_list[nb2].region == region) {
