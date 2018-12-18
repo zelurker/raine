@@ -606,8 +606,10 @@ void reset_game_hardware(void)
      hs_open();
      hs_init();
 
-     hist_open("history.dat");
-     hist_open("command.dat");
+     hist_open("history.dat",current_game->main_name);
+     if (!history)
+	 hist_open("history.dat",parent_name());
+     hist_open("command.dat",current_game->main_name);
    }
 
    print_debug("reset_game_hardware(): OK\n");

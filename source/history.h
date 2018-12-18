@@ -14,7 +14,7 @@ extern menu_item_t *menu_commands;
 extern int nb_commands;
 extern char **commands_buff;
 
-void hist_open(char *name);
+void hist_open(char *name,const char *game);
 
 
 #ifdef __cplusplus
