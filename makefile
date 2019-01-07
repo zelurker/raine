@@ -1509,10 +1509,6 @@ endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
 	@cp -rfv locale/fr locale/es $(langdir)
-ifndef DARWIN
-	$(INSTALL_DATA) neoraine.desktop $(prefix)/share/applications
-endif
-	$(INSTALL_DATA) neoraine.png $(prefix)/share/pixmaps
 ifdef DARWIN
 	@echo creating package $(DESTDIR)
 	@cp Info.plist $(prefix)
