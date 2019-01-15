@@ -28,15 +28,19 @@ while (<F>) {
 			$_ .= "tnzsb,tnzs2,";
 		} elsif (/=bgaregga,/) {
 			$_ .= "battleg,";
+		} elsif (/=1944j,$/) {
+			$_ .= "1944";
 		}
 		/^\$info\=(.+)/;
 		my $list = $1;
 		my @list = split /\,/,$list;
 		$skip = 1;
-		foreach (@list) {
-			my $game = $_;
-			if (grep { $game eq $_} @games) {
-				$skip = 0;
+		if (!/=1944,/) {
+			foreach (@list) {
+				my $game = $_;
+				if (grep { $game eq $_} @games) {
+					$skip = 0;
+				}
 			}
 		}
 	} elsif (/^\$(.+?)\=/) { # toutes les consoles etc de ness sont arrivées là-dedans !
