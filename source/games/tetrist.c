@@ -11,14 +11,14 @@
 #include "taitosnd.h"
 #include "blit.h"
 #include "bsystem.h"
-
+#include "speed_hack.h"
 
 static struct ROM_INFO rom_tetrist[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
-              "c12-03.bin",  0x38f1ed41,   "c12-02.bin",  0xed9530bc),
-  LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
-              "c12-05.bin",  0x128e9927,   "c12-04.bin",  0x5da7a319),
+  { "c12-03.50", 0x020000, 0x38f1ed41, REGION_CPU1, 0x000000, LOAD_8_16 },
+  { "c12-02.31", 0x020000, 0xed9530bc, REGION_CPU1, 0x000001, LOAD_8_16 },
+  { "c12-05.49", 0x020000, 0x128e9927, REGION_CPU1, 0x040000, LOAD_8_16 },
+  { "c12-04.30", 0x020000, 0x5da7a319, REGION_CPU1, 0x040001, LOAD_8_16 },
   { "c12-06.bin", 0x10000, 0xf2814b38, REGION_ROM2, 0, LOAD_NORMAL },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -78,14 +78,23 @@ static struct DSW_DATA dsw_data_taito_sega_tetris_0[] =
    { NULL,                    0,   },
 };
 
+extern struct DSW_DATA dsw_data_taitob_diff[];
+
 static struct DSW_INFO dsw_tetrist[] =
 {
    { 0x058000, 0xFF, dsw_data_taito_sega_tetris_0 },
-   { 0x058002, 0xFF, dsw_data_default_1 },
+   { 0x058002, 0xFF, dsw_data_taitob_diff },
    { 0,        0,    NULL,      },
 };
 
 static UINT8 *RAM_INPUT;
+
+static void write_pal_w(UINT32 offset, UINT16 data) {
+    offset -= 0xa00000;
+    int bank = offset/32;
+    bank_status[bank] = 0;
+    WriteWord(RAM+0x11000+offset,data);
+}
 
 static void load_tetrist(void)
 {
@@ -110,11 +119,6 @@ static void load_tetrist(void)
 
    RAM_INPUT = RAM+0x58000;
 
-   WriteLong68k(&ROM[0x072E],0x13FC0000);	// move.b #$00,$AA0000
-   WriteLong68k(&ROM[0x0732],0x00AA0000);	// Speed Hack
-   WriteWord68k(&ROM[0x0736],0x6100-10);	// <Loop>
-
-
    // Init tc0220ioc emulation
    // ------------------------
 
@@ -129,54 +133,30 @@ static void load_tetrist(void)
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
    InitPaletteMap(RAM+0x11000, 0x100, 0x10, 0x1000);
    ByteSwap(ROM,0x80000);
+   apply_rom_hack(ROM,0x72e,4);
 
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);	// 68000 ROM
-   AddMemFetch(-1, -1, NULL);
+   add_68000_rom(0,0x000000, 0x07FFFF, ROM+0x000000-0x000000);	// 68000 ROM
 
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadByte(0x800000, 0x807FFF, NULL, RAM+0x000000);			// 68000 RAM
-   AddReadByte(0x400000, 0x408FFF, NULL, RAM+0x008000);			// ??? RAM
-   AddReadByte(0x410000, 0x413FFF, NULL, RAM+0x013000);			// ??? RAM
-   AddReadByte(0xA00000, 0xA01FFF, NULL, RAM+0x011000);			// COLOR RAM
-   AddReadByte(0x440000, 0x47FFFF, NULL, RAM+0x018000);			// PIXEL RAM
+   add_68000_ram(0,0x800000, 0x807FFF, RAM+0x000000);			// 68000 RAM
+   add_68000_ram(0,0x400000, 0x408FFF, RAM+0x008000);			// ??? RAM
+   add_68000_ram(0,0x410000, 0x413FFF, RAM+0x013000);			// ??? RAM
+   add_68000_rom(0,0xA00000, 0xA01FFF, RAM+0x011000);			// COLOR RAM
+   add_68000_ram(0,0x440000, 0x47FFFF, RAM+0x018000);			// PIXEL RAM
    AddReadByte(0x600000, 0x60000F, tc0220ioc_rb, NULL);			// INPUT
    AddReadByte(0x200000, 0x200003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadWord(0x800000, 0x807FFF, NULL, RAM+0x000000);			// 68000 RAM
-   AddReadWord(0x400000, 0x408FFF, NULL, RAM+0x008000);			// ??? RAM
-   AddReadWord(0x410000, 0x413FFF, NULL, RAM+0x013000);			// SCREEN RAM
-   AddReadWord(0xA00000, 0xA01FFF, NULL, RAM+0x011000);			// COLOR RAM
-   AddReadWord(0x440000, 0x47FFFF, NULL, RAM+0x018000);			// PIXEL RAM
    AddReadWord(0x600000, 0x60000F, tc0220ioc_rw, NULL);			// INPUT
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x800000, 0x807FFF, NULL, RAM+0x000000);		// 68000 RAM
-   AddWriteByte(0x440000, 0x47FFFF, NULL, RAM+0x018000);		// PIXEL RAM
-   AddWriteByte(0x400000, 0x408FFF, NULL, RAM+0x008000);		// ??? RAM
-   AddWriteByte(0x410000, 0x413FFF, NULL, RAM+0x013000);		// SCREEN RAM
-   AddWriteByte(0xA00000, 0xA01FFF, NULL, RAM+0x011000);		// COLOR RAM
    AddWriteByte(0x418000, 0x41801F, NULL, RAM+0x058100);		// SCROLL RAM
    AddWriteByte(0x200000, 0x200003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0x600000, 0x60000F, tc0220ioc_wb, NULL);		// INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x800000, 0x807FFF, NULL, RAM+0x000000);		// 68000 RAM
-   AddWriteWord(0x440000, 0x47FFFF, NULL, RAM+0x018000);		// PIXEL RAM
-   AddWriteWord(0x400000, 0x408FFF, NULL, RAM+0x008000);		// ??? RAM
-   AddWriteWord(0x410000, 0x413FFF, NULL, RAM+0x013000);		// ??? RAM
-   AddWriteWord(0xA00000, 0xA01FFF, NULL, RAM+0x011000);		// COLOR RAM
+   AddWriteWord(0xA00000, 0xA01FFF, write_pal_w, NULL);		// COLOR RAM
    AddWriteWord(0x418000, 0x41801F, NULL, RAM+0x058100);		// SCROLL RAM
    AddWriteWord(0x600000, 0x60000F, tc0220ioc_ww, NULL);		// INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 static void execute_tetrist(void)
@@ -190,7 +170,6 @@ static void execute_tetrist(void)
 
 static void DrawTaitoTetris(void)
 {
-    ClearPaletteMap();
     draw_taitob_fb(0x1a000,0x40,RAM[0x05810F],0,0,1);
 
 }

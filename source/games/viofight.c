@@ -46,7 +46,7 @@ static struct DSW_DATA dsw_data_violence_fight_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_DATA dsw_data_violence_fight_1[] =
+struct DSW_DATA dsw_data_taitob_diff[] =
 {
    { MSG_DIFFICULTY,          0x03, 0x04 },
    { MSG_NORMAL,              0x03},
@@ -60,7 +60,7 @@ static struct DSW_DATA dsw_data_violence_fight_1[] =
 static struct DSW_INFO dsw_viofight[] =
 {
    { 0x000000, 0xFF, dsw_data_violence_fight_0 },
-   { 0x000002, 0xFF, dsw_data_violence_fight_1 },
+   { 0x000002, 0xFF, dsw_data_taitob_diff },
    { 0,        0,    NULL,      },
 };
 

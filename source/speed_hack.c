@@ -47,6 +47,10 @@ void apply_rom_hack(UINT8 *ROM, UINT32 pc, int kind) {
   } else if (kind == 3) {
     // qsound (slammast)
     pWriteWord(&ROM[pc+6],0x6008);
+  } else if (kind == 4) {
+      // tetrist
+    pWriteWord(&ROM[pc+6],0x4e71);
+    pWriteWord(&ROM[pc+8],0x6100-10);
   } else if (kind == 10) {
     // cps2 beq long
     pWriteWord(&ROM[pc+6],0x4e71);
