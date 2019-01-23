@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use v5.10;
+use lib ".";
 use source::bonus::genres;
 use strict;
 
