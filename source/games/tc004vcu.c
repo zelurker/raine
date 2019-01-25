@@ -7,6 +7,7 @@
 #include "gameinc.h"
 #include "tc004vcu.h"
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
+#include "blit.h"
 
 /*
 
@@ -139,6 +140,14 @@ static UINT8 zoom_table[0x80+1]=
    0x76,0x76,0x77,0x78,0x78,0x79,0x79,0x7A,0x7B,0x7B,0x7C,0x7D,0x7D,0x7E,0x7E,0x7F,0x80
 };
 
+static int layer[4];
+
+enum {
+    BG0 = 0,
+    BG1,
+    SPR,
+    FG0 };
+
 void tc0004vcu_init(void)
 {
    int ta,tb=0x00;
@@ -171,6 +180,10 @@ void tc0004vcu_init(void)
 
    init_16x16_zoom_32();
    zoom16_ofs = make_16x16_zoom_ofs_type2();
+   layer[BG0] = add_layer_info("BG0");
+   layer[BG1] = add_layer_info("BG1");
+   layer[SPR] = add_layer_info("SPR");
+   layer[FG0] = add_layer_info("FG0");
 }
 
 void tc0004vcu_gfx_fg0_a_wb(UINT32 addr, UINT8 data)
@@ -328,6 +341,11 @@ void tc0004vcu_render_bg0(void)
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
+   if(! check_layer_enabled(layer[BG0])) {
+       clear_game_screen(0);
+       return;
+   }
+
    RAM_BG    = tc0004vcu.RAM + 0x0C000;
    RAM_BG_B  = tc0004vcu.RAM + 0x1C000;
    RAM_SCR   = tc0004vcu.RAM + 0x20802;
@@ -340,12 +358,14 @@ void tc0004vcu_render_bg0(void)
    bmp_h = tc0004vcu.bmp_h;
    scr_x = tc0004vcu.scr_x;
    scr_y = tc0004vcu.scr_y;
+   int zy = RAM_SCR[10];
 
       MAKE_SCROLL_1024x1024_2_16(
-         scr_x-(ReadWord(RAM_SCR+0)),
-         scr_y+(ReadWord(RAM_SCR+4))
+         scr_x-(ReadWord(RAM_SCR+0)&0x3ff),
+         scr_y+(ReadWord(RAM_SCR+4)&0x3ff)+48
       );
 
+   if (zy == 0x7f) {
       START_SCROLL_1024x1024_2_16(bmp_x,bmp_y,bmp_w,bmp_h);
 
          MAP_PALETTE_MAPPED_NEW(
@@ -362,6 +382,39 @@ void tc0004vcu_render_bg0(void)
       }
 
       END_SCROLL_1024x1024_2_16();
+   } else {
+       zz=zzzz;
+       int ny,ty,lzy;
+       zy++;
+       /* zy default value is 7f, for a default size of 16.
+	* So that's about 8 times the size...
+	* so we'll compute the size of the sprites on 8 lines for zy
+	* to get something as precise as possible... */
+       for(y=(bmp_y-y16),ny=1,ty=0;(UINT32)y<(bmp_h+bmp_y);y+=lzy){
+	   lzy = zy*ny/8-ty;
+	   ny++;
+	   if (ny == 9) {
+	       ny = 1;
+	       ty = 0;
+	   } else
+	       ty += lzy;
+	   for(x=(bmp_x-x16);(UINT32)x<(bmp_w+bmp_x);x+=16){
+
+	       MAP_PALETTE_MAPPED_NEW(
+		       RAM_BG_B[zz]&0x3F,
+		       16,
+		       map
+		       );
+
+	       switch(RAM_BG_B[zz]&0xC0){
+	       case 0x00: Draw16x16_32_Mapped_ZoomXY_Rot(&RAM_GFX[(ReadWord(&RAM_BG[zz])&tile_mask)<<8],x,y,map,16,lzy);        break;
+	       case 0x40: Draw16x16_32_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[(ReadWord(&RAM_BG[zz])&tile_mask)<<8],x,y,map,16,lzy);  break;
+	       case 0x80: Draw16x16_32_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[(ReadWord(&RAM_BG[zz])&tile_mask)<<8],x,y,map,16,lzy);  break;
+	       case 0xC0: Draw16x16_32_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[(ReadWord(&RAM_BG[zz])&tile_mask)<<8],x,y,map,16,lzy); break;
+	       }
+
+       END_SCROLL_1024x1024_2_16();
+    }
 }
 
 void tc0004vcu_render_bg1(void)
@@ -378,6 +431,9 @@ void tc0004vcu_render_bg1(void)
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
+  if(! check_layer_enabled(layer[BG1]))
+    return;
+
    RAM_BG    = tc0004vcu.RAM + 0x0E000;
    RAM_BG_B  = tc0004vcu.RAM + 0x1E000;
    RAM_SCR   = tc0004vcu.RAM + 0x20804;
@@ -391,43 +447,92 @@ void tc0004vcu_render_bg1(void)
    bmp_h = tc0004vcu.bmp_h;
    scr_x = tc0004vcu.scr_x;
    scr_y = tc0004vcu.scr_y;
+   int zy = RAM_SCR[10];
 
-      MAKE_SCROLL_1024x1024_2_16(
-         scr_x-(ReadWord(RAM_SCR+0)),
-         scr_y+(ReadWord(RAM_SCR+4))
-      );
+   MAKE_SCROLL_1024x1024_2_16(
+	   scr_x-(ReadWord(RAM_SCR+0)),
+	   scr_y+(ReadWord(RAM_SCR+4))+48
+	   );
 
-      START_SCROLL_1024x1024_2_16(bmp_x,bmp_y,bmp_w,bmp_h);
+   if (zy == 0x7f) {
+       START_SCROLL_1024x1024_2_16(bmp_x,bmp_y,bmp_w,bmp_h);
 
-      ta=ReadWord(&RAM_BG[zz])&tile_mask;
-      if(RAM_MSK[ta]!=0){			// No pixels; skip
+       ta=ReadWord(&RAM_BG[zz])&tile_mask;
+       if(RAM_MSK[ta]!=0){			// No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            RAM_BG_B[zz]&0x3F,
-            16,
-            map
-         );
+	   MAP_PALETTE_MAPPED_NEW(
+		   RAM_BG_B[zz]&0x3F,
+		   16,
+		   map
+		   );
 
-         if(RAM_MSK[ta]==1){			// Some pixels; trans
-            switch(RAM_BG_B[zz]&0xC0){
-               case 0x00: Draw16x16_Trans_Mapped_Rot(&RAM_GFX[ta<<8],x,y,map);        break;
-               case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
-               case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
-               case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map); break;
-            }
-         }
-         else{					// all pixels; solid
-            switch(RAM_BG_B[zz]&0xC0){
-               case 0x00: Draw16x16_Mapped_Rot(&RAM_GFX[ta<<8],x,y,map);        break;
-               case 0x40: Draw16x16_Mapped_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
-               case 0x80: Draw16x16_Mapped_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
-               case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map); break;
-            }
-         }
+	   if(RAM_MSK[ta]==1){			// Some pixels; trans
+	       switch(RAM_BG_B[zz]&0xC0){
+	       case 0x00: Draw16x16_Trans_Mapped_Rot(&RAM_GFX[ta<<8],x,y,map);        break;
+	       case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
+	       case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
+	       case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map); break;
+	       }
+	   }
+	   else{					// all pixels; solid
+	       switch(RAM_BG_B[zz]&0xC0){
+	       case 0x00: Draw16x16_Mapped_Rot(&RAM_GFX[ta<<8],x,y,map);        break;
+	       case 0x40: Draw16x16_Mapped_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
+	       case 0x80: Draw16x16_Mapped_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map);  break;
+	       case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map); break;
+	       }
+	   }
 
-      }
+       }
 
-      END_SCROLL_1024x1024_2_16();
+       END_SCROLL_1024x1024_2_16();
+   } else {
+       zz=zzzz;
+       int ny,ty,lzy;
+       zy++;
+       /* zy default value is 7f, for a default size of 16.
+	* So that's about 8 times the size...
+	* so we'll compute the size of the sprites on 8 lines for zy
+	* to get something as precise as possible... */
+       for(y=(bmp_y-y16),ny=1,ty=0;(UINT32)y<(bmp_h+bmp_y);y+=lzy){
+	   lzy = zy*ny/8-ty;
+	   ny++;
+	   if (ny == 9) {
+	       ny = 1;
+	       ty = 0;
+	   } else
+	       ty += lzy;
+	   for(x=(bmp_x-x16);(UINT32)x<(bmp_w+bmp_x);x+=16){
+	       ta=ReadWord(&RAM_BG[zz])&tile_mask;
+	       if(RAM_MSK[ta]!=0){			// No pixels; skip
+
+		   MAP_PALETTE_MAPPED_NEW(
+			   RAM_BG_B[zz]&0x3F,
+			   16,
+			   map
+			   );
+
+		   if(RAM_MSK[ta]==1){			// Some pixels; trans
+		       switch(RAM_BG_B[zz]&0xC0){
+		       case 0x00: Draw16x16_32_Trans_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy);        break;
+		       case 0x40: Draw16x16_32_Trans_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy);  break;
+		       case 0x80: Draw16x16_32_Trans_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy);  break;
+		       case 0xC0: Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy); break;
+		       }
+		   }
+		   else{					// all pixels; solid
+		       switch(RAM_BG_B[zz]&0xC0){
+		       case 0x00: Draw16x16_32_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy);        break;
+		       case 0x40: Draw16x16_32_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy);  break;
+		       case 0x80: Draw16x16_32_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy);  break;
+		       case 0xC0: Draw16x16_32_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,16,lzy); break;
+		       }
+		   }
+
+	       }
+
+       END_SCROLL_1024x1024_2_16();
+   }
 }
 
 void tc0004vcu_render_fg0(void)
@@ -440,6 +545,8 @@ void tc0004vcu_render_fg0(void)
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
    UINT32 scr_x,scr_y;
 
+   if(! check_layer_enabled(layer[FG0]))
+       return;
    RAM_BG    = tc0004vcu.RAM + 0x01000;
    GFX_BG    = tc0004vcu.GFX_FG0;
 
@@ -504,6 +611,8 @@ void tc0004vcu_render_obj(void)
    int sx_1,sy_1,sx_2,sy_2;
    int ofs_x,ofs_y;
 
+   if(! check_layer_enabled(layer[SPR]))
+       return;
    RAM_BG    = tc0004vcu.RAM + 0x20400;
    RAM_GFX   = tc0004vcu.GFX_BG0;
    RAM_MSK   = tc0004vcu.GFX_BG0_MSK;
@@ -521,65 +630,65 @@ void tc0004vcu_render_obj(void)
    zz = 0x03F0;
    do{
 
-      if(ReadWord(&RAM_BG[zz+4])!=0x0000){
+       if(ReadWord(&RAM_BG[zz+4])!=0x0000){
 
-   x_store    = (ofs_x+ReadWord(&RAM_BG[zz+2]))&OBJ_X_MASK;
-   y          = (ofs_y+ReadWord(&RAM_BG[zz+0]))&OBJ_Y_MASK;
+	   x_store    = ofs_x+(ReadWord(&RAM_BG[zz+2])&OBJ_X_MASK);
+	   y          = ofs_y+(ReadWord(&RAM_BG[zz+0])&OBJ_Y_MASK)-48;
 
-   td         = ((ReadWord(&RAM_BG[zz+6])&0x1FFF)<<3);
+	   td         = ((ReadWord(&RAM_BG[zz+6])&0x1FFF)<<3);
 
-   zdx_store  = zoom16_ofs+(zoom_conv_x[(RAM_BG[zz+5]&0x7F)]<<2);
-   //zoom_dat_y = zoom16_ofs+(zoom_conv_y[(RAM_BG[zz+4]&0x7F)]<<2);
-   zoom_dat_y = zoom16_ofs+(zoom_conv_x[(RAM_BG[zz+5]&0x7F)]<<2);
+	   zdx_store  = zoom16_ofs+(zoom_conv_x[(RAM_BG[zz+5]&0x7F)]<<2);
+	   //zoom_dat_y = zoom16_ofs+(zoom_conv_y[(RAM_BG[zz+4]&0x7F)]<<2);
+	   zoom_dat_y = zoom16_ofs+(zoom_conv_x[(RAM_BG[zz+5]&0x7F)]<<2);
 
-   ry         = chain_y_size[(ReadWord(&RAM_BG[zz])>>10)&0x03];
+	   ry         = chain_y_size[(ReadWord(&RAM_BG[zz])>>10)&0x03];
 
-   do{
-   x          = x_store;
-   rx         = 4;
-   zoom_dat_x = zdx_store;
-   zy         = *zoom_dat_y++;
-   do{
-      zx = *zoom_dat_x++;
-      if(((x+zx) > sx_1) && (x < sx_2)){
-      if(((y+zy) > sy_1) && (y < sy_2)){
+	   do{
+	       x          = x_store;
+	       rx         = 4;
+	       zoom_dat_x = zdx_store;
+	       zy         = *zoom_dat_y++;
+	       do{
+		   zx = *zoom_dat_x++;
+		   if(((x+zx) > sx_1) && (x < sx_2)){
+		       if(((y+zy) > sy_1) && (y < sy_2)){
 
-      ta=ReadWord(&RAM_CH[td])&tile_mask;
-      if(RAM_MSK[ta]!=0){			// No pixels; skip
+			   ta=ReadWord(&RAM_CH[td])&tile_mask;
+			   if(RAM_MSK[ta]!=0){			// No pixels; skip
 
-      MAP_PALETTE_MAPPED_NEW(
-         RAM_CH_B[td]&0x3F,
-         16,
-         map
-      );
+			       MAP_PALETTE_MAPPED_NEW(
+				       RAM_CH_B[td]&0x3F,
+				       16,
+				       map
+				       );
 
-         if(RAM_MSK[ta]==1){			// Some pixels; trans
-            switch(RAM_CH_B[td]&0xC0){
-               case 0x00: Draw16x16_32_Trans_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
-               case 0x40: Draw16x16_32_Trans_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0x80: Draw16x16_32_Trans_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0xC0: Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
-            }
-         }
-         else{					// all pixels; solid
-            switch(RAM_CH_B[td]&0xC0){
-               case 0x00: Draw16x16_32_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
-               case 0x40: Draw16x16_32_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0x80: Draw16x16_32_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
-               case 0xC0: Draw16x16_32_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
-            }
-         }
+			       if(RAM_MSK[ta]==1){			// Some pixels; trans
+				   switch(RAM_CH_B[td]&0xC0){
+				   case 0x00: Draw16x16_32_Trans_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
+				   case 0x40: Draw16x16_32_Trans_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+				   case 0x80: Draw16x16_32_Trans_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+				   case 0xC0: Draw16x16_32_Trans_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
+				   }
+			       }
+			       else{					// all pixels; solid
+				   switch(RAM_CH_B[td]&0xC0){
+				   case 0x00: Draw16x16_32_Mapped_ZoomXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);        break;
+				   case 0x40: Draw16x16_32_Mapped_ZoomXY_FlipY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+				   case 0x80: Draw16x16_32_Mapped_ZoomXY_FlipX_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy);  break;
+				   case 0xC0: Draw16x16_32_Mapped_ZoomXY_FlipXY_Rot(&RAM_GFX[ta<<8],x,y,map,zx,zy); break;
+				   }
+			       }
 
-      }
-      }
-      }
-      x = (x+zx)&OBJ_X_MASK;
-      td += 2;
-   }while(--rx);
-   y = (y+zy)&OBJ_Y_MASK;
-   }while(--ry);
+			   }
+		       }
+		   }
+		   x = (x+zx)&OBJ_X_MASK;
+		   td += 2;
+	       }while(--rx);
+	       y = (y+zy)&OBJ_Y_MASK;
+	   }while(--ry);
 
-   }
+       }
 
    }while((zz-=8)>=0);
 

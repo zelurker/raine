@@ -86,18 +86,10 @@ static struct INPUT_INFO input_syvalion[] =
 
 static struct DSW_DATA dsw_data_syvalion_0[] =
 {
-   { MSG_DSWA_BIT1,           0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
-   { MSG_DSWA_BIT2,           0x02, 0x02 },
-   { MSG_OFF,                 0x02},
-   { MSG_ON,                  0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
+    DSW_CABINET( 0, 1 ),
+    DSW_SCREEN( 2, 0 ),
+    DSW_TEST_MODE(0, 4),
+    DSW_DEMO_SOUND(8, 0),
    { MSG_DSWA_BIT5,           0x10, 0x02 },
    { MSG_OFF,                 0x10},
    { MSG_ON,                  0x00},
@@ -120,10 +112,25 @@ static struct DSW_INFO dsw_syvalion[] =
    { 0,        0,    NULL,      },
 };
 
+/* Stephh notes about the region :
+
+  - Region stored at 0x07fffe.w
+  - Sets :
+      * 'syvalion' : region = 0x0000
+  - Coinage relies on the region (code at 0x003640) :
+      * 0x0000 (Japan), 0x0001 (US), 0x0003 (US, Romstar license) and
+        0x0004 (licensed to PHOENIX ELECTRONICS CO.) use TAITO_COINAGE_JAPAN_OLD
+      * 0x0002 (World) uses TAITO_COINAGE_WORLD
+  - Notice screen only if region = 0x0000
+  - Text is always in Japanese regardless of the region !
+  - DSW bit 6 has an unknown effect because of a write to unmapped 0x430000.w
+    (see code at 0x002af8). Another write to this address is done at 0x002a96.
+    */
+
 static struct ROMSW_DATA romsw_data_syvalion_0[] =
 {
    { "Japan with copyright screen",                 0x00 },
-   { "Japan without copyright screen",           0x02 },
+   { "Japan, no copyright screen",           0x02 },
    { NULL,                    0    },
 };
 
@@ -135,11 +142,8 @@ static struct ROMSW_INFO romsw_syvalion[] =
 
 
 
-static UINT8 *RAM_VIDEO;
 static UINT8 *RAM_COLOUR;
 static UINT8 *RAM_INPUT;
-
-static UINT8 *GFX_FG0;
 
 static void load_syvalion(void)
 {
@@ -151,8 +155,6 @@ static void load_syvalion(void)
 
    memset(RAM+0x00000,0x00,0x40000);
 
-   GFX_FG0   = RAM+0x40000;
-   RAM_VIDEO = RAM+0x10000;
    RAM_COLOUR= RAM+0x31000+0x800;
    RAM_INPUT = RAM+0x32000;
 
@@ -169,13 +171,13 @@ static void load_syvalion(void)
    // Init tc0004vcu emulation
    // ------------------------
 
-   tc0004vcu.RAM	= RAM_VIDEO;
-   tc0004vcu.GFX_FG0	= GFX_FG0;
+   tc0004vcu.RAM	= RAM+0x10000;
+   tc0004vcu.GFX_FG0	= RAM+0x40000;
    tc0004vcu.tile_mask	= 0x3FFF;
    tc0004vcu.bmp_x	= 64;
    tc0004vcu.bmp_y	= 64;
    tc0004vcu.bmp_w	= 512;
-   tc0004vcu.bmp_h	= 416;
+   tc0004vcu.bmp_h	= 400;
    tc0004vcu.scr_x	= 0;
    tc0004vcu.scr_y	= 0;
 
@@ -296,7 +298,7 @@ static struct VIDEO_INFO video_syvalion =
 {
    DrawSyvalion,
    512,
-   416,
+   400,
    64,
    VIDEO_ROTATE_NORMAL,
    syvalion_gfx
