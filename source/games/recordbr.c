@@ -367,8 +367,6 @@ static void DrawRecordBr(void)
    // Init tc0180vcu emulation
    // ------------------------
 
-   tc0004vcu_layer_count = 0;
-
    // BG0
    // ---
 

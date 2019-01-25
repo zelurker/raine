@@ -381,8 +381,6 @@ static void draw_air_inferno(void)
    // Init tc0180vcu emulation
    // ------------------------
 
-   tc0004vcu_layer_count = 0;
-
    // BG0
    // ---
 

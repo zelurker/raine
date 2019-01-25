@@ -10,8 +10,6 @@ extern "C" {
 
 #include "deftypes.h"
 
-int tc0004vcu_layer_count;			// Init this to 0 each screen update.
-
 typedef struct TC0004VCU			// Information about 1 chip
 {
    UINT8 *RAM;					// Chip RAM address
