@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+# Generates the prototypes for newspr.c from lscroll.c
+# Usage : grep void lscroll.c|perl filter.pl
+
 while (<>) {
   s/ \\$//;
   s/[ \t]+$//;
