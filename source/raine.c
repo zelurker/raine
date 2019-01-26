@@ -116,7 +116,7 @@ void init_lang() {
 #else
     SDL_putenv(buf);
 #endif
-    setlocale(LC_ALL & ~LC_NUMERIC,"");
+    setlocale(LC_ALL & ~LC_NUMERIC & ~LC_MONETARY,"");
 #endif
 }
 
