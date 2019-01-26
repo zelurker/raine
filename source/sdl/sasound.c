@@ -181,7 +181,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        spec.channels = 2;
        int len = sample_rate/fps;
        spec.samples = (len); // should be pow2, but doesn't change anything!
-       printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
+       // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
        /* Notice : creative labs semms to make sound drivers which do not respect specs
 	  in windows, since they are unable to handle small buffers for the updates.
 	  For their drivers, spec.samples should be :
@@ -211,7 +211,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 	   RaineSoundCard = 0;
 	   return 1;
        }
-       printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
+       // printf("openaudio: desired samples %d, got %d\n",spec.samples,gotspec.samples);
        opened_audio = 1;
 #if HAS_NEO
        if (!sound_init)
