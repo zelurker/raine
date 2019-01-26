@@ -2899,13 +2899,13 @@ static void execute_tnzsb(void)
 
    //print_ingame(60,gettext("%04x:%04x"),ReadWord68k(&RAM[0xF300]),ReadWord68k(&RAM[0xF302]));
 
-   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60));	// Main Z80 8MHz (60fps)
+   cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// Main Z80 8MHz (60fps)
    // if(romset==8) cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(8,60));	// must fix mz80!!!
    print_debug("Z80PC_MAIN:%04x\n",z80pc);
 
    cpu_interrupt(CPU_Z80_1, 0x38);
 
-   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(6,60));	// Sub Z80 8MHz (60fps)
+   cpu_execute_cycles(CPU_Z80_2, CPU_FRAME_MHz(8,60));	// Sub Z80 8MHz (60fps)
    print_debug("Z80PC_SUB:%04x\n",z80pc);
    cpu_interrupt(CPU_Z80_2, 0x38);
 
