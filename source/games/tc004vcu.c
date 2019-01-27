@@ -362,7 +362,7 @@ void tc0004vcu_render_bg0(void)
 
       MAKE_SCROLL_1024x1024_2_16(
          scr_x-(ReadWord(RAM_SCR+0)&0x3ff),
-         scr_y+(ReadWord(RAM_SCR+4)&0x3ff)+48
+         scr_y+(ReadWord(RAM_SCR+4)&0x3ff)
       );
 
    if (zy == 0x7f) {
@@ -451,7 +451,7 @@ void tc0004vcu_render_bg1(void)
 
    MAKE_SCROLL_1024x1024_2_16(
 	   scr_x-(ReadWord(RAM_SCR+0)),
-	   scr_y+(ReadWord(RAM_SCR+4))+48
+	   scr_y+(ReadWord(RAM_SCR+4))
 	   );
 
    if (zy == 0x7f) {
@@ -543,7 +543,7 @@ void tc0004vcu_render_fg0(void)
    UINT8 *RAM_BG;
    UINT8 *GFX_BG;
    UINT32 bmp_x,bmp_y,bmp_w,bmp_h;
-   UINT32 scr_x,scr_y;
+   // UINT32 scr_x,scr_y;
 
    if(! check_layer_enabled(layer[FG0]))
        return;
@@ -554,14 +554,16 @@ void tc0004vcu_render_fg0(void)
    bmp_y = tc0004vcu.bmp_y;
    bmp_w = tc0004vcu.bmp_w;
    bmp_h = tc0004vcu.bmp_h;
-   scr_x = tc0004vcu.scr_x;
-   scr_y = tc0004vcu.scr_y;
+   /* fg0 has no scrolling, it's supposed to always be entierly displayed !
+    * Well, maybe not exactly entierly, but still... ! */
+//   scr_x = tc0004vcu.scr_x;
+//   scr_y = tc0004vcu.scr_y;
 
    tx = 64-(bmp_w>>3);
 
       MAKE_SCROLL_512x512_1_8_no16(
-         scr_x, //-(ReadWord(RAM_SCR+0)),
-         scr_y  //+(ReadWord(RAM_SCR+4))
+         0,0 //scr_x, //-(ReadWord(RAM_SCR+0)),
+         // scr_y  //+(ReadWord(RAM_SCR+4))
       );
 
       zz=zzzz;
@@ -633,7 +635,7 @@ void tc0004vcu_render_obj(void)
        if(ReadWord(&RAM_BG[zz+4])!=0x0000){
 
 	   x_store    = ofs_x+(ReadWord(&RAM_BG[zz+2])&OBJ_X_MASK);
-	   y          = ofs_y+(ReadWord(&RAM_BG[zz+0])&OBJ_Y_MASK)-48;
+	   y          = ofs_y+(ReadWord(&RAM_BG[zz+0])&OBJ_Y_MASK);
 
 	   td         = ((ReadWord(&RAM_BG[zz+6])&0x1FFF)<<3);
 

@@ -41,6 +41,25 @@ static struct ROM_INFO rom_syvalion[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_tetristh[] =
+{
+  { "c26-12-1.ic36", 0x20000, 0x77e80c82, REGION_CPU1, 0x00000, LOAD_8_16 },
+  { "c26-11-1.ic18", 0x20000, 0x069d77d2, REGION_CPU1, 0x00001, LOAD_8_16 },
+  { "c26-13.ic56", 0x10000, 0xefa89dfa, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  { "c26-04.ic51", 0x20000, 0x23ddf00f, REGION_GFX1, 0x000000, LOAD_8_16 },
+  { "c26-08.ic65", 0x20000, 0x86071824, REGION_GFX1, 0x000001, LOAD_8_16 },
+  { "c26-03.ic50", 0x20000, 0x341be9ac, REGION_GFX1, 0x100000, LOAD_8_16 },
+  { "c26-07.ic64", 0x20000, 0xc236311f, REGION_GFX1, 0x100001, LOAD_8_16 },
+  { "c26-02.ic49", 0x20000, 0x0b0bc88f, REGION_GFX1, 0x200000, LOAD_8_16 },
+  { "c26-06.ic63", 0x20000, 0xdeae0394, REGION_GFX1, 0x200001, LOAD_8_16 },
+  { "c26-01.ic48", 0x20000, 0x7efc7311, REGION_GFX1, 0x300000, LOAD_8_16 },
+  { "c26-05.ic62", 0x20000, 0x12718d97, REGION_GFX1, 0x300001, LOAD_8_16 },
+  { "b56-09.bin", 0x80000, 0x7fd9ee68, REGION_SMP2, 0x00000, LOAD_NORMAL },
+  { "b56-10.bin", 0x80000, 0xde1bce59, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  // { "b56-18.bin", 0x02000, 0xc88f0bbe, REGION_USER1, 0x00000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
 static gfx_layout tilelayout =
 {
 	16,16,  /* 16x16 pixels */
@@ -162,12 +181,6 @@ static void load_syvalion(void)
 
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
 
-   // 68000 Speed Hack
-   // ----------------
-
-   ByteSwap(ROM,0x80000);
-   apply_rom_hack(ROM,0x72a,4);
-
    // Init tc0004vcu emulation
    // ------------------------
 
@@ -179,7 +192,7 @@ static void load_syvalion(void)
    tc0004vcu.bmp_w	= 512;
    tc0004vcu.bmp_h	= 400;
    tc0004vcu.scr_x	= 0;
-   tc0004vcu.scr_y	= 0;
+   tc0004vcu.scr_y	= 48;
 
    tc0004vcu_init();
 
@@ -194,40 +207,47 @@ static void load_syvalion(void)
  *  StarScream Stuff follows
  */
 
-   add_68000_rom(0,0x000000, 0x07FFFF, ROM+0x000000-0x000000);	// 68000 ROM
+
+   Add68000Code(0,0,REGION_ROM1);
+   // apply_rom_hack(ROM,0x72a,4);
 
    add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);			// 68000 RAM
    AddReadBW(0x400000, 0x420FFF, NULL, RAM+0x010000);			// SCREEN RAM
    add_68000_ram(0,0x500000, 0x500FFF, RAM+0x031000);			// COLOR RAM
-   AddReadByte(0x200000, 0x200003, tc0220ioc_rb_port, NULL);		// INPUT
-   AddReadByte(0x300000, 0x300003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
+   if (is_current_game("syvalion")) {
+       GameMouse=1;
+       AddReadByte(0x200000, 0x200003, tc0220ioc_rb_port, NULL);		// INPUT
+       AddReadWord(0x200000, 0x200003, tc0220ioc_rw_port, NULL);		// INPUT
+       AddWriteByte(0x200000, 0x200003, tc0220ioc_wb_port, NULL);		// INPUT
+       AddWriteWord(0x200000, 0x200003, tc0220ioc_ww_port, NULL);		// INPUT
+       AddReadByte(0x300000, 0x300003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
+       AddWriteByte(0x300000, 0x300003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
+   } else {
+       AddReadByte(0x200000, 0x200003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
+       AddWriteByte(0x200000, 0x200003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
+       AddReadByte(0x300000, 0x300003, tc0220ioc_rb_port, NULL);		// INPUT
+       AddReadWord(0x300000, 0x300003, tc0220ioc_rw_port, NULL);		// INPUT
+       AddWriteByte(0x300000, 0x300003, tc0220ioc_wb_port, NULL);		// INPUT
+       AddWriteWord(0x300000, 0x300003, tc0220ioc_ww_port, NULL);		// INPUT
+   }
 
-   AddReadWord(0x200000, 0x200003, tc0220ioc_rw_port, NULL);		// INPUT
    AddReadWord(0x110000, 0x11FFFF, NULL, RAM+0x000000);			// 68000 RAM [MIRROR]
 
    AddWriteByte(0x410000, 0x410FFF, tc0004vcu_gfx_fg0_b_wb, NULL);	// FG0 GFX RAM
    AddWriteByte(0x401000, 0x420FFF, NULL, RAM+0x011000);		// SCREEN RAM
    AddWriteByte(0x400000, 0x400FFF, tc0004vcu_gfx_fg0_a_wb, NULL);	// FG0 GFX RAM
-   AddWriteByte(0x200000, 0x200003, tc0220ioc_wb_port, NULL);		// INPUT
-   AddWriteByte(0x300000, 0x300003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
 
    AddWriteWord(0x410000, 0x410FFF, tc0004vcu_gfx_fg0_b_ww, NULL);	// FG0 GFX RAM
    AddWriteWord(0x401000, 0x420FFF, NULL, RAM+0x011000);		// SCREEN RAM
    AddWriteWord(0x400000, 0x400FFF, tc0004vcu_gfx_fg0_a_ww, NULL);	// FG0 GFX RAM
-   AddWriteWord(0x200000, 0x200003, tc0220ioc_ww_port, NULL);		// INPUT
 
    finish_conf_68000(0);
-
-   GameMouse=1;
 }
 
 static void execute_syvalion(void)
 {
    static int p1x,p1y;
-
-   p1x=0;
-   p1y=0;
 
    /*------[Mouse Hack]-------*/
 
@@ -250,10 +270,10 @@ static void execute_syvalion(void)
    if((RAM[0x32082]!=0)&&(p1x> -0x200)) p1x-=0x20;
    if((RAM[0x32083]!=0)&&(p1x<  0x200)) p1x+=0x20;
 
-   RAM[0x3201C] = (p1x>>8)&0xFF;
-   RAM[0x3201E] = (p1x>>0)&0xFF;
-   RAM[0x32018] = (p1y>>8)&0xFF;
-   RAM[0x3201A] = (p1y>>0)&0xFF;
+   RAM[0x3201C] = (p1x>>0)&0xFF;
+   RAM[0x3201E] = (p1x>>8)&0xFF;
+   RAM[0x32018] = (p1y>>0)&0xFF;
+   RAM[0x3201A] = (p1y>>8)&0xFF;
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);
@@ -308,4 +328,5 @@ GMEI( syvalion, "Syvalion", TAITO, 1988, GAME_SHOOT,
 	.long_name_jpn = "サイバリオン",
 	.board = "B51",
 );
+CLNEI( tetristh,syvalion,"Tetris (Japan,Taito H-System)",SEGA,1988, GAME_PUZZLE );
 
