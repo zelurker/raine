@@ -1127,7 +1127,8 @@ endif
 all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/raine.pot \
 	locale/fr/LC_MESSAGES/raine.mo \
-	locale/es/LC_MESSAGES/raine.mo
+	locale/es/LC_MESSAGES/raine.mo \
+	locale/it/LC_MESSAGES/raine.mo
 
 locale/raine.pot:
 	xgettext --omit-header -C -k_ -kgettext -d raine -s -o locale/tmp `find source -name '*.c*'`
@@ -1135,6 +1136,9 @@ locale/raine.pot:
 	rm -f locale/tmp
 
 locale/fr/LC_MESSAGES/raine.mo: locale/french.po
+	msgfmt -c -v -o $@ $<
+
+locale/it/LC_MESSAGES/raine.mo: locale/it.po
 	msgfmt -c -v -o $@ $<
 
 locale/es/LC_MESSAGES/raine.mo: locale/es.po
