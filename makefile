@@ -490,7 +490,8 @@ OBJDIRS=$(OBJDIR)                \
     $(OBJDIR)/m68705             \
 	$(OBJDIR)/neocd				 \
 	locale/fr/LC_MESSAGES \
-	locale/es/LC_MESSAGES
+	locale/es/LC_MESSAGES \
+	locale/it/LC_MESSAGES
 
 ifdef CZ80
 OBJDIRS += $(OBJDIR)/cz80
