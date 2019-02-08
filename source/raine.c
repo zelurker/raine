@@ -116,7 +116,9 @@ void init_lang() {
 #else
     SDL_putenv(buf);
 #endif
-    setlocale(LC_ALL & ~LC_NUMERIC & ~LC_MONETARY,"");
+    /* 1st argument of setlocale is *not* a bit mask, and since I don't want numeric conversions here I need to call it twice */
+    setlocale(LC_ALL,"");
+    setlocale(LC_NUMERIC,"C");
 #endif
 }
 
