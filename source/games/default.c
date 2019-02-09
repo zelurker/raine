@@ -212,7 +212,7 @@ void ClearDefault(void)
    clear_regions();
    FreeMemoryPool();				// Free anything left in the memory pool
 
-   LanguageSw.Count = 0;
+   LanguageSw.Count = LanguageSw.Address = 0;
 
    if (pbitmap) {
      destroy_bitmap(pbitmap);
