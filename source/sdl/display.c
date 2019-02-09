@@ -526,7 +526,7 @@ void ScreenChange(void)
    //show_mouse(screen);
 }
 
-void resize() {
+void resize(int call) {
   // Minimum size
   static int last_time;
   if (display_cfg.screen_x < 320)
@@ -582,8 +582,10 @@ void resize() {
 
     bezel_fix_screen_size(&display_cfg.screen_x,&display_cfg.screen_y);
   }
-  print_debug("calling ScreenChange from resize\n");
-  ScreenChange();
+  if (call) {
+      print_debug("calling ScreenChange from resize\n");
+      ScreenChange();
+  }
 }
 
 void set_default_video_mode() {
@@ -667,8 +669,16 @@ int switch_res(const VIDEO_INFO *vid)
 {
    int w,h;
 
-   get_best_resolution(vid,&w,&h);
-   if (display_cfg.auto_mode_change == 2) {
+   if (!display_cfg.fullscreen && display_cfg.keep_ratio) {
+       // we just want to honor keep_ratio here, nothing more
+       int x = display_cfg.screen_x, y = display_cfg.screen_y;
+       resize(0);
+       w = display_cfg.screen_x; h = display_cfg.screen_y;
+       display_cfg.screen_x = x; display_cfg.screen_y = y;
+   } else
+       get_best_resolution(vid,&w,&h);
+
+   if (display_cfg.video_mode == 2 && display_cfg.auto_mode_change == 2) {
      w *= 2;
      h *= 2;
    }

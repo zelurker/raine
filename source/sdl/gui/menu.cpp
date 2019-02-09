@@ -1982,7 +1982,7 @@ void TMenu::execute() {
 			if (display_cfg.screen_y < 480)
 				display_cfg.screen_y = 480;
 		}
-	    resize();
+	    resize(1);
 	    if (font) {
 		delete font;
 		font = NULL;

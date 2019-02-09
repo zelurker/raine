@@ -32,7 +32,7 @@ extern int overlays_workarounds;
 extern UINT32 screen_flags; // flags of the game screen, before gui adjustement
 extern const SDL_VideoInfo *video;
 
-void resize();
+void resize(int call);
 int lock_surface(SDL_Surface *s);
 void adjust_gui_resolution();
 void set_opengl_filter(int filter);
