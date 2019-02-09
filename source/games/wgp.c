@@ -183,7 +183,7 @@ static void set_col_bank(UINT32 bank)
 {
    bank &= 3;
    silly_wgp_colour_ram(RAM_COLOUR + (bank * 0x800));
-   memset(bank_status, 0x00, 0x100 * 2);
+   memset(bank_status, 0x00, sizeof(bank_status));
 }
 
 static void load_actual(int romset)
