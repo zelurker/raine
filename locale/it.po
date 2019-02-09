@@ -500,8 +500,8 @@ msgid "Unable to load: %s"
 msgstr "Impossibile caricare: %s"
 
 #, c-format
-msgid "Unable to open '%s'\n"
-msgstr "Impossibile aprire '%s'\n"
+msgid "Unable to open '%s' crc32:%x\n"
+msgstr "Impossibile aprire '%s' crc32:%x\n"
 
 #, c-format
 msgid "Unable to save: %s"

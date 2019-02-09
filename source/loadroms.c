@@ -1011,7 +1011,7 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
 
    if(!ta)
    {
-      sprintf(load_debug+strlen(load_debug),_("Unable to open '%s'\n"),rom);
+      sprintf(load_debug+strlen(load_debug),_("Unable to open '%s' crc32:%x\n"),rom,rec_rom_info.crc32);
       sprintf(load_debug+strlen(load_debug),"\n");
       sprintf(load_debug+strlen(load_debug),_("Search path:\n"));
       sprintf(load_debug+strlen(load_debug),"\n");

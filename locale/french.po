@@ -4198,8 +4198,8 @@ msgid "Unable to load: %s"
 msgstr "Incapable de charger : %s"
 
 #, c-format
-msgid "Unable to open '%s'\n"
-msgstr "Incapable d'ouvrir '%s'\n"
+msgid "Unable to open '%s' crc32:%x\n"
+msgstr "Incapable d'ouvrir '%s' crc32:%x\n"
 
 #, c-format
 msgid "Unable to save: %s"
