@@ -152,6 +152,7 @@ void display_write_config() {
 #ifdef RAINE_WIN32
    raine_set_config_int("Display", "video_driver", display_cfg.video_driver);
 #endif
+   print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
    raine_set_config_int("Display", "screen_y", display_cfg.screen_y);
    raine_set_config_int("Display", "winx", display_cfg.winx);
@@ -534,7 +535,7 @@ void resize() {
     display_cfg.screen_y = 240;
 
 
-  if (current_game ) {
+  if (current_game && display_cfg.keep_ratio ) {
     // keep aspect ratio
     VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
     double ratio = get_bezel_ratio();

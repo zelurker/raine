@@ -152,7 +152,8 @@ static void load_game_proc()
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function
 
-    if(display_cfg.auto_mode_change) { // && switch_res(current_game->video))){
+    if((display_cfg.auto_mode_change && display_cfg.video_mode == 2) || // normal blits
+	     display_cfg.keep_ratio) { // && switch_res(current_game->video))){
       switch_res(current_game->video);
     } else {
       print_debug("no resolution switching wanted\n");
@@ -174,11 +175,11 @@ static void load_game_proc()
     load_game_rom_info();
 
     if (!(load_error & LOAD_FATAL_ERROR)) {
-			init_inputs();
-      init_dsw();
-      init_romsw();
-      init_sound();
-      read_bld();
+	init_inputs();
+	init_dsw();
+	init_romsw();
+	init_sound();
+	read_bld();
     }
 }
 
@@ -458,7 +459,7 @@ void StartGUI(void)
 	       WantPlay = 0;
        }
 
-       if(current_game && display_cfg.auto_mode_change) {
+       if(current_game && (display_cfg.auto_mode_change && display_cfg.video_mode == 2)) {
 	   switch_res(current_game->video);
 	   if (bestw) {
 	       display_cfg.screen_x = bestw;
