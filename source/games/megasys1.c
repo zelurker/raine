@@ -1884,6 +1884,8 @@ static void load_rodland(void)
      rodlandj_gfx_unmangle(3);
    }
 
+   GFX = load_region[REGION_GFX1];
+   // Is this "unmangle" really useful somewhere ??? No idea !!!
    for(ta=0;ta<0x10000;ta++){
 	   tb=GFX[ta+0x20000];
 	   tc=GFX[ta+0x30000];

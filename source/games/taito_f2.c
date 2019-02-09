@@ -2752,6 +2752,7 @@ static void load_megab(void)
   RAM_VIDEO  = RAM+0x18000;
   RAM_SCROLL = RAM+0x3C100;
   RAM_OBJECT = RAM+0x10000;
+  RAM_INPUT  = RAM+0x3C000;
   GFX_FG0    = RAM+0x3c200;
 
   set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
