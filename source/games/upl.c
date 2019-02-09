@@ -283,7 +283,7 @@ static struct DSW_DATA dsw_data_ninja_kid_2_0[] =
    { _("None"),                  0x00},
    DSW_CONTINUE_PLAY( 0x08, 0x00),
    DSW_DEMO_SOUND( 0x00, 0x10),
-   { MSG_DIFFICULTY,          0x20},
+   { MSG_DIFFICULTY,          0x20,2},
    { MSG_NORMAL,              0x20},
    { MSG_HARD,                0x00},
    { MSG_LIVES,               0x40, 0x02 },

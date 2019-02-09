@@ -3602,7 +3602,11 @@ static struct DSW_DATA dsw_data_mtwins_1[] =
 static struct DSW_DATA dsw_data_mtwins_2[] =
 {
 	CPS1_DIFFICULTY_1
-  { MSG_LIVES, 0x38},
+  { MSG_LIVES, 0x38, 4},
+	{ "1", 0x10 },
+	{ "2", 0x18 },
+	{ "3", 0x8 },
+	{ "4", 0 },
   DSW_UNUSED( 0x00, 0x40),
   DSW_UNUSED( 0x00, 0x80),
   { NULL, 0}
@@ -3611,7 +3615,7 @@ static struct DSW_DATA dsw_data_mtwins_2[] =
 static struct DSW_INFO dsw_mtwins[] =
 {
   { 0x1a, 0xff, dsw_data_mtwins_1 },
-  { 0x1c, 0xff, dsw_data_mtwins_2 },
+  { 0x1c, 0xcf, dsw_data_mtwins_2 },
   { 0x1e, 0x9f, dsw_data_unsquad_3 },
   { 0, 0, NULL }
 };

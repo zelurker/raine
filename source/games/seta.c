@@ -2230,7 +2230,7 @@ static struct DSW_INFO dsw_metafox[] =
 
 static struct DSW_DATA dsw_data_arbalest_3[] =
 {
-  { _("Licensed To") , 0x0000, 3 },
+  { _("Licensed To") , 0x0000, 2 },
   { _("Taito") , 0x0000},
   { _("Romstar") , 0x0001},
   DSW_SCREEN( 0x0002, 0x0000),

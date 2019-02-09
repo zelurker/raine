@@ -66,7 +66,7 @@ static struct INPUT_INFO input_gcpinbal[] =
 
 static struct DSW_DATA dsw_data_grand_cross_pinball_0[] =
 {
-   { MSG_COIN1,               0x07, 0x07 },
+   { MSG_COIN1,               0x07, 0x08 },
    { MSG_4COIN_1PLAY,         0x02},
    { MSG_3COIN_1PLAY,         0x03},
    { MSG_2COIN_1PLAY,         0x04},
@@ -75,7 +75,7 @@ static struct DSW_DATA dsw_data_grand_cross_pinball_0[] =
    { _("1 Coin/1 Credit 2/3"),   0x05},
    { _("1 Coin/1 Credit 5/6"),   0x00},
    { MSG_1COIN_2PLAY,         0x06},
-   { MSG_COIN2,               0x38, 0x07 },
+   { MSG_COIN2,               0x38, 0x08 },
    { MSG_4COIN_1PLAY,         0x10},
    { MSG_3COIN_1PLAY,         0x18},
    { MSG_2COIN_1PLAY,         0x20},
@@ -89,6 +89,7 @@ static struct DSW_DATA dsw_data_grand_cross_pinball_0[] =
    { "3",                     0xC0},
    { "4",                     0x80},
    { "5",                     0x40},
+   { NULL,                    0,   },
 };
 
 static struct DSW_DATA dsw_data_grand_cross_pinball_1[] =

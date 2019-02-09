@@ -74,7 +74,7 @@ static struct INPUT_INFO input_cabalbl[] =
 
 static struct DSW_DATA dsw_data_cabal_0[] =
 {
-   { MSG_COIN_SLOTS,          0x0F, 0x07 },
+   { MSG_COIN_SLOTS,          0x0F, 0x08 },
    { MSG_1COIN_1PLAY,         0x0F},
    { MSG_2COIN_1PLAY,         0x0E},
    { MSG_3COIN_1PLAY,         0x0D},
