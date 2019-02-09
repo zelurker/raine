@@ -296,95 +296,92 @@ void load_bezel() {
 
 int bezel_fix_screen_size(int *myw,int *myh) {
   /* Tell raine that we need a biger screen to fit the bezel */
-  if (!current_game) return 0;
+  if (!current_game || !bezel_bitmap) return 0;
   int rotate_screen = (current_game->video->flags ^ display_cfg.user_rotate) & 3;
   if (rotate_screen == 1 || rotate_screen == 3) {
     int *dupe = myw;
     myw = myh;
     myh = dupe;
   }
-  if (bezel_bitmap) {
-    print_debug("bezel_fix_screen_size before : %d,%d factors %g,%g\n",*myw,*myh,w-x,h-y);
+  print_debug("bezel_fix_screen_size before : %d,%d factors %g,%g\n",*myw,*myh,w-x,h-y);
 
-    *myw = round(*myw*(w-x));
-    *myh = round(*myh*(h-y));
+  *myw = round(*myw*(w-x));
+  *myh = round(*myh*(h-y));
 #ifndef RAINE_DOS
-    if (sdl_overlay) {
+  if (sdl_overlay) {
       /* If we have an overlay then we can adjust this to any size
        * (otherwise the game screen has priority over the bezel) */
       if ((rotate_screen & 1) && (*myw > display_cfg.screen_y ||
-	    *myh > display_cfg.screen_x)) {
-	double ratio = *myw*1.0/ *myh;
-	printf("bezel: overflow %d x %d of screen %d %d\n",*myw,*myh,display_cfg.screen_x,display_cfg.screen_y);
-	if (*myw > *myh) {
-	  *myw = display_cfg.screen_y;
-	  *myh = *myw/ratio;
-	} else {
-	  if (ratio * display_cfg.screen_x < display_cfg.screen_y) {
-	    *myh = display_cfg.screen_x;
-	    *myw = ratio* *myh;
+		  *myh > display_cfg.screen_x)) {
+	  double ratio = *myw*1.0/ *myh;
+	  printf("bezel: overflow %d x %d of screen %d %d\n",*myw,*myh,display_cfg.screen_x,display_cfg.screen_y);
+	  if (*myw > *myh) {
+	      *myw = display_cfg.screen_y;
+	      *myh = *myw/ratio;
 	  } else {
-	    *myw = display_cfg.screen_y;
-	    *myh = *myw/ratio;
+	      if (ratio * display_cfg.screen_x < display_cfg.screen_y) {
+		  *myh = display_cfg.screen_x;
+		  *myw = ratio* *myh;
+	      } else {
+		  *myw = display_cfg.screen_y;
+		  *myh = *myw/ratio;
+	      }
 	  }
-	}
-	if ((rotate_screen & 1) && (*myw > display_cfg.screen_y ||
-	      *myh > display_cfg.screen_x)) {
-	  printf("still overflow after %d %d\n",*myw,*myh);
-	  printf("forcing size of screen...\n");
-	  if (*myw > display_cfg.screen_y)
-	    *myw = display_cfg.screen_y;
-	  if (*myh > display_cfg.screen_x)
-	    *myh = display_cfg.screen_x;
-	}
-	printf("bezel: fixed screen overflow, new size : %d x %d\n",*myw,*myh);
+	  if ((rotate_screen & 1) && (*myw > display_cfg.screen_y ||
+		      *myh > display_cfg.screen_x)) {
+	      printf("still overflow after %d %d\n",*myw,*myh);
+	      printf("forcing size of screen...\n");
+	      if (*myw > display_cfg.screen_y)
+		  *myw = display_cfg.screen_y;
+	      if (*myh > display_cfg.screen_x)
+		  *myh = display_cfg.screen_x;
+	  }
+	  printf("bezel: fixed screen overflow, new size : %d x %d\n",*myw,*myh);
       } else if (((rotate_screen & 1) == 0) && (*myw > display_cfg.screen_x ||
-	    *myh > display_cfg.screen_y)) {
-	double ratio = *myw*1.0/ *myh;
-	printf("bezel: horiz overflow %d x %d of screen %d %d\n",*myw,*myh,display_cfg.screen_x,display_cfg.screen_y);
-	if (*myw > *myh) {
-	  *myw = display_cfg.screen_x;
-	  *myh = *myw/ratio;
-	} else {
-	  if (ratio * display_cfg.screen_y < display_cfg.screen_x) {
-	    *myh = display_cfg.screen_y;
-	    *myw = ratio* *myh;
+		  *myh > display_cfg.screen_y)) {
+	  double ratio = *myw*1.0/ *myh;
+	  printf("bezel: horiz overflow %d x %d of screen %d %d\n",*myw,*myh,display_cfg.screen_x,display_cfg.screen_y);
+	  if (*myw > *myh) {
+	      *myw = display_cfg.screen_x;
+	      *myh = *myw/ratio;
 	  } else {
-	    *myw = display_cfg.screen_x;
-	    *myh = *myw/ratio;
+	      if (ratio * display_cfg.screen_y < display_cfg.screen_x) {
+		  *myh = display_cfg.screen_y;
+		  *myw = ratio* *myh;
+	      } else {
+		  *myw = display_cfg.screen_x;
+		  *myh = *myw/ratio;
+	      }
 	  }
-	}
-	if ((*myw > display_cfg.screen_x ||
-	      *myh > display_cfg.screen_y)) {
-	  printf("still overflow after %d %d\n",*myw,*myh);
-	  printf("forcing size of screen...\n");
-	  if (*myw > display_cfg.screen_x)
-	    *myw = display_cfg.screen_x;
-	  if (*myh > display_cfg.screen_y)
-	    *myh = display_cfg.screen_y;
-	}
-	printf("bezel: fixed screen overflow, new size : %d x %d\n",*myw,*myh);
+	  if ((*myw > display_cfg.screen_x ||
+		      *myh > display_cfg.screen_y)) {
+	      printf("still overflow after %d %d\n",*myw,*myh);
+	      printf("forcing size of screen...\n");
+	      if (*myw > display_cfg.screen_x)
+		  *myw = display_cfg.screen_x;
+	      if (*myh > display_cfg.screen_y)
+		  *myh = display_cfg.screen_y;
+	  }
+	  printf("bezel: fixed screen overflow, new size : %d x %d\n",*myw,*myh);
       }
-    }
+  }
 #endif
 
-    bezel_width = *myw;
-    bezel_height = *myh;
-    if (use_scale2x == 1) {
+  bezel_width = *myw;
+  bezel_height = *myh;
+  if (use_scale2x == 1) {
       /* This thing is becoming *REALLY* messy now... I should probably try
        * to rewrite the whole thing more cleanly one day... ! */
       bezel_width /= 2;
       bezel_height /= 2;
-    } else if (use_scale2x == 2) {
+  } else if (use_scale2x == 2) {
       bezel_width /= 3;
       bezel_height /= 3;
-    }
-    *myw = round(*myw/(w-x));
-    *myh = round(*myh/(h-y));
-    print_debug("bezel_fix_screen_size after : %d,%d\n",*myw,*myh);
-    return 1;
   }
-  return 0;
+  *myw = round(*myw/(w-x));
+  *myh = round(*myh/(h-y));
+  print_debug("bezel_fix_screen_size after : %d,%d\n",*myw,*myh);
+  return 1;
 }
 
 void bezel_fix_screen_coordinates(int *destx,int *desty,int viewx,int viewy, int screenx, int screeny) {
