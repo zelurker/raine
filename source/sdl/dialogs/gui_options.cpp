@@ -55,6 +55,7 @@ int do_gui_options(int sel) {
   gui_menu[nb++] = color_menu[0];
   gui_menu[nb++] = color_menu[1];
   gui_menu[nb++] = color_menu[2];
+  gui_menu[nb++] = color_menu[3];
   gui_menu[nb].label = _("Directories...");
   gui_menu[nb].menu_func = &do_dirs;
   gui_options = new TMenu(_("Options"), gui_menu);
