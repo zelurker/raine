@@ -65,6 +65,7 @@ char *joy_name[MAX_JOY];
 int bad_axes[MAX_JOY*MAX_AXIS];
 char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
+static int lost_focus;
 
 int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
   analog_maxy,analog_normx,analog_normy,
@@ -1485,13 +1486,10 @@ static void handle_event(SDL_Event *event) {
       exit(0);
     case SDL_ACTIVEEVENT:
       if (event->active.gain)
-	      app_state |= event->active.state;
+	  app_state |= event->active.state;
       else
-	      app_state &= ~event->active.state;
-      if (! raine_cfg.req_pause_game && !(app_state & SDL_APPINPUTFOCUS) &&
-			  pause_on_focus)
-		  // lost input -> go to pause
-	      raine_cfg.req_pause_game = 1;
+	  app_state &= ~event->active.state;
+      lost_focus = 0;
       break;
   }
 }
@@ -1533,6 +1531,13 @@ void update_inputs(void)
 
   while (SDL_PollEvent(&event)) {
     handle_event(&event);
+  }
+  if (! raine_cfg.req_pause_game && !(app_state & SDL_APPINPUTFOCUS) &&
+	  pause_on_focus ) {
+      lost_focus++;
+      // lost input -> go to pause
+      if (lost_focus >= 2)
+	  raine_cfg.req_pause_game = 1;
   }
   if (recording_demo)
     save_demo_inputs();
