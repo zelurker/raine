@@ -4569,6 +4569,12 @@ void load_neocd() {
 	init_cdda();
 	init_load_type();
 	clear_file_cache();
+	if (get_cd_load_type() < 0) {
+	    load_error = LOAD_FATAL_ERROR;
+	    ClearDefault();
+	    current_game = NULL;
+	    return; // error in init_load_type then...
+	}
 	if(!(RAM=AllocateMem(RAMSize))) return;
 	memset(RAM,0,RAMSize); // be sure to start with a clean ram...
 	// Starting with a clean ram here is especially important if we loaded

@@ -287,28 +287,29 @@ void init_load_type() {
 	    }
 	    strcpy(path+1,start+1);
 	    if (!exists(neocd_path)) {
-		// 1st thing to try : some lamers distribute rips where they
-		// rename all the files without editing the cue file.
-		// The only way to find the correct file is to use only
-		// the extension and replace the base part of the filename
-		// with the one of the cue file !
-		// Usually the bin file has the same base filename as the cue
-		// file so it's a reasonable assumption.
+		strcat(neocd_path,".gz");
+		if (!exists(neocd_path)) {
+		    neocd_path[strlen(neocd_path)-3] = 0;
+		} else {
+		    init_iso_gz();
+		    continue;
+		}
+	    }
+	    if (!exists(neocd_path)) {
+		// Last resort for some broken cue files
+		// sometimes all the files have been renamed with the same base name without changing the cue file
 		char ext[4];
 		strcpy(ext,&neocd_path[strlen(neocd_path)-3]);
 		strcpy(neocd_path,cue);
 		strcpy(&neocd_path[strlen(neocd_path)-3],ext);
 	    }
 	    if (!exists(neocd_path)) {
-		strcat(neocd_path,".gz");
-		if (!exists(neocd_path)) {
-		    MessageBox(gettext("Error"),gettext("can't find iso file"),gettext("OK"));
-		    path[1] = 0;
-		    break;
-		} else
-		    init_iso_gz();
-	    } else
-		init_iso();
+		MessageBox(gettext("Error"),gettext("can't find iso file"),gettext("OK"));
+		load_type = -1;
+		fclose(f);
+		return;
+	    }
+	    init_iso();
 	  } else if (!strncmp(end+2,"MP3",3) || !strncmp(end+2,"WAVE",4)) {
 	    if (alloc_tracks == nb_tracks) {
 	      alloc_tracks += 10;
