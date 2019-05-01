@@ -1454,7 +1454,7 @@ void neogeo_read_gamename(void)
   }
   /* update window title with game name */
   char neocd_wm_title[160];
-  sprintf(neocd_wm_title,"NeoRaine - %s",config_game_name);
+  sprintf(neocd_wm_title,"Raine - %s",config_game_name);
   SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
 }
 
