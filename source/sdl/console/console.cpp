@@ -187,22 +187,23 @@ static int add_watch(UINT32 adr, int size, int read, int value=-1) {
     }
   }
   if (nb_watch < MAX_WATCH) {
-    if (read) {
-      if (size == 1) {
-	insert_rb(0,0,adr,adr,(void*)exec_watchb,NULL);
-      } else if (size == 2)
-	insert_rw(0,0,adr,adr+1,(void*)exec_watchw,NULL);
-      else
-	insert_rw(0,0,adr,adr+size-1,(void*)exec_watchw,NULL);
-    } else {
-      if (size == 1) {
-	insert_wb(0,0,adr,adr,(void*)exec_watchb,NULL);
-      } else if (size == 2)
-	insert_ww(0,0,adr,adr+1,(void*)exec_watchw,NULL);
-      else {
-	insert_ww(0,0,adr,adr+size-1,(void*)exec_watchw,NULL);
-	cons->print("added watch, size %d bytes\n",size);
-      }
+      int cpu = cpu_id & 0xf;
+      if (read) {
+	  if (size == 1) {
+	      insert_rb(cpu,0,adr,adr,(void*)exec_watchb,NULL);
+	  } else if (size == 2)
+	      insert_rw(cpu,0,adr,adr+1,(void*)exec_watchw,NULL);
+	  else
+	      insert_rw(cpu,0,adr,adr+size-1,(void*)exec_watchw,NULL);
+      } else {
+	  if (size == 1) {
+	      insert_wb(cpu,0,adr,adr,(void*)exec_watchb,NULL);
+	  } else if (size == 2)
+	      insert_ww(cpu,0,adr,adr+1,(void*)exec_watchw,NULL);
+	  else {
+	      insert_ww(cpu,0,adr,adr+size-1,(void*)exec_watchw,NULL);
+	      cons->print("added watch, size %d bytes\n",size);
+	  }
     }
     watch[nb_watch].adr = adr;
     watch[nb_watch].size = size;
