@@ -28,6 +28,17 @@
 #include <unistd.h>
 
 #include <curl/curl.h>
+#include "gui.h" // load_progress
+
+static int progress_callback(void *clientp,
+                             curl_off_t dltotal,
+                             curl_off_t dlnow,
+                             curl_off_t ultotal,
+                             curl_off_t ulnow) {
+    if (dltotal == 0) return 0;
+    curl_progress_f(dlnow*100/dltotal);
+    return 0; // non 0 to abort transfer
+}
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 {
@@ -59,6 +70,9 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, write_data);
 
   curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
+  curl_easy_setopt(curl_handle, CURLOPT_XFERINFODATA, NULL);
+  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
+  curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
 
   /* open the file */
   pagefile = fopen(file, "wb");

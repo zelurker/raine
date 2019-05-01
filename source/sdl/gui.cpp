@@ -101,12 +101,15 @@ int add_gui_options(menu_item_t *menu) {
 
 static TDialog *loading_dialog;
 static int progress_count;
+static int curl_progress;
 
 static menu_item_t load_items[] =
 {
   { "", },
   { _("Progress"), NULL, &progress_count, ITEM_PROGRESS_BAR },
   { "...", },
+  { NULL }, // curl msg
+  { _("Progress"), NULL, &curl_progress, ITEM_PROGRESS_BAR },
   { NULL, },
 };
 
@@ -123,6 +126,22 @@ void load_progress(char *rom,int count)
     loading_dialog->redraw_fg_layer();
   }
   last_tick = SDL_GetTicks();
+}
+
+void curl_progress_f(int count) {
+    if (!loading_dialog) return;
+    if (!load_items[3].label) {
+	printf("init curl dialog\n");
+	load_items[3].label = _("Downloading from internet archive");
+	delete loading_dialog;
+	loading_dialog = new TDialog(_("Loading Game"),load_items);
+	loading_dialog->draw();
+    }
+    if (curl_progress != count) {
+	curl_progress = count;
+	if (loading_dialog)
+	    loading_dialog->redraw_fg_layer();
+    }
 }
 
 void load_message(char *msg) {
@@ -165,6 +184,7 @@ static void load_game_proc()
     }
 
     progress_count = 0;
+    curl_progress = 0;
     load_items[0].label = _("Applying GFX Layouts and stuff..."); // init
     if (!raine_cfg.no_gui) {
 	adjust_gui_resolution();
@@ -244,6 +264,7 @@ static void do_load_game(void)
 #endif
      if (loading_dialog) {
 	 delete loading_dialog;
+	 load_items[3].label = NULL;
 	 loading_dialog = NULL;
      }
      if (raine_cfg.save_game_screen_settings)
