@@ -17,6 +17,7 @@
 #include "6502/m6502hlp.h"
 #endif
 #include "7z.h"
+#include "curl.h"
 
 #undef _
 #define _(string) gettext(string)
@@ -242,6 +243,7 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 
          UINT32 ta;
          char path[512];
+         char url[512];
 
          for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
 
@@ -268,6 +270,29 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 
             }
          }
+
+	 // Curl side of things...
+         for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
+            if(dir_cfg.rom_dir[ta][0]){
+		sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
+		if (!exists(path)) {
+		    sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
+		    sprintf(url,"https://archive.org/download/arcade_%s/%s.zip",dir,dir);
+		    printf("would try %s\n",url);
+		    int ret = get_url(path,url);
+		    if (!ret) {
+			if((load_zipped(path, rec_rom_info.name, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
+			    // printf("loaded %s from %s\n",rec_rom_info.name,path);
+			    printf("curl ok\n");
+			    return 1;
+			} else
+			    sprintf(load_debug+strlen(load_debug),"tried to get the rom from internet archive (%s),\n"
+				    "but didn't find the right file in the archive !\n", dir);
+		    } else
+			printf("curl: got ret %d\n",ret);
+		}
+	    }
+	 }
 
       }
 
@@ -986,24 +1011,24 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
 
    if(!ta){
 
-   // try to locate alternative filenames via the crc32 & size data (merged sets)
+       // try to locate alternative filenames via the crc32 & size data (merged sets)
 
-   tc = find_alternative_file_names( &rec_rom_info, dir_list );
+       tc = find_alternative_file_names( &rec_rom_info, dir_list );
 
-   // try loading with any alternative file names we found
+       // try loading with any alternative file names we found
 
-   ta = 0;
+       ta = 0;
 
-   for(tb=0; tb<tc; tb++){
+       for(tb=0; tb<tc; tb++){
 
-     rec_rom_info.name = alt_names[tb];
+	   rec_rom_info.name = alt_names[tb];
 
-      ta = recursive_rom_load( dir_list, 1 );
+	   ta = recursive_rom_load( dir_list, 1 );
 
-      if(ta)
-         tb = tc;
+	   if(ta)
+	       tb = tc;
 
-   }
+       }
 
    }
 

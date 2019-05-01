@@ -17,7 +17,7 @@
 VERSION = "0.64.16"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -1056,6 +1056,8 @@ OBJS +=	$(OBJDIR)/alleg/blit.o \
 
 endif
 
+OBJS += $(OBJDIR)/curl.o
+
 ifdef STATIC
 LIBS = $(LIBS_STATIC)
 CFLAGS += -DALLEGRO_STATICLINK
@@ -1107,7 +1109,7 @@ LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/li
 endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
-LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image # -lefence
+LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image $(shell curl-config --libs) # -lefence
 ifdef HAS_NEO
 ifdef RAINE_UNIX
 ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
