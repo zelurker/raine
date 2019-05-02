@@ -110,6 +110,7 @@ static menu_item_t load_items[] =
   { "...", },
   { NULL }, // curl msg
   { _("Progress"), NULL, &curl_progress, ITEM_PROGRESS_BAR },
+  { _("from internet archive"), },
   { NULL, },
 };
 
@@ -128,15 +129,17 @@ void load_progress(char *rom,int count)
   last_tick = SDL_GetTicks();
 }
 
+void setup_curl_dlg(char *name) {
+    load_items[3].label = name;
+    SDL_Rect r = { 0, 0, sdl_screen->w, sdl_screen->h };
+    loading_dialog->update_bg_layer(&r);
+    delete loading_dialog;
+    loading_dialog = new TDialog(_("Loading Game"),load_items);
+    loading_dialog->draw();
+}
+
 void curl_progress_f(int count) {
     if (!loading_dialog) return;
-    if (!load_items[3].label) {
-	printf("init curl dialog\n");
-	load_items[3].label = _("Downloading from internet archive");
-	delete loading_dialog;
-	loading_dialog = new TDialog(_("Loading Game"),load_items);
-	loading_dialog->draw();
-    }
     if (curl_progress != count) {
 	curl_progress = count;
 	if (loading_dialog)

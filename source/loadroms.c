@@ -211,7 +211,6 @@ GAME_MAIN *find_game(char *main_name)
 
 static ROM_INFO  rec_rom_info;      // the rom to load
 static UINT8    *rec_dest;          // destination memory buffer
-static char last_url[512];
 
 static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 {
@@ -244,7 +243,6 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 
          UINT32 ta;
          char path[512];
-         char url[512];
 
          for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
 
@@ -271,44 +269,6 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 
             }
          }
-
-	 // Curl side of things...
-	 int found = 0;
-	 for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
-	     // We must make a separate loop to test the existence of the file for the tricky case where
-	     // we search for a rom which is in the parent of the rom we are currently trying to load
-	     // and the current rom is not available and there is more than 1 rom dir...
-	     if(dir_cfg.rom_dir[ta][0] && dir[0] != '$'){
-		 sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
-		 if (exists(path)) {
-		     found = 1;
-		     break;
-		 }
-	     }
-	 }
-	 for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
-	     if (found) break;
-	     if(dir_cfg.rom_dir[ta][0] && dir[0] != '$'){
-		 sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
-		 sprintf(url,"https://archive.org/download/arcade_%s/%s.zip",dir,dir);
-		 if (!strcmp(url,last_url)) break;
-		 printf("would try %s\n",url);
-		 strcpy(last_url,url);
-		 int ret = get_url(path,url);
-		 if (!ret) {
-		     if((load_zipped(path, rec_rom_info.name, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
-			 // printf("loaded %s from %s\n",rec_rom_info.name,path);
-			 printf("curl ok\n");
-			 return 1;
-		     } else {
-			 sprintf(load_debug+strlen(load_debug),"tried to get the rom from internet archive (%s),\n"
-				 "but didn't find the right file in the archive !\n", dir);
-		     }
-		 } else {
-		     sprintf(load_debug+strlen(load_debug),"No %s.zip on internet archive\n",dir);
-		 }
-	     }
-	 }
       }
 
       return recursive_rom_load( head+1, actual_load );
@@ -476,7 +436,6 @@ UINT32 find_alternative_file_names(const ROM_INFO *rom_info, const DIR_INFO *dir
 // Hack to load correctly these 16x16x8 sprites...
 // I know it's ugly, but I spent one hour trying to figure out how these
 // gfx layout worked... After that, enough was enough !
-
 
 int load_sprite_8_16b(char *rom, UINT8 *dst, UINT32 len){
   UINT8 *src;
@@ -962,7 +921,9 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
    const ROM_INFO *rom_list;
    UINT32     ta,tb,tc;
    int found;
+   int tried_curl = 0;
 
+beg:
    if (activate_continue) {
        if (remaining_size >= size) {
 	   memcpy(dest,remaining_b,size);
@@ -1047,6 +1008,53 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
 
    }
 
+   if (!ta && !tried_curl) {
+       // Curl then...
+       // 1st idea was to put that at the end of recursive_rom_load
+       // problem is that sometimes the archive present on disk is not
+       // the 1st one of the DIR_INFO entry, so it must be handled AFTER
+
+       // Get a usable dir_list
+       // There is a loop here because one of these names might be the one on internet archive
+       // but there is no way to guess which one !
+       const DIR_INFO *dlist = dir_list;
+       char *dir,path[512],url[512];
+       int ta;
+       tried_curl = 1;
+       do {
+	   dir = dlist[0].maindir;
+	   while (dir && IS_ROMOF(dir)) {
+	       dlist++;
+	       dir = dlist[0].maindir;
+	   }
+
+	   // Then find a writable rom dir if there is one
+	   for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
+	       sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
+	       FILE *f = fopen(path,"wb");
+	       if (f) {
+		   fclose(f);
+		   break;
+	       }
+	   }
+	   sprintf(url,"https://archive.org/download/arcade_%s/%s.zip",dir,dir);
+	   printf("would try %s\n",url);
+	   char name[80];
+	   snprintf(name,80,_("Downloading %s.zip"),dir);
+	   setup_curl_dlg(name);
+	   int ret = get_url(path,url);
+	   if (!ret) {
+	       break;
+	   } else {
+	       sprintf(load_debug+strlen(load_debug),"No %s.zip on internet archive\n",dir);
+	       dlist++;
+	       dir = dlist[0].maindir;
+	   }
+       } while (dir);
+       if (dir)
+	   goto beg;
+   }
+
    // Error Logging
 
    if(!ta)
@@ -1065,7 +1073,6 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
    }
 
    return ta;
-
 }
 
 /*
