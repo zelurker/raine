@@ -292,7 +292,7 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 		 sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
 		 sprintf(url,"https://archive.org/download/arcade_%s/%s.zip",dir,dir);
 		 if (!strcmp(url,last_url)) break;
-		 printf("would try %s old url\n",url);
+		 printf("would try %s\n",url);
 		 strcpy(last_url,url);
 		 int ret = get_url(path,url);
 		 if (!ret) {
@@ -304,8 +304,9 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 			 sprintf(load_debug+strlen(load_debug),"tried to get the rom from internet archive (%s),\n"
 				 "but didn't find the right file in the archive !\n", dir);
 		     }
-		 } else
-		     printf("curl: got ret %d\n",ret);
+		 } else {
+		     sprintf(load_debug+strlen(load_debug),"No %s.zip on internet archive\n",dir);
+		 }
 	     }
 	 }
       }

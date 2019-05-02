@@ -30,6 +30,8 @@
 #include <curl/curl.h>
 #include "gui.h" // load_progress
 
+static int check_header,header_error;
+
 static int progress_callback(void *clientp,
                              curl_off_t dltotal,
                              curl_off_t dlnow,
@@ -42,8 +44,18 @@ static int progress_callback(void *clientp,
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-  size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
-  return written;
+    if (check_header) {
+	// nmemb < 2 should never happen, just print a warning
+	if (nmemb < 2) printf("should check 2 bytes, got %d bytes\n",nmemb);
+	check_header = 0;
+	char *hdr = (char*)ptr;
+	if (hdr[0] != 0x50 || hdr[1] != 0x4b) { // zip signature : PK
+	    header_error = 1;
+	    return -1;
+	}
+    }
+    size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
+    return written;
 }
 
 int get_url(char *file, char *url)
@@ -74,6 +86,8 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
   curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
 
+  check_header = 1;
+  header_error = 0;
   /* open the file */
   pagefile = fopen(file, "wb");
   if(pagefile) {
@@ -86,6 +100,7 @@ int get_url(char *file, char *url)
 
     /* close the header file */
     fclose(pagefile);
+    if (header_error) unlink(file);
   }
 
   /* cleanup curl stuff */
