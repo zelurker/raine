@@ -377,8 +377,6 @@ class TMain_menu : public TMenu
 };
 
 static void do_main_menu() {
-    if (!sdl_screen->pixels)
-	adjust_gui_resolution();
   TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
   int old_region;
   // init romsw

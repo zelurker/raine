@@ -395,9 +395,10 @@ static SDL_Surface *new_set_gfx_mode() {
     display_cfg.screen_y != sdl_screen->h ||
     (display_cfg.bpp != sdl_screen->format->BitsPerPixel && display_cfg.video_mode != 0) ||
     ((sdl_screen->flags ^ videoflags) & (~(SDL_ANYFORMAT|SDL_HWPALETTE)))) {
-      if (sdl_screen)
+      if (sdl_screen) {
 	  print_debug("new_set_gfx_mode decision : flags %x x %x y %d bpp %d\n",sdl_screen->flags ^ videoflags,display_cfg.screen_x != sdl_screen->w,
 		  display_cfg.screen_y != sdl_screen->h,display_cfg.bpp != sdl_screen->format->BitsPerPixel);
+      }
     if (!strcmp(driver,"fbcon")) {
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
       SDL_InitSubSystem(SDL_INIT_VIDEO);
@@ -474,6 +475,7 @@ static SDL_Surface *new_set_gfx_mode() {
   if (s->flags & SDL_OPENGL) {
       get_ogl_infos();
       print_debug("new_set_gfx_mode: opengl ok, getting infos\n");
+      opengl_reshape(sdl_screen->w,sdl_screen->h);
   } else if (!display_cfg.video_mode && !gui_level) {// asked for opengl, didn't get it...
       display_cfg.video_mode = 2;
       print_debug("new_set_gfx_mode: did not get opengl, switching to normal blits\n");
