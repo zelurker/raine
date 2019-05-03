@@ -255,7 +255,7 @@ extern int forced_bpp,gui_level;
 static SDL_Surface *new_set_gfx_mode() {
   SDL_Surface *s;
   int bpp;
-  if (display_cfg.fullscreen && !display_cfg.auto_mode_change) {
+  if (display_cfg.fullscreen && (display_cfg.video_mode != 2 || !display_cfg.auto_mode_change)) {
     if (!desktop_w) get_desktop_mode();
     display_cfg.screen_x = desktop_w;
     display_cfg.screen_y = desktop_h;
