@@ -682,10 +682,12 @@ static int do_not_stop,end_screen,start_frame;
 static void get_scanline() {
   if (!raster_frame) {
     // scanline isn't available, find it
-    // Use start_frame here because current_neo_frame
+    // Use start_frame here because current_eno_frame
     // can vary when finding a speed hack
     int cycles = s68000readOdometer() - start_frame;
-    scanline = cycles * NB_LINES / current_neo_frame;
+    // The +0xf0 is to try to make garou happy, it freezes on a certain stage 3 otherwise
+    // sadly I can't check it works, lost the savegame and the details of the problem !
+    scanline = ((cycles * NB_LINES / current_neo_frame) + 0xf0);
   }
 }
 
@@ -5327,20 +5329,7 @@ void execute_neocd() {
       // the 68k frame does not need to be sliced any longer, we
       // execute cycles on the z80 upon receiving a command !
       raster_frame = 0;
-      /* I didn't think I needed to be precise on the vbl position for a normal frame, but apparently garou checks the
-       * screen counter until it finds a number between 0 and 2, which is possible only if the vbl is not started at line 0 ! */
-      int first_part = current_neo_frame * 0xf0 / NB_LINES; // f0 = start of vbl
-      int rest = current_neo_frame - first_part;
-      if (!stopped_68k)
-	  cpu_execute_cycles(CPU_68K_0, first_part);
-      if (stopped_68k && current_game->exec == &loading_progress_function) {
-	  // It means we started loading things, best to exit this frame now !
-	  return;
-      }
-      vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
-      update_interrupts();
-      stopped_68k = 0;
-      cpu_execute_cycles(CPU_68K_0, rest);
+      cpu_execute_cycles(CPU_68K_0, current_neo_frame);
       if (allowed_speed_hacks) {
 	  /* Speed hacks are searched ONLY in the normal frame because we
 	   * could find places waiting for an hbl and not a vbl if using also
@@ -5436,6 +5425,10 @@ void execute_neocd() {
        * except that the 007Z bios tests the z80 communication
        * while irqs are disabled, so it's better to allow this here */
       execute_z80_audio_frame();
+  }
+  if (!raster_frame) {
+      vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
+      update_interrupts();
   }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
