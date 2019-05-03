@@ -19,6 +19,7 @@
 #else
 #include "sdl/gui.h"
 #endif
+#include <curl/curl.h>
 
 #ifdef RAINE_DOS
 #include <conio.h>
@@ -128,6 +129,8 @@ static void mystrcpy(char *dst,char *src) {
     if (src != dst)
 	strcpy(dst,src);
 }
+
+CURL *curl_handle;
 
 int main(int argc,char *argv[])
 {
@@ -609,7 +612,11 @@ int main(int argc,char *argv[])
    s68000init();
 #endif
 
+   curl_global_init(CURL_GLOBAL_ALL);
+   curl_handle = curl_easy_init();
    StartGUI();
+   curl_easy_cleanup(curl_handle);
+   curl_global_cleanup();
    if (recording)
        end_recording();
 

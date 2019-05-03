@@ -1023,7 +1023,7 @@ beg:
        tried_curl = 1;
        do {
 	   dir = dlist[0].maindir;
-	   while (dir && IS_ROMOF(dir)) {
+	   while (dir && (IS_ROMOF(dir) || IS_CLONEOF(dir) || strchr(dir,'_'))) {
 	       dlist++;
 	       dir = dlist[0].maindir;
 	   }
@@ -1034,10 +1034,11 @@ beg:
 	       FILE *f = fopen(path,"wb");
 	       if (f) {
 		   fclose(f);
+		   unlink(path);
 		   break;
 	       }
 	   }
-	   sprintf(url,"https://archive.org/download/arcade_%s/%s.zip",dir,dir);
+	   sprintf(url,"http://archive.org/download/arcade_%s/%s.zip",dir,dir);
 	   printf("would try %s\n",url);
 	   char name[80];
 	   snprintf(name,80,_("Downloading %s.zip"),dir);

@@ -28,9 +28,8 @@
 #include <unistd.h>
 
 #include <curl/curl.h>
+#include <string.h>
 #include "gui.h" // load_progress
-
-static int check_header,header_error;
 
 static int progress_callback(void *clientp,
                              curl_off_t dltotal,
@@ -44,39 +43,26 @@ static int progress_callback(void *clientp,
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-    if (check_header) {
-	// nmemb < 2 should never happen, just print a warning
-	if (nmemb < 2) printf("should check 2 bytes, got %d bytes\n",nmemb);
-	check_header = 0;
-	char *hdr = (char*)ptr;
-	if (hdr[0] != 0x50 || hdr[1] != 0x4b) { // zip signature : PK
-	    header_error = 1;
-	    return -1;
-	}
-    }
     size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
     return written;
 }
 
+extern CURL *curl_handle;
+
 int get_url(char *file, char *url)
 {
-  CURL *curl_handle;
   FILE *pagefile;
   int ret;
 
-  curl_global_init(CURL_GLOBAL_ALL);
-
-  /* init the curl session */
-  curl_handle = curl_easy_init();
+  // All the init stuff is taken care in raine.c, so that the connection can be re-used
+  // internet archive is sadly regularly slow, it has a heavy traffic clearly so we use
+  // all we can to speed up the transfer... !
 
   /* set URL to get here */
   curl_easy_setopt(curl_handle, CURLOPT_URL, url);
 
   /* Switch on full protocol/debug output while testing */
   curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 0L);
-
-  /* disable progress meter, set to 0L to enable and disable debug output */
-  curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
 
   /* send all data to this function  */
   curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, write_data);
@@ -85,14 +71,22 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_XFERINFODATA, NULL);
   curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
   curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
+  curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 1);
 
-  check_header = 1;
-  header_error = 0;
   /* open the file */
+  ret = curl_easy_perform(curl_handle);
+  char *ct = "";
+  if (ret == CURLE_OK)
+      curl_easy_getinfo(curl_handle,CURLINFO_CONTENT_TYPE,&ct);
+  if (strcmp(ct,"application/zip")) {
+      printf("curl: didn't get application/zip, aborting...\n");
+      return 1;
+  }
+  curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 0);
+
   pagefile = fopen(file, "wb");
   if(pagefile) {
 
-    /* write the page body to this file handle */
     curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, pagefile);
 
     /* get it! */
@@ -100,13 +94,7 @@ int get_url(char *file, char *url)
 
     /* close the header file */
     fclose(pagefile);
-    if (header_error) unlink(file);
   }
-
-  /* cleanup curl stuff */
-  curl_easy_cleanup(curl_handle);
-
-  curl_global_cleanup();
 
   return ret;
 }
