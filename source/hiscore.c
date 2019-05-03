@@ -21,6 +21,8 @@ Taken from xmame 37b7.1
 #endif
 
 static char *db_filename = "hiscore.dat"; /* high score definition file */
+static UINT32 adr_check[3];
+static int ncheck;
 
 static struct
 {
@@ -53,6 +55,8 @@ static void copy_to_memory (int cpu, int addr, const UINT8 *source, int num_byte
 	for (i=0; i<num_bytes; i++)
 	{
 		computer_writemem_byte (cpu, addr+i, source[i]);
+		if (source[i] && ncheck < 3)
+		    adr_check[ncheck++] = addr+i;
 	}
 }
 
@@ -261,6 +265,7 @@ void hs_open ()
   FILE *f;
   f = fopen (get_shared(db_filename), "r");
   state.mem_range = NULL;
+  ncheck = 0;
 
   if (f)
     {
@@ -372,6 +377,16 @@ void hs_update (void)
 	  } else {
 	    LOG("not safe\n");
 	  }
+	} else if (ncheck == 3) {
+	    int nzero = 0;
+	    for (int n=0; n<3; n++) {
+		if (gen_cpu_read_byte(adr_check[n]) == 0)
+		    nzero++;
+	    }
+	    if (nzero == 3) { // area was cleared, probably in service mode...
+		state.hiscores_have_been_loaded = 0;
+		ncheck = 0;
+	    }
 	}
     }
 }
