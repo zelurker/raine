@@ -1038,7 +1038,12 @@ beg:
 		   break;
 	       }
 	   }
-	   sprintf(url,"http://archive.org/download/arcade_%s/%s.zip",dir,dir);
+	   if (!strcmp(dir,"neogeo"))
+	       // neogeo is in all the roms directories, there is probably a redirect
+	       // or space is not an issue... !
+	       sprintf(url,"http://archive.org/download/arcade_2020bb/%s.zip",dir);
+	   else
+	       sprintf(url,"http://archive.org/download/arcade_%s/%s.zip",dir,dir);
 	   printf("would try %s\n",url);
 	   char name[80];
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
