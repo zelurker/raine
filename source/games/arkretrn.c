@@ -10,6 +10,7 @@
 #include "tc200obj.h"
 #include "savegame.h"           // save/load game routines
 #include "sasound.h"
+// #include "files.h"
 
 
 static struct ROM_INFO rom_arkretrn[] =
@@ -17,19 +18,18 @@ static struct ROM_INFO rom_arkretrn[] =
    {	   "e36.01", 0x00040000, 0x54b9b2cd, 0, 0, 0, },
    {	   "e36.02", 0x00040000, 0x694eda31, 0, 0, 0, },
    {	   "e36.03", 0x00040000, 0x1ea8558b, 0, 0, 0, },
-   {	   "e36.04", 0x00200000, 0x2250959b, 0, 0, 0, },
+   {	   "e36.04", 0x00200000, 0x2250959b, REGION_SOUND1, 0, LOAD_BE, },
    {	   "e36.05", 0x00080000, 0xdb18bce2, 0, 0, 0, },
    {	   "e36.06", 0x00080000, 0x110ab729, 0, 0, 0, },
    {	   "e36.07", 0x00080000, 0x266bf1c1, 0, 0, 0, },
-   {	   "e36.08", 0x00040000, 0xaa699e1b, 0, 0, 0, },
-   {	   "e36.09", 0x00040000, 0xf16985e0, 0, 0, 0, },
-   {	   "e36.10", 0x00040000, 0xc940dba1, 0, 0, 0, },
-   {	   "e36.11", 0x00040000, 0xb50cfb92, 0, 0, 0, },
+   { "e36-11.20", 0x040000, 0xb50cfb92, REGION_CPU1, 0x000000, LOAD_8_32 },
+   { "e36-10.19", 0x040000, 0xc940dba1, REGION_CPU1, 0x000001, LOAD_8_32 },
+   { "e36-09.18", 0x040000, 0xf16985e0, REGION_CPU1, 0x000002, LOAD_8_32 },
+   { "e36-08.17", 0x040000, 0xaa699e1b, REGION_CPU1, 0x000003, LOAD_8_32 },
    {	   "e36.12", 0x00040000, 0x3bae39be, REGION_ROM2, 0x000000, LOAD_8_16, },
    {	   "e36.13", 0x00040000, 0x94448e82, REGION_ROM2, 0x000001, LOAD_8_16, },
    {	       NULL,	      0,	  0, 0, 0, 0, },
 };
-
 
 static struct ROMSW_DATA romsw_data_arkanoid_returns_0[] =
 {
@@ -159,8 +159,6 @@ static void load_arkretrn(void)
    // Setup 68020 Memory Map
    // ----------------------
 
-   AddF3MemoryMap(0x100000);
-
    RAM_BG0=RAM+0x30000;
    RAM_BG1=RAM+0x32000;
    RAM_BG2=RAM+0x34000;
@@ -181,27 +179,13 @@ static void load_arkretrn(void)
    SCR2_YOFS=0xFF80;
    SCR3_YOFS=0xFF80;
 
-   if(!load_rom("e36.11", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+0]=RAM[ta];
-   }
-   if(!load_rom("e36.10", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+1]=RAM[ta];
-   }
-   if(!load_rom("e36.09", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+2]=RAM[ta];
-   }
-   if(!load_rom("e36.08", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+3]=RAM[ta];
-   }
+   FreeMem(ROM);
+   ROM = load_region[REGION_CPU1];
+   // load_file("/home/manu/.raine/debug/ROM.bin",ROM,get_region_size(REGION_ROM1));
+   AddF3MemoryMap(0x100000);
 
    // 68000 code
    M68000ROM = load_region[REGION_ROM2];
-   if(!(PCMROM=AllocateMem(0x400000))) return;
-   load_be("e36.04",PCMROM+0x000000,0x200000);
    max_banks_this_game=1;
 
    memset(RAM+0x00000,0x00,0x80000);
