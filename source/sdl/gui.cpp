@@ -131,8 +131,7 @@ void load_progress(char *rom,int count)
 
 void setup_curl_dlg(char *name) {
     load_items[3].label = name;
-    SDL_Rect r = { 0, 0, sdl_screen->w, sdl_screen->h };
-    loading_dialog->update_bg_layer(&r);
+    loading_dialog->update_bg_layer(NULL);
     delete loading_dialog;
     loading_dialog = new TDialog(_("Loading Game"),load_items);
     loading_dialog->draw();

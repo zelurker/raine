@@ -1003,34 +1003,27 @@ void TMenu::update_fg_layer(int nb_to_update) {
 
 void TMenu::update_bg_layer(SDL_Rect *region) {
   SDL_Rect tmp;
+  if (region) tmp = *region; // otherwise SDL_BlitSurface changes region
+  else tmp = { 0, 0, (Uint16)sdl_screen->w, (Uint16)sdl_screen->h };
   if (bgdst.w == 0 || bgdst.h == 0) {
       // In case a messagebox of error is displayed at the very start
       // of the program, then bgdst can be null (dialog)
       // or a loading progress dialog at start
-      if (region)
-	  boxColor(sdl_screen,region->x,region->y,region->x+region->w-1,
-		  region->y+region->h-1,mymakecol(0,0,0));
+      boxColor(sdl_screen,tmp.x,tmp.y,tmp.x+tmp.w-1,
+	      tmp.y+tmp.h-1,mymakecol(0,0,0));
       return;
   }
-  if (region) {
-    tmp = *region; // otherwise SDL_BlitSurface changes region
-    if (tmp.y < work_area.y) tmp.y = work_area.y;
-    if (tmp.y+tmp.h > work_area.y+work_area.h)
+
+  if (tmp.y < work_area.y) tmp.y = work_area.y;
+  if (tmp.y+tmp.h > work_area.y+work_area.h)
       tmp.h = work_area.y+work_area.h - tmp.y;
-    if (tmp.h > 65000)
+  if (tmp.h > 65000)
       return;
-  }
   SDL_Rect src;
   if (!bg_layer) {
-    if (region) {
       boxColor(sdl_screen,tmp.x,tmp.y,tmp.x+tmp.w-1,
-	tmp.y+tmp.h-1,mymakecol(0,0,0));
-    } else {
-      SDL_FillRect(sdl_screen,&work_area,0);
-    }
-    return;
-  } else if (!region) {
-    tmp = work_area;
+	      tmp.y+tmp.h-1,mymakecol(0,0,0));
+      return;
   }
   if (bgdst.x > tmp.x) {
     // Normally it can't be out in x and y at the same time
