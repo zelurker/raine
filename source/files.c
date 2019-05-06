@@ -92,7 +92,7 @@ char *get_shared(char *name) {
   // Extreme case : when loading a neocd game we chdir to the game's directory
   // so current directory is lost, so we test the initial working directory
   // here... !
-  sprintf(shared, "%s" SLASH "%s", pwd,name);
+  snprintf(shared,FILENAME_MAX, "%s" SLASH "%s", pwd,name);
   return shared;
 }
 #endif

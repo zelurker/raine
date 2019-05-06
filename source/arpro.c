@@ -872,7 +872,7 @@ void update_arpro_cheats(void)
 	   char text[256];
 
 	   get_cheat_hex_value(ta,text);
-	   snprintf(text,256,"%s %s",text,CheatList[ta].info);
+	   snprintf(&text[strlen(text)],256-strlen(text)," %s",CheatList[ta].info);
 	   textout_fast(text,x+current_game->video->border_size,
 			y+current_game->video->border_size,
 			get_white_pen());

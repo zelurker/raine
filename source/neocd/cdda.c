@@ -118,7 +118,7 @@ static int cdda_play(int track,int loop)
   if (!str3) {
       if (get_cd_load_type() != IPL_TYPE) {
 	  // Guess the file, but not when reading directly the files !!!
-	  sprintf(str,"%s%sneocd.mp3",neocd_dir,SLASH);
+	  snprintf(str,FILENAME_MAX,"%s%sneocd.mp3",neocd_dir,SLASH);
 	  strcpy(str2,"xx.mp3");
 	  str2[0]=(((track)/10)%10)+48;
 	  str2[1]=((track)%10)+48;

@@ -82,7 +82,7 @@ static menu_item_t *get_savegames(int for_saving) {
       if (!strnicmp(entry->d_name,current_game->main_name,len)) {
 	char fpath[1024];
 	int version = 0;
-	sprintf(fpath,"%s%s%s",fdir,SLASH,entry->d_name);
+	snprintf(fpath,1024,"%s%s%s",fdir,SLASH,entry->d_name);
 	gzFile fin = gzopen(fpath,"rb");
 	if (fin) {
 	  version = mgetl(fin);

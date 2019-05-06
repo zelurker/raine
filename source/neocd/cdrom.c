@@ -426,7 +426,7 @@ void init_load_type() {
       }
     } else { // if (f)
 	char error[4096];
-	sprintf(error,_("The file '%s' can't be loaded"),neocd_path);
+	snprintf(error,4096,_("The file '%s' can't be loaded"),neocd_path);
 	MessageBox(gettext("Error"),error,gettext("ok"));
     }
   } else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"iso")) {
@@ -499,7 +499,7 @@ int get_size(char *filename) {
 	case IPL_TYPE:
 		       if (!strchr(filename,SLASH[0])) {
 			   char file[1024];
-			   sprintf(file,"%s%s%s",neocd_dir,SLASH,filename);
+			   snprintf(file,1024,"%s%s%s",neocd_dir,SLASH,filename);
 			   size = size_file(file);
 			   break;
 		       }
@@ -678,7 +678,7 @@ static int load_neocd_file(char *name, UINT8 *dest, int size) {
     case IPL_TYPE:
 		   if (!strchr(name,SLASH[0])) {
 		     char file[1024];
-		     sprintf(file,"%s%s%s",neocd_dir,SLASH,name);
+		     snprintf(file,1024,"%s%s%s",neocd_dir,SLASH,name);
 		     ret = load_file_off(file,dest,offset,size);
 		   } else
 		     ret = load_file_off(name,dest,offset,size);

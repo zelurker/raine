@@ -3323,9 +3323,9 @@ static void ExecCode()
 		fprintf(fp, "		global	%sexec\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sexec", cpubasename);
+		snprintf(string,150, "%sexec", cpubasename);
 	else
-		sprintf(string, "%sexec_", cpubasename);
+		snprintf(string,150, "%sexec_", cpubasename);
 	ProcBegin(string, 0xffffffff);
 
 	fprintf(fp, "_%sexec:\n", cpubasename);
@@ -3441,9 +3441,9 @@ static void CpuInit()
 	fprintf(fp, "		global	%sinit_\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sinit", cpubasename);
+		snprintf(string,150, "%sinit", cpubasename);
 	else
-		sprintf(string, "%sinit_", cpubasename);
+		snprintf(string,150, "%sinit_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 	fprintf(fp, "_%sinit:\n", cpubasename);
@@ -3459,9 +3459,9 @@ static void NmiCode()
 	fprintf(fp, "		global	%snmi\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%snmi", cpubasename);
+		snprintf(string,150, "%snmi", cpubasename);
 	else
-		sprintf(string, "%snmi_", cpubasename);
+		snprintf(string,150, "%snmi_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 
@@ -3508,9 +3508,9 @@ static void IntCode()
 	fprintf(fp, "		global	%sint\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sint", cpubasename);
+		snprintf(string,150, "%sint", cpubasename);
 	else
-		sprintf(string, "%sint_", cpubasename);
+		snprintf(string,150, "%sint_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 
@@ -3568,9 +3568,9 @@ static void GetTicksCode()
 	fprintf(fp, "		global	%sGetElapsedTicks_\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sGetElapsedTicks", cpubasename);
+		snprintf(string,150, "%sGetElapsedTicks", cpubasename);
 	else
-		sprintf(string, "%sGetElapsedTicks_", cpubasename);
+		snprintf(string,150, "%sGetElapsedTicks_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 
@@ -3600,9 +3600,9 @@ static void ReleaseTimesliceCode()
 	  fprintf(fp, "		global	%sReleaseTimeslice_\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sReleaseTimeslice", cpubasename);
+		snprintf(string,150, "%sReleaseTimeslice", cpubasename);
 	else
-		sprintf(string, "%sReleaseTimeslice_", cpubasename);
+		snprintf(string,150, "%sReleaseTimeslice_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 
@@ -3621,9 +3621,9 @@ static void ResetCode()
 	fprintf(fp, "		global	%sreset\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sreset", cpubasename);
+		snprintf(string,150, "%sreset", cpubasename);
 	else
-		sprintf(string, "%sreset_", cpubasename);
+		snprintf(string,150, "%sreset_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 
@@ -3652,9 +3652,9 @@ static void SetContextCode()
 	fprintf(fp, "		global	%sSetContext\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sSetContext", cpubasename);
+		snprintf(string,150, "%sSetContext", cpubasename);
 	else
-		sprintf(string, "%sSetContext_", cpubasename);
+		snprintf(string,150, "%sSetContext_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 	fprintf(fp, "_%sSetContext:\n", cpubasename);
@@ -3683,9 +3683,9 @@ static void GetContextCode()
 	fprintf(fp, "		global	%sGetContext\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sGetContext", cpubasename);
+		snprintf(string,150, "%sGetContext", cpubasename);
 	else
-		sprintf(string, "%sGetContext_", cpubasename);
+		snprintf(string,150, "%sGetContext_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 
@@ -3715,9 +3715,9 @@ static void GetContextSizeCode()
 	fprintf(fp, "		global	%sGetContextSize\n", cpubasename);
 
 	if (bPlain)
-		sprintf(string, "%sGetContextSize", cpubasename);
+		snprintf(string,150, "%sGetContextSize", cpubasename);
 	else
-		sprintf(string, "%sGetContextSize_", cpubasename);
+		snprintf(string,150, "%sGetContextSize_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
 	fprintf(fp, "_%sGetContextSize:\n", cpubasename);

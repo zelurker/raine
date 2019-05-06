@@ -100,7 +100,7 @@ static int do_update_block(int sel) {
     FILE *fmap = fopen(map,"rb");
     if (!fmap) {
       char error[256];
-      sprintf(error,"no map %s",map);
+      snprintf(error,256,"no map %s",map);
       MessageBox(_("Error"),error);
       return 0;
     }

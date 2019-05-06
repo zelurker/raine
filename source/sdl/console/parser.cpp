@@ -183,7 +183,7 @@ int parse(char *orig)
       s++;
     }
     char buff2[1024];
-    sprintf(buff2,"%s%d%s",expr,res,s);
+    snprintf(buff2,1024,"%s%d%s",expr,res,s);
     strcpy(expr,buff2); // obliged to use another string for the sprintf
   }
 

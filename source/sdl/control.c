@@ -641,26 +641,26 @@ void load_game_keys(char *section)
 	sprintf(key_name,"%s",def_input[InputList[ta].default_key-0x100].name);
 	no_spaces(key_name);
 	InputList[ta].Key = raine_get_config_int(section,key_name,InputList[ta].Key);
-	sprintf(other_name,"%s_joystick",key_name);
+	snprintf(other_name,64,"%s_joystick",key_name);
 	InputList[ta].Joy = raine_get_config_int(section,other_name,InputList[ta].Joy);
-	sprintf(other_name,"%s_mouse",key_name);
+	snprintf(other_name,64,"%s_mouse",key_name);
 	InputList[ta].mousebtn = raine_get_config_int(section,other_name,InputList[ta].mousebtn);
-	sprintf(other_name,"%s_auto_rate",key_name);
+	snprintf(other_name,64,"%s_auto_rate",key_name);
 	InputList[ta].auto_rate = raine_get_config_int(section,other_name,0);
-	sprintf(other_name,"%s_link",key_name);
+	snprintf(other_name,64,"%s_link",key_name);
 	link = raine_get_config_int(section,other_name,0);
 	if (link) {
 	  printf("link from %d to %d\n",ta,link);
 	  InputList[ta].link = link;
 	  InputList[link] = InputList[ta];
 	  InputList[link].link = ta;
-	  sprintf(other_name,"%s_linked_key",key_name);
+	  snprintf(other_name,64,"%s_linked_key",key_name);
 	  InputList[link].Key = raine_get_config_int(section,other_name,0);
-	  sprintf(other_name,"%s_linked_joy",key_name);
+	  snprintf(other_name,64,"%s_linked_joy",key_name);
 	  InputList[link].Joy = raine_get_config_int(section,other_name,0);
-	  sprintf(other_name,"%s_linked_mouse",key_name);
+	  snprintf(other_name,64,"%s_linked_mouse",key_name);
 	  InputList[link].mousebtn = raine_get_config_int(section,other_name,0);
-	  sprintf(other_name,"%s_linked_auto_rate",key_name);
+	  snprintf(other_name,64,"%s_linked_auto_rate",key_name);
 	  InputList[link].auto_rate = raine_get_config_int(section,other_name,0);
 	  // Different name to allow it to be assigned !
 	  char s[120];
@@ -703,35 +703,35 @@ void save_game_keys(char *section)
 	 if (InputList[ta].Key != def_input[InputList[ta].default_key & 0xff].scancode)
 	   raine_set_config_int(section,key_name,InputList[ta].Key);
 	 if (InputList[ta].Joy != def_input[InputList[ta].default_key & 0xff].joycode) {
-	   sprintf(other_name,"%s_joystick",key_name);
+	   snprintf(other_name,64,"%s_joystick",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].Joy);
 	 }
 
 	 if (InputList[ta].mousebtn != def_input[InputList[ta].default_key & 0xff].mousebtn) {
-	   sprintf(other_name,"%s_mouse",key_name);
+	   snprintf(other_name,64,"%s_mouse",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].mousebtn);
 	 }
 	 if (InputList[ta].auto_rate) {
-	   sprintf(other_name,"%s_auto_rate",key_name);
+	   snprintf(other_name,64,"%s_auto_rate",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].auto_rate);
 	 }
 	 if (InputList[ta].link > ta) {
 	   int link = InputList[ta].link;
-	   sprintf(other_name,"%s_link",key_name);
+	   snprintf(other_name,64,"%s_link",key_name);
 	   raine_set_config_int(section,other_name,link);
 	   if (InputList[link].Key) {
-	     sprintf(other_name,"%s_linked_key",key_name);
+	     snprintf(other_name,64,"%s_linked_key",key_name);
 	     raine_set_config_int(section,other_name,InputList[link].Key);
 	   }
 	   if (InputList[link].Joy) {
-	     sprintf(other_name,"%s_linked_joy",key_name);
+	     snprintf(other_name,64,"%s_linked_joy",key_name);
 	     raine_set_config_int(section,other_name,InputList[link].Joy);
 	   }
 	   if (InputList[link].mousebtn) {
-	     sprintf(other_name,"%s_linked_mouse",key_name);
+	     snprintf(other_name,64,"%s_linked_mouse",key_name);
 	     raine_set_config_int(section,other_name,InputList[link].mousebtn);
 	   }
-	   sprintf(other_name,"%s_linked_auto_rate",key_name);
+	   snprintf(other_name,64,"%s_linked_auto_rate",key_name);
 	   raine_set_config_int(section,other_name,InputList[link].auto_rate);
 	 }
       }
@@ -786,9 +786,9 @@ void load_default_keys(char *section)
       sprintf(key_name,"%s",def_input[ta].name);
       no_spaces(key_name);
       def_input[ta].scancode = raine_get_config_int(section,key_name,def_input[ta].scancode);
-      sprintf(other_name,"%s_joystick",key_name);
+      snprintf(other_name,64,"%s_joystick",key_name);
       def_input[ta].joycode = raine_get_config_int(section,other_name,def_input[ta].joycode);
-      sprintf(other_name,"%s_mouse",key_name);
+      snprintf(other_name,64,"%s_mouse",key_name);
       def_input[ta].mousebtn = raine_get_config_int(section,other_name,def_input[ta].mousebtn);
 
    }
@@ -821,9 +821,9 @@ void save_default_keys(char *section)
       no_spaces(key_name);
       if (*key_name) {
 	  raine_set_config_int(section,key_name,def_input[ta].scancode);
-	  sprintf(other_name,"%s_joystick",key_name);
+	  snprintf(other_name,64,"%s_joystick",key_name);
 	  raine_set_config_int(section,other_name,def_input[ta].joycode);
-	  sprintf(other_name,"%s_mouse",key_name);
+	  snprintf(other_name,64,"%s_mouse",key_name);
 	  raine_set_config_int(section,other_name,def_input[ta].mousebtn);
       }
    }

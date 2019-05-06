@@ -3935,8 +3935,8 @@ void PushPopOperationsIndexed(UINT32 dwOpcode)
 	char bRegBaseMsb[25];
 	char string[150];
 
-	sprintf(bRegBaseLsb, "byte [_z80%s]", mz80Index);
-	sprintf(bRegBaseMsb, "byte [_z80%s + 1]", mz80Index);
+	snprintf(bRegBaseLsb,25, "byte [_z80%s]", mz80Index);
+	snprintf(bRegBaseMsb,25, "byte [_z80%s + 1]", mz80Index);
 
 	sprintf(string, "[_z80%s]", mz80Index);
 
@@ -4067,7 +4067,7 @@ void GetTicksCode(void)
 	fprintf(fp, "           global  %sGetElapsedTicks\n", cpubasename);
 
 	Alignment();
-	sprintf(procname, "%sGetElapsedTicks_", cpubasename);
+	snprintf(procname,150, "%sGetElapsedTicks_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%sGetElapsedTicks:\n", cpubasename);
 	fprintf(fp, "%sGetElapsedTicks:\n", cpubasename);
@@ -4092,7 +4092,7 @@ void ReleaseTimesliceCode(void)
 	fprintf(fp, "           global  %sReleaseTimeslice\n", cpubasename);
 
 	Alignment();
-	sprintf(procname, "%sReleaseTimeslice_", cpubasename);
+	snprintf(procname,150, "%sReleaseTimeslice_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%sReleaseTimeslice:\n", cpubasename);
 	fprintf(fp, "%sReleaseTimeslice:\n", cpubasename);
@@ -4519,7 +4519,7 @@ void EmitRegularInstructions(void)
 	while (dwLoop < 0x100)
 	{
 		dwLoop2 = 0;
-		sprintf(procname, "RegInst%.2x", (UINT8) dwLoop);
+		snprintf(procname,150, "RegInst%.2x", (UINT8) dwLoop);
 
 		while (StandardOps[dwLoop2].bOpCode != dwLoop && StandardOps[dwLoop2].bOpCode != 0xffffffff)
 			dwLoop2++;
@@ -4542,7 +4542,7 @@ void EmitCBInstructions(void)
 
 	while (dwLoop < 0x100)
 	{
-		sprintf(procname, "CBInst%.2x", (UINT8) dwLoop);
+		snprintf(procname,150, "CBInst%.2x", (UINT8) dwLoop);
 		dwLoop2 = 0;
 
 		while (CBOps[dwLoop2].bOpCode != dwLoop && CBOps[dwLoop2].bOpCode != 0xffffffff)
@@ -4565,7 +4565,7 @@ void EmitEDInstructions(void)
 
 	while (dwLoop < 0x100)
 	{
-		sprintf(procname, "EDInst%.2x", (UINT8) dwLoop);
+		snprintf(procname,150, "EDInst%.2x", (UINT8) dwLoop);
 		dwLoop2 = 0;
 
 		while (EDOps[dwLoop2].bOpCode != dwLoop && EDOps[dwLoop2].bOpCode != 0xffffffff)
@@ -4588,7 +4588,7 @@ void EmitDDInstructions(void)
 
 	while (dwLoop < 0x100)
 	{
-		sprintf(procname, "DDInst%.2x", (UINT8) dwLoop);
+		snprintf(procname,150, "DDInst%.2x", (UINT8) dwLoop);
 		dwLoop2 = 0;
 
 		while (DDFDOps[dwLoop2].bOpCode != dwLoop && DDFDOps[dwLoop2].bOpCode != 0xffffffff)
@@ -4607,7 +4607,7 @@ void EmitDDInstructions(void)
 
 	while (dwLoop < 0x100)
 	{
-		sprintf(procname, "DDFDCBInst%.2x", (UINT8) dwLoop);
+		snprintf(procname,150, "DDFDCBInst%.2x", (UINT8) dwLoop);
 		dwLoop2 = 0;
 
 		while (DDFDCBOps[dwLoop2].bOpCode != dwLoop && DDFDCBOps[dwLoop2].bOpCode != 0xffffffff)
@@ -4630,7 +4630,7 @@ void EmitFDInstructions(void)
 
 	while (dwLoop < 0x100)
 	{
-		sprintf(procname, "FDInst%.2x", (UINT8) dwLoop);
+		snprintf(procname,150, "FDInst%.2x", (UINT8) dwLoop);
 		dwLoop2 = 0;
 
 		while (DDFDOps[dwLoop2].bOpCode != dwLoop && DDFDOps[dwLoop2].bOpCode != 0xffffffff)
@@ -4963,7 +4963,7 @@ void ExecCode(void)
 	if (bPlain)
 		fprintf(fp, "           global  %sexec\n", cpubasename);
 
-	sprintf(procname, "%sexec_", cpubasename);
+	snprintf(procname,150, "%sexec_", cpubasename);
 	ProcBegin(0xffffffff);
 
 	fprintf(fp, "_%sexec:\n", cpubasename);
@@ -5216,7 +5216,7 @@ void SetStopAtIntEnd(void)
 	if (bPlain)
 		fprintf(fp, "           global  %s_set_stop_at_int_end\n", cpubasename);
 
-	sprintf(procname, "%s_set_stop_at_int_end_", cpubasename);
+	snprintf(procname,150, "%s_set_stop_at_int_end_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%s_set_stop_at_int_end:\n", cpubasename);
 
@@ -5235,7 +5235,7 @@ void NmiCode(void)
 	if (bPlain)
 		fprintf(fp, "           global  %snmi\n", cpubasename);
 
-	sprintf(procname, "%snmi_", cpubasename);
+	snprintf(procname,150, "%snmi_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%snmi:\n", cpubasename);
 
@@ -5327,7 +5327,7 @@ void IntCode(void)
 	if (bPlain)
 		fprintf(fp, "           global  %sint\n", cpubasename);
 
-	sprintf(procname, "%sint_", cpubasename);
+	snprintf(procname,150, "%sint_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%sint:\n", cpubasename);
 
@@ -5424,7 +5424,7 @@ void ResetCode(void)
 
 	if (bPlain)
 		fprintf(fp, "           global  %sreset\n", cpubasename);
-	sprintf(procname, "%sreset_", cpubasename);
+	snprintf(procname,150, "%sreset_", cpubasename);
 	ProcBegin(0xffffffff);
 
 	fprintf(fp, "_%sreset:\n", cpubasename);
@@ -5470,7 +5470,7 @@ void SetContextCode(void)
 	if (bPlain)
 		fprintf(fp, "           global  %sSetContext\n", cpubasename);
 
-	sprintf(procname, "%sSetContext_", cpubasename);
+	snprintf(procname,150, "%sSetContext_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%sSetContext:\n", cpubasename);
 
@@ -5505,7 +5505,7 @@ void GetContextCode(void)
 	if (bPlain)
 		fprintf(fp, "           global  %sGetContext\n", cpubasename);
 
-	sprintf(procname, "%sGetContext_", cpubasename);
+	snprintf(procname,150, "%sGetContext_", cpubasename);
 	ProcBegin(0xffffffff);
 	fprintf(fp, "_%sGetContext:\n", cpubasename);
 
@@ -5540,7 +5540,7 @@ void GetContextSizeCode(void)
 	if (bPlain)
 		fprintf(fp, "           global  %sGetContextSize\n", cpubasename);
 
-	sprintf(procname, "%sGetContextSize_", cpubasename);
+	snprintf(procname,150, "%sGetContextSize_", cpubasename);
 	ProcBegin(0xffffffff);
 
 	fprintf(fp, "_%sGetContextSize:\n", cpubasename);

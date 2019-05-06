@@ -823,8 +823,9 @@ static void DrawGalPanic(void)
      MAP_PALETTE_MAPPED_NEW(0, 512, map);
      for (x=0; x<256; x++)
        transp[x] = (ReadWord(&RAM_PAL[x<<1]) & 1);
-   } else
+   } else {
      MAP_PALETTE_MAPPED_NEW(0, 512, map);
+   }
 
 
    //-----------------------------------------------------------------------------

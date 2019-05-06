@@ -270,7 +270,7 @@ int load_neo_from_name(char *res) {
   char *s = strrchr(neocd_dir,SLASH[0]);
   if (!s) {
       getcwd(neocd_dir,FILENAME_MAX);
-      sprintf(neocd_path,"%s%s%s",neocd_dir,SLASH,res);
+      snprintf(neocd_path,FILENAME_MAX,"%s%s%s",neocd_dir,SLASH,res);
   } else
       *s = 0; // neocd_dir without ending slash
   print_debug("load_neo_from_name: file %s neocd_dir %s\n",neocd_path,neocd_dir);

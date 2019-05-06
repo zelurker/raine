@@ -845,7 +845,7 @@ int do_about(int sel) {
 #endif
     about_items[2].label = gcc_version;
     path = get_shared("bitmaps/raine_logo.png");
-    sprintf(about_cpu, "CPU: %s", raine_cpu_model);
+    snprintf(about_cpu, 64, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
     char about_sdl[80];
 #if HAS_NEO
