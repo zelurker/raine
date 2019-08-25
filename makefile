@@ -1178,7 +1178,7 @@ ifndef SDL
 endif
 endif
 ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
-	@echo using system SDL_sound (check that it uses libmpg123)...
+	@echo "using system SDL_sound (check that it uses libmpg123)..."
 else
 	@echo using local static SDL_sound
 endif
