@@ -1027,6 +1027,7 @@ beg:
 	       dlist++;
 	       dir = dlist[0].maindir;
 	   }
+	   if (!dir) break;
 
 	   // Then find a writable rom dir if there is one
 	   for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
