@@ -26,6 +26,7 @@
 #endif
 #include "ingame.h"
 #include "7z.h"
+#include "sdl/dialogs/messagebox.h"
 
 // cdrom_speed : used only for the speed of the loading animations
 int cdrom_speed;

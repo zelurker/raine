@@ -6,6 +6,7 @@
 #include "cpumain.h"
 #include "neocd/neocd.h"
 #include "files.h"
+#include "sdl/dialogs/messagebox.h"
 
 static menu_item_t menu[14]; // 14 soft dips max
 

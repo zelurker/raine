@@ -12,6 +12,7 @@
 #include "68000/starhelp.h"
 #include "neo_softdips.h"
 #include "neo_debug_dips.h"
+#include "sdl/dialogs/messagebox.h"
 
 static char *neo_names[] =
 {

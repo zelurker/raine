@@ -379,7 +379,8 @@ void hs_update (void)
 	  }
 	} else if (ncheck == 3) {
 	    int nzero = 0;
-	    for (int n=0; n<3; n++) {
+	    int n;
+	    for (n=0; n<3; n++) {
 		if (gen_cpu_read_byte(adr_check[n]) == 0)
 		    nzero++;
 	    }
