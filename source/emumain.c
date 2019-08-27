@@ -168,11 +168,6 @@ UINT32 run_game_emulation(void)
    // For neocd, video initialization is done BEFORE loading
    print_debug("Init Screen Buffer...\n");
    SetupScreenBitmap();
-   if (!display_cfg.video_mode && (sdl_screen->flags & SDL_OPENGL)) {
-       get_ogl_infos();
-       print_debug("new_set_gfx_mode: opengl ok, getting infos\n");
-       opengl_reshape(sdl_screen->w,sdl_screen->h);
-   }
 
    print_debug("Init Video Core...\n");
    init_video_core();

@@ -544,9 +544,12 @@ endif
 endif
 
 ifdef RAINE_DEBUG
-CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-format-truncation -Wno-write-strings -g -DRAINE_DEBUG
-CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-format-truncation -Wno-write-strings -g -DRAINE_DEBUG
-
+CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+ifndef RAINE_DOS
+    CFLAGS_MCU += -Wno-format-truncation
+    CFLAGS += -Wno-format-truncation
+endif
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
 # the 68020 core in dos. -Wno-trigraphs suppress some anoying warnings with
@@ -1042,7 +1045,8 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/math/matrix.o \
 	$(OBJDIR)/sdl/glsl.o \
-	$(OBJDIR)/sdl/profile.o
+	$(OBJDIR)/sdl/profile.o \
+	$(OBJDIR)/curl.o
 
 ifndef NO_ASM
 OBJS +=  $(OBJDIR)/sdl/gen_conv.o
@@ -1055,8 +1059,6 @@ OBJS +=	$(OBJDIR)/alleg/blit.o \
 	$(OBJDIR)/alleg/profile.o
 
 endif
-
-OBJS += $(OBJDIR)/curl.o
 
 ifdef STATIC
 LIBS = $(LIBS_STATIC)

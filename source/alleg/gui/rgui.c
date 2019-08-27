@@ -1236,7 +1236,7 @@ void prepare_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2
    alert_dialog[A_S1].y = alert_dialog[0].y + avg_h;
    alert_dialog[A_S2].y = alert_dialog[0].y + avg_h*2;
    alert_dialog[A_S3].y = alert_dialog[0].y + avg_h*3;
-   alert_dialog[A_S1].h = alert_dialog[A_S2].h = alert_dialog[A_S2].h = avg_h;
+   alert_dialog[A_S1].h = alert_dialog[A_S2].h = avg_h;
 
    alert_dialog[A_B1].y = alert_dialog[A_B2].y = alert_dialog[A_B3].y =
 						alert_dialog[0].y + avg_h*5;

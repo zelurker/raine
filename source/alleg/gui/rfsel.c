@@ -639,6 +639,7 @@ static int fs_flist_proc(int msg, DIALOG *d, int c)
 
       replace_filename(flist->dir, s, uconvert_ascii("*.*", tmp), sizeof(flist->dir));
 
+      // for_each_file is deprecated, but it's an allegro function and we don't update allegro anymore, luckily !
       for_each_file(flist->dir, FA_RDONLY | FA_DIREC | FA_ARCH | FA_HIDDEN | FA_SYSTEM, fs_flist_putter, 0);
 
       if (*allegro_errno)

@@ -14,6 +14,7 @@
 #include "emumain.h"
 #include "streams.h"
 #include "dac.h"
+#include <math.h>
 
 /* This hardware is a nuisance :
  * a 68705 used only for protection, it doesn't even access any input, + its synchronization is weird, and it obliged me to patch a bug in the 68705 recompiler.

@@ -17,7 +17,9 @@
 #include "6502/m6502hlp.h"
 #endif
 #include "7z.h"
+#ifdef SDL
 #include "curl.h"
+#endif
 
 #undef _
 #define _(string) gettext(string)
@@ -921,9 +923,11 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
    const ROM_INFO *rom_list;
    UINT32     ta,tb,tc;
    int found;
+#ifdef SDL
    int tried_curl = 0;
 
 beg:
+#endif
    if (activate_continue) {
        if (remaining_size >= size) {
 	   memcpy(dest,remaining_b,size);
@@ -1008,6 +1012,7 @@ beg:
 
    }
 
+#ifdef SDL
    if (!ta && !tried_curl) {
        // Curl then...
        // 1st idea was to put that at the end of recursive_rom_load
@@ -1061,6 +1066,7 @@ beg:
        if (dir)
 	   goto beg;
    }
+#endif
 
    // Error Logging
 

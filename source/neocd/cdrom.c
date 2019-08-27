@@ -20,13 +20,13 @@
 #include "display.h"
 #ifndef RAINE_DOS
 #include "display_sdl.h"
+#include "sdl/dialogs/messagebox.h"
 #else
 #include <ctype.h>
 #include "alleg/gui/rgui.h"
 #endif
 #include "ingame.h"
 #include "7z.h"
-#include "sdl/dialogs/messagebox.h"
 
 // cdrom_speed : used only for the speed of the loading animations
 int cdrom_speed;
@@ -262,7 +262,7 @@ void init_load_type() {
 	      if (!end) {
 		  char msg[1024];
 		  sprintf(msg,_("Serious cue format error on line %s"),orig);
-		  MessageBox(gettext("Error"),msg,gettext("OK"));
+		  ErrorMsg(msg);
 		  break;
 	      }
 	      start = buff + 5;
@@ -276,14 +276,14 @@ void init_load_type() {
 	      if (!start) {
 		  char msg[1024];
 		  sprintf(msg,_("cue format error on line : %s"),orig);
-		  MessageBox(gettext("Error"),msg,gettext("OK"));
+		  ErrorMsg(msg);
 		  break;
 	      }
 	  }
 	  if (!strncmp(end+2,"BINARY",6)) {
 	    char *path = strrchr(neocd_path,SLASH[0]);
 	    if (!path) {
-	      MessageBox(gettext("Error"),gettext("path format error"),gettext("OK"));
+	      ErrorMsg(gettext("path format error"));
 	      break;
 	    }
 	    strcpy(path+1,start+1);
@@ -305,7 +305,7 @@ void init_load_type() {
 		strcpy(&neocd_path[strlen(neocd_path)-3],ext);
 	    }
 	    if (!exists(neocd_path)) {
-		MessageBox(gettext("Error"),gettext("can't find iso file"),gettext("OK"));
+		ErrorMsg(gettext("can't find iso file"));
 		load_type = -1;
 		fclose(f);
 		return;
@@ -316,7 +316,7 @@ void init_load_type() {
 	      alloc_tracks += 10;
 	      mp3_track = realloc(mp3_track,alloc_tracks*sizeof(char**));
 	      if (!mp3_track) {
-		MessageBox(gettext("Error"),gettext("alloc error"),gettext("OK"));
+		ErrorMsg(gettext("alloc error"));
 		break;
 	      }
 	    }
@@ -343,7 +343,7 @@ void init_load_type() {
 	  } else {
 	    char msg[160];
 	    sprintf(msg,_("Track format unknown '%s'"),end+2);
-	    MessageBox(gettext("Error"),msg,gettext("OK"));
+	    ErrorMsg(msg);
 	    break;
 	  }
 	} else if ((s = strstr(buff,"TRACK "))) {
@@ -361,7 +361,7 @@ void init_load_type() {
 	  if (nb_indexes == alloc_indexes) {
 	    indexes = realloc(indexes,(alloc_indexes+10)*sizeof(int));
 	    if (!indexes) {
-	      MessageBox(gettext("Error"),gettext("indexes alloc error"),gettext("OK"));
+	      ErrorMsg(gettext("indexes alloc error"));
 	      break;
 	    }
 	    for (n=alloc_indexes; n<alloc_indexes+10; n++)
@@ -394,7 +394,7 @@ void init_load_type() {
 	  if (alloc_indexes < alloc_tracks) {
 	    indexes = realloc(indexes,alloc_tracks*sizeof(int));
 	    if (!indexes) {
-	      MessageBox(gettext("Error"),gettext("indexes alloc error"),gettext("OK"));
+	      ErrorMsg(gettext("indexes alloc error"));
 	      break;
 	    }
 	    for (n=alloc_indexes; n<alloc_tracks; n++)
@@ -414,7 +414,7 @@ void init_load_type() {
       } // feof
       fclose(f);
       if (!iso_sector_size) {
-	MessageBox(gettext("Error"),gettext("Could not determine sector size from\nthe cue file"),gettext("OK"));
+	ErrorMsg(gettext("Could not determine sector size from\nthe cue file"));
       } else {
 	if (nb_tracks) { // we MUST chdir to the cue directory in this case !
 	  char *path = strrchr(neocd_path,SLASH[0]);
@@ -428,7 +428,7 @@ void init_load_type() {
     } else { // if (f)
 	char error[4096];
 	snprintf(error,4096,_("The file '%s' can't be loaded"),neocd_path);
-	MessageBox(gettext("Error"),error,gettext("ok"));
+	ErrorMsg(error);
     }
   } else if (!stricmp(&neocd_path[strlen(neocd_path)-3],"iso")) {
     load_type = ISO_TYPE;
