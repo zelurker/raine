@@ -17,6 +17,9 @@ while (<F>) {
 	}
 }
 close(F);
+# Games included in multi15, not everything, some couldn't be found in history.dat !
+# But lots of clones there, so I guess it's normal.
+push @games,("hangly","eyes","crush","mspacmat","lizwiz");
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 $year += 1900;
 $mon++;
