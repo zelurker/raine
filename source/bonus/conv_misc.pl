@@ -3,8 +3,9 @@
 # Convert mostly what other scripts don't : WRITE_HANDLER syntax (horrible),
 # and GFX_LAYOUT mostly.
 
+use lib ".";
 use strict;
-use genres;
+use source::bonus::genres;
 
 $| = 1;
 my $cps2_mode;
@@ -95,7 +96,7 @@ while (<>) {
 		$company =~ s/"//g;
 		$company = uc($company);
 		my $genre;
-		my $genre = ($parent !~ /^(0|neogeo)$/ ? genres::get_genre($parent) : genres::get_genre($name));
+		my $genre = ($parent !~ /^(0|neogeo)$/ ? genres::get_genre($parent,$long_name) : genres::get_genre($name,$long_name));
 		if ($cps1_mode || $cps2_mode) {
 			if ($rot eq "ROT0") {
 				$rot = undef;
