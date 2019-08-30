@@ -529,7 +529,7 @@ static int warned;
 
 static void draw_emudx() {
   UINT8 code, color;
-  SCROLL_REGS
+  SCROLL_REGS;
   UINT8 *map,*gfx;
   int offs;
   int curlev = 0;
@@ -880,7 +880,7 @@ static void execute_dkong() {
 
 static void draw_dkong() {
   UINT8 code, color;
-  SCROLL_REGS
+  SCROLL_REGS;
   UINT8 *map,*gfx;
   int offs,sy;
 

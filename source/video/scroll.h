@@ -8,8 +8,8 @@ extern "C" {
 /*                                                                            */
 /******************************************************************************/
 
-#define SCROLL_REGS             \
-   int x,y,x16,y16,zzzz,zzz,zz; \
+#define SCROLL_REGS            \
+   int x,y,x16,y16,zzzz,zzz,zz
 
 #define MAKE_SCROLL_512x512_4_16_R(scr_x,scr_y) \
    zzz=~(scr_x);                                \
@@ -276,6 +276,138 @@ extern "C" {
 #define END_SCROLL_1024x1024_2_16() \
   END_SCROLL_n_16(1024,1024,2)
 
+#define DRAW_LAYER16(w,h,n,scrx,scry,col,spr)                                                                                                      \
+   MAKE_SCROLL_n_16(w,h,n,scrx,scry);                                                                                                              \
+   START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y); \
+      MAP_PALETTE_MAPPED_NEW(                                                                                                                      \
+         col,                                                                                                                                      \
+         16,                                                                                                                                       \
+         map                                                                                                                                       \
+      );                                                                                                                                           \
+      Draw16x16_Mapped_Rot(spr, x, y, map);                                                                                                        \
+   END_SCROLL_n_16(w,h,n);
+
+#define DRAW_LAYER16_flip(w,h,n,scrx,scry,col,spr,flip)                                                                                            \
+   MAKE_SCROLL_n_16(w,h,n,scrx,scry);                                                                                                              \
+   START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y); \
+      MAP_PALETTE_MAPPED_NEW(                                                                                                                      \
+         col,                                                                                                                                      \
+         16,                                                                                                                                       \
+         map                                                                                                                                       \
+      );                                                                                                                                           \
+      Draw16x16_Mapped_flip_Rot(spr, x, y, map,flip);                                                                                              \
+   END_SCROLL_n_16(w,h,n);
+
+#define DRAW_LAYER16_YX(w,h,n,scrx,scry,col,spr)                                                                                                   \
+   MAKE_SCROLL_n_16(w,h,n,scrx,scry);                                                                                                              \
+   START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_y,current_game->video->screen_x); \
+      MAP_PALETTE_MAPPED_NEW(                                                                                                                      \
+         col,                                                                                                                                      \
+         16,                                                                                                                                       \
+         map                                                                                                                                       \
+      );                                                                                                                                           \
+      Draw16x16_Mapped_Rot(spr, y, x, map);                                                                                                        \
+   END_SCROLL_n_16(w,h,n);
+
+#define DRAW_LAYER16_TR(w,h,n,scrx,scry,col,sprn,msk,gfx)                                                                                          \
+   MAKE_SCROLL_n_16(w,h,n,scrx,scry);                                                                                                              \
+   START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y); \
+                                                                                                                                                   \
+      ta = sprn;                                                                                                                                   \
+      if(msk[ta]){                                                                                                                                 \
+                                                                                                                                                   \
+         MAP_PALETTE_MAPPED_NEW(                                                                                                                   \
+            col,                                                                                                                                   \
+            16,                                                                                                                                    \
+            map                                                                                                                                    \
+         );                                                                                                                                        \
+                                                                                                                                                   \
+         if(msk[ta]==1){                        /* Some pixels; trans */                                                                           \
+            Draw16x16_Trans_Mapped_Rot(&gfx[ta<<8], x, y, map);                                                                                    \
+         }                                                                                                                                         \
+         else{                                                /* all pixels; solid */                                                              \
+            Draw16x16_Mapped_Rot(&gfx[ta<<8], x, y, map);                                                                                          \
+         }                                                                                                                                         \
+                                                                                                                                                   \
+      }                                                                                                                                            \
+                                                                                                                                                   \
+   END_SCROLL_n_16(w,h,n);
+
+#define DRAW_LAYER16_TR_flip(w,h,n,scrx,scry,col,sprn,msk,gfx,flip)                                                                                \
+   MAKE_SCROLL_n_16(w,h,n,scrx,scry);                                                                                                              \
+   START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y); \
+                                                                                                                                                   \
+      ta = sprn;                                                                                                                                   \
+      if(msk[ta]){                                                                                                                                 \
+                                                                                                                                                   \
+         MAP_PALETTE_MAPPED_NEW(                                                                                                                   \
+            col,                                                                                                                                   \
+            16,                                                                                                                                    \
+            map                                                                                                                                    \
+         );                                                                                                                                        \
+                                                                                                                                                   \
+         if(msk[ta]==1){                        /* Some pixels; trans */                                                                           \
+            Draw16x16_Trans_Mapped_flip_Rot(&gfx[ta<<8], x, y, map,flip);                                                                          \
+         }                                                                                                                                         \
+         else{                                                /* all pixels; solid */                                                              \
+            Draw16x16_Mapped_flip_Rot(&gfx[ta<<8], x, y, map,flip);                                                                                \
+         }                                                                                                                                         \
+                                                                                                                                                   \
+      }                                                                                                                                            \
+                                                                                                                                                   \
+   END_SCROLL_n_16(w,h,n);
+
+#define DRAW_LAYER16_TR_YX(w,h,n,scrx,scry,col,sprn,msk,gfx)                                                                                       \
+   MAKE_SCROLL_n_16(w,h,n,scrx,scry);                                                                                                              \
+   START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_y,current_game->video->screen_x); \
+                                                                                                                                                   \
+      ta = sprn;                                                                                                                                   \
+      if(msk[ta]){                                                                                                                                 \
+                                                                                                                                                   \
+         MAP_PALETTE_MAPPED_NEW(                                                                                                                   \
+            col,                                                                                                                                   \
+            16,                                                                                                                                    \
+            map                                                                                                                                    \
+         );                                                                                                                                        \
+                                                                                                                                                   \
+         if(msk[ta]==1){                        /* Some pixels; trans */                                                                           \
+            Draw16x16_Trans_Mapped_Rot(&gfx[ta<<8], y, x, map);                                                                                    \
+         }                                                                                                                                         \
+         else{                                                /* all pixels; solid */                                                              \
+            Draw16x16_Mapped_Rot(&gfx[ta<<8], y, x, map);                                                                                          \
+         }                                                                                                                                         \
+                                                                                                                                                   \
+      }                                                                                                                                            \
+                                                                                                                                                   \
+   END_SCROLL_n_16(w,h,n);
+#define DRAW_LAYER8_TR(w,h,n,scrx,scry,col,sprn,msk,gfx)                                                                                          \
+   MAKE_SCROLL_n_8(w,h,n,                                                                                                                         \
+       scrx,                                                                                                                                      \
+       scry                                                                                                                                       \
+   );                                                                                                                                             \
+                                                                                                                                                  \
+   START_SCROLL_8(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y); \
+                                                                                                                                                  \
+      ta = sprn;                                                                                                                                  \
+      if(msk[ta]){                                /* No pixels; skip */                                                                           \
+                                                                                                                                                  \
+         MAP_PALETTE_MAPPED_NEW(                                                                                                                  \
+            col,                                                                                                                                  \
+            16,                                                                                                                                   \
+            map                                                                                                                                   \
+         );                                                                                                                                       \
+                                                                                                                                                  \
+         if(msk[ta]==1){                        /* Some pixels; trans */                                                                          \
+            Draw8x8_Trans_Mapped_Rot(&gfx[ta<<6], x, y, map);                                                                                     \
+         }                                                                                                                                        \
+         else{                                                /* all pixels; solid */                                                             \
+            Draw8x8_Mapped_Rot(&gfx[ta<<6], x, y, map);                                                                                           \
+         }                                                                                                                                        \
+                                                                                                                                                  \
+      }                                                                                                                                           \
+                                                                                                                                                  \
+   END_SCROLL_n_8(w,h,n);
+
 // -----------------------------------------------------------------------------
 
 #define MAKE_SCROLL_1024x512_2_16(scr_x,scr_y) \
@@ -458,13 +590,7 @@ extern "C" {
 
 // -----------------------------------------------------------------------------
 
-#define MAKE_SCROLL_512x1024_2_16(scr_x,scr_y) \
-   zzz=(scr_x);                                \
-   zzzz=(zzz&0x1F0)>>3;                        \
-   x16=zzz&15;                                 \
-   zzz=(scr_y);                                \
-   zzzz|=(zzz&0x3F0)<<2;                       \
-   y16=zzz&15;                                 \
+#define MAKE_SCROLL_512x1024_2_16(scr_x,scr_y) MAKE_SCROLL_n_16(512,1024,2,scr_x,scr_y)
 
 #define START_SCROLL_512x1024_2_16		START_SCROLL_16
 #define START_SCROLL_512x1024_2_16_R180		START_SCROLL_16_R180

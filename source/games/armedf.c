@@ -602,17 +602,7 @@ static void DrawArmedF(void)
      scrolly = ReadWord(&RAM[io_w+2])+112-16;
      scrollx = ReadWord(&RAM[io_w+4])+16;
 
-     MAKE_SCROLL_512x1024_2_16(scrollx,scrolly);
-
-     START_SCROLL_512x1024_2_16(border,border,resy,resx);
-     MAP_PALETTE_MAPPED_NEW(
-			  (RAM[bg_videoram+1+zz]>>3)|0x60,
-			  16,
-			  map
-			  );
-
-     Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord(&RAM[bg_videoram+zz])&0x03FF)<<8],y,x,map);
-     END_SCROLL_512x1024_2_16();
+     DRAW_LAYER16_YX(512,1024,2,scrollx,scrolly,(RAM[bg_videoram+1+zz]>>3)|0x60,&GFX_BG0[(ReadWord(&RAM[bg_videoram+zz])&0x03FF)<<8]);
    }
    else{
       clear_game_screen(0);
@@ -637,31 +627,7 @@ static void DrawArmedF(void)
        scrolly = ReadWord(&RAM[io_w+6])+96;
      }
      //fprintf(stderr,"%d & %d (%d)\n",scrollx,scrolly,scroll_type);
-     MAKE_SCROLL_512x1024_2_16(
-			     scrollx,
-			     scrolly
-   );
-
-     START_SCROLL_512x1024_2_16(border,border,resy,resx);
-
-     ta = ReadWord(&RAM[fg_videoram+zz]) & 0x03FF;
-
-     if(MSK_BG1[ta]!=0){				// No pixels; skip
-
-       MAP_PALETTE_MAPPED_NEW(
-			    (RAM[fg_videoram+1+zz]>>3)|0x40,
-			    16,
-			    map
-			    );
-
-       if(MSK_BG1[ta]==1)				// Some pixels; trans
-	 Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8],y,x,map);
-       else						// all pixels; solid
-	 Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8],y,x,map);
-
-     }
-
-     END_SCROLL_512x1024_2_16();
+     DRAW_LAYER16_TR_YX(512,1024,2,scrollx,scrolly,(RAM[fg_videoram+1+zz]>>3)|0x40,ReadWord(&RAM[fg_videoram+zz]) & 0x03FF,MSK_BG1,GFX_BG1);
      }
    }
 

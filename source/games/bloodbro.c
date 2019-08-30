@@ -1099,28 +1099,17 @@ static void DrawBloodBros(void)
 {
    int x,y,x16,y16;
    int zz,zzz,zzzz,ta;
-   UINT8 *MAP;
+   UINT8 *map;
 
    ClearPaletteMap();
 
    // BG0
 
-   MAKE_SCROLL_512x1024_2_16(
+   DRAW_LAYER16(512,1024,2,
       ReadWord(&RAM_SCR[0x00]),
-      ReadWord(&RAM_SCR[0x02])+16
-   );
-
-   START_SCROLL_512x1024_2_16(32,32,256,224);
-
-      MAP_PALETTE_MAPPED_NEW(
-         (ReadWord(&RAM_BG0[zz])>>12)|pal_bg0,
-         16,
-         MAP
-      );
-
-      Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord(&RAM_BG0[zz])&0xFFF)<<8],x,y,MAP);
-
-   END_SCROLL_512x1024_2_16();
+      ReadWord(&RAM_SCR[0x02])+16,
+      (ReadWord(&RAM_BG0[zz])>>12)|pal_bg0,
+      &GFX_BG0[(ReadWord(&RAM_BG0[zz])&0xFFF)<<8]);
 
    // OBJECT LOW
 
@@ -1147,13 +1136,13 @@ static void DrawBloodBros(void)
          MAP_PALETTE_MAPPED_NEW(
             (ReadWord(&RAM_BG1[zz])>>12)|pal_bg1,
             16,
-            MAP
+            map
          );
 
          if(GFX_BG1_SOLID[ta]==1)		// Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8],x,y,MAP);
+            Draw16x16_Trans_Mapped_Rot(&GFX_BG1[ta<<8],x,y,map);
          else					// all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8],x,y,MAP);
+            Draw16x16_Mapped_Rot(&GFX_BG1[ta<<8],x,y,map);
 
       }
 
@@ -1170,32 +1159,13 @@ static void DrawBloodBros(void)
 
    // FG0
 
-   MAKE_SCROLL_256x256_2_8(
+   DRAW_LAYER8_TR(256,256,2,
       0,
-      0+16
-   );
-
-   START_SCROLL_256x256_2_8(32,32,256,224);
-
-      ta=ReadWord(&RAM_FG0[zz])&0xFFF;
-
-      if(GFX_FG0_SOLID[ta]!=0){			// No pixels; skip
-
-         MAP_PALETTE_MAPPED_NEW(
-            (ReadWord(&RAM_FG0[zz])>>12)|pal_fg0,
-            16,
-            MAP
-         );
-
-         if(GFX_FG0_SOLID[ta]==1)		// Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_FG0[ta<<6],x,y,MAP);
-         else					// all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_FG0[ta<<6],x,y,MAP);
-
-      }
-
-   END_SCROLL_256x256_2_8();
-
+      0+16,
+      (ReadWord(&RAM_FG0[zz])>>12)|pal_fg0,
+      ReadWord(&RAM_FG0[zz])&0xFFF,
+      GFX_FG0_SOLID,
+      GFX_FG0);
 }
 
 /*

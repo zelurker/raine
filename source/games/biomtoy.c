@@ -534,87 +534,26 @@ static void DrawBiomToy(void)
    //  SCREEN 1
    // ----------
 
-
-   MAKE_SCROLL_512x512_4_16(
+   DRAW_LAYER16_TR_flip(512,512,4,
        ReadWord(&RAM[0x8006]),
-       ReadWord(&RAM[0x8004])+16
-   );
-
-
-   START_SCROLL_512x512_4_16(32,32,320,240);
-
-      ta = (ReadWord( &RAM_VIDEO[zz+0x1000] ) >> 2);
-
-      if( GFX_TILE16_SOLID[ta] ){
-
-         MAP_PALETTE_MAPPED_NEW(
-           RAM_VIDEO[zz+0x1000+2] & 0x3F ,   // bank
-           16,
-	   map
-         );
-
-         if(GFX_TILE16_SOLID[ta]==1){			// Some pixels; trans
-            switch( RAM_VIDEO[zz+0x1000] & 0x03){
-               case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }else{
-	    switch( RAM_VIDEO[zz+0x1000] & 0x03){	// all pixels; solid
-               case 0x00: Draw16x16_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }
-      }
-
-
-   END_SCROLL_512x512_4_16();
-
-
+       ReadWord(&RAM[0x8004])+16,
+       RAM_VIDEO[zz+0x1000+2] & 0x3F,
+       (ReadWord( &RAM_VIDEO[zz+0x1000] ) >> 2),
+       GFX_TILE16_SOLID,
+       GFX_TILE16,
+       RAM_VIDEO[zz+0x1000] & 0x03);
 
    //  SCREEN 0
    // ----------
 
-   MAKE_SCROLL_512x512_4_16(
+   DRAW_LAYER16_TR_flip(512,512,4,
        ReadWord(&RAM[0x8002])+4,	// offset
-       ReadWord(&RAM[0x8000])+16
-   );
-
-   START_SCROLL_512x512_4_16(32,32,320,240);
-
-      ta = (ReadWord( &RAM_VIDEO[zz] ) >> 2);
-
-      if( GFX_TILE16_SOLID[ta] ){
-
-         MAP_PALETTE_MAPPED_NEW(
-           RAM_VIDEO[zz+2] & 0x3F ,
-           16,
-           map
-         );
-
-         if(GFX_TILE16_SOLID[ta]==1){			// Some pixels; trans
-            switch(RAM_VIDEO[zz] & 0x03){
-               case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }else{
-	    switch(RAM_VIDEO[zz] & 0x03){		// all pixels; solid
-               case 0x00: Draw16x16_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }
-      }
-
-   END_SCROLL_512x512_4_16();
-
-
+       ReadWord(&RAM[0x8000])+16,
+       RAM_VIDEO[zz+2] & 0x3F,
+       (ReadWord( &RAM_VIDEO[zz] ) >> 2),
+       GFX_TILE16_SOLID,
+       GFX_TILE16,
+       RAM_VIDEO[zz] & 0x03);
 
    //  SPRITES
    // ---------
@@ -676,87 +615,26 @@ static void DrawManiacsq(void)
    //  SCREEN 0
    // ----------
 
-   MAKE_SCROLL_512x512_4_16(
+   DRAW_LAYER16_TR_flip(512,512,4,
        ReadWord(&RAM[0x8002])+4,	// offset
-       ReadWord(&RAM[0x8000])+16
-   );
-
-   START_SCROLL_512x512_4_16(32,32,320,240);
-
-      ta = (ReadWord( &RAM_VIDEO[zz] ) >> 2)&0x1FFF;
-
-      if( GFX_TILE16_SOLID[ta] ){
-
-         MAP_PALETTE_MAPPED_NEW(
-           RAM_VIDEO[zz+2] & 0x3F ,
-           16,
-           map
-         );
-
-
-         if(GFX_TILE16_SOLID[ta]==1){			// Some pixels; trans
-            switch(RAM_VIDEO[zz] & 0x03){
-               case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }else{
-	    switch(RAM_VIDEO[zz] & 0x03){		// all pixels; solid
-               case 0x00: Draw16x16_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }
-      }
-
-   END_SCROLL_512x512_4_16();
-
+       ReadWord(&RAM[0x8000])+16,
+       RAM_VIDEO[zz+2] & 0x3F,
+       (ReadWord( &RAM_VIDEO[zz] ) >> 2)&0x1fff,
+       GFX_TILE16_SOLID,
+       GFX_TILE16,
+       RAM_VIDEO[zz] & 0x03);
 
    //  SCREEN 1
    // ----------
 
-
-   MAKE_SCROLL_512x512_4_16(
+   DRAW_LAYER16_TR_flip(512,512,4,
        ReadWord(&RAM[0x8006]),
-       ReadWord(&RAM[0x8004])+16
-   );
-
-
-   START_SCROLL_512x512_4_16(32,32,320,240);
-
-      ta = (ReadWord( &RAM_VIDEO[zz+0x1000] ) >> 2)&0x1FFF;
-
-      if( GFX_TILE16_SOLID[ta] ){
-
-         MAP_PALETTE_MAPPED_NEW(
-           RAM_VIDEO[zz+0x1000+2] & 0x3F ,   // bank
-           16,
-           map
-         );
-
-
-         if(GFX_TILE16_SOLID[ta]==1){			// Some pixels; trans
-            switch( RAM_VIDEO[zz+0x1000] & 0x03){
-               case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }else{
-	    switch( RAM_VIDEO[zz+0x1000] & 0x03){	// all pixels; solid
-               case 0x00: Draw16x16_Mapped_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-               case 0x01: Draw16x16_Mapped_FlipY_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x02: Draw16x16_Mapped_FlipX_Rot(&GFX_TILE16[ta<<8], x, y, map);  break;
-               case 0x03: Draw16x16_Mapped_FlipXY_Rot(&GFX_TILE16[ta<<8], x, y, map); break;
-            }
-         }
-      }
-
-
-   END_SCROLL_512x512_4_16();
-
+       ReadWord(&RAM[0x8004])+16,
+       RAM_VIDEO[zz+0x1000+2] & 0x3F,
+       (ReadWord( &RAM_VIDEO[zz+0x1000] ) >> 2)&0x1fff,
+       GFX_TILE16_SOLID,
+       GFX_TILE16,
+       RAM_VIDEO[zz+0x1000] & 0x03);
 
    //  SPRITES
    // ---------

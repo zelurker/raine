@@ -613,22 +613,11 @@ static void DrawToki(void)
    // BG0
    // ---
 
-   MAKE_SCROLL_512x512_2_16(
+   DRAW_LAYER16(512,512,2,
        ReadWord(SCR_BG+2)-ofs_x,
-       ReadWord(SCR_BG)+16+1
-   );
-
-   START_SCROLL_512x512_2_16(32,32,256,224);
-
-      MAP_PALETTE_MAPPED_NEW(
-         ((ReadWord(&RAM_BG[zz])>>12)&0x0F)|col_msk,
-         16,
-         map
-      );
-
-      Draw16x16_Mapped_Rot(&GFX_BG[(ReadWord(&RAM_BG[zz])&0x0FFF)<<8], x, y, map);
-
-   END_SCROLL_512x512_2_16();
+       ReadWord(SCR_BG)+16+1,
+       ((ReadWord(&RAM_BG[zz])>>12)&0x0F)|col_msk,
+       &GFX_BG[(ReadWord(&RAM_BG[zz])&0x0FFF)<<8]);
 
    // BG1
    // ---
@@ -650,32 +639,13 @@ static void DrawToki(void)
       col_msk = 0x20;
    }
 
-   MAKE_SCROLL_512x512_2_16(
+   DRAW_LAYER16_TR(512,512,2,
        ReadWord(SCR_BG+2)-ofs_x,
-       ReadWord(SCR_BG)+16+1
-   );
-
-   START_SCROLL_512x512_2_16(32,32,256,224);
-
-      ta = ReadWord(&RAM_BG[zz])&0x0FFF;
-      if(MSK_BG[ta]){				// No pixels; skip
-
-         MAP_PALETTE_MAPPED_NEW(
-            ((ReadWord(&RAM_BG[zz])>>12)&0x0F)|col_msk,
-            16,
-            map
-         );
-
-         if(MSK_BG[ta]==1){			// Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG[ta<<8], x, y, map);
-         }
-         else{						// all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG[ta<<8], x, y, map);
-         }
-
-      }
-
-   END_SCROLL_512x512_2_16();
+       ReadWord(SCR_BG)+16+1,
+       ((ReadWord(&RAM_BG[zz])>>12)&0x0F)|col_msk,
+       ReadWord(&RAM_BG[zz])&0x0FFF,
+       MSK_BG,
+       GFX_BG);
 
    // OBJECT
    // ------
@@ -737,32 +707,14 @@ static void DrawToki(void)
    // FG0
    // ---
 
-   MAKE_SCROLL_256x256_2_8(
+   DRAW_LAYER8_TR(256,256,2,
        0,
-       16
-   );
+       16,
+       ((ReadWord(&RAM_FG0[zz])>>12)&0x0F)|0x10,
+       ReadWord(&RAM_FG0[zz])&0x0FFF,
+       GFX_FG0_SOLID,
+       GFX_FG0);
 
-   START_SCROLL_256x256_2_8(32,32,256,224);
-
-      ta = ReadWord(&RAM_FG0[zz])&0x0FFF;
-      if(GFX_FG0_SOLID[ta]){				// No pixels; skip
-
-         MAP_PALETTE_MAPPED_NEW(
-            ((ReadWord(&RAM_FG0[zz])>>12)&0x0F)|0x10,
-            16,
-            map
-         );
-
-         if(GFX_FG0_SOLID[ta]==1){			// Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
-         }
-         else{						// all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_FG0[ta<<6], x, y, map);
-         }
-
-      }
-
-   END_SCROLL_256x256_2_8();
 }
 
 /*
