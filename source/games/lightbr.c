@@ -247,17 +247,7 @@ static void load_lightbr(void)
 
    set_colour_mapper(&col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb);
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu.RAM	= RAM+0x20000;
-// Mapper disabled
-   tc0003vcu.bmp_x	= 64;
-   tc0003vcu.bmp_y	= 64;
-   tc0003vcu.bmp_w	= 320;
-   tc0003vcu.bmp_h	= 232;
-   tc0003vcu.scr_x	= 0;
-   tc0003vcu.scr_y	= 0;
+   init_tc003vcu(0,0);
 
    // Init tc0200obj emulation
    // ------------------------

@@ -230,17 +230,7 @@ static void load_arabianm(void)
    set_colour_mapper(&col_map_12bit_rgbxxxx);
    InitPaletteMap(RAM+0x60000, 0x200, 0x40, 0x8000);
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu.RAM	= RAM+0x20000;
-   //tc0003vcu.mapper	= &Map_12bit_RGBxxxxx;
-   tc0003vcu.bmp_x	= 64;
-   tc0003vcu.bmp_y	= 64;
-   tc0003vcu.bmp_w	= 320;
-   tc0003vcu.bmp_h	= 224;
-   tc0003vcu.scr_x	= 0;
-   tc0003vcu.scr_y	= 16;
+   init_tc003vcu(0,16);
 
    // Init tc0200obj emulation
    // ------------------------

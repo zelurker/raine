@@ -243,17 +243,7 @@ static void load_akkanvdr(void)
    set_colour_mapper(&col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb);
    InitPaletteMap(RAM+0x60000, 0x200, 0x40, 0x8000);
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu.RAM	= RAM+0x20000;
-// Mapper disabled
-   tc0003vcu.bmp_x	= 64;
-   tc0003vcu.bmp_y	= 64;
-   tc0003vcu.bmp_w	= 224;
-   tc0003vcu.bmp_h	= 320;
-   tc0003vcu.scr_x	= 16;
-   tc0003vcu.scr_y	= 0;
+   init_tc003vcu(16,0);
 
    // Init tc0200obj emulation
    // ------------------------

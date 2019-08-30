@@ -138,6 +138,8 @@ Not implemented:
 
 /******************************************************************************/
 
+struct TC0003VCU tc0003vcu;
+
 void f3video_render_fg0(void)
 {
    int x,y,zzzz,zzz,zz,ta,tx;
@@ -403,4 +405,14 @@ void f3video_render_fg0_gfx2(void)
 
       }
       }
+}
+
+void init_tc003vcu(int scr_x, int scr_y) {
+   tc0003vcu.RAM	= RAM+0x20000; // always the same place, fixed by f3system.C
+   tc0003vcu.bmp_x	= current_game->video->border_size;
+   tc0003vcu.bmp_y	= current_game->video->border_size;
+   tc0003vcu.bmp_w	= current_game->video->screen_x;
+   tc0003vcu.bmp_h	= current_game->video->screen_y;
+   tc0003vcu.scr_x	= scr_x;
+   tc0003vcu.scr_y	= scr_y;
 }

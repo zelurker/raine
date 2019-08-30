@@ -497,14 +497,7 @@ static void DrawSuperChase(void)
 
    if(RefreshBuffers){
 
-   tc0003vcu.RAM	= RAM+0x20000;
-   tc0003vcu.mapper	= &Map_24bit_xRGB;
-   tc0003vcu.bmp_x	= 64;
-   tc0003vcu.bmp_y	= 64;
-   tc0003vcu.bmp_w	= 320;
-   tc0003vcu.bmp_h	= 240;
-   tc0003vcu.scr_x	= 0;
-   tc0003vcu.scr_y	= 0;
+       init_tc003vcu(0,0);
 
    }
 

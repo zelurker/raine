@@ -279,17 +279,7 @@ static void load_pwrgoal(void)
    set_colour_mapper(&col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb);
    InitPaletteMap(RAM+0x60000, 0x200, 0x20, 0x1000);
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu.RAM	= RAM+0x20000;
-// Mapper disabled
-   tc0003vcu.bmp_x	= 64;
-   tc0003vcu.bmp_y	= 64;
-   tc0003vcu.bmp_w	= 320;
-   tc0003vcu.bmp_h	= 224;
-   tc0003vcu.scr_x	= 0;
-   tc0003vcu.scr_y	= 16;
+   init_tc003vcu(0,16);
 
    // Init tc0200obj emulation
    // ------------------------
