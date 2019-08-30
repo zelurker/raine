@@ -120,6 +120,11 @@ enum region_flags
    LOAD_SWAP_16,
    LOAD8X8_16X16,
    LOAD_8_16S, // 8_16 for sprites (without GfxLayout)
+   LOAD_8_32S, // taito f3 sprites
+   LOAD_16_64S,
+   LOAD_MASK8,
+   LOAD_MASK8_45,
+   LOAD_MASK4,
 
    LOAD_CONTINUE,
    LOAD_IGNORE,

@@ -13,29 +13,28 @@
 #include "blit.h"
 
 /********************
-   BUBBLEM MEMORIES
+   BUBBLE MEMORIES
  ********************/
-
 
 static struct ROM_INFO rom_bubblem[] =
 {
-   {   "e21-07.rom", 0x00100000, 0x7789bf7c, 0, 0, 0, },
-   {   "e21-02.rom", 0x00200000, 0xb7cb9232, 0, 0, 0, },
-   {   "e21-03.rom", 0x00200000, 0x54c5f83d, 0, 0, 0, },
-   {   "e21-04.rom", 0x00200000, 0xe5af2a2d, 0, 0, 0, },
-   {   "e21-05.rom", 0x00100000, 0x07eab58f, 0, 0, 0, },
-   {   "e21-06.rom", 0x00100000, 0x997fc0d7, 0, 0, 0, },
-   {   "e21-01.rom", 0x00200000, 0xa11f2f99, 0, 0, 0, },
+  { "e21-21.20", 0x080000, 0xcac4169c, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "e21-20.19", 0x080000, 0x7727c673, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "e21-19.18", 0x080000, 0xbe0b907d, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "e21-18.17", 0x080000, 0xd14e313a, REGION_CPU1, 0x000003, LOAD_8_32 },
+  { "e21-02.rom", 0x200000, 0xb7cb9232, REGION_GFX1 , 0x000000, LOAD_8_32S },
+  { "e21-01.rom", 0x200000, 0xa11f2f99, REGION_GFX1 , 0x000002, LOAD_8_32S },
+  { "e21-07.rom", 0x100000, 0x7789bf7c, REGION_GFX2 , 0x000000, LOAD_16_64S },
+  { "e21-06.rom", 0x100000, 0x997fc0d7, REGION_GFX2 , 0x000004, LOAD_16_64S },
+  { "e21-05.rom", 0x100000, 0x07eab58f, REGION_GFX2 , 0x000000, LOAD_MASK8 },
+  { "e21-03.rom", 0x200000, 0x54c5f83d, REGION_SOUND1, 0x000000, LOAD_BE }, // C8 C9 CA CB
+  { "e21-04.rom", 0x200000, 0xe5af2a2d, REGION_SOUND1, 0x400000, LOAD_BE }, // CC CD -std-
   LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
               "e21-12.rom",  0x34093de1,   "e21-13.rom",  0x9e9ec437),
-   {   "e21-18.rom", 0x00080000, 0xd14e313a, 0, 0, 0, },
-   {   "e21-19.rom", 0x00080000, 0xbe0b907d, 0, 0, 0, },
-   {   "e21-20.rom", 0x00080000, 0x7727c673, 0, 0, 0, },
-   {   "e21-21.rom", 0x00080000, 0xcac4169c, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-/*
+
 static struct ROMSW_DATA romsw_data_bubble_memories_0[] =
 {
    { "Taito Worldwide (Japanese)", 0x01 },
@@ -43,38 +42,16 @@ static struct ROMSW_DATA romsw_data_bubble_memories_0[] =
    { "Taito Japan",                0x03 },
    { NULL,                         0    },
 };
-*/
 
-/*
-static struct ROMSW_INFO bubble_memories_romsw[] =
+static struct ROMSW_INFO bubblem_romsw[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_bubble_memories_0 },
    { 0,        0,    NULL },
 };
-*/
 
 /**************************
    BUBBLEM MEMORIES JAPAN
  **************************/
-
-
-static struct ROM_INFO rom_bubblemj[] =
-{
-   {   "e21-07.rom", 0x00100000, 0x7789bf7c, 0, 0, 0, },
-   {   "e21-02.rom", 0x00200000, 0xb7cb9232, 0, 0, 0, },
-   {   "e21-03.rom", 0x00200000, 0x54c5f83d, 0, 0, 0, },
-   {   "e21-04.rom", 0x00200000, 0xe5af2a2d, 0, 0, 0, },
-   {   "e21-05.rom", 0x00100000, 0x07eab58f, 0, 0, 0, },
-   {   "e21-06.rom", 0x00100000, 0x997fc0d7, 0, 0, 0, },
-   {   "e21-01.rom", 0x00200000, 0xa11f2f99, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
-              "e21-12.rom",  0x34093de1,   "e21-13.rom",  0x9e9ec437),
-   {    "e21-08.17", 0x00080000, 0x27381ae2, 0, 0, 0, },
-   {    "e21-09.18", 0x00080000, 0x6c305f17, 0, 0, 0, },
-   {    "e21-10.19", 0x00080000, 0xcdfb58f6, 0, 0, 0, },
-   {    "e21-11.20", 0x00080000, 0xdf0eeae4, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
-};
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -118,8 +95,6 @@ static UINT8 default_eeprom_jp[] = {
 
 static void LoadBubbleMemories(int version)
 {
-   int ta,tb,tc;
-
    RAMSize=0x80000;
 
    if (version == 0) {
@@ -130,60 +105,9 @@ static void LoadBubbleMemories(int version)
      default_eeprom_size = sizeof(default_eeprom_jp);
    }
    if(!(RAM=AllocateMem(0x80000))) return;
-   if(!(ROM=AllocateMem(0x200000))) return;
-   if(!(GFX=AllocateMem(0x64AB00+0x3C2300))) return;
 
-   GFX_BG0 = GFX+0x64AB00;
-   GFX_SPR = GFX+0x000000;
-
-   tb=0;
-   if(!load_rom("e21-02.rom", ROM, 0x192AC0)) return;	// 16x16 SPRITES ($64AB)
-   for(ta=0;ta<0x192AC0;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=2;
-   if(!load_rom("e21-01.rom", ROM, 0x192AC0)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0x192AC0;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-
-   tb=0;
-   if(!load_rom("e21-07.rom", ROM, 0xF08C0)) return;	// 16x16 TILES ($3C23)
-   for(ta=0;ta<0xF08C0;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=4;
-   if(!load_rom("e21-06.rom", ROM, 0xF08C0)) return;	// 16x16 TILES
-   for(ta=0;ta<0xF08C0;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=0;
-   if(!load_rom("e21-05.rom", ROM, 0xF08C0)) return;	// 16x16 TILES (MASK)
-   for(ta=0;ta<0xF08C0;ta+=2){
-      tc=ROM[ta];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
-      tb+=8;
-   }
-
+   GFX_SPR = load_region[REGION_GFX1];
+   GFX_BG0 = load_region[REGION_GFX2];
    GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x3C23);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x64AB);
 
@@ -216,30 +140,10 @@ static void LoadBubbleMemories(int version)
    SCR2_YOFS=(0xFFFF)<<7;
    SCR4_YOFS=(0x001F-1)<<0;
 
-   if(!load_rom_index(12, RAM, 0x80000)) return;
-   for(ta=0;ta<0x80000;ta++){
-      ROM[(ta<<2)+0]=RAM[ta];
-   }
-   if(!load_rom_index(11, RAM, 0x80000)) return;
-   for(ta=0;ta<0x80000;ta++){
-      ROM[(ta<<2)+1]=RAM[ta];
-   }
-   if(!load_rom_index(10, RAM, 0x80000)) return;
-   for(ta=0;ta<0x80000;ta++){
-      ROM[(ta<<2)+2]=RAM[ta];
-   }
-   if(!load_rom_index(9, RAM, 0x80000)) return;
-   for(ta=0;ta<0x80000;ta++){
-      ROM[(ta<<2)+3]=RAM[ta];
-   }
-
    // 68000 code
    M68000ROM = load_region[REGION_ROM2];
    //WriteWord68k(&ROM[0x199b4],0x4e71); // Hack from mame ??!
    //save_file("rom.dat",M68000ROM,0x40000);
-   if(!(PCMROM=AllocateMem(0x800000))) return;
-   load_be("e21-03.rom",PCMROM,0x200000);
-   load_be("e21-04.rom",PCMROM+0x400000,0x200000);
    max_banks_this_game=3; //=memory_region_length(REGION_SOUND1)/0x400000;
 
    memset(RAM+0x00000,0x00,0x80000);
@@ -301,10 +205,6 @@ static void LoadBubbleMemories(int version)
 
 static void load_bubblem(void) {
   LoadBubbleMemories(0);
-}
-
-static void load_bubblemj(void) {
-  LoadBubbleMemories(1);
 }
 
 static void DrawBubbleMemories(void)
@@ -378,22 +278,6 @@ static struct VIDEO_INFO video_bubblem =
    64,
    VIDEO_ROTATE_NORMAL,
 };
-static struct DIR_INFO dir_bubblemj[] =
-{
-   { "bubble_memories_jp", },
-   { "bubblemj", },
-   { ROMOF("bubblem"), },
-   { CLONEOF("bubblem"), },
-   { NULL, },
-};
-GAME( bubblemj, "Bubble Memories (Japan)", TAITO, 1995, GAME_PLATFORM,
-	.input = f3_system_inputs,
-	.video = &video_bubblem,
-	.exec = ExecuteF3SystemFrame_NoInt5,
-	.long_name_jpn = "バブルメモリーズ (Japan)",
-	.board = "E21",
-	.sound = f3_sound,
-);
 static struct DIR_INFO dir_bubblem[] =
 {
    { "bubble_memories", },
@@ -402,6 +286,7 @@ static struct DIR_INFO dir_bubblem[] =
 };
 GAME( bubblem, "Bubble Memories", TAITO, 1995, GAME_PLATFORM,
 	.input = f3_system_inputs,
+	.romsw = bubblem_romsw,
 	.video = &video_bubblem,
 	.exec = ExecuteF3SystemFrame_NoInt5,
 	.long_name_jpn = "バブルメモリーズ",

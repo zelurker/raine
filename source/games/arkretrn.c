@@ -10,18 +10,19 @@
 #include "tc200obj.h"
 #include "savegame.h"           // save/load game routines
 #include "sasound.h"
+#include "blit.h"
 // #include "files.h"
 
 
 static struct ROM_INFO rom_arkretrn[] =
 {
-   {	   "e36.01", 0x00040000, 0x54b9b2cd, 0, 0, 0, },
-   {	   "e36.02", 0x00040000, 0x694eda31, 0, 0, 0, },
-   {	   "e36.03", 0x00040000, 0x1ea8558b, 0, 0, 0, },
+  { "e36-03.12", 0x040000, 0x1ea8558b, REGION_GFX1 , 0x000000, LOAD_8_32S },
+  { "e36-02.8", 0x040000, 0x694eda31, REGION_GFX1 , 0x000002, LOAD_8_32S },
+  { "e36-01.4", 0x040000, 0x54b9b2cd, REGION_GFX1 , 0x000000, LOAD_MASK4 },
+  { "e36-07.47", 0x080000, 0x266bf1c1, REGION_GFX2 , 0x000000, LOAD_16_64S },
+  { "e36-06.45", 0x080000, 0x110ab729, REGION_GFX2 , 0x000004, LOAD_16_64S },
+  { "e36-05.43", 0x080000, 0xdb18bce2, REGION_GFX2 , 0x000000, LOAD_MASK8_45 },
    {	   "e36.04", 0x00200000, 0x2250959b, REGION_SOUND1, 0, LOAD_BE, },
-   {	   "e36.05", 0x00080000, 0xdb18bce2, 0, 0, 0, },
-   {	   "e36.06", 0x00080000, 0x110ab729, 0, 0, 0, },
-   {	   "e36.07", 0x00080000, 0x266bf1c1, 0, 0, 0, },
    { "e36-11.20", 0x040000, 0xb50cfb92, REGION_CPU1, 0x000000, LOAD_8_32 },
    { "e36-10.19", 0x040000, 0xc940dba1, REGION_CPU1, 0x000001, LOAD_8_32 },
    { "e36-09.18", 0x040000, 0xf16985e0, REGION_CPU1, 0x000002, LOAD_8_32 },
@@ -75,85 +76,14 @@ static UINT8 *GFX_SPR_SOLID;
 
 static void load_arkretrn(void)
 {
-   int ta,tb,tc;
-
    RAMSize=0x80000;
 
    if(!(RAM=AllocateMem(0x80000))) return;
-   if(!(ROM=AllocateMem(0x100000))) return;
-   if(!(GFX=AllocateMem(0x0BAF00+0x19A500))) return;
 
-   GFX_BG0 = GFX+0x0BAF00;
-   GFX_SPR = GFX+0x000000;
+   GFX_SPR = load_region[REGION_GFX1];
+   GFX_BG0 = load_region[REGION_GFX2];
 
-   tb=0;
-   if(!load_rom("e36.03", ROM, 0x2EBC0)) return;                // 16x16 SPRITES ($BAF)
-   for(ta=0;ta<0x2EBC0;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=2;
-   if(!load_rom("e36.02", ROM, 0x2EBC0)) return;                // 16x16 SPRITES
-   for(ta=0;ta<0x2EBC0;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=0;
-   if(!load_rom("e36.01", ROM, 0x2EBC0)) return;                // 16x16 SPRITES (MASK)
-   for(ta=0;ta<0x2EBC0;ta++){
-      tc=ROM[ta];
-      GFX[tb+3]|=((tc&0x40)>>6)<<4;
-      GFX[tb+2]|=((tc&0x10)>>4)<<4;
-      GFX[tb+1]|=((tc&0x04)>>2)<<4;
-      GFX[tb+0]|=((tc&0x01)>>0)<<4;
-      tb+=4;
-   }
-
-   tb=0;
-   if(!load_rom("e36.07", ROM, 0x66940)) return;                // 16x16 TILES ($19A5)
-   for(ta=0;ta<0x66940;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=4;
-   if(!load_rom("e36.06", ROM, 0x66940)) return;                // 16x16 TILES
-   for(ta=0;ta<0x66940;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=0;
-   if(!load_rom("e36.05", ROM, 0x66940)) return;                // 16x16 TILES (MASK)
-   for(ta=0;ta<0x66940;ta+=2){
-      tc=ROM[ta];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
-      tc=ROM[ta+1];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<5;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<5;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<5;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<5;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<5;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<5;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<5;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<5;
-      tb+=8;
-   }
-
-   GFX_BG0_SOLID = MakeSolidTileMap16x16(GFX_BG0, 0x19A5);
+   GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x19A5);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x0BAF);
 
    // Setup 68020 Memory Map
@@ -179,9 +109,7 @@ static void load_arkretrn(void)
    SCR2_YOFS=0xFF80;
    SCR3_YOFS=0xFF80;
 
-   FreeMem(ROM);
    ROM = load_region[REGION_CPU1];
-   // load_file("/home/manu/.raine/debug/ROM.bin",ROM,get_region_size(REGION_ROM1));
    AddF3MemoryMap(0x100000);
 
    // 68000 code
@@ -243,132 +171,18 @@ static void ClearArkRetrn(void)
 
 static void DrawArkRetrn(void)
 {
-   int x,y,ta,zz,zzz,zzzz,x16,y16;
-   UINT8 *MAP;
-
    ClearPaletteMap();
 
-   if(check_layer_enabled(f3_bg0_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7
-   );
+   if(check_layer_enabled(f3_bg0_id))
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0);
+   else
+       clear_game_screen(0);
 
-   zz=zzzz;
+   if(check_layer_enabled(f3_bg1_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,(ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7,RAM_BG1,GFX_BG0,GFX_BG0_SOLID);
 
-   for(y=(64-y16);y<(232+64);y+=16){
-   for(x=(64-x16);x<(320+64);x+=16){
-
-      MAP_PALETTE_MAPPED_NEW(
-	 ReadWord68k(&RAM_BG0[zz])&0x1FF,
-	 64,
-	 MAP
-      );
-
-      switch(RAM_BG0[zz]&0xC0){
-      case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x1FFF)<<8],x,y,MAP);	 break;
-      case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x1FFF)<<8],x,y,MAP);  break;
-      case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x1FFF)<<8],x,y,MAP);  break;
-      case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x1FFF)<<8],x,y,MAP); break;
-      }
-
-      zz=(zz&0x1F00)|((zz+4)&0xFF);
-   }
-   zzzz=(zzzz+0x100)&0x1FFF;
-   zz=zzzz;
-   }
-   }
-
-
-   if(check_layer_enabled(f3_bg1_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7
-   );
-
-   zz=zzzz;
-
-   for(y=(64-y16);y<(232+64);y+=16){
-   for(x=(64-x16);x<(320+64);x+=16){
-
-   ta=ReadWord68k(&RAM_BG1[zz+2])&0x1FFF;
-   if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-	 ReadWord68k(&RAM_BG1[zz])&0x1FF,
-	 64,
-	 MAP
-      );
-
-      if(GFX_BG0_SOLID[ta]==0){
-	 switch(RAM_BG1[zz]&0xC0){
-	 case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);	break;
-	 case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);	break;
-	 case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);	break;
-	 case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-	 }
-      }
-      else{
-	 switch(RAM_BG1[zz]&0xC0){
-	 case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);	  break;
-	 case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-	 case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-	 case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-	 }
-      }
-   }
-
-      zz=(zz&0x1F00)|((zz+4)&0xFF);
-   }
-   zzzz=(zzzz+0x100)&0x1FFF;
-   zz=zzzz;
-   }
-   }
-
-   if(check_layer_enabled(f3_bg2_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7
-   );
-
-   zz=zzzz;
-
-   for(y=(64-y16);y<(232+64);y+=16){
-   for(x=(64-x16);x<(320+64);x+=16){
-
-   ta=ReadWord68k(&RAM_BG2[zz+2])&0x1FFF;
-   if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-	 ReadWord68k(&RAM_BG2[zz])&0x1FF,
-	 64,
-	 MAP
-      );
-
-      if(GFX_BG0_SOLID[ta]==0){
-	 switch(RAM_BG2[zz]&0xC0){
-	 case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);	break;
-	 case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);	break;
-	 case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);	break;
-	 case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-	 }
-      }
-      else{
-	 switch(RAM_BG2[zz]&0xC0){
-	 case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);	  break;
-	 case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-	 case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-	 case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-	 }
-      }
-   }
-
-      zz=(zz&0x1F00)|((zz+4)&0xFF);
-   }
-   zzzz=(zzzz+0x100)&0x1FFF;
-   zz=zzzz;
-   }
-   }
+   if(check_layer_enabled(f3_bg2_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,(ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7,RAM_BG2,GFX_BG0,GFX_BG0_SOLID);
 /*
    if(check_layer_enabled(f3_bg3_id)){
    MAKE_SCROLL_1024x512_4_16(

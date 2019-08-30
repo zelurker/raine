@@ -105,6 +105,9 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
 	switch(flag)
 	  {
 	  case LOAD_NORMAL:
+	  case LOAD_MASK4:
+	  case LOAD_MASK8:
+	  case LOAD_MASK8_45:
 	  case LOAD_SWAP_16:
 	  case LOAD8X8_16X16:
 	  case LOAD_FILL:
@@ -115,8 +118,14 @@ static int get_region_size_from_rominfo(const struct ROM_INFO *rom_list, UINT32 
 	  case LOAD_BE:
 	    j = rom_list->offset + (rom_list->size * 2) - 1;
             break;
+	  case LOAD_8_32S:
+	    j = (rom_list->offset&~2) + (rom_list->size * 4);
+            break;
 	  case LOAD_8_32:
 	    j = rom_list->offset + (rom_list->size * 4) - 3;
+	    break;
+	  case LOAD_16_64S:
+	    j = (rom_list->offset&~4) + (rom_list->size * 4);
 	    break;
 	  case LOAD_8_64:
 	    j = rom_list->offset + (rom_list->size * 8) - 7;
@@ -439,7 +448,7 @@ UINT32 find_alternative_file_names(const ROM_INFO *rom_info, const DIR_INFO *dir
 // I know it's ugly, but I spent one hour trying to figure out how these
 // gfx layout worked... After that, enough was enough !
 
-int load_sprite_8_16b(char *rom, UINT8 *dst, UINT32 len){
+static int load_sprite_8_16b(char *rom, UINT8 *dst, UINT32 len){
   UINT8 *src;
   UINT32 ta,tb;
 
@@ -458,7 +467,7 @@ int load_sprite_8_16b(char *rom, UINT8 *dst, UINT32 len){
   return 0;
 }
 
-int load_sprite_8_16(char *rom, UINT8 *dst, UINT32 len){
+static int load_sprite_8_16(char *rom, UINT8 *dst, UINT32 len){
   UINT8 *src;
   UINT32 ta,tb;
 
@@ -469,6 +478,125 @@ int load_sprite_8_16(char *rom, UINT8 *dst, UINT32 len){
       for(ta = 0,tb=0; ta < len; ta ++, tb += 2){
 	dst[tb+1] |= (src[ta] >> 4) & 0x0F;
 	dst[tb+0] |= (src[ta] >> 0) & 0x0F;
+      }
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static int load_sprite_8_32(char *rom, UINT8 *dst, UINT32 len){
+  UINT8 *src;
+  UINT32 ta,tb;
+
+  // from 1 byte, 2 bytes decoded, 2 left blank (8_32)
+  src = get_temp_buffer(len);
+  if(src){
+    if(load_rom(rom, src, len)){
+      for(ta = 0,tb=0; ta < len; ta ++, tb += 2){
+	  dst[tb++]=src[ta]&15;
+	  dst[tb++]=src[ta]>>4;
+      }
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static int load_sprite_16_64(char *rom, UINT8 *dst, UINT32 len){
+    // Very particular, for taito f3 sprites :
+    // 4 bytes decoded, then 4 bytes left blank (64 bits) from 2 bytes read
+  UINT8 *src;
+  UINT32 ta,tb;
+
+  src = get_temp_buffer(len);
+  if(src){
+    if(load_rom(rom, src, len)){
+      for(ta = 0,tb=0; ta < len; ta +=2, tb += 4){
+	  dst[tb++]=src[ta]&15;
+	  dst[tb++]=src[ta]>>4;
+	  dst[tb++]=src[ta+1]&15;
+	  dst[tb++]=src[ta+1]>>4;
+      }
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static int load_sprite_mask8(char *rom, UINT8 *dst, UINT32 len){
+    // It goes with the load_16_64s, it's the mask applied after that
+  UINT8 *src;
+  UINT32 ta,tb;
+
+  src = get_temp_buffer(len);
+  if(src){
+    if(load_rom(rom, src, len)){
+      for(ta = 0,tb=0; ta < len; ta +=2, tb += 8){
+	  UINT8 tc=src[ta];
+	  dst[tb+7]|=((tc&0x80)>>7)<<4;
+	  dst[tb+6]|=((tc&0x40)>>6)<<4;
+	  dst[tb+5]|=((tc&0x20)>>5)<<4;
+	  dst[tb+4]|=((tc&0x10)>>4)<<4;
+	  dst[tb+3]|=((tc&0x08)>>3)<<4;
+	  dst[tb+2]|=((tc&0x04)>>2)<<4;
+	  dst[tb+1]|=((tc&0x02)>>1)<<4;
+	  dst[tb+0]|=((tc&0x01)>>0)<<4;
+      }
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static int load_sprite_mask8_45(char *rom, UINT8 *dst, UINT32 len){
+    // 2 bytes of input instead of 1 in the load_sprite_mask8
+  UINT8 *src;
+  UINT32 ta,tb;
+
+  src = get_temp_buffer(len);
+  if(src){
+    if(load_rom(rom, src, len)){
+      for(ta = 0,tb=0; ta < len; ta +=2, tb += 8){
+	  UINT8 tc=src[ta];
+	  dst[tb+7]|=((tc&0x80)>>7)<<4;
+	  dst[tb+6]|=((tc&0x40)>>6)<<4;
+	  dst[tb+5]|=((tc&0x20)>>5)<<4;
+	  dst[tb+4]|=((tc&0x10)>>4)<<4;
+	  dst[tb+3]|=((tc&0x08)>>3)<<4;
+	  dst[tb+2]|=((tc&0x04)>>2)<<4;
+	  dst[tb+1]|=((tc&0x02)>>1)<<4;
+	  dst[tb+0]|=((tc&0x01)>>0)<<4;
+	  tc=src[ta+1];
+	  dst[tb+7]|=((tc&0x80)>>7)<<5;
+	  dst[tb+6]|=((tc&0x40)>>6)<<5;
+	  dst[tb+5]|=((tc&0x20)>>5)<<5;
+	  dst[tb+4]|=((tc&0x10)>>4)<<5;
+	  dst[tb+3]|=((tc&0x08)>>3)<<5;
+	  dst[tb+2]|=((tc&0x04)>>2)<<5;
+	  dst[tb+1]|=((tc&0x02)>>1)<<5;
+	  dst[tb+0]|=((tc&0x01)>>0)<<5;
+      }
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static int load_sprite_mask4(char *rom, UINT8 *dst, UINT32 len){
+    // It goes with the load_16_64s, it's the mask applied after that
+  UINT8 *src;
+  UINT32 ta,tb;
+
+  src = get_temp_buffer(len);
+  if(src){
+    if(load_rom(rom, src, len)){
+      for(ta = 0,tb=0; ta < len; ta++, tb += 4){
+	  UINT8 tc=src[ta];
+	  dst[tb+3]|=((tc&0xC0)>>6)<<4;
+	  dst[tb+2]|=((tc&0x30)>>4)<<4;
+	  dst[tb+1]|=((tc&0x0C)>>2)<<4;
+	  dst[tb+0]|=((tc&0x03)>>0)<<4;
       }
       return 1;
     }
@@ -517,6 +645,15 @@ static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_
 	  case LOAD_NORMAL:
 	    if(!load_rom(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
             break;
+	  case LOAD_MASK8:
+	    if(!load_sprite_mask8(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
+            break;
+	  case LOAD_MASK8_45:
+	    if(!load_sprite_mask8_45(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
+            break;
+	  case LOAD_MASK4:
+	    if(!load_sprite_mask4(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
+            break;
 	  case LOAD_FILL:
 	    memset(dest + rom_list->offset,rom_list->crc32, rom_list->size);
 	    break;
@@ -527,6 +664,9 @@ static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_
 	      if(!load_sprite_8_16b(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
 	    }
 	    break;
+	  case LOAD_8_32S:
+	      if(!load_sprite_8_32(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
+	      break;
 	  case LOAD_8_16:
 	      if(!load_rom_8_16(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
 	      break;
@@ -536,6 +676,9 @@ static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_
 	  case LOAD_8_32:
 	    if(!load_rom_8_32(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
             break;
+	  case LOAD_16_64S:
+	    if(!load_sprite_16_64(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
+	    break;
 	  case LOAD_8_64:
 	    if(!load_rom_8_64(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
 	    break;
@@ -954,7 +1097,7 @@ beg:
      last_rom = rom;
    }
    if (loaded_roms > roms_count) {
-     printf("error loaded_roms > roms_count\n");
+     printf("error loaded_roms (%d) > roms_count (%d)\n",loaded_roms,roms_count);
      exit(1);
    }
    load_progress(rom,loaded_roms*100/roms_count);

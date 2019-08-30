@@ -47,7 +47,6 @@
   DRV(pbobble)
 
 // bubblem.c
-  DRV(bubblemj)
   DRV(bubblem)
 
 // bublbobl.c

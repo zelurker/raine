@@ -4,6 +4,10 @@
 /*                                                                            */
 /******************************************************************************/
 
+// Particularity of this game : tiles/sprites are flipped in rom and it uses flipscreen to display them correctly.
+// Now the problem is where flipscreen is... It seems to be in the sprite queue, when a special command bit is set !
+// For now I test the detection and keep the old drawing code, but it should be possible to detect this and adapt
+
 #include "gameinc.h"
 #include "f3system.h"
 #include "tc003vcu.h"
@@ -12,23 +16,22 @@
 #include "sasound.h"
 extern char mybuff[0x10000];
 
-
 static struct ROM_INFO rom_arabianm[] =
 {
-   {   "d29-06.rom", 0x00080000, 0xeea07bf3, 0, 0, 0, },
-   {   "d29-02.rom", 0x00100000, 0xed894fe1, 0, 0, 0, },
-   {   "d29-03.rom", 0x00100000, 0xaeaff456, 0, 0, 0, },
-   {   "d29-04.rom", 0x00100000, 0x01711cfe, 0, 0, 0, },
-   {   "d29-05.rom", 0x00100000, 0x9b5f7a17, 0, 0, 0, },
-   {   "d29-01.rom", 0x00200000, 0x545ac4b3, 0, 0, 0, },
-   {   "d29-07.rom", 0x00080000, 0xdb3c094d, 0, 0, 0, },
-   {   "d29-08.rom", 0x00080000, 0xd7562851, 0, 0, 0, },
+    { "d29-06.ic49", 0x080000, 0xeea07bf3, REGION_GFX2 , 0x000000, LOAD_16_64S },
+  { "d29-07.ic50", 0x080000, 0xdb3c094d, REGION_GFX2 , 0x000004, LOAD_16_64S },
+  { "d29-08.ic51", 0x080000, 0xd7562851, REGION_GFX2 , 0x000000, LOAD_MASK8 },
+  { "d29-03.ic66", 0x100000, 0xaeaff456, REGION_GFX1 , 0x000000, LOAD_8_32S },
+  { "d29-04.ic67", 0x100000, 0x01711cfe, REGION_GFX1 , 0x000002, LOAD_8_32S },
+  { "d29-05.ic68", 0x100000, 0x9b5f7a17, REGION_GFX1 , 0x000000, LOAD_MASK4 },
+  { "d29-23.ic40", 0x40000, 0x89a0c706, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "d29-22.ic38", 0x40000, 0x4afc22a4, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "d29-21.ic36", 0x40000, 0xac32eb38, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "d29-25.ic34", 0x40000, 0xb9b652ed, REGION_CPU1, 0x000003, LOAD_8_32 },
+  { "d29-01.ic17", 0x200000, 0x545ac4b3, REGION_SOUND1, 0x000000, LOAD_BE }, // C8 C9 CA CB
+  { "d29-02.ic18", 0x100000, 0xed894fe1, REGION_SOUND1, 0x600000, LOAD_BE }, // -std-
   LOAD8_16(  REGION_ROM2,  0x000000,  0x00020000,
               "d29-18.rom",  0xd97780df,   "d29-19.rom",  0xb1ad365c),
-   {   "d29-21.rom", 0x00040000, 0xac32eb38, 0, 0, 0, },
-   {   "d29-22.rom", 0x00040000, 0x4afc22a4, 0, 0, 0, },
-   {   "d29-23.rom", 0x00040000, 0x89a0c706, 0, 0, 0, },
-   {   "d29-25.rom", 0x00040000, 0xb9b652ed, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -76,75 +79,12 @@ static UINT8 *GFX_SPR_SOLID;
 
 static void load_arabianm(void)
 {
-   int ta,tb,tc;
    RAMSize=0x80000;
 
    if(!(RAM=AllocateMem(0x80000))) return;
-   if(!(ROM=AllocateMem(0x100000))) return;
 
-   if(!(GFX=AllocateMem(0x1F7500+0x400000))) return;
-
-   GFX_BG0=GFX+0x000000;
-   GFX_SPR=GFX+0x1F7500;
-
-   tb=0;
-   if(!load_rom("d29-03.rom", ROM, 0x100000)) return;	// 16x16 SPRITES ($4000)
-   for(ta=0;ta<0x100000;ta++){
-      GFX_SPR[tb++]=ROM[ta]&15;
-      GFX_SPR[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=2;
-   if(!load_rom("d29-04.rom", ROM, 0x100000)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0x100000;ta++){
-      GFX_SPR[tb++]=ROM[ta]&15;
-      GFX_SPR[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=0;
-   if(!load_rom("d29-05.rom", ROM, 0x100000)) return;	// 16x16 SPRITES (MASK)
-   for(ta=0;ta<0x100000;ta++){
-      tc=ROM[ta];
-      GFX_SPR[tb+3]|=((tc&0xC0)>>6)<<4;
-      GFX_SPR[tb+2]|=((tc&0x30)>>4)<<4;
-      GFX_SPR[tb+1]|=((tc&0x0C)>>2)<<4;
-      GFX_SPR[tb+0]|=((tc&0x03)>>0)<<4;
-      tb+=4;
-   }
-
-   tb=0;
-   if(!load_rom("d29-06.rom", ROM, 0x7DD40)) return;	// 16x16 TILES ($1F75)
-   for(ta=0;ta<0x7DD40;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=4;
-   if(!load_rom("d29-07.rom", ROM, 0x7DD40)) return;	// 16x16 TILES
-   for(ta=0;ta<0x7DD40;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=0;
-   if(!load_rom("d29-08.rom", ROM, 0x7DD40)) return;	// 16x16 TILES (MASK)
-   for(ta=0;ta<0x7DD40;ta+=2){
-      tc=ROM[ta];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
-      tb+=8;
-   }
-
+   GFX_SPR = load_region[REGION_GFX1];
+   GFX_BG0 = load_region[REGION_GFX2];
    GFX_BG0_SOLID = MakeSolidTileMap16x16(GFX_BG0, 0x1F75);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x4000);
 
@@ -173,28 +113,8 @@ static void load_arabianm(void)
    SCR2_YOFS=0x0780-(16<<7);
    SCR3_YOFS=0x0780-(16<<7);
 
-   if(!load_rom("d29-23.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+0]=RAM[ta];
-   }
-   if(!load_rom("d29-22.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+1]=RAM[ta];
-   }
-   if(!load_rom("d29-21.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+2]=RAM[ta];
-   }
-   if(!load_rom("d29-25.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+3]=RAM[ta];
-   }
-
    // 68000 code
    M68000ROM = load_region[REGION_ROM2];
-   if(!(PCMROM=AllocateMem(0x800000))) return;
-   load_be("d29-01.rom",PCMROM,0x200000);
-   load_be("d29-02.rom",PCMROM+0x600000,0x100000);
    max_banks_this_game=3; //=memory_region_length(REGION_SOUND1)/0x400000;
 
    memset(PCMROM+0x400000,0,0x1fffff);
