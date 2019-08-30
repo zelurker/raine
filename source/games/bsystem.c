@@ -139,7 +139,7 @@ static struct INPUT_INFO input_spacedx[] =
    INP0( COIN2, 0x072002, 0x20 ),
    INP0( TILT, 0x072004, 0x01 ),
    INP0( SERVICE, 0x072004, 0x02 ),
-   INP0( TEST, 0x072002, 0x02 ),
+   INP0( TEST, 0x072000, 0x80 ),
 
    INP0( P1_START, 0x072004, 0x10 ),
    INP0( P1_UP, 0x07200E, 0x01 ),
@@ -147,6 +147,8 @@ static struct INPUT_INFO input_spacedx[] =
    INP0( P1_LEFT, 0x07200E, 0x04 ),
    INP0( P1_RIGHT, 0x07200E, 0x08 ),
    INP0( P1_B1, 0x072006, 0x01 ),
+   INP0( P1_B2, 0x072006, 0x02 ),
+   INP0( P1_B3, 0x072006, 0x04 ),
 
    INP0( P2_START, 0x072004, 0x20 ),
    INP0( P2_UP, 0x07200E, 0x10 ),
@@ -154,6 +156,8 @@ static struct INPUT_INFO input_spacedx[] =
    INP0( P2_LEFT, 0x07200E, 0x40 ),
    INP0( P2_RIGHT, 0x07200E, 0x80 ),
    INP0( P2_B1, 0x072006, 0x10 ),
+   INP0( P2_B2, 0x072006, 0x20 ),
+   INP0( P2_B3, 0x072006, 0x40 ),
 
    END_INPUT
 };
