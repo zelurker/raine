@@ -286,11 +286,6 @@ static void DrawIntCup94(void)
 
    ClearPaletteMap();
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu_layer_count = 0;
-
    if(check_layer_enabled(f3_bg0_id)){
    MAKE_SCROLL_512x512_4_16(
       (0-320)-((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6),

@@ -325,11 +325,6 @@ static void DrawTwinQix(void)
 
    ClearPaletteMap();
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu_layer_count = 0;
-
    if(check_layer_enabled(f3_bg0_id)){
 
    MAKE_SCROLL_1024x512_4_16(

@@ -286,11 +286,6 @@ static void DrawPuzzleBobble4(void)
 
    ClearPaletteMap();
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu_layer_count = 0;
-
    d0=0;
 
    if(check_layer_enabled(f3_bg0_id)){

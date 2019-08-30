@@ -360,11 +360,6 @@ static void DrawTRStars(void)
 
    ClearPaletteMap();
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu_layer_count = 0;
-
    if(check_layer_enabled(f3_bg0_id)){
    zzz=(ReadWord68k(&RAM_SCR0[0])>>6)+40;
    zzzz=((zzz&0x3F0)>>4)<<2;			// X Offset (16-1024)

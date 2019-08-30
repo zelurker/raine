@@ -495,11 +495,6 @@ static void DrawSuperChase(void)
 
    ClearPaletteMap();
 
-   // Init tc0003vcu emulation
-   // ------------------------
-
-   tc0003vcu_layer_count = 0;
-
    if(RefreshBuffers){
 
    tc0003vcu.RAM	= RAM+0x20000;
