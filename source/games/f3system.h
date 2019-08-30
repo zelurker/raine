@@ -23,13 +23,7 @@ extern struct INPUT_INFO f3_system_inputs_4_player[];
 
 void AddF3MemoryMap(UINT32 romsize);
 
-int f3_bg0_id;
-int f3_bg1_id;
-int f3_bg2_id;
-int f3_bg3_id;
-
-int f3_bg5_id;
-int f3_bg6_id;
+extern int f3_bg0_id,f3_bg1_id,f3_bg2_id,f3_bg3_id,f3_bg5_id,f3_bg6_id;
 
 // I/O controller type
 
@@ -40,6 +34,8 @@ int f3_bg6_id;
 #define F3_IOC_TRACKBALL	(0x0010)
 
 void init_f3_system_ioc(UINT32 type);
+void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG);
+void draw_f3_layer(int sx,int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,UINT8 *GFX_BG_SOLID);
 
 void IntF3System(void);
 void ExecuteF3SystemFrame(void);

@@ -16,6 +16,7 @@
 
 char f3_shared_ram[0x10000];
 UINT8 *EEPROM;
+int f3_bg0_id,f3_bg1_id,f3_bg2_id,f3_bg3_id,f3_bg5_id,f3_bg6_id;
 
 struct INPUT_INFO f3_system_inputs[] =
 {
@@ -610,6 +611,65 @@ void AddF3MemoryMap(UINT32 romsize)
    W24[0x4A]=RAM+0x69100;	// OUTPUT	($4A0000-$4A00FF)
 
    EEPROM=RAM+0x6B000;		// EEPROM
+}
+
+static const INT16 planes[] = { 16, 32, 0, 64 };
+
+void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG) {
+    SCROLL_REGS;
+    int w;
+    if (ReadWord68k(RAM+0x6A000+0xf*2) == 0x80)
+	w = 1024;
+    else
+	w = 512;
+    MAKE_SCROLL_n_16(w,512,4,sx,sy);
+
+    START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y);
+
+    INT16 color = ReadWord68k(&RAM_BG[zz]);
+    INT16 extra_planes = (color & 0xc00) >> 10; // 0 = 4bpp, 1 = 5bpp, 3 = 6bpp !
+    UINT8 *map;
+    MAP_PALETTE_MAPPED_NEW(
+	    color&0x1FF & (~extra_planes),
+	    planes[extra_planes],        map
+	    );
+
+    Draw16x16_Mapped_flip_Rot(&GFX_BG[(ReadWord68k(&RAM_BG[zz+2]))<<8],x,y,map,(color & 0xc000)>>14);
+
+    END_SCROLL_n_16(w,512,4);
+}
+
+void draw_f3_layer(int sx,int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,UINT8 *GFX_BG_SOLID) {
+    SCROLL_REGS;
+    int w;
+    if (ReadWord68k(RAM+0x6A000+0xf*2) == 0x80)
+	w = 1024;
+    else
+	w = 512;
+    MAKE_SCROLL_n_16(w,512,4,sx,sy);
+
+    START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y);
+    INT16 color = ReadWord68k(&RAM_BG[zz]);
+    INT16 extra_planes = (color & 0xc00) >> 10; // 0 = 4bpp, 1 = 5bpp, 3 = 6bpp !
+    UINT8 *map;
+
+    UINT16 ta=ReadWord68k(&RAM_BG[zz+2]);
+    if(ta!=0){
+
+	MAP_PALETTE_MAPPED_NEW(
+		color&0x1FF & (~extra_planes),
+		planes[extra_planes],        map
+		);
+
+	if(GFX_BG_SOLID[ta]==2){
+	    Draw16x16_Mapped_flip_Rot(&GFX_BG[ta<<8],x,y,map,(color & 0xc000)>>14);
+	}
+	else if (GFX_BG_SOLID[ta]){
+	    Draw16x16_Trans_Mapped_flip_Rot(&GFX_BG[ta<<8],x,y,map,(color & 0xc000)>>14);
+	}
+    }
+
+    END_SCROLL_n_16(w,512,4);
 }
 
 static UINT32 lastled;

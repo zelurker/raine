@@ -10,6 +10,7 @@
 #include "tc200obj.h"
 #include "savegame.h"		// save/load game routines
 #include "sasound.h"
+#include "blit.h"
 
 /********************
    BUBBLEM MEMORIES
@@ -183,7 +184,7 @@ static void LoadBubbleMemories(int version)
       tb+=8;
    }
 
-   GFX_BG0_SOLID = MakeSolidTileMap16x16(GFX_BG0, 0x3C23);
+   GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x3C23);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x64AB);
 
    // Setup 68020 Memory Map
@@ -323,7 +324,7 @@ static void load_bubblemj(void) {
 
 static void DrawBubbleMemories(void)
 {
-   int x,y,ta,zz,zzz,zzzz,x16,y16;
+   int x,zz,zzz,zzzz,x16;
    UINT8 *MAP;
 
    ClearPaletteMap();
@@ -333,147 +334,16 @@ static void DrawBubbleMemories(void)
 
    tc0003vcu_layer_count = 0;
 
-   if(check_layer_enabled(f3_bg0_id)){
-   //if((RAM[0x46700]&0x20)==0){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG0[zz])&0x1FF,
-               32,        MAP
-            );
-
-      switch(RAM_BG0[zz]&0xC0){
-      case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);        break;
-      case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);  break;
-      case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);  break;
-      case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP); break;
-      }
-
-   END_SCROLL_1024x512_4_16();
-   //}
-   }
-
-   if(check_layer_enabled(f3_bg1_id)){
-   //if((RAM[0x46500]&0x20)==0){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      ta=ReadWord68k(&RAM_BG1[zz+2])&0x3FFF;
-      if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG1[zz])&0x1FF,
-               32,        MAP
-            );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG1[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG1[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      }
-
-   END_SCROLL_1024x512_4_16();
-   //}
-   }
-
-   if(check_layer_enabled(f3_bg2_id)){
-   //if((RAM[0x46300]&0x20)==0){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      ta=ReadWord68k(&RAM_BG2[zz+2])&0x3FFF;
-      if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG2[zz])&0x1FF,
-               32,        MAP
-            );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG2[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG2[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      }
-
-   END_SCROLL_1024x512_4_16();
-   //}
-   }
-
-   if(check_layer_enabled(f3_bg3_id)){
-   //if((RAM[0x46100]&0x20)==0){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      ta=ReadWord68k(&RAM_BG3[zz+2])&0x3FFF;
-      if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG3[zz])&0x1FF,
-               32,        MAP
-            );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG3[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG3[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      }
-
-   END_SCROLL_1024x512_4_16();
-   //}
-   }
+   if(check_layer_enabled(f3_bg0_id))
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0);
+   else
+       clear_game_screen(0);
+   if (check_layer_enabled(f3_bg1_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,(ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7,RAM_BG1,GFX_BG0,GFX_BG0_SOLID);
+   if (check_layer_enabled(f3_bg2_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,(ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7,RAM_BG2,GFX_BG0,GFX_BG0_SOLID);
+   if (check_layer_enabled(f3_bg3_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,(ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7,RAM_BG3,GFX_BG0,GFX_BG0_SOLID);
 
    if(check_layer_enabled(f3_bg6_id)){
    zzz=0-((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0);
