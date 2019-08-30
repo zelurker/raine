@@ -20,7 +20,6 @@ typedef struct TC0200OBJ			// Information about 1 chip
    int bmp_x,bmp_y;				// Game screen offset (32,32)
    int bmp_w,bmp_h;				// Game screen size (320,224)
    int ofs_x,ofs_y;				// Scroll offset add (0,-8)
-   mapper_direct *mapper;			// Colour mapper
    UINT16 ctrl;					// color/pri control
    UINT8 *RAM_TILE;				// Extra Tile mapping
    UINT8 *RAM_TILE_B;				// Extra Tile mapping (double buffer)

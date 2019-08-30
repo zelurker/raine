@@ -268,11 +268,6 @@ static void load_gekirido(void)
    tc0200obj.RAM_B	= RAM+0x28000;
    tc0200obj.GFX	= GFX_SPR;
    tc0200obj.MASK	= GFX_SPR_SOLID;
-   tc0200obj.bmp_x	= 64;
-   tc0200obj.bmp_y	= 64;
-   tc0200obj.bmp_w	= 232;
-   tc0200obj.bmp_h	= 320;
-// Mapper disabled
    tc0200obj.tile_mask	= 0x7FFF;
    tc0200obj.ofs_x	= 0;	//-16;		//(0-0x0C)-16;		// 0x0C 0x1F
    tc0200obj.ofs_y	= 0;		//0-0x2E;	//(0-0x1F)+15;	// 0x1F 0x2E

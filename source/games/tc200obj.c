@@ -164,27 +164,31 @@ UINT16 f2_sprites_colors;
 
 void init_tc0200obj(void)
 {
-  int i;
-  for (i=0; i<8; i++)
-    bank_data[i] = 0x400 * i;
+    int i;
+    tc0200obj.bmp_x	= current_game->video->border_size;
+    tc0200obj.bmp_y	= current_game->video->border_size;
+    tc0200obj.bmp_w	= current_game->video->screen_x;
+    tc0200obj.bmp_h	= current_game->video->screen_y;
+    for (i=0; i<8; i++)
+	bank_data[i] = 0x400 * i;
 
-   init_16x16_zoom();
-   zoom16_ofs = make_16x16_zoom_ofs_type1();
+    init_16x16_zoom();
+    zoom16_ofs = make_16x16_zoom_ofs_type1();
 
-   object_id = add_layer_info("Object");
-   disabled = 1;
+    object_id = add_layer_info("Object");
+    disabled = 1;
 
-   RAM_BG    = tc0200obj.RAM;
-   RAM_GFX   = tc0200obj.GFX;
-   RAM_MSK   = tc0200obj.MASK;
-   tile_mask = tc0200obj.tile_mask;
-   sx_1      = tc0200obj.bmp_x - 16;
-   sy_1      = tc0200obj.bmp_y - 16;
-   sx_2      = tc0200obj.bmp_x + tc0200obj.bmp_w;
-   sy_2      = tc0200obj.bmp_y + tc0200obj.bmp_h;
-   f2_x_offset = tc0200obj.ofs_x;
-   f2_sprite_type = tc0200obj.ofs_y;
-   //object_id = add_layer_info("TC0200OBJ:OBJECT");
+    RAM_BG    = tc0200obj.RAM;
+    RAM_GFX   = tc0200obj.GFX;
+    RAM_MSK   = tc0200obj.MASK;
+    tile_mask = tc0200obj.tile_mask;
+    sx_1      = tc0200obj.bmp_x - 16;
+    sy_1      = tc0200obj.bmp_y - 16;
+    sx_2      = tc0200obj.bmp_x + tc0200obj.bmp_w;
+    sy_2      = tc0200obj.bmp_y + tc0200obj.bmp_h;
+    f2_x_offset = tc0200obj.ofs_x;
+    f2_sprite_type = tc0200obj.ofs_y;
+    //object_id = add_layer_info("TC0200OBJ:OBJECT");
 }
 
 void make_object_bank(UINT8 *src)

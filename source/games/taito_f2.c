@@ -1210,10 +1210,6 @@ static void setup_gfx() {
   init_gfx = 0;
    tc0200obj.RAM	= RAM_OBJECT+0x0000;
    tc0200obj.RAM_B	= NULL;
-   tc0200obj.bmp_x	= 32;
-   tc0200obj.bmp_y	= 32;
-   tc0200obj.bmp_w	= 320;
-   tc0200obj.bmp_h	= 224;
    tc0200obj.ofs_x	= -3;
    tc0200obj.ofs_y	= 0; // sprite type now
 

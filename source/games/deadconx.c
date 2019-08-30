@@ -347,11 +347,6 @@ static void load_deadconx(void)
    tc0200obj.RAM_B	= RAM+0x18000;
    tc0200obj.GFX	= GFX_SPR;
    tc0200obj.MASK	= GFX_SPR_SOLID;
-   tc0200obj.bmp_x	= 48;
-   tc0200obj.bmp_y	= 48;
-   tc0200obj.bmp_w	= 320;
-   tc0200obj.bmp_h	= 224;
-// Mapper disabled
    tc0200obj.tile_mask	= 0x3FFF;
    tc0200obj.ofs_x	= 0;
    tc0200obj.ofs_y	= 0;
