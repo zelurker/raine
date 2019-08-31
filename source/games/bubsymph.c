@@ -10,6 +10,7 @@
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
+#include "blit.h"
 
 /*******************
    BUBBLE BOBBLE 2
@@ -18,24 +19,55 @@
 
 static struct ROM_INFO rom_bublbob2[] =
 {
-   {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
-   {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
-   {       "d90.10", 0x00040000, 0x8e957d3d, REGION_ROM1, 0x000002, LOAD_8_32, },
-   {       "d90.17", 0x00040000, 0x711f1894, REGION_ROM1, 0x000003, LOAD_8_32, },
-   {       "d90.01", 0x00100000, 0x8aedb9e5, 0, 0, 0, },
-   {       "d90.02", 0x00100000, 0x5ab04ca2, 0, 0, 0, },
-   {       "d90.03", 0x00100000, 0x6fa894a1, 0, 0, 0, },
-   {       "d90.04", 0x00200000, 0xfeee5fda, 0, 0, 0, },
-   {       "d90.05", 0x00200000, 0xc192331f, 0, 0, 0, },
-   {       "d90.06", 0x00100000, 0x166a72b8, 0, 0, 0, },
-   {       "d90.07", 0x00100000, 0xb436b42d, 0, 0, 0, },
-   {       "d90.08", 0x00100000, 0x25a4fb2c, 0, 0, 0, },
+  { "d90-21.ic20", 0x40000, 0x2a2b771a, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "d90-20.ic19", 0x40000, 0xf01f63b6, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "d90-19.ic18", 0x40000, 0x86eef19a, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "d90-18.ic17", 0x40000, 0xf5b8cdce, REGION_CPU1, 0x000003, LOAD_8_32 },
+  { "d90-03", 0x100000, 0x6fa894a1, REGION_GFX1 , 0x000000, LOAD_8_32S },
+  { "d90-02", 0x100000, 0x5ab04ca2, REGION_GFX1 , 0x000002, LOAD_8_32S },
+  { "d90-01", 0x100000, 0x8aedb9e5, REGION_GFX1 , 0x000000, LOAD_MASK4 },
+  { "d90-08", 0x100000, 0x25a4fb2c, REGION_GFX2 , 0x000000, LOAD_16_64S },
+  { "d90-07", 0x100000, 0xb436b42d, REGION_GFX2 , 0x000004, LOAD_16_64S },
+  { "d90-06", 0x100000, 0x166a72b8, REGION_GFX2 , 0x000000, LOAD_MASK8 },
+  { "d90-04", 0x200000, 0xfeee5fda, REGION_SMP1, 0x000000, LOAD_BE }, // C8 C9 CA CB
+  { "d90-05", 0x200000, 0xc192331f, REGION_SMP1, 0x400000, LOAD_BE }, // CC CD -std-
   LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
                   "d90.13",  0x6762bd90,       "d90.14",  0x8e33357e),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-/*
+static struct ROM_INFO rom_bublbob2o[] =
+{
+   {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
+   {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
+   {       "d90.10", 0x00040000, 0x8e957d3d, REGION_ROM1, 0x000002, LOAD_8_32, },
+   {       "d90.17", 0x00040000, 0x711f1894, REGION_ROM1, 0x000003, LOAD_8_32, },
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO rom_bublbob2p[] =
+{
+  { "soft-3-8c9b.ic60", 0x40000, 0x15d0594e, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "soft-2-0587.ic61", 0x40000, 0xd1a5231f, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "soft-1-9a9c.ic62", 0x40000, 0xc11a4d26, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "soft-0-a523.ic63", 0x40000, 0x58131f9e, REGION_CPU1, 0x000003, LOAD_8_32 },
+  { "cq80-obj-0l-c166.ic8", 0x80000, 0x9bff223b, REGION_GFX1 , 0x000000, LOAD_8_32S },
+  { "cq80-obj-0m-24f4.ic30", 0x80000, 0xee71f643, REGION_GFX1 , 0x000002, LOAD_8_32S },
+  { "cq80-obj-0h-990d.ic32", 0x80000, 0x4d3a78e0, REGION_GFX1 , 0x000000, LOAD_MASK4 },
+  { "cq80-scr0-5ba4.ic7", 0x080000, 0x044dc38b, REGION_GFX3 , 0x000000, LOAD_8_32 },
+  { "cq80-scr2-cc11.ic5", 0x080000, 0xb81aa2c7, REGION_GFX3 , 0x000001, LOAD_8_32 },
+  { "cq80-scr1-a5f3.ic6", 0x080000, 0x3cf3a3ba, REGION_GFX3 , 0x000002, LOAD_8_32 },
+  { "cq80-scr3-4266.ic4", 0x080000, 0xc114583f, REGION_GFX3 , 0x000003, LOAD_8_32 },
+  { "cq80-scr4-7fe1.ic3", 0x080000, 0x2bba1728, REGION_GFX4 , 0x000000, LOAD_NORMAL }, // ???
+  { "snd-h-348f.ic66",    0x020000, 0xf66e60f2, REGION_ROM2,  0x000000, LOAD_8_16 },
+  { "snd-l-4ec1.ic65",    0x020000, 0xd302d8bc, REGION_ROM2,  0x000001, LOAD_8_16 },
+  { "cq80-snd-data0-7b5f.ic43", 0x080000, 0xbf8f26d3, REGION_SMP1 , 0x000000, LOAD_BE }, // C8
+  { "cq80-snd-data1-933b.ic44", 0x080000, 0x62b00475, REGION_SMP1 , 0x100000, LOAD_BE }, // C9
+  { "cq80-snd3-std5-3a9c.ic10", 0x080000, 0x26312451, REGION_SMP1 , 0x600000, LOAD_BE }, // -std-
+  { "cq80-snd2-std6-a148.ic11", 0x080000, 0x2edaa9dc, REGION_SMP1 , 0x700000, LOAD_BE }, // -std-
+   {           NULL,          0,          0, 0, 0, 0, },
+};
+
 static struct ROMSW_DATA romsw_data_bubble_bobble_2[] =
 {
    { "Taito Japan (Japanese)",        0x01 },
@@ -43,60 +75,12 @@ static struct ROMSW_DATA romsw_data_bubble_bobble_2[] =
    { "Taito World (Bubble Bobble 2)", 0x03 },
    { NULL,                     0    },
 };
-*/
 
-
-
-/*******************
-   BUBBLE SYMPHONY
- *******************/
-
-
-static struct ROM_INFO rom_bubsymph[] =
+static struct ROMSW_INFO bubsymph_romsw[] =
 {
-   {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
-   {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
-   {       "d90.10", 0x00040000, 0x8e957d3d, REGION_ROM1, 0x000002, LOAD_8_32, },
-   {       "d90.09", 0x00040000, 0x3f2090b7, REGION_ROM1, 0x000003, LOAD_8_32, },
-   {       "d90.01", 0x00100000, 0x8aedb9e5, 0, 0, 0, },
-   {       "d90.02", 0x00100000, 0x5ab04ca2, 0, 0, 0, },
-   {       "d90.03", 0x00100000, 0x6fa894a1, 0, 0, 0, },
-   {       "d90.04", 0x00200000, 0xfeee5fda, 0, 0, 0, },
-   {       "d90.05", 0x00200000, 0xc192331f, 0, 0, 0, },
-   {       "d90.06", 0x00100000, 0x166a72b8, 0, 0, 0, },
-   {       "d90.07", 0x00100000, 0xb436b42d, 0, 0, 0, },
-   {       "d90.08", 0x00100000, 0x25a4fb2c, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
-                  "d90.13",  0x6762bd90,       "d90.14",  0x8e33357e),
-   {           NULL,          0,          0, 0, 0, 0, },
+   { 0x0FFFFF, 0x01, romsw_data_bubble_bobble_2 },
+   { 0,        0,    NULL },
 };
-
-
-/**********************
-   BUBBLE SYMPHONY US
- **********************/
-
-
-static struct ROM_INFO rom_bubsympu[] =
-{
-   {       "d90.12", 0x00040000, 0x9e523996, REGION_ROM1, 0x000000, LOAD_8_32, },
-   {       "d90.11", 0x00040000, 0xedfdbb7f, REGION_ROM1, 0x000001, LOAD_8_32, },
-   {       "d90.10", 0x00040000, 0x8e957d3d, REGION_ROM1, 0x000002, LOAD_8_32, },
-   {      "d90.usa", 0x00040000, 0x06182802, REGION_ROM1, 0x000003, LOAD_8_32, },
-   {       "d90.01", 0x00100000, 0x8aedb9e5, 0, 0, 0, },
-   {       "d90.02", 0x00100000, 0x5ab04ca2, 0, 0, 0, },
-   {       "d90.03", 0x00100000, 0x6fa894a1, 0, 0, 0, },
-   {       "d90.04", 0x00200000, 0xfeee5fda, 0, 0, 0, },
-   {       "d90.05", 0x00200000, 0xc192331f, 0, 0, 0, },
-   {       "d90.06", 0x00100000, 0x166a72b8, 0, 0, 0, },
-   {       "d90.07", 0x00100000, 0xb436b42d, 0, 0, 0, },
-   {       "d90.08", 0x00100000, 0x25a4fb2c, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
-                  "d90.13",  0x6762bd90,       "d90.14",  0x8e33357e),
-   {           NULL,          0,          0, 0, 0, 0, },
-};
-
-
 
 static UINT8 *RAM_BG0;
 static UINT8 *RAM_BG1;
@@ -130,81 +114,39 @@ static UINT8 *GFX_SPR_SOLID;
 
 static void load_bublbob2(void)
 {
-   int ta,tb,tc;
-   UINT8 *TMP;
-
    RAMSize=0x80000;
 
    if(!(RAM=AllocateMem(0x80000))) return;
-   if(!(GFX=AllocateMem(0x3E8D00+0x336E00))) return;
-   if(!(TMP=AllocateMem(0x100000))) return;
 
-   GFX_BG0 = GFX+0x3E8D00;
-   GFX_SPR = GFX+0x000000;
+   GFX_SPR = load_region[REGION_GFX1];
+   memset(GFX_SPR+0x1C8900,0x00,0x100); // ??!
+   if (is_current_game("bublbob2p")) {
+       GFX_BG0 = AllocateMem(0x400000);
+       int ta;
+       int tb=0;
+       UINT8 *src = load_region[REGION_GFX3];
+       for (ta=0; ta<0x200000; ta++) {
+	   GFX_BG0[tb++]=src[ta]&15;
+	   GFX_BG0[tb++]=src[ta]>>4;
+       }
+       src = load_region[REGION_GFX4];
+       tb=0;
+       for (ta=0; ta<0x80000; ta++) {
+	   UINT8 tc=src[ta];
+	   GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
+	   GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
+	   GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
+	   GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
+	   GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
+	   GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
+	   GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
+	   GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
+	   tb+=8;
+       }
+   } else
+       GFX_BG0 = load_region[REGION_GFX2];
 
-   tb=0;
-   if(!load_rom("d90.03", TMP, 0xFA340)) return;	// 16x16 SPRITES ($3E8D)
-   for(ta=0;ta<0xFA340;ta++){
-      GFX[tb++]=TMP[ta]&15;
-      GFX[tb++]=TMP[ta]>>4;
-      tb+=2;
-   }
-   tb=2;
-   if(!load_rom("d90.02", TMP, 0xFA340)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0xFA340;ta++){
-      GFX[tb++]=TMP[ta]&15;
-      GFX[tb++]=TMP[ta]>>4;
-      tb+=2;
-   }
-   tb=0;
-   if(!load_rom("d90.01", TMP, 0xFA340)) return;	// 16x16 SPRITES (MASK)
-   for(ta=0;ta<0xFA340;ta++){
-      tc=TMP[ta];
-      GFX[tb+3]|=((tc&0xC0)>>6)<<4;
-      GFX[tb+2]|=((tc&0x30)>>4)<<4;
-      GFX[tb+1]|=((tc&0x0C)>>2)<<4;
-      GFX[tb+0]|=((tc&0x03)>>0)<<4;
-      tb+=4;
-   }
-
-   memset(GFX+0x1C8900,0x00,0x100);
-
-   tb=0;
-   if(!load_rom("d90.08", TMP, 0xCDB80)) return;	// 16x16 TILES ($336E)
-   for(ta=0;ta<0xCDB80;ta+=2){
-      GFX_BG0[tb++]=TMP[ta]&15;
-      GFX_BG0[tb++]=TMP[ta]>>4;
-      GFX_BG0[tb++]=TMP[ta+1]&15;
-      GFX_BG0[tb++]=TMP[ta+1]>>4;
-      tb+=4;
-   }
-   tb=4;
-   if(!load_rom("d90.07", TMP, 0xCDB80)) return;	// 16x16 TILES
-   for(ta=0;ta<0xCDB80;ta+=2){
-      GFX_BG0[tb++]=TMP[ta]&15;
-      GFX_BG0[tb++]=TMP[ta]>>4;
-      GFX_BG0[tb++]=TMP[ta+1]&15;
-      GFX_BG0[tb++]=TMP[ta+1]>>4;
-      tb+=4;
-   }
-   tb=0;
-   if(!load_rom("d90.06", TMP, 0xCDB80)) return;	// 16x16 TILES (MASK)
-   for(ta=0;ta<0xCDB80;ta+=2){
-      tc=TMP[ta];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
-      tb+=8;
-   }
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = MakeSolidTileMap16x16(GFX_BG0, 0x336E);
+   GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x4000);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x3E8D);
 
    // Setup 68020 Memory Map
@@ -238,9 +180,6 @@ static void load_bublbob2(void)
 
    // 68000 code
    M68000ROM = load_region[REGION_ROM2];
-   if(!(PCMROM=AllocateMem(0x800000))) return;
-   load_be("d90.04",PCMROM,0x200000);
-   load_be("d90.05",PCMROM+0x400000,0x200000);
    max_banks_this_game=3; //=memory_region_length(REGION_SOUND1)/0x400000;
 
    memset(RAM+0x00000,0x00,0x80000);
@@ -249,27 +188,50 @@ static void load_bublbob2(void)
    // EEPROM HACKS
    // ------------
 
-   WriteWord68k(&ROM[0x0ECD6A],0x7F00);		//	raine	#$00 <read eeprom>
-   WriteWord68k(&ROM[0x0ECD6C],0x4E75);		//	rts
+   if (is_current_game("bublbob2p")) {
+       WriteWord68k(&ROM[0x0Eb92c],0x7F00);		//	raine	#$00 <read eeprom>
+       WriteWord68k(&ROM[0x0Eb92e],0x4E75);		//	rts
 
-   WriteWord68k(&ROM[0x0ECDE6],0x7F01);		//	raine	#$01 <write eeprom>
-   WriteWord68k(&ROM[0x0ECDE8],0x4E75);		//	rts
+       WriteWord68k(&ROM[0x0Eb9a8],0x7F01);		//	raine	#$01 <write eeprom>
+       WriteWord68k(&ROM[0x0Eb9aa],0x4E75);		//	rts
+   } else {
+       WriteWord68k(&ROM[0x0ECD6A],0x7F00);		//	raine	#$00 <read eeprom>
+       WriteWord68k(&ROM[0x0ECD6C],0x4E75);		//	rts
+
+       WriteWord68k(&ROM[0x0ECDE6],0x7F01);		//	raine	#$01 <write eeprom>
+       WriteWord68k(&ROM[0x0ECDE8],0x4E75);		//	rts
+   }
 
    // SPEED HACKS
    // -----------
 
-   WriteWord68k(&ROM[0x0E9A3A],0x7F02);		//	raine	#$02 <stop cpu>
-   WriteWord68k(&ROM[0x0E9A3C],0x4E71);		//	nop
-   WriteWord68k(&ROM[0x0E9A3E],0x4E71);		//	nop
+   if (is_current_game("bublbob2p")) {
+       WriteWord68k(&ROM[0x0E8a16],0x7F02);		//	raine	#$02 <stop cpu>
+       WriteWord68k(&ROM[0x0E8a18],0x4E71);		//	nop
+       WriteWord68k(&ROM[0x0E8a1a],0x4E71);		//	nop
 
-   WriteWord68k(&ROM[0x0E9902],0x4EF9);		//	jmp	$FFA00
-   WriteLong68k(&ROM[0x0E9904],0x000FFA00);	//
+       WriteWord68k(&ROM[0x0E8902],0x4EF9);		//	jmp	$FFA00
+       WriteLong68k(&ROM[0x0E8904],0x000FFA00);	//
 
-   WriteLong68k(&ROM[0x0FFA00],0x526D8124);	//	addq	#1,(-32476,a5)
-   WriteWord68k(&ROM[0x0FFA04],0x7F02);		//	raine	#$02 <stop cpu>
+       WriteLong68k(&ROM[0x0FFA00],0x526D8120);	//	addq	#1,(-32480,a5)
+       WriteWord68k(&ROM[0x0FFA04],0x7F02);		//	raine	#$02 <stop cpu>
 
-   WriteWord68k(&ROM[0x0FFA06],0x4EF9);		//	jmp	$E98F8
-   WriteLong68k(&ROM[0x0FFA08],0x000E98F8);	//
+       WriteWord68k(&ROM[0x0FFA06],0x4EF9);		//	jmp	$E88F8
+       WriteLong68k(&ROM[0x0FFA08],0x000E88F8);	//
+   } else {
+       WriteWord68k(&ROM[0x0E9A3A],0x7F02);		//	raine	#$02 <stop cpu>
+       WriteWord68k(&ROM[0x0E9A3C],0x4E71);		//	nop
+       WriteWord68k(&ROM[0x0E9A3E],0x4E71);		//	nop
+
+       WriteWord68k(&ROM[0x0E9902],0x4EF9);		//	jmp	$FFA00
+       WriteLong68k(&ROM[0x0E9904],0x000FFA00);	//
+
+       WriteLong68k(&ROM[0x0FFA00],0x526D8124);	//	addq	#1,(-32476,a5)
+       WriteWord68k(&ROM[0x0FFA04],0x7F02);		//	raine	#$02 <stop cpu>
+
+       WriteWord68k(&ROM[0x0FFA06],0x4EF9);		//	jmp	$E98F8
+       WriteLong68k(&ROM[0x0FFA08],0x000E98F8);	//
+   }
 
    F3SystemEEPROMAccess=&F3SysEEPROMAccessMode1;
 
@@ -302,144 +264,23 @@ static void load_bublbob2(void)
 
 static void DrawBubbleSymphony(void)
 {
-   int x,y,ta,zz,zzz,zzzz,x16,y16;
+   int x,zz,zzz,zzzz,x16;
    UINT8 *MAP;
 
    ClearPaletteMap();
 
-   if(check_layer_enabled(f3_bg0_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7
-   );
+   if(check_layer_enabled(f3_bg0_id))
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0);
+   else
+       clear_game_screen(0);
+   if(check_layer_enabled(f3_bg1_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,(ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7,RAM_BG1,GFX_BG0,GFX_BG0_SOLID);
 
-   START_SCROLL_1024x512_4_16(64,64,320,224);
+   if(check_layer_enabled(f3_bg2_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,(ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7,RAM_BG2,GFX_BG0,GFX_BG0_SOLID);
 
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG0[zz])&0x1FF,
-               32,        MAP
-            );
-
-      switch(RAM_BG0[zz]&0xC0){
-      case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);        break;
-      case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);  break;
-      case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);  break;
-      case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP); break;
-      }
-
-   END_SCROLL_1024x512_4_16();
-   }
-
-   if(check_layer_enabled(f3_bg1_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      ta=ReadWord68k(&RAM_BG1[zz+2])&0x3FFF;
-      if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG1[zz])&0x1FF,
-               32,        MAP
-            );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG1[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG1[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      }
-
-   END_SCROLL_1024x512_4_16();
-   }
-
-   if(check_layer_enabled(f3_bg2_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      ta=ReadWord68k(&RAM_BG2[zz+2])&0x3FFF;
-      if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG2[zz])&0x1FF,
-               32,        MAP
-            );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG2[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG2[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      }
-
-   END_SCROLL_1024x512_4_16();
-   }
-
-   if(check_layer_enabled(f3_bg3_id)){
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-      ta=ReadWord68k(&RAM_BG3[zz+2])&0x3FFF;
-      if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-               ReadWord68k(&RAM_BG3[zz])&0x1FF,
-               32,        MAP
-            );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG3[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG3[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      }
-
-   END_SCROLL_1024x512_4_16();
-   }
+   if(check_layer_enabled(f3_bg3_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,(ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7,RAM_BG3,GFX_BG0,GFX_BG0_SOLID);
 
    if(check_layer_enabled(f3_bg6_id)){
    zzz=0-((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0);
@@ -450,6 +291,17 @@ static void DrawBubbleSymphony(void)
    zzzz+=zz<<2;					// Y Offset (0-255)
 
    zzzz&=0xFFFF;
+#if 0
+   // the tile_index conversion doesn't work !
+   int tile_index = zzzz; // ??
+   int y_offs = ReadWord68k(&RAM_SCR4[2]) & 0x1ff;
+   int col_off;
+   if ((((tile_index%32)*8 + y_offs)&0x1ff)>0xff)
+       col_off=0x800+((tile_index%32)*0x40)+((tile_index&0xfe0)>>5);
+   else
+       col_off=((tile_index%32)*0x40)+((tile_index&0xfe0)>>5);
+#endif
+
    MAP_PALETTE_MAPPED_NEW(
 			  16, // ???
             16,     MAP
@@ -494,46 +346,20 @@ static struct DIR_INFO dir_bublbob2[] =
    { "bublbob2", },
    { NULL, },
 };
-#define load_bubsymph load_bublbob2
-#define load_bubsympu load_bublbob2
-GAME( bublbob2, "Bubble Bobble 2", TAITO, 1994, GAME_PLATFORM,
+#define input_bublbob2 f3_system_inputs
+#define sound_bublbob2 f3_sound
+#define execute_bublbob2 ExecuteF3SystemFrame_NoInt5
+#define dsw_bublbob2 NULL
+GAME( bublbob2, "Bubble Bobble II (Ver 2.6O 1994/12/16)", TAITO, 1994, GAME_PLATFORM,
 	.input = f3_system_inputs,
+	.romsw = bubsymph_romsw,
 	.video = &video_bublbob2,
 	.exec = ExecuteF3SystemFrame_NoInt5,
 	.long_name_jpn = "バブルシンフォニー",
 	.board = "D90",
 	.sound = f3_sound,
 );
-static struct DIR_INFO dir_bubsymph[] =
-{
-   { "bubble_symphony", },
-   { "bubsymph", },
-   { ROMOF("bublbob2"), },
-   { CLONEOF("bublbob2"), },
-   { NULL, },
-};
-GAME( bubsymph, "Bubble Symphony", TAITO, 1994, GAME_PLATFORM,
-	.input = f3_system_inputs,
-	.video = &video_bublbob2,
-	.exec = ExecuteF3SystemFrame_NoInt5,
-	.long_name_jpn = "バブルシンフォニー",
-	.board = "D90",
-	.sound = f3_sound,
-);
-static struct DIR_INFO dir_bubsympu[] =
-{
-   { "bubble_symphony_us", },
-   { "bubsympu", },
-   { ROMOF("bublbob2"), },
-   { CLONEOF("bublbob2"), },
-   { NULL, },
-};
-GAME( bubsympu, "Bubble Symphony (US)", TAITO, 1994, GAME_PLATFORM,
-	.input = f3_system_inputs,
-	.video = &video_bublbob2,
-	.exec = ExecuteF3SystemFrame_NoInt5,
-	.long_name_jpn = "バブルシンフォニー (US)",
-	.board = "D90",
-	.sound = f3_sound,
-);
-
+CLNEI(bublbob2o,bublbob2,"Bubble Bobble II (Ver 2.5O 1994/10/05)",TAITO,1994,GAME_PLATFORM,
+	.romsw = bubsymph_romsw,
+	);
+CLNEI(bublbob2p,bublbob2,"Bubble Bobble II (Ver 0.0J 1993/12/13, prototype)",TAITO,1994,GAME_PLATFORM);

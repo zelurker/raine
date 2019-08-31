@@ -61,8 +61,8 @@
 
 // bubsymph.c
   DRV(bublbob2)
-  DRV(bubsymph)
-  DRV(bubsympu)
+    DRV(bublbob2o)
+    DRV(bublbob2p)
 
 // cabal.c
   DRV(cabalbl)
