@@ -82,6 +82,17 @@ static void copy_from_memory (int cpu, int addr, UINT8 *dest, int num_bytes)
 static UINT32 hexstr2num (const char **pString)
 {
 	const char *string = *pString;
+	if (*string == '@') {
+	    // New format
+	    const char *s = strchr(string,',');
+	    if (s)
+		s = strchr(s+1,',');
+	    if (s) {
+		*pString = s;
+		return 0;
+	    }
+	}
+
 	UINT32 result = 0;
 	if (string)
 	{
@@ -124,6 +135,8 @@ static UINT32 hexstr2num (const char **pString)
 static int is_mem_range (const char *pBuf)
 {
 	char c;
+	if (*pBuf == '@') // new format
+	    return 1;
 	for(;;)
 	{
 		c = *pBuf++;
