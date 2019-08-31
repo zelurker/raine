@@ -10,6 +10,7 @@
 #include "games/default.h"
 #include "loadroms.h"
 #include "newmem.h"
+#include "emumain.h"
 
 struct S68000CONTEXT            M68000_context[MAX_68000];
 static struct STARSCREAM_PROGRAMREGION M68000_programregion[MAX_68000][MAX_PROGRAM];
@@ -546,6 +547,8 @@ void AddInitMemory(void)
    M68000_context[0].u_writebyte = M68000_dataregion_wb[0];
    M68000_context[0].u_writeword = M68000_dataregion_ww[0];
    M68000_context[0].resethandler = M68000_resethandler[0];
+   if (!M68000_context[0].resethandler)
+       M68000_context[0].resethandler = &reset_game_hardware; // a sound default... !
    M68000_context[0].sr = 0x2700;
 
    AddSaveCallback_Internal(M68000A_save_update);
