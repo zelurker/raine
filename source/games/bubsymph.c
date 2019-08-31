@@ -55,10 +55,10 @@ static struct ROM_INFO rom_bublbob2p[] =
   { "cq80-obj-0m-24f4.ic30", 0x80000, 0xee71f643, REGION_GFX1 , 0x000002, LOAD_8_32S },
   { "cq80-obj-0h-990d.ic32", 0x80000, 0x4d3a78e0, REGION_GFX1 , 0x000000, LOAD_MASK4 },
   { "cq80-scr0-5ba4.ic7", 0x080000, 0x044dc38b, REGION_GFX3 , 0x000000, LOAD_8_32 },
-  { "cq80-scr2-cc11.ic5", 0x080000, 0xb81aa2c7, REGION_GFX3 , 0x000001, LOAD_8_32 },
-  { "cq80-scr1-a5f3.ic6", 0x080000, 0x3cf3a3ba, REGION_GFX3 , 0x000002, LOAD_8_32 },
+  { "cq80-scr1-a5f3.ic6", 0x080000, 0x3cf3a3ba, REGION_GFX3 , 0x000001, LOAD_8_32 },
+  { "cq80-scr2-cc11.ic5", 0x080000, 0xb81aa2c7, REGION_GFX3 , 0x000002, LOAD_8_32 },
   { "cq80-scr3-4266.ic4", 0x080000, 0xc114583f, REGION_GFX3 , 0x000003, LOAD_8_32 },
-  { "cq80-scr4-7fe1.ic3", 0x080000, 0x2bba1728, REGION_GFX4 , 0x000000, LOAD_NORMAL }, // ???
+  { "cq80-scr4-7fe1.ic3", 0x080000, 0x2bba1728, REGION_GFX4 , 0x000000, LOAD_NORMAL },
   { "snd-h-348f.ic66",    0x020000, 0xf66e60f2, REGION_ROM2,  0x000000, LOAD_8_16 },
   { "snd-l-4ec1.ic65",    0x020000, 0xd302d8bc, REGION_ROM2,  0x000001, LOAD_8_16 },
   { "cq80-snd-data0-7b5f.ic43", 0x080000, 0xbf8f26d3, REGION_SMP1 , 0x000000, LOAD_BE }, // C8
@@ -147,7 +147,7 @@ static void load_bublbob2(void)
        GFX_BG0 = load_region[REGION_GFX2];
 
    GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x4000);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x3E8D);
+   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x4000);
 
    // Setup 68020 Memory Map
    // ----------------------
@@ -293,7 +293,7 @@ static void DrawBubbleSymphony(void)
    zzzz&=0xFFFF;
 #if 0
    // the tile_index conversion doesn't work !
-   int tile_index = zzzz; // ??
+   int tile_index = 64+32;
    int y_offs = ReadWord68k(&RAM_SCR4[2]) & 0x1ff;
    int col_off;
    if ((((tile_index%32)*8 + y_offs)&0x1ff)>0xff)
@@ -301,9 +301,17 @@ static void DrawBubbleSymphony(void)
    else
        col_off=((tile_index%32)*0x40)+((tile_index&0xfe0)>>5);
 #endif
+   // Some shameless cheating to extract what looks best !
+   // The problem here is that we really don't draw this the way intended
+   // we are supposed to get a color bank for each 16x16 sprite, and in fact we just
+   // draw columns of 8 pixels ! The only chance is to get the 1st bank and pray that
+   // it remains the same after that !!! Tested in bublbob2p and bublbob2 so far... !
+   int col_off = 0x120/2;
+   INT16 vram_tile = ReadWord68k(&RAM[0x3c000+col_off*2]);
+   // printf("ofs %x tile %x bank %x\n",col_off,vram_tile,(vram_tile>>9)&0x3f);
 
    MAP_PALETTE_MAPPED_NEW(
-			  16, // ???
+			  (vram_tile>>9)&0x3f, // ???
             16,     MAP
          );
 
