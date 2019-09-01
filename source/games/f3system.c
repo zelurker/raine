@@ -654,7 +654,7 @@ void draw_f3_layer(int sx,int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,UINT8 *GFX_BG_SOLI
     UINT8 *map;
 
     UINT16 ta=ReadWord68k(&RAM_BG[zz+2]);
-    if(ta!=0){
+    if(GFX_BG_SOLID[ta]){
 
 	MAP_PALETTE_MAPPED_NEW(
 		color&0x1FF & (~extra_planes),
@@ -670,6 +670,62 @@ void draw_f3_layer(int sx,int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,UINT8 *GFX_BG_SOLI
     }
 
     END_SCROLL_n_16(w,512,4);
+}
+
+void draw_f3_pixel(int dx,int dy,UINT8 *src) {
+    /* One of the craziest layers I ever saw !
+     * So the idea is to draw a pixel bitmap, but each 8x8 area on its surface has an attribute in videoram
+     * to make things even worse : the attributes area is not oriented the same way as the bitmap itself !
+     * Mostly used in bubblem and bubsymph clones (levels walls + some backgrounds for the prototype), and twinqix
+     * Todo : maybe try to find some clever ways to speed up things when there is nothing to draw here...
+     */
+    int x,x16,zzzz,zzz,zz;
+    UINT8 *map;
+   zzz=0; // -dx; // dx doesn't seem to be used ?
+   zzzz=((zzz&0x1F8)>>3)<<10;			// X Offset (16-1024)
+   int tile_index = zzzz>>4;
+   x16=7-(zzz&7);				// X Offset (0-15)
+   zz=1-dy;
+   zz&=0xFF;					// Y Offset (0-255)
+   zzzz+=zz<<2;					// Y Offset (0-255)
+   tile_index += (((1-dy)&0x1ff)>>3)<<6;
+   if (tile_index > 0x800 || tile_index < 0)
+       tile_index = 0x800+(tile_index & 0x7FF);
+
+   zzzz&=0xFFFF;
+
+   for(x=56+x16;x<(320+64);x+=8){
+       int tile0 = tile_index;
+       int z0 = zzzz;
+       for (int y=0; y<224; y+=8) {
+	   INT16 vram_tile = ReadWord68k(&RAM[0x3c000+tile_index*2]);
+
+
+	   MAP_PALETTE_MAPPED_NEW(
+		   (vram_tile>>9)&0x3f, // ???
+		   16,     map
+		   );
+	   // if (vram_tile&0x8000) printf("flipy\n"); // flags|=TILE_FLIPY;
+
+	   if (vram_tile&0x0100)
+	       // The only game I know which uses this is twinqix
+	       Draw8x8_Trans_Packed_Mapped_Rot(&src[zzzz],x,64+1+y,map);
+	   else
+	       Draw8x8_Trans_Packed_Mapped_FlipY_Rot(&src[zzzz],x,64+1+y,map);
+	   tile_index+=0x40;
+	   tile_index &= 0xFff;
+	   zzzz+=8*4;
+	   if ((tile_index >= 0x800 && tile_index < 0x840) || (tile_index >= 0 && tile_index < 0x40)) {
+	       /* There is again something weird with this layer, when reaching a limit, a sign limit apparently, instead of cycling smoothly
+		* it needs to be corrected of 1 char on the left. Tested here on tile_index. The fix is not perfect, while a level is scrolling
+		* in bubblem for example you might see the walls moving left and right very fast before stabilizing at the end of the scrolling.
+		* No idea to make it better for now... */
+	       zzzz -= 0x400;
+	   }
+       }
+       zzzz=(z0+0x400)&0xFFFF;
+       tile_index = tile0 + 1;
+   }
 }
 
 static UINT32 lastled;

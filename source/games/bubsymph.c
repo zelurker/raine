@@ -264,9 +264,6 @@ static void load_bublbob2(void)
 
 static void DrawBubbleSymphony(void)
 {
-   int x,zz,zzz,zzzz,x16;
-   UINT8 *MAP;
-
    ClearPaletteMap();
 
    if(check_layer_enabled(f3_bg0_id))
@@ -282,58 +279,9 @@ static void DrawBubbleSymphony(void)
    if(check_layer_enabled(f3_bg3_id))
        draw_f3_layer((ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,(ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7,RAM_BG3,GFX_BG0,GFX_BG0_SOLID);
 
-   if(check_layer_enabled(f3_bg6_id)){
-   zzz=0-((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0);
-   zzzz=((zzz&0x1F8)>>3)<<10;			// X Offset (16-1024)
-   x16=7-(zzz&7);				// X Offset (0-15)
-   zz=17-((ReadWord68k(&RAM_SCR4[2])-SCR4_YOFS)>>0);
-   zz&=0xFF;					// Y Offset (0-255)
-   zzzz+=zz<<2;					// Y Offset (0-255)
+   if(check_layer_enabled(f3_bg6_id))
+	draw_f3_pixel(((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0),((ReadWord68k(&RAM_SCR4[2])-SCR4_YOFS)>>0),RAM_BG4);
 
-   zzzz&=0xFFFF;
-#if 0
-   // the tile_index conversion doesn't work !
-   int tile_index = 64+32;
-   int y_offs = ReadWord68k(&RAM_SCR4[2]) & 0x1ff;
-   int col_off;
-   if ((((tile_index%32)*8 + y_offs)&0x1ff)>0xff)
-       col_off=0x800+((tile_index%32)*0x40)+((tile_index&0xfe0)>>5);
-   else
-       col_off=((tile_index%32)*0x40)+((tile_index&0xfe0)>>5);
-#endif
-   // Some shameless cheating to extract what looks best !
-   // The problem here is that we really don't draw this the way intended
-   // we are supposed to get a color bank for each 16x16 sprite, and in fact we just
-   // draw columns of 8 pixels ! The only chance is to get the 1st bank and pray that
-   // it remains the same after that !!! Tested in bublbob2p and bublbob2 so far... !
-   int col_off = 0x120/2;
-   INT16 vram_tile = ReadWord68k(&RAM[0x3c000+col_off*2]);
-   // printf("ofs %x tile %x bank %x\n",col_off,vram_tile,(vram_tile>>9)&0x3f);
-
-   MAP_PALETTE_MAPPED_NEW(
-			  (vram_tile>>9)&0x3f, // ???
-            16,     MAP
-         );
-
-   if(zz<=48){
-
-   for(x=56+x16;x<(320+64);x+=8){
-     Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,208,MAP);
-      zzzz=(zzzz+0x400)&0xFFFF;
-   }
-
-   }
-   else{
-
-   for(x=56+x16;x<(320+64);x+=8){
-     Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,256-zz,MAP);
-     Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz+((256-zz)<<2)-0x400],x,64+16+(256-zz),208-(256-zz),MAP);
-     zzzz=(zzzz+0x400)&0xFFFF;
-   }
-
-   }
-
-   }
    render_tc0200obj_mapped_f3system();
 
    if(check_layer_enabled(f3_bg5_id)){

@@ -209,9 +209,6 @@ static void load_bubblem(void) {
 
 static void DrawBubbleMemories(void)
 {
-   int x,zz,zzz,zzzz,x16;
-   UINT8 *MAP;
-
    ClearPaletteMap();
 
    if(check_layer_enabled(f3_bg0_id))
@@ -225,41 +222,8 @@ static void DrawBubbleMemories(void)
    if (check_layer_enabled(f3_bg3_id))
        draw_f3_layer((ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,(ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7,RAM_BG3,GFX_BG0,GFX_BG0_SOLID);
 
-   if(check_layer_enabled(f3_bg6_id)){
-   zzz=0-((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0);
-   zzzz=((zzz&0x1F8)>>3)<<10;			// X Offset (16-1024)
-   x16=7-(zzz&7);				// X Offset (0-15)
-   zz=17-((ReadWord68k(&RAM_SCR4[2])-SCR4_YOFS)>>0);
-   zz&=0xFF;					// Y Offset (0-255)
-   zzzz+=zz<<2;					// Y Offset (0-255)
-
-   zzzz&=0xFFFF;
-
-      MAP_PALETTE_MAPPED_NEW(
-               0x10,
-               16,        MAP
-            );
-
-   if(zz<=48){
-
-   for(x=56+x16;x<(320+64);x+=8){
-      Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,208,MAP);
-      zzzz=(zzzz+0x400)&0xFFFF;
-   }
-
-   }
-   else{
-
-   for(x=56+x16;x<(320+64);x+=8){
-      Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz],x,64+16,256-zz,MAP);
-      Draw8xH_Trans_Packed_Mapped_FlipY_Rot(&RAM_BG4[zzzz+((256-zz)<<2)-0x400],x,64+16+(256-zz),208-(256-zz),MAP);
-      zzzz=(zzzz+0x400)&0xFFFF;
-   }
-
-   }
-
-   }
-
+   if(check_layer_enabled(f3_bg6_id))
+       draw_f3_pixel(((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0),((ReadWord68k(&RAM_SCR4[2])-SCR4_YOFS)>>0),RAM_BG4);
 
    render_tc0200obj_mapped_f3system();
 

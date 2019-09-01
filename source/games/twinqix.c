@@ -11,6 +11,7 @@
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
+#include "blit.h"
 
 
 static struct ROM_INFO rom_twinqix[] =
@@ -163,7 +164,7 @@ static void load_twinqix(void)
       tb+=8;
    }
 
-   GFX_BG0_SOLID = MakeSolidTileMap16x16(GFX_BG0, 0x2BE8);
+   GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x2BE8);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x134D);
 
    // Setup 68020 Memory Map
@@ -305,170 +306,26 @@ static void load_twinqix(void)
 
 static void DrawTwinQix(void)
 {
-   int x,y,ta,zz,zzz,zzzz,x16,y16;
-   UINT8 *MAP;
-
    ClearPaletteMap();
 
-   if(check_layer_enabled(f3_bg0_id)){
+   if(check_layer_enabled(f3_bg0_id))
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0);
+   else
+       clear_game_screen(0);
 
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7
-   );
+   if(check_layer_enabled(f3_bg1_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,(ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7,RAM_BG1,GFX_BG0,GFX_BG0_SOLID);
 
-   START_SCROLL_1024x512_4_16(64,64,320,224);
+   if(check_layer_enabled(f3_bg2_id))
+       draw_f3_layer((ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,(ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7,RAM_BG2,GFX_BG0,GFX_BG0_SOLID);
 
-      MAP_PALETTE_MAPPED_NEW(
-         ReadWord68k(&RAM_BG0[zz])&0x1FF,
-         64,
-         MAP
-      );
+   if(check_layer_enabled(f3_bg3_id))
+       if(ReadWord68k(&RAM[0x4623E])==0x0F07){
+	   draw_f3_layer((ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,(ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7,RAM_BG3,GFX_BG0,GFX_BG0_SOLID);
+       }
 
-      switch(RAM_BG0[zz]&0xC0){
-      case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);        break;
-      case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);  break;
-      case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP);  break;
-      case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[(ReadWord68k(&RAM_BG0[zz+2])&0x3FFF)<<8],x,y,MAP); break;
-      }
-
-   END_SCROLL_1024x512_4_16();
-   }
-
-
-   if(check_layer_enabled(f3_bg1_id)){
-
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR1[0])-SCR1_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR1[8])-SCR1_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-   ta=ReadWord68k(&RAM_BG1[zz+2])&0x3FFF;
-   if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-         ReadWord68k(&RAM_BG1[zz])&0x1FF,
-         64,
-         MAP
-      );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG1[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG1[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-   }
-
-   END_SCROLL_1024x512_4_16();
-   }
-
-   if(check_layer_enabled(f3_bg2_id)){
-
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR2[0])-SCR2_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR2[8])-SCR2_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-   ta=ReadWord68k(&RAM_BG2[zz+2])&0x3FFF;
-   if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-         ReadWord68k(&RAM_BG2[zz])&0x1FF,
-         64,
-         MAP
-      );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG2[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG2[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-   }
-
-   END_SCROLL_1024x512_4_16();
-   }
-
-   if(check_layer_enabled(f3_bg3_id)){
-   if(ReadWord68k(&RAM[0x4623E])==0x0F07){
-
-   MAKE_SCROLL_1024x512_4_16(
-      (ReadWord68k(&RAM_SCR3[0])-SCR3_XOFS)>>6,
-      (ReadWord68k(&RAM_SCR3[8])-SCR3_YOFS)>>7
-   );
-
-   START_SCROLL_1024x512_4_16(64,64,320,224);
-
-   ta=ReadWord68k(&RAM_BG3[zz+2])&0x3FFF;
-   if(ta!=0){
-
-      MAP_PALETTE_MAPPED_NEW(
-         ReadWord68k(&RAM_BG3[zz])&0x1FF,
-         64,
-         MAP
-      );
-
-      if(GFX_BG0_SOLID[ta]==0){
-         switch(RAM_BG3[zz]&0xC0){
-         case 0x00: Draw16x16_Trans_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Trans_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-      else{
-         switch(RAM_BG3[zz]&0xC0){
-         case 0x00: Draw16x16_Mapped_Rot(&GFX_BG0[ta<<8],x,y,MAP);        break;
-         case 0x40: Draw16x16_Mapped_FlipY_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0x80: Draw16x16_Mapped_FlipX_Rot(&GFX_BG0[ta<<8],x,y,MAP);  break;
-         case 0xC0: Draw16x16_Mapped_FlipXY_Rot(&GFX_BG0[ta<<8],x,y,MAP); break;
-         }
-      }
-   }
-
-   END_SCROLL_1024x512_4_16();
-   }
-   }
-
-   if(check_layer_enabled(f3_bg6_id)){
-
-      MAP_PALETTE_MAPPED_NEW(
-         16,
-         16,
-         MAP
-      );
-
-   zzzz=0x50000;
-   for(x=64;x<(320+64);x+=8){
-      Draw8xH_Trans_Packed_Mapped_Rot(&RAM[zzzz],x,64,224,MAP);
-      zzzz+=0x400;
-   }
-   }
+   if(check_layer_enabled(f3_bg6_id))
+       draw_f3_pixel(((ReadWord68k(&RAM_SCR4[0])-SCR4_XOFS)>>0),((ReadWord68k(&RAM_SCR4[2])-SCR4_YOFS)>>0),RAM_BG4);
 
    // object
 
