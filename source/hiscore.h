@@ -11,6 +11,7 @@ void hs_init( void );
 void hs_update( void );
 void hs_close( void );
 void hs_load (void);
+int hiscores_loaded();
 
 void computer_writemem_byte(int cpu, int addr, int value);
 int computer_readmem_byte(int cpu, int addr);

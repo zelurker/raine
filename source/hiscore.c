@@ -47,6 +47,10 @@ int computer_readmem_byte(int cpu, int addr)
   return gen_cpu_read_byte(addr);
 }
 
+int hiscores_loaded() {
+    return state.hiscores_have_been_loaded;
+}
+
 /*****************************************************************************/
 
 static void copy_to_memory (int cpu, int addr, const UINT8 *source, int num_bytes)
@@ -171,11 +175,17 @@ static int safe_to_load (void)
 		if ((UINT32)(computer_readmem_byte (mem_range->cpu, mem_range->addr)) !=
 			mem_range->start_value)
 		{
+#ifdef RAINE_DEBUG
+		    printf("hiscores: bad addr %x\n",mem_range->addr);
+#endif
 			return 0;
 		}
 		if ((UINT32)(computer_readmem_byte (mem_range->cpu, mem_range->addr + mem_range->num_bytes - 1)) !=
 			mem_range->end_value)
 		{
+#ifdef RAINE_DEBUG
+		    printf("hiscores: bad end %x\n",mem_range->addr + mem_range->num_bytes - 1);
+#endif
 			return 0;
 		}
 		mem_range = mem_range->next;
@@ -212,7 +222,7 @@ void hs_load (void)
   if (f)
     {
       struct mem_range *mem_range = state.mem_range;
-      LOG(("loading...\n"));
+      LOG(("hiscores: loading...\n"));
       while (mem_range)
 	{
 	  UINT8 *data = malloc (mem_range->num_bytes);
@@ -249,7 +259,7 @@ static void hs_save (void)
   if (f)
     {
       struct mem_range *mem_range = state.mem_range;
-      LOG(("saving...\n"));
+      LOG(("hiscores: saving...\n"));
       while (mem_range)
 	{
 	  UINT8 *data = malloc (mem_range->num_bytes);
@@ -363,15 +373,15 @@ void hs_init (void)
     }
   if (state.mem_range)
     {
-      LOG("range ready\n");
+      LOG("hiscores: range ready\n");
       if (!state.hiscores_have_been_loaded)
 	{
 
 	  if (safe_to_load()) {
-	    LOG(" loaded\n");
+	    LOG("hiscores loaded\n");
 	    hs_load();
 	  } else {
-	    LOG("not safe to load\n");
+	    LOG("hiscores not safe to load\n");
 	  }
 	}
     }
@@ -386,9 +396,9 @@ void hs_update (void)
 	{
 	  if (safe_to_load()) {
 	    hs_load();
-	    LOG("loaded\n");
+	    LOG("hiscores loaded\n");
 	  } else {
-	    LOG("not safe\n");
+	    LOG("hiscores not safe\n");
 	  }
 	} else if (ncheck == 3) {
 	    int nzero = 0;

@@ -514,6 +514,10 @@ void reset_game_hardware(void)
    print_debug("reset_game_hardware(): Start\n");
 
    hs_close(); // in case...
+   if (current_game) {
+     hs_open();
+     hs_init();
+   }
 
    sa_pause_sound();
    saStopSoundEmulators();
@@ -603,8 +607,6 @@ void reset_game_hardware(void)
    if (reset_function) reset_function();
 
    if (current_game) {
-     hs_open();
-     hs_init();
 
      hist_open("history.dat",current_game->main_name);
      if (!history)
