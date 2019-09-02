@@ -681,9 +681,9 @@ void draw_f3_pixel(int dx,int dy,UINT8 *src) {
      */
     int x,x16,zzzz,zzz,zz;
     UINT8 *map;
-   zzz=0; // -dx; // dx doesn't seem to be used ?
+   zzz=1-dx; // x scrolling used in bublbob2 !
    zzzz=((zzz&0x1F8)>>3)<<10;			// X Offset (16-1024)
-   int tile_index = zzzz>>4;
+   int tile_index = (zzz & 0x1f8)>>3;
    x16=7-(zzz&7);				// X Offset (0-15)
    zz=1-dy;
    zz&=0xFF;					// Y Offset (0-255)
@@ -695,14 +695,22 @@ void draw_f3_pixel(int dx,int dy,UINT8 *src) {
    zzzz&=0xFFFF;
 
    for(x=56+x16;x<(320+64);x+=8){
+       if (tile_index >= 0x40 && tile_index < 0x80)
+	   /* This is really a super ugly hack :
+	    * in bublbob2, beginning of stage 3 when coming from the middle gate
+	    * when the level scrolls towards the left, the right side of the level has wrong colors
+	    * it seems to happen when tile_index becomes >= 0x40
+	    * There is probably an offset to fix this, but I doubt &= 0x3f is the right solution
+	    * since it takes the index back... ! But here, it works, so it will do the trick until
+	    * I find somewhere where it doesn't work !!! */
+	   tile_index = (tile_index & 0x3f);
        int tile0 = tile_index;
        int z0 = zzzz;
        for (int y=0; y<224; y+=8) {
 	   INT16 vram_tile = ReadWord68k(&RAM[0x3c000+tile_index*2]);
 
-
 	   MAP_PALETTE_MAPPED_NEW(
-		   (vram_tile>>9)&0x3f, // ???
+		   (vram_tile>>9)&0x3f,
 		   16,     map
 		   );
 	   // if (vram_tile&0x8000) printf("flipy\n"); // flags|=TILE_FLIPY;
