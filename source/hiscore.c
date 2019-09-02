@@ -88,7 +88,7 @@ static UINT32 hexstr2num (const char **pString)
 	    if (s)
 		s = strchr(s+1,',');
 	    if (s) {
-		*pString = s;
+		*pString = s+1;
 		return 0;
 	    }
 	}
