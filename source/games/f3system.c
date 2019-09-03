@@ -686,16 +686,20 @@ void draw_f3_pixel(int dx,int dy,UINT8 *src) {
    int tile_index = (zzz & 0x1f8)>>3;
    x16=7-(zzz&7);				// X Offset (0-15)
    zz=1-dy;
-   zz&=0xFF;					// Y Offset (0-255)
-   zzzz+=zz<<2;					// Y Offset (0-255)
-   tile_index += (((1-dy)&0x1ff)>>3)<<6;
+   zz&=0xFf;					// Y Offset (0-255)
+   // The fix to be able to do the vertical scrolling with constant colors :
+   // change zzzz on 8 pixels boundaries, and then change y loop to draw
+   // the offscreen part of the sprite so that we always draw the same 8x8 sprite
+   zzzz+=(zz&0xf8)<<2;					// Y Offset (0-255)
+   tile_index += (zz>>3)<<6;
    if (tile_index > 0x800 || tile_index < 0)
        tile_index = 0x800+(tile_index & 0x7FF);
 
    zzzz&=0xFFFF;
+   int orig = tile_index;
 
    for(x=56+x16;x<(320+64);x+=8){
-       if (tile_index >= 0x40 && tile_index < 0x80)
+       if (orig < 0x40 && tile_index >= 0x40 && tile_index < 0x80)
 	   /* This is really a super ugly hack :
 	    * in bublbob2, beginning of stage 3 when coming from the middle gate
 	    * when the level scrolls towards the left, the right side of the level has wrong colors
@@ -706,7 +710,7 @@ void draw_f3_pixel(int dx,int dy,UINT8 *src) {
 	   tile_index = (tile_index & 0x3f);
        int tile0 = tile_index;
        int z0 = zzzz;
-       for (int y=0; y<224; y+=8) {
+       for (int y=0-(zz&7); y<224; y+=8) {
 	   INT16 vram_tile = ReadWord68k(&RAM[0x3c000+tile_index*2]);
 
 	   MAP_PALETTE_MAPPED_NEW(
