@@ -11,6 +11,7 @@
 #include "sasound.h" // Including this one in f3... !!!
 #include "es5506.h"
 #include "emumain.h"
+#include "lspr16.h"
 
 //#define DUMP 1
 
@@ -615,13 +616,35 @@ void AddF3MemoryMap(UINT32 romsize)
 
 static const INT16 planes[] = { 16, 32, 0, 64 };
 
-void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG) {
+void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,int index) {
     SCROLL_REGS;
     int w;
     if (ReadWord68k(RAM+0x6A000+0xf*2) == 0x80)
 	w = 1024;
     else
 	w = 512;
+    int bit_select = 1<<index;
+    UINT8 *lbase = RAM+0x4a000+0x200*index;
+    INT16 xoff[256];
+    INT16 l = 0;
+    char has_lscroll[256/16];
+    memset(has_lscroll,0,256/16);
+    int warned = 0;
+    for (y=0; y<256; y++) {
+	if (ReadWord68k(RAM+0x40000+(0x600+y)*2) & bit_select) {
+	    l = ReadWord68k(lbase + y*2)>>15;
+	}
+	xoff[y] = l;
+	if (l) {
+	    has_lscroll[y/16] = 1;
+#ifdef RAINE_DEBUG
+	    if (!warned) {
+		warned = 1;
+		print_ingame(1,"lscroll bg%d",index);
+	    }
+#endif
+	}
+    }
     MAKE_SCROLL_n_16(w,512,4,sx,sy);
 
     START_SCROLL_16(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y);
@@ -633,8 +656,10 @@ void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG) {
 	    color&0x1FF & (~extra_planes),
 	    planes[extra_planes],        map
 	    );
-
-    Draw16x16_Mapped_flip_Rot(&GFX_BG[(ReadWord68k(&RAM_BG[zz+2]))<<8],x,y,map,(color & 0xc000)>>14);
+    if (has_lscroll[(y-64+24)/16])
+	ldraw16x16_Mapped_flip_Rot(&GFX_BG[(ReadWord68k(&RAM_BG[zz+2]))<<8],x,y,map,&xoff[y-64+24],(color & 0xc000)>>14);
+    else
+	Draw16x16_Mapped_flip_Rot(&GFX_BG[(ReadWord68k(&RAM_BG[zz+2]))<<8],x,y,map,(color & 0xc000)>>14);
 
     END_SCROLL_n_16(w,512,4);
 }
@@ -677,7 +702,6 @@ void draw_f3_pixel(int dx,int dy,UINT8 *src) {
      * So the idea is to draw a pixel bitmap, but each 8x8 area on its surface has an attribute in videoram
      * to make things even worse : the attributes area is not oriented the same way as the bitmap itself !
      * Mostly used in bubblem and bubsymph clones (levels walls + some backgrounds for the prototype), and twinqix
-     * Todo : maybe try to find some clever ways to speed up things when there is nothing to draw here...
      */
     int x,x16,zzzz,zzz,zz;
     UINT8 *map;
@@ -691,7 +715,7 @@ void draw_f3_pixel(int dx,int dy,UINT8 *src) {
    // change zzzz on 8 pixels boundaries, and then change y loop to draw
    // the offscreen part of the sprite so that we always draw the same 8x8 sprite
    zzzz+=(zz&0xf8)<<2;					// Y Offset (0-255)
-   tile_index += (zz>>3)<<6;
+   tile_index += (((1-dy)&0x1ff)>>3)<<6;
    if (tile_index > 0x800 || tile_index < 0)
        tile_index = 0x800+(tile_index & 0x7FF);
 

@@ -456,7 +456,7 @@ static void DrawPuzzleBobble2(void)
    ClearPaletteMap();
 
    if(check_layer_enabled(f3_bg0_id))
-       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0);
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0,0); // not sure for the index !
    else
        clear_game_screen(0);
 

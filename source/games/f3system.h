@@ -34,7 +34,7 @@ extern int f3_bg0_id,f3_bg1_id,f3_bg2_id,f3_bg3_id,f3_bg5_id,f3_bg6_id;
 #define F3_IOC_TRACKBALL	(0x0010)
 
 void init_f3_system_ioc(UINT32 type);
-void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG);
+void draw_f3_opaque_layer(int sx, int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,int index);
 void draw_f3_layer(int sx,int sy, UINT8 *RAM_BG,UINT8 *GFX_BG,UINT8 *GFX_BG_SOLID);
 void draw_f3_pixel(int dx,int dy,UINT8 *src);
 

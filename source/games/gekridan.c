@@ -35,6 +35,7 @@ static struct ROMSW_DATA romsw_data_gekirindan_0[] =
 {
    { "Taito Japan (Japanese)", 0x01 },
    { "Taito America",         0x02 },
+   { "World", 3 },
    { NULL,                    0    },
 };
 

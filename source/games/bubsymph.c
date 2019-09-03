@@ -70,8 +70,8 @@ static struct ROM_INFO rom_bublbob2p[] =
 
 static struct ROMSW_DATA romsw_data_bubble_bobble_2[] =
 {
-   { "Taito Japan (Japanese)",        0x01 },
-   { "Taito America",                 0x02 },
+   { "Taito Japan (Japanese - Symphony)",        0x01 },
+   { "Taito America (Symphony)",                 0x02 },
    { "Taito World (Bubble Bobble 2)", 0x03 },
    { NULL,                     0    },
 };
@@ -267,7 +267,7 @@ static void DrawBubbleSymphony(void)
    ClearPaletteMap();
 
    if(check_layer_enabled(f3_bg0_id))
-       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0);
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0,2);
    else
        clear_game_screen(0);
    if(check_layer_enabled(f3_bg1_id))
