@@ -1563,9 +1563,12 @@ $(OBJDIR)/Musashi/m68kmake: $(OBJDIR)/Musashi/m68kmake.o
 
 $(OBJDIR)/Musashi/m68kcpu.o: source/Musashi/m68kops.h source/Musashi/m68kops.c source/Musashi/m68kcpu.c
 
-source/68020/68020.h: source/Musashi/m68k.h
+source/neocd/neocd.c: source/Musashi/m68k.h
+source/68021/68020.h: source/Musashi/m68k.h
 source/Musashi/m68k.h:
-	git submodule add https://github.com/zelurker/Musashi.git source/Musashi
+	if ! [ -d source/Musashi ]; then git submodule add https://github.com/zelurker/Musashi.git source/Musashi; fi
+	cd source/Musashi && git submodule init
+	cd source/Musashi && git submodule update
 	cd source/Musashi && rm -f m68kconf.h && ln -s ../m68kconf.h
 
 endif
