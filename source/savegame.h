@@ -108,7 +108,11 @@ void AddSaveCallback_Internal(void *callback);
 #define SAVE_68K_0            ASCII_ID('6','8','K',0x00)
 #define SAVE_68K_1            ASCII_ID('6','8','K',0x01)
 
+#ifdef USE_MUSASHI
+#define SAVE_M68020_0         ASCII_ID('M','2','0',0x00)
+#else
 #define SAVE_M68020_0         ASCII_ID('0','2','0',0x00)
+#endif
 
 #define SAVE_MCU_0            ASCII_ID('M','C','U',0x00)
 

@@ -283,7 +283,11 @@ static int sound_latch;
 static void macrossp_system(UINT8 data)
 {
   if (data == 3) { // sound write
+#ifdef USE_MUSASHI
+    sound_latch=m68k_get_reg(NULL,M68K_REG_D0);
+#else
     sound_latch=m68k_dreg(regs,0);
+#endif
 
     cpu_interrupt(CPU_68K_0,2);
     // The number of executed cycles is not realy important, thanks to the speed hack

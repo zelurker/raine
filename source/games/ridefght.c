@@ -193,8 +193,7 @@ static void execute_ridingf(void)
   cycles = 1;
   for (ta=0; ta<f3_slices/2; ta++) {
     if (cycles) {// cycles = 0 if we reached the speed hack
-      Execute68020(214000/f3_slices);
-      print_debug("[BEFORE INT2] PC:%06x SR:%04x\n",regs.pc,regs.sr);
+      cpu_execute_cycles(CPU_M68020_0,214000/f3_slices);
     }
 #if 0
     // For some reason sound does seem to hang the whole thing...
@@ -210,8 +209,7 @@ static void execute_ridingf(void)
   cycles = 1;
   for (ta=0; ta<f3_slices/2; ta++) {
     if (cycles) {// cycles = 0 if we reached the speed hack
-      Execute68020(214000/f3_slices);
-      print_debug("[BEFORE INT3] PC:%06x SR:%04x\n",regs.pc,regs.sr);
+      cpu_execute_cycles(CPU_M68020_0,214000/f3_slices);
     }
 #if 0
     if (RaineSoundCard) {

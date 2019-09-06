@@ -473,16 +473,15 @@ static void execute_superchs(void)
       }
     }
   }
-      print_debug("PC020:%06x SR:%04x\n",regs.pc,regs.sr);
    Interrupt68020(2);
    Interrupt68020(3);
 
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(8,60));	// M68000 8MHz (60fps)
-#ifdef RAINE_DEBUG
-   // Not sure wether these are actually about the 2nd 68k...
-   print_debug("PC000:%06x SR0:%04x\n",s68000context.pc,s68000context.sr);
-#endif
+#ifdef USE_MUSASHI
+   if(((m68k_get_reg(NULL,M68K_REG_SR) & 0x0700)!=0x0700)&&(s68000context.pc==0x030e))
+#else
    if(((regs.sr & 0x0700)!=0x0700)&&(s68000context.pc==0x030e))
+#endif
       cpu_interrupt(CPU_68K_1, 4);
 
    IntF3System();

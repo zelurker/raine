@@ -13,7 +13,38 @@
 
 #include "68020.h"
 //#include "config.h"
+#ifdef USE_MUSASHI
+#include "Musashi/m68kcpu.h"
+
+UINT8 *R24[0x100], *W24[0x100];
+
+UINT32 m68k_read_memory_8(UINT32 adr) {
+    return R24[(adr >> 16)&0xff][adr & 0xffff];
+}
+
+UINT32 m68k_read_memory_16(UINT32 adr) {
+    return ReadWord68k(R24[(adr >> 16)&0xff]+(adr & 0xffff));
+}
+
+UINT32 m68k_read_memory_32(UINT32 adr) {
+    return ReadLong68k(R24[(adr >> 16)&0xff]+(adr & 0xffff));
+}
+
+void m68k_write_memory_8(UINT32 adr, UINT32 data) {
+    WriteByte(W24[(adr >> 16)&0xff]+(adr & 0xffff),data);
+}
+
+void m68k_write_memory_16(UINT32 adr, UINT32 data) {
+    WriteWord68k(W24[(adr >> 16)&0xff]+(adr & 0xffff),data);
+}
+
+void m68k_write_memory_32(UINT32 adr, UINT32 data) {
+    WriteLong68k(W24[(adr >> 16)&0xff]+(adr & 0xffff),data);
+}
+
+#else
 #include "m68k.h"
+#endif
 
 #include "newcpu.h"
 #include "newmem.h"
@@ -22,13 +53,17 @@
 #include "raine.h"
 #include "savegame.h"
 
+void (*F3SystemEEPROMAccess)(UINT8 data);
+// cycles == 0 if we reach a speed hack...
+UINT32 cycles;
+
+#ifndef USE_MUSASHI
 #if defined( RAINE_WIN32 ) && !defined(__MINGW32__)
 struct flag_struct regflags;
 #else
 struct flag_struct regflags __asm__ ("regflags");
 #endif
 
-void (*F3SystemEEPROMAccess)(UINT8 data);
 int areg_byteinc[8] = { 1,1,1,1,1,1,1,2 };
 int imm8_table[8] = { 8,1,2,3,4,5,6,7 };
 int movem_index1[0x100];
@@ -43,7 +78,6 @@ cpuop_func *cpufunctbl[0x10000];
 
 extern cpuop_func CPU_OP_NAME(_illegal_jedi);
 
-UINT32 cycles;
 /* static */ UINT8 *cyclepos;
 
 extern void Init020_00(void);
@@ -175,6 +209,7 @@ void Execute68020(int c)
    }
 #endif
 }
+#endif // USE_MUSASHI
 
 void U_68020_A_load_update(void)
 {
@@ -185,12 +220,18 @@ int MC68020 = 0;
 
 void init_m68k(void)
 {
+    MC68020 = 1;
+#ifdef USE_MUSASHI
+    m68k_init();
+    m68k_set_cpu_type(M68K_CPU_TYPE_68020);
+    // Avoid the pointers at the end of the struct... they should already be initialized
+    AddSaveData(SAVE_M68020_0, (UINT8 *) &m68ki_cpu, (UINT8*)&m68ki_cpu.cyc_instruction - ((UINT8*)&m68ki_cpu));
+#else
     long int opcode;
     int i,j;
 
     print_debug("Adding U68020...\n");
 
-    MC68020 = 1;
     for (i = 0 ; i < 256 ; i++) {
 	for (j = 0 ; j < 8 ; j++) {
 		if (i & (1 << j)) break;
@@ -236,11 +277,12 @@ void init_m68k(void)
    FreeMem((UINT8 *)table68k);
 
    InitJedi();
-
-   AddLoadCallback(U_68020_A_load_update);
    AddSaveData(SAVE_M68020_0, (UINT8 *) &regs, sizeof(regs));
+#endif
+   AddLoadCallback(U_68020_A_load_update);
 }
 
+#ifndef USE_MUSASHI
 void m68k_do_jsr(uaecptr oldpc, uaecptr dest)
 {
    m68k_areg(regs, 7) -= 4;
@@ -679,41 +721,51 @@ void Reset68020(void)
     regs.sr=0x2700;
     MakeFromSR();
 }
+#endif // USE_MUSASHI
 
-void op_illg(uae_u32 opcode)
+int op_illg(int opcode)
 {
     // RAINE #$xx
 
     if((opcode&0xFF00)==0x7F00){
        F3SystemEEPROMAccess(opcode&0xFF);
+#ifndef USE_MUSASHI
        m68k_incpc(2);
-       return;
+#endif
+       return(1);
     }
 
     // LINEF #$xxx
 
+#ifndef USE_MUSASHI
     if((opcode&0xF000)==0xF000){
 	Exception(0xB,0);
-	return;
+	return 1;
     }
 
     // LINEA #$xxx
 
     if((opcode&0xF000)==0xA000){
 	Exception(0xA,0);
-	return;
+	return 1;
     }
 
        print_debug("[Illegal 68020 Instruction $%08x:%04x]\n",regs.pc,opcode);
+
     Exception(4,0);
+#endif
+    return 0;
 }
 
 void Stop68020(void)
 {
    cycles=0;
 
+#ifdef USE_MUSASHI
+    m68k_end_timeslice();
 #ifdef FAST020
    WriteLong(&cyclepos[0],cycles);
+#endif
 #endif
 
       print_debug("[68020 Stopped by User]\n");

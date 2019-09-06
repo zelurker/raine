@@ -556,20 +556,32 @@ void do_regs(int argc, char **argv) {
 #ifndef NO020
   case 3:
       for (int n=0; n<8; n++) {
+#ifdef USE_MUSASHI
+	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,m68k_get_reg(NULL,(m68k_register_t)(M68K_REG_D0+n)));
+#else
 	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,regs.regs[n]);
+#endif
 	  if (n==3 || n==7) {
 	      cons->print(buf);
 	      *buf = 0;
 	  }
       }
       for (int n=0; n<8; n++) {
+#ifdef USE_MUSASHI
+	  sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,m68k_get_reg(NULL,(m68k_register_t)(M68K_REG_A0+n)));
+#else
 	  sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,regs.regs[n+8]);
+#endif
 	  if (n==3 || n==7) {
 	      cons->print(buf);
 	      *buf = 0;
 	  }
       }
+#ifdef USE_MUSASHI
+      cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",m68k_get_reg(NULL,M68K_REG_SR),m68k_get_reg(NULL,M68K_REG_PC));
+#else
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",regs.sr,regs.pc);
+#endif
       break;
 #endif
   }

@@ -28,6 +28,13 @@ extern "C" {
 //
 // Reset 68020 regs and read Stack/PC from Vector table
 
+#ifdef USE_MUSASHI
+#include "Musashi/m68k.h"
+
+#define Reset68020 m68k_pulse_reset
+#define Execute68020 m68k_execute
+#define Interrupt68020 m68k_set_irq
+#else
 void Reset68020(void);
 
 // Execute68020(int c):
@@ -41,7 +48,7 @@ void Execute68020(int c);
 // Attempt to call Interrupt level (if Interrupt level is in enabled in SR)
 
 void Interrupt68020(int level);
-
+#endif
 // Stop68020():
 //
 // Stop Execute68020() loop (for speed hacks)

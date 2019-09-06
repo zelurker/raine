@@ -265,8 +265,7 @@ static void execute_popnpopj(void)
   cycles = 1;
   for (ta=0; ta<f3_slices; ta++) {
     if (cycles) {// cycles = 0 if we reached the speed hack
-      Execute68020(1600000/f3_slices);
-      print_debug("PC0:%06x SR:%04x\n",regs.pc,regs.sr);
+      cpu_execute_cycles(CPU_M68020_0,1600000/f3_slices);
     }
     if (RaineSoundCard) {
       cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60*f3_slices)); // M68000 16MHz (60fps)

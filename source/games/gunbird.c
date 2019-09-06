@@ -758,14 +758,27 @@ static void s1945_mcu_r(UINT8 data)
   if (data == 3) { // mcu read
     // used only in s1945
     UINT32 ta;
+#ifdef USE_MUSASHI
+    ta = m68k_get_reg(NULL,M68K_REG_D0);
+    m68k_set_reg(M68K_REG_D0,mcu_table[ta & 0xff]);
+#else
     ta=m68k_dreg(regs,0);
     m68k_dreg(regs,0)=mcu_table[ta & 0xff];
+#endif
   } else if (data == 2) { // speed hack
     Stop68020();
   } else if (data == 4)  // gunbird sound command ! (using a0)
+#ifdef USE_MUSASHI
+      gunbird_sound(m68k_get_reg(NULL,M68K_REG_A0));
+#else
       gunbird_sound(m68k_areg(regs,0));
+#endif
   else if (data == 5) // s1945/tengai sound (using d0)
+#ifdef USE_MUSASHI
+      gunbird_sound(m68k_get_reg(NULL,M68K_REG_D0));
+#else
       gunbird_sound(m68k_dreg(regs,0));
+#endif
 
 #if 0
   // All this is debuging stuff. It's useless now, but I leave it here

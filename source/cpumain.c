@@ -272,7 +272,11 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 #ifndef NO020
       case CPU_M68020_0:
          Execute68020(cycles);
+#ifdef USE_MUSASHI
+	 print_debug("PC0:%06x SR:%04x\n",m68k_get_reg(NULL,M68K_REG_PC),m68k_get_reg(NULL,M68K_REG_SR));
+#else
 	 print_debug("PC0:%06x SR:%04x\n",regs.pc,regs.sr);
+#endif
       break;
 #endif
 #ifdef HAVE_6502
@@ -354,7 +358,11 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 #endif
 #ifndef NO020
    case CPU_M68020_0:
+#ifdef USE_MUSASHI
+     ret = m68k_get_reg(NULL,M68K_REG_PC);
+#else
      ret = regs.pc;
+#endif
      break;
 #endif
 #ifdef HAVE_6502

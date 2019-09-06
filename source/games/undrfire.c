@@ -402,8 +402,7 @@ static void load_undrfire(void)
 
 static void execute_undrfire(void)
 {
-   Execute68020(800000);
-      print_debug("PC:%06x SR:%04x\n",regs.pc,regs.sr);
+   cpu_execute_cycles(CPU_M68020_0,800000);
    Interrupt68020(4);
    Interrupt68020(5);
 

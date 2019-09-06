@@ -32,10 +32,11 @@ struct cputbl
    uae_u16 opcode;
 };
 
-extern void op_illg(uae_u32);
+extern int op_illg(int);
 
 typedef char flagtype;
 
+#ifndef USE_MUSASHI
 extern struct regstruct
 {
     uae_u32 regs[16];
@@ -52,6 +53,7 @@ extern struct regstruct
     uae_u32 vbr,sfc,dfc;
 
 } regs;
+#endif
 
 #define m68k_dreg(r,num) ((r).regs[(num)])
 #define m68k_areg(r,num) ((r).regs[(num)+8])
@@ -68,6 +70,8 @@ UINT8 RR_ROM;
 #define get_ibyte_1(o) get_ibyte(o)
 #define get_iword_1(o) get_iword(o)
 #define get_ilong_1(o) get_ilong(o)
+
+#ifndef USE_MUSASHI
 #define m68k_incpc(o) (regs.pc += (o))
 
 static DEF_INLINE uae_u32 nextibyte(void)
@@ -114,19 +118,21 @@ static DEF_INLINE void m68k_setstopped(int stop)
 {
     regs.stopped = stop;
 }
+#endif
 
 extern UINT32 cycles;
 
 extern void MakeSR(void);
 extern void MakeFromSR(void);
 
+extern void init_m68k(void);
+#ifndef USE_MUSASHI
 extern void Exception(int, uaecptr);
 extern void dump_counts(void);
 extern void m68k_move2c(int, uae_u32 *);
 extern void m68k_movec2(int, uae_u32 *);
 extern void m68k_divl(uae_u32, uae_u32, uae_u16, uaecptr);
 extern void m68k_mull(uae_u32, uae_u32, uae_u16);
-extern void init_m68k(void);
 extern void m68k_go(int);
 extern void m68k_dumpstate(uaecptr *);
 extern void m68k_disasm(uaecptr,uaecptr *,int);
@@ -142,6 +148,7 @@ extern struct cputbl op_direct_smalltbl[];
 extern cpuop_func *cpufunctbl[0x10000];
 #else
 extern cpuop_func *cpufunctbl[0x10000];
+#endif
 #endif
 
 #ifdef __cplusplus

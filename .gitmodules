@@ -1,0 +1,8 @@
+[submodule "source/musashi"]
+	path = source/musashi
+	url = https://github.com/kstenerud/Musashi.git
+[submodule "source/Musashi"]
+	path = source/Musashi
+	url = https://github.com/zelurker/Musashi.git
+	ignore = dirty
+

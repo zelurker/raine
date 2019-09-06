@@ -78,12 +78,21 @@ void get_regs(int cpu) {
 	break;
 #ifndef NO020
     case 3: // 68020
+#ifdef USE_MUSASHI
+	for (int n=0; n<8; n++) {
+	    a[n] = m68k_get_reg(NULL,(m68k_register_t)(M68K_REG_A0+n));
+	    d[n] = (long)m68k_get_reg(NULL,(m68k_register_t)(M68K_REG_D0+n));
+	}
+	sr = m68k_get_reg(NULL,M68K_REG_SR);
+	pc = m68k_get_reg(NULL,M68K_REG_PC);
+#else
 	for (int n=0; n<8; n++) {
 	    a[n] = (long)regs.regs[n+8];
 	    d[n] = (long)regs.regs[n];
 	}
 	sr = regs.sr;
 	pc = regs.pc;
+#endif
 	break;
 #endif
     }
@@ -110,12 +119,21 @@ void set_regs(int cpu) {
 	break;
 #ifndef NO020
     case 3:
+#ifdef USE_MUSASHI
+	for (int n=0; n<8; n++) {
+	    m68k_set_reg((m68k_register_t)(M68K_REG_A0+n), a[n]);
+	    m68k_set_reg((m68k_register_t)(M68K_REG_D0+n), d[n]);
+	}
+	m68k_set_reg(M68K_REG_SR,sr);
+	m68k_set_reg(M68K_REG_PC, pc);
+#else
 	for (int n=0; n<8; n++) {
 	    regs.regs[n+8] = a[n];
 	    regs.regs[n] = d[n];
 	}
 	regs.sr = sr;
 	regs.pc = pc;
+#endif
 	break;
 #endif
     }

@@ -22,6 +22,10 @@ RAINE_DEBUG = 1
 # Be verbose ?
 # VERBOSE = 1
 
+# Use musashi ? If so, it will be used instead of the asm uae core for
+# the 68020, at least for now
+USE_MUSASHI = 1
+
 # For osx : use frameworks or brew shared libs ?
 # Actually frameworks are a convenience for end users, to build them use
 # the make_framework.pl script in TOOLS directory to convert the brew
@@ -499,6 +503,10 @@ else
 OBJDIRS += $(OBJDIR)/z80
 endif
 
+ifdef USE_MUSASHI
+	OBJDIRS += $(OBJDIR)/Musashi
+endif
+
 ifdef C68020
 OBJDIRS += $(OBJDIR)/68020/c
 else
@@ -617,6 +625,10 @@ CFLAGS += -DNO_ASM
 CFLAGS_MCU += -DNO_ASM
 endif
 
+ifdef USE_MUSASHI
+	CFLAGS += -DUSE_MUSASHI
+endif
+
 ifdef CZ80
 CFLAGS += -DHAS_CZ80
 CFLAGS_MCU += -DHAS_CZ80
@@ -681,11 +693,18 @@ ASM020= $(OBJDIR)/68020/c/newcpu.o \
 	$(OBJDIR)/68020/c/cpuemu_02.o \
 	$(OBJDIR)/68020/c/cpuemu_03.o
 else
+ifdef USE_MUSASHI
+ASM020= $(OBJDIR)/68020/newcpu.o \
+	$(OBJDIR)/Musashi/m68kcpu.o \
+	$(OBJDIR)/Musashi/m68kops.o
+
+else
 ASM020= $(OBJDIR)/68020/newcpu.o \
 	$(OBJDIR)/68020/readcpu.o \
 	$(OBJDIR)/68020/cpustbl.o \
 	$(OBJDIR)/68020/cpudefs.o \
 	$(OBJDIR)/68020/a020core.o
+endif
 endif
 
 # STARSCREAM 68000 core
@@ -1535,6 +1554,21 @@ else
 	@echo There is no needs to install for a win32/dos system
 endif
 
+ifdef USE_MUSASHI
+source/Musashi/m68kops.c source/Musashi/m68kops.h: $(OBJDIR)/Musashi/m68kmake
+	cd source/Musashi && ../../$(OBJDIR)/Musashi/m68kmake
+
+$(OBJDIR)/Musashi/m68kmake: $(OBJDIR)/Musashi/m68kmake.o
+	$(LD) -o $@ $<
+
+$(OBJDIR)/Musashi/m68kcpu.o: source/Musashi/m68kops.h source/Musashi/m68kops.c source/Musashi/m68kcpu.c
+
+source/68020/68020.h: source/Musashi/m68k.h
+source/Musashi/m68k.h:
+	git submodule add https://github.com/zelurker/Musashi.git source/Musashi
+	cd source/Musashi && rm -f m68kconf.h && ln -s ../m68kconf.h
+
+endif
 
 uninstall:
 ifdef RAINE_UNIX

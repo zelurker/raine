@@ -866,14 +866,22 @@ void F3SysEEPROMAccessMode1(UINT8 data)
    // READ: d0=EEPROM[d0]
 
    if(data==0){
+#ifdef USE_MUSASHI
+      m68k_set_reg(M68K_REG_D0,ReadWord(&EEPROM[(m68k_get_reg(NULL,M68K_REG_D0)&0x3F)<<1]));
+#else
       m68k_dreg(regs,0)=ReadWord(&EEPROM[(m68k_dreg(regs,0)&0x3F)<<1]);
+#endif
       return;
    }
 
    // WRITE: EEPROM[d0]=d1
 
    if(data==1){
+#ifdef USE_MUSASHI
+      WriteWord(&EEPROM[(m68k_get_reg(NULL,M68K_REG_D0)&0x3F)<<1],m68k_get_reg(NULL,M68K_REG_D1)&0xFFFF);
+#else
       WriteWord(&EEPROM[(m68k_dreg(regs,0)&0x3F)<<1],m68k_dreg(regs,1)&0xFFFF);
+#endif
       return;
    }
 
@@ -895,14 +903,22 @@ void F3SysEEPROMAccessMode1B(UINT8 data)
    // READ: d1=EEPROM[d0]
 
    if(data==0){
+#ifdef USE_MUSASHI
+      m68k_set_reg(M68K_REG_D1,ReadWord(&EEPROM[(m68k_get_reg(NULL,M68K_REG_D0)&0x3F)<<1]));
+#else
       m68k_dreg(regs,1)=ReadWord(&EEPROM[(m68k_dreg(regs,0)&0x3F)<<1]);
+#endif
       return;
    }
 
    // WRITE: EEPROM[d0]=d1
 
    if(data==1){
+#ifdef USE_MUSASHI
+      WriteWord(&EEPROM[(m68k_get_reg(NULL,M68K_REG_D0)&0x3F)<<1],m68k_get_reg(NULL,M68K_REG_D1)&0xFFFF);
+#else
       WriteWord(&EEPROM[(m68k_dreg(regs,0)&0x3F)<<1],m68k_dreg(regs,1)&0xFFFF);
+#endif
       return;
    }
 
@@ -933,12 +949,21 @@ void F3SysEEPROMAccessMode2(UINT8 data)
 
    // READ/WRITE
 
+#ifdef USE_MUSASHI
+   ta=m68k_get_reg(NULL,M68K_REG_D0);
+   tb=m68k_get_reg(NULL,M68K_REG_D1);
+#else
    ta=m68k_dreg(regs,0);
    tb=m68k_dreg(regs,1);
+#endif
 
    if(((ta&0x80000000)!=0)&&(tb==9)){
       tc=ReadWord(&EEPROM[(ta&0x3F)<<1]);
+#ifdef USE_MUSASHI
+      m68k_set_reg(M68K_REG_D0,tc);
+#else
       m68k_dreg(regs,0)=tc;
+#endif
       return;
    }
    if(((ta&0x40000000)!=0)&&(tb==25)){
@@ -971,7 +996,11 @@ void ExecuteF3SystemFrame(void)
       }
     }
   }
+#ifdef USE_MUSASHI
+  if (ReadWord68k(&ROM[m68k_get_reg(NULL,M68K_REG_PC)]) == 0x60fe)
+#else
   if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+#endif
     reset_game_hardware();
   else {
     cpu_interrupt(CPU_M68020_0, 5);	// Interrupt#5 [Occasionally used, for timing I think]
@@ -985,7 +1014,6 @@ void ExecuteF3SystemFrameB(void)
   // The same, but without the execute_cycles at the end
   int ta;
   IntF3System();
-  cpu_interrupt(CPU_M68020_0, 3);	// Interrupt#3 [Video Start]
   cycles = 1;
   for (ta=0; ta<f3_slices; ta++) {
     if (cycles) {// cycles = 0 if we reached the speed hack
@@ -998,11 +1026,19 @@ void ExecuteF3SystemFrameB(void)
       }
     }
   }
+#ifdef USE_MUSASHI
+  if (ReadWord68k(&ROM[m68k_get_reg(NULL,M68K_REG_PC)]) == 0x60fe)
+#else
   if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+#endif
     reset_game_hardware();
   else {
+  cpu_interrupt(CPU_M68020_0, 3);	// Interrupt#3 [Video Start]
+  cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
     cpu_interrupt(CPU_M68020_0, 5);	// Interrupt#5 [Occasionally used, for timing I think]
+  cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
     cpu_interrupt(CPU_M68020_0, 2);	// Interrupt#2 [Video End]
+  cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
   }
 }
 
@@ -1025,7 +1061,7 @@ void ExecuteF3SystemFrame_NoInt5(void)
        }
      }
    }
-  if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+  if (ReadWord68k(&ROM[m68k_get_reg(NULL,M68K_REG_PC)]) == 0x60fe)
     reset_game_hardware();
   else {
     cpu_interrupt(CPU_M68020_0, 2);	// Interrupt#2 [Video End]
@@ -1053,7 +1089,11 @@ void ExecuteF3SystemFrame_NoInt5B(void)
        }
      }
    }
-   if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+#ifdef USE_MUSASHI
+  if (ReadWord68k(&ROM[m68k_get_reg(NULL,M68K_REG_PC)]) == 0x60fe)
+#else
+  if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+#endif
      reset_game_hardware();
    else {
      cpu_interrupt(CPU_M68020_0, 2);	// Interrupt#2 [Video End]
@@ -1079,6 +1119,10 @@ void ExecuteF3SystemFrame_int2(void)
        }
      }
    }
-   if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+#ifdef USE_MUSASHI
+  if (ReadWord68k(&ROM[m68k_get_reg(NULL,M68K_REG_PC)]) == 0x60fe)
+#else
+  if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
+#endif
      reset_game_hardware();
 }
