@@ -810,7 +810,11 @@ static menu_item_t about_items[] =
   {    _("Starscream 0.26r4 by Neill Corlett"), },
   {    _("MZ80 3.4raine3 by Neill Bradley") },
   {    _("M6502 1.6raine2 by Neill Bradley") },
+#ifdef USE_MUSASHI
+  { _("68020: Musashi v3.3x by Karl Stenerud") },
+#else
   {    _("UAE 68020 Emulator : old hacked asm version from UAE") },
+#endif
   {    _("MCU 68705: statically recompiled code by Richard Mitton") },
   { _("History..."), &about_game },
   { NULL, NULL, NULL },
