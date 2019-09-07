@@ -1042,7 +1042,8 @@
 
 // pbobble2.c
   DRV(pbobble2)
-  DRV(pbobbl2x)
+    DRV(pbobble2o)
+  DRV(pbobble2x)
 
 // pbobble3.c
   DRV(pbobble3)

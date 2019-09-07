@@ -15,19 +15,28 @@
 
 static struct ROM_INFO rom_pbobble2[] =
 {
-   {   "e10-04.rom", 0x00200000, 0x5c0862a6, 0, 0, 0, },
-   {   "e10-01.rom", 0x00100000, 0x8c26ff49, 0, 0, 0, },
-   {   "e10-02.rom", 0x00100000, 0xc0564490, 0, 0, 0, },
-   {   "e10-03.rom", 0x00200000, 0x46d68ac8, 0, 0, 0, },
-   {   "e10-05.rom", 0x00100000, 0x81266151, 0, 0, 0, },
-   {   "e10-06.rom", 0x00100000, 0x1b0f20e2, 0, 0, 0, },
-   {   "e10-07.rom", 0x00100000, 0xdcb3c29b, 0, 0, 0, },
-   {   "e10-09.rom", 0x00040000, 0xe0b1b599, 0, 0, 0, },
-   {   "e10-10.rom", 0x00040000, 0xf432267a, 0, 0, 0, },
-   {   "e10-11.rom", 0x00040000, 0xb82f81da, 0, 0, 0, },
+  { "e10-22.bin", 0x40000, 0x7b12105d, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "e10-23.bin", 0x40000, 0x56a66435, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "e10-24.bin", 0x40000, 0xf9d0794b, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "e10-25.bin", 0x40000, 0xff0407d3, REGION_CPU1, 0x000003, LOAD_8_32 },
+  { "e10-02.rom", 0x100000, 0xc0564490, REGION_GFX1 , 0x000000, LOAD_8_32S },
+  { "e10-01.rom", 0x100000, 0x8c26ff49, REGION_GFX1 , 0x000002, LOAD_8_32S },
+  { "e10-07.rom", 0x100000, 0xdcb3c29b, REGION_GFX2 , 0x000000, LOAD_16_64S },
+  { "e10-06.rom", 0x100000, 0x1b0f20e2, REGION_GFX2 , 0x000004, LOAD_16_64S },
+  { "e10-05.rom", 0x100000, 0x81266151, REGION_GFX2 , 0x000000, LOAD_MASK8_45 },
+  { "e10-03.rom", 0x200000, 0x46d68ac8, REGION_SOUND1 , 0x000000, LOAD_BE }, // CC CD CE CF
+  { "e10-04.rom", 0x200000, 0x5c0862a6, REGION_SOUND1 , 0x400000, LOAD_BE }, // C8 C9 CA CB
   LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
               "e10-12.rom",  0xb92dc8ad,   "e10-13.rom",  0x87842c13),
-   {   "e10-15.rom", 0x00040000, 0xa2c0a268, 0, 0, 0, },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_pbobble2o[] = // clone of pbobble2
+{
+  { "e10-11.20", 0x40000, 0xb82f81da, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "e10-10.19", 0x40000, 0xf432267a, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "e10-09.18", 0x40000, 0xe0b1b599, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "e10-15.17", 0x40000, 0xa2c0a268, REGION_CPU1, 0x000003, LOAD_8_32 },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -45,22 +54,12 @@ static struct ROMSW_INFO romsw_pbobble2[] =
    { 0,        0,    NULL },
 };
 
-
-
-
-static struct ROM_INFO rom_pbobbl2x[] =
+static struct ROM_INFO rom_pbobble2x[] = // clone of pbobble2
 {
-   {   "e10-01.rom", 0x00100000, 0x8c26ff49, 0, 0, 0, },
-   {   "e10-02.rom", 0x00100000, 0xc0564490, 0, 0, 0, },
-   {   "e10-03.rom", 0x00200000, 0x46d68ac8, 0, 0, 0, },
-   {   "e10-04.rom", 0x00200000, 0x5c0862a6, 0, 0, 0, },
-   {   "e10-05.rom", 0x00100000, 0x81266151, 0, 0, 0, },
-   {   "e10-06.rom", 0x00100000, 0x1b0f20e2, 0, 0, 0, },
-   {   "e10-07.rom", 0x00100000, 0xdcb3c29b, 0, 0, 0, },
-   {       "e10.26", 0x00040000, 0xa5c24047, 0, 0, 0, },
-   {       "e10.27", 0x00040000, 0x88cc0b5c, 0, 0, 0, },
-   {       "e10.28", 0x00040000, 0x412a3602, 0, 0, 0, },
-   {       "e10.29", 0x00040000, 0xf1e9ad3f, 0, 0, 0, },
+  { "e10-29.20", 0x40000, 0xf1e9ad3f, REGION_CPU1, 0x000000, LOAD_8_32 },
+  { "e10-28.19", 0x40000, 0x412a3602, REGION_CPU1, 0x000001, LOAD_8_32 },
+  { "e10-27.18", 0x40000, 0x88cc0b5c, REGION_CPU1, 0x000002, LOAD_8_32 },
+  { "e10-26.17", 0x40000, 0xa5c24047, REGION_CPU1, 0x000003, LOAD_8_32 },
   LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
                   "e10.30",  0xbb090c1e,       "e10.31",  0xf4b88d65),
    {           NULL,          0,          0, 0, 0, 0, },
@@ -74,7 +73,7 @@ static struct ROMSW_DATA romsw_data_puzzle_bobble_2x_0[] =
    { NULL,                                   0    },
 };
 
-static struct ROMSW_INFO romsw_pbobbl2x[] =
+static struct ROMSW_INFO romsw_pbobble2x[] =
 {
    { 0x0FFFFF, 0x03, romsw_data_puzzle_bobble_2x_0 },
    { 0,        0,    NULL },
@@ -109,73 +108,11 @@ static UINT8 *GFX_SPR_SOLID;
 
 static void load_pbobble2(void)
 {
-   int ta,tb,tc;
-
    RAMSize=0x80000;
 
    if(!(RAM=AllocateMem(0x80000))) return;
-   if(!(ROM=AllocateMem(0x100000))) return;
-   if(!(GFX=AllocateMem(0x3F5D00+0x3EC700))) return;
-
-   GFX_BG0 = GFX+0x3F5D00;
-   GFX_SPR = GFX+0x000000;
-
-   tb=0;
-   if(!load_rom("e10-02.rom", ROM, 0xFD740)) return;	// 16x16 SPRITES ($3F5D)
-   for(ta=0;ta<0xFD740;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=2;
-   if(!load_rom("e10-01.rom", ROM, 0xFD740)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0xFD740;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=0;
-   if(!load_rom("e10-07.rom", ROM, 0xFB1C0)) return;	// 16x16 TILES ($3EC7)
-   for(ta=0;ta<0xFB1C0;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=4;
-   if(!load_rom("e10-06.rom", ROM, 0xFB1C0)) return;	// 16x16 TILES
-   for(ta=0;ta<0xFB1C0;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=0;
-   if(!load_rom("e10-05.rom", ROM, 0xFB1C0)) return;	// 16x16 TILES (MASK)
-   for(ta=0;ta<0xFB1C0;ta+=2){
-      tc=ROM[ta];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
-      tc=ROM[ta+1];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<5;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<5;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<5;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<5;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<5;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<5;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<5;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<5;
-      tb+=8;
-   }
-
+   GFX_SPR = load_region[REGION_GFX1];
+   GFX_BG0 = load_region[REGION_GFX2];
    GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x3EC7);
    GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x3F5D);
 
@@ -204,219 +141,70 @@ static void load_pbobble2(void)
    SCR1_YOFS=0xF400;
    SCR0_YOFS=0xF400;
 
-   if(!load_rom("e10-11.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+0]=RAM[ta];
-   }
-   if(!load_rom("e10-10.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+1]=RAM[ta];
-   }
-   if(!load_rom("e10-09.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+2]=RAM[ta];
-   }
-   if(!load_rom("e10-15.rom", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+3]=RAM[ta];
-   }
-
    // 68000 code
    M68000ROM = load_region[REGION_ROM2];
-   if(!(PCMROM=AllocateMem(0x800000))) return;
-   load_be("e10-03.rom",PCMROM,0x200000);
-   load_be("e10-04.rom",PCMROM+0x400000,0x200000);
    max_banks_this_game=3; //=memory_region_length(REGION_SOUND1)/0x400000;
 
    memset(RAM+0x00000,0x00,0x80000);
    memset(RAM+0x69000,0xFF,0x01000);
 
-   // EEPROM ACCESS
-   // -------------
+   if (is_current_game("pbobble2x")) {
+       // EEPROM ACCESS
+       // -------------
 
-   WriteWord68k(&ROM[0x0044B2],0x7F00);		//	raine	#$00 <eeprom access>
-   WriteWord68k(&ROM[0x0044B4],0x4ED6);		//	jmp	(a6)
+       WriteWord68k(&ROM[0x0044D2],0x7F00);		//	raine	#$00 <eeprom access>
+       WriteWord68k(&ROM[0x0044D4],0x4ED6);		//	jmp	(a6)
 
-   // SPEED HACK
-   // ----------
+       // SPEED HACK
+       // ----------
 
-   WriteWord68k(&ROM[0x31B4],0x4EF9);		//	jmp	$F8000
-   WriteLong68k(&ROM[0x31B6],0x000F8000);
+       WriteWord68k(&ROM[0x031D4],0x4EF9);		//	jmp	$F8000
+       WriteLong68k(&ROM[0x031D6],0x000F8000);
 
-   WriteWord68k(&ROM[0xF8000],0x4EB9);		//	jsr	$028FC <random gen>
-   WriteLong68k(&ROM[0xF8002],0x000028FC);
-   WriteWord68k(&ROM[0xF8006],0x7F02);		//	raine	#$02 <stop cpu>
-   WriteWord68k(&ROM[0xF8008],0x6100-10);	//	bra.s	<loop>
+       WriteWord68k(&ROM[0xF8000],0x4EB9);		//	jsr	$0291C <random gen>
+       WriteLong68k(&ROM[0xF8002],0x0000291C);
+       WriteWord68k(&ROM[0xF8006],0x7F02);		//	raine	#$02 <stop cpu>
+       WriteWord68k(&ROM[0xF8008],0x6100-10);	//	bra.s	<loop>
+   } else if (is_current_game("pbobble2")) { // 2.30
+       // EEPROM ACCESS
+       // -------------
 
-   F3SystemEEPROMAccess=&F3SysEEPROMAccessMode2;
+       WriteWord68k(&ROM[0x004516],0x7F00);		//	raine	#$00 <eeprom access>
+       WriteWord68k(&ROM[0x004518],0x4ED6);		//	jmp	(a6)
 
+       // SPEED HACK
+       // ----------
 
-   set_colour_mapper(&col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb);
-   InitPaletteMap(RAM+0x60000, 0x200, 0x40, 0x8000);
+       WriteWord68k(&ROM[0x03218],0x4EF9);		//	jmp	$F8000
+       WriteLong68k(&ROM[0x0321a],0x000F8000);
 
-   init_tc003vcu(0,0);
+       WriteWord68k(&ROM[0xF8000],0x4EB9);		//	jsr	$02960 <random gen>
+       WriteLong68k(&ROM[0xF8002],0x00002960);
+       WriteWord68k(&ROM[0xF8006],0x7F02);		//	raine	#$02 <stop cpu>
+       WriteWord68k(&ROM[0xF8008],0x6100-10);	//	bra.s	<loop>
 
-   // Init tc0200obj emulation
-   // ------------------------
+       // Wonder if it's a real update or just a hack ?
+       WriteWord68k(&ROM[0x40092],0x4e71);	// weird crash (nops)
+       WriteWord68k(&ROM[0x40094],0x4e71);	// nop
+       WriteWord68k(&ROM[0x40096],0x4e71);	// nop
+   } else { // 2.20
+       // EEPROM ACCESS
+       // -------------
 
-   tc0200obj.RAM	= RAM+0x20000;
-   tc0200obj.RAM_B	= RAM+0x28000;
-   tc0200obj.GFX	= GFX_SPR;
-   tc0200obj.MASK	= GFX_SPR_SOLID;
-   tc0200obj.tile_mask	= 0x3FFF;
-   tc0200obj.ofs_x	= 0-0x2E;
-   tc0200obj.ofs_y	= 0-0x18;
+       WriteWord68k(&ROM[0x0044B2],0x7F00);		//	raine	#$00 <eeprom access>
+       WriteWord68k(&ROM[0x0044B4],0x4ED6);		//	jmp	(a6)
 
-   tc0200obj.cols	= 16;
+       // SPEED HACK
+       // ----------
 
-   init_tc0200obj();
+       WriteWord68k(&ROM[0x31B4],0x4EF9);		//	jmp	$F8000
+       WriteLong68k(&ROM[0x31B6],0x000F8000);
 
-   init_f3_system_ioc(F3_IOC_2P_3BUTTON);
-
-   init_m68k();
-   setup_sound_68000();
-}
-
-static void load_pbobbl2x(void)
-{
-   int ta,tb,tc;
-
-   RAMSize=0x80000;
-
-   if(!(RAM=AllocateMem(0x80000))) return;
-   if(!(ROM=AllocateMem(0x100000))) return;
-   if(!(GFX=AllocateMem(0x3F5D00+0x3EC700))) return;
-
-   GFX_BG0 = GFX+0x3F5D00;
-   GFX_SPR = GFX+0x000000;
-
-   tb=0;
-   if(!load_rom("e10-02.rom", ROM, 0xFD740)) return;	// 16x16 SPRITES ($3F5D)
-   for(ta=0;ta<0xFD740;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
+       WriteWord68k(&ROM[0xF8000],0x4EB9);		//	jsr	$028FC <random gen>
+       WriteLong68k(&ROM[0xF8002],0x000028FC);
+       WriteWord68k(&ROM[0xF8006],0x7F02);		//	raine	#$02 <stop cpu>
+       WriteWord68k(&ROM[0xF8008],0x6100-10);	//	bra.s	<loop>
    }
-   tb=2;
-   if(!load_rom("e10-01.rom", ROM, 0xFD740)) return;	// 16x16 SPRITES
-   for(ta=0;ta<0xFD740;ta++){
-      GFX[tb++]=ROM[ta]&15;
-      GFX[tb++]=ROM[ta]>>4;
-      tb+=2;
-   }
-   tb=0;
-   if(!load_rom("e10-07.rom", ROM, 0xFB1C0)) return;	// 16x16 TILES ($3EC7)
-   for(ta=0;ta<0xFB1C0;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=4;
-   if(!load_rom("e10-06.rom", ROM, 0xFB1C0)) return;	// 16x16 TILES
-   for(ta=0;ta<0xFB1C0;ta+=2){
-      GFX_BG0[tb++]=ROM[ta]&15;
-      GFX_BG0[tb++]=ROM[ta]>>4;
-      GFX_BG0[tb++]=ROM[ta+1]&15;
-      GFX_BG0[tb++]=ROM[ta+1]>>4;
-      tb+=4;
-   }
-   tb=0;
-   if(!load_rom("e10-05.rom", ROM, 0xFB1C0)) return;	// 16x16 TILES (MASK)
-   for(ta=0;ta<0xFB1C0;ta+=2){
-      tc=ROM[ta];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<4;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<4;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<4;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<4;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<4;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<4;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<4;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<4;
-      tc=ROM[ta+1];
-      GFX_BG0[tb+7]|=((tc&0x80)>>7)<<5;
-      GFX_BG0[tb+6]|=((tc&0x40)>>6)<<5;
-      GFX_BG0[tb+5]|=((tc&0x20)>>5)<<5;
-      GFX_BG0[tb+4]|=((tc&0x10)>>4)<<5;
-      GFX_BG0[tb+3]|=((tc&0x08)>>3)<<5;
-      GFX_BG0[tb+2]|=((tc&0x04)>>2)<<5;
-      GFX_BG0[tb+1]|=((tc&0x02)>>1)<<5;
-      GFX_BG0[tb+0]|=((tc&0x01)>>0)<<5;
-      tb+=8;
-   }
-
-   GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x3EC7);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x3F5D);
-
-   // Setup 68020 Memory Map
-   // ----------------------
-
-   AddF3MemoryMap(0x100000);
-
-   RAM_BG0=RAM+0x33000;
-   RAM_BG1=RAM+0x32000;
-   RAM_BG2=RAM+0x31000;
-   RAM_BG3=RAM+0x30000;
-
-   RAM_SCR0=RAM+0x6A006;
-   RAM_SCR1=RAM+0x6A004;
-   RAM_SCR2=RAM+0x6A002;
-   RAM_SCR3=RAM+0x6A000;
-
-   SCR3_XOFS=0xF640;
-   SCR2_XOFS=0xF740;
-   SCR1_XOFS=0xF840;
-   SCR0_XOFS=0xF940;
-
-   SCR3_YOFS=0xF400;
-   SCR2_YOFS=0xF400;
-   SCR1_YOFS=0xF400;
-   SCR0_YOFS=0xF400;
-
-   if(!load_rom("e10.29", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+0]=RAM[ta];
-   }
-   if(!load_rom("e10.28", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+1]=RAM[ta];
-   }
-   if(!load_rom("e10.27", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+2]=RAM[ta];
-   }
-   if(!load_rom("e10.26", RAM, 0x40000)) return;
-   for(ta=0;ta<0x40000;ta++){
-      ROM[(ta<<2)+3]=RAM[ta];
-   }
-
-   // 68000 code
-   M68000ROM = load_region[REGION_ROM2];
-   if(!(PCMROM=AllocateMem(0x800000))) return;
-   load_be("e10-03.rom",PCMROM,0x200000);
-   load_be("e10-04.rom",PCMROM+0x400000,0x200000);
-   max_banks_this_game=3; //=memory_region_length(REGION_SOUND1)/0x400000;
-
-   memset(RAM+0x00000,0x00,0x80000);
-   memset(RAM+0x69000,0xFF,0x01000);
-
-   // EEPROM ACCESS
-   // -------------
-
-   WriteWord68k(&ROM[0x0044D2],0x7F00);		//	raine	#$00 <eeprom access>
-   WriteWord68k(&ROM[0x0044D4],0x4ED6);		//	jmp	(a6)
-
-   // SPEED HACK
-   // ----------
-
-   WriteWord68k(&ROM[0x031D4],0x4EF9);		//	jmp	$F8000
-   WriteLong68k(&ROM[0x031D6],0x000F8000);
-
-   WriteWord68k(&ROM[0xF8000],0x4EB9);		//	jsr	$0291C <random gen>
-   WriteLong68k(&ROM[0xF8002],0x0000291C);
-   WriteWord68k(&ROM[0xF8006],0x7F02);		//	raine	#$02 <stop cpu>
-   WriteWord68k(&ROM[0xF8008],0x6100-10);	//	bra.s	<loop>
 
    F3SystemEEPROMAccess=&F3SysEEPROMAccessMode2;
 
@@ -456,7 +244,7 @@ static void DrawPuzzleBobble2(void)
    ClearPaletteMap();
 
    if(check_layer_enabled(f3_bg0_id))
-       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0,0); // not sure for the index !
+       draw_f3_opaque_layer((ReadWord68k(&RAM_SCR0[0])-SCR0_XOFS)>>6,(ReadWord68k(&RAM_SCR0[8])-SCR0_YOFS)>>7,RAM_BG0,GFX_BG0,3);
    else
        clear_game_screen(0);
 
@@ -627,31 +415,18 @@ static struct DIR_INFO dir_pbobble2[] =
    { "pbobble2", },
    { NULL, },
 };
-GAME( pbobble2, "Puzzle Bobble 2", TAITO, 1995, GAME_PUZZLE,
-	.input = f3_system_inputs,
+#define input_pbobble2 f3_system_inputs
+#define dsw_pbobble2 NULL
+#define execute_pbobble2 ExecuteF3SystemFrameB
+#define sound_pbobble2 f3_sound
+
+GME( pbobble2, "Puzzle Bobble 2 (Ver 2.3O 1995/07/31)", TAITO, 1995, GAME_PUZZLE,
 	.romsw = romsw_pbobble2,
-	.video = &video_pbobble2,
-	.exec = ExecuteF3SystemFrameB,
 	.long_name_jpn = "パズルボブル２",
 	.board = "E10",
-	.sound = f3_sound,
 );
-static struct DIR_INFO dir_pbobbl2x[] =
-{
-   { "puzzle_bobble_2x", },
-   { "puzbob2x", },
-   { "pbobbl2x", },
-   { ROMOF("pbobble2"), },
-   { CLONEOF("pbobble2"), },
-   { NULL, },
-};
-GAME( pbobbl2x, "Puzzle Bobble 2 (extra)", TAITO, 1995, GAME_PUZZLE,
-	.input = f3_system_inputs,
-	.romsw = romsw_pbobbl2x,
-	.video = &video_pbobble2,
-	.exec = ExecuteF3SystemFrameB,
-	.long_name_jpn = "パズルボブル２Ｘ",
-	.board = "E10",
-	.sound = f3_sound,
-);
+CLNEI(pbobble2o, pbobble2,"Puzzle Bobble 2 (Ver 2.2O 1995/07/20)",TAITO,1995,GAME_PUZZLE);
+CLNEI(pbobble2x, pbobble2,"Puzzle Bobble 2X (Ver 2.20 1995/11/11)",TAITO,1995,GAME_PUZZLE,
+	.romsw = romsw_pbobble2x,
+	);
 
