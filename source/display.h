@@ -18,6 +18,7 @@ void set_default_video_mode();
 void clear_raine_screen();
 
 extern int bestw,besth,bestbpp;
+extern float max_fps;
 void setup_gfx_modes();
 int switch_res(const VIDEO_INFO *vid);
 

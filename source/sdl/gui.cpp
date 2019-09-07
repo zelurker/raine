@@ -169,6 +169,8 @@ static void load_game_proc()
     fps = current_game->video->fps;
     if (fps < 0.1)
 	fps = 60.0; // 60 fps (default)
+    if (fps > max_fps)
+	fps = max_fps;
 
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function

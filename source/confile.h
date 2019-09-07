@@ -18,7 +18,6 @@ void raine_pop_config_state(void);
 char *raine_get_config_string(const char *section, const char *name, char *def);
 int   raine_get_config_int(const char *section, const char *name, int def);
 int   raine_get_config_hex(char *section, char *name, int def);
-float raine_get_config_float(char *section, char *name, float def);
 int   raine_get_config_id(char *section, char *name, int def);
 char *raine_get_config_text(char *msg);
 

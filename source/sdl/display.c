@@ -23,6 +23,7 @@
 #include "profile.h"
 
 togl_options ogl;
+float max_fps;
 
 int disp_screen_x, prefered_yuv_format;
 #ifdef DARWIN
@@ -108,6 +109,9 @@ void display_read_config() {
    display_cfg.scanlines = raine_get_config_int( "Display", "scanlines", 0);
    display_cfg.stretch = raine_get_config_int( "Display", "stretch", 2);
    video_fps = raine_get_config_int( "Display", "video_fps", 15);
+   char *s = raine_get_config_string("Display", "max_fps", "60");
+   if (*s)
+       sscanf(s,"%f",&max_fps);
 
    display_cfg.user_rotate = raine_get_config_int( "Display", "rotate", 0);
    display_cfg.user_flip = raine_get_config_int( "Display", "flip", 0);
@@ -160,6 +164,9 @@ void display_write_config() {
    raine_set_config_int("Display", "scanlines", display_cfg.scanlines);
    raine_set_config_int("Display", "stretch", display_cfg.stretch);
    raine_set_config_int("Display", "video_fps", video_fps);
+   char s[20];
+   snprintf(s,20,"%g",max_fps);
+   raine_set_config_string("Display","max_fps",s);
 
    raine_set_config_int("Display", "rotate", display_cfg.user_rotate);
    raine_set_config_int("Display", "flip", display_cfg.user_flip);

@@ -9,6 +9,8 @@
 #include "video/res.h"
 #include "display.h"
 
+float max_fps;
+
 void display_read_config() {
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
 
@@ -26,6 +28,9 @@ void display_read_config() {
    display_cfg.fast_set_pal	= raine_get_config_int( "Display",      "fast_set_pal",         1);
    display_cfg.screenshot_png = raine_get_config_int( "Display",      "screenshot_png",         1);
    video_fps = raine_get_config_int( "Display",      "video_fps",         15);
+   char *s = raine_get_config_string("Display", "max_fps", "60");
+   if (*s)
+       sscanf(s,"%f",&max_fps);
 
 #ifdef RAINE_UNIX
    if (geteuid()>0) { // non root user can NOT write to the palette
@@ -65,6 +70,9 @@ void display_write_config() {
    raine_set_config_int(	"Display",      "fast_set_pal",         display_cfg.fast_set_pal);
    raine_set_config_int(	"Display",      "screenshot_png",         display_cfg.screenshot_png);
    raine_set_config_int(	"Display",      "video_fps",         video_fps);
+   char s[20];
+   snprintf(s,20,"%g",max_fps);
+   raine_set_config_string("Display","max_fps",s);
 
    raine_set_config_int(	"Display",      "rotate",               display_cfg.user_rotate);
    raine_set_config_int(	"Display",      "flip",                 display_cfg.user_flip);
