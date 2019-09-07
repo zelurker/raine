@@ -1257,12 +1257,19 @@ commands_t commands[] =
   { NULL, NULL, },
 };
 
+static int lastw,lasth;
+
 int do_console(int sel) {
     init_cpuid();
     cpu_get_ram(cpu_id,ram,&nb_ram);
     int irq = 0;
-    if (!cons)
+    if (!cons || lastw!=screen->w || lasth!=screen->h) {
+	if (cons)
+	    delete cons;
 	cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,1000, commands);
+	lastw = screen->w;
+	lasth = screen->h;
+    }
     get_regs(cpu_id); // 1st thing to do here !!!
     if (goto_debuger >= 100) {
 	cons->set_visible();
@@ -1337,7 +1344,6 @@ void preinit_console() {
 
 void done_console() {
   if (cons) {
-      cons->save_history();
       delete cons;
       cons = NULL;
   }
@@ -1359,8 +1365,11 @@ void run_console_command(char *command) {
     if (!*command) return;
   init_cpuid();
   cpu_get_ram(cpu_id,ram,&nb_ram);
-  if (!cons)
+  if (!cons) {
     cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,50, commands);
+    lastw = screen->w;
+    lasth = screen->h;
+  }
   get_regs(cpu_id);
   cons->run_cmd(command);
   set_regs(cpu_id);

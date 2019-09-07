@@ -74,6 +74,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
 }
 
 TConsole::~TConsole() {
+    save_history();
   for (int n=0; n<nb_items; n++) {
     free((void*)menu[n].label);
   }
