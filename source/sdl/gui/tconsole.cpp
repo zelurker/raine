@@ -85,6 +85,7 @@ TConsole::~TConsole() {
 
 void TConsole::save_history() {
     char buf[FILENAME_MAX];
+    if (!current_game) return;
     snprintf(buf,FILENAME_MAX,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
     edit_child->save_history(buf);
 }
