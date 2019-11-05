@@ -1136,6 +1136,7 @@ ifdef RAINE_UNIX
 ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
 LIBS += -lSDL_sound
 else
+CFLAGS += -I/usr/local/include/SDL
 LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -lvorbisfile
 endif
 else
