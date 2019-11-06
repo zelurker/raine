@@ -551,6 +551,8 @@ else
 endif
 endif
 
+DEFINE += -DMUSASHI_CNF=\"m68kconf-raine.h\"
+
 ifdef RAINE_DEBUG
 CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
 CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
