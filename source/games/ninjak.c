@@ -119,7 +119,7 @@ static UINT8 *GFX_SPR_SOLID;
 
 static int BadReadWord(UINT32 address)
 {
-       print_debug("Rw(%06x) [%06x]\n",address,s68000context.pc);
+       print_debug("Rw(%06x) [%06x]\n",address,s68000_pc);
    return(0xFFFF);
 }
 

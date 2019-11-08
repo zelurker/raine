@@ -391,7 +391,7 @@ static void execute_hitice(void)
    #endif
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-   if(s68000context.pc == 0x001C){	// Prevent game freezing up
+   if(s68000_pc == 0x001C){	// Prevent game freezing up
    cpu_interrupt(CPU_68K_0, 6);
    cpu_interrupt(CPU_68K_0, 4);
    }

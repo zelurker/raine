@@ -24,7 +24,9 @@ RAINE_DEBUG = 1
 
 # Use musashi ? If so, it will be used instead of the asm uae core for
 # the 68020, at least for now
-USE_MUSASHI = 1
+# 1 = 68020
+# 2 = 68000 + 68020
+USE_MUSASHI = 2
 
 # For osx : use frameworks or brew shared libs ?
 # Actually frameworks are a convenience for end users, to build them use
@@ -628,7 +630,7 @@ CFLAGS_MCU += -DNO_ASM
 endif
 
 ifdef USE_MUSASHI
-	CFLAGS += -DUSE_MUSASHI
+	CFLAGS += -DUSE_MUSASHI=$(USE_MUSASHI)
 endif
 
 ifdef CZ80
@@ -711,8 +713,12 @@ endif
 
 # STARSCREAM 68000 core
 
+ifeq ($(USE_MUSASHI),2)
+SC000= $(OBJDIR)/68000/starhelp.o
+else
 SC000=	$(OBJDIR)/68000/s68000.o \
-	$(OBJDIR)/68000/starhelp.o \
+	$(OBJDIR)/68000/starhelp.o
+endif
 
 # MZ80 core
 
@@ -1572,7 +1578,6 @@ source/Musashi/m68k.h:
 	if ! [ -d source/Musashi ]; then git submodule add https://github.com/zelurker/Musashi.git source/Musashi; fi
 	cd source/Musashi && git submodule init
 	cd source/Musashi && git submodule update
-	cd source/Musashi && rm -f m68kconf.h && ln -s ../m68kconf.h
 
 endif
 

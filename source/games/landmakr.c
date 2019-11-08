@@ -266,11 +266,7 @@ static void execute_landmakr(void)
   }
 
 
-#ifdef USE_MUSASHI
-  if (ReadWord68k(&ROM[m68k_get_reg(NULL,M68K_REG_PC)]) == 0x60fe)
-#else
-  if (ReadWord68k(&ROM[regs.pc]) == 0x60fe)
-#endif
+  if (ReadWord68k(&ROM[REG_PC]) == 0x60fe)
     reset_game_hardware();
   else {
     Interrupt68020(3);

@@ -410,7 +410,7 @@ static void execute_warriorb(void)
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60)); // M68000 20MHz (60fps)
    /*#ifdef RAINE_DEBUG
-      print_debug("PC0:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC0:%06x SR:%04x\n",s68000_pc,s68000_sr);
    #endif*/
    cpu_interrupt(CPU_68K_0, 4);
 

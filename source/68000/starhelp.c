@@ -4,6 +4,9 @@
 /*                                                                            */
 /******************************************************************************/
 
+#include <stdio.h>
+#include <stdlib.h> // Required to avoid a non sense when declaring uint from m68kcpu.h !
+
 #include "starhelp.h"
 #include "raine.h"
 #include "savegame.h"
@@ -11,8 +14,13 @@
 #include "loadroms.h"
 #include "newmem.h"
 #include "emumain.h"
+#include "cpumain.h"
 
+#if USE_MUSASHI < 2
 struct S68000CONTEXT            M68000_context[MAX_68000];
+#else
+m68ki_cpu_core M68000_context[MAX_68000];
+#endif
 static struct STARSCREAM_PROGRAMREGION M68000_programregion[MAX_68000][MAX_PROGRAM];
 static struct STARSCREAM_DATAREGION    M68000_dataregion_rb[MAX_68000][MAX_DATA];
 static struct STARSCREAM_DATAREGION    M68000_dataregion_rw[MAX_68000][MAX_DATA];
@@ -514,6 +522,7 @@ releases, have to 'pack' them into our own save buffer then.
 
 */
 
+#if USE_MUSASHI < 2
 typedef struct SAVE_BUFFER
 {
    UINT32 id;
@@ -528,9 +537,111 @@ typedef struct SAVE_BUFFER
 } SAVE_BUFFER;
 
 static struct SAVE_BUFFER save_buffer[2];
+#else
+extern uint32 current_cpu_num[16];
+typedef uint32(*read_func)(uint32);
+typedef void(*write_func)(uint32,uint32);
+
+static uint32 m68k_read8(uint32 adr) {
+    int cpu = current_cpu_num[CPU_68K_0 >> 4];
+    int max = data_count_rb[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (M68000_dataregion_rb[cpu][n].lowaddr <= adr &&
+		adr <= M68000_dataregion_rb[cpu][n].highaddr) {
+	    if (M68000_dataregion_rb[cpu][n].memorycall)
+		return (*(read_func)M68000_dataregion_rb[cpu][n].memorycall)(adr);
+	    return ReadByte(M68000_dataregion_rb[cpu][n].userdata+(adr^1));
+	}
+    }
+    return 0xff; // DefBadRead is handled by the starscream structs normally
+}
+
+static uint32 m68k_read16(uint32 adr) {
+    int cpu = current_cpu_num[CPU_68K_0 >> 4];
+    int max = data_count_rw[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (M68000_dataregion_rw[cpu][n].lowaddr <= adr &&
+		adr <= M68000_dataregion_rw[cpu][n].highaddr) {
+	    if (M68000_dataregion_rw[cpu][n].memorycall)
+		return (*(read_func)M68000_dataregion_rw[cpu][n].memorycall)(adr);
+
+	    return ReadWord(M68000_dataregion_rw[cpu][n].userdata+adr);
+	}
+    }
+    return 0xffff;
+}
+
+static uint32 m68k_read32(uint32 adr) {
+    int cpu = current_cpu_num[CPU_68K_0 >> 4];
+    int max = data_count_rw[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (M68000_dataregion_rw[cpu][n].lowaddr <= adr &&
+		adr <= M68000_dataregion_rw[cpu][n].highaddr) {
+	    if (M68000_dataregion_rw[cpu][n].memorycall)
+		return ((*(read_func)M68000_dataregion_rw[cpu][n].memorycall)(adr)<<16) |
+		    (*(read_func)M68000_dataregion_rw[cpu][n].memorycall)(adr+2);
+	    return ReadLongSc(M68000_dataregion_rw[cpu][n].userdata+adr);
+	}
+    }
+    return 0xffffffff;
+}
+
+static void m68k_write8(uint32 adr,uint32 data) {
+    int cpu = current_cpu_num[CPU_68K_0 >> 4];
+    int max = data_count_wb[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (M68000_dataregion_wb[cpu][n].lowaddr <= adr &&
+		adr <= M68000_dataregion_wb[cpu][n].highaddr) {
+	    if (M68000_dataregion_wb[cpu][n].memorycall) {
+		(*(write_func)M68000_dataregion_wb[cpu][n].memorycall)(adr,data);
+		return;
+	    }
+	    WriteByte(M68000_dataregion_wb[cpu][n].userdata+(adr^1), data);
+	}
+    }
+}
+
+static void m68k_write16(uint32 adr,uint32 data) {
+    int cpu = current_cpu_num[CPU_68K_0 >> 4];
+    int max = data_count_ww[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (M68000_dataregion_ww[cpu][n].lowaddr <= adr &&
+		adr <= M68000_dataregion_ww[cpu][n].highaddr) {
+	    if (M68000_dataregion_ww[cpu][n].memorycall) {
+		(*(write_func)M68000_dataregion_ww[cpu][n].memorycall)(adr,data);
+		return;
+	    }
+	    WriteWord(M68000_dataregion_ww[cpu][n].userdata+adr, data);
+	}
+    }
+}
+
+static void m68k_write32(uint32 adr,uint32 data) {
+    int cpu = current_cpu_num[CPU_68K_0 >> 4];
+    int max = data_count_ww[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (M68000_dataregion_ww[cpu][n].lowaddr <= adr &&
+		adr <= M68000_dataregion_ww[cpu][n].highaddr) {
+	    if (M68000_dataregion_ww[cpu][n].memorycall) {
+		(*(write_func)M68000_dataregion_ww[cpu][n].memorycall)(adr,data >> 16);
+		(*(write_func)M68000_dataregion_ww[cpu][n].memorycall)(adr+2,data & 0xffff);
+		return;
+	    }
+	    WriteLongSc(M68000_dataregion_ww[cpu][n].userdata+adr,data);
+	}
+    }
+}
+#endif
 
 void AddInitMemory(void)
 {
+#if USE_MUSASHI < 2
    M68000_context[0].fetch       = M68000_programregion[0];
    M68000_context[0].readbyte    = M68000_dataregion_rb[0];
    M68000_context[0].readword    = M68000_dataregion_rw[0];
@@ -554,6 +665,20 @@ void AddInitMemory(void)
    AddSaveCallback_Internal(M68000A_save_update);
    AddLoadCallback_Internal(M68000A_load_update);
    AddSaveData(SAVE_68K_0, (UINT8 *) &save_buffer[0], sizeof(SAVE_BUFFER));
+#else
+    m68k_init();
+    m68ki_cpu.read8 = m68k_read8;
+    m68ki_cpu.read16 = m68k_read16;
+    m68ki_cpu.read32 = m68k_read32;
+
+    m68ki_cpu.write8 = m68k_write8;
+    m68ki_cpu.write16 = m68k_write16;
+    m68ki_cpu.write32 = m68k_write32;
+    m68k_set_cpu_type(M68K_CPU_TYPE_68000);
+    m68k_get_context(&M68000_context[0]);
+    // Avoid the pointers at the end of the struct... they should already be initialized
+    AddSaveData(SAVE_68K_0, (UINT8 *) &M68000_context[0], (UINT8*)&M68000_context[0].cyc_instruction - ((UINT8*)&M68000_context[0]));
+#endif
 
    if (StarScreamEngine < 1) StarScreamEngine = 1;
 }
@@ -647,6 +772,7 @@ void AddWriteWordMC68000B(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 
 void AddInitMemoryMC68000B(void)
 {
+#if USE_MUSASHI < 2
    M68000_context[1].fetch       = M68000_programregion[1];
    M68000_context[1].readbyte    = M68000_dataregion_rb[1];
    M68000_context[1].readword    = M68000_dataregion_rw[1];
@@ -668,6 +794,20 @@ void AddInitMemoryMC68000B(void)
    AddSaveCallback_Internal(M68000B_save_update);
    AddLoadCallback_Internal(M68000B_load_update);
    AddSaveData(SAVE_68K_1, (UINT8 *) &save_buffer[1], sizeof(SAVE_BUFFER));
+#else
+    m68k_init();
+    m68k_set_cpu_type(M68K_CPU_TYPE_68000);
+    m68ki_cpu.read8 = m68k_read8;
+    m68ki_cpu.read16 = m68k_read16;
+    m68ki_cpu.read32 = m68k_read32;
+
+    m68ki_cpu.write8 = m68k_write8;
+    m68ki_cpu.write16 = m68k_write16;
+    m68ki_cpu.write32 = m68k_write32;
+    m68k_get_context(&M68000_context[1]);
+    // Avoid the pointers at the end of the struct... they should already be initialized
+    AddSaveData(SAVE_68K_1, (UINT8 *) &M68000_context[1], (UINT8*)&M68000_context[1].cyc_instruction - ((UINT8*)&M68000_context[1]));
+#endif
 
    if (StarScreamEngine < 2) StarScreamEngine = 2;
 }
@@ -687,21 +827,21 @@ void Stop68000(UINT32 address, UINT8 data)
 
 UINT8 DefBadReadByte(UINT32 address)
 {
-  print_debug("RB(%06x) [%06x]\n",address,s68000readPC());
+  print_debug("RB(%06x) [%06x]\n",address,s68000_pc);
   return 0xFF;
 }
 
 UINT16 DefBadReadWord(UINT32 address)
 {
-       print_debug("RW(%06x) [%06x]\n",address,s68000readPC());
+       print_debug("RW(%06x) [%06x]\n",address,s68000_pc);
    return 0x0000;
 }
 
 void DefBadWriteByte(UINT32 address, UINT8 data)
 {
-      print_debug("WB(%06x,%02x) [%06x]\n",address,data,s68000readPC());
+      print_debug("WB(%06x,%02x) [%06x]\n",address,data,s68000_pc);
 #ifdef RAINE_DEBUG
-      if (s68000readPC() & 0xff000000) {
+      if (s68000_pc & 0xff000000) {
 	printf("68k out of bounds\n");
 	print_debug("68k out of bounds\n");
 	exit(1);
@@ -711,7 +851,7 @@ void DefBadWriteByte(UINT32 address, UINT8 data)
 
 void DefBadWriteWord(UINT32 address, UINT16 data)
 {
-      print_debug("WW(%06x,%04x) [%06x]\n",address,data,s68000readPC());
+      print_debug("WW(%06x,%04x) [%06x]\n",address,data,s68000_pc);
 }
 
 typedef struct OLD_CONTEXT
@@ -732,6 +872,7 @@ typedef struct OLD_CONTEXT
    UINT8 contextfiller;
 } OLD_CONTEXT;
 
+#if USE_MUSASHI < 2
 static void do_save_packing(int cpu)
 {
    UINT32 ta;
@@ -809,6 +950,7 @@ void M68000B_load_update(void)
 {
    do_load_unpacking(1);
 }
+#endif
 
 void finish_conf_68000(int cpu) {
    add_68000_rb(cpu,0x000000, 0xFFFFFFFF, DefBadReadByte, NULL);

@@ -94,7 +94,7 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 		    (!watch[n].read && watch[n].value == data) ||
 		    (watch[n].read && ptr && watch[n].value == ptr[getadr(offset)])) {
 		if (!watch[n].cond || parse(watch[n].cond)) {
-		    watch[n].pc = s68000readPC();
+		    watch[n].pc = s68000_pc;
 		    Stop68000(0,0);
 		    goto_debuger = n+100;
 		}
@@ -144,7 +144,7 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data) {
 		    (!watch[n].read && watch[n].value == data) ||
 		    (watch[n].read && ptr && watch[n].value == ReadWord(&ptr[offset]))) {
 		if (!watch[n].cond || parse(watch[n].cond)) {
-		    watch[n].pc = s68000readPC();
+		    watch[n].pc = s68000_pc;
 		    Stop68000(0,0);
 		    goto_debuger = n+100;
 		}
@@ -523,21 +523,21 @@ void do_regs(int argc, char **argv) {
   switch (cpu_id >> 4) {
   case 1:
       for (int n=0; n<8; n++) {
-	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,s68000context.dreg[n]);
+	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,s68000_dreg[n]);
 	  if (n==3 || n==7) {
 	      cons->print(buf);
 	      *buf = 0;
 	  }
       }
       for (int n=0; n<8; n++) {
-	  sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,s68000context.areg[n]);
+	  sprintf(buf+strlen(buf),"\E[36mA%d:\E[0m%08x ",n,s68000_areg[n]);
 	  if (n==3 || n==7) {
 	      cons->print(buf);
 	      *buf = 0;
 	  }
       }
-      cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000context.sr,
-	      s68000context.pc);
+      cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000_sr,
+	      s68000_pc);
       break;
   case 2:
       cons->print("\E[36mAF:\E[0m%04x \E[36mBC:\E[0m%04x"

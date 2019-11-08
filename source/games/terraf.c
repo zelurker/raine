@@ -765,8 +765,8 @@ static void execute_kodure(void)
   // If the hack happens in an interrupt then the pc must not move (infinite loop).
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-   if (s68000context.pc == 0x4abc)
-     s68000context.pc = 0x4ab6;
+   if (s68000_pc == 0x4abc)
+     s68000_pc = 0x4ab6;
 
    cpu_interrupt(CPU_68K_0, 1);
 

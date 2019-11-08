@@ -118,6 +118,7 @@ struct S68020CONTEXT {
 	STARSCREAM_CONTEXTINFO_68020
 };
 
+#if USE_MUSASHI < 2
 #define STARSCREAM_IDENTIFIERS(SNC,SN)                        \
                                                               \
 extern struct SNC##CONTEXT SN##context;                       \
@@ -140,6 +141,28 @@ unsigned SN##readPC           (void);                         \
 STARSCREAM_IDENTIFIERS(S68000,s68000)
 STARSCREAM_IDENTIFIERS(S68010,s68010)
 STARSCREAM_IDENTIFIERS(S68020,s68020)
+#define s68000_sr s68000context.sr
+#define s68000_interrupts s68000context.interrupts[0]
+#define s68000_pc s68000context.pc
+#define s68000_areg s68000context.areg
+#define s68000_dreg s68000context.dreg
+#define s68000_cycles_run s68000context.odometer
+#else
+#include "Musashi/m68kcpu.h"
+
+#define s68000readOdometer m68k_cycles_run
+#define s68000_sr m68ki_get_sr()
+#define s68000_interrupts m68ki_cpu.int_level
+#define s68000_pc REG_PC
+#define s68000_areg REG_A
+#define s68000_dreg REG_D
+#define s68000releaseTimeslice m68k_end_timeslice
+#define s68000_cycles_run m68k_cycles_run()
+#define s68000init()
+#define s68000GetContext(ctx) m68k_get_context(ctx)
+#define s68000SetContext(ctx) m68k_set_context(ctx)
+
+#endif
 
 #ifdef __cplusplus
 }

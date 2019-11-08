@@ -807,7 +807,11 @@ static menu_item_t about_items[] =
   { "http://raine.1emulation.com/", NULL, NULL },
   { " ", NULL, NULL, },
   { _("CPU emulators:"), NULL, NULL },
+#if USE_MUSASHI == 2
+  {    _("68000 : Musashi v3.3x by Karl Stenerud") },
+#else
   {    _("Starscream 0.26r4 by Neill Corlett"), },
+#endif
   {    _("MZ80 3.4raine3 by Neill Bradley") },
   {    _("M6502 1.6raine2 by Neill Bradley") },
 #ifdef USE_MUSASHI

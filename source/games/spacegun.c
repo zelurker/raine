@@ -148,7 +148,7 @@ static UINT8 *GFX_BG0_SOLID;
 static int BadReadByte(UINT32 address)
 {
    #ifdef RAINE_DEBUG
-      //print_debug("Rb%01d(%06x) [%06x]\n",tcpu,address,s68000context.pc);
+      //print_debug("Rb%01d(%06x) [%06x]\n",tcpu,address,s68000_pc);
    #endif
    return(0xFF);
 }
@@ -156,7 +156,7 @@ static int BadReadByte(UINT32 address)
 static int BadReadWord(UINT32 address)
 {
    #ifdef RAINE_DEBUG
-       //print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000context.pc);
+       //print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000_pc);
    #endif
    return(0);
 }
@@ -164,14 +164,14 @@ static int BadReadWord(UINT32 address)
 static void BadWriteByte(UINT32 address, UINT8 data)
 {
    #ifdef RAINE_DEBUG
-      //print_debug("Wb%01d(%06x,%02x) [%06x]\n",tcpu,address,data,s68000context.pc);
+      //print_debug("Wb%01d(%06x,%02x) [%06x]\n",tcpu,address,data,s68000_pc);
    #endif
 }
 
 static void BadWriteWord(UINT32 address, UINT16 data)
 {
    #ifdef RAINE_DEBUG
-      //print_debug("Ww%01d(%06x,%04x) [%06x]\n",tcpu,address,data,s68000context.pc);
+      //print_debug("Ww%01d(%06x,%04x) [%06x]\n",tcpu,address,data,s68000_pc);
    #endif
 }
 

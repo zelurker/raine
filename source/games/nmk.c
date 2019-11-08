@@ -2626,11 +2626,11 @@ static UINT8 tharrier_mcu_r(UINT32 offset) {
 
 	int res;
 
-	if (s68000readPC()==0x8aa) {
+	if (s68000_pc==0x8aa) {
 	    res = (ReadWord(&RAM[0x9064]))|0x20; /* Task Force Harrier */
-	} else if (s68000readPC()==0x8ce) {
+	} else if (s68000_pc==0x8ce) {
 	    res = (ReadWord(&RAM[0x9064]))|0x60; /* Task Force Harrier */
-	} else if (s68000readPC()==0x8e4)
+	} else if (s68000_pc==0x8e4)
 	    // At $8e4 the mcu just wants 0s !
 	    res = 0;
 	else

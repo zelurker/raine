@@ -773,10 +773,10 @@ static void draw_mcatadv() {
 
 static void execute_mcatadv() {
   cpu_execute_cycles(CPU_68K_0, frame_68k);
-   if (s68000context.pc == 0x36c ||
-       (s68000context.pc == 0x11e && is_current_game("nost"))) {
+   if (s68000_pc == 0x36c ||
+       (s68000_pc == 0x11e && is_current_game("nost"))) {
      reset_game_hardware();
-   } else if (s68000context.pc == 0x5a8c && !hack_applied && is_current_game("nost")) {
+   } else if (s68000_pc == 0x5a8c && !hack_applied && is_current_game("nost")) {
      memcpy(hack_buffer,&ROM[0x5a8a],6);
      WriteWord(&ROM[0x5a8a],0x4239);
      WriteWord(&ROM[0x5a8c],0xaa);

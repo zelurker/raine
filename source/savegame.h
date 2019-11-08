@@ -105,8 +105,13 @@ void AddSaveCallback_Internal(void *callback);
 #define SAVE_Z80_2            ASCII_ID('Z','8','0',0x02)
 #define SAVE_Z80_3            ASCII_ID('Z','8','0',0x03)
 
+#if USE_MUSASHI == 2
+#define SAVE_68K_0            ASCII_ID('M','S','K',0x00)
+#define SAVE_68K_1            ASCII_ID('M','S','K',0x01)
+#else
 #define SAVE_68K_0            ASCII_ID('6','8','K',0x00)
 #define SAVE_68K_1            ASCII_ID('6','8','K',0x01)
+#endif
 
 #ifdef USE_MUSASHI
 #define SAVE_M68020_0         ASCII_ID('M','2','0',0x00)

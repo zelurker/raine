@@ -131,7 +131,7 @@ static UINT8 *GFX_SPR_SOLID;
 static void BadWriteByte(UINT32 addr, UINT8 data)
 {
 #ifdef RAINE_DEBUG
-      if(addr!=0x700001) print_debug("Wb(%06x,%02x) [%06x]\n",addr,data,s68000context.pc);
+      if(addr!=0x700001) print_debug("Wb(%06x,%02x) [%06x]\n",addr,data,s68000_pc);
 #endif
 }
 

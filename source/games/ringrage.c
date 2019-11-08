@@ -268,7 +268,7 @@ static void execute_ringrage(void)
     }
 /*     if (RaineSoundCard) { */
 /*       cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60*f3_slices)); // M68000 16MHz (60fps) */
-/*       print_debug("PC68k:%06x SR:%04x\n",s68000context.pc,s68000context.sr); */
+/*       print_debug("PC68k:%06x SR:%04x\n",s68000_pc,s68000_sr); */
 /*       if (int7_active) { */
 /* 	if (f3_slices == 16) */
 /* 	  f3_slices = 1; */

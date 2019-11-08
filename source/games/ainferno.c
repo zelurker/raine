@@ -119,20 +119,20 @@ static UINT8 *GFX_FG0;
 
 static int BadReadWord(UINT32 address)
 {
-       print_debug("Rw(%06x) [%06x]\n",address,s68000context.pc);
+       print_debug("Rw(%06x) [%06x]\n",address,s68000_pc);
    return(0xFFFF);
 }
 
 static void BadWriteByte(UINT32 address, UINT8 data)
 {
 #ifdef RAINE_DEBUG
-      if(address!=0xA00200) print_debug("Wb(%06x,%02x) [%06x]\n",address,data,s68000context.pc);
+      if(address!=0xA00200) print_debug("Wb(%06x,%02x) [%06x]\n",address,data,s68000_pc);
 #endif
 }
 
 static void BadWriteWord(UINT32 address, UINT16 data)
 {
-      print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000context.pc);
+      print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000_pc);
 }
 
 static void load_ainferno(void)

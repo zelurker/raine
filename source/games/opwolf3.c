@@ -83,14 +83,14 @@ static struct ROMSW_INFO romsw_opwolf3[] =
 static void BadWriteByte(UINT32 address, UINT8 data)
 {
 #ifdef RAINE_DEBUG
-      if(address!=0xB00000) print_debug("Wb(%06x,%02x) [%06x]\n",address,data,s68000context.pc);
+      if(address!=0xB00000) print_debug("Wb(%06x,%02x) [%06x]\n",address,data,s68000_pc);
 #endif
 }
 
 static void BadWriteWord(UINT32 address, UINT16 data)
 {
 #ifdef RAINE_DEBUG
-      if(address!=0xC00000) print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000context.pc);
+      if(address!=0xC00000) print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000_pc);
 #endif
 }
 

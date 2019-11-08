@@ -3050,10 +3050,12 @@ static void execute_growl(void)
 static void execute_gunfront(void)
 {
   // 68k overclocked because of speed hacks, 2 execute_cycles / frame for sprite sync
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60) - s68000context.odometer);
+   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60) - s68000_cycles_run);
    cpu_interrupt(CPU_68K_0, 6);
    cpu_interrupt(CPU_68K_0, 5);
-   s68000context.odometer = 0;
+#if USE_MUSASHI < 2
+   s68000_cycles_run = 0;
+#endif
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60));
 
    Taito2610_Frame();			// Z80 and YM2610

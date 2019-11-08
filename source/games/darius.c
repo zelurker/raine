@@ -328,7 +328,7 @@ static int tcpu;
 static UINT16 BadReadWord(UINT32 address)
 {
 #ifdef RAINE_DEBUG
-       if(address!=0x0B0000)print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000context.pc);
+       if(address!=0x0B0000)print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000_pc);
 #endif
    return(0xFFFF);
 }
@@ -336,7 +336,7 @@ static UINT16 BadReadWord(UINT32 address)
 static void BadWriteWord(UINT32 address, UINT16 data)
 {
 #ifdef RAINE_DEBUG
-      if(address!=0x0B0000)print_debug("Ww%01d(%06x,%04x) [%06x]\n",tcpu,address,data,s68000context.pc);
+      if(address!=0x0B0000)print_debug("Ww%01d(%06x,%04x) [%06x]\n",tcpu,address,data,s68000_pc);
 #endif
 }
 
@@ -877,12 +877,12 @@ static void execute_darius(void)
 
    tcpu=0;
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-      print_debug("PC0:%06x SR0:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC0:%06x SR0:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_0, 4);
 
    tcpu=1;
    cpu_execute_cycles(CPU_68K_1, 90000*2);
-      print_debug("PC1:%06x SR1:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC1:%06x SR1:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_1, 4);
 
    if(tc0140syt_want_nmi()!=0) cpu_int_nmi(CPU_Z80_0);

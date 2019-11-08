@@ -558,7 +558,7 @@ static void ClearWorldGrandPrix(void)
 static void execute_wgp(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));		// M68000 12MHz (60fps)
-      print_debug("PC0:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC0:%06x SR:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_0, 4);
    cpu_interrupt(CPU_68K_0, 6);
    cpu_interrupt(CPU_68K_0, 6);
@@ -568,7 +568,7 @@ static void execute_wgp(void)
    cpu_interrupt(CPU_68K_0, 6);
 
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(12,60));		// M68000 12MHz (60fps)
-      print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC1:%06x SR:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_1, 4);
    cpu_interrupt(CPU_68K_1, 6);
 

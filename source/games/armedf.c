@@ -509,7 +509,7 @@ static void execute_armedf(void)
 
    Nichibutsu3526_Frame();		// Z80 and YM3526
 
-   if (s68000readPC()==0xE090)
+   if (s68000_pc==0xE090)
      make_dipswitch_bytes();		// fix dsw
 }
 

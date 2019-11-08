@@ -737,9 +737,9 @@ static void execute_aquajckj(void)
 CPULoop:
    cpu_execute_cycles(CPU_68K_0, 1800000);
 
-   if((s68000context.pc)>=0x100){
-   if((s68000context.pc)!=0x208){
-      print_debug("PC0-WAIT:%06x SR0:%04x\n",s68000context.pc,s68000context.sr);
+   if((s68000_pc)>=0x100){
+   if((s68000_pc)!=0x208){
+      print_debug("PC0-WAIT:%06x SR0:%04x\n",s68000_pc,s68000_sr);
    }
 
    cpu_execute_cycles(CPU_68K_1, 1800000);
@@ -752,7 +752,7 @@ CPULoop:
 
    cpu_execute_cycles(CPU_68K_1, 1800000);
 
-      print_debug("PC0:%06x SR0:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC0:%06x SR0:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_0, 4);
 #endif
 

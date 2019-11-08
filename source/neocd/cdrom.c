@@ -1245,6 +1245,8 @@ int neogeo_cdrom_load_pcm_file(char *FileName, unsigned int Offset)
   return size;
 }
 
+extern int goto_debuger;
+
 static void finish_loading() {
   /* These writes are still necessary, they do what the bios would do if we
      were able to emulate every hardware address used by the cdrom. But we
@@ -1288,6 +1290,7 @@ static void finish_loading() {
   // during loading. I guess it's some kind of ack... !
   WriteByte(&RAM[0x10F6D9 ^ 1], 0x01);
   animations_enabled = 0; // animations disabled, must be explicitely enabled
+  goto_debuger = 1;
   // by the game...
 }
 

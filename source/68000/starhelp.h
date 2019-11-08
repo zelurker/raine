@@ -20,7 +20,11 @@ extern "C" {
 #define ReadLongSc(a) ((ReadWord(a)<<16) | ReadWord(a+2))
 #define WriteLongSc(a,b) WriteWord(a,(b)>>16); WriteWord(a+2,((b)&0xffff))
 
+#if USE_MUSASHI < 2
 extern struct S68000CONTEXT            M68000_context[MAX_68000];
+#else
+extern m68ki_cpu_core M68000_context[MAX_68000];
+#endif
 extern struct STARSCREAM_DATAREGION    M68000_dataregion_ww[MAX_68000][MAX_DATA];
 
 /*

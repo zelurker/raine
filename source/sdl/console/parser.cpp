@@ -55,11 +55,11 @@ void get_regs(int cpu) {
     switch (cpu >> 4) {
     case 1: // 68k
 	for (int n=0; n<8; n++) {
-	    a[n] = (long)s68000context.areg[n];
-	    d[n] = (long)s68000context.dreg[n];
+	    a[n] = (long)s68000_areg[n];
+	    d[n] = (long)s68000_dreg[n];
 	}
-	sr = s68000context.sr;
-	pc = s68000readPC();
+	sr = s68000_sr;
+	pc = s68000_pc;
 	break;
     case 2:
 	num = cpu & 0xf;
@@ -103,11 +103,16 @@ void set_regs(int cpu) {
     switch (cpu >> 4) {
     case 1:
 	for (int n=0; n<8; n++) {
-	    M68000_context[num].areg[n] = s68000context.areg[n] = a[n];
-	    M68000_context[num].dreg[n] = s68000context.dreg[n] = d[n];
+	    s68000_areg[n] = a[n];
+	    s68000_dreg[n] = d[n];
 	}
+#if USE_MUSASHI < 2
 	M68000_context[num].sr = s68000context.sr = sr;
-	M68000_context[num].pc = s68000context.pc = pc;
+#else
+	m68ki_set_sr(sr);
+#endif
+	s68000_pc = pc;
+	s68000GetContext(&M68000_context[num]);
 	break;
     case 2:
 	Z80_context[num].z80af = (int(za)<<8)|int(zf);

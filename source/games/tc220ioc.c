@@ -189,7 +189,7 @@ void tc0220ioc_wb(UINT32 address, UINT8 data)
          }
       break;
       case 0x08:				// [Lights and Paddle Acknowledge]
-	print_debug("tc220ioc: ram_input 8 = %x [%x]\n",data,s68000context.pc);
+	print_debug("tc220ioc: ram_input 8 = %x [%x]\n",data,s68000_pc);
          tc0220ioc.RAM[0x08] = data;
          switch_led(0,(data>>2)&1);		// Coin A [Coin Inserted]
          switch_led(1,(data>>3)&1);		// Coin B [Coin Inserted]
@@ -199,7 +199,7 @@ void tc0220ioc_wb(UINT32 address, UINT8 data)
       default:
 #ifdef RAINE_DEBUG
          if(!(tc0220ioc.ctrl & TC0220_QUIET)){
-            print_debug("tc0220ioc_wb(%02x,%02x) [%06x]\n",address&0x1E,data,s68000context.pc);
+            print_debug("tc0220ioc_wb(%02x,%02x) [%06x]\n",address&0x1E,data,s68000_pc);
          }
 #endif
       break;

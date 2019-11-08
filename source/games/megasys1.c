@@ -1681,7 +1681,7 @@ static void MS1SoundFrame(void)
   for( ta = MS1SoundLoop; ta > 0; ta-- ){
     cpu_execute_cycles(CPU_68K_1, MS1SoundClock);
 #ifdef RAINE_DEBUG
-    if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+    if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000_pc,s68000_sr);
 #endif
     cpu_interrupt(CPU_68K_1, 4);
   }
@@ -1695,7 +1695,7 @@ static void MS2SoundFrame(void)
    for(ta=0;ta<3;ta++){
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(12,60)/3);          // 2 Ints/Frame (correct music speed?)
 #ifdef RAINE_DEBUG
-   if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+   if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000_pc,s68000_sr);
 #endif
    cpu_interrupt(CPU_68K_1, 2);
    }

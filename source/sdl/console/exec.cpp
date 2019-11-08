@@ -23,7 +23,7 @@ static void (*resethandler)();
 static void exec_break() {
   int n;
   for (n=0; n<used_break; n++) {
-    if (breakp[n].adr == s68000readPC()-2) {
+    if (breakp[n].adr == s68000_pc-2) {
       goto_debuger = n+1;
       Stop68000(0,0);
       /* Sadly, there is no way to correct the pc from here in starscream, so
@@ -91,11 +91,15 @@ void do_break(int argc, char **argv) {
     breakp[used_break].cond = NULL;
     WriteWord(&ptr[adr],0x4e70); // reset
     breakp[used_break++].adr = adr;
+#if USE_MUSASHI == 2
+    cons->print("breakpoint not yet supported with musashi (reset handler)");
+#else
     if (s68000context.resethandler != &exec_break) {
       resethandler = s68000context.resethandler;
       M68000_context[0].resethandler = s68000context.resethandler = &exec_break;
     }
     if (cons) cons->print("breakpoint #%d inserted at %x",used_break-1,adr);
+#endif
   }
 }
 
@@ -105,22 +109,22 @@ void do_break(int argc, char **argv) {
 int check_irq(UINT32 adr) {
     int irq = 0;
     int cpu_id = get_cpu_id();
-    if (s68000context.sr >= 0x2100) {
-	UINT8 *ptr = get_userdata(cpu_id,s68000context.areg[7]);
+    if (s68000_sr >= 0x2100) {
+	UINT8 *ptr = get_userdata(cpu_id,s68000_areg[7]);
 	if (!ptr) {
 	    do_irq(0,NULL);
 	    printf("didn't get memory pointer for a7, you are on your own...");
 	    return 0;
 	}
-	UINT32 ret = ((UINT32)ReadLongSc(&ptr[s68000context.areg[7]+2]));
+	UINT32 ret = ((UINT32)ReadLongSc(&ptr[s68000_areg[7]+2]));
 	if (ret == adr+2 || ret == adr) {
-	    WriteLongSc(&ptr[s68000context.areg[7]+2],adr);
-	    irq = (s68000context.sr & 0x700) >> 8;
+	    WriteLongSc(&ptr[s68000_areg[7]+2],adr);
+	    irq = (s68000_sr & 0x700) >> 8;
 	    get_regs();
 	    do_irq(0,NULL); // get out of the irq...
 	} else
 	    printf("irq detected but address does not match : %x, passed %x\n",
-		    ReadLongSc(&ptr[s68000context.areg[7]+2]),adr);
+		    ReadLongSc(&ptr[s68000_areg[7]+2]),adr);
     }
     return irq;
 }

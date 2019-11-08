@@ -5429,7 +5429,7 @@ static UINT8 batrider_68k_z80rom_rb(UINT32 offset)
 {
    offset >>= 1;
    offset  &= 0x3FFFF;
-   // fprintf(stderr,"read from %x\n",s68000readPC());
+   // fprintf(stderr,"read from %x\n",s68000_pc);
    if (offset < 0x8000)
      return BR_Z80_BANK[0][offset];
    return BR_Z80_BANK[offset >> 14][(offset & 0x3FFF)|0x8000];

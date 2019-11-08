@@ -920,10 +920,10 @@ static void execute_silentd(void)
    vcu_debug_info();
    #endif
 
-   //if((s68000context.pc<0x80)||(s68000context.pc>0x7FF80))
+   //if((s68000_pc<0x80)||(s68000_pc>0x7FF80))
    cpu_interrupt(CPU_68K_0, 6);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
-   //if((s68000context.pc<0x80)||(s68000context.pc>0x7FF80))
+   //if((s68000_pc<0x80)||(s68000_pc>0x7FF80))
    cpu_interrupt(CPU_68K_0, 4);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(2,60));	// Sync Scroll
 

@@ -2673,7 +2673,7 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
 }
 
 static void dynamic_hack() {
-  UINT32 pc = s68000context.pc;
+  UINT32 pc = s68000_pc;
 
   // Z80
 #if 0

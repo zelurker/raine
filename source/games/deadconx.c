@@ -180,14 +180,14 @@ static UINT8 *GFX_SPR_SOLID;
 
 static int BadReadWord(UINT32 address)
 {
-       print_debug("Rw(%06x) [%06x]\n",address,s68000context.pc);
+       print_debug("Rw(%06x) [%06x]\n",address,s68000_pc);
    return(0xFFFF);
 }
 
 static void BadWriteWord(UINT32 address, UINT16 data)
 {
 #ifdef RAINE_DEBUG
-      if(address!=0x800000) print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000context.pc);
+      if(address!=0x800000) print_debug("Ww(%06x,%04x) [%06x]\n",address,data,s68000_pc);
 #endif
 }
 

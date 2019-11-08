@@ -55,8 +55,14 @@ extern struct regstruct
 } regs;
 #endif
 
+#ifdef USE_MUSASHI
+#define m68k_dreg(r,num) REG_D[num]
+#define m68k_areg(r,num) REG_A[num]
+#else
 #define m68k_dreg(r,num) ((r).regs[(num)])
 #define m68k_areg(r,num) ((r).regs[(num)+8])
+#define REG_PC regs.pc
+#endif
 /*
 UINT8 RR_ROM;
 #define get_ibyte(o) ReadByte68k(((&RR_ROM)+regs.pc+(o)+1))

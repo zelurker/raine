@@ -261,7 +261,7 @@ static void update_irq_state(void)
 #ifdef RAINE_DEBUG
 /*     if (s68000context.interrupts[0] & 2) */
 #endif
-    s68000context.interrupts[0] &= ~2;
+    s68000_interrupts &= ~2;
     // irq_counter = 0;
   }
 }
@@ -2309,7 +2309,7 @@ static void execute_mazinger(void)
    unknown_irq  = 1;
    update_irq_state();
 
-   if (s68000context.pc == 0x1d92)
+   if (s68000_pc == 0x1d92)
      reset_game_hardware();
 }
 
@@ -2349,7 +2349,7 @@ static void execute_esprade(void)
    agallet_vblank_irq = 1;
    if (stopped_68k) {
      // return to the speed hack
-     s68000context.pc = get_speed_hack_adr(0)-ROM;
+     s68000_pc = get_speed_hack_adr(0)-ROM;
      stopped_68k = 0;
    }
    update_irq_state();

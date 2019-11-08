@@ -274,13 +274,13 @@ static int tcpu=0;
 
 static int BadReadByte(UINT32 address)
 {
-      print_debug("Rb%01d(%06x) [%06x]\n",tcpu,address,s68000context.pc);
+      print_debug("Rb%01d(%06x) [%06x]\n",tcpu,address,s68000_pc);
    return(0x55);
 }
 
 static int BadReadWord(UINT32 address)
 {
-       print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000context.pc);
+       print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000_pc);
    return(0x5555);
 }
 
@@ -844,12 +844,12 @@ static void execute_topspeed(void)
 
    tcpu=0;
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));		// M68000 12MHz (60fps)
-      print_debug("PC0:%06x SR0:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC0:%06x SR0:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_0, 6);
 
    tcpu=1;
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(12,60));		// M68000 12MHz (60fps)
-      print_debug("PC1:%06x SR1:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC1:%06x SR1:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_1, 5);
 
    Taito2151_Frame();				// Z80 and YM2151

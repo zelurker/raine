@@ -611,7 +611,7 @@ static void execute_sci(void)
    RAM[0x02281A] = wheel>>8;
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-      print_debug("PC0:%06x SR0:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC0:%06x SR0:%04x\n",s68000_pc,s68000_sr);
 
    if(cpu_get_pc(CPU_68K_0) == 0x1006){
 
@@ -626,7 +626,7 @@ static void execute_sci(void)
    }
 
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-      print_debug("PC1:%06x SR1:%04x\n",s68000context.pc,s68000context.sr);
+      print_debug("PC1:%06x SR1:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_1, 4);
 
    Taito2610_Frame();			// Z80 and YM2610

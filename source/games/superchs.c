@@ -478,9 +478,9 @@ static void execute_superchs(void)
 
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(8,60));	// M68000 8MHz (60fps)
 #ifdef USE_MUSASHI
-   if(((m68k_get_reg(NULL,M68K_REG_SR) & 0x0700)!=0x0700)&&(s68000context.pc==0x030e))
+   if(((m68k_get_reg(NULL,M68K_REG_SR) & 0x0700)!=0x0700)&&(s68000_pc==0x030e))
 #else
-   if(((regs.sr & 0x0700)!=0x0700)&&(s68000context.pc==0x030e))
+   if(((regs.sr & 0x0700)!=0x0700)&&(s68000_pc==0x030e))
 #endif
       cpu_interrupt(CPU_68K_1, 4);
 

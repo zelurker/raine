@@ -283,17 +283,13 @@ static int sound_latch;
 static void macrossp_system(UINT8 data)
 {
   if (data == 3) { // sound write
-#ifdef USE_MUSASHI
-    sound_latch=m68k_get_reg(NULL,M68K_REG_D0);
-#else
     sound_latch=m68k_dreg(regs,0);
-#endif
 
     cpu_interrupt(CPU_68K_0,2);
     // The number of executed cycles is not realy important, thanks to the speed hack
     cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(16,60)); // M68000 16MHz (60fps)
-    if (s68000context.pc == 0x336) {
-      s68000context.pc = 0x32a;
+    if (s68000_pc == 0x336) {
+      s68000_pc = 0x32a;
     }
   } else if (data == 2) { // speed hack
     Stop68020();
@@ -674,11 +670,11 @@ static void execute_macrossp() {
   cpu_interrupt(CPU_M68020_0, 3);
 
   cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(16,60)); // M68000 16MHz (60fps)
-  if (s68000context.pc == 0x336) {
+  if (s68000_pc == 0x336) {
     // Speed hack stops here, we loop around here
-    s68000context.pc = 0x32a;
+    s68000_pc = 0x32a;
   }
-  print_debug("PC1:%06x SR:%04x\n",s68000context.pc,s68000context.sr);
+  print_debug("PC1:%06x SR:%04x\n",s68000_pc,s68000_sr);
 }
 
 static struct VIDEO_INFO video_macrossp =

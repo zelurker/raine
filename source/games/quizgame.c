@@ -2024,13 +2024,13 @@ static void execute_yuyugogo(void)
 
    switch(romset){
    case 0:
-      if(s68000context.pc == 0x00CC){
+      if(s68000_pc == 0x00CC){
       cpu_interrupt(CPU_68K_0, 5);
       cpu_interrupt(CPU_68K_0, 6);
       }
    break;
    case 1:
-      if(s68000context.pc == 0x31CC){
+      if(s68000_pc == 0x31CC){
       cpu_interrupt(CPU_68K_0, 6);
       cpu_interrupt(CPU_68K_0, 5);
       }

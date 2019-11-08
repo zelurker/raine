@@ -596,7 +596,7 @@ void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 				mcu_latch = RAM[0xfc00+(mcu_addr & 0x03ff)];
 			}
 			else {
-			    print_debug("%04x: 68705 unknown read mcu_addr %04x\n",activecpu_get_pc(),mcu_addr);
+			    print_debug("68705 unknown read mcu_addr %04x\n",mcu_addr);
 			}
 		}
 		else	/* write */
@@ -607,7 +607,7 @@ void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 				RAM[0xfc00+(mcu_addr & 0x03ff)] = portA_out;
 			}
 			else {
-			    print_debug("%04x: 68705 unknown write to mcu_addr %04x\n",activecpu_get_pc(),mcu_addr);
+			    print_debug("68705 unknown write to mcu_addr %04x\n",mcu_addr);
 			}
 		}
 	}
@@ -622,11 +622,11 @@ void BubbleBobble_MCU_WRMEM(int a, UINT8 data)
 	}
 	if ((ddrB & 0x40) && (~data & 0x40) && (portB_out & 0x40))
 	{
-	    print_debug("%04x: 68705 unknown port B bit %02x\n",activecpu_get_pc(),data);
+	    print_debug("68705 unknown port B bit %02x\n",data);
 	}
 	if ((ddrB & 0x80) && (~data & 0x80) && (portB_out & 0x80))
 	{
-	    print_debug("%04x: 68705 unknown port B bit %02x\n",activecpu_get_pc(),data);
+	    print_debug("68705 unknown port B bit %02x\n",data);
 	}
 
 	portB_out = data;

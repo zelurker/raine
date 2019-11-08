@@ -148,7 +148,7 @@ uninitialize - need to do this before outside access to cpu contexts
 
 void stop_cpu_main(void)
 {
-  /* What's this code for ??? */
+  /* It fills all the cpu contexts with correct data so that they can eventually be saved */
    UINT32 ta;
 
    for(ta=0; ta<0x10; ta++)
@@ -177,9 +177,13 @@ void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 #if HAVE_68000
       case CPU_68K_0:
       case CPU_68K_1:
-         s68000interrupt(vector, -1);
-         s68000flushInterrupts();
-      break;
+#if USE_MUSASHI == 2
+	  m68k_set_irq(vector);
+#else
+	  s68000interrupt(vector, -1);
+	  s68000flushInterrupts();
+#endif
+	  break;
 #endif
 #if HAVE_Z80
       case CPU_Z80_0:
@@ -252,10 +256,14 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 #if HAVE_68000
       case CPU_68K_0:
       case CPU_68K_1:
+#if USE_MUSASHI == 2
+	  m68k_execute(cycles);
+#else
          s68000exec(cycles);
-	 print_debug("PC:%06x SR:%04x SP:%04x\n",s68000context.pc,s68000context.sr,s68000context.areg[7]);
+#endif
+	 print_debug("PC:%06x SR:%04x SP:%04x\n",s68000_pc,s68000_sr,s68000_areg[7]);
 #ifdef RAINE_DEBUG
-	 if (s68000context.pc & 0xff000000) {
+	 if (s68000_pc & 0xff000000) {
 	   printf("pc out of bounds for 68k%d\n",cpu_id & 15);
 	 }
 #endif
@@ -303,7 +311,11 @@ void cpu_reset(UINT32 cpu_id)
 #if HAVE_68000
       case CPU_68K_0:
       case CPU_68K_1:
-         s68000reset();
+#if USE_MUSASHI == 2
+	  m68k_pulse_reset();
+#else
+	  s68000reset();
+#endif
       break;
 #endif
 #if HAVE_Z80
@@ -345,7 +357,7 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 #if HAVE_68000
    case CPU_68K_0:
    case CPU_68K_1:
-     ret = s68000context.pc;
+     ret = s68000_pc;
      break;
 #endif
 #if HAVE_Z80
