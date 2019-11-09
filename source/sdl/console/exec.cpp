@@ -18,7 +18,9 @@ typedef struct {
 
 static int used_break;
 tbreak breakp[MAX_BREAK];
+#if USE_MUSASHI < 2
 static void (*resethandler)();
+#endif
 
 static void exec_break() {
   int n;
@@ -33,13 +35,30 @@ static void exec_break() {
        * later */
     }
   }
+#if USE_MUSASHI < 2
   if (resethandler && resethandler != quiet_reset_handler) {
     printf("calling prev reset handler\n");
     (*resethandler)();
   }
+#endif
+}
+
+void (*old_f3)(UINT8 data);
+
+void my_illg(UINT8 data)
+{
+    exec_break();
+    if (data == 3)
+	m68ki_cpu.pc -= 2;
+    if (old_f3)
+	(*old_f3)(data);
 }
 
 void do_break(int argc, char **argv) {
+    if (old_f3 != F3SystemEEPROMAccess || !old_f3) {
+	old_f3 = F3SystemEEPROMAccess;
+	F3SystemEEPROMAccess=&my_illg;
+    }
     int cpu_id = get_cpu_id();
     if (cpu_id >> 4 != 1)
 	throw "breakpoints only for 68000 for now";
@@ -89,17 +108,19 @@ void do_break(int argc, char **argv) {
     }
     breakp[used_break].old = ReadWord(&ptr[adr]);
     breakp[used_break].cond = NULL;
-    WriteWord(&ptr[adr],0x4e70); // reset
-    breakp[used_break++].adr = adr;
 #if USE_MUSASHI == 2
-    cons->print("breakpoint not yet supported with musashi (reset handler)");
+    WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
 #else
+    WriteWord(&ptr[adr],0x4e70); // reset
+#endif
+    breakp[used_break++].adr = adr;
+#if USE_MUSASHI < 2
     if (s68000context.resethandler != &exec_break) {
       resethandler = s68000context.resethandler;
       M68000_context[0].resethandler = s68000context.resethandler = &exec_break;
     }
-    if (cons) cons->print("breakpoint #%d inserted at %x",used_break-1,adr);
 #endif
+    if (cons) cons->print("breakpoint #%d inserted at %x",used_break-1,adr);
   }
 }
 
