@@ -671,6 +671,13 @@ void AddInitMemory(void)
     m68ki_cpu.read16 = m68k_read16;
     m68ki_cpu.read32 = m68k_read32;
 
+    m68ki_cpu.read_im16 = m68k_read16;
+    m68ki_cpu.read_im32 = m68k_read32;
+
+    m68ki_cpu.read_pc8 = m68k_read8;
+    m68ki_cpu.read_pc16 = m68k_read16;
+    m68ki_cpu.read_pc32 = m68k_read32;
+
     m68ki_cpu.write8 = m68k_write8;
     m68ki_cpu.write16 = m68k_write16;
     m68ki_cpu.write32 = m68k_write32;
@@ -800,6 +807,13 @@ void AddInitMemoryMC68000B(void)
     m68ki_cpu.read8 = m68k_read8;
     m68ki_cpu.read16 = m68k_read16;
     m68ki_cpu.read32 = m68k_read32;
+
+    m68ki_cpu.read_im16 = m68k_read16;
+    m68ki_cpu.read_im32 = m68k_read32;
+
+    m68ki_cpu.read_pc8 = m68k_read8;
+    m68ki_cpu.read_pc16 = m68k_read16;
+    m68ki_cpu.read_pc32 = m68k_read32;
 
     m68ki_cpu.write8 = m68k_write8;
     m68ki_cpu.write16 = m68k_write16;

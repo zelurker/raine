@@ -49,7 +49,7 @@ void my_illg(UINT8 data)
 {
     exec_break();
     if (data == 3)
-	m68ki_cpu.pc -= 2;
+	s68000_pc -= 2;
     if (old_f3)
 	(*old_f3)(data);
 }

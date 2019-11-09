@@ -2413,10 +2413,23 @@ void cps2_find_last_sprite(void)    /* Find the offset of last sprite */
 }
 
 static UINT16 *xor;
+static int size_user1,size_code;
 
+#if USE_MUSASHI == 2
+static uint32 cps2_read16(uint32 adr) {
+    if (adr < size_code)
+	return ReadWord(ROM+adr);
+    return (*m68ki_cpu.read16)(adr);
+}
+
+static uint32 cps2_read32(uint32 adr) {
+    if (adr < size_code)
+	return ReadLongSc(ROM+adr);
+    return (*m68ki_cpu.read32)(adr);
+}
+#endif
 
 void load_cps2() {
-  int  size_code, size_user1;
   // UINT16 *rom = load_region[REGION_ROM1];
 /*   int size = get_region_size(REGION_USER1)/2,i,size_code; */
   size_code = get_region_size(REGION_ROM1);
@@ -2495,11 +2508,11 @@ void load_cps2() {
   cps2_output = RAM;
 
   if (xor) {
-    // normal cps2 behaviour
-  AddReadBW(0x000000, size_user1-1, NULL, (UINT8*)xor+0x000000);
-  if (size_code > size_user1) {
-    AddReadBW(size_user1, size_code-1, NULL, &ROM[size_user1]);
-  }
+      // normal cps2 behaviour
+      AddReadBW(0x000000, size_user1-1, NULL, (UINT8*)xor+0x000000);
+      if (size_code > size_user1) {
+	  AddReadBW(size_user1, size_code-1, NULL, &ROM[size_user1]);
+      }
   } else {
     // phoenix behaviour : no crypted rom !
 /*
@@ -2610,6 +2623,16 @@ void load_cps2() {
 
   Z80SetDataBank(0,Z80ROM);
   finish_conf_cps1();
+#if USE_MUSASHI == 2
+  /* The immediate reads are what reads code -> from ROM
+   * All the other reads read from xor
+   * Requires M68K_SEPARATE_READS */
+  if (xor) {
+      m68ki_cpu.read_im16 = cps2_read16;
+      m68ki_cpu.read_im32 = cps2_read32;
+      m68k_get_context(&M68000_context[0]); // because of stop_cpu_main !
+  }
+#endif
 
   // WriteWord(&ROM[0xfa2],0x60fe);
 }
