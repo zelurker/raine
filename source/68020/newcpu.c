@@ -16,6 +16,7 @@
 #ifdef USE_MUSASHI
 #include "Musashi/m68kcpu.h"
 
+m68ki_cpu_core m68020_context;
 UINT8 *R24[0x100], *W24[0x100];
 
 UINT32 m68k_read_memory_8(UINT32 adr) {
@@ -224,6 +225,7 @@ void init_m68k(void)
 #ifdef USE_MUSASHI
     m68k_init();
     m68k_set_cpu_type(M68K_CPU_TYPE_68020);
+    m68k_get_context(&m68020_context);
     // Avoid the pointers at the end of the struct... they should already be initialized
     AddSaveData(SAVE_M68020_0, (UINT8 *) &m68ki_cpu, (UINT8*)&m68ki_cpu.cyc_instruction - ((UINT8*)&m68ki_cpu));
 #else

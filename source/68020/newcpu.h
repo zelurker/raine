@@ -56,6 +56,10 @@ extern struct regstruct
 #endif
 
 #ifdef USE_MUSASHI
+#include "Musashi/m68kcpu.h"
+
+extern m68ki_cpu_core m68020_context;
+
 #define m68k_dreg(r,num) REG_D[num]
 #define m68k_areg(r,num) REG_A[num]
 #else

@@ -30,6 +30,22 @@ void switch_cpu(UINT32 cpu_id)
 
    new_type = cpu_id >> 4;
    new_num  = cpu_id & 0x0F;
+#if USE_MUSASHI == 2
+   /* Musashi handles the 68020 & the 68000 with only 1 context, so I must
+    * switch between contexts here... */
+   if (new_type == (CPU_68K_0 >> 4) && m68ki_cpu.cpu_type == CPU_TYPE_020) {
+       // Only 68020 tested, will have to change if using 68EC020.
+       m68k_get_context(&m68020_context);
+       m68k_set_context(&M68000_context[new_num]);
+       current_cpu_num[new_type] = new_num;
+       return;
+   } else if (new_type == (CPU_M68020_0 >> 4) && m68ki_cpu.cpu_type != CPU_TYPE_020) {
+       m68k_get_context(&M68000_context[new_num]);
+       m68k_set_context(&m68020_context);
+       current_cpu_num[new_type] = new_num;
+       return;
+   }
+#endif
 
    if( current_cpu_num[new_type] != new_num ){
 
@@ -61,8 +77,8 @@ void switch_cpu(UINT32 cpu_id)
          break;
 #endif
 #ifndef NO020
-         case CPU_M68020_0:
-         break;
+	 case CPU_M68020_0:
+	 break;
 #endif
 #ifdef HAVE_6502
          case CPU_M6502_0:
@@ -104,7 +120,7 @@ void switch_cpu(UINT32 cpu_id)
 #endif
 #ifndef NO020
          case CPU_M68020_0:
-         break;
+	 break;
 #endif
 
 #ifdef HAVE_6502
