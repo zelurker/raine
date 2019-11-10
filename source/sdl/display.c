@@ -679,7 +679,7 @@ int switch_res(const VIDEO_INFO *vid)
 {
    int w,h;
 
-   if (!display_cfg.fullscreen && display_cfg.keep_ratio) {
+   if (!display_cfg.fullscreen && display_cfg.keep_ratio && display_cfg.video_mode == 2) {
        // we just want to honor keep_ratio here, nothing more
        int x = display_cfg.screen_x, y = display_cfg.screen_y;
        resize(0);

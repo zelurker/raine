@@ -251,7 +251,7 @@ static void do_load_game(void)
        bestbpp = 0;
      }
 
-     if (bestw && besth) {
+     if (bestw && besth && display_cfg.video_mode == 2) {
        //display_cfg.screen_type = bestmode;
        display_cfg.screen_x = bestw;
        display_cfg.screen_y = besth;
