@@ -18,12 +18,6 @@ struct EEPROM_interface
 	int enable_multi_read;/* set to 1 to enable multiple values to be read from one read command */
 };
 
-#ifndef CLEAR_LINE
-#define CLEAR_LINE		0		/* clear (a fired, held or pulsed) line */
-#define ASSERT_LINE     1       /* assert an interrupt immediately */
-#define HOLD_LINE       2       /* hold interrupt line until enable is true */
-#define PULSE_LINE		3		/* pulse interrupt line for one instruction */
-#endif
 void EEPROM_init(struct EEPROM_interface *interface);
 
 void EEPROM_write_bit(int bit);

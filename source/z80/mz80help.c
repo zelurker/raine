@@ -32,7 +32,14 @@ puser is relative to 0x0000
 #include "cpumain.h" // Z80_0
 #include "version.h" // to force a recompilation if RAINE_DEBUG is defined
 
+#ifndef MAME_Z80
 struct mz80context	Z80_context[MAX_Z80];
+INT32 z80_offdata;
+#else
+Z80_Regs Z80_context[MAX_Z80];
+UINT32 dwElapsedTicks;
+INT32 z80_offdata;
+#endif
 struct MemoryReadByte	Z80_memory_rb[MAX_Z80][MAX_Z80_DATA];
 struct MemoryWriteByte	Z80_memory_wb[MAX_Z80][MAX_Z80_DATA];
 struct z80PortRead	Z80_port_rb[MAX_Z80][MAX_Z80_PORT];
@@ -61,8 +68,137 @@ typedef struct Z80_DATA			// Information about 1 chip
 } Z80_DATA;
 
 struct Z80_DATA z80_data[MAX_Z80];
+#ifdef MAME_Z80
+typedef UINT32(*read_func)(UINT32);
+typedef void(*write_func)(UINT32,UINT32);
+
+UINT8 z80_read8(UINT32 adr) {
+    int cpu = current_cpu_num[CPU_Z80_0 >> 4];
+    int max = memory_count_rb[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (Z80_memory_rb[cpu][n].lowAddr <= adr &&
+		adr <= Z80_memory_rb[cpu][n].highAddr) {
+	    if (Z80_memory_rb[cpu][n].memoryCall)
+		return ((read_func)(Z80_memory_rb[cpu][n].memoryCall))(adr);
+	    else
+		return ((UINT8*)Z80_memory_rb[cpu][n].pUserArea)[adr];
+	}
+    }
+    print_debug("z80_read8 out of bounds\n");
+    return 0xff;
+}
+
+UINT16 z80_read16(UINT32 adr) {
+    int cpu = current_cpu_num[CPU_Z80_0 >> 4];
+    int max = memory_count_rb[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (Z80_memory_rb[cpu][n].lowAddr <= adr &&
+		adr <= Z80_memory_rb[cpu][n].highAddr) {
+	    if (Z80_memory_rb[cpu][n].memoryCall)
+		return ((read_func)(Z80_memory_rb[cpu][n].memoryCall))(adr) |
+		    (((read_func)(Z80_memory_rb[cpu][n].memoryCall))(adr+1)<<8);
+	    else
+		return ReadWord((UINT8*)Z80_memory_rb[cpu][n].pUserArea+adr);
+	}
+    }
+    print_debug("z80_read16 out of bounds\n");
+    return 0xff;
+}
+
+UINT8 z80_readop(UINT32 adr) {
+    return Z80.z80Base[adr];
+}
+
+UINT8 z80_readop_arg(UINT32 adr) {
+    return Z80.z80Base[adr+z80_offdata];
+}
+
+UINT16 z80_readop_arg16(UINT32 adr) {
+    return ReadWord(&Z80.z80Base[adr+z80_offdata]);
+}
+
+void z80_write8(UINT32 adr,UINT8 data) {
+    int cpu = current_cpu_num[CPU_Z80_0 >> 4];
+    int max = memory_count_wb[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (Z80_memory_wb[cpu][n].lowAddr <= adr &&
+		adr <= Z80_memory_wb[cpu][n].highAddr) {
+	    if (Z80_memory_wb[cpu][n].memoryCall) {
+		((write_func)(Z80_memory_wb[cpu][n].memoryCall))(adr,data);
+		return;
+	    } else {
+		((UINT8*)Z80_memory_wb[cpu][n].pUserArea)[adr] = data;
+		return;
+	    }
+	}
+    }
+    print_debug("z80_write8 out of bounds\n");
+}
+
+void z80_write16(UINT32 adr,UINT16 data) {
+    int cpu = current_cpu_num[CPU_Z80_0 >> 4];
+    int max = memory_count_wb[cpu];
+    int n;
+    for (n=0; n<max; n++) {
+	if (Z80_memory_wb[cpu][n].lowAddr <= adr &&
+		adr <= Z80_memory_wb[cpu][n].highAddr) {
+	    if (Z80_memory_wb[cpu][n].memoryCall) {
+		((write_func)(Z80_memory_wb[cpu][n].memoryCall))(adr,data & 0xff);
+		((write_func)(Z80_memory_wb[cpu][n].memoryCall))(adr+1,data>>8);
+		return;
+	    } else {
+		WriteWord((UINT8*)Z80_memory_wb[cpu][n].pUserArea+adr, data);
+		return;
+	    }
+	}
+    }
+    print_debug("z80_write8 out of bounds\n");
+}
+
+UINT8 z80_read_port(UINT32 adr) {
+    int cpu = current_cpu_num[CPU_Z80_0 >> 4];
+    int max = port_count_rb[cpu];
+    int n;
+    if (!Z80Has16bitsPorts) adr &= 0xff;
+    for (n=0; n<max; n++) {
+	if (Z80_port_rb[cpu][n].lowIoAddr <= adr &&
+		adr <= Z80_port_rb[cpu][n].highIoAddr) {
+	    if (Z80_port_rb[cpu][n].IOCall)
+		return ((read_func)(Z80_port_rb[cpu][n].IOCall))(adr);
+	    else
+		return ((UINT8*)Z80_port_rb[cpu][n].pUserArea)[adr];
+	}
+    }
+    print_debug("z80_read_port out of bounds\n");
+    return 0xff;
+}
+
+void z80_write_port(UINT32 adr,UINT8 data) {
+    int cpu = current_cpu_num[CPU_Z80_0 >> 4];
+    int max = port_count_wb[cpu];
+    int n;
+    if (!Z80Has16bitsPorts) adr &= 0xff;
+    for (n=0; n<max; n++) {
+	if (Z80_port_wb[cpu][n].lowIoAddr <= adr &&
+		adr <= Z80_port_wb[cpu][n].highIoAddr) {
+	    if (Z80_port_wb[cpu][n].IOCall) {
+		((write_func)(Z80_port_wb[cpu][n].IOCall))(adr,data);
+		return;
+	    } else {
+		((UINT8*)Z80_port_wb[cpu][n].pUserArea)[adr] = data;
+		return;
+	    }
+	}
+    }
+    print_debug("z80_write_port out of bounds\n");
+}
+#endif
 
 #ifdef RAINE_DEBUG
+// For allegro, vastly outdated for the other builds
 int add_z80_debug_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2) {
   if (memory_count_rb[cpu] < MAX_Z80_DATA) {
     memmove(&Z80_memory_rb[cpu][1],&Z80_memory_rb[cpu][0],
@@ -207,12 +343,17 @@ void Z80SetBank(int cpu,UINT8 *src)
 {
    // Update base pointer (if called during emulation)
 
+#ifndef MAME_Z80
    z80Base = src;
    // Update base pointer (if called outside emulation)
 
    Z80_context[cpu].z80Base = src;
 
    z80_data[cpu].base_ram = Z80_context[cpu].z80Base;
+#else
+   print_debug("Z80SetBank %d = %x\n",cpu,src);
+   Z80.z80Base = Z80_context[cpu].z80Base = src;
+#endif
 
    Z80SetDataBank(cpu,src);
 }
@@ -226,9 +367,13 @@ void Z80SetBank(int cpu,UINT8 *src)
 void AddZ80AROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 {
    Z80_context[0].z80Base = d0;
+#ifndef MAME_Z80
    z80_data[0].base_ram = Z80_context[0].z80Base;
    Z80_context[0].z80intAddr = d1;
    Z80_context[0].z80nmiAddr = d2;
+#else
+   z80_init(NULL);
+#endif
 }
 
 void AddZ80AReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -251,15 +396,26 @@ void AddZ80AWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
    add_mz80_port_region_wb(0, d0, d1, d2, d3);
 }
 
+#ifdef MAME_Z80
+static void Z80A_save_update() {
+    Z80.dwElapsedTicks = Z80_context[0].dwElapsedTicks = dwElapsedTicks;
+}
+#endif
+
 void AddZ80AInit(void)
 {
+   AddLoadCallback(Z80A_load_update);
+#ifdef MAME_Z80
+   AddSaveCallback(Z80A_save_update);
+   AddSaveData(SAVE_Z80_0, (UINT8 *) &Z80_context[0], (UINT8*)&Z80_context[0].z80Base - (UINT8*)&Z80_context[0]);
+#else
    Z80_context[0].z80MemRead  = Z80_memory_rb[0];
    Z80_context[0].z80MemWrite = Z80_memory_wb[0];
    Z80_context[0].z80IoRead   = Z80_port_rb[0];
    Z80_context[0].z80IoWrite  = Z80_port_wb[0];
 
-   AddLoadCallback(Z80A_load_update);
    AddSaveData(SAVE_Z80_0, (UINT8 *) &Z80_context[0], sizeof(Z80_context[0]));
+#endif
 
    MZ80Engine=1;
 }
@@ -273,9 +429,13 @@ void AddZ80AInit(void)
 void AddZ80BROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 {
    Z80_context[1].z80Base=d0;
+#ifndef MAME_Z80
    z80_data[1].base_ram = Z80_context[1].z80Base;
    Z80_context[1].z80intAddr=d1;
    Z80_context[1].z80nmiAddr=d2;
+#else
+   z80_init(NULL);
+#endif
 }
 
 void AddZ80BReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -300,6 +460,7 @@ void AddZ80BWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
 
 void AddZ80BInit(void)
 {
+#ifndef MAME_Z80
    Z80_context[1].z80MemRead  = Z80_memory_rb[1];
    Z80_context[1].z80MemWrite = Z80_memory_wb[1];
    Z80_context[1].z80IoRead   = Z80_port_rb[1];
@@ -307,6 +468,10 @@ void AddZ80BInit(void)
 
    AddLoadCallback(Z80B_load_update);
    AddSaveData(SAVE_Z80_1, (UINT8 *) &Z80_context[1], sizeof(Z80_context[1]));
+#else
+   // With MAME_Z80 the only pointer in Z80_Regs is if we use DAISY, which should never happen
+   AddSaveData(SAVE_Z80_1, (UINT8 *) &Z80_context[1], (UINT8*)&Z80_context[1].z80Base - (UINT8*)&Z80_context[1]);
+#endif
 
    MZ80Engine=2;
 }
@@ -320,9 +485,13 @@ void AddZ80BInit(void)
 void AddZ80CROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 {
    Z80_context[2].z80Base=d0;
+#ifndef MAME_Z80
    z80_data[2].base_ram = Z80_context[2].z80Base;
    Z80_context[2].z80intAddr=d1;
    Z80_context[2].z80nmiAddr=d2;
+#else
+   z80_init(NULL);
+#endif
 }
 
 void AddZ80CReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -347,6 +516,7 @@ void AddZ80CWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
 
 void AddZ80CInit(void)
 {
+#ifndef MAME_Z80
    Z80_context[2].z80MemRead  = Z80_memory_rb[2];
    Z80_context[2].z80MemWrite = Z80_memory_wb[2];
    Z80_context[2].z80IoRead   = Z80_port_rb[2];
@@ -354,6 +524,10 @@ void AddZ80CInit(void)
 
    AddLoadCallback(Z80C_load_update);
    AddSaveData(SAVE_Z80_2, (UINT8 *) &Z80_context[2], sizeof(Z80_context[2]));
+#else
+   // With MAME_Z80 the only pointer in Z80_Regs is if we use DAISY, which should never happen
+   AddSaveData(SAVE_Z80_2, (UINT8 *) &Z80_context[2], (UINT8*)&Z80_context[2].z80Base - (UINT8*)&Z80_context[2]);
+#endif
 
    MZ80Engine=3;
 }
@@ -367,9 +541,13 @@ void AddZ80CInit(void)
 void AddZ80DROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 {
    Z80_context[3].z80Base=d0;
+#ifndef MAME_Z80
    z80_data[3].base_ram = Z80_context[3].z80Base;
    Z80_context[3].z80intAddr=d1;
    Z80_context[3].z80nmiAddr=d2;
+#else
+   z80_init(NULL);
+#endif
 }
 
 void AddZ80DReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -394,6 +572,7 @@ void AddZ80DWritePort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
 
 void AddZ80DInit(void)
 {
+#ifndef MAME_Z80
    Z80_context[3].z80MemRead  = Z80_memory_rb[3];
    Z80_context[3].z80MemWrite = Z80_memory_wb[3];
    Z80_context[3].z80IoRead   = Z80_port_rb[3];
@@ -401,10 +580,15 @@ void AddZ80DInit(void)
 
    AddLoadCallback(Z80D_load_update);
    AddSaveData(SAVE_Z80_3, (UINT8 *) &Z80_context[3], sizeof(Z80_context[3]));
+#else
+   // With MAME_Z80 the only pointer in Z80_Regs is if we use DAISY, which should never happen
+   AddSaveData(SAVE_Z80_3, (UINT8 *) &Z80_context[3], (UINT8*)&Z80_context[3].z80Base - (UINT8*)&Z80_context[3]);
+#endif
 
    MZ80Engine=4;
 }
 
+#ifndef MAME_Z80
 static void convert_savegame_type1(int cpu) {
   if (Z80_context[cpu].z80intPending) // interruptstate in 2.7
     Z80_context[cpu].z80iff = 3;
@@ -412,10 +596,14 @@ static void convert_savegame_type1(int cpu) {
     Z80_context[cpu].z80iff = 0; // ints disabled
   Z80_context[cpu].z80intPending = 0; // No sense with mz80 2.7 !
 }
+#endif
 
 static void z80_load_update(int cpu) {
   print_debug("Z80%c Load Callback()\n",65+cpu);
 
+#ifdef MAME_Z80
+  dwElapsedTicks = Z80_context[cpu].dwElapsedTicks;
+#else
   if (savegame_version == SAVE_FILE_TYPE_1)
     convert_savegame_type1(cpu);
   Z80_context[cpu].z80MemRead  = Z80_memory_rb[cpu];
@@ -423,6 +611,7 @@ static void z80_load_update(int cpu) {
   Z80_context[cpu].z80IoRead   = Z80_port_rb[cpu];
   Z80_context[cpu].z80IoWrite  = Z80_port_wb[cpu];
   Z80_context[cpu].z80Base     = z80_data[cpu].base_ram;
+#endif
 }
 
 void Z80A_load_update(void)
@@ -465,8 +654,10 @@ void ClearZ80List(void)
       z80_data[ta].read_bank.count = 0;
       z80_data[ta].write_bank.count = 0;
 
-      Z80_context[0].z80Base = NULL;
-      z80_data[0].base_ram = NULL;
+      Z80_context[ta].z80Base = NULL;
+#ifndef MAME_Z80
+      z80_data[ta].base_ram = NULL;
+#endif
    }
    StopAddress = StopAddressB = StopAddressC = StopAddressD = 0;
 }

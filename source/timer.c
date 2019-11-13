@@ -129,7 +129,7 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
   called_adjust = 1;
   if (free_timer < MAX_TIMERS) {
 #if VERBOSE
-      printf("timer_set %g cycles %d fps %d z80_frame %d cyclesremaining %d id %d param %d\n",duration,remaining,fps,z80_frame,cyclesRemaining,timer_id,param);
+      printf("timer_set %g cycles %d fps %g z80_frame %d cyclesremaining %d id %d param %d\n",duration,remaining,fps,z80_frame,cyclesRemaining,timer_id,param);
 #endif
     timer[free_timer].handler = callback;
     timer[free_timer].param = param;

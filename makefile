@@ -48,6 +48,9 @@ HAS_CONSOLE = 1
 # compile bezels (artwork) support ? (ignored if building neocd)
 # USE_BEZELS=1
 
+# use mame z80 ?
+MAME_Z80 = 1
+
 # use cz80 instead of the usual heavily modyfied asm-only mz80 ?
 # CZ80 = 1
 
@@ -504,6 +507,10 @@ OBJDIRS += $(OBJDIR)/cz80
 else
 OBJDIRS += $(OBJDIR)/z80
 endif
+ifdef MAME_Z80
+OBJDIRS += $(OBJDIR)/mame/z80
+DEFINE += -DMAME_Z80
+endif
 
 ifdef USE_MUSASHI
 	OBJDIRS += $(OBJDIR)/Musashi
@@ -553,7 +560,14 @@ else
 endif
 endif
 
-DEFINE += -DMUSASHI_CNF=\"m68kconf-raine.h\"
+ifdef USE_MUSASHI
+DEFINE += -DMUSASHI_CNF=\"m68kconf-raine.h\" -DUSE_MUSASHI=$(USE_MUSASHI)
+endif
+
+# define LSB_FIRST if we are a little-endian target
+ifndef BIGENDIAN
+DEFINE += -DLSB_FIRST
+endif
 
 ifdef RAINE_DEBUG
 CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
@@ -629,9 +643,6 @@ CFLAGS += -DNO_ASM
 CFLAGS_MCU += -DNO_ASM
 endif
 
-ifdef USE_MUSASHI
-	CFLAGS += -DUSE_MUSASHI=$(USE_MUSASHI)
-endif
 
 ifdef CZ80
 CFLAGS += -DHAS_CZ80
@@ -726,8 +737,12 @@ ifdef CZ80
 MZ80= $(OBJDIR)/cz80/cz80.o \
       $(OBJDIR)/cz80/mz80help.o
 else
+ifdef MAME_Z80
+MZ80=$(OBJDIR)/z80/mz80help.o $(OBJDIR)/mame/z80/z80.o
+else
 MZ80=	$(OBJDIR)/z80/mz80.o \
 	$(OBJDIR)/z80/mz80help.o
+endif
 endif
 
 # network core

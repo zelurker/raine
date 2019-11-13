@@ -808,17 +808,21 @@ static menu_item_t about_items[] =
   { " ", NULL, NULL, },
   { _("CPU emulators:"), NULL, NULL },
 #if USE_MUSASHI == 2
-  {    _("68000 : Musashi v3.3x by Karl Stenerud") },
+  {    _("68000,68020 : Musashi v3.3x by Karl Stenerud") },
 #else
-  {    _("Starscream 0.26r4 by Neill Corlett"), },
-#endif
-  {    _("MZ80 3.4raine3 by Neill Bradley") },
-  {    _("M6502 1.6raine2 by Neill Bradley") },
-#ifdef USE_MUSASHI
+#ifdef MUSASHI
   { _("68020: Musashi v3.3x by Karl Stenerud") },
 #else
   {    _("UAE 68020 Emulator : old hacked asm version from UAE") },
 #endif
+  {    _("Starscream 0.26r4 by Neill Corlett"), },
+#endif
+#ifdef MAME_Z80
+  {    _("Z80: old mame 'portable' z80") },
+#else
+  {    _("MZ80 3.4raine3 by Neill Bradley") },
+#endif
+  {    _("M6502 1.6raine2 by Neill Bradley") },
   {    _("MCU 68705: statically recompiled code by Richard Mitton") },
   { _("History..."), &about_game },
   { NULL, NULL, NULL },

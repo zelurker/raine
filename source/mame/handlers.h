@@ -62,10 +62,39 @@ typedef read32_handler	port_read32_handler;
 typedef write32_handler	port_write32_handler;
 
 // cpuintf
-#define CLEAR_LINE		0		/* clear (a fired, held or pulsed) line */
-#define ASSERT_LINE     1       /* assert an interrupt immediately */
-#define HOLD_LINE       2       /* hold interrupt line until enable is true */
-#define PULSE_LINE		3		/* pulse interrupt line for one instruction */
+enum
+{
+	/* line states */
+	CLEAR_LINE = 0,				/* clear (a fired, held or pulsed) line */
+	ASSERT_LINE,				/* assert an interrupt immediately */
+	HOLD_LINE,					/* hold interrupt line until acknowledged */
+	PULSE_LINE,					/* pulse interrupt line for one instruction */
+
+	/* internal flags (not for use by drivers!) */
+	INTERNAL_CLEAR_LINE = 100 + CLEAR_LINE,
+	INTERNAL_ASSERT_LINE = 100 + ASSERT_LINE,
+
+	/* input lines */
+	MAX_INPUT_LINES = 32+3,
+	INPUT_LINE_IRQ0 = 0,
+	INPUT_LINE_IRQ1 = 1,
+	INPUT_LINE_IRQ2 = 2,
+	INPUT_LINE_IRQ3 = 3,
+	INPUT_LINE_IRQ4 = 4,
+	INPUT_LINE_IRQ5 = 5,
+	INPUT_LINE_IRQ6 = 6,
+	INPUT_LINE_IRQ7 = 7,
+	INPUT_LINE_IRQ8 = 8,
+	INPUT_LINE_IRQ9 = 9,
+	INPUT_LINE_NMI = MAX_INPUT_LINES - 3,
+
+	/* special input lines that are implemented in the core */
+	INPUT_LINE_RESET = MAX_INPUT_LINES - 2,
+	INPUT_LINE_HALT = MAX_INPUT_LINES - 1,
+
+	/* output lines */
+	MAX_OUTPUT_LINES = 32
+};
 
 /***************************************************************************
 	Core memory read/write/opbase handler types.

@@ -1045,16 +1045,27 @@ static void load_bublbobl(void)
    // Skip Idle Z80
    // -------------
 
+#ifndef MAME_Z80
+   // This "hide the speed hack" thing is weird
+   // apparently there is no function which checks the code
+   // it's only read opcode + read argument, which should normally be read from the z80base
+   // that's how it works in mame_z80 at least
+   // maybe I should double check this one of these days
+   // meanwhile this speed hack can be safety disabled, you really don't see a noticeable speed difference,
+   // even on a debug build !
    HACK[2][0] = ROM_SND[0x0178];
    HACK[2][1] = ROM_SND[0x0179];
    ROM_SND[0x0178]=0xD3;  // OUT (AAh), A
    ROM_SND[0x0179]=0xAA;  //
+#endif
 
    SetStopZ80CMode2(0x016D);
 
    AddZ80CROMBase(ROM_SND, 0x38, 0x66);
 
+#ifndef MAME_Z80
    AddZ80CReadByte(0x0178, 0x0179, NULL, HACK[2]); // hide speed hack
+#endif
    AddZ80CReadByte(0x0000, 0x7FFF, NULL,              ROM_SND);      // ROM
    AddZ80CReadByte(0x8000, 0x8FFF, NULL,              RAM_SND);      // SOUND RAM
    AddZ80CReadByte(0x9000, 0x9001, BB_YM2203Read,     NULL);         // YM2203

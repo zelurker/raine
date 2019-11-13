@@ -1290,7 +1290,6 @@ static void finish_loading() {
   // during loading. I guess it's some kind of ack... !
   WriteByte(&RAM[0x10F6D9 ^ 1], 0x01);
   animations_enabled = 0; // animations disabled, must be explicitely enabled
-  goto_debuger = 1;
   // by the game...
 }
 

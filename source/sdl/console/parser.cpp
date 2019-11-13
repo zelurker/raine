@@ -73,8 +73,13 @@ void get_regs(int cpu) {
 	ze = (Z80_context[num].z80de&0xff);
 	zh = (Z80_context[num].z80hl>>8);
 	zl = (Z80_context[num].z80hl&0xff);
+#ifdef MAME_Z80
+	pc = Z80_context[num].pc.d;
+	iff = Z80_context[num].iff1|(Z80_context[num].iff2<<1);
+#else
 	pc = Z80_context[num].z80pc;
 	iff = Z80_context[num].z80iff;
+#endif
 	break;
 #ifndef NO020
     case 3: // 68020
@@ -119,8 +124,14 @@ void set_regs(int cpu) {
 	Z80_context[num].z80bc = (int(zb)<<8)|int(zc);
 	Z80_context[num].z80de = (int(zd)<<8)|int(ze);
 	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
+#ifdef MAME_Z80
+	Z80_context[num].pc.d = pc;
+	Z80_context[num].iff1 = ((int)iff) & 1;
+	Z80_context[num].iff2 = ((int)iff) >> 1;
+#else
 	Z80_context[num].z80pc = pc;
 	Z80_context[num].z80iff = iff;
+#endif
 	break;
 #ifndef NO020
     case 3:

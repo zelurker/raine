@@ -548,8 +548,13 @@ void do_regs(int argc, char **argv) {
 	      Z80_context[num].z80hl);
       cons->print("\E[36mSP:\E[0m%04x \E[36mPC:\E[0m%04x \E[36mIFF:\E[0m%d \E[36mIX:%04x \E[36mIY:%04x",
 	      Z80_context[num].z80sp,
+#ifdef MAME_Z80
+	      Z80_context[num].pc.d,
+	      Z80_context[num].iff1|(Z80_context[num].iff2<<1),
+#else
 	      Z80_context[num].z80pc,
 	      Z80_context[num].z80iff,
+#endif
 	      Z80_context[num].z80ix,
 	      Z80_context[num].z80iy);
       break;

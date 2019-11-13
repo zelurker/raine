@@ -97,9 +97,7 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end);
 UINT8 *get_userdata(UINT32 cpu, UINT32 adr);
 int bcd(int value);
 
-#ifdef RAINE_DEBUG
 extern UINT32 current_cpu_num[0x10];
-#endif
 
 #ifdef __cplusplus
 }

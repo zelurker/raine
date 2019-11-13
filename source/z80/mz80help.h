@@ -17,7 +17,11 @@ extern "C" {
 
 extern UINT8 *ROM_BANK[MAX_Z80];
 
+#ifndef MAME_Z80
 extern struct mz80context	Z80_context[MAX_Z80];
+#else
+extern Z80_Regs Z80_context[MAX_Z80];
+#endif
 extern struct MemoryReadByte	Z80_memory_rb[MAX_Z80][MAX_Z80_DATA];
 extern struct MemoryWriteByte	Z80_memory_wb[MAX_Z80][MAX_Z80_DATA];
 extern struct z80PortRead	Z80_port_rb[MAX_Z80][MAX_Z80_PORT];

@@ -90,6 +90,10 @@ struct z80PortRead
 	void *pUserArea;
 };
 
+extern UINT8 ExitOnEI,Z80Has16bitsPorts;;
+extern UINT32 dwElapsedTicks;
+
+#ifndef MAME_Z80
 struct mz80context
 {
 	UINT8 *z80Base;
@@ -129,8 +133,6 @@ extern UINT32 z80intPending; // For debuging
 extern UINT32 cyclesRemaining; // for the timers
 extern UINT32 _z80iff;
 
-extern UINT32 dwElapsedTicks;
-extern UINT8 ExitOnEI,Z80Has16bitsPorts;;
 extern UINT8 *z80Base;		// mz80Base;
 extern INT32 z80_offdata;
 extern UINT32 mz80exec(unsigned long int);
@@ -147,6 +149,39 @@ extern UINT16 z80nmiAddr;
 extern UINT16 z80pc;
 
 typedef struct mz80context CONTEXTMZ80;
+#else
+#include "mame/z80/z80.h"
+
+extern INT32 z80_offdata;
+#define mz80ReleaseTimeslice z80_release_time_slice
+#define z80intPending  Z80.irq_state
+#define mz80GetContext(a) z80_get_context(a)
+#define mz80SetContext(a) z80_set_context(a)
+#define mz80int(vector)                                  \
+{                                                        \
+    z80_set_irq_line(vector,INPUT_LINE_IRQ0,HOLD_LINE);  \
+    z80_execute(100);                             \
+    z80_set_irq_line(vector,INPUT_LINE_IRQ0,CLEAR_LINE); \
+}
+#define cyclesRemaining z80_ICount
+#define _z80iff (Z80.iff1|(Z80.iff2<<1))
+#define mz80nmi()                                  \
+{                                                  \
+    z80_set_irq_line(Z80.irq_vector,INPUT_LINE_NMI,HOLD_LINE);  \
+    z80_execute(10);                              \
+    z80_set_irq_line(Z80.irq_vector,INPUT_LINE_NMI,CLEAR_LINE); \
+}
+#define mz80exec(cycles) z80_execute(cycles)
+#define mz80reset() z80_reset()
+#define z80af af.d
+#define z80bc bc.d
+#define z80de de.d
+#define z80hl hl.d
+#define z80pc Z80.pc.d
+#define z80sp sp.d
+#define z80ix ix.d
+#define z80iy iy.d
+#endif
 
 #ifdef __cplusplus
 };
