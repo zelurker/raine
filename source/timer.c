@@ -195,7 +195,6 @@ void triger_timers() {
       printf("timer %d elapsed %d diff %d\n",n,elapsed,elapsed - timer[n].cycles);
       count++;
 #endif
-#ifndef HAS_CZ80
       // if here, not while. silentd messes its timers at start and recovers
       // after that, if there is a while here, it's an infinite loop
       // (the logic of the driver might be wrong, but it works this way anyway)
@@ -217,7 +216,6 @@ void triger_timers() {
 	dwElapsedTicks = elapsed; // This frame must not count for the timers
 	cyclesRemaining=0;
       }
-#endif
       called_adjust = 0;
       (*(timer[n].handler))(timer[n].param);
       // Normally, I would call timer_remove here :

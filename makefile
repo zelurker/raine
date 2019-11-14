@@ -51,9 +51,6 @@ HAS_CONSOLE = 1
 # use mame z80 ?
 MAME_Z80 = 1
 
-# use cz80 instead of the usual heavily modyfied asm-only mz80 ?
-# CZ80 = 1
-
 # Use C version of 68020 core ? (default is asm, commented out)
 # C68020 = 1
 
@@ -61,7 +58,7 @@ MAME_Z80 = 1
 
 ifdef NO_ASM
 ASM_VIDEO_CORE =
-CZ80 = 1
+MAME_Z80 = 1
 C68020 = 1
 endif
 
@@ -195,11 +192,7 @@ INCDIR=                 \
     -Isource/6502       \
 	-Isource/m68705
 
-ifdef CZ80
-INCDIR +=  -Isource/cz80
-else
 INCDIR +=  -Isource/z80
-endif
 
 ifdef C68020
 INCDIR += -Isource/68020/c
@@ -502,11 +495,7 @@ OBJDIRS=$(OBJDIR)                \
 	locale/es/LC_MESSAGES \
 	locale/it/LC_MESSAGES
 
-ifdef CZ80
-OBJDIRS += $(OBJDIR)/cz80
-else
 OBJDIRS += $(OBJDIR)/z80
-endif
 ifdef MAME_Z80
 OBJDIRS += $(OBJDIR)/mame/z80
 DEFINE += -DMAME_Z80
@@ -643,12 +632,6 @@ CFLAGS += -DNO_ASM
 CFLAGS_MCU += -DNO_ASM
 endif
 
-
-ifdef CZ80
-CFLAGS += -DHAS_CZ80
-CFLAGS_MCU += -DHAS_CZ80
-endif
-
 ifdef USE_BEZELS
 CFLAGS += -DUSE_BEZELS=1
 CFLAGS_MCU += -DUSE_BEZELS=1
@@ -733,16 +716,11 @@ endif
 
 # MZ80 core
 
-ifdef CZ80
-MZ80= $(OBJDIR)/cz80/cz80.o \
-      $(OBJDIR)/cz80/mz80help.o
-else
 ifdef MAME_Z80
 MZ80=$(OBJDIR)/z80/mz80help.o $(OBJDIR)/mame/z80/z80.o
 else
 MZ80=	$(OBJDIR)/z80/mz80.o \
 	$(OBJDIR)/z80/mz80help.o
-endif
 endif
 
 # network core
@@ -1382,7 +1360,6 @@ endif
 # of bounds" in the console. So it's not used for now.
 	$(OBJDIR)/68000/star.exe -hog $@
 
-ifndef CZ80
 # generate mz80.asm
 
 $(OBJDIR)/z80/mz80.o: $(OBJDIR)/z80/mz80.asm
@@ -1409,8 +1386,6 @@ else
 	$(OBJDIR)/z80/makez80.exe -l -s -cs -x86 $@
 endif
 endif
-
-endif # ifndef CZ80
 
 # generate m6502.asm
 
@@ -1488,11 +1463,9 @@ $(OBJDIR)/68000/star.o: source/68000/star.c
 	@echo Compiling StarScream...
 	$(CCV) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
 
-ifndef CZ80
 $(OBJDIR)/z80/makez80.o: source/z80/makez80.c
 	@echo Compiling mz80...
 	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
-endif
 
 $(OBJDIR)/6502/make6502.o: source/6502/make6502.c
 	@echo Compiling make6502...
