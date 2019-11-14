@@ -51,15 +51,12 @@ HAS_CONSOLE = 1
 # use mame z80 ?
 MAME_Z80 = 1
 
-# Use C version of 68020 core ? (default is asm, commented out)
-# C68020 = 1
-
 # end of user options, after this line the real thing starts...
 
 ifdef NO_ASM
 ASM_VIDEO_CORE =
 MAME_Z80 = 1
-C68020 = 1
+USE_MUSASHI = 2
 endif
 
 # Try to detect mingw... If you want to build the dos and the mingw
@@ -194,11 +191,7 @@ INCDIR=                 \
 
 INCDIR +=  -Isource/z80
 
-ifdef C68020
-INCDIR += -Isource/68020/c
-else
 INCDIR += -Isource/68020
-endif
 
 ifeq ($(OSTYPE),cygwin)
 
@@ -300,11 +293,6 @@ else
 SDL = 1
 
 ifdef DARWIN
-# using C video core for the moment
-# pb: how to run self modifying code on OSX ?
-# And same problem for the 68020 apparently !
-# ASM_VIDEO_CORE =
-# C68020 = 1
 DESTDIR = Raine.app
    prefix = $(DESTDIR)/Contents
    bindir = $(prefix)/MacOS
@@ -505,11 +493,7 @@ ifdef USE_MUSASHI
 	OBJDIRS += $(OBJDIR)/Musashi
 endif
 
-ifdef C68020
-OBJDIRS += $(OBJDIR)/68020/c
-else
 OBJDIRS += $(OBJDIR)/68020
-endif
 
 ifdef SDL
 OBJDIRS += \
@@ -682,15 +666,6 @@ endif
 
 # ASM 68020 core
 
-ifdef C68020
-ASM020= $(OBJDIR)/68020/c/newcpu.o \
-	$(OBJDIR)/68020/c/readcpu.o \
-	$(OBJDIR)/68020/c/cpustbl.o \
-	$(OBJDIR)/68020/c/cpudefs.o \
-	$(OBJDIR)/68020/c/cpuemu_01.o \
-	$(OBJDIR)/68020/c/cpuemu_02.o \
-	$(OBJDIR)/68020/c/cpuemu_03.o
-else
 ifdef USE_MUSASHI
 ASM020= $(OBJDIR)/68020/newcpu.o \
 	$(OBJDIR)/Musashi/m68kcpu.o \
@@ -702,7 +677,6 @@ ASM020= $(OBJDIR)/68020/newcpu.o \
 	$(OBJDIR)/68020/cpustbl.o \
 	$(OBJDIR)/68020/cpudefs.o \
 	$(OBJDIR)/68020/a020core.o
-endif
 endif
 
 # STARSCREAM 68000 core
