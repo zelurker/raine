@@ -67,6 +67,13 @@ void update_timers() {
 
 void z80_irq_handler(int irq) {
   // printf("z80_irq_handler %d\n",irq);
+#ifdef MAME_Z80
+    // A single line, as it's supposed to be finally !
+    // Notice that when using the other code with this emulator, aodk has no sound
+    // I am not totally sure of the reason, maybe the cycles I execute after the default irq
+    // are too much here ?
+    z80_set_irq_line(0x38,INPUT_LINE_IRQ0,irq);
+#else
   if (irq) {
     cpu_interrupt(audio_cpu, 0x38);
   }
@@ -77,6 +84,7 @@ void z80_irq_handler(int irq) {
     // a little more about it one day...
     mz80ReleaseIRQ(audio_cpu & 0xf);
   }
+#endif
 #endif
 }
 
