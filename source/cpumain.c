@@ -294,7 +294,6 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
       case CPU_Z80_2:
       case CPU_Z80_3:
          mz80exec(cycles);
-	 print_debug("z80 %d base %x\n",cpu_id & 0xf,Z80.z80Base);
       break;
 #endif
 #ifndef NO020
