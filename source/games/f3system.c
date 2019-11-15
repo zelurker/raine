@@ -971,6 +971,7 @@ void ExecuteF3SystemFrame(void)
       }
     }
   }
+   switch_cpu(CPU_M68020_0);
   if (ReadWord68k(&ROM[REG_PC]) == 0x60fe)
     reset_game_hardware();
   else {
@@ -997,6 +998,7 @@ void ExecuteF3SystemFrameB(void)
       }
     }
   }
+   switch_cpu(CPU_M68020_0);
   if (ReadWord68k(&ROM[REG_PC]) == 0x60fe)
   {
     reset_game_hardware();
@@ -1030,6 +1032,7 @@ void ExecuteF3SystemFrame_NoInt5(void)
        }
      }
    }
+   switch_cpu(CPU_M68020_0);
   if (ReadWord68k(&ROM[REG_PC]) == 0x60fe)
     reset_game_hardware();
   else {
@@ -1058,6 +1061,7 @@ void ExecuteF3SystemFrame_NoInt5B(void)
        }
      }
    }
+   switch_cpu(CPU_M68020_0);
   if (ReadWord68k(&ROM[REG_PC]) == 0x60fe)
      reset_game_hardware();
    else {
@@ -1084,6 +1088,7 @@ void ExecuteF3SystemFrame_int2(void)
        }
      }
    }
+   switch_cpu(CPU_M68020_0);
   if (ReadWord68k(&ROM[REG_PC]) == 0x60fe)
      reset_game_hardware();
 }
