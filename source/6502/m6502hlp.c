@@ -9,6 +9,7 @@ This is untested
 #include "m6502hlp.h"
 #include "savegame.h"
 #include "debug.h"
+#include "cpumain.h"
 
 UINT8 *M6502ROM;
 int M6502Engine;
@@ -35,14 +36,133 @@ struct M6502_DATA m6502_data[3];
  *  Fill in the basic structures via these functions...
  */
 
+#ifdef MAME_6502
+typedef UINT32(*read_func)(UINT32);
+typedef void(*write_func)(UINT32,UINT32);
+
+UINT8 m6502_readop(UINT32 adr) {
+    return m6502.m6502Base[adr];
+}
+
+UINT8 m6502_readop_arg(UINT32 adr) {
+    return m6502.m6502Base[adr];
+}
+
+UINT8 m6502_read8(UINT32 adr) {
+    int cpu = current_cpu_num[CPU_M6502_0 >> 4];
+    int n;
+    // I didn't see the memory maps were not in arrays
+    // which forces me to make a case...
+    // this emu would benefit from memory handlers in the struct
+    // rather than globally like that...
+    switch(cpu) {
+    case 0:
+	for (n=0; n<c1; n++) {
+	    if (M6502A_memoryreadbyte[n].lowAddr <= adr &&
+		    adr <= M6502A_memoryreadbyte[n].highAddr) {
+		if (M6502A_memoryreadbyte[n].memoryCall)
+		    return ((read_func)(M6502A_memoryreadbyte[n].memoryCall))(adr);
+		else
+		    return ((UINT8*)M6502A_memoryreadbyte[n].pUserArea)[adr];
+	    }
+	}
+	break;
+    case 1:
+	for (n=0; n<b1; n++) {
+	    if (M6502B_memoryreadbyte[n].lowAddr <= adr &&
+		    adr <= M6502B_memoryreadbyte[n].highAddr) {
+		if (M6502B_memoryreadbyte[n].memoryCall)
+		    return ((read_func)(M6502B_memoryreadbyte[n].memoryCall))(adr);
+		else
+		    return ((UINT8*)M6502B_memoryreadbyte[n].pUserArea)[adr];
+	    }
+	}
+	break;
+    case 2:
+	for (n=0; n<e1; n++) {
+	    if (M6502C_memoryreadbyte[n].lowAddr <= adr &&
+		    adr <= M6502C_memoryreadbyte[n].highAddr) {
+		if (M6502C_memoryreadbyte[n].memoryCall)
+		    return ((read_func)(M6502C_memoryreadbyte[n].memoryCall))(adr);
+		else
+		    return ((UINT8*)M6502C_memoryreadbyte[n].pUserArea)[adr];
+	    }
+	}
+	break;
+    }
+    return m6502_readop(adr);
+}
+
+void m6502_write8(UINT32 adr,UINT8 data) {
+    int cpu = current_cpu_num[CPU_M6502_0 >> 4];
+    int n;
+    switch(cpu) {
+    case 0:
+	for (n=0; n<c2; n++) {
+	    if (M6502A_memorywritebyte[n].lowAddr <= adr &&
+		    adr <= M6502A_memorywritebyte[n].highAddr) {
+		if (M6502A_memorywritebyte[n].memoryCall) {
+		    ((write_func)(M6502A_memorywritebyte[n].memoryCall))(adr,data);
+		    return;
+		} else {
+		    ((UINT8*)M6502A_memorywritebyte[n].pUserArea)[adr] = data;
+		    return;
+		}
+	    }
+	}
+	break;
+    case 1:
+	for (n=0; n<b2; n++) {
+	    if (M6502B_memorywritebyte[n].lowAddr <= adr &&
+		    adr <= M6502B_memorywritebyte[n].highAddr) {
+		if (M6502B_memorywritebyte[n].memoryCall) {
+		    ((write_func)(M6502B_memorywritebyte[n].memoryCall))(adr,data);
+		    return;
+		} else {
+		    ((UINT8*)M6502B_memorywritebyte[n].pUserArea)[adr] = data;
+		    return;
+		}
+	    }
+	}
+	break;
+    case 2:
+	for (n=0; n<e2; n++) {
+	    if (M6502C_memorywritebyte[n].lowAddr <= adr &&
+		    adr <= M6502C_memorywritebyte[n].highAddr) {
+		if (M6502C_memorywritebyte[n].memoryCall) {
+		    ((write_func)(M6502C_memorywritebyte[n].memoryCall))(adr,data);
+		    return;
+		} else {
+		    ((UINT8*)M6502C_memorywritebyte[n].pUserArea)[adr] = data;
+		    return;
+		}
+	    }
+	}
+	break;
+    }
+
+}
+#endif
+
 // FIRST EMULATED M6502
 
 void AddM6502AROMBase(UINT8 *d0)
 {
+#ifdef MAME_6502
+    if (!m6502.insn) {
+	printf("AddM6502AROMBase: call 1st m6502_init or m65c02_init !\n");
+	exit(1);
+    }
+   m6502.m6502Base = d0;
+   m6502_get_context(&M6502_context[0]);
+#else
    M6502_context[0].m6502Base = d0;
    m6502_data[0].base_ram = M6502_context[0].m6502Base;
+#endif
 }
 
+// Unused so far in raine, code probably adapted from z80 !
+#ifndef MAME_6502
 void M6502ASetBank(UINT8 *src)
 {
    int ta,tb;
@@ -114,6 +234,7 @@ void M6502CSetBank(UINT8 *src)
       M6502C_memorywritebyte[tb].pUserArea = src;			// Write new pointer
    }
 }
+#endif
 
 void AddM6502AReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
@@ -166,11 +287,15 @@ void AddM6502ARW(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
 
 void AddM6502AInit(void)
 {
+#ifdef MAME_6502
+   AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
+#else
    M6502_context[0].m6502MemoryRead  = M6502A_memoryreadbyte;
    M6502_context[0].m6502MemoryWrite = M6502A_memorywritebyte;
 
    AddLoadCallback(M6502A_load_update);
    AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], sizeof(M6502_context[0]));
+#endif
 
    M6502Engine=1;
 }
@@ -183,8 +308,17 @@ void AddM6502AInit(void)
 
 void AddM6502BROMBase(UINT8 *d0)
 {
-   M6502_context[1].m6502Base=d0;
+#ifdef MAME_6502
+    if (!m6502.insn) {
+	printf("AddM6502BROMBase: call 1st m6502_init or m65c02_init !\n");
+	exit(1);
+    }
+   m6502.m6502Base = d0;
+   m6502_get_context(&M6502_context[1]);
+#else
    m6502_data[1].base_ram = M6502_context[1].m6502Base;
+   M6502_context[1].m6502Base=d0;
+#endif
 }
 
 void AddM6502BReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -233,11 +367,15 @@ void AddM6502BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 
 void AddM6502BInit(void)
 {
+#ifdef MAME_6502
+   AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
+#else
    M6502_context[1].m6502MemoryRead  = M6502B_memoryreadbyte;
    M6502_context[1].m6502MemoryWrite = M6502B_memorywritebyte;
 
    AddLoadCallback(M6502B_load_update);
    AddSaveData(SAVE_M6502_1, (UINT8 *) &M6502_context[1], sizeof(M6502_context[1]));
+#endif
 
    M6502Engine=2;
 }
@@ -250,8 +388,17 @@ void AddM6502BInit(void)
 
 void AddM6502CROMBase(UINT8 *d0)
 {
-   M6502_context[2].m6502Base=d0;
+#ifdef MAME_6502
+    if (!m6502.insn) {
+	printf("AddM6502CROMBase: call 1st m6502_init or m65c02_init !\n");
+	exit(1);
+    }
+   m6502.m6502Base = d0;
+   m6502_get_context(&M6502_context[2]);
+#else
    m6502_data[2].base_ram = M6502_context[2].m6502Base;
+   M6502_context[2].m6502Base=d0;
+#endif
 }
 
 void AddM6502CReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -300,15 +447,20 @@ void AddM6502CWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 
 void AddM6502CInit(void)
 {
+#ifdef MAME_6502
+   AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
+#else
    M6502_context[2].m6502MemoryRead  = M6502C_memoryreadbyte;
    M6502_context[2].m6502MemoryWrite = M6502C_memorywritebyte;
 
    AddLoadCallback(M6502C_load_update);
    AddSaveData(SAVE_M6502_2, (UINT8 *) &M6502_context[2], sizeof(M6502_context[2]));
+#endif
 
    M6502Engine=3;
 }
 
+#ifndef MAME_6502
 void M6502A_load_update(void)
 {
    #ifdef RAINE_DEBUG
@@ -341,8 +493,10 @@ void M6502C_load_update(void)
    M6502_context[2].m6502MemoryWrite = M6502C_memorywritebyte;
    M6502_context[2].m6502Base     = m6502_data[2].base_ram;
 }
+#endif
 
 void M6502_disp_context(int nb) {
+#ifndef MAME_6502
   struct m6502context *ctx = &M6502_context[nb];
   // printf("base %x\n",ctx->m6502Base);
   printf("registers :\n");
@@ -350,6 +504,7 @@ void M6502_disp_context(int nb) {
 	 ctx->m6502s,ctx->m6502af >> 8);
   printf("PC:%4x\n",ctx->m6502pc);
   printf("pending: %x\n",ctx->irqPending);
+#endif
 }
 
 void ClearM6502List(void)

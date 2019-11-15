@@ -66,33 +66,6 @@
 extern "C" {
 #endif
 
-extern UINT32 m6502nmi(void);
-extern UINT32 m6502int(UINT32);
-extern UINT32 m6502exec(UINT32);
-extern void m6502reset(void);
-extern UINT32 m6502GetElapsedTicks(UINT32);
-extern void m6502ReleaseTimeslice();
-
-extern UINT32 m6502zpnmi(void);
-extern UINT32 m6502zpint(UINT32);
-extern UINT32 m6502zpexec(UINT32);
-extern void m6502zpreset(void);
-extern UINT32 m6502zpGetElapsedTicks(UINT32);
-extern void m6502zpReleaseTimeslice();
-
-extern UINT32 m6502bsnmi(void);
-extern UINT32 m6502bsint(UINT32);
-extern UINT32 m6502bsexec(UINT32);
-extern void m6502bsreset(void);
-extern UINT32 m6502bsGetElapsedTicks(UINT32);
-extern void m6502bsReleaseTimeslice();
-
-extern UINT16 m6502bspc;
-extern UINT16 m6502zppc;
-extern UINT16 m6502pc;
-
-UINT8 *m6502Base;		// Must make global in the asm
-
 #ifndef _MEMORYREADWRITEBYTE_
 #define _MEMORYREADWRITEBYTE_
 
@@ -119,6 +92,7 @@ struct MemoryReadByte
  * GetContextSize() call to obtain the specifics of the context.
  */
 
+#ifndef MAME_6502
 struct m6502context
 {
 	UINT8 *m6502Base;                               /* 32 Bit pointer to base memory address */
@@ -162,6 +136,32 @@ struct m6502bscontext
 typedef struct m6502context CONTEXTM6502;
 typedef struct m6502bscontext CONTEXTM6502BS;
 
+extern UINT32 m6502nmi(void);
+extern UINT32 m6502int(UINT32);
+extern UINT32 m6502exec(UINT32);
+extern void m6502reset(void);
+extern UINT32 m6502GetElapsedTicks(UINT32);
+extern void m6502ReleaseTimeslice();
+
+extern UINT32 m6502zpnmi(void);
+extern UINT32 m6502zpint(UINT32);
+extern UINT32 m6502zpexec(UINT32);
+extern void m6502zpreset(void);
+extern UINT32 m6502zpGetElapsedTicks(UINT32);
+extern void m6502zpReleaseTimeslice();
+
+extern UINT32 m6502bsnmi(void);
+extern UINT32 m6502bsint(UINT32);
+extern UINT32 m6502bsexec(UINT32);
+extern void m6502bsreset(void);
+extern UINT32 m6502bsGetElapsedTicks(UINT32);
+extern void m6502bsReleaseTimeslice();
+
+extern UINT16 m6502bspc;
+extern UINT16 m6502zppc;
+extern UINT16 m6502pc;
+
+UINT8 *m6502Base;		// Must make global in the asm
 extern void m6502SetContext(struct m6502context *);
 extern void m6502GetContext(struct m6502context *);
 extern UINT32 m6502GetContextSize(void);
@@ -179,6 +179,33 @@ extern void m6502zpinit(void);
 extern void m6502bsinit(void);
 
 extern UINT8 *m6502bspbBankSwitch[32];	// Bank switching registers
+
+#else
+#include "mame/6502/m6502.h"
+
+#define m6502int(vector) m6502_set_irq_line(INPUT_LINE_IRQ0,HOLD_LINE)
+#define m6502nmi()                                                            \
+    if (m6502.subtype == SUBTYPE_65C02) {                                     \
+        m65c02_set_irq_line(INPUT_LINE_NMI,HOLD_LINE);                        \
+    } else {                                                                  \
+        m6502_set_irq_line(INPUT_LINE_NMI,HOLD_LINE);                         \
+    }
+#define m6502pc m6502.pc.d
+#define m6502reset() if (m6502.subtype == SUBTYPE_65C02) { \
+    m65c02_reset();                                        \
+} else {                                                   \
+    m6502_reset();                                         \
+}
+#define m6502ReleaseTimeslice() m6502_release_time_slice()
+#define m6502exec(cycles)                 \
+    if (m6502.subtype == SUBTYPE_65C02) { \
+        m65c02_execute(cycles);           \
+    } else {                              \
+        m6502_execute(cycles);            \
+    }
+#define m6502GetContext m6502_get_context
+#define m6502SetContext m6502_set_context
+#endif
 
 #ifdef __cplusplus
 };

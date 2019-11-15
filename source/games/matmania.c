@@ -337,6 +337,9 @@ static void load_matmania() {
   GFX_BG0_SOLID = NULL;
 
   page_select = RAM + 0x3000;
+#ifdef MAME_6502
+  m6502_init();
+#endif
   AddM6502AROMBase(RAM);
 
   AddM6502ARead(0x3000, 0x3030, NULL, input_buffer);

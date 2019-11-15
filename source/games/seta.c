@@ -3577,7 +3577,7 @@ static UINT16 dsw_usclssic_r(UINT32 offset) {
 
 static void calibr50_soundlatch_w(UINT32 offset, UINT16 data) {
   latch1 = data;
-  m6502nmi();
+  cpu_int_nmi(CPU_M6502_0);
   m6502exec(100);	// 100 cycles is enough ?
 }
 
@@ -3692,6 +3692,9 @@ static void load_arbalest(void)
     // Setup 6502 memory map
     // --------------------
 
+#ifdef MAME_6502
+     m65c02_init();
+#endif
     AddM6502AROMBase(M6502ROM);
 
     if (is_current_game("usclssic") || is_current_game("calibr50")) {
@@ -3735,8 +3738,6 @@ static void load_arbalest(void)
      AddM6502AWriteByte(0x0000, 0xFFFF, DefBadWriteM6502,           NULL);
      AddM6502AWriteByte(    -1,     -1, NULL,                       NULL);
 
-#ifdef RAINE_DEBUG
-#endif
      AddM6502AInit();
 
      memset(M6502ROM+0x1000,0xff,0xa); // inputs for 6502 initialisation
@@ -3932,13 +3933,13 @@ static void execute_arbalest(void)
   // As often the 68k is supposed to be a 8Mhz but the game seems to push it to its limits
   // at times, so it should be a little smoother at 12 MHz
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));
-  m6502exec(CPU_FRAME_MHz(0.5,60));	// M6502 4MHz (60fps)
+  cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(0.5,60));	// M6502 4MHz (60fps)
   m6502nmi();
 
   // cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(6,60));
   cpu_interrupt(CPU_68K_0, 3);
 
-  m6502exec(CPU_FRAME_MHz(0.5,60));	// M6502 4MHz (60fps)
+  cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(0.5,60));	// M6502 4MHz (60fps)
   print_debug("M6502_PC:%04x\n",m6502pc);
   m6502int(1);
 }
@@ -3986,10 +3987,10 @@ static void execute_downtown(void)
   cpu_interrupt(CPU_68K_0, 1);
   m6502nmi();
 #if 1
-  m6502exec(CPU_FRAME_MHz(0.8,60));	// M6502 4MHz (60fps)
+  cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(0.8,60));	// M6502 4MHz (60fps)
 #else
   if (cpu_frame_count < 380)
-    m6502exec(CPU_FRAME_MHz(1.5,60));	// M6502 4MHz (60fps)
+    cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(1.5,60));	// M6502 4MHz (60fps)
   else {
     int counter = 400;
   do {
@@ -4002,7 +4003,7 @@ static void execute_downtown(void)
 /*     if (m6502pc >= 0x70bc && m6502pc <= 0x70c0) */
 /*       dump = 1; */
     while (m6502pc == oldpc) {
-      m6502exec(cycles);
+      cpu_execute_cycles(CPU_M6502_0,cycles);
       cycles++;
     }
     M6502_disp_context(0);
@@ -4018,7 +4019,7 @@ static void execute_downtown(void)
 
    // if (cpu_frame_count < 380) {
      m6502int(1);
-     m6502exec(CPU_FRAME_MHz(0.8,60));	// M6502 4MHz (60fps)
+     cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(0.8,60));	// M6502 4MHz (60fps)
      // }
      print_debug("M6502_PC:%04x %02x %02x\n",m6502pc,M6502ROM[m6502pc],M6502ROM[m6502pc+1]);
 }
@@ -4032,7 +4033,7 @@ static void execute_tndrcade() {
   for (n=0; n<SLICES; n++) {
     cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60)/SLICES);
 
-    m6502exec(CPU_FRAME_MHz(1.9,60)/SLICES);	// M6502 4MHz (60fps)
+    cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(1.9,60)/SLICES);	// M6502 4MHz (60fps)
     print_debug("M6502_PC:%04x %02x %02x\n",m6502pc,M6502ROM[m6502pc],M6502ROM[m6502pc+1]);
     m6502int(1);
   }
@@ -4168,7 +4169,7 @@ static void execute_usclssic(void)
       cpu_interrupt(CPU_68K_0, 4);
     else
       cpu_interrupt(CPU_68K_0, 2);
-    m6502exec(CPU_FRAME_MHz(2,60)/5);
+    cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(2,60)/5);
   }
   print_debug("M6502_PC:%04x\n",m6502pc);
   m6502int(1);
@@ -4210,7 +4211,7 @@ static void execute_calibr50(void)
   // calibr50 was made for an 8 Mhz cpu, if you increase the frequency, then the game
   // accelerates !
   for (n=0; n<4; n++) {
-    m6502exec(CPU_FRAME_MHz(2,60)/4);
+    cpu_execute_cycles(CPU_M6502_0,CPU_FRAME_MHz(2,60)/4);
     print_debug("M6502_PC:%04x\n",m6502pc);
     m6502int(1);
 

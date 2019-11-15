@@ -576,23 +576,16 @@ void reset_game_hardware(void)
 
 #ifdef HAVE_6502
    if(M6502Engine>=1){
-      m6502SetContext(&M6502_context[0]);
-      m6502reset();
-      m6502GetContext(&M6502_context[0]);
-
-      print_ingame(120,gettext("CPU M6502#0 Reset"));
+       cpu_reset(CPU_M6502_0);
+       print_ingame(120,gettext("CPU M6502#0 Reset"));
    }
    if(M6502Engine>=2){
-      m6502SetContext(&M6502_context[1]);
-      m6502reset();
-      m6502GetContext(&M6502_context[1]);
+       cpu_reset(CPU_M6502_1);
 
       print_ingame(120,gettext("CPU M6502#1 Reset"));
    }
    if(M6502Engine>=3){
-      m6502SetContext(&M6502_context[2]);
-      m6502reset();
-      m6502GetContext(&M6502_context[2]);
+       cpu_reset(CPU_M6502_2);
 
       print_ingame(120,gettext("CPU M6502#2 Reset"));
    }

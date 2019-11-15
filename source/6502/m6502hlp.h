@@ -13,7 +13,11 @@ extern "C" {
 
 #define MAX_6502	(3)
 
+#ifndef MAME_6502
 struct m6502context	M6502_context[MAX_6502];
+#else
+m6502_Regs M6502_context[MAX_6502];
+#endif
 
 struct MemoryReadByte	M6502A_memoryreadbyte[32];
 struct MemoryWriteByte	M6502A_memorywritebyte[32];
@@ -109,9 +113,11 @@ void StopM6502CMode2(UINT16 address, UINT8 data);
 UINT8 DefBadReadM6502(UINT16 offset);
 void DefBadWriteM6502(UINT16 offset, UINT8 data);
 
+#ifndef MAME_6502
 void M6502ASetBank(UINT8 *src);
 void M6502BSetBank(UINT8 *src);
 void M6502CSetBank(UINT8 *src);
+#endif
 
 void M6502_disp_context(int nb);
 void M6502WriteByte(UINT32 address, UINT16 data);

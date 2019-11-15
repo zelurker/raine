@@ -28,6 +28,12 @@ RAINE_DEBUG = 1
 # 2 = 68000 + 68020
 USE_MUSASHI = 2
 
+# use mame z80 ?
+MAME_Z80 = 1
+
+# use mame 6502 ?
+MAME_6502 = 1
+
 # For osx : use frameworks or brew shared libs ?
 # Actually frameworks are a convenience for end users, to build them use
 # the make_framework.pl script in TOOLS directory to convert the brew
@@ -47,9 +53,6 @@ HAS_CONSOLE = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # USE_BEZELS=1
-
-# use mame z80 ?
-MAME_Z80 = 1
 
 # end of user options, after this line the real thing starts...
 
@@ -489,6 +492,11 @@ OBJDIRS += $(OBJDIR)/mame/z80
 DEFINE += -DMAME_Z80
 endif
 
+ifdef MAME_6502
+OBJDIRS += $(OBJDIR)/mame/6502
+DEFINE += -DMAME_6502
+endif
+
 ifdef USE_MUSASHI
 	OBJDIRS += $(OBJDIR)/Musashi
 endif
@@ -705,8 +713,13 @@ NET=	$(OBJDIR)/net/d_system.o \
 
 # M6502 core
 
+ifdef MAME_6502
+M6502 = $(OBJDIR)/6502/m6502hlp.o \
+		$(OBJDIR)/mame/6502/m6502.o
+else
 M6502=	$(OBJDIR)/6502/m6502.o \
-	$(OBJDIR)/6502/m6502hlp.o \
+	$(OBJDIR)/6502/m6502hlp.o
+endif
 
 # M68705 core
 
@@ -1363,6 +1376,7 @@ endif
 
 # generate m6502.asm
 
+ifndef MAME_6502
 $(OBJDIR)/6502/m6502.o: $(OBJDIR)/6502/m6502.asm
 	@echo Assembling $<...
 	$(ASM) -MD $*.d -o $@ $(AFLAGS) $<
@@ -1385,6 +1399,7 @@ ifdef RAINE_UNIX
 	$(OBJDIR)/6502/make6502.exe -l -s -6510 $@
 else
 	$(OBJDIR)/6502/make6502.exe -s -6510 $@
+endif
 endif
 endif
 
