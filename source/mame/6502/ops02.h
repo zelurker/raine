@@ -78,6 +78,8 @@
  ***************************************************************/
 #define RDOPARG() m6502_readop_arg(PCW++); m6502_ICount -= 1
 
+#define RDOPARG16() m6502_readop_arg16(PCW); PCW += 2; m6502_ICount -= 2
+
 /***************************************************************
  *  RDMEM   read memory
  ***************************************************************/
@@ -141,9 +143,14 @@
 /***************************************************************
  *  EA = absolute address
  ***************************************************************/
-#define EA_ABS													\
-	EAL = RDOPARG();											\
-	EAH = RDOPARG()
+#ifdef LSB_FIRST
+#define EA_ABS         \
+    EAW = RDOPARG16();
+#else
+#define EA_ABS           \
+        EAL = RDOPARG(); \
+        EAH = RDOPARG()
+#endif
 
 /***************************************************************
  *  EA = absolute address + X

@@ -46,6 +46,7 @@
 #define change_pc(x)
 
 extern UINT8 m6502_readop(UINT32 adr);
+extern UINT16 m6502_readop_arg16(UINT32 adr);
 extern UINT8 m6502_readop_arg(UINT32 adr);
 extern UINT16 m6502_readop_arg16(UINT32 adr);
 extern UINT8 m6502_read8(UINT32 adr);

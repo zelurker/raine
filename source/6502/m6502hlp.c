@@ -48,6 +48,10 @@ UINT8 m6502_readop_arg(UINT32 adr) {
     return m6502.m6502Base[adr];
 }
 
+UINT16 m6502_readop_arg16(UINT32 adr) {
+    return ReadWord(m6502.m6502Base+adr);
+}
+
 UINT8 m6502_read8(UINT32 adr) {
     int cpu = current_cpu_num[CPU_M6502_0 >> 4];
     int n;
