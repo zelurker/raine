@@ -617,7 +617,7 @@ static void write_sound_command(UINT32 offset, UINT16 data) {
     latch = data;
     cpu_int_nmi(CPU_Z80_0);
 
-#if !defined(HAS_CZ80) && !defined(MAME_Z80)
+// #if !defined(HAS_CZ80) && !defined(MAME_Z80)
     // Very few games seem to need this, but Ironclad is one of them (you loose
     // the z80 just after choosing "start game" if you don't do this !)
     // Also mslug produces bad cd songs without this !!!
@@ -626,7 +626,7 @@ static void write_sound_command(UINT32 offset, UINT16 data) {
     cpu_execute_cycles(CPU_Z80_0, 60000);
     dwElapsedTicks = ticks; // say this never happened
     ExitOnEI = 0;
-#endif
+// #endif
   }
 }
 
