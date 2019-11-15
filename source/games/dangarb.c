@@ -3,6 +3,9 @@
 /*                    Ufo Robo Dangar (C) 1986 NICHIBUTSU                     */
 /*                                                                            */
 /******************************************************************************/
+// Unfinished : actually originally Antiriad thought this was a 68k + z80 game
+// it actually uses 2 z80s, confirmed by mame. There is code only for the audio z80
+// currently. Adding the other one shouldn't be too hard, but for now it's unfinished.
 
 #include "gameinc.h"
 #include "nichisnd.h"
@@ -52,8 +55,6 @@ static struct INPUT_INFO input_dangarb[] =
 
    END_INPUT
 };
-
-
 
 static UINT8 *GFX_BG0;
 static UINT8 *GFX_BG1;
