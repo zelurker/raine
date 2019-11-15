@@ -822,8 +822,18 @@ static menu_item_t about_items[] =
 #else
   {    _("MZ80 3.4raine3 by Neill Bradley") },
 #endif
+#ifdef MAME_6502
+  { _("6502/65c02: mame 125 version") },
+#else
   {    _("M6502 1.6raine2 by Neill Bradley") },
+#endif
   {    _("MCU 68705: statically recompiled code by Richard Mitton") },
+#ifdef __i386__
+  { _("32 bits i386 binary with plenty of asm inside") },
+#endif
+#ifdef __x86_64__
+  { _("64 bits x86 binary, no asm at all, a raine anomaly !") },
+#endif
   { _("History..."), &about_game },
   { NULL, NULL, NULL },
 };
