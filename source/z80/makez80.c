@@ -67,7 +67,9 @@
 #define SEPARATION_CODE_DATA
 /* 3.4raine3 : add ed6b instruction (ld (hl),adr !
  * Actually I just branch to the mischandler opcode 2a to execute the standard
- * instruction, not sure it's the best way to do it, but it works ! */
+ * instruction, not sure it's the best way to do it, but it works !
+ * The game which crashes without this is bublredux when using the level skipper (p1 + p2 ingame -> crash if the instruction is not supported)
+ */
 
 /* 3.4raine2 : now supports the variable Z80Has16bitsPorts. Set it to 1 to
  * enable 16 bits ports (neogeo mainly). in a,(8) is correctly handled as
