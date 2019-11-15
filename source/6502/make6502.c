@@ -778,6 +778,7 @@ static void ReadMemoryByteHandler()
 	if (bUseStack)
 		fprintf(fp, "		add	esp, 8	; Get the junk off the stack\n");
 
+	fprintf(fp, "		xor	edx, edx	; Zero X\n");
 	fprintf(fp, "		xor	ebx, ebx	; Zero X\n");
 	fprintf(fp, "		xor	ecx, ecx	; Zero Y\n");
 	fprintf(fp, "		xor	esi, esi	; Zero it!\n");
