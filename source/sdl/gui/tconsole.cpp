@@ -145,7 +145,7 @@ void TConsole::print(const char *format, ...)
     return;
   }
   char string[2048],*s;
-  va_list ap = NULL;
+  va_list ap;
   va_start(ap,format);
   vsprintf(string,format,ap);
   va_end(ap);
