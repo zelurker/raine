@@ -3138,10 +3138,16 @@ static void execute_lordofk(void)
 static void execute_64street(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
-   cpu_interrupt(CPU_68K_0, 4);
-   cpu_interrupt(CPU_68K_0, 3);
-   cpu_interrupt(CPU_68K_0, 2);
+   // For musashi, the order must be 1,2,3,4 and not 4,3,2,1, and we must execute at some cycle between each interrupt
+   // otherwise the last one takes priority (with the simplest interrupt handling).
+   // Since starscream doesn't care, I'll keep this code for both emulators then...
    cpu_interrupt(CPU_68K_0, 1);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 2);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 3);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 4);
 
    ExecuteSoundFrame();
 }
