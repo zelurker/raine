@@ -1697,11 +1697,12 @@ void render_tc0200obj_mapped_f3system(void)
 
       td=RAM_BG[zz+8];
 
-      if (ReadWord68k(&RAM_BG[zz+6]) & 0x8000) {
-	  printf("*** sprite control\n");
-	  if (ReadWord68k(&RAM_BG[zz+10]) & 0x2000)
-	      printf("Flipscreen !\n");
-      }
+      // Works : vertical games are detected from this...
+      // if (ReadWord68k(&RAM_BG[zz+6]) & 0x8000) {
+	  // printf("*** sprite control\n");
+	  // if (ReadWord68k(&RAM_BG[zz+10]) & 0x2000)
+	      // printf("Flipscreen !\n");
+      // }
 
       if((td&0x04)==0){
          tb = RAM_BG[zz+9];
