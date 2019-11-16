@@ -2416,6 +2416,12 @@ static UINT16 *xor;
 static int size_user1,size_code;
 
 #if USE_MUSASHI == 2
+static uint32 cps2_read8(uint32 adr) {
+    if (adr < size_code)
+	return ReadByte(ROM+(adr^1));
+    return (*m68ki_cpu.read16)(adr);
+}
+
 static uint32 cps2_read16(uint32 adr) {
     if (adr < size_code)
 	return ReadWord(ROM+adr);
@@ -2630,6 +2636,7 @@ void load_cps2() {
   if (xor) {
       m68ki_cpu.read_im16 = cps2_read16;
       m68ki_cpu.read_im32 = cps2_read32;
+      m68ki_cpu.read_pc8 = cps2_read8;
       m68ki_cpu.read_pc16 = cps2_read16;
       m68ki_cpu.read_pc32 = cps2_read32;
       m68k_get_context(&M68000_context[0]); // because of stop_cpu_main !
@@ -3606,7 +3613,7 @@ static void cps1_render_scroll2_bitmap(int mask)
 
 	    if (myy> 0 && myy <= scrheight) {
 	      colour=ReadWord(&RAM_SCROLL2[offs+2]);
-	      INT16 *offs = &offsets[myy-16];
+	      INT16 *dx = &offsets[myy-16];
 	      MAP_PALETTE_MAPPED_NEW(
 				     (colour&0x1F) | 0x40,
 				     16,
@@ -3616,12 +3623,12 @@ static void cps1_render_scroll2_bitmap(int mask)
 		if (cps_version == 2) {
 		  if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
 		    if (distort_scroll2) {
-		      pldraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,offs,(colour & 0x60)>>5,mask);
+		      pldraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
 		    } else
 		      pdraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
 		  } else { // all solid
 		    if (distort_scroll2) {
-		      pldraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,offs,(colour & 0x60)>>5,mask);
+		      pldraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
 		    } else
 		      pdraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
 		  }
@@ -3632,7 +3639,7 @@ static void cps1_render_scroll2_bitmap(int mask)
 		    // line scrolls work correctly with priorities. Tested
 		    // in 2nd stage of dino.
 		    if (distort_scroll2)
-		      ldraw16x16_Trans_Mapped_flip_Rot(dest, myx, myy, map,offs,(colour & 0x60)>>5);
+		      ldraw16x16_Trans_Mapped_flip_Rot(dest, myx, myy, map,dx,(colour & 0x60)>>5);
 		    else
 		      Draw16x16_Trans_Mapped_flip_Rot(dest,myx,myy,map,(colour & 0x60)>>5);
 		  }
@@ -3647,12 +3654,12 @@ static void cps1_render_scroll2_bitmap(int mask)
 	      } else {
 		if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
 		  if (distort_scroll2)
-		    ldraw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,offs,(colour & 0x60)>>5);
+		    ldraw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
 		  else
 		    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5);
 		} else { // all solid
 		  if (distort_scroll2)
-		    ldraw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,offs,(colour & 0x60)>>5);
+		    ldraw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
 		  else
 		    Draw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5);
 		}
