@@ -135,7 +135,11 @@ void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
 
    M68000_programregion[cpu][program_count[cpu]].lowaddr  = d0;
    M68000_programregion[cpu][program_count[cpu]].highaddr = d1;
+#if USE_MUSASHI == 2
+   M68000_programregion[cpu][program_count[cpu]].offset   = d2;
+#else
    M68000_programregion[cpu][program_count[cpu]].offset   = (UINT32) d2;
+#endif
    program_count[cpu]++;
 }
 
@@ -145,7 +149,11 @@ static void set_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2
     for (n=0; n<program_count[cpu]; n++) {
 	if (d0 == M68000_programregion[cpu][n].lowaddr &&
 		d1 == M68000_programregion[cpu][n].highaddr) {
+#if USE_MUSASHI == 2
+	    M68000_programregion[cpu][n].offset   = d2;
+#else
 	    M68000_programregion[cpu][n].offset   = (UINT32) d2;
+#endif
 	    return;
 	}
     }
@@ -717,8 +725,10 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
       }
       else{
          if((address>=MC68000A_memoryall[ta].lowaddr)&&(MC68000A_memoryall[ta].highaddr>=address)){
+	     // Notice : the function uses the memoryall array here and not the usual memory array
+	     // so the offset must indeed be corrected by substracting the low addr
             if(MC68000A_memoryall[ta].memorycall==NULL && MC68000A_memoryall[ta].userdata){
-               WriteByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address^1)-MC68000A_memoryall[ta].lowaddr),data);
+               WriteByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address-MC68000A_memoryall[ta].lowaddr)^1),data);
                ta=ma;
             }
             //else{
@@ -741,7 +751,7 @@ UINT8 ReadStarScreamByte(UINT32 address)
       else{
          if((address>=MC68000A_memoryall[ta].lowaddr)&&(MC68000A_memoryall[ta].highaddr>=address)){
             if(MC68000A_memoryall[ta].memorycall==NULL && MC68000A_memoryall[ta].userdata){
-               return ReadByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address^1)-MC68000A_memoryall[ta].lowaddr) );
+               return ReadByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address-MC68000A_memoryall[ta].lowaddr)^1) );
             }
          }
       }
