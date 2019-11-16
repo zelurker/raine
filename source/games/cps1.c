@@ -2630,6 +2630,8 @@ void load_cps2() {
   if (xor) {
       m68ki_cpu.read_im16 = cps2_read16;
       m68ki_cpu.read_im32 = cps2_read32;
+      m68ki_cpu.read_pc16 = cps2_read16;
+      m68ki_cpu.read_pc32 = cps2_read32;
       m68k_get_context(&M68000_context[0]); // because of stop_cpu_main !
   }
 #endif
