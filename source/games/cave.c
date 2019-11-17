@@ -2201,6 +2201,7 @@ static void load_dfeveron(void)
 
      pWriteWord(&ROM[0x8dba],0x4e71); // disable rom check : nop
      pWriteWord(&ROM[0x8dc4],0x600a); // bra
+     pWriteWord(&ROM[0x8f10],0x6006); // speed up starting, esp with musashi
    } else {
      // fever sos
      // Speed hack
@@ -2213,6 +2214,7 @@ static void load_dfeveron(void)
      pWriteWord(&ROM[0x8f46],0x4e71); // disable eeprom test (nop)
      pWriteWord(&ROM[0x8f48],0x4e71); // if it does not find this value in the eeprom
      // then it just resets
+     pWriteWord(&ROM[0x8f32],0x6006); // speed up starting, esp with musashi
   }
    setup_cave_game();
 }
