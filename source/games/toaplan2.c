@@ -6394,8 +6394,9 @@ static void execute_kbash(void)
    if((romset==11)){
 
       cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(28,60));    // M68000 28MHz (60fps)
-      cpu_interrupt(CPU_68K_0, 4);
       cpu_interrupt(CPU_68K_0, 2);
+      cpu_execute_cycles(CPU_68K_0,1);
+      cpu_interrupt(CPU_68K_0, 4);
 
    }
    else{
