@@ -2100,6 +2100,7 @@ static void memory_map_macross2(int type) {
 
    // setup the sound z80
 
+   AddZ80AROMBase(load_region[REGION_ROM2],0x38,0x66);
    z80_init_banks(0,REGION_ROM2,0x8000,0x4000);
    AddZ80AReadByte(0x0000, 0xbfff, NULL, NULL); // bank
    // AddZ80AReadByte(0xa000, 0xa000, NULL, &blank); // nop
@@ -3162,8 +3163,9 @@ static int tick;
 
 static void execute_tdragon2(void)
 {
-   cpu_interrupt(CPU_68K_0, 2);
+   cpu_interrupt(CPU_68K_0, 4);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
+
    //WriteWord(&RAM[0x9000],ReadWord(&RAM[0x9000]) | 1);
    //fprintf(stderr,"%x %x\n",ReadWord(&RAM[0x9000]),ReadWord(&RAM[0x9074]));
 
@@ -3173,10 +3175,11 @@ static void execute_tdragon2(void)
      cpu_interrupt(CPU_68K_0, 1);
      // cpu_interrupt(CPU_68K_0, 2);
       tick-=60;
-      if (tick >= 60)
+      // if (tick >= 60)
 	  cpu_execute_cycles(CPU_68K_0,1000);
    }
-   cpu_interrupt(CPU_68K_0, 4);
+   cpu_interrupt(CPU_68K_0, 2);
+   cpu_execute_cycles(CPU_68K_0,1);
 
    ExecuteSoundFrame();
 }
@@ -3372,16 +3375,19 @@ static void execute_bioship(void)
   } while (cycles > 0);
    //WriteWord(&RAM[0x9000],ReadWord(&RAM[0x9000]) | 1);
    //fprintf(stderr,"%x %x\n",ReadWord(&RAM[0x9000]),ReadWord(&RAM[0x9074]));
-   cpu_interrupt(CPU_68K_0, 4);
-   if (req_int2)
-     cpu_interrupt(CPU_68K_0, 2);
 
    tick += int_rate[romset];
 
    while(tick>=60){
      cpu_interrupt(CPU_68K_0, 1);
+     cpu_execute_cycles(CPU_68K_0,1);
       tick-=60;
    }
+   if (req_int2) {
+     cpu_interrupt(CPU_68K_0, 2);
+     cpu_execute_cycles(CPU_68K_0,1);
+   }
+   cpu_interrupt(CPU_68K_0, 4);
 }
 
 /*
