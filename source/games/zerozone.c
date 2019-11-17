@@ -194,37 +194,25 @@ static void load_zerozone(void)
    ByteSwap(ROM,0x20000);
    ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x01FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x01FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x0C0000, 0x0C7FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x080000, 0x09FFFF, NULL, RAM+0x010000);                 // VRAM/PALETTE
+   add_68000_rom(0,0x000000, 0x01FFFF, ROM);                 // 68000 ROM
+   add_68000_ram(0,0xc0000, 0xc7fff, RAM);
+   add_68000_ram(0,0x80000,0x9ffff, RAM + 0x10000); // vram + palette
    AddReadByte(0x0B4000, 0x0BFFFF, NULL, RAM+0x030000);                 // ???
    AddReadByte(0x0F0000, 0x0FBFFF, NULL, RAM+0x034000);                 // ???
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x01FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x0C0000, 0x0C7FFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x080000, 0x09FFFF, NULL, RAM+0x010000);                 // VRAM/PALETTE
    AddReadWord(0x0B4000, 0x0BFFFF, NULL, RAM+0x030000);                 // ???
    AddReadWord(0x0F0000, 0x0FBFFF, NULL, RAM+0x034000);                 // ???
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x0C0000, 0x0C7FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x084000, 0x084000, ZeroZoneSoundWrite68k, NULL);       // SOUND COMM
-   AddWriteByte(0x080000, 0x09FFFF, NULL, RAM+0x010000);                // VRAM/PALETTE
    AddWriteByte(0x0B4000, 0x0BFFFF, NULL, RAM+0x030000);                // ???
    AddWriteByte(0x0F0000, 0x0FBFFF, NULL, RAM+0x034000);                // ???
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x0C0000, 0x0C7FFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x080000, 0x09FFFF, NULL, RAM+0x010000);                // VRAM/PALETTE
    AddWriteWord(0x0B4000, 0x0BFFFF, NULL, RAM+0x030000);                // ???
    AddWriteWord(0x0F0000, 0x0FBFFF, NULL, RAM+0x034000);                // ???
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
+   InitPaletteMap(RAM+0x18000,0x10,0x10,0x1000);
+   extern struct COLOUR_MAPPER col_Map_15bit_zerozone;
+   set_colour_mapper(&col_Map_15bit_zerozone);
 }
 
 static void ClearZeroZone(void)
@@ -248,9 +236,11 @@ static void execute_zerozone(void)
 static void DrawZeroZone(void)
 {
    int ta,yy,tx,ty,zz;
+   UINT8 *map;
 
    // Palette (256 colours)
 
+#if 0
    for(ta=0;ta<256;ta++){
       yy=ReadWord(&RAM[0x18000+(ta<<1)]);
 #ifdef SDL
@@ -263,6 +253,8 @@ static void DrawZeroZone(void)
       pal[ta].r=(yy&0x00F0)>>2|((yy&0x02)>>0);
 #endif
    }
+#endif
+   ClearPaletteMap();
 
    // BG0
 
@@ -270,7 +262,11 @@ static void DrawZeroZone(void)
    for(tx=0;tx<368;tx+=8,zz+=8){
       for(ty=0;ty<224;ty+=8,zz+=2){
          ta = ReadWord(&RAM[zz]);
-         Draw8x8_8_Rot(&GFX[(ta&0x0FFF)<<6], tx, ty, (UINT8) ((ta>>8)&0xF0) );
+         // Draw8x8_8_Rot(&GFX[(ta&0x0FFF)<<6], tx, ty, (UINT8) ((ta>>8)&0xF0) );
+	 MAP_PALETTE_MAPPED_NEW(((ta>>12)&0xF),
+		 16,
+		 map);
+         Draw8x8_Mapped_Rot(&GFX[(ta&0x0FFF)<<6], tx, ty, map );
       }
    }
 }
@@ -280,7 +276,7 @@ static struct VIDEO_INFO video_zerozone =
    368,
    224,
    0,
-   VIDEO_ROTATE_NORMAL | VIDEO_NEEDS_8BPP |
+   VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
 };
 static struct DIR_INFO dir_zerozone[] =

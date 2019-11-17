@@ -1048,6 +1048,16 @@ BUILD_MAPPER5(Map_15bit_RRRRGGGGBBBBRGBx_16,UINT16,GET_PEN_FOR_COLOUR_16)
 BUILD_MAPPER5(Map_15bit_RRRRGGGGBBBBRGBx_24,UINT32,GET_PEN_FOR_COLOUR_24)
 BUILD_MAPPER5(Map_15bit_RRRRGGGGBBBBRGBx_32,UINT32,GET_PEN_FOR_COLOUR_32)
 
+struct COLOUR_MAPPER col_Map_15bit_RRRRGGGGBBBBRGBx =
+{
+   "15bit_RRRRGGGGBBBBRGBx",
+   Map_15bit_RRRRGGGGBBBBRGBx_8,
+   Map_15bit_RRRRGGGGBBBBRGBx_15,
+   Map_15bit_RRRRGGGGBBBBRGBx_16,
+   Map_15bit_RRRRGGGGBBBBRGBx_24,
+   Map_15bit_RRRRGGGGBBBBRGBx_32,
+};
+
 // Map_15bit_xRGBRRRRGGGGBBBB
 #undef BUILD_MAPPER5
 #define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)		\
@@ -1103,16 +1113,6 @@ BUILD_MAPPER5(Map_15bit_xRGBRRRRGGGGBBBB_16,UINT16,GET_PEN_FOR_COLOUR_16)
 BUILD_MAPPER5(Map_15bit_xRGBRRRRGGGGBBBB_24,UINT32,GET_PEN_FOR_COLOUR_24)
 BUILD_MAPPER5(Map_15bit_xRGBRRRRGGGGBBBB_32,UINT32,GET_PEN_FOR_COLOUR_32)
 
-struct COLOUR_MAPPER col_Map_15bit_RRRRGGGGBBBBRGBx =
-{
-   "15bit_RRRRGGGGBBBBRGBx",
-   Map_15bit_xRGBRRRRGGGGBBBB_8,
-   Map_15bit_xRGBRRRRGGGGBBBB_15,
-   Map_15bit_xRGBRRRRGGGGBBBB_16,
-   Map_15bit_xRGBRRRRGGGGBBBB_24,
-   Map_15bit_xRGBRRRRGGGGBBBB_32,
-};
-
 struct COLOUR_MAPPER col_Map_15bit_xRGBRRRRGGGGBBBB =
 {
    "15bit_xRGBRRRRGGGGBBBB",
@@ -1121,6 +1121,47 @@ struct COLOUR_MAPPER col_Map_15bit_xRGBRRRRGGGGBBBB =
    Map_15bit_xRGBRRRRGGGGBBBB_16,
    Map_15bit_xRGBRRRRGGGGBBBB_24,
    Map_15bit_xRGBRRRRGGGGBBBB_32,
+};
+#undef BUILD_MAPPER5
+#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)   \
+void NAME(UINT32 bank, UINT32 cols)           \
+{                                             \
+   UINT16 yy;                                 \
+   UINT16 *ta;                                \
+   TYPE *ct,res;                              \
+                                              \
+   bank_status[bank] = cols;                  \
+   ta = (UINT16 *) (RAM_PAL+(bank<<5));       \
+   ct = (TYPE*)coltab[bank];                  \
+   do{                                        \
+      yy = (*ta++);                           \
+                                              \
+       PEN_FUNC(                              \
+               (yy&0xF000)>>8|((yy&0x08)),    \
+               (yy&0x0F00)>>4|((yy&0x04)<<1), \
+               (yy&0x00F0)|((yy&0x02)<<2),    \
+               res                            \
+               );                             \
+                                              \
+      *ct++ = res;                            \
+                                              \
+   }while(--cols);                            \
+}
+
+BUILD_MAPPER5(Map_15bit_zerozone_8,UINT8,GET_PEN_FOR_COLOUR_8)
+BUILD_MAPPER5(Map_15bit_zerozone_15,UINT16,GET_PEN_FOR_COLOUR_15)
+BUILD_MAPPER5(Map_15bit_zerozone_16,UINT16,GET_PEN_FOR_COLOUR_16)
+BUILD_MAPPER5(Map_15bit_zerozone_24,UINT32,GET_PEN_FOR_COLOUR_24)
+BUILD_MAPPER5(Map_15bit_zerozone_32,UINT32,GET_PEN_FOR_COLOUR_32)
+
+struct COLOUR_MAPPER col_Map_15bit_zerozone =
+{
+   "15bit_zerozone",
+   Map_15bit_zerozone_8,
+   Map_15bit_zerozone_15,
+   Map_15bit_zerozone_16,
+   Map_15bit_zerozone_24,
+   Map_15bit_zerozone_32,
 };
 
 void map_15bit_rrrr_rggg_ggbb_bbbx_rev_8(UINT32 bank, UINT32 cols)
