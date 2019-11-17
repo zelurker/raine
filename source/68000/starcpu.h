@@ -17,7 +17,11 @@ extern "C" {
 struct STARSCREAM_PROGRAMREGION {
 	unsigned lowaddr;
 	unsigned highaddr;
+#if USE_MUSASHI == 2
+	UINT8 *offset;
+#else
 	unsigned offset;
+#endif
 };
 
 struct STARSCREAM_DATAREGION {
