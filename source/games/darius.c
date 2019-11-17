@@ -10,11 +10,10 @@
 #include "2203intf.h"
 #include "msm5205.h"
 #include "streams.h"
+#include "timer.h"
+#include "files.h"
 
 static WRITE_HANDLER( DariusVol );
-
-
-
 static struct ROM_INFO rom_dariusj[] =
 {
    { "a96_28-1.152", 0x00010000, 0xfb34d400, 0, 0, 0, },
@@ -115,49 +114,51 @@ static struct INPUT_INFO input_darius[] =
 
 static struct DSW_DATA dsw_data_darius_0[] =
 {
-   { MSG_DSWA_BIT1,           0x01, 0x02 },
-   { MSG_OFF,                 0x01},
-   { MSG_ON,                  0x00},
-   { _("Auto Turbo Fire"),       0x02, 0x02 },
-   { MSG_OFF,                 0x02},
-   { MSG_ON,                  0x00},
-   { MSG_TEST_MODE,           0x04, 0x02 },
-   { MSG_OFF,                 0x04},
-   { MSG_ON,                  0x00},
-   { MSG_DEMO_SOUND,          0x08, 0x02 },
-   { MSG_ON,                  0x08},
-   { MSG_OFF,                 0x00},
-   { MSG_COIN1,               0x30, 0x04 },
-   { MSG_1COIN_1PLAY,         0x30},
-   { MSG_1COIN_2PLAY,         0x20},
-   { MSG_2COIN_3PLAY,         0x10},
-   { MSG_2COIN_1PLAY,         0x00},
-   { MSG_COIN2,               0xC0, 0x04 },
-   { MSG_1COIN_1PLAY,         0xC0},
-   { MSG_1COIN_2PLAY,         0x80},
-   { MSG_2COIN_3PLAY,         0x40},
-   { MSG_2COIN_1PLAY,         0x00},
-   { NULL,                    0,   },
+  { MSG_UNKNOWN, 0x0001, 2 },
+  { MSG_OFF, 0x0001, 0x00 },
+  { MSG_ON, 0x0000, 0x00 },
+  { "Autofire", 0x0002, 2 },
+  { MSG_NORMAL, 0x0002, 0x00 },
+  { "Fast", 0x0000, 0x00 },
+  DSW_SERVICE( 0, 0x0004 ),
+  DSW_DEMO_SOUND( 0x0008, 0x0000 ),
+  { MSG_COIN1, 0x0030, 4 },
+  { MSG_4COIN_1PLAY, 0x0000, 0x00 },
+  { MSG_3COIN_1PLAY, 0x0010, 0x00 },
+  { MSG_2COIN_1PLAY, 0x0020, 0x00 },
+  { MSG_1COIN_1PLAY, 0x0030, 0x00 },
+  { MSG_COIN2, 0x00c0, 4 },
+  { MSG_1COIN_2PLAY, 0x00c0, 0x00 },
+  { MSG_1COIN_3PLAY, 0x0080, 0x00 },
+  { MSG_1COIN_4PLAY, 0x0040, 0x00 },
+  { MSG_1COIN_6PLAY, 0x0000, 0x00 },
+  { NULL, 0, 0}
 };
 
 static struct DSW_DATA dsw_data_darius_1[] =
 {
-   { MSG_DIFFICULTY,          0x03, 0x04 },
-   { MSG_NORMAL,              0x03},
-   { MSG_EASY,                0x02},
-   { MSG_HARD,                0x01},
-   { MSG_HARDEST,             0x00},
-   { _("Extra Ship"),            0x0C, 0x04 },
-   { _("30k 100k"),              0x0C},
-   { _("20k 80k"),               0x08},
-   { _("40k 200k"),              0x04},
-   { _("50k 250k"),              0x00},
-   { _("Ships"),                 0x30, 0x04 },
-   { "3",                     0x30},
-   { "5",                     0x20},
-   { "1",                     0x10},
-   { "2",                     0x00},
-   { NULL,                    0,   },
+  { MSG_DIFFICULTY, 0x3, 4 },
+  { MSG_EASY, 0x2, 0x00 },
+  { MSG_MEDIUM, 0x3, 0x00 },
+  { MSG_HARD, 0x1, 0x00 },
+  { MSG_HARDEST, 0x0, 0x00 },
+  { MSG_EXTRA_LIFE, 0xc, 4 },
+  { "every 600k", 0x8, 0x00 },
+  { "600k only", 0xc, 0x00 },
+  { "800k only", 0x4, 0x00 },
+  { MSG_UNKNOWN, 0x0, 0x00 },
+  { MSG_LIVES, 0x30, 4 },
+  { "3", 0x30, 0x00 },
+  { "4", 0x20, 0x00 },
+  { "5", 0x10, 0x00 },
+  { "6", 0x0, 0x00 },
+  { MSG_UNKNOWN, 0x40, 2 },
+  { MSG_OFF, 0x40, 0x00 },
+  { MSG_ON, 0x0, 0x00 },
+  { MSG_CONTINUE_PLAY, 0x80, 2 },
+  { MSG_NO, 0x0, 0x00 },
+  { MSG_YES, 0x80, 0x00 },
+  { NULL, 0, 0}
 };
 
 static struct DSW_INFO dsw_darius[] =
@@ -178,7 +179,7 @@ static struct YM2203interface ym2203_interface =
   { 0 },
   { DariusVol, NULL },
   { NULL, NULL },
-  { NULL, NULL }
+  { z80_irq_handler, NULL }
 };
 
 static struct msm5205_adpcm_list darius_adpcm[] =
@@ -323,23 +324,6 @@ static UINT8 *GFX_FG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-static int tcpu;
-
-static UINT16 BadReadWord(UINT32 address)
-{
-#ifdef RAINE_DEBUG
-       if(address!=0x0B0000)print_debug("Rw%01d(%06x) [%06x]\n",tcpu,address,s68000_pc);
-#endif
-   return(0xFFFF);
-}
-
-static void BadWriteWord(UINT32 address, UINT16 data)
-{
-#ifdef RAINE_DEBUG
-      if(address!=0x0B0000)print_debug("Ww%01d(%06x,%04x) [%06x]\n",tcpu,address,data,s68000_pc);
-#endif
-}
-
 static UINT8 darius_ioc_rb(UINT32 address)
 {
    address&=0xFF;
@@ -396,8 +380,14 @@ static void darius_ioc_ww(UINT32 address, UINT16 data)
    darius_ioc_wb(address+1, (UINT8) ((data>>0)&0xFF));
 }
 
+static void clear_darius() {
+    save_debug("ROM.bin",ROM,0x60000,1);
+    save_debug("ROM2.bin",ROM+0x60000,0x40000,1);
+}
+
 static void load_darius()
 {
+    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
    int ta,tb,tc,romset;
    if (is_current_game("dariusj"))
        romset = 0;
@@ -543,7 +533,7 @@ static void load_darius()
    memset(RAM,0xFF,0x30000);
    if(!load_rom_index(1, RAM+0x00000, 0x10000)) return;		// 68000 MAIN
    if(romset==2){
-   if(!load_rom_index(30,RAM+0x10000, 0x10000)) return;
+       if(!load_rom_index(30,RAM+0x10000, 0x10000)) return;
    }
    if(!load_rom_index(3, RAM+0x20000, 0x10000)) return;
 
@@ -639,145 +629,158 @@ static void load_darius()
    msm5205_interface.romsize[0] = 0x10000;
    msm5205_interface.updatemode = MSM5205_STEREO;
 
-   /************************************/
-
-
    if(romset==0){		// Original
 
-   // Main 68000 Speed Hack
+       // Main 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x0070C],0x13FC0000);
-   WriteLong68k(&ROM[0x00710],0x00AA0000);
-   WriteWord68k(&ROM[0x00714],0x6100-20);
+       WriteLong68k(&ROM[0x0070C],0x13FC0000);
+       WriteLong68k(&ROM[0x00710],0x00AA0000);
+       WriteWord68k(&ROM[0x00714],0x6100-20);
 
-   WriteLong68k(&ROM[0x00938],0x13FC0000);
-   WriteLong68k(&ROM[0x0093C],0x00AA0000);
+#if USE_MUSASHI < 2
+       // This one is pretty bad : with this speed hack the communication is interrupted in the middle of an irq
+       // and both cpus do a lot of work in their irq function. For that to work I would need some way to make the irq
+       // pending, but as it is now, I don't see how... so the easiest way is to disable this, and then add some cycles
+       // after the irq or the 1st cpu so that the communication can be initiated.
+       // Without this, the game works, but the stages are empty ! You don't get any enemy !
+       WriteLong68k(&ROM[0x00938],0x13FC0000);
+       WriteLong68k(&ROM[0x0093C],0x00AA0000);
+#endif
 
-   // Sub 68000 Speed Hack
+       // Sub 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x606FA],0x13FC0000);
-   WriteLong68k(&ROM[0x606FE],0x00AA0000);
-   WriteWord68k(&ROM[0x60702],0x6100-16);
+       WriteLong68k(&ROM[0x606FA],0x13FC0000);
+       WriteLong68k(&ROM[0x606FE],0x00AA0000);
+       WriteWord68k(&ROM[0x60702],0x6100-16);
 
-   WriteLong68k(&ROM[0x6F074],0x13FC0000);
-   WriteLong68k(&ROM[0x6F078],0x00AA0000);
+       WriteLong68k(&ROM[0x6F074],0x13FC0000);
+       WriteLong68k(&ROM[0x6F078],0x00AA0000);
 
-   // Fix Main 68000 Checksum
+       // Fix Main 68000 Checksum
 
-   WriteLong68k(&ROM[0x013A8],0x4E714E71);
-   WriteLong68k(&ROM[0x013BE],0x4E714E71);
+       WriteLong68k(&ROM[0x013A8],0x4E714E71);
+       WriteLong68k(&ROM[0x013BE],0x4E714E71);
 
-   // Fix Communication
+       // Fix Communication
 
-   WriteWord68k(&ROM[0x013EA],0x4E71);
+       WriteWord68k(&ROM[0x013EA],0x4E71);
 
-   // Fix Sub 68000 Checksum
+       // Fix Sub 68000 Checksum
 
-   WriteLong68k(&ROM[0x60A0A],0x4E714E71);
+       WriteLong68k(&ROM[0x60A0A],0x4E714E71);
 
    }
 
    if(romset==1){		// Extra
 
-   // Main 68000 Speed Hack
+       // Main 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x00716],0x13FC0000);
-   WriteLong68k(&ROM[0x0071A],0x00AA0000);
-   WriteWord68k(&ROM[0x0071E],0x6100-20);
+       WriteLong68k(&ROM[0x00716],0x13FC0000);
+       WriteLong68k(&ROM[0x0071A],0x00AA0000);
+       WriteWord68k(&ROM[0x0071E],0x6100-20);
 
-   WriteLong68k(&ROM[0x0093E],0x13FC0000);
-   WriteLong68k(&ROM[0x00942],0x00AA0000);
+       WriteLong68k(&ROM[0x0093E],0x13FC0000);
+       WriteLong68k(&ROM[0x00942],0x00AA0000);
 
-   // Sub 68000 Speed Hack
+       // Sub 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x606FA],0x13FC0000);
-   WriteLong68k(&ROM[0x606FE],0x00AA0000);
-   WriteWord68k(&ROM[0x60702],0x6100-16);
+       WriteLong68k(&ROM[0x606FA],0x13FC0000);
+       WriteLong68k(&ROM[0x606FE],0x00AA0000);
+       WriteWord68k(&ROM[0x60702],0x6100-16);
 
-   WriteLong68k(&ROM[0x6F074],0x13FC0000);
-   WriteLong68k(&ROM[0x6F078],0x00AA0000);
+       WriteLong68k(&ROM[0x6F074],0x13FC0000);
+       WriteLong68k(&ROM[0x6F078],0x00AA0000);
 
-   // Fix Main 68000 Checksum
+       // Fix Main 68000 Checksum
 
-   WriteLong68k(&ROM[0x013D6],0x4E714E71);
-   WriteLong68k(&ROM[0x013EC],0x4E714E71);
+       WriteLong68k(&ROM[0x013D6],0x4E714E71);
+       WriteLong68k(&ROM[0x013EC],0x4E714E71);
 
-   // Fix Communication
+       // Fix Communication
 
-   WriteWord68k(&ROM[0x01418],0x4E71);
+       WriteWord68k(&ROM[0x01418],0x4E71);
 
-   // Fix Sub 68000 Checksum
+       // Fix Sub 68000 Checksum
 
-   WriteLong68k(&ROM[0x60A0A],0x4E714E71);
+       WriteLong68k(&ROM[0x60A0A],0x4E714E71);
 
    }
 
    if(romset==2){		// Alternate
 
-   // Main 68000 Speed Hack
+       // Main 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x0070C],0x13FC0000);
-   WriteLong68k(&ROM[0x00710],0x00AA0000);
-   WriteWord68k(&ROM[0x00714],0x6100-20);
+       WriteLong68k(&ROM[0x0070C],0x13FC0000);
+       WriteLong68k(&ROM[0x00710],0x00AA0000);
+       WriteWord68k(&ROM[0x00714],0x6100-20);
 
-   WriteLong68k(&ROM[0x00938],0x13FC0000);
-   WriteLong68k(&ROM[0x0093C],0x00AA0000);
+#if USE_MUSASHI < 2
+       WriteLong68k(&ROM[0x00938],0x13FC0000);
+       WriteLong68k(&ROM[0x0093C],0x00AA0000);
+#endif
 
-   // Sub 68000 Speed Hack
+       // Sub 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x606FA],0x13FC0000);
-   WriteLong68k(&ROM[0x606FE],0x00AA0000);
-   WriteWord68k(&ROM[0x60702],0x6100-16);
+       WriteLong68k(&ROM[0x606FA],0x13FC0000);
+       WriteLong68k(&ROM[0x606FE],0x00AA0000);
+       WriteWord68k(&ROM[0x60702],0x6100-16);
 
-   WriteLong68k(&ROM[0x6F074],0x13FC0000);
-   WriteLong68k(&ROM[0x6F078],0x00AA0000);
+#if 1
+       WriteLong68k(&ROM[0x6F074],0x13FC0000);
+       WriteLong68k(&ROM[0x6F078],0x00AA0000);
 
-   // Fix Main 68000 Checksum
+       WriteWord68k(&ROM[0x60000 + 0xf052],0x4239);
+       WriteWord68k(&ROM[0x60000 + 0xf054],0xaa);
+       WriteWord68k(&ROM[0x60000 + 0xf056],0);
+       WriteWord68k(&ROM[0x60000 + 0xf05e],0x67f2);
+#endif
 
-   WriteLong68k(&ROM[0x013FA],0x4E714E71);
-   WriteLong68k(&ROM[0x01410],0x4E714E71);
+       // Fix Main 68000 Checksum
 
-   // Fix Communication
+       WriteLong68k(&ROM[0x013FA],0x4E714E71);
+       WriteLong68k(&ROM[0x01410],0x4E714E71);
 
-   WriteWord68k(&ROM[0x0143C],0x4E71);
+       // Fix Communication
 
-   // Fix Sub 68000 Checksum
+       WriteWord68k(&ROM[0x0143C],0x4E71);
 
-   WriteLong68k(&ROM[0x60A0A],0x4E714E71);
+       // Fix Sub 68000 Checksum
+
+       WriteLong68k(&ROM[0x60A0A],0x4E714E71);
 
    }
 
    if (romset == 3) {
-   // Main 68000 Speed Hack
+       // Main 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x00700],0x13FC0000);
-   WriteLong68k(&ROM[0x00704],0x00AA0000);
-   WriteWord68k(&ROM[0x00708],0x6100-20);
+       WriteLong68k(&ROM[0x00700],0x13FC0000);
+       WriteLong68k(&ROM[0x00704],0x00AA0000);
+       WriteWord68k(&ROM[0x00708],0x6100-20);
 
-   WriteLong68k(&ROM[0x0092c],0x13FC0000);
-   WriteLong68k(&ROM[0x00930],0x00AA0000);
+       WriteLong68k(&ROM[0x0092c],0x13FC0000);
+       WriteLong68k(&ROM[0x00930],0x00AA0000);
 
-   // Sub 68000 Speed Hack
+       // Sub 68000 Speed Hack
 
-   WriteLong68k(&ROM[0x606FA],0x13FC0000);
-   WriteLong68k(&ROM[0x606FE],0x00AA0000);
-   WriteWord68k(&ROM[0x60702],0x6100-16);
+       WriteLong68k(&ROM[0x606FA],0x13FC0000);
+       WriteLong68k(&ROM[0x606FE],0x00AA0000);
+       WriteWord68k(&ROM[0x60702],0x6100-16);
 
-   WriteLong68k(&ROM[0x6F076],0x13FC0000);
-   WriteLong68k(&ROM[0x6F07a],0x00AA0000);
+       WriteLong68k(&ROM[0x6F076],0x13FC0000);
+       WriteLong68k(&ROM[0x6F07a],0x00AA0000);
 
-   // Fix Main 68000 Checksum
+       // Fix Main 68000 Checksum
 
-   WriteLong68k(&ROM[0x01398],0x4E714E71);
-   //WriteLong68k(&ROM[0x013BE],0x4E714E71);
+       WriteLong68k(&ROM[0x01398],0x4E714E71);
+       //WriteLong68k(&ROM[0x013BE],0x4E714E71);
 
-   // Fix Communication
+       // Fix Communication
 
-   WriteWord68k(&ROM[0x013c4],0x4E71);
+       WriteWord68k(&ROM[0x013c4],0x4E71);
 
-   // Fix Sub 68000 Checksum
+       // Fix Sub 68000 Checksum
 
-   WriteLong68k(&ROM[0x60A0A],0x4E714E71);
+       WriteLong68k(&ROM[0x60A0A],0x4E714E71);
    }
 
    memset(RAM+0x00000,0x00,0x44000);
@@ -792,108 +795,60 @@ static void load_darius()
    ByteSwap(ROM,0xA0000);
    ByteSwap(RAM,0x44000);
 
-   AddMemFetch(0x000000, 0x05FFFF, ROM+0x000000-0x000000);	// 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x05FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadByte(0x080000, 0x08FFFF, NULL, RAM+0x000000);			// MAIN RAM
-   AddReadByte(0xD00000, 0xD0FFFF, NULL, RAM+0x010000);			// SCREEN RAM
-   AddReadByte(0xE00000, 0xE10FFF, NULL, RAM+0x020000);			// COMMON RAM
+   add_68000_rom(0,0,0x5ffff,ROM);
+   add_68000_ram(0,0x80000,0x8ffff,RAM);
+   add_68000_ram(0,0xD00000, 0xD0FFFF, RAM+0x010000);			// SCREEN RAM
+   add_68000_ram(0,0xE00000, 0xE10FFF, RAM+0x020000);			// COMMON RAM
    AddReadByte(0xC00000, 0xC000FF, darius_ioc_rb, NULL);		// I/O
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x05FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadWord(0x080000, 0x08FFFF, NULL, RAM+0x000000);			// MAIN RAM
-   AddReadWord(0xD00000, 0xD0FFFF, NULL, RAM+0x010000);			// SCREEN RAM
    AddReadWord(0xD80000, 0xD80FFF, NULL, RAM+0x031000);			// COLOUR RAM
-   AddReadWord(0xE00000, 0xE10FFF, NULL, RAM+0x020000);			// COMMON RAM
    AddReadWord(0xC00000, 0xC000FF, darius_ioc_rw, NULL);		// I/O
-   AddReadWord(0x000000, 0xFFFFFF, BadReadWord, NULL);			// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x08FFFF, NULL, RAM+0x000000);		// MAIN RAM
-   AddWriteByte(0xD00000, 0xD0FFFF, NULL, RAM+0x010000);		// SCREEN RAM
-   AddWriteByte(0xE00000, 0xE10FFF, NULL, RAM+0x020000);		// COMMON RAM
    AddWriteByte(0xC00000, 0xC000FF, darius_ioc_wb, NULL);		// I/O
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x08FFFF, NULL, RAM+0x000000);		// MAIN RAM
-   AddWriteWord(0xD00000, 0xD0FFFF, NULL, RAM+0x010000);		// SCREEN RAM
    AddWriteWord(0xD80000, 0xD80FFF, NULL, RAM+0x031000);		// COLOUR RAM
-   AddWriteWord(0xE00000, 0xE10FFF, NULL, RAM+0x020000);		// COMMON RAM
    AddWriteWord(0xD20000, 0xD20003, NULL, RAM+0x042100);		// YSCROLL RAM
    AddWriteWord(0xD40000, 0xD40003, NULL, RAM+0x042200);		// XSCROLL RAM
    AddWriteWord(0xC00000, 0xC000FF, darius_ioc_ww, NULL);		// I/O
-   AddWriteWord(0x000000, 0xFFFFFF, BadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
 
    // Sub 68000 Memory Map
    // --------------------
 
-   AddMemFetchMC68000B(0x000000, 0x03FFFF, ROM+0x060000-0x000000);	// 68000 ROM
-   AddMemFetchMC68000B(-1, -1, NULL);
+   add_68000_rom(1,0x000000, 0x03FFFF, ROM+0x060000);	// 68000 ROM
+   add_68000_ram(1,0x40000, 0x4ffff, RAM+0x32000);
+   add_68000_ram(1,0xE00000, 0xE10FFF, RAM+0x020000);		// COMMON RAM
 
-   AddReadByteMC68000B(0x000000, 0x03FFFF, NULL, ROM+0x060000);		// 68000 ROM
-   AddReadByteMC68000B(0x040000, 0x04FFFF, NULL, RAM+0x032000);		// SUB LOCAL RAM
-   AddReadByteMC68000B(0xE00000, 0xE10FFF, NULL, RAM+0x020000);		// COMMON RAM
-   AddReadByteMC68000B(0x000000, 0xFFFFFF, DefBadReadByte, NULL);	// <Bad Reads>
-   AddReadByteMC68000B(-1, -1, NULL, NULL);
-
-   AddReadWordMC68000B(0x000000, 0x03FFFF, NULL, ROM+0x060000);		// 68000 ROM
-   AddReadWordMC68000B(0x040000, 0x04FFFF, NULL, RAM+0x032000);		// SUB LOCAL RAM
    AddReadWordMC68000B(0xD80000, 0xD80FFF, NULL, RAM+0x031000);		// COLOUR RAM
-   AddReadWordMC68000B(0xE00000, 0xE10FFF, NULL, RAM+0x020000);		// COMMON RAM
-   AddReadWordMC68000B(0x000000, 0xFFFFFF, BadReadWord, NULL);		// <Bad Reads>
-   AddReadWordMC68000B(-1, -1, NULL, NULL);
 
-   AddWriteByteMC68000B(0x040000, 0x04FFFF, NULL, RAM+0x032000);	// SUB LOCAL RAM
-   AddWriteByteMC68000B(0xE00000, 0xE10FFF, NULL, RAM+0x020000);	// COMMON RAM
    AddWriteByteMC68000B(0xAA0000, 0xAA0001, Stop68000, NULL);		// Trap Idle 68000
-   AddWriteByteMC68000B(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);	// <Bad Writes>
-   AddWriteByteMC68000B(-1, -1, NULL, NULL);
 
-   AddWriteWordMC68000B(0x040000, 0x04FFFF, NULL, RAM+0x032000);	// SUB LOCAL RAM
    AddWriteWordMC68000B(0xD80000, 0xD80FFF, NULL, RAM+0x031000);	// COLOUR RAM
-   AddWriteWordMC68000B(0xE00000, 0xE10FFF, NULL, RAM+0x020000);	// COMMON RAM
    AddWriteWordMC68000B(0xC00000, 0xC000FF, NULL, RAM+0x042000);	// I/O RAM
-   AddWriteWordMC68000B(0x000000, 0xFFFFFF, BadWriteWord, NULL);	// <Bad Writes>
-   AddWriteWordMC68000B(-1, -1, NULL, NULL);
-
-   AddInitMemoryMC68000B();	// Set Starscream mem pointers...
+   finish_conf_68000(1);
 }
 
 static void execute_darius(void)
 {
-   tcpu=0;
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
 
-   tcpu=1;
    cpu_execute_cycles(CPU_68K_1, 90000*2);
 
-   tcpu=0;
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
       print_debug("PC0:%06x SR0:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_0, 4);
+#if USE_MUSASHI == 2
+   cpu_execute_cycles(CPU_68K_0,500);
+#endif
 
-   tcpu=1;
    cpu_execute_cycles(CPU_68K_1, 90000*2);
       print_debug("PC1:%06x SR1:%04x\n",s68000_pc,s68000_sr);
    cpu_interrupt(CPU_68K_1, 4);
 
    if(tc0140syt_want_nmi()!=0) cpu_int_nmi(CPU_Z80_0);
 
-   //cpu_execute_cycles(CPU_Z80_0, 4000000/60*2);			// Sound Main Z80
-   cpu_execute_cycles(CPU_Z80_0, 5000000/60);			// Sound Main Z80
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC0:%04x\n",z80pc);
-#endif*/
-   cpu_interrupt(CPU_Z80_0, 0x38);
-
+   execute_z80_audio_frame();
 }
 
 static void DrawDarius(void)
@@ -1151,6 +1106,7 @@ static struct DIR_INFO dir_darius[] =
 };
 GME( darius, "Darius", TAITO, 1986, GAME_SHOOT,
 	.long_name_jpn = "ダライアス",
+	.clear = clear_darius,
 	.board = "A96",
 );
 static struct DIR_INFO dir_dariuse[] =

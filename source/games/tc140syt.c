@@ -259,7 +259,8 @@ void tc0140syt_write_sub_z80(UINT16 offset, UINT8 data)
          // [NMI Disable]
 
          case 0x05:
-            tc0140syt.sub_nmi = 0;
+	 // This is definetely wrong in darius, with this enabled you loose the sound effects when there are too many effects at the same time
+            // tc0140syt.sub_nmi = 0;
          break;
 
          // [NMI Enable]
