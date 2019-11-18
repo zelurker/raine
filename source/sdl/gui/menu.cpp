@@ -1966,7 +1966,9 @@ void TMenu::execute() {
         handle_joystick(&event);
 	break;
       case SDL_VIDEORESIZE:
-	if (!display_cfg.fullscreen || display_cfg.auto_mode_change) {
+	print_debug("received resize %d,%d screen %d,%d\n",event.resize.w,event.resize.h,display_cfg.screen_x,display_cfg.screen_y);
+	if ((event.resize.w != display_cfg.screen_x ||
+		    event.resize.h != display_cfg.screen_y) && (!display_cfg.fullscreen || display_cfg.auto_mode_change)) {
 	    display_cfg.screen_x = event.resize.w;
 	    display_cfg.screen_y = event.resize.h;
 		if (keep_vga) {
