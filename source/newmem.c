@@ -24,7 +24,7 @@ void *AllocateMem(UINT32 size)
    void *memptr;
 
    if (size < 8) {
-     printf("received size %d\n",size);
+     print_debug("AllocateMem: received size %d\n",size);
      size = 8;
    }
 
