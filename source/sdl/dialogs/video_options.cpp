@@ -11,7 +11,7 @@
 #include "blit.h"
 #include "sdl/blit_sdl.h"
 #include "control.h"
-#include "sdl/control_internal.h"
+// #include "sdl/control_internal.h"
 #include "display.h"
 #include "sdl/display_sdl.h"
 #ifdef MessageBox
@@ -31,6 +31,7 @@ class TVideo : public TMenu
 };
 
 static TVideo *video_options;
+extern "C" void toggle_fullscreen(); // from control_internal.h normally, but windows.h is allergic !
 
 static int my_toggle_fullscreen(int sel) {
     // int oldx = display_cfg.screen_x, oldy = display_cfg.screen_y;
