@@ -117,7 +117,10 @@ void display_read_config() {
    display_cfg.user_flip = raine_get_config_int( "Display", "flip", 0);
    display_cfg.no_rotate = raine_get_config_int( "Display", "no_rotate", 0);
    display_cfg.no_flip = raine_get_config_int( "Display", "no_flip", 0);
-   display_cfg.auto_mode_change = raine_get_config_int( "Display", "auto_mode_change", 0);
+   if (display_cfg.video_mode != 2)
+       display_cfg.auto_mode_change = 0;
+   else
+       display_cfg.auto_mode_change = raine_get_config_int( "Display", "auto_mode_change", 0);
    display_cfg.fix_aspect_ratio = raine_get_config_int("display", "fix_aspect_ratio", 1);
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
    display_cfg.double_buffer = raine_get_config_int("display", "double_buffer", 1);
