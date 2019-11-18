@@ -114,7 +114,7 @@ void set_regs(int cpu) {
 #if USE_MUSASHI < 2
 	M68000_context[num].sr = s68000context.sr = sr;
 #else
-	m68ki_set_sr(sr);
+	m68ki_set_sr_noint_nosp(sr);
 #endif
 	s68000_pc = pc;
 	s68000GetContext(&M68000_context[num]);
