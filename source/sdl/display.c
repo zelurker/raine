@@ -92,6 +92,9 @@ void display_read_config() {
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
 
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0);
+#if defined( __x86_64__ ) || defined(NO_ASM)
+   if (display_cfg.video_mode == 1) display_cfg.video_mode = 0; // forbid yuv overlay if no asm
+#endif
 #ifdef RAINE_WIN32
    display_cfg.video_driver = raine_get_config_int( "Display", "video_driver", 0);
    char *pos = raine_get_config_string("Display", "position", "");

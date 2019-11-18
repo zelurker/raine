@@ -207,8 +207,12 @@ static menu_item_t video_items[] =
 {  _("SDL video driver"), NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
   { _("SDL default (windib since 1.2.10)"), _("windib (good for ogl)"),_("directx (good for hw overlays/blits)")} },
 #endif
-{  _("Video renderer"), NULL, (int*)&display_cfg.video_mode, 3, {0, 1, 2},
-  { _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
+{  _("Video renderer"), NULL, (int*)&display_cfg.video_mode,
+#if defined(__x86_64__) || defined(NO_ASM)
+    2, {0, 2},{ _("OpenGL"), _("Normal blits")} },
+#else
+    3, {0, 1, 2},{ _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
+#endif
 { _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
 { _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
 { _("Use double buffer (ignored by opengl)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
