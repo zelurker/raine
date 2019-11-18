@@ -2184,11 +2184,13 @@ static INLINE void advance(void)
 
 			if (mod_ind)
 			{
-				UINT32 kc_channel =	op->kc_i + mod_ind;
-				(op+0)->phase += ( (PSG->freq[ kc_channel + (op+0)->dt2 ] + (op+0)->dt1) * (op+0)->mul ) >> 1;
-				(op+1)->phase += ( (PSG->freq[ kc_channel + (op+1)->dt2 ] + (op+1)->dt1) * (op+1)->mul ) >> 1;
-				(op+2)->phase += ( (PSG->freq[ kc_channel + (op+2)->dt2 ] + (op+2)->dt1) * (op+2)->mul ) >> 1;
-				(op+3)->phase += ( (PSG->freq[ kc_channel + (op+3)->dt2 ] + (op+3)->dt1) * (op+3)->mul ) >> 1;
+				INT32 kc_channel =	op->kc_i + mod_ind;
+				if (kc_channel >= 0) {
+				    (op+0)->phase += ( (PSG->freq[ kc_channel + (op+0)->dt2 ] + (op+0)->dt1) * (op+0)->mul ) >> 1;
+				    (op+1)->phase += ( (PSG->freq[ kc_channel + (op+1)->dt2 ] + (op+1)->dt1) * (op+1)->mul ) >> 1;
+				    (op+2)->phase += ( (PSG->freq[ kc_channel + (op+2)->dt2 ] + (op+2)->dt1) * (op+2)->mul ) >> 1;
+				    (op+3)->phase += ( (PSG->freq[ kc_channel + (op+3)->dt2 ] + (op+3)->dt1) * (op+3)->mul ) >> 1;
+				}
 			}
 			else		/* phase modulation from LFO is equal to zero */
 			{
