@@ -230,7 +230,6 @@ int init_sound_emulators(void)
 	break;
 	}
 	if( i ){
-	  audio_sample_rate = 0;
 	  SndMachine = NULL;
 	  printf("emulator init failed\n");
 	  return 1;
