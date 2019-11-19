@@ -391,8 +391,9 @@ static void execute_opwolf3(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
 
-   cpu_interrupt(CPU_68K_0, 6);
    cpu_interrupt(CPU_68K_0, 5);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 6);
 
    Taito2610_Frame();			// Z80 and YM2610
 

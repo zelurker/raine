@@ -658,6 +658,7 @@ void do_irq(int argc, char **argv) {
   if (argc == 2) {
     int irq = parse(argv[1]);
     cpu_interrupt(cpu_id,irq);
+    cpu_execute_cycles(cpu_id,1);
     get_regs(cpu_id);
     return;
   }

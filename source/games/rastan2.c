@@ -465,8 +465,9 @@ static void execute_nastar(void)
    #endif
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-   cpu_interrupt(CPU_68K_0, 4);
    cpu_interrupt(CPU_68K_0, 2);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 4);
 
    execute_z80_audio_frame();
 }

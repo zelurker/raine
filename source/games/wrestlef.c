@@ -552,6 +552,7 @@ static void execute_wwfwfsta(void)
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 16MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);
+   cpu_execute_cycles(CPU_68K_0,1);
    cpu_interrupt(CPU_68K_0, 3);
 
 //   TechnosSound_Frame();		// Z80; YM2151; OKI ADPCM

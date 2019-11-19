@@ -719,6 +719,7 @@ else{
 
    cpu_execute_cycles(CPU_68K_1, CPU_FRAME_MHz(16,60));
    cpu_interrupt(CPU_68K_1, 4);
+   cpu_execute_cycles(CPU_68K_1,1);
    cpu_interrupt(CPU_68K_1, 5);
 }
 

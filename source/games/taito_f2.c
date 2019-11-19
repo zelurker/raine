@@ -2964,6 +2964,7 @@ static void execute_liquidk(void)
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
+   cpu_execute_cycles(CPU_68K_0,1);
    cpu_interrupt(CPU_68K_0, 6);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    Taito2610_Frame();			// Z80 and YM2610
@@ -3051,8 +3052,9 @@ static void execute_gunfront(void)
 {
   // 68k overclocked because of speed hacks, 2 execute_cycles / frame for sprite sync
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(20,60) - s68000_cycles_run);
-   cpu_interrupt(CPU_68K_0, 6);
    cpu_interrupt(CPU_68K_0, 5);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 6);
 #if USE_MUSASHI < 2
    s68000_cycles_run = 0;
 #endif
@@ -3093,8 +3095,9 @@ static void execute_cameltry(void)
    tc0005rot_set_bitmap();
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
-   cpu_interrupt(CPU_68K_0, 6);
    cpu_interrupt(CPU_68K_0, 5);
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 6);
 
    execute_z80_audio_frame();
 

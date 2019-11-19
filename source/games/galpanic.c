@@ -706,8 +706,9 @@ static void load_galpanic_actual(void)
 static void execute_newfant(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));
-   cpu_interrupt(CPU_68K_0, 5);					// int5 updates palette
    cpu_interrupt(CPU_68K_0, 3);					// int3 drives the game
+   cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 5);					// int5 updates palette
 }
 
 static void draw_galpanic_sprites() {

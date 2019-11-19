@@ -615,6 +615,7 @@ static void execute_othunder(void)
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
+   cpu_execute_cycles(CPU_68K_0,1);
    cpu_interrupt(CPU_68K_0, 6);
 
    Taito2610_Frame();			// Z80 and YM2610
