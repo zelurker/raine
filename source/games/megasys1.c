@@ -3130,6 +3130,7 @@ static void execute_lordofk(void)
    //print_ingame(60,gettext("%04x.%04x/%04x/%04x.%04x.%04x"),ReadWord(&RAM[0x14000]),ReadWord(&RAM[0x14204]),ReadWord(&RAM[0x1420C]),ReadWord(&RAM[0x1400C]),ReadWord(&RAM[0x14100]),ReadWord(&RAM[0x14300]));
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));
   cpu_interrupt(CPU_68K_0, 1);
+  cpu_execute_cycles(CPU_68K_0,1);
   cpu_interrupt(CPU_68K_0, 2);
   ExecuteSoundFrame();                         // 68000 *or* Z80
 
