@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.64.16"
+VERSION = "0.90"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -43,7 +43,7 @@ MAME_6502 = 1
 # Disable all asm, if you do that you'd better remove the cpu cores which
 # currently exist only in asm. This will also disable the asm_video_core of
 # course
-# NO_ASM = 1
+NO_ASM = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
@@ -227,7 +227,12 @@ ifdef RAINE32
    # MINGW32
 
 SDL = 1
+ifdef NO_ASM
+	RAINE_EXE = raine.exe
+else
    RAINE_EXE = raine32.exe
+endif
+
 ifdef CROSSCOMPILE
 	ASM = @nasm
 	MD = @mkdir
@@ -1130,7 +1135,7 @@ endif
 else
 # windows
 # and these libs are used by SDL_sound/FLAC
-LIBS += -logg -lvorbisfile -lws2_32 -lintl
+LIBS += -logg -lvorbisfile -lws2_32 -lintl -lssp
 endif
 endif # HAS_NEO
 endif
@@ -1230,10 +1235,6 @@ ifdef GFX_SVGALIB
 	@echo -n " with svgalib support"
 endif
 	@echo " with $(CC) for $(OSTYPE) CPU=$(CPU)"
-ifndef ASM_VIDEO_CORE
-	@echo "WARNING : move functions do not exist in the c"
-	@echo "          video core. Using the asm functions for these..."
-endif
 
 ifdef RAINE32
 $(RAINE_EXE):	$(OBJS) $(OBJDIR)/raine.res
@@ -1545,7 +1546,11 @@ source/Musashi/m68kops.c source/Musashi/m68kops.h: $(OBJDIR)/Musashi/m68kmake
 	cd source/Musashi && ../../$(OBJDIR)/Musashi/m68kmake
 
 $(OBJDIR)/Musashi/m68kmake: $(OBJDIR)/Musashi/m68kmake.o
+ifdef CROSSCOMPILE
+	cp -fv $(NATIVE)/object/Musashi/m68kmake $(OBJDIR)/Musashi
+else
 	$(LD) -o $@ $<
+endif
 
 $(OBJDIR)/Musashi/m68kcpu.o: source/Musashi/m68kops.h source/Musashi/m68kops.c source/Musashi/m68kcpu.c
 
