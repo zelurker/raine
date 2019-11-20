@@ -58,7 +58,7 @@ extern "C" {
 // Useful String Constants
 
 #define HANDLE	"Raine Team"    // Credit string
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) && !defined(__x86_64__)
 #define EMUNAME "Raine32"       // Win32/DirectX Name
 #else
 #define EMUNAME "Raine"    // Dos/Linux Name
