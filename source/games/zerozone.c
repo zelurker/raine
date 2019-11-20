@@ -235,7 +235,7 @@ static void execute_zerozone(void)
 
 static void DrawZeroZone(void)
 {
-   int ta,yy,tx,ty,zz;
+   int ta,tx,ty,zz;
    UINT8 *map;
 
    // Palette (256 colours)
