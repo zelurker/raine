@@ -76,7 +76,7 @@ void Draw##SIZE##x##SIZE##_Mapped_##BPP##_FlipY(ARG_MAP)               \
    int xx,yy;                                                          \
                                                                        \
    for(yy=0; yy<SIZE; yy++){                                           \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x + 15;         \
+      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x + SIZE-1;     \
       for(xx=0; xx<SIZE; xx++){                                        \
          *line-- = ((UINT##BPP *)cmap)[ *SPR++ ];                      \
       }                                                                \
@@ -89,7 +89,7 @@ void Draw##SIZE##x##SIZE##_Mapped_##BPP##_FlipXY(ARG_MAP)              \
    int xx,yy;                                                          \
                                                                        \
    for(yy=SIZE-1; yy>=0; yy--){                                        \
-      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x + 15;         \
+      line = ((UINT##BPP *)(GameBitmap->line[y+yy])) + x + SIZE-1;     \
       for(xx=0; xx<SIZE; xx++){                                        \
          *line-- = ((UINT##BPP *)cmap)[ *SPR++ ];                      \
       }                                                                \
