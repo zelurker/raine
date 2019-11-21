@@ -18,6 +18,7 @@
 #include "sasound.h"
 #include "loadroms.h"
 #include "streams.h"
+#include "savegame.h"
 
 /* 8 voices max */
 #define MAX_VOICES 8
@@ -392,7 +393,9 @@ int namco_sh_start(const struct namco_interface *intf)
 		voice->noise_state = 0;
 		voice->noise_seed = 1;
 		voice->noise_counter = 0;
+		// AddSaveData(ASCII_ID('N','M','C',n),(UINT8*)voice,(UINT8*)&voice->wave-(UINT8*)voice);
 	}
+	AddSaveData(ASCII_ID('N','A','M','C'),(UINT8*)&sound_enable,sizeof(sound_enable));
 
 	return 0;
 }
