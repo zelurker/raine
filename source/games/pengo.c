@@ -1196,7 +1196,7 @@ static struct ROM_INFO rom_mspacman[] =
   { "u5", 0x0800, 0xf45fbbcd, REGION_ROM1, 0x8000, LOAD_NORMAL },
   { "u6", 0x1000, 0xa90e7000, REGION_ROM1, 0x9000, LOAD_NORMAL },
   { "u7", 0x1000, 0xc82cd714, REGION_ROM1, 0xb000, LOAD_NORMAL },
-  FILL(0xc000, 0x3000,0xff, ROM1),
+  FILL(0xc000, 0x3000,0xbf, ROM1),
   { "5e", 0x1000, 0x5c281d01, REGION_GFX1, 0x0000, LOAD_NORMAL },
   { "5f", 0x1000, 0x615af909, REGION_GFX2, 0x0000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
@@ -1210,7 +1210,7 @@ static struct ROM_INFO rom_mspacmab[] =
   { "boot4", 0x1000, 0x165a9dd8, REGION_ROM1, 0x3000, LOAD_NORMAL },
   { "boot5", 0x1000, 0x8c3e6de6, REGION_ROM1, 0x8000, LOAD_NORMAL },
   { "boot6", 0x1000, 0x368cb165, REGION_ROM1, 0x9000, LOAD_NORMAL },
-  FILL(0xa000, 0x5000,0xff, ROM1),
+  FILL(0xa000, 0x5000,0xbf, ROM1),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1223,7 +1223,7 @@ static struct ROM_INFO rom_mspac6m[] =
   { "52.cpu", 0x1000, 0x48453707, REGION_ROM1, 0x8000, LOAD_NORMAL },
   { "62.cpu", 0x1000, 0x2e961bc4, REGION_ROM1, 0x9000, LOAD_NORMAL },
 
-  FILL(0xa000,0x5000,0xff,ROM1),
+  FILL(0xa000,0x5000,0xbf,ROM1),
 
   { "7.cpu", 0x0800, 0x2850148a, REGION_GFX1, 0x0000, LOAD_NORMAL },
   { "9.cpu", 0x0800, 0x6c3c6ebb, REGION_GFX1, 0x0800, LOAD_NORMAL },
@@ -1244,7 +1244,7 @@ static struct ROM_INFO rom_mspacpls[] =
   { "boot4", 0x1000, 0x165a9dd8, REGION_ROM1, 0x3000, LOAD_NORMAL },
   { "mspacatk.5", 0x1000, 0xe6e06954, REGION_ROM1, 0x8000, LOAD_NORMAL },
   { "mspacatk.6", 0x1000, 0x3b5db308, REGION_ROM1, 0x9000, LOAD_NORMAL },
-  FILL(0xa000, 0x5000,0xff, ROM1),
+  FILL(0xa000, 0x5000,0xbf, ROM1),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1938,7 +1938,7 @@ static struct ROM_INFO rom_pacman25[] =
   { "maps3.rom", 0x1000, 0xc626ea9c, REGION_ROM1, 0xa000, LOAD_NORMAL },
   // maps 18-25
   { "maps4.rom", 0x1000, 0xf5ba954d, REGION_ROM1, 0xb000, LOAD_NORMAL },
-  FILL(0xc000, 0x3000,0xff, ROM1),
+  FILL(0xc000, 0x3000,0xbf, ROM1),
 
   { "pacman25.5e", 0x1000, 0x11d47ae1, REGION_GFX1, 0x0000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
