@@ -916,9 +916,11 @@ static void do_search(int argc, char **argv) {
     } else {
       start = parse(argv[2]);
       char *s = strchr(argv[2],'-');
-      if (s)
-	end = parse(s+1);
-      else {
+      if (s) {
+	  *s = 0;
+	  start = parse(argv[2]);
+	  end = parse(s+1);
+      } else {
 	end = 0;
 	for (UINT32 n=0; n<nb_ram; n+=2) {
 	  if (ram[n] <= start && start <= ram[n+1]) {
@@ -938,24 +940,39 @@ static void do_search(int argc, char **argv) {
 	for (int n=REGION_ROM1; n<=REGION_ROM4; n++)
 	    if (R24[start>>16] == load_region[n]) {
 		end = get_region_size(n);
+		cons->print("end adjusted %x",end);
 		break;
 	    }
 
-	printf("end adjusted %x\n",end);
     }
 
     if (end < start) {
-      cons->print("end adr should be > start adr");
+      cons->print("end adr (%x) should be > start adr (%x)",end,start);
       return;
     }
 
     // find userdata
     if (block < 0) {
+	int found = 0;
+	unsigned int diffn = 0xffffff,bestn;
       for (block = 0; block < (int)nb_ram; block += 2) {
 	if (ram[block] <= start && end <= ram[block+1]) {
+	    found = 1;
 	  break;
+	} else {
+	    if (ram[block] <= start && start-ram[block] < diffn) {
+		diffn = start - ram[block];
+		bestn = block;
+	    }
 	}
       }
+      if (!found) {
+	  // Exact match is not always possible when passing the where argument manually
+	  // in this case we suppose the user knows what he's doing and we take the closest match
+	  // for the start address and hope that the end will be in the same block.
+	  block = bestn;
+      }
+
     }
 
     if (block < 0) {
@@ -963,6 +980,7 @@ static void do_search(int argc, char **argv) {
       return;
     }
 
+    cons->print("searching from %x to %x",start,end);
     ptr = get_userdata(cpu_id,ram[block]);
 
     if (argv[1][0] == '"' || argv[1][0] == 0x27 /* ' */) {
