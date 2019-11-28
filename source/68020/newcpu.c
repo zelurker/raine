@@ -765,9 +765,9 @@ void Stop68020(void)
 
 #ifdef USE_MUSASHI
     m68k_end_timeslice();
+#endif
 #ifdef FAST020
    WriteLong(&cyclepos[0],cycles);
-#endif
 #endif
 
       print_debug("[68020 Stopped by User]\n");
