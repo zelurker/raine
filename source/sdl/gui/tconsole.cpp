@@ -139,6 +139,8 @@ char* ansistr(char *s,int n) {
   return s;
 }
 
+#define mystrcpy(a,b) memmove(a,b,strlen(b)+1)
+
 void TConsole::print(const char *format, ...)
 {
   if (!visible) {
@@ -154,7 +156,7 @@ void TConsole::print(const char *format, ...)
   while ((s = strstr(string,"\n"))) {
     *s = 0;
     print(string);
-    strcpy(string,&s[1]);
+    mystrcpy(string,&s[1]);
   }
 
   // 2 extend tabs
@@ -179,11 +181,11 @@ void TConsole::print(const char *format, ...)
       *s = 0;
       print(string);
       *pos = old;
-      strcpy(string,s+1);
+      mystrcpy(string,s+1);
     } else {
       print(string);
       *pos = old;
-      strcpy(string,pos);
+      mystrcpy(string,pos);
     }
   }
 
@@ -321,6 +323,7 @@ void TConsole::do_help(int argc, char **argv) {
       } else {
 	print("no more help");
       }
+      break;
     }
     cmd++;
   }
