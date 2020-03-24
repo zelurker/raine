@@ -63,7 +63,7 @@ changes/antiriad:
 - Changed date from 1984 to 1986 (oops!).
 - Removed up/down from inputs (unused, like rainbow islands).
 - Cpu slices is now 16 per frame, or the music breaks on the bootlegs.
-- I think it's safe to remove the FAKE_MCU stuff now ¦_¦.
+- I think it's safe to remove the FAKE_MCU stuff now Â¦_Â¦.
 
 08-September-99:
 
@@ -902,7 +902,7 @@ static void bubl_reset() {
 
 static void load_bublbobl(void)
 {
-/*ÄÄÄÄ Set up ROM/RAM ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ*/
+/*Ã„Ã„Ã„Ã„ Set up ROM/RAM Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„*/
 
     set_reset_function(bubl_reset);
     init_assoc( 3);
@@ -1339,17 +1339,17 @@ static struct DIR_INFO dir_bublbobl[] =
    { NULL, },
 };
 GME( bublbobl, "Bubble Bobble", TAITO, 1986, GAME_PLATFORM,
-	.long_name_jpn = "ƒoƒuƒ‹ƒ{ƒuƒ‹",
+	.long_name_jpn = "ãƒãƒ–ãƒ«ãƒœãƒ–ãƒ«",
 	.board = "A78",
 );
 CLNE( boblbobl, bublbobl, "Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
 	.input = input_sboblbob,
 	.dsw = dsw_boblbobl,
-	.long_name_jpn = "ƒ{ƒuƒ‹ƒ{ƒuƒ‹",
 );
 CLNEI( dland, bublbobl, "Dream Land / Super dream land (bootleg of bubble bobble)", BOOTLEG, 1987, GAME_PLATFORM,
 	.input = input_sboblbob,
 	.dsw = dsw_dland,
+	.long_name_jpn = "å¤¢ã®åœŸåœ°",
 );
 static struct DIR_INFO dir_bublboblr[] =
 {
@@ -1361,7 +1361,7 @@ static struct DIR_INFO dir_bublboblr[] =
    { NULL, },
 };
 CLNE( bublboblr, bublbobl, "Bubble Bobble (US mode select)", TAITO, 1986, GAME_PLATFORM,
-	.long_name_jpn = "ƒoƒuƒ‹ƒ{ƒuƒ‹ (US mode select)",
+	.long_name_jpn = "ãƒãƒ–ãƒ«ãƒœãƒ–ãƒ« (US mode select)",
 	.board = "A78",
 );
 CLNEI( bublcave, bublbobl, "Bubble Bobble Lost Cave (Ver 1.2)", HACK, 2013, GAME_PLATFORM);
@@ -1379,7 +1379,7 @@ static struct DIR_INFO dir_bubboblr1[] =
    { NULL, },
 };
 CLNE( bubboblr1, bublbobl,"Bubble Bobble (US)", TAITO, 1986, GAME_PLATFORM,
-	.long_name_jpn = "ƒoƒuƒ‹ƒ{ƒuƒ‹ (US)",
+	.long_name_jpn = "ãƒãƒ–ãƒ«ãƒœãƒ–ãƒ« (US)",
 	.board = "A78",
 );
 static struct DIR_INFO dir_sboblbob[] =
@@ -1395,6 +1395,5 @@ static struct DIR_INFO dir_sboblbob[] =
 CLNE( sboblbob, bublbobl,"Super Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
 	.input = input_sboblbob,
 	.dsw = dsw_sboblbob,
-	.long_name_jpn = "ƒX[ƒp[ƒ{ƒuƒ‹ƒ{ƒuƒ‹",
 );
 
