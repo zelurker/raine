@@ -26,13 +26,13 @@ VERSION = "0.90.1"
 # the 68020, at least for now
 # 1 = 68020
 # 2 = 68000 + 68020
-USE_MUSASHI = 2
+# USE_MUSASHI = 2
 
 # use mame z80 ?
-MAME_Z80 = 1
+# MAME_Z80 = 1
 
 # use mame 6502 ?
-MAME_6502 = 1
+# MAME_6502 = 1
 
 # For osx : use frameworks or brew shared libs ?
 # Actually frameworks are a convenience for end users, to build them use
@@ -40,10 +40,9 @@ MAME_6502 = 1
 # shared libs to frameworks and then define FRAMEWORK here
 # FRAMEWORK = 1
 
-# Disable all asm, if you do that you'd better remove the cpu cores which
-# currently exist only in asm. This will also disable the asm_video_core of
+# Disable all asm. This will also disable the asm_video_core of
 # course
-NO_ASM = 1
+# NO_ASM = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
@@ -51,7 +50,17 @@ ASM_VIDEO_CORE = 1
 # console ?
 HAS_CONSOLE = 1
 
+# target build for cross compilation, the 2 defaults are for mingw32, 32
+# and 64 bits. You can't build both at the same time, make a choice !
+# Defining this allws to use ${target}-gcc for the compiler and includes
+# from /usr/${target}/include, libs in /usr/${target}/lib
+# Also, if you choose x86_64, you'd better set NO_ASM to 1 then.
+target=i686-w64-mingw32
+# target=x86_64-w64-mingw32
+
 # compile bezels (artwork) support ? (ignored if building neocd)
+# This option hasn't been tested for ages, not sure it still works
+# better leave it commented for now until really tested.
 # USE_BEZELS=1
 
 # end of user options, after this line the real thing starts...
@@ -62,20 +71,32 @@ MAME_Z80 = 1
 USE_MUSASHI = 2
 endif
 
-# Try to detect mingw... If you want to build the dos and the mingw
-# version on the same system you should unset djdir before making
-# the mingw version.
+ifdef target
+	CROSSCOMPILE = 1
+	# I don't think anyone would want another native here ?
+	NATIVE=linux-gnu-sdl
+endif
+
 ifeq ("$(shell uname)","Linux")
 OSTYPE=linux-gnu
 endif
-
-ifeq ($(CC),cc)
-CC=gcc
-endif
-
 ifeq ("$(shell uname)","FreeBSD")
 OSTYPE=linux-gnu
 endif
+
+ifndef CC
+	CC=cc
+endif
+
+ifdef target
+CC=${target}-gcc
+CXX=${target}-g++
+INCDIR = -I/usr/${target}/include
+else
+CC=gcc
+CXX=g++
+endif
+
 ifeq ("$(shell uname)","Darwin")
 # Mac os X
 DARWIN=1
@@ -90,10 +111,14 @@ else
     LD=$(CXX)
 endif
 endif
-
-endif
+endif # darwin
 
 ifeq ("$(OSTYPE)","msys")
+MINGDIR=1
+OSTYPE=mingw32
+endif
+
+ifeq ($(shell echo ${target}|sed 's/.*mingw.*/mingw/'),mingw)
 MINGDIR=1
 OSTYPE=mingw32
 endif
@@ -146,6 +171,8 @@ ASM=@nasm
 endif
 endif
 
+NASM_V := $(shell nasm -v 2>/dev/null)
+
 ifdef mingdir
 MINGDIR=1
 endif
@@ -169,7 +196,7 @@ CXXV=@$(CXX)
 LDV=@$(LD)
 endif
 
-GCC_MAJOR := $(shell $(CC) -dumpversion|sed 's/\..*//')
+GCC_MAJOR := $(shell echo $(CC) -dumpversion|sed 's/\..*//')
 GCC_MINOR := $(shell $(CC) -dumpversion|sed 's/.\.\(.\)\..*/\1/')
 GCC_PATCH := $(shell $(CC) -dumpversion|sed 's/.*\.//')
 
@@ -181,7 +208,7 @@ MD =	@mkdir
 # profiling
 # CC =	gcc -pg
 
-INCDIR=                 \
+INCDIR +=                 \
     -Isource            \
     -Isource/68000      \
     -Isource/sound      \
@@ -246,13 +273,19 @@ endif
    AFLAGS = -f coff -O1 -D__RAINE__ \
 	   -DRAINE_WIN32
 
+ifdef target
+   PNG_CFLAGS = "$(shell /usr/${target}/bin/libpng-config --cflags)"
+   PNG_LFLAGS = $(shell /usr/${target}/bin/libpng-config --ldflags)
+   PNG_STATIC_LFLAGS = "$(shell /usr/${target}/bin/libpng-config --static --ldflags)"
+else
    PNG_CFLAGS = "$(shell libpng-config --cflags)"
    PNG_LFLAGS = $(shell libpng-config --ldflags)
    PNG_STATIC_LFLAGS = "$(shell libpng-config --static --ldflags)"
+endif
    DEFINE = -D__RAINE__ \
 	   -DRAINE_WIN32 \
 
-   LIBS = -lz $(PNG_LFLAGS) -lopengl32 -lglu32
+   LIBS = $(PNG_LFLAGS) -lopengl32 -lglu32 -lz
    LIBS_STATIC = -lz $(PNG_STATIC_LFLAGS)
    INCDIR += $(PNG_CFLAGS)
 
@@ -1112,7 +1145,11 @@ SFLAGS += -DDARWIN
 CFLAGS_MCU += -DDARWIN
 LFLAGS += -Wl,-no_pie,-allow_heap_execute,-no_compact_unwind
 else  #DARWIN
+ifdef target
+CFLAGS += $(shell /usr/${target}/bin/sdl-config --cflags)
+else
 CFLAGS += $(shell sdl-config --cflags)
+endif
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
 ifdef HAS_NEO
@@ -1123,7 +1160,11 @@ LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/li
 endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
+ifdef target
+LIBS += $(shell /usr/${target}/bin/sdl-config --libs) -lSDL_ttf -lSDL_image $(shell /usr/${target}/bin/curl-config --libs) # -lefence
+else
 LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image $(shell curl-config --libs) # -lefence
+endif
 ifdef HAS_NEO
 ifdef RAINE_UNIX
 ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
@@ -1226,6 +1267,12 @@ $(OBJDIR)/raine.res:	source/raine.rc
 endif
 
 message:
+ifndef NO_ASM
+ifndef NASM_V
+	@echo "can't find nasm, tried with nasm & nasmw"
+	@exit 1
+endif
+endif
 ifdef RAINE_DEBUG
 	@echo -n Building Raine, debug version
 else
