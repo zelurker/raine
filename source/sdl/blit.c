@@ -702,9 +702,9 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
 
   if (sdl_overlay) {
     // convert source to yuy2 format in the overlay
-    unsigned char *src,*dest;
     SDL_LockYUVOverlay(sdl_overlay);
 #ifndef NO_ASM
+    unsigned char *src,*dest;
     if (sdl_overlay->format == SDL_YUY2_OVERLAY) {
       src = GameBitmap->line[GameScreen.ytop]+x1*2;
       dest = sdl_overlay->pixels[0]; // +y*sdl_overlay->pitches[0];
@@ -744,11 +744,11 @@ static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, 
     }
     return;
   } else { // no overlay, classical blit
-    int locked;
 
     if (display_cfg.stretch && use_scale2x) {
       // use_scale2x gives the factor : 1 = 2x, 2 = 3x, etc...
 #ifndef NO_ASM
+	int locked;
       switch(display_cfg.stretch) {
 	case 1: // scale2x/3x
 	  locked = lock_surface(sdl_screen);
