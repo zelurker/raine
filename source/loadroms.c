@@ -17,7 +17,7 @@
 #include "6502/m6502hlp.h"
 #endif
 #include "7z.h"
-#ifdef SDL
+#if defined(SDL) && defined(USE_CURL)
 #include "curl.h"
 #endif
 
@@ -1066,7 +1066,7 @@ int load_rom(char *rom, UINT8 *dest, UINT32 size)
    const ROM_INFO *rom_list;
    UINT32     ta,tb,tc;
    int found;
-#ifdef SDL
+#if defined(SDL) && defined(USE_CURL)
    int tried_curl = 0;
 
 beg:
@@ -1155,7 +1155,7 @@ beg:
 
    }
 
-#ifdef SDL
+#if defined(SDL) && defined(USE_CURL)
    if (!ta && !tried_curl) {
        // Curl then...
        // 1st idea was to put that at the end of recursive_rom_load

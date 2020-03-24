@@ -17,15 +17,21 @@
 VERSION = "0.90.1"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
 
-# Use musashi ? If so, it will be used instead of the asm uae core for
-# the 68020, at least for now
+# use curl to try to get unavailable roms from rom archive ?
+# curl is a nice idea, the problem is that it requires a ton of dlls in
+# windows
+# so it might be a good idea to make a build without it...
+# USE_CURL = 1
+
+# Use musashi ?
 # 1 = 68020
 # 2 = 68000 + 68020
+# set to 2 if NO_ASM is defined
 # USE_MUSASHI = 2
 
 # use mame z80 ?
@@ -677,6 +683,10 @@ OBJDIRS +=  \
 
 endif
 
+ifdef USE_CURL
+CFLAGS += -DUSE_CURL
+endif
+
 # assembler (gas)
 SFLAGS= $(INCDIR) \
 	$(DEFINE) \
@@ -1090,8 +1100,11 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/math/matrix.o \
 	$(OBJDIR)/sdl/glsl.o \
-	$(OBJDIR)/sdl/profile.o \
-	$(OBJDIR)/curl.o
+	$(OBJDIR)/sdl/profile.o
+
+ifdef USE_CURL
+OBJS += $(OBJDIR)/curl.o
+endif
 
 ifndef NO_ASM
 OBJS +=  $(OBJDIR)/sdl/gen_conv.o
@@ -1161,9 +1174,15 @@ endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
 ifdef target
-LIBS += $(shell /usr/${target}/bin/sdl-config --libs) -lSDL_ttf -lSDL_image $(shell /usr/${target}/bin/curl-config --libs) # -lefence
+LIBS += $(shell /usr/${target}/bin/sdl-config --libs) -lSDL_ttf -lSDL_image
+ifdef USE_CURL
+LIBS += $(shell /usr/${target}/bin/curl-config --libs) # -lefence
+endif
 else
-LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image $(shell curl-config --libs) # -lefence
+LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image
+ifdef USE_CURL
+LIBS += $(shell curl-config --libs) # -lefence
+endif
 endif
 ifdef HAS_NEO
 ifdef RAINE_UNIX

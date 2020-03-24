@@ -18,7 +18,9 @@
 #include "loadpng.h"
 #else
 #include "sdl/gui.h"
+#ifdef USE_CURL
 #include <curl/curl.h>
+#endif
 #endif
 
 #ifdef RAINE_DOS
@@ -130,7 +132,7 @@ static void mystrcpy(char *dst,char *src) {
 	strcpy(dst,src);
 }
 
-#ifdef SDL
+#if defined(SDL) && defined(USE_CURL)
 CURL *curl_handle;
 #endif
 
@@ -614,12 +616,12 @@ int main(int argc,char *argv[])
    s68000init();
 #endif
 
-#ifdef SDL
+#if defined(SDL) && defined(USE_CURL)
    curl_global_init(CURL_GLOBAL_ALL);
    curl_handle = curl_easy_init();
 #endif
    StartGUI();
-#ifdef SDL
+#if defined(SDL) && defined(USE_CURL)
    curl_easy_cleanup(curl_handle);
    curl_global_cleanup();
 #endif
