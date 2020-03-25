@@ -221,6 +221,7 @@ GAME_MAIN *find_game(char *main_name)
 /* bit unlikely, but you never know and recursion makes it look nice). */
 
 static ROM_INFO  rec_rom_info;      // the rom to load
+static struct DIR_INFO *current_dir; // filled also by load_rom_from_rominfo
 static UINT8    *rec_dest;          // destination memory buffer
 
 static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
@@ -1023,6 +1024,8 @@ load rom from a filename
 */
 
 static int load_rom_from_rominfo(char *rom, UINT8 *dest, UINT32 size, const ROM_INFO *rom_list, const struct DIR_INFO *head) {
+    // fill rec_rom_info.crc32 from the rom_info struct
+    // also keep the used dir_info in current_dir for curl if necessary
    int found=0;
    while((rom_list->name) && (!rec_rom_info.crc32)){
 
@@ -1030,6 +1033,7 @@ static int load_rom_from_rominfo(char *rom, UINT8 *dest, UINT32 size, const ROM_
       {
          found++;
          rec_rom_info.crc32 = rom_list->crc32;
+	 current_dir = (struct DIR_INFO *)head;
       }
 
       rom_list++;
@@ -1165,7 +1169,7 @@ beg:
        // Get a usable dir_list
        // There is a loop here because one of these names might be the one on internet archive
        // but there is no way to guess which one !
-       const DIR_INFO *dlist = dir_list;
+       const DIR_INFO *dlist = current_dir;
        char *dir,path[512],url[512];
        int ta;
        tried_curl = 1;
