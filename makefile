@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.90.1"
+VERSION = "0.90.2"
 
 # Comment out if you don't want the debug features
 RAINE_DEBUG = 1
@@ -26,7 +26,7 @@ RAINE_DEBUG = 1
 # curl is a nice idea, the problem is that it requires a ton of dlls in
 # windows
 # so it might be a good idea to make a build without it...
-# USE_CURL = 1
+USE_CURL = 1
 
 # Use musashi ?
 # 1 = 68020
@@ -61,7 +61,7 @@ HAS_CONSOLE = 1
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # Also, if you choose x86_64, you'd better set NO_ASM to 1 then.
-target=i686-w64-mingw32
+# target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
 
 # compile bezels (artwork) support ? (ignored if building neocd)
@@ -74,6 +74,7 @@ target=i686-w64-mingw32
 ifdef NO_ASM
 ASM_VIDEO_CORE =
 MAME_Z80 = 1
+MAME_6502 = 1
 USE_MUSASHI = 2
 endif
 
