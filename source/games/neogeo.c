@@ -46,6 +46,10 @@ static struct ROM_INFO rom_bios[] = // struct used to select bios
   { "neo-epo.sp1", 0x020000, 0xd27a71f1, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "neo-po.sp1", 0x020000, 0x16d0c132, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { "236-bios.sp1", 0x020000, 0x853e6b96, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+
+  { "uni-bios_3_2.rom", 0x020000, 0xa4e8b9b3, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_3_3.rom", 0x020000, 0x24858466, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  { "uni-bios_4_0.rom", 0x020000, 0xa7aab458, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
   { NULL, 0, 0, 0, 0, 0 }
 };
 

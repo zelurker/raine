@@ -42,6 +42,9 @@ static char *neo_names[] =
     "Asia AES",
     "Japan AES",
     "Irrmaze bios",
+    "Universe Bios (Hack, Ver. 3.2)",
+    "Universe Bios (Hack, Ver. 3.3)",
+    "Universe Bios (Hack, Ver. 4.0)",
 };
 
 static int select_bios(int sel);
