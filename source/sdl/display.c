@@ -489,7 +489,6 @@ static SDL_Surface *new_set_gfx_mode() {
       // Mandatory to avoid a black screen in opengl when calling the console from the keyboard and returning
       get_ogl_infos();
       print_debug("new_set_gfx_mode: opengl ok, getting infos\n");
-      opengl_reshape(sdl_screen->w,sdl_screen->h);
   } else if (!display_cfg.video_mode && !gui_level) {// asked for opengl, didn't get it...
       display_cfg.video_mode = 2;
       print_debug("new_set_gfx_mode: did not get opengl, switching to normal blits\n");
@@ -539,6 +538,8 @@ void ScreenChange(void)
    }
    if (screen) free(screen);
    screen = surface_to_bmp(s);
+   if (s->flags & SDL_OPENGL)
+       opengl_reshape(sdl_screen->w,sdl_screen->h);
    //show_mouse(screen);
 }
 
