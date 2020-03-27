@@ -314,6 +314,8 @@ void ReClipScreen(void)
 
   // GameScreen.xview = oldxview;
   // GameScreen.yview = oldyview;
+  if (sdl_screen->flags & SDL_OPENGL)
+      opengl_reshape(sdl_screen->w,sdl_screen->h);
 }
 
 void DrawPaused(void)
