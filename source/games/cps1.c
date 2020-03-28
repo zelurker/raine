@@ -1703,9 +1703,9 @@ void finish_conf_cps1()
    int size_code = get_region_size(REGION_CPU1);
    if (is_current_game("sf2dongb"))
        AddReadWord(0x180000, 0x1fffff, sf2dongb_rw, NULL);
-   AddMemFetch(size_code, size_code+32, space_hack - size_code);
+   AddMemFetch(0x500000, 0x500020, space_hack - size_code);
    print_debug("space_hack mapped at %x\n",size_code);
-   AddReadBW(size_code, size_code+32, NULL, space_hack);
+   AddReadBW(0x500000, 0x500020, NULL, space_hack);
 
    finish_conf_68000(0);
    RAM_SCROLL1 = NULL; // Init after the 1st frame...
@@ -2658,7 +2658,10 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
   // First find some place at the end of the rom
 
   UINT32 pc,dbf;
-  int size_code = get_region_size(REGION_ROM1);
+  // It was a bad idea to stick the speed hack code at the end of the rom, in cps2 configuration space at 400000 is supposed to contain cps2_output
+  // the area at 500000 looks much safer... (caused a bug in sfa3 when using musashi)
+  // I guess the reason it worked with starscream is because it was using only immediate reads which were read from the memfetch area, musashi doesn't use these...
+  int size_code = 0x500000; // get_region_size(REGION_ROM1);
   UINT32 free = size_code; // space_hack address
   if (loop_end < 0x100) {
       // just insert some code at the end of the rom...
