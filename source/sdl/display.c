@@ -548,8 +548,8 @@ void resize(int call) {
   static int last_time;
   if (display_cfg.screen_x < 320)
     display_cfg.screen_x = 320;
-  if (display_cfg.screen_y < 240)
-    display_cfg.screen_y = 240;
+  if (display_cfg.screen_y < 200)
+    display_cfg.screen_y = 200;
 
 
   if (current_game && display_cfg.keep_ratio ) {
