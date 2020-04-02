@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.90.5"
+VERSION = "0.90.6"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -62,7 +62,7 @@ HAS_CONSOLE = 1
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # Also, if you choose x86_64, you'd better set NO_ASM to 1 then.
 # target=i686-w64-mingw32
-# target=x86_64-w64-mingw32
+target=x86_64-w64-mingw32
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
@@ -1252,11 +1252,6 @@ ifndef SDL
 	@echo -n allegro:
 	@allegro-config --version
 endif
-endif
-ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
-	@echo "using system SDL_sound (check that it uses libmpg123)..."
-else
-	@echo using local static SDL_sound
 endif
 
 source/version.h: makefile
