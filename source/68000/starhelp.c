@@ -26,7 +26,6 @@ static struct STARSCREAM_DATAREGION    M68000_dataregion_rb[MAX_68000][MAX_DATA]
 static struct STARSCREAM_DATAREGION    M68000_dataregion_rw[MAX_68000][MAX_DATA];
 static struct STARSCREAM_DATAREGION    M68000_dataregion_wb[MAX_68000][MAX_DATA];
 struct STARSCREAM_DATAREGION    M68000_dataregion_ww[MAX_68000][MAX_DATA];
-static struct STARSCREAM_DATAREGION    MC68000A_memoryall[128];
 static void *M68000_resethandler[MAX_68000];
 
 int StarScreamEngine;
@@ -113,15 +112,6 @@ void *get_userfunc(UINT32 cpu, int read, int size, int off_start, UINT32 offset)
   return NULL;
 }
 
-void AddMemoryList(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
-{
-   MC68000A_memoryall[ma].lowaddr    = d0;
-   MC68000A_memoryall[ma].highaddr   = d1;
-   MC68000A_memoryall[ma].memorycall = d2;
-   MC68000A_memoryall[ma].userdata   = d3;
-   ma++;
-}
-
 void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
 {
 	int n;
@@ -198,8 +188,6 @@ void add_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
      exit(1);
    }
 
-   if(cpu == 0)
-      AddMemoryList(d0,d1,d2,d3);
 }
 
 void add_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -214,8 +202,6 @@ void add_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
      exit(1);
    }
 
-   if(cpu == 0)
-      AddMemoryList(d0,d1,d2,d3);
 }
 
 void add_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -230,8 +216,6 @@ void add_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
      exit(1);
    }
 
-   if(cpu == 0)
-      AddMemoryList(d0,d1,d2,d3);
 }
 
 void del_wb(int cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
@@ -379,8 +363,6 @@ void add_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
      exit(1);
    }
 
-   if(cpu == 0)
-      AddMemoryList(d0,d1,d2,d3);
 }
 
 void set_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -719,22 +701,42 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
 {
    int ta;
 
-   for(ta=0;(UINT32)ta<ma;ta++){
-      if((MC68000A_memoryall[ta].lowaddr)==-1){
+   for(ta=0;ta<data_count_wb[0];ta++){
+      if((M68000_dataregion_wb[0][ta].lowaddr)==-1){
          ta=ma;
             print_debug("Wb(%06x,%02x) [Via WriteStarScreamByte]\n",address,data);
       }
       else{
-         if((address>=MC68000A_memoryall[ta].lowaddr)&&(MC68000A_memoryall[ta].highaddr>=address)){
+         if((address>=M68000_dataregion_wb[0][ta].lowaddr)&&(M68000_dataregion_wb[0][ta].highaddr>=address)){
 	     // Notice : the function uses the memoryall array here and not the usual memory array
 	     // so the offset must indeed be corrected by substracting the low addr
-            if(MC68000A_memoryall[ta].memorycall==NULL && MC68000A_memoryall[ta].userdata){
-               WriteByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address-MC68000A_memoryall[ta].lowaddr)^1),data);
-               ta=ma;
+            if(M68000_dataregion_wb[0][ta].memorycall==NULL && M68000_dataregion_wb[0][ta].userdata){
+               WriteByte( ((UINT8 *) M68000_dataregion_wb[0][ta].userdata) + (address^1),data);
+	       return;
             }
             else{
-               ((write_func)MC68000A_memoryall[ta].memorycall)(address,data);
+               ((write_func)M68000_dataregion_wb[0][ta].memorycall)(address,data);
+	       return;
             }
+         }
+      }
+   }
+   // Now if it was not found, look in the _rb array even if it's a write
+   // it's mainly for the region switch when it's located in rom
+   for(ta=0;ta<data_count_rb[0];ta++){
+      if((M68000_dataregion_rb[0][ta].lowaddr)==-1){
+         ta=ma;
+            print_debug("Wb(%06x,%02x) [Via WriteStarScreamByte]\n",address,data);
+      }
+      else{
+         if((address>=M68000_dataregion_rb[0][ta].lowaddr)&&(M68000_dataregion_rb[0][ta].highaddr>=address)){
+	     // Notice : the function uses the memoryall array here and not the usual memory array
+	     // so the offset must indeed be corrected by substracting the low addr
+            if(M68000_dataregion_rb[0][ta].memorycall==NULL && M68000_dataregion_rb[0][ta].userdata){
+               WriteByte( ((UINT8 *) M68000_dataregion_rb[0][ta].userdata) + (address^1),data);
+	       return;
+            }
+	    // there can't be any function called here, it's a write, not a read !
          }
       }
    }
