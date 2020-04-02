@@ -744,15 +744,17 @@ UINT8 ReadStarScreamByte(UINT32 address)
 {
    int ta;
 
-   for(ta=0;(UINT32)ta<ma;ta++){
-      if((MC68000A_memoryall[ta].lowaddr)==-1){
+   for(ta=0;(UINT32)ta<data_count_rb[0];ta++){
+      if((M68000_dataregion_rb[0][ta].lowaddr)==-1){
             print_debug("Rb(%06x) [Via ReadStarScreamByte]\n",address);
          return(0x00);
       }
       else{
-         if((address>=MC68000A_memoryall[ta].lowaddr)&&(MC68000A_memoryall[ta].highaddr>=address)){
-            if(MC68000A_memoryall[ta].memorycall==NULL && MC68000A_memoryall[ta].userdata){
-               return ReadByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address-MC68000A_memoryall[ta].lowaddr)^1) );
+         if((address>=M68000_dataregion_rb[0][ta].lowaddr)&&(M68000_dataregion_rb[0][ta].highaddr>=address)){
+            if(M68000_dataregion_rb[0][ta].memorycall==NULL && M68000_dataregion_rb[0][ta].userdata){
+               return ReadByte( ((UINT8 *) M68000_dataregion_rb[0][ta].userdata) + (address^1) );
+	    } else{
+               return ((read_func)M68000_dataregion_rb[0][ta].memorycall)(address);
             }
          }
       }
