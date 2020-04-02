@@ -378,7 +378,6 @@ class TMain_menu : public TMenu
 };
 
 static void do_main_menu() {
-  TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
   int old_region;
   // init romsw
   if (current_game && current_game->romsw) {
@@ -391,6 +390,7 @@ static void do_main_menu() {
     }
   }
 
+  TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
   main_menu->execute();
   if (current_game && current_game->romsw && old_region != region_code)
       reset_game_hardware();
