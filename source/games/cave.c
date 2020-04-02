@@ -209,6 +209,10 @@ static void install_region() {
   }
 }
 
+static void init_region(UINT32 offset, UINT8 data) {
+    cave_region_byte = data;
+}
+
 static void setup_cave_game() {
   int i;
   init_pbitmap();
@@ -1530,7 +1534,7 @@ static void load_mazinger()
 
    AddWriteByte(0xAA0000, 0xAA0000, mystop68k, NULL);   // Trap Idle 68000
    cave_region_pos = 0x05;
-   AddWriteByte(0xAA0001, 0xAA0001, NULL, ((UINT8*)&cave_region_byte)+1);   // Trap Idle 68000
+   AddWriteByte(0xAA0001, 0xAA0001, init_region, NULL);
 
    // Speed hack
 
@@ -1746,7 +1750,7 @@ static void init_sailormn_hardware(int type)
 
   AddWriteByte(0xAA0000, 0xAA0000, mystop68k, NULL);   // Trap Idle 68000
   cave_region_pos = 0x11;
-  AddWriteByte(0xAA0001, 0xAA0001, NULL, ((UINT8*)&cave_region_byte)+1);   // Trap Idle 68000
+  AddWriteByte(0xAA0001, 0xAA0001, init_region, NULL);
 
   if (type == 1) {
     // Air Gallet

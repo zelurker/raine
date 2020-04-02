@@ -530,6 +530,9 @@ releases, have to 'pack' them into our own save buffer then.
 
 */
 
+typedef UINT32(*read_func)(UINT32);
+typedef void(*write_func)(UINT32,UINT32);
+
 #if USE_MUSASHI < 2
 typedef struct SAVE_BUFFER
 {
@@ -547,8 +550,6 @@ typedef struct SAVE_BUFFER
 static struct SAVE_BUFFER save_buffer[2];
 #else
 extern uint32 current_cpu_num[16];
-typedef uint32(*read_func)(uint32);
-typedef void(*write_func)(uint32,uint32);
 
 static uint32 m68k_read8(uint32 adr) {
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
@@ -731,9 +732,9 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
                WriteByte( ((UINT8 *) MC68000A_memoryall[ta].userdata) + ((address-MC68000A_memoryall[ta].lowaddr)^1),data);
                ta=ma;
             }
-            //else{
-            //   *MC68000A_memoryall[ta].memorycall(address,data);
-            //}
+            else{
+               ((write_func)MC68000A_memoryall[ta].memorycall)(address,data);
+            }
          }
       }
    }
