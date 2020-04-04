@@ -700,17 +700,13 @@ void save_game_keys(char *section)
 	    continue;
 	 sprintf(key_name,"%s",def_input[InputList[ta].default_key-0x100].name);
          no_spaces(key_name);
-	 if (InputList[ta].Key != def_input[InputList[ta].default_key & 0xff].scancode)
-	   raine_set_config_int(section,key_name,InputList[ta].Key);
-	 if (InputList[ta].Joy != def_input[InputList[ta].default_key & 0xff].joycode) {
-	   snprintf(other_name,64,"%s_joystick",key_name);
-	   raine_set_config_int(section,other_name,InputList[ta].Joy);
-	 }
+	 raine_set_config_int(section,key_name,InputList[ta].Key);
+	 snprintf(other_name,64,"%s_joystick",key_name);
+	 raine_set_config_int(section,other_name,InputList[ta].Joy);
 
-	 if (InputList[ta].mousebtn != def_input[InputList[ta].default_key & 0xff].mousebtn) {
-	   snprintf(other_name,64,"%s_mouse",key_name);
-	   raine_set_config_int(section,other_name,InputList[ta].mousebtn);
-	 }
+	 snprintf(other_name,64,"%s_mouse",key_name);
+	 raine_set_config_int(section,other_name,InputList[ta].mousebtn);
+
 	 if (InputList[ta].auto_rate) {
 	   snprintf(other_name,64,"%s_auto_rate",key_name);
 	   raine_set_config_int(section,other_name,InputList[ta].auto_rate);
