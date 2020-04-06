@@ -643,8 +643,6 @@ void TMenu::compute_width_from_font() {
     width_max += HMARGIN;
   }
   if (width_max > work_area.w) width_max = work_area.w;
-  if (width_max_options > work_area.w)
-	  width_max_options = work_area.w;
 }
 
 void TMenu::adjust_len_max_options(unsigned int &len_max_options) {
@@ -2142,24 +2140,15 @@ TDialog::TDialog(char *my_title, menu_item_t *mymenu) :
 { htitle = 0;
 }
 
-void TDialog::setup_font(unsigned int len_frame) {
-  TMenu::setup_font(len_frame);
-  if (*title) {
-    int w;
-    font->dimensions(title,&w,&htitle);
-    w+=2; htitle+=2; // with border
-    if (w > width_max) {
-      width_max = w;
+void TDialog::compute_width_from_font() {
+    TMenu::compute_width_from_font();
+    if (*title) {
+	int w;
+	font->dimensions(title,&w,&htitle);
+	w+=2; htitle+=2; // with border
+	if (w > width_max)
+	    width_max = w;
     }
-    int htotal = (sdl_screen->h-htitle)/(nb_items + 4 + 6); // margin
-    if (rows)
-      htotal = (sdl_screen->h-htitle)/rows;
-    if (htotal < font->get_font_height() && htotal < font->get_font_width()) {
-      delete font;
-      font = new TFont_ttf(htotal,font_name);
-      compute_width_from_font();
-    }
-  }
 }
 
 void TDialog::display_fglayer_header(int &y) {

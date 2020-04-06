@@ -155,7 +155,7 @@ class TDialog : public TMenu {
   public:
     TDialog(char *my_title, menu_item_t *mymenu);
     void setup_bg_layer(SDL_Surface *bitmap) {}
-    virtual void setup_font(unsigned int len_frame);
+    virtual void compute_width_from_font();
     void clear_screen() {}
     virtual void display_fglayer_header(int &y);
     virtual void skip_fglayer_header(int &y);
