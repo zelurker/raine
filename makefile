@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.90.6"
+VERSION = "0.90.7"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -48,7 +48,7 @@ USE_CURL = 1
 
 # Disable all asm. This will also disable the asm_video_core of
 # course
-NO_ASM = 1
+# NO_ASM = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
@@ -62,7 +62,7 @@ HAS_CONSOLE = 1
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # Also, if you choose x86_64, you'd better set NO_ASM to 1 then.
 # target=i686-w64-mingw32
-target=x86_64-w64-mingw32
+# target=x86_64-w64-mingw32
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
