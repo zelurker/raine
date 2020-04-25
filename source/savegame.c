@@ -26,6 +26,7 @@
 // #include "sdl/SDL_gfx/SDL_rotozoom.h"
 // #include "sdl/blit_sdl.h"
 #include "dialogs/fsel.h"
+#include "sdl/dialogs/messagebox.h"
 #endif
 
 #include "timer.h" // update_timers
@@ -462,10 +463,31 @@ void read_safe_data(UINT8 *dest, UINT32 dest_size, UINT32 data_size, gzFile fin)
 
 #define ASC(x) ((x)<32?(x)+0x30:(x))
 
+#define LEN_DUMP 240
+static char dbuf[LEN_DUMP];
+
+static void dump_id(int id, int size) {
+    if (!dbuf[0])
+	sprintf(dbuf,"Unexpected IDs in savefile:\n");
+    int l = strlen(dbuf);
+    snprintf(&dbuf[l],LEN_DUMP-l,"%08x ",id);
+    char buf[5];
+    char *p = buf;
+    for (int s=24; s >= 0; s-=8) {
+	int x = (id >> s) & 0xff;
+	if (x >= 32) *p++ = x;
+	else if (x < 10) *p++ = '0' + x;
+    }
+    *p = 0;
+    l = strlen(dbuf);
+    snprintf(&dbuf[l],LEN_DUMP-l," (%s)\n",buf);
+}
+
 void NewLoad(gzFile fin)
 {
    int ta,tb,load_done;
    char name[EXT_NAME+1];
+   dbuf[0] = 0;
    UINT32 t_size,t_id;
 	 int endianess_bug = 0;
 
@@ -569,6 +591,7 @@ void NewLoad(gzFile fin)
          }
          if(tb==0){
             print_debug("Unexpected ID in savefile: %08x/%08x\n",t_id,t_size);
+	    dump_id(t_id,t_size);
             read_safe_data(NULL,0,t_size,fin);
 	    if (t_size <= 0) {
 	      print_debug("early exit for savefile\n");
@@ -582,6 +605,8 @@ void NewLoad(gzFile fin)
    }while(!load_done);
    ProcessCallbackList(CALLBACK_LOAD|CALLBACK_CORE);
    ProcessCallbackList(CALLBACK_LOAD);
+   if (dbuf[0])
+       MessageBox("Alert",dbuf,"Ok");
 }
 
 void do_load_state(char *name) {
