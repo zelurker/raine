@@ -23,7 +23,9 @@ static int set_lang(int sel) {
     return 0;
 }
 
-static menu_item_t gui_menu[14] =
+#define MAX_GUI 15
+
+static menu_item_t gui_menu[MAX_GUI] =
 {
 {  _("Language"), &set_lang, &lang_int, 4, {0, 1, 2, 3 }, { "Default (english)", "French","Spanish","Italian"} },
 };
@@ -58,6 +60,10 @@ int do_gui_options(int sel) {
   gui_menu[nb++] = color_menu[3];
   gui_menu[nb].label = _("Directories...");
   gui_menu[nb].menu_func = &do_dirs;
+  if (nb >= MAX_GUI-1) { // -1 because we need a NULL at the end
+      printf("too many gui options !\n");
+      exit(1);
+  }
   gui_options = new TMenu(_("Options"), gui_menu);
   gui_options->execute();
   delete gui_options;
