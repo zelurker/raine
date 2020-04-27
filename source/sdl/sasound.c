@@ -445,7 +445,6 @@ static void close_sample() {
   global_state.decoded_ptr = NULL;
   if (fbin) {
     fclose(fbin);
-    printf("fbin kaput\n");
     fbin = NULL;
   }
 }
