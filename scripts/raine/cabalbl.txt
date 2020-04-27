@@ -1,0 +1,66 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $41658 $01
+
+script "1UP Invulnerability OFF"
+	poke $41658 $FF
+
+script "2UP Invulnerability ON" always
+	poke $41659 $01
+
+script "2UP Invulnerability OFF"
+	poke $41659 $FF
+
+script "1UP Unlimited lives" always
+	poke $4005E $03
+
+script "2UP Unlimited lives" always
+	poke $4005F $03
+
+script "1UP Unlimited bombs" always
+	poke $40052 $99
+
+script "2UP Unlimited bombs" always
+	poke $40053 $99
+
+script "*UP One enemy ends level  (T)"
+	poke $40084 $01
+
+script "1UP Weap. - Normal gun    (P)" always
+	poke $40111 $00
+
+script "1UP Weap. - Semi-auto gun (P)" always
+	poke $40111 $01
+
+script "1UP Weap. - Full-auto gun (P)" always
+	poke $40111 $02
+
+script "2UP Weap. - Normal gun    (P)" always
+	poke $40145 $00
+
+script "2UP Weap. - Semi-auto gun (P)" always
+	poke $40145 $01
+
+script "2UP Weap. - Full-auto gun (P)" always
+	poke $40145 $02
+
+script "1UP Weap. - Normal gun    (T)"
+	poke $40111 $00
+
+script "1UP Weap. - Semi-auto gun (T)"
+	poke $40111 $01
+
+script "1UP Weap. - Full-auto gun (T)"
+	poke $40111 $02
+
+script "2UP Weap. - Normal gun    (T)"
+	poke $40145 $00
+
+script "2UP Weap. - Semi-auto gun (T)"
+	poke $40145 $01
+
+script "2UP Weap. - Full-auto gun (T)"
+	poke $40145 $02

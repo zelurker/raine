@@ -1,0 +1,84 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $A023FF $3E
+
+script "1UP Invulnerability OFF"
+	poke $A023FF $01
+
+script "2UP Invulnerability ON" always
+	poke $A026FF $3E
+
+script "2UP Invulnerability OFF"
+	poke $A026FF $01
+
+script "1UP Unlimited lives" always
+	poke $A023C3 $03
+
+script "2UP Unlimited lives" always
+	poke $A023C5 $03
+
+script "1UP Unlimited energy" always
+	poke $A023BB $08
+
+script "2UP Unlimited energy" always
+	poke $A023BF $08
+
+script "1UP Unlimited ammo." always
+	poke $A02455 $00
+
+script "2UP Unlimited ammo." always
+	poke $A02755 $00
+
+script "*UP Unlimited time" always
+	dpoke $A023B2 $03E7
+
+script "1UP Weapon - Normal       (P)" always
+	poke $A02407 $00
+
+script "1UP Weapon - Machine gun  (P)" always
+	poke $A02407 $01
+
+script "1UP Weapon - Piercing     (P)" always
+	poke $A02407 $02
+
+script "1UP Weapon - 3-way        (P)" always
+	poke $A02407 $03
+
+script "2UP Weapon - Normal       (P)" always
+	poke $A02707 $00
+
+script "2UP Weapon - Machine gun  (P)" always
+	poke $A02707 $01
+
+script "2UP Weapon - Piercing     (P)" always
+	poke $A02707 $02
+
+script "2UP Weapon - 3-way        (P)" always
+	poke $A02707 $03
+
+script "1UP Weapon - Normal       (T)" always
+	poke $A02407 $00
+
+script "1UP Weapon - Machine gun  (T)" always
+	poke $A02407 $01
+
+script "1UP Weapon - Piercing     (T)" always
+	poke $A02407 $02
+
+script "1UP Weapon - 3-way        (T)" always
+	poke $A02407 $03
+
+script "2UP Weapon - Normal       (T)" always
+	poke $A02707 $00
+
+script "2UP Weapon - Machine gun  (T)" always
+	poke $A02707 $01
+
+script "2UP Weapon - Piercing     (T)" always
+	poke $A02707 $02
+
+script "2UP Weapon - 3-way        (T)" always
+	poke $A02707 $03

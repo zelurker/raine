@@ -1,0 +1,79 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $E1AD $03
+
+script "2UP Unlimited lives" always
+	poke $E1ED $03
+
+script "*UP Unlimited bonus" always
+	dpoke $E05B $0999
+
+script "1UP Unlimited magnet time" always
+	poke $E1B5 $B4
+
+script "2UP Unlimited magnet time" always
+	poke $E1F5 $B4
+
+script "1UP Bat never reduces" always
+	poke $E1B3 $63
+	poke $E1AA $00
+	poke $E1AB $99
+
+script "2UP Bat never reduces" always
+	poke $E1F3 $63
+	poke $E1EA $00
+	poke $E1EB $99
+
+script "*UP Level 50 when level ends"
+	poke $E045 $31
+
+script "1UP Maximum bat size" always
+	poke $E1B1 $06
+
+script "2UP Maximum bat size" always
+	poke $E1F1 $06
+
+script "1UP Get the normal ball   (P)" always
+	poke $E1A9 $00
+
+script "1UP Get the super ball    (P)" always
+	poke $E1A9 $01
+
+script "2UP Get the normal ball   (P)" always
+	poke $E1E9 $00
+
+script "2UP Get the super ball    (P)" always
+	poke $E1E9 $01
+
+script "1UP Get the normal ball   (T)"
+	poke $E1A9 $00
+
+script "1UP Get the super ball    (T)"
+	poke $E1A9 $01
+
+script "2UP Get the normal ball   (T)"
+	poke $E1E9 $00
+
+script "2UP Get the super ball    (T)"
+	poke $E1E9 $01
+
+script "1UP Get the magnet        (P)" always
+	poke $E1B4 $43
+
+script "2UP Get the magnet        (P)" always
+	poke $E1F4 $43
+
+script "1UP Get the magnet        (T)"
+	poke $E1B4 $43
+
+script "2UP Get the magnet        (T)"
+	poke $E1F4 $43
+
+script "1UP No more magnet"
+	poke $E1B4 $00
+
+script "2UP No more magnet"
+	poke $E1F4 $00

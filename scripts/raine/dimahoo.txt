@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Hidden characters ON" always
+	poke $928A8B $01
+
+script "*UP Hidden characters OFF" always
+	poke $928A8B $00
+
+script "1UP Invulnerability ON" always
+	poke $FF10D5 $B3
+
+script "1UP Invulnerability OFF"
+	poke $FF10D5 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF1CD5 $B3
+
+script "2UP Invulnerability OFF"
+	poke $FF1CD5 $01
+
+script "1UP Unlimited lives" always
+	poke $92804E $03
+
+script "2UP Unlimited lives" always
+	poke $92814E $03
+
+script "1UP Unlimited bombs" always
+	poke $92804F $09
+
+script "2UP Unlimited bombs" always
+	poke $92814F $09

@@ -1,0 +1,78 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $10BE80 $01
+
+script "1UP Invulnerability OFF"
+	poke $10BE80 $00
+
+script "2UP Invulnerability ON" always
+	poke $10BF88 $01
+
+script "2UP Invulnerability OFF"
+	poke $10BF88 $00
+
+script "1UP Unlimited energy" always
+	poke $10BE8B $64
+
+script "2UP Unlimited energy" always
+	poke $10BF93 $64
+
+script "1UP Unlimited power" always
+	poke $10BE93 $64
+
+script "2UP Unlimited power" always
+	poke $10BF9B $64
+
+script "*UP Unlimited time" always
+	poke $10B49F $09
+
+script "1UP Weapon - Single       (P)" always
+	poke $10BE79 $00
+
+script "1UP Weapon - Double       (P)" always
+	poke $10BE79 $01
+
+script "1UP Weapon - Blocker      (P)" always
+	poke $10BE79 $02
+
+script "1UP Weapon - M. gun       (P)" always
+	poke $10BE79 $03
+
+script "2UP Weapon - Single       (P)" always
+	poke $10BF81 $00
+
+script "2UP Weapon - Double       (P)" always
+	poke $10BF81 $01
+
+script "2UP Weapon - Blocker      (P)" always
+	poke $10BF81 $02
+
+script "2UP Weapon - M. gun       (P)" always
+	poke $10BF81 $03
+
+script "1UP Weapon - Single       (T)"
+	poke $10BE79 $00
+
+script "1UP Weapon - Double       (T)"
+	poke $10BE79 $01
+
+script "1UP Weapon - Blocker      (T)"
+	poke $10BE79 $02
+
+script "1UP Weapon - M. gun       (T)"
+	poke $10BE79 $03
+
+script "2UP Weapon - Single       (T)"
+	poke $10BF81 $00
+
+script "2UP Weapon - Double       (T)"
+	poke $10BF81 $01
+
+script "2UP Weapon - Blocker      (T)"
+	poke $10BF81 $02
+
+script "2UP Weapon - M. gun       (T)"
+	poke $10BF81 $03

@@ -1927,6 +1927,7 @@ load_game_config(int game): load game specific settings for a certain game.
 
 */
 
+#ifndef SDL
 static void load_cheats(char *name) {
     char buff[80];
   load_arpro_cheats(name);
@@ -1935,6 +1936,7 @@ static void load_cheats(char *name) {
       load_arpro_cheats(buff);
   }
 }
+#endif
 
 void load_game_config(void)
 {
@@ -1988,6 +1990,8 @@ void load_game_config(void)
    else
 #endif
        sprintf(str,"%s",get_shared("cheats.cfg"));
+#ifndef SDL
+   // sdl versions now read cheats only from scripts !
    raine_set_config_file(str);
 
    // Load Cheat Settings
@@ -2000,6 +2004,7 @@ void load_game_config(void)
 	       load_cheats(parent); // default : if no cheats, try the parent !
        }
    }
+#endif
 
    raine_pop_config_state();
 }

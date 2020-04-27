@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $E021 $03
+
+script "*UP Unlimited time" always
+	poke $E190 $99

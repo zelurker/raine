@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Help line ON" always
+	poke $103613 $01
+
+script "*UP Help line OFF"
+	poke $103613 $02

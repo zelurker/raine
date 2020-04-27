@@ -1,0 +1,44 @@
+# Cheats from  : Pugsy
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time" always
+	dpoke $FF9DE4 $5DBF
+
+script "Infinite Lives PL1" always
+	poke $FF9F09 $09
+
+script "Infinite Energy PL1" always
+	poke $FF9F8D $D8
+
+script "Invincibility PL1" always
+	poke $FF9F29 $B3
+
+script "Always have crowbar PL1" always
+	poke $FF9F85 $29
+	poke $FF9FC5 $29
+	poke $FF9FC8 $04
+
+script "Always have spanner PL1" always
+	poke $FF9F85 $2A
+	poke $FF9FC5 $2A
+	poke $FF9FC8 $05
+
+script "Infinite Lives PL2" always
+	poke $FF9F33 $09
+
+script "Infinite Energy PL2" always
+	poke $FFA04D $D8
+
+script "Invincibility PL2" always
+	poke $FF9F59 $B3
+
+script "Always have crowbar PL2" always
+	poke $FFA045 $29
+	poke $FFA085 $29
+	poke $FFA088 $04
+
+script "Always have spanner PL2" always
+	poke $FFA045 $2A
+	poke $FFA085 $2A
+	poke $FFA088 $05

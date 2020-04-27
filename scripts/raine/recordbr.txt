@@ -1,0 +1,30 @@
+# Cheats from  : Pugsy
+# Last update  : 2002.02.13
+# Desc. format : Pugsy
+
+script "Infinite Time for Races" always
+	poke $1038B3 $00
+
+script "Always run Very Fast PL1" always
+	poke $10377B $FF
+
+script "Always run Very Fast PL2" always
+	poke $1037CB $FF
+
+script "Infinite Oxygen PL1" always
+	poke $10377D $30
+
+script "Infinite Oxygen PL2" always
+	poke $1037CD $30
+
+script "Always swim Very Fast PL1" always
+	poke $10377B $F6
+
+script "Always swim Very Fast PL2" always
+	poke $1037CB $F6
+
+script "Success Vault = 29 Metres PL1" always
+	poke $1033C1 $29
+
+script "Success Vault = 29 Metres PL2" always
+	poke $1033C5 $29

@@ -1,0 +1,32 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
+
+script "*UP Unlimited lives" always
+	poke $C1B17 $03
+
+script "*UP Unlimited bombs" always
+	poke $C12E9 $08
+
+script "*UP Maximum fire power" always
+	poke $C1B2F $03
+	poke $C12E7 $03
+
+script "*UP Fire - Multi-way      (P)" always
+	poke $C12E3 $00
+
+script "*UP Fire - Laser          (P)" always
+	poke $C12E3 $08
+
+script "*UP Fire - Homing fire    (P)" always
+	poke $C12E3 $10
+
+script "*UP Fire - Multi-way      (T)"
+	poke $C12E3 $00
+
+script "*UP Fire - Laser          (T)"
+	poke $C12E3 $08
+
+script "*UP Fire - Homing fire    (T)"
+	poke $C12E3 $10

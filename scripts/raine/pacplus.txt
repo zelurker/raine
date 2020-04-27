@@ -1,0 +1,10 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
+
+script "*UP Unlimited lives" always
+	poke $4E14 $03
+
+script "*UP Unlimited "power" time" always
+	poke $4DCB $FF

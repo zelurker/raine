@@ -1,0 +1,42 @@
+# Cheats from  : The Ultimate Patchers, Antiriad
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability ON" always
+	poke $10D5D5 $F0
+
+script "*UP Invulnerability OFF"
+	poke $10D5D5 $01
+
+script "1UP Unlimited lives    (OFF)" always
+	poke $10D535 $03
+
+script "2UP Unlimited lives    (OFF)" always
+	poke $10D545 $03
+
+script "*UP Unlimited time     (OFF)" always
+	poke $10CC42 $50
+
+script "*UP Maximum fire speed" always
+	poke $10CC35 $05
+
+script "*UP Maximum bounce power" always
+	poke $10CC37 $08
+
+script "*UP Max. bubble size - Red" always
+	poke $10CC3F $04
+
+script "*UP Max. bubble size - Green" always
+	poke $10CC41 $04
+
+script "*UP Max. bubble size - Purple" always
+	poke $10CC3D $04
+
+script "Get red bubbles" always
+	poke $10CC3B $01
+
+script "Get green bubbles" always
+	poke $10CC3B $02
+
+script "Get purple bubbles" always
+	poke $10CC3B $03

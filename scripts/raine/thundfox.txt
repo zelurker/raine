@@ -1,0 +1,81 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $30002D $31
+
+script "1UP Invulnerability OFF"
+	poke $30002D $01
+
+script "2UP Invulnerability ON" always
+	poke $30006D $31
+
+script "2UP Invulnerability OFF"
+	poke $30006D $01
+
+script "1UP Unlimited lives" always
+	poke $303C72 $03
+
+script "2UP Unlimited lives" always
+	poke $303C84 $03
+
+script "1UP Unlimited energy" always
+	poke $303C73 $0C
+
+script "2UP Unlimited energy" always
+	poke $303C85 $0C
+
+script "1UP Unlimited ammo." always
+	poke $303C6F $63
+
+script "2UP Unlimited ammo." always
+	poke $303C81 $63
+
+script "1UP Unlimited time      (OFF)" always
+	dpoke $301222 $03E7
+
+script "2UP Unlimited time      (OFF)" always
+	dpoke $301228 $03E7
+
+script "1UP Weapon - None         (P)" always
+	poke $303C6E $00
+
+script "1UP Weapon - Rocket       (P)" always
+	poke $303C6E $01
+
+script "1UP Weapon - Flamethrower (P)" always
+	poke $303C6E $02
+
+script "1UP Weapon - Grenades     (P)" always
+	poke $303C6E $03
+
+script "1UP Weapon - Bayonet      (P)" always
+	poke $303C6E $04
+
+script "1UP Weapon - Machine gun  (P)" always
+	poke $303C6E $05
+
+script "1UP Weapon - Revolver     (P)" always
+	poke $303C6E $06
+
+script "2UP Weapon - None         (P)" always
+	poke $303C80 $00
+
+script "2UP Weapon - Rocket       (P)" always
+	poke $303C80 $01
+
+script "2UP Weapon - Flamethrower (P)" always
+	poke $303C80 $02
+
+script "2UP Weapon - Grenades     (P)" always
+	poke $303C80 $03
+
+script "2UP Weapon - Bayonet      (P)" always
+	poke $303C80 $04
+
+script "2UP Weapon - Machine gun  (P)" always
+	poke $303C80 $05
+
+script "2UP Weapon - Revolver     (P)" always
+	poke $303C80 $06

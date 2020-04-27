@@ -1,0 +1,12 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited energy" always
+	poke $004A $FF
+
+script "*UP Weak opponent" always
+	poke $004B $00
+
+script "*UP Unlimited time" always
+	poke $02CF $59

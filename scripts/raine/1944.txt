@@ -1,0 +1,63 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Inv. ON  (M.P.)" always
+	poke $92267E peek($92267E)&$ef|$10
+
+script "1UP Inv. OFF (M.P.)"
+	poke $92267E peek($92267E)&$ef
+
+script "2UP Inv. ON  (M.P.)" always
+	poke $92277E peek($92277E)&$ef|$10
+
+script "2UP Inv. OFF (M.P.)"
+	poke $92277E peek($92277E)&$ef
+
+script "1UP Inv. ON  (S.P. 1)" always
+	poke $92287E peek($92287E)&$ef|$10
+
+script "1UP Inv. OFF (S.P. 1)"
+	poke $92287E peek($92287E)&$ef
+
+script "1UP Inv. ON  (S.P. 2)" always
+	poke $92297E peek($92297E)&$ef|$10
+
+script "1UP Inv. OFF (S.P. 2)"
+	poke $92297E peek($92297E)&$ef
+
+script "2UP Inv. ON  (S.P. 1)" always
+	poke $922A7E peek($922A7E)&$ef|$10
+
+script "2UP Inv. OFF (S.P. 1)"
+	poke $922A7E peek($922A7E)&$ef
+
+script "2UP Inv. ON  (S.P. 2)" always
+	poke $922B7E peek($922B7E)&$ef|$10
+
+script "2UP Inv. OFF (S.P. 2)"
+	poke $922B7E peek($922B7E)&$ef
+
+script "1UP Unlimited energy" always
+	poke $9226A5 $96
+
+script "2UP Unlimited energy" always
+	poke $9227A5 $96
+
+script "1UP Unlimited bombs" always
+	poke $922405 $0A
+
+script "2UP Unlimited bombs" always
+	poke $922505 $0A
+
+script "1UP Unlimited side planes" always
+	dpoke $9223FA $03E7
+
+script "2UP Unlimited side planes" always
+	dpoke $9224FA $03E7
+
+script "1UP Maximum fire power - M.P." always
+	poke $922429 $03
+
+script "2UP Maximum fire power - M.P." always
+	poke $922529 $03

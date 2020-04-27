@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $D578 $01
+
+script "1UP Invulnerability OFF"
+	poke $D578 $50
+
+script "2UP Invulnerability ON" always
+	poke $D5A8 $01
+
+script "2UP Invulnerability OFF"
+	poke $D5A8 $50
+
+script "1UP Unlimited lives" always
+	poke $D531 $03
+
+script "2UP Unlimited lives" always
+	poke $D555 $03
+
+script "1UP Unlimited shield" always
+	poke $D577 $FF
+
+script "2UP Unlimited shield" always
+	poke $D5A7 $FF
+
+script "1UP Double + auto-fire    (P)" always
+	poke $D547 $0F
+
+script "2UP Double + auto-fire    (P)" always
+	poke $D56B $0F

@@ -1,0 +1,21 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited retries" always
+	poke $8132 $09
+
+script "2UP Unlimited retries" always
+	poke $81B2 $09
+
+script "1UP Unlimited time      (OFF)" always
+	dpoke $811C $0300
+
+script "2UP Unlimited time      (OFF)" always
+	dpoke $819C $0300
+
+script "1UP End Level"
+	poke $810A $00
+
+script "2UP End Level"
+	poke $818A $00

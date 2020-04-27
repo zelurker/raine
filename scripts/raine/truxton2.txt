@@ -1,0 +1,69 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $1005E2 $B4
+
+script "1UP Invulnerability OFF"
+	poke $1005E2 $01
+
+script "2UP Invulnerability ON" always
+	poke $100622 $B4
+
+script "2UP Invulnerability OFF"
+	poke $100622 $01
+
+script "1UP Unlimited lives" always
+	poke $100429 $03
+
+script "2UP Unlimited lives" always
+	poke $100447 $03
+
+script "1UP Unlimited bombs" always
+	poke $10042D $05
+
+script "2UP Unlimited bombs" always
+	poke $10044B $05
+
+script "1UP Maximum fire power" always
+	poke $10042B $04
+
+script "2UP Maximum fire power" always
+	poke $100449 $04
+
+script "1UP Weapon - Red          (P)" always
+	poke $10042F $01
+
+script "1UP Weapon - Blue         (P)" always
+	poke $10042F $02
+
+script "1UP Weapon - Green        (P)" always
+	poke $10042F $03
+
+script "2UP Weapon - Red          (P)" always
+	poke $10044D $01
+
+script "2UP Weapon - Blue         (P)" always
+	poke $10044D $02
+
+script "2UP Weapon - Green        (P)" always
+	poke $10044D $03
+
+script "1UP Weapon - Red          (T)"
+	poke $10042F $01
+
+script "1UP Weapon - Blue         (T)"
+	poke $10042F $02
+
+script "1UP Weapon - Green        (T)"
+	poke $10042F $03
+
+script "2UP Weapon - Red          (T)"
+	poke $10044D $01
+
+script "2UP Weapon - Blue         (T)"
+	poke $10044D $02
+
+script "2UP Weapon - Green        (T)"
+	poke $10044D $03

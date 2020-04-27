@@ -1,0 +1,27 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited energy" always
+	poke $20D4E9 $10
+
+script "2UP Unlimited energy" always
+	poke $20D561 $10
+
+script "1UP Unlimited bullets" always
+	poke $20D4F3 $18
+
+script "2UP Unlimited bullets" always
+	poke $20D56B $18
+
+script "1UP Unlimited shotgun" always
+	poke $20D4FB $09
+
+script "2UP Unlimited shotgun" always
+	poke $20D573 $09
+
+script "1UP Unlimited full fire" always
+	dpoke $20D502 $03E7
+
+script "2UP Unlimited full fire" always
+	dpoke $20D57A $03E7

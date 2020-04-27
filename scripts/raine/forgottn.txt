@@ -1,0 +1,168 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited energy" always
+	poke $FF9035 $38
+
+script "2UP Unlimited energy" always
+	poke $FF9055 $38
+
+script "*UP Unlimited time" always
+	poke $FFE1D2 $99
+
+script "1UP Unlimited money (-OFF)" always
+	poke $FFE192 $99
+	poke $FFE193 $99
+	poke $FFE194 $99
+	poke $FFE195 $00
+
+script "2UP Unlimited money (-OFF)" always
+	poke $FFE196 $99
+	poke $FFE197 $99
+	poke $FFE198 $99
+	poke $FFE199 $00
+
+script "1UP Satellite ON" always
+	poke $FFCEE2 $01
+
+script "1UP Satellite OFF"
+	poke $FFCEE2 $00
+
+script "2UP Satellite ON" always
+	poke $FFCF32 $01
+
+script "2UP Satellite OFF"
+	poke $FFCF32 $00
+
+script "1UP Sat P - Laser         (P)" always
+	poke $FFCF18 $00
+
+script "1UP Sat P - Beam          (P)" always
+	poke $FFCF18 $02
+
+script "1UP Sat P - Missile       (P)" always
+	poke $FFCF18 $04
+
+script "1UP Sat P - Balcan bomber (P)" always
+	poke $FFCF18 $06
+
+script "1UP Sat P - Napalm bomb   (P)" always
+	poke $FFCF18 $08
+
+script "1UP Sat P - V-Cannon      (P)" always
+	poke $FFCF18 $0A
+
+script "1UP Sat P - Burner        (P)" always
+	poke $FFCF18 $0C
+
+script "1UP Sat P - Multi-way     (P)" always
+	poke $FFCF18 $0E
+
+script "1UP Sat P - Bound shot    (P)" always
+	poke $FFCF18 $10
+
+script "1UP Sat P - Power laser   (P)" always
+	poke $FFCF18 $12
+
+script "1UP Sat P - Homing laser  (P)" always
+	poke $FFCF18 $14
+
+script "2UP Sat P - Laser         (P)" always
+	poke $FFCF68 $00
+
+script "2UP Sat P - Beam          (P)" always
+	poke $FFCF68 $02
+
+script "2UP Sat P - Missile       (P)" always
+	poke $FFCF68 $04
+
+script "2UP Sat P - Balcan bomber (P)" always
+	poke $FFCF68 $06
+
+script "2UP Sat P - Napalm bomb   (P)" always
+	poke $FFCF68 $08
+
+script "2UP Sat P - V-Cannon      (P)" always
+	poke $FFCF68 $0A
+
+script "2UP Sat P - Burner        (P)" always
+	poke $FFCF68 $0C
+
+script "2UP Sat P - Multi-way     (P)" always
+	poke $FFCF68 $0E
+
+script "2UP Sat P - Bound shot    (P)" always
+	poke $FFCF68 $10
+
+script "2UP Sat P - Power laser   (P)" always
+	poke $FFCF68 $12
+
+script "2UP Sat P - Homing laser  (P)" always
+	poke $FFCF68 $14
+
+script "1UP Sat P - Laser         (T)"
+	poke $FFCF18 $00
+
+script "1UP Sat P - Beam          (T)"
+	poke $FFCF18 $02
+
+script "1UP Sat P - Missile       (T)"
+	poke $FFCF18 $04
+
+script "1UP Sat P - Balcan bomber (T)"
+	poke $FFCF18 $06
+
+script "1UP Sat P - Napalm bomb   (T)"
+	poke $FFCF18 $08
+
+script "1UP Sat P - V-Cannon      (T)"
+	poke $FFCF18 $0A
+
+script "1UP Sat P - Burner        (T)"
+	poke $FFCF18 $0C
+
+script "1UP Sat P - Multi-way     (T)"
+	poke $FFCF18 $0E
+
+script "1UP Sat P - Bound shot    (T)"
+	poke $FFCF18 $10
+
+script "1UP Sat P - Power laser   (T)"
+	poke $FFCF18 $12
+
+script "1UP Sat P - Homing laser  (T)"
+	poke $FFCF18 $14
+
+script "2UP Sat P - Laser         (T)"
+	poke $FFCF68 $00
+
+script "2UP Sat P - Beam          (T)"
+	poke $FFCF68 $02
+
+script "2UP Sat P - Missile       (T)"
+	poke $FFCF68 $04
+
+script "2UP Sat P - Balcan bomber (T)"
+	poke $FFCF68 $06
+
+script "2UP Sat P - Napalm bomb   (T)"
+	poke $FFCF68 $08
+
+script "2UP Sat P - V-Cannon      (T)"
+	poke $FFCF68 $0A
+
+script "2UP Sat P - Burner        (T)"
+	poke $FFCF68 $0C
+
+script "2UP Sat P - Multi-way     (T)"
+	poke $FFCF68 $0E
+
+script "2UP Sat P - Bound shot    (T)"
+	poke $FFCF68 $10
+
+script "2UP Sat P - Power laser   (T)"
+	poke $FFCF68 $12
+
+script "2UP Sat P - Homing laser  (T)"
+	poke $FFCF68 $14

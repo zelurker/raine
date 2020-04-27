@@ -1,0 +1,28 @@
+# Cheats from  : Tourniquet
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time" always
+	poke $1C16A3 $59
+
+script "Infinite Life Char. 1" always
+	poke $1C0617 $6E
+	poke $1C061F $6E
+
+script "Infinite Life Char. 2" always
+	poke $1C0723 $6E
+	poke $1C072B $6E
+
+script "Infinite Life Char. 3" always
+	poke $1C082F $6E
+	poke $1C0837 $6E
+
+script "Infinite Life Char. 4" always
+	poke $1C093B $6E
+	poke $1C0942 $6E
+
+script "Play as LOD Char. 1" always
+	poke $1C0607 $04
+
+script "Play as LOD Char. 2" always
+	poke $1C0191 $05

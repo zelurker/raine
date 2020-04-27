@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $F1A39 $03
+
+script "*UP Maximum speed" always
+	poke $F1A19 $03
+
+script "*UP Maximum fire power" always
+	poke $F1A1B $04
+
+script "*UP Maximum weapon power" always
+	poke $F1A1D $02

@@ -1,0 +1,109 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF8323 $F0
+	poke $FF8300 $02
+
+script "1UP Invulnerability OFF"
+	poke $FF8323 $01
+	poke $FF8300 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF8423 $F0
+	poke $FF8400 $02
+
+script "2UP Invulnerability OFF"
+	poke $FF8423 $01
+	poke $FF8400 $01
+
+script "1UP Unlimited lives" always
+	poke $FF83A4 $03
+
+script "2UP Unlimited lives" always
+	poke $FF84A4 $03
+
+script "1UP Unlimited bombs" always
+	poke $FF83B3 $05
+
+script "2UP Unlimited bombs" always
+	poke $FF84B3 $05
+
+script "1UP Maximum fire power" always
+	poke $FF83B1 $07
+
+script "2UP Maximum fire power" always
+	poke $FF84B1 $07
+
+script "1UP Normal fire           (P)" always
+	poke $FF83B2 $00
+
+script "1UP Extra fire - 3-way    (P)" always
+	poke $FF83B2 $02
+
+script "1UP Extra fire - Laser    (P)" always
+	poke $FF83B2 $04
+
+script "2UP Normal fire           (P)" always
+	poke $FF84B2 $00
+
+script "2UP Extra fire - 3-way    (P)" always
+	poke $FF84B2 $02
+
+script "2UP Extra fire - Laser    (P)" always
+	poke $FF84B2 $04
+
+script "1UP Normal fire           (T)"
+	poke $FF83B2 $00
+
+script "1UP Extra fire - 3-way    (T)"
+	poke $FF83B2 $02
+
+script "1UP Extra fire - Laser    (T)"
+	poke $FF83B2 $04
+
+script "2UP Normal fire           (T)"
+	poke $FF84B2 $00
+
+script "2UP Extra fire - 3-way    (T)"
+	poke $FF84B2 $02
+
+script "2UP Extra fire - Laser    (T)"
+	poke $FF84B2 $04
+
+script "1UP Get the H missiles    (P)" always
+	poke $FF83B8 $00
+
+script "1UP Get the M missiles    (P)" always
+	poke $FF83B8 $01
+
+script "1UP Get the N missiles    (P)" always
+	poke $FF83B8 $02
+
+script "2UP Get the H missiles    (P)" always
+	poke $FF84B8 $00
+
+script "2UP Get the M missiles    (P)" always
+	poke $FF84B8 $01
+
+script "2UP Get the N missiles    (P)" always
+	poke $FF84B8 $02
+
+script "1UP Get the H missiles    (T)"
+	poke $FF83B8 $00
+
+script "1UP Get the M missiles    (T)"
+	poke $FF83B8 $01
+
+script "1UP Get the N missiles    (T)"
+	poke $FF83B8 $02
+
+script "2UP Get the H missiles    (T)"
+	poke $FF84B8 $00
+
+script "2UP Get the M missiles    (T)"
+	poke $FF84B8 $01
+
+script "2UP Get the N missiles    (T)"
+	poke $FF84B8 $02

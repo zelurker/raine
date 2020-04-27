@@ -1,0 +1,149 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
+
+script "*UP Invulnerability ON" always
+	poke $10D206 $01
+	poke $10D209 $FF
+
+script "*UP Invulnerability OFF"
+	poke $10D206 $00
+	poke $10D209 $00
+
+script "1UP Unlimited lives" always
+	poke $10E1C3 $03
+
+script "2UP Unlimited lives" always
+	poke $10E1D3 $03
+
+script "*UP All permanent POWs" always
+	poke $10D043 $C7
+	poke $10D042 $02
+
+script "*UP No permanent POWs"
+	poke $10D043 $00
+	poke $10D042 $00
+
+script "*UP Speed        (normal)"
+	poke $10D065 $00
+
+script "*UP Speed        (power-up)" always
+	poke $10D065 $01
+
+script "*UP Speed        (ultimate !)" always
+	poke $10D065 $03
+
+script "*UP Fire speed   (normal)"
+	poke $10D064 $00
+
+script "*UP Fire speed   (power-up)" always
+	poke $10D064 $01
+
+script "*UP Fire speed   (ultimate !)" always
+	poke $10D064 $07
+
+script "*UP Fire range   (normal)"
+	poke $10D063 $00
+
+script "*UP Fire range   (power-up 1)" always
+	poke $10D063 $01
+
+script "*UP Fire range   (power-up 2)" always
+	poke $10D063 $02
+
+script "*UP Fire range   (ultimate !)" always
+	poke $10D063 $04
+
+script "*UP Bonus door       (normal)"
+	poke $10D058 $00
+
+script "*UP Bonus door       (always)" always
+	poke $10D058 $01
+
+script "1UP Get 7 small diamonds  (P)" always
+	poke $10E1D0 $01
+
+script "2UP Get 7 small diamonds  (P)" always
+	poke $10E1E0 $01
+
+script "1UP Get 7 small diamonds  (T)"
+	poke $10E1D0 $01
+
+script "2UP Get 7 small diamonds  (T)"
+	poke $10E1E0 $01
+
+script "*UP Get 7 big diamonds"
+	poke $10D057 $7F
+	poke $10D056 $00
+
+script "*UP Get 3 mirrors"
+	poke $10D057 $80
+	poke $10D056 $03
+
+script "*UP Get 7 big D and 3 M"
+	poke $10D057 $FF
+	poke $10D056 $03
+
+script "*UP Get big diamond - red"
+	poke $10D057 peek($10D057)&$fe|$01
+
+script "*UP Get big diamond - orange"
+	poke $10D057 peek($10D057)&$fd|$02
+
+script "*UP Get big diamond - yellow"
+	poke $10D057 peek($10D057)&$fb|$04
+
+script "*UP Get big diamond - green"
+	poke $10D057 peek($10D057)&$f7|$08
+
+script "*UP Get big diamond - blue"
+	poke $10D057 peek($10D057)&$ef|$10
+
+script "*UP Get big diamond - indigo"
+	poke $10D057 peek($10D057)&$df|$20
+
+script "*UP Get big diamond - purple"
+	poke $10D057 peek($10D057)&$bf|$40
+
+script "*UP Get mirror - red"
+	poke $10D057 peek($10D057)&$7f|$80
+
+script "*UP Get mirror - gray"
+	poke $10D056 peek($10D056)&$fe|$01
+
+script "*UP Get mirror - yellow"
+	poke $10D056 peek($10D056)&$fd|$02
+
+script "*UP Get wing power        (P)" always
+	poke $10D1C8 $01
+
+script "*UP Get wing power        (T)"
+	poke $10D1C8 $01
+
+script "*UP No more wing power"
+	poke $10D1C8 $01
+
+script "1UP Monsters + items (normal)"
+	poke $10E1D1 $00
+
+script "1UP Monsters + items (always)" always
+	poke $10E1D1 $00
+
+script "1UP Monsters + items (never)" always
+	poke $10E1D1 $01
+
+script "2UP Monsters + items (normal)"
+	poke $10E1E1 $00
+
+script "2UP Monsters + items (always)" always
+	poke $10E1E1 $00
+
+script "2UP Monsters + items (never)" always
+	poke $10E1E1 $01
+
+script "*UP Last level         (next)"
+	poke $10D04B $26
+
+script "*UP Last level         (life)"
+	poke $10D04B $27

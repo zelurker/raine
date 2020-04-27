@@ -1,0 +1,36 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited energy" always
+	dlpoke $FF838C $00600060
+
+script "2UP Unlimited energy" always
+	dlpoke $FF848C $00600060
+
+script "1UP Unlimited ammo." always
+	poke $FF83BB $99
+
+script "2UP Unlimited ammo." always
+	poke $FF84BB $99
+
+script "1UP Unlimited money" always
+	poke $FF83B3 $90
+
+script "2UP Unlimited money" always
+	poke $FF84B3 $90
+
+script "1UP Unlimited shield" always
+	poke $FF83BD $04
+
+script "2UP Unlimited shield" always
+	poke $FF84BD $04
+
+script "*UP Unlimited time" always
+	poke $FF800B $99
+
+script "1UP Weapon level 6      (max)" always
+	poke $FF83B0 $05
+
+script "2UP Weapon level 6      (max)" always
+	poke $FF84B0 $05

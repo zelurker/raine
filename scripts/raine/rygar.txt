@@ -1,0 +1,186 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $C0A0 $03
+
+script "2UP Unlimited lives" always
+	poke $C190 $03
+
+script "1UP Unlimited time" always
+	poke $C0AA $64
+
+script "2UP Unlimited time" always
+	poke $C19A $64
+
+script "*UP Unlimited time for inv." always
+	poke $C461 $28
+
+script "1UP Next star = 70000 pts (P)" always
+	poke $C0BC $07
+
+script "2UP Next star = 70000 pts (P)" always
+	poke $C1AC $07
+
+script "1UP Next star = 70000 pts (T)"
+	poke $C0BC $07
+
+script "2UP Next star = 70000 pts (T)"
+	poke $C1AC $07
+
+script "1UP All powers + inv.     (P)" always
+	poke $C0EE $1F
+
+script "2UP All powers + inv.     (P)" always
+	poke $C1DE $1F
+
+script "1UP All powers            (P)" always
+	poke $C0EE $1B
+
+script "2UP All powers            (P)" always
+	poke $C1DE $1B
+
+script "1UP No powers             (P)" always
+	poke $C0EE $00
+
+script "2UP No powers             (P)" always
+	poke $C1DE $00
+
+script "1UP Long range power  ON  (P)" always
+	poke $C0EE peek($C0EE)&$fe|$01
+
+script "1UP Long range power  OFF (P)" always
+	poke $C0EE peek($C0EE)&$fe
+
+script "1UP Jumping power     ON  (P)" always
+	poke $C0EE peek($C0EE)&$fd|$02
+
+script "1UP Jumping power     OFF (P)" always
+	poke $C0EE peek($C0EE)&$fd
+
+script "1UP Invulnerability   ON  (P)" always
+	poke $C0EE peek($C0EE)&$fb|$04
+
+script "1UP Invulnerability   OFF (P)" always
+	poke $C0EE peek($C0EE)&$fb
+
+script "1UP Power-up shot     ON  (P)" always
+	poke $C0EE peek($C0EE)&$f7|$08
+
+script "1UP Power-up shot     OFF (P)" always
+	poke $C0EE peek($C0EE)&$f7
+
+script "1UP Vertical shot     ON  (P)" always
+	poke $C0EE peek($C0EE)&$ef|$10
+
+script "1UP Vertical shot     OFF (P)" always
+	poke $C0EE peek($C0EE)&$ef
+
+script "2UP Long range power  ON  (P)" always
+	poke $C1DE peek($C1DE)&$fe|$01
+
+script "2UP Long range power  OFF (P)" always
+	poke $C1DE peek($C1DE)&$fe
+
+script "2UP Jumping power     ON  (P)" always
+	poke $C1DE peek($C1DE)&$fd|$02
+
+script "2UP Jumping power     OFF (P)" always
+	poke $C1DE peek($C1DE)&$fd
+
+script "2UP Invulnerability   ON  (P)" always
+	poke $C1DE peek($C1DE)&$fb|$04
+
+script "2UP Invulnerability   OFF (P)" always
+	poke $C1DE peek($C1DE)&$fb
+
+script "2UP Power-up shot     ON  (P)" always
+	poke $C1DE peek($C1DE)&$f7|$08
+
+script "2UP Power-up shot     OFF (P)" always
+	poke $C1DE peek($C1DE)&$f7
+
+script "2UP Vertical shot     ON  (P)" always
+	poke $C1DE peek($C1DE)&$ef|$10
+
+script "2UP Vertical shot     OFF (P)" always
+	poke $C1DE peek($C1DE)&$ef
+
+script "1UP All powers + inv.     (T)" always
+	poke $C0EE $1F
+
+script "2UP All powers + inv.     (T)" always
+	poke $C1DE $1F
+
+script "1UP All powers            (T)"
+	poke $C0EE $1B
+
+script "2UP All powers            (T)"
+	poke $C1DE $1B
+
+script "1UP No powers             (T)"
+	poke $C0EE $00
+
+script "2UP No powers             (T)"
+	poke $C1DE $00
+
+script "1UP Long range power  ON  (T)"
+	poke $C0EE peek($C0EE)&$fe|$01
+
+script "1UP Long range power  OFF (T)"
+	poke $C0EE peek($C0EE)&$fe
+
+script "1UP Jumping power     ON  (T)"
+	poke $C0EE peek($C0EE)&$fd|$02
+
+script "1UP Jumping power     OFF (T)"
+	poke $C0EE peek($C0EE)&$fd
+
+script "1UP Invulnerability   ON  (T)"
+	poke $C0EE peek($C0EE)&$fb|$04
+
+script "1UP Invulnerability   OFF (T)"
+	poke $C0EE peek($C0EE)&$fb
+
+script "1UP Power-up shot     ON  (T)"
+	poke $C0EE peek($C0EE)&$f7|$08
+
+script "1UP Power-up shot     OFF (T)"
+	poke $C0EE peek($C0EE)&$f7
+
+script "1UP Vertical shot     ON  (T)"
+	poke $C0EE peek($C0EE)&$ef|$10
+
+script "1UP Vertical shot     OFF (T)"
+	poke $C0EE peek($C0EE)&$ef
+
+script "2UP Long range power  ON  (T)"
+	poke $C1DE peek($C1DE)&$fe|$01
+
+script "2UP Long range power  OFF (T)"
+	poke $C1DE peek($C1DE)&$fe
+
+script "2UP Jumping power     ON  (T)"
+	poke $C1DE peek($C1DE)&$fd|$02
+
+script "2UP Jumping power     OFF (T)"
+	poke $C1DE peek($C1DE)&$fd
+
+script "2UP Invulnerability   ON  (T)"
+	poke $C1DE peek($C1DE)&$fb|$04
+
+script "2UP Invulnerability   OFF (T)"
+	poke $C1DE peek($C1DE)&$fb
+
+script "2UP Power-up shot     ON  (T)"
+	poke $C1DE peek($C1DE)&$f7|$08
+
+script "2UP Power-up shot     OFF (T)"
+	poke $C1DE peek($C1DE)&$f7
+
+script "2UP Vertical shot     ON  (T)"
+	poke $C1DE peek($C1DE)&$ef|$10
+
+script "2UP Vertical shot     OFF (T)"
+	poke $C1DE peek($C1DE)&$ef

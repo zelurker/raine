@@ -1,0 +1,273 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $2043F9 $03
+
+script "2UP Unlimited lives" always
+	poke $20440D $03
+
+script "1UP Max. fire power - Front" always
+	poke $2010B3 $03
+
+script "1UP Max. fire power - Back" always
+	poke $2010D3 $03
+
+script "1UP Max. fire power - Upper" always
+	poke $2010F3 $03
+
+script "1UP Max. fire power - Lower" always
+	poke $201113 $03
+
+script "2UP Max. fire power - Front" always
+	poke $202053 $03
+
+script "2UP Max. fire power - Back" always
+	poke $202073 $03
+
+script "2UP Max. fire power - Upper" always
+	poke $202093 $03
+
+script "2UP Max. fire power - Lower" always
+	poke $2020B3 $03
+
+script "1UP Front shot - Laser    (P)" always
+	poke $2010B1 $01
+
+script "1UP Front shot - Normal   (P)" always
+	poke $2010B1 $02
+
+script "1UP Front shot - Bound    (P)" always
+	poke $2010B1 $03
+
+script "1UP Front shot - Red shot (P)" always
+	poke $2010B1 $04
+
+script "1UP Front shot - Homing   (P)" always
+	poke $2010B1 $05
+
+script "1UP Back  shot - Laser    (P)" always
+	poke $2010D1 $01
+
+script "1UP Back  shot - Normal   (P)" always
+	poke $2010D1 $02
+
+script "1UP Back  shot - Bound    (P)" always
+	poke $2010D1 $03
+
+script "1UP Back  shot - Red shot (P)" always
+	poke $2010D1 $04
+
+script "1UP Back  shot - Homing   (P)" always
+	poke $2010D1 $05
+
+script "1UP Upper shot - Laser    (P)" always
+	poke $2010F1 $01
+
+script "1UP Upper shot - Normal   (P)" always
+	poke $2010F1 $02
+
+script "1UP Upper shot - Bound    (P)" always
+	poke $2010F1 $03
+
+script "1UP Upper shot - Red shot (P)" always
+	poke $2010F1 $04
+
+script "1UP Upper shot - Homing   (P)" always
+	poke $2010F1 $05
+
+script "1UP Lower shot - Laser    (P)" always
+	poke $201111 $01
+
+script "1UP Lower shot - Normal   (P)" always
+	poke $201111 $02
+
+script "1UP Lower shot - Bound    (P)" always
+	poke $201111 $03
+
+script "1UP Lower shot - Red shot (P)" always
+	poke $201111 $04
+
+script "1UP Lower shot - Homing   (P)" always
+	poke $2010F1 $05
+
+script "2UP Front shot - Laser    (P)" always
+	poke $202051 $01
+
+script "2UP Front shot - Normal   (P)" always
+	poke $202051 $02
+
+script "2UP Front shot - Bound    (P)" always
+	poke $202051 $03
+
+script "2UP Front shot - Red shot (P)" always
+	poke $202051 $04
+
+script "2UP Front shot - Homing   (P)" always
+	poke $202051 $05
+
+script "2UP Back  shot - Laser    (P)" always
+	poke $202071 $01
+
+script "2UP Back  shot - Normal   (P)" always
+	poke $202071 $02
+
+script "2UP Back  shot - Bound    (P)" always
+	poke $202071 $03
+
+script "2UP Back  shot - Red shot (P)" always
+	poke $202071 $04
+
+script "2UP Back  shot - Homing   (P)" always
+	poke $202071 $05
+
+script "2UP Upper shot - Laser    (P)" always
+	poke $202091 $01
+
+script "2UP Upper shot - Normal   (P)" always
+	poke $202091 $02
+
+script "2UP Upper shot - Bound    (P)" always
+	poke $202091 $03
+
+script "2UP Upper shot - Red shot (P)" always
+	poke $202091 $04
+
+script "2UP Upper shot - Homing   (P)" always
+	poke $202091 $05
+
+script "2UP Lower shot - Laser    (P)" always
+	poke $2020B1 $01
+
+script "2UP Lower shot - Normal   (P)" always
+	poke $2020B1 $02
+
+script "2UP Lower shot - Bound    (P)" always
+	poke $2020B1 $03
+
+script "2UP Lower shot - Red shot (P)" always
+	poke $2020B1 $04
+
+script "2UP Lower shot - Homing   (P)" always
+	poke $2020B1 $05
+
+script "1UP Front shot - Laser    (T)"
+	poke $2010B1 $01
+
+script "1UP Front shot - Normal   (T)"
+	poke $2010B1 $02
+
+script "1UP Front shot - Bound    (T)"
+	poke $2010B1 $03
+
+script "1UP Front shot - Red shot (T)"
+	poke $2010B1 $04
+
+script "1UP Front shot - Homing   (T)"
+	poke $2010B1 $05
+
+script "1UP Back  shot - Laser    (T)"
+	poke $2010D1 $01
+
+script "1UP Back  shot - Normal   (T)"
+	poke $2010D1 $02
+
+script "1UP Back  shot - Bound    (T)"
+	poke $2010D1 $03
+
+script "1UP Back  shot - Red shot (T)"
+	poke $2010D1 $04
+
+script "1UP Back  shot - Homing   (T)"
+	poke $2010D1 $05
+
+script "1UP Upper shot - Laser    (T)"
+	poke $2010F1 $01
+
+script "1UP Upper shot - Normal   (T)"
+	poke $2010F1 $02
+
+script "1UP Upper shot - Bound    (T)"
+	poke $2010F1 $03
+
+script "1UP Upper shot - Red shot (T)"
+	poke $2010F1 $04
+
+script "1UP Upper shot - Homing   (T)"
+	poke $2010F1 $05
+
+script "1UP Lower shot - Laser    (T)"
+	poke $201111 $01
+
+script "1UP Lower shot - Normal   (T)"
+	poke $201111 $02
+
+script "1UP Lower shot - Bound    (T)"
+	poke $201111 $03
+
+script "1UP Lower shot - Red shot (T)"
+	poke $201111 $04
+
+script "1UP Lower shot - Homing   (T)"
+	poke $2010F1 $05
+
+script "2UP Front shot - Laser    (T)"
+	poke $202051 $01
+
+script "2UP Front shot - Normal   (T)"
+	poke $202051 $02
+
+script "2UP Front shot - Bound    (T)"
+	poke $202051 $03
+
+script "2UP Front shot - Red shot (T)"
+	poke $202051 $04
+
+script "2UP Front shot - Homing   (T)"
+	poke $202051 $05
+
+script "2UP Back  shot - Laser    (T)"
+	poke $202071 $01
+
+script "2UP Back  shot - Normal   (T)"
+	poke $202071 $02
+
+script "2UP Back  shot - Bound    (T)"
+	poke $202071 $03
+
+script "2UP Back  shot - Red shot (T)"
+	poke $202071 $04
+
+script "2UP Back  shot - Homing   (T)"
+	poke $202071 $05
+
+script "2UP Upper shot - Laser    (T)"
+	poke $202091 $01
+
+script "2UP Upper shot - Normal   (T)"
+	poke $202091 $02
+
+script "2UP Upper shot - Bound    (T)"
+	poke $202091 $03
+
+script "2UP Upper shot - Red shot (T)"
+	poke $202091 $04
+
+script "2UP Upper shot - Homing   (T)"
+	poke $202091 $05
+
+script "2UP Lower shot - Laser    (T)"
+	poke $2020B1 $01
+
+script "2UP Lower shot - Normal   (T)"
+	poke $2020B1 $02
+
+script "2UP Lower shot - Bound    (T)"
+	poke $2020B1 $03
+
+script "2UP Lower shot - Red shot (T)"
+	poke $2020B1 $04
+
+script "2UP Lower shot - Homing   (T)"
+	poke $2020B1 $05

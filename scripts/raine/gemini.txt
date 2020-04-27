@@ -1,0 +1,147 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $C067 $10
+
+script "1UP Invulnerability OFF"
+	poke $C067 $00
+
+script "2UP Invulnerability ON" always
+	poke $C06A $10
+
+script "2UP Invulnerability OFF"
+	poke $C06A $00
+
+script "1UP Unlimited lives" always
+	poke $C303 $03
+
+script "2UP Unlimited lives" always
+	poke $C343 $03
+
+script "1UP Unlimited POWs" always
+	poke $C302 $01
+
+script "2UP Unlimited POWs" always
+	poke $C342 $01
+
+script "1UP POW - Purple 3-way    (P)" always
+	poke $C8E9 $00
+
+script "1UP POW - Red flame       (P)" always
+	poke $C8E9 $04
+
+script "1UP POW - Green star      (P)" always
+	poke $C8E9 $08
+
+script "1UP POW - Blue wind       (P)" always
+	poke $C8E9 $0C
+
+script "1UP POW - Green missiles  (P)" always
+	poke $C8E9 $10
+
+script "1UP POW - Extra life      (P)" always
+	poke $C8E9 $14
+
+script "1UP POW - Speed up        (P)" always
+	poke $C8E9 $18
+
+script "1UP POW - 20000 points    (P)" always
+	poke $C8E9 $1C
+
+script "1UP POW - 50000 points    (P)" always
+	poke $C8E9 $20
+
+script "1UP POW - 100000 points   (P)" always
+	poke $C8E9 $24
+
+script "2UP POW - Purple 3-way    (P)" always
+	poke $C871 $00
+
+script "2UP POW - Red flame       (P)" always
+	poke $C871 $04
+
+script "2UP POW - Green star      (P)" always
+	poke $C871 $08
+
+script "2UP POW - Blue wind       (P)" always
+	poke $C871 $0C
+
+script "2UP POW - Green missiles  (P)" always
+	poke $C871 $10
+
+script "2UP POW - Extra life      (P)" always
+	poke $C871 $14
+
+script "2UP POW - Speed up        (P)" always
+	poke $C871 $18
+
+script "2UP POW - 20000 points    (P)" always
+	poke $C871 $1C
+
+script "2UP POW - 50000 points    (P)" always
+	poke $C871 $20
+
+script "2UP POW - 100000 points   (P)" always
+	poke $C871 $24
+
+script "1UP POW - Purple 3-way    (T)"
+	poke $C8E9 $00
+
+script "1UP POW - Red flame       (T)"
+	poke $C8E9 $04
+
+script "1UP POW - Green star      (T)"
+	poke $C8E9 $08
+
+script "1UP POW - Blue wind       (T)"
+	poke $C8E9 $0C
+
+script "1UP POW - Green missiles  (T)"
+	poke $C8E9 $10
+
+script "1UP POW - Extra life      (T)"
+	poke $C8E9 $14
+
+script "1UP POW - Speed up        (T)"
+	poke $C8E9 $18
+
+script "1UP POW - 20000 points    (T)"
+	poke $C8E9 $1C
+
+script "1UP POW - 50000 points    (T)"
+	poke $C8E9 $20
+
+script "1UP POW - 100000 points   (T)"
+	poke $C8E9 $24
+
+script "2UP POW - Purple 3-way    (T)"
+	poke $C871 $00
+
+script "2UP POW - Red flame       (T)"
+	poke $C871 $04
+
+script "2UP POW - Green star      (T)"
+	poke $C871 $08
+
+script "2UP POW - Blue wind       (T)"
+	poke $C871 $0C
+
+script "2UP POW - Green missiles  (T)"
+	poke $C871 $10
+
+script "2UP POW - Extra life      (T)"
+	poke $C871 $14
+
+script "2UP POW - Speed up        (T)"
+	poke $C871 $18
+
+script "2UP POW - 20000 points    (T)"
+	poke $C871 $1C
+
+script "2UP POW - 50000 points    (T)"
+	poke $C871 $20
+
+script "2UP POW - 100000 points   (T)"
+	poke $C871 $24

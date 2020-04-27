@@ -1,0 +1,51 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $F080B $A0
+
+script "1UP Invulnerability OFF"
+	poke $F080B $01
+
+script "2UP Invulnerability ON" always
+	poke $F0C03 $A0
+
+script "2UP Invulnerability OFF"
+	poke $F0C03 $01
+
+script "1UP Unlimited lives" always
+	poke $F0847 $03
+
+script "2UP Unlimited lives" always
+	poke $F0C39 $03
+
+script "1UP No extra weapon       (T)"
+	poke $F084D $00
+
+script "1UP Extra weapon - M      (T)"
+	poke $F084D $01
+
+script "1UP Extra weapon - E      (T)"
+	poke $F084D $02
+
+script "1UP Extra weapon - T      (T)"
+	poke $F084D $03
+
+script "1UP Extra weapon - B      (T)"
+	poke $F084D $04
+
+script "2UP No extra weapon       (T)"
+	poke $F0C3F $00
+
+script "2UP Extra weapon - M      (T)"
+	poke $F0C3F $01
+
+script "2UP Extra weapon - E      (T)"
+	poke $F0C3F $02
+
+script "2UP Extra weapon - T      (T)"
+	poke $F0C3F $03
+
+script "2UP Extra weapon - B      (T)"
+	poke $F0C3F $04

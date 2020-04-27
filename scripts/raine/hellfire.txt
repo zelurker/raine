@@ -1,0 +1,21 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $4264D $03
+
+script "2UP Unlimited lives" always
+	poke $4264F $03
+
+script "1UP Maximum power" always
+	poke $41D33 $05
+
+script "2UP Maximum power" always
+	poke $41D93 $05
+
+script "1UP Maximum speed" always
+	poke $41D37 $28
+
+script "2UP Maximum speed" always
+	poke $41D97 $28

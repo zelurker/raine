@@ -1,0 +1,21 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited time" always
+	dpoke $300E5C $1388
+
+script "1UP Time=0'00"00 - Total" always
+	dpoke $300E36 $0000
+
+script "1UP Time=0'00"00 - SS1" always
+	dpoke $300E54 $0000
+
+script "1UP Time=0'00"00 - SS2" always
+	dpoke $300E56 $0000
+
+script "1UP Time=0'00"00 - SS3" always
+	dpoke $300E58 $0000
+
+script "1UP Time=0'00"00 - SS4" always
+	dpoke $300E5A $0000

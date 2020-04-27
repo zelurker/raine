@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited turbos" always
+	poke $101936 $05
+
+script "1UP Unlimited time" always
+	poke $101930 $99

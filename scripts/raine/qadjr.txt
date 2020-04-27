@@ -1,0 +1,16 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
+
+script "1UP Unlimited vitality" always
+	poke $FF81A7 $05
+
+script "2UP Unlimited vitality" always
+	poke $FF82A7 $05
+
+script "*UP Good answer ends quiz (T)"
+	poke $FF8C0D $01
+
+script "*UP Watch me for good answer" always
+	print_ingame 1 "*UP Watch me for good answer : %02x" peek($FFB698)

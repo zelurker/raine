@@ -1,0 +1,87 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability" always
+	poke $10095C $00
+
+script "2UP Invulnerability" always
+	poke $1009C0 $00
+
+script "1UP Unlimited lives" always
+	poke $100962 $03
+
+script "2UP Unlimited lives" always
+	poke $1009C6 $03
+
+script "1UP Maximum fire power" always
+	poke $100965 $05
+
+script "2UP Maximum fire power" always
+	poke $1009C9 $05
+
+script "1UP Maximum speed" always
+	poke $100967 $10
+
+script "2UP Maximum speed" always
+	poke $1009CB $10
+
+script "1UP Sub W - None          (P)" always
+	poke $1009BB $00
+
+script "1UP Sub W - Front miss.   (P)" always
+	poke $1009BB $06
+
+script "1UP Sub W - Homing miss.  (P)" always
+	poke $1009BB $0C
+
+script "1UP Sub W - Side miss.    (P)" always
+	poke $1009BB $12
+
+script "1UP Sub W - Around launch (P)" always
+	poke $1009BB $08
+
+script "2UP Sub W - None          (P)" always
+	poke $100A1F $00
+
+script "2UP Sub W - Front miss.   (P)" always
+	poke $100A1F $06
+
+script "2UP Sub W - Homing miss.  (P)" always
+	poke $100A1F $0C
+
+script "2UP Sub W - Side miss.    (P)" always
+	poke $100A1F $12
+
+script "2UP Sub W - Around launch (P)" always
+	poke $100A1F $08
+
+script "1UP Sub W - None          (T)"
+	poke $1009BB $00
+
+script "1UP Sub W - Front miss.   (T)"
+	poke $1009BB $06
+
+script "1UP Sub W - Homing miss.  (T)"
+	poke $1009BB $0C
+
+script "1UP Sub W - Side miss.    (T)"
+	poke $1009BB $12
+
+script "1UP Sub W - Around launch (T)"
+	poke $1009BB $08
+
+script "2UP Sub W - None          (T)"
+	poke $100A1F $00
+
+script "2UP Sub W - Front miss.   (T)"
+	poke $100A1F $06
+
+script "2UP Sub W - Homing miss.  (T)"
+	poke $100A1F $0C
+
+script "2UP Sub W - Side miss.    (T)"
+	poke $100A1F $12
+
+script "2UP Sub W - Around launch (T)"
+	poke $100A1F $08

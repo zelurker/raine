@@ -1,0 +1,27 @@
+# Cheats from  : Pugsy
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time" always
+	poke $408DAC $99
+
+script "Infinite Energy PL1" always
+	poke $410035 $C8
+
+script "Always have Smasher PL1" always
+	poke $408DF3 $C8
+
+script "Get Smasher Now! PL1"
+	poke $408DF3 $C8
+
+script "Infinite Energy PL2" always
+	poke $4100B5 $C8
+
+script "Always have Smasher PL2" always
+	poke $408E33 $C8
+
+script "Get Smasher Now! PL2"
+	poke $408E33 $C8
+
+script "One Hit to Kill Boss Now!"
+	poke $410835 $00

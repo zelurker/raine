@@ -1,0 +1,126 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability" always
+	poke $E26B $00
+
+script "*UP Unlimited lives" always
+	poke $E218 $03
+
+script "*UP Unlimited time in "shop"" always
+	poke $EE28 $10
+
+script "*UP Maximum speed" always
+	poke $E217 $06
+
+script "*UP Maximum fire power" always
+	poke $E214 $08
+
+script "*UP Go to last level"
+	poke $E219 $04
+
+script "*UP Go to begining of level"
+	poke $E219 $09
+
+script "*UP Go to boss - levels 1 & 3"
+	poke $E219 $70
+
+script "*UP Go to boss - levels 2 & 4"
+	poke $E219 $80
+
+script "*UP Go to boss - level  5"
+	poke $E219 $A0
+
+script "*UP Extra fire ON" always
+	poke $E220 $01
+
+script "*UP Extra fire OFF"
+	poke $E220 $00
+
+script "*UP Auto fire  ON" always
+	poke $E223 $01
+
+script "*UP Auto fire  OFF"
+	poke $E223 $00
+
+script "*UP EF - Shield flames 1  (P)" always
+	poke $E215 $00
+
+script "*UP EF - Shield flames 2  (P)" always
+	poke $E215 $01
+
+script "*UP EF - Side + Rear shot (P)" always
+	poke $E215 $02
+
+script "*UP EF - Diagonal shot    (P)" always
+	poke $E215 $03
+
+script "*UP EF - Little men       (P)" always
+	poke $E215 $04
+
+script "*UP EF - Banana shot 1    (P)" always
+	poke $E215 $05
+
+script "*UP EF - Banana shot 2    (P)" always
+	poke $E215 $06
+
+script "*UP EF - Circle shot      (P)" always
+	poke $E215 $08
+
+script "*UP EF - Splitting bombs  (P)" always
+	poke $E215 $09
+
+script "*UP EF - Normal bombs     (P)" always
+	poke $E215 $0A
+
+script "*UP EF - Homing bombs     (P)" always
+	poke $E215 $0B
+
+script "*UP EF - Bouncing bombs   (P)" always
+	poke $E215 $0C
+
+script "*UP EF - Bouncing flames  (P)" always
+	poke $E215 $0D
+
+script "*UP EF - Shield flames 1  (T)"
+	poke $E215 $00
+
+script "*UP EF - Shield flames 2  (T)"
+	poke $E215 $01
+
+script "*UP EF - Side + Rear shot (T)"
+	poke $E215 $02
+
+script "*UP EF - Diagonal shot    (T)"
+	poke $E215 $03
+
+script "*UP EF - Little men       (T)"
+	poke $E215 $04
+
+script "*UP EF - Banana shot 1    (T)"
+	poke $E215 $05
+
+script "*UP EF - Banana shot 2    (T)"
+	poke $E215 $06
+
+script "*UP EF - Circle shot      (T)"
+	poke $E215 $08
+
+script "*UP EF - Splitting bombs  (T)"
+	poke $E215 $09
+
+script "*UP EF - Normal bombs     (T)"
+	poke $E215 $0A
+
+script "*UP EF - Homing bombs     (T)"
+	poke $E215 $0B
+
+script "*UP EF - Bouncing bombs   (T)"
+	poke $E215 $0C
+
+script "*UP EF - Bouncing flames  (T)"
+	poke $E215 $0D
+
+script "*UP One hit for boss      (T)"
+	dpoke $EE4C $0000

@@ -1,0 +1,111 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	dpoke $2007DC $012C
+
+script "1UP Invulnerability OFF"
+	dpoke $2007DC $0001
+
+script "2UP Invulnerability ON" always
+	dpoke $200818 $012C
+
+script "2UP Invulnerability OFF"
+	dpoke $200818 $0001
+
+script "1UP Unlimited lives" always
+	poke $2007CB $03
+
+script "2UP Unlimited lives" always
+	poke $200807 $03
+
+script "1UP Unlimited shields" always
+	poke $2007CF $05
+
+script "2UP Unlimited shields" always
+	poke $20080B $05
+
+script "1UP Weapon - Laser        (P)" always
+	poke $2007E9 $00
+
+script "1UP Weapon - Shell        (P)" always
+	poke $2007E9 $01
+
+script "1UP Weapon - Flame        (P)" always
+	poke $2007E9 $02
+
+script "1UP Weapon - 3-way        (P)" always
+	poke $2007E9 $03
+
+script "1UP Weapon - 2-way        (P)" always
+	poke $2007E9 $04
+
+script "1UP Weapon - Chain        (P)" always
+	poke $2007E9 $05
+
+script "1UP Weapon - Side         (P)" always
+	poke $2007E9 $06
+
+script "2UP Weapon - Laser        (P)" always
+	poke $200825 $00
+
+script "2UP Weapon - Shell        (P)" always
+	poke $200825 $01
+
+script "2UP Weapon - Flame        (P)" always
+	poke $200825 $02
+
+script "2UP Weapon - 3-way        (P)" always
+	poke $200825 $03
+
+script "2UP Weapon - 2-way        (P)" always
+	poke $200825 $04
+
+script "2UP Weapon - Chain        (P)" always
+	poke $200825 $05
+
+script "2UP Weapon - Side         (P)" always
+	poke $200825 $06
+
+script "1UP Weapon - Laser        (T)"
+	poke $2007E9 $00
+
+script "1UP Weapon - Shell        (T)"
+	poke $2007E9 $01
+
+script "1UP Weapon - Flame        (T)"
+	poke $2007E9 $02
+
+script "1UP Weapon - 3-way        (T)"
+	poke $2007E9 $03
+
+script "1UP Weapon - 2-way        (T)"
+	poke $2007E9 $04
+
+script "1UP Weapon - Chain        (T)"
+	poke $2007E9 $05
+
+script "1UP Weapon - Side         (T)"
+	poke $2007E9 $06
+
+script "2UP Weapon - Laser        (T)"
+	poke $200825 $00
+
+script "2UP Weapon - Shell        (T)"
+	poke $200825 $01
+
+script "2UP Weapon - Flame        (T)"
+	poke $200825 $02
+
+script "2UP Weapon - 3-way        (T)"
+	poke $200825 $03
+
+script "2UP Weapon - 2-way        (T)"
+	poke $200825 $04
+
+script "2UP Weapon - Chain        (T)"
+	poke $200825 $05
+
+script "2UP Weapon - Side         (T)"
+	poke $200825 $06

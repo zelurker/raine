@@ -1,0 +1,111 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $E00C $03
+
+script "2UP Unlimited lives" always
+	poke $E011 $03
+
+script "*UP Unlimited time" always
+	poke $E7EE $78
+
+script "*UP Go to last level"
+	poke $E008 $42
+
+script "*UP Warp door (Always)" always
+	poke $E39D peek($E39D)&$7f|$80
+
+script "*UP Warp door (Opened)"
+	poke $E39D peek($E39D)&$7f|$80
+
+script "*UP Warp door (Closed)"
+	poke $E39D peek($E39D)&$7f
+
+script "*UP End level"
+	poke $E393 $00
+
+script "*UP Get 10000 when next   (P)" always
+	poke $E39D peek($E39D)&$fe|$01
+
+script "*UP Get 10000 when next   (T)"
+	poke $E39D peek($E39D)&$fe|$01
+
+script "*UP 1st pill's power - L"
+	poke $E5D6 $81
+
+script "*UP 1st pill's power - E"
+	poke $E5D6 $82
+
+script "*UP 1st pill's power - T"
+	poke $E5D6 $83
+
+script "*UP 1st pill's power - C"
+	poke $E5D6 $86
+
+script "*UP 1st pill's power - I"
+	poke $E5D6 $87
+
+script "*UP 1st pill's power - R"
+	poke $E5D6 $88
+
+script "*UP 1st pill's power - P"
+	poke $E5D6 $8A
+
+script "*UP 1st pill's power - M"
+	poke $E5D6 $8D
+
+script "*UP 1st pill's power - S"
+	poke $E5D6 $8E
+
+script "*UP 1st pill's power - B"
+	poke $E5D6 $90
+
+script "*UP 1st pill's power - D"
+	poke $E5D6 $91
+
+script "*UP 1st pill's power - N"
+	poke $E5D6 $92
+
+script "*UP 1st pill's power - ?"
+	poke $E5D6 $93
+
+script "*UP 2nd pill's power - L"
+	poke $E5DA $81
+
+script "*UP 2nd pill's power - E"
+	poke $E5DA $82
+
+script "*UP 2nd pill's power - T"
+	poke $E5DA $83
+
+script "*UP 2nd pill's power - C"
+	poke $E5DA $86
+
+script "*UP 2nd pill's power - I"
+	poke $E5DA $87
+
+script "*UP 2nd pill's power - R"
+	poke $E5DA $88
+
+script "*UP 2nd pill's power - P"
+	poke $E5DA $8A
+
+script "*UP 2nd pill's power - M"
+	poke $E5DA $8D
+
+script "*UP 2nd pill's power - S"
+	poke $E5DA $8E
+
+script "*UP 2nd pill's power - B"
+	poke $E5DA $90
+
+script "*UP 2nd pill's power - D"
+	poke $E5DA $91
+
+script "*UP 2nd pill's power - N"
+	poke $E5DA $92
+
+script "*UP 2nd pill's power - ?"
+	poke $E5DA $93

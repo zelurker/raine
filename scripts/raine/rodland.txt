@@ -1,0 +1,62 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $F413D $B4
+
+script "1UP Invulnerability OFF"
+	poke $F413D $01
+
+script "2UP Invulnerability ON" always
+	poke $F41BD $B4
+
+script "2UP Invulnerability OFF"
+	poke $F41BD $01
+
+script "1UP Unlimited lives" always
+	poke $F413B $03
+
+script "2UP Unlimited lives" always
+	poke $F41BB $03
+
+script "*UP "Extra Game" ON   (-T)"
+	poke $F48B1 $01
+	poke $F3072 $FF
+	poke $F3073 $FF
+
+script "1UP Get EXTRA"
+	poke $F4231 $1F
+
+script "2UP Get EXTRA"
+	poke $F4233 $1F
+
+script "1UP Get letter - E"
+	poke $F4231 peek($F4231)&$fe|$01
+
+script "1UP Get letter - X"
+	poke $F4231 peek($F4231)&$fd|$02
+
+script "1UP Get letter - T"
+	poke $F4231 peek($F4231)&$fb|$04
+
+script "1UP Get letter - R"
+	poke $F4231 peek($F4231)&$f7|$08
+
+script "1UP Get letter - A"
+	poke $F4231 peek($F4231)&$ef|$10
+
+script "2UP Get letter - E"
+	poke $F4233 peek($F4233)&$fe|$01
+
+script "2UP Get letter - X"
+	poke $F4233 peek($F4233)&$fd|$02
+
+script "2UP Get letter - T"
+	poke $F4233 peek($F4233)&$fb|$04
+
+script "2UP Get letter - R"
+	poke $F4233 peek($F4233)&$f7|$08
+
+script "2UP Get letter - A"
+	poke $F4233 peek($F4233)&$ef|$10

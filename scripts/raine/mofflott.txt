@@ -1,0 +1,16 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $100B5C $03
+
+script "*UP Unlimited fuel" always
+	poke $100B64 $48
+
+script "*UP Unlimited money" always
+	poke $100B6D $99
+	dpoke $100b6e $9999
+
+script "*UP One key opens exit    (P)" always
+	poke $100B7B $08

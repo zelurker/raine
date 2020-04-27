@@ -1,0 +1,14 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability ON" always
+	poke $102C6B $5A
+	poke $109504 peek($109504)&$f7|$08
+
+script "*UP Invulnerability OFF"
+	poke $102C6B $01
+	poke $109504 peek($109504)&$f7
+
+script "*UP Unlimited lives" always
+	poke $109522 $03

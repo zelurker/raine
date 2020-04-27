@@ -1,0 +1,99 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $C002F9 $03
+
+script "2UP Unlimited lives" always
+	poke $C002FB $03
+
+script "1UP Get the shield        (P)" always
+	poke $C00355 peek($C00355)&$e1|$1E
+
+script "2UP Get the shield        (P)" always
+	poke $C003B5 peek($C003B5)&$e1|$1E
+
+script "1UP Get the shield        (T)"
+	poke $C00355 peek($C00355)&$e1|$1E
+
+script "2UP Get the shield        (T)"
+	poke $C003B5 peek($C003B5)&$e1|$1E
+
+script "1UP No more shield"
+	poke $C00355 peek($C00355)&$e1
+
+script "2UP No more shield"
+	poke $C003B5 peek($C003B5)&$e1
+
+script "1UP Next 'P' gives shield (P)" always
+	poke $C002E9 $02
+
+script "2UP Next 'P' gives shield (P)" always
+	poke $C002EB $02
+
+script "1UP Next 'P' gives shield (T)"
+	poke $C002E9 $02
+
+script "2UP Next 'P' gives shield (T)"
+	poke $C002EB $02
+
+script "1UP Weapon - Missiles     (P)" always
+	poke $C002ED $00
+
+script "1UP Weapon - Laser        (P)" always
+	poke $C002ED $01
+
+script "1UP Weapon - Auto         (P)" always
+	poke $C002ED $02
+
+script "1UP Weapon - Bombs        (P)" always
+	poke $C002ED $03
+
+script "1UP Weapon - 3-way        (P)" always
+	poke $C002ED $04
+
+script "2UP Weapon - Missiles     (P)" always
+	poke $C002EF $00
+
+script "2UP Weapon - Laser        (P)" always
+	poke $C002EF $01
+
+script "2UP Weapon - Auto         (P)" always
+	poke $C002EF $02
+
+script "2UP Weapon - Bombs        (P)" always
+	poke $C002EF $03
+
+script "2UP Weapon - 3-way        (P)" always
+	poke $C002EF $04
+
+script "1UP Weapon - Missiles     (T)"
+	poke $C002ED $00
+
+script "1UP Weapon - Laser        (T)"
+	poke $C002ED $01
+
+script "1UP Weapon - Auto         (T)"
+	poke $C002ED $02
+
+script "1UP Weapon - Bombs        (T)"
+	poke $C002ED $03
+
+script "1UP Weapon - 3-way        (T)"
+	poke $C002ED $04
+
+script "2UP Weapon - Missiles     (T)"
+	poke $C002EF $00
+
+script "2UP Weapon - Laser        (T)"
+	poke $C002EF $01
+
+script "2UP Weapon - Auto         (T)"
+	poke $C002EF $02
+
+script "2UP Weapon - Bombs        (T)"
+	poke $C002EF $03
+
+script "2UP Weapon - 3-way        (T)"
+	poke $C002EF $04

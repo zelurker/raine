@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited fuel      (OFF)" always
+	poke $805FC $7F
+
+script "*UP Rank set to 1st" always
+	poke $805FB $01

@@ -1,0 +1,122 @@
+# Cheats from  : Pugsy, Monyons
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time" always
+	dpoke $1039E8 $1770
+
+script "Max STR - Fighter" always
+	dpoke $104176 $03E7
+
+script "Max A.C. - Fighter" always
+	dpoke $104162 $03E7
+
+script "Max armor - Fighter" always
+	poke $104165 $FF
+
+script "Max STR - Mage" always
+	dpoke $104178 $03E7
+
+script "Max A.C. - Mage" always
+	dpoke $104166 $03E7
+
+script "Max armor - Mage" always
+	poke $104169 $FF
+
+script "Max STR - Priest" always
+	dpoke $10417A $03E7
+
+script "Max A.C. - Priest" always
+	dpoke $10416A $03E7
+
+script "Max armor - Priest" always
+	poke $10416D $FF
+
+script "Max STR - Ninja" always
+	dpoke $10417C $03E7
+
+script "Max A.C. - Ninja" always
+	dpoke $10416E $03E7
+
+script "Max armor - Ninja" always
+	poke $104171 $FF
+
+script "Invincibility ON PL1" always
+	poke $103E4B $59
+
+script "Invincibility OFF PL1"
+	poke $103E4B $01
+
+script "Invincibility ON PL2" always
+	poke $103EF5 $59
+
+script "Invincibility OFF PL2"
+	poke $103EF5 $01
+
+script "Infinite H.P. PL1" always
+	poke $103DF1 $C8
+	poke $103DF3 $C8
+
+script "Infinite Magic PL1" always
+	poke $103E3A $FA
+
+script "Infinite Medicine PL1" always
+	poke $103E36 $09
+
+script "Infinite Antidote PL1" always
+	poke $103E37 $09
+
+script "Infinite Elixir PL1" always
+	poke $103E35 $08
+
+script "Infinite Gold PL1" always
+	dpoke $103E32 $EA60
+
+script "Maximum Level PL1" always
+	poke $103E38 $63
+
+script "Maximum AGL PL1" always
+	poke $103E39 $FA
+
+script "Maximum EXP PL1" always
+	dlpoke $103E2E $EA60FDE8
+
+script "Infinite H.P. PL2" always
+	poke $103E9B $C8
+	poke $103E9D $C8
+
+script "Infinite Magic PL2" always
+	poke $103EE4 $FA
+
+script "Infinite Medicine PL2" always
+	poke $103EE0 $09
+
+script "Infinite Antidote PL2" always
+	poke $103EE1 $09
+
+script "Infinite Elixir PL2" always
+	poke $103EDF $08
+
+script "Infinite Gold PL2" always
+	dpoke $103EDC $EA60
+
+script "Maximum Level PL2" always
+	poke $103EE2 $63
+
+script "Maximum AGL PL2" always
+	poke $103EE3 $FA
+
+script "Maximum EXP PL2" always
+	dlpoke $103ED8 $EA60FDE8
+
+script "INN Use Counter  0" always
+	poke $103D99 $00
+
+script "Get WATER GARD ITEM" always
+	poke $1040BF $01
+
+script "GET WORMs THREAD" always
+	poke $1040BC $01
+
+script "AfterUse WORMs THREAD." always
+	poke $1040BC $04

@@ -1,0 +1,54 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $40FF5A $03
+
+script "2UP Unlimited lives" always
+	poke $40FFAA $03
+
+script "3UP Unlimited lives" always
+	poke $40FFFA $03
+
+script "4UP Unlimited lives" always
+	poke $41004A $03
+
+script "1UP Unlimited energy" always
+	poke $40FF57 $23
+
+script "2UP Unlimited energy" always
+	poke $40FFA7 $23
+
+script "3UP Unlimited energy" always
+	poke $40FFF7 $23
+
+script "4UP Unlimited energy" always
+	poke $410047 $23
+
+script "1UP Unlimited magic" always
+	poke $40FF5B $09
+
+script "2UP Unlimited magic" always
+	poke $40FFAB $09
+
+script "3UP Unlimited magic" always
+	poke $40FFFB $09
+
+script "4UP Unlimited magic" always
+	poke $41004B $09
+
+script "1UP Unlimited ammo." always
+	poke $40FF77 $09
+
+script "2UP Unlimited ammo." always
+	poke $40FFC7 $09
+
+script "3UP Unlimited ammo." always
+	poke $410017 $09
+
+script "4UP Unlimited ammo." always
+	poke $410067 $09
+
+script "*UP Unlimited time" always
+	poke $411369 $63

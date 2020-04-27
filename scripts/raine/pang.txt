@@ -1,0 +1,139 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $E200 peek($E200)&$fb|$04
+
+script "1UP Invulnerability OFF"
+	poke $E200 peek($E200)&$fb
+
+script "2UP Invulnerability ON" always
+	poke $E280 peek($E280)&$fb|$04
+
+script "2UP Invulnerability OFF"
+	poke $E280 peek($E280)&$fb
+
+script "1UP Unlimited lives" always
+	poke $E230 $03
+
+script "2UP Unlimited lives" always
+	poke $E2B0 $03
+
+script "*UP Unlimited time      (OFF)" always
+	poke $E01A $99
+
+script "1UP Get the protection    (P)" always
+	poke $E228 $01
+
+script "2UP Get the protection    (P)" always
+	poke $E2A8 $01
+
+script "1UP Get the protection    (T)"
+	poke $E228 $01
+
+script "2UP Get the protection    (T)"
+	poke $E2A8 $01
+
+script "1UP No more protection"
+	poke $E228 $00
+
+script "2UP No more protection"
+	poke $E2A8 $00
+
+script "*UP Freeze bubbles        (T)"
+	poke $E027 $01
+
+script "*UP Unfreeze bubbles      (T)"
+	poke $E027 $00
+
+script "*UP End Level"
+	poke $E01C $00
+
+script "*UP Last level     (next-)"
+	poke $E018 $10
+	poke $E019 $30
+
+script "*UP Last level     (life-)"
+	poke $E018 $10
+	poke $E019 $31
+
+script "1UP Weapon - Single   (-P)" always
+	poke $E229 $00
+	poke $E22C $00
+	poke $E244 $00
+
+script "1UP Weapon - Double   (-P)" always
+	poke $E229 $01
+	poke $E22C $00
+	poke $E244 $00
+
+script "1UP Weapon - M. gun   (-P)" always
+	poke $E229 $00
+	poke $E22C $01
+	poke $E244 $00
+
+script "1UP Weapon - Blocker  (-P)" always
+	poke $E229 $00
+	poke $E22C $00
+	poke $E244 $01
+
+script "2UP Weapon - Single   (-P)" always
+	poke $E2A9 $00
+	poke $E2AC $00
+	poke $E2C4 $00
+
+script "2UP Weapon - Double   (-P)" always
+	poke $E2A9 $01
+	poke $E2AC $00
+	poke $E2C4 $00
+
+script "2UP Weapon - M. gun   (-P)" always
+	poke $E2A9 $00
+	poke $E2AC $01
+	poke $E2C4 $00
+
+script "2UP Weapon - Blocker  (-P)" always
+	poke $E2A9 $00
+	poke $E2AC $00
+	poke $E2C4 $01
+
+script "1UP Weapon - Single   (-T)"
+	poke $E229 $00
+	poke $E22C $00
+	poke $E244 $00
+
+script "1UP Weapon - Double   (-T)"
+	poke $E229 $01
+	poke $E22C $00
+	poke $E244 $00
+
+script "1UP Weapon - M. gun   (-T)"
+	poke $E229 $00
+	poke $E22C $01
+	poke $E244 $00
+
+script "1UP Weapon - Blocker  (-T)"
+	poke $E229 $00
+	poke $E22C $00
+	poke $E244 $01
+
+script "2UP Weapon - Single   (-T)" always
+	poke $E2A9 $00
+	poke $E2AC $00
+	poke $E2C4 $00
+
+script "2UP Weapon - Double   (-T)"
+	poke $E2A9 $01
+	poke $E2AC $00
+	poke $E2C4 $00
+
+script "2UP Weapon - M. gun   (-T)"
+	poke $E2A9 $00
+	poke $E2AC $01
+	poke $E2C4 $00
+
+script "2UP Weapon - Blocker  (-T)"
+	poke $E2A9 $00
+	poke $E2AC $00
+	poke $E2C4 $01

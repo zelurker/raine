@@ -1,0 +1,114 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability ON (bug!)" always
+	poke $FE2C3 $6C
+
+script "*UP Invulnerability OFF"
+	poke $FE2C3 $01
+
+script "*UP Unlimited lives" always
+	poke $FC021 $03
+
+script "*UP Unlimited energy" always
+	poke $FC00B $03
+
+script "*UP Unlimited time" always
+	poke $FC01B $09
+
+script "*UP Unlimited money" always
+	poke $FC022 $90
+	poke $FC023 $00
+
+script "*UP Get all keys      (-P)" always
+	poke $FC032 peek($FC032)&$fc|$03
+	poke $FC033 peek($FC033)&$7f|$80
+	poke $FC032 peek($FC032)&$fe|$01
+
+script "*UP Get the red key       (P)" always
+	poke $FC032 peek($FC032)&$fd|$02
+
+script "*UP Get the blue key      (P)" always
+	poke $FC033 peek($FC033)&$7f|$80
+
+script "*UP Get all keys      (-T)"
+	poke $FC032 peek($FC032)&$fc|$03
+	poke $FC033 peek($FC033)&$7f|$80
+	poke $FC032 peek($FC032)&$fe|$01
+
+script "*UP Get the red key       (T)"
+	poke $FC032 peek($FC032)&$fd|$02
+
+script "*UP Get the blue key      (T)"
+	poke $FC033 peek($FC033)&$7f|$80
+
+script "*UP Get shield - silver   (P)" always
+	poke $FC033 peek($FC033)&$ef|$10
+
+script "*UP Get shield - gold     (P)" always
+	poke $FC033 peek($FC033)&$df|$20
+
+script "*UP Get shield - silver   (T)"
+	poke $FC033 peek($FC033)&$ef|$10
+
+script "*UP Get shield - gold     (T)"
+	poke $FC033 peek($FC033)&$df|$20
+
+script "*UP Get potion - jump     (P)" always
+	poke $FC032 peek($FC032)&$f7|$08
+
+script "*UP Get potion - strength (P)" always
+	poke $FC032 peek($FC032)&$ef|$10
+
+script "*UP Get potion - jump     (T)"
+	poke $FC032 peek($FC032)&$f7|$08
+
+script "*UP Get potion - strength (T)"
+	poke $FC032 peek($FC032)&$ef|$10
+
+script "*UP Get the boots         (P)" always
+	poke $FC031 peek($FC031)&$f7|$08
+
+script "*UP Get the boots         (T)"
+	poke $FC031 peek($FC031)&$f7|$08
+
+script "*UP No extra weapon       (P)" always
+	poke $FC031 peek($FC031)&$f8
+
+script "*UP EW - Knife        (-P)" always
+	poke $FC031 peek($FC031)&$fe|$01
+	poke $FC031 peek($FC031)&$f9
+
+script "*UP EW - Single axe   (-P)" always
+	poke $FC031 peek($FC031)&$fd|$02
+	poke $FC031 peek($FC031)&$fa
+
+script "*UP EW - Double axe   (-P)" always
+	poke $FC031 peek($FC031)&$fb|$04
+	poke $FC031 peek($FC031)&$fc
+
+script "*UP No extra weapon       (T)"
+	poke $FC031 peek($FC031)&$f8
+
+script "*UP EW - Knife        (-T)"
+	poke $FC031 peek($FC031)&$fe|$01
+	poke $FC031 peek($FC031)&$f9
+
+script "*UP EW - Single axe   (-T)"
+	poke $FC031 peek($FC031)&$fd|$02
+	poke $FC031 peek($FC031)&$fa
+
+script "*UP EW - Double axe   (-T)"
+	poke $FC031 peek($FC031)&$fb|$04
+	poke $FC031 peek($FC031)&$fc
+
+script "*UP Get story-teller bird (P)" always
+	poke $FC032 peek($FC032)&$f7|$08
+
+script "*UP Get story-teller bird (T)"
+	poke $FC032 peek($FC032)&$f7|$08
+
+script "*UP One hit for boss  (-T)"
+	poke $FCE06 $00
+	poke $FCE07 $01

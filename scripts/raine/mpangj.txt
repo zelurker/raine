@@ -1,0 +1,101 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FFA502 $EC
+
+script "1UP Invulnerability OFF"
+	poke $FFA502 $00
+
+script "2UP Invulnerability ON" always
+	poke $FFA5C2 $EC
+
+script "2UP Invulnerability OFF"
+	poke $FFA5C2 $00
+
+script "1UP Unlimited lives" always
+	poke $FF8126 $03
+
+script "2UP Unlimited lives" always
+	poke $FF8127 $03
+
+script "*UP Unlimited time" always
+	poke $FF8108 $32
+
+script "1UP Get the protection    (P)" always
+	poke $FFA503 $01
+
+script "2UP Get the protection    (P)" always
+	poke $FFA5C3 $01
+
+script "1UP Get the protection    (T)"
+	poke $FFA503 $01
+
+script "2UP Get the protection    (T)"
+	poke $FFA5C3 $01
+
+script "1UP No more protection"
+	poke $FFA503 $00
+
+script "2UP No more protection"
+	poke $FFA5C3 $00
+
+script "*UP Freeze bubbles ON" always
+	poke $FF810A $05
+	poke $FF810B $2D
+
+script "*UP Freeze bubbles OFF"
+	poke $FF810A $00
+	poke $FF810B $01
+
+script "*UP End Level"
+	poke $E01C $00
+
+script "1UP Weapon - Single       (P)" always
+	poke $FFA50C $04
+
+script "1UP Weapon - Double       (P)" always
+	poke $FFA50C $00
+
+script "1UP Weapon - Blocker      (P)" always
+	poke $FFA50C $01
+
+script "1UP Weapon - M. gun       (P)" always
+	poke $FFA50C $02
+
+script "2UP Weapon - Single       (P)" always
+	poke $FFA5CC $04
+
+script "2UP Weapon - Double       (P)" always
+	poke $FFA5CC $00
+
+script "2UP Weapon - Blocker      (P)" always
+	poke $FFA5CC $01
+
+script "2UP Weapon - M. gun       (P)" always
+	poke $FFA5CC $02
+
+script "1UP Weapon - Single       (T)"
+	poke $FFA50C $04
+
+script "1UP Weapon - Double       (T)"
+	poke $FFA50C $00
+
+script "1UP Weapon - Blocker      (T)"
+	poke $FFA50C $01
+
+script "1UP Weapon - M. gun       (T)"
+	poke $FFA50C $02
+
+script "2UP Weapon - Single       (T)"
+	poke $FFA5CC $04
+
+script "2UP Weapon - Double       (T)"
+	poke $FFA5CC $00
+
+script "2UP Weapon - Blocker      (T)"
+	poke $FFA5CC $01
+
+script "2UP Weapon - M. gun       (T)"
+	poke $FFA5CC $02

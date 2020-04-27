@@ -1,0 +1,74 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $FF4808 $99
+
+script "1UP C1 - Unlimited energy" always
+	poke $FF3A51 $90
+
+script "1UP C2 - Unlimited energy" always
+	poke $FF4251 $90
+
+script "2UP C1 - Unlimited energy" always
+	poke $FF3E51 $90
+
+script "2UP C2 - Unlimited energy" always
+	poke $FF4651 $90
+
+script "1UP C1 - Energy set to 0  (P)" always
+	poke $FF3A51 $00
+
+script "1UP C2 - Energy set to 0  (P)" always
+	poke $FF4251 $00
+
+script "2UP C1 - Energy set to 0  (P)" always
+	poke $FF3E51 $00
+
+script "2UP C2 - Energy set to 0  (P)" always
+	poke $FF4651 $00
+
+script "1UP C1 - Energy set to 0  (T)"
+	poke $FF3A51 $00
+
+script "1UP C2 - Energy set to 0  (T)"
+	poke $FF4251 $00
+
+script "2UP C1 - Energy set to 0  (T)"
+	poke $FF3E51 $00
+
+script "2UP C2 - Energy set to 0  (T)"
+	poke $FF4651 $00
+
+script "1UP C1 - Maximum power" always
+	poke $FF3A53 $00
+	poke $FF3A54 $03
+
+script "1UP C2 - Maximum power" always
+	poke $FF4253 $00
+	poke $FF4254 $03
+
+script "2UP C1 - Maximum power" always
+	poke $FF3E53 $00
+	poke $FF3E54 $03
+
+script "2UP C2 - Maximum power" always
+	poke $FF4653 $00
+	poke $FF4654 $03
+
+script "1UP C1 - Minimum power" always
+	poke $FF3A53 $00
+	poke $FF3A54 $00
+
+script "1UP C2 - Minimum power" always
+	poke $FF4253 $00
+	poke $FF4254 $00
+
+script "2UP C1 - Minimum power" always
+	poke $FF3E53 $00
+	poke $FF3E54 $00
+
+script "2UP C2 - Minimum power" always
+	poke $FF4653 $00
+	poke $FF4654 $00

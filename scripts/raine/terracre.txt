@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $202D4 $03
+
+script "2UP Unlimited lives" always
+	poke $202D5 $03
+
+script "*UP Unlimited polymorphes" always
+	poke $20A34 $03
+
+script "*UP Unlimited polymorph time" always
+	dpoke $20A36 $01F8

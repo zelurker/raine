@@ -1,0 +1,24 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $4803C9 $03
+
+script "2UP Unlimited lives" always
+	poke $4803DD $03
+
+script "1UP Unlimited bombs" always
+	poke $4803CD $08
+
+script "2UP Unlimited bombs" always
+	poke $4803E1 $08
+
+script "1UP Maximum power" always
+	poke $4803CB $04
+
+script "2UP Maximum power" always
+	poke $4803DF $04
+
+script "*UP Maximum bonus" always
+	poke $4803A5 $59

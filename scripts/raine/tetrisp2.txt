@@ -1,0 +1,90 @@
+# Cheats from  : Pugsy
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Bombs" always
+	poke $10D7A3 $03
+
+script "Next = Red --        PL1  (P)" always
+	poke $10E1D7 $00
+
+script "Next = Yellow square PL1  (P)" always
+	poke $10E1D7 $01
+
+script "Next = Light Blue T  PL1  (P)" always
+	poke $10E1D7 $02
+
+script "Next = Dark Blue L   PL1  (P)" always
+	poke $10E1D7 $03
+
+script "Next = Orange L      PL1  (P)" always
+	poke $10E1D7 $04
+
+script "Next = Green Z       PL1  (P)" always
+	poke $10E1D7 $05
+
+script "Next = Purple Z      PL1  (P)" always
+	poke $10E1D7 $06
+
+script "Next = Red --        PL1  (T)"
+	poke $10E1D7 $00
+
+script "Next = Yellow square PL1  (T)"
+	poke $10E1D7 $01
+
+script "Next = Light Blue T  PL1  (T)"
+	poke $10E1D7 $02
+
+script "Next = Dark Blue L   PL1  (T)"
+	poke $10E1D7 $03
+
+script "Next = Orange L      PL1  (T)"
+	poke $10E1D7 $04
+
+script "Next = Green Z       PL1  (T)"
+	poke $10E1D7 $05
+
+script "Next = Purple Z      PL1  (T)"
+	poke $10E1D7 $06
+
+script "Next = Red --        PL2  (P)" always
+	poke $10E317 $00
+
+script "Next = Yellow square PL2  (P)" always
+	poke $10E317 $01
+
+script "Next = Light Blue T  PL2  (P)" always
+	poke $10E317 $02
+
+script "Next = Dark Blue L   PL2  (P)" always
+	poke $10E317 $03
+
+script "Next = Orange L      PL2  (P)" always
+	poke $10E317 $04
+
+script "Next = Green Z       PL2  (P)" always
+	poke $10E317 $05
+
+script "Next = Purple Z      PL2  (P)" always
+	poke $10E317 $06
+
+script "Next = Red --        PL2  (T)"
+	poke $10E317 $00
+
+script "Next = Yellow square PL2  (T)"
+	poke $10E317 $01
+
+script "Next = Light Blue T  PL2  (T)"
+	poke $10E317 $02
+
+script "Next = Dark Blue L   PL2  (T)"
+	poke $10E317 $03
+
+script "Next = Orange L      PL2  (T)"
+	poke $10E317 $04
+
+script "Next = Green Z       PL2  (T)"
+	poke $10E317 $05
+
+script "Next = Purple Z      PL2  (T)"
+	poke $10E317 $06

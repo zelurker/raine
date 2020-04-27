@@ -1,0 +1,201 @@
+# Cheats from  : Pugsy
+# Last update  : 2002.02.13
+# Desc. format : Pugsy
+
+script "Help line ON PL1" always
+	poke $9070D5 $01
+
+script "Help line OFF PL1"
+	poke $9070D5 $00
+
+script "Cur. bubble always blue    PL1" always
+	poke $90706D $00
+
+script "Cur. bubble always red     PL1" always
+	poke $90706D $01
+
+script "Cur. bubble always yellow  PL1" always
+	poke $90706D $02
+
+script "Cur. bubble always green   PL1" always
+	poke $90706D $03
+
+script "Cur. bubble always purple  PL1" always
+	poke $90706D $04
+
+script "Cur. bubble always orange  PL1" always
+	poke $90706D $05
+
+script "Cur. bubble always black   PL1" always
+	poke $90706D $06
+
+script "Cur. bubble always grey    PL1" always
+	poke $90706D $07
+
+script "Next bubble always blue    PL1" always
+	poke $90708B $00
+
+script "Next bubble always red     PL1" always
+	poke $90708B $01
+
+script "Next bubble always yellow  PL1" always
+	poke $90708B $02
+
+script "Next bubble always green   PL1" always
+	poke $90708B $03
+
+script "Next bubble always purple  PL1" always
+	poke $90708B $04
+
+script "Next bubble always orange  PL1" always
+	poke $90708B $05
+
+script "Next bubble always black   PL1" always
+	poke $90708B $06
+
+script "Next bubble always grey    PL1" always
+	poke $90708B $07
+
+script "Cur. bubble will be blue   PL1"
+	poke $90706D $00
+
+script "Cur. bubble will be red    PL1"
+	poke $90706D $01
+
+script "Cur. bubble will be yellow PL1"
+	poke $90706D $02
+
+script "Cur. bubble will be green  PL1"
+	poke $90706D $03
+
+script "Cur. bubble will be purple PL1"
+	poke $90706D $04
+
+script "Cur. bubble will be orange PL1"
+	poke $90706D $05
+
+script "Cur. bubble will be black  PL1"
+	poke $90706D $06
+
+script "Cur. bubble will be grey   PL1"
+	poke $90706D $07
+
+script "Next bubble will be blue   PL1"
+	poke $90708B $00
+
+script "Next bubble will be red    PL1"
+	poke $90708B $01
+
+script "Next bubble will be yellow PL1"
+	poke $90708B $02
+
+script "Next bubble will be green  PL1"
+	poke $90708B $03
+
+script "Next bubble will be purple PL1"
+	poke $90708B $04
+
+script "Next bubble will be orange PL1"
+	poke $90708B $05
+
+script "Next bubble will be black  PL1"
+	poke $90708B $06
+
+script "Next bubble will be grey   PL1"
+	poke $90708B $07
+
+script "Cur. bubble always blue    PL2" always
+	poke $9070F3 $00
+
+script "Cur. bubble always red     PL2" always
+	poke $9070F3 $01
+
+script "Cur. bubble always yellow  PL2" always
+	poke $9070F3 $02
+
+script "Cur. bubble always green   PL2" always
+	poke $9070F3 $03
+
+script "Cur. bubble always purple  PL2" always
+	poke $9070F3 $04
+
+script "Cur. bubble always orange  PL2" always
+	poke $9070F3 $05
+
+script "Cur. bubble always black   PL2" always
+	poke $9070F3 $06
+
+script "Cur. bubble always grey    PL2" always
+	poke $9070F3 $07
+
+script "Next bubble always blue    PL2" always
+	poke $907111 $00
+
+script "Next bubble always red     PL2" always
+	poke $907111 $01
+
+script "Next bubble always yellow  PL2" always
+	poke $907111 $02
+
+script "Next bubble always green   PL2" always
+	poke $907111 $03
+
+script "Next bubble always purple  PL2" always
+	poke $907111 $04
+
+script "Next bubble always orange  PL2" always
+	poke $907111 $05
+
+script "Next bubble always black   PL2" always
+	poke $907111 $06
+
+script "Next bubble always grey    PL2" always
+	poke $907111 $07
+
+script "Cur. bubble will be blue   PL2"
+	poke $9070F3 $00
+
+script "Cur. bubble will be red    PL2"
+	poke $9070F3 $01
+
+script "Cur. bubble will be yellow PL2"
+	poke $9070F3 $02
+
+script "Cur. bubble will be green  PL2"
+	poke $9070F3 $03
+
+script "Cur. bubble will be purple PL2"
+	poke $9070F3 $04
+
+script "Cur. bubble will be orange PL2"
+	poke $9070F3 $05
+
+script "Cur. bubble will be black  PL2"
+	poke $9070F3 $06
+
+script "Cur. bubble will be grey   PL2"
+	poke $9070F3 $07
+
+script "Next bubble will be blue   PL2"
+	poke $907111 $00
+
+script "Next bubble will be red    PL2"
+	poke $907111 $01
+
+script "Next bubble will be yellow PL2"
+	poke $907111 $02
+
+script "Next bubble will be green  PL2"
+	poke $907111 $03
+
+script "Next bubble will be purple PL2"
+	poke $907111 $04
+
+script "Next bubble will be orange PL2"
+	poke $907111 $05
+
+script "Next bubble will be black  PL2"
+	poke $907111 $06
+
+script "Next bubble will be grey   PL2"
+	poke $907111 $07

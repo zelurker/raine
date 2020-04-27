@@ -1,0 +1,63 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $40C243 $B4
+
+script "1UP Invulnerability OFF"
+	poke $40C243 $01
+
+script "2UP Invulnerability ON" always
+	poke $40C343 $B4
+
+script "2UP Invulnerability OFF"
+	poke $40C343 $01
+
+script "3UP Invulnerability ON" always
+	poke $40C443 $B4
+
+script "3UP Invulnerability OFF"
+	poke $40C443 $01
+
+script "4UP Invulnerability ON" always
+	poke $40C543 $B4
+
+script "4UP Invulnerability OFF"
+	poke $40C543 $01
+
+script "1UP Unlimited lives" always
+	poke $40C244 $03
+
+script "2UP Unlimited lives" always
+	poke $40C344 $03
+
+script "3UP Unlimited lives" always
+	poke $40C444 $03
+
+script "4UP Unlimited lives" always
+	poke $40C544 $03
+
+script "1UP Unlimited energy" always
+	poke $404FD0 $08
+
+script "2UP Unlimited energy" always
+	poke $405050 $08
+
+script "3UP Unlimited energy" always
+	poke $4050D0 $08
+
+script "4UP Unlimited energy" always
+	poke $405150 $08
+
+script "1UP Unlimited super attacks" always
+	poke $40C245 $09
+
+script "2UP Unlimited super attacks" always
+	poke $40C345 $09
+
+script "3UP Unlimited super attacks" always
+	poke $40C445 $09
+
+script "4UP Unlimited super attacks" always
+	poke $40C545 $09

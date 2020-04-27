@@ -1,0 +1,24 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $FF72CA $99
+
+script "1UP Unlimited energy" always
+	dlpoke $FF802C $01160116
+
+script "2UP Unlimited energy" always
+	dlpoke $FF842C $01160116
+
+script "1UP Energy set to 0" always
+	dlpoke $FF802C $00000000
+
+script "2UP Energy set to 0" always
+	dlpoke $FF842C $00000000
+
+script "1UP Energy set to 0"
+	dlpoke $FF802C $00000000
+
+script "2UP Energy set to 0"
+	dlpoke $FF842C $00000000

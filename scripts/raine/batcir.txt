@@ -1,0 +1,250 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF830C $B3
+
+script "1UP Invulnerability OFF"
+	poke $FF830C $01
+
+script "2UP Invulnerability ON" always
+	poke $FF844C $B3
+
+script "2UP Invulnerability OFF"
+	poke $FF844C $01
+
+script "3UP Invulnerability ON" always
+	poke $FF858C $B3
+
+script "3UP Invulnerability OFF"
+	poke $FF858C $01
+
+script "4UP Invulnerability ON" always
+	poke $FF86CC $B3
+
+script "4UP Invulnerability OFF"
+	poke $FF86CC $01
+
+script "1UP Unlimited lives" always
+	poke $FF830A $03
+
+script "2UP Unlimited lives" always
+	poke $FF844A $03
+
+script "3UP Unlimited lives" always
+	poke $FF858A $03
+
+script "4UP Unlimited lives" always
+	poke $FF86CA $03
+
+script "1UP Unlimited energy" always
+	poke $FF82B7 $80
+	poke $FF82EB $80
+
+script "2UP Unlimited energy" always
+	poke $FF83F7 $80
+	poke $FF842B $80
+
+script "3UP Unlimited energy" always
+	poke $FF8537 $80
+	poke $FF856B $80
+
+script "4UP Unlimited energy" always
+	poke $FF8677 $80
+	poke $FF86AB $80
+
+script "1UP Unlimited B.D.L. units" always
+	poke $FF833E $05
+
+script "2UP Unlimited B.D.L. units" always
+	poke $FF847E $05
+
+script "3UP Unlimited B.D.L. units" always
+	poke $FF85BE $05
+
+script "4UP Unlimited B.D.L. units" always
+	poke $FF86FE $05
+
+script "1UP Unlimited money" always
+	dpoke $FF8328 $270F
+
+script "2UP Unlimited money" always
+	dpoke $FF8468 $270F
+
+script "3UP Unlimited money" always
+	dpoke $FF85A8 $270F
+
+script "4UP Unlimited money" always
+	dpoke $FF86E8 $270F
+
+script "*UP Unlimited time" always
+	poke $FF5D57 $59
+
+script "1UP Upgrade 1 ON"
+	poke $FF833C peek($FF833C)&$fe|$01
+
+script "1UP Upgrade 1 OFF"
+	poke $FF833C peek($FF833C)&$fe
+
+script "1UP Upgrade 2 ON"
+	poke $FF833C peek($FF833C)&$fd|$02
+
+script "1UP Upgrade 2 OFF"
+	poke $FF833C peek($FF833C)&$fd
+
+script "1UP Upgrade 3 ON"
+	poke $FF833C peek($FF833C)&$fb|$04
+
+script "1UP Upgrade 3 OFF"
+	poke $FF833C peek($FF833C)&$fb
+
+script "1UP Upgrade 4 ON"
+	poke $FF833C peek($FF833C)&$f7|$08
+
+script "1UP Upgrade 4 OFF"
+	poke $FF833C peek($FF833C)&$f7
+
+script "1UP Upgrade 5 ON"
+	poke $FF833C peek($FF833C)&$ef|$10
+
+script "1UP Upgrade 5 OFF"
+	poke $FF833C peek($FF833C)&$ef
+
+script "1UP Upgrade 6 ON"
+	poke $FF833C peek($FF833C)&$df|$20
+
+script "1UP Upgrade 6 OFF"
+	poke $FF833C peek($FF833C)&$df
+
+script "1UP Item given last level ON"
+	poke $FF833C peek($FF833C)&$7f|$80
+
+script "1UP Item given last level OFF"
+	poke $FF833C peek($FF833C)&$7f
+
+script "2UP Upgrade 1 ON"
+	poke $FF847C peek($FF847C)&$fe|$01
+
+script "2UP Upgrade 1 OFF"
+	poke $FF847C peek($FF847C)&$fe
+
+script "2UP Upgrade 2 ON"
+	poke $FF847C peek($FF847C)&$fd|$02
+
+script "2UP Upgrade 2 OFF"
+	poke $FF847C peek($FF847C)&$fd
+
+script "2UP Upgrade 3 ON"
+	poke $FF847C peek($FF847C)&$fb|$04
+
+script "2UP Upgrade 3 OFF"
+	poke $FF847C peek($FF847C)&$fb
+
+script "2UP Upgrade 4 ON"
+	poke $FF847C peek($FF847C)&$f7|$08
+
+script "2UP Upgrade 4 OFF"
+	poke $FF847C peek($FF847C)&$f7
+
+script "2UP Upgrade 5 ON"
+	poke $FF847C peek($FF847C)&$ef|$10
+
+script "2UP Upgrade 5 OFF"
+	poke $FF847C peek($FF847C)&$ef
+
+script "2UP Upgrade 6 ON"
+	poke $FF847C peek($FF847C)&$df|$20
+
+script "2UP Upgrade 6 OFF"
+	poke $FF847C peek($FF847C)&$df
+
+script "2UP Item given last level ON"
+	poke $FF847C peek($FF847C)&$7f|$80
+
+script "2UP Item given last level OFF"
+	poke $FF847C peek($FF847C)&$7f
+
+script "3UP Upgrade 1 ON"
+	poke $FF85BC peek($FF85BC)&$fe|$01
+
+script "3UP Upgrade 1 OFF"
+	poke $FF85BC peek($FF85BC)&$fe
+
+script "3UP Upgrade 2 ON"
+	poke $FF85BC peek($FF85BC)&$fd|$02
+
+script "3UP Upgrade 2 OFF"
+	poke $FF85BC peek($FF85BC)&$fd
+
+script "3UP Upgrade 3 ON"
+	poke $FF85BC peek($FF85BC)&$fb|$04
+
+script "3UP Upgrade 3 OFF"
+	poke $FF85BC peek($FF85BC)&$fb
+
+script "3UP Upgrade 4 ON"
+	poke $FF85BC peek($FF85BC)&$f7|$08
+
+script "3UP Upgrade 4 OFF"
+	poke $FF85BC peek($FF85BC)&$f7
+
+script "3UP Upgrade 5 ON"
+	poke $FF85BC peek($FF85BC)&$ef|$10
+
+script "3UP Upgrade 5 OFF"
+	poke $FF85BC peek($FF85BC)&$ef
+
+script "3UP Upgrade 6 ON"
+	poke $FF85BC peek($FF85BC)&$df|$20
+
+script "3UP Upgrade 6 OFF"
+	poke $FF85BC peek($FF85BC)&$df
+
+script "3UP Item given last level ON"
+	poke $FF85BC peek($FF85BC)&$7f|$80
+
+script "3UP Item given last level OFF"
+	poke $FF85BC peek($FF85BC)&$7f
+
+script "4UP Upgrade 1 ON"
+	poke $FF86FC peek($FF86FC)&$fe|$01
+
+script "4UP Upgrade 1 OFF"
+	poke $FF86FC peek($FF86FC)&$fe
+
+script "4UP Upgrade 2 ON"
+	poke $FF86FC peek($FF86FC)&$fd|$02
+
+script "4UP Upgrade 2 OFF"
+	poke $FF86FC peek($FF86FC)&$fd
+
+script "4UP Upgrade 3 ON"
+	poke $FF86FC peek($FF86FC)&$fb|$04
+
+script "4UP Upgrade 3 OFF"
+	poke $FF86FC peek($FF86FC)&$fb
+
+script "4UP Upgrade 4 ON"
+	poke $FF86FC peek($FF86FC)&$f7|$08
+
+script "4UP Upgrade 4 OFF"
+	poke $FF86FC peek($FF86FC)&$f7
+
+script "4UP Upgrade 5 ON"
+	poke $FF86FC peek($FF86FC)&$ef|$10
+
+script "4UP Upgrade 5 OFF"
+	poke $FF86FC peek($FF86FC)&$ef
+
+script "4UP Upgrade 6 ON"
+	poke $FF86FC peek($FF86FC)&$df|$20
+
+script "4UP Upgrade 6 OFF"
+	poke $FF86FC peek($FF86FC)&$df
+
+script "4UP Item given last level ON"
+	poke $FF86FC peek($FF86FC)&$7f|$80
+
+script "4UP Item given last level OFF"
+	poke $FF86FC peek($FF86FC)&$7f

@@ -1,0 +1,41 @@
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $60826F $63
+
+script "1UP Unlimited energy" always
+	poke $605124 $68
+
+script "2UP Unlimited energy" always
+	poke $605190 $68
+
+script "1UP Energy set to 0       (P)" always
+	poke $605124 $00
+
+script "2UP Energy set to 0       (P)" always
+	poke $605190 $00
+
+script "1UP Energy set to 0       (T)"
+	poke $605124 $00
+
+script "2UP Energy set to 0       (T)"
+	poke $605190 $00
+
+script "1UP End round to win match" always
+	poke $602750 $02
+
+script "2UP End round to win match" always
+	poke $602751 $02
+
+script "1UP Rounds won set to 0   (P)" always
+	poke $602750 $00
+
+script "2UP Rounds won set to 0   (P)" always
+	poke $602751 $00
+
+script "1UP Rounds won set to 0   (T)"
+	poke $602750 $00
+
+script "2UP Rounds won set to 0   (T)"
+	poke $602751 $00

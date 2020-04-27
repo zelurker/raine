@@ -1,0 +1,50 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON   (Pl)" always
+	poke $FFA9E0 $77
+
+script "1UP Invulnerability OFF  (Pl)"
+	poke $FFA9E0 $01
+
+script "2UP Invulnerability ON   (Pl)" always
+	poke $FFAAA0 $77
+
+script "2UP Invulnerability OFF  (Pl)"
+	poke $FFAAA0 $01
+
+script "1UP Invulnerability ON   (Pa)" always
+	poke $FFB7C5 $75
+
+script "1UP Invulnerability OFF  (Pa)"
+	poke $FFB7C5 $01
+
+script "2UP Invulnerability ON   (Pa)" always
+	poke $FFB8C5 $75
+
+script "2UP Invulnerability OFF  (Pa)"
+	poke $FFB8C5 $01
+
+script "1UP Unlimited Pl energy" always
+	poke $FFA98C $1F401F40
+
+script "2UP Unlimited Pl energy" always
+	poke $FFAA4C $1F401F40
+
+script "1UP Unlimited magic" always
+	poke $FFA9BC $99
+
+script "2UP Unlimited magic" always
+	poke $FFAA7C $99
+
+script "1UP Unlimited keys" always
+	poke $FFA9E9 $09
+	dpoke $ffa9ea $909
+
+script "2UP Unlimited keys" always
+	poke $FFAAA9 $09
+	dpoke $ffaaaa $909
+
+script "*UP Unlimited time" always
+	poke $FFFF4B $99

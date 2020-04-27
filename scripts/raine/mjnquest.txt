@@ -1,0 +1,77 @@
+# Cheats from  : Pugsy
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Winning hand (08)"
+	poke $11A301 $00
+	poke $11A300 $04
+
+script "Winning hand (08)"
+	poke $11A305 $00
+
+script "Winning hand (08)"
+	poke $11A304 $04
+
+script "Winning hand (08)"
+	poke $11A309 $00
+
+script "Winning hand (08)"
+	poke $11A308 $04
+
+script "Winning hand (08)"
+	poke $11A30D $01
+
+script "Winning hand (08)"
+	poke $11A30C $04
+
+script "Winning hand (08)"
+	poke $11A311 $01
+
+script "Winning hand (18)"
+	poke $11A310 $04
+	poke $11A315 $01
+	poke $11A314 $04
+
+script "Winning hand (18)"
+	poke $11A319 $02
+
+script "Winning hand (18)"
+	poke $11A318 $04
+
+script "Winning hand (18)"
+	poke $11A31D $02
+
+script "Winning hand (18)"
+	poke $11A31C $04
+
+script "Winning hand (18)"
+	poke $11A321 $02
+
+script "Winning hand (18)"
+	poke $11A320 $04
+
+script "Winning hand (18)"
+	poke $11A325 $03
+
+script "Winning hand (28)"
+	poke $11A324 $04
+	poke $11A329 $03
+	poke $11A328 $04
+
+script "Winning hand (28)"
+	poke $11A32D $03
+
+script "Winning hand (28)"
+	poke $11A32C $04
+
+script "Winning hand (28)"
+	poke $11A331 $04
+
+script "Winning hand (28)"
+	poke $11A330 $04
+
+script "Winning hand (28)"
+	poke $11A335 $04
+
+script "Winning hand (28)"
+	poke $11A334 $04

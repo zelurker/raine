@@ -1,0 +1,47 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF82E6 $0E
+
+script "1UP Invulnerability OFF"
+	poke $FF82E6 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF8386 $0E
+
+script "2UP Invulnerability OFF"
+	poke $FF8386 $01
+
+script "1UP Unlimited energy" always
+	dpoke $FF8288 $0999
+
+script "2UP Unlimited energy" always
+	dpoke $FF8328 $0999
+
+script "1UP Character level 8   (max)" always
+	poke $FF82EE $07
+
+script "2UP Character level 8   (max)" always
+	poke $FF838E $07
+
+script "1UP Weapon level 8      (max)" always
+	poke $FF82E9 $07
+
+script "2UP Weapon level 8      (max)" always
+	poke $FF8389 $07
+
+script "1UP Maximum weap. power" always
+	poke $FF82E2 $0B
+	poke $FF82EF $07
+
+script "2UP Maximum weap. power" always
+	poke $FF8382 $0B
+	poke $FF838F $07
+
+script "1UP Maximum blue balls" always
+	poke $FF82E1 $02
+
+script "2UP Maximum blue balls" always
+	poke $FF8381 $02

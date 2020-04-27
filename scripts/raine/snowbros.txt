@@ -1,0 +1,97 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $101591 $03
+
+script "2UP Unlimited lives" always
+	poke $1015A7 $03
+
+script "*UP Unlimited time" always
+	poke $1000BB $20
+
+script "*UP Floor 50 when level ends"
+	poke $101573 $30
+
+script "1UP Get all powers        (P)" always
+	poke $1015A8 $70
+
+script "2UP Get all powers        (P)" always
+	poke $1015A9 $70
+
+script "1UP Get power-up shot     (P)" always
+	poke $1015A8 peek($1015A8)&$ef|$10
+
+script "1UP Get power-up range    (P)" always
+	poke $1015A8 peek($1015A8)&$df|$20
+
+script "1UP Get power-up speed    (P)" always
+	poke $1015A8 peek($1015A8)&$bf|$40
+
+script "2UP Get power-up shot     (P)" always
+	poke $1015A9 peek($1015A9)&$ef|$10
+
+script "2UP Get power-up range    (P)" always
+	poke $1015A9 peek($1015A9)&$df|$20
+
+script "2UP Get power-up speed    (P)" always
+	poke $1015A9 peek($1015A9)&$bf|$40
+
+script "1UP Get SNOW"
+	poke $1015AA peek($1015AA)&$f0|$0F
+
+script "2UP Get SNOW"
+	poke $1015AB peek($1015AB)&$f0|$0F
+
+script "1UP Get letter - S"
+	poke $1015AA peek($1015AA)&$fe|$01
+
+script "1UP Get letter - N"
+	poke $1015AA peek($1015AA)&$fd|$02
+
+script "1UP Get letter - O"
+	poke $1015AA peek($1015AA)&$fb|$04
+
+script "1UP Get letter - W"
+	poke $1015AA peek($1015AA)&$f7|$08
+
+script "2UP Get letter - S"
+	poke $1015AB peek($1015AB)&$fe|$01
+
+script "2UP Get letter - N"
+	poke $1015AB peek($1015AB)&$fd|$02
+
+script "2UP Get letter - O"
+	poke $1015AB peek($1015AB)&$fb|$04
+
+script "2UP Get letter - W"
+	poke $1015AB peek($1015AB)&$f7|$08
+
+script "1UP Get all powers        (T)"
+	poke $1015A8 $70
+
+script "2UP Get all powers        (T)"
+	poke $1015A9 $70
+
+script "1UP Get power-up shot     (T)"
+	poke $1015A8 peek($1015A8)&$ef|$10
+
+script "1UP Get power-up range    (T)"
+	poke $1015A8 peek($1015A8)&$df|$20
+
+script "1UP Get power-up speed    (T)"
+	poke $1015A8 peek($1015A8)&$bf|$40
+
+script "2UP Get power-up shot     (T)"
+	poke $1015A9 peek($1015A9)&$ef|$10
+
+script "2UP Get power-up range    (T)"
+	poke $1015A9 peek($1015A9)&$df|$20
+
+script "2UP Get power-up speed    (T)"
+	poke $1015A9 peek($1015A9)&$bf|$40
+
+script "*UP One hit for boss  (-T)"
+	dpoke $1018CA $0001
+	dpoke $10190A $0001

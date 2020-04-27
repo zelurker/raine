@@ -1,0 +1,19 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited vitality" always
+	poke $10109D $07
+
+script "2UP Unlimited vitality" always
+	poke $10109E $07
+
+script "*UP Watch me for good answer" always
+	print_ingame 1 "*UP Watch me for good answer : %02x" peek($1020E5)
+
+script "*UP Answer ends step  (-T)"
+	poke $102B89 $08
+	poke $102C59 $07
+
+script "*UP Answer ends arrest    (T)"
+	poke $102C8D $09

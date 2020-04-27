@@ -1,0 +1,48 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $8A8A $09
+
+script "1UP Maximum energy    (-P)" always
+	poke $A039 $A0
+	poke $A66E $A0
+
+script "2UP Maximum energy    (-P)" always
+	poke $A139 $A0
+	poke $A670 $A0
+
+script "1UP Maximum power         (P)" always
+	poke $A66D $A0
+
+script "2UP Maximum power         (P)" always
+	poke $A66F $A0
+
+script "1UP Energy set to 0   (-P)" always
+	poke $A039 $00
+	poke $A66E $00
+
+script "2UP Energy set to 0   (-P)" always
+	poke $A139 $00
+	poke $A670 $00
+
+script "1UP Power set to 0        (P)" always
+	poke $A66D $00
+
+script "2UP Power set to 0        (P)" always
+	poke $A66F $00
+
+script "1UP Energy set to 0   (-T)"
+	poke $A039 $00
+	poke $A66E $00
+
+script "2UP Energy set to 0   (-T)"
+	poke $A139 $00
+	poke $A670 $00
+
+script "1UP Power set to 0        (T)"
+	poke $A66D $00
+
+script "2UP Power set to 0        (T)"
+	poke $A66F $00

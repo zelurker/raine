@@ -1,0 +1,90 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF128E $64
+
+script "1UP Invulnerability OFF"
+	poke $FF128E $01
+
+script "2UP Invulnerability ON" always
+	poke $FF138E $64
+
+script "2UP Invulnerability OFF"
+	poke $FF138E $01
+
+script "3UP Invulnerability ON" always
+	poke $FF148E $64
+
+script "3UP Invulnerability OFF"
+	poke $FF148E $01
+
+script "1UP Unlimited lives" always
+	poke $FF125D $03
+
+script "2UP Unlimited lives" always
+	poke $FF135D $03
+
+script "3UP Unlimited lives" always
+	poke $FF145D $03
+
+script "1UP Unlimited energy" always
+	poke $FF129B $40
+
+script "2UP Unlimited energy" always
+	poke $FF139B $40
+
+script "3UP Unlimited energy" always
+	poke $FF149B $40
+
+script "*UP Unlimited time" always
+	poke $FFE084 $63
+
+script "1UP Get 99999999 EP   (-P)" always
+	poke $FF12C2 $99
+	poke $FF12C3 $99
+	poke $FF12C4 $99
+	poke $FF12C5 $99
+
+script "2UP Get 99999999 EP   (-P)" always
+	poke $FF13C2 $99
+	poke $FF13C3 $99
+	poke $FF13C4 $99
+	poke $FF13C5 $99
+
+script "3UP Get 99999999 EP   (-P)" always
+	poke $FF14C2 $99
+	poke $FF14C3 $99
+	poke $FF14C4 $99
+	poke $FF14C5 $99
+
+script "1UP Character level 24  (max)" always
+	poke $FF12A2 $17
+
+script "2UP Character level 24  (max)" always
+	poke $FF13A2 $17
+
+script "3UP Character level 24  (max)" always
+	poke $FF14A2 $17
+
+script "1UP Weapon level 8      (max)" always
+	poke $FF12A3 $07
+
+script "2UP Weapon level 8      (max)" always
+	poke $FF13A3 $07
+
+script "3UP Weapon level 8      (max)" always
+	poke $FF14A3 $07
+
+script "1UP Protection level 8  (max)" always
+	poke $FF12A4 $07
+
+script "2UP Protection level 8  (max)" always
+	poke $FF13A4 $07
+
+script "3UP Protection level 8  (max)" always
+	poke $FF14A4 $07
+
+script "*UP Go to last level"
+	poke $FF0E49 $0E

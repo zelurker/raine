@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited energy" always
+	poke $A010 $60
+
+script "*UP One hit for bosses    (T)"
+	poke $A050 $01

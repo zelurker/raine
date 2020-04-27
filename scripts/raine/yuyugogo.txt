@@ -1,0 +1,18 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "*UP Watch me for good answer" always
+	print_ingame 1 "*UP Watch me for good answer : %02x" peek($B002C0)
+
+script "1UP Get 100% good answers (P)" always
+	poke $B00488 $64
+
+script "2UP Get 100% good answers (P)" always
+	poke $B00588 $64
+
+script "1UP Get 100% good answers (T)" always
+	poke $B00488 $64
+
+script "2UP Get 100% good answers (T)" always
+	poke $B00588 $64

@@ -1,0 +1,75 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $ED76 $03
+
+script "2UP Unlimited lives" always
+	poke $ED7B $03
+
+script "*UP One hit for head      (T)"
+	poke $ED6B $10
+
+script "*UP Go to last level"
+	poke $ED72 $20
+
+script "*UP Warp door (Always)" always
+	poke $C4CE $01
+
+script "*UP Warp door (Never)" always
+	poke $C4CE $00
+
+script "*UP Warp door (Opened)"
+	poke $C4CE $01
+
+script "*UP Warp door (Closed)"
+	poke $C4CE $00
+
+script "*UP End level"
+	poke $ED83 $00
+
+script "*UP No pills can fall" always
+	poke $C658 $80
+
+script "*UP A pill is falling - L"
+	poke $C658 $01
+
+script "*UP A pill is falling - E"
+	poke $C658 $02
+
+script "*UP A pill is falling - C"
+	poke $C658 $03
+
+script "*UP A pill is falling - S"
+	poke $C658 $04
+
+script "*UP A pill is falling - B"
+	poke $C658 $05
+
+script "*UP A pill is falling - D"
+	poke $C658 $06
+
+script "*UP A pill is falling - P"
+	poke $C658 $07
+
+script "*UP Pill's power - L"
+	poke $C658 $81
+
+script "*UP Pill's power - E"
+	poke $C658 $82
+
+script "*UP Pill's power - C"
+	poke $C658 $83
+
+script "*UP Pill's power - S"
+	poke $C658 $84
+
+script "*UP Pill's power - B"
+	poke $C658 $85
+
+script "*UP Pill's power - D"
+	poke $C658 $86
+
+script "*UP Pill's power - P"
+	poke $C658 $87

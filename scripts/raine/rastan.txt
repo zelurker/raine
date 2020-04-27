@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $10C101 $03
+
+script "*UP Unlimited energy" always
+	poke $10C13A $30
+
+script "*UP Weapon - Normal sword (P)" always
+	poke $10D2FB $01
+
+script "*UP Weapon - Halberd      (P)" always
+	poke $10D2FB $02
+
+script "*UP Weapon - Chainball    (P)" always
+	poke $10D2FB $03
+
+script "*UP Weapon - Fire sword   (P)" always
+	poke $10D2FB $04
+
+script "*UP Weapon - Normal sword (T)"
+	poke $10D2FB $01
+
+script "*UP Weapon - Halberd      (T)"
+	poke $10D2FB $02
+
+script "*UP Weapon - Chainball    (T)"
+	poke $10D2FB $03
+
+script "*UP Weapon - Fire sword   (T)"
+	poke $10D2FB $04

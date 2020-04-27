@@ -1,0 +1,73 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $411BF1 $01
+	poke $411BD9 peek($411BD9)&$fb
+
+script "1UP Invulnerability OFF"
+	poke $411BF1 $9F
+	poke $411BD9 peek($411BD9)&$fb|$04
+
+script "2UP Invulnerability ON" always
+	poke $415231 $01
+	poke $415219 peek($415219)&$fb
+
+script "2UP Invulnerability OFF"
+	poke $415231 $9F
+	poke $415219 peek($415219)&$fb|$04
+
+script "1UP Unlimited lives" always
+	poke $408477 $03
+
+script "2UP Unlimited lives" always
+	poke $408479 $03
+
+script "1UP Unlimited bombs" always
+	poke $4151ED $09
+
+script "2UP Unlimited bombs" always
+	poke $41882D $09
+
+script "1UP Maximum fire power" always
+	poke $4151E5 $05
+
+script "2UP Maximum fire power" always
+	poke $418825 $05
+
+script "1UP Missiles - Homing     (P)" always
+	poke $4151EA $01
+
+script "1UP Missiles - Napalm     (P)" always
+	poke $4151EA $02
+
+script "1UP Missiles - Normal     (P)" always
+	poke $4151EA $03
+
+script "2UP Missiles - Homing     (P)" always
+	poke $41882A $01
+
+script "2UP Missiles - Napalm     (P)" always
+	poke $41882A $02
+
+script "2UP Missiles - Normal     (P)" always
+	poke $41882A $03
+
+script "1UP Missiles - Homing     (T)"
+	poke $4151EA $01
+
+script "1UP Missiles - Napalm     (T)"
+	poke $4151EA $02
+
+script "1UP Missiles - Normal     (T)"
+	poke $4151EA $03
+
+script "2UP Missiles - Homing     (T)"
+	poke $41882A $01
+
+script "2UP Missiles - Napalm     (T)"
+	poke $41882A $02
+
+script "2UP Missiles - Normal     (T)"
+	poke $41882A $03

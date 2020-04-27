@@ -1,0 +1,93 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $1003E9 $07
+
+script "2UP Unlimited lives" always
+	poke $1003EB $07
+
+script "1UP Fire - Blue           (P)" always
+	poke $102A69 $00
+
+script "1UP Fire - Red            (P)" always
+	poke $102A69 $04
+
+script "1UP Fire - Purple         (P)" always
+	poke $102A69 $08
+
+script "1UP Fire - Green          (P)" always
+	poke $102A69 $0C
+
+script "2UP Fire - Blue           (P)" always
+	poke $102B29 $00
+
+script "2UP Fire - Red            (P)" always
+	poke $102B29 $04
+
+script "2UP Fire - Purple         (P)" always
+	poke $102B29 $08
+
+script "2UP Fire - Green          (P)" always
+	poke $102B29 $0C
+
+script "1UP Fire - Blue           (T)"
+	poke $102A69 $00
+
+script "1UP Fire - Red            (T)"
+	poke $102A69 $04
+
+script "1UP Fire - Purple         (T)"
+	poke $102A69 $08
+
+script "1UP Fire - Green          (T)"
+	poke $102A69 $0C
+
+script "2UP Fire - Blue           (T)"
+	poke $102B29 $00
+
+script "2UP Fire - Red            (T)"
+	poke $102B29 $04
+
+script "2UP Fire - Purple         (T)"
+	poke $102B29 $08
+
+script "2UP Fire - Green          (T)"
+	poke $102B29 $0C
+
+script "1UP Special power - None  (P)" always
+	poke $102A6F $00
+
+script "1UP Special power - Twins (P)" always
+	poke $102A6F $04
+
+script "1UP Special power - Bombs (P)" always
+	poke $102A6F $0C
+
+script "2UP Special power - None  (P)" always
+	poke $102B2F $00
+
+script "2UP Special power - Twins (P)" always
+	poke $102B2F $04
+
+script "2UP Special power - Bombs (P)" always
+	poke $102B2F $0C
+
+script "1UP Special power - None  (T)"
+	poke $102A6F $00
+
+script "1UP Special power - Twins (T)"
+	poke $102A6F $04
+
+script "1UP Special power - Bombs (T)"
+	poke $102A6F $0C
+
+script "2UP Special power - None  (T)"
+	poke $102B2F $00
+
+script "2UP Special power - Twins (T)"
+	poke $102B2F $04
+
+script "2UP Special power - Bombs (T)"
+	poke $102B2F $0C

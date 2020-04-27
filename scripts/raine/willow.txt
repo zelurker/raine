@@ -1,0 +1,18 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $FF8342 $03
+
+script "*UP Unlimited energy" always
+	dpoke $FF8362 $0606
+
+script "*UP Unlimited time" always
+	poke $FF83C7 $59
+
+script "*UP Unlimited money" always
+	poke $FF8369 $90
+
+script "*UP Unlimited bracelets" always
+	poke $FF835D $03

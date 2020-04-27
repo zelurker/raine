@@ -1,0 +1,141 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $6008C3 $81
+
+script "1UP Invulnerability OFF"
+	poke $6008C3 $01
+
+script "2UP Invulnerability ON" always
+	poke $600903 $81
+
+script "2UP Invulnerability OFF"
+	poke $600903 $01
+
+script "1UP Unlimited lives" always
+	poke $6019EB $03
+
+script "2UP Unlimited lives" always
+	poke $6019ED $03
+
+script "1UP Unlimited bombs" always
+	poke $6019EF $03
+
+script "2UP Unlimited bombs" always
+	poke $6019F1 $03
+
+script "1UP Maximum fire power" always
+	poke $60092F $07
+
+script "2UP Maximum fire power" always
+	poke $600931 $07
+
+script "1UP Fire - Red            (P)" always
+	poke $600927 $00
+
+script "1UP Fire - Green          (P)" always
+	poke $600927 $01
+
+script "1UP Fire - Blue           (P)" always
+	poke $600927 $02
+
+script "1UP Fire - Yellow         (P)" always
+	poke $600927 $03
+
+script "1UP Fire - Special        (P)" always
+	poke $600927 $04
+
+script "2UP Fire - Red            (P)" always
+	poke $600929 $00
+
+script "2UP Fire - Green          (P)" always
+	poke $600929 $01
+
+script "2UP Fire - Blue           (P)" always
+	poke $600929 $02
+
+script "2UP Fire - Yellow         (P)" always
+	poke $600929 $03
+
+script "2UP Fire - Special        (P)" always
+	poke $600929 $04
+
+script "1UP Fire - Red            (T)"
+	poke $600927 $00
+
+script "1UP Fire - Green          (T)"
+	poke $600927 $01
+
+script "1UP Fire - Blue           (T)"
+	poke $600927 $02
+
+script "1UP Fire - Yellow         (T)"
+	poke $600927 $03
+
+script "1UP Fire - Special        (T)"
+	poke $600927 $04
+
+script "2UP Fire - Red            (T)"
+	poke $600929 $00
+
+script "2UP Fire - Green          (T)"
+	poke $600929 $01
+
+script "2UP Fire - Blue           (T)"
+	poke $600929 $02
+
+script "2UP Fire - Yellow         (T)"
+	poke $600929 $03
+
+script "2UP Fire - Special        (T)"
+	poke $600929 $04
+
+script "1UP Bomb - AshuraBomb     (P)" always
+	poke $60092B $00
+
+script "1UP Bomb - FireWave       (P)" always
+	poke $60092B $01
+
+script "1UP Bomb - AshuraFlash    (P)" always
+	poke $60092B $02
+
+script "1UP Bomb - S.Beam         (P)" always
+	poke $60092B $03
+
+script "2UP Bomb - AshuraBomb     (P)" always
+	poke $60092D $00
+
+script "2UP Bomb - FireWave       (P)" always
+	poke $60092D $01
+
+script "2UP Bomb - AshuraFlash    (P)" always
+	poke $60092D $02
+
+script "2UP Bomb - S.Beam         (P)" always
+	poke $60092D $03
+
+script "1UP Bomb - AshuraBomb     (T)"
+	poke $60092B $00
+
+script "1UP Bomb - FireWave       (T)"
+	poke $60092B $01
+
+script "1UP Bomb - AshuraFlash    (T)"
+	poke $60092B $02
+
+script "1UP Bomb - S.Beam         (T)"
+	poke $60092B $03
+
+script "2UP Bomb - AshuraBomb     (T)"
+	poke $60092D $00
+
+script "2UP Bomb - FireWave       (T)"
+	poke $60092D $01
+
+script "2UP Bomb - AshuraFlash    (T)"
+	poke $60092D $02
+
+script "2UP Bomb - S.Beam         (T)"
+	poke $60092D $03

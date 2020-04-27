@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.09.08
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited helps" always
+	poke $C0967 $09
+
+script "2UP Unlimited helps" always
+	poke $C1083 $09
+
+script "1UP End level"
+	poke $C0966 $00
+
+script "2UP End level"
+	poke $C1082 $00

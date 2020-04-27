@@ -1,0 +1,147 @@
+# Cheats from  : Pugsy, The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Energy PL1" always
+	poke $107869 $28
+
+script "Invincibility PL1" always
+	poke $1078C5 $EE
+
+script "Infinite Ammo PL1" always
+	poke $107845 $06
+
+script "Lose Weapon Now! PL1"
+	poke $1078BB $00
+
+script "Change to Knife Now! PL1"
+	poke $1078BB $01
+
+script "Change to Revolver Now! PL1"
+	poke $1078BB $02
+
+script "Change to Whip Now! PL1"
+	poke $1078BB $03
+
+script "Change to Ass. Rifle Now! PL1"
+	poke $1078BB $05
+
+script "Change to R Launcher Now! PL1"
+	poke $1078BB $06
+
+script "Change to Grenade Now! PL1"
+	poke $1078BB $07
+
+script "Change to Crow Bar Now! PL1"
+	poke $1078BB $08
+
+script "Change to Sword Now! PL1"
+	poke $1078BB $09
+
+script "Infinite Energy PL2" always
+	poke $107969 $28
+
+script "Invincibility PL2" always
+	poke $1079C5 $EE
+
+script "Infinite Ammo PL2" always
+	poke $107945 $06
+
+script "Lose Weapon Now! PL2"
+	poke $1079BB $00
+
+script "Change to Knife Now! PL2"
+	poke $1079BB $01
+
+script "Change to Revolver Now! PL2"
+	poke $1079BB $02
+
+script "Change to Whip Now! PL2"
+	poke $1079BB $03
+
+script "Change to Ass. Rifle Now! PL2"
+	poke $1079BB $05
+
+script "Change to R Launcher Now! PL2"
+	poke $1079BB $06
+
+script "Change to Grenade Now! PL2"
+	poke $1079BB $07
+
+script "Change to Crow Bar Now! PL2"
+	poke $1079BB $08
+
+script "Change to Sword Now! PL2"
+	poke $1079BB $09
+
+script "Infinite Energy PL3" always
+	poke $107A69 $28
+
+script "Invincibility PL3" always
+	poke $107AC5 $EE
+
+script "Infinite Ammo PL3" always
+	poke $107A45 $06
+
+script "Lose Weapon Now! PL3"
+	poke $107ABB $00
+
+script "Change to Knife Now! PL3"
+	poke $107ABB $01
+
+script "Change to Revolver Now! PL3"
+	poke $107ABB $02
+
+script "Change to Whip Now! PL3"
+	poke $107ABB $03
+
+script "Change to Ass. Rifle Now! PL3"
+	poke $107ABB $05
+
+script "Change to R Launcher Now! PL3"
+	poke $107ABB $06
+
+script "Change to Grenade Now! PL3"
+	poke $107ABB $07
+
+script "Change to Crow Bar Now! PL3"
+	poke $107ABB $08
+
+script "Change to Sword Now! PL3"
+	poke $107ABB $09
+
+script "Infinite Energy PL4" always
+	poke $107B69 $28
+
+script "Invincibility PL4" always
+	poke $107BC5 $EE
+
+script "Infinite Ammo PL4" always
+	poke $107B45 $06
+
+script "Lose Weapon Now! PL4"
+	poke $107BBB $00
+
+script "Change to Knife Now! PL4"
+	poke $107BBB $01
+
+script "Change to Revolver Now! PL4"
+	poke $107BBB $02
+
+script "Change to Whip Now! PL4"
+	poke $107BBB $03
+
+script "Change to Ass. Rifle Now! PL4"
+	poke $107BBB $05
+
+script "Change to R Launcher Now! PL4"
+	poke $107BBB $06
+
+script "Change to Grenade Now! PL4"
+	poke $107BBB $07
+
+script "Change to Crow Bar Now! PL4"
+	poke $107BBB $08
+
+script "Change to Sword Now! PL4"
+	poke $107BBB $09

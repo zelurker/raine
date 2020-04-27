@@ -1,0 +1,42 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $40B3CB $3B
+
+script "1UP Unlimited energy" always
+	poke $40C83C $47
+
+script "2UP Unlimited energy" always
+	poke $40CA3C $47
+
+script "3UP Unlimited energy" always
+	poke $40CC3C $47
+
+script "4UP Unlimited energy" always
+	poke $40CE3C $47
+
+script "1UP Energy set to 0       (P)" always
+	poke $40C83C $00
+
+script "2UP Energy set to 0       (P)" always
+	poke $40CA3C $00
+
+script "3UP Energy set to 0       (P)" always
+	poke $40CC3C $00
+
+script "4UP Energy set to 0       (P)" always
+	poke $40CE3C $00
+
+script "1UP Energy set to 0       (T)"
+	poke $40C83C $00
+
+script "2UP Energy set to 0       (T)"
+	poke $40CA3C $00
+
+script "3UP Energy set to 0       (T)"
+	poke $40CC3C $00
+
+script "4UP Energy set to 0       (T)"
+	poke $40CE3C $00

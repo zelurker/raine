@@ -1,0 +1,12 @@
+# Cheats from  : The Ultimate Patchers, Antiriad
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $FF280B $03
+
+script "2UP Unlimited lives" always
+	poke $FF281B $03
+
+script "*UP Unlimited energy" always
+	poke $FF2826 $40

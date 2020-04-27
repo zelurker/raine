@@ -1,0 +1,63 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $241E5D $3E
+
+script "1UP Invulnerability OFF"
+	poke $241E5D $01
+
+script "2UP Invulnerability ON" always
+	poke $241EDD $3E
+
+script "2UP Invulnerability OFF"
+	poke $241EDD $01
+
+script "1UP Unlimited lives" always
+	poke $240BCF $03
+
+script "2UP Unlimited lives" always
+	poke $240BD1 $03
+
+script "1UP Unlimited energy" always
+	poke $241E7A $A0
+
+script "2UP Unlimited energy" always
+	poke $241EFA $A0
+
+script "1UP Unlimited bombs" always
+	poke $241E53 $0A
+
+script "2UP Unlimited bombs" always
+	poke $241ED3 $0A
+
+script "1UP Maximum fire power" always
+	poke $241E4F $02
+
+script "2UP Maximum fire power" always
+	poke $241ECF $02
+
+script "1UP Speed  ON" always
+	poke $241E38 peek($241E38)&$df|$20
+
+script "1UP Speed  OFF"
+	poke $241E38 peek($241E38)&$df
+
+script "1UP Shield ON" always
+	poke $241E38 peek($241E38)&$7f|$80
+
+script "1UP Shield OFF"
+	poke $241E38 peek($241E38)&$7f
+
+script "2UP Speed  ON" always
+	poke $241EB8 peek($241EB8)&$df|$20
+
+script "2UP Speed  OFF"
+	poke $241EB8 peek($241EB8)&$df
+
+script "2UP Shield ON" always
+	poke $241EB8 peek($241EB8)&$7f|$80
+
+script "2UP Shield OFF"
+	poke $241EB8 peek($241EB8)&$7f

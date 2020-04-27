@@ -1,0 +1,81 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $40D283 $B4
+
+script "1UP Invulnerability OFF"
+	poke $40D283 $01
+
+script "2UP Invulnerability ON" always
+	poke $40D2D3 $B4
+
+script "2UP Invulnerability OFF"
+	poke $40D2D3 $01
+
+script "1UP Unlimited lives" always
+	poke $40D225 $03
+
+script "2UP Unlimited lives" always
+	poke $40D227 $03
+
+script "1UP Unlimited bombs" always
+	poke $40D29B $4F
+
+script "2UP Unlimited bombs" always
+	poke $40D2EB $4F
+
+script "1UP Maximum fire power" always
+	poke $40D2A9 $05
+
+script "2UP Maximum fire power" always
+	poke $40D2F9 $05
+
+script "1UP Bomb - Flames         (P)" always
+	poke $40D2AB $00
+
+script "1UP Bomb - Lightnings     (P)" always
+	poke $40D2AB $01
+
+script "1UP Bomb - Clouds         (P)" always
+	poke $40D2AB $02
+
+script "1UP Bomb - Nuclear        (P)" always
+	poke $40D2AB $03
+
+script "2UP Bomb - Flames         (P)" always
+	poke $40D2FB $00
+
+script "2UP Bomb - Lightnings     (P)" always
+	poke $40D2FB $01
+
+script "2UP Bomb - Clouds         (P)" always
+	poke $40D2FB $02
+
+script "2UP Bomb - Nuclear        (P)" always
+	poke $40D2FB $03
+
+script "1UP Bomb - Flames         (T)"
+	poke $40D2AB $00
+
+script "1UP Bomb - Lightning      (T)"
+	poke $40D2AB $01
+
+script "1UP Bomb - Clouds         (T)"
+	poke $40D2AB $02
+
+script "1UP Bomb - Nuclear        (T)"
+	poke $40D2AB $03
+
+script "2UP Bomb - Flames         (T)"
+	poke $40D2FB $00
+
+script "2UP Bomb - Lightning      (T)"
+	poke $40D2FB $01
+
+script "2UP Bomb - Clouds         (T)"
+	poke $40D2FB $02
+
+script "2UP Bomb - Nuclear        (T)"
+	poke $40D2FB $03

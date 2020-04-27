@@ -1,0 +1,23 @@
+# Cheats from  : Tourniquet
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time PL1" always
+	poke $41DFDB $14
+
+script "Infinite Time PL2" always
+	poke $41E06F $14
+
+script "Help line ON PL1"
+	poke $4061D8 $FF
+
+script "Help line OFF PL1"
+	poke $4061D8 $00
+
+script "Never Attacked PL1" always
+	poke $40A2AB $00
+	poke $41DFD1 $00
+
+script "Never Attacked PL2" always
+	poke $40A2AD $00
+	poke $41E065 $00

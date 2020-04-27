@@ -1,0 +1,77 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $80825 $78
+	poke $80821 peek($80821)&$fc|$03
+
+script "1UP Invulnerability OFF"
+	poke $80825 $00
+	poke $80821 peek($80821)&$fc
+
+script "2UP Invulnerability ON" always
+	poke $80EE5 $78
+	poke $80EE1 peek($80EE1)&$fc|$03
+
+script "2UP Invulnerability OFF"
+	poke $80EE5 $00
+	poke $80EE1 peek($80EE1)&$fc
+
+script "1UP Unlimited lives" always
+	poke $8086C $03
+
+script "2UP Unlimited lives" always
+	poke $80F2C $03
+
+script "1UP Unlimited bombs" always
+	poke $8086D $63
+
+script "2UP Unlimited bombs" always
+	poke $80F2D $63
+
+script "1UP Unlimited time for weapon" always
+	poke $8087E $18
+
+script "2UP Unlimited time for weapon" always
+	poke $80F3E $18
+
+script "*UP One enemy ends lv (-T)"
+	poke $85C21 $01
+	poke $85C22 $02
+
+script "1UP Weap. - Normal gun    (P)" always
+	poke $80874 $00
+
+script "1UP Weap. - Semi-auto gun (P)" always
+	poke $80874 $01
+
+script "1UP Weap. - Full-auto gun (P)" always
+	poke $80874 $02
+
+script "2UP Weap. - Normal gun    (P)" always
+	poke $80F34 $00
+
+script "2UP Weap. - Semi-auto gun (P)" always
+	poke $80F34 $01
+
+script "2UP Weap. - Full-auto gun (P)" always
+	poke $80F34 $02
+
+script "1UP Weap. - Normal gun    (T)"
+	poke $80874 $00
+
+script "1UP Weap. - Semi-auto gun (T)"
+	poke $80874 $01
+
+script "1UP Weap. - Full-auto gun (T)"
+	poke $80874 $02
+
+script "2UP Weap. - Normal gun    (T)"
+	poke $80F34 $00
+
+script "2UP Weap. - Semi-auto gun (T)"
+	poke $80F34 $01
+
+script "2UP Weap. - Full-auto gun (T)"
+	poke $80F34 $02

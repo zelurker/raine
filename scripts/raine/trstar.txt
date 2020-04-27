@@ -1,0 +1,23 @@
+# Cheats from  : Pugsy
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Energy PL1" always
+	poke $413893 $78
+	poke $41806D $8C
+	poke $41806F $68
+
+script "Drain All Energy Now! PL1"
+	poke $413893 $00
+	poke $41806D $00
+	poke $41806F $00
+
+script "Infinite Energy PL2" always
+	poke $413993 $78
+	poke $4180ED $8C
+	poke $4180EF $68
+
+script "Drain All Energy Now! PL2"
+	poke $413993 $00
+	poke $4180ED $00
+	poke $4180EF $00

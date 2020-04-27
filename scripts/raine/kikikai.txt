@@ -1,0 +1,6 @@
+# Cheats from  : Antiriad
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $D957 $03

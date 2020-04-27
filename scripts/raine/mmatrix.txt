@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $FF49A9 $03
+
+script "2UP Unlimited lives" always
+	poke $FF49CF $03
+
+script "1UP Maximum fire power" always
+	poke $FF49B5 $07
+
+script "2UP Maximum fire power" always
+	poke $FF49DB $07

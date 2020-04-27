@@ -1,0 +1,35 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $10274F $63
+
+script "1UP Invulnerability OFF"
+	poke $10274F $01
+
+script "2UP Invulnerability ON" always
+	poke $102789 $63
+
+script "2UP Invulnerability OFF"
+	poke $102789 $01
+
+script "1UP Unlimited lives" always
+	poke $102759 $03
+
+script "2UP Unlimited lives" always
+	poke $102793 $03
+
+script "1UP Unlimited red pill time" always
+	poke $10274D $C8
+
+script "2UP Unlimited red pill time" always
+	poke $102787 $C8
+
+script "*UP Unlimited time  (-OFF)" always
+	poke $1033D4 $00
+	poke $1033D5 $02
+
+script "*UP One pill ends lvl (-T)"
+	poke $1033CE $00
+	poke $1033CF $01

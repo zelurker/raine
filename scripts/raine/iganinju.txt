@@ -1,0 +1,45 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $F0029 $03
+
+script "2UP Unlimited lives" always
+	poke $F002B $03
+
+script "*UP Unlimited energy    (OFF)" always
+	poke $F007F $04
+
+script "*UP Unlimited time      (OFF)" always
+	poke $F0177 $99
+
+script "*UP Weapon - Sword        (P)" always
+	poke $F00BD $00
+
+script "*UP Weapon - Grapple      (P)" always
+	poke $F00BD $01
+
+script "*UP Weapon - Shuriken     (P)" always
+	poke $F00BD $02
+
+script "*UP Weapon - Knife        (P)" always
+	poke $F00BD $03
+
+script "*UP Weapon - Knife+       (P)" always
+	poke $F00BD $04
+
+script "*UP Weapon - Sword        (T)"
+	poke $F00BD $00
+
+script "*UP Weapon - Grapple      (T)"
+	poke $F00BD $01
+
+script "*UP Weapon - Shuriken     (T)"
+	poke $F00BD $02
+
+script "*UP Weapon - Knife        (T)"
+	poke $F00BD $03
+
+script "*UP Weapon - Knife+       (T)"
+	poke $F00BD $04

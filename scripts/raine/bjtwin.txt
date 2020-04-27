@@ -1,0 +1,75 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $F106F $A0
+
+script "1UP Invulnerability OFF"
+	poke $F106F $01
+
+script "2UP Invulnerability ON" always
+	poke $F116F $A0
+
+script "2UP Invulnerability OFF"
+	poke $F116F $01
+
+script "1UP Unlimited lives" always
+	poke $F1037 $03
+
+script "2UP Unlimited lives" always
+	poke $F1137 $03
+
+script "*UP Unlimited "power" time" always
+	poke $F1205 $FF
+
+script "*UP Unlimited time" always
+	dpoke $F9092 $0990
+
+script "*UP Bonus gives multiplicator"
+	poke $F131F $01
+
+script "*UP Bonus gives extra life"
+	poke $F131F $02
+
+script "*UP Next bomb for "power" (P)" always
+	poke $F9073 $13
+
+script "*UP Next bomb for "power" (T)"
+	poke $F9073 $13
+
+script "*UP Score x5              (P)" always
+	poke $F9071 $04
+
+script "*UP Score x5              (T)"
+	poke $F9071 $04
+
+script "1UP Maximum items" always
+	poke $F105D $63
+
+script "2UP Maximum items" always
+	poke $F115D $63
+
+script "1UP Maximum bombs" always
+	poke $F106B $18
+
+script "2UP Maximum bombs" always
+	poke $F116B $18
+
+script "1UP Maximum fire bombs" always
+	poke $F106D $17
+
+script "2UP Maximum fire bombs" always
+	poke $F116D $17
+
+script "1UP Maximum bombs" always
+	poke $F106B $46
+
+script "2UP Maximum bombs" always
+	poke $F116B $46
+
+script "1UP Maximum fire bombs" always
+	poke $F106D $45
+
+script "2UP Maximum fire bombs" always
+	poke $F116D $45

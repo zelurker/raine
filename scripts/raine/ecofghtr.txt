@@ -1,0 +1,27 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF877A $EF
+
+script "1UP Invulnerability OFF"
+	poke $FF877A $01
+
+script "2UP Invulnerability ON" always
+	poke $FF8D4A $EF
+
+script "2UP Invulnerability OFF"
+	poke $FF8D4A $01
+
+script "1UP Unlimited lives" always
+	poke $FFF5F2 $03
+
+script "2UP Unlimited lives" always
+	poke $FFF5F3 $03
+
+script "1UP Maximum weapon power" always
+	poke $FF8952 $05
+
+script "2UP Maximum weapon power" always
+	poke $FF8F22 $05

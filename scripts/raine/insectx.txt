@@ -1,0 +1,75 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability" always
+	poke $E01C $00
+
+script "1UP Unlimited lives" always
+	poke $E01A $03
+
+script "2UP Unlimited lives" always
+	poke $E01B $03
+
+script "*UP Maximum speed" always
+	poke $E025 $07
+
+script "*UP Maximum fire power" always
+	poke $E1E3 $07
+
+script "*UP No extra fire         (P)" always
+	poke $E1E2 $00
+
+script "*UP EF - Big missile      (P)" always
+	poke $E1E2 $01
+
+script "*UP EF - Small monster    (P)" always
+	poke $E1E2 $02
+
+script "*UP EF - Round circles    (P)" always
+	poke $E1E2 $03
+
+script "*UP EF - Wide missiles    (P)" always
+	poke $E1E2 $04
+
+script "*UP EF - Drop bomb        (P)" always
+	poke $E1E2 $05
+
+script "*UP EF - Spray bomb       (P)" always
+	poke $E1E2 $06
+
+script "*UP EF - Bounce flame bomb(P)" always
+	poke $E1E2 $07
+
+script "*UP EF - Split beam bomb  (P)" always
+	poke $E1E2 $08
+
+script "*UP No extra fire         (T)"
+	poke $E1E2 $00
+
+script "*UP EF - Big missile      (T)"
+	poke $E1E2 $01
+
+script "*UP EF - Small monster    (T)"
+	poke $E1E2 $02
+
+script "*UP EF - Round circles    (T)"
+	poke $E1E2 $03
+
+script "*UP EF - Wide missiles    (T)"
+	poke $E1E2 $04
+
+script "*UP EF - Drop bomb        (T)"
+	poke $E1E2 $05
+
+script "*UP EF - Spray bomb       (T)"
+	poke $E1E2 $06
+
+script "*UP EF - Bounce flame bomb(T)"
+	poke $E1E2 $07
+
+script "*UP EF - Split beam bomb  (T)"
+	poke $E1E2 $08
+
+script "*UP One hit for boss      (T)"
+	dpoke $E484 $0000

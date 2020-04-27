@@ -1,0 +1,34 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability ON" always
+	poke $FF0CF5 $9F
+
+script "*UP Invulnerability OFF"
+	poke $FF0CF5 $00
+
+script "*UP Unlimited lives" always
+	poke $FF0CA8 $64
+
+script "*UP Unlimited energy" always
+	poke $FF0CE6 $81
+	poke $FF0CE7 $81
+	poke $FF0CE8 $81
+	poke $FF0CE9 $81
+	poke $FF0CEA $81
+
+script "*UP Unlimited time" always
+	poke $FF0F6A $02
+	poke $FF0F6B $58
+
+script "*UP Unlimited wolf time" always
+	poke $FF0CF8 $00
+	poke $FF0CF9 $FF
+
+script "*UP No more wolf"
+	poke $FF0CF8 $00
+	poke $FF0CF9 $01
+
+script "*UP Maximum pods       (bug!)" always
+	poke $FF0CE4 $02

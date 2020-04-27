@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $E842 $45
+
+script "*UP End half              (T)"
+	poke $E842 $00
+
+script "1UP Total score set to 10 (P)" always
+	poke $DBD0 $10
+
+script "2UP Total score set to 10 (P)" always
+	poke $DBD1 $10
+
+script "1UP Total score set to 0  (P)" always
+	poke $DBD0 $00
+
+script "2UP Total score set to 0  (P)" always
+	poke $DBD1 $00
+
+script "1UP Total score set to 10 (T)"
+	poke $DBD0 $10
+
+script "2UP Total score set to 10 (T)"
+	poke $DBD1 $10
+
+script "1UP Total score set to 0  (T)"
+	poke $DBD0 $00
+
+script "2UP Total score set to 0  (T)"
+	poke $DBD1 $00

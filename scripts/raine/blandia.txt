@@ -1,0 +1,30 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $3010FF $63
+
+script "1UP Unlimited energy" always
+	poke $30110F $80
+	poke $301113 $80
+
+script "2UP Unlimited energy" always
+	poke $30110D $80
+	poke $301111 $80
+
+script "1UP Energy set to 0   (-P)" always
+	poke $30110F $00
+	poke $301113 $00
+
+script "2UP Energy set to 0   (-P)" always
+	poke $30110D $00
+	poke $301111 $00
+
+script "1UP Energy set to 0   (-T)"
+	poke $30110F $00
+	poke $301113 $00
+
+script "2UP Energy set to 0   (-T)"
+	poke $30110D $00
+	poke $301111 $00

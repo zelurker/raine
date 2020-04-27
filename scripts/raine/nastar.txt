@@ -1,0 +1,124 @@
+# Cheats from  : Pugsy, The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time" always
+	poke $601B61 $99
+
+script "Infinite Lives PL1" always
+	poke $60050B $0A
+
+script "Infinite Energy PL1" always
+	poke $600509 $0B
+
+script "Invincibility PL1       (OFF)" always
+	poke $600593 $B3
+
+script "Always have Max Speed PL1" always
+	poke $600515 $01
+
+script "Always have Max Level PL1" always
+	poke $60050D $09
+
+script "Always have Normal Sword PL1" always
+	poke $600569 $00
+
+script "Always have Big Sword PL1" always
+	poke $600569 $01
+
+script "Always have Claw PL1" always
+	poke $600569 $02
+
+script "Always have No shot PL1" always
+	poke $600511 $00
+
+script "Always have Fire ball shot PL1" always
+	poke $600511 $01
+
+script "Always have Ice shot PL1" always
+	poke $600511 $02
+
+script "Always have Barrier shot PL1" always
+	poke $600511 $03
+	poke $601EAD $0F
+
+script "Get the Normal Sword Now! PL1"
+	poke $600569 $00
+
+script "Get the Big Sword Now! PL1"
+	poke $600569 $01
+
+script "Get the Claw Now! PL1"
+	poke $600569 $02
+
+script "Get the No shot Now! PL1"
+	poke $600511 $00
+
+script "Get the Fire ball shot Now! PL1"
+	poke $600511 $01
+
+script "Get the Ice shot Now! PL1"
+	poke $600511 $02
+
+script "Get the Barrier shot Now! PL1"
+	poke $600511 $03
+	poke $601EAD $0F
+
+script "Infinite Lives PL2" always
+	poke $600521 $0A
+
+script "Infinite Energy PL2" always
+	poke $60051F $0B
+
+script "Invincibility PL2       (OFF)" always
+	poke $6005A9 $B3
+
+script "Always have Max Speed PL2" always
+	poke $60052B $01
+
+script "Always have Max Level PL2" always
+	poke $600523 $09
+
+script "Always have Normal Sword PL2" always
+	poke $6005E9 $08
+
+script "Always have Big Sword PL2" always
+	poke $6005E9 $09
+
+script "Always have Claw PL2" always
+	poke $6005E9 $0A
+
+script "Always have No shot PL2" always
+	poke $600527 $00
+
+script "Always have Fire ball shot PL2" always
+	poke $600527 $01
+
+script "Always have Ice shot PL2" always
+	poke $600527 $02
+
+script "Always have Barrier shot PL2" always
+	poke $600527 $03
+	poke $601ED9 $0F
+
+script "Get the Normal Sword Now! PL2"
+	poke $6005E9 $08
+
+script "Get the Big Sword Now! PL2"
+	poke $6005E9 $09
+
+script "Get the Claw Now! PL2"
+	poke $6005E9 $0A
+
+script "Get the No shot Now! PL2"
+	poke $600527 $00
+
+script "Get the Fire ball shot Now! PL2"
+	poke $600527 $01
+
+script "Get the Ice shot Now! PL2"
+	poke $600527 $02
+
+script "Get the Barrier shot Now! PL2"
+	poke $600527 $03
+	poke $601ED9 $0F

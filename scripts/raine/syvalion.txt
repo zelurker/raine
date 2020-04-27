@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $104273 $03
+
+script "*UP Unlimited energy" always
+	poke $1043B6 $09
+
+script "*UP Unlimited time" always
+	dpoke $1044D6 $03E7
+
+script "*UP Maximum fire power" always
+	poke $1042B4 $14

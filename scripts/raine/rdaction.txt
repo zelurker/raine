@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $E130 $03
+
+script "2UP Unlimited lives" always
+	poke $E169 $03
+
+script "*UP Unlimited time     (OFF)" always
+	poke $E108 $99
+
+script "*UP End level"
+	poke $E110 peek($E110)&$fb|$04

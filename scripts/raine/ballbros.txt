@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Maximum lines" always
+	dpoke $F00624 $9999
+
+script "2UP Maximum lines" always
+	dpoke $F00626 $9999

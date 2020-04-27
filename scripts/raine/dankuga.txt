@@ -1,0 +1,47 @@
+# Cheats from  : Pugsy
+# Last update  : 2001.07.11
+# Desc. format : Pugsy
+
+script "Infinite Time" always
+	poke $409737 $09
+	poke $409733 $09
+
+script "Finish this Round Now!"
+	poke $409737 $00
+	poke $409733 $00
+
+script "Infinite Energy PL1" always
+	poke $412B35 $64
+
+script "Drain All Energy Now! PL1"
+	poke $412B35 $00
+
+script "Always have Max CRUSH PL1" always
+	poke $412BC1 $C8
+
+script "Always have Min CRUSH PL1" always
+	poke $412BC1 $00
+
+script "Get Max CRUSH Now! PL1"
+	poke $412BC1 $C8
+
+script "Get Min CRUSH Now! PL1"
+	poke $412BC1 $00
+
+script "Infinite Energy PL2" always
+	poke $412D35 $64
+
+script "Drain All Energy Now! PL2"
+	poke $412D35 $00
+
+script "Always have Max CRUSH PL2" always
+	poke $412DC1 $C8
+
+script "Always have Min CRUSH PL2" always
+	poke $412DC1 $00
+
+script "Get Max CRUSH Now! PL2"
+	poke $412DC1 $C8
+
+script "Get Min CRUSH Now! PL2"
+	poke $412DC1 $00

@@ -1,0 +1,97 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF82F2 $FF
+	poke $FF8244 $02
+
+script "1UP Invulnerability OFF"
+	poke $FF82F2 $00
+	poke $FF8244 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF83F2 $FF
+	poke $FF8344 $02
+
+script "2UP Invulnerability OFF"
+	poke $FF83F2 $00
+	poke $FF8344 $01
+
+script "1UP Unlimited lives" always
+	poke $FF82EC $03
+
+script "2UP Unlimited lives" always
+	poke $FF83EC $03
+
+script "1UP Unlimited bombs" always
+	poke $FF8305 $05
+
+script "2UP Unlimited bombs" always
+	poke $FF8405 $05
+
+script "1UP Weapon power-up ON" always
+	poke $FF8337 $FF
+
+script "1UP Weapon power-up OFF"
+	poke $FF8337 $00
+
+script "2UP Weapon power-up ON" always
+	poke $FF8437 $FF
+
+script "2UP Weapon power-up OFF"
+	poke $FF8437 $00
+
+script "1UP Maximum level/bonus"
+	poke $FF8328 $1D
+
+script "2UP Maximum level/bonus"
+	poke $FF8428 $1D
+
+script "1UP Fire - Normal         (P)" always
+	poke $FF82F1 $00
+
+script "1UP Fire - Flames         (P)" always
+	poke $FF82F1 $04
+
+script "1UP Fire - 3-way          (P)" always
+	poke $FF82F1 $08
+
+script "1UP Fire - Shell          (P)" always
+	poke $FF82F1 $0C
+
+script "2UP Fire - Normal         (P)" always
+	poke $FF83F1 $00
+
+script "2UP Fire - Flames         (P)" always
+	poke $FF83F1 $04
+
+script "2UP Fire - 3-way          (P)" always
+	poke $FF83F1 $08
+
+script "2UP Fire - Shell          (P)" always
+	poke $FF83F1 $0C
+
+script "1UP Fire - Normal         (T)"
+	poke $FF82F1 $00
+
+script "1UP Fire - Flames         (T)"
+	poke $FF82F1 $04
+
+script "1UP Fire - 3-way          (T)"
+	poke $FF82F1 $08
+
+script "1UP Fire - Shell          (T)"
+	poke $FF82F1 $0C
+
+script "2UP Fire - Normal         (T)"
+	poke $FF83F1 $00
+
+script "2UP Fire - Flames         (T)"
+	poke $FF83F1 $04
+
+script "2UP Fire - 3-way          (T)"
+	poke $FF83F1 $08
+
+script "2UP Fire - Shell          (T)"
+	poke $FF83F1 $0C

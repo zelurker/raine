@@ -1,0 +1,51 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.09.08
+# Desc. format : The Ultimate Patchers
+
+script "*UP Guest players  ON" always
+	poke $20FD4C $FF
+
+script "*UP Guest players  OFF" always
+	poke $20FD4C $00
+
+script "*UP Player select  ON" always
+	poke $20FD4D $FF
+
+script "*UP Player select  OFF" always
+	poke $20FD4D $00
+
+script "*UP Special course ON" always
+	poke $20FD42 $FF
+
+script "*UP Special course OFF" always
+	poke $20FD42 $00
+
+script "1UP Invulnerability ON" always
+	poke $204177 $EE
+
+script "1UP Invulnerability OFF"
+	poke $204177 $01
+
+script "2UP Invulnerability ON" always
+	poke $2042E9 $EE
+
+script "2UP Invulnerability OFF"
+	poke $2042E9 $01
+
+script "1UP Unlimited bombs" always
+	dpoke $204174 $0428
+
+script "2UP Unlimited bombs" always
+	dpoke $2042E6 $0428
+
+script "1UP Max. front fire power" always
+	poke $204172 $03
+
+script "2UP Max. front fire power" always
+	poke $2042E4 $03
+
+script "1UP Max. option fire power" always
+	poke $204166 $02
+
+script "2UP Max. option fire power" always
+	poke $2042D8 $02

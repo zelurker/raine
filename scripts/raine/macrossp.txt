@@ -1,0 +1,69 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $F07183 $A0
+
+script "1UP Invulnerability OFF"
+	poke $F07183 $01
+
+script "2UP Invulnerability ON" always
+	poke $F07187 $A0
+
+script "2UP Invulnerability OFF"
+	poke $F07187 $01
+
+script "1UP Unlimited lives" always
+	poke $F173C1 $03
+
+script "2UP Unlimited lives" always
+	poke $F175C1 $03
+
+script "1UP Unlimited bombs" always
+	poke $F173C3 $04
+
+script "2UP Unlimited bombs" always
+	poke $F175C3 $04
+
+script "1UP Maximum fire power" always
+	poke $F173CB $04
+
+script "2UP Maximum fire power" always
+	poke $F175CB $04
+
+script "1UP Weapon - Type 1       (P)" always
+	poke $F173BF $00
+
+script "1UP Weapon - Type 2       (P)" always
+	poke $F173BF $01
+
+script "1UP Weapon - Type 3       (P)" always
+	poke $F173BF $02
+
+script "2UP Weapon - Type 1       (P)" always
+	poke $F175BF $00
+
+script "2UP Weapon - Type 2       (P)" always
+	poke $F175BF $01
+
+script "2UP Weapon - Type 3       (P)" always
+	poke $F175BF $02
+
+script "1UP Weapon - Type 1       (T)"
+	poke $F173BF $00
+
+script "1UP Weapon - Type 2       (T)"
+	poke $F173BF $01
+
+script "1UP Weapon - Type 3       (T)"
+	poke $F173BF $02
+
+script "2UP Weapon - Type 1       (T)"
+	poke $F175BF $00
+
+script "2UP Weapon - Type 2       (T)"
+	poke $F175BF $01
+
+script "2UP Weapon - Type 3       (T)"
+	poke $F175BF $02

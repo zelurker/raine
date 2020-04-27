@@ -1,0 +1,42 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $FFA00C $09
+
+script "1UP Unlimited energy" always
+	poke $FF907B $FF
+
+script "2UP Unlimited energy" always
+	poke $FF927B $FF
+
+script "3UP Unlimited energy" always
+	poke $FF947B $FF
+
+script "4UP Unlimited energy" always
+	poke $FF967B $FF
+
+script "1UP Energy set to 0       (P)" always
+	poke $FF907B $00
+
+script "2UP Energy set to 0       (P)" always
+	poke $FF927B $00
+
+script "3UP Energy set to 0       (P)" always
+	poke $FF947B $00
+
+script "4UP Energy set to 0       (P)" always
+	poke $FF967B $00
+
+script "1UP Energy set to 0       (T)"
+	poke $FF907B $00
+
+script "2UP Energy set to 0       (T)"
+	poke $FF927B $00
+
+script "3UP Energy set to 0       (T)"
+	poke $FF947B $00
+
+script "4UP Energy set to 0       (T)"
+	poke $FF967B $00

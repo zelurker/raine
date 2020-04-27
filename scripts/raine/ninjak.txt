@@ -1,0 +1,39 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $101004 $03
+
+script "2UP Unlimited lives" always
+	poke $101044 $03
+
+script "3UP Unlimited lives" always
+	poke $101084 $03
+
+script "4UP Unlimited lives" always
+	poke $1010C4 $03
+
+script "1UP Unlimited energy" always
+	poke $101005 $05
+
+script "2UP Unlimited energy" always
+	poke $101045 $05
+
+script "3UP Unlimited energy" always
+	poke $101085 $05
+
+script "4UP Unlimited energy" always
+	poke $1010C5 $05
+
+script "1UP Unlimited magic" always
+	poke $101037 $04
+
+script "2UP Unlimited magic" always
+	poke $101077 $04
+
+script "3UP Unlimited magic" always
+	poke $1010B7 $04
+
+script "4UP Unlimited magic" always
+	poke $1010F7 $04

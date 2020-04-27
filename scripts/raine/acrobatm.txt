@@ -1,0 +1,55 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $8026D $78
+	poke $89003 peek($89003)&$fe
+
+script "1UP Invulnerability OFF"
+	poke $8026D $01
+	poke $89003 peek($89003)&$fe|$01
+
+script "2UP Invulnerability ON" always
+	poke $8028F $78
+	poke $89A93 peek($89A93)&$fe
+
+script "2UP Invulnerability OFF"
+	poke $8028F $01
+	poke $89A93 peek($89A93)&$fe|$01
+
+script "1UP Unlimited lives" always
+	poke $80255 $03
+
+script "2UP Unlimited lives" always
+	poke $80277 $03
+
+script "1UP Maximum fire power" always
+	poke $80267 $04
+
+script "2UP Maximum fire power" always
+	poke $80289 $04
+
+script "1UP Weapon - Wave         (P)" always
+	poke $8026B $00
+
+script "1UP Weapon - Hurricane    (P)" always
+	poke $8026B $01
+
+script "2UP Weapon - Wave         (P)" always
+	poke $8028D $00
+
+script "2UP Weapon - Hurricane    (P)" always
+	poke $8028D $01
+
+script "1UP Weapon - Wave         (T)"
+	poke $8026B $00
+
+script "1UP Weapon - Hurricane    (T)"
+	poke $8026B $01
+
+script "2UP Weapon - Wave         (T)"
+	poke $8028D $00
+
+script "2UP Weapon - Hurricane    (T)"
+	poke $8028D $01

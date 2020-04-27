@@ -1,0 +1,259 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF1838 $B4
+	poke $FF17BA peek($FF17BA)&$7f|$80
+
+script "1UP Invulnerability OFF"
+	poke $FF1838 $00
+	poke $FF17BA peek($FF17BA)&$7f
+
+script "2UP Invulnerability ON" always
+	poke $FF18D8 $B4
+	poke $FF185A peek($FF185A)&$7f|$80
+
+script "2UP Invulnerability OFF"
+	poke $FF18D8 $00
+	poke $FF185A peek($FF185A)&$7f
+
+script "1UP Unlimited lives" always
+	poke $FF0DE7 $03
+
+script "2UP Unlimited lives" always
+	poke $FF0DE8 $03
+
+script "*UP Unlimited time" always
+	poke $FF1011 $09
+
+script "1UP Unlimited super bomb ammo" always
+	poke $FF0E36 $FF
+
+script "2UP Unlimited super bomb ammo" always
+	poke $FF0E38 $FF
+
+script "1UP One heart = life  (-P)" always
+	poke $FF0E17 $63
+	poke $FF0E19 $64
+
+script "2UP One heart = life  (-P)" always
+	poke $FF0E1B $63
+	poke $FF0E1D $64
+
+script "1UP One heart = life  (-T)"
+	poke $FF0E17 $63
+	poke $FF0E19 $64
+
+script "2UP One heart = life  (-T)"
+	poke $FF0E1B $63
+	poke $FF0E1D $64
+
+script "1UP Weapon - Normal       (P)" always
+	poke $FF0E14 $01
+
+script "1UP Weapon - Hyper shot   (P)" always
+	poke $FF0E14 $02
+
+script "1UP Weapon - Tail  shot   (P)" always
+	poke $FF0E14 $03
+
+script "1UP Weapon - Bound shot   (P)" always
+	poke $FF0E14 $04
+
+script "1UP Weapon - Super bomb   (P)" always
+	poke $FF0E14 $00
+
+script "2UP Weapon - Normal       (P)" always
+	poke $FF0E15 $01
+
+script "2UP Weapon - Hyper shot   (P)" always
+	poke $FF0E15 $02
+
+script "2UP Weapon - Tail  shot   (P)" always
+	poke $FF0E15 $03
+
+script "2UP Weapon - Bound shot   (P)" always
+	poke $FF0E15 $04
+
+script "2UP Weapon - Super bomb   (P)" always
+	poke $FF0E15 $00
+
+script "1UP Weapon - Normal       (T)"
+	poke $FF0E14 $01
+
+script "1UP Weapon - Hyper shot   (T)"
+	poke $FF0E14 $02
+
+script "1UP Weapon - Tail  shot   (T)"
+	poke $FF0E14 $03
+
+script "1UP Weapon - Bound shot   (T)"
+	poke $FF0E14 $04
+
+script "1UP Weapon - Super bomb   (T)"
+	poke $FF0E14 $00
+
+script "2UP Weapon - Normal       (T)"
+	poke $FF0E15 $01
+
+script "2UP Weapon - Hyper shot   (T)"
+	poke $FF0E15 $02
+
+script "2UP Weapon - Tail  shot   (T)"
+	poke $FF0E15 $03
+
+script "2UP Weapon - Bound shot   (T)"
+	poke $FF0E15 $04
+
+script "2UP Weapon - Super bomb   (T)"
+	poke $FF0E15 $00
+
+script "1UP Option - Flames       (P)" always
+	poke $FF0DE3 $01
+
+script "1UP Option - Flames       (P)" always
+	poke $FF0DE3 $02
+
+script "2UP Option - Circular     (P)" always
+	poke $FF0DE5 $01
+
+script "2UP Option - Circular     (P)" always
+	poke $FF0DE5 $02
+
+script "1UP Option - Flames       (T)"
+	poke $FF0DE3 $01
+
+script "1UP Option - Flames       (T)"
+	poke $FF0DE3 $02
+
+script "2UP Option - Circular     (T)"
+	poke $FF0DE5 $01
+
+script "2UP Option - Circular     (T)"
+	poke $FF0DE5 $02
+
+script "1UP Invulnerability ON" always
+	poke $FF1838 $B4
+	poke $FF17BA peek($FF17BA)&$7f|$80
+
+script "1UP Invulnerability OFF"
+	poke $FF1838 $00
+	poke $FF17BA peek($FF17BA)&$7f
+
+script "2UP Invulnerability ON" always
+	poke $FF18D8 $B4
+	poke $FF185A peek($FF185A)&$7f|$80
+
+script "2UP Invulnerability OFF"
+	poke $FF18D8 $00
+	poke $FF185A peek($FF185A)&$7f
+
+script "1UP Unlimited lives" always
+	poke $FF0DE7 $03
+
+script "2UP Unlimited lives" always
+	poke $FF0DE8 $03
+
+script "*UP Unlimited boss time" always
+	dpoke $FF1002 $270F
+
+script "1UP One heart = life  (-P)" always
+	poke $FF184D $59
+	poke $FF184C $5A
+
+script "2UP One heart = life  (-P)" always
+	poke $FF18ED $59
+	poke $FF18EC $5A
+
+script "1UP One heart = life  (-T)"
+	poke $FF184D $59
+	poke $FF184C $5A
+
+script "2UP One heart = life  (-T)"
+	poke $FF18ED $59
+	poke $FF18EC $5A
+
+script "1UP Maximum options" always
+	poke $FF183B $06
+	poke $FF183D $07
+
+script "2UP Maximum options" always
+	poke $FF18DB $06
+	poke $FF18DD $07
+
+script "1UP Maximum bomb power" always
+	poke $FF1842 $02
+
+script "2UP Maximum bomb power" always
+	poke $FF18E2 $02
+
+script "1UP Max. fire power - Wide" always
+	poke $FF1845 $04
+
+script "1UP Max. fire power - Rapid" always
+	poke $FF1847 $04
+
+script "2UP Max. fire power - Wide" always
+	poke $FF18E5 $04
+
+script "2UP Max. fire power - Rapid" always
+	poke $FF18E7 $04
+
+script "1UP Get the protetion     (P)" always
+	poke $FF183E $01
+
+script "2UP Get the protetion     (P)" always
+	poke $FF18DE $01
+
+script "1UP Get the protetion     (T)"
+	poke $FF183E $01
+
+script "2UP Get the protetion     (T)"
+	poke $FF18DE $01
+
+script "1UP No more protetion"
+	poke $FF183E $00
+
+script "2UP No more protetion"
+	poke $FF18DE $00
+
+script "1UP Fire - Rapid shot     (P)" always
+	poke $FF183F $00
+
+script "1UP Fire - Wide  shot     (P)" always
+	poke $FF183F $01
+
+script "2UP Fire - Rapid shot     (P)" always
+	poke $FF18DF $00
+
+script "2UP Fire - Wide  shot     (P)" always
+	poke $FF18DF $01
+
+script "1UP Fire - Rapid shot     (T)"
+	poke $FF183F $00
+
+script "1UP Fire - Wide  shot     (T)"
+	poke $FF183F $01
+
+script "2UP Fire - Rapid shot     (T)"
+	poke $FF18DF $00
+
+script "2UP Fire - Wide  shot     (T)"
+	poke $FF18DF $01
+
+script "1UP Invulnerability ON" always
+	poke $FF17D2 $01
+	poke $FF17D3 $2C
+
+script "1UP Invulnerability OFF"
+	poke $FF17D2 $00
+	poke $FF17D3 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF1872 $01
+	poke $FF1873 $2C
+
+script "2UP Invulnerability OFF"
+	poke $FF1872 $00
+	poke $FF1873 $01

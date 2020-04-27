@@ -1,0 +1,18 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $8814 $03
+
+script "2UP Unlimited lives" always
+	poke $8815 $03
+
+script "*UP Monster 1 is stoned"
+	poke $8D1F $04
+
+script "*UP Monster 2 is stoned"
+	poke $8D3F $04
+
+script "*UP Monster 3 is stoned"
+	poke $8D5F $04

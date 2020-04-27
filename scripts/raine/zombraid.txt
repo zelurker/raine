@@ -1,0 +1,27 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $4C628 peek($4C628)&$df|$20
+
+script "1UP Invulnerability OFF"
+	poke $4C628 peek($4C628)&$df
+
+script "2UP Invulnerability ON" always
+	poke $4C676 peek($4C676)&$df|$20
+
+script "2UP Invulnerability OFF"
+	poke $4C676 peek($4C676)&$df
+
+script "1UP Unlimited energy" always
+	poke $20C479 $3E
+
+script "2UP Unlimited energy" always
+	poke $20C47B $3E
+
+script "1UP Unlimited ammo." always
+	poke $20C47F $06
+
+script "2UP Unlimited ammo." always
+	poke $20C483 $06

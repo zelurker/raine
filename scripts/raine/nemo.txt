@@ -1,0 +1,24 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $FF8398 $03
+
+script "2UP Unlimited lives" always
+	poke $FF8498 $03
+
+script "1UP Unlimited energy" always
+	poke $FF838F $30
+
+script "2UP Unlimited energy" always
+	poke $FF848F $30
+
+script "*UP Unlimited time" always
+	poke $FF8525 $59
+
+script "1UP Unlimited attacks" always
+	poke $FF838C $0108
+
+script "2UP Unlimited attacks" always
+	poke $FF848C $0108

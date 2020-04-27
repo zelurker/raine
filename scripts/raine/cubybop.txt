@@ -1,0 +1,7 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $8403 $09
+	dpoke $8404 $909

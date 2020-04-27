@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited vitality" always
+	poke $102309 $05
+
+script "2UP Unlimited vitality" always
+	poke $10230B $05

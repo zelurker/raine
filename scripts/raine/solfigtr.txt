@@ -1,0 +1,12 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited energy" always
+	dpoke $10101C $0100
+
+script "2UP Unlimited energy" always
+	dpoke $10111C $0100
+
+script "*UP Unlimited time" always
+	dpoke $102940 $0100

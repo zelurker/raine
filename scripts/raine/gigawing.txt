@@ -1,0 +1,41 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FFAE3A $00
+	poke $FFAE3B $EF
+	poke $FFADEB peek($FFADEB)&$bf|$40
+
+script "1UP Invulnerability OFF"
+	poke $FFAE3A $00
+	poke $FFAE3B $01
+	poke $FFADEB peek($FFADEB)&$bf
+
+script "2UP Invulnerability ON" always
+	poke $FFAEFA $00
+	poke $FFAEFB $EF
+	poke $FFAEAB peek($FFAEAB)&$bf|$40
+
+script "2UP Invulnerability OFF"
+	poke $FFAEFA $00
+	poke $FFAEFB $01
+	poke $FFAEAB peek($FFAEAB)&$bf
+
+script "1UP Unlimited lives" always
+	poke $FF72DD $03
+
+script "2UP Unlimited lives" always
+	poke $FF72DF $03
+
+script "1UP Unlimited bombs" always
+	poke $FF72E1 $08
+
+script "2UP Unlimited bombs" always
+	poke $FF72E3 $08
+
+script "1UP Maximum fire power" always
+	poke $FF730D $03
+
+script "2UP Maximum fire power" always
+	poke $FF7315 $03

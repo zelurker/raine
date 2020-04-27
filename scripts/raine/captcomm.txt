@@ -1,0 +1,63 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FFAA69 $C8
+
+script "1UP Invulnerability OFF"
+	poke $FFAA69 $01
+
+script "2UP Invulnerability ON" always
+	poke $FFAB69 $C8
+
+script "2UP Invulnerability OFF"
+	poke $FFAB69 $01
+
+script "3UP Invulnerability ON" always
+	poke $FFAC69 $C8
+
+script "3UP Invulnerability OFF"
+	poke $FFAC69 $01
+
+script "4UP Invulnerability ON" always
+	poke $FFAD69 $C8
+
+script "4UP Invulnerability OFF"
+	poke $FFAD69 $01
+
+script "1UP Unlimited lives" always
+	poke $FFAA7C $03
+
+script "2UP Unlimited lives" always
+	poke $FFAB7C $03
+
+script "3UP Unlimited lives" always
+	poke $FFAC7C $03
+
+script "4UP Unlimited lives" always
+	poke $FFAD7C $03
+
+script "1UP Unlimited energy" always
+	poke $FFA9D1 $48
+
+script "2UP Unlimited energy" always
+	poke $FFAAD1 $48
+
+script "3UP Unlimited energy" always
+	poke $FFABD1 $48
+
+script "4UP Unlimited energy" always
+	poke $FFACD1 $48
+
+script "1UP Unlimited "ammo."" always
+	poke $FFAA41 $02
+
+script "2UP Unlimited "ammo."" always
+	poke $FFAB41 $02
+
+script "3UP Unlimited "ammo."" always
+	poke $FFAC41 $02
+
+script "4UP Unlimited "ammo."" always
+	poke $FFAD41 $02

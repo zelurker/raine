@@ -1,0 +1,30 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $FF072B $03
+
+script "1UP Unlimited energy" always
+	poke $FF0729 $E0
+
+script "1UP Unlimited ammo." always
+	poke $FF0547 $5C
+
+script "1UP Bullets - None        (P)" always
+	poke $FF0549 $00
+
+script "1UP Bullets - Normal      (P)" always
+	poke $FF0549 $01
+
+script "1UP Bullets - Flames      (P)" always
+	poke $FF0549 $02
+
+script "1UP Bullets - None        (T)"
+	poke $FF0549 $00
+
+script "1UP Bullets - Normal      (T)"
+	poke $FF0549 $01
+
+script "1UP Bullets - Flames      (T)"
+	poke $FF0549 $02

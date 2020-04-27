@@ -1,0 +1,45 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $81D17 $03
+
+script "*UP Unlimited bombs" always
+	poke $81847 $0A
+
+script "*UP Maximum fire power" always
+	poke $81845 $02
+
+script "*UP Maximum speed" always
+	poke $81855 $26
+
+script "*UP Next 'P' for power-up (P)" always
+	poke $81D2D $04
+
+script "*UP Next 'P' for power-up (T)"
+	poke $81D2D $04
+
+script "*UP Fire - Red        (-P)" always
+	poke $81841 $00
+	poke $81843 $00
+
+script "*UP Fire - Green      (-P)" always
+	poke $81841 $08
+	poke $81843 $08
+
+script "*UP Fire - Blue       (-P)" always
+	poke $81841 $10
+	poke $81843 $10
+
+script "*UP Fire - Red        (-T)"
+	poke $81841 $00
+	poke $81843 $00
+
+script "*UP Fire - Green      (-T)"
+	poke $81841 $08
+	poke $81843 $08
+
+script "*UP Fire - Blue       (-T)"
+	poke $81841 $10
+	poke $81843 $10

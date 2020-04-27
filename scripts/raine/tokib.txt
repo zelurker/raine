@@ -1,0 +1,54 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $60A67 $03
+
+script "*UP Unlimited time" always
+	poke $6087E $99
+
+script "*UP Unlimited fire power" always
+	poke $60ADA $FC
+
+script "*UP Helmet ON" always
+	poke $60AAB $01
+
+script "*UP Helmet OFF"
+	poke $60AAB $00
+
+script "*UP No extra weapon       (P)" always
+	poke $60AA9 $00
+
+script "*UP Extra weapon - POW up (P)" always
+	poke $60AA9 $01
+
+script "*UP Extra weapon - Double (P)" always
+	poke $60AA9 $02
+
+script "*UP Extra weapon - Flames (P)" always
+	poke $60AA9 $03
+
+script "*UP Extra weapon - Fire   (P)" always
+	poke $60AA9 $04
+
+script "*UP Extra weapon - Triple (P)" always
+	poke $60AA9 $05
+
+script "*UP No extra weapon       (T)"
+	poke $60AA9 $00
+
+script "*UP Extra weapon - POW up (T)"
+	poke $60AA9 $01
+
+script "*UP Extra weapon - Double (T)"
+	poke $60AA9 $02
+
+script "*UP Extra weapon - Flames (T)"
+	poke $60AA9 $03
+
+script "*UP Extra weapon - Fire   (T)"
+	poke $60AA9 $04
+
+script "*UP Extra weapon - Triple (T)"
+	poke $60AA9 $05

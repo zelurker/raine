@@ -1,0 +1,42 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.09.08
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	dpoke $FE0A88 $0CC3
+
+script "1UP Unlimited energy" always
+	dpoke $FE4BFC $07FF
+
+script "2UP Unlimited energy" always
+	dpoke $FE4F14 $07FF
+
+script "1UP Energy set to 0       (P)" always
+	dpoke $FE4BFC $0000
+
+script "2UP Energy set to 0       (P)" always
+	dpoke $FE4F14 $0000
+
+script "1UP Energy set to 0       (T)"
+	dpoke $FE4BFC $0000
+
+script "2UP Energy set to 0       (T)"
+	dpoke $FE4F14 $0000
+
+script "1UP End round to win match" always
+	poke $FE4BFF $02
+
+script "2UP End round to win match" always
+	poke $FE4F17 $02
+
+script "1UP Rounds won set to 0   (P)" always
+	poke $FE4BFF $00
+
+script "2UP Rounds won set to 0   (P)" always
+	poke $FE4F17 $00
+
+script "1UP Rounds won set to 0   (T)"
+	poke $FE4BFF $00
+
+script "2UP Rounds won set to 0   (T)"
+	poke $FE4F17 $00

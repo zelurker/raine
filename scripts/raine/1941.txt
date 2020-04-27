@@ -1,0 +1,75 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF1468 $78
+
+script "1UP Invulnerability OFF"
+	poke $FF1468 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF14E8 $78
+
+script "2UP Invulnerability OFF"
+	poke $FF14E8 $01
+
+script "1UP Unlimited energy" always
+	poke $FF0DA5 $07
+
+script "2UP Unlimited energy" always
+	poke $FF0DA7 $07
+
+script "1UP Unlimited time for weapon" always
+	poke $FF0DE7 $99
+
+script "2UP Unlimited time for weapon" always
+	poke $FF0DE8 $99
+
+script "1UP Normal fire           (P)" always
+	poke $FF0DC8 $00
+
+script "1UP Extra fire - M. Gun   (P)" always
+	poke $FF0DC8 $01
+
+script "1UP Extra fire - S. Shell (P)" always
+	poke $FF0DC8 $02
+
+script "1UP Extra fire - Missile  (P)" always
+	poke $FF0DC8 $03
+
+script "2UP Normal fire           (P)" always
+	poke $FF0DCB $00
+
+script "2UP Extra fire - M. Gun   (P)" always
+	poke $FF0DCB $01
+
+script "2UP Extra fire - S. Shell (P)" always
+	poke $FF0DCB $02
+
+script "2UP Extra fire - Missile  (P)" always
+	poke $FF0DCB $03
+
+script "1UP Normal fire           (T)"
+	poke $FF0DC8 $00
+
+script "1UP Extra fire - M. Gun   (T)"
+	poke $FF0DC8 $01
+
+script "1UP Extra fire - S. Shell (T)"
+	poke $FF0DC8 $02
+
+script "1UP Extra fire - Missile  (T)"
+	poke $FF0DC8 $03
+
+script "2UP Normal fire           (T)"
+	poke $FF0DCB $00
+
+script "2UP Extra fire - M. Gun   (T)"
+	poke $FF0DCB $01
+
+script "2UP Extra fire - S. Shell (T)"
+	poke $FF0DCB $02
+
+script "2UP Extra fire - Missile  (T)"
+	poke $FF0DCB $03

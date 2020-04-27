@@ -1,0 +1,59 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $C1EA7 $03
+
+script "2UP Unlimited lives" always
+	poke $C1EA9 $03
+
+script "1UP Unlimited bombs" always
+	poke $C16E9 $08
+
+script "2UP Unlimited bombs" always
+	poke $C1749 $08
+
+script "1UP Maximum fire power" always
+	poke $C1EBD $03
+	poke $C16E7 $03
+
+script "2UP Maximum fire power" always
+	poke $C1EBF $03
+	poke $C1747 $03
+
+script "1UP Fire - Multi-way      (P)" always
+	poke $C16E3 $00
+
+script "1UP Fire - Laser          (P)" always
+	poke $C16E3 $08
+
+script "1UP Fire - Homing fire    (P)" always
+	poke $C16E3 $10
+
+script "2UP Fire - Multi-way      (P)" always
+	poke $C1743 $00
+
+script "2UP Fire - Laser          (P)" always
+	poke $C1743 $08
+
+script "2UP Fire - Homing fire    (P)" always
+	poke $C1743 $10
+
+script "1UP Fire - Multi-way      (T)"
+	poke $C16E3 $00
+
+script "1UP Fire - Laser          (T)"
+	poke $C16E3 $08
+
+script "1UP Fire - Homing fire    (T)"
+	poke $C16E3 $10
+
+script "2UP Fire - Multi-way      (T)"
+	poke $C1743 $00
+
+script "2UP Fire - Laser          (T)"
+	poke $C1743 $08
+
+script "2UP Fire - Homing fire    (T)"
+	poke $C1743 $10

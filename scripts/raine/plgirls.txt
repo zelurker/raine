@@ -1,0 +1,12 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $8390 $99
+
+script "2UP Unlimited lives" always
+	poke $8391 $99
+
+script "*UP End level"
+	poke $8226 $00

@@ -1,0 +1,46 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited play time" always
+	poke $8001C3 $09
+
+script "2UP Unlimited play time" always
+	poke $8001CB $09
+
+script "3UP Unlimited play time" always
+	poke $8001D3 $09
+
+script "4UP Unlimited play time" always
+	poke $8001DB $09
+
+script "*UP Unlimited match time" always
+	poke $800143 $09
+
+script "*UP End match"
+	poke $800141 $00
+	dpoke $800142 $00
+
+script "*UP Score set to 99 - Red  (P)" always
+	poke $80082C $99
+
+script "*UP Score set to 99 - Blue (P)" always
+	poke $80082D $99
+
+script "*UP Score set to 00 - Red  (P)" always
+	poke $80082C $00
+
+script "*UP Score set to 00 - Blue (P)" always
+	poke $80082D $00
+
+script "*UP Score set to 99 - Red  (T)"
+	poke $80082C $99
+
+script "*UP Score set to 99 - Blue (T)"
+	poke $80082D $99
+
+script "*UP Score set to 00 - Red  (T)"
+	poke $80082C $00
+
+script "*UP Score set to 00 - Blue (T)"
+	poke $80082D $00

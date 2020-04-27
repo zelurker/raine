@@ -1,0 +1,24 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $FF8CCE $99
+
+script "1UP Unlimited energy" always
+	poke $FF83F9 $90
+
+script "2UP Unlimited energy" always
+	poke $FF87F9 $90
+
+script "1UP Energy set to 0       (P)" always
+	poke $FF83F9 $00
+
+script "2UP Energy set to 0       (P)" always
+	poke $FF87F9 $00
+
+script "1UP Energy set to 0       (T)"
+	poke $FF83F9 $00
+
+script "2UP Energy set to 0       (T)"
+	poke $FF87F9 $00

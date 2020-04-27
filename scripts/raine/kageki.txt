@@ -1,0 +1,21 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited energy" always
+	poke $E75C $00
+
+script "2UP Unlimited energy" always
+	poke $E7FC $00
+
+script "1UP Energy set to 0       (P)" always
+	poke $E75C $80
+
+script "2UP Energy set to 0       (P)" always
+	poke $E7FC $80
+
+script "1UP Energy set to 0       (T)"
+	poke $E75C $80
+
+script "2UP Energy set to 0       (T)"
+	poke $E7FC $80

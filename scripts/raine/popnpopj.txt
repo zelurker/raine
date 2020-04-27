@@ -1,0 +1,295 @@
+# Cheats from  : Pugsy
+# Last update  : 2002.02.13
+# Desc. format : Pugsy
+
+script "Infinite Move Time PL1" always
+	dpoke $40A880 $01FF
+
+script "Infinite Move Time PL2" always
+	dpoke $40A882 $01FF
+
+script "Cloud never moves PL1" always
+	dpoke $40C1B2 $0169
+
+script "Cloud never moves PL2" always
+	dpoke $40C1B4 $0169
+
+script "Never Attacked PL1" always
+	poke $40A0CF $00
+	poke $40A826 $00
+	poke $40A827 $00
+
+script "Never Attacked PL1" always
+	poke $40A0CD $00
+	poke $40A828 $00
+	poke $40A829 $00
+
+script "Cur. T Balloon always red         PL1" always
+	poke $40A869 $01
+
+script "Cur. T Balloon always brown       PL1" always
+	poke $40A869 $02
+
+script "Cur. T Balloon always yellow      PL1" always
+	poke $40A869 $03
+
+script "Cur. T Balloon always green       PL1" always
+	poke $40A869 $04
+
+script "Cur. T Balloon always light blue  PL1" always
+	poke $40A869 $05
+
+script "Cur. T Balloon always dark blue   PL1" always
+	poke $40A869 $06
+
+script "Cur. T Balloon always purple      PL1" always
+	poke $40A869 $07
+
+script "Cur. T Balloon always grey        PL1" always
+	poke $40A869 $08
+
+script "Cur. B Balloon always red         PL1" always
+	poke $40A86B $01
+
+script "Cur. B Balloon always brown       PL1" always
+	poke $40A86B $02
+
+script "Cur. B Balloon always yellow      PL1" always
+	poke $40A86B $03
+
+script "Cur. B Balloon always green       PL1" always
+	poke $40A86B $04
+
+script "Cur. B Balloon always light blue  PL1" always
+	poke $40A86B $05
+
+script "Cur. B Balloon always dark blue   PL1" always
+	poke $40A86B $06
+
+script "Cur. B Balloon always purple      PL1" always
+	poke $40A86B $07
+
+script "Cur. B Balloon always grey        PL1" always
+	poke $40A86B $08
+
+script "Next T Balloon always red         PL1" always
+	poke $40A84B $01
+
+script "Next T Balloon always brown       PL1" always
+	poke $40A84B $02
+
+script "Next T Balloon always yellow      PL1" always
+	poke $40A84B $03
+
+script "Next T Balloon always green       PL1" always
+	poke $40A84B $04
+
+script "Next T Balloon always light blue  PL1" always
+	poke $40A84B $05
+
+script "Next T Balloon always dark blue   PL1" always
+	poke $40A84B $06
+
+script "Next T Balloon always purple      PL1" always
+	poke $40A84B $07
+
+script "Next T Balloon always grey        PL1" always
+	poke $40A84B $08
+
+script "Next B Balloon always red         PL1" always
+	poke $40A84F $01
+
+script "Next B Balloon always brown       PL1" always
+	poke $40A84F $02
+
+script "Next B Balloon always yellow      PL1" always
+	poke $40A84F $03
+
+script "Next B Balloon always green       PL1" always
+	poke $40A84F $04
+
+script "Next B Balloon always light blue  PL1" always
+	poke $40A84F $05
+
+script "Next B Balloon always dark blue   PL1" always
+	poke $40A84F $06
+
+script "Next B Balloon always purple      PL1" always
+	poke $40A84F $07
+
+script "Next B Balloon always grey        PL1" always
+	poke $40A84F $08
+
+script "Cur. T Balloon will be red        PL1"
+	poke $40A869 $01
+
+script "Cur. T Balloon will be brown      PL1"
+	poke $40A869 $02
+
+script "Cur. T Balloon will be yellow     PL1"
+	poke $40A869 $03
+
+script "Cur. T Balloon will be green      PL1"
+	poke $40A869 $04
+
+script "Cur. T Balloon will be light blue PL1"
+	poke $40A869 $05
+
+script "Cur. T Balloon will be dark blue  PL1"
+	poke $40A869 $06
+
+script "Cur. T Balloon will be purple     PL1"
+	poke $40A869 $07
+
+script "Cur. T Balloon will be grey       PL1"
+	poke $40A869 $08
+
+script "Cur. B Balloon will be brown      PL1"
+	poke $40A86B $02
+
+script "Cur. B Balloon will be yellow     PL1"
+	poke $40A86B $03
+
+script "Cur. B Balloon will be green      PL1"
+	poke $40A86B $04
+
+script "Cur. B Balloon will be light Blue PL1"
+	poke $40A86B $05
+
+script "Cur. B Balloon will be dark Blue  PL1"
+	poke $40A86B $06
+
+script "Cur. B Balloon will be purple     PL1"
+	poke $40A86B $07
+
+script "Cur. B Balloon will be grey       PL1"
+	poke $40A86B $08
+
+script "Next T Balloon will be red        PL1"
+	poke $40A84B $01
+
+script "Next T Balloon will be brown      PL1"
+	poke $40A84B $02
+
+script "Next T Balloon will be yellow     PL1"
+	poke $40A84B $03
+
+script "Next T Balloon will be green      PL1"
+	poke $40A84B $04
+
+script "Next T Balloon will be light blue PL1"
+	poke $40A84B $05
+
+script "Next T Balloon will be dark blue  PL1"
+	poke $40A84B $06
+
+script "Next T Balloon will be purple     PL1"
+	poke $40A84B $07
+
+script "Next T Balloon will be grey       PL1"
+	poke $40A84B $08
+
+script "Next B Balloon will be red        PL1"
+	poke $40A84F $01
+
+script "Next B Balloon will be brown      PL1"
+	poke $40A84F $02
+
+script "Next B Balloon will be yellow     PL1"
+	poke $40A84F $03
+
+script "Next B Balloon will be green      PL1"
+	poke $40A84F $04
+
+script "Next B Balloon will be light blue PL1"
+	poke $40A84F $05
+
+script "Next B Balloon will be dark blue  PL1"
+	poke $40A84F $06
+
+script "Next B Balloon will be purple     PL1"
+	poke $40A84F $07
+
+script "Next B Balloon will be grey       PL1"
+	poke $40A84F $08
+
+script "Cur. T Balloon always red         PL2" always
+	poke $40A86D $01
+
+script "Cur. T Balloon always brown       PL2" always
+	poke $40A86D $02
+
+script "Cur. T Balloon always yellow      PL2" always
+	poke $40A86D $03
+
+script "Cur. T Balloon always green       PL2" always
+	poke $40A86D $04
+
+script "Cur. T Balloon always light blue  PL2" always
+	poke $40A86D $05
+
+script "Cur. T Balloon always dark blue   PL2" always
+	poke $40A86D $06
+
+script "Cur. T Balloon always purple      PL2" always
+	poke $40A86D $07
+
+script "Cur. T Balloon always grey        PL2" always
+	poke $40A86D $08
+
+script "Cur. B Balloon always red         PL2" always
+	poke $40A86F $01
+
+script "Cur. B Balloon always brown       PL2" always
+	poke $40A86F $02
+
+script "Cur. B Balloon always yellow      PL2" always
+	poke $40A86F $03
+
+script "Cur. B Balloon always green       PL2" always
+	poke $40A86F $04
+
+script "Cur. B Balloon always light blue  PL2" always
+	poke $40A86F $05
+
+script "Cur. B Balloon always dark blue   PL2" always
+	poke $40A86F $06
+
+script "Cur. B Balloon always purple      PL2" always
+	poke $40A86F $07
+
+script "Cur. B Balloon always grey        PL2" always
+	poke $40A86F $08
+
+script "Next T Balloon always red         PL2" always
+	poke $40A84D $01
+
+script "Next T Balloon always brown       PL2" always
+	poke $40A84D $02
+
+script "Next T Balloon always yellow      PL2" always
+	poke $40A84D $03
+
+script "Next T Balloon always green       PL2" always
+	poke $40A84D $04
+
+script "Next T Balloon always light blue  PL2" always
+	poke $40A84D $05
+
+script "Next T Balloon always dark blue   PL2" always
+	poke $40A84D $06
+
+script "Next T Balloon always purple      PL2" always
+	poke $40A84D $07
+
+script "Next T Balloon always grey        PL2" always
+	poke $40A84D $08
+
+script "Next B Balloon always red         PL2" always
+	poke $40A851 $01
+
+script "Next B Balloon always brown       PL2" always
+	poke $40A851 $02
+
+script "Next B Balloon always yellow      PL2" always
+	poke $40A851 $03

@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $20062D $64
+
+script "1UP Invulnerability OFF"
+	poke $20062D $01
+
+script "2UP Invulnerability ON" always
+	poke $200653 $64
+
+script "2UP Invulnerability OFF"
+	poke $200653 $01
+
+script "1UP Unlimited lives" always
+	poke $20063D $05
+
+script "2UP Unlimited lives" always
+	poke $200663 $03
+
+script "1UP Maximum speed" always
+	poke $200627 $05
+
+script "2UP Maximum speed" always
+	poke $20064D $05
+
+script "*UP Pods ON" always
+	poke $200685 $01
+
+script "*UP Pods OFF"
+	poke $200685 $00

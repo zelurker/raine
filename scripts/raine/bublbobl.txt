@@ -8,4 +8,307 @@ script "skip this level"
   dpoke timeout 1
   poke timeout+2 $e9
 
+# Cheats from  : The Ultimate Patchers, Pugsy
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
 
+script "*UP "Super" mode ON" always
+	poke $E5DB $01
+
+script "*UP "Super" mode OFF" always
+	poke $E5DB $00
+
+script "*UP "Original" mode ON" always
+	poke $E5D1 $01
+
+script "*UP "Original" mode OFF" always
+	poke $E5D1 $00
+
+script "*UP "Power-up" mode ON" always
+	poke $E5D2 $01
+
+script "*UP "Power-up" mode OFF" always
+	poke $E5D2 $00
+
+script "1UP Invulnerability ON" always
+	poke $E6B6 $01
+
+script "1UP Invulnerability OFF"
+	poke $E6B6 $00
+
+script "2UP Invulnerability ON" always
+	poke $E6E8 $01
+
+script "2UP Invulnerability OFF"
+	poke $E6E8 $00
+
+script "1UP Unlimited lives" always
+	poke $E645 $03
+
+script "2UP Unlimited lives" always
+	poke $E64A $03
+
+script "*UP End level"
+	poke $E720 $01
+
+script "*UP Level 100 when level ends"
+	poke $E64B $62
+
+script "1UP Speed        (normal)"
+	poke $E6C1 $0C
+
+script "1UP Speed        (power-up)"
+	poke $E6C1 $14
+
+script "1UP Speed        (ultimate !)" always
+	poke $E6C1 $28
+
+script "1UP Fire speed   (normal)"
+	poke $E6BF $14
+
+script "1UP Fire speed   (power-up)"
+	poke $E6BF $05
+
+script "1UP Fire speed   (ultimate !)" always
+	poke $E6BF $01
+
+script "1UP Fire range   (normal)"
+	poke $E6C2 $40
+
+script "1UP Fire range   (power-up)"
+	poke $E6C2 $80
+
+script "1UP Fire range   (ultimate !)" always
+	poke $E6C2 $FF
+
+script "1UP Head power   (normal)"
+	poke $E6C0 $03
+
+script "1UP Head power   (power-up)"
+	poke $E6C0 $06
+
+script "1UP Head power   (ultimate !)" always
+	poke $E6C0 $09
+
+script "2UP Speed        (normal)"
+	poke $E6F3 $0C
+
+script "2UP Speed        (power-up)"
+	poke $E6F3 $14
+
+script "2UP Speed        (ultimate !)" always
+	poke $E6F3 $28
+
+script "2UP Fire speed   (normal)"
+	poke $E6F1 $14
+
+script "2UP Fire speed   (power-up)"
+	poke $E6F1 $05
+
+script "2UP Fire speed   (ultimate !)" always
+	poke $E6F1 $01
+
+script "2UP Fire range   (normal)"
+	poke $E6F4 $40
+
+script "2UP Fire range   (power-up)"
+	poke $E6F4 $80
+
+script "2UP Fire range   (ultimate !)" always
+	poke $E6F4 $FF
+
+script "2UP Head power   (normal)"
+	poke $E6F2 $03
+
+script "2UP Head power   (power-up)"
+	poke $E6F2 $06
+
+script "2UP Head power   (ultimate !)" always
+	poke $E6F2 $09
+
+script "1UP Get EXTEND"
+	poke $E742 $3F
+
+script "2UP Get EXTEND"
+	poke $E743 $3F
+
+script "1UP Get letter - E (red)"
+	poke $E742 peek($E742)&$fe|$01
+
+script "1UP Get letter - X (pink)"
+	poke $E742 peek($E742)&$fd|$02
+
+script "1UP Get letter - T (yellow)"
+	poke $E742 peek($E742)&$fb|$04
+
+script "1UP Get letter - E (green)"
+	poke $E742 peek($E742)&$f7|$08
+
+script "1UP Get letter - N (blue)"
+	poke $E742 peek($E742)&$ef|$10
+
+script "1UP Get letter - D (purple)"
+	poke $E742 peek($E742)&$df|$20
+
+script "2UP Get letter - E (red)"
+	poke $E743 peek($E743)&$fe|$01
+
+script "2UP Get letter - X (pink)"
+	poke $E743 peek($E743)&$fd|$02
+
+script "2UP Get letter - T (yellow)"
+	poke $E743 peek($E743)&$fb|$04
+
+script "2UP Get letter - E (green)"
+	poke $E743 peek($E743)&$f7|$08
+
+script "2UP Get letter - N (blue)"
+	poke $E743 peek($E743)&$ef|$10
+
+script "2UP Get letter - D (purple)"
+	poke $E743 peek($E743)&$df|$20
+
+script "*UP Bonus doors      (normal)"
+	poke $E613 $01
+
+script "*UP Bonus doors      (always)" always
+	poke $E613 $01
+
+script "*UP "EXTEND" letters (normal)"
+	poke $F676 $00
+
+script "*UP "EXTEND" letters (always)" always
+	poke $F676 $01
+
+script "*UP Bell flash       (normal)"
+	poke $E603 $00
+
+script "*UP Bell flash       (always)" always
+	poke $E603 $01
+
+script "*UP Item at begining (normal)"
+	poke $F44D $00
+
+script "*UP Item at begining (always)" always
+	poke $F44D $01
+
+script "1UP Fire bubbles"
+	poke $F60F $00
+
+script "1UP Fire lightnings"
+	poke $F60F $01
+
+script "2UP Fire bubbles"
+	poke $F610 $00
+
+script "2UP Fire lightnings"
+	poke $F610 $01
+
+script "*UP Item - pink sweet"
+	poke $F45E $00
+
+script "*UP Item - blue sweet"
+	poke $F45E $01
+
+script "*UP Item - yellow sweet"
+	poke $F45E $02
+
+script "*UP Item - shoe"
+	poke $F45E $03
+
+script "*UP Item - clock"
+	poke $F45E $04
+
+script "*UP Item - bomb"
+	poke $F45E $05
+
+script "*UP Item - brown umbrella"
+	poke $F45E $06
+
+script "*UP Item - red umbrella"
+	poke $F45E $07
+
+script "*UP Item - pink umbrella"
+	poke $F45E $08
+
+script "*UP Item - orange potion"
+	poke $F45E $09
+
+script "*UP Item - red potion"
+	poke $F45E $0A
+
+script "*UP Item - green potion"
+	poke $F45E $0B
+
+script "*UP Item - yellow potion"
+	poke $F45E $0C
+
+script "*UP Item - purple potion"
+	poke $F45E $0D
+
+script "*UP Item - heart"
+	poke $F45E $0E
+
+script "*UP Item - blue ring"
+	poke $F45E $0F
+
+script "*UP Item - pink ring"
+	poke $F45E $10
+
+script "*UP Item - red ring"
+	poke $F45E $11
+
+script "*UP Item - blue cross"
+	poke $F45E $12
+
+script "*UP Item - yellow cross"
+	poke $F45E $13
+
+script "*UP Item - orange cross"
+	poke $F45E $14
+
+script "*UP Item - blue tea-pot"
+	poke $F45E $15
+
+script "*UP Item - yellow tea-pot"
+	poke $F45E $18
+
+script "*UP Item - red tea-pot"
+	poke $F45E $16
+
+script "*UP Item - purple tea-pot"
+	poke $F45E $17
+
+script "*UP Item - book"
+	poke $F45E $19
+
+script "*UP Item - gray "ring?""
+	poke $F45E $1A
+
+script "*UP Item - orange necklace"
+	poke $F45E $1B
+
+script "*UP Item - gray necklace"
+	poke $F45E $1C
+
+script "*UP Item - fork"
+	poke $F45E $1D
+
+script "*UP Item - pink chest"
+	poke $F45E $1E
+
+script "*UP Item - yellow chest"
+	poke $F45E $1F
+
+script "*UP Item - red chest"
+	poke $F45E $20
+
+script "*UP Item - blue chest"
+	poke $F45E $21
+
+script "*UP Item - gray chest"
+	poke $F45E $22
+
+script "*UP Item - white candy-stick"
+	poke $F45E $23

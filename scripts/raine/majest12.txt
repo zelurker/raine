@@ -1,0 +1,19 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
+
+script "1UP Unlimited lives" always
+	poke $203619 $03
+
+script "2UP Unlimited lives" always
+	poke $20361B $03
+
+script "1UP Unlimited shields" always
+	poke $205291 $09
+
+script "2UP Unlimited shields" always
+	poke $2052DF $09
+
+script "*UP Unlimited time for weapon" always
+	poke $20553D $32

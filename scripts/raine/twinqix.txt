@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $406B50 $03
+
+script "2UP Unlimited lives" always
+	poke $406B51 $03
+
+script "1UP End round with 99.99%"
+	dpoke $4093B0 $6F63
+
+script "2UP End round with 99.99%"
+	dpoke $4099BA $6F63

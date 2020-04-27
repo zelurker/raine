@@ -1,0 +1,136 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF8352 $77
+
+script "1UP Invulnerability OFF"
+	poke $FF8352 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF8752 $77
+
+script "2UP Invulnerability OFF"
+	poke $FF8752 $01
+
+script "1UP Unlimited energy" always
+	poke $FF8351 $20
+
+script "2UP Unlimited energy" always
+	poke $FF8751 $20
+
+script "*UP Unlimited time" always
+	poke $FF8119 $45
+
+script "1UP Unlimited extra weapon 1" always
+	poke $FF8453 $10
+
+script "1UP Unlimited extra weapon 2" always
+	poke $FF8455 $10
+
+script "1UP Unlimited extra weapon 3" always
+	poke $FF8457 $10
+
+script "1UP Unlimited extra weapon 4" always
+	poke $FF8459 $10
+
+script "1UP Unlimited extra weapon 5" always
+	poke $FF845B $10
+
+script "1UP Unlimited extra weapon 6" always
+	poke $FF845D $10
+
+script "2UP Unlimited extra weapon 1" always
+	poke $FF8853 $10
+
+script "2UP Unlimited extra weapon 2" always
+	poke $FF8855 $10
+
+script "2UP Unlimited extra weapon 3" always
+	poke $FF8857 $10
+
+script "2UP Unlimited extra weapon 4" always
+	poke $FF8859 $10
+
+script "2UP Unlimited extra weapon 5" always
+	poke $FF885B $10
+
+script "2UP Unlimited extra weapon 6" always
+	poke $FF885D $10
+
+script "1UP Get extra weapon 1    (P)" always
+	poke $FF8449 $01
+
+script "1UP Get extra weapon 2    (P)" always
+	poke $FF844A $01
+
+script "1UP Get extra weapon 3    (P)" always
+	poke $FF844B $01
+
+script "1UP Get extra weapon 4    (P)" always
+	poke $FF844C $01
+
+script "1UP Get extra weapon 5    (P)" always
+	poke $FF844D $01
+
+script "1UP Get extra weapon 6    (P)" always
+	poke $FF844E $01
+
+script "2UP Get extra weapon 1    (P)" always
+	poke $FF8849 $01
+
+script "2UP Get extra weapon 2    (P)" always
+	poke $FF884A $01
+
+script "2UP Get extra weapon 3    (P)" always
+	poke $FF884B $01
+
+script "2UP Get extra weapon 4    (P)" always
+	poke $FF884C $01
+
+script "2UP Get extra weapon 5    (P)" always
+	poke $FF884D $01
+
+script "2UP Get extra weapon 6    (P)" always
+	poke $FF884E $01
+
+script "1UP No more extra weapon 1"
+	poke $FF8449 $00
+
+script "1UP No more extra weapon 2"
+	poke $FF844A $00
+
+script "1UP No more extra weapon 3"
+	poke $FF844B $00
+
+script "1UP No more extra weapon 4"
+	poke $FF844C $00
+
+script "1UP No more extra weapon 5"
+	poke $FF844D $00
+
+script "1UP No more extra weapon 6"
+	poke $FF844E $00
+
+script "2UP No more extra weapon 1"
+	poke $FF8849 $00
+
+script "2UP No more extra weapon 2"
+	poke $FF884A $00
+
+script "2UP No more extra weapon 3"
+	poke $FF884B $00
+
+script "2UP No more extra weapon 4"
+	poke $FF884C $00
+
+script "2UP No more extra weapon 5"
+	poke $FF884D $00
+
+script "2UP No more extra weapon 6"
+	poke $FF884E $00
+
+script "*UP One hit for enemy (-T)"
+	poke $FFCD51 $00
+	poke $FFCE51 $00

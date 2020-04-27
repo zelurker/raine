@@ -1,0 +1,30 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $818B3 $03
+
+script "*UP Maximum power" always
+	poke $80F51 $03
+
+script "*UP Maximum speed" always
+	poke $80007 $30
+
+script "*UP Weapon - Multi-way    (P)" always
+	poke $80029 $00
+
+script "*UP Weapon - Laser        (P)" always
+	poke $80029 $01
+
+script "*UP Weapon - Missiles     (P)" always
+	poke $80029 $02
+
+script "*UP Weapon - Multi-way    (T)"
+	poke $80029 $00
+
+script "*UP Weapon - Laser        (T)"
+	poke $80029 $01
+
+script "*UP Weapon - Missiles     (T)"
+	poke $80029 $02

@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP End level"
+	poke $8DA0 peek($8DA0)&$ef|$10
+
+script "2UP End level"
+	poke $8DD0 peek($8DD0)&$ef|$10

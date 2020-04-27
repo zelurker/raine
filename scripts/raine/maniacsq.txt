@@ -1,0 +1,10 @@
+# Cheats from  : Pugsy, The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+# Game not supported in official RAINE released !
+
+script "1UP Drop piece to end level" always
+	dpoke $FF4D3C $FFFF
+
+script "2UP Drop piece to end level" always
+	dpoke $FF600E $FFFF

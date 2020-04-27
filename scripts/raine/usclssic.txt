@@ -1,0 +1,12 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited holes" always
+	poke $FFC8A5 $12
+
+script "1UP Unlimited strokes" always
+	poke $FFC94B $01
+
+script "1UP Unlimited time" always
+	poke $FFC9A7 $09

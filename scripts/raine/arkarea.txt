@@ -1,0 +1,127 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $C00A $01
+
+script "1UP Invulnerability OFF"
+	poke $C00A $00
+
+script "2UP Invulnerability ON" always
+	poke $C00B $01
+
+script "2UP Invulnerability OFF"
+	poke $C00B $00
+
+script "1UP Unlimited lives" always
+	poke $D209 $03
+
+script "2UP Unlimited lives" always
+	poke $D259 $03
+
+script "1UP Unlimited time for weapon" always
+	poke $D207 $FF
+
+script "2UP Unlimited time for weapon" always
+	poke $D257 $FF
+
+script "1UP Weapon - Normal   (-P)" always
+	poke $D200 $1C
+	poke $D202 $04
+	poke $D203 $01
+
+script "1UP Weapon - Tracer   (-P)" always
+	poke $D200 $1F
+	poke $D202 $03
+	poke $D203 $01
+
+script "1UP Weapon - Flamer   (-P)" always
+	poke $D200 $22
+	poke $D202 $03
+	poke $D203 $01
+
+script "1UP Weapon - 3-way    (-P)" always
+	poke $D200 $25
+	poke $D202 $03
+	poke $D203 $03
+
+script "1UP Weapon - 8-way    (-P)" always
+	poke $D200 $2C
+	poke $D202 $01
+	poke $D203 $08
+
+script "2UP Weapon - Normal   (-P)" always
+	poke $D250 $1C
+	poke $D252 $04
+	poke $D253 $01
+
+script "2UP Weapon - Tracer   (-P)" always
+	poke $D250 $1F
+	poke $D252 $03
+	poke $D253 $01
+
+script "2UP Weapon - Flamer   (-P)" always
+	poke $D250 $22
+	poke $D252 $03
+	poke $D253 $01
+
+script "2UP Weapon - 3-way    (-P)" always
+	poke $D250 $25
+	poke $D252 $03
+	poke $D253 $03
+
+script "2UP Weapon - 8-way    (-P)" always
+	poke $D250 $2C
+	poke $D252 $01
+	poke $D253 $08
+
+script "1UP Weapon - Normal   (-T)"
+	poke $D200 $1C
+	poke $D202 $04
+	poke $D203 $01
+
+script "1UP Weapon - Tracer   (-T)"
+	poke $D200 $1F
+	poke $D202 $03
+	poke $D203 $01
+
+script "1UP Weapon - Flamer   (-T)"
+	poke $D200 $22
+	poke $D202 $03
+	poke $D203 $01
+
+script "1UP Weapon - 3-way    (-T)"
+	poke $D200 $25
+	poke $D202 $03
+	poke $D203 $03
+
+script "1UP Weapon - 8-way    (-T)"
+	poke $D200 $2C
+	poke $D202 $01
+	poke $D203 $08
+
+script "2UP Weapon - Normal   (-T)"
+	poke $D250 $1C
+	poke $D252 $04
+	poke $D253 $01
+
+script "2UP Weapon - Tracer   (-T)"
+	poke $D250 $1F
+	poke $D252 $03
+	poke $D253 $01
+
+script "2UP Weapon - Flamer   (-T)"
+	poke $D250 $22
+	poke $D252 $03
+	poke $D253 $01
+
+script "2UP Weapon - 3-way    (-T)"
+	poke $D250 $25
+	poke $D252 $03
+	poke $D253 $03
+
+script "2UP Weapon - 8-way    (-T)"
+	poke $D250 $2C
+	poke $D252 $01
+	poke $D253 $08

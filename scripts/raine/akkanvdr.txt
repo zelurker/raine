@@ -1,0 +1,7 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+	poke $410CDF $03
+
+script "2UP Unlimited lives" always
+	poke $410D5F $03

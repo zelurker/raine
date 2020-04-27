@@ -1,0 +1,21 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $606BE $03
+
+script "2UP Unlimited lives" always
+	poke $606BF $03
+
+script "*UP Unlimited shields" always
+	poke $606ED $FF
+
+script "*UP Maximum laser" always
+	poke $606EB $03
+
+script "*UP Maximum bombs" always
+	poke $606EC $03
+
+script "*UP Maximum speed" always
+	poke $606EE $03

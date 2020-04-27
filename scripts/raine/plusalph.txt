@@ -1,0 +1,36 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability" always
+	poke $F30C1 $02
+
+script "1UP Unlimited lives" always
+	poke $F30A1 $03
+
+script "2UP Unlimited lives" always
+	poke $F30A3 $03
+
+script "*UP Unlimited bombs" always
+	poke $F3131 $09
+
+script "*UP Maximum fire power" always
+	poke $F312B $07
+
+script "*UP Weapon - P - Red      (P)" always
+	poke $F30C7 $00
+
+script "*UP Weapon - J - Green    (P)" always
+	poke $F30C7 $01
+
+script "*UP Weapon - H - Purple   (P)" always
+	poke $F30C7 $02
+
+script "*UP Weapon - P - Red      (T)"
+	poke $F30C7 $00
+
+script "*UP Weapon - J - Green    (T)"
+	poke $F30C7 $01
+
+script "*UP Weapon - H - Purple   (T)"
+	poke $F30C7 $02

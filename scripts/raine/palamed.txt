@@ -1,0 +1,57 @@
+# Cheats from  : The Ultimate Patchers, Pugsy
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP One line ends level"
+	poke $830D $01
+
+script "2UP One line ends level"
+	poke $837E $01
+
+script "1UP Dice Line= 123456 (-P)" always
+	poke $82A5 $01
+	dpoke $82a6 $203
+	poke $82A8 $04
+	dpoke $82a9 $506
+
+script "1UP Dice Line= 666666 (-P)" always
+	poke $82A5 $06
+	dpoke $82a6 $606
+	poke $82A8 $06
+	dpoke $82a9 $606
+
+script "2UP Dice Line= 123456 (-P)" always
+	poke $825E $01
+	dpoke $825f $203
+	poke $8261 $04
+	dpoke $8262 $506
+
+script "2UP Dice Line= 666666 (-P)" always
+	poke $825E $06
+	dpoke $825f $606
+	poke $8261 $06
+	dpoke $8262 $606
+
+script "1UP Dice Line= 123456 (-T)"
+	poke $82A5 $01
+	dpoke $82a6 $203
+	poke $82A8 $04
+	dpoke $82a9 $506
+
+script "1UP Dice Line= 666666 (-T)"
+	poke $82A5 $06
+	dpoke $82a6 $606
+	poke $82A8 $06
+	dpoke $82a9 $606
+
+script "2UP Dice Line= 123456 (-T)"
+	poke $825E $01
+	dpoke $825f $203
+	poke $8261 $04
+	dpoke $8262 $506
+
+script "2UP Dice Line= 666666 (-T)"
+	poke $825E $06
+	dpoke $825f $606
+	poke $8261 $06
+	dpoke $8262 $606

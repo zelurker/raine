@@ -1,0 +1,39 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $C02A $03
+
+script "2UP Unlimited lives" always
+	poke $C052 $03
+
+script "*UP Unlimited time" always
+	poke $C195 $99
+
+script "*UP No more time"
+	poke $C195 $01
+
+script "*UP Size is normal        (T)"
+	poke $CDB0 $00
+
+script "*UP Size is big           (T)"
+	poke $CDB0 $02
+
+script "*UP Size is small         (T)"
+	poke $CDB0 $03
+
+script "*UP Get multiway shot (-P)" always
+	poke $CDB3 $80
+	poke $CDB5 $B0
+	poke $CDB6 $04
+
+script "*UP Get multiway shot (-T)" always
+	poke $CDB3 $80
+	poke $CDB5 $B0
+	poke $CDB6 $04
+
+script "*UP Get normal shot   (-T)"
+	poke $CDB3 $00
+	poke $CDB5 $01
+	poke $CDB6 $00

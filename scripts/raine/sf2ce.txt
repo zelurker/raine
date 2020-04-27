@@ -1,0 +1,127 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+# DO NOT use clone relation for this game !
+
+script "*UP Unlimited time      (OFF)" always
+	poke $FF8ABE $99
+
+script "1UP Unlimited energy(-OFF)" always
+	poke $FF83E9 $90
+	poke $FF857B $90
+
+script "2UP Unlimited energy(-OFF)" always
+	poke $FF86E9 $90
+	poke $FF887B $90
+
+script "1UP Energy set to 0   (-P)" always
+	poke $FF83E9 $00
+	poke $FF857B $00
+
+script "2UP Energy set to 0   (-P)" always
+	poke $FF86E9 $00
+	poke $FF887B $00
+
+script "1UP Energy set to 0   (-T)"
+	poke $FF83E9 $00
+	poke $FF857B $00
+
+script "2UP Energy set to 0   (-T)"
+	poke $FF86E9 $00
+	poke $FF887B $00
+
+script "1UP End round to win match" always
+	poke $FF864E $02
+
+script "2UP End round to win match" always
+	poke $FF894E $02
+
+script "1UP Rounds won set to 0   (P)" always
+	poke $FF864E $00
+
+script "2UP Rounds won set to 0   (P)" always
+	poke $FF894E $00
+
+script "1UP Rounds won set to 0   (T)"
+	poke $FF864E $00
+
+script "2UP Rounds won set to 0   (T)"
+	poke $FF894E $00
+
+script "*UP Last level         (next)"
+	poke $FF89C1 $0A
+
+script "*UP Last level         (coin)"
+	poke $FF89C1 $0B
+
+script "1UP Play with Ryu"
+	poke $FF864F $00
+
+script "1UP Play with E. Honda"
+	poke $FF864F $01
+
+script "1UP Play with Blanka"
+	poke $FF864F $02
+
+script "1UP Play with Guile"
+	poke $FF864F $03
+
+script "1UP Play with Ken"
+	poke $FF864F $04
+
+script "1UP Play with Chun Li"
+	poke $FF864F $05
+
+script "1UP Play with Zangief"
+	poke $FF864F $06
+
+script "1UP Play with Dhalsim"
+	poke $FF864F $07
+
+script "1UP Play with M. Bison (bug!)"
+	poke $FF864F $08
+
+script "1UP Play with Sagat    (bug!)"
+	poke $FF864F $09
+
+script "1UP Play with Balrog   (bug!)"
+	poke $FF864F $0A
+
+script "1UP Play with Vega     (bug!)"
+	poke $FF864F $0B
+
+script "2UP Play with Ryu"
+	poke $FF894F $00
+
+script "2UP Play with E. Honda"
+	poke $FF894F $01
+
+script "2UP Play with Blanka"
+	poke $FF894F $02
+
+script "2UP Play with Guile"
+	poke $FF894F $03
+
+script "2UP Play with Ken"
+	poke $FF894F $04
+
+script "2UP Play with Chun Li"
+	poke $FF894F $05
+
+script "2UP Play with Zangief"
+	poke $FF894F $06
+
+script "2UP Play with Dhalsim"
+	poke $FF894F $07
+
+script "2UP Play with M. Bison (bug!)"
+	poke $FF894F $08
+
+script "2UP Play with Sagat    (bug!)"
+	poke $FF894F $09
+
+script "2UP Play with Balrog   (bug!)"
+	poke $FF894F $0A
+
+script "2UP Play with Vega     (bug!)"
+	poke $FF894F $0B

@@ -1,0 +1,51 @@
+# Cheats from  : Pugsy, Monyons
+# Last update  : 2001.09.08
+# Desc. format : Pugsy
+
+script "Invincibility" always
+	poke $FFA463 $78
+
+script "Infinite Energy (ghost)" always
+	poke $FF9E51 $C8
+
+script "Infinite Energy (player)" always
+	poke $FF9F2D $68
+
+script "No more energy (player)"
+	poke $FF9F2D $01
+
+script "Char - Girl (red)" always
+	poke $FFA45B $01
+
+script "Char - Girl (green)" always
+	poke $FFA45B $02
+
+script "Char - Gang (green)" always
+	poke $FFA45B $03
+
+script "Char - Dragon (green)" always
+	poke $FFA45B $05
+
+script "Char - Dragon (blue)" always
+	poke $FFA45B $06
+
+script "Char - Dragon (red)" always
+	poke $FFA45B $07
+
+script "Char - Highjump (gun)" always
+	poke $FFA45B $09
+
+script "Char - Gunjin (gun)" always
+	poke $FFA45B $0E
+
+script "Char - Gunjin (yellow)" always
+	poke $FFA45B $0F
+
+script "Char - Ninja (blue)" always
+	poke $FFA45B $14
+
+script "Char - Ninja (red)" always
+	poke $FFA45B $15
+
+script "Char - Magic (red)" always
+	poke $FFA45B $18

@@ -1,0 +1,57 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.09.08
+# Desc. format : The Ultimate Patchers
+
+script "*UP Player select + Team Edit" always
+	poke $20F792 $06
+
+script "*UP Player select - "Phase 3"" always
+	poke $20F792 $04
+
+script "*UP Player select - "Phase 2"" always
+	poke $20F792 $02
+
+script "*UP Player select -  Default" always
+	poke $20F792 $00
+
+script "*UP Special course ON" always
+	poke $20F760 $FF
+
+script "*UP Special course OFF" always
+	poke $20F760 $00
+
+script "1UP Invulnerability ON" always
+	poke $2041BD $EC
+
+script "1UP Invulnerability OFF"
+	poke $2041BD $01
+
+script "2UP Invulnerability ON" always
+	poke $20439F $EC
+
+script "2UP Invulnerability OFF"
+	poke $20439F $01
+
+script "1UP Unlimited bombs" always
+	dpoke $2041BA $0128
+
+script "2UP Unlimited bombs" always
+	dpoke $20439C $0128
+
+script "1UP Max. front fire power" always
+	poke $2041B8 $03
+
+script "2UP Max. front fire power" always
+	poke $20439A $03
+
+script "1UP Max. side fire power" always
+	poke $2041A2 $03
+
+script "2UP Max. side fire power" always
+	poke $204384 $03
+
+script "1UP Maximum options" always
+	poke $2041C0 $06
+
+script "2UP Maximum options" always
+	poke $2043A2 $06

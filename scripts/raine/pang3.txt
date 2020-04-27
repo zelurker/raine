@@ -1,0 +1,111 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FFABB7 $EC
+
+script "1UP Invulnerability OFF"
+	poke $FFABB7 $01
+
+script "2UP Invulnerability ON" always
+	poke $FFAC77 $EC
+
+script "2UP Invulnerability OFF"
+	poke $FFAC77 $01
+
+script "1UP Unlimited lives" always
+	poke $FF8BB4 $03
+
+script "2UP Unlimited lives" always
+	poke $FF8BB5 $03
+
+script "*UP Unlimited time" always
+	poke $FF8BAE $FA
+
+script "*UP Last level - Train (next)"
+	poke $FF8BC6 $08
+
+script "*UP Last level - Tour  (next)"
+	poke $FF8BC6 $30
+
+script "*UP Last level - Panic (next)"
+	poke $FF8BDF $61
+
+script "1UP Get the protection    (P)" always
+	poke $FFABF4 $01
+
+script "2UP Get the protection    (P)" always
+	poke $FFACB4 $01
+
+script "1UP Get the protection    (T)"
+	poke $FFABF4 $01
+
+script "2UP Get the protection    (T)"
+	poke $FFACB4 $01
+
+script "1UP No more protection"
+	poke $FFABF4 $00
+
+script "2UP No more protection"
+	poke $FFACB4 $00
+
+script "1UP Weapon - Double       (P)" always
+	poke $FFABC8 $00
+
+script "1UP Weapon - Blocker      (P)" always
+	poke $FFABC8 $01
+
+script "1UP Weapon - 3-way        (P)" always
+	poke $FFABC8 $02
+
+script "1UP Weapon - Diagonal     (P)" always
+	poke $FFABC8 $03
+
+script "1UP Weapon - Super?       (P)" always
+	poke $FFABC8 $04
+
+script "2UP Weapon - Double       (P)" always
+	poke $FFAC88 $00
+
+script "2UP Weapon - Blocker      (P)" always
+	poke $FFAC88 $01
+
+script "2UP Weapon - 3-way        (P)" always
+	poke $FFAC88 $02
+
+script "2UP Weapon - Diagonal     (P)" always
+	poke $FFAC88 $03
+
+script "2UP Weapon - Super?       (P)" always
+	poke $FFAC88 $04
+
+script "1UP Weapon - Double       (T)"
+	poke $FFABC8 $00
+
+script "1UP Weapon - Blocker      (T)"
+	poke $FFABC8 $01
+
+script "1UP Weapon - 3-way        (T)"
+	poke $FFABC8 $02
+
+script "1UP Weapon - Diagonal     (T)"
+	poke $FFABC8 $03
+
+script "1UP Weapon - Super?       (T)"
+	poke $FFABC8 $04
+
+script "2UP Weapon - Double       (T)"
+	poke $FFAC88 $00
+
+script "2UP Weapon - Blocker      (T)"
+	poke $FFAC88 $01
+
+script "2UP Weapon - 3-way        (T)"
+	poke $FFAC88 $02
+
+script "2UP Weapon - Diagonal     (T)"
+	poke $FFAC88 $03
+
+script "2UP Weapon - Super?       (T)"
+	poke $FFAC88 $04

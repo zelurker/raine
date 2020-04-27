@@ -1,0 +1,6 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Race time = 0'00"00   (P)" always
+	dpoke $10B6DE $0000

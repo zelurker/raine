@@ -1,0 +1,9 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited energy" always
+	dpoke $E78E $9999
+
+script "2UP Unlimited energy" always
+	dpoke $E7AE $9999

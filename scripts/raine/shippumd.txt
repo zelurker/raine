@@ -1,0 +1,71 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.09.08
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $1012D5 $EF
+
+script "1UP Invulnerability OFF"
+	poke $1012D5 $01
+
+script "2UP Invulnerability ON" always
+	poke $1013D5 $EF
+
+script "2UP Invulnerability OFF"
+	poke $1013D5 $01
+
+script "1UP Unlimited lives" always
+	poke $100555 $03
+
+script "2UP Unlimited lives" always
+	poke $100557 $03
+
+script "1UP Unlimited bombs" always
+	poke $1012D7 $09
+
+script "2UP Unlimited bombs" always
+	poke $1013D7 $09
+
+script "1UP Maximum main fire power" always
+	poke $1012DF $03
+
+script "2UP Maximum main fire power" always
+	poke $1013DF $03
+
+script "1UP Maximum extra fire power" always
+	poke $1012D9 $02
+
+script "2UP Maximum extra fire power" always
+	poke $1013D9 $02
+
+script "1UP Extra weapon - F  (-P)" always
+	poke $1012DB peek($1012DB)&$fe|$01
+	poke $1012DB peek($1012DB)&$fd
+
+script "1UP Extra weapon - H  (-P)" always
+	poke $1012DB peek($1012DB)&$fe
+	poke $1012DB peek($1012DB)&$fd|$02
+
+script "2UP Extra weapon - F  (-P)" always
+	poke $1013DB peek($1013DB)&$fe|$01
+	poke $1013DB peek($1013DB)&$fd
+
+script "2UP Extra weapon - H  (-P)" always
+	poke $1013DB peek($1013DB)&$fe
+	poke $1013DB peek($1013DB)&$fd|$02
+
+script "1UP Extra weapon - F  (-T)"
+	poke $1012DB peek($1012DB)&$fe|$01
+	poke $1012DB peek($1012DB)&$fd
+
+script "1UP Extra weapon - H  (-T)"
+	poke $1012DB peek($1012DB)&$fe
+	poke $1012DB peek($1012DB)&$fd|$02
+
+script "2UP Extra weapon - F  (-T)"
+	poke $1013DB peek($1013DB)&$fe|$01
+	poke $1013DB peek($1013DB)&$fd
+
+script "2UP Extra weapon - H  (-T)"
+	poke $1013DB peek($1013DB)&$fe
+	poke $1013DB peek($1013DB)&$fd|$02

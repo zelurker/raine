@@ -1,0 +1,40 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $FF8109 $63
+
+script "1UP Unlimited energy" always
+	dlpoke $FF8450 $02400240
+
+script "2UP Unlimited energy" always
+	dlpoke $FF8850 $02400240
+
+script "1UP Energy set to 0       (P)" always
+	dlpoke $FF8450 $FFFFFFFF
+
+script "2UP Energy set to 0       (P)" always
+	dlpoke $FF8850 $FFFFFFFF
+
+script "1UP Energy set to 0       (T)"
+	dlpoke $FF8450 $FFFFFFFF
+
+script "2UP Energy set to 0       (T)"
+	dlpoke $FF8850 $FFFFFFFF
+
+script "1UP Maximum power" always
+	poke $FF8509 $63
+	poke $FF850B $90
+
+script "2UP Maximum power" always
+	poke $FF8909 $63
+	poke $FF890B $90
+
+script "1UP Minimum power" always
+	poke $FF8509 $00
+	poke $FF850B $00
+
+script "2UP Minimum power" always
+	poke $FF8909 $00
+	poke $FF890B $00

@@ -1,0 +1,36 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF149B $B4
+
+script "1UP Invulnerability OFF"
+	poke $FF149B $00
+
+script "2UP Invulnerability ON" always
+	poke $FF155B $B4
+
+script "2UP Invulnerability OFF"
+	poke $FF155B $00
+
+script "1UP Unlimited lives" always
+	poke $FF147B $03
+
+script "2UP Unlimited lives" always
+	poke $FF153B $03
+
+script "1UP Unlimited energy" always
+	poke $FF14AB $40
+
+script "2UP Unlimited energy" always
+	poke $FF156B $40
+
+script "1UP Unlimited magic" always
+	poke $FF14D3 $06
+
+script "2UP Unlimited magic" always
+	poke $FF1593 $06
+
+script "*UP Unlimited time" always
+	poke $FF0F69 $59

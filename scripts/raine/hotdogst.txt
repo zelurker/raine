@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	dpoke $3CB3DE $0080
+
+script "1UP Invulnerability OFF"
+	dpoke $3CB3DE $0110
+
+script "2UP Invulnerability ON" always
+	dpoke $3CBBDE $0080
+
+script "2UP Invulnerability OFF"
+	dpoke $3CBBDE $0110
+
+script "1UP Unlimited lives" always
+	poke $3010ED $03
+
+script "2UP Unlimited lives" always
+	poke $3010EF $03
+
+script "1UP Unlimited bombs" always
+	poke $3010F1 $09
+
+script "2UP Unlimited bombs" always
+	poke $3010F3 $09
+
+script "1UP Maximum fire power" always
+	poke $3011ED $03
+
+script "2UP Maximum fire power" always
+	poke $3011EF $03

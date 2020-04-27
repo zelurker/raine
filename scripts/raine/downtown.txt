@@ -1,0 +1,30 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FFEFAF $FF
+
+script "1UP Invulnerability OFF"
+	poke $FFEFAF $01
+
+script "2UP Invulnerability ON" always
+	poke $FFEFEF $FF
+
+script "2UP Invulnerability OFF"
+	poke $FFEFEF $01
+
+script "1UP Unlimited lives" always
+	poke $FFEFA7 $03
+
+script "2UP Unlimited lives" always
+	poke $FFEFE7 $03
+
+script "1UP Unlimited energy" always
+	poke $FFEFB2 $08
+
+script "2UP Unlimited energy" always
+	poke $FFEFF2 $08
+
+script "*UP Unlimited time" always
+	poke $FFEF06 $99

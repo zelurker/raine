@@ -1,0 +1,33 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited time" always
+	poke $10A335 $3B
+
+script "*UP End game"
+	dpoke $10A334 $0000
+
+script "1Te Score set to 10       (P)" always
+	poke $10A332 $0A
+
+script "2Te Score set to 10       (P)" always
+	poke $10A333 $0A
+
+script "1Te Score set to 0        (P)" always
+	poke $10A332 $00
+
+script "2Te Score set to 0        (P)" always
+	poke $10A333 $00
+
+script "1Te Score set to 10       (T)"
+	poke $10A332 $0A
+
+script "2Te Score set to 10       (T)"
+	poke $10A333 $0A
+
+script "1Te Score set to 0        (T)"
+	poke $10A332 $00
+
+script "2Te Score set to 0        (T)"
+	poke $10A333 $00

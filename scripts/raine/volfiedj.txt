@@ -1,0 +1,36 @@
+# Cheats from  : Tourniquet, Pugsy, The Ultimate Patchers
+# Last update  : 2002.09.08
+# Desc. format : The Ultimate Patchers
+
+script "*UP Unlimited lives" always
+	poke $100181 $03
+
+script "*UP Unlimited shields" always
+	dpoke $10018A $9909
+
+script "*UP End round - 99.9%"
+	dpoke $100192 $9909
+
+script "*UP Speed  ON" always
+	poke $10031B $01
+
+script "*UP Speed  OFF"
+	poke $10031B $00
+
+script "*UP Power  ON" always
+	poke $100882 $01
+
+script "*UP Power  OFF"
+	poke $100882 $00
+
+script "*UP Laser  ON" always
+	poke $100884 $01
+
+script "*UP Laser  OFF"
+	poke $100884 $00
+
+script "*UP Freeze ON" always
+	poke $100883 $01
+
+script "*UP Freeze OFF"
+	poke $100883 $00

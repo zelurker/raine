@@ -1,0 +1,42 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $FF1190 $59
+
+script "1UP Invulnerability OFF"
+	poke $FF1190 $01
+
+script "2UP Invulnerability ON" always
+	poke $FF1240 $59
+
+script "2UP Invulnerability OFF"
+	poke $FF1240 $01
+
+script "3UP Invulnerability ON" always
+	poke $FF12F0 $59
+
+script "3UP Invulnerability OFF"
+	poke $FF12F0 $01
+
+script "1UP Unlimited energy" always
+	poke $FF1175 $30
+
+script "2UP Unlimited energy" always
+	poke $FF1225 $30
+
+script "3UP Unlimited energy" always
+	poke $FF12D5 $30
+
+script "1UP Unlimited missiles" always
+	poke $FF117C $99
+
+script "2UP Unlimited missiles" always
+	poke $FF122C $99
+
+script "3UP Unlimited missiles" always
+	poke $FF12DC $99
+
+script "*UP Unlimited time" always
+	poke $FF0ECD $09

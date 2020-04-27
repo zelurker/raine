@@ -1,0 +1,45 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2002.02.13
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $F02DB $4F
+
+script "1UP Invulnerability OFF"
+	poke $F0E5B $00
+
+script "2UP Invulnerability ON" always
+	poke $F02DB $4F
+
+script "2UP Invulnerability OFF"
+	poke $F0E5B $00
+
+script "1UP Unlimited lives" always
+	poke $F02DD $03
+
+script "2UP Unlimited lives" always
+	poke $F0E5D $03
+
+script "1UP Unlimited energy" always
+	poke $F0331 $14
+
+script "2UP Unlimited energy" always
+	poke $F0EB1 $14
+
+script "1UP Maximum beam charge" always
+	poke $F0335 $40
+
+script "2UP Maximum beam charge" always
+	poke $F0EB5 $40
+
+script "*UP Hit check    ON"
+	dpoke $F0054 $0000
+
+script "*UP Hit check    OFF"
+	dpoke $F0054 $FFFF
+
+script "*UP Round select ON"
+	dpoke $F0056 $FFFF
+
+script "*UP Round select OFF"
+	dpoke $F0056 $0000

@@ -1,0 +1,24 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $F00CF $03
+
+script "2UP Unlimited lives" always
+	poke $F00DF $03
+
+script "1UP Unlimited energy (player)" always
+	poke $F0107 $40
+
+script "2UP Unlimited energy (player)" always
+	poke $F0187 $40
+
+script "1UP Unlimited energy (horse)" always
+	poke $F0E11 $03
+
+script "2UP Unlimited energy (horse)" always
+	poke $F0E15 $03
+
+script "*UP End level"
+	poke $F003D $00

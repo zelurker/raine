@@ -1,0 +1,15 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "1UP Unlimited lives" always
+	poke $A22D $27
+
+script "2UP Unlimited lives" always
+	poke $A233 $27
+
+script "*UP Maximum fire power" always
+	poke $AA71 peek($AA71)&$f8|$07
+
+script "*UP Maximum shield" always
+	poke $AA71 peek($AA71)&$8f|$70

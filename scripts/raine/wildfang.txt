@@ -1,0 +1,36 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2001.07.11
+# Desc. format : The Ultimate Patchers
+
+script "1UP Invulnerability ON" always
+	poke $60E11 $40
+
+script "1UP Invulnerability OFF"
+	poke $60E11 $00
+
+script "2UP Invulnerability ON" always
+	poke $60E91 $40
+
+script "2UP Invulnerability OFF"
+	poke $60E91 $00
+
+script "1UP Unlimited lives" always
+	poke $60E1E $03
+
+script "2UP Unlimited lives" always
+	poke $60E9F $03
+
+script "1UP Unlimited energy" always
+	poke $60DD7 $32
+
+script "2UP Unlimited energy" always
+	poke $60E57 $32
+
+script "1UP Unlimited polymorphes" always
+	poke $60E17 $03
+
+script "2UP Unlimited polymorphes" always
+	poke $60E97 $03
+
+script "*UP Unlimited time" always
+	poke $608CC $99

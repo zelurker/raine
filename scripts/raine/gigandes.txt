@@ -1,0 +1,147 @@
+# Cheats from  : The Ultimate Patchers
+# Last update  : 2007.05.01
+# Desc. format : The Ultimate Patchers
+
+script "*UP Invulnerability ON" always
+	poke $F00B67 $A0
+
+script "*UP Invulnerability OFF"
+	poke $F00B67 $00
+
+script "1UP Unlimited lives" always
+	poke $F00B92 $03
+
+script "2UP Unlimited lives" always
+	poke $F00BBA $03
+
+script "*UP Max. fire power - Front" always
+	poke $F00B3C $05
+
+script "*UP Max. fire power - Back" always
+	poke $F00B3E $05
+
+script "*UP Max. fire power - Upper" always
+	poke $F00B3D $05
+
+script "*UP Max. fire power - Lower" always
+	poke $F00B3F $05
+
+script "*UP Weap. Front - None    (P)" always
+	poke $F00B34 $00
+
+script "*UP Weap. Front - Shot    (P)" always
+	poke $F00B34 $01
+
+script "*UP Weap. Front - Missile (P)" always
+	poke $F00B34 $02
+
+script "*UP Weap. Front - Laser   (P)" always
+	poke $F00B34 $03
+
+script "*UP Weap. Front - Ball    (P)" always
+	poke $F00B34 $04
+
+script "*UP Weap. Back  - None    (P)" always
+	poke $F00B38 $00
+
+script "*UP Weap. Back  - Shot    (P)" always
+	poke $F00B38 $01
+
+script "*UP Weap. Back  - Missile (P)" always
+	poke $F00B38 $02
+
+script "*UP Weap. Back  - Laser   (P)" always
+	poke $F00B38 $03
+
+script "*UP Weap. Back  - Ball    (P)" always
+	poke $F00B38 $04
+
+script "*UP Weap. Upper - None    (P)" always
+	poke $F00B36 $00
+
+script "*UP Weap. Upper - Shot    (P)" always
+	poke $F00B36 $01
+
+script "*UP Weap. Upper - Missile (P)" always
+	poke $F00B36 $02
+
+script "*UP Weap. Upper - Laser   (P)" always
+	poke $F00B36 $03
+
+script "*UP Weap. Upper - Ball    (P)" always
+	poke $F00B36 $04
+
+script "*UP Weap. Lower - None    (P)" always
+	poke $F00B3A $00
+
+script "*UP Weap. Lower - Shot    (P)" always
+	poke $F00B3A $01
+
+script "*UP Weap. Lower - Missile (P)" always
+	poke $F00B3A $02
+
+script "*UP Weap. Lower - Laser   (P)" always
+	poke $F00B3A $03
+
+script "*UP Weap. Lower - Ball    (P)" always
+	poke $F00B3A $04
+
+script "*UP Weap. Front - None    (T)"
+	poke $F00B34 $00
+
+script "*UP Weap. Front - Shot    (T)"
+	poke $F00B34 $01
+
+script "*UP Weap. Front - Missile (T)"
+	poke $F00B34 $02
+
+script "*UP Weap. Front - Laser   (T)"
+	poke $F00B34 $03
+
+script "*UP Weap. Front - Ball    (T)"
+	poke $F00B34 $04
+
+script "*UP Weap. Back  - None    (T)"
+	poke $F00B38 $00
+
+script "*UP Weap. Back  - Shot    (T)"
+	poke $F00B38 $01
+
+script "*UP Weap. Back  - Missile (T)"
+	poke $F00B38 $02
+
+script "*UP Weap. Back  - Laser   (T)"
+	poke $F00B38 $03
+
+script "*UP Weap. Back  - Ball    (T)"
+	poke $F00B38 $04
+
+script "*UP Weap. Upper - None    (T)"
+	poke $F00B36 $00
+
+script "*UP Weap. Upper - Shot    (T)"
+	poke $F00B36 $01
+
+script "*UP Weap. Upper - Missile (T)"
+	poke $F00B36 $02
+
+script "*UP Weap. Upper - Laser   (T)"
+	poke $F00B36 $03
+
+script "*UP Weap. Upper - Ball    (T)"
+	poke $F00B36 $04
+
+script "*UP Weap. Lower - None    (T)"
+	poke $F00B3A $00
+
+script "*UP Weap. Lower - Shot    (T)"
+	poke $F00B3A $01
+
+script "*UP Weap. Lower - Missile (T)"
+	poke $F00B3A $02
+
+script "*UP Weap. Lower - Laser   (T)"
+	poke $F00B3A $03
+
+script "*UP Weap. Lower - Ball    (T)"
+	poke $F00B3A $04
