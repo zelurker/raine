@@ -54,7 +54,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   nb_items = 0;
   font_name = "VeraMono.ttf";
   len_max = maxlen;
-  field = new char[len_max*2]; // len_max*2 to have room for eventual
+  field = new char[len_max*4]; // len_max*4 to have room for eventual
   *field = 0;
   // expansions (base conversion...)
   edit_menu.label = init_label; // not used, but must not be NULL to show this field
@@ -345,8 +345,8 @@ int TConsole::run_cmd(char *string) {
   char *argv[10];
   int argc;
   if (field != string) {
-    strncpy(field,string,len_max*2);
-    field[len_max*2-1] = 0;
+    strncpy(field,string,len_max*4);
+    field[len_max*4-1] = 0;
   }
   if (*field) {
     if (!strchr(field,'#'))
