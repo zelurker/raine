@@ -1269,6 +1269,7 @@ commands_t commands[] =
   { "break", &do_break, "break [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint", },
   { "until", &do_until, "(u)ntil pc : executes cycles until pc reaches value given in parameter. Can be interrupted with ESC or Ctrl-C" },
   { "u", &do_until },
+  { "print_ingame", &do_print_ingame, "print_ingame nb_frames msg [arguments...]\nthis is a script command only, it useless from the console.\nDisplays a message at the bottom of the screen while the game is running\n(max 3 arguments)" },
   { "loaded", &do_loaded, "loaded [type] offset : neocd only, returns what is loaded at this offset", "type is 0 (PRG) if ommited\n"
       "Oterwise it can be :\n"
 "PRG 0\n"

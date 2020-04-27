@@ -8,6 +8,7 @@
 #include "newmem.h"
 #include "starhelp.h"
 #include "sdl/gui.h"
+#include "ingame.h"
 
 #define MAX_BREAK 10
 typedef struct {
@@ -52,6 +53,28 @@ void my_illg(UINT8 data)
 	s68000_pc -= 2;
     if (old_f3)
 	(*old_f3)(data);
+}
+
+void do_print_ingame(int argc, char **argv) {
+    if (argc == 1) {
+	cons->print("syntax : print_ingame nb_frame msg args...");
+	return;
+    }
+    int nbf = parse(argv[1]);
+    int nb = 0;
+    int arg[3];
+    char *s = argv[2]-1;
+    while (nb < 3 && (s=strchr(s+1,'%'))) {
+	if (s[1] == '%') { s++; continue; }
+	arg[nb] = parse(argv[3+nb]);
+	nb++;
+    }
+    if (argv[2][0] == '"') argv[2]++;
+    if (argv[2][strlen(argv[2])-1] == '"') argv[2][strlen(argv[2])-1] = 0;
+    if (nb == 0) print_ingame(nbf,argv[2]);
+    else if (nb == 1) print_ingame(nbf,argv[2],arg[0]);
+    else if (nb == 2) print_ingame(nbf,argv[2],arg[0],arg[1]);
+    else if (nb == 3) print_ingame(nbf,argv[2],arg[0],arg[1],arg[2]);
 }
 
 void do_break(int argc, char **argv) {
