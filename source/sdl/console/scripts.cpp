@@ -85,16 +85,17 @@ void init_scripts() {
 	int pos = ftell(f);
 	script[nb_scripts].nb_lines = 0;
 	while (!feof(f)) {
-	  myfgets(buff,1024,f);
-	  int n=0;
-	  // skip spaces, tabs, and comments
-	  while (buff[n] == ' ' || buff[n] == 9)
-	    n++;
-	  if (buff[n] == 0)
-	    break;
-	  if (buff[n] == '#')
-	    continue; // don't keep comments !
-	  script[nb_scripts].nb_lines++;
+	    *buff = 0;
+	    myfgets(buff,1024,f);
+	    int n=0;
+	    // skip spaces, tabs, and comments
+	    while (buff[n] == ' ' || buff[n] == 9)
+		n++;
+	    if (buff[n] == 0)
+		break;
+	    if (buff[n] == '#')
+		continue; // don't keep comments !
+	    script[nb_scripts].nb_lines++;
 	}
 	fseek(f,pos,SEEK_SET);
 	int l = 0;
