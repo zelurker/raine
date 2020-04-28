@@ -267,8 +267,11 @@ int parse(char *orig)
   catch (mu::Parser::exception_type &e)
   {
     parser_error = 1;
-    const char *msg = e.GetMsg().c_str();
-    // apparently vsprintf needs a char* which can be writen to, so we convert
+    char msg[80];
+    // apparently the e.GetMsg().c_str() is corrupted in the 2nd throw below,
+    // so we must copy the string to a temp buffer instead of using it directly
+    strncpy(msg, e.GetMsg().c_str(),80);
+    msg[79] = 0;
 #ifdef RAINE_DEBUG
     printf("console: %s\n",msg);
 #endif
