@@ -1828,11 +1828,6 @@ msgstr " - Quale file vuoi modificare? - "
 msgid "no 8x16 font available !!!"
 msgstr "Il carattere da 8x16px non è disponibile!"
 
-#: source/sdl/dialogs/translator.cpp:673
-#: source/sdl/dialogs/translator.cpp:681
-msgid "hidden"
-msgstr "Nascosto"
-
 # .................................... EDIT MSG
 
 

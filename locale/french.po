@@ -4609,9 +4609,6 @@ msgstr "vert"
 msgid "hardware surface available"
 msgstr "Surface matérielle disponible"
 
-msgid "hidden"
-msgstr "caché"
-
 msgid ""
 "history.dat not found\n"
 "Download it from http://www.arcade-history.com/index.php?page=download\n"

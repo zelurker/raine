@@ -670,7 +670,7 @@ static int insert_code(int sel) {
 
 static menu_item_t msg_menu[] =
 {
-    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { _("hidden") } },
+    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { "hidden" } },
     { _("Insert special code..."), &insert_code },
     { "", &draw_translator, &base_no, ITEM_TBITMAP, { 320, 256, 8 } },
     { NULL, NULL, NULL }
@@ -678,7 +678,7 @@ static menu_item_t msg_menu[] =
 
 static menu_item_t screen_menu[] =
 {
-    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { _("hidden") } },
+    { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { "hidden" } },
     { "", &draw_translator, &base_no, ITEM_TBITMAP, { 320, 256, 8 } },
     { NULL, NULL, NULL }
 };
