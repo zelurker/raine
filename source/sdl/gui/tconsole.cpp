@@ -14,10 +14,14 @@
 void split_command(char *field, char **argv, int *argc, int max) {
   char *s = field;
   *argc = 0;
+  for (int n=0; n<max; n++)
+      argv[n] = NULL;
   while (*s && (*s == ' ' || *s==9)) // skip the leading spaces
     s++;
   if (*s) argv[(*argc)++] = s;
   while (*s) {
+      if (*s == '#')
+	  return; // skip comment
     while (*s != ' ' && *s)  {
       if (*s == '"') {
 	s++;
@@ -34,8 +38,11 @@ void split_command(char *field, char **argv, int *argc, int max) {
       *s++ = 0;
       while (*s == ' ' || *s==9)
 	s++;
-      if (*s)
+      if (*s) {
 	argv[(*argc)++] = s;
+	if (*argc == max)
+	    return;
+      }
     }
   }
 }
