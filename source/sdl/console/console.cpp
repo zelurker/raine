@@ -14,6 +14,7 @@
 #include "z80/mz80help.h"
 #include "68020/u020help.h"
 #include "neocd/cache.h"
+#include "arpro.h"
 
 static int cpu_id;
 extern void do_if(int argc, char **argv);
@@ -599,7 +600,10 @@ static void do_poke(int argc, char **argv) {
   UINT32 adr = parse(argv[1]);
   UINT32 val  = parse(argv[2]);
   UINT8 *ptr = get_ptr(adr);
-  if (!ptr) throw "poke outside of ram";
+  if (!ptr) {
+      gen_cpu_write_byte(adr,val);
+      return;
+  }
 
   if (!strcasecmp(argv[0],"poke")) {
       if (cpu_id >> 4== 1) // 68k
