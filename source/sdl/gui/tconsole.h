@@ -59,7 +59,7 @@ class TConsole : public TDialog
     // outside
     virtual int handler(int cause);
   public:
-    TConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd);
+    TConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd, int is_visible = 1);
     ~TConsole();
     // virtual void compute_nb_items();
     virtual void print(const char *format, ...);

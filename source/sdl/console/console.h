@@ -13,7 +13,7 @@ class TRaineConsole : public TConsole
   int pointer_on, pointer_n, pointer_x,pointer_top,pointer_rows,pointer_end;
   int dump_cols;
   public:
-    TRaineConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd) : TConsole(my_title,init_label,maxlen,maxlines,mycmd)
+    TRaineConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd,int is_visible = 1) : TConsole(my_title,init_label,maxlen,maxlines,mycmd,is_visible)
     {
 	load_history();
       pointer_on = 0;

@@ -1390,7 +1390,7 @@ void run_console_command(char *command) {
   init_cpuid();
   cpu_get_ram(cpu_id,ram,&nb_ram);
   if (!cons) {
-    cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,50, commands);
+    cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,50, commands,0);
     lastw = screen->w;
     lasth = screen->h;
   }

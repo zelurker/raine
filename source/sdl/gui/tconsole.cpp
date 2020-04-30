@@ -22,34 +22,52 @@ void split_command(char *field, char **argv, int *argc, int max) {
   while (*s) {
       if (*s == '#')
 	  return; // skip comment
-    while (*s != ' ' && *s)  {
-      if (*s == '"') {
-	s++;
-	while (*s != '"' && *s)
-	  s++;
-      } else if (*s == 0x27 /* ' */) {
-	s++;
-	while (*s != 0x27 /* ' */ && *s)
+      while (*s != ' ' && *s)  {
+	  if (*s == '"') {
+	      s++;
+	      while (*s != '"' && *s)
+		  s++;
+	  } else if (*s == 0x27 /* ' */) {
+	      s++;
+	      while (*s != 0x27 /* ' */ && *s)
+		  s++;
+	  }
 	  s++;
       }
-      s++;
-    }
-    if (*s == ' ' || *s==9) {
-      *s++ = 0;
-      while (*s == ' ' || *s==9)
-	s++;
-      if (*s) {
-	argv[(*argc)++] = s;
-	if (*argc == max)
-	    return;
+      if (*s == ' ' || *s==9) {
+	  *s++ = 0;
+	  while (*s == ' ' || *s==9)
+	      s++;
+	  if (*s) {
+	      if (*s == '"') {
+		  s++;
+		  char *e = strchr(s,'"');
+		  if (e) {
+		      *e = 0;
+		      argv[(*argc)++] = s;
+		      s = e+1;
+		  } else {
+		      // error case anyway
+		      s--;
+		      *s = '"';
+		      argv[(*argc)++] = s;
+		  }
+	      } else
+		  argv[(*argc)++] = s;
+	      if (*argc == max) {
+		  printf("split_command: max arguments !\n");
+		  exit(1);
+	      }
+	  }
       }
-    }
   }
 }
 
 static int dummy_handler(int cause) { return 0; }
 
-TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd) :
+#define MAX_FIELD 8192
+
+TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd,int is_visible) :
   TDialog(my_title,NULL)
 {
   int dummy_int;
@@ -61,7 +79,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   nb_items = 0;
   font_name = "VeraMono.ttf";
   len_max = maxlen;
-  field = new char[len_max*4]; // len_max*4 to have room for eventual
+  field = new char[MAX_FIELD];
   *field = 0;
   // expansions (base conversion...)
   edit_menu.label = init_label; // not used, but must not be NULL to show this field
@@ -74,10 +92,9 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   edit_menu.values_list[1] = 1; // use history
   edit_menu.values_list[2] = work_area.w*3/4; // width
   edit_child = new TEdit(&edit_menu);
-  visible = 1;
+  visible = is_visible;
   interactive = NULL;
-  TConsole::print(pretty_emu_name " " VERSION " console based on muParser v%s", mu::Parser().GetVersion().c_str());
-  visible = 0;
+  print(pretty_emu_name " " VERSION " console based on muParser v%s", mu::Parser().GetVersion().c_str());
 }
 
 TConsole::~TConsole() {
@@ -341,36 +358,54 @@ void TConsole::do_help(int argc, char **argv) {
   *field = 0;
 }
 
+static char temp[MAX_FIELD];
+
 int TConsole::run_cmd(char *string) {
   int len = strlen(string);
+  if (string[len-1] == '\\') {
+      string[len-1] = 0;
+      strncat(temp,string,MAX_FIELD);
+      temp[MAX_FIELD-1] = 0;
+      return 0;
+  }
+  if (*temp) {
+      strncat(temp,string,MAX_FIELD);
+      temp[MAX_FIELD-1] = 0;
+      string = temp;
+  }
+
   while (len && string[len-1] < 32)
     string[--len] = 0;
   if (interactive) {
     interactive(string);
+    temp[0] = 0;
     return 0;
   }
   char *argv[10];
   int argc;
   if (field != string) {
-    strncpy(field,string,len_max*4);
-    field[len_max*4-1] = 0;
+    strncpy(field,string,MAX_FIELD);
+    field[MAX_FIELD-1] = 0;
   }
   if (*field) {
     if (!strchr(field,'#'))
       print("\E[31m>\E[0m %s",field);
     if (!strcasecmp(field,"exit")) {
       *field = 0;
+      *temp = 0;
       return 1;
     }
     split_command(field,argv,&argc,10);
-    if (argc < 1) { *field = 0; return 0; } // empty line (or spaces)
+    if (argc < 1) { *field = 0; *temp = 0; return 0; } // empty line (or spaces)
     if (argv[0][0] == '#') {
       *field = 0;
+      *temp = 0;
       return 0; // comment
     }
     if (!strcasecmp(argv[0],"help") || !strcmp(argv[0],"?")) {
       do_help(argc, argv);
       *field = 0;
+      *temp = 0;
       return 0;
     }
     commands_t *cmd = commands;
@@ -411,6 +446,7 @@ int TConsole::run_cmd(char *string) {
     }
     *field = 0;
   }
+  *temp = 0;
   return 0;
 }
 
