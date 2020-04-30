@@ -4,6 +4,7 @@
 #include "scripts.h"
 #include "console.h"
 #include "sdl/dialogs/messagebox.h"
+#include "profile.h"
 
 #define MAX_PARAM 60
 
@@ -354,9 +355,12 @@ void add_scripts(menu_item_t *menu) {
   }
 }
 
+extern double frame;
+
 void update_scripts() {
     if (!nb_scripts) return;
     int n;
+    frame = cpu_frame_count;
     for (n=0; n<nb_scripts; n++) {
 	if (script[n].status) {
 	    for (char **l = script[n].run; l && *l; l++)

@@ -14,6 +14,7 @@
  * operations, but can be easily extended, so let's go... */
 
 using namespace mu;
+value_type mod(value_type v1, value_type v2) { return int(rint(v1))%int(rint(v2)); }
 value_type rol(value_type v1, value_type v2) { return int(rint(v1))<<int(rint(v2)); }
 value_type ror(value_type v1, value_type v2) { return int(rint(v1))>>int(rint(v2)); }
 value_type Or(value_type v1, value_type v2) { return int(v1) | int(v2); }
@@ -23,6 +24,7 @@ value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
 double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
 static double param;
+double frame;
 
 void set_script_param(int myp) {
     param = myp;
@@ -229,16 +231,17 @@ int parse(char *orig)
   try
   {
     if (!initialised) {
-      p.DefineOprt( _T("<<"), rol, 0);
-      p.DefineOprt( _T(">>"), ror, 0);
-      p.DefineOprt( _T("|"), Or, 0);
-      p.DefineOprt( _T("&"), And, 0);
-      p.DefineInfixOprt( _T("~"), Not);
-      p.DefineInfixOprt( _T("!"), LogNot);
-      p.DefineFun( _T("alert"), alert, false);
-      p.DefineFun( _T("dpeek"), dpeek, false);
-      p.DefineFun( _T("peek"), peek, false);
-      p.DefineFun( _T("lpeek"), lpeek, false);
+      p.DefineOprt( "%", mod, 6);
+      p.DefineOprt( "<<", rol, 3);
+      p.DefineOprt( ">>", ror, 3);
+      p.DefineOprt( "|", Or, 3);
+      p.DefineOprt( "&", And, 3);
+      p.DefineInfixOprt( "~", Not);
+      p.DefineInfixOprt( "!", LogNot);
+      p.DefineFun( "alert", alert, false);
+      p.DefineFun( "dpeek", dpeek, false);
+      p.DefineFun( "peek", peek, false);
+      p.DefineFun( "lpeek", lpeek, false);
       p.SetVarFactory(AddVariable,&p);
       // p.DefineFun( _T("r"), reg, false);
       for (int n=0; n<8; n++) {
@@ -261,6 +264,7 @@ int parse(char *orig)
       p.DefineVar("iff",&iff);
       p.DefineVar("pc",&pc);
       p.DefineVar("param",&param);
+      p.DefineVar("frame",&frame);
       initialised = 1;
     }
 //    p.DefineVar("a", &fVal);
