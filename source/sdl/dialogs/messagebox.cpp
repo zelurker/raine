@@ -15,10 +15,10 @@ int MessageBox(char *title, char *the_content, char *mybtn) {
   char *content = strdup(the_content);
   char *s = content, *start;
   int nb_btn = 0;
-  char buttons[256];
-  if (mybtn) strncpy(buttons,mybtn,256);
-  buttons[255] = 0;
-  
+  char buttons[10240];
+  if (mybtn) strncpy(buttons,mybtn,10240);
+  buttons[10239] = 0;
+
   if (mybtn) {
     nb_btn = 1;
     char *s = buttons;
