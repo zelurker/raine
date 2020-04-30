@@ -443,6 +443,9 @@ void TRaineConsole::unknown_command(int argc, char **argv) {
   if (argc > 1) {
     throw(ConsExcept("token unknown %s",argv[0]));
   }
+  // pass the command to parse so that it's handled by muparser, allows to evaluate math expressions and play with variables
+  int val = parse(argv[0]);
+  print("%d ($%x)",val,val);
 }
 
 TRaineConsole *cons;
