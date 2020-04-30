@@ -55,7 +55,7 @@ void split_command(char *field, char **argv, int *argc, int max) {
 	      } else
 		  argv[(*argc)++] = s;
 	      if (*argc == max) {
-		  printf("split_command: max arguments !\n");
+		  printf("split_command: max arguments : %d for command %s !\n",max,field);
 		  exit(1);
 	      }
 	  }
@@ -381,7 +381,7 @@ int TConsole::run_cmd(char *string) {
     temp[0] = 0;
     return 0;
   }
-  char *argv[10];
+  char *argv[50];
   int argc;
   if (field != string) {
     strncpy(field,string,MAX_FIELD);
@@ -395,7 +395,7 @@ int TConsole::run_cmd(char *string) {
       *temp = 0;
       return 1;
     }
-    split_command(field,argv,&argc,10);
+    split_command(field,argv,&argc,50);
     if (argc < 1) { *field = 0; *temp = 0; return 0; } // empty line (or spaces)
     if (argv[0][0] == '#') {
       *field = 0;

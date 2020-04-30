@@ -5,7 +5,7 @@
 #include "console.h"
 #include "sdl/dialogs/messagebox.h"
 
-#define MAX_PARAM 10
+#define MAX_PARAM 60
 
 typedef struct {
   char *title;
@@ -15,6 +15,7 @@ typedef struct {
   int nb_param;
   int value_list[MAX_PARAM];
   char *value_list_label[MAX_PARAM];
+  char *comment;
 } tscript;
 
 tscript *script;
@@ -45,6 +46,12 @@ char *get_script_name(int writeable) {
   mkdir_rwx(shared);
   snprintf(shared+strlen(shared),1024-strlen(shared),"%s%s.txt",SLASH,current_game->main_name);
   return shared;
+}
+
+char *get_script_comment(int n) {
+    if (script[n].comment)
+	return script[n].comment;
+    return "";
 }
 
 int atoh(char *s) {
@@ -90,6 +97,7 @@ void init_scripts() {
 	  for (int x=0; x<script[n].nb_param; x++)
 	      free(script[n].value_list_label[x]);
       }
+      if (script[n].comment) free(script[n].comment);
     }
     free(script);
     script = NULL;
@@ -99,11 +107,11 @@ void init_scripts() {
   FILE *f = fopen(get_script_name(0),"rb");
   int nb_alloc = 0;
   if (f) {
-      char buff[1024];
+      char buff[10240];
       *buff = 0;
     while (!feof(f)) {
 	if (strncmp(buff,"script",6))  // if containing a script line then it's just a loop, don't erase it !
-	    myfgets(buff,1024,f);
+	    myfgets(buff,10240,f);
 	if (!strncmp(buff,"script \"",8) ||
 		!strncmp(buff,"hidden \"",8)) {
 	    if (nb_scripts == nb_alloc) {
@@ -116,19 +124,26 @@ void init_scripts() {
 		script[nb_scripts].run =
 		script[nb_scripts].change = NULL;
 	    int argc;
-	    char *argv[10];
-	    split_command(buff,argv,&argc,10);
+	    char *argv[70];
+	    char **margv = argv;
+	    split_command(buff,argv,&argc,70);
 	    if (argc < 2) {
 		printf("init_scripts: script without title: %s\n",buff);
 		fclose(f);
 		return;
 	    }
 	    script[nb_scripts].title = strdup(argv[1]);
+	    script[nb_scripts].comment = NULL;
 	    script[nb_scripts].status = 0;
 	    script[nb_scripts].nb_param = 0;
+	    if (argc > 2 && !strncmp(argv[2],"comm:",5)) {
+		script[nb_scripts].comment = strdup(argv[2]+5);
+		margv = &argv[1];
+		argc--;
+	    }
 	    if (argc > 2) { // param needed for script
-		if (!strncmp(argv[2],"inter=",6)) {
-		    char *s = argv[2]+6;
+		if (!strncmp(margv[2],"inter=",6)) {
+		    char *s = margv[2]+6;
 		    for (int n=0; n<=1; n++) {
 			char *e = strchr(s,',');
 			if (e) {
@@ -147,8 +162,12 @@ void init_scripts() {
 		} else {
 		    // in this case all the remaining arguments are in the format value/description
 		    script[nb_scripts].nb_param = argc - 2;
+		    if (argc - 2 > MAX_PARAM) {
+			printf("too many arguments for %s (%d)\n",buff,argc-2);
+			exit(1);
+		    }
 		    for (int n=0; n<argc-2; n++) {
-			char *s = strchr(argv[n+2],'/');
+			char *s = strchr(margv[n+2],'/');
 			if (!s) {
 			    printf("script: argument wrong format, expected value/description\n");
 			    fclose(f);
@@ -156,10 +175,10 @@ void init_scripts() {
 			}
 			*s = 0;
 			int val;
-			if (!strncasecmp(argv[n+2],"0x",2)) {
-			    val = atoh(argv[n+2]+2);
+			if (!strncasecmp(margv[n+2],"0x",2)) {
+			    val = atoh(margv[n+2]+2);
 			} else {
-			    val = atoi(argv[n+2]);
+			    val = atoi(margv[n+2]);
 			}
 			script[nb_scripts].value_list[n] = val;
 			script[nb_scripts].value_list_label[n] = strdup(s+1);
@@ -172,7 +191,7 @@ void init_scripts() {
 	    bool on = false, off = false, change = false, run = false;
 	    while (!feof(f)) {
 		*buff = 0;
-		myfgets(buff,1024,f);
+		myfgets(buff,10240,f);
 		int n=0;
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
@@ -225,7 +244,7 @@ void init_scripts() {
 
 	    char **lines;
 	    while (!feof(f)) {
-		myfgets(buff,1024,f);
+		myfgets(buff,10240,f);
 		int n=0;
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
@@ -265,9 +284,7 @@ void init_scripts() {
 }
 
 static int activate_cheat(int n) {
-    for (char **l = script[n].change; l && *l; l++)
-	run_console_command(*l);
-    if (script[n].nb_param && script[n].status) {
+    if (script[n].nb_param) {
 	if (script[n].nb_param == 3 && !script[n].value_list_label[0]) { // interval
 	    menu_item_t *menu;
 	    menu = (menu_item_t*)calloc(2,sizeof(menu_item_t));
@@ -296,6 +313,8 @@ static int activate_cheat(int n) {
 		script[n].status = 0;
 	}
     }
+    for (char **l = script[n].change; l && *l; l++)
+	run_console_command(*l);
 
     if (!script[n].status) {
 	for (char **l = script[n].off; l && *l; l++)
@@ -308,17 +327,26 @@ static int activate_cheat(int n) {
 }
 
 void add_scripts(menu_item_t *menu) {
+    static char off[20],on[20];
+    sprintf(off,"\E[31m%s",_("Off"));
+    sprintf(on,"\E[32m%s",_("On"));
   for (int n=0; n<nb_scripts; n++) {
       if (script[n].hidden) continue;
       menu->label = script[n].title;
       if (script[n].on || script[n].off || script[n].run || script[n].change) {
 	  menu->value_int = &script[n].status;
 	  menu->menu_func = &activate_cheat;
-	  menu->values_list_size = 2;
-	  menu->values_list[0] = 0;
-	  menu->values_list[1] = 1;
-	  menu->values_list_label[0] = _("Off");
-	  menu->values_list_label[1] = _("On");
+	  if (script[n].run) {
+	      menu->values_list_size = 2;
+	      menu->values_list[0] = 0;
+	      menu->values_list[1] = 1;
+	      menu->values_list_label[0] = off;
+	      menu->values_list_label[1] = on;
+	  } else {
+	      menu->values_list_size = 1;
+	      menu->values_list[0] = 0;
+	      menu->values_list_label[0] = _("Set");
+	  }
       }
       menu++;
   }

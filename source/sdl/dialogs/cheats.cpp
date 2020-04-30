@@ -23,7 +23,7 @@ class TCheatDlg : public TMenu
       if (sel < CheatCount) {
 	snprintf(cheat_info,256,"Info: %s",CheatList[sel].info);
       } else {
-	snprintf(cheat_info,256,"Script");
+	snprintf(cheat_info,256,get_script_comment(sel));
       }
       font->put_string(HMARGIN,base,cheat_info,fg_frame,bg_frame);
       if (!(sdl_screen->flags & SDL_DOUBLEBUF)) {

@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
 #include "sdl/compat.h"
+#include "sdl/gui/tconsole.h"
 
 /* Basic widgets for TMenu, see menu.cpp comments at the top for an
  * introduction to the gui.
@@ -283,7 +284,7 @@ int TOptions::get_len_max_options() {
 	      sprintf(s2,"%d",menu->values_list[l]);
 	      len2 = strlen(s2);
 	  } else
-	      len2 = strlen(menu->values_list_label[l]);
+	      len2 = ansilen(menu->values_list_label[l]);
 	  if (len2 > len_max_options) {
 	      len_max_options = len2;
 	  }
@@ -304,7 +305,7 @@ int TOptions::get_width_max_options(TFont *font) {
 	      sprintf(s2,"%d",menu->values_list[l]);
 	      font->dimensions(s2,&w,&h);
 	  } else
-	      font->dimensions(menu->values_list_label[l],&w,&h);
+	      ansi_font_dim(font,menu->values_list_label[l],&w,&h);
 	  if (w > width_max_options)
 	      width_max_options = w;
       }
@@ -337,7 +338,11 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
     sprintf(buff,"%d",*(menu->value_int));
     disp_string = buff;
   }
-  font->surf_string(s,xoptions,y,disp_string,fg,bg,w);
+  char *old = menu->label;
+  menu->label = disp_string;
+  TStatic::disp(s,font,xoptions,y,w,h,fg,bg,xoptions);
+  menu->label = old;
+  // font->surf_string(s,xoptions,y,disp_string,fg,bg,w);
 }
 
 /* About cycling of next_list_item and prev_list_item : this is mandatory with
