@@ -443,8 +443,6 @@ void TRaineConsole::unknown_command(int argc, char **argv) {
   if (argc > 1) {
     throw(ConsExcept("token unknown %s",argv[0]));
   }
-  int val = parse(argv[0]);
-  print("%d ($%x)",val,val);
 }
 
 TRaineConsole *cons;
@@ -1195,7 +1193,22 @@ static void do_cpu(int argc, char **argv) {
        else if (!strncmp(argv[1],"z80",3) &&
 	       (has_z80 & (1<<(nb = argv[1][3] - 'a'))))
 	   cpu_id = CPU_Z80_0 + nb;
-       else
+       else if (!strcmp(argv[1],"main")) {
+	   // try to guess the main cpu then...
+	   if (has_68020) cpu_id = CPU_M68020_0;
+	   else if (has_68k) cpu_id = CPU_68K_0;
+	   else if (has_z80 & 1) cpu_id = CPU_Z80_0;
+	   else if (has_z80 & 2) cpu_id = CPU_Z80_1;
+       } else if (!strcmp(argv[1],"audio")) {
+	   cpu_id = 0;
+	   for (int n=4; n>=1; n--)
+	       if (has_z80 & n) cpu_id = CPU_Z80_0+(n-1);
+	   if (!cpu_id) {
+	       if (has_68k & 2) cpu_id = CPU_68K_1;
+	       else if (has_68k & 1) cpu_id = CPU_68K_0;
+	       else if (has_68020) cpu_id = CPU_M68020_0;
+	   }
+       } else
 	   throw "cpu not recognized or not active";
        if (cpu_id != old) {
 	   switch_cpu(cpu_id);
