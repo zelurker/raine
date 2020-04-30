@@ -23,7 +23,7 @@ extern "C" {
 #define NB_VALUES 75
 
 typedef struct {
-                const char *label;
+                char *label;
                 int (*menu_func)(int);
                 int     *value_int;
                 int     values_list_size;

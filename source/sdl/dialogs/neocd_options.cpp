@@ -212,8 +212,8 @@ static int select_bios(int sel) {
 	sprintf(label2,_("NeoCD bios : %s"),s);
     }
 
-    neocd_menu[0].label = (const char*)label;
-    neocd_menu[1].label = (const char*)label2;
+    neocd_menu[0].label = label;
+    neocd_menu[1].label = label2;
     set_neogeo_bios(sel);
     return 1;
 }
