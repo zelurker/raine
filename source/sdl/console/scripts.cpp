@@ -112,6 +112,8 @@ void init_scripts() {
     while (!feof(f)) {
 	if (strncmp(buff,"script",6))  // if containing a script line then it's just a loop, don't erase it !
 	    myfgets(buff,10240,f);
+	while (*buff && buff[strlen(buff)-1] == '\\')
+	    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
 	if (!strncmp(buff,"script \"",8) ||
 		!strncmp(buff,"hidden \"",8)) {
 	    if (nb_scripts == nb_alloc) {
