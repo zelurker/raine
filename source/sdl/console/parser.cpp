@@ -22,6 +22,11 @@ value_type Not(value_type v1) { return ~int(rint(v1)); }
 value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
 double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
+static double param;
+
+void set_script_param(int myp) {
+    param = myp;
+}
 
 value_type peek(value_type fadr) {
   UINT32 adr = fadr;
@@ -255,6 +260,7 @@ int parse(char *orig)
       p.DefineVar("l",&zl);
       p.DefineVar("iff",&iff);
       p.DefineVar("pc",&pc);
+      p.DefineVar("param",&param);
       initialised = 1;
     }
 //    p.DefineVar("a", &fVal);
