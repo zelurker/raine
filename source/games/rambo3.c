@@ -24,7 +24,7 @@ Monday 22nd May 1989
 */
 
 
-static struct ROM_INFO rom_rambo3[] =
+static struct ROM_INFO rom_rambo3p[] =
 {
    {    "r3-00.rom", 0x00010000, 0xdf7a6ed6, 0, 0, 0, },
    {    "r3-0e.rom", 0x00010000, 0x3efa4177, 0, 0, 0, },
@@ -54,7 +54,7 @@ static struct ROM_INFO rom_rambo3[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_INFO dsw_rambo3[] =
+static struct DSW_INFO dsw_rambo3p[] =
 {
    { 0x000000, 0xFF, dsw_data_default_0 },
    { 0x000002, 0xFF, dsw_data_default_1 },
@@ -69,7 +69,7 @@ static struct ROMSW_DATA romsw_data_rambo_3_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO romsw_rambo3[] =
+static struct ROMSW_INFO romsw_rambo3p[] =
 {
    { 0x100FFFF, 0x03, romsw_data_rambo_3_0 },
    { 0,        0,    NULL },
@@ -77,7 +77,7 @@ static struct ROMSW_INFO romsw_rambo3[] =
 
 
 
-static struct ROM_INFO rom_rambo3a[] =
+static struct ROM_INFO rom_rambo3[] =
 {
    { "ramb3-01.bin", 0x00080000, 0xc55fcf54, 0, 0, 0, },
    { "ramb3-02.bin", 0x00080000, 0x9dd014c6, 0, 0, 0, },
@@ -92,7 +92,7 @@ static struct ROM_INFO rom_rambo3a[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_rambo3a[] =
+static struct INPUT_INFO input_rambo3[] =
 {
    INP1( COIN1, 0x000006, 0x10 ),
    INP1( COIN2, 0x000006, 0x20 ),
@@ -149,7 +149,7 @@ static struct DSW_DATA dsw_data_rambo_3_alternate_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_rambo3a[] =
+static struct DSW_INFO dsw_rambo3[] =
 {
    { 0x000000, 0xFF, dsw_data_rambo_3_alternate_0 },
    { 0x000002, 0xFF, dsw_data_default_1 },
@@ -166,7 +166,7 @@ static struct ROMSW_DATA romsw_data_rambo_3_alternate_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO romsw_rambo3a[] =
+static struct ROMSW_INFO romsw_rambo3[] =
 {
    { 0x03FFFF, 0x02, romsw_data_rambo_3_alternate_0 },
    { 0,        0,    NULL },
@@ -184,7 +184,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_BG2;
 static UINT8 *GFX_BG2_SOLID;
 
-static void load_rambo3(void)
+static void load_rambo3p(void)
 {
    int ta,tb,tc;
 
@@ -465,7 +465,7 @@ static void load_rambo3(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void load_rambo3a(void)
+static void load_rambo3(void)
 {
    int ta,tb,tc;
 
@@ -711,7 +711,7 @@ static void load_rambo3a(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void execute_rambo3(void)
+static void execute_rambo3p(void)
 {
    #ifdef RAINE_DEBUG
    vcu_debug_info();
@@ -723,35 +723,36 @@ static void execute_rambo3(void)
    cpu_interrupt(CPU_68K_0, 6);
    Taito2610_Frame();			// Z80 and YM2610
 }
-static struct DIR_INFO dir_rambo3[] =
+static struct DIR_INFO dir_rambo3p[] =
 {
    { "rambo_3", },
-   { "rambo3", },
-   { NULL, },
-};
-GAME( rambo3, "Rambo 3", TAITO, 1989, GAME_SHOOT,
-	.input = b_system_inputs,
-	.dsw = dsw_rambo3,
-	.romsw = romsw_rambo3,
-	.video = &b_system_r180_video,
-	.exec = execute_rambo3,
-	.long_name_jpn = "ÉâÉìÉ{Å[ÇR",
-	.board = "B93",
-);
-static struct DIR_INFO dir_rambo3a[] =
-{
-   { "rambo_3_alternate", },
-   { "rambo3a", },
+   { "rambo3p", },
    { ROMOF("rambo3"), },
    { CLONEOF("rambo3"), },
    { NULL, },
 };
-GAME( rambo3a, "Rambo 3 (release 2)", TAITO, 1989, GAME_SHOOT,
-	.input = input_rambo3a,
-	.dsw = dsw_rambo3a,
-	.romsw = romsw_rambo3a,
+GAME( rambo3p, "Rambo 3", TAITO, 1989, GAME_SHOOT,
+	.input = b_system_inputs,
+	.dsw = dsw_rambo3p,
+	.romsw = romsw_rambo3p,
 	.video = &b_system_r180_video,
-	.exec = execute_rambo3,
+	.exec = execute_rambo3p,
+	.long_name_jpn = "ÉâÉìÉ{Å[ÇR",
+	.board = "B93",
+);
+static struct DIR_INFO dir_rambo3[] =
+{
+   { "rambo_3_alternate", },
+   { "rambo3", },
+   { "rambo3a", },
+   { NULL, },
+};
+GAME( rambo3, "Rambo 3 (release 2)", TAITO, 1989, GAME_SHOOT,
+	.input = input_rambo3,
+	.dsw = dsw_rambo3,
+	.romsw = romsw_rambo3,
+	.video = &b_system_r180_video,
+	.exec = execute_rambo3p,
 	.long_name_jpn = "ÉâÉìÉ{Å[ÇR (release 2)",
 	.board = "B93",
 );

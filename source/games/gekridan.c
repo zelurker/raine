@@ -12,7 +12,7 @@
 #include "sasound.h"
 
 
-static struct ROM_INFO rom_gekirido[] =
+static struct ROM_INFO rom_gekiridn[] =
 {
    {   "e11-01.bin", 0x00200000, 0xc2cd1069, 0, 0, 0, },
    {   "e11-02.bin", 0x00200000, 0x5722a83b, 0, 0, 0, },
@@ -39,7 +39,7 @@ static struct ROMSW_DATA romsw_data_gekirindan_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO romsw_gekirido[] =
+static struct ROMSW_INFO romsw_gekiridn[] =
 {
    { 0x0FFFFF, 0x01, romsw_data_gekirindan_0 },
    { 0,        0,    NULL },
@@ -73,7 +73,7 @@ static UINT8 *GFX_BG0_SOLID;
 static UINT8 *GFX_SPR;
 static UINT8 *GFX_SPR_SOLID;
 
-static void load_gekirido(void)
+static void load_gekiridn(void)
 {
    int ta,tb,tc;
 
@@ -439,7 +439,7 @@ static void DrawGekirindan(void)
       f3video_render_fg0_r270();
    }
 }
-static struct VIDEO_INFO video_gekirido =
+static struct VIDEO_INFO video_gekiridn =
 {
    DrawGekirindan,
    232,
@@ -447,18 +447,19 @@ static struct VIDEO_INFO video_gekirido =
    64,
    VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
 };
-static struct DIR_INFO dir_gekirido[] =
+static struct DIR_INFO dir_gekiridn[] =
 {
    { "gekirindan", },
    { "gekridan", },
    { "gekirido", },
+   { "gekiridn", },
    { NULL, },
 };
-GAME( gekirido, "Gekirindan", TAITO, 1995, GAME_SHOOT,
+GAME( gekiridn, "Gekirindan", TAITO, 1995, GAME_SHOOT,
 	.input = f3_system_inputs,
-	.romsw = romsw_gekirido,
+	.romsw = romsw_gekiridn,
 	.clear = ClearGekirindan,
-	.video = &video_gekirido,
+	.video = &video_gekiridn,
 	.exec = ExecuteF3SystemFrameB,
 	.long_name_jpn = "‹t—Ø’e",
 	.board = "E11",

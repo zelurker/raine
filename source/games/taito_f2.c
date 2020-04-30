@@ -289,7 +289,7 @@ static struct ROM_INFO rom_ssi[] =
    {           NULL,          0,          0, 0,           0,        0,           },
 };
 
-static struct ROM_INFO rom_majest12[] =
+static struct ROM_INFO rom_majest12j[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
               "c64_07.10",  0xf29ed5c9,   "c64_08.11",  0xddfd33d5),
@@ -298,7 +298,7 @@ static struct ROM_INFO rom_majest12[] =
    {           NULL,          0,          0, 0,           0,        0,           },
 };
 
-static struct ROM_INFO rom_dondokdj[] =
+static struct ROM_INFO rom_dondokodj[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "b95-12.bin",  0xd0fce87a, "b95-11-1.bin",  0xdad40cd3),
@@ -313,7 +313,7 @@ static struct ROM_INFO rom_dondokdj[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_megab[] =
+static struct ROM_INFO rom_megablst[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "c11-07.55",  0x11d228b6, "c11-08.39",  0xa79d4dca),
@@ -644,7 +644,7 @@ static struct DSW_DATA dsw_data_dondokod_1[] =
   { NULL, 0}
 };
 
-static struct DSW_INFO dsw_dondokdj[] =
+static struct DSW_INFO dsw_dondokodj[] =
 {
    { 0x00, 0xFF, dsw_data_dondokod_0 },
    { 0x02, 0xFF, dsw_data_dondokod_1 },
@@ -685,7 +685,7 @@ static struct DSW_INFO dsw_gunfront[] =
   { 0, 0, NULL }
 };
 
-static struct DSW_DATA dsw_data_megab_0[] =
+static struct DSW_DATA dsw_data_megablst_0[] =
 {
    DSW_CABINET( 0x00,1 ),
    DSW_SCREEN( 0x02, 0x00),
@@ -727,9 +727,9 @@ static struct DSW_DATA dsw_data_mega_blast_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_megab[] =
+static struct DSW_INFO dsw_megablst[] =
 {
-   { 0x00, 0xFF, dsw_data_megab_0 },
+   { 0x00, 0xFF, dsw_data_megablst_0 },
    { 0x02, 0xFF, dsw_data_mega_blast_1 },
    { 0,        0,    NULL,      },
 };
@@ -758,7 +758,7 @@ static struct DSW_DATA dsw_data_liquidk_1[] =
 
 static struct DSW_INFO dsw_liquidk[] =
 {
-   { 0x00, 0xFF, dsw_data_megab_0 },
+   { 0x00, 0xFF, dsw_data_megablst_0 },
    { 0x02, 0xFF, dsw_data_liquidk_1 },
    { 0,        0,    NULL,      },
 };
@@ -787,7 +787,7 @@ static struct DSW_DATA dsw_data_ssi_1[] =
 
 static struct DSW_INFO dsw_ssi[] =
 {
-  { 0x00, 0xfe, dsw_data_megab_0 },
+  { 0x00, 0xfe, dsw_data_megablst_0 },
   { 0x02, 0xff, dsw_data_ssi_1 },
   { 0, 0, NULL }
 };
@@ -1061,7 +1061,7 @@ static struct ROMSW_INFO romsw_thundfox[] =
    { 0,        0,    NULL },
 };
 
-static struct ROMSW_INFO romsw_dondokdj[] =
+static struct ROMSW_INFO romsw_dondokodj[] =
 {
    { 0x077FFF, 0x03, romsw_data_taito_jap_us },
    { 0,        0,    NULL },
@@ -1631,7 +1631,7 @@ static void load_growl() {
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void load_dondokdj(void)
+static void load_dondokodj(void)
 {
    // 68000 Speed Hack
    // ----------------
@@ -2720,7 +2720,7 @@ static void load_ssi() {
   finish_conf_68000(0);
 }
 
-static void load_megab(void)
+static void load_megablst(void)
 {
   ROM[0x00628]=0x4E;
   ROM[0x00629]=0x71;
@@ -2912,7 +2912,7 @@ static void load_liquidk(void)
 
 static int last_scr,last_scr2;
 
-static void execute_dondokdj(void)
+static void execute_dondokodj(void)
 {
    tc0005rot_set_bitmap();
 
@@ -2992,9 +2992,9 @@ static void execute_f2demo(void)
      scroll[4]--;
 }
 
-static void execute_megab(void)
+static void execute_megablst(void)
 {
-  RAM[0x38802]=0x01; // c chip for megab
+  RAM[0x38802]=0x01; // c chip for megablst
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 5);
@@ -3597,7 +3597,7 @@ static void draw_mjnquest(void)
 
 // The inputs do not have the same adreses as dondokod. Maybe we should use input_buffer
 // instead of a direct mapping...
-static struct INPUT_INFO input_megab[] =
+static struct INPUT_INFO input_megablst[] =
 {
    INP0( COIN1, 0x03C00E, 0x04 ),
    INP0( COIN2, 0x03C00E, 0x08 ),
@@ -3649,7 +3649,7 @@ static struct VIDEO_INFO video_cameltry =
    VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
    pivot_gfxdecodeinfo
 };
-static struct VIDEO_INFO video_dondokdj =
+static struct VIDEO_INFO video_dondokodj =
 {
    draw_f2_pri_rot_delay,
    320,
@@ -3762,25 +3762,26 @@ static struct DIR_INFO dir_dinorex[] =
 GAME( dinorex, "Dino Rex", TAITO, 1992, GAME_BEAT,
 	.input = input_f2b2,
 	.dsw = dsw_dinorex,
-	.romsw = romsw_dondokdj,
+	.romsw = romsw_dondokodj,
 	.video = &video_solfigtr,
 	.exec = execute_mjnquest,
 	.long_name_jpn = "ダイノレックス",
 	.board = "D39",
 );
-static struct DIR_INFO dir_dondokdj[] =
+static struct DIR_INFO dir_dondokodj[] =
 {
    { "don_doko_don", },
    { "dondokod", },
+   { "dondokodj", },
    { "dondokdj", },
    { NULL, },
 };
-GAME( dondokdj, "Don Doko Don", TAITO, 1989, GAME_PLATFORM,
+GAME( dondokodj, "Don Doko Don", TAITO, 1989, GAME_PLATFORM,
 	.input = input_f2b2,
-	.dsw = dsw_dondokdj,
-	.romsw = romsw_dondokdj,
-	.video = &video_dondokdj,
-	.exec = execute_dondokdj,
+	.dsw = dsw_dondokodj,
+	.romsw = romsw_dondokodj,
+	.video = &video_dondokodj,
+	.exec = execute_dondokodj,
 	.long_name_jpn = "ドンドコドン",
 	.board = "B95",
 );
@@ -3897,33 +3898,35 @@ GAME( mjnquest, "Mahjong Quest", TAITO, 1990, GAME_PUZZLE,
 	.exec = execute_mjnquest,
 	.board = "C77",
 );
-static struct DIR_INFO dir_majest12[] =
+static struct DIR_INFO dir_majest12j[] =
 {
    { "majestic_twelve", },
    { "mj12", },
+   { "majest12j", },
    { "majest12", },
    { ROMOF("ssi"), },
    { CLONEOF("ssi"), },
    { NULL, },
 };
 #define input_ssi input_f2b2
-CLNE(majest12, ssi, "Majestic Twelve", TAITO, 1990, GAME_SHOOT,
+CLNE(majest12j, ssi, "Majestic Twelve", TAITO, 1990, GAME_SHOOT,
 	.long_name_jpn = "マジェスティックトウェルブ",
 	.board = "C64",
 );
-static struct DIR_INFO dir_megab[] =
+static struct DIR_INFO dir_megablst[] =
 {
    { "mega_blast", },
-   { "megab", },
-   { "megabl", },
+   { "megablst", },
+   { "megablstl", },
+   { "megab" },
    { NULL, },
 };
-GAME( megab, "Mega Blast", TAITO, 1989, GAME_SHOOT,
-	.input = input_megab,
-	.dsw = dsw_megab,
+GAME( megablst, "Mega Blast", TAITO, 1989, GAME_SHOOT,
+	.input = input_megablst,
+	.dsw = dsw_megablst,
 	.romsw = romsw_f2demo,
 	.video = &video_solfigtr,
-	.exec = execute_megab,
+	.exec = execute_megablst,
 	.long_name_jpn = "メガブラスト",
 	.board = "C11",
 );

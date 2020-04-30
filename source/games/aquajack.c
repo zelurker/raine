@@ -22,7 +22,7 @@
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 
 
-static struct ROM_INFO rom_aquajckj[] =
+static struct ROM_INFO rom_aquajackj[] =
 {
    {   "b77-01.rom", 0x00080000, 0xcdab000d, 0, 0, 0, },
    {   "b77-02.rom", 0x00080000, 0xdaea0d2e, 0, 0, 0, },
@@ -41,7 +41,7 @@ static struct ROM_INFO rom_aquajckj[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_aquajckj[] =
+static struct INPUT_INFO input_aquajackj[] =
 {
    INP0( COIN1, 0x01F104, 0x04 ),
    INP0( COIN2, 0x01F104, 0x08 ),
@@ -101,7 +101,7 @@ static struct DSW_DATA dsw_data_aqua_jack_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_aquajckj[] =
+static struct DSW_INFO dsw_aquajackj[] =
 {
    { 0x01F100, 0xFF, dsw_data_aqua_jack_0 },
    { 0x01F102, 0xFF, dsw_data_aqua_jack_1 },
@@ -116,7 +116,7 @@ static struct ROMSW_DATA romsw_data_aqua_jack_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO romsw_aquajckj[] =
+static struct ROMSW_INFO romsw_aquajackj[] =
 {
    { 0x03FFFF, 0x01, romsw_data_aqua_jack_0 },
    { 0,        0,    NULL },
@@ -147,7 +147,7 @@ static UINT8 *GFX_BG0_SOLID;
 
 static UINT8 *GFX_LINES;
 
-static void load_aquajckj(void)
+static void load_aquajackj(void)
 {
    int ta,tb,tc;
    UINT8 *TMP;
@@ -717,7 +717,7 @@ static void load_aquajckj(void)
    AddInitMemoryMC68000B();	// Set Starscream mem pointers...
 }
 
-static void execute_aquajckj(void)
+static void execute_aquajackj(void)
 {
 #if 0
    int ta;
@@ -1002,7 +1002,7 @@ Byte | Bit(s) | Description
   7  |xxxxxxxx| Sprite Number (Low)
 
 */
-static struct VIDEO_INFO video_aquajckj =
+static struct VIDEO_INFO video_aquajackj =
 {
    draw_aqua_jack,
    320,
@@ -1010,15 +1010,16 @@ static struct VIDEO_INFO video_aquajckj =
    32,
    VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
 };
-static struct DIR_INFO dir_aquajckj[] =
+static struct DIR_INFO dir_aquajackj[] =
 {
    { "aqua_jack", },
    { "aquajack", },
+   { "aquajackj", },
    { "aquajckj", },
    { NULL, },
 };
-GME( aquajckj, "Aqua Jack", TAITO, 1990, GAME_SHOOT | GAME_PARTIALLY_WORKING,
-	.romsw = romsw_aquajckj,
+GME( aquajackj, "Aqua Jack", TAITO, 1990, GAME_SHOOT | GAME_PARTIALLY_WORKING,
+	.romsw = romsw_aquajackj,
 	.board = "B77",
 );
 

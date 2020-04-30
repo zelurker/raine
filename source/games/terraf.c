@@ -184,25 +184,25 @@ static struct DSW_INFO dsw_legion[] =
 
 
 
-static struct ROM_INFO rom_kodure[] =
+static struct ROM_INFO rom_kozure[] =
 {
-   { "kodure8.6e"  , 0x00010000, 0x6bbfb1e6, 0, 0, 0, },	// main 68000
-   { "kodure3.6h"  , 0x00010000, 0xf9178ec8, 0, 0, 0, },
-   { "kodure7.5e"  , 0x00010000, 0xa7ee09bb, 0, 0, 0, },
-   { "kodure2.5h"  , 0x00010000, 0x236d820f, 0, 0, 0, },
-   { "kodure6.3e"  , 0x00010000, 0x9120e728, 0, 0, 0, },
-   { "kodure1.3h"  , 0x00010000, 0x345fe7a5, 0, 0, 0, },
-   { "kodure11.17k", 0x00010000, 0xdba51e2d, 0, 0, 0, },	// sound z80
-   { "kodure9.11e" , 0x00008000, 0xe041356e, 0, 0, 0, },	// text
-   { "kodure5.15h" , 0x00020000, 0x0b510258, 0, 0, 0, },	// foreground
-   { "kodure4.14h" , 0x00010000, 0xfb8e13e6, 0, 0, 0, },
-   { "kodure14.8a" , 0x00010000, 0x94a9c3d0, 0, 0, 0, },	// background
-   { "kodure12.8d" , 0x00020000, 0x15f4021d, 0, 0, 0, },	// sprites
-   { "kodure13.9d" , 0x00020000, 0xb3b6c753, 0, 0, 0, },
+   { "kozure8.6e"  , 0x00010000, 0x6bbfb1e6, 0, 0, 0, },	// main 68000
+   { "kozure3.6h"  , 0x00010000, 0xf9178ec8, 0, 0, 0, },
+   { "kozure7.5e"  , 0x00010000, 0xa7ee09bb, 0, 0, 0, },
+   { "kozure2.5h"  , 0x00010000, 0x236d820f, 0, 0, 0, },
+   { "kozure6.3e"  , 0x00010000, 0x9120e728, 0, 0, 0, },
+   { "kozure1.3h"  , 0x00010000, 0x345fe7a5, 0, 0, 0, },
+   { "kozure11.17k", 0x00010000, 0xdba51e2d, 0, 0, 0, },	// sound z80
+   { "kozure9.11e" , 0x00008000, 0xe041356e, 0, 0, 0, },	// text
+   { "kozure5.15h" , 0x00020000, 0x0b510258, 0, 0, 0, },	// foreground
+   { "kozure4.14h" , 0x00010000, 0xfb8e13e6, 0, 0, 0, },
+   { "kozure14.8a" , 0x00010000, 0x94a9c3d0, 0, 0, 0, },	// background
+   { "kozure12.8d" , 0x00020000, 0x15f4021d, 0, 0, 0, },	// sprites
+   { "kozure13.9d" , 0x00020000, 0xb3b6c753, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct DSW_DATA dsw_data_kodure_0[] =
+static struct DSW_DATA dsw_data_kozure_0[] =
 {
    { MSG_LIVES,               0x03, 0x04 },
    { "3",                     0x03},
@@ -223,7 +223,7 @@ static struct DSW_DATA dsw_data_kodure_0[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_DATA dsw_data_kodure_1[] =
+static struct DSW_DATA dsw_data_kozure_1[] =
 {
    { MSG_COIN1,               0x03, 0x04 },
    { MSG_2COIN_1PLAY,         0x01},
@@ -244,10 +244,10 @@ static struct DSW_DATA dsw_data_kodure_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_kodure[] =
+static struct DSW_INFO dsw_kozure[] =
 {
-   { 0x018004, 0xEF, dsw_data_kodure_0 },
-   { 0x018006, 0xFF, dsw_data_kodure_1 },
+   { 0x018004, 0xEF, dsw_data_kozure_0 },
+   { 0x018006, 0xFF, dsw_data_kozure_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -611,7 +611,7 @@ static void load_legion(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void load_kodure(void)
+static void load_kozure(void)
 {
    int ta,tb;
 
@@ -624,27 +624,27 @@ static void load_kodure(void)
    if(!(RAM=AllocateMem(RAMSize))) return;
    if(!(GFX=AllocateMem(0x110000))) return;
 
-   if(!load_rom("kodure8.6e",&RAM[0x0000],0x10000)) return;	// 68000 ROM
+   if(!load_rom("kozure8.6e",&RAM[0x0000],0x10000)) return;	// 68000 ROM
    for(ta=0;ta<0x10000;ta++){
       ROM[ta+ta]=RAM[ta];
    }
-   if(!load_rom("kodure3.6h",&RAM[0x0000],0x10000)) return;
+   if(!load_rom("kozure3.6h",&RAM[0x0000],0x10000)) return;
    for(ta=0;ta<0x10000;ta++){
       ROM[ta+ta+1]=RAM[ta];
    }
-   if(!load_rom("kodure7.5e",&RAM[0x0000],0x10000)) return;
+   if(!load_rom("kozure7.5e",&RAM[0x0000],0x10000)) return;
    for(ta=0;ta<0x10000;ta++){
       ROM[ta+ta+0x20000]=RAM[ta];
    }
-   if(!load_rom("kodure2.5h",&RAM[0x0000],0x10000)) return;
+   if(!load_rom("kozure2.5h",&RAM[0x0000],0x10000)) return;
    for(ta=0;ta<0x10000;ta++){
       ROM[ta+ta+0x20001]=RAM[ta];
    }
-   if(!load_rom("kodure6.3e",&RAM[0x0000],0x10000)) return;
+   if(!load_rom("kozure6.3e",&RAM[0x0000],0x10000)) return;
    for(ta=0;ta<0x10000;ta++){
       ROM[ta+ta+0x40000]=RAM[ta];
    }
-   if(!load_rom("kodure1.3h",&RAM[0x0000],0x10000)) return;
+   if(!load_rom("kozure1.3h",&RAM[0x0000],0x10000)) return;
    for(ta=0;ta<0x10000;ta++){
       ROM[ta+ta+0x40001]=RAM[ta];
    }
@@ -652,7 +652,7 @@ static void load_kodure(void)
    /*-----[Sound Setup]-----*/
 
    Z80ROM=RAM+0x40100;
-   if(!load_rom("kodure11.17k", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   if(!load_rom("kozure11.17k", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
 
    AddNichibutsuYM3526(0x008c, 0x0081);
 
@@ -664,23 +664,23 @@ static void load_kodure(void)
    GFX_FG0 = GFX+0x100000;
 
    tb=0;
-   if(!load_rom("kodure14.8a", RAM+0x00000, 0x10000)) return;	// GFX BG0
+   if(!load_rom("kozure14.8a", RAM+0x00000, 0x10000)) return;	// GFX BG0
    for(ta=0;ta<0x10000;ta++,tb+=2){
       GFX_BG0[tb+0]=(RAM[ta]&15)^15;
       GFX_BG0[tb+1]=(RAM[ta]>>4)^15;
    }
 
    tb=0;
-   if(!load_rom("kodure5.15h", RAM+0x00000, 0x20000)) return;	// GFX BG1
-   if(!load_rom("kodure4.14h", RAM+0x20000, 0x10000)) return;
+   if(!load_rom("kozure5.15h", RAM+0x00000, 0x20000)) return;	// GFX BG1
+   if(!load_rom("kozure4.14h", RAM+0x20000, 0x10000)) return;
    for(ta=0;ta<0x30000;ta++,tb+=2){
       GFX_BG1[tb+0]=(RAM[ta]&15)^15;
       GFX_BG1[tb+1]=(RAM[ta]>>4)^15;
    }
 
    tb=0;
-   if(!load_rom("kodure12.8d", RAM+0x00000, 0x20000)) return;	// GFX SPR
-   if(!load_rom("kodure13.9d", RAM+0x20000, 0x20000)) return;
+   if(!load_rom("kozure12.8d", RAM+0x00000, 0x20000)) return;	// GFX SPR
+   if(!load_rom("kozure13.9d", RAM+0x20000, 0x20000)) return;
    for(ta=0;ta<0x20000;ta++,tb+=4){
       GFX_SPR[tb+0]=(RAM[ta+0x00000]&15)^15;
       GFX_SPR[tb+1]=(RAM[ta+0x00000]>>4)^15;
@@ -689,7 +689,7 @@ static void load_kodure(void)
    }
 
    tb=0;
-   if(!load_rom("kodure9.11e", RAM+0x00000, 0x08000)) return;	// GFX FG0
+   if(!load_rom("kozure9.11e", RAM+0x00000, 0x08000)) return;	// GFX FG0
    for(ta=0;ta<0x8000;ta++,tb+=2){
       GFX_FG0[tb+0]=(RAM[ta]&15)^15;
       GFX_FG0[tb+1]=(RAM[ta]>>4)^15;
@@ -759,7 +759,7 @@ static void execute_terraf(void)
    Nichibutsu3526_Frame();		// Z80 and YM3526
 }
 
-static void execute_kodure(void)
+static void execute_kozure(void)
 {
   // Kodure needs its own cpu frame for the speed hack
   // If the hack happens in an interrupt then the pc must not move (infinite loop).
@@ -1053,16 +1053,17 @@ static struct VIDEO_INFO video_terraf =
    NULL,
    57
 };
-static struct DIR_INFO dir_kodure[] =
+static struct DIR_INFO dir_kozure[] =
 {
+   { "kozure", },
    { "kodure", },
    { NULL, },
 };
-GAME( kodure, "Kodure Ookami (Japan)", NICHIBUTSU, 1987, GAME_BEAT,
+GAME( kozure, "Kodure Ookami (Japan)", NICHIBUTSU, 1987, GAME_BEAT,
 	.input = input_legion,
-	.dsw = dsw_kodure,
+	.dsw = dsw_kozure,
 	.video = &video_terraf,
-	.exec = execute_kodure,
+	.exec = execute_kozure,
 );
 GMEI( legion, "Legion", NICHIBUTSU, 1987, GAME_SHOOT|GAME_PARTIALLY_WORKING,
 );

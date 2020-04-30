@@ -968,7 +968,7 @@ static struct SOUND_INFO sound_whoopee[] =
  *****************/
 
 
-static struct ROM_INFO rom_pipibibi[] =
+static struct ROM_INFO rom_pipibibsbl[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x020000,
             "ppbb05.bin",  0x3d51133c, "ppbb06.bin",  0x14c92515 ),
@@ -981,7 +981,7 @@ static struct ROM_INFO rom_pipibibi[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_pipibibi[] =
+static struct INPUT_INFO input_pipibibsbl[] =
 {
    INP1( COIN1, 0x00E02C, 0x08 ),
    INP1( COIN2, 0x00E02C, 0x10 ),
@@ -1041,7 +1041,7 @@ static struct DSW_DATA dsw_data_pipi_and_bibi_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_pipibibi[] =
+static struct DSW_INFO dsw_pipibibsbl[] =
 {
    { 0x00E020, 0x00, dsw_data_pipi_and_bibi_0 },
    { 0x00E024, 0x00, dsw_data_whoopee_1 },
@@ -1347,7 +1347,7 @@ static struct ROM_INFO rom_kgpe[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_bgaregh[] =
+static struct INPUT_INFO input_bgareggahk[] =
 {
    INP1( COIN1, 0x000000, 0x08 ),
    INP1( COIN2, 0x000000, 0x10 ),
@@ -1657,7 +1657,7 @@ static struct ROM_INFO rom_batridra[] =
    BATTLE GAREGGA
  ******************/
 
-static struct YM2151interface battleg_ym2151 =
+static struct YM2151interface bgaregga_ym2151 =
 {
    1,
    32000000/8,
@@ -1666,7 +1666,7 @@ static struct YM2151interface battleg_ym2151 =
    { NULL },
 };
 
-static struct OKIM6295interface battleg_m6295 =
+static struct OKIM6295interface bgaregga_m6295 =
 {
    1,
    { 32000000/16/132 },
@@ -1682,10 +1682,10 @@ static struct OKIM6295interface batsugun_m6295 =
    { 220 }
 };
 
-static struct SOUND_INFO sound_battleg[] =
+static struct SOUND_INFO sound_bgaregga[] =
 {
-   { SOUND_YM2151J, &battleg_ym2151,     },
-   { SOUND_M6295,   &battleg_m6295,    },
+   { SOUND_YM2151J, &bgaregga_ym2151,     },
+   { SOUND_M6295,   &bgaregga_m6295,    },
    { 0,             NULL,                },
 };
 
@@ -1698,7 +1698,7 @@ static struct SOUND_INFO sound_batsugun[] =
 
 
 
-static struct ROM_INFO rom_battleg[] =
+static struct ROM_INFO rom_bgaregga[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "prg0.bin",  0xf80c2fc2, "prg1.bin",  0x2ccfdd1e),
@@ -1712,7 +1712,7 @@ static struct ROM_INFO rom_battleg[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO rom_bgaregc[] =
+static struct ROM_INFO rom_bgareggacn[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "u123",  0x88a4e66a, "u65",  0x5dea32a3),
@@ -1727,7 +1727,7 @@ static struct ROM_INFO rom_bgaregc[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO rom_bgaregh[] =
+static struct ROM_INFO rom_bgareggahk[] =
 {
   LOAD8_16(  REGION_ROM1,  0x000000,  0x080000,
             "prg_0.bin",  0x951ecc07, "prg_1.bin",  0x729a60c6),
@@ -1855,7 +1855,7 @@ static struct DSW_DATA dsw_data_battle_garegc_2[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_battleg[] =
+static struct DSW_INFO dsw_bgaregga[] =
 {
    { 0x000003, 0x00, dsw_data_battle_garegga_0 },
    { 0x000004, 0x00, dsw_data_battle_garegga_1 },
@@ -1863,7 +1863,7 @@ static struct DSW_INFO dsw_battleg[] =
    { 0,        0,    NULL,      },
 };
 
-static struct DSW_INFO dsw_bgaregh[] =
+static struct DSW_INFO dsw_bgareggahk[] =
 {
    { 0x000003, 0x00, dsw_data_battle_garegga_0 },
    { 0x000004, 0x00, dsw_data_battle_garegc_1 },
@@ -3862,7 +3862,7 @@ static void load_kbash(void)
    AddInitMemory();     // Set Starscream mem pointers...
 }
 
-static void load_pipibibi(void)
+static void load_pipibibsbl(void)
 {
    romset=2;
    LoadActual();
@@ -5701,19 +5701,19 @@ static void batcomm_wb(UINT16 addr,UINT8 data)
 }
 
 
-static UINT8 battleg_z80_port_rb(UINT8 offset)
+static UINT8 bgaregga_z80_port_rb(UINT8 offset)
 {
    print_debug("batleg_z80_rb(%02x)\n", offset);
    return 0x00;
 }
 
-static void battleg_z80_port_wb(UINT8 offset, UINT8 data)
+static void bgaregga_z80_port_wb(UINT8 offset, UINT8 data)
 {
          print_debug("batleg_z80_wb(%02x,%02x)\n", offset, data);
 }
 
 
-static void sound_battleg_wb(UINT32 offset, UINT8 data)
+static void sound_bgaregga_wb(UINT32 offset, UINT8 data)
 {
         print_debug("batleg_sound(%04x,%02x)\n", offset,data);
 //   sound_nmi=1;
@@ -5726,11 +5726,11 @@ static void sound_battleg_wb(UINT32 offset, UINT8 data)
 }
 
 
-static void sound_battleg_ww(UINT32 offset, UINT16 data)
+static void sound_bgaregga_ww(UINT32 offset, UINT16 data)
 {
   // Should not be called normally (or there would twice too much interrupts!)
-  sound_battleg_wb(offset+0, data >> 8);
-  sound_battleg_wb(offset+1, data >> 0);
+  sound_bgaregga_wb(offset+0, data >> 8);
+  sound_bgaregga_wb(offset+1, data >> 0);
 }
 
 // Battle bakraid
@@ -5802,12 +5802,12 @@ static void setup_garega_z80(char *name) {
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
    AddZ80AWriteByte(    -1,     -1, NULL,                       NULL);
 
-   AddZ80AReadPort(0x00, 0xFF, battleg_z80_port_rb,            NULL);          // IOC
+   AddZ80AReadPort(0x00, 0xFF, bgaregga_z80_port_rb,            NULL);          // IOC
    AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,                   NULL);
    AddZ80AReadPort(  -1,   -1, NULL,                            NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,                   NULL);
-   AddZ80AWritePort(0x00, 0xFF, battleg_z80_port_wb,           NULL);          // IOC
+   AddZ80AWritePort(0x00, 0xFF, bgaregga_z80_port_wb,           NULL);          // IOC
    AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,                 NULL);
    AddZ80AWritePort(  -1,   -1, NULL,                           NULL);
 
@@ -6139,7 +6139,7 @@ static struct DSW_INFO dsw_bbakraid[] =
 
 /**************** Battle Garegga ********************/
 
-static UINT8 battleg_ioc_68k_rb(UINT32 offset)
+static UINT8 bgaregga_ioc_68k_rb(UINT32 offset)
 {
    offset &= 0x7FFF;
 
@@ -6172,20 +6172,20 @@ static UINT8 battleg_ioc_68k_rb(UINT32 offset)
          return TimerRead(0);
       break;
       default:
-            print_debug("battleg_ioc_68k_rb(%04x)\n", offset);
+            print_debug("bgaregga_ioc_68k_rb(%04x)\n", offset);
          return 0;
       break;
    }
 
 }
 
-static UINT16 battleg_ioc_68k_rw(UINT32 offset)
+static UINT16 bgaregga_ioc_68k_rw(UINT32 offset)
 {
-   return (battleg_ioc_68k_rb(offset+0) << 8) |
-          (battleg_ioc_68k_rb(offset+1) << 0);
+   return (bgaregga_ioc_68k_rb(offset+0) << 8) |
+          (bgaregga_ioc_68k_rb(offset+1) << 0);
 }
 
-static void battleg_ioc_68k_wb(UINT32 offset, UINT8 data)
+static void bgaregga_ioc_68k_wb(UINT32 offset, UINT8 data)
 {
    offset &= 0x7FFF;
 
@@ -6194,19 +6194,19 @@ static void battleg_ioc_68k_wb(UINT32 offset, UINT8 data)
          set_toaplan2_leds(data);
       break;
       default:
-            print_debug("battleg_ioc_68k_wb(%02x,%02x)\n", offset, data);
+            print_debug("bgaregga_ioc_68k_wb(%02x,%02x)\n", offset, data);
       break;
    }
 
 }
 
-static void battleg_ioc_68k_ww(UINT32 offset, UINT16 data)
+static void bgaregga_ioc_68k_ww(UINT32 offset, UINT16 data)
 {
-   battleg_ioc_68k_wb(offset+0, data >> 8);
-   battleg_ioc_68k_wb(offset+1, data >> 0);
+   bgaregga_ioc_68k_wb(offset+0, data >> 8);
+   bgaregga_ioc_68k_wb(offset+1, data >> 0);
 }
 
-static void load_battleg(void)
+static void load_bgaregga(void)
 {
    UINT8 *TMP;
    int ta,tb;
@@ -6232,7 +6232,7 @@ static void load_battleg(void)
 
    if(!(PCMROM = AllocateMem(0x140000))) return;
    if(!load_rom("rom5.bin", PCMROM+0x040000, 0x100000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&battleg_m6295),PCMROM+0x00000,0x140000);
+   ADPCMSetBuffers(((struct ADPCMinterface*)&bgaregga_m6295),PCMROM+0x00000,0x140000);
    PCMBanksize = 0x140000;
 
    Z80ROM = RAM+0x34000+0x10000;
@@ -6283,8 +6283,8 @@ static void load_battleg(void)
    ByteSwap(ROM,0x100000);
    ByteSwap(RAM,0x034000);
 
-   if (!strcmp(current_game->main_name,"bgaregc") ||
-       !strcmp(current_game->main_name,"bgaregh")) { // Korean version
+   if (!strcmp(current_game->main_name,"bgareggacn") ||
+       !strcmp(current_game->main_name,"bgareggahk")) { // Korean version
      // Prevents ROM test
      WriteLong(&ROM[0x15b64],0x4e714e71); // nop
      // Prevents RAM test
@@ -6328,7 +6328,7 @@ static void load_battleg(void)
    AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
    AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
-   AddReadByte(0x218000, 0x21FFFF, battleg_ioc_68k_rb, NULL);           // turbo comm ram
+   AddReadByte(0x218000, 0x21FFFF, bgaregga_ioc_68k_rb, NULL);           // turbo comm ram
    AddReadByte(0x600000, 0x6000ff, NULL, commram);             // sound comm
    AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
    AddReadByte(-1, -1, NULL, NULL);
@@ -6336,15 +6336,15 @@ static void load_battleg(void)
    AddReadWord(0x000000, 0x0FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
    AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
-   AddReadWord(0x218000, 0x21FFFF, battleg_ioc_68k_rw, NULL);           // turbo comm ram
+   AddReadWord(0x218000, 0x21FFFF, bgaregga_ioc_68k_rw, NULL);           // turbo comm ram
    AddReadWord(0x600000, 0x6000ff, NULL, commram);             // sound comm
    AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
    AddReadWord(-1, -1,NULL, NULL);
 
    AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteByte(0x218000, 0x21FFFF, battleg_ioc_68k_wb, NULL);          // turbo comm ram
+   AddWriteByte(0x218000, 0x21FFFF, bgaregga_ioc_68k_wb, NULL);          // turbo comm ram
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x600000, 0x601000, sound_battleg_wb, NULL);            // sound comm
+   AddWriteByte(0x600000, 0x601000, sound_bgaregga_wb, NULL);            // sound comm
    AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
    AddWriteByte(-1, -1, NULL, NULL);
 
@@ -6352,8 +6352,8 @@ static void load_battleg(void)
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x500000, 0x503FFF, NULL, RAM+0x020000);                // TEXT RAM (FG0 RAM)
-   AddWriteWord(0x600000, 0x601000, sound_battleg_ww, NULL);            // sound comm
-   AddWriteWord(0x218000, 0x21FFFF, battleg_ioc_68k_ww, NULL);          // turbo comm ram
+   AddWriteWord(0x600000, 0x601000, sound_bgaregga_ww, NULL);            // sound comm
+   AddWriteWord(0x218000, 0x21FFFF, bgaregga_ioc_68k_ww, NULL);          // turbo comm ram
    AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
    AddWriteWord(-1, -1, NULL, NULL);
 
@@ -7127,7 +7127,7 @@ bit#7 = Screen Invert
 
 */
 
-static struct VIDEO_INFO video_bgaregh =
+static struct VIDEO_INFO video_bgareggahk =
 {
    DrawToaplan2,
    320,
@@ -7154,9 +7154,9 @@ static struct DIR_INFO dir_batrider[] =
    { NULL, },
 };
 GAME( batrider, "Armed Police Batrider (B)" /* "Feb 13 1998" */, RAIZING, 1998, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_batrider,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.sound = sound_batrider,
 );
@@ -7169,9 +7169,9 @@ static struct DIR_INFO dir_batridra[] =
    { NULL, },
 };
 CLONE(batridra, batrider, "Armed Police Batrider (A)" /* "Dec 22 1997" */, RAIZING, 1997 /* 1998 on title screen */, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_batrider,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.sound = sound_batrider,
 );
@@ -7183,56 +7183,59 @@ static struct DIR_INFO dir_batsugun[] =
 GAME( batsugun, "Batsugun", TOAPLAN, 1993, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_batsugun,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.board = "TP030",
 	.sound = sound_batsugun,
 );
-static struct DIR_INFO dir_bgaregc[] =
+static struct DIR_INFO dir_bgareggacn[] =
 {
    { "battle_gareggc", },
+   { "bgareggacn", },
    { "bgaregc", },
-   { CLONEOF("battleg"), },
-   { ROMOF("battleg"), },
+   { CLONEOF("bgaregga"), },
+   { ROMOF("bgaregga"), },
    { NULL, },
 };
-CLONE(bgaregc, battleg, "Battle Garegga Chinese version" /* "Apr 2 1996" */, RAIZING, 1996, GAME_SHOOT,
-	.input = input_bgaregh,
-	.dsw = dsw_bgaregh,
-	.video = &video_bgaregh,
+CLONE(bgareggacn, bgaregga, "Battle Garegga Chinese version" /* "Apr 2 1996" */, RAIZING, 1996, GAME_SHOOT,
+	.input = input_bgareggahk,
+	.dsw = dsw_bgareggahk,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
-	.sound = sound_battleg,
+	.sound = sound_bgaregga,
 );
-static struct DIR_INFO dir_battleg[] =
+static struct DIR_INFO dir_bgaregga[] =
 {
    { "battle_garegga", },
+   { "bgaregga", },
    { "battleg", },
-   { "battlega", },
-   { "battlegb", },
-   { "battlegc", },
+   { "bgareggaa", },
+   { "bgareggab", },
+   { "bgareggac", },
    { NULL, },
 };
-GAME( battleg, "Battle Garegga" /* "Feb 3 1996" */, RAIZING, 1996, GAME_SHOOT,
-	.input = input_bgaregh,
-	.dsw = dsw_battleg,
-	.video = &video_bgaregh,
+GAME( bgaregga, "Battle Garegga" /* "Feb 3 1996" */, RAIZING, 1996, GAME_SHOOT,
+	.input = input_bgareggahk,
+	.dsw = dsw_bgaregga,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
-	.sound = sound_battleg,
+	.sound = sound_bgaregga,
 );
-static struct DIR_INFO dir_bgaregh[] =
+static struct DIR_INFO dir_bgareggahk[] =
 {
    { "battle_garegga_sat_mar_2_1996", },
+   { "bgareggahk", },
    { "bgaregh", },
-   { CLONEOF("battleg"), },
-   { ROMOF("battleg"), },
+   { CLONEOF("bgaregga"), },
+   { ROMOF("bgaregga"), },
    { NULL, },
 };
-CLONE(bgaregh, battleg, "Battle Garegga Hong Kong Ver.", RAIZING, 1996, GAME_SHOOT,
-	.input = input_bgaregh,
-	.dsw = dsw_bgaregh,
-	.video = &video_bgaregh,
+CLONE(bgareggahk, bgaregga, "Battle Garegga Hong Kong Ver.", RAIZING, 1996, GAME_SHOOT,
+	.input = input_bgareggahk,
+	.dsw = dsw_bgareggahk,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
-	.sound = sound_battleg,
+	.sound = sound_bgaregga,
 );
 static struct DIR_INFO dir_bbakrada[] =
 {
@@ -7243,9 +7246,9 @@ static struct DIR_INFO dir_bbakrada[] =
    { NULL, },
 };
 CLONE(bbakrada, bbakraid, "Battle Bakraid normal version" /* "Apr 7 1999" */, RAIZING, 1999, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_bbakraid,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_bbakraid,
 	.long_name_jpn = "???",
 	.board = "TP021",
@@ -7259,9 +7262,9 @@ static struct DIR_INFO dir_bbakraid[] =
    { NULL, },
 };
 GAME( bbakraid, "Battle Bakraid unlimited version" /* "Jun 8 1999" */, RAIZING, 1999, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_bbakraid,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_bbakraid,
 	.long_name_jpn = "???",
 	.board = "TP021",
@@ -7275,7 +7278,7 @@ static struct DIR_INFO dir_dogyuun[] =
 GAME( dogyuun, "Dogyuun", TOAPLAN, 1992 /* check the "notice" screen */, GAME_SHOOT,
 	.input = input_dogyuun,
 	.dsw = dsw_dogyuun,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.long_name_jpn = "‚h‚M‚‡¸[‚Ù",
 	.board = "TP022",
@@ -7290,7 +7293,7 @@ static struct DIR_INFO dir_fixeight[] =
 GAME( fixeight, "Fix Eight", TOAPLAN, 1992, GAME_SHOOT | GAME_PARTIALLY_WORKING,
 	.input = input_fixeight,
 	.dsw = dsw_fixeight,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.board = "TP026",
 	.sound = sound_vfive,
@@ -7307,7 +7310,7 @@ static struct DIR_INFO dir_fixeighb[] =
 CLONE(fixeighb, fixeight, "Fix Eight Bootleg", BOOTLEG, 1992, GAME_SHOOT,
 	.input = input_fixeight,
 	.dsw = dsw_fixeight,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_truxton2,
 	.board = "TP026",
 	.sound = sound_fixeighb,
@@ -7320,7 +7323,7 @@ static struct DIR_INFO dir_ghox[] =
 GAME( ghox, "Ghox", TOAPLAN, 1991, GAME_BREAKOUT,
 	.input = input_vfive,
 	.dsw = dsw_ghox,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.long_name_jpn = "‚S¸[‚N‚X",
 	.board = "TP021",
@@ -7336,7 +7339,7 @@ static struct DIR_INFO dir_grindstm[] =
 CLONE(grindstm, vfive, "Grind Stormer", TOAPLAN, 1992, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_grindstm,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.board = "TP027",
 	.sound = sound_vfive,
@@ -7349,9 +7352,9 @@ static struct DIR_INFO dir_kgpe[] =
    { NULL, },
 };
 CLONE(kgpe, shippumd, "Kingdom Grand Prix", RAIZING, 1994, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_kgpe,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.long_name_jpn = "ƒæÚ˘˚È˚@ëÜÏç…Ì",
 	.sound = sound_kbash,
@@ -7388,24 +7391,25 @@ static struct DIR_INFO dir_mahoudai[] =
    { NULL, },
 };
 GAME( mahoudai, "Mahou Daisakusen", RAIZING, 1993, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_mahoudai,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.long_name_jpn = "˚È˚@ëÜÏç…Ì",
 	.sound = sound_kbash,
 );
-static struct DIR_INFO dir_pipibibi[] =
+static struct DIR_INFO dir_pipibibsbl[] =
 {
    { "pipi_and_bibi", },
    { "pipibibi", },
+   { "pipibibsbl", },
    { ROMOF("whoopee"), },
    { CLONEOF("whoopee"), },
    { NULL, },
 };
-GAME(pipibibi, "Pipi and Bibi's", BOOTLEG, 1991, GAME_PLATFORM | GAME_ADULT,
-	.input = input_pipibibi,
-	.dsw = dsw_pipibibi,
+GAME(pipibibsbl, "Pipi and Bibi's", BOOTLEG, 1991, GAME_PLATFORM | GAME_ADULT,
+	.input = input_pipibibsbl,
+	.dsw = dsw_pipibibsbl,
 	.video = &video_kbash,
 	.exec = execute_kbash,
 	.long_name_jpn = "‚t¸[‚r¸[ (bootleg)",
@@ -7418,9 +7422,9 @@ static struct DIR_INFO dir_shippumd[] =
    { NULL, },
 };
 GAME( shippumd, "Shippu Mahou Daisakusen", RAIZING, 1994, GAME_SHOOT,
-	.input = input_bgaregh,
+	.input = input_bgareggahk,
 	.dsw = dsw_shippumd,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.long_name_jpn = "ƒæÚ˘˚È˚@ëÜÏç…Ì",
 	.sound = sound_kbash,
@@ -7449,7 +7453,7 @@ static struct DIR_INFO dir_truxton2[] =
 GAME( truxton2, "Tatsujin 2", TOAPLAN, 1992, GAME_SHOOT,
 	.input = input_truxton2,
 	.dsw = dsw_truxton2,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_truxton2,
 	.long_name_jpn = "∆B…lÎ§",
 	.board = "TP024",
@@ -7480,7 +7484,7 @@ static struct DIR_INFO dir_vfive[] =
 GAME(vfive, "V Five", TOAPLAN, 1993, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_vfive,
-	.video = &video_bgaregh,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.board = "TP027",
 	.sound = sound_vfive,
@@ -7502,8 +7506,8 @@ GAME( whoopee, "Whoopee", TOAPLAN, 1991, GAME_PLATFORM | GAME_ADULT,
 
 CLONEI(sstriker, mahoudai, "Sorcer Striker (World)", TOAPLAN, 1993, GAME_SHOOT,
 	.dsw = sstriker_dsw,
-	.input = input_bgaregh,
-	.video = &video_bgaregh,
+	.input = input_bgareggahk,
+	.video = &video_bgareggahk,
 	.exec = execute_kbash,
 	.sound = sound_kbash
 	);

@@ -369,7 +369,7 @@ static struct ROM_INFO rom_finalttr[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_hyperpcb[] =
+static struct ROM_INFO rom_hyperpacb[] =
 {
   LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
             "hpacui12.bin",  0x23dc00d1, "hpacuh12.bin",  0x633ab2c6 ),
@@ -731,7 +731,7 @@ static void soundlatch_w(UINT32 offset, UINT16 data) {
 }
 
 // No idea why I have to put 6 MHz here and not 4, but what is sure is that
-// with 4 the sound dies very quickly while in game in hyperpac and hyperpcb
+// with 4 the sound dies very quickly while in game in hyperpac and hyperpacb
 #define Z80_FRAME CPU_FRAME_MHz(6,60)
 
 static void load_hyperpac(void)
@@ -815,7 +815,7 @@ static void load_hyperpac(void)
      vbl = &RAM[0x22290];
    } else if (is_current_game("pzlbreak"))
        romset = 0xc;
-   else if (!strcmp(current_game->main_name,"hyperpcb")) {
+   else if (!strcmp(current_game->main_name,"hyperpacb")) {
      AddReadWord(0x104490, 0x104491, speed_hack, NULL);    // Trap Idle 68000
      vbl = &RAM[0x24490];
    } else if (!strcmp(current_game->main_name,"cookbib2") ||
@@ -981,7 +981,7 @@ static struct SOUND_INFO sound_snowbros[] =
 };
 
 
-// necessary because hyperpcb is a clone set in mame, so we need the parent.
+// necessary because hyperpacb is a clone set in mame, so we need the parent.
 
 
 
@@ -1275,15 +1275,15 @@ static struct DIR_INFO dir_hyperpac[] =
    { NULL, },
 };
 GME( hyperpac, "Hyper Pacman", TOAPLAN, 1990, GAME_MISC);
-static struct DIR_INFO dir_hyperpcb[] =
+static struct DIR_INFO dir_hyperpacb[] =
 {
    { "hyper_pacman_bootleg", },
-   { "hyperpcb", },
+   { "hyperpacb", },
    { ROMOF("hyperpac") },
    { CLONEOF("hyperpac") },
    { NULL, },
 };
-CLNE( hyperpcb,hyperpac, "Hyper Pacman (bootleg)", TOAPLAN, 1990, GAME_MISC);
+CLNE( hyperpacb,hyperpac, "Hyper Pacman (bootleg)", TOAPLAN, 1990, GAME_MISC);
 static struct DIR_INFO dir_moremore[] =
 {
    { "more_more", },

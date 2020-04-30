@@ -2,7 +2,7 @@
   DRV(ainferno)
 
 // aquajack.c
-  DRV(aquajckj)
+  DRV(aquajackj)
 
 // arabianm.c
   DRV(arabianm)
@@ -664,7 +664,7 @@
   DRV(gcpinbal)
 
 // gekridan.c
-  DRV(gekirido)
+  DRV(gekiridn)
 
 // gridseek.c
   DRV(gseeker)
@@ -702,7 +702,7 @@
   DRV(pzlbreak)
   DRV(finalttr)
   DRV(hyperpac)
-  DRV(hyperpcb)
+  DRV(hyperpacb)
   DRV(moremore)
   DRV(moremorp)
   DRV(snowbros)
@@ -1097,7 +1097,7 @@
 
 // rambo3.c
   DRV(rambo3)
-  DRV(rambo3a)
+  DRV(rambo3p)
 
 // rastan2.c
   DRV(nastar)
@@ -1177,7 +1177,7 @@
   DRV(cameltry)
   DRV(camltrua)
   DRV(dinorex)
-  DRV(dondokdj)
+  DRV(dondokodj)
   DRV(driftout)
   DRV(driveout)
   DRV(f2demo)
@@ -1186,8 +1186,8 @@
   DRV(gunfront)
   DRV(liquidk)
   DRV(mjnquest)
-  DRV(majest12)
-  DRV(megab)
+  DRV(majest12j)
+  DRV(megablst)
   DRV(pulirula)
   DRV(solfigtr)
   DRV(ssi)
@@ -1205,7 +1205,7 @@
   DRV(terracre)
 
 // terraf.c
-  DRV(kodure)
+  DRV(kozure)
   DRV(legion)
   DRV(terraf)
 
@@ -1234,9 +1234,9 @@
   DRV(batrider)
   DRV(batridra)
   DRV(batsugun)
-  DRV(bgaregc)
-  DRV(battleg)
-  DRV(bgaregh)
+  DRV(bgareggacn)
+  DRV(bgaregga)
+  DRV(bgareggahk)
   DRV(bbakrada)
   DRV(bbakraid)
   DRV(dogyuun)
@@ -1248,7 +1248,7 @@
   DRV(kbash)
   DRV(kbash2)
   DRV(mahoudai)
-  DRV(pipibibi)
+  DRV(pipibibsbl)
   DRV(shippumd)
   DRV(snowbro2)
   DRV(truxton2)
@@ -1322,7 +1322,7 @@
   DRV(plumppop)
   DRV(tnzsjo)
   DRV(tnzsb)
-  DRV(tnzs2)
+  DRV(tnzsop)
 
 // zerozone.c
   DRV(zerozone)

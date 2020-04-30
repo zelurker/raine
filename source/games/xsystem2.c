@@ -481,7 +481,7 @@ static struct SOUND_INFO sound_tnzsb[] =
    { 0,             NULL,                      },
 };
 
-static struct ROM_INFO rom_tnzs2[] = // prototype (location test?) version; has different rom labels, and the Seta X1-001 chip has prototype markings revealing it was fabbed by Yamaha, as 'YM3906' // clone of tnzs
+static struct ROM_INFO rom_tnzsop[] = // prototype (location test?) version; has different rom labels, and the Seta X1-001 chip has prototype markings revealing it was fabbed by Yamaha, as 'YM3906' // clone of tnzs
 {
   { "c-11__6-24__1959h.d27c1000d-15.u32", 0x20000, 0x3c1dae7b, REGION_CPU1, 0x00000, LOAD_NORMAL },
   { "e-3__6-24__c4ach.tmm27512d-20.u38", 0x10000, 0xc7662e96, REGION_CPU2, 0x00000, LOAD_NORMAL },
@@ -1783,7 +1783,7 @@ static void load_tnzsjo(void)
    // Skip Idle Z80
    // -------------
 
-   if (is_current_game("tnzs2")) {
+   if (is_current_game("tnzsop")) {
        ROM[0x0AE9]=0xC9;  // ret
 
        ROM[0x0294]=0xD3;  // OUTA (AAh)
@@ -1819,7 +1819,7 @@ static void load_tnzsjo(void)
    // Skip Idle Z80
    // -------------
 
-   if (is_current_game("tnzs2")) {
+   if (is_current_game("tnzsop")) {
        Z80ROM[0x013E]=0xD3;  // OUTA (AAh)
        Z80ROM[0x013F]=0xAA;  //
 
@@ -3176,14 +3176,14 @@ CLNEI( tnzsjo, tnzsb, "The New Zealand Story (old tnzs raine set)", TAITO, 1988,
 	.board = "B53",
 	.sound = sound_arknoid2,
 );
-static struct DIR_INFO dir_tnzs2[] =
+static struct DIR_INFO dir_tnzsop[] =
 {
    { "the_nz_story_extra", },
-   { "tnzs2", },
    { "tnzsop", },
+   { "tnzs2" },
    { NULL, },
 };
-CLNE(tnzs2, tnzsb, "The New Zealand Story (extra)", TAITO, 1988, GAME_PLATFORM,
+CLNE(tnzsop, tnzsb, "The New Zealand Story (World, Prototype)", TAITO, 1988, GAME_PLATFORM,
 	.long_name_jpn = "ニュージーランドストーリーエキストラ",
 	.input = input_tnzs,
      );
