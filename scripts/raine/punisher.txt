@@ -1,36 +1,103 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $FF8EB5 $F0
-
-script "1UP Invulnerability OFF"
-	poke $FF8EB5 $01
-
-script "2UP Invulnerability ON" always
-	poke $FF8FB5 $F0
-
-script "2UP Invulnerability OFF"
-	poke $FF8FB5 $01
-
-script "1UP Unlimited lives" always
-	poke $FF5BA4 $03
-
-script "2UP Unlimited lives" always
-	poke $FF5BA5 $03
-
-script "1UP Unlimited energy" always
-	poke $FF8E9F $88
-
-script "2UP Unlimited energy" always
-	poke $FF8F9F $88
-
-script "1UP Unlimited bombs" always
-	poke $FF5BCA $09
-
-script "2UP Unlimited bombs" always
-	poke $FF5BCB $09
-
-script "*UP Unlimited time" always
-	poke $FF18AB $BF
+script "Infinite Time"  
+run:
+    poke $FF18AB $BF
+script "Always have Gun drawn"  
+run:
+    poke $FF5D96 $01
+script "Sticky Weapons" \
+ "comm:When the enemies punch you won't drop any weapons you are holding (The only exception is when you die, launch, or when the level ends!)"  
+on:
+    temp0=peek($01ADEE)
+run:
+    poke $01ADEE $60
+off:
+    poke $01ADEE temp0
+script "Finish this Level Now!" \
+ "comm:Simply walk to the end, though on the First Level you will need the 'Always have Gun drawn' cheat to kill the Boss"  
+on:
+    poke $FF5FA1 $FF
+script "Select Starting Stage" \
+ "0x00/Stage 1"\
+ "0x01/Stage 2"\
+ "0x02/Stage 3"\
+ "0x07/Bonus Stage"\
+ "0x03/Stage 4"\
+ "0x04/Stage 5"\
+ "0x05/Last Stage"\
+ "0x06/Hidden Bonus Stage" 
+run:
+    if (peek($FF5BB9)==$00)
+      poke $FF5BB9 param
+    endif
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($0905C2)
+    temp1=dpeek($09135C)
+    temp2=dpeek($092FC4)
+    temp3=dpeek($0939AE)
+run:
+    dpoke $0905C2 $4E71
+    dpoke $09135C $4E71
+    dpoke $092FC4 $4E71
+    dpoke $0939AE $4E71
+off:
+    dpoke $0905C2 temp0
+    dpoke $09135C temp1
+    dpoke $092FC4 temp2
+    dpoke $0939AE temp3
+script "One Hit Kills"  
+on:
+    temp0=dpeek($096B4E)
+    temp1=dpeek($02C1D0)
+    temp2=dpeek($05C158)
+    temp3=dpeek($0913FE)
+    temp4=dpeek($095FF2)
+    temp5=dpeek($093A24)
+run:
+    dpoke $096B4E $6000
+    dpoke $02C1D0 $6002
+    dpoke $05C158 $6000
+    dpoke $0913FE $446C
+    dpoke $095FF2 $446C
+    dpoke $093A24 $446C
+off:
+    dpoke $096B4E temp0
+    dpoke $02C1D0 temp1
+    dpoke $05C158 temp2
+    dpoke $0913FE temp3
+    dpoke $095FF2 temp4
+    dpoke $093A24 temp5
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF5BA4 $03
+script "P1 Infinite Energy"  
+run:
+    poke $FF8E9F $88
+script "P1 Infinite Bombs"  
+run:
+    poke $FF5BCA $09
+script "P1 Invincibility"  
+run:
+    poke $FF8EB5 $F0
+script "P1 Infinite Weapon on Pickup" \
+ "comm:If you pick up the objects, they will become almost indestructable."  
+run:
+    poke ((dpeek($FF8ECE))+$FF0037) $FE
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8F9F $88
+script "P2 Infinite Bombs"  
+run:
+    poke $FF5BCB $09
+script "P2 Infinite Lives"  
+run:
+    poke $FF5BA5 $03
+script "P2 Invincibility"  
+run:
+    poke $FF8FB5 $F0
+script "P2 Infinite Weapon on Pickup" \
+ "comm:If you pick up the objects, they will become almost indestructable."  
+run:
+    poke ((dpeek($FF8FCE))+$FF0037) $FE

@@ -1,147 +1,87 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability ON" always
-	poke $F00B67 $A0
-
-script "*UP Invulnerability OFF"
-	poke $F00B67 $00
-
-script "1UP Unlimited lives" always
-	poke $F00B92 $03
-
-script "2UP Unlimited lives" always
-	poke $F00BBA $03
-
-script "*UP Max. fire power - Front" always
-	poke $F00B3C $05
-
-script "*UP Max. fire power - Back" always
-	poke $F00B3E $05
-
-script "*UP Max. fire power - Upper" always
-	poke $F00B3D $05
-
-script "*UP Max. fire power - Lower" always
-	poke $F00B3F $05
-
-script "*UP Weap. Front - None    (P)" always
-	poke $F00B34 $00
-
-script "*UP Weap. Front - Shot    (P)" always
-	poke $F00B34 $01
-
-script "*UP Weap. Front - Missile (P)" always
-	poke $F00B34 $02
-
-script "*UP Weap. Front - Laser   (P)" always
-	poke $F00B34 $03
-
-script "*UP Weap. Front - Ball    (P)" always
-	poke $F00B34 $04
-
-script "*UP Weap. Back  - None    (P)" always
-	poke $F00B38 $00
-
-script "*UP Weap. Back  - Shot    (P)" always
-	poke $F00B38 $01
-
-script "*UP Weap. Back  - Missile (P)" always
-	poke $F00B38 $02
-
-script "*UP Weap. Back  - Laser   (P)" always
-	poke $F00B38 $03
-
-script "*UP Weap. Back  - Ball    (P)" always
-	poke $F00B38 $04
-
-script "*UP Weap. Upper - None    (P)" always
-	poke $F00B36 $00
-
-script "*UP Weap. Upper - Shot    (P)" always
-	poke $F00B36 $01
-
-script "*UP Weap. Upper - Missile (P)" always
-	poke $F00B36 $02
-
-script "*UP Weap. Upper - Laser   (P)" always
-	poke $F00B36 $03
-
-script "*UP Weap. Upper - Ball    (P)" always
-	poke $F00B36 $04
-
-script "*UP Weap. Lower - None    (P)" always
-	poke $F00B3A $00
-
-script "*UP Weap. Lower - Shot    (P)" always
-	poke $F00B3A $01
-
-script "*UP Weap. Lower - Missile (P)" always
-	poke $F00B3A $02
-
-script "*UP Weap. Lower - Laser   (P)" always
-	poke $F00B3A $03
-
-script "*UP Weap. Lower - Ball    (P)" always
-	poke $F00B3A $04
-
-script "*UP Weap. Front - None    (T)"
-	poke $F00B34 $00
-
-script "*UP Weap. Front - Shot    (T)"
-	poke $F00B34 $01
-
-script "*UP Weap. Front - Missile (T)"
-	poke $F00B34 $02
-
-script "*UP Weap. Front - Laser   (T)"
-	poke $F00B34 $03
-
-script "*UP Weap. Front - Ball    (T)"
-	poke $F00B34 $04
-
-script "*UP Weap. Back  - None    (T)"
-	poke $F00B38 $00
-
-script "*UP Weap. Back  - Shot    (T)"
-	poke $F00B38 $01
-
-script "*UP Weap. Back  - Missile (T)"
-	poke $F00B38 $02
-
-script "*UP Weap. Back  - Laser   (T)"
-	poke $F00B38 $03
-
-script "*UP Weap. Back  - Ball    (T)"
-	poke $F00B38 $04
-
-script "*UP Weap. Upper - None    (T)"
-	poke $F00B36 $00
-
-script "*UP Weap. Upper - Shot    (T)"
-	poke $F00B36 $01
-
-script "*UP Weap. Upper - Missile (T)"
-	poke $F00B36 $02
-
-script "*UP Weap. Upper - Laser   (T)"
-	poke $F00B36 $03
-
-script "*UP Weap. Upper - Ball    (T)"
-	poke $F00B36 $04
-
-script "*UP Weap. Lower - None    (T)"
-	poke $F00B3A $00
-
-script "*UP Weap. Lower - Shot    (T)"
-	poke $F00B3A $01
-
-script "*UP Weap. Lower - Missile (T)"
-	poke $F00B3A $02
-
-script "*UP Weap. Lower - Laser   (T)"
-	poke $F00B3A $03
-
-script "*UP Weap. Lower - Ball    (T)"
-	poke $F00B3A $04
+script "Infinite Credits"  
+run:
+    poke $F0001F $63
+script "Invincibility 'ON'" \
+ "comm:To be used when you blink"  
+run:
+    poke $F00B67 $A0
+script "Invincibility 'OFF'"  
+on:
+    poke $F00B67 $00
+script "4th Unit Mode"  
+run:
+    poke $F00B87 $05
+script "Select Perm. Front Weapon" \
+ "0x01/Shot"\
+ "0x02/Missile"\
+ "0x03/Laser"\
+ "0x04/Ball" 
+run:
+    poke $F00B34 param
+script "Select Perm. Back Weapon" \
+ "0x01/Shot"\
+ "0x02/Missile"\
+ "0x03/Laser"\
+ "0x04/Ball" 
+run:
+    poke $F00B38 param
+script "Select Perm. Upper Weapon" \
+ "0x01/Shot"\
+ "0x02/Missile"\
+ "0x03/Laser"\
+ "0x04/Ball" 
+run:
+    poke $F00B36 param
+script "Select Perm. Lower Weapon" \
+ "0x01/Shot"\
+ "0x02/Missile"\
+ "0x03/Laser"\
+ "0x04/Ball" 
+run:
+    poke $F00B3A param
+script "Maximum Power Front"  
+run:
+    poke $F00B3C $05
+script "Maximum Power Back"  
+run:
+    poke $F00B3E $05
+script "Maximum Power Upper"  
+run:
+    poke $F00B3D $05
+script "Maximum Power Lower"  
+run:
+    poke $F00B3F $05
+script "Upper Shot Right upper"  
+on:
+    poke $F00BDE $02
+script "Upper Shot Upper"  
+on:
+    poke $F00BDE $04
+script "Upper Shot Left upper"  
+on:
+    poke $F00BDE $06
+script "Lower Shot Left upper"  
+on:
+    poke $F00BE2 $0A
+script "Lower Shot Upper"  
+on:
+    poke $F00BE2 $0C
+script "Lower Shot Right upper"  
+on:
+    poke $F00BE2 $0E
+script "Quick Direction Change Mode"  
+run:
+    poke $F00B99 $14
+script "No Direction Change Mode"  
+run:
+    poke $F00B99 $13
+script "No Rotate Mode"  
+run:
+    poke $F00BDA $10
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F00B92 $79
+script "P2 Infinite Lives"  
+run:
+    poke $F00BBA $79

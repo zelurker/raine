@@ -1,0 +1,33 @@
+script "Infinite Credits"  
+run:
+    poke $FF809E $09
+script "Infinite Time"  
+run:
+    dpoke $FF63E8 $03E7
+script "Puzzles Never Move Closer"  
+on:
+    temp0=dpeek($0337A4)
+run:
+    dpoke $0337A4 $4E75
+off:
+    dpoke $0337A4 temp0
+script "Finish this Round Now!"  
+on:
+    poke $FF5196 $00
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF80B5 param

@@ -1,0 +1,125 @@
+script "Infinite Credits"  
+run:
+    poke $822A9 $63
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $82BF9 $0A
+script "P1 Invincibility"  
+run:
+    poke $82B7F $02
+script "P1 Always have Max Missile"  
+run:
+    poke $82B9D $07
+script "P1 Always have Max Bomb"  
+run:
+    poke $82BA1 $07
+script "P1 Always have Max Arm"  
+run:
+    poke $82BA5 $07
+script "P1 Select Perm Missile" \
+ "0x00/Shot Missile"\
+ "0x01/Laser Missile"\
+ "0x02/Beam Missile" 
+run:
+    poke $82B9B param
+script "P1 Select Perm Bomb" \
+ "0x00/Single Bomb"\
+ "0x01/Double Bomb"\
+ "0x02/4-way Bomb" 
+run:
+    poke $82B9F param
+script "P1 Select Perm Arm" \
+ "0x00/Green Arm"\
+ "0x01/Silver Arm"\
+ "0x02/Gold Arm" 
+run:
+    poke $82BA3 param
+script "P1 Get Max Missile Now!"  
+on:
+    poke $82B9D $07
+script "P1 Get Max Bomb Now!"  
+on:
+    poke $82BA1 $07
+script "P1 Get Max Arm Now!"  
+on:
+    poke $82BA5 $07
+script "P1 Select Missile Now!" \
+ "0x00/Shot Missile"\
+ "0x01/Laser Missile"\
+ "0x02/Beam Missile" 
+change:
+    poke $82B9B param
+script "P1 Select Bomb Now!" \
+ "0x00/Single Bomb"\
+ "0x01/Double Bomb"\
+ "0x02/4-way Bomb" 
+change:
+    poke $82B9F param
+script "P1 Select Arm Now!" \
+ "0x00/Green Arm"\
+ "0x01/Silver Arm"\
+ "0x02/Gold Arm" 
+change:
+    poke $82BA3 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $82C0F $0A
+script "P2 Invincibility"  
+run:
+    poke $82BB3 $02
+script "P2 Always have Max Missile"  
+run:
+    poke $82BD1 $07
+script "P2 Always have Max Bomb"  
+run:
+    poke $82BD5 $07
+script "P2 Always have Max Arm"  
+run:
+    poke $82BD9 $07
+script "P2 Select Perm Missile" \
+ "0x00/Shot Missile"\
+ "0x01/Laser Missile"\
+ "0x02/Beam Missile" 
+run:
+    poke $82BCF param
+script "P2 Select Perm Bomb" \
+ "0x00/Single Bomb"\
+ "0x01/Double Bomb"\
+ "0x02/4-way Bomb" 
+run:
+    poke $82BD3 param
+script "P2 Select Perm Arm" \
+ "0x00/Green Arm"\
+ "0x01/Silver Arm"\
+ "0x02/Gold Arm" 
+run:
+    poke $82BD7 param
+script "P2 Get Max Missile Now!"  
+on:
+    poke $82BD1 $07
+script "P2 Get Max Bomb Now!"  
+on:
+    poke $82BD5 $07
+script "P2 Get Max Arm Now!"  
+on:
+    poke $82BD9 $07
+script "P2 Select Missile Now!" \
+ "0x00/Shot Missile"\
+ "0x01/Laser Missile"\
+ "0x02/Beam Missile" 
+change:
+    poke $82BCF param
+script "P2 Select Bomb Now!" \
+ "0x00/Single Bomb"\
+ "0x01/Double Bomb"\
+ "0x02/4-way Bomb" 
+change:
+    poke $82BD3 param
+script "P2 Select Arm Now!" \
+ "0x00/Green Arm"\
+ "0x01/Silver Arm"\
+ "0x02/Gold Arm" 
+change:
+    poke $82BD7 param

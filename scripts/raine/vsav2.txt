@@ -1,40 +1,186 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $FF8109 $63
-
-script "1UP Unlimited energy" always
-	dlpoke $FF8450 $02400240
-
-script "2UP Unlimited energy" always
-	dlpoke $FF8850 $02400240
-
-script "1UP Energy set to 0       (P)" always
-	dlpoke $FF8450 $FFFFFFFF
-
-script "2UP Energy set to 0       (P)" always
-	dlpoke $FF8850 $FFFFFFFF
-
-script "1UP Energy set to 0       (T)"
-	dlpoke $FF8450 $FFFFFFFF
-
-script "2UP Energy set to 0       (T)"
-	dlpoke $FF8850 $FFFFFFFF
-
-script "1UP Maximum power" always
-	poke $FF8509 $63
-	poke $FF850B $90
-
-script "2UP Maximum power" always
-	poke $FF8909 $63
-	poke $FF890B $90
-
-script "1UP Minimum power" always
-	poke $FF8509 $00
-	poke $FF850B $00
-
-script "2UP Minimum power" always
-	poke $FF8909 $00
-	poke $FF890B $00
+script "Infinite Time"  
+run:
+    poke $FF8109 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF8109 $00
+script "Select Background" \
+ "comm:Turn this cheat off or alter it if you want another background" \
+ "0x00/01 - FEAST OF THE DAMNED"\
+ "0x02/02 - CONCRETE CAVE"\
+ "0x04/03 - TOWER OF ARROGANCE"\
+ "0x06/04 - RED THIRST"\
+ "0x08/05 - DESERTED CHATEAU"\
+ "0x0A/06 - ABARAYA"\
+ "0x0C/07 - VANITY PARADISE"\
+ "0x0E/08 - WAR AGONY"\
+ "0x10/09 - FOREVER TORMENT"\
+ "0x12/10 - GREEN SCREAM"\
+ "0x14/11 - IRON HORSE, IRON TERROR"\
+ "0x16/12 - FETUS OF GOD"\
+ "0x18/13 - REVENGER'S ROOST" 
+run:
+    poke $FF8101 param
+script " "  
+script "P1 Soul Keeper 'ON'"  
+run:
+    poke $FF87BC $FF
+script "P1 Soul Keeper 'OFF'"  
+on:
+    poke $FF87BC $00
+script "P1 Maximum POW"  
+run:
+    poke $FF8509 $63
+script "P1 Infinite Energy"  
+run:
+    lpoke $FF8450 $01200120
+script "P1 Drain All Energy Now!"  
+on:
+    lpoke $FF8450 $00000000
+script "P1 Infinite Dark Force Change Time"  
+run:
+    poke $FF85C5 $70
+script "P1 Infinite Dark Force Power Time"  
+run:
+    poke $FF8577 $70
+script "P1 Enable Marionette Effect for VS screen"  
+run:
+    poke $FF87C3 $FF
+script "P1 Select Character Colour" \
+ "0x06/Dark"\
+ "0x07/Light" 
+run:
+    poke $FF87AE param
+script "P1 Gloomy Puppet Show helper"  
+run:
+    poke $FF844B $FF
+script "P1 Select Character" \
+ "comm:Free player selection. Use on the level VS screen" \
+ "0x00/Bulleta"\
+ "0x01/Dimitri"\
+ "0x02/Gallon"\
+ "0x03/Victor"\
+ "0x04/Zabel"\
+ "0x05/Morrigan"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Aulbath"\
+ "0x0A/Sasquatch"\
+ "0x0C/Q-Bee"\
+ "0x0D/Lei-Lei"\
+ "0x0E/Lilith"\
+ "0x0F/Jedah"\
+ "0x10/Alternate Phobos"\
+ "0x13/Alternate Donovan"\
+ "0x18/#Oboro Bishamon (Boss)#"\
+ "0x19/#Oboro-Bishamon#" 
+run:
+    poke $FF8782 param
+    if (param==$0x10)
+      poke $FF87C2 $01
+    endif
+    if (param==$0x13)
+      poke $FF87C2 $00
+    endif
+script " "  
+script "P2 Soul Keeper 'ON'"  
+run:
+    poke $FF8BBC $FF
+script "P2 Soul Keeper 'OFF'"  
+on:
+    poke $FF8BBC $00
+script "P2 Maximum POW"  
+run:
+    poke $FF8909 $63
+script "P2 Infinite Energy"  
+run:
+    lpoke $FF8850 $01200120
+script "P2 Drain All Energy Now!"  
+on:
+    lpoke $FF8850 $00000000
+script "P2 Infinite Dark Force Change Time"  
+run:
+    poke $FF89C5 $70
+script "P2 Infinite Dark Force Power Time"  
+run:
+    poke $FF8977 $70
+script "P2 Enable Marionette Effect for VS screen"  
+run:
+    poke $FF8BC3 $FF
+script "P2 Select Character Colour" \
+ "0x06/Dark"\
+ "0x07/Light" 
+run:
+    poke $FF8BAE param
+script "P2 Gloomy Puppet Show helper"  
+run:
+    poke $FF884B $01
+script "P2 Select Character" \
+ "comm:Free player selection. Use on the level VS screen" \
+ "0x00/Bulleta"\
+ "0x01/Dimitri"\
+ "0x02/Gallon"\
+ "0x03/Victor"\
+ "0x04/Zabel"\
+ "0x05/Morrigan"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Aulbath"\
+ "0x0A/Sasquatch"\
+ "0x0C/Q-Bee"\
+ "0x0D/Lei-Lei"\
+ "0x0E/Lilith"\
+ "0x0F/Jedah"\
+ "0x10/Alternate Phobos"\
+ "0x13/Alternate Donovan"\
+ "0x18/#Oboro Bishamon (Boss)#"\
+ "0x19/#Oboro-Bishamon#" 
+run:
+    poke $FF8B82 param
+    if (param==$0x10)
+      poke $FF8BC2 $01
+    endif
+    if (param==$0x13)
+      poke $FF8BC2 $00
+    endif
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=peek($FF8033)
+    temp1=dpeek($007C5E)
+    temp2=lpeek($007C60)
+run:
+    poke $FF8033 temp0
+    dpoke $007C5E temp1
+    lpoke $007C60 temp2
+    if (dpeek($FF8109)!=$0&&lpeek($FF810C)==$0)
+      poke $FF8033 $0
+      dpoke $FFF000 $0
+      dpoke $FFF200 $0
+      dpoke $FF356C $0
+      dpoke $007C5E $4E71
+      lpoke $007C60 $4E714E71
+    endif
+off:
+    poke $FF8033 temp0
+    dpoke $007C5E temp1
+    lpoke $007C60 temp2
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8091 param

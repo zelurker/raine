@@ -1,12 +1,19 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited holes" always
-	poke $FFC8A5 $12
-
-script "1UP Unlimited strokes" always
-	poke $FFC94B $01
-
-script "1UP Unlimited time" always
-	poke $FFC9A7 $09
+script "Infinite Credits"  
+run:
+    poke $FF0F13 $08
+script "Infinite Time"  
+run:
+    poke $FFC9A7 $09
+script "Select Next Hole Now!" \
+ inter=1,18,1 
+change:
+    poke $FFC7F7 (param-$1)
+script "Infinite Holes"  
+run:
+    poke $FFC8A5 $12
+script "Infinite Strokes"  
+run:
+    poke $FFC94B $01
+script "Reset Strokes Now!"  
+on:
+    poke $FFC94B $00

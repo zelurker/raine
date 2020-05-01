@@ -1,33 +1,86 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $20062D $64
-
-script "1UP Invulnerability OFF"
-	poke $20062D $01
-
-script "2UP Invulnerability ON" always
-	poke $200653 $64
-
-script "2UP Invulnerability OFF"
-	poke $200653 $01
-
-script "1UP Unlimited lives" always
-	poke $20063D $05
-
-script "2UP Unlimited lives" always
-	poke $200663 $03
-
-script "1UP Maximum speed" always
-	poke $200627 $05
-
-script "2UP Maximum speed" always
-	poke $20064D $05
-
-script "*UP Pods ON" always
-	poke $200685 $01
-
-script "*UP Pods OFF"
-	poke $200685 $00
+script "Infinite Credits"  
+run:
+    poke $201C41 $09
+script "Invincibility"  
+on:
+    temp0=peek($0086CC)
+    temp1=dpeek($0088E2)
+run:
+    poke $0086CC $60
+    dpoke $0088E2 $6014
+off:
+    poke $0086CC temp0
+    dpoke $0088E2 temp1
+script "Pannier Pod Guns 'ON'"  
+run:
+    poke $200685 $01
+script "Pannier Pod Guns 'OFF'"  
+on:
+    poke $200685 $00
+script "Always have Maximum Pod Shot Power"  
+run:
+    poke $200695 $02
+script "Select Pod Weapon" \
+ "0x00/Red (Laser)"\
+ "0x01/Yellow (Ring)"\
+ "0x03/Blue (Ball)" 
+run:
+    poke $200693 param
+script " "  
+script "P1 Select Starting Stage" \
+ "0x00000000/Stage 1-1"\
+ "0x00000001/Stage 1-2"\
+ "0x00010000/Stage 2-1"\
+ "0x00010001/Stage 2-2"\
+ "0x00020000/Stage 3-1"\
+ "0x00020001/Stage 3-2"\
+ "0x00030000/Stage 4-1"\
+ "0x00030001/Stage 4-2"\
+ "0x00040000/Stage 5-1"\
+ "0x00040001/Stage 5-2"\
+ "0x00050000/Stage 6-1"\
+ "0x00050001/Stage 6-2" 
+run:
+    if (lpeek($20063E)==$00000000)
+      lpoke $20063E param
+    endif
+script "P1 Infinite Lives"  
+run:
+    poke $20063D $08
+script "P1 Select Speed" \
+ inter=0,5,1 
+run:
+    poke $200627 (param)
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $200629 $10|(peek($200629)&~10)
+script " "  
+script "P2 Select Starting Stage" \
+ "0x00000000/Stage 1-1"\
+ "0x00000001/Stage 1-2"\
+ "0x00010000/Stage 2-1"\
+ "0x00010001/Stage 2-2"\
+ "0x00020000/Stage 3-1"\
+ "0x00020001/Stage 3-2"\
+ "0x00030000/Stage 4-1"\
+ "0x00030001/Stage 4-2"\
+ "0x00040000/Stage 5-1"\
+ "0x00040001/Stage 5-2"\
+ "0x00050000/Stage 6-1"\
+ "0x00050001/Stage 6-2" 
+run:
+    if (lpeek($200664)==$00000000)
+      lpoke $200664 param
+    endif
+script "P2 Infinite Lives"  
+run:
+    poke $200663 $08
+script "P2 Select Speed" \
+ inter=0,5,1 
+run:
+    poke $20064D (param)
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $20064F $10|(peek($20064F)&~10)

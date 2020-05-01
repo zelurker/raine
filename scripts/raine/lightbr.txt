@@ -1,63 +1,70 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $40C243 $B4
-
-script "1UP Invulnerability OFF"
-	poke $40C243 $01
-
-script "2UP Invulnerability ON" always
-	poke $40C343 $B4
-
-script "2UP Invulnerability OFF"
-	poke $40C343 $01
-
-script "3UP Invulnerability ON" always
-	poke $40C443 $B4
-
-script "3UP Invulnerability OFF"
-	poke $40C443 $01
-
-script "4UP Invulnerability ON" always
-	poke $40C543 $B4
-
-script "4UP Invulnerability OFF"
-	poke $40C543 $01
-
-script "1UP Unlimited lives" always
-	poke $40C244 $03
-
-script "2UP Unlimited lives" always
-	poke $40C344 $03
-
-script "3UP Unlimited lives" always
-	poke $40C444 $03
-
-script "4UP Unlimited lives" always
-	poke $40C544 $03
-
-script "1UP Unlimited energy" always
-	poke $404FD0 $08
-
-script "2UP Unlimited energy" always
-	poke $405050 $08
-
-script "3UP Unlimited energy" always
-	poke $4050D0 $08
-
-script "4UP Unlimited energy" always
-	poke $405150 $08
-
-script "1UP Unlimited super attacks" always
-	poke $40C245 $09
-
-script "2UP Unlimited super attacks" always
-	poke $40C345 $09
-
-script "3UP Unlimited super attacks" always
-	poke $40C445 $09
-
-script "4UP Unlimited super attacks" always
-	poke $40C545 $09
+script "Infinite Credits"  
+run:
+    poke $400207 $09
+script "Infinite Time"  
+run:
+    poke $407F36 $77
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $40C244 $09
+script "P1 Infinite Energy"  
+run:
+    poke $404FD0 $14
+script "P1 Infinite Specials"  
+run:
+    poke $40C245 $09
+script "P1 Invincibility"  
+run:
+    poke $40C243 $02
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $40C344 $09
+script "P2 Infinite Energy"  
+run:
+    poke $405050 $08
+script "P2 Infinite Specials"  
+run:
+    poke $40C345 $09
+script "P2 Invincibility"  
+run:
+    poke $40C343 $02
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $40C444 $09
+script "P3 Infinite Energy"  
+run:
+    poke $4050D0 $08
+script "P3 Infinite Specials"  
+run:
+    poke $40C445 $09
+script "P3 Invincibility"  
+run:
+    poke $40C443 $02
+script " "  
+script "P4 Infinite Lives"  
+run:
+    poke $40C544 $09
+script "P4 Infinite Energy"  
+run:
+    poke $405150 $08
+script "P4 Infinite Specials"  
+run:
+    poke $40C545 $09
+script "P4 Invincibility"  
+run:
+    poke $40C543 $02
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), reset again (F3), wait for Test Mode to appear then turn the Test Mode OFF (F2) and reset (F3)." \
+ "0x01/Japan (Lightbringer)"\
+ "0x02/US (Dungeon Magic)"\
+ "0x03/World (Dungeon Magic)" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

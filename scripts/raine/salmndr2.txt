@@ -1,0 +1,71 @@
+script "Infinite Credits"  
+run:
+    poke $C00C29 $63
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $C00461 $B
+script "P1 Invincibility"  
+run:
+    poke $C00523 $02
+script "P1 Select Weapon" \
+ "0x10/Normal"\
+ "0x11/Laser"\
+ "0x12/Ripple Laser"\
+ "0x13/Twin Laser" 
+run:
+    poke $C0048F param
+script "P1 Select Shot Power" \
+ "0x00/Low"\
+ "0x01/High" 
+run:
+    poke $C00490 param
+script "P1 Select Missiles" \
+ "0x0F00/None"\
+ "0x1801/Normal"\
+ "0x1901/Twin" 
+run:
+    dpoke $C00491 param
+script "P1 Select Next Life 'Option's" \
+ "comm:To get the Options(the balls that follow you around, shooting when you shoot), lose a life while the code is on, or complete a phase. You start with the number of options you select after each life/phase" \
+ inter=0,4,1 
+run:
+    poke $C0048E (param)
+script "P1 Select Speed" \
+ inter=0,5,1 
+run:
+    poke $C00495 (param)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $C0080F $B
+script "P2 Invincibility"  
+run:
+    poke $C008D1 $02
+script "P2 Select Weapon" \
+ "0x10/Normal"\
+ "0x11/Laser"\
+ "0x12/Ripple Laser"\
+ "0x13/Twin Laser" 
+run:
+    poke $C0083D param
+script "P2 Select Shot Power" \
+ "0x00/Low"\
+ "0x01/High" 
+run:
+    poke $C0083E param
+script "P2 Select Missiles" \
+ "0x0F00/None"\
+ "0x1801/Normal"\
+ "0x1901/Twin" 
+run:
+    dpoke $C0083F param
+script "P2 Select Next Life 'Option's" \
+ "comm:To get the Options(the balls that follow you around, shooting when you shoot), lose a life while the code is on, or complete a phase. You start with the number of options you select after each life/phase" \
+ inter=0,4,1 
+run:
+    poke $C0083C (param)
+script "P2 Select Speed" \
+ inter=0,5,1 
+run:
+    poke $C00843 (param)

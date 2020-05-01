@@ -1,0 +1,57 @@
+script "Infinite Credits"  
+run:
+    poke $4002 $0E
+script "Infinite Lives"  
+run:
+    poke $421D $06
+script "Invincibility"  
+on:
+    temp0=peek($12D9)
+run:
+    poke $12D9 $C9
+off:
+    poke $12D9 temp0
+script "Rapid Fire" \
+ "comm:This cheat enables continuous attack by holding the fire button"  
+run:
+    dpoke $4010 $0000|(dpeek($4010)&~1010)
+script "Bullets never Explode on Non-attacking ships" \
+ "comm:They will keep moving and destroying to they reach their full range"  
+on:
+    temp0=peek($0B37)
+run:
+    poke $0B37 $A1
+off:
+    poke $0B37 temp0
+script "Finish this Level Now!" \
+ "comm:Level will change when all flying aliens return to the swarm"  
+on:
+    dpoke $4222 $0001
+script "Aliens Never Attack"  
+on:
+    temp0=peek($1538)
+    temp1=peek($15C2)
+run:
+    poke $1538 $C9
+    poke $15C2 $C9
+off:
+    poke $1538 temp0
+    poke $15C2 temp1
+script "Alien Attack Now!" \
+ "comm:Will also temporarily bypass the Aliens Never Attack cheat"  
+on:
+    poke $4228 $01
+script "Flagship Attack Now!" \
+ "comm:Will also temporarily bypass the Aliens Never Attack cheat"  
+on:
+    poke $4229 $01
+script "Half Speed Enemy Bullets"  
+on:
+    temp0=peek($0A88)
+run:
+    poke $0A88 $01
+off:
+    poke $0A88 temp0
+script "Restore flagship row Now!"  
+on:
+    lpoke $4176 $01010101

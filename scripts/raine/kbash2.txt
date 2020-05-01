@@ -1,0 +1,62 @@
+script "Infinite Credits"  
+run:
+    poke $100023 $09
+script "Infinite Time"  
+run:
+    if (frame%180==$0)
+      poke $10023D $99
+    endif
+script "Invincibility"  
+on:
+    temp0=peek($003811)
+    temp1=peek($00A7ED)
+    temp2=peek($0172C6)
+    temp3=peek($018F72)
+    temp4=peek($01E61A)
+    temp5=dpeek($02118C)
+run:
+    poke $003811 $08
+    poke $00A7ED $02
+    poke $0172C6 $60
+    poke $018F72 $60
+    poke $01E61A $60
+    dpoke $02118C $4E75
+off:
+    poke $003811 temp0
+    poke $00A7ED temp1
+    poke $0172C6 temp2
+    poke $018F72 temp3
+    poke $01E61A temp4
+    dpoke $02118C temp5
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1001D5 $09
+script "P1 Infinite Energy"  
+run:
+    poke $10151C $70
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $100015 $00|(peek($100015)&~10)
+    poke $101527 $00|(peek($101527)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10020D $09
+script "P2 Infinite Energy"  
+run:
+    poke $1015C4 $70
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $100019 $00|(peek($100019)&~10)
+    poke $1015CF $00|(peek($1015CF)&~10)
+script " "  
+script "Skip RAM Check"  
+on:
+    temp0=dpeek($0000D6)
+run:
+    dpoke $0000D6 $050C
+off:
+    dpoke $0000D6 temp0

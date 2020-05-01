@@ -1,33 +1,25 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F01998 $5A
-
-script "1UP Invulnerability OFF"
-	poke $F01998 $01
-
-script "2UP Invulnerability ON" always
-	poke $F019EC $5A
-
-script "2UP Invulnerability OFF"
-	poke $F019EC $01
-
-script "1UP Unlimited lives" always
-	poke $F0198D $0A
-
-script "2UP Unlimited lives" always
-	poke $F019E1 $0A
-
-script "1UP Unlimited bombs" always
-	poke $F0198E $09
-
-script "2UP Unlimited bombs" always
-	poke $F019E2 $09
-
-script "1UP Maximum fire power" always
-	poke $F01988 $07
-
-script "2UP Maximum fire power" always
-	poke $F019DC $07
+script "P1 Infinite Lives"  
+run:
+    poke $F0198D $0A
+script "P1 Infinite Bombs"  
+run:
+    poke $F0198E $09
+script "P1 Maximum Fire Power"  
+run:
+    poke $F01988 $07
+script "P1 Invincibility"  
+run:
+    poke $F01998 $5A
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F019E1 $0A
+script "P2 Infinite Bombs"  
+run:
+    poke $F019E2 $09
+script "P2 Maximum Fire Power"  
+run:
+    poke $F019DC $07
+script "P2 Invincibility"  
+run:
+    poke $F019EC $5A

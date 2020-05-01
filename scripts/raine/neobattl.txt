@@ -1,111 +1,45 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	dpoke $2007DC $012C
-
-script "1UP Invulnerability OFF"
-	dpoke $2007DC $0001
-
-script "2UP Invulnerability ON" always
-	dpoke $200818 $012C
-
-script "2UP Invulnerability OFF"
-	dpoke $200818 $0001
-
-script "1UP Unlimited lives" always
-	poke $2007CB $03
-
-script "2UP Unlimited lives" always
-	poke $200807 $03
-
-script "1UP Unlimited shields" always
-	poke $2007CF $05
-
-script "2UP Unlimited shields" always
-	poke $20080B $05
-
-script "1UP Weapon - Laser        (P)" always
-	poke $2007E9 $00
-
-script "1UP Weapon - Shell        (P)" always
-	poke $2007E9 $01
-
-script "1UP Weapon - Flame        (P)" always
-	poke $2007E9 $02
-
-script "1UP Weapon - 3-way        (P)" always
-	poke $2007E9 $03
-
-script "1UP Weapon - 2-way        (P)" always
-	poke $2007E9 $04
-
-script "1UP Weapon - Chain        (P)" always
-	poke $2007E9 $05
-
-script "1UP Weapon - Side         (P)" always
-	poke $2007E9 $06
-
-script "2UP Weapon - Laser        (P)" always
-	poke $200825 $00
-
-script "2UP Weapon - Shell        (P)" always
-	poke $200825 $01
-
-script "2UP Weapon - Flame        (P)" always
-	poke $200825 $02
-
-script "2UP Weapon - 3-way        (P)" always
-	poke $200825 $03
-
-script "2UP Weapon - 2-way        (P)" always
-	poke $200825 $04
-
-script "2UP Weapon - Chain        (P)" always
-	poke $200825 $05
-
-script "2UP Weapon - Side         (P)" always
-	poke $200825 $06
-
-script "1UP Weapon - Laser        (T)"
-	poke $2007E9 $00
-
-script "1UP Weapon - Shell        (T)"
-	poke $2007E9 $01
-
-script "1UP Weapon - Flame        (T)"
-	poke $2007E9 $02
-
-script "1UP Weapon - 3-way        (T)"
-	poke $2007E9 $03
-
-script "1UP Weapon - 2-way        (T)"
-	poke $2007E9 $04
-
-script "1UP Weapon - Chain        (T)"
-	poke $2007E9 $05
-
-script "1UP Weapon - Side         (T)"
-	poke $2007E9 $06
-
-script "2UP Weapon - Laser        (T)"
-	poke $200825 $00
-
-script "2UP Weapon - Shell        (T)"
-	poke $200825 $01
-
-script "2UP Weapon - Flame        (T)"
-	poke $200825 $02
-
-script "2UP Weapon - 3-way        (T)"
-	poke $200825 $03
-
-script "2UP Weapon - 2-way        (T)"
-	poke $200825 $04
-
-script "2UP Weapon - Chain        (T)"
-	poke $200825 $05
-
-script "2UP Weapon - Side         (T)"
-	poke $200825 $06
+script "Infinite Credits"  
+run:
+    poke $200691 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $2007CB $0A
+script "P1 Infinite Energy"  
+run:
+    poke $2007CF $05
+script "P1 Invincibility"  
+run:
+    poke $2007DD $03
+script "P1 Select Weapon" \
+ "comm:Weapon names are descriptive not actual (what are the real names?)" \
+ "0x00/Normal"\
+ "0x01/Missile"\
+ "0x02/Fireball"\
+ "0x03/3-Way Double"\
+ "0x04/2-Way Missile"\
+ "0x05/Chain Mail"\
+ "0x06/3-Way Missile" 
+run:
+    poke $2007E9 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $200807 $0A
+script "P2 Infinite Energy"  
+run:
+    poke $20080B $05
+script "P2 Invincibility"  
+run:
+    poke $200819 $03
+script "P2 Select Weapon" \
+ "comm:Weapon names are descriptive not actual (what are the real names?)" \
+ "0x00/Normal"\
+ "0x01/Missile"\
+ "0x02/Fireball"\
+ "0x03/3-Way Double"\
+ "0x04/2-Way Missile"\
+ "0x05/Chain Mail"\
+ "0x06/3-Way Missile" 
+run:
+    poke $200825 param

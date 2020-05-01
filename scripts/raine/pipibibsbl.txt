@@ -1,0 +1,30 @@
+script "Infinite Credits"  
+run:
+    poke $80571 $09
+script "Always have 4 Coins"  
+run:
+    poke $8066B $04
+script "Stop End-of-Level Bomb Timer" \
+ "comm:Turn off to leave level"  
+run:
+    poke $80671 $77
+script "Only 1 Computer to Collect per Level"  
+run:
+    if (peek($8073D)<00)||(peek($8073D)>01)
+      poke $8073D $01
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $8063F $05
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $80687 $1B
+script "P2 Infinite Lives"  
+run:
+    poke $8064D $05
+script "P2 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $806E7 $7D

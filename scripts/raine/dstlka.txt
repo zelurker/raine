@@ -1,0 +1,94 @@
+script "Infinite Time"  
+run:
+    poke $FF9409 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF9409 $00
+script "Select Background" \
+ "0x00/Demitri"\
+ "0x01/Jon Talbain"\
+ "0x02/Victor"\
+ "0x03/Lord Raptor"\
+ "0x04/Morrigan"\
+ "0x05/Anakaris"\
+ "0x06/Felicia"\
+ "0x07/Bishamon"\
+ "0x08/Rikuo"\
+ "0x09/Sasquatch"\
+ "0x0A/Huitzil"\
+ "0x0B/Pyron" 
+run:
+    dpoke $FF9388 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF83CB $90
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF83CB $00
+script "P1 Infinite Special"  
+run:
+    poke $FF855F $8E
+script "P1 Select Character" \
+ "comm:Free player selection - Use on level VS screen" \
+ "0x01/Dimitri"\
+ "0x02/Gallon"\
+ "0x03/Victor"\
+ "0x04/Zabelzaroch"\
+ "0x05/Morrigan"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Aulbath"\
+ "0x0A/Sasquatch"\
+ "0x0B/Phobos"\
+ "0x0C/Pyron" 
+run:
+    poke $FF8729 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF87CB $90
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF87CB $00
+script "P2 Infinite Special"  
+run:
+    poke $FF895F $51
+script "P2 Select Character" \
+ "comm:Free player selection - Use on level VS screen" \
+ "0x01/Dimitri"\
+ "0x02/Gallon"\
+ "0x03/Victor"\
+ "0x04/Zabelzaroch"\
+ "0x05/Morrigan"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Aulbath"\
+ "0x0A/Sasquatch"\
+ "0x0B/Phobos"\
+ "0x0C/Pyron" 
+run:
+    poke $FF8B29 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Asia"\
+ "0x06/Hispanic"\
+ "0x08/Euro" 
+run:
+    poke $FF8205 param
+script "Select Title" \
+ "0x00/Vampire (Japanese Text)"\
+ "0x01/Darkstalkers (English Text)" 
+run:
+    poke $FF8214 param

@@ -1,0 +1,915 @@
+script "Infinite Time"  
+run:
+    poke $FF8109 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF8109 $00
+script "Select Colour Unlock" \
+ "comm:Select it before inserting coin(s). (NOTE - the colour refers to the background colour after you've inserted a credit)" \
+ "0x00/Cream (Default)"\
+ "0x01/Red (Unlocks Classical Mode)"\
+ "0x02/Green (Unlocks Balrog, Juli, and Juni)"\
+ "0x03/Blue (Unlocks Mazi Mode and Saikyou Mode)"\
+ "0x04/Light Blue (Unlocks Survival, Dramatic and Final Battle Mode)" 
+change:
+    poke $FF80EE param
+script "Select Backdrop" \
+ "0x00/Japan (Sunset)"\
+ "0x02/USA (Hotel)"\
+ "0x04/Japan (Cave)"\
+ "0x06/USA (Hangar)"\
+ "0x08/China"\
+ "0x0A/Thailand (Temple)"\
+ "0x0C/USA (Japanese)"\
+ "0x0E/USA (Metro City)"\
+ "0x10/England"\
+ "0x12/Italy"\
+ "0x14/Point 48106 (Night)"\
+ "0x16/Thailand (Statue)"\
+ "0x18/Japan (Swings)"\
+ "0x1A/Japan (Market at Day)"\
+ "0x1C/USA (Military)"\
+ "0x1E/India"\
+ "0x20/Russia"\
+ "0x22/Hong Kong"\
+ "0x2A/Point 48106 (Day)"\
+ "0x2C/Greece"\
+ "0x30/Japan (Sumo Ring)"\
+ "0x32/Brazil"\
+ "0x34/Japan (Seaside)"\
+ "0x36/USA (Prison)"\
+ "0x38/Spain"\
+ "0x3A/Japan (Market at Night)" 
+run:
+    poke $FF8101 param
+script "Skip Character Intros"  
+run:
+    poke $FF8431 $00
+script "Skip Map Screen" \
+ "comm:Normal and Dramatic Modes only"  
+run:
+    poke $FF8111 $FF
+script "Select Dramatic Battle Adversary 1" \
+ "comm:Select a different character for each adversary as cloned characters will be skipped" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x15/Balrog"\
+ "0x16/Cammy"\
+ "0x18/E. Honda"\
+ "0x19/Blanka"\
+ "0x1A/R. Mika"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+on:
+    temp0=peek($00B97A)
+run:
+    poke $00B97A param
+off:
+    poke $00B97A temp0
+script "Select Dramatic Battle Adversary 2" \
+ "comm:Select a different character for each adversary as cloned characters will be skipped" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x15/Balrog"\
+ "0x16/Cammy"\
+ "0x18/E. Honda"\
+ "0x19/Blanka"\
+ "0x1A/R. Mika"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+on:
+    temp0=peek($00B97B)
+run:
+    poke $00B97B param
+off:
+    poke $00B97B temp0
+script "Select Dramatic Battle Adversary 3" \
+ "comm:Select a different character for each adversary as cloned characters will be skipped" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x15/Balrog"\
+ "0x16/Cammy"\
+ "0x18/E. Honda"\
+ "0x19/Blanka"\
+ "0x1A/R. Mika"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+on:
+    temp0=peek($00B97C)
+run:
+    poke $00B97C param
+off:
+    poke $00B97C temp0
+script "Select Dramatic Battle Adversary 4" \
+ "comm:Select a different character for each adversary as cloned characters will be skipped" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x15/Balrog"\
+ "0x16/Cammy"\
+ "0x18/E. Honda"\
+ "0x19/Blanka"\
+ "0x1A/R. Mika"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+on:
+    temp0=peek($00B97D)
+run:
+    poke $00B97D param
+off:
+    poke $00B97D temp0
+script "Select Dramatic Battle Adversary 5" \
+ "comm:Select a different character for each adversary as cloned characters will be skipped" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x15/Balrog"\
+ "0x16/Cammy"\
+ "0x18/E. Honda"\
+ "0x19/Blanka"\
+ "0x1A/R. Mika"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+on:
+    temp0=peek($00B982)
+run:
+    poke $00B982 param
+off:
+    poke $00B982 temp0
+script "Select Dramatic Battle Adversary 6" \
+ "comm:Select a different character for each adversary as cloned characters will be skipped" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x15/Balrog"\
+ "0x16/Cammy"\
+ "0x18/E. Honda"\
+ "0x19/Blanka"\
+ "0x1A/R. Mika"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+on:
+    temp0=peek($00B983)
+run:
+    poke $00B983 param
+off:
+    poke $00B983 temp0
+script " "  
+script "P1 Skip Story" \
+ "comm:Normal Mode only"  
+run:
+    poke $FF8549 $FF
+script "P2 Skip Story" \
+ "comm:Normal mode only"  
+run:
+    poke $FF8949 $FF
+script " "  
+script "Enable these Mode cheats on the Character Selection"  
+script "Screen. They may work for different players configs."  
+script " "  
+script "P1 Select Mode" \
+ "0x00/Normal Mode"\
+ "0xFF/Survival Mode" 
+run:
+    poke $FF854B param
+script "P2 Select Mode" \
+ "0x00/Normal Mode"\
+ "0xFF/Survival Mode" 
+run:
+    poke $FF894B param
+script "P1+P2 Dramatic Battle Mode"  
+run:
+    poke $FF8168 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    lpoke $FF8450 $00900090
+script "P1 Drain All Energy Now!"  
+on:
+    lpoke $FF8450 $00000000
+script "P1 Infinite Power"  
+run:
+    poke $FF851F $90
+script "P1 No Power"  
+run:
+    poke $FF851F $00
+script "P1 Refill Power Now!"  
+on:
+    poke $FF851F $90
+script "P1 Drain Power Now!"  
+on:
+    poke $FF851F $00
+script "P1 Never Get Dizzied"  
+run:
+    dpoke $FF86CC $0028
+script "P1 Always Get Dizzied When Hit"  
+run:
+    dpoke $FF86CC $FAFA
+script "P1 Never Get Guard Crushed"  
+run:
+    dpoke $FF864C $7000
+script "P1 Always Get Guard Crushed When Blocking"  
+run:
+    dpoke $FF864C $1010
+script "P1 Infinite Fireballs"  
+run:
+    poke $FF8638 $00
+script "P1 Never have use of Fireballs"  
+run:
+    poke $FF8638 $01
+script "P1 Infinite Taunts"  
+run:
+    poke $FF84BC $01
+script "P1 Infinite Air Special/Super moves"  
+run:
+    poke $FF8431 $00
+script "P1 Recalculate Damage When Hit"  
+run:
+    dpoke $FF865A $0303
+script "P1 Always Be in Original Combo" \
+ "comm:Activate only during an Original combo to get the afterimages!"  
+on:
+    temp0=peek($FF84B9)
+run:
+    poke $FF84B9 $01
+off:
+    poke $FF84B9 temp0
+script "P1 Infinite Time for Original Combo"  
+run:
+    poke $FF84BB $9A
+script "P1 Select Original Combo Afterimage Type" \
+ "0x000F0005/LP+LK Combo"\
+ "0x00300010/MP+MK Combo"\
+ "0x0051001B/HP+HK Combo" 
+run:
+    lpoke $FF86A6 param
+script "P1 Select Control" \
+ "comm:Disable this cheat if you use the Boss mode cheat below" \
+ "0x00/User"\
+ "0x01/CPU" 
+run:
+    poke $FF8525 param
+script "P1 Boss Mode" \
+ "comm:Final Bison, etc"  
+run:
+    poke $FF8524 $01
+    if peek($FF8559)==$01
+      poke $FF8525 $01
+    endif
+    if peek($FF8559)==$00
+      poke $FF8525 $00
+    endif
+script " "  
+script "Enable these Mode cheats on the Character Selection Screen."  
+script " "  
+script "P1 Enable Classical Mode Now!" \
+ "comm:Alternative Ism. No gauges, air blocks, taunts etc."  
+on:
+    poke $FF855E $01
+script "P1 Enable Mazi Mode Now!" \
+ "comm:Greater damage inflicted, greater damage done. Only lose one round to lose."  
+on:
+    poke $FF855A $01
+script "P1 Enable Saikyou Mode Now!" \
+ "comm:Easy to get dizzy, slightly less damage done, rubbish!"  
+on:
+    poke $FF8531 $01
+script " "  
+script "P1 Select ISM" \
+ "comm:Enable only after selecting your ISM on the Character Selection screen" \
+ "0x01/A-ISM"\
+ "0x02/V-ISM"\
+ "0x03/X-ISM"\
+ "0x04/S-ISM" 
+run:
+    if (param==$01)
+      poke $FF8523 $00
+      poke $FF8532 $00
+    endif
+    if (param==$02)
+      poke $FF8523 $01
+      poke $FF8532 $01
+    endif
+    if (param==$03)
+      poke $FF8523 $FF
+      poke $FF8532 $FF
+    endif
+    if (param==$04)
+      poke $FF8523 $02
+      poke $FF8532 $00
+    endif
+script "P1 Select Character" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken Masters"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan Hibiki"\
+ "0x0D/Sakura Kasugano"\
+ "0x0E/Rolento Schugerg"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen (Sou-ryuu stance)"\
+ "0x13/#Gen (Ki-ryuu stance)"\
+ "0x15/#Balrog"\
+ "0x16/Cammy"\
+ "0x18/Edmund Honda"\
+ "0x19/Blanka"\
+ "0x1A/Rainbow Mika Nanakawa"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin Kanzuki"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+run:
+    poke $FF8502 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    lpoke $FF8850 $00900090
+script "P2 Drain All Energy Now!"  
+on:
+    lpoke $FF8850 $00000000
+script "P2 Infinite Power"  
+run:
+    poke $FF891F $90
+script "P2 No Power"  
+run:
+    poke $FF891F $00
+script "P2 Refill Power Now!"  
+on:
+    poke $FF891F $90
+script "P2 Drain Power Now!"  
+on:
+    poke $FF891F $00
+script "P2 Never Get Dizzied"  
+run:
+    dpoke $FF8ACC $0028
+script "P2 Always Get Dizzied When Hit"  
+run:
+    dpoke $FF8ACC $FAFA
+script "P2 Never Get Guard Crushed"  
+run:
+    dpoke $FF8A4C $7000
+script "P2 Always Get Guard Crushed When Blocking"  
+run:
+    dpoke $FF8A4C $1010
+script "P2 Infinite Fireballs"  
+run:
+    poke $FF8A38 $00
+script "P2 Never have use of Fireballs"  
+run:
+    poke $FF8A38 $01
+script "P2 Infinite Taunts"  
+run:
+    poke $FF88BC $01
+script "P2 Infinite Air Special/Super moves"  
+run:
+    poke $FF8831 $00
+script "P2 Recalculate Damage When Hit"  
+run:
+    dpoke $FF8A5A $0303
+script "P2 Always Be in Original Combo" \
+ "comm:Activate only during an Original combo to get the afterimages!"  
+on:
+    temp0=peek($FF88B9)
+run:
+    poke $FF88B9 $01
+off:
+    poke $FF88B9 temp0
+script "P2 Infinite Time for Original Combo"  
+run:
+    poke $FF88BB $9A
+script "P2 Select Original Combo Afterimage Type" \
+ "0x000F0005/LP+LK Combo"\
+ "0x00300010/MP+MK Combo"\
+ "0x0051001B/HP+HK Combo" 
+run:
+    lpoke $FF8AA6 param
+script "P2 Select Control" \
+ "comm:Disable this cheat if you use the Boss mode cheat below" \
+ "0x00/User"\
+ "0x01/CPU" 
+run:
+    poke $FF8925 param
+script "P2 Boss Mode" \
+ "comm:Final Bison, etc"  
+run:
+    poke $FF8924 $01
+    if peek($FF8959)==$01
+      poke $FF8925 $01
+    endif
+    if peek($FF8959)==$00
+      poke $FF8925 $00
+    endif
+script " "  
+script "Enable these Mode cheats on the Character Selection Screen."  
+script " "  
+script "P2 Enable Classical Mode Now!" \
+ "comm:Alternative Ism. No gauges, air blocks, taunts etc."  
+on:
+    poke $FF895E $01
+script "P2 Enable Mazi Mode Now!" \
+ "comm:Greater damage inflicted, greater damage done. Only lose one round to lose."  
+on:
+    poke $FF895A $01
+script "P2 Enable Saikyou Mode Now!" \
+ "comm:Easy to get dizzy, slightly less damage done, rubbish!"  
+on:
+    poke $FF8931 $01
+script " "  
+script "P2 Select ISM" \
+ "comm:Enable only after selecting your ISM on the Character Selection screen" \
+ "0x01/A-ISM"\
+ "0x02/V-ISM"\
+ "0x03/X-ISM"\
+ "0x04/S-ISM" 
+run:
+    if (param==$01)
+      poke $FF8923 $00
+      poke $FF8932 $00
+    endif
+    if (param==$02)
+      poke $FF8923 $01
+      poke $FF8932 $01
+    endif
+    if (param==$03)
+      poke $FF8923 $FF
+      poke $FF8932 $FF
+    endif
+    if (param==$04)
+      poke $FF8923 $02
+      poke $FF8932 $00
+    endif
+script "P2 Select Character" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken Masters"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan Hibiki"\
+ "0x0D/Sakura Kasugano"\
+ "0x0E/Rolento Schugerg"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen (Sou-ryuu stance)"\
+ "0x13/#Gen (Ki-ryuu stance)"\
+ "0x15/#Balrog"\
+ "0x16/Cammy"\
+ "0x18/Edmund Honda"\
+ "0x19/Blanka"\
+ "0x1A/Rainbow Mika Nanakawa"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin Kanzuki"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+run:
+    poke $FF8902 param
+script " "  
+script "P3 Infinite Energy"  
+run:
+    lpoke $FF8C50 $00900090
+script "P3 Drain All Energy Now!"  
+on:
+    lpoke $FF8C50 $00000000
+script "P3 Infinite Power"  
+run:
+    poke $FF8D1F $90
+script "P3 No Power"  
+run:
+    poke $FF8D1F $00
+script "P3 Refill Power Now!"  
+on:
+    poke $FF8D1F $90
+script "P3 Drain Power Now!"  
+on:
+    poke $FF8D1F $00
+script "P3 Never Get Dizzied"  
+run:
+    dpoke $FF8ECC $0028
+script "P3 Always Get Dizzied When Hit"  
+run:
+    dpoke $FF8ECC $FAFA
+script "P3 Never Get Guard Crushed"  
+run:
+    dpoke $FF8E4C $7000
+script "P3 Always Get Guard Crushed When Blocking"  
+run:
+    dpoke $FF8E4C $1010
+script "P3 Infinite Fireballs"  
+run:
+    poke $FF8E38 $00
+script "P3 Never have use of Fireballs"  
+run:
+    poke $FF8E38 $01
+script "P3 Infinite Taunts"  
+run:
+    poke $FF8CBC $01
+script "P3 Infinite Air Special/Super moves"  
+run:
+    poke $FF8C31 $00
+script "P3 Recalculate Damage When Hit"  
+run:
+    dpoke $FF8E5A $0303
+script "P3 Always Be in Original Combo" \
+ "comm:Activate only during an Original combo to get the afterimages!"  
+on:
+    temp0=peek($FF8CB9)
+run:
+    poke $FF8CB9 $01
+off:
+    poke $FF8CB9 temp0
+script "P3 Infinite Time for Original Combo"  
+run:
+    poke $FF8CBB $9A
+script "P3 Select Original Combo Afterimage Type" \
+ "0x000F0005/LP+LK Combo"\
+ "0x00300010/MP+MK Combo"\
+ "0x0051001B/HP+HK Combo" 
+run:
+    lpoke $FF8EA6 param
+script "P3 Select Control" \
+ "comm:Disable this cheat if you use the Boss mode cheat below" \
+ "0x00/User"\
+ "0x01/CPU" 
+run:
+    poke $FF8D25 param
+script "P3 Boss Mode" \
+ "comm:Final Bison, etc"  
+run:
+    poke $FF8D24 $01
+    if peek($FF8D59)==$01
+      poke $FF8D25 $01
+    endif
+    if peek($FF8D59)==$00
+      poke $FF8D25 $00
+    endif
+script " "  
+script "Enable these Mode cheats on the Character Selection Screen."  
+script " "  
+script "P3 Enable Classical Mode Now!" \
+ "comm:Alternative Ism. No gauges, air blocks, taunts etc."  
+on:
+    poke $FF8D5E $01
+script "P3 Enable Mazi Mode Now!" \
+ "comm:Greater damage inflicted, greater damage done. Only lose one round to lose."  
+on:
+    poke $FF8D5A $01
+script "P3 Enable Saikyou Mode Now!" \
+ "comm:Easy to get dizzy, slightly less damage done, rubbish!"  
+on:
+    poke $FF8D31 $01
+script " "  
+script "P3 Select ISM" \
+ "comm:Enable only after selecting your ISM on the Character Selection screen" \
+ "0x01/A-ISM"\
+ "0x02/V-ISM"\
+ "0x03/X-ISM"\
+ "0x04/S-ISM" 
+run:
+    if (param==$01)
+      poke $FF8D23 $00
+      poke $FF8D32 $00
+    endif
+    if (param==$02)
+      poke $FF8D23 $01
+      poke $FF8D32 $01
+    endif
+    if (param==$03)
+      poke $FF8D23 $FF
+      poke $FF8D32 $FF
+    endif
+    if (param==$04)
+      poke $FF8D23 $02
+      poke $FF8D32 $00
+    endif
+script "P3 Select Character" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken Masters"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan Hibiki"\
+ "0x0D/Sakura Kasugano"\
+ "0x0E/Rolento Schugerg"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen (Sou-ryuu stance)"\
+ "0x13/#Gen (Ki-ryuu stance)"\
+ "0x15/#Balrog"\
+ "0x16/Cammy"\
+ "0x18/Edmund Honda"\
+ "0x19/Blanka"\
+ "0x1A/Rainbow Mika Nanakawa"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin Kanzuki"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+run:
+    poke $FF8D02 param
+script " "  
+script "P4 Infinite Energy"  
+run:
+    lpoke $FF9050 $00900090
+script "P4 Drain All Energy Now!"  
+on:
+    lpoke $FF9050 $00000000
+script "P4 Infinite Power"  
+run:
+    poke $FF911F $90
+script "P4 No Power"  
+run:
+    poke $FF911F $00
+script "P4 Refill Power Now!"  
+on:
+    poke $FF911F $90
+script "P4 Drain Power Now!"  
+on:
+    poke $FF911F $00
+script "P4 Never Get Dizzied"  
+run:
+    dpoke $FF92CC $0028
+script "P4 Always Get Dizzied When Hit"  
+run:
+    dpoke $FF92CC $FAFA
+script "P4 Never Get Guard Crushed"  
+run:
+    dpoke $FF924C $7000
+script "P4 Always Get Guard Crushed When Blocking"  
+run:
+    dpoke $FF924C $1010
+script "P4 Infinite Fireballs"  
+run:
+    poke $FF9238 $00
+script "P4 Never have use of Fireballs"  
+run:
+    poke $FF9238 $01
+script "P4 Infinite Taunts"  
+run:
+    poke $FF90BC $01
+script "P4 Infinite Air Special/Super moves"  
+run:
+    poke $FF9031 $00
+script "P4 Recalculate Damage When Hit"  
+run:
+    dpoke $FF925A $0303
+script "P4 Always Be in Original Combo" \
+ "comm:Activate only during an Original combo to get the afterimages!"  
+on:
+    temp0=peek($FF90B9)
+run:
+    poke $FF90B9 $01
+off:
+    poke $FF90B9 temp0
+script "P4 Infinite Time for Original Combo"  
+run:
+    poke $FF90BB $9A
+script "P4 Select Original Combo Afterimage Type" \
+ "0x000F0005/LP+LK Combo"\
+ "0x00300010/MP+MK Combo"\
+ "0x0051001B/HP+HK Combo" 
+run:
+    lpoke $FF92A6 param
+script "P4 Select Control" \
+ "comm:Disable this cheat if you use the Boss mode cheat below" \
+ "0x00/User"\
+ "0x01/CPU" 
+run:
+    poke $FF9125 param
+script "P4 Boss Mode" \
+ "comm:Final Bison, etc"  
+run:
+    poke $FF9124 $01
+    if peek($FF9159)==$01
+      poke $FF9125 $01
+    endif
+    if peek($FF9159)==$00
+      poke $FF9125 $00
+    endif
+script " "  
+script "Enable these Mode cheats on the Character Selection Screen."  
+script " "  
+script "P4 Enable Classical Mode Now!" \
+ "comm:Alternative Ism. No gauges, air blocks, taunts etc."  
+on:
+    poke $FF915E $01
+script "P4 Enable Mazi Mode Now!" \
+ "comm:Greater damage inflicted, greater damage done. Only lose one round to lose."  
+on:
+    poke $FF915A $01
+script "P4 Enable Saikyou Mode Now!" \
+ "comm:Easy to get dizzy, slightly less damage done, rubbish!"  
+on:
+    poke $FF9131 $01
+script " "  
+script "P4 Select ISM" \
+ "comm:Enable only after selecting your ISM on the Character Selection screen" \
+ "0x01/A-ISM"\
+ "0x02/V-ISM"\
+ "0x03/X-ISM"\
+ "0x04/S-ISM" 
+run:
+    if (param==$01)
+      poke $FF9123 $00
+      poke $FF9132 $00
+    endif
+    if (param==$02)
+      poke $FF9123 $01
+      poke $FF9132 $01
+    endif
+    if (param==$03)
+      poke $FF9123 $FF
+      poke $FF9132 $FF
+    endif
+    if (param==$04)
+      poke $FF9123 $02
+      poke $FF9132 $00
+    endif
+script "P4 Select Character" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken Masters"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan Hibiki"\
+ "0x0D/Sakura Kasugano"\
+ "0x0E/Rolento Schugerg"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen (Sou-ryuu stance)"\
+ "0x13/#Gen (Ki-ryuu stance)"\
+ "0x15/#Balrog"\
+ "0x16/Cammy"\
+ "0x18/Edmund Honda"\
+ "0x19/Blanka"\
+ "0x1A/Rainbow Mika Nanakawa"\
+ "0x1B/Cody"\
+ "0x1C/Vega"\
+ "0x1D/Karin Kanzuki"\
+ "0x1E/#Juli"\
+ "0x1F/#Juni" 
+run:
+    poke $FF9102 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8091 param

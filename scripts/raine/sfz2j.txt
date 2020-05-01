@@ -1,0 +1,3 @@
+script " "  
+script "This game hasn't got any cheats, however there is a"  
+script "clone/parent/sibling of this game which has cheats."  

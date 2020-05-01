@@ -1,0 +1,57 @@
+script "Infinite Credits"  
+run:
+    poke $FF80B0 $09
+script "Always Have Slow Speed"  
+run:
+    dpoke $FF96C8 $0002
+script "Always Have Time Stop"  
+run:
+    dpoke $FF96C6 $0002
+script "Select Ball" \
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Green"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Light Blue"\
+ "0x08/Black" 
+run:
+    if (param==$01)
+      poke $FF98D4 $00
+      poke $FF98F8 $00
+    endif
+    if (param==$02)
+      poke $FF98D4 $01
+      poke $FF98F8 $01
+    endif
+    if (param==$03)
+      poke $FF98D4 $02
+      poke $FF98F8 $02
+    endif
+    if (param==$04)
+      poke $FF98D4 $03
+      poke $FF98F8 $03
+    endif
+    if (param==$05)
+      poke $FF98D4 $04
+      poke $FF98F8 $04
+    endif
+    if (param==$06)
+      poke $FF98D4 $05
+      poke $FF98F8 $05
+    endif
+    if (param==$07)
+      poke $FF98D4 $06
+      poke $FF98F8 $06
+    endif
+    if (param==$08)
+      poke $FF98D4 $07
+      poke $FF98F8 $07
+    endif
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main

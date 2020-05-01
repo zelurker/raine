@@ -1,0 +1,340 @@
+script "Infinite Time (Turn OFF on the Bonus Stage!)"  
+run:
+    poke $108406 $99
+script "Finish this Fight Now!"  
+on:
+    poke $108406 $00
+script "Invincibility [Master Code]"  
+on:
+    temp0=lpeek($0F6B9A)
+    temp1=lpeek($0FDDA0)
+    temp2=lpeek($0FDDA4)
+    temp3=lpeek($0FDDA8)
+    temp4=lpeek($0FDDAC)
+    temp5=lpeek($01DAEA)
+    temp6=dpeek($01DAEE)
+    temp7=lpeek($0FDDB0)
+    temp8=dpeek($0FDDB4)
+    temp9=lpeek($0FDDB6)
+    temp10=lpeek($0FDDBA)
+    temp11=lpeek($0FDDBE)
+    temp12=lpeek($01DC14)
+    temp13=dpeek($01DC18)
+    temp14=lpeek($0FDDC2)
+    temp15=dpeek($0FDDC6)
+    temp16=lpeek($0FDDC8)
+    temp17=lpeek($0FDDCC)
+    temp18=lpeek($0FDDD0)
+run:
+    lpoke $0F6B9A $61007204
+    lpoke $0FDDA0 $4A2C007E
+    lpoke $0FDDA4 $6606C22C
+    lpoke $0FDDA8 $006B4E75
+    lpoke $0FDDAC $72004E75
+    lpoke $01DAEA $4EB9000F
+    dpoke $01DAEE $DDB0
+    lpoke $0FDDB0 $4A2E12FE
+    dpoke $0FDDB4 $6608
+    lpoke $0FDDB6 $082E0000
+    lpoke $0FDDBA $0A684E75
+    lpoke $0FDDBE $70004E75
+    lpoke $01DC14 $4EB9000F
+    dpoke $01DC18 $DDC2
+    lpoke $0FDDC2 $4A2E12FE
+    dpoke $0FDDC6 $6608
+    lpoke $0FDDC8 $082E0001
+    lpoke $0FDDCC $0A684E75
+    lpoke $0FDDD0 $70004E75
+off:
+    lpoke $0F6B9A temp0
+    lpoke $0FDDA0 temp1
+    lpoke $0FDDA4 temp2
+    lpoke $0FDDA8 temp3
+    lpoke $0FDDAC temp4
+    lpoke $01DAEA temp5
+    dpoke $01DAEE temp6
+    lpoke $0FDDB0 temp7
+    dpoke $0FDDB4 temp8
+    lpoke $0FDDB6 temp9
+    lpoke $0FDDBA temp10
+    lpoke $0FDDBE temp11
+    lpoke $01DC14 temp12
+    dpoke $01DC18 temp13
+    lpoke $0FDDC2 temp14
+    dpoke $0FDDC6 temp15
+    lpoke $0FDDC8 temp16
+    lpoke $0FDDCC temp17
+    lpoke $0FDDD0 temp18
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($0F6BA6)
+run:
+    dpoke $0F6BA6 $6012
+off:
+    dpoke $0F6BA6 temp0
+script "Desperation Move (Both Players)" \
+ "comm:Desperation moves are always available for all players, including CPU player in 1UP game!"  
+on:
+    temp0=peek($01D475)
+    temp1=peek($01D483)
+run:
+    poke $01D475 $00
+    poke $01D483 $80
+off:
+    poke $01D475 temp0
+    poke $01D483 temp1
+script "Always successful in all Bonus Games" \
+ "comm:This cheat must be turned on before selecting a bonus game. Selected bonus game will be succeed."  
+on:
+    temp0=dpeek($017B58)
+    temp1=dpeek($017EBA)
+    temp2=lpeek($018376)
+    temp3=dpeek($01837A)
+    temp4=peek($01838D)
+    temp5=dpeek($017A7A)
+    temp6l=lpeek(0182FC)
+    temp6h=lpeek($18300
+    temp7=peek($108448)
+    temp8=dpeek($1767C)
+run:
+    dpoke $017B58 $6002
+    dpoke $017EBA $4E71
+    lpoke $018376 $4EB90001
+    dpoke $01837A $8562
+    poke $01838D $00
+    dpoke $017A7A $6002
+    lpoke $0182FC $1B7C0000
+    lpoke $18300 $04CD600A
+    if (peek($109FC3)==$3C)&&(peek($10843B)==$03)
+      poke $108448 $01
+      dpoke $1767C $4E71
+    endif
+off:
+    dpoke $017B58 temp0
+    dpoke $017EBA temp1
+    lpoke $018376 temp2
+    dpoke $01837A temp3
+    poke $01838D temp4
+    dpoke $017A7A temp5
+    lpoke $0182FC temp6 l
+    lpoke $18300 temp6h
+    poke $108448 temp7
+    dpoke $01767C temp8
+script "Select Ending" \
+ "0x00/Ryo"\
+ "0x01/Robert"\
+ "0x02/Eiji"\
+ "0x03/Jack"\
+ "0x04/LEE"\
+ "0x05/King"\
+ "0x06/Mickey"\
+ "0x07/John"\
+ "0x08/Big"\
+ "0x09/Takuma"\
+ "0x0A/Yuri"\
+ "0x0B/Temjin"\
+ "0x0C/Big(2)" 
+run:
+    poke $109F91 param
+script "Select Background" \
+ "0x01/Ryo"\
+ "0x02/Robert"\
+ "0x03/Eiji"\
+ "0x04/Jack"\
+ "0x05/LEE"\
+ "0x06/King"\
+ "0x07/Mickey"\
+ "0x08/John"\
+ "0x09/Big"\
+ "0x0A/Takuma"\
+ "0x0B/Yuri"\
+ "0x0C/Temjin"\
+ "0x0D/Geese"\
+ "0x0E/Bonus Stage"\
+ "0x0F/Bonus Stage 2"\
+ "0x0F/Blank" 
+run:
+    poke $108401 param
+script "Special Defeat Animation Everytime" \
+ "comm:Any final hit will cause special defeat animation, instead of special move."  
+on:
+    temp0=peek($020504)
+run:
+    poke $020504 $60
+off:
+    poke $020504 temp0
+script "Easy F,D,DF moves" \
+ "comm:F,D,F + Button A to perform uppercut. (For Ryo and Robert.)"  
+on:
+    temp0=peek($025F65)
+run:
+    poke $025F65 $08
+off:
+    poke $025F65 temp0
+script "Select Perm Winner" \
+ "0x90/P1"\
+ "0x91/P2" 
+run:
+    poke $10840A param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $1092ED $60
+script "P1 Drain All Energy Now!"  
+on:
+    poke $1092ED $01
+script "P1 Invincibility" \
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+on:
+    temp0=peek($10A67E)
+    temp1=peek($10A97E)
+    temp2=peek($10AA7E)
+    temp3=peek($10AB7E)
+run:
+    poke $10A67E $01
+    poke $10A97E $01
+    poke $10AA7E $01
+    poke $10AB7E $01
+off:
+    poke $10A67E temp0
+    poke $10A97E temp1
+    poke $10AA7E temp2
+    poke $10AB7E temp3
+script "P1 Infinite Power"  
+run:
+    poke $1094A4 $80
+script "P1 Always have Minimum Power"  
+run:
+    poke $1094A4 $00
+script "P1 Drain All Power Now!"  
+on:
+    poke $1094A4 $00
+script " "  
+script "Free player selection-Can be used anytime!"  
+script "At selection screen, use AFTER selection,"  
+script "however there are some palette glitches."  
+script " "  
+script "P1 Select Character" \
+ "comm:Win causes 'Game Over' when you select Geese" \
+ "0x01/Ryo Sakazaki"\
+ "0x02/Robert Garcia"\
+ "0x03/Eiji Kisaragi"\
+ "0x04/Jack Turner"\
+ "0x05/Lee Pai Long"\
+ "0x06/King"\
+ "0x07/Mickey Rogers"\
+ "0x08/John Crawley"\
+ "0x09/Big"\
+ "0x0A/Takuma Sakazaki"\
+ "0x0B/Yuri Sakazaki"\
+ "0x0C/Temjin"\
+ "0x0D/Geese Howard" 
+change:
+    poke $1092E3 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $1093ED $60
+script "P2 Drain All Energy Now!"  
+on:
+    poke $1093ED $01
+script "P2 Invincibility" \
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+on:
+    temp0=peek($10A07E)
+    temp1=peek($10A37E)
+    temp2=peek($10A47E)
+    temp3=peek($10A57E)
+run:
+    poke $10A07E $01
+    poke $10A37E $01
+    poke $10A47E $01
+    poke $10A57E $01
+off:
+    poke $10A07E temp0
+    poke $10A37E temp1
+    poke $10A47E temp2
+    poke $10A57E temp3
+script "P2 Infinite Power"  
+run:
+    poke $1095A4 $80
+script "P2 Always have Minimum Power"  
+run:
+    poke $1095A4 $00
+script "P2 Drain All Power Now!"  
+on:
+    poke $1095A4 $00
+script "Next fight = Boss Now!"  
+on:
+    poke $108429 $0E
+script "Next fight = Special BossNow!"  
+on:
+    poke $108429 $0F
+script " "  
+script "Free player selection-Can be used anytime!"  
+script "At selection screen, use AFTER selection,"  
+script "however there are some palette glitches."  
+script " "  
+script "P2 Select Character" \
+ "comm:Win causes 'Game Over' when you select Geese" \
+ "0x01/Ryo Sakazaki"\
+ "0x02/Robert Garcia"\
+ "0x03/Eiji Kisaragi"\
+ "0x04/Jack Turner"\
+ "0x05/Lee Pai Long"\
+ "0x06/King"\
+ "0x07/Mickey Rogers"\
+ "0x08/John Crawley"\
+ "0x09/Big"\
+ "0x0A/Takuma Sakazaki"\
+ "0x0B/Yuri Sakazaki"\
+ "0x0C/Temjin"\
+ "0x0D/Geese Howard" 
+change:
+    poke $1093E3 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

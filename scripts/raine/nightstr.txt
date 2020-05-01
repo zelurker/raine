@@ -1,0 +1,22 @@
+script "Infinite Credits"  
+run:
+    poke $109C59 $09
+script "Infinite Shields"  
+run:
+    poke $10C28D $09
+script "Invincibility"  
+run:
+    poke $10BCE3 $01
+script "Set Boss Timer = 0 Now!"  
+on:
+    poke $109BD7 $00
+script "Select Vehicle" \
+ "0x00/Normal Unit"\
+ "0x01/Transformer"\
+ "0x02/Armored Man"\
+ "0x03/Normal Unit with the Supporting Plane"\
+ "0x04/Motorbike"\
+ "0x05/Boosted Unit"\
+ "0x06/Best Unit" 
+run:
+    poke $10BD4D param

@@ -1,0 +1,64 @@
+script "Infinite Credits"  
+run:
+    poke $102295 $63
+script "Finish this Stage Now!"  
+on:
+    poke $102C77 $00
+script "Always Keep Upto Four Balls in Play"  
+run:
+    if (peek($102D0D)<00)||(peek($102D0D)>D4)
+      poke $102D0D $B0
+    endif
+    if (peek($102D29)<00)||(peek($102D29)>D4)
+      poke $102D29 $B0
+    endif
+    if (peek($102D45)<00)||(peek($102D45)>D4)
+      poke $102D45 $B0
+    endif
+    if (peek($102D61)<00)||(peek($102D61)>D4)
+      poke $102D61 $B0
+    endif
+script "Select First Ball Size" \
+ "0x00/Small"\
+ "0x01/Normal"\
+ "0x02/Large" 
+run:
+    poke $102D13 param
+script "Select Second Ball Size" \
+ "0x00/Small"\
+ "0x01/Normal"\
+ "0x02/Large" 
+run:
+    poke $102D2F param
+script "Select Third Ball Size" \
+ "0x00/Small"\
+ "0x01/Normal"\
+ "0x02/Large" 
+run:
+    poke $102D4B param
+script "Select Fourth Ball Size" \
+ "0x00/Small"\
+ "0x01/Normal"\
+ "0x02/Large" 
+run:
+    poke $102D67 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $102CB3 $04
+script "P1 Select Bat Type" \
+ "0x002F0001/Normal Bat"\
+ "0x00530002/Long Bat"\
+ "0x00770003/Shooting Bat" 
+run:
+    lpoke $102CA6 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $102CD9 $04
+script "P2 Select Bat Type" \
+ "0x002F0001/Normal Bat"\
+ "0x00530002/Long Bat"\
+ "0x00770003/Shooting Bat" 
+run:
+    lpoke $102CCC param

@@ -1,6 +1,7 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	dpoke $106686 $0999
+script "Infinite Credits"  
+run:
+    poke $102333 $09
+script "Infinite Time"  
+run:
+    poke $106686 $09
+    poke $106687 $99

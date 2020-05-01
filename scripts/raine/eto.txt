@@ -1,0 +1,97 @@
+script "Infinite Credits"  
+run:
+    poke $200988 $09
+script " "  
+script "P1 Never be dropped on"  
+run:
+    poke $202AC3 $00
+script "P1 Win this game Now!"  
+on:
+    poke $202AC7 $4C
+script "P1 Select Perm. Next Bottom Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+run:
+    poke $202C40 param
+script "P1 Select Perm. Next Top Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+run:
+    poke $202C41 param
+script "P1 Select Temp. Next Bottom Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+change:
+    poke $202C40 param
+script "P1 Select Temp. Next Top Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+change:
+    poke $202C41 param
+script " "  
+script "P2 Never be dropped on"  
+on:
+    poke $202AC7 $00
+script "P2 Win this game Now!"  
+on:
+    poke $202AC3 $4C
+script "P2 Select Perm. Next Bottom Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+run:
+    poke $202C42 param
+script "P2 Select Perm. Next Top Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+run:
+    poke $202C43 param
+script "P2 Select Temp. Next Bottom Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+change:
+    poke $202C42 param
+script "P2 Select Temp. Next Top Tile" \
+ "0x01/Red"\
+ "0x02/Orange"\
+ "0x03/Green"\
+ "0x04/Blue"\
+ "0x05/Purple"\
+ "0x06/Bubble"\
+ "0x07/Chest" 
+change:
+    poke $202C43 param

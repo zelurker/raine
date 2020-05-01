@@ -1,295 +1,273 @@
-# Cheats from  : Pugsy
-# Last update  : 2002.02.13
-# Desc. format : Pugsy
-
-script "Infinite Move Time PL1" always
-	dpoke $40A880 $01FF
-
-script "Infinite Move Time PL2" always
-	dpoke $40A882 $01FF
-
-script "Cloud never moves PL1" always
-	dpoke $40C1B2 $0169
-
-script "Cloud never moves PL2" always
-	dpoke $40C1B4 $0169
-
-script "Never Attacked PL1" always
-	poke $40A0CF $00
-	poke $40A826 $00
-	poke $40A827 $00
-
-script "Never Attacked PL1" always
-	poke $40A0CD $00
-	poke $40A828 $00
-	poke $40A829 $00
-
-script "Cur. T Balloon always red         PL1" always
-	poke $40A869 $01
-
-script "Cur. T Balloon always brown       PL1" always
-	poke $40A869 $02
-
-script "Cur. T Balloon always yellow      PL1" always
-	poke $40A869 $03
-
-script "Cur. T Balloon always green       PL1" always
-	poke $40A869 $04
-
-script "Cur. T Balloon always light blue  PL1" always
-	poke $40A869 $05
-
-script "Cur. T Balloon always dark blue   PL1" always
-	poke $40A869 $06
-
-script "Cur. T Balloon always purple      PL1" always
-	poke $40A869 $07
-
-script "Cur. T Balloon always grey        PL1" always
-	poke $40A869 $08
-
-script "Cur. B Balloon always red         PL1" always
-	poke $40A86B $01
-
-script "Cur. B Balloon always brown       PL1" always
-	poke $40A86B $02
-
-script "Cur. B Balloon always yellow      PL1" always
-	poke $40A86B $03
-
-script "Cur. B Balloon always green       PL1" always
-	poke $40A86B $04
-
-script "Cur. B Balloon always light blue  PL1" always
-	poke $40A86B $05
-
-script "Cur. B Balloon always dark blue   PL1" always
-	poke $40A86B $06
-
-script "Cur. B Balloon always purple      PL1" always
-	poke $40A86B $07
-
-script "Cur. B Balloon always grey        PL1" always
-	poke $40A86B $08
-
-script "Next T Balloon always red         PL1" always
-	poke $40A84B $01
-
-script "Next T Balloon always brown       PL1" always
-	poke $40A84B $02
-
-script "Next T Balloon always yellow      PL1" always
-	poke $40A84B $03
-
-script "Next T Balloon always green       PL1" always
-	poke $40A84B $04
-
-script "Next T Balloon always light blue  PL1" always
-	poke $40A84B $05
-
-script "Next T Balloon always dark blue   PL1" always
-	poke $40A84B $06
-
-script "Next T Balloon always purple      PL1" always
-	poke $40A84B $07
-
-script "Next T Balloon always grey        PL1" always
-	poke $40A84B $08
-
-script "Next B Balloon always red         PL1" always
-	poke $40A84F $01
-
-script "Next B Balloon always brown       PL1" always
-	poke $40A84F $02
-
-script "Next B Balloon always yellow      PL1" always
-	poke $40A84F $03
-
-script "Next B Balloon always green       PL1" always
-	poke $40A84F $04
-
-script "Next B Balloon always light blue  PL1" always
-	poke $40A84F $05
-
-script "Next B Balloon always dark blue   PL1" always
-	poke $40A84F $06
-
-script "Next B Balloon always purple      PL1" always
-	poke $40A84F $07
-
-script "Next B Balloon always grey        PL1" always
-	poke $40A84F $08
-
-script "Cur. T Balloon will be red        PL1"
-	poke $40A869 $01
-
-script "Cur. T Balloon will be brown      PL1"
-	poke $40A869 $02
-
-script "Cur. T Balloon will be yellow     PL1"
-	poke $40A869 $03
-
-script "Cur. T Balloon will be green      PL1"
-	poke $40A869 $04
-
-script "Cur. T Balloon will be light blue PL1"
-	poke $40A869 $05
-
-script "Cur. T Balloon will be dark blue  PL1"
-	poke $40A869 $06
-
-script "Cur. T Balloon will be purple     PL1"
-	poke $40A869 $07
-
-script "Cur. T Balloon will be grey       PL1"
-	poke $40A869 $08
-
-script "Cur. B Balloon will be brown      PL1"
-	poke $40A86B $02
-
-script "Cur. B Balloon will be yellow     PL1"
-	poke $40A86B $03
-
-script "Cur. B Balloon will be green      PL1"
-	poke $40A86B $04
-
-script "Cur. B Balloon will be light Blue PL1"
-	poke $40A86B $05
-
-script "Cur. B Balloon will be dark Blue  PL1"
-	poke $40A86B $06
-
-script "Cur. B Balloon will be purple     PL1"
-	poke $40A86B $07
-
-script "Cur. B Balloon will be grey       PL1"
-	poke $40A86B $08
-
-script "Next T Balloon will be red        PL1"
-	poke $40A84B $01
-
-script "Next T Balloon will be brown      PL1"
-	poke $40A84B $02
-
-script "Next T Balloon will be yellow     PL1"
-	poke $40A84B $03
-
-script "Next T Balloon will be green      PL1"
-	poke $40A84B $04
-
-script "Next T Balloon will be light blue PL1"
-	poke $40A84B $05
-
-script "Next T Balloon will be dark blue  PL1"
-	poke $40A84B $06
-
-script "Next T Balloon will be purple     PL1"
-	poke $40A84B $07
-
-script "Next T Balloon will be grey       PL1"
-	poke $40A84B $08
-
-script "Next B Balloon will be red        PL1"
-	poke $40A84F $01
-
-script "Next B Balloon will be brown      PL1"
-	poke $40A84F $02
-
-script "Next B Balloon will be yellow     PL1"
-	poke $40A84F $03
-
-script "Next B Balloon will be green      PL1"
-	poke $40A84F $04
-
-script "Next B Balloon will be light blue PL1"
-	poke $40A84F $05
-
-script "Next B Balloon will be dark blue  PL1"
-	poke $40A84F $06
-
-script "Next B Balloon will be purple     PL1"
-	poke $40A84F $07
-
-script "Next B Balloon will be grey       PL1"
-	poke $40A84F $08
-
-script "Cur. T Balloon always red         PL2" always
-	poke $40A86D $01
-
-script "Cur. T Balloon always brown       PL2" always
-	poke $40A86D $02
-
-script "Cur. T Balloon always yellow      PL2" always
-	poke $40A86D $03
-
-script "Cur. T Balloon always green       PL2" always
-	poke $40A86D $04
-
-script "Cur. T Balloon always light blue  PL2" always
-	poke $40A86D $05
-
-script "Cur. T Balloon always dark blue   PL2" always
-	poke $40A86D $06
-
-script "Cur. T Balloon always purple      PL2" always
-	poke $40A86D $07
-
-script "Cur. T Balloon always grey        PL2" always
-	poke $40A86D $08
-
-script "Cur. B Balloon always red         PL2" always
-	poke $40A86F $01
-
-script "Cur. B Balloon always brown       PL2" always
-	poke $40A86F $02
-
-script "Cur. B Balloon always yellow      PL2" always
-	poke $40A86F $03
-
-script "Cur. B Balloon always green       PL2" always
-	poke $40A86F $04
-
-script "Cur. B Balloon always light blue  PL2" always
-	poke $40A86F $05
-
-script "Cur. B Balloon always dark blue   PL2" always
-	poke $40A86F $06
-
-script "Cur. B Balloon always purple      PL2" always
-	poke $40A86F $07
-
-script "Cur. B Balloon always grey        PL2" always
-	poke $40A86F $08
-
-script "Next T Balloon always red         PL2" always
-	poke $40A84D $01
-
-script "Next T Balloon always brown       PL2" always
-	poke $40A84D $02
-
-script "Next T Balloon always yellow      PL2" always
-	poke $40A84D $03
-
-script "Next T Balloon always green       PL2" always
-	poke $40A84D $04
-
-script "Next T Balloon always light blue  PL2" always
-	poke $40A84D $05
-
-script "Next T Balloon always dark blue   PL2" always
-	poke $40A84D $06
-
-script "Next T Balloon always purple      PL2" always
-	poke $40A84D $07
-
-script "Next T Balloon always grey        PL2" always
-	poke $40A84D $08
-
-script "Next B Balloon always red         PL2" always
-	poke $40A851 $01
-
-script "Next B Balloon always brown       PL2" always
-	poke $40A851 $02
-
-script "Next B Balloon always yellow      PL2" always
-	poke $40A851 $03
+script "Infinite Credits"  
+run:
+    poke $400265 $09
+script " "  
+script "P1 Infinite Move Time"  
+run:
+    poke $40A880 $01
+    poke $40A881 $FF
+script "P1 Always have lots of Special Weapons Next"  
+run:
+    poke $40A15D $23
+script "P1 Cloud never moves"  
+run:
+    poke $40C1B2 $01
+    poke $40C1B3 $69
+script " "  
+script "P1 Never get Attacked [VS Mode]"  
+run:
+    poke $40A0CF $00
+    poke $40A826 $00
+    poke $40A827 $00
+script "P1 Attack opp. side with 10 Now! [VS Mode]"  
+on:
+    poke $40A0CD $0A
+    poke $40A828 $FF
+    poke $40A829 $FF
+script "P1 Attack opp. side with LOTS Now! [VS Mode]" \
+ "comm:This is effectively a Win this Game Now! cheat"  
+on:
+    poke $40A0CD $60
+    poke $40A828 $FF
+    poke $40A829 $FF
+script " "  
+script "The cheats for the Next Bubbles do not update"  
+script "the display, the Current Bubbles do though."  
+script " "  
+script "P1 Select Perm. Current Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A869 param
+script "P1 Select Perm. Current Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A86B param
+script "P1 Select Temp. Current Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A869 param
+script "P1 Select Temp. Current Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A86B param
+script "P1 Select Perm. Next Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A84B param
+script "P1 Select Perm. Next Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A84F param
+script "P1 Select Temp. Next Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A84B param
+script "P1 Select Temp. Next Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A84F param
+script " "  
+script "P2 Infinite Move Time"  
+run:
+    poke $40A882 $01
+    poke $40A883 $FF
+script "P2 Always have lots of Special Weapons Next"  
+run:
+    poke $40A15F $23
+script "P2 Cloud never moves"  
+run:
+    poke $40C1B4 $01
+    poke $40C1B5 $69
+script " "  
+script "P2 Never get Attacked [VS Mode]"  
+run:
+    poke $40A0CD $00
+    poke $40A828 $00
+    poke $40A829 $00
+script "P2 Attack opp. side with 10 Now! [VS Mode]"  
+on:
+    poke $40A0CF $0A
+    poke $40A826 $FF
+    poke $40A827 $FF
+script "P2 Attack opp. side with LOTS Now! [VS Mode]" \
+ "comm:This is effectively a Win this Game Now! cheat"  
+on:
+    poke $40A0CF $60
+    poke $40A826 $FF
+    poke $40A827 $FF
+script " "  
+script "The cheats for the Next Bubbles do not update"  
+script "the display, the Current Bubbles do though."  
+script " "  
+script "P2 Select Perm. Current Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A86D param
+script "P2 Select Perm. Current Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A86F param
+script "P2 Select Temp. Current Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A86D param
+script "P2 Select Temp. Current Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A86F param
+script "P2 Select Perm. Next Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A84D param
+script "P2 Select Perm. Next Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+run:
+    poke $40A851 param
+script "P2 Select Temp. Next Top Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A84D param
+script "P2 Select Temp. Next Bottom Balloon" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x01/Red"\
+ "0x02/Brown"\
+ "0x03/Yellow"\
+ "0x04/Green"\
+ "0x05/Light Blue"\
+ "0x06/Dark Blue"\
+ "0x07/Purple"\
+ "0x08/Grey" 
+change:
+    poke $40A851 param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

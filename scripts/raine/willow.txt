@@ -1,18 +1,70 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $FF8342 $03
-
-script "*UP Unlimited energy" always
-	dpoke $FF8362 $0606
-
-script "*UP Unlimited time" always
-	poke $FF83C7 $59
-
-script "*UP Unlimited money" always
-	poke $FF8369 $90
-
-script "*UP Unlimited bracelets" always
-	poke $FF835D $03
+script "Infinite Credits"  
+run:
+    poke $FF82A2 $09
+script "Infinite Time"  
+run:
+    poke $FF83C7 $59
+script "Infinite Lives"  
+run:
+    poke $FF8342 $09
+script "Infinite Energy"  
+run:
+    poke $FF8362 $06
+script "Hit Anywhere" \
+ "comm:Enemies that block frontal attacks need to be manually killed from behind"  
+on:
+    temp0=dpeek($03A182)
+    temp1=dpeek($03A19E)
+    temp2=dpeek($03A124)
+    temp3=dpeek($03A140)
+run:
+    dpoke $03A182 $4E71
+    dpoke $03A19E $4E71
+    dpoke $03A124 $4E71
+    dpoke $03A140 $4E71
+off:
+    dpoke $03A182 temp0
+    dpoke $03A19E temp1
+    dpoke $03A124 temp2
+    dpoke $03A140 temp3
+script "Infinite Money"  
+run:
+    poke $FF8369 $90
+script "Infinite Bracelets"  
+run:
+    poke $FF835D $03
+script "Maximum Magic Power"  
+run:
+    poke $FF8366 $06
+script "Maximum Sword Power"  
+run:
+    poke $FF8367 $04
+script "Select Instant Magic" \
+ "comm:Instant magic will not perform a one press button magic. But, it will reduce the time for the recharge - pressing the key for 1 second or more will be enough." \
+ "0x4E/Moon Light"\
+ "0x6E/Tornado"\
+ "0x8E/Gold"\
+ "0x9E/Time"\
+ "0xAE/Blast"\
+ "0xBF/Crystal" 
+run:
+    poke $FF8376 param
+script "Select Starting Stage" \
+ inter=1,6,1 
+run:
+    if (peek($FF8345)==$00)
+      poke $FF8345 (param-$1)
+    endif
+script "Select Character Now!" \
+ "0x01/Willow"\
+ "0x02/Madmartigan" 
+change:
+    if (param==$01)
+      poke $FF8386 $00
+      poke $FF9866 $00
+    endif
+    if (param==$02)
+      poke $FF8386 $04
+      poke $FF9866 $04
+    endif
+script " "  

@@ -1,0 +1,13 @@
+script "Infinite Credits"  
+run:
+    poke $F0007 $99
+script "Select Perm Current Single Colour Block" \
+ "0x00/Red"\
+ "0x08/Blue"\
+ "0x10/Green"\
+ "0x18/Yellow" 
+run:
+    dpoke $F724C param
+    dpoke $F724E param
+    dpoke $F7250 param
+    dpoke $F7252 param

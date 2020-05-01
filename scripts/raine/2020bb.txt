@@ -1,0 +1,178 @@
+script "Infinite Continues"  
+run:
+    poke $1000C1 $64
+script "Infinite Select Time"  
+run:
+    poke $105BA4 $02
+script "Infinite Game Time"  
+run:
+    poke $104290 $59
+script "Infinite Total Outs"  
+run:
+    poke $1000C0 $16
+script "Always Hit a Home Run" \
+ "comm:Press or hold Bunt button before or during play. Ball must be in the air."  
+on:
+    temp0=lpeek($004572)
+    temp1=dpeek($004576)
+    temp2=lpeek($0FFFE0)
+    temp3=lpeek($0FFFE4)
+    temp4=lpeek($0FFFE8)
+    temp5=lpeek($0FFFEC)
+    temp6=lpeek($0FFFF0)
+    temp7=lpeek($0FFFF4)
+run:
+    lpoke $004572 $4EB9000F
+    dpoke $004576 $FFE0
+    lpoke $0FFFE0 $02395540
+    lpoke $0FFFE4 $0010FD95
+    lpoke $0FFFE8 $6706397C
+    lpoke $0FFFEC $49800002
+    lpoke $0FFFF0 $08AD0004
+    lpoke $0FFFF4 $80AB4E75
+off:
+    lpoke $004572 temp0
+    dpoke $004576 temp1
+    lpoke $0FFFE0 temp2
+    lpoke $0FFFE4 temp3
+    lpoke $0FFFE8 temp4
+    lpoke $0FFFEC temp5
+    lpoke $0FFFF0 temp6
+    lpoke $0FFFF4 temp7
+script "Infinite Strikes"  
+run:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100040) $00
+    endif
+script "Infinite Balls"  
+run:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100041) $00
+    endif
+script "Infinite Outs"  
+run:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100042) $00
+    endif
+script "Set Strikes to 0 Now!"  
+on:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100040) $00
+    endif
+script "Set Strikes to 2 Now!"  
+on:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100040) $02
+    endif
+script "Set Balls to 0 Now!"  
+on:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100041) $00
+    endif
+script "Set Balls to 3 Now!"  
+on:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100041) $03
+    endif
+script "Set Outs to 0 Now!"  
+on:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100042) $00
+    endif
+script "Set Outs to 2 Now!"  
+on:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100042) $02
+    endif
+script "Select Current Innings Now!" \
+ "0x00/Top of 1st"\
+ "0x01/Bottom of 1st"\
+ "0x02/Top of 2nd"\
+ "0x03/Bottom of 2nd"\
+ "0x04/Top of 3rd"\
+ "0x05/Bottom of 3rd"\
+ "0x06/Top of 4th"\
+ "0x07/Bottom of 4th"\
+ "0x08/Top of 5th"\
+ "0x09/Bottom of 5th"\
+ "0x0A/Top of 6th"\
+ "0x0B/Bottom of 6th"\
+ "0x0C/Top of 7th"\
+ "0x0D/Bottom of 7th"\
+ "0x0E/Top of 8th"\
+ "0x0F/Bottom of 8th"\
+ "0x10/Top of 9th"\
+ "0x11/Bottom of 9th" 
+change:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100043) param
+    endif
+script "Always have a Quick Win" \
+ "comm:Strike out for an easy win. Enable this cheat and turn off the other cheats for this to work properly."  
+run:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100042) $02)
+      poke ((dpeek($1000CA))+$100040) $02)
+      poke ((dpeek($1000CA))+$100043) $11)
+      poke ((dpeek($1000CA))+$100044) $63)
+      poke ((dpeek($1000CA))+$100045) $00)
+    endif
+script " "  
+script "P1 Select Score" \
+ inter=1,100,1 
+run:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100044) param
+    endif
+script "P2 Select Score" \
+ inter=1,100,1 
+run:
+    if peek((dpeek($1000CA))+$100005)!=peek($1000CB)
+      poke ((dpeek($1000CA))+$100045) param
+    endif
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

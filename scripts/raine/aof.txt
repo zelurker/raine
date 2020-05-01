@@ -1,0 +1,193 @@
+script "Infinite Time (Turn OFF on the Bonus Stage!)"  
+run:
+    poke $108406 $99
+script "Finish this Fight Now!"  
+on:
+    poke $108406 $00
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($010CAC)
+run:
+    dpoke $010CAC $6012
+off:
+    dpoke $010CAC temp0
+script "Desperation Move (Both Players)" \
+ "comm:Ryo or Robert's desperation move is always available. Perform desperation move with joystick D, DF, F and then key C followed by key A."  
+on:
+    temp0=peek($0139AB)
+    temp1=peek($0139B9)
+run:
+    poke $0139AB $00
+    poke $0139B9 $80
+off:
+    poke $0139AB temp0
+    poke $0139B9 temp1
+script "Always successful in all Bonus Games" \
+ "comm:This cheat must be turned on before selecting a bonus game. Selected bonus game will be succeed."  
+on:
+    temp0=dpeek($00EAC8)
+    temp1=dpeek($00DC22)
+    temp2=peek($10870F)
+    temp3=peek($108448)
+run:
+    dpoke $00EAC8 $600C
+    dpoke $00DC22 $600C
+    if (dpeek($109EAE)==$F91C)&&(peek($10843B)==$02)
+      poke $10870F $FF
+      poke $108448 $01
+    endif
+off:
+    dpoke $00EAC8 temp0
+    dpoke $00DC22 temp1
+    poke $10870F temp2
+    poke $108448 temp3
+script "King's costume always flies off" \
+ "comm:Any final hit will cause King's costume fly off, instead of special move."  
+on:
+    temp0=peek($016A32)
+run:
+    poke $016A32 $60
+off:
+    poke $016A32 temp0
+script "Easy F,D,DF moves" \
+ "comm:F,D,F + Button A to perform uppercut. (For Ryo, Robert and Mr. Karate.)"  
+on:
+    temp0=peek($014144)
+    temp1=peek($014500)
+run:
+    poke $014144 $18
+    poke $014500 $18
+off:
+    poke $014144 temp0
+    poke $014500 temp1
+script "Unlock Secret Characters at VS Mode Select Player Screen" \
+ "comm:Enable it before VS Mode Select Player. Unlocks Mr. Big and Mr. Karate."  
+on:
+    temp0=lpeek($00A860)
+run:
+    lpoke $00A860 $303C000B
+off:
+    lpoke $00A860 temp0
+script "Select Perm Winner" \
+ "0x90/P1"\
+ "0x91/P2" 
+run:
+    poke $10840A param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $1092CD $60
+script "P1 Drain All Energy Now!"  
+on:
+    poke $1092CD $01
+script "P1 Infinite Power"  
+run:
+    poke $1094A4 $80
+script "P1 Always have Minimum Power"  
+run:
+    poke $1094A4 $00
+script "P1 Drain All Power Now!"  
+on:
+    poke $1094A4 $00
+script "P1 Select C button action" \
+ "comm:The C button does essentially what the A or B button does (outside throw range), depending on which button was pressed last. Eg pressing A, then C will throw a punch for the C press, while pressing B then C will throw a kick for the C action." \
+ "0x00/Punch"\
+ "0x01/Kick" 
+run:
+    poke $1094B5 param|(peek($1094B5)&~01)
+script "P1 Select Character" \
+ "comm:This cheat switches the character immediately when your character moves but the energy bar character icon and name won't update till the next round." \
+ "0x0000/Ryo Sakazaki"\
+ "0x0001/Robert Garcia"\
+ "0x0002/Ryuhaku Todo"\
+ "0x0003/Jack Turner"\
+ "0x0004/Lee Pai Long"\
+ "0x0005/King"\
+ "0x0006/Micky Rodgers"\
+ "0x0007/John Crawley"\
+ "0x0008/#Mr. Big"\
+ "0x0009/#Mr. Karate" 
+run:
+    dpoke $1092C2 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $1093CD $60
+script "P2 Drain All Energy Now!"  
+on:
+    poke $1093CD $01
+script "P2 Infinite Power"  
+run:
+    poke $1095A4 $80
+script "P2 Always have Minimum Power"  
+run:
+    poke $1095A4 $00
+script "P2 Drain All Power Now!"  
+on:
+    poke $1095A4 $00
+script "P2 Select C button action" \
+ "comm:The C button does essentially what the A or B button does (outside throw range), depending on which button was pressed last. Eg pressing A, then C will throw a punch for the C press, while pressing B then C will throw a kick for the C action." \
+ "0x00/Punch"\
+ "0x01/Kick" 
+run:
+    poke $1095B5 param|(peek($1095B5)&~01)
+script "P2 Select Character" \
+ "comm:This cheat switches the character immediately when your character moves but the energy bar character icon and name won't update till the next round." \
+ "0x0000/Ryo Sakazaki"\
+ "0x0001/Robert Garcia"\
+ "0x0002/Ryuhaku Todo"\
+ "0x0003/Jack Turner"\
+ "0x0004/Lee Pai Long"\
+ "0x0005/King"\
+ "0x0006/Micky Rodgers"\
+ "0x0007/John Crawley"\
+ "0x0008/#Mr. Big"\
+ "0x0009/#Mr. Karate" 
+run:
+    dpoke $1093C2 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,9 +1,22 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited energy" always
-	poke $A010 $60
-
-script "*UP One hit for bosses    (T)"
-	poke $A050 $01
+script "Infinite Credits"  
+run:
+    poke $08187 $09
+script "Infinite Energy"  
+run:
+    poke $0A010 $60
+script "Invincibility"  
+on:
+    temp0=peek($0352A)
+    temp1=peek($03666)
+    temp2=peek($1C072)
+run:
+    poke $0352A $18
+    poke $03666 $C9
+    poke $1C072 $18
+off:
+    poke $0352A temp0
+    poke $03666 temp1
+    poke $1C072 temp2
+script "One hit to kill boss Now!"  
+on:
+    poke $0A050 $01

@@ -1,0 +1,181 @@
+script "Infinite Credits"  
+run:
+    poke $103A37 $09
+script " "  
+script "Cookie + Bibi"  
+script " "  
+script "Select Bubble Status (Puzzle Mode)" \
+ "0x00/Always Get Down"\
+ "0x0A/Never Get Down" 
+run:
+    poke $104669 param
+script " "  
+script "P1 Select Bubble Status (VS Mode)" \
+ "0x00/Always Get Down"\
+ "0x0A/Never Get Down" 
+run:
+    poke $104CA7 param
+script "P1 Select Current Ball" \
+ "0x01/Tennisball"\
+ "0x02/Basketball"\
+ "0x03/Soccerball"\
+ "0x04/Baseball"\
+ "0x05/Bowlingball"\
+ "0x06/Billiardball"\
+ "0x07/Volleyball"\
+ "0x08/Football" 
+run:
+    poke $104C75 param
+script "P1 Infinite Throwing Time"  
+run:
+    dpoke $104C82 $0100
+script " "  
+script "P2 Select Bubble Status (VS Mode)" \
+ "0x00/Always Get Down"\
+ "0x0A/Never Get Down" 
+run:
+    poke $104E6D param
+script "P2 Select Current Ball" \
+ "0x01/Tennisball"\
+ "0x02/Basketball"\
+ "0x03/Soccerball"\
+ "0x04/Baseball"\
+ "0x05/Bowlingball"\
+ "0x06/Billiardball"\
+ "0x07/Volleyball"\
+ "0x08/Football" 
+run:
+    poke $104E3B param
+script "P2 Infinite Throwing Time"  
+run:
+    dpoke $104E48 $0100
+script "Always Displayed Help Line" \
+ "comm:Puzzle Mode on single play ONLY"  
+run:
+    poke $10417B $01
+script "Select Starting Stage" \
+ inter=1,50,1 
+change:
+    poke $103AA9 (param-$1)
+script " "  
+script "New Hyper Man"  
+script " "  
+script "Infinite Time"  
+run:
+    dpoke $103AA4 $7FFF
+script "Enable to Eat Monster"  
+run:
+    dpoke $104668 $0002
+script "Select Starting Stage" \
+ "comm:Set on control information screen" \
+ inter=1,45,1 
+on:
+    poke $103AA9 $FF
+change:
+    poke $103AA9 (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $10469B $09
+script "P1 Invincibility"  
+run:
+    if (frame%60==$0)
+      poke $1046B3 $60
+    endif
+script "P1 Select Level" \
+ "comm:The Maximum Level option can cause slow down" \
+ "0x46/Best Level"\
+ "0x62/Maximum Level (Buggy)" 
+run:
+    poke $10467D param
+script "P1 Select Speed" \
+ inter=0,41,1 
+run:
+    poke $10469D (param)
+script "P1 Always Have Helmet"  
+run:
+    poke $1046A5 $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1046EF $09
+script "P2 Invincibility"  
+run:
+    if (frame%60==$0)
+      poke $104707 $60
+    endif
+script "P2 Select Level" \
+ "comm:The Maximum Level option can cause slow down" \
+ "0x46/Best Level"\
+ "0x62/Maximum Level (Buggy)" 
+run:
+    poke $1046D1 param
+script "P2 Select Speed" \
+ inter=0,41,1 
+run:
+    poke $1046F1 (param)
+script "P2 Always Have Helmet"  
+run:
+    poke $1046F9 $01
+script " "  
+script "Hyper Man"  
+script " "  
+script "Infinite Time"  
+run:
+    dpoke $103AA4 $7FFF
+script "Enable to Eat Monster"  
+run:
+    dpoke $1046A6 $0002
+script "Always Have Fluoro Scope"  
+run:
+    poke $104645 $01
+script "Finish Current Stage Now!"  
+on:
+    poke $104647 $00
+script "Select Starting Stage" \
+ "comm:Set on the game selection screen" \
+ inter=1,28,1 
+on:
+    poke $103AA9 $FF
+change:
+    poke $103AA9 (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1046D7 $09
+script "P1 Invincibility"  
+run:
+    poke $1046EB $02
+script "P1 Select Speed" \
+ inter=0,111,1 
+run:
+    poke $1046D9 (param)
+script "P1 Always Have Jump Shoes"  
+run:
+    poke $1046DB $01
+script "P1 Always Have Helmet"  
+run:
+    poke $1046DF $01
+script "P1 Always Have Laser"  
+run:
+    poke $1046E1 $63
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10471F $09
+script "P2 Invincibility"  
+run:
+    poke $104733 $02
+script "P2 Select Speed" \
+ inter=0,111,1 
+run:
+    poke $104721 (param)
+script "P2 Always Have Jump Shoes"  
+run:
+    poke $104723 $01
+script "P2 Always Have Helmet"  
+run:
+    poke $104727 $01
+script "P2 Always Have Laser"  
+run:
+    poke $104729 $63

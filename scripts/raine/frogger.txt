@@ -1,13 +1,53 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $83E5 $03
-
-script "2UP Unlimited lives" always
-	poke $83E6 $03
-
-script "*UP Unlimited bonus" always
-	poke $83DD $3C
-	poke $83DE $60
+script "Infinite Time"  
+run:
+    dpoke $83DD $603C
+script "Invincibility"  
+on:
+    temp0=peek($086B)
+    temp1=peek($12D1)
+    temp2=peek($13B4)
+    temp3=peek($13D2)
+    temp4=peek($1618)
+    temp5=peek($16AE)
+    temp6=peek($1D80)
+    temp7=peek($2694)
+    temp8=peek($28F0)
+    temp9=peek($2B7B)
+    temp10=peek($2CCD)
+run:
+    poke $086B $00
+    poke $12D1 $00
+    poke $13B4 $00
+    poke $13D2 $00
+    poke $1618 $00
+    poke $16AE $00
+    poke $1D80 $00
+    poke $2694 $00
+    poke $28F0 $00
+    poke $2B7B $00
+    poke $2CCD $00
+off:
+    poke $086B temp0
+    poke $12D1 temp1
+    poke $13B4 temp2
+    poke $13D2 temp3
+    poke $1618 temp4
+    poke $16AE temp5
+    poke $1D80 temp6
+    poke $2694 temp7
+    poke $28F0 temp8
+    poke $2B7B temp9
+    poke $2CCD temp10
+script "Finish this Level Now!"  
+on:
+    poke $825C $05
+script "Move Fast"  
+run:
+    lpoke $824C $00000000
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $83E5 $06
+script "P2 Infinite Lives"  
+run:
+    poke $83E6 $06

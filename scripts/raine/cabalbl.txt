@@ -1,66 +1,85 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $41658 $01
-
-script "1UP Invulnerability OFF"
-	poke $41658 $FF
-
-script "2UP Invulnerability ON" always
-	poke $41659 $01
-
-script "2UP Invulnerability OFF"
-	poke $41659 $FF
-
-script "1UP Unlimited lives" always
-	poke $4005E $03
-
-script "2UP Unlimited lives" always
-	poke $4005F $03
-
-script "1UP Unlimited bombs" always
-	poke $40052 $99
-
-script "2UP Unlimited bombs" always
-	poke $40053 $99
-
-script "*UP One enemy ends level  (T)"
-	poke $40084 $01
-
-script "1UP Weap. - Normal gun    (P)" always
-	poke $40111 $00
-
-script "1UP Weap. - Semi-auto gun (P)" always
-	poke $40111 $01
-
-script "1UP Weap. - Full-auto gun (P)" always
-	poke $40111 $02
-
-script "2UP Weap. - Normal gun    (P)" always
-	poke $40145 $00
-
-script "2UP Weap. - Semi-auto gun (P)" always
-	poke $40145 $01
-
-script "2UP Weap. - Full-auto gun (P)" always
-	poke $40145 $02
-
-script "1UP Weap. - Normal gun    (T)"
-	poke $40111 $00
-
-script "1UP Weap. - Semi-auto gun (T)"
-	poke $40111 $01
-
-script "1UP Weap. - Full-auto gun (T)"
-	poke $40111 $02
-
-script "2UP Weap. - Normal gun    (T)"
-	poke $40145 $00
-
-script "2UP Weap. - Semi-auto gun (T)"
-	poke $40145 $01
-
-script "2UP Weap. - Full-auto gun (T)"
-	poke $40145 $02
+script "Infinite Credits"  
+run:
+    poke $40028 $99
+script "Select Starting Level" \
+ "0xFFFF/1-1"\
+ "0x0000/1-2"\
+ "0x0001/1-3"\
+ "0x0002/1-4"\
+ "0x0003/2-1"\
+ "0x0004/2-2"\
+ "0x0005/2-3"\
+ "0x0006/2-4"\
+ "0x0007/3-1"\
+ "0x0008/3-2"\
+ "0x0009/3-3"\
+ "0x000A/3-4"\
+ "0x000B/4-1"\
+ "0x000C/4-2"\
+ "0x000D/4-3"\
+ "0x000E/4-4"\
+ "0x000F/5-1"\
+ "0x0010/5-2"\
+ "0x0011/5-3"\
+ "0x0012/5-4" 
+on:
+    temp0=dpeek($01110)
+run:
+    dpoke $01110 param
+off:
+    dpoke $01110 temp0
+script "Finish Current Level Now!" \
+ "comm:In x-4 level, a boss will appear instead of the level finish"  
+on:
+    poke $40049 $01
+script "Destroy Boss Now!"  
+on:
+    poke $40049 $05
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $4005E $09
+script "P1 Infinite Bombs"  
+run:
+    poke $40052 $99
+script "P1 Invincibility"  
+run:
+    poke $41658 $FB
+script "P1 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Semi-Auto Gun"\
+ "0x02/Full-Auto Gun" 
+run:
+    poke $40111 param
+script "P1 Rapid Fire - Gun" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $4000E $00
+script "P1 Rapid Fire - Bomb" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $4000F $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $4005F $09
+script "P2 Infinite Bombs"  
+run:
+    poke $40053 $99
+script "P2 Invincibility"  
+run:
+    poke $41659 $FB
+script "P2 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Semi-Auto Gun"\
+ "0x02/Full-Auto Gun" 
+run:
+    poke $40145 param
+script "P2 Rapid Fire - Gun" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $40010 $00
+script "P2 Rapid Fire - Bomb" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $40011 $00

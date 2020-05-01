@@ -1,18 +1,24 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $611F3 $03
-
-script "2UP Unlimited lives" always
-	poke $6121D $03
-
-script "1UP Unlimited continues" always
-	poke $611F4 $03
-
-script "2UP Unlimited continues" always
-	poke $6121E $03
-
-script "*UP Unlimited bonus     (OFF)" always
-	poke $625AA $99
+script "Infinite Bonus (F6)" \
+ "comm:F6 at the end of level"  
+run:
+    poke $625AA $99
+script "Select Starting Round" \
+ inter=1,6,1 
+run:
+    if (peek($62623)==$00)
+      poke $62623 (param-$1)
+    endif
+script "-= See the Dip Switch Menu to enable Invincibility =-"  
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $611F3 $0A
+script "P1 Infinite Continues"  
+run:
+    poke $611F4 $03
+script "P2 Infinite Lives"  
+run:
+    poke $6121D $0A
+script "P2 Infinite Continues"  
+run:
+    poke $6121E $03

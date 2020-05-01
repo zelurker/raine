@@ -1,201 +1,147 @@
-# Cheats from  : Pugsy
-# Last update  : 2002.02.13
-# Desc. format : Pugsy
-
-script "Help line ON PL1" always
-	poke $9070D5 $01
-
-script "Help line OFF PL1"
-	poke $9070D5 $00
-
-script "Cur. bubble always blue    PL1" always
-	poke $90706D $00
-
-script "Cur. bubble always red     PL1" always
-	poke $90706D $01
-
-script "Cur. bubble always yellow  PL1" always
-	poke $90706D $02
-
-script "Cur. bubble always green   PL1" always
-	poke $90706D $03
-
-script "Cur. bubble always purple  PL1" always
-	poke $90706D $04
-
-script "Cur. bubble always orange  PL1" always
-	poke $90706D $05
-
-script "Cur. bubble always black   PL1" always
-	poke $90706D $06
-
-script "Cur. bubble always grey    PL1" always
-	poke $90706D $07
-
-script "Next bubble always blue    PL1" always
-	poke $90708B $00
-
-script "Next bubble always red     PL1" always
-	poke $90708B $01
-
-script "Next bubble always yellow  PL1" always
-	poke $90708B $02
-
-script "Next bubble always green   PL1" always
-	poke $90708B $03
-
-script "Next bubble always purple  PL1" always
-	poke $90708B $04
-
-script "Next bubble always orange  PL1" always
-	poke $90708B $05
-
-script "Next bubble always black   PL1" always
-	poke $90708B $06
-
-script "Next bubble always grey    PL1" always
-	poke $90708B $07
-
-script "Cur. bubble will be blue   PL1"
-	poke $90706D $00
-
-script "Cur. bubble will be red    PL1"
-	poke $90706D $01
-
-script "Cur. bubble will be yellow PL1"
-	poke $90706D $02
-
-script "Cur. bubble will be green  PL1"
-	poke $90706D $03
-
-script "Cur. bubble will be purple PL1"
-	poke $90706D $04
-
-script "Cur. bubble will be orange PL1"
-	poke $90706D $05
-
-script "Cur. bubble will be black  PL1"
-	poke $90706D $06
-
-script "Cur. bubble will be grey   PL1"
-	poke $90706D $07
-
-script "Next bubble will be blue   PL1"
-	poke $90708B $00
-
-script "Next bubble will be red    PL1"
-	poke $90708B $01
-
-script "Next bubble will be yellow PL1"
-	poke $90708B $02
-
-script "Next bubble will be green  PL1"
-	poke $90708B $03
-
-script "Next bubble will be purple PL1"
-	poke $90708B $04
-
-script "Next bubble will be orange PL1"
-	poke $90708B $05
-
-script "Next bubble will be black  PL1"
-	poke $90708B $06
-
-script "Next bubble will be grey   PL1"
-	poke $90708B $07
-
-script "Cur. bubble always blue    PL2" always
-	poke $9070F3 $00
-
-script "Cur. bubble always red     PL2" always
-	poke $9070F3 $01
-
-script "Cur. bubble always yellow  PL2" always
-	poke $9070F3 $02
-
-script "Cur. bubble always green   PL2" always
-	poke $9070F3 $03
-
-script "Cur. bubble always purple  PL2" always
-	poke $9070F3 $04
-
-script "Cur. bubble always orange  PL2" always
-	poke $9070F3 $05
-
-script "Cur. bubble always black   PL2" always
-	poke $9070F3 $06
-
-script "Cur. bubble always grey    PL2" always
-	poke $9070F3 $07
-
-script "Next bubble always blue    PL2" always
-	poke $907111 $00
-
-script "Next bubble always red     PL2" always
-	poke $907111 $01
-
-script "Next bubble always yellow  PL2" always
-	poke $907111 $02
-
-script "Next bubble always green   PL2" always
-	poke $907111 $03
-
-script "Next bubble always purple  PL2" always
-	poke $907111 $04
-
-script "Next bubble always orange  PL2" always
-	poke $907111 $05
-
-script "Next bubble always black   PL2" always
-	poke $907111 $06
-
-script "Next bubble always grey    PL2" always
-	poke $907111 $07
-
-script "Cur. bubble will be blue   PL2"
-	poke $9070F3 $00
-
-script "Cur. bubble will be red    PL2"
-	poke $9070F3 $01
-
-script "Cur. bubble will be yellow PL2"
-	poke $9070F3 $02
-
-script "Cur. bubble will be green  PL2"
-	poke $9070F3 $03
-
-script "Cur. bubble will be purple PL2"
-	poke $9070F3 $04
-
-script "Cur. bubble will be orange PL2"
-	poke $9070F3 $05
-
-script "Cur. bubble will be black  PL2"
-	poke $9070F3 $06
-
-script "Cur. bubble will be grey   PL2"
-	poke $9070F3 $07
-
-script "Next bubble will be blue   PL2"
-	poke $907111 $00
-
-script "Next bubble will be red    PL2"
-	poke $907111 $01
-
-script "Next bubble will be yellow PL2"
-	poke $907111 $02
-
-script "Next bubble will be green  PL2"
-	poke $907111 $03
-
-script "Next bubble will be purple PL2"
-	poke $907111 $04
-
-script "Next bubble will be orange PL2"
-	poke $907111 $05
-
-script "Next bubble will be black  PL2"
-	poke $907111 $06
-
-script "Next bubble will be grey   PL2"
-	poke $907111 $07
+script "Select Next Round Now!" \
+ "0x01/Round 4"\
+ "0x02/Round 8"\
+ "0x03/Round 12"\
+ "0x04/Round 16"\
+ "0x05/Round 20"\
+ "0x06/Round 24"\
+ "0x07/Round 28"\
+ "0x08/Round 30"\
+ "0x09/End Sequence" 
+change:
+    if (param==$01)
+      poke $9026EB $02
+      poke $9026ED $02
+    endif
+    if (param==$02)
+      poke $9026EB $06
+      poke $9026ED $06
+    endif
+    if (param==$03)
+      poke $9026EB $0A
+      poke $9026ED $0A
+    endif
+    if (param==$04)
+      poke $9026EB $0E
+      poke $9026ED $0E
+    endif
+    if (param==$05)
+      poke $9026EB $12
+      poke $9026ED $12
+    endif
+    if (param==$06)
+      poke $9026EB $16
+      poke $9026ED $16
+    endif
+    if (param==$07)
+      poke $9026EB $1A
+      poke $9026ED $1A
+    endif
+    if (param==$08)
+      poke $9026EB $1C
+      poke $9026ED $1C
+    endif
+    if (param==$09)
+      poke $9026EB $20
+      poke $9026ED $20
+    endif
+script "Quick Finish Cheat" \
+ "comm:It's best to activate the Quick Finish cheat when at least one wall has decended, just complete 3 matching colours to drop the whole screen!"  
+on:
+    poke $904913 $00
+    poke $904927 $00
+script " "  
+script "P1 Select Help Line" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $9070D5 param
+script "P1 Select Perm. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $90706D param
+script "P1 Select Perm. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $90708B param
+script "P1 Select Temp. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $90706D param
+script "P1 Select Temp. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $90708B param
+script " "  
+script "P2 Select Perm. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $9070F3 param
+script "P2 Select Perm. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $907111 param
+script "P2 Select Temp. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $9070F3 param
+script "P2 Select Temp. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $907111 param

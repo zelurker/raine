@@ -1,24 +1,250 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $FFAE09 $63
-
-script "1UP Unlimited energy" always
-	poke $FF8441 $90
-
-script "2UP Unlimited energy" always
-	poke $FF8841 $90
-
-script "1UP Energy set to 0       (P)" always
-	poke $FF8441 $00
-
-script "2UP Energy set to 0       (P)" always
-	poke $FF8841 $00
-
-script "1UP Energy set to 0       (T)"
-	poke $FF8441 $00
-
-script "2UP Energy set to 0       (T)"
-	poke $FF8841 $00
+script "Infinite Time"  
+run:
+    poke $FFAE09 $63
+script "Quick Dramatic Battle"  
+run:
+    poke $FFAE49 $01
+    poke $FF84A2 $00
+    poke $FF88A2 $01
+script "Select Background" \
+ "0x00/Ryu"\
+ "0x02/Ken"\
+ "0x04/M.Bison"\
+ "0x06/Charlie"\
+ "0x08/Chun-Li"\
+ "0x0A/Adon"\
+ "0x0C/Sodom"\
+ "0x0E/Guy"\
+ "0x10/Birdie"\
+ "0x12/Rose"\
+ "0x14/M.Bison"\
+ "0x16/Sagat"\
+ "0x18/Dan" 
+run:
+    dpoke $FFAE00 param
+script "Fight Akuma on Stage 1" \
+ "comm:For both players. Enable it on the Character Selection Screen."  
+run:
+    poke $FFAE48 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8441 $90
+script "P1 Energy always set to 0"  
+run:
+    poke $FF8441 $00
+script "P1 Energy set to 0 Now!"  
+on:
+    poke $FF8441 $00
+script "P1 End round to win match"  
+run:
+    poke $FF84C6 $01
+script "P1 Rounds won always = 0"  
+run:
+    poke $FF84C6 $00
+script "P1 Rounds won = 0 Now!"  
+on:
+    poke $FF84C6 $00
+script "P1 Air special/super moves" \
+ "comm:Glitches when knocked down"  
+run:
+    poke $FF842F $00
+script "P1 Infinite Power"  
+run:
+    poke $FF84BF $90
+script "P1 Drain All Power Now!"  
+on:
+    poke $FF84BF $00
+script "P1 Never Faint"  
+run:
+    poke $FF8537 $00
+script "P1 Faint on every hit"  
+run:
+    poke $FF853A $00
+script "P1 Select Character" \
+ "comm:Free player selection - Use on level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M.Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan" 
+change:
+    poke $FF84A2 param
+script "P1 Infinite Taunts for Ken or Ryu"  
+run:
+    poke $FF85F2 $01
+script "P1 Infinite Taunts for Chun Li"  
+run:
+    poke $FF85C1 $01
+script "P1 Infinite Taunts for Charlie"  
+run:
+    poke $FF85F0 $01
+script "P1 Infinite Taunts for Guy"  
+run:
+    poke $FF85C4 $01
+script "P1 Infinite Taunts for Birdie"  
+run:
+    poke $FF85F8 $00
+script "P1 Infinite Taunts for Sodom"  
+run:
+    poke $FF85FF $01
+script "P1 Infinite Taunts for Adon"  
+run:
+    poke $FF85F8 $01
+script "P1 Infinite Taunts for Rose"  
+run:
+    poke $FF85E8 $01
+script "P1 Infinite Taunts for Sagat"  
+run:
+    poke $FF85C0 $01
+script "P1 Infinite Taunts for Akuma"  
+run:
+    poke $FF85F1 $01
+script "P1 Infinite Taunts for Bison"  
+run:
+    poke $FF85FB $01
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8841 $90
+script "P2 Energy always set to 0"  
+run:
+    poke $FF8841 $00
+script "P2 Energy set to 0 Now!"  
+on:
+    poke $FF8841 $00
+script "P2 End round to win match"  
+run:
+    poke $FF88C6 $01
+script "P2 Rounds won always = 0"  
+run:
+    poke $FF88C6 $00
+script "P2 Rounds won = 0 Now!"  
+on:
+    poke $FF88C6 $00
+script "P2 Air special/super moves" \
+ "comm:Glitches when knocked down"  
+run:
+    poke $FF882F $00
+script "P2 Infinite Power"  
+run:
+    poke $FF88BF $90
+script "P2 Drain All Power Now!"  
+on:
+    poke $FF88BF $00
+script "P2 Never Faint"  
+run:
+    poke $FF8937 $00
+script "P2 Faint on every hit"  
+run:
+    poke $FF893A $00
+script "P2 Select Character" \
+ "comm:Free player selection - Use on level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M.Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan" 
+change:
+    poke $FF88A2 param
+script "P2 Infinite Taunts for Ken or Ryu"  
+run:
+    poke $FF89F2 $01
+script "P2 Infinite Taunts for Chun Li"  
+run:
+    poke $FF89C1 $01
+script "P2 Infinite Taunts for Charlie"  
+run:
+    poke $FF89F0 $01
+script "P2 Infinite Taunts for Guy"  
+run:
+    poke $FF89C4 $01
+script "P2 Infinite Taunts for Birdie"  
+run:
+    poke $FF89F8 $00
+script "P2 Infinite Taunts for Sodom"  
+run:
+    poke $FF89FF $01
+script "P2 Infinite Taunts for Adon"  
+run:
+    poke $FF89F8 $01
+script "P2 Infinite Taunts for Rose"  
+run:
+    poke $FF89E8 $01
+script "P2 Infinite Taunts for Sagat"  
+run:
+    poke $FF89C0 $01
+script "P2 Infinite Taunts for Akuma"  
+run:
+    poke $FF89F1 $01
+script "P2 Infinite Taunts for Bison"  
+run:
+    poke $FF89FB $01
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start; set to China stage for no BG sprites"  
+on:
+    temp0=peek($FF8039)
+    temp1=dpeek($004B4E)
+    temp2=lpeek($004B50)
+    temp3=dpeek($004A7E)
+    temp4=dpeek($004AE2)
+    temp5=dpeek($0164BE)
+run:
+    poke $FF8039 temp0
+    dpoke $004B4E temp1
+    lpoke $004B50 temp2
+    dpoke $004A7E $600A
+    dpoke $004AE2 $4E75
+    dpoke $0164BE $4E75
+    if (peek($FFAE2D)!=$0&&lpeek($FFAE0C)==$0)
+      poke $FF8039 $0
+      dpoke $FFB1AC $0
+      dpoke $004B4E $4E71
+      lpoke $004B50 $4E714E71
+    endif
+off:
+    poke $FF8039 temp0
+    dpoke $004B4E temp1
+    lpoke $004B50 temp2
+    dpoke $004A7E temp3
+    dpoke $004AE2 temp4
+    dpoke $0164BE temp5
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Asia"\
+ "0x08/Euro"\
+ "0x0A/Brazil" 
+run:
+    poke $FF8191 param
+script "Select Hidden Debug Menu" \
+ "comm:Activate on the TEST MENU (F2)." \
+ "0x00/Normal Starting Menu"\
+ "0x06/TEST MENU (CRASHES GAME ON SELECTION!)"\
+ "0x0A/CHARACTER TEST" 
+change:
+    poke $FF8001 param

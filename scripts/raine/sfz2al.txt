@@ -1,0 +1,305 @@
+script "Free Play Mode 'ON'"  
+run:
+    poke $FF809C $01
+script "Infinite Time"  
+run:
+    poke $FF8109 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF8109 $00
+script "Change to Normal Mode Now!"  
+on:
+    poke $FF816C $00
+    poke $FF84CB $00
+script "Change to Dramatic Battle Now!"  
+on:
+    poke $FF816C $01
+    poke $FF84CB $00
+script "Change to Survival Mode Now!"  
+on:
+    poke $FF84CB $FF
+    poke $FF816C $00
+script "Next fight is last fight Now! (Normal)"  
+on:
+    poke $FF8115 $07
+script "Next fight is last fight Now! (Dramatic)"  
+on:
+    poke $FF8115 $03
+script "Next fight is last fight Now! (Survival)"  
+on:
+    poke $FF8115 $11
+script "Select Next Stage Now!" \
+ "comm:Use this after you have won a stage and 'WINNER' is displayed. However, when you finish the game it will finish as if you where on Akuma's Island regardless of stage chosen." \
+ "0x00/Japan (Snow)"\
+ "0x02/USA (Boat)"\
+ "0x04/Japan (Akuma's Island)"\
+ "0x06/USA (Plane)"\
+ "0x08/China (Bikes)"\
+ "0x0A/Thailand (Lakeside)"\
+ "0x0C/USA (Truck)"\
+ "0x0E/USA (Alley)"\
+ "0x10/England (Toilets)"\
+ "0x12/Italy (Venice)"\
+ "0x14/Brazil (Plane)"\
+ "0x16/Thailand (Buddha)"\
+ "0x18/Hong Kong (Market)"\
+ "0x1A/Japan (Outside House)"\
+ "0x1C/USA (Yard)"\
+ "0x1E/India (Elephants)"\
+ "0x20/USSR (Factory)"\
+ "0x22/China (Alley)"\
+ "0x24/Australia (Crop Field)"\
+ "0x26/Venezuela (Waterfall)" 
+change:
+    poke $FF8101 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8451 $90
+    poke $FF8453 $90
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF8451 $00
+    poke $FF8453 $00
+script "P1 Always have Maximum POW"  
+run:
+    poke $FF849F $90
+script "P1 Always have Minimum POW"  
+run:
+    poke $FF849F $00
+script "P1 Get Maximum POW Now!"  
+on:
+    poke $FF849F $90
+script "P1 Get Minimum POW Now!"  
+on:
+    poke $FF849F $00
+script "P1 Infinite Custom Combo"  
+run:
+    poke $FF8699 $B0
+    poke $FF869A $00
+script "P1 Never Faint"  
+run:
+    poke $FF8537 $00
+script "P1 Select Colour Scheme" \
+ "comm:Use after picking character" \
+ inter=0,5,1 
+change:
+    poke $FF84A8 (param)
+script "P1 Enable Rival Character"  
+run:
+    poke $FF84C6 $05
+script "P1 Enable CPU Shin Gouki"  
+run:
+    poke $FF84C8 $03
+script "P1 Disable Rival Character"  
+run:
+    poke $FF84C6 $00
+script "P1 Disable CPU Shin Gouki"  
+run:
+    poke $FF84C8 $00
+script "P1 Select Character" \
+ "comm:Free player selection - Use on level VS screen" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x12/Chun-Li (SF2)"\
+ "0x14/Akuma (Blue)"\
+ "0x17/Evil Ryu" 
+change:
+    poke $FF8482 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8851 $90
+    poke $FF8853 $90
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF8851 $00
+    poke $FF8853 $00
+script "P2 Always have Maximum POW"  
+run:
+    poke $FF889F $90
+script "P2 Always have Minimum POW"  
+run:
+    poke $FF889F $00
+script "P2 Get Maximum POW Now!"  
+on:
+    poke $FF889F $90
+script "P2 Get Minimum POW Now!"  
+on:
+    poke $FF889F $00
+script "P2 Infinite Custom Combo"  
+run:
+    poke $FF8A99 $B0
+    poke $FF8A9A $00
+script "P2 Never Faint"  
+run:
+    poke $FF8937 $00
+script "P2 Select Colour Scheme" \
+ "comm:Use after picking character" \
+ inter=0,5,1 
+change:
+    poke $FF88A8 (param)
+script "P2 Enable Rival Character"  
+run:
+    poke $FF88C6 $05
+script "P2 Enable CPU Shin Gouki"  
+run:
+    poke $FF88C8 $03
+script "P2 Disable Rival Character"  
+run:
+    poke $FF88C6 $00
+script "P2 Disable CPU Shin Gouki"  
+run:
+    poke $FF88C8 $00
+script "P2 Select Character" \
+ "comm:Free player selection - Use on level VS screen" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x12/Chun-Li (SF2)"\
+ "0x14/Akuma (Blue)"\
+ "0x17/Evil Ryu" 
+change:
+    poke $FF8882 param
+script " "  
+script "P3 Infinite Energy"  
+run:
+    poke $FF8C51 $90
+    poke $FF8C53 $90
+script "P3 Drain All Energy Now!"  
+on:
+    poke $FF8C51 $00
+    poke $FF8C53 $00
+script "P3 Always have Maximum POW"  
+run:
+    poke $FF8C9F $90
+script "P3 Always have Minimum POW"  
+run:
+    poke $FF8C9F $00
+script "P3 Get Maximum POW Now!"  
+on:
+    poke $FF8C9F $90
+script "P3 Get Minimum POW Now!"  
+on:
+    poke $FF8C9F $00
+script "P3 Infinite Custom Combo"  
+run:
+    poke $FF8E99 $B0
+    poke $FF8E9A $00
+script "P3 Never Faint"  
+run:
+    poke $FF8D37 $00
+script "P3 Select Colour Scheme" \
+ "comm:Use after picking character" \
+ inter=0,5,1 
+change:
+    poke $FF8CA8 (param)
+script "P3 Enable Rival Character"  
+run:
+    poke $FF8CC6 $05
+script "P3 Enable CPU Shin Gouki"  
+run:
+    poke $FF8CC8 $03
+script "P3 Disable Rival Character"  
+run:
+    poke $FF8CC6 $00
+script "P3 Disable CPU Shin Gouki"  
+run:
+    poke $FF8CC8 $00
+script "P3 Select Character" \
+ "comm:Free player selection - Use on level VS screen" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan"\
+ "0x0D/Sakura"\
+ "0x0E/Rolento"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen"\
+ "0x12/Chun-Li (SF2)"\
+ "0x14/Akuma (Blue)"\
+ "0x17/Evil Ryu" 
+change:
+    poke $FF8C82 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Hide Background" \
+ "comm:set to Venezuela stage for no BG sprites"  
+on:
+    temp0=peek($FF8033)
+    temp1=dpeek($0059F8)
+    temp2=lpeek($0059FA)
+run:
+    poke $FF8033 temp0
+    dpoke $0059F8 temp1
+    lpoke $0059FA temp2
+    if (dpeek($FF8109)!=$0&&lpeek($FF810C)==$0)
+      poke $FF8033 $0
+      dpoke $FFC900 $0
+      dpoke $FFCB00 $0
+      dpoke $FFCD00 $0
+      dpoke $FFE550 $0
+      dpoke $0059F8 $4E71
+      lpoke $0059FA $4E714E71
+    endif
+off:
+    poke $FF8033 temp0
+    dpoke $0059F8 temp1
+    lpoke $0059FA temp2
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8091 param

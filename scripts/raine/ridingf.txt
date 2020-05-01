@@ -1,27 +1,52 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Time" always
-	poke $408DAC $99
-
-script "Infinite Energy PL1" always
-	poke $410035 $C8
-
-script "Always have Smasher PL1" always
-	poke $408DF3 $C8
-
-script "Get Smasher Now! PL1"
-	poke $408DF3 $C8
-
-script "Infinite Energy PL2" always
-	poke $4100B5 $C8
-
-script "Always have Smasher PL2" always
-	poke $408E33 $C8
-
-script "Get Smasher Now! PL2"
-	poke $408E33 $C8
-
-script "One Hit to Kill Boss Now!"
-	poke $410835 $00
+script "Infinite Credits"  
+run:
+    poke $40812D $09
+script "Infinite Time" \
+ "comm:Don't have enabled on the Press 1 or 2 player screen!"  
+run:
+    poke $408DAC $99
+script "One Hit to Kill Boss Now!"  
+on:
+    poke $410835 $00
+script "Select Starting Stage" \
+ "0x02/Stage 2"\
+ "0x03/Food Time Stage"\
+ "0x04/Stage 3"\
+ "0x06/Stage 4"\
+ "0x07/Stage 5" 
+run:
+    if (peek($40825B)==$01)
+      poke $40825B param
+    endif
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $410035 $C8
+script "P1 Always have Smasher"  
+run:
+    poke $408DF3 $C8
+script "P1 Get Smasher Now!"  
+on:
+    poke $408DF3 $C8
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $4100B5 $C8
+script "P2 Always have Smasher"  
+run:
+    poke $408E33 $C8
+script "P2 Get Smasher Now!"  
+on:
+    poke $408E33 $C8
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), reset again (F3), wait for Test Mode to appear then turn the Test Mode OFF (F2) and reset (F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

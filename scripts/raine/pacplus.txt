@@ -1,10 +1,195 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-# DO NOT use clone relation for this game !
-
-script "*UP Unlimited lives" always
-	poke $4E14 $03
-
-script "*UP Unlimited "power" time" always
-	poke $4DCB $FF
+script "Infinite Credits"  
+run:
+    poke $4E6E $99
+script "Infinite Lives"  
+run:
+    dpoke $4E14 $0506
+script "Invincibility"  
+on:
+    temp0=lpeek($1793)
+    temp1=lpeek($3CE0)
+    temp2=lpeek($3CE3)
+    temp3=lpeek($3CE7)
+run:
+    lpoke $1793 $003CE0C3|(lpeek($1793)&~00FFFFFF)
+    lpoke $3CE0 $000420A7|(lpeek($3CE0)&~00FFFFFF)
+    lpoke $3CE3 $1783C3AF
+    lpoke $3CE7 $1796C3AF
+off:
+    lpoke $1793 temp0
+    lpoke $3CE0 temp1
+    lpoke $3CE3 temp2
+    lpoke $3CE7 temp3
+script "Enable Speed Hack" \
+ "comm:This will greatly speed up your character."  
+on:
+    temp0=peek($182D)
+run:
+    poke $182D $01
+off:
+    poke $182D temp0
+script "Finish this Level Now!"  
+on:
+    poke $4E0E $F4
+script "Select Starting Level" \
+ "comm:For the best effect deactivate this cheat after you've started the Level" \
+ "0x01/Vimto"\
+ "0x02/1st Peas"\
+ "0x03/2nd Peas"\
+ "0x04/1st Apple"\
+ "0x05/2nd Apple"\
+ "0x06/1st Grapes"\
+ "0x07/2nd Grapes"\
+ "0x08/1st Galaxian"\
+ "0x09/2nd Galaxian"\
+ "0x10/1st Bread"\
+ "0x11/2nd Bread"\
+ "0x12/1st Pancakes"\
+ "0x13/2nd Pancakes" 
+run:
+    if (param==$01)&&(peek($4E0A)==$68)
+      poke $4E0A $7E
+    endif
+    if (param==$01)&&(peek($4E13)==$00)
+      poke $4E13 $01
+    endif
+    if (param==$02)&&(peek($4E0A)==$68)
+      poke $4E0A $7F
+    endif
+    if (param==$02)&&(peek($4E13)==$00)
+      poke $4E13 $02
+    endif
+    if (param==$03)&&(peek($4E0A)==$68)
+      poke $4E0A $80
+    endif
+    if (param==$03)&&(peek($4E13)==$00)
+      poke $4E13 $03
+    endif
+    if (param==$04)&&(peek($4E0A)==$68)
+      poke $4E0A $81
+    endif
+    if (param==$04)&&(peek($4E13)==$00)
+      poke $4E13 $04
+    endif
+    if (param==$05)&&(peek($4E0A)==$68)
+      poke $4E0A $82
+    endif
+    if (param==$05)&&(peek($4E13)==$00)
+      poke $4E13 $05
+    endif
+    if (param==$06)&&(peek($4E0A)==$68)
+      poke $4E0A $83
+    endif
+    if (param==$06)&&(peek($4E13)==$00)
+      poke $4E13 $06
+    endif
+    if (param==$07)&&(peek($4E0A)==$68)
+      poke $4E0A $84
+    endif
+    if (param==$07)&&(peek($4E13)==$00)
+      poke $4E13 $07
+    endif
+    if (param==$08)&&(peek($4E0A)==$68)
+      poke $4E0A $85
+    endif
+    if (param==$08)&&(peek($4E13)==$00)
+      poke $4E13 $08
+    endif
+    if (param==$09)&&(peek($4E0A)==$68)
+      poke $4E0A $86
+    endif
+    if (param==$09)&&(peek($4E13)==$00)
+      poke $4E13 $09
+    endif
+    if (param==$10)&&(peek($4E0A)==$68)
+      poke $4E0A $87
+    endif
+    if (param==$10)&&(peek($4E13)==$00)
+      poke $4E13 $0A
+    endif
+    if (param==$11)&&(peek($4E0A)==$68)
+      poke $4E0A $88
+    endif
+    if (param==$11)&&(peek($4E13)==$00)
+      poke $4E13 $B
+    endif
+    if (param==$12)&&(peek($4E0A)==$68)
+      poke $4E0A $89
+    endif
+    if (param==$12)&&(peek($4E13)==$00)
+      poke $4E13 $0C
+    endif
+    if (param==$13)&&(peek($4E0A)==$68)
+      poke $4E0A $8A
+    endif
+    if (param==$13)&&(peek($4E13)==$00)
+      poke $4E13 $0D
+    endif
+script "Select Level (for Practice)" \
+ "comm:Do NOT use in conjunction with the standard Select Starting Level cheat" \
+ "0x00/Coke"\
+ "0x01/Vimto"\
+ "0x02/1st Peas"\
+ "0x03/2nd Peas"\
+ "0x04/1st Apple"\
+ "0x05/2nd Apple"\
+ "0x06/1st Grapes"\
+ "0x07/2nd Grapes"\
+ "0x08/1st Galaxian"\
+ "0x09/2nd Galaxian"\
+ "0x0A/1st Bread"\
+ "0x0B/2nd Bread"\
+ "0x0C/1st Pancakes"\
+ "0x0D/2nd Pancakes"\
+ "0xFF/Split-Screen (Unplayable)"\
+ "0xFE/No maze or dots(Unfinishable)" 
+run:
+    poke $4E13 param
+script "Select Ghost Changeback Speed" \
+ "0x0000/Stay blue until eaten"\
+ "0x0258/Slow"\
+ "0x0168/Moderate"\
+ "0x00F0/Quick"\
+ "0x0078/Lightning"\
+ "0x0001/No change to blue" 
+run:
+    dpoke $4DBD param
+script " "  
+script "Ghost Status Cheats"  
+script " "  
+script "Red always blue"  
+run:
+    poke $4DA7 $01
+script "Pink always blue"  
+run:
+    poke $4DA8 $01
+script "Green always blue"  
+run:
+    poke $4DA9 $01
+script "Orange always blue"  
+run:
+    poke $4DAA $01
+script "Ghosts Always Edible (No Pts)"  
+run:
+    poke $4DA5 $00
+script " "  
+script "Fix Split Screen Bug" \
+ "comm:Fixes the bug with levels GT 255 see here - www.donhodges.com/how_high_can_you_get2.htm"  
+on:
+    temp0=lpeek($2BFC)
+    temp1=dpeek($2C00)
+    temp2=peek($2C38)
+    temp3=lpeek($2C3C)
+    temp4=dpeek($2FFC)
+run:
+    lpoke $2BFC $37D207FE
+    dpoke $2C00 $3C2C
+    poke $2C38 $12
+    lpoke $2C3C $0006D612|(lpeek($2C3C)&~00FFFFFF)
+    dpoke $2FFC $8181
+off:
+    lpoke $2BFC temp0
+    dpoke $2C00 temp1
+    poke $2C38 temp2
+    lpoke $2C3C temp3
+    dpoke $2FFC temp4

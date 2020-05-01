@@ -1,0 +1,208 @@
+script "Infinite Time"  
+run:
+    poke $FF8225 $59
+script "Finish this Scene Now!"  
+on:
+    poke $FF81F3 $FF
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($01D0A6)
+    temp1=dpeek($01D182)
+run:
+    dpoke $01D0A6 $6002
+    dpoke $01D182 $4E71
+off:
+    dpoke $01D0A6 temp0
+    dpoke $01D182 temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF8471 $09
+script "P1 Infinite Health"  
+run:
+    poke $FF83C1 $65
+script "P1 Infinite Special"  
+run:
+    dpoke $FF840B $0040
+script "P1 Infinite Super"  
+run:
+    poke $FF842F $E4
+script "P1 Invincibility"  
+run:
+    poke $FF83CC $01
+    poke $FF83F0 $10
+    poke $FF841F $00
+    poke $FF8429 $00
+script "P1 Infinite Weapon on Pickup"  
+run:
+    poke ((dpeek($FF83DA))+$FF0061) $FF
+script "P1 Select Weapon" \
+ "comm:Switch weapons during the IDLE STANCE to avoid crashing the game and use it when you are holding a Weapon. Use it with the 'Infinite Weapon on Pickup' and don't throw any Hand Grenades to minimise losing your Weapon." \
+ "0x00/Combi-Stick"\
+ "0x01/Naginata"\
+ "0x02/Katana"\
+ "0x03/Pulse Gun"\
+ "0x04/Knife"\
+ "0x05/Pipe"\
+ "0x06/Hand Grenade"\
+ "0x07/Flamer"\
+ "0x08/Grenade Launcher"\
+ "0x09/Metal Mace"\
+ "0x0C/Disc (Maybe buggy)" 
+run:
+    poke ((dpeek($FF83DA))+$FF0002) param
+script "P1 Select Rapid Fire - Punch" \
+ "comm:Turn it OFF on the name entry screen" \
+ "0x01/Normal"\
+ "0x02/Fast"\
+ "0x03/Unlimited" 
+run:
+    if (param==$01)
+      poke $FF846E $00|(peek($FF846E)&~20)
+    endif
+    if (param==$02)
+      poke $FF846E param|(peek($FF846E)&~20)
+      poke $FF83AC $00
+    endif
+    if (param==$03)
+      poke $FF846E $00|(peek($FF846E)&~20)
+      poke $FF83AC $00
+      poke $FF8401 $00
+    endif
+script "P1 Rapid Fire - Weapon" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FF846E $00|(peek($FF846E)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF8571 $09
+script "P2 Infinite Health"  
+run:
+    poke $FF84C1 $65
+script "P2 Infinite Special"  
+run:
+    dpoke $FF850B $0040
+script "P2 Infinite Super"  
+run:
+    poke $FF852F $E4
+script "P2 Invincibility"  
+run:
+    poke $FF84CC $01
+    poke $FF84F0 $10
+    poke $FF851F $00
+    poke $FF8529 $00
+script "P2 Infinite Weapon on Pickup"  
+run:
+    poke ((dpeek($FF84DA))+$FF0061) $FF
+script "P2 Select Weapon" \
+ "comm:Switch weapons during the IDLE STANCE to avoid crashing the game and use it when you are holding a Weapon. Use it with the 'Infinite Weapon on Pickup' and don't throw any Hand Grenades to minimise losing your Weapon." \
+ "0x00/Combi-Stick"\
+ "0x01/Naginata"\
+ "0x02/Katana"\
+ "0x03/Pulse Gun"\
+ "0x04/Knife"\
+ "0x05/Pipe"\
+ "0x06/Hand Grenade"\
+ "0x07/Flamer"\
+ "0x08/Grenade Launcher"\
+ "0x09/Metal Mace"\
+ "0x0C/Disc (Maybe buggy)" 
+run:
+    poke ((dpeek($FF84DA))+$FF0002) param
+script "P2 Select Rapid Fire - Punch" \
+ "comm:Turn it OFF on the name entry screen" \
+ "0x01/Normal"\
+ "0x02/Fast"\
+ "0x03/Unlimited" 
+run:
+    if (param==$01)
+      poke $FF856E $00|(peek($FF856E)&~20)
+    endif
+    if (param==$02)
+      poke $FF856E param|(peek($FF856E)&~20)
+      poke $FF84AC $00
+    endif
+    if (param==$03)
+      poke $FF856E $00|(peek($FF856E)&~20)
+      poke $FF84AC $00
+      poke $FF8501 $00
+    endif
+script "P2 Rapid Fire - Weapon" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FF856E $00|(peek($FF856E)&~10)
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $FF8671 $09
+script "P3 Infinite Health"  
+run:
+    poke $FF85C1 $65
+script "P3 Infinite Special"  
+run:
+    dpoke $FF860B $0040
+script "P3 Infinite Super"  
+run:
+    poke $FF862F $E4
+script "P3 Invincibility"  
+run:
+    poke $FF85CC $01
+    poke $FF85F0 $10
+    poke $FF861F $00
+    poke $FF8629 $00
+script "P3 Infinite Weapon on Pickup"  
+run:
+    poke ((dpeek($FF85DA))+$FF0061) $FF
+script "P3 Select Weapon" \
+ "comm:Switch weapons during the IDLE STANCE to avoid crashing the game and use it when you are holding a Weapon. Use it with the 'Infinite Weapon on Pickup' and don't throw any Hand Grenades to minimise losing your Weapon." \
+ "0x00/Combi-Stick"\
+ "0x01/Naginata"\
+ "0x02/Katana"\
+ "0x03/Pulse Gun"\
+ "0x04/Knife"\
+ "0x05/Pipe"\
+ "0x06/Hand Grenade"\
+ "0x07/Flamer"\
+ "0x08/Grenade Launcher"\
+ "0x09/Metal Mace"\
+ "0x0C/Disc (Maybe buggy)" 
+run:
+    poke ((dpeek($FF85DA))+$FF0002) param
+script "P3 Select Rapid Fire - Punch" \
+ "comm:Turn it OFF on the name entry screen" \
+ "0x01/Normal"\
+ "0x02/Fast"\
+ "0x03/Unlimited" 
+run:
+    if (param==$01)
+      poke $FF866E $00|(peek($FF866E)&~20)
+    endif
+    if (param==$02)
+      poke $FF866E param|(peek($FF866E)&~20)
+      poke $FF85AC $00
+    endif
+    if (param==$03)
+      poke $FF866E $00|(peek($FF866E)&~20)
+      poke $FF85AC $00
+      poke $FF8601 $00
+    endif
+script "P3 Rapid Fire - Weapon" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FF866E $00|(peek($FF866E)&~10)
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Asia"\
+ "0x08/Euro" 
+run:
+    poke $FF81C9 param

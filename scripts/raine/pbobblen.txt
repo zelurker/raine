@@ -1,0 +1,198 @@
+script "Select Next Round Now!" \
+ "0x01/Round 4"\
+ "0x02/Round 8"\
+ "0x03/Round 12"\
+ "0x04/Round 16"\
+ "0x05/Round 20"\
+ "0x06/Round 24"\
+ "0x07/Round 28"\
+ "0x08/Round 30"\
+ "0x09/End Sequence" 
+change:
+    if (param==$01)
+      poke $102271 $02
+      poke $102273 $02
+    endif
+    if (param==$02)
+      poke $102271 $06
+      poke $102273 $06
+    endif
+    if (param==$03)
+      poke $102271 $0A
+      poke $102273 $0A
+    endif
+    if (param==$04)
+      poke $102271 $0E
+      poke $102273 $0E
+    endif
+    if (param==$05)
+      poke $102271 $12
+      poke $102273 $12
+    endif
+    if (param==$06)
+      poke $102271 $16
+      poke $102273 $16
+    endif
+    if (param==$07)
+      poke $102271 $1A
+      poke $102273 $1A
+    endif
+    if (param==$08)
+      poke $102271 $1C
+      poke $102273 $1C
+    endif
+    if (param==$09)
+      poke $102271 $20
+      poke $102273 $20
+    endif
+script "Quick Finish Cheat" \
+ "comm:It's best to activate the Quick Finish cheat when at least one wall has decended, just complete 3 matching colours to drop the whole screen!"  
+on:
+    poke $105A9D $00
+    poke $105AB1 $00
+script " "  
+script "P1 Select Help Line" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $108287 param
+script "P1 Select Perm. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $10821F param
+script "P1 Select Perm. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $10823D param
+script "P1 Select Temp. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $10821F param
+script "P1 Select Temp. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $10823D param
+script " "  
+script "P2 Select Help Line" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $108323 param
+script "P2 Select Perm. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $1082BB param
+script "P2 Select Perm. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+run:
+    poke $1082D9 param
+script "P2 Select Temp. Current Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $1082BB param
+script "P2 Select Temp. Next Bubble" \
+ "0x00/Blue"\
+ "0x01/Red"\
+ "0x02/Yellow"\
+ "0x03/Green"\
+ "0x04/Purple"\
+ "0x05/Orange"\
+ "0x06/Black"\
+ "0x07/Grey" 
+change:
+    poke $1082D9 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

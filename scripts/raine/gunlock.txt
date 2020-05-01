@@ -1,21 +1,165 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $404BF5 $B3
-
-script "1UP Invulnerability OFF"
-	poke $404BF5 $00
-
-script "2UP Invulnerability ON" always
-	poke $404CF5 $B3
-
-script "2UP Invulnerability OFF"
-	poke $404CF5 $00
-
-script "1UP Unlimited lives" always
-	poke $404B95 $03
-
-script "2UP Unlimited lives" always
-	poke $404C95 $03
+script "Infinite Credits"  
+run:
+    poke $402265 $09
+script "Unlock Area Select Mode" \
+ "comm:Reset the game to enable it"  
+on:
+    temp0=peek($0005E7)
+    temp1=dpeek($007E4E)
+run:
+    poke $0005E7 $9E
+    dpoke $007E4E $6078
+off:
+    poke $0005E7 temp0
+    dpoke $007E4E temp1
+script "Select Starting Area" \
+ "comm:Enable on the 'PUSH 1 OR 2 PLAYER BUTTON' screen. Turn it OFF after starting the game." \
+ inter=1,6,1 
+on:
+    poke $402313 $FF
+change:
+    poke $402313 (param)
+script "Always Have Speed Up"  
+on:
+    temp0=dpeek($027324)
+    temp1=dpeek($02732C)
+    temp2=dpeek($027338)
+    temp3=dpeek($027340)
+    temp4=dpeek($027344)
+    temp5=dpeek($027348)
+    temp6=dpeek($02734C)
+    temp7=dpeek($027358)
+    temp8=dpeek($027360)
+    temp9=dpeek($027364)
+    temp10=dpeek($027368)
+    temp11=dpeek($02736C)
+run:
+    dpoke $027324 $0500
+    dpoke $02732C $FB01
+    dpoke $027338 $FAA1
+    dpoke $027340 $FC35
+    dpoke $027344 $0388
+    dpoke $027348 $FC35
+    dpoke $02734C $FC79
+    dpoke $027358 $0560
+    dpoke $027360 $03CC
+    dpoke $027364 $0388
+    dpoke $027368 $03CC
+    dpoke $02736C $FC79
+off:
+    dpoke $027324 temp0
+    dpoke $02732C temp1
+    dpoke $027338 temp2
+    dpoke $027340 temp3
+    dpoke $027344 temp4
+    dpoke $027348 temp5
+    dpoke $02734C temp6
+    dpoke $027358 temp7
+    dpoke $027360 temp8
+    dpoke $027364 temp9
+    dpoke $027368 temp10
+    dpoke $02736C temp11
+script "Always Have Penetrable Shot"  
+on:
+    temp0=dpeek($02577E)
+    temp1=dpeek($0257C6)
+run:
+    dpoke $02577E $600A
+    dpoke $0257C6 $600A
+off:
+    dpoke $02577E temp0
+    dpoke $0257C6 temp1
+script "Select Shot Speed" \
+ inter=0,30,1 
+on:
+    temp0=peek($02759A)
+    temp1=dpeek($0275CC)
+run:
+    poke $02759A (param)
+    dpoke $0275CC $303C
+off:
+    poke $02759A temp0
+    dpoke $0275CC temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $404B95 $9A
+script "P1 Invincibility"  
+run:
+    dpoke $404BF4 $0002
+script "P1 Auto Lock-On"  
+on:
+    temp0=dpeek($03047E)
+    temp1=dpeek($0305C4)
+run:
+    dpoke $03047E $6028
+    dpoke $0305C4 $6028
+off:
+    dpoke $03047E temp0
+    dpoke $0305C4 temp1
+script "P1 Always have LASER Power MAX"  
+run:
+    poke $404BA3 $0A
+    poke $404BAF $06
+script "P1 Select Shot" \
+ "0x00/Level 1"\
+ "0x01/Level 2"\
+ "0x02/Level 3"\
+ "0x03/Level 4"\
+ "0x0A/Maximum" 
+run:
+    poke $404B96 param
+script "P1 Rapid Fire - Shot "  
+run:
+    poke $404B98 $01
+script "P1 Rapid Fire - Laser"  
+run:
+    poke $400099 $20|(peek($400099)&~20)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $404C95 $9A
+script "P2 Invincibility"  
+run:
+    dpoke $404CF4 $0002
+script "P2 Auto Lock-On"  
+on:
+    temp0=dpeek($0304F8)
+    temp1=dpeek($030640)
+run:
+    dpoke $0304F8 $6020
+    dpoke $030640 $6020
+off:
+    dpoke $0304F8 temp0
+    dpoke $030640 temp1
+script "P2 Always have LASER Power MAX"  
+run:
+    poke $404CA3 $0A
+    poke $404CAF $06
+script "P2 Select Shot" \
+ "0x00/Level 1"\
+ "0x01/Level 2"\
+ "0x02/Level 3"\
+ "0x03/Level 4"\
+ "0x0A/Maximum" 
+run:
+    poke $404C96 param
+script "P2 Rapid Fire - Shot"  
+run:
+    poke $404C98 $01
+script "P2 Rapid Fire - Laser" \
+ "comm:Turn it OFF on the name entry screen and make sure it's OFF in Test Mode."  
+run:
+    poke $40009B $20|(peek($40009B)&~20)
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan (Ray Force)"\
+ "0x02/US (Ray Force)"\
+ "0x03/World (Gunlock)" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

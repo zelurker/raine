@@ -1,47 +1,179 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Time" always
-	poke $409737 $09
-	poke $409733 $09
-
-script "Finish this Round Now!"
-	poke $409737 $00
-	poke $409733 $00
-
-script "Infinite Energy PL1" always
-	poke $412B35 $64
-
-script "Drain All Energy Now! PL1"
-	poke $412B35 $00
-
-script "Always have Max CRUSH PL1" always
-	poke $412BC1 $C8
-
-script "Always have Min CRUSH PL1" always
-	poke $412BC1 $00
-
-script "Get Max CRUSH Now! PL1"
-	poke $412BC1 $C8
-
-script "Get Min CRUSH Now! PL1"
-	poke $412BC1 $00
-
-script "Infinite Energy PL2" always
-	poke $412D35 $64
-
-script "Drain All Energy Now! PL2"
-	poke $412D35 $00
-
-script "Always have Max CRUSH PL2" always
-	poke $412DC1 $C8
-
-script "Always have Min CRUSH PL2" always
-	poke $412DC1 $00
-
-script "Get Max CRUSH Now! PL2"
-	poke $412DC1 $C8
-
-script "Get Min CRUSH Now! PL2"
-	poke $412DC1 $00
+script "Infinite Time"  
+run:
+    poke $409733 $09
+    poke $409737 $09
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $409733 $00
+    poke $409737 $01
+script "Can Select Anyone" \
+ "comm:Either move up from Kazuya or down from Marco to get to the other characters."  
+on:
+    temp0=peek($042435)
+    temp1=peek($042447)
+run:
+    poke $042435 $0A
+    poke $042447 $0A
+off:
+    poke $042435 temp0
+    poke $042447 temp1
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($03C6BC)
+run:
+    dpoke $03C6BC $6002
+off:
+    dpoke $03C6BC temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $41322D $63
+script "P1 Drain All Energy Now!"  
+on:
+    poke $41322D $00
+script "P1 Select Character" \
+ "comm:Free player selection - Use on Character selection or Winner/Loser screen." \
+ "0x01/Kazuya"\
+ "0x02/Barts"\
+ "0x03/Gekkou"\
+ "0x04/Wulong"\
+ "0x05/Lihua"\
+ "0x06/Liza"\
+ "0x07/J. McCoy"\
+ "0x08/Boggy"\
+ "0x09/Marco"\
+ "0x10/Gonzales"\
+ "0x11/Azteca"\
+ "0x12/General" 
+run:
+    if (param==$01)
+      poke $40B321 $00
+      poke $41454D $00
+    endif
+    if (param==$02)
+      poke $40B321 $01
+      poke $41454D $01
+    endif
+    if (param==$03)
+      poke $40B321 $02
+      poke $41454D $02
+    endif
+    if (param==$04)
+      poke $40B321 $03
+      poke $41454D $03
+    endif
+    if (param==$05)
+      poke $40B321 $04
+      poke $41454D $04
+    endif
+    if (param==$06)
+      poke $40B321 $05
+      poke $41454D $05
+    endif
+    if (param==$07)
+      poke $40B321 $06
+      poke $41454D $06
+    endif
+    if (param==$08)
+      poke $40B321 $07
+      poke $41454D $07
+    endif
+    if (param==$09)
+      poke $40B321 $08
+      poke $41454D $08
+    endif
+    if (param==$10)
+      poke $40B321 $09
+      poke $41454D $09
+    endif
+    if (param==$11)
+      poke $40B321 $0A
+      poke $41454D $0A
+    endif
+    if (param==$12)
+      poke $40B321 $B
+      poke $41454D $B
+    endif
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $41342D $63
+script "P2 Drain All Energy Now!"  
+on:
+    poke $41342D $00
+script "P2 Select Character" \
+ "comm:Free player selection - Use on Character selection or Winner/Loser screen." \
+ "0x01/Kazuya"\
+ "0x02/Barts"\
+ "0x03/Gekkou"\
+ "0x04/Wulong"\
+ "0x05/Lihua"\
+ "0x06/Liza"\
+ "0x07/J. McCoy"\
+ "0x08/Boggy"\
+ "0x09/Marco"\
+ "0x10/Gonzales"\
+ "0x11/Azteca"\
+ "0x12/General" 
+run:
+    if (param==$01)
+      poke $40B521 $00
+      poke $41454F $00
+    endif
+    if (param==$02)
+      poke $40B521 $01
+      poke $41454F $01
+    endif
+    if (param==$03)
+      poke $40B521 $02
+      poke $41454F $02
+    endif
+    if (param==$04)
+      poke $40B521 $03
+      poke $41454F $03
+    endif
+    if (param==$05)
+      poke $40B521 $04
+      poke $41454F $04
+    endif
+    if (param==$06)
+      poke $40B521 $05
+      poke $41454F $05
+    endif
+    if (param==$07)
+      poke $40B521 $06
+      poke $41454F $06
+    endif
+    if (param==$08)
+      poke $40B521 $07
+      poke $41454F $07
+    endif
+    if (param==$09)
+      poke $40B521 $08
+      poke $41454F $08
+    endif
+    if (param==$10)
+      poke $40B521 $09
+      poke $41454F $09
+    endif
+    if (param==$11)
+      poke $40B521 $0A
+      poke $41454F $0A
+    endif
+    if (param==$12)
+      poke $40B521 $B
+      poke $41454F $B
+    endif
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), reset again (F3), wait for Test Mode to appear then turn the Test Mode OFF (F2) and reset (F3)." \
+ "0x01/Japan (Kaiser Knuckle)"\
+ "0x02/US (Global Champion)"\
+ "0x03/World (Kaiser Knuckle)" 
+on:
+    temp0=peek($1FFFFF)
+run:
+    poke $1FFFFF param
+off:
+    poke $1FFFFF temp0

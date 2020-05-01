@@ -1,0 +1,247 @@
+script "Infinite Time"  
+run:
+    poke $FF1E67 $00
+script "Select Starting Stage" \
+ inter=1,7,1 
+run:
+    if (peek($FF81D0)==$00)
+      poke $FF81D0 (param-$1)
+    endif
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($0123C8)
+    temp1=dpeek($012BF8)
+run:
+    dpoke $0123C8 $4E71
+    dpoke $012BF8 $4E71
+off:
+    dpoke $0123C8 temp0
+    dpoke $012BF8 temp1
+script "One Hit Kills"  
+on:
+    temp0=dpeek($014E28)
+    temp1=dpeek($014E2E)
+run:
+    dpoke $014E28 $E94D
+    dpoke $014E2E $6002
+off:
+    dpoke $014E28 temp0
+    dpoke $014E2E temp1
+script "Select Combination Item Type" \
+ "0x00/TurboJet"\
+ "0x01/Robot"\
+ "0x02/Tank" 
+run:
+    poke $FFF73F param
+script "Get Combination Item Now!"  
+on:
+    poke $FF9C8A $01
+script "Combination Item Power Now!" \
+ "comm:Only use after combine"  
+on:
+    poke $FF9C8D $06
+script "Infinite Combination Item Fuel" \
+ "comm:Must be playing at least a 2 Player game"  
+run:
+    poke $FF1E93 $99
+script "Get off Combination Item Now!"  
+on:
+    dpoke $FFF74F $00FF
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF96E3 $04
+script "P1 Infinite Energy"  
+run:
+    poke $FF95DD $50
+script "P1 Invincibility"  
+run:
+    poke $FF9657 $FE
+script "P1 Infinite Bullets"  
+run:
+    poke $FF95FA $01
+script "P1 Select Character" \
+ "0x01/Bloodia"\
+ "0x02/Reptos"\
+ "0x03/Guldin"\
+ "0x04/Fordy" 
+run:
+    if (param==$01)
+      poke $FF95DA $00
+      poke $FF965C $00
+    endif
+    if (param==$02)
+      poke $FF95DA $01
+      poke $FF965C $01
+    endif
+    if (param==$03)
+      poke $FF95DA $02
+      poke $FF965C $02
+    endif
+    if (param==$04)
+      poke $FF95DA $03
+      poke $FF965C $03
+    endif
+script "P1 Select Main Weapon" \
+ "0x00/Machine Gun"\
+ "0x01/Drill"\
+ "0x02/Spark"\
+ "0x03/Claw"\
+ "0x04/Laser Blade"\
+ "0x05/Shield" 
+run:
+    poke $FF965E param
+script "P1 Select Sub Weapon" \
+ "0x00/Vulcan"\
+ "0x01/Missile"\
+ "0x02/Guided"\
+ "0x03/Laser"\
+ "0x04/Flame"\
+ "0x05/Bomb"\
+ "0x06/Napalm" 
+run:
+    poke $FF965F param
+script "P1 Select Legs" \
+ "0x00/Robot"\
+ "0x01/Tank"\
+ "0x02/Power Bug"\
+ "0x03/Turbo Jet" 
+run:
+    poke $FF965D param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF98A3 $04
+script "P2 Infinite Energy"  
+run:
+    poke $FF979D $50
+script "P2 Invincibility"  
+run:
+    poke $FF9817 $FE
+script "P2 Infinite Bullets"  
+run:
+    poke $FF97BA $01
+script "P2 Select Character" \
+ "0x01/Bloodia"\
+ "0x02/Reptos"\
+ "0x03/Guldin"\
+ "0x04/Fordy" 
+run:
+    if (param==$01)
+      poke $FF979A $00
+      poke $FF985C $00
+    endif
+    if (param==$02)
+      poke $FF979A $01
+      poke $FF985C $01
+    endif
+    if (param==$03)
+      poke $FF979A $02
+      poke $FF985C $02
+    endif
+    if (param==$04)
+      poke $FF979A $03
+      poke $FF985C $03
+    endif
+script "P2 Select Main Weapon" \
+ "0x00/Machine Gun"\
+ "0x01/Drill"\
+ "0x02/Spark"\
+ "0x03/Claw"\
+ "0x04/Laser Blade"\
+ "0x05/Shield" 
+run:
+    poke $FF981E param
+script "P2 Select Sub Weapon" \
+ "0x00/Vulcan"\
+ "0x01/Missile"\
+ "0x02/Guided"\
+ "0x03/Laser"\
+ "0x04/Flame"\
+ "0x05/Bomb"\
+ "0x06/Napalm" 
+run:
+    poke $FF981F param
+script "P2 Select Legs" \
+ "0x00/Robot"\
+ "0x01/Tank"\
+ "0x02/Power Bug"\
+ "0x03/Turbo Jet" 
+run:
+    poke $FF981D param
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $FF9A63 $04
+script "P3 Infinite Energy"  
+run:
+    poke $FF995D $50
+script "P3 Invincibility"  
+run:
+    poke $FF99D7 $FE
+script "P3 Infinite Bullets"  
+run:
+    poke $FF997A $05
+script "P3 Select Character" \
+ "0x01/Bloodia"\
+ "0x02/Reptos"\
+ "0x03/Guldin"\
+ "0x04/Fordy" 
+run:
+    if (param==$01)
+      poke $FF994A $00
+      poke $FF9A5C $00
+    endif
+    if (param==$02)
+      poke $FF994A $01
+      poke $FF9A5C $01
+    endif
+    if (param==$03)
+      poke $FF994A $02
+      poke $FF9A5C $02
+    endif
+    if (param==$04)
+      poke $FF994A $03
+      poke $FF9A5C $03
+    endif
+script "P3 Select Main Weapon" \
+ "0x00/Machine Gun"\
+ "0x01/Drill"\
+ "0x02/Spark"\
+ "0x03/Claw"\
+ "0x04/Laser Blade"\
+ "0x05/Shield" 
+run:
+    poke $FF99DE param
+script "P3 Select Sub Weapon" \
+ "0x00/Vulcan"\
+ "0x01/Missile"\
+ "0x02/Guided"\
+ "0x03/Laser"\
+ "0x04/Flame"\
+ "0x05/Bomb"\
+ "0x06/Napalm" 
+run:
+    poke $FF99DF param
+script "P3 Select Legs" \
+ "0x00/Robot"\
+ "0x01/Tank"\
+ "0x02/Power Bug"\
+ "0x03/Turbo Jet" 
+run:
+    poke $FF99DD param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x01/USA"\
+ "0x02/Asia"\
+ "0x03/Hispanic"\
+ "0x04/Brazil"\
+ "0x05/Europe" 
+run:
+    poke $FF80DB param

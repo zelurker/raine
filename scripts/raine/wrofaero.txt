@@ -1,21 +1,81 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $300831 $78
-
-script "1UP Invulnerability OFF"
-	poke $300831 $01
-
-script "2UP Invulnerability ON" always
-	poke $300879 $78
-
-script "2UP Invulnerability OFF"
-	poke $300879 $01
-
-script "1UP Unlimited lives" always
-	poke $30081F $03
-
-script "2UP Unlimited lives" always
-	poke $300867 $03
+script "Infinite Credits"  
+run:
+    poke $300691 $09
+script "Select Starting Stage" \
+ inter=1,8,1 
+run:
+    if (peek($300A97)==$00)
+      poke $300A97 (param-$1)
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $30081F $0A
+script "P1 Invincibility"  
+run:
+    poke $300831 $78
+script "P1 Always have Maximum Right Pod"  
+run:
+    poke $303635 $03
+    dpoke $30363C $020F
+script "P1 Always have Maximum Left Pod"  
+run:
+    poke $30363F $03
+    dpoke $303646 $020F
+script "P1 Select Weapon" \
+ "comm:Use this with an Activation Key for the best effect" \
+ "0x00/Vulcan"\
+ "0x01/Drill Laser"\
+ "0x02/3way"\
+ "0x03/5way"\
+ "0x04/Horming Missile"\
+ "0x05/Spread Bomb"\
+ "0x06/Side"\
+ "0x07/Back Bomb"\
+ "0x08/Search Laser"\
+ "0x09/X Laser" 
+on:
+    temp0=peek($30083D)
+run:
+    poke $30083D param
+off:
+    poke $30083D temp0
+script "P1 Rapid Fire"  
+run:
+    poke $30081D $10|(peek($30081D)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $300867 $0A
+script "P2 Invincibility"  
+run:
+    poke $300879 $78
+script "P2 Always have Maximum Right Pod"  
+run:
+    poke $303649 $03
+    dpoke $303650 $020F
+script "P2 Always have Maximum Left Pod"  
+run:
+    poke $303653 $03
+    dpoke $30365A $020F
+script "P2 Select Weapon" \
+ "comm:Use this with an Activation Key for the best effect" \
+ "0x00/Vulcan"\
+ "0x01/Drill Laser"\
+ "0x02/3way"\
+ "0x03/5way"\
+ "0x04/Horming Missile"\
+ "0x05/Spread Bomb"\
+ "0x06/Side"\
+ "0x07/Back Bomb"\
+ "0x08/Search Laser"\
+ "0x09/X Laser" 
+on:
+    temp0=peek($300885)
+run:
+    poke $300885 param
+off:
+    poke $300885 temp0
+script "P2 Rapid Fire"  
+run:
+    poke $300865 $10|(peek($300865)&~10)

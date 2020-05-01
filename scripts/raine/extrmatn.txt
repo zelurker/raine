@@ -1,9 +1,22 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	dpoke $E78E $9999
-
-script "2UP Unlimited energy" always
-	dpoke $E7AE $9999
+script "Invincibility"  
+on:
+    temp0=peek($17AB)
+    temp1=peek($233E)
+run:
+    poke $17AB $C9
+    poke $233E $18
+off:
+    poke $17AB temp0
+    poke $233E temp1
+script "P1 Infinite Life"  
+run:
+    dpoke $E78E $9999
+script "P1 Rapid Fire"  
+run:
+    poke $EC1C $08|(peek($EC1C)&~08)
+script "P2 Infinite Life"  
+run:
+    dpoke $E7AE $9999
+script "P2 Rapid Fire"  
+run:
+    poke $EC1E $08|(peek($EC1E)&~08)

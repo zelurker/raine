@@ -1,18 +1,16 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $8079 $78
-	poke $86E0 peek($86E0)&$bf|$40
-
-script "1UP Invulnerability OFF"
-	poke $8079 $01
-	poke $86E0 peek($86E0)&$bf
-
-script "1UP Unlimited energy" always
-	poke $86E1 $06
-
-script "1UP Unlimited time" always
-	poke $8078 $09
-	poke $8077 $09
+script "Infinite Credits"  
+run:
+    poke $8032 $99
+script "Infinite Time"  
+run:
+    dpoke $8077 $0909
+script "Infinite Energy"  
+run:
+    poke $86E1 $06
+script "Invincibility"  
+run:
+    poke $8079 $78
+    poke $86E0 $40|(peek($86E0)&~40)
+off:
+    poke $8079 $01
+    poke $86E0 $00|(peek($86E0)&~40)

@@ -1,18 +1,61 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $203619 $03
-
-script "2UP Unlimited lives" always
-	poke $20361B $03
-
-script "1UP Unlimited shields" always
-	poke $205293 $09
-
-script "2UP Unlimited shields" always
-	poke $2052E1 $09
-
-script "*UP Unlimited time for weapon" always
-	poke $20553F $32
+script "Infinite Credits"  
+run:
+    poke $200097 $09
+script "Select Starting Round" \
+ inter=1,43,1 
+run:
+    if (peek($2035D5)==$00)
+      poke $2035D5 (param-$1)
+    endif
+script "Select Perm. Extra Weapon" \
+ "0x01/Buster Laser"\
+ "0x02/Hyper Laser"\
+ "0x03/Fire Flower"\
+ "0x04/Destroy Beam"\
+ "0x05/Time Stop" 
+run:
+    if (param==$01)
+      poke $205534 $03
+      poke $20553F $30
+      poke $205537 $01
+    endif
+    if (param==$02)
+      poke $205534 $03
+      poke $205537 $02
+    endif
+    if (param==$03)
+      poke $205534 $03
+      poke $205537 $03
+    endif
+    if (param==$04)
+      poke $205534 $03
+      poke $205537 $06
+    endif
+    if (param==$05)
+      poke $205534 $03
+      poke $20553F $30
+      poke $205537 $07
+    endif
+script "Long Lasting Weapons"  
+run:
+    poke $20553F $30
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $203619 $0A
+script "P1 Infinite Shields"  
+run:
+    poke $205293 $09
+script "P1 Infinite Powerup"  
+run:
+    poke $205295 $02
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $20361B $0A
+script "P2 Infinite Shields"  
+run:
+    poke $2052E1 $09
+script "P2 Infinite Powerup"  
+run:
+    poke $2052E3 $02

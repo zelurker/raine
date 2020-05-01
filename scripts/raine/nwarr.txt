@@ -1,24 +1,233 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $FF8E09 $99
-
-script "1UP Unlimited energy" always
-	poke $FF83CB $90
-
-script "2UP Unlimited energy" always
-	poke $FF88CB $90
-
-script "1UP Energy set to 0       (P)" always
-	poke $FF83CB $00
-
-script "2UP Energy set to 0       (P)" always
-	poke $FF88CB $00
-
-script "1UP Energy set to 0       (T)"
-	poke $FF83CB $00
-
-script "2UP Energy set to 0       (T)"
-	poke $FF88CB $00
+script "Infinite Credits"  
+run:
+    poke $FF81B2 $09
+script "Infinite Time"  
+run:
+    poke $FF8E09 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF8E09 $00
+script "Game Speed always =" \
+ "0x00/Normal"\
+ "0x01/Turbo" 
+run:
+    poke $FF8213 param
+script "Select Backdrop" \
+ "0x00/Demitri's"\
+ "0x01/Jon Talbain's"\
+ "0x02/Victor's"\
+ "0x03/Lord Raptor's"\
+ "0x04/Morrigan's"\
+ "0x05/Anakaris's"\
+ "0x06/Felicia's"\
+ "0x07/Bishamon's"\
+ "0x08/Rikuo's"\
+ "0x09/Sasquatch's"\
+ "0x0A/Huitzil's"\
+ "0x0B/Pyron's"\
+ "0x0C/Hsien-Ko's"\
+ "0x0D/Donovan's" 
+run:
+    poke $FF8D89 param
+script "Select Starting Stage" \
+ inter=1,10,1 
+run:
+    if (peek($FF8842)==$00)
+      poke $FF8842 (param-$1)
+    endif
+script "Select Background" \
+ "0x00/Demitri"\
+ "0x01/Jon Talbain"\
+ "0x02/Victor"\
+ "0x03/Lord Raptor"\
+ "0x04/Morrigan"\
+ "0x05/Anakaris"\
+ "0x06/Felicia"\
+ "0x07/Bishamon"\
+ "0x08/Rikuo"\
+ "0x09/Sasquatch"\
+ "0x0A/Huitzil"\
+ "0x0B/Pyron"\
+ "0x0C/Hsien-Ko"\
+ "0x0D/Donovan" 
+run:
+    dpoke $FF8D88 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    if (frame%60==$0)
+      poke $FF83CB $90
+    endif
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF83CB $00
+script "P1 Infinite Special"  
+run:
+    poke $FF8565 $0A
+    poke $FF855F $70
+script "P1 No Specials Available"  
+run:
+    poke $FF855D $00
+script "P1 Select constant Attack Level" \
+ "0x00/Low"\
+ "0x01/Medium"\
+ "0x02/High" 
+run:
+    poke $FF83ED param
+script "P1 Infinite Auto Guard"  
+run:
+    poke $FF850D $01
+    poke $FF884C $63
+script "P1 Win this Round to Win Match Now!"  
+on:
+    poke $FF8830 $02
+script "P1 Action Speed Up"  
+run:
+    poke $FF8397 $01
+script "P1 Never be dazed"  
+run:
+    poke $FF83D3 $00
+script "P1 Select Character Now!" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x01/Demitri"\
+ "0x02/Jon Talbain"\
+ "0x03/Victor"\
+ "0x04/Lord Raptor"\
+ "0x05/Morrigan"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Rikuo"\
+ "0x0A/Sasquatch"\
+ "0x0B/Huitzil"\
+ "0x0C/Pyron"\
+ "0x0D/Hsien-Ko"\
+ "0x0E/Donovan" 
+change:
+    poke $FF8829 param
+script "P1 Select Character Colour Now!" \
+ "0x00/Colour 1"\
+ "0x01/Colour 2"\
+ "0x02/Colour 3"\
+ "0x03/Colour 4"\
+ "0x04/Colour 5"\
+ "0x05/Colour 6"\
+ "0x06/Colour 7"\
+ "0x07/Colour 8" 
+change:
+    poke $FF882F param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    if (frame%60==$0)
+      poke $FF88CB $90
+    endif
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF88CB $00
+script "P2 Infinite Special"  
+run:
+    poke $FF8A65 $0A
+    poke $FF8A5F $70
+script "P2 No Specials Available"  
+run:
+    poke $FF8A5D $00
+script "P2 Select constant Attack Level" \
+ "0x00/Low"\
+ "0x01/Medium"\
+ "0x02/High" 
+run:
+    poke $FF88ED param
+script "P2 Infinite Auto Guard"  
+run:
+    poke $FF8A0D $01
+    poke $FF8D4C $63
+script "P2 Win this Round to Win Match Now!"  
+on:
+    poke $FF8D30 $02
+script "P2 Action Speed Up"  
+run:
+    poke $FF8897 $01
+script "P2 Never be dazed"  
+run:
+    poke $FF88D3 $00
+script "P2 Select Character Now!" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x01/Demitri"\
+ "0x02/Jon Talbain"\
+ "0x03/Victor"\
+ "0x04/Lord Raptor"\
+ "0x05/Morrigan"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Rikuo"\
+ "0x0A/Sasquatch"\
+ "0x0B/Huitzil"\
+ "0x0C/Pyron"\
+ "0x0D/Hsien-Ko"\
+ "0x0E/Donovan" 
+change:
+    poke $FF8D29 param
+script "P2 Select Character Colour Now!" \
+ "0x00/Colour 1"\
+ "0x01/Colour 2"\
+ "0x02/Colour 3"\
+ "0x03/Colour 4"\
+ "0x04/Colour 5"\
+ "0x05/Colour 6"\
+ "0x06/Colour 7"\
+ "0x07/Colour 8" 
+change:
+    poke $FF8D2F param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start; set to Demitri stage for no BG sprites"  
+on:
+    temp0=peek($FF8053)&0F
+    temp1=dpeek($02542C)
+    temp2=lpeek($02542E)
+    temp3=lpeek($027092)
+    temp4=lpeek($0272BC)
+    temp5=dpeek($0E2B08)
+run:
+    poke $FF8053 peek($FF8053)|temp0
+    dpoke $02542C $4E71
+    lpoke $02542E $4E714E71
+    lpoke $027092 temp3
+    lpoke $0272BC temp4
+    dpoke $0E2B08 temp5
+    if (dpeek($FF8008)==$A)
+      poke $FF8053 peek($FF8053)&F0
+      lpoke $027092 $4E714E71
+      lpoke $0272BC $4E714E71
+      dpoke $0E2B08 $4E71
+    endif
+off:
+    poke $FF8053 peek($FF8053)|temp0
+    dpoke $02542C temp1
+    lpoke $02542E temp2
+    lpoke $027092 temp3
+    lpoke $0272BC temp4
+    dpoke $0E2B08 temp5
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Asia"\
+ "0x06/Hispanic"\
+ "0x08/Brazil"\
+ "0x0A/Euro" 
+run:
+    poke $FF8205 param
+script "Select Title" \
+ "0x00/Vampire Hunter"\
+ "0x01/Night Warriors" 
+run:
+    poke $FF8214 param

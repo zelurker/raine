@@ -1,51 +1,58 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $FFD6BF $FF
-
-script "1UP Invulnerability OFF"
-	poke $FFD6BF $01
-
-script "2UP Invulnerability ON" always
-	poke $FFD6C1 $FF
-
-script "2UP Invulnerability OFF"
-	poke $FFD6C1 $01
-
-script "1UP Unlimited lives" always
-	poke $FFD639 $03
-
-script "2UP Unlimited lives" always
-	poke $FFD63B $03
-
-script "1UP Unlimited bombs" always
-	poke $FFD685 $09
-
-script "2UP Unlimited bombs" always
-	poke $FFD687 $09
-
-script "1UP Unlimited ammo." always
-	dpoke $FFFC0E $03E7
-
-script "2UP Unlimited ammo." always
-	dpoke $FFFC10 $03E7
-
-script "1UP Maximum speed" always
-	poke $FFD68B $01
-
-script "2UP Maximum speed" always
-	poke $FFD68F $01
-
-script "1UP Maximum fire power" always
-	poke $FFD679 $07
-
-script "2UP Maximum fire power" always
-	poke $FFD67B $07
-
-script "1UP Maximum fire range" always
-	poke $FFD681 $04
-
-script "2UP Maximum fire range" always
-	poke $FFD683 $04
+script "Never any Enemy"  
+run:
+    poke $FFD6D7 $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FFD639 $09
+script "P1 Infinite Bombs"  
+run:
+    poke $FFD685 $09
+script "P1 Infinite Ammo"  
+run:
+    poke $FFFC0E $03
+    poke $FFFC0F $E7
+script "P1 Maximum shot Power"  
+run:
+    poke $FFD679 $07
+script "P1 Maximum shot Range"  
+run:
+    poke $FFD681 $04
+script "P1 Maximum Speed"  
+run:
+    poke $FFD68B $03
+script "P1 Invincibility"  
+run:
+    poke $FFD6BF $FF
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FFD63B $09
+script "P2 Infinite Bombs"  
+run:
+    poke $FFD687 $09
+script "P2 Infinite Ammo"  
+run:
+    poke $FFFC10 $03
+    poke $FFFC11 $E7
+script "P2 Maximum Shot Power"  
+run:
+    poke $FFD67B $07
+script "P2 Maximum Shot Range"  
+run:
+    poke $FFD683 $04
+script "P2 Maximum Speed"  
+run:
+    poke $FFD68F $03
+script "P2 Invincibility"  
+run:
+    poke $FFD6C1 $FF
+script " "  
+script "Enable Debug Menu" \
+ "comm:Enable the cheat after you've started a game, use the Player 2 controls to navigate the menu - sound test option works but the other options don't work."  
+on:
+    temp0=dpeek($0049E6)
+run:
+    dpoke $0049E6 $7B56
+off:
+    dpoke $0049E6 temp0

@@ -1,0 +1,219 @@
+script "Infinite Time"  
+run:
+    poke $108368 $61
+script "Select Backdrop" \
+ "comm:Changes between matches" \
+ "0x00/Arie"\
+ "0x01/Obama"\
+ "0x02/Kuchinotsu"\
+ "0x03/Koga"\
+ "0x04/Kushiyama"\
+ "0x05/Dohsaki"\
+ "0x06/Funatsu"\
+ "0x07/Fukae"\
+ "0x08/Kusenbutake"\
+ "0x09/Amakusa Castle (vs Amakusa)"\
+ "0x0A/Amakusa Castle (vs Zankuro)"\
+ "0x0B/Amakusa Castle (vs Rival)" 
+run:
+    poke $108B2B param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108443 $FC
+script "P1 Drain All Energy Now!"  
+on:
+    poke $108443 $00
+script "P1 Infinite Power"  
+run:
+    poke $10844C $40
+script "P1 Always Have Power Gauge"  
+run:
+    poke $108558 $00
+script "P1 Never Have Power Gauge"  
+run:
+    poke $108558 $FF
+script "P1 Select Rounds Won" \
+ inter=0,2,1 
+run:
+    poke $108462 (param)
+script "P1 Select Character" \
+ "comm:Use this in-between rounds" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo Hattori"\
+ "0x04/Galford"\
+ "0x05/Kyoshiro Senryou"\
+ "0x06/Ukyo Tachibana"\
+ "0x07/Genjuro Kibagami"\
+ "0x08/Kubikiri Basara"\
+ "0x09/Shizumaru Hisame"\
+ "0x0A/Gaira Kafuin"\
+ "0x0B/Amakusa Shirou Tokisada"\
+ "0x0C/Jubei Yagyu"\
+ "0x0D/#Zankuro Minazuki"\
+ "0x0E/Charlotte"\
+ "0x0F/Tam Tam"\
+ "0x10/Kazuki Kazama"\
+ "0x11/Sogetsu Kazama" 
+run:
+    poke $108322 param
+script "P1 Select Colour" \
+ "0x00/A Colour"\
+ "0x01/B Colour" 
+run:
+    poke $10832A param
+script "P1 Select Playing Style" \
+ "0x00/Slash"\
+ "0x01/Bust" 
+run:
+    poke $108324 param
+script "P1 Select Character Difficulty" \
+ "0x00/Beginners Class"\
+ "0x01/Medium Grade"\
+ "0x02/Upper Grade" 
+run:
+    poke $108326 param
+script "P1 Select Control" \
+ "0xFF/Human Control"\
+ "0x00/CPU Control" 
+run:
+    poke $108320 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108643 $FC
+script "P2 Drain All Energy Now!"  
+on:
+    poke $108643 $00
+script "P2 Infinite Power"  
+run:
+    poke $10864C $40
+script "P2 Always Have Power Gauge"  
+run:
+    poke $108758 $00
+script "P2 Never Have Power Gauge"  
+run:
+    poke $108758 $FF
+script "P2 Select Rounds Won" \
+ "comm:Use this in-between rounds" \
+ inter=0,2,1 
+run:
+    poke $108662 (param)
+script "P2 Select Character" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo Hattori"\
+ "0x04/Galford"\
+ "0x05/Kyoshiro Senryou"\
+ "0x06/Ukyo Tachibana"\
+ "0x07/Genjuro Kibagami"\
+ "0x08/Kubikiri Basara"\
+ "0x09/Shizumaru Hisame"\
+ "0x0A/Gaira Kafuin"\
+ "0x0B/Amakusa Shirou Tokisada"\
+ "0x0C/Jubei Yagyu"\
+ "0x0D/#Zankuro Minazuki"\
+ "0x0E/Charlotte"\
+ "0x0F/Tam Tam"\
+ "0x10/Kazuki Kazama"\
+ "0x11/Sogetsu Kazama" 
+run:
+    poke $108323 param
+script "P2 Select Colour" \
+ "0x00/A Colour"\
+ "0x01/B Colour" 
+run:
+    poke $10832B param
+script "P2 Select Playing Style" \
+ "0x00/Slash"\
+ "0x01/Bust" 
+run:
+    poke $108325 param
+script "P2 Select Difficulty" \
+ "0x00/Beginners Class"\
+ "0x01/Medium Grade"\
+ "0x02/Upper Grade" 
+run:
+    poke $108327 param
+script "P2 Select Control" \
+ "0xFF/Human Control"\
+ "0x00/CPU Control" 
+run:
+    poke $108321 param
+script " "  
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=dpeek($003140)
+    dpoke $003140 $4E71
+    temp1=dpeek($00314C)
+    dpoke $00314C $4E71
+    temp2=lpeek($003152)
+    lpoke $003152 $4E714E71
+    temp3=lpeek($028CFE)
+    lpoke $028CFE $60464E71
+run:
+    if dpeek($1080C4)==$B
+      dpoke $108314 $0000
+      poke $109179 $02
+      lpoke $109180 $8F8F8F8F
+      poke $10C72E $00
+    endif
+off:
+    dpoke $003140 temp0
+    dpoke $00314C temp1
+    lpoke $003152 temp2
+    lpoke $028CFE temp3
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FDE0 $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

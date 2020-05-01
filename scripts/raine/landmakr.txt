@@ -1,0 +1,249 @@
+script "Infinite Credits"  
+run:
+    poke $400091 $09
+script "Select Level Set" \
+ "comm:With 'Another World' there's a Girl on the Title Screen and different maps, Same as 'Fire,LEFT,RIGHT,Fire' on Title Screen" \
+ "0x00/Normal Levels"\
+ "0x01/Another World Levels" 
+run:
+    poke $401F73 param
+script " "  
+script "P1 Infinite Move Time"  
+run:
+    dpoke $401FD8 $0258
+script "P1 Never get Attacked"  
+run:
+    poke $40202B $00
+script "P1 Attack opp. side with 10 Now!"  
+on:
+    poke $4020D3 $0A
+script "P1 Attack opp. side with LOTS Now!" \
+ "comm:This is effectively a Win this Game Now! cheat"  
+on:
+    poke $4020D3 $60
+script "P1 Pusher Always at 0%"  
+run:
+    poke $402025 $00
+script "P1 Set Pusher to 0% Now!"  
+on:
+    poke $402025 $00
+script "P1 Set Pusher to 50% Now!"  
+on:
+    poke $402025 $40
+script "P1 Set Pusher to 100% Now!"  
+on:
+    poke $402025 $81
+script "P1 Select Perm Next Tile" \
+ "0x00/Red"\
+ "0x02/Dark Blue"\
+ "0x04/Orange"\
+ "0x06/Green"\
+ "0x08/Light Blue"\
+ "0x0A/Yellow"\
+ "0x0C/Grey"\
+ "0x0E/Purple" 
+run:
+    poke $402037 param
+script "P1 Next Tile is Red Now!"  
+on:
+    poke $402037 $00
+script "P1 Next Tile is Dark Blue Now!"  
+on:
+    poke $402037 $02
+script "P1 Next Tile is Orange Now!"  
+on:
+    poke $402037 $04
+script "P1 Next Tile is Green Now!"  
+on:
+    poke $402037 $06
+script "P1 Next Tile is Light Blue Now!"  
+on:
+    poke $402037 $08
+script "P1 Next Tile is Yellow Now!"  
+on:
+    poke $402037 $0A
+script "P1 Next Tile is Grey Now!"  
+on:
+    poke $402037 $0C
+script "P1 Next Tile is Purple Now!"  
+on:
+    poke $402037 $0E
+script "P1 Select Character" \
+ "comm:Enable this character cheat on the level map screen for the best effect." \
+ "0x01/Hiryu"\
+ "0x02/Aifa"\
+ "0x03/Soumei"\
+ "0x04/Renki"\
+ "0x05/Youen"\
+ "0x06/Kouko"\
+ "0x07/RinRei"\
+ "0x08/Roushinski"\
+ "0x09/Ranju"\
+ "0x10/Gaira" 
+run:
+    if (param==$01)
+      poke $4078F7 $00
+      poke $401FA9 $00
+    endif
+    if (param==$02)
+      poke $4078F7 $01
+      poke $401FA9 $01
+    endif
+    if (param==$03)
+      poke $4078F7 $02
+      poke $401FA9 $02
+    endif
+    if (param==$04)
+      poke $4078F7 $03
+      poke $401FA9 $03
+    endif
+    if (param==$05)
+      poke $4078F7 $04
+      poke $401FA9 $04
+    endif
+    if (param==$06)
+      poke $4078F7 $05
+      poke $401FA9 $05
+    endif
+    if (param==$07)
+      poke $4078F7 $06
+      poke $401FA9 $06
+    endif
+    if (param==$08)
+      poke $4078F7 $07
+      poke $401FA9 $07
+    endif
+    if (param==$09)
+      poke $4078F7 $08
+      poke $401FA9 $08
+    endif
+    if (param==$10)
+      poke $4078F7 $09
+      poke $401FA9 $09
+    endif
+script " "  
+script "P2 Infinite Move Time"  
+run:
+    dpoke $402080 $0258
+script "P2 Never get Attacked"  
+run:
+    poke $4020D3 $00
+script "P2 Attack opp. side with 10 Now!"  
+on:
+    poke $40202B $0A
+script "P2 Attack opp. side with LOTS Now!" \
+ "comm:This is effectively a Win this Game Now! cheat"  
+on:
+    poke $40202B $60
+script "P2 Pusher Always at 0%"  
+run:
+    poke $4020CD $00
+script "P2 Set Pusher to 0% Now!"  
+on:
+    poke $4020CD $00
+script "P2 Set Pusher to 50% Now!"  
+on:
+    poke $4020CD $40
+script "P2 Set Pusher to 100% Now!"  
+on:
+    poke $4020CD $81
+script "P2 Select Perm Next Tile" \
+ "0x00/Red"\
+ "0x02/Dark Blue"\
+ "0x04/Orange"\
+ "0x06/Green"\
+ "0x08/Light Blue"\
+ "0x0A/Yellow"\
+ "0x0C/Grey"\
+ "0x0E/Purple" 
+run:
+    poke $4020DF param
+script "P2 Next Tile is Red Now!"  
+on:
+    poke $4020DF $00
+script "P2 Next Tile is Dark Blue Now!"  
+on:
+    poke $4020DF $02
+script "P2 Next Tile is Orange Now!"  
+on:
+    poke $4020DF $04
+script "P2 Next Tile is Green Now!"  
+on:
+    poke $4020DF $06
+script "P2 Next Tile is Light Blue Now!"  
+on:
+    poke $4020DF $08
+script "P2 Next Tile is Yellow Now!"  
+on:
+    poke $4020DF $0A
+script "P2 Next Tile is Grey Now!"  
+on:
+    poke $4020DF $0C
+script "P2 Next Tile is Purple Now!"  
+on:
+    poke $4020DF $0E
+script "P2 Select Character" \
+ "comm:Enable this character cheat on the level map screen for the best effect." \
+ "0x01/Hiryu"\
+ "0x02/Aifa"\
+ "0x03/Soumei"\
+ "0x04/Renki"\
+ "0x05/Youen"\
+ "0x06/Kouko"\
+ "0x07/RinRei"\
+ "0x08/Roushinski"\
+ "0x09/Ranju"\
+ "0x10/Gaira" 
+run:
+    if (param==$01)
+      poke $4078FD $00
+      poke $402051 $00
+    endif
+    if (param==$02)
+      poke $4078FD $01
+      poke $402051 $01
+    endif
+    if (param==$03)
+      poke $4078FD $02
+      poke $402051 $02
+    endif
+    if (param==$04)
+      poke $4078FD $03
+      poke $402051 $03
+    endif
+    if (param==$05)
+      poke $4078FD $04
+      poke $402051 $04
+    endif
+    if (param==$06)
+      poke $4078FD $05
+      poke $402051 $05
+    endif
+    if (param==$07)
+      poke $4078FD $06
+      poke $402051 $06
+    endif
+    if (param==$08)
+      poke $4078FD $07
+      poke $402051 $07
+    endif
+    if (param==$09)
+      poke $4078FD $08
+      poke $402051 $08
+    endif
+    if (param==$10)
+      poke $4078FD $09
+      poke $402051 $09
+    endif
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($1FFFFF)
+run:
+    poke $1FFFFF param
+off:
+    poke $1FFFFF temp0

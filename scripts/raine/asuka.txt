@@ -1,69 +1,44 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $1034C7 $78
-
-script "1UP Invulnerability OFF"
-	poke $1034C7 $01
-
-script "2UP Invulnerability ON" always
-	poke $1034C9 $78
-
-script "2UP Invulnerability OFF"
-	poke $1034C9 $01
-
-script "1UP Unlimited lives" always
-	poke $1033D9 $03
-
-script "2UP Unlimited lives" always
-	poke $1033DB $03
-
-script "1UP Unlimited bombs" always
-	poke $103417 $05
-
-script "2UP Unlimited bombs" always
-	poke $103419 $05
-
-script "1UP Maximum fire power" always
-	poke $1033EB $05
-
-script "2UP Maximum fire power" always
-	poke $1033ED $05
-
-script "1UP Weapon - Missiles     (P)" always
-	poke $103561 $01
-
-script "1UP Weapon - Laser        (P)" always
-	poke $103561 $02
-
-script "1UP Weapon - Beam         (P)" always
-	poke $103561 $03
-
-script "2UP Weapon - Missiles     (P)" always
-	poke $103563 $01
-
-script "2UP Weapon - Laser        (P)" always
-	poke $103563 $02
-
-script "2UP Weapon - Beam         (P)" always
-	poke $103563 $03
-
-script "1UP Weapon - Missiles     (T)"
-	poke $103561 $01
-
-script "1UP Weapon - Laser        (T)"
-	poke $103561 $02
-
-script "1UP Weapon - Beam         (T)"
-	poke $103561 $03
-
-script "2UP Weapon - Missiles     (T)"
-	poke $103563 $01
-
-script "2UP Weapon - Laser        (T)"
-	poke $103563 $02
-
-script "2UP Weapon - Beam         (T)"
-	poke $103563 $03
+script "Infinite Credits"  
+run:
+    poke $103613 $09
+script "Kill Boss with One Hit Now!"  
+on:
+    poke $102694 $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1033D9 $03
+script "P1 Infinite Bombs"  
+run:
+    poke $103417 $05
+script "P1 Always Maximum Fire Power"  
+run:
+    poke $1033EB $05
+script "P1 Invincibility"  
+run:
+    poke $1034C7 $02
+script "P1 Select Weapon" \
+ "0x01/Missiles"\
+ "0x02/Laser"\
+ "0x03/Beam" 
+run:
+    poke $103561 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1033DB $03
+script "P2 Infinite Bombs"  
+run:
+    poke $103419 $05
+script "P2 Always Maximum Fire Power"  
+run:
+    poke $1033ED $05
+script "P2 Invincibility"  
+run:
+    poke $1034C9 $02
+script "P2 Select Weapon" \
+ "0x01/Missiles"\
+ "0x02/Laser"\
+ "0x03/Beam" 
+run:
+    poke $103563 param

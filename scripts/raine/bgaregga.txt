@@ -1,0 +1,90 @@
+script "Select Hidden Planes" \
+ "0xFF/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $10A6A7 param
+script "Always 10000pts BONUS"  
+run:
+    poke $109CB8 $24
+script "Watch Game Rank"  
+run:
+script "Always have Easiest Rank"  
+run:
+    lpoke $10C9D2 $00F00000
+script "Select Game Mode" \
+ "comm:Should be activated before SELECT PLAYER screen." \
+ "0x04/Extended"\
+ "0x02/Harder"\
+ "0x00/Stage Edit"\
+ "0x06/Special" 
+on:
+    temp0=peek($10CA0F)
+run:
+    if (peek($10A6B0)==$00)
+      poke $10A6B0 param
+    endif
+    if (param==$00)||(param==$06)
+      poke $10CA0F $FF
+    endif
+off:
+    poke $10CA0F temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101686 $05
+script "P1 Infinite Bombs"  
+run:
+    poke $101682 $04
+    poke $101684 $28
+script "P1 Invincibility"  
+run:
+    poke $101688 $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $101680 $04
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10177E $05
+script "P2 Infinite Bombs"  
+run:
+    poke $10177A $04
+    poke $10177C $28
+script "P2 Invincibility"  
+run:
+    poke $101780 $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $101778 $04
+script " "  
+script "Select Region" \
+ "comm:Enable and Reset to see any effect" \
+ "0x00/Europe"\
+ "0x01/Germany"\
+ "0x02/Austria"\
+ "0x03/Belgium"\
+ "0x04/Denmark"\
+ "0x05/Finland"\
+ "0x06/France"\
+ "0x07/Great Britain"\
+ "0x08/Greece"\
+ "0x09/Holland"\
+ "0x0A/Italy"\
+ "0x0B/Norway"\
+ "0x0C/Portugal"\
+ "0x0D/Spain"\
+ "0x0E/Sweden"\
+ "0x0F/Switzerland"\
+ "0x10/Australia"\
+ "0x11/New Zealand"\
+ "0x12/NO REGION SCREEN"\
+ "0x13/Taiwan (Select after ROM0 check)"\
+ "0x14/Hong Kong (Select after ROM0 check)"\
+ "0x15/Korea (Select after ROM0 check)"\
+ "0x16/China (Select after ROM0 check)" 
+on:
+    temp0=peek($000000)
+run:
+    poke $000000 param
+off:
+    poke $000000 temp0

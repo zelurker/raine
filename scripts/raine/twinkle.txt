@@ -1,27 +1,19 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $10233B $96
-
-script "1UP Invulnerability OFF"
-	poke $10233B $00
-
-script "2UP Invulnerability ON" always
-	poke $10237F $40
-
-script "2UP Invulnerability OFF"
-	poke $10237F $00
-
-script "1UP Unlimited lives" always
-	poke $10233C $03
-
-script "2UP Unlimited lives" always
-	poke $102380 $03
-
-script "*UP Unlimited time" always
-	poke $104754 $0F9F
-
-script "*UP End level"
-	poke $1042FF $00
+script "Infinite Time"  
+run:
+    dpoke $104754 $0F9F
+script "Finish this Stage Now!"  
+on:
+    poke $1042FF $00
+script " "  
+script "P1 Invincibility"  
+run:
+    poke $10233B $02
+script "P1 Infinite Lives"  
+run:
+    dpoke $10233C $7FFF
+script "P2 Invincibility"  
+run:
+    poke $10237F $02
+script "P2 Infinite Lives"  
+run:
+    dpoke $102380 $7FFF

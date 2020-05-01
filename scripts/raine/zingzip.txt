@@ -1,105 +1,74 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability" always
-	poke $2004C2 $01
-
-script "2UP Invulnerability" always
-	poke $200526 $01
-
-script "1UP Unlimited lives" always
-	poke $2004F9 $03
-
-script "2UP Unlimited lives" always
-	poke $20055D $03
-
-script "1UP Unlimited bombs" always
-	poke $20055F $09
-
-script "2UP Unlimited bombs" always
-	poke $2004FB $09
-
-script "1UP Maximum fire power" always
-	poke $2004D5 $04
-
-script "2UP Maximum fire power" always
-	poke $200539 $04
-
-script "1UP Maximum missile power" always
-	poke $2004D7 $02
-
-script "2UP Maximum missile power" always
-	poke $20053B $02
-
-script "1UP Fire - Normal         (P)" always
-	poke $2004DF $00
-
-script "1UP Fire - Flames         (P)" always
-	poke $2004DF $01
-
-script "1UP Fire - Laser          (P)" always
-	poke $2004DF $02
-
-script "2UP Fire - Normal         (P)" always
-	poke $200543 $00
-
-script "2UP Fire - Flames         (P)" always
-	poke $200543 $01
-
-script "2UP Fire - Laser          (P)" always
-	poke $200543 $02
-
-script "1UP Fire - Normal         (T)"
-	poke $2004DF $00
-
-script "1UP Fire - Flames         (T)"
-	poke $2004DF $01
-
-script "1UP Fire - Laser          (T)"
-	poke $2004DF $02
-
-script "2UP Fire - Normal         (T)"
-	poke $200543 $00
-
-script "2UP Fire - Flames         (T)"
-	poke $200543 $01
-
-script "2UP Fire - Laser          (T)"
-	poke $200543 $02
-
-script "1UP Missiles - Homing     (P)" always
-	poke $2004E1 $01
-
-script "1UP Missiles - Normal     (P)" always
-	poke $2004E1 $02
-
-script "1UP Missiles - 4-way      (P)" always
-	poke $2004E1 $03
-
-script "2UP Missiles - Homing     (P)" always
-	poke $200545 $01
-
-script "2UP Missiles - Normal     (P)" always
-	poke $200545 $02
-
-script "2UP Missiles - 4-way      (P)" always
-	poke $200545 $03
-
-script "1UP Missiles - Homing     (T)"
-	poke $2004E1 $01
-
-script "1UP Missiles - Normal     (T)"
-	poke $2004E1 $02
-
-script "1UP Missiles - 4-way      (T)"
-	poke $2004E1 $03
-
-script "2UP Missiles - Homing     (T)"
-	poke $200545 $01
-
-script "2UP Missiles - Normal     (T)"
-	poke $200545 $02
-
-script "2UP Missiles - 4-way      (T)"
-	poke $200545 $03
+script "Infinite Credits"  
+run:
+    poke $202893 $09
+script "Select Starting Stage" \
+ "0x01/Stage 1"\
+ "0x02/Stage 2"\
+ "0x03/Stage 3"\
+ "0x04/Stage 4"\
+ "0x05/Stage 5"\
+ "0x06/Stage 6"\
+ "0x07/Stage 7"\
+ "0x08/Boss 1"\
+ "0x09/Boss 2"\
+ "0x0A/Boss 3" 
+run:
+    if (peek($2028C7)==$01)
+      poke $2028C7 param
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $2004F9 $0A
+script "P1 Infinite Bombs"  
+run:
+    poke $2004FB $09
+script "P1 Invincibility"  
+run:
+    poke $2004C2 $01
+script "P1 Maximum Shot Power"  
+run:
+    poke $2004D5 $04
+script "P1 Select Shot" \
+ "0x00/Normal"\
+ "0x01/Fire"\
+ "0x02/Laser" 
+run:
+    poke $2004DF param
+script "P1 Maximum Missile Power"  
+run:
+    poke $2004D7 $02
+script "P1 Select Missile" \
+ "0x02/Normal"\
+ "0x01/Homing"\
+ "0x03/X way" 
+run:
+    poke $2004E1 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $20055D $0A
+script "P2 Infinite Bombs"  
+run:
+    poke $20055F $09
+script "P2 Invincibility"  
+run:
+    poke $200526 $01
+script "P2 Maximum Shot Power"  
+run:
+    poke $200539 $04
+script "P2 Select Shot" \
+ "0x00/Normal"\
+ "0x01/Fire"\
+ "0x02/Laser" 
+run:
+    poke $200543 param
+script "P2 Maximum Missile Power"  
+run:
+    poke $20053B $02
+script "P2 Select Missile" \
+ "0x02/Normal"\
+ "0x01/Homing"\
+ "0x03/X way" 
+run:
+    poke $200545 param

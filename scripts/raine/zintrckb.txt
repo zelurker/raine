@@ -1,0 +1,121 @@
+script "Infinite Time"  
+run:
+    poke $10C419 $64
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $10C455 $12
+script "P1 Infinite Item"  
+run:
+    poke $10C444 $12
+script "P1 Blocks Never Fall"  
+run:
+    poke $10C142 $FF
+    poke $10C144 $FF
+    poke $10C146 $FF
+    poke $10C148 $FF
+    poke $10C14A $FF
+    poke $10C14C $FF
+    poke $10C14E $FF
+    poke $10C150 $FF
+script "P1 Select Character" \
+ "0x00/Subberg Hungneil"\
+ "0x01/Pukie"\
+ "0x02/Sheila Flay"\
+ "0x03/Reusha Fino (Elf)"\
+ "0x04/Kaireen (Valkiree)"\
+ "0x05/Hawk's Eye of Iga (Ninja)"\
+ "0x06/Gimri (Troll)"\
+ "0x07/Dark Sniper"\
+ "0x08/#Ryu Eagle"\
+ "0x09/#Fenril"\
+ "0x0A/#Yormngand"\
+ "0x0B/#Roki" 
+change:
+    poke $10B609 param
+script "P1 Select Level" \
+ inter=0,19,1 
+run:
+    poke $10C452 (param)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $10C4D5 $12
+script "P2 Infinite Item"  
+run:
+    poke $10C4C4 $12
+script "P2 Blocks Never Fall"  
+run:
+    poke $10C156 $FF
+    poke $10C158 $FF
+    poke $10C15A $FF
+    poke $10C15C $FF
+    poke $10C15E $FF
+    poke $10C160 $FF
+    poke $10C162 $FF
+    poke $10C164 $FF
+script "P2 Select Character" \
+ "0x00/Subberg Hungneil"\
+ "0x01/Pukie"\
+ "0x02/Sheila Flay"\
+ "0x03/Reusha Fino (Elf)"\
+ "0x04/Kaireen (Valkiree)"\
+ "0x05/Hawk's Eye of Iga (Ninja)"\
+ "0x06/Gimri (Troll)"\
+ "0x07/Dark Sniper"\
+ "0x08/#Ryu Eagle"\
+ "0x09/#Fenril"\
+ "0x0A/#Yormngand"\
+ "0x0B/#Roki" 
+change:
+    poke $10B649 param
+script "P2 Select Level" \
+ inter=0,19,1 
+run:
+    poke $10C4D2 (param)
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

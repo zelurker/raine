@@ -1,0 +1,61 @@
+script "Infinite Energy"  
+run:
+    poke $100C59 $00
+script "Infinite Bullets"  
+run:
+    poke $100B1F $22
+script "Infinite Magazines"  
+run:
+    poke $100B21 $09
+script "Infinite Grenades"  
+run:
+    poke $100B23 $05
+script "Invincibility"  
+on:
+    temp0=peek($00A516)
+run:
+    poke $00A516 $60
+off:
+    poke $00A516 temp0
+script "Never have any soldiers to kill"  
+run:
+    poke $0FF039 $00
+script "Never have any Helicopters to destroy"  
+run:
+    poke $0FF03D $00
+script "Never have any Tanks to destroy"  
+run:
+    poke $0FF03F $00
+script "Never have any Ships to destroy"  
+run:
+    poke $0FF041 $00
+script "No more soldiers to kill Now!" \
+ "comm:Effects current level only"  
+on:
+    poke $0FF039 $00
+script "No more helicopters Now!" \
+ "comm:Effects current level only"  
+on:
+    poke $0FF03D $00
+script "No more tanks to destroy Now!" \
+ "comm:Effects current level only"  
+on:
+    poke $0FF03F $00
+script "No more ships to destroy Now!" \
+ "comm:Effects current level only"  
+on:
+    poke $0FF041 $00
+script "Finish this Level Now!" \
+ "comm:In levels 5 + 6, you must rescue at least one hostage before using this cheat"  
+on:
+    poke $0FF039 $00
+    poke $0FF03D $00
+    poke $0FF03F $00
+    poke $0FF041 $00
+script "Stop Screen Flashing on Shooting"  
+on:
+    temp0=peek($001131)
+run:
+    poke $001131 $02
+off:
+    poke $001131 temp0

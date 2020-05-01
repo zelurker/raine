@@ -1,0 +1,176 @@
+script "Infinite Set Time"  
+run:
+    poke $10008D $99
+script "Finish Set Now!"  
+on:
+    poke $10008D $00
+script "Select Court" \
+ "comm:Use this on the Court 'Selection' Screen enable the one you want once it's chosen itself." \
+ "0x00/Beach"\
+ "0x01/Lawn"\
+ "0x02/Tiles"\
+ "0x03/Concrete"\
+ "0x04/Clay"\
+ "0x05/Stadium" 
+run:
+    poke $100324 param
+script "Select CPU Team" \
+ "comm:Enable these before chosing your character disable once it gets to court select." \
+ "0x01/Japan"\
+ "0x02/Spain"\
+ "0x03/USA"\
+ "0x04/Korea"\
+ "0x05/Italy"\
+ "0x06/Germany" 
+run:
+    if (param==$01)
+      poke $1004FC $10
+      poke $1004FE $00
+    endif
+    if (param==$02)
+      poke $1004FC $10
+      poke $1004FE $01
+    endif
+    if (param==$03)
+      poke $1004FC $10
+      poke $1004FE $02
+    endif
+    if (param==$04)
+      poke $1004FC $10
+      poke $1004FE $03
+    endif
+    if (param==$05)
+      poke $1004FC $10
+      poke $1004FE $04
+    endif
+    if (param==$06)
+      poke $1004FC $10
+      poke $1004FE $05
+    endif
+script "Select Points to Win Match" \
+ "comm:Select the score that you would like to play to. The round will end when a player reaches the point goal or the time is up, so use in conjunction with the 'Infinite Time' cheat for the Best Effect." \
+ inter=5,99,1 
+run:
+    poke $1000FF tobcd(param)
+off:
+    poke $1000FF $12
+script "Select Round Length" \
+ "comm:Select the length (in seconds) that you would like the round to last. The round will end when a player reaches the point goal or the time is up." \
+ inter=10,99,1 
+run:
+    poke $10FD88 param
+off:
+    poke $10FD88 $1E
+script "Infinite Credit Insert Time" \
+ "comm:Disables the timer which forces the player start button upon inserting a credit."  
+run:
+    poke $10FDDA $30
+script "Infinite Selection Time Limit" \
+ "comm:Disables the timer which forces selection on the VS. Type Select, Character Select, Court Select screens. You will need to disable this cheat on the VS. CPU Court Select, as the game relies on this timer running out to force selection."  
+run:
+    poke $100090 $9
+off:
+    poke $100090 $0
+script "Select Player Mode" \
+ "comm:Allows CPU to play against CPU" \
+ "0x00/P1 vs CPU"\
+ "0x01/P1 vs P2"\
+ "0x02/CPU vs P2"\
+ "0x03/CPU vs CPU" 
+run:
+    if param==$00||(peek($10008D)==$00&&param==$03)
+      poke $100801 $00
+      poke $100881 $03
+    endif
+    if peek($10008D)!=$00&&param==$01
+      poke $100801 $00
+      poke $100881 $01
+    endif
+    if peek($10008D)!=$00&&param==$02
+      poke $100801 $02
+      poke $100881 $01
+    endif
+    if peek($10008D)!=$00&&param==$03
+      poke $100801 $02
+      poke $100881 $03
+    endif
+script " "  
+script "P1 Score always = 0"  
+run:
+    poke $100873 $00
+script "P1 Score always = 99"  
+run:
+    poke $100873 $99
+script "P1 Set score = 0 Now!"  
+on:
+    poke $100873 $00
+script "P1 Set score = 99 Now!"  
+on:
+    poke $100873 $99
+script "P1 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $100873 tobcd(param)
+script " "  
+script "P2 Score always = 0"  
+run:
+    poke $1008F3 $00
+script "P2 Score always = 99"  
+run:
+    poke $1008F3 $99
+script "P2 Set score = 0 Now!"  
+on:
+    poke $1008F3 $00
+script "P2 Set score = 99 Now!"  
+on:
+    poke $1008F3 $99
+script "P2 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $1008F3 tobcd(param)
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

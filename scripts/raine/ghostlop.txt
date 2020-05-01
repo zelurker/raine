@@ -1,0 +1,75 @@
+script "Infinite Time"  
+run:
+    dpoke $10C846 $0909
+script "Select Starting Level" \
+ "0x00/1: McCoy"\
+ "0x01/2: Friday"\
+ "0x02/3: Under the Bed / PolterGeist"\
+ "0x04/4: The Eater / Roaming Horses"\
+ "0x06/5: Tin Tank / Dancing Doll"\
+ "0x08/6: Lulu"\
+ "0x0C/7: Cursed Guitar / Tin Tank"\
+ "0x14/8: Pumpkin Head"\
+ "0x1C/9: Great King of Terror"\
+ "0x24/S: Gray (Secret Level)" 
+run:
+    if (param==$24)
+      poke $10D977 $1C
+    endif
+    if (peek($10D937)==$00)
+      poke $10D933 param
+      poke $10D937 param
+    endif
+script " "  
+script "Finish Current Round Now! PL1"  
+on:
+    poke $10C20D $01
+script "Finish Current Round Now! PL2"  
+on:
+    poke $10C1B9 $01
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

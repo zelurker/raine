@@ -1,0 +1,170 @@
+script "Infinite Credits" \
+ "comm:Note, in 4 Player Configuration this will give you Infinite Lives for all Players"  
+run:
+    lpoke $FFA850 $09090909
+script "Select Starting Stage" \
+ inter=1,9,1 
+run:
+    if (peek($FFA8CE)==$00)
+      poke $FFA8CE (param-$1)
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FFAA7C $64
+script "P1 Infinite Energy"  
+run:
+    poke $FFA9D1 $48
+script "P1 Infinite Ammo on Pickup"  
+run:
+    poke $FFAA41 $02
+script "P1 Invincibility"  
+run:
+    poke $FFAA69 $C8
+script "P1 Select Weapon" \
+ "comm:Use this in conjunction with the 'Infinite Ammo on Pickup' cheat. You will get this weapon the next time you pick a weapon up or if you start with it enabled." \
+ "0x00/Hand Gun"\
+ "0x04/Machine Gun"\
+ "0x08/Missile"\
+ "0x0C/Shock Beam"\
+ "0x0E/Ninja Knife"\
+ "0x10/Laser"\
+ "0x12/Hummer"\
+ "0x14/Special Attack" 
+run:
+    poke $FFEE63 param
+script "P1 Action Speed Up"  
+run:
+    poke $FFA9C1 $01
+script "P1 Endless Grab Attack"  
+run:
+    poke $FFAA3F $09
+script "P1 Select Character" \
+ "0x00/Mummy Commando"\
+ "0x01/Captain Commando"\
+ "0x02/Ninja Commando"\
+ "0x03/Baby Commando" 
+run:
+    poke $FFAA34 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FFAB7C $64
+script "P2 Infinite Energy"  
+run:
+    poke $FFAAD1 $48
+script "P2 Infinite Ammo on Pickup"  
+run:
+    poke $FFAB41 $02
+script "P2 Invincibility"  
+run:
+    poke $FFAB69 $C8
+script "P2 Select Weapon" \
+ "0x00/Hand Gun"\
+ "0x04/Machine Gun"\
+ "0x08/Missile"\
+ "0x0C/Shock Beam"\
+ "0x0E/Ninja Knife"\
+ "0x10/Laser"\
+ "0x12/Hummer"\
+ "0x14/Special Attack" 
+run:
+    poke $FFEF63 param
+script "P2 Action Speed Up"  
+run:
+    poke $FFAAC1 $01
+script "P2 Endless Grab Attack"  
+run:
+    poke $FFAB3F $09
+script "P2 Select Character" \
+ "0x00/Mummy Commando"\
+ "0x01/Captain Commando"\
+ "0x02/Ninja Commando"\
+ "0x03/Baby Commando" 
+run:
+    poke $FFAB34 param
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $FFAC7C $64
+script "P3 Infinite Energy"  
+run:
+    poke $FFABD1 $48
+script "P3 Infinite Ammo on Pickup"  
+run:
+    poke $FFAC41 $02
+script "P3 Invincibility"  
+run:
+    poke $FFAC69 $C8
+script "P3 Select Weapon" \
+ "0x00/Hand Gun"\
+ "0x04/Machine Gun"\
+ "0x08/Missile"\
+ "0x0C/Shock Beam"\
+ "0x0E/Ninja Knife"\
+ "0x10/Laser"\
+ "0x12/Hummer"\
+ "0x14/Special Attack" 
+run:
+    poke $FFF063 param
+script "P3 Action Speed Up"  
+run:
+    poke $FFABC1 $01
+script "P3 Endless Grab Attack"  
+run:
+    poke $FFAC3F $09
+script "P3 Select Character" \
+ "0x00/Mummy Commando"\
+ "0x01/Captain Commando"\
+ "0x02/Ninja Commando"\
+ "0x03/Baby Commando" 
+run:
+    poke $FFAC34 param
+script " "  
+script "P4 Infinite Lives"  
+run:
+    poke $FFAD7C $64
+script "P4 Infinite Energy"  
+run:
+    poke $FFACD1 $48
+script "P4 Infinite Ammo on Pickup"  
+run:
+    poke $FFAD41 $02
+script "P4 Invincibility"  
+run:
+    poke $FFAD69 $C8
+script "P4 Select Weapon" \
+ "0x00/Hand Gun"\
+ "0x04/Machine Gun"\
+ "0x08/Missile"\
+ "0x0C/Shock Beam"\
+ "0x0E/Ninja Knife"\
+ "0x10/Laser"\
+ "0x12/Hummer"\
+ "0x14/Special Attack" 
+run:
+    poke $FFF163 param
+script "P4 Action Speed Up"  
+run:
+    poke $FFACC1 $01
+script "P4 Endless Grab Attack"  
+run:
+    poke $FFAD3F $09
+script "P4 Select Character" \
+ "0x00/Mummy Commando"\
+ "0x01/Captain Commando"\
+ "0x02/Ninja Commando"\
+ "0x03/Baby Commando" 
+run:
+    poke $FFAD34 param
+script " "  
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x01/U.S.A."\
+ "0x02/World"\
+ "0x03/Japan with Capcom Copyright + No Warning"\
+ "0x04/U.S.A. with Capcom U.S.A. Copyright + No Warning"\
+ "0x05/World + No Warning" 
+run:
+    poke $FFF88A param

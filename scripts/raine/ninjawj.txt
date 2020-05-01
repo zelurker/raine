@@ -1,0 +1,34 @@
+script "Infinite Credits"  
+run:
+    poke $0C22B7 $09
+script "Infinite Time"  
+run:
+    dpoke $0C6DE8 $03E8
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $241307 $64
+script "P1 Infinite Shuriken"  
+run:
+    poke $241321 $63
+script "P1 Invincibility"  
+on:
+    temp0=peek($007038)
+run:
+    poke $007038 $60
+off:
+    poke $007038 temp0
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $241387 $64
+script "P2 Infinite Shuriken"  
+run:
+    poke $2413A1 $63
+script "P2 Invincibility"  
+on:
+    temp0=peek($00724C)
+run:
+    poke $00724C $60
+off:
+    poke $00724C temp0

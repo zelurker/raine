@@ -1,9 +1,3 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $8E3C $99
-
-script "*UP No more time"
-	poke $8E3C $01
+script "Infinite Time"  
+run:
+    poke $8E3C $29

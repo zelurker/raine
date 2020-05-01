@@ -1,9 +1,9 @@
-# Cheats from  : The Ultimate Patchers, Antiriad
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited damage" always
-	poke $10DD8B $00
-
-script "1UP Unlimited torpedos" always
-	poke $10DE34 $1E
+script "Infinite Credits"  
+run:
+    poke $10793F $09
+script "No Damage (Windscreen still Cracks)"  
+run:
+    poke $10DD8B $00
+script "Infinite Torpedos"  
+run:
+    poke $10DE34 $27

@@ -1,0 +1,149 @@
+script "Infinite Time"  
+run:
+    poke $10B90B $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $10B90B $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $103069 $C8
+    poke $10306B $C8
+    poke $10306F $C8
+script "P1 Drain All Energy Now!"  
+on:
+    poke $103069 $00
+    poke $10306B $00
+    poke $10306F $00
+script "P1 Always have Maximum POW"  
+run:
+    poke $10307D $F0
+script "P1 Always have SSS Rank"  
+run:
+    poke $10B84D $07
+script "P1 Select Character" \
+ "0x01/Princess Sissy"\
+ "0x02/Mr.Jones"\
+ "0x03/Lynn Baker"\
+ "0x04/Elias Patrick"\
+ "0x05/Jimmy" 
+run:
+    if (param==$01)
+      poke $10B81F $0F
+      poke $10B823 $0F
+    endif
+    if (param==$02)
+      poke $10B81F $10
+      poke $10B823 $10
+      poke $102225 $0F
+    endif
+    if (param==$03)
+      poke $10B81F $11
+      poke $10B823 $11
+      poke $102225 $11
+    endif
+    if (param==$04)
+      poke $10B81F $12
+      poke $10B823 $12
+      poke $102225 $10
+    endif
+    if (param==$05)
+      poke $10B81F $13
+      poke $10B823 $13
+      poke $102225 $12
+    endif
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $102E9D $C8
+    poke $102E9F $C8
+    poke $102EA3 $C8
+script "P2 Drain All Energy Now!"  
+on:
+    poke $102E9D $00
+    poke $102E9F $00
+    poke $102EA3 $00
+script "P2 Always have Maximum POW"  
+run:
+    poke $102EB1 $F0
+script "P2 Always have SSS Rank"  
+run:
+    poke $10B87D $07
+script "P2 Select Character" \
+ "0x01/Princess Sissy"\
+ "0x02/Mr.Jones"\
+ "0x03/Lynn Baker"\
+ "0x04/Elias Patrick"\
+ "0x05/Jimmy" 
+run:
+    if (param==$01)
+      poke $10B84F $0F
+      poke $10B853 $0F
+    endif
+    if (param==$02)
+      poke $10B84F $10
+      poke $10B853 $10
+      poke $1024E5 $0F
+    endif
+    if (param==$03)
+      poke $10B84F $11
+      poke $10B853 $11
+      poke $1024E5 $11
+    endif
+    if (param==$04)
+      poke $10B84F $12
+      poke $10B853 $12
+      poke $1024E5 $10
+    endif
+    if (param==$05)
+      poke $10B84F $13
+      poke $10B853 $13
+      poke $1024E5 $12
+    endif
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

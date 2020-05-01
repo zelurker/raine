@@ -1,9 +1,28 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited fuel      (OFF)" always
-	poke $805FC $7F
-
-script "*UP Rank set to 1st" always
-	poke $805FB $01
+script " "  
+script "Don't collect Gas dropped by the helicopter!!!"  
+script " "  
+script "Infinite Gas"  
+on:
+    temp0=peek($805FC)
+run:
+    if (frame%300==$0)&&(peek($805FC)!=temp0)
+      poke $805FC $7F
+    endif
+script "Rank always 1st"  
+on:
+    temp0=peek($805FB)
+run:
+    if (frame%60==$0)&&(peek($805FB)!=temp0)
+      poke $805FB $01
+    endif
+script " "  
+script "The invincibility cheat must be be activated during play and"  
+script "deactivated during fuel refill + BEFORE crossing the GOAL line"  
+script " "  
+script "Invincibility"  
+run:
+    poke $8072A $00
+    poke $80739 $00
+script "Always ride at Maximum Speed"  
+run:
+    poke $80728 $03

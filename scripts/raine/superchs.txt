@@ -1,9 +1,9 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited turbos" always
-	poke $102DBB $03
-
-script "1UP Unlimited time" always
-	dpoke $102802 $EA5F
+script "Infinite Credits"  
+run:
+    poke $100144 $09
+script "Infinite Time"  
+run:
+    dpoke $102802 $EFFF
+script "Infinite Turbos"  
+run:
+    poke $102DBB $03

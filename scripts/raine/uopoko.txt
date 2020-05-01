@@ -1,0 +1,76 @@
+script "Infinite Credits"  
+run:
+    poke $100195 $09
+script "Select Starting Stage" \
+ inter=1,31,1 
+run:
+    if (peek($100203)==$00)
+      poke $100203 (param-$1)
+    endif
+script " "  
+script "P1 Infinite Time"  
+run:
+    poke $102310 $06
+script "P1 Always have Guide Pointer"  
+run:
+    poke $10233B $01
+    poke $10233C $09
+    poke $10233D $6C
+script "P1 Always have Guide Pointer (vs Mode)"  
+run:
+    poke $10233B $01
+    poke $10233C $0D
+    poke $10233D $10
+script "P1 Select Perm. Current Bubble" \
+ "0x80/Magenta"\
+ "0x81/Blue"\
+ "0x82/Green"\
+ "0x83/Aqua"\
+ "0x84/Red"\
+ "0x85/Black"\
+ "0x86/Yellow"\
+ "0x87/Orange" 
+run:
+    poke $1022F1 param
+script "P1 Select Temp. Current Bubble" \
+ "0x80/Magenta"\
+ "0x81/Blue"\
+ "0x82/Green"\
+ "0x83/Aqua"\
+ "0x84/Red"\
+ "0x85/Black"\
+ "0x86/Yellow"\
+ "0x87/Orange" 
+change:
+    poke $1022F1 param
+script " "  
+script "P2 Infinite Time"  
+run:
+    poke $102312 $06
+script "P2 Always have Guide Pointer (vs Mode)"  
+run:
+    poke $1023BB $01
+    poke $1023BC $0D
+    poke $1023BD $10
+script "P2 Select Perm. Current Bubble" \
+ "0x80/Magenta"\
+ "0x81/Blue"\
+ "0x82/Green"\
+ "0x83/Aqua"\
+ "0x84/Red"\
+ "0x85/Black"\
+ "0x86/Yellow"\
+ "0x87/Orange" 
+run:
+    poke $1022F3 param
+script "P2 Select Temp. Current Bubble" \
+ "0x80/Magenta"\
+ "0x81/Blue"\
+ "0x82/Green"\
+ "0x83/Aqua"\
+ "0x84/Red"\
+ "0x85/Black"\
+ "0x86/Yellow"\
+ "0x87/Orange" 
+change:
+    poke $1022F3 param

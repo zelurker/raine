@@ -1,36 +1,67 @@
-# Cheats from  : Tourniquet, Pugsy, The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $100181 $03
-
-script "*UP Unlimited shields" always
-	dpoke $10018A $9909
-
-script "*UP End round - 99.9%"
-	dpoke $100192 $9909
-
-script "*UP Speed  ON" always
-	poke $10031B $01
-
-script "*UP Speed  OFF"
-	poke $10031B $00
-
-script "*UP Power  ON" always
-	poke $100882 $01
-
-script "*UP Power  OFF"
-	poke $100882 $00
-
-script "*UP Laser  ON" always
-	poke $100884 $01
-
-script "*UP Laser  OFF"
-	poke $100884 $00
-
-script "*UP Freeze ON" always
-	poke $100883 $01
-
-script "*UP Freeze OFF"
-	poke $100883 $00
+script "Infinite Credits"  
+run:
+    poke $100027 $09
+script "Infinite Lives"  
+run:
+    poke $100181 $06
+script "Infinite Shields"  
+run:
+    dpoke $10018A $9A09
+script "Select Speed Status" \
+ "0x01/Always ON"\
+ "0x00/Always OFF" 
+run:
+    poke $10031B param
+script "Select Power Status" \
+ "0x01/Always ON"\
+ "0x00/Always OFF" 
+run:
+    poke $100882 param
+script "Select Laser Status" \
+ "0x01/Always ON"\
+ "0x00/Always OFF" 
+run:
+    poke $100884 param
+script "Select Freeze All Enemies Status" \
+ "0x01/Always ON"\
+ "0x00/Always OFF" 
+run:
+    poke $100883 param
+script "Complete level with 99.9% Now!"  
+on:
+    lpoke $100190 $00009909
+script "Complete Game Now!"  
+on:
+    dpoke $100197 $160F
+    lpoke $100190 $00009909
+script "Invincibility"  
+on:
+    temp0=peek($09782)
+    temp1=dpeek($15ED6)
+    temp2=dpeek($15FA2)
+    temp3=peek($17B18)
+    temp4=peek($212D4)
+run:
+    poke $09782 $60
+    dpoke $15ED6 $4E75
+    dpoke $15FA2 $4E75
+    poke $17B18 $60
+    poke $212D4 $60
+off:
+    poke $09782 temp0
+    dpoke $15ED6 temp1
+    dpoke $15FA2 temp2
+    poke $17B18 temp3
+    poke $212D4 temp4
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($03FFFF)
+run:
+    poke $03FFFF param
+off:
+    poke $03FFFF temp0

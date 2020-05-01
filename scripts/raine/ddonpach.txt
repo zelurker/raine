@@ -1,0 +1,134 @@
+script "Infinite Selection Time"  
+run:
+    poke $10BE68 $11
+script "Kill Boss with 1 hit Now!"  
+on:
+    poke $10019A $00
+script "Enemy never fires at you!"  
+run:
+    poke $1017BF $63
+script "Infinite Fire Bomb Shot Time" \
+ "comm:This cheat only works for one player at a time, it can be either P1 or P2. You either have to end the level or turn it OFF before the other player can have a go at it!"  
+run:
+    poke $100E41 $26
+script "Always have 1000000 bonus"  
+run:
+    poke $103F8F $1E
+script "Select Level to follow Level 1" \
+ "comm:Second Loop is new harder game starting from Level 1, Level 7 is final stage with two bosses after Second Loop." \
+ "0x01/Level 2"\
+ "0x02/Level 3"\
+ "0x03/Level 4"\
+ "0x04/Level 5"\
+ "0x05/Level 6"\
+ "0x07/Second Loop"\
+ "0x06/Level 7 (Special)"\
+ "0x08/End Sequence" 
+on:
+    temp0=lpeek($13FC)
+    temp1=dpeek($1400)
+run:
+    lpoke $13FC $4EB90009
+    dpoke $1400 $8000
+    lpoke $98000 $4A790010
+    lpoke $98004 $197A6644
+    lpoke $98008 $4A790010
+    lpoke $9800c $1978663C
+    dpoke $98010 $103C
+    poke $98012 $00
+    poke $98013 param
+    lpoke $98014 $B03C0001
+    lpoke $98018 $6732B03C
+    lpoke $9801C $00066D24
+    lpoke $98020 $B03C0006
+    lpoke $98024 $6718B03C
+    lpoke $98028 $00086606
+    lpoke $9802C $903C0001
+    lpoke $98030 $600C4279
+    lpoke $98034 $0010197A
+    lpoke $98038 $903C0001
+    lpoke $9803C $60065279
+    lpoke $98040 $0010197A
+    lpoke $98044 $13C00010
+    lpoke $98048 $19794E75
+    lpoke $9804C $52790010
+    lpoke $98050 $19784E75
+off:
+    lpoke $13FC temp0
+    dpoke $1400 temp1
+    lpoke $98000 $FFFFFFFF
+    lpoke $98004 $FFFFFFFF
+    lpoke $98008 $FFFFFFFF
+    lpoke $9800c $FFFFFFFF
+    lpoke $98010 $FFFFFFFF
+    lpoke $98014 $FFFFFFFF
+    lpoke $98018 $FFFFFFFF
+    lpoke $9801c $FFFFFFFF
+    lpoke $98020 $FFFFFFFF
+    lpoke $98024 $FFFFFFFF
+    lpoke $98028 $FFFFFFFF
+    lpoke $9802c $FFFFFFFF
+    lpoke $98030 $FFFFFFFF
+    lpoke $98034 $FFFFFFFF
+    lpoke $98038 $FFFFFFFF
+    lpoke $9803c $FFFFFFFF
+    lpoke $98040 $FFFFFFFF
+    lpoke $98044 $FFFFFFFF
+    lpoke $98048 $FFFFFFFF
+    lpoke $9804c $FFFFFFFF
+    lpoke $98050 $FFFFFFFF
+    lpoke $98054 $FFFFFFFF
+script "Kill Boss with 1 hit Now!" \
+ "comm:Set this cheat after any boss completely appears on screen."  
+on:
+    temp0=peek($101979)
+    if (temp0<=04)||(temp0==$06)
+      lpoke $100198 $00000000
+    endif
+    if (temp0>=05)
+      lpoke $100158 $00000000
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101965 $05
+script "P1 Infinite Bombs"  
+run:
+    poke $102CB0 $06
+    poke $102CB1 $06
+script "P1 Maximum Shot"  
+run:
+    poke $102CAD $04
+    poke $102CAF $04
+script "P1 Maximum Combo"  
+run:
+    poke $1017D1 $37
+script "P1 Invincibility"  
+run:
+    poke $102CCA $01
+script "P1 Always have x99 max"  
+run:
+    poke $10192B $99
+    poke $10192D $99
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $101967 $05
+script "P2 Infinite Bombs"  
+run:
+    poke $102CF0 $06
+    poke $102CF1 $06
+script "P2 Maximum Shot"  
+run:
+    poke $102CED $04
+    poke $102CEF $04
+script "P2 Maximum Combo"  
+run:
+    poke $1017FB $37
+script "P2 Invincibility"  
+run:
+    poke $102D0A $01
+script "P2 Always have x99 max"  
+run:
+    poke $101935 $99
+    poke $101937 $99

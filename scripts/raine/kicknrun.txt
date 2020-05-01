@@ -1,33 +1,37 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $E842 $45
-
-script "*UP End half              (T)"
-	poke $E842 $00
-
-script "1UP Total score set to 10 (P)" always
-	poke $DBD0 $10
-
-script "2UP Total score set to 10 (P)" always
-	poke $DBD1 $10
-
-script "1UP Total score set to 0  (P)" always
-	poke $DBD0 $00
-
-script "2UP Total score set to 0  (P)" always
-	poke $DBD1 $00
-
-script "1UP Total score set to 10 (T)"
-	poke $DBD0 $10
-
-script "2UP Total score set to 10 (T)"
-	poke $DBD1 $10
-
-script "1UP Total score set to 0  (T)"
-	poke $DBD0 $00
-
-script "2UP Total score set to 0  (T)"
-	poke $DBD1 $00
+script "Infinite Credits"  
+run:
+    poke $E809 $99
+script "Infinite Time"  
+run:
+    poke $E842 $45
+script "Finish this Half Now!"  
+on:
+    poke $E842 $00
+script "Select Starting Match" \
+ "0x01/1st"\
+ "0x03/2nd"\
+ "0x05/3rd"\
+ "0x07/4th"\
+ "0x09/Semi-Final"\
+ "0x0B/Final" 
+on:
+    temp0=peek($0CDB)
+run:
+    poke $0CDB param
+off:
+    poke $0CDB temp0
+script " "  
+script "P1 Select Score" \
+ "comm:Display changes when one team scores" \
+ inter=0,99,1 
+change:
+    cpu audio
+    poke $9BD0 tobcd(param)
+    cpu main
+script "P2 Select Score" \
+ "comm:Display changes when one team scores" \
+ inter=0,99,1 
+change:
+    cpu audio
+    poke $9BD1 tobcd(param)
+    cpu main

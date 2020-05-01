@@ -1,0 +1,110 @@
+script "Infinite Time"  
+run:
+    poke $100A09 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $100A09 $00
+script "Goto Boss Fight Screen Now!" \
+ "comm:The Goto Boss Fight Screen should be activated on the character selection screen. If you activate it during any fight however you will see the ENDING after you win that match!"  
+on:
+    poke $100A93 $0C
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke ((lpeek($100A0A))+$A5) $80
+script "P1 Drain All Energy Now!"  
+on:
+    poke ((lpeek($100A0A))+$A5) $00
+script "P1 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wang-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0A/Tamtam"\
+ "0x0B/Charlotte"\
+ "0x0C/Amakusa" 
+run:
+    poke $10100B param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke ((lpeek($100A0E))+$A5) $80
+script "P2 Drain All Energy Now!"  
+on:
+    poke ((lpeek($100A0E))+$A5) $00
+script "P2 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wang-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0A/Tamtam"\
+ "0x0B/Charlotte"\
+ "0x0C/Amakusa" 
+run:
+    poke $10102B param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,27 +1,55 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $62CED $3E
-
-script "1UP Invulnerability OFF"
-	poke $62CED $01
-
-script "2UP Invulnerability ON" always
-	poke $62D1F $3E
-
-script "2UP Invulnerability OFF"
-	poke $62D1F $01
-
-script "1UP Unlimited lives" always
-	poke $62CE4 $03
-
-script "2UP Unlimited lives" always
-	poke $62D16 $03
-
-script "1UP Unlimited bombs" always
-	poke $62CE9 $03
-
-script "2UP Unlimited bombs" always
-	poke $62D1B $03
+script "Invincibility"  
+on:
+    temp0=dpeek($0D9E4)
+run:
+    dpoke $0D9E4 $4E75
+off:
+    dpoke $0D9E4 temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $62CE4 $06
+script "P1 Infinite Bombs"  
+run:
+    poke $62CE9 $03
+script "P1 Always Have Speed Up"  
+run:
+    dpoke $61644 $0302
+    dpoke $62D04 $0002
+script "P1 Always Have Laser"  
+run:
+    dpoke $62CDA $0002
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on name entry screen"  
+run:
+    if (peek($62CD8)<00)||(peek($62CD8)>01)
+      poke $62CD8 $00
+    endif
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $62D16 $06
+script "P2 Infinite Bombs"  
+run:
+    poke $62D1B $03
+script "P2 Always Have Speed Up"  
+run:
+    dpoke $61684 $0302
+    dpoke $62D36 $0002
+script "P2 Always Have Laser"  
+run:
+    dpoke $62D0C $0002
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on name entry screen"  
+run:
+    if (peek($62D0A)<00)||(peek($62D0A)>01)
+      poke $62D0A $00
+    endif
+script " "  
+script "Skip RAM/ROM Check"  
+on:
+    temp0=dpeek($001B6)
+run:
+    dpoke $001B6 $0002
+off:
+    dpoke $001B6 temp0

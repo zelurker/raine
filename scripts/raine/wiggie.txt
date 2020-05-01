@@ -1,6 +1,134 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $FFD4C6 $03
+script "Infinite Credits"  
+run:
+    poke $FFC21B $09
+script "Infinite Lives"  
+run:
+    poke $FFD4C6 $03
+script "Select Current Stage" \
+ "comm:Enable this ingame - the selected stage will appear when you lose a life" \
+ inter=1,24,1 
+change:
+    poke $FFD4C0 (param-$1)
+script "Always have Super Ball"  
+run:
+    poke $FFE00D $06
+script "Always have Magnet"  
+run:
+    poke $FFDFF8 $80
+script "Select Bat Size" \
+ "0x80/Enlarged"\
+ "0xD0/Maximum" 
+run:
+    poke $FFE007 param
+script "Infinite Bonus"  
+run:
+    poke $FFD34E $0F
+    poke $FFD34B $80
+    poke $FFE2B2 $00
+script "Select Perm. Bonus" \
+ "0x01/Magnet"\
+ "0x02/Super Ball"\
+ "0x03/Extend"\
+ "0x04/Bombs"\
+ "0x05/1Up"\
+ "0x06/Multi"\
+ "0x07/Weapon"\
+ "0x08/Triplication" 
+on:
+    temp0=peek($FFE2B3)
+    temp1=peek($E0004F)
+    temp2=peek($E0204F)
+    temp3=peek($FFE2B3)
+    temp4=peek($E0004F)
+    temp5=peek($E0204F)
+    temp6=peek($FFE2B3)
+    temp7=peek($E0004F)
+    temp8=peek($E0204F)
+    temp9=peek($FFE2B3)
+    temp10=peek($E0004F)
+    temp11=peek($E0204F)
+    temp12=peek($FFE2B3)
+    temp13=peek($E0004F)
+    temp14=peek($E0204F)
+    temp15=peek($FFE2B3)
+    temp16=peek($E0004F)
+    temp17=peek($E0204F)
+    temp18=peek($FFE2B3)
+    temp19=peek($E0004F)
+    temp20=peek($E0204F)
+    temp21=peek($FFE2B3)
+    temp22=peek($E0004F)
+    temp23=peek($E0204F)
+run:
+    if (param==$01)&&(frame%60==$0)&&(peek($FFE2B3)!=temp0)
+      poke $FFE2B3 $01
+    endif
+    if (param==$01)&&(frame%60==$0)&&(peek($E0004F)!=temp1)
+      poke $E0004F $18
+    endif
+    if (param==$01)&&(frame%60==$0)&&(peek($E0204F)!=temp2)
+      poke $E0204F $18
+    endif
+    if (param==$02)&&(frame%60==$0)&&(peek($FFE2B3)!=temp3)
+      poke $FFE2B3 $02
+    endif
+    if (param==$02)&&(frame%60==$0)&&(peek($E0004F)!=temp4)
+      poke $E0004F $1E
+    endif
+    if (param==$02)&&(frame%60==$0)&&(peek($E0204F)!=temp5)
+      poke $E0204F $1E
+    endif
+    if (param==$03)&&(frame%60==$0)&&(peek($FFE2B3)!=temp6)
+      poke $FFE2B3 $03
+    endif
+    if (param==$03)&&(frame%60==$0)&&(peek($E0004F)!=temp7)
+      poke $E0004F $1A
+    endif
+    if (param==$03)&&(frame%60==$0)&&(peek($E0204F)!=temp8)
+      poke $E0204F $1A
+    endif
+    if (param==$04)&&(frame%60==$0)&&(peek($FFE2B3)!=temp9)
+      poke $FFE2B3 $04
+    endif
+    if (param==$04)&&(frame%60==$0)&&(peek($E0004F)!=temp10)
+      poke $E0004F $19
+    endif
+    if (param==$04)&&(frame%60==$0)&&(peek($E0204F)!=temp11)
+      poke $E0204F $19
+    endif
+    if (param==$05)&&(frame%60==$0)&&(peek($FFE2B3)!=temp12)
+      poke $FFE2B3 $05
+    endif
+    if (param==$05)&&(frame%60==$0)&&(peek($E0004F)!=temp13)
+      poke $E0004F $1F
+    endif
+    if (param==$05)&&(frame%60==$0)&&(peek($E0204F)!=temp14)
+      poke $E0204F $1F
+    endif
+    if (param==$06)&&(frame%60==$0)&&(peek($FFE2B3)!=temp15)
+      poke $FFE2B3 $06
+    endif
+    if (param==$06)&&(frame%60==$0)&&(peek($E0004F)!=temp16)
+      poke $E0004F $1C
+    endif
+    if (param==$06)&&(frame%60==$0)&&(peek($E0204F)!=temp17)
+      poke $E0204F $1C
+    endif
+    if (param==$07)&&(frame%60==$0)&&(peek($FFE2B3)!=temp18)
+      poke $FFE2B3 $07
+    endif
+    if (param==$07)&&(frame%60==$0)&&(peek($E0004F)!=temp19)
+      poke $E0004F $1D
+    endif
+    if (param==$07)&&(frame%60==$0)&&(peek($E0204F)!=temp20)
+      poke $E0204F $1D
+    endif
+    if (param==$08)&&(frame%60==$0)&&(peek($FFE2B3)!=temp21)
+      poke $FFE2B3 $08
+    endif
+    if (param==$08)&&(frame%60==$0)&&(peek($E0004F)!=temp22)
+      poke $E0004F $1B
+    endif
+    if (param==$08)&&(frame%60==$0)&&(peek($E0204F)!=temp23)
+      poke $E0204F $1B
+    endif

@@ -1,15 +1,21 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $FFD723 $03
-
-script "2UP Unlimited lives" always
-	poke $FFD731 $03
-
-script "3UP Unlimited lives" always
-	poke $FFD73F $03
-
-script "4UP Unlimited lives" always
-	poke $FFD74D $03
+script "Infinite Credits"  
+run:
+    poke $FFD60D $09
+script "Select Starting Stage" \
+ inter=$1,$99,1 
+run:
+    if (peek($FFD76D)==$01)
+      poke $FFD76D tobcd(param)
+    endif
+script "P1 Infinite Lives"  
+run:
+    poke $FFD723 $09
+script "P2 Infinite Lives"  
+run:
+    poke $FFD731 $09
+script "P3 Infinite Lives"  
+run:
+    poke $FFD73F $09
+script "P4 Infinite Lives"  
+run:
+    poke $FFD74D $09

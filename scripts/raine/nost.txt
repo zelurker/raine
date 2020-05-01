@@ -1,21 +1,76 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability" always
-	poke $104001 $00
-
-script "2UP Invulnerability" always
-	poke $104081 $00
-
-script "1UP Unlimited lives" always
-	poke $1000FC $03
-
-script "2UP Unlimited lives" always
-	poke $1000FD $03
-
-script "1UP Maximum fire power" always
-	poke $10401C $07
-
-script "2UP Maximum fire power" always
-	poke $10409C $07
+script "Infinite Credits"  
+run:
+    poke $10000E $09
+script "Select the Starting Level" \
+ "comm:Use on ship select screen" \
+ inter=1,9,1 
+change:
+    poke $10004F (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1000FC $07
+script "P1 Invincibility"  
+run:
+    poke $104001 $00
+script "P1 Lose a Life Now!"  
+on:
+    poke $104001 $01
+script "P1 Always Maximum Shot Power"  
+run:
+    poke $10401C $07
+script "P1 Set Maximum Option Level" \
+ "comm:Set after getting the option, don't set with no option !"  
+on:
+    poke $10401D $04
+script "P1 Always Maximum ?-Item Bonus"  
+run:
+    poke $1001CA $14
+script "P1 Always Have Maximum B-Chip"  
+run:
+    poke $1000FE $99
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $1000E3 $00|(peek($1000E3)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1000FD $07
+script "P2 Invincibility"  
+run:
+    poke $104081 $00
+script "P2 Lose a Life Now!"  
+on:
+    poke $104081 $01
+script "P2 Always Maximum Shot Power"  
+run:
+    poke $10409C $07
+script "P2 Set Maximum Option Level" \
+ "comm:Set after getting the option, don't set with no option !"  
+on:
+    poke $10409D $04
+script "P2 Always Maximum ?-Item Bonus"  
+run:
+    poke $1001CB $14
+script "P2 Always Have Maximum B-Chip"  
+run:
+    poke $1000FF $99
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $1000E9 $00|(peek($1000E9)&~10)
+script " "  
+script "Skip RAM/ROM Check"  
+on:
+    temp0=dpeek($000122)
+    temp1=peek($0005E1)
+    temp2=dpeek($0005F8)
+run:
+    dpoke $000122 $0146
+    poke $0005E1 $00
+    dpoke $0005F8 $4ED2
+off:
+    dpoke $000122 temp0
+    poke $0005E1 temp1
+    dpoke $0005F8 temp2

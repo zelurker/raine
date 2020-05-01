@@ -1,9 +1,118 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited vitality" always
-	poke $102309 $05
-
-script "2UP Unlimited vitality" always
-	poke $10230B $05
+script "Infinite Credits"  
+run:
+    dpoke $102294 $7FFF
+script "Finish this Stage Now!"  
+on:
+    poke $10254F $1A
+    poke $10259B $1A
+    poke $10246F $1A
+script "P1 Infinite Lives"  
+run:
+    poke $102309 $05
+script "P2 Infinite Lives"  
+run:
+    poke $10230B $05
+script "Stage 1"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $102DBD $05
+script "P1 Score always = 255"  
+run:
+    poke $10254F $FF
+script "P2 Score always = 255"  
+run:
+    poke $1025E5 $FF
+script "Stage 2"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $1026A3 $05
+script "P1 Score always = 255"  
+run:
+    poke $10259B $FF
+script "P2 Score always = 255"  
+run:
+    poke $102631 $FF
+script "Stages 3-6, 10, 12-16 + 19-20"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $102457 $05
+script "P1 Score always = 255"  
+run:
+    poke $10246F $FF
+script "P2 Score always = 255"  
+run:
+    poke $102471 $FF
+script "Stage 7"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $1026ED $05
+script "P1 Score always = 255"  
+run:
+    poke $10254F $FF
+script "P2 Score always = 255"  
+run:
+    poke $10262F $FF
+script "Stage 8"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $1028D1 $05
+script "P1 Score always = 255"  
+run:
+    poke $102921 $FF
+script "P2 Score always = 255"  
+run:
+    poke $102923 $FF
+script "Stage 9"  
+script " "  
+script "P1 Score always = 255"  
+run:
+    poke $10254F $FF
+script "P2 Score always = 255"  
+run:
+    poke $1025F9 $FF
+script "Stage 11"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $102821 $05
+script "P1 Score always = 255"  
+run:
+    poke $10254F $FF
+script "P2 Score always = 255"  
+run:
+    poke $1025E5 $FF
+script "Stage 17"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $102951 $05
+script "P1 Score always = 255"  
+run:
+    poke $10254F $FF
+script "P2 Score always = 255"  
+run:
+    poke $1025E5 $FF
+script "Stage 18"  
+script " "  
+script "Infinite Time" \
+ "comm:Turn this cheat OFF to finish the stage"  
+run:
+    poke $102781 $05
+script "P1 Score always = 255"  
+run:
+    poke $10259B $FF
+script "P2 Score always = 255"  
+run:
+    poke $102631 $FF

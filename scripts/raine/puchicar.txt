@@ -1,0 +1,37 @@
+script "Infinite Credits"  
+run:
+    poke $40026B $09
+script "Unlock Secret Character" \
+ "comm:Enable to select Patoraco via the character selection screen"  
+run:
+    poke $402186 $FF
+script "P1 Always Keep Ball in Play"  
+run:
+    if (peek($403139)<00)||(peek($403139)>B8)
+      poke $403139 $A0
+    endif
+script "P1 Always play as Patoraco" \
+ "comm:Enable this Secret Character cheat on or before the character selection screen"  
+run:
+    poke $400F39 $0C
+script "P2 Always Keep Ball in Play"  
+run:
+    if (peek($4038DD)<00)||(peek($4038DD)>B8)
+      poke $4038DD $A0
+    endif
+script "P2 Always play as Patoraco" \
+ "comm:Enable this Secret Character cheat on or before the character selection screen"  
+run:
+    poke $400F99 $0C
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3). Then you may have to turn the Test Mode ON (with F2)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

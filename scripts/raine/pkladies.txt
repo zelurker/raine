@@ -1,78 +1,53 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited hands" always
-	poke $E70F $09
-
-script "1UP Get RF - 5000 pts (-T)"
-	poke $E220 $09
-	poke $E200 $31
-	poke $E201 $3D
-	poke $E202 $3C
-	poke $E203 $3B
-	poke $E204 $3A
-
-script "1UP Get SF - 2000 pts (-T)"
-	poke $E220 $08
-	poke $E200 $16
-	poke $E201 $17
-	poke $E202 $18
-	poke $E203 $19
-	poke $E204 $1A
-
-script "1UP Get FK - 1000 pts (-T)"
-	poke $E220 $07
-	poke $E200 $14
-	poke $E201 $24
-	poke $E202 $34
-	poke $E203 $44
-	poke $E204 $27
-
-script "1UP Get FH -  700 pts (-T)"
-	poke $E220 $06
-	poke $E200 $29
-	poke $E201 $49
-	poke $E202 $18
-	poke $E203 $28
-	poke $E204 $38
-
-script "1UP Get FL -  500 pts (-T)"
-	poke $E220 $05
-	poke $E200 $2C
-	poke $E201 $2B
-	poke $E202 $27
-	poke $E203 $25
-	poke $E204 $22
-
-script "1UP Get ST -  300 pts (-T)"
-	poke $E220 $04
-	poke $E200 $37
-	poke $E201 $26
-	poke $E202 $45
-	poke $E203 $44
-	poke $E204 $23
-
-script "1UP Get TK -  200 pts (-T)"
-	poke $E220 $03
-	poke $E200 $12
-	poke $E201 $32
-	poke $E202 $42
-	poke $E203 $4B
-	poke $E204 $1A
-
-script "1UP Get TP -  100 pts (-T)"
-	poke $E220 $02
-	poke $E200 $25
-	poke $E201 $35
-	poke $E202 $13
-	poke $E203 $43
-	poke $E204 $29
-
-script "1UP Get JB -   50 pts (-T)"
-	poke $E220 $01
-	poke $E200 $1D
-	poke $E201 $4D
-	poke $E202 $1C
-	poke $E203 $28
-	poke $E204 $36
+script "Infinite Points"  
+run:
+    poke $E703 $09
+    lpoke $E704 $09090909
+script "Infinite Hands"  
+run:
+    poke $E70F $09
+script "Back card must be visible when you activate these codes"  
+script "Get RF - 5000 pts Now!"  
+on:
+    poke $E220 $09
+    lpoke $E200 $3B3C3D31
+    poke $E204 $3A
+script "Get SF - 2000 pts Now!"  
+on:
+    poke $E220 $08
+    lpoke $E200 $19181716
+    poke $E204 $1A
+script "Get FK - 1000 pts Now!"  
+on:
+    poke $E220 $07
+    lpoke $E200 $44342414
+    poke $E204 $27
+script "Get FH -  700 pts Now!"  
+on:
+    poke $E220 $06
+    lpoke $E200 $28184929
+    poke $E204 $38
+script "Get FL -  500 pts Now!"  
+on:
+    poke $E220 $05
+    lpoke $E200 $25272B2C
+    poke $E204 $22
+script "Get ST -  300 pts Now!"  
+on:
+    poke $E220 $04
+    lpoke $E200 $44452637
+    poke $E204 $23
+script "Get TK -  200 pts Now!"  
+on:
+    poke $E220 $03
+    lpoke $E200 $4B423212
+    poke $E204 $1A
+script "Get TP -  100 pts Now!"  
+on:
+    poke $E220 $02
+    lpoke $E200 $43133525
+    poke $E204 $29
+script "Get JB -   50 pts Now!"  
+on:
+    poke $E220 $01
+    lpoke $E200 $281C4D1D
+    poke $E204 $36

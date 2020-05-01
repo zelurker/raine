@@ -1,0 +1,50 @@
+script "Select Starting Mission" \
+ "0x4279/Mission 1-1"\
+ "0x5279/Mission 1-2"\
+ "0x5479/Mission 2-1"\
+ "0x5679/Mission 2-2"\
+ "0x5879/Mission 3-1"\
+ "0x5A79/Mission 3-2"\
+ "0x5C79/Mission 4-1"\
+ "0x5E79/Mission 4-2" 
+on:
+    temp0l=lpeek(02132)
+    temp0h=lpeek($2136
+run:
+    dpoke $02132 $42B9
+    dpoke $02138 param
+    dpoke $0213C $0018
+off:
+    lpoke $02132 temp0l
+    lpoke $2136 temp0h
+script "P1 Infinite Lives"  
+run:
+    poke $F0847 $03
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $F080B $A0
+script "P1 Select Extra Weapon" \
+ "0x00/None"\
+ "0x01/M"\
+ "0x02/E"\
+ "0x03/T"\
+ "0x04/B" 
+run:
+    poke $F084D param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F0C39 $03
+script "P2 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $F0C03 $A0
+script "P2 Select Extra Weapon" \
+ "0x00/None"\
+ "0x01/M"\
+ "0x02/E"\
+ "0x03/T"\
+ "0x04/B" 
+run:
+    poke $F0C3F param

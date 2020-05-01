@@ -1,0 +1,320 @@
+script "No more level gain" \
+ "comm:Solo only"  
+run:
+    poke $101C5D $00
+script " "  
+script "Note on some games you only have 2 people, when this happens"  
+script "there is no CENTRE. CENTRE becomes LEFT for P1 and CENTRE"  
+script "becomes RIGHT for P2. With what was LEFT and RIGHT become clear"  
+script " "  
+script "P1 Select Perm. Current LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101D03 param
+script "P1 Select Perm. Current CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101D23 param
+script "P1 Select Perm. Current RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101D43 param
+script "P1 Select Temp. Current LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101D03 param
+script "P1 Select Temp. Current CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101D23 param
+script "P1 Select Temp. Current RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101D43 param
+script "P1 Select Perm. Next LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101D63 param
+script "P1 Select Perm. Next CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101D83 param
+script "P1 Select Perm. Next RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101DA3 param
+script "P1 Select Temp. Next LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101D63 param
+script "P1 Select Temp. Next CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101D83 param
+script "P1 Select Temp. Next RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101DA3 param
+script " "  
+script "P2 Select Perm. Current LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101F03 param
+script "P2 Select Perm. Current CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101F23 param
+script "P2 Select Perm. Current RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101F43 param
+script "P2 Select Temp. Current LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101F03 param
+script "P2 Select Temp. Current CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101F23 param
+script "P2 Select Temp. Current RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101F43 param
+script "P2 Select Perm. Next LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101F63 param
+script "P2 Select Perm. Next CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101F83 param
+script "P2 Select Perm. Next RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+run:
+    poke $101FA3 param
+script "P2 Select Temp. Next LEFT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101F63 param
+script "P2 Select Temp. Next CENTRE" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101F83 param
+script "P2 Select Temp. Next RIGHT" \
+ "0x00/Clear"\
+ "0x01/Pink"\
+ "0x02/Yellow"\
+ "0x03/Purple"\
+ "0x04/Red"\
+ "0x05/Grey"\
+ "0x06/Green"\
+ "0x07/Blue" 
+change:
+    poke $101FA3 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

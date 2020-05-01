@@ -1,0 +1,17 @@
+script "Watch me for good answer" \
+ "comm:Watch out for these values 10=1, 20=2, 40=3, 80=4"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $FFB653 $10
+script "Good answer ends quiz Now!"  
+on:
+    poke $FFB825 $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF81A5 $05
+script "P2 Infinite Lives"  
+run:
+    poke $FF82A5 $05
+script " "  

@@ -1,15 +1,34 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $FF0E33 $03
-
-script "2UP Unlimited lives" always
-	poke $FF0E35 $03
-
-script "1UP Unlimited bombs" always
-	poke $FF2519 $63
-
-script "2UP Unlimited bombs" always
-	poke $FF253D $63
+script "Infinite Credits"  
+run:
+    poke $FF0F39 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF0E33 $99
+script "P1 Infinite Grenades"  
+run:
+    poke $FF2519 $63
+script "P1 Invincibility"  
+on:
+    temp0=peek($0807E2)
+run:
+    poke $0807E2 $60
+off:
+    poke $0807E2 temp0
+script "P1 Speed Up movement"  
+run:
+    poke $FF05AA $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF0E35 $99
+script "P2 Infinite Grenades"  
+run:
+    poke $FF253D $63
+script "P2 Invincibility"  
+on:
+    temp0=peek($0808AA)
+run:
+    poke $0808AA $60
+off:
+    poke $0808AA temp0

@@ -1,39 +1,52 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F531B $BF
-
-script "1UP Invulnerability OFF"
-	poke $F531B $00
-
-script "2UP Invulnerability ON" always
-	poke $F671B $BF
-
-script "2UP Invulnerability OFF"
-	poke $F671B $00
-
-script "1UP Unlimited lives" always
-	poke $F5329 $03
-
-script "2UP Unlimited lives" always
-	poke $F6729 $23
-
-script "1UP Unlimited "Big"" always
-	poke $F532F $05
-
-script "2UP Unlimited "Big"" always
-	poke $F672F $05
-
-script "1UP Maximum fire power" always
-	poke $F532B $06
-
-script "2UP Maximum fire power" always
-	poke $F672B $06
-
-script "1UP Maximum options" always
-	poke $F531F $04
-
-script "2UP Maximum options" always
-	poke $F672F $04
+script "Infinite Credits"  
+run:
+    poke $FEF01 $63
+script "Select Starting Stage (Incomplete)" \
+ "comm:Doesn't allow you to select Stage 8 as it doesn't work" \
+ inter=1,7,1 
+run:
+    if (peek($F9021)==$00)
+      poke $F9021 (param-$1)
+    endif
+script "Select Current Loop" \
+ inter=1,255,1 
+change:
+    poke $F902F (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F5329 $06
+script "P1 Infinite Bombs"  
+run:
+    poke $F532F $08
+script "P1 Invincibility"  
+run:
+    poke $F531B $02
+script "P1 Always Maximum Shot Power"  
+run:
+    poke $F532B $06
+script "P1 Always Have Options"  
+run:
+    poke $F531F $04
+script "P1 Rapid Fire"  
+run:
+    poke $F531D $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F6729 $06
+script "P2 Infinite Bombs"  
+run:
+    poke $F672F $08
+script "P2 Invincibility"  
+run:
+    poke $F671B $02
+script "P2 Always Maximum Shot Power"  
+run:
+    poke $F672B $06
+script "P2 Always Have Options"  
+run:
+    poke $F671F $04
+script "P2 Rapid Fire"  
+run:
+    poke $F671D $00

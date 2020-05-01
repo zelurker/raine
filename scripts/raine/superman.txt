@@ -1,57 +1,51 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F01291 $78
-
-script "1UP Invulnerability OFF"
-	poke $F01291 $01
-
-script "2UP Invulnerability ON" always
-	poke $F01091 $78
-
-script "2UP Invulnerability OFF"
-	poke $F01091 $01
-
-script "1UP Unlimited lives" always
-	poke $F012B7 $03
-
-script "2UP Unlimited lives" always
-	poke $F010B7 $03
-
-script "1UP Unlimited energy" always
-	poke $F012B5 $14
-
-script "2UP Unlimited energy" always
-	poke $F010B5 $14
-
-script "1UP Unlimited yellow diamonds" always
-	poke $F012BB $0A
-
-script "2UP Unlimited yellow diamonds" always
-	poke $F010BB $0A
-
-script "*UP One hit for helicos" always
-	poke $F02C09 $00
-	poke $F03D0B $00
-	poke $F03E4B $00
-	poke $F03D8B $00
-
-script "*UP One hit for boss 1"
-	dpoke $F00A76 $0000
-
-script "*UP One hit for boss 2"
-	dpoke $F00A72 $0000
-
-script "*UP One hit for boss 3"
-	dpoke $F00A5A $0000
-
-script "*UP One hit for boss 4"
-	dpoke $F00A6A $0000
-
-script "*UP One hit for boss 5a"
-	dpoke $F00A6A $0000
-
-script "*UP One hit for boss 5b"
-	dpoke $F00A5F $0000
+script "One hit for helicos"  
+run:
+    poke $F02C09 $00
+    poke $F03D0B $00
+    poke $F03E4B $00
+    poke $F03D8B $00
+script "One hit for boss 1"  
+on:
+    dpoke $F00A76 $0000
+script "One hit for boss 2"  
+on:
+    dpoke $F00A72 $0000
+script "One hit for boss 3"  
+on:
+    dpoke $F00A5A $0000
+script "One hit for boss 4"  
+on:
+    dpoke $F00A6A $0000
+script "One hit for boss 5a"  
+on:
+    dpoke $F00A6A $0000
+script "One hit for boss 5b"  
+on:
+    poke $F00A5F $00
+    poke $F00A67 $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F012B7 $09
+script "P1 Infinite Energy"  
+run:
+    poke $F012B5 $14
+script "P1 Invincibility"  
+run:
+    poke $F01291 $78
+script "P1 Infinite Yellow Diamonds"  
+run:
+    poke $F012BB $0A
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F010B7 $09
+script "P2 Infinite Energy"  
+run:
+    poke $F010B5 $14
+script "P2 Invincibility"  
+run:
+    poke $F01091 $78
+script "P2 Infinite Yellow Diamonds"  
+run:
+    poke $F010BB $0A

@@ -1,12 +1,21 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited vitality" always
-	poke $50CD87 $0C
-
-script "2UP Unlimited vitality" always
-	poke $50CE87 $0C
-
-script "*UP Watch me for good answer" always
-	print_ingame 1 "*UP Watch me for good answer : %02x" peek($50C749)
+script "Infinite Credits"  
+run:
+    poke $503DCF $09
+script "Display the Correct Answer"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $50C749 $01
+script " "  
+script "P1 Infinite Time"  
+run:
+    poke $50CDCD $0A
+script "P1 Infinite Energy"  
+run:
+    poke $50CD87 $0C
+script "P2 Infinite Time"  
+run:
+    poke $50CECD $0A
+script "P2 Infinite Energy"  
+run:
+    poke $50CE87 $0C

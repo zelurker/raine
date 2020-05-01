@@ -1,46 +1,50 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited play time" always
-	poke $8001C3 $09
-
-script "2UP Unlimited play time" always
-	poke $8001CB $09
-
-script "3UP Unlimited play time" always
-	poke $8001D3 $09
-
-script "4UP Unlimited play time" always
-	poke $8001DB $09
-
-script "*UP Unlimited match time" always
-	poke $800143 $09
-
-script "*UP End match"
-	poke $800141 $00
-	dpoke $800142 $00
-
-script "*UP Score set to 99 - Red  (P)" always
-	poke $80082C $99
-
-script "*UP Score set to 99 - Blue (P)" always
-	poke $80082D $99
-
-script "*UP Score set to 00 - Red  (P)" always
-	poke $80082C $00
-
-script "*UP Score set to 00 - Blue (P)" always
-	poke $80082D $00
-
-script "*UP Score set to 99 - Red  (T)"
-	poke $80082C $99
-
-script "*UP Score set to 99 - Blue (T)"
-	poke $80082D $99
-
-script "*UP Score set to 00 - Red  (T)"
-	poke $80082C $00
-
-script "*UP Score set to 00 - Blue (T)"
-	poke $80082D $00
+script "Infinite Period Time"  
+run:
+    if lpeek($800140)>00000001
+      lpoke $800140 $0009050A
+    endif
+script "Finish this Period Now!"  
+on:
+    lpoke $800140 $00000000
+script " "  
+script "P1 Infinite Play Time"  
+run:
+    if lpeek($8001C0)>00000001
+      lpoke $8001C0 $00090509
+    endif
+script "P1 Play Time UP Now!"  
+on:
+    lpoke $8001C0 $00000000
+script "P2 Infinite Play Time"  
+run:
+    if lpeek($8001C8)>00000001
+      lpoke $8001C8 $00090509
+    endif
+script "P2 Play Time UP Now!"  
+on:
+    lpoke $8001C8 $00000000
+script "P3 Infinite Play Time"  
+run:
+    if lpeek($8001D0)>00000001
+      lpoke $8001D0 $00090509
+    endif
+script "P3 Play Time UP Now!"  
+on:
+    lpoke $8001D0 $00000000
+script "P4 Infinite Play Time"  
+run:
+    if lpeek($8001D8)>00000001
+      lpoke $8001D8 $00090509
+    endif
+script "P4 Play Time UP Now!"  
+on:
+    lpoke $8001D8 $00000000
+script " "  
+script "Select Score for Red Team Now!" \
+ inter=0,99,1 
+change:
+    poke $80082C tobcd(param)
+script "Select Score for Blue Team Now!" \
+ inter=0,99,1 
+change:
+    poke $80082D tobcd(param)

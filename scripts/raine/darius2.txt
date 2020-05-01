@@ -1,0 +1,17 @@
+script "Infinite Credits"  
+run:
+    poke $0C1FD9 $09
+script "P1 Infinite Lives"  
+run:
+    poke $2400DF $09
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $2400F9 $EF
+script "P2 Infinite Lives"  
+run:
+    poke $240513 $09
+script "P2 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $24052D $EF

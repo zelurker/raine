@@ -1,24 +1,43 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $F00CF $03
-
-script "2UP Unlimited lives" always
-	poke $F00DF $03
-
-script "1UP Unlimited energy (player)" always
-	poke $F0107 $40
-
-script "2UP Unlimited energy (player)" always
-	poke $F0187 $40
-
-script "1UP Unlimited energy (horse)" always
-	poke $F0E11 $03
-
-script "2UP Unlimited energy (horse)" always
-	poke $F0E15 $03
-
-script "*UP End level"
-	poke $F003D $00
+script "Always have 'Fu,Rin,Ka,Zan,'"  
+run:
+    poke $F0081 $0F
+script "Always have Koduka (Knife)"  
+run:
+    poke $F0E23 $01
+script " "  
+script "Enable the select starting cheats on"  
+script "the screen with the smoke signals."  
+script " "  
+script "Select the Starting Stage" \
+ inter=1,5,1 
+change:
+    poke $F0039 (param-$1)
+script "Select the Starting Scene" \
+ inter=1,4,1 
+change:
+    poke $F003B (param-$1)
+script "Finish this Scene Now!"  
+on:
+    poke $F003D $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F00CF $03
+script "P1 Infinite Energy"  
+run:
+    poke $F0107 $50
+script "P1 Infinite Life(Horse)" \
+ "comm:Bonus Stage"  
+run:
+    poke $F0E11 $03
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F00DF $03
+script "P2 Infinite Energy"  
+run:
+    poke $F0187 $50
+script "P2 Infinite Life(Horse)" \
+ "comm:Bonus stage"  
+run:
+    poke $F0E15 $03

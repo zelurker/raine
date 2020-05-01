@@ -1,207 +1,163 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Help line ON PL1" always
-	poke $41F836 peek($41F836)&$7f|$80
-
-script "Help line OFF PL1"
-	poke $41F836 peek($41F836)&$7f
-
-script "Cur. bubble always red     PL1" always
-	poke $413412 $01
-
-script "Cur. bubble always green   PL1" always
-	poke $413412 $02
-
-script "Cur. bubble always blue    PL1" always
-	poke $413412 $03
-
-script "Cur. bubble always yellow  PL1" always
-	poke $413412 $04
-
-script "Cur. bubble always orange  PL1" always
-	poke $413412 $05
-
-script "Cur. bubble always purple  PL1" always
-	poke $413412 $06
-
-script "Cur. bubble always grey    PL1" always
-	poke $413412 $07
-
-script "Cur. bubble always black   PL1" always
-	poke $413412 $08
-
-script "Next bubble always red     PL1" always
-	poke $413421 $01
-
-script "Next bubble always green   PL1" always
-	poke $413421 $02
-
-script "Next bubble always blue    PL1" always
-	poke $413421 $03
-
-script "Next bubble always yellow  PL1" always
-	poke $413421 $04
-
-script "Next bubble always orange  PL1" always
-	poke $413421 $05
-
-script "Next bubble always purple  PL1" always
-	poke $413421 $06
-
-script "Next bubble always grey    PL1" always
-	poke $413421 $07
-
-script "Next bubble always black   PL1" always
-	poke $413421 $08
-
-script "Cur. bubble will be red    PL1"
-	poke $413412 $01
-
-script "Cur. bubble will be green  PL1"
-	poke $413412 $02
-
-script "Cur. bubble will be blue   PL1"
-	poke $413412 $03
-
-script "Cur. bubble will be yellow PL1"
-	poke $413412 $04
-
-script "Cur. bubble will be orange PL1"
-	poke $413412 $05
-
-script "Cur. bubble will be purple PL1"
-	poke $413412 $06
-
-script "Cur. bubble will be grey   PL1"
-	poke $413412 $07
-
-script "Cur. bubble will be black  PL1"
-	poke $413412 $08
-
-script "Next bubble will be red    PL1"
-	poke $413421 $01
-
-script "Next bubble will be green  PL1"
-	poke $413421 $02
-
-script "Next bubble will be blue   PL1"
-	poke $413421 $03
-
-script "Next bubble will be yellow PL1"
-	poke $413421 $04
-
-script "Next bubble will be orange PL1"
-	poke $413421 $05
-
-script "Next bubble will be purple PL1"
-	poke $413421 $06
-
-script "Next bubble will be grey   PL1"
-	poke $413421 $07
-
-script "Next bubble will be black  PL1"
-	poke $413421 $08
-
-script "Help line ON PL2" always
-	poke $41F837 peek($41F837)&$7f|$80
-
-script "Help line OFF PL2"
-	poke $41F837 peek($41F837)&$7f
-
-script "Cur. bubble always red     PL2" always
-	poke $413512 $01
-
-script "Cur. bubble always green   PL2" always
-	poke $413512 $02
-
-script "Cur. bubble always blue    PL2" always
-	poke $413512 $03
-
-script "Cur. bubble always yellow  PL2" always
-	poke $413512 $04
-
-script "Cur. bubble always orange  PL2" always
-	poke $413512 $05
-
-script "Cur. bubble always purple  PL2" always
-	poke $413512 $06
-
-script "Cur. bubble always grey    PL2" always
-	poke $413512 $07
-
-script "Cur. bubble always black   PL2" always
-	poke $413512 $08
-
-script "Next bubble always red     PL2" always
-	poke $413521 $01
-
-script "Next bubble always green   PL2" always
-	poke $413521 $02
-
-script "Next bubble always blue    PL2" always
-	poke $413521 $03
-
-script "Next bubble always yellow  PL2" always
-	poke $413521 $04
-
-script "Next bubble always orange  PL2" always
-	poke $413521 $05
-
-script "Next bubble always purple  PL2" always
-	poke $413521 $06
-
-script "Next bubble always grey    PL2" always
-	poke $413521 $07
-
-script "Next bubble always black   PL2" always
-	poke $413521 $08
-
-script "Cur. bubble will be red    PL2"
-	poke $413512 $01
-
-script "Cur. bubble will be green  PL2"
-	poke $413512 $02
-
-script "Cur. bubble will be blue   PL2"
-	poke $413512 $03
-
-script "Cur. bubble will be yellow PL2"
-	poke $413512 $04
-
-script "Cur. bubble will be orange PL2"
-	poke $413512 $05
-
-script "Cur. bubble will be purple PL2"
-	poke $413512 $06
-
-script "Cur. bubble will be grey   PL2"
-	poke $413512 $07
-
-script "Cur. bubble will be black  PL2"
-	poke $413512 $08
-
-script "Next bubble will be red    PL2"
-	poke $413521 $01
-
-script "Next bubble will be green  PL2"
-	poke $413521 $02
-
-script "Next bubble will be blue   PL2"
-	poke $413521 $03
-
-script "Next bubble will be yellow PL2"
-	poke $413521 $04
-
-script "Next bubble will be orange PL2"
-	poke $413521 $05
-
-script "Next bubble will be purple PL2"
-	poke $413521 $06
-
-script "Next bubble will be grey   PL2"
-	poke $413521 $07
-
-script "Next bubble will be black  PL2"
-	poke $413521 $08
+script "Infinite Credits"  
+run:
+    poke $405BE1 $09
+script "Enable 'Alternate World' Levels" \
+ "comm:Drunk on Title Screen and different maps, Same as 'Fire,LEFT,RIGHT,Fire' on Title Screen"  
+on:
+    poke $408D58 $FF
+script "Disable 'Alternate World' Levels"  
+on:
+    poke $40AFD0 $FF
+script " "  
+script "P1 Select Help Line" \
+ "0x80/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $41F836 param|(peek($41F836)&~80)
+script "P1 Finish this Round Now!" \
+ "comm:Works on P1 Versus + Puzzle Mode"  
+on:
+    if (peek($40B05B)==$00)
+      poke $41F839 $40|(peek($41F839)&~40)
+    endif
+    if (peek($40B05B)>=01)
+      poke $41F837 $01|(peek($41F837)&~01)
+    endif
+script "P1 Select Perm. Current Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+run:
+    poke $413412 param
+script "P1 Select Perm. Next Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+run:
+    poke $413421 param
+script "P1 Select Temp. Current Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+change:
+    poke $413412 param
+script "P1 Select Temp. Next Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+change:
+    poke $413421 param
+script "P1 Select Character" \
+ "comm:The # characters will crash the game at the end of the final round as those characters don't have endings" \
+ "0x00/Bub/Bob"\
+ "0x04/Musashi"\
+ "0x02/Prettio"\
+ "0x03/Marina"\
+ "0x01/Twinkle/Chincle"\
+ "0x05/Luna"\
+ "0x06/Jack"\
+ "0x07/Super Sonic Blastman"\
+ "0x08/#Debrun"\
+ "0x09/#Drank (Dreg)" 
+run:
+    poke $41F858 param
+script " "  
+script "P2 Select Help Line" \
+ "0x80/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $41F837 param|(peek($41F837)&~80)
+script "P2 Finish this Round Now!" \
+ "comm:Works on P2 Versus + Puzzle Mode"  
+on:
+    poke $41F83A $40|(peek($41F83A)&~40)
+script "P2 Select Perm. Current Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+run:
+    poke $413512 param
+script "P2 Select Perm. Next Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+run:
+    poke $413521 param
+script "P2 Select Temp. Current Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+change:
+    poke $413512 param
+script "P2 Select Temp. Next Bubble" \
+ "0x01/Red"\
+ "0x02/Green"\
+ "0x03/Blue"\
+ "0x04/Yellow"\
+ "0x05/Orange"\
+ "0x06/Purple"\
+ "0x07/Grey"\
+ "0x08/Black" 
+change:
+    poke $413521 param
+script "P2 Select Character" \
+ "comm:The # characters will crash the game at the end of the final round as those characters don't have endings" \
+ "0x00/Bub/Bob"\
+ "0x04/Musashi"\
+ "0x02/Prettio"\
+ "0x03/Marina"\
+ "0x01/Twinkle/Chincle"\
+ "0x05/Luna"\
+ "0x06/Jack"\
+ "0x07/Super Sonic Blastman"\
+ "0x08/#Debrun"\
+ "0x09/#Drank (Dreg)" 
+run:
+    poke $41F859 param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3). Then you may have to turn the Test Mode ON (with F2), wait for Test Mode to appear and reset again (with F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($1FFFFF)
+run:
+    poke $1FFFFF param
+off:
+    poke $1FFFFF temp0

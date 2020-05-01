@@ -1,45 +1,43 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F7C2D $60
-
-script "1UP Invulnerability OFF"
-	poke $F7C2D $01
-
-script "2UP Invulnerability ON" always
-	poke $F7D2D $60
-
-script "2UP Invulnerability OFF"
-	poke $F7D2D $01
-
-script "1UP Unlimited lives" always
-	poke $F7C29 $03
-
-script "2UP Unlimited lives" always
-	poke $F7D29 $03
-
-script "1UP Unlimited extra weapon" always
-	poke $F7C2F $10
-
-script "2UP Unlimited extra weapon" always
-	poke $F7D2F $10
-
-script "1UP Maximum fire power" always
-	poke $F7C2B $03
-
-script "2UP Maximum fire power" always
-	poke $F7D2B $03
-
-script "1UP One coin for life     (P)" always
-	poke $F7CE1 $09
-
-script "2UP One coin for life     (P)" always
-	poke $F7DE1 $09
-
-script "1UP One coin for life     (T)"
-	poke $F7CE1 $09
-
-script "2UP One coin for life     (T)"
-	poke $F7DE1 $09
+script "Infinite Credits"  
+run:
+    poke $F9019 $63
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F7C29 $0C
+script "P1 Maximum Fire Power"  
+run:
+    poke $F7C2B $03
+script "P1 Infinite Extra Weapon"  
+run:
+    poke $F7C2F $10
+script "P1 Invincibility" \
+ "comm:Move the character to the right at the begining of each stage"  
+run:
+    poke $F7C2D $02
+script "P1 Always One coin for life"  
+run:
+    poke $F7CE1 $09
+script "P1 One coin for life Now!"  
+on:
+    poke $F7CE1 $09
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F7D29 $0C
+script "P2 Maximum Fire Power"  
+run:
+    poke $F7D2B $03
+script "P2 Infinite Extra Weapon"  
+run:
+    poke $F7D2F $10
+script "P2 Invincibility" \
+ "comm:Move the character to the right at the begining of each stage"  
+run:
+    poke $F7D2D $02
+script "P2 Always One coin for life"  
+run:
+    poke $F7DE1 $09
+script "P2 One coin for life Now!"  
+on:
+    poke $F7DE1 $09

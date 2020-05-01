@@ -1,187 +1,165 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $FFDA2C $03
-
-script "2UP Unlimited lives" always
-	poke $FFDA2D $03
-
-script "1UP Unlimited power unit ammo" always
-	poke $FFE530 $30
-
-script "2UP Unlimited power unit ammo" always
-	poke $FFE590 $30
-
-script "1UP Maximum fire power" always
-	poke $FFE531 $09
-
-script "2UP Maximum fire power" always
-	poke $FFE591 $09
-
-script "1UP All power units available" always
-	poke $FFDA03 $00
-
-script "2UP All power units available" always
-	poke $FFDA03 $00
-
-script "1UP P=Shield unit     (-P)" always
-	poke $FFDBE3 $00
-	poke $FFE52F $00
-
-script "1UP P=Homing missile  (-P)" always
-	poke $FFDBE3 $01
-	poke $FFE52F $01
-
-script "1UP P=Atomic missile  (-P)" always
-	poke $FFDBE3 $02
-	poke $FFE52F $02
-
-script "1UP P=Lazer cannon    (-P)" always
-	poke $FFDBE3 $03
-	poke $FFE52F $03
-
-script "1UP P=Comrade fighter (-P)" always
-	poke $FFDBE3 $04
-	poke $FFE52F $04
-
-script "1UP P=Antiair mine    (-P)" always
-	poke $FFDBE3 $05
-	poke $FFE52F $05
-
-script "1UP P=Sonic wave      (-P)" always
-	poke $FFDBE3 $06
-	poke $FFE52F $06
-
-script "1UP P=Photon blastr   (-P)" always
-	poke $FFDBE3 $07
-	poke $FFE52F $07
-
-script "1UP P=Splay missile   (-P)" always
-	poke $FFDBE3 $08
-	poke $FFE52F $08
-
-script "1UP P=Autoaimig valcan(-P)" always
-	poke $FFDBE3 $09
-	poke $FFE52F $09
-
-script "2UP P=Shield unit     (-P)" always
-	poke $FFDBF7 $00
-	poke $FFE58F $00
-
-script "2UP P=Homing missile  (-P)" always
-	poke $FFDBF7 $01
-	poke $FFE58F $01
-
-script "2UP P=Atomic missile  (-P)" always
-	poke $FFDBF7 $02
-	poke $FFE58F $02
-
-script "2UP P=Lazer cannon    (-P)" always
-	poke $FFDBF7 $03
-	poke $FFE58F $03
-
-script "2UP P=Comrade fighter (-P)" always
-	poke $FFDBF7 $04
-	poke $FFE58F $04
-
-script "2UP P=Antiair mine    (-P)" always
-	poke $FFDBF7 $05
-	poke $FFE58F $05
-
-script "2UP P=Sonic wave      (-P)" always
-	poke $FFDBF7 $06
-	poke $FFE58F $06
-
-script "2UP P=Photon blastr   (-P)" always
-	poke $FFDBF7 $07
-	poke $FFE58F $07
-
-script "2UP P=Splay missile   (-P)" always
-	poke $FFDBF7 $08
-	poke $FFE58F $08
-
-script "2UP P=Autoaimig valcan(-P)" always
-	poke $FFDBF7 $09
-	poke $FFE58F $09
-
-script "1UP P=Shield unit     (-T)"
-	poke $FFDBE3 $00
-	poke $FFE52F $00
-
-script "1UP P=Homing missile  (-T)"
-	poke $FFDBE3 $01
-	poke $FFE52F $01
-
-script "1UP P=Atomic missile  (-T)"
-	poke $FFDBE3 $02
-	poke $FFE52F $02
-
-script "1UP P=Lazer cannon    (-T)"
-	poke $FFDBE3 $03
-	poke $FFE52F $03
-
-script "1UP P=Comrade fighter (-T)"
-	poke $FFDBE3 $04
-	poke $FFE52F $04
-
-script "1UP P=Antiair mine    (-T)"
-	poke $FFDBE3 $05
-	poke $FFE52F $05
-
-script "1UP P=Sonic wave      (-T)"
-	poke $FFDBE3 $06
-	poke $FFE52F $06
-
-script "1UP P=Photon blastr   (-T)"
-	poke $FFDBE3 $07
-	poke $FFE52F $07
-
-script "1UP P=Splay missile   (-T)"
-	poke $FFDBE3 $08
-	poke $FFE52F $08
-
-script "1UP P=Autoaimig valcan(-T)"
-	poke $FFDBE3 $09
-	poke $FFE52F $09
-
-script "2UP P=Shield unit     (-T)"
-	poke $FFDBF7 $00
-	poke $FFE58F $00
-
-script "2UP P=Homing missile  (-T)"
-	poke $FFDBF7 $01
-	poke $FFE58F $01
-
-script "2UP P=Atomic missile  (-T)"
-	poke $FFDBF7 $02
-	poke $FFE58F $02
-
-script "2UP P=Lazer cannon    (-T)"
-	poke $FFDBF7 $03
-	poke $FFE58F $03
-
-script "2UP P=Comrade fighter (-T)"
-	poke $FFDBF7 $04
-	poke $FFE58F $04
-
-script "2UP P=Antiair mine    (-T)"
-	poke $FFDBF7 $05
-	poke $FFE58F $05
-
-script "2UP P=Sonic wave      (-T)"
-	poke $FFDBF7 $06
-	poke $FFE58F $06
-
-script "2UP P=Photon blastr   (-T)"
-	poke $FFDBF7 $07
-	poke $FFE58F $07
-
-script "2UP P=Splay missile   (-T)"
-	poke $FFDBF7 $08
-	poke $FFE58F $08
-
-script "2UP P=Autoaimig valcan(-T)"
-	poke $FFDBF7 $09
-	poke $FFE58F $09
+script "Select Starting Stage" \
+ "comm:Enable on the weapon select screen" \
+ inter=1,6,1 
+change:
+    poke $FFDA01 (param)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FFDA2C $09
+script "P1 Infinite Weapon Energy"  
+run:
+    poke $FFDA2A $30
+    poke $FFE530 $30
+script "P1 Invincibility"  
+run:
+    poke $FFE532 $01
+    poke $FFE534 $05
+script "P1 Max Shot Power"  
+run:
+    poke $FFE531 $09
+script "P1 All Weapons Available"  
+run:
+    poke $FFDA03 $00
+script "P1 Select Speed" \
+ inter=0,5,1 
+run:
+    poke $FFE52E (param)
+script "P1 Rapid Fire - Shot"  
+run:
+    poke $FFE536 $00|(peek($FFE536)&~10)
+script "P1 Rapid Fire - Weapon"  
+run:
+    poke $FFE536 $00|(peek($FFE536)&~20)
+script "P1 Select Weapon" \
+ "0x01/Shield Unit"\
+ "0x02/Homing Missile"\
+ "0x03/Atomic Missile"\
+ "0x04/Lazer Cannon"\
+ "0x05/Comrade Fighter"\
+ "0x06/AntiAir Mine"\
+ "0x07/Sonic Wave"\
+ "0x08/Photon Blaster"\
+ "0x09/Splay Missile"\
+ "0x10/AutoAiming Valcan" 
+run:
+    if (param==$01)
+      poke $FFDBE3 $00
+      poke $FFE52F $00
+    endif
+    if (param==$02)
+      poke $FFDBE3 $01
+      poke $FFE52F $01
+    endif
+    if (param==$03)
+      poke $FFDBE3 $02
+      poke $FFE52F $02
+    endif
+    if (param==$04)
+      poke $FFDBE3 $03
+      poke $FFE52F $03
+    endif
+    if (param==$05)
+      poke $FFDBE3 $04
+      poke $FFE52F $04
+    endif
+    if (param==$06)
+      poke $FFDBE3 $05
+      poke $FFE52F $05
+    endif
+    if (param==$07)
+      poke $FFDBE3 $06
+      poke $FFE52F $06
+    endif
+    if (param==$08)
+      poke $FFDBE3 $07
+      poke $FFE52F $07
+    endif
+    if (param==$09)
+      poke $FFDBE3 $08
+      poke $FFE52F $08
+    endif
+    if (param==$10)
+      poke $FFDBE3 $09
+      poke $FFE52F $09
+    endif
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FFDA2D $09
+script "P2 Infinite Weapon Energy"  
+run:
+    poke $FFDA2B $30
+    poke $FFE590 $30
+script "P2 Invincibility"  
+run:
+    poke $FFE592 $01
+    poke $FFE594 $05
+script "P2 Max Shot Power"  
+run:
+    poke $FFE591 $09
+script "P2 All Weapons Available"  
+run:
+    poke $FFDA04 $00
+script "P2 Select Speed" \
+ inter=0,5,1 
+run:
+    poke $FFE58E (param)
+script "P2 Rapid Fire - Shot"  
+run:
+    poke $FFE596 $00|(peek($FFE596)&~10)
+script "P2 Rapid Fire - Weapon"  
+run:
+    poke $FFE596 $00|(peek($FFE596)&~20)
+script "P2 Select Weapon" \
+ "0x01/Shield Unit"\
+ "0x02/Homing Missile"\
+ "0x03/Atomic Missile"\
+ "0x04/Lazer Cannon"\
+ "0x05/Comrade Fighter"\
+ "0x06/AntiAir Mine"\
+ "0x07/Sonic Wave"\
+ "0x08/Photon Blaster"\
+ "0x09/Splay Missile"\
+ "0x10/AutoAiming Valcan" 
+run:
+    if (param==$01)
+      poke $FFDBF7 $00
+      poke $FFE58F $00
+    endif
+    if (param==$02)
+      poke $FFDBF7 $01
+      poke $FFE58F $01
+    endif
+    if (param==$03)
+      poke $FFDBF7 $02
+      poke $FFE58F $02
+    endif
+    if (param==$04)
+      poke $FFDBF7 $03
+      poke $FFE58F $03
+    endif
+    if (param==$05)
+      poke $FFDBF7 $04
+      poke $FFE58F $04
+    endif
+    if (param==$06)
+      poke $FFDBF7 $05
+      poke $FFE58F $05
+    endif
+    if (param==$07)
+      poke $FFDBF7 $06
+      poke $FFE58F $06
+    endif
+    if (param==$08)
+      poke $FFDBF7 $07
+      poke $FFE58F $07
+    endif
+    if (param==$09)
+      poke $FFDBF7 $08
+      poke $FFE58F $08
+    endif
+    if (param==$10)
+      poke $FFDBF7 $09
+      poke $FFE58F $09
+    endif

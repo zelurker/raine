@@ -1,81 +1,66 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $30002D $31
-
-script "1UP Invulnerability OFF"
-	poke $30002D $01
-
-script "2UP Invulnerability ON" always
-	poke $30006D $31
-
-script "2UP Invulnerability OFF"
-	poke $30006D $01
-
-script "1UP Unlimited lives" always
-	poke $303C72 $03
-
-script "2UP Unlimited lives" always
-	poke $303C84 $03
-
-script "1UP Unlimited energy" always
-	poke $303C73 $0C
-
-script "2UP Unlimited energy" always
-	poke $303C85 $0C
-
-script "1UP Unlimited ammo." always
-	poke $303C6F $63
-
-script "2UP Unlimited ammo." always
-	poke $303C81 $63
-
-script "1UP Unlimited time      (OFF)" always
-	dpoke $301222 $03E7
-
-script "2UP Unlimited time      (OFF)" always
-	dpoke $301228 $03E7
-
-script "1UP Weapon - None         (P)" always
-	poke $303C6E $00
-
-script "1UP Weapon - Rocket       (P)" always
-	poke $303C6E $01
-
-script "1UP Weapon - Flamethrower (P)" always
-	poke $303C6E $02
-
-script "1UP Weapon - Grenades     (P)" always
-	poke $303C6E $03
-
-script "1UP Weapon - Bayonet      (P)" always
-	poke $303C6E $04
-
-script "1UP Weapon - Machine gun  (P)" always
-	poke $303C6E $05
-
-script "1UP Weapon - Revolver     (P)" always
-	poke $303C6E $06
-
-script "2UP Weapon - None         (P)" always
-	poke $303C80 $00
-
-script "2UP Weapon - Rocket       (P)" always
-	poke $303C80 $01
-
-script "2UP Weapon - Flamethrower (P)" always
-	poke $303C80 $02
-
-script "2UP Weapon - Grenades     (P)" always
-	poke $303C80 $03
-
-script "2UP Weapon - Bayonet      (P)" always
-	poke $303C80 $04
-
-script "2UP Weapon - Machine gun  (P)" always
-	poke $303C80 $05
-
-script "2UP Weapon - Revolver     (P)" always
-	poke $303C80 $06
+script "Infinite Credits"  
+run:
+    poke $303B6D $09
+script "Infinite Time"  
+run:
+    poke $301225 $02
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $303C72 $07
+script "P1 Infinite Energy"  
+run:
+    poke $303C73 $0C
+script "P1 Invincibility"  
+run:
+    poke $30002D $03
+script "P1 Infinite Ammo"  
+run:
+    poke $303C6F $63
+script "P1 Select Vehicle" \
+ "0x00/No Vehicle"\
+ "0x0D/Gyro-Copter"\
+ "0x0A/Jet-Ski" 
+run:
+    poke $300037 param
+script "P1 Select Weapon" \
+ "comm:Enable on the title screen or if you enable it during the game you will need to die to make it effective." \
+ "0x00/NO weapon"\
+ "0x04/Bayonet"\
+ "0x06/Revolver"\
+ "0x05/Machine Gun"\
+ "0x02/Flamethrower"\
+ "0x03/Grenades"\
+ "0x01/Rocket Launcher" 
+run:
+    poke $303C6E param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $303C84 $07
+script "P2 Infinite Energy"  
+run:
+    poke $303C85 $0C
+script "P2 Invincibility"  
+run:
+    poke $30006D $03
+script "P2 Infinite Ammo"  
+run:
+    poke $303C81 $63
+script "P2 Select Vehicle" \
+ "0x00/No Vehicle"\
+ "0x0D/Gyro-Copter"\
+ "0x0A/Jet-Ski" 
+run:
+    poke $300077 param
+script "P2 Select Weapon" \
+ "comm:Enable on the title screen or if you enable it during the game you will need to die to make it effective." \
+ "0x00/NO weapon"\
+ "0x04/Bayonet"\
+ "0x06/Revolver"\
+ "0x05/Machine Gun"\
+ "0x02/Flamethrower"\
+ "0x03/Grenades"\
+ "0x01/Rocket Launcher" 
+run:
+    poke $303C80 param

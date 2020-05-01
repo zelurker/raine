@@ -1,0 +1,254 @@
+script "Infinite Time"  
+run:
+    poke $10E32B $61
+script " "  
+script "Both story cheats are useful when using KAEDE, YUKI or MORIYA."  
+script "Story Part 2 cheat is useful for JUZOH, AKARI, WASHIZUKA,"  
+script "SHIKYOH, OKINA, and SHINGEN."  
+script "They MUST be activated on the character select screen."  
+script " "  
+script "Story Part 1 (Stage 7)"  
+on:
+    poke $10AC43 $06
+script "Story Part 2 (Stage 8)"  
+on:
+    poke $10AC43 $07
+script "The boss cheat must be activated on the Character Select screen."  
+script "First Boss"  
+on:
+    poke $10AC43 $08
+script "Final Boss."  
+on:
+    poke $10AC43 $09
+script "Select Next Cinematic Now!" \
+ "comm:This cheat must be activated during any fight. After winning, you can see the cinematic." \
+ "0x03/Middle Cinematic"\
+ "0x07/First boss Cinematic"\
+ "0x08/Inbetween Bosses Cinematic"\
+ "0x09/Ending Cinematic" 
+change:
+    poke $10AC43 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    dpoke ((lpeek($10AC2C))+$180) $0100
+script "P1 Drain All Energy Now!"  
+on:
+    dpoke ((lpeek($10AC2C))+$180) $0000
+script "P1 Always have Power 'Power' Mode"  
+run:
+    poke ((lpeek($10AC2C))+$18C) $01
+script "P1 Always have Power 'Speed' Mode"  
+run:
+    poke ((lpeek($10AC2C))+$18C) $02
+script "P1 Always have Maximum Power" \
+ "comm:Power Bar display maybe incorrect though"  
+run:
+    poke ((lpeek($10AC2C))+$18D) $40
+script "P1 Always have Minimum Power"  
+run:
+    poke ((lpeek($10AC2C))+$18D) $00
+script "P1 Drain All Power Now!"  
+on:
+    poke ((lpeek($10AC2C))+$18D) $00
+script "P1 Select Character" \
+ "0x00/Kaede"\
+ "0x01/Moriya"\
+ "0x02/Yuki"\
+ "0x03/Okina"\
+ "0x04/Akari"\
+ "0x05/Juzoh"\
+ "0x06/Washizuka"\
+ "0x07/Shikyoh"\
+ "0x08/Amano"\
+ "0x09/Lee"\
+ "0x0A/Zantetsu"\
+ "0x0B/Shigen"\
+ "0x0C/Musashi"\
+ "0x0D/Kagami"\
+ "0x0E/Awakened Kaede" 
+run:
+    poke $10EAAD param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke ((lpeek($10AC30))+$180) $0100
+script "P2 Drain All Energy Now!"  
+on:
+    dpoke ((lpeek($10AC30))+$180) $0000
+script "P2 Always have Power 'Power' Mode"  
+run:
+    poke ((lpeek($10AC30))+$18C) $01
+script "P2 Always have Power 'Speed' Mode"  
+run:
+    poke ((lpeek($10AC30))+$18C) $02
+script "P2 Always have Maximum Power" \
+ "comm:Power Bar display maybe incorrect though"  
+run:
+    poke ((lpeek($10AC30))+$18D) $40
+script "P2 Always have Minimum Power"  
+run:
+    poke ((lpeek($10AC30))+$18D) $00
+script "P2 Drain All Power Now!"  
+on:
+    poke ((lpeek($10AC30))+$18D) $00
+script "P2 Select Character" \
+ "0x00/Kaede"\
+ "0x01/Moriya"\
+ "0x02/Yuki"\
+ "0x03/Okina"\
+ "0x04/Akari"\
+ "0x05/Juzoh"\
+ "0x06/Washizuka"\
+ "0x07/Shikyoh"\
+ "0x08/Amano"\
+ "0x09/Lee"\
+ "0x0A/Zantetsu"\
+ "0x0B/Shigen"\
+ "0x0C/Musashi"\
+ "0x0D/Kagami"\
+ "0x0E/Awakened Kaede" 
+run:
+    poke $10EAAF param
+script " "  
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=dpeek($05F8D6)
+    dpoke $05F8D6 $0001
+    temp1=lpeek($05F9C0)
+    lpoke $05F9C0 $4E714E71
+    temp2=dpeek($060790)
+    dpoke $060790 $6028
+run:
+    temp9=dpeek($10AC40)
+    if peek($10A922)==$0
+      temp9=$FF
+    endif
+    if temp9!=$FF
+      dpoke $10829E $8F8F
+    endif
+    if temp9==$0
+      dpoke $109D9C $0700
+      lpoke $10A8A0 $007B007F
+      lpoke $10a8a4 $00850089
+    endif
+    if temp9==$1
+      dpoke $109D9C $0130
+      lpoke $10A890 $00640068
+      lpoke $10a894 $006E0072
+    endif
+    if temp9==$2
+      dpoke $109D9C $0E00
+      lpoke $10A8A4 $005A005E
+      lpoke $10a8a8 $00640068
+    endif
+    if temp9==$3
+      dpoke $109D9C $008C
+      lpoke $10A888 $00350039
+      lpoke $10a88c $003F0043
+    endif
+    if temp9==$4
+      dpoke $109D9C $800C
+      lpoke $10A888 $00350039
+      lpoke $10a88c $003F0043
+    endif
+    if temp9==$5
+      dpoke $109D9C $080C
+      lpoke $10A888 $00350039
+      lpoke $10a88c $003F0043
+    endif
+    if temp9==$6
+      dpoke $109D9C $0098
+      lpoke $10A88C $00530057
+      lpoke $10a890 $005D0061
+    endif
+    if temp9==$7
+      dpoke $109D9C $008C
+      lpoke $10A888 $00350039
+      lpoke $10a88c $003F0043
+    endif
+    if temp9==$8
+      dpoke $109D9C $040C
+      lpoke $10A888 $00350039
+      lpoke $10a88c $003F0043
+    endif
+    if temp9==$9
+      dpoke $109D9C $020C
+      lpoke $10A888 $00350039
+      lpoke $10a88c $003F0043
+    endif
+    if temp9==$A
+      dpoke $109D9C $0070
+      lpoke $10A890 $00550059
+      lpoke $10a894 $005F0063
+    endif
+    if temp9==$B
+      dpoke $109D9C $00E0
+      lpoke $10A898 $00E600ED
+      lpoke $10a89c $00F000F7
+    endif
+    if temp9==$C
+      dpoke $109D9C $0038
+      lpoke $10A88C $0049004D
+      lpoke $10a890 $00530058
+    endif
+    if temp9==$D
+      dpoke $109D9C $0260
+      lpoke $10A894 $00550059
+      lpoke $10a898 $005F0063
+    endif
+off:
+    dpoke $05F8D6 temp0
+    lpoke $05F9C0 temp1
+    dpoke $060790 temp2
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FDE0 $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

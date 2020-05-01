@@ -1,0 +1,212 @@
+script "Infinite Time"  
+run:
+    poke $105680 $9A
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $105680 $00
+script "Level Selection after Enemy Select Screen"  
+on:
+    temp0=peek($10E000)
+run:
+    poke $10E000 $04|(temp0&~04)
+off:
+    poke $10E000 temp0
+script "Select Perm. Background" \
+ "comm:Name in brackets is the fighter you'd normally encounter on that Level" \
+ "0x01/Sound Beach (Terry)"\
+ "0x02/Howard Arena (Andy)"\
+ "0x03/National Park (Joe)"\
+ "0x04/East Side Park (Mai)"\
+ "0x05/Geese Tower (Geese)"\
+ "0x06/Dream Amusement Park (Sokaku)"\
+ "0x07/Pao Pao Cafe 2 (Bob)"\
+ "0x08/Port Town (Hon-Fu)"\
+ "0x09/Pioneer Plaza (Mary)"\
+ "0x0A/South Town Airport (Franco)"\
+ "0x0B/South Station (Yamazaki)"\
+ "0x0C/Delta Park (???)"\
+ "0x0D/Delta Park(2) (???)"\
+ "0x0E/Delta Park(3) (Chonshu, Chonrei)"\
+ "0x0F/Geese Tower(2)" 
+run:
+    poke $105627 param
+script " "  
+script "Once you activate Easy Supers you can do"  
+script "all the SDMs of any character (even the"  
+script "hidden SDMs), all you have to do usually is"  
+script "during play press down, down + A (DM),"  
+script "down, down + C (SDM), some characters that"  
+script "have more than 2 SDMs can use the B or D"  
+script "buttons as well."  
+script " "  
+script "Always have Easy Supers"  
+run:
+    poke $10E001 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $100489 $78
+script "P1 Drain all Energy Now!"  
+on:
+    poke $100489 $00
+script "P1 Eliminate SDM Conditions" \
+ "comm:Should allow you to use SDMs in the same manner as DMs (ie. low life only, no special conditions)"  
+on:
+    temp0=lpeek($044B46)
+    temp1=lpeek($031D24)
+run:
+    poke $108A84 $FF
+    lpoke $044B46 $4E714E71
+    lpoke $031D24 $4E714E71
+    poke $108A86 $FF
+off:
+    lpoke $044B46 temp0
+    lpoke $031D24 temp1
+script "P1 Infinite SDMs" \
+ "comm:This will make it so that you can do your SDM more than once a round"  
+run:
+    poke $1004A2 $00
+script "P1 Rounds Won = 2  Now!"  
+on:
+    poke $105666 $02
+script "P1 Select Character" \
+ "comm:Free player selection, Use between rounds" \
+ "0x01/Terry Bogard"\
+ "0x02/Andy Bogard"\
+ "0x03/Joe Higashi"\
+ "0x04/Mai Shiranui"\
+ "0x05/Geese Howard"\
+ "0x06/Sokaku"\
+ "0x07/Bob Wilson"\
+ "0x08/Hon Fu"\
+ "0x09/Blue Mary"\
+ "0x0A/Franco Bash"\
+ "0x0B/Ryuji Yamazaki"\
+ "0x0C/Jin Chonrei"\
+ "0x0D/Jin Chonshu" 
+run:
+    poke $10561D param
+script "P1 Select Colour" \
+ "0x00/A colour"\
+ "0x01/D colour" 
+run:
+    poke $105624 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $100589 $78
+script "P2 Drain all Energy Now!"  
+on:
+    poke $100589 $00
+script "P2 Eliminate SDM Conditions" \
+ "comm:Should allow you to use SDMs in the same manner as DMs (ie. low life only, no special conditions)"  
+on:
+    temp0=lpeek($044B46)
+    temp1=lpeek($031D24)
+run:
+    poke $108A85 $FF
+    lpoke $044B46 $4E714E71
+    lpoke $031D24 $4E714E71
+    poke $108A87 $FF
+off:
+    lpoke $044B46 temp0
+    lpoke $031D24 temp1
+script "P2 Infinite SDMs" \
+ "comm:This will make it so that you can do your SDM more than once a round"  
+run:
+    poke $1005A2 $00
+script "P2 Rounds Won = 2  Now!"  
+on:
+    poke $105667 $02
+script "P2 Select Character" \
+ "comm:Free player selection, Use between rounds" \
+ "0x01/Terry Bogard"\
+ "0x02/Andy Bogard"\
+ "0x03/Joe Higashi"\
+ "0x04/Mai Shiranui"\
+ "0x05/Geese Howard"\
+ "0x06/Sokaku"\
+ "0x07/Bob Wilson"\
+ "0x08/Hon Fu"\
+ "0x09/Blue Mary"\
+ "0x0A/Franco Bash"\
+ "0x0B/Ryuji Yamazaki"\
+ "0x0C/Jin Chonrei"\
+ "0x0D/Jin Chonshu" 
+run:
+    poke $10561F param
+script "P2 Select Colour" \
+ "0x00/A colour"\
+ "0x01/D colour" 
+run:
+    poke $105625 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start; works in round 1 only"  
+on:
+    temp0=lpeek($00371C)
+run:
+    lpoke $00371C temp0
+    if (peek($10567A)!=$00&&peek($10567B)==$00&&peek($10562D)==$01)
+      lpoke $00371C $4E714E71
+      poke $1051E3 $00
+      poke $1051E5 $01
+      dpoke $100916 $0001
+      dpoke $401FFE $8F8F
+    endif
+off:
+    lpoke $00371C temp0
+    poke $1051E3 peek($1051E2)&0F
+    poke $1051E5 peek($1051E4)&0F
+    dpoke $401FFE $0000
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

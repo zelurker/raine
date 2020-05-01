@@ -1,0 +1,35 @@
+script "Infinite Credits"  
+run:
+    poke $1F900D $09
+script "Select Starting Stage" \
+ inter=1,8,1 
+run:
+    if (peek($1F9021)==$00)
+      poke $1F9021 (param-$1)
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1F7F29 $06
+script "P1 Infinite Bombs"  
+run:
+    poke $1F7F2F $08
+script "P1 Max Firepower"  
+run:
+    poke $1F7F31 $03
+script "P1 Invincibility"  
+run:
+    poke $1F7F2D $02
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1F7E29 $06
+script "P2 Infinite Bombs"  
+run:
+    poke $1F7E2F $08
+script "P2 Max Firepower"  
+run:
+    poke $1F7E31 $03
+script "P2 Invincibility"  
+run:
+    poke $1F7E2D $02

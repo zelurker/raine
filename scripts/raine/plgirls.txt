@@ -1,12 +1,27 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $8390 $99
-
-script "2UP Unlimited lives" always
-	poke $8391 $99
-
-script "*UP End level"
-	poke $8226 $00
+script "Infinite Credits"  
+run:
+    poke $8240 $99
+script "Finish this level Now!"  
+on:
+    poke $8226 $00
+script "Always Keep One Ball in Play"  
+run:
+    if (dpeek($8324)==$0400)
+      dpoke $8324 $4800
+    endif
+    if (dpeek($8324)==$0300)
+      dpoke $8324 $4800
+    endif
+    if (dpeek($8324)==$0200)
+      dpoke $8324 $4800
+    endif
+    if (dpeek($8324)==$0100)
+      dpoke $8324 $4800
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $8390 $99
+script "P2 Infinite Lives"  
+run:
+    poke $8391 $99

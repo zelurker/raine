@@ -1,0 +1,31 @@
+script "Infinite Time"  
+run:
+    dpoke $201F9C $0DEC
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    dpoke $201F9C $0001
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($00BAF6)
+    temp1=dpeek($00BE04)
+run:
+    dpoke $00BAF6 $601E
+    dpoke $00BE04 $6000
+off:
+    dpoke $00BAF6 temp0
+    dpoke $00BE04 temp1
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $202883 $A0
+script "P1 Drain All Energy Now!"  
+on:
+    poke $202883 $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $2029AF $A0
+script "P2 Drain All Energy Now!"  
+on:
+    poke $2029AF $00

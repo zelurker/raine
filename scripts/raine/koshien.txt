@@ -1,30 +1,64 @@
-# Cheats from  : Pugsy
-# Last update  : 2002.02.13
-# Desc. format : Pugsy
-
-script "Infinite Strikes" always
-	poke $10049E $00
-
-script "Infinite Balls" always
-	poke $10049F $00
-
-script "Infinite Outs" always
-	poke $1004A0 $00
-
-script "Set Strikes to 0 Now!"
-	poke $10049E $00
-
-script "Set Strikes to 2 Now!"
-	poke $10049E $02
-
-script "Set Balls to 0 Now!"
-	poke $10049F $00
-
-script "Set Balls to 3 Now!"
-	poke $10049F $03
-
-script "Set Outs to 0 Now!"
-	poke $1004A0 $00
-
-script "Set Outs to 2 Now!"
-	poke $1004A0 $02
+script "Infinite Credits"  
+run:
+    poke $1000A1 $09
+script "Infinite Strikes"  
+run:
+    poke $10049E $00
+script "Infinite Balls"  
+run:
+    poke $10049F $00
+script "Infinite Outs"  
+run:
+    poke $1004A0 $00
+script "Set Strikes to 0 Now!"  
+on:
+    poke $10049E $00
+script "Set Strikes to 2 Now!"  
+on:
+    poke $10049E $02
+script "Set Balls to 0 Now!"  
+on:
+    poke $10049F $00
+script "Set Balls to 3 Now!"  
+on:
+    poke $10049F $03
+script "Set Outs to 0 Now!"  
+on:
+    poke $1004A0 $00
+script "Set Outs to 2 Now!"  
+on:
+    poke $1004A0 $02
+script " "  
+script "Score always = 0 1st Team"  
+run:
+    poke $1004A6 $00
+    poke $1004DA $00
+script "Score always = 99 1st Team"  
+run:
+    poke $1004A6 $99
+    poke $1004DA $99
+script "Score = 0 Now! 1st Team"  
+on:
+    poke $1004A6 $00
+    poke $1004DA $00
+script "Score = 50 Now! 1st Team"  
+on:
+    poke $1004A6 $50
+    poke $1004DA $50
+script " "  
+script "Score always = 0 2nd Team"  
+run:
+    poke $1004A5 $00
+    poke $1004DB $00
+script "Score always = 99 2nd Team"  
+run:
+    poke $1004A5 $99
+    poke $1004DB $99
+script "Score = 0 Now! 2nd Team"  
+on:
+    poke $1004A5 $00
+    poke $1004DB $00
+script "Score = 50 Now! 2nd Team"  
+on:
+    poke $1004A5 $50
+    poke $1004DB $50

@@ -1,15 +1,31 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $A22D $27
-
-script "2UP Unlimited lives" always
-	poke $A233 $27
-
-script "*UP Maximum fire power" always
-	poke $AA71 peek($AA71)&$f8|$07
-
-script "*UP Maximum shield" always
-	poke $AA71 peek($AA71)&$8f|$70
+script "Infinite Credits"  
+run:
+    poke $A1DD $09
+script "Infinite Time"  
+run:
+    poke $AA80 $20
+script "Invincibility"  
+run:
+    poke $AA74 $3C
+script "Maximum Fire Power"  
+run:
+    poke $AA71 $04|(peek($AA71)&~04)
+script "Always have Max Shield"  
+run:
+    poke $AA71 $40|(peek($AA71)&~40)
+script "Open All Doors Now!"  
+on:
+    lpoke $ABEC $0A0A0A0A
+script "Select Starting Round" \
+ inter=1,32,1 
+run:
+    if (peek($A22C)==$01)
+      poke $A22C (param)
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $A22D $27
+script "P2 Infinite Lives"  
+run:
+    poke $A233 $27

@@ -1,0 +1,11 @@
+script "Invincibility"  
+on:
+    temp0=master.mb@27E6
+run:
+    master.mb@27E6=$C9
+off:
+    master.mb@27E6=temp0
+script "Rapid Fire"  
+run:
+    master.pb@D91D=$00
+    master.pb@D91F=$00

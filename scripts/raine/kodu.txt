@@ -1,0 +1,126 @@
+script "Infinite Time"  
+run:
+    poke $FFE084 $64
+script "Kill Stage Guardian with 1 hit Now!"  
+on:
+    poke $FF431B $00
+script "Kill Last Guardian Now!"  
+on:
+    dpoke $FF6C1A $0000
+script "Select Starting Stage" \
+ inter=1,16,1 
+run:
+    if (peek($FF0E49)==$00)
+      poke $FF0E49 (param-$1)
+    endif
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($006A9C)
+    temp1=dpeek($006AD4)
+    temp2=dpeek($006AF8)
+run:
+    dpoke $006A9C $6002
+    dpoke $006AD4 $6002
+    dpoke $006AF8 $6002
+off:
+    dpoke $006A9C temp0
+    dpoke $006AD4 temp1
+    dpoke $006AF8 temp2
+script "One Hit Kills"  
+on:
+    temp0=dpeek($006BBA)
+    temp1=dpeek($05E1A4)
+run:
+    dpoke $006BBA $6002
+    dpoke $05E1A4 $4E71
+off:
+    dpoke $006BBA temp0
+    dpoke $05E1A4 temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF125D $07
+script "P1 Infinite Energy"  
+run:
+    poke $FF129B $63
+script "P1 Invincibility" \
+ "comm:Doesn't protect you against the Last Guardian's Claw"  
+run:
+    poke $FF128E $02
+script "P1 Always Maximum Attack Power"  
+run:
+    poke $FF129D $63
+script "P1 Always Maximum Defence Power"  
+run:
+    poke $FF129F $63
+script "P1 Always Maximum Character"  
+run:
+    poke $FF12A2 $17
+script "P1 Always Maximum Weapon"  
+run:
+    poke $FF12A3 $07
+script "P1 Always Maximum Protection"  
+run:
+    poke $FF12A4 $07
+script "P1 Always Maximum Experience Points"  
+run:
+    lpoke $FF12C2 $99999999
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF135D $07
+script "P2 Infinite Energy"  
+run:
+    poke $FF139B $63
+script "P2 Invincibility" \
+ "comm:Doesn't protect you against the Last Guardian's Claw"  
+run:
+    poke $FF138E $02
+script "P2 Always Maximum Attack Power"  
+run:
+    poke $FF139D $63
+script "P2 Always Maximum Defence Power"  
+run:
+    poke $FF139F $63
+script "P2 Always Maximum Character"  
+run:
+    poke $FF13A2 $17
+script "P2 Always Maximum Weapon"  
+run:
+    poke $FF13A3 $07
+script "P2 Always Maximum Protection"  
+run:
+    poke $FF13A4 $07
+script "P2 Always Maximum Experience Points"  
+run:
+    lpoke $FF13C2 $99999999
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $FF145D $07
+script "P3 Infinite Energy"  
+run:
+    poke $FF149B $63
+script "P3 Invincibility" \
+ "comm:Doesn't protect you against the Last Guardian's Claw"  
+run:
+    poke $FF148E $02
+script "P2 Always Maximum Attack Power"  
+run:
+    poke $FF149D $63
+script "P3 Always Maximum Defence Power"  
+run:
+    poke $FF149F $63
+script "P3 Always Maximum Character"  
+run:
+    poke $FF14A2 $17
+script "P3 Always Maximum Weapon"  
+run:
+    poke $FF14A3 $07
+script "P3 Always Maximum Protection"  
+run:
+    poke $FF14A4 $07
+script "P3 Always Maximum Experience Points"  
+run:
+    lpoke $FF14C2 $99999999
+script " "  

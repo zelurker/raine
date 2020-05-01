@@ -1,0 +1,247 @@
+script "Infinite Time"  
+run:
+    dpoke $FF8068 $4650
+script "Infinite Keys"  
+run:
+    poke $FF805C $09
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($0426E6)
+    temp1=dpeek($04271E)
+    temp2=dpeek($042742)
+run:
+    dpoke $0426E6 $6002
+    dpoke $04271E $6002
+    dpoke $042742 $6002
+off:
+    dpoke $0426E6 temp0
+    dpoke $04271E temp1
+    dpoke $042742 temp2
+script "One Hit Kills"  
+on:
+    temp0=dpeek($0427C2)
+run:
+    dpoke $0427C2 $4268
+off:
+    dpoke $0427C2 temp0
+script " "  
+script "Cheats with 'ELF' or 'CLERIC' only work for those characters"  
+script "You MUST pick up a weapon before you can use it!!"  
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8719 $A0
+script "P1 Invincibility"  
+run:
+    poke $FF875D $03
+script "P1 Infinite Gold"  
+run:
+    poke $FF874E $09
+    poke $FF874F $99
+script "P1 Infinite Dagger"  
+run:
+    poke $FF84A8 $09
+script "P1 Infinite Hammer"  
+run:
+    poke $FF84A9 $09
+script "P1 Infinite Arrows"  
+run:
+    poke $FF84AA $09
+script "P1 Infinite Oil"  
+run:
+    poke $FF84AB $09
+script "P1 Infinite Ring MM"  
+run:
+    poke $FF84AC $09
+script "P1 Infinite Ring FB"  
+run:
+    poke $FF84AE $09
+script "P1 Infinite Ring LB"  
+run:
+    poke $FF84AF $09
+script "P1 Infinite Ring CL"  
+run:
+    poke $FF84B1 $09
+script "P1 Infinite Magic Missile 'ELF'"  
+run:
+    poke $FF84B8 $09
+script "P1 Infinite Invisibility 'ELF'"  
+run:
+    poke $FF84B9 $09
+script "P1 Infinite Fireball 'ELF'"  
+run:
+    poke $FF84BA $09
+script "P1 Infinite Hold Person 'CLERIC'"  
+run:
+    poke $FF84B4 $09
+script "P1 Infinite Cont. Light 'CLERIC'"  
+run:
+    poke $FF84B5 $09
+script "P1 Infinite Striking 'CLERIC'"  
+run:
+    poke $FF84BF $09
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8819 $A0
+script "P2 Invincibility"  
+run:
+    poke $FF885D $03
+script "P2 Infinite Gold"  
+run:
+    poke $FF884E $09
+    poke $FF884F $99
+script "P2 Infinite Dagger"  
+run:
+    poke $FF84E8 $09
+script "P2 Infinite Hammer"  
+run:
+    poke $FF84E9 $09
+script "P2 Infinite Arrows"  
+run:
+    poke $FF84EA $09
+script "P2 Infinite Oil"  
+run:
+    poke $FF84EB $09
+script "P2 Infinite Ring MM"  
+run:
+    poke $FF84EC $09
+script "P2 Infinite Ring FB"  
+run:
+    poke $FF84EE $09
+script "P2 Infinite Ring LB"  
+run:
+    poke $FF84EF $09
+script "P2 Infinite Ring CL"  
+run:
+    poke $FF84F1 $09
+script "P2 Infinite Magic Missile 'ELF'"  
+run:
+    poke $FF84F8 $09
+script "P2 Infinite Invisibility 'ELF'"  
+run:
+    poke $FF84F9 $09
+script "P2 Infinite Fireball 'ELF'"  
+run:
+    poke $FF84FA $09
+script "P2 Infinite Hold Person 'CLERIC'"  
+run:
+    poke $FF84F4 $09
+script "P2 Infinite Cont. Light 'CLERIC'"  
+run:
+    poke $FF84F5 $09
+script "P2 Infinite Striking 'CLERIC'"  
+run:
+    poke $FF84FF $09
+script " "  
+script "P3 Infinite Energy"  
+run:
+    poke $FF8919 $A0
+script "P3 Invincibility"  
+run:
+    poke $FF895D $03
+script "P3 Infinite Gold"  
+run:
+    poke $FF894E $09
+    poke $FF894F $99
+script "P3 Infinite Dagger"  
+run:
+    poke $FF8528 $09
+script "P3 Infinite Hammer"  
+run:
+    poke $FF8529 $09
+script "P3 Infinite Arrows"  
+run:
+    poke $FF852A $09
+script "P3 Infinite Oil"  
+run:
+    poke $FF852B $09
+script "P3 Infinite Ring MM"  
+run:
+    poke $FF852C $09
+script "P3 Infinite Ring FB"  
+run:
+    poke $FF852E $09
+script "P3 Infinite Ring LB"  
+run:
+    poke $FF852F $09
+script "P3 Infinite Ring CL"  
+run:
+    poke $FF8531 $09
+script "P3 Infinite Magic Missile 'ELF'"  
+run:
+    poke $FF8538 $09
+script "P3 Infinite Invisibility 'ELF'"  
+run:
+    poke $FF8539 $09
+script "P3 Infinite Fireball 'ELF'"  
+run:
+    poke $FF853A $09
+script "P3 Infinite Hold Person 'CLERIC'"  
+run:
+    poke $FF8534 $09
+script "P3 Infinite Cont. Light 'CLERIC'"  
+run:
+    poke $FF8535 $09
+script "P3 Infinite Striking 'CLERIC'"  
+run:
+    poke $FF853F $09
+script " "  
+script "P4 Infinite Energy"  
+run:
+    poke $FF8A19 $A0
+script "P4 Invincibility"  
+run:
+    poke $FF8A5D $03
+script "P4 Infinite Gold"  
+run:
+    poke $FF8A4E $09
+    poke $FF8A4F $99
+script "P4 Infinite Dagger"  
+run:
+    poke $FF8568 $09
+script "P4 Infinite Hammer"  
+run:
+    poke $FF8569 $09
+script "P4 Infinite Arrows"  
+run:
+    poke $FF856A $09
+script "P4 Infinite Oil"  
+run:
+    poke $FF856B $09
+script "P4 Infinite Ring MM"  
+run:
+    poke $FF856C $09
+script "P4 Infinite Ring FB"  
+run:
+    poke $FF856E $09
+script "P4 Infinite Ring LB"  
+run:
+    poke $FF856F $09
+script "P4 Infinite Ring CL"  
+run:
+    poke $FF8571 $09
+script "P4 Infinite Magic Missile 'ELF'"  
+run:
+    poke $FF8578 $09
+script "P4 Infinite Invisibility 'ELF'"  
+run:
+    poke $FF8579 $09
+script "P4 Infinite Fireball 'ELF'"  
+run:
+    poke $FF857A $09
+script "P4 Infinite Hold Person 'CLERIC'"  
+run:
+    poke $FF8574 $09
+script "P4 Infinite Cont. Light 'CLERIC'"  
+run:
+    poke $FF8575 $09
+script "P4 Infinite Striking 'CLERIC'"  
+run:
+    poke $FF857F $09
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main

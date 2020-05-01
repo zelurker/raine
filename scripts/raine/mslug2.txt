@@ -1,23 +1,282 @@
-script "P1 invulnerability" always
-  poke $101517 2
-
-script "P1 infinite lives"
-  poke $101276 $99
-
-script "P1 50 bombs"
-  poke $10c348 50
-
-script "P1 infinite amo"
-	dpoke $10c34c $ffff
-
-script "P1 shotgun"
-	poke $10c346 0
-
-script "P1 rocket launcher"
-	poke $10c346 1
-
-script "P1 flame thrower"
-	poke $10c346 2
-
-script "P1 machine gun"
-	poke $10c346 3
+script "Infinite Time"  
+run:
+    poke $1013B4 $3C
+script "Select starting mission" \
+ "comm:Use this cheat on the soldier/character selection screen." \
+ inter=1,6,1 
+change:
+    poke $10C31F (param-$1)
+script "Select next mission" \
+ inter=1,6,1 
+change:
+    poke $10C31F (param-$1)
+script "Finish Current Section/Mission Now!" \
+ "comm:Missions 1-3-4 do not have sub-sections."  
+on:
+    if (dpeek($101346)==$F6D4)
+      poke $10C31D $FF
+    endif
+script "See End Sequence Now!"  
+on:
+    if (dpeek($101346)==$F6D4)
+      poke $10C31D $FF
+      poke $10C31F $06
+    endif
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($0780CA)
+    temp1=dpeek($077DF6)
+    temp2=dpeek($077E32)
+    temp3=dpeek($004B36)
+run:
+    dpoke $0780CA $6002
+    dpoke $077DF6 $6002
+    dpoke $077E32 $6002
+    dpoke $004B36 $018A
+off:
+    dpoke $0780CA temp0
+    dpoke $077DF6 temp1
+    dpoke $077E32 temp2
+    dpoke $004B36 temp3
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101276 $63
+script "P1 Infinite Bombs"  
+run:
+    poke $10C348 $63
+script "P1 Infinite Ammo"  
+run:
+    poke $10C34D $FF
+script "P1 Infinite Cannon"  
+run:
+    poke $10E8A1 $0A
+script "P1 Invincibility"  
+run:
+    poke $101517 $77
+script "P1 Infinite Vehicle Cannon"  
+run:
+    poke $10E8A1 $0A
+script "P1 Infinite Vehicle Energy"  
+run:
+    poke $10E89B $30
+script "P1 Select Body Type" \
+ "0x00/Normal"\
+ "0x02/Fat Bloater"\
+ "0x03/Mummy" 
+run:
+    poke $101525 param
+script "P1 Select Weapon" \
+ "0x01/Normal Gun"\
+ "0x02/Shotgun"\
+ "0x03/Rocket Launcher"\
+ "0x04/Flamethrower"\
+ "0x05/Machine Gun"\
+ "0x06/Laser" 
+run:
+    if (param==$01)
+      poke $10C346 $FF
+      poke $101525 $00
+    endif
+    if (param==$02)
+      poke $10C346 $00
+      poke $101525 $01
+    endif
+    if (param==$03)
+      poke $10C346 $01
+      poke $101525 $01
+    endif
+    if (param==$04)
+      poke $10C346 $02
+      poke $101525 $01
+    endif
+    if (param==$05)
+      poke $10C346 $03
+      poke $101525 $01
+    endif
+    if (param==$06)
+      poke $10C346 $04
+      poke $101525 $01
+    endif
+script "P1 Rapid Fire"  
+run:
+    poke $10E7D9 $00|(peek($10E7D9)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10131E $63
+script "P2 Infinite Bombs"  
+run:
+    poke $10C349 $63
+script "P2 Infinite Ammo"  
+run:
+    poke $10C34F $FF
+script "P2 Infinite Cannon"  
+run:
+    poke $10E8C5 $0A
+script "P2 Invincibility"  
+run:
+    poke $1015BF $77
+script "P2 Infinite Vehicle Cannon"  
+run:
+    poke $10E8C5 $0A
+script "P2 Infinite Vehicle Energy"  
+run:
+    poke $10E8BF $30
+script "P2 Select Body Type" \
+ "0x00/Normal"\
+ "0x02/Fat Bloater"\
+ "0x03/Mummy" 
+run:
+    poke $1015CD param
+script "P2 Select Weapon" \
+ "0x01/Normal Gun"\
+ "0x02/Shotgun"\
+ "0x03/Rocket Launcher"\
+ "0x04/Flamethrower"\
+ "0x05/Machine Gun"\
+ "0x06/Laser" 
+run:
+    if (param==$01)
+      poke $10C347 $FF
+      poke $1015CD $00
+    endif
+    if (param==$02)
+      poke $10C347 $00
+      poke $1015CD $01
+    endif
+    if (param==$03)
+      poke $10C347 $01
+      poke $1015CD $01
+    endif
+    if (param==$04)
+      poke $10C347 $02
+      poke $1015CD $01
+    endif
+    if (param==$05)
+      poke $10C347 $03
+      poke $1015CD $01
+    endif
+    if (param==$06)
+      poke $10C347 $04
+      poke $1015CD $01
+    endif
+script "P2 Rapid Fire"  
+run:
+    poke $10E7DF $00|(peek($10E7DF)&~10)
+script " "  
+script "Enable Pause Menu and Debug Menu" \
+ "comm:Enable it on the soldier/character selection screen. Press '3' twice for Debug Menu."  
+on:
+    poke $10FD82 $00
+    poke $101099 $01
+off:
+    poke $10FD82 $80
+    poke $101099 $00
+script "DEBUG DIPS OPTIONS"  
+script "DEBUG DIP - Invincibility"  
+run:
+    dpoke $10F000 $8000|(dpeek($10F000)&~8000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~8000)
+script "DEBUG DIP - View debug information" \
+ "comm:Once you have turned this on, the only immediate effect turning it off will be that the text won't update any more"  
+run:
+    dpoke $10F000 $0100|(dpeek($10F000)&~0100)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0100)
+script "DEBUG DIP - Unknown" \
+ "comm:Answers on a postcard please....or better post it on the cheat forums"  
+run:
+    dpoke $10F000 $0200|(dpeek($10F000)&~0200)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0200)
+script "DEBUG DIP - 1st plane check" \
+ "comm:Shows the walkable ground, makes the foreground choppy as it scrolls when activated. May linger around if not turned off proper."  
+run:
+    dpoke $10F000 $0800|(dpeek($10F000)&~0800)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0800)
+script "DEBUG DIP - 2nd plane check" \
+ "comm:makes the background choppy as it scrolls when activated."  
+run:
+    dpoke $10F000 $1000|(dpeek($10F000)&~1000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~1000)
+script "DEBUG DIP - View attack hitbox"  
+run:
+    dpoke $10F000 $2000|(dpeek($10F000)&~2000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~2000)
+script "DEBUG DIP - View body hitbox"  
+run:
+    dpoke $10F000 $4000|(dpeek($10F000)&~4000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~4000)
+script "DEBUG DIP - Infinite Grenades"  
+run:
+    dpoke $10F000 $0004|(dpeek($10F000)&~0004)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0004)
+script "DEBUG DIP - Infinite Ammo"  
+run:
+    dpoke $10F000 $0008|(dpeek($10F000)&~0008)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0008)
+script "DEBUG DIP - Show Respawn Position" \
+ "comm:A sprite appears, showing the player's respawn point."  
+run:
+    dpoke $10F000 $0002|(dpeek($10F000)&~0002)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0002)
+script "DEBUG DIP - Press D to destroy all onscreen enemies" \
+ "comm:no score bonuses"  
+run:
+    dpoke $10F000 $0001|(dpeek($10F000)&~0001)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0001)
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,34 +1,93 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-# DO NOT use clone relation for this game !
-
-script "*UP Unlimited time" always
-	poke $10A441 $3B
-
-script "*UP End game"
-	dpoke $10A440 $0000
-
-script "1Te Score set to 10       (P)" always
-	poke $10A43E $0A
-
-script "2Te Score set to 10       (P)" always
-	poke $10A43F $0A
-
-script "1Te Score set to 0        (P)" always
-	poke $10A43E $00
-
-script "2Te Score set to 0        (P)" always
-	poke $10A43F $00
-
-script "1Te Score set to 10       (T)"
-	poke $10A43E $0A
-
-script "2Te Score set to 10       (T)"
-	poke $10A43F $0A
-
-script "1Te Score set to 0        (T)"
-	poke $10A43E $00
-
-script "2Te Score set to 0        (T)"
-	poke $10A43F $00
+script "Infinite Time"  
+run:
+    poke $102929 $3B
+    poke $10A441 $3C
+    poke $10A440 $63
+script "Finish this Game Now!"  
+on:
+    poke $102929 $00
+    poke $10A441 $00
+    poke $10A440 $00
+script "Select Starting Match" \
+ "comm:1=First/7=Last/8=You are hero" \
+ inter=1,6,1 
+run:
+    if (peek($102A5B)==$01)
+      poke $102A5B (param)
+    endif
+script "Infinite Super Shoots" \
+ "comm:Each captain of any 4 players can perform Super Shoot without timer-score restrictions and infinitely in a game."  
+on:
+    temp0=peek($1E375)
+    temp1=dpeek($1E388)
+    temp2=peek($1E38F)
+    temp3=peek($1E397)
+run:
+    poke $1E375 $79
+    dpoke $1E388 $4E71
+    poke $1E38F $78
+    poke $1E397 $05
+off:
+    poke $1E375 temp0
+    dpoke $1E388 temp1
+    poke $1E38F temp2
+    poke $1E397 temp3
+script " "  
+script "Score always 0 Team 1"  
+run:
+    poke $1078EC $00
+    poke $10A43E $00
+script "Score always 9 Team 1"  
+run:
+    poke $1078EC $09
+    poke $10A43E $09
+script "Set score = 0 Now! Team 1"  
+on:
+    poke $1078EC $00
+    poke $10A43E $00
+script "Set score = 9 Now! Team 1"  
+on:
+    poke $1078EC $09
+    poke $10A43E $09
+script " "  
+script "Score always 0 Team 2"  
+run:
+    poke $107BEC $00
+    poke $10A43F $00
+script "Score always 9 Team 2"  
+run:
+    poke $107BEC $09
+    poke $10A43F $09
+script "Set score = 0 Now! Team 2"  
+on:
+    poke $107BEC $00
+    poke $10A43F $00
+script "Set score = 9 Now! Team 2"  
+on:
+    poke $107BEC $09
+    poke $10A43F $09
+script " "  
+script "P1 Infinite Credits"  
+run:
+    poke $102935 $09
+script "P1 Fouls Always = 0"  
+run:
+    poke $1033B7 $00
+script "P2 Infinite Credits"  
+run:
+    poke $102937 $09
+script "P2 Fouls Always = 0"  
+run:
+    poke $1033F7 $00
+script "P3 Infinite Credits"  
+run:
+    poke $102939 $09
+script "P3 Fouls Always = 0"  
+run:
+    poke $103437 $00
+script "P4 Infinite Credits"  
+run:
+    poke $10293B $09
+script "P4 Fouls Always = 0"  
+run:
+    poke $103477 $00

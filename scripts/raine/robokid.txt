@@ -1,9 +1,77 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $E021 $03
-
-script "*UP Unlimited time" always
-	poke $E190 $99
+script "Infinite Credits"  
+run:
+    poke $0E108 $12
+script "Infinite Time"  
+run:
+    poke $0E190 $99
+script "Infinite Lives"  
+run:
+    poke $0E021 $05
+script "Invincibility (Test)"  
+on:
+    temp0=dpeek($0534E)
+    temp1=dpeek($06051)
+    temp2=dpeek($060C4)
+    temp3=dpeek($134CC)
+    temp4=dpeek($13566)
+    temp5=lpeek($00030)
+    temp6=lpeek($00034)
+run:
+    dpoke $0534E $C9B7
+    dpoke $06051 $0030
+    dpoke $060C4 $0030
+    dpoke $134CC $0030
+    dpoke $13566 $0030
+    lpoke $00030 $E19221FD
+    lpoke $00034 $005352C3|(lpeek($00034)&~00FFFFFF)
+off:
+    dpoke $0534E temp0
+    dpoke $06051 temp1
+    dpoke $060C4 temp2
+    dpoke $134CC temp3
+    dpoke $13566 temp4
+    lpoke $00030 temp5
+    lpoke $00034 temp6
+script "Rapid Fire"  
+run:
+    poke $0F0BE $00|(peek($0F0BE)&~10)
+script "Always Have Fly"  
+run:
+    poke $0F0C2 $01
+script "Always Have Speed Up"  
+run:
+    poke $0F0C3 $01
+script "Always Have Rapid Fire Item"  
+run:
+    poke $0F0CB $01
+script "Always Have Fire-2"  
+on:
+    poke $0F0C6 $01
+run:
+    poke $0F0C5 $01|(peek($0F0C5)&~01)
+script "Always Have 3-Way Beam"  
+on:
+    poke $0F0C6 $02
+run:
+    poke $0F0C5 $02|(peek($0F0C5)&~02)
+script "Always Have Missile"  
+on:
+    poke $0F0C6 $04
+run:
+    poke $0F0C5 $04|(peek($0F0C5)&~04)
+script "Always Have 5-Way Vulcan"  
+on:
+    poke $0F0C6 $08
+run:
+    poke $0F0C5 $08|(peek($0F0C5)&~08)
+script " "  
+script "Skip RAM/ROM Check"  
+on:
+    temp0=peek($000F7)
+    temp1=peek($032BB)
+run:
+    poke $000F7 $98
+    poke $032BB $C3
+off:
+    poke $000F7 temp0
+    poke $032BB temp1

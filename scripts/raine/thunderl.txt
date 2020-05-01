@@ -1,6 +1,69 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $FFD4C6 $03
+script "Infinite Credits"  
+run:
+    poke $FFC21B $09
+script "Infinite Lives"  
+run:
+    poke $FFD4C6 $04
+script "Select Starting Level" \
+ "0x00/1-1"\
+ "0x01/1-2"\
+ "0x02/1-3"\
+ "0x03/1-4"\
+ "0x04/1-5 (1st Boss)"\
+ "0x05/2-1"\
+ "0x06/2-2"\
+ "0x07/2-3"\
+ "0x08/2-4"\
+ "0x09/2-5 (2nd Boss)"\
+ "0x0A/3-1"\
+ "0x0B/3-2"\
+ "0x0C/3-3"\
+ "0x0D/3-4"\
+ "0x0E/3-5 (3rd Boss)"\
+ "0x0F/4-1"\
+ "0x10/4-2"\
+ "0x11/4-3"\
+ "0x12/4-4"\
+ "0x13/4-5 (4th Boss)"\
+ "0x14/5-1"\
+ "0x15/5-2"\
+ "0x16/5-3"\
+ "0x17/5-4"\
+ "0x18/5-5 (Last Boss)" 
+run:
+    if peek($FFD4C0)==$00
+      poke $FFD4C0 param
+    endif
+    if peek($FFD4D0)==$00
+      poke $FFD4D0 param
+    endif
+script "Kill Boss with 1 Hit Now!"  
+on:
+    poke $FFE2F7 $00
+    poke $FFE32B $00
+script "Select Bat Size" \
+ "comm:Assign to an activation key for the best effect and cycle through the bat sizes during play" \
+ "0x70/Massive"\
+ "0x60/Very Large"\
+ "0x50/Large"\
+ "0x40/Large Medium"\
+ "0x30/Small Medium"\
+ "0x20/Normal" 
+run:
+    poke $FFE007 param
+script "Select Bat Type" \
+ "0x00/Normal Bat"\
+ "0x80/Catcher Bat" 
+run:
+    poke $FFDFF8 param|(peek($FFDFF8)&~80)
+script "Select Replicating Balls" \
+ "0x00/1 Ball (no-splitting)"\
+ "0x40/3 Balls (splitting)" 
+run:
+    poke $FFDFF8 param|(peek($FFDFF8)&~40)
+script "Select Number of Rockets" \
+ "0x00/No Rockets"\
+ "0x20/Single Rocket"\
+ "0x30/Double Rocket" 
+run:
+    poke $FFDFF8 param|(peek($FFDFF8)&~30)

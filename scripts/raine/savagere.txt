@@ -1,0 +1,198 @@
+script "Infinite Time"  
+run:
+    poke $1084A8 $59
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $1084A8 $00
+script "Invincibility [Master Code] (TEST)"  
+on:
+    temp0=lpeek($020AD6)
+    temp1=dpeek($020ADA)
+    temp2=lpeek($07F6B0)
+    temp3=lpeek($07F6B4)
+    temp4=lpeek($07F6B8)
+    temp5=lpeek($07F6BC)
+    temp6=lpeek($07F6C0)
+    temp7=lpeek($07F6C4)
+    temp8=lpeek($07F6C8)
+    temp9=lpeek($07F6CC)
+    temp10=dpeek($07F6D0)
+    temp11=lpeek($02E072)
+    temp12=dpeek($02E076)
+    temp13=lpeek($07F6D2)
+    temp14=dpeek($07F6D6)
+    temp15=lpeek($07F6D8)
+    temp16=lpeek($07F6DC)
+    temp17=lpeek($07F6E0)
+    temp18=lpeek($02DF3E)
+    temp19=dpeek($02DF42)
+    temp20=lpeek($07F6E4)
+    temp21=dpeek($07F6E8)
+    temp22=lpeek($07F6EA)
+    temp23=lpeek($07F6EE)
+    temp24=lpeek($07F6F2)
+run:
+    lpoke $020AD6 $4EB90007
+    dpoke $020ADA $F6B0
+    lpoke $07F6B0 $4A2C0017
+    lpoke $07F6B4 $67164A2B
+    lpoke $07F6B8 $00176708
+    lpoke $07F6BC $303C8000
+    lpoke $07F6C0 $80504E75
+    lpoke $07F6C4 $082C0003
+    lpoke $07F6C8 $003B67F0
+    lpoke $07F6CC $4CDF0001
+    dpoke $07F6D0 $4E75
+    lpoke $02E072 $4EB90007
+    dpoke $02E076 $F6D2
+    lpoke $07F6D2 $4A2B0017
+    dpoke $07F6D6 $6708
+    lpoke $07F6D8 $08280006
+    lpoke $07F6DC $00024E75
+    lpoke $07F6E0 $70004E75
+    lpoke $02DF3E $4EB90007
+    dpoke $02DF42 $F6E4
+    lpoke $07F6E4 $4A2B0017
+    dpoke $07F6E8 $6708
+    lpoke $07F6EA $0C2C0001
+    lpoke $07F6EE $00414E75
+    lpoke $07F6F2 $70014E75
+off:
+    lpoke $020AD6 temp0
+    dpoke $020ADA temp1
+    lpoke $07F6B0 temp2
+    lpoke $07F6B4 temp3
+    lpoke $07F6B8 temp4
+    lpoke $07F6BC temp5
+    lpoke $07F6C0 temp6
+    lpoke $07F6C4 temp7
+    lpoke $07F6C8 temp8
+    lpoke $07F6CC temp9
+    dpoke $07F6D0 temp10
+    lpoke $02E072 temp11
+    dpoke $02E076 temp12
+    lpoke $07F6D2 temp13
+    dpoke $07F6D6 temp14
+    lpoke $07F6D8 temp15
+    lpoke $07F6DC temp16
+    lpoke $07F6E0 temp17
+    lpoke $02DF3E temp18
+    dpoke $02DF42 temp19
+    lpoke $07F6E4 temp20
+    dpoke $07F6E8 temp21
+    lpoke $07F6EA temp22
+    lpoke $07F6EE temp23
+    lpoke $07F6F2 temp24
+script "Select Character" \
+ "comm:Free player selection - Use it on the selection screen. Solo mode ONLY!!" \
+ "0x0A/King Leo [End Boss]"\
+ "0x0B/Angry Chung" 
+run:
+    poke $1043C3 param
+script "Always Enable Special Move"  
+on:
+    temp0=peek($02E0B1)
+    temp1=peek($02E691)
+    temp2=peek($02EA2D)
+    temp3=peek($02EBF3)
+    temp4=peek($02ED9F)
+    temp5=peek($02EFB9)
+    temp6=peek($02F14B)
+    temp7=peek($02F3C1)
+    temp8=peek($02F7CB)
+    temp9=peek($02F827)
+run:
+    poke $02E0B1 $02
+    poke $02E691 $02
+    poke $02EA2D $02
+    poke $02EBF3 $02
+    poke $02ED9F $02
+    poke $02EFB9 $02
+    poke $02F14B $02
+    poke $02F3C1 $02
+    poke $02F7CB $02
+    poke $02F827 $02
+off:
+    poke $02E0B1 temp0
+    poke $02E691 temp1
+    poke $02EA2D temp2
+    poke $02EBF3 temp3
+    poke $02ED9F temp4
+    poke $02EFB9 temp5
+    poke $02F14B temp6
+    poke $02F3C1 temp7
+    poke $02F7CB temp8
+    poke $02F827 temp9
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke ((lpeek($10846A))+$95) $F0
+script "P1 Drain All Energy Now!"  
+on:
+    poke ((lpeek($10846A))+$95) $00
+script "P1 Invincibility (TEST)" \
+ "comm:Works after you've enabled 'Invincibility [Master Code]'" \
+ "0x00/Enabled"\
+ "0x20/Disabled" 
+run:
+    poke ((lpeek($10846A))+$17) param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke ((lpeek($10846E))+$95) $F0
+script "P2 Drain All Energy Now!"  
+on:
+    poke ((lpeek($10846E))+$95) $00
+script "P2 Invincibility (TEST)" \
+ "comm:Works after you've enabled 'Invincibility [Master Code]'" \
+ "0x00/Enabled"\
+ "0x20/Disabled" 
+run:
+    poke ((lpeek($10846E))+$17) param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

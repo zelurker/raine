@@ -1,57 +1,55 @@
-# Cheats from  : The Ultimate Patchers, Pugsy
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP One line ends level"
-	poke $830D $01
-
-script "2UP One line ends level"
-	poke $837E $01
-
-script "1UP Dice Line= 123456 (-P)" always
-	poke $82A5 $01
-	dpoke $82a6 $203
-	poke $82A8 $04
-	dpoke $82a9 $506
-
-script "1UP Dice Line= 666666 (-P)" always
-	poke $82A5 $06
-	dpoke $82a6 $606
-	poke $82A8 $06
-	dpoke $82a9 $606
-
-script "2UP Dice Line= 123456 (-P)" always
-	poke $825E $01
-	dpoke $825f $203
-	poke $8261 $04
-	dpoke $8262 $506
-
-script "2UP Dice Line= 666666 (-P)" always
-	poke $825E $06
-	dpoke $825f $606
-	poke $8261 $06
-	dpoke $8262 $606
-
-script "1UP Dice Line= 123456 (-T)"
-	poke $82A5 $01
-	dpoke $82a6 $203
-	poke $82A8 $04
-	dpoke $82a9 $506
-
-script "1UP Dice Line= 666666 (-T)"
-	poke $82A5 $06
-	dpoke $82a6 $606
-	poke $82A8 $06
-	dpoke $82a9 $606
-
-script "2UP Dice Line= 123456 (-T)"
-	poke $825E $01
-	dpoke $825f $203
-	poke $8261 $04
-	dpoke $8262 $506
-
-script "2UP Dice Line= 666666 (-T)"
-	poke $825E $06
-	dpoke $825f $606
-	poke $8261 $06
-	dpoke $8262 $606
+script "Infinite Credits"  
+run:
+    poke $880D $09
+script " "  
+script "P1 Dice Line always all 6s"  
+run:
+    poke $82A5 $06
+    poke $82A6 $06
+    poke $82A7 $06
+    poke $82A8 $06
+    poke $82A9 $06
+    poke $82AA $06
+script "P1 Dice Line all 6s Now!"  
+on:
+    poke $82A5 $06
+    poke $82A6 $06
+    poke $82A7 $06
+    poke $82A8 $06
+    poke $82A9 $06
+    poke $82AA $06
+script "P1 One Line needed to complete level Now!"  
+on:
+    poke $830D $01
+script "P1 Select Starting Level" \
+ inter=1,98,1 
+run:
+    if (peek($830E)==$01)
+      poke $830E (param)
+    endif
+script " "  
+script "P2 Dice Line always all 6s"  
+run:
+    poke $835E $06
+    poke $835F $06
+    poke $8360 $06
+    poke $8361 $06
+    poke $8362 $06
+    poke $8363 $06
+script "P2 Dice Line all 6s Now!"  
+on:
+    poke $835E $06
+    poke $835F $06
+    poke $8360 $06
+    poke $8361 $06
+    poke $8362 $06
+    poke $8363 $06
+script "P2 One Line needed to complete level Now!"  
+on:
+    poke $837E $01
+script "P2 Select Starting Level" \
+ inter=1,98,1 
+run:
+    if (peek($837F)==$01)
+      poke $837F (param)
+    endif

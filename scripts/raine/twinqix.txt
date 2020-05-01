@@ -1,15 +1,44 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $406B50 $03
-
-script "2UP Unlimited lives" always
-	poke $406B51 $03
-
-script "1UP End round with 99.99%"
-	dpoke $4093B0 $6F63
-
-script "2UP End round with 99.99%"
-	dpoke $4099BA $6F63
+script "Infinite Credits"  
+run:
+    poke $400223 $09
+script "Infinite Time" \
+ "comm:Doesn't work against Warnings!"  
+run:
+    poke $406B1A $FF
+script "Enemies always Frozen"  
+run:
+    poke $40916D $05
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $406B50 $03
+script "P1 Always have Maximum Speed"  
+run:
+    poke $409365 $05
+script "P1 Finish this Round with 99.99% Now!"  
+on:
+    poke $4093B0 $6F
+    poke $4093B1 $63
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $406B51 $03
+script "P2 Always have Maximum Speed"  
+run:
+    poke $40996F $05
+script "P2 Finish this Round with 99.99% Now!"  
+on:
+    poke $4099BA $6F
+    poke $4099BB $63
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

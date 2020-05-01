@@ -1,0 +1,81 @@
+script "Infinite Time"  
+run:
+    poke $63510 $99
+    poke $63511 $99
+script "Infinite Energy"  
+run:
+    poke $61057 $08
+script "Infinite FireBall Cart" \
+ "comm:Only activate with cart!"  
+run:
+    poke $63772 $09
+    poke $63773 $09
+script "Select Starting Level" \
+ "comm:Enable on the intro screen" \
+ inter=1,7,1 
+change:
+    poke $6379F (param-$1)
+script "Invincibility"  
+on:
+    temp0=dpeek($05218)
+    temp1=dpeek($073CC)
+    temp2=dpeek($07440)
+    temp3=dpeek($1327E)
+    temp4=dpeek($13444)
+run:
+    dpoke $05218 $6018
+    dpoke $073CC $6020
+    dpoke $07440 $6004
+    dpoke $1327E $6008
+    dpoke $13444 $6006
+off:
+    dpoke $05218 temp0
+    dpoke $073CC temp1
+    dpoke $07440 temp2
+    dpoke $1327E temp3
+    dpoke $13444 temp4
+script "Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $636DC $00
+    poke $636E2 $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $6379A $9A
+script "P1 Select Weapon" \
+ "0x00/Sword"\
+ "0x01/Spear" 
+run:
+    poke $6379C param
+script "P1 Keep a Baby on your back" \
+ "comm:So that you can attack"  
+run:
+    poke $6379B $00
+script "P1 No Lower class enemies" \
+ "comm:Turn off at end of Level. Only activate this when the character is NOT flashing!!"  
+on:
+    poke $63794 $0A
+script "P1 Bonus Stage (2 Symbols)"  
+run:
+    poke $6379E $02
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $637BA $9A
+script "P2 Select Weapon" \
+ "0x00/Sword"\
+ "0x01/Spear" 
+run:
+    poke $637BC param
+script "P2 Keep a Baby on your back" \
+ "comm:So that you can attack"  
+run:
+    poke $637BB $00
+script "P2 No Lower class enemies" \
+ "comm:Turn off at end of Level. Only activate this when the character is NOT flashing!!"  
+on:
+    poke $637B4 $0A
+script "P2 Bonus Stage (2 Symbols)"  
+run:
+    poke $637BE $02

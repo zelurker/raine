@@ -1,15 +1,64 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $202D4 $03
-
-script "2UP Unlimited lives" always
-	poke $202D5 $03
-
-script "*UP Unlimited polymorphes" always
-	poke $20A34 $03
-
-script "*UP Unlimited polymorph time" always
-	dpoke $20A36 $01F8
+script "Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $20682 $0C
+    poke $20683 $F2
+    poke $20684 $FF
+    poke $20A35 $00
+script "Infinite polymorphes" \
+ "comm:Get a number first"  
+run:
+    poke $20A34 $03
+script "Infinite polymorph time"  
+run:
+    poke $20A37 $F8
+script "Rapid Fire"  
+run:
+    poke $20A38 $00
+script "Select Movement Speed" \
+ "0x01/Normal"\
+ "0x02/Faster"\
+ "0x03/Fastest" 
+on:
+    temp0=$2067E
+    temp1=$20680
+    temp2=$2
+    temp3=$1
+    temp4=$0x098
+    temp5=$0x168
+    temp6=$0x088
+    temp7=$0x158
+run:
+    if dpeek(temp0)==temp8+temp2
+      dpoke temp0 temp8+(temp2*param)
+    endif
+    if dpeek(temp0)==temp8-temp2
+      dpoke temp0 temp8-(temp2*param)
+    endif
+    if dpeek(temp1)==temp9+temp3
+      dpoke temp1 temp9+(temp3*param)
+    endif
+    if dpeek(temp1)==temp9-temp3
+      dpoke temp1 temp9-(temp3*param)
+    endif
+    if dpeek(temp0)<temp4
+      dpoke temp0 temp4
+    endif
+    if dpeek(temp0)>temp5
+      dpoke temp0 temp5
+    endif
+    if dpeek(temp1)<temp6
+      dpoke temp1 temp6
+    endif
+    if dpeek(temp1)>temp7
+      dpoke temp1 temp7
+      temp8=dpeek(temp0)
+      temp9=dpeek(temp1)
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $202D4 $09
+script "P2 Infinite Lives"  
+run:
+    poke $202D5 $09

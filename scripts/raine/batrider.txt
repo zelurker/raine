@@ -1,51 +1,89 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "*UP Guest players  ON" always
-	poke $20FD4C $FF
-
-script "*UP Guest players  OFF" always
-	poke $20FD4C $00
-
-script "*UP Player select  ON" always
-	poke $20FD4D $FF
-
-script "*UP Player select  OFF" always
-	poke $20FD4D $00
-
-script "*UP Special course ON" always
-	poke $20FD42 $FF
-
-script "*UP Special course OFF" always
-	poke $20FD42 $00
-
-script "1UP Invulnerability ON" always
-	poke $204177 $EE
-
-script "1UP Invulnerability OFF"
-	poke $204177 $01
-
-script "2UP Invulnerability ON" always
-	poke $2042E9 $EE
-
-script "2UP Invulnerability OFF"
-	poke $2042E9 $01
-
-script "1UP Unlimited bombs" always
-	dpoke $204174 $0428
-
-script "2UP Unlimited bombs" always
-	dpoke $2042E6 $0428
-
-script "1UP Max. front fire power" always
-	poke $204172 $03
-
-script "2UP Max. front fire power" always
-	poke $2042E4 $03
-
-script "1UP Max. option fire power" always
-	poke $204166 $02
-
-script "2UP Max. option fire power" always
-	poke $2042D8 $02
+script "Enable Guest Characters" \
+ "comm:Enable 'Kingdom Grand Prix'/'Shippu Mahou Daisakusen' and 'Battle Garegga' characters, Same as 'Up,Up,Down,Down,Left,Right,A,B' after inserting credits."  
+on:
+    poke $20FD4C $FF
+script "Disable Guest Characters"  
+on:
+    poke $20FD4C $00
+script "Enable Player Select"  
+on:
+    poke $20FD4D $FF
+script "Disable Player Select"  
+on:
+    poke $20FD4D $00
+script "Enable Special Course" \
+ "comm:Check www.world-of-arcades.net/R8zing/Batrider/Secrets.htm for full infos about these 'hidden features' and the other secrets of the game"  
+on:
+    poke $20FD42 $FF
+script "Disable Special Course"  
+on:
+    poke $20FD42 $00
+script "Watch Game Rank"  
+run:
+script "Always have Easiest Rank"  
+run:
+    lpoke $20F9D0 $00F7FFFF
+script " "  
+script "P1 Infinite Bombs"  
+run:
+    dpoke $204174 $0428
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $204177 $02
+script "P1 Maximum Front Fire Power"  
+run:
+    poke $204172 $03
+script "P1 Maximum Option Fire Power" \
+ "comm:Get an option first"  
+run:
+    poke $204166 $02
+script " "  
+script "P2 Infinite Bombs"  
+run:
+    dpoke $2042E6 $0428
+script "P2 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $2042E9 $02
+script "P2 Maximum Front Fire Power"  
+run:
+    poke $2042E4 $03
+script "P2 Maximum Option Fire Power" \
+ "comm:Get an option first"  
+run:
+    poke $2042D8 $02
+script " "  
+script "Select Region" \
+ "comm:Enable and Reset to see any effect" \
+ "0x00/Japan"\
+ "0x01/USA"\
+ "0x02/Europe"\
+ "0x03/Asia"\
+ "0x04/Germany"\
+ "0x05/Austria"\
+ "0x06/Belgium"\
+ "0x07/Denmark"\
+ "0x08/Finland"\
+ "0x09/France"\
+ "0x0A/Great Britain"\
+ "0x0B/Greece"\
+ "0x0C/Holland"\
+ "0x0D/Italy"\
+ "0x0E/Norway"\
+ "0x0F/Portugal"\
+ "0x10/Spain"\
+ "0x11/Sweden"\
+ "0x12/Switzerland"\
+ "0x13/Australia"\
+ "0x14/New Zealand"\
+ "0x15/Taiwan"\
+ "0x16/Hong Kong"\
+ "0x17/Korea"\
+ "0x18/China" 
+on:
+    temp0=peek($000000)
+run:
+    poke $000000 param
+off:
+    poke $000000 temp0

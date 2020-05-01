@@ -1,57 +1,41 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $100ABB $88
-
-script "2UP Unlimited energy" always
-	poke $100AEB $88
-
-script "1UP Unlimited bombs" always
-	poke $100AB6 $09
-
-script "2UP Unlimited bombs" always
-	poke $100AE6 $09
-
-script "1UP Maximum fire power" always
-	poke $100AB8 $03
-
-script "2UP Maximum fire power" always
-	poke $100AE8 $03
-
-script "1UP Weapon - Orange       (P)" always
-	poke $100AB7 $00
-
-script "1UP Weapon - Blue         (P)" always
-	poke $100AB7 $01
-
-script "1UP Weapon - Green        (P)" always
-	poke $100AB7 $02
-
-script "2UP Weapon - Orange       (P)" always
-	poke $100AE7 $00
-
-script "2UP Weapon - Blue         (P)" always
-	poke $100AE7 $01
-
-script "2UP Weapon - Green        (P)" always
-	poke $100AE7 $02
-
-script "1UP Weapon - Orange       (T)"
-	poke $100AB7 $00
-
-script "1UP Weapon - Blue         (T)"
-	poke $100AB7 $01
-
-script "1UP Weapon - Green        (T)"
-	poke $100AB7 $02
-
-script "2UP Weapon - Orange       (T)"
-	poke $100AE7 $00
-
-script "2UP Weapon - Blue         (T)"
-	poke $100AE7 $01
-
-script "2UP Weapon - Green        (T)"
-	poke $100AE7 $02
+script "Infinite Credits"  
+run:
+    poke $1000A0 $09
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $100ABB $88
+script "P1 Infinite Bombs"  
+run:
+    poke $100AB6 $09
+script "P1 Always have Full Power Weapon"  
+run:
+    poke $100AB8 $03
+script "P1 Select Weapon" \
+ "0x00/Orange"\
+ "0x01/Blue"\
+ "0x02/Green" 
+run:
+    poke $100AB7 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $100AEB $88
+script "P2 Infinite Bombs"  
+run:
+    poke $100AE6 $09
+script "P2 Always have Full Power Weapon"  
+run:
+    poke $100AE8 $03
+script "P2 Select Weapon" \
+ "0x00/Orange"\
+ "0x01/Blue"\
+ "0x02/Green" 
+run:
+    poke $100AE7 param
+script " "  
+script "Select Language" \
+ "0x30/Japanese"\
+ "0x31/English" 
+run:
+    poke $100017 param

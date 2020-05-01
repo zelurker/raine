@@ -1,24 +1,180 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $20D6E7 $5A
-
-script "1UP Invulnerability OFF"
-	poke $20D6E7 $01
-
-script "2UP Invulnerability ON" always
-	poke $20DC67 $5A
-
-script "2UP Invulnerability OFF"
-	poke $20DC67 $01
-
-script "1UP Unlimited energy" always
-	poke $20D699 $80
-
-script "2UP Unlimited energy" always
-	poke $20DC19 $80
-
-script "*UP Unlimited time" always
-	poke $202A12 $63
+script "Infinite Credits"  
+run:
+    poke $2000B9 $09
+script "Infinite Time"  
+run:
+    poke $202A12 $63
+script "Select Starting Level" \
+ "comm:Enable on or before the "PUSH 1P OR 2P BUTTON TO START" screen" \
+ "0xEC76/Depon Road"\
+ "0xEC9A/Harbor Village of Peslo"\
+ "0xECAC/The Pirate Ship Southernkid"\
+ "0xECD0/Fairy Forest"\
+ "0xED18/Wind Canyon"\
+ "0xED2A/Mahadidekaradi Spiral Tower"\
+ "0xED4E/Forgotten Swamp"\
+ "0xED96/Housemen's Forest"\
+ "0xEDA8/Hulakatzia Volcano"\
+ "0xEDDE/The Enchanted Castle of Zananstaff"\
+ "0xEE14/Ke Fa Mountain"\
+ "0xEE26/Canal River of Dead Souls"\
+ "0xEE4A/Underground Cell"\
+ "0xEE92/Palace of The Black Demon Religion"\
+ "0xEEC8/Final Stage - The Temple of Gulestopalis"\
+ "0xEEEC/The Ending" 
+run:
+    if lpeek($2029CC)==$0000EC76
+      lpoke $2029CC param
+    endif
+script "Enable to Go to Secret Area" \
+ "comm:You can go to Fairy's Forest, River of Dead Souls, Forgotten Swamp and Hulakatzia Volcano"  
+run:
+    poke $202993 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $20D699 $80
+script "P1 Invincibility (Incomplete)" \
+ "comm:Doesn't work in Horsemen's Forest and Wind Canyon"  
+run:
+    poke $20D6E7 $02
+script "P1 Rapid Fire"  
+run:
+    poke $20F2B3 $10|(peek($20F2B3)&~10)
+    poke $20290A $00|(peek($20290A)&~10)
+script "P1 Always Have Arms"  
+run:
+    poke $2029F0 $01|(peek($2029F0)&~01)
+    dpoke $20D6D8 $0005
+script "P1 Always Have Arms of Fire"  
+run:
+    poke $2029F0 $02|(peek($2029F0)&~02)
+    dpoke $20D6D8 $0002
+    poke $20D6EB $40
+script "P1 Always Have Arms of Thunder"  
+run:
+    poke $2029F0 $04|(peek($2029F0)&~04)
+    dpoke $20D6D8 $0002
+    poke $20D6EB $80
+script "P1 Always Have Herb" \
+ "comm:Vitality Up"  
+run:
+    poke $2029F1 $01|(peek($2029F1)&~01)
+script "P1 Always Have Harenon Daiamond Image" \
+ "comm:Protections Power Up"  
+run:
+    poke $2029F1 $02|(peek($2029F1)&~02)
+script "P1 Always Have Moon Crystal" \
+ "comm:Magic Power Up"  
+run:
+    poke $2029F1 $04|(peek($2029F1)&~04)
+script "P1 Always Have Dragon's Teardrop" \
+ "comm:Foutune Level up"  
+run:
+    poke $2029F1 $08|(peek($2029F1)&~08)
+script "P1 Always Have Attacking Speed Up"  
+run:
+    poke $2029F1 $10|(peek($2029F1)&~10)
+script "P1 Always Have Attacking Power Up"  
+run:
+    poke $2029F1 $20|(peek($2029F1)&~20)
+script "P1 Always Have Brave Geran's Necklace" \
+ "comm:Movement Speed Up"  
+run:
+    poke $2029F1 $40|(peek($2029F1)&~40)
+script "P1 Always Have Jeweled Holy Crown of Ishulin" \
+ "comm:Enemy Force Down"  
+run:
+    poke $2029F1 $80|(peek($2029F1)&~80)
+script "P1 Always Have Maximum Copper Coins"  
+run:
+    poke $2029F6 $63
+script "P1 Always Have Maximum Silver Coins"  
+run:
+    poke $2029F7 $63
+script "P1 Always Have Maximum Gold Coins"  
+run:
+    poke $2029F8 $63
+script "P1 Always Have Maximum Treasures"  
+run:
+    poke $2029F9 $63
+script "P1 Select Arms" \
+ "0x00/Normal Arms"\
+ "0x40/Arms of Fire"\
+ "0x80/Arms of Thunder" 
+run:
+    poke $20D6EB param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $20DC19 $80
+script "P2 Invincibility (Incomplete)" \
+ "comm:Doesn't work in Horsemen's Forest and Wind Canyon"  
+run:
+    poke $20DC67 $02
+script "P2 Rapid Fire"  
+run:
+    poke $20F2BD $10|(peek($20F2BD)&~10)
+    poke $20290B $00|(peek($20290B)&~10)
+script "P2 Always Have Arms"  
+run:
+    poke $202A04 $01|(peek($202A04)&~01)
+    dpoke $20DC58 $0005
+script "P2 Always Have Arms of Fire"  
+run:
+    poke $202A04 $02|(peek($202A04)&~02)
+    dpoke $20DC58 $0002
+    poke $20DC6B $40
+script "P2 Always Have Arms of Thunder"  
+run:
+    poke $202A04 $04|(peek($202A04)&~04)
+    dpoke $20DC58 $0002
+    poke $20DC6B $80
+script "P2 Always Have Herb" \
+ "comm:Vitality Up"  
+run:
+    poke $202A05 $01|(peek($202A05)&~01)
+script "P2 Always Have Harenon Daiamond Image" \
+ "comm:Protections Power Up"  
+run:
+    poke $202A05 $02|(peek($202A05)&~02)
+script "P2 Always Have Moon Crystal" \
+ "comm:Magic Power Up"  
+run:
+    poke $202A05 $04|(peek($202A05)&~04)
+script "P2 Always Have Dragon's Teardrop" \
+ "comm:Foutune Level up"  
+run:
+    poke $202A05 $08|(peek($202A05)&~08)
+script "P2 Always Have Attacking Speed Up"  
+run:
+    poke $202A05 $10|(peek($202A05)&~10)
+script "P2 Always Have Attacking Power Up"  
+run:
+    poke $202A05 $20|(peek($202A05)&~20)
+script "P2 Always Have Brave Geran's Necklace" \
+ "comm:Movement Speed Up"  
+run:
+    poke $202A05 $40|(peek($202A05)&~40)
+script "P2 Always Have Jeweled Holy Crown of Ishulin" \
+ "comm:Enemy Force Down"  
+run:
+    poke $202A05 $80|(peek($202A05)&~80)
+script "P2 Always Have Maximum Copper Coins"  
+run:
+    poke $202A0A $63
+script "P2 Always Have Maximum Silver Coins"  
+run:
+    poke $202A0B $63
+script "P2 Always Have Maximum Gold Coins"  
+run:
+    poke $202A0C $63
+script "P2 Always Have Maximum Treasures"  
+run:
+    poke $202A0D $63
+script "P2 Select Arms" \
+ "0x00/Normal Arms"\
+ "0x40/Arms of Fire"\
+ "0x80/Arms of Thunder" 
+run:
+    poke $20DC6B param

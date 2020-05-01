@@ -1,0 +1,154 @@
+script "Infinite Select Time"  
+run:
+    poke $109024 $09
+script "Select next level" \
+ inter=1,8,1 
+change:
+    poke $109021 (param-$1)
+script "Goto End Sequence next"  
+on:
+    poke $109021 $07
+script " "  
+script "P1 Infinite Continues"  
+run:
+    poke $10909E $65
+script "P1 Infinite Lives"  
+run:
+    poke $100229 $05
+script "P1 Infinite Bombs"  
+run:
+    poke $10022F $03
+script "P1 Enable HyperBomb"  
+run:
+    poke $10021D $01
+script "P1 Max Shot"  
+run:
+    poke $100261 $03
+script "P1 Max Missile"  
+run:
+    poke $100265 $01
+script "P1 Max Rear Shot"  
+run:
+    poke $100269 $03
+script "P1 Invincibility"  
+run:
+    poke $10023E $01
+script "P1 Select Ship Speed" \
+ "0x00/Low"\
+ "0x01/Medium"\
+ "0x02/Fast" 
+run:
+    poke $100219 param
+script "P1 Select Shot Type" \
+ "0x00/3-Way"\
+ "0x01/Wave"\
+ "0x02/Vertical" 
+run:
+    poke $100263 param
+script "P1 Select Missile" \
+ "0x00/Homing"\
+ "0x01/A.A"\
+ "0x02/A.S." 
+run:
+    poke $100267 param
+script "P1 Select Rear Fire" \
+ "0x00/2-Way"\
+ "0x01/Wave"\
+ "0x02/Twin" 
+run:
+    poke $10026B param
+script " "  
+script "P2 Infinite Continues"  
+run:
+    poke $10909F $65
+script "P2 Infinite Lives"  
+run:
+    poke $100029 $05
+script "P2 Infinite Bombs"  
+run:
+    poke $10002F $03
+script "P2 Enable HyperBomb"  
+run:
+    poke $10001D $01
+script "P2 Max Shot"  
+run:
+    poke $100061 $03
+script "P2 Max Missile"  
+run:
+    poke $100065 $03
+script "P2 Max Rear Shot"  
+run:
+    poke $100069 $03
+script "P2 Invincibility"  
+run:
+    poke $10003E $01
+script "P2 Select Ship Speed" \
+ "0x00/Low"\
+ "0x01/Medium"\
+ "0x02/Fast" 
+run:
+    poke $100019 param
+script "P2 Select Shot Type" \
+ "0x00/3-Way"\
+ "0x01/Wave"\
+ "0x02/Vertical" 
+run:
+    poke $100063 param
+script "P2 Select Missile" \
+ "0x00/Homing"\
+ "0x01/A.A"\
+ "0x02/A.S." 
+run:
+    poke $100067 param
+script "P2 Select Rear Fire" \
+ "0x00/2-Way"\
+ "0x01/Wave"\
+ "0x02/Twin" 
+run:
+    poke $10006B param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

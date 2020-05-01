@@ -1,0 +1,43 @@
+script "Always winning hand"  
+run:
+    poke $FF8600 $1C
+    poke $FF8604 $1C
+    poke $FF8608 $1C
+    poke $FF860C $1D
+    poke $FF8610 $1D
+    poke $FF8614 $1D
+    poke $FF8618 $1E
+    poke $FF861C $1E
+    poke $FF8620 $1E
+    poke $FF8624 $1F
+    poke $FF8628 $1F
+    poke $FF862C $1F
+    poke $FF8630 $20
+    poke $FF8634 $20
+    poke $FF84DC $20
+script "Watch ALL 14 tiles - Player"  
+run:
+script "Watch ALL 14 tiles - C.P.U."  
+run:
+script " "  
+script "Here is the look-up list for the above watches."  
+script "value     common name    chinese"  
+script "00h       - no tile -"  
+script "01h-09h   1-9 'chars'    1-9 'wan'"  
+script "0Ah-12h   1-9 'dots'     1-9 'tung'"  
+script "13h-1Bh   1-9 'bamboo'   1-9 'tiao'"  
+script "1Ch-1Fh   East,South,West+North 'wind'"  
+script "20h-22h   White,Green+Red 'dragon'"  
+script " "  
+script "Format of Watch - WW0X0YZZh"  
+script " "  
+script "WW - value of tile, 0X - (?), ZZ - (?)"  
+script "0Y - how to show the tile in the table"  
+script "0Y=02 - normal,    0Y=04 - face up"  
+script "0Y=05 - face down, 0Y=0E - like 04 but horizontal"  
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main

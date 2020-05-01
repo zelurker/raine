@@ -1,77 +1,72 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $80825 $78
-	poke $80821 peek($80821)&$fc|$03
-
-script "1UP Invulnerability OFF"
-	poke $80825 $00
-	poke $80821 peek($80821)&$fc
-
-script "2UP Invulnerability ON" always
-	poke $80EE5 $78
-	poke $80EE1 peek($80EE1)&$fc|$03
-
-script "2UP Invulnerability OFF"
-	poke $80EE5 $00
-	poke $80EE1 peek($80EE1)&$fc
-
-script "1UP Unlimited lives" always
-	poke $8086C $03
-
-script "2UP Unlimited lives" always
-	poke $80F2C $03
-
-script "1UP Unlimited bombs" always
-	poke $8086D $63
-
-script "2UP Unlimited bombs" always
-	poke $80F2D $63
-
-script "1UP Unlimited time for weapon" always
-	poke $8087E $18
-
-script "2UP Unlimited time for weapon" always
-	poke $80F3E $18
-
-script "*UP One enemy ends lv (-T)"
-	poke $85C21 $01
-	poke $85C22 $02
-
-script "1UP Weap. - Normal gun    (P)" always
-	poke $80874 $00
-
-script "1UP Weap. - Semi-auto gun (P)" always
-	poke $80874 $01
-
-script "1UP Weap. - Full-auto gun (P)" always
-	poke $80874 $02
-
-script "2UP Weap. - Normal gun    (P)" always
-	poke $80F34 $00
-
-script "2UP Weap. - Semi-auto gun (P)" always
-	poke $80F34 $01
-
-script "2UP Weap. - Full-auto gun (P)" always
-	poke $80F34 $02
-
-script "1UP Weap. - Normal gun    (T)"
-	poke $80874 $00
-
-script "1UP Weap. - Semi-auto gun (T)"
-	poke $80874 $01
-
-script "1UP Weap. - Full-auto gun (T)"
-	poke $80874 $02
-
-script "2UP Weap. - Normal gun    (T)"
-	poke $80F34 $00
-
-script "2UP Weap. - Semi-auto gun (T)"
-	poke $80F34 $01
-
-script "2UP Weap. - Full-auto gun (T)"
-	poke $80F34 $02
+script "Infinite Credits"  
+run:
+    poke $8002D $99
+script "1 Enemy to Finish Current Scene Now!" \
+ "comm:Also one hit for boss"  
+on:
+    dpoke $85C21 $0102
+script "Select Starting Stage" \
+ "comm:Pause the game during enabling or reset after enabling" \
+ "0xFF/Stage 1-1"\
+ "0x00/Stage 1-2"\
+ "0x01/Stage 1-3"\
+ "0x02/Stage 1-4"\
+ "0x03/Stage 2-1"\
+ "0x04/Stage 2-2"\
+ "0x05/Stage 2-3"\
+ "0x06/Stage 2-4"\
+ "0x07/Stage 3-1"\
+ "0x08/Stage 3-2"\
+ "0x09/Stage 3-3"\
+ "0x0A/Stage 3-4"\
+ "0x0B/Stage 4-1"\
+ "0x0C/Stage 4-2"\
+ "0x0D/Stage 4-3"\
+ "0x0E/Stage 4-4"\
+ "0x0F/Final Stage" 
+run:
+    if (peek($85C24)==$FF)
+      poke $85C24 param
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $8086C $08
+script "P1 Infinite Bombs"  
+run:
+    poke $8086D $63
+script "P1 Invincibility"  
+run:
+    poke $80821 $03|(peek($80821)&~03)
+    poke $80825 $02
+script "P1 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Semi-Auto Gun"\
+ "0x02/Full-Auto Gun" 
+run:
+    poke $80874 param
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $80017 $00|(peek($80017)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $80F2C $08
+script "P2 Infinite Bombs"  
+run:
+    poke $80F2D $63
+script "P2 Invincibility"  
+run:
+    poke $80EE1 $03|(peek($80EE1)&~03)
+    poke $80EE5 $02
+script "P2 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Semi-Auto Gun"\
+ "0x02/Full-Auto Gun" 
+run:
+    poke $80F34 param
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $80016 $00|(peek($80016)&~10)

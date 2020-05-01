@@ -1,24 +1,61 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $FF72CA $99
-
-script "1UP Unlimited energy" always
-	dlpoke $FF802C $01160116
-
-script "2UP Unlimited energy" always
-	dlpoke $FF842C $01160116
-
-script "1UP Energy set to 0" always
-	dlpoke $FF802C $00000000
-
-script "2UP Energy set to 0" always
-	dlpoke $FF842C $00000000
-
-script "1UP Energy set to 0"
-	dlpoke $FF802C $00000000
-
-script "2UP Energy set to 0"
-	dlpoke $FF842C $00000000
+script "Infinite Credits"  
+run:
+    poke $FF726E $09
+script "Infinite Time"  
+run:
+    poke $FF72CA $99
+script "Finish this Battle Now!"  
+on:
+    poke $FF72CA $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    lpoke $FF802C $01160117
+script "P1 Drain Most Energy Now!"  
+on:
+    lpoke $FF802C $00000000
+script "P2 Infinite Energy"  
+run:
+    lpoke $FF842C $01160117
+script "P2 Drain Most Energy Now!"  
+on:
+    lpoke $FF842C $00000000
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=peek($FF7047)
+    temp1=dpeek($002A96)
+run:
+    poke $FF7047 temp0
+    dpoke $002A96 temp1
+    if (dpeek($FF732C)==$4)
+      poke $FF7047 $0
+      dpoke $002A96 $4E71
+      poke $FF9800 $0
+      poke $FF9900 $0
+      poke $FF9A00 $0
+      poke $FF9B00 $0
+      poke $FF9C00 $0
+      poke $FF9D00 $0
+      poke $FF9E00 $0
+      poke $FF9F00 $0
+    endif
+off:
+    poke $FF7047 temp0
+    dpoke $002A96 temp1
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x01/USA"\
+ "0x02/Euro"\
+ "0x03/Asia Sample"\
+ "0x04/Asia TW"\
+ "0x05/Hispanic"\
+ "0x0A/Brazil" 
+run:
+    poke $FF7445 param

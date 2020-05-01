@@ -1,0 +1,63 @@
+script "Infinite Credits"  
+run:
+    poke $4059E1 $09
+script "P1 Select Help Line" \
+ "0xFF/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $40A8E7 param
+script " "  
+script "VS Mode Cheats"  
+script " "  
+script "Enable the Select starting round on the 'planets' screen."  
+script "Select starting round" \
+ "comm:Level background will be incorrect to you 'Continue'" \
+ inter=1,12,1 
+change:
+    poke $409E53 (param-$1)
+script "Select next round" \
+ inter=1,12,1 
+change:
+    poke $409E53 (param-$1)
+script "P1 Limited number of Attacked" \
+ "0x00/Never"\
+ "0x07/Max 7"\
+ "0x0E/Max 14"\
+ "0x15/Max 21"\
+ "0x1C/Max 28"\
+ "0x23/Max 35"\
+ "0x46/Max 70" 
+run:
+    if peek($40A43F)>=param
+      poke $40A43F param
+    endif
+    if peek($40A445)>=param
+      poke $40A445 param
+    endif
+script "P2 Limited number of Attacked" \
+ "0x00/Never"\
+ "0x07/Max 7"\
+ "0x0E/Max 14"\
+ "0x15/Max 21"\
+ "0x1C/Max 28"\
+ "0x23/Max 35"\
+ "0x46/Max 70" 
+run:
+    if peek($40A43B)>=param
+      poke $40A43B param
+    endif
+    if peek($40A443)>=param
+      poke $40A443 param
+    endif
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($1FFFFF)
+run:
+    poke $1FFFFF param
+off:
+    poke $1FFFFF temp0

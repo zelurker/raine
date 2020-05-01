@@ -1,39 +1,64 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $101304 $78
-
-script "1UP Invulnerability OFF"
-	poke $101304 $01
-
-script "2UP Invulnerability ON" always
-	poke $101354 $78
-
-script "2UP Invulnerability OFF"
-	poke $101354 $01
-
-script "3UP Invulnerability ON" always
-	poke $1013A4 $78
-
-script "3UP Invulnerability OFF"
-	poke $1013A4 $01
-
-script "4UP Invulnerability ON" always
-	poke $1013F4 $78
-
-script "4UP Invulnerability OFF"
-	poke $1013F4 $01
-
-script "1UP Unlimited lives" always
-	poke $1000E3 $03
-
-script "2UP Unlimited lives" always
-	poke $1000FD $03
-
-script "3UP Unlimited lives" always
-	poke $100117 $03
-
-script "4UP Unlimited lives" always
-	poke $100131 $03
+script "P1 Infinite Lives"  
+run:
+    poke $1000E3 $0A
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate 'P1 Invincibility' cheat. But the cheat is better as the dipswitch causes a game crash when another player is selected."  
+run:
+    poke $10130C $84
+script "P1 Always have Speed Up"  
+run:
+    poke $1012DD $20|(peek($1012DD)&~20)
+script "P1 Always have Power Up"  
+run:
+    poke $1012DD $40|(peek($1012DD)&~40)
+script "P1 Always have Range Up"  
+run:
+    poke $1012DD $80|(peek($1012DD)&~80)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1000FD $0A
+script "P2 Invincibility"  
+run:
+    poke $101354 $84
+script "P2 Always have Speed Up"  
+run:
+    poke $10132D $20|(peek($10132D)&~20)
+script "P2 Always have Power Up"  
+run:
+    poke $10132D $40|(peek($10132D)&~40)
+script "P2 Always have Range Up"  
+run:
+    poke $10132D $80|(peek($10132D)&~80)
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $100117 $0A
+script "P3 Invincibility"  
+run:
+    poke $1013A4 $84
+script "P3 Always have Speed Up"  
+run:
+    poke $10137D $20|(peek($10137D)&~20)
+script "P3 Always have Power Up"  
+run:
+    poke $10137D $40|(peek($10137D)&~40)
+script "P3 Always have Range Up"  
+run:
+    poke $10137D $80|(peek($10137D)&~80)
+script " "  
+script "P4 Infinite Lives"  
+run:
+    poke $100131 $0A
+script "P4 Invincibility"  
+run:
+    poke $1013F4 $84
+script "P4 Always have Speed Up"  
+run:
+    poke $1013CD $20|(peek($1013CD)&~20)
+script "P4 Always have Power Up"  
+run:
+    poke $1013CD $40|(peek($1013CD)&~40)
+script "P4 Always have Range Up"  
+run:
+    poke $1013CD $80|(peek($1013CD)&~80)

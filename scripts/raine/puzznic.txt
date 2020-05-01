@@ -1,21 +1,99 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited retries" always
-	poke $8132 $09
-
-script "2UP Unlimited retries" always
-	poke $81B2 $09
-
-script "1UP Unlimited time      (OFF)" always
-	dpoke $811C $0300
-
-script "2UP Unlimited time      (OFF)" always
-	dpoke $819C $0300
-
-script "1UP End Level"
-	poke $810A $00
-
-script "2UP End Level"
-	poke $818A $00
+script "P1 Infinite Time"  
+on:
+    temp0=peek($811C)
+    temp1=peek($811D)
+run:
+    if (frame%300==$0)&&(peek($811C)!=temp0)
+      poke $811C $03
+    endif
+    if (frame%300==$0)&&(peek($811D)!=temp1)
+      poke $811D $00
+    endif
+script "P1 Infinite Retries"  
+run:
+    poke $8132 $09
+script "P1 Finish this Stage Now!"  
+on:
+    poke $810A $00
+script "P1 Slide Show Mode" \
+ "comm:Slide Show Mode requires Infinite Time enabled for best effect!!"  
+run:
+    poke $810A $00
+script " "  
+script "P2 Infinite Time"  
+on:
+    temp0=peek($819C)
+    temp1=peek($819D)
+run:
+    if (frame%300==$0)&&(peek($819C)!=temp0)
+      poke $819C $03
+    endif
+    if (frame%300==$0)&&(peek($819D)!=temp1)
+      poke $819D $00
+    endif
+script "P2 Infinite Retries"  
+run:
+    poke $81B2 $09
+script "P2 Finish this Stage Now!"  
+on:
+    poke $818A $00
+script "P2 Slide Show Mode" \
+ "comm:Slide Show Mode requires Infinite Time enabled for best effect!!"  
+run:
+    poke $818A $00
+script " "  
+script "1 Player Game"  
+script " "  
+script "Reset Girl Picture Now!"  
+on:
+    poke $8A08 $FF
+script "Select Girl Picture Now!" \
+ "comm:Use after the bonus award at the end of a level." \
+ "0x00/Tina"\
+ "0x01/Judy"\
+ "0x02/Karen"\
+ "0x03/Patty"\
+ "0x04/Candy"\
+ "0x05/Alicia"\
+ "0x06/Tracie"\
+ "0x07/Lisa"\
+ "0x08/Brenda"\
+ "0x09/Meg" 
+change:
+    poke $8A06 param
+script " "  
+script "2 Player Game, Use P1 when P2 is playing + P2 when P1 is playing"  
+script " "  
+script "P1 Reset Girl Picture"  
+on:
+    poke $8A88 $FF
+script "P1 Select Girl Picture Now!" \
+ "0x00/Tina"\
+ "0x01/Judy"\
+ "0x02/Karen"\
+ "0x03/Patty"\
+ "0x04/Candy"\
+ "0x05/Alicia"\
+ "0x06/Tracie"\
+ "0x07/Lisa"\
+ "0x08/Brenda"\
+ "0x09/Meg" 
+change:
+    poke $8A86 param
+script " "  
+script "P2 Reset Girl Picture"  
+on:
+    poke $8B08 $FF
+script "P2 Select Girl Picture Now!" \
+ "0x00/Tina"\
+ "0x01/Judy"\
+ "0x02/Karen"\
+ "0x03/Patty"\
+ "0x04/Candy"\
+ "0x05/Alicia"\
+ "0x06/Tracie"\
+ "0x07/Lisa"\
+ "0x08/Brenda"\
+ "0x09/Meg" 
+change:
+    poke $8B06 param

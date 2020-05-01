@@ -1,0 +1,166 @@
+script "Infinite Continues"  
+run:
+    poke $103E78 $FF
+script "Infinite Time"  
+run:
+    poke $10D002 $99
+script "Infinite Character Select Time"  
+run:
+    poke $103D72 $99
+script "Select Starting Stage" \
+ "0x00/Stage 1"\
+ "0x01/Stage 2-1"\
+ "0x02/Stage 2-2"\
+ "0x03/Stage 2-3"\
+ "0x04/Stage 3-1"\
+ "0x05/Stage 3-2"\
+ "0x06/Stage 4"\
+ "0x07/Stage 5-1"\
+ "0x08/Stage 5-2"\
+ "0x09/Stage 5-3"\
+ "0x0A/Stage 5-4"\
+ "0x0B/Stage 5-5"\
+ "0x0C/Final Boss" 
+run:
+    if peek($100091)==$00
+      poke $100091 param
+    endif
+script "Finish This Stage Now!"  
+on:
+    poke $1001BE $05
+script "See End Sequence Now!" \
+ "comm:You can use this cheat in demo mode or any stage"  
+on:
+    poke $100051 $04
+    poke $1001BE $05
+script "Mostly One Hit Kills" \
+ "comm:To kill the Boss, you must hit him 2-3 times"  
+run:
+    poke $1004A1 $00
+    poke $100521 $00
+    poke $100621 $00
+    poke $100321 $00
+    poke $1003A1 $00
+    poke $100421 $00
+    poke $1005A1 $00
+    poke $100921 $00
+    poke $1008A1 $00
+    poke $1009A1 $00
+    poke $100821 $00
+    poke $1006A1 $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $100230 $09
+script "P1 Infinite Energy"  
+run:
+    poke $100221 $FF
+script "P1 Invincibility" \
+ "comm:You have to turn this cheat OFF to progress to the next flipscreen!!!"  
+run:
+    dpoke $100266 $00B2
+    poke $10020F $10|(peek($10020F)&~10)
+off:
+    dpoke $100266 $00B2
+    poke $10020F $00|(peek($10020F)&~10)
+script "P1 No Auto Weapon Drop" \
+ "comm:Weapon does not fall automatically from your hand"  
+run:
+    dpoke $100277 $0000
+script "P1 Select Weapon" \
+ "0x01/Knife"\
+ "0x02/Bottle"\
+ "0x03/Broken Bottle"\
+ "0x04/Dynamite"\
+ "0x05/Stick"\
+ "0x06/Gun" 
+run:
+    poke $10022D param
+    poke $100276 $00
+script "P1 Select Character" \
+ "0x00/Ryu"\
+ "0x01/Duke"\
+ "0x02/Billy" 
+run:
+    poke $103D35 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1002B0 $09
+script "P2 Infinite Energy"  
+run:
+    poke $1002A1 $FF
+script "P2 Invincibility" \
+ "comm:You have to turn this cheat OFF to progress to the next flipscreen!!!"  
+run:
+    dpoke $1002E6 $00B2
+    poke $10028F $10|(peek($10028F)&~10)
+off:
+    dpoke $1002E6 $00B2
+    poke $10028F $00|(peek($10028F)&~10)
+script "P2 No Auto Weapon Drop" \
+ "comm:Weapon does not fall automatically from your hand"  
+run:
+    dpoke $1002F7 $0000
+script "P2 Select Weapon" \
+ "0x01/Knife"\
+ "0x02/Bottle"\
+ "0x03/Broken Bottle"\
+ "0x04/Dynamite"\
+ "0x05/Stick"\
+ "0x06/Gun" 
+run:
+    poke $1002AD param
+    poke $1002F6 $00
+script "P2 Select Character" \
+ "0x00/Ryu"\
+ "0x01/Duke"\
+ "0x02/Billy" 
+run:
+    poke $103D55 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

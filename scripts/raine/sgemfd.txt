@@ -1,0 +1,257 @@
+script "Infinite Time"  
+run:
+    poke $FF8188 $99
+script "Select next round" \
+ inter=1,8,1 
+change:
+    poke $FF8193 (param-$1)
+script "Move Round Announce"  
+run:
+    poke $FF818E $00
+script "Background always =" \
+ "0x00/Capcom Cafe"\
+ "0x02/Shopping Center"\
+ "0x04/Slopes"\
+ "0x06/Dock"\
+ "0x08/Chinatown"\
+ "0x0A/Fireplace"\
+ "0x0C/Morrigan's Castle"\
+ "0x0E/Demitri's Castle" 
+run:
+    poke $FF8181 param
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($015554)
+run:
+    dpoke $015554 $6006
+off:
+    dpoke $015554 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8441 $90
+script "P1 Always have Max Power"  
+run:
+    poke $FF8595 $60
+script "P1 Infinite Super Stocks"  
+run:
+    poke $FF8594 $09
+script "P1 Max Red Gem Attack"  
+run:
+    poke $FF85A3 $60
+script "P1 Max Yellow Gem Attack"  
+run:
+    poke $FF85A5 $60
+script "P1 Max Blue Gem Attack"  
+run:
+    poke $FF85A7 $60
+script "P1 Air Moves"  
+run:
+    poke $FF844F $00
+script "P1 No Hit Stop"  
+run:
+    poke $FF844C $00
+script "P1 No Shot Limit"  
+run:
+    poke $FF8570 $00
+script "P1 Endless Shot Hit"  
+run:
+    poke $FF9841 $63
+    poke $FF9941 $63
+script "P1 Action Speed Up"  
+run:
+    poke $FF8419 $01
+script "P1 Max Guard Crush"  
+run:
+    poke $FF8539 $3C
+script "P1 No Flash Combo"  
+run:
+    poke $FF859B $00
+    poke $FF859A $01
+    poke $FF859D $00
+script "P1 Display 99 Hits"  
+run:
+    poke $FF8944 $63
+script "P1 Gem (A) always =" \
+ "0xFF/None"\
+ "0x00/Flame"\
+ "0x01/Water"\
+ "0x02/Lightning"\
+ "0x03/Skull"\
+ "0x04/Banana"\
+ "0x05/Bomb"\
+ "0x06/Petrify" 
+run:
+    poke $FF85F0 param
+script "P1 Gem (B) always =" \
+ "0xFF/None"\
+ "0x00/Flame"\
+ "0x01/Water"\
+ "0x02/Lightning"\
+ "0x03/Skull"\
+ "0x04/Banana"\
+ "0x05/Bomb"\
+ "0x06/Petrify" 
+run:
+    poke $FF85F1 param
+script "P1 Gem (C) always =" \
+ "0xFF/None"\
+ "0x00/Flame"\
+ "0x01/Water"\
+ "0x02/Lightning"\
+ "0x03/Skull"\
+ "0x04/Banana"\
+ "0x05/Bomb"\
+ "0x06/Petrify" 
+run:
+    poke $FF85F2 param
+script "P1 Infinite Select Time" \
+ "comm:Turn this OFF during fights"  
+run:
+    poke $FF840E $14
+script "P1 Select Character" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Chun-Li"\
+ "0x03/Sakura"\
+ "0x04/Morrigan"\
+ "0x05/Lei-Lei (Hsien-Ko)"\
+ "0x06/Felicia"\
+ "0x07/Tabasa (Tessa)"\
+ "0x08/Ibuki"\
+ "0x09/Zangief"\
+ "0x0A/Dan"\
+ "0x0B/Gouki (Akuma)" 
+run:
+    poke $FF8781 param
+script "P1 Select Player Colour" \
+ "comm:This cheat will have effect everywhere but the character selection screen" \
+ "0x00/Punch"\
+ "0x01/Kick"\
+ "0x02/Special"\
+ "0x03/PKS" 
+run:
+    poke $FF879F param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8841 $90
+script "P2 Always have Max Power"  
+run:
+    poke $FF8995 $60
+script "P2 Infinite Super Stocks"  
+run:
+    poke $FF8994 $09
+script "P2 Max Red Gem Attack"  
+run:
+    poke $FF89A3 $60
+script "P2 Max Yellow Gem Attack"  
+run:
+    poke $FF89A5 $60
+script "P2 Max Blue Gem Attack"  
+run:
+    poke $FF89A7 $60
+script "P2 Air Moves"  
+run:
+    poke $FF884F $00
+script "P2 No Hit Stop"  
+run:
+    poke $FF884C $00
+script "P2 No Shot Limit"  
+run:
+    poke $FF8970 $00
+script "P2 Endless Shot Hit"  
+run:
+    poke $FF9441 $63
+    poke $FF9541 $63
+script "P2 Action Speed Up"  
+run:
+    poke $FF8819 $01
+script "P2 Max Guard Crush"  
+run:
+    poke $FF8939 $3C
+script "P2 No Flash Combo"  
+run:
+    poke $FF899B $00
+    poke $FF899A $01
+    poke $FF899D $00
+script "P2 Display 99 Hits"  
+run:
+    poke $FF8544 $63
+script "P2 Gem (A) always =" \
+ "0xFF/None"\
+ "0x00/Flame"\
+ "0x01/Water"\
+ "0x02/Lightning"\
+ "0x03/Skull"\
+ "0x04/Banana"\
+ "0x05/Bomb"\
+ "0x06/Petrify" 
+run:
+    poke $FF89F0 param
+script "P2 Gem (B) always =" \
+ "0xFF/None"\
+ "0x00/Flame"\
+ "0x01/Water"\
+ "0x02/Lightning"\
+ "0x03/Skull"\
+ "0x04/Banana"\
+ "0x05/Bomb"\
+ "0x06/Petrify" 
+run:
+    poke $FF89F1 param
+script "P2 Gem (C) always =" \
+ "0xFF/None"\
+ "0x00/Flame"\
+ "0x01/Water"\
+ "0x02/Lightning"\
+ "0x03/Skull"\
+ "0x04/Banana"\
+ "0x05/Bomb"\
+ "0x06/Petrify" 
+run:
+    poke $FF89F2 param
+script "P2 Infinite Select Time" \
+ "comm:Turn this OFF during fights"  
+run:
+    poke $FF880E $14
+script "P2 Select Character" \
+ "0x00/Ryu"\
+ "0x01/Ken"\
+ "0x02/Chun-Li"\
+ "0x03/Sakura"\
+ "0x04/Morrigan"\
+ "0x05/Lei-Lei (Hsien-Ko)"\
+ "0x06/Felicia"\
+ "0x07/Tabasa (Tessa)"\
+ "0x08/Ibuki"\
+ "0x09/Zangief"\
+ "0x0A/Dan"\
+ "0x0B/Gouki (Akuma)" 
+run:
+    poke $FF8B81 param
+script "P2 Select Player Colour" \
+ "comm:This cheat will have effect everywhere but the character selection screen" \
+ "0x00/Punch"\
+ "0x01/Kick"\
+ "0x02/Special"\
+ "0x03/PKS" 
+run:
+    poke $FF8B9F param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8111 param

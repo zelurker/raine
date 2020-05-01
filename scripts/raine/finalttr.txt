@@ -1,0 +1,44 @@
+script "Infinite Credits"  
+run:
+    poke $100015 $63
+script "Infinite Time"  
+run:
+    poke $101951 $5A
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $101951 $00
+script "Select Starting Stage" \
+ inter=1,10,1 
+run:
+    if (peek($1014F9)==$00)
+      poke $1014F9 (param-$1)
+    endif
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $101510 $39
+script "P1 Drain All Energy Now!"  
+on:
+    poke $101510 $00
+script "P1 Win this Stage Now!"  
+on:
+    poke $1014FB $01
+    poke $101734 $00
+script "P1 Rounds Won always = 0"  
+run:
+    poke $1014FB $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $101734 $39
+script "P2 Drain All Energy Now!"  
+on:
+    poke $101734 $00
+script "P2 Win this Stage Now!"  
+on:
+    poke $101510 $00
+    poke $10171F $01
+script "P2 Rounds Won always = 0"  
+run:
+    poke $10171F $00

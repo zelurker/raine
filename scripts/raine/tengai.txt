@@ -1,39 +1,62 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $FE348F $78
-
-script "1UP Invulnerability OFF"
-	poke $FE348F $01
-
-script "2UP Invulnerability ON" always
-	poke $FE350F $78
-
-script "2UP Invulnerability OFF"
-	poke $FE350F $01
-
-script "1UP Unlimited lives" always
-	poke $FE3471 $03
-
-script "2UP Unlimited lives" always
-	poke $FE34F1 $03
-
-script "1UP Unlimited bombs" always
-	poke $FE3475 $06
-
-script "2UP Unlimited bombs" always
-	poke $FE34F5 $06
-
-script "1UP Maximum fire power" always
-	poke $FE3477 $03
-
-script "2UP Maximum fire power" always
-	poke $FE34F7 $03
-
-script "1UP Maximum missile power" always
-	poke $FE3497 $04
-
-script "2UP Maximum missile power" always
-	poke $FE3517 $04
+script "Infinite Credits"  
+run:
+    poke $FE95D9 $09
+script "Unlock Secret Character" \
+ "comm:Move cursor to '?' on character selection screen"  
+on:
+    temp0=peek($FF8627)
+run:
+    poke $FF8627 $03
+off:
+    poke $FF8627 temp0
+script "Select Game Mode" \
+ "0x00/Normal Mode"\
+ "0x01/Non-stop Mode" 
+run:
+    poke $FE353F param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FE3471 $05
+script "P1 Infinite Bombs"  
+run:
+    poke $FE3475 $06
+script "P1 Invincibility"  
+run:
+    poke $FE348F $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $FE3477 $03
+script "P1 Maximum Missile Power"  
+run:
+    poke $FE3497 $04
+script "P1 Rapid Fire - Normal"  
+run:
+    poke $FE3489 $00|(peek($FE3489)&~08)
+script "P1 Rapid Fire - Special"  
+run:
+    poke $FE3489 $00|(peek($FE3489)&~08)
+    lpoke $FE345D $00000000|(lpeek($FE345D)&~FFFFFF00)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FE34F1 $05
+script "P2 Infinite Bombs"  
+run:
+    poke $FE34F5 $06
+script "P2 Invincibility"  
+run:
+    poke $FE350F $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $FE34F7 $03
+script "P2 Maximum Missile Power"  
+run:
+    poke $FE3517 $04
+script "P2 Rapid Fire - Normal"  
+run:
+    poke $FE3509 $00|(peek($FE3509)&~08)
+script "P2 Rapid Fire - Special"  
+run:
+    poke $FE3509 $00|(peek($FE3509)&~08)
+    lpoke $FE34DD $00000000|(lpeek($FE34DD)&~FFFFFF00)

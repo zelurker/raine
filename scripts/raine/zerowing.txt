@@ -1,30 +1,48 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $818B3 $03
-
-script "*UP Maximum power" always
-	poke $80F51 $03
-
-script "*UP Maximum speed" always
-	poke $80007 $30
-
-script "*UP Weapon - Multi-way    (P)" always
-	poke $80029 $00
-
-script "*UP Weapon - Laser        (P)" always
-	poke $80029 $01
-
-script "*UP Weapon - Missiles     (P)" always
-	poke $80029 $02
-
-script "*UP Weapon - Multi-way    (T)"
-	poke $80029 $00
-
-script "*UP Weapon - Laser        (T)"
-	poke $80029 $01
-
-script "*UP Weapon - Missiles     (T)"
-	poke $80029 $02
+script "P1 Infinite Lives"  
+run:
+    poke $81B9F $63
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $8000D $6B
+script "P1 Always have Maximum Power"  
+run:
+    poke $811F1 $03
+script "P1 Always have Maximum Speed"  
+run:
+    poke $80007 $30
+script "P1 Select Weapon" \
+ "0x00/Normal"\
+ "0x01/Laser"\
+ "0x02/Missiles" 
+run:
+    poke $80029 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $81BA1 $63
+script "P2 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $8003D $62
+script "P2 Always have Maximum Power"  
+run:
+    poke $811F3 $03
+script "P2 Always have Maximum Speed"  
+run:
+    poke $80037 $30
+script "P2 Select Weapon" \
+ "0x00/Normal"\
+ "0x01/Laser"\
+ "0x02/Missiles" 
+run:
+    poke $80059 param
+script " "  
+script "Disable Red Screen Flashing" \
+ "comm:Stops the whole screen flashing red when something is hit"  
+on:
+    temp0=dpeek($00186)
+run:
+    dpoke $00186 $6010
+off:
+    dpoke $00186 temp0

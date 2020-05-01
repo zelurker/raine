@@ -1,0 +1,60 @@
+script "Infinite Credits"  
+run:
+    poke $BEF01 $09
+script "Select Starting Stage" \
+ "comm:Set on the 'Push Start' screen after you've inserted a credit" \
+ inter=1,7,1 
+on:
+    poke $B9021 $FF
+change:
+    poke $B9021 (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $B7A29 $06
+script "P1 Invincibility"  
+run:
+    poke $B7A2D $02
+script "P1 Infinite Bombs"  
+run:
+    poke $B7A2F $08
+script "P1 Always Maximum Shot Power"  
+run:
+    poke $B7A56 $00
+    poke $B7A7F $07
+script "P1 Select Weapon" \
+ "0x00/Vulcan"\
+ "0x01/Fire"\
+ "0x02/Multi-Way"\
+ "0x03/Missile" 
+run:
+    poke $B7A57 param
+script "P1 Rapid Fire"  
+run:
+    poke $B7A1D $00
+    poke $B7A7B $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $B7B29 $06
+script "P2 Invincibility"  
+run:
+    poke $B7B2D $02
+script "P2 Infinite Bombs"  
+run:
+    poke $B7B2F $08
+script "P2 Always Maximum Shot Power"  
+run:
+    poke $B7B56 $00
+    poke $B7B7F $07
+script "P2 Select Weapon" \
+ "0x00/Vulcan"\
+ "0x01/Fire"\
+ "0x02/Multi-Way"\
+ "0x03/Missile" 
+run:
+    poke $B7B57 param
+script "P2 Rapid Fire"  
+run:
+    poke $B7B1D $00
+    poke $B7B7B $00

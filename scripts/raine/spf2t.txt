@@ -1,0 +1,224 @@
+script "Infinite Credits"  
+run:
+    poke $FF8076 $09
+script " "  
+script "Send 20 gems to P2 Now!"  
+on:
+    poke $FF849E $14
+script "Send 40 gems to P2 Now!"  
+on:
+    poke $FF849E $28
+script "Send 60 gems to P2 Now!"  
+on:
+    poke $FF849E $3C
+script "P1 Never receive counter attacks"  
+run:
+    poke $FF889E $00
+script "-=The diamonds cheats must be activated in order=-"  
+script "P1 Get diamond 1 Now!"  
+on:
+    poke $FF84F5 $18
+script "P1 Get diamond 2 Now!"  
+on:
+    poke $FF84F5 $31
+script "P1 Get diamond 3 Now!"  
+on:
+    poke $FF84F5 $4A
+script "P1 Get diamond 4 Now!"  
+on:
+    poke $FF84F5 $63
+script "P1 Get diamond 5 Now!"  
+on:
+    poke $FF84F5 $7C
+script "P1 Get diamond 6 Now!"  
+on:
+    poke $FF84F5 $95
+script "P1 Get diamond 7 Now!"  
+on:
+    poke $FF84F5 $AE
+script "P1 Get diamond 8 Now!"  
+on:
+    poke $FF84F5 $C7
+script "P1 Get diamond 9 Now!"  
+on:
+    poke $FF84F5 $E0
+script "P1 Get diamond 10 Now!"  
+on:
+    poke $FF84F5 $F9
+script "P1 Select Character" \
+ "comm:Free player selection - Use on 'Stage X' or 'Select Difficulty' screens" \
+ "0x01/Morrigan"\
+ "0x02/Chun-Li"\
+ "0x03/Ryu"\
+ "0x04/Ken"\
+ "0x05/Lei-Lei"\
+ "0x06/Donovan"\
+ "0x07/Felicia"\
+ "0x08/Sakura"\
+ "0x09/Devilot"\
+ "0x10/Akuma (Gouki)"\
+ "0x11/Dan" 
+run:
+    if (param==$01)
+      poke $FF0C82 $00
+      poke $FF8382 $00
+    endif
+    if (param==$02)
+      poke $FF0C82 $01
+      poke $FF8382 $01
+    endif
+    if (param==$03)
+      poke $FF0C82 $02
+      poke $FF8382 $02
+    endif
+    if (param==$04)
+      poke $FF0C82 $03
+      poke $FF8382 $03
+    endif
+    if (param==$05)
+      poke $FF0C82 $04
+      poke $FF8382 $04
+    endif
+    if (param==$06)
+      poke $FF0C82 $05
+      poke $FF8382 $05
+    endif
+    if (param==$07)
+      poke $FF0C82 $06
+      poke $FF8382 $06
+    endif
+    if (param==$08)
+      poke $FF0C82 $07
+      poke $FF8382 $07
+    endif
+    if (param==$09)
+      poke $FF0C82 $08
+      poke $FF8382 $08
+    endif
+    if (param==$10)
+      poke $FF0C82 $09
+      poke $FF8382 $09
+    endif
+    if (param==$11)
+      poke $FF0C82 $0A
+      poke $FF8382 $0A
+    endif
+script " "  
+script "Send 20 gems to P1 Now!"  
+on:
+    poke $FF889E $14
+script "Send 40 gems to P1 Now!"  
+on:
+    poke $FF889E $28
+script "Send 60 gems to P1 Now!"  
+on:
+    poke $FF889E $3C
+script "P2 Never receive counter attacks"  
+run:
+    poke $FF849E $00
+script "-=The diamonds cheats must be activated in order=-"  
+script "P2 Get diamond 1 Now!"  
+on:
+    poke $FF88F5 $18
+script "P2 Get diamond 2 Now!"  
+on:
+    poke $FF88F5 $31
+script "P2 Get diamond 3 Now!"  
+on:
+    poke $FF88F5 $4A
+script "P2 Get diamond 4 Now!"  
+on:
+    poke $FF88F5 $63
+script "P2 Get diamond 5 Now!"  
+on:
+    poke $FF88F5 $7C
+script "P2 Get diamond 6 Now!"  
+on:
+    poke $FF88F5 $95
+script "P2 Get diamond 7 Now!"  
+on:
+    poke $FF88F5 $AE
+script "P2 Get diamond 8 Now!"  
+on:
+    poke $FF88F5 $C7
+script "P2 Get diamond 9 Now!"  
+on:
+    poke $FF88F5 $E0
+script "P2 Get diamond 10 Now!"  
+on:
+    poke $FF88F5 $F9
+script "P2 Select Character" \
+ "comm:Free player selection - Use on 'Stage X' or 'Select Difficulty' screens" \
+ "0x01/Morrigan"\
+ "0x02/Chun-Li"\
+ "0x03/Ryu"\
+ "0x04/Ken"\
+ "0x05/Lei-Lei"\
+ "0x06/Donovan"\
+ "0x07/Felicia"\
+ "0x08/Sakura"\
+ "0x09/Devilot"\
+ "0x10/Akuma (Gouki)"\
+ "0x11/Dan" 
+run:
+    if (param==$01)
+      poke $FF0C86 $00
+      poke $FF8782 $00
+    endif
+    if (param==$02)
+      poke $FF0C86 $01
+      poke $FF8782 $01
+    endif
+    if (param==$03)
+      poke $FF0C86 $02
+      poke $FF8782 $02
+    endif
+    if (param==$04)
+      poke $FF0C86 $03
+      poke $FF8782 $03
+    endif
+    if (param==$05)
+      poke $FF0C86 $04
+      poke $FF8782 $04
+    endif
+    if (param==$06)
+      poke $FF0C86 $05
+      poke $FF8782 $05
+    endif
+    if (param==$07)
+      poke $FF0C86 $06
+      poke $FF8782 $06
+    endif
+    if (param==$08)
+      poke $FF0C86 $07
+      poke $FF8782 $07
+    endif
+    if (param==$09)
+      poke $FF0C86 $08
+      poke $FF8782 $08
+    endif
+    if (param==$10)
+      poke $FF0C86 $09
+      poke $FF8782 $09
+    endif
+    if (param==$11)
+      poke $FF0C86 $0A
+      poke $FF8782 $0A
+    endif
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F020 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8091 param

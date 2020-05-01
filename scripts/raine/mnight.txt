@@ -1,39 +1,49 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $C02A $03
-
-script "2UP Unlimited lives" always
-	poke $C052 $03
-
-script "*UP Unlimited time" always
-	poke $C195 $99
-
-script "*UP No more time"
-	poke $C195 $01
-
-script "*UP Size is normal        (T)"
-	poke $CDB0 $00
-
-script "*UP Size is big           (T)"
-	poke $CDB0 $02
-
-script "*UP Size is small         (T)"
-	poke $CDB0 $03
-
-script "*UP Get multiway shot (-P)" always
-	poke $CDB3 $80
-	poke $CDB5 $B0
-	poke $CDB6 $04
-
-script "*UP Get multiway shot (-T)" always
-	poke $CDB3 $80
-	poke $CDB5 $B0
-	poke $CDB6 $04
-
-script "*UP Get normal shot   (-T)"
-	poke $CDB3 $00
-	poke $CDB5 $01
-	poke $CDB6 $00
+script "Infinite Time"  
+run:
+    if peek($C195)>01
+      poke $C195 $99
+    endif
+script "Lose remaining time Now!"  
+on:
+    poke $C195 $01
+script "Select Starting Act" \
+ "comm:Set on the 'Push One (or Two) Player Start Button' screen after you've inserted a credit" \
+ inter=1,93,1 
+on:
+    poke $C02B $FF
+change:
+    poke $C02B (param-$1)
+script "Invincibility"  
+run:
+    poke $CB1C $00
+script "Rapid Fire"  
+run:
+    poke $CDAD $00
+script "Select Size" \
+ "comm:Normal size to enter trap, Big size == invincibility" \
+ "0x00/Normal"\
+ "0x02/Big"\
+ "0x03/Small" 
+run:
+    poke $CDB0 param
+script "Select Shot" \
+ "0x01/Normal"\
+ "0x02/Multiway" 
+run:
+    if (param==$01)
+      poke $CDB3 $00
+      poke $CDB5 $01
+      poke $CDB6 $00
+    endif
+    if (param==$02)
+      poke $CDB3 $80
+      poke $CDB5 $B0
+      poke $CDB6 $04
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $C02A $08
+script "P2 Infinite Lives"  
+run:
+    poke $C052 $08

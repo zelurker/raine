@@ -1,12 +1,21 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	dpoke $10101C $0100
-
-script "2UP Unlimited energy" always
-	dpoke $10111C $0100
-
-script "*UP Unlimited time" always
-	dpoke $102940 $0100
+script "Infinite Time"  
+run:
+    poke $102941 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $102941 $00
+script "P1 Infinite Energy"  
+run:
+    poke $10101D $95
+script "P1 Drain all Energy Now!" \
+ "comm:P1 needs to be hit once before this will work!"  
+on:
+    poke $10101D $00
+script "P2 Infinite Energy"  
+run:
+    poke $10111D $95
+script "P2 Drain all Energy Now!" \
+ "comm:P2 needs to be hit once before this will work!"  
+on:
+    poke $10111D $00

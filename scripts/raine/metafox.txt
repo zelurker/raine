@@ -1,59 +1,146 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F01572 peek($F01572)&$ef|$10
-
-script "1UP Invulnerability OFF"
-	poke $F01572 peek($F01572)&$ef
-
-script "2UP Invulnerability ON" always
-	poke $F015CE peek($F015CE)&$ef|$10
-
-script "2UP Invulnerability OFF"
-	poke $F015CE peek($F015CE)&$ef
-
-script "1UP Unlimited lives" always
-	poke $F015A9 $03
-
-script "2UP Unlimited lives" always
-	poke $F01605 $03
-
-script "1UP Unlimited bombs" always
-	poke $F015A6 $09
-
-script "2UP Unlimited bombs" always
-	poke $F01602 $09
-
-script "1UP Maximum 'S'" always
-	poke $F015AA $05
-
-script "2UP Maximum 'S'" always
-	poke $F01606 $05
-
-script "1UP Maximum fire power" always
-	poke $F015A4 $14
-
-script "2UP Maximum fire power" always
-	poke $F01600 $14
-
-script "1UP Maximum speed" always
-	poke $F0158E $06
-	poke $F0158F $06
-
-script "2UP Maximum speed" always
-	poke $F015EA $06
-	poke $F015EB $06
-
-script "1UP Auto-fire ON" always
-	poke $F015A7 $01
-
-script "1UP Auto-fire OFF"
-	poke $F015A7 $00
-
-script "2UP Auto-fire ON" always
-	poke $F01603 $01
-
-script "2UP Auto-fire OFF"
-	poke $F01603 $00
+script "Start on Round 1" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $00
+script "Start on Round 2" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $01
+script "Start on Round 3" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $02
+script "Start on Round 4" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $03
+script "Start on Round 5" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $04
+script "Start on Round 6" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $05
+script "Start on Round 7" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $06
+script "Start on Round 8" \
+ "comm:Turn off this cheat when you have started the level!!"  
+run:
+    poke $F0131B $07
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F015A9 $0A
+script "P1 Infinite Bombs"  
+run:
+    poke $F015A6 $09
+script "P1 Maximum Shot Power"  
+run:
+    poke $F015A4 $14
+script "P1 Select Current Shot Power" \
+ inter=1,21,1 
+change:
+    poke $F015A4 (param-$1)
+script "P1 Maximum 'S'"  
+run:
+    poke $F015AA $05
+script "P1 Auto Shot"  
+run:
+    poke $F015A7 $01
+script "P1 Invincibility" \
+ "0x10/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $F01572 param|(peek($F01572)&~10)
+script "P1 Select Plane" \
+ "0x01/F4V-1D CORSAIR"\
+ "0x02/F-86F SABRE"\
+ "0x03/F.A-18A HORNET" 
+run:
+    if (param==$01)
+      poke $F015A5 $00
+      poke $F0158E $03
+      poke $F0158F $03
+    endif
+    if (param==$02)
+      poke $F015A5 $01
+      poke $F0158E $05
+      poke $F0158F $05
+    endif
+    if (param==$03)
+      poke $F015A5 $02
+      poke $F0158E $06
+      poke $F0158F $06
+    endif
+script "P1 Maximum X and Y Move Speed"  
+run:
+    poke $F0158E $06
+    poke $F0158F $06
+script "P1 Select Current X Move Speed" \
+ inter=1,7,1 
+change:
+    poke $F0158E (param-$1)
+script "P1 Select Current Y Move Speed" \
+ inter=1,7,1 
+change:
+    poke $F0158F (param-$1)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F01605 $0A
+script "P2 Infinite Bombs"  
+run:
+    poke $F01602 $09
+script "P2 Maximum Shot Power"  
+run:
+    poke $F01600 $14
+script "P2 Select Current Shot Power" \
+ inter=1,21,1 
+change:
+    poke $F01600 (param-$1)
+script "P2 Maximum 'S'"  
+run:
+    poke $F01606 $05
+script "P2 Auto Shot"  
+run:
+    poke $F01603 $01
+script "P2 Invincibility" \
+ "0x10/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $F015CE param|(peek($F015CE)&~10)
+script "P2 Select Plane" \
+ "0x01/F4V-1D CORSAIR"\
+ "0x02/F-86F SABRE"\
+ "0x03/F.A-18A HORNET" 
+run:
+    if (param==$01)
+      poke $F01601 $00
+      poke $F015EA $03
+      poke $F015EB $03
+    endif
+    if (param==$02)
+      poke $F01601 $01
+      poke $F015EA $05
+      poke $F015EB $05
+    endif
+    if (param==$03)
+      poke $F01601 $02
+      poke $F015EA $06
+      poke $F015EB $06
+    endif
+script "P2 Maximum X and Y Move Speed"  
+run:
+    poke $F015EA $06
+    poke $F015EB $06
+script "P2 Select Current X Move Speed" \
+ inter=1,7,1 
+change:
+    poke $F015EA (param-$1)
+script "P2 Select Current Y Move Speed" \
+ inter=1,7,1 
+change:
+    poke $F015EB (param-$1)

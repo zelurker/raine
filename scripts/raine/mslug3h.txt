@@ -1,0 +1,278 @@
+script "Infinite Time"  
+run:
+    poke $10ED78 $99
+script "Select Blood Colour" \
+ "0x00/Clear"\
+ "0x01/Red" 
+run:
+    poke $10FD92 param
+script "Select Starting Mission" \
+ "0x00/Mission 1"\
+ "0x01/Mission 2"\
+ "0x02/Mission 3"\
+ "0x03/Mission 4"\
+ "0x04/Final Mission"\
+ "0x05/End Sequence" 
+run:
+    if (peek($10ED7A)==$00)
+      poke $10ED7A param
+    endif
+script "Finish Current Mission Now!"  
+on:
+    if (peek($10ED7D)==$3E)
+      poke $10ED7D $3F
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1002BB $64
+script "P1 Invincibility" \
+ "comm:You can still die in vehicles and falling in water (without scuba gear)"  
+run:
+    poke $100581 $02
+script "P1 Infinite Ammo"  
+run:
+    dpoke $10EAFA $03E7
+script "P1 Infinite Bombs"  
+run:
+    poke $10EAF5 $63
+script "P1 No bomb throwing delay" \
+ "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
+run:
+    poke $10EAF0 $00
+script "P1 Always have 15 Prisoners"  
+run:
+    poke $10ED05 $0F
+script "P1 Get 15 Prisoners Now!"  
+on:
+    poke $10ED05 $0F
+script "P1 Select Shot Equipment" \
+ "comm:The Mobile Satellite + Thunder Cloud options are slightly buggy they both work fine if enabled prior to starting the level" \
+ "0xFF00/Normal Gun"\
+ "0x0201/MS Cannon"\
+ "0x0102/Shotgun"\
+ "0x0203/Rocket Launcher"\
+ "0x0104/Flame Shot"\
+ "0xFF05/Heavy Machine Gun"\
+ "0xFF06/Laser Gun"\
+ "0x0107/SUPER Shotgun"\
+ "0x0208/SUPER Rocket Launcher"\
+ "0x0109/SUPER Flame Shot"\
+ "0xFF0A/SUPER Heavy Machine Gun"\
+ "0xFF0B/SUPER Laser Gun"\
+ "0x030C/Enemy Chaser"\
+ "0x020D/Iron Lizard"\
+ "0x030E/Drop Shot"\
+ "0x020F/SUPER Grenade"\
+ "0x0315/FAT Enemy Chaser"\
+ "0xFF10/Mobile Satellite (Buggy - see note)"\
+ "0xFF11/Thunder Cloud (Buggy - see note)" 
+run:
+    dpoke $10EAF2 param
+script "P1 Select Bomb" \
+ "0x01/Mortar Grenade(Normal)"\
+ "0x02/Petrol Bomb"\
+ "0x03/Rock" 
+run:
+    poke $10EAF4 param
+script "P1 Select Body Type" \
+ "comm:Select them in this order Human-Fatman-Mummy-Swimmer-Snowman-Zombie and back around through Human for the best effect" \
+ "0x00/Human"\
+ "0x02/Fatman (Can't Move!)"\
+ "0x03/Mummy"\
+ "0x05/Swimmer"\
+ "0x06/Snowman (Can't Move!)"\
+ "0x07/Zombie" 
+run:
+    poke $10058F param
+script "P1 Rapid Fire"  
+run:
+    poke $100094 $00|(peek($100094)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10036B $64
+script "P2 Invincibility" \
+ "comm:You can still die in vehicles and falling in water (without scuba gear)"  
+run:
+    poke $100631 $02
+script "P2 Infinite Ammo"  
+run:
+    dpoke $10EB08 $03E7
+script "P2 Infinite Bombs"  
+run:
+    poke $10EB03 $63
+script "P2 No bomb throwing delay" \
+ "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
+run:
+    poke $10EAFE $00
+script "P2 Always have 15 Prisoners"  
+run:
+    poke $10ED0D $0F
+script "P2 Get 15 Prisoners Now!"  
+on:
+    poke $10ED0D $0F
+script "P2 Select Shot Equipment" \
+ "comm:The Mobile Satellite + Thunder Cloud options are slightly buggy they both work fine if enabled prior to starting the level" \
+ "0xFF00/Normal Gun"\
+ "0x0201/MS Cannon"\
+ "0x0102/Shotgun"\
+ "0x0203/Rocket Launcher"\
+ "0x0104/Flame Shot"\
+ "0xFF05/Heavy Machine Gun"\
+ "0xFF06/Laser Gun"\
+ "0x0107/SUPER Shotgun"\
+ "0x0208/SUPER Rocket Launcher"\
+ "0x0109/SUPER Flame Shot"\
+ "0xFF0A/SUPER Heavy Machine Gun"\
+ "0xFF0B/SUPER Laser Gun"\
+ "0x030C/Enemy Chaser"\
+ "0x020D/Iron Lizard"\
+ "0x030E/Drop Shot"\
+ "0x020F/SUPER Grenade"\
+ "0x0315/FAT Enemy Chaser"\
+ "0xFF10/Mobile Satellite (Buggy - see note)"\
+ "0xFF11/Thunder Cloud (Buggy - see note)" 
+run:
+    dpoke $10EB00 param
+script "P2 Select Bomb" \
+ "0x01/Mortar Grenade(Normal)"\
+ "0x02/Petrol Bomb"\
+ "0x03/Rock" 
+run:
+    poke $10EB02 param
+script "P2 Select Body Type" \
+ "comm:Select them in this order Human-Fatman-Mummy-Swimmer-Snowman-Zombie and back around through Human for the best effect" \
+ "0x00/Human"\
+ "0x02/Fatman (Can't Move!)"\
+ "0x03/Mummy"\
+ "0x05/Swimmer"\
+ "0x06/Snowman (Can't Move!)"\
+ "0x07/Zombie" 
+run:
+    poke $10063F param
+script "P2 Rapid Fire"  
+run:
+    poke $10009A $00|(peek($10009A)&~10)
+script " "  
+script "Enable Pause Menu and Debug Menu" \
+ "comm:Enable it on the soldier/character selection screen. Press '3' twice for Debug Menu."  
+on:
+    poke $10FD82 $00
+    poke $10F002 $01
+off:
+    poke $10FD82 $80
+    poke $10F002 $00
+script "DEBUG DIPS OPTIONS"  
+script "DEBUG DIP - Invincibility"  
+run:
+    dpoke $10F000 $8000|(dpeek($10F000)&~8000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~8000)
+script "DEBUG DIP - View debug information" \
+ "comm:Once you have turned this on, the only immediate effect turning it off will be that the text won't update any more"  
+run:
+    dpoke $10F000 $0100|(dpeek($10F000)&~0100)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0100)
+script "DEBUG DIP - Unknown" \
+ "comm:Answers on a postcard please....or better post it on the cheat forums"  
+run:
+    dpoke $10F000 $0200|(dpeek($10F000)&~0200)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0200)
+script "DEBUG DIP - 1st plane check" \
+ "comm:Shows the walkable ground, makes the foreground choppy as it scrolls when activated. May linger around if not turned off proper."  
+run:
+    dpoke $10F000 $0800|(dpeek($10F000)&~0800)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0800)
+script "DEBUG DIP - 2nd plane check" \
+ "comm:makes the background choppy as it scrolls when activated."  
+run:
+    dpoke $10F000 $1000|(dpeek($10F000)&~1000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~1000)
+script "DEBUG DIP - View attack hitbox"  
+run:
+    dpoke $10F000 $2000|(dpeek($10F000)&~2000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~2000)
+script "DEBUG DIP - View body hitbox"  
+run:
+    dpoke $10F000 $4000|(dpeek($10F000)&~4000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~4000)
+script "DEBUG DIP - Infinite Grenades"  
+run:
+    dpoke $10F000 $0004|(dpeek($10F000)&~0004)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0004)
+script "DEBUG DIP - Infinite Ammo"  
+run:
+    dpoke $10F000 $0008|(dpeek($10F000)&~0008)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0008)
+script "DEBUG DIP - Show Respawn Position" \
+ "comm:A sprite appears, showing the player's respawn point."  
+run:
+    dpoke $10F000 $0002|(dpeek($10F000)&~0002)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0002)
+script "DEBUG DIP - Press D to destroy all onscreen enemies" \
+ "comm:no score bonuses"  
+run:
+    dpoke $10F000 $0001|(dpeek($10F000)&~0001)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0001)
+script "DEBUG DIP - Disable Background Music" \
+ "comm:Enable before starting the game, turning it off ingame won't turn music back on straightaway."  
+run:
+    dpoke $10F000 $0020|(dpeek($10F000)&~0020)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0020)
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

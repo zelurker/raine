@@ -1,18 +1,55 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $1C1725 $03
-
-script "2UP Unlimited lives" always
-	poke $1C1727 $03
-
-script "1UP Unlimited energy" always
-	poke $1C0849 $C0
-
-script "2UP Unlimited energy" always
-	poke $1C084B $C0
-
-script "*UP Unlimited time" always
-	poke $1C01A1 $63
+script "Infinite Credits"  
+run:
+    poke $1C01A5 $63
+script "Infinite Time" \
+ "comm:Not for the bonus stages"  
+run:
+    poke $1C01A1 $63
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1C1725 $0A
+script "P1 Infinite Energy"  
+run:
+    poke $1C0849 $C0
+script "P1 Invincibility"  
+on:
+    temp0=peek($006164)
+run:
+    poke $006164 $60
+off:
+    poke $006164 temp0
+script "P1 Rapid Fire - Punch"  
+run:
+    poke $1C1795 $00|(peek($1C1795)&~01)
+script "P1 Rapid Fire - Punch (Infinite)"  
+run:
+    poke $1C1795 $00|(peek($1C1795)&~01)
+    poke $1C0AF1 $00
+script "P1 Rapid Fire - Kick"  
+run:
+    poke $1C179D $00|(peek($1C179D)&~01)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1C1727 $0A
+script "P2 Infinite Energy"  
+run:
+    poke $1C084B $C0
+script "P2 Invincibility"  
+on:
+    temp0=peek($0079F0)
+run:
+    poke $0079F0 $60
+off:
+    poke $0079F0 temp0
+script "P2 Rapid Fire - Punch"  
+run:
+    poke $1C1797 $00|(peek($1C1797)&~01)
+script "P2 Rapid Fire - Punch (Infinite)"  
+run:
+    poke $1C1797 $00|(peek($1C1797)&~01)
+    poke $1C0AF3 $00
+script "P2 Rapid Fire - Kick"  
+run:
+    poke $1C179F $00|(peek($1C179F)&~01)

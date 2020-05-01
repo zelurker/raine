@@ -1,0 +1,18 @@
+script "Infinite Credits"  
+run:
+    poke $0C0007 $09
+script "Infinite Time"  
+run:
+    dpoke $0CB6BA $1770
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3)." \
+ "0x00/Japan"\
+ "0x01/US"\
+ "0x02/World" 
+on:
+    temp0=peek($03FFFF)
+run:
+    poke $03FFFF param
+off:
+    poke $03FFFF temp0

@@ -1,12 +1,33 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	dpoke $A0021C $0100
-
-script "2UP Unlimited energy" always
-	dpoke $A0029C $0100
-
-script "*UP Unlimited time" always
-	dpoke $A00140 $0100
+script "Infinite Credits"  
+run:
+    poke $A0013D $09
+script "Infinite Time"  
+run:
+    dpoke $A00140 $0999
+script "Finish this Bout Now!"  
+on:
+    dpoke $A00140 $0000
+script " "  
+script "P1 Infinite Energy"  
+run:
+    dpoke $A0021C $0999
+script "P1 Drain all Energy Now!"  
+on:
+    dpoke $A0021C $0000
+script "P1 Select Power" \
+ "0x16/Maximum"\
+ "0x00/None" 
+run:
+    poke $A00237 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke $A0029C $0999
+script "P2 Drain all Energy Now!"  
+on:
+    dpoke $A0029C $0000
+script "P2 Select Power" \
+ "0x16/Maximum"\
+ "0x00/None" 
+run:
+    poke $A002B7 param

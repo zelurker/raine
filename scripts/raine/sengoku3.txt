@@ -1,0 +1,137 @@
+script "Infinite Time"  
+run:
+    poke $108457 $63
+script "Infinite Select Time"  
+run:
+    poke $1083C6 $09
+script "Destroy All Enemy with 1 Shot"  
+run:
+    poke $105904 $00
+    poke $105905 $00
+    poke $1059FE $00
+    poke $1059FF $00
+    poke $105AF9 $00
+    poke $105BF3 $00
+    poke $105CEC $00
+    poke $105CED $00
+    poke $105DE7 $00
+    poke $105EE1 $00
+    poke $105FDB $00
+    poke $1060D5 $00
+script "Crash All Object with 1 Shot"  
+run:
+    poke $103DAD $00
+    poke $103EA7 $00
+    poke $103FA1 $00
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $102C19 $60
+script "P1 Infinite Throwing Stars"  
+run:
+    poke $1083EB $09
+script "P1 Infinite Magic"  
+run:
+    poke $1083E3 $38
+script "P1 Invincibility"  
+run:
+    poke $102C5D $32
+script "P1 Infinite Combo Time"  
+run:
+    poke $1083DB $40
+script "P1 Select Weapon" \
+ "0x00/Syuriken"\
+ "0x01/Kunai"\
+ "0x02/Bomb"\
+ "0x03/Saucer" 
+run:
+    poke $1083EA param
+script "P1 Select Character" \
+ "0x01/Kagetsura"\
+ "0x02/Kongoh"\
+ "0x03/Falcon"\
+ "0x04/Kurenai"\
+ "0x05/#Okuni"\
+ "0x00/#Byacci"\
+ "0x06/#A" 
+run:
+    poke $1083CA param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $102D13 $60
+script "P2 Infinite Throwing Stars"  
+run:
+    poke $108409 $09
+script "P2 Infinite Magic"  
+run:
+    poke $108401 $38
+script "P2 Invincibility"  
+run:
+    poke $102D57 $32
+script "P2 Infinite Combo Time"  
+run:
+    poke $1083F9 $40
+script "P2 Select Weapon" \
+ "0x00/Syuriken"\
+ "0x01/Kunai"\
+ "0x02/Bomb"\
+ "0x03/Saucer" 
+run:
+    poke $108408 param
+script "P2 Select Character" \
+ "0x01/Kagetsura"\
+ "0x02/Kongoh"\
+ "0x03/Falcon"\
+ "0x04/Kurenai"\
+ "0x05/#Okuni"\
+ "0x00/#Byacci"\
+ "0x06/#A" 
+run:
+    poke $1083CC param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

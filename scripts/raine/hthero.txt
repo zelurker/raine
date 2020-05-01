@@ -1,0 +1,96 @@
+script "Infinite Time"  
+run:
+    poke $102929 $3C
+    poke $10A335 $3C
+    poke $10A334 $63
+script "Finish this Game Now!"  
+on:
+    poke $102929 $00
+    poke $10A335 $00
+    poke $10A334 $00
+script "Select Starting Match" \
+ "comm:1=First/7=Last/8=You are hero" \
+ inter=1,6,1 
+run:
+    if (peek($102A5B)==$01)
+      poke $102A5B (param)
+    endif
+script "Infinite Super Shoots" \
+ "comm:Each captain of any 4 players can perform Super Shoot without timer-score restrictions and infinitely in a game."  
+on:
+    temp0=peek($1F1DB)
+    temp1=dpeek($1F1EA)
+    temp2=peek($1F1F7)
+    temp3=peek($1F1FF)
+run:
+    poke $1F1DB $79
+    dpoke $1F1EA $6606
+    poke $1F1F7 $78
+    poke $1F1FF $05
+off:
+    poke $1F1DB temp0
+    dpoke $1F1EA temp1
+    poke $1F1F7 temp2
+    poke $1F1FF temp3
+script " "  
+script "Score always 0 Team 1"  
+run:
+    poke $10A332 $00
+    poke $107AE0 $00
+script "Score always 9 Team 1"  
+run:
+    poke $10A332 $09
+    poke $107AE0 $09
+script "Set score = 0 Now! Team 1"  
+on:
+    poke $10A332 $00
+    poke $107AE0 $00
+script "Set score = 9 Now! Team 1"  
+on:
+    poke $10A332 $09
+    poke $107AE0 $09
+script " "  
+script "Score always 0 Team 2"  
+run:
+    poke $10A333 $00
+    poke $107AE9 $00
+script "Score always 9 Team 2"  
+run:
+    poke $10A333 $09
+    poke $107AE9 $09
+script "Set score = 0 Now! Team 2"  
+on:
+    poke $10A333 $00
+    poke $107AE9 $00
+script "Set score = 9 Now! Team 2"  
+on:
+    poke $10A333 $09
+    poke $107AE9 $09
+script " "  
+script "P1 Infinite Credits"  
+run:
+    poke $102935 $09
+script "P1 Fouls Always = 0"  
+run:
+    poke $1033B7 $00
+script " "  
+script "P2 Infinite Credits"  
+run:
+    poke $102937 $09
+script "P2 Fouls Always = 0"  
+run:
+    poke $1033F7 $00
+script " "  
+script "P3 Infinite Credits"  
+run:
+    poke $102939 $09
+script "P3 Fouls Always = 0"  
+run:
+    poke $103437 $00
+script " "  
+script "P4 Infinite Credits"  
+run:
+    poke $10293B $09
+script "P4 Fouls Always = 0"  
+run:
+    poke $103477 $00

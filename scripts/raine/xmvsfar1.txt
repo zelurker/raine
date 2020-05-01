@@ -1,0 +1,312 @@
+script "Infinite Time"  
+run:
+    poke $FF5008 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF5008 $00
+script "Select Invincibility" \
+ "comm:May not protect you against All Specials? You need to select 'Neither Player' before OFF to turn it OFF properly" \
+ "0x01/Neither Player"\
+ "0x02/Player 1 Only"\
+ "0x03/Player 2 Only"\
+ "0x04/Both Players" 
+run:
+    if (param==$01)
+      poke $07C682 $67
+      lpoke $07CDBA $B0416000|(lpeek($07CDBA)&~FFFFFF00)
+      poke $07C706 $67
+    endif
+    if (param==$02)
+      poke $07C682 $60
+      lpoke $07CDBA $BDCC6400|(lpeek($07CDBA)&~FFFFFF00)
+      poke $07C706 $67
+    endif
+    if (param==$03)
+      poke $07C706 $60
+      lpoke $07CDBA $B9CE6400|(lpeek($07CDBA)&~FFFFFF00)
+      poke $07C682 $67
+    endif
+    if (param==$04)
+      poke $07C682 $60
+      poke $07C706 $60
+      lpoke $07CDBA $B0416000|(lpeek($07CDBA)&~FFFFFF00)
+    endif
+script "Go to the Boss Battle Next!"  
+on:
+    poke $FF5081 $06
+script " "  
+script "P1 Infinite Energy (Active Char)"  
+run:
+    poke $FF4211 $90
+    poke $FF421B $90
+script "P1 Infinite Energy (Inactive Char)"  
+run:
+    poke $FF4A11 $90
+    poke $FF4A1B $90
+script "P1 Drain All Energy Now! (Active Char)"  
+on:
+    poke $FF4211 $00
+    poke $FF421B $00
+script "P1 Drain All Energy Now! (Inactive Char)"  
+on:
+    poke $FF4A11 $00
+    poke $FF4A1B $00
+script "P1 Always Max Power"  
+run:
+    poke $FF4214 $03
+    poke $FF4213 $90
+script "P1 Always Min Power"  
+run:
+    poke $FF4214 $00
+    poke $FF4213 $00
+script "P1 Get Max Power Now!"  
+on:
+    poke $FF4214 $03
+    poke $FF4213 $90
+script "P1 Get Min Power Now!"  
+on:
+    poke $FF4214 $00
+    poke $FF4213 $00
+script "P1 Infinite Recovery Energy"  
+run:
+    poke $FF421B $90
+script "P1 Hits always cause Max Damage"  
+run:
+    poke $FF4103 $FF
+script "P1 Play with Apocalypse"  
+run:
+    poke $FF4053 $10
+    poke $FF4853 $10
+    poke $FF50B1 $10
+    poke $FF50B3 $10
+    poke $FF5113 $00
+script "P1 Single Character Fighting Mode"  
+run:
+    poke $FF4A11 $00
+    poke $FF4A1B $00
+script "P1 Select Character (Active Char)" \
+ "comm:You can use this cheat ingame or on the character select screen (the safest way is to change the inactive character, then switch)." \
+ "0x00/Wolverine"\
+ "0x02/Cyclops"\
+ "0x04/Storm"\
+ "0x06/Rogue"\
+ "0x08/Gambit"\
+ "0x0A/Sabretooth"\
+ "0x0C/Juggernaut"\
+ "0x0E/Magneto"\
+ "0x10/#Apocalypse"\
+ "0x12/Ryu"\
+ "0x14/Ken Masters"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/M. Bison"\
+ "0x1E/#Akuma"\
+ "0x20/Charlie"\
+ "0x22/Cammy"\
+ "0x24/#SFA-costume Chun-Li" 
+run:
+    poke $FF4053 param
+script "P1 Select Character (Inactive Char)" \
+ "comm:You can use this cheat ingame or on the character select screen (the safest way is to change the inactive character, then switch)." \
+ "0x00/Wolverine"\
+ "0x02/Cyclops"\
+ "0x04/Storm"\
+ "0x06/Rogue"\
+ "0x08/Gambit"\
+ "0x0A/Sabretooth"\
+ "0x0C/Juggernaut"\
+ "0x0E/Magneto"\
+ "0x10/#Apocalypse"\
+ "0x12/Ryu"\
+ "0x14/Ken Masters"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/M. Bison"\
+ "0x1E/#Akuma"\
+ "0x20/Charlie"\
+ "0x22/Cammy"\
+ "0x24/#SFA-costume Chun-Li" 
+run:
+    poke $FF4853 param
+script "P1 Select Rogue's Stolen Power" \
+ "0xFFFF/None"\
+ "0x0000/Wolverine"\
+ "0x0002/Cyclops"\
+ "0x0004/Storm"\
+ "0x0008/Gambit"\
+ "0x000A/Sabretooth"\
+ "0x000C/Juggernaut"\
+ "0x000E/Magneto"\
+ "0x0012/Ryu"\
+ "0x0014/Ken"\
+ "0x0016/Chun-Li"\
+ "0x0018/Dhalsim"\
+ "0x001A/Zangief"\
+ "0x001C/Vega (M. Bison)"\
+ "0x001E/Gouki (Akuma)"\
+ "0x0020/Nash (Charlie)"\
+ "0x0022/Cammy"\
+ "0x0024/Chun-Li (SFZ)" 
+run:
+    dpoke $FF4342 param
+script " "  
+script "P2 Infinite Energy (Active Char)"  
+run:
+    poke $FF4611 $90
+    poke $FF461B $90
+script "P2 Infinite Energy (Inactive Char)"  
+run:
+    poke $FF4E11 $90
+    poke $FF4E1B $90
+script "P2 Drain All Energy Now! (Active Char)"  
+on:
+    poke $FF4611 $00
+    poke $FF461B $00
+script "P2 Drain All Energy Now! (Inactive Char)"  
+on:
+    poke $FF4E11 $00
+    poke $FF4E1B $00
+script "P2 Always Max Power"  
+run:
+    poke $FF4614 $03
+    poke $FF4613 $90
+script "P2 Always Min Power"  
+run:
+    poke $FF4614 $00
+    poke $FF4613 $00
+script "P2 Get Max Power Now!"  
+on:
+    poke $FF4614 $03
+    poke $FF4613 $90
+script "P2 Get Min Power Now!"  
+on:
+    poke $FF4614 $00
+    poke $FF4613 $00
+script "P2 Infinite Recovery Energy"  
+run:
+    poke $FF461B $90
+script "P2 Hits always cause Max Damage"  
+run:
+    poke $FF4503 $FF
+script "P2 Play with Apocalypse"  
+run:
+    poke $FF4453 $10
+    poke $FF4C53 $10
+    poke $FF50B5 $10
+    poke $FF50B7 $10
+    poke $FF5113 $00
+script "P2 Single Character Fighting Mode"  
+run:
+    poke $FF4E11 $00
+    poke $FF4E1B $00
+script "P2 Select Character (Active Char)" \
+ "comm:You can use this cheat ingame or on the character select screen (the safest way is to change the inactive character, then switch)." \
+ "0x00/Wolverine"\
+ "0x02/Cyclops"\
+ "0x04/Storm"\
+ "0x06/Rogue"\
+ "0x08/Gambit"\
+ "0x0A/Sabretooth"\
+ "0x0C/Juggernaut"\
+ "0x0E/Magneto"\
+ "0x10/#Apocalypse"\
+ "0x12/Ryu"\
+ "0x14/Ken Masters"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/M. Bison"\
+ "0x1E/#Akuma"\
+ "0x20/Charlie"\
+ "0x22/Cammy"\
+ "0x24/#SFA-costume Chun-Li" 
+run:
+    poke $FF4453 param
+script "P2 Select Character (Inactive Char)" \
+ "comm:You can use this cheat ingame or on the character select screen (the safest way is to change the inactive character, then switch)." \
+ "0x00/Wolverine"\
+ "0x02/Cyclops"\
+ "0x04/Storm"\
+ "0x06/Rogue"\
+ "0x08/Gambit"\
+ "0x0A/Sabretooth"\
+ "0x0C/Juggernaut"\
+ "0x0E/Magneto"\
+ "0x10/#Apocalypse"\
+ "0x12/Ryu"\
+ "0x14/Ken Masters"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/M. Bison"\
+ "0x1E/#Akuma"\
+ "0x20/Charlie"\
+ "0x22/Cammy"\
+ "0x24/#SFA-costume Chun-Li" 
+run:
+    poke $FF4C53 param
+script "P2 Select Rogue's Stolen Power" \
+ "0xFFFF/None"\
+ "0x0000/Wolverine"\
+ "0x0002/Cyclops"\
+ "0x0004/Storm"\
+ "0x0008/Gambit"\
+ "0x000A/Sabretooth"\
+ "0x000C/Juggernaut"\
+ "0x000E/Magneto"\
+ "0x0012/Ryu"\
+ "0x0014/Ken"\
+ "0x0016/Chun-Li"\
+ "0x0018/Dhalsim"\
+ "0x001A/Zangief"\
+ "0x001C/Vega (M. Bison)"\
+ "0x001E/Gouki (Akuma)"\
+ "0x0020/Nash (Charlie)"\
+ "0x0022/Cammy"\
+ "0x0024/Chun-Li (SFZ)" 
+run:
+    dpoke $FF4742 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=dpeek($FF543A)
+    temp1=dpeek($FF543C)
+    temp2=dpeek($FF543E)
+    temp3=dpeek($FFFA9C)
+    temp4=dpeek($FFFA9E)
+    temp5=dpeek($FFFAA0)
+run:
+    if (dpeek($FF5000)==$0800)
+      dpoke $FF543A $0
+      dpoke $FF543C $0
+      dpoke $FF543E $0
+      dpoke $FFFA9C $0
+      dpoke $FFFA9E $0
+      dpoke $FFFAA0 $0
+      lpoke $FFDF0A $0
+    endif
+off:
+    dpoke $FF543A temp0
+    dpoke $FF543C temp1
+    dpoke $FF543E temp2
+    dpoke $FFFA9C temp3
+    dpoke $FFFA9E temp4
+    dpoke $FFFAA0 temp5
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Asia"\
+ "0x08/Euro"\
+ "0x0A/Brazil" 
+run:
+    poke $FF5479 param

@@ -1,90 +1,111 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Bombs" always
-	poke $10D7A3 $03
-
-script "Next = Red --        PL1  (P)" always
-	poke $10E1D7 $00
-
-script "Next = Yellow square PL1  (P)" always
-	poke $10E1D7 $01
-
-script "Next = Light Blue T  PL1  (P)" always
-	poke $10E1D7 $02
-
-script "Next = Dark Blue L   PL1  (P)" always
-	poke $10E1D7 $03
-
-script "Next = Orange L      PL1  (P)" always
-	poke $10E1D7 $04
-
-script "Next = Green Z       PL1  (P)" always
-	poke $10E1D7 $05
-
-script "Next = Purple Z      PL1  (P)" always
-	poke $10E1D7 $06
-
-script "Next = Red --        PL1  (T)"
-	poke $10E1D7 $00
-
-script "Next = Yellow square PL1  (T)"
-	poke $10E1D7 $01
-
-script "Next = Light Blue T  PL1  (T)"
-	poke $10E1D7 $02
-
-script "Next = Dark Blue L   PL1  (T)"
-	poke $10E1D7 $03
-
-script "Next = Orange L      PL1  (T)"
-	poke $10E1D7 $04
-
-script "Next = Green Z       PL1  (T)"
-	poke $10E1D7 $05
-
-script "Next = Purple Z      PL1  (T)"
-	poke $10E1D7 $06
-
-script "Next = Red --        PL2  (P)" always
-	poke $10E317 $00
-
-script "Next = Yellow square PL2  (P)" always
-	poke $10E317 $01
-
-script "Next = Light Blue T  PL2  (P)" always
-	poke $10E317 $02
-
-script "Next = Dark Blue L   PL2  (P)" always
-	poke $10E317 $03
-
-script "Next = Orange L      PL2  (P)" always
-	poke $10E317 $04
-
-script "Next = Green Z       PL2  (P)" always
-	poke $10E317 $05
-
-script "Next = Purple Z      PL2  (P)" always
-	poke $10E317 $06
-
-script "Next = Red --        PL2  (T)"
-	poke $10E317 $00
-
-script "Next = Yellow square PL2  (T)"
-	poke $10E317 $01
-
-script "Next = Light Blue T  PL2  (T)"
-	poke $10E317 $02
-
-script "Next = Dark Blue L   PL2  (T)"
-	poke $10E317 $03
-
-script "Next = Orange L      PL2  (T)"
-	poke $10E317 $04
-
-script "Next = Green Z       PL2  (T)"
-	poke $10E317 $05
-
-script "Next = Purple Z      PL2  (T)"
-	poke $10E317 $06
+script "Infinite Credits"  
+run:
+    poke $10801D $63
+script "Unlock Another World" \
+ "comm:Puzzle Mode ONLY"  
+on:
+    temp0=peek($10B089)
+run:
+    poke $10B089 $01
+off:
+    poke $10B089 temp0
+script " "  
+script "Cheats for ALL Modes (P2 is VS mode ONLY!)"  
+script " "  
+script "P1 Select Next Shape Now!" \
+ "0x00/Red --"\
+ "0x01/Yellow square"\
+ "0x02/Light Blue T"\
+ "0x03/Dark Blue L"\
+ "0x04/Orange L"\
+ "0x05/Green Z"\
+ "0x06/Purple Z" 
+change:
+    poke $10E1D7 param
+script "P1 Spikes Never Descend"  
+run:
+    poke $10BD2D $05
+script "P2 Select Next Shape Now!" \
+ "0x00/Red --"\
+ "0x01/Yellow square"\
+ "0x02/Light Blue T"\
+ "0x03/Dark Blue L"\
+ "0x04/Orange L"\
+ "0x05/Green Z"\
+ "0x06/Purple Z" 
+change:
+    poke $10E317 param
+script "P2 Spikes Never Descend"  
+run:
+    poke $10BD4D $05
+script " "  
+script "Endless Mode Cheats"  
+script " "  
+script "Finish this Chapter on the Next Shape Now!"  
+on:
+    poke $10AF4F $0E
+script "Select Current Chapter" \
+ inter=1,99,1 
+change:
+    poke $10AF0D (param-$1)
+script "Select Next Chapter" \
+ inter=1,99,1 
+change:
+    poke $10AF0D (param-$1)
+script "Pieces always fall slowly" \
+ "comm:Level Always = 0"  
+run:
+    poke $10E213 $00
+script "Select Letter on Next Piece Now!" \
+ "0x00/No letter"\
+ "0x01/A"\
+ "0x02/B"\
+ "0x03/C"\
+ "0x04/D"\
+ "0x05/E"\
+ "0x06/F"\
+ "0x07/G"\
+ "0x08/H"\
+ "0x09/I"\
+ "0x0A/J"\
+ "0x0B/K"\
+ "0x0C/L"\
+ "0x0D/M"\
+ "0x0E/N"\
+ "0x0F/O"\
+ "0x10/P"\
+ "0x11/Q"\
+ "0x12/R"\
+ "0x13/S"\
+ "0x14/T"\
+ "0x15/U"\
+ "0x16/V"\
+ "0x17/W"\
+ "0x18/X"\
+ "0x19/Y"\
+ "0x1A/Z" 
+change:
+    poke $10E1DF param
+script " "  
+script "VS Mode Cheats"  
+script " "  
+script "P1 Select Number on Next Piece Now!" \
+ "0x00/No number"\
+ "0x01/1"\
+ "0x02/2"\
+ "0x03/3" 
+run:
+    poke $10E1DF param
+script "P2 Select Number on Next Piece Now!" \
+ "0x00/No number"\
+ "0x01/1"\
+ "0x02/2"\
+ "0x03/3" 
+run:
+    poke $10E31F param
+script " "  
+script "Puzzle Mode Cheats"  
+script " "  
+script "Infinite Bombs"  
+run:
+    poke $10D7A3 $03

@@ -1,30 +1,61 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $3010FF $63
-
-script "1UP Unlimited energy" always
-	poke $30110F $80
-	poke $301113 $80
-
-script "2UP Unlimited energy" always
-	poke $30110D $80
-	poke $301111 $80
-
-script "1UP Energy set to 0   (-P)" always
-	poke $30110F $00
-	poke $301113 $00
-
-script "2UP Energy set to 0   (-P)" always
-	poke $30110D $00
-	poke $301111 $00
-
-script "1UP Energy set to 0   (-T)"
-	poke $30110F $00
-	poke $301113 $00
-
-script "2UP Energy set to 0   (-T)"
-	poke $30110D $00
-	poke $301111 $00
+script "Infinite Credits"  
+run:
+    poke $300ABF $09
+script "Infinite Time"  
+run:
+    poke $3010FF $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $3010FF $00
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($00FACA)
+run:
+    dpoke $00FACA $7E01
+off:
+    dpoke $00FACA temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $30110F $80
+    poke $301113 $80
+script "P1 Drain all Energy Now!"  
+on:
+    poke $30110F $00
+    poke $301113 $00
+script "P1 Select Character" \
+ "0x00/Gurianos"\
+ "0x01/Diokles"\
+ "0x02/Irriana"\
+ "0x03/Retsu.Zen"\
+ "0x04/Mcgill"\
+ "0x05/Jurane"\
+ "0x06/Launa"\
+ "0x07/Xeldus"\
+ "0x08/Imageo"\
+ "0x09/Gildus" 
+run:
+    poke $300FCE param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $30110D $80
+    poke $301111 $80
+script "P2 Drain all Energy Now!"  
+on:
+    poke $30110D $00
+    poke $301111 $00
+script "P2 Select Character" \
+ "0x00/Gurianos"\
+ "0x01/Diokles"\
+ "0x02/Irriana"\
+ "0x03/Retsu.Zen"\
+ "0x04/Mcgill"\
+ "0x05/Jurane"\
+ "0x06/Launa"\
+ "0x07/Xeldus"\
+ "0x08/Imageo"\
+ "0x09/Gildus" 
+run:
+    poke $300FCF param

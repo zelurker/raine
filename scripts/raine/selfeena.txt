@@ -1,0 +1,40 @@
+script "Infinite Credits"  
+run:
+    poke $100167 $09
+script "Infinite Time"  
+run:
+    poke $1023A1 $99
+script " "  
+script "An odd one this, there is no solid P1 or P2. If you play"  
+script "a one player game you will be the 1st Player. If you play"  
+script "a two player game and press 2 before 1 then P2 will be"  
+script "the 1st player and if you press 1 before 2 then P1 will"  
+script "be the first player."  
+script " "  
+script "Infinite Lives (1st Player)"  
+run:
+    poke $100615 $99
+script "Infinite Bombs (1st Player)"  
+run:
+    poke $100629 $99
+script "Invincibility 'ON' (1st Player)" \
+ "comm:To be used when you flicker"  
+run:
+    poke $1023DD $01
+script "Invincibility 'OFF' (1st Player)"  
+on:
+    poke $1023DD $00
+script " "  
+script "Infinite Lives (2nd Player)"  
+run:
+    poke $100695 $99
+script "Infinite Bombs (2nd Player)"  
+run:
+    poke $1006A9 $99
+script "Invincibility 'ON' (2nd Player)" \
+ "comm:To be used when you flicker"  
+run:
+    poke $1023E1 $01
+script "Invincibility 'OFF' (2nd Player)"  
+on:
+    poke $1023E1 $00

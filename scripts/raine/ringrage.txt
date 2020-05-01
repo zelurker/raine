@@ -1,42 +1,42 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $40B3CB $3B
-
-script "1UP Unlimited energy" always
-	poke $40C83C $47
-
-script "2UP Unlimited energy" always
-	poke $40CA3C $47
-
-script "3UP Unlimited energy" always
-	poke $40CC3C $47
-
-script "4UP Unlimited energy" always
-	poke $40CE3C $47
-
-script "1UP Energy set to 0       (P)" always
-	poke $40C83C $00
-
-script "2UP Energy set to 0       (P)" always
-	poke $40CA3C $00
-
-script "3UP Energy set to 0       (P)" always
-	poke $40CC3C $00
-
-script "4UP Energy set to 0       (P)" always
-	poke $40CE3C $00
-
-script "1UP Energy set to 0       (T)"
-	poke $40C83C $00
-
-script "2UP Energy set to 0       (T)"
-	poke $40CA3C $00
-
-script "3UP Energy set to 0       (T)"
-	poke $40CC3C $00
-
-script "4UP Energy set to 0       (T)"
-	poke $40CE3C $00
+script "Infinite Credits"  
+run:
+    poke $40AB8D $09
+script "Infinite Time"  
+run:
+    poke $40B3CB $3B
+script "P1 Infinite Energy"  
+run:
+    poke $40C83C $47
+script "P1 Drain All Energy Now!"  
+on:
+    poke $40C83C $00
+script "P2 Infinite Energy"  
+run:
+    poke $40CA3C $47
+script "P2 Drain All Energy Now!"  
+on:
+    poke $40CA3C $00
+script "P3 Infinite Energy"  
+run:
+    poke $40CC3C $47
+script "P3 Drain All Energy Now!"  
+on:
+    poke $40CC3C $00
+script "P4 Infinite Energy"  
+run:
+    poke $40CE3C $47
+script "P4 Drain All Energy Now!"  
+on:
+    poke $40CE3C $00
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($07FFFF)
+run:
+    poke $07FFFF param
+off:
+    poke $07FFFF temp0

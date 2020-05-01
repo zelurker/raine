@@ -1,0 +1,5 @@
+script " "  
+script "There are no cheats for this game as it was only"  
+script "recently fixed or added. Cheats may have been found"  
+script "since the last cheat file release so please search"  
+script "the cheat forums before posting ANY cheat requests."  

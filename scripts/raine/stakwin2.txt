@@ -1,0 +1,105 @@
+script "Infinite Shop Time"  
+run:
+    poke $108943 $0A
+script " "  
+script "P1 Infinite Money"  
+run:
+    poke $108B5C $FF
+    poke $108B5D $FF
+script "P1 Infinite Power"  
+run:
+    poke $1089E2 $EA
+script "P1 Always Extra Speed"  
+run:
+    poke $1089C0 $23
+script "P1 Have Maximum Speed"  
+run:
+    poke $1080F8 $07
+script "P1 Have Maximum Stamina"  
+run:
+    poke $1080F9 $07
+script "P1 Have Maximum Burst"  
+run:
+    poke $1080FA $07
+script " "  
+script "P2 Infinite Money"  
+run:
+    poke $10800A $FF
+    poke $10800B $FF
+script "P2 Infinite Power"  
+run:
+    poke $108BA0 $FF
+script "P2 Always Extra Speed"  
+run:
+    poke $108B7E $23
+script "P2 Have Maximum Speed"  
+run:
+    poke $108138 $07
+script "P2 Have Maximum Stamina"  
+run:
+    poke $108139 $07
+script "P2 Have Maximum Burst"  
+run:
+    poke $10813A $07
+script " "  
+script "Special Moves- Back and forward are"  
+script "relative to the direction you face."  
+script "Extra Push- Forward, A"  
+script "High In The Saddle- Back + A"  
+script "Interference- Back, Forward, Back, B"  
+script "Incentive- B, A"  
+script "Windlash- B, B, B, B, ..."  
+script "Hyper Dash- Forward, Back, Forward, A"  
+script " "  
+script "P1 Enable All Special Moves"  
+run:
+    poke $1080D9 $FF
+script "P2 Enable All Special Moves"  
+run:
+    poke $108119 $FF
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

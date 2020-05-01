@@ -1,0 +1,122 @@
+script "Select Starting Stage" \
+ "0x00/Stage 1 Scene 1"\
+ "0x04/Stage 2 Scene 1"\
+ "0x08/Stage 2 Scene 2"\
+ "0x0C/Stage 2 Scene 3"\
+ "0x10/Stage 3 Scene 1"\
+ "0x14/Stage 3 Scene 2"\
+ "0x18/Stage 4 Scene 1"\
+ "0x1C/Stage 4 Scene 2"\
+ "0x20/Stage 4 Scene 3"\
+ "0x24/Stage 5 Scene 1"\
+ "0x28/Stage 5 Scene 2"\
+ "0x2C/Stage 5 Scene 3" 
+run:
+    if (peek($10D01F)==$00)
+      poke $10D01F param
+    endif
+script "Finish this Stage Now!" \
+ "comm:Does nothing on Stage 5 Scene 3"  
+on:
+    if peek($10D01F)!=$2C
+      poke $10D2A0 $FF
+    endif
+script "Drain Boss Energy Now!"  
+on:
+    poke $106CE2 $01
+script " "  
+script "P1 Infinite Lives" \
+ "comm:F6 at the end of game"  
+run:
+    poke $105015 $03
+script "P1 Infinite Energy"  
+run:
+    poke $105F62 $05
+script "P1 Infinite Bombs"  
+run:
+    poke $105FBD $05
+script "P1 Invincibility"  
+run:
+    poke $105F95 $02
+script "P1 Select Weapon" \
+ "0x00/No Weapon"\
+ "0x04/Yoyo"\
+ "0x08/Fire"\
+ "0x0C/Ice"\
+ "0x10/Bomb"\
+ "0x14/Glove"\
+ "0x18/Thunder"\
+ "0x1C/Double" 
+run:
+    poke $105F55 param|(peek($105F55)&~1C)
+script " "  
+script "P2 Infinite Lives" \
+ "comm:F6 at the end of game"  
+run:
+    poke $10503D $03
+script "P2 Infinite Energy"  
+run:
+    poke $106022 $05
+script "P2 Infinite Bombs"  
+run:
+    poke $10607D $05
+script "P2 Invincibility"  
+run:
+    poke $106055 $02
+script "P2 Select Weapon" \
+ "0x00/No Weapon"\
+ "0x04/Yoyo"\
+ "0x08/Fire"\
+ "0x0C/Ice"\
+ "0x10/Bomb"\
+ "0x14/Glove"\
+ "0x18/Thunder"\
+ "0x1C/Double" 
+run:
+    poke $106015 param|(peek($106015)&~1C)
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

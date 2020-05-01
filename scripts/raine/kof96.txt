@@ -1,0 +1,519 @@
+script "Infinite Time"  
+on:
+    temp0=peek($10A836)
+run:
+    if (frame%60==$0)&&(peek($10A836)!=temp0)
+      poke $10A836 $60
+    endif
+script "Boss code + Timer stop" \
+ "comm:Debug Dip 1-3"  
+on:
+    temp0=peek($100000)
+run:
+    poke $100000 $04
+off:
+    poke $100000 temp0
+script "Enable hidden characters" \
+ "comm:Adds Chizuru and Goenitz to the selection screen - enable it before the selection screen."  
+run:
+    poke $10E752 $01
+script "Select Opponent Lineup" \
+ "comm:Team Play only" \
+ "0x00/Normal Teams"\
+ "0x01/Variation 1"\
+ "0x02/Variation 2"\
+ "0x03/Variation 3" 
+run:
+    poke $10E750 param
+script "Beaten team at Japan Team Stage"  
+on:
+    poke $10A797 $01|(peek($10A797)&~01)
+script "Beaten team at Fatal Fury Team Stage"  
+on:
+    poke $10A797 $02|(peek($10A797)&~02)
+script "Beaten team at Art of Fighting Team Stage"  
+on:
+    poke $10A797 $04|(peek($10A797)&~04)
+script "Beaten team at Ikari Team Stage"  
+on:
+    poke $10A797 $08|(peek($10A797)&~08)
+script "Beaten team at Psycho Soldier Team Stage"  
+on:
+    poke $10A797 $10|(peek($10A797)&~10)
+script "Beaten team at Gals Fighters Team Stage"  
+on:
+    poke $10A797 $20|(peek($10A797)&~20)
+script "Beaten team at Korea Team Stage"  
+on:
+    poke $10A797 $40|(peek($10A797)&~40)
+script "Beaten team at Iori Team Stage"  
+on:
+    poke $10A797 $80|(peek($10A797)&~80)
+script "Beaten Boss Team"  
+on:
+    poke $10A796 $01|(peek($10A796)&~01)
+script "Beaten Chizuru"  
+on:
+    poke $10A796 $02|(peek($10A796)&~02)
+script "Select Current Round" \
+ inter=1,6,1 
+run:
+    poke $10A7ED (param-$1)
+script "Select Backdrop" \
+ "0x00/Japan Team"\
+ "0x01/Fatal Fury Team"\
+ "0x02/Art of Fighting Team"\
+ "0x03/Ikari Team"\
+ "0x04/Psycho Soldier Team"\
+ "0x05/Gals Fighters Team"\
+ "0x06/Korea Team"\
+ "0x07/Iori Team"\
+ "0x08/Boss Team"\
+ "0x09/Chizuru"\
+ "0x0A/Goenitz" 
+run:
+    poke $10A7E8 param
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($003240)
+run:
+    dpoke $003240 $6002
+off:
+    dpoke $003240 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108239 $67
+script "P1 Infinite Power"  
+run:
+    poke $1081E8 $80
+    poke $1081EA $3C
+    poke $10824D $04
+script "P1 Never Get Dizzied"  
+run:
+    poke $10823F $67
+script "P1 Every Hit Will Dizzy"  
+run:
+    poke $10823F $00
+script "P1 Stun Gauge Never Recovers Until Dizzied"  
+run:
+    poke $108244 $10
+script "P1 Stun Gauge Instantly Recovers"  
+run:
+    poke $108244 $00
+script "P1 Never Get Guard Crushed"  
+run:
+    poke $108247 $67
+script "P1 Every Block Will Guard Crush"  
+run:
+    poke $108247 $00
+script "P1 Guard Bar Never Recovers Until Guard Crushed"  
+run:
+    poke $10824C $10
+script "P1 Guard Bar Instantly Recovers"  
+run:
+    poke $10824C $00
+script "P1 Select Team" \
+ "0x00/Japan Team"\
+ "0x01/Fatal Fury Team"\
+ "0x02/Art of Fighting Team"\
+ "0x03/Ikari Team"\
+ "0x04/Psycho Soldier Team"\
+ "0x05/Womens Team"\
+ "0x06/Korea Team"\
+ "0x07/Yagami Team"\
+ "0x08/Boss Team"\
+ "0x09/Chizuru (solo)"\
+ "0x0A/Goenitz (solo)"\
+ "0x0B/Weapons of God Team"\
+ "0x0C/Goenitz Team"\
+ "0xFF/Custom Team" 
+run:
+    poke $10A844 param
+script "P1 Select Rounds Lost" \
+ inter=0,2,1 
+run:
+    poke $10A845 (param)
+script "P1 Select Character (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/Kyo Kusanagi"\
+ "0x01/Benimaru Nikaido"\
+ "0x02/Goro Daimon"\
+ "0x03/Terry Bogard"\
+ "0x04/Andy Bogard"\
+ "0x05/Joe Higashi"\
+ "0x06/Ryo Sakazaki"\
+ "0x07/Robert Garcia"\
+ "0x08/Yuri Sakazaki"\
+ "0x09/Leona"\
+ "0x0A/Ralf Jones"\
+ "0x0B/Clark Steel"\
+ "0x0C/Athena Asamiya"\
+ "0x0D/Sie Kensou"\
+ "0x0E/Chin Gentsai"\
+ "0x0F/Kasumi Todo"\
+ "0x10/Mai Shiranui"\
+ "0x11/King"\
+ "0x12/Kim Kaphwan"\
+ "0x13/Chang Koehan"\
+ "0x14/Choi Bounge"\
+ "0x15/Iori Yagami"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Geese Howard"\
+ "0x19/Wolfgang Krauser"\
+ "0x1A/Mr. Big"\
+ "0x1B/#Chizuru Kagura"\
+ "0x1C/#Goenitz" 
+run:
+    poke $10A846 param
+script "P1 Select Character (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/Kyo Kusanagi"\
+ "0x01/Benimaru Nikaido"\
+ "0x02/Goro Daimon"\
+ "0x03/Terry Bogard"\
+ "0x04/Andy Bogard"\
+ "0x05/Joe Higashi"\
+ "0x06/Ryo Sakazaki"\
+ "0x07/Robert Garcia"\
+ "0x08/Yuri Sakazaki"\
+ "0x09/Leona"\
+ "0x0A/Ralf Jones"\
+ "0x0B/Clark Steel"\
+ "0x0C/Athena Asamiya"\
+ "0x0D/Sie Kensou"\
+ "0x0E/Chin Gentsai"\
+ "0x0F/Kasumi Todo"\
+ "0x10/Mai Shiranui"\
+ "0x11/King"\
+ "0x12/Kim Kaphwan"\
+ "0x13/Chang Koehan"\
+ "0x14/Choi Bounge"\
+ "0x15/Iori Yagami"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Geese Howard"\
+ "0x19/Wolfgang Krauser"\
+ "0x1A/Mr. Big"\
+ "0x1B/#Chizuru Kagura"\
+ "0x1C/#Goenitz" 
+run:
+    poke $10A847 param
+script "P1 Select Character (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/Kyo Kusanagi"\
+ "0x01/Benimaru Nikaido"\
+ "0x02/Goro Daimon"\
+ "0x03/Terry Bogard"\
+ "0x04/Andy Bogard"\
+ "0x05/Joe Higashi"\
+ "0x06/Ryo Sakazaki"\
+ "0x07/Robert Garcia"\
+ "0x08/Yuri Sakazaki"\
+ "0x09/Leona"\
+ "0x0A/Ralf Jones"\
+ "0x0B/Clark Steel"\
+ "0x0C/Athena Asamiya"\
+ "0x0D/Sie Kensou"\
+ "0x0E/Chin Gentsai"\
+ "0x0F/Kasumi Todo"\
+ "0x10/Mai Shiranui"\
+ "0x11/King"\
+ "0x12/Kim Kaphwan"\
+ "0x13/Chang Koehan"\
+ "0x14/Choi Bounge"\
+ "0x15/Iori Yagami"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Geese Howard"\
+ "0x19/Wolfgang Krauser"\
+ "0x1A/Mr. Big"\
+ "0x1B/#Chizuru Kagura"\
+ "0x1C/#Goenitz" 
+run:
+    poke $10A848 param
+script "P1 Select Colour (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/A colour"\
+ "0x01/D colour" 
+run:
+    poke $10A849 param
+script "P1 Select Colour (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/A colour"\
+ "0x01/D colour" 
+run:
+    poke $10A84A param
+script "P1 Select Colour (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/A colour"\
+ "0x01/D colour" 
+run:
+    poke $10A84B param
+script "P1 Select First Character" \
+ "comm:This refers to the character that fights first" \
+ "0x00/Character A"\
+ "0x01/Character B"\
+ "0x02/Character C" 
+run:
+    poke $10A84C param
+script "P1 Select Second Character" \
+ "comm:This refers to the character that fights second" \
+ "0x00/Character A"\
+ "0x01/Character B"\
+ "0x02/Character C" 
+run:
+    poke $10A84D param
+script "P1 Select Third Character" \
+ "comm:This refers to the character that fights third" \
+ "0x00/Character A"\
+ "0x01/Character B"\
+ "0x02/Character C" 
+run:
+    poke $10A84E param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108439 $67
+script "P2 Infinite Power"  
+run:
+    poke $1083E8 $80
+    poke $1083EA $3C
+    poke $10844D $04
+script "P2 Never Get Dizzied"  
+run:
+    poke $10843F $67
+script "P2 Every Hit Will Dizzy"  
+run:
+    poke $10843F $00
+script "P2 Stun Gauge Never Recovers Until Dizzied"  
+run:
+    poke $108444 $10
+script "P2 Stun Gauge Instantly Recovers"  
+run:
+    poke $108444 $00
+script "P2 Never Get Guard Crushed"  
+run:
+    poke $108447 $67
+script "P2 Every Block Will Guard Crush"  
+run:
+    poke $108447 $00
+script "P2 Guard Bar Never Recovers Until Guard Crushed"  
+run:
+    poke $10844C $10
+script "P2 Guard Bar Instantly Recovers"  
+run:
+    poke $10844C $00
+script "P2 Select Team" \
+ "0x00/Japan Team"\
+ "0x01/Fatal Fury Team"\
+ "0x02/Art of Fighting Team"\
+ "0x03/Ikari Team"\
+ "0x04/Psycho Soldier Team"\
+ "0x05/Womens Team"\
+ "0x06/Korea Team"\
+ "0x07/Yagami Team"\
+ "0x08/Boss Team"\
+ "0x09/Chizuru (solo)"\
+ "0x0A/Goenitz (solo)"\
+ "0x0B/Weapons of God Team"\
+ "0x0C/Goenitz Team"\
+ "0xFF/Custom Team" 
+run:
+    poke $10A855 param
+script "P2 Select Rounds Lost" \
+ inter=0,2,1 
+run:
+    poke $10A856 (param)
+script "P2 Select Character (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/Kyo Kusanagi"\
+ "0x01/Benimaru Nikaido"\
+ "0x02/Goro Daimon"\
+ "0x03/Terry Bogard"\
+ "0x04/Andy Bogard"\
+ "0x05/Joe Higashi"\
+ "0x06/Ryo Sakazaki"\
+ "0x07/Robert Garcia"\
+ "0x08/Yuri Sakazaki"\
+ "0x09/Leona"\
+ "0x0A/Ralf Jones"\
+ "0x0B/Clark Steel"\
+ "0x0C/Athena Asamiya"\
+ "0x0D/Sie Kensou"\
+ "0x0E/Chin Gentsai"\
+ "0x0F/Kasumi Todo"\
+ "0x10/Mai Shiranui"\
+ "0x11/King"\
+ "0x12/Kim Kaphwan"\
+ "0x13/Chang Koehan"\
+ "0x14/Choi Bounge"\
+ "0x15/Iori Yagami"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Geese Howard"\
+ "0x19/Wolfgang Krauser"\
+ "0x1A/Mr. Big"\
+ "0x1B/#Chizuru Kagura"\
+ "0x1C/#Goenitz" 
+run:
+    poke $10A857 param
+script "P2 Select Character (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/Kyo Kusanagi"\
+ "0x01/Benimaru Nikaido"\
+ "0x02/Goro Daimon"\
+ "0x03/Terry Bogard"\
+ "0x04/Andy Bogard"\
+ "0x05/Joe Higashi"\
+ "0x06/Ryo Sakazaki"\
+ "0x07/Robert Garcia"\
+ "0x08/Yuri Sakazaki"\
+ "0x09/Leona"\
+ "0x0A/Ralf Jones"\
+ "0x0B/Clark Steel"\
+ "0x0C/Athena Asamiya"\
+ "0x0D/Sie Kensou"\
+ "0x0E/Chin Gentsai"\
+ "0x0F/Kasumi Todo"\
+ "0x10/Mai Shiranui"\
+ "0x11/King"\
+ "0x12/Kim Kaphwan"\
+ "0x13/Chang Koehan"\
+ "0x14/Choi Bounge"\
+ "0x15/Iori Yagami"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Geese Howard"\
+ "0x19/Wolfgang Krauser"\
+ "0x1A/Mr. Big"\
+ "0x1B/#Chizuru Kagura"\
+ "0x1C/#Goenitz" 
+run:
+    poke $10A858 param
+script "P2 Select Character (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/Kyo Kusanagi"\
+ "0x01/Benimaru Nikaido"\
+ "0x02/Goro Daimon"\
+ "0x03/Terry Bogard"\
+ "0x04/Andy Bogard"\
+ "0x05/Joe Higashi"\
+ "0x06/Ryo Sakazaki"\
+ "0x07/Robert Garcia"\
+ "0x08/Yuri Sakazaki"\
+ "0x09/Leona"\
+ "0x0A/Ralf Jones"\
+ "0x0B/Clark Steel"\
+ "0x0C/Athena Asamiya"\
+ "0x0D/Sie Kensou"\
+ "0x0E/Chin Gentsai"\
+ "0x0F/Kasumi Todo"\
+ "0x10/Mai Shiranui"\
+ "0x11/King"\
+ "0x12/Kim Kaphwan"\
+ "0x13/Chang Koehan"\
+ "0x14/Choi Bounge"\
+ "0x15/Iori Yagami"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Geese Howard"\
+ "0x19/Wolfgang Krauser"\
+ "0x1A/Mr. Big"\
+ "0x1B/#Chizuru Kagura"\
+ "0x1C/#Goenitz" 
+run:
+    poke $10A859 param
+script "P2 Select First Character" \
+ "comm:This refers to the character that fights first" \
+ "0x00/Character A"\
+ "0x01/Character B"\
+ "0x02/Character C" 
+run:
+    poke $10A85D param
+script "P2 Select Second Character" \
+ "comm:This refers to the character that fights second" \
+ "0x00/Character A"\
+ "0x01/Character B"\
+ "0x02/Character C" 
+run:
+    poke $10A85E param
+script "P2 Select Third Character" \
+ "comm:This refers to the character that fights third" \
+ "0x00/Character A"\
+ "0x01/Character B"\
+ "0x02/Character C" 
+run:
+    poke $10A85F param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FDE0 $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=peek($100097)
+    temp1=peek($10A785)
+    temp2=peek($10A83A)
+    temp3=dpeek($01F292)
+run:
+    if (peek($10A784)!=$0&&peek($10A83B)==$00)
+      poke $100097 $00
+      poke $10A785 temp1|80
+      poke $10A83A temp2|80
+      dpoke $01F292 $008F
+      dpoke $10D930 $8F8F
+    endif
+off:
+    poke $100097 temp0
+    poke $10A785 temp1
+    poke $10A83A temp2
+    dpoke $01F292 temp3
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

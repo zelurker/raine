@@ -1,15 +1,15 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited helps" always
-	poke $C0967 $09
-
-script "2UP Unlimited helps" always
-	poke $C1083 $09
-
-script "1UP End level"
-	poke $C0966 $00
-
-script "2UP End level"
-	poke $C1082 $00
+script "Infinite Credits"  
+run:
+    poke $C179C $63
+script "P1 Infinite Helps"  
+run:
+    poke $C0967 $09
+script "P1 Finish this Level Now!"  
+on:
+    poke $C0966 $00
+script "P2 Infinite Helps"  
+run:
+    poke $C1083 $09
+script "P2 Finish this Level Now!"  
+on:
+    poke $C1082 $00

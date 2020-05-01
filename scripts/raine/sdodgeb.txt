@@ -1,0 +1,252 @@
+script "Infinite Time"  
+run:
+    poke $1065AB $99
+script "Time Up Now!"  
+on:
+    poke $1065AB $00
+script "Infinite Continues"  
+run:
+    poke $10FD89 $64
+    dpoke $101080 $0000
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $105CBD $FF
+    poke $105CBF $FF
+    poke $105CC1 $FF
+script "P1 Drain All Energy Now!"  
+on:
+    poke $105CBD $00
+    poke $105CBF $00
+    poke $105CC1 $00
+script "P1 Always have Max Power"  
+run:
+    dpoke $105FD2 $8FFF
+script "P1 Drain All Power Now!"  
+on:
+    dpoke $105FD2 $0000
+script "P1 Select 1st Character" \
+ "0x00/Kunio (Kunio Team)"\
+ "0x01/Riki (Riki Team)"\
+ "0x02/Shinji (Shinji Team)"\
+ "0x03/Misuzu (Misuzu Team)"\
+ "0x04/Kenji (Kenji Team)"\
+ "0x05/Miyuki (Miyuki Team)"\
+ "0x06/Sabu (Sabu Team)"\
+ "0x07/D.B.Maou (D.Maou Team)"\
+ "0x0A/Kamekichi (Kunio Team)"\
+ "0x0B/Kiyoshi (Misuzu Team)"\
+ "0x0C/Musashi (Kunio Team)"\
+ "0x0D/Jyoji (Kenji Team)"\
+ "0x0E/Keiko (Miyuki Team)"\
+ "0x0F/Kaede (Miyuki Team)"\
+ "0x10/Kozue (Riki Team)"\
+ "0x11/Hiromitsu (Shinji Team)"\
+ "0x12/Takuya (Sabu Team)"\
+ "0x13/Akemi (Sabu Team)"\
+ "0x14/Makoto (Kenji Team)"\
+ "0x15/Boo (D.Maou Team)"\
+ "0x16/Gonzou (Misuzu Team)"\
+ "0x17/Akira (Shinji Team)"\
+ "0x18/Ushimaru (Riki Team)"\
+ "0x19/Daa (D.Maou Team)" 
+run:
+    poke $103E5B param
+script "P1 Select 2nd Character" \
+ "0x00/Kunio (Kunio Team)"\
+ "0x01/Riki (Riki Team)"\
+ "0x02/Shinji (Shinji Team)"\
+ "0x03/Misuzu (Misuzu Team)"\
+ "0x04/Kenji (Kenji Team)"\
+ "0x05/Miyuki (Miyuki Team)"\
+ "0x06/Sabu (Sabu Team)"\
+ "0x07/D.B.Maou (D.Maou Team)"\
+ "0x0A/Kamekichi (Kunio Team)"\
+ "0x0B/Kiyoshi (Misuzu Team)"\
+ "0x0C/Musashi (Kunio Team)"\
+ "0x0D/Jyoji (Kenji Team)"\
+ "0x0E/Keiko (Miyuki Team)"\
+ "0x0F/Kaede (Miyuki Team)"\
+ "0x10/Kozue (Riki Team)"\
+ "0x11/Hiromitsu (Shinji Team)"\
+ "0x12/Takuya (Sabu Team)"\
+ "0x13/Akemi (Sabu Team)"\
+ "0x14/Makoto (Kenji Team)"\
+ "0x15/Boo (D.Maou Team)"\
+ "0x16/Gonzou (Misuzu Team)"\
+ "0x17/Akira (Shinji Team)"\
+ "0x18/Ushimaru (Riki Team)"\
+ "0x19/Daa (D.Maou Team)" 
+run:
+    poke $103E5D param
+script "P1 Select 3rd Character" \
+ "0x00/Kunio (Kunio Team)"\
+ "0x01/Riki (Riki Team)"\
+ "0x02/Shinji (Shinji Team)"\
+ "0x03/Misuzu (Misuzu Team)"\
+ "0x04/Kenji (Kenji Team)"\
+ "0x05/Miyuki (Miyuki Team)"\
+ "0x06/Sabu (Sabu Team)"\
+ "0x07/D.B.Maou (D.Maou Team)"\
+ "0x0A/Kamekichi (Kunio Team)"\
+ "0x0B/Kiyoshi (Misuzu Team)"\
+ "0x0C/Musashi (Kunio Team)"\
+ "0x0D/Jyoji (Kenji Team)"\
+ "0x0E/Keiko (Miyuki Team)"\
+ "0x0F/Kaede (Miyuki Team)"\
+ "0x10/Kozue (Riki Team)"\
+ "0x11/Hiromitsu (Shinji Team)"\
+ "0x12/Takuya (Sabu Team)"\
+ "0x13/Akemi (Sabu Team)"\
+ "0x14/Makoto (Kenji Team)"\
+ "0x15/Boo (D.Maou Team)"\
+ "0x16/Gonzou (Misuzu Team)"\
+ "0x17/Akira (Shinji Team)"\
+ "0x18/Ushimaru (Riki Team)"\
+ "0x19/Daa (D.Maou Team)" 
+run:
+    poke $103E5F param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $105CC5 $FF
+    poke $105CC7 $FF
+    poke $105CC9 $FF
+script "P2 Drain All Energy Now!"  
+on:
+    poke $105CC5 $00
+    poke $105CC7 $00
+    poke $105CC9 $00
+script "P2 Always have Max Power"  
+run:
+    dpoke $105FDA $8FFF
+script "P2 Drain All Power Now!"  
+on:
+    dpoke $105FDA $0000
+script "P2 Select 1st Character" \
+ "0x00/Kunio (Kunio Team)"\
+ "0x01/Riki (Riki Team)"\
+ "0x02/Shinji (Shinji Team)"\
+ "0x03/Misuzu (Misuzu Team)"\
+ "0x04/Kenji (Kenji Team)"\
+ "0x05/Miyuki (Miyuki Team)"\
+ "0x06/Sabu (Sabu Team)"\
+ "0x07/D.B.Maou (D.Maou Team)"\
+ "0x0A/Kamekichi (Kunio Team)"\
+ "0x0B/Kiyoshi (Misuzu Team)"\
+ "0x0C/Musashi (Kunio Team)"\
+ "0x0D/Jyoji (Kenji Team)"\
+ "0x0E/Keiko (Miyuki Team)"\
+ "0x0F/Kaede (Miyuki Team)"\
+ "0x10/Kozue (Riki Team)"\
+ "0x11/Hiromitsu (Shinji Team)"\
+ "0x12/Takuya (Sabu Team)"\
+ "0x13/Akemi (Sabu Team)"\
+ "0x14/Makoto (Kenji Team)"\
+ "0x15/Boo (D.Maou Team)"\
+ "0x16/Gonzou (Misuzu Team)"\
+ "0x17/Akira (Shinji Team)"\
+ "0x18/Ushimaru (Riki Team)"\
+ "0x19/Daa (D.Maou Team)" 
+run:
+    poke $103E63 param
+script "P2 Select 2nd Character" \
+ "0x00/Kunio (Kunio Team)"\
+ "0x01/Riki (Riki Team)"\
+ "0x02/Shinji (Shinji Team)"\
+ "0x03/Misuzu (Misuzu Team)"\
+ "0x04/Kenji (Kenji Team)"\
+ "0x05/Miyuki (Miyuki Team)"\
+ "0x06/Sabu (Sabu Team)"\
+ "0x07/D.B.Maou (D.Maou Team)"\
+ "0x0A/Kamekichi (Kunio Team)"\
+ "0x0B/Kiyoshi (Misuzu Team)"\
+ "0x0C/Musashi (Kunio Team)"\
+ "0x0D/Jyoji (Kenji Team)"\
+ "0x0E/Keiko (Miyuki Team)"\
+ "0x0F/Kaede (Miyuki Team)"\
+ "0x10/Kozue (Riki Team)"\
+ "0x11/Hiromitsu (Shinji Team)"\
+ "0x12/Takuya (Sabu Team)"\
+ "0x13/Akemi (Sabu Team)"\
+ "0x14/Makoto (Kenji Team)"\
+ "0x15/Boo (D.Maou Team)"\
+ "0x16/Gonzou (Misuzu Team)"\
+ "0x17/Akira (Shinji Team)"\
+ "0x18/Ushimaru (Riki Team)"\
+ "0x19/Daa (D.Maou Team)" 
+run:
+    poke $103E65 param
+script "P2 Select 3rd Character" \
+ "0x00/Kunio (Kunio Team)"\
+ "0x01/Riki (Riki Team)"\
+ "0x02/Shinji (Shinji Team)"\
+ "0x03/Misuzu (Misuzu Team)"\
+ "0x04/Kenji (Kenji Team)"\
+ "0x05/Miyuki (Miyuki Team)"\
+ "0x06/Sabu (Sabu Team)"\
+ "0x07/D.B.Maou (D.Maou Team)"\
+ "0x0A/Kamekichi (Kunio Team)"\
+ "0x0B/Kiyoshi (Misuzu Team)"\
+ "0x0C/Musashi (Kunio Team)"\
+ "0x0D/Jyoji (Kenji Team)"\
+ "0x0E/Keiko (Miyuki Team)"\
+ "0x0F/Kaede (Miyuki Team)"\
+ "0x10/Kozue (Riki Team)"\
+ "0x11/Hiromitsu (Shinji Team)"\
+ "0x12/Takuya (Sabu Team)"\
+ "0x13/Akemi (Sabu Team)"\
+ "0x14/Makoto (Kenji Team)"\
+ "0x15/Boo (D.Maou Team)"\
+ "0x16/Gonzou (Misuzu Team)"\
+ "0x17/Akira (Shinji Team)"\
+ "0x18/Ushimaru (Riki Team)"\
+ "0x19/Daa (D.Maou Team)" 
+run:
+    poke $103E67 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

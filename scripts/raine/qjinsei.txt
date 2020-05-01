@@ -1,15 +1,25 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited vitality" always
-	poke $30BFD6 $06
-
-script "2UP Unlimited vitality" always
-	poke $30BFF6 $06
-
-script "*UP Watch me for good answer" always
-	print_ingame 1 "*UP Watch me for good answer : %02x" peek($30BFB8)
-
-script "*UP Good answer ends quiz (T)"
-	poke $30BF30 $01
+script "Infinite Credits"  
+run:
+    poke $30D229 $09
+script "Infinite Time" \
+ "comm:Time display incorrect though"  
+run:
+    poke $30BF42 $0A
+script "Display the Correct Answer"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $30BFB8 $01
+script "Answer 1 is correct for this question Now!"  
+on:
+    poke $30BFB8 $01
+script "Good answer ends quiz Now!"  
+on:
+    poke $30BF30 $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $30BFD6 $06
+script "P2 Infinite Lives"  
+run:
+    poke $30BFF6 $06

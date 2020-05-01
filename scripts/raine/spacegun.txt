@@ -1,0 +1,109 @@
+script "Infinite Credits"  
+run:
+    poke $31733D $09
+script "Infinite Time (Turn OFF at end of level)"  
+run:
+    dpoke $3173A6 $03E8
+script "Always have rescued 9 Hostages"  
+run:
+    poke $317BBF $09
+script "Select Starting Stage" \
+ inter=1,7, 
+run:
+    poke $317393 param
+script "Finish Current Stage Now!"  
+on:
+    if (peek($317BBF)==$00)
+      poke $317BBF $01
+    endif
+    if (peek($317B7B)==$00)&&(peek($318BC1)!=$01)&&(peek($3173A1)<07)
+      poke $317B7B $01
+    endif
+    if (peek($317B7B)==$00)&&(peek($318BC1)!=$01)&&(peek($3173A1)==$07)
+      poke $317B7D $01
+    endif
+script "Cockpit does not get damaged in Stage 7"  
+on:
+    temp0=peek($3644F)
+run:
+    poke $3644F $3C
+off:
+    poke $3644F temp0
+script "Enable Debug Mode and Set Speed" \
+ "0x00/Speed 1/1"\
+ "0x05/Speed 1/2"\
+ "0x03/Speed 1/6"\
+ "0x02/Stop" 
+change:
+    poke $317391 $01
+    poke $3172EC param
+off:
+    poke $317391 $00
+    poke $3172EC $00
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $3173B2 $28
+script "P1 Always have full shot Energy"  
+run:
+    poke $3173BA $28
+script "P1 Infinite Flame Weapons"  
+run:
+    poke $317D29 $09
+script "P1 Infinite Bomb Weapons"  
+run:
+    poke $317D2B $09
+script "P1 Infinite Blade Weapons"  
+run:
+    poke $317D2D $09
+script "P1 Infinite Freeze Weapons"  
+run:
+    poke $317D2F $09
+script "P1 Select Perm Weapon" \
+ "comm:Use in conjunction with the Infinite Weapons cheats" \
+ "0x00/Normal"\
+ "0x01/Flame"\
+ "0x02/Bomb"\
+ "0x03/Blade"\
+ "0x04/Freeze" 
+run:
+    poke $317D27 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $3173B6 $28
+script "P2 Always have full shot Energy"  
+run:
+    poke $3173BC $28
+script "P2 Infinite Flame Weapons"  
+run:
+    poke $317D45 $09
+script "P2 Infinite Bomb Weapons"  
+run:
+    poke $317D47 $09
+script "P2 Infinite Blade Weapons"  
+run:
+    poke $317D49 $09
+script "P2 Infinite Freeze Weapons"  
+run:
+    poke $317D4A $09
+script "P2 Select Perm Weapon" \
+ "comm:Use in conjunction with the Infinite Weapons cheats" \
+ "0x00/Normal"\
+ "0x01/Flame"\
+ "0x02/Bomb"\
+ "0x03/Blade"\
+ "0x04/Freeze" 
+run:
+    poke $317D43 param
+script " "  
+script "Select Region" \
+ "0x00/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($07FFFF)
+run:
+    poke $07FFFF param
+off:
+    poke $07FFFF temp0

@@ -1,0 +1,169 @@
+script "Infinite Time"  
+run:
+    dpoke $100AC6 $9900
+script "Select Background" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wan-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0B/Charlotte"\
+ "0x0C/Genjuro"\
+ "0x0D/Cham Cham"\
+ "0x0E/Sieger"\
+ "0x0F/Nicotine"\
+ "0x10/Mizuki"\
+ "0x11/Kuroko" 
+run:
+    poke $100AD9 param
+script "Select Starting Stage" \
+ "0x00/Stage 1"\
+ "0x01/Stage 2"\
+ "0x02/Stage 3"\
+ "0x03/Stage 4"\
+ "0x04/Stage 5"\
+ "0x05/Stage 6"\
+ "0x06/Stage 7"\
+ "0x07/Stage 8"\
+ "0x08/Stage 9"\
+ "0x09/Stage 10"\
+ "0x0A/Stage 11"\
+ "0x0B/Stage 12"\
+ "0x0C/Final Stage"\
+ "0x0D/Special Stage(Kuroko, S Stage)" 
+run:
+    if (peek($100AEE)==$00)
+      poke $100AEE param
+    endif
+script " "  
+script "P1 Infinite Energy"  
+run:
+    temp0=peek((lpeek($100A46))+$BB)
+    if temp0NEtemp1
+      poke ((lpeek($100A46))+$BB) $80
+      temp1=temp0-$2
+    endif
+script "P1 Drain All Energy Now!"  
+on:
+    poke ((lpeek($100A46))+$BB) $00
+script "P1 Always have Maximum Power"  
+run:
+    poke ((lpeek($100A46))+$F0) $20
+script "P1 Always have Minimum Power"  
+run:
+    poke ((lpeek($100A46))+$F0) $00
+script "P1 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wan-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0B/Charlotte"\
+ "0x0C/Genjuro"\
+ "0x0D/Cham Cham"\
+ "0x0E/Sieger"\
+ "0x0F/Nicotine"\
+ "0x10/Mizuki"\
+ "0x11/Kuroko" 
+run:
+    poke $100D0B param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    temp0=peek((lpeek($100A4A))+$BB)
+    if temp0NEtemp1
+      poke ((lpeek($100A4A))+$BB) $80
+      temp1=temp0-$2
+    endif
+script "P2 Drain All Energy Now!"  
+on:
+    poke ((lpeek($100A4A))+$BB) $00
+script "P2 Always have Maximum Power"  
+run:
+    poke ((lpeek($100A4A))+$F0) $20
+script "P2 Always have Minimum Power"  
+run:
+    poke ((lpeek($100A4A))+$F0) $00
+script "P2 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wan-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0B/Charlotte"\
+ "0x0C/Genjuro"\
+ "0x0D/Cham Cham"\
+ "0x0E/Sieger"\
+ "0x0F/Nicotine"\
+ "0x10/Mizuki"\
+ "0x11/Kuroko" 
+run:
+    poke $100D1B param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

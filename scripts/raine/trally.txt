@@ -1,0 +1,117 @@
+script "Infinite Continues"  
+run:
+    poke $10FD89 $64
+    poke $1030B2 $00
+script "Infinite Time"  
+run:
+    poke $103611 $99
+    poke $103613 $3B
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99
+script "Mute All Music" \
+ "comm:Fully mutes all music, including BIOS music"  
+on:
+    if peek($0109)==$03
+      temp0=$04AC
+    endif
+    if peek($0109)==$05
+      temp0=$D2A4
+    endif
+    if peek($0109)==$09
+      temp0=$CEBD
+    endif
+    if peek($0109)==$12
+      temp0=$04AC
+    endif
+    if peek($0109)==$17
+      temp0=$04AC
+    endif
+    if peek($0109)==$22
+      temp0=$CEC0
+    endif
+    if peek($0109)==$24
+      temp0=$04C2
+    endif
+    if peek($0109)==$37
+      temp0=$03ED
+    endif
+    if peek($0109)==$38
+      temp0=$03ED
+    endif
+    if peek($0109)==$50
+      temp0=$03ED
+    endif
+    if peek($0109)==$53
+      temp0=$03FE
+    endif
+    if peek($0109)==$54
+      temp0=$03ED
+    endif
+    if peek($0109)==$57
+      temp0=$040D
+    endif
+    if peek($0109)==$64
+      temp0=$0408
+    endif
+    if peek($0109)==$74
+      temp0=$0408
+    endif
+    if peek($0109)==$90
+      temp0=$04AC
+    endif
+run:
+    cpu audio
+    if peek(temp0)==$32
+      poke temp0 $C9
+    endif
+    cpu main
+off:
+    cpu audio
+    if peek(temp0)==$C9
+      poke temp0 $32
+    endif
+    cpu main

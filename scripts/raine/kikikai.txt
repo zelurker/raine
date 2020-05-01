@@ -1,6 +1,67 @@
-# Cheats from  : Antiriad
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $D957 $03
+script "Infinite Lives"  
+run:
+    poke $D957 $09
+script "Invincibility (Enable with Skip RAM/ROM Check)" \
+ "comm:ROM Code - you must enable this in conjunction with Skip RAM/ROM Check"  
+on:
+    temp0=lpeek($20EA)
+    temp1=lpeek($20EE)
+    temp2=lpeek($20F1)
+    temp3=peek($251F)
+    temp4=peek($5164)
+run:
+    lpoke $20EA $DAB732AF
+    lpoke $20EE $00E1CB32|(lpeek($20EE)&~00FFFFFF)
+    lpoke $20F1 $C9E8A232
+    poke $251F $C9
+    poke $5164 $18
+off:
+    lpoke $20EA temp0
+    lpoke $20EE temp1
+    lpoke $20F1 temp2
+    poke $251F temp3
+    poke $5164 temp4
+script "Unlock Secret Character" \
+ "comm:Enable before the title screen"  
+run:
+    poke $E1DF $01
+script "Rapid Fire - Shot 1"  
+run:
+    poke $E1B0 $10|(peek($E1B0)&~10)
+script "Rapid Fire - Shot 2"  
+run:
+    poke $E1B0 $20|(peek($E1B0)&~20)
+script " "  
+script "Skip RAM/ROM Check"  
+on:
+    temp0=dpeek($01DA)
+    temp1=peek($0225)
+    temp2=peek($4828)
+run:
+    dpoke $01DA $01DC
+    poke $0225 $18
+    poke $4828 $C9
+    poke $DEB0 $FF
+    poke $DEB7 $FF
+    poke $DEC6 $FF
+    poke $DECD $FF
+    poke $DED4 $FF
+    poke $DF0A $FF
+    poke $DF10 $FF
+    poke $DF33 $FF
+    poke $DF38 $FF
+    poke $DF3D $FF
+    poke $E19A $FF
+    poke $E1C6 $FF
+    poke $E1D7 $FF
+    poke $E1F4 $FF
+    poke $E217 $FF
+    poke $E222 $FF
+    poke $E227 $FF
+    poke $E22D $FF
+    poke $E251 $FF
+    poke $E256 $FF
+off:
+    dpoke $01DA temp0
+    poke $0225 temp1
+    poke $4828 temp2

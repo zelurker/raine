@@ -1,15 +1,27 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $F1A39 $03
-
-script "*UP Maximum speed" always
-	poke $F1A19 $03
-
-script "*UP Maximum fire power" always
-	poke $F1A1B $04
-
-script "*UP Maximum weapon power" always
-	poke $F1A1D $02
+script "Infinite Lives"  
+run:
+    poke $F1A39 $B
+script "Invincibility"  
+run:
+    poke $F1A00 $80
+    poke $F1A09 $00
+script "Maximum Speed"  
+run:
+    poke $F1A19 $03
+script "Maximum Fire power"  
+run:
+    poke $F1A1B $04
+script "Maximum Weapon power"  
+run:
+    poke $F1A1D $02
+script "Select starting round" \
+ "comm:You should enable this cheat on the 'Push Start' screen, ie. after credits have been inserted! The Round display wont be correct" \
+ inter=1,6,1 
+on:
+    poke $F1AED $FF
+change:
+    poke $F1AED (param-$1)
+script "Select next round" \
+ inter=1,6,1 
+change:
+    poke $F1AED (param-$1)

@@ -1,0 +1,109 @@
+script "Infinite Time"  
+run:
+    poke $1062E1 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $1062E1 $00
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $102D09 $64
+script "P1 Drain All Energy Now"  
+on:
+    poke $102D09 $00
+script "P1 Select Character" \
+ "comm:Free player selection-Use on ANY selection screen. BUT Ohga vs. Ohga doesn't work!" \
+ "0x00/Gowcaizer"\
+ "0x01/Captain"\
+ "0x02/Karin"\
+ "0x03/Fudomaru"\
+ "0x04/Marion"\
+ "0x05/Shaia"\
+ "0x06/Shenlong"\
+ "0x07/Kyosuke"\
+ "0x08/Stinger"\
+ "0x09/Brider"\
+ "0x0A/Platonic Twins"\
+ "0x0B/Ohga" 
+change:
+    poke $10464D param
+script "P1 Desperation moves always available"  
+run:
+    poke $10315F $80|(peek($10315F)&~80)
+off:
+    poke $10315F $00|(peek($10315F)&~80)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $1035BF $64
+script "P2 Drain All Energy Now"  
+on:
+    poke $1035BF $00
+script "P2 Select Character" \
+ "comm:Free player selection-Use on ANY selection screen. BUT Ohga vs. Ohga doesn't work!" \
+ "0x00/Gowcaizer"\
+ "0x01/Captain"\
+ "0x02/Karin"\
+ "0x03/Fudomaru"\
+ "0x04/Marion"\
+ "0x05/Shaia"\
+ "0x06/Shenlong"\
+ "0x07/Kyosuke"\
+ "0x08/Stinger"\
+ "0x09/Brider"\
+ "0x0A/Platonic Twins"\
+ "0x0B/Ohga" 
+change:
+    poke $10467D param
+script "P2 Desperation moves always available"  
+run:
+    poke $103A15 $80|(peek($103A15)&~80)
+off:
+    poke $103A15 $00|(peek($103A15)&~80)
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

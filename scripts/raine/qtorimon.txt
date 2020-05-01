@@ -1,9 +1,12 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $10080D $03
-
-script "2UP Unlimited lives" always
-	poke $10090D $03
+script "Infinite Time"  
+run:
+    poke $102DC3 $07
+script "Display Answers" \
+ "comm:Correct one starts with 4"  
+run:
+script "P1 Infinite Lives"  
+run:
+    poke $10080D $99
+script "P2 Infinite Lives"  
+run:
+    poke $10090D $99

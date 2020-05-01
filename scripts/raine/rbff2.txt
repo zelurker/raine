@@ -1,0 +1,263 @@
+script "Infinite Time"  
+run:
+    poke $107C28 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $107C28 $00
+script " "  
+script "Stage Selection. Activate during a match."  
+script "Win the match for cheat to take effect."  
+script " "  
+script "Fight Krauser Next Now!"  
+on:
+    poke $107BB5 $08
+script "Fight Geese Next Now!"  
+on:
+    poke $107BB5 $09
+script "Fight Alfred Next Now!"  
+on:
+    poke $107BB5 $0A
+script "Goto Ending Next Now!"  
+on:
+    poke $107BB5 $B
+script " "  
+script "Once you activate Easy Supers you can do all the SDMs of any"  
+script "Character, regardless of life or power conditions. All you"  
+script "have to do is do d,d+A (DM)or d,d+C (SDM). Franco and Billy"  
+script "can use d,d+B for their second DM, while Geese and Krauser"  
+script "can use d,d+D for their second SDM. Xiangfei's second DM must"  
+script "still be input manually (as it must be comboed into)."  
+script " "  
+script "Always have Easy Supers"  
+on:
+    temp0=peek($10E001)
+run:
+    poke $10E001 $01|(peek($10E001)&~01)
+off:
+    poke $10E001 temp0
+script "Select Backdrop" \
+ "comm:Free Backdrop Selection. Activate between rounds. First character listed with each selection uses Variation 0, 2nd character listed uses Variation 1, and if applicable 3rd character listed uses Variation 2." \
+ "0x01/Tree [Mai, Sokaku, Andy]"\
+ "0x02/Billboard (1 Line) [Cheng, Yamazaki]"\
+ "0x03/Square [Kim, Tung]"\
+ "0x04/Geese Tower [Geese, Billy]"\
+ "0x05/Strolheim Castle [Krauser, Laurence]"\
+ "0x06/Crosswalk [Duck, Mary]"\
+ "0x07/Fighting Ring [Bob, Franco, Joe]"\
+ "0x08/Jin Chamber [Chonshu, Chonrei]"\
+ "0x09/Rest Stop [Terry, Rick, Alfred]"\
+ "0x0A/Street (1 Line) [Xiangfei, Hon-Fu]" 
+run:
+    poke $107BB1 param
+script "Select Stage Variation" \
+ inter=0,2,1 
+run:
+    poke $107BB7 (param)
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $10048B $C0
+script "P1 Drain All Energy Now!"  
+on:
+    poke $10048B $00
+script "P1 Infinite Power"  
+run:
+    poke $1004BC $3C
+script "P1 Select Rounds Won" \
+ inter=0,2,1 
+run:
+    poke $107C0C (param)
+script "P1 Select Streak Count" \
+ inter=0,99,1 
+run:
+    poke $107C1B tobcd(param)
+script "P1 Motion blur for" \
+ "comm:This cheat is futile but it permits you to make out the differences between normal and special moves"  
+run:
+    poke $1004CD $5F
+script "P1 Select Character" \
+ "comm:Free player selection - Activate between rounds or after selection." \
+ "0x01/Terry Bogard"\
+ "0x02/Andy Bogard"\
+ "0x03/Joe Higashi"\
+ "0x04/Mai Shiranui"\
+ "0x05/Geese Howard"\
+ "0x06/Sokaku Mochizuki"\
+ "0x07/Bob Wilson"\
+ "0x08/Hon-Fu"\
+ "0x09/Blue Mary"\
+ "0x0A/Franco Bash"\
+ "0x0B/Ryuji Yamazaki"\
+ "0x0C/Jin Chonshu"\
+ "0x0D/Jin Chonrei"\
+ "0x0E/Duck King"\
+ "0x0F/Kim Kaphwan"\
+ "0x10/Billy Kane"\
+ "0x11/Cheng Sinzan"\
+ "0x12/Tung Fu Rue"\
+ "0x13/Laurence Blood"\
+ "0x14/Wolfgang Krauser"\
+ "0x15/Rick Strowd"\
+ "0x16/Li Xiangfei"\
+ "0x17/#Alfred#" 
+run:
+    poke $107BA5 param
+script "P1 Select Character Colour" \
+ "comm:Lifebar portrait colours will not change" \
+ "0x00/A Colour"\
+ "0x01/D Colour" 
+run:
+    poke $107BAC param
+script "P1 Max Kaiser Wave"  
+run:
+    poke $1004FB $03
+script "P1 Select Yamazaki Drill SDM Level" \
+ "00/Level 1: Punch Combo"\
+ "01/Level 2: Kick Combo"\
+ "02/Level 3: Headbutt Combo"\
+ "03/Level 4: Snake Tamer Combo"\
+ "04/Level 5: Double Return Combo" 
+run:
+    if peek($100494)<param
+      poke $100494 param
+    endif
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $10058B $C0
+script "P2 Drain All Energy Now!"  
+on:
+    poke $10058B $00
+script "P2 Infinite Power"  
+run:
+    poke $1005BC $3C
+script "P2 Select Rounds Won" \
+ inter=0,13,1 
+run:
+    poke $107C0C (param)
+script "P2 Select Streak Count" \
+ inter=0,99,1 
+run:
+    poke $107C1D tobcd(param)
+script "P2 Motion blur for" \
+ "comm:This cheat is futile but it permits you to make out the differences between normal and special moves"  
+run:
+    poke $1005CD $5F
+script "P2 Select Character" \
+ "comm:Free player selection - Activate between rounds or after selection." \
+ "0x01/Terry Bogard"\
+ "0x02/Andy Bogard"\
+ "0x03/Joe Higashi"\
+ "0x04/Mai Shiranui"\
+ "0x05/Geese Howard"\
+ "0x06/Sokaku Mochizuki"\
+ "0x07/Bob Wilson"\
+ "0x08/Hon-Fu"\
+ "0x09/Blue Mary"\
+ "0x0A/Franco Bash"\
+ "0x0B/Ryuji Yamazaki"\
+ "0x0C/Jin Chonshu"\
+ "0x0D/Jin Chonrei"\
+ "0x0E/Duck King"\
+ "0x0F/Kim Kaphwan"\
+ "0x10/Billy Kane"\
+ "0x11/Cheng Sinzan"\
+ "0x12/Tung Fu Rue"\
+ "0x13/Laurence Blood"\
+ "0x14/Wolfgang Krauser"\
+ "0x15/Rick Strowd"\
+ "0x16/Li Xiangfei"\
+ "0x17/#Alfred#" 
+run:
+    poke $107BA7 param
+script "P2 Select Character Colour" \
+ "comm:Lifebar portrait colours will not change" \
+ "0x00/A Colour"\
+ "0x01/D Colour" 
+run:
+    poke $107BAD param
+script "P2 Max Kaiser Wave"  
+run:
+    poke $1005FB $03
+script "P2 Select Yamazaki Drill SDM Level" \
+ "00/Level 1: Punch Combo"\
+ "01/Level 2: Kick Combo"\
+ "02/Level 3: Headbutt Combo"\
+ "03/Level 4: Snake Tamer Combo"\
+ "04/Level 5: Double Return Combo" 
+run:
+    if peek($100594)<param
+      poke $100594 param
+    endif
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FDE0 $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start; works in round 1 only"  
+on:
+    temp0=dpeek($017306)
+run:
+    dpoke $017306 temp0
+    if (peek($107C22)==$38&&peek($107BB9)==$01)
+      poke $107C22 $33
+    endif
+    if (peek($107C22)!=$00&&peek($107BB9)==$01)
+      dpoke $017306 $6004
+      poke $107762 $00
+      poke $107765 $01
+      dpoke $401FFE $8F8F
+    endif
+off:
+    dpoke $017306 temp0
+    poke $107762 $FF
+    poke $107765 peek($107764)&0F
+    dpoke $401FFE $0000
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

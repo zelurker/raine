@@ -1,24 +1,18 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F006F $9F
-
-script "1UP Invulnerability OFF"
-	poke $F006F $01
-
-script "2UP Invulnerability ON" always
-	poke $F016F $9F
-
-script "2UP Invulnerability OFF"
-	poke $F016F $01
-
-script "1UP Unlimited lives" always
-	poke $F0037 $03
-
-script "2UP Unlimited lives" always
-	poke $F0137 $03
-
-script "*UP Unlimited time" always
-	poke $F906B $63
+script "Infinite Credits"  
+run:
+    poke $F9003 $09
+script "Infinite Time"  
+run:
+    poke $F906B $63
+script "P1 Infinite Lives"  
+run:
+    poke $F0037 $09
+script "P1 Invincibility"  
+run:
+    poke $F006F $02
+script "P2 Infinite Lives"  
+run:
+    poke $F0137 $09
+script "P2 Invincibility"  
+run:
+    poke $F016F $02

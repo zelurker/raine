@@ -1,0 +1,178 @@
+script "Infinite Time"  
+run:
+    poke $10DF0F $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $10DF0F $00
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($00EC76)
+run:
+    dpoke $00EC76 $6002
+off:
+    dpoke $00EC76 temp0
+script " "  
+script "The Go to Boss Now! Cheat must be activated"  
+script "on the character selection screen."  
+script " "  
+script "Go to First Boss Now!"  
+on:
+    poke $104BEB $07
+script "Go to Final Boss Now!"  
+on:
+    poke $104BEB $08
+script "Select Birthday Character" \
+ "comm:Always enables Heat Mode" \
+ "0x0000/Robert"\
+ "0x0001/Ryo"\
+ "0x0002/Karman"\
+ "0x0003/Kasumi"\
+ "0x0004/Rody"\
+ "0x0005/Lenny"\
+ "0x0006/Wang"\
+ "0x0007/Jin"\
+ "0x0008/Sinclair"\
+ "0x0009/Wyler" 
+run:
+    dpoke $10E260 param
+script "Unlock Sinclair"  
+run:
+    poke $10EC07 $01|(peek($10EC07)&~01)
+script "Unlock Wyler"  
+run:
+    poke $10EC07 $02|(peek($10EC07)&~02)
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $100468 $10
+    poke $100469 $00
+script "P1 Drain All Energy Now!"  
+on:
+    poke $100468 $00
+    poke $100469 $01
+script "P1 Infinite Power"  
+run:
+    poke $10046A $10
+    poke $10046B $00
+script "P1 Always have Minimum Power"  
+run:
+    poke $10046A $00
+    poke $10046B $00
+script "P1 Drain All Power Now!"  
+on:
+    poke $10046A $00
+    poke $10046B $01
+script "P1 Rapid Fire - Punch"  
+run:
+    poke $1078A8 $00|(peek($1078A8)&~10)
+script "P1 Rapid Fire - Kick"  
+run:
+    poke $1078A8 $00|(peek($1078A8)&~20)
+script "P1 Rapid Fire - Hardbrow"  
+run:
+    poke $1078A8 $00|(peek($1078A8)&~40)
+script "P1 Select Character" \
+ "comm:Free player selection - No secret characters. Use between rounds only. Doesn't work for 1st round though." \
+ "0x00/Robert Garcia"\
+ "0x01/Ryo Sakazaki"\
+ "0x02/Karman Cole"\
+ "0x03/Kazumi Todoh"\
+ "0x04/Rody Birts"\
+ "0x05/Lenny Creston"\
+ "0x06/Wang Koh San"\
+ "0x07/Jin Fuha"\
+ "0x08/Sinclair"\
+ "0x09/Wyler" 
+run:
+    poke $104C0D param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $100568 $10
+    poke $100569 $00
+script "P2 Drain All Energy Now!"  
+on:
+    poke $100568 $00
+    poke $100569 $01
+script "P2 Infinite Power"  
+run:
+    poke $10056A $10
+    poke $10056B $00
+script "P2 Always have Minimum Power"  
+run:
+    poke $10056A $00
+    poke $10056B $00
+script "P2 Drain All Power Now!"  
+on:
+    poke $10056A $00
+    poke $10056B $01
+script "P2 Rapid Fire - Punch"  
+run:
+    poke $1078E8 $00|(peek($1078E8)&~10)
+script "P2 Rapid Fire - Kick"  
+run:
+    poke $1078E8 $00|(peek($1078E8)&~20)
+script "P2 Rapid Fire - Hardbrow"  
+run:
+    poke $1078E8 $00|(peek($1078E8)&~40)
+script "P2 Select Character" \
+ "comm:Free player selection - No secret characters. Use between rounds only. Doesn't work for 1st round though." \
+ "0x00/Robert Garcia"\
+ "0x01/Ryo Sakazaki"\
+ "0x02/Karman Cole"\
+ "0x03/Kazumi Todoh"\
+ "0x04/Rody Birts"\
+ "0x05/Lenny Creston"\
+ "0x06/Wang Koh San"\
+ "0x07/Jin Fuha"\
+ "0x08/Sinclair"\
+ "0x09/Wyler" 
+run:
+    poke $104C0F param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

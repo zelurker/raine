@@ -1,0 +1,36 @@
+script "Infinite Credits"  
+run:
+    poke $20A8C3 $63
+script "'Columns' Game"  
+script "P1 Infinite Helps"  
+run:
+    poke $203F90 $04
+script "P2 Infinite Helps"  
+run:
+    poke $203F6C $04
+script "'Pang' Game"  
+script "Infinite Time"  
+run:
+    dpoke $2030D0 $03E7
+script "'Solitaire' Game"  
+script "Infinite Time"  
+run:
+    poke $2030C2 $87
+script "'Shanghai' Game"  
+script "Infinite Time"  
+run:
+    poke $2030C2 $00
+script "P1 Infinite Helps"  
+run:
+    poke $200019 $03
+script "P2 Infinite Helps"  
+run:
+    poke $20001A $03
+script "'Pac-Man' Game"  
+script "Get One Pill to Finish this Round Now!"  
+on:
+    poke $2030D5 $01
+script "'Tetris' Game"  
+script "Finish this Round Now! [SOLO]"  
+on:
+    poke $2019A9 $00

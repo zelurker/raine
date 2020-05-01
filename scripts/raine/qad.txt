@@ -1,99 +1,77 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited vitality" always
-	poke $FFE477 $05
-
-script "2UP Unlimited vitality" always
-	poke $FFE479 $05
-
-script "*UP Good answer ends quiz (T)"
-	poke $FFE965 $01
-
-script "*UP Watch me for good answer" always
-	print_ingame 1 "*UP Watch me for good answer : %02x" peek($FFE004)
-
-script "*UP End quiz to end level 1"
-	poke $FFE026 $0A
-
-script "*UP End quiz to end level 2-1"
-	poke $FFE026 $12
-
-script "*UP End quiz to end level 2-2"
-	poke $FFE026 $20
-
-script "*UP End quiz to end level 3"
-	poke $FFE026 $2A
-
-script "*UP End quiz to end level 4"
-	poke $FFE026 $13
-
-script "*UP End quiz to end level 5-1"
-	poke $FFE026 $1A
-
-script "*UP End quiz to end level 5-2"
-	poke $FFE026 $13
-
-script "*UP End quiz to end level 6"
-	poke $FFE026 $2A
-
-script "*UP End quiz to end level 7"
-	poke $FFE026 $22
-
-script "*UP Get the shortcut      (T)"
-	poke $FFE967 $01
-
-script "*UP Get the magic scroll  (T)"
-	poke $FFE967 $02
-
-script "*UP Get the magic staff   (T)"
-	poke $FFE967 $03
-
-script "*UP Get the magic sword   (T)"
-	poke $FFE967 $04
-
-script "*UP Quiz cat. - Art"
-	poke $FF7FC1 $00
-
-script "*UP Quiz cat. - Books"
-	poke $FF7FC1 $01
-
-script "*UP Quiz cat. - Entertainment"
-	poke $FF7FC1 $02
-
-script "*UP Quiz cat. - Food & drink"
-	poke $FF7FC1 $03
-
-script "*UP Quiz cat. - Geography"
-	poke $FF7FC1 $04
-
-script "*UP Quiz cat. - Health"
-	poke $FF7FC1 $05
-
-script "*UP Quiz cat. - History"
-	poke $FF7FC1 $06
-
-script "*UP Quiz cat. - Pot pourri"
-	poke $FF7FC1 $07
-
-script "*UP Quiz cat. - Movies"
-	poke $FF7FC1 $08
-
-script "*UP Quiz cat. - Music"
-	poke $FF7FC1 $09
-
-script "*UP Quiz cat. - Mythology"
-	poke $FF7FC1 $0A
-
-script "*UP Quiz cat. - Science"
-	poke $FF7FC1 $0B
-
-script "*UP Quiz cat. - Sports"
-	poke $FF7FC1 $0C
-
-script "*UP Quiz cat. - Television"
-	poke $FF7FC1 $0D
-
-script "*UP Quiz cat. - Miscellaneous"
-	poke $FF7FC1 $FF
+script "Display the Correct Answer"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $FFE004 $00
+script "Good answer ends quiz Now!"  
+on:
+    poke $FFE965 $01
+script "End quiz to end level 1" \
+ "comm:Woods of legend"  
+on:
+    poke $FFE026 $0A
+script "End quiz to end level 2-1" \
+ "comm:Beast of mountain"  
+on:
+    poke $FFE026 $12
+script "End quiz to end level 2-2" \
+ "comm:Flat field"  
+on:
+    poke $FFE026 $20
+script "End quiz to end level 3" \
+ "comm:Chateau of Avalon"  
+on:
+    poke $FFE026 $2A
+script "End quiz to end level 4" \
+ "comm:Fairy lake"  
+on:
+    poke $FFE026 $13
+script "End quiz to end level 5-1" \
+ "comm:Destroyed town"  
+on:
+    poke $FFE026 $1A
+script "End quiz to end level 5-2" \
+ "comm:Midnight forrest"  
+on:
+    poke $FFE026 $13
+script "End quiz to end level 6" \
+ "comm:Dungeon"  
+on:
+    poke $FFE026 $2A
+script "End quiz to end level 7" \
+ "comm:Gordian's palace"  
+on:
+    poke $FFE026 $22
+script "Select Weapon Now!" \
+ "0x01/Shortcut"\
+ "0x02/Magic Scroll"\
+ "0x03/Magic Staff"\
+ "0x04/Magic Sword" 
+change:
+    poke $FFE967 param
+script "Select Temp. Quiz Catagory" \
+ "0x00/Art"\
+ "0x01/Books"\
+ "0x02/Entertainment"\
+ "0x03/Food + Drink"\
+ "0x04/Geography"\
+ "0x05/Health"\
+ "0x06/History"\
+ "0x07/Pot Pourri"\
+ "0x08/Movies"\
+ "0x09/Music"\
+ "0x0A/Mythology"\
+ "0x0B/Science"\
+ "0x0C/Sports"\
+ "0x0D/Television"\
+ "0xFF/Miscellaneous" 
+change:
+    poke $FF7FC1 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FFE477 $05
+script "P2 Infinite Lives"  
+run:
+    poke $FFE479 $05
+script " "  

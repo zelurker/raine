@@ -1,42 +1,26 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability ON" always
-	dpoke $E7C0 $FF5A
-
-script "*UP Invulnerability OFF"
-	dpoke $E7C0 $0000
-
-script "*UP Unlimited lives" always
-	poke $E6B3 $03
-
-script "*UP Unlimited time" always
-	poke $E6B7 $3F
-
-script "*UP Unlimited air" always
-	poke $E7D6 $00
-
-script "*UP Weapon - Arrows       (P)" always
-	poke $EF28 $01
-
-script "*UP Weapon - Bombs        (P)" always
-	poke $EF28 $02
-
-script "*UP Weapon - Flames       (P)" always
-	poke $EF28 $04
-
-script "*UP Weapon - Laser        (P)" always
-	poke $EF28 $08
-
-script "*UP Weapon - Arrows       (T)"
-	poke $EF28 $01
-
-script "*UP Weapon - Bombs        (T)"
-	poke $EF28 $02
-
-script "*UP Weapon - Flames       (T)"
-	poke $EF28 $04
-
-script "*UP Weapon - Laser        (T)"
-	poke $EF28 $08
+script "Infinite Lives"  
+run:
+    poke $E6B3 $03
+script "Infinite Time"  
+run:
+    poke $E6B7 $3F
+script "Infinite SCUBA Air"  
+run:
+    poke $E7D6 $00
+script "Invincibility"  
+run:
+    poke $E7C1 $5A
+    poke $E7C0 $FF
+script "Select Weapon" \
+ "0x01/Arrows"\
+ "0x02/Bombs"\
+ "0x04/Flames"\
+ "0x08/Laser" 
+run:
+    poke $EF28 param
+script "Select Starting Level" \
+ inter=1,13,1 
+run:
+    if (peek($E6B6)==$00)
+      poke $E6B6 (param-$1)
+    endif

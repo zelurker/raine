@@ -1,42 +1,118 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	dpoke $FE0A88 $0CC3
-
-script "1UP Unlimited energy" always
-	dpoke $FE4BFC $07FF
-
-script "2UP Unlimited energy" always
-	dpoke $FE4F14 $07FF
-
-script "1UP Energy set to 0       (P)" always
-	dpoke $FE4BFC $0000
-
-script "2UP Energy set to 0       (P)" always
-	dpoke $FE4F14 $0000
-
-script "1UP Energy set to 0       (T)"
-	dpoke $FE4BFC $0000
-
-script "2UP Energy set to 0       (T)"
-	dpoke $FE4F14 $0000
-
-script "1UP End round to win match" always
-	poke $FE4BFF $02
-
-script "2UP End round to win match" always
-	poke $FE4F17 $02
-
-script "1UP Rounds won set to 0   (P)" always
-	poke $FE4BFF $00
-
-script "2UP Rounds won set to 0   (P)" always
-	poke $FE4F17 $00
-
-script "1UP Rounds won set to 0   (T)"
-	poke $FE4BFF $00
-
-script "2UP Rounds won set to 0   (T)"
-	poke $FE4F17 $00
+script "Infinite Credits"  
+run:
+    poke $FE1A09 $09
+script "Infinite Time"  
+run:
+    poke $FE0A89 $B2
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($0591CC)
+    temp1=dpeek($0591E2)
+    temp2=dpeek($0591F8)
+    temp3=dpeek($05920E)
+run:
+    dpoke $0591CC $6002
+    dpoke $0591E2 $6002
+    dpoke $0591F8 $6002
+    dpoke $05920E $6002
+off:
+    dpoke $0591CC temp0
+    dpoke $0591E2 temp1
+    dpoke $0591F8 temp2
+    dpoke $05920E temp3
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FE4BFC $07
+    poke $FE4BFD $FF
+script "P1 Drain All Energy Now!" \
+ "comm:Don't enable this when you are being attacked or the game may become locked"  
+on:
+    poke $FE4BFC $00
+    poke $FE4BFD $00
+script "P1 Always have Wins = 0"  
+run:
+    poke $FE4BFF $00
+script "P1 Always have Wins = 2" \
+ "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
+run:
+    poke $FE4BFF $02
+script "P1 Set Wins = 0 Now!"  
+on:
+    poke $FE4BFF $00
+script "P1 Set Wins = 1 Now!"  
+on:
+    poke $FE4BFF $01
+script "P1 Set Wins = 2 Now!" \
+ "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
+on:
+    poke $FE4BFF $02
+script "P1 Select Character" \
+ "comm:Free player selection. Use on level VS screen or use ingame and play as that character in the next battle." \
+ "0x00/Antony"\
+ "0x01/Cyborg D-9F"\
+ "0x02/Rick"\
+ "0x03/Shinsaku"\
+ "0x04/Mitsuji"\
+ "0x05/Wolf"\
+ "0x06/Tyssa"\
+ "0x08/Masamichi"\
+ "0x09/Cyborg T-8P"\
+ "0x0A/Jeff"\
+ "0x0B/John"\
+ "0x0C/Harimaoh"\
+ "0x0D/Dan"\
+ "0x0E/Yuki"\
+ "0x07/Kumachan"\
+ "0x0F/Kumasama" 
+run:
+    poke $FE1A35 param
+    poke $FE4B8F param
+script " "  
+script "P2 Infinite Energy" \
+ "comm:Don't enable this when you are being attacked or the game may become locked"  
+run:
+    poke $FE4F14 $07
+    poke $FE4F15 $FF
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FE4F14 $00
+    poke $FE4F15 $00
+script "P2 Always have Wins = 0"  
+run:
+    poke $FE4F17 $00
+script "P2 Always have Wins = 2" \
+ "comm:As long as P1 wins LT 2 then P2 wins the battle automatically on end of round"  
+run:
+    poke $FE4F17 $02
+script "P2 Set Wins = 0 Now!"  
+on:
+    poke $FE4F17 $00
+script "P2 Set Wins = 1 Now!"  
+on:
+    poke $FE4F17 $01
+script "P2 Set Wins = 2 Now!" \
+ "comm:As long as P1 wins LT 2 then P2 wins the battle automatically at the end of round"  
+on:
+    poke $FE4F17 $02
+script "P2 Select Character" \
+ "comm:Free player selection. Use on level VS screen or use ingame and play as that character in the next battle." \
+ "0x00/Antony"\
+ "0x01/Cyborg D-9F"\
+ "0x02/Rick"\
+ "0x03/Shinsaku"\
+ "0x04/Mitsuji"\
+ "0x05/Wolf"\
+ "0x06/Tyssa"\
+ "0x08/Masamichi"\
+ "0x09/Cyborg T-8P"\
+ "0x0A/Jeff"\
+ "0x0B/John"\
+ "0x0C/Harimaoh"\
+ "0x0D/Dan"\
+ "0x0E/Yuki"\
+ "0x07/Kumachan"\
+ "0x0F/Kumasama" 
+run:
+    poke $FE1A75 param
+    poke $FE4B91 param

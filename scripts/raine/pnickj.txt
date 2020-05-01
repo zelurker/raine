@@ -1,303 +1,180 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Next T  is green      (P)" always
-	poke $FF88F4 $00
-
-script "1UP Next T  is red        (P)" always
-	poke $FF88F4 $01
-
-script "1UP Next T  is blue       (P)" always
-	poke $FF88F4 $02
-
-script "1UP Next T  is yellow     (P)" always
-	poke $FF88F4 $03
-
-script "1UP Next T  is cyan       (P)" always
-	poke $FF88F4 $04
-
-script "1UP Next T  is pink       (P)" always
-	poke $FF88F4 $05
-
-script "1UP Next T  is orange     (P)" always
-	poke $FF88F4 $06
-
-script "1UP Next T  is purple     (P)" always
-	poke $FF88F4 $07
-
-script "1UP Next T* is green      (P)" always
-	poke $FF88F4 $08
-
-script "1UP Next T* is red        (P)" always
-	poke $FF88F4 $09
-
-script "1UP Next T* is blue       (P)" always
-	poke $FF88F4 $0A
-
-script "1UP Next T* is yellow     (P)" always
-	poke $FF88F4 $0B
-
-script "1UP Next T* is cyan       (P)" always
-	poke $FF88F4 $0C
-
-script "1UP Next T* is pink       (P)" always
-	poke $FF88F4 $0D
-
-script "1UP Next T* is orange     (P)" always
-	poke $FF88F4 $0E
-
-script "1UP Next T* is purple     (P)" always
-	poke $FF88F4 $0F
-
-script "1UP Next B  is green      (P)" always
-	poke $FF88F5 $00
-
-script "1UP Next B  is red        (P)" always
-	poke $FF88F5 $01
-
-script "1UP Next B  is blue       (P)" always
-	poke $FF88F5 $02
-
-script "1UP Next B  is yellow     (P)" always
-	poke $FF88F5 $03
-
-script "1UP Next B  is cyan       (P)" always
-	poke $FF88F5 $04
-
-script "1UP Next B  is pink       (P)" always
-	poke $FF88F5 $05
-
-script "1UP Next B  is orange     (P)" always
-	poke $FF88F5 $06
-
-script "1UP Next B  is purple     (P)" always
-	poke $FF88F5 $07
-
-script "1UP Next B* is green      (P)" always
-	poke $FF88F5 $08
-
-script "1UP Next B* is red        (P)" always
-	poke $FF88F5 $09
-
-script "1UP Next B* is blue       (P)" always
-	poke $FF88F5 $0A
-
-script "1UP Next B* is yellow     (P)" always
-	poke $FF88F5 $0B
-
-script "1UP Next B* is cyan       (P)" always
-	poke $FF88F5 $0C
-
-script "1UP Next B* is pink       (P)" always
-	poke $FF88F5 $0D
-
-script "1UP Next B* is orange     (P)" always
-	poke $FF88F5 $0E
-
-script "1UP Next B* is purple     (P)" always
-	poke $FF88F5 $0F
-
-script "2UP Next T  is green      (P)" always
-	poke $FF8954 $00
-
-script "2UP Next T  is red        (P)" always
-	poke $FF8954 $01
-
-script "2UP Next T  is blue       (P)" always
-	poke $FF8954 $02
-
-script "2UP Next T  is yellow     (P)" always
-	poke $FF8954 $03
-
-script "2UP Next T  is cyan       (P)" always
-	poke $FF8954 $04
-
-script "2UP Next T  is pink       (P)" always
-	poke $FF8954 $05
-
-script "2UP Next T  is orange     (P)" always
-	poke $FF8954 $06
-
-script "2UP Next T  is purple     (P)" always
-	poke $FF8954 $07
-
-script "2UP Next T* is green      (P)" always
-	poke $FF8954 $08
-
-script "2UP Next T* is red        (P)" always
-	poke $FF8954 $09
-
-script "2UP Next T* is blue       (P)" always
-	poke $FF8954 $0A
-
-script "2UP Next T* is yellow     (P)" always
-	poke $FF8954 $0B
-
-script "2UP Next T* is cyan       (P)" always
-	poke $FF8954 $0C
-
-script "2UP Next T* is pink       (P)" always
-	poke $FF8954 $0D
-
-script "2UP Next T* is orange     (P)" always
-	poke $FF8954 $0E
-
-script "2UP Next T* is purple     (P)" always
-	poke $FF8954 $0F
-
-script "2UP Next B  is green      (P)" always
-	poke $FF8955 $00
-
-script "2UP Next B  is red        (P)" always
-	poke $FF8955 $01
-
-script "2UP Next B  is blue       (P)" always
-	poke $FF8955 $02
-
-script "2UP Next B  is yellow     (P)" always
-	poke $FF8955 $03
-
-script "2UP Next B  is cyan       (P)" always
-	poke $FF8955 $04
-
-script "2UP Next B  is pink       (P)" always
-	poke $FF8955 $05
-
-script "2UP Next B  is orange     (P)" always
-	poke $FF8955 $06
-
-script "2UP Next B  is purple     (P)" always
-	poke $FF8955 $07
-
-script "2UP Next B* is green      (P)" always
-	poke $FF8955 $08
-
-script "2UP Next B* is red        (P)" always
-	poke $FF8955 $09
-
-script "2UP Next B* is blue       (P)" always
-	poke $FF8955 $0A
-
-script "2UP Next B* is yellow     (P)" always
-	poke $FF8955 $0B
-
-script "2UP Next B* is cyan       (P)" always
-	poke $FF8955 $0C
-
-script "2UP Next B* is pink       (P)" always
-	poke $FF8955 $0D
-
-script "2UP Next B* is orange     (P)" always
-	poke $FF8955 $0E
-
-script "2UP Next B* is purple     (P)" always
-	poke $FF8955 $0F
-
-script "1UP Next T  is green      (T)"
-	poke $FF88F4 $00
-
-script "1UP Next T  is red        (T)"
-	poke $FF88F4 $01
-
-script "1UP Next T  is blue       (T)"
-	poke $FF88F4 $02
-
-script "1UP Next T  is yellow     (T)"
-	poke $FF88F4 $03
-
-script "1UP Next T  is cyan       (T)"
-	poke $FF88F4 $04
-
-script "1UP Next T  is pink       (T)"
-	poke $FF88F4 $05
-
-script "1UP Next T  is orange     (T)"
-	poke $FF88F4 $06
-
-script "1UP Next T  is purple     (T)"
-	poke $FF88F4 $07
-
-script "1UP Next T* is green      (T)"
-	poke $FF88F4 $08
-
-script "1UP Next T* is red        (T)"
-	poke $FF88F4 $09
-
-script "1UP Next T* is blue       (T)"
-	poke $FF88F4 $0A
-
-script "1UP Next T* is yellow     (T)"
-	poke $FF88F4 $0B
-
-script "1UP Next T* is cyan       (T)"
-	poke $FF88F4 $0C
-
-script "1UP Next T* is pink       (T)"
-	poke $FF88F4 $0D
-
-script "1UP Next T* is orange     (T)"
-	poke $FF88F4 $0E
-
-script "1UP Next T* is purple     (T)"
-	poke $FF88F4 $0F
-
-script "1UP Next B  is green      (T)"
-	poke $FF88F5 $00
-
-script "1UP Next B  is red        (T)"
-	poke $FF88F5 $01
-
-script "1UP Next B  is blue       (T)"
-	poke $FF88F5 $02
-
-script "1UP Next B  is yellow     (T)"
-	poke $FF88F5 $03
-
-script "1UP Next B  is cyan       (T)"
-	poke $FF88F5 $04
-
-script "1UP Next B  is pink       (T)"
-	poke $FF88F5 $05
-
-script "1UP Next B  is orange     (T)"
-	poke $FF88F5 $06
-
-script "1UP Next B  is purple     (T)"
-	poke $FF88F5 $07
-
-script "1UP Next B* is green      (T)"
-	poke $FF88F5 $08
-
-script "1UP Next B* is red        (T)"
-	poke $FF88F5 $09
-
-script "1UP Next B* is blue       (T)"
-	poke $FF88F5 $0A
-
-script "1UP Next B* is yellow     (T)"
-	poke $FF88F5 $0B
-
-script "1UP Next B* is cyan       (T)"
-	poke $FF88F5 $0C
-
-script "1UP Next B* is pink       (T)"
-	poke $FF88F5 $0D
-
-script "1UP Next B* is orange     (T)"
-	poke $FF88F5 $0E
-
-script "1UP Next B* is purple     (T)"
-	poke $FF88F5 $0F
-
-script "2UP Next T  is green      (T)"
-	poke $FF8954 $00
-
-script "2UP Next T  is red        (T)"
-	poke $FF8954 $01
-
-script "2UP Next T  is blue       (T)"
-	poke $FF8954 $02
-
-script "2UP Next T  is yellow     (T)"
-	poke $FF8954 $03
+script "P1 Select Perm. Next Top Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+run:
+    poke $FF88F4 param
+script "P1 Select Perm. Next Bottom Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+run:
+    poke $FF88F5 param
+script "P1 Select Temp. Next Top Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+change:
+    poke $FF88F4 param
+script "P1 Select Temp. Next Bottom Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+change:
+    poke $FF88F5 param
+script " "  
+script "The Level Picture only changes on certain"  
+script "levels including levels 10, 30 and 50."  
+script " "  
+script "P1 Select Starting Level" \
+ inter=1,98,1 
+run:
+    if (peek($FF8644)==$01)
+      poke $FF8644 (param)
+    endif
+script " "  
+script "P2 Select Perm. Next Top Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+run:
+    poke $FF8954 param
+script "P2 Select Perm. Next Bottom Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+run:
+    poke $FF8955 param
+script "P2 Select Temp. Next Top Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+change:
+    poke $FF8954 param
+script "P2 Select Temp. Next Bottom Shape" \
+ "0x00/Green"\
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Yellow"\
+ "0x04/Cyan"\
+ "0x05/Pink"\
+ "0x06/Orange"\
+ "0x07/Purple"\
+ "0x08/Green Star"\
+ "0x09/Red Star"\
+ "0x0A/Blue Star"\
+ "0x0B/Yellow Star"\
+ "0x0C/Cyan Star"\
+ "0x0D/Pink Star"\
+ "0x0E/Orange Star"\
+ "0x0F/Purple Star" 
+change:
+    poke $FF8955 param
+script " "  
+script "The Level Picture only changes on certain"  
+script "levels including levels 10, 30 and 50."  
+script " "  
+script "P2 Select Starting Level" \
+ inter=1,98,1 
+run:
+    if (peek($FF8664)==$01)
+      poke $FF8664 (param)
+    endif
+script " "  
+script "Select Region" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/ETC" 
+run:
+    poke $FF8037 param

@@ -1,0 +1,189 @@
+script "Almost Instantly Beat Game Now!"  
+on:
+    poke $4080F7 $15
+    poke $4080F9 $B
+    poke $40814F $06
+script "Get 'ROD' and Finish Level Now!"  
+on:
+    poke $40820A $07
+script "Get Red Key Now!"  
+on:
+    poke $40EA4F $01
+script "Get Blue Key Now!"  
+on:
+    poke $40EA4E $01
+script "Get Green Key Now!"  
+on:
+    poke $40EA4D $01
+script "Get Orange Key Now!"  
+on:
+    poke $40EA4C $01
+script "Always Get Secret Rooms"  
+run:
+    poke $40EA66 $00
+script "Get Crystal-Ball Now! (Effective Next Level)"  
+on:
+    poke $40ECF1 $3C
+script "Bubble The Guardian Now!"  
+on:
+    poke $4041A9 $00
+script "Select + Get Note 1 Now!" \
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Green"\
+ "0x04/Orange" 
+change:
+    poke $408160 param
+script "Select + Get Note 2 Now!" \
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Green"\
+ "0x04/Orange" 
+change:
+    poke $408161 param
+script "Select + Get Note 3 Now!" \
+ "0x01/Red"\
+ "0x02/Blue"\
+ "0x03/Green"\
+ "0x04/Orange" 
+change:
+    poke $408162 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $408272 $0A
+script "P1 Invincibility" \
+ "comm:Use together with the 'Stop Flicker during Invincibility' cheat if the flickering annoys"  
+run:
+    poke $40826E $02
+script "P1 Select Bubble Type" \
+ "0x01/Lightning"\
+ "0x02/Water"\
+ "0x03/Fire"\
+ "0x04/Rainbow"\
+ "0x05/Whirlwind"\
+ "0x06/Musical" 
+run:
+    poke $4049B5 param
+script "P1 Always have Max Shoe Speed"  
+run:
+    poke $408262 $03
+script "P1 Select Character" \
+ "0x00/Bubblun (Green)"\
+ "0x01/Bobblun (Blue)"\
+ "0x02/Cururun (Orange)"\
+ "0x03/Coronon (Pink)"\
+ "0x04/Bubblun (Human)"\
+ "0x05/Bobblun (Human)"\
+ "0x06/Cururun (Human)"\
+ "0x07/Coronon (Human)"\
+ "0x08/#Zen Chan" 
+run:
+    poke $4049B7 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $408273 $0A
+script "P2 Invincibility" \
+ "comm:Use together with the 'Stop Flicker during Invincibility' cheat if the flickering annoys"  
+run:
+    poke $40826F $02
+script "P1 Select Bubble Type" \
+ "0x01/Lightning"\
+ "0x02/Water"\
+ "0x03/Fire"\
+ "0x04/Rainbow"\
+ "0x05/Whirlwind"\
+ "0x06/Musical" 
+run:
+    poke $404A35 param
+script "P2 Always have Max Shoe Speed"  
+run:
+    poke $408263 $03
+script "P2 Select Character" \
+ "0x00/Bubblun (Green)"\
+ "0x01/Bobblun (Blue)"\
+ "0x02/Cururun (Orange)"\
+ "0x03/Coronon (Pink)"\
+ "0x04/Bubblun (Human)"\
+ "0x05/Bobblun (Human)"\
+ "0x06/Cururun (Human)"\
+ "0x07/Coronon (Human)"\
+ "0x08/#Zen Chan" 
+run:
+    poke $404A37 param
+script " "  
+script "Stop Flicker during Invincibility"  
+on:
+    temp0=peek($017A97)
+run:
+    poke $017A97 $D0
+off:
+    poke $017A97 temp0
+script " "  
+script "Activate any 1 of these codes on the title"  
+script "screen before the curtains open. Only 1 code"  
+script "can be active at a time."  
+script " "  
+script "Classic Game (BJBJBJR1)"  
+on:
+    poke $40A206 $08
+script "Classic Game (LJL1LBL1)"  
+on:
+    poke $40A20E $08
+script "Classic Game (1JBLRJ1R)"  
+on:
+    poke $40A216 $08
+script "Super Mode Select (U1RJBL1D)"  
+on:
+    poke $40A21E $08
+script "Unlock Human Characters (LDUJR1BR)"  
+on:
+    poke $40A226 $08
+script "Max. Candy Effects (DBJ1LRL1)"  
+on:
+    poke $40A22E $08
+script "Always Access Secret Rooms (JBJBJBL1)"  
+on:
+    poke $40A236 $08
+script "Select Ending" \
+ "comm:This only accesses the endings to the current game mode and the forms of your characters. Some ending numbers are repeats. Should be used with the 'Almost Instantly Beat Game Now!' code for highest chance of success." \
+ inter=0,16,1 
+change:
+    poke $40813B (param)
+script " "  
+script "The following values are set when you collect"  
+script "the huge candy from the second to last diamond"  
+script "room in the game. It is not known what some of"  
+script "these do, and they may not do anything at all."  
+script " "  
+script "Always Have Fastest Bubble Blowing"  
+run:
+    poke $40824A $01
+script "Always Have Fastest Bubble Motion"  
+run:
+    poke $408252 $03
+script "Always Have Farthest Bubble Blowing"  
+run:
+    poke $40825A $03
+script "Secret Room Candy Unknown Effect 1"  
+run:
+    poke $40824E $01
+script "Secret Room Candy Unknown Effect 2"  
+run:
+    poke $408256 $05
+script "Secret Room Candy Unknown Effect 3"  
+run:
+    poke $40825E $05
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World/Europe" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

@@ -1,63 +1,72 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $1035E2 $0C
-
-script "2UP Unlimited energy" always
-	poke $103674 $0C
-
-script "*UP Unlimited time" always
-	poke $102911 $64
-
-script "*UP End level"
-	poke $102A2F $00
-
-script "1UP Weapon - Automatic    (P)" always
-	poke $103607 $00
-
-script "1UP Weapon - Revolver     (P)" always
-	poke $103607 $01
-
-script "1UP Weapon - Shotgun      (P)" always
-	poke $103607 $02
-
-script "1UP Weapon - Machine Gun  (P)" always
-	poke $103607 $03
-
-script "2UP Weapon - Automatic    (P)" always
-	poke $103699 $00
-
-script "2UP Weapon - Revolver     (P)" always
-	poke $103699 $01
-
-script "2UP Weapon - Shotgun      (P)" always
-	poke $103699 $02
-
-script "2UP Weapon - Machine Gun  (P)" always
-	poke $103699 $03
-
-script "1UP Weapon - Automatic    (T)"
-	poke $103607 $00
-
-script "1UP Weapon - Revolver     (T)"
-	poke $103607 $01
-
-script "1UP Weapon - Shotgun      (T)"
-	poke $103607 $02
-
-script "1UP Weapon - Machine Gun  (T)"
-	poke $103607 $03
-
-script "2UP Weapon - Automatic    (T)"
-	poke $103699 $00
-
-script "2UP Weapon - Revolver     (T)"
-	poke $103699 $01
-
-script "2UP Weapon - Shotgun      (T)"
-	poke $103699 $02
-
-script "2UP Weapon - Machine Gun  (T)"
-	poke $103699 $03
+script "Infinite Time"  
+run:
+    poke $102911 $65
+script "Finish this Round Now!"  
+on:
+    poke $102A2F $00
+script "Select number of enemies left Now!" \
+ inter=0,255,1 
+change:
+    poke $102A2F (param)
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $1035E2 $0C
+script "P1 Invincibility"  
+run:
+    poke $103612 $03
+script "P1 Always have the Automatic"  
+run:
+    poke $103607 $00
+script "P1 Always have the Revolver"  
+run:
+    poke $103607 $01
+script "P1 Always have the Shotgun"  
+run:
+    poke $103607 $02
+script "P1 Always have the Machine Gun"  
+run:
+    poke $103607 $03
+script "P1 Get the Automatic Now!"  
+on:
+    poke $103607 $00
+script "P1 Get the Revolver Now!"  
+on:
+    poke $103607 $01
+script "P1 Get the Shotgun Now!"  
+on:
+    poke $103607 $02
+script "P1 Get the Machine Gun Now!"  
+on:
+    poke $103607 $03
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $103674 $0C
+script "P2 Invincibility"  
+run:
+    poke $1036A4 $03
+script "P2 Always have the Automatic"  
+run:
+    poke $103699 $00
+script "P2 Always have the Revolver"  
+run:
+    poke $103699 $01
+script "P2 Always have the Shotgun"  
+run:
+    poke $103699 $02
+script "P2 Always have the Machine Gun"  
+run:
+    poke $103699 $03
+script "P2 Get the Automatic Now!"  
+on:
+    poke $103699 $00
+script "P2 Get the Revolver Now!"  
+on:
+    poke $103699 $01
+script "P2 Get the Shotgun Now!"  
+on:
+    poke $103699 $02
+script "P2 Get the Machine Gun Now!"  
+on:
+    poke $103699 $03

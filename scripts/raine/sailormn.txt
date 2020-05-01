@@ -1,36 +1,168 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $102023 peek($102023)&$7f
-
-script "1UP Invulnerability OFF"
-	poke $102023 peek($102023)&$7f|$80
-
-script "1UP Invulnerability ON" always
-	poke $102123 peek($102123)&$7f
-
-script "1UP Invulnerability OFF"
-	poke $102123 peek($102123)&$7f|$80
-
-script "1UP Unlimited lives" always
-	poke $1020F4 $03
-
-script "2UP Unlimited lives" always
-	poke $1021F4 $03
-
-script "1UP Unlimited energy" always
-	poke $102033 $40
-
-script "2UP Unlimited energy" always
-	poke $102133 $40
-
-script "*UP Unlimited time" always
-	poke $10A416 $99
-
-script "1UP Maximum magic power" always
-	poke $1094C5 $05
-
-script "2UP Maximum magic power" always
-	poke $1095C5 $05
+script "Infinite Credits"  
+run:
+    poke $10835F $09
+script "Infinite Time"  
+run:
+    poke $10A416 $99
+script "Hit Anywhere (Both Players)" \
+ "comm:Enemies hit anywhere as well. Use with Invincibilty for the best effect."  
+on:
+    temp0=dpeek($00700E)
+    temp1=dpeek($007072)
+run:
+    dpoke $00700E $6002
+    dpoke $007072 $6002
+off:
+    dpoke $00700E temp0
+    dpoke $007072 temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1020F4 $09
+script "P1 Infinite Energy"  
+run:
+    poke $102033 $44
+script "P1 Invincibility" \
+ "0x00/Enabled"\
+ "0x80/Disabled" 
+run:
+    poke $102023 param|(peek($102023)&~80)
+script "P1 Select Combo" \
+ "0x00/Punch Only Combo"\
+ "0x04/Finish Only Combo" 
+run:
+    poke $102039 param
+script "P1 Select Magic Level" \
+ "0x01/1"\
+ "0x02/2"\
+ "0x03/3"\
+ "0x04/4"\
+ "0x05/5 (Max)" 
+run:
+    poke $1094C5 param
+script "P1 Select Character" \
+ "0x01/Sailor Moon"\
+ "0x02/Sailor Mercury"\
+ "0x03/Sailor Mars"\
+ "0x04/Sailor Jupiter"\
+ "0x05/Sailor Venus" 
+run:
+    poke $102001 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1021F4 $09
+script "P2 Infinite Energy"  
+run:
+    poke $102133 $44
+script "P2 Invincibility" \
+ "0x00/Enabled"\
+ "0x80/Disabled" 
+run:
+    poke $102123 param|(peek($102123)&~80)
+script "P2 Select Combo" \
+ "0x00/Punch Only Combo"\
+ "0x04/Finish Only Combo" 
+run:
+    poke $102139 param
+script "P2 Select Magic Level" \
+ "0x01/1"\
+ "0x02/2"\
+ "0x03/3"\
+ "0x04/4"\
+ "0x05/5 (Max)" 
+run:
+    poke $1095C5 param
+script "P2 Select Character" \
+ "0x01/Sailor Moon"\
+ "0x02/Sailor Mercury"\
+ "0x03/Sailor Mars"\
+ "0x04/Sailor Jupiter"\
+ "0x05/Sailor Venus" 
+run:
+    poke $102101 param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you must reset the game (with F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/Europe"\
+ "0x04/Hong Kong"\
+ "0x05/Taiwan"\
+ "0x06/Korea" 
+run:
+    if (param==$01)&&(peek($10A34B)==$02)
+      poke $10A34B $00
+    endif
+    if (param==$01)&&(peek($10A3CB)==$02)
+      poke $10A3CB $00
+    endif
+    if (param==$01)&&(peek($10A40D)==$02)
+      poke $10A40D $00
+    endif
+    if (param==$02)&&(peek($10A34B)==$02)
+      poke $10A34B $01
+    endif
+    if (param==$02)&&(peek($10A3CB)==$02)
+      poke $10A3CB $01
+    endif
+    if (param==$02)&&(peek($10A40D)==$02)
+      poke $10A40D $01
+    endif
+    if (param==$03)&&(peek($10A34B)==$02)
+      poke $10A34B $02
+    endif
+    if (param==$03)&&(peek($10A3CB)==$02)
+      poke $10A3CB $02
+    endif
+    if (param==$03)&&(peek($10A40D)==$02)
+      poke $10A40D $02
+    endif
+    if (param==$04)&&(peek($10A34B)==$02)
+      poke $10A34B $03
+    endif
+    if (param==$04)&&(peek($10A3CB)==$02)
+      poke $10A3CB $03
+    endif
+    if (param==$04)&&(peek($10A40D)==$02)
+      poke $10A40D $03
+    endif
+    if (param==$05)&&(peek($10A34B)==$02)
+      poke $10A34B $04
+    endif
+    if (param==$05)&&(peek($10A3CB)==$02)
+      poke $10A3CB $04
+    endif
+    if (param==$05)&&(peek($10A40D)==$02)
+      poke $10A40D $04
+    endif
+    if (param==$06)&&(peek($10A34B)==$02)
+      poke $10A34B $05
+    endif
+    if (param==$06)&&(peek($10A3CB)==$02)
+      poke $10A3CB $05
+    endif
+    if (param==$06)&&(peek($10A40D)==$02)
+      poke $10A40D $05
+    endif
+script "Select Title Language" \
+ "0x01/Japanese"\
+ "0x02/English" 
+run:
+    if (param==$01)&&(peek($10A3C3)==$01)
+      poke $10A3C3 $00
+    endif
+    if (param==$01)&&(peek($10A40F)==$01)
+      poke $10A40F $00
+    endif
+    if (param==$02)&&(peek($10A3C3)==$01)
+      poke $10A3C3 $01
+    endif
+    if (param==$02)&&(peek($10A40F)==$01)
+      poke $10A40F $01
+    endif
+script "Display Hidden Debug BPSM Test Mode Menu" \
+ "comm:For best clarity, use on the Game Settings menu (F2)."  
+on:
+    lpoke $10819A $00010001
+    poke $10A489 $00

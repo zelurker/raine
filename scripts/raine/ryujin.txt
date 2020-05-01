@@ -1,21 +1,85 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $101A03 $04
-
-script "2UP Unlimited energy" always
-	poke $101A73 $04
-
-script "1UP Unlimited bombs" always
-	poke $101A2F $09
-
-script "2UP Unlimited bombs" always
-	poke $101A9F $09
-
-script "1UP Maximum fire power" always
-	poke $101A21 $05
-
-script "2UP Maximum fire power" always
-	poke $101A91 $05
+script "Infinite Credits"  
+run:
+    poke $100114 $09
+script "Select starting level" \
+ "comm:Use on character select screen to select start level. It only changes the current level if you lose all your lives and then continue the game." \
+ inter=1,6,1 
+change:
+    poke $101603 (param-$1)
+script "Select next level" \
+ inter=1,6,1 
+change:
+    poke $101603 (param-$1)
+script "Kill the Boss Now!" \
+ "comm:This is a timer cheat, not a life cheat. May be useful elsewhere"  
+on:
+    poke $1000CC $00
+    poke $1000CB $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101A03 $04
+script "P1 Infinite Bombs"  
+run:
+    poke $101A2F $09
+script "P1 Maximum Fire Power"  
+run:
+    poke $101A21 $05
+script "P1 Always have Pink Weapon" \
+ "comm:Has no effect when you have a Big Ship"  
+run:
+    poke $101A1F $00
+script "P1 Always have Blue Weapon" \
+ "comm:Has no effect when you have a Big Ship"  
+run:
+    poke $101A1F $01
+script "P1 Get the Pink Weapon Now!" \
+ "comm:Has no effect when you have a Big Ship"  
+on:
+    poke $101A1F $00
+script "P1 Get the Blue Weapon Now!" \
+ "comm:Has no effect when you have a Big Ship"  
+on:
+    poke $101A1F $01
+script "P1 Always have Big Ship" \
+ "comm:Turn off between levels to avoid glitches. Don't enable when you have invincibility or it will flicker"  
+run:
+    poke $1000C4 $60
+    poke $1019CA $03
+    poke $1019D6 $04
+    poke $1019D7 $04
+    poke $101A2B $04
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $101A73 $04
+script "P2 Infinite Bombs"  
+run:
+    poke $101A9F $09
+script "P2 Maximum Fire Power"  
+run:
+    poke $101A91 $05
+script "P2 Always have Pink Weapon" \
+ "comm:Has no effect when you have a Big Ship"  
+run:
+    poke $101A8F $00
+script "P2 Always have Blue Weapon" \
+ "comm:Has no effect when you have a Big Ship"  
+run:
+    poke $101A8F $01
+script "P2 Get the Pink Weapon Now!" \
+ "comm:Has no effect when you have a Big Ship"  
+on:
+    poke $101A8F $00
+script "P2 Get the Blue Weapon Now!" \
+ "comm:Has no effect when you have a Big Ship"  
+on:
+    poke $101A8F $01
+script "P2 Always have Big Ship" \
+ "comm:Turn off between levels to avoid glitches. Don't enable when you have invincibility or it will flicker"  
+run:
+    poke $1000C8 $60
+    poke $101A3A $03
+    poke $101A46 $04
+    poke $101A47 $04
+    poke $101A9B $04

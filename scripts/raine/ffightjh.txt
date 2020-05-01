@@ -1,0 +1,130 @@
+script "Infinite Time"  
+run:
+    poke $FF80AF $99
+script "Clear this Scene Now!" \
+ "comm:Turn Off Bonus Stage"  
+on:
+    poke $FF8129 $01
+script "Go to Final Stage Now!"  
+on:
+    poke $FF80BE $05
+script "One Hit to Kill Goons"  
+run:
+    poke $FF8701 $00
+    poke $FF87C1 $00
+    poke $FF8881 $00
+    poke $FF8941 $00
+    poke $FF8A01 $00
+    poke $FF8AC1 $00
+    poke $FF8B81 $00
+    poke $FF8C41 $00
+    poke $FF8D01 $00
+    poke $FF8DC1 $00
+    poke $FF8E81 $00
+    poke $FF8F41 $00
+    poke $FF9001 $00
+script "Kill Boss Faster Now!"  
+on:
+    dpoke $FF9A80 $0008
+script "Knife stab ability for Guy and Haggar" \
+ "comm:Guy and Haggar can stab enemies with knife as Cody can."  
+on:
+    temp0=dpeek($BE06)
+    temp1=peek($BE3C)
+run:
+    dpoke $BE06 $4E71
+    poke $BE3C $60
+off:
+    dpoke $BE06 temp0
+    poke $BE3C temp1
+script "Never lose weapons" \
+ "comm:After enemy hits, dropped weapons are never lost."  
+on:
+    temp0=peek($5A5DE)
+    temp1=peek($5AD72)
+    temp2=peek($5B600)
+run:
+    poke $5A5DE $60
+    poke $5AD72 $60
+    poke $5B600 $60
+off:
+    poke $5A5DE temp0
+    poke $5AD72 temp1
+    poke $5B600 temp2
+script "Never drop weapons" \
+ "comm:Weapons are never dropped unless player loses a life."  
+on:
+    temp0=dpeek($0A79A)
+    temp1=peek($0A826)
+    temp2=peek($0A9CC)
+run:
+    dpoke $0A79A $6022
+    poke $0A826 $60
+    poke $0A9CC $60
+off:
+    dpoke $0A79A temp0
+    poke $0A826 temp1
+    poke $0A9CC temp2
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF85E8 $09
+script "P1 Invincibility"  
+run:
+    poke $FF85C9 $FE
+script "P1 Infinite Energy"  
+run:
+    poke $FF8581 $90
+script "P1 Punch Only Combo"  
+run:
+    poke $FF860B $00
+script "P1 Bodyblow Only Combo" \
+ "comm:Haggar Finish"  
+run:
+    poke $FF860B $02
+script "P1 Cody Finish" \
+ "comm:Haggar is Punch"  
+run:
+    poke $FF860B $04
+script "P1 Guy Finish" \
+ "comm:Cody + Haggar is Punch"  
+run:
+    poke $FF860B $06
+script "P1 Action Speed Up"  
+run:
+    poke $FF8590 $01
+script "P1 Infinite Supers"  
+run:
+    poke $FFFFC1 $09
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF86A8 $09
+script "P2 Invincibility"  
+run:
+    poke $FF8689 $FE
+script "P2 Infinite Energy"  
+run:
+    poke $FF8641 $90
+script "P2 Punch Only Combo"  
+run:
+    poke $FF86CB $00
+script "P2 Bodyblow Only Combo" \
+ "comm:Haggar Finish"  
+run:
+    poke $FF86CB $02
+script "P2 Cody Finish" \
+ "comm:Haggar is Punch"  
+run:
+    poke $FF86CB $04
+script "P2 Guy Finish" \
+ "comm:Cody + Haggar is Punch"  
+run:
+    poke $FF86CB $06
+script "P2 Action Speed Up"  
+run:
+    poke $FF8650 $01
+script "P2 Infinite Supers"  
+run:
+    poke $FFFFC3 $09
+script " "  

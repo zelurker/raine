@@ -1,0 +1,168 @@
+script "Infinite Time"  
+run:
+    poke $10D127 $D2
+script "Invincibility"  
+run:
+    poke $10D1FC $01
+    poke $10D1FF $E3
+script "Select Rainbow Size" \
+ "0x00/X1"\
+ "0x01/X2"\
+ "0x02/X3"\
+ "0x03/X4"\
+ "0x04/X5"\
+ "0x05/X6" 
+run:
+    poke $10D05F param
+script "Select Rainbow Speed" \
+ "0x00/Normal"\
+ "0x01/Fast"\
+ "0x07/Very Fast" 
+run:
+    poke $10D060 param
+script "Select Speed" \
+ "comm:You should enable this speed power-up cheat on the title screen or before losing a life!" \
+ "0x00/Normal"\
+ "0x01/Power-Up"\
+ "0x03/Maximum" 
+run:
+    poke $10D061 param
+script "Get All 7 Big Diamonds Now!"  
+on:
+    poke $10D055 $7F|(peek($10D055)&~7F)
+script "Get All 3 Mirrors Now!"  
+on:
+    poke $10D055 $80|(peek($10D055)&~80)
+    poke $10D054 $03|(peek($10D054)&~03)
+script "Get Red    Big Diamond Now!"  
+on:
+    poke $10D055 $01|(peek($10D055)&~01)
+script "Get Orange Big Diamond Now!"  
+on:
+    poke $10D055 $02|(peek($10D055)&~02)
+script "Get Yellow Big Diamond Now!"  
+on:
+    poke $10D055 $04|(peek($10D055)&~04)
+script "Get Green  Big Diamond Now!"  
+on:
+    poke $10D055 $08|(peek($10D055)&~08)
+script "Get Blue   Big Diamond Now!"  
+on:
+    poke $10D055 $10|(peek($10D055)&~10)
+script "Get Indigo Big Diamond Now!"  
+on:
+    poke $10D055 $20|(peek($10D055)&~20)
+script "Get Purple Big Diamond Now!"  
+on:
+    poke $10D055 $40|(peek($10D055)&~40)
+script "Get Red    Mirror Now!"  
+on:
+    poke $10D055 $80|(peek($10D055)&~80)
+script "Get Grey   Mirror Now!"  
+on:
+    poke $10D054 $01|(peek($10D054)&~01)
+script "Get Yellow Mirror Now!"  
+on:
+    poke $10D054 $02|(peek($10D054)&~02)
+script "Kill Island Guardian Now!"  
+on:
+    poke $10E1B9 $00
+script "Kill all Island Guardians fast"  
+run:
+    poke $10E1B9 $00
+script "All permanent POWs"  
+run:
+    poke $10D041 $C7
+    poke $10D040 $02
+script "Always have Bonus door"  
+run:
+    poke $10D056 $01
+script "Always have wing power"  
+run:
+    poke $10D1C0 $01
+script "Always have the fairy"  
+run:
+    poke $10C96B $05
+    poke $10DF22 $FF
+script "Get wing power Now!"  
+on:
+    poke $10D1C0 $01
+script "Get the fairy Now!"  
+on:
+    poke $10C96B $05
+    poke $10DF22 $FF
+script "Select Starting Round" \
+ "0x00/1 (World 1)"\
+ "0x01/2 (World 1)"\
+ "0x02/3 (World 1)"\
+ "0x03/4 (World 1)"\
+ "0x04/5 (World 2)"\
+ "0x05/6 (World 2)"\
+ "0x06/7 (World 2)"\
+ "0x07/8 (World 2)"\
+ "0x08/9 (World 3)"\
+ "0x09/10 (World 3)"\
+ "0x0A/11 (World 3)"\
+ "0x0B/12 (World 3)"\
+ "0x0C/13 (World 4)"\
+ "0x0D/14 (World 4)"\
+ "0x0E/15 (World 4)"\
+ "0x0F/16 (World 4)"\
+ "0x10/17 (World 5)"\
+ "0x11/18 (World 5)"\
+ "0x12/19 (World 5)"\
+ "0x13/20 (World 5)"\
+ "0x14/21 (World 6)"\
+ "0x15/22 (World 6)"\
+ "0x16/23 (World 6)"\
+ "0x17/24 (World 6)"\
+ "0x18/25 (World 7)"\
+ "0x19/26 (World 7)"\
+ "0x1A/27 (World 7)"\
+ "0x1B/28 (World 7) NORMAL END"\
+ "0x1C/## 29 (World 8) ##"\
+ "0x1D/## 30 (World 8) ##"\
+ "0x1E/## 31 (World 8) ##"\
+ "0x1F/## 32 (World 8) ##"\
+ "0x20/## 33 (World 9) ##"\
+ "0x21/## 34 (World 9) ##"\
+ "0x22/## 35 (World 9) ##"\
+ "0x23/## 36 (World 9) ##"\
+ "0x24/## 37 (World 10) ##"\
+ "0x25/## 38 (World 10) ##"\
+ "0x26/## 39 (World 10) ##"\
+ "0x27/## 40 (World 10) ##" 
+run:
+    if (peek($10D049)==$00)
+      poke $10D049 param
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $10E1FF $04
+script "P1 Always have ROYGBIV"  
+run:
+    poke $10E20C $01
+script "P1 Get ROYGBIV Now!"  
+on:
+    poke $10E20C $01
+script "P1 Select Monsters+Items" \
+ "0x00/Always have"\
+ "0x01/Never have" 
+run:
+    poke $10E20D param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10E20F $04
+script "P2 Always have ROYGBIV"  
+run:
+    poke $10E21C $01
+script "P2 Get ROYGBIV Now!"  
+on:
+    poke $10E21C $01
+script "P2 Select Monsters+Items" \
+ "0x00/Always have"\
+ "0x01/Never have" 
+run:
+    poke $10E21D param

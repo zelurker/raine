@@ -1,0 +1,81 @@
+script "Infinite Continues"  
+run:
+    poke $10FD89 $64
+    poke $100114 $FF
+script "Infinite Time - W.G.P" \
+ "comm:In story mode this will make you lose the Seaside Street Time Trial race every time"  
+run:
+    poke $1000F8 $99
+script "Infinite Time - Story"  
+run:
+    poke $10011B $99
+script "Infinite Time Remaining [STORY MODE]" \
+ "comm:For use in the Suzuka 8 Hours race at the end of story mode"  
+run:
+    poke $1000FC $08
+    poke $1000FD $60
+script "Infinite Turbos"  
+run:
+    poke $100F79 $04
+script "Win every race (as 1st)"  
+run:
+    poke $100F89 $01
+script "Always ride at Maximum Speed" \
+ "comm:Turn it OFF if you are stuck in a crash position"  
+run:
+    poke $100F52 $01
+    poke $100F53 $99
+script "Get Maximum Speed Boost Now!"  
+on:
+    poke $100F52 $01
+    poke $100F53 $99
+script "Infinite Money [STORY MODE]"  
+run:
+    poke $100C1C $99
+    poke $100C1D $99
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,0 +1,272 @@
+script "Infinite Time"  
+run:
+    poke $106B11 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $106B11 $00
+script "Infinite Character Selection Time"  
+run:
+    poke $106BDE $02
+script "Select Stage" \
+ "comm:You face five teams, then Abobo, another team, then Johann." \
+ inter=1,8,1 
+run:
+    poke $106909 (param-$1)
+script "Select Background" \
+ "comm:There's one background for each pairing, one for Abubo, and one for Johann. they are listed by which pairing they belong to. Radel/Annie, Jones/Kang + Johann don't have destructible barriers." \
+ "0x00/Sonia/Jimmy"\
+ "0x01/Pepe/Pupa"\
+ "0x02/Cassandra/Oni"\
+ "0x03/Billy/Lynn"\
+ "0x04/Alica/Elias"\
+ "0x05/Radel/Annie"\
+ "0x06/Abubo"\
+ "0x07/Jones/Kang"\
+ "0x08/Johann" 
+run:
+    poke $106B97 param
+script "Unbreakable Barriers"  
+on:
+    temp0=dpeek($067D22)
+run:
+    dpoke $067D22 $4E75
+off:
+    dpoke $067D22 temp0
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($069AE4)
+    temp1=dpeek($069AEA)
+    temp2=dpeek($069B0A)
+run:
+    dpoke $069AE4 $4E71
+    dpoke $069AEA $6000
+    dpoke $069B0A $6000
+off:
+    dpoke $069AE4 temp0
+    dpoke $069AEA temp1
+    dpoke $069B0A temp2
+script " "  
+script "P1 Infinite Energy (Active Char)"  
+run:
+    poke $1024CF $B4
+    poke $1024D3 $B4
+script "P1 Infinite Energy (Inactive Char)"  
+run:
+    poke $1027BF $B4
+    poke $1027C3 $B4
+script "P1 Drain All Energy Now! (Active Char)"  
+on:
+    poke $1024CF $00
+    poke $1024D3 $00
+script "P1 Drain All Energy Now! (Inactive Char)"  
+run:
+    poke $1027BF $00
+    poke $1027C3 $00
+script "P1 Infinite Power"  
+run:
+    poke $1024E3 $D8
+script "P1 Never have Power"  
+run:
+    poke $1024E3 $00
+script "P1 Drain All Power Now!"  
+on:
+    poke $1024E3 $00
+script "P1 No Wait Time to switch characters" \
+ "comm:Do not switch characters if the character you are swapping to is KO'd - or the game will CRASH!"  
+run:
+    poke $1024E5 $28
+script "P1 Can never switch characters"  
+run:
+    poke $1024E5 $00
+script "P1 Select First Character" \
+ "comm:Enable this cheat on the title screen" \
+ "0x00/Billy"\
+ "0x01/Lynn"\
+ "0x02/Radel"\
+ "0x03/Annie"\
+ "0x04/Cassandra"\
+ "0x05/Oni"\
+ "0x06/Pepe"\
+ "0x07/Pupa"\
+ "0x08/Alice"\
+ "0x09/Elias"\
+ "0x0A/Jones"\
+ "0x0B/Kang"\
+ "0x0C/Sonia"\
+ "0x0D/Jimmy"\
+ "0x0E/Abubo"\
+ "0x0F/Johann" 
+run:
+    poke $106BE3 param
+script "P1 Select First Character Colour" \
+ "comm:These control in-game character colours only. Its effect cannot be seen on the select screen. Johann does not appear to have B, C, or D colours." \
+ "0x00/Colour A"\
+ "0x01/Colour B"\
+ "0x02/Colour C"\
+ "0x03/Colour D" 
+run:
+    poke $106BE5 param
+script "P1 Select Second Character" \
+ "comm:Enable this cheat on the title screen" \
+ "0x00/Billy"\
+ "0x01/Lynn"\
+ "0x02/Radel"\
+ "0x03/Annie"\
+ "0x04/Cassandra"\
+ "0x05/Oni"\
+ "0x06/Pepe"\
+ "0x07/Pupa"\
+ "0x08/Alice"\
+ "0x09/Elias"\
+ "0x0A/Jones"\
+ "0x0B/Kang"\
+ "0x0C/Sonia"\
+ "0x0D/Jimmy"\
+ "0x0E/Abubo"\
+ "0x0F/Johann" 
+run:
+    poke $106BE7 param
+script "P1 Select Second Character Colour" \
+ "comm:These control in-game character colours only. Its effect cannot be seen on the select screen. Johann does not appear to have B, C, or D colours." \
+ "0x00/Colour A"\
+ "0x01/Colour B"\
+ "0x02/Colour C"\
+ "0x03/Colour D" 
+run:
+    poke $106BE9 param
+script " "  
+script "P2 Infinite Energy (Active Char)"  
+run:
+    poke $102357 $B4
+    poke $10235B $B4
+script "P2 Infinite Energy (Inactive Char)"  
+run:
+    poke $102647 $B4
+    poke $10264B $B4
+script "P2 Drain All Energy Now! (Active Char)"  
+on:
+    poke $102357 $00
+    poke $10235B $00
+script "P2 Drain All Energy Now! (Inactive Char)"  
+on:
+    poke $102647 $00
+    poke $10264B $00
+script "P2 Infinite Power"  
+run:
+    poke $10236B $D8
+script "P2 Never have Power"  
+run:
+    poke $10236B $00
+script "P2 Drain All Power Now!"  
+on:
+    poke $10236B $00
+script "P2 No Wait Time to switch characters" \
+ "comm:Do not switch characters if the character you are swapping to is KO'd - or the game will CRASH!"  
+run:
+    poke $10236D $28
+script "P2 Can never switch characters"  
+run:
+    poke $10236D $00
+script "P2 Select First Character" \
+ "comm:Enable this cheat on the title screen (Only available in VS Mode)" \
+ "0x00/Billy"\
+ "0x01/Lynn"\
+ "0x02/Radel"\
+ "0x03/Annie"\
+ "0x04/Cassandra"\
+ "0x05/Oni"\
+ "0x06/Pepe"\
+ "0x07/Pupa"\
+ "0x08/Alice"\
+ "0x09/Elias"\
+ "0x0A/Jones"\
+ "0x0B/Kang"\
+ "0x0C/Sonia"\
+ "0x0D/Jimmy"\
+ "0x0E/Abubo"\
+ "0x0F/Johann" 
+run:
+    poke $106BF1 param
+script "P2 Select First Character Colour" \
+ "comm:These control in-game character colours only. Its effect cannot be seen on the select screen. Johann does not appear to have B, C, or D colours." \
+ "0x00/Colour A"\
+ "0x01/Colour B"\
+ "0x02/Colour C"\
+ "0x03/Colour D" 
+run:
+    poke $106BF3 param
+script "P2 Select Second Character" \
+ "comm:Enable this cheat on the title screen (Only available in VS Mode)" \
+ "0x00/Billy"\
+ "0x01/Lynn"\
+ "0x02/Radel"\
+ "0x03/Annie"\
+ "0x04/Cassandra"\
+ "0x05/Oni"\
+ "0x06/Pepe"\
+ "0x07/Pupa"\
+ "0x08/Alice"\
+ "0x09/Elias"\
+ "0x0A/Jones"\
+ "0x0B/Kang"\
+ "0x0C/Sonia"\
+ "0x0D/Jimmy"\
+ "0x0E/Abubo"\
+ "0x0F/Johann" 
+run:
+    poke $106BF5 param
+script "P2 Select Second Character Colour" \
+ "comm:These control in-game character colours only. Its effect cannot be seen on the select screen. Johann does not appear to have B, C, or D colours." \
+ "0x00/Colour A"\
+ "0x01/Colour B"\
+ "0x02/Colour C"\
+ "0x03/Colour D" 
+run:
+    poke $106BF7 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

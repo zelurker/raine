@@ -1,18 +1,89 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $1002E8 $03
-
-script "2UP Unlimited lives" always
-	poke $1002DC $03
-
-script "1UP Unlimited helps" always
-	poke $1001A1 $04
-
-script "2UP Unlimited helps" always
-	poke $1001A2 $04
-
-script "*UP Unlimited time      (OFF)" always
-	poke $100300 $63
+script " "  
+script "Cheats for All or Multiple Game Rounds"  
+script " "  
+script "Infinite Credits"  
+run:
+    poke $10A8C3 $63
+script "Infinite Time (Turn OFF at end of stage!)"  
+run:
+    poke $100300 $63
+script "Always 1 level only needed to complete Round"  
+run:
+    poke $10030E $01
+script "Practice this Round" \
+ "comm:Turn it OFF with the 'Complete one level to complete Round Now!' cheat"  
+run:
+    poke $10030E $03
+script "Complete 1 level to complete Round Now!"  
+on:
+    poke $10030E $01
+script "P1 Infinite Lives"  
+run:
+    poke $1002E8 $09
+script "P1 Infinite Help"  
+run:
+    poke $1001A1 $04
+script "P2 Infinite Lives"  
+run:
+    poke $1002DC $09
+script "P2 Infinite Help"  
+run:
+    poke $1001A2 $04
+script " "  
+script "Spot the Difference Round"  
+script " "  
+script "Next Difference spotted finishes level Now!"  
+on:
+    poke $100140 $00
+script "One Difference spotted always finishes level"  
+run:
+    poke $100140 $00
+script " "  
+script "Shadow Identification Round"  
+script " "  
+script "1   2   3"  
+script "4   5   6"  
+script "7   8   9"  
+script "Display the Correct Shadow Answer"  
+run:
+script " "  
+script "Slide Puzzle Round (Click on a Tile after selecting the cheat!)"  
+script " "  
+script "P1 Automatically Complete most of Puzzle Now!"  
+on:
+    lpoke $100564 $01020304
+    lpoke $100568 $05060708
+    poke $10056C $09
+script "P2 Automatically Complete most of Puzzle Now!"  
+on:
+    lpoke $1000A8 $01020304
+    lpoke $1000AC $05060708
+    poke $1000B0 $09
+script " "  
+script "Mallet Hitting Rounds"  
+script " "  
+script "P1 Finish this Level Now!"  
+on:
+    poke $10004A $00
+script "P2 Finish this Level Now!"  
+on:
+    poke $10004B $00
+script " "  
+script "Bonus Stage"  
+script " "  
+script "Gets Extra Life Now!"  
+on:
+    poke $1003AC $1F
+    poke $100300 $00
+script " "  
+script "Balloon Round"  
+script " "  
+script "Finish Stage Now!"  
+on:
+    poke $100300 $00
+script "P1 Invincibility"  
+run:
+    poke $10012A $04
+script "P2 Invincibility"  
+run:
+    poke $100264 $04

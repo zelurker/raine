@@ -1,0 +1,331 @@
+script "Infinite Credits"  
+run:
+    poke $FF8D67 $09
+script "Infinite Time"  
+run:
+    dpoke ((dpeek($FFC38E))+$FF0362) $0000
+script "One Correct Answer Ends Quiz Now!"  
+on:
+    poke $FF83B0 $00
+script "Watch me for good answer"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $FF8397 $00
+script "Select Quiz Category" \
+ "0x01/Category 1"\
+ "0x02/Category 2"\
+ "0x03/Category 3"\
+ "0x04/Category 4"\
+ "0x05/Category 5"\
+ "0x06/Category 6"\
+ "0x07/Category 7"\
+ "0x08/Category 8"\
+ "0x09/Category 9"\
+ "0x10/Category 10"\
+ "0x11/Category 11"\
+ "0x12/Category 12"\
+ "0x13/Category 13"\
+ "0x14/Category 14"\
+ "0x15/Category 15"\
+ "0x16/Category 16"\
+ "0x17/Category 17" 
+run:
+    if (param==$01)
+      poke $FF83C6 $01
+      poke $FF83C4 $00
+    endif
+    if (param==$02)
+      poke $FF83C6 $01
+      poke $FF83C4 $01
+    endif
+    if (param==$03)
+      poke $FF83C6 $01
+      poke $FF83C4 $02
+    endif
+    if (param==$04)
+      poke $FF83C6 $01
+      poke $FF83C4 $03
+    endif
+    if (param==$05)
+      poke $FF83C6 $01
+      poke $FF83C4 $04
+    endif
+    if (param==$06)
+      poke $FF83C6 $01
+      poke $FF83C4 $05
+    endif
+    if (param==$07)
+      poke $FF83C6 $01
+      poke $FF83C4 $06
+    endif
+    if (param==$08)
+      poke $FF83C6 $01
+      poke $FF83C4 $07
+    endif
+    if (param==$09)
+      poke $FF83C6 $01
+      poke $FF83C4 $08
+    endif
+    if (param==$10)
+      poke $FF83C6 $01
+      poke $FF83C4 $09
+    endif
+    if (param==$11)
+      poke $FF83C6 $01
+      poke $FF83C4 $0A
+    endif
+    if (param==$12)
+      poke $FF83C6 $01
+      poke $FF83C4 $B
+    endif
+    if (param==$13)
+      poke $FF83C6 $01
+      poke $FF83C4 $0C
+    endif
+    if (param==$14)
+      poke $FF83C6 $01
+      poke $FF83C4 $0D
+    endif
+    if (param==$15)
+      poke $FF83C6 $01
+      poke $FF83C4 $0E
+    endif
+    if (param==$16)
+      poke $FF83C6 $01
+      poke $FF83C4 $0F
+    endif
+    if (param==$17)
+      poke $FF83C6 $01
+      poke $FF83C4 $10
+    endif
+script "Select Passes" \
+ "0x01/One Pass"\
+ "0x02/Two Passes"\
+ "0x03/Three Passes"\
+ "0x04/Four Passes"\
+ "0x05/Five Passes"\
+ "0x06/Six Passes"\
+ "0x20/End of Stage"\
+ "0x00/Get Envy" 
+run:
+    poke $FF834B param
+script "Select First Help Item" \
+ "0x00/Nothing"\
+ "0x01/2 Questions"\
+ "0x02/3 Questions"\
+ "0x03/Show Answer"\
+ "0x04/Allow 1 Mistake"\
+ "0x05/Genre Select"\
+ "0x06/Slow Timer"\
+ "0x07/Double Score"\
+ "0x08/Bonus Love Points"\
+ "0x09/Bonus Attack Points" 
+run:
+    poke $FF8097 param
+script "Select Second Help Item" \
+ "0x00/Nothing"\
+ "0x01/2 Questions"\
+ "0x02/3 Questions"\
+ "0x03/Show Answer"\
+ "0x04/Allow 1 Mistake"\
+ "0x05/Genre Select"\
+ "0x06/Slow Timer"\
+ "0x07/Double Score"\
+ "0x08/Bonus Love Points"\
+ "0x09/Bonus Attack Points" 
+run:
+    poke $FF80A4 param
+script "Select Character" \
+ "0x01/Ezaki Kumiko"\
+ "0x02/Fujiya Momoko"\
+ "0x03/Kanebo Saki"\
+ "0x04/Sakuma Emi"\
+ "0x05/Sakuma Megumi"\
+ "0x06/Shall-Lotte"\
+ "0x07/Toumato Mayumi" 
+run:
+    if (param==$01)
+      poke $FF4093 $00
+      poke $FF839D $00
+      poke $FF83CF $00
+      poke $FF83D1 $00
+    endif
+    if (param==$02)
+      poke $FF4093 $01
+      poke $FF839D $01
+      poke $FF83CF $01
+    endif
+    if (param==$03)
+      poke $FF4093 $03
+      poke $FF839D $03
+      poke $FF83CF $03
+    endif
+    if (param==$04)
+      poke $FF4093 $05
+      poke $FF839D $05
+      poke $FF83CF $05
+    endif
+    if (param==$05)
+      poke $FF4093 $06
+      poke $FF839D $06
+      poke $FF83CF $06
+    endif
+    if (param==$06)
+      poke $FF4093 $02
+      poke $FF839D $02
+      poke $FF83CF $02
+    endif
+    if (param==$07)
+      poke $FF4093 $04
+      poke $FF839D $04
+      poke $FF83CF $04
+    endif
+script "Touch Quiz Count - Clear Quiz Count"  
+run:
+    poke $FF8D5E $00
+script "Touch Quiz Count - Clear Answer Count"  
+run:
+    poke $FF8079 $00
+script "Select Starting Stage" \
+ "0x01/Stage 1"\
+ "0x02/Stage 2"\
+ "0x03/Stage 3"\
+ "0x04/Stage 4"\
+ "0x05/Stage 5"\
+ "0x06/Stage 6"\
+ "0x07/Stage 7"\
+ "0x08/Stage 8"\
+ "0x09/Stage 9" 
+run:
+    if (peek($FF8200)==$01)
+      poke $FF8200 param
+    endif
+script "Select Roulette Count" \
+ inter=1,40,1 
+run:
+    poke $FF834B param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF8063 $05
+    poke $FF8097 $00
+    poke $FF80A3 peek($FF8097)
+    poke $FF80A4 peek($FF8097)
+    poke $FF80A5 peek($FF8097)
+    poke $FF80A6 peek($FF8097)
+    poke $FF80A7 peek($FF8097)
+script "P1 Select Card Item" \
+ "0x01/2 answers"\
+ "0x02/3 answers"\
+ "0x03/Good answer"\
+ "0x04/1 chance"\
+ "0x05/Genre select"\
+ "0x06/Timer slow"\
+ "0x07/Score x2"\
+ "0x08/Parameter up"\
+ "0x09/Attack power up" 
+run:
+    poke $FF8097 param
+    poke $FF80A3 peek($FF8097)
+    poke $FF80A4 peek($FF8097)
+    poke $FF80A5 peek($FF8097)
+    poke $FF80A6 peek($FF8097)
+    poke $FF80A7 peek($FF8097)
+script "P1 Infinite Item"  
+run:
+    dpoke $FF80AE $03FF
+script "P1 Always have 100 Love Points - Ezaki Kumiko"  
+run:
+    dpoke $FF855A $0064
+script "P1 Always have 100 Love Points - Fujiya Momoko"  
+run:
+    dpoke $FF85DA $0064
+script "P1 Always have 100 Love Points - Kanebo Saki"  
+run:
+    dpoke $FF86DA $0064
+script "P1 Always have 100 Love Points - Sakuma Emi"  
+run:
+    dpoke $FF87DA $0064
+script "P1 Always have 100 Love Points - Sakuma Megumi"  
+run:
+    dpoke $FF885A $0064
+script "P1 Always have 100 Love Points - Toumato Mayumi"  
+run:
+    dpoke $FF875A $0064
+script "P1 Total Average always = 0%"  
+run:
+    poke $FF80A9 $00
+script "P1 Total Average always = 100%"  
+run:
+    poke $FF80A9 $64
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF8163 $05
+    poke $FF8197 $00
+    poke $FF81A3 peek($FF8197)
+    poke $FF81A4 peek($FF8197)
+    poke $FF81A5 peek($FF8197)
+    poke $FF81A6 peek($FF8197)
+    poke $FF81A7 peek($FF8197)
+script "P2 Select Card Item" \
+ "0x01/2 answers"\
+ "0x02/3 answers"\
+ "0x03/Good answer"\
+ "0x04/1 chance"\
+ "0x05/Genre select"\
+ "0x06/Timer slow"\
+ "0x07/Score x2"\
+ "0x08/Parameter up"\
+ "0x09/Attack power up" 
+run:
+    poke $FF8197 param
+    poke $FF81A3 peek($FF8197)
+    poke $FF81A4 peek($FF8197)
+    poke $FF81A5 peek($FF8197)
+    poke $FF81A6 peek($FF8197)
+    poke $FF81A7 peek($FF8197)
+script "P2 Infinite Item"  
+run:
+    dpoke $FF81AE $03FF
+script "P2 Always have 100 Love Points - Ezaki Kumiko"  
+run:
+    dpoke $FF855C $0064
+script "P2 Always have 100 Love Points - Fujiya Momoko"  
+run:
+    dpoke $FF85DC $0064
+script "P2 Always have 100 Love Points - Kanebo Saki"  
+run:
+    dpoke $FF86DC $0064
+script "P2 Always have 100 Love Points - Sakuma Emi"  
+run:
+    dpoke $FF87DC $0064
+script "P2 Always have 100 Love Points - Sakuma Megumi"  
+run:
+    dpoke $FF885C $0064
+script "P2 Always have 100 Love Points - Toumato Mayumi"  
+run:
+    dpoke $FF875C $0064
+script "P2 Total Average always = 0%"  
+run:
+    poke $FF81A9 $00
+script "P2 Total Average always = 100%"  
+run:
+    poke $FF81A9 $64
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Asia"\
+ "0x08/Euro"\
+ "0x0A/Brazil" 
+run:
+    poke $FF8D81 param

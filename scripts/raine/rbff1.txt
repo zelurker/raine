@@ -1,0 +1,190 @@
+script "Infinite Time"  
+run:
+    poke $106AA8 $9A
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $106AA8 $00
+script "Select Starting Fight" \
+ "0x01/Fight 1"\
+ "0x02/Fight 2"\
+ "0x03/Fight 3"\
+ "0x04/Fight 4"\
+ "0x05/Fight 5"\
+ "0x06/Fight 6"\
+ "0x07/Fight 7"\
+ "0x08/Fight 8"\
+ "0x09/Fight 9"\
+ "0x0A/Fight 10"\
+ "0x0B/Fight 11"\
+ "0x0C/Fight 12"\
+ "0x0D/Boss (Last Fight)" 
+run:
+    if (peek($106A37)==$01)
+      poke $106A37 param
+    endif
+script "Left Wall always Solid" \
+ "comm:No leftwards 'Out of Bounds' possible, this cheat will not rebuild collapsed walls!"  
+run:
+    poke $10969F $0A
+script "Right Wall always Solid" \
+ "comm:No rightwards 'Out of Bounds' possible, this cheat will not rebuild collapsed walls!"  
+run:
+    poke $1096A1 $0A
+script "Left Wall will collapse with 1 hit Now!"  
+on:
+    poke $10969F $00
+script "Right Wall will collapse with 1 hit Now!"  
+on:
+    poke $1096A1 $00
+script " "  
+script "Once you activate Easy Supers you can do all the SDMs of any character"  
+script "(even the hidden SDMs), all you have to do usually is during play"  
+script "press DOWN, DOWN + A (DM), DOWN, DOWN + C (SDM), some characters that"  
+script "have more than 2 SDMs can use the B or D buttons as well."  
+script " "  
+script "Always have Easy Supers"  
+run:
+    poke $10E001 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $100489 $C0
+script "P1 Drain All Energy Now!"  
+on:
+    poke $100489 $00
+script "P1 Infinite Power"  
+run:
+    poke $1004BA $3C
+script "P1 Select Character" \
+ "comm:Free player selection - Activate between rounds or after selection." \
+ "0x01/Terry Bogard"\
+ "0x02/Andy Bogard"\
+ "0x03/Joe Higashi"\
+ "0x04/Mai Shiranui"\
+ "0x05/Geese Howard"\
+ "0x06/Sokaku Mochizuki"\
+ "0x07/Bob Wilson"\
+ "0x08/Hon-Fu"\
+ "0x09/Blue Mary"\
+ "0x0A/Franco Bash"\
+ "0x0B/Ryuji Yamazaki"\
+ "0x0C/Jin Chonshu"\
+ "0x0D/Jin Chonrei"\
+ "0x0E/Duck King"\
+ "0x0F/Kim Kaphwan"\
+ "0x10/Billy Kane" 
+run:
+    poke $106A25 param
+script "P1 Select Colour" \
+ "0x00/A Colour"\
+ "0x01/D Colour" 
+run:
+    poke $106A2C param|(peek($106A2C)&~01)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $100589 $C0
+script "P2 Drain All Energy Now!"  
+on:
+    poke $100589 $00
+script "P2 Infinite Power"  
+run:
+    poke $1005BA $3C
+script "P2 Select Character" \
+ "comm:Free player selection - Activate between rounds or after selection." \
+ "0x01/Terry Bogard"\
+ "0x02/Andy Bogard"\
+ "0x03/Joe Higashi"\
+ "0x04/Mai Shiranui"\
+ "0x05/Geese Howard"\
+ "0x06/Sokaku Mochizuki"\
+ "0x07/Bob Wilson"\
+ "0x08/Hon-Fu"\
+ "0x09/Blue Mary"\
+ "0x0A/Franco Bash"\
+ "0x0B/Ryuji Yamazaki"\
+ "0x0C/Jin Chonshu"\
+ "0x0D/Jin Chonrei"\
+ "0x0E/Duck King"\
+ "0x0F/Kim Kaphwan"\
+ "0x10/Billy Kane" 
+run:
+    poke $106A27 param
+script "P2 Select Colour" \
+ "0x00/A Colour"\
+ "0x01/D Colour" 
+run:
+    poke $106A2D param|(peek($106A2D)&~01)
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE1A $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start; works in round 1 only"  
+on:
+    temp0=lpeek($00375C)
+run:
+    lpoke $00375C temp0
+    if (peek($106AA2)==$38&&peek($106A39)==$01)
+      poke $106AA2 $33
+    endif
+    if (peek($106AA2)!=$00&&peek($106AA3)==$00&&peek($106A39)==$01)
+      lpoke $00375C $4E714E71
+      poke $1065E3 $00
+      poke $1065E5 $01
+      dpoke $401FFE $8F8F
+    endif
+off:
+    lpoke $00375C temp0
+    poke $106AA2 $38
+    poke $1065E3 peek($1065E2)&0F
+    poke $1065E5 peek($1065E4)&0F
+    dpoke $401FFE $0000
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

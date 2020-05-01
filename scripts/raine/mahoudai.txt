@@ -1,87 +1,53 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.09.08
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $10173B $F0
-
-script "1UP Invulnerability OFF"
-	poke $10173B $01
-
-script "2UP Invulnerability ON" always
-	poke $1017FB $F0
-
-script "2UP Invulnerability OFF"
-	poke $1017FB $01
-
-script "1UP Unlimited lives" always
-	poke $1004A5 $03
-
-script "2UP Unlimited lives" always
-	poke $1004A7 $03
-
-script "1UP Unlimited bombs" always
-	poke $10173D $09
-
-script "2UP Unlimited bombs" always
-	poke $1017FD $09
-
-script "1UP Maximum main fire power" always
-	poke $101745 $05
-
-script "2UP Maximum main fire power" always
-	poke $101805 $05
-
-script "1UP Maximum extra fire power" always
-	poke $101759 $02
-
-script "2UP Maximum extra fire power" always
-	poke $101819 $02
-
-script "1UP Extra weapon - F  (-P)" always
-	poke $10175F peek($10175F)&$fb
-	poke $10175F peek($10175F)&$f7
-
-script "1UP Extra weapon - W  (-P)" always
-	poke $10175F peek($10175F)&$fb|$04
-	poke $10175F peek($10175F)&$f7
-
-script "1UP Extra weapon - H  (-P)" always
-	poke $10175F peek($10175F)&$fb
-	poke $10175F peek($10175F)&$f7|$08
-
-script "2UP Extra weapon - F  (-P)" always
-	poke $10181F peek($10181F)&$fb
-	poke $10181F peek($10181F)&$f7
-
-script "2UP Extra weapon - W  (-P)" always
-	poke $10181F peek($10181F)&$fb|$04
-	poke $10181F peek($10181F)&$f7
-
-script "2UP Extra weapon - H  (-P)" always
-	poke $10181F peek($10181F)&$fb
-	poke $10181F peek($10181F)&$f7|$08
-
-script "1UP Extra weapon - F  (-T)"
-	poke $10175F peek($10175F)&$fb
-	poke $10175F peek($10175F)&$f7
-
-script "1UP Extra weapon - W  (-T)"
-	poke $10175F peek($10175F)&$fb|$04
-	poke $10175F peek($10175F)&$f7
-
-script "1UP Extra weapon - H  (-T)"
-	poke $10175F peek($10175F)&$fb
-	poke $10175F peek($10175F)&$f7|$08
-
-script "2UP Extra weapon - F  (-T)"
-	poke $10181F peek($10181F)&$fb
-	poke $10181F peek($10181F)&$f7
-
-script "2UP Extra weapon - W  (-T)"
-	poke $10181F peek($10181F)&$fb|$04
-	poke $10181F peek($10181F)&$f7
-
-script "2UP Extra weapon - H  (-T)"
-	poke $10181F peek($10181F)&$fb
-	poke $10181F peek($10181F)&$f7|$08
+script "Infinite Credits"  
+run:
+    poke $100393 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1004A5 $09
+script "P1 Infinite Bombs"  
+run:
+    poke $10173D $09
+script "P1 Invincibility" \
+ "comm:Only enable Invincibility after launch when you can shoot your weapons!! See the Dip Switch Menu to enable an alternate 'P1 Invincibility' cheat. But the cheat is better as the dipswitch causes a game crash when P2 is selected."  
+run:
+    poke $10173B $02
+script "P1 Maximum Main Weapon Power"  
+run:
+    poke $101745 $05
+script "P1 Maximum Extra Weapon Power" \
+ "comm:Get an extra weapon first"  
+run:
+    poke $101759 $02
+script "P1 Select Extra Weapon" \
+ "comm:Get an extra weapon first" \
+ "0x00/Front"\
+ "0x04/Wide"\
+ "0x08/Homing" 
+run:
+    poke $10175F param|(peek($10175F)&~0C)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1004A7 $09
+script "P2 Infinite Bombs"  
+run:
+    poke $1017FD $09
+script "P2 Invincibility" \
+ "comm:Only enable Invincibility after launch when you can shoot your weapons!!"  
+run:
+    poke $1017FB $02
+script "P2 Maximum Main Weapon Power"  
+run:
+    poke $101805 $05
+script "P2 Maximum Extra Weapon Power" \
+ "comm:Get an extra weapon first"  
+run:
+    poke $101819 $02
+script "P2 Select Extra Weapon" \
+ "comm:Get an extra weapon first" \
+ "0x00/Front"\
+ "0x04/Wide"\
+ "0x08/Homing" 
+run:
+    poke $10181F param|(peek($10181F)&~0C)

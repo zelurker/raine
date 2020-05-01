@@ -1,0 +1,98 @@
+script "Infinite Credits"  
+run:
+    poke $101731 $09
+script "Select Starting Round" \
+ inter=1,5,1 
+run:
+    if (peek($1052D9)==$00)
+      poke $1052D9 (param-$1)
+    endif
+script "Select Game Mode" \
+ "0x00/Normal Mode"\
+ "0x01/Time Attack Mode" 
+run:
+    poke $105105 param
+script " "  
+script "P1 Unlock Secret Character" \
+ "comm:Enable on the title screen"  
+on:
+    temp0=peek($104082)
+run:
+    poke $104082 $FF
+off:
+    poke $104082 temp0
+script "P1 Infinite Lives"  
+run:
+    poke $1052C5 $07
+script "P1 Infinite Bombs"  
+run:
+    poke $105A3B $03
+script "P1 Invincibility"  
+run:
+    poke $105A16 $80
+script "P1 Maximum Fire Power"  
+run:
+    poke $105A35 $06
+    poke $105A41 $05
+    poke $105A45 $04
+script "P1 Select Fighter Type" \
+ "0x00/Type-A (Concentrated Shot)"\
+ "0x08/Type-B (3-way Shot)"\
+ "0x10/Type-C (Wide Area Shot)" 
+run:
+    poke $105A36 param
+script "P1 Select Powerful Type" \
+ "0x00/Lock-On (Chases enemy)"\
+ "0x08/Bomb (Explode upon contact)"\
+ "0x10/Roll (Penetrates enemy)" 
+run:
+    poke $105A34 param
+script "P1 Select Speed" \
+ "0x1A/1 (Slowest)"\
+ "0x1E/2"\
+ "0x29/3"\
+ "0x2D/4 (Fastest)" 
+run:
+    poke $105A30 param
+script " "  
+script "P2 Unlock Secret Character" \
+ "comm:Enable on the title screen"  
+on:
+    temp0=peek($1040B0)
+run:
+    poke $1040B0 $FF
+off:
+    poke $1040B0 temp0
+script "P2 Infinite Lives"  
+run:
+    poke $1052C7 $07
+script "P2 Infinite Bombs"  
+run:
+    poke $105A7B $03
+script "P2 Invincibility"  
+run:
+    poke $105A56 $80
+script "P2 Maximum Fire Power"  
+run:
+    poke $105A75 $06
+    poke $105A81 $05
+    poke $105A85 $04
+script "P2 Select Fighter Type" \
+ "0x00/Type-A (Concentrated Shot)"\
+ "0x08/Type-B (3-way Shot)"\
+ "0x10/Type-C (Wide Area Shot)" 
+run:
+    poke $105A76 param
+script "P2 Select Powerful Shot" \
+ "0x00/Lock-On (Chases enemy)"\
+ "0x08/Bomb (Explode upon contact)"\
+ "0x10/Roll (Penetrates enemy)" 
+run:
+    poke $105A74 param
+script "P2 Select Speed" \
+ "0x1A/1 (Slowest)"\
+ "0x1E/2"\
+ "0x29/3"\
+ "0x2D/4 (Fastest)" 
+run:
+    poke $105A70 param

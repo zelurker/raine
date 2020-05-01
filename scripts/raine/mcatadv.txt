@@ -1,19 +1,26 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability ON" always
-	poke $101E65 $EF
-
-script "*UP Invulnerability OFF"
-	poke $101E65 $01
-
-script "*UP Unlimited lives" always
-	poke $101DD3 $03
-
-script "*UP Unlimited energy" always
-	poke $101DCF $0C
-	poke $101DD1 $0C
-
-script "*UP Unlimited time      (OFF)" always
-	poke $101D05 $99
+script "Infinite Credits"  
+run:
+    poke $101009 $09
+script "Infinite Time"  
+on:
+    temp0=peek($101D05)
+run:
+    if (frame%300==$0)&&(peek($101D05)!=temp0)
+      poke $101D05 $99
+    endif
+script "Infinite Lives"  
+run:
+    poke $101DD3 $64
+script "Infinite Energy"  
+run:
+    lpoke $101DCE $000C000C
+script "Invincibility" \
+ "comm:Falling down gaps or into water can still kill you though!"  
+run:
+    poke $101E65 $03
+script "Select Starting Level" \
+ inter=1,5,1 
+run:
+    if (peek($101DC9)==$00)
+      poke $101DC9 (param-$1)
+    endif

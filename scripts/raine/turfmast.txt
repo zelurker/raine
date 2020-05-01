@@ -1,0 +1,149 @@
+script "Select Shot Power" \
+ "0x04/1 Line (Green)"\
+ "0x08/2 Lines (Green)"\
+ "0x0C/3 Lines (Green)"\
+ "0x10/4 Lines (Green)"\
+ "0x14/5 Lines (Green)"\
+ "0x18/6 Lines (Green)"\
+ "0x1C/7 Lines (Green)"\
+ "0x20/8 Lines (Green)"\
+ "0x24/9 Lines (Green)"\
+ "0x28/10 Lines (Green)"\
+ "0x32/50% (Off Green)"\
+ "0x3C/60% (Off Green)"\
+ "0x46/70% (Off Green)"\
+ "0x50/80% (Off Green)"\
+ "0x5A/90% (Off Green)"\
+ "0x64/100% (Off Green)"\
+ "0x7F/Maximum (Tee Shot)" 
+run:
+    poke $106FE7 param
+script "Select Club" \
+ "0x00/1W (260 Yards)"\
+ "0x01/3W (240 Yards)"\
+ "0x02/4W (230 Yards)"\
+ "0x03/1I (220 Yards)"\
+ "0x04/3I (200 Yards)"\
+ "0x05/4I (190 Yards)"\
+ "0x06/5I (180 Yards)"\
+ "0x07/6I (170 Yards)"\
+ "0x08/7I (160 Yards)"\
+ "0x09/8I (150 Yards)"\
+ "0x0A/9I (140 Yards)"\
+ "0x0B/PW (120 Yards)"\
+ "0x0C/SW (100 Yards)"\
+ "0x0D/PT (28 Yards)" 
+run:
+    poke $106FDF param
+script "Select Wind Power" \
+ "0x00/No Wind"\
+ "0x13/Full Wind" 
+run:
+    poke $106FE1 param
+script "Select Wind Direction" \
+ "0x00/NORTH"\
+ "0x01/NNE"\
+ "0x02/NE"\
+ "0x03/NEE"\
+ "0x04/EAST"\
+ "0x05/SEE"\
+ "0x06/SE"\
+ "0x07/SSE"\
+ "0x08/SOUTH"\
+ "0x09/SSW"\
+ "0x0A/SW"\
+ "0x0B/SWW"\
+ "0x0C/WEST"\
+ "0x0D/NWW"\
+ "0x0E/NW"\
+ "0x0F/NNW" 
+run:
+    poke $106FE3 param
+script " "  
+script "P1 Infinite Time"  
+run:
+    if (frame%60==$0)
+      poke $101255 $1E
+    endif
+script "P1 Infinite Strokes"  
+run:
+    poke $107006 $01
+script "P1 Infinite Holes"  
+run:
+    poke $10D572 $63
+script "P1 Select Character" \
+ "0x00/Young Hero   (USA)"\
+ "0x01/Power Golfer (BRA)"\
+ "0x02/Shot Maker   (GER)"\
+ "0x03/Putt Master  (JAP)"\
+ "0x04/Veteran      (AUS)"\
+ "0x05/Technician   (GBR)" 
+run:
+    poke $107005 param
+script " "  
+script "P2 Infinite Time"  
+run:
+    if (frame%60==$0)
+      poke $1005F5 $1E
+    endif
+script "P2 Infinite Strokes"  
+run:
+    poke $10702C $01
+script "P2 Infinite Holes"  
+run:
+    poke $10D5D2 $63
+script "P2 Select Character" \
+ "0x00/Young Hero   (USA)"\
+ "0x01/Power Golfer (BRA)"\
+ "0x02/Shot Maker   (GER)"\
+ "0x03/Putt Master  (JAP)"\
+ "0x04/Veteran      (AUS)"\
+ "0x05/Technician   (GBR)" 
+run:
+    poke $10702B param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

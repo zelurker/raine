@@ -1,0 +1,22 @@
+script "Infinite Time"  
+run:
+    poke $100200 $99
+script "Infinite Turbos"  
+run:
+    poke $1003A3 $04
+script "Always Super Speed"  
+run:
+    poke $10041C $05
+script "Super Speed Now!"  
+on:
+    poke $10041C $05
+script "Finish Chase after 1 Hit Now!"  
+on:
+    poke $1002D8 $14
+    poke $1002AF $00
+script "Select Starting Stage" \
+ inter=1,5, 
+run:
+    if (peek($10010A)==$FF)&&(peek($10012D)==$00)
+      poke $10012D (param-$1)
+    endif

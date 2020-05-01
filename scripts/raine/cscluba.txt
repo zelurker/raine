@@ -1,0 +1,277 @@
+script "Infinite Credits"  
+run:
+    poke $FF8AE9 $09
+script "Infinite Time"  
+run:
+    lpoke $FF8C92 $09050923
+script "Finish this Game Now!"  
+on:
+    lpoke $FF8C92 $00000000
+script "Select Secret Character Availability" \
+ "0xFFFF/Enabled"\
+ "0x0000/Disabled" 
+run:
+    dpoke $FF8C20 param
+script " "  
+script "Dunk Stars Cheats"  
+script " "  
+script "Select Starting Stage" \
+ "0x00/Quarter-Final"\
+ "0x01/Semi-Final"\
+ "0x02/Final" 
+run:
+    if (peek($FF8CA0)==$00)
+      poke $FF8CA0 param
+    endif
+script "P1 Infinite Team Selection Time"  
+run:
+    poke $FF0E3F $FF
+script "P1 Select Team" \
+ "comm:Use on or before the Character Selection Screen" \
+ "0x00/Korea"\
+ "0x01/China"\
+ "0x02/Taiwan"\
+ "0x03/Brazil"\
+ "0x04/Philippines"\
+ "0x05/Italy"\
+ "0x06/Russia"\
+ "0x07/USA"\
+ "0x08/#USA/Gold Team" 
+run:
+    poke $FF0E36 param
+script "P1 Score always = 0"  
+run:
+    poke $FF8C99 $00
+script "P1 Score always = 99"  
+run:
+    poke $FF8C99 $63
+script "P1 Set score = 0 Now!"  
+on:
+    poke $FF8C99 $00
+script "P1 Set score = 50 Now!"  
+on:
+    poke $FF8C99 $32
+script "P1 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $FF8C99 (param)
+script "P2 Infinite Team Selection Time"  
+run:
+    poke $FF0E4F $FF
+script "P2 Select Team" \
+ "comm:Use on or before the Character Selection Screen" \
+ "0x00/Korea"\
+ "0x01/China"\
+ "0x02/Taiwan"\
+ "0x03/Brazil"\
+ "0x04/Philippines"\
+ "0x05/Italy"\
+ "0x06/Russia"\
+ "0x07/USA"\
+ "0x08/#USA/Gold Team" 
+run:
+    poke $FF0E46 param
+script "P2 Score always = 0"  
+run:
+    poke $FF8C9B $00
+script "P2 Score always = 99"  
+run:
+    poke $FF8C9B $63
+script "P2 Set score = 0 Now!"  
+on:
+    poke $FF8C9B $00
+script "P2 Set score = 50 Now!"  
+on:
+    poke $FF8C9B $32
+script "P2 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $FF8C9B (param)
+script " "  
+script "Kick Stars Cheats"  
+script " "  
+script "Select Starting Stage" \
+ "0x00/Quarter-Final"\
+ "0x01/Semi-Final"\
+ "0x02/Final" 
+run:
+    if (peek($FF8C9C)==$00)
+      poke $FF8C9C param
+    endif
+script "P1 Infinite Team Selection Time"  
+run:
+    poke $FF0995 $FF
+script "P1 Select Team" \
+ "comm:Use on or before the Character Selection Screen" \
+ "0x00/Korea"\
+ "0x01/Japan"\
+ "0x02/Taiwan"\
+ "0x03/Spain"\
+ "0x04/France"\
+ "0x05/Italy"\
+ "0x06/Argentina"\
+ "0x07/Brazil"\
+ "0x08/#All Stars" 
+run:
+    poke $FF098C param
+script "P1 Score always = 0"  
+run:
+    poke $FF8CB5 $00
+script "P1 Score always = 99"  
+run:
+    poke $FF8CB5 $63
+script "P1 Set score = 0 Now!"  
+on:
+    poke $FF8CB5 $00
+script "P1 Set score = 50 Now!"  
+on:
+    poke $FF8CB5 $32
+script "P1 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $FF8CB5 (param)
+script "P2 Infinite Team Selection Time"  
+run:
+    poke $FF09A9 $FF
+script "P2 Select Team" \
+ "comm:Use on or before the Character Selection Screen" \
+ "0x00/Korea"\
+ "0x01/Japan"\
+ "0x02/Taiwan"\
+ "0x03/Spain"\
+ "0x04/France"\
+ "0x05/Italy"\
+ "0x06/Argentina"\
+ "0x07/Brazil"\
+ "0x08/#All Stars" 
+run:
+    poke $FF09A0 param
+script "P2 Score always = 0"  
+run:
+    poke $FF8CBB $00
+script "P2 Score always = 99"  
+run:
+    poke $FF8CBB $63
+script "P2 Set score = 0 Now!"  
+on:
+    poke $FF8CBB $00
+script "P2 Set score = 50 Now!"  
+on:
+    poke $FF8CBB $32
+script "P2 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $FF8CBB (param)
+script " "  
+script "Smash Stars Cheats"  
+script " "  
+script "Select Starting Stage" \
+ "0x00/Quarter-Final"\
+ "0x01/Semi-Final"\
+ "0x02/Final" 
+run:
+    if (peek($FF8CDA)==$00)
+      poke $FF8CDA param
+    endif
+script "P1 Infinite Team Selection Time"  
+run:
+    poke $FF0CAB $FF
+script "P1 Select Team" \
+ "comm:Use on or before the Character Selection Screen" \
+ "0x00/Sue (Korea)"\
+ "0x01/Hikari (Japan)"\
+ "0x02/Li-Li (China)"\
+ "0x03/Jana (Brazil)"\
+ "0x04/Zina (Egypt)"\
+ "0x05/Fei-Fei (Singapore)"\
+ "0x06/Myray (Philippines)"\
+ "0x07/Fang-Ming (Taiwan)"\
+ "0x08/Florence (Italy)"\
+ "0x09/Laurie (UK)"\
+ "0x0A/Katrina (Russia)"\
+ "0x0B/Natalie (France)"\
+ "0x0C/Simmy (India)"\
+ "0x0D/Graft (Germany)"\
+ "0x0E/Amee (USA)"\
+ "0x0F/Estella (Spain)"\
+ "0x10/#Melody (Love)" 
+run:
+    poke $FFAE87 param
+script "P1 SET Score always = 0"  
+run:
+    poke $FFAE14 $00
+script "P1 Set SET score = 0 Now!"  
+on:
+    poke $FFAE14 $00
+script "P1 Set SET score = 40 Now!"  
+on:
+    poke $FFAE14 $03
+script "P1 MATCH Score always = 0"  
+run:
+    poke $FFAE15 $00
+script "P1 Set MATCH score = 0 Now!"  
+on:
+    poke $FFAE15 $00
+script "P1 Set MATCH score = 6 Now!"  
+on:
+    poke $FFAE15 $06
+script "P2 Infinite Team Selection Time"  
+run:
+    poke $FF0CBF $FF
+script "P2 Select Team" \
+ "comm:Use on or before the Character Selection Screen" \
+ "0x00/Sue (Korea)"\
+ "0x01/Hikari (Japan)"\
+ "0x02/Li-Li (China)"\
+ "0x03/Jana (Brazil)"\
+ "0x04/Zina (Egypt)"\
+ "0x05/Fei-Fei (Singapore)"\
+ "0x06/Myray (Philippines)"\
+ "0x07/Fang-Ming (Taiwan)"\
+ "0x08/Florence (Italy)"\
+ "0x09/Laurie (UK)"\
+ "0x0A/Katrina (Russia)"\
+ "0x0B/Natalie (France)"\
+ "0x0C/Simmy (India)"\
+ "0x0D/Graft (Germany)"\
+ "0x0E/Amee (USA)"\
+ "0x0F/Estella (Spain)"\
+ "0x10/#Melody (Love)" 
+run:
+    poke $FFB387 param
+script "P2 SET Score always = 0"  
+run:
+    poke $FFB314 $00
+script "P2 Set SET score = 0 Now!"  
+on:
+    poke $FFB314 $00
+script "P2 Set SET score = 40 Now!"  
+on:
+    poke $FFB314 $03
+script "P2 MATCH Score always = 0"  
+run:
+    poke $FFB315 $00
+script "P2 Set MATCH score = 0 Now!"  
+on:
+    poke $FFB315 $00
+script "P2 Set MATCH score = 6 Now!"  
+on:
+    poke $FFB315 $06
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x01/USA"\
+ "0x02/Asia"\
+ "0x03/Hispanic"\
+ "0x04/Euro"\
+ "0x05/Brazil"\
+ "0x06/Oceania"\
+ "0x07/Korea" 
+run:
+    poke $FF8C0B param

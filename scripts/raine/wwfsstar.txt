@@ -1,18 +1,74 @@
-# Cheats from  : Tourniquet
-# Last update  : 2002.02.13
-# Desc. format : Pugsy
-
-script "Infinite Time" always
-	poke $1C1851 $42
-
-script "Infinite Life Character 1" always
-	poke $1C013D $30
-
-script "Infinite Life Character 2" always
-	poke $1C0257 $30
-
-script "Infinite Life Character 3" always
-	poke $1C0371 $30
-
-script "Infinite Life Character 4" always
-	poke $1C048B $30
+script "Infinite Credits"  
+run:
+    poke $1C0017 $99
+script "Infinite Time"  
+run:
+    poke $1C1851 $42
+script "Infinite Energy 1st Character"  
+run:
+    poke $1C013D $30
+script "Drain All Energy Now! 1st Char"  
+on:
+    poke $1C013D $00
+script "Select 1st Character" \
+ "0x00/Savage"\
+ "0x01/Hogan"\
+ "0x02/Warrior"\
+ "0x03/Honky Tonk"\
+ "0x04/Duggan"\
+ "0x05/Big Boss"\
+ "0x06/Dibiase"\
+ "0x07/Andre" 
+run:
+    poke $1C0071 param
+script "Infinite Energy 2nd Character"  
+run:
+    poke $1C0257 $30
+script "Drain All Energy Now! 2nd Char"  
+on:
+    poke $1C0257 $00
+script "Select 2nd Character" \
+ "0x00/Savage"\
+ "0x01/Hogan"\
+ "0x02/Warrior"\
+ "0x03/Honky Tonk"\
+ "0x04/Duggan"\
+ "0x05/Big Boss"\
+ "0x06/Dibiase"\
+ "0x07/Andre" 
+run:
+    poke $1C006F param
+script "Infinite Energy 3rd Character"  
+run:
+    poke $1C0371 $30
+script "Drain All Energy Now! 3rd Char"  
+on:
+    poke $1C0371 $00
+script "Select 3rd Character" \
+ "0x00/Savage"\
+ "0x01/Hogan"\
+ "0x02/Warrior"\
+ "0x03/Honky Tonk"\
+ "0x04/Duggan"\
+ "0x05/Big Boss"\
+ "0x06/Dibiase"\
+ "0x07/Andre" 
+run:
+    poke $1C0087 param
+script "Infinite Energy 4th Character"  
+run:
+    poke $1C048B $30
+script "Drain All Energy Now! 4th Char"  
+on:
+    poke $1C048B $00
+script "Select 4th Character" \
+ "0x00/Savage"\
+ "0x01/Hogan"\
+ "0x02/Warrior"\
+ "0x03/Honky Tonk"\
+ "0x04/Duggan"\
+ "0x05/Big Boss"\
+ "0x06/Dibiase"\
+ "0x07/Andre" 
+run:
+    poke $1C0085 param

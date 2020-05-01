@@ -1,0 +1,127 @@
+script "Infinite Credits"  
+run:
+    poke $4E6E $99
+script "Infinite Lives"  
+run:
+    dpoke $4E14 $0506
+script "Invincibility"  
+on:
+    temp0=lpeek($1774)
+    temp1=lpeek($3CDF)
+    temp2=lpeek($3CE3)
+    temp3=lpeek($3CE7)
+run:
+    lpoke $1774 $323CE0C3
+    lpoke $3CDF $0420A700
+    lpoke $3CE3 $1FBDC3AF
+    lpoke $3CE7 $1777C3AF
+off:
+    lpoke $1774 temp0
+    lpoke $3CDF temp1
+    lpoke $3CE3 temp2
+    lpoke $3CE7 temp3
+script "Move Manually"  
+on:
+    temp0=lpeek($18C5)
+    temp1=lpeek($3E60)
+    temp2=lpeek($3E64)
+    temp3=lpeek($3E68)
+    temp4=lpeek($3E6C)
+run:
+    lpoke $18C5 $CB3E60C3
+    lpoke $3E60 $2F50003A
+    lpoke $3E64 $04280FE6
+    lpoke $3E68 $18C8C32F
+    lpoke $3E6C $001A13C3
+off:
+    lpoke $18C5 temp0
+    lpoke $3E60 temp1
+    lpoke $3E64 temp2
+    lpoke $3E68 temp3
+    lpoke $3E6C temp4
+script "Move through Walls"  
+on:
+    temp0=peek($18F3)
+run:
+    poke $18F3 $18
+off:
+    poke $18F3 temp0
+script "Enable Speed Hack" \
+ "comm:This will greatly speed up your character."  
+on:
+    temp0=dpeek($180B)
+run:
+    dpoke $180B $3218
+off:
+    dpoke $180B temp0
+script "Finish this Level Now!"  
+on:
+    if peek($430A)==$F4
+      poke $4E0E $E0
+    endif
+    if peek($430A)==$EB
+      poke $4E0E $F4
+    endif
+    if peek($430A)==$E9
+      poke $4E0E $F2
+    endif
+    if peek($430A)==$DF
+      poke $4E0E $EE
+    endif
+script "Select Starting Level" \
+ "comm:Note: Maze colour may not be correct for the first life (this is only the case for some of the mspacman sets). For the best effect deactivate this cheat after you've started the Level" \
+ "0x01/Strawberry"\
+ "0x02/Orange"\
+ "0x03/Pretzel"\
+ "0x04/Apple"\
+ "0x05/Pear"\
+ "0x06/Banana"\
+ "0x07/Multifruit 1a"\
+ "0x08/Multifruit 1b"\
+ "0x09/Multifruit 2" 
+run:
+    lpoke $10F40 $0693C34E
+    lpoke $10f44 $1332003E
+    lpoke $10690 $3A0F40C3
+    poke $10F41 param
+    if peek($4E13)==$00
+      poke $4E13 param
+    endif
+    if peek($4E0A)==$68
+      poke $4E0A param+$0x68
+    endif
+    if peek($4E0A)==$7D
+      poke $4E0A param+$0x7D
+    endif
+off:
+    lpoke $10F40 $00
+    lpoke $10f44 
+    lpoke $10690 $3A4E1332
+script "Select Ghost Changeback Speed" \
+ "0x0000/Stay blue until eaten"\
+ "0x0258/Slow"\
+ "0x0168/Moderate"\
+ "0x00F0/Quick"\
+ "0x0078/Lightning"\
+ "0x0001/No change to blue" 
+run:
+    dpoke $4DBD param
+script " "  
+script "Ghost Status Cheats"  
+script " "  
+script "Red always blue"  
+run:
+    poke $4DA7 $01
+script "Pink always blue"  
+run:
+    poke $4DA8 $01
+script "Green always blue"  
+run:
+    poke $4DA9 $01
+script "Orange always blue"  
+run:
+    poke $4DAA $01
+script "Ghosts Always Edible (No Pts)"  
+run:
+    poke $4DA5 $00
+script " "  

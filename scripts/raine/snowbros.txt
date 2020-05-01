@@ -1,97 +1,149 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $101591 $03
-
-script "2UP Unlimited lives" always
-	poke $1015A7 $03
-
-script "*UP Unlimited time" always
-	poke $1000BB $20
-
-script "*UP Floor 50 when level ends"
-	poke $101573 $30
-
-script "1UP Get all powers        (P)" always
-	poke $1015A8 $70
-
-script "2UP Get all powers        (P)" always
-	poke $1015A9 $70
-
-script "1UP Get power-up shot     (P)" always
-	poke $1015A8 peek($1015A8)&$ef|$10
-
-script "1UP Get power-up range    (P)" always
-	poke $1015A8 peek($1015A8)&$df|$20
-
-script "1UP Get power-up speed    (P)" always
-	poke $1015A8 peek($1015A8)&$bf|$40
-
-script "2UP Get power-up shot     (P)" always
-	poke $1015A9 peek($1015A9)&$ef|$10
-
-script "2UP Get power-up range    (P)" always
-	poke $1015A9 peek($1015A9)&$df|$20
-
-script "2UP Get power-up speed    (P)" always
-	poke $1015A9 peek($1015A9)&$bf|$40
-
-script "1UP Get SNOW"
-	poke $1015AA peek($1015AA)&$f0|$0F
-
-script "2UP Get SNOW"
-	poke $1015AB peek($1015AB)&$f0|$0F
-
-script "1UP Get letter - S"
-	poke $1015AA peek($1015AA)&$fe|$01
-
-script "1UP Get letter - N"
-	poke $1015AA peek($1015AA)&$fd|$02
-
-script "1UP Get letter - O"
-	poke $1015AA peek($1015AA)&$fb|$04
-
-script "1UP Get letter - W"
-	poke $1015AA peek($1015AA)&$f7|$08
-
-script "2UP Get letter - S"
-	poke $1015AB peek($1015AB)&$fe|$01
-
-script "2UP Get letter - N"
-	poke $1015AB peek($1015AB)&$fd|$02
-
-script "2UP Get letter - O"
-	poke $1015AB peek($1015AB)&$fb|$04
-
-script "2UP Get letter - W"
-	poke $1015AB peek($1015AB)&$f7|$08
-
-script "1UP Get all powers        (T)"
-	poke $1015A8 $70
-
-script "2UP Get all powers        (T)"
-	poke $1015A9 $70
-
-script "1UP Get power-up shot     (T)"
-	poke $1015A8 peek($1015A8)&$ef|$10
-
-script "1UP Get power-up range    (T)"
-	poke $1015A8 peek($1015A8)&$df|$20
-
-script "1UP Get power-up speed    (T)"
-	poke $1015A8 peek($1015A8)&$bf|$40
-
-script "2UP Get power-up shot     (T)"
-	poke $1015A9 peek($1015A9)&$ef|$10
-
-script "2UP Get power-up range    (T)"
-	poke $1015A9 peek($1015A9)&$df|$20
-
-script "2UP Get power-up speed    (T)"
-	poke $1015A9 peek($1015A9)&$bf|$40
-
-script "*UP One hit for boss  (-T)"
-	dpoke $1018CA $0001
-	dpoke $10190A $0001
+script "Infinite Credits"  
+run:
+    poke $100195 $09
+script "Infinite Time"  
+run:
+    poke $1000BB $20
+script "Enable to Get Secret Bonus"  
+run:
+    if (peek($10165D)<00)||(peek($10165D)>01)
+      poke $10165D $01
+    endif
+script "One hit for boss Now!"  
+on:
+    dpoke $1018CA $0001
+    dpoke $10190A $0001
+script "Select Starting Floor" \
+ "0x00/Floor 1"\
+ "0x09/Floor 10"\
+ "0x0A/Floor 11"\
+ "0x13/Floor 20"\
+ "0x14/Floor 21"\
+ "0x1D/Floor 30"\
+ "0x1E/Floor 31"\
+ "0x27/Floor 40"\
+ "0x28/Floor 41"\
+ "0x31/Floor 50" 
+run:
+    if (peek($1001C9)!=$00)&&(peek($101573)==$00)
+      poke $101573 param
+    endif
+script "Items do not disappear" \
+ "comm:Power-ups and bonus items."  
+on:
+    temp0=peek($008162)
+run:
+    poke $008162 $60
+off:
+    poke $008162 temp0
+script "Pumpkin head never appears"  
+on:
+    temp0=lpeek($008732)
+run:
+    lpoke $008732 $4E714E71
+off:
+    lpoke $008732 temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101591 $0A
+script "P1 Invincibility" \
+ "comm:Turn it OFF temporarily when you get the green potion. See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    if (peek($1015EB)<00)||(peek($1015EB)>27)
+      poke $1015EB $00
+    endif
+script "P1 Get Invincibility Item Now!"  
+on:
+    poke $1015EB $24
+script "P1 Rapid Fire"  
+run:
+    poke $1015D7 $00
+script "P1 Always have all powers"  
+run:
+    poke $1015A8 $70
+script "P1 Always have pow-up shot"  
+run:
+    poke $1015A8 $10|(peek($1015A8)&~10)
+script "P1 Always have pow-up range"  
+run:
+    poke $1015A8 $20|(peek($1015A8)&~20)
+script "P1 Always have pow-up speed"  
+run:
+    poke $1015A8 $40|(peek($1015A8)&~40)
+script "P1 Get all powers Now!"  
+on:
+    poke $1015A8 $70
+script "P1 Get pow-up shot Now!"  
+on:
+    poke $1015A8 $10|(peek($1015A8)&~10)
+script "P1 Get pow-up range Now!"  
+on:
+    poke $1015A8 $20|(peek($1015A8)&~20)
+script "P1 Get pow-up speed Now!"  
+on:
+    poke $1015A8 $40|(peek($1015A8)&~40)
+script "P1 Get Letter 'S' Now!"  
+on:
+    poke $1015AA $01|(peek($1015AA)&~01)
+script "P1 Get Letter 'N' Now!"  
+on:
+    poke $1015AA $02|(peek($1015AA)&~02)
+script "P1 Get Letter 'O' Now!"  
+on:
+    poke $1015AA $04|(peek($1015AA)&~04)
+script "P1 Get Letter 'W' Now!"  
+on:
+    poke $1015AA $08|(peek($1015AA)&~08)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1015A7 $0A
+script "P2 Invincibility" \
+ "comm:Turn it OFF temporarily when you get the green potion. See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    if (peek($10162B)<00)||(peek($10162B)>27)
+      poke $10162B $00
+    endif
+script "P2 Get Invincibility Item Now!"  
+on:
+    poke $10162B $24
+script "P2 Rapid Fire"  
+run:
+    poke $101617 $00
+script "P2 Always have all powers"  
+run:
+    poke $1015A9 $70
+script "P2 Always have pow-up shot"  
+run:
+    poke $1015A9 $10|(peek($1015A9)&~10)
+script "P2 Always have pow-up range"  
+run:
+    poke $1015A9 $20|(peek($1015A9)&~20)
+script "P2 Always have pow-up speed"  
+run:
+    poke $1015A9 $40|(peek($1015A9)&~40)
+script "P2 Get all powers Now!"  
+on:
+    poke $1015A9 $70
+script "P2 Get pow-up shot Now!"  
+on:
+    poke $1015A9 $10|(peek($1015A9)&~10)
+script "P2 Get pow-up range Now!"  
+on:
+    poke $1015A9 $20|(peek($1015A9)&~20)
+script "P2 Get pow-up speed Now!"  
+on:
+    poke $1015A9 $40|(peek($1015A9)&~40)
+script "P2 Get Letter 'S' Now!"  
+on:
+    poke $1015AB $01|(peek($1015AB)&~01)
+script "P2 Get Letter 'N' Now!"  
+on:
+    poke $1015AB $02|(peek($1015AB)&~02)
+script "P2 Get Letter 'O' Now!"  
+on:
+    poke $1015AB $04|(peek($1015AB)&~04)
+script "P2 Get Letter 'W' Now!"  
+on:
+    poke $1015AB $08|(peek($1015AB)&~08)

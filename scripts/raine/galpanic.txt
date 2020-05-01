@@ -1,26 +1,42 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $53E7D4 $03
-
-script "2UP Unlimited lives" always
-	poke $53E7D5 $03
-
-script "*UP Unlimited time" always
-	poke $53E7E7 $3B
-
-script "*UP Unlimited energy" always
-	poke $53E78D $14
-	poke $53E793 $1C
-
-script "*UP End round with 100%"
-	poke $53C0CD $64
-	poke $53C0CF $00
-
-script "*UP Last sub-lv. (naked girl)"
-	poke $53E7DD $02
-
-script "*UP Challenge stage (special)" always
-	poke $53D535 $01
+script "Infinite Credits"  
+run:
+    poke $53D064 $09
+script "Infinite Time"  
+run:
+    dpoke $53E7E6 $093C
+script "Infinite Energy"  
+run:
+    poke $53E78D $14
+    poke $53E793 $1C
+script "Invincibility"  
+on:
+    temp0=peek($00236A)
+    temp1=peek($00B60E)
+    temp2=peek($00BA55)
+run:
+    poke $00236A $60
+    poke $00B60E $60
+    poke $00BA55 $02
+off:
+    poke $00236A temp0
+    poke $00B60E temp1
+    poke $00BA55 temp2
+script "Finish round with 100% Now!"  
+on:
+    poke $53C0CD $64
+    poke $53C0CF $00
+script "Goto Last sub-level (Naked Girl) Now!" \
+ "comm:Use this cheat when the silhouette is displayed."  
+on:
+    poke $53E7DD $02
+script "Goto Challenge Stage (Special) Now!" \
+ "comm:Use this cheat when the silhouette is displayed."  
+on:
+    poke $53D535 $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $53E7D4 $06
+script "P2 Infinite Lives"  
+run:
+    poke $53E7D5 $06

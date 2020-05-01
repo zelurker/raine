@@ -1,0 +1,400 @@
+script " "  
+script "This game has got a LOT of cheats. Don't"  
+script "go mad as it may spoil the game too much!"  
+script " "  
+script "Infinite Credits"  
+run:
+    poke $E366 $63
+script "Select Starting Round" \
+ inter=1,100,1 
+run:
+    if (peek($E64B)==$00)
+      poke $E64B (param-$1)
+    endif
+script "Invincibility"  
+on:
+    temp0=peek($4033)
+run:
+    poke $4033 $35
+off:
+    poke $4033 temp0
+script "Hit Anywhere (Normal Enemies)"  
+run:
+    poke $013D8 $00
+    poke $013E1 $37
+off:
+    poke $013D8 $09
+    poke $013E1 $B9
+script "Un-Escapeable Bubbles"  
+on:
+    temp0=peek($5E49)
+run:
+    poke $5E49 $C3
+off:
+    poke $5E49 temp0
+script "Infinite Fruit/Diamond Appear Time"  
+on:
+    temp0=peek($7D2B)
+run:
+    poke $7D2B $00
+off:
+    poke $7D2B temp0
+script "Infinite 1st Item Appear Time" \
+ "comm:Once you've enabled this cheat you can NOT turn the effect off without restarting the emulation"  
+run:
+    poke $1850A $C9
+    poke $1A81D $C9
+script "Infinite 2nd Item Appear Time" \
+ "comm:Once you've enabled this cheat you can NOT turn the effect off without restarting the emulation"  
+run:
+    poke $1872D $C9
+    poke $1A81D $C9
+script "Select Jump Height" \
+ "0x08/Half"\
+ "0x10/Normal"\
+ "0x18/1.5x Normal"\
+ "0x20/2.0x Normal"\
+ "0x28/2.5x Normal"\
+ "0x30/3.0x Normal" 
+run:
+    poke $4AEE param
+off:
+    poke $4AEE $10
+script "Walk through Walls" \
+ "comm:You can not go through walls when you are falling"  
+on:
+    temp0=peek($4294)
+    temp1=peek($42D1)
+run:
+    poke $4294 $00
+    poke $42D1 $00
+off:
+    poke $4294 temp0
+    poke $42D1 temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $E645 $06
+script "P1 Select Movement Speed" \
+ "0x0C/Normal"\
+ "0x14/Power-up"\
+ "0x28/Ultimate" 
+run:
+    poke $E6C1 param
+script "P1 Select Fire Speed" \
+ "0x14/Normal"\
+ "0x05/Power-up"\
+ "0x01/Ultimate" 
+run:
+    poke $E6BF param
+script "P1 Select Bubble Range" \
+ "0x40/Normal"\
+ "0x80/Long"\
+ "0xFF/Extra Long" 
+run:
+    poke $E6C2 param
+script "P1 Select Bubble/Lightning" \
+ "0x00/Bubble"\
+ "0x01/Lightning" 
+run:
+    poke $F60F param
+script "P1 Select Head Power" \
+ "0x03/Normal"\
+ "0x06/Power-up"\
+ "0x09/Ultimate" 
+run:
+    poke $E6C0 param
+script "P1 Get EXTEND Now!"  
+on:
+    poke $E742 $3F
+script "P1 Get letter - E (Red) Now!"  
+on:
+    poke $E742 $01|(peek($E742)&~01)
+script "P1 Get letter - X (Pink) Now!"  
+on:
+    poke $E742 $02|(peek($E742)&~02)
+script "P1 Get letter - T (Yellow) Now!"  
+on:
+    poke $E742 $04|(peek($E742)&~04)
+script "P1 Get letter - E (Green) Now!"  
+on:
+    poke $E742 $08|(peek($E742)&~08)
+script "P1 Get letter - N (Blue) Now!"  
+on:
+    poke $E742 $10|(peek($E742)&~10)
+script "P1 Get letter - D (Purple) Now!"  
+on:
+    poke $E742 $20|(peek($E742)&~20)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $E64A $06
+script "P2 Select Movement Speed" \
+ "0x0C/Normal"\
+ "0x14/Power-up"\
+ "0x28/Ultimate" 
+run:
+    poke $E6F3 param
+script "P2 Select Fire Speed" \
+ "0x14/Normal"\
+ "0x05/Power-up"\
+ "0x01/Ultimate" 
+run:
+    poke $E6F1 param
+script "P2 Select Bubble Range" \
+ "0x40/Normal"\
+ "0x80/Long"\
+ "0xFF/Extra Long" 
+run:
+    poke $E6F4 param
+script "P2 Select Bubble/Lightning" \
+ "0x00/Bubble"\
+ "0x01/Lightning" 
+run:
+    poke $F610 param
+script "P2 Select Head Power" \
+ "0x03/Normal"\
+ "0x06/Power-up"\
+ "0x09/Ultimate" 
+run:
+    poke $E6F2 param
+script "P2 Get EXTEND Now!"  
+on:
+    poke $E743 $3F
+script "P2 Get letter - E (Red) Now!"  
+on:
+    poke $E743 $01|(peek($E743)&~01)
+script "P2 Get letter - X (Pink) Now!"  
+on:
+    poke $E743 $02|(peek($E743)&~02)
+script "P2 Get letter - T (Yellow) Now!"  
+on:
+    poke $E743 $04|(peek($E743)&~04)
+script "P2 Get letter - E (Green) Now!"  
+on:
+    poke $E743 $08|(peek($E743)&~08)
+script "P2 Get letter - N (Blue) Now!"  
+on:
+    poke $E743 $10|(peek($E743)&~10)
+script "P2 Get letter - D (Purple) Now!"  
+on:
+    poke $E743 $20|(peek($E743)&~20)
+script " "  
+script "Select 'Super' Mode" \
+ "comm:Baddies from first 50 levels switch with last and levels change colour, Title will display 'Super' if enabled before title displayed. Same as '1P,Jump,Bubble,Left,Right,Jump,1P,Right' on Title Screen" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $E5DB param
+script "Select 'Original' Mode" \
+ "comm:Doors still appear even if you die. Same as 'Bubble,Jump,Bubble,Jump,Bubble,Jump,Right,1P' on Title Screen" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $E5D1 param
+script "Select 'Power-Up' Mode" \
+ "comm:Fast feet, fast bubbles etc. Same as 'Left,Jump,Left,1P,Left,Bubble,Left,1P' on Title Screen" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $E5D2 param
+script "Always get Bonus doors"  
+run:
+    poke $E613 $01
+script "Constant Extend Letters"  
+run:
+    poke $F676 $01
+script "Always Warn (Bell Item)"  
+run:
+    poke $E603 $01
+script "Apple or Orange? You decide!"  
+run:
+    poke $E5FA $03
+script "Coke Can Item"  
+run:
+    poke $E608 $01
+script "Select Fireball Bubble Occurence" \
+ "0x01/Always"\
+ "0x03/1 in 2"\
+ "0x05/1 in 3"\
+ "0x07/1 in 4"\
+ "0x15/1 in 16"\
+ "0x1D/1 in 256"\
+ "0x25/1 in 4096" 
+run:
+    poke $6E30 param
+script "Disable Bubbles?"  
+run:
+    poke $5C2B $C9
+script "Fireballs for 5 levels"  
+on:
+    poke $E6BB $05
+script "Fireballs"  
+run:
+    poke $E6BE $40
+script "Fireball Cross"  
+run:
+    poke $E5EE $07
+script "Select 1st Item Now!" \
+ "comm:Use this cheat only at the start of a level, before the item appears! (if it appears at all)  FORMAT Fruit Name (Points)" \
+ "0x00/Green Pepper (10 Pts)"\
+ "0x01/Aubergine (20 Pts)"\
+ "0x02/Carrot (30 Pts)"\
+ "0x03/Onion (40 Pts)"\
+ "0x04/Beetroot (50 Pts)"\
+ "0x05/Turnip (60 Pts)"\
+ "0x06/Parsnip (70 Pts)"\
+ "0x07/Marrow (80 Pts)"\
+ "0x08/Pea Pod (90 Pts)"\
+ "0x09/Mushroom (100 Pts)"\
+ "0x0A/Corn Cob (Lvl 35) (150 Pts)"\
+ "0x0B/Fried Egg (200 Pts)"\
+ "0x0C/Red Acorn Thingy (250 Pts)"\
+ "0x0D/Apple (300 Pts)"\
+ "0x0E/Lemon (350 Pts)"\
+ "0x0F/Orange (400 Pts)"\
+ "0x10/Peach (450 Pts)"\
+ "0x11/Bananas (500 Pts)"\
+ "0x12/Pear (550 Pts)"\
+ "0x13/Watermelon (600 Pts)"\
+ "0x14/Single Brown Lolly (Lvl 15) (650 Pts)"\
+ "0x15/Double Blue Lolly (700 Pts)"\
+ "0x16/Pink Pudding (Lvl 5) (750 Pts)"\
+ "0x17/Yellow Pudding (800 Pts)"\
+ "0x18/Green Pudding (850 Pts)"\
+ "0x19/Green And Brown Pudding (Lvl 40) (900 Pts)"\
+ "0x1A/Simple White Ice Cream Cone (950 Pts)"\
+ "0x1B/Double Scoop Ice Cream Cone (1,000 Pts)"\
+ "0x1C/Donut (Lvl 25) (1,000 Pts)"\
+ "0x1D/French Fries (1,000 Pts)"\
+ "0x1E/Sausage On A Stick (2,000 Pts)"\
+ "0x1F/Creme Caramel (2,000 Pts)"\
+ "0x20/Burger (2,000 Pts)"\
+ "0x21/Slice Of Cake (Triangular) (2,000 Pts)"\
+ "0x22/Cupcake (Blobby) (3,000 Pts)"\
+ "0x23/Chicken Leg (3,000 Pts)"\
+ "0x24/Purple Martini (3,000 Pts)"\
+ "0x25/Some Variety Of Sushi? (3,000 Pts)"\
+ "0x26/Pinkish Sweet (Lvl 50) (4,000 Pts)"\
+ "0x27/(Brown Or Red?) Eskimo Pie (4,000 Pts)"\
+ "0x28/(Brown Or Red?) Eskimo Pie (4,000 Pts)"\
+ "0x29/Mug Of Lager (Lvl 45) (4,000 Pts)"\
+ "0x2A/Purple Crystals (5,000 Pts)"\
+ "0x2B/Purple Jewel (5,000 Pts)"\
+ "0x2C/Yellow Butterfly (5,000 Pts)"\
+ "0x2D/Blue Crystals (5,000 Pts)"\
+ "0x2E/Blue Jewel (6,000 Pts)"\
+ "0x2F/Necklace With Purple Pendant (6,000 Pts)"\
+ "0x30/Purple Shell (6,000 Pts)"\
+ "0x31/Red Jewel (7,000 Pts)"\
+ "0x32/Necklace With Blue Pendant (7,000 Pts)"\
+ "0x33/Bowl Of Rice (7,000 Pts)"\
+ "0x34/Necklace With Red Pendant (8,000 Pts)"\
+ "0x35/Dinner (8,000 Pts)"\
+ "0x36/Red Crown, Blue Gems, No Cross (8,000 Pts)"\
+ "0x37/Red Crown, Blue Gems, Red Cross (8,000 Pts)"\
+ "0x38/Cyan Crown, Red Gems, No Cross (9,000 Pts)"\
+ "0x39/Blue Crown, Red Gems, Cyan Cross (9,000 Pts)"\
+ "0x3A/Gold Crown, Red Gems, No Cross (10,000 Pts)"\
+ "0x3B/Gold Crown, Red Gems, White Cross (10,000 Pts)" 
+change:
+    poke $F44C param
+script "Select 2nd Item Now!" \
+ "comm:Use this cheat only at the start of a level, before the item appears! (if it appears at all) When you are given a distribution, each bubble turns into an object." \
+ "0x00/Pink Sweet (Power-Up Fire Range)"\
+ "0x01/Blue Sweet (Power-Up Head Power)"\
+ "0x02/Yellow Sweet (Power-Up Fire Speed)"\
+ "0x03/Shoe (Power-Up Speed)"\
+ "0x04/Clock (Slows Down The Monsters)"\
+ "0x05/Bomb (Turns Monsters Into Diamonds)"\
+ "0x06/Brown Umbrella (Warps You 3 Levels Farther)"\
+ "0x07/Red Umbrella (Warps You 5 Levels Farther)"\
+ "0x08/Pink Umbrella (Warps You 7 Levels Farther)"\
+ "0x09/Orange Potion (Potion Of Sunflowers)"\
+ "0x0A/Red Potion (Potion Of Flowers)"\
+ "0x0B/Green Potion (Potion Of Clovers)"\
+ "0x0C/Yellow Potion (Potion Of Rainbows)"\
+ "0x0D/Purple Potion (Potion Of Music Notes)"\
+ "0x0E/Heart (Invincibility+Freeze Monsters)"\
+ "0x0F/Blue Ring (Points When You Walk)"\
+ "0x10/Pink Ring (Points When You Jump)"\
+ "0x11/Red Ring (Points When You Bubble)"\
+ "0x12/Blue Cross (Fills Screen With Water)"\
+ "0x13/Yellow Cross (Make Lightning Strike)"\
+ "0x14/Orange Cross (Fire Flames Not Bubbles)"\
+ "0x15/Blue Tea-Pot (Point When You Walk.Jump+Bubble)"\
+ "0x18/Yellow Tea-Pot (Power-Up Fire Range+Speed+H Pwr)"\
+ "0x16/Red Tea-Pot (Blue + Yellow Teapots Combined)"\
+ "0x17/Purple Tea-Pot (Turn Monsters Into Diamonds)"\
+ "0x19/Book (Turns Monsters Into Diamonds)"\
+ "0x1A/Grey 'Ring?' (Makes Stars Fall)"\
+ "0x1B/Orange Necklace (The Extend Letters)"\
+ "0x1C/Grey Necklace (Produces A Big Fireball)"\
+ "0x1D/Fork (Makes Fruits Fall)"\
+ "0x1E/Pink Chest (Pink Diamonds On Level End)"\
+ "0x1F/Yellow Chest (Yellow Diamonds On Level End)"\
+ "0x20/Red Chest (Red Diamonds On Level End)"\
+ "0x21/Blue Chest (Blue Diamonds On Level End)"\
+ "0x22/Grey Chest (Grey Diamonds On Level End)"\
+ "0x23/White Candy-Stick (Cakes On Level End)"\
+ "0x24/Yellow Candy-Stick (Chocolate Cakes On Level End)"\
+ "0x25/Red Candy-Stick (Watermelons On Level End)"\
+ "0x26/Orange Candy-Stick (Oranges On Level End)"\
+ "0x27/Brown Candy-Stick (Ice Creams On Level End)"\
+ "0x28/Blue Candy-Stick (Ice Creams On Level End)"\
+ "0x29/Bell (Destructive Item Warning)"\
+ "0x2A/Octopussy (Wood Crosses On Level End)"\
+ "0x2B/Pink Floyd (Aliens On Level End)"\
+ "0x2C/Glass Of Beer (???? On Level End)"\
+ "0x2D/Knife (Makes Fruits Fall)"\
+ "0x2E/Crystal Ball (Gives Level Beginning Items)"\
+ "0x30/Skeleton ('Hurry Up !' The Monsters)"\
+ "0x31/Bonus Door Lev. 20 (Warps You To Room Of Diamonds)"\
+ "0x32/Bonus Door Lev. 30 (Warps You To Room Of Diamonds)"\
+ "0x33/Bonus Door Lev. 40 (Warps You To Room Of Diamonds)"\
+ "0x34/Bonus Door Lev. 50 (Warps You To Level 70)" 
+change:
+    poke $F45E param
+script "Quick Fruit at start"  
+run:
+    poke $F44D $01
+script "Lipstick"  
+run:
+    poke $E60A $01
+script "Stop the Baron"  
+run:
+    poke $E345 $05
+script " "  
+script "These 5 cheats will make a potion appear"  
+script "on the next screen. It will be of the"  
+script "type requested unless you have earned a"  
+script "higher potion or you have fallen off the"  
+script "bottom of the screen since setting the"  
+script "cheat. Falling off the bottom will"  
+script "upgrade the potion to the next one!"  
+script " "  
+script "Sunflower Potion(next screen)"  
+on:
+    poke $E5E7 $0F
+script "Flower Potion (next screen)"  
+on:
+    poke $E5E7 $10
+script "Clover Potion (next screen)"  
+on:
+    poke $E5E7 $11
+script "Rainbow Potion (next screen)"  
+on:
+    poke $E5E7 $12
+script "Musical Potion (next screen)"  
+on:
+    poke $E5E7 $13
+script " "  
+script "These 2 cheats are useful when you Get"  
+script "stuck on a screen. Use only one at a time!"  
+script "                  ]"  
+script "Drown 'em All! Now! OR..."  
+on:
+    poke $F590 $01
+script "Throw The Book At Them Now!"  
+on:
+    poke $E720 $01

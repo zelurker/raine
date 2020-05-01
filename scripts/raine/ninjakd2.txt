@@ -1,27 +1,32 @@
-# Cheats from  : Pugsy, The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Time" always
-	poke $E20B $3C
-
-script "Infinite Lives PL1" always
-	poke $E12F $07
-
-script "Infinite Lives PL2" always
-	poke $E167 $07
-
-script "Invincibility" always
-	poke $ECF0 $00
-
-script "Infinite Fireballs" always
-	poke $E110 $FF
-
-script "Get 10 Bonus Vials Now!"
-	poke $E109 $0A
-
-script "Enemies NEVER shoot" always
-	poke $EC04 $00
-
-script "Clear this Round Now!"
-	poke $E10F peek($E10F)&$fb|$04
+script "Infinite Time"  
+run:
+    poke $E20B $3C
+script "Invincibility"  
+run:
+    poke $ECF0 $00
+script "All Ammo"  
+run:
+    poke $E112 $04
+    poke $E116 $02
+    poke $E117 $03
+    poke $E118 $04
+script "Infinite Fireballs"  
+run:
+    poke $E110 $FF
+script "Enemies NEVER shoot"  
+run:
+    poke $EC04 $00
+script "Clear this Round Now!"  
+on:
+    poke $E10F $06
+script "Select the Scene" \
+ inter=1,32,1 
+change:
+    poke $E0FF (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $E12F $07
+script "P2 Infinite Lives"  
+run:
+    poke $E167 $07

@@ -1,9 +1,5 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Help line ON" always
-	poke $4061D8 $01
-
-script "*UP Help line OFF"
-	poke $4061D8 $00
+script "Help Line [Single Mode Only]" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $121CC8 param

@@ -1,0 +1,20 @@
+script "Infinite Credits"  
+run:
+    poke $108E55 $09
+script "Infinite Race Time"  
+run:
+    poke $10B6DF $00
+script "Always ride at 200km/h"  
+run:
+    dpoke $10BB2A $00C8
+script "Always ride at 280km/h"  
+run:
+    dpoke $10BB2A $0119
+script "Get 280km/h speed boost Now!" \
+ "comm:Best used with an activation key for best effect (it's like a turbo option)"  
+on:
+    dpoke $10BB2A $0119
+script "Hands free game completion" \
+ "comm:Just watch and don't enable the speed cheats with this enabled"  
+run:
+    poke $142311 $75

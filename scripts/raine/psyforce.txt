@@ -1,0 +1,117 @@
+script "Infinite Credits"  
+run:
+    poke $1276E8 $09
+script "Infinite Time"  
+run:
+    poke $127894 $63
+script "Infinite Play Time"  
+run:
+    dpoke $18EF98 $0000
+script "Infinite Character Select Time"  
+run:
+    poke $1C0154 $FF
+script "Select Episode" \
+ "comm:Set on character select screen" \
+ inter=1,7,1 
+change:
+    poke $18EEF3 (param)
+script " "  
+script "P1 Infinite Energy"  
+run:
+    dpoke $18EED8 $03E8
+script "P1 Drain All Energy Now!"  
+on:
+    dpoke $18EED8 $0000
+script "P1 Lose Now!"  
+on:
+    dpoke $18EED8 $FFFF
+script "P1 Infinite Power"  
+run:
+    dpoke $18EEDA $0190
+script "P1 Always No Power"  
+run:
+    dpoke $18EEDA $0000
+script "P1 Select Guard Mode" \
+ "0x00/Manual Guard"\
+ "0x01/Auto Guard" 
+run:
+    poke $18EEF4 param
+script "P1 Infinite Auto Guard" \
+ "comm:Only use with auto guard mode"  
+run:
+    poke $18EFA6 $0A
+script "P1 Select Constant Guard Status" \
+ "0x00/No Guard"\
+ "0x08/Normal Guard"\
+ "0x04/Barrier Guard" 
+run:
+    poke $18EE82 param
+script "P1 Make Keith Selectable" \
+ "comm:Set before going to character select screen (e.g. title screen)"  
+on:
+    temp0=peek($127858)
+run:
+    poke $127858 $D0
+off:
+    poke $127858 temp0
+script "P1 Rapid Fire - Weak Attack"  
+run:
+    poke $127630 $00|(peek($127630)&~10)
+script "P1 Rapid Fire - Strong Attack"  
+run:
+    poke $127630 $00|(peek($127630)&~20)
+script "P1 Select Character Colour" \
+ "0x00/P1 Colour"\
+ "0x01/P2 Colour" 
+run:
+    poke $18EEE4 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke $18F018 $03E8
+script "P2 Drain All Energy Now!"  
+on:
+    dpoke $18F018 $0000
+script "P2 Lose Now!"  
+on:
+    dpoke $18F018 $FFFF
+script "P2 Infinite Power"  
+run:
+    dpoke $18F01A $0190
+script "P2 Always No Power"  
+run:
+    dpoke $18F01A $0000
+script "P2 Select Guard Mode" \
+ "0x00/Manual Guard"\
+ "0x01/Auto Guard" 
+run:
+    poke $18F034 param
+script "P2 Infinite Auto Guard" \
+ "comm:Only use with auto guard mode"  
+run:
+    poke $18F0E6 $0A
+script "P2 Select Constant Guard Status" \
+ "0x00/No Guard"\
+ "0x08/Normal Guard"\
+ "0x04/Barrier Guard" 
+run:
+    poke $18EFC2 param
+script "P2 Make Keith Selectable" \
+ "comm:Set before going to character select screen (e.g. title screen)"  
+on:
+    temp0=peek($12785C)
+run:
+    poke $12785C $D0
+off:
+    poke $12785C temp0
+script "P2 Rapid Fire - Weak Attack"  
+run:
+    poke $127634 $00|(peek($127634)&~10)
+script "P2 Rapid Fire - Strong Attack"  
+run:
+    poke $127634 $00|(peek($127634)&~20)
+script "P2 Select Character Colour" \
+ "0x00/P1 Colour"\
+ "0x01/P2 Colour" 
+run:
+    poke $18F024 param

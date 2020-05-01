@@ -1,0 +1,80 @@
+script "Infinite Credits"  
+run:
+    poke $6004D9 $09
+script "Infinite Time"  
+run:
+    poke $601B60 $0A
+    poke $601B61 $00
+script "P1 Infinite Lives"  
+run:
+    poke $60050B $0A
+script "P1 Infinite Energy"  
+run:
+    poke $600509 $B
+script "P1 Invincibility"  
+run:
+    if (peek($601575)<=04)
+      poke $601575 $00
+    endif
+script "P1 Always have Max Speed"  
+run:
+    poke $600515 $01
+script "P1 Always have Max Level"  
+run:
+    poke $60050D $09
+script "P1 Select Weapon" \
+ "0x00/Normal Sword"\
+ "0x01/Big Sword"\
+ "0x02/Claw" 
+run:
+    poke $600569 param
+script "P1 Select Shot" \
+ "0x00/None"\
+ "0x01/Fireball"\
+ "0x02/Ice"\
+ "0x03/Barrier" 
+run:
+    poke $600511 param
+    if (param==$03)
+      poke $601EAD $0F
+    endif
+script "P1 Action Speed Up"  
+run:
+    poke $6005A9 $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $600521 $0A
+script "P2 Infinite Energy"  
+run:
+    poke $60051F $B
+script "P2 Invincibility"  
+run:
+    if (peek($6015D5)<=04)
+      poke $6015D5 $00
+    endif
+script "P2 Always have Max Speed"  
+run:
+    poke $60052B $01
+script "P2 Always have Max Level"  
+run:
+    poke $600523 $09
+script "P2 Select Weapon" \
+ "0x08/Normal Sword"\
+ "0x09/Big Sword"\
+ "0x0A/Claw" 
+run:
+    poke $6005E9 param
+script "P2 Select Shot" \
+ "0x00/None"\
+ "0x01/Fireball"\
+ "0x02/Ice"\
+ "0x03/Barrier" 
+run:
+    poke $600527 param
+    if (param==$03)
+      poke $601ED9 $0F
+    endif
+script "P2 Action Speed Up"  
+run:
+    poke $600629 $01

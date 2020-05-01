@@ -1,27 +1,145 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $E00751 $38
-
-script "1UP Invulnerability OFF"
-	poke $E00751 $01
-
-script "2UP Invulnerability ON" always
-	poke $E007D1 $38
-
-script "2UP Invulnerability OFF"
-	poke $E007D1 $01
-
-script "1UP Unlimited lives" always
-	poke $E00741 $03
-
-script "2UP Unlimited lives" always
-	poke $E007C1 $03
-
-script "1UP Unlimited bombs" always
-	poke $E00743 $03
-
-script "2UP Unlimited bombs" always
-	poke $E007C3 $03
+script "Invincibility"  
+on:
+    temp0=lpeek($01DB24)
+    temp1=lpeek($01DB28)
+    temp2=peek($01DE72)
+run:
+    lpoke $01DB24 $3B7C0002
+    lpoke $01DB28 $00506026
+    poke $01DE72 $00
+off:
+    lpoke $01DB24 temp0
+    lpoke $01DB28 temp1
+    poke $01DE72 temp2
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $E00741 $09
+script "P1 Infinite Bombs"  
+run:
+    poke $E00743 $09
+script "P1 Select Left Sidecar" \
+ "0x00/None"\
+ "0x02/Side 12.7mm Chaingun (Green)"\
+ "0x03/Dual Side 12.7mm Chaingun (Green)"\
+ "0x04/Side 30mm Cannon (Green)"\
+ "0x05/Dual Side 30mm Cannon (Green)"\
+ "0x06/Side 105mm Cannon (Green)"\
+ "0x07/Dual Side 105mm (Green)"\
+ "0x0A/12.7mm Chaingun (Green)"\
+ "0x0B/Dual 12.7mm Chaingun (Green)"\
+ "0x0C/30mm Cannon (Green)"\
+ "0x0D/Dual 30mm Cannon (Green)"\
+ "0x0E/105mm Cannon (Green)"\
+ "0x0F/Dual 105mm (Green)"\
+ "0x12/Side 12.7mm Chaingun (Orange)"\
+ "0x13/Dual Side 12.7mm Chaingun (Orange)"\
+ "0x14/Side 30mm Cannon (Orange)"\
+ "0x15/Dual Side 30mm Cannon (Orange)"\
+ "0x16/Side 105mm Cannon (Orange)"\
+ "0x17/Dual Side 105mm (Orange)"\
+ "0x1A/12.7mm Chaingun (Orange)"\
+ "0x1B/Dual 12.7mm Chaingun (Orange)"\
+ "0x1C/30mm Cannon (Orange)"\
+ "0x1D/Dual 30mm Cannon (Orange)"\
+ "0x1E/105mm Cannon (Orange)"\
+ "0x1F/Dual 105mm (Orange)" 
+run:
+    poke $E0074D param
+script "P1 Select Right Sidecar" \
+ "0x00/None"\
+ "0x02/Side 12.7mm Chaingun (Green)"\
+ "0x03/Dual Side 12.7mm Chaingun (Green)"\
+ "0x04/Side 30mm Cannon (Green)"\
+ "0x05/Dual Side 30mm Cannon (Green)"\
+ "0x06/Side 105mm Cannon (Green)"\
+ "0x07/Dual Side 105mm (Green)"\
+ "0x0A/12.7mm Chaingun (Green)"\
+ "0x0B/Dual 12.7mm Chaingun (Green)"\
+ "0x0C/30mm Cannon (Green)"\
+ "0x0D/Dual 30mm Cannon (Green)"\
+ "0x0E/105mm Cannon (Green)"\
+ "0x0F/Dual 105mm (Green)"\
+ "0x12/Side 12.7mm Chaingun (Orange)"\
+ "0x13/Dual Side 12.7mm Chaingun (Orange)"\
+ "0x14/Side 30mm Cannon (Orange)"\
+ "0x15/Dual Side 30mm Cannon (Orange)"\
+ "0x16/Side 105mm Cannon (Orange)"\
+ "0x17/Dual Side 105mm (Orange)"\
+ "0x1A/12.7mm Chaingun (Orange)"\
+ "0x1B/Dual 12.7mm Chaingun (Orange)"\
+ "0x1C/30mm Cannon (Orange)"\
+ "0x1D/Dual 30mm Cannon (Orange)"\
+ "0x1E/105mm Cannon (Orange)"\
+ "0x1F/Dual 105mm (Orange)" 
+run:
+    poke $E0074F param
+script "P1 Always have Laser Powerup"  
+run:
+    poke $E00773 $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $E007C1 $09
+script "P2 Infinite Bombs"  
+run:
+    poke $E007C3 $09
+script "P2 Select Left Sidecar" \
+ "0x00/None"\
+ "0x02/Side 12.7mm Chaingun (Green)"\
+ "0x03/Dual Side 12.7mm Chaingun (Green)"\
+ "0x04/Side 30mm Cannon (Green)"\
+ "0x05/Dual Side 30mm Cannon (Green)"\
+ "0x06/Side 105mm Cannon (Green)"\
+ "0x07/Dual Side 105mm (Green)"\
+ "0x0A/12.7mm Chaingun (Green)"\
+ "0x0B/Dual 12.7mm Chaingun (Green)"\
+ "0x0C/30mm Cannon (Green)"\
+ "0x0D/Dual 30mm Cannon (Green)"\
+ "0x0E/105mm Cannon (Green)"\
+ "0x0F/Dual 105mm (Green)"\
+ "0x12/Side 12.7mm Chaingun (Orange)"\
+ "0x13/Dual Side 12.7mm Chaingun (Orange)"\
+ "0x14/Side 30mm Cannon (Orange)"\
+ "0x15/Dual Side 30mm Cannon (Orange)"\
+ "0x16/Side 105mm Cannon (Orange)"\
+ "0x17/Dual Side 105mm (Orange)"\
+ "0x1A/12.7mm Chaingun (Orange)"\
+ "0x1B/Dual 12.7mm Chaingun (Orange)"\
+ "0x1C/30mm Cannon (Orange)"\
+ "0x1D/Dual 30mm Cannon (Orange)"\
+ "0x1E/105mm Cannon (Orange)"\
+ "0x1F/Dual 105mm (Orange)" 
+run:
+    poke $E007CD param
+script "P2 Select Right Sidecar" \
+ "0x00/None"\
+ "0x02/Side 12.7mm Chaingun (Green)"\
+ "0x03/Dual Side 12.7mm Chaingun (Green)"\
+ "0x04/Side 30mm Cannon (Green)"\
+ "0x05/Dual Side 30mm Cannon (Green)"\
+ "0x06/Side 105mm Cannon (Green)"\
+ "0x07/Dual Side 105mm (Green)"\
+ "0x0A/12.7mm Chaingun (Green)"\
+ "0x0B/Dual 12.7mm Chaingun (Green)"\
+ "0x0C/30mm Cannon (Green)"\
+ "0x0D/Dual 30mm Cannon (Green)"\
+ "0x0E/105mm Cannon (Green)"\
+ "0x0F/Dual 105mm (Green)"\
+ "0x12/Side 12.7mm Chaingun (Orange)"\
+ "0x13/Dual Side 12.7mm Chaingun (Orange)"\
+ "0x14/Side 30mm Cannon (Orange)"\
+ "0x15/Dual Side 30mm Cannon (Orange)"\
+ "0x16/Side 105mm Cannon (Orange)"\
+ "0x17/Dual Side 105mm (Orange)"\
+ "0x1A/12.7mm Chaingun (Orange)"\
+ "0x1B/Dual 12.7mm Chaingun (Orange)"\
+ "0x1C/30mm Cannon (Orange)"\
+ "0x1D/Dual 30mm Cannon (Orange)"\
+ "0x1E/105mm Cannon (Orange)"\
+ "0x1F/Dual 105mm (Orange)" 
+run:
+    poke $E007CF param
+script "P2 Always have Laser Powerup"  
+run:
+    poke $E007F3 $01

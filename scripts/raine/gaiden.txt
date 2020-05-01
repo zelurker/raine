@@ -1,0 +1,55 @@
+script "Infinite Credits"  
+run:
+    poke $62F15 $09
+script "Infinite Time"  
+run:
+    poke $61E89 $99
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($0E196)
+run:
+    dpoke $0E196 $0D2C
+off:
+    dpoke $0E196 temp0
+script "One Hit Kills"  
+on:
+    temp0=dpeek($0E9AC)
+    temp1=dpeek($0EAFC)
+run:
+    dpoke $0E9AC $4E71
+    dpoke $0EAFC $4E71
+off:
+    dpoke $0E9AC temp0
+    dpoke $0EAFC temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $61E8E $03
+script "P1 Infinite Energy"  
+run:
+    poke $61EC3 $09
+script "P1 Infinite Sword"  
+run:
+    poke $61EBA $0A
+script "P1 Invincibility"  
+run:
+    poke $61EB0 $2C
+script "P1 Rapid Fire"  
+run:
+    poke $61E32 $00|(peek($61E32)&~02)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $61E8F $03
+script "P2 Infinite Energy"  
+run:
+    poke $61F03 $09
+script "P2 Infinite Sword"  
+run:
+    poke $61EFA $0A
+script "P2 Invincibility"  
+run:
+    poke $61EF1 $2C
+script "P2 Rapid Fire"  
+run:
+    poke $61E32 $00|(peek($61E32)&~22)

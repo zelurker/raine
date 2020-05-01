@@ -1,0 +1,47 @@
+script "Select Starting Round" \
+ inter=1,8,1 
+run:
+    if (peek($FF81D7)==$00)
+      poke $FF81D7 (param-$1)
+    endif
+script " "  
+script "P1 Invincibility"  
+run:
+    poke $FF82E6 $0E
+script "P1 Infinite Energy"  
+run:
+    dpoke $FF8288 $0999
+script "P1 Character level 8 (max)"  
+run:
+    poke $FF82EE $07
+script "P1 Weapon level 8 (max)"  
+run:
+    poke $FF82E9 $07
+script "P1 Maximum Weapon Power"  
+run:
+    poke $FF82E2 $B
+    poke $FF82EF $07
+script "P1 Maximum Blue Balls"  
+run:
+    poke $FF82E1 $02
+script " "  
+script "P2 Invincibility"  
+run:
+    poke $FF8386 $0E
+script "P2 Infinite Energy"  
+run:
+    dpoke $FF8328 $0999
+script "P2 Character level 8 (max)"  
+run:
+    poke $FF838E $07
+script "P2 Weapon level 8 (max)"  
+run:
+    poke $FF8389 $07
+script "P2 Maximum Weapon Power"  
+run:
+    poke $FF8382 $B
+    poke $FF838F $07
+script "P2 Maximum Blue Balls"  
+run:
+    poke $FF8381 $02
+script " "  

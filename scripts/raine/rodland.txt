@@ -1,62 +1,118 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F413D $B4
-
-script "1UP Invulnerability OFF"
-	poke $F413D $01
-
-script "2UP Invulnerability ON" always
-	poke $F41BD $B4
-
-script "2UP Invulnerability OFF"
-	poke $F41BD $01
-
-script "1UP Unlimited lives" always
-	poke $F413B $03
-
-script "2UP Unlimited lives" always
-	poke $F41BB $03
-
-script "*UP "Extra Game" ON   (-T)"
-	poke $F48B1 $01
-	poke $F3072 $FF
-	poke $F3073 $FF
-
-script "1UP Get EXTRA"
-	poke $F4231 $1F
-
-script "2UP Get EXTRA"
-	poke $F4233 $1F
-
-script "1UP Get letter - E"
-	poke $F4231 peek($F4231)&$fe|$01
-
-script "1UP Get letter - X"
-	poke $F4231 peek($F4231)&$fd|$02
-
-script "1UP Get letter - T"
-	poke $F4231 peek($F4231)&$fb|$04
-
-script "1UP Get letter - R"
-	poke $F4231 peek($F4231)&$f7|$08
-
-script "1UP Get letter - A"
-	poke $F4231 peek($F4231)&$ef|$10
-
-script "2UP Get letter - E"
-	poke $F4233 peek($F4233)&$fe|$01
-
-script "2UP Get letter - X"
-	poke $F4233 peek($F4233)&$fd|$02
-
-script "2UP Get letter - T"
-	poke $F4233 peek($F4233)&$fb|$04
-
-script "2UP Get letter - R"
-	poke $F4233 peek($F4233)&$f7|$08
-
-script "2UP Get letter - A"
-	poke $F4233 peek($F4233)&$ef|$10
+script "Enable Alternate Game" \
+ "comm:Different Title, Levels, Characters, Story, Bosses etc. Same as 'Down,Down,Down' after inserting coin except you get to see Different Title and Attract this way!"  
+on:
+    poke $F3047 $02
+    poke $F3049 $02
+script "Disable Alternate Game"  
+on:
+    poke $F3047 $01
+    poke $F3049 $01
+script "Turn 'Extra Game' ON"  
+on:
+    poke $F48B1 $01
+    poke $F3072 $FF
+    poke $F3073 $FF
+script " "  
+script "These 1 Hit to Kill codes are only for the Alternate Game."  
+script " "  
+script "1 Hit to Kill 1st Boss Now!"  
+on:
+    poke $F52B9 $01
+script "1 Hit to Kill 2nd Bosses Now!"  
+on:
+    lpoke $F5CD4 $00010001
+    lpoke $F5CD8 $00010001
+    lpoke $F5CDC $00010001
+    lpoke $F5CE0 $00010001
+script "1 Hit to Kill 3rd Boss Now!"  
+on:
+    poke $F542F $14
+script "1 Hit to Kill 4th Boss Now!"  
+on:
+    poke $F5CCF $14
+script "1 Hit to Kill Final Boss Now!"  
+on:
+    poke $F5CCD $26
+script " "  
+script "These 1 Hit to Kill codes are only for the Normal Game."  
+script " "  
+script "1 Hit to Kill 1st Bosses Now!"  
+on:
+    lpoke $F5CBE $00070007
+    lpoke $F5CC2 $00070007
+    lpoke $F5CC6 $00070007
+script "1 Hit to Kill 2nd Boss Now!"  
+on:
+    poke $F5CC3 $1C
+script "1 Hit to Kill 3rd Boss Now!"  
+on:
+    poke $F5CBF $10
+script "1 Hit to Kill Final Boss Now!"  
+on:
+    lpoke $F5CC4 $0010000A
+    lpoke $F5CC8 $0020003C
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F413B $07
+script "P1 Invincibility"  
+run:
+    poke $F413D $02
+script "P1 Get EXTRA Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4231 $1F
+script "P1 Get letter - E Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4231 $01|(peek($F4231)&~01)
+script "P1 Get letter - X Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4231 $02|(peek($F4231)&~02)
+script "P1 Get letter - T Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4231 $04|(peek($F4231)&~04)
+script "P1 Get letter - R Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4231 $08|(peek($F4231)&~08)
+script "P1 Get letter - A Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4231 $10|(peek($F4231)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F41BB $07
+script "P2 Invincibility"  
+run:
+    poke $F41BD $02
+script "P2 Get EXTRA Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4233 $1F
+script "P2 Get letter - E Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4233 $01|(peek($F4233)&~01)
+script "P2 Get letter - X Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4233 $02|(peek($F4233)&~02)
+script "P2 Get letter - T Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4233 $04|(peek($F4233)&~04)
+script "P2 Get letter - R Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4233 $08|(peek($F4233)&~08)
+script "P2 Get letter - A Now!" \
+ "comm:'Extra Game' must be ON"  
+on:
+    poke $F4233 $10|(peek($F4233)&~10)
+script " "  
+script "EXTRA GAME INFO - To access PART 2 of the game, after you've"  
+script "inserted a credit press DOWN 3 times then press start!!!"  

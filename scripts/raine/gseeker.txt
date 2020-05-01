@@ -1,81 +1,55 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $40D283 $B4
-
-script "1UP Invulnerability OFF"
-	poke $40D283 $01
-
-script "2UP Invulnerability ON" always
-	poke $40D2D3 $B4
-
-script "2UP Invulnerability OFF"
-	poke $40D2D3 $01
-
-script "1UP Unlimited lives" always
-	poke $40D225 $03
-
-script "2UP Unlimited lives" always
-	poke $40D227 $03
-
-script "1UP Unlimited bombs" always
-	poke $40D29B $4F
-
-script "2UP Unlimited bombs" always
-	poke $40D2EB $4F
-
-script "1UP Maximum fire power" always
-	poke $40D2A9 $05
-
-script "2UP Maximum fire power" always
-	poke $40D2F9 $05
-
-script "1UP Bomb - Flames         (P)" always
-	poke $40D2AB $00
-
-script "1UP Bomb - Lightnings     (P)" always
-	poke $40D2AB $01
-
-script "1UP Bomb - Clouds         (P)" always
-	poke $40D2AB $02
-
-script "1UP Bomb - Nuclear        (P)" always
-	poke $40D2AB $03
-
-script "2UP Bomb - Flames         (P)" always
-	poke $40D2FB $00
-
-script "2UP Bomb - Lightnings     (P)" always
-	poke $40D2FB $01
-
-script "2UP Bomb - Clouds         (P)" always
-	poke $40D2FB $02
-
-script "2UP Bomb - Nuclear        (P)" always
-	poke $40D2FB $03
-
-script "1UP Bomb - Flames         (T)"
-	poke $40D2AB $00
-
-script "1UP Bomb - Lightning      (T)"
-	poke $40D2AB $01
-
-script "1UP Bomb - Clouds         (T)"
-	poke $40D2AB $02
-
-script "1UP Bomb - Nuclear        (T)"
-	poke $40D2AB $03
-
-script "2UP Bomb - Flames         (T)"
-	poke $40D2FB $00
-
-script "2UP Bomb - Lightning      (T)"
-	poke $40D2FB $01
-
-script "2UP Bomb - Clouds         (T)"
-	poke $40D2FB $02
-
-script "2UP Bomb - Nuclear        (T)"
-	poke $40D2FB $03
+script "Infinite Credits"  
+run:
+    poke $40AEE5 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $40D225 $07
+script "P1 Invincibility"  
+run:
+    poke $40D283 $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $40D2A9 $06
+script "P1 Infinite Bombs"  
+run:
+    poke $40D29B $50
+script "P1 Select Bomb" \
+ "0x00/Fire Bomb"\
+ "0x01/Blue Bomb"\
+ "0x02/Green Bomb"\
+ "0x03/Gold Bomb" 
+run:
+    poke $40D2AB param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $40D227 $07
+script "P2 Invincibility"  
+run:
+    poke $40D2D3 $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $40D2F9 $06
+script "P2 Infinite Bombs"  
+run:
+    poke $40D2EB $50
+script "P2 Select Bomb" \
+ "0x00/Fire Bomb"\
+ "0x00/Blue Bomb"\
+ "0x00/Green Bomb"\
+ "0x00/Gold Bomb" 
+run:
+    poke $40D2FB param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait,  then reset again (F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

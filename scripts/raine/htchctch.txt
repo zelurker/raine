@@ -1,0 +1,100 @@
+script "Infinite Credits"  
+run:
+    poke $341C7F $63
+script "Infinite Time"  
+run:
+    lpoke $120D87 $00000000|(lpeek($120D87)&~FFFFFF00)
+script " "  
+script "P1 Select Perm. Top Object" \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+run:
+    poke $12039D param
+script "P1 Select Perm. Bottom Object" \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+run:
+    poke $12039F param
+script "P1 Select Temp. Top Object" \
+ "comm:Assign this to an activation key for the best effect, then just press that key as many times as you want to cycle through the objects one by one." \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+change:
+    poke $12039D param
+script "P1 Select Temp. Bottom Object" \
+ "comm:Assign this to an activation key for the best effect, then just press that key as many times as you want to cycle through the objects one by one." \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+change:
+    poke $12039F param
+script " "  
+script "P2 Select Perm. Top Object" \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+run:
+    poke $120455 param
+script "P2 Select Perm. Bottom Object" \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+run:
+    poke $120457 param
+script "P2 Select Temp. Top Object" \
+ "comm:Assign this to an activation key for the best effect, then just press that key as many times as you want to cycle through the objects one by one." \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+change:
+    poke $120455 param
+script "P2 Select Temp. Bottom Object" \
+ "comm:Assign this to an activation key for the best effect, then just press that key as many times as you want to cycle through the objects one by one." \
+ "0x00/Yellow Cylinder"\
+ "0x01/Purple Cube"\
+ "0x02/Orange Polygon"\
+ "0x03/Blue Sphere"\
+ "0x04/Red Polygon"\
+ "0x05/Green Cube"\
+ "0x06/Grey Sphere"\
+ "0x07/Blue Polygon" 
+change:
+    poke $120457 param

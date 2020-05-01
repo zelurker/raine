@@ -1,0 +1,150 @@
+script "Infinite Time"  
+on:
+    temp0=lpeek($033B60)
+    temp1=dpeek($033B64)
+run:
+    lpoke $033B60 $3D7C0909
+    dpoke $033B64 $001E
+off:
+    lpoke $033B60 temp0
+    dpoke $033B64 temp1
+script "Finish this Round Now!"  
+on:
+    dpoke $10022E $0001
+script "Always Enable Special Move" \
+ "comm:You can use special move regardless of an energy (Normally it needs 0x3F or lower)."  
+on:
+    temp0=peek($01708B)
+run:
+    poke $01708B $01
+off:
+    poke $01708B temp0
+script "All Characters Selectable" \
+ "comm:You can select Behemoth, Eelith, Lucifer and Gilfer in the character selection screen. They are hidden between Susano and Igret. But selectable Gilfer is buggy because he is another version of Lucifer"  
+on:
+    temp0=peek($00FD75)
+    temp1=peek($00FDD7)
+run:
+    poke $00FD75 $B
+    poke $00FDD7 $0C
+off:
+    poke $00FD75 temp0
+    poke $00FDD7 temp1
+script " "  
+script "P1 Infinite Energy"  
+on:
+    temp0=lpeek($0333D2)
+    temp1=dpeek($0333D6)
+    temp2=lpeek($0333D8)
+    temp3=dpeek($0333DC)
+run:
+    lpoke $0333D2 $317C00FF
+    dpoke $0333D6 $006C
+    lpoke $0333D8 $3D7C0060
+    dpoke $0333DC $0026
+off:
+    lpoke $0333D2 temp0
+    dpoke $0333D6 temp1
+    lpoke $0333D8 temp2
+    dpoke $0333DC temp3
+script "P1 Drain All Energy Now!"  
+on:
+    poke $109089 $00
+script "P1 Invincibility" \
+ "comm:Disabled against a catch or throw by opponent"  
+on:
+    temp0=peek($01CD01)
+run:
+    poke $01CD01 $32
+off:
+    poke $01CD01 temp0
+script "P1 Select Character" \
+ "comm:Free player selection - Use it on the selection screen" \
+ "0x08/Behemoth"\
+ "0x09/Eelis"\
+ "0x0A/Lucifer"\
+ "0x0B/Gilfer" 
+change:
+    poke $108D4C param
+script " "  
+script "P2 Infinite Energy"  
+on:
+    temp0=lpeek($0333F2)
+    temp1=dpeek($0333F6)
+    temp2=lpeek($0333F8)
+    temp3=dpeek($0333FC)
+run:
+    lpoke $0333F2 $317C00FF
+    dpoke $0333F6 $006C
+    lpoke $0333F8 $3D7C0060
+    dpoke $0333FC $0028
+off:
+    lpoke $0333F2 temp0
+    dpoke $0333F6 temp1
+    lpoke $0333F8 temp2
+    dpoke $0333FC temp3
+script "P2 Drain All Energy Now!"  
+on:
+    poke $109361 $00
+script "P2 Invincibility" \
+ "comm:Disabled against a catch or throw by opponent"  
+on:
+    temp0=peek($01CD1D)
+run:
+    poke $01CD1D $32
+off:
+    poke $01CD1D temp0
+script "P2 Select Character" \
+ "comm:Free player selection - Use it on the selection screen" \
+ "0x08/Behemoth"\
+ "0x09/Eelis"\
+ "0x0A/Lucifer"\
+ "0x0B/Gilfer" 
+change:
+    poke $108D4D param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

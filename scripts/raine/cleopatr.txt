@@ -1,0 +1,15 @@
+script "Infinite Credits"  
+run:
+    poke $40F9BF $09
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($07FFFF)
+run:
+    poke $07FFFF param
+off:
+    poke $07FFFF temp0

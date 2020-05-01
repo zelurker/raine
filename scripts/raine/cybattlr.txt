@@ -1,33 +1,49 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $1FB013 peek($1FB013)&$fb|$04
-
-script "1UP Invulnerability OFF"
-	poke $1FB013 peek($1FB013)&$fb
-
-script "2UP Invulnerability ON" always
-	poke $1FB093 peek($1FB093)&$fb|$04
-
-script "2UP Invulnerability OFF"
-	poke $1FB093 peek($1FB093)&$fb
-
-script "1UP Unlimited energy" always
-	poke $1FB015 $80
-
-script "2UP Unlimited energy" always
-	poke $1FB095 $80
-
-script "1UP Max. charge - Sword" always
-	dpoke $1FB03C $270F
-
-script "2UP Max. charge - Sword" always
-	dpoke $1FB0BC $270F
-
-script "1UP Max. fire power - Gun" always
-	poke $1FB042 $03
-
-script "2UP Max. fire power - Gun" always
-	poke $1FB0C2 $03
+script "Infinite Credits"  
+run:
+    poke $1FD101 $09
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $1FB015 $80
+script "P1 Invincibility"  
+run:
+    poke $1FB013 $04|(peek($1FB013)&~04)
+script "P1 Max charge - Sword" \
+ "comm:To be used on level 1"  
+run:
+    poke $1FB03C $27
+    poke $1FB03D $0F
+script "P1 Max fire power - Gun" \
+ "comm:To be used after level 1"  
+run:
+    poke $1FB042 $03
+script "P1 Rapid Fire - Shot"  
+run:
+    poke $1FD003 $00|(peek($1FD003)&~10)
+    poke $1FB025 $00
+script "P1 Rapid Fire - Sword"  
+run:
+    poke $1FD003 $00|(peek($1FD003)&~20)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $1FB095 $80
+script "P2 Invincibility"  
+run:
+    poke $1FB093 $04|(peek($1FB093)&~04)
+script "P2 Max charge - Sword" \
+ "comm:To be used on level 1"  
+run:
+    poke $1FB0BC $27
+    poke $1FB0BD $0F
+script "P2 Max fire power - Gun" \
+ "comm:To be used after level 1"  
+run:
+    poke $1FB0C2 $03
+script "P2 Rapid Fire - Shot"  
+run:
+    poke $1FD005 $00|(peek($1FD005)&~10)
+    poke $1FB0A5 $00
+script "P2 Rapid Fire - Sword"  
+run:
+    poke $1FD005 $00|(peek($1FD005)&~20)

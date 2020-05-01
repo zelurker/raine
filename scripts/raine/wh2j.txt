@@ -1,0 +1,223 @@
+script "Infinite Time"  
+run:
+    if peek($10C109)>01
+      poke $10C109 $9A
+    endif
+script "Finish this Round Now!"  
+on:
+    poke $10C109 $01
+script "Always Round 1"  
+run:
+    poke $10C121 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    dpoke $10600C $6060
+script "P1 Drain All Energy Now!"  
+on:
+    dpoke $10600C $0000
+script "P1 Select Character" \
+ "comm:Free player selection, Use BETWEEN rounds" \
+ "0x01/Dragon"\
+ "0x02/Hanzou"\
+ "0x03/Muscle"\
+ "0x04/J. Carn"\
+ "0x05/Janne"\
+ "0x06/Rasputin"\
+ "0x07/Fuuma"\
+ "0x08/Brocken"\
+ "0x09/Shura"\
+ "0x0A/Ryoko"\
+ "0x0B/C. Kidd"\
+ "0x0C/Mudman"\
+ "0x0D/Erick"\
+ "0x0E/J. Max"\
+ "0x0F/Jack"\
+ "0x10/Ryofu"\
+ "0x11/Zeus" 
+change:
+    poke $106004 param
+script "P1 Always have Wins = 0"  
+run:
+    poke $10C122 $00|(peek($10C122)&~03)
+script "P1 Always have Wins = 2" \
+ "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
+run:
+    poke $10C122 $03|(peek($10C122)&~03)
+script "P1 Set Wins = 0 Now!"  
+on:
+    poke $10C122 $00|(peek($10C122)&~03)
+script "P1 Set Wins = 1 Now!"  
+on:
+    poke $10C122 $01|(peek($10C122)&~03)
+script "P1 Set Wins = 2 Now!" \
+ "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
+on:
+    poke $10C122 $03|(peek($10C122)&~03)
+script "P1 Always have Won 3 Rounds [Tournament]"  
+run:
+    poke $10C123 $15|(peek($10C123)&~3F)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke $10610C $6060
+script "P2 Drain All Energy Now!"  
+on:
+    dpoke $10610C $0000
+script "P2 Select Character" \
+ "comm:Free player selection, Use BETWEEN rounds" \
+ "0x01/Dragon"\
+ "0x02/Hanzou"\
+ "0x03/Muscle"\
+ "0x04/J. Carn"\
+ "0x05/Janne"\
+ "0x06/Rasputin"\
+ "0x07/Fuuma"\
+ "0x08/Brocken"\
+ "0x09/Shura"\
+ "0x0A/Ryoko"\
+ "0x0B/C. Kidd"\
+ "0x0C/Mudman"\
+ "0x0D/Erick"\
+ "0x0E/J. Max"\
+ "0x0F/Jack"\
+ "0x10/Ryofu"\
+ "0x11/Zeus" 
+change:
+    poke $106104 param
+script "P2 Always have Wins = 0"  
+run:
+    poke $10C122 $00|(peek($10C122)&~0C)
+script "P2 Always have Wins = 2" \
+ "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
+run:
+    poke $10C122 $0C|(peek($10C122)&~0C)
+script "P2 Set Wins = 0 Now!"  
+on:
+    poke $10C122 $00|(peek($10C122)&~0C)
+script "P2 Set Wins = 1 Now!"  
+on:
+    poke $10C122 $04|(peek($10C122)&~0C)
+script "P2 Set Wins = 2 Now!" \
+ "comm:As long as P1 wins LT 2 then P2 wins the battle automatically at the end of round"  
+on:
+    poke $10C122 $0C|(peek($10C122)&~0C)
+script "P2 Always have Won 3 Rounds [Tournament]"  
+run:
+    poke $10C123 $15|(peek($10C123)&~3F)
+script " "  
+script "Deathmatch Player 'Downs' always 0"  
+run:
+    poke $106111 $00
+script "Deathmatch CPU 'Downs' always 6"  
+run:
+    poke $106011 $06
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99
+script "Mute All Music" \
+ "comm:Fully mutes all music, including BIOS music"  
+on:
+    if peek($0109)==$03
+      temp0=$04AC
+    endif
+    if peek($0109)==$05
+      temp0=$D2A4
+    endif
+    if peek($0109)==$09
+      temp0=$CEBD
+    endif
+    if peek($0109)==$12
+      temp0=$04AC
+    endif
+    if peek($0109)==$17
+      temp0=$04AC
+    endif
+    if peek($0109)==$22
+      temp0=$CEC0
+    endif
+    if peek($0109)==$24
+      temp0=$04C2
+    endif
+    if peek($0109)==$37
+      temp0=$03ED
+    endif
+    if peek($0109)==$38
+      temp0=$03ED
+    endif
+    if peek($0109)==$50
+      temp0=$03ED
+    endif
+    if peek($0109)==$53
+      temp0=$03FE
+    endif
+    if peek($0109)==$54
+      temp0=$03ED
+    endif
+    if peek($0109)==$57
+      temp0=$040D
+    endif
+    if peek($0109)==$64
+      temp0=$0408
+    endif
+    if peek($0109)==$74
+      temp0=$0408
+    endif
+    if peek($0109)==$90
+      temp0=$04AC
+    endif
+run:
+    cpu audio
+    if peek(temp0)==$32
+      poke temp0 $C9
+    endif
+    cpu main
+off:
+    cpu audio
+    if peek(temp0)==$C9
+      poke temp0 $32
+    endif
+    cpu main

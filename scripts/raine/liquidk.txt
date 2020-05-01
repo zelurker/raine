@@ -1,14 +1,45 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability ON" always
-	poke $102C6B $5A
-	poke $109504 peek($109504)&$f7|$08
-
-script "*UP Invulnerability OFF"
-	poke $102C6B $01
-	poke $109504 peek($109504)&$f7
-
-script "*UP Unlimited lives" always
-	poke $109522 $03
+script "Infinite Lives"  
+run:
+    poke $109522 $03
+script "Invincibility"  
+run:
+    poke $109504 $08|(peek($109504)&~08)
+    poke $102C6B $5A
+script "Always have Speed Up"  
+run:
+    poke $109530 $60
+script "Always have Max Speed Up"  
+run:
+    poke $109530 $FF
+script "Never Slip"  
+run:
+    poke $109BEC $FF
+script "Always have Max Shot Up"  
+run:
+    poke $109D73 $08
+script "Always have Penetration State Up"  
+run:
+    poke $109D79 $14
+script "Always have Max Penetration State Up (Buggy)"  
+run:
+    poke $109D79 $FF
+script "Always have Max Penetration Speed Up"  
+run:
+    poke $109D7C $FF
+script "Always have Penetration Shot Up"  
+run:
+    poke $102A7F $14
+script "Select Starting level" \
+ "comm:Use on credit screen" \
+ inter=1,24,1 
+on:
+    poke $10952F $01
+change:
+    poke $10952F (param-$1)
+script "Select Starting level" \
+ "comm:Including bonus levels" \
+ inter=1,37,1 
+on:
+    poke $10952F $01
+change:
+    poke $10952F (param-$1)

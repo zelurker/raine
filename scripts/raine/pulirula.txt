@@ -1,33 +1,39 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $307EDC $5B
-
-script "1UP Invulnerability OFF"
-	poke $307EDC $01
-
-script "2UP Invulnerability ON" always
-	poke $307F66 $5B
-
-script "2UP Invulnerability OFF"
-	poke $307F66 $01
-
-script "1UP Unlimited lives" always
-	poke $307F0B $03
-
-script "2UP Unlimited lives" always
-	poke $307F95 $03
-
-script "1UP Unlimited energy" always
-	poke $307F0F $60
-
-script "2UP Unlimited energy" always
-	poke $307F99 $60
-
-script "1UP Unlimited magic" always
-	poke $307F0D $05
-
-script "2UP Unlimited magic" always
-	poke $307F97 $05
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($033028)
+    temp1=dpeek($0330FC)
+    temp2=dpeek($03314C)
+run:
+    dpoke $033028 $6002
+    dpoke $0330FC $4E71
+    dpoke $03314C $4E71
+off:
+    dpoke $033028 temp0
+    dpoke $0330FC temp1
+    dpoke $03314C temp2
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $307F0B $04
+script "P1 Infinite Energy"  
+run:
+    poke $307F0F $60
+script "P1 Infinite Magic"  
+run:
+    poke $307F0D $05
+script "P1 Invincibility"  
+run:
+    poke $307EDC $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $307F95 $04
+script "P2 Infinite Energy"  
+run:
+    poke $307F99 $60
+script "P2 Infinite Magic"  
+run:
+    poke $307F97 $05
+script "P2 Invincibility"  
+run:
+    poke $307F66 $01

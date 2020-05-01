@@ -1,0 +1,361 @@
+script "Infinite Time"  
+run:
+    poke $107D62 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $107D62 $00
+script "Mai's boobs always bounce"  
+on:
+    temp0=peek($10785A)
+run:
+    poke $10785A $00
+off:
+    poke $10785A temp0
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($01621E)
+run:
+    dpoke $01621E $6002
+off:
+    dpoke $01621E temp0
+script " "  
+script "P1 Infinite Character (A) Energy"  
+run:
+    poke $2FE91D $70
+script "P1 Infinite Character (B) Energy"  
+run:
+    poke $2FEA1D $70
+script "P1 Infinite Character (C) Energy"  
+run:
+    poke $2FEB1D $70
+script "P1 Drain All Character (A) Energy Now!"  
+on:
+    poke $2FE91D $00
+script "P1 Drain All Character (B) Energy Now!"  
+on:
+    poke $2FEA1D $00
+script "P1 Drain All Character (C) Energy Now!"  
+on:
+    poke $2FEB1D $00
+script "P1 Infinite Power"  
+run:
+    poke $2FE804 $05
+    poke $2FE800 $48
+script "P1 Select Character (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai" 
+run:
+    poke $107D0C param
+script "P1 Select Character (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai" 
+run:
+    poke $107D0D param
+script "P1 Select Character (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai" 
+run:
+    poke $107D0E param
+script " "  
+script "P2 Infinite Character (A) Energy"  
+run:
+    poke $2FED1D $70
+script "P2 Infinite Character (B) Energy"  
+run:
+    poke $2FEE1D $70
+script "P2 Infinite Character (C) Energy"  
+run:
+    poke $2FEF1D $70
+script "P2 Drain All Character (A) Energy Now!"  
+on:
+    poke $2FED1D $00
+script "P2 Drain All Character (B) Energy Now!"  
+on:
+    poke $2FEE1D $00
+script "P2 Drain All Character (C) Energy Now!"  
+on:
+    poke $2FEF1D $00
+script "P2 Infinite Power"  
+run:
+    poke $2FEC04 $05
+    poke $2FEC00 $48
+script "P2 Select Character (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizur"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai" 
+run:
+    poke $107D0F param
+script "P2 Select Character (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizur"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Muka" 
+run:
+    poke $107D10 param
+script "P2 Select Character (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru" 
+run:
+    poke $107D11 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FD89 $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

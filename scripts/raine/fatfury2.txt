@@ -1,0 +1,145 @@
+script "Infinite Time"  
+run:
+    poke $10092A $99
+script "Finish Round Now!"  
+on:
+    poke $10092A $00
+script "Always Enable Special Move"  
+on:
+    temp0=peek($01A3F7)
+run:
+    poke $01A3F7 $02
+off:
+    poke $01A3F7 temp0
+script "Select Stage (Background)" \
+ "comm:The background will not change until you disable it or change it. If you change it mid-round the background won't update till the next round." \
+ "0x01/Terry (U.S.A.)"\
+ "0x02/Andy (Italy)"\
+ "0x03/Joe (Thailand)"\
+ "0x04/Big Bear (Australia)"\
+ "0x05/Jubei (Japan)"\
+ "0x06/Cheng (Hong Kong)"\
+ "0x07/Kim (Korea)"\
+ "0x08/Mai (Japan)"\
+ "0x09/Billy (Great Britain)"\
+ "0x0A/Axel (U.S.A.)"\
+ "0x0B/Laurence (Spain)"\
+ "0x0C/Krauser (Germany)" 
+run:
+    poke $10AAD5 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $1003CB $60
+script "P1 Drain all Energy Now!"  
+on:
+    poke $1003CB $00
+script "P1 Select Character" \
+ "comm:If you enable it mid-round the character won't update till the next round" \
+ "0x01/Terry"\
+ "0x02/Andy"\
+ "0x03/Joe"\
+ "0x04/Big Bear"\
+ "0x05/Jubei"\
+ "0x06/Cheng"\
+ "0x07/Kim"\
+ "0x08/Mai"\
+ "0x09/Billy"\
+ "0x0A/Axel"\
+ "0x0B/Laurence"\
+ "0x0C/Krauser" 
+run:
+    poke $10419B param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $1004CB $60
+script "P2 Drain all Energy Now!"  
+on:
+    poke $1004CB $00
+script "P2 Select Character" \
+ "comm:If you enable it mid-round the character won't update till the next round" \
+ "0x01/Terry"\
+ "0x02/Andy"\
+ "0x03/Joe"\
+ "0x04/Big Bear"\
+ "0x05/Jubei"\
+ "0x06/Cheng"\
+ "0x07/Kim"\
+ "0x08/Mai"\
+ "0x09/Billy"\
+ "0x0A/Axel"\
+ "0x0B/Laurence"\
+ "0x0C/Krauser" 
+run:
+    poke $10419D param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start"  
+run:
+    poke $1051C9 peek($1051C8)&7F|10
+    dpoke $401FFE $0000
+    if (peek($100002)==$43)
+      poke $100920 $20
+      poke $10092B $3C
+    endif
+    if (peek($100002)==$43&&(peek($100003)&80)!=$00)
+      poke $1051C9 $10
+      poke $1041C1 $40
+      dpoke $1041C3 $00
+      dpoke $401FFE $8F8F
+    endif
+off:
+    poke $100920 $40
+    poke $1051C9 peek($1051C8)&7F|10
+    dpoke $401FFE $0000
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

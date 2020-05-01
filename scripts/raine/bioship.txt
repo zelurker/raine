@@ -1,45 +1,52 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F02DB $4F
-
-script "1UP Invulnerability OFF"
-	poke $F0E5B $00
-
-script "2UP Invulnerability ON" always
-	poke $F02DB $4F
-
-script "2UP Invulnerability OFF"
-	poke $F0E5B $00
-
-script "1UP Unlimited lives" always
-	poke $F02DD $03
-
-script "2UP Unlimited lives" always
-	poke $F0E5D $03
-
-script "1UP Unlimited energy" always
-	poke $F0331 $14
-
-script "2UP Unlimited energy" always
-	poke $F0EB1 $14
-
-script "1UP Maximum beam charge" always
-	poke $F0335 $40
-
-script "2UP Maximum beam charge" always
-	poke $F0EB5 $40
-
-script "*UP Hit check    ON"
-	dpoke $F0054 $0000
-
-script "*UP Hit check    OFF"
-	dpoke $F0054 $FFFF
-
-script "*UP Round select ON"
-	dpoke $F0056 $FFFF
-
-script "*UP Round select OFF"
-	dpoke $F0056 $0000
+script "The following cheats are from the 'option' menu of the test mode. But the values are"  
+script "reset when you reset the game. Using cheats allows you to change them with ease."  
+script "Select Hit Check" \
+ "0x0000/Always 'ON'"\
+ "0xFFFF/Always 'OFF'" 
+run:
+    dpoke $F0054 param
+script "Select Round Select" \
+ "0xFFFF/Always 'ON'"\
+ "0x0000/Always 'OFF'" 
+run:
+    dpoke $F0056 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F02DD $06
+script "P1 Infinite Energy"  
+run:
+    poke $F0331 $14
+script "P1 Always have Max Beam"  
+run:
+    poke $F0335 $40
+script "P1 Invincibility"  
+run:
+    poke $F02DB $4F
+script "P1 Always have Autobeam"  
+run:
+    poke $F02FA $FF
+script "P1 Infinite Auto-beam Time" \
+ "comm:You must get the auto-beam powerup for it to work though"  
+run:
+    poke $F0375 $21
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F0E5D $06
+script "P2 Infinite Energy"  
+run:
+    poke $F0EB1 $14
+script "P2 Always have Max Beam"  
+run:
+    poke $F0EB5 $40
+script "P2 Invincibility"  
+run:
+    poke $F0E5B $4F
+script "P2 Always have Autobeam"  
+run:
+    poke $F0E7A $FF
+script "P2 Infinite Auto-beam Time" \
+ "comm:You must get the auto-beam powerup for it to work though"  
+run:
+    poke $F0EF5 $21

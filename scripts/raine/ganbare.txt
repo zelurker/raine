@@ -1,0 +1,5 @@
+script " "  
+script "This is a gambling or a redemption ticket game,"  
+script "and although cheats are possible it's generating"  
+script "little interest. If you've made any then please"  
+script "post them on the cheat forums."  

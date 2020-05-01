@@ -1,40 +1,211 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $FF8109 $63
-
-script "1UP Unlimited energy" always
-	dlpoke $FF8450 $02400240
-
-script "2UP Unlimited energy" always
-	dlpoke $FF8850 $02400240
-
-script "1UP Energy set to 0       (P)" always
-	dlpoke $FF8450 $FFFFFFFF
-
-script "2UP Energy set to 0       (P)" always
-	dlpoke $FF8850 $FFFFFFFF
-
-script "1UP Energy set to 0       (T)"
-	dlpoke $FF8450 $FFFFFFFF
-
-script "2UP Energy set to 0       (T)"
-	dlpoke $FF8850 $FFFFFFFF
-
-script "1UP Maximum power" always
-	poke $FF8509 $63
-	poke $FF850B $90
-
-script "2UP Maximum power" always
-	poke $FF8909 $63
-	poke $FF890B $90
-
-script "1UP Minimum power" always
-	poke $FF8509 $00
-	poke $FF850B $00
-
-script "2UP Minimum power" always
-	poke $FF8909 $00
-	poke $FF890B $00
+script "Infinite Time"  
+run:
+    poke $FF8109 $63
+script "Finish this Match Now!"  
+on:
+    poke $FF8109 $00
+script "Select Background" \
+ "comm:Turn this cheat off or alter it if you want another background" \
+ "0x00/01 - FEAST OF THE DAMNED"\
+ "0x02/02 - CONCRETE CAVE"\
+ "0x04/03 - TOWER OF ARROGANCE"\
+ "0x06/04 - RED THIRST"\
+ "0x08/05 - DESERTED CHATEAU"\
+ "0x0A/06 - ABARAYA"\
+ "0x0C/07 - VANITY PARADISE"\
+ "0x0E/08 - WAR AGONY"\
+ "0x10/09 - FOREVER TORMENT"\
+ "0x12/10 - GREEN SCREAM"\
+ "0x14/11 - IRON HORSE, IRON TERROR"\
+ "0x16/12 - FETUS OF GOD"\
+ "0x18/13 - REVENGER'S ROOST" 
+run:
+    poke $FF8101 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    lpoke $FF8450 $02400240
+script "P1 Drain All Energy Now!"  
+on:
+    lpoke $FF8450 $00000000
+script "P1 Infinite Power"  
+run:
+    lpoke $FF8508 $00630090|(lpeek($FF8508)&~00FFFFFF)
+script "P1 Always No Power"  
+run:
+    lpoke $FF8508 $00000000|(lpeek($FF8508)&~00FFFFFF)
+script "P1 Shadow Mode"  
+on:
+    temp0=peek($FF87BC)
+run:
+    poke $FF87BC $FF
+off:
+    poke $FF87BC temp0
+script "P1 Marionette Mode"  
+on:
+    temp0=peek($FF87C3)
+run:
+    poke $FF87C3 $FF
+off:
+    poke $FF87C3 temp0
+script "P1 Infinite Dark Force Change Time"  
+run:
+    poke $FF85C5 $70
+script "P1 Infinite Dark Force Power Time"  
+run:
+    poke $FF8577 $70
+script "P1 Select Control" \
+ "0x00/User"\
+ "0x01/CPU" 
+run:
+    poke $FF87B4 param
+script "P1 Select Character" \
+ "0x00/#Baby Bonnie Hood"\
+ "0x01/Demitri Maximov"\
+ "0x02/Jon Talbain"\
+ "0x03/Victor von Geldenheim"\
+ "0x04/Lord Raptor"\
+ "0x05/Morrigan Aensland"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Rikuo"\
+ "0x0A/Sasquatch"\
+ "0x0B/#Lord Raptor (during Dark Force)"\
+ "0x0C/#Q-Bee"\
+ "0x0D/Hsien-Ko"\
+ "0x0E/#Lilith"\
+ "0x0F/#Jedah"\
+ "0x10/Huitzil"\
+ "0x11/Pyron"\
+ "0x12/#Dark Talbain"\
+ "0x13/Donovan Baine"\
+ "0x18/#Oboro-Bishamon" 
+run:
+    poke $FF8782 param
+script "P1 Select Colour" \
+ "0x00/LP colour"\
+ "0x01/MP colour"\
+ "0x02/HP colour"\
+ "0x03/LK colour"\
+ "0x04/MK colour"\
+ "0x05/HK colour"\
+ "0x06/PPP colour"\
+ "0x07/KKK colour" 
+run:
+    poke $FF87AE param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    lpoke $FF8850 $02400240
+script "P2 Drain All Energy Now!"  
+on:
+    lpoke $FF8850 $00000000
+script "P2 Infinite Power"  
+run:
+    lpoke $FF8908 $00630090|(lpeek($FF8908)&~00FFFFFF)
+script "P2 Always No Power"  
+run:
+    lpoke $FF8908 $00000000|(lpeek($FF8908)&~00FFFFFF)
+script "P2 Shadow Mode"  
+on:
+    temp0=peek($FF8BBC)
+run:
+    poke $FF8BBC $FF
+off:
+    poke $FF8BBC temp0
+script "P2 Marionette Mode"  
+on:
+    temp0=peek($FF8BC3)
+run:
+    poke $FF8BC3 $FF
+off:
+    poke $FF8BC3 temp0
+script "P2 Infinite Dark Force Change Time"  
+run:
+    poke $FF89C5 $70
+script "P2 Infinite Dark Force Power Time"  
+run:
+    poke $FF8977 $70
+script "P2 Select Control" \
+ "0x00/User"\
+ "0x01/CPU" 
+run:
+    poke $FF8BB4 param
+script "P2 Select Character" \
+ "0x00/#Baby Bonnie Hood"\
+ "0x01/Demitri Maximov"\
+ "0x02/Jon Talbain"\
+ "0x03/Victor von Geldenheim"\
+ "0x04/Lord Raptor"\
+ "0x05/Morrigan Aensland"\
+ "0x06/Anakaris"\
+ "0x07/Felicia"\
+ "0x08/Bishamon"\
+ "0x09/Rikuo"\
+ "0x0A/Sasquatch"\
+ "0x0B/#Lord Raptor (during Dark Force)"\
+ "0x0C/#Q-Bee"\
+ "0x0D/Hsien-Ko"\
+ "0x0E/#Lilith"\
+ "0x0F/#Jedah"\
+ "0x10/Huitzil"\
+ "0x11/Pyron"\
+ "0x12/#Dark Talbain"\
+ "0x13/Donovan Baine"\
+ "0x18/#Oboro-Bishamon" 
+run:
+    poke $FF8B82 param
+script "P2 Select Colour" \
+ "0x00/LP colour"\
+ "0x01/MP colour"\
+ "0x02/HP colour"\
+ "0x03/LK colour"\
+ "0x04/MK colour"\
+ "0x05/HK colour"\
+ "0x06/PPP colour"\
+ "0x07/KKK colour" 
+run:
+    poke $FF8BAE param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=peek($FF8033)
+    temp1=dpeek($007BF0)
+    temp2=lpeek($007BF2)
+run:
+    poke $FF8033 temp0
+    dpoke $007BF0 temp1
+    lpoke $007BF2 temp2
+    if (dpeek($FF8109)!=$0&&lpeek($FF810C)==$0)
+      poke $FF8033 $0
+      dpoke $FFF000 $0
+      dpoke $FFF200 $0
+      dpoke $FF356C $0
+      dpoke $007BF0 $4E71
+      lpoke $007BF2 $4E714E71
+    endif
+off:
+    poke $FF8033 temp0
+    dpoke $007BF0 temp1
+    lpoke $007BF2 temp2
+script "Select Region" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8091 param
+script "Select Title Screen" \
+ "0x00/Vampire Hunter 2"\
+ "0x02/Night Warriors 2" 
+run:
+    poke $FF8091 param

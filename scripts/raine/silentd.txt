@@ -1,15 +1,70 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $401993 $64
-
-script "2UP Unlimited energy" always
-	poke $401A13 $64
-
-script "3UP Unlimited energy" always
-	poke $401A93 $64
-
-script "4UP Unlimited energy" always
-	poke $401B13 $64
+script "Infinite Time"  
+run:
+    lpoke $4000A0 $09999999
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $401993 $64
+script "P1 Invincibility" \
+ "0x00/Enabled"\
+ "0x03/Disabled" 
+run:
+    poke $401999 param|(peek($401999)&~03)
+script "P1 Infinite Attack"  
+run:
+    poke $4019C5 $01
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $400444 $00|(peek($400444)&~01)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $401A13 $64
+script "P2 Invincibility" \
+ "0x00/Enabled"\
+ "0x03/Disabled" 
+run:
+    poke $401A19 param|(peek($401A19)&~03)
+script "P2 Infinite Attack"  
+run:
+    poke $401A45 $01
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $40044C $00|(peek($40044C)&~01)
+script " "  
+script "To play with P3 and P4 you need to change"  
+script "the cabinet style in the DIP switch menu."  
+script " "  
+script "P3 Infinite Energy"  
+run:
+    poke $401A93 $64
+script "P3 Invincibility" \
+ "0x00/Enabled"\
+ "0x03/Disabled" 
+run:
+    poke $401A99 param|(peek($401A99)&~03)
+script "P3 Infinite Attack"  
+run:
+    poke $401AC5 $01
+script "P3 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $400454 $00|(peek($400454)&~01)
+script " "  
+script "P4 Infinite Energy"  
+run:
+    poke $401B13 $64
+script "P4 Invincibility" \
+ "0x00/Enabled"\
+ "0x03/Disabled" 
+run:
+    poke $401B19 param|(peek($401B19)&~03)
+script "P4 Infinite Attack"  
+run:
+    poke $401B45 $01
+script "P4 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $40045C $00|(peek($40045C)&~01)

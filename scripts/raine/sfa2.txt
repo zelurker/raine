@@ -1,30 +1,190 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $FF8109 $63
-
-script "1UP Unlimited energy" always
-	poke $FF8451 $90
-	poke $FF8453 $90
-
-script "2UP Unlimited energy" always
-	poke $FF8851 $90
-	poke $FF8853 $90
-
-script "1UP Energy set to 0   (-P)" always
-	poke $FF8451 $00
-	poke $FF8453 $00
-
-script "2UP Energy set to 0   (-P)" always
-	poke $FF8851 $00
-	poke $FF8853 $00
-
-script "1UP Energy set to 0   (-T)"
-	poke $FF8451 $00
-	poke $FF8453 $00
-
-script "2UP Energy set to 0   (-T)"
-	poke $FF8851 $00
-	poke $FF8453 $00
+script "Infinite Time"  
+run:
+    poke $FF8109 $63
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF8109 $00
+script "Select Backdrop" \
+ "0x00/Japan (Winter)"\
+ "0x02/USA (Party)"\
+ "0x04/Japan (Gokuentou)"\
+ "0x06/USA (Plane)"\
+ "0x08/China (Street)"\
+ "0x0A/Thailand (Lake)"\
+ "0x0C/USA (Truck)"\
+ "0x0E/USA (Metro City)"\
+ "0x10/England"\
+ "0x12/Italy"\
+ "0x14/Brazil"\
+ "0x16/Thailand (Statue)"\
+ "0x18/Hong Kong"\
+ "0x1A/Japan (House)"\
+ "0x1C/USA (Elevator)"\
+ "0x1E/India"\
+ "0x20/USSR"\
+ "0x22/China (Alley)"\
+ "0x24/#Australia"\
+ "0x26/#Venezuela" 
+run:
+    poke $FF8101 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8451 $90
+    poke $FF8453 $90
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF8451 $00
+    poke $FF8453 $00
+script "P1 Infinite Power"  
+run:
+    poke $FF849F $90
+script "P1 Drain All Power Now!"  
+on:
+    poke $FF849F $00
+script "P1 Infinite Taunts"  
+run:
+    poke $FF854F $01
+script "P1 Never Get Dizzied"  
+run:
+    dpoke $FF8684 $0000
+script "P1 Infinite Custom Combo"  
+run:
+    dpoke $FF8699 $B000
+script "P1 Fight Mid-Boss Next" \
+ "comm:Can only be done once per play"  
+run:
+    poke $FF84C6 $05
+script "P1 Fight Shin-Akuma" \
+ "comm:Can only be done once per play"  
+run:
+    poke $FF84C8 $03
+script "P1 Select Character" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken Masters"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan Hibiki"\
+ "0x0D/Sakura Kasugano"\
+ "0x0E/Rolento Schugerg"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen (Sou-ryuu)"\
+ "0x12/#Chun-Li (SF2 clothes)"\
+ "0x13/#Gen (Ki-ryuu)"\
+ "0x14/#Shin-Akuma"\
+ "0x15/#SF2-style Zangief"\
+ "0x16/#SF2-style Dhalsim"\
+ "0x17/#Satsui no Hadou ni Mezameta Ryu" 
+run:
+    poke $FF8482 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8851 $90
+    poke $FF8853 $90
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF8851 $00
+    poke $FF8853 $00
+script "P2 Infinite Power"  
+run:
+    poke $FF889F $90
+script "P2 Drain All Power Now!"  
+on:
+    poke $FF889F $00
+script "P2 Infinite Taunts"  
+run:
+    poke $FF894F $01
+script "P2 Never Get Dizzied"  
+run:
+    dpoke $FF8A84 $0000
+script "P2 Infinite Custom Combo"  
+run:
+    dpoke $FF8A99 $B000
+script "P2 Fight Mid-Boss Next" \
+ "comm:Can only be done once per play"  
+run:
+    poke $FF88C6 $05
+script "P2 Fight Shin-Akuma" \
+ "comm:Can only be done once per play"  
+run:
+    poke $FF88C8 $03
+script "P2 Select Character" \
+ "comm:Free player selection - Use on the level VS screen." \
+ "0x00/Ryu"\
+ "0x01/Ken Masters"\
+ "0x02/Akuma"\
+ "0x03/Charlie"\
+ "0x04/Chun-Li"\
+ "0x05/Adon"\
+ "0x06/Sodom"\
+ "0x07/Guy"\
+ "0x08/Birdie"\
+ "0x09/Rose"\
+ "0x0A/M. Bison"\
+ "0x0B/Sagat"\
+ "0x0C/Dan Hibiki"\
+ "0x0D/Sakura Kasugano"\
+ "0x0E/Rolento Schugerg"\
+ "0x0F/Dhalsim"\
+ "0x10/Zangief"\
+ "0x11/Gen (Sou-ryuu)"\
+ "0x12/#Chun-Li (SF2 clothes)"\
+ "0x13/#Gen (Ki-ryuu)"\
+ "0x14/#Shin-Akuma"\
+ "0x15/#SF2-style Zangief"\
+ "0x16/#SF2-style Dhalsim"\
+ "0x17/#Satsui no Hadou ni Mezameta Ryu" 
+run:
+    poke $FF8882 param
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Hide Background" \
+ "comm:set to Venezuela stage for no BG sprites"  
+on:
+    temp0=peek($FF8033)
+    temp1=dpeek($005646)
+    temp2=lpeek($005648)
+run:
+    poke $FF8033 temp0
+    dpoke $00562E temp1
+    lpoke $005648 temp2
+    if (dpeek($FF8109)!=$0&&lpeek($FF810C)==$0)
+      poke $FF8033 $0
+      dpoke $FFC900 $0
+      dpoke $FFCB00 $0
+      dpoke $FFCD00 $0
+      dpoke $FFE550 $0
+      dpoke $005646 $4E71
+      lpoke $005648 $4E714E71
+    endif
+off:
+    poke $FF8033 temp0
+    dpoke $005646 temp1
+    lpoke $005648 temp2
+script " "  
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Oceania"\
+ "0x08/Asia"\
+ "0x0A/Euro"\
+ "0x0C/Brazil" 
+run:
+    poke $FF8091 param

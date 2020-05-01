@@ -1,0 +1,127 @@
+script "P1 Infinite Lives"  
+run:
+    poke $1000B3 $02
+script "P1 Infinite Energy"  
+run:
+    poke $100305 $06
+script "P1 Invincibility"  
+run:
+    if (frame%60==$0)
+      poke $10037F $50
+    endif
+script "P1 Rapid Fire"  
+run:
+    poke $1000F6 $00|(peek($1000F6)&~10)
+script "P1 Enable Transformations"  
+run:
+    poke $100336 $0F
+script "P1 Change Time Ninja"  
+run:
+    poke $100365 $60
+script "P1 Change Time Samourai"  
+run:
+    poke $100367 $60
+script "P1 Change Time Dog"  
+run:
+    poke $100369 $60
+script "P1 Permanent Weapons"  
+run:
+    poke $100380 $04
+script "P1 Select Weapon" \
+ "0x00/None"\
+ "0x01/Red Sphere"\
+ "0x02/Blue Sphere"\
+ "0x03/Purple Sphere"\
+ "0x04/Yellow Sphere"\
+ "0x05/Unknown Power 1"\
+ "0x06/Unknown Power 2"\
+ "0x07/Unknown Power 3" 
+run:
+    poke $1002F9 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1000B5 $02
+script "P2 Infinite Energy"  
+run:
+    poke $100405 $06
+script "P2 Invincibility"  
+run:
+    if (frame%60==$0)
+      poke $10047F $50
+    endif
+script "P2 Rapid Fire"  
+run:
+    poke $1000F7 $00|(peek($1000F7)&~10)
+script "P2 Enable Transformations"  
+run:
+    poke $100436 $0F
+script "P2 Change Time Ninja"  
+run:
+    poke $100465 $60
+script "P2 Change Time Samourai"  
+run:
+    poke $100467 $60
+script "P2 Change Time Dog"  
+run:
+    poke $100469 $60
+script "P2 Permanent Weapons"  
+run:
+    poke $100480 $04
+script "P2 Select Weapon" \
+ "0x00/None"\
+ "0x01/Red Sphere"\
+ "0x02/Blue Sphere"\
+ "0x03/Purple Sphere"\
+ "0x04/Yellow Sphere"\
+ "0x05/Unknown Power 1"\
+ "0x06/Unknown Power 2"\
+ "0x07/Unknown Power 3" 
+run:
+    poke $1003F9 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,30 +1,55 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $FF072B $03
-
-script "1UP Unlimited energy" always
-	poke $FF0729 $E0
-
-script "1UP Unlimited ammo." always
-	poke $FF0547 $5C
-
-script "1UP Bullets - None        (P)" always
-	poke $FF0549 $00
-
-script "1UP Bullets - Normal      (P)" always
-	poke $FF0549 $01
-
-script "1UP Bullets - Flames      (P)" always
-	poke $FF0549 $02
-
-script "1UP Bullets - None        (T)"
-	poke $FF0549 $00
-
-script "1UP Bullets - Normal      (T)"
-	poke $FF0549 $01
-
-script "1UP Bullets - Flames      (T)"
-	poke $FF0549 $02
+script "Infinite Time"  
+run:
+    lpoke $FF0F72 $00000957
+script "Infinite Lives"  
+run:
+    poke $FF072B $09
+script "Infinite Energy"  
+run:
+    poke $FF0729 $E0
+script "Invincibility"  
+run:
+    poke $FF5EFB $04
+script "Infinite Ammo" \
+ "comm:Get some bullets first"  
+run:
+    poke $FF0547 $5C
+script "Select Ammo" \
+ "0x00/No Bullets"\
+ "0x01/Normal Bullets"\
+ "0x02/Flame Bullets" 
+run:
+    poke $FF0549 param
+script "Higher Running Jumps (See Warning)" \
+ "comm:This lets you jump higher when you jump whilst running. WARNING - Do not jump off the screen past the bosses or you will not be able to finish"  
+on:
+    temp0=lpeek($007952)
+run:
+    lpoke $007952 $FFF50000
+off:
+    lpoke $007952 temp0
+script "Higher Standing Jumps (See Warning)" \
+ "comm:This lets you jump higher when you jump whilst standing still. WARNING - Do not jump off the screen past the bosses or you will not be able to finish"  
+on:
+    temp0=lpeek($007A80)
+run:
+    lpoke $007A80 $FFF50000
+off:
+    lpoke $007A80 temp0
+script "Hit Anywhere" \
+ "comm:Target-able Objects + Enemies that are immune to damage may prevent other enemies on-screen from being hit due to the game's targeting system"  
+on:
+    temp0=dpeek($029C02)
+    temp1=dpeek($029C08)
+    temp2=dpeek($029C62)
+    temp3=dpeek($029C68)
+run:
+    dpoke $029C02 $6002
+    dpoke $029C08 $6002
+    dpoke $029C62 $6002
+    dpoke $029C68 $6002
+off:
+    dpoke $029C02 temp0
+    dpoke $029C08 temp1
+    dpoke $029C62 temp2
+    dpoke $029C68 temp3

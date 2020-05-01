@@ -1,0 +1,61 @@
+script "Infinite Lives"  
+run:
+    poke $FF0CA8 $03
+script "Infinite Time"  
+run:
+    dpoke $FF0F6A $0257
+script "Invincibility"  
+run:
+    poke $FF0CF5 $6B
+script "Infinite Energy"  
+run:
+    poke $FF0CE6 $81
+    poke $FF0CE7 $81
+    poke $FF0CE8 $81
+    poke $FF0CE9 $81
+    poke $FF0CEA $81
+script "Infinite Psyfer (Sword Power)"  
+run:
+    poke $FF0CE3 $FF
+script "Infinite wolf time"  
+run:
+    poke $FF0CF8 $00
+    poke $FF0CF9 $FF
+script "No more wolf Now!"  
+on:
+    poke $FF0CF8 $00
+    poke $FF0CF9 $01
+script "Always Maximum pods (bug!)"  
+run:
+    poke $FF0CE4 $02
+script "Select Starting Stage" \
+ "0x00/1 : Kafazu"\
+ "0x01/2 : Siberia"\
+ "0x03/3 : Balrog"\
+ "0x02/4 : Amazon"\
+ "0x04/5 : Third Moon" 
+run:
+    if (peek($FF0CB2)==$00)
+      poke $FF0CB2 param
+    endif
+script "Barebreasted Amazon Warriors (Amazon Level)" \
+ "comm:Removes the added fig leaf sprite overlay from the normally exposed breast"  
+on:
+    dpoke $02E53E $0888
+    dpoke $02E544 $0888
+    dpoke $02E54A $0888
+    dpoke $02E550 $0888
+    dpoke $02F3BE $0888
+    dpoke $02F3C4 $0888
+    dpoke $02F3CA $0888
+    dpoke $02F3D0 $0888
+off:
+    dpoke $02E53E $16F0
+    dpoke $02E544 $16F1
+    dpoke $02E54A $16F2
+    dpoke $02E550 $1E84
+    dpoke $02F3BE $16F0
+    dpoke $02F3C4 $16F1
+    dpoke $02F3CA $16F2
+    dpoke $02F3D0 $1E84
+script " "  

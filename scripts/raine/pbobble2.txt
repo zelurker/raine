@@ -1,23 +1,225 @@
-# Cheats from  : Tourniquet
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Time PL1" always
-	poke $41DFDB $14
-
-script "Infinite Time PL2" always
-	poke $41E06F $14
-
-script "Help line ON PL1"
-	poke $4061D8 $FF
-
-script "Help line OFF PL1"
-	poke $4061D8 $00
-
-script "Never Attacked PL1" always
-	poke $40A2AB $00
-	poke $41DFD1 $00
-
-script "Never Attacked PL2" always
-	poke $40A2AD $00
-	poke $41E065 $00
+script "Infinite Credits"  
+run:
+    poke $400091 $09
+script "Always have Help Line"  
+on:
+    temp0=peek($072B86)
+run:
+    poke $072B86 $60
+off:
+    poke $072B86 temp0
+script "Enable 'Alternate World' Levels" \
+ "comm:Drunk on Title Screen and different maps, Same as 'Fire,LEFT,RIGHT,Fire' on Title Screen"  
+on:
+    poke $40A276 $01
+script "Disable 'Alternate World' Levels"  
+on:
+    poke $40A276 $00
+script "Finish this Round Now! Puzzle+Vs Mode" \
+ "comm:Works on P1 Versus + Puzzle Mode"  
+on:
+    poke $4060F0 $04|(peek($4060F0)&~04)
+script "P1 Infinite Time"  
+run:
+    poke $41DFDB $14
+script "P2 Infinite Time"  
+run:
+    poke $41E06F $14
+script "Versus Mode Cheats"  
+script " "  
+script "P1 Never Attacked"  
+run:
+    poke $40A2AB $00
+    poke $41DFD1 $00
+script "P2 Never Attacked"  
+run:
+    poke $40A2AD $00
+    poke $41E065 $00
+script "Puzzle Mode Cheats"  
+script " "  
+script "Select Starting Level" \
+ "comm:This cheats works from the 'select path' screen. Press 'Pause' + activate the cheat, then unpause and then press 'A' the select button. Warning! Moving the pointer after activating it will reset this cheat!" \
+ "0x0000/A-01"\
+ "0x0001/A-02"\
+ "0x0002/A-03"\
+ "0x0003/A-04"\
+ "0x0004/A-05"\
+ "0x0100/B-01"\
+ "0x0101/B-02"\
+ "0x0102/B-03"\
+ "0x0103/B-04"\
+ "0x0104/B-05"\
+ "0x0205/C-06"\
+ "0x0206/C-07"\
+ "0x0207/C-08"\
+ "0x0208/C-09"\
+ "0x0209/C-10"\
+ "0x0305/D-06"\
+ "0x0306/D-07"\
+ "0x0307/D-08"\
+ "0x0308/D-09"\
+ "0x0309/D-10"\
+ "0x0405/E-06"\
+ "0x0406/E-07"\
+ "0x0407/E-08"\
+ "0x0408/E-09"\
+ "0x0409/E-10"\
+ "0x050A/F-11"\
+ "0x050B/F-12"\
+ "0x050C/F-13"\
+ "0x050D/F-14"\
+ "0x050E/F-15"\
+ "0x060A/G-11"\
+ "0x060B/G-12"\
+ "0x060C/G-13"\
+ "0x060D/G-14"\
+ "0x060E/G-15"\
+ "0x070A/H-11"\
+ "0x070B/H-12"\
+ "0x070C/H-13"\
+ "0x070D/H-14"\
+ "0x070E/H-15"\
+ "0x080A/I-11"\
+ "0x080B/I-12"\
+ "0x080C/I-13"\
+ "0x080D/I-14"\
+ "0x080E/I-15"\
+ "0x090F/J-16"\
+ "0x0910/J-17"\
+ "0x0911/J-18"\
+ "0x0912/J-19"\
+ "0x0913/J-20"\
+ "0x0A0F/K-16"\
+ "0x0A10/K-17"\
+ "0x0A11/K-18"\
+ "0x0A12/K-19"\
+ "0x0A13/K-20"\
+ "0x0B0F/L-16"\
+ "0x0B10/L-17"\
+ "0x0B11/L-18"\
+ "0x0B12/L-19"\
+ "0x0B13/L-20"\
+ "0x0C0F/M-16"\
+ "0x0C10/M-17"\
+ "0x0C11/M-18"\
+ "0x0C12/M-19"\
+ "0x0C13/M-20"\
+ "0x0D0F/N-16"\
+ "0x0D10/N-17"\
+ "0x0D11/N-18"\
+ "0x0D12/N-19"\
+ "0x0D13/N-20"\
+ "0x0E14/O-21"\
+ "0x0E15/O-22"\
+ "0x0E16/O-23"\
+ "0x0E17/O-24"\
+ "0x0E18/O-25"\
+ "0x0F14/P-21"\
+ "0x0F15/P-22"\
+ "0x0F16/P-23"\
+ "0x0F17/P-24"\
+ "0x0F18/P-25"\
+ "0x1014/Q-21"\
+ "0x1015/Q-22"\
+ "0x1016/Q-23"\
+ "0x1017/Q-24"\
+ "0x1018/Q-25"\
+ "0x1114/R-21"\
+ "0x1115/R-22"\
+ "0x1116/R-23"\
+ "0x1117/R-24"\
+ "0x1118/R-25"\
+ "0x1214/S-21"\
+ "0x1215/S-22"\
+ "0x1216/S-23"\
+ "0x1217/S-24"\
+ "0x1218/S-25"\
+ "0x1314/T-21"\
+ "0x1315/T-22"\
+ "0x1316/T-23"\
+ "0x1317/T-24"\
+ "0x1318/T-25"\
+ "0x1419/U-26"\
+ "0x141A/U-27"\
+ "0x141B/U-28"\
+ "0x141C/U-29"\
+ "0x141D/U-30"\
+ "0x1519/V-26"\
+ "0x151A/V-27"\
+ "0x151B/V-28"\
+ "0x151C/V-29"\
+ "0x151D/V-30"\
+ "0x1619/W-26"\
+ "0x161A/W-27"\
+ "0x161B/W-28"\
+ "0x161C/W-29"\
+ "0x161D/W-30"\
+ "0x1719/?-26"\
+ "0x171A/?-27"\
+ "0x171B/?-28"\
+ "0x171C/?-29"\
+ "0x171D/?-30"\
+ "0x1819/X-26"\
+ "0x181A/X-27"\
+ "0x181B/X-28"\
+ "0x181C/X-29"\
+ "0x181D/X-30"\
+ "0x1919/Y-26"\
+ "0x191A/Y-27"\
+ "0x191B/Y-28"\
+ "0x191C/Y-29"\
+ "0x191D/Y-30"\
+ "0x1A19/Z-26"\
+ "0x1A1A/Z-27"\
+ "0x1A1B/Z-28"\
+ "0x1A1C/Z-29"\
+ "0x1A1D/Z-30" 
+change:
+    poke $40AA97 (paramRSHIFT8)
+    poke $4061D5 (param&0x00FF)
+    poke $4061D9 (param&0x00FF)
+script "Select Next Level" \
+ "comm:Use during play to allow you to go to the level before the Path." \
+ "0x0004/A-05"\
+ "0x0104/B-05"\
+ "0x0209/C-10"\
+ "0x0309/D-10"\
+ "0x0409/E-10"\
+ "0x050E/F-15"\
+ "0x060E/G-15"\
+ "0x070E/H-15"\
+ "0x080E/I-15"\
+ "0x0913/J-20"\
+ "0x0A13/K-20"\
+ "0x0B13/L-20"\
+ "0x0C13/M-20"\
+ "0x0D13/N-20"\
+ "0x0E18/O-25"\
+ "0x0F18/P-25"\
+ "0x1018/Q-25"\
+ "0x1118/R-25"\
+ "0x1218/S-25"\
+ "0x1318/T-25"\
+ "0x141D/U-30"\
+ "0x151D/V-30"\
+ "0x161D/W-30"\
+ "0x171D/?-30"\
+ "0x181D/X-30"\
+ "0x191D/Y-30"\
+ "0x1A1D/Z-30" 
+change:
+    poke $40AA97 (paramRSHIFT8)
+    poke $4061D5 (param&0x00FF)-$1
+    poke $4061D9 (param&0x00FF)-$1
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3). Then you may have to turn the Test Mode ON (with F2), wait for Test Mode to appear and reset again (with F3)." \
+ "0x01/Japan (Puzzle Bobble 2)"\
+ "0x02/US (Bust-A-Move Again)"\
+ "0x03/World (Puzzle Bobble 2)" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

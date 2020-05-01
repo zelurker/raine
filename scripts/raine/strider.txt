@@ -1,34 +1,82 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
+script "Infinite Lives"  
+run:
+    poke $FF0CA8 $03
+script "Infinite Time"  
+run:
+    dpoke $FF0F6A $0257
+script "Invincibility"  
+run:
+    poke $FF0CF5 $6B
+script "Infinite Energy"  
+run:
+    poke $FF0CE6 $81
+    poke $FF0CE7 $81
+    poke $FF0CE8 $81
+    poke $FF0CE9 $81
+    poke $FF0CEA $81
+script "Infinite Psyfer (Sword Power)"  
+run:
+    poke $FF0CE3 $FF
+script "Infinite wolf time"  
+run:
+    poke $FF0CF8 $00
+    poke $FF0CF9 $FF
+script "No more wolf Now!"  
+on:
+    poke $FF0CF8 $00
+    poke $FF0CF9 $01
+script "Always Maximum pods (bug!)"  
+run:
+    poke $FF0CE4 $02
+script "Select Starting Stage" \
+ "0x00/1 : Kafazu"\
+ "0x01/2 : Siberia"\
+ "0x03/3 : Balrog"\
+ "0x02/4 : Amazon"\
+ "0x04/5 : Third Moon" 
+run:
+    if (peek($FF0CB2)==$00)
+      poke $FF0CB2 param
+    endif
+script "Barebreasted Amazon Warriors (Amazon Level)" \
+ "comm:Removes the added fig leaf sprite overlay from the normally exposed breast"  
+on:
+    dpoke $02E46A $0888
+    dpoke $02E470 $0888
+    dpoke $02E476 $0888
+    dpoke $02E47C $0888
+    dpoke $02F2EA $0888
+    dpoke $02F2F0 $0888
+    dpoke $02F2F6 $0888
+    dpoke $02F2FC $0888
+off:
+    dpoke $02E46A $16F0
+    dpoke $02E470 $16F1
+    dpoke $02E476 $16F2
+    dpoke $02E47C $1E84
+    dpoke $02F2EA $16F0
+    dpoke $02F2F0 $16F1
+    dpoke $02F2F6 $16F2
+    dpoke $02F2FC $1E84
+script " "  
+script "Add Character Option to Test Menu" \
+ "comm:Select "CHARACTER" to access the menu.
+Pick "OBJECT" for sprites,
+"SCROLL1" for the game's font,
+"SCROLL2" for the game's foreground tiles,
+and "SCROLL3" for background tiles.
 
-script "*UP Invulnerability ON" always
-	poke $FF0CF5 $9F
-
-script "*UP Invulnerability OFF"
-	poke $FF0CF5 $00
-
-script "*UP Unlimited lives" always
-	poke $FF0CA8 $64
-
-script "*UP Unlimited energy" always
-	poke $FF0CE6 $81
-	poke $FF0CE7 $81
-	poke $FF0CE8 $81
-	poke $FF0CE9 $81
-	poke $FF0CEA $81
-
-script "*UP Unlimited time" always
-	poke $FF0F6A $02
-	poke $FF0F6B $58
-
-script "*UP Unlimited wolf time" always
-	poke $FF0CF8 $00
-	poke $FF0CF9 $FF
-
-script "*UP No more wolf"
-	poke $FF0CF8 $00
-	poke $FF0CF9 $01
-
-script "*UP Maximum pods       (bug!)" always
-	poke $FF0CE4 $02
+Controls:
+Up: Scroll down.
+Down: Scroll up.
+Left / Right: Scroll through available palettes.
+Button 1: Toggle vertical flipping.
+Button 2: Toggle horizontal flipping.
+1P Start: Toggle between a simple and complex tile display.
+2P Start: Loads the next level's palette group."  
+on:
+    temp0=peek($071E18)
+run:
+    poke $071E18 $60
+off:
+    poke $071E18 temp0

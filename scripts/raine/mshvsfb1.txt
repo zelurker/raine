@@ -1,0 +1,223 @@
+script "Infinite Time"  
+run:
+    poke $FF4808 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF4808 $00
+script "Go to Final Stage Next"  
+on:
+    poke $FF4881 $08
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($0B0B08)
+    temp1=dpeek($0B0B38)
+run:
+    dpoke $0B0B08 $4E71
+    dpoke $0B0B38 $4E71
+off:
+    dpoke $0B0B08 temp0
+    dpoke $0B0B38 temp1
+script " "  
+script "P1 Infinite Energy (1st Character)"  
+run:
+    poke $FF3A51 $90
+    poke $FF3A5B $90
+script "P1 Drain All Energy (1st Character) Now!"  
+on:
+    poke $FF3A51 $00
+    poke $FF3A5B $00
+script "P1 Infinite Energy (2nd Character)"  
+run:
+    poke $FF4251 $90
+    poke $FF425B $90
+script "P1 Drain All Energy (2nd Character) Now!"  
+on:
+    poke $FF4251 $00
+    poke $FF425B $00
+script "P1 Always Max Power"  
+run:
+    poke $FF3A54 $03
+    poke $FF4254 $03
+script "P1 Play with Apocalypse"  
+run:
+    poke $FF3853 $00
+    poke $FF4053 $00
+    poke $FF48B1 $00
+    poke $FF48B3 $00
+    poke $FF4913 $00
+script "P1 Select 1st Character" \
+ "comm:Enable this on the Character selection screen." \
+ "0x02/Cyclops"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Shuma Gorath"\
+ "0x0C/Omega Red"\
+ "0x0E/Spider-Man"\
+ "0x10/Blackheart"\
+ "0x12/Ryu"\
+ "0x14/Ken"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/Bison"\
+ "0x1E/Akuma"\
+ "0x20/Sakura"\
+ "0x24/Dan"\
+ "0x22/#Norimaro#"\
+ "0x26/#Mech-Akuma#"\
+ "0x28/#Mech-Zangief#"\
+ "0x2A/#Sunburned Sakura#"\
+ "0x2C/#Shadow#"\
+ "0x2E/#U.S.Agent#"\
+ "0x30/#Mephisto#"\
+ "0x32/#Armor Spider-Man#" 
+run:
+    poke $FF3853 param
+script "P1 Select 2nd Character" \
+ "comm:Enable this on the Character selection screen." \
+ "0x02/Cyclops"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Shuma Gorath"\
+ "0x0C/Omega Red"\
+ "0x0E/Spider-Man"\
+ "0x10/Blackheart"\
+ "0x12/Ryu"\
+ "0x14/Ken"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/Bison"\
+ "0x1E/Akuma"\
+ "0x20/Sakura"\
+ "0x24/Dan"\
+ "0x22/#Norimaro#"\
+ "0x26/#Mech-Akuma#"\
+ "0x28/#Mech-Zangief#"\
+ "0x2A/#Sunburned Sakura#"\
+ "0x2C/#Shadow#"\
+ "0x2E/#U.S.Agent#"\
+ "0x30/#Mephisto#"\
+ "0x32/#Armor Spider-Man#" 
+run:
+    poke $FF4053 param
+script " "  
+script "P2 Infinite Energy (1st Character)"  
+run:
+    poke $FF3E51 $90
+    poke $FF3E5B $90
+script "P2 Drain All Energy (1st Character) Now!"  
+on:
+    poke $FF3E51 $00
+    poke $FF3E5B $00
+script "P2 Infinite Energy (2nd Character)"  
+run:
+    poke $FF4651 $90
+    poke $FF465B $90
+script "P2 Drain All Energy (2nd Character) Now!"  
+on:
+    poke $FF4651 $00
+    poke $FF465B $00
+script "P2 Always Max Power"  
+run:
+    poke $FF3E54 $03
+    poke $FF4654 $03
+script "P2 Play with Apocalypse"  
+run:
+    poke $FF3C53 $00
+    poke $FF4453 $00
+    poke $FF48B5 $00
+    poke $FF48B7 $00
+    poke $FF4913 $00
+script "P2 Select 1st Character" \
+ "comm:Enable this on the Character selection screen." \
+ "0x02/Cyclops"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Shuma Gorath"\
+ "0x0C/Omega Red"\
+ "0x0E/Spider-Man"\
+ "0x10/Blackheart"\
+ "0x12/Ryu"\
+ "0x14/Ken"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/Bison"\
+ "0x1E/Akuma"\
+ "0x20/Sakura"\
+ "0x24/Dan"\
+ "0x22/#Norimaro#"\
+ "0x26/#Mech-Akuma#"\
+ "0x28/#Mech-Zangief#"\
+ "0x2A/#Sunburned Sakura#"\
+ "0x2C/#Shadow#"\
+ "0x2E/#U.S.Agent#"\
+ "0x30/#Mephisto#"\
+ "0x32/#Armor Spider-Man#" 
+run:
+    poke $FF3C53 param
+script "P2 Select 2nd Character" \
+ "comm:Enable this on the Character selection screen." \
+ "0x02/Cyclops"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Shuma Gorath"\
+ "0x0C/Omega Red"\
+ "0x0E/Spider-Man"\
+ "0x10/Blackheart"\
+ "0x12/Ryu"\
+ "0x14/Ken"\
+ "0x16/Chun-Li"\
+ "0x18/Dhalsim"\
+ "0x1A/Zangief"\
+ "0x1C/Bison"\
+ "0x1E/Akuma"\
+ "0x20/Sakura"\
+ "0x24/Dan"\
+ "0x22/#Norimaro#"\
+ "0x26/#Mech-Akuma#"\
+ "0x28/#Mech-Zangief#"\
+ "0x2A/#Sunburned Sakura#"\
+ "0x2C/#Shadow#"\
+ "0x2E/#U.S.Agent#"\
+ "0x30/#Mephisto#"\
+ "0x32/#Armor Spider-Man#" 
+run:
+    poke $FF4453 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=dpeek($FF4C50)
+    temp1=dpeek($FF4C52)
+    temp2=dpeek($FF4C54)
+    temp3=dpeek($FFFBB8)
+    temp4=dpeek($FFFBBA)
+    temp5=dpeek($FFFBBC)
+run:
+    if (dpeek($FF4800)==$0800)
+      dpoke $FF4C50 $0
+      dpoke $FF4C52 $0
+      dpoke $FF4C54 $0
+      dpoke $FFFBB8 $0
+      dpoke $FFFBBA $0
+      dpoke $FFFBBC $0
+      lpoke $FFDE20 $0
+    endif
+off:
+    dpoke $FF4C50 temp0
+    dpoke $FF4C52 temp1
+    dpoke $FF4C54 temp2
+    dpoke $FFFBB8 temp3
+    dpoke $FFFBBA temp4
+    dpoke $FFFBBC temp5

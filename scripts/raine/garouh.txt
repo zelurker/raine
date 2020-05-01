@@ -1,0 +1,216 @@
+script "Infinite Time"  
+run:
+    poke $107490 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $107490 $00
+script "Always have Easy Supers"  
+on:
+    temp0=dpeek($027F9C)
+    temp1=dpeek($04CEDE)
+run:
+    dpoke $027F9C $4E71
+    dpoke $04CEDE $4E71
+off:
+    dpoke $027F9C temp0
+    dpoke $04CEDE temp1
+script "Current Normal Level is Final Level Now!" \
+ "comm:Normal Mode"  
+on:
+    poke $107439 $08
+script "Current Survival Level is Final Level Now!" \
+ "comm:Survival Mode"  
+on:
+    poke $107439 $0E
+script "Select Backdrop" \
+ "0x00/Freight Express"\
+ "0x01/Live House 'Old Line'"\
+ "0x02/Oriental Casino 'Woo'"\
+ "0x03/Yok Chong Market"\
+ "0x04/Philantrophy Belfry"\
+ "0x05/Barbaroi Falls"\
+ "0x06/Blue Wave Harbor"\
+ "0x07/Sarah Forest"\
+ "0x08/5th Ave. and 2nd St."\
+ "0x09/Slam 'Free Field'"\
+ "0x0A/Universal Arena"\
+ "0x0B/S.S.P. Maneuver Field"\
+ "0x0C/(Mansion Basement)"\
+ "0x0D/(Mansion)" 
+run:
+    poke $107435 param
+script "Enable Survival Mode"  
+on:
+    temp0=peek($1041D9)
+run:
+    poke $1041D9 $01
+off:
+    poke $1041D9 temp0
+script " "  
+script "P1 Infinite Credits" \
+ "comm:Home version"  
+run:
+    poke $10E008 $09
+script "P1 Infinite Energy"  
+run:
+    poke $10048E $78
+script "P1 Drain All Energy Now!"  
+on:
+    poke $10048E $00
+script "P1 Infinite Power"  
+run:
+    poke $1004BE $80
+script "P1 Drain All Power Now!"  
+on:
+    poke $1004BE $00
+script "P1 Select Character" \
+ "0x00/Terry Bogard"\
+ "0x01/Rock Howard"\
+ "0x02/Kim Dong Hwan"\
+ "0x03/Kim Jae Hoon"\
+ "0x04/Hotaru Futaba"\
+ "0x05/Gato"\
+ "0x06/Bonne Jenet"\
+ "0x07/Khushnood Butt"\
+ "0x08/Hokutomaru"\
+ "0x09/Freeman"\
+ "0x0A/Tizoc"\
+ "0x0B/Kevin Rian"\
+ "0x0C/Grant"\
+ "0x0D/Kain R. Heinlein" 
+run:
+    poke $10742B param
+script "P1 Select Character Colour" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $107432 param
+script "P1 Select Rounds Won" \
+ inter=0,2,1 
+run:
+    poke $107474 (param)
+script "P1 Select TOP Bar Length" \
+ "comm:Works only when player is NOT CPU controlled" \
+ "0x00/5 chunks"\
+ "0x01/3 chunks"\
+ "0x02/1 chunk"\
+ "0x03/Entire Life Bar" 
+run:
+    poke $1074C2 param
+script "P1 Select Leftmost TOP Chunk" \
+ "comm:Works only when player is NOT CPU controlled" \
+ inter=0,14,1 
+run:
+    poke $1074C3 (param)
+script " "  
+script "P2 Infinite Credits" \
+ "comm:Home version"  
+run:
+    poke $10E009 $09
+script "P2 Infinite Energy"  
+run:
+    poke $10058E $78
+script "P2 Drain All Energy Now!"  
+on:
+    poke $10058E $00
+script "P2 Infinite Power"  
+run:
+    poke $1005BE $80
+script "P2 Drain All Power Now!"  
+on:
+    poke $1005BE $00
+script "P2 Select Character" \
+ "0x00/Terry Bogard"\
+ "0x01/Rock Howard"\
+ "0x02/Kim Dong Hwan"\
+ "0x03/Kim Jae Hoon"\
+ "0x04/Hotaru Futaba"\
+ "0x05/Gato"\
+ "0x06/Bonne Jenet"\
+ "0x07/Khushnood Butt"\
+ "0x08/Hokutomaru"\
+ "0x09/Freeman"\
+ "0x0A/Tizoc"\
+ "0x0B/Kevin Rian"\
+ "0x0C/Grant"\
+ "0x0D/Kain R. Heinlein" 
+run:
+    poke $10742D param
+script "P2 Select Character Colour" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $107433 param
+script "P2 Select Rounds Won" \
+ inter=0,2,1 
+run:
+    poke $107475 (param)
+script "P2 Select TOP Bar Length" \
+ "comm:Works only when player is NOT CPU controlled" \
+ "0x00/5 chunks"\
+ "0x01/3 chunks"\
+ "0x02/1 chunk"\
+ "0x03/Entire Life Bar" 
+run:
+    poke $1074C4 param
+script "P2 Select Leftmost TOP Chunk" \
+ "comm:Works only when player is NOT CPU controlled" \
+ inter=0,14,1 
+run:
+    poke $1074C5 (param)
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FD89 $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

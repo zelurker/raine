@@ -1,21 +1,61 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $4264D $03
-
-script "2UP Unlimited lives" always
-	poke $4264F $03
-
-script "1UP Maximum power" always
-	poke $41D33 $05
-
-script "2UP Maximum power" always
-	poke $41D93 $05
-
-script "1UP Maximum speed" always
-	poke $41D37 $28
-
-script "2UP Maximum speed" always
-	poke $41D97 $28
+script "Infinite Credits"  
+run:
+    poke $C0005 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $4264D $63
+script "P1 Invincibility" \
+ "0x20/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $41D31 param|(peek($41D31)&~20)
+script "P1 Select Speed" \
+ "0x10/1"\
+ "0x16/2"\
+ "0x1C/3"\
+ "0x22/4"\
+ "0x28/5" 
+run:
+    poke $41D37 param
+script "P1 Maximum Shot Power"  
+run:
+    poke $41D33 $05
+script "P1 Rapid Fire"  
+run:
+    poke $41D30 $00|(peek($41D30)&~08)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $4264F $63
+script "P2 Invincibility" \
+ "0x20/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $41D91 param|(peek($41D91)&~20)
+script "P2 Select Speed" \
+ "0x10/1"\
+ "0x16/2"\
+ "0x1C/3"\
+ "0x22/4"\
+ "0x28/5" 
+run:
+    poke $41D97 param
+script "P2 Maximum Shot Power"  
+run:
+    poke $41D93 $05
+script "P2 Rapid Fire"  
+run:
+    poke $41D90 $00|(peek($41D90)&~08)
+script " "  
+script "Skip RAM/ROM Check" \
+ "comm:Doesn't work with Infinite Credits enabled"  
+on:
+    temp0=dpeek($0065A)
+    temp1=dpeek($00754)
+run:
+    dpoke $0065A $6058
+    dpoke $00754 $602A
+off:
+    dpoke $0065A temp0
+    dpoke $00754 temp1

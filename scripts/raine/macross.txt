@@ -1,27 +1,54 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F642D $96
-
-script "1UP Invulnerability OFF"
-	poke $F642D $01
-
-script "2UP Invulnerability ON" always
-	poke $F652D $96
-
-script "2UP Invulnerability OFF"
-	poke $F652D $01
-
-script "1UP Unlimited lives" always
-	poke $F6429 $03
-
-script "2UP Unlimited lives" always
-	poke $F6529 $03
-
-script "1UP Unlimited bombs" always
-	poke $F642F $07
-
-script "2UP Unlimited bombs" always
-	poke $F652F $07
+script "Infinite Credits"  
+run:
+    poke $F9003 $09
+script "Select starting round" \
+ "comm:You should enable this cheat on the 'PUSH START' screen, ie. after credits have been inserted! The Round display wont be correct" \
+ inter=1,7,1 
+on:
+    poke $F9021 $FF
+change:
+    poke $F9021 (param-$1)
+script "Select next Round" \
+ inter=1,7,1 
+change:
+    poke $F9021 (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F6429 $0A
+script "P1 Infinite Bombs"  
+run:
+    poke $F642F $07
+script "P1 Invincibility"  
+run:
+    poke $F642D $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $F647F $07
+script "P1 Select Weapon" \
+ "0x00/Fighter Shot"\
+ "0x01/Gerwalk Shot"\
+ "0x02/Battroid Shot"\
+ "0x03/Amord-V Shot" 
+run:
+    poke $F6457 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F6529 $0A
+script "P2 Infinite Bombs"  
+run:
+    poke $F652F $07
+script "P2 Invincibility"  
+run:
+    poke $F653D $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $F657F $07
+script "P2 Select Weapon" \
+ "0x00/Fighter Shot"\
+ "0x01/Gerwalk Shot"\
+ "0x02/Battroid Shot"\
+ "0x03/Armord-V Shot" 
+run:
+    poke $F6557 param

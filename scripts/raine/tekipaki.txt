@@ -1,0 +1,11 @@
+script "Infinite Credits"  
+run:
+    poke $80055 $09
+script "P1 Select current level Now!" \
+ inter=0,999,10 
+change:
+    dpoke $80C06 (param)
+script "P2 Select current level Now!" \
+ inter=0,999,10 
+change:
+    dpoke $80C06 (param)

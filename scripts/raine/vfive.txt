@@ -1,55 +1,147 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-# DO NOT use clone relation for this game !
-
-script "*UP Unlimited lives" always
-	poke $10063B $03
-
-script "*UP Maximum speed" always
-	poke $100603 $04
-
-script "*UP Maximum fire power" always
-	poke $10063D $05
-
-script "*UP Cursor on speed       (P)" always
-	poke $100647 $01
-
-script "*UP Cursor on shot        (P)" always
-	poke $100647 $02
-
-script "*UP Cursor on search      (P)" always
-	poke $100647 $03
-
-script "*UP Cursor on missile     (P)" always
-	poke $100647 $04
-
-script "*UP Cursor on power       (P)" always
-	poke $100647 $05
-
-script "*UP Cursor on shield      (P)" always
-	poke $100647 $06
-
-script "*UP No cursor displayed   (P)" always
-	poke $100647 $00
-
-script "*UP Cursor on speed       (T)"
-	poke $100647 $01
-
-script "*UP Cursor on shot        (T)"
-	poke $100647 $02
-
-script "*UP Cursor on search      (T)"
-	poke $100647 $03
-
-script "*UP Cursor on missile     (T)"
-	poke $100647 $04
-
-script "*UP Cursor on power       (T)"
-	poke $100647 $05
-
-script "*UP Cursor on shield      (T)"
-	poke $100647 $06
-
-script "*UP No cursor displayed   (T)"
-	poke $100647 $00
+script "Infinite Credits"  
+run:
+    poke $1003B3 $09
+script "Infinite Lives"  
+run:
+    poke $10063B $0F
+script "Maximum Speed"  
+run:
+    poke $100603 $04
+script "Maximum Fire Power"  
+run:
+    poke $10063D $05
+script "Invincibility (Buggy?)"  
+run:
+    poke $1005E2 $8C
+script "Invincibility (Flicker)" \
+ "comm:See the Dip Switch Menu to enable an alternate 'P1 Invincibility' cheat. But the cheat is better as the dipswitch causes a game crash when P2 is selected."  
+run:
+    poke $10060F $02
+script "Always Maximum Shot Power"  
+run:
+    dpoke $100600 $0002
+    poke $100605 $02
+    if (peek($100619)<39)||(peek($100619)>79)
+      poke $100619 $39
+    endif
+script "Select Weapon" \
+ "0x01/Normal Shot"\
+ "0x02/Search"\
+ "0x03/Missile" 
+change:
+    if (param==$01)
+      poke $100608 $01
+    endif
+    if (param==$02)
+      poke $100608 $01
+    endif
+    if (param==$03)
+      poke $100608 $01
+    endif
+run:
+    if (param==$01)
+      poke $1005FF $00
+      poke $100609 $02
+    endif
+    if (param==$02)
+      poke $1005FF $01
+      poke $100609 $00
+    endif
+    if (param==$03)
+      poke $1005FF $02
+      poke $100609 $01
+    endif
+script "Select Speed" \
+ "0x0E/Minimum"\
+ "0x18/1"\
+ "0x22/2"\
+ "0x2C/3"\
+ "0x36/Maximum" 
+run:
+    poke $1005FC param
+script "Select Game Mode" \
+ "0x00/Normal Mode"\
+ "0x01/Bomber Mode" 
+run:
+    poke $100655 param
+script "Select Cursor Position" \
+ "comm:Select Cursor Position is ONLY of in Normal Mode." \
+ "0x00/None"\
+ "0x01/Speed Up"\
+ "0x02/Normal Shot"\
+ "0x03/Search"\
+ "0x04/Missile"\
+ "0x05/Power Up"\
+ "0x06/Shield" 
+run:
+    poke $100647 param
+script "Infinite Bombs" \
+ "comm:Infinite Bombs is ONLY of in Bomber Mode."  
+run:
+    poke $100659 $06
+script "Select Starting Stage" \
+ "0x01/Stage 1"\
+ "0x02/Stage 2"\
+ "0x03/Stage 3"\
+ "0x04/Stage 4"\
+ "0x05/Stage 5"\
+ "0x06/Stage 6" 
+run:
+    if (param==$01)&&(dpeek($10063E)==$0000)
+      dpoke $10063E $0000
+    endif
+    if (param==$01)&&(peek($100645)==$00)
+      poke $100645 $00
+    endif
+    if (param==$01)&&(peek($10064D)==$00)
+      poke $10064D $01
+    endif
+    if (param==$02)&&(dpeek($10063E)==$0000)
+      dpoke $10063E $02C0
+    endif
+    if (param==$02)&&(peek($100645)==$00)
+      poke $100645 $01
+    endif
+    if (param==$02)&&(peek($10064D)==$00)
+      poke $10064D $01
+    endif
+    if (param==$03)&&(dpeek($10063E)==$0000)
+      dpoke $10063E $0640
+    endif
+    if (param==$03)&&(peek($100645)==$00)
+      poke $100645 $02
+    endif
+    if (param==$03)&&(peek($10064D)==$00)
+      poke $10064D $01
+    endif
+    if (param==$04)&&(dpeek($10063E)==$0000)
+      dpoke $10063E $0A80
+    endif
+    if (param==$04)&&(peek($100645)==$00)
+      poke $100645 $03
+    endif
+    if (param==$04)&&(peek($10064D)==$00)
+      poke $10064D $01
+    endif
+    if (param==$05)&&(dpeek($10063E)==$0000)
+      dpoke $10063E $0F00
+    endif
+    if (param==$05)&&(peek($100645)==$00)
+      poke $100645 $04
+    endif
+    if (param==$05)&&(peek($10064D)==$00)
+      poke $10064D $01
+    endif
+    if (param==$06)&&(dpeek($10063E)==$0000)
+      dpoke $10063E $1500
+    endif
+    if (param==$06)&&(peek($100645)==$00)
+      poke $100645 $05
+    endif
+    if (param==$06)&&(peek($10064D)==$00)
+      poke $10064D $01
+    endif
+script "Select Current Loop" \
+ inter=1,2,1 
+change:
+    poke $100643 (param-$1)

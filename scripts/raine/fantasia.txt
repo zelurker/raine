@@ -1,19 +1,34 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $C82662 $03
-
-script "2UP Unlimited lives" always
-	poke $C82663 $03
-
-script "*UP Unlimited time" always
-	poke $C82675 $3B
-
-script "*UP Unlimited energy" always
-	poke $C8261B $14
-
-script "*UP End round with 100%"
-	poke $C82761 $64
-	poke $C82763 $00
+script "Infinite Credits"  
+run:
+    poke $C80F82 $09
+script "Infinite Time"  
+run:
+    dpoke $C82674 $093C
+script "Infinite Energy" \
+ "comm:Display isn't correct"  
+run:
+    poke $C8261B $14
+script "Invincibility"  
+on:
+    temp0=peek($002A14)
+    temp1=peek($005472)
+    temp2=peek($0058DD)
+run:
+    poke $002A14 $60
+    poke $005472 $60
+    poke $0058DD $02
+off:
+    poke $002A14 temp0
+    poke $005472 temp1
+    poke $0058DD temp2
+script "End round with 100% Now!"  
+on:
+    poke $C82761 $64
+    poke $C82763 $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $C82662 $03
+script "P2 Infinite Lives"  
+run:
+    poke $C82663 $03

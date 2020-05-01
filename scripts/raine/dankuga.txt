@@ -1,47 +1,62 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Time" always
-	poke $409737 $09
-	poke $409733 $09
-
-script "Finish this Round Now!"
-	poke $409737 $00
-	poke $409733 $00
-
-script "Infinite Energy PL1" always
-	poke $412B35 $64
-
-script "Drain All Energy Now! PL1"
-	poke $412B35 $00
-
-script "Always have Max CRUSH PL1" always
-	poke $412BC1 $C8
-
-script "Always have Min CRUSH PL1" always
-	poke $412BC1 $00
-
-script "Get Max CRUSH Now! PL1"
-	poke $412BC1 $C8
-
-script "Get Min CRUSH Now! PL1"
-	poke $412BC1 $00
-
-script "Infinite Energy PL2" always
-	poke $412D35 $64
-
-script "Drain All Energy Now! PL2"
-	poke $412D35 $00
-
-script "Always have Max CRUSH PL2" always
-	poke $412DC1 $C8
-
-script "Always have Min CRUSH PL2" always
-	poke $412DC1 $00
-
-script "Get Max CRUSH Now! PL2"
-	poke $412DC1 $C8
-
-script "Get Min CRUSH Now! PL2"
-	poke $412DC1 $00
+script "Infinite Credits"  
+run:
+    poke $40E175 $09
+script "Infinite Time"  
+run:
+    poke $409737 $09
+    poke $409733 $09
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $409737 $00
+    poke $409733 $00
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $412B35 $64
+script "P1 Drain All Energy Now!"  
+on:
+    poke $412B35 $00
+script "P1 Always have Max CRUSH"  
+run:
+    poke $412BC1 $C8
+script "P1 Always have Min CRUSH"  
+run:
+    poke $412BC1 $00
+script "P1 Get Max CRUSH Now!"  
+on:
+    poke $412BC1 $C8
+script "P1 Get Min CRUSH Now!"  
+on:
+    poke $412BC1 $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $412D35 $64
+script "P2 Drain All Energy Now!"  
+on:
+    poke $412D35 $00
+script "P2 Always have Max CRUSH"  
+run:
+    poke $412DC1 $C8
+script "P2 Always have Min CRUSH"  
+run:
+    poke $412DC1 $00
+script "P2 Get Max CRUSH Now!"  
+on:
+    poke $412DC1 $C8
+script "P2 Get Min CRUSH Now!"  
+on:
+    poke $412DC1 $00
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($1FFFFF)
+run:
+    poke $1FFFFF param
+off:
+    poke $1FFFFF temp0

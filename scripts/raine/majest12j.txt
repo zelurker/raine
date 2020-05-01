@@ -1,0 +1,15 @@
+script "Long Lasting Weapons"  
+run:
+    poke $20553D $30
+script "P1 Infinite Lives"  
+run:
+    poke $203619 $0A
+script "P1 Infinite Shields"  
+run:
+    poke $205291 $09
+script "P2 Infinite Lives"  
+run:
+    poke $20361B $0A
+script "P2 Infinite Shields"  
+run:
+    poke $2052DF $09

@@ -1,27 +1,77 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $827C5 $14
-
-script "2UP Unlimited energy" always
-	poke $827C7 $14
-
-script "1UP Unlimited bullets" always
-	poke $827C9 $63
-
-script "2UP Unlimited bullets" always
-	poke $827CB $63
-
-script "1UP Unlimited magazines" always
-	poke $827CD $63
-
-script "2UP Unlimited magazines" always
-	poke $827CF $63
-
-script "1UP Unlimited grenades" always
-	poke $827D1 $63
-
-script "2UP Unlimited grenades" always
-	poke $827D3 $63
+script "Infinite Credits"  
+run:
+    poke $826F1 $09
+script "Select Starting Mission" \
+ inter=1,8, 
+run:
+    poke $826F3 (param-$1)*10
+script "Finish Current Mission Now!"  
+on:
+    temp0=peek($8229F)
+    temp1=dpeek($83710)
+    if (temp1!=$0000)&&(temp0==$08)
+      dpoke $836AA $FFFF
+    endif
+    if (temp1!=$0000)&&((temp0==$04)||(temp0==$06))
+      dpoke $8371A $FFFF
+      poke $83717 $09
+    endif
+    if (temp1!=$0000)
+      dpoke $83710 $0001
+    endif
+script "All Hostages Rescued (Levels 4 + 6)"  
+run:
+    poke $83717 $09
+script "Invincibility for Hostage Pilot in Mission 8"  
+on:
+    temp0=peek($1B294)
+run:
+    poke $1B294 $60
+off:
+    poke $1B294 temp0
+script "Prevent Game Over in Mission 8" \
+ "comm:Should be enabled before final boss with hostage pilot scene appears"  
+on:
+    temp0=dpeek($1E034)
+run:
+    dpoke $1E034 $601C
+off:
+    dpoke $1E034 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    lpoke $82800 $01400140
+script "P1 Infinite Magazines"  
+run:
+    poke $827CD $63
+script "P1 Infinite Bullets"  
+run:
+    poke $827C9 $63
+script "P1 Infinite Grenades"  
+run:
+    poke $827D1 $63
+script "P1 Invincibility"  
+run:
+    poke $80CD1 $02
+script "P1 No Magazine Changing Delay"  
+run:
+    poke $80CCD $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    lpoke $82804 $01400140
+script "P2 Infinite Magazines"  
+run:
+    poke $827CF $63
+script "P2 Infinite Bullets"  
+run:
+    poke $827CB $63
+script "P2 Infinite Grenades"  
+run:
+    poke $827D3 $63
+script "P2 Invincibility"  
+run:
+    poke $80ED3 $02
+script "P2 No Magazine Changing Delay"  
+run:
+    poke $80ECF $00

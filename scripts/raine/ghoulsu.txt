@@ -1,0 +1,122 @@
+script "Infinite Time"  
+run:
+    poke $FF06D3 $59
+script "Invincibility"  
+run:
+    poke $FF0931 $FF
+off:
+    poke $FF0931 $00
+script "Always have Powerup"  
+run:
+    poke $FF095E $01
+script "Get Powerup Now!"  
+on:
+    poke $FF095E $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF07AD $08
+script "P1 Select Armour" \
+ "0x01/None"\
+ "0x02/Golden Armour"\
+ "0x03/Silver Armour" 
+run:
+    if (param==$01)
+      poke $FF07AA $00
+      poke $FF07AC $01
+    endif
+    if (param==$02)
+      poke $FF07AA $01
+      poke $FF07AC $03
+    endif
+    if (param==$03)
+      poke $FF07AA $01
+      poke $FF07AC $02
+    endif
+script "P1 Select Weapon" \
+ "0x00/Lance"\
+ "0x01/Knife"\
+ "0x02/Torch"\
+ "0x03/Sword"\
+ "0x04/Axe"\
+ "0x05/Shield"\
+ "0x06/Fireball" 
+run:
+    poke $FF07C6 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF080D $08
+script "P2 Select Armour" \
+ "0x01/None"\
+ "0x02/Golden Armour"\
+ "0x03/Silver Armour" 
+run:
+    if (param==$01)
+      poke $FF080A $00
+      poke $FF080C $01
+    endif
+    if (param==$02)
+      poke $FF080A $01
+      poke $FF080C $03
+    endif
+    if (param==$03)
+      poke $FF080A $01
+      poke $FF080C $02
+    endif
+script "P2 Select Weapon" \
+ "0x00/Lance"\
+ "0x01/Knife"\
+ "0x02/Torch"\
+ "0x03/Sword"\
+ "0x04/Axe"\
+ "0x05/Shield"\
+ "0x06/Fireball" 
+run:
+    poke $FF0826 param
+script " "  
+script "Always be duck (BUGGY)"  
+run:
+    poke $FF07AC $04
+script "Always be old man (BUGGY)"  
+run:
+    poke $FF07C4 $42
+script "Dance Routine (BUGGY)"  
+run:
+    poke $FF07C4 $44
+script "Polymorph = duck (normal)?"  
+on:
+    poke $FFD0BB $00
+script "Polymorph = duck (never)?"  
+run:
+    poke $FFD0BB $00
+script "Round Clear Now!!"  
+on:
+    dpoke $FF0954 $C378
+script "Go to Round 1"  
+on:
+    poke $FF07C8 $02
+    dpoke $FF0954 $C378
+script "Go to Round 2"  
+on:
+    poke $FF07C8 $00
+    dpoke $FF0954 $C378
+script "Go to Round 3"  
+on:
+    poke $FF07C8 $01
+    dpoke $FF0954 $C378
+script "Go to Round 4"  
+on:
+    poke $FF07C8 $03
+    dpoke $FF0954 $C378
+script "Go to Round 5"  
+on:
+    poke $FF07C8 $05
+    dpoke $FF0954 $C378
+script "Go to Final Round"  
+on:
+    poke $FF07C8 $07
+    dpoke $FF0954 $C378
+    poke $FF07D5 $01
+    poke $FF07C6 $06
+script " "  

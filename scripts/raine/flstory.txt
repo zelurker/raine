@@ -1,0 +1,39 @@
+script "Infinite Credits"  
+run:
+    poke $E604 $09
+script "Infinite Time-last enemy esc."  
+run:
+    poke $E695 $01
+script "Infinite Time-last enemy stay"  
+run:
+    poke $E694 $01
+script "Infinite Item Time"  
+run:
+    poke $E6D1 $FF
+script "Infinite Lives"  
+run:
+    poke $E782 $05
+script "See the Dip Switch Menu to enable Invincibility."  
+script "Coin point always x9"  
+run:
+    poke $E6FC $08
+script "Make treasure appearNow!"  
+on:
+    poke $E786 $03
+    poke $E785 $20
+script "Select Spell to Cast" \
+ "0x00/Normal Spell"\
+ "0x01/Long Spell"\
+ "0x02/Erase Spell"\
+ "0x03/Fire Spell"\
+ "0x08/Step Charm" 
+run:
+    poke $E61F param
+script "Select Current Round" \
+ inter=1,101,1 
+change:
+    poke $E781 (param-$1)
+script "Select Next Round" \
+ inter=1,101,1 
+change:
+    poke $E781 (param-$1)

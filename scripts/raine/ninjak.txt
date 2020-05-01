@@ -1,39 +1,54 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $101004 $03
-
-script "2UP Unlimited lives" always
-	poke $101044 $03
-
-script "3UP Unlimited lives" always
-	poke $101084 $03
-
-script "4UP Unlimited lives" always
-	poke $1010C4 $03
-
-script "1UP Unlimited energy" always
-	poke $101005 $05
-
-script "2UP Unlimited energy" always
-	poke $101045 $05
-
-script "3UP Unlimited energy" always
-	poke $101085 $05
-
-script "4UP Unlimited energy" always
-	poke $1010C5 $05
-
-script "1UP Unlimited magic" always
-	poke $101037 $04
-
-script "2UP Unlimited magic" always
-	poke $101077 $04
-
-script "3UP Unlimited magic" always
-	poke $1010B7 $04
-
-script "4UP Unlimited magic" always
-	poke $1010F7 $04
+script "P1 Infinite Lives"  
+run:
+    poke $101004 $03
+script "P1 Infinite Energy"  
+run:
+    poke $101005 $05
+script "P1 Invincibility"  
+run:
+    dpoke $10102E $0002
+script "P1 Infinite Magic"  
+run:
+    poke $101037 $04
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $101044 $03
+script "P2 Infinite Energy"  
+run:
+    poke $101045 $05
+script "P2 Invincibility"  
+run:
+    dpoke $10106E $0002
+script "P2 Infinite Magic"  
+run:
+    poke $101077 $04
+script " "  
+script "To play with P3 and P4 you need to change"  
+script "the cabinet style in the DIP switch menu."  
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $101084 $03
+script "P3 Infinite Energy"  
+run:
+    poke $101085 $05
+script "P3 Invincibility"  
+run:
+    dpoke $1010AE $0002
+script "P3 Infinite Magic"  
+run:
+    poke $1010B7 $04
+script " "  
+script "P4 Infinite Lives"  
+run:
+    poke $1010C4 $03
+script "P4 Infinite Energy"  
+run:
+    poke $1010C5 $05
+script "P4 Invincibility"  
+run:
+    dpoke $1010EE $0002
+script "P4 Infinite Magic"  
+run:
+    poke $1010F7 $04

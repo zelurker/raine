@@ -1,0 +1,197 @@
+script "Infinite Time"  
+run:
+    poke $FF81B2 $3B
+script "Infinite Boss Time"  
+run:
+    poke $FF81DE $63
+script "Hit Anywhere (Both Players)" \
+ "comm:Excludes throws. Disables boss ability to block player attacks. Does not work on bonus levels."  
+run:
+    dpoke $00808A $605E
+    dpoke $008810 $600C
+    dpoke $0089DA $4E71
+    dpoke $0089E0 $4E71
+    dpoke $0089F4 $4E71
+    dpoke $008A16 $4E71
+    dpoke $008A32 $6002
+    dpoke $008A58 $6002
+    dpoke $008A60 $6002
+    dpoke $008A78 $6002
+    dpoke $00928E $600C
+    dpoke $0094EE $6002
+    dpoke $009500 $6002
+    dpoke $009524 $6002
+    dpoke $009542 $6002
+    dpoke $0098DA $4E71
+    dpoke $009934 $6002
+    dpoke $009958 $6002
+    dpoke $00996E $6002
+    dpoke $009AB2 $6006
+    dpoke $009BD8 $6002
+    dpoke $009BEA $6002
+    dpoke $009C0E $6002
+    dpoke $009C2C $6002
+off:
+    dpoke $00808A $6B00
+    dpoke $008810 $6F18
+    dpoke $0089DA $67D2
+    dpoke $0089E0 $6604
+    dpoke $0089F4 $62B8
+    dpoke $008A16 $6296
+    dpoke $008A32 $6200
+    dpoke $008A58 $6700
+    dpoke $008A60 $6700
+    dpoke $008A78 $6200
+    dpoke $00928E $6F18
+    dpoke $0094EE $6700
+    dpoke $009500 $6200
+    dpoke $009524 $6200
+    dpoke $009542 $6200
+    dpoke $0098DA $6F0C
+    dpoke $009934 $6700
+    dpoke $009958 $6200
+    dpoke $00996E $6200
+    dpoke $009AB2 $6F12
+    dpoke $009BD8 $6700
+    dpoke $009BEA $6200
+    dpoke $009C0E $6200
+    dpoke $009C2C $6200
+script "One Hit Kills"  
+on:
+    temp0=peek($0080EE)
+run:
+    poke $0080EE $44
+off:
+    poke $0080EE temp0
+script "Kill all Enemies on this Level Now!"  
+on:
+    poke $FF8199 $FF
+script "Kill all On-Screen Enemies Now!"  
+on:
+    poke $FFD1DE $FF
+    poke $FFD0FE $FF
+    poke $FFD01E $FF
+    poke $FFCF3E $FF
+    poke $FFCE5E $FF
+    poke $FFCD7E $FF
+    poke $FFCC9E $FF
+    poke $FFCBBE $FF
+    poke $FFCADE $FF
+script "Infinite Enemy Count"  
+run:
+    poke $FF81AD $00
+script "Weapons don't disappear"  
+on:
+    temp0=peek($021E30)
+run:
+    poke $021E30 $02
+off:
+    poke $021E30 temp0
+script " "  
+script "P1 Infinite Credits"  
+run:
+    poke $FF62F7 $09
+script "P1 Infinite Lives"  
+run:
+    poke $FF7F9B $03
+script "P1 Infinite Energy"  
+run:
+    poke $FFBE9F $68
+script "P1 Invincibility"  
+run:
+    poke $FFBED5 $02
+script "P1 Always have Horse" \
+ "comm:DO NOT have these cheats active before the player has been chosen (ie, don't set the cheats for P3 before P3 is playing, or the game will crash"  
+run:
+    poke $FFBE7F $01
+script "P1 Always have Horse with Invincibility"  
+run:
+    poke $FFBE45 $00
+    dpoke $FFBE7E $0001
+script "P1 Always Have Kusanagi Sword"  
+run:
+    dpoke $FFAF1C $0081
+    poke $FFAF20 $01
+    poke $FFAF3D $14
+    poke $FFAF3F $00
+    lpoke $FFAF64 $00000004
+    poke $FFAF68 $00
+    dpoke $FFAFA8 $0000
+    dpoke $FFBEA8 $0000
+script "P1 Punch Only Combo"  
+run:
+    poke $FFBECA $02
+script "P1 Finish Only"  
+run:
+    poke $FFBECA $01
+    poke $FFBEC9 $FF
+script "P1 Always Command ON" \
+ "comm:CHOU-HI Only"  
+run:
+    poke $FFBEDD $FF
+script "P1 Quick Bow Motion" \
+ "comm:KOU-CHUU Only"  
+run:
+    poke $FFBECF $00
+script " "  
+script "P2 Infinite Credits"  
+run:
+    poke $FF6307 $09
+script "P2 Infinite Lives"  
+run:
+    poke $FF7F9C $03
+script "P2 Infinite Energy"  
+run:
+    poke $FFBF7F $68
+script "P2 Invincibility"  
+run:
+    poke $FFBFB5 $02
+script "P2 Always have Horse" \
+ "comm:DO NOT have these cheats active before the player has been chosen (ie, don't set the cheats for P3 before P3 is playing, or the game will crash"  
+run:
+    poke $FFBF5F $01
+script "P2 Always have Horse with Invincibility"  
+run:
+    poke $FFBF25 $00
+    dpoke $FFBF5E $0001
+script "P2 Always Have Kusanagi Sword"  
+run:
+    dpoke $FFAFDC $8101
+    poke $FFAFE0 $14
+    poke $FFAFFD $00
+    poke $FFAFFF $04
+    lpoke $FFB024 $00000000
+    poke $FFB028 $00
+    dpoke $FFB068 $BEFC
+    dpoke $FFBF88 $AFDC
+script " "  
+script "P3 Infinite Credits"  
+run:
+    poke $FF6317 $09
+script "P3 Infinite Lives"  
+run:
+    poke $FF7F9D $03
+script "P3 Infinite Energy"  
+run:
+    poke $FFC05F $68
+script "P3 Invincibility"  
+run:
+    poke $FFC095 $02
+script "P3 Always have Horse" \
+ "comm:DO NOT have these cheats active before the player has been chosen (ie, don't set the cheats for P3 before P3 is playing, or the game will crash"  
+run:
+    poke $FFC03F $01
+script "P3 Always have Horse with Invincibility"  
+run:
+    poke $FFC005 $00
+    dpoke $FFC03E $0001
+script "P3 Always Have Kusanagi Sword"  
+run:
+    dpoke $FFB09C $8101
+    poke $FFB0A0 $14
+    poke $FFB0BD $00
+    poke $FFB0BF $04
+    lpoke $FFB0E4 $00000000
+    poke $FFB0E8 $00
+    dpoke $FFB128 $BFDC
+    dpoke $FFC068 $B09C

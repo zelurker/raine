@@ -1,156 +1,122 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $FF07AD $03
-
-script "2UP Unlimited lives" always
-	poke $FF080D $03
-
-script "*UP Unlimited time" always
-	poke $FF06D3 $59
-
-script "*UP Get weapon power (normal)"
-	poke $FF095E $00
-
-script "*UP Get weapon power (always)" always
-	poke $FF095E $01
-
-script "1UP Always golden armor" always
-	poke $FF07AA $01
-	poke $FF07AC $03
-
-script "1UP Always silver armor" always
-	poke $FF07AA $01
-	poke $FF07AC $02
-
-script "1UP Never recover armor" always
-	poke $FF07AA $00
-	poke $FF07AC $01
-
-script "2UP Always golden armor" always
-	poke $FF080A $01
-	poke $FF080C $03
-
-script "2UP Always silver armor" always
-	poke $FF080A $01
-	poke $FF080C $02
-
-script "2UP Never recover armor" always
-	poke $FF080A $00
-	poke $FF080C $01
-
-script "1UP Recover gold. armor"
-	poke $FF07AA $01
-	poke $FF07AC $03
-
-script "1UP Recover silv. armor"
-	poke $FF07AA $01
-	poke $FF07AC $02
-
-script "1UP Lose armor"
-	poke $FF07AA $00
-	poke $FF07AC $01
-
-script "2UP Recover gold. armor"
-	poke $FF080A $01
-	poke $FF080C $03
-
-script "2UP Recover silv. armor"
-	poke $FF080A $01
-	poke $FF080C $02
-
-script "2UP Lose armor"
-	poke $FF080A $00
-	poke $FF080C $01
-
-script "*UP Polymorph = duck (normal)"
-	poke $FFD0BB $00
-
-script "*UP Polymorph = duck (never)" always
-	poke $FFD0BB $00
-
-script "1UP Weapon - Spear        (P)" always
-	poke $FF07C6 $00
-
-script "1UP Weapon - Knife        (P)" always
-	poke $FF07C6 $01
-
-script "1UP Weapon - Torch        (P)" always
-	poke $FF07C6 $02
-
-script "1UP Weapon - Sword        (P)" always
-	poke $FF07C6 $03
-
-script "1UP Weapon - Axe          (P)" always
-	poke $FF07C6 $04
-
-script "1UP Weapon - Shield       (P)" always
-	poke $FF07C6 $05
-
-script "1UP Weapon - Super weapon (P)" always
-	poke $FF07C6 $06
-
-script "2UP Weapon - Spear        (P)" always
-	poke $FF0826 $00
-
-script "2UP Weapon - Knife        (P)" always
-	poke $FF0826 $01
-
-script "2UP Weapon - Torch        (P)" always
-	poke $FF0826 $02
-
-script "2UP Weapon - Sword        (P)" always
-	poke $FF0826 $03
-
-script "2UP Weapon - Axe          (P)" always
-	poke $FF0826 $04
-
-script "2UP Weapon - Shield       (P)" always
-	poke $FF0826 $05
-
-script "2UP Weapon - Super weapon (P)" always
-	poke $FF0826 $06
-
-script "1UP Weapon - Spear        (T)"
-	poke $FF07C6 $00
-
-script "1UP Weapon - Knife        (T)"
-	poke $FF07C6 $01
-
-script "1UP Weapon - Torch        (T)"
-	poke $FF07C6 $02
-
-script "1UP Weapon - Sword        (T)"
-	poke $FF07C6 $03
-
-script "1UP Weapon - Axe          (T)"
-	poke $FF07C6 $04
-
-script "1UP Weapon - Shield       (T)"
-	poke $FF07C6 $05
-
-script "1UP Weapon - Super weapon (T)"
-	poke $FF07C6 $06
-
-script "2UP Weapon - Spear        (T)"
-	poke $FF0826 $00
-
-script "2UP Weapon - Knife        (T)"
-	poke $FF0826 $01
-
-script "2UP Weapon - Torch        (T)"
-	poke $FF0826 $02
-
-script "2UP Weapon - Sword        (T)"
-	poke $FF0826 $03
-
-script "2UP Weapon - Axe          (T)"
-	poke $FF0826 $04
-
-script "2UP Weapon - Shield       (T)"
-	poke $FF0826 $05
-
-script "2UP Weapon - Super weapon (T)"
-	poke $FF0826 $06
+script "Infinite Time"  
+run:
+    poke $FF06D3 $59
+script "Invincibility"  
+run:
+    poke $FF0931 $FF
+off:
+    poke $FF0931 $00
+script "Always have Powerup"  
+run:
+    poke $FF095E $01
+script "Get Powerup Now!"  
+on:
+    poke $FF095E $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF07AD $08
+script "P1 Select Armour" \
+ "0x01/None"\
+ "0x02/Golden Armour"\
+ "0x03/Silver Armour" 
+run:
+    if (param==$01)
+      poke $FF07AA $00
+      poke $FF07AC $01
+    endif
+    if (param==$02)
+      poke $FF07AA $01
+      poke $FF07AC $03
+    endif
+    if (param==$03)
+      poke $FF07AA $01
+      poke $FF07AC $02
+    endif
+script "P1 Select Weapon" \
+ "0x00/Lance"\
+ "0x01/Knife"\
+ "0x02/Torch"\
+ "0x03/Sword"\
+ "0x04/Axe"\
+ "0x05/Shield"\
+ "0x06/Fireball" 
+run:
+    poke $FF07C6 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF080D $08
+script "P2 Select Armour" \
+ "0x01/None"\
+ "0x02/Golden Armour"\
+ "0x03/Silver Armour" 
+run:
+    if (param==$01)
+      poke $FF080A $00
+      poke $FF080C $01
+    endif
+    if (param==$02)
+      poke $FF080A $01
+      poke $FF080C $03
+    endif
+    if (param==$03)
+      poke $FF080A $01
+      poke $FF080C $02
+    endif
+script "P2 Select Weapon" \
+ "0x00/Lance"\
+ "0x01/Knife"\
+ "0x02/Torch"\
+ "0x03/Sword"\
+ "0x04/Axe"\
+ "0x05/Shield"\
+ "0x06/Fireball" 
+run:
+    poke $FF0826 param
+script " "  
+script "Always be duck (BUGGY)"  
+run:
+    poke $FF07AC $04
+script "Always be old man (BUGGY)"  
+run:
+    poke $FF07C4 $42
+script "Dance Routine (BUGGY)"  
+run:
+    poke $FF07C4 $44
+script "Polymorph = duck (normal)?"  
+on:
+    poke $FFD0BB $00
+script "Polymorph = duck (never)?"  
+run:
+    poke $FFD0BB $00
+script "Round Clear Now!"  
+on:
+    dpoke $FF0954 $C31C
+script "Go to Round 1"  
+on:
+    poke $FF07C8 $02
+    dpoke $FF0954 $C31C
+script "Go to Round 2"  
+on:
+    poke $FF07C8 $00
+    dpoke $FF0954 $C31C
+script "Go to Round 3"  
+on:
+    poke $FF07C8 $01
+    dpoke $FF0954 $C31C
+script "Go to Round 4"  
+on:
+    poke $FF07C8 $03
+    dpoke $FF0954 $C31C
+script "Go to Round 5"  
+on:
+    poke $FF07C8 $05
+    dpoke $FF0954 $C31C
+script "Go to Final Round"  
+on:
+    poke $FF07C8 $07
+    dpoke $FF0954 $C31C
+    poke $FF07D5 $01
+    poke $FF07C6 $06
+script " "  

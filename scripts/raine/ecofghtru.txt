@@ -1,0 +1,68 @@
+script "Infinite Credits"  
+run:
+    poke $FF02EA $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FFF5F2 $09
+script "P1 Invincibility"  
+run:
+    if (frame%60==$0)
+      poke $FF877A $FF
+    endif
+script "P1 Always have Maximum Arm Weapon Power"  
+run:
+    poke $FF8952 $05
+script "P1 Always have Penetration Shot"  
+run:
+    poke $FF8922 $00
+script "P1 Always have Penetration Hammer"  
+run:
+    poke $FF895A $04
+script "P1 Select Weapon" \
+ "0x03/Energy Ball"\
+ "0x04/Hammer"\
+ "0x07/Wheel"\
+ "0x09/Laser Sword" 
+run:
+    poke $FF8904 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FFF5F3 $09
+script "P2 Invincibility"  
+run:
+    if (frame%60==$0)
+      poke $FF8D4A $FF
+    endif
+script "P2 Always have Maximum Arm Weapon Power"  
+run:
+    poke $FF8F22 $05
+script "P2 Always have Penetration Shot"  
+run:
+    poke $FF8EF2 $00
+script "P2 Always have Penetration Hammer"  
+run:
+    poke $FF8F2A $04
+script "P2 Select Weapon" \
+ "0x03/Energy Ball"\
+ "0x04/Hammer"\
+ "0x07/Wheel"\
+ "0x09/Laser Sword" 
+run:
+    poke $FF8ED4 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x01/USA"\
+ "0x02/ETC"\
+ "0x03/Hispanic"\
+ "0x04/Asia" 
+run:
+    poke $FF03E9 param

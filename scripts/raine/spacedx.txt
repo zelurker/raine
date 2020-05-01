@@ -1,9 +1,38 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $903BFF $07
-
-script "2UP Unlimited lives" always
-	poke $903CFF $07
+script "Infinite Credits"  
+run:
+    poke $902445 $09
+script "Invaders Don't Move"  
+run:
+    poke $903BDD $16
+script "Invaders Don't Shoot"  
+run:
+    poke $90087F $98
+script "Bullet Invincibility"  
+on:
+    temp0=peek($005AE6)
+run:
+    poke $005AE6 $60
+off:
+    poke $005AE6 temp0
+script "Auto Fire"  
+on:
+    temp0=dpeek($004F2C)
+run:
+    dpoke $004F2C $4E71
+off:
+    dpoke $004F2C temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $903BFF $07
+script "P2 Infinite Lives"  
+run:
+    poke $903CFF $07
+script " "  
+script "Skip ROM Check"  
+on:
+    temp0=dpeek($001AF8)
+run:
+    dpoke $001AF8 $4E75
+off:
+    dpoke $001AF8 temp0

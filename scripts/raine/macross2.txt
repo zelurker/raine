@@ -1,24 +1,23 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $1F5F2D $A0
-
-script "1UP Invulnerability OFF"
-	poke $1F5F2D $01
-
-script "2UP Invulnerability ON" always
-	poke $1F5E2D $A0
-
-script "2UP Invulnerability OFF"
-	poke $1F5E2D $01
-
-script "1UP Unlimited bombs" always
-	poke $1F5F2F $08
-
-script "2UP Unlimited bombs" always
-	poke $1F5E2F $08
-
-script "*UP Unlimited time" always
-	poke $1F9027 $78
+script "Infinite Credits"  
+run:
+    poke $1F900D $09
+script "Infinite Time"  
+run:
+    poke $1F9027 $78
+script "Select next Stage" \
+ inter=1,9,1 
+change:
+    poke $1F9021 (param-$1)
+script " "  
+script "P1 Infinite Bombs"  
+run:
+    poke $1F5F2F $08
+script "P1 Invincibility"  
+run:
+    poke $1F5F2D $02
+script "P2 Infinite Bombs"  
+run:
+    poke $1F5E2F $08
+script "P2 Invincibility"  
+run:
+    poke $1F5E2D $02

@@ -1,9 +1,209 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $4E14 $03
-
-script "*UP Unlimited "power" time" always
-	poke $4DCB $FF
+script "Infinite Credits"  
+run:
+    poke $4E6E $99
+script "Infinite Lives"  
+run:
+    dpoke $4E14 $0506
+script "Invincibility"  
+on:
+    temp0=lpeek($1774)
+    temp1=lpeek($3CDF)
+    temp2=lpeek($3CE3)
+    temp3=lpeek($3CE7)
+run:
+    lpoke $1774 $323CE0C3
+    lpoke $3CDF $0420A700
+    lpoke $3CE3 $1764C3AF
+    lpoke $3CE7 $1777C3AF
+off:
+    lpoke $1774 temp0
+    lpoke $3CDF temp1
+    lpoke $3CE3 temp2
+    lpoke $3CE7 temp3
+script "Move Manually"  
+on:
+    temp0=lpeek($18C5)
+    temp1=lpeek($3E60)
+    temp2=lpeek($3E64)
+    temp3=lpeek($3E68)
+    temp4=lpeek($3E6C)
+run:
+    lpoke $18C5 $CB3E60C3
+    lpoke $3E60 $2F50003A
+    lpoke $3E64 $04280FE6
+    lpoke $3E68 $18C8C32F
+    lpoke $3E6C $001A13C3
+off:
+    lpoke $18C5 temp0
+    lpoke $3E60 temp1
+    lpoke $3E64 temp2
+    lpoke $3E68 temp3
+    lpoke $3E6C temp4
+script "Move through Walls"  
+on:
+    temp0=peek($18F3)
+run:
+    poke $18F3 $18
+off:
+    poke $18F3 temp0
+script "Enable Speed Hack" \
+ "comm:This will greatly speed up your character."  
+on:
+    temp0=dpeek($180B)
+run:
+    dpoke $180B $3218
+off:
+    dpoke $180B temp0
+script "Finish this Level Now!"  
+on:
+    poke $4E0E $F4
+script "Select Starting Level" \
+ "comm:For the best effect deactivate this cheat after you've started the Level" \
+ "0x01/Strawberry"\
+ "0x02/1st Orange"\
+ "0x03/2nd Orange"\
+ "0x04/1st Apple"\
+ "0x05/2nd Apple"\
+ "0x06/1st Pineapple"\
+ "0x07/2nd Pineapple"\
+ "0x08/1st Galaxian"\
+ "0x09/2nd Galaxian"\
+ "0x0A/1st Bell"\
+ "0x0B/2nd Bell"\
+ "0x0C/1st Key"\
+ "0x0D/2nd Key" 
+run:
+    if peek($4E13)==$00
+      poke $4E13 param
+    endif
+    if (param<0x0C)&&(peek($4E0A)==$68)
+      poke $4E0A param+$0x7D
+    endif
+    if (param>=0x0C)&&(peek($4E0A)==$68)
+      poke $4E0A param+$0x7B
+    endif
+script "Select Ghost Changeback Speed" \
+ "0x0000/Stay blue until eaten"\
+ "0x0258/Slow"\
+ "0x0168/Moderate"\
+ "0x00F0/Quick"\
+ "0x0078/Lightning"\
+ "0x0001/No change to blue" 
+run:
+    dpoke $4DBD param
+script "Select Level (for Practice)" \
+ "comm:Do NOT use in conjunction with the standard Select Starting Level cheat" \
+ "0x00/Cherry"\
+ "0x01/Strawberry"\
+ "0x02/1st Orange"\
+ "0x03/2nd Orange"\
+ "0x04/1st Apple"\
+ "0x05/2nd Apple"\
+ "0x06/1st Pineapple"\
+ "0x07/2nd Pineapple"\
+ "0x08/1st Galaxian"\
+ "0x09/2nd Galaxian"\
+ "0x0A/1st Bell"\
+ "0x0B/2nd Bell"\
+ "0x0C/1st Key"\
+ "0x0D/2nd Key"\
+ "0xFF/Split-Screen (Unplayable)"\
+ "0xFE/No maze or dots(Unfinishable)" 
+run:
+    poke $4E13 param
+script " "  
+script "Ghost Status Cheats"  
+script " "  
+script "Red Ghost always blue"  
+run:
+    poke $4DA7 $01
+script "Pink Ghost always blue"  
+run:
+    poke $4DA8 $01
+script "Green Ghost always blue"  
+run:
+    poke $4DA9 $01
+script "Orange Ghost always blue"  
+run:
+    poke $4DAA $01
+script "Ghosts Always Edible (No Pts)"  
+run:
+    poke $4DA5 $00
+script " "  
+script "Ghosts Enter All Passages" \
+ "comm:This can lead to a much harder game, Ghosts can travel up restricted passages in chase/scatter modes"  
+on:
+    temp0=peek($1C15)
+    temp1=peek($1CEC)
+    temp2=peek($1DC3)
+    temp3=peek($1E9A)
+run:
+    poke $1C15 $00
+    poke $1CEC $00
+    poke $1DC3 $00
+    poke $1E9A $00
+off:
+    poke $1C15 temp0
+    poke $1CEC temp1
+    poke $1DC3 temp2
+    poke $1E9A temp3
+script "Ghosts Ignore Tunnel Slowdown" \
+ "comm:Ghosts no longer slow down when travelling through side tunnels"  
+on:
+    temp0=peek($2063)
+run:
+    poke $2063 $00
+off:
+    poke $2063 temp0
+script "Ms. Pac-Man Ghost Behavior" \
+ "comm:Ms. Pac-Man-style reversals + randomized scatter movement for red/pink ghosts - effectively play with Ms Pac Man Ghost Rules."  
+on:
+    temp0=dpeek($0E5C)
+    temp1=lpeek($274A)
+    temp2=lpeek($2780)
+    temp3=lpeek($2FC0)
+    temp4=lpeek($2FC4)
+    temp5=lpeek($2FC8)
+    temp6=lpeek($2FCC)
+    temp7=lpeek($2FD0)
+    temp8=lpeek($2FD4)
+run:
+    dpoke $0E5C $00AF
+    lpoke $274A $2FC0CD4D
+    lpoke $2780 $2FC0CD4D
+    lpoke $2FC0 $D021E5F5
+    lpoke $2FC4 $E65FED2F
+    lpoke $2FC8 $235FD706
+    lpoke $2FCC $C9F1E156
+    lpoke $2FD0 $391D221D
+    lpoke $2FD4 $3B402040
+off:
+    dpoke $0E5C temp0
+    lpoke $274A temp1
+    lpoke $2780 temp2
+    lpoke $2FC0 temp3
+    lpoke $2FC4 temp4
+    lpoke $2FC8 temp5
+    lpoke $2FCC temp6
+    lpoke $2FD0 temp7
+    lpoke $2FD4 temp8
+script "Fix Split Screen Bug" \
+ "comm:Fixes the bug with levels GT 255 see here - www.donhodges.com/how_high_can_you_get2.htm"  
+on:
+    temp0=lpeek($2BF3)
+    temp1=dpeek($2BF7)
+    temp2=peek($2C2F)
+    temp3=lpeek($2C32)
+    temp4=dpeek($2FFE)
+run:
+    lpoke $2BF3 $2ED207FE
+    dpoke $2BF7 $3C2C
+    poke $2C2F $12
+    lpoke $2C32 $06D6123E
+    dpoke $2FFE $9816
+off:
+    lpoke $2BF3 temp0
+    dpoke $2BF7 temp1
+    poke $2C2F temp2
+    lpoke $2C32 temp3
+    dpoke $2FFE temp4

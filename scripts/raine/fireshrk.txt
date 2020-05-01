@@ -1,59 +1,32 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $C1EA7 $03
-
-script "2UP Unlimited lives" always
-	poke $C1EA9 $03
-
-script "1UP Unlimited bombs" always
-	poke $C16E9 $08
-
-script "2UP Unlimited bombs" always
-	poke $C1749 $08
-
-script "1UP Maximum fire power" always
-	poke $C1EBD $03
-	poke $C16E7 $03
-
-script "2UP Maximum fire power" always
-	poke $C1EBF $03
-	poke $C1747 $03
-
-script "1UP Fire - Multi-way      (P)" always
-	poke $C16E3 $00
-
-script "1UP Fire - Laser          (P)" always
-	poke $C16E3 $08
-
-script "1UP Fire - Homing fire    (P)" always
-	poke $C16E3 $10
-
-script "2UP Fire - Multi-way      (P)" always
-	poke $C1743 $00
-
-script "2UP Fire - Laser          (P)" always
-	poke $C1743 $08
-
-script "2UP Fire - Homing fire    (P)" always
-	poke $C1743 $10
-
-script "1UP Fire - Multi-way      (T)"
-	poke $C16E3 $00
-
-script "1UP Fire - Laser          (T)"
-	poke $C16E3 $08
-
-script "1UP Fire - Homing fire    (T)"
-	poke $C16E3 $10
-
-script "2UP Fire - Multi-way      (T)"
-	poke $C1743 $00
-
-script "2UP Fire - Laser          (T)"
-	poke $C1743 $08
-
-script "2UP Fire - Homing fire    (T)"
-	poke $C1743 $10
+script "Infinite Lives"  
+run:
+    poke $C1EA7 $0A
+script "Infinite Bombs"  
+run:
+    poke $C16E9 $08
+script "Invincibility"  
+run:
+    poke $02362 $60
+    dpoke $02506 $4E71
+script " "  
+script "P1 Maximum Fire Power"  
+run:
+    poke $C1EBD $03
+    poke $C16E7 $03
+script "P1 Select Weapon" \
+ "0x00/Normal"\
+ "0x08/Laser"\
+ "0x10/Fire" 
+run:
+    poke $C16E3 param
+script " "  
+script "P2 Maximum Fire Power"  
+run:
+    poke $C1EBF $03
+    poke $C1747 $03
+script "P2 Select Weapon" \
+ "0x00/Normal"\
+ "0x08/Laser"\
+ "0x10/Fire" 
+run:
+    poke $C1743 param

@@ -1,54 +1,131 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $40FF5A $03
-
-script "2UP Unlimited lives" always
-	poke $40FFAA $03
-
-script "3UP Unlimited lives" always
-	poke $40FFFA $03
-
-script "4UP Unlimited lives" always
-	poke $41004A $03
-
-script "1UP Unlimited energy" always
-	poke $40FF57 $23
-
-script "2UP Unlimited energy" always
-	poke $40FFA7 $23
-
-script "3UP Unlimited energy" always
-	poke $40FFF7 $23
-
-script "4UP Unlimited energy" always
-	poke $410047 $23
-
-script "1UP Unlimited magic" always
-	poke $40FF5B $09
-
-script "2UP Unlimited magic" always
-	poke $40FFAB $09
-
-script "3UP Unlimited magic" always
-	poke $40FFFB $09
-
-script "4UP Unlimited magic" always
-	poke $41004B $09
-
-script "1UP Unlimited ammo." always
-	poke $40FF77 $09
-
-script "2UP Unlimited ammo." always
-	poke $40FFC7 $09
-
-script "3UP Unlimited ammo." always
-	poke $410017 $09
-
-script "4UP Unlimited ammo." always
-	poke $410067 $09
-
-script "*UP Unlimited time" always
-	poke $411369 $63
+script "Infinite Credits"  
+run:
+    poke $40DC2B $09
+script "Infinite Time"  
+run:
+    poke $411369 $64
+script "Select Starting Stage" \
+ "0x01/1-1"\
+ "0x02/1-2"\
+ "0x04/2-1"\
+ "0x05/2-2"\
+ "0x06/3"\
+ "0x07/4-1"\
+ "0x08/4-2"\
+ "0x09/4-3"\
+ "0x0A/5-1"\
+ "0x0B/5-2"\
+ "0x0C/5-3"\
+ "0x0D/5-4"\
+ "0x0E/5-5"\
+ "0x0F/6-1"\
+ "0x10/6-2"\
+ "0x11/6-3"\
+ "0x12/7-1"\
+ "0x13/7-2"\
+ "0x14/7-3"\
+ "0x15/7-4"\
+ "0x16/7-5"\
+ "0x17/7-6" 
+run:
+    if (peek($40FE63)==$01)
+      poke $40FE63 param
+    endif
+script "Always have Magic Carpet"  
+run:
+    poke $40FE97 $02
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $40FF5A $05
+script "P1 Infinite Energy"  
+run:
+    poke $40FF57 $23
+script "P1 Infinite Magic"  
+run:
+    poke $40FF5B $09
+script "P1 Infinite Ammo" \
+ "comm:Effective when you have a weapon"  
+run:
+    poke $40FF77 $09
+script "P1 Invincibility"  
+run:
+    poke $40FF7D $03
+script "P1 Enemies never attack"  
+run:
+    poke $40FF36 $E8
+script "P1 Maximum Power Up"  
+run:
+    poke $410D61 $FF
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $40FFAA $05
+script "P2 Infinite Energy"  
+run:
+    poke $40FFA7 $23
+script "P2 Infinite Magic"  
+run:
+    poke $40FFAB $09
+script "P2 Infinite Ammo" \
+ "comm:Effective when you have a weapon"  
+run:
+    poke $40FFC7 $09
+script "P2 Invincibility"  
+run:
+    poke $40FFCD $03
+script "P2 Enemies never attack"  
+run:
+    poke $40FF86 $E8
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $40FFFA $05
+script "P3 Infinite Energy"  
+run:
+    poke $40FFF7 $23
+script "P3 Infinite Magic"  
+run:
+    poke $40FFFB $09
+script "P3 Infinite Ammo" \
+ "comm:Effective when you have a weapon"  
+run:
+    poke $410017 $09
+script "P3 Invincibility"  
+run:
+    poke $41001D $03
+script "P3 Enemies never attack"  
+run:
+    poke $40FFD6 $E8
+script " "  
+script "P4 Infinite Lives"  
+run:
+    poke $41004A $05
+script "P4 Infinite Energy"  
+run:
+    poke $410047 $23
+script "P4 Infinite Magic"  
+run:
+    poke $41004B $09
+script "P4 Infinite Ammo" \
+ "comm:Effective when you have a weapon"  
+run:
+    poke $410067 $09
+script "P4 Invincibility"  
+run:
+    poke $41006D $03
+script "P4 Enemies never attack"  
+run:
+    poke $410026 $E8
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), reset again (F3), wait for Test Mode to appear then turn the Test Mode OFF (F2) and reset (F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

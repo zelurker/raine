@@ -1,0 +1,162 @@
+script "Infinite Time"  
+run:
+    poke $FF4808 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FF4808 $00
+script "Challenge Gouki Surely" \
+ "comm:Just Before Juggernaut"  
+on:
+    temp0=peek($FF4921)
+run:
+    poke $FF4921 $18
+off:
+    poke $FF4921 temp0
+script "Select Background" \
+ "0x00/Wolverine"\
+ "0x01/Psylocke"\
+ "0x02/Colossus"\
+ "0x03/Cyclops/Gouki"\
+ "0x04/Storm"\
+ "0x05/Iceman"\
+ "0x06/Spiral"\
+ "0x07/Silver Samurai"\
+ "0x08/Omega Red"\
+ "0x09/Sentinel"\
+ "0x0A/Juggernaut"\
+ "0x0B/Magneto" 
+run:
+    poke $FF488F param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF4191 $8F
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF4191 $00
+script "P1 Never Faint"  
+run:
+    poke $FF40FD $00
+script "P1 Action Speed Up"  
+run:
+    poke $FF403F $01
+script "P1 Always have Max Power"  
+run:
+    poke $FF4198 $02
+    poke $FF4195 $8E
+script "P1 Always have Min Power"  
+run:
+    poke $FF4198 $00
+    poke $FF4195 $00
+script "P1 Get Max Power Now!"  
+on:
+    poke $FF4198 $02
+    poke $FF4195 $8E
+script "P1 Get Min Power Now!"  
+on:
+    poke $FF4198 $00
+    poke $FF4195 $00
+script "P1 Select Character" \
+ "0x00/Wolverine"\
+ "0x02/Psylocke"\
+ "0x04/Colossus"\
+ "0x06/Cyclops"\
+ "0x08/Storm"\
+ "0x0A/Iceman"\
+ "0x0C/Spiral"\
+ "0x0E/Silver Samurai"\
+ "0x10/Omega Red"\
+ "0x12/Sentinel"\
+ "0x14/#Juggernaut"\
+ "0x16/#Magneto"\
+ "0x18/#Gouki" 
+run:
+    poke $FF4051 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF4591 $8F
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF4591 $00
+script "P2 Never Faint"  
+run:
+    poke $FF44FD $00
+script "P2 Action Speed Up"  
+run:
+    poke $FF443F $01
+script "P2 Always have Max Power"  
+run:
+    poke $FF4598 $02
+    poke $FF4595 $8E
+script "P2 Always have Min Power"  
+run:
+    poke $FF4598 $00
+    poke $FF4595 $00
+script "P2 Get Max Power Now!"  
+on:
+    poke $FF4598 $02
+    poke $FF4595 $8E
+script "P2 Get Min Power Now!"  
+on:
+    poke $FF4598 $00
+    poke $FF4595 $00
+script "P2 Select Character" \
+ "0x00/Wolverine"\
+ "0x02/Psylocke"\
+ "0x04/Colossus"\
+ "0x06/Cyclops"\
+ "0x08/Storm"\
+ "0x0A/Iceman"\
+ "0x0C/Spiral"\
+ "0x0E/Silver Samurai"\
+ "0x10/Omega Red"\
+ "0x12/Sentinel"\
+ "0x14/#Juggernaut"\
+ "0x16/#Magneto"\
+ "0x18/#Gouki" 
+run:
+    poke $FF4451 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=dpeek($FF4BCC)
+    temp1=dpeek($FF4BCE)
+    temp2=dpeek($FFEADC)
+    temp3=dpeek($FFEADE)
+run:
+    if (peek($FF4800)==$04)
+      dpoke $FF4BCC $0
+      dpoke $FF4BCE $0
+      dpoke $FFEADC $0
+      dpoke $FFEADE $0
+      lpoke $FFD20E $0
+    endif
+off:
+    dpoke $FF4BCC temp0
+    dpoke $FF4BCE temp1
+    dpoke $FFEADC temp2
+    dpoke $FFEADE temp3
+script "White background"  
+run:
+    poke $FFEE75 $1
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Euro"\
+ "0x06/ASIA"\
+ "0x08/Hispanic"\
+ "0x0A/Brazil" 
+run:
+    poke $FF4BF7 param
+script "Display Hidden Debug EDIT MENU" \
+ "comm:Activate on the TEST MENU (F2)."  
+run:
+    poke $FFEAEB $E5

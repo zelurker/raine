@@ -1,126 +1,68 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability" always
-	poke $E26B $00
-
-script "*UP Unlimited lives" always
-	poke $E218 $03
-
-script "*UP Unlimited time in "shop"" always
-	poke $EE28 $10
-
-script "*UP Maximum speed" always
-	poke $E217 $06
-
-script "*UP Maximum fire power" always
-	poke $E214 $08
-
-script "*UP Go to last level"
-	poke $E219 $04
-
-script "*UP Go to begining of level"
-	poke $E219 $09
-
-script "*UP Go to boss - levels 1 & 3"
-	poke $E219 $70
-
-script "*UP Go to boss - levels 2 & 4"
-	poke $E219 $80
-
-script "*UP Go to boss - level  5"
-	poke $E219 $A0
-
-script "*UP Extra fire ON" always
-	poke $E220 $01
-
-script "*UP Extra fire OFF"
-	poke $E220 $00
-
-script "*UP Auto fire  ON" always
-	poke $E223 $01
-
-script "*UP Auto fire  OFF"
-	poke $E223 $00
-
-script "*UP EF - Shield flames 1  (P)" always
-	poke $E215 $00
-
-script "*UP EF - Shield flames 2  (P)" always
-	poke $E215 $01
-
-script "*UP EF - Side + Rear shot (P)" always
-	poke $E215 $02
-
-script "*UP EF - Diagonal shot    (P)" always
-	poke $E215 $03
-
-script "*UP EF - Little men       (P)" always
-	poke $E215 $04
-
-script "*UP EF - Banana shot 1    (P)" always
-	poke $E215 $05
-
-script "*UP EF - Banana shot 2    (P)" always
-	poke $E215 $06
-
-script "*UP EF - Circle shot      (P)" always
-	poke $E215 $08
-
-script "*UP EF - Splitting bombs  (P)" always
-	poke $E215 $09
-
-script "*UP EF - Normal bombs     (P)" always
-	poke $E215 $0A
-
-script "*UP EF - Homing bombs     (P)" always
-	poke $E215 $0B
-
-script "*UP EF - Bouncing bombs   (P)" always
-	poke $E215 $0C
-
-script "*UP EF - Bouncing flames  (P)" always
-	poke $E215 $0D
-
-script "*UP EF - Shield flames 1  (T)"
-	poke $E215 $00
-
-script "*UP EF - Shield flames 2  (T)"
-	poke $E215 $01
-
-script "*UP EF - Side + Rear shot (T)"
-	poke $E215 $02
-
-script "*UP EF - Diagonal shot    (T)"
-	poke $E215 $03
-
-script "*UP EF - Little men       (T)"
-	poke $E215 $04
-
-script "*UP EF - Banana shot 1    (T)"
-	poke $E215 $05
-
-script "*UP EF - Banana shot 2    (T)"
-	poke $E215 $06
-
-script "*UP EF - Circle shot      (T)"
-	poke $E215 $08
-
-script "*UP EF - Splitting bombs  (T)"
-	poke $E215 $09
-
-script "*UP EF - Normal bombs     (T)"
-	poke $E215 $0A
-
-script "*UP EF - Homing bombs     (T)"
-	poke $E215 $0B
-
-script "*UP EF - Bouncing bombs   (T)"
-	poke $E215 $0C
-
-script "*UP EF - Bouncing flames  (T)"
-	poke $E215 $0D
-
-script "*UP One hit for boss      (T)"
-	dpoke $EE4C $0000
+script "Infinite Shop Time"  
+run:
+    poke $EE28 $10
+script "Infinite Lives"  
+run:
+    poke $E218 $64
+script "Invincibility"  
+run:
+    poke $E26B $00
+script "Always have Max Fire Power"  
+run:
+    poke $E214 $08
+script "Select Fire Power Now!" \
+ inter=1,9,1 
+change:
+    poke $E214 (param-$1)
+script "Always have Maximum speed"  
+run:
+    poke $E217 $06
+script "Select Speed Now!" \
+ inter=1,7,1 
+change:
+    poke $E217 (param-$1)
+script "Infinite Special Shot 'ON'" \
+ "comm:Enable to use Special Shots"  
+run:
+    poke $E220 $01
+script "Infinite Special Shot 'OFF'"  
+on:
+    poke $E220 $00
+script "Turn Auto fire ON"  
+run:
+    poke $E223 $01
+script "Turn Auto fire OFF"  
+on:
+    poke $E223 $00
+script "One hit for boss Now!"  
+on:
+    poke $EE4C $00
+    poke $EE4D $00
+script "Select Special Shot" \
+ "0x00/Shield Flames 1"\
+ "0x01/Shield Flames 2"\
+ "0x02/Side + Rear Shot"\
+ "0x03/Diagonal Shot"\
+ "0x04/Little Men Shot"\
+ "0x05/Banana Shot"\
+ "0x06/Big Banana Shot"\
+ "0x08/Circle Shot"\
+ "0x09/Splitting Bombs"\
+ "0x0A/Normal Bombs"\
+ "0x0B/Homing Bombs"\
+ "0x0C/Bouncing Bombs"\
+ "0x0D/Bouncing Flames" 
+run:
+    poke $E215 param
+script "Go to begining of level Now!"  
+on:
+    poke $E219 $09
+script "Go to boss - levels 1+3 Now!"  
+on:
+    poke $E219 $70
+script "Go to boss - levels 2+4 Now!"  
+on:
+    poke $E219 $80
+script "Go to boss - level  5 Now!"  
+on:
+    poke $E219 $A0

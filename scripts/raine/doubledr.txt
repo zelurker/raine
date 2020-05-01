@@ -1,0 +1,260 @@
+script "Infinite Continues"  
+run:
+    poke $10FD89 $64
+    poke $1062C6 $00
+    poke $1062C7 $00
+script "Infinite Time"  
+run:
+    poke $102242 $9A
+script "Infinite Character Selection Time"  
+run:
+    poke $105BA3 $78
+script "Unlock Secret Characters Now!"  
+on:
+    poke $108E84 $01
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $100450 $00
+script "P1 Drain All Energy Now!"  
+on:
+    poke $100450 $68
+script "P1 Select Charge" \
+ "0x68/Maximum Charge"\
+ "0x00/Minimum Charge" 
+run:
+    poke $100510 param
+script "P1 Select Character" \
+ "comm:Free player selection-Can be used anytime! At selection screen, use AFTER selection, however there are some palette glitches." \
+ "0x00/Billy"\
+ "0x01/Super Billy"\
+ "0x02/Jimmy"\
+ "0x03/Super Jimmy"\
+ "0x04/Marian"\
+ "0x05/Abobo"\
+ "0x06/Amon"\
+ "0x07/Eddie"\
+ "0x08/Rebecca"\
+ "0x09/Dulton"\
+ "0x0A/Cheng-Fu"\
+ "0x0B/Burnov"\
+ "0x0C/Duke"\
+ "0x0D/Shuko" 
+run:
+    poke $100445 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $100550 $00
+script "P2 Drain All Energy Now!"  
+on:
+    poke $100550 $68
+script "P2 Select Charge" \
+ "0x68/Maximum Charge"\
+ "0x00/Minimum Charge" 
+run:
+    poke $100610 param
+script "P2 Select Character" \
+ "comm:Free player selection-Can be used anytime! At selection screen, use AFTER selection, however there are some palette glitches." \
+ "0x00/Billy"\
+ "0x01/Super Billy"\
+ "0x02/Jimmy"\
+ "0x03/Super Jimmy"\
+ "0x04/Marian"\
+ "0x05/Abobo"\
+ "0x06/Amon"\
+ "0x07/Eddie"\
+ "0x08/Rebecca"\
+ "0x09/Dulton"\
+ "0x0A/Cheng-Fu"\
+ "0x0B/Burnov"\
+ "0x0C/Duke"\
+ "0x0D/Shuko" 
+run:
+    poke $100545 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    lpoke $F810 $00
+    lpoke $f814 
+    lpoke $F818 $00
+    lpoke $f81c 
+    lpoke $F820 $00
+    lpoke $f824 
+    lpoke $F828 $00
+    lpoke $f82c 
+    lpoke $F830 $00
+    lpoke $f834 
+    lpoke $F838 $00
+    lpoke $f83c 
+    lpoke $F840 $00
+    lpoke $f844 
+    lpoke $F848 $00
+    lpoke $f84c 
+    lpoke $F850 $00
+    lpoke $f854 
+    lpoke $F858 $00
+    lpoke $f85c 
+    lpoke $F860 $00
+    lpoke $f864 
+    lpoke $F868 $00
+    lpoke $f86c 
+    lpoke $F870 $00
+    lpoke $f874 
+    lpoke $F878 $00
+    lpoke $f87c 
+    lpoke $F880 $00
+    lpoke $f884 
+    lpoke $F888 $00
+    lpoke $f88c 
+    lpoke $F890 $00
+    lpoke $f894 
+    lpoke $F898 $00
+    lpoke $f89c 
+    lpoke $F8A0 $00
+    lpoke $f8a4 
+    lpoke $F8A8 $00
+    lpoke $f8ac 
+    lpoke $F8B0 $00
+    lpoke $f8b4 
+    lpoke $F8B8 $00
+    lpoke $f8bc 
+    lpoke $F8C0 $00
+    lpoke $f8c4 
+    lpoke $F8C8 $00
+    lpoke $f8cc 
+    lpoke $F8D0 $00
+    lpoke $f8d4 
+    lpoke $F8D8 $00
+    lpoke $f8dc 
+    lpoke $F8E0 $00
+    lpoke $f8e4 
+    lpoke $F8E8 $00
+    lpoke $f8ec 
+    lpoke $F8F0 $00
+    lpoke $f8f4 
+    lpoke $F8F8 $00
+    lpoke $f8fc 
+    lpoke $F900 $00
+    lpoke $f904 
+    lpoke $F908 $00
+    lpoke $f90c 
+    lpoke $F910 $00
+    lpoke $f914 
+    lpoke $F918 $00
+    lpoke $f91c 
+    lpoke $F920 $00
+    lpoke $f924 
+    lpoke $F928 $00
+    lpoke $f92c 
+    lpoke $F930 $00
+    lpoke $f934 
+    lpoke $F938 $00
+    lpoke $f93c 
+    lpoke $F940 $00
+    lpoke $f944 
+    lpoke $F948 $00
+    lpoke $f94c 
+    lpoke $F950 $00
+    lpoke $f954 
+    lpoke $F958 $00
+    lpoke $f95c 
+    lpoke $F960 $00
+    lpoke $f964 
+    lpoke $F968 $00
+    lpoke $f96c 
+    lpoke $F970 $00
+    lpoke $f974 
+    lpoke $F978 $00
+    lpoke $f97c 
+    lpoke $F980 $00
+    lpoke $f984 
+    lpoke $F988 $00
+    lpoke $f98c 
+    lpoke $F990 $00
+    lpoke $f994 
+    lpoke $F998 $00
+    lpoke $f99c 
+    lpoke $F9A0 $00
+    lpoke $f9a4 
+    lpoke $F9A8 $00
+    lpoke $f9ac 
+    lpoke $F9B0 $00
+    lpoke $f9b4 
+    lpoke $F9B8 $00
+    lpoke $f9bc 
+    lpoke $F9C0 $00
+    lpoke $f9c4 
+    lpoke $F9C8 $00
+    lpoke $f9cc 
+    lpoke $F9D0 $00
+    lpoke $f9d4 
+    lpoke $F9D8 $00
+    lpoke $f9dc 
+    lpoke $F9E0 $00
+    lpoke $f9e4 
+    lpoke $F9E8 $00
+    lpoke $f9ec 
+    lpoke $F9F0 $00
+    lpoke $f9f4 
+    lpoke $F9F8 $00
+    lpoke $f9fc 
+    lpoke $FA00 $00
+    lpoke $fa04 
+    lpoke $FA08 $00
+    lpoke $fa0c 
+    lpoke $FA10 $00
+    lpoke $fa14 
+    lpoke $FA18 $00
+    lpoke $fa1c 
+    lpoke $FA20 $00
+    lpoke $fa24 
+    lpoke $FA28 $00
+    lpoke $fa2c 
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

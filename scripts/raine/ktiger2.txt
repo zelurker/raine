@@ -1,27 +1,35 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $40D295 peek($40D295)&$ef|$10
-
-script "1UP Invulnerability OFF"
-	poke $40D295 peek($40D295)&$ef
-
-script "2UP Invulnerability ON" always
-	poke $40D328 peek($40D328)&$ef|$10
-
-script "2UP Invulnerability OFF"
-	poke $40D328 peek($40D328)&$ef
-
-script "1UP Unlimited lives" always
-	poke $400865 $03
-
-script "2UP Unlimited lives" always
-	poke $400867 $03
-
-script "1UP Unlimited bombs" always
-	poke $400869 $04
-
-script "2UP Unlimited bombs" always
-	poke $40086D $04
+script "Infinite Credits"  
+run:
+    poke $4006CB $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $400865 $09
+script "P1 Infinite Bombs"  
+run:
+    poke $400869 $05
+script "P1 Invincibility"  
+run:
+    poke $40D268 $10|(peek($40D268)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $400867 $09
+script "P2 Infinite Bombs"  
+run:
+    poke $40086D $05
+script "P2 Invincibility"  
+run:
+    poke $40D328 $10|(peek($40D328)&~10)
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan (Kyukyoku Tiger 2)"\
+ "0x02/US (Twin Cobra 2)"\
+ "0x03/World (Twin Cobra 2)" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

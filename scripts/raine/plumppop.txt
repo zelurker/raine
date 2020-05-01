@@ -1,9 +1,23 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $E479 $03
-
-script "2UP Unlimited lives" always
-	poke $E483 $03
+script "Auto Safety Parachute" \
+ "comm:Automatically deploys a parachute if you miss the bounce which makes it impossible to crash. Note you will to turn this cheat OFF at the end of each Round"  
+on:
+    temp0=dpeek($157B)
+run:
+    dpoke $157B $7C18
+off:
+    dpoke $157B temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $E479 $63
+script "P2 Infinite Lives"  
+run:
+    poke $E483 $63
+script " "  
+script "Skip ROM Check"  
+on:
+    temp0=peek($3754)
+run:
+    poke $3754 $C9
+off:
+    poke $3754 temp0

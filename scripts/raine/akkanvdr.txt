@@ -1,7 +1,87 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-	poke $410CDF $03
-
-script "2UP Unlimited lives" always
-	poke $410D5F $03
+script "Infinite Credits"  
+run:
+    poke $40FFCB $09
+script "Select Starting Round" \
+ inter=1,4,1 
+run:
+    poke $4155AF (param)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $410CDF $08
+script "P1 Always have Auto+Full Pow"  
+run:
+    poke $410CC9 $3B
+script "P1 Get + Shoot Full Pow Now!" \
+ "comm:Use this with an Activation Key for the best effect"  
+on:
+    poke $410CC9 $3B
+script "P1 Invincibility"  
+on:
+    temp0=peek($410C9C)
+run:
+    poke $410C9C $80
+off:
+    poke $410C9C temp0
+script "P1 Rapid Fire - Normal" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $410CD7 $10|(peek($410CD7)&~10)
+script "P1 Rapid Fire - Special" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $410CD7 $10|(peek($410CD7)&~10)
+    poke $410CE1 $00
+script "P1 Auto Charge Shot Fire - Nr"  
+run:
+    poke $410CC9 $3B
+script "P1 Auto Charge Shot Fire - Sp"  
+run:
+    poke $410CC9 $3B
+    poke $410CE1 $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $410D5F $08
+script "P2 Always have Auto+Full Pow"  
+run:
+    poke $410D49 $3B
+script "P2 Get + Shoot Full Pow Now!" \
+ "comm:Use this with an Activation Key for the best effect"  
+on:
+    poke $410D49 $3B
+script "P2 Invincibility"  
+on:
+    temp0=peek($410D1C)
+run:
+    poke $410D1C $80
+off:
+    poke $410D1C temp0
+script "P2 Rapid Fire - Normal" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $410D57 $10|(peek($410D57)&~10)
+script "P2 Rapid Fire - Special" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $410D57 $10|(peek($410D57)&~10)
+    poke $410D61 $00
+script "P2 Auto Charge Shot Fire - Nr"  
+run:
+    poke $410D49 $3B
+script "P2 Auto Charge Shot Fire - Sp"  
+run:
+    poke $410D49 $3B
+    poke $412D9F $00
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait,  then reset again (F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($07FFFF)
+run:
+    poke $07FFFF param
+off:
+    poke $07FFFF temp0

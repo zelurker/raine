@@ -1,0 +1,139 @@
+script "Infinite Game Time"  
+run:
+    poke $410159 $5A
+    poke $410155 $00
+script "Finish this Game Now!"  
+on:
+    poke $410159 $00
+    poke $410155 $3C
+script "Never Any Injury Time"  
+run:
+    poke $41015B $00
+script "Infinite Injury Time"  
+run:
+    poke $41015B $0A
+script " "  
+script "The score cheats will only update the display when a goal is"  
+script "scored or the game ends. BTW, beware the Japan side as they"  
+script "are really dirty and the referee loves 'em! (git!)"  
+script " "  
+script "Score always 0 Team 1"  
+run:
+    poke $4139CB $00
+script "Score always 99 Team 1"  
+run:
+    poke $4139CB $63
+script "Set score = 0 Now! Team 1"  
+on:
+    poke $4139CB $00
+script "Set score = 50 Now! Team 1"  
+on:
+    poke $4139CB $32
+script "Select Score Now! Team 1" \
+ inter=0,99,1 
+change:
+    poke $4139CB (param)
+script "Always win P.K. Team 1"  
+run:
+    poke $413A29 $01
+    poke $413AA9 $00
+script "Score always = 0 Team 2"  
+run:
+    poke $413A4B $00
+script "Score always = 99 Team 2"  
+run:
+    poke $413A4B $63
+script "Set score = 0 Now! Team 2"  
+on:
+    poke $413A4B $00
+script "Set score = 50 Now! Team 2"  
+on:
+    poke $413A4B $32
+script "Select Score Now! Team 2" \
+ inter=0,99,1 
+change:
+    poke $413A4B (param)
+script "Always win P.K. Team 2"  
+run:
+    poke $413A29 $00
+    poke $413AA9 $01
+script " "  
+script "P1 Infinite Credits"  
+run:
+    poke $40E77F $09
+script "P1 Infinite Time" \
+ "comm:This is useful when you choose Super Feint, Super Dash or Super Sliding"  
+run:
+    poke $411FFE $1E
+script "P1 Infinite Units"  
+run:
+    poke $411FEF $63
+script "P1 Select Shoot" \
+ "0x00/None"\
+ "0x02/Super Shoot"\
+ "0x01/Hyper Shoot" 
+run:
+    poke $411FF7 param
+script " "  
+script "P2 Infinite Credits"  
+run:
+    poke $40E781 $09
+script "P2 Infinite Time" \
+ "comm:This is useful when you choose Super Feint, Super Dash or Super Sliding"  
+run:
+    poke $412000 $1E
+script "P2 Infinite Units"  
+run:
+    poke $411FF1 $63
+script "P2 Select Shoot" \
+ "0x00/None"\
+ "0x02/Super Shoot"\
+ "0x01/Hyper Shoot" 
+run:
+    poke $411FF9 param
+script " "  
+script "P3 Infinite Credits"  
+run:
+    poke $40E783 $09
+script "P3 Infinite Time" \
+ "comm:This is useful when you choose Super Feint, Super Dash or Super Sliding"  
+run:
+    poke $412002 $1E
+script "P3 Infinite Units"  
+run:
+    poke $411FF3 $63
+script "P3 Select Shoot" \
+ "0x00/None"\
+ "0x02/Super Shoot"\
+ "0x01/Hyper Shoot" 
+run:
+    poke $411FFA param
+script " "  
+script "P4 Infinite Credits"  
+run:
+    poke $40E785 $09
+script "P4 Infinite Time" \
+ "comm:This is useful when you choose Super Feint, Super Dash or Super Sliding"  
+run:
+    poke $412004 $1E
+script "P4 Infinite Units"  
+run:
+    poke $411FF5 $63
+script "P4 Select Shoot" \
+ "0x00/None"\
+ "0x02/Super Shoot"\
+ "0x01/Hyper Shoot" 
+run:
+    poke $411FFC param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

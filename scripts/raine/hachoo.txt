@@ -1,15 +1,12 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $F5004 $7F
-
-script "2UP Unlimited energy" always
-	poke $F5084 $7F
-
-script "1UP Maximum power" always
-	poke $F7029 $05
-
-script "2UP Maximum power" always
-	poke $F70A9 $05
+script "P1 Infinite Energy"  
+run:
+    poke $F5004 $7F
+script "P1 Power Up"  
+run:
+    poke $F7029 $05
+script "P2 Infinite Energy"  
+run:
+    poke $F5084 $7F
+script "P2 Power Up"  
+run:
+    poke $F70A9 $05

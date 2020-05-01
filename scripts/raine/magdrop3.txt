@@ -1,0 +1,178 @@
+script "No more level gain" \
+ "comm:Survival game only"  
+run:
+    poke $100626 $00
+script "Unlock Secret Characters" \
+ "comm:Wait for 2 seconds to be able to select Hanged Man, Moon, Hermit, Temperance, Tower and Fortune"  
+run:
+    dpoke $100112 $0303
+script " "  
+script "P1 Always have Quota=001" \
+ "comm:Battle game only"  
+run:
+    if (frame%60==$0)
+      poke $100611 $01
+    endif
+script "P1 Always have Quota=200" \
+ "comm:Battle game only"  
+run:
+    poke $100611 $C8
+script "P1 Select Card" \
+ "0x00/Fool"\
+ "0x01/Magician"\
+ "0x02/High Priestess"\
+ "0x03/Empress"\
+ "0x04/Emperor"\
+ "0x05/Hierophant"\
+ "0x06/Lovers"\
+ "0x07/Chariot"\
+ "0x08/Strength"\
+ "0x09/#Hermit#"\
+ "0x0A/#Fortune#"\
+ "0x0B/Justice"\
+ "0x0C/#Hanged Man#"\
+ "0x0D/Death"\
+ "0x0E/#Temperance#"\
+ "0x0F/Devil"\
+ "0x10/#Tower#"\
+ "0x11/Star"\
+ "0x12/#Moon#"\
+ "0x13/Sun"\
+ "0x14/Judgment"\
+ "0x15/World"\
+ "0x16/#Black Pierrot#"\
+ "0x17/#Strength's Father#"\
+ "0x80/Fool (CPU)"\
+ "0x81/Magician (CPU)"\
+ "0x82/High Priestess (CPU)"\
+ "0x83/Empress (CPU)"\
+ "0x84/Emperor (CPU)"\
+ "0x85/Hierophant (CPU)"\
+ "0x86/Lovers (CPU)"\
+ "0x87/Chariot (CPU)"\
+ "0x88/Strength (CPU)"\
+ "0x89/#Hermit (CPU)#"\
+ "0x8A/#Fortune (CPU)#"\
+ "0x8B/Justice (CPU)"\
+ "0x8C/#Hanged Man (CPU)#"\
+ "0x8D/Death (CPU)"\
+ "0x8E/#Temperance (CPU)#"\
+ "0x8F/Devil (CPU)"\
+ "0x90/#Tower (CPU)#"\
+ "0x91/Star (CPU)"\
+ "0x92/#Moon (CPU)#"\
+ "0x93/Sun (CPU)"\
+ "0x94/Judgment (CPU)"\
+ "0x95/World (CPU)"\
+ "0x96/#Black Pierrot (CPU)#"\
+ "0x97/#Strength's Father (CPU)#" 
+run:
+    poke $1000FA param
+script " "  
+script "P2 Always have Quota=001" \
+ "comm:Battle game only"  
+run:
+    if (frame%60==$0)
+      poke $100651 $01
+    endif
+script "P2 Always have Quota=200" \
+ "comm:Battle game only"  
+run:
+    poke $100651 $C8
+script "P2 Select Card" \
+ "0x00/Fool"\
+ "0x01/Magician"\
+ "0x02/High Priestess"\
+ "0x03/Empress"\
+ "0x04/Emperor"\
+ "0x05/Hierophant"\
+ "0x06/Lovers"\
+ "0x07/Chariot"\
+ "0x08/Strength"\
+ "0x09/#Hermit#"\
+ "0x0A/#Fortune#"\
+ "0x0B/Justice"\
+ "0x0C/#Hanged Man#"\
+ "0x0D/Death"\
+ "0x0E/#Temperance#"\
+ "0x0F/Devil"\
+ "0x10/#Tower#"\
+ "0x11/Star"\
+ "0x12/#Moon#"\
+ "0x13/Sun"\
+ "0x14/Judgment"\
+ "0x15/World"\
+ "0x16/#Black Pierrot#"\
+ "0x17/#Strength's Father#"\
+ "0x80/Fool (CPU)"\
+ "0x81/Magician (CPU)"\
+ "0x82/High Priestess (CPU)"\
+ "0x83/Empress (CPU)"\
+ "0x84/Emperor (CPU)"\
+ "0x85/Hierophant (CPU)"\
+ "0x86/Lovers (CPU)"\
+ "0x87/Chariot (CPU)"\
+ "0x88/Strength (CPU)"\
+ "0x89/#Hermit (CPU)#"\
+ "0x8A/#Fortune (CPU)#"\
+ "0x8B/Justice (CPU)"\
+ "0x8C/#Hanged Man (CPU)#"\
+ "0x8D/Death (CPU)"\
+ "0x8E/#Temperance (CPU)#"\
+ "0x8F/Devil (CPU)"\
+ "0x90/#Tower (CPU)#"\
+ "0x91/Star (CPU)"\
+ "0x92/#Moon (CPU)#"\
+ "0x93/Sun (CPU)"\
+ "0x94/Judgment (CPU)"\
+ "0x95/World (CPU)"\
+ "0x96/#Black Pierrot (CPU)#"\
+ "0x97/#Strength's Father (CPU)#" 
+run:
+    poke $1000FB param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

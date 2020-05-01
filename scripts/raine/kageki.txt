@@ -1,21 +1,59 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited energy" always
-	poke $E75C $00
-
-script "2UP Unlimited energy" always
-	poke $E7FC $00
-
-script "1UP Energy set to 0       (P)" always
-	poke $E75C $80
-
-script "2UP Energy set to 0       (P)" always
-	poke $E7FC $80
-
-script "1UP Energy set to 0       (T)"
-	poke $E75C $80
-
-script "2UP Energy set to 0       (T)"
-	poke $E7FC $80
+script "Invincibility (VS CPU Mode)"  
+on:
+    temp0=peek($720B)
+    temp1=peek($721F)
+    temp2=peek($7233)
+    temp3=peek($7247)
+    temp4=peek($725B)
+    temp5=peek($7269)
+run:
+    poke $720B $C3
+    poke $721F $C3
+    poke $7233 $C3
+    poke $7247 $C3
+    poke $725B $C3
+    poke $7269 $C3
+off:
+    poke $720B temp0
+    poke $721F temp1
+    poke $7233 temp2
+    poke $7247 temp3
+    poke $725B temp4
+    poke $7269 temp5
+script "Infinite Player Energy"  
+run:
+    poke $E75C $00
+script "Drain all Player Energy Now!"  
+on:
+    poke $E75C $80
+script "Infinite Enemy Energy"  
+run:
+    poke $E7FC $00
+script "Drain all Enemy Energy Now!"  
+on:
+    poke $E7FC $80
+script "Rapid Fire - Single"  
+run:
+    poke $E03D $00|(peek($E03D)&~10)
+    poke $E03D $00|(peek($E03D)&~20)
+script " "  
+script "P1 Select Starting Round" \
+ inter=1,9,1 
+run:
+    if (peek($E007)==$00)
+      poke $E007 (param-$1)
+    endif
+script "P1 Rapid Fire - Dual"  
+run:
+    poke $E0C0 $00|(peek($E0C0)&~10)
+    poke $E0C0 $00|(peek($E0C0)&~20)
+script "P2 Select Starting Round" \
+ inter=1,9,1 
+run:
+    if (peek($E00E)==$00)
+      poke $E00E (param-$1)
+    endif
+script "P2 Rapid Fire - Dual"  
+run:
+    poke $E0C1 $00|(peek($E0C1)&~10)
+    poke $E0C1 $00|(peek($E0C1)&~20)

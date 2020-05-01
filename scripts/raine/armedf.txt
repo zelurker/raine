@@ -1,48 +1,57 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $61106 $03
-
-script "2UP Unlimited lives" always
-	poke $61126 $03
-
-script "*UP Unlimited polymorphes" always
-	poke $63C52 $03
-
-script "*UP Unlimited polymorph time" always
-	dpoke $63C47 $01F8
-
-script "*UP No more morph time"
-	dpoke $63C46 $0001
-
-script "*UP Maximum speed" always
-	poke $63970 $04
-
-script "*UP Maximum fire power" always
-	poke $63C4A $02
-
-script "*UP Extra weapon - Laser  (P)" always
-	poke $63C48 $00
-
-script "*UP Extra weapon - Bomb   (P)" always
-	poke $63C48 $02
-
-script "*UP Extra weapon - Cutter (P)" always
-	poke $63C48 $04
-
-script "*UP Extra weapon - Homing (P)" always
-	poke $63C48 $06
-
-script "*UP Extra weapon - Laser  (T)"
-	poke $63C48 $00
-
-script "*UP Extra weapon - Bomb   (T)"
-	poke $63C48 $02
-
-script "*UP Extra weapon - Cutter (T)"
-	poke $63C48 $04
-
-script "*UP Extra weapon - Homing (T)"
-	poke $63C48 $06
+script "Infinite Credits"  
+run:
+    poke $611A6 $09
+script "Invincibility"  
+on:
+    temp0=dpeek($06FBE)
+    temp1=dpeek($09A14)
+run:
+    dpoke $06FBE $4E75
+    dpoke $09A14 $6066
+off:
+    dpoke $06FBE temp0
+    dpoke $09A14 temp1
+script "Infinite polymorphs" \
+ "comm:Get the F first"  
+run:
+    poke $63C52 $03
+script "Infinite polymorph time"  
+run:
+    poke $63C47 $F8
+script "No more morph time"  
+on:
+    poke $63C46 $00
+    poke $63C47 $01
+script "Maximum Speed"  
+run:
+    poke $63970 $04
+script "Maximum Fire Power"  
+run:
+    poke $63C4A $02
+script "Rapid Fire - Normal" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    lpoke $61001 $00000000|(lpeek($61001)&~10001000)
+script "Rapid Fire - Special" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    lpoke $61001 $00000000|(lpeek($61001)&~10001000)
+    poke $61108 $00
+    poke $61128 $00
+    poke $61529 $00
+    poke $61569 $00
+script "Select Extra Weapon" \
+ "comm:These extra weapon cheats require you to have any extra weapon first!" \
+ "0x00/Laser"\
+ "0x02/Bomb"\
+ "0x04/Cutter"\
+ "0x06/Homing" 
+run:
+    poke $63C48 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $61106 $03
+script "P2 Infinite Lives"  
+run:
+    poke $61126 $03

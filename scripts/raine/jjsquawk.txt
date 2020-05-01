@@ -1,30 +1,52 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $2014B0 $FF
-
-script "1UP Invulnerability OFF"
-	poke $2014B0 $01
-
-script "2UP Invulnerability ON" always
-	poke $201530 $FF
-
-script "2UP Invulnerability OFF"
-	poke $201530 $01
-
-script "1UP Unlimited lives" always
-	poke $20561C $03
-
-script "2UP Unlimited lives" always
-	poke $20561D $03
-
-script "1UP Unlimited energy" always
-	poke $205724 $05
-
-script "2UP Unlimited energy" always
-	poke $205725 $05
-
-script "*UP Unlimited time" always
-	poke $200032 $F0
+script "Infinite Credits"  
+run:
+    poke $200043 $09
+script "Infinite Time"  
+run:
+    poke $200032 $EF
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $20561C $05
+script "P1 Infinite Energy"  
+run:
+    poke $205724 $03
+script "P1 Invincibility"  
+run:
+    poke $2014B0 $02
+script "P1 Select Weapon" \
+ "0x00/Strawberry"\
+ "0x01/Pumpkin"\
+ "0x02/Screw"\
+ "0x03/Little Bird + Screw"\
+ "0x04/3 Shot"\
+ "0x05/7 Shot"\
+ "0x06/Spring"\
+ "0x07/Cog"\
+ "0x0A/Bomber"\
+ "0x0B/Multi-Way" 
+run:
+    poke $2014AD param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $20561D $05
+script "P2 Infinite Energy"  
+run:
+    poke $205725 $03
+script "P2 Invincibility"  
+run:
+    poke $201530 $02
+script "P2 Select Weapon" \
+ "0x00/Strawberry"\
+ "0x01/Pumpkin"\
+ "0x02/Screw"\
+ "0x03/Little Bird + Screw"\
+ "0x04/3 Shot"\
+ "0x05/7 Shot"\
+ "0x06/Spring"\
+ "0x07/Cog"\
+ "0x0A/Bomber"\
+ "0x0B/Multi-Way" 
+run:
+    poke $20152D param

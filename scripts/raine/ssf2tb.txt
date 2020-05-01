@@ -1,0 +1,578 @@
+script "Infinite Time"  
+run:
+    if peek($FF8CD2)==$00&&peek($FF8CCE)>01
+      dpoke $FF8CCE $9928
+      dpoke $FFE0D2 $253C
+    endif
+script "Finish this Round Now!"  
+on:
+    dpoke $FF8CCE $0101
+script "Disable projectile impact slowdown"  
+run:
+    if peek($FF83F8)!=$FF&&peek($FF87F8)!=$FF
+      poke $FF82F2 $00
+    endif
+script "Always in Turbo Mode" \
+ "comm:Characters move faster"  
+run:
+    poke $FF82ED $01
+script "Select Starting Stage" \
+ "0x0000/Stage 1"\
+ "0x0100/Stage 2"\
+ "0x0200/Stage 3"\
+ "0x0300/Bonus stage: car"\
+ "0x0301/Stage 4"\
+ "0x0401/Stage 5"\
+ "0x0501/Stage 6"\
+ "0x0601/Bonus stage: barrels"\
+ "0x0602/Stage 7"\
+ "0x0702/Stage 8"\
+ "0x0802/Stage 9 (Boxer)"\
+ "0x0902/Bonus stage: drums"\
+ "0x0903/Stage 10 (Claw)"\
+ "0x0A03/Stage 11 (Sagat)"\
+ "0x0B03/Stage 12 (Dictator)" 
+run:
+    if (dpeek($FF8C01)==$0000)||(peek($FF8BD1)=$00)||(dpeek($FF8C01)==param)
+      poke $FF8BD1 param/100
+      dpoke $FF8C01 param
+    endif
+script "Select Backdrop" \
+ "0x00/Japan (Castle)"\
+ "0x01/Japan (Bath House)"\
+ "0x02/Brazil"\
+ "0x03/USA (Air Base)"\
+ "0x04/USA (Pier)"\
+ "0x05/China"\
+ "0x06/USSR"\
+ "0x07/India (Dhalsim)"\
+ "0x08/USA (Las Vegas)"\
+ "0x09/Thailand (Statue)"\
+ "0x0A/Spain"\
+ "0x0B/Thailand (Temple)"\
+ "0x0C/England"\
+ "0x0D/Mexico"\
+ "0x0E/Hong Kong"\
+ "0x0F/Jamaica" 
+run:
+    poke $FFE08B param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    if dpeek($FF83F8)<60&&(peek($FF83D1)&10)==$00&&peek($FF8BE4)==$0
+      dpoke $FF83F8 $90
+      dpoke $FF858A $90
+    endif
+script "P1 Dizzy Status" \
+ "0x00/Never get dizzied"\
+ "0x40/Always get dizzied" 
+run:
+    dpoke $FF842A param
+    dpoke $FF842C param
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF83F9 $00
+script "P1 Finish round to win match"  
+run:
+    poke $FF875E $02
+script "P1 Rounds won always set = 0"  
+run:
+    poke $FF875E $00
+script "P1 Rounds won set = 0 Now!"  
+on:
+    poke $FF875E $00
+script "P1 Invincibility"  
+run:
+    poke $FF858D $01
+script "P1 Allow special moves during jump"  
+run:
+    poke $FF854F $00
+script "P1 Hadou Ken motion Cancel" \
+ "comm:Buggy"  
+run:
+    poke $FF83EC $01
+script "P1 No limit next shot" \
+ "comm:Buggy"  
+run:
+    poke $FF85A2 $00
+    poke $FF85A3 $00
+script "P1 Set Boxer Turnpunch level" \
+ "0001/One"\
+ "0121/Two"\
+ "0241/Three"\
+ "0481/Four"\
+ "0961/Five"\
+ "1441/Six"\
+ "1921/Seven"\
+ "2401/Final" 
+run:
+    if peek(FF83CE+$391)==$0A
+      dpoke (FF83CE+$B6) param
+      dpoke (FF83CE+$B8) param
+    endif
+script "P1 Select Character" \
+ "0x00/Ryu"\
+ "0x01/Edmund Honda"\
+ "0x02/Blanka"\
+ "0x03/Guile"\
+ "0x04/Ken Masters"\
+ "0x05/Chun-Li"\
+ "0x06/Zangief"\
+ "0x07/Dhalsim"\
+ "0x08/Balrog"\
+ "0x09/Sagat"\
+ "0x0A/Vega"\
+ "0x0B/M. Bison"\
+ "0x0C/Cammy"\
+ "0x0D/Thunder Hawk"\
+ "0x0E/Fei Long"\
+ "0x0F/Dee Jay" 
+run:
+    poke $FF875F param
+script "P1 Select Colour" \
+ "0x00/LP button"\
+ "0x01/MP button"\
+ "0x02/HP button"\
+ "0x03/LK button"\
+ "0x04/MK button"\
+ "0x05/HK button"\
+ "0x06/Start button"\
+ "0x07/Hold any P/K button" 
+run:
+    poke $FF877F param
+script "P1 Easy charge moves"  
+run:
+    temp0=peek(FF83CE+$391)
+    if peek($FF83CE)==$0
+      temp0=$FF
+    endif
+    if temp0==$1
+      poke (FF83CE+$81) $01
+    endif
+    if temp0==$1&&peek(FF83CE+$AA)<=02
+      poke (FF83CE+$AB) $01
+    endif
+    if temp0==$2
+      poke (FF83CE+$81) $01
+      poke (FF83CE+$B4) $01
+      poke (FF83CE+$BA) $01
+    endif
+    if temp0==$3
+      poke (FF83CE+$81) $01
+      poke (FF83CE+$87) $01
+    endif
+    if temp0==$5
+      poke (FF83CE+$81) $01
+    endif
+    if temp0==$5&&peek(FF83CE+$B0)<=02
+      poke (FF83CE+$B1) $01
+    endif
+    if temp0==$8
+      poke (FF83CE+$81) $01
+      poke (FF83CE+$89) $01
+      poke (FF83CE+$92) $01
+    endif
+    if temp0==$8&&peek(FF83CE+$AC)<=02
+      poke (FF83CE+$AD) $01
+    endif
+    if temp0==$A
+      poke (FF83CE+$81) $01
+      poke (FF83CE+$89) $01
+      poke (FF83CE+$C1) $01
+      dpoke (FF83CE+$B2) $0101
+    endif
+    if temp0==$B&&peek(FF83CE+$88)<=02
+      poke (FF83CE+$89) $01
+    endif
+    if temp0==$B&&peek(FF83CE+$8C)<=02
+      poke (FF83CE+$8D) $01
+    endif
+    if temp0==$B&&peek(FF83CE+$90)<=02
+      poke (FF83CE+$91) $01
+    endif
+    if temp0==$F&&peek(FF83CE+$92)<=02
+      poke (FF83CE+$93) $01
+    endif
+    if temp0==$F&&peek(FF83CE+$96)<=02
+      poke (FF83CE+$97) $01
+    endif
+    if temp0==$F&&peek(FF83CE+$A6)<=02
+      poke (FF83CE+$A7) $01
+    endif
+script "P1 Easy QCF + QCB moves"  
+run:
+    temp0=peek(FF83CE+$391)
+    if peek($FF83CE)==$0
+      temp0=$FF
+    endif
+    if (temp0==$0||temp0==$4)
+      poke (FF83CE+$90) $04
+      poke (FF83CE+$94) $04
+    endif
+    if temp0==$7
+      poke (FF83CE+$80) $04
+    endif
+    if temp0==$9
+      poke (FF83CE+$88) $04
+      poke (FF83CE+$8C) $04
+    endif
+    if temp0==$C
+      poke (FF83CE+$96) $04
+    endif
+    if temp0==$E
+      poke (FF83CE+$90) $04
+      poke (FF83CE+$A0) $04
+    endif
+script "P1 Easy F,D,DF + B,D,DB moves"  
+run:
+    temp0=peek(FF83CE+$391)
+    if peek($FF83CE)==$0
+      temp0=$FF
+    endif
+    if (temp0==$0||temp0==$4)
+      poke (FF83CE+$98) $04
+    endif
+    if temp0==$9
+      poke (FF83CE+$80) $04
+    endif
+    if temp0==$C
+      poke (FF83CE+$92) $04
+    endif
+    if temp0==$D
+      poke (FF83CE+$92) $04
+    endif
+    if temp0==$E
+      poke (FF83CE+$94) $04
+    endif
+    if temp0==$7&&(dpeek(FF83CE+$392)&2)>0
+      dpoke (FF83CE+$88) $0608
+      poke (FF83CE+$8D) $05
+    endif
+    if temp0==$7&&(dpeek(FF83CE+$392)&1)>0
+      dpoke (FF83CE+$88) $0608
+      poke (FF83CE+$8D) $06
+    endif
+script "P1 Easy 360, half-circle + tiger-knee moves"  
+run:
+    temp0=peek(FF83CE+$391)
+    if peek($FF83CE)==$0
+      temp0=$FF
+    endif
+    if temp0==$0
+      poke (FF83CE+$E0) $08
+    endif
+    if temp0==$7
+      poke (FF83CE+$84) $08
+    endif
+    if temp0==$C
+      poke (FF83CE+$A2) $04
+    endif
+    if temp0==$6&&peek(FF83CE+$12)!=$0
+      lpoke (FF83CE+$80) $06060800
+      lpoke (FF83CE+$9B) $06040800
+    endif
+    if temp0==$6&&peek(FF83CE+$12)==$0
+      lpoke (FF83CE+$80) $06070800
+      lpoke (FF83CE+$9B) $06050800
+    endif
+    if temp0==$D&&peek(FF83CE+$12)!=$0
+      lpoke (FF83CE+$99) $04060800
+    endif
+    if temp0==$D&&peek(FF83CE+$12)==$0
+      lpoke (FF83CE+$99) $05060800
+    endif
+    if temp0==$9
+      poke (FF83CE+$84) $04
+    endif
+script "P1 Easy button tap moves"  
+run:
+    temp0=peek(FF83CE+$391)
+    if peek($FF83CE)==$0
+      temp0=$FF
+    endif
+    if temp0==$1&&peek(FF83CE+$9A)<2
+      poke (FF83CE+$9A) $2
+    endif
+    if temp0==$1&&peek(FF83CE+$9C)<2
+      poke (FF83CE+$9C) $2
+    endif
+    if temp0==$1&&peek(FF83CE+$9E)<2
+      poke (FF83CE+$9E) $2
+    endif
+    if (temp0==$2||temp0==$5)&&peek(FF83CE+$9A)<3
+      poke (FF83CE+$9A) $3
+    endif
+    if (temp0==$2||temp0==$5)&&peek(FF83CE+$9C)<3
+      poke (FF83CE+$9C) $3
+    endif
+    if (temp0==$2||temp0==$5)&&peek(FF83CE+$9E)<3
+      poke (FF83CE+$9E) $3
+    endif
+script " "  
+script "P2 Infinite Energy"  
+run:
+    if dpeek($FF87F8)<60&&(peek($FF87D1)&10)==$00&&peek($FF8BE4)==$0
+      dpoke $FF87F8 $90
+      dpoke $FF898A $90
+    endif
+script "P2 Dizzy Status" \
+ "0x00/Never get dizzied"\
+ "0x40/Always get dizzied" 
+run:
+    dpoke $FF882A param
+    dpoke $FF882C param
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF87F9 $00
+script "P2 Finish round to win match"  
+run:
+    poke $FF8B5E $02
+script "P2 Rounds won always set = 0"  
+run:
+    poke $FF8B5E $00
+script "P2 Rounds won set = 0 Now!"  
+on:
+    poke $FF8B5E $00
+script "P2 Invincibility"  
+run:
+    poke $FF898D $01
+script "P2 Allow special moves during jump"  
+run:
+    poke $FF894F $00
+script "P2 Hadou Ken motion Cancel" \
+ "comm:Buggy"  
+run:
+    poke $FF87EC $01
+script "P2 No limit next shot" \
+ "comm:Buggy"  
+run:
+    poke $FF89A2 $00
+    poke $FF89A3 $00
+script "P2 Set Boxer Turnpunch level" \
+ "0001/One"\
+ "0121/Two"\
+ "0241/Three"\
+ "0481/Four"\
+ "0961/Five"\
+ "1441/Six"\
+ "1921/Seven"\
+ "2401/Final" 
+run:
+    if peek(FF87CE+$391)==$0A
+      dpoke (FF87CE+$B6) param
+      dpoke (FF87CE+$B8) param
+    endif
+script "P2 Select Character" \
+ "0x00/Ryu"\
+ "0x01/Edmund Honda"\
+ "0x02/Blanka"\
+ "0x03/Guile"\
+ "0x04/Ken Masters"\
+ "0x05/Chun-Li"\
+ "0x06/Zangief"\
+ "0x07/Dhalsim"\
+ "0x08/Balrog"\
+ "0x09/Sagat"\
+ "0x0A/Vega"\
+ "0x0B/M. Bison"\
+ "0x0C/Cammy"\
+ "0x0D/Thunder Hawk"\
+ "0x0E/Fei Long"\
+ "0x0F/Dee Jay" 
+run:
+    poke $FF8B5F param
+script "P2 Select Colour" \
+ "0x00/LP button"\
+ "0x01/MP button"\
+ "0x02/HP button"\
+ "0x03/LK button"\
+ "0x04/MK button"\
+ "0x05/HK button"\
+ "0x06/Start button"\
+ "0x07/Hold any P/K button" 
+run:
+    poke $FF8B7F param
+script "P2 Easy charge moves"  
+run:
+    temp0=peek(FF87CE+$391)
+    if peek($FF87CE)==$0
+      temp0=$FF
+    endif
+    if temp0==$1
+      poke (FF87CE+$81) $01
+    endif
+    if temp0==$1&&peek(FF87CE+$AA)<=02
+      poke (FF87CE+$AB) $01
+    endif
+    if temp0==$2
+      poke (FF87CE+$81) $01
+      poke (FF87CE+$B4) $01
+      poke (FF87CE+$BA) $01
+    endif
+    if temp0==$3
+      poke (FF87CE+$81) $01
+      poke (FF87CE+$87) $01
+    endif
+    if temp0==$5
+      poke (FF87CE+$81) $01
+    endif
+    if temp0==$5&&peek(FF87CE+$B0)<=02
+      poke (FF87CE+$B1) $01
+    endif
+    if temp0==$8
+      poke (FF87CE+$81) $01
+      poke (FF87CE+$89) $01
+      poke (FF87CE+$92) $01
+    endif
+    if temp0==$8&&peek(FF87CE+$AC)<=02
+      poke (FF87CE+$AD) $01
+    endif
+    if temp0==$A
+      poke (FF87CE+$81) $01
+      poke (FF87CE+$89) $01
+      poke (FF87CE+$C1) $01
+      dpoke (FF87CE+$B2) $0101
+    endif
+    if temp0==$B&&peek(FF87CE+$88)<=02
+      poke (FF87CE+$89) $01
+    endif
+    if temp0==$B&&peek(FF87CE+$8C)<=02
+      poke (FF87CE+$8D) $01
+    endif
+    if temp0==$B&&peek(FF87CE+$90)<=02
+      poke (FF87CE+$91) $01
+    endif
+    if temp0==$F&&peek(FF87CE+$92)<=02
+      poke (FF87CE+$93) $01
+    endif
+    if temp0==$F&&peek(FF87CE+$96)<=02
+      poke (FF87CE+$97) $01
+    endif
+    if temp0==$F&&peek(FF87CE+$A6)<=02
+      poke (FF87CE+$A7) $01
+    endif
+script "P2 Easy QCF + QCB moves"  
+run:
+    temp0=peek(FF87CE+$391)
+    if peek($FF87CE)==$0
+      temp0=$FF
+    endif
+    if (temp0==$0||temp0==$4)
+      poke (FF87CE+$90) $04
+      poke (FF87CE+$94) $04
+    endif
+    if temp0==$7
+      poke (FF87CE+$80) $04
+    endif
+    if temp0==$9
+      poke (FF87CE+$88) $04
+      poke (FF87CE+$8C) $04
+    endif
+    if temp0==$C
+      poke (FF87CE+$96) $04
+    endif
+    if temp0==$E
+      poke (FF87CE+$90) $04
+      poke (FF87CE+$A0) $04
+    endif
+script "P2 Easy F,D,DF + B,D,DB moves"  
+run:
+    temp0=peek(FF87CE+$391)
+    if peek($FF87CE)==$0
+      temp0=$FF
+    endif
+    if (temp0==$0||temp0==$4)
+      poke (FF87CE+$98) $04
+    endif
+    if temp0==$9
+      poke (FF87CE+$80) $04
+    endif
+    if temp0==$C
+      poke (FF87CE+$92) $04
+    endif
+    if temp0==$D
+      poke (FF87CE+$92) $04
+    endif
+    if temp0==$E
+      poke (FF87CE+$94) $04
+    endif
+    if temp0==$7&&(dpeek(FF87CE+$392)&2)>0
+      dpoke (FF87CE+$88) $0608
+      poke (FF87CE+$8D) $05
+    endif
+    if temp0==$7&&(dpeek(FF87CE+$392)&1)>0
+      dpoke (FF87CE+$88) $0608
+      poke (FF87CE+$8D) $06
+    endif
+script "P2 Easy 360, half-circle + tiger-knee moves"  
+run:
+    temp0=peek(FF87CE+$391)
+    if peek($FF87CE)==$0
+      temp0=$FF
+    endif
+    if temp0==$0
+      poke (FF87CE+$E0) $08
+    endif
+    if temp0==$7
+      poke (FF87CE+$84) $08
+    endif
+    if temp0==$C
+      poke (FF87CE+$A2) $04
+    endif
+    if temp0==$6&&peek(FF87CE+$12)!=$0
+      lpoke (FF87CE+$80) $06060800
+      lpoke (FF87CE+$9B) $06040800
+    endif
+    if temp0==$6&&peek(FF87CE+$12)==$0
+      lpoke (FF87CE+$80) $06070800
+      lpoke (FF87CE+$9B) $06050800
+    endif
+    if temp0==$D&&peek(FF87CE+$12)!=$0
+      lpoke (FF87CE+$99) $04060800
+    endif
+    if temp0==$D&&peek(FF87CE+$12)==$0
+      lpoke (FF87CE+$99) $05060800
+    endif
+    if temp0==$9
+      poke (FF87CE+$84) $04
+    endif
+script "P2 Easy button tap moves"  
+run:
+    temp0=peek(FF87CE+$391)
+    if peek($FF87CE)==$0
+      temp0=$FF
+    endif
+    if temp0==$1&&peek(FF87CE+$9A)<2
+      poke (FF87CE+$9A) $2
+    endif
+    if temp0==$1&&peek(FF87CE+$9C)<2
+      poke (FF87CE+$9C) $2
+    endif
+    if temp0==$1&&peek(FF87CE+$9E)<2
+      poke (FF87CE+$9E) $2
+    endif
+    if (temp0==$2||temp0==$5)&&peek(FF87CE+$9A)<3
+      poke (FF87CE+$9A) $3
+    endif
+    if (temp0==$2||temp0==$5)&&peek(FF87CE+$9C)<3
+      poke (FF87CE+$9C) $3
+    endif
+    if (temp0==$2||temp0==$5)&&peek(FF87CE+$9E)<3
+      poke (FF87CE+$9E) $3
+    endif
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/ETC"\
+ "0x06/Hispanic"\
+ "0x08/Asia"\
+ "0x0A/Asia TW" 
+run:
+    poke $FF82CF param

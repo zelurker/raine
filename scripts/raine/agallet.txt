@@ -1,33 +1,67 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $100D71 $78
-
-script "1UP Invulnerability OFF"
-	poke $100D71 $01
-
-script "2UP Invulnerability ON" always
-	poke $100E31 $78
-
-script "2UP Invulnerability OFF"
-	poke $100E31 $01
-
-script "1UP Unlimited lives" always
-	poke $1002ED $03
-
-script "2UP Unlimited lives" always
-	poke $1002EF $03
-
-script "1UP Unlimited bombs" always
-	poke $100D73 $05
-
-script "2UP Unlimited bombs" always
-	poke $100E33 $05
-
-script "1UP Maximum fire power" always
-	poke $100D7C $1E
-
-script "2UP Maximum fire power" always
-	poke $100E3C $1E
+script "Infinite Credits"  
+run:
+    poke $1001CD $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1002ED $07
+script "P1 Infinite Bombs"  
+run:
+    poke $100D73 $05
+script "P1 Invincibility"  
+run:
+    poke $100D71 $01
+script "P1 Maximum Fire Power"  
+run:
+    poke $100D7C $1D
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1002EF $07
+script "P2 Infinite Bombs"  
+run:
+    poke $100E33 $05
+script "P2 Invincibility"  
+run:
+    poke $100E31 $01
+script "P2 Maximum Fire Power"  
+run:
+    poke $100E3C $1D
+script " "  
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x01/USA"\
+ "0x02/Euro"\
+ "0x03/Hong Kong"\
+ "0x04/Taiwan"\
+ "0x05/Korea" 
+run:
+    poke $1000DF param
+script "Enable Level Select" \
+ "comm:Level select will appear after inserting a coin and pressing start"  
+run:
+    dpoke $100094 $0001
+off:
+    dpoke $100094 $0000
+script "Enable Invincibility"  
+run:
+    dpoke $100092 $0001
+off:
+    dpoke $100092 $0000
+script "Enable Pause" \
+ "comm:Pause game with P2 Start, unpause with P1 Start"  
+run:
+    dpoke $100090 $0001
+off:
+    dpoke $100090 $0000
+script "Enable Reset" \
+ "comm:Reset game by pressing P2 A+B+C (This appears to be BROKEN! Game resets, but then locks up)"  
+run:
+    dpoke $10008E $0001
+off:
+    dpoke $10008E $0000
+script "Enable Country/Region Select Menu" \
+ "comm:While in the DIP-SW menu in Test Mode, highlight Factory Settings, hold P1 Right and press P1 Button 2"  
+run:
+    dpoke $109722 $0010

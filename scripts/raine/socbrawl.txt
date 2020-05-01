@@ -1,0 +1,122 @@
+script "Infinite Time"  
+run:
+    poke $10BDB9 $59
+    poke $10BDB8 $99
+script "Finish this Game Now!"  
+on:
+    poke $10BDB9 $00
+    poke $10BDB8 $00
+script " "  
+script "P1 Always have Maximum Energy"  
+run:
+    poke $10B3A8 $60
+script "P1 Always have Minimum Energy"  
+run:
+    poke $10B3A8 $00
+script "P1 Score always 0"  
+run:
+    poke $10B3A2 $00
+script "P1 Score always 99"  
+run:
+    poke $10B3A2 $63
+script "P1 Set score = 0 Now!"  
+on:
+    poke $10B3A2 $00
+script "P1 Set score = 99 Now!"  
+on:
+    poke $10B3A2 $63
+script "P1 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $10B3A2 (param)
+script "P1 Always win Penalty Shootout"  
+run:
+    poke $10D49F $03
+    poke $10D4A1 $00
+script "P1 Infinite Penalty Kicks Left" \
+ "comm:Lets you get some serious practise in if you enable it with the Never score a penalty kick cheats"  
+run:
+    poke $10D4A3 $02
+script "P1 Never score a Penalty Kick"  
+run:
+    poke $10D49F $00
+script " "  
+script "P2 Always have Maximum Energy"  
+run:
+    poke $10B3B0 $60
+script "P2 Always have Minimum Energy"  
+run:
+    poke $10B3B0 $00
+script "P2 Score always = 0"  
+run:
+    poke $10B3A4 $00
+script "P2 Score always = 99"  
+run:
+    poke $10B3A4 $63
+script "P2 Set score = 0 Now!"  
+on:
+    poke $10B3A4 $00
+script "P2 Set score = 99 Now!"  
+on:
+    poke $10B3A4 $63
+script "P2 Select Score Now!" \
+ inter=0,99,1 
+change:
+    poke $10B3A4 (param)
+script "P2 Always win Penalty Shootout"  
+run:
+    poke $10D49F $00
+    poke $10D4A1 $03
+script "P2 Infinite Penalty Kicks Left" \
+ "comm:Lets you get some serious practise in if you enable it with the Never score a penalty kick cheats"  
+run:
+    poke $10D4A5 $02
+script "P2 Never score a Penalty Kick"  
+run:
+    poke $10D4A1 $00
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,147 +1,53 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $C067 $10
-
-script "1UP Invulnerability OFF"
-	poke $C067 $00
-
-script "2UP Invulnerability ON" always
-	poke $C06A $10
-
-script "2UP Invulnerability OFF"
-	poke $C06A $00
-
-script "1UP Unlimited lives" always
-	poke $C303 $03
-
-script "2UP Unlimited lives" always
-	poke $C343 $03
-
-script "1UP Unlimited POWs" always
-	poke $C302 $01
-
-script "2UP Unlimited POWs" always
-	poke $C342 $01
-
-script "1UP POW - Purple 3-way    (P)" always
-	poke $C8E9 $00
-
-script "1UP POW - Red flame       (P)" always
-	poke $C8E9 $04
-
-script "1UP POW - Green star      (P)" always
-	poke $C8E9 $08
-
-script "1UP POW - Blue wind       (P)" always
-	poke $C8E9 $0C
-
-script "1UP POW - Green missiles  (P)" always
-	poke $C8E9 $10
-
-script "1UP POW - Extra life      (P)" always
-	poke $C8E9 $14
-
-script "1UP POW - Speed up        (P)" always
-	poke $C8E9 $18
-
-script "1UP POW - 20000 points    (P)" always
-	poke $C8E9 $1C
-
-script "1UP POW - 50000 points    (P)" always
-	poke $C8E9 $20
-
-script "1UP POW - 100000 points   (P)" always
-	poke $C8E9 $24
-
-script "2UP POW - Purple 3-way    (P)" always
-	poke $C871 $00
-
-script "2UP POW - Red flame       (P)" always
-	poke $C871 $04
-
-script "2UP POW - Green star      (P)" always
-	poke $C871 $08
-
-script "2UP POW - Blue wind       (P)" always
-	poke $C871 $0C
-
-script "2UP POW - Green missiles  (P)" always
-	poke $C871 $10
-
-script "2UP POW - Extra life      (P)" always
-	poke $C871 $14
-
-script "2UP POW - Speed up        (P)" always
-	poke $C871 $18
-
-script "2UP POW - 20000 points    (P)" always
-	poke $C871 $1C
-
-script "2UP POW - 50000 points    (P)" always
-	poke $C871 $20
-
-script "2UP POW - 100000 points   (P)" always
-	poke $C871 $24
-
-script "1UP POW - Purple 3-way    (T)"
-	poke $C8E9 $00
-
-script "1UP POW - Red flame       (T)"
-	poke $C8E9 $04
-
-script "1UP POW - Green star      (T)"
-	poke $C8E9 $08
-
-script "1UP POW - Blue wind       (T)"
-	poke $C8E9 $0C
-
-script "1UP POW - Green missiles  (T)"
-	poke $C8E9 $10
-
-script "1UP POW - Extra life      (T)"
-	poke $C8E9 $14
-
-script "1UP POW - Speed up        (T)"
-	poke $C8E9 $18
-
-script "1UP POW - 20000 points    (T)"
-	poke $C8E9 $1C
-
-script "1UP POW - 50000 points    (T)"
-	poke $C8E9 $20
-
-script "1UP POW - 100000 points   (T)"
-	poke $C8E9 $24
-
-script "2UP POW - Purple 3-way    (T)"
-	poke $C871 $00
-
-script "2UP POW - Red flame       (T)"
-	poke $C871 $04
-
-script "2UP POW - Green star      (T)"
-	poke $C871 $08
-
-script "2UP POW - Blue wind       (T)"
-	poke $C871 $0C
-
-script "2UP POW - Green missiles  (T)"
-	poke $C871 $10
-
-script "2UP POW - Extra life      (T)"
-	poke $C871 $14
-
-script "2UP POW - Speed up        (T)"
-	poke $C871 $18
-
-script "2UP POW - 20000 points    (T)"
-	poke $C871 $1C
-
-script "2UP POW - 50000 points    (T)"
-	poke $C871 $20
-
-script "2UP POW - 100000 points   (T)"
-	poke $C871 $24
+script "P1 Infinite Lives"  
+run:
+    poke $C303 $0A
+script "P1 Invincibility"  
+run:
+    poke $C067 $10|(peek($C067)&~10)
+    poke $C300 $FD
+script "P1 Rapid Fire"  
+run:
+    poke $C016 $00
+script "P1 Infinite POWs"  
+run:
+    poke $C302 $01
+script "P1 Select Perm. POW worth" \
+ "0x00/3-way"\
+ "0x04/Flame"\
+ "0x08/Stars"\
+ "0x0C/Blue Wind"\
+ "0x10/Missiles"\
+ "0x14/Extra Life"\
+ "0x18/Speed Up"\
+ "0x1C/20000 Pts"\
+ "0x20/50000 Pts"\
+ "0x24/100000 Pts" 
+run:
+    poke $C8E9 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $C343 $0A
+script "P2 Invincibility"  
+run:
+    poke $C06A $10|(peek($C06A)&~10)
+    poke $C340 $FD
+script "P2 Rapid Fire"  
+run:
+    poke $C01F $00
+script "P2 Infinite POWs"  
+run:
+    poke $C342 $01
+script "P2 Select Perm. POW worth" \
+ "0x00/3-way"\
+ "0x04/Flame"\
+ "0x08/Stars"\
+ "0x0C/Blue Wind"\
+ "0x10/Missiles"\
+ "0x14/Extra Life"\
+ "0x18/Speed Up"\
+ "0x1C/20000 Pts"\
+ "0x20/50000 Pts"\
+ "0x24/100000 Pts" 
+run:
+    poke $C871 param

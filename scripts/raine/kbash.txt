@@ -1,18 +1,82 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $1001D5 $03
-
-script "2UP Unlimited lives" always
-	poke $10020D $03
-
-script "1UP Unlimited energy" always
-	poke $10151C $70
-
-script "2UP Unlimited energy" always
-	poke $1015C4 $70
-
-script "*UP Unlimited time       (OFF)" always
-	poke $10023D $99
+script " "  
+script "A lot of these cheats need"  
+script "to be deactivated at the"  
+script "end of the round. Use F6 to"  
+script "disable then F6 to reenable"  
+script "when the next round starts"  
+script " "  
+script "Infinite Credits"  
+run:
+    poke $100023 $09
+script "Infinite Time"  
+run:
+    poke $10023D $99
+script "Invincibility"  
+on:
+    temp0=peek($003811)
+    temp1=peek($00A801)
+    temp2=peek($017232)
+    temp3=peek($018EDE)
+    temp4=peek($01E586)
+    temp5=dpeek($0210F8)
+run:
+    poke $003811 $08
+    poke $00A801 $02
+    poke $017232 $60
+    poke $018EDE $60
+    poke $01E586 $60
+    dpoke $0210F8 $4E75
+off:
+    poke $003811 temp0
+    poke $00A801 temp1
+    poke $017232 temp2
+    poke $018EDE temp3
+    poke $01E586 temp4
+    dpoke $0210F8 temp5
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1001D5 $09
+script "P1 Infinite Energy"  
+run:
+    poke $10151C $70
+script "P1 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $100015 $00|(peek($100015)&~10)
+    poke $101527 $00|(peek($101527)&~10)
+script "P1 Get 153 Pts Sub Game"  
+on:
+    poke $101659 $99
+script "P1 Get 0 Pts Sub Game"  
+on:
+    poke $101659 $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10020D $09
+script "P2 Infinite Energy"  
+run:
+    poke $1015C4 $70
+script "P2 Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $100019 $00|(peek($100019)&~10)
+    poke $1015CF $00|(peek($1015CF)&~10)
+script "P2 Get 153 Pts Sub Game"  
+on:
+    poke $101701 $99
+script "P2 Get 0 Pts Sub Game"  
+on:
+    poke $101701 $00
+script " "  
+script "Skip RAM/ROM Check"  
+on:
+    temp0=dpeek($0003F0)
+    temp1=dpeek($0004B6)
+run:
+    dpoke $0003F0 $6062
+    dpoke $0004B6 $4E75
+off:
+    dpoke $0003F0 temp0
+    dpoke $0004B6 temp1

@@ -1,41 +1,33 @@
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $60826F $63
-
-script "1UP Unlimited energy" always
-	poke $605124 $68
-
-script "2UP Unlimited energy" always
-	poke $605190 $68
-
-script "1UP Energy set to 0       (P)" always
-	poke $605124 $00
-
-script "2UP Energy set to 0       (P)" always
-	poke $605190 $00
-
-script "1UP Energy set to 0       (T)"
-	poke $605124 $00
-
-script "2UP Energy set to 0       (T)"
-	poke $605190 $00
-
-script "1UP End round to win match" always
-	poke $602750 $02
-
-script "2UP End round to win match" always
-	poke $602751 $02
-
-script "1UP Rounds won set to 0   (P)" always
-	poke $602750 $00
-
-script "2UP Rounds won set to 0   (P)" always
-	poke $602751 $00
-
-script "1UP Rounds won set to 0   (T)"
-	poke $602750 $00
-
-script "2UP Rounds won set to 0   (T)"
-	poke $602751 $00
+script "Infinite Time"  
+run:
+    poke $60826F $FF
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $60826F $00
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $605124 $68
+script "P1 Drain All Energy Now!"  
+on:
+    poke $605124 $00
+script "P1 Set Rounds won to 2 Now!"  
+on:
+    poke $602750 $02
+script "P1 Set Rounds won to 0 Now!"  
+on:
+    poke $602750 $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $605190 $68
+script "P2 Drain All Energy Now!"  
+on:
+    poke $605190 $00
+script "P2 Set Rounds won to 2 Now!"  
+on:
+    poke $602751 $02
+script "P2 Set Rounds won to 0 Now!"  
+on:
+    poke $602751 $00

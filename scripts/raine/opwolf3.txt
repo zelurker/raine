@@ -1,0 +1,41 @@
+script "Infinite Credits"  
+run:
+    poke $5022B7 $09
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $50F1CB $05
+script "P1 Infinite Bombs"  
+run:
+    poke $50F1EB $03
+script "P1 Infinite Ammo" \
+ "comm:Saves having to reload"  
+run:
+    poke $50F1CD $0D
+script "P1 Invincibility"  
+run:
+    poke $50F1C1 $02|(peek($50F1C1)&~02)
+    poke $50F1C3 $40|(peek($50F1C3)&~40)
+    dpoke $50F1DC $0002
+script "P1 Rapid Fire"  
+run:
+    poke $50F1E2 $FF
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $50F1FB $05
+script "P2 Infinite Bombs"  
+run:
+    poke $50F21B $03
+script "P2 Infinite Ammo" \
+ "comm:Saves having to reload"  
+run:
+    poke $50F1FD $0D
+script "P2 Invincibility"  
+run:
+    poke $50F1F1 $02|(peek($50F1F1)&~02)
+    poke $50F1F3 $40|(peek($50F1F3)&~40)
+    dpoke $50F20C $0002
+script "P2 Rapid Fire"  
+run:
+    poke $50F212 $FF

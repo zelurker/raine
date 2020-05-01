@@ -1,0 +1,31 @@
+script "Infinite Credits"  
+run:
+    poke $102475 $63
+script "Infinite Time"  
+run:
+    if (frame%120==$0)
+      poke $1036E7 $09
+    endif
+script "Finish this Stage Now!"  
+on:
+    poke $103799 $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $102561 $09
+script "P1 Invincibility"  
+run:
+    poke $10256B $02
+script "P1 Infinite Money"  
+run:
+    lpoke $103722 $3B9AC9FF
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10265D $09
+script "P2 Invincibility"  
+run:
+    poke $102667 $02
+script "P2 Infinite Money"  
+run:
+    lpoke $103726 $3B9AC9FF

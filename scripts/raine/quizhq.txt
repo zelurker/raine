@@ -1,19 +1,34 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited vitality" always
-	poke $10109D $07
-
-script "2UP Unlimited vitality" always
-	poke $10109E $07
-
-script "*UP Watch me for good answer" always
-	print_ingame 1 "*UP Watch me for good answer : %02x" peek($1020E5)
-
-script "*UP Answer ends step  (-T)"
-	poke $102B89 $08
-	poke $102C59 $07
-
-script "*UP Answer ends arrest    (T)"
-	poke $102C8D $09
+script "Infinite Time"  
+run:
+    poke $1020EF $3F
+script "Question always has 2 answers ONLY"  
+run:
+    poke $102C5D $02
+script "Display the Correct Answer"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $1020E5 $01
+script "Answer 1 is correct for this question Now!"  
+on:
+    poke $1020E5 $01
+script "Always catch criminal [CHASE]" \
+ "comm:You will never have to answer any questions on the chase part!"  
+run:
+    poke $102C59 $08
+    poke $102B89 $08
+script "Catch up with the criminal Now!"  
+on:
+    poke $102C59 $08
+    poke $102B89 $08
+script "Always catch the car straight away [BATTLE]"  
+run:
+    poke $102C8D $0A
+script "Catch the car Now! [BATTLE]" \
+ "comm:You must enable this on the Battle Quiz screen"  
+on:
+    poke $102C8D $0A
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $10109D $07

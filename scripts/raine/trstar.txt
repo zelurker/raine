@@ -1,23 +1,106 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Energy PL1" always
-	poke $413893 $78
-	poke $41806D $8C
-	poke $41806F $68
-
-script "Drain All Energy Now! PL1"
-	poke $413893 $00
-	poke $41806D $00
-	poke $41806F $00
-
-script "Infinite Energy PL2" always
-	poke $413993 $78
-	poke $4180ED $8C
-	poke $4180EF $68
-
-script "Drain All Energy Now! PL2"
-	poke $413993 $00
-	poke $4180ED $00
-	poke $4180EF $00
+script "Infinite Credits"  
+run:
+    poke $413000 $09
+script "P1 Infinite Energy"  
+run:
+    dpoke $413892 $dpeek($413894)
+    dpoke $41806E (dpeek($413894))*3
+    if (peek($413813)==$00)
+      dpoke $41806C $008C
+    endif
+    if (peek($413813)==$01)
+      dpoke $41806C $0096
+    endif
+    if (peek($413813)==$02)
+      dpoke $41806C $0082
+    endif
+    if (peek($413813)==$03)
+      dpoke $41806C $00A0
+    endif
+    if (peek($413813)==$04)
+      dpoke $41806C $006E
+    endif
+    if (peek($413813)==$05)
+      dpoke $41806C $0060
+    endif
+    if (peek($413813)==$06)
+      dpoke $41806C $00BE
+    endif
+    if (peek($413813)==$07)
+      dpoke $41806C $0096
+    endif
+script "P1 Drain All Energy Now!"  
+on:
+    poke $413893 $00
+    poke $41806D $00
+    poke $41806F $00
+script "P1 Select Character" \
+ "comm:Use on or after character select screen" \
+ "0x00/Shouichi Kanou"\
+ "0x01/Michael Eldorado"\
+ "0x02/Aldebaron Nipper"\
+ "0x03/Bruce Hasimikov"\
+ "0x04/Storm Viper"\
+ "0x05/Tamshing Vaortao"\
+ "0x06/#King Shyana"\
+ "0x07/#Richard Hymer" 
+run:
+    poke $413813 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke $413992 $dpeek($413994)
+    dpoke $4180EE (dpeek($413994))*3
+    if (peek($413913)==$00)
+      dpoke $4180EC $008C
+    endif
+    if (peek($413913)==$01)
+      dpoke $4180EC $0096
+    endif
+    if (peek($413913)==$02)
+      dpoke $4180EC $0082
+    endif
+    if (peek($413913)==$03)
+      dpoke $4180EC $00A0
+    endif
+    if (peek($413913)==$04)
+      dpoke $4180EC $006E
+    endif
+    if (peek($413913)==$05)
+      dpoke $4180EC $0060
+    endif
+    if (peek($413913)==$06)
+      dpoke $4180EC $00BE
+    endif
+    if (peek($413913)==$07)
+      dpoke $4180EC $0096
+    endif
+script "P2 Drain All Energy Now!"  
+on:
+    poke $413993 $00
+    poke $4180ED $00
+    poke $4180EF $00
+script "P2 Select Character" \
+ "comm:Use on or after character select screen" \
+ "0x00/Shouichi Kanou"\
+ "0x01/Michael Eldorado"\
+ "0x02/Aldebaron Nipper"\
+ "0x03/Bruce Hasimikov"\
+ "0x04/Storm Viper"\
+ "0x05/Tamshing Vaortao"\
+ "0x06/#King Shyana"\
+ "0x07/#Richard Hymer" 
+run:
+    poke $413913 param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3)." \
+ "0x01/Japan (Top Ranking Stars)"\
+ "0x02/US (Prime Time Fighter)"\
+ "0x03/World (Top Ranking Stars)" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

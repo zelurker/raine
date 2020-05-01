@@ -1,0 +1,207 @@
+script "Infinite Time"  
+on:
+    temp0=lpeek($00B9F8)
+run:
+    lpoke $00B9F8 $1D7C0099
+off:
+    lpoke $00B9F8 temp0
+script "Unlock Secret Characters"  
+on:
+    temp0=lpeek($01278A)
+    temp1=dpeek($01278E)
+    temp2=lpeek($0127A8)
+    temp3=dpeek($0127AC)
+    temp4=lpeek($02F520)
+    temp5=lpeek($02F524)
+    temp6=lpeek($02F528)
+    temp7=lpeek($02F52C)
+    temp8=lpeek($02F530)
+    temp9=dpeek($02F534)
+run:
+    lpoke $01278A $4EB90002
+    dpoke $01278E $F520
+    lpoke $0127A8 $4EB90002
+    dpoke $0127AC $F52A
+    lpoke $02F520 $53106A10
+    lpoke $02F524 $10BC000B
+    lpoke $02F528 $600A5210
+    lpoke $02F52C $0C100C0B
+    lpoke $02F530 $63024210
+    dpoke $02F534 $4E75
+off:
+    lpoke $01278A temp0
+    dpoke $01278E temp1
+    lpoke $0127A8 temp2
+    dpoke $0127AC temp3
+    lpoke $02F520 temp4
+    lpoke $02F524 temp5
+    lpoke $02F528 temp6
+    lpoke $02F52C temp7
+    lpoke $02F530 temp8
+    dpoke $02F534 temp9
+script "Invincibility" \
+ "0x01/P1 Only"\
+ "0x02/P2 Only" 
+on:
+    temp0=lpeek($02FCB4)
+    temp1=lpeek($02F540)
+    temp2=dpeek($02F544)
+    temp3=lpeek($02F546)
+    temp4=lpeek($02F54A)
+    temp5=lpeek($039222)
+    temp6=dpeek($039226)
+    temp7=lpeek($03927E)
+    temp8=dpeek($039282)
+    temp9=lpeek($0392E6)
+    temp10=dpeek($0392EA)
+    temp11=lpeek($02F54E)
+    temp12=dpeek($02F552)
+    temp13=lpeek($02F554)
+    temp14=lpeek($02F558)
+    temp15=lpeek($02F55C)
+run:
+    if (param==$01)
+      lpoke $02FCB4 $6000F88A
+      lpoke $02F540 $BDEDD094
+      dpoke $02F544 $6604
+      lpoke $02F546 $70014E75
+      lpoke $02F54A $70004E75
+      lpoke $039222 $4EB90002
+      dpoke $039226 $F54E
+      lpoke $03927E $4EB90002
+      dpoke $039282 $F54E
+      lpoke $0392E6 $4EB90002
+      dpoke $0392EA $F54E
+      lpoke $02F54E $B7EDD094
+      dpoke $02F552 $6708
+      lpoke $02F554 $082B0007
+      lpoke $02F558 $00124E75
+      lpoke $02F55C $70014E75
+    endif
+    if (param==$02)
+      lpoke $02FCB4 $6000F88A
+      lpoke $02F540 $BDEDD098
+      dpoke $02F544 $6604
+      lpoke $02F546 $70014E75
+      lpoke $02F54A $70004E75
+      lpoke $039222 $4EB90002
+      dpoke $039226 $F54E
+      lpoke $03927E $4EB90002
+      dpoke $039282 $F54E
+      lpoke $0392E6 $4EB90002
+      dpoke $0392EA $F54E
+      lpoke $02F54E $B7EDD098
+      dpoke $02F552 $6708
+      lpoke $02F554 $082B0007
+      lpoke $02F558 $00124E75
+      lpoke $02F55C $70014E75
+    endif
+off:
+    lpoke $02FCB4 temp0
+    lpoke $02F540 temp1
+    dpoke $02F544 temp2
+    lpoke $02F546 temp3
+    lpoke $02F54A temp4
+    lpoke $039222 temp5
+    dpoke $039226 temp6
+    lpoke $03927E temp7
+    dpoke $039282 temp8
+    lpoke $0392E6 temp9
+    dpoke $0392EA temp10
+    lpoke $02F54E temp11
+    dpoke $02F552 temp12
+    lpoke $02F554 temp13
+    lpoke $02F558 temp14
+    lpoke $02F55C temp15
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke ((lpeek($105094))+$56) $64
+script "P1 Drain All Energy Now!"  
+on:
+    poke ((lpeek($105094))+$56) $00
+script "P1 Infinite Magic"  
+run:
+    poke ((lpeek($105094))+$6E) $3C
+script "P1 Always No Magic"  
+run:
+    poke ((lpeek($105094))+$6E) $00
+script "P1 Select Character" \
+ "comm:Use these cheats on the selection screen only!!" \
+ "0x08/Manto Ace"\
+ "0x09/Karakuri"\
+ "0x0A/Jyashinsai"\
+ "0x0B/Lucifeller" 
+change:
+    poke $102E17 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke ((lpeek($105098))+$56) $64
+script "P2 Drain All Energy Now!"  
+on:
+    poke ((lpeek($105098))+$56) $00
+script "P2 Infinite Magic"  
+run:
+    poke ((lpeek($105098))+$6E) $3C
+script "P2 Always No Magic"  
+run:
+    poke ((lpeek($105098))+$6E) $00
+script "P2 Select Character" \
+ "0x08/Manto Ace"\
+ "0x09/Karakuri"\
+ "0x0A/Jyashinsai"\
+ "0x0B/Lucifeller" 
+change:
+    poke $102E18 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

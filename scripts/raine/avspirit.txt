@@ -1,54 +1,19 @@
-# Cheats from  : Pugsy, Monyons
-# Last update  : 2001.09.08
-# Desc. format : Pugsy
-
-script "Invincibility" always
-	poke $7A527 $78
-
-script "Infinite Energy (ghost)" always
-	poke $79E55 $C8
-
-script "Infinite Energy (player)" always
-	poke $79F51 $68
-
-script "No more energy (player)"
-	poke $79F51 $01
-
-script "Infinite Time for bosses" always
-	poke $7F038 $28
-
-script "Char - girl (red)" always
-	poke $7A51F $01
-
-script "Char - girl (green)" always
-	poke $7A51F $02
-
-script "Char - gang (green)" always
-	poke $7A51F $03
-
-script "Char - Dragon (green)" always
-	poke $7A51F $05
-
-script "Char - Dragon (blue)" always
-	poke $7A51F $06
-
-script "Char - Dragon (red)" always
-	poke $7A51F $07
-
-script "Char - highjump (gun)" always
-	poke $7A51F $09
-
-script "Char - gunjin (gun)" always
-	poke $7A51F $0E
-
-script "Char - gunjin (yellow)" always
-	poke $7A51F $0F
-
-script "Char - ninja (blue)" always
-	poke $7A51F $14
-
-script "Char - ninja (red)" always
-	poke $7A51F $15
-
-script "Char - magic (red)" always
-	poke $7A51F $18
+script "Infinite Credits"  
+run:
+    poke $78F8B $99
+script "Invincibility"  
+run:
+    poke $7A527 $78
+script "Infinite Energy (ghost)"  
+run:
+    poke $79E55 $C8
+script "Infinite Energy (player)"  
+run:
+    poke $79F51 $68
+script "No more energy (player)" \
+ "comm:Get hit to be a ghost"  
+on:
+    poke $79F51 $01
+script "Infinite Time for bosses"  
+run:
+    poke $7F038 $28

@@ -1,33 +1,164 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $411F07 $3B
-
-script "*UP End game"
-	dpoke $411F06 $0000
-
-script "1Te Score set to 10       (P)" always
-	poke $410E69 $0A
-
-script "2Te Score set to 10       (P)" always
-	poke $410E71 $0A
-
-script "1Te Score set to 0        (P)" always
-	poke $410E69 $00
-
-script "2Te Score set to 0        (P)" always
-	poke $410E71 $00
-
-script "1Te Score set to 10       (T)"
-	poke $410E69 $0A
-
-script "2Te Score set to 10       (T)"
-	poke $410E71 $0A
-
-script "1Te Score set to 0        (T)"
-	poke $410E69 $00
-
-script "2Te Score set to 0        (T)"
-	poke $410E71 $00
+script "Infinite Time"  
+run:
+    poke $411F07 $3C
+    poke $411F06 $09
+script "Finish this Game Now!"  
+on:
+    poke $411F07 $00
+    poke $411F06 $00
+script "Select Special Menu" \
+ "comm:Set to With if you want to use the Select Special Shoot cheats" \
+ "0x85/With"\
+ "0x8D/Without" 
+run:
+    poke $4114A1 param
+script "Select Current Level" \
+ inter=1,6,1 
+change:
+    poke $40F55D (param)
+script "Select Next Level" \
+ inter=1,7,1 
+change:
+    poke $40F55D (param-$1)
+script " "  
+script "CPU Next Foul = Red Card LEFT TEAM" \
+ "comm:Use when CPU plays with Left Team, works up to 3 times per match."  
+run:
+    poke $411F98 $02
+script "Score always 0 LEFT TEAM"  
+run:
+    poke $410E69 $00
+script "Score always 19 LEFT TEAM"  
+run:
+    poke $410E69 $13
+script "Set score = 0 Now! LEFT TEAM"  
+on:
+    poke $410E69 $00
+script "Set score = 19 Now! LEFT TEAM"  
+on:
+    poke $410E69 $13
+script "Select Score Now! LEFT TEAM" \
+ inter=0,19,1 
+change:
+    poke $410E69 (param)
+script " "  
+script "CPU Next Foul = Red Card RIGHT TEAM" \
+ "comm:Use when CPU plays with Right Team, works up to 3 times per match."  
+run:
+    poke $411F99 $02
+script "Score always = 0 RIGHT TEAM"  
+run:
+    poke $410E71 $00
+script "Score always = 19 RIGHT TEAM"  
+run:
+    poke $410E71 $13
+script "Set score = 0 Now! RIGHT TEAM"  
+on:
+    poke $410E71 $00
+script "Set score = 19 Now! RIGHT TEAM"  
+on:
+    poke $410E71 $13
+script "Select Score Now! RIGHT TEAM" \
+ inter=0,19,1 
+change:
+    poke $410E71 (param)
+script " "  
+script "P1 Infinite Credits"  
+run:
+    poke $40E77B $09
+script "P1 Infinite Units"  
+run:
+    poke $410E9D $63
+script "P1 No Fouls"  
+run:
+    poke $410E85 $00
+script "P1 Select Special Shoot" \
+ "comm:To make Special Shoot cheats work, you have to set Special Menu to 'With'.Activate Super/Hyper Shoot with Button 3" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410E99 param
+script " "  
+script "P2 Infinite Credits"  
+run:
+    poke $40E77D $09
+script "P2 Infinite Units"  
+run:
+    poke $410ED5 $63
+script "P2 No Fouls"  
+run:
+    poke $410EBD $00
+script "P2 Select Special Shoot" \
+ "comm:To make Special Shoot cheats work, you have to set Special Menu to 'With'.Activate Super/Hyper Shoot with Button 3" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410ED1 param
+script " "  
+script "P3 Infinite Credits"  
+run:
+    poke $40E77F $09
+script "P3 Infinite Units"  
+run:
+    poke $410F0D $63
+script "P3 No Fouls"  
+run:
+    poke $410EF5 $00
+script "P3 Select Special Shoot" \
+ "comm:To make Special Shoot cheats work, you have to set Special Menu to 'With'.Activate Super/Hyper Shoot with Button 3" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410F09 param
+script " "  
+script "P4 Infinite Credits"  
+run:
+    poke $40E781 $09
+script "P4 Infinite Units"  
+run:
+    poke $410F45 $63
+script "P4 No Fouls"  
+run:
+    poke $410F2D $00
+script "P4 Select Special Shoot" \
+ "comm:To make Special Shoot cheats work, you have to set Special Menu to 'With'.Activate Super/Hyper Shoot with Button 3" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410F41 param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($07FFFF)
+run:
+    poke $07FFFF param
+off:
+    poke $07FFFF temp0

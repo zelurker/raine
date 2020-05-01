@@ -1,51 +1,49 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $801497 $B3
-
-script "1UP Invulnerability OFF"
-	poke $801497 $01
-
-script "2UP Invulnerability ON" always
-	poke $801597 $B3
-
-script "2UP Invulnerability OFF"
-	poke $801597 $01
-
-script "1UP Unlimited energy" always
-	poke $801407 $E0
-
-script "2UP Unlimited energy" always
-	poke $801507 $E0
-
-script "1UP Unlimited bombs - Normal" always
-	poke $801405 $08
-
-script "2UP Unlimited bombs - Normal" always
-	poke $801505 $08
-
-script "1UP Unlimited bombs - Super" always
-	poke $801421 $02
-
-script "2UP Unlimited bombs - Super" always
-	poke $801521 $02
-
-script "1UP Unlimited time - B.W." always
-	poke $801425 $FF
-
-script "2UP Unlimited time - B.W." always
-	poke $801525 $FF
-
-script "1UP Unlimited time - B.S." always
-	poke $801429 $FF
-
-script "2UP Unlimited time - B.S." always
-	poke $801529 $FF
-
-script "1UP Unlimited time - R.F." always
-	poke $801427 $FF
-
-script "2UP Unlimited time - R.F." always
-	poke $801527 $FF
+script "P1 Infinite Energy"  
+run:
+    poke $801407 $E0
+script "P1 Infinite Normal Bombs"  
+run:
+    poke $801405 $08
+script "P1 Infinite Super Bombs"  
+run:
+    poke $801421 $02
+script "P1 Invincibility"  
+run:
+    poke $801495 $02
+script "P1 Infinite Big Weapon Time" \
+ "comm:Get the item first"  
+run:
+    poke $801425 $FF
+script "P1 Infinite Big Sights Time" \
+ "comm:Get the item first"  
+run:
+    poke $801429 $FF
+script "P1 Infinite Fast Shoot Time" \
+ "comm:Get the item first"  
+run:
+    poke $801427 $FF
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $801507 $E0
+script "P2 Infinite Normal Bombs"  
+run:
+    poke $801505 $08
+script "P2 Infinite Super Bombs"  
+run:
+    poke $801521 $02
+script "P2 Invincibility"  
+run:
+    poke $801595 $02
+script "P2 Infinite Big Weapon Time" \
+ "comm:Get the item first"  
+run:
+    poke $801525 $FF
+script "P2 Infinite Big Sights Time" \
+ "comm:Get the item first"  
+run:
+    poke $801529 $FF
+script "P2 Infinite Fast Shoot Time" \
+ "comm:Get the item first"  
+run:
+    poke $801527 $FF

@@ -1,0 +1,105 @@
+script " "  
+script "PUZZLE MODE"  
+script " "  
+script "No more Level Gain"  
+run:
+    poke $100A5F $00
+script " "  
+script "VS MODE"  
+script " "  
+script "Unlock Secret Characters" \
+ "comm:Enable to select Devil, Strength and Empress"  
+on:
+    temp0=peek($101489)
+run:
+    poke $101489 $01
+off:
+    poke $101489 temp0
+script "Face The Black Clawn"  
+on:
+    temp0=peek($100073)
+run:
+    poke $100073 $00
+off:
+    poke $100073 temp0
+script "Select Starting Stage" \
+ "0x09/Empress Castle"\
+ "0x0A/Black Clawn (The Special Ending)" 
+run:
+    if (peek($100072)==$00)
+      poke $100072 param
+    endif
+script " "  
+script "P1 Always have Quota=001" \
+ "comm:One ballon to win"  
+run:
+    if (frame%60==$0)
+      poke $100A4B $01
+    endif
+script "P1 Always have Quota=200"  
+run:
+    poke $100A4B $C8
+script "P1 Play as Black Clawn (Buggy)"  
+run:
+    poke $100117 $0A
+    poke $100805 $09
+script " "  
+script "P2 Always have Quota=001" \
+ "comm:One ballon to win"  
+run:
+    if (frame%60==$0)
+      poke $100A6B $01
+    endif
+script "P2 Always have Quota=200"  
+run:
+    poke $100A6B $C8
+script "P2 Play as Black Clawn"  
+run:
+    poke $100118 $0A
+    poke $100905 $09
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,0 +1,528 @@
+script "Infinite Time"  
+run:
+    poke $10A7D3 $46
+script "Mai's boobs always bounce" \
+ "comm:Causes Japanese text to appear"  
+run:
+    poke $10A7E0 $00
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($00267A)
+run:
+    dpoke $00267A $6002
+off:
+    dpoke $00267A temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108239 $66
+script "P1 Drain All Energy Now!"  
+on:
+    poke $108239 $00
+script "P1 Always have Maximum POW"  
+run:
+    poke $1082E3 $04
+script "P1 Always have No POW"  
+run:
+    poke $1081E8 $00
+    poke $1082E3 $00
+script "P1 Select Character (A)" \
+ "comm:ABCD is the order in which you selected your character on the character selection screen, and would appear from the outside in during the order select screen." \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A7E6 param
+script "P1 Select Character (B)" \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A7E7 param
+script "P1 Select Character (C)" \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A7E8 param
+script "P1 Select Character (D)" \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A7E9 param
+script "P1 Play with Zero" \
+ "comm:This maybe less buggy then the above cheat for this character"  
+run:
+    poke $10A7E9 $28
+    poke $10A7F8 $28
+    poke $10A7F9 $28
+    poke $10A7FA $28
+    poke $10A7FC $00
+    poke $10A7FD $00
+    poke $10A7FE $00
+script "P1 Play with Igniz" \
+ "comm:This maybe less buggy then the above cheat for this character"  
+run:
+    poke $10A7E9 $29
+    poke $10A7F8 $29
+    poke $10A7F9 $29
+    poke $10A7FA $29
+script "P1 Play with Zero (featuring Evil Joe)"  
+run:
+    poke $10A7E9 $28
+    poke $10A7F8 $28
+    poke $10A7F9 $12
+    poke $10A7FA $28
+    poke $10A7FC $00
+    poke $10A7FD $B5
+    poke $10A7FE $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108439 $66
+script "P2 Drain All Energy Now!"  
+on:
+    poke $108439 $00
+script "P2 Always have Maximum POW"  
+run:
+    poke $1084E3 $04
+script "P2 Always have No POW"  
+run:
+    poke $1083E8 $00
+    poke $1084E3 $00
+script "P2 Select Character (A)" \
+ "comm:ABCD is the order in which you selected your character on the character selection screen, and would appear from the outside in during the order select screen." \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A804 param
+script "P2 Select Character (B)" \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A805 param
+script "P2 Select Character (C)" \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A806 param
+script "P2 Select Character (D)" \
+ "0x00/K'"\
+ "0x01/Maxima"\
+ "0x02/Whip"\
+ "0x03/Lin"\
+ "0x04/Kyo"\
+ "0x05/Benimaru"\
+ "0x06/Daimon"\
+ "0x07/Shingo"\
+ "0x08/Iori"\
+ "0x09/Vanessa"\
+ "0x0A/Seth"\
+ "0x0B/Ramon"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Heidern"\
+ "0x10/Terry"\
+ "0x11/Andy"\
+ "0x12/Joe"\
+ "0x13/Mary"\
+ "0x14/Ryo"\
+ "0x15/Robert"\
+ "0x16/Yuri"\
+ "0x17/Takuma"\
+ "0x18/King"\
+ "0x19/Mai"\
+ "0x1A/Hinako"\
+ "0x1B/Xiangfei"\
+ "0x1C/Kula"\
+ "0x1D/Foxy"\
+ "0x1E/K9999"\
+ "0x1F/Angel"\
+ "0x20/Athena"\
+ "0x21/Kensou"\
+ "0x22/Chin"\
+ "0x23/Bao"\
+ "0x24/Kim"\
+ "0x25/Chang"\
+ "0x26/Choi"\
+ "0x27/May"\
+ "0x28/Zero"\
+ "0x29/Igniz" 
+run:
+    poke $10A807 param
+script "P2 Play with Zero" \
+ "comm:This maybe less buggy then the above cheat for this character"  
+run:
+    poke $10A80F $28
+    poke $10A81E $28
+    poke $10A81F $28
+    poke $10A820 $28
+    poke $10A822 $00
+    poke $10A823 $00
+    poke $10A824 $00
+script "P2 Play with Igniz" \
+ "comm:This maybe less buggy then the above cheat for this character"  
+run:
+    poke $10A80F $29
+    poke $10A81E $29
+    poke $10A81F $29
+    poke $10A820 $29
+script "P2 Play with Zero (featuring Evil Joe)"  
+run:
+    poke $10A80F $28
+    poke $10A81E $28
+    poke $10A81F $12
+    poke $10A820 $28
+    poke $10A822 $00
+    poke $10A823 $B5
+    poke $10A824 $00
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FD89 $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=peek($10008B)
+    temp1=peek($10A788)
+    temp2=peek($10A7D6)
+    temp3=dpeek($014E44)
+
+run:
+    if (dpeek($10A7D2)!=$0&&peek($10A7D7)==$00)
+      poke $10008B $00
+      poke $10A788 temp1|80
+      poke $10A7D6 temp2|80
+      dpoke $014E44 $008F
+      dpoke $10D8F8 $8F8F
+    endif
+off:
+    poke $10008B temp0
+    poke $10A788 temp1
+    poke $10A7D6 temp2
+    dpoke $014E44 temp3
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

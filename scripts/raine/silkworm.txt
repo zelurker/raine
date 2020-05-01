@@ -1,33 +1,37 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $D578 $01
-
-script "1UP Invulnerability OFF"
-	poke $D578 $50
-
-script "2UP Invulnerability ON" always
-	poke $D5A8 $01
-
-script "2UP Invulnerability OFF"
-	poke $D5A8 $50
-
-script "1UP Unlimited lives" always
-	poke $D531 $03
-
-script "2UP Unlimited lives" always
-	poke $D555 $03
-
-script "1UP Unlimited shield" always
-	poke $D577 $FF
-
-script "2UP Unlimited shield" always
-	poke $D5A7 $FF
-
-script "1UP Double + auto-fire    (P)" always
-	poke $D547 $0F
-
-script "2UP Double + auto-fire    (P)" always
-	poke $D56B $0F
+script "Finish this Stage Now!"  
+on:
+    poke $D009 $FF
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $D531 $05
+script "P1 Invincibility"  
+on:
+    temp0=peek($3FE2)
+run:
+    poke $3FE2 $C9
+off:
+    poke $3FE2 temp0
+script "Killer Heli"  
+run:
+    poke $D577 $A9
+script "Heli has auto+double shot"  
+run:
+    poke $D547 $0F
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $D555 $05
+script "P2 Invincibility"  
+on:
+    temp0=peek($3745)
+run:
+    poke $3745 $C9
+off:
+    poke $3745 temp0
+script "Killer Jeep"  
+run:
+    poke $D5A7 $A9
+script "Jeep has auto+double shot"  
+run:
+    poke $D56B $0F

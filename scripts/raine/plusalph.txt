@@ -1,36 +1,92 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability" always
-	poke $F30C1 $02
-
-script "1UP Unlimited lives" always
-	poke $F30A1 $03
-
-script "2UP Unlimited lives" always
-	poke $F30A3 $03
-
-script "*UP Unlimited bombs" always
-	poke $F3131 $09
-
-script "*UP Maximum fire power" always
-	poke $F312B $07
-
-script "*UP Weapon - P - Red      (P)" always
-	poke $F30C7 $00
-
-script "*UP Weapon - J - Green    (P)" always
-	poke $F30C7 $01
-
-script "*UP Weapon - H - Purple   (P)" always
-	poke $F30C7 $02
-
-script "*UP Weapon - P - Red      (T)"
-	poke $F30C7 $00
-
-script "*UP Weapon - J - Green    (T)"
-	poke $F30C7 $01
-
-script "*UP Weapon - H - Purple   (T)"
-	poke $F30C7 $02
+script "Invincibility"  
+on:
+    temp0=dpeek($13B8A)
+    temp1=dpeek($13B90)
+    temp2=peek($13B96)
+run:
+    dpoke $13B8A $42B9
+    dpoke $13B90 $42B9
+    poke $13B96 $60
+off:
+    dpoke $13B8A temp0
+    dpoke $13B90 temp1
+    poke $13B96 temp2
+script "Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $F3123 $00|(peek($F3123)&~10)
+script "Infinite Special Shots"  
+run:
+    poke $F3131 $09
+script "Select Shot Type" \
+ "0x00/2 Shot"\
+ "0x01/2 Shot +1"\
+ "0x02/Blade +1"\
+ "0x03/Blade +2"\
+ "0x04/4 Shot +1"\
+ "0x05/4 Shot +3"\
+ "0x06/2 Blade+3"\
+ "0x07/2 Blade+3"\
+ "0x08/2 Shot +Wide [NOT FOR PLANE]"\
+ "0x09/2 Shot +Balls [NOT FOR JET OR HELI]"\
+ "0x0A/Blade +Balls [NOT FOR JET OR HELI]"\
+ "0x0B/?1 [NOT FOR PLANE,JET OR HELI]"\
+ "0x0C/?2 [NOT FOR PLANE,JET OR HELI]"\
+ "0x0D/?3 [NOT FOR PLANE,JET OR HELI]"\
+ "0x0E/?4 [NOT FOR PLANE,JET OR HELI]"\
+ "0x0F/4Shot +Wide [NOT FOR JET OR HELI]"\
+ "0x10/Ray" 
+run:
+    poke $F312B param
+script "Select Ship Type" \
+ "comm:Make sure you don't pick a Shot Type which is not suitable" \
+ "0x00/Plane (Shots)"\
+ "0x01/Jet (Balls)"\
+ "0x02/Heli (Triangles)" 
+run:
+    poke $F30C7 param
+script "Select Starting Level" \
+ "0x01/1"\
+ "0x02/2"\
+ "0x03/3"\
+ "0x04/4"\
+ "0x05/5"\
+ "0x06/6"\
+ "0x07/7" 
+run:
+    if (peek($F2EE5)==$01)
+      poke $F2EE5 param
+    endif
+script "Always Open Secret Bomb"  
+on:
+    temp0=peek($2BD6F)
+    temp1=peek($2BD7D)
+run:
+    poke $2BD6F $02
+    poke $2BD7D $02
+off:
+    poke $2BD6F temp0
+    poke $2BD7D temp1
+script "Always Mark Secret Character"  
+on:
+    temp0=lpeek($2BC52)
+    temp1=dpeek($2BC56)
+run:
+    lpoke $2BC52 $58680008
+    dpoke $2BC56 $6048
+off:
+    lpoke $2BC52 temp0
+    dpoke $2BC56 temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $F30A1 $05
+script "P1 Change Colour"  
+run:
+    poke $F30BD $02
+script "P2 Infinite Lives"  
+run:
+    poke $F30A3 $05
+script "P2 Change Colour"  
+run:
+    poke $F30BD $01

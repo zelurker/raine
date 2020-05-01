@@ -1,0 +1,133 @@
+script "Infinite Credits"  
+run:
+    poke $2030F7 $09
+script "Select Next Round" \
+ "comm:The Round cheat is buggy so activate at the enemy boss for the best effect and turn it OFF after you've started the next round" \
+ "0x01/3"\
+ "0x02/4"\
+ "0x03/5"\
+ "0x04/6"\
+ "0x05/7" 
+run:
+    if (param==$01)
+      poke $204451 $03
+      poke $2043E5 $03
+    endif
+    if (param==$02)
+      poke $204451 $04
+      poke $2043E5 $04
+    endif
+    if (param==$03)
+      poke $204451 $05
+      poke $2043E5 $05
+    endif
+    if (param==$04)
+      poke $204451 $06
+      poke $2043E5 $06
+    endif
+    if (param==$05)
+      poke $204451 $07
+      poke $2043E5 $07
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $2043F9 $03
+script "P1 Invincibility"  
+run:
+    poke $20105E $00
+script "P1 Maximum Front Fire Power"  
+run:
+    poke $2010B3 $03
+script "P1 Maximum Rear  Fire Power"  
+run:
+    poke $2010D3 $03
+script "P1 Maximum Upper Fire Power"  
+run:
+    poke $2010F3 $03
+script "P1 Maximum Lower Fire Power"  
+run:
+    poke $201113 $03
+script "P1 Select Front Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $2010B1 param
+script "P1 Select Rear Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $2010D1 param
+script "P1 Select Upper Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $2010F1 param
+script "P1 Select Lower Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $201111 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $20440D $03
+script "P2 Invincibility"  
+run:
+    poke $201FFE $00
+script "P2 Maximum Front Fire Power"  
+run:
+    poke $202053 $03
+script "P2 Maximum Rear  Fire Power"  
+run:
+    poke $202073 $03
+script "P2 Maximum Upper Fire Power"  
+run:
+    poke $202093 $03
+script "P2 Maximum Lower Fire Power"  
+run:
+    poke $2020B3 $03
+script "P2 Select Front Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $202051 param
+script "P2 Select Rear Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $202071 param
+script "P2 Select Upper Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $202091 param
+script "P2 Select Lower Shot" \
+ "0x01/Laser"\
+ "0x02/Normal"\
+ "0x03/Bound"\
+ "0x04/Red Shot"\
+ "0x05/Homing" 
+run:
+    poke $2020B1 param

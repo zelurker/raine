@@ -1,0 +1,317 @@
+script "Infinite Time"  
+run:
+    poke $10092A $99
+script "Finish Round Now!"  
+on:
+    poke $10092A $00
+script "Always Enable Special Move"  
+on:
+    temp0=peek($024103)
+run:
+    poke $024103 $02
+off:
+    poke $024103 temp0
+script "Unlock Ryo Sakazaki"  
+on:
+    temp0=dpeek($02094E)
+    temp1=dpeek($020BD2)
+run:
+    poke $10E063 $FF
+    dpoke $02094E $4E71
+    dpoke $020BD2 $4E71
+off:
+    dpoke $02094E temp0
+    dpoke $020BD2 temp1
+script "Always have Easy Supers" \
+ "comm:For all characters; Back, Forward, A+C performs Desperation Move."  
+on:
+    temp0l=lpeek(038BBA)
+    temp0h=lpeek($38bbe
+    temp1=lpeek($038BC2)
+    temp2l=lpeek(038C52)
+    temp2h=lpeek($38c56
+    temp3=lpeek($038C5A)
+    temp4l=lpeek(038D00)
+    temp4h=lpeek($38d04
+    temp5=lpeek($038D08)
+    temp6l=lpeek(038D78)
+    temp6h=lpeek($38d7c
+    temp7=lpeek($038D80)
+    temp8l=lpeek(038DFC)
+    temp8h=lpeek($38e00
+    temp9=lpeek($038E04)
+    temp10l=lpeek(038E66)
+    temp10h=lpeek($38e6a
+    temp11=lpeek($038E6E)
+    temp12l=lpeek(038EEC)
+    temp12h=lpeek($38ef0
+    temp13=lpeek($038EF4)
+    temp14l=lpeek(038F80)
+    temp14h=lpeek($38f84
+    temp15=lpeek($038F88)
+    temp16l=lpeek(039014)
+    temp16h=lpeek($39018
+    temp17=lpeek($03901C)
+    temp18l=lpeek(0390A6)
+    temp18h=lpeek($390aa
+    temp19=lpeek($0390AE)
+    temp20l=lpeek(039142)
+    temp20h=lpeek($39146
+    temp21=lpeek($03914A)
+    temp22l=lpeek(0391CA)
+    temp22h=lpeek($391ce
+    temp23=lpeek($0391D2)
+    temp24l=lpeek(03923E)
+    temp24h=lpeek($39242
+    temp25=lpeek($039246)
+    temp26l=lpeek(0392D6)
+    temp26h=lpeek($392da
+    temp27=lpeek($0392DE)
+    temp28l=lpeek(039390)
+    temp28h=lpeek($39394
+    temp29=lpeek($039398)
+    temp30l=lpeek(039430)
+    temp30h=lpeek($39434
+    temp31=lpeek($039438)
+run:
+    temp32=$0F0400000C0F030C
+    temp33=$F00EFF09
+    lpoke $038BBA temp32l
+    lpoke $38bbe temp32h
+    lpoke $038BC2 temp33
+    lpoke $038C52 temp32l
+    lpoke $38c56 temp32h
+    lpoke $038C5A temp33
+    lpoke $038D00 temp32l
+    lpoke $38d04 temp32h
+    lpoke $038D08 temp33
+    lpoke $038D78 temp32l
+    lpoke $38d7c temp32h
+    lpoke $038D80 temp33
+    lpoke $038DFC temp32l
+    lpoke $38e00 temp32h
+    lpoke $038E04 temp33
+    lpoke $038E66 temp32l
+    lpoke $38e6a temp32h
+    lpoke $038E6E temp33
+    lpoke $038EEC temp32l
+    lpoke $38ef0 temp32h
+    lpoke $038EF4 temp33
+    lpoke $038F80 temp32l
+    lpoke $38f84 temp32h
+    lpoke $038F88 temp33
+    lpoke $039014 temp32l
+    lpoke $39018 temp32h
+    lpoke $03901C temp33
+    lpoke $0390A6 temp32l
+    lpoke $390aa temp32h
+    lpoke $0390AE temp33
+    lpoke $039142 temp32l
+    lpoke $39146 temp32h
+    lpoke $03914A temp33
+    lpoke $0391CA temp32l
+    lpoke $391ce temp32h
+    lpoke $0391D2 temp33
+    lpoke $03923E temp32l
+    lpoke $39242 temp32h
+    lpoke $039246 temp33
+    lpoke $0392D6 temp32l
+    lpoke $392da temp32h
+    lpoke $0392DE temp33
+    lpoke $039390 temp32l
+    lpoke $39394 temp32h
+    lpoke $039398 temp33
+    lpoke $039430 temp32l
+    lpoke $39434 temp32h
+    lpoke $039438 temp33
+off:
+    lpoke $038BBA temp0 l
+    lpoke $38bbe temp0h
+    lpoke $038BC2 temp1
+    lpoke $038C52 temp2 l
+    lpoke $38c56 temp2h
+    lpoke $038C5A temp3
+    lpoke $038D00 temp4 l
+    lpoke $38d04 temp4h
+    lpoke $038D08 temp5
+    lpoke $038D78 temp6 l
+    lpoke $38d7c temp6h
+    lpoke $038D80 temp7
+    lpoke $038DFC temp8 l
+    lpoke $38e00 temp8h
+    lpoke $038E04 temp9
+    lpoke $038E66 temp10l
+    lpoke $38e6a temp10h
+    lpoke $038E6E temp11
+    lpoke $038EEC temp12l
+    lpoke $38ef0 temp12h
+    lpoke $038EF4 temp13
+    lpoke $038F80 temp14l
+    lpoke $38f84 temp14h
+    lpoke $038F88 temp15
+    lpoke $039014 temp16l
+    lpoke $39018 temp16h
+    lpoke $03901C temp17
+    lpoke $0390A6 temp18l
+    lpoke $390aa temp18h
+    lpoke $0390AE temp19
+    lpoke $039142 temp20l
+    lpoke $39146 temp20h
+    lpoke $03914A temp21
+    lpoke $0391CA temp22l
+    lpoke $391ce temp22h
+    lpoke $0391D2 temp23
+    lpoke $03923E temp24l
+    lpoke $39242 temp24h
+    lpoke $039246 temp25
+    lpoke $0392D6 temp26l
+    lpoke $392da temp26h
+    lpoke $0392DE temp27
+    lpoke $039390 temp28l
+    lpoke $39394 temp28h
+    lpoke $039398 temp29
+    lpoke $039430 temp30l
+    lpoke $39434 temp30h
+    lpoke $039438 temp31
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $10049A $60
+script "P1 Drain all Energy Now!"  
+on:
+    poke $10049A $00
+script "P1 Rapid Fire - Quick Punch"  
+run:
+    poke $10FD96 $00|(peek($10FD96)&~10)
+script "P1 Rapid Fire - Quick Kick"  
+run:
+    poke $10FD96 $00|(peek($10FD96)&~20)
+script "P1 Rapid Fire - Strong Punch"  
+run:
+    poke $10FD96 $00|(peek($10FD96)&~40)
+script "P1 Rapid Fire - Strong Kick"  
+run:
+    poke $10FD96 $00|(peek($10FD96)&~80)
+script "P1 Play with Ryo Sakazaki" \
+ "comm:Free player selection - Use it on the selection screen."  
+on:
+    poke $101E93 $10
+script "P1 See Endsequence Now!" \
+ "comm:Set it ingame, in a Round.
+  NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
+on:
+    if (dpeek($100010)==$49D8)&&((peek($100034)&01)==$01)
+      temp0=$01
+    endif
+    if (temp0==$01)
+      poke $10049A $01
+      poke $10059A $00
+      dpoke $10092A $0001
+      poke $100058 $01
+      poke $10B2F3 $10
+    endif
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $10059A $60
+script "P2 Drain all Energy Now!"  
+on:
+    poke $10059A $00
+script "P2 Rapid Fire - Quick Punch"  
+run:
+    poke $10FD9C $00|(peek($10FD9C)&~10)
+script "P2 Rapid Fire - Quick Kick"  
+run:
+    poke $10FD9C $00|(peek($10FD9C)&~20)
+script "P2 Rapid Fire - Strong Punch"  
+run:
+    poke $10FD9C $00|(peek($10FD9C)&~40)
+script "P2 Rapid Fire - Strong Kick"  
+run:
+    poke $10FD9C $00|(peek($10FD9C)&~80)
+script "P2 Play with Ryo Sakazaki" \
+ "comm:Free player selection - Use it on the selection screen."  
+on:
+    poke $101F93 $10
+script "P2 See Endsequence Now!" \
+ "comm:Set it ingame, in a Round.
+  NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
+on:
+    if (dpeek($100010)==$49D8)&&((peek($100034)&02)==$02)
+      temp0=$01
+    endif
+    if (temp0==$01)
+      poke $10059A $01
+      poke $10049A $00
+      dpoke $10092A $0001
+      poke $100059 $01
+      poke $10B2F3 $10
+    endif
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start"  
+run:
+    poke $1051E1 peek($1051E0)&7F
+    dpoke $401FFE $0000
+    if ((peek($100003)&9F)>90&&(peek($100003)&40)==$00)
+      poke $1051E1 $10
+      poke $100920 $20
+      poke $10092B $3C
+      poke $1041D9 $40
+      dpoke $1041DA $00
+      dpoke $401FFE $8F8F
+    endif
+off:
+    poke $100920 $40
+    poke $1051E1 peek($1051E0)&7F
+    dpoke $401FFE $0000
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

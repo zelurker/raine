@@ -1,0 +1,216 @@
+script "Infinite Credits"  
+run:
+    poke $FF80B6 $09
+script "Infinite Time"  
+run:
+    poke $FFEBA0 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $FFEBA0 $00
+script "Go to Final Stage Now!"  
+on:
+    poke $FF8530 $08
+    poke $FF852A $08
+    poke $FFEB36 $08
+script "Select Background" \
+ "0x00/City"\
+ "0x01/Arena"\
+ "0x02/Orbital station"\
+ "0x03/TOWN-3"\
+ "0x04/Forest"\
+ "0x05/Warship"\
+ "0x06/Seafloor"\
+ "0x07/Airfield"\
+ "0x08/Volcano"\
+ "0x09/Brain"\
+ "0x0C/Arena II"\
+ "0x0D/Seafloor II"\
+ "0x0E/Airfield II"\
+ "0x0F/City II" 
+run:
+    dpoke $FFEA2C param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF81E5 $98
+script "P1 Drain All Energy Now!"  
+on:
+    poke $FF81E5 $00
+script "P1 Infinite Power"  
+run:
+    poke $FF8534 $3F
+script "P1 Drain All Power Now!"  
+on:
+    poke $FF8534 $00
+script "P1 Hit Anywhere"  
+on:
+    temp0=lpeek($04607C)
+    temp1=dpeek($046080)
+    temp2=lpeek($3FFFE0)
+    temp3=lpeek($3FFFE4)
+    temp4=lpeek($3FFFE8)
+    temp5=lpeek($3FFFEC)
+    temp6=lpeek($3FFFF0)
+    temp7=lpeek($3FFFF4)
+run:
+    lpoke $04607C $4EB9003F
+    dpoke $046080 $FFE0
+    lpoke $3FFFE0 $B3FC00FF
+    lpoke $3FFFE4 $2F806606
+    lpoke $3FFFE8 $3F7C610A
+    lpoke $3FFFEC $00024E75
+    lpoke $3FFFF0 $082A0002
+    lpoke $3FFFF4 $00044E75
+off:
+    lpoke $04607C temp0
+    dpoke $046080 temp1
+    lpoke $3FFFE0 temp2
+    lpoke $3FFFE4 temp3
+    lpoke $3FFFE8 temp4
+    lpoke $3FFFEC temp5
+    lpoke $3FFFF0 temp6
+    lpoke $3FFFF4 temp7
+script "P1 Infinite Arm Gauge"  
+run:
+    poke $FF830C $30
+script "P1 Select Arm Gauge Regeneration Time" \
+ "0xFF/Instant"\
+ "0x00/Never" 
+run:
+    poke $FF830D param
+script "P1 Arm VA Now!"  
+on:
+    poke $FF82AE $01
+script "P1 Disarm VA Now!" \
+ "comm:Super-8, Helion, and Warlock cannot be disarmed"  
+on:
+    poke $FF82AE $00
+script "P1 Infinite Weapon"  
+run:
+    poke $FF830E $30
+    poke $FF8310 $30
+script "P1 Infinite Boost"  
+run:
+    poke $FF830A $1D
+script "P1 Select Perm Ride" \
+ "0x00/Blodia"\
+ "0x01/Reptos"\
+ "0x02/Fordy"\
+ "0x03/Guldin"\
+ "0x04/Swordsman"\
+ "0x05/Lightning"\
+ "0x06/Jackal"\
+ "0x07/Vise"\
+ "0x08/Cyclone"\
+ "0x09/Riot"\
+ "0x0A/Tarantula"\
+ "0x0B/Helion"\
+ "0x0C/Super-8"\
+ "0x0D/Gaits"\
+ "0x0E/Warlock"\
+ "0x0F/Killer Bee" 
+run:
+    poke $FF8511 param
+    poke $FF8512 param
+    poke $FF8513 param
+    poke $FF852C param
+script "P1 Select Character" \
+ "0x00/Jin"\
+ "0x01/Santana"\
+ "0x02/Mary"\
+ "0x03/Arieta"\
+ "0x04/Gawaine"\
+ "0x05/Bao + Mao"\
+ "0x06/Devilotte"\
+ "0x07/Chiyomaru + Tessan"\
+ "0x08/Shade"\
+ "0x09/G. O. D." 
+run:
+    poke $FF8510 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF85E5 $98
+script "P2 Drain All Energy Now!"  
+on:
+    poke $FF85E5 $00
+script "P2 Infinite Power"  
+run:
+    poke $FF8934 $3F
+script "P2 Drain All Power Now!"  
+on:
+    poke $FF8934 $00
+script "P2 Infinite Arm Gauge"  
+run:
+    poke $FF870C $30
+script "P2 Select Arm Gauge Regeneration Time" \
+ "0xFF/Instant"\
+ "0x00/Never" 
+run:
+    poke $FF870D param
+script "P2 Arm VA Now!"  
+on:
+    poke $FF86AE $01
+script "P2 Disarm VA Now!" \
+ "comm:Super-8, Helion, and Warlock cannot be disarmed"  
+on:
+    poke $FF86AE $00
+script "P2 Infinite Weapon"  
+run:
+    poke $FF870E $30
+    poke $FF8710 $30
+script "P2 Infinite Boost"  
+run:
+    poke $FF870A $1D
+script "P2 Select Perm Ride" \
+ "0x00/Blodia"\
+ "0x01/Reptos"\
+ "0x02/Fordy"\
+ "0x03/Guldin"\
+ "0x04/Swordsman"\
+ "0x05/Lightning"\
+ "0x06/Jackal"\
+ "0x07/Vise"\
+ "0x08/Cyclone"\
+ "0x09/Riot"\
+ "0x0A/Tarantula"\
+ "0x0B/Helion"\
+ "0x0C/Super-8"\
+ "0x0D/Gaits"\
+ "0x0E/Warlock"\
+ "0x0F/Killer Bee" 
+run:
+    poke $FF8911 param
+    poke $FF8912 param
+    poke $FF8913 param
+    poke $FF892C param
+script "P1 Select Character" \
+ "0x00/Jin"\
+ "0x01/Santana"\
+ "0x02/Mary"\
+ "0x03/Arieta"\
+ "0x04/Gawaine"\
+ "0x05/Bao + Mao"\
+ "0x06/Devilotte"\
+ "0x07/Chiyomaru + Tessan"\
+ "0x08/Shade"\
+ "0x09/G. O. D." 
+run:
+    poke $FF8910 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Asia"\
+ "0x06/Hispanic"\
+ "0x08/Euro"\
+ "0x0A/Brazil" 
+run:
+    poke $FF80A0 param

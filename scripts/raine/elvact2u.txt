@@ -1,75 +1,75 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $407FE9 $B3
-
-script "1UP Invulnerability OFF"
-	poke $407FE9 $01
-
-script "2UP Invulnerability ON" always
-	poke $4088C5 $B3
-
-script "2UP Invulnerability OFF"
-	poke $4088C5 $01
-
-script "1UP Unlimited lives" always
-	poke $40780F $03
-
-script "2UP Unlimited lives" always
-	poke $4080EB $03
-
-script "1UP Unlimited energy" always
-	poke $407811 $02
-
-script "2UP Unlimited energy" always
-	poke $4080ED $02
-
-script "1UP Unlimited bombs" always
-	poke $4078C5 $63
-
-script "2UP Unlimited bombs" always
-	poke $4081A1 $63
-
-script "1UP Unlimited ammo." always
-	poke $407873 $63
-
-script "2UP Unlimited ammo." always
-	poke $40814F $63
-
-script "1UP Weapon - Normal       (P)" always
-	poke $407871 $00
-
-script "1UP Weapon - "M"          (P)" always
-	poke $407871 $01
-
-script "1UP Weapon - "L"          (P)" always
-	poke $407871 $02
-
-script "2UP Weapon - Normal       (P)" always
-	poke $40814D $00
-
-script "2UP Weapon - "M"          (P)" always
-	poke $40814D $01
-
-script "2UP Weapon - "L"          (P)" always
-	poke $40814D $02
-
-script "1UP Weapon - Normal       (T)"
-	poke $407871 $00
-
-script "1UP Weapon - "M"          (T)"
-	poke $407871 $01
-
-script "1UP Weapon - "L"          (T)"
-	poke $407871 $02
-
-script "2UP Weapon - Normal       (T)"
-	poke $40814D $00
-
-script "2UP Weapon - "M"          (T)"
-	poke $40814D $01
-
-script "2UP Weapon - "L"          (T)"
-	poke $40814D $02
+script "Infinite Credits"  
+run:
+    dpoke $400090 $0009
+script "Infinite Time (Final Level)"  
+run:
+    poke $409C5B $AA
+script "Invincibility" \
+ "comm:You can still die from falling or by being crashed by elevators, so use with the Infinite Lives cheat."  
+on:
+    temp0=dpeek($0BED74)
+    temp1=dpeek($0BED88)
+run:
+    dpoke $0BED74 $6002
+    dpoke $0BED88 $0000
+off:
+    dpoke $0BED74 temp0
+    dpoke $0BED88 temp1
+script " "  
+script "P1 Infinite Lives"  
+run:
+    dpoke $40780E $0009
+script "P1 Infinite Energy" \
+ "comm:Select Infinite Male Energy for Male Characters or Infinite Female Energy for Female Characters" \
+ "0x00030000/Infinite Male Energy"\
+ "0x00028000/Infinite Female Energy" 
+run:
+    lpoke $407810 param
+script "P1 Infinite Bombs"  
+run:
+    dpoke $4078C4 $0063
+script "P1 Infinite Ammo" \
+ "comm:Used when you have the 'M' or 'L' weapons"  
+run:
+    dpoke $407872 $03E7
+script "P1 Select Weapon" \
+ "0x00/Normal"\
+ "0x01/'M'"\
+ "0x02/'L'" 
+run:
+    poke $407871 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    dpoke $4080EA $0009
+script "P2 Infinite Energy" \
+ "comm:Select Infinite Male Energy for Male Characters or Infinite Female Energy for Female Characters" \
+ "0x00030000/Infinite Male Energy"\
+ "0x00028000/Infinite Female Energy" 
+run:
+    lpoke $4080EC param
+script "P2 Infinite Bombs"  
+run:
+    dpoke $4081A0 $0063
+script "P2 Infinite Ammo" \
+ "comm:Used when you have the 'M' or 'L' weapons"  
+run:
+    dpoke $40814E $03E7
+script "P2 Select Weapon" \
+ "0x00/Normal"\
+ "0x01/'M'"\
+ "0x02/'L'" 
+run:
+    poke $40814D param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($1FFFFF)
+run:
+    poke $1FFFFF param
+off:
+    poke $1FFFFF temp0

@@ -1,27 +1,51 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $1C207B $03
-
-script "2UP Unlimited lives" always
-	poke $1C217B $03
-
-script "3UP Unlimited lives" always
-	poke $1C227B $03
-
-script "1UP Unlimited energy" always
-	dpoke $1C2014 $03E7
-
-script "2UP Unlimited energy" always
-	dpoke $1C2114 $03E7
-
-script "3UP Unlimited energy" always
-	dpoke $1C2214 $03E7
-
-script "*UP Unlimited time" always
-	poke $1C001F $99
-
-script "*UP Unlimited coins" always
-	poke $1C002F $99
+script "Infinite Time"  
+run:
+    dpoke $1C001E $0999
+script "Infinite Shop Time"  
+run:
+    poke $1C0023 $30
+script "Infinite Coins"  
+run:
+    poke $1C002F $99
+script "Select Starting Mission" \
+ "0x00/Mission 1"\
+ "0x04/Mission 2"\
+ "0x02/Mission 3"\
+ "0x05/Mission 4"\
+ "0x06/Mission 5"\
+ "0x0A/Final Boss" 
+run:
+    if (peek($1C1E01)==$00)
+      poke $1C1E01 param
+    endif
+script "Finish Current Section Now!"  
+on:
+    if (peek($1C1E06)==$FF)&&(peek($1C1E01)<0A)
+      poke $1C1E03 $01
+    endif
+script "See End Sequence Now!"  
+on:
+    if (peek($1C1E06)==$FF)
+      poke $1C1E02 $10
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1C207B $03
+script "P1 Infinite Energy"  
+run:
+    dpoke $1C2014 $03E7
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $1C217B $03
+script "P2 Infinite Energy"  
+run:
+    dpoke $1C2114 $03E7
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $1C227B $03
+script "P3 Infinite Energy"  
+run:
+    dpoke $1C2214 $03E7

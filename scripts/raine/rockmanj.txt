@@ -1,0 +1,181 @@
+script "Infinite Time"  
+run:
+    poke $FF8119 $45
+script "One hit for Crash-man"  
+on:
+    poke $FFD851 $00
+script "One hit for other enemies"  
+on:
+    poke $FFDA51 $00
+script "Kill small enemies - Lv 7"  
+on:
+    poke $FFD951 $00
+script "One hit for prof - hands"  
+on:
+    poke $FFDA51 $00
+script "One hit for prof - nails"  
+on:
+    poke $FFD751 $00
+script "One hit for prof - head"  
+on:
+    poke $FFD951 $00
+script "Hit Anywhere (Both Players)" \
+ "comm:Enemies hit anywhere as well. Use with invincibility."  
+run:
+    dpoke $01C202 $4E71
+    dpoke $01C224 $4E71
+off:
+    dpoke $01C202 $6228
+    dpoke $01C224 $6206
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8351 $10
+script "P1 Invincibility"  
+run:
+    poke $FF8352 $02
+script "P1 Always have Maximum Fire"  
+run:
+    poke $FF8430 $00
+script "P1 Always have Full Charge Shot"  
+run:
+    poke $FF8433 $01
+script "P1 Rapid Fire"  
+run:
+    poke $FF8460 $00|(peek($FF8460)&~10)
+script "P1 Infinite Weapon Energy"  
+run:
+    poke $FF8459 $1C
+    poke $FF8453 $1C
+    poke $FF8455 $1C
+    poke $FF845B $1C
+    poke $FF845D $1C
+    poke $FF8457 $1C
+script "P1 Always have Extra Weapon 1" \
+ "comm:Story 1 - shadow blade   Story 2 - rolling cutter   Story 3 - super arm"  
+run:
+    poke $FF8449 $01
+script "P1 Always have Extra Weapon 2" \
+ "comm:Story 1 - plant barrier  Story 2 - power stone      Story 3 - pharao wave"  
+run:
+    poke $FF844A $01
+script "P1 Always have Extra Weapon 3" \
+ "comm:Story 1 - gyro attack    Story 2 - crush noise      Story 3 - air shooter"  
+run:
+    poke $FF844B $01
+script "P1 Always have Extra Weapon 4" \
+ "comm:Story 1 - centaur arrow  Story 2 - thunder beam     Story 3 - quick boomerang"  
+run:
+    poke $FF844C $01
+script "P1 Always have Extra Weapon 5" \
+ "comm:Story 1 - bubble lead    Story 2 - dive missile     Story 3 - gemini laser"  
+run:
+    poke $FF844D $01
+script "P1 Always have Extra Weapon 6" \
+ "comm:Story 1 - atomic fire    Story 2 - slash claw       Story 3 - napalm bomb"  
+run:
+    poke $FF844E $01
+script "P1 Lose Extra Weapon 1 Now!"  
+on:
+    poke $FF8449 $00
+script "P1 Lose Extra Weapon 2 Now!"  
+on:
+    poke $FF844A $00
+script "P1 Lose Extra Weapon 3 Now!"  
+on:
+    poke $FF844B $00
+script "P1 Lose Extra Weapon 4 Now!"  
+on:
+    poke $FF844C $00
+script "P1 Lose Extra Weapon 5 Now!"  
+on:
+    poke $FF844D $00
+script "P1 Lose Extra Weapon 6 Now!"  
+on:
+    poke $FF844E $00
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8751 $10
+script "P2 Invincibility"  
+run:
+    poke $FF8752 $02
+script "P2 Always have Maximum Fire"  
+run:
+    poke $FF8830 $00
+script "P2 Always have Full Charge Shot"  
+run:
+    poke $FF8833 $01
+script "P2 Rapid Fire"  
+run:
+    poke $FF8860 $00|(peek($FF8860)&~10)
+script "P2 Infinite Weapon Energy"  
+run:
+    poke $FF8859 $1C
+    poke $FF8853 $1C
+    poke $FF8855 $1C
+    poke $FF885B $1C
+    poke $FF885D $1C
+    poke $FF8857 $1C
+script "P2 Always have Extra Weapon 1" \
+ "comm:Story 1 - shadow blade   Story 2 - rolling cutter   Story 3 - super arm"  
+run:
+    poke $FF8849 $01
+script "P2 Always have Extra Weapon 2" \
+ "comm:Story 1 - plant barrier  Story 2 - power stone      Story 3 - pharao wave"  
+run:
+    poke $FF884A $01
+script "P2 Always have Extra Weapon 3" \
+ "comm:Story 1 - gyro attack    Story 2 - crush noise      Story 3 - air shooter"  
+run:
+    poke $FF884B $01
+script "P2 Always have Extra Weapon 4" \
+ "comm:Story 1 - centaur arrow  Story 2 - thunder beam     Story 3 - quick boomerang"  
+run:
+    poke $FF884C $01
+script "P2 Always have Extra Weapon 5" \
+ "comm:Story 1 - bubble lead    Story 2 - dive missile     Story 3 - gemini laser"  
+run:
+    poke $FF884D $01
+script "P2 Always have Extra Weapon 6" \
+ "comm:Story 1 - atomic fire    Story 2 - slash claw       Story 3 - napalm bomb"  
+run:
+    poke $FF884E $01
+script "P2 Lose Extra Weapon 1 Now!"  
+on:
+    poke $FF8849 $00
+script "P2 Lose Extra Weapon 2 Now!"  
+on:
+    poke $FF884A $00
+script "P2 Lose Extra Weapon 3 Now!"  
+on:
+    poke $FF884B $00
+script "P2 Lose Extra Weapon 4 Now!"  
+on:
+    poke $FF884C $00
+script "P2 Lose Extra Weapon 5 Now!"  
+on:
+    poke $FF884D $00
+script "P2 Lose Extra Weapon 6 Now!"  
+on:
+    poke $FF884E $00
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F018 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Asia"\
+ "0x08/Euro"\
+ "0x0A/Brazil" 
+run:
+    poke $FF808D param
+script "Display Hidden Debug SUBTEST MENU" \
+ "comm:Activate on the TEST MENU (F2)."  
+run:
+    poke $FF8001 $06

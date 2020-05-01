@@ -1,9 +1,31 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $F886 $03
-
-script "2UP Unlimited lives" always
-	poke $F906 $03
+script "Infinite Credits"  
+run:
+    cpua.pb@F80B=$09
+script "Invincibility"  
+run:
+    cpua.pb@EB70=$00
+script "Always have Bird + Dog Option"  
+run:
+    cpua.pb@E50F=$C0
+    cpua.pb@E530=$8C
+    cpua.pb@E540=$8D
+script "Select Full Auto" \
+ "0x87/Disruption + Full Auto"\
+ "0x8B/Laser + Full auto" 
+run:
+    cpua.pb@E50D=param
+script "Select Missiles" \
+ "0x01/Land Missiles"\
+ "0x02/Air Missiles"\
+ "0xFE/#Back Missiles"\
+ "0xFC/#Sub Disruption"\
+ "0xFB/#Back Laser" 
+run:
+    cpua.pb@E50E=param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    cpua.pb@F886=$64
+script "P2 Infinite Lives"  
+run:
+    cpua.pb@F906=$64

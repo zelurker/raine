@@ -1,0 +1,176 @@
+script "Finish Level Now!"  
+on:
+    poke $E393 $00
+script "Infinite Time"  
+run:
+    poke $E7EE $78
+script "Always Keep One Ball in Play"  
+run:
+    if (peek($E3B4)<=10)
+      poke $E3B4 $10
+    endif
+script "Select Starting Round" \
+ "comm:After Round 1 you have a different round either side but the same round number" \
+ "0x00/Round 1"\
+ "0x02/Round 2 (Right)"\
+ "0x03/Round 2 (Left)"\
+ "0x04/Round 3 (Right)"\
+ "0x05/Round 3 (Left)"\
+ "0x06/Round 4 (Right)"\
+ "0x07/Round 4 (Left)"\
+ "0x08/Round 5 (Right)"\
+ "0x09/Round 5 (Left)"\
+ "0x0A/Round 6 (Right)"\
+ "0x0B/Round 6 (Left)"\
+ "0x0C/Round 7 (Right)"\
+ "0x0D/Round 7 (Left)"\
+ "0x0E/Round 8 (Right)"\
+ "0x0F/Round 8 (Left)"\
+ "0x10/Round 9 (Right)"\
+ "0x11/Round 9 (Left)"\
+ "0x12/Round 10 (Right)"\
+ "0x13/Round 10 (Left)"\
+ "0x14/Round 11 (Right)"\
+ "0x15/Round 11 (Left)"\
+ "0x16/Round 12 (Right)"\
+ "0x17/Round 12 (Left)"\
+ "0x18/Round 13 (Right)"\
+ "0x19/Round 13 (Left)"\
+ "0x1A/Round 14 (Right)"\
+ "0x1B/Round 14 (Left)"\
+ "0x1C/Round 15 (Right)"\
+ "0x1D/Round 15 (Left)"\
+ "0x1E/Round 16 (Right)"\
+ "0x1F/Round 16 (Left)"\
+ "0x20/Round 17 (Right)"\
+ "0x21/Round 17 (Left)"\
+ "0x22/Round 18 (Right)"\
+ "0x23/Round 18 (Left)"\
+ "0x24/Round 19 (Right)"\
+ "0x25/Round 19 (Left)"\
+ "0x26/Round 20 (Right)"\
+ "0x27/Round 20 (Left)"\
+ "0x28/Round 21 (Right)"\
+ "0x29/Round 21 (Left)"\
+ "0x2A/Round 22 (Right)"\
+ "0x2B/Round 22 (Left)"\
+ "0x2C/Round 23 (Right)"\
+ "0x2D/Round 23 (Left)"\
+ "0x2E/Round 24 (Right)"\
+ "0x2F/Round 24 (Left)"\
+ "0x30/Round 25 (Right)"\
+ "0x31/Round 25 (Left)"\
+ "0x32/Round 26 (Right)"\
+ "0x33/Round 26 (Left)"\
+ "0x34/Round 27 (Right)"\
+ "0x35/Round 27 (Left)"\
+ "0x36/Round 28 (Right)"\
+ "0x37/Round 28 (Left)"\
+ "0x38/Round 29 (Right)"\
+ "0x39/Round 29 (Left)"\
+ "0x3A/Round 30 (Right)"\
+ "0x3B/Round 30 (Left)"\
+ "0x3C/Round 31 (Right)"\
+ "0x3D/Round 31 (Left)"\
+ "0x3E/Round 32 (Right)"\
+ "0x3F/Round 32 (Left)"\
+ "0x40/Round 33 (Right)"\
+ "0x41/Round 33 (Left)"\
+ "0x42/Round 34 (Right)"\
+ "0x43/Round 34 (Left)" 
+run:
+    if (peek($E008)==$00)
+      poke $E008 param
+    endif
+script "Invincibility (Round 34)"  
+on:
+    temp0=peek($815C)
+run:
+    poke $815C $C9
+off:
+    poke $815C temp0
+script "Warp Door always Open"  
+run:
+    poke $E39D $80|(peek($E39D)&~80)
+script "Open Warp Door Now!"  
+on:
+    poke $E39D $80|(peek($E39D)&~80)
+script "Close Warp Door Now!"  
+on:
+    poke $E39D $00|(peek($E39D)&~80)
+script "Always 10000 when next"  
+run:
+    poke $E39D $01|(peek($E39D)&~01)
+script "Get 10000 when next Now!"  
+on:
+    poke $E39D $01|(peek($E39D)&~01)
+script "Select Perm. Bat" \
+ "0x0000/Normal Bat"\
+ "0x0101/Laser Bat"\
+ "0x0002/Enlarged Bat"\
+ "0x0003/Twin Bats"\
+ "0x0006/Catcher Bat"\
+ "0x0007/Tracing Bat"\
+ "0x0008/Reduced Bat" 
+run:
+    dpoke $E5EF param
+script "Select Temp. Bat" \
+ "comm:Assign to an activation key for the best effect" \
+ "0x0000/Normal Bat"\
+ "0x0101/Laser Bat"\
+ "0x0002/Enlarged Bat"\
+ "0x0003/Twin Bats"\
+ "0x0006/Catcher Bat"\
+ "0x0007/Tracing Bat"\
+ "0x0008/Reduced Bat" 
+change:
+    dpoke $E5EF param
+script "Always do BALL PLAQUE"  
+run:
+    poke $E5F7 $08
+    poke $E5F6 $00
+script "Do BALL PLAQUE Now!"  
+on:
+    poke $E5F7 $08
+    poke $E5F6 $00
+script "Select 1st Pill Power Now!" \
+ "comm:Only use this cheat when you are playing and when a pill is falling, assign to an activation key for the best effect" \
+ "0x81/L (Red) [Laser]"\
+ "0x82/E (Lt Blue) [Enlarged Bat]"\
+ "0x83/T (Dk Blue) [Twin Bats]"\
+ "0x86/C (Lt Green) [Catcher Bat]"\
+ "0x87/I (Dk Green) [Tracing Bat]"\
+ "0x88/R (Black) [Reduced Bat]"\
+ "0x8A/P (Dk Grey) [Extra Life]"\
+ "0x8D/M (Purple) [POW Multiballs]"\
+ "0x8E/S (Orange) [Slower Ball]"\
+ "0x90/B (Pink) [Warp Door]"\
+ "0x91/D (Cyan) [Multiballs]"\
+ "0x92/N (Lt Grey) [3 Regen. Balls]"\
+ "0x93/? (Multi) [Mystery]" 
+change:
+    poke $E5D6 param
+script "Select 2nd Pill Power Now!" \
+ "comm:Only use this cheat when you are playing and when a pill is falling, assign to an activation key for the best effect" \
+ "0x81/L (Red) [Laser]"\
+ "0x82/E (Lt Blue) [Enlarged Bat]"\
+ "0x83/T (Dk Blue) [Twin Bats]"\
+ "0x86/C (Lt Green) [Catcher Bat]"\
+ "0x87/I (Dk Green) [Tracing Bat]"\
+ "0x88/R (Black) [Reduced Bat]"\
+ "0x8A/P (Dk Grey) [Extra Life]"\
+ "0x8D/M (Purple) [POW Multiballs]"\
+ "0x8E/S (Orange) [Slower Ball]"\
+ "0x90/B (Pink) [Warp Door]"\
+ "0x91/D (Cyan) [Multiballs]"\
+ "0x92/N (Lt Grey) [3 Regen. Balls]"\
+ "0x93/? (Multi) [Mystery]" 
+change:
+    poke $E5DA param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $E00C $03
+script "P2 Infinite Lives"  
+run:
+    poke $E011 $03

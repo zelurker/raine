@@ -1,0 +1,5 @@
+script "Help Line [Single Puzzle Mode Only]" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $10369B param

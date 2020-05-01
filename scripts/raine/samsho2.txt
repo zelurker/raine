@@ -1,0 +1,502 @@
+script "Infinite Time"  
+run:
+    dpoke $100AC6 $9900
+script "Select Background" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wan-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0B/Charlotte"\
+ "0x0C/Genjuro"\
+ "0x0D/Cham Cham"\
+ "0x0E/Sieger"\
+ "0x0F/Nicotine"\
+ "0x10/Mizuki"\
+ "0x11/Kuroko" 
+run:
+    poke $100AD9 param
+script "Select Starting Stage" \
+ "0x00/Stage 1"\
+ "0x01/Stage 2"\
+ "0x02/Stage 3"\
+ "0x03/Stage 4"\
+ "0x04/Stage 5"\
+ "0x05/Stage 6"\
+ "0x06/Stage 7"\
+ "0x07/Stage 8"\
+ "0x08/Stage 9"\
+ "0x09/Stage 10"\
+ "0x0A/Stage 11"\
+ "0x0B/Stage 12"\
+ "0x0C/Final Stage"\
+ "0x0D/Special Stage(Kuroko, S Stage)" 
+run:
+    if (peek($100AEE)==$00)
+      poke $100AEE param
+    endif
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($00BA4E)
+run:
+    dpoke $00BA4E $6000
+off:
+    dpoke $00BA4E temp0
+script "Always have Easy Super Moves" \
+ "comm:For all characters; Down, Down, A performs Super Move."  
+on:
+    temp0l=lpeek(6EAF2)
+    temp0h=lpeek($6eaf6
+    temp1l=lpeek(6EAFA)
+    temp1h=lpeek($6eafe
+    temp2l=lpeek(6E9B2)
+    temp2h=lpeek($6e9b6
+    temp3l=lpeek(6E9BA)
+    temp3h=lpeek($6e9be
+    temp4l=lpeek(6EAB2)
+    temp4h=lpeek($6eab6
+    temp5l=lpeek(6EABA)
+    temp5h=lpeek($6eabe
+    temp6l=lpeek(6EA72)
+    temp6h=lpeek($6ea76
+    temp7l=lpeek(6EA7A)
+    temp7h=lpeek($6ea7e
+    temp8l=lpeek(6E9D2)
+    temp8h=lpeek($6e9d6
+    temp9l=lpeek(6E9DA)
+    temp9h=lpeek($6e9de
+    temp10l=lpeek(6EA52)
+    temp10h=lpeek($6ea56
+    temp11l=lpeek(6EA5A)
+    temp11h=lpeek($6ea5e
+    temp12l=lpeek(6E992)
+    temp12h=lpeek($6e996
+    temp13l=lpeek(6E99A)
+    temp13h=lpeek($6e99e
+    temp14l=lpeek(6EA92)
+    temp14h=lpeek($6ea96
+    temp15l=lpeek(6EA9A)
+    temp15h=lpeek($6ea9e
+    temp16l=lpeek(6EA32)
+    temp16h=lpeek($6ea36
+    temp17l=lpeek(6EA3A)
+    temp17h=lpeek($6ea3e
+    temp18l=lpeek(6EAD2)
+    temp18h=lpeek($6ead6
+    temp19l=lpeek(6EADA)
+    temp19h=lpeek($6eade
+    temp20l=lpeek(6EA12)
+    temp20h=lpeek($6ea16
+    temp21l=lpeek(6EA1A)
+    temp21h=lpeek($6ea1e
+    temp22l=lpeek(6E9F2)
+    temp22h=lpeek($6e9f6
+    temp23l=lpeek(6E9FA)
+    temp23h=lpeek($6e9fe
+run:
+    temp24=$0F0200000F020011
+    temp25=$F010000E00000000
+    lpoke $6EAF2 temp24l
+    lpoke $6eaf6 temp24h
+    lpoke $6EAFA temp25l
+    lpoke $6eafe temp25h
+    lpoke $6E9B2 temp24l
+    lpoke $6e9b6 temp24h
+    lpoke $6E9BA temp25l
+    lpoke $6e9be temp25h
+    lpoke $6EAB2 temp24l
+    lpoke $6eab6 temp24h
+    lpoke $6EABA temp25l
+    lpoke $6eabe temp25h
+    lpoke $6EA72 temp24l
+    lpoke $6ea76 temp24h
+    lpoke $6EA7A temp25l
+    lpoke $6ea7e temp25h
+    lpoke $6E9D2 temp24l
+    lpoke $6e9d6 temp24h
+    lpoke $6E9DA temp25l
+    lpoke $6e9de temp25h
+    lpoke $6EA52 temp24l
+    lpoke $6ea56 temp24h
+    lpoke $6EA5A temp25l
+    lpoke $6ea5e temp25h
+    lpoke $6E992 temp24l
+    lpoke $6e996 temp24h
+    lpoke $6E99A temp25l
+    lpoke $6e99e temp25h
+    lpoke $6EA92 temp24l
+    lpoke $6ea96 temp24h
+    lpoke $6EA9A temp25l
+    lpoke $6ea9e temp25h
+    lpoke $6EA32 temp24l
+    lpoke $6ea36 temp24h
+    lpoke $6EA3A temp25l
+    lpoke $6ea3e temp25h
+    lpoke $6EAD2 temp24l
+    lpoke $6ead6 temp24h
+    lpoke $6EADA temp25l
+    lpoke $6eade temp25h
+    lpoke $6EA12 temp24l
+    lpoke $6ea16 temp24h
+    lpoke $6EA1A temp25l
+    lpoke $6ea1e temp25h
+    lpoke $6E9F2 temp24l
+    lpoke $6e9f6 temp24h
+    lpoke $6E9FA temp25l
+    lpoke $6e9fe temp25h
+off:
+    lpoke $6EAF2 temp0 l
+    lpoke $6eaf6 temp0h
+    lpoke $6EAFA temp1 l
+    lpoke $6eafe temp1h
+    lpoke $6E9B2 temp2 l
+    lpoke $6e9b6 temp2h
+    lpoke $6E9BA temp3 l
+    lpoke $6e9be temp3h
+    lpoke $6EAB2 temp4 l
+    lpoke $6eab6 temp4h
+    lpoke $6EABA temp5 l
+    lpoke $6eabe temp5h
+    lpoke $6EA72 temp6 l
+    lpoke $6ea76 temp6h
+    lpoke $6EA7A temp7 l
+    lpoke $6ea7e temp7h
+    lpoke $6E9D2 temp8 l
+    lpoke $6e9d6 temp8h
+    lpoke $6E9DA temp9 l
+    lpoke $6e9de temp9h
+    lpoke $6EA52 temp10l
+    lpoke $6ea56 temp10h
+    lpoke $6EA5A temp11l
+    lpoke $6ea5e temp11h
+    lpoke $6E992 temp12l
+    lpoke $6e996 temp12h
+    lpoke $6E99A temp13l
+    lpoke $6e99e temp13h
+    lpoke $6EA92 temp14l
+    lpoke $6ea96 temp14h
+    lpoke $6EA9A temp15l
+    lpoke $6ea9e temp15h
+    lpoke $6EA32 temp16l
+    lpoke $6ea36 temp16h
+    lpoke $6EA3A temp17l
+    lpoke $6ea3e temp17h
+    lpoke $6EAD2 temp18l
+    lpoke $6ead6 temp18h
+    lpoke $6EADA temp19l
+    lpoke $6eade temp19h
+    lpoke $6EA12 temp20l
+    lpoke $6ea16 temp20h
+    lpoke $6EA1A temp21l
+    lpoke $6ea1e temp21h
+    lpoke $6E9F2 temp22l
+    lpoke $6e9f6 temp22h
+    lpoke $6E9FA temp23l
+    lpoke $6e9fe temp23h
+script "Always have Easy Transformation Moves" \
+ "comm:For all characters; Down, Down, C performs Transformation Move."  
+on:
+    temp0l=lpeek(6E952)
+    temp0h=lpeek($6e956
+    temp1l=lpeek(6E95A)
+    temp1h=lpeek($6e95e
+    temp2l=lpeek(6E90E)
+    temp2h=lpeek($6e912
+    temp3l=lpeek(6E916)
+    temp3h=lpeek($6e91a
+    temp4l=lpeek(6E8EE)
+    temp4h=lpeek($6e8f2
+    temp5l=lpeek(6E8F6)
+    temp5h=lpeek($6e8fa
+    temp6l=lpeek(6E8A6)
+    temp6h=lpeek($6e8aa
+    temp7l=lpeek(6E8AE)
+    temp7h=lpeek($6e8b2
+    temp8l=lpeek(6E81A)
+    temp8h=lpeek($6e81e
+    temp9l=lpeek(6E822)
+    temp9h=lpeek($6e826
+    temp10l=lpeek(6E886)
+    temp10h=lpeek($6e88a
+    temp11l=lpeek(6E88E)
+    temp11h=lpeek($6e892
+    temp12l=lpeek(6E7B2)
+    temp12h=lpeek($6e7b6
+    temp13l=lpeek(6E7BA)
+    temp13h=lpeek($6e7be
+    temp14l=lpeek(6E7F6)
+    temp14h=lpeek($6e7fa
+    temp15l=lpeek(6E7FE)
+    temp15h=lpeek($6e802
+    temp16l=lpeek(6E8CA)
+    temp16h=lpeek($6e8ce
+    temp17l=lpeek(6E8D2)
+    temp17h=lpeek($6e8d6
+    temp18l=lpeek(6E83E)
+    temp18h=lpeek($6e842
+    temp19l=lpeek(6E846)
+    temp19h=lpeek($6e84a
+    temp20l=lpeek(6E7D6)
+    temp20h=lpeek($6e7da
+    temp21l=lpeek(6E7DE)
+    temp21h=lpeek($6e7e2
+    temp22l=lpeek(6E92E)
+    temp22h=lpeek($6e932
+    temp23l=lpeek(6E936)
+    temp23h=lpeek($6e93a
+    temp24l=lpeek(6E862)
+    temp24h=lpeek($6e866
+    temp25l=lpeek(6E86A)
+    temp25h=lpeek($6e86e
+    temp26l=lpeek(6E972)
+    temp26h=lpeek($6e976
+    temp27l=lpeek(6E97A)
+    temp27h=lpeek($6e97e
+run:
+    temp28=$0F0200000F020011
+    temp29=$F040000E00000000
+    lpoke $6E952 temp28l
+    lpoke $6e956 temp28h
+    lpoke $6E95A temp29l
+    lpoke $6e95e temp29h
+    lpoke $6E90E temp28l
+    lpoke $6e912 temp28h
+    lpoke $6E916 temp29l
+    lpoke $6e91a temp29h
+    lpoke $6E8EE temp28l
+    lpoke $6e8f2 temp28h
+    lpoke $6E8F6 temp29l
+    lpoke $6e8fa temp29h
+    lpoke $6E8A6 temp28l
+    lpoke $6e8aa temp28h
+    lpoke $6E8AE temp29l
+    lpoke $6e8b2 temp29h
+    lpoke $6E81A temp28l
+    lpoke $6e81e temp28h
+    lpoke $6E822 temp29l
+    lpoke $6e826 temp29h
+    lpoke $6E886 temp28l
+    lpoke $6e88a temp28h
+    lpoke $6E88E temp29l
+    lpoke $6e892 temp29h
+    lpoke $6E7B2 temp28l
+    lpoke $6e7b6 temp28h
+    lpoke $6E7BA temp29l
+    lpoke $6e7be temp29h
+    lpoke $6E7F6 temp28l
+    lpoke $6e7fa temp28h
+    lpoke $6E7FE temp29l
+    lpoke $6e802 temp29h
+    lpoke $6E8CA temp28l
+    lpoke $6e8ce temp28h
+    lpoke $6E8D2 temp29l
+    lpoke $6e8d6 temp29h
+    lpoke $6E83E temp28l
+    lpoke $6e842 temp28h
+    lpoke $6E846 temp29l
+    lpoke $6e84a temp29h
+    lpoke $6E7D6 temp28l
+    lpoke $6e7da temp28h
+    lpoke $6E7DE temp29l
+    lpoke $6e7e2 temp29h
+    lpoke $6E92E temp28l
+    lpoke $6e932 temp28h
+    lpoke $6E936 temp29l
+    lpoke $6e93a temp29h
+    lpoke $6E862 temp28l
+    lpoke $6e866 temp28h
+    lpoke $6E86A temp29l
+    lpoke $6e86e temp29h
+    lpoke $6E972 temp28l
+    lpoke $6e976 temp28h
+    lpoke $6E97A temp29l
+    lpoke $6e97e temp29h
+off:
+    lpoke $6E952 temp0 l
+    lpoke $6e956 temp0h
+    lpoke $6E95A temp1 l
+    lpoke $6e95e temp1h
+    lpoke $6E90E temp2l
+    lpoke $6e912 temp2h
+    lpoke $6E916 temp3 l
+    lpoke $6e91a temp3h
+    lpoke $6E8EE temp4 l
+    lpoke $6e8f2 temp4h
+    lpoke $6E8F6 temp5 l
+    lpoke $6e8fa temp5h
+    lpoke $6E8A6 temp6l
+    lpoke $6e8aa temp6h
+    lpoke $6E8AE temp7 l
+    lpoke $6e8b2 temp7h
+    lpoke $6E81A temp8 l
+    lpoke $6e81e temp8h
+    lpoke $6E822 temp9 l
+    lpoke $6e826 temp9h
+    lpoke $6E886 temp10l
+    lpoke $6e88a temp10h
+    lpoke $6E88E temp11l
+    lpoke $6e892 temp11h
+    lpoke $6E7B2 temp12l
+    lpoke $6e7b6 temp12h
+    lpoke $6E7BA temp13l
+    lpoke $6e7be temp13h
+    lpoke $6E7F6 temp14l
+    lpoke $6e7fa temp14h
+    lpoke $6E7FE temp15l
+    lpoke $6e802 temp15h
+    lpoke $6E8CA temp16l
+    lpoke $6e8ce temp16h
+    lpoke $6E8D2 temp17l
+    lpoke $6e8d6 temp17h
+    lpoke $6E83E temp18l
+    lpoke $6e842 temp18h
+    lpoke $6E846 temp19l
+    lpoke $6e84a temp19h
+    lpoke $6E7D6 temp20l
+    lpoke $6e7da temp20h
+    lpoke $6E7DE temp21l
+    lpoke $6e7e2 temp21h
+    lpoke $6E92E temp22l
+    lpoke $6e932 temp22h
+    lpoke $6E936 temp23l
+    lpoke $6e93a temp23h
+    lpoke $6E862 temp24l
+    lpoke $6e866 temp24h
+    lpoke $6E86A temp25l
+    lpoke $6e86e temp25h
+    lpoke $6E972 temp26l
+    lpoke $6e976 temp26h
+    lpoke $6E97A temp27l
+    lpoke $6e97e temp27h
+script " "  
+script "P1 Infinite Energy"  
+run:
+    temp0=peek((lpeek($100A46))+$BB)
+    if temp0NEtemp1
+      poke ((lpeek($100A46))+$BB) $80
+      temp1=temp0-$2
+    endif
+script "P1 Drain All Energy Now!"  
+on:
+    poke ((lpeek($100A46))+$BB) $00
+script "P1 Always have Maximum Power"  
+run:
+    poke ((lpeek($100A46))+$F0) $20
+script "P1 Always have Minimum Power"  
+run:
+    poke ((lpeek($100A46))+$F0) $00
+script "P1 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wan-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0B/Charlotte"\
+ "0x0C/Genjuro"\
+ "0x0D/Cham Cham"\
+ "0x0E/Sieger"\
+ "0x0F/Nicotine"\
+ "0x10/Mizuki"\
+ "0x11/Kuroko" 
+run:
+    poke $100D0B param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    temp0=peek((lpeek($100A4A))+$BB)
+    if temp0NEtemp1
+      poke ((lpeek($100A4A))+$BB) $80
+      temp1=temp0-$2
+    endif
+script "P2 Drain All Energy Now!"  
+on:
+    poke ((lpeek($100A4A))+$BB) $00
+script "P2 Always have Maximum Power"  
+run:
+    poke ((lpeek($100A4A))+$F0) $20
+script "P2 Always have Minimum Power"  
+run:
+    poke ((lpeek($100A4A))+$F0) $00
+script "P2 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Hanzo"\
+ "0x03/Galford"\
+ "0x04/Wan-Fu"\
+ "0x05/Ukyo"\
+ "0x06/Kyoshiro"\
+ "0x07/Gen-An"\
+ "0x08/Earthquake"\
+ "0x09/Jubei"\
+ "0x0B/Charlotte"\
+ "0x0C/Genjuro"\
+ "0x0D/Cham Cham"\
+ "0x0E/Sieger"\
+ "0x0F/Nicotine"\
+ "0x10/Mizuki"\
+ "0x11/Kuroko" 
+run:
+    poke $100D1B param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE2D $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

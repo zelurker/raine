@@ -1,42 +1,95 @@
-# Cheats from  : The Ultimate Patchers, Antiriad
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Invulnerability ON" always
-	poke $10D5D5 $F0
-
-script "*UP Invulnerability OFF"
-	poke $10D5D5 $01
-
-script "1UP Unlimited lives    (OFF)" always
-	poke $10D535 $03
-
-script "2UP Unlimited lives    (OFF)" always
-	poke $10D545 $03
-
-script "*UP Unlimited time     (OFF)" always
-	poke $10CC42 $50
-
-script "*UP Maximum fire speed" always
-	poke $10CC35 $05
-
-script "*UP Maximum bounce power" always
-	poke $10CC37 $08
-
-script "*UP Max. bubble size - Red" always
-	poke $10CC3F $04
-
-script "*UP Max. bubble size - Green" always
-	poke $10CC41 $04
-
-script "*UP Max. bubble size - Purple" always
-	poke $10CC3D $04
-
-script "Get red bubbles" always
-	poke $10CC3B $01
-
-script "Get green bubbles" always
-	poke $10CC3B $02
-
-script "Get purple bubbles" always
-	poke $10CC3B $03
+script "Infinite Credits"  
+run:
+    poke $10F7B7 $09
+script "Select Starting Round" \
+ "comm:The SPACE AREA is possibly a hidden extra, you need to die as Bonze to turn into a dragon so turn Invincibility OFF" \
+ "0x00/ROUND 1 DILAPIDATED BACKYARD CEMETRY"\
+ "0x01/ROUND 2 THE DEAD-OR-ALIVE RIVER"\
+ "0x02/ROUND 3 BURNING INFERNO"\
+ "0x03/ROUND 4 BLOODY POND"\
+ "0x04/ROUND 5 GLACIER TRAP"\
+ "0x05/ROUND 6 LOSE-YOUR-WAY MAZE"\
+ "0x06/SEMI-FINAL ROUND - EMMA'S LAIR"\
+ "0x07/FINAL ROUND PART 1"\
+ "0x08/FINAL ROUND PART 2"\
+ "0x09/SPACE AREA" 
+run:
+    if (peek($10CC13)==$00)
+      poke $10CC13 param
+    endif
+script "Infinite Time"  
+run:
+    poke $10CC43 $02
+script "Invincibility"  
+run:
+    poke $10D5D5 $02
+script "Always have Maximum fire speed"  
+run:
+    poke $10CC35 $05
+script "Always have Maximum bounce power"  
+run:
+    poke $10CC37 $08
+script "Always have Blue bubble"  
+run:
+    poke $10CC3B $00
+script "Always have Max. Red bubble size"  
+run:
+    poke $10CC3F $04
+script "Always have Max. Green bubble size"  
+run:
+    poke $10CC41 $04
+script "Always have Max. Purple bubble size"  
+run:
+    poke $10CC3D $04
+script "Mega Jumps" \
+ "comm:This lets you jump higher, may cause bugs so use with caution"  
+on:
+    temp0=peek($00D70D)
+run:
+    poke $00D70D $1F
+off:
+    poke $00D70D temp0
+script "Infinite Energy [SPACE AREA]"  
+run:
+    poke $10E88F $04
+script " "  
+script "P1 Infinite Lives"  
+on:
+    temp0=peek($10D535)
+run:
+    if (frame%300==$0)&&(peek($10D535)!=temp0)
+      poke $10D535 $05
+    endif
+script "P2 Infinite Lives"  
+on:
+    temp0=peek($10D545)
+run:
+    if (frame%300==$0)&&(peek($10D545)!=temp0)
+      poke $10D545 $05
+    endif
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (with F3)." \
+ "0x00/Japan"\
+ "0x01/US"\
+ "0x02/World" 
+on:
+    temp0=peek($03FFFF)
+run:
+    poke $03FFFF param
+off:
+    poke $03FFFF temp0
+script "Fix Bonus Life Dip Switch"  
+on:
+    temp0=lpeek($009624)
+run:
+    lpoke $009624 $0030E848
+off:
+    lpoke $009624 temp0
+script "Skip ROM Check"  
+on:
+    temp0=peek($007526)
+run:
+    poke $007526 $60
+off:
+    poke $007526 temp0

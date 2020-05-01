@@ -1,111 +1,66 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $E200 peek($E200)&$fb|$04
-
-script "1UP Invulnerability OFF"
-	poke $E200 peek($E200)&$fb
-
-script "2UP Invulnerability ON" always
-	poke $E280 peek($E280)&$fb|$04
-
-script "2UP Invulnerability OFF"
-	poke $E280 peek($E280)&$fb
-
-script "1UP Unlimited lives     (OFF)" always
-	poke $E260 $03
-
-script "2UP Unlimited lives     (OFF)" always
-	poke $E2E0 $03
-
-script "*UP Unlimited time" always
-	poke $E1C1 $99
-
-script "1UP Get the protection    (P)" always
-	poke $E254 $01
-
-script "2UP Get the protection    (P)" always
-	poke $E2D4 $01
-
-script "1UP Get the protection    (T)"
-	poke $E254 $01
-
-script "2UP Get the protection    (T)"
-	poke $E2D4 $01
-
-script "1UP No more protection"
-	poke $E254 $00
-
-script "2UP No more protection"
-	poke $E2D4 $00
-
-script "*UP Freeze bubbles        (T)"
-	poke $E0AB $01
-
-script "*UP Unfreeze bubbles      (T)"
-	poke $E0AB $00
-
-script "*UP End Level"
-	poke $E0A0 $00
-
-script "*UP Last level - Panic (next)"
-	poke $E0D3 $62
-
-script "*UP Last level - Tour  (next)"
-	poke $E099 $26
-
-script "*UP Last level - Panic (life)"
-	poke $E0D3 $63
-
-script "*UP Last level - Tour  (life)"
-	poke $E099 $27
-
-script "1UP Weapon - Single       (P)" always
-	poke $E257 $00
-
-script "1UP Weapon - Double       (P)" always
-	poke $E257 $02
-
-script "1UP Weapon - Blocker      (P)" always
-	poke $E257 $04
-
-script "1UP Weapon - M. gun       (P)" always
-	poke $E257 $06
-
-script "2UP Weapon - Single       (P)" always
-	poke $E2D7 $00
-
-script "2UP Weapon - Double       (P)" always
-	poke $E2D7 $02
-
-script "2UP Weapon - Blocker      (P)" always
-	poke $E2D7 $04
-
-script "2UP Weapon - M. gun       (P)" always
-	poke $E2D7 $06
-
-script "1UP Weapon - Single       (T)"
-	poke $E257 $00
-
-script "1UP Weapon - Double       (T)"
-	poke $E257 $02
-
-script "1UP Weapon - Blocker      (T)"
-	poke $E257 $04
-
-script "1UP Weapon - M. gun       (T)"
-	poke $E257 $06
-
-script "2UP Weapon - Single       (T)"
-	poke $E2D7 $00
-
-script "2UP Weapon - Double       (T)"
-	poke $E2D7 $02
-
-script "2UP Weapon - Blocker      (T)"
-	poke $E2D7 $04
-
-script "2UP Weapon - M. gun       (T)"
-	poke $E2D7 $06
+script "Infinite Time" \
+ "comm:Available in tour mode only"  
+run:
+    poke $E1C1 $99
+script "Stop the Bubbles Now!" \
+ "comm:Also Stop the Monsters"  
+on:
+    poke $E0AB $01
+script "Restart the Bubbles Now!"  
+on:
+    poke $E0AB $00
+script "Finish this Level Now!"  
+on:
+    poke $E0A0 $00
+script "Last Panic level next"  
+on:
+    poke $E0D3 $62
+script "Last Tour level next"  
+on:
+    poke $E099 $26
+script "Last Panic level on life loss"  
+on:
+    poke $E0D3 $63
+script "Last Tour level on life loss"  
+on:
+    poke $E099 $27
+script " "  
+script "P1 Infinite Lives" \
+ "comm:This cheat MUST be turned OFF as soon you finish the last level (be it in 'Panic' or 'Tour' mode) or the game won't end after the credits messages (you can't enter your initials and the game 'hangs')."  
+run:
+    poke $E260 $03
+script "P1 Invincibility" \
+ "0x04/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $E200 param|(peek($E200)&~04)
+script "P1 Always Have Protection"  
+run:
+    poke $E254 $02
+script "P1 Select Weapon" \
+ "0x00/Normal"\
+ "0x02/Double"\
+ "0x04/Blocker"\
+ "0x06/Machine Gun" 
+run:
+    poke $E257 param
+script " "  
+script "P2 Infinite Lives" \
+ "comm:This cheat MUST be turned OFF as soon you finish the last level (be it in 'Panic' or 'Tour' mode) or the game won't end after the credits messages (you can't enter your initials and the game 'hangs')."  
+run:
+    poke $E2E0 $03
+script "P2 Invincibility" \
+ "0x04/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $E280 param|(peek($E280)&~04)
+script "P2 Always Have Protection"  
+run:
+    poke $E2D4 $02
+script "P2 Select Weapon" \
+ "0x00/Normal"\
+ "0x02/Double"\
+ "0x04/Blocker"\
+ "0x06/Machine Gun" 
+run:
+    poke $E2D7 param

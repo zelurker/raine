@@ -1,6 +1,57 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $421D $03
+script "Infinite Credits"  
+run:
+    poke $4002 $14
+script "Infinite Lives"  
+run:
+    poke $421D $05
+script "Invincibility"  
+on:
+    temp0=peek($12F2)
+run:
+    poke $12F2 $C9
+off:
+    poke $12F2 temp0
+script "Rapid Fire" \
+ "comm:This cheat enables continuous attack by holding the fire button"  
+run:
+    dpoke $4010 $0000|(dpeek($4010)&~1010)
+script "Bullets never Explode on Non-attacking ships" \
+ "comm:They will keep moving and destroying to they reach their full range"  
+on:
+    temp0=peek($0B50)
+run:
+    poke $0B50 $B1
+off:
+    poke $0B50 temp0
+script "Finish this Level Now!" \
+ "comm:Level will change when all flying aliens return to the swarm"  
+on:
+    dpoke $4222 $0001
+script "Aliens Never Attack"  
+on:
+    temp0=peek($1551)
+    temp1=peek($15DB)
+run:
+    poke $1551 $C9
+    poke $15DB $C9
+off:
+    poke $1551 temp0
+    poke $15DB temp1
+script "Alien Attack Now!" \
+ "comm:Will also temporarily bypass the Aliens Never Attack cheat"  
+on:
+    poke $4228 $01
+script "Flagship Attack Now!" \
+ "comm:Will also temporarily bypass the Aliens Never Attack cheat"  
+on:
+    poke $4229 $01
+script "Half Speed Enemy Bullets"  
+on:
+    temp0=peek($0A99)
+run:
+    poke $0A99 $01
+off:
+    poke $0A99 temp0
+script "Restore flagship row Now!"  
+on:
+    lpoke $4176 $01010101

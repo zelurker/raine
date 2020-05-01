@@ -1,47 +1,79 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $FF82E6 $0E
-
-script "1UP Invulnerability OFF"
-	poke $FF82E6 $01
-
-script "2UP Invulnerability ON" always
-	poke $FF8386 $0E
-
-script "2UP Invulnerability OFF"
-	poke $FF8386 $01
-
-script "1UP Unlimited energy" always
-	dpoke $FF8288 $0999
-
-script "2UP Unlimited energy" always
-	dpoke $FF8328 $0999
-
-script "1UP Character level 8   (max)" always
-	poke $FF82EE $07
-
-script "2UP Character level 8   (max)" always
-	poke $FF838E $07
-
-script "1UP Weapon level 8      (max)" always
-	poke $FF82E9 $07
-
-script "2UP Weapon level 8      (max)" always
-	poke $FF8389 $07
-
-script "1UP Maximum weap. power" always
-	poke $FF82E2 $0B
-	poke $FF82EF $07
-
-script "2UP Maximum weap. power" always
-	poke $FF8382 $0B
-	poke $FF838F $07
-
-script "1UP Maximum blue balls" always
-	poke $FF82E1 $02
-
-script "2UP Maximum blue balls" always
-	poke $FF8381 $02
+script "Select Starting Round" \
+ inter=1,8,1 
+run:
+    if (peek($FF81D7)==$00)
+      poke $FF81D7 (param-$1)
+    endif
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($00A60C)
+    temp1=dpeek($00A620)
+    temp2=dpeek($00A55C)
+    temp3=dpeek($00A570)
+    temp4=dpeek($00A6C0)
+    temp5=dpeek($00A6D6)
+run:
+    dpoke $00A60C $4E71
+    dpoke $00A620 $4E71
+    dpoke $00A55C $4E71
+    dpoke $00A570 $4E71
+    dpoke $00A6C0 $6002
+    dpoke $00A6D6 $4E71
+off:
+    dpoke $00A60C temp0
+    dpoke $00A620 temp1
+    dpoke $00A55C temp2
+    dpoke $00A570 temp3
+    dpoke $00A6C0 temp4
+    dpoke $00A6D6 temp5
+script "One Hit Kills"  
+on:
+    temp0=dpeek($00A640)
+    temp1=dpeek($00A58E)
+run:
+    dpoke $00A640 $4E71
+    dpoke $00A58E $6002
+off:
+    dpoke $00A640 temp0
+    dpoke $00A58E temp1
+script " "  
+script "P1 Invincibility"  
+run:
+    poke $FF82E6 $0E
+script "P1 Infinite Energy"  
+run:
+    dpoke $FF8288 $0999
+script "P1 Character level 8 (max)"  
+run:
+    poke $FF82EE $07
+script "P1 Weapon level 8 (max)"  
+run:
+    poke $FF82E9 $07
+script "P1 Maximum Weapon Power"  
+run:
+    poke $FF82E2 $B
+    poke $FF82EF $07
+script "P1 Maximum Blue Balls"  
+run:
+    poke $FF82E1 $02
+script " "  
+script "P2 Invincibility"  
+run:
+    poke $FF8386 $0E
+script "P2 Infinite Energy"  
+run:
+    dpoke $FF8328 $0999
+script "P2 Character level 8 (max)"  
+run:
+    poke $FF838E $07
+script "P2 Weapon level 8 (max)"  
+run:
+    poke $FF8389 $07
+script "P2 Maximum Weapon Power"  
+run:
+    poke $FF8382 $B
+    poke $FF838F $07
+script "P2 Maximum Blue Balls"  
+run:
+    poke $FF8381 $02
+script " "  

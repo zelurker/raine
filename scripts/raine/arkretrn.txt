@@ -1,9 +1,104 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $402079 $03
-
-script "2UP Unlimited lives" always
-	poke $40207B $03
+script "Infinite Credits"  
+run:
+    poke $400261 $09
+script "Finish this Round Now!"  
+on:
+    poke $40202F $00
+script "Select Starting Round" \
+ "comm:This cheat also unlocks all 100 levels" \
+ inter=1,100,1 
+run:
+    lpoke $402148 $00000000
+    if (peek($40205B)==$01)
+      poke $40205B param
+    endif
+script "Always Keep One Ball in Play"  
+run:
+    if (peek($401D43)<00)||(peek($401D43)>C4)
+      poke $401D43 $B8
+    endif
+script "Infinite Ball Release Time"  
+on:
+    temp0=dpeek($007816)
+run:
+    dpoke $007816 $6012
+off:
+    dpoke $007816 temp0
+script "Select Permanent Ball Type" \
+ "comm:Instead of regular,mega or giga ball, multi-ball will still overide this" \
+ "0x02/Mega Ball"\
+ "0x03/Giga Ball" 
+run:
+    if (peek($401D2D)<=03)&&(peek($401D2D)!=$01)
+      poke $401D2D param
+    endif
+off:
+    if (peek($401D2D)<=03)&&(peek($401D2D)!=$01)
+      poke $401D2D $00
+    endif
+script "Invincibility (Round 100)"  
+on:
+    temp0=peek($0051DE)
+    temp1=peek($007186)
+    temp2=peek($005BD6)
+run:
+    poke $0051DE $60
+    poke $007186 $60
+    poke $005BD6 $60
+off:
+    poke $0051DE temp0
+    poke $007186 temp1
+    poke $005BD6 temp2
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $402079 $63
+script "P1 Always have Lightning Barrier"  
+run:
+    poke $40057D $FF
+    dpoke $402262 $dpeek($401CFA)
+script "P1 Select Permanent Bat Type" \
+ "0x08/x 1.5"\
+ "0x09/x 2.0"\
+ "0x0A/Catch"\
+ "0x0B/Laser" 
+run:
+    if (peek($400379)<=B)
+      poke $400379 param
+    endif
+off:
+    if (peek($400379)<=B)
+      poke $400379 $00
+    endif
+script "P2 Infinite Lives"  
+run:
+    poke $40207B $63
+script "P2 Always have Lightning Barrier"  
+run:
+    poke $4005D3 $FF
+    dpoke $402272 $dpeek($401CFC)
+script "P2 Select Permanent Bat Type" \
+ "0x08/x 1.5"\
+ "0x09/x 2.0"\
+ "0x0A/Catch"\
+ "0x0B/Laser" 
+run:
+    if (peek($4003CF)<=B)
+      poke $4003CF param
+    endif
+off:
+    if (peek($4003CF)<=B)
+      poke $4003CF $00
+    endif
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($0FFFFF)
+run:
+    poke $0FFFFF param
+off:
+    poke $0FFFFF temp0

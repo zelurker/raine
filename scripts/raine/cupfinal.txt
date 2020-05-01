@@ -1,0 +1,146 @@
+script "Infinite Time"  
+run:
+    poke $412629 $3C
+    poke $412628 $09
+script "Finish this Game Now!"  
+on:
+    poke $412629 $00
+    poke $412628 $00
+script " "  
+script "CPU Next Foul = Red Card LEFT TEAM" \
+ "comm:Use when CPU plays with Left Team, works up to 3 times per match."  
+run:
+    poke $41269A $02
+script "Score always 0 LEFT TEAM"  
+run:
+    poke $410E71 $00
+script "Score always 19 LEFT TEAM"  
+run:
+    poke $410E71 $13
+script "Set score = 0 Now! LEFT TEAM"  
+on:
+    poke $410E71 $00
+script "Set score = 19 Now! LEFT TEAM"  
+on:
+    poke $410E71 $13
+script "Select Score Now! LEFT TEAM" \
+ inter=0,19,1 
+change:
+    poke $410E71 (param)
+script " "  
+script "CPU Next Foul = Red Card RIGHT TEAM" \
+ "comm:Use when CPU plays with Right Team, works up to 3 times per match."  
+run:
+    poke $41269B $02
+script "Score always = 0 RIGHT TEAM"  
+run:
+    poke $410E79 $00
+script "Score always = 19 RIGHT TEAM"  
+run:
+    poke $410E79 $13
+script "Set score = 0 Now! RIGHT TEAM"  
+on:
+    poke $410E79 $00
+script "Set score = 19 Now! RIGHT TEAM"  
+on:
+    poke $410E79 $13
+script "Select Score Now! RIGHT TEAM" \
+ inter=0,19,1 
+change:
+    poke $410E79 (param)
+script " "  
+script "P1 Infinite Credits"  
+run:
+    poke $40E77B $09
+script "P1 Infinite Units"  
+run:
+    poke $410EA5 $63
+script "P1 No Fouls"  
+run:
+    poke $410E8D $00
+script "P1 Select Special Shoot" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410EA1 param
+script " "  
+script "P2 Infinite Credits"  
+run:
+    poke $40E77D $09
+script "P2 Infinite Units"  
+run:
+    poke $410EDD $63
+script "P2 No Fouls"  
+run:
+    poke $410EC5 $00
+script "P2 Select Special Shoot" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410ED9 param
+script " "  
+script "P3 Infinite Credits"  
+run:
+    poke $40E77F $09
+script "P3 Infinite Units"  
+run:
+    poke $410F15 $63
+script "P3 No Fouls"  
+run:
+    poke $410EFD $00
+script "P3 Select Special Shoot" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410F11 param
+script " "  
+script "P4 Infinite Credits"  
+run:
+    poke $40E781 $09
+script "P4 Infinite Units"  
+run:
+    poke $410F4D $63
+script "P4 No Fouls"  
+run:
+    poke $410F35 $00
+script "P4 Select Special Shoot" \
+ "0xFF/None"\
+ "0x00/Super Dash"\
+ "0x01/Super Sliding"\
+ "0x02/Over Run"\
+ "0x03/Super Guard"\
+ "0x04/Banana Shoot"\
+ "0x05/Super Shoot"\
+ "0x06/Hyper Shoot" 
+run:
+    poke $410F49 param
+script " "  
+script "Select Region" \
+ "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \
+ "0x01/Japan"\
+ "0x02/US"\
+ "0x03/World" 
+on:
+    temp0=peek($07FFFF)
+run:
+    poke $07FFFF param
+off:
+    poke $07FFFF temp0

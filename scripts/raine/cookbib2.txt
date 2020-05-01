@@ -1,9 +1,73 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Help line ON" always
-	poke $103613 $01
-
-script "*UP Help line OFF"
-	poke $103613 $02
+script "Infinite Credits"  
+run:
+    poke $102475 $09
+script " "  
+script "P1 Select Help Line" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $103613 param|(peek($103613)&~80)
+script "P1 Balls never drop by a line"  
+run:
+    poke $102517 $06
+script "P1 Infinite Move Time"  
+run:
+    poke $102513 $D8
+script "P1 Select Temp. Next Ball" \
+ "0x01/Tennis Ball"\
+ "0x02/Basketball"\
+ "0x03/Football"\
+ "0x04/Baseball"\
+ "0x05/Bowling Ball"\
+ "0x06/Pool Ball"\
+ "0x07/Volleyball"\
+ "0x08/Rugby Ball"\
+ "0x09/Bubble" 
+change:
+    poke $102507 param
+script "P1 Select Perm. Next Ball" \
+ "0x01/Tennis Ball"\
+ "0x02/Basketball"\
+ "0x03/Football"\
+ "0x04/Baseball"\
+ "0x05/Bowling Ball"\
+ "0x06/Pool Ball"\
+ "0x07/Volleyball"\
+ "0x08/Rugby Ball"\
+ "0x09/Bubble" 
+run:
+    poke $102507 param
+script " "  
+script "P2 Next ball always Guide"  
+run:
+    poke $103613 $01
+script "P2 Balls never drop by a line"  
+run:
+    poke $10259D $06
+script "P2 Infinite Move Time"  
+run:
+    poke $102599 $D8
+script "P2 Select Temp. Next Ball" \
+ "0x01/Tennis Ball"\
+ "0x02/Basketball"\
+ "0x03/Football"\
+ "0x04/Baseball"\
+ "0x05/Bowling Ball"\
+ "0x06/Pool Ball"\
+ "0x07/Volleyball"\
+ "0x08/Rugby Ball"\
+ "0x09/Bubble" 
+change:
+    poke $10258D param
+script "P2 Select Perm. Next Ball" \
+ "0x01/Tennis Ball"\
+ "0x02/Basketball"\
+ "0x03/Football"\
+ "0x04/Baseball"\
+ "0x05/Bowling Ball"\
+ "0x06/Pool Ball"\
+ "0x07/Volleyball"\
+ "0x08/Rugby Ball"\
+ "0x09/Bubble" 
+run:
+    poke $10258D param

@@ -1,0 +1,12 @@
+script "Infinite Credits"  
+run:
+    poke $84573 $09
+script "Infinite Time"  
+run:
+    dpoke $8458A $03E7
+script "Rank always set to 1st"  
+run:
+    poke $845AD $01
+script "Invincibility"  
+run:
+    sub.pb@83572=$00

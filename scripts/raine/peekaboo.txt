@@ -1,42 +1,137 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $1F02E7 $03
-
-script "2UP Unlimited lives" always
-	poke $1F02E9 $03
-
-script "*UP Minimum ball speed" always
-	poke $1F30AD $00
-
-script "*UP Pill's power - E"
-	poke $1F30D1 $01
-
-script "*UP Pill's power - C"
-	poke $1F30D1 $02
-
-script "*UP Pill's power - L"
-	poke $1F30D1 $03
-
-script "*UP Pill's power - M"
-	poke $1F30D1 $04
-
-script "*UP Pill's power - H"
-	poke $1F30D1 $05
-
-script "*UP Pill's power - S"
-	poke $1F30D1 $06
-
-script "*UP Pill's power - F"
-	poke $1F30D1 $07
-
-script "*UP Pill's power - D"
-	poke $1F30D1 $08
-
-script "*UP Pill's power - X"
-	poke $1F30D1 $0A
-
-script "*UP Pill's power - extra life"
-	poke $1F30D1 $09
+script "P1 Infinite Lives"  
+run:
+    poke $1F02E7 $09
+script "P2 Infinite Lives"  
+run:
+    poke $1F02E9 $09
+script "Always Slow Ball"  
+run:
+    poke $1F30AD $00
+script "Watch number of Tiles"  
+run:
+script "Get Catch Now!"  
+on:
+    poke $1F3089 $02
+script "Get Hyperball Now!"  
+on:
+    poke $1F3089 $05
+script "Always Catch"  
+run:
+    poke $1F3089 $02
+script "Always Hyperball"  
+run:
+    poke $1F3089 $05
+script "Watch Bonus Effect"  
+run:
+script "Watch Bonus Letter"  
+run:
+script "Every Bonus is Extend"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $01
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $52
+    endif
+script "Every Bonus is Catch"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $02
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $51
+    endif
+script "Every Bonus is Laser"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $03
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $4D
+    endif
+script "Every Bonus is Multi"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $04
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $50
+    endif
+script "Every Bonus is Hyper"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $05
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $4F
+    endif
+script "Every Bonus is Speed"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $06
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $4E
+    endif
+script "Every Bonus is Find"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $07
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $53
+    endif
+script "Every Bonus is Bombs"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $08
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $54
+    endif
+script "Every Bonus is 1UP"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $09
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $56
+    endif
+script "Every Bonus=Finish Level"  
+on:
+    temp0=peek($1F30D1)
+    temp1=peek($1F807F)
+run:
+    if (frame%60==$0)&&(peek($1F30D1)!=temp0)
+      poke $1F30D1 $0A
+    endif
+    if (frame%60==$0)&&(peek($1F807F)!=temp1)
+      poke $1F807F $55
+    endif

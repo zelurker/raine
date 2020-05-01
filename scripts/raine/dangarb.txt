@@ -1,19 +1,31 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $E38C $03
-
-script "2UP Unlimited lives" always
-	poke $E38D $03
-
-script "*UP Unlimited polymorphes" always
-	poke $EC1F $03
-
-script "*UP Unlimited polymorph time" always
-	poke $EC19 $F4
-
-script "*UP No more morph time"
-	poke $EC19 $02
-	poke $EC1A $00
+script "Infinite polymorphs"  
+run:
+    poke $EC1F $03
+script "Infinite polymorph time"  
+run:
+    poke $EC19 $F4
+off:
+    poke $EC19 $02
+    poke $EC1A $00
+script "Get Formation Robot Now!"  
+on:
+    poke $EC01 $84
+    poke $EC04 $00|(peek($EC04)&~02)
+script "Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $EC04 $02
+off:
+    poke $EC04 $00
+script "Rapid Fire" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $E1E7 $00|(peek($E1E7)&~10)
+    poke $E1E9 $00|(peek($E1E9)&~10)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $E38C $05
+script "P2 Infinite Lives"  
+run:
+    poke $E38D $05

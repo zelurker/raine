@@ -1,21 +1,33 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited vitality" always
-	poke $906851 $05
-
-script "2UP Unlimited vitality" always
-	poke $906859 $05
-
-script "3UP Unlimited vitality" always
-	poke $906861 $05
-
-script "4UP Unlimited vitality" always
-	poke $906869 $05
-
-script "*UP Answer ends quiz      (T)"
-	poke $90681F $0A
-
-script "*UP Watch me for good answer" always
-	print_ingame 1 "*UP Watch me for good answer : %02x" peek($906927)
+script "Infinite Credits Slot A"  
+run:
+    poke $907293 $09
+script "Infinite Credits Slot B"  
+run:
+    poke $907295 $09
+script "Infinite Credits Slot C"  
+run:
+    poke $907297 $09
+script "Infinite Credits Slot D"  
+run:
+    poke $907299 $09
+script "Display the Correct Answer"  
+run:
+script "Answer 1 always correct"  
+run:
+    poke $906927 $01
+script "Good answer ends quiz Now!"  
+on:
+    poke $90681F $0A
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $906851 $05
+script "P2 Infinite Lives"  
+run:
+    poke $906859 $05
+script "P3 Infinite Lives"  
+run:
+    poke $906861 $05
+script "P4 Infinite Lives"  
+run:
+    poke $906869 $05

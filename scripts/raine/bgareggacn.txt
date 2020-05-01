@@ -1,0 +1,72 @@
+script "Select Hidden Planes" \
+ "0xFF/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $10A6A7 param
+script "Always 10000pts BONUS"  
+run:
+    poke $109CB8 $24
+script "Watch Game Rank"  
+run:
+script "Always have Easiest Rank"  
+run:
+    lpoke $10C9D2 $00F00000
+script "Select Game Mode" \
+ "comm:Should be activated before SELECT PLAYER screen." \
+ "0x04/Extended"\
+ "0x02/Harder"\
+ "0x00/Stage Edit"\
+ "0x06/Special" 
+on:
+    temp0=peek($10CA0F)
+run:
+    if (peek($10A6B0)==$00)
+      poke $10A6B0 param
+    endif
+    if (param==$00)||(param==$06)
+      poke $10CA0F $FF
+    endif
+off:
+    poke $10CA0F temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101687 $05
+script "P1 Infinite Bombs"  
+run:
+    poke $101683 $04
+    poke $101685 $28
+script "P1 Invincibility"  
+run:
+    poke $101689 $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $101681 $04
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10177F $05
+script "P2 Infinite Bombs"  
+run:
+    poke $10177B $04
+    poke $10177D $28
+script "P2 Invincibility"  
+run:
+    poke $101781 $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $101779 $04
+script " "  
+script "Select Region" \
+ "comm:Enable and Reset to see any effect" \
+ "0x00/Asia"\
+ "0x01/Taiwan"\
+ "0x02/Hong Kong"\
+ "0x03/Korea"\
+ "0x04/China" 
+on:
+    temp0=peek($000000)
+run:
+    poke $000000 param
+off:
+    poke $000000 temp0

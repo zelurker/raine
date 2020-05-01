@@ -1,13 +1,20 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-# DO NOT use clone relation for this game !
-
-script "*UP Unlimited lives" always
-	poke $F0164D $03
-
-script "*UP Unlimited bombs" always
-	poke $F0164F $09
-
-script "*UP Maximum fire power" always
-	poke $F016B3 $03
+script "Infinite Credits"  
+run:
+    poke $F000F3 $09
+script "Infinite Lives"  
+run:
+    poke $F0164D $08
+script "Infinite Bombs"  
+run:
+    poke $F0164F $07
+script "Invincibility" \
+ "comm:Works for all Planes even the Helpers"  
+on:
+    temp0=peek($00A4FC)
+run:
+    poke $00A4FC $60
+off:
+    poke $00A4FC temp0
+script "Always have Max Fire Power"  
+run:
+    poke $F016B3 $03

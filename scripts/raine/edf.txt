@@ -1,51 +1,37 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON  (OFF)" always
-	poke $616F3 $B2
-
-script "1UP Invulnerability OFF"
-	poke $616F3 $01
-
-script "2UP Invulnerability ON  (OFF)" always
-	poke $61953 $B2
-
-script "2UP Invulnerability OFF"
-	poke $61953 $01
-
-script "1UP Unlimited lives" always
-	poke $616F5 $03
-
-script "2UP Unlimited lives" always
-	poke $61955 $03
-
-script "1UP Weapon level 5      (max)" always
-	poke $616F7 $04
-
-script "2UP Weapon level 5      (max)" always
-	poke $61957 $04
-
-script "1UP Weapon - Valcan       (T)"
-	poke $61737 $00
-
-script "1UP Weapon - Laser        (T)"
-	poke $61737 $01
-
-script "1UP Weapon - Atomic       (T)"
-	poke $61737 $02
-
-script "1UP Weapon - Homing       (T)"
-	poke $61737 $03
-
-script "2UP Weapon - Valcan       (T)"
-	poke $61997 $00
-
-script "2UP Weapon - Laser        (T)"
-	poke $61997 $01
-
-script "2UP Weapon - Atomic       (T)"
-	poke $61997 $02
-
-script "2UP Weapon - Homing       (T)"
-	poke $61997 $03
+script "P1 Infinite Lives"  
+run:
+    poke $616F5 $03
+script "P1 Invincibility"  
+run:
+    if (peek($616F3)==$01)
+      poke $616F3 $02
+    endif
+script "P1 Weapon level 5 (max)"  
+run:
+    poke $616F7 $04
+script "P1 Select Weapon" \
+ "0x00/Valcan Weapon"\
+ "0x01/Laser Weapon"\
+ "0x02/Atomic Weapon"\
+ "0x03/Homing Weapon" 
+run:
+    poke $61737 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $61955 $03
+script "P2 Invincibility"  
+run:
+    if (peek($61953)==$01)
+      poke $61953 $02
+    endif
+script "P2 Weapon level 5 (max)"  
+run:
+    poke $61957 $04
+script "P2 Select Weapon" \
+ "0x00/Valcan Weapon"\
+ "0x01/Laser Weapon"\
+ "0x02/Atomic Weapon"\
+ "0x03/Homing Weapon" 
+run:
+    poke $61997 param

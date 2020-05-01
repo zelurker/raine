@@ -1,0 +1,363 @@
+script "Infinite Credits"  
+run:
+    poke $FF5863 $09
+script "Infinite Time"  
+run:
+    poke $FF5D57 $5A
+script "Infinite Time To Buy Upgrades"  
+run:
+    poke $FF5950 $0A
+script "Stage Time always 0" \
+ "comm:00"  
+run:
+    poke $FF5D42 $00
+script "Select Starting Round" \
+ "comm:Enable on the Character Select screen" \
+ inter=1,8,1 
+change:
+    poke $FF5934 (param-$1)
+script "Select Next Round" \
+ inter=1,8,1 
+change:
+    poke $FF5934 (param-$1)
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($01572A)
+    temp1=dpeek($01574A)
+    temp2=dpeek($015764)
+    temp3=dpeek($016544)
+    temp4=dpeek($016562)
+    temp5=dpeek($01657A)
+run:
+    dpoke $01572A $6002
+    dpoke $01574A $6002
+    dpoke $015764 $6002
+    dpoke $016544 $4E71
+    dpoke $016562 $4E71
+    dpoke $01657A $6002
+off:
+    dpoke $01572A temp0
+    dpoke $01574A temp1
+    dpoke $015764 temp2
+    dpoke $016544 temp3
+    dpoke $016562 temp4
+    dpoke $01657A temp5
+script "One Hit Kills"  
+on:
+    temp0=dpeek($0179EC)
+run:
+    dpoke $0179EC $446E
+off:
+    dpoke $0179EC temp0
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF830A $09
+script "P1 Infinite Energy"  
+run:
+    poke $FF82B7 $80
+    poke $FF82EB $80
+script "P1 Invincibility"  
+run:
+    poke $FF830C $03
+script "P1 Infinite Money"  
+run:
+    poke $FF8328 $27
+    poke $FF8329 $0F
+script "P1 Infinite Battle Download Units"  
+run:
+    poke $FF833E $05
+script "P1 Always have 50 Coin Upgrade" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+run:
+    poke $FF833C $01|(peek($FF833C)&~01)
+script "P1 Always have 100 Coin Upgrade" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+run:
+    poke $FF833C $02|(peek($FF833C)&~02)
+script "P1 Always have 200 Coin Upgrade" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+run:
+    poke $FF833C $04|(peek($FF833C)&~04)
+script "P1 Always have 300/400 Coin Upgrade" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+run:
+    poke $FF833C $08|(peek($FF833C)&~08)
+script "P1 Always have 400/300 Coin Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+run:
+    poke $FF833C $10|(peek($FF833C)&~10)
+script "P1 Always have 500 Coin Upgrade" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+run:
+    poke $FF833C $20|(peek($FF833C)&~20)
+script "P1 Always have Earnt Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+run:
+    poke $FF833C $80|(peek($FF833C)&~80)
+script "P1 Get 50 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+on:
+    poke $FF833C $01|(peek($FF833C)&~01)
+script "P1 Get 100 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+on:
+    poke $FF833C $02|(peek($FF833C)&~02)
+script "P1 Get 200 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+on:
+    poke $FF833C $04|(peek($FF833C)&~04)
+script "P1 Get 300/400 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+on:
+    poke $FF833C $08|(peek($FF833C)&~08)
+script "P1 Get 400/300 Coin Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+on:
+    poke $FF833C $10|(peek($FF833C)&~10)
+script "P1 Get 500 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+on:
+    poke $FF833C $20|(peek($FF833C)&~20)
+script "P1 Get Earnt Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+on:
+    poke $FF833C $80|(peek($FF833C)&~80)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF844A $09
+script "P2 Infinite Energy"  
+run:
+    poke $FF83F7 $80
+    poke $FF842B $80
+script "P2 Invincibility"  
+run:
+    poke $FF844C $03
+script "P2 Infinite Money"  
+run:
+    poke $FF8468 $27
+    poke $FF8469 $0F
+script "P2 Infinite Battle Download Units"  
+run:
+    poke $FF847E $05
+script "P2 Always have 50 Coin Upgrade" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+run:
+    poke $FF847C $01|(peek($FF847C)&~01)
+script "P2 Always have 100 Coin Upgrade" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+run:
+    poke $FF847C $02|(peek($FF847C)&~02)
+script "P2 Always have 200 Coin Upgrade" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+run:
+    poke $FF847C $04|(peek($FF847C)&~04)
+script "P2 Always have 300/400 Coin Upgrade" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+run:
+    poke $FF847C $08|(peek($FF847C)&~08)
+script "P2 Always have 400/300 Coin Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+run:
+    poke $FF847C $10|(peek($FF847C)&~10)
+script "P2 Always have 500 Coin Upgrade" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+run:
+    poke $FF847C $20|(peek($FF847C)&~20)
+script "P2 Always have Earnt Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+run:
+    poke $FF847C $80|(peek($FF847C)&~80)
+script "P2 Get 50 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+on:
+    poke $FF847C $01|(peek($FF847C)&~01)
+script "P2 Get 100 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+on:
+    poke $FF847C $02|(peek($FF847C)&~02)
+script "P2 Get 200 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+on:
+    poke $FF847C $04|(peek($FF847C)&~04)
+script "P2 Get 300/400 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+on:
+    poke $FF847C $08|(peek($FF847C)&~08)
+script "P2 Get 400/300 Coin Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+on:
+    poke $FF847C $10|(peek($FF847C)&~10)
+script "P2 Get 500 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+on:
+    poke $FF847C $20|(peek($FF847C)&~20)
+script "P2 Get Earnt Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+on:
+    poke $FF847C $80|(peek($FF847C)&~80)
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $FF858A $09
+script "P3 Infinite Energy"  
+run:
+    poke $FF8537 $80
+    poke $FF856B $80
+script "P3 Invincibility"  
+run:
+    poke $FF858C $03
+script "P3 Infinite Money"  
+run:
+    poke $FF85A8 $27
+    poke $FF85A9 $0F
+script "P3 Infinite Battle Download Units"  
+run:
+    poke $FF85BE $05
+script "P3 Always have 50 Coin Upgrade" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+run:
+    poke $FF85BC $01|(peek($FF85BC)&~01)
+script "P3 Always have 100 Coin Upgrade" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+run:
+    poke $FF85BC $02|(peek($FF85BC)&~02)
+script "P3 Always have 200 Coin Upgrade" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+run:
+    poke $FF85BC $04|(peek($FF85BC)&~04)
+script "P3 Always have 300/400 Coin Upgrade" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+run:
+    poke $FF85BC $08|(peek($FF85BC)&~08)
+script "P3 Always have 400/300 Coin Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+run:
+    poke $FF85BC $10|(peek($FF85BC)&~10)
+script "P3 Always have 500 Coin Upgrade" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+run:
+    poke $FF85BC $20|(peek($FF85BC)&~20)
+script "P3 Always have Earnt Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+run:
+    poke $FF85BC $80|(peek($FF85BC)&~80)
+script "P3 Get 50 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+on:
+    poke $FF85BC $01|(peek($FF85BC)&~01)
+script "P3 Get 100 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+on:
+    poke $FF85BC $02|(peek($FF85BC)&~02)
+script "P3 Get 200 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+on:
+    poke $FF85BC $04|(peek($FF85BC)&~04)
+script "P3 Get 300/400 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+on:
+    poke $FF85BC $08|(peek($FF85BC)&~08)
+script "P3 Get 400/300 Coin Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+on:
+    poke $FF85BC $10|(peek($FF85BC)&~10)
+script "P3 Get 500 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+on:
+    poke $FF85BC $20|(peek($FF85BC)&~20)
+script "P3 Get Earnt Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+on:
+    poke $FF85BC $80|(peek($FF85BC)&~80)
+script " "  
+script "P4 Infinite Lives"  
+run:
+    poke $FF86CA $09
+script "P4 Infinite Energy"  
+run:
+    poke $FF8677 $80
+    poke $FF86AB $80
+script "P4 Invincibility"  
+run:
+    poke $FF86CC $03
+script "P4 Infinite Money"  
+run:
+    poke $FF86E8 $27
+    poke $FF86E9 $0F
+script "P4 Infinite Battle Download Units"  
+run:
+    poke $FF86FE $05
+script "P4 Always have 50 Coin Upgrade" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+run:
+    poke $FF86FC $01|(peek($FF86FC)&~01)
+script "P4 Always have 100 Coin Upgrade" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+run:
+    poke $FF86FC $02|(peek($FF86FC)&~02)
+script "P4 Always have 200 Coin Upgrade" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+run:
+    poke $FF86FC $04|(peek($FF86FC)&~04)
+script "P4 Always have 300/400 Coin Upgrade" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+run:
+    poke $FF86FC $08|(peek($FF86FC)&~08)
+script "P4 Always have 400/300 Coin Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+run:
+    poke $FF86FC $10|(peek($FF86FC)&~10)
+script "P4 Always have 500 Coin Upgrade" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+run:
+    poke $FF86FC $20|(peek($FF86FC)&~20)
+script "P4 Always have Earnt Upgrade" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+run:
+    poke $FF86FC $80|(peek($FF86FC)&~80)
+script "P4 Get 50 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Hyper Tornado' Yellow Iris='Whip Rush' Alien Green='Alien Twister' Pink Ostrich='Burning Arrow' Captain Silver='Silver Wind'"  
+on:
+    poke $FF86FC $01|(peek($FF86FC)&~01)
+script "P4 Get 100 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Burning Heel Kick' Yellow Iris='Triangle Shot' Alien Green='Alien Magic' Pink Ostrich='Sonic Spin' Captain Silver='Slash Stream'"  
+on:
+    poke $FF86FC $02|(peek($FF86FC)&~02)
+script "P4 Get 200 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Heat Kick' Yellow Iris='Aerial Dance' Alien Green='Green Cyclone' Pink Ostrich='Sky Capture' Captain Silver='Rolling Crush'"  
+on:
+    poke $FF86FC $04|(peek($FF86FC)&~04)
+script "P4 Get 300/400 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Giga Crush' Yellow Iris='Mirage Dance' Alien Green='Healing Plus' Pink Ostrich/Captain Silver='Vital Gain 1'"  
+on:
+    poke $FF86FC $08|(peek($FF86FC)&~08)
+script "P4 Get 400/300 Coin Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green='Vital Gain 1' Pink Ostrich='Triple Feather' Captain Silver='Freeze Laser'"  
+on:
+    poke $FF86FC $10|(peek($FF86FC)&~10)
+script "P4 Get 500 Coin Upgrade Now!" \
+ "comm:Cyber Blue='Cyber Cannon' Yellow Iris='Fin Special' Alien Green='Honey Bee Attack' Pink Ostrich='Pinky Ball' Captain Silver='Freeze Storm'"  
+on:
+    poke $FF86FC $20|(peek($FF86FC)&~20)
+script "P4 Get Earnt Upgrade Now!" \
+ "comm:Cyber Blue/Yellow Iris/Alien Green/Pink Ostrich/Captain Silver='Vital Gain 2'"  
+on:
+    poke $FF86FC $80|(peek($FF86FC)&~80)
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x01/USA"\
+ "0x02/Asia"\
+ "0x03/Hispanic"\
+ "0x04/Euro"\
+ "0x05/Brazil" 
+run:
+    poke $FF58C4 param

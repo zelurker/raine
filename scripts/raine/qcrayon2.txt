@@ -1,24 +1,58 @@
-# Cheats from  : Pugsy
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Infinite Energy PL1" always
-	poke $20585D $05
-
-script "Maximum Power PL1 (Rock Round)" always
-	poke $208157 $4F
-
-script "Infinite Energy PL2" always
-	poke $20587F $05
-
-script "Maximum Power PL2 (Rock Round)" always
-	poke $208173 $4F
-
-script "Watch me for good answer (Quiz Round)" always
-	print_ingame 1 "Watch me for good answer (Quiz Round) : %02x" peek($205943)
-
-script "Watch me for good answer (Spell Round)" always
-	print_ingame 1 "Watch me for good answer (Spell Round) : %02x" peek($205991)
-
-script "Watch me and match me    (Spell Round)" always
-	print_ingame 1 "Watch me and match me    (Spell Round) : %02x" peek($205ABD)
+script "Infinite Time [General Purpose]" \
+ "comm:Infinite Time for Quiz Round, Round Select, Spelling Game"  
+run:
+    poke $205895 $0A
+script "Infinite Time [Maze Round]"  
+run:
+    poke $208E1F $0A
+script "Infinite Time [Balloon Round]"  
+run:
+    poke $20A2FF $0A
+script "Infinite Time [Tug of War Round]"  
+run:
+    poke $209CF9 $0A
+script "Complete this Round Fast Now!" \
+ "comm:Works for most types of rounds except for the Quiz type rounds and the Spelling Round"  
+on:
+    poke $2044E7 $00
+script "Always complete Rounds Fast" \
+ "comm:Works for most types of rounds except for the Quiz type rounds and the Spelling Round"  
+run:
+    poke $2044E7 $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $20585D $05
+script "P1 Maximum Power [Rock Round]"  
+run:
+    poke $208157 $4F
+script "P2 Infinite Lives"  
+run:
+    poke $20587F $05
+script "P2 Maximum Power [Rock Round]"  
+run:
+    poke $208173 $4F
+script " "  
+script "Display the Correct Answer [Quiz Round]"  
+run:
+script "Answer 1 always correct [Quiz Round]"  
+run:
+    poke $205943 $01
+script "Answer 1 is correct Now! [Quiz Round]"  
+on:
+    poke $205943 $01
+script " "  
+script "Watch and match these two values to"  
+script "get the answer correct on the round."  
+script " "  
+script "Watch me for good answer [Spelling Round]"  
+run:
+script "Watch me and match me! [Spelling Round]" \
+ "comm:Use this cheat in conjunction with the 'Watch me for good answer [Spelling Round]'. Change this value by moving the joystick and when this value matches the 'Watch me for good answer [Spelling Round]' watch then you will be over the correct answer - just press fire!"  
+run:
+script "First character always correct [Spelling Round]"  
+run:
+    poke $205991 $01
+script "First character is correct Now! [Spelling Round]"  
+on:
+    poke $205991 $01

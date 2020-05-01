@@ -1,0 +1,101 @@
+script "Infinite Continues"  
+run:
+    poke $10FD89 $64
+    poke $101032 $00
+script "Infinite Energy"  
+run:
+    poke $10181F $08
+script "Select Weapon" \
+ "0x0F/Machine Gun"\
+ "0x00/Pistol" 
+run:
+    poke $101856 param
+script "Infinite Pistol Ammo"  
+run:
+    dpoke $1017F6 $0999
+script "Infinite M. Gun Ammo"  
+run:
+    dpoke $101854 $0999
+script "Infinite Knife Power"  
+run:
+    poke $101878 $10
+script "One Hit Kills"  
+on:
+    temp0=dpeek($003334)
+run:
+    dpoke $003334 $4229
+off:
+    dpoke $003334 temp0
+script "Select Starting Mission" \
+ "0x01/Mission 1"\
+ "0x02/Mission 2"\
+ "0x03/End Sequence" 
+on:
+    temp0l=lpeek(0D16)
+    temp0h=lpeek($d1a
+run:
+    if param==$01
+      lpoke $0D16 temp0l
+      lpoke $d1a temp0h
+    endif
+    if param==$02
+      lpoke $0D16 $4EF90001
+      lpoke $d1a $3C540000
+    endif
+    if param==$03
+      lpoke $0D16 $4EF90000
+      lpoke $d1a $7E4C0000
+    endif
+off:
+    lpoke $0D16 temp0l
+    lpoke $d1a temp0h
+script "Rapid Punch" \
+ "comm:All Button A operations (punch-knife stab-fire) will be rapid."  
+run:
+    poke $10FD96 $00|(peek($10FD96)&~10)
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

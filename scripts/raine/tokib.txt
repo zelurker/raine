@@ -1,54 +1,50 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited lives" always
-	poke $60A67 $03
-
-script "*UP Unlimited time" always
-	poke $6087E $99
-
-script "*UP Unlimited fire power" always
-	poke $60ADA $FC
-
-script "*UP Helmet ON" always
-	poke $60AAB $01
-
-script "*UP Helmet OFF"
-	poke $60AAB $00
-
-script "*UP No extra weapon       (P)" always
-	poke $60AA9 $00
-
-script "*UP Extra weapon - POW up (P)" always
-	poke $60AA9 $01
-
-script "*UP Extra weapon - Double (P)" always
-	poke $60AA9 $02
-
-script "*UP Extra weapon - Flames (P)" always
-	poke $60AA9 $03
-
-script "*UP Extra weapon - Fire   (P)" always
-	poke $60AA9 $04
-
-script "*UP Extra weapon - Triple (P)" always
-	poke $60AA9 $05
-
-script "*UP No extra weapon       (T)"
-	poke $60AA9 $00
-
-script "*UP Extra weapon - POW up (T)"
-	poke $60AA9 $01
-
-script "*UP Extra weapon - Double (T)"
-	poke $60AA9 $02
-
-script "*UP Extra weapon - Flames (T)"
-	poke $60AA9 $03
-
-script "*UP Extra weapon - Fire   (T)"
-	poke $60AA9 $04
-
-script "*UP Extra weapon - Triple (T)"
-	poke $60AA9 $05
+script "Infinite Time"  
+run:
+    dpoke $6087D $0999
+script "Infinite Lives"  
+run:
+    poke $60A67 $09
+script "Invincibility" \
+ "comm:You can still die by falling down bottomless pits and falling in lava though"  
+on:
+    temp0=dpeek($19726)
+run:
+    dpoke $19726 $4E75
+off:
+    dpoke $19726 temp0
+script "Kill Boss with 1 Hit Now!"  
+on:
+    poke $627E5 $00
+    poke $62841 $00
+script "Destroy Last Boss Armor with 1 hit now!" \
+ "comm:Use this to kill last boss faster"  
+on:
+    poke $62F15 $00
+script "Select Weapon" \
+ "0x00/Default Weapon"\
+ "0x01/Big Balls"\
+ "0x02/Whirler"\
+ "0x03/Flamer"\
+ "0x04/Lava"\
+ "0x05/3-Way" 
+run:
+    poke $60AA9 param
+script "Always have Maximum Lava Weapon Power"  
+run:
+    poke $60ADA $FC
+script "Select Effect" \
+ "0x01/Helmet Effect"\
+ "0x02/Sneakers Effect" 
+run:
+    poke $60AAB param
+script "Select Sprite Movement" \
+ "0x01/Walk"\
+ "0x05/Swim" 
+run:
+    poke $60AA7 param
+script "Debug Mode" \
+ "comm:Gives you Invincibility and some on-screen info"  
+on:
+    poke $489 $0F
+off:
+    poke $489 $00

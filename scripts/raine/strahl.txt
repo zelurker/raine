@@ -1,173 +1,75 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2002.02.13
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $F0DBB $03
-
-script "2UP Unlimited lives" always
-	poke $F0DBD $03
-
-script "1UP Unlimited bombs" always
-	poke $F0D5F $1C
-
-script "2UP Unlimited bombs" always
-	poke $F0D69 $1C
-
-script "1UP Maximum fire power" always
-	poke $FA60F $60
-
-script "2UP Maximum fire power" always
-	poke $FA70B $60
-
-script "1UP Max. weapon weight" always
-	poke $F0DCE $02
-	poke $F0DCF $7F
-
-script "2UP Max. weapon weight" always
-	poke $F0DD0 $02
-	poke $F0DD1 $7F
-
-script "1UP Shot - Twin           (P)" always
-	poke $F0D57 $00
-
-script "1UP Shot - Laser          (P)" always
-	poke $F0D57 $01
-
-script "1UP Shot - Homing laser   (P)" always
-	poke $F0D57 $02
-
-script "1UP Shot - Charge         (P)" always
-	poke $F0D57 $03
-
-script "2UP Shot - Twin           (P)" always
-	poke $F0D61 $00
-
-script "2UP Shot - Laser          (P)" always
-	poke $F0D61 $01
-
-script "2UP Shot - Homing laser   (P)" always
-	poke $F0D61 $02
-
-script "2UP Shot - Charge         (P)" always
-	poke $F0D61 $03
-
-script "1UP Shot - Twin           (T)"
-	poke $F0D57 $00
-
-script "1UP Shot - Laser          (T)"
-	poke $F0D57 $01
-
-script "1UP Shot - Homing laser   (T)"
-	poke $F0D57 $02
-
-script "1UP Shot - Charge         (T)"
-	poke $F0D57 $03
-
-script "2UP Shot - Twin           (T)"
-	poke $F0D61 $00
-
-script "2UP Shot - Laser          (T)"
-	poke $F0D61 $01
-
-script "2UP Shot - Homing laser   (T)"
-	poke $F0D61 $02
-
-script "2UP Shot - Charge         (T)"
-	poke $F0D61 $03
-
-script "1UP Side - Vulcan         (P)" always
-	poke $F0D59 $00
-
-script "1UP Side - Homing         (P)" always
-	poke $F0D59 $01
-
-script "1UP Side - Shield         (P)" always
-	poke $F0D59 $02
-
-script "1UP Side - Expand         (P)" always
-	poke $F0D59 $03
-
-script "2UP Side - Vulcan         (P)" always
-	poke $F0D65 $00
-
-script "2UP Side - Homing         (P)" always
-	poke $F0D65 $01
-
-script "2UP Side - Shield         (P)" always
-	poke $F0D65 $02
-
-script "2UP Side - Expand         (P)" always
-	poke $F0D65 $03
-
-script "1UP Side - Vulcan         (T)"
-	poke $F0D59 $00
-
-script "1UP Side - Homing         (T)"
-	poke $F0D59 $01
-
-script "1UP Side - Shield         (T)"
-	poke $F0D59 $02
-
-script "1UP Side - Expand         (T)"
-	poke $F0D59 $03
-
-script "2UP Side - Vulcan         (T)"
-	poke $F0D65 $00
-
-script "2UP Side - Homing         (T)"
-	poke $F0D65 $01
-
-script "2UP Side - Shield         (T)"
-	poke $F0D65 $02
-
-script "2UP Side - Expand         (T)"
-	poke $F0D65 $03
-
-script "1UP Bomb - Small          (P)" always
-	poke $F0D5D $00
-
-script "1UP Bomb - Rocket         (P)" always
-	poke $F0D5D $01
-
-script "1UP Bomb - Big            (P)" always
-	poke $F0D5D $02
-
-script "1UP Bomb - Napalm         (P)" always
-	poke $F0D5D $03
-
-script "2UP Bomb - Small          (P)" always
-	poke $F0D67 $00
-
-script "2UP Bomb - Rocket         (P)" always
-	poke $F0D67 $01
-
-script "2UP Bomb - Big            (P)" always
-	poke $F0D67 $02
-
-script "2UP Bomb - Napalm         (P)" always
-	poke $F0D67 $03
-
-script "1UP Bomb - Small          (T)"
-	poke $F0D5D $00
-
-script "1UP Bomb - Rocket         (T)"
-	poke $F0D5D $01
-
-script "1UP Bomb - Big            (T)"
-	poke $F0D5D $02
-
-script "1UP Bomb - Napalm         (T)"
-	poke $F0D5D $03
-
-script "2UP Bomb - Small          (T)"
-	poke $F0D67 $00
-
-script "2UP Bomb - Rocket         (T)"
-	poke $F0D67 $01
-
-script "2UP Bomb - Big            (T)"
-	poke $F0D67 $02
-
-script "2UP Bomb - Napalm         (T)"
-	poke $F0D67 $03
+script "P1 Infinite Lives"  
+run:
+    poke $F0DBB $10
+script "P1 Infinite Bombs"  
+run:
+    poke $F0D5F $1C
+script "P1 Invincibility"  
+run:
+    poke $F0CD1 $00
+script "P1 Maximum Weapon Weight"  
+run:
+    poke $F0DCE $02
+    poke $F0DCF $7F
+script "P1 Weapon always Full Power"  
+run:
+    poke $FA60F $60
+script "P1 Select Shot" \
+ "0x00/TWIN"\
+ "0x01/LASER"\
+ "0x02/H.LASER"\
+ "0x03/CHARGE" 
+run:
+    poke $F0D57 param
+script "P1 Select Side" \
+ "0x00/VULCAN"\
+ "0x01/HOMING"\
+ "0x02/SHIELD"\
+ "0x03/EXPAND" 
+run:
+    poke $F0D59 param
+script "P1 Select Bomb" \
+ "0x00/SMALL"\
+ "0x01/ROCKET"\
+ "0x02/BIG"\
+ "0x03/NAPALM" 
+run:
+    poke $F0D5D param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F0DBD $10
+script "P2 Infinite Bombs"  
+run:
+    poke $F0D69 $1C
+script "P2 Invincibility"  
+run:
+    poke $F0CD3 $00
+script "P2 Maximum Weapon Weight"  
+run:
+    poke $F0DD0 $02
+    poke $F0DD1 $7F
+script "P2 Weapon always Full Power"  
+run:
+    poke $FA70B $60
+script "P2 Select Shot" \
+ "0x00/TWIN"\
+ "0x01/LASER"\
+ "0x02/H.LASER"\
+ "0x03/CHARGE" 
+run:
+    poke $F0D61 param
+script "P2 Select Side" \
+ "0x00/VULCAN"\
+ "0x01/HOMING"\
+ "0x02/SHIELD"\
+ "0x03/EXPAND" 
+run:
+    poke $F0D65 param
+script "P2 Select Bomb" \
+ "0x00/SMALL"\
+ "0x01/ROCKET"\
+ "0x02/BIG"\
+ "0x03/NAPALM" 
+run:
+    poke $F0D67 param

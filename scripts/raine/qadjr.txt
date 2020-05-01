@@ -1,16 +1,26 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-# DO NOT use clone relation for this game !
-
-script "1UP Unlimited vitality" always
-	poke $FF81A7 $05
-
-script "2UP Unlimited vitality" always
-	poke $FF82A7 $05
-
-script "*UP Good answer ends quiz (T)"
-	poke $FF8C0D $01
-
-script "*UP Watch me for good answer" always
-	print_ingame 1 "*UP Watch me for good answer : %02x" peek($FFB698)
+script " "  
+script "Watch out for these values 10=1, 20=2, 40=3, 80=4"  
+script " "  
+script "Watch me for good answer"  
+run:
+script "Good answer ends quiz Now!"  
+on:
+    poke $FF8C0D $01
+script "Select Perm. Steps" \
+ "0x01/1 step"\
+ "0x02/2 steps"\
+ "0x03/3 steps"\
+ "0x04/4 steps"\
+ "0x05/5 steps"\
+ "0x06/6 steps"\
+ "0x32/50 steps" 
+run:
+    poke $FF8CCE param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF81A7 $05
+script "P2 Infinite Lives"  
+run:
+    poke $FF82A7 $05
+script " "  

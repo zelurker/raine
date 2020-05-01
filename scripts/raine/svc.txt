@@ -1,0 +1,239 @@
+script "Infinite Time"  
+run:
+    poke $10AC15 $5B
+script "Unlock Secret Characters" \
+ "comm:The secret characters are selectable but you won't see the icons which are between the two character select blocks"  
+on:
+    temp0=dpeek($00DCF6)
+    temp1=dpeek($00DEBA)
+run:
+    dpoke $00DCF6 $601A
+    dpoke $00DEBA $601A
+off:
+    dpoke $00DCF6 temp0
+    dpoke $00DEBA temp1
+script "Stage 1 Clear to Ending"  
+run:
+    poke $10ABDD $08
+script "Infinite Time in Player Select"  
+run:
+    poke $10CD6C $0F
+script "No InGame Background Music"  
+on:
+    temp0=peek($011276)
+run:
+    poke $011276 $60
+off:
+    poke $011276 temp0
+script "Select Secret Ending Stage" \
+ "comm:Appears at the end of the Game" \
+ "0x0F/Heaven (Athena)"\
+ "0x1F/Hell (Red Arremer)"\
+ "0xFF/Nothing (Bad End)" 
+run:
+    poke $10CDE8 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $10A239 $E0
+script "P1 Infinite Energy (Red)"  
+run:
+    poke $10A239 $70
+script "P1 Always Max Power"  
+run:
+    poke $10A1E8 $63
+    poke $10A1E9 $FF
+    poke $10A21D $20
+script "P1 Infinite Exceed"  
+run:
+    dpoke $10D01A $0258
+script "P1 Infinite Guard"  
+run:
+    poke $10A247 $70
+script "P1 No Energy"  
+run:
+    poke $10A239 $00
+script "P1 No Power"  
+run:
+    poke $10A1E8 $00
+    poke $10A1E9 $00
+script "P1 No Guard"  
+run:
+    poke $10A247 $00
+script "P1 Select Character" \
+ "0x00/Kyo"\
+ "0x01/Iori"\
+ "0x02/Ryo"\
+ "0x03/Terry"\
+ "0x04/Mai"\
+ "0x05/Kasumi"\
+ "0x06/Kim"\
+ "0x07/Mr.Karate"\
+ "0x08/Choi"\
+ "0x09/Earthquake"\
+ "0x0A/Genjyuro"\
+ "0x0B/Shiki"\
+ "0x0C/Geese *"\
+ "0x0D/Mars People *"\
+ "0x0E/Goenitz *"\
+ "0x0F/Athena **"\
+ "0x10/Ryu"\
+ "0x11/Ken"\
+ "0x12/Chun-Li"\
+ "0x13/Guile"\
+ "0x14/Dhalsim"\
+ "0x15/M.Bison (Balrog)"\
+ "0x16/Balrog (Vega)"\
+ "0x17/Sagat"\
+ "0x18/Vega (M.Bison)"\
+ "0x19/Gouki (Akuma)"\
+ "0x1A/Hugo"\
+ "0x1B/Tessa"\
+ "0x1C/Zero *"\
+ "0x1D/Demitri *"\
+ "0x1E/Dan *"\
+ "0x1F/Red Arremer **"\
+ "0x20/Iori *"\
+ "0x21/Mr.Karate **"\
+ "0x22/Violent Ken *"\
+ "0x23/Shin-Gouki (Shin-Akuma) **" 
+run:
+    poke $10AC30 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $10A4B9 $E0
+script "P2 Infinite Energy (Red)"  
+run:
+    poke $10A4B9 $70
+script "P2 Always Max Power"  
+run:
+    poke $10A468 $63
+    poke $10A469 $FF
+    poke $10A49D $20
+script "P2 Infinite Exceed"  
+run:
+    dpoke $10D1DE $0258
+script "P2 Infinite Guard"  
+run:
+    poke $10A4C7 $70
+script "P2 No Energy"  
+run:
+    poke $10A4B9 $00
+script "P2 No Power"  
+run:
+    poke $10A468 $00
+    poke $10A469 $00
+script "P2 No Guard"  
+run:
+    poke $10A4C7 $00
+script "P2 Select Character" \
+ "0x00/Kyo"\
+ "0x01/Iori"\
+ "0x02/Ryo"\
+ "0x03/Terry"\
+ "0x04/Mai"\
+ "0x05/Kasumi"\
+ "0x06/Kim"\
+ "0x07/Mr.Karate"\
+ "0x08/Choi"\
+ "0x09/Earthquake"\
+ "0x0A/Genjyuro"\
+ "0x0B/Shiki"\
+ "0x0C/Geese *"\
+ "0x0D/Mars People *"\
+ "0x0E/Goenitz *"\
+ "0x0F/Athena **"\
+ "0x10/Ryu"\
+ "0x11/Ken"\
+ "0x12/Chun-Li"\
+ "0x13/Guile"\
+ "0x14/Dhalsim"\
+ "0x15/M.Bison (Balrog)"\
+ "0x16/Balrog (Vega)"\
+ "0x17/Sagat"\
+ "0x18/Vega (M.Bison)"\
+ "0x19/Gouki (Akuma)"\
+ "0x1A/Hugo"\
+ "0x1B/Tessa"\
+ "0x1C/Zero *"\
+ "0x1D/Demitri *"\
+ "0x1E/Dan *"\
+ "0x1F/Red Arremer **"\
+ "0x20/Iori *"\
+ "0x21/Mr.Karate **"\
+ "0x22/Violent Ken *"\
+ "0x23/Shin-Gouki (Shin-Akuma) **" 
+run:
+    poke $10AC54 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FD89 $00
+    cpu main
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=dpeek($00ED7A)
+    temp1=lpeek($00ED7C)
+run:
+    dpoke $00ED7A $4E71
+    lpoke $00ED7C $4E714E71
+    poke $10AB8A peek($10AB8A)&7F
+    if (peek($10AC1B)&4F)==$40
+      poke $10AB8A peek($10AB8A)|80
+      poke $10AC1A peek($10AC1A)&EF
+      poke $10008B $00
+      dpoke $10C436 $8F8F
+    endif
+off:
+    dpoke $00ED7A temp0
+    lpoke $00ED7C temp1
+    poke $10AB8A peek($10AB8A)&0F
+    dpoke $10C436 $0000
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

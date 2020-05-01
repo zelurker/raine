@@ -1,87 +1,40 @@
-# Cheats from  : Pugsy, The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : Pugsy
-
-script "Always have Red Shape PL1" always
-	dpoke $804802 $0101
-
-script "Always have Orange Shape PL1" always
-	dpoke $804802 $0202
-
-script "Always have Blue Shape PL1" always
-	dpoke $804802 $0303
-
-script "Always have Purple Shape PL1" always
-	dpoke $804802 $0404
-
-script "Always have Green Shape PL1" always
-	dpoke $804802 $0505
-
-script "Always have Cyan Shape PL1" always
-	dpoke $804802 $0606
-
-script "Always have Yellow Shape PL1" always
-	dpoke $804802 $0707
-
-script "Make current Shape = Red Now! PL1"
-	dpoke $804802 $0101
-
-script "Make current Shape = Orange Now! PL1"
-	dpoke $804802 $0202
-
-script "Make current Shape = Blue Now! PL1"
-	dpoke $804802 $0303
-
-script "Make current Shape = Purple Now! PL1"
-	dpoke $804802 $0404
-
-script "Make current Shape = Green Now! PL1"
-	dpoke $804802 $0505
-
-script "Make current Shape = Cyan Now! PL1"
-	dpoke $804802 $0606
-
-script "Make current Shape = Yellow Now! PL1"
-	dpoke $804802 $0707
-
-script "Always have Red Shape PL2" always
-	dpoke $80493C $0101
-
-script "Always have Orange Shape PL2" always
-	dpoke $80493C $0202
-
-script "Always have Blue Shape PL2" always
-	dpoke $80493C $0303
-
-script "Always have Purple Shape PL2" always
-	dpoke $80493C $0404
-
-script "Always have Green Shape PL2" always
-	dpoke $80493C $0505
-
-script "Always have Cyan Shape PL2" always
-	dpoke $80493C $0606
-
-script "Always have Yellow Shape PL2" always
-	dpoke $80493C $0707
-
-script "Make current Shape = Red Now! PL2"
-	dpoke $80493C $0101
-
-script "Make current Shape = Orange Now! PL2"
-	dpoke $80493C $0202
-
-script "Make current Shape = Blue Now! PL2"
-	dpoke $80493C $0303
-
-script "Make current Shape = Purple Now! PL2"
-	dpoke $80493C $0404
-
-script "Make current Shape = Green Now! PL2"
-	dpoke $80493C $0505
-
-script "Make current Shape = Cyan Now! PL2"
-	dpoke $80493C $0606
-
-script "Make current Shape = Yellow Now! PL2"
-	dpoke $80493C $0707
+script "P1 Select Perm. Current Shape" \
+ "0x0101/Red"\
+ "0x0202/Orange"\
+ "0x0303/Blue"\
+ "0x0404/Purple"\
+ "0x0505/Green"\
+ "0x0606/Cyan"\
+ "0x0707/Yellow" 
+run:
+    dpoke $804802 param
+script "P1 Select Temp. Current Shape" \
+ "0x0101/Red"\
+ "0x0202/Orange"\
+ "0x0303/Blue"\
+ "0x0404/Purple"\
+ "0x0505/Green"\
+ "0x0606/Cyan"\
+ "0x0707/Yellow" 
+change:
+    dpoke $804802 param
+script "P2 Select Perm. Current Shape" \
+ "0x0101/Red"\
+ "0x0202/Orange"\
+ "0x0303/Blue"\
+ "0x0404/Purple"\
+ "0x0505/Green"\
+ "0x0606/Cyan"\
+ "0x0707/Yellow" 
+run:
+    dpoke $80493C param
+script "P2 Select Temp. Current Shape" \
+ "0x0101/Red"\
+ "0x0202/Orange"\
+ "0x0303/Blue"\
+ "0x0404/Purple"\
+ "0x0505/Green"\
+ "0x0606/Cyan"\
+ "0x0707/Yellow" 
+change:
+    dpoke $80493C param

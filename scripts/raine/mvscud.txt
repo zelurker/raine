@@ -1,0 +1,597 @@
+script "Infinite Time"  
+run:
+    poke $FF4008 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+run:
+    if (frame%60==$0)
+      poke $FF4008 $00
+    endif
+script "Infinite Char Select Time"  
+run:
+    poke $FF416E $13
+script "Select Backdrop Now!" \
+ "comm:Will not update till the next round - use it before the backdrop displays" \
+ inter=1,10,1 
+change:
+    poke $FF4113 (param-$1)
+script "Select Current Stage Now!" \
+ inter=1,10,1 
+change:
+    poke $FF4081 (param-$1)
+script "Go to Final Stage Now!"  
+on:
+    poke $FF4081 $09
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($0D7274)
+run:
+    dpoke $0D7274 $6002
+off:
+    dpoke $0D7274 temp0
+script " "  
+script "P1 Infinite Energy (1st Char)"  
+run:
+    poke $FF3271 $90
+    poke $FF327B $90
+script "P1 Drain All Energy (1st Char) Now!"  
+on:
+    poke $FF3271 $00
+    poke $FF327B $00
+script "P1 Infinite Energy (2nd Char)"  
+run:
+    poke $FF3A71 $90
+    poke $FF3A7B $90
+script "P1 Drain All Energy (2nd Char) Now!"  
+on:
+    poke $FF3A71 $00
+    poke $FF3A7B $00
+    temp0=lpeek($0D7248)
+    temp1=lpeek($0D724C)
+    temp2=lpeek($3FFFC0)
+    temp3=lpeek($3FFFC4)
+    temp4=lpeek($3FFFC8)
+    temp5=lpeek($3FFFCC)
+    temp6=lpeek($3FFFD0)
+    temp7=lpeek($3FFFD4)
+    temp8=dpeek($3FFFD8)
+run:
+    lpoke $0D7248 $4EB9003F
+    lpoke $0D724C $FFC04E71
+    lpoke $3FFFC0 $BDFC00FF
+    lpoke $3FFFC4 $34006608
+    lpoke $3FFFC8 $3F7C7278
+    lpoke $3FFFCC $00024E75
+    lpoke $3FFFD0 $302C0070
+    lpoke $3FFFD4 $322E0078
+    dpoke $3FFFD8 $4E75
+off:
+    lpoke $0D7248 temp0
+    lpoke $0D724C temp1
+    lpoke $3FFFC0 temp2
+    lpoke $3FFFC4 temp3
+    lpoke $3FFFC8 temp4
+    lpoke $3FFFCC temp5
+    lpoke $3FFFD0 temp6
+    lpoke $3FFFD4 temp7
+    dpoke $3FFFD8 temp8
+script "P1 Infinite Strikers"  
+run:
+    poke $FF32C6 $09
+script "P1 Always have Max Super"  
+run:
+    poke $FF3274 $03
+    poke $FF3A74 $03
+script "P1 Enable All Chars" \
+ "comm:Roll is Right from Megaman/Rockman, Fast-Venom is Up from Chun-Li, MSH-Hulk is Up from Ryu, Armor-War Machine is Up from Zangief,Shadow Lady is Down from Gambit + Alt-Morrigan is Down from War Machine"  
+run:
+    poke $FF4199 $40
+script "P1 Select 1st Char" \
+ "0x02/War Machine"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Gambit"\
+ "0x0C/Venom"\
+ "0x0E/Spider-Man"\
+ "0x10/Roll"\
+ "0x12/Ryu"\
+ "0x14/Captain Commando"\
+ "0x16/Chun-Li"\
+ "0x18/Jin"\
+ "0x1A/Zangeif"\
+ "0x1C/Strider Hiryu"\
+ "0x1E/Morrigan"\
+ "0x20/Rockman"\
+ "0x22/Onslaught"\
+ "0x24/Alt-Venom"\
+ "0x26/Alt-Hulk"\
+ "0x28/Alt-War-Machine"\
+ "0x2A/Shadow Lady"\
+ "0x2C/Alt-Morrigan" 
+run:
+    poke $FF3053 param
+script "P1 Select 2nd Char" \
+ "0x02/War Machine"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Gambit"\
+ "0x0C/Venom"\
+ "0x0E/Spider-Man"\
+ "0x10/Roll"\
+ "0x12/Ryu"\
+ "0x14/Captain Commando"\
+ "0x16/Chun-Li"\
+ "0x18/Jin"\
+ "0x1A/Zangeif"\
+ "0x1C/Strider Hiryu"\
+ "0x1E/Morrigan"\
+ "0x20/Rockman"\
+ "0x22/Onslaught"\
+ "0x24/Alt-Venom"\
+ "0x26/Alt-Hulk"\
+ "0x28/Alt-War-Machine"\
+ "0x2A/Shadow Lady"\
+ "0x2C/Alt-Morrigan" 
+run:
+    poke $FF3853 param
+script "P1 Select Partner" \
+ "0x18/Unknown Soldier"\
+ "0x00/Lou"\
+ "0x20/Arthur"\
+ "0x24/Saki"\
+ "0x1C/Ton Pooh"\
+ "0x48/Devilot"\
+ "0x44/Anita"\
+ "0x3C/Pure + Fur"\
+ "0x28/Miechele Heart"\
+ "0x2C/Thor"\
+ "0x10/Cyclops"\
+ "0x08/Magneto"\
+ "0x30/Storm"\
+ "0x4C/Jubilee"\
+ "0x34/Rogue"\
+ "0x0C/Psylocke"\
+ "0x04/Juggernaut"\
+ "0x38/Iceman"\
+ "0x14/Colossus"\
+ "0x40/U.S. Agent"\
+ "0x50/Shadow"\
+ "0x54/Sentinel" 
+run:
+    poke $FF40D9 param
+script "P1 Select Attacks (1st Char) Now!" \
+ "comm:Useful for when you select Ryu and want to switch between Ryu, Ken and Akuma in game. Doesn't cost any Supers either." \
+ "0x01/Ryu's Attacks"\
+ "0x02/Ken's Attacks"\
+ "0x03/Akuma's Attacks" 
+change:
+    if (param==$01)
+      poke $FF30E6 $1A
+      poke $FF32CA $87
+      poke $FF32CB $C4
+      poke $FF3385 $00
+    endif
+    if (param==$02)
+      poke $FF30E6 $30
+      poke $FF32CA $EC
+      poke $FF32CB $44
+      poke $FF3385 $02
+    endif
+    if (param==$03)
+      poke $FF30E6 $32
+      poke $FF32CA $ED
+      poke $FF32CB $04
+      poke $FF3385 $04
+    endif
+script "P1 Play as Onslaught in Vs. Mode" \
+ "comm:Here it is, you can only play as Onslaught in vs. mode. Have a friend start a game as P1 then activate this cheat (do not insert a coin and start as P2, just activate the cheat for P2). Or have a friend start as P2 and activate the cheat for P1."  
+run:
+    poke $FF40B1 $22
+    poke $FF40B3 $22
+    poke $FF3003 $01
+    poke $FF3803 $01
+    poke $FF415E $22
+    poke $FF415F $22
+script "P1 Infinite Duo Time"  
+run:
+    poke $FF4035 $8F
+    poke $FF4034 $02
+script "P1 Infinite Air Jump (1st Char)"  
+run:
+    poke $FF3152 $00
+script "P1 Infinite Air Jump (2nd Char)"  
+run:
+    poke $FF3952 $00
+script "P1 Action Speed Up (1st Char)"  
+run:
+    poke $FF303F $01
+script "P1 Action Speed Up (2nd Char)"  
+run:
+    poke $FF383F $01
+script "P1 No Chain Limit (1st Char)"  
+run:
+    poke $FF30B7 $01
+script "P1 No Chain Limit (2nd Char)"  
+run:
+    poke $FF38B7 $01
+script "P1 No Hit Stop (1st Char)"  
+run:
+    poke $FF3085 $00
+script "P1 No Hit Stop (2nd Char)"  
+run:
+    poke $FF3885 $00
+script "P1 Select Control (1st Char)" \
+ "0x01/Human Control"\
+ "0x00/CPU Control" 
+run:
+    poke $FF3003 param
+script "P1 Select Control (2nd Char)" \
+ "0x01/Human Control"\
+ "0x00/CPU Control" 
+run:
+    poke $FF3803 param
+script "P1 Select Colours (1st Char)" \
+ "0x00/P colours"\
+ "0x01/K colours" 
+run:
+    poke $FF3277 param
+script "P1 Select Colours (2nd Char)" \
+ "0x00/P colours"\
+ "0x01/K colours" 
+run:
+    poke $FF3A77 param
+script "P1 Select Helper 1 Colour" \
+ "0x00/Colour 1"\
+ "0x01/Colour 2" 
+run:
+    poke $FF3095 param
+script "P1 Select Helper 2 Colour" \
+ "0x00/Colour 1"\
+ "0x01/Colour 2" 
+run:
+    poke $FF3895 param
+script "-=Cheats just for Captain America=-"  
+script "P1 Select Shield (1st Char)" \
+ "0x00/Enabled"\
+ "0x01/Disabled" 
+run:
+    poke $FF33B4 param
+script "P1 Select Shield (2nd Char)" \
+ "0x00/Enabled"\
+ "0x01/Disabled" 
+run:
+    poke $FF3BB4 param
+script "-=Cheats just for Megaman=-"  
+script "P1 Select Charge Type (1st Char)" \
+ "0x00/No Charge"\
+ "0x04/Controllable Auto Shot"\
+ "0x06/Auto Shot" 
+run:
+    poke $FF3190 param
+script "P1 Select Charge Type (2nd Char)" \
+ "0x00/No Charge"\
+ "0x04/Controllable Auto Shot"\
+ "0x06/Auto Shot" 
+run:
+    poke $FF3990 param
+script "-=Cheats just for Megaman + Roll=-"  
+script "P1 Infinite Beat Plane + Rush Drill Time"  
+run:
+    poke $FF339F $B4
+    poke $FF3B9F $B4
+script "P1 Select 1st Char Weapon" \
+ "comm:The Invisible Leaf Shield cheat makes the Leaf Shield invisible and you can't throw it away" \
+ "0x00/Rock Ball"\
+ "0x02/Tornado Hold"\
+ "0x04/Leaf Shield"\
+ "0x05/Invisible Leaf Shield" 
+run:
+    poke $FF3381 param
+    if (param==$05)
+      poke $FF3381 $04
+      poke $FF33AB $01
+    endif
+script "P1 Select 2nd Char Weapon" \
+ "comm:The Invisible Leaf Shield cheat makes the Leaf Shield invisible and you can't throw it away" \
+ "0x00/Rock Ball"\
+ "0x02/Tornado Hold"\
+ "0x04/Leaf Shield"\
+ "0x05/Invisible Leaf Shield" 
+run:
+    poke $FF3B81 param
+    if (param==$05)
+      poke $FF3B81 $04
+      poke $FF3BAB $01
+    endif
+script "P1 Infinite Heki Hari Tsuki Time for Strider Hiryu" \
+ "comm:Must only be turned on during a Heki Hari Tsuki. The game *might* hang elsewise"  
+run:
+    poke $FF304E $01
+    poke $FF304F $28
+    poke $FF384E $01
+    poke $FF384F $28
+script "P1 Infinite Hikou Time for War Machine"  
+run:
+    poke $FF33C0 $01
+    poke $FF33C1 $DE
+    poke $FF3BC0 $01
+    poke $FF3BC1 $DE
+script " "  
+script "P2 Infinite Energy (1st Char)"  
+run:
+    poke $FF3671 $90
+    poke $FF367B $90
+script "P2 Drain All Energy (1st Char) Now!"  
+on:
+    poke $FF3671 $00
+    poke $FF367B $00
+script "P2 Infinite Energy (2nd Char)"  
+run:
+    poke $FF3E71 $90
+    poke $FF3E7B $90
+script "P2 Drain All Energy (2nd Char) Now!"  
+on:
+    poke $FF3E71 $00
+    poke $FF3E7B $00
+script "P2 Infinite Strikers"  
+run:
+    poke $FF36C6 $09
+script "P2 Always have Max Super"  
+run:
+    poke $FF3674 $03
+    poke $FF3E74 $03
+script "P2 Enable All Chars" \
+ "comm:Roll is Right from Megaman/Rockman, Fast-Venom is Up from Chun-Li, MSH-Hulk is Up from Ryu, Armor-War Machine is Up from Zangief,Shadow Lady is Down from Gambit + Alt-Morrigan is Down from War Machine"  
+run:
+    poke $FF41C9 $40
+script "P2 Select 1st Char" \
+ "0x02/War Machine"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Gambit"\
+ "0x0C/Venom"\
+ "0x0E/Spider-Man"\
+ "0x10/Roll"\
+ "0x12/Ryu"\
+ "0x14/Captain Commando"\
+ "0x16/Chun-Li"\
+ "0x18/Jin"\
+ "0x1A/Zangeif"\
+ "0x1C/Strider Hiryu"\
+ "0x1E/Morrigan"\
+ "0x20/Rockman"\
+ "0x22/Onslaught"\
+ "0x24/Alt-Venom"\
+ "0x26/Alt-Hulk"\
+ "0x28/Alt-War-Machine"\
+ "0x2A/Shadow Lady"\
+ "0x2C/Alt-Morrigan" 
+run:
+    poke $FF3453 param
+script "P2 Select 2nd Char" \
+ "0x02/War Machine"\
+ "0x04/Captain America"\
+ "0x06/Hulk"\
+ "0x08/Wolverine"\
+ "0x0A/Gambit"\
+ "0x0C/Venom"\
+ "0x0E/Spider-Man"\
+ "0x10/Roll"\
+ "0x12/Ryu"\
+ "0x14/Captain Commando"\
+ "0x16/Chun-Li"\
+ "0x18/Jin"\
+ "0x1A/Zangeif"\
+ "0x1C/Strider Hiryu"\
+ "0x1E/Morrigan"\
+ "0x20/Rockman"\
+ "0x22/Onslaught"\
+ "0x24/Alt-Venom"\
+ "0x26/Alt-Hulk"\
+ "0x28/Alt-War-Machine"\
+ "0x2A/Shadow Lady"\
+ "0x2C/Alt-Morrigan" 
+run:
+    poke $FF3C53 param
+script "P2 Select Partner" \
+ "0x18/Unknown Soldier"\
+ "0x00/Lou"\
+ "0x20/Arthur"\
+ "0x24/Saki"\
+ "0x1C/Ton Pooh"\
+ "0x48/Devilot"\
+ "0x44/Anita"\
+ "0x3C/Pure + Fur"\
+ "0x28/Miechele Heart"\
+ "0x2C/Thor"\
+ "0x10/Cyclops"\
+ "0x08/Magneto"\
+ "0x30/Storm"\
+ "0x4C/Jubilee"\
+ "0x34/Rogue"\
+ "0x0C/Psylocke"\
+ "0x04/Juggernaut"\
+ "0x38/Iceman"\
+ "0x14/Colossus"\
+ "0x40/U.S. Agent"\
+ "0x50/Shadow"\
+ "0x54/Sentinel" 
+run:
+    poke $FF40DB param
+script "P2 Play as Onslaught in Vs. Mode" \
+ "comm:Here it is, you can only play as Onslaught in vs. mode. Have a friend start a game as P1 then activate this cheat (do not insert a coin and start as P2, just activate the cheat for P2). Or have a friend start as P2 and activate the cheat for P1."  
+run:
+    poke $FF40B5 $22
+    poke $FF40B7 $22
+    poke $FF3403 $01
+    poke $FF3C03 $01
+    poke $FF415E $22
+    poke $FF415F $22
+script "P2 Infinite Duo Time"  
+run:
+    poke $FF4435 $8F
+    poke $FF4434 $02
+script "P2 Infinite Air Jump (1st Char)"  
+run:
+    poke $FF3452 $00
+script "P2 Infinite Air Jump (2nd Char)"  
+run:
+    poke $FF3D52 $00
+script "P2 Action Speed Up (1st Char)"  
+run:
+    poke $FF343F $01
+script "P2 Action Speed Up (2nd Char)"  
+run:
+    poke $FF3C3F $01
+script "P2 No Chain Limit (1st Char)"  
+run:
+    poke $FF34B7 $01
+script "P2 No Chain Limit (2nd Char)"  
+run:
+    poke $FF3CB7 $01
+script "P2 No Hit Stop (1st Char)"  
+run:
+    poke $FF3485 $00
+script "P2 No Hit Stop (2nd Char)"  
+run:
+    poke $FF3C85 $00
+script "P2 Select Control (1st Char)" \
+ "0x01/Human Control"\
+ "0x00/CPU Control" 
+run:
+    poke $FF3403 param
+script "P2 Select Control (2nd Char)" \
+ "0x01/Human Control"\
+ "0x00/CPU Control" 
+run:
+    poke $FF3C03 param
+script "P2 Select Colours (1st Char)" \
+ "0x00/P colours"\
+ "0x01/K colours" 
+run:
+    poke $FF3677 param
+script "P2 Select Colours (2nd Char)" \
+ "0x00/P colours"\
+ "0x01/K colours" 
+run:
+    poke $FF3E77 param
+script "P2 Select Helper 1 Colour" \
+ "0x00/Colour 1"\
+ "0x01/Colour 2" 
+run:
+    poke $FF3495 param
+script "P2 Select Helper 2 Colour" \
+ "0x00/Colour 1"\
+ "0x01/Colour 2" 
+run:
+    poke $FF3C95 param
+script "-=Cheats just for Captain America=-"  
+script "P2 Select Shield (1st Char)" \
+ "0x00/Enabled"\
+ "0x01/Disabled" 
+run:
+    poke $FF37B4 param
+script "P2 Select Shield (2nd Char)" \
+ "0x00/Enabled"\
+ "0x01/Disabled" 
+run:
+    poke $FF3FB4 param
+script "-=Cheats just for Megaman=-"  
+script "P2 Select Charge Type (1st Char)" \
+ "0x00/No Charge"\
+ "0x04/Controllable Auto Shot"\
+ "0x06/Auto Shot" 
+run:
+    poke $FF3590 param
+script "P2 Select Charge Type (2nd Char)" \
+ "0x00/No Charge"\
+ "0x04/Controllable Auto Shot"\
+ "0x06/Auto Shot" 
+run:
+    poke $FF3D90 param
+script "-=Cheats just for Megaman + Roll=-"  
+script "P2 Infinite Beat Plane + Rush Drill Time"  
+run:
+    poke $FF379F $B4
+    poke $FF3F9F $B4
+script "P2 Select 1st Char Weapon" \
+ "comm:The Invisible Leaf Shield cheat makes the Leaf Shield invisible and you can't throw it away" \
+ "0x00/Rock Ball"\
+ "0x02/Tornado Hold"\
+ "0x04/Leaf Shield"\
+ "0x05/Invisible Leaf Shield" 
+run:
+    poke $FF3781 param
+    if (param==$05)
+      poke $FF3781 $04
+      poke $FF37AB $01
+    endif
+script "P2 Select 2nd Char Weapon" \
+ "comm:The Invisible Leaf Shield cheat makes the Leaf Shield invisible and you can't throw it away" \
+ "0x00/Rock Ball"\
+ "0x02/Tornado Hold"\
+ "0x04/Leaf Shield"\
+ "0x05/Invisible Leaf Shield" 
+run:
+    poke $FF3F81 param
+    if (param==$05)
+      poke $FF3F81 $04
+      poke $FF3FAB $01
+    endif
+script "P2 Infinite Heki Hari Tsuki Time for Strider Hiryu" \
+ "comm:Must only be turned on during a Heki Hari Tsuki. The game *might* hang elsewise"  
+run:
+    poke $FF344E $01
+    poke $FF344F $28
+    poke $FF3C4E $01
+    poke $FF3C4F $28
+script "P2 Infinite Hikou Time for War Machine"  
+run:
+    poke $FF37C0 $01
+    poke $FF37C1 $DE
+    poke $FF3FC0 $01
+    poke $FF3FC1 $DE
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Hide Background"  
+on:
+    temp0=dpeek($FF4472)
+    temp1=dpeek($FF4474)
+    temp2=dpeek($FF4476)
+    temp3=dpeek($FFF640)
+    temp4=dpeek($FFF642)
+    temp5=dpeek($FFF644)
+run:
+    if (dpeek($FF4000)==$0800)
+      dpoke $FF4472 $0
+      dpoke $FF4474 $0
+      dpoke $FF4476 $0
+      dpoke $FFF640 $0
+      dpoke $FFF642 $0
+      dpoke $FFF644 $0
+      lpoke $FFDA44 $0
+    endif
+off:
+    dpoke $FF4472 temp0
+    dpoke $FF4474 temp1
+    dpoke $FF4476 temp2
+    dpoke $FFF640 temp3
+    dpoke $FFF642 temp4
+    dpoke $FFF644 temp5
+script "Select Region" \
+ "comm:This sets the machine region - the effectiveness may vary! You have to enable this ASAP- ON or before the ROM check screen! Or enable + RESET." \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Euro"\
+ "0x06/Brazil"\
+ "0x08/Hispanic"\
+ "0x0A/Asia" 
+run:
+    poke $FF44B3 param

@@ -1,0 +1,82 @@
+script "Infinite Lives"  
+run:
+    poke $FF0CA8 $03
+script "Infinite Time"  
+run:
+    dpoke $FF0F6A $0257
+script "Invincibility"  
+run:
+    poke $FF0CF5 $6B
+script "Infinite Energy"  
+run:
+    poke $FF0CE6 $81
+    poke $FF0CE7 $81
+    poke $FF0CE8 $81
+    poke $FF0CE9 $81
+    poke $FF0CEA $81
+script "Infinite Psyfer (Sword Power)"  
+run:
+    poke $FF0CE3 $FF
+script "Infinite wolf time"  
+run:
+    poke $FF0CF8 $00
+    poke $FF0CF9 $FF
+script "No more wolf Now!"  
+on:
+    poke $FF0CF8 $00
+    poke $FF0CF9 $01
+script "Always Maximum pods (bug!)"  
+run:
+    poke $FF0CE4 $02
+script "Select Starting Stage" \
+ "0x00/1 : Kafazu"\
+ "0x01/2 : Siberia"\
+ "0x03/3 : Balrog"\
+ "0x02/4 : Amazon"\
+ "0x04/5 : Third Moon" 
+run:
+    if (peek($FF0CB2)==$00)
+      poke $FF0CB2 param
+    endif
+script "Barebreasted Amazon Warriors (Amazon Level)" \
+ "comm:Removes the added fig leaf sprite overlay from the normally exposed breast"  
+on:
+    dpoke $02E276 $0888
+    dpoke $02E27C $0888
+    dpoke $02E282 $0888
+    dpoke $02E288 $0888
+    dpoke $02F0F6 $0888
+    dpoke $02F0FC $0888
+    dpoke $02F102 $0888
+    dpoke $02F108 $0888
+off:
+    dpoke $02E276 $16F0
+    dpoke $02E27C $16F1
+    dpoke $02E282 $16F2
+    dpoke $02E288 $1E84
+    dpoke $02F0F6 $16F0
+    dpoke $02F0FC $16F1
+    dpoke $02F102 $16F2
+    dpoke $02F108 $1E84
+script " "  
+script "Add Character Option to Test Menu" \
+ "comm:Select "CHARACTER" to access the menu.
+Pick "OBJECT" for sprites,
+"SCROLL1" for the game's font,
+"SCROLL2" for the game's foreground tiles,
+and "SCROLL3" for background tiles.
+
+Controls:
+Up: Scroll down.
+Down: Scroll up.
+Left / Right: Scroll through available palettes.
+Button 1: Toggle vertical flipping.
+Button 2: Toggle horizontal flipping.
+1P Start: Toggle between a simple and complex tile display.
+2P Start: Loads the next level's palette group."  
+on:
+    temp0=peek($071C24)
+run:
+    poke $071C24 $60
+off:
+    poke $071C24 temp0

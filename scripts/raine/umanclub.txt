@@ -1,44 +1,62 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $200805 $77
-
-script "1UP Invulnerability OFF"
-	poke $200805 $01
-
-script "2UP Invulnerability ON" always
-	poke $20083D $77
-
-script "2UP Invulnerability OFF"
-	poke $20083D $01
-
-script "1UP Unlimited lives" always
-	poke $2007F3 $03
-
-script "2UP Unlimited lives" always
-	poke $20082B $03
-
-script "1UP Unlimited energy" always
-	poke $2007F5 $06
-	poke $2007F7 $06
-
-script "2UP Unlimited energy" always
-	poke $20082D $06
-	poke $20082F $06
-
-script "1UP Maximum power" always
-	poke $2007F9 $10
-
-script "2UP Maximum power" always
-	poke $200831 $10
-
-script "1UP Maximum speed" always
-	poke $2007DF $04
-
-script "2UP Maximum speed" always
-	poke $200817 $04
-
-script "*UP One hit for bosses    (T)"
-	poke $200A9B $00
+script "Infinite Credits"  
+run:
+    poke $200691 $09
+script "One hit to kill Boss Now!"  
+on:
+    poke $200A9B $00
+script " "  
+script "These Select starting stage/mission cheats should"  
+script "be enabled on the character selection screen."  
+script " "  
+script "Select starting stage" \
+ inter=1,6,1 
+change:
+    poke $200A51 (param-$1)
+script "Select starting/current mission" \
+ "comm:When used as a 'current' cheat you need to complete the current stage to see any affect." \
+ inter=1,8,1 
+change:
+    poke $200A4F (param-$1)
+script "Select next stage" \
+ inter=1,6,1 
+change:
+    poke $200A51 (param-$1)
+script "Select current mission" \
+ "comm:You need to complete current stage to see any affect though" \
+ inter=1,8,1 
+change:
+    poke $200A4F (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $2007F3 $0A
+script "P1 Infinite Energy"  
+run:
+    poke $2007F7 $06
+    poke $2007F5 $06
+script "P1 Infinite Ammo Power"  
+run:
+    poke $2007F9 $10
+script "P1 Invincibility"  
+run:
+    poke $200805 $03
+script "P1 Always have Maximum Speed"  
+run:
+    poke $2007DF $04
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $20082B $0A
+script "P2 Infinite Energy"  
+run:
+    poke $20082F $06
+    poke $20082D $06
+script "P2 Infinite Ammo Power"  
+run:
+    poke $200831 $10
+script "P2 Invincibility"  
+run:
+    poke $20083D $03
+script "P2 Always have Maximum Speed"  
+run:
+    poke $200817 $04

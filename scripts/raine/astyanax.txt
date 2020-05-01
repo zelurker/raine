@@ -1,46 +1,79 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $FFD2B7 $01
-	poke $FFD290 peek($FFD290)&$bf
-
-script "1UP Invulnerability OFF"
-	poke $FFD2B7 $01
-	poke $FFD290 peek($FFD290)&$bf|$40
-
-script "2UP Invulnerability ON" always
-	poke $FFD437 $01
-	poke $FFD410 peek($FFD410)&$bf
-
-script "2UP Invulnerability OFF"
-	poke $FFD437 $01
-	poke $FFD410 peek($FFD410)&$bf|$40
-
-script "1UP Unlimited lives" always
-	poke $FF8881 $03
-
-script "2UP Unlimited lives" always
-	poke $FF88C9 $03
-
-script "1UP Unlimited energy" always
-	poke $FFD2B5 $40
-
-script "2UP Unlimited energy" always
-	poke $FFD435 $40
-
-script "*UP Unlimited time" always
-	poke $FFFB73 $99
-
-script "1UP Maximum fire power" always
-	poke $FF8897 $3C
-
-script "2UP Maximum fire power" always
-	poke $FF88DF $3C
-
-script "1UP Maximum magic power" always
-	poke $FF88AD $0B
-
-script "2UP Maximum magic power" always
-	poke $FF88F5 $0B
+script "Infinite Credits"  
+run:
+    poke $FF883F $09
+script "Infinite Time"  
+run:
+    poke $FFFB72 $01
+    poke $FFFB73 $99
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF8881 $06
+script "P1 Infinite Energy"  
+run:
+    poke $FFD2B5 $40
+script "P1 Invincibility" \
+ "0x01/Enabled"\
+ "0x02/Disabled" 
+run:
+    if (param==$01)
+      poke $FFD2B7 $01
+      poke $FFD290 $00|(peek($FFD290)&~40)
+    endif
+    if (param==$02)
+      poke $FFD2B7 $01
+      poke $FFD290 $40|(peek($FFD290)&~40)
+    endif
+script "P1 Maximum Fire Power"  
+run:
+    poke $FF8897 $3C
+script "P1 Maximum Magic Power"  
+run:
+    poke $FF88AD $B
+script "P1 Infinite Shield" \
+ "comm:Seems to be buggy!"  
+run:
+    poke $FFD31D $03
+script "P1 Always have Shield" \
+ "comm:This cheat should be enabled on the title screen or it won't display until you've lost a life!!"  
+run:
+    poke $FF8889 $01
+script "P1 Get Shield Now!"  
+on:
+    poke $FF8889 $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FF88C9 $06
+script "P2 Infinite Energy"  
+run:
+    poke $FFD435 $40
+script "P2 Invincibility" \
+ "0x01/Enabled"\
+ "0x02/Disabled" 
+run:
+    if (param==$01)
+      poke $FFD437 $01
+      poke $FFD410 $00|(peek($FFD410)&~40)
+    endif
+    if (param==$02)
+      poke $FFD437 $01
+      poke $FFD410 $40|(peek($FFD410)&~40)
+    endif
+script "P2 Maximum Fire Power"  
+run:
+    poke $FF88DF $3C
+script "P2 Maximum Magic Power"  
+run:
+    poke $FF88F5 $B
+script "P2 Infinite Shield" \
+ "comm:Seems to be buggy!"  
+run:
+    poke $FFD49D $03
+script "P2 Always have Shield" \
+ "comm:This cheat should be enabled on the title screen or it won't display until you've lost a life!!"  
+run:
+    poke $FF81BF $01
+script "P2 Get Shield Now!"  
+on:
+    poke $FF81BF $01

@@ -1,0 +1,140 @@
+script "Infinite Time"  
+run:
+    poke $101A52 $01
+    poke $101A53 $59
+    poke $101A54 $09
+script "Infinite Select Team Time"  
+run:
+    poke $10E0C4 $21
+script "Finish this Period Now!"  
+on:
+    poke $101A52 $00
+    poke $101A53 $00
+    poke $101A54 $01
+script "Make this the Second Half Now!"  
+on:
+    poke $101A49 $02
+script "Set Secret Team instead of China" \
+ "comm:Enable the cheat before Team Select screen. Chosen team will be available instead of China (3rd row 2nd from left). 4 hidden teams revealed and selectable, only for main parent rom (not for Dunk Dream and Street Slam)" \
+ "0x01/Mexico"\
+ "0x02/Brazil"\
+ "0x03/Australia"\
+ "0x04/Sweden" 
+run:
+    if (peek($100A27)==$00)
+      poke $100A27 param
+    endif
+script " "  
+script "P1 Always have 0 Points" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+run:
+    poke $101A0B $00
+script "P1 Always have 99 Points" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+run:
+    poke $101A0B $99
+script "P1 Get 0 Points Now!" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+on:
+    poke $101A0B $00
+script "P1 Get 99 Points Now!" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+on:
+    poke $101A0B $99
+script "P1 Select Score" \
+ "comm:The scores won't be correctly displayed until a team scores another basket" \
+ inter=0,99,1 
+change:
+    poke $101A0B tobcd(param)
+script "P1 Supershoot Always Full"  
+run:
+    poke $101A5A $C0
+script "P1 Supershoot Always Empty"  
+run:
+    poke $101A5A $00
+script "P1 Fill Supershoot Now!"  
+on:
+    poke $101A5A $C0
+script "P1 Empty Supershoot Now!"  
+on:
+    poke $101A5A $00
+script " "  
+script "P2 Always have 0 Points" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+run:
+    poke $101A0F $00
+script "P2 Always have 99 Points" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+run:
+    poke $101A0F $99
+script "P2 Get 0 Points Now!" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+on:
+    poke $101A0F $00
+script "P2 Get 99 Points Now!" \
+ "comm:The scores won't be correctly displayed until a team scores another basket"  
+on:
+    poke $101A0F $99
+script "P2 Select Score" \
+ "comm:The scores won't be correctly displayed until a team scores another basket" \
+ inter=0,99,1 
+change:
+    poke $101A0F tobcd(param)
+script "P2 Supershoot Always Full"  
+run:
+    poke $101A5C $C0
+script "P2 Supershoot Always Empty"  
+run:
+    poke $101A5C $00
+script "P2 Fill Supershoot Now!"  
+on:
+    poke $101A5C $C0
+script "P2 Empty Supershoot Now!"  
+on:
+    poke $101A5C $00
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,0 +1,1198 @@
+script "Infinite Time"  
+run:
+    poke $10A7D2 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $10A7D2 $00
+    poke $10A7D3 $01
+script "See End Sequence Next!" \
+ "comm:Finish the current match to go straight to the end sequence"  
+on:
+    poke $10A79B $08
+script "Select Backdrop" \
+ "0x00/Japan"\
+ "0x01/Korea"\
+ "0x02/China"\
+ "0x03/Holland"\
+ "0x04/Cambodia"\
+ "0x05/Mexico"\
+ "0x06/Italy"\
+ "0x07/Rugal"\
+ "0x08/NESTS" 
+run:
+    poke $10A79A param
+script "Mai's boobs always bounce"  
+on:
+    temp0=peek($10A7E0)
+run:
+    poke $10A7E0 $00
+off:
+    poke $10A7E0 temp0
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($002662)
+run:
+    dpoke $002662 $6002
+off:
+    dpoke $002662 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108239 $66
+script "P1 Always have Maximum Power"  
+run:
+    poke $1082E3 $05
+script "P1 Drain All Energy Now!"  
+on:
+    poke $108239 $00
+script "P1 Drain All Power Now!"  
+on:
+    poke $1082E3 $00
+    poke $1081E8 $00
+script "P1 Always have Max Mode"  
+run:
+    poke $1082E3 $05
+    poke $1081EA $2F
+    poke $1081EB $10
+    poke $10821D $20|(peek($10821D)&~20)
+script "P1 Infinite Stun Gauge"  
+run:
+    poke $10823F $66
+script "P1 Infinite Guard Bar"  
+run:
+    poke $108247 $66
+script "P1 Near-Instant Stun Gauge Recovery"  
+run:
+    poke $108244 $10
+script "P1 Near-Instant Guard Bar Recovery"  
+run:
+    poke $10824C $22
+script "P1 Select Rounds Lost" \
+ inter=0,2,1 
+run:
+    poke $10A7E5 (param)
+script "P1 Select Team" \
+ "0x00/Japan Team"\
+ "0x01/Fatal Fury Team"\
+ "0x02/Korea Team"\
+ "0x03/Psycho Soldier Team"\
+ "0x04/Ikari Team"\
+ "0x05/Art of Fighting Team"\
+ "0x06/Womens Team"\
+ "0x07/Iori Team"\
+ "0x08/'98 Special Team"\
+ "0x09/New Face Team"\
+ "0x0A/Hero Team"\
+ "0x0B/2000 Special Team"\
+ "0x0C/NESTS Team"\
+ "0x0D/Rugal (solo)"\
+ "0xFF/Custom Team" 
+run:
+    poke $10A7E3 param
+script "P1 Select Team Style" \
+ "0x40/Fight Solo"\
+ "0x00/Fight as a Team" 
+run:
+    poke $10A7E4 param|(peek($10A7E4)&~40)
+script "P1 Select Character (A)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A804 param
+script "P1 Select Character (B)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A805 param
+script "P1 Select Character (C)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A806 param
+script "P1 Select Fighter (A)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A7EE param
+script "P1 Select Fighter (B)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A7EF param
+script "P1 Select Fighter (C)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A7F0 param
+script "P1 Select Winquote Character (A)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A7E6 param
+script "P1 Select Winquote Character (B)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A7E7 param
+script "P1 Select Winquote Character (C)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A7E8 param
+script "P1 Select Mode" \
+ "comm:This controls whether May Lee is using Normal or Hero Mode. Normally, she changes with ABC" \
+ "0x00/Normal Mode"\
+ "0x04/Hero Mode" 
+run:
+    poke $108182 param|(peek($108182)&~04)
+script "P1 Select Order Number (A)" \
+ "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
+ inter=0,3,1 
+run:
+    poke $10A7F8 (param+$1)|(peek($10A7F8)&~03)
+script "P1 Select Order Number (B)" \
+ "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
+ inter=0,3,1 
+run:
+    poke $10A7F9 (param+$1)|(peek($10A7F9)&~03)
+script "P1 Select Order Number (C)" \
+ "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
+ inter=0,3,1 
+run:
+    poke $10A7FA (param+$1)|(peek($10A7FA)&~03)
+script "P1 Select Roulette Status (A)" \
+ "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
+ "0x00/Not Selected by Roulette"\
+ "0x80/Selected by Roulette" 
+run:
+    poke $10A804 param|(peek($10A804)&~80)
+script "P1 Select Roulette Status (B)" \
+ "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
+ "0x00/Not Selected by Roulette"\
+ "0x80/Selected by Roulette" 
+run:
+    poke $10A805 param|(peek($10A805)&~80)
+script "P1 Select Roulette Status (C)" \
+ "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
+ "0x00/Not Selected by Roulette"\
+ "0x80/Selected by Roulette" 
+run:
+    poke $10A806 param|(peek($10A806)&~80)
+script "P1 Select Moves" \
+ "comm:This controls whether Yashiro, Shermie, or Chris use their normal or Orochi moves" \
+ "0x00/Normal Moves"\
+ "0x10/Orochi Moves" 
+run:
+    poke $10821D param|(peek($10821D)&~10)
+script "P1 Select Character Colour (A)" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $10A7EA param|(peek($10A7EA)&~03)
+script "P1 Select Character Colour (B)" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $10A7EB param|(peek($10A7EB)&~03)
+script "P1 Select Character Colour (C)" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $10A7EC param|(peek($10A7EC)&~03)
+script "P1 Select Colours (A)" \
+ "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
+ "0x00/Normal Colours"\
+ "0x01/Orochi Colours" 
+run:
+    poke $10A7E3 param|(peek($10A7E3)&~01)
+script "P1 Select Colours (B)" \
+ "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
+ "0x00/Normal Colours"\
+ "0x02/Orochi Colours" 
+run:
+    poke $10A7E3 param|(peek($10A7E3)&~02)
+script "P1 Select Colours (C)" \
+ "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
+ "0x00/Normal Colours"\
+ "0x04/Orochi Colours" 
+run:
+    poke $10A7E3 param|(peek($10A7E3)&~04)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108439 $66
+script "P2 Always have Maximum Power"  
+run:
+    poke $1084E3 $05
+script "P2 Drain All Energy Now!"  
+on:
+    poke $108439 $00
+script "P2 Drain All Power Now!"  
+on:
+    poke $1084E3 $00
+    poke $1083E8 $00
+script "P2 Always have Max Mode"  
+run:
+    poke $1084E3 $05
+    poke $1083EA $2F
+    poke $1083EB $10
+    poke $10841D $20|(peek($10841D)&~20)
+script "P2 Infinite Stun Gauge"  
+run:
+    poke $10843F $66
+script "P2 Infinite Guard Bar"  
+run:
+    poke $108447 $66
+script "P2 Near-Instant Stun Gauge Recovery"  
+run:
+    poke $108444 $10
+script "P2 Near-Instant Guard Bar Recovery"  
+run:
+    poke $10844C $22
+script "P2 Select Rounds Lost" \
+ inter=0,2,1 
+run:
+    poke $10A80B (param)
+script "P2 Select Team" \
+ "0x00/Japan Team"\
+ "0x01/Fatal Fury Team"\
+ "0x02/Korea Team"\
+ "0x03/Psycho Soldier Team"\
+ "0x04/Ikari Team"\
+ "0x05/Art of Fighting Team"\
+ "0x06/Womens Team"\
+ "0x07/Iori Team"\
+ "0x08/'98 Special Team"\
+ "0x09/New Face Team"\
+ "0x0A/Hero Team"\
+ "0x0B/2000 Special Team"\
+ "0x0C/NESTS Team"\
+ "0x0D/Rugal (solo)"\
+ "0xFF/Custom Team" 
+run:
+    poke $10A809 param
+script "P2 Select Team Style" \
+ "0x40/Fight Solo"\
+ "0x00/Fight as a Team" 
+run:
+    poke $10A80A param|(peek($10A80A)&~40)
+script "P2 Select Character (A)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A82A param
+script "P2 Select Character (B)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A82B param
+script "P2 Select Character (C)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A82C param
+script "P2 Select Fighter (A)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A814 param
+script "P2 Select Fighter (B)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A815 param
+script "P2 Select Fighter (C)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A816 param
+script "P2 Select Winquote Character (A)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A80C param
+script "P2 Select Winquote Character (B)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A80D param
+script "P2 Select Winquote Character (C)" \
+ "0x00/Kyo"\
+ "0x01/Benimaru"\
+ "0x02/Daimon"\
+ "0x03/Terry"\
+ "0x04/Andy"\
+ "0x05/Joe"\
+ "0x06/Kim"\
+ "0x07/Chang"\
+ "0x08/Choi"\
+ "0x09/Athena"\
+ "0x0A/Kensou"\
+ "0x0B/Chin"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Ryo"\
+ "0x10/Robert"\
+ "0x11/Takuma"\
+ "0x12/Mai"\
+ "0x13/Yuri"\
+ "0x14/May Lee"\
+ "0x15/Iori"\
+ "0x16/Mature"\
+ "0x17/Vice"\
+ "0x18/Yamazaki"\
+ "0x19/Mary"\
+ "0x1A/Billy"\
+ "0x1B/Yashiro"\
+ "0x1C/Shermie"\
+ "0x1D/Chris"\
+ "0x1E/K'"\
+ "0x1F/Maxima"\
+ "0x20/Whip"\
+ "0x21/Vanessa"\
+ "0x22/Seth"\
+ "0x23/Ramon"\
+ "0x24/Kula"\
+ "0x25/K9999"\
+ "0x26/Angel"\
+ "0x27/Rugal"\
+ "0x28/Kusanagi" 
+run:
+    poke $10A80E param
+script "P2 Select Mode" \
+ "comm:This controls whether May Lee is using Normal or Hero Mode. Normally, she changes with ABC" \
+ "0x00/Normal Mode"\
+ "0x04/Hero Mode" 
+run:
+    poke $108382 param|(peek($108382)&~04)
+script "P2 Select Order Number (A)" \
+ "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
+ inter=0,3,1 
+run:
+    poke $10A81E (param+$1)|(peek($10A81E)&~03)
+script "P2 Select Order Number (B)" \
+ "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
+ inter=0,3,1 
+run:
+    poke $10A81F (param+$1)|(peek($10A81F)&~03)
+script "P2 Select Order Number (C)" \
+ "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
+ inter=0,3,1 
+run:
+    poke $10A820 (param+$1)|(peek($10A820)&~03)
+script "P2 Select Roulette Status (A)" \
+ "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
+ "0x00/Not Selected by Roulette"\
+ "0x80/Selected by Roulette" 
+run:
+    poke $10A82A param|(peek($10A82A)&~80)
+script "P2 Select Roulette Status (B)" \
+ "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
+ "0x00/Not Selected by Roulette"\
+ "0x80/Selected by Roulette" 
+run:
+    poke $10A82B param|(peek($10A82B)&~80)
+script "P2 Select Roulette Status (C)" \
+ "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
+ "0x00/Not Selected by Roulette"\
+ "0x80/Selected by Roulette" 
+run:
+    poke $10A82C param|(peek($10A82C)&~80)
+script "P2 Select Moves" \
+ "comm:This controls whether Yashiro, Shermie, or Chris use their normal or Orochi moves" \
+ "0x00/Normal Moves"\
+ "0x10/Orochi Moves" 
+run:
+    poke $10841D param|(peek($10841D)&~10)
+script "P2 Select Character Colour (A)" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $10A810 param|(peek($10A810)&~03)
+script "P2 Select Character Colour (B)" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $10A811 param|(peek($10A811)&~03)
+script "P2 Select Character Colour (C)" \
+ "0x00/A colour"\
+ "0x01/B colour"\
+ "0x02/C colour"\
+ "0x03/D colour" 
+run:
+    poke $10A812 param|(peek($10A812)&~03)
+script "P2 Select Colours (A)" \
+ "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
+ "0x01/Normal Colours"\
+ "0x02/Orochi Colours" 
+run:
+    if (param==$01)
+      poke $10A809 $00|(peek($10A809)&~01)
+    endif
+    if (param==$02)
+      poke $108809 $01|(peek($108809)&~01)
+    endif
+script "P2 Select Colours (B)" \
+ "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
+ "0x01/Normal Colours"\
+ "0x02/Orochi Colours" 
+run:
+    if (param==$01)
+      poke $10A809 $00|(peek($10A809)&~02)
+    endif
+    if (param==$02)
+      poke $108809 $02|(peek($108809)&~02)
+    endif
+script "P2 Select Colours (C)" \
+ "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
+ "0x01/Normal Colours"\
+ "0x02/Orochi Colours" 
+run:
+    if (param==$01)
+      poke $10A809 $00|(peek($10A809)&~04)
+    endif
+    if (param==$02)
+      poke $108809 $04|(peek($108809)&~04)
+    endif
+script " "  
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=peek($10008B)
+    temp1=peek($10A788)
+    temp2=peek($10A7D6)
+    temp3=dpeek($011444)
+
+run:
+    if (dpeek($10A7D2)!=$0&&peek($10A7D7)==$00)
+      poke $10008B $00
+      poke $10A788 temp1|80
+      poke $10A7D6 temp2|80
+      dpoke $011444 $008F
+      dpoke $10D8F8 $8F8F
+    endif
+off:
+    poke $10008B temp0
+    poke $10A788 temp1
+    poke $10A7D6 temp2
+    dpoke $011444 temp3
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

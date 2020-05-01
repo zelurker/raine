@@ -1,0 +1,237 @@
+script "Infinite Time"  
+run:
+    poke $FF84E9 $09
+script "Infinite Character Select Time"  
+run:
+    poke $FF8635 $0A
+script "Select Starting Episode" \
+ inter=1,8,1 
+run:
+    if (peek($FF84D9)==$00)
+      poke $FF84D9 (param-$1)
+    endif
+script "Infinite Ammo" \
+ "comm:Works for Rifle, Gun, Uzi, M-16A1, Shotgun and Bazooka"  
+on:
+    temp0=lpeek($023960)
+    temp1=lpeek($023964)
+    temp2=lpeek($180000)
+    temp3=lpeek($180004)
+    temp4=lpeek($180008)
+run:
+    lpoke $023960 $4EB90018
+    lpoke $023964 $00004E71
+    lpoke $180000 $366A00B4
+    lpoke $180004 $70323740
+    lpoke $180008 $006C4E75
+off:
+    lpoke $023960 temp0
+    lpoke $023964 temp1
+    lpoke $180000 temp2
+    lpoke $180004 temp3
+    lpoke $180008 temp4
+script "Never lose weapons" \
+ "comm:After enemy hits, dropped weapons are never lost"  
+on:
+    temp0=peek($024634)
+run:
+    poke $024634 $60
+off:
+    poke $024634 temp0
+script "Never drop weapons" \
+ "comm:Weapons are never dropped unless Game Over happens."  
+on:
+    temp0=peek($010DD4)
+    temp1=peek($0116FE)
+    temp2=peek($01C1EE)
+    temp3=peek($01C3CE)
+    temp4=peek($01C594)
+    temp5=peek($01C72C)
+    temp6=peek($01CC18)
+    temp7=peek($01D27C)
+run:
+    poke $010DD4 $0C
+    poke $0116FE $B2
+    poke $01C1EE $B2
+    poke $01C3CE $B2
+    poke $01C594 $B2
+    poke $01C72C $B2
+    poke $01CC18 $B2
+    poke $01D27C $B2
+off:
+    poke $010DD4 temp0
+    poke $0116FE temp1
+    poke $01C1EE temp2
+    poke $01C3CE temp3
+    poke $01C594 temp4
+    poke $01C72C temp5
+    poke $01CC18 temp6
+    poke $01D27C temp7
+script "Kill Vice T. with 1 hit Now!"  
+on:
+    dpoke $FFDCA0 $0001
+script "Kill Butcher with 1 hit Now!"  
+on:
+    dpoke $FFDCA0 $0001
+script "Kill Hogg with 1 hit Now!"  
+on:
+    dpoke $FFD3E0 $0001
+script "Kill Slice with 1 hit Now!"  
+on:
+    dpoke $FFDAE0 $0001
+script "Kill Morgan/Morgue with 1 hit Now!"  
+on:
+    dpoke $FFDCA0 $0001
+script "Kill Tyrog with 1 hit Now!"  
+on:
+    dpoke $FFDCA0 $0001
+script "Kill Slisaur 1 with 1 hit Now!"  
+on:
+    dpoke $FFD680 $0001
+script "Kill Slisaur 2 with 1 hit Now!"  
+on:
+    dpoke $FFD5A0 $0001
+script "Kill the one headed Fessenden with 1 hit Now!"  
+on:
+    dpoke $FFD920 $0001
+script "Kill the several headed Fessenden with 1 hit Now!"  
+on:
+    dpoke $FFD4C0 $0001
+script "Finish Episode Now!"  
+on:
+    poke $FF84D1 $06
+script "See End Sequence Now!"  
+on:
+    poke $FF84D1 $06
+    poke $FF84D9 $07
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FFB317 $03
+script "P1 Infinite Energy"  
+run:
+    poke $FFB2E1 $64
+script "P1 Invincibility"  
+run:
+    poke $FFB274 $02
+    dpoke $FFB360 $0002
+script "P1 Select Character" \
+ "0x01/Jack.T"\
+ "0x02/Hannah.D"\
+ "0x03/Mustapha.C"\
+ "0x04/Mess.O" 
+run:
+    if (param==$01)
+      poke $FFB277 $00
+      poke $FF863A $00
+    endif
+    if (param==$02)
+      poke $FFB277 $02
+      poke $FF863A $01
+    endif
+    if (param==$03)
+      poke $FFB277 $01
+      poke $FF863A $02
+    endif
+    if (param==$04)
+      poke $FFB277 $03
+      poke $FF863A $03
+    endif
+script "P1 Rapid Fire - Normal" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FFB314 $00|(peek($FFB314)&~10)
+script "P1 Rapid Fire - Unlimited" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FFB314 $00|(peek($FFB314)&~10)
+    poke $FFB326 $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $FFB497 $03
+script "P2 Infinite Energy"  
+run:
+    poke $FFB461 $64
+script "P2 Invincibility"  
+run:
+    poke $FFB3F4 $02
+    dpoke $FFB4E0 $0002
+script "P2 Select Character" \
+ "0x01/Jack.T"\
+ "0x02/Hannah.D"\
+ "0x03/Mustapha.C"\
+ "0x04/Mess.O" 
+run:
+    if (param==$01)
+      poke $FFB3F7 $00
+      poke $FF8646 $00
+    endif
+    if (param==$02)
+      poke $FFB3F7 $02
+      poke $FF8646 $01
+    endif
+    if (param==$03)
+      poke $FFB3F7 $01
+      poke $FF8646 $02
+    endif
+    if (param==$04)
+      poke $FFB3F7 $03
+      poke $FF8646 $03
+    endif
+script "P2 Rapid Fire - Normal" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FFB494 $00|(peek($FFB494)&~10)
+script "P2 Rapid Fire - Unlimited" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FFB494 $00|(peek($FFB494)&~10)
+    poke $FFB4A6 $00
+script " "  
+script "P3 Infinite Lives"  
+run:
+    poke $FFB617 $03
+script "P3 Infinite Energy"  
+run:
+    poke $FFB5E1 $64
+script "P3 Invincibility"  
+run:
+    poke $FFB574 $02
+    dpoke $FFB660 $0002
+script "P3 Select Character" \
+ "0x01/Jack.T"\
+ "0x02/Hannah.D"\
+ "0x03/Mustapha.C"\
+ "0x04/Mess.O" 
+run:
+    if (param==$01)
+      poke $FFB577 $00
+      poke $FF8652 $00
+    endif
+    if (param==$02)
+      poke $FFB577 $02
+      poke $FF8652 $01
+    endif
+    if (param==$03)
+      poke $FFB577 $01
+      poke $FF8652 $02
+    endif
+    if (param==$04)
+      poke $FFB577 $03
+      poke $FF8652 $03
+    endif
+script "P3 Rapid Fire - Normal" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FFB614 $00|(peek($FFB614)&~10)
+script "P3 Rapid Fire - Unlimited" \
+ "comm:Turn it OFF on the name entry screen"  
+run:
+    poke $FFB614 $00|(peek($FFB614)&~10)
+    poke $FFB626 $00
+script " "  
+script "Enable Hidden OBJECT TEST and SCROLL TEST" \
+ "comm:Press F2 and get OBJECT Test on '10' and SCROLL TEST on '11'"  
+run:
+    poke $FF84C3 $01

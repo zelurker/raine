@@ -1,45 +1,41 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $105CDD $01
-	poke $105CCB $01
-
-script "1UP Invulnerability OFF"
-	poke $105CDD $00
-	poke $105CCB $00
-
-script "2UP Invulnerability ON" always
-	poke $105D1D $01
-	poke $105D0B $01
-
-script "2UP Invulnerability OFF"
-	poke $105D1D $00
-	poke $105D0B $00
-
-script "1UP Unlimited lives" always
-	poke $10754D $03
-
-script "2UP Unlimited lives" always
-	poke $10754F $03
-
-script "1UP Unlimited bombs" always
-	poke $107551 $14
-
-script "2UP Unlimited bombs" always
-	poke $107553 $14
-
-script "1UP Maximum speed" always
-	poke $1075AF $03
-
-script "2UP Maximum speed" always
-	poke $1075B1 $03
-
-script "1UP Maximum fire power" always
-	poke $10753F $03
-	poke $107555 $03
-
-script "2UP Maximum fire power" always
-	poke $107541 $03
-	poke $107557 $03
+script "P1 Infinite Lives"  
+run:
+    poke $10754D $05
+script "P1 Infinite Bombs"  
+run:
+    poke $107551 $14
+script "P1 Maximum Speed"  
+run:
+    poke $1075AF $03
+script "P1 Maximum Fire Power"  
+run:
+    poke $10753F $03
+    poke $107555 $03
+script "P1 Invincibility"  
+run:
+    poke $105CDD $01
+    poke $105CCB $01
+off:
+    poke $105CDD $00
+    poke $105CCB $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10754F $05
+script "P2 Infinite Bombs"  
+run:
+    poke $107553 $14
+script "P2 Maximum Speed"  
+run:
+    poke $1075B1 $03
+script "P2 Maximum Fire Power"  
+run:
+    poke $107541 $03
+    poke $107557 $03
+script "P2 Invincibility"  
+run:
+    poke $105D1D $01
+    poke $105D0B $01
+off:
+    poke $105D1D $00
+    poke $105D0B $00

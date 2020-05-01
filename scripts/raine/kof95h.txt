@@ -1,0 +1,482 @@
+script "Infinite Time"  
+on:
+    temp0=peek($10A836)
+run:
+    if (frame%300==$0)&&(peek($10A836)!=temp0)
+      poke $10A836 $60
+    endif
+script "Finish Round Now!"  
+on:
+    poke $10A836 $00
+script "Boss code + Timer stop"  
+run:
+    poke $100000 $04
+script "Enable hidden characters" \
+ "comm:Adds the extra two hidden characters to the selection screen"  
+run:
+    poke $10E79A $01
+script "Always Ready Special Move"  
+on:
+    temp0=peek($004BCE)
+    temp1=peek($00B848)
+    temp2=peek($00B874)
+    temp3=peek($00B8B8)
+run:
+    poke $004BCE $60
+    poke $00B848 $60
+    poke $00B874 $60
+    poke $00B8B8 $60
+off:
+    poke $004BCE temp0
+    poke $00B848 temp1
+    poke $00B874 temp2
+    poke $00B8B8 temp3
+script "Invincibility [Master Code]"  
+on:
+    temp0=lpeek($00265E)
+    temp1=lpeek($002662)
+    temp2=lpeek($054030)
+    temp3=lpeek($054034)
+    temp4=lpeek($054038)
+    temp5=lpeek($05403C)
+    temp6=lpeek($054040)
+    temp7=lpeek($00A8AE)
+    temp8=dpeek($00A8B2)
+    temp9=lpeek($054044)
+    temp10=lpeek($054048)
+    temp11=lpeek($05404C)
+    temp12=lpeek($054050)
+    temp13=lpeek($054054)
+    temp14=lpeek($01041C)
+    temp15=lpeek($010420)
+    temp16=lpeek($011880)
+    temp17=lpeek($011884)
+    temp18=lpeek($011BD6)
+    temp19=lpeek($011BDA)
+    temp20=lpeek($0123EA)
+    temp21=lpeek($0123EE)
+    temp22=lpeek($01B154)
+    temp23=lpeek($01B158)
+    temp24=lpeek($01BE3A)
+    temp25=lpeek($01BE3E)
+    temp26=lpeek($01CED8)
+    temp27=lpeek($01CEDC)
+    temp28=lpeek($02EA5E)
+    temp29=lpeek($02EA62)
+    temp30=lpeek($02EE16)
+    temp31=lpeek($02EE1A)
+    temp32=lpeek($0307C4)
+    temp33=lpeek($0307C8)
+    temp34=lpeek($030B16)
+    temp35=lpeek($030B1A)
+    temp36=lpeek($054058)
+    temp37=lpeek($05405C)
+    temp38=lpeek($054060)
+    temp39=lpeek($054064)
+    temp40=lpeek($054068)
+    temp41=lpeek($00EB1C)
+    temp42=dpeek($00EB20)
+    temp43=lpeek($05406C)
+    temp44=lpeek($054070)
+    temp45=dpeek($054074)
+    temp46=lpeek($054076)
+    temp47=lpeek($05407A)
+    temp48=lpeek($01AFCE)
+    temp49=dpeek($01AFD2)
+    temp50=lpeek($05407E)
+    temp51=dpeek($054082)
+    temp52=lpeek($054084)
+    temp53=lpeek($054088)
+    temp54=lpeek($05408C)
+run:
+    lpoke $00265E $4EB90005
+    lpoke $002662 $40304E71
+    lpoke $054030 $2C6D27A0
+    lpoke $054034 $4A2E01F0
+    lpoke $054038 $6606052E
+    lpoke $05403C $007C4E75
+    lpoke $054040 $74004E75
+    lpoke $00A8AE $4EB90005
+    dpoke $00A8B2 $4044
+    lpoke $054044 $48411210
+    lpoke $054048 $4A2B01F0
+    lpoke $05404C $6604C207
+    lpoke $054050 $4E75323C
+    lpoke $054054 $00004E75
+    lpoke $01041C $4EB90005
+    lpoke $010420 $40584E71
+    lpoke $011880 $4EB90005
+    lpoke $011884 $40584E71
+    lpoke $011BD6 $4EB90005
+    lpoke $011BDA $40584E71
+    lpoke $0123EA $4EB90005
+    lpoke $0123EE $40584E71
+    lpoke $01B154 $4EB90005
+    lpoke $01B158 $40584E71
+    lpoke $01BE3A $4EB90005
+    lpoke $01BE3E $40584E71
+    lpoke $01CED8 $4EB90005
+    lpoke $01CEDC $40584E71
+    lpoke $02EA5E $4EB90005
+    lpoke $02EA62 $40584E71
+    lpoke $02EE16 $4EB90005
+    lpoke $02EE1A $40584E71
+    lpoke $0307C4 $4EB90005
+    lpoke $0307C8 $40584E71
+    lpoke $030B16 $4EB90005
+    lpoke $030B1A $40584E71
+    lpoke $054058 $4A2B01F0
+    lpoke $05405C $660A302C
+    lpoke $054060 $0018906B
+    lpoke $054064 $00184E75
+    lpoke $054068 $707F4E75
+    lpoke $00EB1C $4EB90005
+    dpoke $00EB20 $406C
+    lpoke $05406C $3210E249
+    lpoke $054070 $4A2B01F0
+    dpoke $054074 $6604
+    lpoke $054076 $90414E75
+    lpoke $05407A $707F4E75
+    lpoke $01AFCE $4EB90005
+    dpoke $01AFD2 $407E
+    lpoke $05407E $4A2B01F0
+    dpoke $054082 $6608
+    lpoke $054084 $082B0005
+    lpoke $054088 $00E34E75
+    lpoke $05408C $707F4E75
+off:
+    lpoke $00265E temp0
+    lpoke $002662 temp1
+    lpoke $054030 temp2
+    lpoke $054034 temp3
+    lpoke $054038 temp4
+    lpoke $05403C temp5
+    lpoke $054040 temp6
+    lpoke $00A8AE temp7
+    dpoke $00A8B2 temp8
+    lpoke $054044 temp9
+    lpoke $054048 temp10
+    lpoke $05404C temp11
+    lpoke $054050 temp12
+    lpoke $054054 temp13
+    lpoke $01041C temp14
+    lpoke $010420 temp15
+    lpoke $011880 temp16
+    lpoke $011884 temp17
+    lpoke $011BD6 temp18
+    lpoke $011BDA temp19
+    lpoke $0123EA temp20
+    lpoke $0123EE temp21
+    lpoke $01B154 temp22
+    lpoke $01B158 temp23
+    lpoke $01BE3A temp24
+    lpoke $01BE3E temp25
+    lpoke $01CED8 temp26
+    lpoke $01CEDC temp27
+    lpoke $02EA5E temp28
+    lpoke $02EA62 temp29
+    lpoke $02EE16 temp30
+    lpoke $02EE1A temp31
+    lpoke $0307C4 temp32
+    lpoke $0307C8 temp33
+    lpoke $030B16 temp34
+    lpoke $030B1A temp35
+    lpoke $054058 temp36
+    lpoke $05405C temp37
+    lpoke $054060 temp38
+    lpoke $054064 temp39
+    lpoke $054068 temp40
+    lpoke $00EB1C temp41
+    dpoke $00EB20 temp42
+    lpoke $05406C temp43
+    lpoke $054070 temp44
+    dpoke $054074 temp45
+    lpoke $054076 temp46
+    lpoke $05407A temp47
+    lpoke $01AFCE temp48
+    dpoke $01AFD2 temp49
+    lpoke $05407E temp50
+    dpoke $054082 temp51
+    lpoke $054084 temp52
+    lpoke $054088 temp53
+    lpoke $05408C temp54
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($0026D0)
+run:
+    dpoke $0026D0 $4E71
+off:
+    dpoke $0026D0 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108221 $CF
+script "P1 Drain all Energy Now!"  
+on:
+    poke $108221 $00
+script "P1 Invincibility" \
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+on:
+    temp0=peek($1082F0)
+run:
+    poke $1082F0 $01
+off:
+    poke $1082F0 temp0
+script "P1 Always have Max POW"  
+run:
+    poke $108219 $7F
+script "P1 Get Max POW Now!"  
+on:
+    poke $108219 $7F
+script "P1 Select 1st Character" \
+ "comm:Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams)." \
+ "0x00/Heidern"\
+ "0x01/Ralf"\
+ "0x02/Clark"\
+ "0x03/Athena"\
+ "0x04/Kensou"\
+ "0x05/Chin"\
+ "0x06/Kyo"\
+ "0x07/Benimaru"\
+ "0x08/Daimon"\
+ "0x09/Iori"\
+ "0x0A/Eiji"\
+ "0x0B/Billy"\
+ "0x0C/Kim"\
+ "0x0D/Chang"\
+ "0x0E/Choi"\
+ "0x0F/Terry"\
+ "0x10/Andy"\
+ "0x11/Joe"\
+ "0x12/Ryo"\
+ "0x13/Robert"\
+ "0x14/Takuma"\
+ "0x15/Yuri"\
+ "0x16/Mai"\
+ "0x17/King"\
+ "0x18/Saisyu Kusanagi"\
+ "0x19/Omega Rugal" 
+run:
+    poke $10A843 param
+script "P1 Select 2nd Character" \
+ "comm:Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams)." \
+ "0x00/Heidern"\
+ "0x01/Ralf"\
+ "0x02/Clark"\
+ "0x03/Athena"\
+ "0x04/Kensou"\
+ "0x05/Chin"\
+ "0x06/Kyo"\
+ "0x07/Benimaru"\
+ "0x08/Daimon"\
+ "0x09/Iori"\
+ "0x0A/Eiji"\
+ "0x0B/Billy"\
+ "0x0C/Kim"\
+ "0x0D/Chang"\
+ "0x0E/Choi"\
+ "0x0F/Terry"\
+ "0x10/Andy"\
+ "0x11/Joe"\
+ "0x12/Ryo"\
+ "0x13/Robert"\
+ "0x14/Takuma"\
+ "0x15/Yuri"\
+ "0x16/Mai"\
+ "0x17/King"\
+ "0x18/Saisyu Kusanagi"\
+ "0x19/Omega Rugal" 
+run:
+    poke $10A844 param
+script "P1 Select 3rd Character" \
+ "comm:Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams)." \
+ "0x00/Heidern"\
+ "0x01/Ralf"\
+ "0x02/Clark"\
+ "0x03/Athena"\
+ "0x04/Kensou"\
+ "0x05/Chin"\
+ "0x06/Kyo"\
+ "0x07/Benimaru"\
+ "0x08/Daimon"\
+ "0x09/Iori"\
+ "0x0A/Eiji"\
+ "0x0B/Billy"\
+ "0x0C/Kim"\
+ "0x0D/Chang"\
+ "0x0E/Choi"\
+ "0x0F/Terry"\
+ "0x10/Andy"\
+ "0x11/Joe"\
+ "0x12/Ryo"\
+ "0x13/Robert"\
+ "0x14/Takuma"\
+ "0x15/Yuri"\
+ "0x16/Mai"\
+ "0x17/King"\
+ "0x18/Saisyu Kusanagi"\
+ "0x19/Omega Rugal" 
+run:
+    poke $10A845 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108421 $CF
+script "P2 Drain all Energy Now!"  
+on:
+    poke $108421 $00
+script "P2 Invincibility" \
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+on:
+    temp0=peek($1084F0)
+run:
+    poke $1084F0 $01
+off:
+    poke $1084F0 temp0
+script "P2 Always have Max POW"  
+run:
+    poke $108419 $7F
+script "P2 Get Max POW Now!"  
+on:
+    poke $108419 $7F
+script "P2 Select 1st Character" \
+ "comm:Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams)." \
+ "0x00/Heidern"\
+ "0x01/Ralf"\
+ "0x02/Clark"\
+ "0x03/Athena"\
+ "0x04/Kensou"\
+ "0x05/Chin"\
+ "0x06/Kyo"\
+ "0x07/Benimaru"\
+ "0x08/Daimon"\
+ "0x09/Iori"\
+ "0x0A/Eiji"\
+ "0x0B/Billy"\
+ "0x0C/Kim"\
+ "0x0D/Chang"\
+ "0x0E/Choi"\
+ "0x0F/Terry"\
+ "0x10/Andy"\
+ "0x11/Joe"\
+ "0x12/Ryo"\
+ "0x13/Robert"\
+ "0x14/Takuma"\
+ "0x15/Yuri"\
+ "0x16/Mai"\
+ "0x17/King"\
+ "0x18/Saisyu Kusanagi"\
+ "0x19/Omega Rugal" 
+run:
+    poke $10A853 param
+script "P2 Select 2nd Character" \
+ "comm:Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams)." \
+ "0x00/Heidern"\
+ "0x01/Ralf"\
+ "0x02/Clark"\
+ "0x03/Athena"\
+ "0x04/Kensou"\
+ "0x05/Chin"\
+ "0x06/Kyo"\
+ "0x07/Benimaru"\
+ "0x08/Daimon"\
+ "0x09/Iori"\
+ "0x0A/Eiji"\
+ "0x0B/Billy"\
+ "0x0C/Kim"\
+ "0x0D/Chang"\
+ "0x0E/Choi"\
+ "0x0F/Terry"\
+ "0x10/Andy"\
+ "0x11/Joe"\
+ "0x12/Ryo"\
+ "0x13/Robert"\
+ "0x14/Takuma"\
+ "0x15/Yuri"\
+ "0x16/Mai"\
+ "0x17/King"\
+ "0x18/Saisyu Kusanagi"\
+ "0x19/Omega Rugal" 
+run:
+    poke $10A854 param
+script "P2 Select 3rd Character" \
+ "comm:Free player selection - Use just after character selection. If used in-game the character will only change when a new round starts (both teams)." \
+ "0x00/Heidern"\
+ "0x01/Ralf"\
+ "0x02/Clark"\
+ "0x03/Athena"\
+ "0x04/Kensou"\
+ "0x05/Chin"\
+ "0x06/Kyo"\
+ "0x07/Benimaru"\
+ "0x08/Daimon"\
+ "0x09/Iori"\
+ "0x0A/Eiji"\
+ "0x0B/Billy"\
+ "0x0C/Kim"\
+ "0x0D/Chang"\
+ "0x0E/Choi"\
+ "0x0F/Terry"\
+ "0x10/Andy"\
+ "0x11/Joe"\
+ "0x12/Ryo"\
+ "0x13/Robert"\
+ "0x14/Takuma"\
+ "0x15/Yuri"\
+ "0x16/Mai"\
+ "0x17/King"\
+ "0x18/Saisyu Kusanagi"\
+ "0x19/Omega Rugal" 
+run:
+    poke $10A855 param
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE1A $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

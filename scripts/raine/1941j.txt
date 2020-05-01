@@ -1,0 +1,147 @@
+script "Infinite Credits"  
+run:
+    poke $FF0D59 $09
+script "Invincibility - 1st Side Fighter"  
+run:
+    poke $FF9A64 $02
+    poke $FF9AE4 $02
+script "Invincibility - 2nd Side Fighter"  
+run:
+    poke $FF9964 $02
+    poke $FF99E4 $02
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($001B54)
+    temp1=dpeek($001D1E)
+    temp2=dpeek($00E4B6)
+run:
+    dpoke $001B54 $01B8
+    dpoke $001D1E $0001
+    dpoke $00E4B6 $0001
+off:
+    dpoke $001B54 temp0
+    dpoke $001D1E temp1
+    dpoke $00E4B6 temp2
+script "Rapid Fire - 1st Side Fighter"  
+run:
+    poke $FF9A6D $03
+    poke $FF9AED $03
+script "Rapid Fire - 2nd Side Fighter"  
+run:
+    poke $FF996D $03
+    poke $FF99ED $03
+script " "  
+script "P1 Infinite Energy"  
+run:
+    dpoke $FF0DA4 $0606
+script "P1 Invincibility" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $FF0DFA param
+script "P1 Rapid Fire"  
+run:
+    poke $FF1471 $03
+    poke $FF3871 $03
+    poke $FF38F1 $03
+script "P1 Infinite Weapon Time"  
+run:
+    poke $FF0DE7 $99
+script "P1 Select Perm. Weapon" \
+ "0x48/Normal"\
+ "0x28/M. Gun"\
+ "0x18/S. Shell"\
+ "0x08/Missile" 
+run:
+    if param==$48
+      temp0=$00
+    endif
+    if param==$28
+      temp0=$01
+    endif
+    if param==$18
+      temp0=$02
+    endif
+    if param==$08
+      temp0=$03
+    endif
+    if (peek($FF0040)==$01)
+      dpoke $9080B0 $4758
+      dpoke $9080B4 $4759
+      poke $FF0DC8 temp0
+      poke $FF0DE7 $00
+      poke $9081AD param
+      poke $9081B1 param+$1
+      poke $9081B5 param+$2
+      poke $9081B9 param+$3
+    endif
+script "P1 Maximum Fire Rate"  
+run:
+    poke $FF1461 $00
+script "P1 Extreme Firepower"  
+run:
+    poke $FFC578 $06
+script "P1 Always have Side Fighters"  
+run:
+    lpoke $FF9918 $01010001
+    poke $FF9944 $05
+    lpoke $FF9998 $01010000
+    poke $FF99C4 $05
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke $FF0DA6 $0606
+script "P2 Invincibility" \
+ "0x01/Enabled"\
+ "0x00/Disabled" 
+run:
+    poke $FF0DFB param
+script "P2 Rapid Fire"  
+run:
+    poke $FF14F1 $03
+    poke $FF3971 $03
+    poke $FF39F1 $03
+script "P2 Infinite Weapon Time"  
+run:
+    poke $FF0DE8 $99
+script "P2 Select Perm. Weapon" \
+ "0x48/Normal"\
+ "0x28/M. Gun"\
+ "0x18/S. Shell"\
+ "0x08/Missile" 
+run:
+    if param==$48
+      temp0=$00
+    endif
+    if param==$28
+      temp0=$01
+    endif
+    if param==$18
+      temp0=$02
+    endif
+    if param==$08
+      temp0=$03
+    endif
+    if (peek($FF0040)==$01)
+      dpoke $9080EC $4758
+      dpoke $9080F0 $4759
+      poke $FF0DCB temp0
+      poke $FF0DE8 $00
+      poke $9081E9 param
+      poke $9081ED param+$1
+      poke $9081F1 param+$2
+      poke $9081F5 param+$3
+    endif
+script "P2 Maximum Fire Rate"  
+run:
+    poke $FF14E1 $00
+script "P2 Extreme Firepower"  
+run:
+    poke $FFC57C $07
+script "P2 Always have Side Fighters"  
+run:
+    lpoke $FF9A18 $01010101
+    poke $FF9A44 $05
+    lpoke $FF9A98 $01010100
+    poke $FF9AC4 $05
+script " "  

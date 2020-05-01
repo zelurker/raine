@@ -1,0 +1,179 @@
+script "Infinite Continues"  
+run:
+    poke $100219 $64
+script "One Player (Solo) Game Cheats"  
+script " "  
+script "Infinite Time (Solo)"  
+run:
+    poke $107D23 $78
+script "Select Help Line" \
+ "0x01/Enabled"\
+ "0x02/Disabled" 
+run:
+    if (param==$01)
+      poke $1020FF $02
+      poke $107D41 $0A
+    endif
+    if (param==$02)
+      poke $1020FF $00
+      poke $107D41 $00
+    endif
+script "Level 39 when level ends"  
+on:
+    poke $1001E5 $25
+script " "  
+script "P1 Select Perm. Current Bubble" \
+ "comm:The star and help bubbles only work for the one player (SOLO) game." \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x09/A Star"\
+ "0x0A/A Help"\
+ "0x0B/A Bomb" 
+run:
+    poke $1023B5 param
+script "P1 Select Perm. Next Bubble" \
+ "comm:The star and help bubbles only work for the one player (SOLO) game." \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x09/A Star"\
+ "0x0A/A Help"\
+ "0x0B/A Bomb" 
+run:
+    poke $10212B param
+script "P1 Select Temp. Current Bubble" \
+ "comm:The star and help bubbles only work for the one player (SOLO) game." \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x09/A Star"\
+ "0x0A/A Help"\
+ "0x0B/A Bomb" 
+change:
+    poke $1023B5 param
+script "P1 Select Temp. Next Bubble" \
+ "comm:The star and help bubbles only work for the one player (SOLO) game." \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x09/A Star"\
+ "0x0A/A Help"\
+ "0x0B/A Bomb" 
+change:
+    poke $10212B param
+script " "  
+script "P2 Select Perm. Current Bubble" \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x0B/A Bomb" 
+run:
+    poke $104B9D param
+script "P2 Select Perm. Next Bubble" \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x0B/A Bomb" 
+run:
+    poke $104913 param
+script "P2 Select Temp. Current Bubble" \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x0B/A Bomb" 
+change:
+    poke $104B9D param
+script "P2 Select Temp. Next Bubble" \
+ "0x01/Blue"\
+ "0x02/Red"\
+ "0x03/Orange"\
+ "0x04/Green"\
+ "0x05/Yellow"\
+ "0x06/Grey"\
+ "0x07/Purple"\
+ "0x08/Black"\
+ "0x0B/A Bomb" 
+change:
+    poke $104913 param
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

@@ -1,0 +1,26 @@
+script "P1 Infinite Lives"  
+run:
+    poke $407090 $0A
+script "P1 Invincibility" \
+ "comm:Use together with the 'Stop Flicker during Invincibility' cheat if the flickering annoys"  
+run:
+    poke $40708C $02
+script "P1 Always have Max Shoe Speed"  
+run:
+    poke $407080 $03
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $407091 $0A
+script "P2 Invincibility" \
+ "comm:Use together with the 'Stop Flicker during Invincibility' cheat if the flickering annoys"  
+run:
+    poke $40708D $02
+script "P2 Always have Max Shoe Speed"  
+run:
+    poke $407081 $03
+script "these do, and they may not do anything at all."  
+script " "  
+script "You will find a larger selection of cheats in"  
+script "in the 'released' version of this game - this"  
+script "is the prototype version."  

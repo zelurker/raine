@@ -1,20 +1,163 @@
-script "P1 99 lives"
-  poke $100377 99
-
-script "P1 invulnerability" always
-  poke $100485 2
-
-script "999 ammo"
-  dpoke $1004c2 999
-
-script "P1 invuln tank" always
-  poke $1005c5 2
-
-script "P1 select weapon"
-  poke $1004d1 alert("select weapon (ESC for normal gun)|Shotgun|Flamer|Rocket launcher|Machine gun")
-  dpoke $1004c2 999
-
-
-script "set game timer to 99"
-  poke $106e93 99
-
+script "Infinite Time"  
+run:
+    poke $106E93 $3C
+script "Infinite Tank Gas"  
+run:
+    poke $1005E7 $30
+script "Infinite Tank Cannon"  
+run:
+    poke $100610 $0A
+script "Infinite Vehicle Cannon"  
+run:
+    dpoke $10060E $0001
+script "Tank Invincibility"  
+run:
+    poke $1005C5 $FF
+script "Select Starting Mission" \
+ inter=1,6,1 
+run:
+    if (peek($10E3B7)==$00)
+      poke $10E3B7 (param-$1)
+    endif
+script "Hit Anywhere"  
+on:
+    dpoke $285FC $4EF9
+    dpoke $28600 $0200
+    lpoke $00200 $B3FC0010
+    lpoke $204 $0440670C
+    lpoke $00208 $D1FC0000
+    lpoke $20c $000A4EF9
+    lpoke $00210 $00028618
+    lpoke $214 $D1FC0000
+    lpoke $00218 $000A4EF9
+    lpoke $21c $00028602
+off:
+    dpoke $285FC $D1FC
+    dpoke $28600 $000A
+    lpoke $00200 $00000000
+    lpoke $204 $00000000
+    lpoke $00208 $00000000
+    lpoke $20c $00000000
+    lpoke $00210 $00000000
+    lpoke $214 $00000000
+    lpoke $00218 $00000000
+    lpoke $21c $00000000
+script "Finish Current Mission Now!"  
+on:
+    if (peek($106ECA)==$00)
+      poke $106ED2 $00
+    endif
+script "See End Sequence Now!"  
+on:
+    if (peek($106ECA)==$00)
+      poke $106ED0 $05
+      poke $106ED2 $00
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $100377 $03
+script "P1 Infinite Bombs"  
+run:
+    poke $1004C0 $0A
+script "P1 Invincibility"  
+run:
+    poke $100485 $40
+script "P1 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Shotgun"\
+ "0x02/Flamer"\
+ "0x03/Rocket Launcher"\
+ "0x04/Machine Gun" 
+run:
+    poke $1004B1 param
+    poke $1004C2 $FF
+script "P1 Rapid Fire"  
+run:
+    poke $106EB2 $00|(peek($106EB2)&~10)
+script "P1 No bomb throwing delay" \
+ "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
+run:
+    lpoke $1004C1 $00000000|(lpeek($1004C1)&~FF0000FF)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $100417 $03
+script "P2 Infinite Bombs"  
+run:
+    poke $100560 $0A
+script "P2 Invincibility"  
+run:
+    poke $100525 $40
+script "P2 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Shotgun"\
+ "0x02/Flamer"\
+ "0x03/Rocket Launcher"\
+ "0x04/Machine Gun" 
+run:
+    poke $100551 param
+    poke $100562 $FF
+script "P2 Rapid Fire"  
+run:
+    poke $106EB8 $00|(peek($106EB8)&~10)
+script "P2 No bomb throwing delay" \
+ "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
+run:
+    lpoke $100561 $00000000|(lpeek($100561)&~FF0000FF)
+script " "  
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99
+script "Turn All Sound Off" \
+ "comm:This will turn ALL sound off the next time you shoot, turn it OFF when the sound dies and the sfx will return but the background music will be gone!"  
+run:
+    cpu audio
+    poke $F81C $00
+    cpu main
+off:
+    cpu audio
+    poke $F81C $10
+    cpu main

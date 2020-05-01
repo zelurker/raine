@@ -1,0 +1,872 @@
+script "Infinite Time"  
+run:
+    poke $FFCAB2 $04
+    poke $FFCB02 $04
+script "Infinite Keys"  
+run:
+    poke $FF8045 $09
+script "Maximum Stage Clear Bonus (Rest Time)"  
+run:
+    poke $FF803A $59
+script "Select Starting Stage" \
+ "0x01/STAGE 1 -OPENING-"\
+ "0x02/STAGE 2 The Village of Trintan"\
+ "0x04/STAGE 3-A To ride a Juggernaut!"\
+ "0x07/STAGE 3-B Battle on the Vesuvia"\
+ "0x0B/STAGE 4 The skies over Aengmore"\
+ "0x0D/STAGE 4 #BOSS#"\
+ "0x0E/STAGE 5-A Forest of despair"\
+ "0x14/STAGE 5-B The riddle of Aensun"\
+ "0x05/STAGE 5-C The forest bridge"\
+ "0x18/STAGE 6 Battle of Strong Oak"\
+ "0x1A/STAGE 6 #BOSS#"\
+ "0x1B/STAGE 7 The grove of destruction"\
+ "0x1C/STAGE 8-A Forest Labyrinth"\
+ "0x23/STAGE 8-B Rescue at the Gnome Village"\
+ "0x22/Village 1"\
+ "0x6E/Village 2"\
+ "0x20/PENALTY STAGE Blackwing The Dragon"\
+ "0x43/The cave of Rafael, the Immortal"\
+ "0x2D/Hidden treasures 'Pathway to Red Dragon'"\
+ "0x2E/Red Dragon"\
+ "0x27/STAGE 9-A Land of Fire"\
+ "0x2B/STAGE 9-B Lost World"\
+ "0x29/STAGE 9-C Secret Underworld"\
+ "0x2F/STAGE 10-1 Gateway"\
+ "0x36/STAGE 10-2 Overtures"\
+ "0x3A/STAGE 10-3 Arena"\
+ "0x3B/STAGE 10-4 Battle Royal"\
+ "0x40/STAGE 10-5 Arena revisted"\
+ "0x41/STAGE 10-6 Inner Heart, Dark Heart"\
+ "0x69/Last Stage #BOSS#" 
+run:
+    if (peek($FF8034)==$01)
+      poke $FF8034 param
+    endif
+script "Hit Anywhere"  
+on:
+    temp0=dpeek($025CA6)
+    temp1=dpeek($025CDC)
+    temp2=dpeek($025D06)
+run:
+    dpoke $025CA6 $6002
+    dpoke $025CDC $6002
+    dpoke $025D06 $6002
+off:
+    dpoke $025CA6 temp0
+    dpoke $025CDC temp1
+    dpoke $025D06 temp2
+script "One Hit Kills"  
+on:
+    temp0=dpeek($025E98)
+run:
+    dpoke $025E98 $4269
+off:
+    dpoke $025E98 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $FF8641 $9A
+script "P1 Invincibility"  
+run:
+    poke $FF865C $03
+script "P1 Maximum SP"  
+run:
+    lpoke $FF86F2 $00099999
+script "P1 Infinite Item"  
+run:
+    lpoke $FF8726 $09090909
+    dpoke $FF872A $0909
+script "P1 Infinite Magic"  
+run:
+    lpoke $FF872F $09090909
+    lpoke $FF8732 $00090909
+    poke $FF8737 $09
+script "P1 Infinite Wands"  
+run:
+    poke $FF8769 $14
+    dpoke $FF876A $1414
+    poke $FF876F $14
+script "P1 Select Right Hand Weapon" \
+ "comm:The Cleric, Elf, Dwarf + Thief can ONLY use the Right Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF86EB param
+script "P1 Select Left Hand Weapon" \
+ "comm:The Magicuser can ONLY use the Left Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0xFF/None"\
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF86EC param
+script "P1 Select Head Equipment" \
+ "0xFF/None"\
+ "0x00/Helmet"\
+ "0x01/Magical Hat"\
+ "0x02/Hood"\
+ "0x03/Ciaclet"\
+ "0x04/Cleric Hat"\
+ "0x05/Tiara" 
+run:
+    poke $FF873E param
+script "P1 Select Body Equipment" \
+ "0xFF/None"\
+ "0x00/Fighter"\
+ "0x01/Cleric"\
+ "0x02/Elf"\
+ "0x03/Dwarf"\
+ "0x04/Magicuser"\
+ "0x05/Thief" 
+run:
+    poke $FF873F param
+script "P1 Select Leg Equipment" \
+ "0xFF/None"\
+ "0x00/Boots of Speed"\
+ "0x01/Boots of Springing + Striding"\
+ "0x02/Boots of Levitation" 
+run:
+    poke $FF8740 param
+    poke $FF8749 $05
+    if (param==$0xFF)
+      poke $FF8749 $00
+    endif
+script "P1 Select Arm Equipment" \
+ "0x01/None"\
+ "0x02/Gauntlet of Power" 
+run:
+    if (param==$01)
+      poke $FF8741 $FF
+      poke $FF874A $00
+    endif
+    if (param==$02)
+      poke $FF8741 $00
+      poke $FF874A $05
+    endif
+script "P1 Select Shield Equipment" \
+ "0xFF/None"\
+ "0x00/Normal Shield"\
+ "0x01/Normal Shield (Elf)"\
+ "0x04/Dragon Shield"\
+ "0x05/Frame Shield"\
+ "0x06/Ice Shield"\
+ "0x07/Shield of Protection from Dark Magic" 
+run:
+    poke $FF8742 param
+script "P1 Select Hand Equipment" \
+ "0xFF/None"\
+ "0x00/Ring of Protection"\
+ "0x01/Ring of Fire Resistance"\
+ "0x02/Ring of Spell Turning"\
+ "0x03/Ring of Protection from Evil"\
+ "0x04/Rod of Fire Ball"\
+ "0x05/Rod of Cold"\
+ "0x06/Rod of Lightning" 
+run:
+    poke $FF8743 param
+    poke $FF874B $05
+    if (param==$0xFF)
+      poke $FF874B $00
+    endif
+script "P1 Select Accessory" \
+ "0xFF/None"\
+ "0x00/Necklace"\
+ "0x01/Orb"\
+ "0x02/Bracelet"\
+ "0x03/Brooch"\
+ "0x04/Earring"\
+ "0x05/Anklet" 
+run:
+    poke $FF8744 param
+script "P1 Select Artifact" \
+ "0xFF/None"\
+ "0x00/Eye of Beholder"\
+ "0x01/Skin of Displacer Beast"\
+ "0x02/Eye of Displacer Beast"\
+ "0x03/Scale of Dragon"\
+ "0x04/Skin of Manticore"\
+ "0x05/Egg of Owlbear"\
+ "0x06/???1"\
+ "0x07/???2"\
+ "0x08/Horn of Dragon"\
+ "0x09/Medal"\
+ "0x0A/Displacer Cloak" 
+run:
+    poke $FF8745 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8841 $9A
+script "P2 Invincibility"  
+run:
+    poke $FF885C $03
+script "P2 Maximum SP"  
+run:
+    lpoke $FF88F2 $00099999
+script "P2 Infinite Item"  
+run:
+    lpoke $FF8926 $09090909
+    dpoke $FF892A $0909
+script "P2 Infinite Magic"  
+run:
+    lpoke $FF892F $09090909
+    lpoke $FF8932 $00090909
+    poke $FF8937 $09
+script "P2 Infinite Wands"  
+run:
+    poke $FF8969 $14
+    dpoke $FF896A $1414
+    poke $FF896F $14
+script "P2 Select Right Hand Weapon" \
+ "comm:The Cleric, Elf, Dwarf + Thief can ONLY use the Right Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF88EB param
+script "P2 Select Left Hand Weapon" \
+ "comm:The Magicuser can ONLY use the Left Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0xFF/None"\
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF88EC param
+script "P2 Select Head Equipment" \
+ "0xFF/None"\
+ "0x00/Helmet"\
+ "0x01/Magical Hat"\
+ "0x02/Hood"\
+ "0x03/Ciaclet"\
+ "0x04/Cleric Hat"\
+ "0x05/Tiara" 
+run:
+    poke $FF893E param
+script "P2 Select Body Equipment" \
+ "0xFF/None"\
+ "0x00/Fighter"\
+ "0x01/Cleric"\
+ "0x02/Elf"\
+ "0x03/Dwarf"\
+ "0x04/Magicuser"\
+ "0x05/Thief" 
+run:
+    poke $FF893F param
+script "P2 Select Leg Equipment" \
+ "0xFF/None"\
+ "0x00/Boots of Speed"\
+ "0x01/Boots of Springing + Striding"\
+ "0x02/Boots of Levitation" 
+run:
+    poke $FF8940 param
+    poke $FF8949 $05
+    if (param==$0xFF)
+      poke $FF8949 $00
+    endif
+script "P2 Select Arm Equipment" \
+ "0x01/None"\
+ "0x02/Gauntlet of Power" 
+run:
+    if (param==$01)
+      poke $FF8941 $FF
+      poke $FF894A $00
+    endif
+    if (param==$02)
+      poke $FF8941 $00
+      poke $FF894A $05
+    endif
+script "P2 Select Shield Equipment" \
+ "0xFF/None"\
+ "0x00/Normal Shield"\
+ "0x01/Normal Shield (Elf)"\
+ "0x04/Dragon Shield"\
+ "0x05/Frame Shield"\
+ "0x06/Ice Shield"\
+ "0x07/Shield of Protection from Dark Magic" 
+run:
+    poke $FF8942 param
+script "P2 Select Hand Equipment" \
+ "0xFF/None"\
+ "0x00/Ring of Protection"\
+ "0x01/Ring of Fire Resistance"\
+ "0x02/Ring of Spell Turning"\
+ "0x03/Ring of Protection from Evil"\
+ "0x04/Rod of Fire Ball"\
+ "0x05/Rod of Cold"\
+ "0x06/Rod of Lightning" 
+run:
+    poke $FF8943 param
+    poke $FF894B $05
+    if (param==$0xFF)
+      poke $FF894B $00
+    endif
+script "P2 Select Accessory" \
+ "0xFF/None"\
+ "0x00/Necklace"\
+ "0x01/Orb"\
+ "0x02/Bracelet"\
+ "0x03/Brooch"\
+ "0x04/Earring"\
+ "0x05/Anklet" 
+run:
+    poke $FF8944 param
+script "P2 Select Artifact" \
+ "0xFF/None"\
+ "0x00/Eye of Beholder"\
+ "0x01/Skin of Displacer Beast"\
+ "0x02/Eye of Displacer Beast"\
+ "0x03/Scale of Dragon"\
+ "0x04/Skin of Manticore"\
+ "0x05/Egg of Owlbear"\
+ "0x06/???1"\
+ "0x07/???2"\
+ "0x08/Horn of Dragon"\
+ "0x09/Medal"\
+ "0x0A/Displacer Cloak" 
+run:
+    poke $FF8945 param
+script " "  
+script "P3 Infinite Energy"  
+run:
+    poke $FF8A41 $9A
+script "P3 Invincibility"  
+run:
+    poke $FF8A5C $03
+script "P3 Maximum SP"  
+run:
+    lpoke $FF8AF2 $00099999
+script "P3 Infinite Item"  
+run:
+    lpoke $FF8B26 $09090909
+    dpoke $FF8B2A $0909
+script "P3 Infinite Magic"  
+run:
+    lpoke $FF8B2F $09090909
+    lpoke $FF8B32 $00090909
+    poke $FF8B37 $09
+script "P3 Infinite Wands"  
+run:
+    poke $FF8B69 $14
+    dpoke $FF8B6A $1414
+    poke $FF8B6F $14
+script "P3 Select Right Hand Weapon" \
+ "comm:The Cleric, Elf, Dwarf + Thief can ONLY use the Right Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF8AEB param
+script "P3 Select Left Hand Weapon" \
+ "comm:The Magicuser can ONLY use the Left Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0xFF/None"\
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF8AEC param
+script "P3 Select Head Equipment" \
+ "0xFF/None"\
+ "0x00/Helmet"\
+ "0x01/Magical Hat"\
+ "0x02/Hood"\
+ "0x03/Ciaclet"\
+ "0x04/Cleric Hat"\
+ "0x05/Tiara" 
+run:
+    poke $FF8B3E param
+script "P3 Select Body Equipment" \
+ "0xFF/None"\
+ "0x00/Fighter"\
+ "0x01/Cleric"\
+ "0x02/Elf"\
+ "0x03/Dwarf"\
+ "0x04/Magicuser"\
+ "0x05/Thief" 
+run:
+    poke $FF8B3F param
+script "P3 Select Leg Equipment" \
+ "0xFF/None"\
+ "0x00/Boots of Speed"\
+ "0x01/Boots of Springing + Striding"\
+ "0x02/Boots of Levitation" 
+run:
+    poke $FF8B40 param
+    poke $FF8B49 $05
+    if (param==$0xFF)
+      poke $FF8B49 $00
+    endif
+script "P3 Select Arm Equipment" \
+ "0x01/None"\
+ "0x02/Gauntlet of Power" 
+run:
+    if (param==$01)
+      poke $FF8B41 $FF
+      poke $FF8B4A $00
+    endif
+    if (param==$02)
+      poke $FF8B41 $00
+      poke $FF8B4A $05
+    endif
+script "P3 Select Shield Equipment" \
+ "0xFF/None"\
+ "0x00/Normal Shield"\
+ "0x01/Normal Shield (Elf)"\
+ "0x04/Dragon Shield"\
+ "0x05/Frame Shield"\
+ "0x06/Ice Shield"\
+ "0x07/Shield of Protection from Dark Magic" 
+run:
+    poke $FF8B42 param
+script "P3 Select Hand Equipment" \
+ "0xFF/None"\
+ "0x00/Ring of Protection"\
+ "0x01/Ring of Fire Resistance"\
+ "0x02/Ring of Spell Turning"\
+ "0x03/Ring of Protection from Evil"\
+ "0x04/Rod of Fire Ball"\
+ "0x05/Rod of Cold"\
+ "0x06/Rod of Lightning" 
+run:
+    poke $FF8B43 param
+    poke $FF8B4B $05
+    if (param==$0xFF)
+      poke $FF8B4B $00
+    endif
+script "P3 Select Accessory" \
+ "0xFF/None"\
+ "0x00/Necklace"\
+ "0x01/Orb"\
+ "0x02/Bracelet"\
+ "0x03/Brooch"\
+ "0x04/Earring"\
+ "0x05/Anklet" 
+run:
+    poke $FF8B44 param
+script "P3 Select Artifact" \
+ "0xFF/None"\
+ "0x00/Eye of Beholder"\
+ "0x01/Skin of Displacer Beast"\
+ "0x02/Eye of Displacer Beast"\
+ "0x03/Scale of Dragon"\
+ "0x04/Skin of Manticore"\
+ "0x05/Egg of Owlbear"\
+ "0x06/???1"\
+ "0x07/???2"\
+ "0x08/Horn of Dragon"\
+ "0x09/Medal"\
+ "0x0A/Displacer Cloak" 
+run:
+    poke $FF8B45 param
+script " "  
+script "P4 Infinite Energy"  
+run:
+    poke $FF8C41 $9A
+script "P4 Invincibility"  
+run:
+    poke $FF8C5C $03
+script "P4 Maximum SP"  
+run:
+    lpoke $FF8CF2 $00099999
+script "P4 Infinite Item"  
+run:
+    lpoke $FF8D26 $09090909
+    dpoke $FF8D2A $0909
+script "P4 Infinite Magic"  
+run:
+    lpoke $FF8D2F $09090909
+    lpoke $FF8D32 $00090909
+    poke $FF8D37 $09
+script "P4 Infinite Wands"  
+run:
+    poke $FF8D69 $14
+    dpoke $FF8D6A $1414
+    poke $FF8D6F $14
+script "P4 Select Right Hand Weapon" \
+ "comm:The Cleric, Elf, Dwarf + Thief can ONLY use the Right Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF8CEB param
+script "P4 Select Left Hand Weapon" \
+ "comm:The Magicuser can ONLY use the Left Hand Weapons. ONLY the Fighter can use both Left + Right Hand Weapons!" \
+ "0xFF/None"\
+ "0x00/Normal Sword Lv1"\
+ "0x01/Normal Sword Lv2"\
+ "0x02/Normal Sword Lv3"\
+ "0x03/Normal Sword Lv4"\
+ "0x04/Short Sword Lv1"\
+ "0x05/Short Sword Lv2"\
+ "0x06/Short Sword Lv3"\
+ "0x07/Short Sword Lv4"\
+ "0x08/Two Handed Sword"\
+ "0x09/Bastard Sword"\
+ "0x0B/Dragon Slayer"\
+ "0x0C/Holy Avenger"\
+ "0x0D/Sword of Legend"\
+ "0x0E/Cursed Sword 1"\
+ "0x0F/Cursed Sword 2"\
+ "0x10/Sword of Flame"\
+ "0x11/Sword of Freeze"\
+ "0x12/Storm Blade"\
+ "0x16/Hand Axe"\
+ "0x18/Battle Axe"\
+ "0x19/Mace"\
+ "0x1D/War Hammer"\
+ "0x1E/Morning Star"\
+ "0x1F/Element Power Staff"\
+ "0x20/Magical Power Staff"\
+ "0x21/Wizardry Staff"\
+ "0x22/Striking Staff"\
+ "0x23/Snake Staff"\
+ "0x24/Wand of Cold"\
+ "0x25/Wand of Fire Ball"\
+ "0x26/Wand of Lightning Bolt"\
+ "0x27/Wand of Paralyze"\
+ "0x28/Shield"\
+ "0x29/Shield (Elf)" 
+run:
+    poke $FF8CEC param
+script "P4 Select Head Equipment" \
+ "0xFF/None"\
+ "0x00/Helmet"\
+ "0x01/Magical Hat"\
+ "0x02/Hood"\
+ "0x03/Ciaclet"\
+ "0x04/Cleric Hat"\
+ "0x05/Tiara" 
+run:
+    poke $FF8D3E param
+script "P4 Select Body Equipment" \
+ "0xFF/None"\
+ "0x00/Fighter"\
+ "0x01/Cleric"\
+ "0x02/Elf"\
+ "0x03/Dwarf"\
+ "0x04/Magicuser"\
+ "0x05/Thief" 
+run:
+    poke $FF8D3F param
+script "P4 Select Leg Equipment" \
+ "0xFF/None"\
+ "0x00/Boots of Speed"\
+ "0x01/Boots of Springing + Striding"\
+ "0x02/Boots of Levitation" 
+run:
+    poke $FF8D40 param
+    poke $FF8D49 $05
+    if (param==$0xFF)
+      poke $FF8D49 $00
+    endif
+script "P4 Select Arm Equipment" \
+ "0x01/None"\
+ "0x02/Gauntlet of Power" 
+run:
+    if (param==$01)
+      poke $FF8D41 $FF
+      poke $FF8D4A $00
+    endif
+    if (param==$02)
+      poke $FF8D41 $00
+      poke $FF8D4A $05
+    endif
+script "P4 Select Shield Equipment" \
+ "0xFF/None"\
+ "0x00/Normal Shield"\
+ "0x01/Normal Shield (Elf)"\
+ "0x04/Dragon Shield"\
+ "0x05/Frame Shield"\
+ "0x06/Ice Shield"\
+ "0x07/Shield of Protection from Dark Magic" 
+run:
+    poke $FF8D42 param
+script "P4 Select Hand Equipment" \
+ "0xFF/None"\
+ "0x00/Ring of Protection"\
+ "0x01/Ring of Fire Resistance"\
+ "0x02/Ring of Spell Turning"\
+ "0x03/Ring of Protection from Evil"\
+ "0x04/Rod of Fire Ball"\
+ "0x05/Rod of Cold"\
+ "0x06/Rod of Lightning" 
+run:
+    poke $FF8D43 param
+    poke $FF8D4B $05
+    if (param==$0xFF)
+      poke $FF8D4B $00
+    endif
+script "P4 Select Accessory" \
+ "0xFF/None"\
+ "0x00/Necklace"\
+ "0x01/Orb"\
+ "0x02/Bracelet"\
+ "0x03/Brooch"\
+ "0x04/Earring"\
+ "0x05/Anklet" 
+run:
+    poke $FF8D44 param
+script "P4 Select Artifact" \
+ "0xFF/None"\
+ "0x00/Eye of Beholder"\
+ "0x01/Skin of Displacer Beast"\
+ "0x02/Eye of Displacer Beast"\
+ "0x03/Scale of Dragon"\
+ "0x04/Skin of Manticore"\
+ "0x05/Egg of Owlbear"\
+ "0x06/???1"\
+ "0x07/???2"\
+ "0x08/Horn of Dragon"\
+ "0x09/Medal"\
+ "0x0A/Displacer Cloak" 
+run:
+    poke $FF8D45 param
+script " "  
+script "Infinite Final Strike! is only for use when playing with 3"  
+script "or 4 Players. Player 1 should select the character Magicuser"  
+script " "  
+script "Infinite Final Strike!"  
+run:
+    poke $FF8641 $9A
+    poke $FF86EC $21
+    poke $FF86EE $01
+    poke $FF8841 $9A
+    poke $FF88EE $01
+    poke $FF8A41 $9A
+    poke $FF8AEE $01
+    poke $FF8A41 $9A
+    poke $FF8CEE $01
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    dpoke $F026 $0000
+    cpu main
+script "Select Region" \
+ "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
+ "0x00/Japan"\
+ "0x02/USA"\
+ "0x04/Hispanic"\
+ "0x06/Asia"\
+ "0x08/Euro"\
+ "0x0A/Brazil" 
+run:
+    poke $FF8071 param

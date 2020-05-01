@@ -1,34 +1,18 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited time" always
-	poke $F012B $59
-
-script "*UP End match"
-	poke $F0129 $00
-	poke $F012B $01
-
-script "1UP Score set to 9        (P)" always
-	poke $F012D $09
-
-script "2UP Score set to 9        (P)" always
-	poke $F012F $09
-
-script "1UP Score set to 0        (P)" always
-	poke $F012D $00
-
-script "2UP Score set to 0        (P)" always
-	poke $F012F $00
-
-script "1UP Score set to 9        (T)"
-	poke $F012D $09
-
-script "2UP Score set to 9        (T)"
-	poke $F012F $09
-
-script "1UP Score set to 0        (T)"
-	poke $F012D $00
-
-script "2UP Score set to 0        (T)"
-	poke $F012F $00
+script "Infinite Time"  
+run:
+    poke $F0129 $09
+    poke $F012B $5A
+script "Finish Game Now!"  
+on:
+    poke $F0129 $00
+    poke $F012B $00
+script "P1 Select Score" \
+ "comm:The score will not display correctly until the score changes!" \
+ inter=0,9,1 
+change:
+    poke $F012D (param)
+script "P2 Select Score" \
+ "comm:The score will not display correctly until the score changes!" \
+ inter=0,9,1 
+change:
+    poke $F012F (param)

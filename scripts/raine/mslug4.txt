@@ -1,0 +1,257 @@
+script "Infinite Time"  
+run:
+    poke $10ED5C $99
+script "Select Starting Mission" \
+ "0x00/Mission 1"\
+ "0x01/Mission 2"\
+ "0x02/Mission 3"\
+ "0x03/Mission 4"\
+ "0x04/Mission 5"\
+ "0x05/Final Mission"\
+ "0x06/End Sequence" 
+run:
+    if (peek($10ED5E)==$00)
+      poke $10ED5E param
+    endif
+script "Finish Current Mission Now!"  
+on:
+    if (peek($10ED61)==$3E)
+      poke $10ED5A $01
+      poke $10ED61 $3F
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $100A89 $09
+script "P1 Invincibility" \
+ "comm:You can still die in vehicles and falling in water (without scuba gear)"  
+run:
+    poke $100D17 $40
+script "P1 Invincibility (Fix Final Stage)"  
+run:
+    poke $100D41 $01
+script "P1 Infinite Bombs"  
+run:
+    poke $10EDED $63
+script "P1 No bomb throwing delay" \
+ "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
+run:
+    poke $10EDE7 $00
+script "P1 Infinite Arms"  
+run:
+    dpoke $10EDF2 $FFFF
+script "P1 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x02/Shotgun"\
+ "0x03/Rocket Launcher"\
+ "0x04/Flame Shot"\
+ "0x05/Heavy Machine Gun"\
+ "0x06/Laser Gun"\
+ "0x07/Big Shotgun"\
+ "0x08/Big Rocket Launcher"\
+ "0x09/Big Flame Shot"\
+ "0x0A/Big Heavy Machine Gun"\
+ "0x0B/Big Laser Gun"\
+ "0x0C/Enemy Chaser"\
+ "0x0D/Iron Lizard"\
+ "0x0E/Drop Shot"\
+ "0x12/Two Machine Gun" 
+run:
+    poke $10EDEA param
+script "P1 Select Bomb" \
+ "0x01/Normal"\
+ "0x02/Fire"\
+ "0x03/Rock" 
+run:
+    poke $10EDEC param
+script "P1 Select Body Type" \
+ "0x00/Human"\
+ "0x02/Fatman"\
+ "0x03/Mummy"\
+ "0x06/Snowman (Can't Move!)"\
+ "0x07/Zombie"\
+ "0x08/Orangutan" 
+run:
+    poke $100D4F param
+    if (param==$02)
+      poke $10EDEE $63
+    endif
+script "P1 Rapid Fire"  
+run:
+    poke $106446 $00|(peek($106446)&~10)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $100B39 $09
+script "P2 Invincibility" \
+ "comm:You can still die in vehicles and falling in water (without scuba gear)"  
+run:
+    poke $100DC7 $40
+script "P2 Invincibility (Fix Final Stage)"  
+run:
+    poke $100DF1 $01
+script "P2 Infinite Bombs"  
+run:
+    poke $10EDFD $63
+script "P2 No bomb throwing delay" \
+ "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
+run:
+    poke $10EDF7 $00
+script "P2 Infinite Arms"  
+run:
+    dpoke $10EE02 $FFFF
+script "P2 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x02/Shotgun"\
+ "0x03/Rocket Launcher"\
+ "0x04/Flame Shot"\
+ "0x05/Heavy Machine Gun"\
+ "0x06/Laser Gun"\
+ "0x07/Big Shotgun"\
+ "0x08/Big Rocket Launcher"\
+ "0x09/Big Flame Shot"\
+ "0x0A/Big Heavy Machine Gun"\
+ "0x0B/Big Laser Gun"\
+ "0x0C/Enemy Chaser"\
+ "0x0D/Iron Lizard"\
+ "0x0E/Drop Shot"\
+ "0x12/Two Machine Gun" 
+run:
+    poke $10EDFA param
+script "P2 Select Bomb" \
+ "0x01/Normal"\
+ "0x02/Fire"\
+ "0x03/Rock" 
+run:
+    poke $10EDFC param
+script "P2 Select Body Type" \
+ "0x00/Human"\
+ "0x02/Fatman"\
+ "0x03/Mummy"\
+ "0x06/Snowman (Can't Move!)"\
+ "0x07/Zombie"\
+ "0x08/Orangutan" 
+run:
+    poke $100DFF param
+    if (param==$02)
+      poke $10EDFE $63
+    endif
+script "P2 Rapid Fire"  
+run:
+    poke $10644C $00|(peek($10644C)&~10)
+script " "  
+script "Enable Pause Menu and Debug Menu" \
+ "comm:Enable it on the soldier/character selection screen. Press '3' twice for Debug Menu."  
+on:
+    poke $10FD82 $00
+    poke $10F002 $01
+off:
+    poke $10FD82 $80
+    poke $10F002 $00
+script "DEBUG DIPS OPTIONS"  
+script "DEBUG DIP - Invincibility"  
+run:
+    dpoke $10F000 $8000|(dpeek($10F000)&~8000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~8000)
+script "DEBUG DIP - View debug information" \
+ "comm:Once you have turned this on, the only immediate effect turning it off will be that the text won't update any more"  
+run:
+    dpoke $10F000 $0100|(dpeek($10F000)&~0100)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0100)
+script "DEBUG DIP - Unknown" \
+ "comm:Answers on a postcard please....or better post it on the cheat forums"  
+run:
+    dpoke $10F000 $0200|(dpeek($10F000)&~0200)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0200)
+script "DEBUG DIP - 1st plane check" \
+ "comm:Shows the walkable ground, makes the foreground choppy as it scrolls when activated. May linger around if not turned off proper."  
+run:
+    dpoke $10F000 $0800|(dpeek($10F000)&~0800)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0800)
+script "DEBUG DIP - 2nd plane check" \
+ "comm:makes the background choppy as it scrolls when activated."  
+run:
+    dpoke $10F000 $1000|(dpeek($10F000)&~1000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~1000)
+script "DEBUG DIP - View attack hitbox"  
+run:
+    dpoke $10F000 $2000|(dpeek($10F000)&~2000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~2000)
+script "DEBUG DIP - View body hitbox"  
+run:
+    dpoke $10F000 $4000|(dpeek($10F000)&~4000)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~4000)
+script "DEBUG DIP - Infinite Grenades"  
+run:
+    dpoke $10F000 $0004|(dpeek($10F000)&~0004)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0004)
+script "DEBUG DIP - Infinite Ammo"  
+run:
+    dpoke $10F000 $0008|(dpeek($10F000)&~0008)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0008)
+script "DEBUG DIP - Show Respawn Position" \
+ "comm:A sprite appears, showing the player's respawn point."  
+run:
+    dpoke $10F000 $0002|(dpeek($10F000)&~0002)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0002)
+script "DEBUG DIP - Press D to destroy all onscreen enemies" \
+ "comm:no score bonuses"  
+run:
+    dpoke $10F000 $0001|(dpeek($10F000)&~0001)
+off:
+    dpoke $10F000 $0000|(dpeek($10F000)&~0001)
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

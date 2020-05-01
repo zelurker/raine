@@ -1,57 +1,46 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $101CB3 $95
-
-script "1UP Invulnerability OFF"
-	poke $101CB3 $01
-
-script "2UP Invulnerability ON" always
-	poke $101CE7 $95
-
-script "2UP Invulnerability OFF"
-	poke $101CE7 $01
-
-script "1UP Unlimited lives" always
-	poke $101CAD $03
-
-script "2UP Unlimited lives" always
-	poke $101CE1 $03
-
-script "1UP Maximum speed" always
-	poke $101CB7 $05
-
-script "2UP Maximum speed" always
-	poke $101CEB $05
-
-script "PL1 Max. fire power - Laser" always
-	poke $100BF9 $06
-
-script "PL1 Max. fire power - Wide" always
-	poke $100BFB $06
-
-script "PL1 Max. fire power - Torrid" always
-	poke $100BFD $06
-
-script "PL2 Max. fire power - Laser" always
-	poke $100C07 $06
-
-script "PL2 Max. fire power - Wide" always
-	poke $100C09 $06
-
-script "PL2 Max. fire power - Torrid" always
-	poke $100C0B $06
-
-script "1UP Get all weapons       (P)" always
-	poke $100C05 $03
-
-script "2UP Get all weapons       (P)" always
-	poke $100C13 $03
-
-script "1UP Get all weapons       (T)" always
-	poke $100C05 $03
-
-script "2UP Get all weapons       (T)" always
-	poke $100C13 $03
+script "Infinite Credits"  
+run:
+    poke $100971 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101CAD $03
+script "P1 Always Maximum Speed"  
+run:
+    poke $101CB7 $05
+script "P1 Always Max. Laser Power"  
+run:
+    poke $100BF9 $06
+script "P1 Always Max. Wide Power"  
+run:
+    poke $100BFB $06
+script "P1 Always Max. Torrid Power"  
+run:
+    poke $100BFD $06
+script "P1 Invincibility 'ON'" \
+ "comm:To be used when you blink"  
+run:
+    poke $101CB3 $95
+script "P1 Invincibility 'OFF'"  
+on:
+    poke $101CB3 $01
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $101CE1 $03
+script "P2 Always Max. Laser Power"  
+run:
+    poke $100C07 $06
+script "P2 Always Max. Wide Power"  
+run:
+    poke $100C09 $06
+script "P2 Always Max. Torrid Power"  
+run:
+    poke $100C0B $06
+script "P2 Invincibility 'ON'" \
+ "comm:To be used when you blink"  
+run:
+    poke $101CE7 $95
+script "P2 Invincibility 'OFF'"  
+on:
+    poke $101CE7 $01

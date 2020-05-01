@@ -1,0 +1,177 @@
+script "Infinite Time"  
+run:
+    poke $10892A $99
+script "Desperation moves always available"  
+on:
+    temp0=peek($02D9D5)
+run:
+    poke $02D9D5 $C0
+off:
+    poke $02D9D5 temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108313 $C0
+script "P1 Drain All Energy Now!"  
+on:
+    poke $108313 $00
+script " "  
+script "Free player selection - Use just after selection screen,"  
+script "or between matches. To use Shin King Lion or Jyazu, both"  
+script "characters must be the same character, as they fight alone."  
+script " "  
+script "P1 Select Character (A)" \
+ "comm:First Character Selected" \
+ "0x00/Syo Hayate"\
+ "0x01/Max Eagle"\
+ "0x02/Gozu"\
+ "0x03/Mezu"\
+ "0x04/Rosa"\
+ "0x05/Kim Sue-Il"\
+ "0x06/Joker"\
+ "0x07/Chung Paifu"\
+ "0x08/Gordon Bowman"\
+ "0x09/King Lion"\
+ "0x0A/#Shin King Lion#"\
+ "0x0B/#Chung Paifu (alternate)#"\
+ "0x0C/#Jyazu#" 
+run:
+    poke $1088EC param|(peek($1088EC)&~0F)
+script "P1 Select Character (B)" \
+ "comm:Second Character Selected" \
+ "0x00/Syo Hayate"\
+ "0x01/Max Eagle"\
+ "0x02/Gozu"\
+ "0x03/Mezu"\
+ "0x04/Rosa"\
+ "0x05/Kim Sue-Il"\
+ "0x06/Joker"\
+ "0x07/Chung Paifu"\
+ "0x08/Gordon Bowman"\
+ "0x09/King Lion"\
+ "0x0A/#Shin King Lion#"\
+ "0x0B/#Chung Paifu (alternate)#"\
+ "0x0C/#Jyazu#" 
+run:
+    poke $1088EE param|(peek($1088EE)&~0F)
+script "P1 Select Character Colour (A)" \
+ "comm:First Character Selected" \
+ "0x00/A Colour"\
+ "0x80/B Colour" 
+run:
+    poke $1088EC param|(peek($1088EC)&~80)
+script "P1 Select Character Colour (B)" \
+ "comm:Second Character Selected" \
+ "0x00/A Colour"\
+ "0x80/B Colour" 
+run:
+    poke $1088EE param|(peek($1088EE)&~80)
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108513 $C0
+script "P2 Drain All Energy Now!"  
+on:
+    poke $108513 $00
+script " "  
+script "Free player selection - Use just after selection screen,"  
+script "or between matches. To use Shin King Lion or Jyazu, both"  
+script "characters must be the same character, as they fight alone."  
+script " "  
+script "P2 Select Character (A)" \
+ "comm:First Character Selected" \
+ "0x00/Syo Hayate"\
+ "0x01/Max Eagle"\
+ "0x02/Gozu"\
+ "0x03/Mezu"\
+ "0x04/Rosa"\
+ "0x05/Kim Sue-Il"\
+ "0x06/Joker"\
+ "0x07/Chung Paifu"\
+ "0x08/Gordon Bowman"\
+ "0x09/King Lion"\
+ "0x0A/#Shin King Lion#"\
+ "0x0B/#Chung Paifu (alternate)#"\
+ "0x0C/#Jyazu#" 
+run:
+    poke $1088ED param|(peek($1088ED)&~0F)
+script "P2 Select Character (B)" \
+ "comm:Second Character Selected" \
+ "0x00/Syo Hayate"\
+ "0x01/Max Eagle"\
+ "0x02/Gozu"\
+ "0x03/Mezu"\
+ "0x04/Rosa"\
+ "0x05/Kim Sue-Il"\
+ "0x06/Joker"\
+ "0x07/Chung Paifu"\
+ "0x08/Gordon Bowman"\
+ "0x09/King Lion"\
+ "0x0A/#Shin King Lion#"\
+ "0x0B/#Chung Paifu (alternate)#"\
+ "0x0C/#Jyazu#" 
+run:
+    poke $1088EF param|(peek($1088EF)&~0F)
+script "P2 Select Character Colour (A)" \
+ "comm:First Character Selected" \
+ "0x00/A Colour"\
+ "0x80/B Colour" 
+run:
+    poke $1088ED param|(peek($1088ED)&~80)
+script "P2 Select Character Colour (B)" \
+ "comm:Second Character Selected" \
+ "0x00/A Colour"\
+ "0x80/B Colour" 
+run:
+    poke $1088EF param|(peek($1088EF)&~80)
+script " "  
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FDE0 $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

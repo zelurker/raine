@@ -1,15 +1,25 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $A249 $03
-
-script "2UP Unlimited lives" always
-	poke $A24D $03
-
-script "*UP Unlimited bombs" always
-	poke $9012 $09
-
-script "*UP Maximum fire power" always
-	poke $9010 $07
+script "Infinite Bombs"  
+run:
+    poke $9012 $09
+script "Maximum Fire Power"  
+run:
+    poke $9010 $07
+script "Invincibility"  
+run:
+    poke $9013 $00
+script "Select Starting Level" \
+ inter=1,5,1 
+run:
+    if (peek($9001)==$01)
+      poke $9001 (param)
+    endif
+script "Rapid Fire"  
+run:
+    poke $900C $00
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $A249 $0A
+script "P2 Infinite Lives"  
+run:
+    poke $A24D $0A

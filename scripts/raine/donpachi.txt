@@ -1,0 +1,68 @@
+script "Infinite Credits"  
+run:
+    poke $10139B $09
+script "Select Area to follow Area 1" \
+ "comm:After End Sequence, Second Loop starts from Area 1." \
+ "0x01/Area 2"\
+ "0x02/Area 3"\
+ "0x03/Area 4"\
+ "0x04/Area 5"\
+ "0x05/End Sequence" 
+on:
+    temp0=lpeek($35CC2)
+    temp1=dpeek($35CC6)
+run:
+    lpoke $35CC2 $4EB90004
+    dpoke $35CC6 $4000
+    lpoke $44000 $4A790010
+    lpoke $44004 $1A426612
+    lpoke $44008 $4A790010
+    lpoke $4400c $1A40660A
+    dpoke $44010 $13FC
+    poke $44012 $00
+    poke $44013 param
+    lpoke $44014 $00101A41
+    lpoke $44018 $4E755279
+    lpoke $4401C $00101A40
+    lpoke $44020 $4E750000
+off:
+    lpoke $35CC2 temp0
+    dpoke $35CC6 temp1
+    lpoke $44000 $0
+    lpoke $44004 
+    lpoke $44008 $0
+    lpoke $4400c 
+    lpoke $44010 $0
+    lpoke $44014 
+    lpoke $44018 $0
+    lpoke $4401c 
+    lpoke $44020 $0
+    lpoke $44024 
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $101A2F $07
+script "P1 Infinite Bombs"  
+run:
+    poke $10217B $04
+script "P1 Invincibility" \
+ "comm:Enable when you have a shield"  
+run:
+    poke $102196 $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $102179 $04
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $101A31 $07
+script "P2 Infinite Bombs"  
+run:
+    poke $1021BB $04
+script "P2 Invincibility" \
+ "comm:Enable when you have a shield"  
+run:
+    poke $1021D6 $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $1021B9 $04

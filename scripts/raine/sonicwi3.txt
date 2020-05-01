@@ -1,0 +1,132 @@
+script "Select Character" \
+ "0x00/P1 Keaton [F4U Corsair] \ P2 Blazers [P61 Black Widow]"\
+ "0x01/P1 Blazers [P61 Black Widow] \ P2 Keaton [F4U Corsair]"\
+ "0x02/P1 Hien [Zero Fighter] \ P2 Mao Mao [Seiran(M6A1)]"\
+ "0x03/P1 Mao Mao [Seiran(M6A1)] \ P2 Hien [Zero Fighter]"\
+ "0x04/P1 Chaika + Pooshka [IL2 Stormovik] \ P2 Spanky [Polikarpov I-16]"\
+ "0x05/P1 Spanky [Polikarpov I-16] \ P2 Chaika + Pooshka [IL2 Stormovik]"\
+ "0x06/P1 Malcolm [DO335 Pfeil] \ P2 Kowful + River [JU-87 Stuka]"\
+ "0x07/P1 Kowful + River [JU-87 Stuka] \ P2 Malcolm [DO335 Pfeil]"\
+ "0x08/P1 Alex + Pictus [Whirlwind] \ P2 Ellen + Cindy [Swordfish]"\
+ "0x09/P1 Ellen + Cindy [Swordfish] \ P2 Alex + Pictus [Whirlwind]"\
+ "0x0A/P1 Kotomi [Red Rabbit] \ P2 The Man [Diabloon]"\
+ "0x0B/P1 The Man [Diabloon] \ P2 Kotomi [Red Rabbit]" 
+run:
+    poke $1003AB param
+script "Enemies Can't Fire"  
+run:
+    poke $10EA57 $01
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $10E89B $05
+script "P1 Infinite Bombs"  
+run:
+    poke $10E8BA $03
+script "P1 Invincibility"  
+run:
+    poke $10E8BF $01
+script "P1 Maximum Power"  
+run:
+    poke $10E8B0 $03
+    if peek($1003AB)==$03||peek($1003AB)==$04
+      poke $10E8B0 $02
+    endif
+    if peek($1003AB)==$05||peek($1003AB)==$07
+      poke $10E8B0 $04
+    endif
+    if peek($1003AB)==$09
+      poke $10E8B0 $01
+    endif
+    if peek($1003AB)==$B
+      poke $10E8B0 $07
+    endif
+    if peek($1003AB)==$0A
+      poke $10E8B0 $02
+    endif
+script "P1 Rapid Fire"  
+run:
+    poke $10EA3C $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10E8F1 $05
+script "P2 Infinite Bombs"  
+run:
+    poke $10E910 $03
+script "P2 Invincibility"  
+run:
+    poke $10E915 $01
+script "P2 Maximum Power"  
+run:
+    poke $10E906 $03
+    if peek($1003AB)==$02||peek($1003AB)==$05
+      poke $10E906 $02
+    endif
+    if peek($1003AB)==$04||peek($1003AB)==$06
+      poke $10E906 $04
+    endif
+    if peek($1003AB)==$08
+      poke $10E906 $01
+    endif
+    if peek($1003AB)==$0A
+      poke $10E906 $07
+    endif
+    if peek($1003AB)==$B
+      poke $10E906 $02
+    endif
+script "P2 Rapid Fire"  
+run:
+    poke $10EA42 $00
+script " "  
+script "DEBUG DIP - Select Starting Stage" \
+ "comm:After "How to play", select stage with left/right and Button A."  
+run:
+    poke $10EA33 $FF
+off:
+    poke $10EA33 $00
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

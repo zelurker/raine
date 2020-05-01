@@ -1,15 +1,35 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "1UP Unlimited lives" always
-	poke $10A5E5 $03
-
-script "2UP Unlimited lives" always
-	poke $10A623 $03
-
-script "1UP Unlimited bombs" always
-	poke $10A5E7 $63
-
-script "2UP Unlimited bombs" always
-	poke $10A625 $63
+script "P1 Infinite Lives"  
+run:
+    poke $10A5E5 $18
+script "P1 Infinite Bombs"  
+run:
+    poke $10A5E7 $63
+script "P1 Select Weapon" \
+ "0x00/Gun 1"\
+ "0x01/Gun 2"\
+ "0x02/Gun 3" 
+run:
+    poke $10A5EF param
+script "P1 Invincibility" \
+ "0x0101/Enabled"\
+ "0x0000/Disabled" 
+run:
+    dpoke $10A5F0 param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10A623 $18
+script "P2 Infinite Bombs"  
+run:
+    poke $10A625 $63
+script "P2 Select Weapon" \
+ "0x00/Gun 1"\
+ "0x01/Gun 2"\
+ "0x02/Gun 3" 
+run:
+    poke $10A62D param
+script "P2 Invincibility" \
+ "0x0101/Enabled"\
+ "0x0000/Disabled" 
+run:
+    dpoke $10A62E param

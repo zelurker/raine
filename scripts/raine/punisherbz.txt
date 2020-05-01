@@ -1,0 +1,69 @@
+script "Infinite Time"  
+run:
+    poke $FF18AB $BF
+script "Always have Gun drawn"  
+run:
+    poke $FF5D96 $01
+script "Sticky Weapons" \
+ "comm:When the enemies punch you won't drop any weapons you are holding (The only exception is when you die, launch, or when the level ends!)"  
+on:
+    temp0=peek($01ADEE)
+run:
+    poke $01ADEE $60
+off:
+    poke $01ADEE temp0
+script "Finish this Level Now!" \
+ "comm:Simply walk to the end, though on the First Level you will need the 'Always have Gun drawn' cheat to kill the Boss"  
+on:
+    poke $FF5FA1 $FF
+script "Select Starting Stage" \
+ "comm:Stages are out of order!" \
+ "0x00/Stage 1"\
+ "0x01/Stage 2"\
+ "0x02/Stage 3"\
+ "0x07/Bonus Stage"\
+ "0x03/Stage 4"\
+ "0x04/Stage 5"\
+ "0x05/Last Stage"\
+ "0x06/Hidden Bonus Stage" 
+run:
+    if peek($FF5BB9)==$03
+      poke $FF5BB9 param
+    endif
+    if peek($FFFFF0)==$00
+      poke $FFFFF0 param
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $FF5BA4 $03
+script "P1 Infinite Energy"  
+run:
+    poke $FF8E9F $88
+script "P1 Infinite Bombs"  
+run:
+    poke $FF5BCA $09
+script "P1 Invincibility"  
+run:
+    poke $FF8EB5 $F0
+script "P1 Infinite Weapon on Pickup" \
+ "comm:If you pick up the objects, they will become almost indestructable."  
+run:
+    poke ((dpeek($FF8ECE))+$FF0037) $FE
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $FF8F9F $88
+script "P2 Infinite Bombs"  
+run:
+    poke $FF5BCB $09
+script "P2 Infinite Lives"  
+run:
+    poke $FF5BA5 $03
+script "P2 Invincibility"  
+run:
+    poke $FF8FB5 $F0
+script "P2 Infinite Weapon on Pickup" \
+ "comm:If you pick up the objects, they will become almost indestructable."  
+run:
+    poke ((dpeek($FF8FCE))+$FF0037) $FE

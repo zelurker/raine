@@ -1,0 +1,40 @@
+script "Infinite Credits"  
+run:
+    poke $1028C7 $09
+script "Select starting round" \
+ "comm:You should enable this cheat on the press 1 or 2 player button screen,  ie. after credits have been inserted!" \
+ inter=1,50,1 
+on:
+    poke $105B3B $FF
+change:
+    poke $105B3B (param-$1)
+script "Select next Round" \
+ inter=1,50,1 
+change:
+    poke $105B3B (param-$1)
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $1084C6 $FF
+script "P1 Always have Max Power"  
+run:
+    poke $1084E7 $10
+script "P1 Invincibility 'ON'"  
+run:
+    poke $1084B0 $08|(peek($1084B0)&~08)
+script "P1 Invincibility 'OFF'"  
+on:
+    poke $1084B0 $00|(peek($1084B0)&~08)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $108504 $FF
+script "P2 Always have Max Power"  
+run:
+    poke $108525 $10
+script "P2 Invincibility 'ON'"  
+run:
+    poke $1084EE $08|(peek($1084EE)&~08)
+script "P2 Invincibility 'OFF'"  
+on:
+    poke $1084EE $00|(peek($1084EE)&~08)

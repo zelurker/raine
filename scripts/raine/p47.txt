@@ -1,51 +1,50 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $F080B $A0
-
-script "1UP Invulnerability OFF"
-	poke $F080B $01
-
-script "2UP Invulnerability ON" always
-	poke $F0C03 $A0
-
-script "2UP Invulnerability OFF"
-	poke $F0C03 $01
-
-script "1UP Unlimited lives" always
-	poke $F0847 $03
-
-script "2UP Unlimited lives" always
-	poke $F0C39 $03
-
-script "1UP No extra weapon       (T)"
-	poke $F084D $00
-
-script "1UP Extra weapon - M      (T)"
-	poke $F084D $01
-
-script "1UP Extra weapon - E      (T)"
-	poke $F084D $02
-
-script "1UP Extra weapon - T      (T)"
-	poke $F084D $03
-
-script "1UP Extra weapon - B      (T)"
-	poke $F084D $04
-
-script "2UP No extra weapon       (T)"
-	poke $F0C3F $00
-
-script "2UP Extra weapon - M      (T)"
-	poke $F0C3F $01
-
-script "2UP Extra weapon - E      (T)"
-	poke $F0C3F $02
-
-script "2UP Extra weapon - T      (T)"
-	poke $F0C3F $03
-
-script "2UP Extra weapon - B      (T)"
-	poke $F0C3F $04
+script "Select Starting Mission" \
+ "0x4279/Mission 1-1"\
+ "0x5279/Mission 1-2"\
+ "0x5479/Mission 2-1"\
+ "0x5679/Mission 2-2"\
+ "0x5879/Mission 3-1"\
+ "0x5A79/Mission 3-2"\
+ "0x5C79/Mission 4-1"\
+ "0x5E79/Mission 4-2" 
+on:
+    temp0l=lpeek(02134)
+    temp0h=lpeek($2138
+run:
+    dpoke $02134 $42B9
+    dpoke $0213A param
+    dpoke $0213E $0018
+off:
+    lpoke $02134 temp0l
+    lpoke $2138 temp0h
+script "P1 Infinite Lives"  
+run:
+    poke $F0847 $03
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $F080B $A0
+script "P1 Select Extra Weapon" \
+ "0x00/None"\
+ "0x01/M"\
+ "0x02/E"\
+ "0x03/T"\
+ "0x04/B" 
+run:
+    poke $F084D param
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $F0C39 $03
+script "P2 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
+run:
+    poke $F0C03 $A0
+script "P2 Select Extra Weapon" \
+ "0x00/None"\
+ "0x01/M"\
+ "0x02/E"\
+ "0x03/T"\
+ "0x04/B" 
+run:
+    poke $F0C3F param

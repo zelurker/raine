@@ -1,0 +1,79 @@
+script "Go to Last Level"  
+run:
+    poke $ED72 $20
+script "Don't die when ball is out"  
+run:
+    poke $EF62 $00
+script "Always Keep One Ball in Play"  
+run:
+    if (peek($C4A5)<00)||(peek($C4A5)>E4)
+      poke $C4A5 $E2
+    endif
+script "Select Perm Ball Speed" \
+ "comm:1 = Slowest, 14 = Fastest" \
+ inter=1,14,1 
+run:
+    poke $C462 param
+off:
+    poke $C462 $05
+script "Warp door always open"  
+run:
+    poke $C4CE $01
+script "Warp door never open"  
+run:
+    poke $C4CE $00
+script "Open Warp door Now!"  
+on:
+    poke $C4CE $01
+script "Shut Warp door Now!"  
+on:
+    poke $C4CE $00
+script "Finish this Level Now!"  
+on:
+    poke $ED83 $00
+script "Lose a Life Now!"  
+on:
+    poke $EF62 $01
+script "No pills can fall"  
+run:
+    poke $C658 $80
+script "Select Pill to Drop Now!" \
+ "0x01/L (Red)    = Laser"\
+ "0x02/E (Blue)   = Enlarged Bat"\
+ "0x03/C (Green)  = Catcher Bat"\
+ "0x04/S (Orange) = Slower Ball"\
+ "0x05/B (Pink)   = Warp Door"\
+ "0x06/D (Cyan)   = Multiballs"\
+ "0x07/P (Grey)   = Extra Life" 
+change:
+    poke $C658 param
+script "Select Pill to Drop Every 5 Seconds" \
+ "0x01/L (Red)    = Laser"\
+ "0x02/E (Blue)   = Enlarged Bat"\
+ "0x03/C (Green)  = Catcher Bat"\
+ "0x04/S (Orange) = Slower Ball"\
+ "0x05/B (Pink)   = Warp Door"\
+ "0x06/D (Cyan)   = Multiballs"\
+ "0x07/P (Grey)   = Extra Life" 
+run:
+    if (frame%300==$0)
+      poke $C658 param
+    endif
+script "Select Change/Dropping Pill Now!" \
+ "comm:The Pill Colour won't change" \
+ "0x81/L (Red)    = Laser"\
+ "0x82/E (Blue)   = Enlarged Bat"\
+ "0x83/C (Green)  = Catcher Bat"\
+ "0x84/S (Orange) = Slower Ball"\
+ "0x85/B (Pink)   = Warp Door"\
+ "0x86/D (Cyan)   = Multiballs"\
+ "0x87/P (Grey)   = Extra Life" 
+change:
+    poke $C658 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $ED76 $06
+script "P2 Infinite Lives"  
+run:
+    poke $ED7B $06

@@ -1,6 +1,9 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2007.05.01
-# Desc. format : The Ultimate Patchers
-
-script "*UP Unlimited helps" always
-	poke $327ECD $02
+script "Infinite Credits"  
+run:
+    poke $328819 $09
+script "Infinite Time"  
+run:
+    poke $326453 $50
+script "Infinite Helps"  
+run:
+    poke $327ECD $02

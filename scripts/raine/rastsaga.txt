@@ -1,0 +1,162 @@
+script "Infinite Lives"  
+run:
+    poke $10C101 $03
+script "Infinite Energy"  
+run:
+    poke $10C13A $30
+script "Invincibility" \
+ "comm:You die though when fall down into the water"  
+on:
+    temp0=dpeek($10C040)
+run:
+    dpoke $10C040 $0040|(dpeek($10C040)&~0040)
+off:
+    dpoke $10C040 temp0
+script "Hit Anywhere" \
+ "comm:Jumping hits the enemy too"  
+on:
+    temp0=dpeek($044AAA)
+run:
+    dpoke $044AAA $4E71
+off:
+    dpoke $044AAA temp0
+script "Finish Current Sub-Round Now!"  
+on:
+    temp0=peek($10D243)
+    temp1=$02
+    if (temp0==$89)
+      temp2=$89
+      temp1=$01
+    endif
+    if (temp0>=83)&&(temp0<89)
+      temp2=$89
+    endif
+    if (temp0>=73)&&(temp0<83)
+      temp2=$83
+    endif
+    if (temp0==$72)
+      temp2=$73
+      temp1=$01
+    endif
+    if (temp0>=6C)&&(temp0<72)
+      temp2=$72
+    endif
+    if (temp0>=5C)&&(temp0<6C)
+      temp2=$6C
+    endif
+    if (temp0==$5B)
+      temp2=$5C
+      temp1=$01
+    endif
+    if (temp0>=55)&&(temp0<5B)
+      temp2=$5B
+    endif
+    if (temp0>=45)&&(temp0<55)
+      temp2=$55
+    endif
+    if (temp0==$44)
+      temp2=$45
+      temp1=$01
+    endif
+    if (temp0>=3E)&&(temp0<44)
+      temp2=$44
+    endif
+    if (temp0>=2E)&&(temp0<3F)
+      temp2=$3F
+    endif
+    if (temp0==$2D)
+      temp2=$2E
+      temp1=$01
+    endif
+    if (temp0>=27)&&(temp0<2D)
+      temp2=$2D
+    endif
+    if (temp0>=17)&&(temp0<27)
+      temp2=$27
+    endif
+    if (temp0==$16)
+      temp2=$17
+      temp1=$01
+    endif
+    if (temp0>=10)&&(temp0<16)
+      temp2=$16
+    endif
+    if (temp0>=00)&&(temp0<10)
+      temp2=$10
+      poke $10D243 temp2
+    endif
+    if (temp1==$02)
+      poke $10C047 $01
+    endif
+    if (temp1==$01)
+      dpoke $10C708 $0000
+      dpoke $10C688 $0000
+    endif
+    if (temp1==$02)
+      poke $10C005 $02
+      poke $10C104 $01
+      poke $10C003 $02
+    endif
+script "Select Starting Round/Sub-Round" \
+ "0xFF/Round 1"\
+ "0xDF/Round 1 Castle"\
+ "0xF7/Round 1 Boss"\
+ "0xFE/Round 2"\
+ "0xDE/Round 2 Castle"\
+ "0xF6/Round 2 Boss"\
+ "0xFD/Round 3"\
+ "0xDD/Round 3 Castle"\
+ "0xF5/Round 3 Boss"\
+ "0xFC/Round 4"\
+ "0xDC/Round 4 Castle"\
+ "0xF4/Round 4 Boss"\
+ "0xFB/Round 5"\
+ "0xDB/Round 5 Castle"\
+ "0xF3/Round 5 Boss"\
+ "0xFA/Round 6"\
+ "0xDA/Round 6 Castle"\
+ "0xF2/Round 6 Boss" 
+on:
+    temp0=peek($05FFFD)
+run:
+    poke $05FFFD param
+off:
+    poke $05FFFD temp0
+script "Select Weapon" \
+ "0x01/Sword"\
+ "0x02/Big Axe"\
+ "0x03/Ball + Chain"\
+ "0x04/Fire Sword"\
+ "0x05/No Weapons" 
+run:
+    poke $10D2FB param
+script "Select Armour" \
+ "0xFF/No Armour"\
+ "0x00/Shield"\
+ "0x01/Mantel"\
+ "0x02/Armature"\
+ "0x03/Golden Armature" 
+run:
+    poke $10D389 param
+script "Rapid Fire"  
+run:
+    poke $10D3C9 $FF
+script "Select Ring Status" \
+ "comm:Having the ring let's you fire faster" \
+ "0x01/Have Ring"\
+ "0x02/No Ring" 
+run:
+    if (param==$01)
+      poke $10D391 $0F
+      poke $10D40F $01
+    endif
+    if (param==$02)
+      poke $10D391 $18
+      poke $10D40F $FF
+    endif
+script "Always have the Rod"  
+run:
+    poke $10D411 $01
+script "Always have the Necklace"  
+run:
+    poke $10D40D $01

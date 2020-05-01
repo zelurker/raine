@@ -1,0 +1,3 @@
+script "Infinite Time"  
+run:
+    poke $324D07 $00

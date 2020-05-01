@@ -1,0 +1,299 @@
+script "Infinite Credits"  
+run:
+    poke $FF0D59 $09
+script "P1 Infinite Lives" \
+ "comm:This cheat will work on all 3 parts"  
+run:
+    poke $FF0DE7 $03
+script "P2 Infinite Lives" \
+ "comm:This cheat will work on all 3 parts"  
+run:
+    poke $FF0DE8 $03
+script " "  
+script "MIDNIGHT WANDERERS (Action)"  
+script "Infinite Time"  
+run:
+    poke $FF1011 $09
+script "Invincibility"  
+on:
+    temp0=peek($00DF86)
+run:
+    poke $00DF86 $67
+off:
+    poke $00DF86 temp0
+script "Drain All Boss Energy Now!"  
+on:
+    poke $FF101F $00
+    poke $FF1026 $00
+script "P1 Infinite Ammo (Super Bomb)"  
+run:
+    poke $FF0E36 $FF
+script "P1 Select Weapon" \
+ "0x01/Normal"\
+ "0x02/Hyper Shot"\
+ "0x03/Tail Shot"\
+ "0x04/Bound Shot"\
+ "0x00/Super Bomb" 
+run:
+    poke $FF0E14 param
+script "P1 Select Option" \
+ "comm:Get an option first" \
+ "0x01/Flames"\
+ "0x02/Circular" 
+run:
+    poke $FF0DE3 param
+script "P1 One heart always = life"  
+run:
+    poke $FF0E17 $63
+    poke $FF0E19 $64
+script "P1 One heart=life Now!"  
+on:
+    poke $FF0E17 $63
+    poke $FF0E19 $64
+script "P1 Select Option Power" \
+ "0x00/Normal"\
+ "0x01/Double" 
+run:
+    poke $FF0DE4 param
+script "P1 Select Character" \
+ "0x00/Roo"\
+ "0x01/Siva" 
+run:
+    poke $FF17BD param|(peek($FF17BD)&~01)
+script "P1 Select Clothes Status" \
+ "comm:Note, if you are always fully clothed you will have effectively have infinite lives" \
+ "0x00/Fully Clothed"\
+ "0x02/Partially Clothed" 
+run:
+    temp0=param|(peek($FF17BD)&~02)
+    poke $FF17BD temp0
+script "P2 Infinite Ammo (Super Bomb)"  
+run:
+    poke $FF0E38 $FF
+script "P2 Select Weapon" \
+ "0x01/Normal"\
+ "0x02/Hyper Shot"\
+ "0x03/Tail Shot"\
+ "0x04/Bound Shot"\
+ "0x00/Super Bomb" 
+run:
+    poke $FF0E15 param
+script "P2 Select Option" \
+ "comm:Get an option first" \
+ "0x01/Flames"\
+ "0x02/Circular" 
+run:
+    poke $FF0DE5 param
+script "P2 One heart always = life"  
+run:
+    poke $FF0E1B $63
+    poke $FF0E1D $64
+script "P2 One heart=life Now!"  
+on:
+    poke $FF0E1B $63
+    poke $FF0E1D $64
+script "P2 Select Option Power" \
+ "0x00/Normal"\
+ "0x01/Double" 
+run:
+    poke $FF0DE6 param
+script "P2 Select Character" \
+ "0x00/Roo"\
+ "0x01/Siva" 
+run:
+    poke $FF185D param|(peek($FF185D)&~01)
+script "P2 Select Clothes Status" \
+ "comm:Note, if you are always fully clothed you will have effectively have infinite lives" \
+ "0x00/Fully Clothed"\
+ "0x02/Partially Clothed" 
+run:
+    temp0=param|(peek($FF185D)&~02)
+    poke $FF185D temp0
+script " "  
+script "CHARIOT (Shooting)"  
+script "The 'Lives' and 'Hearts' cheats must be"  
+script "deactivated after killing the last boss."  
+script "Invincibility"  
+on:
+    temp0=peek($02C39E)
+run:
+    poke $02C39E $67
+off:
+    poke $02C39E temp0
+script "Infinite Boss Time"  
+run:
+    dpoke $FF1002 $270F
+script "P1 One heart always = life"  
+run:
+    poke $FF184D $59
+    poke $FF184C $5A
+script "P1 One heart=life Now!"  
+on:
+    poke $FF184D $59
+    poke $FF184C $5A
+script "P1 Maximum Options"  
+run:
+    poke $FF183B $06
+    poke $FF183D $07
+script "P1 Maximum Bomb Power"  
+run:
+    poke $FF1842 $02
+script "P1 Select Shot Type" \
+ "0x00/Rapid"\
+ "0x01/Wide" 
+run:
+    poke $FF183F param
+script "P1 Maximum Fire Power (Wide)"  
+run:
+    poke $FF1845 $04
+script "P1 Maximum Fire Power (Rapid)"  
+run:
+    poke $FF1847 $04
+script "P1 Select Protection" \
+ "0x01/Always"\
+ "0x00/Never" 
+run:
+    poke $FF183E param
+script "P1 Rapid Fire"  
+run:
+    poke $FF1815 $00
+script "P1 Maximum Fire Rate"  
+run:
+    poke $FF1813 $00
+    poke $FF1819 $00
+script "P2 One heart always = life"  
+run:
+    poke $FF18ED $59
+    poke $FF18EC $5A
+script "P2 One heart=life Now!"  
+on:
+    poke $FF18ED $59
+    poke $FF18EC $5A
+script "P2 Maximum Options"  
+run:
+    poke $FF18DB $06
+    poke $FF18DD $07
+script "P2 Maximum Bomb Power"  
+run:
+    poke $FF18E2 $02
+script "P2 Select Shot Type" \
+ "0x00/Rapid"\
+ "0x01/Wide" 
+run:
+    poke $FF18DF param
+script "P2 Maximum Fire Power (Wide)"  
+run:
+    poke $FF18E5 $04
+script "P2 Maximum Fire Power (Rapid)"  
+run:
+    poke $FF18E7 $04
+script "P2 Select Protection" \
+ "0x01/Always"\
+ "0x00/Never" 
+run:
+    poke $FF18DE param
+script "P2 Rapid Fire"  
+run:
+    poke $FF18B5 $00
+script "P2 Maximum Fire Rate"  
+run:
+    poke $FF18B3 $00
+    poke $FF18B9 $00
+script " "  
+script "DON'T PULL (Puzzle)"  
+script "Finish this Level Now!"  
+on:
+    lpoke $FF104A $00000000
+script "Next fruit always = 100000"  
+run:
+    poke $FF0EC3 $16
+script "Next fruit = 100000 Now!"  
+on:
+    poke $FF0EC3 $16
+script "Select Level Set" \
+ "comm:Note, except for RARE common levels these sets are quite different!!!" \
+ "0x6604330C/Regular"\
+ "0x52406002/Alternate 1"\
+ "0x54406002/Alternate 2"\
+ "0x56406002/Alternate 3"\
+ "0x58406002/Alternate 4"\
+ "0x5A406002/Alternate 5" 
+on:
+    temp0=lpeek($045264)
+    temp1=dpeek($045270)
+run:
+    lpoke $045264 param
+    dpoke $045270 $4E71
+    if (param==$6604330C)
+      dpoke $045270 $E048
+    endif
+off:
+    lpoke $045264 temp0
+    dpoke $045270 temp1
+script "Professional Course" \
+ "0x01/Enable"\
+ "0x00/Disable" 
+run:
+    poke $FF0E6C param
+script "Go To 'Let's Dance' Now!" \
+ "comm:Try not to use this cheat when enemies are still hidden"  
+on:
+    poke $FF0E59 $01|(peek($FF0E59)&~81)
+    poke $FF0E42 $01|(peek($FF0E42)&~81)
+script "Drop A Bomb Now!"  
+on:
+    poke $FF0EC0 $20|(peek($FF0EC0)&~20)
+script "'Escape' Mode"  
+run:
+    poke $FF1041 $01|(peek($FF1041)&~01)
+script "Select Enemy Speed" \
+ "0x00/Slow"\
+ "0x3F/Fast" 
+run:
+    poke $FF100A param
+script "Boxes Are Solid" \
+ "comm:Boxes will not collapse after a simple impact."  
+on:
+    temp0=dpeek($04715C)
+run:
+    dpoke $04715C $600A
+off:
+    dpoke $04715C temp0
+script "Boxes Are Fragile" \
+ "comm:Boxes will collapse after a simple impact (excluding 'Hearts')"  
+on:
+    temp0=lpeek($047422)
+run:
+    lpoke $047422 $6000FD34
+off:
+    lpoke $047422 temp0
+script "P1 Invincibility"  
+run:
+    dpoke $FF17D2 $0002
+script "P1 One fruit always = life"  
+run:
+    poke $FF0EBC $62
+    poke $FF0EBE $63
+script "P1 One fruit = life Now!"  
+on:
+    poke $FF0EBC $62
+    poke $FF0EBE $63
+script "P2 Invincibility"  
+run:
+    dpoke $FF1872 $0002
+script "P2 One fruit always = life"  
+run:
+    poke $FF0EBD $62
+    poke $FF0EBF $63
+script "P2 One fruit = life Now!"  
+on:
+    poke $FF0EBD $62
+    poke $FF0EBF $63
+script " "  
+script "Skip RAM Check"  
+on:
+    temp0=dpeek($05DB08)
+run:
+    dpoke $05DB08 $0186
+off:
+    dpoke $05DB08 temp0

@@ -1,0 +1,207 @@
+script "Infinite Time"  
+run:
+    poke $10849E $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"  
+on:
+    poke $10849E $00
+script "Select Backdrop" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo Hattori"\
+ "0x04/Galford"\
+ "0x05/Kyoshiro Senryou"\
+ "0x06/Ukyo Tachibana"\
+ "0x07/Genjuro Kibagami"\
+ "0x08/Kubikiri Basara"\
+ "0x09/Shizumaru Hisame"\
+ "0x0A/Gaira Kafuin"\
+ "0x0B/Amakusa Shirou Tokisada"\
+ "0x0C/Kuroko"\
+ "0x0D/Zankuro Minazuki"\
+ "0x0E/Zankuro Minazuki (Final Battle)" 
+run:
+    poke $109069 param
+script "Hit Anywhere (Both Players)"  
+on:
+    temp0=dpeek($01773E)
+run:
+    dpoke $01773E $05CC
+off:
+    dpoke $01773E temp0
+script " "  
+script "P1 Infinite Energy"  
+run:
+    poke $108573 $80
+script "P1 Drain All Energy Now!"  
+on:
+    poke $108573 $00
+script "P1 Infinite Power"  
+run:
+    poke $10857C $40
+script "P1 Drain All Power Now!"  
+on:
+    poke $10857C $00
+script "P1 Select Rounds Won" \
+ inter=0,2,1 
+run:
+    poke $108592 (param)
+script "P1 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection. There are however some glitches, eg. when you win with Zankuro Minazuki." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo Hattori"\
+ "0x04/Galford"\
+ "0x05/Kyoshiro Senryou"\
+ "0x06/Ukyo Tachibana"\
+ "0x07/Genjuro Kibagami"\
+ "0x08/Kubikiri Basara"\
+ "0x09/Shizumaru Hisame"\
+ "0x0A/Gaira Kafuin"\
+ "0x0B/Amakusa Shirou Tokisada"\
+ "0x0C/#Kuroko"\
+ "0x0D/#Zankuro Minazuki" 
+run:
+    poke $108470 param|(peek($108470)&~0F)
+script "P1 Select Playing Style" \
+ "0x00/Slash"\
+ "0x50/Bust" 
+run:
+    poke $108470 param|(peek($108470)&~50)
+script "P1 Select Character Colour" \
+ "0x00/A colour"\
+ "0x80/B colour" 
+run:
+    poke $108470 param|(peek($108470)&~80)
+script "P1 Select Character Difficulty" \
+ "0x00/Beginners Class"\
+ "0x01/Medium Grade"\
+ "0x02/Upper Grade" 
+run:
+    poke $108472 param
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $108673 $80
+script "P2 Drain All Energy Now!"  
+on:
+    poke $108673 $00
+script "P2 Infinite Power"  
+run:
+    poke $10867C $40
+script "P2 Drain All Power Now!"  
+on:
+    poke $10867C $00
+script "P2 Select Rounds Won" \
+ inter=0,2,1 
+run:
+    poke $108692 (param)
+script "P2 Select Character" \
+ "comm:Free player selection. Activate between rounds or just after selection. There are however some glitches, eg. when you win with Zankuro Minazuki." \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo Hattori"\
+ "0x04/Galford"\
+ "0x05/Kyoshiro Senryou"\
+ "0x06/Ukyo Tachibana"\
+ "0x07/Genjuro Kibagami"\
+ "0x08/Kubikiri Basara"\
+ "0x09/Shizumaru Hisame"\
+ "0x0A/Gaira Kafuin"\
+ "0x0B/Amakusa Shirou Tokisada"\
+ "0x0C/#Kuroko"\
+ "0x0D/#Zankuro Minazuki" 
+run:
+    poke $108471 param|(peek($108471)&~0F)
+script "P2 Select Playing Style" \
+ "0x00/Slash"\
+ "0x50/Bust" 
+run:
+    poke $108471 param|(peek($108471)&~50)
+script "P2 Select Character Colour" \
+ "0x00/A colour"\
+ "0x80/B colour" 
+run:
+    poke $108471 param|(peek($108471)&~80)
+script "P2 Select Character Difficulty" \
+ "0x00/Beginners Class"\
+ "0x01/Medium Grade"\
+ "0x02/Upper Grade" 
+run:
+    poke $108473 param
+script " "  
+script "Hide Background" \
+ "comm:Activate before match start"  
+on:
+    temp0=dpeek($013E8A)
+    dpoke $013E8A $4E71
+    temp1=dpeek($013E96)
+    dpoke $013E96 $4E71
+    temp2=lpeek($013E9C)
+    lpoke $013E9C $4E714E71
+    temp3=lpeek($01A0E6)
+    lpoke $01A0E6 $4E754E71
+run:
+    if peek($10A3A0)==$B
+      poke $10B581 $00
+      poke $10A0DB $02
+      lpoke $10A0DE $8F8F8F8F
+    endif
+off:
+    dpoke $013E8A temp0
+    dpoke $013E96 temp1
+    lpoke $013E9C temp2
+    lpoke $01A0E6 temp3
+script "No Background Music"  
+run:
+    cpu audio
+    poke $FE1A $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)" 
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."  
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+run:
+    poke $D00034 $99

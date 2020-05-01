@@ -1,57 +1,72 @@
-# Cheats from  : The Ultimate Patchers
-# Last update  : 2001.07.11
-# Desc. format : The Ultimate Patchers
-
-script "1UP Invulnerability ON" always
-	poke $10141E $B4
-
-script "1UP Invulnerability OFF"
-	poke $10141E $01
-
-script "2UP Invulnerability ON" always
-	poke $10145E $B4
-
-script "2UP Invulnerability OFF"
-	poke $10145E $01
-
-script "1UP Unlimited lives" always
-	poke $10139B $03
-
-script "2UP Unlimited lives" always
-	poke $10139D $03
-
-script "1UP Unlimited bombs     (OFF)" always
-	poke $101415 $07
-
-script "2UP Unlimited bombs     (OFF)" always
-	poke $101455 $07
-
-script "1UP Next 'P' = 10000 pts  (P)" always
-	poke $1013E7 $09
-
-script "2UP Next 'P' = 10000 pts  (P)" always
-	poke $1013EB $09
-
-script "1UP Next 'P' = 10000 pts  (T)"
-	poke $1013E7 $09
-
-script "2UP Next 'P' = 10000 pts  (T)"
-	poke $1013EB $09
-
-script "1UP Maximum fire power" always
-	poke $101413 $04
-
-script "2UP Maximum fire power" always
-	poke $101453 $04
-
-script "1UP Maximum fire level" always
-	poke $101411 $02
-
-script "2UP Maximum fire level" always
-	poke $101451 $02
-
-script "1UP Increase fire level"
-	dpoke $101416 $0300
-
-script "2UP Increase fire level"
-	dpoke $101456 $0300
+script "Infinite Credits"  
+run:
+    poke $100E85 $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $10139B $09
+script "P1 Infinite Bombs"  
+run:
+    poke $101415 $07
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate 'P1 Invincibility' cheat. But the cheat is better as the dipswitch causes a game crash when P2 is selected."  
+run:
+    poke $10141E $01
+script "P1 Always have Max Weapon"  
+run:
+    poke $101411 $02
+script "P1 Always have Max Shot Power"  
+run:
+    poke $101413 $04
+script "P1 Get Max Weapon Now!"  
+on:
+    poke $101411 $02
+script "P1 Get Max Shot Power Now!"  
+on:
+    poke $101413 $04
+script "P1 Next 'P' always=10000 pts" \
+ "comm:Get maximum fire power"  
+run:
+    poke $1013E7 $09
+script "P1 Next 'P' = 10000 pts Now!" \
+ "comm:Get maximum fire power"  
+on:
+    poke $1013E7 $09
+script "P1 Up fire level Now!"  
+on:
+    poke $101416 $03
+    poke $101417 $00
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $10139D $09
+script "P2 Infinite Bombs"  
+run:
+    poke $101455 $07
+script "P2 Invincibility"  
+run:
+    poke $10145E $01
+script "P2 Always have Max Weapon"  
+run:
+    poke $101451 $02
+script "P2 Always have Max Shot Power"  
+run:
+    poke $101453 $04
+script "P2 Get Max Weapon Now!"  
+on:
+    poke $101451 $02
+script "P2 Get Max Shot Power Now!"  
+on:
+    poke $101453 $04
+script "P2 Next 'P' always=10000 pts" \
+ "comm:Get maximum fire power"  
+run:
+    poke $1013EB $09
+script "P2 Next 'P' = 10000 pts Now!" \
+ "comm:Get maximum fire power"  
+on:
+    poke $1013EB $09
+script "P2 Up fire level Now!"  
+on:
+    poke $101456 $03
+    poke $101457 $00
