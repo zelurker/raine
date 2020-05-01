@@ -347,7 +347,8 @@ void add_scripts(menu_item_t *menu) {
 	      menu->values_list_label[1] = on;
 	  } else {
 	      menu->values_list_size = 1;
-	      menu->values_list[0] = 0;
+	      // The Set cheats usually use the on lines, so set this to 1
+	      menu->values_list[0] = 1;
 	      menu->values_list_label[0] = _("Set");
 	  }
       }
