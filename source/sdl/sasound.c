@@ -461,8 +461,9 @@ void saDestroySound( int remove_all_resources )
       If you load pacman first then the audio will be opened at 96 Khz, so it must
       be closed at the end in order to open it again at a more normal frequency later. */
 
-   if (remove_all_resources)
+   if (remove_all_resources) {
        close_sample();
+   }
    if (opened_audio) {
      /* Well for some unknown reason calling Sound_Quit and then Sound_Init
       * later crashes sdl_sound when it was not used the 1st time - on a mixed
@@ -610,7 +611,10 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     } else if (cdda.playing == CDDA_STOP && sample) {
 	// Not absolutely sure it's a good idea, some games might want
 	// to restart the track later, but we'll see...
-	close_sample();
+	// actually close_sample from the callback can be dangerous, there can be
+	// a race condition when leaving the program, another call coming from saDestroySound
+	// and both racing, so I comment this out for now, shouldn't harm anything anyway...
+	// close_sample();
     }
 
     if (sample && cdda.playing == CDDA_PLAY && !done_flag && !mute_music) {
