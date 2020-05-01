@@ -250,7 +250,7 @@ void init_scripts() {
 		script[nb_scripts].change[nb_change] = NULL;
 	    }
 
-	    char **lines;
+	    char **lines = NULL;
 	    while (!feof(f)) {
 		myfgets(buff,10240,f);
 		int n=0;
@@ -278,12 +278,15 @@ void init_scripts() {
 		    l = 0;
 		    continue;
 		}
+		if (!lines) {
+		    MessageBox("alert","cheats file in the wrong format, please update !","ok");
+		    fclose(f);
+		    return;
+		}
 		lines[l++] = strdup(&buff[n]);
 	    }
 	    nb_scripts++;
 	} else { // script line
-	    printf("problem %s\n",buff);
-	    exit(0);
 	    run_console_command(buff); // pre-init, usually for variables
 	}
     } // feof
