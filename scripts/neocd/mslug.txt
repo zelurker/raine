@@ -1,20 +1,26 @@
 script "P1 99 lives"
+on:
   poke $100397 99
 
-script "P1 invulnerability" always
+script "P1 invulnerability"
+run:
   poke $1004a5 2
 
 script "999 ammo"
+on:
   dpoke $1004e2 999
 
-script "P1 invuln tank" always
+script "P1 invuln tank"
+run:
   poke $1005e5 2
 
 script "P1 select weapon"
+on:
   poke $1004d1 alert("select weapon (ESC for normal gun)|Shotgun|Flamer|Rocket launcher|Machine gun")
   dpoke $1004e2 999
 
 
 script "set game timer to 99"
+on:
   poke $106eb3 99
 

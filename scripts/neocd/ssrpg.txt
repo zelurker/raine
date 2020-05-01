@@ -1,4 +1,5 @@
-script "set hp = max hp now" 
+script "set hp = max hp now"
+on:
   base=lpeek($10cd2c)
   if base!=0
     maxhp=dpeek(base+$3a)
@@ -35,6 +36,7 @@ script "set hp = max hp now"
   endif
 
 script "set mana = max mana now"
+on:
   base=lpeek($10cd2c)
   if base!=0
     maxmana=dpeek(base+$3e)
@@ -64,6 +66,7 @@ script "set mana = max mana now"
   endif
 
 script "fight: set max rage after taking next hit"
+on:
   base=lpeek($10cd2c)
   if base!=0
     base_fight=lpeek($10f2d4)
@@ -81,6 +84,7 @@ script "fight: set max rage after taking next hit"
   endif
 
 script "map: set max rage for next fight"
+on:
   base=lpeek($10cd2c)
   if base!=0
     dpoke base+$5c 100
@@ -95,6 +99,7 @@ script "map: set max rage for next fight"
   endif
 
 script "max hp += 300"
+on:
   base=lpeek($10cd2c)
   if base!=0
     maxhp=dpeek(base+$3a)
@@ -112,6 +117,7 @@ script "max hp += 300"
   endif
 
 script "max mana += 200"
+on:
   base=lpeek($10cd2c)
   if base!=0
     maxmana=dpeek(base+$3e)
@@ -129,15 +135,19 @@ script "max mana += 200"
   endif
 
 script "9999 gold"
+on:
   dpoke $10ce6a 9999
 
 script "10 potions of cure (50gp each)"
+on:
   poke $10cd66 10
 
 script "disable random encounters"
+on:
   dpoke $1d29e $4e75
 
 script "re-enable random encounters"
+on:
   dpoke $1d29e $422d
 
 
