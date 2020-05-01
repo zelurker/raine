@@ -129,6 +129,7 @@ sub handle_action {
 	}
 	if ($cpu) {
 		say " "x$indent,"cpu main";
+		$cpu = 0;
 	}
 }
 
@@ -141,6 +142,7 @@ sub handle_script {
 
 my $ref = XML::LibXML->load_xml(location => $ARGV[0]);
 foreach ($ref->findnodes("//cheat")) {
+	next if ($_->findvalue('./@desc') =~ /Sound Test/i);
 	print 'script "',$_->findvalue('./@desc'),'" ';
 	my $com = $_->findnodes('./comment');
 	print "\\\n \"comm:$com\" " if ($com);
