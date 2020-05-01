@@ -2004,6 +2004,10 @@ void load_game_config(void)
 	       load_cheats(parent); // default : if no cheats, try the parent !
        }
    }
+#else
+#ifdef HAS_CONSOLE
+   init_scripts(); // must be called AFTER reset_game_hardware
+#endif
 #endif
 
    raine_pop_config_state();

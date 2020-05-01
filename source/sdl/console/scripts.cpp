@@ -22,7 +22,7 @@ typedef struct {
 tscript *script;
 int nb_scripts;
 
-char *get_script_name(int writeable) {
+static char *get_script_name(int writeable) {
   char base[10];
    if (is_neocd())
        strcpy(base,"neocd");
@@ -32,6 +32,11 @@ char *get_script_name(int writeable) {
   snprintf(buf,FILENAME_MAX,"scripts%s%s%s%s.txt",SLASH,base,SLASH,current_game->main_name);
 
   char *s = get_shared(buf);
+  if (!exists(s) && is_neocd()) {
+      snprintf(buf,FILENAME_MAX,"scripts%s%s%s%s.txt",SLASH,"raine",SLASH,current_game->main_name);
+      s = get_shared(buf);
+  }
+
   if (!exists(s)) {
       snprintf(buf,FILENAME_MAX,"scripts%s%s%s%s.txt",SLASH,base,SLASH,parent_name());
       s = get_shared(buf);

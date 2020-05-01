@@ -263,9 +263,6 @@ static void do_load_game(void)
 
      reset_game_hardware();
 
-#ifdef HAS_CONSOLE
-     init_scripts(); // must be called AFTER reset_game_hardware
-#endif
      if (loading_dialog) {
 	 delete loading_dialog;
 	 load_items[3].label = NULL;
