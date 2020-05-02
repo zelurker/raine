@@ -328,10 +328,19 @@ static int activate_cheat(int n) {
 		script[n].status = 0;
 	}
     }
-    for (char **l = script[n].change; l && *l; l++)
-	run_console_command(*l);
+    if (script[n].change) {
+	for (char **l = script[n].change; l && *l; l++)
+	    run_console_command(*l);
+	return 0;
+    }
 
     if (!script[n].status) {
+	if (!script[n].off & !script[n].run) {
+	    // no off, nor run, nor changing -> it's a set script, try on in this case !
+	    for (char **l = script[n].on; l && *l; l++)
+		run_console_command(*l);
+	    return 0;
+	}
 	for (char **l = script[n].off; l && *l; l++)
 	    run_console_command(*l);
 	return 0;
@@ -359,8 +368,7 @@ void add_scripts(menu_item_t *menu) {
 	      menu->values_list_label[1] = on;
 	  } else {
 	      menu->values_list_size = 1;
-	      // The Set cheats usually use the on lines, so set this to 1
-	      menu->values_list[0] = 1;
+	      menu->values_list[0] = 0; // default value = 0, otherwise they run all the time !
 	      menu->values_list_label[0] = _("Set");
 	  }
       }
