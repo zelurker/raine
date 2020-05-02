@@ -202,7 +202,6 @@ void init_scripts() {
 	    int nb_on = 0, nb_off = 0, nb_run = 0, nb_change = 0;
 	    bool on = false, off = false, change = false, run = false;
 	    while (!feof(f)) {
-		*buff = 0;
 		myfgets(buff,10240,f);
 		int n=0;
 		// skip spaces, tabs, and comments

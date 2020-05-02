@@ -578,11 +578,12 @@ int size_zipped(char *zipfile, char *name, int crc32)
 #endif
 
 int myfgets(char *buff, int size, FILE *f) {
-  fgets(buff,size,f);
-  int len = strlen(buff);
-  while (len > 0 && buff[len-1] < 32 && buff[len-1] > 0)
-    buff[--len] = 0;
-  return len;
+    *buff = 0;
+    fgets(buff,size,f);
+    int len = strlen(buff);
+    while (len > 0 && buff[len-1] < 32 && buff[len-1] > 0)
+	buff[--len] = 0;
+    return len;
 }
 
 void backslash(char *s)
