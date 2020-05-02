@@ -20,6 +20,7 @@ on:
     poke $20FD42 $00
 script "Watch Game Rank"  
 run:
+    print_ingame 1 "Rank : %d" peek($20F9D1)
 script "Always have Easiest Rank"  
 run:
     lpoke $20F9D0 $00F7FFFF

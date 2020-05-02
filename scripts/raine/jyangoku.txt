@@ -17,8 +17,10 @@ run:
     poke $FF84DC $20
 script "Watch ALL 14 tiles - Player"  
 run:
+    print_ingame 1 "%08X %08X %08X %08X %08X %08X %08X\n%08X %08X %08X %08X %08X %08X %08X" lpeek(FF8600+0x04*argindex)
 script "Watch ALL 14 tiles - C.P.U."  
 run:
+    print_ingame 1 "%08X %08X %08X %08X %08X %08X %08X\n%08X %08X %08X %08X %08X %08X %08X" lpeek(FF8E40+0x04*argindex)
 script " "  
 script "Here is the look-up list for the above watches."  
 script "value     common name    chinese"  

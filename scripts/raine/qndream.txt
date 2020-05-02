@@ -9,6 +9,7 @@ on:
     poke $FF83B0 $00
 script "Watch me for good answer"  
 run:
+    print_ingame 1 "Correct Answer : %c" (peek($FF8397))/4+0x31
 script "Answer 1 always correct"  
 run:
     poke $FF8397 $00

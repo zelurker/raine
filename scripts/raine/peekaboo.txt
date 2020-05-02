@@ -9,6 +9,7 @@ run:
     poke $1F30AD $00
 script "Watch number of Tiles"  
 run:
+    print_ingame 1 "%02X" peek($1F1001)
 script "Get Catch Now!"  
 on:
     poke $1F3089 $02
@@ -23,8 +24,10 @@ run:
     poke $1F3089 $05
 script "Watch Bonus Effect"  
 run:
+    print_ingame 1 "%02X" peek($1F80D1)
 script "Watch Bonus Letter"  
 run:
+    print_ingame 1 "%02X" peek($1F807F)
 script "Every Bonus is Extend"  
 on:
     temp0=peek($1F30D1)

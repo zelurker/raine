@@ -7,6 +7,7 @@ on:
     poke $100A0E $01
 script "Display the Correct Answer"  
 run:
+    print_ingame 1 "Correct Answer : %c" (peek($100A14))+0x30
 script "Answer 1 always correct"  
 run:
     poke $100A14 $01
