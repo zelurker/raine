@@ -436,7 +436,7 @@ static void close_sample() {
 #if HAS_NEO
   if (sample) {
     Sound_FreeSample(sample);
-    printf("free sample\n");
+    printf("free sample (close_sample)\n");
   }
   sample = NULL;
 #endif
@@ -604,9 +604,9 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    print_debug("load_sample %s ok\n",track_to_read);
 	}
 	done_flag = 0;
-	if (cdda.pos)
+	if (cdda.pos && sample) {
 	    Sound_Seek(sample,cdda.pos*10/(441*4));
-	else
+	} else
 	    skip_silence = cdda.skip_silence;
     } else if (cdda.playing == CDDA_STOP && sample) {
 	// Not absolutely sure it's a good idea, some games might want
