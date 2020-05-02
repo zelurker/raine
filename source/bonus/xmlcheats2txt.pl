@@ -29,6 +29,10 @@ sub handle_arg {
 	$cond =~ s/maincpu.[mopr]p?b@([0-9a-f]+)/peek(\$$1)/gi;
 	$cond =~ s/maincpu.[mopr]p?w@([0-9a-f]+)/dpeek(\$$1)/gi;
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-f]+)/lpeek(\$$1)/gi;
+	# variante, () mais avec juste un hexa dedans !
+	$cond =~ s/maincpu.[mopr]p?b@\(([0-9a-f]+)\)/peek(\$$1)/gi;
+	$cond =~ s/maincpu.[mopr]p?w@\(([0-9a-f]+)\)/dpeek(\$$1)/gi;
+	$cond =~ s/maincpu.[mopr]p?d@\(([0-9a-f]+)\)/lpeek(\$$1)/gi;
 	$cond =~ s/ LT /</gi;
 	$cond =~ s/ GT />/gi;
 	$cond =~ s/ GE />=/gi;
@@ -46,8 +50,20 @@ sub handle_arg {
 	$cond =~ s/maincpu.[mopr]p?b@([0-9a-z]+)/peek($1)/gi;
 	$cond =~ s/maincpu.[mopr]p?w@([0-9a-z]+)/dpeek($1)/gi;
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-z]+)/lpeek($1)/gi;
-	$cond =~ s/([\+\-])([0-9a-f]+)/$1\$$2/gi;
+	$cond =~ s/([\+\-])([0-9a-f]+)/$1\$$2/gi if ($cond !~ /[\+\-]0x/);
 	$cond;
+}
+
+sub handle_output {
+	my $indent = pop @_;
+	foreach (@_) {
+		my $format = $_->getAttribute("format");
+		my $output = $_->to_literal();
+		$output =~ s/\n//;
+		$output =~ s/^[ \t]+//;
+		$output = handle_arg($output);
+		print " "x$indent,"print_ingame 1 \"$format\" $output"; # for some reason, cr is included
+	}
 }
 
 sub handle_action {
@@ -138,6 +154,7 @@ sub handle_script {
 	return if (!$script);
 	say $script->getAttribute("state"),":";
 	handle_action($script->findnodes("./action"),4);
+	handle_output($script->findnodes("./output"),4);
 }
 
 my $ref = XML::LibXML->load_xml(location => $ARGV[0]);
