@@ -35,8 +35,8 @@ script "P1 Select Perm Weapon" \
  "0x04/Pipe"\
  "0x05/Spanner" 
 run:
-    poke $FF9F85 param+$0x25
-    poke $FF9FC5 param+$0x25
+    poke $FF9F85 param+0x25
+    poke $FF9FC5 param+0x25
     poke $FF9FC8 param
 script " "  
 script "P2 Infinite Lives"  
@@ -52,6 +52,6 @@ script "P2 Select Perm Weapon" \
  "0x04/Pipe"\
  "0x05/Spanner" 
 run:
-    poke $FFA045 param+$0x25
-    poke $FFA085 param+$0x25
+    poke $FFA045 param+0x25
+    poke $FFA085 param+0x25
     poke $FFA088 param
