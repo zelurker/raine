@@ -37,10 +37,14 @@ static char *get_script_name(int writeable) {
       s = get_shared(buf);
   }
 
+#if 0
+  // don't try to use the parent for now, with all the new cheats from mame we have cheats for everything
+  // and when it's not the case it's better to avoid to assume the parent has the same cheats (pacman25 !)
   if (!exists(s)) {
       snprintf(buf,FILENAME_MAX,"scripts%s%s%s%s.txt",SLASH,base,SLASH,parent_name());
       s = get_shared(buf);
   }
+#endif
   if (!writeable)
     return s;
   // if it must be writable, force the use of the personnal folder, and
