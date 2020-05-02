@@ -169,6 +169,7 @@ void init_assoc(int kind) {
     if (type) {
 	prepare_cdda_save(ASCII_ID('T','R','C','K'));
 	AddSaveData(ASCII_ID('T','R','C','A'),(UINT8*)&active,sizeof(active));
+	AddSaveData(ASCII_ID('T','R','C','M'),(UINT8*)&mode,sizeof(mode));
     }
 }
 
@@ -260,10 +261,10 @@ static void mute_song() {
 }
 
 int handle_sound_cmd(int cmd) {
+    if (disable_assoc || !type) return 0;
 #if VERBOSE
     printf("cmd %x mode %d\n",cmd,mode);
 #endif
-    if (disable_assoc || !type) return 0;
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after
