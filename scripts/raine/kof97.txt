@@ -10,7 +10,7 @@ script "Boss code + Timer stop" \
 on:
     temp0=peek($100000)
 run:
-    poke $100000 $04|(peek($100000)&~04)
+    poke $100000 $04|(peek($100000)&~$04)
 off:
     poke $100000 temp0
 script "Enable hidden characters (except Orochi)" \
@@ -70,11 +70,11 @@ run:
     poke $1082E3 $03
     poke $1081EA $40
     poke $10825F $23
-    poke $1081E0 $10|(peek($1081E0)&~10)
+    poke $1081E0 $10|(peek($1081E0)&~$10)
 script "-= 'Extra' Mode cheats =-"  
 script "P1 Maximum Power"  
 run:
-    poke $1081E0 $10|(peek($1081E0)&~10)
+    poke $1081E0 $10|(peek($1081E0)&~$10)
     poke $1081E8 $81
     poke $1081EA $3F
     poke $10824D $04
@@ -210,15 +210,15 @@ run:
 script "P1 Use Alternate Version Character (A)" \
  "comm:This refers to the first character selected."  
 run:
-    poke $10A857 $01|(peek($10A857)&~01)
+    poke $10A857 $01|(peek($10A857)&~$01)
 script "P1 Use Alternate Version Character (B)" \
  "comm:This refers to the second character selected."  
 run:
-    poke $10A857 $02|(peek($10A857)&~02)
+    poke $10A857 $02|(peek($10A857)&~$02)
 script "P1 Use Alternate Version Character (C)" \
  "comm:This refers to the third character selected."  
 run:
-    poke $10A857 $04|(peek($10A857)&~04)
+    poke $10A857 $04|(peek($10A857)&~$04)
 script "P1 Select Colour (A)" \
  "comm:This refers to the first character selected." \
  "0x00/A colour (Advanced Mode)"\
@@ -274,11 +274,11 @@ run:
     poke $1084E3 $03
     poke $1083EA $40
     poke $10845F $23
-    poke $1083E0 $10|(peek($1083E0)&~10)
+    poke $1083E0 $10|(peek($1083E0)&~$10)
 script "-= 'Extra' Mode cheats =-"  
 script "P2 Maximum Power"  
 run:
-    poke $1083E0 $10|(peek($1083E0)&~10)
+    poke $1083E0 $10|(peek($1083E0)&~$10)
     poke $1083E8 $81
     poke $1083EA $3F
     poke $10844D $04
@@ -414,15 +414,15 @@ run:
 script "P2 Use Alternate Version Character (A)" \
  "comm:This refers to the first character selected."  
 run:
-    poke $10A868 $01|(peek($10A868)&~01)
+    poke $10A868 $01|(peek($10A868)&~$01)
 script "P2 Use Alternate Version Character (B)" \
  "comm:This refers to the second character selected."  
 run:
-    poke $10A868 $02|(peek($10A868)&~02)
+    poke $10A868 $02|(peek($10A868)&~$02)
 script "P2 Use Alternate Version Character (C)" \
  "comm:This refers to the third character selected."  
 run:
-    poke $10A868 $04|(peek($10A868)&~04)
+    poke $10A868 $04|(peek($10A868)&~$04)
 script "P1 Select Colour (A)" \
  "comm:This refers to the first character selected." \
  "0x00/A colour (Advanced Mode)"\

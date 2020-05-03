@@ -25,7 +25,7 @@ run:
     poke $FFB7C5 $02
 script "P1 Infinite Keys"  
 run:
-    lpoke $FFA9E8 $00090909|(lpeek($FFA9E8)&~00FFFFFF)
+    lpoke $FFA9E8 $00090909|(lpeek($FFA9E8)&~$00FFFFFF)
 script "P1 Select Partner" \
  "0x00/Ninja"\
  "0x02/Bigfoot"\
@@ -97,7 +97,7 @@ run:
     poke $FFB8C5 $02
 script "P2 Infinite Keys"  
 run:
-    lpoke $FFAAA8 $00090909|(lpeek($FFAAA8)&~00FFFFFF)
+    lpoke $FFAAA8 $00090909|(lpeek($FFAAA8)&~$00FFFFFF)
 script "P2 Select Partner" \
  "0x00/Ninja"\
  "0x02/Bigfoot"\

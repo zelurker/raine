@@ -169,7 +169,7 @@ script "-------- Player VS CPU ------------"
 script "If there's a draw after final round you lose."  
 script "P1 Never Wins"  
 run:
-    poke $10C123 $00|(peek($10C123)&~0F)
+    poke $10C123 $00|(peek($10C123)&~$0F)
 script "Always Wins" \
  "comm:You've to play the round"  
 run:
@@ -180,20 +180,20 @@ on:
     poke $10C123 $0F
 script "P1 Set Wins = 0 Now!"  
 on:
-    poke $10C123 $00|(peek($10C123)&~0F)
+    poke $10C123 $00|(peek($10C123)&~$0F)
 script "P1 Set Wins = 1 Now!"  
 on:
-    poke $10C123 $01|(peek($10C123)&~0F)
+    poke $10C123 $01|(peek($10C123)&~$0F)
 script "P1 Set Wins = 2 Now!"  
 on:
-    poke $10C123 $03|(peek($10C123)&~0F)
+    poke $10C123 $03|(peek($10C123)&~$0F)
 script "P1 Set Wins = 3 Now!"  
 on:
-    poke $10C123 $07|(peek($10C123)&~0F)
+    poke $10C123 $07|(peek($10C123)&~$0F)
 script " "  
 script "P2 Never Wins"  
 run:
-    poke $10C123 $00|(peek($10C123)&~F0)
+    poke $10C123 $00|(peek($10C123)&~$F0)
 script "P2 Always Wins" \
  "comm:You've to play the round"  
 run:
@@ -204,22 +204,22 @@ on:
     poke $10C123 $F0
 script "P2 Set Wins = 0 Now!"  
 on:
-    poke $10C123 $00|(peek($10C123)&~F0)
+    poke $10C123 $00|(peek($10C123)&~$F0)
 script "P2 Set Wins = 1 Now!"  
 on:
-    poke $10C123 $10|(peek($10C123)&~F0)
+    poke $10C123 $10|(peek($10C123)&~$F0)
 script "P2 Set Wins = 2 Now!"  
 on:
-    poke $10C123 $30|(peek($10C123)&~F0)
+    poke $10C123 $30|(peek($10C123)&~$F0)
 script "P2 Set Wins = 3 Now!"  
 on:
-    poke $10C123 $70|(peek($10C123)&~F0)
+    poke $10C123 $70|(peek($10C123)&~$F0)
 script " "  
 script "-------- Player VS Player ---------"  
 script "If there's a draw after final round both players lose."  
 script "P1 Never Wins"  
 run:
-    poke $10C122 $00|(peek($10C122)&~0F)
+    poke $10C122 $00|(peek($10C122)&~$0F)
 script "P1 Always Wins" \
  "comm:You've to play the round"  
 run:
@@ -230,20 +230,20 @@ on:
     poke $10C122 $0F
 script "P1 Set Wins = 0 Now!"  
 on:
-    poke $10C122 $00|(peek($10C122)&~0F)
+    poke $10C122 $00|(peek($10C122)&~$0F)
 script "P1 Set Wins = 1 Now!"  
 on:
-    poke $10C122 $01|(peek($10C122)&~0F)
+    poke $10C122 $01|(peek($10C122)&~$0F)
 script "P1 Set Wins = 2 Now!"  
 on:
-    poke $10C122 $03|(peek($10C122)&~0F)
+    poke $10C122 $03|(peek($10C122)&~$0F)
 script "P1 Set Wins = 3 Now!"  
 on:
-    poke $10C122 $07|(peek($10C122)&~0F)
+    poke $10C122 $07|(peek($10C122)&~$0F)
 script " "  
 script "P2 Never Wins"  
 run:
-    poke $10C122 $00|(peek($10C122)&~F0)
+    poke $10C122 $00|(peek($10C122)&~$F0)
 script "P2 Always Wins" \
  "comm:You've to play the round"  
 run:
@@ -254,16 +254,16 @@ on:
     poke $10C122 $F0
 script "P2 Set Wins = 0 Now!"  
 on:
-    poke $10C122 $00|(peek($10C122)&~F0)
+    poke $10C122 $00|(peek($10C122)&~$F0)
 script "P2 Set Wins = 1 Now!"  
 on:
-    poke $10C122 $10|(peek($10C122)&~F0)
+    poke $10C122 $10|(peek($10C122)&~$F0)
 script "P2 Set Wins = 2 Now!"  
 on:
-    poke $10C122 $30|(peek($10C122)&~F0)
+    poke $10C122 $30|(peek($10C122)&~$F0)
 script "P2 Set Wins = 3 Now!"  
 on:
-    poke $10C122 $70|(peek($10C122)&~F0)
+    poke $10C122 $70|(peek($10C122)&~$F0)
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

@@ -58,21 +58,21 @@ script "P1 Select Rapid Fire - Punch" \
  "0x03/Unlimited" 
 run:
     if (param==$01)
-      poke $FF846E $00|(peek($FF846E)&~20)
+      poke $FF846E $00|(peek($FF846E)&~$20)
     endif
     if (param==$02)
-      poke $FF846E param|(peek($FF846E)&~20)
+      poke $FF846E param|(peek($FF846E)&~$20)
       poke $FF83AC $00
     endif
     if (param==$03)
-      poke $FF846E $00|(peek($FF846E)&~20)
+      poke $FF846E $00|(peek($FF846E)&~$20)
       poke $FF83AC $00
       poke $FF8401 $00
     endif
 script "P1 Rapid Fire - Weapon" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FF846E $00|(peek($FF846E)&~10)
+    poke $FF846E $00|(peek($FF846E)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -117,21 +117,21 @@ script "P2 Select Rapid Fire - Punch" \
  "0x03/Unlimited" 
 run:
     if (param==$01)
-      poke $FF856E $00|(peek($FF856E)&~20)
+      poke $FF856E $00|(peek($FF856E)&~$20)
     endif
     if (param==$02)
-      poke $FF856E param|(peek($FF856E)&~20)
+      poke $FF856E param|(peek($FF856E)&~$20)
       poke $FF84AC $00
     endif
     if (param==$03)
-      poke $FF856E $00|(peek($FF856E)&~20)
+      poke $FF856E $00|(peek($FF856E)&~$20)
       poke $FF84AC $00
       poke $FF8501 $00
     endif
 script "P2 Rapid Fire - Weapon" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FF856E $00|(peek($FF856E)&~10)
+    poke $FF856E $00|(peek($FF856E)&~$10)
 script " "  
 script "P3 Infinite Lives"  
 run:
@@ -176,21 +176,21 @@ script "P3 Select Rapid Fire - Punch" \
  "0x03/Unlimited" 
 run:
     if (param==$01)
-      poke $FF866E $00|(peek($FF866E)&~20)
+      poke $FF866E $00|(peek($FF866E)&~$20)
     endif
     if (param==$02)
-      poke $FF866E param|(peek($FF866E)&~20)
+      poke $FF866E param|(peek($FF866E)&~$20)
       poke $FF85AC $00
     endif
     if (param==$03)
-      poke $FF866E $00|(peek($FF866E)&~20)
+      poke $FF866E $00|(peek($FF866E)&~$20)
       poke $FF85AC $00
       poke $FF8601 $00
     endif
 script "P3 Rapid Fire - Weapon" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FF866E $00|(peek($FF866E)&~10)
+    poke $FF866E $00|(peek($FF866E)&~$10)
 script " "  
 script "No Background Music"  
 run:

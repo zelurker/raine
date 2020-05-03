@@ -61,43 +61,43 @@ run:
     poke $10ED5F param
 script "Beaten Japan Team"  
 run:
-    poke $10A799 $01|(peek($10A799)&~01)
+    poke $10A799 $01|(peek($10A799)&~$01)
 script "Beaten Fatal Fury Team"  
 run:
-    poke $10A799 $02|(peek($10A799)&~02)
+    poke $10A799 $02|(peek($10A799)&~$02)
 script "Beaten Art of Fighting Team"  
 run:
-    poke $10A799 $04|(peek($10A799)&~04)
+    poke $10A799 $04|(peek($10A799)&~$04)
 script "Beaten Ikari Team"  
 run:
-    poke $10A799 $08|(peek($10A799)&~08)
+    poke $10A799 $08|(peek($10A799)&~$08)
 script "Beaten Psycho Soldier Team"  
 run:
-    poke $10A799 $10|(peek($10A799)&~10)
+    poke $10A799 $10|(peek($10A799)&~$10)
 script "Beaten Gals Fighters Team"  
 run:
-    poke $10A799 $20|(peek($10A799)&~20)
+    poke $10A799 $20|(peek($10A799)&~$20)
 script "Beaten Korea Team"  
 run:
-    poke $10A799 $40|(peek($10A799)&~40)
+    poke $10A799 $40|(peek($10A799)&~$40)
 script "Beaten New Face Team"  
 run:
-    poke $10A799 $80|(peek($10A799)&~80)
+    poke $10A799 $80|(peek($10A799)&~$80)
 script "Beaten Special Team"  
 run:
-    poke $10A798 $01|(peek($10A798)&~01)
+    poke $10A798 $01|(peek($10A798)&~$01)
 script "Beaten Iori Team"  
 run:
-    poke $10A798 $02|(peek($10A798)&~02)
+    poke $10A798 $02|(peek($10A798)&~$02)
 script "Beaten Masters Team"  
 run:
-    poke $10A798 $04|(peek($10A798)&~04)
+    poke $10A798 $04|(peek($10A798)&~$04)
 script "Beaten USA Sports Team"  
 run:
-    poke $10A798 $08|(peek($10A798)&~08)
+    poke $10A798 $08|(peek($10A798)&~$08)
 script "Beaten Shingo"  
 run:
-    poke $10A798 $10|(peek($10A798)&~10)
+    poke $10A798 $10|(peek($10A798)&~$10)
 script "Hit Anywhere (Both Players)"  
 on:
     temp0=dpeek($003B04)
@@ -315,15 +315,15 @@ run:
 script "P1 Use Alternate Version Character (A)" \
  "comm:This refers to the first character selected"  
 run:
-    poke $10A85A $01|(peek($10A85A)&~01)
+    poke $10A85A $01|(peek($10A85A)&~$01)
 script "P1 Use Alternate Version Character (B)" \
  "comm:This refers to the second character selected"  
 run:
-    poke $10A85A $02|(peek($10A85A)&~02)
+    poke $10A85A $02|(peek($10A85A)&~$02)
 script "P1 Use Alternate Version Character (C)" \
  "comm:This refers to the third character selected"  
 run:
-    poke $10A85A $04|(peek($10A85A)&~04)
+    poke $10A85A $04|(peek($10A85A)&~$04)
 script "P1 Select Roulette Status" \
  "0x00/No one selected at random"\
  "0x02/All characters selected at random"\
@@ -586,15 +586,15 @@ run:
 script "P2 Use Alternate Version Character (A)" \
  "comm:This refers to the first character selected"  
 run:
-    poke $10A86B $01|(peek($10A86B)&~01)
+    poke $10A86B $01|(peek($10A86B)&~$01)
 script "P2 Use Alternate Version Character (B)" \
  "comm:This refers to the second character selected"  
 run:
-    poke $10A86B $02|(peek($10A86B)&~02)
+    poke $10A86B $02|(peek($10A86B)&~$02)
 script "P2 Use Alternate Version Character (C)" \
  "comm:This refers to the third character selected"  
 run:
-    poke $10A86B $04|(peek($10A86B)&~04)
+    poke $10A86B $04|(peek($10A86B)&~$04)
 script "P2 Select Roulette Status" \
  "0x00/No one selected at random"\
  "0x02/All characters selected at random"\

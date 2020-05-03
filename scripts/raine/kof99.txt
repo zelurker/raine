@@ -7,10 +7,10 @@ on:
     poke $10A7E6 $00
 script "Enable Kyo"  
 run:
-    poke $10EB49 $20|(peek($10EB49)&~20)
+    poke $10EB49 $20|(peek($10EB49)&~$20)
 script "Enable Iori"  
 run:
-    poke $10EB49 $10|(peek($10EB49)&~10)
+    poke $10EB49 $10|(peek($10EB49)&~$10)
 script "Always have 9999 Battle Points (Last Round)"  
 run:
     dpoke $10EC78 $9999
@@ -48,28 +48,28 @@ run:
     poke $10ECBD param
 script "Beaten Hero Team"  
 on:
-    poke $10A799 $01|(peek($10A799)&~01)
+    poke $10A799 $01|(peek($10A799)&~$01)
 script "Beaten Fatal Fury Team"  
 on:
-    poke $10A799 $02|(peek($10A799)&~02)
+    poke $10A799 $02|(peek($10A799)&~$02)
 script "Beaten Art of Fighting Team"  
 on:
-    poke $10A799 $04|(peek($10A799)&~04)
+    poke $10A799 $04|(peek($10A799)&~$04)
 script "Beaten Ikari Team"  
 on:
-    poke $10A799 $08|(peek($10A799)&~08)
+    poke $10A799 $08|(peek($10A799)&~$08)
 script "Beaten Psycho Soldier Team"  
 on:
-    poke $10A799 $10|(peek($10A799)&~10)
+    poke $10A799 $10|(peek($10A799)&~$10)
 script "Beaten Gals Fighters Team"  
 on:
-    poke $10A799 $20|(peek($10A799)&~20)
+    poke $10A799 $20|(peek($10A799)&~$20)
 script "Beaten Korea Team"  
 on:
-    poke $10A799 $40|(peek($10A799)&~40)
+    poke $10A799 $40|(peek($10A799)&~$40)
 script "Beaten Krizalid"  
 on:
-    poke $10A799 $80|(peek($10A799)&~80)
+    poke $10A799 $80|(peek($10A799)&~$80)
 script "Hit Anywhere (Both Players)"  
 on:
     temp0=dpeek($00258A)

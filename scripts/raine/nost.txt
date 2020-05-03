@@ -32,7 +32,7 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $1000E3 $00|(peek($1000E3)&~10)
+    poke $1000E3 $00|(peek($1000E3)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -59,7 +59,7 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $1000E9 $00|(peek($1000E9)&~10)
+    poke $1000E9 $00|(peek($1000E9)&~$10)
 script " "  
 script "Skip RAM/ROM Check"  
 on:

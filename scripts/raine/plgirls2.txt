@@ -10,7 +10,7 @@ run:
 script "Invincibility"  
 run:
     poke $8079 $78
-    poke $86E0 $40|(peek($86E0)&~40)
+    poke $86E0 $40|(peek($86E0)&~$40)
 off:
     poke $8079 $01
-    poke $86E0 $00|(peek($86E0)&~40)
+    poke $86E0 $00|(peek($86E0)&~$40)

@@ -4,7 +4,7 @@ run:
     poke $10202C $00
 script "Infinite Time"  
 run:
-    lpoke $101FB5 $3F830000|(lpeek($101FB5)&~FFFFFF00)
+    lpoke $101FB5 $3F830000|(lpeek($101FB5)&~$FFFFFF00)
 script "Drain Energy Enemy 1 Now!"  
 on:
     poke $10226B $01

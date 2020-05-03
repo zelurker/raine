@@ -4,7 +4,7 @@ run:
 script " "  
 script "P1 Finish this Level Now!"  
 on:
-    poke $8DA0 $10|(peek($8DA0)&~10)
+    poke $8DA0 $10|(peek($8DA0)&~$10)
 script "P1 Select Next [Easy] Level" \
  inter=1,5,1 
 change:
@@ -52,7 +52,7 @@ change:
 script " "  
 script "P2 Finish this Level Now!"  
 on:
-    poke $8DD0 $10|(peek($8DD0)&~10)
+    poke $8DD0 $10|(peek($8DD0)&~$10)
 script "P2 Select Next [Easy] Level" \
  inter=1,5,1 
 change:

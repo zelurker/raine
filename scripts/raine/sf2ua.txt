@@ -29,7 +29,7 @@ script "Select Starting Stage" \
  "0x0A03/Stage 11 (Dictator)" 
 run:
     if dpeek($FF89F9)==$0000||dpeek($FF89F9)==param
-      poke $FF89CD param/100
+      poke $FF89CD param/$100
     endif
     if dpeek($FF89F9)==$0000
       dpoke $FF89F9 param
@@ -105,7 +105,7 @@ off:
 script " "  
 script "P1 Infinite Energy"  
 run:
-    if dpeek($FF83F0)<60&&(peek($FF83C9)&10)==$00&&peek($FF89E0)==$0
+    if dpeek($FF83F0)<60&&(peek($FF83C9)&$10)==$00&&peek($FF89E0)==$0
       dpoke $FF83F0 $90
       dpoke $FF8582 $90
     endif
@@ -144,36 +144,36 @@ run:
     poke $FF859B $00
 script "P1 Easy button tap moves"  
 run:
-    temp0=peek(FF83C6+$291)
+    temp0=peek($FF83C6+$291)
     if peek($FF83C6)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek(FF83C6+$98)<6
-      poke (FF83C6+$98) $6
+    if temp0==$1&&peek($FF83C6+$98)<6
+      poke ($FF83C6+$98) $6
     endif
-    if temp0==$1&&peek(FF83C6+$9A)<6
-      poke (FF83C6+$9A) $6
+    if temp0==$1&&peek($FF83C6+$9A)<6
+      poke ($FF83C6+$9A) $6
     endif
-    if temp0==$1&&peek(FF83C6+$9C)<6
-      poke (FF83C6+$9C) $6
+    if temp0==$1&&peek($FF83C6+$9C)<6
+      poke ($FF83C6+$9C) $6
     endif
-    if temp0==$2&&peek(FF83C6+$9C)<8
-      poke (FF83C6+$9C) $8
+    if temp0==$2&&peek($FF83C6+$9C)<8
+      poke ($FF83C6+$9C) $8
     endif
-    if temp0==$2&&peek(FF83C6+$9E)<8
-      poke (FF83C6+$9E) $8
+    if temp0==$2&&peek($FF83C6+$9E)<8
+      poke ($FF83C6+$9E) $8
     endif
-    if temp0==$2&&peek(FF83C6+$A0)<8
-      poke (FF83C6+$A0) $8
+    if temp0==$2&&peek($FF83C6+$A0)<8
+      poke ($FF83C6+$A0) $8
     endif
-    if temp0==$5&&peek(FF83C6+$9A)<8
-      poke (FF83C6+$9A) $8
+    if temp0==$5&&peek($FF83C6+$9A)<8
+      poke ($FF83C6+$9A) $8
     endif
-    if temp0==$5&&peek(FF83C6+$9C)<8
-      poke (FF83C6+$9C) $8
+    if temp0==$5&&peek($FF83C6+$9C)<8
+      poke ($FF83C6+$9C) $8
     endif
-    if temp0==$5&&peek(FF83C6+$9E)<8
-      poke (FF83C6+$9E) $8
+    if temp0==$5&&peek($FF83C6+$9E)<8
+      poke ($FF83C6+$9E) $8
     endif
 script "P1 Shot motion cancel"  
 run:
@@ -183,59 +183,59 @@ run:
     poke $FF83E4 $00
 script "P1 Easy charge moves"  
 run:
-    temp0=peek(FF83C6+$291)
+    temp0=peek($FF83C6+$291)
     if peek($FF83C6)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek(FF83C6+$91)<=02
-      poke (FF83C6+$92) $01
+    if temp0==$1&&peek($FF83C6+$91)<=02
+      poke ($FF83C6+$92) $01
     endif
-    if temp0==$2&&peek(FF83C6+$90)<=02
-      poke (FF83C6+$91) $01
+    if temp0==$2&&peek($FF83C6+$90)<=02
+      poke ($FF83C6+$91) $01
     endif
     if temp0==$3
-      poke (FF83C6+$81) $01
-      poke (FF83C6+$87) $01
+      poke ($FF83C6+$81) $01
+      poke ($FF83C6+$87) $01
     endif
     if temp0==$5
-      poke (FF83C6+$81) $01
+      poke ($FF83C6+$81) $01
     endif
 script "P1 Easy QCF + QCB moves"  
 run:
-    temp0=peek(FF83C6+$291)
+    temp0=peek($FF83C6+$291)
     if peek($FF83C6)==$0
       temp0=$FF
     endif
     if (temp0==$0||temp0==$4)
-      poke (FF83C6+$90) $04
-      poke (FF83C6+$98) $04
+      poke ($FF83C6+$90) $04
+      poke ($FF83C6+$98) $04
     endif
     if temp0==$7
-      lpoke (FF83C6+$90) $02080004
+      lpoke ($FF83C6+$90) $02080004
     endif
 script "P1 Easy F,D,DF moves"  
 run:
-    temp0=peek(FF83C6+$291)
+    temp0=peek($FF83C6+$291)
     if peek($FF83C6)==$0
       temp0=$FF
     endif
     if (temp0==$0||temp0==$4)
-      poke (FF83C6+$A0) $04
+      poke ($FF83C6+$A0) $04
     endif
 script "P1 Easy 360 + half-circle moves"  
 run:
-    temp0=peek(FF83C6+$291)
+    temp0=peek($FF83C6+$291)
     if peek($FF83C6)==$0
       temp0=$FF
     endif
     if temp0==$7
-      lpoke (FF83C6+$98) $02080008
+      lpoke ($FF83C6+$98) $02080008
     endif
-    if temp0==$6&&peek(FF83C6+$12)!=$0
-      lpoke (FF83C6+$80) $06060800
+    if temp0==$6&&peek($FF83C6+$12)!=$0
+      lpoke ($FF83C6+$80) $06060800
     endif
-    if temp0==$6&&peek(FF83C6+$12)==$0
-      lpoke (FF83C6+$80) $06070800
+    if temp0==$6&&peek($FF83C6+$12)==$0
+      lpoke ($FF83C6+$80) $06070800
     endif
 script "P1 Select Character" \
  "0x00/Ryu"\
@@ -261,7 +261,7 @@ run:
 script " "  
 script "P2 Infinite Energy"  
 run:
-    if dpeek($FF86F0)<60&&(peek($FF86C9)&10)==$00&&peek($FF89E0)==$0
+    if dpeek($FF86F0)<60&&(peek($FF86C9)&$10)==$00&&peek($FF89E0)==$0
       dpoke $FF86F0 $90
       dpoke $FF8882 $90
     endif
@@ -300,36 +300,36 @@ run:
     poke $FF889B $00
 script "P2 Easy button tap moves"  
 run:
-    temp0=peek(FF86C6+$291)
+    temp0=peek($FF86C6+$291)
     if peek($FF86C6)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek(FF86C6+$98)<6
-      poke (FF86C6+$98) $6
+    if temp0==$1&&peek($FF86C6+$98)<6
+      poke ($FF86C6+$98) $6
     endif
-    if temp0==$1&&peek(FF86C6+$9A)<6
-      poke (FF86C6+$9A) $6
+    if temp0==$1&&peek($FF86C6+$9A)<6
+      poke ($FF86C6+$9A) $6
     endif
-    if temp0==$1&&peek(FF86C6+$9C)<6
-      poke (FF86C6+$9C) $6
+    if temp0==$1&&peek($FF86C6+$9C)<6
+      poke ($FF86C6+$9C) $6
     endif
-    if temp0==$2&&peek(FF86C6+$9C)<8
-      poke (FF86C6+$9C) $8
+    if temp0==$2&&peek($FF86C6+$9C)<8
+      poke ($FF86C6+$9C) $8
     endif
-    if temp0==$2&&peek(FF86C6+$9E)<8
-      poke (FF86C6+$9E) $8
+    if temp0==$2&&peek($FF86C6+$9E)<8
+      poke ($FF86C6+$9E) $8
     endif
-    if temp0==$2&&peek(FF86C6+$A0)<8
-      poke (FF86C6+$A0) $8
+    if temp0==$2&&peek($FF86C6+$A0)<8
+      poke ($FF86C6+$A0) $8
     endif
-    if temp0==$5&&peek(FF86C6+$9A)<8
-      poke (FF86C6+$9A) $8
+    if temp0==$5&&peek($FF86C6+$9A)<8
+      poke ($FF86C6+$9A) $8
     endif
-    if temp0==$5&&peek(FF86C6+$9C)<8
-      poke (FF86C6+$9C) $8
+    if temp0==$5&&peek($FF86C6+$9C)<8
+      poke ($FF86C6+$9C) $8
     endif
-    if temp0==$5&&peek(FF86C6+$9E)<8
-      poke (FF86C6+$9E) $8
+    if temp0==$5&&peek($FF86C6+$9E)<8
+      poke ($FF86C6+$9E) $8
     endif
 script "P2 Shot motion cancel"  
 run:
@@ -339,59 +339,59 @@ run:
     poke $FF86E4 $00
 script "P2 Easy charge moves"  
 run:
-    temp0=peek(FF86C6+$291)
+    temp0=peek($FF86C6+$291)
     if peek($FF86C6)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek(FF86C6+$91)<=02
-      poke (FF86C6+$92) $01
+    if temp0==$1&&peek($FF86C6+$91)<=02
+      poke ($FF86C6+$92) $01
     endif
-    if temp0==$2&&peek(FF86C6+$90)<=02
-      poke (FF86C6+$91) $01
+    if temp0==$2&&peek($FF86C6+$90)<=02
+      poke ($FF86C6+$91) $01
     endif
     if temp0==$3
-      poke (FF86C6+$81) $01
-      poke (FF86C6+$87) $01
+      poke ($FF86C6+$81) $01
+      poke ($FF86C6+$87) $01
     endif
     if temp0==$5
-      poke (FF86C6+$81) $01
+      poke ($FF86C6+$81) $01
     endif
 script "P2 Easy QCF + QCB moves"  
 run:
-    temp0=peek(FF86C6+$291)
+    temp0=peek($FF86C6+$291)
     if peek($FF86C6)==$0
       temp0=$FF
     endif
     if (temp0==$0||temp0==$4)
-      poke (FF86C6+$90) $04
-      poke (FF86C6+$98) $04
+      poke ($FF86C6+$90) $04
+      poke ($FF86C6+$98) $04
     endif
     if temp0==$7
-      lpoke (FF86C6+$90) $02080004
+      lpoke ($FF86C6+$90) $02080004
     endif
 script "P2 Easy F,D,DF moves"  
 run:
-    temp0=peek(FF86C6+$291)
+    temp0=peek($FF86C6+$291)
     if peek($FF86C6)==$0
       temp0=$FF
     endif
     if (temp0==$0||temp0==$4)
-      poke (FF86C6+$A0) $04
+      poke ($FF86C6+$A0) $04
     endif
 script "P2 Easy 360 + half-circle moves"  
 run:
-    temp0=peek(FF86C6+$291)
+    temp0=peek($FF86C6+$291)
     if peek($FF86C6)==$0
       temp0=$FF
     endif
     if temp0==$7
-      lpoke (FF86C6+$98) $02080008
+      lpoke ($FF86C6+$98) $02080008
     endif
-    if temp0==$6&&peek(FF86C6+$12)!=$0
-      lpoke (FF86C6+$80) $06060800
+    if temp0==$6&&peek($FF86C6+$12)!=$0
+      lpoke ($FF86C6+$80) $06060800
     endif
-    if temp0==$6&&peek(FF86C6+$12)==$0
-      lpoke (FF86C6+$80) $06070800
+    if temp0==$6&&peek($FF86C6+$12)==$0
+      lpoke ($FF86C6+$80) $06070800
     endif
 script "P2 Select Character" \
  "0x00/Ryu"\

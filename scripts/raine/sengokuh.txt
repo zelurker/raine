@@ -11,7 +11,7 @@ run:
     endif
 script "P1 Rapid Fire"  
 run:
-    poke $1000F6 $00|(peek($1000F6)&~10)
+    poke $1000F6 $00|(peek($1000F6)&~$10)
 script "P1 Enable Transformations"  
 run:
     poke $100336 $0F
@@ -52,7 +52,7 @@ run:
     endif
 script "P2 Rapid Fire"  
 run:
-    poke $1000F7 $00|(peek($1000F7)&~10)
+    poke $1000F7 $00|(peek($1000F7)&~$10)
 script "P2 Enable Transformations"  
 run:
     poke $100436 $0F

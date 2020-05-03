@@ -42,7 +42,7 @@ run:
     poke $FF8433 $01
 script "P1 Rapid Fire"  
 run:
-    poke $FF8460 $00|(peek($FF8460)&~10)
+    poke $FF8460 $00|(peek($FF8460)&~$10)
 script "P1 Infinite Weapon Energy"  
 run:
     poke $FF8459 $1C
@@ -108,7 +108,7 @@ run:
     poke $FF8833 $01
 script "P2 Rapid Fire"  
 run:
-    poke $FF8860 $00|(peek($FF8860)&~10)
+    poke $FF8860 $00|(peek($FF8860)&~$10)
 script "P2 Infinite Weapon Energy"  
 run:
     poke $FF8859 $1C

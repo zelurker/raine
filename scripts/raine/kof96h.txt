@@ -27,34 +27,34 @@ run:
     poke $10E750 param
 script "Beaten team at Japan Team Stage"  
 on:
-    poke $10A797 $01|(peek($10A797)&~01)
+    poke $10A797 $01|(peek($10A797)&~$01)
 script "Beaten team at Fatal Fury Team Stage"  
 on:
-    poke $10A797 $02|(peek($10A797)&~02)
+    poke $10A797 $02|(peek($10A797)&~$02)
 script "Beaten team at Art of Fighting Team Stage"  
 on:
-    poke $10A797 $04|(peek($10A797)&~04)
+    poke $10A797 $04|(peek($10A797)&~$04)
 script "Beaten team at Ikari Team Stage"  
 on:
-    poke $10A797 $08|(peek($10A797)&~08)
+    poke $10A797 $08|(peek($10A797)&~$08)
 script "Beaten team at Psycho Soldier Team Stage"  
 on:
-    poke $10A797 $10|(peek($10A797)&~10)
+    poke $10A797 $10|(peek($10A797)&~$10)
 script "Beaten team at Gals Fighters Team Stage"  
 on:
-    poke $10A797 $20|(peek($10A797)&~20)
+    poke $10A797 $20|(peek($10A797)&~$20)
 script "Beaten team at Korea Team Stage"  
 on:
-    poke $10A797 $40|(peek($10A797)&~40)
+    poke $10A797 $40|(peek($10A797)&~$40)
 script "Beaten team at Iori Team Stage"  
 on:
-    poke $10A797 $80|(peek($10A797)&~80)
+    poke $10A797 $80|(peek($10A797)&~$80)
 script "Beaten Boss Team"  
 on:
-    poke $10A796 $01|(peek($10A796)&~01)
+    poke $10A796 $01|(peek($10A796)&~$01)
 script "Beaten Chizuru"  
 on:
-    poke $10A796 $02|(peek($10A796)&~02)
+    poke $10A796 $02|(peek($10A796)&~$02)
 script "Select Current Round" \
  inter=1,6,1 
 run:

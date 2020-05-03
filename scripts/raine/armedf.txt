@@ -31,11 +31,11 @@ run:
 script "Rapid Fire - Normal" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    lpoke $61001 $00000000|(lpeek($61001)&~10001000)
+    lpoke $61001 $00000000|(lpeek($61001)&~$10001000)
 script "Rapid Fire - Special" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    lpoke $61001 $00000000|(lpeek($61001)&~10001000)
+    lpoke $61001 $00000000|(lpeek($61001)&~$10001000)
     poke $61108 $00
     poke $61128 $00
     poke $61529 $00

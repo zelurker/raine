@@ -43,7 +43,7 @@ run:
 script "P1 Rapid Fire" \
  "comm:No charge shot available"  
 run:
-    dpoke $FF82E4 $0000|(dpeek($FF82E4)&~1010)
+    dpoke $FF82E4 $0000|(dpeek($FF82E4)&~$1010)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -81,7 +81,7 @@ run:
 script "P2 Rapid Fire" \
  "comm:No charge shot available"  
 run:
-    dpoke $FF83E4 $0000|(dpeek($FF83E4)&~1010)
+    dpoke $FF83E4 $0000|(dpeek($FF83E4)&~$1010)
 script " "  
 script "Select Region" \
  "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \

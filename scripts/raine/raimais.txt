@@ -9,10 +9,10 @@ run:
     poke $AA74 $3C
 script "Maximum Fire Power"  
 run:
-    poke $AA71 $04|(peek($AA71)&~04)
+    poke $AA71 $04|(peek($AA71)&~$04)
 script "Always have Max Shield"  
 run:
-    poke $AA71 $40|(peek($AA71)&~40)
+    poke $AA71 $40|(peek($AA71)&~$40)
 script "Open All Doors Now!"  
 on:
     lpoke $ABEC $0A0A0A0A

@@ -9,7 +9,7 @@ script "Invincibility" \
 on:
     temp0=dpeek($10C040)
 run:
-    dpoke $10C040 $0040|(dpeek($10C040)&~0040)
+    dpoke $10C040 $0040|(dpeek($10C040)&~$0040)
 off:
     dpoke $10C040 temp0
 script "Hit Anywhere" \

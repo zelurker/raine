@@ -6,7 +6,7 @@ run:
     poke $FFCBCB $09
 script "P1 Invincibility"  
 run:
-    poke $FFCCD3 $00|(peek($FFCCD3)&~02)
+    poke $FFCCD3 $00|(peek($FFCCD3)&~$02)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -16,4 +16,4 @@ run:
     poke $FFCC7B $09
 script "P2 Invincibility"  
 run:
-    poke $FFE053 $00|(peek($FFE053)&~02)
+    poke $FFE053 $00|(peek($FFE053)&~$02)

@@ -40,52 +40,52 @@ run:
     poke $20D6E7 $02
 script "P1 Rapid Fire"  
 run:
-    poke $20F2B3 $10|(peek($20F2B3)&~10)
-    poke $20290A $00|(peek($20290A)&~10)
+    poke $20F2B3 $10|(peek($20F2B3)&~$10)
+    poke $20290A $00|(peek($20290A)&~$10)
 script "P1 Always Have Arms"  
 run:
-    poke $2029F0 $01|(peek($2029F0)&~01)
+    poke $2029F0 $01|(peek($2029F0)&~$01)
     dpoke $20D6D8 $0005
 script "P1 Always Have Arms of Fire"  
 run:
-    poke $2029F0 $02|(peek($2029F0)&~02)
+    poke $2029F0 $02|(peek($2029F0)&~$02)
     dpoke $20D6D8 $0002
     poke $20D6EB $40
 script "P1 Always Have Arms of Thunder"  
 run:
-    poke $2029F0 $04|(peek($2029F0)&~04)
+    poke $2029F0 $04|(peek($2029F0)&~$04)
     dpoke $20D6D8 $0002
     poke $20D6EB $80
 script "P1 Always Have Herb" \
  "comm:Vitality Up"  
 run:
-    poke $2029F1 $01|(peek($2029F1)&~01)
+    poke $2029F1 $01|(peek($2029F1)&~$01)
 script "P1 Always Have Harenon Daiamond Image" \
  "comm:Protections Power Up"  
 run:
-    poke $2029F1 $02|(peek($2029F1)&~02)
+    poke $2029F1 $02|(peek($2029F1)&~$02)
 script "P1 Always Have Moon Crystal" \
  "comm:Magic Power Up"  
 run:
-    poke $2029F1 $04|(peek($2029F1)&~04)
+    poke $2029F1 $04|(peek($2029F1)&~$04)
 script "P1 Always Have Dragon's Teardrop" \
  "comm:Foutune Level up"  
 run:
-    poke $2029F1 $08|(peek($2029F1)&~08)
+    poke $2029F1 $08|(peek($2029F1)&~$08)
 script "P1 Always Have Attacking Speed Up"  
 run:
-    poke $2029F1 $10|(peek($2029F1)&~10)
+    poke $2029F1 $10|(peek($2029F1)&~$10)
 script "P1 Always Have Attacking Power Up"  
 run:
-    poke $2029F1 $20|(peek($2029F1)&~20)
+    poke $2029F1 $20|(peek($2029F1)&~$20)
 script "P1 Always Have Brave Geran's Necklace" \
  "comm:Movement Speed Up"  
 run:
-    poke $2029F1 $40|(peek($2029F1)&~40)
+    poke $2029F1 $40|(peek($2029F1)&~$40)
 script "P1 Always Have Jeweled Holy Crown of Ishulin" \
  "comm:Enemy Force Down"  
 run:
-    poke $2029F1 $80|(peek($2029F1)&~80)
+    poke $2029F1 $80|(peek($2029F1)&~$80)
 script "P1 Always Have Maximum Copper Coins"  
 run:
     poke $2029F6 $63
@@ -114,52 +114,52 @@ run:
     poke $20DC67 $02
 script "P2 Rapid Fire"  
 run:
-    poke $20F2BD $10|(peek($20F2BD)&~10)
-    poke $20290B $00|(peek($20290B)&~10)
+    poke $20F2BD $10|(peek($20F2BD)&~$10)
+    poke $20290B $00|(peek($20290B)&~$10)
 script "P2 Always Have Arms"  
 run:
-    poke $202A04 $01|(peek($202A04)&~01)
+    poke $202A04 $01|(peek($202A04)&~$01)
     dpoke $20DC58 $0005
 script "P2 Always Have Arms of Fire"  
 run:
-    poke $202A04 $02|(peek($202A04)&~02)
+    poke $202A04 $02|(peek($202A04)&~$02)
     dpoke $20DC58 $0002
     poke $20DC6B $40
 script "P2 Always Have Arms of Thunder"  
 run:
-    poke $202A04 $04|(peek($202A04)&~04)
+    poke $202A04 $04|(peek($202A04)&~$04)
     dpoke $20DC58 $0002
     poke $20DC6B $80
 script "P2 Always Have Herb" \
  "comm:Vitality Up"  
 run:
-    poke $202A05 $01|(peek($202A05)&~01)
+    poke $202A05 $01|(peek($202A05)&~$01)
 script "P2 Always Have Harenon Daiamond Image" \
  "comm:Protections Power Up"  
 run:
-    poke $202A05 $02|(peek($202A05)&~02)
+    poke $202A05 $02|(peek($202A05)&~$02)
 script "P2 Always Have Moon Crystal" \
  "comm:Magic Power Up"  
 run:
-    poke $202A05 $04|(peek($202A05)&~04)
+    poke $202A05 $04|(peek($202A05)&~$04)
 script "P2 Always Have Dragon's Teardrop" \
  "comm:Foutune Level up"  
 run:
-    poke $202A05 $08|(peek($202A05)&~08)
+    poke $202A05 $08|(peek($202A05)&~$08)
 script "P2 Always Have Attacking Speed Up"  
 run:
-    poke $202A05 $10|(peek($202A05)&~10)
+    poke $202A05 $10|(peek($202A05)&~$10)
 script "P2 Always Have Attacking Power Up"  
 run:
-    poke $202A05 $20|(peek($202A05)&~20)
+    poke $202A05 $20|(peek($202A05)&~$20)
 script "P2 Always Have Brave Geran's Necklace" \
  "comm:Movement Speed Up"  
 run:
-    poke $202A05 $40|(peek($202A05)&~40)
+    poke $202A05 $40|(peek($202A05)&~$40)
 script "P2 Always Have Jeweled Holy Crown of Ishulin" \
  "comm:Enemy Force Down"  
 run:
-    poke $202A05 $80|(peek($202A05)&~80)
+    poke $202A05 $80|(peek($202A05)&~$80)
 script "P2 Always Have Maximum Copper Coins"  
 run:
     poke $202A0A $63

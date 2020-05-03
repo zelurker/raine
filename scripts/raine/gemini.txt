@@ -3,7 +3,7 @@ run:
     poke $C303 $0A
 script "P1 Invincibility"  
 run:
-    poke $C067 $10|(peek($C067)&~10)
+    poke $C067 $10|(peek($C067)&~$10)
     poke $C300 $FD
 script "P1 Rapid Fire"  
 run:
@@ -30,7 +30,7 @@ run:
     poke $C343 $0A
 script "P2 Invincibility"  
 run:
-    poke $C06A $10|(peek($C06A)&~10)
+    poke $C06A $10|(peek($C06A)&~$10)
     poke $C340 $FD
 script "P2 Rapid Fire"  
 run:

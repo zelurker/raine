@@ -26,11 +26,11 @@ off:
 script "P1 Rapid Fire - Normal" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $410CD7 $10|(peek($410CD7)&~10)
+    poke $410CD7 $10|(peek($410CD7)&~$10)
 script "P1 Rapid Fire - Special" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $410CD7 $10|(peek($410CD7)&~10)
+    poke $410CD7 $10|(peek($410CD7)&~$10)
     poke $410CE1 $00
 script "P1 Auto Charge Shot Fire - Nr"  
 run:
@@ -60,11 +60,11 @@ off:
 script "P2 Rapid Fire - Normal" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $410D57 $10|(peek($410D57)&~10)
+    poke $410D57 $10|(peek($410D57)&~$10)
 script "P2 Rapid Fire - Special" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $410D57 $10|(peek($410D57)&~10)
+    poke $410D57 $10|(peek($410D57)&~$10)
     poke $410D61 $00
 script "P2 Auto Charge Shot Fire - Nr"  
 run:

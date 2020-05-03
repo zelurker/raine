@@ -36,7 +36,7 @@ script "P1 Select Character (A)" \
  "0x0B/#Chung Paifu (alternate)#"\
  "0x0C/#Jyazu#" 
 run:
-    poke $1088EC param|(peek($1088EC)&~0F)
+    poke $1088EC param|(peek($1088EC)&~$0F)
 script "P1 Select Character (B)" \
  "comm:Second Character Selected" \
  "0x00/Syo Hayate"\
@@ -53,19 +53,19 @@ script "P1 Select Character (B)" \
  "0x0B/#Chung Paifu (alternate)#"\
  "0x0C/#Jyazu#" 
 run:
-    poke $1088EE param|(peek($1088EE)&~0F)
+    poke $1088EE param|(peek($1088EE)&~$0F)
 script "P1 Select Character Colour (A)" \
  "comm:First Character Selected" \
  "0x00/A Colour"\
  "0x80/B Colour" 
 run:
-    poke $1088EC param|(peek($1088EC)&~80)
+    poke $1088EC param|(peek($1088EC)&~$80)
 script "P1 Select Character Colour (B)" \
  "comm:Second Character Selected" \
  "0x00/A Colour"\
  "0x80/B Colour" 
 run:
-    poke $1088EE param|(peek($1088EE)&~80)
+    poke $1088EE param|(peek($1088EE)&~$80)
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -94,7 +94,7 @@ script "P2 Select Character (A)" \
  "0x0B/#Chung Paifu (alternate)#"\
  "0x0C/#Jyazu#" 
 run:
-    poke $1088ED param|(peek($1088ED)&~0F)
+    poke $1088ED param|(peek($1088ED)&~$0F)
 script "P2 Select Character (B)" \
  "comm:Second Character Selected" \
  "0x00/Syo Hayate"\
@@ -111,19 +111,19 @@ script "P2 Select Character (B)" \
  "0x0B/#Chung Paifu (alternate)#"\
  "0x0C/#Jyazu#" 
 run:
-    poke $1088EF param|(peek($1088EF)&~0F)
+    poke $1088EF param|(peek($1088EF)&~$0F)
 script "P2 Select Character Colour (A)" \
  "comm:First Character Selected" \
  "0x00/A Colour"\
  "0x80/B Colour" 
 run:
-    poke $1088ED param|(peek($1088ED)&~80)
+    poke $1088ED param|(peek($1088ED)&~$80)
 script "P2 Select Character Colour (B)" \
  "comm:Second Character Selected" \
  "0x00/A Colour"\
  "0x80/B Colour" 
 run:
-    poke $1088EF param|(peek($1088EF)&~80)
+    poke $1088EF param|(peek($1088EF)&~$80)
 script " "  
 script "No Background Music"  
 run:

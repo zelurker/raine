@@ -9,7 +9,7 @@ script "Level Selection after Enemy Select Screen"
 on:
     temp0=peek($10E000)
 run:
-    poke $10E000 $04|(temp0&~04)
+    poke $10E000 $04|(temp0&~$04)
 off:
     poke $10E000 temp0
 script "Select Perm. Background" \

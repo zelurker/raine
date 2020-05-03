@@ -3,7 +3,8 @@ run:
     poke $FF0EE3 $09
 script "Display the Correct Answer"  
 run:
-    print_ingame 1 "Correct Answer : %c" (peek($FFEA03))+0x31
+    print_ingame 1 "Correct Answer : %c" \
+ (peek($FFEA03))+0x31
 script "Answer 1 always correct"  
 run:
     poke $FFEA03 $00

@@ -3,7 +3,7 @@ run:
     poke $10B49D $63
 script "Infinite Time"  
 run:
-    lpoke $10B49F $09000900|(lpeek($10B49F)&~FFFFFF00)
+    lpoke $10B49F $09000900|(lpeek($10B49F)&~$FFFFFF00)
 script "Always Stop All Balls 'ON'"  
 run:
     poke $109896 $01
@@ -40,7 +40,7 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $1000B3 $00|(peek($1000B3)&~10)
+    poke $1000B3 $00|(peek($1000B3)&~$10)
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -67,4 +67,4 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $1000B2 $00|(peek($1000B2)&~10)
+    poke $1000B2 $00|(peek($1000B2)&~$10)

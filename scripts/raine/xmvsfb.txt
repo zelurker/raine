@@ -14,23 +14,23 @@ script "Select Invincibility" \
 run:
     if (param==$01)
       poke $07C6B0 $67
-      lpoke $07CDE8 $B0416000|(lpeek($07CDE8)&~FFFFFF00)
+      lpoke $07CDE8 $B0416000|(lpeek($07CDE8)&~$FFFFFF00)
       poke $07C734 $67
     endif
     if (param==$02)
       poke $07C6B0 $60
-      lpoke $07CDE8 $BDCC6400|(lpeek($07CDE8)&~FFFFFF00)
+      lpoke $07CDE8 $BDCC6400|(lpeek($07CDE8)&~$FFFFFF00)
       poke $07C734 $67
     endif
     if (param==$03)
       poke $07C734 $60
-      lpoke $07CDE8 $B9CE6400|(lpeek($07CDE8)&~FFFFFF00)
+      lpoke $07CDE8 $B9CE6400|(lpeek($07CDE8)&~$FFFFFF00)
       poke $07C6B0 $67
     endif
     if (param==$04)
       poke $07C6B0 $60
       poke $07C734 $60
-      lpoke $07CDE8 $B0416000|(lpeek($07CDE8)&~FFFFFF00)
+      lpoke $07CDE8 $B0416000|(lpeek($07CDE8)&~$FFFFFF00)
     endif
 script "Go to the Boss Battle Next!"  
 on:

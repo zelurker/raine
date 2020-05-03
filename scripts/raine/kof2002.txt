@@ -55,7 +55,7 @@ run:
     poke $1082E3 $05
     poke $1081EA $2F
     poke $1081EB $10
-    poke $10821D $20|(peek($10821D)&~20)
+    poke $10821D $20|(peek($10821D)&~$20)
 script "P1 Infinite Stun Gauge"  
 run:
     poke $10823F $66
@@ -94,7 +94,7 @@ script "P1 Select Team Style" \
  "0x40/Fight Solo"\
  "0x00/Fight as a Team" 
 run:
-    poke $10A7E4 param|(peek($10A7E4)&~40)
+    poke $10A7E4 param|(peek($10A7E4)&~$40)
 script "P1 Select Character (A)" \
  "0x00/Kyo"\
  "0x01/Benimaru"\
@@ -496,85 +496,85 @@ script "P1 Select Mode" \
  "0x00/Normal Mode"\
  "0x04/Hero Mode" 
 run:
-    poke $108182 param|(peek($108182)&~04)
+    poke $108182 param|(peek($108182)&~$04)
 script "P1 Select Order Number (A)" \
  "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
  inter=0,3,1 
 run:
-    poke $10A7F8 (param+$1)|(peek($10A7F8)&~03)
+    poke $10A7F8 (param+$1)|(peek($10A7F8)&~$03)
 script "P1 Select Order Number (B)" \
  "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
  inter=0,3,1 
 run:
-    poke $10A7F9 (param+$1)|(peek($10A7F9)&~03)
+    poke $10A7F9 (param+$1)|(peek($10A7F9)&~$03)
 script "P1 Select Order Number (C)" \
  "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
  inter=0,3,1 
 run:
-    poke $10A7FA (param+$1)|(peek($10A7FA)&~03)
+    poke $10A7FA (param+$1)|(peek($10A7FA)&~$03)
 script "P1 Select Roulette Status (A)" \
  "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
  "0x00/Not Selected by Roulette"\
  "0x80/Selected by Roulette" 
 run:
-    poke $10A804 param|(peek($10A804)&~80)
+    poke $10A804 param|(peek($10A804)&~$80)
 script "P1 Select Roulette Status (B)" \
  "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
  "0x00/Not Selected by Roulette"\
  "0x80/Selected by Roulette" 
 run:
-    poke $10A805 param|(peek($10A805)&~80)
+    poke $10A805 param|(peek($10A805)&~$80)
 script "P1 Select Roulette Status (C)" \
  "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
  "0x00/Not Selected by Roulette"\
  "0x80/Selected by Roulette" 
 run:
-    poke $10A806 param|(peek($10A806)&~80)
+    poke $10A806 param|(peek($10A806)&~$80)
 script "P1 Select Moves" \
  "comm:This controls whether Yashiro, Shermie, or Chris use their normal or Orochi moves" \
  "0x00/Normal Moves"\
  "0x10/Orochi Moves" 
 run:
-    poke $10821D param|(peek($10821D)&~10)
+    poke $10821D param|(peek($10821D)&~$10)
 script "P1 Select Character Colour (A)" \
  "0x00/A colour"\
  "0x01/B colour"\
  "0x02/C colour"\
  "0x03/D colour" 
 run:
-    poke $10A7EA param|(peek($10A7EA)&~03)
+    poke $10A7EA param|(peek($10A7EA)&~$03)
 script "P1 Select Character Colour (B)" \
  "0x00/A colour"\
  "0x01/B colour"\
  "0x02/C colour"\
  "0x03/D colour" 
 run:
-    poke $10A7EB param|(peek($10A7EB)&~03)
+    poke $10A7EB param|(peek($10A7EB)&~$03)
 script "P1 Select Character Colour (C)" \
  "0x00/A colour"\
  "0x01/B colour"\
  "0x02/C colour"\
  "0x03/D colour" 
 run:
-    poke $10A7EC param|(peek($10A7EC)&~03)
+    poke $10A7EC param|(peek($10A7EC)&~$03)
 script "P1 Select Colours (A)" \
  "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
  "0x00/Normal Colours"\
  "0x01/Orochi Colours" 
 run:
-    poke $10A7E3 param|(peek($10A7E3)&~01)
+    poke $10A7E3 param|(peek($10A7E3)&~$01)
 script "P1 Select Colours (B)" \
  "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
  "0x00/Normal Colours"\
  "0x02/Orochi Colours" 
 run:
-    poke $10A7E3 param|(peek($10A7E3)&~02)
+    poke $10A7E3 param|(peek($10A7E3)&~$02)
 script "P1 Select Colours (C)" \
  "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
  "0x00/Normal Colours"\
  "0x04/Orochi Colours" 
 run:
-    poke $10A7E3 param|(peek($10A7E3)&~04)
+    poke $10A7E3 param|(peek($10A7E3)&~$04)
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -594,7 +594,7 @@ run:
     poke $1084E3 $05
     poke $1083EA $2F
     poke $1083EB $10
-    poke $10841D $20|(peek($10841D)&~20)
+    poke $10841D $20|(peek($10841D)&~$20)
 script "P2 Infinite Stun Gauge"  
 run:
     poke $10843F $66
@@ -633,7 +633,7 @@ script "P2 Select Team Style" \
  "0x40/Fight Solo"\
  "0x00/Fight as a Team" 
 run:
-    poke $10A80A param|(peek($10A80A)&~40)
+    poke $10A80A param|(peek($10A80A)&~$40)
 script "P2 Select Character (A)" \
  "0x00/Kyo"\
  "0x01/Benimaru"\
@@ -1035,77 +1035,77 @@ script "P2 Select Mode" \
  "0x00/Normal Mode"\
  "0x04/Hero Mode" 
 run:
-    poke $108382 param|(peek($108382)&~04)
+    poke $108382 param|(peek($108382)&~$04)
 script "P2 Select Order Number (A)" \
  "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
  inter=0,3,1 
 run:
-    poke $10A81E (param+$1)|(peek($10A81E)&~03)
+    poke $10A81E (param+$1)|(peek($10A81E)&~$03)
 script "P2 Select Order Number (B)" \
  "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
  inter=0,3,1 
 run:
-    poke $10A81F (param+$1)|(peek($10A81F)&~03)
+    poke $10A81F (param+$1)|(peek($10A81F)&~$03)
 script "P2 Select Order Number (C)" \
  "comm:What this does is allow you to obfuscate your team order, which would mean that with these cheats on, you would be able to hide your order until your match begins" \
  inter=0,3,1 
 run:
-    poke $10A820 (param+$1)|(peek($10A820)&~03)
+    poke $10A820 (param+$1)|(peek($10A820)&~$03)
 script "P2 Select Roulette Status (A)" \
  "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
  "0x00/Not Selected by Roulette"\
  "0x80/Selected by Roulette" 
 run:
-    poke $10A82A param|(peek($10A82A)&~80)
+    poke $10A82A param|(peek($10A82A)&~$80)
 script "P2 Select Roulette Status (B)" \
  "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
  "0x00/Not Selected by Roulette"\
  "0x80/Selected by Roulette" 
 run:
-    poke $10A82B param|(peek($10A82B)&~80)
+    poke $10A82B param|(peek($10A82B)&~$80)
 script "P2 Select Roulette Status (C)" \
  "comm:This determines if your character is selected by Roulette (ie. whether or not your character changes each match because you selected them randomly)." \
  "0x00/Not Selected by Roulette"\
  "0x80/Selected by Roulette" 
 run:
-    poke $10A82C param|(peek($10A82C)&~80)
+    poke $10A82C param|(peek($10A82C)&~$80)
 script "P2 Select Moves" \
  "comm:This controls whether Yashiro, Shermie, or Chris use their normal or Orochi moves" \
  "0x00/Normal Moves"\
  "0x10/Orochi Moves" 
 run:
-    poke $10841D param|(peek($10841D)&~10)
+    poke $10841D param|(peek($10841D)&~$10)
 script "P2 Select Character Colour (A)" \
  "0x00/A colour"\
  "0x01/B colour"\
  "0x02/C colour"\
  "0x03/D colour" 
 run:
-    poke $10A810 param|(peek($10A810)&~03)
+    poke $10A810 param|(peek($10A810)&~$03)
 script "P2 Select Character Colour (B)" \
  "0x00/A colour"\
  "0x01/B colour"\
  "0x02/C colour"\
  "0x03/D colour" 
 run:
-    poke $10A811 param|(peek($10A811)&~03)
+    poke $10A811 param|(peek($10A811)&~$03)
 script "P2 Select Character Colour (C)" \
  "0x00/A colour"\
  "0x01/B colour"\
  "0x02/C colour"\
  "0x03/D colour" 
 run:
-    poke $10A812 param|(peek($10A812)&~03)
+    poke $10A812 param|(peek($10A812)&~$03)
 script "P2 Select Colours (A)" \
  "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
  "0x01/Normal Colours"\
  "0x02/Orochi Colours" 
 run:
     if (param==$01)
-      poke $10A809 $00|(peek($10A809)&~01)
+      poke $10A809 $00|(peek($10A809)&~$01)
     endif
     if (param==$02)
-      poke $108809 $01|(peek($108809)&~01)
+      poke $108809 $01|(peek($108809)&~$01)
     endif
 script "P2 Select Colours (B)" \
  "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
@@ -1113,10 +1113,10 @@ script "P2 Select Colours (B)" \
  "0x02/Orochi Colours" 
 run:
     if (param==$01)
-      poke $10A809 $00|(peek($10A809)&~02)
+      poke $10A809 $00|(peek($10A809)&~$02)
     endif
     if (param==$02)
-      poke $108809 $02|(peek($108809)&~02)
+      poke $108809 $02|(peek($108809)&~$02)
     endif
 script "P2 Select Colours (C)" \
  "comm:These control whether Yashiro, Shermie, or Chris have their normal or Orochi form colours. Change between rounds." \
@@ -1124,10 +1124,10 @@ script "P2 Select Colours (C)" \
  "0x02/Orochi Colours" 
 run:
     if (param==$01)
-      poke $10A809 $00|(peek($10A809)&~04)
+      poke $10A809 $00|(peek($10A809)&~$04)
     endif
     if (param==$02)
-      poke $108809 $04|(peek($108809)&~04)
+      poke $108809 $04|(peek($108809)&~$04)
     endif
 script " "  
 script "Hide Background" \

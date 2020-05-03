@@ -10,7 +10,7 @@ on:
     poke $120825 $00
 script "P1 Invincibility"  
 run:
-    lpoke $120885 $01000200|(lpeek($120885)&~FF00FF00)
+    lpoke $120885 $01000200|(lpeek($120885)&~$FF00FF00)
 script "P1 Always have Max Power"  
 run:
     poke $120829 $3D
@@ -32,7 +32,7 @@ on:
     poke $120BEB $00
 script "P2 Invincibility"  
 run:
-    lpoke $120C4B $01000200|(lpeek($120C4B)&~FF00FF00)
+    lpoke $120C4B $01000200|(lpeek($120C4B)&~$FF00FF00)
 script "P2 Always have Max Power"  
 run:
     poke $120BEF $3D

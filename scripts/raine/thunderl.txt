@@ -55,15 +55,15 @@ script "Select Bat Type" \
  "0x00/Normal Bat"\
  "0x80/Catcher Bat" 
 run:
-    poke $FFDFF8 param|(peek($FFDFF8)&~80)
+    poke $FFDFF8 param|(peek($FFDFF8)&~$80)
 script "Select Replicating Balls" \
  "0x00/1 Ball (no-splitting)"\
  "0x40/3 Balls (splitting)" 
 run:
-    poke $FFDFF8 param|(peek($FFDFF8)&~40)
+    poke $FFDFF8 param|(peek($FFDFF8)&~$40)
 script "Select Number of Rockets" \
  "0x00/No Rockets"\
  "0x20/Single Rocket"\
  "0x30/Double Rocket" 
 run:
-    poke $FFDFF8 param|(peek($FFDFF8)&~30)
+    poke $FFDFF8 param|(peek($FFDFF8)&~$30)

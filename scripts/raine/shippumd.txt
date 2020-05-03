@@ -24,7 +24,7 @@ script "P1 Select Extra Weapon" \
  "0x01/Front"\
  "0x02/Homing" 
 run:
-    poke $1012DB param|(peek($1012DB)&~03)
+    poke $1012DB param|(peek($1012DB)&~$03)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -47,4 +47,4 @@ script "P2 Select Extra Weapon" \
  "0x01/Front"\
  "0x02/Homing" 
 run:
-    poke $1013DB param|(peek($1013DB)&~03)
+    poke $1013DB param|(peek($1013DB)&~$03)

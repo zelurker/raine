@@ -11,7 +11,7 @@ on:
     temp4=peek($5164)
 run:
     lpoke $20EA $DAB732AF
-    lpoke $20EE $00E1CB32|(lpeek($20EE)&~00FFFFFF)
+    lpoke $20EE $00E1CB32|(lpeek($20EE)&~$00FFFFFF)
     lpoke $20F1 $C9E8A232
     poke $251F $C9
     poke $5164 $18
@@ -27,10 +27,10 @@ run:
     poke $E1DF $01
 script "Rapid Fire - Shot 1"  
 run:
-    poke $E1B0 $10|(peek($E1B0)&~10)
+    poke $E1B0 $10|(peek($E1B0)&~$10)
 script "Rapid Fire - Shot 2"  
 run:
-    poke $E1B0 $20|(peek($E1B0)&~20)
+    poke $E1B0 $20|(peek($E1B0)&~$20)
 script " "  
 script "Skip RAM/ROM Check"  
 on:

@@ -31,22 +31,22 @@ on:
     poke $241E53 $02
 script "P1 Get Normal Weapon Now!"  
 on:
-    poke $241E3C $00|(peek($241E3C)&~4B)
+    poke $241E3C $00|(peek($241E3C)&~$4B)
 script "P1 Get 3-Way Weapon Now!"  
 on:
-    poke $241E3C $01|(peek($241E3C)&~4B)
+    poke $241E3C $01|(peek($241E3C)&~$4B)
 script "P1 Get Super Ball Now!"  
 on:
-    poke $241E3C $08|(peek($241E3C)&~08)
+    poke $241E3C $08|(peek($241E3C)&~$08)
 script "P1 Get Super Burner Now!"  
 on:
-    poke $241E3C $40|(peek($241E3C)&~48)
+    poke $241E3C $40|(peek($241E3C)&~$48)
 script "P1 Get Speed Up Now!"  
 on:
-    poke $241E3C $20|(peek($241E3C)&~20)
+    poke $241E3C $20|(peek($241E3C)&~$20)
 script "P1 Get Shield Now!"  
 on:
-    poke $241E3C $80|(peek($241E3C)&~80)
+    poke $241E3C $80|(peek($241E3C)&~$80)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -65,22 +65,22 @@ on:
     poke $241ED3 $02
 script "P2 Get Normal Weapon Now!"  
 on:
-    poke $241EBC $00|(peek($241EBC)&~4B)
+    poke $241EBC $00|(peek($241EBC)&~$4B)
 script "P2 Get 3-Way Weapon Now!"  
 on:
-    poke $241EBC $01|(peek($241EBC)&~4B)
+    poke $241EBC $01|(peek($241EBC)&~$4B)
 script "P2 Get Super Ball Now!"  
 on:
-    poke $241EBC $08|(peek($241EBC)&~08)
+    poke $241EBC $08|(peek($241EBC)&~$08)
 script "P2 Get Super Burner Now!"  
 on:
-    poke $241EBC $40|(peek($241EBC)&~48)
+    poke $241EBC $40|(peek($241EBC)&~$48)
 script "P2 Get Speed Up Now!"  
 on:
-    poke $241EBC $20|(peek($241EBC)&~20)
+    poke $241EBC $20|(peek($241EBC)&~$20)
 script "P2 Get Shield Now!"  
 on:
-    poke $241EBC $80|(peek($241EBC)&~80)
+    poke $241EBC $80|(peek($241EBC)&~$80)
 script " "  
 script "Skip ROM Checks"  
 on:

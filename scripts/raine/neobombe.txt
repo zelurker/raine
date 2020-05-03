@@ -69,11 +69,11 @@ run:
 script "P1 Always Have Bomb Kick (Incomplete)" \
  "comm:Can't use Bomb Catch at the same time"  
 run:
-    poke ((lpeek($10449E))+$47) $01|(peek((lpeek($10449E))+$47)&~01)
+    poke ((lpeek($10449E))+$47) $01|(peek((lpeek($10449E))+$47)&~$01)
 script "P1 Always Have Bomb Catch (Incomplete)" \
  "comm:Can't use Bomb Kick at the same time"  
 run:
-    poke ((lpeek($10449E))+$47) $04|(peek((lpeek($10449E))+$47)&~04)
+    poke ((lpeek($10449E))+$47) $04|(peek((lpeek($10449E))+$47)&~$04)
 script "P1 Select Bomb" \
  "0x00/Normal Bomb"\
  "0x01/Penetrable Bomb"\
@@ -104,11 +104,11 @@ run:
 script "P2 Always Have Bomb Kick (Incomplete)" \
  "comm:Can't use Bomb Catch at the same time"  
 run:
-    poke ((lpeek($1044A2))+$47) $01|(peek((lpeek($1044A2))+$47)&~01)
+    poke ((lpeek($1044A2))+$47) $01|(peek((lpeek($1044A2))+$47)&~$01)
 script "P2 Always Have Bomb Catch (Incomplete)" \
  "comm:Can't use Bomb Kick at the same time"  
 run:
-    poke ((lpeek($1044A2))+$47) $04|(peek((lpeek($1044A2))+$47)&~04)
+    poke ((lpeek($1044A2))+$47) $04|(peek((lpeek($1044A2))+$47)&~$04)
 script "P2 Select Bomb" \
  "0x00/Normal Bomb"\
  "0x01/Penetrable Bomb"\

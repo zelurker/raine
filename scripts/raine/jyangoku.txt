@@ -18,38 +18,38 @@ run:
 script "Watch ALL 14 tiles - Player"  
 run:
     print_ingame 1 "%08X %08X %08X %08X %08X %08X %08X\n%08X %08X %08X %08X %08X %08X %08X" \
- lpeek(FF8600+0x04*0) \
- lpeek(FF8600+0x04*1) \
- lpeek(FF8600+0x04*2) \
- lpeek(FF8600+0x04*3) \
- lpeek(FF8600+0x04*4) \
- lpeek(FF8600+0x04*5) \
- lpeek(FF8600+0x04*6) \
- lpeek(FF8600+0x04*7) \
- lpeek(FF8600+0x04*8) \
- lpeek(FF8600+0x04*9) \
- lpeek(FF8600+0x04*10) \
- lpeek(FF8600+0x04*11) \
- lpeek(FF8600+0x04*12) \
- lpeek(FF8600+0x04*13) \
+ lpeek($FF8600+0x04*0) \
+ lpeek($FF8600+0x04*1) \
+ lpeek($FF8600+0x04*2) \
+ lpeek($FF8600+0x04*3) \
+ lpeek($FF8600+0x04*4) \
+ lpeek($FF8600+0x04*5) \
+ lpeek($FF8600+0x04*6) \
+ lpeek($FF8600+0x04*7) \
+ lpeek($FF8600+0x04*8) \
+ lpeek($FF8600+0x04*9) \
+ lpeek($FF8600+0x04*10) \
+ lpeek($FF8600+0x04*11) \
+ lpeek($FF8600+0x04*12) \
+ lpeek($FF8600+0x04*13) \
  
 script "Watch ALL 14 tiles - C.P.U."  
 run:
     print_ingame 1 "%08X %08X %08X %08X %08X %08X %08X\n%08X %08X %08X %08X %08X %08X %08X" \
- lpeek(FF8E40+0x04*0) \
- lpeek(FF8E40+0x04*1) \
- lpeek(FF8E40+0x04*2) \
- lpeek(FF8E40+0x04*3) \
- lpeek(FF8E40+0x04*4) \
- lpeek(FF8E40+0x04*5) \
- lpeek(FF8E40+0x04*6) \
- lpeek(FF8E40+0x04*7) \
- lpeek(FF8E40+0x04*8) \
- lpeek(FF8E40+0x04*9) \
- lpeek(FF8E40+0x04*10) \
- lpeek(FF8E40+0x04*11) \
- lpeek(FF8E40+0x04*12) \
- lpeek(FF8E40+0x04*13) \
+ lpeek($FF8E40+0x04*0) \
+ lpeek($FF8E40+0x04*1) \
+ lpeek($FF8E40+0x04*2) \
+ lpeek($FF8E40+0x04*3) \
+ lpeek($FF8E40+0x04*4) \
+ lpeek($FF8E40+0x04*5) \
+ lpeek($FF8E40+0x04*6) \
+ lpeek($FF8E40+0x04*7) \
+ lpeek($FF8E40+0x04*8) \
+ lpeek($FF8E40+0x04*9) \
+ lpeek($FF8E40+0x04*10) \
+ lpeek($FF8E40+0x04*11) \
+ lpeek($FF8E40+0x04*12) \
+ lpeek($FF8E40+0x04*13) \
  
 script " "  
 script "Here is the look-up list for the above watches."  

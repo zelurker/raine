@@ -22,41 +22,41 @@ script "Select Extra Weapon" \
  "0x05/Disabled" 
 run:
     if (param==$01)
-      dpoke $1017E0 $0138|(dpeek($1017E0)&~FFFFFF38)
+      dpoke $1017E0 $0138|(dpeek($1017E0)&~$FFFFFF38)
     endif
     if (param==$02)
-      dpoke $1017E0 $0220|(dpeek($1017E0)&~FFFFFF20)
+      dpoke $1017E0 $0220|(dpeek($1017E0)&~$FFFFFF20)
     endif
     if (param==$03)
-      dpoke $1017E0 $0320|(dpeek($1017E0)&~FFFFFF20)
+      dpoke $1017E0 $0320|(dpeek($1017E0)&~$FFFFFF20)
     endif
     if (param==$04)
-      dpoke $1017E0 $0420|(dpeek($1017E0)&~FFFFFF20)
+      dpoke $1017E0 $0420|(dpeek($1017E0)&~$FFFFFF20)
     endif
     if (param==$05)
-      dpoke $1017E0 $0000|(dpeek($1017E0)&~FFFFFF38)
+      dpoke $1017E0 $0000|(dpeek($1017E0)&~$FFFFFF38)
     endif
 script "Select Bomb Weapon" \
  "0x00000040/Homing Missile"\
  "0x00020040/Bomb"\
  "0x00000000/Disabled" 
 run:
-    lpoke $1017DE param|(lpeek($1017DE)&~00FF0040)
+    lpoke $1017DE param|(lpeek($1017DE)&~$00FF0040)
 script "Select Front Protection" \
  "0x01/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $1017E1 param|(peek($1017E1)&~01)
+    poke $1017E1 param|(peek($1017E1)&~$01)
 script "Select Upper Pod" \
  "0x02/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $1017E1 param|(peek($1017E1)&~02)
+    poke $1017E1 param|(peek($1017E1)&~$02)
 script "Select Lower Pod" \
  "0x04/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $1017E1 param|(peek($1017E1)&~04)
+    poke $1017E1 param|(peek($1017E1)&~$04)
 script " "  
 script "P1 Infinite Lives"  
 run:

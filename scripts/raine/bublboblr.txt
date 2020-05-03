@@ -102,22 +102,22 @@ on:
     poke $E742 $3F
 script "P1 Get letter - E (Red) Now!"  
 on:
-    poke $E742 $01|(peek($E742)&~01)
+    poke $E742 $01|(peek($E742)&~$01)
 script "P1 Get letter - X (Pink) Now!"  
 on:
-    poke $E742 $02|(peek($E742)&~02)
+    poke $E742 $02|(peek($E742)&~$02)
 script "P1 Get letter - T (Yellow) Now!"  
 on:
-    poke $E742 $04|(peek($E742)&~04)
+    poke $E742 $04|(peek($E742)&~$04)
 script "P1 Get letter - E (Green) Now!"  
 on:
-    poke $E742 $08|(peek($E742)&~08)
+    poke $E742 $08|(peek($E742)&~$08)
 script "P1 Get letter - N (Blue) Now!"  
 on:
-    poke $E742 $10|(peek($E742)&~10)
+    poke $E742 $10|(peek($E742)&~$10)
 script "P1 Get letter - D (Purple) Now!"  
 on:
-    poke $E742 $20|(peek($E742)&~20)
+    poke $E742 $20|(peek($E742)&~$20)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -156,22 +156,22 @@ on:
     poke $E743 $3F
 script "P2 Get letter - E (Red) Now!"  
 on:
-    poke $E743 $01|(peek($E743)&~01)
+    poke $E743 $01|(peek($E743)&~$01)
 script "P2 Get letter - X (Pink) Now!"  
 on:
-    poke $E743 $02|(peek($E743)&~02)
+    poke $E743 $02|(peek($E743)&~$02)
 script "P2 Get letter - T (Yellow) Now!"  
 on:
-    poke $E743 $04|(peek($E743)&~04)
+    poke $E743 $04|(peek($E743)&~$04)
 script "P2 Get letter - E (Green) Now!"  
 on:
-    poke $E743 $08|(peek($E743)&~08)
+    poke $E743 $08|(peek($E743)&~$08)
 script "P2 Get letter - N (Blue) Now!"  
 on:
-    poke $E743 $10|(peek($E743)&~10)
+    poke $E743 $10|(peek($E743)&~$10)
 script "P2 Get letter - D (Purple) Now!"  
 on:
-    poke $E743 $20|(peek($E743)&~20)
+    poke $E743 $20|(peek($E743)&~$20)
 script " "  
 script "This game has Super Mode by default so"  
 script "to turn it OFF use the following cheat"  

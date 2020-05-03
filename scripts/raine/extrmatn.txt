@@ -13,10 +13,10 @@ run:
     dpoke $E78E $9999
 script "P1 Rapid Fire"  
 run:
-    poke $EC1C $08|(peek($EC1C)&~08)
+    poke $EC1C $08|(peek($EC1C)&~$08)
 script "P2 Infinite Life"  
 run:
     dpoke $E7AE $9999
 script "P2 Rapid Fire"  
 run:
-    poke $EC1E $08|(peek($EC1E)&~08)
+    poke $EC1E $08|(peek($EC1E)&~$08)

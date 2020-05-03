@@ -18,11 +18,11 @@ script "P1 Invincibility" \
 run:
     if (param==$01)
       poke $FFD2B7 $01
-      poke $FFD290 $00|(peek($FFD290)&~40)
+      poke $FFD290 $00|(peek($FFD290)&~$40)
     endif
     if (param==$02)
       poke $FFD2B7 $01
-      poke $FFD290 $40|(peek($FFD290)&~40)
+      poke $FFD290 $40|(peek($FFD290)&~$40)
     endif
 script "P1 Maximum Fire Power"  
 run:
@@ -54,11 +54,11 @@ script "P2 Invincibility" \
 run:
     if (param==$01)
       poke $FFD437 $01
-      poke $FFD410 $00|(peek($FFD410)&~40)
+      poke $FFD410 $00|(peek($FFD410)&~$40)
     endif
     if (param==$02)
       poke $FFD437 $01
-      poke $FFD410 $40|(peek($FFD410)&~40)
+      poke $FFD410 $40|(peek($FFD410)&~$40)
     endif
 script "P2 Maximum Fire Power"  
 run:

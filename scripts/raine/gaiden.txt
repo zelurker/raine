@@ -36,7 +36,7 @@ run:
     poke $61EB0 $2C
 script "P1 Rapid Fire"  
 run:
-    poke $61E32 $00|(peek($61E32)&~02)
+    poke $61E32 $00|(peek($61E32)&~$02)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -52,4 +52,4 @@ run:
     poke $61EF1 $2C
 script "P2 Rapid Fire"  
 run:
-    poke $61E32 $00|(peek($61E32)&~22)
+    poke $61E32 $00|(peek($61E32)&~$22)

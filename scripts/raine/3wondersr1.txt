@@ -59,13 +59,13 @@ script "P1 Select Character" \
  "0x00/Roo"\
  "0x01/Siva" 
 run:
-    poke $FF17BD param|(peek($FF17BD)&~01)
+    poke $FF17BD param|(peek($FF17BD)&~$01)
 script "P1 Select Clothes Status" \
  "comm:Note, if you are always fully clothed you will have effectively have infinite lives" \
  "0x00/Fully Clothed"\
  "0x02/Partially Clothed" 
 run:
-    temp0=param|(peek($FF17BD)&~02)
+    temp0=param|(peek($FF17BD)&~$02)
     poke $FF17BD temp0
 script "P2 Infinite Ammo (Super Bomb)"  
 run:
@@ -101,13 +101,13 @@ script "P2 Select Character" \
  "0x00/Roo"\
  "0x01/Siva" 
 run:
-    poke $FF185D param|(peek($FF185D)&~01)
+    poke $FF185D param|(peek($FF185D)&~$01)
 script "P2 Select Clothes Status" \
  "comm:Note, if you are always fully clothed you will have effectively have infinite lives" \
  "0x00/Fully Clothed"\
  "0x02/Partially Clothed" 
 run:
-    temp0=param|(peek($FF185D)&~02)
+    temp0=param|(peek($FF185D)&~$02)
     poke $FF185D temp0
 script " "  
 script "CHARIOT (Shooting)"  
@@ -238,14 +238,14 @@ run:
 script "Go To 'Let's Dance' Now!" \
  "comm:Try not to use this cheat when enemies are still hidden"  
 on:
-    poke $FF0E59 $01|(peek($FF0E59)&~81)
-    poke $FF0E42 $01|(peek($FF0E42)&~81)
+    poke $FF0E59 $01|(peek($FF0E59)&~$81)
+    poke $FF0E42 $01|(peek($FF0E42)&~$81)
 script "Drop A Bomb Now!"  
 on:
-    poke $FF0EC0 $20|(peek($FF0EC0)&~20)
+    poke $FF0EC0 $20|(peek($FF0EC0)&~$20)
 script "'Escape' Mode"  
 run:
-    poke $FF1041 $01|(peek($FF1041)&~01)
+    poke $FF1041 $01|(peek($FF1041)&~$01)
 script "Select Enemy Speed" \
  "0x00/Slow"\
  "0x3F/Fast" 

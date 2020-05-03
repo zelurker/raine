@@ -10,7 +10,7 @@ off:
 script "Get Formation Robot Now!"  
 on:
     poke $EC01 $84
-    poke $EC04 $00|(peek($EC04)&~02)
+    poke $EC04 $00|(peek($EC04)&~$02)
 script "Invincibility" \
  "comm:See the Dip Switch Menu to enable an alternate Invincibility cheat."  
 run:
@@ -20,8 +20,8 @@ off:
 script "Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $E1E7 $00|(peek($E1E7)&~10)
-    poke $E1E9 $00|(peek($E1E9)&~10)
+    poke $E1E7 $00|(peek($E1E7)&~$10)
+    poke $E1E9 $00|(peek($E1E9)&~$10)
 script " "  
 script "P1 Infinite Lives"  
 run:

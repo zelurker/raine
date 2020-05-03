@@ -21,14 +21,14 @@ off:
     poke $006164 temp0
 script "P1 Rapid Fire - Punch"  
 run:
-    poke $1C1795 $00|(peek($1C1795)&~01)
+    poke $1C1795 $00|(peek($1C1795)&~$01)
 script "P1 Rapid Fire - Punch (Infinite)"  
 run:
-    poke $1C1795 $00|(peek($1C1795)&~01)
+    poke $1C1795 $00|(peek($1C1795)&~$01)
     poke $1C0AF1 $00
 script "P1 Rapid Fire - Kick"  
 run:
-    poke $1C179D $00|(peek($1C179D)&~01)
+    poke $1C179D $00|(peek($1C179D)&~$01)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -45,11 +45,11 @@ off:
     poke $0079F0 temp0
 script "P2 Rapid Fire - Punch"  
 run:
-    poke $1C1797 $00|(peek($1C1797)&~01)
+    poke $1C1797 $00|(peek($1C1797)&~$01)
 script "P2 Rapid Fire - Punch (Infinite)"  
 run:
-    poke $1C1797 $00|(peek($1C1797)&~01)
+    poke $1C1797 $00|(peek($1C1797)&~$01)
     poke $1C0AF3 $00
 script "P2 Rapid Fire - Kick"  
 run:
-    poke $1C179F $00|(peek($1C179F)&~01)
+    poke $1C179F $00|(peek($1C179F)&~$01)

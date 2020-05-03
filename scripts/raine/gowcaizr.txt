@@ -30,9 +30,9 @@ change:
     poke $10464D param
 script "P1 Desperation moves always available"  
 run:
-    poke $10315F $80|(peek($10315F)&~80)
+    poke $10315F $80|(peek($10315F)&~$80)
 off:
-    poke $10315F $00|(peek($10315F)&~80)
+    poke $10315F $00|(peek($10315F)&~$80)
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -58,9 +58,9 @@ change:
     poke $10467D param
 script "P2 Desperation moves always available"  
 run:
-    poke $103A15 $80|(peek($103A15)&~80)
+    poke $103A15 $80|(peek($103A15)&~$80)
 off:
-    poke $103A15 $00|(peek($103A15)&~80)
+    poke $103A15 $00|(peek($103A15)&~$80)
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

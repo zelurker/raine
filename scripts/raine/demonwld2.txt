@@ -4,13 +4,13 @@ run:
     poke $C002F9 $0A
 script "P1 Always have the Shield"  
 run:
-    poke $C00355 $1E|(peek($C00355)&~1E)
+    poke $C00355 $1E|(peek($C00355)&~$1E)
 script "P1 Get the Shield Now!"  
 on:
-    poke $C00355 $1E|(peek($C00355)&~1E)
+    poke $C00355 $1E|(peek($C00355)&~$1E)
 script "P1 Lose the Shield Now!"  
 on:
-    poke $C00355 $00|(peek($C00355)&~1E)
+    poke $C00355 $00|(peek($C00355)&~$1E)
 script "P1 Next 'P' always = Shield"  
 run:
     poke $C002E9 $02
@@ -31,13 +31,13 @@ run:
     poke $C002FB $0A
 script "P2 Always have the Shield"  
 run:
-    poke $C003B5 $1E|(peek($C003B5)&~1E)
+    poke $C003B5 $1E|(peek($C003B5)&~$1E)
 script "P2 Get the Shield Now!"  
 on:
-    poke $C003B5 $1E|(peek($C003B5)&~1E)
+    poke $C003B5 $1E|(peek($C003B5)&~$1E)
 script "P2 Lose the Shield Now!"  
 on:
-    poke $C003B5 $00|(peek($C003B5)&~1E)
+    poke $C003B5 $00|(peek($C003B5)&~$1E)
 script "P2 Next 'P' always = Shield"  
 run:
     poke $C002EB $02

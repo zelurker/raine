@@ -65,23 +65,23 @@ on:
 script "P1 Get letter - E Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F422F $01|(peek($F422F)&~01)
+    poke $F422F $01|(peek($F422F)&~$01)
 script "P1 Get letter - X Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F422F $02|(peek($F422F)&~02)
+    poke $F422F $02|(peek($F422F)&~$02)
 script "P1 Get letter - T Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F422F $04|(peek($F422F)&~04)
+    poke $F422F $04|(peek($F422F)&~$04)
 script "P1 Get letter - R Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F422F $08|(peek($F422F)&~08)
+    poke $F422F $08|(peek($F422F)&~$08)
 script "P1 Get letter - A Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F422F $10|(peek($F422F)&~10)
+    poke $F422F $10|(peek($F422F)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -96,23 +96,23 @@ on:
 script "P2 Get letter - E Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F4231 $01|(peek($F4231)&~01)
+    poke $F4231 $01|(peek($F4231)&~$01)
 script "P2 Get letter - X Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F4231 $02|(peek($F4231)&~02)
+    poke $F4231 $02|(peek($F4231)&~$02)
 script "P2 Get letter - T Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F4231 $04|(peek($F4231)&~04)
+    poke $F4231 $04|(peek($F4231)&~$04)
 script "P2 Get letter - R Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F4231 $08|(peek($F4231)&~08)
+    poke $F4231 $08|(peek($F4231)&~$08)
 script "P2 Get letter - A Now!" \
  "comm:'Extra Game' must be ON"  
 on:
-    poke $F4231 $10|(peek($F4231)&~10)
+    poke $F4231 $10|(peek($F4231)&~$10)
 script " "  
 script "EXTRA GAME INFO - To access PART 2 of the game, after you've"  
 script "inserted a credit press DOWN 3 times then press start!!!"  

@@ -56,10 +56,10 @@ off:
     poke $127858 temp0
 script "P1 Rapid Fire - Weak Attack"  
 run:
-    poke $127630 $00|(peek($127630)&~10)
+    poke $127630 $00|(peek($127630)&~$10)
 script "P1 Rapid Fire - Strong Attack"  
 run:
-    poke $127630 $00|(peek($127630)&~20)
+    poke $127630 $00|(peek($127630)&~$20)
 script "P1 Select Character Colour" \
  "0x00/P1 Colour"\
  "0x01/P2 Colour" 
@@ -106,10 +106,10 @@ off:
     poke $12785C temp0
 script "P2 Rapid Fire - Weak Attack"  
 run:
-    poke $127634 $00|(peek($127634)&~10)
+    poke $127634 $00|(peek($127634)&~$10)
 script "P2 Rapid Fire - Strong Attack"  
 run:
-    poke $127634 $00|(peek($127634)&~20)
+    poke $127634 $00|(peek($127634)&~$20)
 script "P2 Select Character Colour" \
  "0x00/P1 Colour"\
  "0x01/P2 Colour" 

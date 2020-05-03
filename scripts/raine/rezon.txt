@@ -54,7 +54,7 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $200629 $10|(peek($200629)&~10)
+    poke $200629 $10|(peek($200629)&~$10)
 script " "  
 script "P2 Select Starting Stage" \
  "0x00000000/Stage 1-1"\
@@ -83,4 +83,4 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $20064F $10|(peek($20064F)&~10)
+    poke $20064F $10|(peek($20064F)&~$10)

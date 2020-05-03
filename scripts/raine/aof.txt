@@ -94,7 +94,7 @@ script "P1 Select C button action" \
  "0x00/Punch"\
  "0x01/Kick" 
 run:
-    poke $1094B5 param|(peek($1094B5)&~01)
+    poke $1094B5 param|(peek($1094B5)&~$01)
 script "P1 Select Character" \
  "comm:This cheat switches the character immediately when your character moves but the energy bar character icon and name won't update till the next round." \
  "0x0000/Ryo Sakazaki"\
@@ -130,7 +130,7 @@ script "P2 Select C button action" \
  "0x00/Punch"\
  "0x01/Kick" 
 run:
-    poke $1095B5 param|(peek($1095B5)&~01)
+    poke $1095B5 param|(peek($1095B5)&~$01)
 script "P2 Select Character" \
  "comm:This cheat switches the character immediately when your character moves but the energy bar character icon and name won't update till the next round." \
  "0x0000/Ryo Sakazaki"\

@@ -33,87 +33,87 @@ run:
     endif
 script "Always have all keys"  
 run:
-    poke $FC032 $03|(peek($FC032)&~03)
-    poke $FC033 $80|(peek($FC033)&~80)
+    poke $FC032 $03|(peek($FC032)&~$03)
+    poke $FC033 $80|(peek($FC033)&~$80)
 script "Always have green key"  
 run:
-    poke $FC032 $01|(peek($FC032)&~01)
+    poke $FC032 $01|(peek($FC032)&~$01)
 script "Always have red key"  
 run:
-    poke $FC032 $02|(peek($FC032)&~02)
+    poke $FC032 $02|(peek($FC032)&~$02)
 script "Always have blue key"  
 run:
-    poke $FC033 $80|(peek($FC033)&~80)
+    poke $FC033 $80|(peek($FC033)&~$80)
 script "Always have silver shield"  
 run:
-    poke $FC033 $10|(peek($FC033)&~10)
+    poke $FC033 $10|(peek($FC033)&~$10)
 script "Always have gold shield"  
 run:
-    poke $FC033 $20|(peek($FC033)&~20)
+    poke $FC033 $20|(peek($FC033)&~$20)
 script "Always have jump potion"  
 run:
-    poke $FC032 $08|(peek($FC032)&~08)
+    poke $FC032 $08|(peek($FC032)&~$08)
 script "Always have strength potion"  
 run:
-    poke $FC032 $10|(peek($FC032)&~10)
+    poke $FC032 $10|(peek($FC032)&~$10)
 script "Always have the boots"  
 run:
-    poke $FC031 $08|(peek($FC031)&~08)
+    poke $FC031 $08|(peek($FC031)&~$08)
 script "Always have no Extra Weapon"  
 run:
-    poke $FC031 $00|(peek($FC031)&~07)
+    poke $FC031 $00|(peek($FC031)&~$07)
 script "Always have Knife Extra Weapon"  
 run:
-    poke $FC031 $01|(peek($FC031)&~07)
+    poke $FC031 $01|(peek($FC031)&~$07)
 script "Always have Single Axe Extra Weapon"  
 run:
-    poke $FC031 $02|(peek($FC031)&~07)
+    poke $FC031 $02|(peek($FC031)&~$07)
 script "Always have Double Axe Extra Weapon"  
 run:
-    poke $FC031 $04|(peek($FC031)&~07)
+    poke $FC031 $04|(peek($FC031)&~$07)
 script "Always have story-teller bird"  
 run:
-    poke $FC031 $80|(peek($FC031)&~80)
+    poke $FC031 $80|(peek($FC031)&~$80)
 script "Get all keys Now!"  
 on:
-    poke $FC032 $03|(peek($FC032)&~03)
-    poke $FC033 $80|(peek($FC033)&~80)
+    poke $FC032 $03|(peek($FC032)&~$03)
+    poke $FC033 $80|(peek($FC033)&~$80)
 script "Get green key Now!"  
 on:
-    poke $FC032 $01|(peek($FC032)&~01)
+    poke $FC032 $01|(peek($FC032)&~$01)
 script "Get red key Now!"  
 on:
-    poke $FC032 $02|(peek($FC032)&~02)
+    poke $FC032 $02|(peek($FC032)&~$02)
 script "Get blue key Now!"  
 on:
-    poke $FC033 $80|(peek($FC033)&~80)
+    poke $FC033 $80|(peek($FC033)&~$80)
 script "Get silver shield Now!"  
 on:
-    poke $FC033 $10|(peek($FC033)&~10)
+    poke $FC033 $10|(peek($FC033)&~$10)
 script "Get gold shield Now!"  
 on:
-    poke $FC033 $20|(peek($FC033)&~20)
+    poke $FC033 $20|(peek($FC033)&~$20)
 script "Get jump potion Now!"  
 on:
-    poke $FC032 $08|(peek($FC032)&~08)
+    poke $FC032 $08|(peek($FC032)&~$08)
 script "Get strength potion Now!"  
 on:
-    poke $FC032 $10|(peek($FC032)&~10)
+    poke $FC032 $10|(peek($FC032)&~$10)
 script "Get the boots Now!"  
 on:
-    poke $FC031 $08|(peek($FC031)&~08)
+    poke $FC031 $08|(peek($FC031)&~$08)
 script "Lose Extra Weapon Now!"  
 on:
-    poke $FC031 $00|(peek($FC031)&~07)
+    poke $FC031 $00|(peek($FC031)&~$07)
 script "Get Knife Extra Weapon  Now!"  
 on:
-    poke $FC031 $01|(peek($FC031)&~07)
+    poke $FC031 $01|(peek($FC031)&~$07)
 script "Get Single Axe EW Now!"  
 on:
-    poke $FC031 $02|(peek($FC031)&~07)
+    poke $FC031 $02|(peek($FC031)&~$07)
 script "Get Double Axe EW Now!"  
 on:
-    poke $FC031 $04|(peek($FC031)&~07)
+    poke $FC031 $04|(peek($FC031)&~$07)
 script "Get story-teller bird Now!"  
 on:
-    poke $FC031 $80|(peek($FC031)&~80)
+    poke $FC031 $80|(peek($FC031)&~$80)

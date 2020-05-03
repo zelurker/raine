@@ -11,8 +11,8 @@ on:
     temp2=lpeek($3CE3)
     temp3=lpeek($3CE7)
 run:
-    lpoke $1793 $003CE0C3|(lpeek($1793)&~00FFFFFF)
-    lpoke $3CE0 $000420A7|(lpeek($3CE0)&~00FFFFFF)
+    lpoke $1793 $003CE0C3|(lpeek($1793)&~$00FFFFFF)
+    lpoke $3CE0 $000420A7|(lpeek($3CE0)&~$00FFFFFF)
     lpoke $3CE3 $1783C3AF
     lpoke $3CE7 $1796C3AF
 off:
@@ -185,7 +185,7 @@ run:
     lpoke $2BFC $37D207FE
     dpoke $2C00 $3C2C
     poke $2C38 $12
-    lpoke $2C3C $0006D612|(lpeek($2C3C)&~00FFFFFF)
+    lpoke $2C3C $0006D612|(lpeek($2C3C)&~$00FFFFFF)
     dpoke $2FFC $8181
 off:
     lpoke $2BFC temp0

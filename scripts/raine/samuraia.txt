@@ -11,7 +11,7 @@ script "P1 Invincibility" \
  "0x10/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $FE1B57 param|(peek($FE1B57)&~10)
+    poke $FE1B57 param|(peek($FE1B57)&~$10)
 script "P1 Auto Penetration Shot"  
 run:
     poke $FE1B51 $5B
@@ -29,7 +29,7 @@ script "P2 Invincibility" \
  "0x10/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $FE1C87 param|(peek($FE1C87)&~10)
+    poke $FE1C87 param|(peek($FE1C87)&~$10)
 script "P2 Auto Penetration Shot"  
 run:
     poke $FE1C81 $FF

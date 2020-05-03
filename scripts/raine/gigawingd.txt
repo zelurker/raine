@@ -32,11 +32,11 @@ script "P1 Invincibility" \
 run:
     if (param==$01)
       dpoke $FFAE3A $0003
-      poke $FFADEB $40|(peek($FFADEB)&~40)
+      poke $FFADEB $40|(peek($FFADEB)&~$40)
     endif
     if (param==$02)
       dpoke $FFAE3A $0001
-      poke $FFADEB $00|(peek($FFADEB)&~40)
+      poke $FFADEB $00|(peek($FFADEB)&~$40)
     endif
 script "P1 Select Shot" \
  "0x00/Type A Level 1"\
@@ -67,7 +67,7 @@ on:
     lpoke $FF72E4 $49999999
 script "P1 Rapid Fire"  
 run:
-    poke $FFAE30 $00|(peek($FFAE30)&~10)
+    poke $FFAE30 $00|(peek($FFAE30)&~$10)
 script "P1 Quick Charge Shield"  
 run:
     if (dpeek($FFAE74)>0FC0)&&(dpeek($FFAE74)<1000)
@@ -94,11 +94,11 @@ script "P2 Invincibility" \
 run:
     if (param==$01)
       dpoke $FFAEFB $0003
-      poke $FFAEAB $40|(peek($FFAEAB)&~40)
+      poke $FFAEAB $40|(peek($FFAEAB)&~$40)
     endif
     if (param==$02)
       dpoke $FFAEFA $0001
-      poke $FFAEFB $00|(peek($FFAEFB)&~40)
+      poke $FFAEFB $00|(peek($FFAEFB)&~$40)
     endif
 script "P2 Select Shot" \
  "0x00/Type A Level 1"\
@@ -129,7 +129,7 @@ on:
     lpoke $FF72E8 $49999999
 script "P2 Rapid Fire"  
 run:
-    poke $FFAEF0 $00|(peek($FFAEF0)&~10)
+    poke $FFAEF0 $00|(peek($FFAEF0)&~$10)
 script "P2 Quick Charge Shield"  
 run:
     if (dpeek($FFAF34)>0FC0)&&(dpeek($FFAF34)<1000)

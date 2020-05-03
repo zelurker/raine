@@ -1,6 +1,7 @@
 script "Display the Correct Answer"  
 run:
-    print_ingame 1 "Correct Answer : %c" (peek($FFE004))+0x31
+    print_ingame 1 "Correct Answer : %c" \
+ (peek($FFE004))+0x31
 script "Answer 1 always correct"  
 run:
     poke $FFE004 $00

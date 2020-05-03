@@ -23,7 +23,7 @@ run:
     dpoke $134EB $0030
     dpoke $13585 $0030
     lpoke $00030 $E1B521FD
-    lpoke $00034 $005371C3|(lpeek($00034)&~00FFFFFF)
+    lpoke $00034 $005371C3|(lpeek($00034)&~$00FFFFFF)
 off:
     dpoke $0536D temp0
     dpoke $06070 temp1
@@ -34,7 +34,7 @@ off:
     lpoke $00034 temp6
 script "Rapid Fire"  
 run:
-    poke $0F0E1 $00|(peek($0F0E1)&~10)
+    poke $0F0E1 $00|(peek($0F0E1)&~$10)
 script "Always Have Fly"  
 run:
     poke $0F0E5 $01
@@ -48,22 +48,22 @@ script "Always Have Fire-2"
 on:
     poke $0F0E9 $01
 run:
-    poke $0F0E8 $01|(peek($0F0E8)&~01)
+    poke $0F0E8 $01|(peek($0F0E8)&~$01)
 script "Always Have 3-Way Beam"  
 on:
     poke $0F0E9 $02
 run:
-    poke $0F0E8 $02|(peek($0F0E8)&~02)
+    poke $0F0E8 $02|(peek($0F0E8)&~$02)
 script "Always Have Missile"  
 on:
     poke $0F0E9 $04
 run:
-    poke $0F0E8 $04|(peek($0F0E8)&~04)
+    poke $0F0E8 $04|(peek($0F0E8)&~$04)
 script "Always Have 5-Way Vulcan"  
 on:
     poke $0F0E9 $08
 run:
-    poke $0F0E8 $08|(peek($0F0E8)&~08)
+    poke $0F0E8 $08|(peek($0F0E8)&~$08)
 script " "  
 script "Skip RAM/ROM Check"  
 on:

@@ -24,7 +24,7 @@ run:
     poke $100884 $07
 script "P1 Always win Penalty Shootout"  
 run:
-    lpoke $108714 $00060000|(lpeek($108714)&~00FF00FF)
+    lpoke $108714 $00060000|(lpeek($108714)&~$00FF00FF)
 script "P1 Select PowerUp" \
  "comm:Choose one of these at the beginning of the game." \
  "0x00/Full Team"\
@@ -59,7 +59,7 @@ run:
     poke $100884 $04
 script "P2 Always win Penalty Shootout"  
 run:
-    lpoke $108714 $00000006|(lpeek($108714)&~00FF00FF)
+    lpoke $108714 $00000006|(lpeek($108714)&~$00FF00FF)
 script "P2 Select PowerUp" \
  "comm:Choose one of these at the beginning of the game." \
  "0x00/Full Team"\

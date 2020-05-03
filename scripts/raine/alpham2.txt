@@ -8,7 +8,7 @@ run:
     poke $1010F2 $03
 script "P1 Invincibility"  
 run:
-    poke $101015 $00|(peek($101015)&~02)
+    poke $101015 $00|(peek($101015)&~$02)
 script "P1 Always have Maximum Gold"  
 run:
     dpoke $1010B0 $9999
@@ -41,7 +41,7 @@ run:
     poke $1011F2 $03
 script "P2 Invincibility"  
 run:
-    poke $101115 $00|(peek($101115)&~02)
+    poke $101115 $00|(peek($101115)&~$02)
 script "P2 Always have Maximum Gold"  
 run:
     dpoke $1011B0 $9999

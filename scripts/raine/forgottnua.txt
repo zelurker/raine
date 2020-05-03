@@ -16,8 +16,8 @@ script "P1 Invincibility"
 run:
     poke $FFB342 $02
     poke $FFB38C $01
-    poke $FF9035 $38|(peek($FF9035)&~38)
-    poke $FF9035 $00|(peek($FF9035)&~C7)
+    poke $FF9035 $38|(peek($FF9035)&~$38)
+    poke $FF9035 $00|(peek($FF9035)&~$C7)
 script "P1 Infinite Zenny"  
 run:
     poke $FFE192 $99
@@ -51,8 +51,8 @@ script "P2 Invincibility"
 run:
     poke $FFB392 $02
     poke $FFB3DC $01
-    poke $FF9055 $38|(peek($FF9055)&~38)
-    poke $FF9055 $00|(peek($FF9055)&~C7)
+    poke $FF9055 $38|(peek($FF9055)&~$38)
+    poke $FF9055 $00|(peek($FF9055)&~$C7)
 script "P2 Infinite Zenny"  
 run:
     poke $FFE196 $99

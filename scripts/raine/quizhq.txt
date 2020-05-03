@@ -6,7 +6,8 @@ run:
     poke $102C5D $02
 script "Display the Correct Answer"  
 run:
-    print_ingame 1 "Correct Answer : %c" (peek($1020E5))+0x30
+    print_ingame 1 "Correct Answer : %c" \
+ (peek($1020E5))+0x30
 script "Answer 1 always correct"  
 run:
     poke $1020E5 $01

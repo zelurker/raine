@@ -27,7 +27,7 @@ run:
 script "P1 Invincibility"  
 run:
     poke $101B9D $02
-    poke $103805 $01|(peek($103805)&~01)
+    poke $103805 $01|(peek($103805)&~$01)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -46,7 +46,7 @@ run:
 script "P2 Invincibility"  
 run:
     poke $101B9F $02
-    poke $104405 $01|(peek($104405)&~01)
+    poke $104405 $01|(peek($104405)&~$01)
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

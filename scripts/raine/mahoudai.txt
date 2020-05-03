@@ -25,7 +25,7 @@ script "P1 Select Extra Weapon" \
  "0x04/Wide"\
  "0x08/Homing" 
 run:
-    poke $10175F param|(peek($10175F)&~0C)
+    poke $10175F param|(peek($10175F)&~$0C)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -50,4 +50,4 @@ script "P2 Select Extra Weapon" \
  "0x04/Wide"\
  "0x08/Homing" 
 run:
-    poke $10181F param|(peek($10181F)&~0C)
+    poke $10181F param|(peek($10181F)&~$0C)

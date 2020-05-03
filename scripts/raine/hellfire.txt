@@ -9,7 +9,7 @@ script "P1 Invincibility" \
  "0x20/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $41D31 param|(peek($41D31)&~20)
+    poke $41D31 param|(peek($41D31)&~$20)
 script "P1 Select Speed" \
  "0x10/1"\
  "0x16/2"\
@@ -23,7 +23,7 @@ run:
     poke $41D33 $05
 script "P1 Rapid Fire"  
 run:
-    poke $41D30 $00|(peek($41D30)&~08)
+    poke $41D30 $00|(peek($41D30)&~$08)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -32,7 +32,7 @@ script "P2 Invincibility" \
  "0x20/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $41D91 param|(peek($41D91)&~20)
+    poke $41D91 param|(peek($41D91)&~$20)
 script "P2 Select Speed" \
  "0x10/1"\
  "0x16/2"\
@@ -46,7 +46,7 @@ run:
     poke $41D93 $05
 script "P2 Rapid Fire"  
 run:
-    poke $41D90 $00|(peek($41D90)&~08)
+    poke $41D90 $00|(peek($41D90)&~$08)
 script " "  
 script "Skip RAM/ROM Check" \
  "comm:Doesn't work with Infinite Credits enabled"  

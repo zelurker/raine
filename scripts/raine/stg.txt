@@ -27,10 +27,10 @@ run:
     poke $FFE52E (param)
 script "P1 Rapid Fire - Shot"  
 run:
-    poke $FFE536 $00|(peek($FFE536)&~10)
+    poke $FFE536 $00|(peek($FFE536)&~$10)
 script "P1 Rapid Fire - Weapon"  
 run:
-    poke $FFE536 $00|(peek($FFE536)&~20)
+    poke $FFE536 $00|(peek($FFE536)&~$20)
 script "P1 Select Weapon" \
  "0x01/Shield Unit"\
  "0x02/Homing Missile"\
@@ -107,10 +107,10 @@ run:
     poke $FFE58E (param)
 script "P2 Rapid Fire - Shot"  
 run:
-    poke $FFE596 $00|(peek($FFE596)&~10)
+    poke $FFE596 $00|(peek($FFE596)&~$10)
 script "P2 Rapid Fire - Weapon"  
 run:
-    poke $FFE596 $00|(peek($FFE596)&~20)
+    poke $FFE596 $00|(peek($FFE596)&~$20)
 script "P2 Select Weapon" \
  "0x01/Shield Unit"\
  "0x02/Homing Missile"\

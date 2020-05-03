@@ -23,13 +23,13 @@ run:
     poke $10069F $10
 script "P1 Always Have Speed Up"  
 run:
-    poke $102691 $30|(peek($102691)&~30)
+    poke $102691 $30|(peek($102691)&~$30)
 script "P1 Always Have Shield"  
 run:
-    poke $102691 $50|(peek($102691)&~50)
+    poke $102691 $50|(peek($102691)&~$50)
 script "P1 Always Have Special Weapon"  
 run:
-    poke $102691 $80|(peek($102691)&~80)
+    poke $102691 $80|(peek($102691)&~$80)
 script "P1 Rapid Fire"  
 run:
     dpoke $1026B4 $0000
@@ -52,13 +52,13 @@ run:
     poke $1006A1 $10
 script "P2 Always Have Speed Up"  
 run:
-    poke $102711 $30|(peek($102711)&~30)
+    poke $102711 $30|(peek($102711)&~$30)
 script "P2 Always Have Shield"  
 run:
-    poke $102711 $50|(peek($102711)&~50)
+    poke $102711 $50|(peek($102711)&~$50)
 script "P2 Always Have Special Weapon"  
 run:
-    poke $102711 $80|(peek($102711)&~80)
+    poke $102711 $80|(peek($102711)&~$80)
 script "P2 Rapid Fire"  
 run:
     dpoke $102734 $0000
@@ -81,13 +81,13 @@ run:
     poke $1006A3 $10
 script "P3 Always Have Speed Up"  
 run:
-    poke $102791 $30|(peek($102791)&~30)
+    poke $102791 $30|(peek($102791)&~$30)
 script "P3 Always Have Shield"  
 run:
-    poke $102791 $50|(peek($102791)&~50)
+    poke $102791 $50|(peek($102791)&~$50)
 script "P3 Always Have Special Weapon"  
 run:
-    poke $102791 $80|(peek($102791)&~80)
+    poke $102791 $80|(peek($102791)&~$80)
 script "P3 Rapid Fire"  
 run:
     dpoke $1027B4 $0000

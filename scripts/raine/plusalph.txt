@@ -14,7 +14,7 @@ off:
 script "Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $F3123 $00|(peek($F3123)&~10)
+    poke $F3123 $00|(peek($F3123)&~$10)
 script "Infinite Special Shots"  
 run:
     poke $F3131 $09

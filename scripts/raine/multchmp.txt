@@ -46,7 +46,8 @@ script "4   5   6"
 script "7   8   9"  
 script "Display the Correct Shadow Answer"  
 run:
-    print_ingame 1 "Correct Shadow : %c" (peek($100184))+0x31
+    print_ingame 1 "Correct Shadow : %c" \
+ (peek($100184))+0x31
 script " "  
 script "Slide Puzzle Round (Click on a Tile after selecting the cheat!)"  
 script " "  

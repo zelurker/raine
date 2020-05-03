@@ -14,8 +14,8 @@ run:
     poke $50F1CD $0D
 script "P1 Invincibility"  
 run:
-    poke $50F1C1 $02|(peek($50F1C1)&~02)
-    poke $50F1C3 $40|(peek($50F1C3)&~40)
+    poke $50F1C1 $02|(peek($50F1C1)&~$02)
+    poke $50F1C3 $40|(peek($50F1C3)&~$40)
     dpoke $50F1DC $0002
 script "P1 Rapid Fire"  
 run:
@@ -33,8 +33,8 @@ run:
     poke $50F1FD $0D
 script "P2 Invincibility"  
 run:
-    poke $50F1F1 $02|(peek($50F1F1)&~02)
-    poke $50F1F3 $40|(peek($50F1F3)&~40)
+    poke $50F1F1 $02|(peek($50F1F1)&~$02)
+    poke $50F1F3 $40|(peek($50F1F3)&~$40)
     dpoke $50F20C $0002
 script "P2 Rapid Fire"  
 run:

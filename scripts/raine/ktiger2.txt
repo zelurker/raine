@@ -10,7 +10,7 @@ run:
     poke $400869 $05
 script "P1 Invincibility"  
 run:
-    poke $40D268 $10|(peek($40D268)&~10)
+    poke $40D268 $10|(peek($40D268)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -20,7 +20,7 @@ run:
     poke $40086D $05
 script "P2 Invincibility"  
 run:
-    poke $40D328 $10|(peek($40D328)&~10)
+    poke $40D328 $10|(peek($40D328)&~$10)
 script " "  
 script "Select Region" \
  "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \

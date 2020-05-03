@@ -39,7 +39,7 @@ run:
     poke $104067 $FF
 script "P1 Rapid Fire"  
 run:
-    poke $10FD96 $00|(peek($10FD96)&~10)
+    poke $10FD96 $00|(peek($10FD96)&~$10)
 script " "  
 script "P2 Infinite Continues"  
 run:
@@ -59,7 +59,7 @@ run:
     poke $1040E7 $FF
 script "P2 Rapid Fire"  
 run:
-    poke $10FD9C $00|(peek($10FD9C)&~10)
+    poke $10FD9C $00|(peek($10FD9C)&~$10)
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

@@ -44,13 +44,13 @@ on:
     poke $10602E $00
 script "P1 Never Wins"  
 run:
-    poke $10C12A $00|(peek($10C12A)&~03)
+    poke $10C12A $00|(peek($10C12A)&~$03)
 script "P1 Rounds Won = 0 Now!"  
 on:
-    poke $10C12A $00|(peek($10C12A)&~03)
+    poke $10C12A $00|(peek($10C12A)&~$03)
 script "P1 Rounds Won = 1 Now!"  
 on:
-    poke $10C12A $01|(peek($10C12A)&~03)
+    poke $10C12A $01|(peek($10C12A)&~$03)
 script "P1 Select Character" \
  "comm:Free player selection, Use BETWEEN rounds. You can't attack at all with Geegus" \
  "0x01/Dragon"\
@@ -75,13 +75,13 @@ on:
     poke $10612E $00
 script "P2 Never Wins"  
 run:
-    poke $10C12A $00|(peek($10C12A)&~0C)
+    poke $10C12A $00|(peek($10C12A)&~$0C)
 script "P2 Rounds Won = 0 Now!"  
 on:
-    poke $10C12A $00|(peek($10C12A)&~0C)
+    poke $10C12A $00|(peek($10C12A)&~$0C)
 script "P2 Rounds Won = 1 Now!"  
 on:
-    poke $10C12A $04|(peek($10C12A)&~0C)
+    poke $10C12A $04|(peek($10C12A)&~$0C)
 script "P2 Select Character" \
  "comm:Free player selection, Use BETWEEN rounds. You can't attack at all with Geegus" \
  "0x01/Dragon"\

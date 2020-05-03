@@ -181,7 +181,7 @@ run:
     dpoke $00ED7A $4E71
     lpoke $00ED7C $4E714E71
     poke $10AB8A peek($10AB8A)&7F
-    if (peek($10AC1B)&4F)==$40
+    if (peek($10AC1B)&$4F)==$40
       poke $10AB8A peek($10AB8A)|80
       poke $10AC1A peek($10AC1A)&EF
       poke $10008B $00

@@ -32,11 +32,11 @@ run:
     poke $FE3497 $04
 script "P1 Rapid Fire - Normal"  
 run:
-    poke $FE3489 $00|(peek($FE3489)&~08)
+    poke $FE3489 $00|(peek($FE3489)&~$08)
 script "P1 Rapid Fire - Special"  
 run:
-    poke $FE3489 $00|(peek($FE3489)&~08)
-    lpoke $FE345D $00000000|(lpeek($FE345D)&~FFFFFF00)
+    poke $FE3489 $00|(peek($FE3489)&~$08)
+    lpoke $FE345D $00000000|(lpeek($FE345D)&~$FFFFFF00)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -55,8 +55,8 @@ run:
     poke $FE3517 $04
 script "P2 Rapid Fire - Normal"  
 run:
-    poke $FE3509 $00|(peek($FE3509)&~08)
+    poke $FE3509 $00|(peek($FE3509)&~$08)
 script "P2 Rapid Fire - Special"  
 run:
-    poke $FE3509 $00|(peek($FE3509)&~08)
-    lpoke $FE34DD $00000000|(lpeek($FE34DD)&~FFFFFF00)
+    poke $FE3509 $00|(peek($FE3509)&~$08)
+    lpoke $FE34DD $00000000|(lpeek($FE34DD)&~$FFFFFF00)

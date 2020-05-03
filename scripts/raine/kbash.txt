@@ -43,8 +43,8 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $100015 $00|(peek($100015)&~10)
-    poke $101527 $00|(peek($101527)&~10)
+    poke $100015 $00|(peek($100015)&~$10)
+    poke $101527 $00|(peek($101527)&~$10)
 script "P1 Get 153 Pts Sub Game"  
 on:
     poke $101659 $99
@@ -61,8 +61,8 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $100019 $00|(peek($100019)&~10)
-    poke $1015CF $00|(peek($1015CF)&~10)
+    poke $100019 $00|(peek($100019)&~$10)
+    poke $1015CF $00|(peek($1015CF)&~$10)
 script "P2 Get 153 Pts Sub Game"  
 on:
     poke $101701 $99

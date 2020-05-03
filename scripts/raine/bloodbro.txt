@@ -37,7 +37,7 @@ run:
     poke $8086D $63
 script "P1 Invincibility"  
 run:
-    poke $80821 $03|(peek($80821)&~03)
+    poke $80821 $03|(peek($80821)&~$03)
     poke $80825 $02
 script "P1 Select Weapon" \
  "0x00/Normal Gun"\
@@ -48,7 +48,7 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $80017 $00|(peek($80017)&~10)
+    poke $80017 $00|(peek($80017)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -58,7 +58,7 @@ run:
     poke $80F2D $63
 script "P2 Invincibility"  
 run:
-    poke $80EE1 $03|(peek($80EE1)&~03)
+    poke $80EE1 $03|(peek($80EE1)&~$03)
     poke $80EE5 $02
 script "P2 Select Weapon" \
  "0x00/Normal Gun"\
@@ -69,4 +69,4 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $80016 $00|(peek($80016)&~10)
+    poke $80016 $00|(peek($80016)&~$10)

@@ -91,19 +91,19 @@ off:
     poke $80C0 temp0
 script "Warp Door always Open"  
 run:
-    poke $E39D $80|(peek($E39D)&~80)
+    poke $E39D $80|(peek($E39D)&~$80)
 script "Open Warp Door Now!"  
 on:
-    poke $E39D $80|(peek($E39D)&~80)
+    poke $E39D $80|(peek($E39D)&~$80)
 script "Close Warp Door Now!"  
 on:
-    poke $E39D $00|(peek($E39D)&~80)
+    poke $E39D $00|(peek($E39D)&~$80)
 script "Always 10000 when next"  
 run:
-    poke $E39D $01|(peek($E39D)&~01)
+    poke $E39D $01|(peek($E39D)&~$01)
 script "Get 10000 when next Now!"  
 on:
-    poke $E39D $01|(peek($E39D)&~01)
+    poke $E39D $01|(peek($E39D)&~$01)
 script "Select Perm. Bat" \
  "0x0000/Normal Bat"\
  "0x0101/Laser Bat"\

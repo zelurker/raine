@@ -6,7 +6,7 @@ script "P1 Select Help Line" \
  "0x01/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $103613 param|(peek($103613)&~80)
+    poke $103613 param|(peek($103613)&~$80)
 script "P1 Balls never drop by a line"  
 run:
     poke $102517 $06

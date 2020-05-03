@@ -52,7 +52,7 @@ off:
 script "Rapid Punch" \
  "comm:All Button A operations (punch-knife stab-fire) will be rapid."  
 run:
-    poke $10FD96 $00|(peek($10FD96)&~10)
+    poke $10FD96 $00|(peek($10FD96)&~$10)
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

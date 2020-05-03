@@ -7,7 +7,7 @@ run:
     poke $1FB015 $80
 script "P1 Invincibility"  
 run:
-    poke $1FB013 $04|(peek($1FB013)&~04)
+    poke $1FB013 $04|(peek($1FB013)&~$04)
 script "P1 Max charge - Sword" \
  "comm:To be used on level 1"  
 run:
@@ -19,18 +19,18 @@ run:
     poke $1FB042 $03
 script "P1 Rapid Fire - Shot"  
 run:
-    poke $1FD003 $00|(peek($1FD003)&~10)
+    poke $1FD003 $00|(peek($1FD003)&~$10)
     poke $1FB025 $00
 script "P1 Rapid Fire - Sword"  
 run:
-    poke $1FD003 $00|(peek($1FD003)&~20)
+    poke $1FD003 $00|(peek($1FD003)&~$20)
 script " "  
 script "P2 Infinite Energy"  
 run:
     poke $1FB095 $80
 script "P2 Invincibility"  
 run:
-    poke $1FB093 $04|(peek($1FB093)&~04)
+    poke $1FB093 $04|(peek($1FB093)&~$04)
 script "P2 Max charge - Sword" \
  "comm:To be used on level 1"  
 run:
@@ -42,8 +42,8 @@ run:
     poke $1FB0C2 $03
 script "P2 Rapid Fire - Shot"  
 run:
-    poke $1FD005 $00|(peek($1FD005)&~10)
+    poke $1FD005 $00|(peek($1FD005)&~$10)
     poke $1FB0A5 $00
 script "P2 Rapid Fire - Sword"  
 run:
-    poke $1FD005 $00|(peek($1FD005)&~20)
+    poke $1FD005 $00|(peek($1FD005)&~$20)

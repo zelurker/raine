@@ -181,11 +181,11 @@ run:
 script "P1 Rapid Fire - Normal" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FFB314 $00|(peek($FFB314)&~10)
+    poke $FFB314 $00|(peek($FFB314)&~$10)
 script "P1 Rapid Fire - Unlimited" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FFB314 $00|(peek($FFB314)&~10)
+    poke $FFB314 $00|(peek($FFB314)&~$10)
     poke $FFB326 $00
 script " "  
 script "P2 Infinite Lives"  
@@ -223,11 +223,11 @@ run:
 script "P2 Rapid Fire - Normal" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FFB494 $00|(peek($FFB494)&~10)
+    poke $FFB494 $00|(peek($FFB494)&~$10)
 script "P2 Rapid Fire - Unlimited" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FFB494 $00|(peek($FFB494)&~10)
+    poke $FFB494 $00|(peek($FFB494)&~$10)
     poke $FFB4A6 $00
 script " "  
 script "P3 Infinite Lives"  
@@ -265,11 +265,11 @@ run:
 script "P3 Rapid Fire - Normal" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FFB614 $00|(peek($FFB614)&~10)
+    poke $FFB614 $00|(peek($FFB614)&~$10)
 script "P3 Rapid Fire - Unlimited" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    poke $FFB614 $00|(peek($FFB614)&~10)
+    poke $FFB614 $00|(peek($FFB614)&~$10)
     poke $FFB626 $00
 script " "  
 script "Enable Hidden OBJECT TEST and SCROLL TEST" \

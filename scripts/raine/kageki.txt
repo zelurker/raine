@@ -34,8 +34,8 @@ on:
     poke $E7FC $80
 script "Rapid Fire - Single"  
 run:
-    poke $E03D $00|(peek($E03D)&~10)
-    poke $E03D $00|(peek($E03D)&~20)
+    poke $E03D $00|(peek($E03D)&~$10)
+    poke $E03D $00|(peek($E03D)&~$20)
 script " "  
 script "P1 Select Starting Round" \
  inter=1,9,1 
@@ -45,8 +45,8 @@ run:
     endif
 script "P1 Rapid Fire - Dual"  
 run:
-    poke $E0C0 $00|(peek($E0C0)&~10)
-    poke $E0C0 $00|(peek($E0C0)&~20)
+    poke $E0C0 $00|(peek($E0C0)&~$10)
+    poke $E0C0 $00|(peek($E0C0)&~$20)
 script "P2 Select Starting Round" \
  inter=1,9,1 
 run:
@@ -55,5 +55,5 @@ run:
     endif
 script "P2 Rapid Fire - Dual"  
 run:
-    poke $E0C1 $00|(peek($E0C1)&~10)
-    poke $E0C1 $00|(peek($E0C1)&~20)
+    poke $E0C1 $00|(peek($E0C1)&~$10)
+    poke $E0C1 $00|(peek($E0C1)&~$20)

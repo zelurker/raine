@@ -33,7 +33,7 @@ script "P1 Invincibility" \
  "0x04/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $E200 param|(peek($E200)&~04)
+    poke $E200 param|(peek($E200)&~$04)
 script "P1 Always Have Protection"  
 run:
     poke $E254 $02
@@ -53,7 +53,7 @@ script "P2 Invincibility" \
  "0x04/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $E280 param|(peek($E280)&~04)
+    poke $E280 param|(peek($E280)&~$04)
 script "P2 Always Have Protection"  
 run:
     poke $E2D4 $02

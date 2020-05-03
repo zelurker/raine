@@ -64,37 +64,37 @@ run:
     poke $1015A8 $70
 script "P1 Always have pow-up shot"  
 run:
-    poke $1015A8 $10|(peek($1015A8)&~10)
+    poke $1015A8 $10|(peek($1015A8)&~$10)
 script "P1 Always have pow-up range"  
 run:
-    poke $1015A8 $20|(peek($1015A8)&~20)
+    poke $1015A8 $20|(peek($1015A8)&~$20)
 script "P1 Always have pow-up speed"  
 run:
-    poke $1015A8 $40|(peek($1015A8)&~40)
+    poke $1015A8 $40|(peek($1015A8)&~$40)
 script "P1 Get all powers Now!"  
 on:
     poke $1015A8 $70
 script "P1 Get pow-up shot Now!"  
 on:
-    poke $1015A8 $10|(peek($1015A8)&~10)
+    poke $1015A8 $10|(peek($1015A8)&~$10)
 script "P1 Get pow-up range Now!"  
 on:
-    poke $1015A8 $20|(peek($1015A8)&~20)
+    poke $1015A8 $20|(peek($1015A8)&~$20)
 script "P1 Get pow-up speed Now!"  
 on:
-    poke $1015A8 $40|(peek($1015A8)&~40)
+    poke $1015A8 $40|(peek($1015A8)&~$40)
 script "P1 Get Letter 'S' Now!"  
 on:
-    poke $1015AA $01|(peek($1015AA)&~01)
+    poke $1015AA $01|(peek($1015AA)&~$01)
 script "P1 Get Letter 'N' Now!"  
 on:
-    poke $1015AA $02|(peek($1015AA)&~02)
+    poke $1015AA $02|(peek($1015AA)&~$02)
 script "P1 Get Letter 'O' Now!"  
 on:
-    poke $1015AA $04|(peek($1015AA)&~04)
+    poke $1015AA $04|(peek($1015AA)&~$04)
 script "P1 Get Letter 'W' Now!"  
 on:
-    poke $1015AA $08|(peek($1015AA)&~08)
+    poke $1015AA $08|(peek($1015AA)&~$08)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -116,34 +116,34 @@ run:
     poke $1015A9 $70
 script "P2 Always have pow-up shot"  
 run:
-    poke $1015A9 $10|(peek($1015A9)&~10)
+    poke $1015A9 $10|(peek($1015A9)&~$10)
 script "P2 Always have pow-up range"  
 run:
-    poke $1015A9 $20|(peek($1015A9)&~20)
+    poke $1015A9 $20|(peek($1015A9)&~$20)
 script "P2 Always have pow-up speed"  
 run:
-    poke $1015A9 $40|(peek($1015A9)&~40)
+    poke $1015A9 $40|(peek($1015A9)&~$40)
 script "P2 Get all powers Now!"  
 on:
     poke $1015A9 $70
 script "P2 Get pow-up shot Now!"  
 on:
-    poke $1015A9 $10|(peek($1015A9)&~10)
+    poke $1015A9 $10|(peek($1015A9)&~$10)
 script "P2 Get pow-up range Now!"  
 on:
-    poke $1015A9 $20|(peek($1015A9)&~20)
+    poke $1015A9 $20|(peek($1015A9)&~$20)
 script "P2 Get pow-up speed  Now!"  
 on:
-    poke $1015A9 $40|(peek($1015A9)&~40)
+    poke $1015A9 $40|(peek($1015A9)&~$40)
 script "P2 Get Letter 'S' Now!"  
 on:
-    poke $1015AB $01|(peek($1015AB)&~01)
+    poke $1015AB $01|(peek($1015AB)&~$01)
 script "P2 Get Letter 'N' Now!"  
 on:
-    poke $1015AB $02|(peek($1015AB)&~02)
+    poke $1015AB $02|(peek($1015AB)&~$02)
 script "P2 Get Letter 'O' Now!"  
 on:
-    poke $1015AB $04|(peek($1015AB)&~04)
+    poke $1015AB $04|(peek($1015AB)&~$04)
 script "P2 Get Letter 'W' Now!"  
 on:
-    poke $1015AB $08|(peek($1015AB)&~08)
+    poke $1015AB $08|(peek($1015AB)&~$08)

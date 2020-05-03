@@ -34,7 +34,7 @@ script "Select Starting Stage" \
  "0x0B03/Stage 12 (Dictator)" 
 run:
     if (dpeek($FF8C01)==$0000)||(peek($FF8BD1)=$00)||(dpeek($FF8C01)==param)
-      poke $FF8BD1 param/100
+      poke $FF8BD1 param/$100
       dpoke $FF8C01 param
     endif
 script "Select Ending" \
@@ -52,7 +52,7 @@ run:
 script " "  
 script "P1 Infinite Energy"  
 run:
-    if dpeek($FF83F8)<60&&(peek($FF83D1)&10)==$00&&peek($FF8BE4)==$0
+    if dpeek($FF83F8)<60&&(peek($FF83D1)&$10)==$00&&peek($FF8BE4)==$0
       dpoke $FF83F8 $90
       dpoke $FF858A $90
     endif
@@ -99,33 +99,33 @@ script "P1 Set Boxer Turnpunch level" \
  "1921/Seven"\
  "2401/Final" 
 run:
-    if peek(FF83CE+$391)==$0A
-      dpoke (FF83CE+$B6) param
-      dpoke (FF83CE+$B8) param
+    if peek($FF83CE+$391)==$0A
+      dpoke ($FF83CE+$B6) param
+      dpoke ($FF83CE+$B8) param
     endif
 script "P1 Easy button tap moves"  
 run:
-    temp0=peek(FF83CE+$391)
+    temp0=peek($FF83CE+$391)
     if peek($FF83CE)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek(FF83CE+$9A)<2
-      poke (FF83CE+$9A) $2
+    if temp0==$1&&peek($FF83CE+$9A)<2
+      poke ($FF83CE+$9A) $2
     endif
-    if temp0==$1&&peek(FF83CE+$9C)<2
-      poke (FF83CE+$9C) $2
+    if temp0==$1&&peek($FF83CE+$9C)<2
+      poke ($FF83CE+$9C) $2
     endif
-    if temp0==$1&&peek(FF83CE+$9E)<2
-      poke (FF83CE+$9E) $2
+    if temp0==$1&&peek($FF83CE+$9E)<2
+      poke ($FF83CE+$9E) $2
     endif
     if (temp0==$2||temp0==$5)&&peek(FF83CE+$9A)<3
-      poke (FF83CE+$9A) $3
+      poke ($FF83CE+$9A) $3
     endif
     if (temp0==$2||temp0==$5)&&peek(FF83CE+$9C)<3
-      poke (FF83CE+$9C) $3
+      poke ($FF83CE+$9C) $3
     endif
     if (temp0==$2||temp0==$5)&&peek(FF83CE+$9E)<3
-      poke (FF83CE+$9E) $3
+      poke ($FF83CE+$9E) $3
     endif
 script "P1 Easy Tatsumaki (Ryu / Ken)"  
 run:
@@ -265,7 +265,7 @@ run:
 script " "  
 script "P2 Infinite Energy"  
 run:
-    if dpeek($FF87F8)<60&&(peek($FF87D1)&10)==$00&&peek($FF8BE4)==$0
+    if dpeek($FF87F8)<60&&(peek($FF87D1)&$10)==$00&&peek($FF8BE4)==$0
       dpoke $FF87F8 $90
       dpoke $FF898A $90
     endif
@@ -312,33 +312,33 @@ script "P2 Set Boxer Turnpunch level" \
  "1921/Seven"\
  "2401/Final" 
 run:
-    if peek(FF87CE+$391)==$0A
-      dpoke (FF87CE+$B6) param
-      dpoke (FF87CE+$B8) param
+    if peek($FF87CE+$391)==$0A
+      dpoke ($FF87CE+$B6) param
+      dpoke ($FF87CE+$B8) param
     endif
 script "P2 Easy button tap moves"  
 run:
-    temp0=peek(FF87CE+$391)
+    temp0=peek($FF87CE+$391)
     if peek($FF87CE)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek(FF87CE+$9A)<2
-      poke (FF87CE+$9A) $2
+    if temp0==$1&&peek($FF87CE+$9A)<2
+      poke ($FF87CE+$9A) $2
     endif
-    if temp0==$1&&peek(FF87CE+$9C)<2
-      poke (FF87CE+$9C) $2
+    if temp0==$1&&peek($FF87CE+$9C)<2
+      poke ($FF87CE+$9C) $2
     endif
-    if temp0==$1&&peek(FF87CE+$9E)<2
-      poke (FF87CE+$9E) $2
+    if temp0==$1&&peek($FF87CE+$9E)<2
+      poke ($FF87CE+$9E) $2
     endif
     if (temp0==$2||temp0==$5)&&peek(FF87CE+$9A)<3
-      poke (FF87CE+$9A) $3
+      poke ($FF87CE+$9A) $3
     endif
     if (temp0==$2||temp0==$5)&&peek(FF87CE+$9C)<3
-      poke (FF87CE+$9C) $3
+      poke ($FF87CE+$9C) $3
     endif
     if (temp0==$2||temp0==$5)&&peek(FF87CE+$9E)<3
-      poke (FF87CE+$9E) $3
+      poke ($FF87CE+$9E) $3
     endif
 script "P2 Easy Tatsumaki (Ryu / Ken)"  
 run:

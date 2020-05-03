@@ -15,9 +15,9 @@ run:
     poke $20C479 $3E
 script "P1 Invincibility"  
 run:
-    poke $20C4B8 $20|(peek($20C4B8)&~20)
+    poke $20C4B8 $20|(peek($20C4B8)&~$20)
 off:
-    poke $20C4B8 $00|(peek($20C4B8)&~20)
+    poke $20C4B8 $00|(peek($20C4B8)&~$20)
 script "P1 Infinite Ammo"  
 run:
     poke $20C47F $06
@@ -33,16 +33,16 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on name entry screen"  
 run:
-    poke $205CBB $00|(peek($205CBB)&~10)
+    poke $205CBB $00|(peek($205CBB)&~$10)
 script " "  
 script "P2 Infinite Energy"  
 run:
     poke $20C47B $3E
 script "P2 Invincibility"  
 run:
-    poke $20C4BA $20|(peek($20C4BA)&~20)
+    poke $20C4BA $20|(peek($20C4BA)&~$20)
 off:
-    poke $20C4BA $00|(peek($20C4BA)&~20)
+    poke $20C4BA $00|(peek($20C4BA)&~$20)
 script "P2 Infinite Ammo"  
 run:
     poke $20C483 $06
@@ -58,4 +58,4 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on name entry screen"  
 run:
-    poke $205CBD $00|(peek($205CBD)&~10)
+    poke $205CBD $00|(peek($205CBD)&~$10)

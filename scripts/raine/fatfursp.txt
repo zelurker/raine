@@ -182,16 +182,16 @@ on:
     poke $10049A $00
 script "P1 Rapid Fire - Quick Punch"  
 run:
-    poke $10FD96 $00|(peek($10FD96)&~10)
+    poke $10FD96 $00|(peek($10FD96)&~$10)
 script "P1 Rapid Fire - Quick Kick"  
 run:
-    poke $10FD96 $00|(peek($10FD96)&~20)
+    poke $10FD96 $00|(peek($10FD96)&~$20)
 script "P1 Rapid Fire - Strong Punch"  
 run:
-    poke $10FD96 $00|(peek($10FD96)&~40)
+    poke $10FD96 $00|(peek($10FD96)&~$40)
 script "P1 Rapid Fire - Strong Kick"  
 run:
-    poke $10FD96 $00|(peek($10FD96)&~80)
+    poke $10FD96 $00|(peek($10FD96)&~$80)
 script "P1 Play with Ryo Sakazaki" \
  "comm:Free player selection - Use it on the selection screen."  
 on:
@@ -200,7 +200,7 @@ script "P1 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
 on:
-    if (dpeek($100010)==$49D8)&&((peek($100034)&01)==$01)
+    if (dpeek($100010)==$49D8)&&((peek($100034)&$01)==$01)
       temp0=$01
     endif
     if (temp0==$01)
@@ -219,16 +219,16 @@ on:
     poke $10059A $00
 script "P2 Rapid Fire - Quick Punch"  
 run:
-    poke $10FD9C $00|(peek($10FD9C)&~10)
+    poke $10FD9C $00|(peek($10FD9C)&~$10)
 script "P2 Rapid Fire - Quick Kick"  
 run:
-    poke $10FD9C $00|(peek($10FD9C)&~20)
+    poke $10FD9C $00|(peek($10FD9C)&~$20)
 script "P2 Rapid Fire - Strong Punch"  
 run:
-    poke $10FD9C $00|(peek($10FD9C)&~40)
+    poke $10FD9C $00|(peek($10FD9C)&~$40)
 script "P2 Rapid Fire - Strong Kick"  
 run:
-    poke $10FD9C $00|(peek($10FD9C)&~80)
+    poke $10FD9C $00|(peek($10FD9C)&~$80)
 script "P2 Play with Ryo Sakazaki" \
  "comm:Free player selection - Use it on the selection screen."  
 on:
@@ -237,7 +237,7 @@ script "P2 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
 on:
-    if (dpeek($100010)==$49D8)&&((peek($100034)&02)==$02)
+    if (dpeek($100010)==$49D8)&&((peek($100034)&$02)==$02)
       temp0=$01
     endif
     if (temp0==$01)
@@ -258,7 +258,7 @@ script "Hide Background" \
 run:
     poke $1051E1 peek($1051E0)&7F
     dpoke $401FFE $0000
-    if ((peek($100003)&9F)>90&&(peek($100003)&40)==$00)
+    if ((peek($100003)&$9F)>90&&(peek($100003)&$40)==$00)
       poke $1051E1 $10
       poke $100920 $20
       poke $10092B $3C

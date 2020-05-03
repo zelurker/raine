@@ -33,7 +33,7 @@ on:
 script "P1 Rapid Fire" \
  "comm:This cheat has a problem with energy charging"  
 run:
-    poke $80227 $00|(peek($80227)&~10)
+    poke $80227 $00|(peek($80227)&~$10)
 script "P1 Lock Energy Charge"  
 run:
     dpoke $80262 $0000
@@ -63,7 +63,7 @@ on:
 script "P2 Rapid Fire" \
  "comm:This cheat has a problem with energy charging"  
 run:
-    poke $80226 $00|(peek($80226)&~10)
+    poke $80226 $00|(peek($80226)&~$10)
 script "P2 Lock Energy Charge"  
 run:
     dpoke $80284 $0000

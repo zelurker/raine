@@ -12,7 +12,8 @@ run:
     poke $907299 $09
 script "Display the Correct Answer"  
 run:
-    print_ingame 1 "Correct Answer : %c" (peek($906927))+0x30
+    print_ingame 1 "Correct Answer : %c" \
+ (peek($906927))+0x30
 script "Answer 1 always correct"  
 run:
     poke $906927 $01

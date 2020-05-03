@@ -205,8 +205,8 @@ script "Select Next Level" \
  "0x1A1D/Z-30" 
 change:
     poke $40DE07 (paramRSHIFT8)
-    poke $407483 (param&0x00FF)-$1
-    poke $407489 (param&0x00FF)-$1
+    poke $407483 (param&0x00FF)-1
+    poke $407489 (param&0x00FF)-1
 script " "  
 script "Select Region" \
  "comm:After you enable this cheat to see any effect you will have to reset the game (with F3). Then you may have to turn the Test Mode ON (with F2), wait for Test Mode to appear and reset again (with F3)." \

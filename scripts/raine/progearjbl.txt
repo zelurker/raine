@@ -26,11 +26,11 @@ run:
     poke $FF419B $78
 script "P1 Always Have Maximum Jewels"  
 run:
-    lpoke $FF4177 $0F423F00|(lpeek($FF4177)&~FFFFFF00)
+    lpoke $FF4177 $0F423F00|(lpeek($FF4177)&~$FFFFFF00)
     poke $FF4195 $99
 script "P1 Always Have Double Rate Item"  
 run:
-    poke $FF42E2 $02|(peek($FF42E2)&~02)
+    poke $FF42E2 $02|(peek($FF42E2)&~$02)
 script "P1 Select Fighter" \
  "comm:Works after you die or finish the stage" \
  "0x00/Gambler"\
@@ -60,7 +60,7 @@ script "P1 Select Character Colour" \
  "0x00/Normal"\
  "0x01/Extra" 
 run:
-    poke $FF2342 param|(peek($FF2342)&~01)
+    poke $FF2342 param|(peek($FF2342)&~$01)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -80,11 +80,11 @@ run:
     poke $FF419D $78
 script "P2 Always Have Maximum Jewels"  
 run:
-    lpoke $FF417B $0F423F00|(lpeek($FF417B)&~FFFFFF00)
+    lpoke $FF417B $0F423F00|(lpeek($FF417B)&~$FFFFFF00)
     poke $FF4199 $99
 script "P2 Always Have Double Rate Item"  
 run:
-    poke $FF4342 $02|(peek($FF4342)&~02)
+    poke $FF4342 $02|(peek($FF4342)&~$02)
 script "P2 Select Fighter" \
  "comm:Works after you die or finish the stage" \
  "0x00/Gambler"\
@@ -114,7 +114,7 @@ script "P2 Select Character Colour" \
  "0x02/Normal"\
  "0x00/Extra" 
 run:
-    poke $FF2342 param|(peek($FF2342)&~02)
+    poke $FF2342 param|(peek($FF2342)&~$02)
 script " "  
 script "No Background Music"  
 run:

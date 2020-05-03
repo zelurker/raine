@@ -30,7 +30,7 @@ off:
     poke $0757 temp5
 script "Rapid Fire"  
 run:
-    poke $C038 $00|(peek($C038)&~01)
+    poke $C038 $00|(peek($C038)&~$01)
 script " "  
 script "P1 Infinite Lives"  
 run:
@@ -43,16 +43,16 @@ run:
     poke $C0EE $00
 script "P1 Always Long Shot"  
 run:
-    poke $C0EE $01|(peek($C0EE)&~01)
+    poke $C0EE $01|(peek($C0EE)&~$01)
 script "P1 Always Tiger Jump"  
 run:
-    poke $C0EE $02|(peek($C0EE)&~02)
+    poke $C0EE $02|(peek($C0EE)&~$02)
 script "P1 Always Multikill Shot"  
 run:
-    poke $C0EE $08|(peek($C0EE)&~08)
+    poke $C0EE $08|(peek($C0EE)&~$08)
 script "P1 Always Straight Up Shot"  
 run:
-    poke $C0EE $10|(peek($C0EE)&~10)
+    poke $C0EE $10|(peek($C0EE)&~$10)
 script "P1 Always all Powers"  
 run:
     poke $C0EE $1B
@@ -67,16 +67,16 @@ on:
     poke $C0EE $00
 script "P1 Get Long Shot Now!"  
 on:
-    poke $C0EE $01|(peek($C0EE)&~01)
+    poke $C0EE $01|(peek($C0EE)&~$01)
 script "P1 Get Tiger Jump Now!"  
 on:
-    poke $C0EE $02|(peek($C0EE)&~02)
+    poke $C0EE $02|(peek($C0EE)&~$02)
 script "P1 Get Multikill Shot Now!"  
 on:
-    poke $C0EE $08|(peek($C0EE)&~08)
+    poke $C0EE $08|(peek($C0EE)&~$08)
 script "P1 Get Straight Up Shot Now!"  
 on:
-    poke $C0EE $10|(peek($C0EE)&~10)
+    poke $C0EE $10|(peek($C0EE)&~$10)
 script "P1 Get all Powers Now!"  
 on:
     poke $C0EE $1B
@@ -98,16 +98,16 @@ run:
     poke $C1DE $00
 script "P2 Always Long Shot"  
 run:
-    poke $C1DE $01|(peek($C1DE)&~01)
+    poke $C1DE $01|(peek($C1DE)&~$01)
 script "P2 Always Tiger Jump"  
 run:
-    poke $C1DE $02|(peek($C1DE)&~02)
+    poke $C1DE $02|(peek($C1DE)&~$02)
 script "P2 Always Multikill Shot"  
 run:
-    poke $C1DE $08|(peek($C1DE)&~08)
+    poke $C1DE $08|(peek($C1DE)&~$08)
 script "P2 Always Straight Up Shot"  
 run:
-    poke $C1DE $10|(peek($C1DE)&~10)
+    poke $C1DE $10|(peek($C1DE)&~$10)
 script "P2 Always all Powers"  
 run:
     poke $C1DE $1B
@@ -122,16 +122,16 @@ on:
     poke $C1DE $00
 script "P2 Get Long Shot Now!"  
 on:
-    poke $C1DE $01|(peek($C1DE)&~01)
+    poke $C1DE $01|(peek($C1DE)&~$01)
 script "P2 Get Tiger Jump Now!"  
 on:
-    poke $C1DE $02|(peek($C1DE)&~02)
+    poke $C1DE $02|(peek($C1DE)&~$02)
 script "P2 Get Multikill Shot Now!"  
 on:
-    poke $C1DE $08|(peek($C1DE)&~08)
+    poke $C1DE $08|(peek($C1DE)&~$08)
 script "P2 Get Straight Up Shot Now!"  
 on:
-    poke $C1DE $10|(peek($C1DE)&~10)
+    poke $C1DE $10|(peek($C1DE)&~$10)
 script "P2 Get all Powers Now!"  
 on:
     poke $C1DE $1B

@@ -3,7 +3,7 @@ run:
     poke $341C7F $63
 script "Infinite Time"  
 run:
-    lpoke $120D87 $00000000|(lpeek($120D87)&~FFFFFF00)
+    lpoke $120D87 $00000000|(lpeek($120D87)&~$FFFFFF00)
 script " "  
 script "P1 Select Perm. Top Object" \
  "0x00/Yellow Cylinder"\

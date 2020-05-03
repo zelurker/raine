@@ -78,7 +78,7 @@ run:
     endif
 script "P1 Rapid Fire"  
 run:
-    poke $106446 $00|(peek($106446)&~10)
+    poke $106446 $00|(peek($106446)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -138,70 +138,70 @@ run:
     endif
 script "P2 Rapid Fire"  
 run:
-    poke $10644C $00|(peek($10644C)&~10)
+    poke $10644C $00|(peek($10644C)&~$10)
 script " "  
 script "DEBUG DIPS OPTIONS"  
 script "DEBUG DIP - Invincibility"  
 run:
-    dpoke $10F000 $8000|(dpeek($10F000)&~8000)
+    dpoke $10F000 $8000|(dpeek($10F000)&~$8000)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~8000)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$8000)
 script "DEBUG DIP - View debug information" \
  "comm:Once you have turned this on, the only immediate effect turning it off will be that the text won't update any more"  
 run:
-    dpoke $10F000 $0100|(dpeek($10F000)&~0100)
+    dpoke $10F000 $0100|(dpeek($10F000)&~$0100)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0100)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0100)
 script "DEBUG DIP - Unknown" \
  "comm:Answers on a postcard please....or better post it on the cheat forums"  
 run:
-    dpoke $10F000 $0200|(dpeek($10F000)&~0200)
+    dpoke $10F000 $0200|(dpeek($10F000)&~$0200)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0200)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0200)
 script "DEBUG DIP - 1st plane check" \
  "comm:Shows the walkable ground, makes the foreground choppy as it scrolls when activated. May linger around if not turned off proper."  
 run:
-    dpoke $10F000 $0800|(dpeek($10F000)&~0800)
+    dpoke $10F000 $0800|(dpeek($10F000)&~$0800)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0800)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0800)
 script "DEBUG DIP - 2nd plane check" \
  "comm:makes the background choppy as it scrolls when activated."  
 run:
-    dpoke $10F000 $1000|(dpeek($10F000)&~1000)
+    dpoke $10F000 $1000|(dpeek($10F000)&~$1000)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~1000)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$1000)
 script "DEBUG DIP - View attack hitbox"  
 run:
-    dpoke $10F000 $2000|(dpeek($10F000)&~2000)
+    dpoke $10F000 $2000|(dpeek($10F000)&~$2000)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~2000)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$2000)
 script "DEBUG DIP - View body hitbox"  
 run:
-    dpoke $10F000 $4000|(dpeek($10F000)&~4000)
+    dpoke $10F000 $4000|(dpeek($10F000)&~$4000)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~4000)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$4000)
 script "DEBUG DIP - Infinite Grenades"  
 run:
-    dpoke $10F000 $0004|(dpeek($10F000)&~0004)
+    dpoke $10F000 $0004|(dpeek($10F000)&~$0004)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0004)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0004)
 script "DEBUG DIP - Infinite Ammo"  
 run:
-    dpoke $10F000 $0008|(dpeek($10F000)&~0008)
+    dpoke $10F000 $0008|(dpeek($10F000)&~$0008)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0008)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0008)
 script "DEBUG DIP - Show Respawn Position" \
  "comm:A sprite appears, showing the player's respawn point."  
 run:
-    dpoke $10F000 $0002|(dpeek($10F000)&~0002)
+    dpoke $10F000 $0002|(dpeek($10F000)&~$0002)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0002)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0002)
 script "DEBUG DIP - Press D to destroy all onscreen enemies" \
  "comm:no score bonuses"  
 run:
-    dpoke $10F000 $0001|(dpeek($10F000)&~0001)
+    dpoke $10F000 $0001|(dpeek($10F000)&~$0001)
 off:
-    dpoke $10F000 $0000|(dpeek($10F000)&~0001)
+    dpoke $10F000 $0000|(dpeek($10F000)&~$0001)
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\

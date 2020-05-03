@@ -42,7 +42,7 @@ off:
     poke $30083D temp0
 script "P1 Rapid Fire"  
 run:
-    poke $30081D $10|(peek($30081D)&~10)
+    poke $30081D $10|(peek($30081D)&~$10)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -78,4 +78,4 @@ off:
     poke $300885 temp0
 script "P2 Rapid Fire"  
 run:
-    poke $300865 $10|(peek($300865)&~10)
+    poke $300865 $10|(peek($300865)&~$10)

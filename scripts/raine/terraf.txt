@@ -13,7 +13,7 @@ run:
 script "Rapid Fire" \
  "comm:Turn it OFF on the name entry screen"  
 run:
-    lpoke $6061D $00000000|(lpeek($6061D)&~00300030)
+    lpoke $6061D $00000000|(lpeek($6061D)&~$00300030)
 script " "  
 script "P1 Infinite Lives"  
 run:

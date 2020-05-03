@@ -14,7 +14,7 @@ off:
 script "Rapid Fire" \
  "comm:This cheat enables continuous attack by holding the fire button"  
 run:
-    dpoke $4010 $0000|(dpeek($4010)&~1010)
+    dpoke $4010 $0000|(dpeek($4010)&~$1010)
 script "Bullets never Explode on Non-attacking ships" \
  "comm:They will keep moving and destroying to they reach their full range"  
 on:

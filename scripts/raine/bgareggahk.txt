@@ -8,7 +8,8 @@ run:
     poke $109CB8 $24
 script "Watch Game Rank"  
 run:
-    print_ingame 1 "Rank : %d" peek($10C9D3)
+    print_ingame 1 "Rank : %d" \
+ peek($10C9D3)
 script "Always have Easiest Rank"  
 run:
     lpoke $10C9D2 $00F00000

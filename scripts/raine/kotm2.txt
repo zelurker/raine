@@ -6,7 +6,7 @@ script "Invincibility" \
 on:
     temp0=peek($100001)
 run:
-    poke $100001 $02|(peek($100001)&~02)
+    poke $100001 $02|(peek($100001)&~$02)
 off:
     poke $100001 temp0
 script "Select Starting Battle" \

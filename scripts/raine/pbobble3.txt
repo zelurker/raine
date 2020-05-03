@@ -13,15 +13,15 @@ script "P1 Select Help Line" \
  "0x80/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $41F836 param|(peek($41F836)&~80)
+    poke $41F836 param|(peek($41F836)&~$80)
 script "P1 Finish this Round Now!" \
  "comm:Works on P1 Versus + Puzzle Mode"  
 on:
     if (peek($40B05B)==$00)
-      poke $41F839 $40|(peek($41F839)&~40)
+      poke $41F839 $40|(peek($41F839)&~$40)
     endif
     if (peek($40B05B)>=01)
-      poke $41F837 $01|(peek($41F837)&~01)
+      poke $41F837 $01|(peek($41F837)&~$01)
     endif
 script "P1 Select Perm. Current Bubble" \
  "0x01/Red"\
@@ -86,11 +86,11 @@ script "P2 Select Help Line" \
  "0x80/Enabled"\
  "0x00/Disabled" 
 run:
-    poke $41F837 param|(peek($41F837)&~80)
+    poke $41F837 param|(peek($41F837)&~$80)
 script "P2 Finish this Round Now!" \
  "comm:Works on P2 Versus + Puzzle Mode"  
 on:
-    poke $41F83A $40|(peek($41F83A)&~40)
+    poke $41F83A $40|(peek($41F83A)&~$40)
 script "P2 Select Perm. Current Bubble" \
  "0x01/Red"\
  "0x02/Green"\

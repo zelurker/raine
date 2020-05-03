@@ -35,7 +35,8 @@ run:
 script " "  
 script "Display the Correct Answer [Quiz Round]"  
 run:
-    print_ingame 1 "Correct Answer [Quiz Round] : %c" (peek($205943))+0x30
+    print_ingame 1 "Correct Answer [Quiz Round] : %c" \
+ (peek($205943))+0x30
 script "Answer 1 always correct [Quiz Round]"  
 run:
     poke $205943 $01
@@ -48,11 +49,13 @@ script "get the answer correct on the round."
 script " "  
 script "Watch me for good answer [Spelling Round]"  
 run:
-    print_ingame 1 "%02X" peek($205991)
+    print_ingame 1 "%02X" \
+ peek($205991)
 script "Watch me and match me! [Spelling Round]" \
  "comm:Use this cheat in conjunction with the 'Watch me for good answer [Spelling Round]'. Change this value by moving the joystick and when this value matches the 'Watch me for good answer [Spelling Round]' watch then you will be over the correct answer - just press fire!"  
 run:
-    print_ingame 1 "%02X" peek($205ABD)
+    print_ingame 1 "%02X" \
+ peek($205ABD)
 script "First character always correct [Spelling Round]"  
 run:
     poke $205991 $01

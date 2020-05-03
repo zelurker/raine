@@ -115,7 +115,7 @@ run:
 script "P1 Rapid Fire - Laser" \
  "comm:Turn it OFF on the name entry screen and make sure it's OFF in Test Mode."  
 run:
-    poke $400099 $20|(peek($400099)&~20)
+    poke $400099 $20|(peek($400099)&~$20)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -151,7 +151,7 @@ run:
 script "P2 Rapid Fire - Laser" \
  "comm:Turn it OFF on the name entry screen and make sure it's OFF in Test Mode."  
 run:
-    poke $40009B $20|(peek($40009B)&~20)
+    poke $40009B $20|(peek($40009B)&~$20)
 script " "  
 script "Select Region" \
  "comm:After you enable this cheat to see any effect you will have to reset the game (F3). Then you may have to turn the Test Mode ON (F2), wait for Test Mode to appear and reset again(F3)." \

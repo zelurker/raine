@@ -80,7 +80,7 @@ script "P1 Select Colour" \
  "0x00/A Colour"\
  "0x01/D Colour" 
 run:
-    poke $106A2C param|(peek($106A2C)&~01)
+    poke $106A2C param|(peek($106A2C)&~$01)
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -115,7 +115,7 @@ script "P2 Select Colour" \
  "0x00/A Colour"\
  "0x01/D Colour" 
 run:
-    poke $106A2D param|(peek($106A2D)&~01)
+    poke $106A2D param|(peek($106A2D)&~$01)
 script " "  
 script "No Background Music"  
 run:

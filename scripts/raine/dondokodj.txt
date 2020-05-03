@@ -21,10 +21,10 @@ run:
     poke $1084E7 $10
 script "P1 Invincibility 'ON'"  
 run:
-    poke $1084B0 $08|(peek($1084B0)&~08)
+    poke $1084B0 $08|(peek($1084B0)&~$08)
 script "P1 Invincibility 'OFF'"  
 on:
-    poke $1084B0 $00|(peek($1084B0)&~08)
+    poke $1084B0 $00|(peek($1084B0)&~$08)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -34,7 +34,7 @@ run:
     poke $108525 $10
 script "P2 Invincibility 'ON'"  
 run:
-    poke $1084EE $08|(peek($1084EE)&~08)
+    poke $1084EE $08|(peek($1084EE)&~$08)
 script "P2 Invincibility 'OFF'"  
 on:
-    poke $1084EE $00|(peek($1084EE)&~08)
+    poke $1084EE $00|(peek($1084EE)&~$08)

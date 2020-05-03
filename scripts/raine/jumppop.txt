@@ -53,19 +53,19 @@ run:
     poke $120473 $09
 script "P1 Invincibility"  
 run:
-    dpoke $12042A $00BE|(dpeek($12042A)&~80FF)
+    dpoke $12042A $00BE|(dpeek($12042A)&~$80FF)
 script "P1 Always Have Power Up"  
 run:
-    poke $120458 $01|(peek($120458)&~01)
+    poke $120458 $01|(peek($120458)&~$01)
 script "P1 Always Have Speed Up"  
 run:
-    poke $120458 $02|(peek($120458)&~02)
+    poke $120458 $02|(peek($120458)&~$02)
 script "P1 Always Have Hammer"  
 run:
-    poke $120458 $04|(peek($120458)&~04)
+    poke $120458 $04|(peek($120458)&~$04)
 script "P1 Always Have Barrier"  
 run:
-    poke $120458 $08|(peek($120458)&~08)
+    poke $120458 $08|(peek($120458)&~$08)
     dpoke $1204E4 $02F0
 script "P1 Lose All Items Now!"  
 on:
@@ -79,19 +79,19 @@ run:
     poke $120673 $09
 script "P2 Invincibility"  
 run:
-    dpoke $12062A $00BE|(dpeek($12062A)&~80FF)
+    dpoke $12062A $00BE|(dpeek($12062A)&~$80FF)
 script "P2 Always Have Power Up"  
 run:
-    poke $120658 $01|(peek($120658)&~01)
+    poke $120658 $01|(peek($120658)&~$01)
 script "P2 Always Have Speed Up"  
 run:
-    poke $120658 $02|(peek($120658)&~02)
+    poke $120658 $02|(peek($120658)&~$02)
 script "P2 Always Have Hammer"  
 run:
-    poke $120658 $04|(peek($120658)&~04)
+    poke $120658 $04|(peek($120658)&~$04)
 script "P2 Always Have Barrier"  
 run:
-    poke $120658 $08|(peek($120658)&~08)
+    poke $120658 $08|(peek($120658)&~$08)
     dpoke $1206E4 $02F0
 script "P2 Lose All Items Now!"  
 on:

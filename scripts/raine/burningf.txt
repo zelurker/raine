@@ -59,10 +59,10 @@ script "P1 Invincibility" \
  "comm:You have to turn this cheat OFF to progress to the next flipscreen!!!"  
 run:
     dpoke $100266 $00B2
-    poke $10020F $10|(peek($10020F)&~10)
+    poke $10020F $10|(peek($10020F)&~$10)
 off:
     dpoke $100266 $00B2
-    poke $10020F $00|(peek($10020F)&~10)
+    poke $10020F $00|(peek($10020F)&~$10)
 script "P1 No Auto Weapon Drop" \
  "comm:Weapon does not fall automatically from your hand"  
 run:
@@ -94,10 +94,10 @@ script "P2 Invincibility" \
  "comm:You have to turn this cheat OFF to progress to the next flipscreen!!!"  
 run:
     dpoke $1002E6 $00B2
-    poke $10028F $10|(peek($10028F)&~10)
+    poke $10028F $10|(peek($10028F)&~$10)
 off:
     dpoke $1002E6 $00B2
-    poke $10028F $00|(peek($10028F)&~10)
+    poke $10028F $00|(peek($10028F)&~$10)
 script "P2 No Auto Weapon Drop" \
  "comm:Weapon does not fall automatically from your hand"  
 run:

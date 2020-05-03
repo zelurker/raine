@@ -33,7 +33,7 @@ script "Always have Easy Supers"
 on:
     temp0=peek($10E001)
 run:
-    poke $10E001 $01|(peek($10E001)&~01)
+    poke $10E001 $01|(peek($10E001)&~$01)
 off:
     poke $10E001 temp0
 script "Select Backdrop" \

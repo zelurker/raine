@@ -3,7 +3,7 @@ run:
     poke $109522 $03
 script "Invincibility"  
 run:
-    poke $109504 $08|(peek($109504)&~08)
+    poke $109504 $08|(peek($109504)&~$08)
     poke $102C6B $5A
 script "Always have Speed Up"  
 run:

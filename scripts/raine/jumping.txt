@@ -29,41 +29,41 @@ run:
     poke $10D061 param
 script "Get All 7 Big Diamonds Now!"  
 on:
-    poke $10D055 $7F|(peek($10D055)&~7F)
+    poke $10D055 $7F|(peek($10D055)&~$7F)
 script "Get All 3 Mirrors Now!"  
 on:
-    poke $10D055 $80|(peek($10D055)&~80)
-    poke $10D054 $03|(peek($10D054)&~03)
+    poke $10D055 $80|(peek($10D055)&~$80)
+    poke $10D054 $03|(peek($10D054)&~$03)
 script "Get Red    Big Diamond Now!"  
 on:
-    poke $10D055 $01|(peek($10D055)&~01)
+    poke $10D055 $01|(peek($10D055)&~$01)
 script "Get Orange Big Diamond Now!"  
 on:
-    poke $10D055 $02|(peek($10D055)&~02)
+    poke $10D055 $02|(peek($10D055)&~$02)
 script "Get Yellow Big Diamond Now!"  
 on:
-    poke $10D055 $04|(peek($10D055)&~04)
+    poke $10D055 $04|(peek($10D055)&~$04)
 script "Get Green  Big Diamond Now!"  
 on:
-    poke $10D055 $08|(peek($10D055)&~08)
+    poke $10D055 $08|(peek($10D055)&~$08)
 script "Get Blue   Big Diamond Now!"  
 on:
-    poke $10D055 $10|(peek($10D055)&~10)
+    poke $10D055 $10|(peek($10D055)&~$10)
 script "Get Indigo Big Diamond Now!"  
 on:
-    poke $10D055 $20|(peek($10D055)&~20)
+    poke $10D055 $20|(peek($10D055)&~$20)
 script "Get Purple Big Diamond Now!"  
 on:
-    poke $10D055 $40|(peek($10D055)&~40)
+    poke $10D055 $40|(peek($10D055)&~$40)
 script "Get Red    Mirror Now!"  
 on:
-    poke $10D055 $80|(peek($10D055)&~80)
+    poke $10D055 $80|(peek($10D055)&~$80)
 script "Get Grey   Mirror Now!"  
 on:
-    poke $10D054 $01|(peek($10D054)&~01)
+    poke $10D054 $01|(peek($10D054)&~$01)
 script "Get Yellow Mirror Now!"  
 on:
-    poke $10D054 $02|(peek($10D054)&~02)
+    poke $10D054 $02|(peek($10D054)&~$02)
 script "Kill Island Guardian Now!"  
 on:
     poke $10E1B9 $00

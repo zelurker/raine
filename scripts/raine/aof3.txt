@@ -38,10 +38,10 @@ run:
     dpoke $10E260 param
 script "Unlock Sinclair"  
 run:
-    poke $10EC07 $01|(peek($10EC07)&~01)
+    poke $10EC07 $01|(peek($10EC07)&~$01)
 script "Unlock Wyler"  
 run:
-    poke $10EC07 $02|(peek($10EC07)&~02)
+    poke $10EC07 $02|(peek($10EC07)&~$02)
 script " "  
 script "P1 Infinite Energy"  
 run:
@@ -65,13 +65,13 @@ on:
     poke $10046B $01
 script "P1 Rapid Fire - Punch"  
 run:
-    poke $1078A8 $00|(peek($1078A8)&~10)
+    poke $1078A8 $00|(peek($1078A8)&~$10)
 script "P1 Rapid Fire - Kick"  
 run:
-    poke $1078A8 $00|(peek($1078A8)&~20)
+    poke $1078A8 $00|(peek($1078A8)&~$20)
 script "P1 Rapid Fire - Hardbrow"  
 run:
-    poke $1078A8 $00|(peek($1078A8)&~40)
+    poke $1078A8 $00|(peek($1078A8)&~$40)
 script "P1 Select Character" \
  "comm:Free player selection - No secret characters. Use between rounds only. Doesn't work for 1st round though." \
  "0x00/Robert Garcia"\
@@ -109,13 +109,13 @@ on:
     poke $10056B $01
 script "P2 Rapid Fire - Punch"  
 run:
-    poke $1078E8 $00|(peek($1078E8)&~10)
+    poke $1078E8 $00|(peek($1078E8)&~$10)
 script "P2 Rapid Fire - Kick"  
 run:
-    poke $1078E8 $00|(peek($1078E8)&~20)
+    poke $1078E8 $00|(peek($1078E8)&~$20)
 script "P2 Rapid Fire - Hardbrow"  
 run:
-    poke $1078E8 $00|(peek($1078E8)&~40)
+    poke $1078E8 $00|(peek($1078E8)&~$40)
 script "P2 Select Character" \
  "comm:Free player selection - No secret characters. Use between rounds only. Doesn't work for 1st round though." \
  "0x00/Robert Garcia"\

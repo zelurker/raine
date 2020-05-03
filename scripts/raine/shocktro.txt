@@ -23,7 +23,7 @@ run:
     endif
     if (temp0==$00)&&(temp1!=$FF)&&(param<=10)
       dpoke $108D1A (dpeek($108D1A))+param
-      dpoke $108D1C (dpeek($108D1A))-$04
+      dpoke $108D1C (dpeek($108D1A))-04
       poke $108D97 param
     endif
 script "Finish Current Stage Now!" \

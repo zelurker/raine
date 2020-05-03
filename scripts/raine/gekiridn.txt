@@ -10,7 +10,7 @@ run:
     poke $4151ED $09
 script "P1 Invincibility"  
 run:
-    poke $411BD9 $00|(peek($411BD9)&~04)
+    poke $411BD9 $00|(peek($411BD9)&~$04)
     poke $411BF1 $90
 script "Always Maximum Shot Power"  
 run:
@@ -41,7 +41,7 @@ run:
     poke $41882D $09
 script "P2 Invincibility"  
 run:
-    poke $415219 $00|(peek($415219)&~04)
+    poke $415219 $00|(peek($415219)&~$04)
     poke $415231 $90
 script "P2 Always Maximum Shot Power"  
 run:

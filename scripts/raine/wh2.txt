@@ -35,24 +35,24 @@ change:
     poke $106004 param
 script "P1 Always have Wins = 0"  
 run:
-    poke $10C122 $00|(peek($10C122)&~03)
+    poke $10C122 $00|(peek($10C122)&~$03)
 script "P1 Always have Wins = 2" \
  "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
 run:
-    poke $10C122 $03|(peek($10C122)&~03)
+    poke $10C122 $03|(peek($10C122)&~$03)
 script "P1 Set Wins = 0 Now!"  
 on:
-    poke $10C122 $00|(peek($10C122)&~03)
+    poke $10C122 $00|(peek($10C122)&~$03)
 script "P1 Set Wins = 1 Now!"  
 on:
-    poke $10C122 $01|(peek($10C122)&~03)
+    poke $10C122 $01|(peek($10C122)&~$03)
 script "P1 Set Wins = 2 Now!" \
  "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
 on:
-    poke $10C122 $03|(peek($10C122)&~03)
+    poke $10C122 $03|(peek($10C122)&~$03)
 script "P1 Always have Won 3 Rounds [Tournament]"  
 run:
-    poke $10C123 $15|(peek($10C123)&~3F)
+    poke $10C123 $15|(peek($10C123)&~$3F)
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -82,24 +82,24 @@ change:
     poke $106104 param
 script "P2 Always have Wins = 0"  
 run:
-    poke $10C122 $00|(peek($10C122)&~0C)
+    poke $10C122 $00|(peek($10C122)&~$0C)
 script "P2 Always have Wins = 2" \
  "comm:As long as P2 wins LT 2 then P1 wins the battle automatically at the end of round"  
 run:
-    poke $10C122 $0C|(peek($10C122)&~0C)
+    poke $10C122 $0C|(peek($10C122)&~$0C)
 script "P2 Set Wins = 0 Now!"  
 on:
-    poke $10C122 $00|(peek($10C122)&~0C)
+    poke $10C122 $00|(peek($10C122)&~$0C)
 script "P2 Set Wins = 1 Now!"  
 on:
-    poke $10C122 $04|(peek($10C122)&~0C)
+    poke $10C122 $04|(peek($10C122)&~$0C)
 script "P2 Set Wins = 2 Now!" \
  "comm:As long as P1 wins LT 2 then P2 wins the battle automatically at the end of round"  
 on:
-    poke $10C122 $0C|(peek($10C122)&~0C)
+    poke $10C122 $0C|(peek($10C122)&~$0C)
 script "P2 Always have Won 3 Rounds [Tournament]"  
 run:
-    poke $10C123 $15|(peek($10C123)&~3F)
+    poke $10C123 $15|(peek($10C123)&~$3F)
 script " "  
 script "Deathmatch Player 'Downs' always 0"  
 run:

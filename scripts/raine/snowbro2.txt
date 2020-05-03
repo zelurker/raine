@@ -7,13 +7,13 @@ run:
     poke $10130C $84
 script "P1 Always have Speed Up"  
 run:
-    poke $1012DD $20|(peek($1012DD)&~20)
+    poke $1012DD $20|(peek($1012DD)&~$20)
 script "P1 Always have Power Up"  
 run:
-    poke $1012DD $40|(peek($1012DD)&~40)
+    poke $1012DD $40|(peek($1012DD)&~$40)
 script "P1 Always have Range Up"  
 run:
-    poke $1012DD $80|(peek($1012DD)&~80)
+    poke $1012DD $80|(peek($1012DD)&~$80)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -23,13 +23,13 @@ run:
     poke $101354 $84
 script "P2 Always have Speed Up"  
 run:
-    poke $10132D $20|(peek($10132D)&~20)
+    poke $10132D $20|(peek($10132D)&~$20)
 script "P2 Always have Power Up"  
 run:
-    poke $10132D $40|(peek($10132D)&~40)
+    poke $10132D $40|(peek($10132D)&~$40)
 script "P2 Always have Range Up"  
 run:
-    poke $10132D $80|(peek($10132D)&~80)
+    poke $10132D $80|(peek($10132D)&~$80)
 script " "  
 script "P3 Infinite Lives"  
 run:
@@ -39,13 +39,13 @@ run:
     poke $1013A4 $84
 script "P3 Always have Speed Up"  
 run:
-    poke $10137D $20|(peek($10137D)&~20)
+    poke $10137D $20|(peek($10137D)&~$20)
 script "P3 Always have Power Up"  
 run:
-    poke $10137D $40|(peek($10137D)&~40)
+    poke $10137D $40|(peek($10137D)&~$40)
 script "P3 Always have Range Up"  
 run:
-    poke $10137D $80|(peek($10137D)&~80)
+    poke $10137D $80|(peek($10137D)&~$80)
 script " "  
 script "P4 Infinite Lives"  
 run:
@@ -55,10 +55,10 @@ run:
     poke $1013F4 $84
 script "P4 Always have Speed Up"  
 run:
-    poke $1013CD $20|(peek($1013CD)&~20)
+    poke $1013CD $20|(peek($1013CD)&~$20)
 script "P4 Always have Power Up"  
 run:
-    poke $1013CD $40|(peek($1013CD)&~40)
+    poke $1013CD $40|(peek($1013CD)&~$40)
 script "P4 Always have Range Up"  
 run:
-    poke $1013CD $80|(peek($1013CD)&~80)
+    poke $1013CD $80|(peek($1013CD)&~$80)

@@ -30,10 +30,10 @@ on:
     lpoke $FF8450 $00000000
 script "P1 Infinite Power"  
 run:
-    lpoke $FF8508 $00630090|(lpeek($FF8508)&~00FFFFFF)
+    lpoke $FF8508 $00630090|(lpeek($FF8508)&~$00FFFFFF)
 script "P1 Always No Power"  
 run:
-    lpoke $FF8508 $00000000|(lpeek($FF8508)&~00FFFFFF)
+    lpoke $FF8508 $00000000|(lpeek($FF8508)&~$00FFFFFF)
 script "P1 Shadow Mode"  
 on:
     temp0=peek($FF87BC)
@@ -103,10 +103,10 @@ on:
     lpoke $FF8850 $00000000
 script "P2 Infinite Power"  
 run:
-    lpoke $FF8908 $00630090|(lpeek($FF8908)&~00FFFFFF)
+    lpoke $FF8908 $00630090|(lpeek($FF8908)&~$00FFFFFF)
 script "P2 Always No Power"  
 run:
-    lpoke $FF8908 $00000000|(lpeek($FF8908)&~00FFFFFF)
+    lpoke $FF8908 $00000000|(lpeek($FF8908)&~$00FFFFFF)
 script "P2 Shadow Mode"  
 on:
     temp0=peek($FF8BBC)

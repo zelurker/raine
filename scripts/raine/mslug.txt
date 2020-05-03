@@ -74,11 +74,11 @@ run:
     poke $1004C2 $FF
 script "P1 Rapid Fire"  
 run:
-    poke $106EB2 $00|(peek($106EB2)&~10)
+    poke $106EB2 $00|(peek($106EB2)&~$10)
 script "P1 No bomb throwing delay" \
  "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
 run:
-    lpoke $1004C1 $00000000|(lpeek($1004C1)&~FF0000FF)
+    lpoke $1004C1 $00000000|(lpeek($1004C1)&~$FF0000FF)
 script " "  
 script "P2 Infinite Lives"  
 run:
@@ -100,11 +100,11 @@ run:
     poke $100562 $FF
 script "P2 Rapid Fire"  
 run:
-    poke $106EB8 $00|(peek($106EB8)&~10)
+    poke $106EB8 $00|(peek($106EB8)&~$10)
 script "P2 No bomb throwing delay" \
  "comm:You can normally have to wait for the bombs to explode before you can throw anymore"  
 run:
-    lpoke $100561 $00000000|(lpeek($100561)&~FF0000FF)
+    lpoke $100561 $00000000|(lpeek($100561)&~$FF0000FF)
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

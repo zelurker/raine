@@ -32,11 +32,11 @@ on:
     poke $6386 $00
 run:
     if (peek($62B1)==$01)
-      poke $62B1 peek($62B0)-$1
+      poke $62B1 peek($62B0)-1
     endif
 off:
     poke $06A9 temp0
-    temp1=(peek($638C)-(peek($638C)/10)*6)
+    temp1=(peek($638C)-(peek($638C)/$10)*$6)
     if (peek($6200)!=$00)
       poke $62B1 temp1
     endif

@@ -10,7 +10,7 @@ on:
     temp1=lpeek($23092)
 run:
     dpoke $2308A $1B7C
-    dpoke $2308C ((param-$1)%6)*1C
+    dpoke $2308C ((param-$1)%$6)*1C
     lpoke $2308E $000D1B7C
     dpoke $23092 (param-$1)/6
     dpoke $23094 $0181
