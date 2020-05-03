@@ -4,7 +4,12 @@ run:
 script "Display Answers" \
  "comm:Correct one starts with 4"  
 run:
-    print_ingame 1 "%02X %02X %02X %02X" peek(100AC4+$argindex)
+    print_ingame 1 "%02X %02X %02X %02X" \
+ peek($100AC4+0) \
+ peek($100AC4+1) \
+ peek($100AC4+2) \
+ peek($100AC4+3) \
+ 
 script "P1 Infinite Lives"  
 run:
     poke $10080D $99
