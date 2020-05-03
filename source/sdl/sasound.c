@@ -150,7 +150,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    int i;
    if (opened_audio)
      return TRUE;
-   RaineSoundCard = 1;
+   RaineSoundCard = soundcard;
    /* install a digital sound driver */
      // Normally, soundcard =0 means no sound in raine.
      // I will try not to break this to keep compatibility with the other
