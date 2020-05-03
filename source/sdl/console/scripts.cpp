@@ -6,7 +6,7 @@
 #include "sdl/dialogs/messagebox.h"
 #include "profile.h"
 
-#define MAX_PARAM 60
+#define MAX_PARAM 90
 
 typedef struct {
   char *title;
@@ -136,9 +136,9 @@ void init_scripts() {
 		script[nb_scripts].run =
 		script[nb_scripts].change = NULL;
 	    int argc;
-	    char *argv[70];
+	    char *argv[100];
 	    char **margv = argv;
-	    split_command(buff,argv,&argc,70);
+	    split_command(buff,argv,&argc,100);
 	    if (argc < 2) {
 		printf("init_scripts: script without title: %s\n",buff);
 		fclose(f);
