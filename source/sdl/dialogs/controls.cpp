@@ -266,7 +266,7 @@ static int do_input(int sel) {
   } else {
     def_input_emu[indice].joycode = inp_joy;
     free(cols[sel*2+1]);
-    cols[sel*2+1] = get_joy_name(def_input_emu[sel].joycode);
+    cols[sel*2+1] = get_joy_name(def_input_emu[indice].joycode);
   }
   controls->setup_font(40);
   controls->draw();
