@@ -10,6 +10,16 @@ use XML::LibXML;
 
 our $cpu = 0;
 
+sub handle_subarg {
+	# traite les arguments entre ()
+	# l'idée est de réussir à extraire les hexa sans préfixe, et ne pas les
+	# confondre avec des variables, un vrai bordel !
+	my $arg = shift;
+	$arg =~ s/^([0-9a-f]+)([\+\-\*\%]|$)/\$$1$2/i if (!/^0x/);
+	while ($arg =~ s/([\+\-\/\*\%\&\~])([0-9a-f]+)([\+\-\*\%\)]|$)/$1\$$2$3/i) {}
+	$arg;
+}
+
 sub handle_arg {
 	my $cond = shift;
 	if ($cond =~ s/audiocpu\./maincpu\./g) {
@@ -50,7 +60,10 @@ sub handle_arg {
 	$cond =~ s/maincpu.[mopr]p?b@([0-9a-z]+)/peek($1)/gi;
 	$cond =~ s/maincpu.[mopr]p?w@([0-9a-z]+)/dpeek($1)/gi;
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-z]+)/lpeek($1)/gi;
-	$cond =~ s/([\+\-])([0-9a-f]+)/$1\$$2/gi if ($cond !~ /[\+\-]0x/);
+
+	$cond =~ s/\((.+)\)/"(".handle_subarg($1).")"/gie;
+	$cond = handle_subarg($cond) if ($cond !~ /\(/ && $cond =~ /[\+\-\/\%]/);
+
 	$cond;
 }
 
@@ -59,10 +72,23 @@ sub handle_output {
 	foreach (@_) {
 		my $format = $_->getAttribute("format");
 		my $output = $_->to_literal();
+		my $count = $_->findnodes('./argument/@count');
 		$output =~ s/\n//;
 		$output =~ s/^[ \t]+//;
 		$output = handle_arg($output);
-		print " "x$indent,"print_ingame 1 \"$format\" $output"; # for some reason, cr is included
+		say " "x$indent,"print_ingame 1 \"$format\" \\";
+		if ($count) {
+			$count = sprintf("%d",$count);
+			for (my $n=0; $n<$count; $n++) {
+				my $res = $output;
+				chomp $res;
+				$res =~ s/argindex/$n/;
+				say " $res \\";
+			}
+			say " ";
+		} else {
+			print " $output";
+		}
 	}
 }
 
