@@ -203,6 +203,8 @@ void init_scripts() {
 	    bool on = false, off = false, change = false, run = false;
 	    while (!feof(f)) {
 		myfgets(buff,10240,f);
+		while (*buff && buff[strlen(buff)-1] == '\\')
+		    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
 		int n=0;
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
@@ -256,6 +258,8 @@ void init_scripts() {
 	    char **lines = NULL;
 	    while (!feof(f)) {
 		myfgets(buff,10240,f);
+		while (*buff && buff[strlen(buff)-1] == '\\')
+		    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
 		int n=0;
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
