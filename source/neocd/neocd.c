@@ -5276,6 +5276,12 @@ void execute_neocd() {
   if (!raster_bitmap)
       raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
 	      320,224);
+  if (z80_enabled /* && !irq.disable */ && RaineSoundCard) {
+      /* Normally irq.disable is an optimization heree,
+       * except that the 007Z bios tests the z80 communication
+       * while irqs are disabled, so it's better to allow this here */
+      execute_z80_audio_frame();
+  }
   if ((irq.control & (IRQ1CTRL_ENABLE)) && !disable_irq1) {
       debug(DBG_RASTER,"raster frame irq.start %d in lines %d\n",irq.start,irq.start/0x180);
 
@@ -5448,12 +5454,6 @@ void execute_neocd() {
       } // allowed_speed_hacks
   }
   start_line -= START_SCREEN;
-  if (z80_enabled /* && !irq.disable */ && RaineSoundCard) {
-      /* Normally irq.disable is an optimization heree,
-       * except that the 007Z bios tests the z80 communication
-       * while irqs are disabled, so it's better to allow this here */
-      execute_z80_audio_frame();
-  }
   if (!raster_frame) {
       vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
       update_interrupts();
