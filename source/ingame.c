@@ -102,11 +102,6 @@ void overlay_ingame_interface(int ogl)
 
    */
 
-   update_arpro_cheats();
-#ifdef HAS_CONSOLE
-   update_scripts();
-#endif
-
    if (!silent_hud)
        for(tb=0;tb<MSG_LIST_SIZE;tb++){
 

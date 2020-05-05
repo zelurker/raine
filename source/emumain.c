@@ -325,6 +325,11 @@ UINT32 run_game_emulation(void)
 	skip_frame_count = 0;
 	render_frame_count ++;
 
+	update_arpro_cheats();
+#ifdef HAS_CONSOLE
+	update_scripts();
+#endif
+
 	// limit speed if we need to
 
 	if((display_cfg.limit_speed) && (read_ingame_timer() <= cpu_frame_count)){
