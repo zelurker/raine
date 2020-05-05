@@ -363,7 +363,7 @@ void add_scripts(menu_item_t *menu) {
       if (script[n].on || script[n].off || script[n].run || script[n].change) {
 	  menu->value_int = &script[n].status;
 	  menu->menu_func = &activate_cheat;
-	  if (script[n].run) {
+	  if (script[n].run || script[n].off) {
 	      menu->values_list_size = 2;
 	      menu->values_list[0] = 0;
 	      menu->values_list[1] = 1;
