@@ -1,26 +1,107 @@
-script "P1 99 lives"
-on:
-  poke $100397 99
-
-script "P1 invulnerability"
+script "Infinite Time"
 run:
-  poke $1004a5 2
-
-script "999 ammo"
-on:
-  dpoke $1004e2 999
-
-script "P1 invuln tank"
+    poke $106Eb3 $3C
+script "Infinite Tank Gas"
 run:
-  poke $1005e5 2
-
-script "P1 select weapon"
+    poke $100607 $30
+script "Infinite Tank Cannon"
+run:
+    poke $100630 $0A
+script "Infinite Vehicle Cannon"
+run:
+    dpoke $10062E $0001
+script "Tank Invincibility"
+run:
+    poke $1005e5 $FF
+script "Select Starting Mission" \
+ inter=1,6,1
+run:
+    if (peek($10E3d7)==$00)
+      poke $10E3d7 (param-$1)
+    endif
+script "Hit Anywhere" "comm:enemies can also hit you from anywhere ! (neocd)"
 on:
-  poke $1004d1 alert("select weapon (ESC for normal gun)|Shotgun|Flamer|Rocket launcher|Machine gun")
-  dpoke $1004e2 999
-
-
-script "set game timer to 99"
+    dpoke $2f2e4 $4EF9
+    dpoke $2f2e8 $0200
+    lpoke $00200 $B3FC0010
+    lpoke $204 $0440670C
+    lpoke $00208 $D1FC0000
+    lpoke $20c $000A4EF9
+    lpoke $00210 $0002f300
+    lpoke $214 $D1FC0000
+    lpoke $00218 $000A4EF9
+    lpoke $21c $0002f2ea
+off:
+    dpoke $2f2e4 $D1FC
+    dpoke $2f2e8 $000A
+    lpoke $00200 $00000000
+    lpoke $204 $00000000
+    lpoke $00208 $00000000
+    lpoke $20c $00000000
+    lpoke $00210 $00000000
+    lpoke $214 $00000000
+    lpoke $00218 $00000000
+    lpoke $21c $00000000
+script "Finish Current Mission Now!"
 on:
-  poke $106eb3 99
-
+    if (peek($106EeA)==$00)
+      poke $106Ef2 $00
+    endif
+script "See End Sequence Now!"
+on:
+    if (peek($106EeA)==$00)
+      poke $106Ef0 $05
+      poke $106Ef2 $00
+    endif
+script " "
+script "P1 Infinite Lives"
+run:
+    poke $100397 $03
+script "P1 Infinite Bombs"
+run:
+    poke $1004e0 $0A
+script "P1 Invincibility"
+run:
+    poke $1004a5 $40
+script "P1 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Shotgun"\
+ "0x02/Flamer"\
+ "0x03/Rocket Launcher"\
+ "0x04/Machine Gun"
+on:
+    poke $1004d1 param
+    poke $1004e2 $FF
+script "P1 Rapid Fire"
+run:
+    poke $106Ed2 $00|(peek($106EB2)&~$10)
+script "P1 No bomb throwing delay" \
+ "comm:You normally have to wait for the bombs to explode before you can throw anymore"
+run:
+    lpoke $1004e1 $00000000|(lpeek($1004C1)&~$FF0000FF)
+script " "
+script "P2 Infinite Lives"
+run:
+    poke $100437 $03
+script "P2 Infinite Bombs"
+run:
+    poke $100580 $0A
+script "P2 Invincibility"
+run:
+    poke $100545 $40
+script "P2 Select Weapon" \
+ "0x00/Normal Gun"\
+ "0x01/Shotgun"\
+ "0x02/Flamer"\
+ "0x03/Rocket Launcher"\
+ "0x04/Machine Gun"
+run:
+    poke $100571 param
+    poke $100582 $FF
+script "P2 Rapid Fire"
+run:
+    poke $106Ed8 $00|(peek($106EB8)&~$10)
+script "P2 No bomb throwing delay" \
+ "comm:You normally have to wait for the bombs to explode before you can throw anymore"
+run:
+    lpoke $100581 $00000000|(lpeek($100561)&~$FF0000FF)
