@@ -85,6 +85,7 @@ class TConsole : public TDialog
     virtual void  execute();
     virtual int run_cmd(char *field);
     void set_visible() { visible = 1; }
+    int is_visible() { return visible; }
 };
 #endif
 #endif

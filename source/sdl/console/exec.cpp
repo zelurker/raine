@@ -627,6 +627,7 @@ void do_list(int argc, char **argv) {
 }
 
 void disp_instruction() {
+    if (!cons->is_visible()) return;
   get_instruction();
   UINT32 pc1 = cpu_get_pc(get_cpu_id());
   if (cur_pc != pc1) {
