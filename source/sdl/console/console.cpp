@@ -1403,12 +1403,15 @@ void done_console() {
   }
   done_breakpoints();
   nb_watch = 0;
+  cpu_id = 0;
 }
 
 void run_console_command(char *command) {
     if (!*command) return;
-  init_cpuid();
-  cpu_get_ram(cpu_id,ram,&nb_ram);
+    if (!cpu_id) {
+	init_cpuid();
+	cpu_get_ram(cpu_id,ram,&nb_ram);
+    }
   if (!cons) {
     cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,50, commands,0);
     lastw = screen->w;
