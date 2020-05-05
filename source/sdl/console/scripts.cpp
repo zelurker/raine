@@ -12,6 +12,7 @@ typedef struct {
   char *title;
   // status : 0 = off, 1 = on (in dialog)
   int status, hidden;
+  int changing; // keeps last value selected
   char **on, **off, **run, **change;
   int nb_param;
   int value_list[MAX_PARAM];
@@ -135,6 +136,7 @@ void init_scripts() {
 		script[nb_scripts].off =
 		script[nb_scripts].run =
 		script[nb_scripts].change = NULL;
+	    script[nb_scripts].changing = 0;
 	    int argc;
 	    char *argv[100];
 	    char **margv = argv;
@@ -308,6 +310,8 @@ static int activate_cheat(int n) {
 	    menu = (menu_item_t*)calloc(2,sizeof(menu_item_t));
 	    menu[0].label = script[n].title;
 	    int param = script[n].value_list[0];
+	    if (script[n].changing >= script[n].value_list[0] && script[n].changing <= script[n].value_list[1])
+		param = script[n].changing;
 	    menu[0].value_int = &param;
 	    menu[0].values_list_size = 3;
 	    menu[0].values_list[0] = script[n].value_list[0];
@@ -317,6 +321,7 @@ static int activate_cheat(int n) {
 	    dlg->execute();
 	    delete dlg;
 	    set_script_param(param);
+	    script[n].changing = param;
 	} else {
 	    char btn[10240];
 	    *btn = 0;
