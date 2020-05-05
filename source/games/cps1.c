@@ -1759,10 +1759,12 @@ static void cps1_set_z80()
    AddZ80AReadByte(0xf008, 0xf008, NULL, (UINT8*)&latch);
    AddZ80AReadByte(0xf00a, 0xf00a, NULL, &cps1_sound_fade_timer);
 
+#if 0
    // kodb
    AddZ80AReadByte(0xe001, 0xe001, YM2151_data_port_0_w,   NULL);
    AddZ80AReadByte(0xe002, 0xe002, OKIM6295_status_0_r, NULL);
    AddZ80AReadByte(0xe008, 0xe008, NULL, (UINT8*)&latch);
+#endif
 
    AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
 
@@ -2883,6 +2885,9 @@ void execute_cps1_frame(void)
     if (*MouseB & 2) input_buffer[2] &= 0xdf;
 #endif
   }
+  // execute the z80 first so that it can eventually catch a command from scripts
+  // otherwise the 68k sends command ff which erases everything regularly !
+   execute_z80_audio_frame();
   cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
 
   if (!speed_hack) {
@@ -2890,7 +2895,6 @@ void execute_cps1_frame(void)
   }
 
    cpu_interrupt(CPU_68K_0, 2);
-   execute_z80_audio_frame();
 }
 
 void execute_ganbare(void)
