@@ -50,94 +50,48 @@ static void ansi_font_dim(TFont *font, char *str, int *width, int *height) {
   process_piece(font,old,width,height);
 }
 
-/* The curse with this function is that it cas only tell if a string is NOT
- * utf8. It's what is really annoying about utf8 anyway...
- * So with it most english strings will be seen as utf8.
- * I'll keep calling it for now anyway just in case but maybe it would be best
- * to assume everything is utf8 now and never call it ? */
-int test_utf(const char *s) {
-    if (!s) return 0;
-
-    // This code is taken from http://stackoverflow.com/questions/1031645/how-to-detect-utf-8-in-plain-c
-
-    const unsigned char * bytes = (const unsigned char *)s;
-    while(*bytes)
-    {
-	if( (// ASCII
-		    // use bytes[0] <= 0x7F to allow ASCII control characters
-		    bytes[0] == 0x09 ||
-		    bytes[0] == 0x0A ||
-		    bytes[0] == 0x0D ||
-		    (0x20 <= bytes[0] && bytes[0] <= 0x7E)
-	    )
-	  ) {
-	    bytes += 1;
-	    continue;
-	}
-
-	if( (// non-overlong 2-byte
-		    (0xC2 <= bytes[0] && bytes[0] <= 0xDF) &&
-		    (0x80 <= bytes[1] && bytes[1] <= 0xBF)
-	    )
-	  ) {
-	    bytes += 2;
-	    continue;
-	}
-
-	if( (// excluding overlongs
-		    bytes[0] == 0xE0 &&
-		    (0xA0 <= bytes[1] && bytes[1] <= 0xBF) &&
-		    (0x80 <= bytes[2] && bytes[2] <= 0xBF)
-	    ) ||
-		(// straight 3-byte
-		 ((0xE1 <= bytes[0] && bytes[0] <= 0xEC) ||
-		  bytes[0] == 0xEE ||
-		  bytes[0] == 0xEF) &&
-		 (0x80 <= bytes[1] && bytes[1] <= 0xBF) &&
-		 (0x80 <= bytes[2] && bytes[2] <= 0xBF)
-		) ||
-		(// excluding surrogates
-		 bytes[0] == 0xED &&
-		 (0x80 <= bytes[1] && bytes[1] <= 0x9F) &&
-		 (0x80 <= bytes[2] && bytes[2] <= 0xBF)
-		)
-	  ) {
-	    bytes += 3;
-	    continue;
-	}
-
-	if( (// planes 1-3
-		    bytes[0] == 0xF0 &&
-		    (0x90 <= bytes[1] && bytes[1] <= 0xBF) &&
-		    (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
-		    (0x80 <= bytes[3] && bytes[3] <= 0xBF)
-	    ) ||
-		(// planes 4-15
-		 (0xF1 <= bytes[0] && bytes[0] <= 0xF3) &&
-		 (0x80 <= bytes[1] && bytes[1] <= 0xBF) &&
-		 (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
-		 (0x80 <= bytes[3] && bytes[3] <= 0xBF)
-		) ||
-		(// plane 16
-		 bytes[0] == 0xF4 &&
-		 (0x80 <= bytes[1] && bytes[1] <= 0x8F) &&
-		 (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
-		 (0x80 <= bytes[3] && bytes[3] <= 0xBF)
-		)
-	  ) {
-	    bytes += 4;
-	    continue;
-	}
-
-	return 0;
-    }
-
+// this time really returns if a valid utf8 sequence was found, so if it returns 0
+// it's ascii, latin or anything else
+// follow the instructions from http://www.fileformat.info/info/unicode/utf8.htm
+int test_utf(const unsigned char *s) {
+    // This code seems to work, but it's an endless pain to use
+    // each time a child overrides something which displays text it must call this
+    // it should be done differently but there is an easy fix : set utf8 to everything in linux
+    // and to nothing elsewhere, what I will do for now...
+#ifdef RAINE_UNIX
     return 1;
+#else
+    return 0;
+#endif
+
+#if 0
+    const unsigned char *e = &s[strlen((const char*)s)];
+    while (*s && s<e) {
+	if (*s >= 0xc2 && *s <= 0xdf) {
+	    if (s[1] >= 0x80 && s[1] <= 0xbf)
+		return 1;
+	    s++;
+	} else if (*s >= 0xe0 && *s <= 0xef) {
+	    if (s[1] >= 0x80 && s[1] <= 0xbf &&
+		    s[2] >= 0x80 && s[2] <= 0xbf)
+		return 1;
+	    s += 2;
+	} else if (*s >= 0xf0 && *s <= 0xff) {
+	    if (s[1] >= 0x80 && s[1] <= 0xbf &&
+		    s[2] >= 0x80 && s[2] <= 0xbf &&
+		    s[3] >= 0x80 && s[3] <= 0xbf)
+		return 1;
+	    s += 3;
+	}
+	s++;
+    }
+    return 0;
+#endif
 }
 
 TStatic::TStatic(menu_item_t *my_menu) {
     menu = my_menu;
-    is_utf = test_utf(menu->label);
+    is_utf = test_utf((const unsigned char*)menu->label);
 }
 
 int TStatic::get_len() {
@@ -340,6 +294,7 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   }
   char *old = menu->label;
   menu->label = disp_string;
+  if (!is_utf) is_utf = test_utf((const unsigned char*)disp_string);
   TStatic::disp(s,font,xoptions,y,w,h,fg,bg,xoptions);
   menu->label = old;
   // font->surf_string(s,xoptions,y,disp_string,fg,bg,w);
