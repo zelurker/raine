@@ -469,6 +469,7 @@ void StartGUI(void)
        } else {
 
 	   WantQuit=1;
+	   ScreenChange();
 
 	   if(current_game)
 
