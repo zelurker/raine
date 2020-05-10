@@ -16,7 +16,7 @@ sub handle_subarg {
 	# confondre avec des variables, un vrai bordel !
 	my $arg = shift;
 	$arg =~ s/^([0-9a-f]+)([\+\-\*\%]|$)/\$$1$2/i if (!/^0x/);
-	while ($arg =~ s/([\+\-\/\*\%\&\~])([0-9a-f]+)([\+\-\*\%\)]|$)/$1\$$2$3/i) {}
+	while ($arg =~ s/(\+|\-|\/|\*|\%|\&|\~|>|<|>=|<=|==|!=)([0-9a-f]+)([\+\-\*\%\)]|$)/$1\$$2$3/i) {}
 	$arg;
 }
 
@@ -47,8 +47,8 @@ sub handle_arg {
 	$cond =~ s/ GT />/gi;
 	$cond =~ s/ GE />=/gi;
 	$cond =~ s/ LE /<=/gi;
-	$cond =~ s/ AND /\&\&/gi;
-	$cond =~ s/ OR /\|\|/gi;
+	$cond =~ s/ AND /and/gi;
+	$cond =~ s/ OR /or/gi;
 	$cond =~ s/ BAND /\&/gi;
 	$cond =~ s/ BOR /\|/gi;
 	$cond =~ s/ //g;
@@ -115,7 +115,7 @@ sub handle_action {
 		my @cmds = split(/,/,$action);
 		while ($action = shift @cmds) {
 			$action =~ s/^[ \t]//;
-			$action =~ s/\n//;
+			$action =~ s/\n//g;
 			next if ($action =~ /^[ \t]*$/);
 
 			print " "x$indent;
