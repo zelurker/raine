@@ -131,6 +131,8 @@ void load_progress(char *rom,int count)
 
 void setup_curl_dlg(char *name) {
     load_items[3].label = name;
+    if (raine_cfg.no_gui)
+	return;
     loading_dialog->update_bg_layer(NULL);
     delete loading_dialog;
     loading_dialog = new TDialog(_("Loading Game"),load_items);
