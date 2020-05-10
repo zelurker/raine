@@ -14,13 +14,15 @@
  * operations, but can be easily extended, so let's go... */
 
 using namespace mu;
-value_type mod(value_type v1, value_type v2) { return int(rint(v1))%int(rint(v2)); }
-value_type rol(value_type v1, value_type v2) { return int(rint(v1))<<int(rint(v2)); }
-value_type ror(value_type v1, value_type v2) { return int(rint(v1))>>int(rint(v2)); }
-value_type Or(value_type v1, value_type v2) { return int(v1) | int(v2); }
-value_type And(value_type v1, value_type v2) { return int(v1) & int(v2); }
-value_type Not(value_type v1) { return ~int(rint(v1)); }
-value_type LogNot(value_type v1) { return !int(rint(v1)); }
+static value_type mod(value_type v1, value_type v2) { return int(rint(v1))%int(rint(v2)); }
+static value_type rol(value_type v1, value_type v2) { return int(rint(v1))<<int(rint(v2)); }
+static value_type ror(value_type v1, value_type v2) { return int(rint(v1))>>int(rint(v2)); }
+static value_type Or(value_type v1, value_type v2) { return int(v1) | int(v2); }
+static value_type And(value_type v1, value_type v2) { return int(v1) & int(v2); }
+static value_type lor(value_type v1, value_type v2) { return int(v1) || int(v2); }
+static value_type land(value_type v1, value_type v2) { return int(v1) && int(v2); }
+static value_type Not(value_type v1) { return ~int(rint(v1)); }
+static value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
 double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
 static double param;
@@ -236,6 +238,9 @@ int parse(char *orig)
       p.DefineOprt( ">>", ror, 3);
       p.DefineOprt( "|", Or, 3);
       p.DefineOprt( "&", And, 3);
+      // There is a collision between && and & so we must define new operators with the same role as && and || !
+      p.DefineOprt( "or", lor, 3);
+      p.DefineOprt( "and", land, 3);
       p.DefineInfixOprt( "~", Not);
       p.DefineInfixOprt( "!", LogNot);
       p.DefineFun( "alert", alert, false);
