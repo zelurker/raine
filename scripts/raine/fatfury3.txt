@@ -153,7 +153,7 @@ on:
     temp0=lpeek($00371C)
 run:
     lpoke $00371C temp0
-    if (peek($10567A)!=$00&&peek($10567B)==$00&&peek($10562D)==$01)
+    if (peek($10567A)!=$00andpeek($10567B)==$00andpeek($10562D)==$01)
       lpoke $00371C $4E714E71
       poke $1051E3 $00
       poke $1051E5 $01

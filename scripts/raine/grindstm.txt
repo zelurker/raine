@@ -15,7 +15,7 @@ script "Always Maximum Shot Power"
 run:
     dpoke $100606 $0002
     poke $10060B $02
-    if (peek($10061F)<39)||(peek($10061F)>79)
+    if (peek($10061F)<$39)or(peek($10061F)>$79)
       poke $10061F $39
     endif
 script "Select Weapon" \
@@ -61,58 +61,58 @@ script "Select Starting Stage" \
  "0x05/Stage 5"\
  "0x06/Stage 6" 
 run:
-    if (param==$01)&&(dpeek($100644)==$0000)
+    if (param==$01)and(dpeek($100644)==$0000)
       dpoke $100644 $0000
     endif
-    if (param==$01)&&(peek($10064B)==$00)
+    if (param==$01)and(peek($10064B)==$00)
       poke $10064B $00
     endif
-    if (param==$01)&&(peek($100653)==$00)
+    if (param==$01)and(peek($100653)==$00)
       poke $100653 $01
     endif
-    if (param==$02)&&(dpeek($100644)==$0000)
+    if (param==$02)and(dpeek($100644)==$0000)
       dpoke $100644 $02C0
     endif
-    if (param==$02)&&(peek($10064B)==$00)
+    if (param==$02)and(peek($10064B)==$00)
       poke $10064B $01
     endif
-    if (param==$02)&&(peek($100653)==$00)
+    if (param==$02)and(peek($100653)==$00)
       poke $100653 $01
     endif
-    if (param==$03)&&(dpeek($100644)==$0000)
+    if (param==$03)and(dpeek($100644)==$0000)
       dpoke $100644 $0640
     endif
-    if (param==$03)&&(peek($10064B)==$00)
+    if (param==$03)and(peek($10064B)==$00)
       poke $10064B $02
     endif
-    if (param==$03)&&(peek($100653)==$00)
+    if (param==$03)and(peek($100653)==$00)
       poke $100653 $01
     endif
-    if (param==$04)&&(dpeek($100644)==$0000)
+    if (param==$04)and(dpeek($100644)==$0000)
       dpoke $100644 $0A80
     endif
-    if (param==$04)&&(peek($10064B)==$00)
+    if (param==$04)and(peek($10064B)==$00)
       poke $10064B $03
     endif
-    if (param==$04)&&(peek($100653)==$00)
+    if (param==$04)and(peek($100653)==$00)
       poke $100653 $01
     endif
-    if (param==$05)&&(dpeek($100644)==$0000)
+    if (param==$05)and(dpeek($100644)==$0000)
       dpoke $100644 $0F00
     endif
-    if (param==$05)&&(peek($10064B)==$00)
+    if (param==$05)and(peek($10064B)==$00)
       poke $10064B $04
     endif
-    if (param==$05)&&(peek($100653)==$00)
+    if (param==$05)and(peek($100653)==$00)
       poke $100653 $01
     endif
-    if (param==$06)&&(dpeek($100644)==$0000)
+    if (param==$06)and(dpeek($100644)==$0000)
       dpoke $100644 $1500
     endif
-    if (param==$06)&&(peek($10064B)==$00)
+    if (param==$06)and(peek($10064B)==$00)
       poke $10064B $05
     endif
-    if (param==$06)&&(peek($100653)==$00)
+    if (param==$06)and(peek($100653)==$00)
       poke $100653 $01
     endif
 script "Select Current Loop" \

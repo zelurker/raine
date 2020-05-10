@@ -3,7 +3,7 @@ run:
     poke $108F7B $99
 script "Finish Current Stage Now!"  
 on:
-    if (peek($100117)==$01)&&(peek($108F85)!=$1C)
+    if (peek($100117)==$01)and(peek($108F85)!=$1C)
       lpoke $10C4BC $000C00A8
     endif
 script " "  

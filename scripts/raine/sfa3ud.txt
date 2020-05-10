@@ -295,7 +295,7 @@ script "P1 Select Mode" \
  "0xFF/Survival Mode"\
  "0x01/Final Battle Mode" 
 change:
-    if (param==$00)||(param==$FF)
+    if (param==$00)or(param==$FF)
       poke $FF854B param
     endif
     if (param==$01)
@@ -308,7 +308,7 @@ script "P2 Select Mode" \
  "0xFF/Survival Mode"\
  "0x01/Final Battle Mode" 
 change:
-    if (param==$00)||(param==$FF)
+    if (param==$00)or(param==$FF)
       poke $FF894B param
     endif
     if (param==$01)

@@ -17,6 +17,6 @@ on:
 script "Select Starting Stage" \
  inter=1,5, 
 run:
-    if (peek($10010A)==$FF)&&(peek($10012D)==$00)
+    if (peek($10010A)==$FF)and(peek($10012D)==$00)
       poke $10012D (param-$1)
     endif

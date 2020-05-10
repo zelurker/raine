@@ -2,7 +2,7 @@ script "Infinite Time"
 on:
     temp0=peek($10A83A)
 run:
-    if (frame%120==$0)&&(peek($10A83A)!=temp0)
+    if (frame%120==$0)and(peek($10A83A)!=temp0)
       poke $10A83A $60
     endif
 script "Enable Omega Rugal" \
@@ -660,9 +660,8 @@ on:
     temp1=peek($10A788)
     temp2=peek($10A83E)
     temp3=dpeek($02E854)
-
 run:
-    if (peek($10A786)!=$0&&peek($10A83F)==$00)
+    if (peek($10A786)!=$0andpeek($10A83F)==$00)
       poke $10008F $00
       poke $10A788 temp1|80
       poke $10A83E temp2|80

@@ -2,14 +2,14 @@ script "Infinite Time"
 on:
     temp0=peek($F0177)
 run:
-    if (frame%300==$0)&&(peek($F0177)!=temp0)
+    if (frame%300==$0)and(peek($F0177)!=temp0)
       poke $F0177 $99
     endif
 script "Infinite Life"  
 on:
     temp0=peek($F007F)
 run:
-    if (frame%120==$0)&&(peek($F007F)!=temp0)
+    if (frame%120==$0)and(peek($F007F)!=temp0)
       poke $F007F $03
     endif
 script "Invincibility"  

@@ -9,10 +9,10 @@ script "Finish Current Mission Now!"
 on:
     temp0=peek($8229F)
     temp1=dpeek($83710)
-    if (temp1!=$0000)&&(temp0==$08)
+    if (temp1!=$0000)and(temp0==$08)
       dpoke $836AA $FFFF
     endif
-    if (temp1!=$0000)&&((temp0==$04)||(temp0==$06))
+    if (temp1!=$0000)and((temp0==$04)or(temp0==$06))
       dpoke $8371A $FFFF
       poke $83717 $09
     endif

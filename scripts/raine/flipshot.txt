@@ -2,7 +2,7 @@ script "Infinite Time"
 on:
     temp0=peek($1037AE)
 run:
-    if (frame%300==$0)&&(peek($1037AE)!=temp0)
+    if (frame%300==$0)and(peek($1037AE)!=temp0)
       poke $1037AE $9A
     endif
 script "Finish this Round Now!" \

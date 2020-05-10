@@ -13,7 +13,7 @@ run:
     poke $600509 $B
 script "P1 Invincibility"  
 run:
-    if (peek($601575)<=04)
+    if (peek($601575)<=$04)
       poke $601575 $00
     endif
 script "P1 Always have Max Speed"  
@@ -50,7 +50,7 @@ run:
     poke $60051F $B
 script "P2 Invincibility"  
 run:
-    if (peek($6015D5)<=04)
+    if (peek($6015D5)<=$04)
       poke $6015D5 $00
     endif
 script "P2 Always have Max Speed"  

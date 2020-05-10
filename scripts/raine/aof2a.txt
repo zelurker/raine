@@ -105,7 +105,7 @@ run:
     dpoke $017A7A $6002
     lpoke $0182FC $1B7C0000
     lpoke $18300 $04CD600A
-    if (peek($109FC3)==$3C)&&(peek($10843B)==$03)
+    if (peek($109FC3)==$3C)and(peek($10843B)==$03)
       poke $108448 $01
       dpoke $1767C $4E71
     endif

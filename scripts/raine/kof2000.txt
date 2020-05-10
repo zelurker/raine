@@ -690,9 +690,8 @@ on:
     temp1=peek($10A788)
     temp2=peek($10A7EA)
     temp3=dpeek($02EE8A)
-
 run:
-    if (dpeek($10A7E6)!=$0&&peek($10A7EB)==$00)
+    if (dpeek($10A7E6)!=$0andpeek($10A7EB)==$00)
       poke $10008F $00
       poke $10A788 temp1|80
       poke $10A7EA temp2|80

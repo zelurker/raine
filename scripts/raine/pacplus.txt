@@ -47,82 +47,82 @@ script "Select Starting Level" \
  "0x12/1st Pancakes"\
  "0x13/2nd Pancakes" 
 run:
-    if (param==$01)&&(peek($4E0A)==$68)
+    if (param==$01)and(peek($4E0A)==$68)
       poke $4E0A $7E
     endif
-    if (param==$01)&&(peek($4E13)==$00)
+    if (param==$01)and(peek($4E13)==$00)
       poke $4E13 $01
     endif
-    if (param==$02)&&(peek($4E0A)==$68)
+    if (param==$02)and(peek($4E0A)==$68)
       poke $4E0A $7F
     endif
-    if (param==$02)&&(peek($4E13)==$00)
+    if (param==$02)and(peek($4E13)==$00)
       poke $4E13 $02
     endif
-    if (param==$03)&&(peek($4E0A)==$68)
+    if (param==$03)and(peek($4E0A)==$68)
       poke $4E0A $80
     endif
-    if (param==$03)&&(peek($4E13)==$00)
+    if (param==$03)and(peek($4E13)==$00)
       poke $4E13 $03
     endif
-    if (param==$04)&&(peek($4E0A)==$68)
+    if (param==$04)and(peek($4E0A)==$68)
       poke $4E0A $81
     endif
-    if (param==$04)&&(peek($4E13)==$00)
+    if (param==$04)and(peek($4E13)==$00)
       poke $4E13 $04
     endif
-    if (param==$05)&&(peek($4E0A)==$68)
+    if (param==$05)and(peek($4E0A)==$68)
       poke $4E0A $82
     endif
-    if (param==$05)&&(peek($4E13)==$00)
+    if (param==$05)and(peek($4E13)==$00)
       poke $4E13 $05
     endif
-    if (param==$06)&&(peek($4E0A)==$68)
+    if (param==$06)and(peek($4E0A)==$68)
       poke $4E0A $83
     endif
-    if (param==$06)&&(peek($4E13)==$00)
+    if (param==$06)and(peek($4E13)==$00)
       poke $4E13 $06
     endif
-    if (param==$07)&&(peek($4E0A)==$68)
+    if (param==$07)and(peek($4E0A)==$68)
       poke $4E0A $84
     endif
-    if (param==$07)&&(peek($4E13)==$00)
+    if (param==$07)and(peek($4E13)==$00)
       poke $4E13 $07
     endif
-    if (param==$08)&&(peek($4E0A)==$68)
+    if (param==$08)and(peek($4E0A)==$68)
       poke $4E0A $85
     endif
-    if (param==$08)&&(peek($4E13)==$00)
+    if (param==$08)and(peek($4E13)==$00)
       poke $4E13 $08
     endif
-    if (param==$09)&&(peek($4E0A)==$68)
+    if (param==$09)and(peek($4E0A)==$68)
       poke $4E0A $86
     endif
-    if (param==$09)&&(peek($4E13)==$00)
+    if (param==$09)and(peek($4E13)==$00)
       poke $4E13 $09
     endif
-    if (param==$10)&&(peek($4E0A)==$68)
+    if (param==$10)and(peek($4E0A)==$68)
       poke $4E0A $87
     endif
-    if (param==$10)&&(peek($4E13)==$00)
+    if (param==$10)and(peek($4E13)==$00)
       poke $4E13 $0A
     endif
-    if (param==$11)&&(peek($4E0A)==$68)
+    if (param==$11)and(peek($4E0A)==$68)
       poke $4E0A $88
     endif
-    if (param==$11)&&(peek($4E13)==$00)
+    if (param==$11)and(peek($4E13)==$00)
       poke $4E13 $B
     endif
-    if (param==$12)&&(peek($4E0A)==$68)
+    if (param==$12)and(peek($4E0A)==$68)
       poke $4E0A $89
     endif
-    if (param==$12)&&(peek($4E13)==$00)
+    if (param==$12)and(peek($4E13)==$00)
       poke $4E13 $0C
     endif
-    if (param==$13)&&(peek($4E0A)==$68)
+    if (param==$13)and(peek($4E0A)==$68)
       poke $4E0A $8A
     endif
-    if (param==$13)&&(peek($4E13)==$00)
+    if (param==$13)and(peek($4E13)==$00)
       poke $4E13 $0D
     endif
 script "Select Level (for Practice)" \

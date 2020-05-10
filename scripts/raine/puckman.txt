@@ -76,10 +76,10 @@ run:
     if peek($4E13)==$00
       poke $4E13 param
     endif
-    if (param<0x0C)&&(peek($4E0A)==$68)
+    if (param<0x0C)and(peek($4E0A)==$68)
       poke $4E0A param+0x7D
     endif
-    if (param>=0x0C)&&(peek($4E0A)==$68)
+    if (param>=0x0C)and(peek($4E0A)==$68)
       poke $4E0A param+0x7B
     endif
 script "Select Ghost Changeback Speed" \

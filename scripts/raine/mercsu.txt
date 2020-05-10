@@ -10,7 +10,7 @@ script "Select Starting Mission" \
  "0x05/Mission 6"\
  "0x06/Final Mission" 
 run:
-    if (peek($FF0B83)==$FF)&&(peek($FF0E8B)==$00)
+    if (peek($FF0B83)==$FF)and(peek($FF0E8B)==$00)
       poke $FF0E8B param
     endif
 script " "  

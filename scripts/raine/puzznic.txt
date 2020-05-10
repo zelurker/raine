@@ -3,10 +3,10 @@ on:
     temp0=peek($811C)
     temp1=peek($811D)
 run:
-    if (frame%300==$0)&&(peek($811C)!=temp0)
+    if (frame%300==$0)and(peek($811C)!=temp0)
       poke $811C $03
     endif
-    if (frame%300==$0)&&(peek($811D)!=temp1)
+    if (frame%300==$0)and(peek($811D)!=temp1)
       poke $811D $00
     endif
 script "P1 Infinite Retries"  
@@ -25,10 +25,10 @@ on:
     temp0=peek($819C)
     temp1=peek($819D)
 run:
-    if (frame%300==$0)&&(peek($819C)!=temp0)
+    if (frame%300==$0)and(peek($819C)!=temp0)
       poke $819C $03
     endif
-    if (frame%300==$0)&&(peek($819D)!=temp1)
+    if (frame%300==$0)and(peek($819D)!=temp1)
       poke $819D $00
     endif
 script "P2 Infinite Retries"  

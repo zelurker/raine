@@ -5,7 +5,7 @@ script "Infinite Time"
 on:
     temp0=peek($101D05)
 run:
-    if (frame%300==$0)&&(peek($101D05)!=temp0)
+    if (frame%300==$0)and(peek($101D05)!=temp0)
       poke $101D05 $99
     endif
 script "Infinite Lives"  

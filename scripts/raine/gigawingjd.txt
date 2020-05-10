@@ -16,7 +16,7 @@ run:
     endif
 script "Finish Current Stage Now!"  
 on:
-    if (peek($908681)==$38)&&(peek($FF6ED6)==$00)
+    if (peek($908681)==$38)and(peek($FF6ED6)==$00)
       poke $FF6ED6 $80
     endif
 script " "  
@@ -59,7 +59,7 @@ run:
     poke $FF730D param
 script "P1 Infinite Reflect Barrier Time"  
 run:
-    if (dpeek($FF9E70)>0x10)&&(dpeek($FF9E70)<0x20)
+    if (dpeek($FF9E70)>0x10)and(dpeek($FF9E70)<0x20)
       dpoke $FF9E70 $001F
     endif
 script "P1 Get Maximum multiplier Now!"  
@@ -70,7 +70,7 @@ run:
     poke $FFAE30 $00|(peek($FFAE30)&~$10)
 script "P1 Quick Charge Shield"  
 run:
-    if (dpeek($FFAE74)>0FC0)&&(dpeek($FFAE74)<1000)
+    if (dpeek($FFAE74)>$0FC0)and(dpeek($FFAE74)<$1000)
       dpoke $FFAE74 $0000
     endif
 script "P1 Select Character" \
@@ -121,7 +121,7 @@ run:
     poke $FF7315 param
 script "P2 Infinite Reflect Barrier Time"  
 run:
-    if (dpeek($FF9FF0)>0x10)&&(dpeek($FF9FF0)<0x20)
+    if (dpeek($FF9FF0)>0x10)and(dpeek($FF9FF0)<0x20)
       dpoke $FF9FF0 $001F
     endif
 script "P2 Get Maximum multiplier Now!"  
@@ -132,7 +132,7 @@ run:
     poke $FFAEF0 $00|(peek($FFAEF0)&~$10)
 script "P2 Quick Charge Shield"  
 run:
-    if (dpeek($FFAF34)>0FC0)&&(dpeek($FFAF34)<1000)
+    if (dpeek($FFAF34)>$0FC0)and(dpeek($FFAF34)<$1000)
       dpoke $FFAF34 $0000
     endif
 script "P2 Select Character" \

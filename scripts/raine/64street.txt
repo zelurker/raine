@@ -12,12 +12,12 @@ script "Select Starting Level" \
  "0x0800000D/The Headquarters"\
  "0x0A000014/Last Level" 
 run:
-    if (peek($FF9DE1)!=$0C)&&(peek($FF9DF9)==$00)&&(peek($FF9DDF)==$2C)
+    if (peek($FF9DE1)!=$0C)and(peek($FF9DF9)==$00)and(peek($FF9DDF)==$2C)
       lpoke $FF9DF6 param
     endif
 script "Finish Current Section Now!"  
 on:
-    if (peek($FF9DE1)!=$0C)&&(peek($FF9DE3)==$08)
+    if (peek($FF9DE1)!=$0C)and(peek($FF9DE3)==$08)
       poke $FF9DF9 $00
       poke $FF9DE3 $0C
     endif

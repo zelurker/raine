@@ -330,10 +330,10 @@ on:
     temp0=dpeek($011158)
 run:
     dpoke $011158 temp0
-    if (peek($106AAE)==$38&&peek($106A37)==$01)
+    if (peek($106AAE)==$38andpeek($106A37)==$01)
       poke $106AAE $33
     endif
-    if (peek($106AAE)!=$00&&peek($106A37)==$01)
+    if (peek($106AAE)!=$00andpeek($106A37)==$01)
       dpoke $011158 $6004
       poke $1065E3 $00
       poke $1065E5 $01

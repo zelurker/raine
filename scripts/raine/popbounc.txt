@@ -3,7 +3,7 @@ on:
     poke $10820B $00
 script "Always Keep Ball in Play [SOLO MODE]"  
 run:
-    if (peek($108149)<00)||(peek($108149)>E4)
+    if (peek($108149)<$00)or(peek($108149)>$E4)
       poke $108149 $D0
     endif
 script "P1 Infinite Lives"  
@@ -11,7 +11,7 @@ run:
     poke $10823D $63
 script "P1 Always Keep Ball in Play [VS MODE]"  
 run:
-    if (peek($10811B)<00)||(peek($10811B)>E4)
+    if (peek($10811B)<$00)or(peek($10811B)>$E4)
       poke $10811B $D0
     endif
 script "P2 Infinite Lives"  
@@ -19,7 +19,7 @@ run:
     poke $10824B $63
 script "P2 Always Keep Ball in Play [VS MODE]"  
 run:
-    if (peek($1073DD)<00)||(peek($1073DD)>E4)
+    if (peek($1073DD)<$00)or(peek($1073DD)>$E4)
       poke $1073DD $D0
     endif
 script " "  

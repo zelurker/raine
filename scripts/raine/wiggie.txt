@@ -60,75 +60,75 @@ on:
     temp22=peek($E0004F)
     temp23=peek($E0204F)
 run:
-    if (param==$01)&&(frame%60==$0)&&(peek($FFE2B3)!=temp0)
+    if (param==$01)and(frame%60==$0)and(peek($FFE2B3)!=temp0)
       poke $FFE2B3 $01
     endif
-    if (param==$01)&&(frame%60==$0)&&(peek($E0004F)!=temp1)
+    if (param==$01)and(frame%60==$0)and(peek($E0004F)!=temp1)
       poke $E0004F $18
     endif
-    if (param==$01)&&(frame%60==$0)&&(peek($E0204F)!=temp2)
+    if (param==$01)and(frame%60==$0)and(peek($E0204F)!=temp2)
       poke $E0204F $18
     endif
-    if (param==$02)&&(frame%60==$0)&&(peek($FFE2B3)!=temp3)
+    if (param==$02)and(frame%60==$0)and(peek($FFE2B3)!=temp3)
       poke $FFE2B3 $02
     endif
-    if (param==$02)&&(frame%60==$0)&&(peek($E0004F)!=temp4)
+    if (param==$02)and(frame%60==$0)and(peek($E0004F)!=temp4)
       poke $E0004F $1E
     endif
-    if (param==$02)&&(frame%60==$0)&&(peek($E0204F)!=temp5)
+    if (param==$02)and(frame%60==$0)and(peek($E0204F)!=temp5)
       poke $E0204F $1E
     endif
-    if (param==$03)&&(frame%60==$0)&&(peek($FFE2B3)!=temp6)
+    if (param==$03)and(frame%60==$0)and(peek($FFE2B3)!=temp6)
       poke $FFE2B3 $03
     endif
-    if (param==$03)&&(frame%60==$0)&&(peek($E0004F)!=temp7)
+    if (param==$03)and(frame%60==$0)and(peek($E0004F)!=temp7)
       poke $E0004F $1A
     endif
-    if (param==$03)&&(frame%60==$0)&&(peek($E0204F)!=temp8)
+    if (param==$03)and(frame%60==$0)and(peek($E0204F)!=temp8)
       poke $E0204F $1A
     endif
-    if (param==$04)&&(frame%60==$0)&&(peek($FFE2B3)!=temp9)
+    if (param==$04)and(frame%60==$0)and(peek($FFE2B3)!=temp9)
       poke $FFE2B3 $04
     endif
-    if (param==$04)&&(frame%60==$0)&&(peek($E0004F)!=temp10)
+    if (param==$04)and(frame%60==$0)and(peek($E0004F)!=temp10)
       poke $E0004F $19
     endif
-    if (param==$04)&&(frame%60==$0)&&(peek($E0204F)!=temp11)
+    if (param==$04)and(frame%60==$0)and(peek($E0204F)!=temp11)
       poke $E0204F $19
     endif
-    if (param==$05)&&(frame%60==$0)&&(peek($FFE2B3)!=temp12)
+    if (param==$05)and(frame%60==$0)and(peek($FFE2B3)!=temp12)
       poke $FFE2B3 $05
     endif
-    if (param==$05)&&(frame%60==$0)&&(peek($E0004F)!=temp13)
+    if (param==$05)and(frame%60==$0)and(peek($E0004F)!=temp13)
       poke $E0004F $1F
     endif
-    if (param==$05)&&(frame%60==$0)&&(peek($E0204F)!=temp14)
+    if (param==$05)and(frame%60==$0)and(peek($E0204F)!=temp14)
       poke $E0204F $1F
     endif
-    if (param==$06)&&(frame%60==$0)&&(peek($FFE2B3)!=temp15)
+    if (param==$06)and(frame%60==$0)and(peek($FFE2B3)!=temp15)
       poke $FFE2B3 $06
     endif
-    if (param==$06)&&(frame%60==$0)&&(peek($E0004F)!=temp16)
+    if (param==$06)and(frame%60==$0)and(peek($E0004F)!=temp16)
       poke $E0004F $1C
     endif
-    if (param==$06)&&(frame%60==$0)&&(peek($E0204F)!=temp17)
+    if (param==$06)and(frame%60==$0)and(peek($E0204F)!=temp17)
       poke $E0204F $1C
     endif
-    if (param==$07)&&(frame%60==$0)&&(peek($FFE2B3)!=temp18)
+    if (param==$07)and(frame%60==$0)and(peek($FFE2B3)!=temp18)
       poke $FFE2B3 $07
     endif
-    if (param==$07)&&(frame%60==$0)&&(peek($E0004F)!=temp19)
+    if (param==$07)and(frame%60==$0)and(peek($E0004F)!=temp19)
       poke $E0004F $1D
     endif
-    if (param==$07)&&(frame%60==$0)&&(peek($E0204F)!=temp20)
+    if (param==$07)and(frame%60==$0)and(peek($E0204F)!=temp20)
       poke $E0204F $1D
     endif
-    if (param==$08)&&(frame%60==$0)&&(peek($FFE2B3)!=temp21)
+    if (param==$08)and(frame%60==$0)and(peek($FFE2B3)!=temp21)
       poke $FFE2B3 $08
     endif
-    if (param==$08)&&(frame%60==$0)&&(peek($E0004F)!=temp22)
+    if (param==$08)and(frame%60==$0)and(peek($E0004F)!=temp22)
       poke $E0004F $1B
     endif
-    if (param==$08)&&(frame%60==$0)&&(peek($E0204F)!=temp23)
+    if (param==$08)and(frame%60==$0)and(peek($E0204F)!=temp23)
       poke $E0204F $1B
     endif

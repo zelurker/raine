@@ -204,7 +204,7 @@ run:
     lpoke $00EDCA $4E754E71
     dpoke $00C9F4 $4E71
     lpoke $00C9F6 $4E714E71
-    if (dpeek($FFEBA0)!=$0&&dpeek($FFEB9A)==$0)
+    if (dpeek($FFEBA0)!=$0anddpeek($FFEB9A)==$0)
       poke $FF8039 peek($FF8039)&F0
       poke $FF803F peek($FF803F)&F0
       lpoke $00EE5A $4E714E71

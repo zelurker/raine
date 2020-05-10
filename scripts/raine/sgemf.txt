@@ -257,7 +257,7 @@ run:
     lpoke $01D3D6 temp1
     dpoke $01C15C temp2
     dpoke $01C328 temp3
-    if (dpeek($FF8189)!=$0&&dpeek($FF818E)==$0)
+    if (dpeek($FF8189)!=$0anddpeek($FF818E)==$0)
       lpoke $01E970 $4E714E71
       lpoke $1e974 $4E714E71
       lpoke $01D3D6 $4E714E71

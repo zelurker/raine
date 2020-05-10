@@ -25,7 +25,7 @@ run:
     if (peek($10A6B0)==$00)
       poke $10A6B0 param
     endif
-    if (param==$00)||(param==$06)
+    if (param==$00)or(param==$06)
       poke $10CA0F $FF
     endif
 off:

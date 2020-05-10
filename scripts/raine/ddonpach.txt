@@ -82,10 +82,10 @@ script "Kill Boss with 1 hit Now!" \
  "comm:Set this cheat after any boss completely appears on screen."  
 on:
     temp0=peek($101979)
-    if (temp0<=04)||(temp0==$06)
+    if (temp0<=$04)or(temp0==$06)
       lpoke $100198 $00000000
     endif
-    if (temp0>=05)
+    if (temp0>=$05)
       lpoke $100158 $00000000
     endif
 script " "  

@@ -13,10 +13,10 @@ run:
     if (peek($10C2F5)==$00)
       poke $10C2F5 param
     endif
-    if (peek($10C2FD)==$00)&&(param<06)
+    if (peek($10C2FD)==$00)and(param<$06)
       poke $10C2FD param
     endif
-    if (peek($10C2FD)==$00)&&(param==$06)
+    if (peek($10C2FD)==$00)and(param==$06)
       poke $10C2FD $0C
     endif
 script "Finish Current Section/Mission Now!" \

@@ -20,7 +20,7 @@ on:
     if (peek($40B05B)==$00)
       poke $41F839 $40|(peek($41F839)&~$40)
     endif
-    if (peek($40B05B)>=01)
+    if (peek($40B05B)>=$01)
       poke $41F837 $01|(peek($41F837)&~$01)
     endif
 script "P1 Select Perm. Current Bubble" \

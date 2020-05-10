@@ -6,7 +6,7 @@ run:
     poke $1000D3 $0A
 script "P1 Invincibility"  
 run:
-    if (peek($1000C9)==$FF)&&(peek($100073)<=0D)
+    if (peek($1000C9)==$FF)and(peek($100073)<=$0D)
       poke $1000C9 $00
     endif
 script "P1 Infinite Bombs"  
@@ -24,7 +24,7 @@ run:
     poke $1001D3 $0A
 script "P2 Invincibility"  
 run:
-    if (peek($1001C9)==$FF)&&(peek($100173)<=0D)
+    if (peek($1001C9)==$FF)and(peek($100173)<=$0D)
       poke $1001C9 $00
     endif
 script "P2 Infinite Bombs"  

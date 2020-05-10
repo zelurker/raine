@@ -218,7 +218,7 @@ run:
     dpoke $004A7E $600A
     dpoke $004AE2 $4E75
     dpoke $0164BE $4E75
-    if (peek($FFAE2D)!=$0&&lpeek($FFAE0C)==$0)
+    if (peek($FFAE2D)!=$0andlpeek($FFAE0C)==$0)
       poke $FF8039 $0
       dpoke $FFB1AC $0
       dpoke $004B4E $4E71

@@ -16,12 +16,12 @@ script "Select Starting Stage" \
 run:
     temp0=(dpeek($108D1A))%14
     temp1=peek($10834A)
-    if (temp0==$00)&&(temp1!=$FF)&&(param==$48)
+    if (temp0==$00)and(temp1!=$FF)and(param==$48)
       dpoke $108D1A param
       dpoke $108D1C $10
       poke $108D97 $14
     endif
-    if (temp0==$00)&&(temp1!=$FF)&&(param<=10)
+    if (temp0==$00)and(temp1!=$FF)and(param<=$10)
       dpoke $108D1A (dpeek($108D1A))+param
       dpoke $108D1C (dpeek($108D1A))-04
       poke $108D97 param
@@ -29,7 +29,7 @@ run:
 script "Finish Current Stage Now!" \
  "comm:Activate on screens with low action to avoid graphical bugs."  
 on:
-    if (peek($100117)==$01)&&(dpeek($108D1A)!=$48)
+    if (peek($100117)==$01)and(dpeek($108D1A)!=$48)
       lpoke $10C454 $000A00E4
     endif
 script " "  

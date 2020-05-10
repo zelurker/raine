@@ -22,7 +22,7 @@ run:
 script "P1 Rapid Fire" \
  "comm:Turn it OFF on name entry screen"  
 run:
-    if (peek($62CD8)<00)||(peek($62CD8)>01)
+    if (peek($62CD8)<$00)or(peek($62CD8)>$01)
       poke $62CD8 $00
     endif
 script " "  
@@ -42,7 +42,7 @@ run:
 script "P2 Rapid Fire" \
  "comm:Turn it OFF on name entry screen"  
 run:
-    if (peek($62D0A)<00)||(peek($62D0A)>01)
+    if (peek($62D0A)<$00)or(peek($62D0A)>$01)
       poke $62D0A $00
     endif
 script " "  

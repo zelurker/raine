@@ -7,7 +7,7 @@ run:
     poke $402186 $FF
 script "P1 Always Keep Ball in Play"  
 run:
-    if (peek($403139)<00)||(peek($403139)>B8)
+    if (peek($403139)<$00)or(peek($403139)>$B8)
       poke $403139 $A0
     endif
 script "P1 Always play as Patoraco" \
@@ -16,7 +16,7 @@ run:
     poke $400F39 $0C
 script "P2 Always Keep Ball in Play"  
 run:
-    if (peek($4038DD)<00)||(peek($4038DD)>B8)
+    if (peek($4038DD)<$00)or(peek($4038DD)>$B8)
       poke $4038DD $A0
     endif
 script "P2 Always play as Patoraco" \

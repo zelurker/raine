@@ -8,7 +8,7 @@ script "Infinite Fuel"
 on:
     temp0=peek($100B64)
 run:
-    if (frame%300==$0)&&(peek($100B64)!=temp0)
+    if (frame%300==$0)and(peek($100B64)!=temp0)
       poke $100B64 $48
     endif
 script "Invincibility" \

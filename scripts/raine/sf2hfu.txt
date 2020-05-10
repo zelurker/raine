@@ -1,6 +1,6 @@
 script "Infinite Time"  
 run:
-    if peek($FF8AC2)==$00&&peek($FF8ABE)>01
+    if peek($FF8AC2)==$00andpeek($FF8ABE)>01
       dpoke $FF8ABE $9928
       dpoke $FFDDA2 $203C
     endif
@@ -9,7 +9,7 @@ on:
     dpoke $FF8ABE $0101
 script "Disable projectile impact slowdown"  
 run:
-    if peek($FF83E8)!=$FF&&peek($FF86E8)!=$FF
+    if peek($FF83E8)!=$FFandpeek($FF86E8)!=$FF
       poke $FF82E2 $00
     endif
 script "Select Starting Stage" \
@@ -29,7 +29,7 @@ script "Select Starting Stage" \
  "0x0A03/Stage 11 (Sagat)"\
  "0x0B03/Stage 12 (Dictator)" 
 run:
-    if dpeek($FF89ED)==$0000||dpeek($FF89ED)==param
+    if dpeek($FF89ED)==$0000ordpeek($FF89ED)==param
       poke $FF89C1 param/$100
     endif
     if dpeek($FF89ED)==$0000
@@ -73,7 +73,7 @@ run:
 script " "  
 script "P1 Infinite Energy"  
 run:
-    if dpeek($FF83E8)<60&&(peek($FF83C1)&$10)==$00&&peek($FF89D4)==$0
+    if dpeek($FF83E8)<60and(peek($FF83C1)&$10)==$00andpeek($FF89D4)==$0
       dpoke $FF83E8 $90
       dpoke $FF857A $90
     endif
@@ -122,22 +122,22 @@ run:
     if peek($FF83BE)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek($FF83BE+$9A)<2
+    if temp0==$1andpeek($FF83BE+$9A)<2
       poke ($FF83BE+$9A) $2
     endif
-    if temp0==$1&&peek($FF83BE+$9C)<2
+    if temp0==$1andpeek($FF83BE+$9C)<2
       poke ($FF83BE+$9C) $2
     endif
-    if temp0==$1&&peek($FF83BE+$9E)<2
+    if temp0==$1andpeek($FF83BE+$9E)<2
       poke ($FF83BE+$9E) $2
     endif
-    if (temp0==$2||temp0==$5)&&peek(FF83BE+$9A)<3
+    if (temp0==$2ortemp0==$5)andpeek(FF83BE+$9A)<3
       poke ($FF83BE+$9A) $3
     endif
-    if (temp0==$2||temp0==$5)&&peek(FF83BE+$9C)<3
+    if (temp0==$2ortemp0==$5)andpeek(FF83BE+$9C)<3
       poke ($FF83BE+$9C) $3
     endif
-    if (temp0==$2||temp0==$5)&&peek(FF83BE+$9E)<3
+    if (temp0==$2ortemp0==$5)andpeek(FF83BE+$9E)<3
       poke ($FF83BE+$9E) $3
     endif
 script "P1 Shot motion cancel"  
@@ -187,7 +187,7 @@ run:
     if peek($FF83BE)==$0
       temp0=$FF
     endif
-    if temp0==$0||temp0==$4
+    if temp0==$0ortemp0==$4
       poke ($FF83BE+$90) $04
       poke ($FF83BE+$98) $04
     endif
@@ -204,17 +204,17 @@ run:
     if peek($FF83BE)==$0
       temp0=$FF
     endif
-    if temp0==$0||temp0==$4
+    if temp0==$0ortemp0==$4
       poke ($FF83BE+$A0) $04
     endif
     if temp0==$9
       lpoke ($FF83BE+$98) $02080004
     endif
-    if temp0==$7&&(dpeek(FF83BE+$292)&$2)>0
+    if temp0==$7and(dpeek(FF83BE+$292)&$2)>0
       dpoke ($FF83BE+$C8) $0608
       poke ($FF83BE+$D3) $05
     endif
-    if temp0==$7&&(dpeek(FF83BE+$292)&$1)>0
+    if temp0==$7and(dpeek(FF83BE+$292)&$1)>0
       dpoke ($FF83BE+$C8) $0608
       poke ($FF83BE+$D3) $06
     endif
@@ -230,13 +230,13 @@ run:
     if temp0==$7
       lpoke ($FF83BE+$98) $02080008
     endif
-    if temp0==$6&&peek($FF83BE+$12)!=$0
+    if temp0==$6andpeek($FF83BE+$12)!=$0
       lpoke ($FF83BE+$80) $06060800
     endif
-    if temp0==$6&&peek($FF83BE+$12)==$0
+    if temp0==$6andpeek($FF83BE+$12)==$0
       lpoke ($FF83BE+$80) $06070800
     endif
-    if temp0==$9&&peek($FF83BE+$AB)<4
+    if temp0==$9andpeek($FF83BE+$AB)<4
       lpoke ($FF83BE+$A8) $02080004
     endif
 script "P1 Set Boxer Turnpunch level" \
@@ -272,7 +272,7 @@ run:
 script " "  
 script "P2 Infinite Energy"  
 run:
-    if dpeek($FF86E8)<60&&(peek($FF86C1)&$10)==$00&&peek($FF89D4)==$0
+    if dpeek($FF86E8)<60and(peek($FF86C1)&$10)==$00andpeek($FF89D4)==$0
       dpoke $FF86E8 $90
       dpoke $FF887A $90
     endif
@@ -321,22 +321,22 @@ run:
     if peek($FF86BE)==$0
       temp0=$FF
     endif
-    if temp0==$1&&peek($FF86BE+$9A)<2
+    if temp0==$1andpeek($FF86BE+$9A)<2
       poke ($FF86BE+$9A) $2
     endif
-    if temp0==$1&&peek($FF86BE+$9C)<2
+    if temp0==$1andpeek($FF86BE+$9C)<2
       poke ($FF86BE+$9C) $2
     endif
-    if temp0==$1&&peek($FF86BE+$9E)<2
+    if temp0==$1andpeek($FF86BE+$9E)<2
       poke ($FF86BE+$9E) $2
     endif
-    if (temp0==$2||temp0==$5)&&peek(FF86BE+$9A)<3
+    if (temp0==$2ortemp0==$5)andpeek(FF86BE+$9A)<3
       poke ($FF86BE+$9A) $3
     endif
-    if (temp0==$2||temp0==$5)&&peek(FF86BE+$9C)<3
+    if (temp0==$2ortemp0==$5)andpeek(FF86BE+$9C)<3
       poke ($FF86BE+$9C) $3
     endif
-    if (temp0==$2||temp0==$5)&&peek(FF86BE+$9E)<3
+    if (temp0==$2ortemp0==$5)andpeek(FF86BE+$9E)<3
       poke ($FF86BE+$9E) $3
     endif
 script "P2 Shot motion cancel"  
@@ -386,7 +386,7 @@ run:
     if peek($FF86BE)==$0
       temp0=$FF
     endif
-    if temp0==$0||temp0==$4
+    if temp0==$0ortemp0==$4
       poke ($FF86BE+$90) $04
       poke ($FF86BE+$98) $04
     endif
@@ -403,17 +403,17 @@ run:
     if peek($FF86BE)==$0
       temp0=$FF
     endif
-    if temp0==$0||temp0==$4
+    if temp0==$0ortemp0==$4
       poke ($FF86BE+$A0) $04
     endif
     if temp0==$9
       lpoke ($FF86BE+$98) $02080004
     endif
-    if temp0==$7&&(dpeek(FF86BE+$292)&$2)>0
+    if temp0==$7and(dpeek(FF86BE+$292)&$2)>0
       dpoke ($FF86BE+$C8) $0608
       poke ($FF86BE+$D3) $05
     endif
-    if temp0==$7&&(dpeek(FF86BE+$292)&$1)>0
+    if temp0==$7and(dpeek(FF86BE+$292)&$1)>0
       dpoke ($FF86BE+$C8) $0608
       poke ($FF86BE+$D3) $06
     endif
@@ -429,13 +429,13 @@ run:
     if temp0==$7
       lpoke ($FF86BE+$98) $02080008
     endif
-    if temp0==$6&&peek($FF86BE+$12)!=$0
+    if temp0==$6andpeek($FF86BE+$12)!=$0
       lpoke ($FF86BE+$80) $06060800
     endif
-    if temp0==$6&&peek($FF86BE+$12)==$0
+    if temp0==$6andpeek($FF86BE+$12)==$0
       lpoke ($FF86BE+$80) $06070800
     endif
-    if temp0==$9&&peek($FF86BE+$AB)<4
+    if temp0==$9andpeek($FF86BE+$AB)<4
       lpoke ($FF86BE+$A8) $02080004
     endif
 script "P2 Set Boxer Turnpunch level" \

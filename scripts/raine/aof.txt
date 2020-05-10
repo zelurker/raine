@@ -32,7 +32,7 @@ on:
 run:
     dpoke $00EAC8 $600C
     dpoke $00DC22 $600C
-    if (dpeek($109EAE)==$F91C)&&(peek($10843B)==$02)
+    if (dpeek($109EAE)==$F91C)and(peek($10843B)==$02)
       poke $10870F $FF
       poke $108448 $01
     endif

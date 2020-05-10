@@ -15,7 +15,7 @@ run:
     poke $F502B $08
 script "P1 Invincibility"  
 run:
-    if (peek($F502D)<02)||(peek($F502D)>80)
+    if (peek($F502D)<$02)or(peek($F502D)>$80)
       poke $F502D $02
     endif
 script "P1 Always Have Maximum Shot Power"  
@@ -33,7 +33,7 @@ run:
     poke $F512B $08
 script "P2 Invincibility"  
 run:
-    if (peek($F512D)<02)||(peek($F512D)>80)
+    if (peek($F512D)<$02)or(peek($F512D)>$80)
       poke $F512D $02
     endif
 script "P2 Always Have Maximum Shot Power"  

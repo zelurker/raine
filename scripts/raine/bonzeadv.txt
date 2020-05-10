@@ -57,14 +57,14 @@ script "P1 Infinite Lives"
 on:
     temp0=peek($10D535)
 run:
-    if (frame%300==$0)&&(peek($10D535)!=temp0)
+    if (frame%300==$0)and(peek($10D535)!=temp0)
       poke $10D535 $05
     endif
 script "P2 Infinite Lives"  
 on:
     temp0=peek($10D545)
 run:
-    if (frame%300==$0)&&(peek($10D545)!=temp0)
+    if (frame%300==$0)and(peek($10D545)!=temp0)
       poke $10D545 $05
     endif
 script " "  

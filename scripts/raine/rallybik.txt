@@ -5,14 +5,14 @@ script "Infinite Gas"
 on:
     temp0=peek($805FC)
 run:
-    if (frame%300==$0)&&(peek($805FC)!=temp0)
+    if (frame%300==$0)and(peek($805FC)!=temp0)
       poke $805FC $7F
     endif
 script "Rank always 1st"  
 on:
     temp0=peek($805FB)
 run:
-    if (frame%60==$0)&&(peek($805FB)!=temp0)
+    if (frame%60==$0)and(peek($805FB)!=temp0)
       poke $805FB $01
     endif
 script " "  

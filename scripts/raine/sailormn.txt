@@ -91,74 +91,74 @@ script "Select Region" \
  "0x05/Taiwan"\
  "0x06/Korea" 
 run:
-    if (param==$01)&&(peek($10A34B)==$02)
+    if (param==$01)and(peek($10A34B)==$02)
       poke $10A34B $00
     endif
-    if (param==$01)&&(peek($10A3CB)==$02)
+    if (param==$01)and(peek($10A3CB)==$02)
       poke $10A3CB $00
     endif
-    if (param==$01)&&(peek($10A40D)==$02)
+    if (param==$01)and(peek($10A40D)==$02)
       poke $10A40D $00
     endif
-    if (param==$02)&&(peek($10A34B)==$02)
+    if (param==$02)and(peek($10A34B)==$02)
       poke $10A34B $01
     endif
-    if (param==$02)&&(peek($10A3CB)==$02)
+    if (param==$02)and(peek($10A3CB)==$02)
       poke $10A3CB $01
     endif
-    if (param==$02)&&(peek($10A40D)==$02)
+    if (param==$02)and(peek($10A40D)==$02)
       poke $10A40D $01
     endif
-    if (param==$03)&&(peek($10A34B)==$02)
+    if (param==$03)and(peek($10A34B)==$02)
       poke $10A34B $02
     endif
-    if (param==$03)&&(peek($10A3CB)==$02)
+    if (param==$03)and(peek($10A3CB)==$02)
       poke $10A3CB $02
     endif
-    if (param==$03)&&(peek($10A40D)==$02)
+    if (param==$03)and(peek($10A40D)==$02)
       poke $10A40D $02
     endif
-    if (param==$04)&&(peek($10A34B)==$02)
+    if (param==$04)and(peek($10A34B)==$02)
       poke $10A34B $03
     endif
-    if (param==$04)&&(peek($10A3CB)==$02)
+    if (param==$04)and(peek($10A3CB)==$02)
       poke $10A3CB $03
     endif
-    if (param==$04)&&(peek($10A40D)==$02)
+    if (param==$04)and(peek($10A40D)==$02)
       poke $10A40D $03
     endif
-    if (param==$05)&&(peek($10A34B)==$02)
+    if (param==$05)and(peek($10A34B)==$02)
       poke $10A34B $04
     endif
-    if (param==$05)&&(peek($10A3CB)==$02)
+    if (param==$05)and(peek($10A3CB)==$02)
       poke $10A3CB $04
     endif
-    if (param==$05)&&(peek($10A40D)==$02)
+    if (param==$05)and(peek($10A40D)==$02)
       poke $10A40D $04
     endif
-    if (param==$06)&&(peek($10A34B)==$02)
+    if (param==$06)and(peek($10A34B)==$02)
       poke $10A34B $05
     endif
-    if (param==$06)&&(peek($10A3CB)==$02)
+    if (param==$06)and(peek($10A3CB)==$02)
       poke $10A3CB $05
     endif
-    if (param==$06)&&(peek($10A40D)==$02)
+    if (param==$06)and(peek($10A40D)==$02)
       poke $10A40D $05
     endif
 script "Select Title Language" \
  "0x01/Japanese"\
  "0x02/English" 
 run:
-    if (param==$01)&&(peek($10A3C3)==$01)
+    if (param==$01)and(peek($10A3C3)==$01)
       poke $10A3C3 $00
     endif
-    if (param==$01)&&(peek($10A40F)==$01)
+    if (param==$01)and(peek($10A40F)==$01)
       poke $10A40F $00
     endif
-    if (param==$02)&&(peek($10A3C3)==$01)
+    if (param==$02)and(peek($10A3C3)==$01)
       poke $10A3C3 $01
     endif
-    if (param==$02)&&(peek($10A40F)==$01)
+    if (param==$02)and(peek($10A40F)==$01)
       poke $10A40F $01
     endif
 script "Display Hidden Debug BPSM Test Mode Menu" \

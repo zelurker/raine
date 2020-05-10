@@ -6,7 +6,7 @@ run:
     poke $1000BB $20
 script "Enable to Get Secret Bonus"  
 run:
-    if (peek($10165D)<00)||(peek($10165D)>01)
+    if (peek($10165D)<$00)or(peek($10165D)>$01)
       poke $10165D $01
     endif
 script "One hit for boss Now!"  
@@ -25,7 +25,7 @@ script "Select Starting Floor" \
  "0x28/Floor 41"\
  "0x31/Floor 50" 
 run:
-    if (peek($1001C9)!=$00)&&(peek($101573)==$00)
+    if (peek($1001C9)!=$00)and(peek($101573)==$00)
       poke $101573 param
     endif
 script "Items do not disappear" \
@@ -50,7 +50,7 @@ run:
 script "P1 Invincibility" \
  "comm:Turn it OFF temporarily when you get the green potion. See the Dip Switch Menu to enable an alternate Invincibility cheat."  
 run:
-    if (peek($1015EB)<00)||(peek($1015EB)>27)
+    if (peek($1015EB)<$00)or(peek($1015EB)>$27)
       poke $1015EB $00
     endif
 script "P1 Get Invincibility Item Now!"  
@@ -102,7 +102,7 @@ run:
 script "P2 Invincibility" \
  "comm:Turn it OFF temporarily when you get the green potion. See the Dip Switch Menu to enable an alternate Invincibility cheat."  
 run:
-    if (peek($10162B)<00)||(peek($10162B)>27)
+    if (peek($10162B)<$00)or(peek($10162B)>$27)
       poke $10162B $00
     endif
 script "P2 Get Invincibility Item Now!"  

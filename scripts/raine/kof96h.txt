@@ -2,7 +2,7 @@ script "Infinite Time"
 on:
     temp0=peek($10A836)
 run:
-    if (frame%60==$0)&&(peek($10A836)!=temp0)
+    if (frame%60==$0)and(peek($10A836)!=temp0)
       poke $10A836 $60
     endif
 script "Boss code + Timer stop" \

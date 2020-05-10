@@ -21,7 +21,7 @@ script "P1 Auto Fire" \
 on:
     temp0=peek($101B7C)
 run:
-    if (frame%60==$0)&&(peek($101B7C)!=temp0)
+    if (frame%60==$0)and(peek($101B7C)!=temp0)
       poke $101B7C $01
     endif
 script "P1 Invincibility"  
@@ -40,7 +40,7 @@ script "P2 Auto Fire" \
 on:
     temp0=peek($101B7E)
 run:
-    if (frame%60==$0)&&(peek($101B7E)!=temp0)
+    if (frame%60==$0)and(peek($101B7E)!=temp0)
       poke $101B7E $01
     endif
 script "P2 Invincibility"  

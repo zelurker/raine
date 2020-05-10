@@ -16,10 +16,10 @@ on:
     if (peek($317BBF)==$00)
       poke $317BBF $01
     endif
-    if (peek($317B7B)==$00)&&(peek($318BC1)!=$01)&&(peek($3173A1)<07)
+    if (peek($317B7B)==$00)and(peek($318BC1)!=$01)and(peek($3173A1)<$07)
       poke $317B7B $01
     endif
-    if (peek($317B7B)==$00)&&(peek($318BC1)!=$01)&&(peek($3173A1)==$07)
+    if (peek($317B7B)==$00)and(peek($318BC1)!=$01)and(peek($3173A1)==$07)
       poke $317B7D $01
     endif
 script "Cockpit does not get damaged in Stage 7"  

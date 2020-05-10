@@ -14,7 +14,7 @@ run:
     endif
 script "Always Keep One Ball in Play"  
 run:
-    if (peek($401D43)<00)||(peek($401D43)>C4)
+    if (peek($401D43)<$00)or(peek($401D43)>$C4)
       poke $401D43 $B8
     endif
 script "Infinite Ball Release Time"  
@@ -29,11 +29,11 @@ script "Select Permanent Ball Type" \
  "0x02/Mega Ball"\
  "0x03/Giga Ball" 
 run:
-    if (peek($401D2D)<=03)&&(peek($401D2D)!=$01)
+    if (peek($401D2D)<=$03)and(peek($401D2D)!=$01)
       poke $401D2D param
     endif
 off:
-    if (peek($401D2D)<=03)&&(peek($401D2D)!=$01)
+    if (peek($401D2D)<=$03)and(peek($401D2D)!=$01)
       poke $401D2D $00
     endif
 script "Invincibility (Round 100)"  
@@ -63,11 +63,11 @@ script "P1 Select Permanent Bat Type" \
  "0x0A/Catch"\
  "0x0B/Laser" 
 run:
-    if (peek($400379)<=B)
+    if (peek($400379)<=$B)
       poke $400379 param
     endif
 off:
-    if (peek($400379)<=B)
+    if (peek($400379)<=$B)
       poke $400379 $00
     endif
 script "P2 Infinite Lives"  
@@ -83,11 +83,11 @@ script "P2 Select Permanent Bat Type" \
  "0x0A/Catch"\
  "0x0B/Laser" 
 run:
-    if (peek($4003CF)<=B)
+    if (peek($4003CF)<=$B)
       poke $4003CF param
     endif
 off:
-    if (peek($4003CF)<=B)
+    if (peek($4003CF)<=$B)
       poke $4003CF $00
     endif
 script " "  

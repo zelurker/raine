@@ -20,7 +20,7 @@ run:
     endif
 script "Finish Current Section Now!"  
 on:
-    if (peek($1C1E06)==$FF)&&(peek($1C1E01)<0A)
+    if (peek($1C1E06)==$FF)and(peek($1C1E01)<$0A)
       poke $1C1E03 $01
     endif
 script "See End Sequence Now!"  

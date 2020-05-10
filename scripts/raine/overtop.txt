@@ -20,21 +20,21 @@ script "Get to Max Speed in 1 sec"
 on:
     temp0=peek($104851)
 run:
-    if (frame%60==$0)&&(peek($104851)!=temp0)
+    if (frame%60==$0)and(peek($104851)!=temp0)
       poke $104851 $FF
     endif
 script "Get to Max Speed in 3 secs"  
 on:
     temp0=peek($104851)
 run:
-    if (frame%120==$0)&&(peek($104851)!=temp0)
+    if (frame%120==$0)and(peek($104851)!=temp0)
       poke $104851 $FF
     endif
 script "Get to Max Speed in 5 secs"  
 on:
     temp0=peek($104851)
 run:
-    if (frame%300==$0)&&(peek($104851)!=temp0)
+    if (frame%300==$0)and(peek($104851)!=temp0)
       poke $104851 $FF
     endif
 script " "  

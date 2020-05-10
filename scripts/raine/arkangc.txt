@@ -6,7 +6,7 @@ run:
     poke $EF62 $00
 script "Always Keep One Ball in Play"  
 run:
-    if (peek($C4A5)<00)||(peek($C4A5)>E4)
+    if (peek($C4A5)<$00)or(peek($C4A5)>$E4)
       poke $C4A5 $E2
     endif
 script "Select Perm Ball Speed" \

@@ -28,60 +28,60 @@ on:
       temp2=$89
       temp1=$01
     endif
-    if (temp0>=83)&&(temp0<89)
+    if (temp0>=$83)and(temp0<$89)
       temp2=$89
     endif
-    if (temp0>=73)&&(temp0<83)
+    if (temp0>=$73)and(temp0<$83)
       temp2=$83
     endif
     if (temp0==$72)
       temp2=$73
       temp1=$01
     endif
-    if (temp0>=6C)&&(temp0<72)
+    if (temp0>=$6C)and(temp0<$72)
       temp2=$72
     endif
-    if (temp0>=5C)&&(temp0<6C)
+    if (temp0>=$5C)and(temp0<$6C)
       temp2=$6C
     endif
     if (temp0==$5B)
       temp2=$5C
       temp1=$01
     endif
-    if (temp0>=55)&&(temp0<5B)
+    if (temp0>=$55)and(temp0<$5B)
       temp2=$5B
     endif
-    if (temp0>=45)&&(temp0<55)
+    if (temp0>=$45)and(temp0<$55)
       temp2=$55
     endif
     if (temp0==$44)
       temp2=$45
       temp1=$01
     endif
-    if (temp0>=3E)&&(temp0<44)
+    if (temp0>=$3E)and(temp0<$44)
       temp2=$44
     endif
-    if (temp0>=2E)&&(temp0<3F)
+    if (temp0>=$2E)and(temp0<$3F)
       temp2=$3F
     endif
     if (temp0==$2D)
       temp2=$2E
       temp1=$01
     endif
-    if (temp0>=27)&&(temp0<2D)
+    if (temp0>=$27)and(temp0<$2D)
       temp2=$2D
     endif
-    if (temp0>=17)&&(temp0<27)
+    if (temp0>=$17)and(temp0<$27)
       temp2=$27
     endif
     if (temp0==$16)
       temp2=$17
       temp1=$01
     endif
-    if (temp0>=10)&&(temp0<16)
+    if (temp0>=$10)and(temp0<$16)
       temp2=$16
     endif
-    if (temp0>=00)&&(temp0<10)
+    if (temp0>=$00)and(temp0<$10)
       temp2=$10
       poke $10D243 temp2
     endif

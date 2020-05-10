@@ -10,7 +10,7 @@ run:
     poke $80671 $77
 script "Only 1 Computer to Collect per Level"  
 run:
-    if (peek($8073D)<00)||(peek($8073D)>01)
+    if (peek($8073D)<$00)or(peek($8073D)>$01)
       poke $8073D $01
     endif
 script " "  

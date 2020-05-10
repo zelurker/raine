@@ -6,7 +6,7 @@ run:
     poke $E7EE $78
 script "Always Keep One Ball in Play"  
 run:
-    if (peek($E3B4)<=10)
+    if (peek($E3B4)<=$10)
       poke $E3B4 $10
     endif
 script "Select Starting Round" \

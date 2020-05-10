@@ -279,7 +279,7 @@ run:
     poke $FF8033 temp0
     dpoke $0059F8 temp1
     lpoke $0059FA temp2
-    if (dpeek($FF8109)!=$0&&lpeek($FF810C)==$0)
+    if (dpeek($FF8109)!=$0andlpeek($FF810C)==$0)
       poke $FF8033 $0
       dpoke $FFC900 $0
       dpoke $FFCB00 $0

@@ -2,7 +2,7 @@ script "Infinite Time"
 on:
     temp0=peek($10882E)
 run:
-    if (frame%120==$0)&&(peek($10882E)!=temp0)
+    if (frame%120==$0)and(peek($10882E)!=temp0)
       poke $10882E $60
     endif
 script "Finish Round Now!"  

@@ -22,7 +22,7 @@ script "P1 Infinite Lives"
 on:
     temp0=peek($10109E)
 run:
-    if (frame%60==$0)&&(peek($10109E)!=temp0)
+    if (frame%60==$0)and(peek($10109E)!=temp0)
       poke $10109E $89
     endif
 script "P1 Infinite Ammo"  
@@ -45,7 +45,7 @@ script "P2 Infinite Lives"
 on:
     temp0=peek($10119E)
 run:
-    if (frame%60==$0)&&(peek($10119E)!=temp0)
+    if (frame%60==$0)and(peek($10119E)!=temp0)
       poke $10119E $89
     endif
 script "P2 Infinite Ammo"  
