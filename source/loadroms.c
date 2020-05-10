@@ -1160,7 +1160,7 @@ beg:
    }
 
 #if defined(SDL) && defined(USE_CURL)
-   if (!ta && !tried_curl) {
+   if (!ta && !tried_curl && !raine_cfg.no_curl) {
        // Curl then...
        // 1st idea was to put that at the end of recursive_rom_load
        // problem is that sometimes the archive present on disk is not

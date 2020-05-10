@@ -363,6 +363,7 @@ int main(int argc,char *argv[])
 
 #ifndef SDL
    _png_compression_level = raine_get_config_int( "Display",      "png_compression",         6);
+   raine_cfg.wibble		= raine_get_config_int( "General",      "wibble",               0);
 #endif
 
    getcwd(pwd,FILENAME_MAX);
@@ -373,11 +374,10 @@ int main(int argc,char *argv[])
 	   dir_cfg.share_path,pwd,argv[0]);
 #endif
 
-   raine_cfg.wibble		= raine_get_config_int( "General",      "wibble",               0);
-
    raine_cfg.extra_games = 0;
 
    raine_cfg.run_count		= raine_get_config_int( "General",      "run_count",                            0);
+   raine_cfg.no_curl		= raine_get_config_int( "General",      "no_curl",                              0);
    raine_cfg.version_no 	= raine_get_config_int( "General",      "version",                              0);
 
    s = strchr(VERSION,'.');
@@ -654,10 +654,13 @@ int main(int argc,char *argv[])
    close_debug();
 #endif
 
+#ifndef SDL
    if(raine_cfg.wibble)
-   raine_set_config_int(	"General",      "wibble",               raine_cfg.wibble);
+       raine_set_config_int(	"General",      "wibble",               raine_cfg.wibble);
+#endif
 
    raine_set_config_int(	"General",      "run_count",            raine_cfg.run_count);
+   raine_set_config_int(	"General",      "no_curl",              raine_cfg.no_curl);
    raine_set_config_int(	"General",      "version",              raine_cfg.version_no);
    raine_set_config_int(	"General",      "LimitSpeed",           display_cfg.limit_speed);
    raine_set_config_int(	"General",      "frame_skip",           display_cfg.frame_skip);

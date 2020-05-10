@@ -276,7 +276,10 @@ typedef struct RAINE_CFG
    UINT32 req_game_index;		// game number for req_load_game
    UINT32 version_no;			// what version of raine is running
    UINT32 run_count;			// how many times raine has run
+#ifndef SDL
    UINT32 wibble;			// wibble the screen
+#endif
+   int no_curl; // disable curl usage
    UINT32 extra_games;			// extra games enable (currently unused)
    UINT32 save_game_screen_settings;	// save display config for each game
    UINT32 hide;

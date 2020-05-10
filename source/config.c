@@ -109,6 +109,8 @@ static void CLI_Help(void)
 	"-noflip/-nof                   : Ignore default flipping in game drivers\n"
 #ifndef SDL
 	"-hide                          : Hide the gui (play at work)\n"
+#else
+	"-nc                            : no curl (disable curl usage to download roms)\n"
 #endif
 	"-listdsw <gamename>            : List dipswitches for a game, or all games\n"
 	"-region n			: set region to number n. Pass -1 for values\n"
@@ -146,6 +148,12 @@ static void CLI_Help(void)
 process the -limitspeed/-l option
 
 */
+
+#ifdef SDL
+static void CLI_nc() {
+    raine_cfg.no_curl = 1;
+}
+#endif
 
 static void CLI_LimitSpeed(void)
 {
@@ -1787,6 +1795,7 @@ static CLI_OPTION cli_commands[] =
    { "-dbuf",		CLI_dbuf		},
    { "-shader",		CLI_shader		},
    { "-filter",		CLI_filter		},
+   { "-nc",             CLI_nc },
 #endif
    { NULL,		NULL        		}
 };
