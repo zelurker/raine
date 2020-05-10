@@ -273,6 +273,7 @@ void TFileSel::compute_nb_items() {
   if (!dir) {
     perror(path);
   } else {
+      chdir(path);
     getcwd(cwd,1024);
     nb_files = 1;
 #ifdef RAINE_WIN32
@@ -312,8 +313,7 @@ void TFileSel::compute_nb_items() {
 	    menu[nb_files].values_list_label[0] = s = (char*)malloc(l);
 	    for (int n=0; n<l; n++) {
 		if (sh[n] > 255) {
-		    printf("short name out of limits\n");
-		    exit(1);
+		    printf("short name out of limits (%d=%d) : %ls\n",n,sh[n],sh);
 		}
 		s[n] = sh[n];
 	    }
