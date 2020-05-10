@@ -250,7 +250,13 @@ static menu_item_t myheader[] = {
 };
 
 void TFileSel::compute_nb_items() {
+#ifdef RAINE_WIN32
+    wchar_t wpath[strlen(path)+1];
+    mbstowcs(wpath,path,strlen(path)+1);
+    _WDIR *dir = _wopendir(wpath);
+#else
   DIR *dir = opendir(path);
+#endif
   int nb_menu = 10;
   char cwd[1024];
   char tmp_path[1024];
@@ -269,22 +275,72 @@ void TFileSel::compute_nb_items() {
   } else {
     getcwd(cwd,1024);
     nb_files = 1;
+#ifdef RAINE_WIN32
+    struct _wdirent *dent;
+    while ((dent = _wreaddir(dir))) {
+	if (!wcscmp(dent->d_name,L".") || !wcscmp(dent->d_name,L".."))
+	    continue;
+	int max = 0;
+	int len = wcslen(dent->d_name);
+	for (int n=0; n<len; n++)
+	    if (dent->d_name[n] > max)
+		max = dent->d_name[n];
+	if (max <= 255) {
+	    char *s;
+	    menu[nb_files].label = s = (char*)malloc(len+1);
+	    for (int n=0; n<=len; n++)
+		s[n] = dent->d_name[n];
+	    snprintf(tmp_path,1024,"%s%s%s",path,SLASH,s);
+	} else {
+	    // complex part, we have a char out of bounds...
+	    char utf[FILENAME_MAX];
+	    *utf = 0;
+	    WideCharToMultiByte(CP_UTF8,
+		    0,
+		    dent->d_name,
+		    -1,
+		    utf,
+		    FILENAME_MAX,
+		    NULL,
+		    NULL);
+	    menu[nb_files].label = strdup(utf);
+	    wchar_t sh[FILENAME_MAX];
+	    *sh = 0;
+	    GetShortPathNameW(dent->d_name,sh,FILENAME_MAX);
+	    int l = wcslen(sh)+1;
+	    char *s;
+	    menu[nb_files].values_list_label[0] = s = (char*)malloc(l);
+	    for (int n=0; n<l; n++) {
+		if (sh[n] > 255) {
+		    printf("short name out of limits\n");
+		    exit(1);
+		}
+		s[n] = sh[n];
+	    }
+	    snprintf(tmp_path,1024,"%s%s%s",path,SLASH,s);
+	}
+#else
     struct dirent *dent;
     while ((dent = readdir(dir))) {
       if (!strcmp(dent->d_name,".") || !strcmp(dent->d_name,".."))
 	continue;
       menu[nb_files].label = strdup(dent->d_name);
       snprintf(tmp_path,1024,"%s%s%s",path,SLASH,dent->d_name);
+#endif
       /* The big stupidity of readdir is that it doesn't set d_type (posix
        * compliant !!!).  */
       struct stat buf;
+      int ret = stat(tmp_path,&buf);
+      if (ret) {
+	  printf("got %d for stat for %s\n",ret,tmp_path);
+      }
       if (!stat(tmp_path,&buf) && S_ISDIR(buf.st_mode)) {
 	menu[nb_files].menu_func = &exec_dir;
 	nb_files++;
       } else if (!(options & ONLY_DIRS)) {
 	menu[nb_files].menu_func = &exec_file;
 	int found = 0,idx;
-	char *s = dent->d_name;
+	char *s = menu[nb_files].label;
 	if (strlen(s) > 3) {
 	    if (!stricmp(&s[strlen(s)-3],"iso") ||
 		    (strlen(s) > 6 && !stricmp(&s[strlen(s)-6],"iso.gz")))
@@ -296,11 +352,11 @@ void TFileSel::compute_nb_items() {
 	    for (s=ext[0], idx=1; s; s=ext[idx++]) {
 		int l = strlen(s);
 		if (strchr(s,'*') || strchr(s,'?')) { // pattern search
-		    if (!fnmatch(s,dent->d_name,FNM_CASEFOLD)) {
+		    if (!fnmatch(s,menu[nb_files].label,FNM_CASEFOLD)) {
 			found = 1;
 			break;
 		    }
-		} else if (!stricmp(&dent->d_name[strlen(dent->d_name)-(l)],s)) {
+		} else if (!stricmp(&menu[nb_files].label[strlen(menu[nb_files].label)-l],s)) {
 		    // extension only
 		    found = 1;
 		    break;
@@ -311,6 +367,10 @@ void TFileSel::compute_nb_items() {
 	if (!found) {
 	  // doesn't match the extension given
 	  free((void*)menu[nb_files].label);
+	  if (menu[nb_files].values_list_label[0]) {
+	      free(menu[nb_files].values_list_label[0]);
+	      menu[nb_files].values_list_label[0] = NULL;
+	  }
 	} else
 	  nb_files++;
       }
@@ -326,7 +386,11 @@ void TFileSel::compute_nb_items() {
       }
     }
     menu[nb_files].label = NULL;
+#ifdef RAINE_WIN32
+    _wclosedir(dir);
+#else
     closedir(dir);
+#endif
     qsort(&menu[1],nb_files-1,sizeof(menu_item_t),&sort_menu);
     if (oldsel)
 	for (int n=1; n<nb_files; n++)
@@ -356,8 +420,12 @@ void TFileSel::compute_nb_items() {
 
 TFileSel::~TFileSel() {
   int nb;
-  for (nb=2; nb<nb_files; nb++)
+  for (nb=2; nb<nb_files; nb++) {
     free((void*)menu[nb].label);
+    if (menu[nb].values_list_label[0]) {
+	free(menu[nb].values_list_label[0]);
+    }
+  }
   if (menu)
     free(menu);
 }
@@ -369,10 +437,10 @@ int TFileSel::get_fgcolor(int n) {
 }
 
 void TFileSel::set_dir(char *mypath) {
+    chdir(mypath);
   if (mypath != path)
     strcpy(path,mypath);
   if (!strstr(path,SLASH)) {
-    chdir(path);
     getcwd(path,1024);
   }
   if (font) {
@@ -407,7 +475,13 @@ int TFileSel::mychdir(int n) {
       strcpy(path,SLASH);
 #endif
   } else
-    sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].label);
+#ifdef RAINE_WIN32
+      if (menu[n].values_list_label[0]) {
+	  sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].values_list_label[0]);
+      } else {
+#endif
+	  sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].label);
+      }
   set_dir(path);
   if (old) {
       for (n=0; n<nb_items; n++)
