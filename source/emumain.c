@@ -55,6 +55,10 @@
 #include "sdl/SDL_gfx/SDL_framerate.h"
 #endif
 #include "neocd/cdda.h"
+#include "arpro.h"
+#ifdef HAS_CONSOLE
+#include "sdl/console/scripts.h"
+#endif
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...
    I can avoid to fix this by just adding these declarations here : */
