@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <zlib.h>
-#include <dirent.h>
 #ifdef DARWIN
 #include <unistd.h>
 #endif
@@ -36,6 +35,7 @@
 #ifdef SDL
 #include "display_sdl.h"
 #endif
+#include <dirent.h>
 
 static int ArgCount;		// Number of arguments in the command line
 static int ArgPosition;		// Current position in the argument list
@@ -62,11 +62,17 @@ void CLI_region() {
 static void CLI_Help(void)
 {
    allegro_message(
-	"USE: Raine <commands> <options> [gamename]\n"
+	"USE: Raine <commands> <options> [gamename]|[file]\n"
+	"\n"
+	"If you pass a file on the command line, it's assmued to be a neocd image,\n"
+	"either a zip or 7z file containing the files which were in the neocd iso\n"
+	"or a cue file (most usual)\n"
+	"or an iso file, in this case audio files are autodetected\n"
 	"\n"
 	"Commands:\n"
 	"\n"
 	"-game/-g [gamename]            : Select a game to load (see game list)\n"
+	"-rp \"path\"                   : use this path as 1st rom path\n"
 	"-gamelist/-gl                  : Quick list of all games\n"
 	"-gameinfo/-listinfo|-li <gamename> : List info for a game, or all games\n"
 	"-romcheck/-rc <gamename>       : Check roms are valid for a game, or all games\n"
@@ -85,11 +91,13 @@ static void CLI_Help(void)
 	"-noautoload                    : Disable auto savegame loading\n"
 	"-screenx/-sx [width]           : Select screen width\n"
 	"-screeny/-sy [height]          : Select screen height\n"
-	"-geometry [width][xheight][+posx][+posy] : window placement\n"
+	"-geometry [width][xheight][+posx][+posy] : window placement (implies -nb)\n"
 #ifndef SDL
 	"-screenmode/sm [type]          : Select screen type (allegro)\n"
 #endif
 	"-fullscreen/fs [0/1]           : Set fullscreen mode on/off\n"
+	"-nb                            : No Border\n"
+	"-wb                            : With Border\n"
 	"-bpp/-depth [number]           : Select screen colour depth\n"
 	"-rotate/-r [angle]             : Rotate screen 0,90,180 or 270 degrees\n"
 	"-ror                           : Rotate screen 90 degrees\n"
@@ -1577,6 +1585,34 @@ static void CLI_dsw_info(void)
 
 }
 
+static void CLI_nb(void)
+{
+    display_cfg.noborder = 1;
+}
+
+static void CLI_wb(void)
+{
+    display_cfg.noborder = 0;
+}
+
+static void CLI_rp(void)
+{
+   if( ((ArgPosition+1) < ArgCount) && (ArgList[ArgPosition+1][0] != '-') ){
+
+      ArgPosition++;
+      if (dir_cfg.rom_dir[0][0])
+	  free(dir_cfg.rom_dir[0]);
+      int l = strlen(ArgList[ArgPosition]);
+      if (ArgList[ArgPosition][l-1] == '/' ||
+	      ArgList[ArgPosition][l-1] == '\\')
+	  dir_cfg.rom_dir[0] = strdup(ArgList[ArgPosition]);
+      else {
+	  dir_cfg.rom_dir[0] = malloc(l+2);
+	  sprintf(dir_cfg.rom_dir[0],"%s/",ArgList[ArgPosition]);
+      }
+   }
+}
+
 static void CLI_lsf(void)
 {
    int i;
@@ -1690,7 +1726,10 @@ static CLI_OPTION cli_commands[] =
    { "-g",		CLI_game_load		},
    { "-listdsw",	CLI_dsw_info		},
    { "-lsf",            CLI_lsf },
+   { "-rp",		CLI_rp },
    { "-source_file",    CLI_lsf },
+   { "-nb",		CLI_nb },
+   { "-wb",		CLI_wb },
    { "-help",		CLI_Help		},
    { "-?",		CLI_Help		},
    { "--help",          CLI_Help                },
