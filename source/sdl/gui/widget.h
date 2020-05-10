@@ -9,7 +9,6 @@ extern int test_utf(const unsigned char *s);
 class TStatic {
   protected:
     menu_item_t *menu;
-    int is_utf;
   public:
     TStatic(menu_item_t *my_menu);
     virtual ~TStatic() {} // virtual destructor required so that objects

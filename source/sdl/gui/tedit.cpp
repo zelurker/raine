@@ -16,7 +16,6 @@ TEdit::TEdit(menu_item_t *my_menu) : TStatic(my_menu)
     pos_cursor = old_pos = 0;
     field = menu->values_list_label[0];
     pos = strlen(field);
-    is_utf = 0;
 }
 
 TEdit::~TEdit()
@@ -34,7 +33,6 @@ void TEdit::free_history() {
 void TEdit::disp(SDL_Surface *s, TFont *myfont, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
   font = myfont;
-  font->set_utf(is_utf);
   if (*menu->label) {
       // Draw the static without a changing bg
     TStatic::disp(s,myfont,x,y,xoptions-x,h,mymakecol(255,255,255),0,xoptions);

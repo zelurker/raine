@@ -54,44 +54,31 @@ static void ansi_font_dim(TFont *font, char *str, int *width, int *height) {
 // it's ascii, latin or anything else
 // follow the instructions from http://www.fileformat.info/info/unicode/utf8.htm
 int test_utf(const unsigned char *s) {
-    // This code seems to work, but it's an endless pain to use
-    // each time a child overrides something which displays text it must call this
-    // it should be done differently but there is an easy fix : set utf8 to everything in linux
-    // and to nothing elsewhere, what I will do for now...
-#ifdef RAINE_UNIX
-    return 1;
-#else
-    return 0;
-#endif
-
-#if 0
     const unsigned char *e = &s[strlen((const char*)s)];
     while (*s && s<e) {
 	if (*s >= 0xc2 && *s <= 0xdf) {
 	    if (s[1] >= 0x80 && s[1] <= 0xbf)
 		return 1;
-	    s++;
+	    return 0;
 	} else if (*s >= 0xe0 && *s <= 0xef) {
 	    if (s[1] >= 0x80 && s[1] <= 0xbf &&
 		    s[2] >= 0x80 && s[2] <= 0xbf)
 		return 1;
-	    s += 2;
+	    return 0;
 	} else if (*s >= 0xf0 && *s <= 0xff) {
 	    if (s[1] >= 0x80 && s[1] <= 0xbf &&
 		    s[2] >= 0x80 && s[2] <= 0xbf &&
 		    s[3] >= 0x80 && s[3] <= 0xbf)
 		return 1;
-	    s += 3;
+	    return 0;
 	}
 	s++;
     }
     return 0;
-#endif
 }
 
 TStatic::TStatic(menu_item_t *my_menu) {
     menu = my_menu;
-    is_utf = test_utf((const unsigned char*)menu->label);
 }
 
 int TStatic::get_len() {
@@ -116,7 +103,6 @@ int TStatic::get_len_max_options() {
 
 int TStatic::get_width(TFont *font) {
   int w,h;
-  font->set_utf(is_utf);
   ansi_font_dim(font,(char*)menu->label,&w,&h);
   return w;
 }
@@ -142,7 +128,6 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
   int fg = myfg, bg = mybg;
   char *s = (char*)menu->label;
   char *old = s;
-  font->set_utf(is_utf);
   while ((s = strstr(s,"\E["))) {
     if (s > menu->label) {
       *s = 0;
@@ -294,7 +279,6 @@ void TOptions::disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   }
   char *old = menu->label;
   menu->label = disp_string;
-  if (!is_utf) is_utf = test_utf((const unsigned char*)disp_string);
   TStatic::disp(s,font,xoptions,y,w,h,fg,bg,xoptions);
   menu->label = old;
   // font->surf_string(s,xoptions,y,disp_string,fg,bg,w);

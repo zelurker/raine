@@ -206,6 +206,7 @@ TFont_ttf::~TFont_ttf() {
 
 void TFont_ttf::dimensions(const char *s,int *w, int *h) {
   if (ttf) {
+      int is_utf = test_utf((const unsigned char*)s);
       if (is_utf)
 	  TTF_SizeUTF8(ttf,s,w,h);
       else
@@ -235,6 +236,7 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
   sc.g = (color >> 16) & 0xff;
   sc.r = (color >> 24) & 0xff;
   SDL_Surface *sf;
+  int is_utf = test_utf((const unsigned char*)s);
   if (is_utf)
       sf = TTF_RenderUTF8_Solid(ttf,s,sc );
   else
@@ -266,6 +268,7 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
   bg.g = (bgcolor >> 16) & 0xff;
   bg.r = (bgcolor >> 24) & 0xff;
   SDL_Surface *sf;
+  int is_utf = test_utf((const unsigned char*)s);
   if (is_utf)
       sf = TTF_RenderUTF8_Shaded(ttf,s,sc,bg);
   else

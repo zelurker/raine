@@ -133,7 +133,6 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     char *old = s;
     int old_min = min_font_size;
     min_font_size = 1;
-    font->set_utf(is_utf);
     int white = mymakecol(255,255,255);
     // All the translations are taken from http://home.comcast.net/~plotor/command.html
     while (*s) {
