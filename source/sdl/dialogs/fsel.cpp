@@ -478,10 +478,9 @@ int TFileSel::mychdir(int n) {
 #ifdef RAINE_WIN32
       if (menu[n].values_list_label[0]) {
 	  sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].values_list_label[0]);
-      } else {
+      } else
 #endif
 	  sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].label);
-      }
   set_dir(path);
   if (old) {
       for (n=0; n<nb_items; n++)
