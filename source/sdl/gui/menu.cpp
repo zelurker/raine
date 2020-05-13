@@ -1142,7 +1142,7 @@ void TMenu::redraw_fg_layer() {
       print_debug("rebuilding fg_layer\n");
       return draw();
   }
-  if (!sdl_screen->pixels) {
+  if (!sdl_screen->pixels || (sdl_screen->flags & SDL_OPENGL)) {
       printf("adjust_gui_resolution from redraw_fg_layer\n");
       adjust_gui_resolution();
   }
