@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.91.3"
+VERSION = "0.91.4"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -71,17 +71,20 @@ HAS_CONSOLE = 1
 
 # end of user options, after this line the real thing starts...
 
+ifdef target
+	CROSSCOMPILE = 1
+	# I don't think anyone would want another native here ?
+	NATIVE=linux-gnu-sdl
+ifeq ("${target}","x86_64-w64-mingw32")
+	NO_ASM = 1
+endif
+endif
+
 ifdef NO_ASM
 ASM_VIDEO_CORE =
 MAME_Z80 = 1
 MAME_6502 = 1
 USE_MUSASHI = 2
-endif
-
-ifdef target
-	CROSSCOMPILE = 1
-	# I don't think anyone would want another native here ?
-	NATIVE=linux-gnu-sdl
 endif
 
 ifeq ("$(shell uname)","Linux")
