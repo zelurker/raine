@@ -1,3 +1,6 @@
+script "Infinite Time"
+run:
+    poke $1013B4 $3C
 script "P1 invulnerability"
 run:
   poke $101517 2
