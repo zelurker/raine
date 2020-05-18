@@ -48,6 +48,7 @@
 #include "sound/assoc.h"
 #include "bld.h"
 #include "alpha.h"
+#include "version.h"
 
 // #define NEOGEO_MCARD_16BITS 1
 
@@ -1455,8 +1456,8 @@ void neogeo_read_gamename(void)
       restore_memcard(); // called after loading
   }
   /* update window title with game name */
-  char neocd_wm_title[160];
-  sprintf(neocd_wm_title,"Raine - %s",config_game_name);
+  char neocd_wm_title[180];
+  sprintf(neocd_wm_title,"Raine %s - %s",VERSION,config_game_name);
   SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
 }
 

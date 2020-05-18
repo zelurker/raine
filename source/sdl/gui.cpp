@@ -44,6 +44,7 @@
 #include "neocd/cdrom.h"
 #include "str_opaque.h"
 #include "control_internal.h"
+#include "version.h"
 
 static int WantScreen;
 static int WantQuit;
@@ -272,7 +273,7 @@ static void do_load_game(void)
      }
      if (raine_cfg.save_game_screen_settings)
        WantScreen=1;
-     sprintf(neocd_wm_title,"Raine - %s",current_game->long_name);
+     sprintf(neocd_wm_title,"Raine %s - %s",VERSION,current_game->long_name);
      SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
      break;
    case LOAD_FATAL_ERROR:			// FATAL ERROR - REMOVE GAME
