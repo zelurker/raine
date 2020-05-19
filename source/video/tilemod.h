@@ -39,7 +39,7 @@ typedef struct TILE_INFO
    UINT32 flip;
 } TILE_INFO;
 
-struct TILE_INFO tile_list[0x10];
+extern struct TILE_INFO tile_list[0x10];
 
 extern UINT32 tile_list_count;
 

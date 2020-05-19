@@ -9,6 +9,9 @@
 #include "lspr8.h"
 
 extern int layer_id_data[MAX_CHIP][3];
+UINT8 *GFX_FG0,*GFX_FG1;
+int tc0100scn_layer_count;			// Init this to 0 each screen update.
+struct TC0100SCN tc0100scn[MAX_CHIP];
 
 /*
 

@@ -10,6 +10,7 @@
 #include "debug.h"
 #endif
 
+struct TILE_INFO tile_list[0x10];
 UINT8 *GFX_BG0;
 UINT8 *GFX_BG1;
 UINT8 *GFX_BG2;

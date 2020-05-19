@@ -9,6 +9,9 @@
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 #include "blit.h"
 
+int tc0180vcu_layer_count;			// Init this to 0 each screen update.
+struct TC0180VCU tc0180vcu;
+
 struct VIDEO_INFO b_system_video =
 {
    draw_b_system,

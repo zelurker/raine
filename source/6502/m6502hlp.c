@@ -13,6 +13,18 @@ This is untested
 
 UINT8 *M6502ROM;
 int M6502Engine;
+struct MemoryReadByte	M6502A_memoryreadbyte[32];
+struct MemoryWriteByte	M6502A_memorywritebyte[32];
+struct MemoryReadByte	M6502B_memoryreadbyte[32];
+struct MemoryWriteByte	M6502B_memorywritebyte[32];
+struct MemoryReadByte	M6502C_memoryreadbyte[32];
+struct MemoryWriteByte	M6502C_memorywritebyte[32];
+#ifndef MAME_6502
+struct m6502context	M6502_context[MAX_6502];
+UINT8 *m6502Base;		// Must make global in the asm
+#else
+m6502_Regs M6502_context[MAX_6502];
+#endif
 static int c1,c2,c3,c4;
 static int b1,b2,b3,b4;
 static int e1,e2,e3,e4;

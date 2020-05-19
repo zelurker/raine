@@ -14,13 +14,13 @@ extern "C" {
 #define MAX_6502	(3)
 
 #ifndef MAME_6502
-struct m6502context	M6502_context[MAX_6502];
+extern struct m6502context	M6502_context[MAX_6502];
 #else
-m6502_Regs M6502_context[MAX_6502];
+extern m6502_Regs M6502_context[MAX_6502];
 #endif
 
-struct MemoryReadByte	M6502A_memoryreadbyte[32];
-struct MemoryWriteByte	M6502A_memorywritebyte[32];
+extern struct MemoryReadByte	M6502A_memoryreadbyte[32];
+extern struct MemoryWriteByte	M6502A_memorywritebyte[32];
 extern UINT8 *M6502ROM;         // Pointer for Z80ROM memory
 extern int M6502Engine;         // Number of M6502's in use
 
@@ -49,8 +49,8 @@ void AddM6502AInit(void);
  *  enough room for all memory entries (Max of 32)!
  */
 
-struct MemoryReadByte	M6502B_memoryreadbyte[32];
-struct MemoryWriteByte	M6502B_memorywritebyte[32];
+extern struct MemoryReadByte	M6502B_memoryreadbyte[32];
+extern struct MemoryWriteByte	M6502B_memorywritebyte[32];
 
 /*
  *  Fill in the basic structures via these functions...
@@ -74,8 +74,9 @@ void AddM6502BInit(void);
  *  enough room for all memory entries (Max of 32)!
  */
 
-struct MemoryReadByte	M6502C_memoryreadbyte[32];
-struct MemoryWriteByte	M6502C_memorywritebyte[32];
+extern struct MemoryReadByte	M6502C_memoryreadbyte[32];
+extern struct MemoryWriteByte	M6502C_memorywritebyte[32];
+
 /*
  *  Fill in the basic structures via these functions...
  */

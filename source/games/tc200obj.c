@@ -148,6 +148,7 @@ Euro Champ 92           - OK [bank ????]
 */
 
 #define OBJ_XY_MASK	0xFFF
+struct TC0200OBJ tc0200obj;
 
 static UINT8 *zoom16_ofs;
 

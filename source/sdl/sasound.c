@@ -65,7 +65,6 @@
 
 int GameSound;
 static int fadeout,fade_nb,fade_frame;
-UINT8 *PCMROM;
 
 static char driver_name[40];
 #ifdef HAS_NEO

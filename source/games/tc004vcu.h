@@ -23,7 +23,7 @@ typedef struct TC0004VCU			// Information about 1 chip
    UINT32 scr_x,scr_y;				// Scroll offset add (0,0)
 } TC0004VCU;
 
-struct TC0004VCU tc0004vcu;
+extern struct TC0004VCU tc0004vcu;
 
 void tc0004vcu_init(void);
 

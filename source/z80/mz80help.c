@@ -34,7 +34,7 @@ puser is relative to 0x0000
 
 #ifndef MAME_Z80
 struct mz80context	Z80_context[MAX_Z80];
-INT32 z80_offdata;
+extern INT32 z80_offdata; // defined in makez80.c (asm)
 #else
 Z80_Regs Z80_context[MAX_Z80];
 UINT32 dwElapsedTicks;

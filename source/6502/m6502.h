@@ -161,10 +161,10 @@ extern UINT16 m6502bspc;
 extern UINT16 m6502zppc;
 extern UINT16 m6502pc;
 
-UINT8 *m6502Base;		// Must make global in the asm
-extern void m6502SetContext(struct m6502context *);
-extern void m6502GetContext(struct m6502context *);
-extern UINT32 m6502GetContextSize(void);
+extern UINT8 *m6502Base;		// Must make global in the asm
+void m6502SetContext(struct m6502context *);
+void m6502GetContext(struct m6502context *);
+UINT32 m6502GetContextSize(void);
 
 extern void m6502zpSetContext(struct m6502context *);
 extern void m6502zpGetContext(struct m6502context *);

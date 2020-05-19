@@ -10,8 +10,6 @@ extern "C" {
 
 #include "deftypes.h"
 
-int tc0180vcu_layer_count;			// Init this to 0 each screen update.
-
 typedef struct TC0180VCU			// Information about 1 chip
 {
    UINT8 *RAM;					// Layer RAM address
@@ -28,7 +26,8 @@ typedef struct TC0180VCU			// Information about 1 chip
    UINT8 *RAM_2;				// Further RAM address
 } TC0180VCU;
 
-struct TC0180VCU tc0180vcu;
+extern int tc0180vcu_layer_count;			// Init this to 0 each screen update.
+extern struct TC0180VCU tc0180vcu;
 
 void vcu_make_col_bankmap(UINT8 mask, UINT8 ofs_0, UINT8 ofs_1, UINT8 ofs_2, UINT8 ofs_3);
 

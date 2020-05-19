@@ -36,11 +36,11 @@ struct TILE_Q
    struct TILE_Q *next;                 // Next item with equal priority
 };
 
-struct TILE_Q *last_tile;               // last tile in use
-struct TILE_Q *next_tile[MAX_PRI];      // next tile for each priority
-struct TILE_Q *first_tile[MAX_PRI];     // first tile for each priority
+extern struct TILE_Q *last_tile;               // last tile in use
+extern struct TILE_Q *next_tile[MAX_PRI];      // next tile for each priority
+extern struct TILE_Q *first_tile[MAX_PRI];     // first tile for each priority
 
-UINT32 tile_start;
+extern UINT32 tile_start;
 
 static DEF_INLINE void QueueTile(int tile, int x, int y, UINT8 *map, UINT8 flip, int pri)
 {

@@ -9,6 +9,9 @@
 #include "savegame.h"
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 
+int tc0006vcu_layer_count;
+struct TC0006VCU tc0006vcu;
+
 /*
 
 In fact, this chip is actually the TC0480SCP (from mame). Here is the info they have:

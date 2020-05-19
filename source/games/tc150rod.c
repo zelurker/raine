@@ -8,6 +8,8 @@
 #include "tc150rod.h"
 #include "blit.h"
 
+struct TC0150ROD tc0150rod;
+
 /*
 
 tc0150rod info

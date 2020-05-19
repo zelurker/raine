@@ -22,7 +22,7 @@ typedef struct SETA_X1				// Information about 1 chip
    UINT32 scr_x,scr_y;				// Scroll offset add (0,0)
 } SETA_X1;
 
-struct SETA_X1 seta_x1;
+extern struct SETA_X1 seta_x1;
 
 void render_seta_x1_68000(void);
 

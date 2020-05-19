@@ -80,6 +80,8 @@ Volfied            - NO [Input on c-chip]
 
 */
 
+struct TC0220IOC tc0220ioc;
+
 /*
 
 Ashura Blaster

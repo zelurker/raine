@@ -50,10 +50,6 @@ void F3SysEEPROMAccessMode1B(UINT8 data);
 void F3SysEEPROMAccessMode2(UINT8 data);
 void setup_sound_68000();
 
-UINT8 *F3ModData;
-
-UINT32 ddd[32];
-
 #ifdef __cplusplus
 }
 #endif

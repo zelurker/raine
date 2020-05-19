@@ -4,11 +4,11 @@ extern "C" {
 #endif
 #include "mame/eeprom.h"
 
-struct SOUND_INFO sound_qsound[2];
-struct VIDEO_INFO video_cps1;
-struct VIDEO_INFO video_cps1_270;
+extern struct SOUND_INFO sound_qsound[2];
+extern struct VIDEO_INFO video_cps1;
+extern struct VIDEO_INFO video_cps1_270;
 
-struct EEPROM_interface pang3_eeprom_interface;
+extern struct EEPROM_interface pang3_eeprom_interface;
 
 void load_cps1_10(void);
 void load_cps1_12(void);

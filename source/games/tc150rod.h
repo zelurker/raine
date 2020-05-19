@@ -20,7 +20,7 @@ typedef struct TC0150ROD			// Information about 1 chip
    UINT32 scr_x,scr_y;				// Scroll offset add (0,0)
 } TC0150ROD;
 
-struct TC0150ROD tc0150rod;
+extern struct TC0150ROD tc0150rod;
 
 void tc0150rod_init_palette(void);
 

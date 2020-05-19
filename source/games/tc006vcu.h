@@ -10,8 +10,6 @@ extern "C" {
 
 #include "deftypes.h"
 
-int tc0006vcu_layer_count;
-
 typedef struct TC0006VCU			// Information about 1 chip
 {
    UINT8 *RAM;					// video ram
@@ -29,7 +27,8 @@ typedef struct TC0006VCU			// Information about 1 chip
    UINT32 pal_ofs;				//
 } TC0006VCU;
 
-struct TC0006VCU tc0006vcu;
+extern int tc0006vcu_layer_count;
+extern struct TC0006VCU tc0006vcu;
 
 void init_tc0006vcu(void);
 

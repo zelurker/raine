@@ -6,6 +6,11 @@
 #include "games.h"
 #include "spr16x16.h"
 
+struct TILE_Q *last_tile;               // last tile in use
+struct TILE_Q *next_tile[MAX_PRI];      // next tile for each priority
+struct TILE_Q *first_tile[MAX_PRI];     // first tile for each priority
+UINT32 tile_start;
+
 /*
   The priority bitmap :
 

@@ -26,7 +26,7 @@ typedef struct TC0200OBJ			// Information about 1 chip
    UINT8 cols;					// Colours per sprite
 } TC0200OBJ;
 
-struct TC0200OBJ tc0200obj;
+extern struct TC0200OBJ tc0200obj;
 
 extern UINT16 *f2_sprite_extension,f2_sprites_colors;
 

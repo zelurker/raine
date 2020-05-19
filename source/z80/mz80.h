@@ -152,7 +152,6 @@ typedef struct mz80context CONTEXTMZ80;
 #else
 #include "mame/z80/z80.h"
 
-extern INT32 z80_offdata;
 #define mz80ReleaseTimeslice z80_release_time_slice
 #define z80intPending  Z80.irq_state
 #define mz80GetContext(a) z80_get_context(a)

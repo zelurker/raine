@@ -263,7 +263,7 @@ static UINT8 *MSK_FG0;
 
 static UINT8 *RAM_SCR;
 
-int romset, x_res, x_off, fg_off;
+static int romset, x_res, x_off, fg_off;
 UINT16 VReg;
 
 static void terraf_clear_intro(int ram_off, int st1, int st2)

@@ -22,7 +22,7 @@ typedef struct TC0002OBJ			// Information about 1 chip
    UINT16 ctrl;					// color/pri control
 } TC0002OBJ;
 
-struct TC0002OBJ tc0002obj;
+extern struct TC0002OBJ tc0002obj;
 
 void render_tc0002obj_mapped(void);
 

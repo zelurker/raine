@@ -18,8 +18,6 @@ extern "C" {
 #define SCN_FG0_SCROLL		2
 #define SCN_FG0_SCROLL_2	3
 
-int tc0100scn_layer_count;			// Init this to 0 each screen update.
-
 typedef struct TC0100SCN_LAYER			// Information about 1 layer
 {
    UINT8 *RAM;					// Layer RAM address
@@ -41,7 +39,8 @@ typedef struct TC0100SCN			// Information about 1 chip
    UINT8 *GFX_FG0;
 } TC0100SCN;
 
-struct TC0100SCN tc0100scn[MAX_CHIP];
+extern int tc0100scn_layer_count;			// Init this to 0 each screen update.
+extern struct TC0100SCN tc0100scn[MAX_CHIP];
 
 void render_tc0100scn_layer_mapped(int chip, int layer, int transp);
 
@@ -51,8 +50,7 @@ void render_tc0100scn_layer_mapped_flipy(int chip, int layer);
 
 /******************************************************************************/
 
-UINT8 *GFX_FG0;
-UINT8 *GFX_FG1;
+extern UINT8 *GFX_FG0,*GFX_FG1;
 
 void init_tc0100scn(int chip);
 

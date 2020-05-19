@@ -9,6 +9,8 @@
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 #include "blit.h"
 
+struct TC0004VCU tc0004vcu;
+
 /*
 
 'tc0004vcu' is a made up name, until someone can give me more board info.

@@ -19,7 +19,7 @@ typedef struct TC0220IOC			// Information about 1 chip
    UINT32 ctrl;					// Control Information
 } TC0220IOC;
 
-struct TC0220IOC tc0220ioc;
+extern struct TC0220IOC tc0220ioc;
 
 extern struct INPUT_INFO b_system_inputs[];
 extern struct INPUT_INFO b_system_inputs_3_button[];

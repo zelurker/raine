@@ -18,7 +18,6 @@
 #include "sdl/opengl.h"
 #include "loadpng.h"
 
-UINT32 emudx_transp;
 static SDL_PixelFormat overlay_format = {
   NULL,
   16,
