@@ -364,7 +364,7 @@ else
    shaders_dir = $(rainedata)/shaders
    fonts_dir = $(rainedata)/fonts
    langdir = $(rainedata)/locale
-   scripts_dir = $(rainedata)/scripts/neocd
+   scripts_dir = $(rainedata)/scripts
 #   bld_dir = $(rainedata)/blend
 endif
    romdir = $(rainedata)/roms
@@ -1574,9 +1574,8 @@ else
 	@echo installing bitmaps in $(bitmaps_dir)
 	$(INSTALL_DATA) bitmaps/cursor.png bitmaps/raine_logo.png $(bitmaps_dir)
 	@echo installing shaders in $(shaders_dir)
-	$(INSTALL_DATA) shaders/* $(shaders_dir)
-	$(INSTALL_DATA) scripts/neocd/* $(scripts_dir)
-	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
+	$(INSTALL_DATA) shaders/*.shader $(shaders_dir)
+	@cp -rfva scripts/* $(scripts_dir)
 #	$(INSTALL_DATA) blend/* $(bld_dir)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
