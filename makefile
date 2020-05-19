@@ -1582,12 +1582,14 @@ endif
 	sh -c "if [ -f command.dat ]; then install command.dat $(rainedata); fi"
 	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/debug_dips.txt $(rainedata)
+ifdef RAINE_DOS
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
+	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
+endif
 ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
-	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
 	@cp -rfv locale/fr locale/es locale/it $(langdir)
 ifdef DARWIN
 	@echo creating package $(DESTDIR)
