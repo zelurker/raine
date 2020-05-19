@@ -1576,6 +1576,7 @@ else
 	@echo installing shaders in $(shaders_dir)
 	$(INSTALL_DATA) shaders/* $(shaders_dir)
 	$(INSTALL_DATA) scripts/neocd/* $(scripts_dir)
+	$(INSTALL_DATA) scripts/raine/* $(scripts_dir)
 #	$(INSTALL_DATA) blend/* $(bld_dir)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
