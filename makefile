@@ -1589,7 +1589,7 @@ ifndef DARWIN
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
 	$(INSTALL_DATA) config/neocheats.cfg $(rainedata)
-	@cp -rfv locale/fr locale/es $(langdir)
+	@cp -rfv locale/fr locale/es locale/it $(langdir)
 ifdef DARWIN
 	@echo creating package $(DESTDIR)
 	@cp Info.plist $(prefix)
