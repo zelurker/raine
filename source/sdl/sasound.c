@@ -593,9 +593,18 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	info.format = gotspec.format;
 	info.channels = gotspec.channels;
 	info.rate = gotspec.freq;
-	sample = Sound_NewSampleFromFile(track_to_read,
-		&info,
-		16384);
+	char *ext = strrchr(track_to_read,'.');
+	if (!ext || (strcasecmp(ext+1,"wav") &&
+		    strcasecmp(ext+1,"ogg") &&
+		    strcasecmp(ext+1,"flac") &&
+		    strcasecmp(ext+1,"mp3"))) {
+	    print_debug("unknown extension for track to read, switching to raw...\n");
+	    SDL_RWops *rw = SDL_RWFromFile(track_to_read,"rb");
+	    sample = Sound_NewSample(rw,"raw",&info,16384);
+	} else
+	    sample = Sound_NewSampleFromFile(track_to_read,
+		    &info,
+		    16384);
 	if (!sample) {
 	    print_ingame(183, gettext("Audio track unreadable"));
 	    print_debug("Audio track unreadable : %s\n",track_to_read);
