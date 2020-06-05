@@ -217,6 +217,34 @@ void get_track_index(int track, int *start, int *end) {
     *start = 0;
 }
 
+static void handle_iso(FILE *f,char *start,char *cue) {
+    strcpy(neocd_path,start);
+    if (!exists(neocd_path)) {
+	strcat(neocd_path,".gz");
+	if (!exists(neocd_path)) {
+	    neocd_path[strlen(neocd_path)-3] = 0;
+	} else {
+	    init_iso_gz();
+	    return;
+	}
+    }
+    if (!exists(neocd_path)) {
+	// Last resort for some broken cue files
+	// sometimes all the files have been renamed with the same base name without changing the cue file
+	char ext[4];
+	strcpy(ext,&neocd_path[strlen(neocd_path)-3]);
+	strcpy(neocd_path,cue);
+	strcpy(&neocd_path[strlen(neocd_path)-3],ext);
+    }
+    if (!exists(neocd_path)) {
+	ErrorMsg(gettext("can't find iso file"));
+	load_type = -1;
+	fclose(f);
+	return;
+    }
+    init_iso();
+}
+
 void init_load_type() {
   if (alloc_tracks) {
     int n;
@@ -280,38 +308,7 @@ void init_load_type() {
 		  break;
 	      }
 	  }
-	  if (!strncmp(end+2,"BINARY",6)) {
-	    char *path = strrchr(neocd_path,SLASH[0]);
-	    if (!path) {
-	      ErrorMsg(gettext("path format error"));
-	      break;
-	    }
-	    strcpy(path+1,start+1);
-	    if (!exists(neocd_path)) {
-		strcat(neocd_path,".gz");
-		if (!exists(neocd_path)) {
-		    neocd_path[strlen(neocd_path)-3] = 0;
-		} else {
-		    init_iso_gz();
-		    continue;
-		}
-	    }
-	    if (!exists(neocd_path)) {
-		// Last resort for some broken cue files
-		// sometimes all the files have been renamed with the same base name without changing the cue file
-		char ext[4];
-		strcpy(ext,&neocd_path[strlen(neocd_path)-3]);
-		strcpy(neocd_path,cue);
-		strcpy(&neocd_path[strlen(neocd_path)-3],ext);
-	    }
-	    if (!exists(neocd_path)) {
-		ErrorMsg(gettext("can't find iso file"));
-		load_type = -1;
-		fclose(f);
-		return;
-	    }
-	    init_iso();
-	  } else if (!strncmp(end+2,"MP3",3) || !strncmp(end+2,"WAVE",4)) {
+	  if (!strncmp(end+2,"MP3",3) || !strncmp(end+2,"WAVE",4) || !strncmp(end+2,"BINARY",6)) {
 	    if (alloc_tracks == nb_tracks) {
 	      alloc_tracks += 10;
 	      mp3_track = realloc(mp3_track,alloc_tracks*sizeof(char**));
@@ -354,6 +351,9 @@ void init_load_type() {
 		    iso_sector_size = atoi(slash+1);
 		    print_debug("found sector size %d\n",iso_sector_size);
 		}
+		handle_iso(f,mp3_track[0],cue);
+		free(mp3_track[0]);
+		nb_tracks--;
 	    }
 	} else if ((s = strstr(buff,"INDEX")) && !nb_tracks && current_track > 1) {
 	  // found internal audio track
