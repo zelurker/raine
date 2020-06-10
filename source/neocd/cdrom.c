@@ -217,7 +217,7 @@ void get_track_index(int track, int *start, int *end) {
     *start = 0;
 }
 
-static void handle_iso(FILE *f,char *start,char *cue) {
+static void handle_iso(char *start,char *cue) {
     strcpy(neocd_path,start);
     if (!exists(neocd_path)) {
 	strcat(neocd_path,".gz");
@@ -239,7 +239,6 @@ static void handle_iso(FILE *f,char *start,char *cue) {
     if (!exists(neocd_path)) {
 	ErrorMsg(gettext("can't find iso file"));
 	load_type = -1;
-	fclose(f);
 	return;
     }
     init_iso();
@@ -320,22 +319,6 @@ void init_load_type() {
 	    int n = nb_tracks;
 	    mp3_track[nb_tracks++] = malloc(strlen(start+1)+strlen(neocd_dir)+4); // +1 for the /, +2 for flac instead of wav, +3 for the end 0.
 	    sprintf(mp3_track[n],"%s" SLASH "%s",neocd_dir,start+1);
-	    if (!exists(mp3_track[n])) {
-		char *ext = strrchr(mp3_track[n],'.');
-		if (ext) {
-		    char *exts[] = { "mp3","ogg","flac", NULL };
-		    int x = 0;
-		    while (exts[x]) {
-			strcpy(ext+1,exts[x]);
-			if (exists(mp3_track[n])) break;
-			x++;
-		    }
-		    if (!exts[x]) {
-			strcpy(ext+1,"wav");
-			print_debug("track %d does not exist : %s\n",n,mp3_track[n]);
-		    }
-		}
-	    }
 	    print_debug("adding mp3 track %s\n",mp3_track[n]);
 	  } else {
 	    char msg[160];
@@ -351,9 +334,31 @@ void init_load_type() {
 		    iso_sector_size = atoi(slash+1);
 		    print_debug("found sector size %d\n",iso_sector_size);
 		}
-		handle_iso(f,mp3_track[0],cue);
+		handle_iso(mp3_track[0],cue);
 		free(mp3_track[0]);
 		nb_tracks--;
+		if (load_type < 0) {
+		    fclose(f);
+		    return;
+		}
+	    } else {
+		int n = nb_tracks-1;
+		if (!exists(mp3_track[n])) {
+		    char *ext = strrchr(mp3_track[n],'.');
+		    if (ext) {
+			char *exts[] = { "mp3","ogg","flac", NULL };
+			int x = 0;
+			while (exts[x]) {
+			    strcpy(ext+1,exts[x]);
+			    if (exists(mp3_track[n])) break;
+			    x++;
+			}
+			if (!exts[x]) {
+			    strcpy(ext+1,"wav");
+			    print_debug("track %d does not exist : %s\n",n,mp3_track[n]);
+			}
+		    }
+		}
 	    }
 	} else if ((s = strstr(buff,"INDEX")) && !nb_tracks && current_track > 1) {
 	  // found internal audio track
