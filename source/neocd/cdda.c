@@ -68,8 +68,16 @@ static char *find_file(char *pattern,char *path){
 	} while (s && ((s[len] <= '9' && s[len] >= '0') ||
 	  (s > dent->d_name && (s[-1] >= '0' && s[-1] <= '9'))));
 	if (s) {
-	  strcpy(name,dent->d_name);
-	  break;
+	    char *ext = &s[strlen(s)-3];
+	    /* Check at least that the extension looks like audio, or at least bin */
+	    if (!strcasecmp(ext,"mp3") ||
+		    !strcasecmp(ext,"ogg") ||
+		    !strcasecmp(ext,"wav") ||
+		    !strcasecmp(ext-1,"flac") ||
+		    !strcasecmp(ext,"bin")) {
+		strcpy(name,dent->d_name);
+		break;
+	    }
 	}
     }
   }
