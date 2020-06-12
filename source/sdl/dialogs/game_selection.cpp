@@ -313,9 +313,8 @@ void TGame_sel::draw_bot_frame() {
   }
   int base = sdl_screen->h-h_bot;
   boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
-  char game_string[100],year_string[80],category_string[80],company_string[100];
-  snprintf(game_string,100,_("Game : %s"),(sel >= 0 ? game_list[sel]->long_name : "-"));
-  game_string[99] = 0;
+  char game_string[140],year_string[80],category_string[80],company_string[100];
+  snprintf(game_string,140,_("Game : %s"),(sel >= 0 ? game_list[sel]->long_name : "-"));
   snprintf(company_string,100,_("Company : %s"),(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
   company_string[99] = 0;
   if (sel >= 0) {
