@@ -203,7 +203,7 @@ int is_clone(struct GAME_MAIN *current_game) {
   char *dir;
   while (dlist->maindir) {
     dir = dlist->maindir;
-    if( IS_ROMOF(dir) || IS_CLONEOF(dir)){
+    if(( IS_ROMOF(dir) || IS_CLONEOF(dir)) && strcmp(dir+1,"neogeo")){
 	return 1;
     }
     dlist++;
