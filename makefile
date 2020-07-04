@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.91.6"
+VERSION = "0.91.7"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
