@@ -693,12 +693,7 @@ static int load_region_files_from_rominfo(UINT32 region, UINT8 *dest, const ROM_
 	    if(!load_rom_16_64(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
             break;
 	  case LOAD_SWAP_16:
-#if HAVE_68000
 	    if(!load_rom_swap_16(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
-#else
-	    fprintf(stderr,"no 68000 compiled in for load_swap_16\n");
-	    return 1;
-#endif
             break;
 	  case LOAD8X8_16X16:
 	    if(!load_rom_8x8_16x16(rom_list->name, dest + rom_list->offset, rom_list->size)) return 0;
@@ -1383,7 +1378,6 @@ int load_rom_16_64(char *rom, UINT8 *dest, UINT32 size)
    return load_rom_bytemap(rom, dest, size, 3);
 }
 
-#if HAVE_68000
 int load_rom_swap_16(char *rom, UINT8 *dest, UINT32 size)
 {
    if(load_rom(rom, dest, size))
@@ -1396,7 +1390,6 @@ int load_rom_swap_16(char *rom, UINT8 *dest, UINT32 size)
       return 0;
    }
 }
-#endif
 
 void convert_8x8_16x16(UINT8* src, UINT8* dst, UINT32 len) {
   UINT32 ta,tb,line,row;
