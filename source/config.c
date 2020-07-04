@@ -921,24 +921,30 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
 	   rom_list++;
 	   continue;
        }
-      sprintf(outbuf+strlen(outbuf), "rom:%-12s size:0x%08x crc32:0x%08x -- ",rom_list->name,rom_list->size,rom_list->crc32);
+       int size = rom_list->size;
+       while (rom_list[1].name && !strcmp(rom_list[1].name,rom_list->name) && rom_list[1].flags == LOAD_CONTINUE) {
+	   rom_list++;
+	   size += rom_list->size;
+       }
 
-      ram = malloc(rom_list->size);
+      sprintf(outbuf+strlen(outbuf), "rom:%-12s size:0x%08x crc32:0x%08x -- ",rom_list->name,size,rom_list->crc32);
 
-      if(load_rom_dir(dir_list, rom_list->name, ram, rom_list->size, rom_list->crc32,full_check)){
+      ram = malloc(size);
 
-         len = rom_size_dir(dir_list, rom_list->name, rom_list->size, rom_list->crc32);
+      if(load_rom_dir(dir_list, rom_list->name, ram, size, rom_list->crc32,full_check)){
 
-         if(len != get_rom_size(&rom_list)){
+         len = rom_size_dir(dir_list, rom_list->name, size, rom_list->crc32);
 
-            sprintf(outbuf+strlen(outbuf), "bad size: 0x%08x\n",len);
+         if(len != size){
+
+            sprintf(outbuf+strlen(outbuf), "bad size: 0x%08x (%x)\n",len,size);
             bad_set = 1;
 
          }
          else{
 
 	 if (full_check)
-	   crc_32bit = crc32(0, ram, rom_list->size);
+	   crc_32bit = crc32(0, ram, size);
 
          if(full_check && crc_32bit != rom_list->crc32 && ~crc_32bit != rom_list->crc32){
 
