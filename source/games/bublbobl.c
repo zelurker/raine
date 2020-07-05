@@ -1373,7 +1373,7 @@ static struct DIR_INFO dir_bubboblr1[] =
 {
    { "bubble_bobble_romstar2", },
    { "bubbobr1", },
-   { "bubbolbr1", },
+   { "bubboblr1", },
    { ROMOF("bublbobl"), },
    { CLONEOF("bublbobl"), },
    { NULL, },
