@@ -917,7 +917,8 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
 
    while(rom_list->name){
 
-       if (rom_list->flags == LOAD_FILL) {
+       if (rom_list->flags == LOAD_FILL ||
+	       rom_list->flags == LOAD_IGNORE) {
 	   rom_list++;
 	   continue;
        }
@@ -933,32 +934,38 @@ static void CheckGame(GAME_MAIN *game_info, int full_check)
 
       if(load_rom_dir(dir_list, rom_list->name, ram, size, rom_list->crc32,full_check)){
 
-         len = rom_size_dir(dir_list, rom_list->name, size, rom_list->crc32);
+	  len = rom_size_dir(dir_list, rom_list->name, size, rom_list->crc32);
 
-         if(len != size){
+	  if(len < size){
 
-            sprintf(outbuf+strlen(outbuf), "bad size: 0x%08x (%x)\n",len,size);
-            bad_set = 1;
+	      sprintf(outbuf+strlen(outbuf), "bad size: 0x%08x (%x)\n",len,size);
+	      bad_set = 1;
 
-         }
-         else{
+	  }
+	  else{
 
-	 if (full_check)
-	   crc_32bit = crc32(0, ram, size);
+	      if (full_check) {
+		  if (len > size) {
+		      free(ram);
+		      ram = malloc(len);
+		      load_rom_dir(dir_list, rom_list->name, ram, len, rom_list->crc32,full_check);
+		  }
+		  crc_32bit = crc32(0, ram, len);
 
-         if(full_check && crc_32bit != rom_list->crc32 && ~crc_32bit != rom_list->crc32){
+		  if(crc_32bit != rom_list->crc32 && ~crc_32bit != rom_list->crc32){
 
-            sprintf(outbuf+strlen(outbuf), "bad crc32: 0x%08x\n", crc_32bit);
-            bad_set = 1;
+		      sprintf(outbuf+strlen(outbuf), "bad crc32: 0x%08x\n", crc_32bit);
+		      bad_set = 1;
 
-         }
-         else if (load_error){
-	   sprintf(outbuf+strlen(outbuf),"\n");
-	 } else {
-            sprintf(outbuf+strlen(outbuf), "ok\n");
-         }
+		  }
+	      }
+	      else if (load_error){
+		  sprintf(outbuf+strlen(outbuf),"\n");
+	      } else {
+		  sprintf(outbuf+strlen(outbuf), "ok\n");
+	      }
 
-         }
+	  }
 
       }
       else{
