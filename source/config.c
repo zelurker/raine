@@ -1606,6 +1606,7 @@ static void CLI_dsw_info(void)
 
 }
 
+#ifndef RAINE_DOS
 static void CLI_nb(void)
 {
     display_cfg.noborder = 1;
@@ -1615,6 +1616,7 @@ static void CLI_wb(void)
 {
     display_cfg.noborder = 0;
 }
+#endif
 
 static void CLI_rp(void)
 {
@@ -1749,8 +1751,10 @@ static CLI_OPTION cli_commands[] =
    { "-lsf",            CLI_lsf },
    { "-rp",		CLI_rp },
    { "-source_file",    CLI_lsf },
+#ifndef RAINE_DOS
    { "-nb",		CLI_nb },
    { "-wb",		CLI_wb },
+#endif
    { "-help",		CLI_Help		},
    { "-?",		CLI_Help		},
    { "--help",          CLI_Help                },
