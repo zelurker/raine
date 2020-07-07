@@ -44,8 +44,8 @@ extern int CGUI_COL_TEXT_1,CGUI_COL_TEXT_2,CGUI_COL_BLACK,
 
 // gui fonts
 
-FONT *gui_main_font;
-FONT *gui_fixed_font;
+extern FONT *gui_main_font;
+extern FONT *gui_fixed_font;
 
 // gui dialog routines
 

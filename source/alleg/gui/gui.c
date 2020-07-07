@@ -43,6 +43,7 @@
 #include "neocd/cdrom.h"
 #include "neocd/neocd.h"
 #endif
+#include "res.h"
 
 extern void update_stretch(); // stretch.c
 struct RGUI_CFG rgui_cfg;
@@ -62,7 +63,6 @@ static int snapshot_cols;
 extern int bestw, besth,bestbpp; // rgui.c to switch mode
 int screen_valid;	// 1 if screen contains a valid image
 
-int wants_switch_res = 0;
 static int WantScreen;
 static int WantQuit;
 static int WantPlay;

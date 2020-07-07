@@ -10,6 +10,9 @@
 #include "gui.h" // color conversion for the gui
 #include "palette.h" // GET_PEN...
 
+FONT *gui_main_font;
+FONT *gui_fixed_font;
+
 /* Stupid deprecated stuff from allegro... was it really useful ?!!! */
 #if (ALLEGRO_VERSION == 4 && ALLEGRO_SUB_VERSION == 0) || ALLEGRO_VERSION < 4
 #define gui_textout_ex(bmp,s,x,y,color,bg,centre)	\

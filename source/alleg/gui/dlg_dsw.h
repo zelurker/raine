@@ -30,7 +30,7 @@ typedef struct DIPSW
    DSTAT statlist[16];
 } DIPSW;
 
-struct DIPSW dipswitch[MAX_DIPSWITCHES];
+extern struct DIPSW dipswitch[MAX_DIPSWITCHES];
 
 int dsw_select_proc(int msg, DIALOG *d, int c);
 char *dswlist_getter(int index, int *list_size);

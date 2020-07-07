@@ -14,7 +14,7 @@ extern "C" {
 #include "raine.h"
 #include "games.h"
 
-int fbcon_enabled;
+extern int fbcon_enabled;
 // If true, then palette switching must be slow, and fbcon must be the only
 // driver available...
 

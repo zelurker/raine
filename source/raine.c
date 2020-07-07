@@ -62,6 +62,9 @@ struct RAINE_CFG raine_cfg;
 UINT8 *ingame_font; 	// Raw data for ingame font
 struct DIR_CFG dir_cfg;
 
+#ifdef RAINE_DOS
+DATAFILE *RaineData;		// Resource datafile
+#endif
 
 #ifdef OLD_ALLEG
 // Cutback Allegro

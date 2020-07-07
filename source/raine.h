@@ -249,7 +249,7 @@ static DEF_INLINE void WriteF3SystemLong(UINT32 i, UINT32 data)
 
 
 #ifndef SDL
-DATAFILE *RaineData;		// Resource datafile
+extern DATAFILE *RaineData;		// Resource datafile
 #endif
 
 extern int StarScreamEngine,		// Number of M68000's in use
