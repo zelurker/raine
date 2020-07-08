@@ -91,11 +91,12 @@ static void CLI_Help(void)
 	"-noautoload                    : Disable auto savegame loading\n"
 	"-screenx/-sx [width]           : Select screen width\n"
 	"-screeny/-sy [height]          : Select screen height\n"
+#ifdef SDL
 	"-geometry [width][xheight][+posx][+posy] : window placement (implies -nb)\n"
-#ifndef SDL
+	"-fullscreen/fs [0/1]           : Set fullscreen mode on/off\n"
+#else
 	"-screenmode/sm [type]          : Select screen type (allegro)\n"
 #endif
-	"-fullscreen/fs [0/1]           : Set fullscreen mode on/off\n"
 	"-nb                            : No Border\n"
 	"-wb                            : With Border\n"
 	"-bpp/-depth [number]           : Select screen colour depth\n"
@@ -351,6 +352,7 @@ static void CLI_screen_y(void)
    sscanf(ArgList[ArgPosition], "%d", &display_cfg.screen_y);
 }
 
+#ifdef SDL
 static void CLI_geometry(void) {
     int nb = 0, size = 0, pos = -1,x = -1,y = -1;
     char *s = ArgList[++ArgPosition];
@@ -404,7 +406,25 @@ static void CLI_geometry(void) {
     }
 }
 
-#ifndef SDL
+/*
+
+process the -fullscreen/-fs option
+
+*/
+
+static void CLI_fullscreen_mode(void)
+{
+  int i;
+
+  if( ((ArgPosition+1) < ArgCount) && (ArgList[ArgPosition+1][0] != '-') )
+    i = atoi(ArgList[ArgPosition+1]);
+  else
+    i = 1; // default : fullscreen = 1
+
+  display_cfg.fullscreen = i;
+}
+
+#else // SDL
 // CLI_screen_mode():
 // Process the -screenmode/-sm option
 
@@ -495,25 +515,6 @@ static void CLI_screen_mode(void)
    );
    exit(1);
 
-}
-#else
-
-/*
-
-process the -fullscreen/-fs option
-
-*/
-
-static void CLI_fullscreen_mode(void)
-{
-  int i;
-
-  if( ((ArgPosition+1) < ArgCount) && (ArgList[ArgPosition+1][0] != '-') )
-    i = atoi(ArgList[ArgPosition+1]);
-  else
-    i = 1; // default : fullscreen = 1
-
-  display_cfg.fullscreen = i;
 }
 #endif
 
@@ -1777,13 +1778,13 @@ static CLI_OPTION cli_commands[] =
    { "-sx",		CLI_screen_x		},
    { "-screeny",	CLI_screen_y		},
    { "-sy",		CLI_screen_y		},
+#ifdef SDL
    { "-geometry",	CLI_geometry },
-#ifndef SDL
-   { "-screenmode",	CLI_screen_mode		},
-   { "-sm",		CLI_screen_mode		},
-#else
    { "-fullscreen",	CLI_fullscreen_mode		},
    { "-fs",		CLI_fullscreen_mode		},
+#else
+   { "-screenmode",	CLI_screen_mode		},
+   { "-sm",		CLI_screen_mode		},
 #endif
    { "-rotate",		CLI_screen_rotate	},
    { "-r",		CLI_screen_rotate	},
