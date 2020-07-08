@@ -105,6 +105,7 @@ void display_read_config() {
        putenv(buffer);
    }
 #endif
+   display_cfg.noborder	= raine_get_config_int(	"Display", "noborder", display_cfg.noborder);
    display_cfg.screen_x = raine_get_config_int( "Display", "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int( "Display", "screen_y", display_cfg.screen_y);
    display_cfg.winx = raine_get_config_int( "Display", "winx", 640);
@@ -163,6 +164,7 @@ void display_write_config() {
    raine_set_config_int("Display", "video_driver", display_cfg.video_driver);
 #endif
    print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);
+   raine_set_config_int("Display", "noborder", display_cfg.noborder);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
    raine_set_config_int("Display", "screen_y", display_cfg.screen_y);
    raine_set_config_int("Display", "winx", display_cfg.winx);
