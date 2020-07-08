@@ -7,6 +7,9 @@
 #include "raine.h"
 #include "games.h"
 #include "neocd/neocd.h"
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 struct GAME_MAIN *current_game;
 int game_count;
@@ -211,12 +214,125 @@ int is_clone(struct GAME_MAIN *current_game) {
   return 0;
 }
 
+/* This balanced binary tree algorythm is taken from
+ * http://www.geeksforgeeks.org/sorted-array-to-balanced-bst/
+ * nice and short ! */
+
+#define elem char*
+
+/* A Binary Tree node */
+struct TNode
+{
+    elem data;
+    struct TNode* left;
+    struct TNode* right;
+};
+
+static struct TNode* newNode(elem data)
+{
+    struct TNode* node = (struct TNode*)
+                         malloc(sizeof(struct TNode));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+
+    return node;
+}
+
+static int get_string_from_tree(struct TNode *nd, char* value) {
+    while (nd) {
+	int i = stricmp(value,nd->data);
+	if (i == 0) return 1;
+	if (i < 0)
+	    nd = nd->left;
+	else
+	    nd = nd->right;
+    }
+    return 0;
+}
+
+/* A function that constructs Balanced Binary Search Tree from a sorted array */
+static struct TNode* sortedArrayToBST(elem arr[], int start, int end)
+{
+    /* Base Case */
+    if (start > end)
+      return NULL;
+
+    /* Get the middle element and make it root */
+    int mid = (start + end)/2;
+    struct TNode *root = newNode(arr[mid]);
+
+    /* Recursively construct the left subtree and make it
+       left child of root */
+    root->left =  sortedArrayToBST(arr, start, mid-1);
+
+    /* Recursively construct the right subtree and make it
+       right child of root */
+    root->right = sortedArrayToBST(arr, mid+1, end);
+
+    return root;
+}
+
+static int alloc_cache, nb_cache;
+static struct TNode **cache;
+
+static int cmpstringp(const void *p1, const void *p2)
+{
+    /* The actual arguments to this function are "pointers to
+       pointers to char", but strcmp(3) arguments are "pointers
+       to char", hence the following cast plus dereference */
+
+    return stricmp(* (char * const *) p1, * (char * const *) p2);
+}
+
+static struct TNode *dir2cache(char *dirname) {
+    DIR *dir = opendir(dirname);
+    if (!dir) return NULL;
+    struct dirent *dent;
+    int nb = 0, nb_alloc = 0;
+    char **names = NULL;
+    while ((dent = readdir(dir))) {
+	if (dent->d_name[0] == '.')
+	    continue;
+	if (nb == nb_alloc) {
+	    nb_alloc += 10;
+	    names = realloc(names,sizeof(char*)*nb_alloc);
+	}
+	names[nb++] = strdup(dent->d_name);
+    }
+    qsort(names,nb,sizeof(char*),cmpstringp);
+    struct TNode *root = sortedArrayToBST(names, 0, nb-1);
+    free(names);
+    return root;
+}
+
+static void build_cache() {
+    int ta;
+    for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
+	if(dir_cfg.rom_dir[ta][0]){
+	    if (ta >= nb_cache) {
+		if (ta >= alloc_cache) {
+		    alloc_cache += 10;
+		    cache = realloc(cache,sizeof(struct TNode)*alloc_cache);
+		}
+		cache[nb_cache++] = dir2cache(dir_cfg.rom_dir[ta]);
+	    }
+	}
+    }
+}
+
+static int rom_exists(int ta,char *filename) {
+    int ret = get_string_from_tree(cache[ta],filename);
+    return ret;
+}
+
 int game_exists(GAME_MAIN **my_game_list,int num)
 {
    const DIR_INFO *dir_list;
    char str[256];
    UINT32 ta;
 
+   build_cache();
    dir_list = my_game_list[num]->dir_list;
 
    while( (dir_list->maindir) ){
@@ -227,14 +343,13 @@ int game_exists(GAME_MAIN **my_game_list,int num)
 
 	    if(dir_cfg.rom_dir[ta][0]){
 
-	       sprintf(str,"%s%s.zip", dir_cfg.rom_dir[ta], dir_list->maindir);
-	       if((exists(str))) return 1;
+	       sprintf(str,"%s.zip", dir_list->maindir);
+	       if((rom_exists(ta,str))) return 1;
 
-	       sprintf(str,"%s%s.7z", dir_cfg.rom_dir[ta], dir_list->maindir);
-	       if((exists(str))) return 1;
+	       sprintf(str,"%s.7z", dir_list->maindir);
+	       if((rom_exists(ta,str))) return 1;
 
-	       sprintf(str,"%s%s", dir_cfg.rom_dir[ta], dir_list->maindir);
-	       if((exists(str))) return 1;
+	       if((rom_exists(ta,dir_list->maindir))) return 1;
 
 	    }
 
