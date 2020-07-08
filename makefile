@@ -63,6 +63,7 @@ HAS_CONSOLE = 1
 # Also, if you choose x86_64, you'd better set NO_ASM to 1 then.
 # target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
+target=i686-pc-msdosdjgpp
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
@@ -313,7 +314,7 @@ ifndef RAINE_DEBUG
   LFLAGS = -mwindows
 endif
 else
-ifdef DJDIR
+ifeq ("${target}","i686-pc-msdosdjgpp")
    RAINE_EXE = Raine.exe
    RAINE_DOS = 1
 
