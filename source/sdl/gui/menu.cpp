@@ -108,7 +108,10 @@ buffer before calling the gui */
 #include "sasound.h"
 #include "neocd/neocd.h"
 #include "newmem.h" // GetMemoryPoolSize
-#include <SDL_opengl.h> // include this AFTER raine files to avoid collision !
+#ifdef RAINE_UNIX
+#define NOGDI // define this before including windows.h to avoid BITMAP !
+#include <SDL_opengl.h> // super annoying windows.h collides here !
+#endif
 
 static int return_mandatory = 0, use_transparency = 1;
 int emulate_mouse_cursor = 0,keep_vga,gui_level;
@@ -1130,14 +1133,17 @@ void TMenu::do_update(SDL_Rect *region) {
 		      SDL_UpdateRect(sdl_screen, 0,0,0,0);
 		  // SDL_GL_SwapBuffers();
 	      }
+#ifdef RAINE_UNIX
 	      else
+		  /* It's highly unlikely this is ever needed because I could never disable double buffer in opengl ! */
 		  glFlush();
-#ifdef RAINE_DEBUG
+#if defined(RAINE_DEBUG)
 	      int gl_error = glGetError( );
 
 	      if( gl_error != GL_NO_ERROR ) {
 		  fprintf( stderr, "testgl: OpenGL error: %d\n", gl_error );
 	      }
+#endif
 #endif
 	  }
   }
