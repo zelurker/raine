@@ -26,6 +26,7 @@ typedef struct {
 extern togl_options ogl;
 
 extern int prefered_yuv_format;
+extern int desktop_w,desktop_h,desktop_bpp;
 #ifdef DARWIN
 extern int overlays_workarounds;
 #endif

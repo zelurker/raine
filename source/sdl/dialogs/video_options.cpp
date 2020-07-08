@@ -46,9 +46,27 @@ static int my_toggle_fullscreen(int sel) {
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
 
+static char oldenv[10];
+
 static int my_toggle_border(int sel) {
+    if (display_cfg.noborder) {
+	char *s = getenv("SDL_VIDEO_WINDOW_POS");
+	if (!s) s = "";
+	strncpy(oldenv, s,10);
+	oldenv[9] = 0;
+	putenv("SDL_VIDEO_WINDOW_POS=0,0");
+	display_cfg.screen_x = desktop_w;
+	display_cfg.screen_y = desktop_h;
+    } else {
+	char env[80];
+	sprintf(env,"SDL_VIDEO_WINDOW_POS=%s",oldenv);
+	putenv(env);
+	display_cfg.screen_x = display_cfg.winx;
+	display_cfg.screen_y = display_cfg.winy;
+    }
+
     ScreenChange();
-    return 0;
+    return 1;
 }
 
 static int update_scaler(int sel) {

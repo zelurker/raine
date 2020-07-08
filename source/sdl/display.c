@@ -32,7 +32,7 @@ int overlays_workarounds = 1;
 int disp_screen_y;
 BITMAP *screen;
 UINT32 videoflags;
-static int desktop_w,desktop_h,desktop_bpp;
+int desktop_w,desktop_h,desktop_bpp;
 static char driver[128];
 const SDL_VideoInfo *video;
 UINT32 screen_flags;
@@ -155,7 +155,7 @@ void set_opengl_filter(int filter) {
 void display_write_config() {
    if(display_cfg.scanlines == 2) display_cfg.screen_y <<= 1;
 
-  if (!display_cfg.fullscreen)
+  if (!display_cfg.fullscreen && !display_cfg.noborder)
       update_window_pos();
 
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
@@ -519,8 +519,10 @@ void ScreenChange(void)
   //show_mouse(NULL);
 
   SDL_Surface *s;
-  if (!display_cfg.fullscreen)
-      update_window_pos();
+  if (!display_cfg.fullscreen) {
+      if (!display_cfg.noborder)
+	  update_window_pos();
+  }
 
   print_debug("ScreenChange calling new_set_gfx_mode\n");
    if((s = new_set_gfx_mode()) == NULL){	// Didn't work:
