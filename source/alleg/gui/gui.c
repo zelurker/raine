@@ -2434,6 +2434,7 @@ static void setup_screen_name() {
 // Actually does the gui/game loop, called from raine.c
 // Caters for command line load and no gui options
 
+char *raine_error;
 
 int StartGUI(void)
 {
@@ -2517,6 +2518,10 @@ int StartGUI(void)
 	if (goto_debuger)
 	  debuger_proc(0,NULL,0);
 #endif
+	if (raine_error) {
+	    raine_alert(raine_translate_text("Error"),raine_error,NULL,NULL,"&Okay",NULL,'O',0);
+	    raine_error = NULL;
+	}
 	while(raine_do_dialog(main_dialog, -1) == -1)
 	  {
 	  }

@@ -420,6 +420,8 @@ static int set_arcade_mode(int SType, int SX, int SY)
 }
 #endif // #ifndef RAINE_WIN32
 
+extern char *raine_error;
+
 static int raine_set_gfx_mode(int SType,int SX,int SY)
 {
   int ret;
@@ -458,6 +460,11 @@ static int raine_set_gfx_mode(int SType,int SX,int SY)
 
    if(display_cfg.triple_buffer) {
       ret= set_triple_buffer_mode(SType,SX,SY);
+      if (ret == 1) {
+	  display_cfg.triple_buffer = 0;
+	  raine_error = "Can't set triple buffer mode";
+      }
+      return raine_set_gfx_mode(SType,SX,SY);
    } else {
        ret= set_gfx_mode(SType,SX,SY,SX,SY);
    }
