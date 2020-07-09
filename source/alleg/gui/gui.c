@@ -1602,17 +1602,14 @@ int romdir_edit_proc(int msg, DIALOG *d, int c)
       ret=raine_do_dialog(romdir_edit_dialog,-1);
       if(ret==1){
 
-      sprintf(dir_cfg.rom_dir[0],"%s",romedit[0]);
-      sprintf(dir_cfg.rom_dir[1],"%s",romedit[1]);
-      sprintf(dir_cfg.rom_dir[2],"%s",romedit[2]);
-      sprintf(dir_cfg.rom_dir[3],"%s",romedit[3]);
-
-      for(i = 0; i < 4; i ++){
-	 if(dir_cfg.rom_dir[i][0]){
-	    put_backslash(dir_cfg.rom_dir[i]);
-	    strlwr(dir_cfg.rom_dir[i]);
-	 }
-      }
+	  for (i=0; i<4; i++) {
+	      if (strcmp(dir_cfg.rom_dir[i],romedit[i])) {
+		  sprintf(dir_cfg.rom_dir[i],"%s",romedit[i]);
+		  update_cache(i);
+		  put_backslash(dir_cfg.rom_dir[i]);
+		  strlwr(dir_cfg.rom_dir[i]);
+	      }
+	  }
 
       build_game_avail_list();
 
@@ -2448,7 +2445,8 @@ int StartGUI(void)
    /*----[Joystick Initialisation]----------------*/
    init_joys();
 
-   sprintf(str, "config/language/%s", dir_cfg.language_file);
+   snprintf(str, 240,"config/language/%s", dir_cfg.language_file);
+   str[239] = 0;
    raine_push_config_state();
    raine_set_config_file(get_shared(str));
 

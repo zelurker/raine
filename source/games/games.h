@@ -304,6 +304,9 @@ int is_clone(struct GAME_MAIN *current_game);
 GAME_MAIN *find_game(char *main_name); // in loadroms.c
 
 int game_exists(GAME_MAIN **my_game_list,int num);
+void update_cache(int i);
+void add_cache(int i);
+void del_cache(int i);
 
 #endif // __raine_games_h_
 

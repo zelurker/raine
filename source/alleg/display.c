@@ -212,8 +212,9 @@ void clear_raine_screen() {
 static int set_triple_buffer_mode(int type, int width, int height) {
   int ret;
   if ((ret = set_gfx_mode(type,width,height,0,height*3))) {
-    if ((ret = set_gfx_mode(type,width,height,0,0)))
-      return ret;
+    if ((ret = set_gfx_mode(type,width,height,0,0))) {
+	return ret;
+    }
   }
 
   /* if triple buffering isn't available, try to enable it */
@@ -221,8 +222,9 @@ static int set_triple_buffer_mode(int type, int width, int height) {
     enable_triple_buffer();
 
   /* if that didn't work, give up */
-  if (!(gfx_capabilities & GFX_CAN_TRIPLE_BUFFER))
-    return 1;
+  if (!(gfx_capabilities & GFX_CAN_TRIPLE_BUFFER)) {
+      return 1;
+  }
 
   print_debug("set_triple_buffer_mode successfull !\n");
   for (ret = 0; ret<3; ret++) {
@@ -454,10 +456,11 @@ static int raine_set_gfx_mode(int SType,int SX,int SY)
 #endif
 #endif
 
-   if(display_cfg.triple_buffer)
+   if(display_cfg.triple_buffer) {
       ret= set_triple_buffer_mode(SType,SX,SY);
-   else
-      ret= set_gfx_mode(SType,SX,SY,SX,SY);
+   } else {
+       ret= set_gfx_mode(SType,SX,SY,SX,SY);
+   }
 #ifdef RAINE_DEBUG
    print_debug("raine_gfx_mode result %d bpp %d\n",ret,get_color_depth());
 #endif
@@ -540,8 +543,10 @@ void set_default_video_mode() {
    vid.screen_y = 240;
    vid.flags = 0;
    switch_res(&vid);
-   display_cfg.screen_x = bestw;
-   display_cfg.screen_y = besth;
+   if (bestw) {
+       display_cfg.screen_x = bestw;
+       display_cfg.screen_y = besth;
+   }
    if (bestbpp) display_cfg.bpp = bestbpp;
 
    print_debug("set_default_video_mode: type %x %dx%d auto_mode_change %d\n",display_cfg.screen_type,display_cfg.screen_x,display_cfg.screen_y,display_cfg.auto_mode_change);

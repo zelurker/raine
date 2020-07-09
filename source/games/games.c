@@ -306,19 +306,47 @@ static struct TNode *dir2cache(char *dirname) {
     return root;
 }
 
+void add_cache(int ta) {
+    if (ta >= nb_cache) {
+	if (ta >= alloc_cache) {
+	    alloc_cache += 10;
+	    cache = realloc(cache,sizeof(struct TNode)*alloc_cache);
+	}
+	cache[nb_cache++] = dir2cache(dir_cfg.rom_dir[ta]);
+    }
+}
+
 static void build_cache() {
     int ta;
     for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
 	if(dir_cfg.rom_dir[ta][0]){
-	    if (ta >= nb_cache) {
-		if (ta >= alloc_cache) {
-		    alloc_cache += 10;
-		    cache = realloc(cache,sizeof(struct TNode)*alloc_cache);
-		}
-		cache[nb_cache++] = dir2cache(dir_cfg.rom_dir[ta]);
-	    }
+	    add_cache(ta);
 	}
     }
+}
+
+static void free_tree(struct TNode *node) {
+    if (node) {
+	if (node->left)
+	    free_tree(node->left);
+	if (node->right)
+	    free_tree(node->right);
+	free(node->data);
+	free(node);
+    }
+}
+
+void del_cache(int i) {
+    free_tree(cache[i]);
+    cache[i] = NULL;
+    nb_cache--;
+    if (nb_cache > i)
+	memmove(&cache[i],&cache[i+1],(nb_cache-i)*sizeof(struct TNode*));
+}
+
+void update_cache(int i) {
+    free_tree(cache[i]);
+    cache[i] = dir2cache(dir_cfg.rom_dir[i]);
 }
 
 static int rom_exists(int ta,char *filename) {

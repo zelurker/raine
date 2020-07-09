@@ -4,6 +4,7 @@
 #include "sdl/dialogs/messagebox.h"
 #include "sdl/dialogs/fsel.h"
 #include "romdir.h"
+#include "games.h"
 
 static int end;
 
@@ -15,6 +16,7 @@ static int do_dir(int sel) {
     dsel(dir_cfg.rom_dir[sel],NULL,res,"Rom dir");
     free(dir_cfg.rom_dir[sel]);
     dir_cfg.rom_dir[sel] = strdup(res);
+    update_cache(sel);
   } else if (ret == 2) // remove
     remove_rom_dir(sel);
   end = 0;

@@ -442,7 +442,11 @@ int main(int argc,char *argv[])
      char *s = raine_get_config_string( "Directories", str, dir_cfg.rom_dir[i]);
      if (s == dir_cfg.rom_dir[i])
        break;
-     dir_cfg.rom_dir[i++] = strdup(s);
+     if (dir_cfg.rom_dir[i])
+	 remove_rom_dir(i);
+
+     add_rom_dir(s);
+     i++;
    } while(1);
 #ifndef SDL
    strcpy(dir_cfg.language_file, raine_get_config_string( "Directories", "language_file", "english.cfg"));
@@ -462,7 +466,8 @@ int main(int argc,char *argv[])
 #endif
 
    for(i = 0; dir_cfg.rom_dir[i]; i ++){
-     put_backslash(dir_cfg.rom_dir[i]);
+       if (dir_cfg.rom_dir[i][0])
+	   put_backslash(dir_cfg.rom_dir[i]);
    }
 
 

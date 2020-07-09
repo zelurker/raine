@@ -1,4 +1,5 @@
 #include "raine.h"
+#include "games.h"
 
 /* Super simple handling of inifinite rom_dirs.
  * The idea is to remain compatible with the old array, so we want a not-so-
@@ -31,6 +32,7 @@ void add_rom_dir(char *s) {
   for (nb_used=0; dir_cfg.rom_dir[nb_used]; nb_used++);
   alloc_romdir(nb_used);
   dir_cfg.rom_dir[nb_used] = strdup(s);
+  add_cache(nb_used);
 }
 
 void remove_rom_dir(int sel) {
@@ -41,6 +43,7 @@ void remove_rom_dir(int sel) {
       for (n=sel+1; n<nb_alloc; n++)
 	dir_cfg.rom_dir[n-1] = dir_cfg.rom_dir[n];
       dir_cfg.rom_dir[nb_alloc-1] = NULL;
+      del_cache(sel);
     }
   }
 }
