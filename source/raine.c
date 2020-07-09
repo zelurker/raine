@@ -348,12 +348,6 @@ int main(int argc,char *argv[])
    sprintf(dir_cfg.emudx_dir,"%semudx" SLASH, dir_cfg.share_path);
    sprintf(dir_cfg.artwork_dir,"%sartwork" SLASH, dir_cfg.share_path);
    init_rom_dir();
-   snprintf(str,256,"%sroms" SLASH, dir_cfg.exe_path);
-   add_rom_dir(str);
-#ifdef RAINE_UNIX
-   snprintf(str,256,"%sroms" SLASH, dir_cfg.share_path);
-   add_rom_dir(str);
-#endif
 
    load_main_config();
 
@@ -448,6 +442,15 @@ int main(int argc,char *argv[])
      add_rom_dir(s);
      i++;
    } while(1);
+   if (!dir_cfg.rom_dir[0]) {
+       // default rom dirs, unlikely needed... !
+       snprintf(str,256,"%sroms" SLASH, dir_cfg.exe_path);
+       add_rom_dir(str);
+#ifdef RAINE_UNIX
+       snprintf(str,256,"%sroms" SLASH, dir_cfg.share_path);
+       add_rom_dir(str);
+#endif
+   }
 #ifndef SDL
    strcpy(dir_cfg.language_file, raine_get_config_string( "Directories", "language_file", "english.cfg"));
 #endif
