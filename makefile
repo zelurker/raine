@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.91.7"
+VERSION = "0.91.8"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -60,10 +60,10 @@ HAS_CONSOLE = 1
 # and 64 bits. You can't build both at the same time, make a choice !
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
-# Also, if you choose x86_64, you'd better set NO_ASM to 1 then.
+# choosing x86_64 here sets NO_ASM to 1 automatically.
 # target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
-target=i686-pc-msdosdjgpp
+# target=i686-pc-msdosdjgpp
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
@@ -600,12 +600,8 @@ DEFINE += -DLSB_FIRST
 endif
 
 ifdef RAINE_DEBUG
-CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
-CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
-ifndef RAINE_DOS
-    CFLAGS_MCU += -Wno-format-truncation
-    CFLAGS += -Wno-format-truncation
-endif
+CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation
+CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
 # the 68020 core in dos. -Wno-trigraphs suppress some anoying warnings with
