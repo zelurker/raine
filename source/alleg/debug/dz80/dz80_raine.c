@@ -21,10 +21,10 @@ int process_adr(UINT8 *base, UINT16 dAddr, dz80_buff buff)
     pDis = malloc(sizeof(DISZ80));
     if (pDis == NULL)
       {
-	printf("Cannot allocate %d bytes\n", sizeof(DISZ80));
+	printf("Cannot allocate %ld bytes\n", sizeof(DISZ80));
 	exit(1);
       }
-    
+
     /* Set up dZ80's structure - not a lot */
     memset(pDis, 0, sizeof(DISZ80));
     dZ80_SetDefaultOptions(pDis);
@@ -32,21 +32,21 @@ int process_adr(UINT8 *base, UINT16 dAddr, dz80_buff buff)
     pDis->flags |= DISFLAG_SINGLE;
   }
   pDis->mem0Start = base;
-  
-  /* And we're off! */ 
+
+  /* And we're off! */
   for(line=0; line < NBLINES; line++)
     {
       pDis->start = pDis->end = dAddr;
-		
+
       err = dZ80_Disassemble(pDis);
       if (err != DERR_NONE)
 	{
 	  break;
 	}
-		
+
       /* Display the disassembled line */
       sprintf(buff[line],"%04x %-8s %s", dAddr, pDis->hexDisBuf, pDis->disBuf);
-		
+
       /* Point to the next instruction */
       dAddr += (WORD)pDis->bytesProcessed;
     }

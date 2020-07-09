@@ -24,7 +24,7 @@
 #define	MARKBLANKLINE	d->lineCmd |= LC_BLANKLINE
 
 int GetNextOpCode(DISZ80 *d)
-{	
+{
 	char		buf[8];
 
 	assert(d != NULL);
@@ -105,14 +105,14 @@ void dZ80_SetDisassemblyRadix(DISZ80 *d, int Radix)
 void PrepareDisInstruction(DISZ80 *d)
 {
 	assert(d != NULL);
-	
+
 	d->hexDisBuf[0] = d->disBuf[0] = d->commentBuf[0] = 0;
 	d->Z80Flags = d->numRecursions = 0; 	/* Clear and IX/IY prefixes, etc. */
 	d->lineCmd = 0; 						/* Clear out line commands */
 	d->haveTabbed = FALSE;
 	return;
 }
-		
+
 int dZ80_Disassemble(DISZ80 *d)
 {
 	int 	i, err, writingOut;
@@ -129,7 +129,7 @@ int dZ80_Disassemble(DISZ80 *d)
 	d->totalPasses = 1;
 	d->labelledOutput = FALSE;
 	d->outStream =	NULL;
-	
+
 	d->pComment = (d->layoutComment != NULL) ? d->layoutComment : "; ";
 
 	if (d->flags & DISFLAG_SINGLE)
@@ -247,7 +247,7 @@ int dZ80_Disassemble(DISZ80 *d)
 					DisZ80CleanUp(d);
 					return err;
 					}
-				
+
 				d->progressCounter--;
 				}
 			}					/* Next instruction */
@@ -271,7 +271,7 @@ int WriteDisLine(DISZ80 *d, unsigned int Addr)
 {
 	int 	i;
 	char	disLine[256], buf[128];
-	
+
 	disLine[0] = 0;
 
 /* Add the instruction's address ? */
@@ -380,7 +380,7 @@ void DisZ80CleanUp(DISZ80 *d)
 			}
 		d->pRefHead[i] = NULL;
 		}
-	
+
 	if (d->opMap != NULL)
 		{
 		free(d->opMap);
@@ -610,7 +610,7 @@ void DisDDCB(DISZ80 *d)
 	num[1] = (char)('0'+ ((d->op >> 3) & 7));
 	num[2] = ',';
 	num[3] = 0;
-	
+
 	ADDTODIS(num + (BitResSet < 2) );
 
 /* Finally, add the register component. */
@@ -940,7 +940,7 @@ void Dis00to3F(DISZ80 *d)
 					ADDTODIS("af,af'");
 					return;
 
-				case 2: 	/* 0x10 */ 
+				case 2: 	/* 0x10 */
 					AddToDisTab(d, "djnz");
 					FlagFn(d, AddToDisRel8(d, FALSE));
 					return;
@@ -978,7 +978,7 @@ void Dis00to3F(DISZ80 *d)
 					AddToDisTabLD(d, "(");
 					AddToDis16BitAbs(d, FALSE);
 					ADDTODIS("),");
-						
+
 					if (d->realop & 0x10)
 						{
 						ADDTODIS("a");
@@ -1138,7 +1138,7 @@ void DisC0toFF(DISZ80 *d)
 				addr = 0xff00 + GetNextOpCode(d);
 				Make16BitNum(d, num, 0xff00);
 				Make8BitNum(d, num2, addr & 0xff);
-				
+
 				AddToDisTabLD(d,"");
 				if (op == 0xe0)
 					sprintf(buf, "(%s+%s),a", num, num2);
@@ -1193,7 +1193,7 @@ void DisC0toFF(DISZ80 *d)
 				AddToDisTabLD(d, buf);
 				AddRefEntry(d, addr, d->lastPC, DISREF_INDIRECT);
 				return;
-			
+
 			}
 		}
 
@@ -1344,7 +1344,7 @@ void AddToDisTab(DISZ80 *d, char *str)
 
 		d->haveTabbed = TRUE;
 		}
-		
+
 	return;
 }
 
@@ -1423,7 +1423,7 @@ void AddToDisReg8(DISZ80 *d, int op, int op2)
 				ADDTODIS((d->Z80Flags & Z80IX) ? "ixl" : "iyl");
 				return;
 				}
-		
+
 			if (op == REG_H)
 				{
 				ADDTODIS((d->Z80Flags & Z80IX) ? "ixh" : "iyh");
@@ -1536,7 +1536,7 @@ void	AddToDisUndocNop(DISZ80 *d)
 
 
 /*
-	void AddToDisUnknown(char *Comment) 
+	void AddToDisUnknown(char *Comment)
 
 	Handles the dumping of an unknown opcode sequence
 */
@@ -1545,14 +1545,14 @@ void AddToDisUnknown(DISZ80 *d, char *Comment)
 {
 	int 	i, numOpCodes;
 	char	buf[64];
-	
+
 	AddToDisTabDB(d);
-	
+
 	numOpCodes = abs(d->PC - d->lastPC);
 	d->PC = d->lastPC;
 
 /* We're going to rewind back to the start of the bad opcode, so clear the hex stream dump */
-	d->hexDisBuf[0] = 0;			
+	d->hexDisBuf[0] = 0;
 
 	for (i = 0; i < numOpCodes; i++)
 		{
@@ -1625,7 +1625,7 @@ BYTE* AllocateMap(DISZ80 *d, char *ErrorStr, unsigned int BytesWanted)
 		{
 		memset(MapPtr, 0, BytesWanted); 	/* Clear the map */
 		}
-		
+
 	return MapPtr;
 }
 
@@ -1776,7 +1776,7 @@ void WriteReferenceFile(DISZ80 *d)
 			case DISREF_ADDR:
 				TypeMsg = "Direct address";
 				break;
-			
+
 			case DISREF_INDIRECT:
 				TypeMsg = "Indirect address";
 				break;
@@ -1800,7 +1800,7 @@ void WriteReferenceFile(DISZ80 *d)
 				sprintf(MsgBuf, "%s %s. %u references:\n", TypeMsg, num1, p->Hits);
 				fwrite(MsgBuf, 1, strlen(MsgBuf), refStream);
 				UnderlineText(refStream, MsgBuf);
-				
+
 				ra = p->pRefAddrHead;
 				while (ra != NULL)
 					{
@@ -1810,11 +1810,12 @@ void WriteReferenceFile(DISZ80 *d)
 					qd.flags = d->flags | DISFLAG_SINGLE;
 					qd.cpuType = d->cpuType;
 					dZ80_InheritRadix(&qd, d);
-		
+
 					dZ80_Disassemble(&qd);
-					
+
 					Make16BitNum(d, num2, ra->RefAddress);
-					sprintf(MsgBuf, "    %s: %s\n", num2, qd.disBuf);
+					snprintf(MsgBuf, 107,"    %s: %s\n", num2, qd.disBuf);
+					MsgBuf[106] = 0;
 					fwrite(MsgBuf, 1, strlen(MsgBuf), refStream);
 
 					ra = ra->pNext;
@@ -1895,7 +1896,7 @@ void AddRefEntry(DISZ80 *d, int Addr, int PC, int RefType)
 			return;
 		}
 
-/* 
+/*
 	Locate the insertion point of this new entry, or if
 	  there's already an existing one, use that
 */
@@ -1926,7 +1927,7 @@ void AddRefEntry(DISZ80 *d, int Addr, int PC, int RefType)
 		return;
 
 	memset(p, 0, sizeof(DISREF));
-	
+
 	p->pPrev = pPrev;					/* Link to previous entry (if any) */
 	p->pNext = pLast;					/* Link the next to the..erm..next */
 
@@ -1941,7 +1942,7 @@ void AddRefEntry(DISZ80 *d, int Addr, int PC, int RefType)
 	p->RefType = RefType;
 	p->Addr = (WORD)Addr;
 	p->Hits = 0;
-	
+
 	AddReferenceAddr(d, p, PC);
 	return;
 }
@@ -1992,7 +1993,7 @@ void DoProgress(DISZ80 *d, int forceUpdate)
 				}
 			}
 		}
-	
+
 	return;
 }
 
@@ -2085,7 +2086,7 @@ void Make16BitNum(DISZ80 *d, char *Dst, int Num)
 		num,
 		(d->layoutNumberSuffix != NULL) ? d->layoutNumberSuffix : ""
 		);
-	
+
 	return;
 }
 

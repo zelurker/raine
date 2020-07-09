@@ -969,7 +969,7 @@ char *cheatlist_getter(int index, int *list_size)
    default:
       if((index >= 0)&&(index<CheatCount)){
 
-         sprintf(S,"%-29s", CheatList[index].name);
+         snprintf(S,30,"%-29s", CheatList[index].name);
          S[29] = 0;
 
          if(CheatList[index].active) {

@@ -210,7 +210,8 @@ int about_proc(int msg, DIALOG *d, int c)
 	sprintf(about5, " ");
 
       sprintf(about6, "Host System: %s", OSName());
-      sprintf(about7, "CPU: %s", raine_cpu_model);
+      snprintf(about7,59, "CPU: %s", raine_cpu_model);
+      about7[58] = 0;
 #ifdef RDTSC_PROFILE
       if (cycles_per_second) sprintf(about7+strlen(about7)," at %d MHz",cycles_per_second/1000000);
 #endif

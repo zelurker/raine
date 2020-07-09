@@ -427,14 +427,16 @@ static void do_save_screen(void)
 
    sprintf(file_name, "%s.%s", current_game->main_name,extension);
 
-   sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
+   snprintf(full_name, 256,"%s%s", dir_cfg.screen_dir, file_name);
+   full_name[255] = 0;
 
 
    if (recording_video) {
      int current_video_frame = cpu_frame_count*video_fps / fps;
 
      if (current_video_frame != last_video_frame) {
-       sprintf(full_name,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count,extension);
+       snprintf(full_name,255,"%s%s_%06d.%s",dir_cfg.screen_dir, current_game->main_name,cpu_frame_count,extension);
+       full_name[254] = 0;
        if (display_cfg.screenshot_png)
 	 save_png(full_name, BlitViewSource, pal);
        else
@@ -454,9 +456,12 @@ static void do_save_screen(void)
 	 return;
        if(dir_cfg.long_file_names)
 	 sprintf(file_name, "%s_%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
-       else
-	 sprintf(file_name, "%.5s%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
-       sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
+       else {
+	 snprintf(file_name,256, "%.5s%03d.%s", current_game->main_name, dir_cfg.last_screenshot_num++,extension);
+	 file_name[255] = 0;
+       }
+       snprintf(full_name,256, "%s%s", dir_cfg.screen_dir, file_name);
+       full_name[255] = 0;
      };
      if (display_cfg.screenshot_png)
        save_png(full_name, BlitViewSource, pal);

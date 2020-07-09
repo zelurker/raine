@@ -635,7 +635,8 @@ void update_monitoring() {
 		fwrite(&i,1,4,f_record); // size 2 (offset 40) = filesize - 44 ???
 	    } else {
 		char dir[1024];
-		sprintf(dir,"Can't create %s",path);
+		snprintf(dir,1011,"Can't create %s",path);
+		dir[1010] = 0;
 		MessageBox("Error",dir,"OK");
 		recording = 0;
 	    }

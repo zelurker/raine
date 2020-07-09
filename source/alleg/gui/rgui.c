@@ -503,15 +503,15 @@ static char *gfx_card_getter(int index, int *list_size)
          h
       );
      } else
-      switch_gfx_res_data(
-         *list_size,
-         res_data[gfx_mode_dialog[DGFX_MODE_LIST].d1].w,
-         res_data[gfx_mode_dialog[DGFX_MODE_LIST].d1].h
-      );
+	 switch_gfx_res_data(
+		 *list_size,
+		 res_data[gfx_mode_dialog[DGFX_MODE_LIST].d1].w,
+		 res_data[gfx_mode_dialog[DGFX_MODE_LIST].d1].h
+		 );
 
-      update_mode_list_dlg();
+     update_mode_list_dlg();
 
-      return NULL;
+     return NULL;
    }
 
    if(index >= 0)
@@ -1479,7 +1479,8 @@ static void save_gui_screen(void)
 
    sprintf(file_name, "%s.pcx", "gui");
 
-   sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
+   snprintf(full_name,256, "%s%s", dir_cfg.screen_dir, file_name);
+   full_name[255] = 0;
 
    /*
 
@@ -1501,7 +1502,8 @@ static void save_gui_screen(void)
 
          sprintf(file_name, "%.5s%03d.pcx", "gui", dir_cfg.last_screenshot_num++);
 
-      sprintf(full_name, "%s%s", dir_cfg.screen_dir, file_name);
+      snprintf(full_name,256, "%s%s", dir_cfg.screen_dir, file_name);
+      full_name[255] = 0;
 
    };
 

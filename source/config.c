@@ -2140,7 +2140,8 @@ void save_game_config(void)
    raine_push_config_state();
 
    // Must always be saved here.
-   sprintf(str,"%sconfig/cheats.cfg", dir_cfg.exe_path);
+   snprintf(str,256,"%sconfig/cheats.cfg", dir_cfg.exe_path);
+   str[255] = 0;
    raine_set_config_file(str);
 
    // Save Cheat Settings
