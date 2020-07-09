@@ -57,9 +57,20 @@ void adjust_gui_resolution() {
 
   if (screen_flags & SDL_OPENGL && gl_init) {
       // just restore the opengl mode to its defaults so that the blits work
+      int videoflags = screen_flags | SDL_OPENGLBLIT;
+#ifdef RAINE_UNIX
+      if (screen_flags & (SDL_FULLSCREEN|SDL_NOFRAME))
+	  // A super bug in linux apparently, maybe not for all window managers ?
+	  // Anyway borderless with opengl -> window totally invisible !
+	  // fullscreen with opengl -> double buffer impossible to handle, getting some kind of slow flashing !
+	  // best solution : disable opengl for these 2 cases !
+	  videoflags &= ~SDL_OPENGLBLIT;
+#endif
       gl_init = 0;
+      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
       int bpp = sdl_screen->format->BitsPerPixel;
-      sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,bpp,(sdl_screen->flags | SDL_ANYFORMAT | SDL_OPENGLBLIT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
+      sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,bpp,(videoflags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
       return;
   }
 
@@ -409,6 +420,8 @@ static SDL_Surface *new_set_gfx_mode() {
       // so it's better to just disable it here
       videoflags &= ~(SDL_ANYFORMAT|SDL_HWPALETTE|SDL_ASYNCBLIT|SDL_DOUBLEBUF);
       videoflags |= SDL_OPENGL;
+      if (gui_level)
+	  videoflags |= SDL_OPENGLBLIT;
       print_debug("new_set_gfx_mode: asking for opengl\n");
   }
 
