@@ -224,9 +224,11 @@ int main(int argc,char *argv[])
 
 #endif // ifdef RAINE_DEBUG
 
-#ifdef RAINE_DOS
-   printf("\E[0m"); // normal text
-#elif defined(RAINE_UNIX)
+#if defined(RAINE_UNIX)
+ // For some unknown reason dos doesn't seem to need this anymore...
+ // specific to freedos ? It happens with or without their nansi.sys
+ // without it we still have the colored characters but this sequence
+ // to restore normal text displays garbage
    if (isatty(fileno(stdout)))
        printf("\E[0m"); // normal text
 #endif
@@ -561,7 +563,7 @@ int main(int argc,char *argv[])
 	"This seems to be the first time you have run " EMUNAME " " VERSION ".\n"
 	"Please read the docs before running... also read raine.cfg.\n"
 	"If you have any problems, please visit\n"
-	"http://rainemu.swishparty.co.uk/\n"
+	"http://raine.1emulation.com/\n"
 	"\n"
 #ifndef SDL
 	"ISSUES:\n"
@@ -618,6 +620,10 @@ int main(int argc,char *argv[])
 
 #ifndef SDL
    build_mode_list(); // After the REAL allegro init...
+   int cur_row, cur_col;
+   unsigned *saved_screen = (unsigned *)alloca(ScreenRows()*ScreenCols()*2);
+   ScreenGetCursor(&cur_row,&cur_col);
+   ScreenRetrieve(saved_screen);
    RaineSoundCardTotal=8;
 #endif
 
@@ -775,6 +781,19 @@ int main(int argc,char *argv[])
    raine_config_cleanup();
 #ifndef SDL
    unload_datafile(RaineData);
+#if 0
+   set_gfx_mode(GFX_MODEX,320,240,8,0);
+   /* For some unknown reason in virtualbox raine doesn't correctly restore text mode
+    * most of the time from a 16bpp mode, setting explicitely an 8bpp mode above
+    * and then calling directly the int function to restore text mode seems to work ! */
+   __dpmi_regs regs;
+   regs.x.ax = 0x3; /* Mode 0x13 is VGA 320x200x256, 0x3 is TEXT 80x25 */
+   __dpmi_int(0x10, &regs); /* same as real-mode */
+#else
+   allegro_exit(); // restores text mode
+#endif
+   ScreenUpdate(saved_screen);
+   ScreenSetCursor(cur_row,cur_col);
 #endif
 
    return 0;
