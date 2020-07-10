@@ -31,7 +31,6 @@
 #define DWORD int
 
 int GameSound;
-UINT8 *PCMROM;
 static UINT8 counter[MAX_STREAM_CHANNELS];
 
 int RaineSoundCardTotal,
