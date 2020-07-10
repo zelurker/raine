@@ -94,11 +94,15 @@ static SDL_Rect get_max_area(SDL_Rect &work_area, SDL_Rect &fgdst) {
 void read_game_list_config() {
    game_list_mode	= raine_get_config_int( "GUI", "game_list_mode", 1);
    short_names	= raine_get_config_int( "GUI", "short_names", 0);
+   clones = raine_get_config_int("GUI","clones",1);
+   status = raine_get_config_int("GUI","status",1);
 }
 
 void save_game_list_config() {
    raine_set_config_int(	"GUI", "game_list_mode", game_list_mode);
    raine_set_config_int(	"GUI", "short_names", short_names);
+   raine_set_config_int(	"GUI", "clones", clones);
+   raine_set_config_int(	"GUI", "status", status);
 }
 
 class TGame_sel : public TMenu
