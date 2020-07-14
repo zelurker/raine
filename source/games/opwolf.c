@@ -758,7 +758,7 @@ static void OpWolfWriteADPCMA(UINT16 offset, UINT8 data)
 
    ad[offset]=data;
 
-   if(offset==6){
+   if(offset==4){
 
       print_debug("OpWolfADPCM(%02X%02X:%02X%02X:%02X%02X)\n",ad[1],ad[0],ad[3],ad[2],ad[4],ad[5]);
 
@@ -783,7 +783,7 @@ static void OpWolfWriteADPCMB(UINT16 offset, UINT8 data)
 
    ad2[offset]=data;
 
-   if(offset==6){
+   if(offset==4){
 
       print_debug("OpWolfADPCM#2(%02X%02X:%02X%02X:%02X%02X)\n",ad2[1],ad2[0],ad2[3],ad2[2],ad2[4],ad2[5]);
 
