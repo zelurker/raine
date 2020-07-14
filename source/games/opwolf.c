@@ -3,6 +3,9 @@
 /*                  OPERATION WOLF (C) 1987 TAITO CORPORATION                 */
 /*                                                                            */
 /******************************************************************************/
+/* I don't know who did that, but the operation wolf in this driver still uses
+ * the z80 rom from the bootleg version to emulate the c-chip, so it's not the
+ * real thing... although it uses the right 68k roms and even the sound rom. */
 
 #include "gameinc.h"
 #include "tc100scn.h"
@@ -212,8 +215,6 @@ static struct SOUND_INFO sound_opwolf[] =
    { SOUND_MSM5205_BUFF, &msm5205_interface, },
    { 0,             NULL,               },
 };
-
-
 
 static struct ROM_INFO rom_opwolfb[] =
 {
@@ -619,7 +620,7 @@ static void execute_opwolf(void)
       myy1=myy11-8;
    }
    else{
-      myy1=myy11-24;
+      myy1=myy11-16;
    }
 
    if(x1<0)   x1=0;
