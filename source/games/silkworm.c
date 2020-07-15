@@ -213,7 +213,7 @@ static void tecmo_adpcm_int()
 	}
 #else
 	if (adpcm_end > adpcm_pos) {
-	  live_msm_decode(adpcm_pos,adpcm_end-adpcm_pos-1);
+	  live_msm_decode(0,adpcm_pos,adpcm_end-adpcm_pos-1);
 	  adpcm_pos++;
 	}
 #endif

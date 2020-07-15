@@ -19,12 +19,6 @@
 
 static struct MSM5205buffer_interface *intf;
 
-// adr and length for the live_decode function
-static UINT16 last_adr;
-static INT16 last_len;
-
-static int used_adpcm;
-
 typedef struct M5205_SAMPLE
 {
    UINT32 len;                  	// length (in samples?)
@@ -183,6 +177,10 @@ void decode_msm_sample(int chip, int sample) {
 
 }
 
+static int last_adr[MSM5205BF_MAX];
+static int last_len[MSM5205BF_MAX];
+static int used_adpcm[MSM5205BF_MAX];
+
 /**************************************************/
 /*    sh start                                    */
 /**************************************************/
@@ -195,8 +193,8 @@ int MSM5205buffer_sh_start( struct MSM5205buffer_interface *interface ){
 
   int rate = audio_sample_rate;
 
-  last_adr = last_len = 0;
-  used_adpcm = 0;
+  last_adr[0] = last_adr[1] = last_len[0] = last_len[1] = 0;
+  used_adpcm[0] = used_adpcm[1] = 0;
 
   intf = interface;
   chip_num = intf->num;
@@ -413,36 +411,36 @@ void MSM5205buffer_setpan( int num, int data )
 
 extern UINT8 *Z80RAM; // mz80help
 
-int live_msm_decode(UINT16 adr,INT16 len) {
+int live_msm_decode(int chip, int adr,int len) {
   // returns 1 if the sample was actually started, 0 otherwise.
   if (len > 0) {
-    if (adr <= last_adr || adr >= last_adr + last_len) {
+    if (adr <= last_adr[chip] || adr >= last_adr[chip] + last_len[chip]) {
       // the sample has changed...
       int i;
-      struct msm5205_adpcm_list *list = intf->list[0];
+      struct msm5205_adpcm_list *list = intf->list[chip];
 
-      last_adr = adr;
-      last_len = len;
+      last_adr[chip] = adr;
+      last_len[chip] = len;
 
       // did we already decode it ?
-      for (i=0; i< used_adpcm; i++)
+      for (i=0; i< used_adpcm[chip]; i++)
 	if (list[i].start == adr)
 	  break;
-      if (i>= used_adpcm) {
+      if (i>= used_adpcm[chip]) {
 	// it's a new sample !
-	i = used_adpcm++;
-	if (used_adpcm >= MAX_MSM_ADPCM) {
-	  print_ingame(300,"ADPCM overflow. Please set a higher MAX_MSM_ADPCM\n");
-	  i = --used_adpcm;
-	} else {
-	  list[i].start = adr;
-	  list[i].end = adr+len;
-
-	  decode_msm_sample(0,i);
+	i = used_adpcm[chip]++;
+	if (used_adpcm[chip] >= MAX_MSM_ADPCM) {
+	  printf("ADPCM overflow. Please set a higher MAX_MSM_ADPCM\n");
+	  i = 0;
 	}
+	list[i].start = adr;
+	list[i].end = adr+len;
+
+	decode_msm_sample(chip,i);
+	print_debug("sample decoded %x chip %d start = %x end %x\n",i,chip,adr,adr+len);
       }
 
-      MSM5205buffer_request( 0, i );
+      MSM5205buffer_request( chip, i );
       return 1;
     }
   }

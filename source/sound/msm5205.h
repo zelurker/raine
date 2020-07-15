@@ -41,7 +41,7 @@ void MSM5205buffer_Stereo_UpdateOne( int num, INT16 **buffer, int length );
 
 void MSM5205buffer_request( int num, int code );
 void MSM5205buffer_setpan( int num, int data );
-int live_msm_decode(UINT16 adr,INT16 len);
+int live_msm_decode(int chip, int adr,int len);
 void MSM5205_set_volume(int chip, int volume);
 
 #endif

@@ -298,7 +298,7 @@ static WRITE_HANDLER( toki_adpcm_data_w )
   INT16 len = ReadWord(&Z80RAM[0x704]);
   UINT16 adr = ReadWord(&Z80RAM[0x702])+(current_bank*0x4000);
   if (len>0) len--;
-  if (live_msm_decode(adr,len)) { // did we start a new sample ?
+  if (live_msm_decode(0,adr,len)) { // did we start a new sample ?
     WriteWord(&Z80RAM[0x702],adr+1);
     WriteWord(&Z80RAM[0x704],1); // stop the work in the nmi !
   }
