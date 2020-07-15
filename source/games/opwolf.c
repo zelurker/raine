@@ -16,7 +16,7 @@
 #include "2151intf.h"
 #include "gun.h"
 #include "emumain.h"
-
+#include "timer.h"
 
 static struct ROM_INFO rom_opwolf[] =
 {
@@ -128,19 +128,19 @@ static struct YM2151interface ym2151_interface =
   1,			// 1 chip
   4000000,		// 4 MHz
   { YM3012_VOL(160,OSD_PAN_LEFT,160,OSD_PAN_RIGHT) },
-  { NULL },
+  { z80_irq_handler },
   { NULL }
 };
 
-static struct msm5205_adpcm_list opwolf_adpcm[0x3c];
+static struct msm5205_adpcm_list opwolf_adpcm1[MAX_MSM_ADPCM],opwolf_adpcm2[MAX_MSM_ADPCM];
 
 static struct MSM5205buffer_interface msm5205_interface =
 {
    2,
    { 8000, 8000 },
    { 223,  223  },
-   { opwolf_adpcm, opwolf_adpcm},
-   { sizeof(opwolf_adpcm) / sizeof(struct msm5205_adpcm_list), sizeof(opwolf_adpcm) / sizeof(struct msm5205_adpcm_list)},
+   { opwolf_adpcm1, opwolf_adpcm2},
+   { MAX_MSM_ADPCM, MAX_MSM_ADPCM },
    { NULL, NULL },
    { 0,    0    },
    { REGION_SOUND1, REGION_SOUND1 },
@@ -390,6 +390,7 @@ static void load_opwolf(void)
    // coin input is mapeed directly in 5c580 -> in the middle of this z80rom2 area !
    memcpy(Z80ROM2,load_region[REGION_CPU3],0x8000);
    AddTaitoYM2151(0x028A, 0x0219, 0x10000, (void *) OpWolfWriteADPCMA, (void *) OpWolfWriteADPCMB);
+   setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
 
    /*--------[C-Chip Z80]---------*/
 
@@ -550,7 +551,7 @@ static void execute_opwolf(void)
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)		// MAIN 68000 12Mhz?
    cpu_interrupt(CPU_68K_0, 5);
 
-   Taito2151_FrameFast();	// Z80 and YM2151
+   Taito2151_Frame();	// Z80 and YM2151
 }
 
 static void DrawOperationWolf(void)
