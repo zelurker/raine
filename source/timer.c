@@ -72,6 +72,7 @@ void z80_irq_handler(int irq) {
     // Notice that when using the other code with this emulator, aodk has no sound
     // I am not totally sure of the reason, maybe the cycles I execute after the default irq
     // are too much here ?
+    switch_cpu(audio_cpu);
     z80_set_irq_line(0x38,INPUT_LINE_IRQ0,irq);
 #else
   if (irq) {
