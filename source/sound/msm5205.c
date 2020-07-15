@@ -4,9 +4,6 @@
 /* Warning : don't EVER mix live_msm_decode with a static list *
  * of samples. live_msm_decode uses realloc on decode_area,    *
  * which would make the list of static samples invalid.        *
- * also, msm_live_decode is intended to be used with a single  *
- * msm chip, since it works on only the global variable        *
- * decode_area.                                                *
  **************************************************************/
 
 #include "raine.h"
@@ -147,10 +144,25 @@ void MSM5205_decode( int i, struct M5205_SAMPLE *samp, UINT8 *rom, UINT32 romsiz
 	*(decode_table + count*3 + 1) = stop;
 	*(decode_table + count*3 + 2) = decode_area_size;
 	decode_table_count++;
-#ifdef RAINE_DEBUG
 	print_debug( "New decode Address (%02x:%08x - %08x)\n", count, *(decode_table + count*3), *(decode_table + count*3 + 1) );
-#endif
+	print_debug("new decode size %x\n",(decode_area_size + samp->len) * sizeof(INT16));
+	INT16 *old = decode_area;
 	decode_area = realloc( decode_area, (decode_area_size + samp->len) * sizeof(INT16) );
+	int num;
+	struct msm5205buffer_chip *mp;
+	for( num = 0; num < chip_num; num++ ){
+	    mp = MSM5205buffer_chip + num;
+	    for( i = 0; i < intf->listsize[num]; i++ ){
+		if( (mp->samp + i)->in_decode_area >= 0) {
+		    (mp->samp + i)->data = decode_area + (mp->samp + i)->in_decode_area;
+		    print_debug("adjust sample %d chip %d\n",i,num);
+		}
+	    }
+	    if (mp->req_buf) {
+		mp->req_buf = mp->req_buf - old + decode_area;
+		print_debug("adjust req_buf chip %d\n",num);
+	    }
+	}
 	ad_data = (INT16 *)(decode_area + decode_area_size);
 	samp->in_decode_area = (decode_area_size); /* rom offset */
 	decode_area_size += samp->len;
@@ -318,7 +330,8 @@ void MSM5205buffer_UpdateOne( int num, INT16 *buffer, int length )
 	mp->now_reqcode = -1;		/* end ADPCM */
 	break;
       }
-      *sp++ = *(dsp + addr);
+      INT16 val = *(dsp + addr);
+      *sp++ = val;
       mp->offset += mp->add;
     }
   }
