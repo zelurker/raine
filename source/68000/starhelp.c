@@ -36,8 +36,6 @@ int StarScreamEngine;
 
 // FIRST EMULATED 68000
 
-static UINT32 ma;
-
 static UINT32 program_count[MAX_68000];
 static UINT32 data_count_rb[MAX_68000];
 static UINT32 data_count_rw[MAX_68000];
@@ -694,7 +692,6 @@ void Clear68000List(void)
       M68000_resethandler[ta] = NULL;
    }
 
-   ma = 0;
 }
 
 void WriteStarScreamByte(UINT32 address, UINT8 data)
@@ -703,8 +700,7 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
 
    for(ta=0;ta<data_count_wb[0];ta++){
       if((M68000_dataregion_wb[0][ta].lowaddr)==-1){
-         ta=ma;
-            print_debug("Wb(%06x,%02x) [Via WriteStarScreamByte]\n",address,data);
+	  break;
       }
       else{
          if((address>=M68000_dataregion_wb[0][ta].lowaddr)&&(M68000_dataregion_wb[0][ta].highaddr>=address)){
@@ -725,8 +721,7 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
    // it's mainly for the region switch when it's located in rom
    for(ta=0;ta<data_count_rb[0];ta++){
       if((M68000_dataregion_rb[0][ta].lowaddr)==-1){
-         ta=ma;
-            print_debug("Wb(%06x,%02x) [Via WriteStarScreamByte]\n",address,data);
+	  return;
       }
       else{
          if((address>=M68000_dataregion_rb[0][ta].lowaddr)&&(M68000_dataregion_rb[0][ta].highaddr>=address)){
