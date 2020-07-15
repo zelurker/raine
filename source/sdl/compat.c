@@ -17,6 +17,7 @@
 #include "sdl/dialogs/messagebox.h"
 #include "sdl/opengl.h"
 #include "loadpng.h"
+#include "version.h"
 
 static SDL_PixelFormat overlay_format = {
   NULL,
@@ -192,7 +193,10 @@ void sdl_init() {
 	    SDL_Quit();
 	    return;
 	}
-	SDL_WM_SetCaption(EMUNAME,EMUNAME);
+	char title[20];
+	snprintf(title,20,"%s v%s",EMUNAME,VERSION);
+	title[19] = 0;
+	SDL_WM_SetCaption(title,title);
 
 	inputs_preinit();
 
