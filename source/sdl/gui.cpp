@@ -262,9 +262,9 @@ static void do_load_game(void)
        bestw = besth = 0;
      }
 
-     load_game_config();
+     reset_game_hardware(); // must be done BEFORE load_game_config for scripts
 
-     reset_game_hardware();
+     load_game_config();
 
      if (loading_dialog) {
 	 delete loading_dialog;
