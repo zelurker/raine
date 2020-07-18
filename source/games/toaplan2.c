@@ -2817,6 +2817,9 @@ static void load_truxton2(void)
    int ta,tb;
 
    romset=0;
+#ifndef MAME_Z80
+   _z80iff = 3; // make sure the timers won't believe ints are disabled !
+#endif
 
    if(!(GFX=AllocateMem(0x400000)))return;
    if(!(TMP=AllocateMem(0x100000)))return;
@@ -2989,6 +2992,9 @@ static void load_snowbro2(void)
    UINT8 *TMP;
 
    romset=1;
+#ifndef MAME_Z80
+   _z80iff = 3; // make sure the timers won't believe ints are disabled !
+#endif
 
    if(!(GFX=AllocateMem(0x600000)))return;
    if(!(TMP=AllocateMem(0x100000)))return;
