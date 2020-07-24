@@ -1,0 +1,122 @@
+script "Infinite Credits"  
+run:
+    poke $1C004F $63
+script "Infinite Time"  
+run:
+    poke $1C16A3 $59
+    poke $1C16A1 $99
+script "Drain All Energy Now! 1st CPU Character"  
+on:
+    poke $1C0A47 $00
+script "Drain All Energy Now! 2nd CPU Character"  
+on:
+    poke $1C0B53 $00
+script "Drain All Energy Now! 3rd CPU Character"  
+on:
+    poke $1C0C5F $00
+script "Drain All Energy Now! 4th CPU Character"  
+on:
+    poke $1C0D6B $00
+script "Drain All Energy Now! 5th CPU Character"  
+on:
+    poke $1C0E77 $00
+script " "  
+script "Infinite Energy 1st Character"  
+run:
+    poke $1C0617 $6E
+    poke $1C061F $6E
+script "Drain All Energy Now! 1st Character"  
+on:
+    poke $1C0617 $00
+    poke $1C061F $00
+script "Select 1st Character" \
+ "comm:Enable this selection cheat as your chosen characters are walking into the ring. If necessary pause the game and select the character you want." \
+ "0x00/Hulk Hogan"\
+ "0x01/Ultimate Warrior"\
+ "0x02/Jake Roberts"\
+ "0x03/Big Boss Man"\
+ "0x04/Hawk"\
+ "0x05/Animal"\
+ "0x06/Sgt Slaughter"\
+ "0x07/Mr. Perfect"\
+ "0x08/Earthquake"\
+ "0x09/Ted DiBiase"\
+ "0x0A/Smash"\
+ "0x0B/Crush" 
+run:
+    poke $1C0607 param
+script " "  
+script "Infinite Energy 2nd Character"  
+run:
+    poke $1C0723 $6E
+    poke $1C072B $6E
+script "Drain All Energy Now! 2nd Character"  
+on:
+    poke $1C0723 $00
+    poke $1C072B $00
+script "Select 2nd Character" \
+ "comm:Enable this selection cheat as your chosen characters are walking into the ring. If necessary pause the game and select the character you want." \
+ "0x00/Hulk Hogan"\
+ "0x01/Ultimate Warrior"\
+ "0x02/Jake Roberts"\
+ "0x03/Big Boss Man"\
+ "0x04/Hawk"\
+ "0x05/Animal"\
+ "0x06/Sgt Slaughter"\
+ "0x07/Mr. Perfect"\
+ "0x08/Earthquake"\
+ "0x09/Ted DiBiase"\
+ "0x0A/Smash"\
+ "0x0B/Crush" 
+run:
+    poke $1C0713 param
+script " "  
+script "Infinite Energy 3rd Character"  
+run:
+    poke $1C082F $6E
+    poke $1C0837 $6E
+script "Drain All Energy Now! 3rd Character"  
+on:
+    poke $1C082F $00
+    poke $1C0837 $00
+script "Select 3rd Character" \
+ "comm:Enable this selection cheat as your chosen characters are walking into the ring. If necessary pause the game and select the character you want." \
+ "0x00/Hulk Hogan"\
+ "0x01/Ultimate Warrior"\
+ "0x02/Jake Roberts"\
+ "0x03/Big Boss Man"\
+ "0x04/Hawk"\
+ "0x05/Animal"\
+ "0x06/Sgt Slaughter"\
+ "0x07/Mr. Perfect"\
+ "0x08/Earthquake"\
+ "0x09/Ted DiBiase"\
+ "0x0A/Smash"\
+ "0x0B/Crush" 
+run:
+    poke $1C081F param
+script " "  
+script "Infinite Energy 4th Character"  
+run:
+    poke $1C093B $6E
+    poke $1C0942 $6E
+script "Drain All Energy Now! 4th Character"  
+on:
+    poke $1C093B $00
+    poke $1C0942 $00
+script "Select 4th Character" \
+ "comm:Enable this selection cheat as your chosen characters are walking into the ring. If necessary pause the game and select the character you want." \
+ "0x00/Hulk Hogan"\
+ "0x01/Ultimate Warrior"\
+ "0x02/Jake Roberts"\
+ "0x03/Big Boss Man"\
+ "0x04/Hawk"\
+ "0x05/Animal"\
+ "0x06/Sgt Slaughter"\
+ "0x07/Mr. Perfect"\
+ "0x08/Earthquake"\
+ "0x09/Ted DiBiase"\
+ "0x0A/Smash"\
+ "0x0B/Crush" 
+run:
+    poke $1C092B param

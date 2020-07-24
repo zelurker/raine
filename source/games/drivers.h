@@ -1298,7 +1298,7 @@
   DRV(wgpj)
 
 // wrestlef.c
-  DRV(wwfwfsta)
+  DRV(wwfwfest)
 
 // wwfsstar.c
   DRV(wwfsstar)

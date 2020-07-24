@@ -12,7 +12,7 @@
 #include "blit.h" // clear_game_screen
 
 
-static struct ROM_INFO rom_wwfwfsta[] =
+static struct ROM_INFO rom_wwfwfest[] =
 {
    {   "wf_73a.rom", 0x00080000, 0x6c522edb, 0, 0, 0, },
    {    "31a11-2.42", 0x00010000, 0x5ddebfea, 0, 0, 0, },
@@ -32,7 +32,7 @@ static struct ROM_INFO rom_wwfwfsta[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_wwfwfsta[] =
+static struct INPUT_INFO input_wwfwfest[] =
 {
    INP0( COIN1, 0x01C021, 0x01 ),
    INP0( COIN2, 0x01C021, 0x02 ),
@@ -121,7 +121,7 @@ static struct DSW_DATA dsw_data_wrestle_fest_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_wwfwfsta[] =
+static struct DSW_INFO dsw_wwfwfest[] =
 {
    { 0x01C07E, 0xFF, dsw_data_wrestle_fest_0 },
    { 0x01C07F, 0xFF, dsw_data_wrestle_fest_1 },
@@ -208,7 +208,7 @@ static void WrestleFSpeedPatch(void)
    }
 }
 
-static void load_wwfwfsta(void)
+static void load_wwfwfest(void)
 {
    UINT8 *TMP;
    int ta,tb,tc,td,te;
@@ -531,7 +531,7 @@ static void load_wwfwfsta(void)
        layer_id_data[ta] = add_layer_info(layer_id_name[ta]);
 }
 
-static void execute_wwfwfsta(void)
+static void execute_wwfwfest(void)
 {
    int ta;
 
@@ -901,7 +901,7 @@ Byte(s)| Bit(s) | Description
  0C-0F |........| Unused
 
 */
-static struct VIDEO_INFO video_wwfwfsta =
+static struct VIDEO_INFO video_wwfwfest =
 {
    DrawWrestleF,
    320,
@@ -910,15 +910,15 @@ static struct VIDEO_INFO video_wwfwfsta =
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
 };
-static struct DIR_INFO dir_wwfwfsta[] =
+static struct DIR_INFO dir_wwfwfest[] =
 {
    { "wrestle_fest", },
    { "wrestlef", },
-   { "wwfwfsta", },
+   { "wwfwfest", },
    { "wwfwfest", },
    { NULL, },
 };
-GME( wwfwfsta, "WWF Wrestlefest", TECHNOS, 1991, GAME_BEAT,
+GME( wwfwfest, "WWF Wrestlefest", TECHNOS, 1991, GAME_BEAT,
 	.long_name_jpn = "‚v‚v‚eƒŒƒbƒXƒ‹ƒtƒFƒ‹ƒg",
 	.board = "TA-0031",
 );
