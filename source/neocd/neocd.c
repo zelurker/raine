@@ -2796,6 +2796,13 @@ void myStop68000(UINT32 adr, UINT8 data) {
 #endif
 }
 
+static UINT16 my_read_ff011c(UINT32 offset) {
+    // The bios always reads the region as a word, so it's handled in read_reg
+    // the problem is with the GetLanguageSwitch function, which reads a byte, and doesn't know what to do with the returned word
+    // so we must define a byte handler here for it
+    return input_buffer[10];
+}
+
 static UINT16 read_reg(UINT32 offset) {
   if (offset == 0xff011c)  {
     // only bit 4 of upper byte is tested - setting it to 1 makes some games
@@ -5035,6 +5042,7 @@ void load_neocd() {
 	// cdrom : there are probably some more adresses of interest in this area
 	// but I found only this one so far (still missing the ones used to control
 	// the cd audio from the bios when exiting from a game).
+	AddReadByte(0xff011c,0xff011c,my_read_ff011c,NULL);
 	AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
 	AddWriteByte(0xff011c, 0xff011c, NULL, &input_buffer[10-1]); // 10 !
 	AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
