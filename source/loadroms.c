@@ -794,7 +794,7 @@ static UINT32 load_gfx_region(UINT32 region)
 	       load_region[newr] = AllocateMem(get_region_size(region));
 	       if (!load_region[newr]) {
 		   printf("can't allocate new region !\n");
-		   exit(1);
+		   return 0;
 	       }
 	       memcpy(load_region[newr],load_region[region],region_size[region]);
 	       region_size[newr] = region_size[region];
@@ -1335,14 +1335,9 @@ static int load_rom_bytemap(char *rom, UINT8 *dest, UINT32 size, UINT32 mode)
          return 1;
       }
       else
-      {
          FreeMem(tmp);
-         return 0;
-      }
    }
-   else
-
-      return 0;
+   return 0;
 
 }
 
@@ -1507,6 +1502,7 @@ void unpack_region_lsb(UINT32 region) {
     UINT8 *src = load_region[region];
     UINT32 size = get_region_size(region);
     UINT8 *dest = AllocateMem(size * 2);
+    if (!dest) return;
     UINT8 *dst = dest;
     UINT32 ta;
     for (ta=0; ta<size; ta++) {
