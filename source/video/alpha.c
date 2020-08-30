@@ -34,38 +34,18 @@ void init_alpha(UINT32 my_alpha) {
 
 #ifndef NO_ASM
   asm(
-#ifdef RAINE_UNIX
-      "movd alpha,%mm2    \n" // Copy ALPHA into %mm2
-#else
-      "movd _alpha,%mm2    \n" // Copy ALPHA into %mm2
-#endif
-      "punpcklwd %mm2,%mm2 \n" // Unpack %mm2 - 0000 0000 00aa 00aa
-      "punpckldq %mm2,%mm2 \n" // Unpack %mm2 - 00aa 00aa 00aa 00aa
-#ifdef RAINE_UNIX
-      "movq %mm2,ALPHA64  \n" // Save the result into ALPHA64
-#else
-      "movq %mm2,_ALPHA64  \n" // Save the result into ALPHA64
-#endif
-      "psrlw  $2,%mm2      \n" // Divide each ALPHA value by 4
-#ifdef RAINE_UNIX
-      "movq %mm2,ALPHABY4 \n" // Save the result to ALPHABY4
-#else
-      "movq %mm2,_ALPHABY4 \n" // Save the result to ALPHABY4
-#endif
+      "movd %0,%%mm2    \n" // Copy ALPHA into %mm2
+      "punpcklwd %%mm2,%%mm2 \n" // Unpack %mm2 - 0000 0000 00aa 00aa
+      "punpckldq %%mm2,%%mm2 \n" // Unpack %mm2 - 00aa 00aa 00aa 00aa
+      "movq %%mm2,%3  \n" // Save the result into ALPHA64
+      "psrlw  $2,%%mm2      \n" // Divide each ALPHA value by 4
+      "movq %%mm2,%4 \n" // Save the result to ALPHABY4
 
-#ifdef RAINE_UNIX
-      "movd emudx_transp,%mm4 \n" // Copy ColorKey into %mm4
-#else
-      "movd _emudx_transp,%mm4 \n" // Copy ColorKey into %mm4
-#endif
-      "punpcklwd %mm4,%mm4 \n" // Unpack %mm4 - 0000 0000 cccc cccc
-      "punpckldq %mm4,%mm4 \n" // Unpack %mm4 - cccc cccc cccc cccc
-#ifdef RAINE_UNIX
-      "movq %mm4,COLORKEY64 \n" // Save the result into COLORKEY64
-#else
-      "movq %mm4,_COLORKEY64 \n" // Save the result into COLORKEY64
-#endif
-      "finit \n"
+      "movd %2,%%mm4 \n" // Copy ColorKey into %%mm4
+      "punpcklwd %%mm4,%%mm4 \n" // Unpack %%mm4 - 0000 0000 cccc cccc
+      "punpckldq %%mm4,%%mm4 \n" // Unpack %%mm4 - cccc cccc cccc cccc
+      "movq %%mm4,%1 \n" // Save the result into COLORKEY64
+      "finit \n" : : "m"(alpha),"m"(COLORKEY64),"m"(emudx_transp),"m"(ALPHA64),"m"(ALPHABY4)
       );
 #endif
 }
