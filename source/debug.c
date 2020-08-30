@@ -27,7 +27,7 @@ write a string to the debug file. supports printf() sytle formatting.
 
 */
 
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) || defined(RAINE_DOS)
 static char debug_name[256];
 #endif
 
@@ -44,7 +44,7 @@ void print_debug(const char *format, ...)
       /* RAINE_WIN32 has some restrictions : when the computer freezes, */
       /* which is rather common in win98, the debug file stays stupidly */
       /* at 0 byte. These defines are an attempt to avoid this... */
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) || defined(RAINE_DOS)
       if (debug_mode < 2) {
 	file_debug = fopen(debug_name,"a+");
 	fseek(file_debug,0,2);
@@ -57,7 +57,7 @@ void print_debug(const char *format, ...)
       fflush(file_debug);
       // Why does this simple flush not work in win32 ???
       //#endif
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) || defined(RAINE_DOS)
       fclose(file_debug);
 #endif
   }
@@ -78,7 +78,7 @@ void open_debug(void)
 	  printf("Unable to write to %s\n",str);
 	  exit(1);
 	}
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) || defined(RAINE_DOS)
 	fclose(file_debug);
 	strcpy(debug_name,str);
 #endif
