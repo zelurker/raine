@@ -1716,6 +1716,21 @@ int switch_res(const VIDEO_INFO *vid)
    return 0;
 }
 
+static int add_dark_mode(GFX_MODE_DATA *list,int nb,int w, int h) {
+    int n;
+    for (n=0; n<nb; n++)
+	if (list[n].w == w && list[n].h == h*3) {
+	    list[nb].w = w;
+	    list[nb].h = h;
+	    char name[20];
+	    sprintf(name,"dark %dx%d",w,h);
+	    list[nb].s = strdup(name);
+	    nb++;
+	    break;
+	}
+    return nb;
+}
+
 void build_mode_list() {
 #if ALLEGRO_WIP_VERSION >= 39 || ALLEGRO_VERSION >= 4
   int screen_mode;
@@ -1736,7 +1751,7 @@ void build_mode_list() {
 #ifdef RAINE_DEBUG
       print_debug("build_mode_list: driver %s index %d modes %d\n",gfx_card_data[screen_mode].name,screen_mode,nb2);
 #endif
-      my_list = dyn_list[screen_mode] = malloc(sizeof(GFX_MODE_DATA)*(nb2+1));
+      my_list = dyn_list[screen_mode] = malloc(sizeof(GFX_MODE_DATA)*(nb2+1+10));
       nb2 = 0;
       for (n=0; n<list->num_modes; n++)
 	if (list->mode[n].bpp == bpp) {
@@ -1748,6 +1763,9 @@ void build_mode_list() {
 	  my_list[nb2].s = strdup(name);
 	  nb2++;
 	}
+      nb2 = add_dark_mode(my_list,nb2,640,160);
+      nb2 = add_dark_mode(my_list,nb2,800,200);
+      nb2 = add_dark_mode(my_list,nb2,1024,256);
       my_list[nb2].w = my_list[nb2].h = 0;
       my_list[nb2].s = NULL;
       destroy_gfx_mode_list(list);
