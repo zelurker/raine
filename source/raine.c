@@ -57,6 +57,10 @@
 #include "display.h" // setup_gfx_modes
 #include "blit.h"
 #include "cpuid.h"
+#if defined(__i386__) && defined(RAINE_UNIX)
+#include "move.h"
+#include <sys/mman.h>
+#endif
 
 struct RAINE_CFG raine_cfg;
 UINT8 *ingame_font; 	// Raw data for ingame font
@@ -139,6 +143,32 @@ static void mystrcpy(char *dst,char *src) {
 CURL *curl_handle;
 #endif
 
+#if defined(__i386__) && defined(RAINE_UNIX)
+static void mymprotect(void* adr) {
+    int pid = getpid();
+    char buf[200];
+    sprintf(buf,"/proc/%d/maps",pid);
+    FILE *f = fopen(buf,"r");
+    if (!f) {
+	printf("can't open file %s, can't appy mprotect patches, expect big troubles !\n",buf);
+	return;
+    }
+    while (!feof(f)) {
+	myfgets(buf,200,f);
+	int start, end;
+	sscanf(buf,"%x-%x",&start,&end);
+	if ((void*)start <= adr && adr <= (void*)end) {
+	    void *vd = (void*)start;
+	    if (mprotect(vd,end-start,PROT_READ|PROT_WRITE|PROT_EXEC))
+		printf("mprotect error, expect trouble !\n");
+	    fclose(f);
+	    return;
+	}
+    }
+    fclose(f);
+}
+#endif
+
 int main(int argc,char *argv[])
 {
    int i;
@@ -162,6 +192,9 @@ int main(int argc,char *argv[])
    const char **dirp = dirs;
 #ifdef GFX_FBCON
    FILE *f;
+#endif
+#if defined(__i386__) && defined(RAINE_UNIX)
+   mymprotect(&init_moveasm);
 #endif
 
   /* This just helps some window managers to grab some info from the
