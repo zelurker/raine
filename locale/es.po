@@ -4444,7 +4444,7 @@ msgid ""
 "bad screen format, report this to rainemu.com:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 msgstr ""
-"mal formato de pantalla, reporta esto a rainemu.swishparty.co.uk\n"
+"mal formato de pantalla, reporta esto a raine.1emulation.com\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 
 msgid "bg"
