@@ -455,7 +455,7 @@ endif
 # so expect problems if you enable this.
 # In dos seal is better to handle pci soundcards.
 ifdef RAINE_DOS
-SEAL = 1
+# SEAL = 1
 endif
 
 ifdef SEAL
@@ -1524,7 +1524,8 @@ $(OBJDIR)/6502/make6502.o: source/6502/make6502.c
 	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
 
 cpuinfo:
-	@sh ./detect-cpu
+	@echo "_MARCH=-march=pentium3 -mtune=pentium3" > cpuinfo
+	@echo "CPU=pentium3" >> cpuinfo
 
 
 # create directories
