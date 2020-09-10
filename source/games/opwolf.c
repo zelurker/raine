@@ -290,25 +290,6 @@ static void CChipWriteW(UINT32 address, int data)
    CChipWriteB(address+1,data&0xFF);
 }
 
-
-static int BadReadByte(UINT32 address)
-{
-   return(0);
-}
-
-static int BadReadWord(UINT32 address)
-{
-   return(0);
-}
-
-static void BadWriteByte(UINT32 address, UINT8 data)
-{
-}
-
-static void BadWriteWord(UINT32 address, UINT16 data)
-{
-}
-
 static void clear_ram() {
   // Clears the z80 c-chip ram, or reseting the game will hang
   memset(Z80ROM2+0x8000,0,0x8000);
@@ -413,18 +394,14 @@ static void load_opwolf(void)
    AddZ80BROMBase(Z80ROM2, 0x0038, 0x0066);
 
    AddZ80BReadByte(0x0000, 0xFFFF, NULL,                        Z80ROM2+0x0000); // Z80 ROM/RAM
-   AddZ80BReadByte(0x0000, 0xFFFF, DefBadReadZ80,               NULL);
-   AddZ80BReadByte(    -1,     -1, NULL,                        NULL);
 
    AddZ80BWriteByte(0x0000, 0xFFFF, NULL,                       Z80ROM2+0x0000); // Z80 RAM
-   AddZ80BWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
-   AddZ80BWriteByte(    -1,     -1, NULL,                       NULL);
 
-   AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
+   AddZ80BReadPort(0x00, 0xFF, DefBadReadPort,           NULL);
    AddZ80BReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80BWritePort(0xAA, 0xAA, StopZ80BMode2,          NULL);
-   AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
+   AddZ80BWritePort(0x00, 0xFF, DefBadWritePort,         NULL);
    AddZ80BWritePort(  -1,   -1, NULL,                   NULL);
 
    AddZ80BInit();
@@ -456,54 +433,36 @@ static void load_opwolf(void)
  */
 
    ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x40000);
 
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);	// 68000 ROM
-   AddMemFetch(-1, -1, NULL);
+   add_68000_rom(0,0,0x3ffff,ROM);
+   add_68000_ram(0,0x100000, 0x107fff, RAM);
+   add_68000_ram(0,0xc00000, 0xc1ffff, RAM_VIDEO);
 
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadByte(0x100000, 0x107FFF, NULL, RAM+0x000000);			// MAIN RAM
-   AddReadByte(0xC00000, 0xC1FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddReadByte(0xD00000, 0xD01FFF, NULL, RAM_OBJECT);			// OBJECT RAM
    AddReadByte(0x0FF000, 0x0FFFFF, CChipReadB, NULL);			// C-CHIP
    AddReadByte(0x380000, 0x38000F, NULL, RAM+0x02B000);			// I/O RAM
    AddReadByte(0x0F0000, 0x0F000F, NULL, RAM+0x02B100);			// I/O RAM
    AddReadByte(0x3E0000, 0x3E0003, tc0140syt_read_main_68k, NULL);	// SOUND
-   AddReadByte(0x000000, 0xFFFFFF, BadReadByte, NULL);			// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadWord(0x100000, 0x107FFF, NULL, RAM+0x000000);			// MAIN RAM
    AddReadWord(0x200000, 0x2007FF, NULL, RAM+0x02A000);			// COLOR RAM
-   AddReadWord(0xC00000, 0xC1FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddReadWord(0x0FF000, 0x0FFFFF, CChipReadW, NULL);			// C-CHIP
    AddReadWord(0x380000, 0x38000F, NULL, RAM+0x02B000);			// I/O RAM
    AddReadWord(0x3A0000, 0x3A000F, NULL, RAM+0x02B400);			// GUN
    AddReadWord(0x0F0000, 0x0F000F, NULL, RAM+0x02B100);			// I/O RAM
-   AddReadWord(0x000000, 0xFFFFFF, BadReadWord, NULL);			// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x107FFF, NULL, RAM+0x000000);		// MAIN RAM
-   AddWriteByte(0xC00000, 0xC1FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteByte(0xD00000, 0xD01FFF, NULL, RAM_OBJECT);			// OBJECT RAM
    AddWriteByte(0x0FF000, 0x0FFFFF, CChipWriteB, NULL);			// C-CHIP
    AddWriteByte(0x3E0000, 0x3E0003, tc0140syt_write_main_68k, NULL);	// SOUND
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, BadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x107FFF, NULL, RAM+0x000000);		// MAIN RAM
-   AddWriteWord(0xC00000, 0xC1FFFF, NULL, RAM_VIDEO);			// SCREEN RAM
    AddWriteWord(0xD00000, 0xD01FFF, NULL, RAM_OBJECT);			// OBJECT RAM
    AddWriteWord(0x200000, 0x2007FF, NULL, RAM+0x02A000);		// COLOR RAM
    AddWriteWord(0xC20000, 0xC20003, NULL, RAM_SCROLL+6);		// SCROLL Y
    AddWriteWord(0xC40000, 0xC40003, NULL, RAM_SCROLL+0);		// SCROLL X
    AddWriteWord(0xC50000, 0xC50001, NULL, RAM_SCROLL+14);		// CTRL
    AddWriteWord(0x0FF000, 0x0FFFFF, CChipWriteW, NULL);			// C-CHIP
-   AddWriteWord(0x000000, 0xFFFFFF, BadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
 
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
 
    GameMouse=1;
 }
