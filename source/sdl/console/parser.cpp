@@ -42,11 +42,6 @@ void init_script_param(int n) {
     param = vec.at(n);
 }
 
-value_type get_script_param(value_type fadr) {
-    static int param;
-    return param++;
-}
-
 value_type peek(value_type fadr) {
   UINT32 adr = fadr;
   UINT8 *ptr = get_ptr(adr);
