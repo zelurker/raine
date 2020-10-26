@@ -301,6 +301,7 @@ void init_scripts() {
     } // feof
     fclose(f);
   } // if (f)
+  set_nb_scripts(nb_scripts);
 }
 
 static int activate_cheat(int n) {
@@ -320,7 +321,7 @@ static int activate_cheat(int n) {
 	    TDialog *dlg = new TDialog("script parameter",menu);
 	    dlg->execute();
 	    delete dlg;
-	    set_script_param(param);
+	    set_script_param(n,param);
 	    script[n].changing = param;
 	} else {
 	    char btn[10240];
@@ -331,7 +332,7 @@ static int activate_cheat(int n) {
 	    btn[strlen(btn)-1] = 0; // remove last |
 	    int ret = MessageBox("script parameter",script[n].title,btn);
 	    if (ret)
-		set_script_param(script[n].value_list[ret-1]);
+		set_script_param(n,script[n].value_list[ret-1]);
 	    else
 		script[n].status = 0;
 	}
@@ -392,6 +393,7 @@ void update_scripts() {
     frame = cpu_frame_count;
     for (n=0; n<nb_scripts; n++) {
 	if (script[n].status) {
+	    init_script_param(n);
 	    for (char **l = script[n].run; l && *l; l++)
 		run_console_command(*l);
 	}

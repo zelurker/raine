@@ -9,6 +9,7 @@
 #include "console.h"
 #include "raine.h" // ReadWord !
 #include "cpumain.h"
+#include <vector>
 
 /* muParser is specialised in double numbers, so it lacks some basic integer
  * operations, but can be easily extended, so let's go... */
@@ -26,10 +27,24 @@ static value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
 double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
 static double param;
+static std::vector<double> vec;
 double frame;
 
-void set_script_param(int myp) {
-    param = myp;
+void set_nb_scripts(int n) {
+    vec.resize(n);
+}
+
+void set_script_param(int n,int myp) {
+    vec.at(n) = myp;
+}
+
+void init_script_param(int n) {
+    param = vec.at(n);
+}
+
+value_type get_script_param(value_type fadr) {
+    static int param;
+    return param++;
 }
 
 value_type peek(value_type fadr) {
