@@ -55,7 +55,7 @@ static struct ROM_INFO rom_silkworm[] =
    {   "silkworm.15",0x10000, 0x6e4052c9, 0, 0, 0, }, // tile2
    {   "silkworm.16",0x10000, 0x9292ed63, 0, 0, 0, }, // tile2
    {   "silkworm.17",0x10000, 0x3fa4563d, 0, 0, 0, }, // tile2
-   {   "silkworm.1", 0x08000, 0x5b553644, REGION_SOUND1, 0, LOAD_NORMAL, },
+   LOAD( SOUND1, "silkworm.1", 0, 0x08000, 0x5b553644),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -249,9 +249,9 @@ static struct SOUND_INFO sound_gemini[] =
 
 static struct ROM_INFO rom_silkwrm2[] =
 {
-   {           "r4", 0x10000, 0x6df3df22, REGION_CPU1, 0, LOAD_NORMAL, },   // cpu1
-   {   "silkworm.5", 0x10000, 0xa6c7bb51, REGION_CPU1, 0xc000, LOAD_NORMAL, }, // cpu1
-   {           "r3", 0x08000, 0xb79848d0, REGION_CPU2, 0, LOAD_NORMAL, }, // cpu2
+   LOAD( CPU1, "r4", 0, 0x10000, 0x6df3df22),   // cpu1
+   LOAD( CPU1, "silkworm.5", 0xc000, 0x10000, 0xa6c7bb51), // cpu1
+   LOAD( CPU2, "r3", 0, 0x08000, 0xb79848d0), // cpu2
    {   "silkworm.2", 0x08000, 0xe80a1cd9, 0, 0, 0, }, // char
    {   "silkworm.6", 0x10000, 0x1138d159, 0, 0, 0, }, // spr
    {   "silkworm.7", 0x10000, 0xd96214f7, 0, 0, 0, }, // spr
@@ -265,7 +265,7 @@ static struct ROM_INFO rom_silkwrm2[] =
    {   "silkworm.15",0x10000, 0x6e4052c9, 0, 0, 0, }, // tile2
    {   "silkworm.16",0x10000, 0x9292ed63, 0, 0, 0, }, // tile2
    {   "silkworm.17",0x10000, 0x3fa4563d, 0, 0, 0, }, // tile2
-   {   "silkworm.1", 0x08000, 0x5b553644, REGION_SOUND1, 0, LOAD_NORMAL, }, // adpcm
+   LOAD( SOUND1, "silkworm.1", 0, 0x08000, 0x5b553644), // adpcm
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -294,7 +294,7 @@ static struct ROM_INFO rom_rygar[] =
    {   "vid_6e.bin", 0x08000, 0xff65e074, 0, 0, 0, }, // tile2
    {   "vid_6c.bin", 0x08000, 0x89868c85, 0, 0, 0, }, // tile2
    {   "vid_6b.bin", 0x08000, 0x35389a7b, 0, 0, 0, }, // tile2
-   {   "cpu_1f.bin", 0x04000, 0x3cc98c5a, REGION_SOUND1, 0, LOAD_NORMAL, }, // adpcm
+   LOAD( SOUND1, "cpu_1f.bin", 0, 0x04000, 0x3cc98c5a), // adpcm
    {           NULL,       0,          0, 0, 0, 0, },
 };
 
@@ -397,7 +397,7 @@ static struct ROM_INFO rom_gemini[] =
    {   "gw15-2ra.rom", 0x10000, 0x4cd18cfa, 0, 0, 0, }, // tile2
    {   "gw16-2rb.rom", 0x10000, 0xf911c7be, 0, 0, 0, }, // tile2
    {   "gw17-3r.rom",  0x10000, 0x79a9ce25, 0, 0, 0, }, // tile2
-   {   "gw01-6a.rom",  0x08000, 0xd78afa05, REGION_SOUND1, 0, LOAD_NORMAL, }, // adpcm
+   LOAD( SOUND1, "gw01-6a.rom", 0, 0x08000, 0xd78afa05), // adpcm
    {            NULL,        0,          0, 0, 0, 0, },
 };
 

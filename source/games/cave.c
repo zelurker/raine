@@ -411,7 +411,7 @@ static struct ROM_INFO rom_espradej[] =
 
 static struct ROM_INFO rom_donpachi[] =
 {
-   {      "prgu.u29", 0x00080000, 0x89c36802,REGION_ROM1,0,LOAD_SWAP_16 },
+   LOAD_SW16( ROM1, "prgu.u29", 0, 0x00080000, 0x89c36802),
 
    LOAD( GFX1, "atdp.u54", 0x000000, 0x100000, 0x6bda6b66),
 
@@ -419,8 +419,8 @@ static struct ROM_INFO rom_donpachi[] =
 
    LOAD( GFX3, "text.u58", 0x000000, 0x00040000, 0x5dba06e7),
 
-   {      "atdp.u44",0x00200000, 0x7189e953,REGION_GFX4,0x000000,LOAD_SWAP_16 },
-   {      "atdp.u45",0x00200000, 0x6984173f,REGION_GFX4,0x200000,LOAD_SWAP_16 },
+   LOAD_SW16( GFX4, "atdp.u44", 0x000000, 0x00200000, 0x7189e953),
+   LOAD_SW16( GFX4, "atdp.u45", 0x200000, 0x00200000, 0x6984173f),
 
    LOAD( SMP1, "atdp.u33", 0x40000, 0x00200000, 0xd749de00),
 
@@ -432,14 +432,14 @@ static struct ROM_INFO rom_donpachi[] =
 
 static struct ROM_INFO rom_donpachj[] =
 {
-   {      "prg.u29", 0x00080000, 0x6be14af6,REGION_ROM1,0,LOAD_SWAP_16 },
+   LOAD_SW16( ROM1, "prg.u29", 0, 0x00080000, 0x6be14af6),
    LOAD( GFX3, "u58.bin", 0x000000, 0x00040000, 0x285379ff),
    {           NULL,          0,          0, },
 };
 
 static struct ROM_INFO rom_donpachk[] =
 {
-   {      "prgk.u26", 0x00080000, 0xbbaf4c8b,REGION_ROM1,0,LOAD_SWAP_16 },
+   LOAD_SW16( ROM1, "prgk.u26", 0, 0x00080000, 0xbbaf4c8b),
    LOAD( GFX3, "u58.bin", 0x000000, 0x00040000, 0x285379ff),
    {           NULL,          0,          0, },
 };
@@ -460,7 +460,7 @@ static struct ROM_INFO rom_guwange[] =
                 "u086.bin",  0x188e4f81,     "u085.bin",  0xa7d5659e),
   LOAD8_16S(  GFX4, 0x1800000,  0x400000,
              "u086.bin",  0x188e4f81,  "u085.bin",  0xa7d5659e),
-   {    "u0462.bin", 0x00400000, 0xb3d75691, REGION_SMP1, 0, LOAD_NORMAL, },
+   LOAD( SMP1, "u0462.bin", 0, 0x00400000, 0xb3d75691),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -484,18 +484,18 @@ static struct ROM_INFO rom_ddonpach[] =
   LOAD8_16(  ROM1,  0x0000000,  0x00080000,
                  "b1.u27",  0xb5cdc8d3,      "b2.u26",  0x6bbb063a),
 
-   {      "u60.bin", 0x00200000, 0x903096a7, REGION_GFX1, 0x0000000, LOAD_NORMAL,  },
+   LOAD( GFX1, "u60.bin", 0x0000000, 0x00200000, 0x903096a7),
 
-   {      "u61.bin", 0x00200000, 0xd89b7631, REGION_GFX2, 0x0000000, LOAD_NORMAL,  },
+   LOAD( GFX2, "u61.bin", 0x0000000, 0x00200000, 0xd89b7631),
 
-   {      "u62.bin", 0x00200000, 0x292bfb6b, REGION_GFX3, 0x0000000, LOAD_NORMAL,  },
+   LOAD( GFX3, "u62.bin", 0x0000000, 0x00200000, 0x292bfb6b),
 
-   {      "u50.bin", 0x00200000, 0x14b260ec, REGION_GFX4, 0x0000000, LOAD_SWAP_16, },
-   {      "u51.bin", 0x00200000, 0xe7ba8cce, REGION_GFX4, 0x0200000, LOAD_SWAP_16, },
-   {      "u52.bin", 0x00200000, 0x02492ee0, REGION_GFX4, 0x0400000, LOAD_SWAP_16, },
-   {      "u53.bin", 0x00200000, 0xcb4c10f0, REGION_GFX4, 0x0600000, LOAD_SWAP_16, },
-   {       "u6.bin", 0x00200000, 0x9dfdafaf, REGION_SMP1, 0x0000000, LOAD_NORMAL, },
-   {       "u7.bin", 0x00200000, 0x795b17d5, REGION_SMP1, 0x0200000, LOAD_NORMAL, },
+   LOAD_SW16( GFX4, "u50.bin", 0x0000000, 0x00200000, 0x14b260ec),
+   LOAD_SW16( GFX4, "u51.bin", 0x0200000, 0x00200000, 0xe7ba8cce),
+   LOAD_SW16( GFX4, "u52.bin", 0x0400000, 0x00200000, 0x02492ee0),
+   LOAD_SW16( GFX4, "u53.bin", 0x0600000, 0x00200000, 0xcb4c10f0),
+   LOAD( SMP1, "u6.bin", 0x0000000, 0x00200000, 0x9dfdafaf),
+   LOAD( SMP1, "u7.bin", 0x0200000, 0x00200000, 0x795b17d5),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -533,10 +533,10 @@ static struct ROM_INFO rom_hotdogst[] =
 
 static struct ROM_INFO rom_mazinger[] =
 {
-  { "mzp-0.u24", 0x80000, 0x43a4279f , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "mzp-0.u24", 0x00000, 0x80000, 0x43a4279f ),
   LOAD( ROM2, "mzs.u21", 0x000, 0x20000, 0xc5b4f7ed ),
   // ROM3 : 68000 bank...
-  { "mzp-1.924", 0x80000, 0xdb40acba,  REGION_ROM3, 0x00000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM3, "mzp-1.924", 0x00000, 0x80000, 0xdb40acba),
   LOAD( GFX1, "bp943a-1.u60", 0x000000, 0x200000, 0x46327415 ),
   LOAD( GFX2, "bp943a-0.u63", 0x000000, 0x200000, 0xc1fed98a ),
   LOAD( GFX4, "bp943a-2.u56", 0x000000, 0x200000, 0x97e13959 ),
@@ -548,8 +548,8 @@ static struct ROM_INFO rom_mazinger[] =
 
 static struct ROM_INFO rom_sailormn[] =
 {
-  { "bpsm945a.u45", 0x080000, 0x898c9515 , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
-  { "bpsm.u46", 0x200000, 0x32084e80 , REGION_ROM1, 0x200000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "bpsm945a.u45", 0x000000, 0x080000, 0x898c9515 ),
+  LOAD_SW16( ROM1, "bpsm.u46", 0x200000, 0x200000, 0x32084e80 ),
 
   LOAD( ROM2, "bpsm945a.u9", 0x4000, 0x80000, 0x438de548 ),
 
@@ -579,8 +579,8 @@ static struct ROM_INFO rom_sailormn[] =
 
 static struct ROM_INFO rom_sailormo[] =
 {
-  { "smprg.u45", 0x080000, 0x234f1152 , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
-  { "bpsm.u46", 0x200000, 0x32084e80 , REGION_ROM1, 0x200000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "smprg.u45", 0x000000, 0x080000, 0x234f1152 ),
+  LOAD_SW16( ROM1, "bpsm.u46", 0x200000, 0x200000, 0x32084e80 ),
 
 
 
@@ -593,7 +593,7 @@ static struct ROM_INFO rom_sailormo[] =
 
 static struct ROM_INFO rom_agallet[] =
 {
-  { "bp962a.u45", 0x080000, 0x24815046 , REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "bp962a.u45", 0x000000, 0x080000, 0x24815046 ),
   LOAD( ROM2, "bp962a.u9", 0x4000, 0x80000, 0x06caddbe),
 
   LOAD( GFX1, "bp962a.u53", 0x000000, 0x200000, 0xfcd9a107),
@@ -615,9 +615,9 @@ static struct ROM_INFO rom_uopoko[] =
 {
   LOAD8_16(  ROM1,  0x000000,  0x00080000,
                 "u26j.bin",  0xe7eec050,     "u25j.bin",  0x68cb6211),
-   {      "u49.bin", 0x00400000, 0x12fb11bb, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {      "u33.bin", 0x00400000, 0x5d142ad2, REGION_GFX4, 0x000000, LOAD_NORMAL, },
-   {       "u4.bin", 0x00200000, 0xa2d0d755, REGION_SMP1, 0x000000, LOAD_NORMAL, },
+   LOAD( GFX1, "u49.bin", 0x000000, 0x00400000, 0x12fb11bb),
+   LOAD( GFX4, "u33.bin", 0x000000, 0x00400000, 0x5d142ad2),
+   LOAD( SMP1, "u4.bin", 0x000000, 0x00200000, 0xa2d0d755),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -626,13 +626,13 @@ static struct ROM_INFO rom_dfeveron[] =
   LOAD8_16(  ROM1,  0x000000,  0x00080000,
                  "cv01-u34.bin",  0xbe87f19d,      "cv01-u33.bin",  0xe53a7db3),
 
-   {      "cv01-u50.bin", 0x00200000, 0x7a344417, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   LOAD( GFX1, "cv01-u50.bin", 0x000000, 0x00200000, 0x7a344417),
 
-   {      "cv01-u49.bin", 0x00200000, 0xd21cdda7, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   LOAD( GFX2, "cv01-u49.bin", 0x000000, 0x00200000, 0xd21cdda7),
 
-   {      "cv01-u25.bin", 0x00400000, 0xa6f6a95d, REGION_GFX4, 0x000000, LOAD_NORMAL, },
-   {      "cv01-u26.bin", 0x00400000, 0x32edb62a, REGION_GFX4, 0x400000, LOAD_NORMAL, },
-   {      "cv01-u19.bin", 0x00400000, 0x5f5514da, REGION_SMP1,        0, LOAD_NORMAL, },
+   LOAD( GFX4, "cv01-u25.bin", 0x000000, 0x00400000, 0xa6f6a95d),
+   LOAD( GFX4, "cv01-u26.bin", 0x400000, 0x00400000, 0x32edb62a),
+   LOAD( SMP1, "cv01-u19.bin", 0, 0x00400000, 0x5f5514da),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 

@@ -425,7 +425,7 @@ static struct ROM_INFO rom_tnzsb[] =
 {
   LOAD( ROM1, "nzsb5324.bin", 0, 0x20000, 0xd66824c6),
   LOAD( ROM2, "nzsb5325.bin", 0, 0x10000, 0xd6ac4e71),
-   { "nzsb5326.bin", 0x00010000, 0xcfd5649c, REGION_CPU3, 0, LOAD_NORMAL, },
+   LOAD( CPU3, "nzsb5326.bin", 0, 0x00010000, 0xcfd5649c),
   LOAD( GFX1, "b53-16.ic7", 0x00000, 0x20000, 0xc3519c2a),
   LOAD( GFX1, "b53-17.ic8", 0x20000, 0x20000, 0x2bf199e8),
   LOAD( GFX1, "b53-18.ic9", 0x40000, 0x20000, 0x92f35ed9),

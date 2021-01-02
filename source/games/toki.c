@@ -48,7 +48,7 @@ static struct ROM_INFO rom_tokib[] =
    {     "toki.e12", 0x00010000, 0xc2ad9342, 0, 0, 0, },
    {     "toki.e11", 0x00010000, 0x48989aa0, 0, 0, 0, },
    {     "toki.e10", 0x00010000, 0xe15c1d0f, 0, 0, 0, },
-   {      "toki.e1", 0x00010000, 0x2832ef75, REGION_ROM2, 0, LOAD_NORMAL, },
+   LOAD( ROM2, "toki.e1", 0, 0x00010000, 0x2832ef75),
    {      "toki.e1", 0x00010000, 0x2832ef75, 0, 0, 0, },
    {      "toki.e5", 0x00020000, 0x66a5a1d6, 0, 0, 0, },
    {     "toki.e40", 0x00020000, 0x96e87350, 0, 0, 0, },

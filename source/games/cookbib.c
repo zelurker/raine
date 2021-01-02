@@ -72,7 +72,7 @@ static struct ROM_INFO rom_cookbib[] =
             "uor3.bin",  0x3fee0c3c, "uor4.bin",  0xbed9ed2d),
   LOAD8_16(  GFX2,  0x000000,    0x040000,
             "srom6.bin",  0xade2dbec,"srom5.bin",  0x73a46e43 ),
-	{ "protdata.bin",0x000200, 0xa77d13f4, REGION_PROMS,0x000000, LOAD_NORMAL, },
+	LOAD( PROMS, "protdata.bin", 0x000000, 0x000200, 0xa77d13f4),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -90,7 +90,7 @@ static struct ROM_INFO rom_htchctch[] =
             "p10uor3.bin",  0x6462e6e0, "p11uor4.bin",  0x9c511d98),
   LOAD8_16(  GFX2,  0x000000, 0x040000,
             "p07srom6.bin",  0x0207949c, "p06srom5.bin",  0x3d2cbb0d ),
-	{ "protdata.bin",0x000200, 0x5b27adb6, REGION_PROMS,0x000000, LOAD_NORMAL, },
+	LOAD( PROMS, "protdata.bin", 0x000000, 0x000200, 0x5b27adb6),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -108,13 +108,13 @@ static struct ROM_INFO rom_chokchok[] =
             "uor3.bin",  0xe2dc3e12, "uor4.bin",  0x6f377530),
   LOAD8_16(  GFX2,  0x000000,     0x080000,
             "srom6.bin",  0x31d5715d,"srom5.bin",  0x836608b8),
-	{ "protdata.bin", 0x000200, 0x0bd39834, REGION_PROMS,0x000000, LOAD_NORMAL, },
+	LOAD( PROMS, "protdata.bin", 0x000000, 0x000200, 0x0bd39834),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_jumppop[] =
 {
-  { "68k_prg.bin", 0x80000, 0x123536b9, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "68k_prg.bin", 0x00000, 0x80000, 0x123536b9),
   LOAD( ROM2, "z80_prg.bin", 0x00000, 0x40000, 0xa88d4424),
   LOAD( ROM2, "z80_prg.bin", 0x08000, 0x40000, 0xa88d4424),
   // GFX1 & GFX2 are inverted compared to mame

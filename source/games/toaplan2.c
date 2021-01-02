@@ -116,8 +116,8 @@ static WRITE_HANDLER( fixeighb_oki_bankswitch_w )
 
 static struct ROM_INFO rom_fixeight[] =
 {
-  { "tp-026-1", 0x080000, 0xf7b1746a, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
-   {     "tp-026-2", 0x00040000, 0x85063f1f, REGION_SOUND1, 0, LOAD_NORMAL, },
+  LOAD_SW16( ROM1, "tp-026-1", 0x000000, 0x080000, 0xf7b1746a),
+   LOAD( SOUND1, "tp-026-2", 0, 0x00040000, 0x85063f1f),
    {     "tp-026-3", 0x00200000, 0xe5578d98, 0, 0, 0, },
    {     "tp-026-4", 0x00200000, 0xb760cb53, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -355,19 +355,19 @@ static struct ROM_INFO rom_fixeighb[] =
 
 static struct ROM_INFO rom_kbash[] =
 {
-  { "kbash01.bin", 0x080000, 0x2965f81d, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "kbash01.bin", 0x000000, 0x080000, 0x2965f81d),
    {  "kbash02.bin", 0x00008000, 0x4cd882a1, 0, 0, 0, },
    {  "kbash03.bin", 0x00200000, 0x32ad508b, 0, 0, 0, },
    {  "kbash04.bin", 0x00200000, 0xe493c077, 0, 0, 0, },
    {  "kbash05.bin", 0x00200000, 0xb84c90eb, 0, 0, 0, },
    {  "kbash06.bin", 0x00200000, 0x9084b50a, 0, 0, 0, },
-   {  "kbash07.bin", 0x00040000, 0x3732318f, REGION_SOUND1, 0, LOAD_NORMAL, },
+   LOAD( SOUND1, "kbash07.bin", 0, 0x00040000, 0x3732318f),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_kbash2[] =
 {
-  { "mecat-m", 0x80000, 0xbd2263c6, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "mecat-m", 0x000000, 0x80000, 0xbd2263c6),
   { "mecat-34", 0x400000, 0x6be7b37e, 0, 0, 0, },
   { "mecat-12", 0x400000, 0x49e46b1f, 0, 0, 0, },
   LOAD( SMP1, "mecat-s", 0x00000, 0x80000, 0x3eb7adf4),
@@ -501,7 +501,7 @@ static struct DSW_INFO dsw_kbash2[] =
 
 static struct ROM_INFO rom_snowbro2[] =
 {
-  { "pro-4", 0x080000, 0x4c7ee341, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "pro-4", 0x000000, 0x080000, 0x4c7ee341),
    {       "rom3-l", 0x00100000, 0xeb06e332, 0, 0, 0, },
    {       "rom3-h", 0x00080000, 0xdf4a952a, 0, 0, 0, },
    {       "rom2-l", 0x00100000, 0xe9d366a9, 0, 0, 0, },
@@ -735,7 +735,7 @@ static struct DSW_INFO dsw_truxton2[] =
 
 static struct ROM_INFO rom_dogyuun[] =
 {
-  { "tp022_01.r16", 0x080000, 0x79eb2429, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "tp022_01.r16", 0x000000, 0x080000, 0x79eb2429),
    LOAD( SMP1, "tp022_2.w30", 0x00000, 0x40000, 0x043271b3),
    {  "tp022_3.r16", 0x00100000, 0x191b595f, 0, 0, 0, },
    {  "tp022_4.r16", 0x00100000, 0xd58d29ca, 0, 0, 0, },
@@ -1207,7 +1207,7 @@ static struct DSW_INFO dsw_ghox[] =
 
 static struct ROM_INFO rom_vfive[] =
 {
-   { "tp027_01.bin", 0x00080000, 0x731d50f4, REGION_ROM1,0,LOAD_SWAP_16 },
+   LOAD_SW16( ROM1, "tp027_01.bin", 0, 0x00080000, 0x731d50f4),
    { "tp027_02.bin", 0x00100000, 0x877b45e8, 0, 0, 0, },
    { "tp027_03.bin", 0x00100000, 0xb1fc6362, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1280,7 +1280,7 @@ static struct DSW_INFO dsw_vfive[] =
 
 static struct ROM_INFO rom_grindstm[] =
 {
-   {       "01.bin", 0x00080000, 0x4923f790, REGION_ROM1,0,LOAD_SWAP_16 },
+   LOAD_SW16( ROM1, "01.bin", 0, 0x00080000, 0x4923f790),
    { "tp027_02.bin", 0x00100000, 0x877b45e8, 0, 0, 0, },
    { "tp027_03.bin", 0x00100000, 0xb1fc6362, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1466,7 +1466,7 @@ static struct DSW_INFO dsw_kgpe[] =
 
 static struct ROM_INFO rom_mahoudai[] =
 {
-  { "ra_ma_01.01", 0x080000, 0x970ccc5c, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "ra_ma_01.01", 0x000000, 0x080000, 0x970ccc5c),
   LOAD( ROM2, "ra_ma_01.02", 0x00000, 0x10000, 0xeabfa46d),
   { "ra_ma_01.03", 0x100000, 0x54e2bd95, 0,0,0 }, // GFX1
   { "ra_ma_01.04", 0x100000, 0x21cd378f, 0,0,0 },
@@ -1485,7 +1485,7 @@ static struct DSW_INFO dsw_mahoudai[] =
 
 static struct ROM_INFO rom_sstriker[] =
 {
-  { "ra-ma-01.01", 0x080000, 0x92259f84, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "ra-ma-01.01", 0x000000, 0x080000, 0x92259f84),
   { "ra_ma_01.03", 0x100000, 0x54e2bd95, 0,0,0 },
   { "ra_ma_01.04", 0x100000, 0x21cd378f, 0,0,0 },
   LOAD( GFX2, "ra-ma-01.05", 0x000000, 0x008000, 0x88b58841),
@@ -1885,7 +1885,7 @@ static struct ROM_INFO rom_batsugun[] =
    {    "tp030_4l.bin", 0x00100000, 0xfedb9861, 0, 0, 0, },
    {     "tp030_5.bin", 0x00100000, 0xbcf5ba05, 0, 0, 0, },
    {     "tp030_6.bin", 0x00100000, 0x0666fecd, 0, 0, 0, },
-  { "tp030_01.bin", 0x080000, 0x3873d7dd, REGION_ROM1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "tp030_01.bin", 0x000000, 0x080000, 0x3873d7dd),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

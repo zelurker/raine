@@ -195,7 +195,7 @@ static struct ROM_INFO rom_mjnquest[] =
 {
   LOAD8_16( ROM1,  0x000000,  0x020000,
             "c77-09",  0x0a005d01, "c77-08",  0x4244f775),
-  { "c77-04", 0x080000, 0xc2e7e038, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "c77-04", 0x080000, 0x080000, 0xc2e7e038),
   LOAD( GFX1, "c77-01", 0x000000, 0x100000, 0x5ba51205),
   LOAD( GFX1, "c77-02", 0x100000, 0x100000, 0x6a6f3040),
   LOAD( GFX2, "c77-05", 0x00000, 0x80000, 0xc5a54678),
@@ -221,8 +221,8 @@ static struct ROM_INFO rom_dinorex[] =
 {
   LOAD8_16( ROM1,  	0x000000,  0x080000,
             "d39_14.9",  0xe6aafdac, "d39_16.8",  0xcedc8537),
-  { "d39-04.6", 0x100000, 0x3800506d, REGION_ROM1, 	0x100000, LOAD_SWAP_16 },
-  { "d39-05.7", 0x100000, 0xe2ec3b5d, REGION_ROM1, 	0x200000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "d39-04.6", 	0x100000, 0x100000, 0x3800506d),
+  LOAD_SW16( ROM1, "d39-05.7", 	0x200000, 0x100000, 0xe2ec3b5d),
   LOAD( GFX1, "d39-06.2", 	0x000000, 0x100000, 0x52f62835),
   LOAD( GFX2, "d39-01.29", 	0x000000, 0x200000, 0xd10e9c7d),
   LOAD( GFX2, "d39-02.28", 	0x200000, 0x200000, 0x6c304403),
@@ -281,11 +281,11 @@ static struct ROM_INFO rom_driftout[] =
 
 static struct ROM_INFO rom_ssi[] =
 {
-   {  "c64-01.1", 0x00100000, 0xa1b4f486, REGION_GFX2, 0x000000, LOAD_NORMAL, },
-   {  "c64-02.2", 0x00020000, 0x3cb0b907, REGION_SMP1, 0x000000, LOAD_NORMAL, },
+   LOAD( GFX2, "c64-01.1", 0x000000, 0x00100000, 0xa1b4f486),
+   LOAD( SMP1, "c64-02.2", 0x000000, 0x00020000, 0x3cb0b907),
   LOAD8_16( ROM1,  0x000000,  0x00040000,
             "c64_15-1.bin",  0xce9308a6, "c64_16-1.bin",  0x470a483a),
-   {   "c64_09.13", 0x00010000, 0x88d7f65c, REGION_ROM2, 0x000000, LOAD_NORMAL, },
+   LOAD( ROM2, "c64_09.13", 0x000000, 0x00010000, 0x88d7f65c),
    {           NULL,          0,          0, 0,           0,        0,           },
 };
 
@@ -366,7 +366,7 @@ static struct ROM_INFO koshien_roms[] =
 {
   LOAD8_16( ROM1,  0x000000,  0x020000,
             "c81-11.bin",  0xb44ea8c9, "c81-10.bin",  0x8f98c40a),
-  { "c81-04.bin", 0x080000, 0x1592b460, REGION_ROM1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( ROM1, "c81-04.bin", 0x080000, 0x080000, 0x1592b460),
   LOAD( GFX1, "c81-03.bin", 0x000000, 0x100000, 0x29bbf492),
   LOAD( GFX2, "c81-01.bin", 0x000000, 0x100000, 0x64b15d2a),
   LOAD( GFX2, "c81-02.bin", 0x100000, 0x100000, 0x962461e8),

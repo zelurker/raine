@@ -12,8 +12,8 @@
 
 static struct ROM_INFO rom_psyforce[] =
 {
-   {       "e22-01", 0x00200000, 0x808b8340, REGION_SOUND1, 0, 0, },
-   {       "e22-06", 0x00020000, 0x739af589, REGION_CPU2, 0, 0, },
+   LOAD( SOUND1, "e22-01", 0, 0x00200000, 0x808b8340),
+   LOAD( CPU2, "e22-06", 0, 0x00020000, 0x739af589),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

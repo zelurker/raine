@@ -123,7 +123,7 @@ static struct ROM_INFO rom_twinkle[] =
   LOAD( ROM2, "u1.bin", 0x00000, 0x10000, 0xe40481da ),
   LOAD( SMP1, "uj15.bin", 0x00000, 0x40000, 0x0a534b37 ),
   LOAD( GFX1, "ua4.bin", 0x000000, 0x80000, 0x6b64bb09 ),
-  { "protdata.bin", 0x000200, 0x00d3e4b4, REGION_PROMS, 0, LOAD_NORMAL, },
+  LOAD( PROMS, "protdata.bin", 0, 0x000200, 0x00d3e4b4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -137,7 +137,7 @@ static struct ROM_INFO rom_3in1semi[] =
   LOAD( GFX1, "u76", 0x080000, 0x80000, 0x5f4b48ea ),
   LOAD( GFX1, "u77", 0x100000, 0x80000, 0xd44211e3 ),
   LOAD( GFX1, "u78", 0x180000, 0x80000, 0xaf596afc ),
-  { "protdata.bin", 0x00200, 0x85deba7c, REGION_PROMS, 0, LOAD_NORMAL, },
+  LOAD( PROMS, "protdata.bin", 0, 0x00200, 0x85deba7c),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -323,7 +323,7 @@ static struct ROM_INFO rom_cookbib2[] =
   LOAD( GFX1, "cookbib2.05", 0x000000, 0x80000, 0x89fb38ce ),
   LOAD( GFX1, "cookbib2.04", 0x080000, 0x80000, 0xf240111f ),
   LOAD( GFX1, "cookbib2.03", 0x100000, 0x40000, 0xe1604821 ),
-  { "protdata.bin", 0x000200, 0xae6d8ed5, REGION_PROMS, 0, LOAD_NORMAL, },
+  LOAD( PROMS, "protdata.bin", 0, 0x000200, 0xae6d8ed5),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -337,7 +337,7 @@ static struct ROM_INFO rom_moremore[] =
   LOAD( GFX1, "u76.bin", 0x080000, 0x80000, 0xe0d479e8 ),
   LOAD( GFX1, "u77.bin", 0x100000, 0x80000, 0x60a281da ),
   LOAD( GFX1, "u78.bin", 0x180000, 0x80000, 0xe2723b4e ),
-  { "protdata.bin", 0x000200, 0x782dd2aa, REGION_PROMS, 0, LOAD_NORMAL, },
+  LOAD( PROMS, "protdata.bin", 0, 0x000200, 0x782dd2aa),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -351,7 +351,7 @@ static struct ROM_INFO rom_moremorp[] =
   LOAD( GFX1, "mmp_u76.bin", 0x080000, 0x80000, 0xc42af064 ),
   LOAD( GFX1, "mmp_u77.bin", 0x100000, 0x80000, 0x1d7396e1 ),
   LOAD( GFX1, "mmp_u78.bin", 0x180000, 0x80000, 0x5508d80b ),
-  { "protdata.bin", 0x000200, 0x782dd2aa, REGION_PROMS, 0, LOAD_NORMAL, },
+  LOAD( PROMS, "protdata.bin", 0, 0x000200, 0x782dd2aa),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -365,7 +365,7 @@ static struct ROM_INFO rom_finalttr[] =
   LOAD( GFX1, "6.1f", 0x040000, 0x40000, 0x7281a3cc ),
   LOAD( GFX1, "7.1g", 0x080000, 0x40000, 0xec80f442 ),
   LOAD( GFX1, "9.1h", 0x0c0000, 0x40000, 0x2ebd316d ),
-  { "protdata.bin", 0x000200, 0xd5bbb006, REGION_PROMS, 0, LOAD_NORMAL, },
+  LOAD( PROMS, "protdata.bin", 0, 0x000200, 0xd5bbb006),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -380,14 +380,14 @@ static struct ROM_INFO rom_snowbros[] =
 {
   LOAD8_16( ROM1,  0x000000,  0x00020000,
                  "sn6.bin",  0x4899ddcf,      "sn5.bin",  0xad310d3f),
-   {   "snowbros.4", 0x00008000, 0xe6eab4e4, REGION_ROM2, 0x000000, LOAD_NORMAL, },
-   {   "sbros-1.41", 0x00080000, 0x16f06b3a, REGION_GFX1, 0x000000, LOAD_NORMAL, },
+   LOAD( ROM2, "snowbros.4", 0x000000, 0x00008000, 0xe6eab4e4),
+   LOAD( GFX1, "sbros-1.41", 0x000000, 0x00080000, 0x16f06b3a),
 
 	/* where were these from, a bootleg? */
-/*    {          "ch0", 0x00020000, 0x36d84dfe, REGION_GFX1, 0x000000, LOAD_NORMAL, }, */
-/*    {          "ch1", 0x00020000, 0x76347256, REGION_GFX1, 0x020000, LOAD_NORMAL, }, */
-/*    {          "ch2", 0x00020000, 0xfdaa634c, REGION_GFX1, 0x040000, LOAD_NORMAL, }, */
-/*    {          "ch3", 0x00020000, 0x34024aef, REGION_GFX1, 0x060000, LOAD_NORMAL, }, */
+/*    LOAD( GFX1, "ch0", 0x000000, 0x00020000, 0x36d84dfe), */
+/*    LOAD( GFX1, "ch1", 0x020000, 0x00020000, 0x76347256), */
+/*    LOAD( GFX1, "ch2", 0x040000, 0x00020000, 0xfdaa634c), */
+/*    LOAD( GFX1, "ch3", 0x060000, 0x00020000, 0x34024aef), */
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
@@ -418,7 +418,7 @@ static struct ROM_INFO rom_wintbob[] =
                 "wb03.bin",  0xdf56e168,     "wb01.bin",  0x05722f17),
   LOAD8_16( ROM1,  0x020000,  0x00010000,
                 "wb04.bin",  0x53be758d,     "wb02.bin",  0xfc8e292e),
-   {     "wb05.bin", 0x00010000, 0x53fe59df, REGION_ROM2, 0x000000, LOAD_NORMAL, },
+   LOAD( ROM2, "wb05.bin", 0x000000, 0x00010000, 0x53fe59df),
    {     "wb13.bin", 0x00010000, 0x426921de, REGION_GFX1, 0x000000, LOAD_8_16,   },
    {     "wb06.bin", 0x00010000, 0x68204937, REGION_GFX1, 0x000001, LOAD_8_16,   },
    {     "wb12.bin", 0x00010000, 0xef4e04c7, REGION_GFX1, 0x020000, LOAD_8_16,   },

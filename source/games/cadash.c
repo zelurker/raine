@@ -21,8 +21,8 @@ static struct ROM_INFO rom_cadash[] =
                   "c21-14",  0x5daf13fb,       "c21-16",  0xcbaa2e75),
   LOAD8_16( ROM1,  0x040000,  0x00020000,
                   "c21-13",  0x6b9e0ee9,       "c21-17",  0xbf9a578a),
-   {       "c21-02.9", 0x00080000, 0x205883b9, REGION_GFX1, 0x000000, LOAD_NORMAL, },
-   {       "c21-01.1", 0x00080000, 0x1ff6f39c, REGION_GFX2, 0x000000, LOAD_NORMAL, },
+   LOAD( GFX1, "c21-02.9", 0x000000, 0x00080000, 0x205883b9),
+   LOAD( GFX2, "c21-01.1", 0x000000, 0x00080000, 0x1ff6f39c),
   LOAD( ROM2, "c21-08.38", 0, 0x10000, 0xdca495a0),
    {           NULL,          0,          0, 0, 0, 0, },
 };

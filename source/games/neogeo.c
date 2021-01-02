@@ -21,41 +21,41 @@ extern struct SOUND_INFO sound_neocd[];
 // but this is not updated often...
 static struct ROM_INFO rom_bios[] = // struct used to select bios
 {
-  { "sp-s2.sp1", 0x020000, 0x9036d879, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp-s.sp1", 0x020000, 0xc7f2fa45, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp-u2.sp1", 0x020000, 0xe72943de, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp-e.sp1", 0x020000, 0x2723a5b5, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "asia-s3.rom", 0x020000, 0x91b64be3, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "vs-bios.rom", 0x020000, 0xf0e8f27d, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp-j2.sp1", 0x020000, 0xacede59c, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp1.jipan.1024", 0x020000, 0x9fb0abe4, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp-45.sp1", 0x080000, 0x03cc9f6a, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "japan-j3.bin", 0x020000, 0xdff6d41f, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "sp-1v1_3db8c.bin", 0x020000, 0x162f0ebe, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_3_1.rom", 0x020000, 0x0c58093f, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_3_0.rom", 0x020000, 0xa97c89a9, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_2_3.rom", 0x020000, 0x27664eb5, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_2_2.rom", 0x020000, 0x2d50996a, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_2_1.rom", 0x020000, 0x8dabf76b, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_2_0.rom", 0x020000, 0x0c12c2ad, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_1_3.rom", 0x020000, 0xb24b44a0, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_1_2.rom", 0x020000, 0x4fa698e9, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_1_1.rom", 0x020000, 0x5dda0d84, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_1_0.rom", 0x020000, 0x0ce453a0, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "neodebug.rom", 0x020000, 0x698ebb7d, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "neo-epo.sp1", 0x020000, 0xd27a71f1, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "neo-po.sp1", 0x020000, 0x16d0c132, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "236-bios.sp1", 0x020000, 0x853e6b96, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  LOAD_SW16( MAINBIOS, "sp-s2.sp1", 0x00000, 0x020000, 0x9036d879),
+  LOAD_SW16( MAINBIOS, "sp-s.sp1", 0x00000, 0x020000, 0xc7f2fa45),
+  LOAD_SW16( MAINBIOS, "sp-u2.sp1", 0x00000, 0x020000, 0xe72943de),
+  LOAD_SW16( MAINBIOS, "sp-e.sp1", 0x00000, 0x020000, 0x2723a5b5),
+  LOAD_SW16( MAINBIOS, "asia-s3.rom", 0x00000, 0x020000, 0x91b64be3),
+  LOAD_SW16( MAINBIOS, "vs-bios.rom", 0x00000, 0x020000, 0xf0e8f27d),
+  LOAD_SW16( MAINBIOS, "sp-j2.sp1", 0x00000, 0x020000, 0xacede59c),
+  LOAD_SW16( MAINBIOS, "sp1.jipan.1024", 0x00000, 0x020000, 0x9fb0abe4),
+  LOAD_SW16( MAINBIOS, "sp-45.sp1", 0x00000, 0x080000, 0x03cc9f6a),
+  LOAD_SW16( MAINBIOS, "japan-j3.bin", 0x00000, 0x020000, 0xdff6d41f),
+  LOAD_SW16( MAINBIOS, "sp-1v1_3db8c.bin", 0x00000, 0x020000, 0x162f0ebe),
+  LOAD_SW16( MAINBIOS, "uni-bios_3_1.rom", 0x00000, 0x020000, 0x0c58093f),
+  LOAD_SW16( MAINBIOS, "uni-bios_3_0.rom", 0x00000, 0x020000, 0xa97c89a9),
+  LOAD_SW16( MAINBIOS, "uni-bios_2_3.rom", 0x00000, 0x020000, 0x27664eb5),
+  LOAD_SW16( MAINBIOS, "uni-bios_2_2.rom", 0x00000, 0x020000, 0x2d50996a),
+  LOAD_SW16( MAINBIOS, "uni-bios_2_1.rom", 0x00000, 0x020000, 0x8dabf76b),
+  LOAD_SW16( MAINBIOS, "uni-bios_2_0.rom", 0x00000, 0x020000, 0x0c12c2ad),
+  LOAD_SW16( MAINBIOS, "uni-bios_1_3.rom", 0x00000, 0x020000, 0xb24b44a0),
+  LOAD_SW16( MAINBIOS, "uni-bios_1_2.rom", 0x00000, 0x020000, 0x4fa698e9),
+  LOAD_SW16( MAINBIOS, "uni-bios_1_1.rom", 0x00000, 0x020000, 0x5dda0d84),
+  LOAD_SW16( MAINBIOS, "uni-bios_1_0.rom", 0x00000, 0x020000, 0x0ce453a0),
+  LOAD_SW16( MAINBIOS, "neodebug.rom", 0x00000, 0x020000, 0x698ebb7d),
+  LOAD_SW16( MAINBIOS, "neo-epo.sp1", 0x00000, 0x020000, 0xd27a71f1),
+  LOAD_SW16( MAINBIOS, "neo-po.sp1", 0x00000, 0x020000, 0x16d0c132),
+  LOAD_SW16( MAINBIOS, "236-bios.sp1", 0x00000, 0x020000, 0x853e6b96),
 
-  { "uni-bios_3_2.rom", 0x020000, 0xa4e8b9b3, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_3_3.rom", 0x020000, 0x24858466, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
-  { "uni-bios_4_0.rom", 0x020000, 0xa7aab458, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  LOAD_SW16( MAINBIOS, "uni-bios_3_2.rom", 0x00000, 0x020000, 0xa4e8b9b3),
+  LOAD_SW16( MAINBIOS, "uni-bios_3_3.rom", 0x00000, 0x020000, 0x24858466),
+  LOAD_SW16( MAINBIOS, "uni-bios_4_0.rom", 0x00000, 0x020000, 0xa7aab458),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 struct ROM_INFO rom_neogeo[] =
 {
-  { "sp-s2.sp1", 0x020000, 0x9036d879, REGION_MAINBIOS, 0x00000, LOAD_SWAP_16 },
+  LOAD_SW16( MAINBIOS, "sp-s2.sp1", 0x00000, 0x020000, 0x9036d879),
   LOAD( ROM2, "sm1.sm1", 0x00000, 0x20000, 0x94416d67),
   LOAD( ZOOMY, "000-lo.lo", 0x00000, 0x20000, 0x5a86cff2),
   LOAD( FIXEDBIOS, "sfix.sfix", 0x000000, 0x20000, 0xc2ea0cfd),
@@ -230,7 +230,7 @@ int check_bios_presence(int sel) {
 
 static struct ROM_INFO rom_nam1975[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "001-p1.p1", 0x080000, 0xcc9fc951, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "001-p1.p1", 0x000000, 0x080000, 0xcc9fc951),
   LOAD( FIXED, "001-s1.s1", 0x000000, 0x20000, 0x7988ba51),
   LOAD( ROM2, "001-m1.m1", 0x00000, 0x40000, 0xba874463),
 	// AES has different label, data is the same: 001-v1.v1
@@ -252,7 +252,7 @@ CLNEI( nam1975, neogeo, "NAM-1975 (NGM-001)(NGH-001)", SNK, 1990, GAME_SHOOT);
 
 static struct ROM_INFO rom_bstars[] = /* MVS VERSION clone of neogeo */
 {
-  { "002-pg.p1", 0x080000, 0xc100b5f5, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "002-pg.p1", 0x000000, 0x080000, 0xc100b5f5),
   LOAD( FIXED, "002-s1.s1", 0x000000, 0x20000, 0x1a7fd0c6),
   LOAD( ROM2, "002-m1.m1", 0x00000, 0x40000, 0x4ecaa4ee),
   LOAD( SMP1, "002-v11.v11", 0x000000, 0x080000, 0xb7b925bd),
@@ -273,7 +273,7 @@ CLNEI(bstars, neogeo, "Baseball Stars Professional (NGM-002)", SNK, 1990, GAME_S
 
 static struct ROM_INFO rom_bstarsh[] = /* AES VERSION clone of bstars */
 {
-  { "002-p1.p1", 0x080000, 0x3bc7790e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "002-p1.p1", 0x000000, 0x080000, 0x3bc7790e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -281,8 +281,8 @@ CLNEI( bstarsh, bstars, "Baseball Stars Professional (NGH-002)", SNK, 1990, GAME
 
 static struct ROM_INFO rom_tpgolf[] = /* MVS AND AES VERSION */
 {
-  { "003-p1.p1", 0x080000, 0xf75549ba, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "003-p2.p2", 0x080000, 0xb7809a8f, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "003-p1.p1", 0x000000, 0x080000, 0xf75549ba),
+  LOAD_SW16( CPU1, "003-p2.p2", 0x080000, 0x080000, 0xb7809a8f),
   LOAD( FIXED, "003-s1.s1", 0x000000, 0x20000, 0x7b3eb9b1),
   LOAD( ROM2, "003-m1.m1", 0x00000, 0x20000, 0x4cc545e6),
 	// AES has different label, data is the same (also found on MVS): 003-v1.v11
@@ -307,7 +307,7 @@ CLNEI( tpgolf, neogeo, "Top Player's Golf (NGM-003)(NGH-003)", SNK, 1990, GAME_S
 
 static struct ROM_INFO rom_maglord[] = /* MVS VERSION clone of neogeo */
 {
-  { "005-pg1.p1", 0x080000, 0xbd0a492d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "005-pg1.p1", 0x000000, 0x080000, 0xbd0a492d),
   LOAD( FIXED, "005-s1.s1", 0x000000, 0x20000, 0x1c5369a2),
   LOAD( ROM2, "005-m1.m1", 0x00000, 0x40000, 0x26259f0f),
   LOAD( SMP1, "005-v11.v11", 0x000000, 0x080000, 0xcc0455fd),
@@ -324,7 +324,7 @@ static struct ROM_INFO rom_maglord[] = /* MVS VERSION clone of neogeo */
 
 static struct ROM_INFO rom_maglordh[] = /* AES VERSION clone of maglord */
 {
-  { "005-p1.p1", 0x080000, 0x599043c5, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "005-p1.p1", 0x000000, 0x080000, 0x599043c5),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -334,7 +334,7 @@ CLNEI( maglordh, maglord, "Magician Lord (NGH-005)", ALPHA, 1990, GAME_PLATFORM)
 
 static struct ROM_INFO rom_ridhero[] = /* MVS AND AES VERSION */
 {
-  { "006-p1.p1", 0x080000, 0xd4aaf597, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "006-p1.p1", 0x000000, 0x080000, 0xd4aaf597),
   LOAD( FIXED, "006-s1.s1", 0x000000, 0x20000, 0xeb5189f0),
   LOAD( ROM2, "006-m1.m1", 0x00000, 0x40000, 0x92e7b4fe),
   LOAD( SMP1, "006-v11.v11", 0x000000, 0x080000, 0xcdf74a42),
@@ -353,7 +353,7 @@ static struct ROM_INFO rom_ridhero[] = /* MVS AND AES VERSION */
 static struct ROM_INFO rom_ridheroh[] = // clone of ridhero
 {
 	/* Chip label p1h does not exist, renamed temporarly to pg1, marked BAD_DUMP. This needs to be verified. */
-  { "006-pg1.p1", 0x080000, 0x52445646, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "006-pg1.p1", 0x000000, 0x080000, 0x52445646),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -362,8 +362,8 @@ CLNEI( ridheroh, ridhero, "Riding Hero (set 2)", SNK, 1990, GAME_RACE);
 
 static struct ROM_INFO rom_alpham2[] = /* MVS AND AES VERSION */
 {
-  { "007-p1.p1", 0x080000, 0x5b266f47, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "007-p2.p2", 0x020000, 0xeb9c1044, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "007-p1.p1", 0x000000, 0x080000, 0x5b266f47),
+  LOAD_SW16( CPU1, "007-p2.p2", 0x080000, 0x020000, 0xeb9c1044),
   LOAD( FIXED, "007-s1.s1", 0x000000, 0x20000, 0x85ec9acf),
   LOAD( ROM2, "007-m1.m1", 0x00000, 0x20000, 0x28dfe2cd),
   LOAD( SMP1, "007-v1.v1", 0x000000, 0x100000, 0xcd5db931),
@@ -402,7 +402,7 @@ CLNEI( alpham2p, alpham2, "Alpha Mission II / ASO II - Last Guardian (prototype)
 
 static struct ROM_INFO rom_ncombat[] = /* MVS VERSION clone of neogeo */
 {
-  { "009-p1.p1", 0x080000, 0xb45fcfbf, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "009-p1.p1", 0x000000, 0x080000, 0xb45fcfbf),
   LOAD( FIXED, "009-s1.s1", 0x000000, 0x20000, 0xd49afee8),
   LOAD( ROM2, "009-m1.m1", 0x00000, 0x20000, 0xb5819863),
   LOAD( SMP1, "009-v11.v11", 0x000000, 0x080000, 0xcf32a59c),
@@ -422,7 +422,7 @@ CLNEI( ncombat, neogeo, "Ninja Combat (NGM-009)", ALPHA, 1990, GAME_BEAT);
 
 static struct ROM_INFO rom_ncombath[] = /* AES VERSION clone of ncombat */
 {
-  { "009-pg1.p1", 0x080000, 0x8e9f0add, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "009-pg1.p1", 0x000000, 0x080000, 0x8e9f0add),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -430,7 +430,7 @@ CLNEI( ncombath, ncombat, "Ninja Combat (NGH-009)", ALPHA, 1990, GAME_BEAT);
 
 static struct ROM_INFO rom_cyberlip[] = // clone of neogeo
 {
-  { "010-p1.p1", 0x080000, 0x69a6b42d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "010-p1.p1", 0x000000, 0x080000, 0x69a6b42d),
   LOAD( FIXED, "010-s1.s1", 0x000000, 0x20000, 0x79a35264),
   LOAD( ROM2, "010-m1.m1", 0x00000, 0x20000, 0x8be3a078),
   LOAD( SMP1, "010-v11.v11", 0x000000, 0x080000, 0x90224d22),
@@ -451,8 +451,8 @@ CLNEI( cyberlip, neogeo, "Cyber-Lip (NGM-010)", SNK, 1990, GAME_PLATFORM);
 
 static struct ROM_INFO rom_superspy[] = /* MVS AND AES VERSION */
 {
-  { "011-p1.p1", 0x080000, 0xc7f944b5, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "sp2.p2", 0x020000, 0x811a4faf, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "011-p1.p1", 0x000000, 0x080000, 0xc7f944b5),
+  LOAD_SW16( CPU1, "sp2.p2", 0x080000, 0x020000, 0x811a4faf),
   LOAD( FIXED, "011-s1.s1", 0x000000, 0x20000, 0xec5fdb96),
   LOAD( ROM2, "011-m1.m1", 0x00000, 0x40000, 0xca661f1b),
   LOAD( SMP1, "011-v11.v11", 0x000000, 0x100000, 0x5c674d5c),
@@ -469,7 +469,7 @@ CLNEI( superspy, neogeo, "The Super Spy (NGM-011)(NGH-011)", SNK, 1990, GAME_FIG
 
 static struct ROM_INFO rom_mutnat[] = /* MVS AND AES VERSION */
 {
-  { "014-p1.p1", 0x080000, 0x6f1699c8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "014-p1.p1", 0x000000, 0x080000, 0x6f1699c8),
   LOAD( FIXED, "014-s1.s1", 0x000000, 0x20000, 0x99419733),
   LOAD( ROM2, "014-m1.m1", 0x00000, 0x20000, 0xb6683092),
   LOAD( SMP1, "014-v1.v1", 0x000000, 0x100000, 0x25419296),
@@ -485,8 +485,8 @@ CLNEI( mutnat, neogeo, "Mutation Nation (NGM-014)(NGH-014)", SNK, 1992, GAME_BEA
 
 static struct ROM_INFO rom_kotm[] = /* MVS VERSION */
 {
-  { "016-p1.p1", 0x080000, 0x1b818731, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "016-p2.p2", 0x020000, 0x12afdc2b, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "016-p1.p1", 0x000000, 0x080000, 0x1b818731),
+  LOAD_SW16( CPU1, "016-p2.p2", 0x080000, 0x020000, 0x12afdc2b),
   LOAD( FIXED, "016-s1.s1", 0x000000, 0x20000, 0x1a2eeeb3),
   LOAD( ROM2, "016-m1.m1", 0x00000, 0x20000, 0x9da9ca10),
   LOAD( SMP1, "016-v1.v1", 0x000000, 0x100000, 0x86c0a502),
@@ -500,8 +500,8 @@ static struct ROM_INFO rom_kotm[] = /* MVS VERSION */
 
 static struct ROM_INFO rom_kotmh[] = /* AES VERSION clone of kotm */
 {
-  { "016-hp1.p1", 0x080000, 0xb774621e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "016-p2.p2", 0x020000, 0x12afdc2b, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "016-hp1.p1", 0x000000, 0x080000, 0xb774621e),
+  LOAD_SW16( CPU1, "016-p2.p2", 0x080000, 0x020000, 0x12afdc2b),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -510,8 +510,8 @@ CLNEI( kotmh, kotm, "King of the Monsters (set 2)", SNK, 1991, GAME_BEAT);
 
 static struct ROM_INFO rom_sengoku[] = /* MVS AND AES VERSION */
 {
-  { "017-p1.p1", 0x080000, 0xf8a63983, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "017-p2.p2", 0x020000, 0x3024bbb3, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "017-p1.p1", 0x000000, 0x080000, 0xf8a63983),
+  LOAD_SW16( CPU1, "017-p2.p2", 0x080000, 0x020000, 0x3024bbb3),
   LOAD( FIXED, "017-s1.s1", 0x000000, 0x20000, 0xb246204d),
   LOAD( ROM2, "017-m1.m1", 0x00000, 0x20000, 0x9b4f34c6),
   LOAD( SMP1, "017-v1.v1", 0x000000, 0x100000, 0x23663295),
@@ -525,8 +525,8 @@ static struct ROM_INFO rom_sengoku[] = /* MVS AND AES VERSION */
 
 static struct ROM_INFO rom_sengokuh[] = /* AES VERSION (US) clone of sengoku */
 {
-  { "017-hp1.p1", 0x080000, 0x33eccae0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "017-p2.p2", 0x020000, 0x3024bbb3, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "017-hp1.p1", 0x000000, 0x080000, 0x33eccae0),
+  LOAD_SW16( CPU1, "017-p2.p2", 0x080000, 0x020000, 0x3024bbb3),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -535,7 +535,7 @@ CLNEI( sengokuh, sengoku, "Sengoku / Sengoku Denshou (NGH-017)(US)", SNK, 1991, 
 
 static struct ROM_INFO rom_burningf[] = /* MVS AND AES VERSION */
 {
-  { "018-p1.p1", 0x080000, 0x4092c8db, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "018-p1.p1", 0x000000, 0x080000, 0x4092c8db),
   LOAD( FIXED, "018-s1.s1", 0x000000, 0x20000, 0x6799ea0d),
   LOAD( ROM2, "018-m1.m1", 0x00000, 0x20000, 0x0c939ee2),
   LOAD( SMP1, "018-v1.v1", 0x000000, 0x100000, 0x508c9ffc),
@@ -549,7 +549,7 @@ static struct ROM_INFO rom_burningf[] = /* MVS AND AES VERSION */
 
 static struct ROM_INFO rom_burningfh[] = /* AES VERSION (US) clone of burningf */
 {
-  { "018-hp1.p1", 0x080000, 0xddffcbf4, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "018-hp1.p1", 0x000000, 0x080000, 0xddffcbf4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -558,7 +558,7 @@ CLNEI( burningfh, burningf, "Burning Fight (NGH-018)(US)", SNK, 1991, GAME_BEAT)
 
 static struct ROM_INFO rom_lbowling[] = /* MVS AND AES VERSION */
 {
-  { "019-p1.p1", 0x080000, 0xa2de8445, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "019-p1.p1", 0x000000, 0x080000, 0xa2de8445),
   LOAD( FIXED, "019-s1.s1", 0x000000, 0x20000, 0x5fcdc0ed),
   LOAD( ROM2, "019-m1.m1", 0x00000, 0x20000, 0xd568c17d),
   LOAD( SMP1, "019-v11.v11", 0x000000, 0x080000, 0x0fb74872),
@@ -573,8 +573,8 @@ CLNEI( lbowling, neogeo, "League Bowling (NGM-019)(NGH-019)", SNK, 1990, GAME_SP
 
 static struct ROM_INFO rom_gpilots[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "020-p1.p1", 0x080000, 0xe6f2fe64, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "020-p2.p2", 0x020000, 0xedcb22ac, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "020-p1.p1", 0x000000, 0x080000, 0xe6f2fe64),
+  LOAD_SW16( CPU1, "020-p2.p2", 0x080000, 0x020000, 0xedcb22ac),
   LOAD( FIXED, "020-s1.s1", 0x000000, 0x20000, 0xa6d83d53),
   LOAD( ROM2, "020-m1.m1", 0x00000, 0x20000, 0x48409377),
   LOAD( SMP1, "020-v11.v11", 0x000000, 0x100000, 0x1b526c8b),
@@ -589,8 +589,8 @@ static struct ROM_INFO rom_gpilots[] = /* MVS AND AES VERSION clone of neogeo */
 
 static struct ROM_INFO rom_gpilotsh[] = /* AES VERSION (US) clone of gpilots */
 {
-  { "020-hp1.p1", 0x080000, 0x7cdb01ce, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "020-p2.p2", 0x020000, 0xedcb22ac, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "020-hp1.p1", 0x000000, 0x080000, 0x7cdb01ce),
+  LOAD_SW16( CPU1, "020-p2.p2", 0x080000, 0x020000, 0xedcb22ac),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -599,7 +599,7 @@ CLNEI( gpilotsh, gpilots, "Ghost Pilots (NGH-020)(US)", SNK, 1991, GAME_SHOOT);
 
 static struct ROM_INFO rom_joyjoy[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "021-p1.p1", 0x080000, 0x39c3478f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "021-p1.p1", 0x000000, 0x080000, 0x39c3478f),
   LOAD( FIXED, "021-s1.s1", 0x000000, 0x20000, 0x6956d778),
   LOAD( ROM2, "021-m1.m1", 0x00000, 0x40000, 0x5a4be5e8),
   LOAD( SMP1, "021-v11.v11", 0x000000, 0x080000, 0x66c1e5c4),
@@ -613,7 +613,7 @@ CLNEI( joyjoy, neogeo, "Puzzled / Joy Joy Kid (NGM-021)(NGH-021)", SNK, 1990, GA
 
 static struct ROM_INFO rom_bjourney[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "022-p1.p1", 0x100000, 0x6a2f6d4a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "022-p1.p1", 0x000000, 0x100000, 0x6a2f6d4a),
   LOAD( FIXED, "022-s1.s1", 0x000000, 0x20000, 0x843c3624),
   LOAD( ROM2, "022-m1.m1", 0x00000, 0x20000, 0x8e1d4ab6),
   LOAD( SMP1, "022-v11.v11", 0x000000, 0x100000, 0x2cb4ad91),
@@ -629,7 +629,7 @@ CLNEI( bjourney, neogeo, "Blue's Journey / Raguy (ALM-001)(ALH-001)", ALPHA, 199
 
 static struct ROM_INFO rom_lresort[] = // clone of neogeo
 {
-  { "024-p1.p1", 0x080000, 0x89c4ab97, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "024-p1.p1", 0x000000, 0x080000, 0x89c4ab97),
   LOAD( FIXED, "024-s1.s1", 0x000000, 0x20000, 0x5cef5cc6),
   LOAD( ROM2, "024-m1.m1", 0x00000, 0x20000, 0xcec19742),
   LOAD( SMP1, "024-v1.v1", 0x000000, 0x100000, 0xefdfa063),
@@ -645,7 +645,7 @@ CLNEI( lresort, neogeo, "Last Resort", SNK, 1992, GAME_SHOOT);
 
 static struct ROM_INFO rom_eightman[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "025-p1.p1", 0x080000, 0x43344cb0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "025-p1.p1", 0x000000, 0x080000, 0x43344cb0),
   LOAD( FIXED, "025-s1.s1", 0x000000, 0x20000, 0xa402202b),
   LOAD( ROM2, "025-m1.m1", 0x00000, 0x20000, 0x9927034c),
   LOAD( SMP1, "025-v1.v1", 0x000000, 0x100000, 0x4558558a),
@@ -661,7 +661,7 @@ CLNEI( eightman, neogeo, "Eight Man (NGM-025)(NGH-025)", SNK, 1991, GAME_BEAT);
 
 static struct ROM_INFO rom_legendos[] = // clone of neogeo
 {
-  { "029-p1.p1", 0x080000, 0x9d563f19, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "029-p1.p1", 0x000000, 0x080000, 0x9d563f19),
   LOAD( FIXED, "029-s1.s1", 0x000000, 0x20000, 0xbcd502f0),
   LOAD( ROM2, "029-m1.m1", 0x00000, 0x20000, 0x6f2843f0),
   LOAD( SMP1, "029-v1.v1", 0x000000, 0x100000, 0x85065452),
@@ -676,7 +676,7 @@ CLNEI( legendos, neogeo, "Legend of Success Joe / Ashita no Joe Densetsu", SNK, 
 
 static struct ROM_INFO rom_2020bb[] = // clone of neogeo
 {
-  { "030-p1.p1", 0x080000, 0xd396c9cb, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "030-p1.p1", 0x000000, 0x080000, 0xd396c9cb),
   LOAD( FIXED, "030-s1.s1", 0x000000, 0x20000, 0x7015b8fc),
   LOAD( ROM2, "030-m1.m1", 0x00000, 0x20000, 0x4cf466ec),
   LOAD( SMP1, "030-v1.v1", 0x000000, 0x100000, 0xd4ca364e),
@@ -692,7 +692,7 @@ CLNEI( 2020bb, neogeo, "2020 Super Baseball (set 1)", SNK, 1991, GAME_SPORTS);
 
 static struct ROM_INFO rom_socbrawl[] = /* MVS VERSION clone of neogeo */
 {
-  { "031-pg1.p1", 0x080000, 0x17f034a7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "031-pg1.p1", 0x000000, 0x080000, 0x17f034a7),
   LOAD( FIXED, "031-s1.s1", 0x000000, 0x20000, 0x4c117174),
   LOAD( ROM2, "031-m1.m1", 0x00000, 0x20000, 0xcb37427c),
   LOAD( SMP1, "031-v1.v1", 0x000000, 0x100000, 0xcc78497e),
@@ -708,7 +708,7 @@ CLNEI( socbrawl, neogeo, "Soccer Brawl (NGM-031)", SNK, 1991, GAME_SPORTS);
 
 static struct ROM_INFO rom_socbrawlh[] = /* AES VERSION clone of socbrawl */
 {
-  { "031-p1.p1", 0x080000, 0xa2801c24, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "031-p1.p1", 0x000000, 0x080000, 0xa2801c24),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -716,8 +716,8 @@ CLNEI( socbrawlh, socbrawl, "Soccer Brawl (NGH-031)", SNK, 1991, GAME_SPORTS);
 
 static struct ROM_INFO rom_fatfury1[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "033-p1.p1", 0x080000, 0x47ebdc2f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "033-p2.p2", 0x020000, 0xc473af1c, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "033-p1.p1", 0x000000, 0x080000, 0x47ebdc2f),
+  LOAD_SW16( CPU1, "033-p2.p2", 0x080000, 0x020000, 0xc473af1c),
   LOAD( FIXED, "033-s1.s1", 0x000000, 0x20000, 0x3c3bdf8c),
   LOAD( ROM2, "033-m1.m1", 0x00000, 0x20000, 0x5be10ffd),
   LOAD( SMP1, "033-v1.v1", 0x000000, 0x100000, 0x212fd20d),
@@ -733,7 +733,7 @@ CLNEI( fatfury1, neogeo, "Fatal Fury - King of Fighters / Garou Densetsu - shuku
 
 static struct ROM_INFO rom_roboarmy[] = // clone of neogeo
 {
-  { "032-p1.p1", 0x080000, 0xcd11cbd4, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "032-p1.p1", 0x000000, 0x080000, 0xcd11cbd4),
   LOAD( FIXED, "032-s1.s1", 0x000000, 0x20000, 0xac0daa1b),
   LOAD( ROM2, "032-m1.m1", 0x00000, 0x20000, 0x35ec952d),
   LOAD( SMP1, "032-v1.v1", 0x000000, 0x100000, 0x63791533),
@@ -749,7 +749,7 @@ CLNEI( roboarmy, neogeo, "Robo Army", SNK, 1991, GAME_BEAT);
 
 static struct ROM_INFO rom_fbfrenzy[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "034-p1.p1", 0x080000, 0xcdef6b19, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "034-p1.p1", 0x000000, 0x080000, 0xcdef6b19),
   LOAD( FIXED, "034-s1.s1", 0x000000, 0x20000, 0x8472ed44),
   LOAD( ROM2, "034-m1.m1", 0x00000, 0x20000, 0xf41b16b8),
   LOAD( SMP1, "034-v1.v1", 0x000000, 0x100000, 0x50c9d0dd),
@@ -765,7 +765,7 @@ CLNEI( fbfrenzy, neogeo, "Football Frenzy (NGM-034)(NGH-034)", SNK, 1992, GAME_S
 
 static struct ROM_INFO rom_crsword[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "037-p1.p1", 0x080000, 0xe7f2553c, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "037-p1.p1", 0x000000, 0x080000, 0xe7f2553c),
   LOAD( FIXED, "037-s1.s1", 0x000000, 0x20000, 0x74651f27),
   LOAD( ROM2, "037-m1.m1", 0x00000, 0x20000, 0x9504b2c6),
   LOAD( SMP1, "037-v1.v1", 0x000000, 0x100000, 0x61fedf65),
@@ -780,8 +780,8 @@ CLNEI( crsword, neogeo, "Crossed Swords (ALM-002)(ALH-002)", ALPHA, 1991, GAME_F
 
 static struct ROM_INFO rom_trally[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "038-p1.p1", 0x080000, 0x1e52a576, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "038-p2.p2", 0x080000, 0xa5193e2f, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "038-p1.p1", 0x000000, 0x080000, 0x1e52a576),
+  LOAD_SW16( CPU1, "038-p2.p2", 0x080000, 0x080000, 0xa5193e2f),
   LOAD( FIXED, "038-s1.s1", 0x000000, 0x20000, 0xfff62ae3),
   LOAD( ROM2, "038-m1.m1", 0x00000, 0x20000, 0x0908707e),
   LOAD( SMP1, "038-v1.v1", 0x000000, 0x100000, 0x5ccd9fd5),
@@ -797,8 +797,8 @@ CLNEI( trally, neogeo, "Thrash Rally (ALM-003)(ALH-003)", ALPHA, 1991, GAME_MISC
 
 static struct ROM_INFO rom_kotm2[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "039-p1.p1", 0x080000, 0xb372d54c, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "039-p2.p2", 0x080000, 0x28661afe, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "039-p1.p1", 0x000000, 0x080000, 0xb372d54c),
+  LOAD_SW16( CPU1, "039-p2.p2", 0x080000, 0x080000, 0x28661afe),
   LOAD( FIXED, "039-s1.s1", 0x000000, 0x20000, 0x63ee053a),
   LOAD( ROM2, "039-m1.m1", 0x00000, 0x20000, 0x0c5b2ad5),
   LOAD( SMP1, "039-v2.v2", 0x000000, 0x200000, 0x86d34b25),
@@ -816,7 +816,7 @@ CLNEI( kotm2, neogeo, "King of the Monsters 2 - The Next Thing (NGM-039)(NGH-039
 
 static struct ROM_INFO rom_sengoku2[] = // clone of neogeo
 {
-  { "040-p1.p1", 0x100000, 0x6dde02c2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "040-p1.p1", 0x000000, 0x100000, 0x6dde02c2),
   LOAD( FIXED, "040-s1.s1", 0x000000, 0x20000, 0xcd9802a3),
   LOAD( ROM2, "040-m1.m1", 0x00000, 0x20000, 0xd4de4bca),
   LOAD( SMP1, "040-v1.v1", 0x000000, 0x200000, 0x71cb4b5d),
@@ -834,7 +834,7 @@ CLNEI( sengoku2, neogeo, "Sengoku 2 / Sengoku Denshou 2", SNK, 1993, GAME_BEAT);
 
 static struct ROM_INFO rom_bstars2[] = // clone of neogeo
 {
-  { "041-p1.p1", 0x080000, 0x523567fd, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "041-p1.p1", 0x000000, 0x080000, 0x523567fd),
   LOAD( FIXED, "041-s1.s1", 0x000000, 0x20000, 0x015c5c94),
   LOAD( ROM2, "041-m1.m1", 0x00000, 0x20000, 0x15c177a6),
   LOAD( SMP1, "041-v1.v1", 0x000000, 0x100000, 0xcb1da093),
@@ -852,7 +852,7 @@ CLNEI( bstars2, neogeo, "Baseball Stars 2", SNK, 1992, GAME_SPORTS);
 static struct ROM_INFO rom_3countb[] = // clone of neogeo
 {
 	/* The original p1 is 8mbit; also found sets with p1 / p2 4mbit on eprom. */
-  { "043-p1.p1", 0x100000, 0xffbdd928, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "043-p1.p1", 0x000000, 0x100000, 0xffbdd928),
   LOAD( FIXED, "043-s1.s1", 0x000000, 0x20000, 0xc362d484),
   LOAD( ROM2, "043-m1.m1", 0x00000, 0x20000, 0x7eab59cb),
   LOAD( SMP1, "043-v1.v1", 0x000000, 0x200000, 0x63688ce8),
@@ -872,7 +872,7 @@ CLNEI( 3countb, neogeo, "3 Count Bout / Fire Suplex (NGM-043)(NGH-043)", SNK, 19
 
 static struct ROM_INFO rom_aof[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "044-p1.p1", 0x080000, 0xca9f7a6d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "044-p1.p1", 0x000000, 0x080000, 0xca9f7a6d),
   LOAD( FIXED, "044-s1.s1", 0x000000, 0x20000, 0x89903f39),
   LOAD( ROM2, "044-m1.m1", 0x00000, 0x20000, 0x0987e4bb),
   LOAD( SMP1, "044-v2.v2", 0x000000, 0x200000, 0x3ec632ea),
@@ -892,8 +892,8 @@ CLNEI( aof, neogeo, "Art of Fighting / Ryuuko no Ken (NGM-044)(NGH-044)", SNK, 1
 
 static struct ROM_INFO rom_samsho[] = /* MVS VERSION clone of neogeo */
 {
-  { "045-p1.p1", 0x100000, 0xdfe51bf0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "045-pg2.sp2", 0x100000, 0x46745b94, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "045-p1.p1", 0x000000, 0x100000, 0xdfe51bf0),
+  LOAD_SW16( CPU1, "045-pg2.sp2", 0x100000, 0x100000, 0x46745b94),
   LOAD( FIXED, "045-s1.s1", 0x000000, 0x20000, 0x9142a4d3),
   LOAD( ROM2, "045-m1.m1", 0x00000, 0x20000, 0x95170640),
   LOAD( SMP1, "045-v1.v1", 0x000000, 0x200000, 0x37f78a9b),
@@ -911,8 +911,8 @@ CLNEI( samsho, neogeo, "Samurai Shodown / Samurai Spirits (NGM-045)", SNK, 1993,
 
 static struct ROM_INFO rom_samshoh[] = /* AES VERSION clone of samsho */
 {
-  { "045-p1.p1", 0x100000, 0xdfe51bf0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "045-p2.sp2", 0x080000, 0x38ee9ba9, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "045-p1.p1", 0x000000, 0x100000, 0xdfe51bf0),
+  LOAD_SW16( CPU1, "045-p2.sp2", 0x100000, 0x080000, 0x38ee9ba9),
   { "045-c1.c1", 0x200000, 0x2e5873a4, REGION_SPRITES, 0x000000, LOAD_8_16 },
   { "045-c2.c2", 0x200000, 0x04febb10, REGION_SPRITES, 0x000001, LOAD_8_16 },
   { "045-c3.c3", 0x200000, 0xf3dabd1e, REGION_SPRITES, 0x400000, LOAD_8_16 },
@@ -926,8 +926,8 @@ CLNEI( samshoh, samsho, "Samurai Shodown / Samurai Spirits (NGH-045)", SNK, 1993
 
 static struct ROM_INFO rom_tophuntr[] = /* MVS VERSION clone of neogeo */
 {
-  { "046-p1.p1", 0x100000, 0x69fa9e29, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "046-p2.sp2", 0x100000, 0xf182cb3e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "046-p1.p1", 0x000000, 0x100000, 0x69fa9e29),
+  LOAD_SW16( CPU1, "046-p2.sp2", 0x100000, 0x100000, 0xf182cb3e),
   LOAD( FIXED, "046-s1.s1", 0x000000, 0x20000, 0x14b01d7b),
   LOAD( ROM2, "046-m1.m1", 0x00000, 0x20000, 0x3f84bb9f),
   LOAD( SMP1, "046-v1.v1", 0x000000, 0x100000, 0xc1f9c2db),
@@ -950,7 +950,7 @@ CLNEI( tophuntr, neogeo, "Top Hunter - Roddy & Cathy (NGM-046)", SNK, 1994, GAME
 static struct ROM_INFO rom_fatfury2[] = /* MVS AND AES VERSION clone of neogeo */
 {
 	/* The original p1 is 8mbit; also found sets with p1 / p2 4mbit on eprom. */
-  { "047-p1.p1", 0x100000, 0xecfdbb69, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "047-p1.p1", 0x000000, 0x100000, 0xecfdbb69),
   LOAD( FIXED, "047-s1.s1", 0x000000, 0x20000, 0xd7dbbf39),
   LOAD( ROM2, "047-m1.m1", 0x00000, 0x20000, 0x820b0ba7),
   LOAD( SMP1, "047-v1.v1", 0x000000, 0x200000, 0xd9d00784),
@@ -970,8 +970,8 @@ CLNEI( fatfury2, neogeo, "Fatal Fury 2 / Garou Densetsu 2 - arata-naru tatakai (
 
 static struct ROM_INFO rom_androdun[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "049-p1.p1", 0x080000, 0x3b857da2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "049-p2.p2", 0x080000, 0x2f062209, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "049-p1.p1", 0x000000, 0x080000, 0x3b857da2),
+  LOAD_SW16( CPU1, "049-p2.p2", 0x080000, 0x080000, 0x2f062209),
   LOAD( FIXED, "049-s1.s1", 0x000000, 0x20000, 0x6349de5d),
   LOAD( ROM2, "049-m1.m1", 0x00000, 0x20000, 0xedd2acf4),
   LOAD( SMP1, "049-v1.v1", 0x000000, 0x100000, 0xce43cb89),
@@ -984,7 +984,7 @@ CLNEI( androdun, neogeo, "Andro Dunos (NGM-049)(NGH-049)", VISCO, 1992, GAME_SHO
 
 static struct ROM_INFO rom_ncommand[] = // clone of neogeo
 {
-  { "050-p1.p1", 0x100000, 0x4e097c40, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "050-p1.p1", 0x000000, 0x100000, 0x4e097c40),
   LOAD( FIXED, "050-s1.s1", 0x000000, 0x20000, 0xdb8f9c8e),
   LOAD( ROM2, "050-m1.m1", 0x00000, 0x20000, 0x6fcf07d3),
   LOAD( SMP1, "050-v1.v1", 0x000000, 0x100000, 0x23c3ab42),
@@ -1000,7 +1000,7 @@ CLNEI( ncommand, neogeo, "Ninja Commando", ALPHA, 1992, GAME_SHOOT);
 
 static struct ROM_INFO rom_viewpoin[] = // clone of neogeo
 {
-  { "051-p1.p1", 0x100000, 0x17aa899d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "051-p1.p1", 0x000000, 0x100000, 0x17aa899d),
   LOAD( FIXED, "051-s1.s1", 0x000000, 0x20000, 0x9fea5758),
   LOAD( ROM2, "051-m1.m1", 0x00000, 0x20000, 0x8e69f29a),
 	/* What board was originally used (labels 051-V2 and 051-V4)? MVS is twice confirmed on NEO-MVS PROG-G2 */
@@ -1017,7 +1017,7 @@ CLNEI( viewpoin, neogeo, "Viewpoint", SAMMY, 1992, GAME_SHOOT);
 
 static struct ROM_INFO rom_ssideki[] = // clone of neogeo
 {
-  { "052-p1.p1", 0x080000, 0x9cd97256, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "052-p1.p1", 0x000000, 0x080000, 0x9cd97256),
   LOAD( FIXED, "052-s1.s1", 0x000000, 0x20000, 0x97689804),
   LOAD( ROM2, "052-m1.m1", 0x00000, 0x20000, 0x49f17d2d),
   LOAD( SMP1, "052-v1.v1", 0x000000, 0x200000, 0x22c097a5),
@@ -1032,9 +1032,9 @@ CLNEI( ssideki, neogeo, "Super Sidekicks / Tokuten Ou", SNK, 1992, GAME_SPORTS);
 
 static struct ROM_INFO rom_wh1[] = /* MVS VERSION clone of neogeo */
 {
-  { "053-epr.p1", 0x080000, 0xd42e1e9a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "053-epr.p1", 0x000000, 0x080000, 0xd42e1e9a),
 	/* P's on eprom, correct chip label unknown */
-  { "053-epr.p2", 0x080000, 0x0e33e8a3, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "053-epr.p2", 0x080000, 0x080000, 0x0e33e8a3),
   LOAD( FIXED, "053-s1.s1", 0x000000, 0x20000, 0x8c2c2d6b),
   LOAD( ROM2, "053-m1.m1", 0x00000, 0x20000, 0x1bd9d04b),
   LOAD( SMP1, "053-v2.v2", 0x000000, 0x200000, 0xa68df485),
@@ -1052,7 +1052,7 @@ CLNEI( wh1, neogeo, "World Heroes (ALM-005)", ALPHA, 1992, GAME_BEAT);
 
 static struct ROM_INFO rom_kof94[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "055-p1.p1", 0x100000, 0xf10a2042, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "055-p1.p1", 0x100000, 0x100000, 0xf10a2042),
   { "055-p1.p1", 0x100000 , 0xf10a2042, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "055-s1.s1", 0x000000, 0x20000, 0x825976c1),
   LOAD( ROM2, "055-m1.m1", 0x00000, 0x20000, 0xf6e77cf5),
@@ -1074,7 +1074,7 @@ CLNEI( kof94, neogeo, "The King of Fighters '94 (NGM-055)(NGH-055)", SNK, 1994, 
 
 static struct ROM_INFO rom_aof2[] = /* MVS VERSION clone of neogeo */
 {
-  { "056-p1.p1", 0x100000, 0xa3b1d021, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "056-p1.p1", 0x000000, 0x100000, 0xa3b1d021),
   LOAD( FIXED, "056-s1.s1", 0x000000, 0x20000, 0x8b02638e),
   LOAD( ROM2, "056-m1.m1", 0x00000, 0x20000, 0xf27e9d52),
   LOAD( SMP1, "056-v1.v1", 0x000000, 0x200000, 0x4628fde0),
@@ -1097,9 +1097,9 @@ CLNEI( aof2, neogeo, "Art of Fighting 2 / Ryuuko no Ken 2 (NGM-056)", SNK, 1994,
 static struct ROM_INFO rom_aof2a[] = /* AES VERSION clone of aof2 */
 {
 	/* the rom below acts as a patch to the program rom in the cart, replacing the first 512kb */
-  { "056-p1.p1", 0x100000, 0xa3b1d021, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "056-p1.p1", 0x000000, 0x100000, 0xa3b1d021),
 	/* P is on eprom, correct chip label unknown */
-  { "056-epr.ep1", 0x80000, 0x75d6301c, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "056-epr.ep1", 0x000000, 0x80000, 0x75d6301c),
   { "056-c1.c1", 0x200000, 0x17b9cbd2, REGION_SPRITES, 0x000000, LOAD_8_16 },
   { "056-c2.c2", 0x200000, 0x5fd76b67, REGION_SPRITES, 0x000001, LOAD_8_16 },
   { "056-c3.c3", 0x200000, 0xd2c88768, REGION_SPRITES, 0x400000, LOAD_8_16 },
@@ -1115,7 +1115,7 @@ CLNEI( aof2a, aof2, "Art of Fighting 2 / Ryuuko no Ken 2 (NGH-056)", SNK, 1994, 
 
 static struct ROM_INFO rom_wh2[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "057-p1.p1", 0x100000, 0x65a891d9, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "057-p1.p1", 0x100000, 0x100000, 0x65a891d9),
   { "057-p1.p1", 0x100000 , 0x65a891d9, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "057-s1.s1", 0x000000, 0x20000, 0xfcaeb3a4),
   LOAD( ROM2, "057-m1.m1", 0x00000, 0x20000, 0x8fa3bc77),
@@ -1134,8 +1134,8 @@ CLNEI( wh2, neogeo,              "World Heroes 2 (ALM-006)(ALH-006)", ADK, 1993,
 
 static struct ROM_INFO rom_fatfursp[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "058-p1.p1", 0x100000, 0x2f585ba2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "058-p2.sp2", 0x080000, 0xd7c71a6b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "058-p1.p1", 0x000000, 0x100000, 0x2f585ba2),
+  LOAD_SW16( CPU1, "058-p2.sp2", 0x100000, 0x080000, 0xd7c71a6b),
   LOAD( FIXED, "058-s1.s1", 0x000000, 0x20000, 0x2df03197),
   LOAD( ROM2, "058-m1.m1", 0x00000, 0x20000, 0xccc5186e),
   LOAD( SMP1, "058-v1.v1", 0x000000, 0x200000, 0x55d7ce84),
@@ -1154,11 +1154,11 @@ CLNEI( fatfursp, neogeo, "Fatal Fury Special / Garou Densetsu Special (set 1)(NG
 
 static struct ROM_INFO rom_fatfurspa[] = /* MVS AND AES VERSION clone of fatfursp */
 {
-  { "058-p1.p1", 0x100000, 0x2f585ba2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "058-p1.p1", 0x000000, 0x100000, 0x2f585ba2),
 	/* the rom below acts as a patch to the program rom in the cart, replacing the first 512kb */
-  { "058-p2.sp2", 0x080000, 0xd7c71a6b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "058-p2.sp2", 0x100000, 0x080000, 0xd7c71a6b),
 	/* P is on eprom, correct chip label unknown */
-  { "058-epr.ep1", 0x080000, 0x9f0c1e1a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "058-epr.ep1", 0x000000, 0x080000, 0x9f0c1e1a),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1166,7 +1166,7 @@ CLNEI( fatfurspa, fatfursp, "Fatal Fury Special / Garou Densetsu Special (set 2)
 
 static struct ROM_INFO rom_savagere[] = // clone of neogeo
 {
-  { "059-p1.p1", 0x100000, 0x01d4e9c0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "059-p1.p1", 0x100000, 0x100000, 0x01d4e9c0),
   { "059-p1.p1", 0x100000 , 0x01d4e9c0, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "059-s1.s1", 0x000000, 0x20000, 0xe08978ca),
   LOAD( ROM2, "059-m1.m1", 0x00000, 0x20000, 0x29992eba),
@@ -1188,7 +1188,7 @@ CLNEI( savagere, neogeo, "Savage Reign / Fu'un Mokushiroku - kakutou sousei", SN
 
 static struct ROM_INFO rom_fightfev[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "060-p1.p1", 0x100000, 0x2a104b50, REGION_CPU1, 0x0000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "060-p1.p1", 0x0000000, 0x100000, 0x2a104b50),
   LOAD( FIXED, "060-s1.s1", 0x000000, 0x20000, 0x7f012104),
   LOAD( ROM2, "060-m1.m1", 0x00000, 0x20000, 0x0b7c4e65),
   LOAD( SMP1, "060-v1.v1", 0x000000, 0x200000, 0xf417c215),
@@ -1204,7 +1204,7 @@ CLNEI( fightfev, neogeo, "Fight Fever (set 1)", VICCOM, 1994, GAME_BEAT);
 
 static struct ROM_INFO rom_ssideki2[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "061-p1.p1", 0x100000, 0x5969e0dc, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "061-p1.p1", 0x000000, 0x100000, 0x5969e0dc),
   LOAD( FIXED, "061-s1.s1", 0x000000, 0x20000, 0x226d1b68),
   LOAD( ROM2, "061-m1.m1", 0x00000, 0x20000, 0x156f6951),
   LOAD( SMP1, "061-v1.v1", 0x000000, 0x200000, 0xf081c8d3),
@@ -1221,8 +1221,8 @@ CLNEI( ssideki2, neogeo, "Super Sidekicks 2 - The World Championship / Tokuten O
 
 static struct ROM_INFO rom_spinmast[] =
 {
-  { "062-p1.p1", 0x100000, 0x37aba1aa, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "062-p2.sp2", 0x100000, 0xf025ab77, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "062-p1.p1", 0x000000, 0x100000, 0x37aba1aa),
+  LOAD_SW16( CPU1, "062-p2.sp2", 0x100000, 0x100000, 0xf025ab77),
   LOAD( FIXED, "062-s1.s1", 0x000000, 0x20000, 0x289e2bbe),
   LOAD( ROM2, "062-m1.m1", 0x00000, 0x20000, 0x76108b2f),
   LOAD( SMP1, "062-v1.v1", 0x000000, 0x100000, 0xcc281aef),
@@ -1241,7 +1241,7 @@ CLNEI( spinmast, neogeo, "Spin Master / Miracle Adventure", DECO, 1993, GAME_BEA
 
 static struct ROM_INFO rom_samsho2[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "063-p1.p1", 0x100000, 0x22368892, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "063-p1.p1", 0x100000, 0x100000, 0x22368892),
   { "063-p1.p1", 0x100000 , 0x22368892, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "063-s1.s1", 0x000000, 0x20000, 0x64a5cd66),
   LOAD( ROM2, "063-m1.m1", 0x00000, 0x20000, 0x56675098),
@@ -1264,11 +1264,11 @@ CLNEI( samsho2, neogeo, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru ji
 
 static struct ROM_INFO rom_samsho2k[] = /* KOREAN VERSION clone of samsho2 */
 {
-  { "063-p1-kan.p1", 0x100000, 0x147cc6d7, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "063-p1-kan.p1", 0x100000, 0x100000, 0x147cc6d7),
 	// the roms below apply as patch over the main program (I haven't checked what they change, the game boots as the Korean version even with just the above program)
   { "063-p1-kan.p1", 0x100000 , 0x147cc6d7, REGION_CPU1, 0x000000, LOAD_CONTINUE },
-  { "063-ep1-kan.ep1", 0x080000, 0xfa32e2d8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "063-ep2-kan.ep2", 0x080000, 0x70b1a4d9, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "063-ep1-kan.ep1", 0x000000, 0x080000, 0xfa32e2d8),
+  LOAD_SW16( CPU1, "063-ep2-kan.ep2", 0x080000, 0x080000, 0x70b1a4d9),
   LOAD( FIXED, "063-s1-kan.s1", 0x000000, 0x20000, 0xff08f80b),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -1277,7 +1277,7 @@ CLNEI( samsho2k, samsho2, "Saulabi Spirits / Jin Saulabi Tu Hon (Korean release 
 
 static struct ROM_INFO rom_wjammers[] =
 {
-  { "065-p1.p1", 0x100000, 0x6692c140, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "065-p1.p1", 0x000000, 0x100000, 0x6692c140),
   LOAD( FIXED, "065-s1.s1", 0x000000, 0x20000, 0x074b5723),
   LOAD( ROM2, "065-m1.m1", 0x00000, 0x20000, 0x52c23cfc),
   LOAD( SMP1, "065-v1.v1", 0x000000, 0x100000, 0xce8b3698),
@@ -1293,7 +1293,7 @@ static struct ROM_INFO rom_wjammers[] =
 
 static struct ROM_INFO rom_karnovr[] =
 {
-  { "066-p1.p1", 0x100000, 0x8c86fd22, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "066-p1.p1", 0x000000, 0x100000, 0x8c86fd22),
   LOAD( FIXED, "066-s1.s1", 0x000000, 0x20000, 0xbae5d5e5),
   LOAD( ROM2, "066-m1.m1", 0x00000, 0x20000, 0x030beae4),
   LOAD( SMP1, "066-v1.v1", 0x000000, 0x200000, 0x0b7ea37a),
@@ -1312,7 +1312,7 @@ CLNEI( karnovr, neogeo, "Karnov's Revenge / Fighter's History Dynamite", DECO, 1
 
 static struct ROM_INFO rom_gururin[] = /* MVS ONLY RELEASE */
 {
-  { "067-p1.p1", 0x80000, 0x4cea8a49, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "067-p1.p1", 0x000000, 0x80000, 0x4cea8a49),
   LOAD( FIXED, "067-s1.s1", 0x000000, 0x20000, 0xb119e1eb),
   LOAD( ROM2, "067-m1.m1", 0x00000, 0x20000, 0x9e3c6328),
   LOAD( SMP1, "067-v1.v1", 0x000000, 0x80000, 0xcf23afd0),
@@ -1325,7 +1325,7 @@ CLNEI( gururin, neogeo, "Gururin", FACE, 1994, GAME_PUZZLE);
 
 static struct ROM_INFO rom_pspikes2[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "068-pg1.p1", 0x100000, 0x105a408f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "068-pg1.p1", 0x000000, 0x100000, 0x105a408f),
   LOAD( FIXED, "068-sg1.s1", 0x000000, 0x20000, 0x18082299),
   LOAD( ROM2, "068-mg1.m1", 0x00000, 0x20000, 0xb1c7911e),
   LOAD( SMP1, "068-v1.v1", 0x000000, 0x100000, 0x2ced86df),
@@ -1344,8 +1344,8 @@ CLNEI( pspikes2, neogeo, "Power Spikes II (NGM-068)", VIDEOSYSTEM, 1994, GAME_SP
 
 static struct ROM_INFO rom_fatfury3[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "069-p1.p1", 0x100000, 0xa8bcfbbc, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "069-sp2.sp2", 0x200000, 0xdbe963ed, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "069-p1.p1", 0x000000, 0x100000, 0xa8bcfbbc),
+  LOAD_SW16( CPU1, "069-sp2.sp2", 0x100000, 0x200000, 0xdbe963ed),
   LOAD( FIXED, "069-s1.s1", 0x000000, 0x20000, 0x0b33a800),
   LOAD( ROM2, "069-m1.m1", 0x00000, 0x20000, 0xfce72926),
   LOAD( SMP1, "069-v1.v1", 0x000000, 0x400000, 0x2bdbd4db),
@@ -1364,7 +1364,7 @@ CLNEI( fatfury3, neogeo, "Fatal Fury 3 - Road to the Final Victory / Garou Dense
 
 static struct ROM_INFO rom_zupapa[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
-  { "070-p1.p1", 0x100000, 0x5a96203e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "070-p1.p1", 0x000000, 0x100000, 0x5a96203e),
 	/* The Encrypted Boards do _not_ have an s1 rom, data for it comes from the Cx ROMs */
   // Dummy region_fixed, overwritten by the decrypt functions but the size is
   // important
@@ -1383,7 +1383,7 @@ CLNEI( zupapa, neogeo, "Zupapa!" , SNK, 2001, GAME_PLATFORM);
 
 static struct ROM_INFO rom_panicbom[] = /* MVS ONLY RELEASE */
 {
-  { "073-p1.p1", 0x080000, 0xadc356ad, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "073-p1.p1", 0x000000, 0x080000, 0xadc356ad),
   LOAD( FIXED, "073-s1.s1", 0x000000, 0x20000, 0xb876de7e),
   LOAD( ROM2, "073-m1.m1", 0x00000, 0x20000, 0x3cdf5d88),
   LOAD( SMP1, "073-v1.v1", 0x000000, 0x200000, 0x7fc86d2f),
@@ -1397,7 +1397,7 @@ CLNEI( panicbom, neogeo, "Panic Bomber", EIGHTING, 1994, GAME_PUZZLE);
 
 static struct ROM_INFO rom_aodk[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "074-p1.p1", 0x100000, 0x62369553, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "074-p1.p1", 0x100000, 0x100000, 0x62369553),
   { "074-p1.p1", 0x100000 , 0x62369553, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "074-s1.s1", 0x000000, 0x20000, 0x96148d2b),
   LOAD( ROM2, "074-m1.m1", 0x00000, 0x20000, 0x5a52a9d1),
@@ -1418,7 +1418,7 @@ CLNEI( aodk, neogeo,        "Aggressors of Dark Kombat / Tsuukai GANGAN Koushink
 
 static struct ROM_INFO rom_sonicwi2[] =
 {
-  { "075-p1.p1", 0x100000, 0x92871738, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "075-p1.p1", 0x100000, 0x100000, 0x92871738),
   { "075-p1.p1", 0x100000 , 0x92871738, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "075-s1.s1", 0x000000, 0x20000, 0xc9eec367),
   LOAD( ROM2, "075-m1.m1", 0x00000, 0x20000, 0xbb828df1),
@@ -1435,7 +1435,7 @@ CLNEI( sonicwi2, neogeo, "Aero Fighters 2 / Sonic Wings 2", VIDEOSYSTEM, 1994, G
 
 static struct ROM_INFO rom_zedblade[] = /* MVS ONLY RELEASE */
 {
-  { "076-p1.p1", 0x080000, 0xd7c1effd, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "076-p1.p1", 0x000000, 0x080000, 0xd7c1effd),
   LOAD( FIXED, "076-s1.s1", 0x000000, 0x20000, 0xf4c25dd5),
   LOAD( ROM2, "076-m1.m1", 0x00000, 0x20000, 0x7b5f3d0a),
   LOAD( SMP1, "076-v1.v1", 0x000000, 0x200000, 0x1a21d90c),
@@ -1452,7 +1452,7 @@ CLNEI( zedblade, neogeo, "Zed Blade / Operation Ragnarok", NMK, 1994, GAME_SHOOT
 
 static struct ROM_INFO rom_galaxyfg[] =
 {
-  { "078-p1.p1", 0x100000, 0x45906309, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "078-p1.p1", 0x100000, 0x100000, 0x45906309),
   { "078-p1.p1", 0x100000 , 0x45906309, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "078-s1.s1", 0x000000, 0x20000, 0x72f8923e),
   LOAD( ROM2, "078-m1.m1", 0x00000, 0x20000, 0x8e9e3b10),
@@ -1474,7 +1474,7 @@ CLNEI( galaxyfg, neogeo, "Galaxy Fight - Universal Warriors", SUNSOFT, 1995, GAM
 
 static struct ROM_INFO rom_strhoop[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "079-p1.p1", 0x100000, 0x5e78328e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "079-p1.p1", 0x000000, 0x100000, 0x5e78328e),
   LOAD( FIXED, "079-s1.s1", 0x000000, 0x20000, 0x3ac06665),
   LOAD( ROM2, "079-m1.m1", 0x00000, 0x20000, 0xbee3455a),
   LOAD( SMP1, "079-v1.v1", 0x000000, 0x200000, 0x718a2400),
@@ -1491,7 +1491,7 @@ CLNEI( strhoop, neogeo, "Street Hoop / Street Slam / Dunk Dream (DEM-004) (DEH-0
 
 static struct ROM_INFO rom_ssideki3[] = // clone of neogeo
 {
-  { "081-p1.p1", 0x100000, 0x6bc27a3d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "081-p1.p1", 0x100000, 0x100000, 0x6bc27a3d),
   { "081-p1.p1", 0x100000 , 0x6bc27a3d, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "081-s1.s1", 0x000000, 0x20000, 0x7626da34),
   LOAD( ROM2, "081-m1.m1", 0x00000, 0x20000, 0x82fcd863),
@@ -1511,7 +1511,7 @@ CLNEI( ssideki3, neogeo, "Super Sidekicks 3 - The Next Glory / Tokuten Ou 3 - ei
 
 static struct ROM_INFO rom_doubledr[] = // clone of neogeo
 {
-  { "082-p1.p1", 0x100000, 0x34ab832a, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "082-p1.p1", 0x100000, 0x100000, 0x34ab832a),
   { "082-p1.p1", 0x100000 , 0x34ab832a, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "082-s1.s1", 0x000000, 0x20000, 0xbef995c5),
   LOAD( ROM2, "082-m1.m1", 0x00000, 0x20000, 0x10b144de),
@@ -1532,7 +1532,7 @@ CLNEI( doubledr, neogeo, "Double Dragon (Neo-Geo)", TECHNOS, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_pbobblen[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "d96-07.ep1", 0x080000, 0x6102ca14, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "d96-07.ep1", 0x000000, 0x080000, 0x6102ca14),
   LOAD( FIXED, "d96-04.s1", 0x000000, 0x20000, 0x9caae538),
   LOAD( ROM2, "d96-06.m1", 0x00000, 0x20000, 0xf424368a),
   LOAD( SMP1, "068-v1.v1", 0x000000, 0x100000, 0x2ced86df),
@@ -1552,7 +1552,7 @@ CLNEI( pbobblen, neogeo, "Puzzle Bobble / Bust-A-Move (Neo-Geo) (NGM-083)", TAIT
 
 static struct ROM_INFO rom_kof95[] = /* MVS VERSION clone of neogeo */
 {
-  { "084-p1.p1", 0x100000, 0x2cba2716, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "084-p1.p1", 0x100000, 0x100000, 0x2cba2716),
   { "084-p1.p1", 0x100000 , 0x2cba2716, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "084-s1.s1", 0x000000, 0x20000, 0xde716f8a),
   LOAD( ROM2, "084-m1.m1", 0x00000, 0x20000, 0x6f2d7429),
@@ -1576,7 +1576,7 @@ CLNEI( kof95, neogeo, "The King of Fighters '95 (NGM-084)", SNK, 1995, GAME_BEAT
 
 static struct ROM_INFO rom_kof95h[] = /* MVS AND AES VERSION clone of kof95 */
 {
-  { "084-pg1.p1", 0x100000, 0x5e54cf95, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "084-pg1.p1", 0x100000, 0x100000, 0x5e54cf95),
   { "084-pg1.p1", 0x100000 , 0x5e54cf95, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* 600000-7fffff empty */
 	/* 1400000-17fffff empty */
@@ -1587,7 +1587,7 @@ CLNEI( kof95h, kof95, "The King of Fighters '95 (NGH-084)", SNK, 1995, GAME_BEAT
 
 static struct ROM_INFO rom_tws96[] = /* MVS ONLY RELEASE */
 {
-  { "086-p1.p1", 0x100000, 0x03e20ab6, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "086-p1.p1", 0x000000, 0x100000, 0x03e20ab6),
   LOAD( FIXED, "086-s1.s1", 0x000000, 0x20000, 0x6f5e2b3a),
   LOAD( ROM2, "086-m1.m1", 0x00000, 0x20000, 0xcb82bc5d),
   LOAD( SMP1, "086-v1.v1", 0x000000, 0x200000, 0x97bf1986),
@@ -1603,12 +1603,12 @@ CLNEI( tws96, neogeo, "Tecmo World Soccer '96", TECMO, 1996, GAME_SPORTS);
 
 static struct ROM_INFO rom_samsho3[] = /* MVS VERSION clone of neogeo */
 {
-  { "087-epr.ep1", 0x080000, 0x23e09bb8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "087-epr.ep2", 0x080000, 0x256f5302, REGION_CPU1, 0x080000, LOAD_SWAP_16 },
-  { "087-epr.ep3", 0x080000, 0xbf2db5dd, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "087-epr.ep1", 0x000000, 0x080000, 0x23e09bb8),
+  LOAD_SW16( CPU1, "087-epr.ep2", 0x080000, 0x080000, 0x256f5302),
+  LOAD_SW16( CPU1, "087-epr.ep3", 0x100000, 0x080000, 0xbf2db5dd),
 	/* P's on eprom, correct chip label unknown */
-  { "087-epr.ep4", 0x080000, 0x53e60c58, REGION_CPU1, 0x180000, LOAD_SWAP_16 },
-  { "087-p5.p5", 0x100000, 0xe86ca4af, REGION_CPU1, 0x200000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "087-epr.ep4", 0x180000, 0x080000, 0x53e60c58),
+  LOAD_SW16( CPU1, "087-p5.p5", 0x200000, 0x100000, 0xe86ca4af),
   LOAD( FIXED, "087-s1.s1", 0x000000, 0x20000, 0x74ec7d9f),
   LOAD( ROM2, "087-m1.m1", 0x00000, 0x20000, 0x8e6440eb),
   LOAD( SMP1, "087-v1.v1", 0x000000, 0x400000, 0x84bdd9a0),
@@ -1628,15 +1628,15 @@ CLNEI( samsho3, neogeo, "Samurai Shodown III / Samurai Spirits - Zankurou Musouk
 
 static struct ROM_INFO rom_samsho3h[] = /* AES VERSION clone of samsho3 */
 {
-  { "087-pg1.p1", 0x100000, 0x282a336e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "087-p2.sp2", 0x200000, 0x9bbe27e0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "087-pg1.p1", 0x000000, 0x100000, 0x282a336e),
+  LOAD_SW16( CPU1, "087-p2.sp2", 0x100000, 0x200000, 0x9bbe27e0),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_fswords[] = /* KOREAN VERSION clone of samsho3 */
 {
-  { "187-p1k.p1", 0x100000, 0xc8e7c075, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "087-p2.sp2", 0x200000, 0x9bbe27e0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "187-p1k.p1", 0x000000, 0x100000, 0xc8e7c075),
+  LOAD_SW16( CPU1, "087-p2.sp2", 0x100000, 0x200000, 0x9bbe27e0),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1645,7 +1645,7 @@ CLNEI( fswords, samsho3, "Fighters Swords (Korean release of Samurai Shodown III
 
 static struct ROM_INFO rom_stakwin[] =
 {
-  { "088-p1.p1", 0x100000, 0xbd5814f6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "088-p1.p1", 0x100000, 0x100000, 0xbd5814f6),
   { "088-p1.p1", 0x100000, 0xbd5814f6, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "088-s1.s1", 0x000000, 0x20000, 0x073cb208),
   LOAD( ROM2, "088-m1.m1", 0x00000, 0x20000, 0x2fe1f499),
@@ -1661,8 +1661,8 @@ CLNEI( stakwin, neogeo, "Stakes Winner / Stakes Winner - GI kinzen seiha e no mi
 
 static struct ROM_INFO rom_pulstar[] = // clone of neogeo
 {
-  { "089-p1.p1", 0x100000, 0x5e5847a2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "089-p2.sp2", 0x200000, 0x028b774c, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "089-p1.p1", 0x000000, 0x100000, 0x5e5847a2),
+  LOAD_SW16( CPU1, "089-p2.sp2", 0x100000, 0x200000, 0x028b774c),
   LOAD( FIXED, "089-s1.s1", 0x000000, 0x20000, 0xc79fc2c8),
   LOAD( ROM2, "089-m1.m1", 0x00000, 0x20000, 0xff3df7c7),
   LOAD( SMP1, "089-v1.v1", 0x000000, 0x400000, 0x6f726ecb),
@@ -1682,7 +1682,7 @@ CLNEI( pulstar, neogeo, "Pulstar", AICOM, 1995, GAME_SHOOT);
 
 static struct ROM_INFO rom_whp[] = // clone of neogeo
 {
-  { "090-p1.p1", 0x100000, 0xafaa4702, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "090-p1.p1", 0x100000, 0x100000, 0xafaa4702),
   { "090-p1.p1", 0x100000 , 0xafaa4702, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "090-s1.s1", 0x000000, 0x20000, 0x174a880f),
   LOAD( ROM2, "090-m1.m1", 0x00000, 0x20000, 0x28065668),
@@ -1706,7 +1706,7 @@ CLNEI( whp, neogeo,        "World Heroes Perfect", ADK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_kabukikl[] =
 {
-  { "092-p1.p1", 0x100000, 0x28ec9b77, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "092-p1.p1", 0x100000, 0x100000, 0x28ec9b77),
   { "092-p1.p1", 0x100000 , 0x28ec9b77, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "092-s1.s1", 0x000000, 0x20000, 0xa3d68ee2),
   LOAD( ROM2, "092-m1.m1", 0x00000, 0x20000, 0x91957ef6),
@@ -1725,7 +1725,7 @@ CLNEI( kabukikl, neogeo, "Kabuki Klash - Far East of Eden / Tengai Makyou - Shin
 
 static struct ROM_INFO rom_neobombe[] = /* MVS ONLY RELEASE */
 {
-  { "093-p1.p1", 0x100000, 0xa1a71d0d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "093-p1.p1", 0x000000, 0x100000, 0xa1a71d0d),
   LOAD( FIXED, "093-s1.s1", 0x000000, 0x20000, 0x4b3fa119),
   LOAD( ROM2, "093-m1.m1", 0x00000, 0x20000, 0xe81e780b),
   LOAD( SMP1, "093-v1.v1", 0x000000, 0x400000, 0x02abd4b0),
@@ -1741,7 +1741,7 @@ CLNEI( neobombe, neogeo, "Neo Bomberman", HUDSON, 1997, GAME_MAZE);
 
 static struct ROM_INFO rom_gowcaizr[] =
 {
-  { "094-p1.p1", 0x100000, 0x33019545, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "094-p1.p1", 0x100000, 0x100000, 0x33019545),
   { "094-p1.p1", 0x100000 , 0x33019545, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "094-s1.s1", 0x000000, 0x20000, 0x2f8748a2),
   LOAD( ROM2, "094-m1.m1", 0x00000, 0x20000, 0x78c851cb),
@@ -1763,8 +1763,8 @@ CLNEI( gowcaizr, neogeo, "Voltage Fighter - Gowcaizer / Choujin Gakuen Gowcaizer
 
 static struct ROM_INFO rom_rbff1[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "095-p1.p1", 0x100000, 0x63b4d8ae, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "095-p2.sp2", 0x200000, 0xcc15826e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "095-p1.p1", 0x000000, 0x100000, 0x63b4d8ae),
+  LOAD_SW16( CPU1, "095-p2.sp2", 0x100000, 0x200000, 0xcc15826e),
   LOAD( FIXED, "095-s1.s1", 0x000000, 0x20000, 0xb6bf5e08),
   LOAD( ROM2, "095-m1.m1", 0x00000, 0x20000, 0x653492a7),
   LOAD( SMP1, "069-v1.v1", 0x000000, 0x400000, 0x2bdbd4db),
@@ -1785,8 +1785,8 @@ CLNEI( rbff1, neogeo, "Real Bout Fatal Fury / Real Bout Garou Densetsu (NGM-095)
 
 static struct ROM_INFO rom_aof3[] = // clone of neogeo
 {
-  { "096-p1.p1", 0x100000, 0x9edb420d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "096-p2.sp2", 0x200000, 0x4d5a2602, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "096-p1.p1", 0x000000, 0x100000, 0x9edb420d),
+  LOAD_SW16( CPU1, "096-p2.sp2", 0x100000, 0x200000, 0x4d5a2602),
   LOAD( FIXED, "096-s1.s1", 0x000000, 0x20000, 0xcc7fd344),
   LOAD( ROM2, "096-m1.m1", 0x00000, 0x20000, 0xcb07b659),
   LOAD( SMP1, "096-v1.v1", 0x000000, 0x200000, 0xe2c32074),
@@ -1807,8 +1807,8 @@ CLNEI( aof3, neogeo, "Art of Fighting 3 - The Path of the Warrior / Art of Fight
 
 static struct ROM_INFO rom_aof3k[] = /* KOREAN VERSION */
 {
-  { "196-p1k.p1", 0x100000, 0xa0780789, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "096-p2.sp2", 0x200000, 0x4d5a2602, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "196-p1k.p1", 0x000000, 0x100000, 0xa0780789),
+  LOAD_SW16( CPU1, "096-p2.sp2", 0x100000, 0x200000, 0x4d5a2602),
   LOAD( FIXED, "096-s1.s1", 0x000000, 0x20000, 0xcc7fd344),
   LOAD( ROM2, "096-m1.m1", 0x00000, 0x20000, 0xcb07b659),
   LOAD( SMP1, "096-v1.v1", 0x000000, 0x200000, 0xe2c32074),
@@ -1829,7 +1829,7 @@ CLNEI( aof3k, aof3, "Art of Fighting 3 - The Path of the Warrior (Korean release
 
 static struct ROM_INFO rom_sonicwi3[] =
 {
-  { "097-p1.p1", 0x100000, 0x0547121d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "097-p1.p1", 0x100000, 0x100000, 0x0547121d),
   { "097-p1.p1", 0x100000 , 0x0547121d, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "097-s1.s1", 0x000000, 0x20000, 0x8dd66743),
   LOAD( ROM2, "097-m1.m1", 0x00000, 0x20000, 0xb20e4291),
@@ -1846,7 +1846,7 @@ CLNEI( sonicwi3, neogeo, "Aero Fighters 3 / Sonic Wings 3", VIDEOSYSTEM, 1995, G
 
 static struct ROM_INFO rom_turfmast[] =
 {
-  { "200-p1.p1", 0x100000, 0x28c83048, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "200-p1.p1", 0x100000, 0x100000, 0x28c83048),
   { "200-p1.p1", 0x100000, 0x28c83048, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "200-s1.s1", 0x000000, 0x20000, 0x9a5402b2),
   LOAD( ROM2, "200-m1.m1", 0x00000, 0x20000, 0x9994ac00),
@@ -1863,7 +1863,7 @@ CLNEI( turfmast, neogeo, "Neo Turf Masters / Big Tournament Golf", NAZCA, 1996, 
 
 static struct ROM_INFO rom_mslug[] =
 {
-  { "201-p1.p1", 0x100000, 0x08d8daa5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "201-p1.p1", 0x100000, 0x100000, 0x08d8daa5),
   { "201-p1.p1", 0x100000 , 0x08d8daa5, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "201-s1.s1", 0x000000, 0x20000, 0x2f55958d),
   LOAD( ROM2, "201-m1.m1", 0x00000, 0x20000, 0xc28b3253),
@@ -1880,7 +1880,7 @@ CLNEI( mslug, neogeo, "Metal Slug - Super Vehicle-001", NAZCA, 1996, GAME_SHOOT)
 
 static struct ROM_INFO rom_puzzledp[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "202-p1.p1", 0x080000, 0x2b61415b, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "202-p1.p1", 0x000000, 0x080000, 0x2b61415b),
   LOAD( FIXED, "202-s1.s1", 0x000000, 0x20000, 0xcd19264f),
   LOAD( ROM2, "202-m1.m1", 0x00000, 0x20000, 0x9c0291ea),
   LOAD( SMP1, "202-v1.v1", 0x000000, 0x080000, 0xdebeb8fb),
@@ -1893,7 +1893,7 @@ CLNEI( puzzledp, neogeo, "Puzzle De Pon!", TAITO, 1995, GAME_PUZZLE);
 
 static struct ROM_INFO rom_neomrdo[] = /* MVS ONLY RELEASE */
 {
-  { "207-p1.p1", 0x100000, 0x334ea51e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "207-p1.p1", 0x000000, 0x100000, 0x334ea51e),
   LOAD( FIXED, "207-s1.s1", 0x000000, 0x20000, 0x6aebafce),
   LOAD( ROM2, "207-m1.m1", 0x00000, 0x20000, 0xb5b74a95),
   LOAD( SMP1, "207-v1.v1", 0x000000, 0x200000, 0x4143c052),
@@ -1906,7 +1906,7 @@ CLNEI( neomrdo, neogeo, "Neo Mr. Do!", VISCO, 1996, GAME_MAZE);
 
 static struct ROM_INFO rom_sdodgeb[] = /* MVS ONLY RELEASE */
 {
-  { "208-p1.p1", 0x100000, 0x127f3d32, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "208-p1.p1", 0x100000, 0x100000, 0x127f3d32),
   { "208-p1.p1", 0x100000 , 0x127f3d32, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "208-s1.s1", 0x000000, 0x20000, 0x64abd6b3),
   LOAD( ROM2, "208-m1.m1", 0x00000, 0x20000, 0x0a5f3325),
@@ -1922,7 +1922,7 @@ CLNEI( sdodgeb, neogeo, "Super Dodge Ball / Kunio no Nekketsu Toukyuu Densetsu",
 
 static struct ROM_INFO rom_goalx3[] = /* MVS ONLY RELEASE */
 {
-  { "209-p1.p1", 0x100000, 0x2a019a79, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "209-p1.p1", 0x100000, 0x100000, 0x2a019a79),
   { "209-p1.p1", 0x100000 , 0x2a019a79, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "209-s1.s1", 0x000000, 0x20000, 0xc0eaad86),
   LOAD( ROM2, "209-m1.m1", 0x00000, 0x20000, 0xcd758325),
@@ -1938,7 +1938,7 @@ CLNEI( goalx3, neogeo, "Goal! Goal! Goal!", VISCO, 1995, GAME_SPORTS);
 
 static struct ROM_INFO rom_overtop[] = // clone of neogeo
 {
-  { "212-p1.p1", 0x100000, 0x16c063a9, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "212-p1.p1", 0x100000, 0x100000, 0x16c063a9),
   { "212-p1.p1", 0x100000 , 0x16c063a9, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "212-s1.s1", 0x000000, 0x20000, 0x481d3ddc),
   LOAD( ROM2, "212-m1.m1", 0x00000, 0x20000, 0xfcab6191),
@@ -1956,7 +1956,7 @@ CLNEI( overtop, neogeo,"Over Top", ADK, 1996, GAME_MISC);
 
 static struct ROM_INFO rom_neodrift[] = /* MVS ONLY RELEASE */
 {
-  { "213-p1.p1", 0x100000, 0xe397d798, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "213-p1.p1", 0x100000, 0x100000, 0xe397d798),
   { "213-p1.p1", 0x100000, 0xe397d798, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "213-s1.s1", 0x000000, 0x20000, 0xb76b61bc),
   LOAD( ROM2, "213-m1.m1", 0x00000, 0x20000, 0x200045f1),
@@ -1971,8 +1971,8 @@ CLNEI( neodrift, neogeo, "Neo Drift Out - New Technology", VISCO, 1996, GAME_RAC
 
 static struct ROM_INFO rom_kof96[] = /* MVS VERSION clone of neogeo */
 {
-  { "214-p1.p1", 0x100000, 0x52755d74, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "214-p2.sp2", 0x200000, 0x002ccb73, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "214-p1.p1", 0x000000, 0x100000, 0x52755d74),
+  LOAD_SW16( CPU1, "214-p2.sp2", 0x100000, 0x200000, 0x002ccb73),
   LOAD( FIXED, "214-s1.s1", 0x000000, 0x20000, 0x1254cbdb),
   LOAD( ROM2, "214-m1.m1", 0x00000, 0x20000, 0xdabc427c),
   LOAD( SMP1, "214-v1.v1", 0x000000, 0x400000, 0x63f7b045),
@@ -1993,8 +1993,8 @@ CLNEI( kof96, neogeo, "The King of Fighters '96 (NGM-214)", SNK, 1996, GAME_BEAT
 
 static struct ROM_INFO rom_kof96h[] = // clone of kof96
 {
-  { "214-pg1.p1", 0x100000, 0xbd3757c9, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "214-p2.sp2", 0x200000, 0x002ccb73, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "214-pg1.p1", 0x000000, 0x100000, 0xbd3757c9),
+  LOAD_SW16( CPU1, "214-p2.sp2", 0x100000, 0x200000, 0x002ccb73),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2002,7 +2002,7 @@ CLNEI( kof96h, kof96, "The King of Fighters '96 (NGH-214)", SNK, 1996, GAME_BEAT
 
 static struct ROM_INFO rom_ssideki4[] = // clone of neogeo
 {
-  { "215-p1.p1", 0x100000, 0x519b4ba3, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "215-p1.p1", 0x100000, 0x100000, 0x519b4ba3),
   { "215-p1.p1", 0x100000 , 0x519b4ba3, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "215-s1.s1", 0x000000, 0x20000, 0xf0fe5c36),
   LOAD( ROM2, "215-m1.m1", 0x00000, 0x20000, 0xa932081d),
@@ -2021,7 +2021,7 @@ CLNEI( ssideki4, neogeo, "The Ultimate 11 - The SNK Football Championship / Toku
 
 static struct ROM_INFO rom_kizuna[] = // clone of neogeo
 {
-  { "216-p1.p1", 0x100000, 0x75d2b3de, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "216-p1.p1", 0x100000, 0x100000, 0x75d2b3de),
   { "216-p1.p1", 0x100000, 0x75d2b3de, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "216-s1.s1", 0x000000, 0x20000, 0xefdc72d7),
   LOAD( ROM2, "216-m1.m1", 0x00000, 0x20000, 0x1b096820),
@@ -2046,8 +2046,8 @@ CLNEI( kizuna, neogeo, "Kizuna Encounter - Super Tag Battle / Fu'un Super Tag Ba
 
 static struct ROM_INFO rom_ninjamas[] =
 {
-  { "217-p1.p1", 0x100000, 0x3e97ed69, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "217-p2.sp2", 0x200000, 0x191fca88, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "217-p1.p1", 0x000000, 0x100000, 0x3e97ed69),
+  LOAD_SW16( CPU1, "217-p2.sp2", 0x100000, 0x200000, 0x191fca88),
   LOAD( FIXED, "217-s1.s1", 0x000000, 0x20000, 0x8ff782f0),
   LOAD( ROM2, "217-m1.m1", 0x00000, 0x20000, 0xd00fb2af),
   LOAD( SMP1, "217-v1.v1", 0x000000, 0x400000, 0x1c34e013),
@@ -2067,7 +2067,7 @@ CLNEI( ninjamas, neogeo, "Ninja Master's - haoh-ninpo-cho", ADK, 1996, GAME_BEAT
 
 static struct ROM_INFO rom_ragnagrd[] =
 {
-  { "218-p1.p1", 0x100000, 0xca372303, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "218-p1.p1", 0x100000, 0x100000, 0xca372303),
   { "218-p1.p1", 0x100000 , 0xca372303, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "218-s1.s1", 0x000000, 0x20000, 0x7d402f9a),
   LOAD( ROM2, "218-m1.m1", 0x00000, 0x20000, 0x17028bcf),
@@ -2088,7 +2088,7 @@ CLNEI( ragnagrd, neogeo, "Ragnagard / Shin-Oh-Ken", SAURUS, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_pgoal[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "219-p1.p1", 0x100000, 0x6af0e574, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "219-p1.p1", 0x100000, 0x100000, 0x6af0e574),
   { "219-p1.p1", 0x100000 , 0x6af0e574, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "219-s1.s1", 0x000000, 0x20000, 0x002f3c88),
   LOAD( ROM2, "219-m1.m1", 0x00000, 0x20000, 0x958efdc8),
@@ -2104,7 +2104,7 @@ CLNEI( pgoal, neogeo, "Pleasure Goal / Futsal - 5 on 5 Mini Soccer (NGM-219)", S
 
 static struct ROM_INFO rom_ironclad[] = /* Prototype - crcs should match the ones of the unreleased dump. clone of neogeo */
 {
-  { "proto_220-p1.p1", 0x100000, 0x62a942c6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "proto_220-p1.p1", 0x100000, 0x100000, 0x62a942c6),
   { "proto_220-p1.p1", 0x100000 , 0x62a942c6, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "proto_220-s1.s1", 0x000000, 0x20000, 0x372fe217),
   LOAD( ROM2, "proto_220-m1.m1", 0x00000, 0x20000, 0x3a08bb63),
@@ -2120,7 +2120,7 @@ CLNEI( ironclad, neogeo, "Iron clad - Choutetsu Brikin'ger (Prototype)", SAURUS,
 
 static struct ROM_INFO rom_ironclado[] = /* Prototype - bootleg/hack based on later release. clone of ironclad */
 {
-  { "proto_220-p1o.p1", 0x100000, 0xce37e3a0, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "proto_220-p1o.p1", 0x100000, 0x100000, 0xce37e3a0),
   { "proto_220-p1o.p1", 0x100000 , 0xce37e3a0, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -2129,7 +2129,7 @@ CLNEI( ironclado, ironclad, "Iron clad - Choutetsu Brikin'ger (Prototype, bootle
 
 static struct ROM_INFO rom_magdrop2[] =
 {
-  { "221-p1.p1", 0x80000, 0x7be82353, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "221-p1.p1", 0x000000, 0x80000, 0x7be82353),
   LOAD( FIXED, "221-s1.s1", 0x000000, 0x20000, 0x2a4063a3),
   LOAD( ROM2, "221-m1.m1", 0x00000, 0x20000, 0xbddae628),
   LOAD( SMP1, "221-v1.v1", 0x000000, 0x200000, 0x7e5e53e4),
@@ -2142,8 +2142,8 @@ CLNEI( magdrop2, neogeo, "Magical Drop II", DECO, 1996, GAME_PUZZLE);
 
 static struct ROM_INFO rom_samsho4[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "222-p1.p1", 0x100000, 0x1a5cb56d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "222-p2.sp2", 0x400000, 0xb023cd8b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "222-p1.p1", 0x000000, 0x100000, 0x1a5cb56d),
+  LOAD_SW16( CPU1, "222-p2.sp2", 0x100000, 0x400000, 0xb023cd8b),
   LOAD( FIXED, "222-s1.s1", 0x000000, 0x20000, 0x8d3d3bf9),
   LOAD( ROM2, "222-m1.m1", 0x00000, 0x20000, 0x7615bc1b),
   LOAD( SMP1, "222-v1.v1", 0x000000, 0x400000, 0x7d6ba95f),
@@ -2164,8 +2164,8 @@ CLNEI( samsho4, neogeo, "Samurai Shodown IV - Amakusa's Revenge / Samurai Spirit
 
 static struct ROM_INFO rom_samsho4k[] = /* KOREAN VERSION clone of samsho4 */
 {
-  { "222-p1k.p1", 0x100000, 0x06e0a25d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "222-p2.sp2", 0x400000, 0xb023cd8b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "222-p1k.p1", 0x000000, 0x100000, 0x06e0a25d),
+  LOAD_SW16( CPU1, "222-p2.sp2", 0x100000, 0x400000, 0xb023cd8b),
   LOAD( FIXED, "222-s1k.s1", 0x000000, 0x20000, 0xd313687d),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -2174,8 +2174,8 @@ CLNEI( samsho4k, samsho4, "Pae Wang Jeon Seol / Legend of a Warrior (Korean cens
 
 static struct ROM_INFO rom_rbffspec[] = // clone of neogeo
 {
-  { "223-p1.p1", 0x100000, 0xf84a2d1d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "223-p2.sp2", 0x400000, 0xaddd8f08, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "223-p1.p1", 0x000000, 0x100000, 0xf84a2d1d),
+  LOAD_SW16( CPU1, "223-p2.sp2", 0x100000, 0x400000, 0xaddd8f08),
   LOAD( FIXED, "223-s1.s1", 0x000000, 0x20000, 0x7ecd6e8c),
   LOAD( ROM2, "223-m1.m1", 0x00000, 0x20000, 0x3fee46bf),
   LOAD( SMP1, "223-v1.v1", 0x000000, 0x400000, 0x76673869),
@@ -2196,7 +2196,7 @@ CLNEI( rbffspec, neogeo, "Real Bout Fatal Fury Special / Real Bout Garou Densets
 
 static struct ROM_INFO rom_twinspri[] = // clone of neogeo
 {
-  { "224-p1.p1", 0x100000, 0x7697e445, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "224-p1.p1", 0x100000, 0x100000, 0x7697e445),
   { "224-p1.p1", 0x100000 , 0x7697e445, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "224-s1.s1", 0x000000, 0x20000, 0xeeed5758),
   LOAD( ROM2, "224-m1.m1", 0x00000, 0x20000, 0x364d6f96),
@@ -2213,8 +2213,8 @@ CLNEI( twinspri, neogeo,        "Twinkle Star Sprites", ADK, 1996, GAME_SHOOT);
 
 static struct ROM_INFO rom_wakuwak7[] =
 {
-  { "225-p1.p1", 0x100000, 0xb14da766, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "225-p2.sp2", 0x200000, 0xfe190665, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "225-p1.p1", 0x000000, 0x100000, 0xb14da766),
+  LOAD_SW16( CPU1, "225-p2.sp2", 0x100000, 0x200000, 0xfe190665),
   LOAD( FIXED, "225-s1.s1", 0x000000, 0x20000, 0x71c4b4b5),
   LOAD( ROM2, "225-m1.m1", 0x00000, 0x20000, 0x0634bba6),
   LOAD( SMP1, "225-v1.v1", 0x000000, 0x400000, 0x6195c6b4),
@@ -2232,7 +2232,7 @@ CLNEI( wakuwak7, neogeo, "Waku Waku 7", SUNSOFT, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_stakwin2[] =
 {
-  { "227-p1.p1", 0x100000, 0xdaf101d2, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "227-p1.p1", 0x100000, 0x100000, 0xdaf101d2),
   { "227-p1.p1", 0x100000 , 0xdaf101d2, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "227-s1.s1", 0x000000, 0x20000, 0x2a8c4462),
   LOAD( ROM2, "227-m1.m1", 0x00000, 0x20000, 0xc8e5e0f9),
@@ -2249,7 +2249,7 @@ CLNEI( stakwin2, neogeo, "Stakes Winner 2", SAURUS, 1996, GAME_SPORTS);
 
 static struct ROM_INFO rom_ghostlop[] = /* Prototype clone of neogeo */
 {
-  { "proto_228-p1.p1", 0x100000, 0x6033172e, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "proto_228-p1.p1", 0x000000, 0x100000, 0x6033172e),
   LOAD( FIXED, "proto_228-s1.s1", 0x000000, 0x20000, 0x83c24e81),
   LOAD( ROM2, "proto_228-m1.m1", 0x00000, 0x20000, 0xfd833b33),
   LOAD( SMP1, "proto_228-v1.v1", 0x000000, 0x200000, 0xc603fce6),
@@ -2262,7 +2262,7 @@ CLNEI( ghostlop, neogeo, "Ghostlop (prototype)", DECO, 1996, GAME_PUZZLE);
 
 static struct ROM_INFO rom_breakers[] = // clone of neogeo
 {
-  { "230-p1.p1", 0x100000, 0xed24a6e6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "230-p1.p1", 0x100000, 0x100000, 0xed24a6e6),
   { "230-p1.p1", 0x100000 , 0xed24a6e6, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "230-s1.s1", 0x000000, 0x20000, 0x076fb64c),
   LOAD( ROM2, "230-m1.m1", 0x00000, 0x20000, 0x3951a1c1),
@@ -2279,7 +2279,7 @@ CLNEI( breakers, neogeo, "Breakers", VISCO, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_miexchng[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "231-p1.p1", 0x80000, 0x61be1810, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "231-p1.p1", 0x000000, 0x80000, 0x61be1810),
   LOAD( FIXED, "231-s1.s1", 0x000000, 0x20000, 0xfe0c0c53),
   LOAD( ROM2, "231-m1.m1", 0x00000, 0x20000, 0xde41301b),
   LOAD( SMP1, "231-v1.v1", 0x000000, 0x400000, 0x113fb898),
@@ -2294,8 +2294,8 @@ CLNEI( miexchng, neogeo, "Money Puzzle Exchanger / Money Idol Exchanger", FACE, 
 
 static struct ROM_INFO rom_kof97[] = /* MVS VERSION clone of neogeo */
 {
-  { "232-p1.p1", 0x100000, 0x7db81ad9, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "232-p2.sp2", 0x400000, 0x158b23f6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "232-p1.p1", 0x000000, 0x100000, 0x7db81ad9),
+  LOAD_SW16( CPU1, "232-p2.sp2", 0x100000, 0x400000, 0x158b23f6),
   LOAD( FIXED, "232-s1.s1", 0x000000, 0x20000, 0x8514ecf5),
   LOAD( ROM2, "232-m1.m1", 0x00000, 0x20000, 0x45348747),
   LOAD( SMP1, "232-v1.v1", 0x000000, 0x400000, 0x22a2b5b5),
@@ -2314,8 +2314,8 @@ CLNEI( kof97, neogeo, "The King of Fighters '97 (NGM-2320)", SNK, 1997, GAME_BEA
 
 static struct ROM_INFO rom_kof97h[] = /* AES VERSION clone of kof97 */
 {
-  { "232-pg1.p1", 0x100000, 0x5c2400b7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "232-p2.sp2", 0x400000, 0x158b23f6, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "232-pg1.p1", 0x000000, 0x100000, 0x5c2400b7),
+  LOAD_SW16( CPU1, "232-p2.sp2", 0x100000, 0x400000, 0x158b23f6),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2323,7 +2323,7 @@ CLNEI( kof97h, kof97, "The King of Fighters '97 (NGH-2320)", SNK, 1997, GAME_BEA
 
 static struct ROM_INFO rom_magdrop3[] = // clone of neogeo
 {
-  { "233-p1.p1", 0x100000, 0x931e17fa, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "233-p1.p1", 0x000000, 0x100000, 0x931e17fa),
   LOAD( FIXED, "233-s1.s1", 0x000000, 0x20000, 0x7399e68a),
   LOAD( ROM2, "233-m1.m1", 0x00000, 0x20000, 0x5beaf34e),
   LOAD( SMP1, "233-v1.v1", 0x000000, 0x400000, 0x58839298),
@@ -2339,8 +2339,8 @@ CLNEI( magdrop3, neogeo, "Magical Drop III", DECO, 1997, GAME_PUZZLE);
 
 static struct ROM_INFO rom_lastblad[] = /* MVS VERSION clone of neogeo */
 {
-  { "234-p1.p1", 0x100000, 0xe123a5a3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "234-p2.sp2", 0x400000, 0x0fdc289e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "234-p1.p1", 0x000000, 0x100000, 0xe123a5a3),
+  LOAD_SW16( CPU1, "234-p2.sp2", 0x100000, 0x400000, 0x0fdc289e),
   LOAD( FIXED, "234-s1.s1", 0x000000, 0x20000, 0x95561412),
   LOAD( ROM2, "234-m1.m1", 0x00000, 0x20000, 0x087628ea),
   LOAD( SMP1, "234-v1.v1", 0x000000, 0x400000, 0xed66b76f),
@@ -2358,8 +2358,8 @@ static struct ROM_INFO rom_lastblad[] = /* MVS VERSION clone of neogeo */
 
 static struct ROM_INFO rom_lastbladh[] = /* AES VERSION clone of lastblad */
 {
-  { "234-pg1.p1", 0x100000, 0xcd01c06d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "234-p2.sp2", 0x400000, 0x0fdc289e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "234-pg1.p1", 0x000000, 0x100000, 0xcd01c06d),
+  LOAD_SW16( CPU1, "234-p2.sp2", 0x100000, 0x400000, 0x0fdc289e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2368,7 +2368,7 @@ CLNEI( lastbladh, lastblad, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi 
 
 static struct ROM_INFO rom_puzzldpr[] = /* MVS ONLY RELEASE clone of puzzledp */
 {
-  { "235-p1.p1", 0x080000, 0xafed5de2, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "235-p1.p1", 0x000000, 0x080000, 0xafed5de2),
   LOAD( FIXED, "235-s1.s1", 0x000000, 0x10000, 0x5a68d91e),
   FILL(          0x10000, 0x10000, 0, FIXED),
   { NULL, 0, 0, 0, 0, 0 }
@@ -2378,7 +2378,7 @@ CLNEI( puzzldpr, puzzledp, "Puzzle De Pon! R!", TAITO, 1997, GAME_PUZZLE);
 
 static struct ROM_INFO rom_irrmaze[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "236-p1.p1", 0x100000, 0x4c2ff660, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "236-p1.p1", 0x100000, 0x100000, 0x4c2ff660),
   { "236-p1.p1", 0x100000 , 0x4c2ff660, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "236-s1.s1", 0x000000, 0x20000, 0x5d1ca640),
 	/* special BIOS with trackball support, we only have one Irritating Maze bios and thats asia */
@@ -2395,7 +2395,7 @@ CLNEI( irrmaze, neogeo, "The Irritating Maze / Ultra Denryu Iraira Bou", SNK, 19
 
 static struct ROM_INFO rom_popbounc[] = /* MVS ONLY RELEASE */
 {
-  { "237-p1.p1", 0x100000, 0xbe96e44f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "237-p1.p1", 0x000000, 0x100000, 0xbe96e44f),
   LOAD( FIXED, "237-s1.s1", 0x000000, 0x20000, 0xb61cf595),
   LOAD( ROM2, "237-m1.m1", 0x00000, 0x20000, 0xd4c946dd),
   LOAD( SMP1, "237-v1.v1", 0x000000, 0x200000, 0xedcb1beb),
@@ -2409,8 +2409,8 @@ CLNEI( popbounc, neogeo, "Pop 'n Bounce / Gapporin", VIDEOSYSTEM, 1997, GAME_BRE
 
 static struct ROM_INFO rom_shocktro[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "238-p1.p1", 0x100000, 0x5677456f, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "238-p2.sp2", 0x400000, 0x5b4a09c5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "238-p1.p1", 0x000000, 0x100000, 0x5677456f),
+  LOAD_SW16( CPU1, "238-p2.sp2", 0x100000, 0x400000, 0x5b4a09c5),
   LOAD( FIXED, "238-s1.s1", 0x000000, 0x20000, 0x1f95cedb),
   LOAD( ROM2, "238-m1.m1", 0x00000, 0x20000, 0x075b9518),
   LOAD( SMP1, "238-v1.v1", 0x000000, 0x400000, 0x260c0bef),
@@ -2430,8 +2430,8 @@ CLNEI( shocktro, neogeo, "Shock Troopers (set 1)", SAURUS, 1997, GAME_SHOOT);
 
 static struct ROM_INFO rom_blazstar[] = // clone of neogeo
 {
-  { "239-p1.p1", 0x100000, 0x183682f8, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "239-p2.sp2", 0x200000, 0x9a9f4154, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "239-p1.p1", 0x000000, 0x100000, 0x183682f8),
+  LOAD_SW16( CPU1, "239-p2.sp2", 0x100000, 0x200000, 0x9a9f4154),
   LOAD( FIXED, "239-s1.s1", 0x000000, 0x20000, 0xd56cb498),
   LOAD( ROM2, "239-m1.m1", 0x00000, 0x20000, 0xd31a3aea),
   LOAD( SMP1, "239-v1.v1", 0x000000, 0x400000, 0x1b8d5bf7),
@@ -2451,8 +2451,8 @@ CLNEI( blazstar, neogeo, "Blazing Star", YUMEKOBO, 1998, GAME_SHOOT);
 
 static struct ROM_INFO rom_rbff2[] = /* MVS VERSION clone of neogeo */
 {
-  { "240-p1.p1", 0x100000, 0x80e41205, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "240-p2.sp2", 0x400000, 0x960aa88d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "240-p1.p1", 0x000000, 0x100000, 0x80e41205),
+  LOAD_SW16( CPU1, "240-p2.sp2", 0x100000, 0x400000, 0x960aa88d),
   LOAD( FIXED, "240-s1.s1", 0x000000, 0x20000, 0xda3b40de),
   LOAD( ROM2, "240-m1.m1", 0x00000, 0x40000, 0xed482791),
   LOAD( SMP1, "240-v1.v1", 0x000000, 0x400000, 0xf796265a),
@@ -2470,8 +2470,8 @@ static struct ROM_INFO rom_rbff2[] = /* MVS VERSION clone of neogeo */
 
 static struct ROM_INFO rom_rbff2h[] = /* AES VERSION clone of rbff2 */
 {
-  { "240-pg1.p1", 0x100000, 0xb6969780, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "240-p2.sp2", 0x400000, 0x960aa88d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "240-pg1.p1", 0x000000, 0x100000, 0xb6969780),
+  LOAD_SW16( CPU1, "240-p2.sp2", 0x100000, 0x400000, 0x960aa88d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2480,8 +2480,8 @@ CLNEI( rbff2h, rbff2, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou 
 
 static struct ROM_INFO rom_mslug2[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "241-p1.p1", 0x100000, 0x2a53c5da, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "241-p2.sp2", 0x200000, 0x38883f44, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "241-p1.p1", 0x000000, 0x100000, 0x2a53c5da),
+  LOAD_SW16( CPU1, "241-p2.sp2", 0x100000, 0x200000, 0x38883f44),
   LOAD( FIXED, "241-s1.s1", 0x000000, 0x20000, 0xf3d32f0f),
   LOAD( ROM2, "241-m1.m1", 0x00000, 0x20000, 0x94520ebd),
   LOAD( SMP1, "241-v1.v1", 0x000000, 0x400000, 0x99ec20e8),
@@ -2497,8 +2497,8 @@ CLNEI( mslug2, neogeo, "Metal Slug 2 - Super Vehicle-001/II (NGM-2410)(NGH-2410)
 
 static struct ROM_INFO rom_kof98[] = /* encrypted code + protection clone of neogeo */
  /* MVS VERSION */{
-  { "242-p1.p1", 0x200000, 0x8893df89, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "242-p2.sp2", 0x400000, 0x980aba4c, REGION_CPU1, 0x200000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "242-p1.p1", 0x000000, 0x200000, 0x8893df89),
+  LOAD_SW16( CPU1, "242-p2.sp2", 0x200000, 0x400000, 0x980aba4c),
   LOAD( FIXED, "242-s1.s1", 0x000000, 0x20000, 0x7f7b4805),
   LOAD( ROM2, "242-m1.m1", 0x00000, 0x40000, 0x4ef7016b),
   LOAD( SMP1, "242-v1.v1", 0x000000, 0x400000, 0xb9ea8051),
@@ -2520,8 +2520,8 @@ CLNEI( kof98, neogeo, "The King of Fighters '98 - The Slugfest / King of Fighter
 
 static struct ROM_INFO rom_kof98h[] = /* AES VERSION clone of kof98 */
 {
-  { "242-pn1.p1", 0x100000, 0x61ac868a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "242-p2.sp2", 0x400000, 0x980aba4c, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "242-pn1.p1", 0x000000, 0x100000, 0x61ac868a),
+  LOAD_SW16( CPU1, "242-p2.sp2", 0x100000, 0x400000, 0x980aba4c),
   LOAD( ROM2, "242-mg1.m1", 0x00000, 0x40000, 0x4e7a6b1b),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -2530,8 +2530,8 @@ CLNEI( kof98h, kof98, "The King of Fighters '98 - The Slugfest / King of Fighter
 
 static struct ROM_INFO rom_lastbld2[] = /* MVS AND AES VERSION clone of neogeo */
  /* later revision */{
-  { "243-pg1.p1", 0x100000, 0xaf1e6554, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "243-pg2.sp2", 0x400000, 0xadd4a30b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "243-pg1.p1", 0x000000, 0x100000, 0xaf1e6554),
+  LOAD_SW16( CPU1, "243-pg2.sp2", 0x100000, 0x400000, 0xadd4a30b),
   LOAD( FIXED, "243-s1.s1", 0x000000, 0x20000, 0xc9cd2298),
   LOAD( ROM2, "243-m1.m1", 0x00000, 0x20000, 0xacf12d10),
   LOAD( SMP1, "243-v1.v1", 0x000000, 0x400000, 0xf7ee6fbb),
@@ -2551,7 +2551,7 @@ CLNEI( lastbld2, neogeo, "The Last Blade 2 / Bakumatsu Roman - Dai Ni Maku Gekka
 
 static struct ROM_INFO rom_neocup98[] = // clone of neogeo
 {
-  { "244-p1.p1", 0x100000, 0xf8fdb7a5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "244-p1.p1", 0x100000, 0x100000, 0xf8fdb7a5),
   { "244-p1.p1", 0x100000 , 0xf8fdb7a5, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "244-s1.s1", 0x000000, 0x20000, 0x9bddb697),
   LOAD( ROM2, "244-m1.m1", 0x00000, 0x20000, 0xa701b276),
@@ -2566,7 +2566,7 @@ CLNEI( neocup98, neogeo, "Neo-Geo Cup '98 - The Road to the Victory", SNK, 1998,
 
 static struct ROM_INFO rom_breakrev[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "245-p1.p1", 0x100000, 0xc828876d, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "245-p1.p1", 0x100000, 0x100000, 0xc828876d),
   { "245-p1.p1", 0x100000 , 0xc828876d, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "245-s1.s1", 0x000000, 0x20000, 0xe7660a5d),
   LOAD( ROM2, "245-m1.m1", 0x00000, 0x20000, 0x00f31c66),
@@ -2586,8 +2586,8 @@ CLNEI( breakrev, neogeo, "Breakers Revenge", VISCO, 1998, GAME_BEAT);
 
 static struct ROM_INFO rom_shocktr2[] = // clone of neogeo
 {
-  { "246-p1.p1", 0x100000, 0x6d4b7781, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "246-p2.sp2", 0x400000, 0x72ea04c3, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "246-p1.p1", 0x000000, 0x100000, 0x6d4b7781),
+  LOAD_SW16( CPU1, "246-p2.sp2", 0x100000, 0x400000, 0x72ea04c3),
   LOAD( FIXED, "246-s1.s1", 0x000000, 0x20000, 0x2a360637),
   LOAD( ROM2, "246-m1.m1", 0x00000, 0x20000, 0xd0604ad1),
   LOAD( SMP1, "246-v1.v1", 0x000000, 0x400000, 0x16986fc6),
@@ -2606,7 +2606,7 @@ CLNEI( shocktr2, neogeo, "Shock Troopers - 2nd Squad", SAURUS, 1998, GAME_SHOOT)
 
 static struct ROM_INFO rom_flipshot[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "247-p1.p1", 0x100000, 0x95779094, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "247-p1.p1", 0x000000, 0x100000, 0x95779094),
   LOAD( FIXED, "247-s1.s1", 0x000000, 0x20000, 0x6300185c),
   LOAD( ROM2, "247-m1.m1", 0x00000, 0x20000, 0xa9fe0144),
   LOAD( SMP1, "247-v1.v1", 0x000000, 0x200000, 0x42ec743d),
@@ -2619,7 +2619,7 @@ CLNEI( flipshot, neogeo, "Battle Flip Shot", VISCO, 1998, GAME_MISC);
 
 static struct ROM_INFO rom_pbobbl2n[] = /* MVS ONLY RELEASE clone of neogeo */
 {
-  { "248-p1.p1", 0x100000, 0x9d6c0754, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "248-p1.p1", 0x000000, 0x100000, 0x9d6c0754),
   LOAD( FIXED, "248-s1.s1", 0x000000, 0x20000, 0x0a3fee41),
   LOAD( ROM2, "248-m1.m1", 0x00000, 0x20000, 0x883097a9),
   LOAD( SMP1, "248-v1.v1", 0x000000, 0x400000, 0x57fde1fa),
@@ -2635,7 +2635,7 @@ CLNEI( pbobbl2n, neogeo, "Puzzle Bobble 2 / Bust-A-Move Again (Neo-Geo)", TAITO,
 
 static struct ROM_INFO rom_ctomaday[] = /* MVS ONLY RELEASE */
 {
-  { "249-p1.p1", 0x100000, 0xc9386118, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "249-p1.p1", 0x100000, 0x100000, 0xc9386118),
   { "249-p1.p1", 0x100000 , 0xc9386118, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "249-s1.s1", 0x000000, 0x20000, 0xdc9eb372),
   LOAD( ROM2, "249-m1.m1", 0x00000, 0x20000, 0x80328a47),
@@ -2650,8 +2650,8 @@ CLNEI( ctomaday, neogeo, "Captain Tomaday", VISCO, 1999, GAME_SHOOT);
 
 static struct ROM_INFO rom_mslugx[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "250-p1.p1", 0x100000, 0x81f1f60b, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "250-p2.ep1", 0x400000, 0x1fda2e12, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "250-p1.p1", 0x000000, 0x100000, 0x81f1f60b),
+  LOAD_SW16( CPU1, "250-p2.ep1", 0x100000, 0x400000, 0x1fda2e12),
   LOAD( FIXED, "250-s1.s1", 0x000000, 0x20000, 0xfb6f441d),
   LOAD( ROM2, "250-m1.m1", 0x00000, 0x20000, 0xfd42a842),
   LOAD( SMP1, "250-v1.v1", 0x000000, 0x400000, 0xc79ede73),
@@ -2670,9 +2670,9 @@ CLNEI( mslugx, neogeo, "Metal Slug X - Super Vehicle-001 (NGM-2500)(NGH-2500)", 
 
 static struct ROM_INFO rom_kof99[] = /* Original Version - Encrypted Code & GFX clone of neogeo */
  /* MVS VERSION */{
-  { "ka.neo-sma", 0x040000, 0x7766d09e, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
-  { "251-p1.p1", 0x400000, 0x006e4532, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "251-p2.p2", 0x400000, 0x90175f15, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "ka.neo-sma", 0x0c0000, 0x040000, 0x7766d09e),
+  LOAD_SW16( CPU1, "251-p1.p1", 0x100000, 0x400000, 0x006e4532),
+  LOAD_SW16( CPU1, "251-p2.p2", 0x500000, 0x400000, 0x90175f15),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
  FILL( 0x000000, 0x20000, 0, FIXED ),
   LOAD( ROM2, "251-m1.m1", 0x00000, 0x20000, 0x5e74539c),
@@ -2696,9 +2696,9 @@ CLNEI( kof99, neogeo, "The King of Fighters '99 - Millennium Battle (NGM-2510)" 
 
 static struct ROM_INFO rom_kof99h[] = /* Original Version - Encrypted Code & GFX clone of kof99 */
  /* AES VERSION */{
-  { "kc.neo-sma", 0x040000, 0x6c9d0647, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
-  { "251-p1.p1", 0x400000, 0x006e4532, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "251-pg2.p2", 0x400000, 0xd9057f51, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "kc.neo-sma", 0x0c0000, 0x040000, 0x6c9d0647),
+  LOAD_SW16( CPU1, "251-p1.p1", 0x100000, 0x400000, 0x006e4532),
+  LOAD_SW16( CPU1, "251-pg2.p2", 0x500000, 0x400000, 0xd9057f51),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
 /* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
 	/* Encrypted */
@@ -2709,7 +2709,7 @@ CLNEI( kof99h, kof99, "The King of Fighters '99 - Millennium Battle (NGH-2510)" 
 
 static struct ROM_INFO rom_ganryu[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
-  { "252-p1.p1", 0x100000, 0x4b8ac4fb, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "252-p1.p1", 0x100000, 0x100000, 0x4b8ac4fb),
   { "252-p1.p1", 0x100000 , 0x4b8ac4fb, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED),
@@ -2725,11 +2725,11 @@ CLNEI( ganryu, neogeo, "Ganryu / Musashi Ganryuki" , VISCO, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone of neogeo */
  /* MVS VERSION - later revision */{
-  { "kf.neo-sma", 0x040000, 0x98bc93dc, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
-  { "253-ep1.p1", 0x200000, 0xea3171a4, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "253-ep2.p2", 0x200000, 0x382f704b, REGION_CPU1, 0x300000, LOAD_SWAP_16 },
-  { "253-ep3.p3", 0x200000, 0xe395bfdd, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
-  { "253-ep4.p4", 0x200000, 0xda92c08e, REGION_CPU1, 0x700000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "kf.neo-sma", 0x0c0000, 0x040000, 0x98bc93dc),
+  LOAD_SW16( CPU1, "253-ep1.p1", 0x100000, 0x200000, 0xea3171a4),
+  LOAD_SW16( CPU1, "253-ep2.p2", 0x300000, 0x200000, 0x382f704b),
+  LOAD_SW16( CPU1, "253-ep3.p3", 0x500000, 0x200000, 0xe395bfdd),
+  LOAD_SW16( CPU1, "253-ep4.p4", 0x700000, 0x200000, 0xda92c08e),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED),
   LOAD( ROM2, "253-m1.m1", 0x00000, 0x40000, 0x36a806be),
@@ -2753,9 +2753,9 @@ CLNEI( garou, neogeo, "Garou - Mark of the Wolves (NGM-2530)" , SNK, 1999, GAME_
 
 static struct ROM_INFO rom_garouh[] = /* Original Version - Encrypted GFX clone of garou */
  /* MVS AND AES VERSION - earlier revision */{
-  { "ke.neo-sma", 0x040000, 0x96c72233, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
-  { "253-p1.p1", 0x400000, 0x18ae5d7e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "253-p2.p2", 0x400000, 0xafffa779, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "ke.neo-sma", 0x0c0000, 0x040000, 0x96c72233),
+  LOAD_SW16( CPU1, "253-p1.p1", 0x100000, 0x400000, 0x18ae5d7e),
+  LOAD_SW16( CPU1, "253-p2.p2", 0x500000, 0x400000, 0xafffa779),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
 /* Ignored : 	ROM_FILL( 0x000000, 0x20000, 0 ) */
 	/* Encrypted */
@@ -2766,8 +2766,8 @@ CLNEI( garouh, garou, "Garou - Mark of the Wolves (NGM-2530)(NGH-2530)" , SNK, 1
 
 static struct ROM_INFO rom_s1945p[] = /* Original Version, Encrypted GFX Roms */ /* MVS ONLY RELEASE */
 {
-  { "254-p1.p1", 0x100000, 0xff8efcff, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "254-p2.sp2", 0x400000, 0xefdfd4dd, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "254-p1.p1", 0x000000, 0x100000, 0xff8efcff),
+  LOAD_SW16( CPU1, "254-p2.sp2", 0x100000, 0x400000, 0xefdfd4dd),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED),
   LOAD( ROM2, "254-m1.m1", 0x00000, 0x20000, 0x994b4487),
@@ -2790,8 +2790,8 @@ CLNEI( s1945p, neogeo, "Strikers 1945 Plus" , PSIKYO, 1999, GAME_SHOOT);
 
 static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX */ /* MVS ONLY RELEASE */
 {
-  { "255-p1.p1", 0x100000, 0xdfa3c0f3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "255-p2.sp2", 0x400000, 0x42050b80, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "255-p1.p1", 0x000000, 0x100000, 0xdfa3c0f3),
+  LOAD_SW16( CPU1, "255-p2.sp2", 0x100000, 0x400000, 0x42050b80),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0,FIXED ),
   LOAD( ROM2, "255-m1.m1", 0x00000, 0x20000, 0x8efd4014),
@@ -2812,9 +2812,9 @@ CLNEI( preisle2, neogeo, "Prehistoric Isle 2" , YUMEKOBO, 1999, GAME_SHOOT);
 static struct ROM_INFO rom_mslug3[] = /* Original Version - Encrypted Code & GFX clone of neogeo */
  /* revision 2000.4.1 */ /* MVS VERSION */{
 	/* The SMA for this release has a green colour marking; the older revision has a white colour marking */
-  { "neo-sma", 0x040000, 0x9cd55736, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
-  { "256-pg1.p1", 0x400000, 0xb07edfd5, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "256-pg2.p2", 0x400000, 0x6097c26b, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "neo-sma", 0x0c0000, 0x040000, 0x9cd55736),
+  LOAD_SW16( CPU1, "256-pg1.p1", 0x100000, 0x400000, 0xb07edfd5),
+  LOAD_SW16( CPU1, "256-pg2.p2", 0x500000, 0x400000, 0x6097c26b),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED ),
   LOAD( ROM2, "256-m1.m1", 0x00000, 0x80000, 0xeaeec116),
@@ -2838,8 +2838,8 @@ CLNEI( mslug3, neogeo, "Metal Slug 3 (NGM-2560)" , SNK, 2000, GAME_SHOOT);
 
 static struct ROM_INFO rom_mslug3h[] = /* Original Version - Encrypted GFX clone of mslug3 */
  /* revision 2000.3.17 */ /* AES VERSION */{
-  { "256-ph1.p1", 0x100000, 0x9c42ca85, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "256-ph2.sp2", 0x400000, 0x1f3d8ce8, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "256-ph1.p1", 0x000000, 0x100000, 0x9c42ca85),
+  LOAD_SW16( CPU1, "256-ph2.sp2", 0x100000, 0x400000, 0x1f3d8ce8),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2847,9 +2847,9 @@ CLNEI( mslug3h, mslug3, "Metal Slug 3 (NGH-2560)" , SNK, 2000, GAME_SHOOT);
 
 static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sound + GFX Roms clone of neogeo */
  /* MVS AND AES VERSION */{
-  { "neo-sma", 0x040000, 0x71c6e6bb, REGION_CPU1, 0x0c0000, LOAD_SWAP_16 },
-  { "257-p1.p1", 0x400000, 0x60947b4c, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
-  { "257-p2.p2", 0x400000, 0x1b7ec415, REGION_CPU1, 0x500000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "neo-sma", 0x0c0000, 0x040000, 0x71c6e6bb),
+  LOAD_SW16( CPU1, "257-p1.p1", 0x100000, 0x400000, 0x60947b4c),
+  LOAD_SW16( CPU1, "257-p2.p2", 0x500000, 0x400000, 0x1b7ec415),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED ),
 	/* Encrypted */
@@ -2875,7 +2875,7 @@ CLNEI( kof2000, neogeo, "The King of Fighters 2000 (NGM-2570) (NGH-2570)" , SNK,
 
 static struct ROM_INFO rom_bangbead[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
-  { "259-p1.p1", 0x100000, 0x88a37f8b, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "259-p1.p1", 0x100000, 0x100000, 0x88a37f8b),
   { "259-p1.p1", 0x100000 , 0x88a37f8b, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
@@ -2892,7 +2892,7 @@ CLNEI( bangbead, neogeo, "Bang Bead", VISCO, 2000, GAME_SPORTS);
 
 static struct ROM_INFO rom_nitd[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
-  { "260-p1.p1", 0x080000, 0x61361082, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "260-p1.p1", 0x000000, 0x080000, 0x61361082),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
   LOAD( ROM2, "260-m1.m1", 0x00000, 0x80000, 0x6407c5e5),
@@ -2907,7 +2907,7 @@ CLNEI( nitd, neogeo, "Nightmare in the Dark" , ELEVEN, 2000, GAME_PLATFORM);
 
 static struct ROM_INFO rom_sengoku3[] = /* Original Version - Encrypted GFX */
 {
-  { "261-ph1.p1", 0x100000, 0xe0d4bc0a, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "261-ph1.p1", 0x100000, 0x100000, 0xe0d4bc0a),
   { "261-ph1.p1", 0x100000 , 0xe0d4bc0a, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0,FIXED ),
@@ -2927,9 +2927,9 @@ CLNEI( sengoku3, neogeo, "Sengoku 3 / Sengoku Densho 2001" , NOISE, 2001, GAME_B
 
 static struct ROM_INFO rom_kof2001[] = /* MVS VERSION clone of neogeo */
 {
-  { "262-p1-08-e0.p1", 0x100000, 0x9381750d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "262-p1-08-e0.p1", 0x000000, 0x100000, 0x9381750d),
 	/* The first/early production run sets have proms with above labels. Some later? sets found have eproms instead of proms */
-  { "262-p2-08-e0.sp2", 0x400000, 0x8e0d8329, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "262-p2-08-e0.sp2", 0x100000, 0x400000, 0x8e0d8329),
   FILL( 0x000000, 0x20000, 0, FIXED ),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "265-262-m1.m1", 0x00000, 0x40000, 0xa7f8119f),
@@ -2954,8 +2954,8 @@ CLNEI( kof2001, neogeo, "The King of Fighters 2001 (NGM-262?)" , EOLITH_S, 2001,
 
 static struct ROM_INFO rom_kof2001h[] = /* AES VERSION clone of kof2001 */
 {
-  { "262-pg1.p1", 0x100000, 0x2af7e741, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "262-pg2.sp2", 0x400000, 0x91eea062, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "262-pg1.p1", 0x000000, 0x100000, 0x2af7e741),
+  LOAD_SW16( CPU1, "262-pg2.sp2", 0x100000, 0x400000, 0x91eea062),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2963,8 +2963,8 @@ CLNEI( kof2001h, kof2001, "The King of Fighters 2001 (NGH-2621)" , EOLITH_S, 200
 
 static struct ROM_INFO rom_mslug4[] = /* Original Version - Encrypted GFX clone of neogeo */
  /* MVS VERSION */{
-  { "263-p1.p1", 0x100000, 0x27e4def3, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "263-p2.sp2", 0x400000, 0xfdb7aed8, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "263-p1.p1", 0x000000, 0x100000, 0x27e4def3),
+  LOAD_SW16( CPU1, "263-p2.sp2", 0x100000, 0x400000, 0xfdb7aed8),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED ),
 	/* Encrypted */
@@ -2987,8 +2987,8 @@ CLNEI( mslug4, neogeo, "Metal Slug 4 (NGM-2630)", MEGA_P, 2002, GAME_SHOOT);
 
 static struct ROM_INFO rom_mslug4h[] = /* Original Version - Encrypted GFX clone of mslug4 */
  /* AES VERSION */{
-  { "263-ph1.p1", 0x100000, 0xc67f5c8d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "263-ph2.sp2", 0x400000, 0xbc3ec89e, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "263-ph1.p1", 0x000000, 0x100000, 0xc67f5c8d),
+  LOAD_SW16( CPU1, "263-ph2.sp2", 0x100000, 0x400000, 0xbc3ec89e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2996,7 +2996,7 @@ CLNEI( mslug4h, mslug4, "Metal Slug 4 (NGH-2630)", MEGA_P, 2002, GAME_SHOOT);
 
 static struct ROM_INFO rom_rotd[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
-  { "264-p1.p1", 0x800000, 0xb8cc969d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "264-p1.p1", 0x000000, 0x800000, 0xb8cc969d),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
 	/* Encrypted */
@@ -3021,8 +3021,8 @@ CLNEI( rotd, neogeo, "Rage of the Dragons (NGM-264?)", EVOGA_P, 2002, GAME_BEAT)
 
 static struct ROM_INFO rom_kof2002[] = /* Encrypted Set clone of neogeo */
  /* MVS AND AES VERSION */{
-  { "265-p1.p1", 0x100000, 0x9ede7323, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "265-p2.sp2", 0x400000, 0x327266b8, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "265-p1.p1", 0x000000, 0x100000, 0x9ede7323),
+  LOAD_SW16( CPU1, "265-p2.sp2", 0x100000, 0x400000, 0x327266b8),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
 	/* Encrypted */
@@ -3047,8 +3047,8 @@ CLNEI( kof2002, neogeo, "The King of Fighters 2002 (NGM-2650)(NGH-2650)" , EOLIT
 
 static struct ROM_INFO rom_matrim[] = /* Encrypted Set clone of neogeo */
  /* MVS AND AES VERSION */{
-  { "266-p1.p1", 0x100000, 0x5d4c2dc7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "266-p2.sp2", 0x400000, 0xa14b1906, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "266-p1.p1", 0x000000, 0x100000, 0x5d4c2dc7),
+  LOAD_SW16( CPU1, "266-p2.sp2", 0x100000, 0x400000, 0xa14b1906),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED ),
 	/* Encrypted */
@@ -3073,7 +3073,7 @@ CLNEI( matrim, neogeo, "Matrimelee / Shin Gouketsuji Ichizoku Toukon (NGM-2660) 
 
 static struct ROM_INFO rom_pnyaa[] = /* Encrypted Set */ /* MVS ONLY RELEASE */
 {
-  { "267-p1.p1", 0x100000, 0x112fe2c0, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "267-p1.p1", 0x000000, 0x100000, 0x112fe2c0),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
 	/* Encrypted */
@@ -3149,8 +3149,8 @@ CLNEI( svc, neogeo, "SNK vs. Capcom - SVC Chaos (NGM-2690)(NGH-2690)", SNK_PLAYM
 
 static struct ROM_INFO rom_samsho5[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
-  { "270-p1.p1", 0x400000, 0x4a2a09e6, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "270-p2.sp2", 0x400000, 0xe0c74c85, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "270-p1.p1", 0x000000, 0x400000, 0x4a2a09e6),
+  LOAD_SW16( CPU1, "270-p2.sp2", 0x400000, 0x400000, 0xe0c74c85),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
 	/* Encrypted */
@@ -3174,8 +3174,8 @@ CLNEI( samsho5, neogeo, "Samurai Shodown V / Samurai Spirits Zero (NGM-2700)", S
 
 static struct ROM_INFO rom_samsho5h[] = /* Encrypted Set, Alternate Set clone of samsho5 */
  /* AES VERSION */{
-  { "270-p1c.p1", 0x400000, 0xbf956089, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "270-p2c.sp2", 0x400000, 0x943a6b1d, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "270-p1c.p1", 0x000000, 0x400000, 0xbf956089),
+  LOAD_SW16( CPU1, "270-p2c.sp2", 0x400000, 0x400000, 0x943a6b1d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -3185,7 +3185,7 @@ static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clon
  /* MVS VERSION */{
   { "271-p1c.p1", 0x400000, 0x530ecc14, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
   { "271-p2c.p2", 0x400000, 0xfd568da9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
-  { "271-p3c.p3", 0x100000, 0xaec5b4a9, REGION_CPU1, 0x800000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "271-p3c.p3", 0x800000, 0x100000, 0xaec5b4a9),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED ),
 	/* Encrypted */
@@ -3211,7 +3211,7 @@ static struct ROM_INFO rom_kof2003h[] = /* Encrypted Code + Sound + GFX Roms clo
  /* AES VERSION */{
   { "271-p1k.p1", 0x400000, 0xd0d0ae3e, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
   { "271-p2k.p2", 0x400000, 0xfb3f79d9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
-  { "271-p3k.p3", 0x100000, 0x232702ad, REGION_CPU1, 0x800000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "271-p3k.p3", 0x800000, 0x100000, 0x232702ad),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x80000, 0, FIXED ),
 	/* Encrypted */
@@ -3232,8 +3232,8 @@ CLNEI( kof2003h, kof2003, "The King of Fighters 2003 (NGH-2710)", SNK_PLAYMORE, 
 
 static struct ROM_INFO rom_samsh5sp[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
-  { "272-p1.p1", 0x400000, 0xfb7a6bba, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "272-p2.sp2", 0x400000, 0x63492ea6, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "272-p1.p1", 0x000000, 0x400000, 0xfb7a6bba),
+  LOAD_SW16( CPU1, "272-p2.sp2", 0x400000, 0x400000, 0x63492ea6),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( 0x000000, 0x20000, 0, FIXED ),
 	/* Encrypted */
@@ -3257,9 +3257,9 @@ CLNEI( samsh5sp, neogeo, "Samurai Shodown V Special / Samurai Spirits Zero Speci
 
 static struct ROM_INFO rom_samsh5sph[] = /* Encrypted Set clone of samsh5sp */
  /* AES VERSION, 2nd bugfix release */{
-  { "272-p1ca.p1", 0x400000, 0xc30a08dd, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "272-p1ca.p1", 0x000000, 0x400000, 0xc30a08dd),
 	/* Correct chip labels unknown */
-  { "272-p2ca.sp2", 0x400000, 0xbd64a518, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "272-p2ca.sp2", 0x400000, 0x400000, 0xbd64a518),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -3267,9 +3267,9 @@ CLNEI( samsh5sph, samsh5sp, "Samurai Shodown V Special / Samurai Spirits Zero Sp
 
 static struct ROM_INFO rom_lans2004[] = // clone of shocktr2
 {
-  { "lnsq-p1.bin", 0x200000, 0xb40a879a, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "lnsq-p21.bin", 0x200000, 0xecdb2d42, REGION_CPU1, 0x200000, LOAD_SWAP_16 },
-  { "lnsq-p22.bin", 0x200000, 0xfac5e2e7, REGION_CPU1, 0x400000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "lnsq-p1.bin", 0x000000, 0x200000, 0xb40a879a),
+  LOAD_SW16( CPU1, "lnsq-p21.bin", 0x200000, 0x200000, 0xecdb2d42),
+  LOAD_SW16( CPU1, "lnsq-p22.bin", 0x400000, 0x200000, 0xfac5e2e7),
   LOAD( FIXED, "lnsq-s1.bin", 0x000000, 0x20000, 0x39e82897),
   LOAD( SMP1, "lnsq-v1.bin", 0x000000, 0x400000, 0x4408ebc3),
   LOAD( SMP1, "lnsq-v2.bin", 0x400000, 0x400000, 0x3d953975),
@@ -3287,7 +3287,7 @@ CLNEI( lans2004, shocktr2, "Lansquenet 2004 (Shock Troopers - 2nd Squad bootleg)
 
 static struct ROM_INFO rom_diggerma[] = /* Unlicensed Prototype, no official game ID # clone of neogeo */
 {
-  { "dig-p1.bin", 0x080000, 0xeda433d7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "dig-p1.bin", 0x000000, 0x080000, 0xeda433d7),
   LOAD( FIXED, "dig-s1.bin", 0x000000, 0x10000, 0x75a88c1f),
   LOAD( ROM2, "dig-m1.bin", 0x00000, 0x10000, 0x833cdf1b),
   LOAD( ROM2, "dig-m1.bin", 0x10000, 0x10000, 0x833cdf1b),
@@ -3301,8 +3301,8 @@ CLNEI( diggerma, neogeo, "Digger Man (prototype)", KYLE_HODGETTS, 2000, GAME_MAZ
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {
-  { "kf97-p1p.bin", 0x100000, 0xc01fda46, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
-  { "kf97-p2p.bin", 0x400000, 0x5502b020, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "kf97-p1p.bin", 0x000000, 0x100000, 0xc01fda46),
+  LOAD_SW16( CPU1, "kf97-p2p.bin", 0x100000, 0x400000, 0x5502b020),
   LOAD( FIXED, "kf97-s1p.bin", 0x000000, 0x20000, 0x73254270),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -3311,10 +3311,10 @@ CLNEI( kof97pls, kof97, "The King of Fighters '97 Plus (bootleg)", BOOTLEG, 1997
 
 static struct ROM_INFO rom_kof97oro[] = // clone of kof97
 {
-  { "orochi-p1.bin", 0x100000, 0x6dcb2946, REGION_CPU1, 0x0000000, LOAD_SWAP_16 },
-  { "orochi-p21.bin", 0x100000, 0x6e1c4d8c, REGION_CPU1, 0x0200000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "orochi-p1.bin", 0x0000000, 0x100000, 0x6dcb2946),
+  LOAD_SW16( CPU1, "orochi-p21.bin", 0x0200000, 0x100000, 0x6e1c4d8c),
   { "orochi-p21.bin", 0x100000 , 0x6e1c4d8c, REGION_CPU1, 0x100000, LOAD_CONTINUE },
-  { "orochi-p29.bin", 0x100000, 0x4c7c0221, REGION_CPU1, 0x0400000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "orochi-p29.bin", 0x0400000, 0x100000, 0x4c7c0221),
   { "orochi-p29.bin", 0x100000 , 0x4c7c0221, REGION_CPU1, 0x300000, LOAD_CONTINUE },
   LOAD( FIXED, "orochi-s1.bin", 0x000000, 0x20000, 0x4ee2149a),
 	// The C1 and C2 here are reconstructed but very likely to be correct.
@@ -3333,7 +3333,7 @@ CLNEI( kof97oro, kof97, "The King of Fighters '97 Oroshi Plus 2003 (bootleg)", B
 
 static struct ROM_INFO rom_wh2j[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  { "064-p1.p1", 0x100000, 0x385a2e86, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "064-p1.p1", 0x100000, 0x100000, 0x385a2e86),
   { "064-p1.p1", 0x100000 , 0x385a2e86, REGION_CPU1, 0x000000, LOAD_CONTINUE },
   LOAD( FIXED, "064-s1.s1", 0x000000, 0x20000, 0x2a03998a),
   LOAD( ROM2, "064-m1.m1", 0x00000, 0x20000, 0xd2eec9d3),
@@ -3354,7 +3354,7 @@ CLNEI( wh2j, neogeo,        "World Heroes 2 Jet (ADM-007)(ADH-007)", ADK, 1994, 
 
 static struct ROM_INFO rom_mosyougi[] = // clone of neogeo
 {
-  { "203-p1.p1", 0x100000, 0x7ba70e2d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "203-p1.p1", 0x000000, 0x100000, 0x7ba70e2d),
   LOAD( FIXED, "203-s1.s1", 0x000000, 0x20000, 0xbfdc8309),
   LOAD( ROM2, "203-m1.m1", 0x00000, 0x20000, 0xa602c2c2),
   LOAD( SMP1, "203-v1.v1", 0x000000, 0x200000, 0xbaa2b9a5),
@@ -3367,7 +3367,7 @@ CLNEI( mosyougi, neogeo,        "Syougi No Tatsujin - Master of Syougi", ADK, 19
 
 static struct ROM_INFO rom_zintrckb[] = // clone of neogeo
 {
-  { "zin-p1.bin", 0x100000, 0x06c8fca7, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "zin-p1.bin", 0x000000, 0x100000, 0x06c8fca7),
   LOAD( FIXED, "zin-s1.bin", 0x000000, 0x20000, 0xa7ab0e81),
   LOAD( ROM2, "zin-m1.bin", 0x00000, 0x20000, 0xfd9627ca),
   LOAD( SMP1, "zin-v1.bin", 0x000000, 0x200000, 0xc09f74f1),
@@ -3380,7 +3380,7 @@ CLNEI( zintrckb, neogeo,             "Zintrick / Oshidashi Zentrix (hack)", HACK
 
 static struct ROM_INFO rom_b2b[] = /* testing bang bang buster... */
 {
-  { "071-p1.bin", 0x80000, 0x7687197d, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "071-p1.bin", 0x000000, 0x80000, 0x7687197d),
   LOAD( FIXED, "071-s1.bin", 0x000000, 0x20000, 0x44e5f154),
   LOAD( ROM2, "071-m1.bin", 0x00000, 0x20000, 0x6da739ad),
   LOAD( SMP1, "071-v1.bin", 0x000000, 0x100000, 0x50feffb0),
@@ -3393,7 +3393,7 @@ CLNEI( b2b, neogeo, "Bang Bang busters", VISCO, 2000, GAME_PLATFORM); // The rom
 
 static struct ROM_INFO rom_totcarib[] = /* testing treasure of the caribeans... */
 {
-  { "totc-p1.bin", 0x100000, 0x99604539, REGION_CPU1, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( CPU1, "totc-p1.bin", 0x000000, 0x100000, 0x99604539),
   LOAD( FIXED, "totc-s1.bin", 0x000000, 0x20000, 0x0a3fee41),
   LOAD( ROM2, "totc-m1.bin", 0x00000, 0x20000, 0x18b23ace),
   LOAD( SMP1, "totc-v1.bin", 0x000000, 0x200000, 0x15c7f9e6),

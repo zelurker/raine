@@ -508,10 +508,10 @@ static struct ROM_INFO rom_tengai[] =
   LOAD( ROM2, "1-u63.bin", 0x10000, 0x20000, 0x2025e387 ),
   //LOAD( CPU3, "4-u59.bin", 0x00000, 0x00100, 0x00000000 ),
   // GFX1
-  { "u20.bin", 0x200000, 0xed42ef73 , REGION_GFX1, 0x000000, LOAD_SWAP_16 },
-  { "u22.bin", 0x200000, 0x8d21caee , REGION_GFX1, 0x200000, LOAD_SWAP_16 },
-  { "u21.bin", 0x200000, 0xefe34eed , REGION_GFX1, 0x400000, LOAD_SWAP_16 },
-  { "u34.bin", 0x400000, 0x2a2e2eeb , REGION_GFX2, 0x000000, LOAD_SWAP_16 },
+  LOAD_SW16( GFX1, "u20.bin", 0x000000, 0x200000, 0xed42ef73 ),
+  LOAD_SW16( GFX1, "u22.bin", 0x200000, 0x200000, 0x8d21caee ),
+  LOAD_SW16( GFX1, "u21.bin", 0x400000, 0x200000, 0xefe34eed ),
+  LOAD_SW16( GFX2, "u34.bin", 0x000000, 0x400000, 0x2a2e2eeb ),
 /* Ignored : ROM_COPY */
   LOAD( SMP1, "u61.bin", 0, 0x200000, 0xa63633c5),	// 8 bit signed pcm (16KHz,
   LOAD( SMP1, "u62.bin", 0x200000, 0x200000, 0x3ad0c357 ),

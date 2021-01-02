@@ -110,7 +110,7 @@ static struct ROM_INFO rom_bublbobl[] =
    LOAD( GFX1, "a78-20.35", 0x68000, 0x8000, 0x9ef863ad),
    /* 0x70000-0x7ffff empty */
   FILL(          0x70000, 0x10000, 0, GFX1),
-   { "68705.bin", 0x00000800, 0x78caa635, REGION_ROM4, 0, LOAD_NORMAL, },
+   LOAD( ROM4, "68705.bin", 0, 0x00000800, 0x78caa635),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
