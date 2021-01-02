@@ -34,25 +34,25 @@ static UINT8 *RAM_OTHERREGS;
 
 static struct ROM_INFO rom_mugsmash[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,     0x040000,
+  LOAD8_16( ROM1,  0x000000,     0x040000,
             "mugs_04.bin",  0x2498fd27, "mugs_05.bin",  0x95efb40b),
 
-	{ "mugs_03.bin",    0x010000, 0x0101df2d, REGION_ROM2, 0x000000, LOAD_NORMAL },
+	LOAD( ROM2, "mugs_03.bin", 0x000000, 0x010000, 0x0101df2d),
 
-	{ "mugs_02.bin",    0x020000, 0xf92a7f4a, REGION_SMP1, 0x000000, LOAD_NORMAL },
-	{ "mugs_01.bin",    0x020000, 0x1a3a0b39, REGION_SMP1, 0x020000, LOAD_NORMAL },
+	LOAD( SMP1, "mugs_02.bin", 0x000000, 0x020000, 0xf92a7f4a),
+	LOAD( SMP1, "mugs_01.bin", 0x020000, 0x020000, 0x1a3a0b39),
 
-  LOAD8_16(  REGION_GFX1,  0x000000,     0x080000,
+  LOAD8_16( GFX1,  0x000000,     0x080000,
             "mugs_11.bin",  0x1c9f5acf, "mugs_10.bin",  0x6b3c22d9),
-  LOAD8_16(  REGION_GFX1,  0x100000,     0x080000,
+  LOAD8_16( GFX1,  0x100000,     0x080000,
             "mugs_09.bin",  0x4e9490f3, "mugs_08.bin",  0x716328d5),
-  LOAD8_16(  REGION_GFX1,  0x200000,     0x080000,
+  LOAD8_16( GFX1,  0x200000,     0x080000,
             "mugs_07.bin",  0x9e3167fd, "mugs_06.bin",  0x8df75d29),
 
-	{ "mugs_12.bin",    0x080000, 0xc0a6ed98, REGION_GFX2, 0x000000, LOAD_NORMAL },
-	{ "mugs_13.bin",    0x080000, 0xe2be8595, REGION_GFX2, 0x080000, LOAD_NORMAL },
-	{ "mugs_14.bin",    0x080000, 0x24e81068, REGION_GFX2, 0x100000, LOAD_NORMAL },
-	{ "mugs_15.bin",    0x080000, 0x82e8187c, REGION_GFX2, 0x180000, LOAD_NORMAL },
+	LOAD( GFX2, "mugs_12.bin", 0x000000, 0x080000, 0xc0a6ed98),
+	LOAD( GFX2, "mugs_13.bin", 0x080000, 0x080000, 0xe2be8595),
+	LOAD( GFX2, "mugs_14.bin", 0x100000, 0x080000, 0x24e81068),
+	LOAD( GFX2, "mugs_15.bin", 0x180000, 0x080000, 0x82e8187c),
 
 	{ NULL, 0, 0, 0, 0, 0 }
 };

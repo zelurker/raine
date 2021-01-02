@@ -15,15 +15,15 @@
 
 static struct ROM_INFO rom_asuka[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16(  ROM1,  0x00000,  0x20000,
             "asuka_13.rom",  0x855efb3e, "asuka_12.rom",  0x271eeee9),
-  { "asuka_03.rom", 0x80000, 0xd3a59b10, REGION_ROM1, 0x80000, LOAD_NORMAL },
-  { "asuka_01.rom", 0x80000, 0x89f32c94, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "asuka_02.rom", 0x80000, 0xf5018cd3, REGION_GFX2, 0x00000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX2,  0x80000,  0x10000,
+  LOAD( ROM1, "asuka_03.rom", 0x80000, 0x80000, 0xd3a59b10),
+  LOAD( GFX1, "asuka_01.rom", 0x00000, 0x80000, 0x89f32c94),
+  LOAD( GFX2, "asuka_02.rom", 0x00000, 0x80000, 0xf5018cd3),
+  LOAD8_16(  GFX2,  0x80000,  0x10000,
             "asuka_07.rom",  0xc113acc8, "asuka_06.rom",  0xf517e64d),
-  { "asuka_11.rom", 0x10000, 0xc378b508, REGION_ROM2, 0, LOAD_NORMAL },
-  { "asuka_10.rom", 0x10000, 0x387aaf40, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "asuka_11.rom", 0, 0x10000, 0xc378b508),
+  LOAD( SMP1, "asuka_10.rom", 0x00000, 0x10000, 0x387aaf40),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

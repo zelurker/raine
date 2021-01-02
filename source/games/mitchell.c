@@ -20,88 +20,88 @@
 
 static struct ROM_INFO rom_pkladies[] =
 {
-  { "pko-prg1.14f", 0x08000, 0x86585a94, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "pko-prg2.15f", 0x10000, 0x86cbe82d, REGION_ROM1, 0x10000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x000000,  0x80000,
+  LOAD( ROM1, "pko-prg1.14f", 0x00000, 0x08000, 0x86585a94),
+  LOAD( ROM1, "pko-prg2.15f", 0x10000, 0x10000, 0x86cbe82d),
+  LOAD8_16( GFX1,  0x000000,  0x80000,
             "pko-001.8h",  0x1ead5d9b, "pko-003.8j",  0x339ab4e6),
-  LOAD8_16(  REGION_GFX1,  0x100000,  0x80000,
+  LOAD8_16( GFX1,  0x100000,  0x80000,
             "pko-002.9h",  0x1cf02586, "pko-004.9j",  0x09ccb442),
-  { "pko-chr1.2j", 0x20000, 0x31ce33cd, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "pko-chr2.3j", 0x20000, 0xad7e055f, REGION_GFX2, 0x020000, LOAD_NORMAL },
-  { "pko-voi1.2d", 0x20000, 0x07e0f531, REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "pko-voi2.3d", 0x20000, 0x18398bf6, REGION_SMP1, 0x20000, LOAD_NORMAL },
+  LOAD( GFX2, "pko-chr1.2j", 0x000000, 0x20000, 0x31ce33cd),
+  LOAD( GFX2, "pko-chr2.3j", 0x020000, 0x20000, 0xad7e055f),
+  LOAD( SMP1, "pko-voi1.2d", 0x00000, 0x20000, 0x07e0f531),
+  LOAD( SMP1, "pko-voi2.3d", 0x20000, 0x20000, 0x18398bf6),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_pang[] =
 {
-  { "pang6.bin", 0x08000, 0x68be52cd, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "pang7.bin", 0x20000, 0x4a2e70f6, REGION_ROM1, 0x10000, LOAD_NORMAL },
+  LOAD( ROM1, "pang6.bin", 0x00000, 0x08000, 0x68be52cd),
+  LOAD( ROM1, "pang7.bin", 0x10000, 0x20000, 0x4a2e70f6),
 
-  { "pang_09.bin", 0x20000, 0x3a5883f5, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "bb3.bin", 0x20000, 0x79a8ed08, REGION_GFX1, 0x020000, LOAD_NORMAL },
+  LOAD( GFX1, "pang_09.bin", 0x000000, 0x20000, 0x3a5883f5),
+  LOAD( GFX1, "bb3.bin", 0x020000, 0x20000, 0x79a8ed08),
 	/* 40000-7ffff empty */
-  { "pang_11.bin", 0x20000, 0x166a16ae, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "bb5.bin", 0x20000, 0x2fb3db6c, REGION_GFX1, 0x0a0000, LOAD_NORMAL },
-  { "bb5.bin", 0x20000, 0x2fb3db6c, REGION_GFX1, 0x0e0000, LOAD_NORMAL },
+  LOAD( GFX1, "pang_11.bin", 0x080000, 0x20000, 0x166a16ae),
+  LOAD( GFX1, "bb5.bin", 0x0a0000, 0x20000, 0x2fb3db6c),
+  LOAD( GFX1, "bb5.bin", 0x0e0000, 0x20000, 0x2fb3db6c),
 	/* c0000-fffff empty */
-  { "bb10.bin", 0x20000, 0xfdba4f6e, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "bb9.bin", 0x20000, 0x39f47a63, REGION_GFX2, 0x020000, LOAD_NORMAL },
-  { "bb1.bin", 0x20000, 0xc52e5b8e, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX2, "bb10.bin", 0x000000, 0x20000, 0xfdba4f6e),
+  LOAD( GFX2, "bb9.bin", 0x020000, 0x20000, 0x39f47a63),
+  LOAD( SMP1, "bb1.bin", 0x00000, 0x20000, 0xc52e5b8e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_spang[] =
 {
-  { "spe_06.rom", 0x08000, 0x1af106fb, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "spe_07.rom", 0x20000, 0x208b5f54, REGION_ROM1, 0x10000, LOAD_NORMAL },
-  { "spe_08.rom", 0x20000, 0x2bc03ade, REGION_ROM1, 0x30000, LOAD_NORMAL },
-  { "spe_02.rom", 0x20000, 0x63c9dfd2, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "03.f2", 0x20000, 0x3ae28bc1, REGION_GFX1, 0x020000, LOAD_NORMAL },
+  LOAD( ROM1, "spe_06.rom", 0x00000, 0x08000, 0x1af106fb),
+  LOAD( ROM1, "spe_07.rom", 0x10000, 0x20000, 0x208b5f54),
+  LOAD( ROM1, "spe_08.rom", 0x30000, 0x20000, 0x2bc03ade),
+  LOAD( GFX1, "spe_02.rom", 0x000000, 0x20000, 0x63c9dfd2),
+  LOAD( GFX1, "03.f2", 0x020000, 0x20000, 0x3ae28bc1),
 	/* 40000-7ffff empty */
-  { "spe_04.rom", 0x20000, 0x9d7b225b, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "05.g2", 0x20000, 0x4a060884, REGION_GFX1, 0x0a0000, LOAD_NORMAL },
+  LOAD( GFX1, "spe_04.rom", 0x080000, 0x20000, 0x9d7b225b),
+  LOAD( GFX1, "05.g2", 0x0a0000, 0x20000, 0x4a060884),
 	/* c0000-fffff empty */
-  { "05.g2", 0x20000, 0x4a060884, REGION_GFX1, 0x0e0000, LOAD_NORMAL },
-  { "spj10_2k.bin", 0x20000, 0xeedd0ade, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "spj09_1k.bin", 0x20000, 0x04b41b75, REGION_GFX2, 0x020000, LOAD_NORMAL },
-  { "spe_01.rom", 0x20000, 0x2d19c133, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "05.g2", 0x0e0000, 0x20000, 0x4a060884),
+  LOAD( GFX2, "spj10_2k.bin", 0x000000, 0x20000, 0xeedd0ade),
+  LOAD( GFX2, "spj09_1k.bin", 0x020000, 0x20000, 0x04b41b75),
+  LOAD( SMP1, "spe_01.rom", 0x00000, 0x20000, 0x2d19c133),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_block[] =
 {
-  { "ble_05.rom", 0x08000, 0xc12e7f4c, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "ble_06.rom", 0x20000, 0xcdb13d55, REGION_ROM1, 0x10000, LOAD_NORMAL },
-  { "ble_07.rom", 0x20000, 0x1d114f13, REGION_ROM1, 0x30000, LOAD_NORMAL },
-  { "bl_08.rom", 0x20000, 0xaa0f4ff1, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "bl_08.rom", 0x20000, 0xaa0f4ff1, REGION_GFX1, 0x040000, LOAD_NORMAL },
-  { "bl_09.rom", 0x20000, 0x6fa8c186, REGION_GFX1, 0x020000, LOAD_NORMAL },
-  { "bl_09.rom", 0x20000, 0x6fa8c186, REGION_GFX1, 0x060000, LOAD_NORMAL },
-  { "bl_18.rom", 0x20000, 0xc0acafaf, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "bl_18.rom", 0x20000, 0xc0acafaf, REGION_GFX1, 0x0c0000, LOAD_NORMAL },
-  { "bl_19.rom", 0x20000, 0x1ae942f5, REGION_GFX1, 0x0a0000, LOAD_NORMAL },
-  { "bl_19.rom", 0x20000, 0x1ae942f5, REGION_GFX1, 0x0e0000, LOAD_NORMAL },
-  { "bl_16.rom", 0x20000, 0xfadcaff7, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "bl_17.rom", 0x20000, 0x5f8cab42, REGION_GFX2, 0x020000, LOAD_NORMAL },
-  { "bl_01.rom", 0x20000, 0xc2ec2abb, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM1, "ble_05.rom", 0x00000, 0x08000, 0xc12e7f4c),
+  LOAD( ROM1, "ble_06.rom", 0x10000, 0x20000, 0xcdb13d55),
+  LOAD( ROM1, "ble_07.rom", 0x30000, 0x20000, 0x1d114f13),
+  LOAD( GFX1, "bl_08.rom", 0x000000, 0x20000, 0xaa0f4ff1),
+  LOAD( GFX1, "bl_08.rom", 0x040000, 0x20000, 0xaa0f4ff1),
+  LOAD( GFX1, "bl_09.rom", 0x020000, 0x20000, 0x6fa8c186),
+  LOAD( GFX1, "bl_09.rom", 0x060000, 0x20000, 0x6fa8c186),
+  LOAD( GFX1, "bl_18.rom", 0x080000, 0x20000, 0xc0acafaf),
+  LOAD( GFX1, "bl_18.rom", 0x0c0000, 0x20000, 0xc0acafaf),
+  LOAD( GFX1, "bl_19.rom", 0x0a0000, 0x20000, 0x1ae942f5),
+  LOAD( GFX1, "bl_19.rom", 0x0e0000, 0x20000, 0x1ae942f5),
+  LOAD( GFX2, "bl_16.rom", 0x000000, 0x20000, 0xfadcaff7),
+  LOAD( GFX2, "bl_17.rom", 0x020000, 0x20000, 0x5f8cab42),
+  LOAD( SMP1, "bl_01.rom", 0x00000, 0x20000, 0xc2ec2abb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_blockj[] =
 {
-  { "blj_05.rom", 0x08000, 0x3b55969a, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "ble_06.rom", 0x20000, 0xcdb13d55, REGION_ROM1, 0x10000, LOAD_NORMAL },
-  { "blj_07.rom", 0x20000, 0x1723883c, REGION_ROM1, 0x30000, LOAD_NORMAL },
+  LOAD( ROM1, "blj_05.rom", 0x00000, 0x08000, 0x3b55969a),
+  LOAD( ROM1, "ble_06.rom", 0x10000, 0x20000, 0xcdb13d55),
+  LOAD( ROM1, "blj_07.rom", 0x30000, 0x20000, 0x1723883c),
   /* Clone of block all the other regions are the same */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_blockjoy[] =
 {
-  { "ble_05.bin", 0x08000, 0xfa2a4536, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "blf_06.bin", 0x20000, 0xe114ebde, REGION_ROM1, 0x10000, LOAD_NORMAL },
-  { "ble_07.rom", 0x20000, 0x1d114f13, REGION_ROM1, 0x30000, LOAD_NORMAL },
+  LOAD( ROM1, "ble_05.bin", 0x00000, 0x08000, 0xfa2a4536),
+  LOAD( ROM1, "blf_06.bin", 0x10000, 0x20000, 0xe114ebde),
+  LOAD( ROM1, "ble_07.rom", 0x30000, 0x20000, 0x1d114f13),
   /* Clone of block all the other regions are the same */
   { NULL, 0, 0, 0, 0, 0 }
 };

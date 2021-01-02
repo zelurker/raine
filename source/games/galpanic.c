@@ -34,97 +34,97 @@ UINT16 galpanic_closest_colour(int r, int g, int b);
 
 static struct ROM_INFO rom_galpanic[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x20000,
+  LOAD8_16(  ROM1,  0x000000,  0x20000,
             "pm112.6",  0x7b972b58 , "pm111.5",  0x4eb7298d ),
-  LOAD8_16(  REGION_ROM1,  0x100000,  0x80000,
+  LOAD8_16(  ROM1,  0x100000,  0x80000,
             "pm005e.7",  0xd7ec650c,"pm004e.8",  0xd3af52bc  ),
-  LOAD8_16(  REGION_ROM1,  0x200000,  0x80000,
+  LOAD8_16(  ROM1,  0x200000,  0x80000,
             "pm001e.14",  0x90433eb1, "pm000e.15",  0x5d220f3f ),
-  LOAD8_16(  REGION_ROM1,  0x300000,  0x80000,
+  LOAD8_16(  ROM1,  0x300000,  0x80000,
             "pm003e.16",  0x6bb060fd, "pm002e.17",  0x713ee898 ),
-  { "pm006e.67", 0x100000, 0x57aec037 , REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "pm008e.l", 0x80000, 0xd9379ba8 , REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "pm008e.l", 0x80000, 0xd9379ba8 , REGION_SMP1, 0x40000, LOAD_NORMAL },
-  { "pm007e.u", 0x80000, 0xc7ed7950 , REGION_SMP1, 0xc0000, LOAD_NORMAL },
+  LOAD( GFX1, "pm006e.67", 0x000000, 0x100000, 0x57aec037 ),
+  LOAD( SMP1, "pm008e.l", 0x00000, 0x80000, 0xd9379ba8 ),
+  LOAD( SMP1, "pm008e.l", 0x40000, 0x80000, 0xd9379ba8 ),
+  LOAD( SMP1, "pm007e.u", 0xc0000, 0x80000, 0xc7ed7950 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
 static struct ROM_INFO rom_fantasia[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
+  LOAD8_16(  ROM1,  0x000000,  0x80000,
             "prog2_16.rom",  0xe27c6c57 , "prog1_13.rom",  0x68d27413 ),
-  LOAD8_16(  REGION_ROM1,  0x100000,  0x80000,
+  LOAD8_16(  ROM1,  0x100000,  0x80000,
             "iscr6_09.rom",  0x2a588393 , "iscr5_05.rom",  0x6160e0f0 ),
-  LOAD8_16(  REGION_ROM1,  0x200000,  0x80000,
+  LOAD8_16(  ROM1,  0x200000,  0x80000,
             "iscr4_08.rom",  0xf776b743 , "iscr3_04.rom",  0x5df0dff2 ),
-  LOAD8_16(  REGION_ROM1,  0x300000,  0x80000,
+  LOAD8_16(  ROM1,  0x300000,  0x80000,
             "iscr2_07.rom",  0x5707d861 , "iscr1_03.rom",  0x36cb811a ),
-  LOAD8_16(  REGION_ROM1,  0x400000,  0x80000,
+  LOAD8_16(  ROM1,  0x400000,  0x80000,
             "imag2_10.rom",  0x1f14a395 , "imag1_06.rom",  0xfaf870e4 ),
-  { "obj1_17.rom", 0x80000, 0xaadb6eb7 , REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "mus-1_01.rom", 0x80000, 0x22955efb , REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "mus-1_01.rom", 0x80000, 0x22955efb , REGION_SMP1, 0x40000, LOAD_NORMAL },
-  { "mus-2_02.rom", 0x80000, 0x4cd4d6c3 , REGION_SMP1, 0xc0000, LOAD_NORMAL },
+  LOAD( GFX1, "obj1_17.rom", 0x00000, 0x80000, 0xaadb6eb7 ),
+  LOAD( SMP1, "mus-1_01.rom", 0x00000, 0x80000, 0x22955efb ),
+  LOAD( SMP1, "mus-1_01.rom", 0x40000, 0x80000, 0x22955efb ),
+  LOAD( SMP1, "mus-2_02.rom", 0xc0000, 0x80000, 0x4cd4d6c3 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
 static struct ROM_INFO rom_newfant[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
+  LOAD8_16(  ROM1,  0x000000,  0x80000,
             "prog2_12.rom",  0xde43a457 , "prog1_07.rom",  0x370b45be ),
-  LOAD8_16(  REGION_ROM1,  0x100000,  0x80000,
+  LOAD8_16(  ROM1,  0x100000,  0x80000,
             "iscr2_10.rom",  0x4f2da2eb , "iscr1_05.rom",  0x63c6894f ),
-  LOAD8_16(  REGION_ROM1,  0x200000,  0x80000,
+  LOAD8_16(  ROM1,  0x200000,  0x80000,
             "iscr4_09.rom",  0x725741ec , "iscr3_04.rom",  0x51d6b362 ),
-  LOAD8_16(  REGION_ROM1,  0x300000,  0x80000,
+  LOAD8_16(  ROM1,  0x300000,  0x80000,
             "iscr6_08.rom",  0x178b2ef3 , "iscr5_03.rom",  0xd2b5c5fa ),
-  LOAD8_16(  REGION_ROM1,  0x400000,  0x80000,
+  LOAD8_16(  ROM1,  0x400000,  0x80000,
             "iscr8_11.rom",  0xf4148528 , "iscr7_06.rom",  0x2dee0c31 ),
-  { "obj1_13.rom", 0x80000, 0xe6d1bc71 , REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "musc1_01.rom", 0x80000, 0x10347fce , REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "musc1_01.rom", 0x80000, 0x10347fce , REGION_SMP1, 0x40000, LOAD_NORMAL },
-  { "musc2_02.rom", 0x80000, 0xb9646a8c , REGION_SMP1, 0xc0000, LOAD_NORMAL },
+  LOAD( GFX1, "obj1_13.rom", 0x00000, 0x80000, 0xe6d1bc71 ),
+  LOAD( SMP1, "musc1_01.rom", 0x00000, 0x80000, 0x10347fce ),
+  LOAD( SMP1, "musc1_01.rom", 0x40000, 0x80000, 0x10347fce ),
+  LOAD( SMP1, "musc2_02.rom", 0xc0000, 0x80000, 0xb9646a8c ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
 static struct ROM_INFO rom_missw96[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
+  LOAD8_16(  ROM1,  0x000000,  0x80000,
             "mw96_10.bin",  0xb1309bb1 , "mw96_06.bin",  0xa5892bb3 ),
-  LOAD8_16(  REGION_ROM1,  0x100000,  0x80000,
+  LOAD8_16(  ROM1,  0x100000,  0x80000,
             "mw96_09.bin",  0x7032dfdf , "mw96_05.bin",  0x91de5ab5 ),
-  LOAD8_16(  REGION_ROM1,  0x200000,  0x80000,
+  LOAD8_16(  ROM1,  0x200000,  0x80000,
             "mw96_08.bin",  0xb8e66fb5 , "mw96_04.bin",  0xe77a04f8 ),
-  LOAD8_16(  REGION_ROM1,  0x300000,  0x80000,
+  LOAD8_16(  ROM1,  0x300000,  0x80000,
             "mw96_07.bin",  0x26112ed3 , "mw96_03.bin",  0xe9374a46 ),
-  { "mw96_11.bin", 0x80000, 0x3983152f , REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "mw96_01.bin", 0x80000, 0xe78a659e , REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "mw96_01.bin", 0x80000, 0xe78a659e , REGION_SMP1, 0x40000, LOAD_NORMAL },
-  { "mw96_02.bin", 0x80000, 0x60fa0c00 , REGION_SMP1, 0xc0000, LOAD_NORMAL },
+  LOAD( GFX1, "mw96_11.bin", 0x00000, 0x80000, 0x3983152f ),
+  LOAD( SMP1, "mw96_01.bin", 0x00000, 0x80000, 0xe78a659e ),
+  LOAD( SMP1, "mw96_01.bin", 0x40000, 0x80000, 0xe78a659e ),
+  LOAD( SMP1, "mw96_02.bin", 0xc0000, 0x80000, 0x60fa0c00 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
 static struct ROM_INFO rom_fantsia2[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x80000,
+  LOAD8_16(  ROM1,  0x000000,  0x80000,
             "prog2.g17",  0x57c59972 , "prog1.f17",  0xbf2d9a26 ),
-  LOAD8_16(  REGION_ROM1,  0x100000,  0x80000,
+  LOAD8_16(  ROM1,  0x100000,  0x80000,
             "scr2.g16",  0x887b1bc5 , "scr1.f16",  0xcbba3182 ),
-  LOAD8_16(  REGION_ROM1,  0x200000,  0x80000,
+  LOAD8_16(  ROM1,  0x200000,  0x80000,
             "scr4.g15",  0xce97e411 , "scr3.f15",  0x480cc2e8 ),
-  LOAD8_16(  REGION_ROM1,  0x300000,  0x80000,
+  LOAD8_16(  ROM1,  0x300000,  0x80000,
             "scr6.g14",  0xb29d49de , "scr5.f14",  0xd5f88b83 ),
-  LOAD8_16(  REGION_ROM1,  0x400000,  0x80000,
+  LOAD8_16(  ROM1,  0x400000,  0x80000,
             "scr8.g20",  0x694ae2b3 , "scr7.f20",  0x6068712c ),
-  { "obj1.1i", 0x80000, 0x52e6872a , REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "obj2.2i", 0x80000, 0xea6e3861 , REGION_GFX1, 0x80000, LOAD_NORMAL },
-  { "music2.1b", 0x80000, 0x23cc4f9c , REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "music2.1b", 0x80000, 0x23cc4f9c , REGION_SMP1, 0x40000, LOAD_NORMAL },
-  { "music1.1a", 0x80000, 0x864167c2 , REGION_SMP1, 0xc0000, LOAD_NORMAL },
+  LOAD( GFX1, "obj1.1i", 0x00000, 0x80000, 0x52e6872a ),
+  LOAD( GFX1, "obj2.2i", 0x80000, 0x80000, 0xea6e3861 ),
+  LOAD( SMP1, "music2.1b", 0x00000, 0x80000, 0x23cc4f9c ),
+  LOAD( SMP1, "music2.1b", 0x40000, 0x80000, 0x23cc4f9c ),
+  LOAD( SMP1, "music1.1a", 0xc0000, 0x80000, 0x864167c2 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

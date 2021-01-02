@@ -12,59 +12,59 @@
 
 static struct ROM_INFO rom_multchmp[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+  LOAD8_16(  ROM1,  0x000000,  0x040000,
             "multchmp.u02",  0x7da8c0df, "multchmp.u03",  0x5dc62799),
-  { "multchmp.u06", 0x20000, 0x7c178bd7, REGION_ROM2, 0, LOAD_NORMAL },
-  { "multchmp.u06", 0x20000, 0x7c178bd7, REGION_ROM2, 0x8000, LOAD_NORMAL },
-  { "multchmp.u36", 0x040000, 0xd8f06fa8, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "multchmp.u37", 0x040000, 0xb1ae7f08, REGION_GFX1, 0x040000, LOAD_NORMAL },
-  { "multchmp.u38", 0x040000, 0x88e252e8, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "multchmp.u39", 0x040000, 0x51f01067, REGION_GFX1, 0x0c0000, LOAD_NORMAL },
-  { "multchmp.u35", 0x040000, 0x9d1590a6, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "multchmp.u27", 0x080000, 0xdc42704e, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "multchmp.u28", 0x080000, 0x449991fa, REGION_GFX2, 0x080000, LOAD_NORMAL },
-  { "multchmp.u33", 0x080000, 0xe4c0ec96, REGION_GFX2, 0x100000, LOAD_NORMAL },
-  { "multchmp.u34", 0x080000, 0xbffaaccc, REGION_GFX2, 0x180000, LOAD_NORMAL },
-  { "multchmp.u29", 0x080000, 0x01bd1399, REGION_GFX2, 0x200000, LOAD_NORMAL },
-  { "multchmp.u30", 0x080000, 0xc6b4cc18, REGION_GFX2, 0x280000, LOAD_NORMAL },
-  { "multchmp.u31", 0x080000, 0xb1e4e9e3, REGION_GFX2, 0x300000, LOAD_NORMAL },
-  { "multchmp.u32", 0x080000, 0xf05cb5b4, REGION_GFX2, 0x380000, LOAD_NORMAL },
-  { "multchmp.u10", 0x20000, 0x6e741fcd, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "multchmp.u06", 0, 0x20000, 0x7c178bd7),
+  LOAD( ROM2, "multchmp.u06", 0x8000, 0x20000, 0x7c178bd7),
+  LOAD( GFX1, "multchmp.u36", 0x000000, 0x040000, 0xd8f06fa8),
+  LOAD( GFX1, "multchmp.u37", 0x040000, 0x040000, 0xb1ae7f08),
+  LOAD( GFX1, "multchmp.u38", 0x080000, 0x040000, 0x88e252e8),
+  LOAD( GFX1, "multchmp.u39", 0x0c0000, 0x040000, 0x51f01067),
+  LOAD( GFX1, "multchmp.u35", 0x100000, 0x040000, 0x9d1590a6),
+  LOAD( GFX2, "multchmp.u27", 0x000000, 0x080000, 0xdc42704e),
+  LOAD( GFX2, "multchmp.u28", 0x080000, 0x080000, 0x449991fa),
+  LOAD( GFX2, "multchmp.u33", 0x100000, 0x080000, 0xe4c0ec96),
+  LOAD( GFX2, "multchmp.u34", 0x180000, 0x080000, 0xbffaaccc),
+  LOAD( GFX2, "multchmp.u29", 0x200000, 0x080000, 0x01bd1399),
+  LOAD( GFX2, "multchmp.u30", 0x280000, 0x080000, 0xc6b4cc18),
+  LOAD( GFX2, "multchmp.u31", 0x300000, 0x080000, 0xb1e4e9e3),
+  LOAD( GFX2, "multchmp.u32", 0x380000, 0x080000, 0xf05cb5b4),
+  LOAD( SMP1, "multchmp.u10", 0x00000, 0x20000, 0x6e741fcd),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mchampdx[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+  LOAD8_16(  ROM1,  0x000000,  0x040000,
             "esd2.cu02",  0x4cca802c, "esd1.cu03",  0x0af1cd0a),
-  { "esd3.su06", 0x80000, 0x2c0c8813, REGION_ROM2, 0, LOAD_NORMAL },
-  { "esd3.su06", 0x80000, 0x2c0c8813, REGION_ROM2, 0x8000, LOAD_NORMAL },
-  { "rom.ju02", 0x200000, 0x7e87e332, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "rom.ju01", 0x200000, 0x1a749fc2, REGION_GFX1, 0x200000, LOAD_NORMAL },
+  LOAD( ROM2, "esd3.su06", 0, 0x80000, 0x2c0c8813),
+  LOAD( ROM2, "esd3.su06", 0x8000, 0x80000, 0x2c0c8813),
+  LOAD( GFX1, "rom.ju02", 0x000000, 0x200000, 0x7e87e332),
+  LOAD( GFX1, "rom.ju01", 0x200000, 0x200000, 0x1a749fc2),
   { "esd5.ju07",0x080000, 0x6cc871cc, REGION_GFX1, 0x400000, LOAD_8_16 },
   // To emulate the rom_fill :
   { "esd5.ju07", 0x080000, 0x6cc871cc, REGION_GFX1, 0x500001, LOAD_8_16 },
-  LOAD8_16(  REGION_GFX2,  0x000000,  0x200000,
+  LOAD8_16(  GFX2,  0x000000,  0x200000,
             "rom.fu35",  0xba46f3dc, "rom.fu34",  0x2895cf09),
-  { "esd4.su10", 0x80000, 0x14c4a30d, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( SMP1, "esd4.su10", 0x00000, 0x80000, 0x14c4a30d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_hedpanic[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x040000,
+  LOAD8_16(  ROM1,  0x000000,  0x040000,
             "esd2",  0x8cccc691, "esd1",  0xd8574925),
-  { "esd3", 0x80000, 0xc668d443, REGION_ROM2, 0, LOAD_NORMAL },
-  { "esd3", 0x80000, 0xc668d443, REGION_ROM2, 0x8000, LOAD_NORMAL },
-  { "esd6", 0x200000, 0x5858372c, REGION_GFX1, 0x200000, LOAD_NORMAL },
+  LOAD( ROM2, "esd3", 0, 0x80000, 0xc668d443),
+  LOAD( ROM2, "esd3", 0x8000, 0x80000, 0xc668d443),
+  LOAD( GFX1, "esd6", 0x200000, 0x200000, 0x5858372c),
 	/* expand this to take up 0x200000 bytes too so we can decode it */
-  { "esd7", 0x200000, 0x055d525f, REGION_GFX1, 0x000000, LOAD_NORMAL },
+  LOAD( GFX1, "esd7", 0x000000, 0x200000, 0x055d525f),
 /* Ignored : 	ROM_FILL( 0x500000, 0x100000, 0 ) */
   { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x400000, LOAD_8_16 },
   { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x500001, LOAD_8_16 },
-  LOAD8_16(  REGION_GFX2,  0x000000,  0x200000,
+  LOAD8_16(  GFX2,  0x000000,  0x200000,
             "esd8",  0x23aceb4f, "esd9",  0x76b46cd2),
-  { "esd4", 0x080000, 0x5692fe92, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  LOAD( SMP1, "esd4", 0x000000, 0x080000, 0x5692fe92),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

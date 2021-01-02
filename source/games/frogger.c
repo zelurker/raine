@@ -37,60 +37,60 @@ static struct star stars[STARS_COUNT];
 
 static struct ROM_INFO rom_frogger[] =
 {
-  { "frogger.26", 0x1000, 0x597696d6, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "frogger.27", 0x1000, 0xb6e6fcc3, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "frsm3.7", 0x1000, 0xaca22ae0, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "frogger.608", 0x0800, 0xe8ab0256, REGION_ROM2, 0x0000, LOAD_NORMAL },
-  { "frogger.609", 0x0800, 0x7380a48f, REGION_ROM2, 0x0800, LOAD_NORMAL },
-  { "frogger.610", 0x0800, 0x31d7eb27, REGION_ROM2, 0x1000, LOAD_NORMAL },
-  { "frogger.607", 0x0800, 0x05f7d883, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "frogger.606", 0x0800, 0xf524ee30, REGION_GFX1, 0x0800, LOAD_NORMAL },
-  { "pr-91.6l", 0x0020, 0x413703bf, REGION_PROMS, 0x0000, LOAD_NORMAL },
+  LOAD( ROM1, "frogger.26", 0x0000, 0x1000, 0x597696d6),
+  LOAD( ROM1, "frogger.27", 0x1000, 0x1000, 0xb6e6fcc3),
+  LOAD( ROM1, "frsm3.7", 0x2000, 0x1000, 0xaca22ae0),
+  LOAD( ROM2, "frogger.608", 0x0000, 0x0800, 0xe8ab0256),
+  LOAD( ROM2, "frogger.609", 0x0800, 0x0800, 0x7380a48f),
+  LOAD( ROM2, "frogger.610", 0x1000, 0x0800, 0x31d7eb27),
+  LOAD( GFX1, "frogger.607", 0x0000, 0x0800, 0x05f7d883),
+  LOAD( GFX1, "frogger.606", 0x0800, 0x0800, 0xf524ee30),
+  LOAD( PROMS, "pr-91.6l", 0x0000, 0x0020, 0x413703bf),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_froggs[] =
 {
-  { "frogger.ic5", 0x1000, 0xc4224bc4, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "frogger.ic6", 0x1000, 0x5370ad00, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "frogger.ic7", 0x1000, 0xdd251066, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "frogger.ic8", 0x1000, 0xe7d0563d, REGION_ROM1, 0x3000, LOAD_NORMAL },
+  LOAD( ROM1, "frogger.ic5", 0x0000, 0x1000, 0xc4224bc4),
+  LOAD( ROM1, "frogger.ic6", 0x1000, 0x1000, 0x5370ad00),
+  LOAD( ROM1, "frogger.ic7", 0x2000, 0x1000, 0xdd251066),
+  LOAD( ROM1, "frogger.ic8", 0x3000, 0x1000, 0xe7d0563d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_galaxian[] =
 {
-  { "galmidw.u", 0x0800, 0x745e2d61, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "galmidw.v", 0x0800, 0x9c999a40, REGION_ROM1, 0x0800, LOAD_NORMAL },
-  { "galmidw.w", 0x0800, 0xb5894925, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "galmidw.y", 0x0800, 0x6b3ca10b, REGION_ROM1, 0x1800, LOAD_NORMAL },
-  { "7l", 0x0800, 0x1b933207, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "1h.bin", 0x0800, 0x39fb43a4, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "1k.bin", 0x0800, 0x7e3f56a2, REGION_GFX1, 0x0800, LOAD_NORMAL },
-  { "6l.bpr", 0x0020, 0xc3ac9467, REGION_PROMS, 0x0000, LOAD_NORMAL },
+  LOAD( ROM1, "galmidw.u", 0x0000, 0x0800, 0x745e2d61),
+  LOAD( ROM1, "galmidw.v", 0x0800, 0x0800, 0x9c999a40),
+  LOAD( ROM1, "galmidw.w", 0x1000, 0x0800, 0xb5894925),
+  LOAD( ROM1, "galmidw.y", 0x1800, 0x0800, 0x6b3ca10b),
+  LOAD( ROM1, "7l", 0x2000, 0x0800, 0x1b933207),
+  LOAD( GFX1, "1h.bin", 0x0000, 0x0800, 0x39fb43a4),
+  LOAD( GFX1, "1k.bin", 0x0800, 0x0800, 0x7e3f56a2),
+  LOAD( PROMS, "6l.bpr", 0x0000, 0x0020, 0xc3ac9467),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_galapx[] =
 {
-  { "galx.u", 0x0800, 0x79e4007d, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "galx.v", 0x0800, 0xbc16064e, REGION_ROM1, 0x0800, LOAD_NORMAL },
-  { "galx.w", 0x0800, 0x72d2d3ee, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "galx.y", 0x0800, 0xafe397f3, REGION_ROM1, 0x1800, LOAD_NORMAL },
-  { "galx.z", 0x0800, 0x778c0d3c, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "galx.1h", 0x0800, 0xe8810654, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "galx.1k", 0x0800, 0xcbe84a76, REGION_GFX1, 0x0800, LOAD_NORMAL },
+  LOAD( ROM1, "galx.u", 0x0000, 0x0800, 0x79e4007d),
+  LOAD( ROM1, "galx.v", 0x0800, 0x0800, 0xbc16064e),
+  LOAD( ROM1, "galx.w", 0x1000, 0x0800, 0x72d2d3ee),
+  LOAD( ROM1, "galx.y", 0x1800, 0x0800, 0xafe397f3),
+  LOAD( ROM1, "galx.z", 0x2000, 0x0800, 0x778c0d3c),
+  LOAD( GFX1, "galx.1h", 0x0000, 0x0800, 0xe8810654),
+  LOAD( GFX1, "galx.1k", 0x0800, 0x0800, 0xcbe84a76),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_superg[] =
 {
-  { "7f.bin", 0x1000, 0x4335b1de, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "superg.w", 0x0800, 0xddeabdae, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "superg.y", 0x0800, 0x9463f753, REGION_ROM1, 0x1800, LOAD_NORMAL },
-  { "superg.z", 0x0800, 0xe6312e35, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "galmidw.1j", 0x0800, 0x84decf98, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "galmidw.1k", 0x0800, 0xc31ada9e, REGION_GFX1, 0x0800, LOAD_NORMAL },
+  LOAD( ROM1, "7f.bin", 0x0000, 0x1000, 0x4335b1de),
+  LOAD( ROM1, "superg.w", 0x1000, 0x0800, 0xddeabdae),
+  LOAD( ROM1, "superg.y", 0x1800, 0x0800, 0x9463f753),
+  LOAD( ROM1, "superg.z", 0x2000, 0x0800, 0xe6312e35),
+  LOAD( GFX1, "galmidw.1j", 0x0000, 0x0800, 0x84decf98),
+  LOAD( GFX1, "galmidw.1k", 0x0800, 0x0800, 0xc31ada9e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

@@ -24,12 +24,12 @@ static struct ROM_INFO rom_opwolf[] =
   { "b20-03-02.30", 0x10000, 0xfdabd8a5, REGION_CPU1, 0x00001, LOAD_8_16 },
   { "b20-04.39", 0x10000, 0x216b4838, REGION_CPU1, 0x20000, LOAD_8_16 },
   { "b20-20.29", 0x10000, 0xd244431a, REGION_CPU1, 0x20001, LOAD_8_16 },
-  { "b20-07.10", 0x10000, 0x45c7ace3, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "opwlfb.09", 0x08000, 0xab27a3dd, REGION_CPU3, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "b20-07.10", 0x00000, 0x10000, 0x45c7ace3),
+  LOAD( CPU3, "opwlfb.09", 0x00000, 0x08000, 0xab27a3dd),
   FILL(0x8000,0x8000,0,CPU3),
-  { "b20-13.13", 0x80000, 0xf6acdab1, REGION_GFX1, 0x00000, LOAD_NORMAL }, /* SCR tiles (8 x 8) */
-  { "b20-14.72", 0x80000, 0x89f889e5, REGION_GFX2, 0x00000, LOAD_NORMAL }, /* Sprites (16 x 16) */
-  { "b20-08.21", 0x80000, 0xf3e19c64, REGION_SOUND1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "b20-13.13", 0x00000, 0x80000, 0xf6acdab1), /* SCR tiles (8 x 8) */
+  LOAD( GFX2, "b20-14.72", 0x00000, 0x80000, 0x89f889e5), /* Sprites (16 x 16) */
+  LOAD( SOUND1, "b20-08.21", 0x00000, 0x80000, 0xf3e19c64),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -160,8 +160,8 @@ static struct ROM_INFO rom_opwolfb[] =
   { "opwlfb.10", 0x10000, 0x9ab6f75c, REGION_CPU1, 0x00001, LOAD_8_16 },
   { "opwlfb.13", 0x10000, 0x61230c6e, REGION_CPU1, 0x20000, LOAD_8_16 },
   { "opwlfb.11", 0x10000, 0x342e318d, REGION_CPU1, 0x20001, LOAD_8_16 },
-  { "opwlfb.30", 0x08000, 0x0669b94c, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "opwlfb.09", 0x08000, 0xab27a3dd, REGION_CPU3, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "opwlfb.30", 0x00000, 0x08000, 0x0669b94c),
+  LOAD( CPU3, "opwlfb.09", 0x00000, 0x08000, 0xab27a3dd),
   FILL(0x8000,0x8000,0,CPU3),
   { "opwlfb.08", 0x10000, 0x134d294e, REGION_GFX1, 0x00000, LOAD_8_16 }, /* SCR tiles (8 x 8) */
   { "opwlfb.06", 0x10000, 0x317d0e66, REGION_GFX1, 0x20000, LOAD_8_16 }, /* SCR tiles (8 x 8) */

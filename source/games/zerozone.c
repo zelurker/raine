@@ -16,7 +16,7 @@ static struct ROM_INFO rom_zerozone[] =
    {     "zz-2.rom", 0x00020000, 0xc7551e81, 0, 0, 0, },
    {     "zz-1.rom", 0x00008000, 0x223ccce5, 0, 0, 0, },
    {     "zz-3.rom", 0x00020000, 0xe348ff5e, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00010000,
+  LOAD8_16( ROM1,  0x000000,  0x00010000,
                 "zz-4.rom",  0x83718b9b,     "zz-5.rom",  0x18557f41),
    {     "zz-6.rom", 0x00080000, 0xc8b906b9, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },

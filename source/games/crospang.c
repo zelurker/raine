@@ -32,8 +32,8 @@ static struct ROM_INFO rom_crospang[] =
 {
     { "p1.bin", 0x20000, 0x0bcbbaad, REGION_CPU1, 0x00001, LOAD_8_16 },
     { "p2.bin", 0x20000, 0x0947d204, REGION_CPU1, 0x00000, LOAD_8_16 },
-{ "s1.bin",      0x010000, 0xd61a224c, REGION_ROM2, 0x000000, LOAD_NORMAL },
-{ "s2.bin",      0x020000, 0x9f9ecd22, REGION_SMP1, 0x000000, LOAD_NORMAL },
+LOAD( ROM2, "s1.bin", 0x000000, 0x010000, 0xd61a224c),
+LOAD( SMP1, "s2.bin", 0x000000, 0x020000, 0x9f9ecd22),
   { "rom1.bin", 0x40000, 0x905042bb, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "rom2.bin", 0x40000, 0xbc4381e9, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "rom3.bin", 0x80000, 0xcc6e1fce, REGION_GFX2, 0x000000, LOAD_8_16 },
@@ -47,8 +47,8 @@ static struct ROM_INFO rom_heuksun[] =
 {
   { "ua02.j3", 0x80000, 0xdb2b9c8e, REGION_CPU1, 0x00001, LOAD_8_16 },
   { "ua03.j5", 0x80000, 0xde9f01e8, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "us02.r4", 0x10000, 0xc7cc05fa, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "us08.u7", 0x40000, 0xae177589, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "us02.r4", 0x00000, 0x10000, 0xc7cc05fa),
+  LOAD( SMP1, "us08.u7", 0x00000, 0x40000, 0xae177589),
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x100001, LOAD_CONTINUE },
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x040001, LOAD_CONTINUE },

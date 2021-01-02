@@ -32,7 +32,7 @@ static struct ROM_INFO rom_twinqix[] =
    {    "snd-1.b44", 0x00080000, 0x274864af, 0, 0, 0, },
    {   "snd-14.b10", 0x00080000, 0x26312451, 0, 0, 0, },
    {   "snd-15.b11", 0x00080000, 0x2edaa9dc, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+  LOAD8_16( ROM2,  0x000000,  0x00040000,
               "spr0-1.b66",  0x4b20e99d,   "spr0-0.b65",  0x2569eb30),
    {           NULL,          0,          0, 0, 0, 0, },
 };

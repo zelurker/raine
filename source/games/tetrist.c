@@ -19,7 +19,7 @@ static struct ROM_INFO rom_tetrist[] =
   { "c12-02.31", 0x020000, 0xed9530bc, REGION_CPU1, 0x000001, LOAD_8_16 },
   { "c12-05.49", 0x020000, 0x128e9927, REGION_CPU1, 0x040000, LOAD_8_16 },
   { "c12-04.30", 0x020000, 0x5da7a319, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "c12-06.bin", 0x10000, 0xf2814b38, REGION_ROM2, 0, LOAD_NORMAL },
+  LOAD( ROM2, "c12-06.bin", 0, 0x10000, 0xf2814b38),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

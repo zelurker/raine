@@ -294,15 +294,15 @@ static struct ROM_INFO rom_vimana[] =         /* From board serial number 1547.0
   { "tp019-7a.bin", 0x20000, 0x5a4bf73e, REGION_CPU1, 0x000000, LOAD_8_16 },
   { "tp019-8a.bin", 0x20000, 0x03ba27e8, REGION_CPU1, 0x000001, LOAD_8_16 },
 	/* sound CPU is a HD647180 (Z180) with internal ROM */
-  { "hd647180.019", 0x08000, 0x41a97ebe, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "hd647180.019", 0x00000, 0x08000, 0x41a97ebe),
   { "vim6.bin", 0x20000, 0x2886878d, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "vim5.bin", 0x20000, 0x61a63d7a, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "vim4.bin", 0x20000, 0xb0515768, REGION_GFX1, 0x40000, LOAD_8_16 },
   { "vim3.bin", 0x20000, 0x0b539131, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "vim1.bin", 0x80000, 0xcdde26cd, REGION_GFX2, 0x00000, LOAD_NORMAL },
-  { "vim2.bin", 0x80000, 0x1dbfc118, REGION_GFX2, 0x80000, LOAD_NORMAL },
-  { "tp019-09.bpr", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
-  { "tp019-10.bpr", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
+  LOAD( GFX2, "vim1.bin", 0x00000, 0x80000, 0xcdde26cd),
+  LOAD( GFX2, "vim2.bin", 0x80000, 0x80000, 0x1dbfc118),
+  LOAD( PROMS, "tp019-09.bpr", 0x00, 0x20, 0xbc88cced),
+  LOAD( PROMS, "tp019-10.bpr", 0x20, 0x20, 0xa1e17492),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -318,15 +318,15 @@ static struct ROM_INFO rom_outzone[] =
 {
   { "prg2.bin", 0x20000, 0x9704db16, REGION_CPU1, 0x000001, LOAD_8_16 },
   { "prg1.bin", 0x20000, 0x127a38d7, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "rom9.bin", 0x8000, 0x73d8e235, REGION_ROM2, 0x0000, LOAD_NORMAL },
-  { "rom5.bin", 0x80000, 0xc64ec7b6, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "rom6.bin", 0x80000, 0x64b6c5ac, REGION_GFX1, 0x80000, LOAD_NORMAL },
+  LOAD( ROM2, "rom9.bin", 0x0000, 0x8000, 0x73d8e235),
+  LOAD( GFX1, "rom5.bin", 0x00000, 0x80000, 0xc64ec7b6),
+  LOAD( GFX1, "rom6.bin", 0x80000, 0x80000, 0x64b6c5ac),
   { "rom2.bin", 0x20000, 0x6bb72d16, REGION_GFX2, 0x00000, LOAD_8_16 },
   { "rom1.bin", 0x20000, 0x0934782d, REGION_GFX2, 0x00001, LOAD_8_16 },
   { "rom3.bin", 0x20000, 0xec903c07, REGION_GFX2, 0x40000, LOAD_8_16 },
   { "rom4.bin", 0x20000, 0x50cbf1a8, REGION_GFX2, 0x40001, LOAD_8_16 },
-//  { "tp018_10.bpr", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
-//  { "tp018_11.bpr", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
+//  LOAD( PROMS, "tp018_10.bpr", 0x00, 0x20, 0xbc88cced),
+//  LOAD( PROMS, "tp018_11.bpr", 0x20, 0x20, 0xa1e17492),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -397,15 +397,15 @@ static struct ROM_INFO rom_rallybik[] =
   { "b45-01.rom", 0x08000, 0x7602f6a7, REGION_CPU1, 0x000001, LOAD_8_16 },
   { "b45-04.rom", 0x20000, 0xe9b005b1, REGION_CPU1, 0x040000, LOAD_8_16 },
   { "b45-03.rom", 0x20000, 0x555344ce, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "b45-05.rom", 0x4000, 0x10814601, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM2, "b45-05.rom", 0x0000, 0x4000, 0x10814601),
   { "b45-09.bin", 0x20000, 0x1dc7b010, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "b45-08.bin", 0x20000, 0xfab661ba, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "b45-07.bin", 0x20000, 0xcd3748b4, REGION_GFX1, 0x40000, LOAD_8_16 },
   { "b45-06.bin", 0x20000, 0x144b085c, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "b45-11.rom", 0x10000, 0x0d56e8bb, REGION_GFX2, 0x00000, LOAD_NORMAL },
-  { "b45-10.rom", 0x10000, 0xdbb7c57e, REGION_GFX2, 0x10000, LOAD_NORMAL },
-  { "b45-12.rom", 0x10000, 0xcf5aae4e, REGION_GFX2, 0x20000, LOAD_NORMAL },
-  { "b45-13.rom", 0x10000, 0x1683b07c, REGION_GFX2, 0x30000, LOAD_NORMAL },
+  LOAD( GFX2, "b45-11.rom", 0x00000, 0x10000, 0x0d56e8bb),
+  LOAD( GFX2, "b45-10.rom", 0x10000, 0x10000, 0xdbb7c57e),
+  LOAD( GFX2, "b45-12.rom", 0x20000, 0x10000, 0xcf5aae4e),
+  LOAD( GFX2, "b45-13.rom", 0x30000, 0x10000, 0x1683b07c),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -445,7 +445,7 @@ static struct ROM_INFO rom_zerowing[] = /* 2 player simultaneous version */
   { "o15-12ii.bin", 0x08000, 0xb29ee3ad, REGION_CPU1, 0x000001, LOAD_8_16 },
   { "o15-09.rom", 0x20000, 0x13764e95, REGION_CPU1, 0x040000, LOAD_8_16 },
   { "o15-10.rom", 0x20000, 0x351ba71a, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "o15-13.rom", 0x8000, 0xe7b72383, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM2, "o15-13.rom", 0x0000, 0x8000, 0xe7b72383),
   { "o15-05.rom", 0x20000, 0x4e5dd246, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "o15-06.rom", 0x20000, 0xc8c6d428, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "o15-07.rom", 0x20000, 0xefc40e99, REGION_GFX1, 0x40000, LOAD_8_16 },
@@ -507,7 +507,7 @@ static struct ROM_INFO rom_demonwld[] =
 {
   { "o16-10.v2", 0x20000, 0xca8194f3, REGION_CPU1, 0x000000, LOAD_8_16 },
   { "o16-09.v2", 0x20000, 0x7baea7ba, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "rom11.v2", 0x8000, 0xdbe08c85, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM2, "rom11.v2", 0x0000, 0x8000, 0xdbe08c85),
   { "rom05", 0x20000, 0x6506c982, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "rom07", 0x20000, 0xa3a0d993, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "rom06", 0x20000, 0x4fc5e5f3, REGION_GFX1, 0x40000, LOAD_8_16 },
@@ -523,7 +523,7 @@ static struct ROM_INFO rom_demonwld2[] = // clone of demonwld
 {
   { "o16-10.rom", 0x20000, 0x036ee46c, REGION_CPU1, 0x000000, LOAD_8_16 },
   { "o16-09.rom", 0x20000, 0xbed746e3, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "rom11", 0x8000, 0x397eca1b, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM2, "rom11", 0x0000, 0x8000, 0x397eca1b),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -591,7 +591,7 @@ static struct ROM_INFO rom_fireshrk[] =
   { "10.8l", 0x08000, 0x9d253d77, REGION_CPU1, 0x000001, LOAD_8_16 },
   { "o17_11ii.7j", 0x20000, 0x6beac378, REGION_CPU1, 0x040000, LOAD_8_16 },
   { "o17_12ii.7l", 0x20000, 0x6adb6eb5, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "hd647180.017", 0x08000, 0x43523032, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "hd647180.017", 0x00000, 0x08000, 0x43523032),
   { "o17_05.12j", 0x20000, 0x565315f8, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "o17_06.13j", 0x20000, 0x95262d4c, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "o17_07.12l", 0x20000, 0x4c4b735c, REGION_GFX1, 0x40000, LOAD_8_16 },
@@ -600,8 +600,8 @@ static struct ROM_INFO rom_fireshrk[] =
   { "o17_02.3d", 0x20000, 0x32a13a9f, REGION_GFX2, 0x00001, LOAD_8_16 },
   { "o17_03.5d", 0x20000, 0x68723dc9, REGION_GFX2, 0x40000, LOAD_8_16 },
   { "o17_04.7d", 0x20000, 0xfe0ecb13, REGION_GFX2, 0x40001, LOAD_8_16 },
-//  { "prom14.25b", 0x20, 0xbc88cced, REGION_PROMS, 0x00, LOAD_NORMAL },
-//  { "prom15.20c", 0x20, 0xa1e17492, REGION_PROMS, 0x20, LOAD_NORMAL },
+//  LOAD( PROMS, "prom14.25b", 0x00, 0x20, 0xbc88cced),
+//  LOAD( PROMS, "prom15.20c", 0x20, 0x20, 0xa1e17492),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -695,7 +695,7 @@ static struct ROM_INFO rom_hellfire[] =
 {
   { "b90_14.0", 0x20000, 0x101df9f5, REGION_CPU1, 0x000000, LOAD_8_16 },
   { "b90_15.1", 0x20000, 0xe67fd452, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "b90_03.2", 0x8000, 0x4058fa67, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM2, "b90_03.2", 0x0000, 0x8000, 0x4058fa67),
   { "b90_04.3", 0x20000, 0xea6150fc, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "b90_05.4", 0x20000, 0xbb52c507, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "b90_06.5", 0x20000, 0xcf5b0252, REGION_GFX1, 0x40000, LOAD_8_16 },
@@ -728,7 +728,7 @@ static struct ROM_INFO rom_truxton[] =
 {
   { "b65_11.bin", 0x20000, 0x1a62379a, REGION_CPU1, 0x000000, LOAD_8_16 },
   { "b65_10.bin", 0x20000, 0xaff5195d, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "b65_09.bin", 0x4000, 0x1bdd4ddc, REGION_ROM2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM2, "b65_09.bin", 0x0000, 0x4000, 0x1bdd4ddc),
   { "b65_08.bin", 0x20000, 0xd2315b37, REGION_GFX1, 0x00000, LOAD_8_16 },
   { "b65_07.bin", 0x20000, 0xfb83252a, REGION_GFX1, 0x00001, LOAD_8_16 },
   { "b65_06.bin", 0x20000, 0x36cedcbe, REGION_GFX1, 0x40000, LOAD_8_16 },

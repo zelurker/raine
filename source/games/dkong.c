@@ -70,82 +70,82 @@ extern int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char
 
 static struct ROM_INFO rom_dkong[] =
 {
-  { "c_5et_g.bin", 0x1000, 0xba70b88b, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "c_5ct_g.bin", 0x1000, 0x5ec461ec, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "c_5bt_g.bin", 0x1000, 0x1c97d324, REGION_ROM1, 0x2000, LOAD_NORMAL },
+  LOAD( ROM1, "c_5et_g.bin", 0x0000, 0x1000, 0xba70b88b),
+  LOAD( ROM1, "c_5ct_g.bin", 0x1000, 0x1000, 0x5ec461ec),
+  LOAD( ROM1, "c_5bt_g.bin", 0x2000, 0x1000, 0x1c97d324),
 	/* space for diagnostic ROM */
-  { "c_5at_g.bin", 0x1000, 0xb9005ac0, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "s_3i_b.bin", 0x0800, 0x45a4ed06, REGION_ROM2, 0x0000, LOAD_NORMAL },
-  { "s_3j_b.bin", 0x0800, 0x4743fe92, REGION_ROM2, 0x0800, LOAD_NORMAL },
-  { "v_5h_b.bin", 0x0800, 0x12c8c95d, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "v_3pt.bin", 0x0800, 0x15e9c5e9, REGION_GFX1, 0x0800, LOAD_NORMAL },
-  { "l_4m_b.bin", 0x0800, 0x59f8054d, REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "l_4n_b.bin", 0x0800, 0x672e4714, REGION_GFX2, 0x0800, LOAD_NORMAL },
-  { "l_4r_b.bin", 0x0800, 0xfeaa59ee, REGION_GFX2, 0x1000, LOAD_NORMAL },
-  { "l_4s_b.bin", 0x0800, 0x20f2ef7e, REGION_GFX2, 0x1800, LOAD_NORMAL },
-  { "c-2k.bpr", 0x0100, 0xe273ede5, REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "c-2j.bpr", 0x0100, 0xd6412358, REGION_PROMS, 0x0100, LOAD_NORMAL },
-  { "v-5e.bpr", 0x0100, 0xb869b8f5, REGION_PROMS, 0x0200, LOAD_NORMAL },
+  LOAD( ROM1, "c_5at_g.bin", 0x3000, 0x1000, 0xb9005ac0),
+  LOAD( ROM2, "s_3i_b.bin", 0x0000, 0x0800, 0x45a4ed06),
+  LOAD( ROM2, "s_3j_b.bin", 0x0800, 0x0800, 0x4743fe92),
+  LOAD( GFX1, "v_5h_b.bin", 0x0000, 0x0800, 0x12c8c95d),
+  LOAD( GFX1, "v_3pt.bin", 0x0800, 0x0800, 0x15e9c5e9),
+  LOAD( GFX2, "l_4m_b.bin", 0x0000, 0x0800, 0x59f8054d),
+  LOAD( GFX2, "l_4n_b.bin", 0x0800, 0x0800, 0x672e4714),
+  LOAD( GFX2, "l_4r_b.bin", 0x1000, 0x0800, 0xfeaa59ee),
+  LOAD( GFX2, "l_4s_b.bin", 0x1800, 0x0800, 0x20f2ef7e),
+  LOAD( PROMS, "c-2k.bpr", 0x0000, 0x0100, 0xe273ede5),
+  LOAD( PROMS, "c-2j.bpr", 0x0100, 0x0100, 0xd6412358),
+  LOAD( PROMS, "v-5e.bpr", 0x0200, 0x0100, 0xb869b8f5),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_dkongex[] =
 {
-  { "cx_5et_g.bin", 0x1000, 0x00b7efaf, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "cx_5ct_g.bin", 0x1000, 0x88af9b69, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "cx_5bt_g.bin", 0x1000, 0xde74ad91, REGION_ROM1, 0x2000, LOAD_NORMAL },
+  LOAD( ROM1, "cx_5et_g.bin", 0x0000, 0x1000, 0x00b7efaf),
+  LOAD( ROM1, "cx_5ct_g.bin", 0x1000, 0x1000, 0x88af9b69),
+  LOAD( ROM1, "cx_5bt_g.bin", 0x2000, 0x1000, 0xde74ad91),
 	/* space for diagnostic ROM */
-  { "cx_5at_g.bin", 0x1000, 0x9fa3e5b7, REGION_ROM1, 0x3000, LOAD_NORMAL },
+  LOAD( ROM1, "cx_5at_g.bin", 0x3000, 0x1000, 0x9fa3e5b7),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_dkongjp[] =
 {
-  { "c_5f_b.bin", 0x1000, 0x424f2b11, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "5g.cpu", 0x1000, 0xd326599b, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "5h.cpu", 0x1000, 0xff31ac89, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "c_5k_b.bin", 0x1000, 0x394d6007, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "v_5h_b.bin", 0x0800, 0x12c8c95d, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "v_5k_b.bin", 0x0800, 0x3684f914, REGION_GFX1, 0x0800, LOAD_NORMAL },
+  LOAD( ROM1, "c_5f_b.bin", 0x0000, 0x1000, 0x424f2b11),
+  LOAD( ROM1, "5g.cpu", 0x1000, 0x1000, 0xd326599b),
+  LOAD( ROM1, "5h.cpu", 0x2000, 0x1000, 0xff31ac89),
+  LOAD( ROM1, "c_5k_b.bin", 0x3000, 0x1000, 0x394d6007),
+  LOAD( GFX1, "v_5h_b.bin", 0x0000, 0x0800, 0x12c8c95d),
+  LOAD( GFX1, "v_5k_b.bin", 0x0800, 0x0800, 0x3684f914),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 /*
 static struct ROM_INFO rom_dkongjr[] =
 {
-  { "dkj.5b", 0x2000, 0xdea28158, REGION_ROM1, 0, LOAD_NORMAL },
-  { "dkj.5c", 0x2000, 0x6fb5faf6, REGION_ROM1, 0, LOAD_NORMAL },
-  { "dkj.5e", 0x2000, 0xd042b6a8, REGION_ROM1, 0, LOAD_NORMAL },
-  { "c_3h.bin", 0x1000, 0x715da5f8, REGION_ROM2, 0x0000, LOAD_NORMAL },
-  { "dkj.3n", 0x1000, 0x8d51aca9, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "dkj.3p", 0x1000, 0x4ef64ba5, REGION_GFX1, 0x1000, LOAD_NORMAL },
-  { "v_7c.bin", 0x0800, 0xdc7f4164, REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "v_7d.bin", 0x0800, 0x0ce7dcf6, REGION_GFX2, 0x0800, LOAD_NORMAL },
-  { "v_7e.bin", 0x0800, 0x24d1ff17, REGION_GFX2, 0x1000, LOAD_NORMAL },
-  { "v_7f.bin", 0x0800, 0x0f8c083f, REGION_GFX2, 0x1800, LOAD_NORMAL },
-  { "c-2e.bpr", 0x0100, 0x463dc7ad, REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "c-2f.bpr", 0x0100, 0x47ba0042, REGION_PROMS, 0x0100, LOAD_NORMAL },
-  { "v-2n.bpr", 0x0100, 0xdbf185bf, REGION_PROMS, 0x0200, LOAD_NORMAL },
+  LOAD( ROM1, "dkj.5b", 0, 0x2000, 0xdea28158),
+  LOAD( ROM1, "dkj.5c", 0, 0x2000, 0x6fb5faf6),
+  LOAD( ROM1, "dkj.5e", 0, 0x2000, 0xd042b6a8),
+  LOAD( ROM2, "c_3h.bin", 0x0000, 0x1000, 0x715da5f8),
+  LOAD( GFX1, "dkj.3n", 0x0000, 0x1000, 0x8d51aca9),
+  LOAD( GFX1, "dkj.3p", 0x1000, 0x1000, 0x4ef64ba5),
+  LOAD( GFX2, "v_7c.bin", 0x0000, 0x0800, 0xdc7f4164),
+  LOAD( GFX2, "v_7d.bin", 0x0800, 0x0800, 0x0ce7dcf6),
+  LOAD( GFX2, "v_7e.bin", 0x1000, 0x0800, 0x24d1ff17),
+  LOAD( GFX2, "v_7f.bin", 0x1800, 0x0800, 0x0f8c083f),
+  LOAD( PROMS, "c-2e.bpr", 0x0000, 0x0100, 0x463dc7ad),
+  LOAD( PROMS, "c-2f.bpr", 0x0100, 0x0100, 0x47ba0042),
+  LOAD( PROMS, "v-2n.bpr", 0x0200, 0x0100, 0xdbf185bf),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_dkong3[] =
 {
-  { "dk3c.7b", 0x2000, 0x38d5f38e, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "dk3c.7c", 0x2000, 0xc9134379, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "dk3c.7d", 0x2000, 0xd22e2921, REGION_ROM1, 0x4000, LOAD_NORMAL },
-  { "dk3c.7e", 0x2000, 0x615f14b7, REGION_ROM1, 0x8000, LOAD_NORMAL },
-  { "dk3c.5l", 0x2000, 0x7ff88885, REGION_ROM2, 0xe000, LOAD_NORMAL },
-  { "dk3c.6h", 0x2000, 0x36d7200c, REGION_CPU3, 0xe000, LOAD_NORMAL },
-  { "dk3v.3n", 0x1000, 0x415a99c7, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "dk3v.3p", 0x1000, 0x25744ea0, REGION_GFX1, 0x1000, LOAD_NORMAL },
-  { "dk3v.7c", 0x1000, 0x8ffa1737, REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "dk3v.7d", 0x1000, 0x9ac84686, REGION_GFX2, 0x1000, LOAD_NORMAL },
-  { "dk3v.7e", 0x1000, 0x0c0af3fb, REGION_GFX2, 0x2000, LOAD_NORMAL },
-  { "dk3v.7f", 0x1000, 0x55c58662, REGION_GFX2, 0x3000, LOAD_NORMAL },
-  { "dkc1-c.1d", 0x0200, 0xdf54befc, REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "dkc1-c.1c", 0x0200, 0x66a77f40, REGION_PROMS, 0x0100, LOAD_NORMAL },
-  { "dkc1-v.2n", 0x0100, 0x50e33434, REGION_PROMS, 0x0200, LOAD_NORMAL },
+  LOAD( ROM1, "dk3c.7b", 0x0000, 0x2000, 0x38d5f38e),
+  LOAD( ROM1, "dk3c.7c", 0x2000, 0x2000, 0xc9134379),
+  LOAD( ROM1, "dk3c.7d", 0x4000, 0x2000, 0xd22e2921),
+  LOAD( ROM1, "dk3c.7e", 0x8000, 0x2000, 0x615f14b7),
+  LOAD( ROM2, "dk3c.5l", 0xe000, 0x2000, 0x7ff88885),
+  LOAD( CPU3, "dk3c.6h", 0xe000, 0x2000, 0x36d7200c),
+  LOAD( GFX1, "dk3v.3n", 0x0000, 0x1000, 0x415a99c7),
+  LOAD( GFX1, "dk3v.3p", 0x1000, 0x1000, 0x25744ea0),
+  LOAD( GFX2, "dk3v.7c", 0x0000, 0x1000, 0x8ffa1737),
+  LOAD( GFX2, "dk3v.7d", 0x1000, 0x1000, 0x9ac84686),
+  LOAD( GFX2, "dk3v.7e", 0x2000, 0x1000, 0x0c0af3fb),
+  LOAD( GFX2, "dk3v.7f", 0x3000, 0x1000, 0x55c58662),
+  LOAD( PROMS, "dkc1-c.1d", 0x0000, 0x0200, 0xdf54befc),
+  LOAD( PROMS, "dkc1-c.1c", 0x0100, 0x0200, 0x66a77f40),
+  LOAD( PROMS, "dkc1-v.2n", 0x0200, 0x0100, 0x50e33434),
   { NULL, 0, 0, 0, 0, 0 }
 };
 */

@@ -54,17 +54,15 @@ extern struct SOUND_INFO sound_mcatadv[];
 
 static struct ROM_INFO rom_bonzeadv[] =
 {
-  { "b41-09-1.17", 0x10000, 0xaf821fbc, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "b41-11-1.26", 0x10000, 0x823fff00, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "b41-10.16", 0x10000, 0x4ca94d77, REGION_CPU1, 0x20000, LOAD_8_16 },
-  { "b41-15.25", 0x10000, 0xaed7a0d0, REGION_CPU1, 0x20001, LOAD_8_16 },
+  LOAD8_16( CPU1, 0x00000, 0x10000,"b41-09-1.17", 0xaf821fbc,"b41-11-1.26", 0x823fff00),
+  LOAD8_16( CPU1, 0x20000, 0x10000,"b41-10.16", 0x4ca94d77,"b41-15.25",0xaed7a0d0 ),
   // Level data :
-  { "b41-01.15", 0x80000, 0x5d072fa4, REGION_CPU1, 0x40000, LOAD_NORMAL },
+  LOAD( CPU1, "b41-01.15", 0x40000, 0x80000, 0x5d072fa4),
 
-  { "b41-03.1", 0x80000, 0x736d35d0, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b41-02.7", 0x80000, 0x29f205d9, REGION_GFX2, 0x00000, LOAD_NORMAL },
-  { "b41-13.20", 0x10000, 0x9e464254, REGION_ROM2, 0, LOAD_NORMAL },
-  { "b41-04.48", 0x80000, 0xc668638f, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "b41-03.1", 0x00000, 0x80000, 0x736d35d0),
+  LOAD( GFX2, "b41-02.7", 0x00000, 0x80000, 0x29f205d9),
+  LOAD( ROM2, "b41-13.20", 0, 0x10000, 0x9e464254),
+  LOAD( SMP1, "b41-04.48", 0x00000, 0x80000, 0xc668638f),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

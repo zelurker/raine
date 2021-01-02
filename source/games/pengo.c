@@ -214,35 +214,35 @@ static struct INPUT_INFO input_pengo[] =
 
 static struct ROM_INFO rom_pengo[] =
 {
-  { "ic8", 0x1000, 0xf37066a8 , REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "ic7", 0x1000, 0xbaf48143 , REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "ic15", 0x1000, 0xadf0eba0 , REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "ic14", 0x1000, 0xa086d60f , REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "ic21", 0x1000, 0xb72084ec , REGION_ROM1, 0x4000, LOAD_NORMAL },
-  { "ic20", 0x1000, 0x94194a89 , REGION_ROM1, 0x5000, LOAD_NORMAL },
-  { "ic32", 0x1000, 0xaf7b12c4 , REGION_ROM1, 0x6000, LOAD_NORMAL },
-  { "ic31", 0x1000, 0x933950fe , REGION_ROM1, 0x7000, LOAD_NORMAL },
+  LOAD( ROM1, "ic8", 0x0000, 0x1000, 0xf37066a8 ),
+  LOAD( ROM1, "ic7", 0x1000, 0x1000, 0xbaf48143 ),
+  LOAD( ROM1, "ic15", 0x2000, 0x1000, 0xadf0eba0 ),
+  LOAD( ROM1, "ic14", 0x3000, 0x1000, 0xa086d60f ),
+  LOAD( ROM1, "ic21", 0x4000, 0x1000, 0xb72084ec ),
+  LOAD( ROM1, "ic20", 0x5000, 0x1000, 0x94194a89 ),
+  LOAD( ROM1, "ic32", 0x6000, 0x1000, 0xaf7b12c4 ),
+  LOAD( ROM1, "ic31", 0x7000, 0x1000, 0x933950fe ),
 
-  { "ic92", 0x2000, 0xd7eec6cd , REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "ic105", 0x2000, 0x5bfd26e9 , REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "pr1633.078", 0x0020, 0x3a5844ec , REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "pr1634.088", 0x0400, 0x766b139b , REGION_PROMS, 0x0020, LOAD_NORMAL },
-  { "pr1635.051", 0x0100, 0xc29dea27 , REGION_SMP1, 0x0000, LOAD_NORMAL },
-  { "pr1636.070", 0x0100, 0x77245b66 , REGION_SMP1, 0x0100, LOAD_NORMAL },
+  LOAD( GFX1, "ic92", 0x0000, 0x2000, 0xd7eec6cd ),
+  LOAD( GFX2, "ic105", 0x0000, 0x2000, 0x5bfd26e9 ),
+  LOAD( PROMS, "pr1633.078", 0x0000, 0x0020, 0x3a5844ec ),
+  LOAD( PROMS, "pr1634.088", 0x0020, 0x0400, 0x766b139b ),
+  LOAD( SMP1, "pr1635.051", 0x0000, 0x0100, 0xc29dea27 ),
+  LOAD( SMP1, "pr1636.070", 0x0100, 0x0100, 0x77245b66 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 // not encrypted
 static struct ROM_INFO rom_pengo2u[] =
 {
-  { "pengo.u8", 0x1000, 0x3dfeb20e, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "pengo.u7", 0x1000, 0x1db341bd, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pengo.u15", 0x1000, 0x7c2842d5, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "pengo.u14", 0x1000, 0x6e3c1f2f, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "pengo.u21", 0x1000, 0x95f354ff, REGION_ROM1, 0x4000, LOAD_NORMAL },
-  { "pengo.u20", 0x1000, 0x0fdb04b8, REGION_ROM1, 0x5000, LOAD_NORMAL },
-  { "pengo.u32", 0x1000, 0xe5920728, REGION_ROM1, 0x6000, LOAD_NORMAL },
-  { "pengo.u31", 0x1000, 0x13de47ed, REGION_ROM1, 0x7000, LOAD_NORMAL },
+  LOAD( ROM1, "pengo.u8", 0x0000, 0x1000, 0x3dfeb20e),
+  LOAD( ROM1, "pengo.u7", 0x1000, 0x1000, 0x1db341bd),
+  LOAD( ROM1, "pengo.u15", 0x2000, 0x1000, 0x7c2842d5),
+  LOAD( ROM1, "pengo.u14", 0x3000, 0x1000, 0x6e3c1f2f),
+  LOAD( ROM1, "pengo.u21", 0x4000, 0x1000, 0x95f354ff),
+  LOAD( ROM1, "pengo.u20", 0x5000, 0x1000, 0x0fdb04b8),
+  LOAD( ROM1, "pengo.u32", 0x6000, 0x1000, 0xe5920728),
+  LOAD( ROM1, "pengo.u31", 0x7000, 0x1000, 0x13de47ed),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1148,39 +1148,39 @@ static void execute_pengo() {
 
 static struct ROM_INFO rom_puckman[] =
 {
-  { "namcopac.6e", 0x1000, 0xfee263b3, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "namcopac.6f", 0x1000, 0x39d1fc83, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "namcopac.6h", 0x1000, 0x02083b03, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "namcopac.6j", 0x1000, 0x7a36fe55, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "pacman.5e", 0x1000, 0x0c944964, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "pacman.5f", 0x1000, 0x958fedf9, REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "82s123.7f", 0x0020, 0x2fc650bd, REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "82s126.4a", 0x0100, 0x3eb3a8e4, REGION_PROMS, 0x0020, LOAD_NORMAL },
-  { "82s126.1m", 0x0100, 0xa9cc86bf, REGION_SMP1, 0x0000, LOAD_NORMAL },
-  { "82s126.3m", 0x0100, 0x77245b66, REGION_SMP1, 0x0100, LOAD_NORMAL },
+  LOAD( ROM1, "namcopac.6e", 0x0000, 0x1000, 0xfee263b3),
+  LOAD( ROM1, "namcopac.6f", 0x1000, 0x1000, 0x39d1fc83),
+  LOAD( ROM1, "namcopac.6h", 0x2000, 0x1000, 0x02083b03),
+  LOAD( ROM1, "namcopac.6j", 0x3000, 0x1000, 0x7a36fe55),
+  LOAD( GFX1, "pacman.5e", 0x0000, 0x1000, 0x0c944964),
+  LOAD( GFX2, "pacman.5f", 0x0000, 0x1000, 0x958fedf9),
+  LOAD( PROMS, "82s123.7f", 0x0000, 0x0020, 0x2fc650bd),
+  LOAD( PROMS, "82s126.4a", 0x0020, 0x0100, 0x3eb3a8e4),
+  LOAD( SMP1, "82s126.1m", 0x0000, 0x0100, 0xa9cc86bf),
+  LOAD( SMP1, "82s126.3m", 0x0100, 0x0100, 0x77245b66),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_pacman[] =
 {
-  { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "pacman.6f", 0x1000, 0x1a6fb2d4, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pacman.6h", 0x1000, 0xbcdd1beb, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "pacman.6j", 0x1000, 0x817d94e3, REGION_ROM1, 0x3000, LOAD_NORMAL },
+  LOAD( ROM1, "pacman.6e", 0x0000, 0x1000, 0xc1e6ab10),
+  LOAD( ROM1, "pacman.6f", 0x1000, 0x1000, 0x1a6fb2d4),
+  LOAD( ROM1, "pacman.6h", 0x2000, 0x1000, 0xbcdd1beb),
+  LOAD( ROM1, "pacman.6j", 0x3000, 0x1000, 0x817d94e3),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_multi15[] =
 {
-  { "mpexe15.bin", 0x80000, 0xeb181a29, REGION_ROM1, 0x10000, LOAD_NORMAL },
+  LOAD( ROM1, "mpexe15.bin", 0x10000, 0x80000, 0xeb181a29),
   // I load the same rom in gfx1 and gfx2, it's because there are lots of
   // layouts are different offsets in it, and it's simpler to have 2 separate
   // copies to handle them...
-  { "mpgfx15.bin", 0x20000, 0x012fb9ec, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "mpgfx15.bin", 0x20000, 0x012fb9ec, REGION_GFX2, 0x0000, LOAD_NORMAL },
+  LOAD( GFX1, "mpgfx15.bin", 0x0000, 0x20000, 0x012fb9ec),
+  LOAD( GFX2, "mpgfx15.bin", 0x0000, 0x20000, 0x012fb9ec),
 
-  { "pal_7f.bin",  0x100, 0x40a5c3d9, REGION_PROMS, 0x1000, LOAD_NORMAL },
-  { "clut_4a.bin", 0x400, 0x562a66de, REGION_PROMS, 0x40, LOAD_NORMAL },
+  LOAD( PROMS, "pal_7f.bin", 0x1000, 0x100, 0x40a5c3d9),
+  LOAD( PROMS, "clut_4a.bin", 0x40, 0x400, 0x562a66de),
 
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -1189,47 +1189,47 @@ static struct ROM_INFO rom_multi15[] =
 
 static struct ROM_INFO rom_mspacman[] =
 {
-  { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "pacman.6f", 0x1000, 0x1a6fb2d4, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pacman.6h", 0x1000, 0xbcdd1beb, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "pacman.6j", 0x1000, 0x817d94e3, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "u5", 0x0800, 0xf45fbbcd, REGION_ROM1, 0x8000, LOAD_NORMAL },
-  { "u6", 0x1000, 0xa90e7000, REGION_ROM1, 0x9000, LOAD_NORMAL },
-  { "u7", 0x1000, 0xc82cd714, REGION_ROM1, 0xb000, LOAD_NORMAL },
+  LOAD( ROM1, "pacman.6e", 0x0000, 0x1000, 0xc1e6ab10),
+  LOAD( ROM1, "pacman.6f", 0x1000, 0x1000, 0x1a6fb2d4),
+  LOAD( ROM1, "pacman.6h", 0x2000, 0x1000, 0xbcdd1beb),
+  LOAD( ROM1, "pacman.6j", 0x3000, 0x1000, 0x817d94e3),
+  LOAD( ROM1, "u5", 0x8000, 0x0800, 0xf45fbbcd),
+  LOAD( ROM1, "u6", 0x9000, 0x1000, 0xa90e7000),
+  LOAD( ROM1, "u7", 0xb000, 0x1000, 0xc82cd714),
   FILL(0xc000, 0x3000,0xbf, ROM1),
-  { "5e", 0x1000, 0x5c281d01, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "5f", 0x1000, 0x615af909, REGION_GFX2, 0x0000, LOAD_NORMAL },
+  LOAD( GFX1, "5e", 0x0000, 0x1000, 0x5c281d01),
+  LOAD( GFX2, "5f", 0x0000, 0x1000, 0x615af909),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mspacmab[] =
 {
-  { "boot1", 0x1000, 0xd16b31b7, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "boot2", 0x1000, 0x0d32de5e, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "boot3", 0x1000, 0x1821ee0b, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "boot4", 0x1000, 0x165a9dd8, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "boot5", 0x1000, 0x8c3e6de6, REGION_ROM1, 0x8000, LOAD_NORMAL },
-  { "boot6", 0x1000, 0x368cb165, REGION_ROM1, 0x9000, LOAD_NORMAL },
+  LOAD( ROM1, "boot1", 0x0000, 0x1000, 0xd16b31b7),
+  LOAD( ROM1, "boot2", 0x1000, 0x1000, 0x0d32de5e),
+  LOAD( ROM1, "boot3", 0x2000, 0x1000, 0x1821ee0b),
+  LOAD( ROM1, "boot4", 0x3000, 0x1000, 0x165a9dd8),
+  LOAD( ROM1, "boot5", 0x8000, 0x1000, 0x8c3e6de6),
+  LOAD( ROM1, "boot6", 0x9000, 0x1000, 0x368cb165),
   FILL(0xa000, 0x5000,0xbf, ROM1),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mspac6m[] =
 {
-  { "1.cpu", 0x1000, 0xd16b31b7, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "2.cpu", 0x1000, 0x0d32de5e, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "3.cpu", 0x1000, 0x513f4d5c, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "4.cpu", 0x1000, 0xe21c81ff, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "52.cpu", 0x1000, 0x48453707, REGION_ROM1, 0x8000, LOAD_NORMAL },
-  { "62.cpu", 0x1000, 0x2e961bc4, REGION_ROM1, 0x9000, LOAD_NORMAL },
+  LOAD( ROM1, "1.cpu", 0x0000, 0x1000, 0xd16b31b7),
+  LOAD( ROM1, "2.cpu", 0x1000, 0x1000, 0x0d32de5e),
+  LOAD( ROM1, "3.cpu", 0x2000, 0x1000, 0x513f4d5c),
+  LOAD( ROM1, "4.cpu", 0x3000, 0x1000, 0xe21c81ff),
+  LOAD( ROM1, "52.cpu", 0x8000, 0x1000, 0x48453707),
+  LOAD( ROM1, "62.cpu", 0x9000, 0x1000, 0x2e961bc4),
 
   FILL(0xa000,0x5000,0xbf,ROM1),
 
-  { "7.cpu", 0x0800, 0x2850148a, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "9.cpu", 0x0800, 0x6c3c6ebb, REGION_GFX1, 0x0800, LOAD_NORMAL },
+  LOAD( GFX1, "7.cpu", 0x0000, 0x0800, 0x2850148a),
+  LOAD( GFX1, "9.cpu", 0x0800, 0x0800, 0x6c3c6ebb),
 
-  { "8.cpu", 0x0800, 0x5596b345, REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "10.cpu", 0x0800, 0x50c7477d, REGION_GFX2, 0x0800, LOAD_NORMAL },
+  LOAD( GFX2, "8.cpu", 0x0000, 0x0800, 0x5596b345),
+  LOAD( GFX2, "10.cpu", 0x0800, 0x0800, 0x50c7477d),
 
   // the proms are taken from pacplus (as mentioned in the text file)
 
@@ -1238,26 +1238,26 @@ static struct ROM_INFO rom_mspac6m[] =
 
 static struct ROM_INFO rom_mspacpls[] =
 {
-  { "boot1", 0x1000, 0xd16b31b7, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "mspacatk.2", 0x1000, 0x0af09d31, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "boot3", 0x1000, 0x1821ee0b, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "boot4", 0x1000, 0x165a9dd8, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "mspacatk.5", 0x1000, 0xe6e06954, REGION_ROM1, 0x8000, LOAD_NORMAL },
-  { "mspacatk.6", 0x1000, 0x3b5db308, REGION_ROM1, 0x9000, LOAD_NORMAL },
+  LOAD( ROM1, "boot1", 0x0000, 0x1000, 0xd16b31b7),
+  LOAD( ROM1, "mspacatk.2", 0x1000, 0x1000, 0x0af09d31),
+  LOAD( ROM1, "boot3", 0x2000, 0x1000, 0x1821ee0b),
+  LOAD( ROM1, "boot4", 0x3000, 0x1000, 0x165a9dd8),
+  LOAD( ROM1, "mspacatk.5", 0x8000, 0x1000, 0xe6e06954),
+  LOAD( ROM1, "mspacatk.6", 0x9000, 0x1000, 0x3b5db308),
   FILL(0xa000, 0x5000,0xbf, ROM1),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_pacplus[] =
 {
-  { "pacplus.6e", 0x1000, 0xd611ef68, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "pacplus.6f", 0x1000, 0xc7207556, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pacplus.6h", 0x1000, 0xae379430, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "pacplus.6j", 0x1000, 0x5a6dff7b, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "pacplus.5e", 0x1000, 0x022c35da, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "pacplus.5f", 0x1000, 0x4de65cdd, REGION_GFX2, 0x0000, LOAD_NORMAL },
-  { "pacplus.7f", 0x0020, 0x063dd53a, REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "pacplus.4a", 0x0100, 0xe271a166, REGION_PROMS, 0x0020, LOAD_NORMAL },
+  LOAD( ROM1, "pacplus.6e", 0x0000, 0x1000, 0xd611ef68),
+  LOAD( ROM1, "pacplus.6f", 0x1000, 0x1000, 0xc7207556),
+  LOAD( ROM1, "pacplus.6h", 0x2000, 0x1000, 0xae379430),
+  LOAD( ROM1, "pacplus.6j", 0x3000, 0x1000, 0x5a6dff7b),
+  LOAD( GFX1, "pacplus.5e", 0x0000, 0x1000, 0x022c35da),
+  LOAD( GFX2, "pacplus.5f", 0x0000, 0x1000, 0x4de65cdd),
+  LOAD( PROMS, "pacplus.7f", 0x0000, 0x0020, 0x063dd53a),
+  LOAD( PROMS, "pacplus.4a", 0x0020, 0x0100, 0xe271a166),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1888,31 +1888,31 @@ static void execute_puckman() {
 
 static struct ROM_INFO rom_pacman3d[] =
 {
-  { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "pacman3d.6f", 0x1000, 0x96364259, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pacman.6h", 0x1000, 0xbcdd1beb, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "pacman3d.6j", 0x1000, 0x959e930e, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "pacman3d.5e", 0x1000, 0xaa203d45, REGION_GFX1, 0x0000, LOAD_NORMAL },
-  { "pacman3d.5f", 0x1000, 0xd1830540, REGION_GFX2, 0x0000, LOAD_NORMAL },
+  LOAD( ROM1, "pacman.6e", 0x0000, 0x1000, 0xc1e6ab10),
+  LOAD( ROM1, "pacman3d.6f", 0x1000, 0x1000, 0x96364259),
+  LOAD( ROM1, "pacman.6h", 0x2000, 0x1000, 0xbcdd1beb),
+  LOAD( ROM1, "pacman3d.6j", 0x3000, 0x1000, 0x959e930e),
+  LOAD( GFX1, "pacman3d.5e", 0x0000, 0x1000, 0xaa203d45),
+  LOAD( GFX2, "pacman3d.5f", 0x0000, 0x1000, 0xd1830540),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_namcosil[] =
 {
-  { "namcopac.6e", 0x1000, 0xfee263b3, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "namcosil.6f", 0x1000, 0xc5ec2352, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "namcopac.6h", 0x1000, 0x02083b03, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "namcosil.6j", 0x1000, 0x57a07f6e, REGION_ROM1, 0x3000, LOAD_NORMAL },
+  LOAD( ROM1, "namcopac.6e", 0x0000, 0x1000, 0xfee263b3),
+  LOAD( ROM1, "namcosil.6f", 0x1000, 0x1000, 0xc5ec2352),
+  LOAD( ROM1, "namcopac.6h", 0x2000, 0x1000, 0x02083b03),
+  LOAD( ROM1, "namcosil.6j", 0x3000, 0x1000, 0x57a07f6e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_xenrev[] =
 {
-  { "pacman.6e", 0x1000, 0xc1e6ab10, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "pacman.6f", 0x1000, 0x1a6fb2d4, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pacman.6h", 0x1000, 0xbcdd1beb, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "xenrev.6j", 0x1000, 0x64a10b6c, REGION_ROM1, 0x3000, LOAD_NORMAL },
-  { "xenrev.5e", 0x1000, 0x40e3522d, REGION_GFX1, 0x0000, LOAD_NORMAL },
+  LOAD( ROM1, "pacman.6e", 0x0000, 0x1000, 0xc1e6ab10),
+  LOAD( ROM1, "pacman.6f", 0x1000, 0x1000, 0x1a6fb2d4),
+  LOAD( ROM1, "pacman.6h", 0x2000, 0x1000, 0xbcdd1beb),
+  LOAD( ROM1, "xenrev.6j", 0x3000, 0x1000, 0x64a10b6c),
+  LOAD( GFX1, "xenrev.5e", 0x0000, 0x1000, 0x40e3522d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1925,22 +1925,22 @@ static struct ROM_INFO rom_xenrev[] =
 
 static struct ROM_INFO rom_pacman25[] =
 {
-  { "namcopac.6e", 0x1000, 0xfee263b3, REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "namcosil.6f", 0x1000, 0xc5ec2352, REGION_ROM1, 0x1000, LOAD_NORMAL },
-  { "pacman25.6h", 0x1000, 0x92cd89b9, REGION_ROM1, 0x2000, LOAD_NORMAL },
-  { "pacman25.6j", 0x1000, 0xf7193845, REGION_ROM1, 0x3000, LOAD_NORMAL },
+  LOAD( ROM1, "namcopac.6e", 0x0000, 0x1000, 0xfee263b3),
+  LOAD( ROM1, "namcosil.6f", 0x1000, 0x1000, 0xc5ec2352),
+  LOAD( ROM1, "pacman25.6h", 0x2000, 0x1000, 0x92cd89b9),
+  LOAD( ROM1, "pacman25.6j", 0x3000, 0x1000, 0xf7193845),
 
   // maps 1-6
-  { "maps1.rom", 0x1000, 0x19a22304, REGION_ROM1, 0x8000, LOAD_NORMAL },
+  LOAD( ROM1, "maps1.rom", 0x8000, 0x1000, 0x19a22304),
   // maps 7-12
-  { "maps2.rom", 0x1000, 0x7cdbd912, REGION_ROM1, 0x9000, LOAD_NORMAL },
+  LOAD( ROM1, "maps2.rom", 0x9000, 0x1000, 0x7cdbd912),
   // maps 13-18
-  { "maps3.rom", 0x1000, 0xc626ea9c, REGION_ROM1, 0xa000, LOAD_NORMAL },
+  LOAD( ROM1, "maps3.rom", 0xa000, 0x1000, 0xc626ea9c),
   // maps 18-25
-  { "maps4.rom", 0x1000, 0xf5ba954d, REGION_ROM1, 0xb000, LOAD_NORMAL },
+  LOAD( ROM1, "maps4.rom", 0xb000, 0x1000, 0xf5ba954d),
   FILL(0xc000, 0x3000,0xbf, ROM1),
 
-  { "pacman25.5e", 0x1000, 0x11d47ae1, REGION_GFX1, 0x0000, LOAD_NORMAL },
+  LOAD( GFX1, "pacman25.5e", 0x0000, 0x1000, 0x11d47ae1),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

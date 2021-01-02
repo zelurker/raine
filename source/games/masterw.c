@@ -12,9 +12,9 @@
 
 static struct ROM_INFO rom_masterw[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+  LOAD8_16( ROM1,  0x000000,  0x00020000,
               "b72-06.rom",  0xae848eff,   "b72-12.rom",  0x7176ce70),
-  LOAD8_16(  REGION_ROM1,  0x040000,  0x00020000,
+  LOAD8_16( ROM1,  0x040000,  0x00020000,
               "b72-04.rom",  0x141e964c,   "b72-03.rom",  0xf4523496),
    {   "b72-07.rom", 0x00010000, 0x2b1a946f, 0, 0, 0, },
    {  "mow-m01.rom", 0x00080000, 0xa24ac26e, 0, 0, 0, },

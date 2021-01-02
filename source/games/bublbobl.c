@@ -89,25 +89,25 @@ changes/antiriad:
 static struct ROM_INFO rom_bublbobl[] =
 {
     /* ROMs banked at 8000-bfff */
-    { "a78-06.51", 0x08000, 0x32c8305b, REGION_CPU1, 0x00000, LOAD_NORMAL },
+    LOAD( CPU1, "a78-06.51", 0x00000, 0x08000, 0x32c8305b),
     /* 20000-2ffff empty */
-    { "a78-05.52", 0x10000, 0x53f4bc6e, REGION_CPU1, 0x08000, LOAD_NORMAL },
-   { "a78-08.37", 0x08000, 0xae11a07b, REGION_ROM2, 0x0000, LOAD_NORMAL },
-   { "a78-07.46", 0x08000, 0x4f9a26e8, REGION_ROM3, 0x0000, LOAD_NORMAL },
-   { "a78-09.12", 0x8000, 0x20358c22, REGION_GFX1, 0x00000, LOAD_NORMAL },
-   { "a78-10.13", 0x8000, 0x930168a9, REGION_GFX1, 0x08000, LOAD_NORMAL },
-   { "a78-11.14", 0x8000, 0x9773e512, REGION_GFX1, 0x10000, LOAD_NORMAL },
-   { "a78-12.15", 0x8000, 0xd045549b, REGION_GFX1, 0x18000, LOAD_NORMAL },
-   { "a78-13.16", 0x8000, 0xd0af35c5, REGION_GFX1, 0x20000, LOAD_NORMAL },
-   { "a78-14.17", 0x8000, 0x7b5369a8, REGION_GFX1, 0x28000, LOAD_NORMAL },
+    LOAD( CPU1, "a78-05.52", 0x08000, 0x10000, 0x53f4bc6e),
+   LOAD( ROM2, "a78-08.37", 0x0000, 0x08000, 0xae11a07b),
+   LOAD( ROM3, "a78-07.46", 0x0000, 0x08000, 0x4f9a26e8),
+   LOAD( GFX1, "a78-09.12", 0x00000, 0x8000, 0x20358c22),
+   LOAD( GFX1, "a78-10.13", 0x08000, 0x8000, 0x930168a9),
+   LOAD( GFX1, "a78-11.14", 0x10000, 0x8000, 0x9773e512),
+   LOAD( GFX1, "a78-12.15", 0x18000, 0x8000, 0xd045549b),
+   LOAD( GFX1, "a78-13.16", 0x20000, 0x8000, 0xd0af35c5),
+   LOAD( GFX1, "a78-14.17", 0x28000, 0x8000, 0x7b5369a8),
    /* 0x30000-0x3ffff empty */
   FILL(          0x30000, 0x10000, 0, GFX1),
-   { "a78-15.30", 0x8000, 0x6b61a413, REGION_GFX1, 0x40000, LOAD_NORMAL },
-   { "a78-16.31", 0x8000, 0xb5492d97, REGION_GFX1, 0x48000, LOAD_NORMAL },
-   { "a78-17.32", 0x8000, 0xd69762d5, REGION_GFX1, 0x50000, LOAD_NORMAL },
-   { "a78-18.33", 0x8000, 0x9f243b68, REGION_GFX1, 0x58000, LOAD_NORMAL },
-   { "a78-19.34", 0x8000, 0x66e9438c, REGION_GFX1, 0x60000, LOAD_NORMAL },
-   { "a78-20.35", 0x8000, 0x9ef863ad, REGION_GFX1, 0x68000, LOAD_NORMAL },
+   LOAD( GFX1, "a78-15.30", 0x40000, 0x8000, 0x6b61a413),
+   LOAD( GFX1, "a78-16.31", 0x48000, 0x8000, 0xb5492d97),
+   LOAD( GFX1, "a78-17.32", 0x50000, 0x8000, 0xd69762d5),
+   LOAD( GFX1, "a78-18.33", 0x58000, 0x8000, 0x9f243b68),
+   LOAD( GFX1, "a78-19.34", 0x60000, 0x8000, 0x66e9438c),
+   LOAD( GFX1, "a78-20.35", 0x68000, 0x8000, 0x9ef863ad),
    /* 0x70000-0x7ffff empty */
   FILL(          0x70000, 0x10000, 0, GFX1),
    { "68705.bin", 0x00000800, 0x78caa635, REGION_ROM4, 0, LOAD_NORMAL, },
@@ -117,18 +117,18 @@ static struct ROM_INFO rom_bublbobl[] =
 static struct ROM_INFO rom_dland[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "dl_3.u69", 0x08000, 0x01eb3e4f, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "dl_5.u67", 0x08000, 0x75740b61, REGION_CPU1, 0x08000, LOAD_NORMAL },
-  { "dl_4.u68", 0x08000, 0xc6a3776f, REGION_CPU1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "dl_3.u69", 0x00000, 0x08000, 0x01eb3e4f),
+  LOAD( CPU1, "dl_5.u67", 0x08000, 0x08000, 0x75740b61),
+  LOAD( CPU1, "dl_4.u68", 0x10000, 0x08000, 0xc6a3776f),
 	/* 20000-2ffff empty */
-  { "dl_6.58", 0x10000, 0x6352d3fa, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "dl_7.59", 0x10000, 0x37a38b69, REGION_GFX1, 0x10000, LOAD_NORMAL },
-  { "dl_8.60", 0x10000, 0x509ee5b1, REGION_GFX1, 0x20000, LOAD_NORMAL },
+  LOAD( GFX1, "dl_6.58", 0x00000, 0x10000, 0x6352d3fa),
+  LOAD( GFX1, "dl_7.59", 0x10000, 0x10000, 0x37a38b69),
+  LOAD( GFX1, "dl_8.60", 0x20000, 0x10000, 0x509ee5b1),
 	/* 0x30000-0x3ffff empty */
   FILL(          0x30000, 0x10000, 0, GFX1),
-  { "dl_9.61", 0x10000, 0xae8514d7, REGION_GFX1, 0x40000, LOAD_NORMAL },
-  { "dl_10.62", 0x10000, 0x6d406fb7, REGION_GFX1, 0x50000, LOAD_NORMAL },
-  { "dl_11.63", 0x10000, 0xbdf9c0ab, REGION_GFX1, 0x60000, LOAD_NORMAL },
+  LOAD( GFX1, "dl_9.61", 0x40000, 0x10000, 0xae8514d7),
+  LOAD( GFX1, "dl_10.62", 0x50000, 0x10000, 0x6d406fb7),
+  LOAD( GFX1, "dl_11.63", 0x60000, 0x10000, 0xbdf9c0ab),
 	/* 0x70000-0x7ffff empty */
   FILL(          0x70000, 0x10000, 0, GFX1),
   { NULL, 0, 0, 0, 0, 0 }
@@ -137,26 +137,26 @@ static struct ROM_INFO rom_dland[] =
 static struct ROM_INFO rom_bublcave[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "a78-06-1.51", 0x08000, 0xe8b9af5e, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "a78-05-1.52", 0x10000, 0xcfe14cb8, REGION_CPU1, 0x08000, LOAD_NORMAL },
+  LOAD( CPU1, "a78-06-1.51", 0x00000, 0x08000, 0xe8b9af5e),
+  LOAD( CPU1, "a78-05-1.52", 0x08000, 0x10000, 0xcfe14cb8),
 	/* 20000-2ffff empty */
   FILL(          0x18000, 0x10000, 0, CPU1), // not sure it's used !
-  { "a78-08.37", 0x08000, 0xa9384086, REGION_ROM2, 0x0000, LOAD_NORMAL },
-  // { "a78-01.17", 0x1000, 0xb1bfb53d, REGION_ROM4, 0xf000, LOAD_NORMAL },
-  { "a78-09.12", 0x8000, 0xb90b7eef, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "a78-10.13", 0x8000, 0x4fb22f05, REGION_GFX1, 0x08000, LOAD_NORMAL },
-  { "a78-11.14", 0x8000, 0x9773e512, REGION_GFX1, 0x10000, LOAD_NORMAL },
-  { "a78-12.15", 0x8000, 0xe49eb49e, REGION_GFX1, 0x18000, LOAD_NORMAL },
-  { "a78-13.16", 0x8000, 0x61919734, REGION_GFX1, 0x20000, LOAD_NORMAL },
-  { "a78-14.17", 0x8000, 0x7e3a13bd, REGION_GFX1, 0x28000, LOAD_NORMAL },
-  { "a78-15.30", 0x8000, 0xc253c73a, REGION_GFX1, 0x40000, LOAD_NORMAL },
+  LOAD( ROM2, "a78-08.37", 0x0000, 0x08000, 0xa9384086),
+  // LOAD( ROM4, "a78-01.17", 0xf000, 0x1000, 0xb1bfb53d),
+  LOAD( GFX1, "a78-09.12", 0x00000, 0x8000, 0xb90b7eef),
+  LOAD( GFX1, "a78-10.13", 0x08000, 0x8000, 0x4fb22f05),
+  LOAD( GFX1, "a78-11.14", 0x10000, 0x8000, 0x9773e512),
+  LOAD( GFX1, "a78-12.15", 0x18000, 0x8000, 0xe49eb49e),
+  LOAD( GFX1, "a78-13.16", 0x20000, 0x8000, 0x61919734),
+  LOAD( GFX1, "a78-14.17", 0x28000, 0x8000, 0x7e3a13bd),
+  LOAD( GFX1, "a78-15.30", 0x40000, 0x8000, 0xc253c73a),
   /* 0x30000-0x3ffff empty */
   FILL(          0x30000, 0x10000, 0, GFX1),
-  { "a78-16.31", 0x8000, 0xe66c92ee, REGION_GFX1, 0x48000, LOAD_NORMAL },
-  { "a78-17.32", 0x8000, 0xd69762d5, REGION_GFX1, 0x50000, LOAD_NORMAL },
-  { "a78-18.33", 0x8000, 0x47ee2544, REGION_GFX1, 0x58000, LOAD_NORMAL },
-  { "a78-19.34", 0x8000, 0x1ceeb1fa, REGION_GFX1, 0x60000, LOAD_NORMAL },
-  { "a78-20.35", 0x8000, 0x64322e24, REGION_GFX1, 0x68000, LOAD_NORMAL },
+  LOAD( GFX1, "a78-16.31", 0x48000, 0x8000, 0xe66c92ee),
+  LOAD( GFX1, "a78-17.32", 0x50000, 0x8000, 0xd69762d5),
+  LOAD( GFX1, "a78-18.33", 0x58000, 0x8000, 0x47ee2544),
+  LOAD( GFX1, "a78-19.34", 0x60000, 0x8000, 0x1ceeb1fa),
+  LOAD( GFX1, "a78-20.35", 0x68000, 0x8000, 0x64322e24),
 	/* 0x70000-0x7ffff empty */
   FILL(          0x70000, 0x10000, 0, GFX1),
 	/* Located on CPU/Sound Board */
@@ -166,9 +166,9 @@ static struct ROM_INFO rom_bublcave[] =
 static struct ROM_INFO rom_bublredux[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "bb3", 0x08000, 0x198dc44e, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "bb5", 0x08000, 0xd29d3444, REGION_CPU1, 0x08000, LOAD_NORMAL },
-  { "bb4", 0x08000, 0x9b819b62, REGION_CPU1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "bb3", 0x00000, 0x08000, 0x198dc44e),
+  LOAD( CPU1, "bb5", 0x08000, 0x08000, 0xd29d3444),
+  LOAD( CPU1, "bb4", 0x10000, 0x08000, 0x9b819b62),
 	/* 20000-2ffff empty */
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -320,9 +320,9 @@ static struct SOUND_INFO sound_bublbobl[] =
 static struct ROM_INFO rom_bublboblr[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "a78-25.51", 0x08000, 0x2d901c9d, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  LOAD( CPU1, "a78-25.51", 0x00000, 0x08000, 0x2d901c9d),
 	/* 20000-2ffff empty */
-  { "a78-24.52", 0x10000, 0xb7afedc4, REGION_CPU1, 0x8000, LOAD_NORMAL },
+  LOAD( CPU1, "a78-24.52", 0x8000, 0x10000, 0xb7afedc4),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -335,9 +335,9 @@ static struct ROM_INFO rom_bublboblr[] =
 static struct ROM_INFO rom_bubboblr1[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "a78-06.51", 0x08000, 0x32c8305b, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  LOAD( CPU1, "a78-06.51", 0x00000, 0x08000, 0x32c8305b),
 	/* 20000-2ffff empty */
-  { "a78-21.52", 0x10000, 0x2844033d, REGION_CPU1, 0x08000, LOAD_NORMAL },
+  LOAD( CPU1, "a78-21.52", 0x08000, 0x10000, 0x2844033d),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -350,9 +350,9 @@ static struct ROM_INFO rom_bubboblr1[] =
 static struct ROM_INFO rom_boblbobl[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "bb3", 0x08000, 0x01f81936, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "bb5", 0x08000, 0x13118eb1, REGION_CPU1, 0x08000, LOAD_NORMAL },
-  { "bb4", 0x08000, 0xafda99d8, REGION_CPU1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "bb3", 0x00000, 0x08000, 0x01f81936),
+  LOAD( CPU1, "bb5", 0x08000, 0x08000, 0x13118eb1),
+  LOAD( CPU1, "bb4", 0x10000, 0x08000, 0xafda99d8),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -471,9 +471,9 @@ static struct DSW_INFO dsw_boblbobl[] =
 static struct ROM_INFO rom_sboblbob[] =
 {
 	/* ROMs banked at 8000-bfff */
-  { "bbb-3.rom", 0x08000, 0xf304152a, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "bb5", 0x08000, 0x13118eb1, REGION_CPU1, 0x08000, LOAD_NORMAL },
-  { "bbb-4.rom", 0x08000, 0x94c75591, REGION_CPU1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "bbb-3.rom", 0x00000, 0x08000, 0xf304152a),
+  LOAD( CPU1, "bb5", 0x08000, 0x08000, 0x13118eb1),
+  LOAD( CPU1, "bbb-4.rom", 0x10000, 0x08000, 0x94c75591),
 	/* 20000-2ffff empty */
    {           NULL,          0,          0, 0, 0, 0, },
 };

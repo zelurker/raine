@@ -25,20 +25,20 @@
 static struct ROM_INFO rom_pirates[] =
 {
 	/* 68000 Code (encrypted) */
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+  LOAD8_16( ROM1,  0x00000,  0x80000,
             "r_449b.bin",  0x224aeeda, "l_5c1e.bin",  0x46740204),
    /* GFX (encrypted) */
-  { "p4_4d48.bin", 0x080000, 0x89fda216, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "p2_5d74.bin", 0x080000, 0x40e069b4, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "p1_7b30.bin", 0x080000, 0x26d78518, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "p8_9f4f.bin", 0x080000, 0xf31696ea, REGION_GFX1, 0x180000, LOAD_NORMAL },
+  LOAD( GFX1, "p4_4d48.bin", 0x000000, 0x080000, 0x89fda216),
+  LOAD( GFX1, "p2_5d74.bin", 0x080000, 0x080000, 0x40e069b4),
+  LOAD( GFX1, "p1_7b30.bin", 0x100000, 0x080000, 0x26d78518),
+  LOAD( GFX1, "p8_9f4f.bin", 0x180000, 0x080000, 0xf31696ea),
 	/* GFX (encrypted) */
-  { "s1_6e89.bin", 0x080000, 0xc78a276f, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "s2_6df3.bin", 0x080000, 0x9f0bad96, REGION_GFX2, 0x080000, LOAD_NORMAL },
-  { "s4_fdcc.bin", 0x080000, 0x8916ddb5, REGION_GFX2, 0x100000, LOAD_NORMAL },
-  { "s8_4b7c.bin", 0x080000, 0x1c41bd2c, REGION_GFX2, 0x180000, LOAD_NORMAL },
+  LOAD( GFX2, "s1_6e89.bin", 0x000000, 0x080000, 0xc78a276f),
+  LOAD( GFX2, "s2_6df3.bin", 0x080000, 0x080000, 0x9f0bad96),
+  LOAD( GFX2, "s4_fdcc.bin", 0x100000, 0x080000, 0x8916ddb5),
+  LOAD( GFX2, "s8_4b7c.bin", 0x180000, 0x080000, 0x1c41bd2c),
 	/* OKI samples (encrypted) */
-   { "s89_49d4.bin", 0x080000, 0x63a739ec, REGION_SMP1, 0x000000, LOAD_NORMAL },
+   LOAD( SMP1, "s89_49d4.bin", 0x000000, 0x080000, 0x63a739ec),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -47,22 +47,22 @@ static struct ROM_INFO rom_pirates[] =
 static struct ROM_INFO rom_genix[] =
 {
 	/* 68000 Code (encrypted) */
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+  LOAD8_16( ROM1,  0x00000,  0x80000,
             "1.15",  0xd26abfb0, "2.16",  0xa14a25b4),
    /* GFX (encrypted) */
-  { "7.34", 0x040000, 0x58da8aac, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "9.35", 0x040000, 0x96bad9a8, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "8.48", 0x040000, 0x0ddc58b6, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "10.49", 0x040000, 0x2be308c5, REGION_GFX1, 0x180000, LOAD_NORMAL },
-  { "10.49", 0x040000, 0x2be308c5, REGION_GFX1, 0x1c0000, LOAD_NORMAL },
+  LOAD( GFX1, "7.34", 0x000000, 0x040000, 0x58da8aac),
+  LOAD( GFX1, "9.35", 0x080000, 0x040000, 0x96bad9a8),
+  LOAD( GFX1, "8.48", 0x100000, 0x040000, 0x0ddc58b6),
+  LOAD( GFX1, "10.49", 0x180000, 0x040000, 0x2be308c5),
+  LOAD( GFX1, "10.49", 0x1c0000, 0x040000, 0x2be308c5),
 	/* GFX (encrypted) */
-  { "6.69", 0x040000, 0xb8422af7, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "5.70", 0x040000, 0xe46125c5, REGION_GFX2, 0x080000, LOAD_NORMAL },
-  { "4.71", 0x040000, 0x7a8ed21b, REGION_GFX2, 0x100000, LOAD_NORMAL },
-  { "3.72", 0x040000, 0xf78bd6ca, REGION_GFX2, 0x180000, LOAD_NORMAL },
-  { "3.72", 0x040000, 0xf78bd6ca, REGION_GFX2, 0x1c0000, LOAD_NORMAL },
+  LOAD( GFX2, "6.69", 0x000000, 0x040000, 0xb8422af7),
+  LOAD( GFX2, "5.70", 0x080000, 0x040000, 0xe46125c5),
+  LOAD( GFX2, "4.71", 0x100000, 0x040000, 0x7a8ed21b),
+  LOAD( GFX2, "3.72", 0x180000, 0x040000, 0xf78bd6ca),
+  LOAD( GFX2, "3.72", 0x1c0000, 0x040000, 0xf78bd6ca),
 	/* OKI samples (encrypted) */
-  { "0.31", 0x080000, 0x80d087bc, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  LOAD( SMP1, "0.31", 0x000000, 0x080000, 0x80d087bc),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

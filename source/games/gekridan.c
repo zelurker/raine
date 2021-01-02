@@ -26,7 +26,7 @@ static struct ROM_INFO rom_gekiridn[] =
    {   "e11-10.bin", 0x00040000, 0x8795e6ba, 0, 0, 0, },
    {   "e11-11.bin", 0x00040000, 0x2284a08e, 0, 0, 0, },
    {   "e11-12.bin", 0x00040000, 0x6a7aaacf, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00020000,
+  LOAD8_16(  ROM2,  0x000000,  0x00020000,
               "e11-13.bin",  0x51a11ff7,   "e11-14.bin",  0xdce2ba91),
    {           NULL,          0,          0, 0, 0, 0, },
 };

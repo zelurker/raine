@@ -28,20 +28,20 @@
 
 static struct ROM_INFO rom_flstory[] =
 {
-  { "cpu-a45.15", 0x4000, 0xf03fc969, REGION_CPU1, 0x0000, LOAD_NORMAL },
-  { "cpu-a45.16", 0x4000, 0x311aa82e, REGION_CPU1, 0x4000, LOAD_NORMAL },
-  { "cpu-a45.17", 0x4000, 0xa2b5d17d, REGION_CPU1, 0x8000, LOAD_NORMAL },
-  { "snd.22", 0x2000, 0xd58b201d, REGION_ROM2, 0x0000, LOAD_NORMAL },
-  { "snd.23", 0x2000, 0x25e7fd9d, REGION_ROM2, 0x2000, LOAD_NORMAL },
-  { "a45-20.mcu", 0x0800, 0x5378253c /*7d2cdd9b*/, REGION_ROM3, 0x0000, LOAD_NORMAL },
-  { "vid-a45.18", 0x4000, 0x6f08f69e, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "vid-a45.06", 0x4000, 0xdc856a75, REGION_GFX1, 0x04000, LOAD_NORMAL },
-  { "vid-a45.08", 0x4000, 0xd0b028ca, REGION_GFX1, 0x08000, LOAD_NORMAL },
-  { "vid-a45.20", 0x4000, 0x1b0edf34, REGION_GFX1, 0x0c000, LOAD_NORMAL },
-  { "vid-a45.19", 0x4000, 0x2b572dc9, REGION_GFX1, 0x10000, LOAD_NORMAL },
-  { "vid-a45.07", 0x4000, 0xaa4b0762, REGION_GFX1, 0x14000, LOAD_NORMAL },
-  { "vid-a45.09", 0x4000, 0x8336be58, REGION_GFX1, 0x18000, LOAD_NORMAL },
-  { "vid-a45.21", 0x4000, 0xfc382bd1, REGION_GFX1, 0x1c000, LOAD_NORMAL },
+  LOAD( CPU1, "cpu-a45.15", 0x0000, 0x4000, 0xf03fc969),
+  LOAD( CPU1, "cpu-a45.16", 0x4000, 0x4000, 0x311aa82e),
+  LOAD( CPU1, "cpu-a45.17", 0x8000, 0x4000, 0xa2b5d17d),
+  LOAD( ROM2, "snd.22", 0x0000, 0x2000, 0xd58b201d),
+  LOAD( ROM2, "snd.23", 0x2000, 0x2000, 0x25e7fd9d),
+  LOAD( ROM3, "a45-20.mcu", 0x0000, 0x0800, 0x5378253c /*7d2cdd9b*/),
+  LOAD( GFX1, "vid-a45.18", 0x00000, 0x4000, 0x6f08f69e),
+  LOAD( GFX1, "vid-a45.06", 0x04000, 0x4000, 0xdc856a75),
+  LOAD( GFX1, "vid-a45.08", 0x08000, 0x4000, 0xd0b028ca),
+  LOAD( GFX1, "vid-a45.20", 0x0c000, 0x4000, 0x1b0edf34),
+  LOAD( GFX1, "vid-a45.19", 0x10000, 0x4000, 0x2b572dc9),
+  LOAD( GFX1, "vid-a45.07", 0x14000, 0x4000, 0xaa4b0762),
+  LOAD( GFX1, "vid-a45.09", 0x18000, 0x4000, 0x8336be58),
+  LOAD( GFX1, "vid-a45.21", 0x1c000, 0x4000, 0xfc382bd1),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

@@ -19,7 +19,7 @@ static struct ROM_INFO rom_syvalion[] =
   { "b51-22.bin", 0x20000, 0xe6c61079, REGION_CPU1, 0x00001, LOAD_8_16 },
   { "b51-19.bin", 0x20000, 0x2abd762c, REGION_CPU1, 0x40000, LOAD_8_16 },
   { "b51-21.bin", 0x20000, 0xaa111f30, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "b51-23.bin", 0x10000, 0x734662de, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "b51-23.bin", 0x00000, 0x10000, 0x734662de),
   { "b51-16.bin", 0x20000, 0xc0fcf7a5, REGION_GFX1, 0x000000, LOAD_8_16 },
   { "b51-12.bin", 0x20000, 0x6b36d358, REGION_GFX1, 0x000001, LOAD_8_16 },
   { "b51-15.bin", 0x20000, 0x30b2ee02, REGION_GFX1, 0x040000, LOAD_8_16 },
@@ -36,8 +36,8 @@ static struct ROM_INFO rom_syvalion[] =
   { "b51-02.bin", 0x20000, 0x906ba440, REGION_GFX1, 0x300001, LOAD_8_16 },
   { "b51-05.bin", 0x20000, 0x47976ae9, REGION_GFX1, 0x340000, LOAD_8_16 },
   { "b51-01.bin", 0x20000, 0x8dab004a, REGION_GFX1, 0x340001, LOAD_8_16 },
-  { "b51-18.bin", 0x80000, 0x8b23ac83, REGION_SOUND2, 0x00000, LOAD_NORMAL }, // deltat
-  { "b51-17.bin", 0x80000, 0xd85096aa, REGION_SOUND1, 0x00000, LOAD_NORMAL }, // adpcm samples
+  LOAD( SOUND2, "b51-18.bin", 0x00000, 0x80000, 0x8b23ac83), // deltat
+  LOAD( SOUND1, "b51-17.bin", 0x00000, 0x80000, 0xd85096aa), // adpcm samples
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -45,7 +45,7 @@ static struct ROM_INFO rom_tetristh[] =
 {
   { "c26-12-1.ic36", 0x20000, 0x77e80c82, REGION_CPU1, 0x00000, LOAD_8_16 },
   { "c26-11-1.ic18", 0x20000, 0x069d77d2, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "c26-13.ic56", 0x10000, 0xefa89dfa, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "c26-13.ic56", 0x00000, 0x10000, 0xefa89dfa),
   { "c26-04.ic51", 0x20000, 0x23ddf00f, REGION_GFX1, 0x000000, LOAD_8_16 },
   { "c26-08.ic65", 0x20000, 0x86071824, REGION_GFX1, 0x000001, LOAD_8_16 },
   { "c26-03.ic50", 0x20000, 0x341be9ac, REGION_GFX1, 0x100000, LOAD_8_16 },
@@ -54,9 +54,9 @@ static struct ROM_INFO rom_tetristh[] =
   { "c26-06.ic63", 0x20000, 0xdeae0394, REGION_GFX1, 0x200001, LOAD_8_16 },
   { "c26-01.ic48", 0x20000, 0x7efc7311, REGION_GFX1, 0x300000, LOAD_8_16 },
   { "c26-05.ic62", 0x20000, 0x12718d97, REGION_GFX1, 0x300001, LOAD_8_16 },
-  { "b56-09.bin", 0x80000, 0x7fd9ee68, REGION_SMP2, 0x00000, LOAD_NORMAL },
-  { "b56-10.bin", 0x80000, 0xde1bce59, REGION_SMP1, 0x00000, LOAD_NORMAL },
-  // { "b56-18.bin", 0x02000, 0xc88f0bbe, REGION_USER1, 0x00000, LOAD_NORMAL },
+  LOAD( SMP2, "b56-09.bin", 0x00000, 0x80000, 0x7fd9ee68),
+  LOAD( SMP1, "b56-10.bin", 0x00000, 0x80000, 0xde1bce59),
+  // LOAD( USER1, "b56-18.bin", 0x00000, 0x02000, 0xc88f0bbe),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

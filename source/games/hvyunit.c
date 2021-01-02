@@ -36,47 +36,47 @@ port:
 
 static struct ROM_INFO rom_hvyunit[] =
 {
-  { "b73_10.5c", 0x20000, 0xca52210f, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "b73_11.5p", 0x10000, 0xcb451695, REGION_CPU2, 0x00000, LOAD_NORMAL },
-  { "b73_12.7e", 0x010000, 0xd1d24fab, REGION_ROM3, 0x000000, LOAD_NORMAL },
-//  { "mermaid.bin", 0x0e00, 0x88c5dd27, REGION_MERMAID, 0x0000, LOAD_NORMAL },
-  { "b73_08.2f", 0x080000, 0xf83dd808, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "b73_07.2c", 0x010000, 0x5cffa42c, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "b73_06.2b", 0x010000, 0xa98e4aea, REGION_GFX1, 0x120000, LOAD_NORMAL },
-  { "b73_01.1b", 0x010000, 0x3a8a4489, REGION_GFX1, 0x140000, LOAD_NORMAL },
-  { "b73_02.1c", 0x010000, 0x025c536c, REGION_GFX1, 0x160000, LOAD_NORMAL },
-  { "b73_03.1d", 0x010000, 0xec6020cf, REGION_GFX1, 0x180000, LOAD_NORMAL },
+  LOAD( ROM1, "b73_10.5c", 0x00000, 0x20000, 0xca52210f),
+  LOAD( CPU2, "b73_11.5p", 0x00000, 0x10000, 0xcb451695),
+  LOAD( ROM3, "b73_12.7e", 0x000000, 0x010000, 0xd1d24fab),
+//  LOAD( MERMAID, "mermaid.bin", 0x0000, 0x0e00, 0x88c5dd27),
+  LOAD( GFX1, "b73_08.2f", 0x000000, 0x080000, 0xf83dd808),
+  LOAD( GFX1, "b73_07.2c", 0x100000, 0x010000, 0x5cffa42c),
+  LOAD( GFX1, "b73_06.2b", 0x120000, 0x010000, 0xa98e4aea),
+  LOAD( GFX1, "b73_01.1b", 0x140000, 0x010000, 0x3a8a4489),
+  LOAD( GFX1, "b73_02.1c", 0x160000, 0x010000, 0x025c536c),
+  LOAD( GFX1, "b73_03.1d", 0x180000, 0x010000, 0xec6020cf),
 	/*                      0x190000, 0x010000  no data */
-  { "b73_04.1f", 0x010000, 0xf7badbb2, REGION_GFX1, 0x1a0000, LOAD_NORMAL },
+  LOAD( GFX1, "b73_04.1f", 0x1a0000, 0x010000, 0xf7badbb2),
 	/*                      0x1b0000, 0x010000  no data */
-  { "b73_05.1h", 0x010000, 0xb8e829d2, REGION_GFX1, 0x1c0000, LOAD_NORMAL },
-  { "b73_09.2p", 0x080000, 0x537c647f, REGION_GFX2, 0x000000, LOAD_NORMAL },
+  LOAD( GFX1, "b73_05.1h", 0x1c0000, 0x010000, 0xb8e829d2),
+  LOAD( GFX2, "b73_09.2p", 0x000000, 0x080000, 0x537c647f),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_hvyunitj[] = // clone of hvyunit
 {
-  { "b73_30.5c", 0x20000, 0x600af545, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "b73_14.5p", 0x10000, 0x0dfb51d4, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM1, "b73_30.5c", 0x00000, 0x20000, 0x600af545),
+  LOAD( ROM2, "b73_14.5p", 0x00000, 0x10000, 0x0dfb51d4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_hvyunitjo[] = // clone of hvyunit
 {
-  { "b73_13.5c", 0x20000, 0xe2874601, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "b73_14.5p", 0x10000, 0x0dfb51d4, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM1, "b73_13.5c", 0x00000, 0x20000, 0xe2874601),
+  LOAD( ROM2, "b73_14.5p", 0x00000, 0x10000, 0x0dfb51d4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_hvyunitu[] = // clone of hvyunit
 {
-  { "b73_34.5c", 0x20000, 0x05c30a90, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "b73_35.6p", 0x10000, 0xaed1669d, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "b73_08.2f", 0x080000, 0xf83dd808, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "b73_28.2c", 0x020000, 0xa02e08d6, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "b73_27.2b", 0x020000, 0x8708f97c, REGION_GFX1, 0x120000, LOAD_NORMAL },
-  { "b73_25.0b", 0x020000, 0x2f13f81e, REGION_GFX1, 0x140000, LOAD_NORMAL }, /* the data in first half of this actually differs slightly to the other sets, a 0x22 fill is replaced by 0xff on empty tiles */
-  { "b73_26.0c", 0x010000, 0xb8e829d2, REGION_GFX1, 0x160000, LOAD_NORMAL }, /* == b73_05.1h, despite the different label */
+  LOAD( ROM1, "b73_34.5c", 0x00000, 0x20000, 0x05c30a90),
+  LOAD( ROM2, "b73_35.6p", 0x00000, 0x10000, 0xaed1669d),
+  LOAD( GFX1, "b73_08.2f", 0x000000, 0x080000, 0xf83dd808),
+  LOAD( GFX1, "b73_28.2c", 0x100000, 0x020000, 0xa02e08d6),
+  LOAD( GFX1, "b73_27.2b", 0x120000, 0x020000, 0x8708f97c),
+  LOAD( GFX1, "b73_25.0b", 0x140000, 0x020000, 0x2f13f81e), /* the data in first half of this actually differs slightly to the other sets, a 0x22 fill is replaced by 0xff on empty tiles */
+  LOAD( GFX1, "b73_26.0c", 0x160000, 0x010000, 0xb8e829d2), /* == b73_05.1h, despite the different label */
   { NULL, 0, 0, 0, 0, 0 }
 };
 

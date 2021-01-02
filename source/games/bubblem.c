@@ -29,7 +29,7 @@ static struct ROM_INFO rom_bubblem[] =
   { "e21-05.rom", 0x100000, 0x07eab58f, REGION_GFX2 , 0x000000, LOAD_MASK8 },
   { "e21-03.rom", 0x200000, 0x54c5f83d, REGION_SOUND1, 0x000000, LOAD_BE }, // C8 C9 CA CB
   { "e21-04.rom", 0x200000, 0xe5af2a2d, REGION_SOUND1, 0x400000, LOAD_BE }, // CC CD -std-
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00040000,
+  LOAD8_16( ROM2,  0x000000,  0x00040000,
               "e21-12.rom",  0x34093de1,   "e21-13.rom",  0x9e9ec437),
    {           NULL,          0,          0, 0, 0, 0, },
 };

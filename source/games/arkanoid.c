@@ -38,42 +38,42 @@ Interesting RAM address from Stephh :
 // parent set.
 static struct ROM_INFO rom_arkanoid[] =
 {
-  { "a75_01-1.rom", 0x8000, 0x5bcda3b0 , REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "a75_11.rom", 0x8000, 0xeafd7191 , REGION_ROM1, 0x8000, LOAD_NORMAL },
-  { "arkanoid.uc", 0x0800, 0x515d77b6 , REGION_ROM2, 0x0000, LOAD_NORMAL },
-  { "a75_03.rom", 0x8000, 0x038b74ba , REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "a75_04.rom", 0x8000, 0x71fae199 , REGION_GFX1, 0x08000, LOAD_NORMAL },
-  { "a75_05.rom", 0x8000, 0xc76374e2 , REGION_GFX1, 0x10000, LOAD_NORMAL },
-  { "07.bpr", 0x0200, 0x0af8b289 , REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "08.bpr", 0x0200, 0xabb002fb , REGION_PROMS, 0x0200, LOAD_NORMAL },
-  { "09.bpr", 0x0200, 0xa7c6c277 , REGION_PROMS, 0x0400, LOAD_NORMAL },
+  LOAD( ROM1, "a75_01-1.rom", 0x0000, 0x8000, 0x5bcda3b0 ),
+  LOAD( ROM1, "a75_11.rom", 0x8000, 0x8000, 0xeafd7191 ),
+  LOAD( ROM2, "arkanoid.uc", 0x0000, 0x0800, 0x515d77b6 ),
+  LOAD( GFX1, "a75_03.rom", 0x00000, 0x8000, 0x038b74ba ),
+  LOAD( GFX1, "a75_04.rom", 0x08000, 0x8000, 0x71fae199 ),
+  LOAD( GFX1, "a75_05.rom", 0x10000, 0x8000, 0xc76374e2 ),
+  LOAD( PROMS, "07.bpr", 0x0000, 0x0200, 0x0af8b289 ),
+  LOAD( PROMS, "08.bpr", 0x0200, 0x0200, 0xabb002fb ),
+  LOAD( PROMS, "09.bpr", 0x0400, 0x0200, 0xa7c6c277 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_arkatour[] =
 {
-  { "t_ark1.bin", 0x8000, 0xe3b8faf5 , REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "t_ark2.bin", 0x8000, 0x326aca4d , REGION_ROM1, 0x8000, LOAD_NORMAL },
+  LOAD( ROM1, "t_ark1.bin", 0x0000, 0x8000, 0xe3b8faf5 ),
+  LOAD( ROM1, "t_ark2.bin", 0x8000, 0x8000, 0x326aca4d ),
   { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
-  { "t_ark3.bin", 0x8000, 0x5ddea3cf , REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "t_ark4.bin", 0x8000, 0x5fcf2e85 , REGION_GFX1, 0x08000, LOAD_NORMAL },
-  { "t_ark5.bin", 0x8000, 0x7b76b192 , REGION_GFX1, 0x10000, LOAD_NORMAL },
+  LOAD( GFX1, "t_ark3.bin", 0x00000, 0x8000, 0x5ddea3cf ),
+  LOAD( GFX1, "t_ark4.bin", 0x08000, 0x8000, 0x5fcf2e85 ),
+  LOAD( GFX1, "t_ark5.bin", 0x10000, 0x8000, 0x7b76b192 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_arkatayt[] =
 {
   { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
-  { "arkanoid.1", 0x8000, 0x6e0a2b6f , REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "arkanoid.2", 0x8000, 0x5a97dd56 , REGION_ROM1, 0x8000, LOAD_NORMAL },
+  LOAD( ROM1, "arkanoid.1", 0x0000, 0x8000, 0x6e0a2b6f ),
+  LOAD( ROM1, "arkanoid.2", 0x8000, 0x8000, 0x5a97dd56 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_arkangc[] =
 {
   { REGION_EMPTY, 0, 0 , REGION_ROM2, 0, LOAD_NORMAL },
-  { "arkgc.1", 0x8000, 0xc54232e6 , REGION_ROM1, 0x0000, LOAD_NORMAL },
-  { "arkgc.2", 0x8000, 0x9f0d4754 , REGION_ROM1, 0x8000, LOAD_NORMAL },
+  LOAD( ROM1, "arkgc.1", 0x0000, 0x8000, 0xc54232e6 ),
+  LOAD( ROM1, "arkgc.2", 0x8000, 0x8000, 0x9f0d4754 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

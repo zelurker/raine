@@ -62,15 +62,15 @@ static int spr_xoffset, spr_yoffset;
 
 static struct ROM_INFO rom_cookbib[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,    0x020000,
+  LOAD8_16(  ROM1,  0x000000,    0x020000,
             "prg2.ub17",  0x2664a335, "prg1.ub16",  0xcda6335f),
-	{ "prg-s.ub5",   0x010000, 0x547d6ea3, REGION_ROM2, 0x000000, LOAD_NORMAL },
-	{ "sound.uc1",   0x020000, 0x545e19b6, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x000000,     0x020000,
+	LOAD( ROM2, "prg-s.ub5", 0x000000, 0x010000, 0x547d6ea3),
+	LOAD( SMP1, "sound.uc1", 0x000000, 0x020000, 0x545e19b6),
+  LOAD8_16(  GFX1,  0x000000,     0x020000,
             "uor1.bin",  0xa7d91f23, "uor2.bin",  0x9aacbec2),
-  LOAD8_16(  REGION_GFX1,  0x040000,     0x020000,
+  LOAD8_16(  GFX1,  0x040000,     0x020000,
             "uor3.bin",  0x3fee0c3c, "uor4.bin",  0xbed9ed2d),
-  LOAD8_16(  REGION_GFX2,  0x000000,    0x040000,
+  LOAD8_16(  GFX2,  0x000000,    0x040000,
             "srom6.bin",  0xade2dbec,"srom5.bin",  0x73a46e43 ),
 	{ "protdata.bin",0x000200, 0xa77d13f4, REGION_PROMS,0x000000, LOAD_NORMAL, },
 	{ NULL, 0, 0, 0, 0, 0 }
@@ -80,15 +80,15 @@ static struct ROM_INFO rom_cookbib[] =
 
 static struct ROM_INFO rom_htchctch[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,      0x020000,
+  LOAD8_16(  ROM1,  0x000000,      0x020000,
             "p04.b17",  0x6991483a, "p03.b16",  0xeff14c40),
-	{ "p02.b5",      0x010000, 0xc5a03186, REGION_ROM2, 0x000000, LOAD_NORMAL },
-	{ "p01.c1",      0x020000, 0x18c06829, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x000000,  0x020000,
+	LOAD( ROM2, "p02.b5", 0x000000, 0x010000, 0xc5a03186),
+	LOAD( SMP1, "p01.c1", 0x000000, 0x020000, 0x18c06829),
+  LOAD8_16(  GFX1,  0x000000,  0x020000,
             "p08uor1.bin",  0x6811e7b6, "p09uor2.bin",  0x1c6549cf),
-  LOAD8_16(  REGION_GFX1,  0x040000,  0x020000,
+  LOAD8_16(  GFX1,  0x040000,  0x020000,
             "p10uor3.bin",  0x6462e6e0, "p11uor4.bin",  0x9c511d98),
-  LOAD8_16(  REGION_GFX2,  0x000000, 0x040000,
+  LOAD8_16(  GFX2,  0x000000, 0x040000,
             "p07srom6.bin",  0x0207949c, "p06srom5.bin",  0x3d2cbb0d ),
 	{ "protdata.bin",0x000200, 0x5b27adb6, REGION_PROMS,0x000000, LOAD_NORMAL, },
 	{ NULL, 0, 0, 0, 0, 0 }
@@ -98,15 +98,15 @@ static struct ROM_INFO rom_htchctch[] =
 
 static struct ROM_INFO rom_chokchok[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,      0x040000,
+  LOAD8_16(  ROM1,  0x000000,      0x040000,
             "ub17.bin",  0xecdb45ca, "ub18.bin",  0xb183852a),
-	{ "ub5.bin",      0x010000, 0x30c2171d, REGION_ROM2, 0x000000, LOAD_NORMAL },
-	{ "uc1.bin",      0x040000, 0xf3f57abd, REGION_SMP1, 0x000000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x000000,      0x080000,
+	LOAD( ROM2, "ub5.bin", 0x000000, 0x010000, 0x30c2171d),
+	LOAD( SMP1, "uc1.bin", 0x000000, 0x040000, 0xf3f57abd),
+  LOAD8_16(  GFX1,  0x000000,      0x080000,
             "uor1.bin",  0xded6642a, "uor2.bin",  0x493f9516),
-  LOAD8_16(  REGION_GFX1,  0x100000,      0x080000,
+  LOAD8_16(  GFX1,  0x100000,      0x080000,
             "uor3.bin",  0xe2dc3e12, "uor4.bin",  0x6f377530),
-  LOAD8_16(  REGION_GFX2,  0x000000,     0x080000,
+  LOAD8_16(  GFX2,  0x000000,     0x080000,
             "srom6.bin",  0x31d5715d,"srom5.bin",  0x836608b8),
 	{ "protdata.bin", 0x000200, 0x0bd39834, REGION_PROMS,0x000000, LOAD_NORMAL, },
 	{ NULL, 0, 0, 0, 0, 0 }
@@ -115,14 +115,14 @@ static struct ROM_INFO rom_chokchok[] =
 static struct ROM_INFO rom_jumppop[] =
 {
   { "68k_prg.bin", 0x80000, 0x123536b9, REGION_ROM1, 0x00000, LOAD_SWAP_16 },
-  { "z80_prg.bin", 0x40000, 0xa88d4424, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "z80_prg.bin", 0x40000, 0xa88d4424, REGION_ROM2, 0x08000, LOAD_NORMAL },
+  LOAD( ROM2, "z80_prg.bin", 0x00000, 0x40000, 0xa88d4424),
+  LOAD( ROM2, "z80_prg.bin", 0x08000, 0x40000, 0xa88d4424),
   // GFX1 & GFX2 are inverted compared to mame
-  { "bg0.bin", 0x100000, 0x35a1363d, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "bg1.bin", 0x100000, 0x5b37f943, REGION_GFX2, 0x100000, LOAD_NORMAL },
-  { "sp0.bin", 0x100000, 0x7c5d0633, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "sp1.bin", 0x100000, 0x7eae782e, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "samples.bin", 0x40000, 0x066f30a7, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX2, "bg0.bin", 0x000000, 0x100000, 0x35a1363d),
+  LOAD( GFX2, "bg1.bin", 0x100000, 0x100000, 0x5b37f943),
+  LOAD( GFX1, "sp0.bin", 0x000000, 0x100000, 0x7c5d0633),
+  LOAD( GFX1, "sp1.bin", 0x100000, 0x100000, 0x7eae782e),
+  LOAD( SMP1, "samples.bin", 0x00000, 0x40000, 0x066f30a7),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

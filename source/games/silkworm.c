@@ -39,9 +39,9 @@ static int sample_size;
 
 static struct ROM_INFO rom_silkworm[] =
 {
-   {   "silkworm.4", 0x10000, 0xa5277cce, REGION_CPU1, 0, LOAD_NORMAL },
-   {   "silkworm.5", 0x10000, 0xa6c7bb51, REGION_CPU1, 0xc000, LOAD_NORMAL },
-   {   "silkworm.3", 0x08000, 0xb589f587, REGION_CPU2, 0, LOAD_NORMAL },
+   LOAD( CPU1, "silkworm.4", 0, 0x10000, 0xa5277cce),
+   LOAD( CPU1, "silkworm.5", 0xc000, 0x10000, 0xa6c7bb51),
+   LOAD( CPU2, "silkworm.3", 0, 0x08000, 0xb589f587),
    {   "silkworm.2", 0x08000, 0xe80a1cd9, 0, 0, 0, }, // char
    {   "silkworm.6", 0x10000, 0x1138d159, 0, 0, 0, }, // spr
    {   "silkworm.7", 0x10000, 0xd96214f7, 0, 0, 0, }, // spr
@@ -277,10 +277,10 @@ static struct ROM_INFO rom_silkwrm2[] =
 
 static struct ROM_INFO rom_rygar[] =
 {
-   {         "5.5p", 0x08000, 0x062cd55d, REGION_CPU1, 0, LOAD_NORMAL },
-   {   "cpu_5m.bin", 0x04000, 0x7ac5191b, REGION_CPU1, 0x8000, LOAD_NORMAL },
-   {   "cpu_5j.bin", 0x08000, 0xed76d606, REGION_CPU1, 0xc000, LOAD_NORMAL },
-   {   "cpu_4h.bin", 0x02000, 0xe4a2fa87, REGION_CPU2, 0, LOAD_NORMAL },
+   LOAD( CPU1, "5.5p", 0, 0x08000, 0x062cd55d),
+   LOAD( CPU1, "cpu_5m.bin", 0x8000, 0x04000, 0x7ac5191b),
+   LOAD( CPU1, "cpu_5j.bin", 0xc000, 0x08000, 0xed76d606),
+   LOAD( CPU2, "cpu_4h.bin", 0, 0x02000, 0xe4a2fa87),
    {   "cpu_8k.bin", 0x08000, 0x4d482fb6, 0, 0, 0, }, // char
    {   "vid_6k.bin", 0x08000, 0xaba6db9e, 0, 0, 0, }, // spr
    {   "vid_6j.bin", 0x08000, 0xae1f2ed6, 0, 0, 0, }, // spr
@@ -381,9 +381,9 @@ static struct DSW_INFO dsw_rygar[] =
 
 static struct ROM_INFO rom_gemini[] =
 {
-   {   "gw04-5s.rom",  0x10000, 0xff9de855, REGION_CPU1, 0, LOAD_NORMAL },
-   {   "gw05-6s.rom",  0x10000, 0x5a6947a9, REGION_CPU1, 0xc000, LOAD_NORMAL },
-   {   "gw03-5h.rom",  0x08000, 0x9bc79596, REGION_CPU2, 0, LOAD_NORMAL },
+   LOAD( CPU1, "gw04-5s.rom", 0, 0x10000, 0xff9de855),
+   LOAD( CPU1, "gw05-6s.rom", 0xc000, 0x10000, 0x5a6947a9),
+   LOAD( CPU2, "gw03-5h.rom", 0, 0x08000, 0x9bc79596),
    {   "gw02-3h.rom",  0x08000, 0x7acc8d35, 0, 0, 0, }, // char
    {   "gw06-1c.rom",  0x10000, 0x4ea51631, 0, 0, 0, }, // spr
    {   "gw07-1d.rom",  0x10000, 0xda42637e, 0, 0, 0, }, // spr

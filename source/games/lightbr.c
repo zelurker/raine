@@ -18,7 +18,7 @@ static struct ROM_INFO rom_lightbr[] =
    {   "d69-13.bin", 0x00080000, 0xdec2ec17, REGION_ROM1, 0x000001, LOAD_8_32, },
    {   "d69-15.bin", 0x00080000, 0x323e1955, REGION_ROM1, 0x000002, LOAD_8_32, },
    {   "d69-14.bin", 0x00080000, 0x990bf945, REGION_ROM1, 0x000003, LOAD_8_32, },
-  LOAD8_16(  REGION_ROM2,  0x000000,  0x00020000,
+  LOAD8_16( ROM2,  0x000000,  0x00020000,
               "d69-18.bin",  0x04600d7b,   "d69-19.bin",  0x1484e853),
    {   "d69-01.bin", 0x00200000, 0x9ac93ac2, 0, 0, 0, },
    {   "d69-02.bin", 0x00200000, 0xdce28dd7, 0, 0, 0, },

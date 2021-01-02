@@ -497,56 +497,56 @@ static struct DSW_INFO dsw_sabotenb[] =
 static struct ROM_INFO rom_macross[] =
 {
   { "921a03", 0x80000, 0x33318d55 , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
-  { "921a02", 0x10000, 0x77c082c7 , REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "921a02", 0x00000, 0x10000, 0x77c082c7 ),
   { "921a01", 0x020000, 0xbbd8242d , 0 /* REGION_GFX1 */, 0x000000, 0 },
   { "921a04", 0x200000, 0x4002e4bb , 0 /* REGION_GFX2 */, 0x000000, 0 },
   { "921a07", 0x200000, 0x7d2bf112 , 0 /* REGION_GFX3 */, 0x000000, 0 },
-  { "921a05", 0x080000, 0xd5a1eddd , REGION_SMP1, 0x020000, LOAD_NORMAL },
-  { "921a06", 0x080000, 0x89461d0f , REGION_SMP2, 0x020000, LOAD_NORMAL },
-/*  { "921a08", 0x0100, 0xcfdbb86c , REGION_PROMS, 0x0000, LOAD_NORMAL },
-  { "921a09", 0x0100, 0x633ab1c9 , REGION_PROMS, 0x0100, LOAD_NORMAL },
-  { "921a10", 0x0020, 0x8371e42d , REGION_PROMS, 0x0200, LOAD_NORMAL }, */
+  LOAD( SMP1, "921a05", 0x020000, 0x080000, 0xd5a1eddd ),
+  LOAD( SMP2, "921a06", 0x020000, 0x080000, 0x89461d0f ),
+/*  LOAD( PROMS, "921a08", 0x0000, 0x0100, 0xcfdbb86c ),
+  LOAD( PROMS, "921a09", 0x0100, 0x0100, 0x633ab1c9 ),
+  LOAD( PROMS, "921a10", 0x0200, 0x0020, 0x8371e42d ), */
   /* Notice that the PROMS were in the mame struct, but they are unused ! */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_blkheart[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "blkhrt.7",  0x5bd248c0 , "blkhrt.6",  0x6449e50d ),
-  { "4.bin", 0x10000, 0x7cefa295 , REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "4.bin", 0x00000, 0x10000, 0x7cefa295 ),
   { "3.bin", 0x020000, 0xa1ab3a16 , 0, 0, 0 }, // REGION_GFX1, 0x000000, 0 },
   { "90068-5.bin", 0x100000, 0xa1ab4f24 , 0, 0, 0 }, // REGION_GFX2, 0x000000, 0 },
   { "90068-8.bin", 0x100000, 0x9d3204b2 , 0, 0, 0 }, // REGION_GFX3, 0x000000, 0 },
-  { "90068-2.bin", 0x080000, 0x3a583184 , REGION_SMP1, 0x020000, LOAD_NORMAL },
-  { "90068-1.bin", 0x080000, 0xe7af69d2 , REGION_SMP2, 0x020000, LOAD_NORMAL },
+  LOAD( SMP1, "90068-2.bin", 0x020000, 0x080000, 0x3a583184 ),
+  LOAD( SMP2, "90068-1.bin", 0x020000, 0x080000, 0xe7af69d2 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_blkhearj[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "7.bin",  0xe0a5c667 , "6.bin",  0x7cce45e8 ),
-  { "4.bin", 0x10000, 0x7cefa295 , REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "4.bin", 0x00000, 0x10000, 0x7cefa295 ),
   { "3.bin", 0x020000, 0xa1ab3a16 , 0, 0, 0 }, // REGION_GFX1, 0x000000, 0 },
   { "90068-5.bin", 0x100000, 0xa1ab4f24 , 0, 0, 0 }, // REGION_GFX2, 0x000000, 0 },
   { "90068-8.bin", 0x100000, 0x9d3204b2 , 0, 0, 0 }, // REGION_GFX3, 0x000000, 0 },
-  { "90068-2.bin", 0x080000, 0x3a583184 , REGION_SMP1, 0x020000, LOAD_NORMAL },
-  { "90068-1.bin", 0x080000, 0xe7af69d2 , REGION_SMP2, 0x020000, LOAD_NORMAL },
+  LOAD( SMP1, "90068-2.bin", 0x020000, 0x080000, 0x3a583184 ),
+  LOAD( SMP2, "90068-1.bin", 0x020000, 0x080000, 0xe7af69d2 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_macross2[] =
 {
   { "mcrs2j.3", 0x80000, 0x36a618fe , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
-  { "mcrs2j.2", 0x20000, 0xb4aa8ac7 , REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "mcrs2j.2", 0x20000, 0xb4aa8ac7 , REGION_ROM2, 0x8000, LOAD_NORMAL },
+  LOAD( ROM2, "mcrs2j.2", 0x00000, 0x20000, 0xb4aa8ac7 ),
+  LOAD( ROM2, "mcrs2j.2", 0x8000, 0x20000, 0xb4aa8ac7 ),
   { "mcrs2j.1", 0x020000, 0xc7417410 , REGION_GFX1, 0x000000, 0 },
   { "bp932an.a04", 0x200000, 0xc4d77ff0 , REGION_GFX2, 0x000000, 0 },
   { "bp932an.a07", 0x200000, 0xaa1b21b9 , REGION_GFX3, 0x000000, LOAD_SWAP_16 },
   { "bp932an.a08", 0x200000, 0x67eb2901 , REGION_GFX3, 0x200000, LOAD_SWAP_16 },
-  { "bp932an.a06", 0x200000, 0xef0ffec0 , REGION_SMP1, 0x40000, LOAD_NORMAL },
-  { "bp932an.a05", 0x100000, 0xb5335abb , REGION_SMP2, 0x40000, LOAD_NORMAL },
+  LOAD( SMP1, "bp932an.a06", 0x40000, 0x200000, 0xef0ffec0 ),
+  LOAD( SMP2, "bp932an.a05", 0x40000, 0x100000, 0xb5335abb ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -687,7 +687,7 @@ static struct ROM_INFO rom_hachamf[] =
    {   "hmf_01.rom", 0x00010000, 0x9e6f48fc, REGION_ROM2, 0, LOAD_NORMAL, },
    {   "hmf_04.rom", 0x00080000, 0x05a624e3, 0, 0, 0, },
    {   "hmf_05.rom", 0x00020000, 0x29fb04a2, 0, 0, 0, },
-  LOAD8_16(  REGION_CPU1,  0,  0x00020000,
+  LOAD8_16( CPU1,  0,  0x00020000,
               "hmf_07.rom",  0x9d847c31,   "hmf_06.rom",  0xde6408a0),
    {   "hmf_08.rom", 0x00100000, 0x7fd0f556, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -759,17 +759,17 @@ static struct DSW_INFO dsw_hachamf[] =
 
 static struct ROM_INFO rom_mustang[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "2.bin",  0xbd9f7c89, "3.bin",  0x0eec36a5),
-  { "90058-7", 0x10000, 0x920a93c8, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "90058-7", 0x00000, 0x10000, 0x920a93c8),
   { "90058-1", 0x20000, 0x81ccfcad, 0 /* REGION_GFX1 */, 0x00000, 0 },
   { "90058-4", 0x80000, 0xa07a2002, 0 /* REGION_GFX2 */, 0x000000, 0 },
   { "90058-8", 0x80000, 0x560bff04, 0 /* REGION_GFX3 */, 0x00000, 0 },
   { "90058-9", 0x80000, 0xb9d72a03, 0 /* REGION_GFX3 */, 0x00001, 0 },
-  { "90058-5", 0x80000, 0xc60c883e, REGION_SMP1, 0x20000, LOAD_NORMAL },
-  { "90058-6", 0x80000, 0x233c1776, REGION_SMP2, 0x20000, LOAD_NORMAL },
-  { "10.bpr", 0x100, 0x633ab1c9, REGION_PROMS, 0x00000, LOAD_NORMAL },
-  { "90058-11", 0x100, 0xcfdbb86c, REGION_PROMS, 0x00100, LOAD_NORMAL },
+  LOAD( SMP1, "90058-5", 0x20000, 0x80000, 0xc60c883e),
+  LOAD( SMP2, "90058-6", 0x20000, 0x80000, 0x233c1776),
+  LOAD( PROMS, "10.bpr", 0x00000, 0x100, 0x633ab1c9),
+  LOAD( PROMS, "90058-11", 0x00100, 0x100, 0xcfdbb86c),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -907,7 +907,7 @@ static struct ROM_INFO rom_strahl[] =
 
 static struct ROM_INFO rom_acrobatm[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "02_ic100.bin",  0x3fe487f4 , "01_ic101.bin",  0x17175753 ),
   { "03_ic79.bin", 0x10000, 0xd86c186e , 0 /* REGION_GFX1 */, 0x000000, 0 },
 
@@ -917,10 +917,10 @@ static struct ROM_INFO rom_acrobatm[] =
   { "08_ic29.bin", 0x80000, 0xb4c0ace3, 0 /* REGION_GFX3 */, 0x100000, 0 },
 
 
-  { "04_ic74.bin", 0x10000, 0x176905fb , REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "05_ic54.bin", 0x80000, 0x3b8c2b0e, REGION_SMP1, 0x020000, LOAD_NORMAL },
-  { "06_ic53.bin", 0x80000, 0xc1517cd4, REGION_SMP2, 0x020000, LOAD_NORMAL },
-  //{ "snd", 0x10000, 0x00000000 , REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "04_ic74.bin", 0x00000, 0x10000, 0x176905fb ),
+  LOAD( SMP1, "05_ic54.bin", 0x020000, 0x80000, 0x3b8c2b0e),
+  LOAD( SMP2, "06_ic53.bin", 0x020000, 0x80000, 0xc1517cd4),
+  //LOAD( SMP1, "snd", 0x00000, 0x10000, 0x00000000 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -982,12 +982,12 @@ static struct DSW_INFO dsw_strahl[] =
 static struct ROM_INFO rom_tforceh[] =
 {
    {            "1", 0x00010000, 0xc7402e4a, 0, 0, 0, },
-  LOAD8_16(  REGION_CPU1,  0,  0x00020000,
+  LOAD8_16( CPU1,  0,  0x00020000,
                        "2",  0x78923aaa,            "3",  0x99cea259),
    {           "12", 0x00010000, 0xb959f837, REGION_CPU2, 0, LOAD_NORMAL, },
    {      "89050-4", 0x00080000, 0x64d7d687, 0, 0, 0, },
-   {      "89050-8", 0x00080000, 0x11ee4c39, REGION_SOUND1, 0x20000, LOAD_NORMAL },
-   {     "89050-10", 0x00080000, 0x893552ab, REGION_SOUND2, 0x20000, LOAD_NORMAL },
+   LOAD( SOUND1, "89050-8", 0x20000, 0x00080000, 0x11ee4c39),
+   LOAD( SOUND2, "89050-10", 0x20000, 0x00080000, 0x893552ab),
    {     "89050-13", 0x00080000, 0x24db3fa4, 0, 0, 0, },
    {     "89050-17", 0x00080000, 0x7f715421, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1003,31 +1003,31 @@ static struct DSW_INFO dsw_tforceh[] =
 
 static struct ROM_INFO rom_tdragon[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "thund.8",  0xedd02831, "thund.7",  0x52192fe5),
   { "thund.6", 0x20000, 0xfe365920, 0 /* REGION_GFX1 */, 0x000000, 0 },
   { "thund.5", 0x100000, 0xd0bde826, 0 /* REGION_GFX2 */, 0x000000, 0 },
   { "thund.4", 0x100000, 0x3eedc2fe, 0 /* REGION_GFX3 */, 0x000000, 0 },
-  { "thund.1", 0x10000, 0xbf493d74, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "thund.3", 0x80000, 0xae6875a8, REGION_SMP1, 0x20000, LOAD_NORMAL },
-  { "thund.2", 0x80000, 0xecfea43e, REGION_SMP2, 0x20000, LOAD_NORMAL },
-/*   { "9.bin", 0x0100, 0xcfdbb86c, REGION_PROMS, 0x0000, LOAD_NORMAL }, */
-/*   { "10.bin", 0x0100, 0xe6ead349, REGION_PROMS, 0x0100, LOAD_NORMAL }, */
+  LOAD( ROM2, "thund.1", 0x00000, 0x10000, 0xbf493d74),
+  LOAD( SMP1, "thund.3", 0x20000, 0x80000, 0xae6875a8),
+  LOAD( SMP2, "thund.2", 0x20000, 0x80000, 0xecfea43e),
+/*   LOAD( PROMS, "9.bin", 0x0000, 0x0100, 0xcfdbb86c), */
+/*   LOAD( PROMS, "10.bin", 0x0100, 0x0100, 0xe6ead349), */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_tdragonb[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "td_04.bin",  0xe8a62d3e, "td_03.bin",  0x2fa1aa04),
 /* Ignored : 	ROM_COPY( REGION_CPU2, 0, 0x018000, 0x08000 ) */
-  { "td_02.bin", 0x10000, 0x99ee7505, REGION_ROM2, 0, LOAD_NORMAL },
+  LOAD( ROM2, "td_02.bin", 0, 0x10000, 0x99ee7505),
   { "td_08.bin", 0x20000, 0x5144dc69, 0 /* REGION_GFX1 */, 		0x000000, 0 },
   { "td_06.bin", 0x80000, 0xc1be8a4d, 0 /* REGION_GFX2 */, 		0x000000, 0 },
   { "td_07.bin", 0x80000, 0x2c3e371f, 0 /* REGION_GFX2 */, 		0x080000, 0 },
   { "td_10.bin", 0x080000, 0xbfd0ec5d, 0 /* REGION_GFX3 */, 	0x000000, 0 },
   { "td_09.bin", 0x080000, 0xb6e074eb, 0 /* REGION_GFX3 */, 	0x000001, 0 },
-  { "td_01.bin", 0x10000, 0xf6f6c4bf, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( SMP1, "td_01.bin", 0x00000, 0x10000, 0xf6f6c4bf),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1036,9 +1036,9 @@ static struct ROM_INFO rom_tdragon2[] =
 {
 
   { "6.bin", 0x80000, 0x310d6bca , REGION_ROM1, 0x00000, LOAD_SWAP_16 },
-  { "5.bin", 0x20000, 0xb870be61 , REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "5.bin", 0x00000, 0x20000, 0xb870be61 ),
 
-  { "5.bin", 0x20000, 0xb870be61 , REGION_ROM2, 0x08000, LOAD_NORMAL },
+  LOAD( ROM2, "5.bin", 0x08000, 0x20000, 0xb870be61 ),
 
   { "1.bin", 0x020000, 0xd488aafa , 0 /* REGION_GFX1 */, 0x000000, 0 },
 
@@ -1048,34 +1048,34 @@ static struct ROM_INFO rom_tdragon2[] =
 
   { "ww930918.8", 0x200000, 0xbaee84b2 , REGION_GFX3, 0x200000, LOAD_SWAP_16 },
 
-  { "ww930916.4", 0x200000, 0x07c35fe6 , REGION_SMP1, 0x040000, LOAD_NORMAL },
+  LOAD( SMP1, "ww930916.4", 0x040000, 0x200000, 0x07c35fe6 ),
 
-  { "ww930915.3", 0x200000, 0x82025bab , REGION_SMP2, 0x040000, LOAD_NORMAL },
-/*   { "9.bpr", 0x0100, 0x435653a2 , REGION_PROMS, 0x0000, LOAD_NORMAL }, */
-/*   { "10.bpr", 0x0100, 0xe6ead349 , REGION_PROMS, 0x0100, LOAD_NORMAL }, */
+  LOAD( SMP2, "ww930915.3", 0x040000, 0x200000, 0x82025bab ),
+/*   LOAD( PROMS, "9.bpr", 0x0000, 0x0100, 0x435653a2 ), */
+/*   LOAD( PROMS, "10.bpr", 0x0100, 0x0100, 0xe6ead349 ), */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
 static struct ROM_INFO rom_ssmissin[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16( ROM1,  0x00000,  0x20000,
             "ssm15.166",  0xaff15927, "ssm14.165",  0xeda61b74  ),
 
   { "ssm16.172", 0x20000, 0x5cf6eb1f , 0 /* REGION_GFX1 */, 0x000000, 0 },
 
-  { "ssm17.147", 0x080000, 0xc9c28455 , REGION_GFX2,0x000000, LOAD_NORMAL },
-  { "ssm18.148", 0x080000, 0xebfdaad6 , REGION_GFX2,0x080000, LOAD_NORMAL },
+  LOAD( GFX2, "ssm17.147", 0x000000, 0x080000, 0xc9c28455 ),
+  LOAD( GFX2, "ssm18.148", 0x080000, 0x080000, 0xebfdaad6 ),
 
-  LOAD8_16(  REGION_GFX3, 0x000000,  0x080000,
+  LOAD8_16( GFX3, 0x000000,  0x080000,
             "ssm19.33",  0xb1943657, "ssm20.34",  0xa0c16c4d ),
 
-  { "ssm11.188", 0x08000, 0x8be6dce3 , REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "ssm13.190", 0x20000, 0x618f66f0 , REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "ssm11.188", 0x00000, 0x08000, 0x8be6dce3 ),
+  LOAD( SMP1, "ssm13.190", 0x00000, 0x20000, 0x618f66f0 ),
 
-  { "ssm12.189", 0x80000, 0xe8219c83 , REGION_SMP1, 0x80000, LOAD_NORMAL },
-/*   { "ssm-pr2.113", 0x0100, 0xcfdbb86c , REGION_PROMS, 0x0000, LOAD_NORMAL }, */
-/*   { "ssm-pr1.114", 0x0200, 0xed0bd072 , REGION_PROMS, 0x0100, LOAD_NORMAL }, */
+  LOAD( SMP1, "ssm12.189", 0x80000, 0x80000, 0xe8219c83 ),
+/*   LOAD( PROMS, "ssm-pr2.113", 0x0000, 0x0100, 0xcfdbb86c ), */
+/*   LOAD( PROMS, "ssm-pr1.114", 0x0100, 0x0200, 0xed0bd072 ), */
   { NULL, 0, 0, 0, 0, 0 }
 };
 

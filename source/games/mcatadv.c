@@ -83,57 +83,57 @@ Stephh's notes (based on the games M68000 code and some tests) :
 
 static struct ROM_INFO rom_mcatadv[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+  LOAD8_16( ROM1,  0x00000,  0x80000,
             "mca-u30e",  0xc62fbb65, "mca-u29e",  0xcf21227c),
-  { "u9.bin", 0x20000, 0xfda05171, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "u9.bin", 0x20000, 0xfda05171, REGION_ROM2, 0x04000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x000000,  0x100000,
+  LOAD( ROM2, "u9.bin", 0x00000, 0x20000, 0xfda05171),
+  LOAD( ROM2, "u9.bin", 0x04000, 0x20000, 0xfda05171),
+  LOAD8_16( GFX1,  0x000000,  0x100000,
             "mca-u82.bin",  0x5f01d746, "mca-u83.bin",  0x4e1be5a6),
-  LOAD8_16(  REGION_GFX1,  0x200000,  0x080000,
+  LOAD8_16( GFX1,  0x200000,  0x080000,
             "mca-u84.bin",  0xdf202790, "mca-u85.bin",  0xa85771d2),
-  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
+  LOAD8_16( GFX1,  0x400000,  0x080000,
             "mca-u86e",  0x017bf1da, "mca-u87e",  0xbc9dc9b9),
-  { "mca-u58.bin", 0x080000, 0x3a8186e2, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "mca-u60.bin", 0x100000, 0xc8942614, REGION_GFX3, 0x000000, LOAD_NORMAL },
-  { "mca-u61.bin", 0x100000, 0x51af66c9, REGION_GFX3, 0x100000, LOAD_NORMAL },
-  { "mca-u100", 0x080000, 0xb273f1b0, REGION_GFX3, 0x200000, LOAD_NORMAL },
-  { "mca-u53.bin", 0x80000, 0x64c76e05, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX2, "mca-u58.bin", 0x000000, 0x080000, 0x3a8186e2),
+  LOAD( GFX3, "mca-u60.bin", 0x000000, 0x100000, 0xc8942614),
+  LOAD( GFX3, "mca-u61.bin", 0x100000, 0x100000, 0x51af66c9),
+  LOAD( GFX3, "mca-u100", 0x200000, 0x080000, 0xb273f1b0),
+  LOAD( SMP1, "mca-u53.bin", 0x00000, 0x80000, 0x64c76e05),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mcatadvj[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+  LOAD8_16( ROM1,  0x00000,  0x80000,
             "u30.bin",  0x05762f42, "u29.bin",  0x4c59d648),
-  LOAD8_16(  REGION_GFX1,  0x000000,  0x100000,
+  LOAD8_16( GFX1,  0x000000,  0x100000,
             "mca-u82.bin",  0x5f01d746, "mca-u83.bin",  0x4e1be5a6),
-  LOAD8_16(  REGION_GFX1,  0x200000,  0x080000,
+  LOAD8_16( GFX1,  0x200000,  0x080000,
             "mca-u84.bin",  0xdf202790, "mca-u85.bin",  0xa85771d2),
-  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
+  LOAD8_16( GFX1,  0x400000,  0x080000,
             "u86.bin",  0x2d3725ed, "u87.bin",  0x4ddefe08),
-  { "mca-u60.bin", 0x100000, 0xc8942614, REGION_GFX3, 0x000000, LOAD_NORMAL },
-  { "mca-u61.bin", 0x100000, 0x51af66c9, REGION_GFX3, 0x100000, LOAD_NORMAL },
-  { "u100.bin", 0x080000, 0xe2c311da, REGION_GFX3, 0x200000, LOAD_NORMAL },
+  LOAD( GFX3, "mca-u60.bin", 0x000000, 0x100000, 0xc8942614),
+  LOAD( GFX3, "mca-u61.bin", 0x100000, 0x100000, 0x51af66c9),
+  LOAD( GFX3, "u100.bin", 0x200000, 0x080000, 0xe2c311da),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_nost[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x80000,
+  LOAD8_16( ROM1,  0x00000,  0x80000,
             "nos-pe-u.bin",  0x4b080149, "nos-po-u.bin",  0x9e3cd6d9),
-  { "nos-ps.u9", 0x40000, 0x832551e9, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "nos-ps.u9", 0x40000, 0x832551e9, REGION_ROM2, 0x08000, LOAD_NORMAL },
-  LOAD8_16(  REGION_GFX1,  0x000000,  0x100000,
+  LOAD( ROM2, "nos-ps.u9", 0x00000, 0x40000, 0x832551e9),
+  LOAD( ROM2, "nos-ps.u9", 0x08000, 0x40000, 0x832551e9),
+  LOAD8_16( GFX1,  0x000000,  0x100000,
             "nos-se-0.u82",  0x9d99108d, "nos-so-0.u83",  0x7df0fc7e),
-  LOAD8_16(  REGION_GFX1,  0x200000,  0x100000,
+  LOAD8_16( GFX1,  0x200000,  0x100000,
             "nos-se-1.u84",  0xaad07607, "nos-so-1.u85",  0x83d0012c),
-  LOAD8_16(  REGION_GFX1,  0x400000,  0x080000,
+  LOAD8_16( GFX1,  0x400000,  0x080000,
             "nos-se-2.u86",  0xd99e6005, "nos-so-2.u87",  0xf60e8ef3),
-  { "nos-b0-0.u58", 0x100000, 0x0214b0f2, REGION_GFX2, 0x000000, LOAD_NORMAL },
-  { "nos-b0-1.u59", 0x080000, 0x3f8b6b34, REGION_GFX2, 0x100000, LOAD_NORMAL },
-  { "nos-b1-0.u60", 0x100000, 0xba6fd0c7, REGION_GFX3, 0x000000, LOAD_NORMAL },
-  { "nos-b1-1.u61", 0x080000, 0xdabd8009, REGION_GFX3, 0x100000, LOAD_NORMAL },
-  { "nossn-00.u53", 0x100000, 0x3bd1bcbc, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX2, "nos-b0-0.u58", 0x000000, 0x100000, 0x0214b0f2),
+  LOAD( GFX2, "nos-b0-1.u59", 0x100000, 0x080000, 0x3f8b6b34),
+  LOAD( GFX3, "nos-b1-0.u60", 0x000000, 0x100000, 0xba6fd0c7),
+  LOAD( GFX3, "nos-b1-1.u61", 0x100000, 0x080000, 0xdabd8009),
+  LOAD( SMP1, "nossn-00.u53", 0x00000, 0x100000, 0x3bd1bcbc),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

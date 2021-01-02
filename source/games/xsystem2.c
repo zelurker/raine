@@ -32,9 +32,9 @@ Supported romsets:
 static struct ROM_INFO rom_arknoid2u[] = // clone of arknoid2
 {
 	/* 0x10000 - 0x1ffff empty */
-  { "b08__11.11c", 0x10000, 0x99555231, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  LOAD( CPU1, "b08__11.11c", 0x00000, 0x10000, 0x99555231),
   FILL(            0x10000, 0x10000, 0, CPU1),
-  { "b08__12.3e", 0x10000, 0xdc84e27d, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  LOAD( CPU2, "b08__12.3e", 0x00000, 0x10000, 0xdc84e27d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -236,22 +236,22 @@ static struct SOUND_INFO sound_kageki[] =
 
 static struct ROM_INFO rom_arknoid2[] =
 {
-  { "b08__05.11c", 0x10000, 0x136edf9d, REGION_CPU1, 0x00000, LOAD_NORMAL },
+  LOAD( CPU1, "b08__05.11c", 0x00000, 0x10000, 0x136edf9d),
   FILL(            0x10000, 0x10000, 0, CPU1),
-  { "b08__13.3e", 0x10000, 0xe8035ef1, REGION_CPU2, 0x00000, LOAD_NORMAL },
-  { "b08-01.13a", 0x20000, 0x2ccc86b4, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b08-02.10a", 0x20000, 0x056a985f, REGION_GFX1, 0x20000, LOAD_NORMAL },
-  { "b08-03.7a", 0x20000, 0x274a795f, REGION_GFX1, 0x40000, LOAD_NORMAL },
-  { "b08-04.4a", 0x20000, 0x9754f703, REGION_GFX1, 0x60000, LOAD_NORMAL },
-  { "b08-08.15f", 0x200, 0xa4f7ebd9, REGION_PROMS, 0x00000, LOAD_NORMAL },
-  { "b08-07.16f", 0x200, 0xea34d9f7, REGION_PROMS, 0x00200, LOAD_NORMAL },
+  LOAD( CPU2, "b08__13.3e", 0x00000, 0x10000, 0xe8035ef1),
+  LOAD( GFX1, "b08-01.13a", 0x00000, 0x20000, 0x2ccc86b4),
+  LOAD( GFX1, "b08-02.10a", 0x20000, 0x20000, 0x056a985f),
+  LOAD( GFX1, "b08-03.7a", 0x40000, 0x20000, 0x274a795f),
+  LOAD( GFX1, "b08-04.4a", 0x60000, 0x20000, 0x9754f703),
+  LOAD( PROMS, "b08-08.15f", 0x00000, 0x200, 0xa4f7ebd9),
+  LOAD( PROMS, "b08-07.16f", 0x00200, 0x200, 0xea34d9f7),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_arknoid2j[] = // clone of arknoid2
 {
 	/* 0x10000 - 0x1ffff empty */
-  { "b08_06.3e", 0x10000, 0xadfcd40c, REGION_CPU2, 0x00000, LOAD_NORMAL },
+  LOAD( CPU2, "b08_06.3e", 0x00000, 0x10000, 0xadfcd40c),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -336,9 +336,9 @@ static struct ROMSW_INFO romsw_tnzsb[] =
 
 static struct ROM_INFO rom_tnzsjo[] = // clone of tnzs
 {
-  { "b53-10.27c1001d.u32", 0x20000, 0xa73745c6, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  // { "b53-14.u38", 0x10000, 0xf269c5f1, REGION_ROM2, 0x00000, LOAD_NORMAL },
-  { "b53-14.u38", 0x10000, 0x9784d443, REGION_ROM2, 0x00000, LOAD_NORMAL },
+  LOAD( CPU1, "b53-10.27c1001d.u32", 0x00000, 0x20000, 0xa73745c6),
+  // LOAD( ROM2, "b53-14.u38", 0x00000, 0x10000, 0xf269c5f1),
+  LOAD( ROM2, "b53-14.u38", 0x00000, 0x10000, 0x9784d443),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -423,17 +423,17 @@ static struct DSW_INFO dsw_tnzsb[] =
 
 static struct ROM_INFO rom_tnzsb[] =
 {
-  { "nzsb5324.bin", 0x20000, 0xd66824c6, REGION_ROM1, 0, LOAD_NORMAL },
-  { "nzsb5325.bin", 0x10000, 0xd6ac4e71, REGION_ROM2, 0, LOAD_NORMAL },
+  LOAD( ROM1, "nzsb5324.bin", 0, 0x20000, 0xd66824c6),
+  LOAD( ROM2, "nzsb5325.bin", 0, 0x10000, 0xd6ac4e71),
    { "nzsb5326.bin", 0x00010000, 0xcfd5649c, REGION_CPU3, 0, LOAD_NORMAL, },
-  { "b53-16.ic7", 0x20000, 0xc3519c2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b53-17.ic8", 0x20000, 0x2bf199e8, REGION_GFX1, 0x20000, LOAD_NORMAL },
-  { "b53-18.ic9", 0x20000, 0x92f35ed9, REGION_GFX1, 0x40000, LOAD_NORMAL },
-  { "b53-19.ic10", 0x20000, 0xedbb9581, REGION_GFX1, 0x60000, LOAD_NORMAL },
-  { "b53-22.ic11", 0x20000, 0x59d2aef6, REGION_GFX1, 0x80000, LOAD_NORMAL },
-  { "b53-23.ic13", 0x20000, 0x74acfb9b, REGION_GFX1, 0xa0000, LOAD_NORMAL },
-  { "b53-20.ic12", 0x20000, 0x095d0dc0, REGION_GFX1, 0xc0000, LOAD_NORMAL },
-  { "b53-21.ic14", 0x20000, 0x9800c54d, REGION_GFX1, 0xe0000, LOAD_NORMAL },
+  LOAD( GFX1, "b53-16.ic7", 0x00000, 0x20000, 0xc3519c2a),
+  LOAD( GFX1, "b53-17.ic8", 0x20000, 0x20000, 0x2bf199e8),
+  LOAD( GFX1, "b53-18.ic9", 0x40000, 0x20000, 0x92f35ed9),
+  LOAD( GFX1, "b53-19.ic10", 0x60000, 0x20000, 0xedbb9581),
+  LOAD( GFX1, "b53-22.ic11", 0x80000, 0x20000, 0x59d2aef6),
+  LOAD( GFX1, "b53-23.ic13", 0xa0000, 0x20000, 0x74acfb9b),
+  LOAD( GFX1, "b53-20.ic12", 0xc0000, 0x20000, 0x095d0dc0),
+  LOAD( GFX1, "b53-21.ic14", 0xe0000, 0x20000, 0x9800c54d),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -483,31 +483,31 @@ static struct SOUND_INFO sound_tnzsb[] =
 
 static struct ROM_INFO rom_tnzsop[] = // prototype (location test?) version; has different rom labels, and the Seta X1-001 chip has prototype markings revealing it was fabbed by Yamaha, as 'YM3906' // clone of tnzs
 {
-  { "c-11__6-24__1959h.d27c1000d-15.u32", 0x20000, 0x3c1dae7b, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "e-3__6-24__c4ach.tmm27512d-20.u38", 0x10000, 0xc7662e96, REGION_CPU2, 0x00000, LOAD_NORMAL },
-  { "a13__03e8.d27c1000d-15.a13", 0x20000, 0x7e0bd5bb, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "a12__f4ec.d27c1000d-15.a12", 0x20000, 0x95880726, REGION_GFX1, 0x20000, LOAD_NORMAL },
-  { "a10__f2b5.d27c1000d-15.a10", 0x20000, 0x2bc4c053, REGION_GFX1, 0x40000, LOAD_NORMAL },
-  { "a08__bd49.d27c1000d-15.a8", 0x20000, 0x8ff8d88c, REGION_GFX1, 0x60000, LOAD_NORMAL },
-  { "a07__d5f3.d27c1000d-15.a7", 0x20000, 0x291bcaca, REGION_GFX1, 0x80000, LOAD_NORMAL },
-  { "a05__662a.d27c1000d-15.a5", 0x20000, 0x6e762e20, REGION_GFX1, 0xa0000, LOAD_NORMAL },
-  { "a04__0c21.d27c1000d-15.a4", 0x20000, 0xe1fd1b9d, REGION_GFX1, 0xc0000, LOAD_NORMAL },
-  { "a02__904f.d27c1000d-15.a2", 0x20000, 0x2ab06bda, REGION_GFX1, 0xe0000, LOAD_NORMAL },
+  LOAD( CPU1, "c-11__6-24__1959h.d27c1000d-15.u32", 0x00000, 0x20000, 0x3c1dae7b),
+  LOAD( CPU2, "e-3__6-24__c4ach.tmm27512d-20.u38", 0x00000, 0x10000, 0xc7662e96),
+  LOAD( GFX1, "a13__03e8.d27c1000d-15.a13", 0x00000, 0x20000, 0x7e0bd5bb),
+  LOAD( GFX1, "a12__f4ec.d27c1000d-15.a12", 0x20000, 0x20000, 0x95880726),
+  LOAD( GFX1, "a10__f2b5.d27c1000d-15.a10", 0x40000, 0x20000, 0x2bc4c053),
+  LOAD( GFX1, "a08__bd49.d27c1000d-15.a8", 0x60000, 0x20000, 0x8ff8d88c),
+  LOAD( GFX1, "a07__d5f3.d27c1000d-15.a7", 0x80000, 0x20000, 0x291bcaca),
+  LOAD( GFX1, "a05__662a.d27c1000d-15.a5", 0xa0000, 0x20000, 0x6e762e20),
+  LOAD( GFX1, "a04__0c21.d27c1000d-15.a4", 0xc0000, 0x20000, 0xe1fd1b9d),
+  LOAD( GFX1, "a02__904f.d27c1000d-15.a2", 0xe0000, 0x20000, 0x2ab06bda),
 	/* these are probably shared with extermination except for u35 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_extrmatn[] =
 {
-  { "b06-20.11c", 0x10000, 0x04e3fc1f, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "b06-21.9c", 0x10000, 0x1614d6a2, REGION_CPU1, 0x10000, LOAD_NORMAL },
-  { "b06-22.4e", 0x10000, 0x744f2c84, REGION_CPU2, 0x00000, LOAD_NORMAL },
-  { "b06-01.13a", 0x20000, 0xd2afbf7e, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b06-02.10a", 0x20000, 0xe0c2757a, REGION_GFX1, 0x20000, LOAD_NORMAL },
-  { "b06-03.7a", 0x20000, 0xee80ab9d, REGION_GFX1, 0x40000, LOAD_NORMAL },
-  { "b06-04.4a", 0x20000, 0x3697ace4, REGION_GFX1, 0x60000, LOAD_NORMAL },
-  { "b06-09.15f", 0x200, 0xf388b361, REGION_PROMS, 0x00000, LOAD_NORMAL },
-  { "b06-08.17f", 0x200, 0x10c9aac3, REGION_PROMS, 0x00200, LOAD_NORMAL },
+  LOAD( CPU1, "b06-20.11c", 0x00000, 0x10000, 0x04e3fc1f),
+  LOAD( CPU1, "b06-21.9c", 0x10000, 0x10000, 0x1614d6a2),
+  LOAD( CPU2, "b06-22.4e", 0x00000, 0x10000, 0x744f2c84),
+  LOAD( GFX1, "b06-01.13a", 0x00000, 0x20000, 0xd2afbf7e),
+  LOAD( GFX1, "b06-02.10a", 0x20000, 0x20000, 0xe0c2757a),
+  LOAD( GFX1, "b06-03.7a", 0x40000, 0x20000, 0xee80ab9d),
+  LOAD( GFX1, "b06-04.4a", 0x60000, 0x20000, 0x3697ace4),
+  LOAD( PROMS, "b06-09.15f", 0x00000, 0x200, 0xf388b361),
+  LOAD( PROMS, "b06-08.17f", 0x00200, 0x200, 0x10c9aac3),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

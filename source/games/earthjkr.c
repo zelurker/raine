@@ -29,14 +29,14 @@
 
 static struct ROM_INFO rom_earthjkr[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+  LOAD8_16(  ROM1,  0x000000,  0x00020000,
                "ej_3b.rom",  0xbdd86fc2,    "ej_3a.rom",  0x9c8050c6),
    {   "ej_30e.rom", 0x00080000, 0x49d1f77f, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-  { "ej_chr.rom", 0x80000, 0xac675297, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "ej_obj.rom", 0x80000, 0x5f21ac47, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "ej_chr.rom", 0x00000, 0x80000, 0xac675297),
+  LOAD( GFX2, "ej_obj.rom", 0x00000, 0x80000, 0x5f21ac47),
   { "ej_1.rom", 0x10000, 0xcb4891db, REGION_GFX2, 0x80000, LOAD_8_16 },
   { "ej_0.rom", 0x10000, 0xb612086f, REGION_GFX2, 0x80001, LOAD_8_16 },
-  { "ej_2.rom", 0x10000, 0x42ba2566, REGION_ROM2, 0, LOAD_NORMAL },
+  LOAD( ROM2, "ej_2.rom", 0, 0x10000, 0x42ba2566),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -114,15 +114,15 @@ static struct DSW_INFO dsw_earthjkr[] =
 
 static struct ROM_INFO rom_mofflott[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+  LOAD8_16(  ROM1,  0x000000,  0x00020000,
               "c17-09.bin",  0x05ee110f,   "c17-08.bin",  0xd0aacffd),
    {   "c17-03.bin", 0x00080000, 0x27047fc3, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-  { "c17-01.bin", 0x80000, 0xe9466d42, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "c17-02.bin", 0x80000, 0x8860a8db, REGION_GFX2, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "c17-01.bin", 0x00000, 0x80000, 0xe9466d42),
+  LOAD( GFX2, "c17-02.bin", 0x00000, 0x80000, 0x8860a8db),
   { "c17-05.bin", 0x10000, 0x57ac4741, REGION_GFX2, 0x80000, LOAD_8_16 },
   { "c17-04.bin", 0x10000, 0xf4250410, REGION_GFX2, 0x80001, LOAD_8_16 },
-  { "c17-07.bin", 0x10000, 0xcdb7bc2c, REGION_ROM2, 0, LOAD_NORMAL },
-  { "c17-06.bin", 0x10000, 0x5c332125, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM2, "c17-07.bin", 0, 0x10000, 0xcdb7bc2c),
+  LOAD( SMP1, "c17-06.bin", 0x00000, 0x10000, 0x5c332125),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -230,12 +230,12 @@ static struct SOUND_INFO sound_mofflott[] =
 
 static struct ROM_INFO rom_galmedes[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+  LOAD8_16(  ROM1,  0x000000,  0x00020000,
              "gm-prg1.bin",  0x32a70753,  "gm-prg0.bin",  0xfae546a4),
    {   "gm-30.rom", 0x00080000, 0x4da2a407, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-  { "gm-scn.bin", 0x80000, 0x3bab0581, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "gm-obj.bin", 0x80000, 0x7a4a1315, REGION_GFX2, 0x00000, LOAD_NORMAL },
-  { "gm-snd.bin", 0x10000, 0xd6f56c21, REGION_ROM2, 0, LOAD_NORMAL },
+  LOAD( GFX1, "gm-scn.bin", 0x00000, 0x80000, 0x3bab0581),
+  LOAD( GFX2, "gm-obj.bin", 0x00000, 0x80000, 0x7a4a1315),
+  LOAD( ROM2, "gm-snd.bin", 0, 0x10000, 0xd6f56c21),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -290,12 +290,12 @@ static struct DSW_INFO dsw_galmedes[] =
 
 static struct ROM_INFO rom_eto[] =
 {
-  LOAD8_16(  REGION_ROM1,  0x000000,  0x00020000,
+  LOAD8_16(  ROM1,  0x000000,  0x00020000,
                 "eto-1.23",  0x44286597,      "eto-0.8",  0x57b79370),
    {     "eto-2.30", 0x00080000, 0x12f46fb5, REGION_ROM1, 0x080000, LOAD_NORMAL, },
-  { "eto-4.3", 0x80000, 0xa8768939, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "eto-3.6", 0x80000, 0xdd247397, REGION_GFX2, 0x00000, LOAD_NORMAL },
-  { "eto-5.27", 0x10000, 0xb3689da0, REGION_ROM2, 0, LOAD_NORMAL },
+  LOAD( GFX1, "eto-4.3", 0x00000, 0x80000, 0xa8768939),
+  LOAD( GFX2, "eto-3.6", 0x00000, 0x80000, 0xdd247397),
+  LOAD( ROM2, "eto-5.27", 0, 0x10000, 0xb3689da0),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

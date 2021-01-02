@@ -124,22 +124,22 @@ static struct ROMSW_INFO romsw_contcirc[] =
 static struct ROM_INFO rom_contcrcu[] =
 {
   // road lines
-  { "b33-01.3", 0x80000, 0xf11f2be8, REGION_GFX3, 0x00000, LOAD_NORMAL },
+  LOAD( GFX3, "b33-01.3", 0x00000, 0x80000, 0xf11f2be8),
   // GFX1 : scr (8x8)
-  { "b33-02.57", 0x80000, 0xf6fb3ba2, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "b33-02.57", 0x00000, 0x80000, 0xf6fb3ba2),
    {  "b33_03", 0x00080000, 0x4f6c36d9, 0, 0, 0, },
    {  "b33_04", 0x00080000, 0x8df866a2, 0, 0, 0, },
    {  "b33_05", 0x00080000, 0xbddf9eea, 0, 0, 0, },
    {  "b33_06", 0x00080000, 0x2cb40599, 0, 0, 0, },
   // sprite map
-  { "b33-07.64", 0x80000, 0x151e1f52, REGION_USER1, 0x00000, LOAD_NORMAL },
-  { "b33-09.18", 0x80000, 0x1e6724b5, REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "b33-10.17", 0x80000, 0xe9ce03ab, REGION_SMP1, 0x80000, LOAD_NORMAL },
-  { "b33-08.19", 0x80000, 0xcaa1c4c8, REGION_SMP2, 0x00000, LOAD_NORMAL },
+  LOAD( USER1, "b33-07.64", 0x00000, 0x80000, 0x151e1f52),
+  LOAD( SMP1, "b33-09.18", 0x00000, 0x80000, 0x1e6724b5),
+  LOAD( SMP1, "b33-10.17", 0x80000, 0x80000, 0xe9ce03ab),
+  LOAD( SMP2, "b33-08.19", 0x00000, 0x80000, 0xcaa1c4c8),
    {  "b33_30", 0x00010000, 0xd8746234, 0, 0, 0, },
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16(  ROM1,  0x00000,  0x20000,
             "ic25",  0xf5c92e42, "ic26",  0xe7c1d1fa),
-  LOAD8_16(  REGION_CPU1,  0x40000,  0x20000,
+  LOAD8_16(  CPU1,  0x40000,  0x20000,
             "ic35",  0x16522f2d, "ic36",  0xd6741e33),
    {  "b14-30", 0x00010000, 0xdccb0c7f, 0, 0, 0, },
    {       "b14-31", 0x00002000, 0x5c6b013d, 0, 0, 0, },
@@ -149,23 +149,23 @@ static struct ROM_INFO rom_contcrcu[] =
 static struct ROM_INFO rom_contcirc[] =
 {
   // road lines
-  { "b33-01.3", 0x80000, 0xf11f2be8, REGION_GFX3, 0x00000, LOAD_NORMAL },
+  LOAD( GFX3, "b33-01.3", 0x00000, 0x80000, 0xf11f2be8),
   // GFX1 : scr (8x8)
-  { "b33-02.57", 0x80000, 0xf6fb3ba2, REGION_GFX1, 0x00000, LOAD_NORMAL },
+  LOAD( GFX1, "b33-02.57", 0x00000, 0x80000, 0xf6fb3ba2),
    // sprites 16x8
   { "b33-06", 0x080000, 0x2cb40599, REGION_GFX2, 0x000000, LOAD_8_32 },
   { "b33-05", 0x080000, 0xbddf9eea, REGION_GFX2, 0x000001, LOAD_8_32 },
   { "b33-04", 0x080000, 0x8df866a2, REGION_GFX2, 0x000002, LOAD_8_32 },
   { "b33-03", 0x080000, 0x4f6c36d9, REGION_GFX2, 0x000003, LOAD_8_32 },
   // sprite map
-  { "b33-07.64", 0x80000, 0x151e1f52, REGION_USER1, 0x00000, LOAD_NORMAL },
-  { "b33-09.18", 0x80000, 0x1e6724b5, REGION_SMP1, 0x00000, LOAD_NORMAL },
-  { "b33-10.17", 0x80000, 0xe9ce03ab, REGION_SMP1, 0x80000, LOAD_NORMAL },
-  { "b33-08.19", 0x80000, 0xcaa1c4c8, REGION_SMP2, 0x00000, LOAD_NORMAL },
+  LOAD( USER1, "b33-07.64", 0x00000, 0x80000, 0x151e1f52),
+  LOAD( SMP1, "b33-09.18", 0x00000, 0x80000, 0x1e6724b5),
+  LOAD( SMP1, "b33-10.17", 0x80000, 0x80000, 0xe9ce03ab),
+  LOAD( SMP2, "b33-08.19", 0x00000, 0x80000, 0xcaa1c4c8),
   { "b33-30.11", 0x10000, 0xd8746234, 0, 0, 0 },
-  LOAD8_16(  REGION_ROM1,  0x00000,  0x20000,
+  LOAD8_16(  ROM1,  0x00000,  0x20000,
             "ic25",  0xf5c92e42, "ic26",  0xe7c1d1fa),
-  LOAD8_16(  REGION_ROM1,  0x40000,  0x00020000,
+  LOAD8_16(  ROM1,  0x40000,  0x00020000,
              "ic35",  0x16522f2d,  "cc_36.bin",  0xa1732ea5),
    {  "b14-30", 0x00010000, 0xdccb0c7f, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },

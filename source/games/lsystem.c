@@ -305,16 +305,16 @@ static void execute_kurikint(void)
 
 static struct ROM_INFO rom_champwr[] =
 {
-  { "c01-13.rom", 0x20000, 0x7ef47525, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "c01-13.rom", 0x20000, 0x7ef47525, REGION_ROM1, 0x06000, LOAD_NORMAL },
-  { "c01-04.rom", 0x20000, 0x358bd076, REGION_ROM1, 0x26000, LOAD_NORMAL },
-  { "c01-08.rom", 0x10000, 0x810efff8, REGION_ROM2, 0, LOAD_NORMAL },
-  { "c01-07.rom", 0x20000, 0x5117c98f, REGION_CPU3, 0x00000, LOAD_NORMAL },
-  { "c01-07.rom", 0x20000, 0x5117c98f, REGION_CPU3, 0x08000, LOAD_NORMAL },
-  { "c01-01.rom", 0x80000, 0xf302e6e9, REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "c01-02.rom", 0x80000, 0x1e0476c4, REGION_GFX1, 0x080000, LOAD_NORMAL },
-  { "c01-03.rom", 0x80000, 0x2a142dbc, REGION_GFX1, 0x100000, LOAD_NORMAL },
-  { "c01-05.rom", 0x20000, 0x22efad4a, REGION_SMP1, 0x00000, LOAD_NORMAL },
+  LOAD( ROM1, "c01-13.rom", 0x00000, 0x20000, 0x7ef47525),
+  LOAD( ROM1, "c01-13.rom", 0x06000, 0x20000, 0x7ef47525),
+  LOAD( ROM1, "c01-04.rom", 0x26000, 0x20000, 0x358bd076),
+  LOAD( ROM2, "c01-08.rom", 0, 0x10000, 0x810efff8),
+  LOAD( CPU3, "c01-07.rom", 0x00000, 0x20000, 0x5117c98f),
+  LOAD( CPU3, "c01-07.rom", 0x08000, 0x20000, 0x5117c98f),
+  LOAD( GFX1, "c01-01.rom", 0x000000, 0x80000, 0xf302e6e9),
+  LOAD( GFX1, "c01-02.rom", 0x080000, 0x80000, 0x1e0476c4),
+  LOAD( GFX1, "c01-03.rom", 0x100000, 0x80000, 0x2a142dbc),
+  LOAD( SMP1, "c01-05.rom", 0x00000, 0x20000, 0x22efad4a),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -404,9 +404,9 @@ static struct DSW_INFO dsw_champwr[] =
 
 static struct ROM_INFO rom_champwru[] =
 {
-  { "c01-12.rom", 0x20000, 0x09f345b3, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "c01-12.rom", 0x20000, 0x09f345b3, REGION_ROM1, 0x06000, LOAD_NORMAL },
-  { "c01-04.rom", 0x20000, 0x358bd076, REGION_ROM1, 0x26000, LOAD_NORMAL },
+  LOAD( ROM1, "c01-12.rom", 0x00000, 0x20000, 0x09f345b3),
+  LOAD( ROM1, "c01-12.rom", 0x06000, 0x20000, 0x09f345b3),
+  LOAD( ROM1, "c01-04.rom", 0x26000, 0x20000, 0x358bd076),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -444,9 +444,9 @@ static struct DSW_INFO dsw_champwru[] =
 
 static struct ROM_INFO rom_champwrj[] =
 {
-  { "c01-06.bin", 0x20000, 0x90fa1409, REGION_ROM1, 0x00000, LOAD_NORMAL },
-  { "c01-06.bin", 0x20000, 0x90fa1409, REGION_ROM1, 0x06000, LOAD_NORMAL },
-  { "c01-04.rom", 0x20000, 0x358bd076, REGION_ROM1, 0x26000, LOAD_NORMAL },
+  LOAD( ROM1, "c01-06.bin", 0x00000, 0x20000, 0x90fa1409),
+  LOAD( ROM1, "c01-06.bin", 0x06000, 0x20000, 0x90fa1409),
+  LOAD( ROM1, "c01-04.rom", 0x26000, 0x20000, 0x358bd076),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -802,25 +802,25 @@ static struct DSW_INFO dsw_kurikint[] =
 
 static struct ROM_INFO rom_plotting[] =
 {
-  { "ic10", 0x10000, 0xbe240921, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "b96-07.ic9", 0x10000, 0x0713a387, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b96-08.ic8", 0x10000, 0x55b8e294, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "ic10", 0x00000, 0x10000, 0xbe240921),
+  LOAD( GFX1, "b96-07.ic9", 0x00000, 0x10000, 0x0713a387),
+  LOAD( GFX1, "b96-08.ic8", 0x10000, 0x10000, 0x55b8e294),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_plottinga[] = // clone of plotting
 {
-  { "plot01.ic10", 0x10000, 0x5b30bc25, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "b96-02.ic9", 0x10000, 0x6e0bad2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b96-03.ic8", 0x10000, 0xfb5f3ca4, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "plot01.ic10", 0x00000, 0x10000, 0x5b30bc25),
+  LOAD( GFX1, "b96-02.ic9", 0x00000, 0x10000, 0x6e0bad2a),
+  LOAD( GFX1, "b96-03.ic8", 0x10000, 0x10000, 0xfb5f3ca4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_plottingb[] = // clone of plotting
 {
-  { "b96-06.ic10", 0x10000, 0xf89a54b1, REGION_CPU1, 0x00000, LOAD_NORMAL },
-  { "b96-02.ic9", 0x10000, 0x6e0bad2a, REGION_GFX1, 0x00000, LOAD_NORMAL },
-  { "b96-03.ic8", 0x10000, 0xfb5f3ca4, REGION_GFX1, 0x10000, LOAD_NORMAL },
+  LOAD( CPU1, "b96-06.ic10", 0x00000, 0x10000, 0xf89a54b1),
+  LOAD( GFX1, "b96-02.ic9", 0x00000, 0x10000, 0x6e0bad2a),
+  LOAD( GFX1, "b96-03.ic8", 0x10000, 0x10000, 0xfb5f3ca4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
