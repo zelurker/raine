@@ -131,14 +131,24 @@ enum region_flags
    LOAD_FILL,
 };
 
+#define LOAD(region, name, offset, size, crc) \
+  { name, size, crc, REGION_##region, offset, LOAD_NORMAL }
+#define LOAD_SW16(region, name, offset, size, crc) \
+  { name, size, crc, REGION_##region, offset, LOAD_SWAP_16 }
 #define LOAD8_16(region, offset, size, rom1, crc1, rom2, crc2) \
-{ rom1, size, crc1, region, offset, LOAD_8_16 }, \
-{ rom2, size, crc2, region, offset+1, LOAD_8_16 }
+{ rom1, size, crc1, REGION_##region, offset, LOAD_8_16 }, \
+{ rom2, size, crc2, REGION_##region, offset+1, LOAD_8_16 }
 
 #define LOAD8_16S(region, offset, size, rom1, crc1, rom2, crc2) \
-{ rom1, size, crc1, region, offset, LOAD_8_16S }, \
-{ rom2, size, crc2, region, offset+1, LOAD_8_16S }
+{ rom1, size, crc1, REGION_##region, offset, LOAD_8_16S }, \
+{ rom2, size, crc2, REGION_##region, offset+1, LOAD_8_16S }
 
+#define LOAD8_32(region, offset, size, rom1, crc1, rom2, crc2, \
+		rom3, crc3, rom4, crc4) \
+{ rom1, size, crc1, REGION_##region, offset, LOAD_16_64 }, \
+{ rom2, size, crc2, REGION_##region, offset+1, LOAD_16_64 }, \
+{ rom3, size, crc3, REGION_##region, offset+2, LOAD_16_64 }, \
+{ rom4, size, crc4, REGION_##region, offset+3, LOAD_16_64 }
 #define LOAD16_64(region, offset, size, rom1, crc1, rom2, crc2, \
 		rom3, crc3, rom4, crc4) \
 { rom1, size, crc1, region, offset, LOAD_16_64 }, \
