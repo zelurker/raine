@@ -94,8 +94,8 @@ get all the letters "sa-mu-ra-i", though.
 
 static struct ROM_INFO rom_64street[] =
 {
-	LOAD8_16( ROM1, 0, 0x040000,
-			"64th_03.rom", 0xed6c6942, "64th_02.rom", 0x0621ed1d),
+    LOAD8_16( ROM1, 0, 0x040000,
+	    "64th_03.rom", 0xed6c6942, "64th_02.rom", 0x0621ed1d),
   // CPU 2
   LOAD8_16( ROM1,  0x080000,  0x010000,
             "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
@@ -3013,7 +3013,7 @@ static int protection_val;
 /* Read the input ports, through a protection device */
 static UINT16 protection_peekaboo_r(UINT32 offset)
 {
-  //fprintf(stderr,"protection_r %x p1_r %x\n",protection_val,player1_r(0));
+  // fprintf(stderr,"protection_r %x p1_r %x offset %x\n",protection_val,player1_r(0),offset);
   switch (protection_val)
 	{
 		case 0x02:	return 0x03;
@@ -3028,6 +3028,7 @@ static void protection_peekaboo_w(UINT32 offset, UINT16 data)
 	static int bank;
 
 	protection_val = data;
+	// printf("peekaboo_w %x\n",data);
 
 	if ((protection_val & 0x90) == 0x90)
 	{
@@ -3115,10 +3116,10 @@ static void load_peekaboo(void)
    add_68000_rom(0,0x000000,0x03FFFF,ROM+0x000000);                 // 68000 ROM
    add_68000_ram(0,0x1F0000,0x1FFFFF,RAM+0x000000);                 // 68000 RAM
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                 // SCREEN RAM
-   add_68000_rb(0,0x100000,0x100001,protection_peekaboo_r,NULL);
+   // add_68000_rb(0,0x100000,0x100001,protection_peekaboo_r,NULL);
    add_68000_rw(0,0x100000,0x100001,protection_peekaboo_r,NULL);
    add_68000_rw(0,0x0f8000,0x0f8001,OKIM6295_status_0_r,NULL);
-   add_68000_wb(0,0x100000,0x100001,protection_peekaboo_w,NULL);
+   // add_68000_wb(0,0x100000,0x100001,protection_peekaboo_w,NULL);
    add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
    add_68000_ww(0,0x100000,0x100001,protection_peekaboo_w,NULL);
    add_68000_ww(0,0x0f8000,0x0f8001,OKIM6295_data_0_w,NULL);
@@ -3179,7 +3180,7 @@ static void execute_peekaboo(void)
    WriteWord(&RAM[0x014000],px);
    WriteWord(&RAM[0x014002],px2);
 
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
+   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60));
    cpu_interrupt(CPU_68K_0, 2);
 }
 
