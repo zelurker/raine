@@ -21,6 +21,7 @@
 #include "sdl/dialogs/fsel.h"
 #include "bld.h"
 #include "files.h"
+#include "glsl.h"
 
 class TVideo : public TMenu
 {
@@ -123,9 +124,10 @@ static int choose_shader(int sel) {
     fsel(dir,exts,ogl.shader,"Select shader");
     if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0] &&
 	    strcmp(old,"None")) { // cancelled ?
-	if (MessageBox(_("Confirmation"),_("Disable shaders ?"),_("Yes|No")) == 1)
+	if (MessageBox(_("Confirmation"),_("Disable shaders ?"),_("Yes|No")) == 1) {
 	    strcpy(ogl.shader,"None");
-	else
+	    delete_shaders();
+	} else
 	    strcpy(ogl.shader,old);
     } else {
 	ogl.render = 1;
