@@ -24,8 +24,8 @@ static struct ROM_INFO rom_dariusg[] =
   { "d87-06.bin", 0x200000, 0x3b97a07c, REGION_GFX2 , 0x000000, LOAD_16_64S },
   { "d87-17.bin", 0x200000, 0xe601d63e, REGION_GFX2 , 0x000004, LOAD_16_64S },
   { "d87-08.bin", 0x200000, 0x76d23602, REGION_GFX2 , 0x000000, LOAD_MASK8 },
-  { "d87-13.bin", 0x40000, 0x15b1fff4, REGION_CPU2, 0x000000, LOAD_8_16 },
-  { "d87-14.bin", 0x40000, 0xeecda29a, REGION_CPU2, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU2, "d87-13.bin", 0x000000, 0x40000, 0x15b1fff4),
+  LOAD_16_8( CPU2, "d87-14.bin", 0x000001, 0x40000, 0xeecda29a),
   { "d87-01.bin", 0x200000, 0x3848a110, REGION_SMP1 , 0x000000, LOAD_BE }, // C9 CA CB CC
   { "d87-02.bin", 0x200000, 0x9250abae, REGION_SMP1 , 0x400000, LOAD_BE }, // CD CE CF D0
   { NULL, 0, 0, 0, 0, 0 }

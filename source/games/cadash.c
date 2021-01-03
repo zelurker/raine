@@ -29,10 +29,10 @@ static struct ROM_INFO rom_cadash[] =
 
 static struct ROM_INFO rom_cadashg[] =
 {
-  { "c21-23-1.12", 0x20000, 0x30ddbabe, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "c21-25-1.16", 0x20000, 0x24e10611, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "c21-22-1.11", 0x20000, 0xdaf58b2d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "c21-24-1.15", 0x20000, 0x2359b93e, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "c21-23-1.12", 0x00000, 0x20000, 0x30ddbabe),
+  LOAD_16_8( CPU1, "c21-25-1.16", 0x00001, 0x20000, 0x24e10611),
+  LOAD_16_8( CPU1, "c21-22-1.11", 0x40000, 0x20000, 0xdaf58b2d),
+  LOAD_16_8( CPU1, "c21-24-1.15", 0x40001, 0x20000, 0x2359b93e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

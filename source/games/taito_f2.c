@@ -160,16 +160,16 @@ static struct ROM_INFO rom_growl[] =
 
 static struct ROM_INFO rom_finalb[] =
 {
-  { "b82_09.10", 0x20000, 0x632f1ecd, REGION_ROM1, 0x00000, LOAD_8_16 },
-  { "b82_17.11", 0x20000, 0xe91b2ec9, REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "b82-06.19", 0x20000, 0xfc450a25, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "b82-07.18", 0x20000, 0xec3df577, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "b82-04.4", 0x80000, 0x6346f98e, REGION_GFX2, 0x000000, LOAD_8_16 },
+  LOAD_16_8( ROM1, "b82_09.10", 0x00000, 0x20000, 0x632f1ecd),
+  LOAD_16_8( ROM1, "b82_17.11", 0x00001, 0x20000, 0xe91b2ec9),
+  LOAD_16_8( GFX1, "b82-06.19", 0x00000, 0x20000, 0xfc450a25),
+  LOAD_16_8( GFX1, "b82-07.18", 0x00001, 0x20000, 0xec3df577),
+  LOAD_16_8( GFX2, "b82-04.4", 0x000000, 0x80000, 0x6346f98e),
 	/* Note: this is intentional to load at 0x180000, not at 0x100000
 	   because finalb_driver_init will move some bits around before data
 	   will be 'gfxdecoded'. The whole thing is because this data is 2bits-
 	   while above is 4bits-packed format, for a total of 6 bits per pixel. */
-  { "b82-03.5", 0x80000, 0xdaa11561, REGION_GFX2, 0x000001, LOAD_8_16 },
+  LOAD_16_8( GFX2, "b82-03.5", 0x000001, 0x80000, 0xdaa11561),
   LOAD( GFX2, "b82-05.3", 0x180000, 0x80000, 0xaa90b93a),
   LOAD( ROM2, "b82_10.16", 0, 0x10000, 0xa38aaaed),
   LOAD( SMP1, "b82-02.1", 0x00000, 0x80000, 0x5dd06bdd),

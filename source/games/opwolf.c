@@ -20,10 +20,10 @@
 
 static struct ROM_INFO rom_opwolf[] =
 {
-  { "b20-05-02.40", 0x10000, 0x3ffbfe3a, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "b20-03-02.30", 0x10000, 0xfdabd8a5, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "b20-04.39", 0x10000, 0x216b4838, REGION_CPU1, 0x20000, LOAD_8_16 },
-  { "b20-20.29", 0x10000, 0xd244431a, REGION_CPU1, 0x20001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "b20-05-02.40", 0x00000, 0x10000, 0x3ffbfe3a),
+  LOAD_16_8( CPU1, "b20-03-02.30", 0x00001, 0x10000, 0xfdabd8a5),
+  LOAD_16_8( CPU1, "b20-04.39", 0x20000, 0x10000, 0x216b4838),
+  LOAD_16_8( CPU1, "b20-20.29", 0x20001, 0x10000, 0xd244431a),
   LOAD( ROM2, "b20-07.10", 0x00000, 0x10000, 0x45c7ace3),
   LOAD( CPU3, "opwlfb.09", 0x00000, 0x08000, 0xab27a3dd),
   FILL(0x8000,0x8000,0,CPU3),
@@ -156,37 +156,37 @@ static struct SOUND_INFO sound_opwolf[] =
 
 static struct ROM_INFO rom_opwolfb[] =
 {
-  { "opwlfb.12", 0x10000, 0xd87e4405, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "opwlfb.10", 0x10000, 0x9ab6f75c, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "opwlfb.13", 0x10000, 0x61230c6e, REGION_CPU1, 0x20000, LOAD_8_16 },
-  { "opwlfb.11", 0x10000, 0x342e318d, REGION_CPU1, 0x20001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "opwlfb.12", 0x00000, 0x10000, 0xd87e4405),
+  LOAD_16_8( CPU1, "opwlfb.10", 0x00001, 0x10000, 0x9ab6f75c),
+  LOAD_16_8( CPU1, "opwlfb.13", 0x20000, 0x10000, 0x61230c6e),
+  LOAD_16_8( CPU1, "opwlfb.11", 0x20001, 0x10000, 0x342e318d),
   LOAD( ROM2, "opwlfb.30", 0x00000, 0x08000, 0x0669b94c),
   LOAD( CPU3, "opwlfb.09", 0x00000, 0x08000, 0xab27a3dd),
   FILL(0x8000,0x8000,0,CPU3),
-  { "opwlfb.08", 0x10000, 0x134d294e, REGION_GFX1, 0x00000, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.06", 0x10000, 0x317d0e66, REGION_GFX1, 0x20000, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.07", 0x10000, 0xe1c4095e, REGION_GFX1, 0x40000, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.05", 0x10000, 0xfd9e72c8, REGION_GFX1, 0x60000, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.04", 0x10000, 0xde0ca98d, REGION_GFX1, 0x00001, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.02", 0x10000, 0x6231fdd0, REGION_GFX1, 0x20001, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.03", 0x10000, 0xccf8ba80, REGION_GFX1, 0x40001, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.01", 0x10000, 0x0a65f256, REGION_GFX1, 0x60001, LOAD_8_16 }, /* SCR tiles (8 x 8) */
-  { "opwlfb.14", 0x10000, 0x663786eb, REGION_GFX2, 0x00000, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.15", 0x10000, 0x315b8aa9, REGION_GFX2, 0x20000, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.16", 0x10000, 0xe01099e3, REGION_GFX2, 0x40000, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.17", 0x10000, 0x56fbe61d, REGION_GFX2, 0x60000, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.18", 0x10000, 0xde9ab08e, REGION_GFX2, 0x00001, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.19", 0x10000, 0x645cf85e, REGION_GFX2, 0x20001, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.20", 0x10000, 0xd80b9cc6, REGION_GFX2, 0x40001, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.21", 0x10000, 0x97d25157, REGION_GFX2, 0x60001, LOAD_8_16 }, /* Sprites (16 x 16) */
-  { "opwlfb.29", 0x10000, 0x05a9eac0, REGION_SOUND1, 0x00000, LOAD_8_16 },
-  { "opwlfb.28", 0x10000, 0x281b2175, REGION_SOUND1, 0x20000, LOAD_8_16 },
-  { "opwlfb.27", 0x10000, 0x441211a6, REGION_SOUND1, 0x40000, LOAD_8_16 },
-  { "opwlfb.26", 0x10000, 0x86d1d42d, REGION_SOUND1, 0x60000, LOAD_8_16 },
-  { "opwlfb.25", 0x10000, 0x85b87f58, REGION_SOUND1, 0x00001, LOAD_8_16 },
-  { "opwlfb.24", 0x10000, 0x8efc5d4d, REGION_SOUND1, 0x20001, LOAD_8_16 },
-  { "opwlfb.23", 0x10000, 0xa874c703, REGION_SOUND1, 0x40001, LOAD_8_16 },
-  { "opwlfb.22", 0x10000, 0x9228481f, REGION_SOUND1, 0x60001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "opwlfb.08", 0x00000, 0x10000, 0x134d294e), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.06", 0x20000, 0x10000, 0x317d0e66), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.07", 0x40000, 0x10000, 0xe1c4095e), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.05", 0x60000, 0x10000, 0xfd9e72c8), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.04", 0x00001, 0x10000, 0xde0ca98d), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.02", 0x20001, 0x10000, 0x6231fdd0), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.03", 0x40001, 0x10000, 0xccf8ba80), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX1, "opwlfb.01", 0x60001, 0x10000, 0x0a65f256), /* SCR tiles (8 x 8) */
+  LOAD_16_8( GFX2, "opwlfb.14", 0x00000, 0x10000, 0x663786eb), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.15", 0x20000, 0x10000, 0x315b8aa9), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.16", 0x40000, 0x10000, 0xe01099e3), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.17", 0x60000, 0x10000, 0x56fbe61d), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.18", 0x00001, 0x10000, 0xde9ab08e), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.19", 0x20001, 0x10000, 0x645cf85e), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.20", 0x40001, 0x10000, 0xd80b9cc6), /* Sprites (16 x 16) */
+  LOAD_16_8( GFX2, "opwlfb.21", 0x60001, 0x10000, 0x97d25157), /* Sprites (16 x 16) */
+  LOAD_16_8( SOUND1, "opwlfb.29", 0x00000, 0x10000, 0x05a9eac0),
+  LOAD_16_8( SOUND1, "opwlfb.28", 0x20000, 0x10000, 0x281b2175),
+  LOAD_16_8( SOUND1, "opwlfb.27", 0x40000, 0x10000, 0x441211a6),
+  LOAD_16_8( SOUND1, "opwlfb.26", 0x60000, 0x10000, 0x86d1d42d),
+  LOAD_16_8( SOUND1, "opwlfb.25", 0x00001, 0x10000, 0x85b87f58),
+  LOAD_16_8( SOUND1, "opwlfb.24", 0x20001, 0x10000, 0x8efc5d4d),
+  LOAD_16_8( SOUND1, "opwlfb.23", 0x40001, 0x10000, 0xa874c703),
+  LOAD_16_8( SOUND1, "opwlfb.22", 0x60001, 0x10000, 0x9228481f),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

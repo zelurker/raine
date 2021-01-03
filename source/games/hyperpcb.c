@@ -143,8 +143,8 @@ static struct ROM_INFO rom_3in1semi[] =
 
 static struct ROM_INFO rom_toppyrap[] =
 {
-  { "uh12.bin", 0x40000, 0x6f5ad699, REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "ui12.bin", 0x40000, 0xcaf5a7e1, REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD_16_8( ROM1, "uh12.bin", 0x00001, 0x40000, 0x6f5ad699),
+  LOAD_16_8( ROM1, "ui12.bin", 0x00000, 0x40000, 0xcaf5a7e1),
   LOAD( ROM2, "u1.bin", 0x00000, 0x10000 , 0x07f50947),
 	/* this contains the code for 2 of the IRQ functions, but the game only uses one of them, the other is
        executed from ROM.  The version in ROM is slightly patched version so maybe there is an earlier revision
@@ -160,8 +160,8 @@ static struct ROM_INFO rom_toppyrap[] =
 
 static struct ROM_INFO rom_pzlbreak[] =
 {
-  { "4.uh12", 0x20000, 0xb3f04f80, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "5.ui12", 0x20000, 0x13c298a0, REGION_CPU1, 0x00000, LOAD_8_16 },
+  LOAD_16_8( CPU1, "4.uh12", 0x00001, 0x20000, 0xb3f04f80),
+  LOAD_16_8( CPU1, "5.ui12", 0x00000, 0x20000, 0x13c298a0),
   LOAD( ROM2, "0.u1", 0x00000, 0x10000 , 0x1ad646b7),
 	/* this is not a real rom but instead the data extracted from
 	   shared ram, the MCU puts it there */
@@ -232,8 +232,8 @@ static struct DSW_INFO dsw_toppyrap[] =
 
 static struct ROM_INFO rom_cookbib3[] =
 {
-  { "u52.bin", 0x40000, 0x65134893, REGION_ROM1, 0x00001, LOAD_8_16 },
-  { "u74.bin", 0x40000, 0xc4ab8435, REGION_ROM1, 0x00000, LOAD_8_16 },
+  LOAD_16_8( ROM1, "u52.bin", 0x00001, 0x40000, 0x65134893),
+  LOAD_16_8( ROM1, "u74.bin", 0x00000, 0x40000, 0xc4ab8435),
   LOAD( ROM2, "u35.bin", 0, 0x10000, 0x5dfd2a98),
 	/* this is not a real rom but instead the data extracted from
        shared ram, the MCU puts it there */
@@ -419,14 +419,14 @@ static struct ROM_INFO rom_wintbob[] =
   LOAD8_16( ROM1,  0x020000,  0x00010000,
                 "wb04.bin",  0x53be758d,     "wb02.bin",  0xfc8e292e),
    LOAD( ROM2, "wb05.bin", 0x000000, 0x00010000, 0x53fe59df),
-   {     "wb13.bin", 0x00010000, 0x426921de, REGION_GFX1, 0x000000, LOAD_8_16,   },
-   {     "wb06.bin", 0x00010000, 0x68204937, REGION_GFX1, 0x000001, LOAD_8_16,   },
-   {     "wb12.bin", 0x00010000, 0xef4e04c7, REGION_GFX1, 0x020000, LOAD_8_16,   },
-   {     "wb07.bin", 0x00010000, 0x53f40978, REGION_GFX1, 0x020001, LOAD_8_16,   },
-   {     "wb11.bin", 0x00010000, 0x41cb4563, REGION_GFX1, 0x040000, LOAD_8_16,   },
-   {     "wb08.bin", 0x00010000, 0x9497b88c, REGION_GFX1, 0x040001, LOAD_8_16,   },
-   {     "wb10.bin", 0x00010000, 0x5fa22b1e, REGION_GFX1, 0x060000, LOAD_8_16,   },
-   {     "wb09.bin", 0x00010000, 0x9be718ca, REGION_GFX1, 0x060001, LOAD_8_16,   },
+   LOAD_16_8( GFX1, "wb13.bin", 0x000000, 0x00010000, 0x426921de),
+   LOAD_16_8( GFX1, "wb06.bin", 0x000001, 0x00010000, 0x68204937),
+   LOAD_16_8( GFX1, "wb12.bin", 0x020000, 0x00010000, 0xef4e04c7),
+   LOAD_16_8( GFX1, "wb07.bin", 0x020001, 0x00010000, 0x53f40978),
+   LOAD_16_8( GFX1, "wb11.bin", 0x040000, 0x00010000, 0x41cb4563),
+   LOAD_16_8( GFX1, "wb08.bin", 0x040001, 0x00010000, 0x9497b88c),
+   LOAD_16_8( GFX1, "wb10.bin", 0x060000, 0x00010000, 0x5fa22b1e),
+   LOAD_16_8( GFX1, "wb09.bin", 0x060001, 0x00010000, 0x9be718ca),
    {           NULL,          0,          0,           0,        0,         0,   },
 };
 

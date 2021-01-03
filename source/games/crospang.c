@@ -30,37 +30,37 @@ static UINT8 *RAM_PFCTRL;
 
 static struct ROM_INFO rom_crospang[] =
 {
-    { "p1.bin", 0x20000, 0x0bcbbaad, REGION_CPU1, 0x00001, LOAD_8_16 },
-    { "p2.bin", 0x20000, 0x0947d204, REGION_CPU1, 0x00000, LOAD_8_16 },
+    LOAD_16_8( CPU1, "p1.bin", 0x00001, 0x20000, 0x0bcbbaad),
+    LOAD_16_8( CPU1, "p2.bin", 0x00000, 0x20000, 0x0947d204),
 LOAD( ROM2, "s1.bin", 0x000000, 0x010000, 0xd61a224c),
 LOAD( SMP1, "s2.bin", 0x000000, 0x020000, 0x9f9ecd22),
-  { "rom1.bin", 0x40000, 0x905042bb, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "rom2.bin", 0x40000, 0xbc4381e9, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "rom3.bin", 0x80000, 0xcc6e1fce, REGION_GFX2, 0x000000, LOAD_8_16 },
-  { "rom4.bin", 0x80000, 0x9a91d494, REGION_GFX2, 0x000001, LOAD_8_16 },
-  { "rom5.bin", 0x80000, 0x53a34dc5, REGION_GFX2, 0x100000, LOAD_8_16 },
-  { "rom6.bin", 0x80000, 0x9c633082, REGION_GFX2, 0x100001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "rom1.bin", 0x00000, 0x40000, 0x905042bb),
+  LOAD_16_8( GFX1, "rom2.bin", 0x00001, 0x40000, 0xbc4381e9),
+  LOAD_16_8( GFX2, "rom3.bin", 0x000000, 0x80000, 0xcc6e1fce),
+  LOAD_16_8( GFX2, "rom4.bin", 0x000001, 0x80000, 0x9a91d494),
+  LOAD_16_8( GFX2, "rom5.bin", 0x100000, 0x80000, 0x53a34dc5),
+  LOAD_16_8( GFX2, "rom6.bin", 0x100001, 0x80000, 0x9c633082),
 { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_heuksun[] =
 {
-  { "ua02.j3", 0x80000, 0xdb2b9c8e, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ua03.j5", 0x80000, 0xde9f01e8, REGION_CPU1, 0x00000, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ua02.j3", 0x00001, 0x80000, 0xdb2b9c8e),
+  LOAD_16_8( CPU1, "ua03.j5", 0x00000, 0x80000, 0xde9f01e8),
   LOAD( ROM2, "us02.r4", 0x00000, 0x10000, 0xc7cc05fa),
   LOAD( SMP1, "us08.u7", 0x00000, 0x40000, 0xae177589),
-  { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x00001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "uc08.r11", 0x00001, 0x20000, 0x242cee69),
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x100001, LOAD_CONTINUE },
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x040001, LOAD_CONTINUE },
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x140001, LOAD_CONTINUE },
-  { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x00000, LOAD_8_16 },
+  LOAD_16_8( GFX1, "uc07.t11", 0x00000, 0x20000, 0x4d1ed885),
   { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x100000, LOAD_CONTINUE },
   { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x040000, LOAD_CONTINUE },
   { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x140000, LOAD_CONTINUE },
-  { "ud14.p11", 0x40000, 0x4fc2b574, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "ud15.m11", 0x40000, 0x1d6187a6, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "ud16.l11", 0x40000, 0xeabec43e, REGION_GFX2, 0x80000, LOAD_8_16 },
-  { "ud17.j11", 0x40000, 0xc6b04171, REGION_GFX2, 0x80001, LOAD_8_16 },
+  LOAD_16_8( GFX2, "ud14.p11", 0x00000, 0x40000, 0x4fc2b574),
+  LOAD_16_8( GFX2, "ud15.m11", 0x00001, 0x40000, 0x1d6187a6),
+  LOAD_16_8( GFX2, "ud16.l11", 0x80000, 0x40000, 0xeabec43e),
+  LOAD_16_8( GFX2, "ud17.j11", 0x80001, 0x40000, 0xc6b04171),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

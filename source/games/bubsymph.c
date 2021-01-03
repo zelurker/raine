@@ -59,8 +59,8 @@ static struct ROM_INFO rom_bublbob2p[] =
   { "cq80-scr2-cc11.ic5", 0x080000, 0xb81aa2c7, REGION_GFX3 , 0x000002, LOAD_8_32 },
   { "cq80-scr3-4266.ic4", 0x080000, 0xc114583f, REGION_GFX3 , 0x000003, LOAD_8_32 },
   LOAD( GFX4 , "cq80-scr4-7fe1.ic3", 0x000000, 0x080000, 0x2bba1728),
-  { "snd-h-348f.ic66",    0x020000, 0xf66e60f2, REGION_ROM2,  0x000000, LOAD_8_16 },
-  { "snd-l-4ec1.ic65",    0x020000, 0xd302d8bc, REGION_ROM2,  0x000001, LOAD_8_16 },
+  LOAD_16_8( ROM2, "snd-h-348f.ic66", 0x000000, 0x020000, 0xf66e60f2),
+  LOAD_16_8( ROM2, "snd-l-4ec1.ic65", 0x000001, 0x020000, 0xd302d8bc),
   { "cq80-snd-data0-7b5f.ic43", 0x080000, 0xbf8f26d3, REGION_SMP1 , 0x000000, LOAD_BE }, // C8
   { "cq80-snd-data1-933b.ic44", 0x080000, 0x62b00475, REGION_SMP1 , 0x100000, LOAD_BE }, // C9
   { "cq80-snd3-std5-3a9c.ic10", 0x080000, 0x26312451, REGION_SMP1 , 0x600000, LOAD_BE }, // -std-

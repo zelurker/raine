@@ -1245,12 +1245,12 @@ LOAD( GFX4, "iga_23.bin", 0, 0x00080000, 0xfb58c5f4),
 
 static struct ROM_INFO rom_kazan[] =
 {
-  { "kazan.2", 0x020000, 0x072aa3d6, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "kazan.1", 0x020000, 0xb9801e2d, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "iga_03.bin", 0x010000, 0xde5937ad, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "iga_04.bin", 0x010000, 0xafaf0480, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "iga_05.bin", 0x010000, 0x13580868, REGION_ROM1, 0x060000, LOAD_8_16 },
-  { "iga_06.bin", 0x010000, 0x7904d5dd, REGION_ROM1, 0x060001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "kazan.2", 0x000000, 0x020000, 0x072aa3d6),
+  LOAD_16_8( CPU1, "kazan.1", 0x000001, 0x020000, 0xb9801e2d),
+  LOAD_16_8( CPU1, "iga_03.bin", 0x040000, 0x010000, 0xde5937ad),
+  LOAD_16_8( CPU1, "iga_04.bin", 0x040001, 0x010000, 0xafaf0480),
+  LOAD_16_8( ROM1, "iga_05.bin", 0x060000, 0x010000, 0x13580868),
+  LOAD_16_8( ROM1, "iga_06.bin", 0x060001, 0x010000, 0x7904d5dd),
   LOAD( GFX1, "kazan.11", 0x000000, 0x020000, 0x08e54137),
   LOAD( GFX1, "kazan.12", 0x020000, 0x020000, 0xe89d58bd),
   LOAD( GFX2, "kazan.15", 0x000000, 0x020000, 0x48b28aa9),

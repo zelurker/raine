@@ -325,8 +325,8 @@ static struct ROM_INFO rom_choko[] =
   { "tkoj3_b.simm3", 0x200000, 0x4d3f919a, REGION_GFX1, 0x0000006, LOAD_8_64 },
   { "tkoj3_a.simm3", 0x200000, 0xcfef17ab, REGION_GFX1, 0x0000007, LOAD_8_64 },
   LOAD( ROM2, "tko.01", 0x00000, 0x20000, 0x6eda50c2),
-  { "tkoj5_a.simm5", 0x200000, 0xab45d509, REGION_SMP1, 0x000000, LOAD_8_16 },
-  { "tkoj5_b.simm5", 0x200000, 0xfa905c3d, REGION_SMP1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( SMP1, "tkoj5_a.simm5", 0x000000, 0x200000, 0xab45d509),
+  LOAD_16_8( SMP1, "tkoj5_b.simm5", 0x000001, 0x200000, 0xfa905c3d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1082,8 +1082,8 @@ static struct ROM_INFO rom_jyangoku[] =
   { "maj3_b.simm3", 0x200000, 0xec737d9d, REGION_GFX1, 0x0000006, LOAD_8_64 },
   { "maj3_a.simm3", 0x200000, 0xc23b6f22, REGION_GFX1, 0x0000007, LOAD_8_64 },
   LOAD( ROM2, "maj.01", 0x00000, 0x20000, 0x1fe8c213),
-  { "maj5_a.simm5", 0x200000, 0x5ad9ee53, REGION_SMP1, 0x000000, LOAD_8_16 },
-  { "maj5_b.simm5", 0x200000, 0xefb3dbfb, REGION_SMP1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( SMP1, "maj5_a.simm5", 0x000000, 0x200000, 0x5ad9ee53),
+  LOAD_16_8( SMP1, "maj5_b.simm5", 0x000001, 0x200000, 0xefb3dbfb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1539,8 +1539,8 @@ static struct ROM_INFO rom_mvscjr1[] = // clone of mvsc
 
 static struct ROM_INFO rom_mvscjsing[] = // clone of mvsc
 {
-  { "mvc_ja.simm1", 0x200000, 0x6a2ef7c2, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "mvc_ja.simm3", 0x200000, 0x699d09ad, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mvc_ja.simm1", 0x000000, 0x200000, 0x6a2ef7c2),
+  LOAD_16_8( CPU1, "mvc_ja.simm3", 0x000001, 0x200000, 0x699d09ad),
   { "mvc64-13m.13", 0x800000, 0x8428ce69, REGION_GFX1, 0x0000000, LOAD_16_64 },
   { "mvc64-15m.15", 0x800000, 0x2e0028f4, REGION_GFX1, 0x0000002, LOAD_16_64 },
   { "mvc64-17m.17", 0x800000, 0x308ca826, REGION_GFX1, 0x0000004, LOAD_16_64 },

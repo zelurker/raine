@@ -22,10 +22,10 @@
 
 static struct ROM_INFO rom_forgottn[] =
 {
-  { "lw11.12f", 0x20000, 0x73e920b7, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lw15.12h", 0x20000, 0x50d7012d, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lw10.13f", 0x20000, 0xbea45994, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lw14.13h", 0x20000, 0x539b2339, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lw11.12f", 0x00000, 0x20000, 0x73e920b7),
+  LOAD_16_8( CPU1, "lw15.12h", 0x00001, 0x20000, 0x50d7012d),
+  LOAD_16_8( CPU1, "lw10.13f", 0x40000, 0x20000, 0xbea45994),
+  LOAD_16_8( CPU1, "lw14.13h", 0x40001, 0x20000, 0x539b2339),
   LOAD_SW16( CPU1, "lw-07.10g", 0x80000, 0x80000, 0xfd252a26),
   { "lw_2.2b", 0x20000, 0x4bd75fee, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "lw_1.2a", 0x20000, 0x65f41485, REGION_GFX1, 0x000001, LOAD_8_64 },
@@ -56,10 +56,10 @@ static struct ROM_INFO rom_forgottn[] =
 
 static struct ROM_INFO rom_forgottnu[] = // clone of forgottn
 {
-  { "lw11c.12f", 0x20000, 0xe62742b6, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lw15c.12h", 0x20000, 0x1b70f216, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lw10c.13f", 0x20000, 0x8f5ea3f5, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lw14c.13h", 0x20000, 0x708e7472, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lw11c.12f", 0x00000, 0x20000, 0xe62742b6),
+  LOAD_16_8( CPU1, "lw15c.12h", 0x00001, 0x20000, 0x1b70f216),
+  LOAD_16_8( CPU1, "lw10c.13f", 0x40000, 0x20000, 0x8f5ea3f5),
+  LOAD_16_8( CPU1, "lw14c.13h", 0x40001, 0x20000, 0x708e7472),
   LOAD_SW16( CPU1, "lw-07.10g", 0x80000, 0x80000, 0xfd252a26),
   { "lw_2.2b", 0x20000, 0x4bd75fee, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "lw_1.2a", 0x20000, 0x65f41485, REGION_GFX1, 0x000001, LOAD_8_64 },
@@ -84,10 +84,10 @@ static struct ROM_INFO rom_forgottnu[] = // clone of forgottn
 
 static struct ROM_INFO rom_forgottnu1[] = // clone of forgottn
 {
-  { "lw11c.14f", 0x20000, 0xe62742b6, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lw15c.14g", 0x20000, 0x1b70f216, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lw10c.13f", 0x20000, 0x8f5ea3f5, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lw14c.13g", 0x20000, 0x708e7472, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lw11c.14f", 0x00000, 0x20000, 0xe62742b6),
+  LOAD_16_8( CPU1, "lw15c.14g", 0x00001, 0x20000, 0x1b70f216),
+  LOAD_16_8( CPU1, "lw10c.13f", 0x40000, 0x20000, 0x8f5ea3f5),
+  LOAD_16_8( CPU1, "lw14c.13g", 0x40001, 0x20000, 0x708e7472),
   LOAD_SW16( CPU1, "lw-07.13e", 0x80000, 0x80000, 0xfd252a26),
   { "lw-01.9d", 0x80000, 0x0318f298, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "lw-08.9f", 0x80000, 0x25a8e43c, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -103,10 +103,10 @@ static struct ROM_INFO rom_forgottnu1[] = // clone of forgottn
 
 static struct ROM_INFO rom_forgottnua[] = // clone of forgottn
 {
-  { "lwu_11a.14f", 0x20000, 0xddf78831, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lwu_15a.14g", 0x20000, 0xf7ce2097, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lwu_10a.13f", 0x20000, 0x8cb38c81, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lwu_14a.13g", 0x20000, 0xd70ef9fd, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lwu_11a.14f", 0x00000, 0x20000, 0xddf78831),
+  LOAD_16_8( CPU1, "lwu_15a.14g", 0x00001, 0x20000, 0xf7ce2097),
+  LOAD_16_8( CPU1, "lwu_10a.13f", 0x40000, 0x20000, 0x8cb38c81),
+  LOAD_16_8( CPU1, "lwu_14a.13g", 0x40001, 0x20000, 0xd70ef9fd),
   LOAD_SW16( CPU1, "lw-07.13e", 0x80000, 0x80000, 0xfd252a26),
   { "lw-01.9d", 0x80000, 0x0318f298, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "lw-08.9f", 0x80000, 0x25a8e43c, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -122,10 +122,10 @@ static struct ROM_INFO rom_forgottnua[] = // clone of forgottn
 
 static struct ROM_INFO rom_forgottnuaa[] = /* 1 byte difference to parent set. Region byte or pointer to the US "warning" screen at boot clone of forgottn */
 {
-  { "lwu_11aa.14f", 0x20000, 0x73e920b7, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lwu_15aa.14g", 0x20000, 0xe47524b9, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lwu_10aa.13f", 0x20000, 0xbea45994, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lwu_14aa.13g", 0x20000, 0x539b2339, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lwu_11aa.14f", 0x00000, 0x20000, 0x73e920b7),
+  LOAD_16_8( CPU1, "lwu_15aa.14g", 0x00001, 0x20000, 0xe47524b9),
+  LOAD_16_8( CPU1, "lwu_10aa.13f", 0x40000, 0x20000, 0xbea45994),
+  LOAD_16_8( CPU1, "lwu_14aa.13g", 0x40001, 0x20000, 0x539b2339),
   LOAD_SW16( CPU1, "lw-07.13e", 0x80000, 0x80000, 0xfd252a26),
   { "lw-01.9d", 0x80000, 0x0318f298, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "lw-08.9f", 0x80000, 0x25a8e43c, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -141,10 +141,10 @@ static struct ROM_INFO rom_forgottnuaa[] = /* 1 byte difference to parent set. R
 
 static struct ROM_INFO rom_lostwrld[] = // clone of forgottn
 {
-  { "lw_11c.14f", 0x20000, 0x67e42546, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lw_15c.14g", 0x20000, 0x402e2a46, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lw_10c.13f", 0x20000, 0xc46479d7, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lw_14c.13g", 0x20000, 0x97670f4a, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lw_11c.14f", 0x00000, 0x20000, 0x67e42546),
+  LOAD_16_8( CPU1, "lw_15c.14g", 0x00001, 0x20000, 0x402e2a46),
+  LOAD_16_8( CPU1, "lw_10c.13f", 0x40000, 0x20000, 0xc46479d7),
+  LOAD_16_8( CPU1, "lw_14c.13g", 0x40001, 0x20000, 0x97670f4a),
   LOAD_SW16( CPU1, "lw-07.13e", 0x80000, 0x80000, 0xfd252a26),
   { "lw-01.9d", 0x80000, 0x0318f298, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "lw-08.9f", 0x80000, 0x25a8e43c, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -162,10 +162,10 @@ static struct ROM_INFO rom_lostwrld[] = // clone of forgottn
 
 static struct ROM_INFO rom_lostwrldo[] = // clone of forgottn
 {
-  { "lw_11.14f", 0x20000, 0x61e2cc56, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "lw_15.14g", 0x20000, 0x8a0c18d3, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "lw_10.13f", 0x20000, 0x23bca4d5, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "lw_14.13g", 0x20000, 0x3a023771, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "lw_11.14f", 0x00000, 0x20000, 0x61e2cc56),
+  LOAD_16_8( CPU1, "lw_15.14g", 0x00001, 0x20000, 0x8a0c18d3),
+  LOAD_16_8( CPU1, "lw_10.13f", 0x40000, 0x20000, 0x23bca4d5),
+  LOAD_16_8( CPU1, "lw_14.13g", 0x40001, 0x20000, 0x3a023771),
   LOAD_SW16( CPU1, "lw-07.13e", 0x80000, 0x80000, 0xfd252a26),
   { "lw-01.9d", 0x80000, 0x0318f298, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "lw-08.9f", 0x80000, 0x25a8e43c, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -183,10 +183,10 @@ static struct ROM_INFO rom_lostwrldo[] = // clone of forgottn
 
 static struct ROM_INFO rom_ghouls[] =
 {
-  { "dme_29.10h", 0x20000, 0x166a58a2, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "dme_30.10j", 0x20000, 0x7ac8407a, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "dme_27.9h", 0x20000, 0xf734b2be, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "dme_28.9j", 0x20000, 0x03d3e714, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "dme_29.10h", 0x00000, 0x20000, 0x166a58a2),
+  LOAD_16_8( CPU1, "dme_30.10j", 0x00001, 0x20000, 0x7ac8407a),
+  LOAD_16_8( CPU1, "dme_27.9h", 0x40000, 0x20000, 0xf734b2be),
+  LOAD_16_8( CPU1, "dme_28.9j", 0x40001, 0x20000, 0x03d3e714),
   LOAD( CPU1, "dm-17.7j", 0x80000, 0x80000, 0x3ea1b0f2),
   { "dm-05.3a", 0x80000, 0x0ba9c0b0, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "dm-07.3f", 0x80000, 0x5d760ab9, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -214,24 +214,24 @@ static struct ROM_INFO rom_ghouls[] =
 
 static struct ROM_INFO rom_ghoulsu[] = // clone of ghouls
 {
-  { "dmu_29.10h", 0x20000, 0x334d85b2, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "dmu_30.10j", 0x20000, 0xcee8ceb5, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "dmu_27.9h", 0x20000, 0x4a524140, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "dmu_28.9j", 0x20000, 0x94aae205, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "dmu_29.10h", 0x00000, 0x20000, 0x334d85b2),
+  LOAD_16_8( CPU1, "dmu_30.10j", 0x00001, 0x20000, 0xcee8ceb5),
+  LOAD_16_8( CPU1, "dmu_27.9h", 0x40000, 0x20000, 0x4a524140),
+  LOAD_16_8( CPU1, "dmu_28.9j", 0x40001, 0x20000, 0x94aae205),
   LOAD( CPU1, "dm-17.7j", 0x80000, 0x80000, 0x3ea1b0f2),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_daimakai[] = // clone of ghouls
 {
-  { "dmj_38.12f", 0x20000, 0x82fd1798, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "dmj_39.12h", 0x20000, 0x35366ccc, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "dmj_40.13f", 0x20000, 0xa17c170a, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "dmj_41.13h", 0x20000, 0x6af0b391, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "dm_33.10f", 0x20000, 0x384d60c4, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "dm_34.10h", 0x20000, 0x19abe30f, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "dm_35.11f", 0x20000, 0xc04b85c8, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "dm_36.11h", 0x20000, 0x89be83de, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "dmj_38.12f", 0x00000, 0x20000, 0x82fd1798),
+  LOAD_16_8( CPU1, "dmj_39.12h", 0x00001, 0x20000, 0x35366ccc),
+  LOAD_16_8( CPU1, "dmj_40.13f", 0x40000, 0x20000, 0xa17c170a),
+  LOAD_16_8( CPU1, "dmj_41.13h", 0x40001, 0x20000, 0x6af0b391),
+  LOAD_16_8( CPU1, "dm_33.10f", 0x80000, 0x20000, 0x384d60c4),
+  LOAD_16_8( CPU1, "dm_34.10h", 0x80001, 0x20000, 0x19abe30f),
+  LOAD_16_8( CPU1, "dm_35.11f", 0xc0000, 0x20000, 0xc04b85c8),
+  LOAD_16_8( CPU1, "dm_36.11h", 0xc0001, 0x20000, 0x89be83de),
   { "dm_02.4b", 0x20000, 0x8b98dc48, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "dm_01.4a", 0x20000, 0x80896c33, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "dm_10.9b", 0x20000, 0xc2e7d9ef, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -285,10 +285,10 @@ static struct ROM_INFO rom_daimakair[] = // clone of ghouls
 
 static struct ROM_INFO rom_strider[] =
 {
-  { "30.11f", 0x20000, 0xda997474, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "35.11h", 0x20000, 0x5463aaa3, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "31.12f", 0x20000, 0xd20786db, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "36.12h", 0x20000, 0x21aa2863, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "30.11f", 0x00000, 0x20000, 0xda997474),
+  LOAD_16_8( CPU1, "35.11h", 0x00001, 0x20000, 0x5463aaa3),
+  LOAD_16_8( CPU1, "31.12f", 0x40000, 0x20000, 0xd20786db),
+  LOAD_16_8( CPU1, "36.12h", 0x40001, 0x20000, 0x21aa2863),
   LOAD_SW16( CPU1, "st-14.8h", 0x80000, 0x80000, 0x9b3cfc08),
   { "st-2.8a", 0x80000, 0x4eee9aea, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "st-11.10a", 0x80000, 0x2d7f21e4, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -307,10 +307,10 @@ static struct ROM_INFO rom_strider[] =
 
 static struct ROM_INFO rom_striderua[] = // clone of strider
 {
-  { "30(__striderua).11f", 0x20000, 0x66aec273, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "35(__striderua).11h", 0x20000, 0x50e0e865, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "31(__striderua).12f", 0x20000, 0xeae93bd1, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "36(__striderua).12h", 0x20000, 0xb904a31d, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "30(__striderua).11f", 0x00000, 0x20000, 0x66aec273),
+  LOAD_16_8( CPU1, "35(__striderua).11h", 0x00001, 0x20000, 0x50e0e865),
+  LOAD_16_8( CPU1, "31(__striderua).12f", 0x40000, 0x20000, 0xeae93bd1),
+  LOAD_16_8( CPU1, "36(__striderua).12h", 0x40001, 0x20000, 0xb904a31d),
   LOAD_SW16( CPU1, "st-14.8h", 0x80000, 0x80000, 0x9b3cfc08),
 /* Ignored : 	ROM_COPY( "gfx", 0x000000, 0x000000, 0x8000 ) */
   LOAD( ROM2, "09(__striderua).12b", 0x00000, 0x10000, 0x08d63519),
@@ -319,14 +319,14 @@ static struct ROM_INFO rom_striderua[] = // clone of strider
 
 static struct ROM_INFO rom_striderj[] = // clone of strider
 {
-  { "sth36.bin", 0x20000, 0x53c7b006, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sth42.bin", 0x20000, 0x4037f65f, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sth37.bin", 0x20000, 0x80e8877d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sth43.bin", 0x20000, 0x6b3fa466, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sth34.bin", 0x20000, 0xbea770b5, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sth40.bin", 0x20000, 0x43b922dc, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sth35.bin", 0x20000, 0x5cc429da, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sth41.bin", 0x20000, 0x50af457f, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sth36.bin", 0x00000, 0x20000, 0x53c7b006),
+  LOAD_16_8( CPU1, "sth42.bin", 0x00001, 0x20000, 0x4037f65f),
+  LOAD_16_8( CPU1, "sth37.bin", 0x40000, 0x20000, 0x80e8877d),
+  LOAD_16_8( CPU1, "sth43.bin", 0x40001, 0x20000, 0x6b3fa466),
+  LOAD_16_8( CPU1, "sth34.bin", 0x80000, 0x20000, 0xbea770b5),
+  LOAD_16_8( CPU1, "sth40.bin", 0x80001, 0x20000, 0x43b922dc),
+  LOAD_16_8( CPU1, "sth35.bin", 0xc0000, 0x20000, 0x5cc429da),
+  LOAD_16_8( CPU1, "sth41.bin", 0xc0001, 0x20000, 0x50af457f),
   { "sth09.bin", 0x20000, 0x1ef6bfbd, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "sth01.bin", 0x20000, 0x1e21b0c1, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "sth13.bin", 0x20000, 0x063263ae, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -374,10 +374,10 @@ static struct ROM_INFO rom_striderjr[] = // clone of strider
 
 static struct ROM_INFO rom_dynwar[] =
 {
-  { "30.11f", 0x20000, 0xf9ec6d68, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "35.11h", 0x20000, 0xe41fff2f, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "31.12f", 0x20000, 0xe3de76ff, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "36.12h", 0x20000, 0x7a13cfbf, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "30.11f", 0x00000, 0x20000, 0xf9ec6d68),
+  LOAD_16_8( CPU1, "35.11h", 0x00001, 0x20000, 0xe41fff2f),
+  LOAD_16_8( CPU1, "31.12f", 0x40000, 0x20000, 0xe3de76ff),
+  LOAD_16_8( CPU1, "36.12h", 0x40001, 0x20000, 0x7a13cfbf),
   LOAD_SW16( CPU1, "tkm-9.8h", 0x80000, 0x80000, 0x93654bcf),
   { "tkm-5.7a", 0x80000, 0xf64bb6a0, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "tkm-8.9a", 0x80000, 0x21fe6274, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -395,14 +395,14 @@ static struct ROM_INFO rom_dynwar[] =
 
 static struct ROM_INFO rom_dynwara[] = // clone of dynwar
 {
-  { "tke_36.12f", 0x20000, 0x895991d1, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "tke_42.12h", 0x20000, 0xc898d2e8, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "tke_37.13f", 0x20000, 0xb228d58c, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "tke_43.13h", 0x20000, 0x1a14375a, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "34.10f", 0x20000, 0x8f663d00, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "40.10h", 0x20000, 0x1586dbf3, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "35.11f", 0x20000, 0x9db93d7a, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "41.11h", 0x20000, 0x1aae69a4, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "tke_36.12f", 0x00000, 0x20000, 0x895991d1),
+  LOAD_16_8( CPU1, "tke_42.12h", 0x00001, 0x20000, 0xc898d2e8),
+  LOAD_16_8( CPU1, "tke_37.13f", 0x40000, 0x20000, 0xb228d58c),
+  LOAD_16_8( CPU1, "tke_43.13h", 0x40001, 0x20000, 0x1a14375a),
+  LOAD_16_8( CPU1, "34.10f", 0x80000, 0x20000, 0x8f663d00),
+  LOAD_16_8( CPU1, "40.10h", 0x80001, 0x20000, 0x1586dbf3),
+  LOAD_16_8( CPU1, "35.11f", 0xc0000, 0x20000, 0x9db93d7a),
+  LOAD_16_8( CPU1, "41.11h", 0xc0001, 0x20000, 0x1aae69a4),
   { "09.4b", 0x20000, 0xc3e83c69, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "01.4a", 0x20000, 0x187b2886, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "13.9b", 0x20000, 0x0273d87d, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -440,14 +440,14 @@ static struct ROM_INFO rom_dynwara[] = // clone of dynwar
 
 static struct ROM_INFO rom_dynwarj[] = // clone of dynwar
 {
-  { "36.12f", 0x20000, 0x1a516657, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "42.12h", 0x20000, 0x12a290a0, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "37.13f", 0x20000, 0x932fc943, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "43.13h", 0x20000, 0x872ad76d, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "34.10f", 0x20000, 0x8f663d00, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "40.10h", 0x20000, 0x1586dbf3, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "35.11f", 0x20000, 0x9db93d7a, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "41.11h", 0x20000, 0x1aae69a4, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "36.12f", 0x00000, 0x20000, 0x1a516657),
+  LOAD_16_8( CPU1, "42.12h", 0x00001, 0x20000, 0x12a290a0),
+  LOAD_16_8( CPU1, "37.13f", 0x40000, 0x20000, 0x932fc943),
+  LOAD_16_8( CPU1, "43.13h", 0x40001, 0x20000, 0x872ad76d),
+  LOAD_16_8( CPU1, "34.10f", 0x80000, 0x20000, 0x8f663d00),
+  LOAD_16_8( CPU1, "40.10h", 0x80001, 0x20000, 0x1586dbf3),
+  LOAD_16_8( CPU1, "35.11f", 0xc0000, 0x20000, 0x9db93d7a),
+  LOAD_16_8( CPU1, "41.11h", 0xc0001, 0x20000, 0x1aae69a4),
   { "09.4b", 0x20000, 0xc3e83c69, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "01.4a", 0x20000, 0x187b2886, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "13.9b", 0x20000, 0x0273d87d, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -497,10 +497,10 @@ static struct ROM_INFO rom_dynwarjr[] = // clone of dynwar
 
 static struct ROM_INFO rom_willow[] =
 {
-  { "wlu_30.11f", 0x20000, 0xd604dbb1, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "35.11h", 0x20000, 0x7a791e77, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "wlu_31.12f", 0x20000, 0x0eb48a83, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "wlu_36.12h", 0x20000, 0x36100209, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "wlu_30.11f", 0x00000, 0x20000, 0xd604dbb1),
+  LOAD_16_8( CPU1, "35.11h", 0x00001, 0x20000, 0x7a791e77),
+  LOAD_16_8( CPU1, "wlu_31.12f", 0x40000, 0x20000, 0x0eb48a83),
+  LOAD_16_8( CPU1, "wlu_36.12h", 0x40001, 0x20000, 0x36100209),
   LOAD_SW16( CPU1, "wlm-32.8h", 0x80000, 0x80000, 0xdfd9f643),
   { "wlm-7.7a", 0x80000, 0xafa74b73, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "wlm-5.9a", 0x80000, 0x12a0dc0b, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -522,24 +522,24 @@ static struct ROM_INFO rom_willow[] =
 
 static struct ROM_INFO rom_willowo[] = // clone of willow
 {
-  { "wlu_30.11f", 0x20000, 0xd604dbb1, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "wlu_35.11h", 0x20000, 0xdaee72fe, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "wlu_31.12f", 0x20000, 0x0eb48a83, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "wlu_36.12h", 0x20000, 0x36100209, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "wlu_30.11f", 0x00000, 0x20000, 0xd604dbb1),
+  LOAD_16_8( CPU1, "wlu_35.11h", 0x00001, 0x20000, 0xdaee72fe),
+  LOAD_16_8( CPU1, "wlu_31.12f", 0x40000, 0x20000, 0x0eb48a83),
+  LOAD_16_8( CPU1, "wlu_36.12h", 0x40001, 0x20000, 0x36100209),
   LOAD_SW16( CPU1, "wlm-32.8h", 0x80000, 0x80000, 0xdfd9f643),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_willowj[] = // clone of willow
 {
-  { "wl_36.12f", 0x20000, 0x2b0d7cbc, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "wl_42.12h", 0x20000, 0x1ac39615, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "wl_37.13f", 0x20000, 0x30a717fa, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "wl_43.13h", 0x20000, 0xd0dddc9e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "wl_34.10f", 0x20000, 0x23a84f7a, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "wl_40.10h", 0x20000, 0xc7a0ed21, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "wl_35.11f", 0x20000, 0x5eff7951, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "wl_41.11h", 0x20000, 0x8d6477a3, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "wl_36.12f", 0x00000, 0x20000, 0x2b0d7cbc),
+  LOAD_16_8( CPU1, "wl_42.12h", 0x00001, 0x20000, 0x1ac39615),
+  LOAD_16_8( CPU1, "wl_37.13f", 0x40000, 0x20000, 0x30a717fa),
+  LOAD_16_8( CPU1, "wl_43.13h", 0x40001, 0x20000, 0xd0dddc9e),
+  LOAD_16_8( CPU1, "wl_34.10f", 0x80000, 0x20000, 0x23a84f7a),
+  LOAD_16_8( CPU1, "wl_40.10h", 0x80001, 0x20000, 0xc7a0ed21),
+  LOAD_16_8( CPU1, "wl_35.11f", 0xc0000, 0x20000, 0x5eff7951),
+  LOAD_16_8( CPU1, "wl_41.11h", 0xc0001, 0x20000, 0x8d6477a3),
   { "wl_09.4b", 0x20000, 0x05aa71b4, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "wl_01.4a", 0x20000, 0x08c2df12, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "wl_13.9b", 0x20000, 0x1f7c87cd, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -569,10 +569,10 @@ static struct ROM_INFO rom_willowj[] = // clone of willow
 
 static struct ROM_INFO rom_unsquad[] =
 {
-  { "aru_30.11f", 0x20000, 0x24d8f88d, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "aru_35.11h", 0x20000, 0x8b954b59, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "aru_31.12f", 0x20000, 0x33e9694b, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "aru_36.12h", 0x20000, 0x7cc8fb9e, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "aru_30.11f", 0x00000, 0x20000, 0x24d8f88d),
+  LOAD_16_8( CPU1, "aru_35.11h", 0x00001, 0x20000, 0x8b954b59),
+  LOAD_16_8( CPU1, "aru_31.12f", 0x40000, 0x20000, 0x33e9694b),
+  LOAD_16_8( CPU1, "aru_36.12h", 0x40001, 0x20000, 0x7cc8fb9e),
   LOAD_SW16( CPU1, "ar-32m.8h", 0x80000, 0x80000, 0xae1d7fb0),
   { "ar-5m.7a", 0x80000, 0xbf4575d8, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "ar-7m.9a", 0x80000, 0xa02945f4, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -586,14 +586,14 @@ static struct ROM_INFO rom_unsquad[] =
 
 static struct ROM_INFO rom_area88[] = // clone of unsquad
 {
-  { "ar_36.12f", 0x20000, 0x65030392, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ar_42.12h", 0x20000, 0xc48170de, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ar_37.13f", 0x20000, 0x33e9694b, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ar_43.13h", 0x20000, 0x7cc8fb9e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ar_34.10f", 0x20000, 0xf6e80386, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ar_40.10h", 0x20000, 0xbe36c145, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ar_35.11f", 0x20000, 0x86d98ff3, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ar_41.11h", 0x20000, 0x758893d3, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ar_36.12f", 0x00000, 0x20000, 0x65030392),
+  LOAD_16_8( CPU1, "ar_42.12h", 0x00001, 0x20000, 0xc48170de),
+  LOAD_16_8( CPU1, "ar_37.13f", 0x40000, 0x20000, 0x33e9694b),
+  LOAD_16_8( CPU1, "ar_43.13h", 0x40001, 0x20000, 0x7cc8fb9e),
+  LOAD_16_8( CPU1, "ar_34.10f", 0x80000, 0x20000, 0xf6e80386),
+  LOAD_16_8( CPU1, "ar_40.10h", 0x80001, 0x20000, 0xbe36c145),
+  LOAD_16_8( CPU1, "ar_35.11f", 0xc0000, 0x20000, 0x86d98ff3),
+  LOAD_16_8( CPU1, "ar_41.11h", 0xc0001, 0x20000, 0x758893d3),
   { "ar_09.4b", 0x20000, 0xdb9376f8, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "ar_01.4a", 0x20000, 0x392151b4, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "ar_13.9b", 0x20000, 0x81436481, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -625,10 +625,10 @@ static struct ROM_INFO rom_area88r[] = // clone of unsquad
 
 static struct ROM_INFO rom_ffight[] =
 {
-  { "ff_36.11f", 0x20000, 0xf9a5ce83, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ff_42.11h", 0x20000, 0x65f11215, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ff_37.12f", 0x20000, 0xe1033784, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffe_43.12h", 0x20000, 0x995e968a, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ff_36.11f", 0x00000, 0x20000, 0xf9a5ce83),
+  LOAD_16_8( CPU1, "ff_42.11h", 0x00001, 0x20000, 0x65f11215),
+  LOAD_16_8( CPU1, "ff_37.12f", 0x40000, 0x20000, 0xe1033784),
+  LOAD_16_8( CPU1, "ffe_43.12h", 0x40001, 0x20000, 0x995e968a),
   LOAD_SW16( CPU1, "ff-32m.8h", 0x80000, 0x80000, 0xc747696e),
   { "ff-5m.7a", 0x80000, 0x9c284108, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "ff-7m.9a", 0x80000, 0xa7584dfb, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -642,67 +642,67 @@ static struct ROM_INFO rom_ffight[] =
 
 static struct ROM_INFO rom_ffighta[] = // clone of ffight
 {
-  { "ffe_30.11f", 0x20000, 0x2347bf51, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ffe_35.11h", 0x20000, 0x5f694ecc, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ffe_31.12f", 0x20000, 0x6dc6b792, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffe_36.12h", 0x20000, 0xb36a0b99, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ffe_30.11f", 0x00000, 0x20000, 0x2347bf51),
+  LOAD_16_8( CPU1, "ffe_35.11h", 0x00001, 0x20000, 0x5f694ecc),
+  LOAD_16_8( CPU1, "ffe_31.12f", 0x40000, 0x20000, 0x6dc6b792),
+  LOAD_16_8( CPU1, "ffe_36.12h", 0x40001, 0x20000, 0xb36a0b99),
   LOAD_SW16( CPU1, "ff-32m.8h", 0x80000, 0x80000, 0xc747696e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_ffightu[] = // clone of ffight
 {
-  { "ff_36.11f", 0x20000, 0xf9a5ce83, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ff_42.11h", 0x20000, 0x65f11215, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ff_37.12f", 0x20000, 0xe1033784, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffu_43.12h", 0x20000, 0x4ca65947, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ff_36.11f", 0x00000, 0x20000, 0xf9a5ce83),
+  LOAD_16_8( CPU1, "ff_42.11h", 0x00001, 0x20000, 0x65f11215),
+  LOAD_16_8( CPU1, "ff_37.12f", 0x40000, 0x20000, 0xe1033784),
+  LOAD_16_8( CPU1, "ffu_43.12h", 0x40001, 0x20000, 0x4ca65947),
   LOAD_SW16( CPU1, "ff-32m.8h", 0x80000, 0x80000, 0xc747696e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_ffightu1[] = // clone of ffight
 {
-  { "ff_36.11f", 0x20000, 0xf9a5ce83, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ff_42.11h", 0x20000, 0x65f11215, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ff_37.12f", 0x20000, 0xe1033784, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffu_43.12h", 0x20000, 0x4ca65947, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ff_34.9f", 0x20000, 0x0c8dc3fc, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ff_40.9h", 0x20000, 0x8075bab9, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ff_35.10f", 0x20000, 0x4a934121, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ff_41.10h", 0x20000, 0x2af68154, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ff_36.11f", 0x00000, 0x20000, 0xf9a5ce83),
+  LOAD_16_8( CPU1, "ff_42.11h", 0x00001, 0x20000, 0x65f11215),
+  LOAD_16_8( CPU1, "ff_37.12f", 0x40000, 0x20000, 0xe1033784),
+  LOAD_16_8( CPU1, "ffu_43.12h", 0x40001, 0x20000, 0x4ca65947),
+  LOAD_16_8( CPU1, "ff_34.9f", 0x80000, 0x20000, 0x0c8dc3fc),
+  LOAD_16_8( CPU1, "ff_40.9h", 0x80001, 0x20000, 0x8075bab9),
+  LOAD_16_8( CPU1, "ff_35.10f", 0xc0000, 0x20000, 0x4a934121),
+  LOAD_16_8( CPU1, "ff_41.10h", 0xc0001, 0x20000, 0x2af68154),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_ffightua[] = // clone of ffight
 {
-  { "ffu_36.11f", 0x20000, 0xe2a48af9, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ffu_42.11h", 0x20000, 0xf4bb480e, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ffu_37.12f", 0x20000, 0xc371c667, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffu_43(__ffightua).12h", 0x20000, 0x2f5771f9, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ffu_36.11f", 0x00000, 0x20000, 0xe2a48af9),
+  LOAD_16_8( CPU1, "ffu_42.11h", 0x00001, 0x20000, 0xf4bb480e),
+  LOAD_16_8( CPU1, "ffu_37.12f", 0x40000, 0x20000, 0xc371c667),
+  LOAD_16_8( CPU1, "ffu_43(__ffightua).12h", 0x40001, 0x20000, 0x2f5771f9),
   LOAD_SW16( CPU1, "ff-32m.8h", 0x80000, 0x80000, 0xc747696e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_ffightub[] = // clone of ffight
 {
-  { "ffu_30.11f", 0x20000, 0xed988977, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ffu_35.11h", 0x20000, 0x07bf1c21, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ffu_31.12f", 0x20000, 0xdba5a476, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffu_36.12h", 0x20000, 0x4d89f542, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ffu_30.11f", 0x00000, 0x20000, 0xed988977),
+  LOAD_16_8( CPU1, "ffu_35.11h", 0x00001, 0x20000, 0x07bf1c21),
+  LOAD_16_8( CPU1, "ffu_31.12f", 0x40000, 0x20000, 0xdba5a476),
+  LOAD_16_8( CPU1, "ffu_36.12h", 0x40001, 0x20000, 0x4d89f542),
   LOAD_SW16( CPU1, "ff-32m.8h", 0x80000, 0x80000, 0xc747696e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_ffightj[] = // clone of ffight
 {
-  { "ff36.bin", 0x20000, 0xf9a5ce83, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ff42.bin", 0x20000, 0x65f11215, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ff37.bin", 0x20000, 0xe1033784, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ff43.bin", 0x20000, 0xb6dee1c3, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ffj_34.10f", 0x20000, 0x0c8dc3fc, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ffj_40.10h", 0x20000, 0x8075bab9, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ffj_35.11f", 0x20000, 0x4a934121, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ffj_41.11h", 0x20000, 0x2af68154, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ff36.bin", 0x00000, 0x20000, 0xf9a5ce83),
+  LOAD_16_8( CPU1, "ff42.bin", 0x00001, 0x20000, 0x65f11215),
+  LOAD_16_8( CPU1, "ff37.bin", 0x40000, 0x20000, 0xe1033784),
+  LOAD_16_8( CPU1, "ff43.bin", 0x40001, 0x20000, 0xb6dee1c3),
+  LOAD_16_8( CPU1, "ffj_34.10f", 0x80000, 0x20000, 0x0c8dc3fc),
+  LOAD_16_8( CPU1, "ffj_40.10h", 0x80001, 0x20000, 0x8075bab9),
+  LOAD_16_8( CPU1, "ffj_35.11f", 0xc0000, 0x20000, 0x4a934121),
+  LOAD_16_8( CPU1, "ffj_41.11h", 0xc0001, 0x20000, 0x2af68154),
   { "ffj_09.4b", 0x20000, 0x5b116d0d, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "ffj_01.4a", 0x20000, 0x815b1797, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "ffj_13.9b", 0x20000, 0x8721a7da, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -724,14 +724,14 @@ static struct ROM_INFO rom_ffightj[] = // clone of ffight
 
 static struct ROM_INFO rom_ffightj1[] = // clone of ffight
 {
-  { "ffj_36.12f", 0x20000, 0xe2a48af9, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ffj_42.12h", 0x20000, 0xf4bb480e, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ffj_37.13f", 0x20000, 0xc371c667, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffj_43.13h", 0x20000, 0x6f81f194, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ffj_34.10f", 0x20000, 0x0c8dc3fc, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ffj_40.10h", 0x20000, 0x8075bab9, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ffj_35.11f", 0x20000, 0x4a934121, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ffj_41.11h", 0x20000, 0x2af68154, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ffj_36.12f", 0x00000, 0x20000, 0xe2a48af9),
+  LOAD_16_8( CPU1, "ffj_42.12h", 0x00001, 0x20000, 0xf4bb480e),
+  LOAD_16_8( CPU1, "ffj_37.13f", 0x40000, 0x20000, 0xc371c667),
+  LOAD_16_8( CPU1, "ffj_43.13h", 0x40001, 0x20000, 0x6f81f194),
+  LOAD_16_8( CPU1, "ffj_34.10f", 0x80000, 0x20000, 0x0c8dc3fc),
+  LOAD_16_8( CPU1, "ffj_40.10h", 0x80001, 0x20000, 0x8075bab9),
+  LOAD_16_8( CPU1, "ffj_35.11f", 0xc0000, 0x20000, 0x4a934121),
+  LOAD_16_8( CPU1, "ffj_41.11h", 0xc0001, 0x20000, 0x2af68154),
   { "ffj_09.4b", 0x20000, 0x5b116d0d, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "ffj_01.4a", 0x20000, 0x815b1797, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "ffj_13.9b", 0x20000, 0x8721a7da, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -753,14 +753,14 @@ static struct ROM_INFO rom_ffightj1[] = // clone of ffight
 
 static struct ROM_INFO rom_ffightj2[] = // clone of ffight
 {
-  { "ffj_36a.12f", 0x20000, 0x088ed1c9, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ffj_42a.12h", 0x20000, 0xc4c491e6, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ffj_37a.13f", 0x20000, 0x708557ff, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ffj_43a.13h", 0x20000, 0xc004004a, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ff_34.10f", 0x20000, 0x0c8dc3fc, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ff_40.10h", 0x20000, 0x8075bab9, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ff_35.11f", 0x20000, 0x4a934121, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ff_41.11h", 0x20000, 0x2af68154, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ffj_36a.12f", 0x00000, 0x20000, 0x088ed1c9),
+  LOAD_16_8( CPU1, "ffj_42a.12h", 0x00001, 0x20000, 0xc4c491e6),
+  LOAD_16_8( CPU1, "ffj_37a.13f", 0x40000, 0x20000, 0x708557ff),
+  LOAD_16_8( CPU1, "ffj_43a.13h", 0x40001, 0x20000, 0xc004004a),
+  LOAD_16_8( CPU1, "ff_34.10f", 0x80000, 0x20000, 0x0c8dc3fc),
+  LOAD_16_8( CPU1, "ff_40.10h", 0x80001, 0x20000, 0x8075bab9),
+  LOAD_16_8( CPU1, "ff_35.11f", 0xc0000, 0x20000, 0x4a934121),
+  LOAD_16_8( CPU1, "ff_41.11h", 0xc0001, 0x20000, 0x2af68154),
   { "ff_09.4b", 0x20000, 0x5b116d0d, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "ff_01.4a", 0x20000, 0x815b1797, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "ff_13.9b", 0x20000, 0x8721a7da, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -793,10 +793,10 @@ static struct ROM_INFO rom_ffightjh[] = // clone of ffight
 
 static struct ROM_INFO rom_1941[] =
 {
-  { "41em_30.11f", 0x20000, 0x4249ec61, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "41em_35.11h", 0x20000, 0xddbee5eb, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "41em_31.12f", 0x20000, 0x584e88e5, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "41em_36.12h", 0x20000, 0x3cfc31d0, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "41em_30.11f", 0x00000, 0x20000, 0x4249ec61),
+  LOAD_16_8( CPU1, "41em_35.11h", 0x00001, 0x20000, 0xddbee5eb),
+  LOAD_16_8( CPU1, "41em_31.12f", 0x40000, 0x20000, 0x584e88e5),
+  LOAD_16_8( CPU1, "41em_36.12h", 0x40001, 0x20000, 0x3cfc31d0),
   LOAD_SW16( CPU1, "41-32m.8h", 0x80000, 0x80000, 0x4e9648ca),
   { "41-5m.7a", 0x80000, 0x01d1cb11, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "41-7m.9a", 0x80000, 0xaeaa3509, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -810,34 +810,34 @@ static struct ROM_INFO rom_1941[] =
 
 static struct ROM_INFO rom_1941r1[] = // clone of 1941
 {
-  { "41e_30.11f", 0x20000, 0x9deb1e75, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "41e_35.11h", 0x20000, 0xd63942b3, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "41e_31.12f", 0x20000, 0xdf201112, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "41e_36.12h", 0x20000, 0x816a818f, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "41e_30.11f", 0x00000, 0x20000, 0x9deb1e75),
+  LOAD_16_8( CPU1, "41e_35.11h", 0x00001, 0x20000, 0xd63942b3),
+  LOAD_16_8( CPU1, "41e_31.12f", 0x40000, 0x20000, 0xdf201112),
+  LOAD_16_8( CPU1, "41e_36.12h", 0x40001, 0x20000, 0x816a818f),
   LOAD_SW16( CPU1, "41-32m.8h", 0x80000, 0x80000, 0x4e9648ca),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_1941u[] = // clone of 1941
 {
-  { "41u_30.11f", 0x20000, 0xbe5439d0, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "41u_35.11h", 0x20000, 0x6ac96595, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "41u_31.12f", 0x20000, 0x9811d6eb, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "41u_36.12h", 0x20000, 0xa87e6137, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "41u_30.11f", 0x00000, 0x20000, 0xbe5439d0),
+  LOAD_16_8( CPU1, "41u_35.11h", 0x00001, 0x20000, 0x6ac96595),
+  LOAD_16_8( CPU1, "41u_31.12f", 0x40000, 0x20000, 0x9811d6eb),
+  LOAD_16_8( CPU1, "41u_36.12h", 0x40001, 0x20000, 0xa87e6137),
   LOAD_SW16( CPU1, "41-32m.8h", 0x80000, 0x80000, 0x4e9648ca),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_1941j[] = // clone of 1941
 {
-  { "41_36.12f", 0x20000, 0x7fbd42ab, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "41_42.12h", 0x20000, 0xc7781f89, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "41_37.13f", 0x20000, 0xc6464b0b, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "41_43.13h", 0x20000, 0x440fc0b5, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "41_34.10f", 0x20000, 0xb5f341ec, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "41_40.10h", 0x20000, 0x3979837d, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "41_35.11f", 0x20000, 0x95cc979a, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "41_41.11h", 0x20000, 0x57496819, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "41_36.12f", 0x00000, 0x20000, 0x7fbd42ab),
+  LOAD_16_8( CPU1, "41_42.12h", 0x00001, 0x20000, 0xc7781f89),
+  LOAD_16_8( CPU1, "41_37.13f", 0x40000, 0x20000, 0xc6464b0b),
+  LOAD_16_8( CPU1, "41_43.13h", 0x40001, 0x20000, 0x440fc0b5),
+  LOAD_16_8( CPU1, "41_34.10f", 0x80000, 0x20000, 0xb5f341ec),
+  LOAD_16_8( CPU1, "41_40.10h", 0x80001, 0x20000, 0x3979837d),
+  LOAD_16_8( CPU1, "41_35.11f", 0xc0000, 0x20000, 0x95cc979a),
+  LOAD_16_8( CPU1, "41_41.11h", 0xc0001, 0x20000, 0x57496819),
   { "41_09.4b", 0x20000, 0xbe1b6bc2, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "41_01.4a", 0x20000, 0xd8946fc1, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "41_13.9b", 0x20000, 0x2e06d0ec, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -859,10 +859,10 @@ static struct ROM_INFO rom_1941j[] = // clone of 1941
 
 static struct ROM_INFO rom_mercs[] =
 {
-  { "so2_30e.11f", 0x20000, 0xe17f9bf7, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "so2_35e.11h", 0x20000, 0x78e63575, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "so2_31e.12f", 0x20000, 0x51204d36, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "so2_36e.12h", 0x20000, 0x9cfba8b4, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "so2_30e.11f", 0x00000, 0x20000, 0xe17f9bf7),
+  LOAD_16_8( CPU1, "so2_35e.11h", 0x00001, 0x20000, 0x78e63575),
+  LOAD_16_8( CPU1, "so2_31e.12f", 0x40000, 0x20000, 0x51204d36),
+  LOAD_16_8( CPU1, "so2_36e.12h", 0x40001, 0x20000, 0x9cfba8b4),
   LOAD_SW16( CPU1, "so2-32m.8h", 0x80000, 0x80000, 0x2eb5cf0c),
   { "so2-6m.8a", 0x80000, 0xaa6102af, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "so2-8m.10a", 0x80000, 0x839e6869, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -884,34 +884,34 @@ static struct ROM_INFO rom_mercs[] =
 
 static struct ROM_INFO rom_mercsu[] = // clone of mercs
 {
-  { "so2_30a.11f", 0x20000, 0xe4e725d7, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "so2_35a.11h", 0x20000, 0xe7843445, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "so2_31a.12f", 0x20000, 0xc0b91dea, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "so2_36a.12h", 0x20000, 0x591edf6c, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "so2_30a.11f", 0x00000, 0x20000, 0xe4e725d7),
+  LOAD_16_8( CPU1, "so2_35a.11h", 0x00001, 0x20000, 0xe7843445),
+  LOAD_16_8( CPU1, "so2_31a.12f", 0x40000, 0x20000, 0xc0b91dea),
+  LOAD_16_8( CPU1, "so2_36a.12h", 0x40001, 0x20000, 0x591edf6c),
   LOAD_SW16( CPU1, "so2-32m.8h", 0x80000, 0x80000, 0x2eb5cf0c),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mercsur1[] = // clone of mercs
 {
-  { "so2_30.11f", 0x20000, 0xe17f9bf7, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "so2_35.11h", 0x20000, 0x4477df61, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "so2_31.12f", 0x20000, 0x51204d36, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "so2_36.12h", 0x20000, 0x9cfba8b4, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "so2_30.11f", 0x00000, 0x20000, 0xe17f9bf7),
+  LOAD_16_8( CPU1, "so2_35.11h", 0x00001, 0x20000, 0x4477df61),
+  LOAD_16_8( CPU1, "so2_31.12f", 0x40000, 0x20000, 0x51204d36),
+  LOAD_16_8( CPU1, "so2_36.12h", 0x40001, 0x20000, 0x9cfba8b4),
   LOAD_SW16( CPU1, "so2-32m.8h", 0x80000, 0x80000, 0x2eb5cf0c),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mercsj[] = // clone of mercs
 {
-  { "so2_36.12f", 0x20000, 0xe17f9bf7, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "so2_42.12h", 0x20000, 0x2c3884c6, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "so2_37.13f", 0x20000, 0x51204d36, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "so2_43.13h", 0x20000, 0x9cfba8b4, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "so2_34.10f", 0x20000, 0xb8dae95f, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "so2_40.10h", 0x20000, 0xde37771c, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "so2_35.11f", 0x20000, 0x7d24394d, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "so2_41.11h", 0x20000, 0x914f85e0, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "so2_36.12f", 0x00000, 0x20000, 0xe17f9bf7),
+  LOAD_16_8( CPU1, "so2_42.12h", 0x00001, 0x20000, 0x2c3884c6),
+  LOAD_16_8( CPU1, "so2_37.13f", 0x40000, 0x20000, 0x51204d36),
+  LOAD_16_8( CPU1, "so2_43.13h", 0x40001, 0x20000, 0x9cfba8b4),
+  LOAD_16_8( CPU1, "so2_34.10f", 0x80000, 0x20000, 0xb8dae95f),
+  LOAD_16_8( CPU1, "so2_40.10h", 0x80001, 0x20000, 0xde37771c),
+  LOAD_16_8( CPU1, "so2_35.11f", 0xc0000, 0x20000, 0x7d24394d),
+  LOAD_16_8( CPU1, "so2_41.11h", 0xc0001, 0x20000, 0x914f85e0),
   { "so2_09.4b", 0x20000, 0x690c261d, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "so2_01.4a", 0x20000, 0x31fd2715, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "so2_13.9b", 0x20000, 0xb5e48282, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -941,10 +941,10 @@ static struct ROM_INFO rom_mercsj[] = // clone of mercs
 
 static struct ROM_INFO rom_mtwins[] =
 {
-  { "che_30.11f", 0x20000, 0x9a2a2db1, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "che_35.11h", 0x20000, 0xa7f96b02, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "che_31.12f", 0x20000, 0xbbff8a99, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "che_36.12h", 0x20000, 0x0fa00c39, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "che_30.11f", 0x00000, 0x20000, 0x9a2a2db1),
+  LOAD_16_8( CPU1, "che_35.11h", 0x00001, 0x20000, 0xa7f96b02),
+  LOAD_16_8( CPU1, "che_31.12f", 0x40000, 0x20000, 0xbbff8a99),
+  LOAD_16_8( CPU1, "che_36.12h", 0x40001, 0x20000, 0x0fa00c39),
   LOAD_SW16( CPU1, "ck-32m.8h", 0x80000, 0x80000, 0x9b70bd41),
   { "ck-5m.7a", 0x80000, 0x4ec75f15, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "ck-7m.9a", 0x80000, 0xd85d00d6, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -958,14 +958,14 @@ static struct ROM_INFO rom_mtwins[] =
 
 static struct ROM_INFO rom_chikij[] = // clone of mtwins
 {
-  { "chj_36a.12f", 0x20000, 0xec1328d8, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "chj_42a.12h", 0x20000, 0x4ae13503, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "chj_37a.13f", 0x20000, 0x46d2cf7b, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "chj_43a.13h", 0x20000, 0x8d387fe8, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ch_34.10f", 0x20000, 0x609ed2f9, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ch_40.10h", 0x20000, 0xbe0d8301, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ch_35.11f", 0x20000, 0xb810867f, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ch_41.11h", 0x20000, 0x8ad96155, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "chj_36a.12f", 0x00000, 0x20000, 0xec1328d8),
+  LOAD_16_8( CPU1, "chj_42a.12h", 0x00001, 0x20000, 0x4ae13503),
+  LOAD_16_8( CPU1, "chj_37a.13f", 0x40000, 0x20000, 0x46d2cf7b),
+  LOAD_16_8( CPU1, "chj_43a.13h", 0x40001, 0x20000, 0x8d387fe8),
+  LOAD_16_8( CPU1, "ch_34.10f", 0x80000, 0x20000, 0x609ed2f9),
+  LOAD_16_8( CPU1, "ch_40.10h", 0x80001, 0x20000, 0xbe0d8301),
+  LOAD_16_8( CPU1, "ch_35.11f", 0xc0000, 0x20000, 0xb810867f),
+  LOAD_16_8( CPU1, "ch_41.11h", 0xc0001, 0x20000, 0x8ad96155),
   { "ch_09.4b", 0x20000, 0x567ab3ca, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "ch_01.4a", 0x20000, 0x7f3b7b56, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "ch_13.9b", 0x20000, 0x12a7a8ba, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -987,10 +987,10 @@ static struct ROM_INFO rom_chikij[] = // clone of mtwins
 
 static struct ROM_INFO rom_msword[] =
 {
-  { "mse_30.11f", 0x20000, 0x03fc8dbc, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "mse_35.11h", 0x20000, 0xd5bf66cd, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "mse_31.12f", 0x20000, 0x30332bcf, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "mse_36.12h", 0x20000, 0x8f7d6ce9, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mse_30.11f", 0x00000, 0x20000, 0x03fc8dbc),
+  LOAD_16_8( CPU1, "mse_35.11h", 0x00001, 0x20000, 0xd5bf66cd),
+  LOAD_16_8( CPU1, "mse_31.12f", 0x40000, 0x20000, 0x30332bcf),
+  LOAD_16_8( CPU1, "mse_36.12h", 0x40001, 0x20000, 0x8f7d6ce9),
   LOAD_SW16( CPU1, "ms-32m.8h", 0x80000, 0x80000, 0x2475ddfc),
   { "ms-5m.7a", 0x80000, 0xc00fe7e2, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "ms-7m.9a", 0x80000, 0x4ccacac5, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -1004,34 +1004,34 @@ static struct ROM_INFO rom_msword[] =
 
 static struct ROM_INFO rom_mswordr1[] = // clone of msword
 {
-  { "ms_30.11f", 0x20000, 0x21c1f078, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "ms_35.11h", 0x20000, 0xa540a73a, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "ms_31.12f", 0x20000, 0xd7e762b5, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "ms_36.12h", 0x20000, 0x66f2dcdb, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ms_30.11f", 0x00000, 0x20000, 0x21c1f078),
+  LOAD_16_8( CPU1, "ms_35.11h", 0x00001, 0x20000, 0xa540a73a),
+  LOAD_16_8( CPU1, "ms_31.12f", 0x40000, 0x20000, 0xd7e762b5),
+  LOAD_16_8( CPU1, "ms_36.12h", 0x40001, 0x20000, 0x66f2dcdb),
   LOAD_SW16( CPU1, "ms-32m.8h", 0x80000, 0x80000, 0x2475ddfc),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mswordu[] = // clone of msword
 {
-  { "msu_30.11f", 0x20000, 0xd963c816, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "msu_35.11h", 0x20000, 0x72f179b3, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "msu_31.12f", 0x20000, 0x20cd7904, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "msu_36.12h", 0x20000, 0xbf88c080, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "msu_30.11f", 0x00000, 0x20000, 0xd963c816),
+  LOAD_16_8( CPU1, "msu_35.11h", 0x00001, 0x20000, 0x72f179b3),
+  LOAD_16_8( CPU1, "msu_31.12f", 0x40000, 0x20000, 0x20cd7904),
+  LOAD_16_8( CPU1, "msu_36.12h", 0x40001, 0x20000, 0xbf88c080),
   LOAD_SW16( CPU1, "ms-32m.8h", 0x80000, 0x80000, 0x2475ddfc),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_mswordj[] = // clone of msword
 {
-  { "msj_36.12f", 0x20000, 0x04f0ef50, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "msj_42.12h", 0x20000, 0x9fcbb9cd, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "msj_37.13f", 0x20000, 0x6c060d70, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "msj_43.13h", 0x20000, 0xaec77787, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "ms_34.10f", 0x20000, 0x0e59a62d, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "ms_40.10h", 0x20000, 0xbabade3a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "ms_35.11f", 0x20000, 0x03da99d1, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "ms_41.11h", 0x20000, 0xfadf99ea, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "msj_36.12f", 0x00000, 0x20000, 0x04f0ef50),
+  LOAD_16_8( CPU1, "msj_42.12h", 0x00001, 0x20000, 0x9fcbb9cd),
+  LOAD_16_8( CPU1, "msj_37.13f", 0x40000, 0x20000, 0x6c060d70),
+  LOAD_16_8( CPU1, "msj_43.13h", 0x40001, 0x20000, 0xaec77787),
+  LOAD_16_8( CPU1, "ms_34.10f", 0x80000, 0x20000, 0x0e59a62d),
+  LOAD_16_8( CPU1, "ms_40.10h", 0x80001, 0x20000, 0xbabade3a),
+  LOAD_16_8( CPU1, "ms_35.11f", 0xc0000, 0x20000, 0x03da99d1),
+  LOAD_16_8( CPU1, "ms_41.11h", 0xc0001, 0x20000, 0xfadf99ea),
   { "ms_09.4b", 0x20000, 0x4adee6f6, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "ms_01.4a", 0x20000, 0xf7ab1b88, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "ms_13.9b", 0x20000, 0xe01adc4b, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1053,10 +1053,10 @@ static struct ROM_INFO rom_mswordj[] = // clone of msword
 
 static struct ROM_INFO rom_cawing[] =
 {
-  { "cae_30a.11f", 0x20000, 0x91fceacd, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "cae_35a.11h", 0x20000, 0x3ef03083, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "cae_31a.12f", 0x20000, 0xe5b75caf, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "cae_36a.12h", 0x20000, 0xc73fd713, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "cae_30a.11f", 0x00000, 0x20000, 0x91fceacd),
+  LOAD_16_8( CPU1, "cae_35a.11h", 0x00001, 0x20000, 0x3ef03083),
+  LOAD_16_8( CPU1, "cae_31a.12f", 0x40000, 0x20000, 0xe5b75caf),
+  LOAD_16_8( CPU1, "cae_36a.12h", 0x40001, 0x20000, 0xc73fd713),
   LOAD_SW16( CPU1, "ca-32m.8h", 0x80000, 0x80000, 0x0c4837d4),
   { "ca-5m.7a", 0x80000, 0x66d4cc37, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "ca-7m.9a", 0x80000, 0xb6f896f2, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -1070,34 +1070,34 @@ static struct ROM_INFO rom_cawing[] =
 
 static struct ROM_INFO rom_cawingr1[] = // clone of cawing
 {
-  { "cae_30.11f", 0x20000, 0x23305cd5, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "cae_35.11h", 0x20000, 0x69419113, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "cae_31.12f", 0x20000, 0x9008dfb3, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "cae_36.12h", 0x20000, 0x4dbf6f8e, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "cae_30.11f", 0x00000, 0x20000, 0x23305cd5),
+  LOAD_16_8( CPU1, "cae_35.11h", 0x00001, 0x20000, 0x69419113),
+  LOAD_16_8( CPU1, "cae_31.12f", 0x40000, 0x20000, 0x9008dfb3),
+  LOAD_16_8( CPU1, "cae_36.12h", 0x40001, 0x20000, 0x4dbf6f8e),
   LOAD_SW16( CPU1, "ca-32m.8h", 0x80000, 0x80000, 0x0c4837d4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_cawingu[] = // clone of cawing
 {
-  { "cau_30a.11f", 0x20000, 0x91fceacd, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "cau_35a.11h", 0x20000, 0xf090d9b2, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "cau_31a.12f", 0x20000, 0xe5b75caf, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "cau_36a.12h", 0x20000, 0xc73fd713, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "cau_30a.11f", 0x00000, 0x20000, 0x91fceacd),
+  LOAD_16_8( CPU1, "cau_35a.11h", 0x00001, 0x20000, 0xf090d9b2),
+  LOAD_16_8( CPU1, "cau_31a.12f", 0x40000, 0x20000, 0xe5b75caf),
+  LOAD_16_8( CPU1, "cau_36a.12h", 0x40001, 0x20000, 0xc73fd713),
   LOAD_SW16( CPU1, "ca-32m.8h", 0x80000, 0x80000, 0x0c4837d4),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_cawingj[] = // clone of cawing
 {
-  { "caj_36a.12f", 0x20000, 0x91fceacd, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "caj_42a.12h", 0x20000, 0x039f8362, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "caj_37a.13f", 0x20000, 0xe5b75caf, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "caj_43a.13h", 0x20000, 0xc73fd713, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "caj_34.10f", 0x20000, 0x51ea57f4, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "caj_40.10h", 0x20000, 0x2ab71ae1, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "caj_35.11f", 0x20000, 0x01d71973, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "caj_41.11h", 0x20000, 0x3a43b538, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "caj_36a.12f", 0x00000, 0x20000, 0x91fceacd),
+  LOAD_16_8( CPU1, "caj_42a.12h", 0x00001, 0x20000, 0x039f8362),
+  LOAD_16_8( CPU1, "caj_37a.13f", 0x40000, 0x20000, 0xe5b75caf),
+  LOAD_16_8( CPU1, "caj_43a.13h", 0x40001, 0x20000, 0xc73fd713),
+  LOAD_16_8( CPU1, "caj_34.10f", 0x80000, 0x20000, 0x51ea57f4),
+  LOAD_16_8( CPU1, "caj_40.10h", 0x80001, 0x20000, 0x2ab71ae1),
+  LOAD_16_8( CPU1, "caj_35.11f", 0xc0000, 0x20000, 0x01d71973),
+  LOAD_16_8( CPU1, "caj_41.11h", 0xc0001, 0x20000, 0x3a43b538),
   { "caj_09.4b", 0x20000, 0x41b0f9a6, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "caj_01.4a", 0x20000, 0x1002d0b8, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "caj_13.9b", 0x20000, 0x6f3948b2, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1119,10 +1119,10 @@ static struct ROM_INFO rom_cawingj[] = // clone of cawing
 
 static struct ROM_INFO rom_nemo[] =
 {
-  { "nme_30a.11f", 0x20000, 0xd2c03e56, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "nme_35a.11h", 0x20000, 0x5fd31661, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "nme_31a.12f", 0x20000, 0xb2bd4f6f, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "nme_36a.12h", 0x20000, 0xee9450e3, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "nme_30a.11f", 0x00000, 0x20000, 0xd2c03e56),
+  LOAD_16_8( CPU1, "nme_35a.11h", 0x00001, 0x20000, 0x5fd31661),
+  LOAD_16_8( CPU1, "nme_31a.12f", 0x40000, 0x20000, 0xb2bd4f6f),
+  LOAD_16_8( CPU1, "nme_36a.12h", 0x40001, 0x20000, 0xee9450e3),
   LOAD_SW16( CPU1, "nm-32m.8h", 0x80000, 0x80000, 0xd6d1add3),
   { "nm-5m.7a", 0x80000, 0x487b8747, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "nm-7m.9a", 0x80000, 0x203dc8c6, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -1136,14 +1136,14 @@ static struct ROM_INFO rom_nemo[] =
 
 static struct ROM_INFO rom_nemoj[] = // clone of nemo
 {
-  { "nmj_36a.12f", 0x20000, 0xdaeceabb, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "nmj_42a.12h", 0x20000, 0x55024740, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "nmj_37a.13f", 0x20000, 0x619068b6, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "nmj_43a.13h", 0x20000, 0xa948a53b, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "nm_34.10f", 0x20000, 0x5737feed, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "nm_40.10h", 0x20000, 0x8a4099f3, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "nm_35.11f", 0x20000, 0xbd11a7f8, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "nm_41.11h", 0x20000, 0x6309603d, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "nmj_36a.12f", 0x00000, 0x20000, 0xdaeceabb),
+  LOAD_16_8( CPU1, "nmj_42a.12h", 0x00001, 0x20000, 0x55024740),
+  LOAD_16_8( CPU1, "nmj_37a.13f", 0x40000, 0x20000, 0x619068b6),
+  LOAD_16_8( CPU1, "nmj_43a.13h", 0x40001, 0x20000, 0xa948a53b),
+  LOAD_16_8( CPU1, "nm_34.10f", 0x80000, 0x20000, 0x5737feed),
+  LOAD_16_8( CPU1, "nm_40.10h", 0x80001, 0x20000, 0x8a4099f3),
+  LOAD_16_8( CPU1, "nm_35.11f", 0xc0000, 0x20000, 0xbd11a7f8),
+  LOAD_16_8( CPU1, "nm_41.11h", 0xc0001, 0x20000, 0x6309603d),
   { "nm_09.4b", 0x20000, 0x9d60d286, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "nm_01.4a", 0x20000, 0x8a83f7c4, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "nm_13.9b", 0x20000, 0xa4909fe0, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1166,14 +1166,14 @@ static struct ROM_INFO rom_nemoj[] = // clone of nemo
 
 static struct ROM_INFO rom_sf2[] =
 {
-  { "sf2e_30g.11e", 0x20000, 0xfe39ee33, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2e_37g.11f", 0x20000, 0xfb92cd74, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2e_31g.12e", 0x20000, 0x69a0a301, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2e_38g.12f", 0x20000, 0x5e22db70, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2e_28g.9e", 0x20000, 0x8bf9f1e5, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2e_35g.9f", 0x20000, 0x626ef934, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2e_30g.11e", 0x00000, 0x20000, 0xfe39ee33),
+  LOAD_16_8( CPU1, "sf2e_37g.11f", 0x00001, 0x20000, 0xfb92cd74),
+  LOAD_16_8( CPU1, "sf2e_31g.12e", 0x40000, 0x20000, 0x69a0a301),
+  LOAD_16_8( CPU1, "sf2e_38g.12f", 0x40001, 0x20000, 0x5e22db70),
+  LOAD_16_8( CPU1, "sf2e_28g.9e", 0x80000, 0x20000, 0x8bf9f1e5),
+  LOAD_16_8( CPU1, "sf2e_35g.9f", 0x80001, 0x20000, 0x626ef934),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { "sf2-5m.4a", 0x80000, 0x22c9cc8e, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "sf2-7m.6a", 0x80000, 0x57213be8, REGION_GFX1, 0x000002, LOAD_16_64 },
   { "sf2-1m.3a", 0x80000, 0xba529b4f, REGION_GFX1, 0x000004, LOAD_16_64 },
@@ -1194,192 +1194,192 @@ static struct ROM_INFO rom_sf2[] =
 
 static struct ROM_INFO rom_sf2eb[] = // clone of sf2
 {
-  { "sf2e_30b.11e", 0x20000, 0x57bd7051, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2e_37b.11f", 0x20000, 0x62691cdd, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2e_31b.12e", 0x20000, 0xa673143d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2e_38b.12f", 0x20000, 0x4c2ccef7, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2_28b.9e", 0x20000, 0x4009955e, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2_35b.9f", 0x20000, 0x8c1f3994, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2e_30b.11e", 0x00000, 0x20000, 0x57bd7051),
+  LOAD_16_8( CPU1, "sf2e_37b.11f", 0x00001, 0x20000, 0x62691cdd),
+  LOAD_16_8( CPU1, "sf2e_31b.12e", 0x40000, 0x20000, 0xa673143d),
+  LOAD_16_8( CPU1, "sf2e_38b.12f", 0x40001, 0x20000, 0x4c2ccef7),
+  LOAD_16_8( CPU1, "sf2_28b.9e", 0x80000, 0x20000, 0x4009955e),
+  LOAD_16_8( CPU1, "sf2_35b.9f", 0x80001, 0x20000, 0x8c1f3994),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ee[] = // clone of sf2
 {
-  { "sf2e_30e.11e", 0x20000, 0xf37cd088, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2e_37e.11f", 0x20000, 0xc39468e6, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2e_31e.12e", 0x20000, 0x7c4771b4, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2e_38e.12f", 0x20000, 0xa4bd0cd9, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2e_28e.9e", 0x20000, 0xe3b95625, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2e_35e.9f", 0x20000, 0x3648769a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2e_30e.11e", 0x00000, 0x20000, 0xf37cd088),
+  LOAD_16_8( CPU1, "sf2e_37e.11f", 0x00001, 0x20000, 0xc39468e6),
+  LOAD_16_8( CPU1, "sf2e_31e.12e", 0x40000, 0x20000, 0x7c4771b4),
+  LOAD_16_8( CPU1, "sf2e_38e.12f", 0x40001, 0x20000, 0xa4bd0cd9),
+  LOAD_16_8( CPU1, "sf2e_28e.9e", 0x80000, 0x20000, 0xe3b95625),
+  LOAD_16_8( CPU1, "sf2e_35e.9f", 0x80001, 0x20000, 0x3648769a),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ua[] = // clone of sf2
 {
-  { "sf2u_30a.11e", 0x20000, 0x08beb861, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37a.11f", 0x20000, 0xb7638d69, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31a.12e", 0x20000, 0x0d5394e0, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38a.12f", 0x20000, 0x42d6a79e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28a.9e", 0x20000, 0x387a175c, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35a.9f", 0x20000, 0xa1a5adcc, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30a.11e", 0x00000, 0x20000, 0x08beb861),
+  LOAD_16_8( CPU1, "sf2u_37a.11f", 0x00001, 0x20000, 0xb7638d69),
+  LOAD_16_8( CPU1, "sf2u_31a.12e", 0x40000, 0x20000, 0x0d5394e0),
+  LOAD_16_8( CPU1, "sf2u_38a.12f", 0x40001, 0x20000, 0x42d6a79e),
+  LOAD_16_8( CPU1, "sf2u_28a.9e", 0x80000, 0x20000, 0x387a175c),
+  LOAD_16_8( CPU1, "sf2u_35a.9f", 0x80001, 0x20000, 0xa1a5adcc),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ub[] = // clone of sf2
 {
-  { "sf2u_30b.11e", 0x20000, 0x57bd7051, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37b.11f", 0x20000, 0x4a54d479, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31b.12e", 0x20000, 0xa673143d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38b.12f", 0x20000, 0x4c2ccef7, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28b.9e", 0x20000, 0x4009955e, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35b.9f", 0x20000, 0x8c1f3994, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30b.11e", 0x00000, 0x20000, 0x57bd7051),
+  LOAD_16_8( CPU1, "sf2u_37b.11f", 0x00001, 0x20000, 0x4a54d479),
+  LOAD_16_8( CPU1, "sf2u_31b.12e", 0x40000, 0x20000, 0xa673143d),
+  LOAD_16_8( CPU1, "sf2u_38b.12f", 0x40001, 0x20000, 0x4c2ccef7),
+  LOAD_16_8( CPU1, "sf2u_28b.9e", 0x80000, 0x20000, 0x4009955e),
+  LOAD_16_8( CPU1, "sf2u_35b.9f", 0x80001, 0x20000, 0x8c1f3994),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2uc[] = // clone of sf2
 {
-  { "sf2u_30c.11e", 0x20000, 0x6cb59385, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37c.11f", 0x20000, 0x32e2c278, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31c.12e", 0x20000, 0xc4fff4a9, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38c.12f", 0x20000, 0x8210fc0e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28c.9e", 0x20000, 0x6eddd5e8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35c.9f", 0x20000, 0x6bcb404c, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30c.11e", 0x00000, 0x20000, 0x6cb59385),
+  LOAD_16_8( CPU1, "sf2u_37c.11f", 0x00001, 0x20000, 0x32e2c278),
+  LOAD_16_8( CPU1, "sf2u_31c.12e", 0x40000, 0x20000, 0xc4fff4a9),
+  LOAD_16_8( CPU1, "sf2u_38c.12f", 0x40001, 0x20000, 0x8210fc0e),
+  LOAD_16_8( CPU1, "sf2u_28c.9e", 0x80000, 0x20000, 0x6eddd5e8),
+  LOAD_16_8( CPU1, "sf2u_35c.9f", 0x80001, 0x20000, 0x6bcb404c),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ud[] = // clone of sf2
 {
-  { "sf2u_30d.11e", 0x20000, 0x4bb2657c, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37d.11f", 0x20000, 0xb33b42f2, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31d.12e", 0x20000, 0xd57b67d7, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38d.12f", 0x20000, 0x9c8916ef, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28d.9e", 0x20000, 0x175819d1, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35d.9f", 0x20000, 0x82060da4, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30d.11e", 0x00000, 0x20000, 0x4bb2657c),
+  LOAD_16_8( CPU1, "sf2u_37d.11f", 0x00001, 0x20000, 0xb33b42f2),
+  LOAD_16_8( CPU1, "sf2u_31d.12e", 0x40000, 0x20000, 0xd57b67d7),
+  LOAD_16_8( CPU1, "sf2u_38d.12f", 0x40001, 0x20000, 0x9c8916ef),
+  LOAD_16_8( CPU1, "sf2u_28d.9e", 0x80000, 0x20000, 0x175819d1),
+  LOAD_16_8( CPU1, "sf2u_35d.9f", 0x80001, 0x20000, 0x82060da4),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ue[] = // clone of sf2
 {
-  { "sf2u_30e.11e", 0x20000, 0xf37cd088, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37e.11f", 0x20000, 0x6c61a513, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31e.12e", 0x20000, 0x7c4771b4, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38e.12f", 0x20000, 0xa4bd0cd9, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28e.9e", 0x20000, 0xe3b95625, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35e.9f", 0x20000, 0x3648769a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30e.11e", 0x00000, 0x20000, 0xf37cd088),
+  LOAD_16_8( CPU1, "sf2u_37e.11f", 0x00001, 0x20000, 0x6c61a513),
+  LOAD_16_8( CPU1, "sf2u_31e.12e", 0x40000, 0x20000, 0x7c4771b4),
+  LOAD_16_8( CPU1, "sf2u_38e.12f", 0x40001, 0x20000, 0xa4bd0cd9),
+  LOAD_16_8( CPU1, "sf2u_28e.9e", 0x80000, 0x20000, 0xe3b95625),
+  LOAD_16_8( CPU1, "sf2u_35e.9f", 0x80001, 0x20000, 0x3648769a),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2uf[] = // clone of sf2
 {
-  { "sf2u_30f.11e", 0x20000, 0xfe39ee33, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37f.11f", 0x20000, 0x169e7388, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31f.12e", 0x20000, 0x69a0a301, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38f.12f", 0x20000, 0x1510e4e2, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28f.9e", 0x20000, 0xacd8175b, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35f.9f", 0x20000, 0xc0a80bd1, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30f.11e", 0x00000, 0x20000, 0xfe39ee33),
+  LOAD_16_8( CPU1, "sf2u_37f.11f", 0x00001, 0x20000, 0x169e7388),
+  LOAD_16_8( CPU1, "sf2u_31f.12e", 0x40000, 0x20000, 0x69a0a301),
+  LOAD_16_8( CPU1, "sf2u_38f.12f", 0x40001, 0x20000, 0x1510e4e2),
+  LOAD_16_8( CPU1, "sf2u_28f.9e", 0x80000, 0x20000, 0xacd8175b),
+  LOAD_16_8( CPU1, "sf2u_35f.9f", 0x80001, 0x20000, 0xc0a80bd1),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ug[] = // clone of sf2
 {
-  { "sf2u_30g.11e", 0x20000, 0xfe39ee33, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37g.11f", 0x20000, 0x5886cae7, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31g.12e", 0x20000, 0x69a0a301, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38g.12f", 0x20000, 0x5e22db70, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28g.9e", 0x20000, 0x8bf9f1e5, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35g.9f", 0x20000, 0x626ef934, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30g.11e", 0x00000, 0x20000, 0xfe39ee33),
+  LOAD_16_8( CPU1, "sf2u_37g.11f", 0x00001, 0x20000, 0x5886cae7),
+  LOAD_16_8( CPU1, "sf2u_31g.12e", 0x40000, 0x20000, 0x69a0a301),
+  LOAD_16_8( CPU1, "sf2u_38g.12f", 0x40001, 0x20000, 0x5e22db70),
+  LOAD_16_8( CPU1, "sf2u_28g.9e", 0x80000, 0x20000, 0x8bf9f1e5),
+  LOAD_16_8( CPU1, "sf2u_35g.9f", 0x80001, 0x20000, 0x626ef934),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ui[] = // clone of sf2
 {
-  { "sf2u_30i.11e", 0x20000, 0xfe39ee33, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37i.11f", 0x20000, 0x9df707dd, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31i.12e", 0x20000, 0x69a0a301, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38i.12f", 0x20000, 0x4cb46daf, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28i.9e", 0x20000, 0x1580be4c, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35i.9f", 0x20000, 0x1468d185, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29b.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36b.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30i.11e", 0x00000, 0x20000, 0xfe39ee33),
+  LOAD_16_8( CPU1, "sf2u_37i.11f", 0x00001, 0x20000, 0x9df707dd),
+  LOAD_16_8( CPU1, "sf2u_31i.12e", 0x40000, 0x20000, 0x69a0a301),
+  LOAD_16_8( CPU1, "sf2u_38i.12f", 0x40001, 0x20000, 0x4cb46daf),
+  LOAD_16_8( CPU1, "sf2u_28i.9e", 0x80000, 0x20000, 0x1580be4c),
+  LOAD_16_8( CPU1, "sf2u_35i.9f", 0x80001, 0x20000, 0x1468d185),
+  LOAD_16_8( CPU1, "sf2_29b.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36b.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2uk[] = // clone of sf2
 {
-  { "sf2u_30k.11e", 0x20000, 0x8f66076c, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2u_37k.11f", 0x20000, 0x4e1f6a83, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31k.12e", 0x20000, 0xf9f89f60, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38k.12f", 0x20000, 0x6ce0a85a, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28k.9e", 0x20000, 0x8e958f31, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35k.9f", 0x20000, 0xfce76fad, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2u_29a.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2u_36a.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2u_30k.11e", 0x00000, 0x20000, 0x8f66076c),
+  LOAD_16_8( CPU1, "sf2u_37k.11f", 0x00001, 0x20000, 0x4e1f6a83),
+  LOAD_16_8( CPU1, "sf2u_31k.12e", 0x40000, 0x20000, 0xf9f89f60),
+  LOAD_16_8( CPU1, "sf2u_38k.12f", 0x40001, 0x20000, 0x6ce0a85a),
+  LOAD_16_8( CPU1, "sf2u_28k.9e", 0x80000, 0x20000, 0x8e958f31),
+  LOAD_16_8( CPU1, "sf2u_35k.9f", 0x80001, 0x20000, 0xfce76fad),
+  LOAD_16_8( CPU1, "sf2u_29a.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2u_36a.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2j[] = // clone of sf2
 {
-  { "sf2j30.bin", 0x20000, 0x79022b31, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2j37.bin", 0x20000, 0x516776ec, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2j31.bin", 0x20000, 0xfe15cb39, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2j38.bin", 0x20000, 0x38614d70, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2j28.bin", 0x20000, 0xd283187a, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2j35.bin", 0x20000, 0xd28158e4, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2_29a.bin", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2_36a.bin", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2j30.bin", 0x00000, 0x20000, 0x79022b31),
+  LOAD_16_8( CPU1, "sf2j37.bin", 0x00001, 0x20000, 0x516776ec),
+  LOAD_16_8( CPU1, "sf2j31.bin", 0x40000, 0x20000, 0xfe15cb39),
+  LOAD_16_8( CPU1, "sf2j38.bin", 0x40001, 0x20000, 0x38614d70),
+  LOAD_16_8( CPU1, "sf2j28.bin", 0x80000, 0x20000, 0xd283187a),
+  LOAD_16_8( CPU1, "sf2j35.bin", 0x80001, 0x20000, 0xd28158e4),
+  LOAD_16_8( CPU1, "sf2_29a.bin", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2_36a.bin", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ja[] = // clone of sf2
 {
-  { "sf2j_30a.11e", 0x20000, 0x57bd7051, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2j_37a.11f", 0x20000, 0x1e1f6844, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2j_31a.12e", 0x20000, 0xa673143d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2j_38a.12f", 0x20000, 0x4c2ccef7, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2j_28a.9e", 0x20000, 0x4009955e, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2j_35a.9f", 0x20000, 0x8c1f3994, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2j_29a.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2j_36a.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2j_30a.11e", 0x00000, 0x20000, 0x57bd7051),
+  LOAD_16_8( CPU1, "sf2j_37a.11f", 0x00001, 0x20000, 0x1e1f6844),
+  LOAD_16_8( CPU1, "sf2j_31a.12e", 0x40000, 0x20000, 0xa673143d),
+  LOAD_16_8( CPU1, "sf2j_38a.12f", 0x40001, 0x20000, 0x4c2ccef7),
+  LOAD_16_8( CPU1, "sf2j_28a.9e", 0x80000, 0x20000, 0x4009955e),
+  LOAD_16_8( CPU1, "sf2j_35a.9f", 0x80001, 0x20000, 0x8c1f3994),
+  LOAD_16_8( CPU1, "sf2j_29a.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2j_36a.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2jc[] = // clone of sf2
 {
-  { "sf2j_30c.11e", 0x20000, 0x8add35ec, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "sf2j_37c.11f", 0x20000, 0x0d74a256, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2j_31c.12e", 0x20000, 0xc4fff4a9, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2j_38c.12f", 0x20000, 0x8210fc0e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2j_28c.9e", 0x20000, 0x6eddd5e8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2j_35c.9f", 0x20000, 0x6bcb404c, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "sf2j_29a.10e", 0x20000, 0xbb4af315, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "sf2j_36a.10f", 0x20000, 0xc02a13eb, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "sf2j_30c.11e", 0x00000, 0x20000, 0x8add35ec),
+  LOAD_16_8( CPU1, "sf2j_37c.11f", 0x00001, 0x20000, 0x0d74a256),
+  LOAD_16_8( CPU1, "sf2j_31c.12e", 0x40000, 0x20000, 0xc4fff4a9),
+  LOAD_16_8( CPU1, "sf2j_38c.12f", 0x40001, 0x20000, 0x8210fc0e),
+  LOAD_16_8( CPU1, "sf2j_28c.9e", 0x80000, 0x20000, 0x6eddd5e8),
+  LOAD_16_8( CPU1, "sf2j_35c.9f", 0x80001, 0x20000, 0x6bcb404c),
+  LOAD_16_8( CPU1, "sf2j_29a.10e", 0xc0000, 0x20000, 0xbb4af315),
+  LOAD_16_8( CPU1, "sf2j_36a.10f", 0xc0001, 0x20000, 0xc02a13eb),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2ebbl[] = // clone of sf2
 {
-  { "12.bin", 0x40000, 0xa258b4d5, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "09.bin", 0x40000, 0x59ccd474, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "11.bin", 0x40000, 0x82097d63, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "10.bin", 0x40000, 0x0c83844d, REGION_CPU1, 0x80001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "12.bin", 0x00000, 0x40000, 0xa258b4d5),
+  LOAD_16_8( CPU1, "09.bin", 0x00001, 0x40000, 0x59ccd474),
+  LOAD_16_8( CPU1, "11.bin", 0x80000, 0x40000, 0x82097d63),
+  LOAD_16_8( CPU1, "10.bin", 0x80001, 0x40000, 0x0c83844d),
 	/* The 12 MASK roms on this PCB match the original roms exactly */
   { "1b_yf082.bin", 0x80000, 0x22c9cc8e, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "1d_yf028.bin", 0x80000, 0x57213be8, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -1417,27 +1417,27 @@ static struct ROM_INFO rom_sf2qp1[] = // clone of sf2
 
 static struct ROM_INFO rom_sf2thndr[] = // clone of sf2
 {
-  { "17_30.11e", 0x20000, 0xd3cd6d18, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "17_37.11f", 0x20000, 0xe892716e, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "sf2u_31b.12e", 0x20000, 0xa673143d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "sf2u_38b.12f", 0x20000, 0x4c2ccef7, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "sf2u_28b.9e", 0x20000, 0x4009955e, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "sf2u_35b.9f", 0x20000, 0x8c1f3994, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "17_29.10e", 0x20000, 0x8830b54d, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "17_36.10f", 0x20000, 0x3f13ada3, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "17_30.11e", 0x00000, 0x20000, 0xd3cd6d18),
+  LOAD_16_8( CPU1, "17_37.11f", 0x00001, 0x20000, 0xe892716e),
+  LOAD_16_8( CPU1, "sf2u_31b.12e", 0x40000, 0x20000, 0xa673143d),
+  LOAD_16_8( CPU1, "sf2u_38b.12f", 0x40001, 0x20000, 0x4c2ccef7),
+  LOAD_16_8( CPU1, "sf2u_28b.9e", 0x80000, 0x20000, 0x4009955e),
+  LOAD_16_8( CPU1, "sf2u_35b.9f", 0x80001, 0x20000, 0x8c1f3994),
+  LOAD_16_8( CPU1, "17_29.10e", 0xc0000, 0x20000, 0x8830b54d),
+  LOAD_16_8( CPU1, "17_36.10f", 0xc0001, 0x20000, 0x3f13ada3),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_3wonders[] =
 {
-  { "rte_30a.11f", 0x20000, 0xef5b8b33, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "rte_35a.11h", 0x20000, 0x7d705529, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "rte_31a.12f", 0x20000, 0x32835e5e, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "rte_36a.12h", 0x20000, 0x7637975f, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "rt_28a.9f", 0x20000, 0x054137c8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "rt_33a.9h", 0x20000, 0x7264cb1b, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "rte_29a.10f", 0x20000, 0xcddaa919, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "rte_34a.10h", 0x20000, 0xed52e7e5, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "rte_30a.11f", 0x00000, 0x20000, 0xef5b8b33),
+  LOAD_16_8( CPU1, "rte_35a.11h", 0x00001, 0x20000, 0x7d705529),
+  LOAD_16_8( CPU1, "rte_31a.12f", 0x40000, 0x20000, 0x32835e5e),
+  LOAD_16_8( CPU1, "rte_36a.12h", 0x40001, 0x20000, 0x7637975f),
+  LOAD_16_8( CPU1, "rt_28a.9f", 0x80000, 0x20000, 0x054137c8),
+  LOAD_16_8( CPU1, "rt_33a.9h", 0x80001, 0x20000, 0x7264cb1b),
+  LOAD_16_8( CPU1, "rte_29a.10f", 0xc0000, 0x20000, 0xcddaa919),
+  LOAD_16_8( CPU1, "rte_34a.10h", 0xc0001, 0x20000, 0xed52e7e5),
   { "rt-5m.7a", 0x80000, 0x86aef804, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "rt-7m.9a", 0x80000, 0x4f057110, REGION_GFX1, 0x000002, LOAD_16_64 },
   { "rt-1m.3a", 0x80000, 0x902489d0, REGION_GFX1, 0x000004, LOAD_16_64 },
@@ -1454,14 +1454,14 @@ static struct ROM_INFO rom_3wonders[] =
 
 static struct ROM_INFO rom_3wondersr1[] = // clone of 3wonders
 {
-  { "rte_30.11f", 0x20000, 0x0d541519, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "rte_35.11h", 0x20000, 0x73dd0e20, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "rte_31.12f", 0x20000, 0x33e0337d, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "rte_36.12h", 0x20000, 0xa8865243, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "rte_28.9f", 0x20000, 0x054137c8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "rte_33.9h", 0x20000, 0x7264cb1b, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "rte_29.10f", 0x20000, 0x9a8df1e4, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "rte_34.10h", 0x20000, 0x6348a79d, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "rte_30.11f", 0x00000, 0x20000, 0x0d541519),
+  LOAD_16_8( CPU1, "rte_35.11h", 0x00001, 0x20000, 0x73dd0e20),
+  LOAD_16_8( CPU1, "rte_31.12f", 0x40000, 0x20000, 0x33e0337d),
+  LOAD_16_8( CPU1, "rte_36.12h", 0x40001, 0x20000, 0xa8865243),
+  LOAD_16_8( CPU1, "rte_28.9f", 0x80000, 0x20000, 0x054137c8),
+  LOAD_16_8( CPU1, "rte_33.9h", 0x80001, 0x20000, 0x7264cb1b),
+  LOAD_16_8( CPU1, "rte_29.10f", 0xc0000, 0x20000, 0x9a8df1e4),
+  LOAD_16_8( CPU1, "rte_34.10h", 0xc0001, 0x20000, 0x6348a79d),
   LOAD( ROM2, "rt_9(__3wondersr1).12b", 0x00000, 0x10000, 0x7d5a77a7),
   LOAD( SMP1, "rt_18(__3wondersr1).11c", 0x00000, 0x20000, 0xf6dc0d3d),
   LOAD( SMP1, "rt_19.12c", 0x20000, 0x20000, 0xdbe64ad0),
@@ -1470,27 +1470,27 @@ static struct ROM_INFO rom_3wondersr1[] = // clone of 3wonders
 
 static struct ROM_INFO rom_3wondersu[] = // clone of 3wonders
 {
-  { "rtu_30a.11f", 0x20000, 0x0b156fd8, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "rtu_35a.11h", 0x20000, 0x57350bf4, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "rtu_31a.12f", 0x20000, 0x0e723fcc, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "rtu_36a.12h", 0x20000, 0x523a45dc, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "rt_28a.9f", 0x20000, 0x054137c8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "rt_33a.9h", 0x20000, 0x7264cb1b, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "rtu_29a.10f", 0x20000, 0x37ba3e20, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "rtu_34a.10h", 0x20000, 0xf99f46c0, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "rtu_30a.11f", 0x00000, 0x20000, 0x0b156fd8),
+  LOAD_16_8( CPU1, "rtu_35a.11h", 0x00001, 0x20000, 0x57350bf4),
+  LOAD_16_8( CPU1, "rtu_31a.12f", 0x40000, 0x20000, 0x0e723fcc),
+  LOAD_16_8( CPU1, "rtu_36a.12h", 0x40001, 0x20000, 0x523a45dc),
+  LOAD_16_8( CPU1, "rt_28a.9f", 0x80000, 0x20000, 0x054137c8),
+  LOAD_16_8( CPU1, "rt_33a.9h", 0x80001, 0x20000, 0x7264cb1b),
+  LOAD_16_8( CPU1, "rtu_29a.10f", 0xc0000, 0x20000, 0x37ba3e20),
+  LOAD_16_8( CPU1, "rtu_34a.10h", 0xc0001, 0x20000, 0xf99f46c0),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_wonder3[] = // clone of 3wonders
 {
-  { "rtj_36.12f", 0x20000, 0xe3741247, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "rtj_42.12h", 0x20000, 0xb4baa117, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "rtj_37.13f", 0x20000, 0xa1f677b0, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "rtj_43.13h", 0x20000, 0x85337a47, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "rt_34.10f", 0x20000, 0x054137c8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "rt_40.10h", 0x20000, 0x7264cb1b, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "rtj_35.11f", 0x20000, 0xe72f9ea3, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "rtj_41.11h", 0x20000, 0xa11ee998, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "rtj_36.12f", 0x00000, 0x20000, 0xe3741247),
+  LOAD_16_8( CPU1, "rtj_42.12h", 0x00001, 0x20000, 0xb4baa117),
+  LOAD_16_8( CPU1, "rtj_37.13f", 0x40000, 0x20000, 0xa1f677b0),
+  LOAD_16_8( CPU1, "rtj_43.13h", 0x40001, 0x20000, 0x85337a47),
+  LOAD_16_8( CPU1, "rt_34.10f", 0x80000, 0x20000, 0x054137c8),
+  LOAD_16_8( CPU1, "rt_40.10h", 0x80001, 0x20000, 0x7264cb1b),
+  LOAD_16_8( CPU1, "rtj_35.11f", 0xc0000, 0x20000, 0xe72f9ea3),
+  LOAD_16_8( CPU1, "rtj_41.11h", 0xc0001, 0x20000, 0xa11ee998),
   { "rt_09.4b", 0x20000, 0x2c40e480, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "rt_01.4a", 0x20000, 0x3e11f8cd, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "rt_13.9b", 0x20000, 0x51009117, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1529,14 +1529,14 @@ static struct ROM_INFO rom_wonder3[] = // clone of 3wonders
 
 static struct ROM_INFO rom_3wondersh[] = // clone of 3wonders
 {
-  { "22.bin", 0x20000, 0xe6071884, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "26.bin", 0x20000, 0xa28447b7, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "23.bin", 0x20000, 0xfd3d6509, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "27.bin", 0x20000, 0x999cba3d, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "rt_28a.9f", 0x20000, 0x054137c8, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "rt_33a.9h", 0x20000, 0x7264cb1b, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "rte_29a.10f", 0x20000, 0xcddaa919, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "rte_34a.10h", 0x20000, 0xed52e7e5, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "22.bin", 0x00000, 0x20000, 0xe6071884),
+  LOAD_16_8( CPU1, "26.bin", 0x00001, 0x20000, 0xa28447b7),
+  LOAD_16_8( CPU1, "23.bin", 0x40000, 0x20000, 0xfd3d6509),
+  LOAD_16_8( CPU1, "27.bin", 0x40001, 0x20000, 0x999cba3d),
+  LOAD_16_8( CPU1, "rt_28a.9f", 0x80000, 0x20000, 0x054137c8),
+  LOAD_16_8( CPU1, "rt_33a.9h", 0x80001, 0x20000, 0x7264cb1b),
+  LOAD_16_8( CPU1, "rte_29a.10f", 0xc0000, 0x20000, 0xcddaa919),
+  LOAD_16_8( CPU1, "rte_34a.10h", 0xc0001, 0x20000, 0xed52e7e5),
   { "16.bin", 0x40000, 0xc997bca2, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "6.bin", 0x40000, 0x3eea321a, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "18.bin", 0x40000, 0x98acdfd4, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1558,14 +1558,14 @@ static struct ROM_INFO rom_3wondersh[] = // clone of 3wonders
 
 static struct ROM_INFO rom_kod[] =
 {
-  { "kde_30a.11e", 0x20000, 0xfcb5efe2, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "kde_37a.11f", 0x20000, 0xf22e5266, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "kde_31a.12e", 0x20000, 0xc710d722, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "kde_38a.12f", 0x20000, 0x57d6ed3a, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "kd_28.9e", 0x20000, 0x9367bcd9, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "kd_35.9f", 0x20000, 0x4ca6a48a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "kd_29.10e", 0x20000, 0x0360fa72, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "kd_36a.10f", 0x20000, 0x95a3cef8, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "kde_30a.11e", 0x00000, 0x20000, 0xfcb5efe2),
+  LOAD_16_8( CPU1, "kde_37a.11f", 0x00001, 0x20000, 0xf22e5266),
+  LOAD_16_8( CPU1, "kde_31a.12e", 0x40000, 0x20000, 0xc710d722),
+  LOAD_16_8( CPU1, "kde_38a.12f", 0x40001, 0x20000, 0x57d6ed3a),
+  LOAD_16_8( CPU1, "kd_28.9e", 0x80000, 0x20000, 0x9367bcd9),
+  LOAD_16_8( CPU1, "kd_35.9f", 0x80001, 0x20000, 0x4ca6a48a),
+  LOAD_16_8( CPU1, "kd_29.10e", 0xc0000, 0x20000, 0x0360fa72),
+  LOAD_16_8( CPU1, "kd_36a.10f", 0xc0001, 0x20000, 0x95a3cef8),
   { "kd-5m.4a", 0x80000, 0xe45b8701, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "kd-7m.6a", 0x80000, 0xa7750322, REGION_GFX1, 0x000002, LOAD_16_64 },
   { "kd-1m.3a", 0x80000, 0x5f74bf78, REGION_GFX1, 0x000004, LOAD_16_64 },
@@ -1582,14 +1582,14 @@ static struct ROM_INFO rom_kod[] =
 
 static struct ROM_INFO rom_kodr1[] = // clone of kod
 {
-  { "kde_30.11e", 0x20000, 0xc7414fd4, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "kde_37.11f", 0x20000, 0xa5bf40d2, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "kde_31.12e", 0x20000, 0x1fffc7bd, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "kde_38.12f", 0x20000, 0x89e57a82, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "kde_28.9e", 0x20000, 0x9367bcd9, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "kde_35.9f", 0x20000, 0x4ca6a48a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "kde_29.10e", 0x20000, 0x6a0ba878, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "kde_36.10f", 0x20000, 0xb509b39d, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "kde_30.11e", 0x00000, 0x20000, 0xc7414fd4),
+  LOAD_16_8( CPU1, "kde_37.11f", 0x00001, 0x20000, 0xa5bf40d2),
+  LOAD_16_8( CPU1, "kde_31.12e", 0x40000, 0x20000, 0x1fffc7bd),
+  LOAD_16_8( CPU1, "kde_38.12f", 0x40001, 0x20000, 0x89e57a82),
+  LOAD_16_8( CPU1, "kde_28.9e", 0x80000, 0x20000, 0x9367bcd9),
+  LOAD_16_8( CPU1, "kde_35.9f", 0x80001, 0x20000, 0x4ca6a48a),
+  LOAD_16_8( CPU1, "kde_29.10e", 0xc0000, 0x20000, 0x6a0ba878),
+  LOAD_16_8( CPU1, "kde_36.10f", 0xc0001, 0x20000, 0xb509b39d),
   LOAD( ROM2, "kd_9(__kodr1).12a", 0x00000, 0x10000, 0xf5514510),
   LOAD( SMP1, "kd_18(__kodr1).11c", 0x00000, 0x20000, 0x69ecb2c8),
   LOAD( SMP1, "kd_19(__kodr1).12c", 0x20000, 0x20000, 0x02d851c1),
@@ -1598,37 +1598,37 @@ static struct ROM_INFO rom_kodr1[] = // clone of kod
 
 static struct ROM_INFO rom_kodu[] = // clone of kod
 {
-  { "kdu_30b.11e", 0x20000, 0x825817f9, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "kdu_37b.11f", 0x20000, 0xd2422dfb, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "kdu_31b.12e", 0x20000, 0x9af36039, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "kdu_38b.12f", 0x20000, 0xbe8405a1, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "kdu_28.9e", 0x20000, 0x9367bcd9, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "kdu_35.9f", 0x20000, 0x4ca6a48a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "kdu_29.10e", 0x20000, 0x0360fa72, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "kdu_36a.10f", 0x20000, 0x95a3cef8, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "kdu_30b.11e", 0x00000, 0x20000, 0x825817f9),
+  LOAD_16_8( CPU1, "kdu_37b.11f", 0x00001, 0x20000, 0xd2422dfb),
+  LOAD_16_8( CPU1, "kdu_31b.12e", 0x40000, 0x20000, 0x9af36039),
+  LOAD_16_8( CPU1, "kdu_38b.12f", 0x40001, 0x20000, 0xbe8405a1),
+  LOAD_16_8( CPU1, "kdu_28.9e", 0x80000, 0x20000, 0x9367bcd9),
+  LOAD_16_8( CPU1, "kdu_35.9f", 0x80001, 0x20000, 0x4ca6a48a),
+  LOAD_16_8( CPU1, "kdu_29.10e", 0xc0000, 0x20000, 0x0360fa72),
+  LOAD_16_8( CPU1, "kdu_36a.10f", 0xc0001, 0x20000, 0x95a3cef8),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_kodj[] = // clone of kod
 {
-  { "kdj_30a.11e", 0x20000, 0xebc788ad, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "kdj_37a.11f", 0x20000, 0xe55c3529, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "kdj_31a.12e", 0x20000, 0xc710d722, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "kdj_38a.12f", 0x20000, 0x57d6ed3a, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "kdj_30a.11e", 0x00000, 0x20000, 0xebc788ad),
+  LOAD_16_8( CPU1, "kdj_37a.11f", 0x00001, 0x20000, 0xe55c3529),
+  LOAD_16_8( CPU1, "kdj_31a.12e", 0x40000, 0x20000, 0xc710d722),
+  LOAD_16_8( CPU1, "kdj_38a.12f", 0x40001, 0x20000, 0x57d6ed3a),
   LOAD_SW16( CPU1, "kd_33.6f", 0x80000, 0x80000, 0x9bd7ad4b),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_kodja[] = // clone of kod
 {
-  { "kdj_36a.12f", 0x20000, 0xebc788ad, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "kdj_42a.12h", 0x20000, 0xe55c3529, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "kdj_37a.13f", 0x20000, 0xc710d722, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "kdj_43a.13h", 0x20000, 0x57d6ed3a, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "kd_34.10f", 0x20000, 0x9367bcd9, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "kd_40.10h", 0x20000, 0x4ca6a48a, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "kd_35.11f", 0x20000, 0x0360fa72, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "kd_41a.11h", 0x20000, 0x95a3cef8, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "kdj_36a.12f", 0x00000, 0x20000, 0xebc788ad),
+  LOAD_16_8( CPU1, "kdj_42a.12h", 0x00001, 0x20000, 0xe55c3529),
+  LOAD_16_8( CPU1, "kdj_37a.13f", 0x40000, 0x20000, 0xc710d722),
+  LOAD_16_8( CPU1, "kdj_43a.13h", 0x40001, 0x20000, 0x57d6ed3a),
+  LOAD_16_8( CPU1, "kd_34.10f", 0x80000, 0x20000, 0x9367bcd9),
+  LOAD_16_8( CPU1, "kd_40.10h", 0x80001, 0x20000, 0x4ca6a48a),
+  LOAD_16_8( CPU1, "kd_35.11f", 0xc0000, 0x20000, 0x0360fa72),
+  LOAD_16_8( CPU1, "kd_41a.11h", 0xc0001, 0x20000, 0x95a3cef8),
   { "kd_9.4b", 0x20000, 0x401a98e3, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "kd_1.4a", 0x20000, 0x5894399a, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "kd_13.9b", 0x20000, 0xb6685131, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1668,8 +1668,8 @@ static struct ROM_INFO rom_captcomm[] =
 {
   LOAD_SW16( CPU1, "cce_23f.8f", 0x000000, 0x80000, 0x42c814c5),
   LOAD_SW16( CPU1, "cc_22f.7f", 0x080000, 0x80000, 0x0fd34195),
-  { "cc_24f.9e", 0x20000, 0x3a794f25, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "cc_28f.9f", 0x20000, 0xfc3c2906, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "cc_24f.9e", 0x100000, 0x20000, 0x3a794f25),
+  LOAD_16_8( CPU1, "cc_28f.9f", 0x100001, 0x20000, 0xfc3c2906),
   { "cc-5m.3a", 0x80000, 0x7261d8ba, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "cc-7m.5a", 0x80000, 0x6a60f949, REGION_GFX1, 0x000002, LOAD_16_64 },
   { "cc-1m.4a", 0x80000, 0x00637302, REGION_GFX1, 0x000004, LOAD_16_64 },
@@ -1688,8 +1688,8 @@ static struct ROM_INFO rom_captcommr1[] = // clone of captcomm
 {
   LOAD_SW16( CPU1, "cce_23d.8f", 0x000000, 0x80000, 0x19c58ece),
   LOAD_SW16( CPU1, "cc_22d.7f", 0x080000, 0x80000, 0xa91949b7),
-  { "cc_24d.9e", 0x20000, 0x680e543f, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "cc_28d.9f", 0x20000, 0x8820039f, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "cc_24d.9e", 0x100000, 0x20000, 0x680e543f),
+  LOAD_16_8( CPU1, "cc_28d.9f", 0x100001, 0x20000, 0x8820039f),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1697,8 +1697,8 @@ static struct ROM_INFO rom_captcommu[] = // clone of captcomm
 {
   LOAD_SW16( CPU1, "ccu_23b.8f", 0x000000, 0x80000, 0x03da44fd),
   LOAD_SW16( CPU1, "ccu_22c.7f", 0x080000, 0x80000, 0x9b82a052),
-  { "ccu_24b.9e", 0x20000, 0x84ff99b2, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "ccu_28b.9f", 0x20000, 0xfbcec223, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ccu_24b.9e", 0x100000, 0x20000, 0x84ff99b2),
+  LOAD_16_8( CPU1, "ccu_28b.9f", 0x100001, 0x20000, 0xfbcec223),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1706,8 +1706,8 @@ static struct ROM_INFO rom_captcommj[] = // clone of captcomm
 {
   LOAD_SW16( CPU1, "ccj_23f.8f", 0x000000, 0x80000, 0x5b482b62),
   LOAD_SW16( CPU1, "ccj_22f.7f", 0x080000, 0x80000, 0x0fd34195),
-  { "ccj_24f.9e", 0x20000, 0x3a794f25, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "ccj_28f.9f", 0x20000, 0xfc3c2906, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ccj_24f.9e", 0x100000, 0x20000, 0x3a794f25),
+  LOAD_16_8( CPU1, "ccj_28f.9f", 0x100001, 0x20000, 0xfc3c2906),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1715,17 +1715,17 @@ static struct ROM_INFO rom_captcommjr1[] = // clone of captcomm
 {
   LOAD_SW16( CPU1, "ccj_23b.8f", 0x000000, 0x80000, 0xe2a2d80e),
   LOAD_SW16( CPU1, "ccj_22c.7f", 0x080000, 0x80000, 0x9b82a052),
-  { "ccj_24b.9e", 0x20000, 0x84ff99b2, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "ccj_28b.9f", 0x20000, 0xfbcec223, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ccj_24b.9e", 0x100000, 0x20000, 0x84ff99b2),
+  LOAD_16_8( CPU1, "ccj_28b.9f", 0x100001, 0x20000, 0xfbcec223),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_captcommb[] = // clone of captcomm
 {
-  { "25.bin", 0x80000, 0xcb71ed7a, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "27.bin", 0x80000, 0x47cb2e87, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "24.bin", 0x40000, 0x79794279, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "26.bin", 0x40000, 0xb01077ba, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "25.bin", 0x000000, 0x80000, 0xcb71ed7a),
+  LOAD_16_8( CPU1, "27.bin", 0x000001, 0x80000, 0x47cb2e87),
+  LOAD_16_8( CPU1, "24.bin", 0x100000, 0x40000, 0x79794279),
+  LOAD_16_8( CPU1, "26.bin", 0x100001, 0x40000, 0xb01077ba),
   { "c91e-01.bin", 0x40000, 0xf863071c, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "c91e-01.bin", 0x40000, 0xf863071c, REGION_GFX1, 0x000004, LOAD_CONTINUE },
   { "c91e-01.bin", 0x40000, 0xf863071c, REGION_GFX1, 0x200000, LOAD_CONTINUE },
@@ -1780,14 +1780,14 @@ static struct ROM_INFO rom_knightsj[] = // clone of knights
 
 static struct ROM_INFO rom_knightsja[] = // clone of knights
 {
-  { "krj_36.12f", 0x20000, 0xad3d1a8e, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "krj_42.12h", 0x20000, 0xe694a491, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "krj_37.13f", 0x20000, 0x85596094, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "krj_43.13h", 0x20000, 0x9198bf8f, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "kr_34.10f", 0x20000, 0xfe6eb08d, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "kr_40.10h", 0x20000, 0x1172806d, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "kr_35.11f", 0x20000, 0xf854b020, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "kr_41.11h", 0x20000, 0xeb52e78d, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "krj_36.12f", 0x00000, 0x20000, 0xad3d1a8e),
+  LOAD_16_8( CPU1, "krj_42.12h", 0x00001, 0x20000, 0xe694a491),
+  LOAD_16_8( CPU1, "krj_37.13f", 0x40000, 0x20000, 0x85596094),
+  LOAD_16_8( CPU1, "krj_43.13h", 0x40001, 0x20000, 0x9198bf8f),
+  LOAD_16_8( CPU1, "kr_34.10f", 0x80000, 0x20000, 0xfe6eb08d),
+  LOAD_16_8( CPU1, "kr_40.10h", 0x80001, 0x20000, 0x1172806d),
+  LOAD_16_8( CPU1, "kr_35.11f", 0xc0000, 0x20000, 0xf854b020),
+  LOAD_16_8( CPU1, "kr_41.11h", 0xc0001, 0x20000, 0xeb52e78d),
   { "kr_09.4b", 0x20000, 0x08b76e10, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "kr_01.4a", 0x20000, 0x40cecf5c, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "kr_13.9b", 0x20000, 0x435aaa03, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -1912,14 +1912,14 @@ static struct ROM_INFO rom_sf2rb[] = // clone of sf2ce
 
 static struct ROM_INFO rom_sf2rb2[] = // clone of sf2ce
 {
-  { "27.bin", 0x20000, 0x40296ecd, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "31.bin", 0x20000, 0x87954a41, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "26.bin", 0x20000, 0xa6974195, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "30.bin", 0x20000, 0x8141fe32, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "25.bin", 0x20000, 0x9ef8f772, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "29.bin", 0x20000, 0x7d9c479c, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "24.bin", 0x20000, 0x93579684, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "28.bin", 0x20000, 0xff728865, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "27.bin", 0x000000, 0x20000, 0x40296ecd),
+  LOAD_16_8( CPU1, "31.bin", 0x000001, 0x20000, 0x87954a41),
+  LOAD_16_8( CPU1, "26.bin", 0x040000, 0x20000, 0xa6974195),
+  LOAD_16_8( CPU1, "30.bin", 0x040001, 0x20000, 0x8141fe32),
+  LOAD_16_8( CPU1, "25.bin", 0x080000, 0x20000, 0x9ef8f772),
+  LOAD_16_8( CPU1, "29.bin", 0x080001, 0x20000, 0x7d9c479c),
+  LOAD_16_8( CPU1, "24.bin", 0x0c0000, 0x20000, 0x93579684),
+  LOAD_16_8( CPU1, "28.bin", 0x0c0001, 0x20000, 0xff728865),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -1988,60 +1988,60 @@ static struct ROM_INFO rom_sf2dkot2[] = // clone of sf2ce
 
 static struct ROM_INFO rom_sf2m2[] = // clone of sf2ce
 {
-  { "ch222esp", 0x80000, 0x9e6d058a, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "ch196esp", 0x80000, 0xed2ff437, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "ch222esp", 0x000000, 0x80000, 0x9e6d058a),
+  LOAD_16_8( CPU1, "ch196esp", 0x000001, 0x80000, 0xed2ff437),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2m3[] = // clone of sf2ce
 {
-  { "u222chp", 0x80000, 0xdb567b66, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "u196chp", 0x80000, 0x95ea597e, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "u222chp", 0x000000, 0x80000, 0xdb567b66),
+  LOAD_16_8( CPU1, "u196chp", 0x000001, 0x80000, 0x95ea597e),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2m4[] = // clone of sf2ce
 {
-  { "u222ne", 0x80000, 0x7133489e, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "u196ne", 0x80000, 0xb07a4f90, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "u222ne", 0x000000, 0x80000, 0x7133489e),
+  LOAD_16_8( CPU1, "u196ne", 0x000001, 0x80000, 0xb07a4f90),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2m5[] = // clone of sf2ce
 {
-  { "u222", 0x80000, 0x03991fba, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "u196", 0x80000, 0x39f15a1e, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "u222", 0x000000, 0x80000, 0x03991fba),
+  LOAD_16_8( CPU1, "u196", 0x000001, 0x80000, 0x39f15a1e),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2m6[] = // clone of sf2ce
 {
-  { "u222-6b", 0x80000, 0x0a3692be, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "u196-6b", 0x80000, 0x80454da7, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "u222-6b", 0x000000, 0x80000, 0x0a3692be),
+  LOAD_16_8( CPU1, "u196-6b", 0x000001, 0x80000, 0x80454da7),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2m7[] = // clone of sf2ce
 {
-  { "u222-2i", 0x40000, 0x1ca7adbd, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "u196-2i", 0x40000, 0xf758408c, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "u222-2s", 0x40000, 0x720cea3e, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "u196-2s", 0x40000, 0x9932832c, REGION_CPU1, 0x080001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "u222-2i", 0x000000, 0x40000, 0x1ca7adbd),
+  LOAD_16_8( CPU1, "u196-2i", 0x000001, 0x40000, 0xf758408c),
+  LOAD_16_8( CPU1, "u222-2s", 0x080000, 0x40000, 0x720cea3e),
+  LOAD_16_8( CPU1, "u196-2s", 0x080001, 0x40000, 0x9932832c),
   LOAD_SW16( CPU1, "s92_21a.bin", 0x100000, 0x80000, 0x925a7877),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2m8[] = // clone of sf2ce
 {
-  { "yyc-2.2", 0x80000, 0xdb567b66, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "yyc-3.4", 0x80000, 0x95ea597e, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "yyc-4.1", 0x20000, 0x1073b7b6, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "yyc-5.3", 0x20000, 0x924c6ce2, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "yyc-2.2", 0x000000, 0x80000, 0xdb567b66),
+  LOAD_16_8( CPU1, "yyc-3.4", 0x000001, 0x80000, 0x95ea597e),
+  LOAD_16_8( CPU1, "yyc-4.1", 0x100000, 0x20000, 0x1073b7b6),
+  LOAD_16_8( CPU1, "yyc-5.3", 0x100001, 0x20000, 0x924c6ce2),
   { "yyc-a", 0x40000, 0x8242621f, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "yyc-a", 0x40000, 0x8242621f, REGION_GFX1, 0x000004, LOAD_CONTINUE },
   { "yyc-a", 0x40000, 0x8242621f, REGION_GFX1, 0x200000, LOAD_CONTINUE },
@@ -2080,21 +2080,21 @@ static struct ROM_INFO rom_sf2m8[] = // clone of sf2ce
 
 static struct ROM_INFO rom_sf2yyc[] = // clone of sf2ce
 {
-  { "b12.rom", 0x80000, 0x8f742fd5, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "b14.rom", 0x80000, 0x8831ec7f, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "b11.rom", 0x20000, 0x94a46525, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "b11.rom", 0x20000, 0x94a46525, REGION_CPU1, 0x140000, LOAD_8_16 },
-  { "b13.rom", 0x20000, 0x8fb3dd47, REGION_CPU1, 0x100001, LOAD_8_16 },
-  { "b13.rom", 0x20000, 0x8fb3dd47, REGION_CPU1, 0x140001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "b12.rom", 0x000000, 0x80000, 0x8f742fd5),
+  LOAD_16_8( CPU1, "b14.rom", 0x000001, 0x80000, 0x8831ec7f),
+  LOAD_16_8( CPU1, "b11.rom", 0x100000, 0x20000, 0x94a46525),
+  LOAD_16_8( CPU1, "b11.rom", 0x140000, 0x20000, 0x94a46525),
+  LOAD_16_8( CPU1, "b13.rom", 0x100001, 0x20000, 0x8fb3dd47),
+  LOAD_16_8( CPU1, "b13.rom", 0x140001, 0x20000, 0x8fb3dd47),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_sf2koryu[] = // clone of sf2ce
 {
-  { "u222.rom", 0x80000, 0x9236a79a, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "u196.rom", 0x80000, 0xb23a869d, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "u221.rom", 0x20000, 0x64e6e091, REGION_CPU1, 0x100000, LOAD_8_16 },
-  { "u195.rom", 0x20000, 0xc95e4443, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "u222.rom", 0x000000, 0x80000, 0x9236a79a),
+  LOAD_16_8( CPU1, "u196.rom", 0x000001, 0x80000, 0xb23a869d),
+  LOAD_16_8( CPU1, "u221.rom", 0x100000, 0x20000, 0x64e6e091),
+  LOAD_16_8( CPU1, "u195.rom", 0x100001, 0x20000, 0xc95e4443),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2108,15 +2108,15 @@ static struct ROM_INFO rom_sf2dongb[] = // clone of sf2ce
 
 static struct ROM_INFO rom_cworld2j[] =
 {
-  { "q5_36.12f", 0x20000, 0x38a08099, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "q5_42.12h", 0x20000, 0x4d29b3a4, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "q5_37.13f", 0x20000, 0xeb547ebc, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "q5_43.13h", 0x20000, 0x3ef65ea8, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "q5_34.10f", 0x20000, 0x7fcc1317, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "q5_40.10h", 0x20000, 0x7f14b7b4, REGION_CPU1, 0x80001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "q5_36.12f", 0x00000, 0x20000, 0x38a08099),
+  LOAD_16_8( CPU1, "q5_42.12h", 0x00001, 0x20000, 0x4d29b3a4),
+  LOAD_16_8( CPU1, "q5_37.13f", 0x40000, 0x20000, 0xeb547ebc),
+  LOAD_16_8( CPU1, "q5_43.13h", 0x40001, 0x20000, 0x3ef65ea8),
+  LOAD_16_8( CPU1, "q5_34.10f", 0x80000, 0x20000, 0x7fcc1317),
+  LOAD_16_8( CPU1, "q5_40.10h", 0x80001, 0x20000, 0x7f14b7b4),
 //  ROM_LOAD16_BYTE( "q5_35(__alt).11f", 0xc0000, 0x20000, CRC(59961612) SHA1(ded5144746dd9612f2db1415e96a826e215ad176) )   /* dumped from another board, 1 byte different, pcb verified */
-  { "q5_35.11f", 0x20000, 0xabacee26, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "q5_41.11h", 0x20000, 0xd3654067, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "q5_35.11f", 0xc0000, 0x20000, 0xabacee26),
+  LOAD_16_8( CPU1, "q5_41.11h", 0xc0001, 0x20000, 0xd3654067),
   { "q5_09.4b", 0x20000, 0x48496d80, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "q5_01.4a", 0x20000, 0xc5453f56, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "q5_13.9b", 0x20000, 0xc741ac52, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -2141,14 +2141,14 @@ static struct ROM_INFO rom_cworld2j[] =
 
 static struct ROM_INFO rom_varth[] =
 {
-  { "vae_30b.11f", 0x20000, 0xadb8d391, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "vae_35b.11h", 0x20000, 0x44e5548f, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "vae_31b.12f", 0x20000, 0x1749a71c, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "vae_36b.12h", 0x20000, 0x5f2e2450, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "vae_28b.9f", 0x20000, 0xe524ca50, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "vae_33b.9h", 0x20000, 0xc0bbf8c9, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "vae_29b.10f", 0x20000, 0x6640996a, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "vae_34b.10h", 0x20000, 0xfa59be8a, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "vae_30b.11f", 0x00000, 0x20000, 0xadb8d391),
+  LOAD_16_8( CPU1, "vae_35b.11h", 0x00001, 0x20000, 0x44e5548f),
+  LOAD_16_8( CPU1, "vae_31b.12f", 0x40000, 0x20000, 0x1749a71c),
+  LOAD_16_8( CPU1, "vae_36b.12h", 0x40001, 0x20000, 0x5f2e2450),
+  LOAD_16_8( CPU1, "vae_28b.9f", 0x80000, 0x20000, 0xe524ca50),
+  LOAD_16_8( CPU1, "vae_33b.9h", 0x80001, 0x20000, 0xc0bbf8c9),
+  LOAD_16_8( CPU1, "vae_29b.10f", 0xc0000, 0x20000, 0x6640996a),
+  LOAD_16_8( CPU1, "vae_34b.10h", 0xc0001, 0x20000, 0xfa59be8a),
   { "va-5m.7a", 0x80000, 0xb1fb726e, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "va-7m.9a", 0x80000, 0x4c6588cd, REGION_GFX1, 0x000002, LOAD_16_64 },
   { "va-1m.3a", 0x80000, 0x0b1ace37, REGION_GFX1, 0x000004, LOAD_16_64 },
@@ -2161,14 +2161,14 @@ static struct ROM_INFO rom_varth[] =
 
 static struct ROM_INFO rom_varthr1[] = // clone of varth
 {
-  { "vae_30a.11f", 0x20000, 0x7fcd0091, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "vae_35a.11h", 0x20000, 0x35cf9509, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "vae_31a.12f", 0x20000, 0x15e5ee81, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "vae_36a.12h", 0x20000, 0x153a201e, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "vae_28a.9f", 0x20000, 0x7a0e0d25, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "vae_33a.9h", 0x20000, 0xf2365922, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "vae_29a.10f", 0x20000, 0x5e2cd2c3, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "vae_34a.10h", 0x20000, 0x3d9bdf83, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "vae_30a.11f", 0x00000, 0x20000, 0x7fcd0091),
+  LOAD_16_8( CPU1, "vae_35a.11h", 0x00001, 0x20000, 0x35cf9509),
+  LOAD_16_8( CPU1, "vae_31a.12f", 0x40000, 0x20000, 0x15e5ee81),
+  LOAD_16_8( CPU1, "vae_36a.12h", 0x40001, 0x20000, 0x153a201e),
+  LOAD_16_8( CPU1, "vae_28a.9f", 0x80000, 0x20000, 0x7a0e0d25),
+  LOAD_16_8( CPU1, "vae_33a.9h", 0x80001, 0x20000, 0xf2365922),
+  LOAD_16_8( CPU1, "vae_29a.10f", 0xc0000, 0x20000, 0x5e2cd2c3),
+  LOAD_16_8( CPU1, "vae_34a.10h", 0xc0001, 0x20000, 0x3d9bdf83),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2181,14 +2181,14 @@ static struct ROM_INFO rom_varthu[] = // clone of varth
 
 static struct ROM_INFO rom_varthj[] = // clone of varth
 {
-  { "vaj_36b.12f", 0x20000, 0x1d798d6a, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "vaj_42b.12h", 0x20000, 0x0f720233, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "vaj_37b.13f", 0x20000, 0x24414b17, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "vaj_43b.13h", 0x20000, 0x34b4b06c, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "vaj_34b.10f", 0x20000, 0x87c79aed, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "vaj_40b.10h", 0x20000, 0x210b4bd0, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "vaj_35b.11f", 0x20000, 0x6b0da69f, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "vaj_41b.11h", 0x20000, 0x6542c8a4, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "vaj_36b.12f", 0x00000, 0x20000, 0x1d798d6a),
+  LOAD_16_8( CPU1, "vaj_42b.12h", 0x00001, 0x20000, 0x0f720233),
+  LOAD_16_8( CPU1, "vaj_37b.13f", 0x40000, 0x20000, 0x24414b17),
+  LOAD_16_8( CPU1, "vaj_43b.13h", 0x40001, 0x20000, 0x34b4b06c),
+  LOAD_16_8( CPU1, "vaj_34b.10f", 0x80000, 0x20000, 0x87c79aed),
+  LOAD_16_8( CPU1, "vaj_40b.10h", 0x80001, 0x20000, 0x210b4bd0),
+  LOAD_16_8( CPU1, "vaj_35b.11f", 0xc0000, 0x20000, 0x6b0da69f),
+  LOAD_16_8( CPU1, "vaj_41b.11h", 0xc0001, 0x20000, 0x6542c8a4),
   { "va_09.4b", 0x20000, 0x183dfaa8, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "va_01.4a", 0x20000, 0xc41312b5, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "va_13.9b", 0x20000, 0x45537e69, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -2210,10 +2210,10 @@ static struct ROM_INFO rom_varthj[] = // clone of varth
 
 static struct ROM_INFO rom_qad[] =
 {
-  { "qdu_36a.12f", 0x20000, 0xde9c24a0, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "qdu_42a.12h", 0x20000, 0xcfe36f0c, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "qdu_37a.13f", 0x20000, 0x10d22320, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "qdu_43a.13h", 0x20000, 0x15e6beb9, REGION_CPU1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "qdu_36a.12f", 0x00000, 0x20000, 0xde9c24a0),
+  LOAD_16_8( CPU1, "qdu_42a.12h", 0x00001, 0x20000, 0xcfe36f0c),
+  LOAD_16_8( CPU1, "qdu_37a.13f", 0x40000, 0x20000, 0x10d22320),
+  LOAD_16_8( CPU1, "qdu_43a.13h", 0x40001, 0x20000, 0x15e6beb9),
   { "qd_09.4b", 0x20000, 0x8c3f9f44, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "qd_01.4a", 0x20000, 0xf688cf8f, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "qd_13.9b", 0x20000, 0xafbd551b, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -2426,14 +2426,14 @@ static struct ROM_INFO rom_dinohunt[] = // clone of dino
 
 static struct ROM_INFO rom_punisher[] =
 {
-  { "pse_26.11e", 0x20000, 0x389a99d2, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "pse_30.11f", 0x20000, 0x68fb06ac, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "pse_27.12e", 0x20000, 0x3eb181c3, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "pse_31.12f", 0x20000, 0x37108e7b, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "pse_24.9e", 0x20000, 0x0f434414, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "pse_28.9f", 0x20000, 0xb732345d, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "pse_25.10e", 0x20000, 0xb77102e2, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "pse_29.10f", 0x20000, 0xec037bce, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "pse_26.11e", 0x000000, 0x20000, 0x389a99d2),
+  LOAD_16_8( CPU1, "pse_30.11f", 0x000001, 0x20000, 0x68fb06ac),
+  LOAD_16_8( CPU1, "pse_27.12e", 0x040000, 0x20000, 0x3eb181c3),
+  LOAD_16_8( CPU1, "pse_31.12f", 0x040001, 0x20000, 0x37108e7b),
+  LOAD_16_8( CPU1, "pse_24.9e", 0x080000, 0x20000, 0x0f434414),
+  LOAD_16_8( CPU1, "pse_28.9f", 0x080001, 0x20000, 0xb732345d),
+  LOAD_16_8( CPU1, "pse_25.10e", 0x0c0000, 0x20000, 0xb77102e2),
+  LOAD_16_8( CPU1, "pse_29.10f", 0x0c0001, 0x20000, 0xec037bce),
   LOAD_SW16( CPU1, "ps_21.6f", 0x100000, 0x80000, 0x8affa5a9),
   { "ps-1m.3a", 0x80000, 0x77b7ccab, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "ps-3m.5a", 0x80000, 0x0122720b, REGION_GFX1, 0x000002, LOAD_16_64 },
@@ -2453,28 +2453,28 @@ static struct ROM_INFO rom_punisher[] =
 
 static struct ROM_INFO rom_punisheru[] = // clone of punisher
 {
-  { "psu_26.11e", 0x20000, 0x9236d121, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "psu_30.11f", 0x20000, 0x8320e501, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "psu_27.12e", 0x20000, 0x61c960a1, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "psu_31.12f", 0x20000, 0x78d4c298, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "psu_24.9e", 0x20000, 0x1cfecad7, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "psu_28.9f", 0x20000, 0xbdf921c1, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "psu_25.10e", 0x20000, 0xc51acc94, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "psu_29.10f", 0x20000, 0x52dce1ca, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "psu_26.11e", 0x000000, 0x20000, 0x9236d121),
+  LOAD_16_8( CPU1, "psu_30.11f", 0x000001, 0x20000, 0x8320e501),
+  LOAD_16_8( CPU1, "psu_27.12e", 0x040000, 0x20000, 0x61c960a1),
+  LOAD_16_8( CPU1, "psu_31.12f", 0x040001, 0x20000, 0x78d4c298),
+  LOAD_16_8( CPU1, "psu_24.9e", 0x080000, 0x20000, 0x1cfecad7),
+  LOAD_16_8( CPU1, "psu_28.9f", 0x080001, 0x20000, 0xbdf921c1),
+  LOAD_16_8( CPU1, "psu_25.10e", 0x0c0000, 0x20000, 0xc51acc94),
+  LOAD_16_8( CPU1, "psu_29.10f", 0x0c0001, 0x20000, 0x52dce1ca),
   LOAD_SW16( CPU1, "ps_21.6f", 0x100000, 0x80000, 0x8affa5a9),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_punisherh[] = // clone of punisher
 {
-  { "psh_26.11e", 0x20000, 0x6ad2bb83, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "psh_30.11f", 0x20000, 0x058d3659, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "psh_27.12e", 0x20000, 0x579f4fd3, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "psh_31.12f", 0x20000, 0x2c9f70b5, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "psh_24.9e", 0x20000, 0xfaa14841, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "psh_28.9f", 0x20000, 0x5c5b1f20, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "psh_25.10e", 0x20000, 0x724fdfda, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "psh_29.10f", 0x20000, 0x779cf901, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "psh_26.11e", 0x000000, 0x20000, 0x6ad2bb83),
+  LOAD_16_8( CPU1, "psh_30.11f", 0x000001, 0x20000, 0x058d3659),
+  LOAD_16_8( CPU1, "psh_27.12e", 0x040000, 0x20000, 0x579f4fd3),
+  LOAD_16_8( CPU1, "psh_31.12f", 0x040001, 0x20000, 0x2c9f70b5),
+  LOAD_16_8( CPU1, "psh_24.9e", 0x080000, 0x20000, 0xfaa14841),
+  LOAD_16_8( CPU1, "psh_28.9f", 0x080001, 0x20000, 0x5c5b1f20),
+  LOAD_16_8( CPU1, "psh_25.10e", 0x0c0000, 0x20000, 0x724fdfda),
+  LOAD_16_8( CPU1, "psh_29.10f", 0x0c0001, 0x20000, 0x779cf901),
   LOAD_SW16( CPU1, "ps_21.6f", 0x100000, 0x80000, 0x8affa5a9),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -2510,10 +2510,10 @@ static struct ROM_INFO rom_punisherbz[] = // clone of punisher
 static struct ROM_INFO rom_slammast[] =
 {
   LOAD_SW16( CPU1, "mbe_23e.8f", 0x000000, 0x80000, 0x5394057a),
-  { "mbe_24b.9e", 0x20000, 0x95d5e729, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "mbe_28b.9f", 0x20000, 0xb1c7cbcb, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "mbe_25b.10e", 0x20000, 0xa50d3fd4, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "mbe_29b.10f", 0x20000, 0x08e32e56, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mbe_24b.9e", 0x080000, 0x20000, 0x95d5e729),
+  LOAD_16_8( CPU1, "mbe_28b.9f", 0x080001, 0x20000, 0xb1c7cbcb),
+  LOAD_16_8( CPU1, "mbe_25b.10e", 0x0c0000, 0x20000, 0xa50d3fd4),
+  LOAD_16_8( CPU1, "mbe_29b.10f", 0x0c0001, 0x20000, 0x08e32e56),
   LOAD_SW16( CPU1, "mbe_21a.6f", 0x100000, 0x80000, 0xd5007b05),
   LOAD_SW16( CPU1, "mbe_20a.5f", 0x180000, 0x80000, 0xaeb557b0),
   { "mb-1m.3a", 0x80000, 0x41468e06, REGION_GFX1, 0x000000, LOAD_16_64 },
@@ -2544,10 +2544,10 @@ static struct ROM_INFO rom_slammast[] =
 static struct ROM_INFO rom_slammastu[] = // clone of slammast
 {
   LOAD_SW16( CPU1, "mbu_23e.8f", 0x000000, 0x80000, 0x224f0062),
-  { "mbu_24b.9e", 0x20000, 0x95d5e729, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "mbu_28b.9f", 0x20000, 0xb1c7cbcb, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "mbu_25b.10e", 0x20000, 0xa50d3fd4, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "mbu_29b.10f", 0x20000, 0x08e32e56, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mbu_24b.9e", 0x080000, 0x20000, 0x95d5e729),
+  LOAD_16_8( CPU1, "mbu_28b.9f", 0x080001, 0x20000, 0xb1c7cbcb),
+  LOAD_16_8( CPU1, "mbu_25b.10e", 0x0c0000, 0x20000, 0xa50d3fd4),
+  LOAD_16_8( CPU1, "mbu_29b.10f", 0x0c0001, 0x20000, 0x08e32e56),
   LOAD_SW16( CPU1, "mbu_21a.6f", 0x100000, 0x80000, 0xd5007b05),
   LOAD_SW16( CPU1, "mbu_20a.5f", 0x180000, 0x80000, 0xfc848af5),
 /* Ignored : 	ROM_COPY( "audiocpu", 0x00000, 0x00000, 0x8000 ) */
@@ -2557,10 +2557,10 @@ static struct ROM_INFO rom_slammastu[] = // clone of slammast
 static struct ROM_INFO rom_mbomberj[] = // clone of slammast
 {
   LOAD_SW16( CPU1, "mbj_23e.8f", 0x000000, 0x80000, 0x0d06036a),
-  { "mbe_24b.9e", 0x20000, 0x95d5e729, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "mbe_28b.9f", 0x20000, 0xb1c7cbcb, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "mbe_25b.10e", 0x20000, 0xa50d3fd4, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "mbe_29b.10f", 0x20000, 0x08e32e56, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mbe_24b.9e", 0x080000, 0x20000, 0x95d5e729),
+  LOAD_16_8( CPU1, "mbe_28b.9f", 0x080001, 0x20000, 0xb1c7cbcb),
+  LOAD_16_8( CPU1, "mbe_25b.10e", 0x0c0000, 0x20000, 0xa50d3fd4),
+  LOAD_16_8( CPU1, "mbe_29b.10f", 0x0c0001, 0x20000, 0x08e32e56),
   LOAD_SW16( CPU1, "mbj_21a.6f", 0x100000, 0x80000, 0xd5007b05),
   LOAD_SW16( CPU1, "mbj_20a.5f", 0x180000, 0x80000, 0xaeb557b0),
   { "mb_01.3a", 0x80000, 0xa53b1c81, REGION_GFX1, 0x000000, LOAD_16_64 },
@@ -2581,14 +2581,14 @@ static struct ROM_INFO rom_mbomberj[] = // clone of slammast
 
 static struct ROM_INFO rom_mbombrd[] =
 {
-  { "mbde_26.11e", 0x20000, 0x72b7451c, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "mbde_30.11f", 0x20000, 0xa036dc16, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "mbde_27.12e", 0x20000, 0x4086f534, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "mbde_31.12f", 0x20000, 0x085f47f0, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "mbde_24.9e", 0x20000, 0xc20895a5, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "mbde_28.9f", 0x20000, 0x2618d5e1, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "mbde_25.10e", 0x20000, 0x9bdb6b11, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "mbde_29.10f", 0x20000, 0x3f52d5e5, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mbde_26.11e", 0x000000, 0x20000, 0x72b7451c),
+  LOAD_16_8( CPU1, "mbde_30.11f", 0x000001, 0x20000, 0xa036dc16),
+  LOAD_16_8( CPU1, "mbde_27.12e", 0x040000, 0x20000, 0x4086f534),
+  LOAD_16_8( CPU1, "mbde_31.12f", 0x040001, 0x20000, 0x085f47f0),
+  LOAD_16_8( CPU1, "mbde_24.9e", 0x080000, 0x20000, 0xc20895a5),
+  LOAD_16_8( CPU1, "mbde_28.9f", 0x080001, 0x20000, 0x2618d5e1),
+  LOAD_16_8( CPU1, "mbde_25.10e", 0x0c0000, 0x20000, 0x9bdb6b11),
+  LOAD_16_8( CPU1, "mbde_29.10f", 0x0c0001, 0x20000, 0x3f52d5e5),
   LOAD_SW16( CPU1, "mbde_21.6f", 0x100000, 0x80000, 0x690c026a),
   LOAD_SW16( CPU1, "mbde_20.5f", 0x180000, 0x80000, 0xb8b2139b),
   { "mb-1m.3a", 0x80000, 0x41468e06, REGION_GFX1, 0x000000, LOAD_16_64 },
@@ -2617,14 +2617,14 @@ static struct ROM_INFO rom_mbombrd[] =
 
 static struct ROM_INFO rom_mbombrdj[] = // clone of mbombrd
 {
-  { "mbdj_26.11e", 0x20000, 0x72b7451c, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "mbdj_30.11f", 0x20000, 0xbeff31cf, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "mbdj_27.12e", 0x20000, 0x4086f534, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "mbdj_31.12f", 0x20000, 0x085f47f0, REGION_CPU1, 0x040001, LOAD_8_16 },
-  { "mbdj_24.9e", 0x20000, 0xc20895a5, REGION_CPU1, 0x080000, LOAD_8_16 },
-  { "mbdj_28.9f", 0x20000, 0x2618d5e1, REGION_CPU1, 0x080001, LOAD_8_16 },
-  { "mbdj_25.10e", 0x20000, 0x9bdb6b11, REGION_CPU1, 0x0c0000, LOAD_8_16 },
-  { "mbdj_29.10f", 0x20000, 0x3f52d5e5, REGION_CPU1, 0x0c0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "mbdj_26.11e", 0x000000, 0x20000, 0x72b7451c),
+  LOAD_16_8( CPU1, "mbdj_30.11f", 0x000001, 0x20000, 0xbeff31cf),
+  LOAD_16_8( CPU1, "mbdj_27.12e", 0x040000, 0x20000, 0x4086f534),
+  LOAD_16_8( CPU1, "mbdj_31.12f", 0x040001, 0x20000, 0x085f47f0),
+  LOAD_16_8( CPU1, "mbdj_24.9e", 0x080000, 0x20000, 0xc20895a5),
+  LOAD_16_8( CPU1, "mbdj_28.9f", 0x080001, 0x20000, 0x2618d5e1),
+  LOAD_16_8( CPU1, "mbdj_25.10e", 0x0c0000, 0x20000, 0x9bdb6b11),
+  LOAD_16_8( CPU1, "mbdj_29.10f", 0x0c0001, 0x20000, 0x3f52d5e5),
   LOAD_SW16( CPU1, "mbdj_21.6f", 0x100000, 0x80000, 0x690c026a),
   LOAD_SW16( CPU1, "mbdj_20.5f", 0x180000, 0x80000, 0xb8b2139b),
   { "mb_01.3a", 0x80000, 0xa53b1c81, REGION_GFX1, 0x000000, LOAD_16_64 },
@@ -2645,8 +2645,8 @@ static struct ROM_INFO rom_mbombrdj[] = // clone of mbombrd
 
 static struct ROM_INFO rom_pnickj[] =
 {
-  { "pnij_36.12f", 0x20000, 0x2d4ffb2b, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "pnij_42.12h", 0x20000, 0xc085dfaf, REGION_CPU1, 0x00001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "pnij_36.12f", 0x00000, 0x20000, 0x2d4ffb2b),
+  LOAD_16_8( CPU1, "pnij_42.12h", 0x00001, 0x20000, 0xc085dfaf),
   { "pnij_09.4b", 0x20000, 0x48177b0a, REGION_GFX1, 0x000000, LOAD_8_64 },
   { "pnij_01.4a", 0x20000, 0x01a0f311, REGION_GFX1, 0x000001, LOAD_8_64 },
   { "pnij_13.9b", 0x20000, 0x406451b0, REGION_GFX1, 0x000002, LOAD_8_64 },
@@ -2671,14 +2671,14 @@ static struct ROM_INFO rom_pnickj[] =
 
 static struct ROM_INFO rom_qtono2j[] =
 {
-  { "tn2j_30.11e", 0x20000, 0x9226eb5e, REGION_CPU1, 0x00000, LOAD_8_16 },
-  { "tn2j_37.11f", 0x20000, 0xd1d30da1, REGION_CPU1, 0x00001, LOAD_8_16 },
-  { "tn2j_31.12e", 0x20000, 0x015e6a8a, REGION_CPU1, 0x40000, LOAD_8_16 },
-  { "tn2j_38.12f", 0x20000, 0x1f139bcc, REGION_CPU1, 0x40001, LOAD_8_16 },
-  { "tn2j_28.9e", 0x20000, 0x86d27f71, REGION_CPU1, 0x80000, LOAD_8_16 },
-  { "tn2j_35.9f", 0x20000, 0x7a1ab87d, REGION_CPU1, 0x80001, LOAD_8_16 },
-  { "tn2j_29.10e", 0x20000, 0x9c384e99, REGION_CPU1, 0xc0000, LOAD_8_16 },
-  { "tn2j_36.10f", 0x20000, 0x4c4b2a0a, REGION_CPU1, 0xc0001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "tn2j_30.11e", 0x00000, 0x20000, 0x9226eb5e),
+  LOAD_16_8( CPU1, "tn2j_37.11f", 0x00001, 0x20000, 0xd1d30da1),
+  LOAD_16_8( CPU1, "tn2j_31.12e", 0x40000, 0x20000, 0x015e6a8a),
+  LOAD_16_8( CPU1, "tn2j_38.12f", 0x40001, 0x20000, 0x1f139bcc),
+  LOAD_16_8( CPU1, "tn2j_28.9e", 0x80000, 0x20000, 0x86d27f71),
+  LOAD_16_8( CPU1, "tn2j_35.9f", 0x80001, 0x20000, 0x7a1ab87d),
+  LOAD_16_8( CPU1, "tn2j_29.10e", 0xc0000, 0x20000, 0x9c384e99),
+  LOAD_16_8( CPU1, "tn2j_36.10f", 0xc0001, 0x20000, 0x4c4b2a0a),
   { "tn2-02m.4a", 0x80000, 0xf2016a34, REGION_GFX1, 0x000000, LOAD_16_64 },
   { "tn2-04m.6a", 0x80000, 0x094e0fb1, REGION_GFX1, 0x000002, LOAD_16_64 },
   { "tn2-01m.3a", 0x80000, 0xcb950cf9, REGION_GFX1, 0x000004, LOAD_16_64 },

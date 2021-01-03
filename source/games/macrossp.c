@@ -77,7 +77,7 @@ static struct ROM_INFO rom_macrossp[] =
 
   LOAD( GFX5, "bp964a.u19", 0x000000, 0x080000, 0x19c7acd9 ),
 
-  { "bp964a.u24", 0x400000, 0x93f90336 , REGION_SMP1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( SMP1, "bp964a.u24", 0x000001, 0x400000, 0x93f90336 ),
   // REGION_SMP2 initialised from REGION_SMP1 in the loading function
   { NULL, 0, 0, 0, 0, 0 }
 };

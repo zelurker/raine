@@ -291,14 +291,14 @@ static struct SOUND_INFO sound_tp1[] =
 
 static struct ROM_INFO rom_vimana[] =         /* From board serial number 1547.04 (July '94) */
 {
-  { "tp019-7a.bin", 0x20000, 0x5a4bf73e, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "tp019-8a.bin", 0x20000, 0x03ba27e8, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "tp019-7a.bin", 0x000000, 0x20000, 0x5a4bf73e),
+  LOAD_16_8( CPU1, "tp019-8a.bin", 0x000001, 0x20000, 0x03ba27e8),
 	/* sound CPU is a HD647180 (Z180) with internal ROM */
   LOAD( ROM2, "hd647180.019", 0x00000, 0x08000, 0x41a97ebe),
-  { "vim6.bin", 0x20000, 0x2886878d, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "vim5.bin", 0x20000, 0x61a63d7a, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "vim4.bin", 0x20000, 0xb0515768, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "vim3.bin", 0x20000, 0x0b539131, REGION_GFX1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "vim6.bin", 0x00000, 0x20000, 0x2886878d),
+  LOAD_16_8( GFX1, "vim5.bin", 0x00001, 0x20000, 0x61a63d7a),
+  LOAD_16_8( GFX1, "vim4.bin", 0x40000, 0x20000, 0xb0515768),
+  LOAD_16_8( GFX1, "vim3.bin", 0x40001, 0x20000, 0x0b539131),
   LOAD( GFX2, "vim1.bin", 0x00000, 0x80000, 0xcdde26cd),
   LOAD( GFX2, "vim2.bin", 0x80000, 0x80000, 0x1dbfc118),
   LOAD( PROMS, "tp019-09.bpr", 0x00, 0x20, 0xbc88cced),
@@ -308,23 +308,23 @@ static struct ROM_INFO rom_vimana[] =         /* From board serial number 1547.0
 
 static struct ROM_INFO rom_vimanaj[] = // clone of vimana
 {
-  { "vim07.bin", 0x20000, 0x1efaea84, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "vim08.bin", 0x20000, 0xe45b7def, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "vim07.bin", 0x000000, 0x20000, 0x1efaea84),
+  LOAD_16_8( CPU1, "vim08.bin", 0x000001, 0x20000, 0xe45b7def),
 	/* sound CPU is a HD647180 (Z180) with internal ROM */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_outzone[] =
 {
-  { "prg2.bin", 0x20000, 0x9704db16, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "prg1.bin", 0x20000, 0x127a38d7, REGION_CPU1, 0x000000, LOAD_8_16 },
+  LOAD_16_8( CPU1, "prg2.bin", 0x000001, 0x20000, 0x9704db16),
+  LOAD_16_8( CPU1, "prg1.bin", 0x000000, 0x20000, 0x127a38d7),
   LOAD( ROM2, "rom9.bin", 0x0000, 0x8000, 0x73d8e235),
   LOAD( GFX1, "rom5.bin", 0x00000, 0x80000, 0xc64ec7b6),
   LOAD( GFX1, "rom6.bin", 0x80000, 0x80000, 0x64b6c5ac),
-  { "rom2.bin", 0x20000, 0x6bb72d16, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "rom1.bin", 0x20000, 0x0934782d, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "rom3.bin", 0x20000, 0xec903c07, REGION_GFX2, 0x40000, LOAD_8_16 },
-  { "rom4.bin", 0x20000, 0x50cbf1a8, REGION_GFX2, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX2, "rom2.bin", 0x00000, 0x20000, 0x6bb72d16),
+  LOAD_16_8( GFX2, "rom1.bin", 0x00001, 0x20000, 0x0934782d),
+  LOAD_16_8( GFX2, "rom3.bin", 0x40000, 0x20000, 0xec903c07),
+  LOAD_16_8( GFX2, "rom4.bin", 0x40001, 0x20000, 0x50cbf1a8),
 //  LOAD( PROMS, "tp018_10.bpr", 0x00, 0x20, 0xbc88cced),
 //  LOAD( PROMS, "tp018_11.bpr", 0x20, 0x20, 0xa1e17492),
   { NULL, 0, 0, 0, 0, 0 }
@@ -332,15 +332,15 @@ static struct ROM_INFO rom_outzone[] =
 
 static struct ROM_INFO rom_outzoneh[] = // clone of outzone
 {
-  { "tp018_7.bin", 0x20000, 0x0c2ac02d, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "tp018_8.bin", 0x20000, 0xca7e48aa, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "tp018_7.bin", 0x000000, 0x20000, 0x0c2ac02d),
+  LOAD_16_8( CPU1, "tp018_8.bin", 0x000001, 0x20000, 0xca7e48aa),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_outzonec[] =                   /* From board serial number 2122 clone of outzone */
 {
-  { "rom7.bin", 0x20000, 0x936e25d8, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "rom8.bin", 0x20000, 0xd19b3ecf, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "rom7.bin", 0x000000, 0x20000, 0x936e25d8),
+  LOAD_16_8( CPU1, "rom8.bin", 0x000001, 0x20000, 0xd19b3ecf),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -393,15 +393,15 @@ static struct DSW_INFO dsw_outzone[] =
 
 static struct ROM_INFO rom_rallybik[] =
 {
-  { "b45-02.rom", 0x08000, 0x383386d7, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "b45-01.rom", 0x08000, 0x7602f6a7, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "b45-04.rom", 0x20000, 0xe9b005b1, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "b45-03.rom", 0x20000, 0x555344ce, REGION_CPU1, 0x040001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "b45-02.rom", 0x000000, 0x08000, 0x383386d7),
+  LOAD_16_8( CPU1, "b45-01.rom", 0x000001, 0x08000, 0x7602f6a7),
+  LOAD_16_8( CPU1, "b45-04.rom", 0x040000, 0x20000, 0xe9b005b1),
+  LOAD_16_8( CPU1, "b45-03.rom", 0x040001, 0x20000, 0x555344ce),
   LOAD( ROM2, "b45-05.rom", 0x0000, 0x4000, 0x10814601),
-  { "b45-09.bin", 0x20000, 0x1dc7b010, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "b45-08.bin", 0x20000, 0xfab661ba, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "b45-07.bin", 0x20000, 0xcd3748b4, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "b45-06.bin", 0x20000, 0x144b085c, REGION_GFX1, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "b45-09.bin", 0x00000, 0x20000, 0x1dc7b010),
+  LOAD_16_8( GFX1, "b45-08.bin", 0x00001, 0x20000, 0xfab661ba),
+  LOAD_16_8( GFX1, "b45-07.bin", 0x40000, 0x20000, 0xcd3748b4),
+  LOAD_16_8( GFX1, "b45-06.bin", 0x40001, 0x20000, 0x144b085c),
   LOAD( GFX2, "b45-11.rom", 0x00000, 0x10000, 0x0d56e8bb),
   LOAD( GFX2, "b45-10.rom", 0x10000, 0x10000, 0xdbb7c57e),
   LOAD( GFX2, "b45-12.rom", 0x20000, 0x10000, 0xcf5aae4e),
@@ -441,19 +441,19 @@ static struct DSW_INFO dsw_rallybik[] =
 
 static struct ROM_INFO rom_zerowing[] = /* 2 player simultaneous version */
 {
-  { "o15-11ii.bin", 0x08000, 0xe697ecb9, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "o15-12ii.bin", 0x08000, 0xb29ee3ad, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "o15-09.rom", 0x20000, 0x13764e95, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "o15-10.rom", 0x20000, 0x351ba71a, REGION_CPU1, 0x040001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "o15-11ii.bin", 0x000000, 0x08000, 0xe697ecb9),
+  LOAD_16_8( CPU1, "o15-12ii.bin", 0x000001, 0x08000, 0xb29ee3ad),
+  LOAD_16_8( CPU1, "o15-09.rom", 0x040000, 0x20000, 0x13764e95),
+  LOAD_16_8( CPU1, "o15-10.rom", 0x040001, 0x20000, 0x351ba71a),
   LOAD( ROM2, "o15-13.rom", 0x0000, 0x8000, 0xe7b72383),
-  { "o15-05.rom", 0x20000, 0x4e5dd246, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "o15-06.rom", 0x20000, 0xc8c6d428, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "o15-07.rom", 0x20000, 0xefc40e99, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "o15-08.rom", 0x20000, 0x1b019eab, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "o15-03.rom", 0x20000, 0x7f245fd3, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "o15-04.rom", 0x20000, 0x0b1a1289, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "o15-01.rom", 0x20000, 0x70570e43, REGION_GFX2, 0x40000, LOAD_8_16 },
-  { "o15-02.rom", 0x20000, 0x724b487f, REGION_GFX2, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "o15-05.rom", 0x00000, 0x20000, 0x4e5dd246),
+  LOAD_16_8( GFX1, "o15-06.rom", 0x00001, 0x20000, 0xc8c6d428),
+  LOAD_16_8( GFX1, "o15-07.rom", 0x40000, 0x20000, 0xefc40e99),
+  LOAD_16_8( GFX1, "o15-08.rom", 0x40001, 0x20000, 0x1b019eab),
+  LOAD_16_8( GFX2, "o15-03.rom", 0x00000, 0x20000, 0x7f245fd3),
+  LOAD_16_8( GFX2, "o15-04.rom", 0x00001, 0x20000, 0x0b1a1289),
+  LOAD_16_8( GFX2, "o15-01.rom", 0x40000, 0x20000, 0x70570e43),
+  LOAD_16_8( GFX2, "o15-02.rom", 0x40001, 0x20000, 0x724b487f),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -505,24 +505,24 @@ static struct DSW_INFO dsw_zerowing[] =
 
 static struct ROM_INFO rom_demonwld[] =
 {
-  { "o16-10.v2", 0x20000, 0xca8194f3, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "o16-09.v2", 0x20000, 0x7baea7ba, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "o16-10.v2", 0x000000, 0x20000, 0xca8194f3),
+  LOAD_16_8( CPU1, "o16-09.v2", 0x000001, 0x20000, 0x7baea7ba),
   LOAD( ROM2, "rom11.v2", 0x0000, 0x8000, 0xdbe08c85),
-  { "rom05", 0x20000, 0x6506c982, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "rom07", 0x20000, 0xa3a0d993, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "rom06", 0x20000, 0x4fc5e5f3, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "rom08", 0x20000, 0xeb53ab09, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "rom01", 0x20000, 0x1b3724e9, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "rom02", 0x20000, 0x7b20a44d, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "rom03", 0x20000, 0x2cacdcd0, REGION_GFX2, 0x40000, LOAD_8_16 },
-  { "rom04", 0x20000, 0x76fd3201, REGION_GFX2, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "rom05", 0x00000, 0x20000, 0x6506c982),
+  LOAD_16_8( GFX1, "rom07", 0x00001, 0x20000, 0xa3a0d993),
+  LOAD_16_8( GFX1, "rom06", 0x40000, 0x20000, 0x4fc5e5f3),
+  LOAD_16_8( GFX1, "rom08", 0x40001, 0x20000, 0xeb53ab09),
+  LOAD_16_8( GFX2, "rom01", 0x00000, 0x20000, 0x1b3724e9),
+  LOAD_16_8( GFX2, "rom02", 0x00001, 0x20000, 0x7b20a44d),
+  LOAD_16_8( GFX2, "rom03", 0x40000, 0x20000, 0x2cacdcd0),
+  LOAD_16_8( GFX2, "rom04", 0x40001, 0x20000, 0x76fd3201),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_demonwld2[] = // clone of demonwld
 {
-  { "o16-10.rom", 0x20000, 0x036ee46c, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "o16-09.rom", 0x20000, 0xbed746e3, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "o16-10.rom", 0x000000, 0x20000, 0x036ee46c),
+  LOAD_16_8( CPU1, "o16-09.rom", 0x000001, 0x20000, 0xbed746e3),
   LOAD( ROM2, "rom11", 0x0000, 0x8000, 0x397eca1b),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -578,28 +578,28 @@ static struct DSW_INFO dsw_demonwld[] =
 
 static struct ROM_INFO rom_samesame[] = // clone of fireshrk
 {
-  { "o17_09.8j", 0x08000, 0x3f69e437, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "o17_10.8l", 0x08000, 0x4e723e0a, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "o17_11.7j", 0x20000, 0xbe07d101, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "o17_12.7l", 0x20000, 0xef698811, REGION_CPU1, 0x040001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "o17_09.8j", 0x000000, 0x08000, 0x3f69e437),
+  LOAD_16_8( CPU1, "o17_10.8l", 0x000001, 0x08000, 0x4e723e0a),
+  LOAD_16_8( CPU1, "o17_11.7j", 0x040000, 0x20000, 0xbe07d101),
+  LOAD_16_8( CPU1, "o17_12.7l", 0x040001, 0x20000, 0xef698811),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_fireshrk[] =
 {
-  { "09.8j", 0x08000, 0xf0c70e6f, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "10.8l", 0x08000, 0x9d253d77, REGION_CPU1, 0x000001, LOAD_8_16 },
-  { "o17_11ii.7j", 0x20000, 0x6beac378, REGION_CPU1, 0x040000, LOAD_8_16 },
-  { "o17_12ii.7l", 0x20000, 0x6adb6eb5, REGION_CPU1, 0x040001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "09.8j", 0x000000, 0x08000, 0xf0c70e6f),
+  LOAD_16_8( CPU1, "10.8l", 0x000001, 0x08000, 0x9d253d77),
+  LOAD_16_8( CPU1, "o17_11ii.7j", 0x040000, 0x20000, 0x6beac378),
+  LOAD_16_8( CPU1, "o17_12ii.7l", 0x040001, 0x20000, 0x6adb6eb5),
   LOAD( ROM2, "hd647180.017", 0x00000, 0x08000, 0x43523032),
-  { "o17_05.12j", 0x20000, 0x565315f8, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "o17_06.13j", 0x20000, 0x95262d4c, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "o17_07.12l", 0x20000, 0x4c4b735c, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "o17_08.13l", 0x20000, 0x95c6586c, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "o17_01.1d", 0x20000, 0xea12e491, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "o17_02.3d", 0x20000, 0x32a13a9f, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "o17_03.5d", 0x20000, 0x68723dc9, REGION_GFX2, 0x40000, LOAD_8_16 },
-  { "o17_04.7d", 0x20000, 0xfe0ecb13, REGION_GFX2, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "o17_05.12j", 0x00000, 0x20000, 0x565315f8),
+  LOAD_16_8( GFX1, "o17_06.13j", 0x00001, 0x20000, 0x95262d4c),
+  LOAD_16_8( GFX1, "o17_07.12l", 0x40000, 0x20000, 0x4c4b735c),
+  LOAD_16_8( GFX1, "o17_08.13l", 0x40001, 0x20000, 0x95c6586c),
+  LOAD_16_8( GFX2, "o17_01.1d", 0x00000, 0x20000, 0xea12e491),
+  LOAD_16_8( GFX2, "o17_02.3d", 0x00001, 0x20000, 0x32a13a9f),
+  LOAD_16_8( GFX2, "o17_03.5d", 0x40000, 0x20000, 0x68723dc9),
+  LOAD_16_8( GFX2, "o17_04.7d", 0x40001, 0x20000, 0xfe0ecb13),
 //  LOAD( PROMS, "prom14.25b", 0x00, 0x20, 0xbc88cced),
 //  LOAD( PROMS, "prom15.20c", 0x20, 0x20, 0xa1e17492),
   { NULL, 0, 0, 0, 0, 0 }
@@ -693,17 +693,17 @@ static struct DSW_INFO dsw_samesame[] =
 
 static struct ROM_INFO rom_hellfire[] =
 {
-  { "b90_14.0", 0x20000, 0x101df9f5, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "b90_15.1", 0x20000, 0xe67fd452, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "b90_14.0", 0x000000, 0x20000, 0x101df9f5),
+  LOAD_16_8( CPU1, "b90_15.1", 0x000001, 0x20000, 0xe67fd452),
   LOAD( ROM2, "b90_03.2", 0x0000, 0x8000, 0x4058fa67),
-  { "b90_04.3", 0x20000, 0xea6150fc, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "b90_05.4", 0x20000, 0xbb52c507, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "b90_06.5", 0x20000, 0xcf5b0252, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "b90_07.6", 0x20000, 0xb98af263, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "b90_11.10", 0x20000, 0xc33e543c, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "b90_10.9", 0x20000, 0x35fd1092, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "b90_09.8", 0x20000, 0xcf01009e, REGION_GFX2, 0x40000, LOAD_8_16 },
-  { "b90_08.7", 0x20000, 0x3404a5e3, REGION_GFX2, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "b90_04.3", 0x00000, 0x20000, 0xea6150fc),
+  LOAD_16_8( GFX1, "b90_05.4", 0x00001, 0x20000, 0xbb52c507),
+  LOAD_16_8( GFX1, "b90_06.5", 0x40000, 0x20000, 0xcf5b0252),
+  LOAD_16_8( GFX1, "b90_07.6", 0x40001, 0x20000, 0xb98af263),
+  LOAD_16_8( GFX2, "b90_11.10", 0x00000, 0x20000, 0xc33e543c),
+  LOAD_16_8( GFX2, "b90_10.9", 0x00001, 0x20000, 0x35fd1092),
+  LOAD_16_8( GFX2, "b90_09.8", 0x40000, 0x20000, 0xcf01009e),
+  LOAD_16_8( GFX2, "b90_08.7", 0x40001, 0x20000, 0x3404a5e3),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -726,17 +726,17 @@ static struct DSW_INFO dsw_hellfire[] =
 
 static struct ROM_INFO rom_truxton[] =
 {
-  { "b65_11.bin", 0x20000, 0x1a62379a, REGION_CPU1, 0x000000, LOAD_8_16 },
-  { "b65_10.bin", 0x20000, 0xaff5195d, REGION_CPU1, 0x000001, LOAD_8_16 },
+  LOAD_16_8( CPU1, "b65_11.bin", 0x000000, 0x20000, 0x1a62379a),
+  LOAD_16_8( CPU1, "b65_10.bin", 0x000001, 0x20000, 0xaff5195d),
   LOAD( ROM2, "b65_09.bin", 0x0000, 0x4000, 0x1bdd4ddc),
-  { "b65_08.bin", 0x20000, 0xd2315b37, REGION_GFX1, 0x00000, LOAD_8_16 },
-  { "b65_07.bin", 0x20000, 0xfb83252a, REGION_GFX1, 0x00001, LOAD_8_16 },
-  { "b65_06.bin", 0x20000, 0x36cedcbe, REGION_GFX1, 0x40000, LOAD_8_16 },
-  { "b65_05.bin", 0x20000, 0x81cd95f1, REGION_GFX1, 0x40001, LOAD_8_16 },
-  { "b65_04.bin", 0x20000, 0x8c6ff461, REGION_GFX2, 0x00000, LOAD_8_16 },
-  { "b65_03.bin", 0x20000, 0x58b1350b, REGION_GFX2, 0x00001, LOAD_8_16 },
-  { "b65_02.bin", 0x20000, 0x1dd55161, REGION_GFX2, 0x40000, LOAD_8_16 },
-  { "b65_01.bin", 0x20000, 0xe974937f, REGION_GFX2, 0x40001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "b65_08.bin", 0x00000, 0x20000, 0xd2315b37),
+  LOAD_16_8( GFX1, "b65_07.bin", 0x00001, 0x20000, 0xfb83252a),
+  LOAD_16_8( GFX1, "b65_06.bin", 0x40000, 0x20000, 0x36cedcbe),
+  LOAD_16_8( GFX1, "b65_05.bin", 0x40001, 0x20000, 0x81cd95f1),
+  LOAD_16_8( GFX2, "b65_04.bin", 0x00000, 0x20000, 0x8c6ff461),
+  LOAD_16_8( GFX2, "b65_03.bin", 0x00001, 0x20000, 0x58b1350b),
+  LOAD_16_8( GFX2, "b65_02.bin", 0x40000, 0x20000, 0x1dd55161),
+  LOAD_16_8( GFX2, "b65_01.bin", 0x40001, 0x20000, 0xe974937f),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

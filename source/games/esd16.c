@@ -41,9 +41,9 @@ static struct ROM_INFO rom_mchampdx[] =
   LOAD( ROM2, "esd3.su06", 0x8000, 0x80000, 0x2c0c8813),
   LOAD( GFX1, "rom.ju02", 0x000000, 0x200000, 0x7e87e332),
   LOAD( GFX1, "rom.ju01", 0x200000, 0x200000, 0x1a749fc2),
-  { "esd5.ju07",0x080000, 0x6cc871cc, REGION_GFX1, 0x400000, LOAD_8_16 },
+  LOAD_16_8( GFX1, "esd5.ju07", 0x400000, 0x080000, 0x6cc871cc),
   // To emulate the rom_fill :
-  { "esd5.ju07", 0x080000, 0x6cc871cc, REGION_GFX1, 0x500001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "esd5.ju07", 0x500001, 0x080000, 0x6cc871cc),
   LOAD8_16(  GFX2,  0x000000,  0x200000,
             "rom.fu35",  0xba46f3dc, "rom.fu34",  0x2895cf09),
   LOAD( SMP1, "esd4.su10", 0x00000, 0x80000, 0x14c4a30d),
@@ -60,8 +60,8 @@ static struct ROM_INFO rom_hedpanic[] =
 	/* expand this to take up 0x200000 bytes too so we can decode it */
   LOAD( GFX1, "esd7", 0x000000, 0x200000, 0x055d525f),
 /* Ignored : 	ROM_FILL( 0x500000, 0x100000, 0 ) */
-  { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x400000, LOAD_8_16 },
-  { "esd5", 0x080000, 0xbd785921, REGION_GFX1, 0x500001, LOAD_8_16 },
+  LOAD_16_8( GFX1, "esd5", 0x400000, 0x080000, 0xbd785921),
+  LOAD_16_8( GFX1, "esd5", 0x500001, 0x080000, 0xbd785921),
   LOAD8_16(  GFX2,  0x000000,  0x200000,
             "esd8",  0x23aceb4f, "esd9",  0x76b46cd2),
   LOAD( SMP1, "esd4", 0x000000, 0x080000, 0x5692fe92),
