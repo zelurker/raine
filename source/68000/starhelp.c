@@ -699,7 +699,7 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
    int ta;
 
    for(ta=0;ta<data_count_wb[0];ta++){
-      if((M68000_dataregion_wb[0][ta].lowaddr)==-1){
+      if((M68000_dataregion_wb[0][ta].lowaddr)==-1 || M68000_dataregion_wb[0][ta].memorycall == &DefBadWriteByte){
 	  break;
       }
       else{
