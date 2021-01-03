@@ -101,7 +101,7 @@ static struct ROM_INFO rom_bublbobl[] =
    LOAD( GFX1, "a78-13.16", 0x20000, 0x8000, 0xd0af35c5),
    LOAD( GFX1, "a78-14.17", 0x28000, 0x8000, 0x7b5369a8),
    /* 0x30000-0x3ffff empty */
-  FILL(          0x30000, 0x10000, 0, GFX1),
+   FILL( GFX1, 0x30000, 0x10000, 0),
    LOAD( GFX1, "a78-15.30", 0x40000, 0x8000, 0x6b61a413),
    LOAD( GFX1, "a78-16.31", 0x48000, 0x8000, 0xb5492d97),
    LOAD( GFX1, "a78-17.32", 0x50000, 0x8000, 0xd69762d5),
@@ -109,7 +109,7 @@ static struct ROM_INFO rom_bublbobl[] =
    LOAD( GFX1, "a78-19.34", 0x60000, 0x8000, 0x66e9438c),
    LOAD( GFX1, "a78-20.35", 0x68000, 0x8000, 0x9ef863ad),
    /* 0x70000-0x7ffff empty */
-  FILL(          0x70000, 0x10000, 0, GFX1),
+  FILL( GFX1, 0x70000, 0x10000, 0),
    LOAD( ROM4, "68705.bin", 0, 0x00000800, 0x78caa635),
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -125,12 +125,12 @@ static struct ROM_INFO rom_dland[] =
   LOAD( GFX1, "dl_7.59", 0x10000, 0x10000, 0x37a38b69),
   LOAD( GFX1, "dl_8.60", 0x20000, 0x10000, 0x509ee5b1),
 	/* 0x30000-0x3ffff empty */
-  FILL(          0x30000, 0x10000, 0, GFX1),
+  FILL( GFX1, 0x30000, 0x10000, 0),
   LOAD( GFX1, "dl_9.61", 0x40000, 0x10000, 0xae8514d7),
   LOAD( GFX1, "dl_10.62", 0x50000, 0x10000, 0x6d406fb7),
   LOAD( GFX1, "dl_11.63", 0x60000, 0x10000, 0xbdf9c0ab),
 	/* 0x70000-0x7ffff empty */
-  FILL(          0x70000, 0x10000, 0, GFX1),
+  FILL( GFX1, 0x70000, 0x10000, 0),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -140,7 +140,7 @@ static struct ROM_INFO rom_bublcave[] =
   LOAD( CPU1, "a78-06-1.51", 0x00000, 0x08000, 0xe8b9af5e),
   LOAD( CPU1, "a78-05-1.52", 0x08000, 0x10000, 0xcfe14cb8),
 	/* 20000-2ffff empty */
-  FILL(          0x18000, 0x10000, 0, CPU1), // not sure it's used !
+  FILL( CPU1, 0x18000, 0x10000, 0), // not sure it's used !
   LOAD( ROM2, "a78-08.37", 0x0000, 0x08000, 0xa9384086),
   // LOAD( ROM4, "a78-01.17", 0xf000, 0x1000, 0xb1bfb53d),
   LOAD( GFX1, "a78-09.12", 0x00000, 0x8000, 0xb90b7eef),
@@ -151,14 +151,14 @@ static struct ROM_INFO rom_bublcave[] =
   LOAD( GFX1, "a78-14.17", 0x28000, 0x8000, 0x7e3a13bd),
   LOAD( GFX1, "a78-15.30", 0x40000, 0x8000, 0xc253c73a),
   /* 0x30000-0x3ffff empty */
-  FILL(          0x30000, 0x10000, 0, GFX1),
+  FILL( GFX1, 0x30000, 0x10000, 0),
   LOAD( GFX1, "a78-16.31", 0x48000, 0x8000, 0xe66c92ee),
   LOAD( GFX1, "a78-17.32", 0x50000, 0x8000, 0xd69762d5),
   LOAD( GFX1, "a78-18.33", 0x58000, 0x8000, 0x47ee2544),
   LOAD( GFX1, "a78-19.34", 0x60000, 0x8000, 0x1ceeb1fa),
   LOAD( GFX1, "a78-20.35", 0x68000, 0x8000, 0x64322e24),
 	/* 0x70000-0x7ffff empty */
-  FILL(          0x70000, 0x10000, 0, GFX1),
+  FILL( GFX1, 0x70000, 0x10000, 0),
 	/* Located on CPU/Sound Board */
    {           NULL,          0,          0, 0, 0, 0, },
 };

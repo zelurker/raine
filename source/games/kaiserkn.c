@@ -42,8 +42,9 @@ static struct ROM_INFO rom_kaiserkn[] =
    {   "d84-23.rom", 0x00080000, 0x39f12a9b, 0, 0, 0, },
    {   "d84-24.rom", 0x00080000, 0xbf20c755, 0, 0, 0, },
    {   "d84-25.rom", 0x00080000, 0x2840893f, 0, 0, 0, },
-  LOAD8_16( ROM2,  0x000000,  0x00040000,
-              "d84-26.rom",  0x4f5b8563,   "d84-27.rom",  0xfb0cb1ba),
+
+  LOAD8_16( ROM2, "d84-26.rom", 0x000000, 0x00040000, 0x4f5b8563),
+  LOAD8_16( ROM2, "d84-27.rom", 0x000000+1, 0x00040000, 0xfb0cb1ba),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -88,8 +89,9 @@ static struct ROM_INFO rom_dankuga[] =
    { "dkg_mpr1.bin", 0x00080000, 0x97566f69, 0, 0, 0, },
    { "dkg_mpr2.bin", 0x00080000, 0x18a4748b, 0, 0, 0, },
    { "dkg_mpr3.bin", 0x00080000, 0xee1531ca, 0, 0, 0, },
-  LOAD8_16( ROM2,  0x000000,  0x00040000,
-              "d84-26.rom",  0x4f5b8563,   "d84-27.rom",  0xfb0cb1ba),
+
+  LOAD8_16( ROM2, "d84-26.rom", 0x000000, 0x00040000, 0x4f5b8563),
+  LOAD8_16( ROM2, "d84-27.rom", 0x000000+1, 0x00040000, 0xfb0cb1ba),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

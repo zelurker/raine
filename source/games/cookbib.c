@@ -62,16 +62,20 @@ static int spr_xoffset, spr_yoffset;
 
 static struct ROM_INFO rom_cookbib[] =
 {
-  LOAD8_16(  ROM1,  0x000000,    0x020000,
-            "prg2.ub17",  0x2664a335, "prg1.ub16",  0xcda6335f),
+
+  LOAD8_16( ROM1, "prg2.ub17", 0x000000, 0x020000, 0x2664a335),
+  LOAD8_16( ROM1, "prg1.ub16", 0x000000+1, 0x020000, 0xcda6335f),
 	LOAD( ROM2, "prg-s.ub5", 0x000000, 0x010000, 0x547d6ea3),
 	LOAD( SMP1, "sound.uc1", 0x000000, 0x020000, 0x545e19b6),
-  LOAD8_16(  GFX1,  0x000000,     0x020000,
-            "uor1.bin",  0xa7d91f23, "uor2.bin",  0x9aacbec2),
-  LOAD8_16(  GFX1,  0x040000,     0x020000,
-            "uor3.bin",  0x3fee0c3c, "uor4.bin",  0xbed9ed2d),
-  LOAD8_16(  GFX2,  0x000000,    0x040000,
-            "srom6.bin",  0xade2dbec,"srom5.bin",  0x73a46e43 ),
+
+  LOAD8_16( GFX1, "uor1.bin", 0x000000, 0x020000, 0xa7d91f23),
+  LOAD8_16( GFX1, "uor2.bin", 0x000000+1, 0x020000, 0x9aacbec2),
+
+  LOAD8_16( GFX1, "uor3.bin", 0x040000, 0x020000, 0x3fee0c3c),
+  LOAD8_16( GFX1, "uor4.bin", 0x040000+1, 0x020000, 0xbed9ed2d),
+
+  LOAD8_16( GFX2, "srom6.bin", 0x000000, 0x040000, 0xade2dbec),
+  LOAD8_16( GFX2, "srom5.bin", 0x000000+1, 0x040000, 0x73a46e43 ),
 	LOAD( PROMS, "protdata.bin", 0x000000, 0x000200, 0xa77d13f4),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
@@ -80,16 +84,20 @@ static struct ROM_INFO rom_cookbib[] =
 
 static struct ROM_INFO rom_htchctch[] =
 {
-  LOAD8_16(  ROM1,  0x000000,      0x020000,
-            "p04.b17",  0x6991483a, "p03.b16",  0xeff14c40),
+
+  LOAD8_16( ROM1, "p04.b17", 0x000000, 0x020000, 0x6991483a),
+  LOAD8_16( ROM1, "p03.b16", 0x000000+1, 0x020000, 0xeff14c40),
 	LOAD( ROM2, "p02.b5", 0x000000, 0x010000, 0xc5a03186),
 	LOAD( SMP1, "p01.c1", 0x000000, 0x020000, 0x18c06829),
-  LOAD8_16(  GFX1,  0x000000,  0x020000,
-            "p08uor1.bin",  0x6811e7b6, "p09uor2.bin",  0x1c6549cf),
-  LOAD8_16(  GFX1,  0x040000,  0x020000,
-            "p10uor3.bin",  0x6462e6e0, "p11uor4.bin",  0x9c511d98),
-  LOAD8_16(  GFX2,  0x000000, 0x040000,
-            "p07srom6.bin",  0x0207949c, "p06srom5.bin",  0x3d2cbb0d ),
+
+  LOAD8_16( GFX1, "p08uor1.bin", 0x000000, 0x020000, 0x6811e7b6),
+  LOAD8_16( GFX1, "p09uor2.bin", 0x000000+1, 0x020000, 0x1c6549cf),
+
+  LOAD8_16( GFX1, "p10uor3.bin", 0x040000, 0x020000, 0x6462e6e0),
+  LOAD8_16( GFX1, "p11uor4.bin", 0x040000+1, 0x020000, 0x9c511d98),
+
+  LOAD8_16( GFX2, "p07srom6.bin", 0x000000, 0x040000, 0x0207949c),
+  LOAD8_16( GFX2, "p06srom5.bin", 0x000000+1, 0x040000, 0x3d2cbb0d ),
 	LOAD( PROMS, "protdata.bin", 0x000000, 0x000200, 0x5b27adb6),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
@@ -98,16 +106,20 @@ static struct ROM_INFO rom_htchctch[] =
 
 static struct ROM_INFO rom_chokchok[] =
 {
-  LOAD8_16(  ROM1,  0x000000,      0x040000,
-            "ub17.bin",  0xecdb45ca, "ub18.bin",  0xb183852a),
+
+  LOAD8_16( ROM1, "ub17.bin", 0x000000, 0x040000, 0xecdb45ca),
+  LOAD8_16( ROM1, "ub18.bin", 0x000000+1, 0x040000, 0xb183852a),
 	LOAD( ROM2, "ub5.bin", 0x000000, 0x010000, 0x30c2171d),
 	LOAD( SMP1, "uc1.bin", 0x000000, 0x040000, 0xf3f57abd),
-  LOAD8_16(  GFX1,  0x000000,      0x080000,
-            "uor1.bin",  0xded6642a, "uor2.bin",  0x493f9516),
-  LOAD8_16(  GFX1,  0x100000,      0x080000,
-            "uor3.bin",  0xe2dc3e12, "uor4.bin",  0x6f377530),
-  LOAD8_16(  GFX2,  0x000000,     0x080000,
-            "srom6.bin",  0x31d5715d,"srom5.bin",  0x836608b8),
+
+  LOAD8_16( GFX1, "uor1.bin", 0x000000, 0x080000, 0xded6642a),
+  LOAD8_16( GFX1, "uor2.bin", 0x000000+1, 0x080000, 0x493f9516),
+
+  LOAD8_16( GFX1, "uor3.bin", 0x100000, 0x080000, 0xe2dc3e12),
+  LOAD8_16( GFX1, "uor4.bin", 0x100000+1, 0x080000, 0x6f377530),
+
+  LOAD8_16( GFX2, "srom6.bin", 0x000000, 0x080000, 0x31d5715d),
+  LOAD8_16( GFX2, "srom5.bin", 0x000000+1, 0x080000, 0x836608b8),
 	LOAD( PROMS, "protdata.bin", 0x000000, 0x000200, 0x0bd39834),
 	{ NULL, 0, 0, 0, 0, 0 }
 };

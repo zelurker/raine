@@ -2370,7 +2370,7 @@ static struct ROM_INFO rom_puzzldpr[] = /* MVS ONLY RELEASE clone of puzzledp */
 {
   LOAD_SW16( CPU1, "235-p1.p1", 0x000000, 0x080000, 0xafed5de2),
   LOAD( FIXED, "235-s1.s1", 0x000000, 0x10000, 0x5a68d91e),
-  FILL(          0x10000, 0x10000, 0, FIXED),
+  FILL( FIXED, 0x10000, 0x10000, 0),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2674,7 +2674,7 @@ static struct ROM_INFO rom_kof99[] = /* Original Version - Encrypted Code & GFX 
   LOAD_SW16( CPU1, "251-p1.p1", 0x100000, 0x400000, 0x006e4532),
   LOAD_SW16( CPU1, "251-p2.p2", 0x500000, 0x400000, 0x90175f15),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
- FILL( 0x000000, 0x20000, 0, FIXED ),
+ FILL( FIXED , 0x000000, 0x20000, 0),
   LOAD( ROM2, "251-m1.m1", 0x00000, 0x20000, 0x5e74539c),
   LOAD( SMP1, "251-v1.v1", 0x000000, 0x400000, 0xef2eecc8),
   LOAD( SMP1, "251-v2.v2", 0x400000, 0x400000, 0x73e211ca),
@@ -2712,7 +2712,7 @@ static struct ROM_INFO rom_ganryu[] = /* Original Version - Encrypted GFX */ /* 
   LOAD_SW16( CPU1, "252-p1.p1", 0x100000, 0x100000, 0x4b8ac4fb),
   { "252-p1.p1", 0x100000 , 0x4b8ac4fb, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED),
+  FILL( FIXED, 0x000000, 0x20000, 0),
   LOAD( ROM2, "252-m1.m1", 0x00000, 0x20000, 0x30cc4099),
   LOAD( SMP1, "252-v1.v1", 0x000000, 0x400000, 0xe5946733),
 	/* Encrypted */
@@ -2731,7 +2731,7 @@ static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone o
   LOAD_SW16( CPU1, "253-ep3.p3", 0x500000, 0x200000, 0xe395bfdd),
   LOAD_SW16( CPU1, "253-ep4.p4", 0x700000, 0x200000, 0xda92c08e),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED),
+  FILL( FIXED, 0x000000, 0x80000, 0),
   LOAD( ROM2, "253-m1.m1", 0x00000, 0x40000, 0x36a806be),
   LOAD( SMP1, "253-v1.v1", 0x000000, 0x400000, 0x263e388c),
   LOAD( SMP1, "253-v2.v2", 0x400000, 0x400000, 0x2c6bc7be),
@@ -2769,7 +2769,7 @@ static struct ROM_INFO rom_s1945p[] = /* Original Version, Encrypted GFX Roms */
   LOAD_SW16( CPU1, "254-p1.p1", 0x000000, 0x100000, 0xff8efcff),
   LOAD_SW16( CPU1, "254-p2.sp2", 0x100000, 0x400000, 0xefdfd4dd),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED),
+  FILL( FIXED, 0x000000, 0x20000, 0),
   LOAD( ROM2, "254-m1.m1", 0x00000, 0x20000, 0x994b4487),
   LOAD( SMP1, "254-v1.v1", 0x000000, 0x400000, 0x844f58fb),
   LOAD( SMP1, "254-v2.v2", 0x400000, 0x400000, 0xd9a248f0),
@@ -2793,7 +2793,7 @@ static struct ROM_INFO rom_preisle2[] = /* Original Version, Encrypted GFX */ /*
   LOAD_SW16( CPU1, "255-p1.p1", 0x000000, 0x100000, 0xdfa3c0f3),
   LOAD_SW16( CPU1, "255-p2.sp2", 0x100000, 0x400000, 0x42050b80),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0,FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
   LOAD( ROM2, "255-m1.m1", 0x00000, 0x20000, 0x8efd4014),
   LOAD( SMP1, "255-v1.v1", 0x000000, 0x400000, 0x5a14543d),
   LOAD( SMP1, "255-v2.v2", 0x400000, 0x200000, 0x6610d91a),
@@ -2816,7 +2816,7 @@ static struct ROM_INFO rom_mslug3[] = /* Original Version - Encrypted Code & GFX
   LOAD_SW16( CPU1, "256-pg1.p1", 0x100000, 0x400000, 0xb07edfd5),
   LOAD_SW16( CPU1, "256-pg2.p2", 0x500000, 0x400000, 0x6097c26b),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
   LOAD( ROM2, "256-m1.m1", 0x00000, 0x80000, 0xeaeec116),
   LOAD( SMP1, "256-v1.v1", 0x000000, 0x400000, 0xf2690241),
   LOAD( SMP1, "256-v2.v2", 0x400000, 0x400000, 0x7e2a10bd),
@@ -2851,10 +2851,10 @@ static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sou
   LOAD_SW16( CPU1, "257-p1.p1", 0x100000, 0x400000, 0x60947b4c),
   LOAD_SW16( CPU1, "257-p2.p2", 0x500000, 0x400000, 0x1b7ec415),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "257-m1.m1", 0x00000, 0x40000, 0x4b749113),
-  FILL(0x40000,0x40000, 0, AUDIOCRYPT),
+  FILL( AUDIOCRYPT, 0x40000, 0x40000, 0),
 
   LOAD( SMP1, "257-v1.v1", 0x000000, 0x400000, 0x17cde847),
   LOAD( SMP1, "257-v2.v2", 0x400000, 0x400000, 0x1afb20ff),
@@ -2878,7 +2878,7 @@ static struct ROM_INFO rom_bangbead[] = /* Original Version - Encrypted GFX */ /
   LOAD_SW16( CPU1, "259-p1.p1", 0x100000, 0x100000, 0x88a37f8b),
   { "259-p1.p1", 0x100000 , 0x88a37f8b, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
   LOAD( ROM2, "259-m1.m1", 0x00000, 0x20000, 0x85668ee9),
   LOAD( SMP1, "259-v1.v1", 0x000000, 0x400000, 0x088eb8ab),
   LOAD( SMP1, "259-v2.v2", 0x400000, 0x100000, 0x97528fe9),
@@ -2894,7 +2894,7 @@ static struct ROM_INFO rom_nitd[] = /* Original Version - Encrypted GFX */ /* MV
 {
   LOAD_SW16( CPU1, "260-p1.p1", 0x000000, 0x080000, 0x61361082),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
   LOAD( ROM2, "260-m1.m1", 0x00000, 0x80000, 0x6407c5e5),
   LOAD( SMP1, "260-v1.v1", 0x000000, 0x400000, 0x24b0480c),
 	/* Encrypted */
@@ -2910,7 +2910,7 @@ static struct ROM_INFO rom_sengoku3[] = /* Original Version - Encrypted GFX */
   LOAD_SW16( CPU1, "261-ph1.p1", 0x100000, 0x100000, 0xe0d4bc0a),
   { "261-ph1.p1", 0x100000 , 0xe0d4bc0a, REGION_CPU1, 0x000000, LOAD_CONTINUE },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0,FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
   LOAD( ROM2, "261-m1.m1", 0x00000, 0x80000, 0x7d501c39),
   LOAD( SMP1, "261-v1.v1", 0x000000, 0x400000, 0x64c30081),
   LOAD( SMP1, "261-v2.v2", 0x400000, 0x400000, 0x392a9c47),
@@ -2930,10 +2930,10 @@ static struct ROM_INFO rom_kof2001[] = /* MVS VERSION clone of neogeo */
   LOAD_SW16( CPU1, "262-p1-08-e0.p1", 0x000000, 0x100000, 0x9381750d),
 	/* The first/early production run sets have proms with above labels. Some later? sets found have eproms instead of proms */
   LOAD_SW16( CPU1, "262-p2-08-e0.sp2", 0x100000, 0x400000, 0x8e0d8329),
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "265-262-m1.m1", 0x00000, 0x40000, 0xa7f8119f),
-  FILL(0x40000, 0x40000, 0, AUDIOCRYPT),
+  FILL( AUDIOCRYPT, 0x40000, 0x40000, 0),
   LOAD( SMP1, "262-v1-08-e0.v1", 0x000000, 0x400000, 0x83d49ecf),
   LOAD( SMP1, "262-v2-08-e0.v2", 0x400000, 0x400000, 0x003f1843),
   LOAD( SMP1, "262-v3-08-e0.v3", 0x800000, 0x400000, 0x2ae38dbe),
@@ -2966,10 +2966,10 @@ static struct ROM_INFO rom_mslug4[] = /* Original Version - Encrypted GFX clone 
   LOAD_SW16( CPU1, "263-p1.p1", 0x000000, 0x100000, 0x27e4def3),
   LOAD_SW16( CPU1, "263-p2.sp2", 0x100000, 0x400000, 0xfdb7aed8),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "263-m1.m1", 0x00000, 0x20000, 0x46ac8228),
-  FILL(0x20000,0x60000,0,AUDIOCRYPT),
+  FILL( AUDIOCRYPT, 0x20000, 0x60000, 0),
 	/* Encrypted */
   LOAD( SMP1, "263-v1.v1", 0x000000, 0x800000, 0x01e9b9cd),
   LOAD( SMP1, "263-v2.v2", 0x800000, 0x800000, 0x4ab2bf81),
@@ -2998,10 +2998,10 @@ static struct ROM_INFO rom_rotd[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
   LOAD_SW16( CPU1, "264-p1.p1", 0x000000, 0x800000, 0xb8cc969d),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "264-m1.m1", 0x00000, 0x20000, 0x4dbd7b43),
-  FILL(0x20000,0x60000,0,AUDIOCRYPT),
+  FILL( AUDIOCRYPT, 0x20000, 0x60000, 0),
 	/* Encrypted */
   LOAD( SMP1, "264-v1.v1", 0x000000, 0x800000, 0xfa005812),
   LOAD( SMP1, "264-v2.v2", 0x800000, 0x800000, 0xc3dc8bf0),
@@ -3024,10 +3024,10 @@ static struct ROM_INFO rom_kof2002[] = /* Encrypted Set clone of neogeo */
   LOAD_SW16( CPU1, "265-p1.p1", 0x000000, 0x100000, 0x9ede7323),
   LOAD_SW16( CPU1, "265-p2.sp2", 0x100000, 0x400000, 0x327266b8),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "265-m1.m1", 0x00000, 0x20000, 0x85aaa632),
-  FILL( 0x20000, 0x60000, 0, AUDIOCRYPT ),
+  FILL( AUDIOCRYPT , 0x20000, 0x60000, 0),
 	/* Encrypted */
   LOAD( SMP1, "265-v1.v1", 0x000000, 0x800000, 0x15e8f3f5),
   LOAD( SMP1, "265-v2.v2", 0x800000, 0x800000, 0xda41d6f9),
@@ -3050,10 +3050,10 @@ static struct ROM_INFO rom_matrim[] = /* Encrypted Set clone of neogeo */
   LOAD_SW16( CPU1, "266-p1.p1", 0x000000, 0x100000, 0x5d4c2dc7),
   LOAD_SW16( CPU1, "266-p2.sp2", 0x100000, 0x400000, 0xa14b1906),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "266-m1.m1", 0x00000, 0x20000, 0x456c3e6c),
-  FILL( 0x020000, 0x60000, 0, AUDIOCRYPT ),
+  FILL( AUDIOCRYPT , 0x020000, 0x60000, 0),
 	/* Encrypted */
   LOAD( SMP1, "266-v1.v1", 0x000000, 0x800000, 0xa4f83690),
   LOAD( SMP1, "266-v2.v2", 0x800000, 0x800000, 0xd0f69eda),
@@ -3075,7 +3075,7 @@ static struct ROM_INFO rom_pnyaa[] = /* Encrypted Set */ /* MVS ONLY RELEASE */
 {
   LOAD_SW16( CPU1, "267-p1.p1", 0x000000, 0x100000, 0x112fe2c0),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "267-m1.m1", 0x00000, 0x80000, 0xc7853ccd),
 	/* Encrypted */
@@ -3093,7 +3093,7 @@ static struct ROM_INFO rom_mslug5[] = /* Encrypted Set clone of neogeo */
   { "268-p1cr.p1", 0x400000, 0xd0466792, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
   { "268-p2cr.p2", 0x400000, 0xfbf6b61e, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "268-m1.m1", 0x00000, 0x80000, 0x4a5a6e0e),
 	/* Encrypted */
@@ -3127,7 +3127,7 @@ static struct ROM_INFO rom_svc[] = /* Encrypted Set clone of neogeo */
   { "269-p1.p1", 0x400000, 0x38e2005e, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
   { "269-p2.p2", 0x400000, 0x6d13797c, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "269-m1.m1", 0x00000, 0x80000, 0xf6819d00),
 	/* Encrypted */
@@ -3152,7 +3152,7 @@ static struct ROM_INFO rom_samsho5[] = /* Encrypted Set clone of neogeo */
   LOAD_SW16( CPU1, "270-p1.p1", 0x000000, 0x400000, 0x4a2a09e6),
   LOAD_SW16( CPU1, "270-p2.sp2", 0x400000, 0x400000, 0xe0c74c85),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "270-m1.m1", 0x00000, 0x80000, 0x49c9901a),
 	/* Encrypted */
@@ -3187,7 +3187,7 @@ static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clon
   { "271-p2c.p2", 0x400000, 0xfd568da9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
   LOAD_SW16( CPU1, "271-p3c.p3", 0x800000, 0x100000, 0xaec5b4a9),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "271-m1c.m1", 0x00000, 0x80000, 0xf5515629),
 	/* Encrypted */
@@ -3213,7 +3213,7 @@ static struct ROM_INFO rom_kof2003h[] = /* Encrypted Code + Sound + GFX Roms clo
   { "271-p2k.p2", 0x400000, 0xfb3f79d9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
   LOAD_SW16( CPU1, "271-p3k.p3", 0x800000, 0x100000, 0x232702ad),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x80000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "271-m1k.m1", 0x00000, 0x80000, 0x48d9affe),
 	/* Encrypted */
@@ -3235,7 +3235,7 @@ static struct ROM_INFO rom_samsh5sp[] = /* Encrypted Set clone of neogeo */
   LOAD_SW16( CPU1, "272-p1.p1", 0x000000, 0x400000, 0xfb7a6bba),
   LOAD_SW16( CPU1, "272-p2.sp2", 0x400000, 0x400000, 0x63492ea6),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( 0x000000, 0x20000, 0, FIXED ),
+  FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
   LOAD( AUDIOCRYPT, "272-m1.m1", 0x00000, 0x80000, 0xadeebf40),
 	/* Encrypted */

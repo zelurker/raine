@@ -512,8 +512,9 @@ static struct ROM_INFO rom_macross[] =
 
 static struct ROM_INFO rom_blkheart[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "blkhrt.7",  0x5bd248c0 , "blkhrt.6",  0x6449e50d ),
+
+  LOAD8_16( ROM1, "blkhrt.7", 0x00000, 0x20000, 0x5bd248c0 ),
+  LOAD8_16( ROM1, "blkhrt.6", 0x00000+1, 0x20000, 0x6449e50d ),
   LOAD( ROM2, "4.bin", 0x00000, 0x10000, 0x7cefa295 ),
   { "3.bin", 0x020000, 0xa1ab3a16 , 0, 0, 0 }, // REGION_GFX1, 0x000000, 0 },
   { "90068-5.bin", 0x100000, 0xa1ab4f24 , 0, 0, 0 }, // REGION_GFX2, 0x000000, 0 },
@@ -525,8 +526,9 @@ static struct ROM_INFO rom_blkheart[] =
 
 static struct ROM_INFO rom_blkhearj[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "7.bin",  0xe0a5c667 , "6.bin",  0x7cce45e8 ),
+
+  LOAD8_16( ROM1, "7.bin", 0x00000, 0x20000, 0xe0a5c667 ),
+  LOAD8_16( ROM1, "6.bin", 0x00000+1, 0x20000, 0x7cce45e8 ),
   LOAD( ROM2, "4.bin", 0x00000, 0x10000, 0x7cefa295 ),
   { "3.bin", 0x020000, 0xa1ab3a16 , 0, 0, 0 }, // REGION_GFX1, 0x000000, 0 },
   { "90068-5.bin", 0x100000, 0xa1ab4f24 , 0, 0, 0 }, // REGION_GFX2, 0x000000, 0 },
@@ -687,8 +689,9 @@ static struct ROM_INFO rom_hachamf[] =
    LOAD( ROM2, "hmf_01.rom", 0, 0x00010000, 0x9e6f48fc),
    {   "hmf_04.rom", 0x00080000, 0x05a624e3, 0, 0, 0, },
    {   "hmf_05.rom", 0x00020000, 0x29fb04a2, 0, 0, 0, },
-  LOAD8_16( CPU1,  0,  0x00020000,
-              "hmf_07.rom",  0x9d847c31,   "hmf_06.rom",  0xde6408a0),
+
+  LOAD8_16( CPU1, "hmf_07.rom", 0, 0x00020000, 0x9d847c31),
+  LOAD8_16( CPU1, "hmf_06.rom", 0+1, 0x00020000, 0xde6408a0),
    {   "hmf_08.rom", 0x00100000, 0x7fd0f556, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -759,8 +762,9 @@ static struct DSW_INFO dsw_hachamf[] =
 
 static struct ROM_INFO rom_mustang[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "2.bin",  0xbd9f7c89, "3.bin",  0x0eec36a5),
+
+  LOAD8_16( ROM1, "2.bin", 0x00000, 0x20000, 0xbd9f7c89),
+  LOAD8_16( ROM1, "3.bin", 0x00000+1, 0x20000, 0x0eec36a5),
   LOAD( ROM2, "90058-7", 0x00000, 0x10000, 0x920a93c8),
   { "90058-1", 0x20000, 0x81ccfcad, 0 /* REGION_GFX1 */, 0x00000, 0 },
   { "90058-4", 0x80000, 0xa07a2002, 0 /* REGION_GFX2 */, 0x000000, 0 },
@@ -907,8 +911,9 @@ static struct ROM_INFO rom_strahl[] =
 
 static struct ROM_INFO rom_acrobatm[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "02_ic100.bin",  0x3fe487f4 , "01_ic101.bin",  0x17175753 ),
+
+  LOAD8_16( ROM1, "02_ic100.bin", 0x00000, 0x20000, 0x3fe487f4 ),
+  LOAD8_16( ROM1, "01_ic101.bin", 0x00000+1, 0x20000, 0x17175753 ),
   { "03_ic79.bin", 0x10000, 0xd86c186e , 0 /* REGION_GFX1 */, 0x000000, 0 },
 
   { "09_ic8.bin",  0x100000,0x7c12afed, 0 /* REGION_GFX2 */, 0x100000, 0 },
@@ -982,8 +987,9 @@ static struct DSW_INFO dsw_strahl[] =
 static struct ROM_INFO rom_tforceh[] =
 {
    {            "1", 0x00010000, 0xc7402e4a, 0, 0, 0, },
-  LOAD8_16( CPU1,  0,  0x00020000,
-                       "2",  0x78923aaa,            "3",  0x99cea259),
+
+  LOAD8_16( CPU1, "2", 0, 0x00020000, 0x78923aaa),
+  LOAD8_16( CPU1, "3", 0+1, 0x00020000, 0x99cea259),
    LOAD( CPU2, "12", 0, 0x00010000, 0xb959f837),
    {      "89050-4", 0x00080000, 0x64d7d687, 0, 0, 0, },
    LOAD( SOUND1, "89050-8", 0x20000, 0x00080000, 0x11ee4c39),
@@ -1003,8 +1009,9 @@ static struct DSW_INFO dsw_tforceh[] =
 
 static struct ROM_INFO rom_tdragon[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "thund.8",  0xedd02831, "thund.7",  0x52192fe5),
+
+  LOAD8_16( ROM1, "thund.8", 0x00000, 0x20000, 0xedd02831),
+  LOAD8_16( ROM1, "thund.7", 0x00000+1, 0x20000, 0x52192fe5),
   { "thund.6", 0x20000, 0xfe365920, 0 /* REGION_GFX1 */, 0x000000, 0 },
   { "thund.5", 0x100000, 0xd0bde826, 0 /* REGION_GFX2 */, 0x000000, 0 },
   { "thund.4", 0x100000, 0x3eedc2fe, 0 /* REGION_GFX3 */, 0x000000, 0 },
@@ -1018,8 +1025,9 @@ static struct ROM_INFO rom_tdragon[] =
 
 static struct ROM_INFO rom_tdragonb[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "td_04.bin",  0xe8a62d3e, "td_03.bin",  0x2fa1aa04),
+
+  LOAD8_16( ROM1, "td_04.bin", 0x00000, 0x20000, 0xe8a62d3e),
+  LOAD8_16( ROM1, "td_03.bin", 0x00000+1, 0x20000, 0x2fa1aa04),
 /* Ignored : 	ROM_COPY( REGION_CPU2, 0, 0x018000, 0x08000 ) */
   LOAD( ROM2, "td_02.bin", 0, 0x10000, 0x99ee7505),
   { "td_08.bin", 0x20000, 0x5144dc69, 0 /* REGION_GFX1 */, 		0x000000, 0 },
@@ -1059,16 +1067,18 @@ static struct ROM_INFO rom_tdragon2[] =
 
 static struct ROM_INFO rom_ssmissin[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "ssm15.166",  0xaff15927, "ssm14.165",  0xeda61b74  ),
+
+  LOAD8_16( ROM1, "ssm15.166", 0x00000, 0x20000, 0xaff15927),
+  LOAD8_16( ROM1, "ssm14.165", 0x00000+1, 0x20000, 0xeda61b74  ),
 
   { "ssm16.172", 0x20000, 0x5cf6eb1f , 0 /* REGION_GFX1 */, 0x000000, 0 },
 
   LOAD( GFX2, "ssm17.147", 0x000000, 0x080000, 0xc9c28455 ),
   LOAD( GFX2, "ssm18.148", 0x080000, 0x080000, 0xebfdaad6 ),
 
-  LOAD8_16( GFX3, 0x000000,  0x080000,
-            "ssm19.33",  0xb1943657, "ssm20.34",  0xa0c16c4d ),
+
+  LOAD8_16( GFX3, "ssm19.33", 0x000000, 0x080000, 0xb1943657),
+  LOAD8_16( GFX3, "ssm20.34", 0x000000+1, 0x080000, 0xa0c16c4d ),
 
   LOAD( ROM2, "ssm11.188", 0x00000, 0x08000, 0x8be6dce3 ),
   LOAD( SMP1, "ssm13.190", 0x00000, 0x20000, 0x618f66f0 ),

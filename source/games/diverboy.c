@@ -28,18 +28,22 @@ static UINT8 *RAM_UNKNOWN2;
 
 static struct ROM_INFO rom_diverboy[] =
 {
-  LOAD8_16(  ROM1,  0x000000,     0x020000,
-            "db_01.bin",  0x6aa11366, "db_02.bin",  0x45f8a673),
+
+  LOAD8_16( ROM1, "db_01.bin", 0x000000, 0x020000, 0x6aa11366),
+  LOAD8_16( ROM1, "db_02.bin", 0x000000+1, 0x020000, 0x45f8a673),
 	LOAD( ROM2, "db_05.bin", 0x000000, 0x010000, 0xffeb49ec),
 	LOAD( SMP1, "db_03.bin", 0x000000, 0x080000, 0x50457505), // note, load at 0x040000, banks get memcpy'd to 0
 	LOAD( SMP1, "db_04.bin", 0x0a0000, 0x020000, 0x01b81da0),
 	LOAD( SMP1, "db_04.bin", 0x0e0000, 0x020000, 0x01b81da0),
-  LOAD8_16(  GFX1,  0x000000,     0x080000,
-            "db_08.bin",  0x7bb96220, "db_09.bin",  0x12b15476),
-  LOAD8_16(  GFX2,  0x000000,     0x020000,
-            "db_07.bin",  0x18485741, "db_10.bin",  0xc381d1cc),
-  LOAD8_16(  GFX2,  0x040000,     0x020000,
-            "db_06.bin",  0x21b4e352, "db_11.bin",  0x41d29c81),
+
+  LOAD8_16( GFX1, "db_08.bin", 0x000000, 0x080000, 0x7bb96220),
+  LOAD8_16( GFX1, "db_09.bin", 0x000000+1, 0x080000, 0x12b15476),
+
+  LOAD8_16( GFX2, "db_07.bin", 0x000000, 0x020000, 0x18485741),
+  LOAD8_16( GFX2, "db_10.bin", 0x000000+1, 0x020000, 0xc381d1cc),
+
+  LOAD8_16( GFX2, "db_06.bin", 0x040000, 0x020000, 0x21b4e352),
+  LOAD8_16( GFX2, "db_11.bin", 0x040000+1, 0x020000, 0x41d29c81),
 	{ NULL, 0, 0, 0, 0, 0 }
 };
 

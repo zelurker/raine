@@ -26,7 +26,7 @@ static struct ROM_INFO rom_opwolf[] =
   LOAD_16_8( CPU1, "b20-20.29", 0x20001, 0x10000, 0xd244431a),
   LOAD( ROM2, "b20-07.10", 0x00000, 0x10000, 0x45c7ace3),
   LOAD( CPU3, "opwlfb.09", 0x00000, 0x08000, 0xab27a3dd),
-  FILL(0x8000,0x8000,0,CPU3),
+  FILL( CPU3, 0x8000, 0x8000, 0),
   LOAD( GFX1, "b20-13.13", 0x00000, 0x80000, 0xf6acdab1), /* SCR tiles (8 x 8) */
   LOAD( GFX2, "b20-14.72", 0x00000, 0x80000, 0x89f889e5), /* Sprites (16 x 16) */
   LOAD( SOUND1, "b20-08.21", 0x00000, 0x80000, 0xf3e19c64),
@@ -162,7 +162,7 @@ static struct ROM_INFO rom_opwolfb[] =
   LOAD_16_8( CPU1, "opwlfb.11", 0x20001, 0x10000, 0x342e318d),
   LOAD( ROM2, "opwlfb.30", 0x00000, 0x08000, 0x0669b94c),
   LOAD( CPU3, "opwlfb.09", 0x00000, 0x08000, 0xab27a3dd),
-  FILL(0x8000,0x8000,0,CPU3),
+  FILL( CPU3, 0x8000, 0x8000, 0),
   LOAD_16_8( GFX1, "opwlfb.08", 0x00000, 0x10000, 0x134d294e), /* SCR tiles (8 x 8) */
   LOAD_16_8( GFX1, "opwlfb.06", 0x20000, 0x10000, 0x317d0e66), /* SCR tiles (8 x 8) */
   LOAD_16_8( GFX1, "opwlfb.07", 0x40000, 0x10000, 0xe1c4095e), /* SCR tiles (8 x 8) */

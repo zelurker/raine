@@ -30,7 +30,8 @@ static struct ROM_INFO rom_arabianm[] =
   { "d29-25.ic34", 0x40000, 0xb9b652ed, REGION_CPU1, 0x000003, LOAD_8_32 },
   { "d29-01.ic17", 0x200000, 0x545ac4b3, REGION_SOUND1, 0x000000, LOAD_BE }, // C8 C9 CA CB
   { "d29-02.ic18", 0x100000, 0xed894fe1, REGION_SOUND1, 0x600000, LOAD_BE }, // -std-
-  LOAD8_16(  ROM2,  0x000000,  0x00020000, "d29-18.rom",  0xd97780df,   "d29-19.rom",  0xb1ad365c),
+  LOAD8_16( ROM2, "d29-18.rom", 0x000000, 0x00020000, 0xd97780df),
+  LOAD8_16( ROM2, "d29-19.rom", 0x000000+1, 0x00020000, 0xb1ad365c),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

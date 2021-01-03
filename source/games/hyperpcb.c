@@ -106,8 +106,9 @@ static int romset;
 
 static struct ROM_INFO rom_hyperpac[] =
 {
-  LOAD8_16(  ROM1,  0x00000,  0x20000,
-            "hyperpac.i12",  0x9c7d85b8, "hyperpac.h12",  0x2cf0531a ),
+
+  LOAD8_16( ROM1, "hyperpac.i12", 0x00000, 0x20000, 0x9c7d85b8),
+  LOAD8_16( ROM1, "hyperpac.h12", 0x00000+1, 0x20000, 0x2cf0531a ),
   LOAD( ROM2, "hyperpac.u1", 0x00000, 0x10000 , 0x03faf88e ),
   LOAD( SMP1, "hyperpac.j15", 0x00000, 0x40000, 0xfb9f468d ),
   LOAD( GFX1, "hyperpac.a4", 0x000000, 0x40000, 0xbd8673da ),
@@ -118,8 +119,9 @@ static struct ROM_INFO rom_hyperpac[] =
 
 static struct ROM_INFO rom_twinkle[] =
 {
-  LOAD8_16(  ROM1,  0x00000,  0x20000,
-            "ui12.bin",  0x5af73684, "uh12.bin",  0xa99626fe  ),
+
+  LOAD8_16( ROM1, "ui12.bin", 0x00000, 0x20000, 0x5af73684),
+  LOAD8_16( ROM1, "uh12.bin", 0x00000+1, 0x20000, 0xa99626fe  ),
   LOAD( ROM2, "u1.bin", 0x00000, 0x10000, 0xe40481da ),
   LOAD( SMP1, "uj15.bin", 0x00000, 0x40000, 0x0a534b37 ),
   LOAD( GFX1, "ua4.bin", 0x000000, 0x80000, 0x6b64bb09 ),
@@ -129,8 +131,9 @@ static struct ROM_INFO rom_twinkle[] =
 
 static struct ROM_INFO rom_3in1semi[] =
 {
-  LOAD8_16( ROM1,  0x00000,           0x40000,
-            "u74",  0x266862c4, "u52",  0xb0e4a0f7 ),
+
+  LOAD8_16( ROM1, "u74", 0x00000, 0x40000, 0x266862c4),
+  LOAD8_16( ROM1, "u52", 0x00000+1, 0x40000, 0xb0e4a0f7 ),
   LOAD( ROM2, "u35", 0x00000, 0x10000, 0xe40481da ),
   LOAD( SMP1, "u14", 0x00000, 0x40000, 0xc83c11be ),
   LOAD( GFX1, "u75", 0x000000, 0x80000, 0xb66a0db6 ),
@@ -316,8 +319,9 @@ static struct DSW_INFO dsw_pzlbreak[] =
 
 static struct ROM_INFO rom_cookbib2[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x40000,
-            "cookbib2.01",  0x65aafde2, "cookbib2.02",  0xb2909460 ),
+
+  LOAD8_16( ROM1, "cookbib2.01", 0x00000, 0x40000, 0x65aafde2),
+  LOAD8_16( ROM1, "cookbib2.02", 0x00000+1, 0x40000, 0xb2909460 ),
   LOAD( ROM2, "cookbib2.07", 0x00000, 0x10000, 0xf59f1c9a ),
   LOAD( SMP1, "cookbib2.06", 0x00000, 0x20000, 0x5e6f76b8 ),
   LOAD( GFX1, "cookbib2.05", 0x000000, 0x80000, 0x89fb38ce ),
@@ -329,8 +333,9 @@ static struct ROM_INFO rom_cookbib2[] =
 
 static struct ROM_INFO rom_moremore[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x40000,
-            "u74.bin",  0x2acdcb88,"u52.bin",  0xcea4b246   ),
+
+  LOAD8_16( ROM1, "u74.bin", 0x00000, 0x40000, 0x2acdcb88),
+  LOAD8_16( ROM1, "u52.bin", 0x00000+1, 0x40000, 0xcea4b246   ),
   LOAD( ROM2, "u35.bin", 0x00000, 0x10000, 0x92dc95fc ),
   LOAD( SMP1, "u14.bin", 0x00000, 0x40000, 0x90580088 ),
   LOAD( GFX1, "u75.bin", 0x000000, 0x80000, 0xd671815c ),
@@ -343,8 +348,9 @@ static struct ROM_INFO rom_moremore[] =
 
 static struct ROM_INFO rom_moremorp[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x40000,
-            "mmp_u74.bin",  0x7c6fede5, "mmp_u52.bin",  0x66baf9b2 ),
+
+  LOAD8_16( ROM1, "mmp_u74.bin", 0x00000, 0x40000, 0x7c6fede5),
+  LOAD8_16( ROM1, "mmp_u52.bin", 0x00000+1, 0x40000, 0x66baf9b2 ),
   LOAD( ROM2, "mmp_u35.bin", 0x00000, 0x10000, 0x4d098cad ),
   LOAD( SMP1, "mmp_u14.bin", 0x00000, 0x40000, 0x211a2566 ),
   LOAD( GFX1, "mmp_u75.bin", 0x000000, 0x80000, 0xaf9e824e ),
@@ -357,8 +363,9 @@ static struct ROM_INFO rom_moremorp[] =
 
 static struct ROM_INFO rom_finalttr[] =
 {
-  LOAD8_16( ROM1,  0x00000, 0x20000,
-            "10.7o",  0xeecc83e5, "9.5o",  0x58d3640e  ),
+
+  LOAD8_16( ROM1, "10.7o", 0x00000, 0x20000, 0xeecc83e5),
+  LOAD8_16( ROM1, "9.5o", 0x00000+1, 0x20000, 0x58d3640e  ),
   LOAD( ROM2, "12.5r", 0x00000, 0x10000, 0x4bc21361 ),
   LOAD( SMP1, "11.7p", 0x00000, 0x20000, 0x2e331022 ),
   LOAD( GFX1, "5.1d", 0x000000, 0x40000, 0x64a450f3 ),
@@ -371,15 +378,17 @@ static struct ROM_INFO rom_finalttr[] =
 
 static struct ROM_INFO rom_hyperpacb[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "hpacui12.bin",  0x23dc00d1, "hpacuh12.bin",  0x633ab2c6 ),
+
+  LOAD8_16( ROM1, "hpacui12.bin", 0x00000, 0x20000, 0x23dc00d1),
+  LOAD8_16( ROM1, "hpacuh12.bin", 0x00000+1, 0x20000, 0x633ab2c6 ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_snowbros[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-                 "sn6.bin",  0x4899ddcf,      "sn5.bin",  0xad310d3f),
+
+  LOAD8_16( ROM1, "sn6.bin", 0x000000, 0x00020000, 0x4899ddcf),
+  LOAD8_16( ROM1, "sn5.bin", 0x000000+1, 0x00020000, 0xad310d3f),
    LOAD( ROM2, "snowbros.4", 0x000000, 0x00008000, 0xe6eab4e4),
    LOAD( GFX1, "sbros-1.41", 0x000000, 0x00080000, 0x16f06b3a),
 
@@ -393,31 +402,36 @@ static struct ROM_INFO rom_snowbros[] =
 
 static struct ROM_INFO rom_snowbroa[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-             "snowbros.3a",  0x10cb37e1,  "snowbros.2a",  0xab91cc1e),
+
+  LOAD8_16( ROM1, "snowbros.3a", 0x000000, 0x00020000, 0x10cb37e1),
+  LOAD8_16( ROM1, "snowbros.2a", 0x000000+1, 0x00020000, 0xab91cc1e),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
 static struct ROM_INFO rom_snowbroj[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-              "snowbros.3",  0x3f504f9e,   "snowbros.2",  0x854b02bc),
+
+  LOAD8_16( ROM1, "snowbros.3", 0x000000, 0x00020000, 0x3f504f9e),
+  LOAD8_16( ROM1, "snowbros.2", 0x000000+1, 0x00020000, 0x854b02bc),
    {           NULL,          0,          0,           0,        0,           0, },
 };
 
 static struct ROM_INFO rom_snowbrob[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-                "sbros3-a",  0x301627d6,     "sbros2-a",  0xf6689f41),
+
+  LOAD8_16( ROM1, "sbros3-a", 0x000000, 0x00020000, 0x301627d6),
+  LOAD8_16( ROM1, "sbros2-a", 0x000000+1, 0x00020000, 0xf6689f41),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_wintbob[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00010000,
-                "wb03.bin",  0xdf56e168,     "wb01.bin",  0x05722f17),
-  LOAD8_16( ROM1,  0x020000,  0x00010000,
-                "wb04.bin",  0x53be758d,     "wb02.bin",  0xfc8e292e),
+
+  LOAD8_16( ROM1, "wb03.bin", 0x000000, 0x00010000, 0xdf56e168),
+  LOAD8_16( ROM1, "wb01.bin", 0x000000+1, 0x00010000, 0x05722f17),
+
+  LOAD8_16( ROM1, "wb04.bin", 0x020000, 0x00010000, 0x53be758d),
+  LOAD8_16( ROM1, "wb02.bin", 0x020000+1, 0x00010000, 0xfc8e292e),
    LOAD( ROM2, "wb05.bin", 0x000000, 0x00010000, 0x53fe59df),
    LOAD_16_8( GFX1, "wb13.bin", 0x000000, 0x00010000, 0x426921de),
    LOAD_16_8( GFX1, "wb06.bin", 0x000001, 0x00010000, 0x68204937),

@@ -137,10 +137,12 @@ static struct ROM_INFO rom_contcrcu[] =
   LOAD( SMP1, "b33-10.17", 0x80000, 0x80000, 0xe9ce03ab),
   LOAD( SMP2, "b33-08.19", 0x00000, 0x80000, 0xcaa1c4c8),
    {  "b33_30", 0x00010000, 0xd8746234, 0, 0, 0, },
-  LOAD8_16(  ROM1,  0x00000,  0x20000,
-            "ic25",  0xf5c92e42, "ic26",  0xe7c1d1fa),
-  LOAD8_16(  CPU1,  0x40000,  0x20000,
-            "ic35",  0x16522f2d, "ic36",  0xd6741e33),
+
+  LOAD8_16( ROM1, "ic25", 0x00000, 0x20000, 0xf5c92e42),
+  LOAD8_16( ROM1, "ic26", 0x00000+1, 0x20000, 0xe7c1d1fa),
+
+  LOAD8_16( CPU1, "ic35", 0x40000, 0x20000, 0x16522f2d),
+  LOAD8_16( CPU1, "ic36", 0x40000+1, 0x20000, 0xd6741e33),
    {  "b14-30", 0x00010000, 0xdccb0c7f, 0, 0, 0, },
    {       "b14-31", 0x00002000, 0x5c6b013d, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -163,10 +165,12 @@ static struct ROM_INFO rom_contcirc[] =
   LOAD( SMP1, "b33-10.17", 0x80000, 0x80000, 0xe9ce03ab),
   LOAD( SMP2, "b33-08.19", 0x00000, 0x80000, 0xcaa1c4c8),
   { "b33-30.11", 0x10000, 0xd8746234, 0, 0, 0 },
-  LOAD8_16(  ROM1,  0x00000,  0x20000,
-            "ic25",  0xf5c92e42, "ic26",  0xe7c1d1fa),
-  LOAD8_16(  ROM1,  0x40000,  0x00020000,
-             "ic35",  0x16522f2d,  "cc_36.bin",  0xa1732ea5),
+
+  LOAD8_16( ROM1, "ic25", 0x00000, 0x20000, 0xf5c92e42),
+  LOAD8_16( ROM1, "ic26", 0x00000+1, 0x20000, 0xe7c1d1fa),
+
+  LOAD8_16( ROM1, "ic35", 0x40000, 0x00020000, 0x16522f2d),
+  LOAD8_16( ROM1, "cc_36.bin", 0x40000+1, 0x00020000, 0xa1732ea5),
    {  "b14-30", 0x00010000, 0xdccb0c7f, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };

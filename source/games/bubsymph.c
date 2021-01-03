@@ -31,8 +31,9 @@ static struct ROM_INFO rom_bublbob2[] =
   { "d90-06", 0x100000, 0x166a72b8, REGION_GFX2 , 0x000000, LOAD_MASK8 },
   { "d90-04", 0x200000, 0xfeee5fda, REGION_SMP1, 0x000000, LOAD_BE }, // C8 C9 CA CB
   { "d90-05", 0x200000, 0xc192331f, REGION_SMP1, 0x400000, LOAD_BE }, // CC CD -std-
-  LOAD8_16( ROM2,  0x000000,  0x00040000,
-                  "d90.13",  0x6762bd90,       "d90.14",  0x8e33357e),
+
+  LOAD8_16( ROM2, "d90.13", 0x000000, 0x00040000, 0x6762bd90),
+  LOAD8_16( ROM2, "d90.14", 0x000000+1, 0x00040000, 0x8e33357e),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

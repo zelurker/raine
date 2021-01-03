@@ -31,8 +31,9 @@ static struct ROM_INFO rom_pbobble3[] =
   { "e29-11.rom", 0x80000, 0xe54ada97, REGION_ROM1, 0x000001, LOAD_8_32 },
   { "e29-10.rom", 0x80000, 0x1502a122, REGION_ROM1, 0x000002, LOAD_8_32 },
   { "e29-16.rom", 0x80000, 0xaac293da, REGION_ROM1, 0x000003, LOAD_8_32 },
-  LOAD8_16( ROM2,  0x000000,  0x00040000,
-              "pb3_13.rom",  0x1ef551ef,   "pb3_14.rom",  0x7ee7e688),
+
+  LOAD8_16( ROM2, "pb3_13.rom", 0x000000, 0x00040000, 0x1ef551ef),
+  LOAD8_16( ROM2, "pb3_14.rom", 0x000000+1, 0x00040000, 0x7ee7e688),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

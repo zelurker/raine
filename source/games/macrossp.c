@@ -55,8 +55,9 @@ static struct ROM_INFO rom_macrossp[] =
   { "bp964a-c.u3", 0x080000, 0xfb895a7b , REGION_ROM1, 0x000001, LOAD_8_32 },
   { "bp964a-c.u4", 0x080000, 0x8c8b966c , REGION_ROM1, 0x000000, LOAD_8_32 },
 
-  LOAD8_16( ROM2,  0x000000,  0x080000,
-            "bp964a.u21",  0x87bdd2fc, "bp964a.u20",  0x12960cbb ),
+
+  LOAD8_16( ROM2, "bp964a.u21", 0x000000, 0x080000, 0x87bdd2fc),
+  LOAD8_16( ROM2, "bp964a.u20", 0x000000+1, 0x080000, 0x12960cbb ),
 
   /* Bios : unknown use */
   LOAD( USER1, "bp964a.u49", 0x000000, 0x020000, 0xad203f76 ),

@@ -36,7 +36,7 @@ static struct ROM_INFO rom_syvalion[] =
   LOAD_16_8( GFX1, "b51-02.bin", 0x300001, 0x20000, 0x906ba440),
   LOAD_16_8( GFX1, "b51-05.bin", 0x340000, 0x20000, 0x47976ae9),
   LOAD_16_8( GFX1, "b51-01.bin", 0x340001, 0x20000, 0x8dab004a),
-  FILL(0x380000, 0x80000,0,GFX1),
+  FILL( GFX1, 0x380000, 0x80000, 0),
   LOAD( SOUND2, "b51-18.bin", 0x00000, 0x80000, 0x8b23ac83), // deltat
   LOAD( SOUND1, "b51-17.bin", 0x00000, 0x80000, 0xd85096aa), // adpcm samples
   { NULL, 0, 0, 0, 0, 0 }
@@ -55,7 +55,7 @@ static struct ROM_INFO rom_tetristh[] =
   LOAD_16_8( GFX1, "c26-06.ic63", 0x200001, 0x20000, 0xdeae0394),
   LOAD_16_8( GFX1, "c26-01.ic48", 0x300000, 0x20000, 0x7efc7311),
   LOAD_16_8( GFX1, "c26-05.ic62", 0x300001, 0x20000, 0x12718d97),
-  FILL(0x340000, 0xc0000,0, GFX1),
+  FILL( GFX1, 0x340000, 0xc0000, 0),
   LOAD( SMP2, "b56-09.bin", 0x00000, 0x80000, 0x7fd9ee68),
   LOAD( SMP1, "b56-10.bin", 0x00000, 0x80000, 0xde1bce59),
   // LOAD( USER1, "b56-18.bin", 0x00000, 0x02000, 0xc88f0bbe),

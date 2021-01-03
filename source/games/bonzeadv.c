@@ -54,8 +54,10 @@ extern struct SOUND_INFO sound_mcatadv[];
 
 static struct ROM_INFO rom_bonzeadv[] =
 {
-  LOAD8_16( CPU1, 0x00000, 0x10000,"b41-09-1.17", 0xaf821fbc,"b41-11-1.26", 0x823fff00),
-  LOAD8_16( CPU1, 0x20000, 0x10000,"b41-10.16", 0x4ca94d77,"b41-15.25",0xaed7a0d0 ),
+  LOAD8_16( CPU1, "b41-09-1.17", 0x00000, 0x10000, 0xaf821fbc),
+  LOAD8_16( CPU1, "b41-11-1.26", 0x00000+1, 0x10000, 0x823fff00),
+  LOAD8_16( CPU1, "b41-10.16", 0x20000, 0x10000, 0x4ca94d77),
+  LOAD8_16( CPU1, "b41-15.25", 0x20000+1, 0x10000, 0xaed7a0d0 ),
   // Level data :
   LOAD( CPU1, "b41-01.15", 0x40000, 0x80000, 0x5d072fa4),
 

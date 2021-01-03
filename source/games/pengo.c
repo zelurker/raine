@@ -1196,7 +1196,7 @@ static struct ROM_INFO rom_mspacman[] =
   LOAD( ROM1, "u5", 0x8000, 0x0800, 0xf45fbbcd),
   LOAD( ROM1, "u6", 0x9000, 0x1000, 0xa90e7000),
   LOAD( ROM1, "u7", 0xb000, 0x1000, 0xc82cd714),
-  FILL(0xc000, 0x3000,0xbf, ROM1),
+  FILL( ROM1, 0xc000, 0x3000, 0xbf),
   LOAD( GFX1, "5e", 0x0000, 0x1000, 0x5c281d01),
   LOAD( GFX2, "5f", 0x0000, 0x1000, 0x615af909),
   { NULL, 0, 0, 0, 0, 0 }
@@ -1210,7 +1210,7 @@ static struct ROM_INFO rom_mspacmab[] =
   LOAD( ROM1, "boot4", 0x3000, 0x1000, 0x165a9dd8),
   LOAD( ROM1, "boot5", 0x8000, 0x1000, 0x8c3e6de6),
   LOAD( ROM1, "boot6", 0x9000, 0x1000, 0x368cb165),
-  FILL(0xa000, 0x5000,0xbf, ROM1),
+  FILL( ROM1, 0xa000, 0x5000, 0xbf),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1223,7 +1223,7 @@ static struct ROM_INFO rom_mspac6m[] =
   LOAD( ROM1, "52.cpu", 0x8000, 0x1000, 0x48453707),
   LOAD( ROM1, "62.cpu", 0x9000, 0x1000, 0x2e961bc4),
 
-  FILL(0xa000,0x5000,0xbf,ROM1),
+  FILL( ROM1, 0xa000, 0x5000, 0xbf),
 
   LOAD( GFX1, "7.cpu", 0x0000, 0x0800, 0x2850148a),
   LOAD( GFX1, "9.cpu", 0x0800, 0x0800, 0x6c3c6ebb),
@@ -1244,7 +1244,7 @@ static struct ROM_INFO rom_mspacpls[] =
   LOAD( ROM1, "boot4", 0x3000, 0x1000, 0x165a9dd8),
   LOAD( ROM1, "mspacatk.5", 0x8000, 0x1000, 0xe6e06954),
   LOAD( ROM1, "mspacatk.6", 0x9000, 0x1000, 0x3b5db308),
-  FILL(0xa000, 0x5000,0xbf, ROM1),
+  FILL( ROM1, 0xa000, 0x5000, 0xbf),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -1938,7 +1938,7 @@ static struct ROM_INFO rom_pacman25[] =
   LOAD( ROM1, "maps3.rom", 0xa000, 0x1000, 0xc626ea9c),
   // maps 18-25
   LOAD( ROM1, "maps4.rom", 0xb000, 0x1000, 0xf5ba954d),
-  FILL(0xc000, 0x3000,0xbf, ROM1),
+  FILL( ROM1, 0xc000, 0x3000, 0xbf),
 
   LOAD( GFX1, "pacman25.5e", 0x0000, 0x1000, 0x11d47ae1),
   { NULL, 0, 0, 0, 0, 0 }

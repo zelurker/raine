@@ -340,8 +340,9 @@ static struct ROM_INFO rom_fixeighb[] =
    {     "tp-026-3", 0x00200000, 0xe5578d98, 0, 0, 0, },
    {     "tp-026-4", 0x00200000, 0xb760cb53, 0, 0, 0, },
    { "1.bin", 0x80000, 0x888f19ac, 0, 0, 0 }, // REGION_SMP1, 0, LOAD_NORMAL },
-  LOAD8_16( ROM1,  0x000000,  0x80000,
-            "3.bin",  0xcc77d4b4, "2.bin",  0xed715488),
+
+  LOAD8_16( ROM1, "3.bin", 0x000000, 0x80000, 0xcc77d4b4),
+  LOAD8_16( ROM1, "2.bin", 0x000000+1, 0x80000, 0xed715488),
    {        "4.bin", 0x00008000, 0xa6aca465, 0, 0, 0, },
    {        "5.bin", 0x00008000, 0x456dd16e, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -847,8 +848,9 @@ static struct DSW_INFO dsw_dogyuun[] =
 
 static struct ROM_INFO rom_whoopee[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "whoopee.1",  0x28882e7e, "whoopee.2",  0x6796f133),
+
+  LOAD8_16( ROM1, "whoopee.1", 0x000000, 0x020000, 0x28882e7e),
+  LOAD8_16( ROM1, "whoopee.2", 0x000000+1, 0x020000, 0x6796f133),
   LOAD( ROM2, "hd647180.025", 0x00000, 0x08000, 0x101c0358),
    {  "tp025-4.bin", 0x00100000, 0xab97f744, 0, 0, 0, },
    {  "tp025-3.bin", 0x00100000, 0x7b16101e, 0, 0, 0, },
@@ -970,8 +972,9 @@ static struct SOUND_INFO sound_whoopee[] =
 
 static struct ROM_INFO rom_pipibibsbl[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "ppbb05.bin",  0x3d51133c, "ppbb06.bin",  0x14c92515 ),
+
+  LOAD8_16( ROM1, "ppbb05.bin", 0x000000, 0x020000, 0x3d51133c),
+  LOAD8_16( ROM1, "ppbb06.bin", 0x000000+1, 0x020000, 0x14c92515 ),
   LOAD( ROM2, "ppbb08.bin", 0x0000, 0x8000, 0x101c0358),
    {   "ppbb01.bin", 0x00080000, 0x0fcae44b, 0, 0, 0, },
    {   "ppbb02.bin", 0x00080000, 0x8bfcdf87, 0, 0, 0, },
@@ -1056,8 +1059,9 @@ static struct DSW_INFO dsw_pipibibsbl[] =
 
 static struct ROM_INFO rom_tekipaki[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x010000,
-            "tp020-1.bin",  0xd8420bd5, "tp020-2.bin",  0x7222de8e),
+
+  LOAD8_16( ROM1, "tp020-1.bin", 0x000000, 0x010000, 0xd8420bd5),
+  LOAD8_16( ROM1, "tp020-2.bin", 0x000000+1, 0x010000, 0x7222de8e),
    { "tp020-3.bin", 0x00080000, 0x2d5e2201, 0, 0, 0, },
    { "tp020-4.bin", 0x00080000, 0x3ebbe41e, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1122,8 +1126,9 @@ static struct DSW_INFO dsw_tekipaki[] =
 
 static struct ROM_INFO rom_ghox[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "tp021-01.u10",  0x9e56ac67, "tp021-02.u11",  0x15cac60f),
+
+  LOAD8_16( ROM1, "tp021-01.u10", 0x000000, 0x020000, 0x9e56ac67),
+  LOAD8_16( ROM1, "tp021-02.u11", 0x000000+1, 0x020000, 0x15cac60f),
    { "tp021-03.u36", 0x00080000, 0xa15d8e9d, 0, 0, 0, },
    { "tp021-04.u37", 0x00080000, 0x26ed1c9a, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
@@ -1337,8 +1342,9 @@ static struct DSW_INFO dsw_grindstm[] =
 #define rom_shippumd rom_kgpe // very special clone
 static struct ROM_INFO rom_kgpe[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "ma02rom1.bin",  0xa678b149, "ma02rom0.bin",  0xf226a212),
+
+  LOAD8_16( ROM1, "ma02rom1.bin", 0x000000, 0x080000, 0xa678b149),
+  LOAD8_16( ROM1, "ma02rom0.bin", 0x000000+1, 0x080000, 0xf226a212),
   LOAD( ROM2, "ma02rom2.bin", 0x00000, 0x10000, 0xdde8a57e),
    { "ma02rom3.bin", 0x00200000, 0x0e797142, 0, 0, 0, },
    { "ma02rom4.bin", 0x00200000, 0x72a6fa53, 0, 0, 0, },
@@ -1499,10 +1505,12 @@ static struct ROM_INFO rom_sstriker[] =
 
 static struct ROM_INFO rom_batrider[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "prg0b.u22",  0x4f3fc729, "prg1b.u23",  0x8e70b492),
-  LOAD8_16( ROM1,  0x100000,  0x080000,
-            "prg2.u21" ,  0xbdaa5fbf, "prg3.u24" ,  0x7aa9f941),
+
+  LOAD8_16( ROM1, "prg0b.u22", 0x000000, 0x080000, 0x4f3fc729),
+  LOAD8_16( ROM1, "prg1b.u23", 0x000000+1, 0x080000, 0x8e70b492),
+
+  LOAD8_16( ROM1, "prg2.u21", 0x100000, 0x080000, 0xbdaa5fbf),
+  LOAD8_16( ROM1, "prg3.u24", 0x100000+1, 0x080000, 0x7aa9f941),
   { "snd.u77", 0x40000, 0x56682696, 0,0,0 },
    {    "rom-1.bin", 0x00400000, 0x0df69ca2, 0, 0, 0, },
    {    "rom-2.bin", 0x00400000, 0x1bfea593, 0, 0, 0, },
@@ -1639,10 +1647,12 @@ static struct SOUND_INFO sound_batrider[] =
 
 static struct ROM_INFO rom_batridra[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "prg0.bin",  0xf93ea27c, "prg1.bin",  0x8ae7f592),
-  LOAD8_16( ROM1,  0x100000,  0x080000,
-            "prg2.u21",  0xbdaa5fbf, "prg3.u24",  0x7aa9f941),
+
+  LOAD8_16( ROM1, "prg0.bin", 0x000000, 0x080000, 0xf93ea27c),
+  LOAD8_16( ROM1, "prg1.bin", 0x000000+1, 0x080000, 0x8ae7f592),
+
+  LOAD8_16( ROM1, "prg2.u21", 0x100000, 0x080000, 0xbdaa5fbf),
+  LOAD8_16( ROM1, "prg3.u24", 0x100000+1, 0x080000, 0x7aa9f941),
    {    "rom-1.bin", 0x00400000, 0x0df69ca2, 0, 0, 0, },
    {    "rom-2.bin", 0x00400000, 0x1bfea593, 0, 0, 0, },
    {    "rom-3.bin", 0x00400000, 0x60167d38, 0, 0, 0, },
@@ -1700,8 +1710,9 @@ static struct SOUND_INFO sound_batsugun[] =
 
 static struct ROM_INFO rom_bgaregga[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "prg0.bin",  0xf80c2fc2, "prg1.bin",  0x2ccfdd1e),
+
+  LOAD8_16( ROM1, "prg0.bin", 0x000000, 0x080000, 0xf80c2fc2),
+  LOAD8_16( ROM1, "prg1.bin", 0x000000+1, 0x080000, 0x2ccfdd1e),
    {     "rom1.bin", 0x00200000, 0x7eafdd70, 0, 0, 0, },
    {     "rom2.bin", 0x00200000, 0xb330e5e2, 0, 0, 0, },
    {     "rom3.bin", 0x00200000, 0x51b9ebfb, 0, 0, 0, },
@@ -1714,8 +1725,9 @@ static struct ROM_INFO rom_bgaregga[] =
 
 static struct ROM_INFO rom_bgareggacn[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "u123",  0x88a4e66a, "u65",  0x5dea32a3),
+
+  LOAD8_16( ROM1, "u123", 0x000000, 0x080000, 0x88a4e66a),
+  LOAD8_16( ROM1, "u65", 0x000000+1, 0x080000, 0x5dea32a3),
   { "snd.bin", 0x20000, 0x68632952, 0, 0, 0 },
    {     "rom1.bin", 0x00200000, 0x7eafdd70, 0, 0, 0, },
    {     "rom2.bin", 0x00200000, 0xb330e5e2, 0, 0, 0, },
@@ -1729,8 +1741,9 @@ static struct ROM_INFO rom_bgareggacn[] =
 
 static struct ROM_INFO rom_bgareggahk[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "prg_0.bin",  0x951ecc07, "prg_1.bin",  0x729a60c6),
+
+  LOAD8_16( ROM1, "prg_0.bin", 0x000000, 0x080000, 0x951ecc07),
+  LOAD8_16( ROM1, "prg_1.bin", 0x000000+1, 0x080000, 0x729a60c6),
    {     "rom1.bin", 0x00200000, 0x7eafdd70, 0, 0, 0, },
    {     "rom2.bin", 0x00200000, 0xb330e5e2, 0, 0, 0, },
    {     "rom3.bin", 0x00200000, 0x51b9ebfb, 0, 0, 0, },
@@ -5743,10 +5756,12 @@ static void sound_bgaregga_ww(UINT32 offset, UINT16 data)
 
 static struct ROM_INFO rom_bbakraid[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "prg0u022.new",  0xfa8d38d3 , "prg1u023.new",  0x4ae9aa64 ),
-  LOAD8_16( ROM1,  0x100000,  0x080000,
-            "prg2u021.bin",  0xffba8656 , "prg3u024.bin",  0x834b8ad6 ),
+
+  LOAD8_16( ROM1, "prg0u022.new", 0x000000, 0x080000, 0xfa8d38d3 ),
+  LOAD8_16( ROM1, "prg1u023.new", 0x000000+1, 0x080000, 0x4ae9aa64 ),
+
+  LOAD8_16( ROM1, "prg2u021.bin", 0x100000, 0x080000, 0xffba8656 ),
+  LOAD8_16( ROM1, "prg3u024.bin", 0x100000+1, 0x080000, 0x834b8ad6 ),
   { "sndu027.bin", 0x20000, 0xe62ab246 , 0,0,0 },//REGION_ROM2, 0, LOAD_NORMAL },
   { "gfxu0510.bin", 0x400000, 0x9cca3446 , 0,0,0 }, // REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "gfxu0511.bin", 0x400000, 0xe16472c0 , 0,0,0 }, // REGION_GFX1, 0x400000, LOAD_NORMAL },
@@ -5762,10 +5777,12 @@ static struct ROM_INFO rom_bbakraid[] =
 
 static struct ROM_INFO rom_bbakrada[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "prg0u022.bin",  0x0dd59512 , "prg1u023.bin",  0xfecde223 ),
-  LOAD8_16( ROM1,  0x100000,  0x080000,
-            "prg2u021.bin",  0xffba8656 , "prg3u024.bin",  0x834b8ad6 ),
+
+  LOAD8_16( ROM1, "prg0u022.bin", 0x000000, 0x080000, 0x0dd59512 ),
+  LOAD8_16( ROM1, "prg1u023.bin", 0x000000+1, 0x080000, 0xfecde223 ),
+
+  LOAD8_16( ROM1, "prg2u021.bin", 0x100000, 0x080000, 0xffba8656 ),
+  LOAD8_16( ROM1, "prg3u024.bin", 0x100000+1, 0x080000, 0x834b8ad6 ),
   { "sndu027.bin", 0x20000, 0xe62ab246 , 0,0,0 }, // REGION_ROM2, 0, LOAD_NORMAL },
   { "gfxu0510.bin", 0x400000, 0x9cca3446 , 0,0,0 }, // REGION_GFX1, 0x000000, LOAD_NORMAL },
   { "gfxu0511.bin", 0x400000, 0xe16472c0 , 0,0,0 }, // REGION_GFX1, 0x400000, LOAD_NORMAL },

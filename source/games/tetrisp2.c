@@ -26,8 +26,9 @@ static struct SOUND_INFO sound_tetrisp2[] =
 
 static struct ROM_INFO rom_tetrisp2[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "t2p_04.rom",  0xe67f9c51, "t2p_01.rom",  0x5020a4ed),
+
+  LOAD8_16( ROM1, "t2p_04.rom", 0x000000, 0x080000, 0xe67f9c51),
+  LOAD8_16( ROM1, "t2p_01.rom", 0x000000+1, 0x080000, 0x5020a4ed),
   { "96019-01.9", 0x400000, 0x06f7dc64, REGION_GFX1, 0x000000, LOAD_16_32 },
 	/* If t2p_m01&2 from this board were correctly read, since they
        hold the same data of the above but with swapped halves, it

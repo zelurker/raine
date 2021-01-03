@@ -17,10 +17,12 @@
 
 static struct ROM_INFO rom_cadash[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-                  "c21-14",  0x5daf13fb,       "c21-16",  0xcbaa2e75),
-  LOAD8_16( ROM1,  0x040000,  0x00020000,
-                  "c21-13",  0x6b9e0ee9,       "c21-17",  0xbf9a578a),
+
+  LOAD8_16( ROM1, "c21-14", 0x000000, 0x00020000, 0x5daf13fb),
+  LOAD8_16( ROM1, "c21-16", 0x000000+1, 0x00020000, 0xcbaa2e75),
+
+  LOAD8_16( ROM1, "c21-13", 0x040000, 0x00020000, 0x6b9e0ee9),
+  LOAD8_16( ROM1, "c21-17", 0x040000+1, 0x00020000, 0xbf9a578a),
    LOAD( GFX1, "c21-02.9", 0x000000, 0x00080000, 0x205883b9),
    LOAD( GFX2, "c21-01.1", 0x000000, 0x00080000, 0x1ff6f39c),
   LOAD( ROM2, "c21-08.38", 0, 0x10000, 0xdca495a0),
@@ -140,28 +142,34 @@ static struct ROMSW_INFO romsw_cadash[] =
 
 static struct ROM_INFO rom_cadashf[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-                  "c21-19",  0x4d70543b,       "c21-21",  0x0e5b9950),
-  LOAD8_16( ROM1,  0x040000,  0x00020000,
-                  "c21-18",  0x8a19e59b,       "c21-20",  0xb96acfd9),
+
+  LOAD8_16( ROM1, "c21-19", 0x000000, 0x00020000, 0x4d70543b),
+  LOAD8_16( ROM1, "c21-21", 0x000000+1, 0x00020000, 0x0e5b9950),
+
+  LOAD8_16( ROM1, "c21-18", 0x040000, 0x00020000, 0x8a19e59b),
+  LOAD8_16( ROM1, "c21-20", 0x040000+1, 0x00020000, 0xb96acfd9),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_cadashi[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-                "c21-14it",  0xd1d9e613,     "c21-16it",  0x142256ef),
-  LOAD8_16( ROM1,  0x040000,  0x00020000,
-                "c21-13it",  0xc9cf6e30,     "c21-17it",  0x641fc9dd),
+
+  LOAD8_16( ROM1, "c21-14it", 0x000000, 0x00020000, 0xd1d9e613),
+  LOAD8_16( ROM1, "c21-16it", 0x000000+1, 0x00020000, 0x142256ef),
+
+  LOAD8_16( ROM1, "c21-13it", 0x040000, 0x00020000, 0xc9cf6e30),
+  LOAD8_16( ROM1, "c21-17it", 0x040000+1, 0x00020000, 0x641fc9dd),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_cadashj[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x00020000,
-             "c21-04.11",  0xcc22ebe5,  "c21-06.15",  0x26e03304),
-  LOAD8_16( ROM1,  0x040000,  0x00020000,
-             "c21-03.10",  0xc54888ed,  "c21-05.14",  0x834018d2),
+
+  LOAD8_16( ROM1, "c21-04.11", 0x000000, 0x00020000, 0xcc22ebe5),
+  LOAD8_16( ROM1, "c21-06.15", 0x000000+1, 0x00020000, 0x26e03304),
+
+  LOAD8_16( ROM1, "c21-03.10", 0x040000, 0x00020000, 0xc54888ed),
+  LOAD8_16( ROM1, "c21-05.14", 0x040000+1, 0x00020000, 0x834018d2),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

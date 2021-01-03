@@ -16,22 +16,29 @@
 
 static struct ROM_INFO rom_rastan[] =
 {
-  LOAD8_16( GFX1,  0x000000,  0x00020000,
-             "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
-  LOAD8_16( GFX1,  0x040000,  0x00020000,
-             "ic39_03.bin",  0xab67e064,  "ic66_04.bin",  0x94737e93),
-  LOAD8_16( GFX2,  0x000000,  0x00020000,
-             "ic15_05.bin",  0xc22d94ac,  "ic28_06.bin",  0x002ccf39),
-  LOAD8_16( GFX2,  0x040000,  0x00020000,
-             "ic14_07.bin",  0xb5632a51,  "ic27_08.bin",  0xfeafca05),
+
+  LOAD8_16( GFX1, "ic40_01.bin", 0x000000, 0x00020000, 0xcd30de19),
+  LOAD8_16( GFX1, "ic67_02.bin", 0x000000+1, 0x00020000, 0x54040fec),
+
+  LOAD8_16( GFX1, "ic39_03.bin", 0x040000, 0x00020000, 0xab67e064),
+  LOAD8_16( GFX1, "ic66_04.bin", 0x040000+1, 0x00020000, 0x94737e93),
+
+  LOAD8_16( GFX2, "ic15_05.bin", 0x000000, 0x00020000, 0xc22d94ac),
+  LOAD8_16( GFX2, "ic28_06.bin", 0x000000+1, 0x00020000, 0x002ccf39),
+
+  LOAD8_16( GFX2, "ic14_07.bin", 0x040000, 0x00020000, 0xb5632a51),
+  LOAD8_16( GFX2, "ic27_08.bin", 0x040000+1, 0x00020000, 0xfeafca05),
    {  "ic49_19.bin", 0x00010000, 0xee81fdd8, 0, 0, 0, },
    {  "ic76_20.bin", 0x00010000, 0xfd1a34cc, 0, 0, 0, },
-  LOAD8_16( ROM1,  0x000000,  0x00010000,
-             "ic19_38.bin",  0x1c91dbb1,  "ic07_37.bin",  0xecf20bdd),
-  LOAD8_16( ROM1,  0x020000,  0x00010000,
-             "ic20_40.bin",  0x0930d4b3,  "ic08_39.bin",  0xd95ade5e),
-  LOAD8_16( ROM1,  0x040000,  0x00010000,
-             "ic21_42.bin",  0x1857a7cb,  "ic09_43.bin",  0xc34b9152),
+
+  LOAD8_16( ROM1, "ic19_38.bin", 0x000000, 0x00010000, 0x1c91dbb1),
+  LOAD8_16( ROM1, "ic07_37.bin", 0x000000+1, 0x00010000, 0xecf20bdd),
+
+  LOAD8_16( ROM1, "ic20_40.bin", 0x020000, 0x00010000, 0x0930d4b3),
+  LOAD8_16( ROM1, "ic08_39.bin", 0x020000+1, 0x00010000, 0xd95ade5e),
+
+  LOAD8_16( ROM1, "ic21_42.bin", 0x040000, 0x00010000, 0x1857a7cb),
+  LOAD8_16( ROM1, "ic09_43.bin", 0x040000+1, 0x00010000, 0xc34b9152),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -196,22 +203,29 @@ static struct SOUND_INFO sound_rastan[] =
 
 static struct ROM_INFO rom_rastsaga[] =
 {
-  LOAD8_16( GFX1,  0x000000,  0x00020000,
-             "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
-  LOAD8_16( GFX1,  0x040000,  0x00020000,
-             "ic39_03.bin",  0xab67e064,  "ic66_04.bin",  0x94737e93),
-  LOAD8_16( GFX2,  0x000000,  0x00020000,
-             "ic15_05.bin",  0xc22d94ac,  "ic28_06.bin",  0x002ccf39),
-  LOAD8_16( GFX2,  0x040000,  0x00020000,
-             "ic14_07.bin",  0xb5632a51,  "ic27_08.bin",  0xfeafca05),
+
+  LOAD8_16( GFX1, "ic40_01.bin", 0x000000, 0x00020000, 0xcd30de19),
+  LOAD8_16( GFX1, "ic67_02.bin", 0x000000+1, 0x00020000, 0x54040fec),
+
+  LOAD8_16( GFX1, "ic39_03.bin", 0x040000, 0x00020000, 0xab67e064),
+  LOAD8_16( GFX1, "ic66_04.bin", 0x040000+1, 0x00020000, 0x94737e93),
+
+  LOAD8_16( GFX2, "ic15_05.bin", 0x000000, 0x00020000, 0xc22d94ac),
+  LOAD8_16( GFX2, "ic28_06.bin", 0x000000+1, 0x00020000, 0x002ccf39),
+
+  LOAD8_16( GFX2, "ic14_07.bin", 0x040000, 0x00020000, 0xb5632a51),
+  LOAD8_16( GFX2, "ic27_08.bin", 0x040000+1, 0x00020000, 0xfeafca05),
    {  "ic49_19.bin", 0x00010000, 0xee81fdd8, 0, 0, 0, },
    {  "ic76_20.bin", 0x00010000, 0xfd1a34cc, 0, 0, 0, },
-  LOAD8_16( ROM1,  0x000000,  0x00010000,
-             "rs19_38.bin",  0xa38ac909,  "rs07_37.bin",  0xbad60872),
-  LOAD8_16( ROM1,  0x020000,  0x00010000,
-             "rs20_40.bin",  0x6bcf70dc,  "rs08_39.bin",  0x8838ecc5),
-  LOAD8_16( ROM1,  0x040000,  0x00010000,
-             "rs21_42.bin",  0xb626c439,  "rs09_43.bin",  0xc928a516),
+
+  LOAD8_16( ROM1, "rs19_38.bin", 0x000000, 0x00010000, 0xa38ac909),
+  LOAD8_16( ROM1, "rs07_37.bin", 0x000000+1, 0x00010000, 0xbad60872),
+
+  LOAD8_16( ROM1, "rs20_40.bin", 0x020000, 0x00010000, 0x6bcf70dc),
+  LOAD8_16( ROM1, "rs08_39.bin", 0x020000+1, 0x00010000, 0x8838ecc5),
+
+  LOAD8_16( ROM1, "rs21_42.bin", 0x040000, 0x00010000, 0xb626c439),
+  LOAD8_16( ROM1, "rs09_43.bin", 0x040000+1, 0x00010000, 0xc928a516),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -245,22 +259,29 @@ static struct DSW_INFO dsw_rastsaga[] =
 
 static struct ROM_INFO rom_rastanu[] =
 {
-  LOAD8_16( GFX1,  0x000000,  0x00020000,
-             "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
-  LOAD8_16( GFX1,  0x040000,  0x00020000,
-             "ic39_03.bin",  0xab67e064,  "ic66_04.bin",  0x94737e93),
-  LOAD8_16( GFX2,  0x000000,  0x00020000,
-             "ic15_05.bin",  0xc22d94ac,  "ic28_06.bin",  0x002ccf39),
-  LOAD8_16( GFX2,  0x040000,  0x00020000,
-             "ic14_07.bin",  0xb5632a51,  "ic27_08.bin",  0xfeafca05),
+
+  LOAD8_16( GFX1, "ic40_01.bin", 0x000000, 0x00020000, 0xcd30de19),
+  LOAD8_16( GFX1, "ic67_02.bin", 0x000000+1, 0x00020000, 0x54040fec),
+
+  LOAD8_16( GFX1, "ic39_03.bin", 0x040000, 0x00020000, 0xab67e064),
+  LOAD8_16( GFX1, "ic66_04.bin", 0x040000+1, 0x00020000, 0x94737e93),
+
+  LOAD8_16( GFX2, "ic15_05.bin", 0x000000, 0x00020000, 0xc22d94ac),
+  LOAD8_16( GFX2, "ic28_06.bin", 0x000000+1, 0x00020000, 0x002ccf39),
+
+  LOAD8_16( GFX2, "ic14_07.bin", 0x040000, 0x00020000, 0xb5632a51),
+  LOAD8_16( GFX2, "ic27_08.bin", 0x040000+1, 0x00020000, 0xfeafca05),
    {  "ic49_19.bin", 0x00010000, 0xee81fdd8, 0, 0, 0, },
    {  "ic76_20.bin", 0x00010000, 0xfd1a34cc, 0, 0, 0, },
-  LOAD8_16( ROM1,  0x000000,  0x00010000,
-             "ic19_38.bin",  0x1c91dbb1,  "ic07_37.bin",  0xecf20bdd),
-  LOAD8_16( ROM1,  0x020000,  0x00010000,
-               "b04-45.20",  0x362812dd,     "b04-44.8",  0x51cc5508),
-  LOAD8_16( ROM1,  0x040000,  0x00010000,
-             "ic21_42.bin",  0x1857a7cb,   "b04-41-1.9",  0xbd403269),
+
+  LOAD8_16( ROM1, "ic19_38.bin", 0x000000, 0x00010000, 0x1c91dbb1),
+  LOAD8_16( ROM1, "ic07_37.bin", 0x000000+1, 0x00010000, 0xecf20bdd),
+
+  LOAD8_16( ROM1, "b04-45.20", 0x020000, 0x00010000, 0x362812dd),
+  LOAD8_16( ROM1, "b04-44.8", 0x020000+1, 0x00010000, 0x51cc5508),
+
+  LOAD8_16( ROM1, "ic21_42.bin", 0x040000, 0x00010000, 0x1857a7cb),
+  LOAD8_16( ROM1, "b04-41-1.9", 0x040000+1, 0x00010000, 0xbd403269),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -268,22 +289,29 @@ static struct ROM_INFO rom_rastanu[] =
 
 static struct ROM_INFO rom_rastanu2[] =
 {
-  LOAD8_16( GFX1,  0x000000,  0x00020000,
-             "ic40_01.bin",  0xcd30de19,  "ic67_02.bin",  0x54040fec),
-  LOAD8_16( GFX1,  0x040000,  0x00020000,
-             "ic39_03.bin",  0xab67e064,  "ic66_04.bin",  0x94737e93),
-  LOAD8_16( GFX2,  0x000000,  0x00020000,
-             "ic15_05.bin",  0xc22d94ac,  "ic28_06.bin",  0x002ccf39),
-  LOAD8_16( GFX2,  0x040000,  0x00020000,
-             "ic14_07.bin",  0xb5632a51,  "ic27_08.bin",  0xfeafca05),
+
+  LOAD8_16( GFX1, "ic40_01.bin", 0x000000, 0x00020000, 0xcd30de19),
+  LOAD8_16( GFX1, "ic67_02.bin", 0x000000+1, 0x00020000, 0x54040fec),
+
+  LOAD8_16( GFX1, "ic39_03.bin", 0x040000, 0x00020000, 0xab67e064),
+  LOAD8_16( GFX1, "ic66_04.bin", 0x040000+1, 0x00020000, 0x94737e93),
+
+  LOAD8_16( GFX2, "ic15_05.bin", 0x000000, 0x00020000, 0xc22d94ac),
+  LOAD8_16( GFX2, "ic28_06.bin", 0x000000+1, 0x00020000, 0x002ccf39),
+
+  LOAD8_16( GFX2, "ic14_07.bin", 0x040000, 0x00020000, 0xb5632a51),
+  LOAD8_16( GFX2, "ic27_08.bin", 0x040000+1, 0x00020000, 0xfeafca05),
    {  "ic49_19.bin", 0x00010000, 0xee81fdd8, 0, 0, 0, },
    {  "ic76_20.bin", 0x00010000, 0xfd1a34cc, 0, 0, 0, },
-  LOAD8_16( ROM1,  0x000000,  0x00010000,
-             "rs19_38.bin",  0xa38ac909,     "b04-21.7",  0x7c8dde9a),
-  LOAD8_16( ROM1,  0x020000,  0x00010000,
-               "b04-23.20",  0x254b3dce,     "b04-22.8",  0x98e8edcf),
-  LOAD8_16( ROM1,  0x040000,  0x00010000,
-               "b04-25.21",  0xd1e5adee,     "b04-24.9",  0xa3dcc106),
+
+  LOAD8_16( ROM1, "rs19_38.bin", 0x000000, 0x00010000, 0xa38ac909),
+  LOAD8_16( ROM1, "b04-21.7", 0x000000+1, 0x00010000, 0x7c8dde9a),
+
+  LOAD8_16( ROM1, "b04-23.20", 0x020000, 0x00010000, 0x254b3dce),
+  LOAD8_16( ROM1, "b04-22.8", 0x020000+1, 0x00010000, 0x98e8edcf),
+
+  LOAD8_16( ROM1, "b04-25.21", 0x040000, 0x00010000, 0xd1e5adee),
+  LOAD8_16( ROM1, "b04-24.9", 0x040000+1, 0x00010000, 0xa3dcc106),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

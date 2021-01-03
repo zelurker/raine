@@ -83,16 +83,20 @@ Stephh's notes (based on the games M68000 code and some tests) :
 
 static struct ROM_INFO rom_mcatadv[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x80000,
-            "mca-u30e",  0xc62fbb65, "mca-u29e",  0xcf21227c),
+
+  LOAD8_16( ROM1, "mca-u30e", 0x00000, 0x80000, 0xc62fbb65),
+  LOAD8_16( ROM1, "mca-u29e", 0x00000+1, 0x80000, 0xcf21227c),
   LOAD( ROM2, "u9.bin", 0x00000, 0x20000, 0xfda05171),
   LOAD( ROM2, "u9.bin", 0x04000, 0x20000, 0xfda05171),
-  LOAD8_16( GFX1,  0x000000,  0x100000,
-            "mca-u82.bin",  0x5f01d746, "mca-u83.bin",  0x4e1be5a6),
-  LOAD8_16( GFX1,  0x200000,  0x080000,
-            "mca-u84.bin",  0xdf202790, "mca-u85.bin",  0xa85771d2),
-  LOAD8_16( GFX1,  0x400000,  0x080000,
-            "mca-u86e",  0x017bf1da, "mca-u87e",  0xbc9dc9b9),
+
+  LOAD8_16( GFX1, "mca-u82.bin", 0x000000, 0x100000, 0x5f01d746),
+  LOAD8_16( GFX1, "mca-u83.bin", 0x000000+1, 0x100000, 0x4e1be5a6),
+
+  LOAD8_16( GFX1, "mca-u84.bin", 0x200000, 0x080000, 0xdf202790),
+  LOAD8_16( GFX1, "mca-u85.bin", 0x200000+1, 0x080000, 0xa85771d2),
+
+  LOAD8_16( GFX1, "mca-u86e", 0x400000, 0x080000, 0x017bf1da),
+  LOAD8_16( GFX1, "mca-u87e", 0x400000+1, 0x080000, 0xbc9dc9b9),
   LOAD( GFX2, "mca-u58.bin", 0x000000, 0x080000, 0x3a8186e2),
   LOAD( GFX3, "mca-u60.bin", 0x000000, 0x100000, 0xc8942614),
   LOAD( GFX3, "mca-u61.bin", 0x100000, 0x100000, 0x51af66c9),
@@ -103,14 +107,18 @@ static struct ROM_INFO rom_mcatadv[] =
 
 static struct ROM_INFO rom_mcatadvj[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x80000,
-            "u30.bin",  0x05762f42, "u29.bin",  0x4c59d648),
-  LOAD8_16( GFX1,  0x000000,  0x100000,
-            "mca-u82.bin",  0x5f01d746, "mca-u83.bin",  0x4e1be5a6),
-  LOAD8_16( GFX1,  0x200000,  0x080000,
-            "mca-u84.bin",  0xdf202790, "mca-u85.bin",  0xa85771d2),
-  LOAD8_16( GFX1,  0x400000,  0x080000,
-            "u86.bin",  0x2d3725ed, "u87.bin",  0x4ddefe08),
+
+  LOAD8_16( ROM1, "u30.bin", 0x00000, 0x80000, 0x05762f42),
+  LOAD8_16( ROM1, "u29.bin", 0x00000+1, 0x80000, 0x4c59d648),
+
+  LOAD8_16( GFX1, "mca-u82.bin", 0x000000, 0x100000, 0x5f01d746),
+  LOAD8_16( GFX1, "mca-u83.bin", 0x000000+1, 0x100000, 0x4e1be5a6),
+
+  LOAD8_16( GFX1, "mca-u84.bin", 0x200000, 0x080000, 0xdf202790),
+  LOAD8_16( GFX1, "mca-u85.bin", 0x200000+1, 0x080000, 0xa85771d2),
+
+  LOAD8_16( GFX1, "u86.bin", 0x400000, 0x080000, 0x2d3725ed),
+  LOAD8_16( GFX1, "u87.bin", 0x400000+1, 0x080000, 0x4ddefe08),
   LOAD( GFX3, "mca-u60.bin", 0x000000, 0x100000, 0xc8942614),
   LOAD( GFX3, "mca-u61.bin", 0x100000, 0x100000, 0x51af66c9),
   LOAD( GFX3, "u100.bin", 0x200000, 0x080000, 0xe2c311da),
@@ -119,16 +127,20 @@ static struct ROM_INFO rom_mcatadvj[] =
 
 static struct ROM_INFO rom_nost[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x80000,
-            "nos-pe-u.bin",  0x4b080149, "nos-po-u.bin",  0x9e3cd6d9),
+
+  LOAD8_16( ROM1, "nos-pe-u.bin", 0x00000, 0x80000, 0x4b080149),
+  LOAD8_16( ROM1, "nos-po-u.bin", 0x00000+1, 0x80000, 0x9e3cd6d9),
   LOAD( ROM2, "nos-ps.u9", 0x00000, 0x40000, 0x832551e9),
   LOAD( ROM2, "nos-ps.u9", 0x08000, 0x40000, 0x832551e9),
-  LOAD8_16( GFX1,  0x000000,  0x100000,
-            "nos-se-0.u82",  0x9d99108d, "nos-so-0.u83",  0x7df0fc7e),
-  LOAD8_16( GFX1,  0x200000,  0x100000,
-            "nos-se-1.u84",  0xaad07607, "nos-so-1.u85",  0x83d0012c),
-  LOAD8_16( GFX1,  0x400000,  0x080000,
-            "nos-se-2.u86",  0xd99e6005, "nos-so-2.u87",  0xf60e8ef3),
+
+  LOAD8_16( GFX1, "nos-se-0.u82", 0x000000, 0x100000, 0x9d99108d),
+  LOAD8_16( GFX1, "nos-so-0.u83", 0x000000+1, 0x100000, 0x7df0fc7e),
+
+  LOAD8_16( GFX1, "nos-se-1.u84", 0x200000, 0x100000, 0xaad07607),
+  LOAD8_16( GFX1, "nos-so-1.u85", 0x200000+1, 0x100000, 0x83d0012c),
+
+  LOAD8_16( GFX1, "nos-se-2.u86", 0x400000, 0x080000, 0xd99e6005),
+  LOAD8_16( GFX1, "nos-so-2.u87", 0x400000+1, 0x080000, 0xf60e8ef3),
   LOAD( GFX2, "nos-b0-0.u58", 0x000000, 0x100000, 0x0214b0f2),
   LOAD( GFX2, "nos-b0-1.u59", 0x100000, 0x080000, 0x3f8b6b34),
   LOAD( GFX3, "nos-b1-0.u60", 0x000000, 0x100000, 0xba6fd0c7),

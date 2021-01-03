@@ -13,12 +13,15 @@
 
 static struct ROM_INFO rom_armedf[] =
 {
-  LOAD8_16(  ROM1,  0x00000,  0x10000,
-            "af_06.rom",  0xc5326603, "af_01.rom",  0x458e9542),
-  LOAD8_16(  ROM1,  0x20000,  0x10000,
-            "af_07.rom",  0xcc8517f5, "af_02.rom",  0x214ef220),
-  LOAD8_16(  ROM1,  0x40000,  0x10000,
-            "af_08.rom",  0xd1d43600, "af_03.rom",  0xbbe1fe2d),
+
+  LOAD8_16( ROM1, "af_06.rom", 0x00000, 0x10000, 0xc5326603),
+  LOAD8_16( ROM1, "af_01.rom", 0x00000+1, 0x10000, 0x458e9542),
+
+  LOAD8_16( ROM1, "af_07.rom", 0x20000, 0x10000, 0xcc8517f5),
+  LOAD8_16( ROM1, "af_02.rom", 0x20000+1, 0x10000, 0x214ef220),
+
+  LOAD8_16( ROM1, "af_08.rom", 0x40000, 0x10000, 0xd1d43600),
+  LOAD8_16( ROM1, "af_03.rom", 0x40000+1, 0x10000, 0xbbe1fe2d),
   LOAD( ROM2, "af_10.rom", 0x00000, 0x10000, 0xc5eacb87),
   LOAD( GFX1, "af_09.rom", 0x00000, 0x08000, 0x7025e92d),
   LOAD( GFX2, "af_04.rom", 0x00000, 0x10000, 0x44d3af4f),
@@ -32,12 +35,15 @@ static struct ROM_INFO rom_armedf[] =
 
 static struct ROM_INFO rom_cclimbr2[] =
 {
-  LOAD8_16(  ROM1,  0x00000,  0x10000,
-            "4.bin",  0x7922ea14, "1.bin",  0x2ac7ed67),
-  LOAD8_16(  ROM1,  0x20000,  0x10000,
-            "6.bin",  0x7905c992, "5.bin",  0x47be6c1e),
-  LOAD8_16(  ROM1,  0x40000,  0x10000,
-            "3.bin",  0x1fb110d6, "2.bin",  0x0024c15b),
+
+  LOAD8_16( ROM1, "4.bin", 0x00000, 0x10000, 0x7922ea14),
+  LOAD8_16( ROM1, "1.bin", 0x00000+1, 0x10000, 0x2ac7ed67),
+
+  LOAD8_16( ROM1, "6.bin", 0x20000, 0x10000, 0x7905c992),
+  LOAD8_16( ROM1, "5.bin", 0x20000+1, 0x10000, 0x47be6c1e),
+
+  LOAD8_16( ROM1, "3.bin", 0x40000, 0x10000, 0x1fb110d6),
+  LOAD8_16( ROM1, "2.bin", 0x40000+1, 0x10000, 0x0024c15b),
   LOAD( ROM2, "11.bin", 0x00000, 0x04000, 0xfe0175be),
   LOAD( ROM2, "12.bin", 0x04000, 0x08000, 0x5ddf18f2),
   LOAD( GFX1, "10.bin", 0x00000, 0x08000, 0x7f475266),

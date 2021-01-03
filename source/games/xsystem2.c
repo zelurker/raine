@@ -33,7 +33,7 @@ static struct ROM_INFO rom_arknoid2u[] = // clone of arknoid2
 {
 	/* 0x10000 - 0x1ffff empty */
   LOAD( CPU1, "b08__11.11c", 0x00000, 0x10000, 0x99555231),
-  FILL(            0x10000, 0x10000, 0, CPU1),
+  FILL( CPU1, 0x10000, 0x10000, 0),
   LOAD( CPU2, "b08__12.3e", 0x00000, 0x10000, 0xdc84e27d),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -237,7 +237,7 @@ static struct SOUND_INFO sound_kageki[] =
 static struct ROM_INFO rom_arknoid2[] =
 {
   LOAD( CPU1, "b08__05.11c", 0x00000, 0x10000, 0x136edf9d),
-  FILL(            0x10000, 0x10000, 0, CPU1),
+  FILL( CPU1, 0x10000, 0x10000, 0),
   LOAD( CPU2, "b08__13.3e", 0x00000, 0x10000, 0xe8035ef1),
   LOAD( GFX1, "b08-01.13a", 0x00000, 0x20000, 0x2ccc86b4),
   LOAD( GFX1, "b08-02.10a", 0x20000, 0x20000, 0x056a985f),

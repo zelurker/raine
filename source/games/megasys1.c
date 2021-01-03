@@ -94,11 +94,13 @@ get all the letters "sa-mu-ra-i", though.
 
 static struct ROM_INFO rom_64street[] =
 {
-    LOAD8_16( ROM1, 0, 0x040000,
-	    "64th_03.rom", 0xed6c6942, "64th_02.rom", 0x0621ed1d),
+
+    LOAD8_16( ROM1, "64th_03.rom", 0, 0x040000, 0xed6c6942),
+    LOAD8_16( ROM1, "64th_02.rom", 0+1, 0x040000, 0x0621ed1d),
   // CPU 2
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
+
+  LOAD8_16( ROM1, "64th_08.rom", 0x080000, 0x010000, 0x632be0c1 ),
+  LOAD8_16( ROM1, "64th_07.rom", 0x080000+1, 0x010000, 0x13595d01 ),
    LOAD( GFX1, "64th_01.rom", 0, 0x00080000, 0x06222f90),
    LOAD( GFX2, "64th_06.rom", 0, 0x00080000, 0x2bfcdc75),
    LOAD( GFX3, "64th_09.rom", 0, 0x00020000, 0xa4a97db4),
@@ -220,23 +222,28 @@ static struct SOUND_INFO sound_lordofk[] =
 
 static struct ROM_INFO rom_64streej[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "91105-3.bin",  0xa211a83b , "91105-2.bin",  0x27c1f436 ),
+
+  LOAD8_16( ROM1, "91105-3.bin", 0x000000, 0x040000, 0xa211a83b ),
+  LOAD8_16( ROM1, "91105-2.bin", 0x000000+1, 0x040000, 0x27c1f436 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "64th_08.rom",  0x632be0c1 , "64th_07.rom",  0x13595d01 ),
+
+  LOAD8_16( ROM1, "64th_08.rom", 0x080000, 0x010000, 0x632be0c1 ),
+  LOAD8_16( ROM1, "64th_07.rom", 0x080000+1, 0x010000, 0x13595d01 ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_astyanax[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "astyan2.bin",  0x1b598dcc , "astyan1.bin",  0x1a1ad3cf ),
-  LOAD8_16( ROM1,  0x40000,  0x10000,
-            "astyan3.bin",  0x097b53a6 , "astyan4.bin",  0x1e1cbdb2 ),
+
+  LOAD8_16( ROM1, "astyan2.bin", 0x00000, 0x20000, 0x1b598dcc ),
+  LOAD8_16( ROM1, "astyan1.bin", 0x00000+1, 0x20000, 0x1a1ad3cf ),
+
+  LOAD8_16( ROM1, "astyan3.bin", 0x40000, 0x10000, 0x097b53a6 ),
+  LOAD8_16( ROM1, "astyan4.bin", 0x40000+1, 0x10000, 0x1e1cbdb2 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "astyan5.bin",  0x11c74045 , "astyan6.bin",  0xeecd4b16 ),
+
+  LOAD8_16( ROM1, "astyan5.bin", 0x080000, 0x010000, 0x11c74045 ),
+  LOAD8_16( ROM1, "astyan6.bin", 0x080000+1, 0x010000, 0xeecd4b16 ),
    LOAD( SOUND2, "astyan7.bin", 0, 0x00020000, 0x319418cc),
    LOAD( SOUND2, "astyan8.bin", 0x20000, 0x00020000, 0x5e5d2a22),
    LOAD( SOUND1, "astyan9.bin", 0, 0x00020000, 0xa10b3f17),
@@ -309,23 +316,28 @@ static struct DSW_INFO dsw_astyanax[] =
 
 static struct ROM_INFO rom_lordofk[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "lokj02.bin",  0x0d7f9b4a , "lokj01.bin",  0xbed3cb93 ),
-  LOAD8_16( ROM1,  0x40000,  0x20000,
-            "lokj03.bin",  0xd8702c91 , "lokj04.bin",  0xeccbf8c9 ),
+
+  LOAD8_16( ROM1, "lokj02.bin", 0x00000, 0x20000, 0x0d7f9b4a ),
+  LOAD8_16( ROM1, "lokj01.bin", 0x00000+1, 0x20000, 0xbed3cb93 ),
+
+  LOAD8_16( ROM1, "lokj03.bin", 0x40000, 0x20000, 0xd8702c91 ),
+  LOAD8_16( ROM1, "lokj04.bin", 0x40000+1, 0x20000, 0xeccbf8c9 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "astyan5.bin",  0x11c74045 , "astyan6.bin",  0xeecd4b16 ),
+
+  LOAD8_16( ROM1, "astyan5.bin", 0x080000, 0x010000, 0x11c74045 ),
+  LOAD8_16( ROM1, "astyan6.bin", 0x080000+1, 0x010000, 0xeecd4b16 ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_avspirit[] =
 {
-  LOAD8_16( ROM1,  0,  0x40000,
-            "spirit05.rom",  0xb26a341a , "spirit06.rom",  0x609f71fe ),
+
+  LOAD8_16( ROM1, "spirit05.rom", 0, 0x40000, 0xb26a341a ),
+  LOAD8_16( ROM1, "spirit06.rom", 0+1, 0x40000, 0x609f71fe ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x020000,
-            "spirit01.rom",  0xd02ec045 , "spirit02.rom",  0x30213390 ),
+
+  LOAD8_16( ROM1, "spirit01.rom", 0x080000, 0x020000, 0xd02ec045 ),
+  LOAD8_16( ROM1, "spirit02.rom", 0x080000+1, 0x020000, 0x30213390 ),
    LOAD( GFX3, "spirit09.rom", 0, 0x00020000, 0x0c37edf7),
    LOAD( GFX4, "spirit10.rom", 0, 0x00080000, 0x2b1180b3),
    LOAD( GFX2, "spirit11.rom", 0, 0x00080000, 0x7896f6b0),
@@ -360,11 +372,13 @@ static struct DSW_INFO dsw_avspirit[] =
 
 static struct ROM_INFO rom_chimerab[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "prg3.bin",  0x70f1448f , "prg2.bin",  0x821dbb85 ),
+
+  LOAD8_16( ROM1, "prg3.bin", 0x000000, 0x040000, 0x70f1448f ),
+  LOAD8_16( ROM1, "prg2.bin", 0x000000+1, 0x040000, 0x821dbb85 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "prg8.bin",  0xa682b1ca , "prg7.bin",  0x83b9982d ),
+
+  LOAD8_16( ROM1, "prg8.bin", 0x080000, 0x010000, 0xa682b1ca ),
+  LOAD8_16( ROM1, "prg7.bin", 0x080000+1, 0x010000, 0x83b9982d ),
    LOAD( GFX4, "b1.bin", 0x80000, 0x00080000, 0x29c0385e),
    LOAD( GFX4, "b2.bin", 0, 0x00080000, 0x6e7f1778),
    LOAD( GFX1, "s1.bin", 0, 0x00080000, 0xe4c2ac77),
@@ -403,10 +417,12 @@ static struct DSW_INFO dsw_chimerab[] =
 
 static struct ROM_INFO rom_cybattlr[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "cb_03.rom",  0xbee20587, "cb_02.rom",  0x2ed14c50),
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "cb_08.rom",  0xbf7b3558, "cb_07.rom",  0x85d219d7),
+
+  LOAD8_16( ROM1, "cb_03.rom", 0x000000, 0x040000, 0xbee20587),
+  LOAD8_16( ROM1, "cb_02.rom", 0x000000+1, 0x040000, 0x2ed14c50),
+
+  LOAD8_16( ROM1, "cb_08.rom", 0x080000, 0x010000, 0xbf7b3558),
+  LOAD8_16( ROM1, "cb_07.rom", 0x080000+1, 0x010000, 0x85d219d7),
 
   LOAD( GFX1, "cb_m01.rom", 0x000000, 0x080000, 0x1109337f),
 
@@ -476,11 +492,13 @@ static struct DSW_INFO dsw_cybattlr[] =
 
 static struct ROM_INFO rom_edf[] =
 {
-  LOAD8_16( ROM1,  0,  0x40000,
-            "edf_05.rom",  0x105094d1 , "edf_06.rom",  0x94da2f0c ),
+
+  LOAD8_16( ROM1, "edf_05.rom", 0, 0x40000, 0x105094d1 ),
+  LOAD8_16( ROM1, "edf_06.rom", 0+1, 0x40000, 0x94da2f0c ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x020000,
-            "edf_01.rom",  0x2290ea19 , "edf_02.rom",  0xce93643e ),
+
+  LOAD8_16( ROM1, "edf_01.rom", 0x080000, 0x020000, 0x2290ea19 ),
+  LOAD8_16( ROM1, "edf_02.rom", 0x080000+1, 0x020000, 0xce93643e ),
 LOAD( GFX3, "edf_09.rom", 0, 0x00020000, 0x96e38983),
 LOAD( SOUND2, "edf_m01.rom", 0, 0x00040000, 0x9149286b),
 LOAD( SOUND1, "edf_m02.rom", 0, 0x00040000, 0xfc4281d2),
@@ -533,11 +551,13 @@ static struct DSW_INFO dsw_edf[] =
 
 static struct ROM_INFO rom_hachoo[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "hacho02.rom",  0x49489c27 , "hacho01.rom",  0x97fc9515 ),
+
+  LOAD8_16( ROM1, "hacho02.rom", 0x000000, 0x020000, 0x49489c27 ),
+  LOAD8_16( ROM1, "hacho01.rom", 0x000000+1, 0x020000, 0x97fc9515 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "hacho05.rom",  0x6271f74f , "hacho06.rom",  0xdb9e743c ),
+
+  LOAD8_16( ROM1, "hacho05.rom", 0x060000, 0x010000, 0x6271f74f ),
+  LOAD8_16( ROM1, "hacho06.rom", 0x060000+1, 0x010000, 0xdb9e743c ),
 LOAD( SOUND2, "hacho08.rom", 0x20000, 0x00020000, 0x888a6df1),
 LOAD( SOUND2, "hacho07.rom", 0, 0x00020000, 0x06e6ca7f),
 LOAD( SOUND1, "hacho09.rom", 0, 0x00020000, 0xe9f35c90),
@@ -600,10 +620,12 @@ static struct DSW_INFO dsw_hachoo[] =
 
 static struct ROM_INFO rom_kickoff[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x010000,
-            "kioff03.rom",  0x3b01be65 , "kioff01.rom",  0xae6e68a1 ),
-  LOAD8_16( ROM1,  0x020000,  0x010000,
-            "kioff09.rom",  0x1770e980 , "kioff19.rom",  0x1b03bbe4 ),
+
+  LOAD8_16( ROM1, "kioff03.rom", 0x000000, 0x010000, 0x3b01be65 ),
+  LOAD8_16( ROM1, "kioff01.rom", 0x000000+1, 0x010000, 0xae6e68a1 ),
+
+  LOAD8_16( ROM1, "kioff09.rom", 0x020000, 0x010000, 0x1770e980 ),
+  LOAD8_16( ROM1, "kioff19.rom", 0x020000+1, 0x010000, 0x1b03bbe4 ),
 LOAD( GFX1, "kioff07.rom", 0x40000, 0x00020000, 0xed649919),
 LOAD( GFX1, "kioff05.rom", 0, 0x00020000, 0xe7232103),
 LOAD( GFX1, "kioff06.rom", 0x20000, 0x00020000, 0xa0b3cb75),
@@ -683,8 +705,9 @@ static struct ROM_INFO rom_lomakai[] =
    LOAD( GFX1, "lom_05.rom", 0, 0x00020000, 0xd04fc713),
    LOAD( GFX4, "lom_06.rom", 0, 0x00020000, 0xf33b6eed),
    LOAD( GFX3, "lom_08.rom", 0, 0x00010000, 0xbdb15e67),
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "lom_30.rom",  0xba6d65b8 , "lom_20.rom",  0x56a00dc2 ),
+
+  LOAD8_16( ROM1, "lom_30.rom", 0x000000, 0x020000, 0xba6d65b8 ),
+  LOAD8_16( ROM1, "lom_20.rom", 0x000000+1, 0x020000, 0x56a00dc2 ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -755,18 +778,21 @@ static struct ROM_INFO rom_makaiden[] =
    {   "lom_05.rom", 0x00020000, 0xd04fc713, 0, 0, 0, },
    {   "lom_06.rom", 0x00020000, 0xf33b6eed, 0, 0, 0, },
    {   "makaiden.8", 0x00010000, 0xa7f623f9, 0, 0, 0, },
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "makaiden.3a",  0x87cf81d1 , "makaiden.2a",  0xd40e0fea ),
+
+  LOAD8_16( ROM1, "makaiden.3a", 0x000000, 0x020000, 0x87cf81d1 ),
+  LOAD8_16( ROM1, "makaiden.2a", 0x000000+1, 0x020000, 0xd40e0fea ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_p47[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "p47us3.bin",  0x022e58b8 , "p47us1.bin",  0xed926bd8 ),
+
+  LOAD8_16( ROM1, "p47us3.bin", 0x000000, 0x020000, 0x022e58b8 ),
+  LOAD8_16( ROM1, "p47us1.bin", 0x000000+1, 0x020000, 0xed926bd8 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
+
+  LOAD8_16( ROM1, "p47j_9.bin", 0x060000, 0x010000, 0xffcf318e ),
+  LOAD8_16( ROM1, "p47j_19.bin", 0x060000+1, 0x010000, 0xadb8c12e ),
   LOAD( GFX3, "p47us16.bin", 0x000000, 0x010000, 0x5a682c8f ),
 LOAD( GFX1, "p47j_5.bin", 0, 0x00020000, 0xfe65b65c),
 LOAD( GFX1, "p47j_6.bin", 0x20000, 0x00020000, 0xe191d2d2),
@@ -830,19 +856,22 @@ static struct DSW_INFO dsw_p47[] =
 
 static struct ROM_INFO rom_p47j[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "p47j_3.bin",  0x11c655e5 , "p47j_1.bin",  0x0a5998de ),
+
+  LOAD8_16( ROM1, "p47j_3.bin", 0x000000, 0x020000, 0x11c655e5 ),
+  LOAD8_16( ROM1, "p47j_1.bin", 0x000000+1, 0x020000, 0x0a5998de ),
   // cpu 2
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "p47j_9.bin",  0xffcf318e , "p47j_19.bin",  0xadb8c12e ),
+
+  LOAD8_16( ROM1, "p47j_9.bin", 0x060000, 0x010000, 0xffcf318e ),
+  LOAD8_16( ROM1, "p47j_19.bin", 0x060000+1, 0x010000, 0xadb8c12e ),
   LOAD( GFX3, "p47j_16.bin", 0x000000, 0x010000, 0x30e44375 ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_peekaboo[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "j3",  0xf5f4cf33 , "j2",  0x7b3d430d ),
+
+  LOAD8_16( ROM1, "j3", 0x000000, 0x020000, 0xf5f4cf33 ),
+  LOAD8_16( ROM1, "j2", 0x000000+1, 0x020000, 0x7b3d430d ),
 LOAD( GFX4, "1", 0, 0x00080000, 0x5a444ecf),
 LOAD( GFX1, "5", 0, 0x00080000, 0x34fa07bb),
 LOAD( GFX3, "4", 0, 0x00020000, 0xf037794b),
@@ -929,24 +958,30 @@ static struct SOUND_INFO sound_peekaboo[] =
 
 static struct ROM_INFO rom_phantasm[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "phntsm02.bin",  0xd96a3584 , "phntsm01.bin",  0xa54b4b87 ),
-  LOAD8_16( ROM1,  0x040000,  0x010000,
-            "phntsm03.bin",  0x1d96ce20 , "phntsm04.bin",  0xdc0c4994 ),
+
+  LOAD8_16( ROM1, "phntsm02.bin", 0x000000, 0x020000, 0xd96a3584 ),
+  LOAD8_16( ROM1, "phntsm01.bin", 0x000000+1, 0x020000, 0xa54b4b87 ),
+
+  LOAD8_16( ROM1, "phntsm03.bin", 0x040000, 0x010000, 0x1d96ce20 ),
+  LOAD8_16( ROM1, "phntsm04.bin", 0x040000+1, 0x010000, 0xdc0c4994 ),
   // cpu 2
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "phntsm05.bin",  0x3b169b4a , "phntsm06.bin",  0xdf2dfb2e ),
+
+  LOAD8_16( ROM1, "phntsm05.bin", 0x080000, 0x010000, 0x3b169b4a ),
+  LOAD8_16( ROM1, "phntsm06.bin", 0x080000+1, 0x010000, 0xdf2dfb2e ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_plusalph[] =
 {
-	LOAD8_16( ROM1, 0, 0x020000,
-   "pa-rom2.bin", 0x33244799, "pa-rom1.bin", 0xa32fdcae ),
-	LOAD8_16( ROM1, 0x40000, 0x010000,
-    "pa-rom3.bin", 0x1b739835, "pa-rom4.bin", 0xff760e80 ),
-	LOAD8_16( ROM1, 0x60000, 0x010000,
-     "pa-rom5.bin", 0xddc2739b, "pa-rom6.bin", 0xf6f8a167 ),
+
+	LOAD8_16( ROM1, "pa-rom2.bin", 0, 0x020000, 0x33244799),
+	LOAD8_16( ROM1, "pa-rom1.bin", 0+1, 0x020000, 0xa32fdcae ),
+
+	LOAD8_16( ROM1, "pa-rom3.bin", 0x40000, 0x010000, 0x1b739835),
+	LOAD8_16( ROM1, "pa-rom4.bin", 0x40000+1, 0x010000, 0xff760e80 ),
+
+	LOAD8_16( ROM1, "pa-rom5.bin", 0x60000, 0x010000, 0xddc2739b),
+	LOAD8_16( ROM1, "pa-rom6.bin", 0x60000+1, 0x010000, 0xf6f8a167 ),
    LOAD( SOUND2, "pa-rom7.bin", 0, 0x00020000, 0x9f5d800e),
    LOAD( SOUND2, "pa-rom8.bin", 0x20000, 0x00020000, 0xae007750),
    LOAD( SOUND1, "pa-rom9.bin", 0, 0x00020000, 0x065364bd),
@@ -1008,13 +1043,16 @@ static struct DSW_INFO dsw_plusalph[] =
 
 static struct ROM_INFO rom_rodland[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "rl_02.rom",  0xc7e00593 , "rl_01.rom",  0x2e748ca1 ),
-  LOAD8_16( ROM1,  0x040000,  0x010000,
-            "rl_03.rom",  0x62fdf6d7 , "rl_04.rom",  0x44163c86 ),
+
+  LOAD8_16( ROM1, "rl_02.rom", 0x000000, 0x020000, 0xc7e00593 ),
+  LOAD8_16( ROM1, "rl_01.rom", 0x000000+1, 0x020000, 0x2e748ca1 ),
+
+  LOAD8_16( ROM1, "rl_03.rom", 0x040000, 0x010000, 0x62fdf6d7 ),
+  LOAD8_16( ROM1, "rl_04.rom", 0x040000+1, 0x010000, 0x44163c86 ),
   // cou 2
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "rl_05.rom",  0xc1617c28 , "rl_06.rom",  0x663392b2 ),
+
+  LOAD8_16( ROM1, "rl_05.rom", 0x060000, 0x010000, 0xc1617c28 ),
+  LOAD8_16( ROM1, "rl_06.rom", 0x060000+1, 0x010000, 0x663392b2 ),
   LOAD( GFX1, "rl_23.rom", 0, 0x80000, 0xac60e771 ),
 
   LOAD( GFX2, "rl_18.rom", 0x000000, 0x080000, 0xf3b30ca6 ),
@@ -1063,25 +1101,32 @@ static struct DSW_INFO dsw_rodland[] =
 
 static struct ROM_INFO rom_rodlndjb[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x010000,
-            "rl19.bin",  0x028de21f , "rl17.bin",  0x9c720046 ),
-  LOAD8_16( ROM1,  0x020000,  0x010000,
-            "rl20.bin",  0x3f536d07 , "rl18.bin",  0x5aa61717 ),
-  LOAD8_16( ROM1,  0x040000,  0x010000,
-            "rl_3.bin",  0xc5b1075f , "rl_4.bin",  0x9ec61048 ),
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "rl02.bin",  0xd26eae8f , "rl01.bin",  0x04cf24bc ),
+
+  LOAD8_16( ROM1, "rl19.bin", 0x000000, 0x010000, 0x028de21f ),
+  LOAD8_16( ROM1, "rl17.bin", 0x000000+1, 0x010000, 0x9c720046 ),
+
+  LOAD8_16( ROM1, "rl20.bin", 0x020000, 0x010000, 0x3f536d07 ),
+  LOAD8_16( ROM1, "rl18.bin", 0x020000+1, 0x010000, 0x5aa61717 ),
+
+  LOAD8_16( ROM1, "rl_3.bin", 0x040000, 0x010000, 0xc5b1075f ),
+  LOAD8_16( ROM1, "rl_4.bin", 0x040000+1, 0x010000, 0x9ec61048 ),
+
+  LOAD8_16( ROM1, "rl02.bin", 0x060000, 0x010000, 0xd26eae8f ),
+  LOAD8_16( ROM1, "rl01.bin", 0x060000+1, 0x010000, 0x04cf24bc ),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
 static struct ROM_INFO rom_rodlandj[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "rl_2.bin",  0xb1d2047e , "rl_1.bin",  0x3c47c2a3 ),
-  LOAD8_16( ROM1,  0x040000,  0x010000,
-            "rl_3.bin",  0xc5b1075f , "rl_4.bin",  0x9ec61048 ),
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "rl_05.rom",  0xc1617c28 , "rl_06.rom",  0x663392b2 ),
+
+  LOAD8_16( ROM1, "rl_2.bin", 0x000000, 0x020000, 0xb1d2047e ),
+  LOAD8_16( ROM1, "rl_1.bin", 0x000000+1, 0x020000, 0x3c47c2a3 ),
+
+  LOAD8_16( ROM1, "rl_3.bin", 0x040000, 0x010000, 0xc5b1075f ),
+  LOAD8_16( ROM1, "rl_4.bin", 0x040000+1, 0x010000, 0x9ec61048 ),
+
+  LOAD8_16( ROM1, "rl_05.rom", 0x060000, 0x010000, 0xc1617c28 ),
+  LOAD8_16( ROM1, "rl_06.rom", 0x060000+1, 0x010000, 0x663392b2 ),
   LOAD( GFX1, "rl_14.bin", 0x000000, 0x080000, 0x8201e1bb ),
 
   LOAD( GFX4, "rl_23.bin", 0x000000, 0x080000, 0x936db174 ),
@@ -1090,10 +1135,12 @@ static struct ROM_INFO rom_rodlandj[] =
 
 static struct ROM_INFO rom_stdragon[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-      "jsd-02.bin", 0xcc29ab19, "jsd-01.bin", 0x67429a57),
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-      "jsd-05.bin", 0x8c04feaa, "jsd-06.bin", 0x0bb62f3a),
+
+  LOAD8_16( ROM1, "jsd-02.bin", 0x000000, 0x020000, 0xcc29ab19),
+  LOAD8_16( ROM1, "jsd-01.bin", 0x000000+1, 0x020000, 0x67429a57),
+
+  LOAD8_16( ROM1, "jsd-05.bin", 0x060000, 0x010000, 0x8c04feaa),
+  LOAD8_16( ROM1, "jsd-06.bin", 0x060000+1, 0x010000, 0x0bb62f3a),
    LOAD( SOUND2, "jsd-07.bin", 0, 0x00020000, 0x6a48e979),
    LOAD( SOUND2, "jsd-08.bin", 0x20000, 0x00020000, 0x40704962),
    LOAD( SOUND1, "jsd-09.bin", 0, 0x00020000, 0xe366bc5a),
@@ -1160,12 +1207,15 @@ static struct DSW_INFO dsw_stdragon[] =
 
 static struct ROM_INFO rom_soldamj[] =
 {
-  LOAD8_16( CPU1, 0, 0x00020000,
-             "soldam2.bin", 0xc73d29e4,  "soldam1.bin", 0xe7cb0c20),
-  LOAD8_16( CPU1, 0x40000, 0x00010000,
-             "soldam3.bin", 0xc5382a07,  "soldam4.bin", 0x1df7816f),
-  LOAD8_16( CPU1, 0x60000, 0x00010000,
-             "soldam5.bin", 0xd1019a67,  "soldam6.bin", 0x3ed219b4),
+
+  LOAD8_16( CPU1, "soldam2.bin", 0, 0x00020000, 0xc73d29e4),
+  LOAD8_16( CPU1, "soldam1.bin", 0+1, 0x00020000, 0xe7cb0c20),
+
+  LOAD8_16( CPU1, "soldam3.bin", 0x40000, 0x00010000, 0xc5382a07),
+  LOAD8_16( CPU1, "soldam4.bin", 0x40000+1, 0x00010000, 0x1df7816f),
+
+  LOAD8_16( CPU1, "soldam5.bin", 0x60000, 0x00010000, 0xd1019a67),
+  LOAD8_16( CPU1, "soldam6.bin", 0x60000+1, 0x00010000, 0x3ed219b4),
 LOAD( SOUND2, "soldam8.bin", 0, 0x00040000, 0xfcd36019),
 LOAD( SOUND1, "soldam10.bin", 0, 0x00040000, 0x8d5613bf),
 LOAD( GFX1, "soldam14.bin", 0, 0x00080000, 0x26cea54a),
@@ -1228,12 +1278,15 @@ static struct ROMSW_INFO romsw_soldamj[] =
 
 static struct ROM_INFO rom_iganinju[] =
 {
-  LOAD8_16( CPU1, 0, 0x00020000,
-             "iga_02.bin", 0xbd00c280,  "iga_01.bin", 0xfa416a9e),
-  LOAD8_16( CPU1, 0x40000, 0x00010000,
-             "iga_03.bin", 0xde5937ad,  "iga_04.bin", 0xafaf0480),
-  LOAD8_16( CPU1, 0x60000, 0x00010000,
-             "iga_05.bin", 0x13580868,  "iga_06.bin", 0x7904d5dd),
+
+  LOAD8_16( CPU1, "iga_02.bin", 0, 0x00020000, 0xbd00c280),
+  LOAD8_16( CPU1, "iga_01.bin", 0+1, 0x00020000, 0xfa416a9e),
+
+  LOAD8_16( CPU1, "iga_03.bin", 0x40000, 0x00010000, 0xde5937ad),
+  LOAD8_16( CPU1, "iga_04.bin", 0x40000+1, 0x00010000, 0xafaf0480),
+
+  LOAD8_16( CPU1, "iga_05.bin", 0x60000, 0x00010000, 0x13580868),
+  LOAD8_16( CPU1, "iga_06.bin", 0x60000+1, 0x00010000, 0x7904d5dd),
 LOAD( SOUND2, "iga_08.bin", 0, 0x00040000, 0x857dbf60),
 LOAD( SOUND1, "iga_10.bin", 0, 0x00040000, 0x67a89e0d),
 LOAD( GFX1, "iga_14.bin", 0, 0x00040000, 0xc707d513),
@@ -1310,10 +1363,12 @@ static struct DSW_INFO dsw_iganinju[] =
 
 static struct ROM_INFO rom_tshingen[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "takeda2.bin",  0x6ddfc9f3 , "takeda1.bin",  0x1afc6b7d ),
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "takeda5.bin",  0xfbdc51c0 , "takeda6.bin",  0x8fa65b69 ),
+
+  LOAD8_16( ROM1, "takeda2.bin", 0x000000, 0x020000, 0x6ddfc9f3 ),
+  LOAD8_16( ROM1, "takeda1.bin", 0x000000+1, 0x020000, 0x1afc6b7d ),
+
+  LOAD8_16( ROM1, "takeda5.bin", 0x060000, 0x010000, 0xfbdc51c0 ),
+  LOAD8_16( ROM1, "takeda6.bin", 0x060000+1, 0x010000, 0x8fa65b69 ),
 LOAD( SOUND2, "shing_07.rom", 0, 0x00020000, 0xc37ecbdc),
 LOAD( SOUND2, "shing_08.rom", 0x20000, 0x00020000, 0x36d56c8c),
 LOAD( SOUND1, "takeda9.bin", 0, 0x00020000, 0xdb7f3f4f),
@@ -1376,10 +1431,12 @@ static struct DSW_INFO dsw_tshingen[] =
 
 static struct ROM_INFO rom_tshingna[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "shing_02.rom",  0xd9ab5b78 , "shing_01.rom",  0xa9d2de20 ),
-  LOAD8_16( ROM1,  0x060000,  0x010000,
-            "takeda5.bin",  0xfbdc51c0 , "takeda6.bin",  0x8fa65b69 ),
+
+  LOAD8_16( ROM1, "shing_02.rom", 0x000000, 0x020000, 0xd9ab5b78 ),
+  LOAD8_16( ROM1, "shing_01.rom", 0x000000+1, 0x020000, 0xa9d2de20 ),
+
+  LOAD8_16( ROM1, "takeda5.bin", 0x060000, 0x010000, 0xfbdc51c0 ),
+  LOAD8_16( ROM1, "takeda6.bin", 0x060000+1, 0x010000, 0x8fa65b69 ),
   LOAD( GFX1, "takeda11.bin", 0x000000, 0x020000, 0xbf0b40a6 ),
 
   LOAD( GFX1, "shing_12.rom", 0x020000, 0x020000, 0x5e4adedb ),

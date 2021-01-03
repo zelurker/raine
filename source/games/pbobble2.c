@@ -26,8 +26,9 @@ static struct ROM_INFO rom_pbobble2[] =
   { "e10-05.rom", 0x100000, 0x81266151, REGION_GFX2 , 0x000000, LOAD_MASK8_45 },
   { "e10-03.rom", 0x200000, 0x46d68ac8, REGION_SOUND1 , 0x000000, LOAD_BE }, // CC CD CE CF
   { "e10-04.rom", 0x200000, 0x5c0862a6, REGION_SOUND1 , 0x400000, LOAD_BE }, // C8 C9 CA CB
-  LOAD8_16( ROM2,  0x000000,  0x00040000,
-              "e10-12.rom",  0xb92dc8ad,   "e10-13.rom",  0x87842c13),
+
+  LOAD8_16( ROM2, "e10-12.rom", 0x000000, 0x00040000, 0xb92dc8ad),
+  LOAD8_16( ROM2, "e10-13.rom", 0x000000+1, 0x00040000, 0x87842c13),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -60,8 +61,9 @@ static struct ROM_INFO rom_pbobble2x[] = // clone of pbobble2
   { "e10-28.19", 0x40000, 0x412a3602, REGION_CPU1, 0x000001, LOAD_8_32 },
   { "e10-27.18", 0x40000, 0x88cc0b5c, REGION_CPU1, 0x000002, LOAD_8_32 },
   { "e10-26.17", 0x40000, 0xa5c24047, REGION_CPU1, 0x000003, LOAD_8_32 },
-  LOAD8_16( ROM2,  0x000000,  0x00040000,
-                  "e10.30",  0xbb090c1e,       "e10.31",  0xf4b88d65),
+
+  LOAD8_16( ROM2, "e10.30", 0x000000, 0x00040000, 0xbb090c1e),
+  LOAD8_16( ROM2, "e10.31", 0x000000+1, 0x00040000, 0xf4b88d65),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 

@@ -18,8 +18,9 @@
 
 static struct ROM_INFO rom_shadoww[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "shadowa.1",  0x8290d567, "shadowa.2",  0xf3f08921),
+
+  LOAD8_16( ROM1, "shadowa.1", 0x00000, 0x20000, 0x8290d567),
+  LOAD8_16( ROM1, "shadowa.2", 0x00000+1, 0x20000, 0xf3f08921),
   LOAD( ROM2, "gaiden.3", 0x0000, 0x10000, 0x75fd3e6a),
   LOAD( GFX1, "gaiden.5", 0x000000, 0x10000, 0x8d4035f7),
   LOAD( GFX2, "14.bin", 0x000000, 0x20000, 0x1ecfddaa),
@@ -46,8 +47,9 @@ static struct ROM_INFO rom_shadoww[] =
 
 static struct ROM_INFO rom_shadowwa[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "shadoww.1",  0xfefba387, "shadoww.2",  0x9b9d6b18),
+
+  LOAD8_16( ROM1, "shadoww.1", 0x00000, 0x20000, 0xfefba387),
+  LOAD8_16( ROM1, "shadoww.2", 0x00000+1, 0x20000, 0x9b9d6b18),
   LOAD( ROM2, "gaiden.3", 0x0000, 0x10000, 0x75fd3e6a),
   LOAD( GFX1, "gaiden.5", 0x000000, 0x10000, 0x8d4035f7),
   LOAD( GFX2, "14.bin", 0x000000, 0x20000, 0x1ecfddaa),
@@ -74,8 +76,9 @@ static struct ROM_INFO rom_shadowwa[] =
 
 static struct ROM_INFO rom_gaiden[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "gaiden.1",  0xe037ff7c, "gaiden.2",  0x454f7314),
+
+  LOAD8_16( ROM1, "gaiden.1", 0x00000, 0x20000, 0xe037ff7c),
+  LOAD8_16( ROM1, "gaiden.2", 0x00000+1, 0x20000, 0x454f7314),
   LOAD( ROM2, "gaiden.3", 0x0000, 0x10000, 0x75fd3e6a),
   LOAD( GFX1, "gaiden.5", 0x000000, 0x10000, 0x8d4035f7),
   LOAD( GFX2, "14.bin", 0x000000, 0x20000, 0x1ecfddaa),
@@ -100,8 +103,9 @@ static struct ROM_INFO rom_gaiden[] =
 
 static struct ROM_INFO rom_ryukendn[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "ryukendn.1",  0x6203a5e2, "ryukendn.2",  0x9e99f522),
+
+  LOAD8_16( ROM1, "ryukendn.1", 0x00000, 0x20000, 0x6203a5e2),
+  LOAD8_16( ROM1, "ryukendn.2", 0x00000+1, 0x20000, 0x9e99f522),
   LOAD( ROM2, "ryukendn.3", 0x0000, 0x10000, 0x6b686b69),
   LOAD( GFX1, "ryukendn.5", 0x000000, 0x10000, 0x765e7baa),
   LOAD( GFX2, "14.bin", 0x000000, 0x20000, 0x1ecfddaa),
@@ -129,8 +133,9 @@ static struct ROM_INFO rom_ryukendn[] =
 
 static struct ROM_INFO rom_tknight[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "tkni1.bin",  0x9121daa8, "tkni2.bin",  0x6669cd87),
+
+  LOAD8_16( ROM1, "tkni1.bin", 0x00000, 0x20000, 0x9121daa8),
+  LOAD8_16( ROM1, "tkni2.bin", 0x00000+1, 0x20000, 0x6669cd87),
   LOAD( ROM2, "tkni3.bin", 0x0000, 0x10000, 0x15623ec7),
   LOAD( GFX1, "tkni5.bin", 0x000000, 0x10000, 0x5ed15896),
   LOAD( GFX2, "tkni7.bin", 0x000000, 0x80000, 0x4b4d4286),
@@ -143,8 +148,9 @@ static struct ROM_INFO rom_tknight[] =
 
 static struct ROM_INFO rom_wildfang[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "1.3st",  0xab876c9b, "2.5st",  0x1dc74b3b),
+
+  LOAD8_16( ROM1, "1.3st", 0x00000, 0x20000, 0xab876c9b),
+  LOAD8_16( ROM1, "2.5st", 0x00000+1, 0x20000, 0x1dc74b3b),
   LOAD( ROM2, "tkni3.bin", 0x0000, 0x10000, 0x15623ec7),
   LOAD( GFX1, "tkni5.bin", 0x000000, 0x10000, 0x5ed15896),
   LOAD( GFX2, "14.3a", 0x000000, 0x20000, 0x0d20c10c),
@@ -167,8 +173,9 @@ static struct ROM_INFO rom_wildfang[] =
 
 static struct ROM_INFO stratof_roms[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "1.3s",  0x060822a4, "2.4s",  0x339358fa),
+
+  LOAD8_16( ROM1, "1.3s", 0x00000, 0x20000, 0x060822a4),
+  LOAD8_16( ROM1, "2.4s", 0x00000+1, 0x20000, 0x339358fa),
   LOAD( ROM2, "a-4b.3", 0x00000, 0x10000, 0x18655c95),
   LOAD( CPU3, "a-6v.mcu", 0x00000, 0x1000, NO_DUMP ),
   LOAD( GFX1, "b-7a.5", 0x00000, 0x10000, 0x6d2e4bf1),
@@ -182,8 +189,9 @@ static struct ROM_INFO stratof_roms[] =
 
 static struct ROM_INFO raiga_roms[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x20000,
-            "a-3s.1",  0x303c2a6c, "a-4s.2",  0x5f31fecb),
+
+  LOAD8_16( ROM1, "a-3s.1", 0x00000, 0x20000, 0x303c2a6c),
+  LOAD8_16( ROM1, "a-4s.2", 0x00000+1, 0x20000, 0x5f31fecb),
   LOAD( ROM2, "a-4b.3", 0x00000, 0x10000, 0x18655c95),
   LOAD( CPU3, "a-6v.mcu", 0x00000, 0x1000, NO_DUMP ),
   LOAD( GFX1, "b-7a.5", 0x00000, 0x10000, 0x6d2e4bf1),

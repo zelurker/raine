@@ -1120,8 +1120,9 @@ static struct GFX_LIST usclssic_gfxdecodeinfo[] =
 
 static struct ROM_INFO rom_daioh[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "fg1-001",  0x104ae74a, "fg1-002",  0xe39a4e67),
+
+  LOAD8_16( ROM1, "fg1-001", 0x000000, 0x080000, 0x104ae74a),
+  LOAD8_16( ROM1, "fg1-002", 0x000000+1, 0x080000, 0xe39a4e67),
   LOAD( GFX1, "fg1-004", 0x000000, 0x100000, 0x9ab0533e),
   LOAD( GFX1, "fg1-003", 0x100000, 0x100000, 0x1c9d51e2),
   LOAD( GFX2, "fg1-005", 0x000000, 0x200000, 0xc25159b9),
@@ -1132,8 +1133,9 @@ static struct ROM_INFO rom_daioh[] =
 
 static struct ROM_INFO rom_neobattl[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "bp923001.u45",  0x0d0aeb73, "bp923002.u46",  0x9731fbbc),
+
+  LOAD8_16( ROM1, "bp923001.u45", 0x000000, 0x020000, 0x0d0aeb73),
+  LOAD8_16( ROM1, "bp923002.u46", 0x000000+1, 0x020000, 0x9731fbbc),
   LOAD( GFX1, "bp923003.u15", 0x00000, 0x80000, 0x91ca98a1),
   LOAD( GFX1, "bp923004.u9", 0x80000, 0x80000, 0x15c678e3),
   LOAD( SMP1, "bp923005.u4", 0x000000, 0x100000, 0x7c0e37be),
@@ -1154,8 +1156,9 @@ static struct ROM_INFO rom_msgundam[] =
 
 static struct ROM_INFO rom_umanclub[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "uw001006.u48",  0x3dae1e9d, "uw001007.u49",  0x5c21e702),
+
+  LOAD8_16( ROM1, "uw001006.u48", 0x000000, 0x020000, 0x3dae1e9d),
+  LOAD8_16( ROM1, "uw001007.u49", 0x000000+1, 0x020000, 0x5c21e702),
   LOAD( GFX1, "bp-u-002.u2", 0x000000, 0x080000, 0x936cbaaa),
   LOAD( GFX1, "bp-u-001.u1", 0x080000, 0x080000, 0x87813c48),
   LOAD( SMP1, "uw003.u13", 0x000000, 0x100000, 0xe2f718eb),
@@ -1164,8 +1167,9 @@ static struct ROM_INFO rom_umanclub[] =
 
 static struct ROM_INFO rom_wiggie[] =
 {
-  LOAD8_16( ROM1,  0x00000,  0x10000,
-            "wiggie.f19",  0x24b58f16, "wiggie.f21",  0x83ba6edb),
+
+  LOAD8_16( ROM1, "wiggie.f19", 0x00000, 0x10000, 0x24b58f16),
+  LOAD8_16( ROM1, "wiggie.f21", 0x00000+1, 0x10000, 0x83ba6edb),
   LOAD( ROM2, "wiggie.a5", 0x00000, 0x10000, 0x8078d77b),
   LOAD( SMP1, "wiggie.d1", 0x00000, 0x40000, 0x27fbe12a),
   LOAD( GFX1, "wiggie.k16", 0x00000, 0x20000, 0x4fb40b8a),
@@ -1177,10 +1181,12 @@ static struct ROM_INFO rom_wiggie[] =
 
 static struct ROM_INFO rom_stg[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "att01003.u27",  0x7a640a93, "att01001.u9",  0x4fa88ad3),
-  LOAD8_16( ROM1,  0x040000,  0x020000,
-            "att01004.u33",  0xbbd45ca1, "att01002.u17",  0x2f8fd80c),
+
+  LOAD8_16( ROM1, "att01003.u27", 0x000000, 0x020000, 0x7a640a93),
+  LOAD8_16( ROM1, "att01001.u9", 0x000000+1, 0x020000, 0x4fa88ad3),
+
+  LOAD8_16( ROM1, "att01004.u33", 0x040000, 0x020000, 0xbbd45ca1),
+  LOAD8_16( ROM1, "att01002.u17", 0x040000+1, 0x020000, 0x2f8fd80c),
   LOAD( GFX1, "att01006.u32", 0x000000, 0x080000, 0x6ad78ea2),
   LOAD( GFX1, "att01005.u26", 0x080000, 0x080000, 0xa347ff00),
   LOAD( GFX2, "att01008.u39", 0x000000, 0x080000, 0x20c47457),
@@ -1192,16 +1198,21 @@ static struct ROM_INFO rom_stg[] =
 
 static struct ROM_INFO rom_drgnunit[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "prg-e.bin",  0x728447df, "prg-o.bin",  0xb2f58ecf),
-  LOAD8_16( GFX1,  0x000000,  0x020000,
-            "obj-2.bin",  0xd7f6ab5a, "obj-1.bin",  0x53a95b13),
-  LOAD8_16( GFX1,  0x040000,  0x020000,
-            "obj-6.bin",  0x80b801f7, "obj-5.bin",  0x6b87bc20),
-  LOAD8_16( GFX1,  0x080000,  0x020000,
-            "obj-4.bin",  0x60d17771, "obj-3.bin",  0x0bccd4d5),
-  LOAD8_16( GFX1,  0x0c0000,  0x020000,
-            "obj-8.bin",  0x826c1543, "obj-7.bin",  0xcbaa7f6a),
+
+  LOAD8_16( ROM1, "prg-e.bin", 0x000000, 0x020000, 0x728447df),
+  LOAD8_16( ROM1, "prg-o.bin", 0x000000+1, 0x020000, 0xb2f58ecf),
+
+  LOAD8_16( GFX1, "obj-2.bin", 0x000000, 0x020000, 0xd7f6ab5a),
+  LOAD8_16( GFX1, "obj-1.bin", 0x000000+1, 0x020000, 0x53a95b13),
+
+  LOAD8_16( GFX1, "obj-6.bin", 0x040000, 0x020000, 0x80b801f7),
+  LOAD8_16( GFX1, "obj-5.bin", 0x040000+1, 0x020000, 0x6b87bc20),
+
+  LOAD8_16( GFX1, "obj-4.bin", 0x080000, 0x020000, 0x60d17771),
+  LOAD8_16( GFX1, "obj-3.bin", 0x080000+1, 0x020000, 0x0bccd4d5),
+
+  LOAD8_16( GFX1, "obj-8.bin", 0x0c0000, 0x020000, 0x826c1543),
+  LOAD8_16( GFX1, "obj-7.bin", 0x0c0000+1, 0x020000, 0xcbaa7f6a),
   LOAD( GFX2, "scr-1o.bin", 0x000000, 0x020000, 0x671525db),
   LOAD( GFX2, "scr-2o.bin", 0x020000, 0x020000, 0x2a3f2ed8),
   LOAD( GFX2, "scr-3o.bin", 0x040000, 0x020000, 0x4d33a92d),
@@ -1223,13 +1234,16 @@ static struct ROM_INFO rom_drgnunit[] =
 
 static struct ROM_INFO rom_arbalest[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "uk001.03",  0xee878a2c, "uk001.04",  0x902bb4e3),
+
+  LOAD8_16( ROM1, "uk001.03", 0x000000, 0x040000, 0xee878a2c),
+  LOAD8_16( ROM1, "uk001.04", 0x000000+1, 0x040000, 0x902bb4e3),
   LOAD( ROM2, "uk001.05", 0x000000, 0x002000, 0x0339fc53),
-  LOAD8_16( GFX1,  0x000000,  0x040000,
-            "uk001.06",  0x11c75746, "uk001.07",  0x01b166c7),
-  LOAD8_16( GFX1,  0x080000,  0x040000,
-            "uk001.08",  0x78d60ba3, "uk001.09",  0xb4748ae0),
+
+  LOAD8_16( GFX1, "uk001.06", 0x000000, 0x040000, 0x11c75746),
+  LOAD8_16( GFX1, "uk001.07", 0x000000+1, 0x040000, 0x01b166c7),
+
+  LOAD8_16( GFX1, "uk001.08", 0x080000, 0x040000, 0x78d60ba3),
+  LOAD8_16( GFX1, "uk001.09", 0x080000+1, 0x040000, 0xb4748ae0),
   LOAD( GFX2, "uk001.10", 0x000000, 0x080000, 0xc1e2f823),
   LOAD( GFX2, "uk001.11", 0x080000, 0x080000, 0x09dfe56a),
   LOAD( GFX2, "uk001.12", 0x100000, 0x080000, 0x818a4085),
@@ -1241,10 +1255,12 @@ static struct ROM_INFO rom_arbalest[] =
 
 static struct ROM_INFO rom_tndrcade[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "ua0-4.1l",  0x73bd63eb, "ua0-2.1h",  0xe96194b1),
-  LOAD8_16( ROM1,  0x040000,  0x020000,
-            "ua0-3.1k",  0x0a7b1c41, "ua0-1.1g",  0xfa906626),
+
+  LOAD8_16( ROM1, "ua0-4.1l", 0x000000, 0x020000, 0x73bd63eb),
+  LOAD8_16( ROM1, "ua0-2.1h", 0x000000+1, 0x020000, 0xe96194b1),
+
+  LOAD8_16( ROM1, "ua0-3.1k", 0x040000, 0x020000, 0x0a7b1c41),
+  LOAD8_16( ROM1, "ua0-1.1g", 0x040000+1, 0x020000, 0xfa906626),
   LOAD( ROM2, "ua10-5.8m", 0x000000, 0x020000, 0x8eff6122),
   LOAD( GFX1, "ua0-10", 0x000000, 0x040000, 0xaa7b6757),
   LOAD( GFX1, "ua0-11", 0x040000, 0x040000, 0x11eaf931),
@@ -1259,15 +1275,19 @@ static struct ROM_INFO rom_tndrcade[] =
 
 static struct ROM_INFO rom_metafox[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "p1003161",  0x4fd6e6a1 , "p1004162",  0xb6356c9a ),
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "up001002",  0xce91c987 , "up001001",  0x0db7a505 ),
+
+  LOAD8_16( ROM1, "p1003161", 0x000000, 0x040000, 0x4fd6e6a1 ),
+  LOAD8_16( ROM1, "p1004162", 0x000000+1, 0x040000, 0xb6356c9a ),
+
+  LOAD8_16( ROM1, "up001002", 0x080000, 0x010000, 0xce91c987 ),
+  LOAD8_16( ROM1, "up001001", 0x080000+1, 0x010000, 0x0db7a505 ),
   LOAD( ROM2, "up001005", 0x000000, 0x002000, 0x2ac5e3e3 ),
-  LOAD8_16( GFX1,  0x000000,  0x040000,
-            "p1006163",  0x80f69c7c , "p1007164",  0xd137e1a3 ),
-  LOAD8_16( GFX1,  0x080000,  0x040000,
-            "p1008165",  0x57494f2b , "p1009166",  0x8344afd2 ),
+
+  LOAD8_16( GFX1, "p1006163", 0x000000, 0x040000, 0x80f69c7c ),
+  LOAD8_16( GFX1, "p1007164", 0x000000+1, 0x040000, 0xd137e1a3 ),
+
+  LOAD8_16( GFX1, "p1008165", 0x080000, 0x040000, 0x57494f2b ),
+  LOAD8_16( GFX1, "p1009166", 0x080000+1, 0x040000, 0x8344afd2 ),
   LOAD( GFX2, "up001010", 0x000000, 0x080000, 0xbfbab472 ),
   LOAD( GFX2, "up001011", 0x080000, 0x080000, 0x26cea381 ),
   LOAD( GFX2, "up001012", 0x100000, 0x080000, 0xfed2c5f9 ),
@@ -1279,15 +1299,19 @@ static struct ROM_INFO rom_metafox[] =
 
 static struct ROM_INFO rom_downtown[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "ud2001.000",  0xf1965260, "ud2001.003",  0xe7d5fa5f),
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "ud2000.002",  0xa300e3ac, "ud2000.001",  0xd2918094),
+
+  LOAD8_16( ROM1, "ud2001.000", 0x000000, 0x040000, 0xf1965260),
+  LOAD8_16( ROM1, "ud2001.003", 0x000000+1, 0x040000, 0xe7d5fa5f),
+
+  LOAD8_16( ROM1, "ud2000.002", 0x080000, 0x010000, 0xa300e3ac),
+  LOAD8_16( ROM1, "ud2000.001", 0x080000+1, 0x010000, 0xd2918094),
   LOAD( ROM2, "ud2002.004", 0x000000, 0x040000, 0xbbd538b1),
-  LOAD8_16( GFX1,  0x000000,  0x080000,
-            "ud2005.t01",  0x77e6d249, "ud2006.t02",  0x6e381bf2),
-  LOAD8_16( GFX1,  0x100000,  0x080000,
-            "ud2007.t03",  0x737b4971, "ud2008.t04",  0x99b9d757),
+
+  LOAD8_16( GFX1, "ud2005.t01", 0x000000, 0x080000, 0x77e6d249),
+  LOAD8_16( GFX1, "ud2006.t02", 0x000000+1, 0x080000, 0x6e381bf2),
+
+  LOAD8_16( GFX1, "ud2007.t03", 0x100000, 0x080000, 0x737b4971),
+  LOAD8_16( GFX1, "ud2008.t04", 0x100000+1, 0x080000, 0x99b9d757),
   LOAD( GFX2, "ud2009.t05", 0x000000, 0x080000, 0xaee6c581),
   LOAD( GFX2, "ud2010.t06", 0x080000, 0x080000, 0x3d399d54),
   LOAD( SMP1, "ud2011.t07", 0x000000, 0x080000, 0x9c9ff69f),
@@ -1296,12 +1320,15 @@ static struct ROM_INFO rom_downtown[] =
 
 static struct ROM_INFO rom_thunderl[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x008000,
-            "m4",  0x1e6b9462, "m5",  0x7e82793e),
-  LOAD8_16( GFX1,  0x000000,  0x020000,
-            "t17",  0x599a632a, "t16",  0x3aeef91c),
-  LOAD8_16( GFX1,  0x040000,  0x020000,
-            "t15",  0xb97a7b56, "t14",  0x79c707be),
+
+  LOAD8_16( ROM1, "m4", 0x000000, 0x008000, 0x1e6b9462),
+  LOAD8_16( ROM1, "m5", 0x000000+1, 0x008000, 0x7e82793e),
+
+  LOAD8_16( GFX1, "t17", 0x000000, 0x020000, 0x599a632a),
+  LOAD8_16( GFX1, "t16", 0x000000+1, 0x020000, 0x3aeef91c),
+
+  LOAD8_16( GFX1, "t15", 0x040000, 0x020000, 0xb97a7b56),
+  LOAD8_16( GFX1, "t14", 0x040000+1, 0x020000, 0x79c707be),
   LOAD( SMP1, "r28", 0x000000, 0x080000, 0xa043615d),
   LOAD( SMP1, "r27", 0x080000, 0x080000, 0xcb8425a3),
   { NULL, 0, 0, 0, 0, 0 }
@@ -1309,12 +1336,15 @@ static struct ROM_INFO rom_thunderl[] =
 
 static struct ROM_INFO rom_wits[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x008000,
-            "un001001.u1",  0x416c567e, "un001002.u4",  0x497a3fa6),
-  LOAD8_16( GFX1,  0x000000,  0x020000,
-            "un001008.7l",  0x1d5d0b2b, "un001007.5l",  0x9e1e6d51),
-  LOAD8_16( GFX1,  0x040000,  0x020000,
-            "un001006.4l",  0x98a980d4, "un001005.2l",  0x6f2ce3c0),
+
+  LOAD8_16( ROM1, "un001001.u1", 0x000000, 0x008000, 0x416c567e),
+  LOAD8_16( ROM1, "un001002.u4", 0x000000+1, 0x008000, 0x497a3fa6),
+
+  LOAD8_16( GFX1, "un001008.7l", 0x000000, 0x020000, 0x1d5d0b2b),
+  LOAD8_16( GFX1, "un001007.5l", 0x000000+1, 0x020000, 0x9e1e6d51),
+
+  LOAD8_16( GFX1, "un001006.4l", 0x040000, 0x020000, 0x98a980d4),
+  LOAD8_16( GFX1, "un001005.2l", 0x040000+1, 0x020000, 0x6f2ce3c0),
   LOAD( SMP1, "un001004.12a", 0x000000, 0x020000, 0xa15ff938),
   LOAD( SMP1, "un001003.10a", 0x020000, 0x020000, 0x3f4b9e55),
   { NULL, 0, 0, 0, 0, 0 }
@@ -1324,10 +1354,12 @@ static struct ROM_INFO rom_twineagl[] =
 {
   LOAD( ROM1, "ua2-1", 0x000000, 0x080000, 0x5c3fe531),
   LOAD( ROM2, "ua2-2", 0x000000, 0x002000, 0x783ca84e),
-  LOAD8_16( GFX1,  0x000000,  0x040000,
-            "ua2-4",  0x8b7532d6, "ua2-3",  0x1124417a),
-  LOAD8_16( GFX1,  0x080000,  0x040000,
-            "ua2-6",  0x99d8dbba, "ua2-5",  0x6e450d28),
+
+  LOAD8_16( GFX1, "ua2-4", 0x000000, 0x040000, 0x8b7532d6),
+  LOAD8_16( GFX1, "ua2-3", 0x000000+1, 0x040000, 0x1124417a),
+
+  LOAD8_16( GFX1, "ua2-6", 0x080000, 0x040000, 0x99d8dbba),
+  LOAD8_16( GFX1, "ua2-5", 0x080000+1, 0x040000, 0x6e450d28),
   LOAD( GFX2, "ua2-8", 0x000000, 0x080000, 0x7d3a8d73),
   LOAD( GFX2, "ua2-10", 0x080000, 0x080000, 0x5bbe1f56),
   LOAD( GFX2, "ua2-7", 0x100000, 0x080000, 0xfce56907),
@@ -1339,8 +1371,9 @@ static struct ROM_INFO rom_twineagl[] =
 
 static struct ROM_INFO rom_blandia[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "ux001001.003",  0x2376a1f3, "ux001002.004",  0xb915e172),
+
+  LOAD8_16( ROM1, "ux001001.003", 0x000000, 0x040000, 0x2376a1f3),
+  LOAD8_16( ROM1, "ux001002.004", 0x000000+1, 0x040000, 0xb915e172),
   LOAD_SW16( ROM1, "ux001003.202", 0x100000, 0x100000, 0x98052c63),
   LOAD( GFX1, "ux001005.200", 0x300000, 0x100000, 0xbea0c4a5),
   LOAD( GFX1, "ux001007.201", 0x100000, 0x100000, 0x4440fdd1),
@@ -1359,8 +1392,9 @@ static struct ROM_INFO rom_blandia[] =
 
 static struct ROM_INFO rom_eightfrc[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "uy2-u4.u3",  0xf1f249c5, "uy2-u3.u4",  0x6f2d8618),
+
+  LOAD8_16( ROM1, "uy2-u4.u3", 0x000000, 0x040000, 0xf1f249c5),
+  LOAD8_16( ROM1, "uy2-u3.u4", 0x000000+1, 0x040000, 0x6f2d8618),
   LOAD( GFX1, "u64.bin", 0x000000, 0x080000, 0xf561ff2e),
   LOAD( GFX1, "u63.bin", 0x080000, 0x080000, 0x4c3f8366),
   LOAD( GFX2, "u66.bin", 0x000000, 0x100000, 0x6fad2b7f),
@@ -1373,28 +1407,33 @@ static struct ROM_INFO rom_eightfrc[] =
 
 static struct ROM_INFO rom_gundhara[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "bpgh-003.u3",  0x14e9970a, "bpgh-004.u4",  0x96dfc658),
-  LOAD8_16( ROM1,  0x100000,  0x080000,
-            "bpgh-002.103",  0x312f58e2, "bpgh-001.102",  0x8d23a23c),
+
+  LOAD8_16( ROM1, "bpgh-003.u3", 0x000000, 0x080000, 0x14e9970a),
+  LOAD8_16( ROM1, "bpgh-004.u4", 0x000000+1, 0x080000, 0x96dfc658),
+
+  LOAD8_16( ROM1, "bpgh-002.103", 0x100000, 0x080000, 0x312f58e2),
+  LOAD8_16( ROM1, "bpgh-001.102", 0x100000+1, 0x080000, 0x8d23a23c),
   LOAD( GFX1, "bpgh-008.u64", 0x000000, 0x200000, 0x7ed9d272),
   LOAD( GFX1, "bpgh-006.201", 0x200000, 0x200000, 0x5a81411d),
   LOAD( GFX1, "bpgh-007.u63", 0x400000, 0x200000, 0xaa49ce7b),
   LOAD( GFX1, "bpgh-005.200", 0x600000, 0x200000, 0x74138266),
   LOAD( GFX2, "bpgh-010.u66", 0x000000, 0x100000, 0xb742f0b8),
-  LOAD8_16( GFX2,  0x100000,  0x080000,
-            "bpgh-009.u65",  0xb768e666, "bpgh-009.u65",  0xb768e666),
+
+  LOAD8_16( GFX2, "bpgh-009.u65", 0x100000, 0x080000, 0xb768e666),
+  LOAD8_16( GFX2, "bpgh-009.u65", 0x100000+1, 0x080000, 0xb768e666),
   LOAD( GFX3, "bpgh-012.u68", 0x000000, 0x200000, 0xedfda595),
-  LOAD8_16( GFX3,  0x200000,  0x100000,
-            "bpgh-011.u67",  0x49aff270, "bpgh-011.u67",  0x49aff270),
+
+  LOAD8_16( GFX3, "bpgh-011.u67", 0x200000, 0x100000, 0x49aff270),
+  LOAD8_16( GFX3, "bpgh-011.u67", 0x200000+1, 0x100000, 0x49aff270),
   LOAD( SMP1, "bpgh-013.u70", 0, 0x100000, 0x0fa5d503),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_jjsquawk[] =
 {
-  LOAD8_16( ROM1,  0,  0x80000,
-            "jj-rom1.040",  0x7b9af960, "jj-rom2.040",  0x47dd71a3),
+
+  LOAD8_16( ROM1, "jj-rom1.040", 0, 0x80000, 0x7b9af960),
+  LOAD8_16( ROM1, "jj-rom2.040", 0+1, 0x80000, 0x47dd71a3),
   // reserve 0x80000 bytes to move a part of the rom...
   LOAD( ROM1, "jj-rom2.040", 0x100000, 0x80000, 0x47dd71a3),
   LOAD( GFX1, "jj-rom9", 0x000000, 0x080000, 0x27441cd3),
@@ -1403,12 +1442,14 @@ static struct ROM_INFO rom_jjsquawk[] =
   LOAD( GFX1, "jj-rom8", 0x180000, 0x080000, 0x2690c57b),
   LOAD( GFX2, "jj-rom11", 0x000000, 0x080000, 0x98b9f4b4),
   LOAD( GFX2, "jj-rom12", 0x080000, 0x080000, 0xd4aa916c),
-  LOAD8_16( GFX2,  0x100000,  0x080000,
-            "jj-rom3.040",  0xa5a35caf, "jj-rom3.040",  0xa5a35caf),
+
+  LOAD8_16( GFX2, "jj-rom3.040", 0x100000, 0x080000, 0xa5a35caf),
+  LOAD8_16( GFX2, "jj-rom3.040", 0x100000+1, 0x080000, 0xa5a35caf),
   LOAD( GFX3, "jj-rom14", 0x000000, 0x080000, 0x274bbb48),
   LOAD( GFX3, "jj-rom13", 0x080000, 0x080000, 0x51e29871),
-  LOAD8_16( GFX3,  0x100000,  0x080000,
-            "jj-rom4.040",  0xa235488e, "jj-rom4.040",  0xa235488e),
+
+  LOAD8_16( GFX3, "jj-rom4.040", 0x100000, 0x080000, 0xa235488e),
+  LOAD8_16( GFX3, "jj-rom4.040", 0x100000+1, 0x080000, 0xa235488e),
   LOAD( SMP1, "jj-rom5.040", 0x000000, 0x080000, 0xd99f2879),
   LOAD( SMP1, "jj-rom6.040", 0x080000, 0x080000, 0x9df1e478),
   { NULL, 0, 0, 0, 0, 0 }
@@ -1416,11 +1457,13 @@ static struct ROM_INFO rom_jjsquawk[] =
 
 static struct ROM_INFO rom_rezon[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "us001001.u3",  0xab923052, "us001002.u4",  0x3dafa0d5),
+
+  LOAD8_16( ROM1, "us001001.u3", 0x000000, 0x020000, 0xab923052),
+  LOAD8_16( ROM1, "us001002.u4", 0x000000+1, 0x020000, 0x3dafa0d5),
 	/* empty gap */
-  LOAD8_16( ROM1,  0x100000,  0x020000,
-            "us001004.103",  0x54871c7c, "us001003.102",  0x1ac3d272),
+
+  LOAD8_16( ROM1, "us001004.103", 0x100000, 0x020000, 0x54871c7c),
+  LOAD8_16( ROM1, "us001003.102", 0x100000+1, 0x020000, 0x1ac3d272),
   LOAD( GFX1, "us001006.u64", 0x000000, 0x080000, 0xa4916e96),
   LOAD( GFX1, "us001005.u63", 0x080000, 0x080000, 0xe6251ebc),
   LOAD( GFX2, "us001007.u66", 0x000000, 0x080000, 0x3760b935),
@@ -1431,8 +1474,9 @@ static struct ROM_INFO rom_rezon[] =
 
 static struct ROM_INFO rom_wrofaero[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "u3.bin",  0x9b896a97, "u4.bin",  0xdda84846),
+
+  LOAD8_16( ROM1, "u3.bin", 0x000000, 0x040000, 0x9b896a97),
+  LOAD8_16( ROM1, "u4.bin", 0x000000+1, 0x040000, 0xdda84846),
   LOAD( GFX1, "u64.bin", 0x000000, 0x080000, 0xf06ccd78),
   LOAD( GFX1, "u63.bin", 0x080000, 0x080000, 0x2a602a1b),
   LOAD( GFX2, "u66.bin", 0x000000, 0x080000, 0xc9fc6a0c),
@@ -1444,18 +1488,22 @@ static struct ROM_INFO rom_wrofaero[] =
 
 static struct ROM_INFO rom_zombraid[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x080000,
-            "fy001003.3",  0x0b34b8f7, "fy001004.4",  0x71bfeb1a),
-  LOAD8_16( ROM1,  0x100000,  0x080000,
-            "fy001002.103",  0x313fd68f, "fy001001.102",  0xa0f61f13),
+
+  LOAD8_16( ROM1, "fy001003.3", 0x000000, 0x080000, 0x0b34b8f7),
+  LOAD8_16( ROM1, "fy001004.4", 0x000000+1, 0x080000, 0x71bfeb1a),
+
+  LOAD8_16( ROM1, "fy001002.103", 0x100000, 0x080000, 0x313fd68f),
+  LOAD8_16( ROM1, "fy001001.102", 0x100000+1, 0x080000, 0xa0f61f13),
   LOAD( GFX1, "fy001006.200", 0x000000, 0x200000, 0xe9ae99f7),
   LOAD( GFX2, "fy001008.66", 0x000000, 0x200000, 0x73d7b0e1),
-  LOAD8_16( GFX2,  0x200000,  0x100000,
-            "fy001007.65",  0xb2fc2c81, "fy001007.65",  0xb2fc2c81),
+
+  LOAD8_16( GFX2, "fy001007.65", 0x200000, 0x100000, 0xb2fc2c81),
+  LOAD8_16( GFX2, "fy001007.65", 0x200000+1, 0x100000, 0xb2fc2c81),
 
   LOAD( GFX3, "fy001010.68", 0x000000, 0x200000, 0x8b40ed7a),
-  LOAD8_16( GFX3,  0x200000,  0x100000,
-            "fy001009.67",  0x6bcca641, "fy001009.67",  0x6bcca641),
+
+  LOAD8_16( GFX3, "fy001009.67", 0x200000, 0x100000, 0x6bcca641),
+  LOAD8_16( GFX3, "fy001009.67", 0x200000+1, 0x100000, 0x6bcca641),
 
 	/* skip 80000-fffff (banked region) */
   LOAD( SMP1, "fy001012.b", 0, 0x200000, 0xfd30e102),
@@ -1473,15 +1521,19 @@ static struct ROM_INFO rom_zombraid[] =
 
 
 static struct ROM_INFO rom_usclssic[] = {
-  LOAD8_16( ROM1,  0x000000,  0x020000,
-            "ue2001.u20",  0x18b41421, "ue2000.u14",  0x69454bc2),
-  LOAD8_16( ROM1,  0x040000,  0x020000,
-            "ue2002.u22",  0xa7bbe248, "ue2003.u30",  0x29601906),
+
+  LOAD8_16( ROM1, "ue2001.u20", 0x000000, 0x020000, 0x18b41421),
+  LOAD8_16( ROM1, "ue2000.u14", 0x000000+1, 0x020000, 0x69454bc2),
+
+  LOAD8_16( ROM1, "ue2002.u22", 0x040000, 0x020000, 0xa7bbe248),
+  LOAD8_16( ROM1, "ue2003.u30", 0x040000+1, 0x020000, 0x29601906),
   LOAD( ROM2, "ue002u61.004", 0x000000, 0x040000, 0x476e9f60),
-  LOAD8_16( GFX1,  0x000000,  0x080000,
-            "ue001009.119",  0xdc065204, "ue001008.118",  0x5947d9b5),
-  LOAD8_16( GFX1,  0x100000,  0x080000,
-            "ue001007.117",  0xb48a885c, "ue001006.116",  0xa6ab6ef4),
+
+  LOAD8_16( GFX1, "ue001009.119", 0x000000, 0x080000, 0xdc065204),
+  LOAD8_16( GFX1, "ue001008.118", 0x000000+1, 0x080000, 0x5947d9b5),
+
+  LOAD8_16( GFX1, "ue001007.117", 0x100000, 0x080000, 0xb48a885c),
+  LOAD8_16( GFX1, "ue001006.116", 0x100000+1, 0x080000, 0xa6ab6ef4),
 
   LOAD( GFX2, "ue001010.120", 0x000000, 0x080000, 0xdd683031),
   LOAD( GFX2, "ue001011.121", 0x080000, 0x080000, 0x0e27bc49),
@@ -1498,8 +1550,9 @@ static struct ROM_INFO rom_usclssic[] = {
   LOAD( GFX2, "ue001020.130", 0x500000, 0x080000, 0xbc07403f),
   LOAD( GFX2, "ue001021.131", 0x580000, 0x080000, 0x98c03efd),
 
-  LOAD8_16( PROMS,  0x000,  0x200,
-            "ue1-023.prm",  0xa13192a4, "ue1-022.prm",  0x1a23129e),
+
+  LOAD8_16( PROMS, "ue1-023.prm", 0x000, 0x200, 0xa13192a4),
+  LOAD8_16( PROMS, "ue1-022.prm", 0x000+1, 0x200, 0x1a23129e),
 
   LOAD( SMP1, "ue001005.132", 0x000000, 0x080000, 0xc5fea37c),
   { NULL, 0, 0, 0, 0, 0 }
@@ -1507,15 +1560,19 @@ static struct ROM_INFO rom_usclssic[] = {
 
 static struct ROM_INFO rom_calibr50[] =
 {
-  LOAD8_16( ROM1,  0x000000,  0x040000,
-            "uh002001.u45",  0xeb92e7ed, "uh002004.u41",  0x5a0ed31e),
-  LOAD8_16( ROM1,  0x080000,  0x010000,
-            "uh001003.9a",  0x0d30d09f, "uh001002.7a",  0x7aecc3f9),
+
+  LOAD8_16( ROM1, "uh002001.u45", 0x000000, 0x040000, 0xeb92e7ed),
+  LOAD8_16( ROM1, "uh002004.u41", 0x000000+1, 0x040000, 0x5a0ed31e),
+
+  LOAD8_16( ROM1, "uh001003.9a", 0x080000, 0x010000, 0x0d30d09f),
+  LOAD8_16( ROM1, "uh001002.7a", 0x080000+1, 0x010000, 0x7aecc3f9),
   LOAD( ROM2, "uh001005.u61", 0x000000, 0x040000, 0x4a54c085),
-  LOAD8_16( GFX1,  0x000000,  0x080000,
-            "uh001006.ux2",  0xfff52f91, "uh001007.ux1",  0xb6c19f71),
-  LOAD8_16( GFX1,  0x100000,  0x080000,
-            "uh001008.ux6",  0x7aae07ef, "uh001009.ux0",  0xf85da2c5),
+
+  LOAD8_16( GFX1, "uh001006.ux2", 0x000000, 0x080000, 0xfff52f91),
+  LOAD8_16( GFX1, "uh001007.ux1", 0x000000+1, 0x080000, 0xb6c19f71),
+
+  LOAD8_16( GFX1, "uh001008.ux6", 0x100000, 0x080000, 0x7aae07ef),
+  LOAD8_16( GFX1, "uh001009.ux0", 0x100000+1, 0x080000, 0xf85da2c5),
   LOAD( GFX2, "uh001010.u3x", 0x000000, 0x080000, 0xf986577a),
   LOAD( GFX2, "uh001011.u50", 0x080000, 0x080000, 0x08620052),
   LOAD( SMP1, "uh001013.u60", 0x000000, 0x080000, 0x09ec0df6),
@@ -1526,13 +1583,15 @@ static struct ROM_INFO rom_calibr50[] =
 
 static struct ROM_INFO rom_zingzip[] =
 {
-  LOAD8_16( ROM1,  	0x000000,  0x040000,
-            "uy001001.3",  0x1a1687ec, "uy001002.4",  0x62e3b0c4),
+
+  LOAD8_16( ROM1, "uy001001.3", 0x000000, 0x040000, 0x1a1687ec),
+  LOAD8_16( ROM1, "uy001002.4", 0x000000+1, 0x040000, 0x62e3b0c4),
   LOAD( GFX1, "uy001006.64", 		0x000000, 0x080000, 0x46e4a7d8),
   LOAD( GFX1, "uy001005.63", 		0x080000, 0x080000, 0x4aac128e),
   LOAD( GFX2, "uy001008.66", 		0x000000, 0x100000, 0x1dff7c4b),
-  LOAD8_16( GFX2,  	0x100000,  0x080000,
-            "uy001007.65",  0xec5b3ab9, "uy001007.65",  0xec5b3ab9),
+
+  LOAD8_16( GFX2, "uy001007.65", 0x100000, 0x080000, 0xec5b3ab9),
+  LOAD8_16( GFX2, "uy001007.65", 0x100000+1, 0x080000, 0xec5b3ab9),
   LOAD( GFX3, "uy001010.68", 		0x000000, 0x100000, 0xbdbcdf03),
   LOAD( SMP1, "uy001011.70", 		0x000000, 0x100000, 0xbd845f55),
   { NULL, 0, 0, 0, 0, 0 }

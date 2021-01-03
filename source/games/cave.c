@@ -365,8 +365,9 @@ static struct SOUND_INFO sound_hotdogst[] =
 
 static struct ROM_INFO rom_esprade[] =
 {
-  LOAD8_16( ROM1, 0,  0x00080000,
-                 "u42_i.bin",  0x3b510a73,      "u41_i.bin",  0x97c1b649),
+
+  LOAD8_16( ROM1, "u42_i.bin", 0, 0x00080000, 0x3b510a73),
+  LOAD8_16( ROM1, "u41_i.bin", 0+1, 0x00080000, 0x97c1b649),
 
    {      "u54.bin", 0x00400000, 0xe7ca6936,REGION_GFX1,0x000000,LOAD8X8_16X16 },
    {      "u55.bin", 0x00400000, 0xf53bd94f,REGION_GFX1,0x400000,LOAD8X8_16X16 },
@@ -387,8 +388,9 @@ static struct ROM_INFO rom_esprade[] =
 
 static struct ROM_INFO rom_espradeo[] =
 {
-  LOAD8_16( ROM1, 0,  0x00080000,
-                 "u42.bin",  0x0718c7e5,      "u41.bin",  0xdef30539),
+
+  LOAD8_16( ROM1, "u42.bin", 0, 0x00080000, 0x0718c7e5),
+  LOAD8_16( ROM1, "u41.bin", 0+1, 0x00080000, 0xdef30539),
 
 
 
@@ -399,8 +401,9 @@ static struct ROM_INFO rom_espradeo[] =
 
 static struct ROM_INFO rom_espradej[] =
 {
-  LOAD8_16( ROM1, 0,  0x00080000,
-                 "u42_ver2.bin",  0x75d03c42,      "u41_ver2.bin",  0x734b3ef0),
+
+  LOAD8_16( ROM1, "u42_ver2.bin", 0, 0x00080000, 0x75d03c42),
+  LOAD8_16( ROM1, "u41_ver2.bin", 0+1, 0x00080000, 0x734b3ef0),
 
 
 
@@ -446,8 +449,9 @@ static struct ROM_INFO rom_donpachk[] =
 
 static struct ROM_INFO rom_guwange[] =
 {
-  LOAD8_16(  ROM1,  0x0000000,  0x00080000,
-            "gu-u0127.bin",  0xf86b5293, "gu-u0129.bin",  0x6c0e3b93),
+
+  LOAD8_16( ROM1, "gu-u0127.bin", 0x0000000, 0x00080000, 0xf86b5293),
+  LOAD8_16( ROM1, "gu-u0129.bin", 0x0000000+1, 0x00080000, 0x6c0e3b93),
 
   {     "u101.bin", 0x00800000, 0x0369491f, REGION_GFX1, 0x0000000, LOAD8X8_16X16, },
 
@@ -466,8 +470,9 @@ static struct ROM_INFO rom_guwange[] =
 
 static struct ROM_INFO rom_guwanges[] = // clone of guwange
 {
-  LOAD8_16(  CPU1, 0x000000,  0x080000,
-             "gu-u0127b.bin",  0x64667d2e,  "gu-u0129b.bin",  0xa99C6b6c),
+
+  LOAD8_16( CPU1, "gu-u0127b.bin", 0x000000, 0x080000, 0x64667d2e),
+  LOAD8_16( CPU1, "gu-u0129b.bin", 0x000000+1, 0x080000, 0xa99C6b6c),
   LOAD8_16S(  GFX4, 0x0000000,  0x800000,
              "u083.bin",  0xadc4b9c4,  "u082.bin",  0x3d75876c),
   LOAD8_16S(  GFX4, 0x1000000,  0x400000,
@@ -481,8 +486,9 @@ static struct ROM_INFO rom_guwanges[] = // clone of guwange
 
 static struct ROM_INFO rom_ddonpach[] =
 {
-  LOAD8_16(  ROM1,  0x0000000,  0x00080000,
-                 "b1.u27",  0xb5cdc8d3,      "b2.u26",  0x6bbb063a),
+
+  LOAD8_16( ROM1, "b1.u27", 0x0000000, 0x00080000, 0xb5cdc8d3),
+  LOAD8_16( ROM1, "b2.u26", 0x0000000+1, 0x00080000, 0x6bbb063a),
 
    LOAD( GFX1, "u60.bin", 0x0000000, 0x00200000, 0x903096a7),
 
@@ -501,8 +507,9 @@ static struct ROM_INFO rom_ddonpach[] =
 
 static struct ROM_INFO rom_ddonpchj[] =
 {
-  LOAD8_16(  ROM1,  0x0000000,  0x00080000,
-                 "u27.bin",  0x2432ff9b,      "u26.bin",  0x4f3a914a),
+
+  LOAD8_16( ROM1, "u27.bin", 0x0000000, 0x00080000, 0x2432ff9b),
+  LOAD8_16( ROM1, "u26.bin", 0x0000000+1, 0x00080000, 0x4f3a914a),
 
 
 
@@ -512,8 +519,9 @@ static struct ROM_INFO rom_ddonpchj[] =
 
 static struct ROM_INFO rom_hotdogst[] =
 {
-  LOAD8_16( ROM1, 0,  0x00080000,
-                  "mp3u29",  0x1f4e5479,       "mp4u28",  0x6f1c3c4b),
+
+  LOAD8_16( ROM1, "mp3u29", 0, 0x00080000, 0x1f4e5479),
+  LOAD8_16( ROM1, "mp4u28", 0+1, 0x00080000, 0x6f1c3c4b),
 
    LOAD( ROM2, "mp2u19", 0x000, 0x00040000, 0xff979ebe),
 
@@ -613,8 +621,9 @@ static struct ROM_INFO rom_agallet[] =
 
 static struct ROM_INFO rom_uopoko[] =
 {
-  LOAD8_16(  ROM1,  0x000000,  0x00080000,
-                "u26j.bin",  0xe7eec050,     "u25j.bin",  0x68cb6211),
+
+  LOAD8_16( ROM1, "u26j.bin", 0x000000, 0x00080000, 0xe7eec050),
+  LOAD8_16( ROM1, "u25j.bin", 0x000000+1, 0x00080000, 0x68cb6211),
    LOAD( GFX1, "u49.bin", 0x000000, 0x00400000, 0x12fb11bb),
    LOAD( GFX4, "u33.bin", 0x000000, 0x00400000, 0x5d142ad2),
    LOAD( SMP1, "u4.bin", 0x000000, 0x00200000, 0xa2d0d755),
@@ -623,8 +632,9 @@ static struct ROM_INFO rom_uopoko[] =
 
 static struct ROM_INFO rom_dfeveron[] =
 {
-  LOAD8_16(  ROM1,  0x000000,  0x00080000,
-                 "cv01-u34.bin",  0xbe87f19d,      "cv01-u33.bin",  0xe53a7db3),
+
+  LOAD8_16( ROM1, "cv01-u34.bin", 0x000000, 0x00080000, 0xbe87f19d),
+  LOAD8_16( ROM1, "cv01-u33.bin", 0x000000+1, 0x00080000, 0xe53a7db3),
 
    LOAD( GFX1, "cv01-u50.bin", 0x000000, 0x00200000, 0x7a344417),
 
@@ -638,8 +648,9 @@ static struct ROM_INFO rom_dfeveron[] =
 
 static struct ROM_INFO rom_feversos[] =
 {
-  LOAD8_16(  ROM1,  0x000000,  0x00080000,
-                 "rom2.bin",  0x24ef3ce6,      "rom1.bin",  0x64ff73fd),
+
+  LOAD8_16( ROM1, "rom2.bin", 0x000000, 0x00080000, 0x24ef3ce6),
+  LOAD8_16( ROM1, "rom1.bin", 0x000000+1, 0x00080000, 0x64ff73fd),
 
 
 

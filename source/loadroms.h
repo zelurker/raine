@@ -137,9 +137,8 @@ enum region_flags
   { name, size, crc, REGION_##region, offset, LOAD_SWAP_16 }
 #define LOAD_16_8(region, name, offset, size, crc) \
   { name, size, crc, REGION_##region, offset, LOAD_8_16 }
-#define LOAD8_16(region, offset, size, rom1, crc1, rom2, crc2) \
-{ rom1, size, crc1, REGION_##region, offset, LOAD_8_16 }, \
-{ rom2, size, crc2, REGION_##region, offset+1, LOAD_8_16 }
+#define LOAD8_16(region, name, offset, size, crc) \
+  { name, size, crc, REGION_##region, offset, LOAD_8_16 }
 
 #define LOAD8_16S(region, offset, size, rom1, crc1, rom2, crc2) \
 { rom1, size, crc1, REGION_##region, offset, LOAD_8_16S }, \
@@ -158,7 +157,7 @@ enum region_flags
 { rom3, size, crc3, region, offset+4, LOAD_16_64 }, \
 { rom4, size, crc4, region, offset+6, LOAD_16_64 } \
 
-#define FILL(offset, size, content, region) \
+#define FILL(region, offset, size, content) \
 { "", size, content, REGION_##region, offset, LOAD_FILL }
 
 typedef struct ROM_INFO

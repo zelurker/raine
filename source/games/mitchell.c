@@ -22,10 +22,12 @@ static struct ROM_INFO rom_pkladies[] =
 {
   LOAD( ROM1, "pko-prg1.14f", 0x00000, 0x08000, 0x86585a94),
   LOAD( ROM1, "pko-prg2.15f", 0x10000, 0x10000, 0x86cbe82d),
-  LOAD8_16( GFX1,  0x000000,  0x80000,
-            "pko-001.8h",  0x1ead5d9b, "pko-003.8j",  0x339ab4e6),
-  LOAD8_16( GFX1,  0x100000,  0x80000,
-            "pko-002.9h",  0x1cf02586, "pko-004.9j",  0x09ccb442),
+
+  LOAD8_16( GFX1, "pko-001.8h", 0x000000, 0x80000, 0x1ead5d9b),
+  LOAD8_16( GFX1, "pko-003.8j", 0x000000+1, 0x80000, 0x339ab4e6),
+
+  LOAD8_16( GFX1, "pko-002.9h", 0x100000, 0x80000, 0x1cf02586),
+  LOAD8_16( GFX1, "pko-004.9j", 0x100000+1, 0x80000, 0x09ccb442),
   LOAD( GFX2, "pko-chr1.2j", 0x000000, 0x20000, 0x31ce33cd),
   LOAD( GFX2, "pko-chr2.3j", 0x020000, 0x20000, 0xad7e055f),
   LOAD( SMP1, "pko-voi1.2d", 0x00000, 0x20000, 0x07e0f531),

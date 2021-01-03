@@ -12,8 +12,9 @@
 
 static struct ROM_INFO rom_multchmp[] =
 {
-  LOAD8_16(  ROM1,  0x000000,  0x040000,
-            "multchmp.u02",  0x7da8c0df, "multchmp.u03",  0x5dc62799),
+
+  LOAD8_16( ROM1, "multchmp.u02", 0x000000, 0x040000, 0x7da8c0df),
+  LOAD8_16( ROM1, "multchmp.u03", 0x000000+1, 0x040000, 0x5dc62799),
   LOAD( ROM2, "multchmp.u06", 0, 0x20000, 0x7c178bd7),
   LOAD( ROM2, "multchmp.u06", 0x8000, 0x20000, 0x7c178bd7),
   LOAD( GFX1, "multchmp.u36", 0x000000, 0x040000, 0xd8f06fa8),
@@ -35,8 +36,9 @@ static struct ROM_INFO rom_multchmp[] =
 
 static struct ROM_INFO rom_mchampdx[] =
 {
-  LOAD8_16(  ROM1,  0x000000,  0x040000,
-            "esd2.cu02",  0x4cca802c, "esd1.cu03",  0x0af1cd0a),
+
+  LOAD8_16( ROM1, "esd2.cu02", 0x000000, 0x040000, 0x4cca802c),
+  LOAD8_16( ROM1, "esd1.cu03", 0x000000+1, 0x040000, 0x0af1cd0a),
   LOAD( ROM2, "esd3.su06", 0, 0x80000, 0x2c0c8813),
   LOAD( ROM2, "esd3.su06", 0x8000, 0x80000, 0x2c0c8813),
   LOAD( GFX1, "rom.ju02", 0x000000, 0x200000, 0x7e87e332),
@@ -44,16 +46,18 @@ static struct ROM_INFO rom_mchampdx[] =
   LOAD_16_8( GFX1, "esd5.ju07", 0x400000, 0x080000, 0x6cc871cc),
   // To emulate the rom_fill :
   LOAD_16_8( GFX1, "esd5.ju07", 0x500001, 0x080000, 0x6cc871cc),
-  LOAD8_16(  GFX2,  0x000000,  0x200000,
-            "rom.fu35",  0xba46f3dc, "rom.fu34",  0x2895cf09),
+
+  LOAD8_16( GFX2, "rom.fu35", 0x000000, 0x200000, 0xba46f3dc),
+  LOAD8_16( GFX2, "rom.fu34", 0x000000+1, 0x200000, 0x2895cf09),
   LOAD( SMP1, "esd4.su10", 0x00000, 0x80000, 0x14c4a30d),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct ROM_INFO rom_hedpanic[] =
 {
-  LOAD8_16(  ROM1,  0x000000,  0x040000,
-            "esd2",  0x8cccc691, "esd1",  0xd8574925),
+
+  LOAD8_16( ROM1, "esd2", 0x000000, 0x040000, 0x8cccc691),
+  LOAD8_16( ROM1, "esd1", 0x000000+1, 0x040000, 0xd8574925),
   LOAD( ROM2, "esd3", 0, 0x80000, 0xc668d443),
   LOAD( ROM2, "esd3", 0x8000, 0x80000, 0xc668d443),
   LOAD( GFX1, "esd6", 0x200000, 0x200000, 0x5858372c),
@@ -62,8 +66,9 @@ static struct ROM_INFO rom_hedpanic[] =
 /* Ignored : 	ROM_FILL( 0x500000, 0x100000, 0 ) */
   LOAD_16_8( GFX1, "esd5", 0x400000, 0x080000, 0xbd785921),
   LOAD_16_8( GFX1, "esd5", 0x500001, 0x080000, 0xbd785921),
-  LOAD8_16(  GFX2,  0x000000,  0x200000,
-            "esd8",  0x23aceb4f, "esd9",  0x76b46cd2),
+
+  LOAD8_16( GFX2, "esd8", 0x000000, 0x200000, 0x23aceb4f),
+  LOAD8_16( GFX2, "esd9", 0x000000+1, 0x200000, 0x76b46cd2),
   LOAD( SMP1, "esd4", 0x000000, 0x080000, 0x5692fe92),
   { NULL, 0, 0, 0, 0, 0 }
 };

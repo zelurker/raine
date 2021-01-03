@@ -25,8 +25,9 @@
 static struct ROM_INFO rom_pirates[] =
 {
 	/* 68000 Code (encrypted) */
-  LOAD8_16( ROM1,  0x00000,  0x80000,
-            "r_449b.bin",  0x224aeeda, "l_5c1e.bin",  0x46740204),
+
+  LOAD8_16( ROM1, "r_449b.bin", 0x00000, 0x80000, 0x224aeeda),
+  LOAD8_16( ROM1, "l_5c1e.bin", 0x00000+1, 0x80000, 0x46740204),
    /* GFX (encrypted) */
   LOAD( GFX1, "p4_4d48.bin", 0x000000, 0x080000, 0x89fda216),
   LOAD( GFX1, "p2_5d74.bin", 0x080000, 0x080000, 0x40e069b4),
@@ -47,8 +48,9 @@ static struct ROM_INFO rom_pirates[] =
 static struct ROM_INFO rom_genix[] =
 {
 	/* 68000 Code (encrypted) */
-  LOAD8_16( ROM1,  0x00000,  0x80000,
-            "1.15",  0xd26abfb0, "2.16",  0xa14a25b4),
+
+  LOAD8_16( ROM1, "1.15", 0x00000, 0x80000, 0xd26abfb0),
+  LOAD8_16( ROM1, "2.16", 0x00000+1, 0x80000, 0xa14a25b4),
    /* GFX (encrypted) */
   LOAD( GFX1, "7.34", 0x000000, 0x040000, 0x58da8aac),
   LOAD( GFX1, "9.35", 0x080000, 0x040000, 0x96bad9a8),

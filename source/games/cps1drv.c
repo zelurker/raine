@@ -2069,7 +2069,7 @@ static struct ROM_INFO rom_sf2m8[] = // clone of sf2ce
 	/* end of extra gfx layer roms */
   { "yyc-9.8", 0x10000 , 0x155824a9, REGION_GFX1, 0x400007, LOAD_CONTINUE },
   // Still need a rom to fill up until $600000, should add something for that
-  FILL(0x5f0000, 0x10000, 0, GFX1),
+  FILL( GFX1, 0x5f0000, 0x10000, 0),
   LOAD( ROM2, "a-15.5", 0x00000, 0x10000, 0x6f07d2cb),
   LOAD( USER1, "c-27.7", 0x00000, 0x10000, 0x13ea1c44),
   LOAD( USER2, "yyc-e", 0x000000, 0x100000, 0x61138469),
