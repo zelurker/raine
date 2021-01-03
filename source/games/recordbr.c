@@ -352,7 +352,7 @@ static void load_recordbr(void)
    AddInitMemory();	// Set Starscream mem pointers...
 }
 
-static void execute_recordbr(void)
+void execute_recordbr(void)
 {
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 2);

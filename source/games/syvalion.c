@@ -189,10 +189,17 @@ static void load_syvalion(void)
    tc0004vcu.tile_mask	= 0x3FFF;
    tc0004vcu.bmp_x	= 64;
    tc0004vcu.bmp_y	= 64;
-   tc0004vcu.bmp_w	= 512;
-   tc0004vcu.bmp_h	= 400;
-   tc0004vcu.scr_x	= 0;
-   tc0004vcu.scr_y	= 48;
+   if (is_current_game("tetristh")) {
+       tc0004vcu.bmp_w	= 320;
+       tc0004vcu.bmp_h	= 240;
+       tc0004vcu.scr_x	= 16-1;
+       tc0004vcu.scr_y	= 32-1;
+   } else {
+       tc0004vcu.bmp_w	= 512;
+       tc0004vcu.bmp_h	= 400;
+       tc0004vcu.scr_x	= 0;
+       tc0004vcu.scr_y	= 48;
+   }
 
    tc0004vcu_init();
 
@@ -323,10 +330,50 @@ static struct VIDEO_INFO video_syvalion =
    VIDEO_ROTATE_NORMAL,
    syvalion_gfx
 };
+static struct VIDEO_INFO video_tetristh =
+{
+   DrawSyvalion,
+   320,
+   240,
+   64,
+   VIDEO_ROTATE_NORMAL,
+   syvalion_gfx
+};
 GMEI( syvalion, "Syvalion", TAITO, 1988, GAME_SHOOT,
 	.romsw = romsw_syvalion,
 	.long_name_jpn = "サイバリオン",
 	.board = "B51",
 );
-CLNEI( tetristh,syvalion,"Tetris (Japan,Taito H-System)",SEGA,1988, GAME_PUZZLE );
+extern void execute_recordbr(void);
+static struct INPUT_INFO input_tetristh[] =
+{
+   INP1( COIN1, 0x032004, 0x04 ),
+   INP1( COIN2, 0x032004, 0x08 ),
+   INP0( TILT, 0x032004, 0x20 ),
+   INP0( SERVICE, 0x032004, 0x10 ),
+
+   INP0( P1_START, 0x032006, 0x01 ),
+   INP0( P2_START, 0x032006, 0x02 ),
+   INP0( P1_B1, 0x032006, 0x04 ),
+   INP0( P2_B1, 0x032006, 0x08 ),
+   INP0( P1_UP, 0x03200E, 0x01 ),
+   INP0( P1_DOWN, 0x03200E, 0x02 ),
+   INP0( P1_LEFT, 0x03200E, 0x04 ),
+   INP0( P1_RIGHT, 0x03200E, 0x08 ),
+   INP0( P2_UP, 0x03200E, 0x10 ),
+   INP0( P2_DOWN, 0x03200E, 0x20 ),
+   INP0( P2_LEFT, 0x03200E, 0x40 ),
+   INP0( P2_RIGHT, 0x03200E, 0x80 ),
+
+   INP0( P3_START, 0x032006, 0x04 ),
+
+   INP0( P4_START, 0x032006, 0x08 ),
+
+   END_INPUT
+};
+
+CLNEI( tetristh,syvalion,"Tetris (Japan,Taito H-System)",SEGA,1988, GAME_PUZZLE,
+	.video = &video_tetristh,
+	.exec = &execute_recordbr,
+	.input = input_tetristh);
 

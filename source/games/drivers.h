@@ -1172,6 +1172,7 @@
 
 // syvalion.c
   DRV(syvalion)
+  DRV(tetristh) // more a clone of recordbr but recordbr doesn't have auto rom loading
 
 // taito_f2.c
   DRV(cameltry)
@@ -1255,6 +1256,7 @@
   DRV(tekipaki)
   DRV(vfive)
   DRV(whoopee)
+  DRV(sstriker)
 
 // toki.c
   DRV(tokib)
