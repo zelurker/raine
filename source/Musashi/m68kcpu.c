@@ -859,7 +859,7 @@ void m68k_end_timeslice(void)
  */
 void m68k_set_irq(unsigned int int_level)
 {
-	m68ki_check_interrupts();
+	// m68ki_check_interrupts();
 	uint old_level = CPU_INT_LEVEL;
 	CPU_INT_LEVEL = int_level << 8;
 

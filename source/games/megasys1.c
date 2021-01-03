@@ -3181,6 +3181,7 @@ static void execute_peekaboo(void)
    WriteWord(&RAM[0x014002],px2);
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(8,60));
+   cpu_execute_cycles(CPU_68K_0, 1);
    cpu_interrupt(CPU_68K_0, 2);
 }
 
