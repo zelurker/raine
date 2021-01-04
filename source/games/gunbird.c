@@ -119,8 +119,8 @@ static struct ROMSW_INFO romsw_sngkace[] =
 
 static struct ROM_INFO rom_gunbirdj[] =
 {
-  { "1-u46.bin", 0x040000, 0x474abd69 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "2-u39.bin", 0x040000, 0x3e3e661f , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "1-u46.bin", 0x000000, 0x040000, 0x474abd69 ),
+  LOAD_32_SWAP_16( ROM1, "2-u39.bin", 0x000002, 0x040000, 0x3e3e661f ),
    {      "u14.bin",   0x200000, 0x7d7e8a00, 0, 0, 0, },
    {      "u24.bin",   0x200000, 0x5e3ffc9d, 0, 0, 0, },
    {      "u15.bin",   0x200000, 0xa827bfb5, 0, 0, 0, },
@@ -132,8 +132,8 @@ static struct ROM_INFO rom_gunbirdj[] =
 
 static struct ROM_INFO rom_gunbird[] =
 {
-  { "4-u46.bin", 0x040000, 0xb78ec99d, REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "5-u39.bin", 0x040000, 0x925f095d, REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "4-u46.bin", 0x000000, 0x040000, 0xb78ec99d),
+  LOAD_32_SWAP_16( ROM1, "5-u39.bin", 0x000002, 0x040000, 0x925f095d),
   LOAD( ROM2, "3-u71.bin", 0x00000, 0x20000, 0x2168e4ba ),
   LOAD( ROM2, "3-u71.bin", 0x10000, 0x20000, 0x2168e4ba ),
    {      "u14.bin",   0x200000, 0x7d7e8a00, 0, 0, 0, },
@@ -149,8 +149,8 @@ static struct ROM_INFO rom_gunbird[] =
 
 static struct ROM_INFO rom_gunbirdk[] =
 {
-  { "1k-u46.bin", 0x080000, 0x745cee52 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "2k-u39.bin", 0x080000, 0x669632fb , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "1k-u46.bin", 0x000000, 0x080000, 0x745cee52 ),
+  LOAD_32_SWAP_16( ROM1, "2k-u39.bin", 0x000002, 0x080000, 0x669632fb ),
   LOAD( ROM2, "k3-u71.bin", 0x00000, 0x20000, 0x11994055 ),
   LOAD( ROM2, "k3-u71.bin", 0x10000, 0x20000, 0x11994055 ),
    {      "u14.bin",   0x200000, 0x7d7e8a00, 0, 0, 0, },
@@ -164,8 +164,8 @@ static struct ROM_INFO rom_gunbirdk[] =
 
 static struct ROM_INFO rom_btlkroad[] =
 {
-  { "4-u46.bin", 0x040000, 0x8a7a28b4 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "5-u39.bin", 0x040000, 0x933561fa , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "4-u46.bin", 0x000000, 0x040000, 0x8a7a28b4 ),
+  LOAD_32_SWAP_16( ROM1, "5-u39.bin", 0x000002, 0x040000, 0x933561fa ),
   LOAD( ROM2, "3-u71.bin", 0x00000, 0x20000, 0x22411fab ),
   LOAD( ROM2, "3-u71.bin", 0x10000, 0x20000, 0x22411fab ),
   LOAD( SMP1, "u64.bin", 0x000000, 0x080000, 0x0f33049f ),
@@ -443,8 +443,8 @@ GMEI( btlkroad,
 
 static struct ROM_INFO rom_sngkace[] =
 {
-  { "1-u127.bin", 0x040000, 0x6c45b2f8 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "2-u126.bin", 0x040000, 0x845a6760 , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "1-u127.bin", 0x000000, 0x040000, 0x6c45b2f8 ),
+  LOAD_32_SWAP_16( ROM1, "2-u126.bin", 0x000002, 0x040000, 0x845a6760 ),
    {      "u14.bin",   0x200000, 0x00a546cb, 0, 0, 0, },
    {      "u34.bin",   0x100000, 0xe6a75bd8, 0, 0, 0, },
    {      "u35.bin",   0x100000, 0xc4ca0164, 0, 0, 0, },
@@ -454,8 +454,8 @@ static struct ROM_INFO rom_sngkace[] =
 
 static struct ROM_INFO rom_samuraia[] =
 {
-  { "4-u127.bin", 0x040000, 0x8c9911ca , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "5-u126.bin", 0x040000, 0xd20c3ef0 , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "4-u127.bin", 0x000000, 0x040000, 0x8c9911ca ),
+  LOAD_32_SWAP_16( ROM1, "5-u126.bin", 0x000002, 0x040000, 0xd20c3ef0 ),
   LOAD( ROM2, "3-u58.bin", 0x00000, 0x20000, 0x310f5c76 ),
   LOAD( ROM2, "3-u58.bin", 0x10000, 0x20000, 0x310f5c76 ),
    {      "u14.bin",   0x200000, 0x00a546cb, 0, 0, 0, },
@@ -468,8 +468,8 @@ static struct ROM_INFO rom_samuraia[] =
 
 static struct ROM_INFO rom_s1945j[] =
 {
-  { "1-u40.bin", 0x040000, 0xc00eb012 , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "2-u41.bin", 0x040000, 0x3f5a134b , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "1-u40.bin", 0x000000, 0x040000, 0xc00eb012 ),
+  LOAD_32_SWAP_16( ROM1, "2-u41.bin", 0x000002, 0x040000, 0x3f5a134b ),
   LOAD( ROM2, "3-u63.bin", 0x00000, 0x20000, 0x42d40ae1 ),
   LOAD( ROM2, "3-u63.bin", 0x10000, 0x20000, 0x42d40ae1 ),
   // LOAD( CPU3, "4-u59.bin", 0x00000, 0x00100, 0x00000000 ),
@@ -485,8 +485,8 @@ static struct ROM_INFO rom_s1945j[] =
 
 static struct ROM_INFO rom_s1945[] =
 {
-  { "2s.u40", 0x040000, 0x9b10062a , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "3s.u41", 0x040000, 0xf87e871a , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "2s.u40", 0x000000, 0x040000, 0x9b10062a ),
+  LOAD_32_SWAP_16( ROM1, "3s.u41", 0x000002, 0x040000, 0xf87e871a ),
   LOAD( ROM2, "3-u63.bin", 0x00000, 0x20000, 0x42d40ae1 ),
   LOAD( ROM2, "3-u63.bin", 0x10000, 0x20000, 0x42d40ae1 ),
   // LOAD( CPU3, "4-u59.bin", 0x00000, 0x00100, 0x00000000 ),
@@ -502,8 +502,8 @@ static struct ROM_INFO rom_s1945[] =
 
 static struct ROM_INFO rom_tengai[] =
 {
-  { "2-u40.bin", 0x080000, 0xab6fe58a , REGION_ROM1, 0x000000, LOAD32_SWAP_16 },
-  { "3-u41.bin", 0x080000, 0x02e42e39 , REGION_ROM1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( ROM1, "2-u40.bin", 0x000000, 0x080000, 0xab6fe58a ),
+  LOAD_32_SWAP_16( ROM1, "3-u41.bin", 0x000002, 0x080000, 0x02e42e39 ),
   LOAD( ROM2, "1-u63.bin", 0x00000, 0x20000, 0x2025e387 ),
   LOAD( ROM2, "1-u63.bin", 0x10000, 0x20000, 0x2025e387 ),
   //LOAD( CPU3, "4-u59.bin", 0x00000, 0x00100, 0x00000000 ),

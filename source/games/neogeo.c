@@ -3090,8 +3090,8 @@ CLNEI( pnyaa, neogeo, "Pochi and Nyaa", AIKY, 2003, GAME_PUZZLE);
 
 static struct ROM_INFO rom_mslug5[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
-  { "268-p1cr.p1", 0x400000, 0xd0466792, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
-  { "268-p2cr.p2", 0x400000, 0xfbf6b61e, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( CPU1, "268-p1cr.p1", 0x000000, 0x400000, 0xd0466792),
+  LOAD_32_SWAP_16( CPU1, "268-p2cr.p2", 0x000002, 0x400000, 0xfbf6b61e),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( FIXED , 0x000000, 0x20000, 0),
 	/* Encrypted */
@@ -3115,8 +3115,8 @@ CLNEI( mslug5, neogeo, "Metal Slug 5 (NGM-2680)", SNK_PLAYMORE, 2003, GAME_SHOOT
 
 static struct ROM_INFO rom_mslug5h[] = /* Encrypted Set clone of mslug5 */
  /* AES release of the game but is also found in later MVS carts */{
-  { "268-p1c.p1", 0x400000, 0x3636690a, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
-  { "268-p2c.p2", 0x400000, 0x8dfc47a2, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( CPU1, "268-p1c.p1", 0x000000, 0x400000, 0x3636690a),
+  LOAD_32_SWAP_16( CPU1, "268-p2c.p2", 0x000002, 0x400000, 0x8dfc47a2),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -3124,8 +3124,8 @@ CLNEI( mslug5h, mslug5, "Metal Slug 5 (NGH-2680)", SNK_PLAYMORE, 2003, GAME_SHOO
 
 static struct ROM_INFO rom_svc[] = /* Encrypted Set clone of neogeo */
  /* MVS AND AES VERSION */{
-  { "269-p1.p1", 0x400000, 0x38e2005e, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
-  { "269-p2.p2", 0x400000, 0x6d13797c, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( CPU1, "269-p1.p1", 0x000000, 0x400000, 0x38e2005e),
+  LOAD_32_SWAP_16( CPU1, "269-p2.p2", 0x000002, 0x400000, 0x6d13797c),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( FIXED , 0x000000, 0x80000, 0),
 	/* Encrypted */
@@ -3183,8 +3183,8 @@ CLNEI( samsho5h, samsho5, "Samurai Shodown V / Samurai Spirits Zero (NGH-2700)",
 
 static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clone of neogeo */
  /* MVS VERSION */{
-  { "271-p1c.p1", 0x400000, 0x530ecc14, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
-  { "271-p2c.p2", 0x400000, 0xfd568da9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( CPU1, "271-p1c.p1", 0x000000, 0x400000, 0x530ecc14),
+  LOAD_32_SWAP_16( CPU1, "271-p2c.p2", 0x000002, 0x400000, 0xfd568da9),
   LOAD_SW16( CPU1, "271-p3c.p3", 0x800000, 0x100000, 0xaec5b4a9),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( FIXED , 0x000000, 0x80000, 0),
@@ -3209,8 +3209,8 @@ CLNEI( kof2003, neogeo, "The King of Fighters 2003 (NGM-2710)", SNK_PLAYMORE, 20
 
 static struct ROM_INFO rom_kof2003h[] = /* Encrypted Code + Sound + GFX Roms clone of kof2003 */
  /* AES VERSION */{
-  { "271-p1k.p1", 0x400000, 0xd0d0ae3e, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
-  { "271-p2k.p2", 0x400000, 0xfb3f79d9, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  LOAD_32_SWAP_16( CPU1, "271-p1k.p1", 0x000000, 0x400000, 0xd0d0ae3e),
+  LOAD_32_SWAP_16( CPU1, "271-p2k.p2", 0x000002, 0x400000, 0xfb3f79d9),
   LOAD_SW16( CPU1, "271-p3k.p3", 0x800000, 0x100000, 0x232702ad),
 	/* The Encrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
   FILL( FIXED , 0x000000, 0x80000, 0),
