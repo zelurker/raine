@@ -1178,11 +1178,12 @@ beg:
 
 	   // Then find a writable rom dir if there is one
 	   for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
-	       sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
+	       sprintf(path, "%stemp.zip", dir_cfg.rom_dir[ta] );
 	       FILE *f = fopen(path,"wb");
 	       if (f) {
 		   fclose(f);
 		   unlink(path);
+		   sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir );
 		   break;
 	       }
 	   }
