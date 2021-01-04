@@ -140,9 +140,9 @@ enum region_flags
 #define LOAD8_16(region, name, offset, size, crc) \
   { name, size, crc, REGION_##region, offset, LOAD_8_16 }
 #define LOAD16_32(region, name, offset, size, crc) \
-  { name, size, crc, REGION_##region, offset, LOAD_8_16 }
+  { name, size, crc, REGION_##region, offset, LOAD_16_32 }
 #define LOAD_32_SWAP_16(region, name, offset, size, crc) \
-  { name, size, crc, REGION_##region, offset, LOAD_8_16 }
+  { name, size, crc, REGION_##region, offset, LOAD32_SWAP_16 }
 
 #define LOAD8_16S(region, offset, size, rom1, crc1, rom2, crc2) \
 { rom1, size, crc1, REGION_##region, offset, LOAD_8_16S }, \
