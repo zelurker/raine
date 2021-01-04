@@ -222,11 +222,9 @@ static struct SOUND_INFO sound_lordofk[] =
 
 static struct ROM_INFO rom_64streej[] =
 {
-
   LOAD8_16( ROM1, "91105-3.bin", 0x000000, 0x040000, 0xa211a83b ),
   LOAD8_16( ROM1, "91105-2.bin", 0x000000+1, 0x040000, 0x27c1f436 ),
   // cpu 2
-
   LOAD8_16( ROM1, "64th_08.rom", 0x080000, 0x010000, 0x632be0c1 ),
   LOAD8_16( ROM1, "64th_07.rom", 0x080000+1, 0x010000, 0x13595d01 ),
    {           NULL,          0,          0, 0, 0, 0, },
@@ -775,9 +773,7 @@ static struct SOUND_INFO sound_lomakai[] =
 static struct ROM_INFO rom_makaiden[] =
 {
   LOAD( ROM2, "lom_01.rom", 0x0000, 0x10000, 0x46e85e90 ),
-   {   "lom_05.rom", 0x00020000, 0xd04fc713, 0, 0, 0, },
-   {   "lom_06.rom", 0x00020000, 0xf33b6eed, 0, 0, 0, },
-   {   "makaiden.8", 0x00010000, 0xa7f623f9, 0, 0, 0, },
+  LOAD( GFX3, "makeaiden.8", 0, 0x00010000,0xa7f623f9),
 
   LOAD8_16( ROM1, "makaiden.3a", 0x000000, 0x020000, 0x87cf81d1 ),
   LOAD8_16( ROM1, "makaiden.2a", 0x000000+1, 0x020000, 0xd40e0fea ),
