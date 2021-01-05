@@ -2013,7 +2013,7 @@ void DoLangEdit(void)
    if(ta<LanguageSw.Count){
       SetLanguageSwitch(ta);
       reset_game_hardware();
-      sprintf(langname,"%s",LanguageSw.Mode[ta]);
+      sprintf(langname,"%s",LanguageSw.data[ta].Mode);
    }
 }
 
@@ -2037,7 +2037,7 @@ char *language_getter(int index, int *list_size)
    break;
    default:
       if((index >= 0)&&(index<LanguageSw.Count))
-	 return LanguageSw.Mode[index];
+	 return LanguageSw.data[index].Mode;
       else
 	 return NULL;
    break;
@@ -2053,7 +2053,7 @@ int language_proc(int msg, DIALOG *d, int c)
       FadeGUI();
       ret=GetLanguageSwitch();
       if(LanguageSw.Count){
-	 sprintf(langname,"%s",LanguageSw.Mode[ret]);
+	 sprintf(langname,"%s",LanguageSw.data[ret].Mode);
 	 language_dialog[1].d1=ret;
       }
       else{

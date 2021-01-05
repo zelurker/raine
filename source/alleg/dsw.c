@@ -394,13 +394,16 @@ void init_romsw(void)
 
       while(romsw_data[tb].name){
 
-	LanguageSw.Mode[tb] = romsw_data[tb].name;
-	LanguageSw.Data[tb] = romsw_data[tb].data;
 	tb++;
 
       }
 
       LanguageSw.Count    = tb;
+      LanguageSw.data = AllocateMem(sizeof(tdata_romsw)*tb);
+      for (int n=0; n<tb; n++) {
+	LanguageSw.data[n].Mode = romsw_data[n].name;
+	LanguageSw.data[n].Data = romsw_data[n].data;
+      }
       gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.def);
 
       ta++;
@@ -413,13 +416,6 @@ void SetupLanguageSwitch(UINT32 addr)
 {
    LanguageSw.Address=addr;
    LanguageSw.Count=0;
-}
-
-void AddLanguageSwitch(UINT8 ldata, char *lname)
-{
-   LanguageSw.Mode[LanguageSw.Count]=lname;
-   LanguageSw.Data[LanguageSw.Count]=ldata;
-   LanguageSw.Count++;
 }
 
 void (*write_region_byte)(int data);
@@ -437,7 +433,7 @@ void SetLanguageSwitch(int number)
       sprintf(buf,"Region out of bounds (%d). Possible values :\n",number);
       int n;
       for (n=0; n<LanguageSw.Count; n++)
-	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.Mode[n]);
+	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.data[n].Mode);
       MessageBox("Warning",buf,"Ok");
       return;
   }
@@ -461,7 +457,7 @@ int GetLanguageSwitch(void)
 {
    int ta,tb;
 
-   if(LanguageSw.Address){
+   if(LanguageSw.Count){
 
        if (read_region_byte)
 	   tb = (*read_region_byte)();
@@ -479,13 +475,13 @@ int GetLanguageSwitch(void)
 
 void load_romswitches(char *section)
 {
-   if(LanguageSw.Address)
+   if(LanguageSw.Count)
       SetLanguageSwitch( raine_get_config_hex(section,"Version",GetLanguageSwitch()) );
 }
 
 void save_romswitches(char *section)
 {
-   if(LanguageSw.Address)
+   if(LanguageSw.Count)
       raine_set_config_hex(section,"Version",GetLanguageSwitch());
 }
 

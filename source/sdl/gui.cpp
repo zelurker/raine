@@ -386,7 +386,7 @@ static void do_main_menu() {
     old_region = region_code = GetLanguageSwitch();
     for (int n=0; n<LanguageSw.Count; n++) {
       main_items[2].values_list[n] = n;
-      main_items[2].values_list_label[n] = LanguageSw.Mode[n];
+      main_items[2].values_list_label[n] = LanguageSw.data[n].Mode;
     }
   }
 

@@ -56,13 +56,18 @@ void save_dipswitches(char *section);
 /*                                                                            */
 /******************************************************************************/
 
+typedef struct
+{
+   char *Mode;		// Mode Name x16
+   UINT8 Data;		// Mode Byte x16
+} tdata_romsw;
+
 typedef struct ROMSW
 {
    char *Name;			// ROMSwitch Name
    UINT32 Address;		// Address of Switch
    int Count;			// Number of Settings(modes) for this switch
-   char *Mode[16];		// Mode Name x16
-   UINT8 Data[16];		// Mode Byte x16
+   tdata_romsw *data;
    UINT8 def;
 } ROMSW;
 
