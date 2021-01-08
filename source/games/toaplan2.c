@@ -1,3 +1,8 @@
+#define DRV_DEF_VIDEO &video_bgareggahk
+#define DRV_DEF_EXEC execute_kbash
+#define DRV_DEF_SOUND sound_kbash
+#define DRV_DEF_INPUT input_bgareggahk
+#define USE_TILEQUEUE 1
 /******************************************************************************/
 /*                                                                            */
 /*                          TOAPLAN 68000 SYSTEM#2                            */
@@ -19,11 +24,83 @@
 #include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "mame/eeprom.h"
+#ifndef USE_TILEQUEUE
+// Leave USE_TILEQUEUE defined, the other option is a quick test with the priority bitmap which never worked completely
+// I just leave it here in case I am motivated to fix it one day, but it's unlikely.
 #include "video/priorities.h"
+#else
+#include "video/pdraw.h"
+#endif
 #include "sound/toaplan2.h"
 
-// use cache for solid tiles/sprites...
-#define USE_CACHE
+#ifdef USE_TILEQUEUE
+#define MAX_PRI         32              // 32 levels of priority
+#define MAX_TILES       0x8000
+
+struct TILE_Q
+{
+   UINT32 tile;                          // Tile number
+   UINT32 x,y;                           // X,Y position
+   UINT8 *map;                          // Colour map data
+   int chip,flip;
+   struct TILE_Q *next;                 // Next item with equal priority
+};
+
+static struct TILE_Q *TileQueue;               // full list
+static struct TILE_Q *last_tile;               // last tile in use
+static struct TILE_Q *next_tile[MAX_PRI];      // next tile for each priority
+static struct TILE_Q *first_tile[MAX_PRI];     // first tile for each priority
+
+static int init_tilequeue() {
+  if(!(TileQueue = (struct TILE_Q *) AllocateMem(sizeof(struct TILE_Q)*MAX_TILES)))return 0;
+  return 1;
+}
+
+static void TerminateTileQueue(void)
+{
+   int ta;
+   struct TILE_Q *curr_tile;
+
+   for(ta=0; ta<MAX_PRI; ta++){
+
+      curr_tile = next_tile[ta];
+
+      curr_tile->next = NULL;
+
+   }
+}
+
+static void ClearTileQueue(void)
+{
+   int ta;
+
+   last_tile = TileQueue;
+
+   for(ta=0; ta<MAX_PRI; ta++){
+      first_tile[ta] = last_tile;
+      next_tile[ta]  = last_tile;
+      last_tile      = last_tile+1;
+   }
+}
+
+static DEF_INLINE void QueueTile(int tile, int x, int y, UINT8 *map, UINT8 flip, int pri, int chip)
+{
+   struct TILE_Q *curr_tile;
+
+   curr_tile = next_tile[pri];
+
+   curr_tile->tile = tile; // +tile_start;
+   curr_tile->x    = x;
+   curr_tile->y    = y;
+   curr_tile->map  = map;
+   curr_tile->chip = chip;
+   curr_tile->flip = flip;
+   curr_tile->next = last_tile;
+
+   next_tile[pri]  = last_tile;
+   last_tile       = last_tile+1;
+}
+#endif
 
 static GfxLayout raizing_textlayout =
 {
@@ -36,9 +113,44 @@ static GfxLayout raizing_textlayout =
 	8*32
 };
 
+static GfxLayout tilelayout =
+{
+	16,16,			/* 16x16 */
+	RGN_FRAC(1,2),	/* Number of tiles */
+	4,				/* 4 bits per pixel */
+	{ RGN_FRAC(1,2)+8, RGN_FRAC(1,2), 8, 0 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7,
+		8*16+0, 8*16+1, 8*16+2, 8*16+3, 8*16+4, 8*16+5, 8*16+6, 8*16+7 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
+		16*16, 17*16, 18*16, 19*16, 20*16, 21*16, 22*16, 23*16 },
+	8*4*16
+};
+
+static GfxLayout spritelayout =
+{
+	8,8,			/* 8x8 */
+	RGN_FRAC(1,2),	/* Number of 8x8 sprites */
+	4,				/* 4 bits per pixel */
+	{ RGN_FRAC(1,2)+8, RGN_FRAC(1,2), 8, 0 },
+	{ 0, 1, 2, 3, 4, 5, 6, 7 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16 },
+	8*16
+};
+
 static struct GFX_LIST raizing_gfxdecodeinfo[] =
 {
-	{ REGION_GFX2, &raizing_textlayout, },		/* Extra-text layer */
+	{ REGION_GFX1, &tilelayout, },
+	{ REGION_GFX1, &spritelayout, },
+	{ REGION_GFX3, &raizing_textlayout, },		/* Extra-text layer */
+	{ -1 } /* end of array */
+};
+
+static struct GFX_LIST dual_gfx[] =
+{
+	{ REGION_GFX1, &tilelayout, },
+	{ REGION_GFX1, &spritelayout, },
+	{ REGION_GFX3, &tilelayout, },
+	{ REGION_GFX3, &spritelayout, },
 	{ -1 } /* end of array */
 };
 
@@ -68,22 +180,16 @@ static struct INPUT_INFO input_vfive[] =
    END_INPUT
 };
 
-/*************
-   FIX EIGHT
- *************/
-
-
 /* The bankswitch code is directly taken from mame.
    I am not familliar with this, and I have not much time right now... */
-
-static unsigned long PCMBanksize;
 
 static void raizing_oki6295_set_bankbase( int chip, int channel, int base )
 {
 	/* The OKI6295 ROM space is divided in four banks, each one indepentently
 	   controlled. The sample table at the beginning of the addressing space is
 	   divided in four pages as well, banked together with the sample data. */
-  unsigned char *rom = PCMROM + chip*PCMBanksize;
+  unsigned char *rom;
+  rom = load_region[REGION_SOUND1+chip];
   /* copy the samples */
   memcpy(rom + channel * 0x10000, rom + 0x40000 + base, 0x10000);
   /* and also copy the samples address table */
@@ -118,8 +224,8 @@ static struct ROM_INFO rom_fixeight[] =
 {
   LOAD_SW16( ROM1, "tp-026-1", 0x000000, 0x080000, 0xf7b1746a),
    LOAD( SOUND1, "tp-026-2", 0, 0x00040000, 0x85063f1f),
-   {     "tp-026-3", 0x00200000, 0xe5578d98, 0, 0, 0, },
-   {     "tp-026-4", 0x00200000, 0xb760cb53, 0, 0, 0, },
+  LOAD( GFX1, "tp-026-3", 0x000000, 0x200000, 0xe5578d98),
+  LOAD( GFX1, "tp-026-4", 0x200000, 0x200000, 0xb760cb53),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -265,16 +371,6 @@ static struct OKIM6295interface raizing_m6295_interface =
    { 160 },
 };
 
-/* Now that fixeight has a REGION_SOUND1 in its roms, we must define this
- * separately since loading of sample is manual here because of the banks */
-static struct OKIM6295interface fix_eight_bootleg_m6295_interface =
-{
-   1,				// 1 chip
-   { 14000000/16/165 },			// taken from mame
-   { 0 },	// rom list
-   { 120 },
-};
-
 static struct OKIM6295interface fixeight_m6295_interface =
 {
    1,				// 1 chip
@@ -318,50 +414,29 @@ static struct SOUND_INFO sound_bbakraid[] =
    { 0,             NULL,                 },
 };
 
-static struct SOUND_INFO sound_fixeighb[] =
-{
-   { SOUND_M6295,   &fix_eight_bootleg_m6295_interface,     },
-   { 0,             NULL,                 },
-};
-
 static struct SOUND_INFO sound_vfive[] =
 {
    { SOUND_M6295,   &fixeight_m6295_interface,     },
    { 0,             NULL,                 },
 };
 
-/*************
-   FIX EIGHT BOOTLEG
- *************/
-
-
 static struct ROM_INFO rom_fixeighb[] =
 {
-   {     "tp-026-3", 0x00200000, 0xe5578d98, 0, 0, 0, },
-   {     "tp-026-4", 0x00200000, 0xb760cb53, 0, 0, 0, },
-   { "1.bin", 0x80000, 0x888f19ac, 0, 0, 0 }, // REGION_SMP1, 0, LOAD_NORMAL },
-
-  LOAD8_16( ROM1, "3.bin", 0x000000, 0x80000, 0xcc77d4b4),
-  LOAD8_16( ROM1, "2.bin", 0x000000+1, 0x80000, 0xed715488),
-   {        "4.bin", 0x00008000, 0xa6aca465, 0, 0, 0, },
-   {        "5.bin", 0x00008000, 0x456dd16e, 0, 0, 0, },
+  LOAD_16_8( CPU1, "3.bin", 0x000000, 0x80000, 0xcc77d4b4),
+  LOAD_16_8( CPU1, "2.bin", 0x000001, 0x80000, 0xed715488),
+  LOAD( GFX3, "4.bin", 0x00000, 0x08000, 0xa6aca465),
+  LOAD( SMP1, "1.bin", 0x00000, 0x80000, 0x888f19ac),
    {           NULL,          0,          0, 0, 0, 0, },
 };
-
-/***************
-   KNUCLE BASH
- ***************/
-
-
 
 static struct ROM_INFO rom_kbash[] =
 {
   LOAD_SW16( ROM1, "kbash01.bin", 0x000000, 0x080000, 0x2965f81d),
-   {  "kbash02.bin", 0x00008000, 0x4cd882a1, 0, 0, 0, },
-   {  "kbash03.bin", 0x00200000, 0x32ad508b, 0, 0, 0, },
-   {  "kbash04.bin", 0x00200000, 0xe493c077, 0, 0, 0, },
-   {  "kbash05.bin", 0x00200000, 0xb84c90eb, 0, 0, 0, },
-   {  "kbash06.bin", 0x00200000, 0x9084b50a, 0, 0, 0, },
+  LOAD( ROM2, "tp023_02.bin", 0x0000, 0x8000, 0x4cd882a1),
+  LOAD( GFX1, "tp023_3.bin", 0x000000, 0x200000, 0x32ad508b),
+  LOAD( GFX1, "tp023_5.bin", 0x200000, 0x200000, 0xb84c90eb),
+  LOAD( GFX1, "tp023_4.bin", 0x400000, 0x200000, 0xe493c077),
+  LOAD( GFX1, "tp023_6.bin", 0x600000, 0x200000, 0x9084b50a),
    LOAD( SOUND1, "kbash07.bin", 0, 0x00040000, 0x3732318f),
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -369,8 +444,8 @@ static struct ROM_INFO rom_kbash[] =
 static struct ROM_INFO rom_kbash2[] =
 {
   LOAD_SW16( ROM1, "mecat-m", 0x000000, 0x80000, 0xbd2263c6),
-  { "mecat-34", 0x400000, 0x6be7b37e, 0, 0, 0, },
-  { "mecat-12", 0x400000, 0x49e46b1f, 0, 0, 0, },
+  LOAD( GFX1, "mecat-34", 0x000000, 0x400000, 0x6be7b37e),
+  LOAD( GFX1, "mecat-12", 0x400000, 0x400000, 0x49e46b1f),
   LOAD( SMP1, "mecat-s", 0x00000, 0x80000, 0x3eb7adf4),
   LOAD( SMP2, "eprom", 0x00000, 0x40000, 0x31115cb9),
   LOAD( USER1, "050917-10", 0x0000, 0x10000, 0x6b213183),
@@ -495,18 +570,13 @@ static struct DSW_INFO dsw_kbash2[] =
    { 0,        0,    NULL,      },
 };
 
-/***************
-   SNOW BROS 2
- ***************/
-
-
 static struct ROM_INFO rom_snowbro2[] =
 {
   LOAD_SW16( ROM1, "pro-4", 0x000000, 0x080000, 0x4c7ee341),
-   {       "rom3-l", 0x00100000, 0xeb06e332, 0, 0, 0, },
-   {       "rom3-h", 0x00080000, 0xdf4a952a, 0, 0, 0, },
-   {       "rom2-l", 0x00100000, 0xe9d366a9, 0, 0, 0, },
-   {       "rom2-h", 0x00080000, 0x9aab7a62, 0, 0, 0, },
+  LOAD( GFX1, "rom2-l", 0x000000, 0x100000, 0xe9d366a9),
+  LOAD( GFX1, "rom2-h", 0x100000, 0x080000, 0x9aab7a62),
+  LOAD( GFX1, "rom3-l", 0x180000, 0x100000, 0xeb06e332),
+  LOAD( GFX1, "rom3-h", 0x280000, 0x080000, 0xdf4a952a),
   LOAD( SMP1, "rom4", 0x00000, 0x80000, 0x638f341e),
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -624,17 +694,12 @@ static struct DSW_INFO dsw_snowbro2[] =
    { 0,        0,    NULL,      },
 };
 
-/*************
-   TRUXTON 2
- *************/
-
-
 static struct ROM_INFO rom_truxton2[] =
 {
   LOAD( ROM1, "tp024_1.bin", 0x000000, 0x080000, 0xf5cfe6ee),
   LOAD( SMP1, "tp024_2.bin", 0x00000, 0x80000, 0xf2f6cae4),
-   { "tp024_3.bin", 0x00100000, 0x47587164, 0, 0, 0, },
-   { "tp024_4.bin", 0x00100000, 0x805c449e, 0, 0, 0, },
+  LOAD( GFX1, "tp024_4.bin", 0x000000, 0x100000, 0x805c449e),
+  LOAD( GFX1, "tp024_3.bin", 0x100000, 0x100000, 0x47587164),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -729,19 +794,14 @@ static struct DSW_INFO dsw_truxton2[] =
    { 0,        0,    NULL,      },
 };
 
-/***********
-   DOGYUUN
- ***********/
-
-
 static struct ROM_INFO rom_dogyuun[] =
 {
   LOAD_SW16( ROM1, "tp022_01.r16", 0x000000, 0x080000, 0x79eb2429),
-   LOAD( SMP1, "tp022_2.w30", 0x00000, 0x40000, 0x043271b3),
-   {  "tp022_3.r16", 0x00100000, 0x191b595f, 0, 0, 0, },
-   {  "tp022_4.r16", 0x00100000, 0xd58d29ca, 0, 0, 0, },
-   {  "tp022_5.r16", 0x00200000, 0xd4c1db45, 0, 0, 0, },
-   {  "tp022_6.r16", 0x00200000, 0xd48dc74f, 0, 0, 0, },
+  LOAD( SMP1, "tp022_2.w30", 0x00000, 0x40000, 0x043271b3),
+  LOAD_SW16( GFX1, "tp022_3.w92", 0x000000, 0x100000, 0x191b595f),
+  LOAD_SW16( GFX1, "tp022_4.w93", 0x100000, 0x100000, 0xd58d29ca),
+  LOAD_SW16( GFX3, "tp022_5.w16", 0x000000, 0x200000, 0xd4c1db45),
+  LOAD_SW16( GFX3, "tp022_6.w17", 0x200000, 0x200000, 0xd48dc74f),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -841,19 +901,11 @@ static struct DSW_INFO dsw_dogyuun[] =
    { 0,        0,    NULL,      },
 };
 
-/***********
-   WHOOPEE
- ***********/
-
-
-static struct ROM_INFO rom_whoopee[] =
+static struct ROM_INFO rom_whoopee[] = // clone of pipibibsbl
 {
 
   LOAD8_16( ROM1, "whoopee.1", 0x000000, 0x020000, 0x28882e7e),
   LOAD8_16( ROM1, "whoopee.2", 0x000000+1, 0x020000, 0x6796f133),
-  LOAD( ROM2, "hd647180.025", 0x00000, 0x08000, 0x101c0358),
-   {  "tp025-4.bin", 0x00100000, 0xab97f744, 0, 0, 0, },
-   {  "tp025-3.bin", 0x00100000, 0x7b16101e, 0, 0, 0, },
  //{   "ppbb07.bin", 0x00008000, 0x456dd16e, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -964,23 +1016,17 @@ static struct SOUND_INFO sound_whoopee[] =
    { 0,             NULL,                 },
 };
 
-
-/*****************
-   PIPI AND BIBI
- *****************/
-
-
-static struct ROM_INFO rom_pipibibsbl[] =
+static struct ROM_INFO rom_pipibibsbl[] = // clone of whoopee
 {
 
   LOAD8_16( ROM1, "ppbb05.bin", 0x000000, 0x020000, 0x3d51133c),
   LOAD8_16( ROM1, "ppbb06.bin", 0x000000+1, 0x020000, 0x14c92515 ),
-  LOAD( ROM2, "ppbb08.bin", 0x0000, 0x8000, 0x101c0358),
-   {   "ppbb01.bin", 0x00080000, 0x0fcae44b, 0, 0, 0, },
-   {   "ppbb02.bin", 0x00080000, 0x8bfcdf87, 0, 0, 0, },
-   {   "ppbb03.bin", 0x00080000, 0xabdd2b8b, 0, 0, 0, },
-   {   "ppbb04.bin", 0x00080000, 0x70faa734, 0, 0, 0, },
  //{   "ppbb07.bin", 0x00008000, 0x456dd16e, 0, 0, 0, },
+  LOAD( ROM2, "hd647180.025", 0x00000, 0x08000, 0x101c0358),
+  LOAD_16_8( GFX1, "ppbb01.bin", 0x000000, 0x080000, 0x0fcae44b),
+  LOAD_16_8( GFX1, "ppbb02.bin", 0x000001, 0x080000, 0x8bfcdf87),
+  LOAD_16_8( GFX1, "ppbb03.bin", 0x100000, 0x080000, 0xabdd2b8b),
+  LOAD_16_8( GFX1, "ppbb04.bin", 0x100001, 0x080000, 0x70faa734),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1052,18 +1098,13 @@ static struct DSW_INFO dsw_pipibibsbl[] =
    { 0,        0,    NULL,      },
 };
 
-/*************
-   TEKI PAKI
- *************/
-
-
 static struct ROM_INFO rom_tekipaki[] =
 {
 
   LOAD8_16( ROM1, "tp020-1.bin", 0x000000, 0x010000, 0xd8420bd5),
   LOAD8_16( ROM1, "tp020-2.bin", 0x000000+1, 0x010000, 0x7222de8e),
-   { "tp020-3.bin", 0x00080000, 0x2d5e2201, 0, 0, 0, },
-   { "tp020-4.bin", 0x00080000, 0x3ebbe41e, 0, 0, 0, },
+  LOAD( GFX1, "tp020-4.bin", 0x000000, 0x080000, 0x3ebbe41e),
+  LOAD( GFX1, "tp020-3.bin", 0x080000, 0x080000, 0x2d5e2201),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1119,18 +1160,12 @@ static struct DSW_INFO dsw_tekipaki[] =
    { 0,        0,    NULL,      },
 };
 
-/********
-   GHOX
- ********/
-
-
 static struct ROM_INFO rom_ghox[] =
 {
-
   LOAD8_16( ROM1, "tp021-01.u10", 0x000000, 0x020000, 0x9e56ac67),
   LOAD8_16( ROM1, "tp021-02.u11", 0x000000+1, 0x020000, 0x15cac60f),
-   { "tp021-03.u36", 0x00080000, 0xa15d8e9d, 0, 0, 0, },
-   { "tp021-04.u37", 0x00080000, 0x26ed1c9a, 0, 0, 0, },
+  LOAD( GFX1, "tp021-03.u36", 0x000000, 0x080000, 0xa15d8e9d),
+  LOAD( GFX1, "tp021-04.u37", 0x080000, 0x080000, 0x26ed1c9a),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1205,16 +1240,13 @@ static struct DSW_INFO dsw_ghox[] =
    { 0,        0,    NULL,      },
 };
 
-/************
-   V - FIVE
- ************/
-
-
 static struct ROM_INFO rom_vfive[] =
 {
+    /* Secondary CPU is a Toaplan marked chip, (TS-007-Spy  TOA PLAN) */
+    /* It's a NEC V25 (PLCC94) (encrypted program uploaded by main CPU) */
    LOAD_SW16( ROM1, "tp027_01.bin", 0, 0x00080000, 0x731d50f4),
-   { "tp027_02.bin", 0x00100000, 0x877b45e8, 0, 0, 0, },
-   { "tp027_03.bin", 0x00100000, 0xb1fc6362, 0, 0, 0, },
+  LOAD( GFX1, "tp027_02.bin", 0x000000, 0x100000, 0x877b45e8),
+  LOAD( GFX1, "tp027_03.bin", 0x100000, 0x100000, 0xb1fc6362),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1277,17 +1309,11 @@ static struct DSW_INFO dsw_vfive[] =
    { 0,        0,    NULL,      },
 };
 
-
-/*****************
-   GRIND STORMER
- *****************/
-
-
 static struct ROM_INFO rom_grindstm[] =
 {
-   LOAD_SW16( ROM1, "01.bin", 0, 0x00080000, 0x4923f790),
-   { "tp027_02.bin", 0x00100000, 0x877b45e8, 0, 0, 0, },
-   { "tp027_03.bin", 0x00100000, 0xb1fc6362, 0, 0, 0, },
+	/* Secondary CPU is a Toaplan marked chip, (TS-007-Spy  TOA PLAN) */
+	/* It's a NEC V25 (PLCC94) (encrypted program uploaded by main CPU) */
+  LOAD_SW16( CPU1, "01.bin", 0x000000, 0x080000, 0x4923f790),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1335,22 +1361,22 @@ static struct DSW_INFO dsw_grindstm[] =
    { 0,        0,    NULL,      },
 };
 
-/***************************
-   SHIPPU MAHOU DAISAKUSEN
- ***************************/
-
-#define rom_shippumd rom_kgpe // very special clone
-static struct ROM_INFO rom_kgpe[] =
+static struct ROM_INFO rom_kingdmgp[] =
 {
-
-  LOAD8_16( ROM1, "ma02rom1.bin", 0x000000, 0x080000, 0xa678b149),
-  LOAD8_16( ROM1, "ma02rom0.bin", 0x000000+1, 0x080000, 0xf226a212),
+  LOAD_16_8( CPU1, "ma02rom1.bin", 0x000000, 0x080000, 0xa678b149),
+  LOAD_16_8( CPU1, "ma02rom0.bin", 0x000001, 0x080000, 0xf226a212),
   LOAD( ROM2, "ma02rom2.bin", 0x00000, 0x10000, 0xdde8a57e),
-   { "ma02rom3.bin", 0x00200000, 0x0e797142, 0, 0, 0, },
-   { "ma02rom4.bin", 0x00200000, 0x72a6fa53, 0, 0, 0, },
-   { "ma02rom5.bin", 0x00008000, 0x116ae559, 0, 0, 0, },
+  LOAD( GFX1, "ma02rom3.bin", 0x000000, 0x200000, 0x0e797142),
+  LOAD( GFX1, "ma02rom4.bin", 0x200000, 0x200000, 0x72a6fa53),
+  LOAD( GFX3, "ma02rom5.eng", 0x000000, 0x008000, 0x8c28460b),
   LOAD( SMP1, "ma02rom6.bin", 0x00000, 0x80000, 0x199e7cae),
-   {           NULL,          0,          0, 0, 0, 0, },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_shippumd[] = // clone of kingdmgp
+{
+  LOAD( GFX3, "ma02rom5.bin", 0x000000, 0x008000, 0x116ae559),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct INPUT_INFO input_bgareggahk[] =
@@ -1449,7 +1475,17 @@ static struct DSW_INFO dsw_shippumd[] =
    { 0,        0,    NULL,      },
 };
 
-static struct DSW_INFO sstriker_dsw[] =
+static struct DSW_INFO dsw_kingdmgp[] =
+{ /* The only difference between shippumd & kingdmgp is GFX2 which just contains the tiles for japan with shippumd and Europe with kingdmgp.
+     So just set a default region as Europe for kingdmgp. It would work with Japan too, but the graphics in the title screen will be messed up
+     in this case... */
+   { 0x000003, 0x00, dsw_data_shippu_mahoudai_0 },
+   { 0x000004, 0x00, dsw_data_shippu_mahoudai_1 },
+   { 0x000005, 0x04, dsw_data_shippu_mahoudai_2 },
+   { 0,        0,    NULL,      },
+};
+
+static struct DSW_INFO dsw_sstriker[] =
 {
    { 0x000003, 0x00, dsw_data_shippu_mahoudai_0 },
    { 0x000004, 0x00, dsw_data_shippu_mahoudai_1 },
@@ -1457,28 +1493,12 @@ static struct DSW_INFO sstriker_dsw[] =
    { 0,        0,    NULL,      },
 };
 
-static struct DSW_INFO dsw_kgpe[] =
-{
+static struct DSW_INFO dsw_sstrikerk[] =
+{ // just a default region = korea
    { 0x000003, 0x00, dsw_data_shippu_mahoudai_0 },
    { 0x000004, 0x00, dsw_data_shippu_mahoudai_1 },
-   { 0x000005, 0x02, dsw_data_shippu_mahoudai_2 },
+   { 0x000005, 0x0a, dsw_data_shippu_mahoudai_2 },
    { 0,        0,    NULL,      },
-};
-
-/********************
-   MAHOU DAISAKUSEN
- ********************/
-
-
-static struct ROM_INFO rom_mahoudai[] =
-{
-  LOAD_SW16( ROM1, "ra_ma_01.01", 0x000000, 0x080000, 0x970ccc5c),
-  LOAD( ROM2, "ra_ma_01.02", 0x00000, 0x10000, 0xeabfa46d),
-  { "ra_ma_01.03", 0x100000, 0x54e2bd95, 0,0,0 }, // GFX1
-  { "ra_ma_01.04", 0x100000, 0x21cd378f, 0,0,0 },
-  LOAD( GFX2, "ra_ma_01.05", 0x000000, 0x008000, 0xc00d1e80),
-  LOAD( SMP1, "ra_ma_01.06", 0x00000, 0x40000, 0x6edb2ab8),
-  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_INFO dsw_mahoudai[] =
@@ -1491,34 +1511,88 @@ static struct DSW_INFO dsw_mahoudai[] =
 
 static struct ROM_INFO rom_sstriker[] =
 {
-  LOAD_SW16( ROM1, "ra-ma-01.01", 0x000000, 0x080000, 0x92259f84),
-  { "ra_ma_01.03", 0x100000, 0x54e2bd95, 0,0,0 },
-  { "ra_ma_01.04", 0x100000, 0x21cd378f, 0,0,0 },
-  LOAD( GFX2, "ra-ma-01.05", 0x000000, 0x008000, 0x88b58841),
+  LOAD_SW16( CPU1, "ra-ma_01_01.u65", 0x000000, 0x080000, 0x708fd51d),
+  LOAD( ROM2, "ra-ma-01_02.u66", 0x00000, 0x10000, 0xeabfa46d),
+  LOAD( GFX1, "ra-ma01-rom2.u2", 0x000000, 0x100000, 0x54e2bd95),
+  LOAD( GFX1, "ra-ma01-rom3.u1", 0x100000, 0x100000, 0x21cd378f),
+  LOAD( GFX3, "ra-ma-01_05.u81", 0x000000, 0x008000, 0x88b58841),
+  LOAD( SMP1, "ra-ma01-rom1.u57", 0x00000, 0x40000, 0x6edb2ab8),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-/***************************
-   ARMED POLICE BATRIDER B
- ***************************/
+static struct ROM_INFO rom_sstrikerk[] = // clone of sstriker
+{
+  LOAD_SW16( CPU1, "ra-ma-01_01.u65", 0x000000, 0x080000, 0x92259f84),
+  { NULL, 0, 0, 0, 0, 0 }
+};
 
+static struct ROM_INFO rom_mahoudai[] = // clone of sstriker
+{
+  LOAD_SW16( CPU1, "ra_ma_01_01.u65", 0x000000, 0x080000, 0x970ccc5c),
+  LOAD( GFX3, "ra_ma_01_05.u81", 0x000000, 0x008000, 0xc00d1e80),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROMSW_DATA romswd_batrider[] =
+{
+  { "Japan", 0x0},
+  { "USA",0x1},
+  { "Europe", 2 },
+  { "Asia", 3},
+  { "German",4},
+  { "Austria",0x5},
+  { "Belgium",6},
+  { "Denmark", 7 },
+  { "Finland", 8 },
+  { "France", 9 },
+  { "Great Britain", 10 },
+  { "Greece", 11 },
+  { "Holland", 12 },
+  { "italy", 13 },
+  { "Norway", 14 },
+  { "Portugal", 15 },
+  { "Spain", 16 },
+  { "Sweden", 17 },
+  { "Switzerland", 18 },
+  { "Australia", 19 },
+  { "New Zealand", 20 },
+  { "Taiwan", 21 },
+  { "Hong Kong", 22 },
+  { "Korea", 23 },
+  { "China", 24 },
+  { "No copyright screen", 25 },
+  { NULL,  0    },
+};
+
+static struct ROMSW_INFO romsw_batrider[] =
+{
+   { 0x0, 0x02, romswd_batrider },
+   { 0,        0,    NULL },
+};
 
 static struct ROM_INFO rom_batrider[] =
 {
-
-  LOAD8_16( ROM1, "prg0b.u22", 0x000000, 0x080000, 0x4f3fc729),
-  LOAD8_16( ROM1, "prg1b.u23", 0x000000+1, 0x080000, 0x8e70b492),
-
-  LOAD8_16( ROM1, "prg2.u21", 0x100000, 0x080000, 0xbdaa5fbf),
-  LOAD8_16( ROM1, "prg3.u24", 0x100000+1, 0x080000, 0x7aa9f941),
-  { "snd.u77", 0x40000, 0x56682696, 0,0,0 },
-   {    "rom-1.bin", 0x00400000, 0x0df69ca2, 0, 0, 0, },
-   {    "rom-2.bin", 0x00400000, 0x1bfea593, 0, 0, 0, },
-   {    "rom-3.bin", 0x00400000, 0x60167d38, 0, 0, 0, },
-   {    "rom-4.bin", 0x00400000, 0xbee03c94, 0, 0, 0, },
-  { "rom-5.bin", 0x100000, 0x4274daf6, 0, 0, 0 },
-  { "rom-6.bin", 0x100000, 0x2a1c2426, 0, 0, 0 },
+  LOAD_16_8( CPU1, "prg0_europe.u22", 0x000000, 0x080000, 0x91d3e975),
+  LOAD_16_8( CPU1, "prg1b.u23", 0x000001, 0x080000, 0x8e70b492),
+  { "prg2.u21" , 0x080000, 0xbdaa5fbf, REGION_CPU1, 0x100000, LOAD_8_16 },
+  { "prg3.u24" , 0x080000, 0x7aa9f941, REGION_CPU1, 0x100001, LOAD_8_16 },
+  LOAD( ROM2, "snd.u77", 0x00000, 0x40000, 0x56682696),
+  LOAD( GFX1, "rom-1.bin", 0x000000, 0x400000, 0x0df69ca2),
+  LOAD( GFX1, "rom-3.bin", 0x400000, 0x400000, 0x60167d38),
+  LOAD( GFX1, "rom-2.bin", 0x800000, 0x400000, 0x1bfea593),
+  LOAD( GFX1, "rom-4.bin", 0xc00000, 0x400000, 0xbee03c94),
+  LOAD( SMP1, "rom-5.bin", 0x040000, 0x100000, 0x4274daf6),
+  LOAD( SMP2, "rom-6.bin", 0x040000, 0x100000, 0x2a1c2426),
    {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO rom_batriderja[] = // clone of batrider
+{
+  LOAD_16_8( CPU1, "prg0.bin", 0x000000, 0x080000, 0xf93ea27c),
+  LOAD_16_8( CPU1, "prg1.u23", 0x000001, 0x080000, 0x8ae7f592),
+  LOAD_16_8( CPU1, "prg2.u21", 0x100000, 0x080000, 0xbdaa5fbf),
+  LOAD_16_8( CPU1, "prg3.u24", 0x100001, 0x080000, 0x7aa9f941),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_batrider_0[] =
@@ -1630,7 +1704,7 @@ static struct OKIM6295interface batrider_m6295 =
    //{ 20000, 20000 },
    { 32000000/10/132, 32000000/10/165 },
    { REGION_SOUND1,REGION_SOUND2 }, // If !=0 then these are REGION numbers !!!
-   { 120,120 }
+   { 240,240 }
 };
 
 static struct SOUND_INFO sound_batrider[] =
@@ -1639,33 +1713,6 @@ static struct SOUND_INFO sound_batrider[] =
    { SOUND_M6295,   &batrider_m6295,      },
    { 0,             NULL,                 },
 };
-
-/***************************
-   ARMED POLICE BATRIDER A
- ***************************/
-
-
-static struct ROM_INFO rom_batridra[] =
-{
-
-  LOAD8_16( ROM1, "prg0.bin", 0x000000, 0x080000, 0xf93ea27c),
-  LOAD8_16( ROM1, "prg1.bin", 0x000000+1, 0x080000, 0x8ae7f592),
-
-  LOAD8_16( ROM1, "prg2.u21", 0x100000, 0x080000, 0xbdaa5fbf),
-  LOAD8_16( ROM1, "prg3.u24", 0x100000+1, 0x080000, 0x7aa9f941),
-   {    "rom-1.bin", 0x00400000, 0x0df69ca2, 0, 0, 0, },
-   {    "rom-2.bin", 0x00400000, 0x1bfea593, 0, 0, 0, },
-   {    "rom-3.bin", 0x00400000, 0x60167d38, 0, 0, 0, },
-   {    "rom-4.bin", 0x00400000, 0xbee03c94, 0, 0, 0, },
-   {    "rom-5.bin", 0x00100000, 0x4274daf6, 0, 0, 0, },
-   {    "rom-6.bin", 0x00100000, 0x2a1c2426, 0, 0, 0, },
-   {      "snd.u77", 0x00040000, 0x56682696, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
-};
-
-/******************
-   BATTLE GAREGGA
- ******************/
 
 static struct YM2151interface bgaregga_ym2151 =
 {
@@ -1680,15 +1727,7 @@ static struct OKIM6295interface bgaregga_m6295 =
 {
    1,
    { 32000000/16/132 },
-   { 0 },
-   { 220 }
-};
-
-static struct OKIM6295interface batsugun_m6295 =
-{
-   1,
-   { 20000 },			// guessed
-   { 0 },
+   { REGION_SOUND1 },
    { 220 }
 };
 
@@ -1701,57 +1740,50 @@ static struct SOUND_INFO sound_bgaregga[] =
 
 static struct SOUND_INFO sound_batsugun[] =
 {
-   { SOUND_M6295,   &batsugun_m6295,    },
+   { SOUND_M6295,   &m6295_interface,    },
    { 0,             NULL,                },
 };
 
-
-
-
 static struct ROM_INFO rom_bgaregga[] =
 {
-
   LOAD8_16( ROM1, "prg0.bin", 0x000000, 0x080000, 0xf80c2fc2),
   LOAD8_16( ROM1, "prg1.bin", 0x000000+1, 0x080000, 0x2ccfdd1e),
-   {     "rom1.bin", 0x00200000, 0x7eafdd70, 0, 0, 0, },
-   {     "rom2.bin", 0x00200000, 0xb330e5e2, 0, 0, 0, },
-   {     "rom3.bin", 0x00200000, 0x51b9ebfb, 0, 0, 0, },
-   {     "rom4.bin", 0x00200000, 0xb333d81f, 0, 0, 0, },
-   {     "rom5.bin", 0x00100000, 0xf6d49863, 0, 0, 0, },
-   {      "snd.bin", 0x00020000, 0x68632952, 0, 0, 0, },
-   {     "text.bin", 0x00008000, 0xe67fd534, 0, 0, 0, },
+  LOAD( ROM2, "snd.bin", 0x00000, 0x20000, 0x68632952),
+  LOAD( GFX1, "rom4.bin", 0x000000, 0x200000, 0xb333d81f),
+  LOAD( GFX1, "rom3.bin", 0x200000, 0x200000, 0x51b9ebfb),
+  LOAD( GFX1, "rom2.bin", 0x400000, 0x200000, 0xb330e5e2),
+  LOAD( GFX1, "rom1.bin", 0x600000, 0x200000, 0x7eafdd70),
+  LOAD( GFX3, "text.u81", 0x00000, 0x08000, 0xe67fd534),
+  LOAD( SMP1, "rom5.bin", 0x040000, 0x100000, 0xf6d49863),
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct ROM_INFO rom_bgareggacn[] =
+static struct ROM_INFO rom_bgareggacn[] = // clone of bgaregga
 {
-
-  LOAD8_16( ROM1, "u123", 0x000000, 0x080000, 0x88a4e66a),
-  LOAD8_16( ROM1, "u65", 0x000000+1, 0x080000, 0x5dea32a3),
-  { "snd.bin", 0x20000, 0x68632952, 0, 0, 0 },
-   {     "rom1.bin", 0x00200000, 0x7eafdd70, 0, 0, 0, },
-   {     "rom2.bin", 0x00200000, 0xb330e5e2, 0, 0, 0, },
-   {     "rom3.bin", 0x00200000, 0x51b9ebfb, 0, 0, 0, },
-   {     "rom4.bin", 0x00200000, 0xb333d81f, 0, 0, 0, },
-   {     "rom5.bin", 0x00100000, 0xf6d49863, 0, 0, 0, },
-   {      "snd.bin", 0x00020000, 0x68632952, 0, 0, 0, },
-   {     "text.bin", 0x00008000, 0xe67fd534, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  LOAD_16_8( CPU1, "u123", 0x000000, 0x080000, 0x88a4e66a),
+  LOAD_16_8( CPU1, "u65", 0x000001, 0x080000, 0x5dea32a3),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_bgareggahk[] =
+static struct ROM_INFO rom_bgareggahk[] = // clone of bgaregga
 {
+  LOAD_16_8( CPU1, "prg_0.rom", 0x000000, 0x080000, 0x26e0019e),
+  LOAD_16_8( CPU1, "prg_1.rom", 0x000001, 0x080000, 0x2ccfdd1e),
+  { NULL, 0, 0, 0, 0, 0 }
+};
 
-  LOAD8_16( ROM1, "prg_0.bin", 0x000000, 0x080000, 0x951ecc07),
-  LOAD8_16( ROM1, "prg_1.bin", 0x000000+1, 0x080000, 0x729a60c6),
-   {     "rom1.bin", 0x00200000, 0x7eafdd70, 0, 0, 0, },
-   {     "rom2.bin", 0x00200000, 0xb330e5e2, 0, 0, 0, },
-   {     "rom3.bin", 0x00200000, 0x51b9ebfb, 0, 0, 0, },
-   {     "rom4.bin", 0x00200000, 0xb333d81f, 0, 0, 0, },
-   {     "rom5.bin", 0x00100000, 0xf6d49863, 0, 0, 0, },
-   {      "snd.bin", 0x00020000, 0x68632952, 0, 0, 0, },
-   {     "text.bin", 0x00008000, 0xe67fd534, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+static struct ROM_INFO rom_bgaregganv[] = // clone of bgaregga
+{
+  LOAD_16_8( CPU1, "prg_0.bin", 0x000000, 0x080000, 0x951ecc07),
+  LOAD_16_8( CPU1, "prg_1.bin", 0x000001, 0x080000, 0x729a60c6),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_bgareggat2[] = // clone of bgaregga
+{
+  LOAD_16_8( CPU1, "prg0", 0x000000, 0x080000, 0x84094099),
+  LOAD_16_8( CPU1, "prg1", 0x000001, 0x080000, 0x46f92fe4),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_battle_garegga_0[] =
@@ -1872,7 +1904,7 @@ static struct DSW_INFO dsw_bgaregga[] =
 {
    { 0x000003, 0x00, dsw_data_battle_garegga_0 },
    { 0x000004, 0x00, dsw_data_battle_garegga_1 },
-   { 0x000005, 0x00, dsw_data_battle_garegga_2 },
+   { 0x000005, 0x01, dsw_data_battle_garegga_2 },
    { 0,        0,    NULL,      },
 };
 
@@ -1884,22 +1916,44 @@ static struct DSW_INFO dsw_bgareggahk[] =
    { 0,        0,    NULL,      },
 };
 
-/************
-   BATSUGUN
- ************/
-
-
 static struct ROM_INFO rom_batsugun[] =
 {
-   {     "tp030_2.bin", 0x00040000, 0x276146f5, 0, 0, 0, },
-   {    "tp030_3h.bin", 0x00100000, 0xed75730b, 0, 0, 0, },
-   {    "tp030_3l.bin", 0x00100000, 0x3024b793, 0, 0, 0, },
-   {    "tp030_4h.bin", 0x00100000, 0xd482948b, 0, 0, 0, },
-   {    "tp030_4l.bin", 0x00100000, 0xfedb9861, 0, 0, 0, },
-   {     "tp030_5.bin", 0x00100000, 0xbcf5ba05, 0, 0, 0, },
-   {     "tp030_6.bin", 0x00100000, 0x0666fecd, 0, 0, 0, },
-  LOAD_SW16( ROM1, "tp030_01.bin", 0x000000, 0x080000, 0x3873d7dd),
+    /* Secondary CPU is a Toaplan marked chip, (TS-007-Spy  TOA PLAN) */
+    /* It's a NEC V25 (PLCC94) (program uploaded by main CPU) */
+  LOAD_SW16( CPU1, "tp030_1a.bin", 0x000000, 0x080000, 0xcb1d4554),
+#if 0
+  LOAD( GFX1, "tp030_3l.bin", 0x100000, 0x100000, 0x3024b793),
+  LOAD( GFX1, "tp030_3h.bin", 0x200000, 0x100000, 0xed75730b),
+  LOAD( GFX1, "tp030_4l.bin", 0x400000, 0x100000, 0xfedb9861),
+  LOAD( GFX1, "tp030_4h.bin", 0x500000, 0x100000, 0xd482948b),
+  LOAD( GFX1, "tp030_5.bin", 0x000000, 0x100000, 0xbcf5ba05),
+  LOAD( GFX1, "tp030_6.bin", 0x300000, 0x100000, 0x0666fecd),
+#else
+  LOAD( GFX1, "tp030_3l.bin", 0x000000, 0x100000, 0x3024b793),
+  LOAD( GFX1, "tp030_3h.bin", 0x100000, 0x100000, 0xed75730b),
+  LOAD( GFX1, "tp030_4l.bin", 0x200000, 0x100000, 0xfedb9861),
+  LOAD( GFX1, "tp030_4h.bin", 0x300000, 0x100000, 0xd482948b),
+  LOAD( GFX3, "tp030_5.bin", 0x000000, 0x100000, 0xbcf5ba05),
+  LOAD( GFX3, "tp030_6.bin", 0x100000, 0x100000, 0x0666fecd),
+#endif
+  LOAD( SMP1, "tp030_2.bin", 0x00000, 0x40000, 0x276146f5),
    {           NULL,          0,          0, 0, 0, 0, },
+};
+
+static struct ROM_INFO rom_batsuguna[] = // clone of batsugun
+{
+	/* Secondary CPU is a Toaplan marked chip, (TS-007-Spy  TOA PLAN) */
+	/* It's a NEC V25 (PLCC94) (program uploaded by main CPU) */
+  LOAD_SW16( CPU1, "tp030_01.bin", 0x000000, 0x080000, 0x3873d7dd),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_batsugunsp[] = // clone of batsugun
+{
+	/* Secondary CPU is a Toaplan marked chip, (TS-007-Spy  TOA PLAN) */
+	/* It's a NEC V25 (PLCC94) (program uploaded by main CPU) */
+  LOAD_SW16( CPU1, "tp030-sp.u69", 0x000000, 0x080000, 0x8072a0cd),
+  { NULL, 0, 0, 0, 0, 0 }
 };
 
 static struct DSW_DATA dsw_data_batsugun_0[] =
@@ -2063,14 +2117,6 @@ static void M6295Write68k(UINT32 offset,UINT16 data)
   //M6295buffer_request(0,data&0xFF);
 }
 
-#if 0
-// unused ?!
-static void m6295_bank_z80_wb(UINT16 offset, UINT8 data)
-{
-   M6295buffer_bankswitch(0, data & 1);
-}
-#endif
-
 static void m6295_z80_wb(UINT16 offset, UINT8 data)
 {
   OKIM6295_data_0_w( 0, data&0xFF );
@@ -2102,12 +2148,10 @@ typedef struct TP2VCU				// information about 1 chip
    UINT32 vram_pos;				// current offset in VRAM
    UINT32 scroll_pos;				// current offset in SCROLL
    UINT32 status;				// some status read
-   UINT8 *GFX_BG;				// GFX data
-   UINT8 *MASK_BG;				// MASK data
-   UINT32 tile_max;				// tile count
 } TP2VCU;
 
 static int vcu_num;
+static int start_frame;
 
 
 static struct TP2VCU tp2vcu[2];			// max 2 chips
@@ -2119,6 +2163,12 @@ static char *layer_id_name[2][4] =
 };
 
 static int layer_id_data[2][4];
+static int tp3vcu_layer_id_data[1];
+
+static char *tp3vcu_layer_id_name[1] =
+{
+   "FG0",
+};
 
 static void init_tp2vcu(UINT32 num)
 {
@@ -2134,6 +2184,30 @@ static void init_tp2vcu(UINT32 num)
    vcu_num = num+1;
 }
 
+/*
+ GP9001 Scroll Registers (hex) : (from mame)
+
+    00      Background scroll X (X flip off)
+    01      Background scroll Y (Y flip off)
+    02      Foreground scroll X (X flip off)
+    03      Foreground scroll Y (Y flip off)
+    04      Top (text) scroll X (X flip off)
+    05      Top (text) scroll Y (Y flip off)
+    06      Sprites    scroll X (X flip off) ???
+    07      Sprites    scroll Y (Y flip off) ???
+    0E      ??? Initialise Video controller at startup ???
+    0F      Scroll update complete ??? (Not used in Ghox and V-Five)
+
+    80      Background scroll X (X flip on)
+    81      Background scroll Y (Y flip on)
+    82      Foreground scroll X (X flip on)
+    83      Foreground scroll Y (Y flip on)
+    84      Top (text) scroll X (X flip on)
+    85      Top (text) scroll Y (Y flip on)
+    86      Sprites    scroll X (X flip on) ???
+    87      Sprites    scroll Y (Y flip on) ???
+    8F      Same as 0Fh except flip bit is active
+    */
 static void tp2vcu_0_ww(UINT32 offset, UINT16 data)
 {
    switch(offset&0x0E){
@@ -2141,10 +2215,6 @@ static void tp2vcu_0_ww(UINT32 offset, UINT16 data)
          tp2vcu[0].vram_pos = (data<<1) & 0x3FFE;
       break;
       case 0x04:                        // Port Data
-         WriteWord(&tp2vcu[0].VRAM[tp2vcu[0].vram_pos], data);
-         tp2vcu[0].vram_pos += 0x0002;
-         tp2vcu[0].vram_pos &= 0x3FFE;
-      break;
       case 0x06:                        // Port Data
          WriteWord(&tp2vcu[0].VRAM[tp2vcu[0].vram_pos], data);
          tp2vcu[0].vram_pos += 0x0002;
@@ -2154,6 +2224,9 @@ static void tp2vcu_0_ww(UINT32 offset, UINT16 data)
          tp2vcu[0].scroll_pos = (data<<1) & 0x001E;
       break;
       case 0x0C:                        // Port Data
+      if (tp2vcu[0].scroll_pos >= 0xe) {
+	  print_debug("tp2_vcu[0] scroll_w %x,%x\n",tp2vcu[0].scroll_pos,data);
+      }
          WriteWord(&tp2vcu[0].SCROLL[tp2vcu[0].scroll_pos], data);
          tp2vcu[0].scroll_pos += 0x0002;
          tp2vcu[0].scroll_pos &= 0x001E;
@@ -2167,22 +2240,27 @@ static void tp2vcu_0_ww(UINT32 offset, UINT16 data)
 static UINT16 tp2vcu_0_rw(UINT32 offset)
 {
    UINT16 ret;
+   int cycles, vpos;
 
    switch(offset&0x0E){
-      case 0x04:                        // Port Data
-         ret = ReadWord(&tp2vcu[0].VRAM[tp2vcu[0].vram_pos]);
-         tp2vcu[0].vram_pos += 0x0002;
-         tp2vcu[0].vram_pos &= 0x3FFE;
-      break;
-      case 0x06:                        // Port Data
-         ret = ReadWord(&tp2vcu[0].VRAM[tp2vcu[0].vram_pos]);
-         tp2vcu[0].vram_pos += 0x0002;
-         tp2vcu[0].vram_pos &= 0x3FFE;
-      break;
-      case 0x0C:                        // Status
-         ret = tp2vcu[0].status;
-         tp2vcu[0].status ^= 1;
-      break;
+   case 0x04:                        // Port Data
+   case 6:
+       ret = ReadWord(&tp2vcu[0].VRAM[tp2vcu[0].vram_pos]);
+       tp2vcu[0].vram_pos += 0x0002;
+       tp2vcu[0].vram_pos &= 0x3FFE;
+       break;
+   case 0x0C:                        // Status
+       // This thing tests vpos, but the result is used to actually choose which sprites to draw !
+       // in batsugun if this returns 0 "too often", then you'll get some red garbage instead of the "insert coin"
+       // at the bottom of the screen for player 2. Maybe it was a way to show on screen that something is wrong ?
+       // weird anyway... ! By the way this is tested by a test $50000d, so the read byte here is important !
+       cycles = s68000readOdometer() - start_frame;
+       vpos = cycles*262/CPU_FRAME_MHz(16,60);
+       // printf("vpos %d tested at %x\n",vpos,s68000readPC());
+       return vpos >= 250 || vpos < 5;
+       // This is what there was before and which produces the red garbage for player 2 :
+       // ret = tp2vcu[0].status;
+       // tp2vcu[0].status ^= 1;
       default:
          ret = 0x0000;
          print_debug("tp2vcu[0] rw(%04x)\n", offset&0x0E);
@@ -2274,7 +2352,6 @@ static UINT8 tp2vcu_0_rb_alt(UINT32 offset)
       return (UINT8) ((ret>>0)&0xFF);
 }
 
-
 static void tp2vcu_1_ww(UINT32 offset, UINT16 data)
 {
    switch(offset&0x0E){
@@ -2282,10 +2359,6 @@ static void tp2vcu_1_ww(UINT32 offset, UINT16 data)
          tp2vcu[1].vram_pos = (data<<1) & 0x3FFE;
       break;
       case 0x04:                        // Port Data
-         WriteWord(&tp2vcu[1].VRAM[tp2vcu[1].vram_pos], data);
-         tp2vcu[1].vram_pos += 0x0002;
-         tp2vcu[1].vram_pos &= 0x3FFE;
-      break;
       case 0x06:                        // Port Data
          WriteWord(&tp2vcu[1].VRAM[tp2vcu[1].vram_pos], data);
          tp2vcu[1].vram_pos += 0x0002;
@@ -2295,9 +2368,13 @@ static void tp2vcu_1_ww(UINT32 offset, UINT16 data)
          tp2vcu[1].scroll_pos = (data<<1) & 0x001E;
       break;
       case 0x0C:                        // Port Data
+      if (tp2vcu[1].scroll_pos >= 0xe) {
+	  print_debug("tp2_vcu[1] scroll_w %x,%x\n",tp2vcu[1].scroll_pos,data);
+      }
+
          WriteWord(&tp2vcu[1].SCROLL[tp2vcu[1].scroll_pos], data);
          tp2vcu[1].scroll_pos += 0x0002;
-         tp2vcu[1].scroll_pos &= 0x001E;
+         tp2vcu[1].scroll_pos &= 0x00fE;
       break;
       default:
          print_debug("tp2vcu[1] ww(%04x,%04x)\n", offset&0x0E, data);
@@ -2311,16 +2388,14 @@ static UINT16 tp2vcu_1_rw(UINT32 offset)
 
    switch(offset&0x0E){
       case 0x04:                        // Port Data
-         ret = ReadWord(&tp2vcu[1].VRAM[tp2vcu[1].vram_pos]);
-         tp2vcu[1].vram_pos += 0x0002;
-         tp2vcu[1].vram_pos &= 0x3FFE;
-      break;
-      case 0x06:                        // Port Data
+      case 6:
          ret = ReadWord(&tp2vcu[1].VRAM[tp2vcu[1].vram_pos]);
          tp2vcu[1].vram_pos += 0x0002;
          tp2vcu[1].vram_pos &= 0x3FFE;
       break;
       case 0x0C:                        // Status
+      // Apparently batsugun tests only vdp 0 for the vbl here, so we can return this fake status here
+      // not even sure this status is tested at all !
          ret = tp2vcu[1].status;
          tp2vcu[1].status ^= 1;
       break;
@@ -2345,16 +2420,38 @@ static UINT8 tp2vcu_1_rb(UINT32 offset)
       return (UINT8) ((ret>>0)&0xFF);
 }
 
-/******************************************************************************/
-/*  SCANLINE TIMER                                                            */
-/******************************************************************************/
 static UINT16 timer_faked;
 
 static UINT16 TimerRead(UINT32 offset)
 {
+#if 1
+    /* Actually I didn't find any place here where a precise result is useful, all it does is to slow the game compared to the fake one, so I keep the fake one for now */
    timer_faked = (timer_faked+0x17)&0x1FF;
 
    return timer_faked;
+#else
+   int cycles = s68000readOdometer() - start_frame;
+   int vpos = cycles*262/CPU_FRAME_MHz(16,60);
+   int one_line = CPU_FRAME_MHz(16,60)/262;
+   int hpos = (cycles - (vpos*one_line))*432/one_line;
+   printf("hpos %d vpos %d\n",hpos,vpos);
+
+        int video_status = 0xff00;    // Set signals inactive
+
+        // vpos = (vpos + 15) % 262;
+
+        if (hpos > 325)
+                video_status &= ~0x8000;
+        if (vpos > 232)
+                video_status &= ~0x4000;
+        if (hpos > 325 || vpos > 232)
+                video_status &= ~0x0100;
+        if (vpos < 256)
+                video_status |= (vpos & 0xff);
+        else
+                video_status |= 0xff;
+	return video_status;
+#endif
 }
 
 /******************************************************************************/
@@ -2769,64 +2866,10 @@ static void TS_001_Turbo_WW(UINT32 offset, UINT16 data)
    TS_001_Turbo_WB(offset, (UINT8) (data&0xFF) );
 }
 
-static void load_tp2_gfx(char *name1,char *name2, int size, UINT8 *RAM,
-			 UINT8 *GFX)
-{
-  int ta,tb,tc;
-  if(!load_rom(name1, RAM, size))return;           // GFX
-  tb=0;
-  for(ta=0;ta<size;ta+=2){
-    tc=RAM[ta];
-    GFX[tb+0] = (((tc&0x80)>>7)<<0);
-    GFX[tb+1] = (((tc&0x40)>>6)<<0);
-    GFX[tb+2] = (((tc&0x20)>>5)<<0);
-    GFX[tb+3] = (((tc&0x10)>>4)<<0);
-    GFX[tb+4] = (((tc&0x08)>>3)<<0);
-    GFX[tb+5] = (((tc&0x04)>>2)<<0);
-    GFX[tb+6] = (((tc&0x02)>>1)<<0);
-    GFX[tb+7] = (((tc&0x01)>>0)<<0);
-    tc=RAM[ta+1];
-    GFX[tb+0] |= (((tc&0x80)>>7)<<1);
-    GFX[tb+1] |= (((tc&0x40)>>6)<<1);
-    GFX[tb+2] |= (((tc&0x20)>>5)<<1);
-    GFX[tb+3] |= (((tc&0x10)>>4)<<1);
-    GFX[tb+4] |= (((tc&0x08)>>3)<<1);
-    GFX[tb+5] |= (((tc&0x04)>>2)<<1);
-    GFX[tb+6] |= (((tc&0x02)>>1)<<1);
-    GFX[tb+7] |= (((tc&0x01)>>0)<<1);
-    tb+=8;
-  }
-
-  if(!load_rom(name2, RAM, size))return;           // GFX
-  tb=0;
-  for(ta=0;ta<size;ta+=2){
-    tc=RAM[ta];
-    GFX[tb+0] |= (((tc&0x80)>>7)<<2);
-    GFX[tb+1] |= (((tc&0x40)>>6)<<2);
-    GFX[tb+2] |= (((tc&0x20)>>5)<<2);
-    GFX[tb+3] |= (((tc&0x10)>>4)<<2);
-    GFX[tb+4] |= (((tc&0x08)>>3)<<2);
-    GFX[tb+5] |= (((tc&0x04)>>2)<<2);
-    GFX[tb+6] |= (((tc&0x02)>>1)<<2);
-    GFX[tb+7] |= (((tc&0x01)>>0)<<2);
-    tc=RAM[ta+1];
-    GFX[tb+0] |= (((tc&0x80)>>7)<<3);
-    GFX[tb+1] |= (((tc&0x40)>>6)<<3);
-    GFX[tb+2] |= (((tc&0x20)>>5)<<3);
-    GFX[tb+3] |= (((tc&0x10)>>4)<<3);
-    GFX[tb+4] |= (((tc&0x08)>>3)<<3);
-    GFX[tb+5] |= (((tc&0x04)>>2)<<3);
-    GFX[tb+6] |= (((tc&0x02)>>1)<<3);
-    GFX[tb+7] |= (((tc&0x01)>>0)<<3);
-    tb+=8;
-  }
-}
-
 /******************************************************************************/
 
 static void load_truxton2(void)
 {
-   UINT8 *TMP;
    int ta,tb;
 
    romset=0;
@@ -2834,18 +2877,10 @@ static void load_truxton2(void)
    _z80iff = 3; // make sure the timers won't believe ints are disabled !
 #endif
 
-   if(!(GFX=AllocateMem(0x400000)))return;
-   if(!(TMP=AllocateMem(0x100000)))return;
-
-   load_tp2_gfx("tp024_4.bin","tp024_3.bin",0x100000,TMP,GFX);
-
-   FreeMem(TMP);
    if (!init_tilequeue()) return;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x10000);
+   tp3vcu_layer_id_data[0] = add_layer_info(tp3vcu_layer_id_name[0]);
 
    RAMSize=0x34000+0x10000;
-
    if(!(RAM=AllocateMem(RAMSize)))return;
 
    memset(RAM+0x00000,0x00,0x34000);
@@ -2863,9 +2898,6 @@ static void load_truxton2(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x0FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -2953,40 +2985,24 @@ static void load_truxton2(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x34000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x200000, 0x20000F, tp2vcu_0_rb, NULL);                 // GCU RAM (SCREEN)
    AddReadByte(0x700000, 0x70000F, NULL, RAM+0x01F000);                 // INPUT
    AddReadByte(0x700010, 0x700011, OKIM6295_status_0_r, NULL);                 // M6295
    AddReadByte(0x700014, 0x700017, YM2151Read68k, NULL);                // YM2151
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x200000, 0x20000F, tp2vcu_0_rw, NULL);                 // GCU RAM (SCREEN)
    AddReadWord(0x700000, 0x70000F, NULL, RAM+0x01F000);                 // INPUT
    AddReadWord(0x700010, 0x700011, OKIM6295_status_0_r, NULL);                 // M6295
    AddReadWord(0x700014, 0x700017, YM2151Read68k, NULL);                // YM2151
    AddReadWord(0x600000, 0x600001, TimerRead, NULL);                    // TIMER
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x700010, 0x700011, M6295Write68k, NULL);               // M6295
    AddWriteByte(0x700014, 0x700017, YM2151Write68k, NULL);              // YM2151
    AddWriteByte(0x700000, 0x70003F, tatsujin_2_ioc_wb, NULL);           // INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x200000, 0x20000F, tp2vcu_0_ww, NULL);               // GCU RAM (SCREEN)
    AddWriteWord(0x300000, 0x300FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x400000, 0x403FFF, NULL, RAM+0x020000);                // TEXT RAM (FG0 RAM)
@@ -2994,32 +3010,17 @@ static void load_truxton2(void)
    AddWriteWord(0x700010, 0x700011, M6295Write68k, NULL);               // M6295
    AddWriteWord(0x700014, 0x700017, YM2151Write68k, NULL);              // YM2151
    AddWriteWord(0x700000, 0x70003F, tatsujin_2_ioc_ww, NULL);           // INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 static void load_snowbro2(void)
 {
-   UINT8 *TMP;
-
    romset=1;
 #ifndef MAME_Z80
    _z80iff = 3; // make sure the timers won't believe ints are disabled !
 #endif
 
-   if(!(GFX=AllocateMem(0x600000)))return;
-   if(!(TMP=AllocateMem(0x100000)))return;
-
-   load_tp2_gfx("rom2-l","rom3-l",0x100000,TMP,GFX);
-   load_tp2_gfx("rom2-h","rom3-h",0x80000,TMP,&GFX[0x400000]);
-
-   FreeMem(TMP);
-
    if (!init_tilequeue()) return;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x18000);
 
    if(!(RAM=AllocateMem(0x20000)))return;
 
@@ -3029,9 +3030,6 @@ static void load_snowbro2(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x1FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -3054,43 +3052,24 @@ static void load_snowbro2(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                 // SCREEN RAM
    AddReadByte(0x500000, 0x500003, YM2151Read68k, NULL);                // YM2151
    AddReadByte(0x700000, 0x7000FF, NULL, RAM+0x01F000);                 // INPUT
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x700000, 0x7000FF, NULL, RAM+0x01F000);                 // INPUT
    AddReadWord(0x600000, 0x600001, OKIM6295_status_0_r, NULL);                 // M6295
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x500000, 0x500003, YM2151Write68k, NULL);              // YM2151
    AddWriteByte(0x700000, 0x70003F, snow_bros_2_ioc_wb, NULL);          // INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);               // SCREEN RAM
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x600000, 0x600001, M6295Write68k, NULL);               // M6295
    AddWriteWord(0x700000, 0x70003F, snow_bros_2_ioc_ww, NULL);          // INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 /*-------[Sound Communication]--------*/
@@ -3121,123 +3100,12 @@ static UINT16 SoundReadZ80(UINT16 address)
 
 static void LoadActual(void)
 {
-   int ta,tb,tc;
    UINT8 *Z80RAM;
 
    if(!(RAM=AllocateMem(0x100000)))return;
    Z80RAM = RAM+0x20000;
-   if(!(GFX=AllocateMem(0x400000)))return;
-
-   if(romset==2){
-      if(!load_rom("ppbb01.bin", RAM, 0x80000))return;           // GFX
-      tb=0;
-      for(ta=0;ta<0x80000;ta++){
-         tc=RAM[ta];
-         GFX[tb+0]=((tc&0x80)>>7)<<0;
-         GFX[tb+1]=((tc&0x40)>>6)<<0;
-         GFX[tb+2]=((tc&0x20)>>5)<<0;
-         GFX[tb+3]=((tc&0x10)>>4)<<0;
-         GFX[tb+4]=((tc&0x08)>>3)<<0;
-         GFX[tb+5]=((tc&0x04)>>2)<<0;
-         GFX[tb+6]=((tc&0x02)>>1)<<0;
-         GFX[tb+7]=((tc&0x01)>>0)<<0;
-         tb+=8;
-      }
-      if(!load_rom("ppbb02.bin", RAM, 0x80000))return;           // GFX
-      tb=0;
-      for(ta=0;ta<0x80000;ta++){
-         tc=RAM[ta];
-         GFX[tb+0]|=((tc&0x80)>>7)<<1;
-         GFX[tb+1]|=((tc&0x40)>>6)<<1;
-         GFX[tb+2]|=((tc&0x20)>>5)<<1;
-         GFX[tb+3]|=((tc&0x10)>>4)<<1;
-         GFX[tb+4]|=((tc&0x08)>>3)<<1;
-         GFX[tb+5]|=((tc&0x04)>>2)<<1;
-         GFX[tb+6]|=((tc&0x02)>>1)<<1;
-         GFX[tb+7]|=((tc&0x01)>>0)<<1;
-         tb+=8;
-      }
-      if(!load_rom("ppbb03.bin", RAM, 0x80000))return;           // GFX
-      tb=0;
-      for(ta=0;ta<0x80000;ta++){
-         tc=RAM[ta];
-         GFX[tb+0]|=((tc&0x80)>>7)<<2;
-         GFX[tb+1]|=((tc&0x40)>>6)<<2;
-         GFX[tb+2]|=((tc&0x20)>>5)<<2;
-         GFX[tb+3]|=((tc&0x10)>>4)<<2;
-         GFX[tb+4]|=((tc&0x08)>>3)<<2;
-         GFX[tb+5]|=((tc&0x04)>>2)<<2;
-         GFX[tb+6]|=((tc&0x02)>>1)<<2;
-         GFX[tb+7]|=((tc&0x01)>>0)<<2;
-         tb+=8;
-      }
-      if(!load_rom("ppbb04.bin", RAM, 0x80000))return;           // GFX
-      tb=0;
-      for(ta=0;ta<0x80000;ta++){
-         tc=RAM[ta];
-         GFX[tb+0]|=((tc&0x80)>>7)<<3;
-         GFX[tb+1]|=((tc&0x40)>>6)<<3;
-         GFX[tb+2]|=((tc&0x20)>>5)<<3;
-         GFX[tb+3]|=((tc&0x10)>>4)<<3;
-         GFX[tb+4]|=((tc&0x08)>>3)<<3;
-         GFX[tb+5]|=((tc&0x04)>>2)<<3;
-         GFX[tb+6]|=((tc&0x02)>>1)<<3;
-         GFX[tb+7]|=((tc&0x01)>>0)<<3;
-         tb+=8;
-      }
-   }
-   else{
-      if(!load_rom("tp025-4.bin", RAM, 0x100000))return;           // GFX
-      tb=0;
-      for(ta=0;ta<0x100000;ta+=2){
-         tc=RAM[ta];
-         GFX[tb+0]=((tc&0x80)>>7)<<0;
-         GFX[tb+1]=((tc&0x40)>>6)<<0;
-         GFX[tb+2]=((tc&0x20)>>5)<<0;
-         GFX[tb+3]=((tc&0x10)>>4)<<0;
-         GFX[tb+4]=((tc&0x08)>>3)<<0;
-         GFX[tb+5]=((tc&0x04)>>2)<<0;
-         GFX[tb+6]=((tc&0x02)>>1)<<0;
-         GFX[tb+7]=((tc&0x01)>>0)<<0;
-         tc=RAM[ta+1];
-         GFX[tb+0]|=((tc&0x80)>>7)<<1;
-         GFX[tb+1]|=((tc&0x40)>>6)<<1;
-         GFX[tb+2]|=((tc&0x20)>>5)<<1;
-         GFX[tb+3]|=((tc&0x10)>>4)<<1;
-         GFX[tb+4]|=((tc&0x08)>>3)<<1;
-         GFX[tb+5]|=((tc&0x04)>>2)<<1;
-         GFX[tb+6]|=((tc&0x02)>>1)<<1;
-         GFX[tb+7]|=((tc&0x01)>>0)<<1;
-         tb+=8;
-      }
-      if(!load_rom("tp025-3.bin", RAM, 0x100000))return;           // GFX
-      tb=0;
-      for(ta=0;ta<0x100000;ta+=2){
-         tc=RAM[ta];
-         GFX[tb+0]|=((tc&0x80)>>7)<<2;
-         GFX[tb+1]|=((tc&0x40)>>6)<<2;
-         GFX[tb+2]|=((tc&0x20)>>5)<<2;
-         GFX[tb+3]|=((tc&0x10)>>4)<<2;
-         GFX[tb+4]|=((tc&0x08)>>3)<<2;
-         GFX[tb+5]|=((tc&0x04)>>2)<<2;
-         GFX[tb+6]|=((tc&0x02)>>1)<<2;
-         GFX[tb+7]|=((tc&0x01)>>0)<<2;
-         tc=RAM[ta+1];
-         GFX[tb+0]|=((tc&0x80)>>7)<<3;
-         GFX[tb+1]|=((tc&0x40)>>6)<<3;
-         GFX[tb+2]|=((tc&0x20)>>5)<<3;
-         GFX[tb+3]|=((tc&0x10)>>4)<<3;
-         GFX[tb+4]|=((tc&0x08)>>3)<<3;
-         GFX[tb+5]|=((tc&0x04)>>2)<<3;
-         GFX[tb+6]|=((tc&0x02)>>1)<<3;
-         GFX[tb+7]|=((tc&0x01)>>0)<<3;
-         tb+=8;
-      }
-   }
 
    if (!init_tilequeue()) return;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x10000);
 
    if(ReadLong68k(&ROM[0])==0x0080577F) DecodePipiBibi(ROM);
 
@@ -3287,9 +3155,6 @@ static void LoadActual(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x0FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -3333,49 +3198,30 @@ static void LoadActual(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
+       Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x080000, 0x087FFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadByte(0x120000, 0x120FFF, NULL, RAM+0x014000);                 // ??? RAM
    AddReadByte(0x180000, 0x183FFF, NULL, RAM+0x011000);                 // ??? RAM
    AddReadByte(0x19C000, 0x19C0FF, NULL, RAM+0x00E000);                 // INPUT/DSW
    AddReadByte(0x190003, 0x190003, SoundRead68k, NULL);                 // SOUND COMM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadWord(0x120000, 0x120FFF, NULL, RAM+0x014000);                 // OBJECT RAM
    AddReadWord(0x180000, 0x183FFF, NULL, RAM+0x011000);                 // BG0/1/2 RAM
    AddReadWord(0x19C000, 0x19C0FF, NULL, RAM+0x00E000);                 // INPUT/DSW
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteByte(0x120000, 0x120FFF, NULL, RAM+0x014000);                // ??? RAM
    AddWriteByte(0x180000, 0x183FFF, NULL, RAM+0x011000);                // SCREEN RAM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteWord(0x120000, 0x120FFF, NULL, RAM+0x014000);                // ??? RAM
    AddWriteWord(0x180000, 0x183FFF, NULL, RAM+0x011000);                // ??? RAM
    AddWriteWord(0x188000, 0x18800F, NULL, RAM+0x019000);                // SCROLL RAM
    AddWriteWord(0x190010, 0x190011, SoundWrite68k, NULL);               // SOUND COMM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 
    }
    else{
@@ -3383,44 +3229,25 @@ static void LoadActual(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
+       Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x080000, 0x087FFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadByte(0x140000, 0x14000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x180000, 0x18006F, NULL, RAM+0x00E000);                 // INPUT/DSW
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadWord(0x140000, 0x14000F, tp2vcu_0_rw, NULL);                 // GCU RAM (SCREEN)
    AddReadWord(0x180000, 0x18006F, NULL, RAM+0x00E000);                 // INPUT/DSW
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteByte(0x180000, 0x18007F, whoopee_ioc_wb, NULL);              // INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteWord(0x140000, 0x14000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x180070, 0x180071, SoundWrite68k, NULL);               // SOUND COMM
    AddWriteWord(0x180000, 0x18007F, whoopee_ioc_ww, NULL);              // INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 
    }
 
@@ -3430,24 +3257,13 @@ static void load_tekipaki(void)
 {
    romset=7;
 
-   if(!(RAM=AllocateMem(0x80000)))return;
-   if(!(GFX=AllocateMem(0x200000)))return;
-
-   load_tp2_gfx("tp020-4.bin","tp020-3.bin",0x80000,RAM,GFX);
-
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x08000);
-
-   memset(RAM+0x00000,0x00,0x20000);
-
    RAMSize=0x20000+0x10000;
+   if(!(RAM=AllocateMem(RAMSize)))return;
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x07FFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -3476,69 +3292,38 @@ static void load_tekipaki(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x20000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x01FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x01FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x080000, 0x087FFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadByte(0x140000, 0x14000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x180000, 0x18006F, NULL, RAM+0x00E000);                 // INPUT/DSW
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x01FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadWord(0x140000, 0x14000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x180000, 0x18006F, NULL, RAM+0x00E000);                 // INPUT/DSW
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteByte(0x180000, 0x18007F, whoopee_ioc_wb, NULL);              // INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteWord(0x140000, 0x14000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x180070, 0x180071, SoundWrite68k, NULL);               // SOUND COMM
    AddWriteWord(0x180000, 0x18007F, whoopee_ioc_ww, NULL);              // INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
-
+   finish_conf_68000(0);
 }
 
 static void load_ghox(void)
 {
    romset=8;
 
-   if(!(RAM=AllocateMem(0x80000)))return;
-   if(!(GFX=AllocateMem(0x200000)))return;
-
-   load_tp2_gfx("tp021-03.u36","tp021-04.u37",0x80000,RAM,GFX);
-
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x08000);
-
-   memset(RAM+0x00000,0x00,0x20000);
-
    RAMSize=0x20000+0x10000;
+   if(!(RAM=AllocateMem(RAMSize)))return;
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x07FFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -3592,45 +3377,26 @@ static void load_ghox(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x080000, 0x087FFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadByte(0x140000, 0x14000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x180000, 0x18FFFF, ghox_ioc_rb, NULL);                  // SUB CPU
    AddReadByte(0x100000, 0x100001, ghox_paddle_rb, NULL);               // PADDLE#1
    AddReadByte(0x040000, 0x040001, ghox_paddle_rb, NULL);               // PADDLE#2
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadWord(0x140000, 0x14000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x180000, 0x18FFFF, ghox_ioc_rw, NULL);                  // SUB CPU
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteByte(0x180000, 0x18FFFF, ghox_ioc_wb, NULL);                 // SUB CPU
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x080000, 0x087FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x0C0000, 0x0C0FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteWord(0x140000, 0x14000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x180000, 0x18FFFF, ghox_ioc_ww, NULL);                 // SUB CPU
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 
    GameMouse=1;
 }
@@ -3639,26 +3405,14 @@ static void load_vfive(void)
 {
    romset=12;
 
-   if(!(RAM=AllocateMem(0x100000)))return;
-   if(!(GFX=AllocateMem(0x400000)))return;
-
-   load_tp2_gfx("tp027_02.bin","tp027_03.bin",0x100000,RAM,GFX);
-
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x10000);
-
-   memset(RAM+0x00000,0x00,0x38000);
-
-   RAM_TURBO = RAM+0x30000;
-
    RAMSize=0x20000+0x10000+0x8000;
+   if(!(RAM=AllocateMem(RAMSize)))return;
+   RAM_TURBO = RAM+0x30000;
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x0FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -3705,48 +3459,29 @@ static void load_vfive(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x107FFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x107FFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x400000, 0x400FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x210000, 0x21FFFF, TS_001_Turbo_RB, NULL);              // SUB CPU
    AddReadByte(0x200000, 0x20003F, v_five_ioc_rb, NULL);                // INPUT
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x107FFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                 // COLOR RAM
    AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x210000, 0x21FFFF, TS_001_Turbo_RW, NULL);              // SUB CPU
    AddReadWord(0x200000, 0x20003F, v_five_ioc_rw, NULL);                // INPUT
    AddReadWord(0x700000, 0x700001, TimerRead, NULL);                    // TIMER
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x107FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteByte(0x210000, 0x21FFFF, TS_001_Turbo_WB, NULL);             // SUB CPU
    AddWriteByte(0x200000, 0x20003F, fix_eight_ioc_wb, NULL);            // INPUT
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x107FFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOR RAM
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x210000, 0x21FFFF, TS_001_Turbo_WW, NULL);             // SUB CPU
    AddWriteWord(0x200000, 0x20003F, fix_eight_ioc_ww, NULL);            // INPUT
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
 static void oki_bankswitch_w(UINT32 offset, UINT8 data)
@@ -3757,37 +3492,19 @@ static void oki_bankswitch_w(UINT32 offset, UINT8 data)
 
 static void load_kbash(void)
 {
-   UINT8 *TMP;
-
    romset=4;
 
-   if(!(GFX=AllocateMem(0x1000000)))return;
-   if(!(TMP=AllocateMem(0x400000)))return;
-
-   if (is_current_game("kbash2")) {
-     load_tp2_gfx("mecat-34","mecat-12",0x400000,TMP,GFX);
-   } else {
-     load_tp2_gfx("kbash03.bin","kbash04.bin",0x200000,TMP,GFX);
-     load_tp2_gfx("kbash05.bin","kbash06.bin",0x200000,TMP,&GFX[0x800000]);
-   }
-
-   FreeMem(TMP);
-
    if (!init_tilequeue()) return;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x40000);
 
    if(!(RAM=AllocateMem(0x20000)))return;
 
    memset(RAM+0x00000,0x00,0x20000);
 
    RAMSize=0x20000;
+   if(!(RAM=AllocateMem(RAMSize)))return;
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x3FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -3895,51 +3612,28 @@ static void load_whoopee(void)
 
 static void load_fixeight(void)
 {
-   UINT8 *TMP;
    int ta,tb;
 
    if(is_current_game("fixeight"))
      romset=5;
-   else
+   else {
      romset = 15;
-
-   if(!(GFX=AllocateMem(0x800000)))return;
-   if(!(TMP=AllocateMem(0x200000)))return;
-
-   load_tp2_gfx("tp-026-3","tp-026-4",0x200000,TMP,GFX);
-
-   FreeMem(TMP);
-
-   if (!init_tilequeue()) return;
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x20000);
-
-   RAMSize=0x80000;
-
-   if(!(RAM=AllocateMem(RAMSize)))return;
-
-   if(is_current_game("fixeight"))
-   {
-     // ByteSwap(ROM,0x80000);
-   }
-   else
-   {
-     ByteSwap(ROM + 0x80000, 0x80000);
-   }
-
-   /*-----[Sound Setup]-----*/
-
-
-   if(!is_current_game("fixeight"))
-   {
+     UINT8 *RAM = load_region[REGION_SOUND1];
      if(!(PCMROM = AllocateMem(0x40000 + 0x50000))) return;
-     if(!load_rom("1.bin", RAM, 0x80000)) return;
      // base rom
      memcpy(PCMROM, RAM, 0x30000);
      // bank rom
      memcpy(PCMROM + 0x40000, RAM + 0x30000, 0x50000);
-     ADPCMSetBuffers(((struct ADPCMinterface*)&fix_eight_bootleg_m6295_interface),PCMROM,0x40000);
+     FreeMem(RAM);
+     load_region[REGION_SOUND1] = PCMROM;
    }
+
+   // load_tp2_gfx(0);
+   if (!init_tilequeue()) return;
+   tp3vcu_layer_id_data[0] = add_layer_info(tp3vcu_layer_id_name[0]);
+
+   RAMSize=0x80000;
+   if(!(RAM=AllocateMem(RAMSize)))return;
 
    /*-----------------------*/
 
@@ -3957,9 +3651,11 @@ static void load_fixeight(void)
        GFX_FG0[tb++]=(ROM[ta]&0xF0)>>4;
        GFX_FG0[tb++]=(ROM[ta]&0x0F)>>0;
      }
+     GFX_FG0_SOLID = make_solid_mask_8x8(GFX_FG0, 0x400);
    }
    else
    {
+#if 0
      // load fg0 tiles from the bootleg rom
      if(!load_rom("4.bin", RAM, 0x8000)) return;
      // unpack fg0 tiles
@@ -3969,15 +3665,11 @@ static void load_fixeight(void)
        GFX_FG0[tb ++] = (RAM[ta] & 0x0F) >> 0;
        RAM[ta] = 0;
      }
+#endif
    }
-
-   GFX_FG0_SOLID = make_solid_mask_8x8(GFX_FG0, 0x400);
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x1FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -4059,43 +3751,30 @@ static void load_fixeight(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x54000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                 // GCU RAM (SCREEN)
    AddReadByte(0x200018, 0x200019, OKIM6295_status_0_r, NULL);               // M6295
    AddReadByte(0x200000, 0x20003F, NULL, RAM+0x01F000);                 // INPUT
-	if(!is_current_game("fixeight")) {
-		AddReadByte(0x700000, 0x700001, TimerRead, NULL);               // TIMER
-	}
+   if(!is_current_game("fixeight")) {
+       AddReadByte(0x700000, 0x700001, TimerRead, NULL);               // TIMER
+   }
    AddReadByte(0x280000, 0x28FFFF, TS_001_Turbo_RB, NULL);              // TS-001-TURBO
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                 // COLOUR RAM
    AddReadWord(0x200018, 0x200019, OKIM6295_status_0_r, NULL);               // M6295
    AddReadWord(0x200000, 0x20003F, NULL, RAM+0x01F000);                 // INPUT
    AddReadWord(0x600000, 0x60FFFF, NULL, RAM+0x044000);                 // CG RAM (FG0 GFX RAM)
-	if(is_current_game("fixeight")) {
-   AddReadWord(0x800000, 0x800001, TimerRead, NULL);                    // TIMER
-	} else
-	{
-		AddReadWord(0x700000, 0x700001, TimerRead, NULL);               // TIMER
-		AddReadWord(0x800000, 0x87FFFF, NULL, ROM+0x080000);            // UNPROTECTED MAPS :)
-	}
+   if(is_current_game("fixeight")) {
+       AddReadWord(0x800000, 0x800001, TimerRead, NULL);                    // TIMER
+   } else
+   {
+       AddReadWord(0x700000, 0x700001, TimerRead, NULL);               // TIMER
+       AddReadWord(0x800000, 0x87FFFF, NULL, ROM+0x080000);            // UNPROTECTED MAPS :)
+   }
    AddReadWord(0x280000, 0x28FFFF, TS_001_Turbo_RW, NULL);              // TS-001-TURBO
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x200014, 0x200015, fixeighb_oki_bankswitch_w, NULL);   // M6295 BANKING
    if (is_current_game("fixeight")) {
      AddWriteByte(0x28f000, 0x28f001, fixeight_okisnd_w, NULL);               // M6295
@@ -4105,10 +3784,7 @@ static void load_fixeight(void)
    AddWriteByte(0x200000, 0x20003F, fix_eight_ioc_wb, NULL);            // INPUT
    AddWriteByte(0x280000, 0x28FFFF, TS_001_Turbo_WB, NULL);             // TS-001-TURBO
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);               // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x500000, 0x503FFF, NULL, RAM_FG0);                     // TEXT RAM (FG0 RAM)
@@ -4116,125 +3792,16 @@ static void load_fixeight(void)
    AddWriteWord(0x200018, 0x200019, M6295Write68k, NULL);             // M6295
    AddWriteWord(0x200000, 0x20003F, fix_eight_ioc_ww, NULL);            // INPUT
    AddWriteWord(0x280000, 0x28FFFF, TS_001_Turbo_WW, NULL);             // TS-001-TURBO
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 static void load_dogyuun(void)
 {
-   UINT8 *TMP;
-   int ta,tb,tc;
    romset=6;
-
-   if(!(GFX=AllocateMem(0xC00000)))return;
-   if(!(TMP=AllocateMem(0x200000)))return;
-
-   tb=0;
-   if(!load_rom("tp022_5.r16", TMP, 0x200000))return;                // GFX
-   for(ta=0;ta<0x200000;ta+=2){
-      tc=TMP[ta+1];
-      GFX[tb+0] = (((tc&0x80)>>7)<<0);
-      GFX[tb+1] = (((tc&0x40)>>6)<<0);
-      GFX[tb+2] = (((tc&0x20)>>5)<<0);
-      GFX[tb+3] = (((tc&0x10)>>4)<<0);
-      GFX[tb+4] = (((tc&0x08)>>3)<<0);
-      GFX[tb+5] = (((tc&0x04)>>2)<<0);
-      GFX[tb+6] = (((tc&0x02)>>1)<<0);
-      GFX[tb+7] = (((tc&0x01)>>0)<<0);
-      tc=TMP[ta];
-      GFX[tb+0] |= (((tc&0x80)>>7)<<1);
-      GFX[tb+1] |= (((tc&0x40)>>6)<<1);
-      GFX[tb+2] |= (((tc&0x20)>>5)<<1);
-      GFX[tb+3] |= (((tc&0x10)>>4)<<1);
-      GFX[tb+4] |= (((tc&0x08)>>3)<<1);
-      GFX[tb+5] |= (((tc&0x04)>>2)<<1);
-      GFX[tb+6] |= (((tc&0x02)>>1)<<1);
-      GFX[tb+7] |= (((tc&0x01)>>0)<<1);
-      tb+=8;
-   }
-   if(!load_rom("tp022_3.r16", TMP, 0x100000))return;                // GFX
-   for(ta=0;ta<0x100000;ta+=2){
-      tc=TMP[ta+1];
-      GFX[tb+0] = (((tc&0x80)>>7)<<0);
-      GFX[tb+1] = (((tc&0x40)>>6)<<0);
-      GFX[tb+2] = (((tc&0x20)>>5)<<0);
-      GFX[tb+3] = (((tc&0x10)>>4)<<0);
-      GFX[tb+4] = (((tc&0x08)>>3)<<0);
-      GFX[tb+5] = (((tc&0x04)>>2)<<0);
-      GFX[tb+6] = (((tc&0x02)>>1)<<0);
-      GFX[tb+7] = (((tc&0x01)>>0)<<0);
-      tc=TMP[ta];
-      GFX[tb+0] |= (((tc&0x80)>>7)<<1);
-      GFX[tb+1] |= (((tc&0x40)>>6)<<1);
-      GFX[tb+2] |= (((tc&0x20)>>5)<<1);
-      GFX[tb+3] |= (((tc&0x10)>>4)<<1);
-      GFX[tb+4] |= (((tc&0x08)>>3)<<1);
-      GFX[tb+5] |= (((tc&0x04)>>2)<<1);
-      GFX[tb+6] |= (((tc&0x02)>>1)<<1);
-      GFX[tb+7] |= (((tc&0x01)>>0)<<1);
-      tb+=8;
-   }
-
-   tb=0;
-   if(!load_rom("tp022_6.r16", TMP, 0x200000))return;                // GFX
-   for(ta=0;ta<0x200000;ta+=2){
-      tc=TMP[ta+1];
-      GFX[tb+0] |= (((tc&0x80)>>7)<<2);
-      GFX[tb+1] |= (((tc&0x40)>>6)<<2);
-      GFX[tb+2] |= (((tc&0x20)>>5)<<2);
-      GFX[tb+3] |= (((tc&0x10)>>4)<<2);
-      GFX[tb+4] |= (((tc&0x08)>>3)<<2);
-      GFX[tb+5] |= (((tc&0x04)>>2)<<2);
-      GFX[tb+6] |= (((tc&0x02)>>1)<<2);
-      GFX[tb+7] |= (((tc&0x01)>>0)<<2);
-      tc=TMP[ta];
-      GFX[tb+0] |= (((tc&0x80)>>7)<<3);
-      GFX[tb+1] |= (((tc&0x40)>>6)<<3);
-      GFX[tb+2] |= (((tc&0x20)>>5)<<3);
-      GFX[tb+3] |= (((tc&0x10)>>4)<<3);
-      GFX[tb+4] |= (((tc&0x08)>>3)<<3);
-      GFX[tb+5] |= (((tc&0x04)>>2)<<3);
-      GFX[tb+6] |= (((tc&0x02)>>1)<<3);
-      GFX[tb+7] |= (((tc&0x01)>>0)<<3);
-      tb+=8;
-   }
-   if(!load_rom("tp022_4.r16", TMP, 0x100000))return;                // GFX
-   for(ta=0;ta<0x100000;ta+=2){
-      tc=TMP[ta+1];
-      GFX[tb+0] |= (((tc&0x80)>>7)<<2);
-      GFX[tb+1] |= (((tc&0x40)>>6)<<2);
-      GFX[tb+2] |= (((tc&0x20)>>5)<<2);
-      GFX[tb+3] |= (((tc&0x10)>>4)<<2);
-      GFX[tb+4] |= (((tc&0x08)>>3)<<2);
-      GFX[tb+5] |= (((tc&0x04)>>2)<<2);
-      GFX[tb+6] |= (((tc&0x02)>>1)<<2);
-      GFX[tb+7] |= (((tc&0x01)>>0)<<2);
-      tc=TMP[ta];
-      GFX[tb+0] |= (((tc&0x80)>>7)<<3);
-      GFX[tb+1] |= (((tc&0x40)>>6)<<3);
-      GFX[tb+2] |= (((tc&0x20)>>5)<<3);
-      GFX[tb+3] |= (((tc&0x10)>>4)<<3);
-      GFX[tb+4] |= (((tc&0x08)>>3)<<3);
-      GFX[tb+5] |= (((tc&0x04)>>2)<<3);
-      GFX[tb+6] |= (((tc&0x02)>>1)<<3);
-      GFX[tb+7] |= (((tc&0x01)>>0)<<3);
-      tb+=8;
-   }
-   // We can't use the generic function, or we would need to byte swap the
-   // result...
-   //load_tp2_gfx("tp022_5.r16","tp022_6.r16",0x200000,TMP,GFX);
-   //load_tp2_gfx("tp022_3.r16","tp022_4.r16",0x100000,TMP,&GFX[0x800000]);
-
-   FreeMem(TMP);
 
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x30000);
-
    RAMSize=0x34000+0x10000+0x10000+0x10000;
-
    if(!(RAM=AllocateMem(RAMSize)))return;
 
    /*-----------------------*/
@@ -4247,16 +3814,10 @@ static void load_dogyuun(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000+0x0000;
    tp2vcu[0].SCROLL   = RAM+0x19000+0x0000;
-   tp2vcu[0].GFX_BG   = GFX+0x000000;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID+0x00000;
-   tp2vcu[0].tile_max = 0x1FFFF;
    init_tp2vcu(0);
 
    tp2vcu[1].VRAM     = RAM+0x11000+0x4000;
    tp2vcu[1].SCROLL   = RAM+0x19000+0x0100;
-   tp2vcu[1].GFX_BG   = GFX+0x800000;
-   tp2vcu[1].MASK_BG  = GFX_BG0_SOLID+0x20000;
-   tp2vcu[1].tile_max = 0x0FFFF;
    init_tp2vcu(1);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -4316,92 +3877,53 @@ static void load_dogyuun(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x54000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x300000, 0x30000F, tp2vcu_1_rb, NULL);                  // GCU RAM (SCREEN)
-   AddReadByte(0x500000, 0x50000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
+   AddReadByte(0x500000, 0x50000F, tp2vcu_1_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x200000, 0x20003F, NULL, RAM+0x01F000);                 // INPUT
    //AddReadByte(0x700010, 0x700011, OKIM6295_status_0_r, NULL);               // M6295
    //AddReadByte(0x700014, 0x700017, YM2151Read68k, NULL);              // YM2151
    AddReadByte(0x210000, 0x21FFFF, TS_001_Turbo_RB, NULL);              // TS-001-TURBO
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x300000, 0x30000F, tp2vcu_1_rw, NULL);                 // GCU RAM (SCREEN)
-   AddReadWord(0x500000, 0x50000F, tp2vcu_0_rw, NULL);                 // GCU RAM (SCREEN)
+   AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                 // GCU RAM (SCREEN)
+   AddReadWord(0x500000, 0x50000F, tp2vcu_1_rw, NULL);                 // GCU RAM (SCREEN)
    AddReadWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddReadWord(0x200000, 0x20003F, NULL, RAM+0x01F000);                 // INPUT
    AddReadWord(0x700010, 0x700011, OKIM6295_status_0_r, NULL);               // M6295
    AddReadWord(0x700014, 0x700017, YM2151Read68k, NULL);              // YM2151
    AddReadWord(0x700000, 0x700001, TimerRead, NULL);                    // TIMER
    AddReadWord(0x210000, 0x21FFFF, TS_001_Turbo_RW, NULL);              // TS-001-TURBO
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    //AddWriteByte(0x200008, 0x200009, M6295Write68k, NULL);             // M6295
 //   AddWriteByte(0x700014, 0x700017, YM2151Write68k, NULL);            // YM2151
    AddWriteByte(0x200000, 0x20003F, dogyuun_ioc_wb, NULL);              // INPUT
    AddWriteByte(0x210000, 0x21FFFF, TS_001_Turbo_WB, NULL);             // TS-001-TURBO
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x300000, 0x30000F, tp2vcu_1_ww, NULL);                 // GCU RAM (SCREEN)
-   AddWriteWord(0x500000, 0x50000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
+   AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
+   AddWriteWord(0x500000, 0x50000F, tp2vcu_1_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    //AddWriteWord(0x200008, 0x200009, M6295Write68k, NULL);             // M6295
    //   AddWriteWord(0x700010, 0x700011, M6295Write68k, NULL);             // M6295
 //   AddWriteWord(0x700014, 0x700017, YM2151Write68k, NULL);            // YM2151
    AddWriteWord(0x200000, 0x20003F, dogyuun_ioc_ww, NULL);              // INPUT
    AddWriteWord(0x210000, 0x21FFFF, TS_001_Turbo_WW, NULL);             // TS-001-TURBO
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 static void load_batsugun(void)
 {
-   UINT8 *TMP;
-
    romset=13;
    // Batsugun uses 1 unmapped bit in these 3 inputs, if it's not set to 0
    // the copyright screen disappears instantly and if you start a game you
    // finish stage 4 before even starting to play !!!
    memset(input_buffer,0,3);
 
-   if(!(GFX=AllocateMem(0x0C00000)))return;
-   if(!(TMP=AllocateMem(0x0100000)))return;
-
-   load_tp2_gfx("tp030_5.bin","tp030_6.bin",0x100000,TMP,GFX);
-   load_tp2_gfx("tp030_3l.bin","tp030_4l.bin",0x100000,TMP,&GFX[0x400000]);
-   load_tp2_gfx("tp030_3h.bin","tp030_4h.bin",0x100000,TMP,&GFX[0x800000]);
-
-   FreeMem(TMP);
-
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x30000);
-
    RAMSize=0x34000+0x10000+0x10000+0x10000;
-
    if(!(RAM=AllocateMem(RAMSize)))return;
-
-   /*-----[Sound Setup]-----*/
-
-   if(!(PCMROM = AllocateMem(0x40000))) return;
-   if(!load_rom("tp030_2.bin", PCMROM, 0x40000)) return;     // ADPCM ROM <1 bank>
-   ADPCMSetBuffers(((struct ADPCMinterface*)&m6295_interface),PCMROM,0x40000);
 
    /*-----------------------*/
 
@@ -4413,16 +3935,10 @@ static void load_batsugun(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000+0x0000;
    tp2vcu[0].SCROLL   = RAM+0x19000+0x0000;
-   tp2vcu[0].GFX_BG   = GFX+0x000000;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID+0x00000;
-   tp2vcu[0].tile_max = 0x0FFFF;
    init_tp2vcu(0);
 
    tp2vcu[1].VRAM     = RAM+0x11000+0x4000;
    tp2vcu[1].SCROLL   = RAM+0x19000+0x0100;
-   tp2vcu[1].GFX_BG   = GFX+0x400000;
-   tp2vcu[1].MASK_BG  = GFX_BG0_SOLID+0x10000;
-   tp2vcu[1].tile_max = 0x1FFFF;
    init_tp2vcu(1);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -4430,68 +3946,62 @@ static void load_batsugun(void)
 
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
 
-   // 68000 Speed hack
+   AddResetHandler(&quiet_reset_handler);
 
-   WriteLong68k(&ROM[0x00670],0x13FC0000);      // move.b #$00,$AA0000
-   WriteLong68k(&ROM[0x00674],0x00AA0000);      //
-   WriteWord68k(&ROM[0x00678],0x4E71);          // nop
+   if (is_current_game("batsugun") || is_current_game("batsuguna")) {
+       // 68000 Speed hack
 
-   // Sound protection and shit
+       WriteLong68k(&ROM[0x00670],0x13FC0000);      // move.b #$00,$AA0000
+       WriteLong68k(&ROM[0x00674],0x00AA0000);      //
+       WriteWord68k(&ROM[0x00678],0x4E71);          // nop
+   } else if (is_current_game("batsugunsp")) {
+       WriteLong68k(&ROM[0x00688],0x13FC0000);      // move.b #$00,$AA0000
+       WriteLong68k(&ROM[0x0068c],0x00AA0000);      //
+       WriteWord68k(&ROM[0x00690],0x4E71);          // nop
+   }
 
-   WriteWord68k(&ROM[0x3BB70],0x4E71);          // nop
-   WriteWord68k(&ROM[0x3BBA8],0x4E71);          // nop
+   if (is_current_game("batsuguna")) {
 
-   // Kill the annoying reset instruction
+       // Sound protection and shit
 
-   WriteWord68k(&ROM[0x3B888],0x4E71);          // nop
+       WriteWord68k(&ROM[0x3BB70],0x4E71);          // nop
+       WriteWord68k(&ROM[0x3BBA8],0x4E71);          // nop
+   } else if (is_current_game("batsugun")) { // batsugun
+       WriteWord68k(&ROM[0x3Bf96],0x4E71);          // nop
+       WriteWord68k(&ROM[0x3Bfce],0x4E71);          // nop
+   } else if (is_current_game("batsugunsp")) {
+       WriteWord68k(&ROM[0x3c798],0x4E71);          // nop
+       WriteWord68k(&ROM[0x3c7d0],0x4E71);          // nop
+   }
 
 /*
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x54000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadByte(0x300000, 0x30000F, tp2vcu_1_rb, NULL);                  // GCU RAM (SCREEN)
-   AddReadByte(0x500000, 0x50000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
+   AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
+   AddReadByte(0x500000, 0x50000F, tp2vcu_1_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x200000, 0x20003F, v_five_ioc_rb, NULL);                // INPUT
    AddReadByte(0x210000, 0x21FFFF, TS_001_Turbo_RB, NULL);              // TS-001-TURBO
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
-   AddReadWord(0x300000, 0x30000F, tp2vcu_1_rw, NULL);                 // GCU RAM (SCREEN)
-   AddReadWord(0x500000, 0x50000F, tp2vcu_0_rw, NULL);                 // GCU RAM (SCREEN)
+   AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                 // GCU RAM (SCREEN)
+   AddReadWord(0x500000, 0x50000F, tp2vcu_1_rw, NULL);                 // GCU RAM (SCREEN)
    AddReadWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddReadWord(0x200000, 0x20003F, v_five_ioc_rw, NULL);                // INPUT
    AddReadWord(0x700000, 0x700001, TimerRead, NULL);                    // TIMER
    AddReadWord(0x210000, 0x21FFFF, TS_001_Turbo_RW, NULL);              // TS-001-TURBO
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x200000, 0x20003F, dogyuun_ioc_wb, NULL);              // INPUT
    AddWriteByte(0x210000, 0x21FFFF, TS_001_Turbo_WB, NULL);             // TS-001-TURBO
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
-   AddWriteWord(0x300000, 0x30000F, tp2vcu_1_ww, NULL);                 // GCU RAM (SCREEN)
-   AddWriteWord(0x500000, 0x50000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
+   AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
+   AddWriteWord(0x500000, 0x50000F, tp2vcu_1_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x200000, 0x20003F, dogyuun_ioc_ww, NULL);              // INPUT
    AddWriteWord(0x210000, 0x21FFFF, TS_001_Turbo_WW, NULL);             // TS-001-TURBO
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
 static UINT8 shippu_z80_rb(UINT16 offset)
@@ -4584,26 +4094,14 @@ static void turbo_68k_ww(UINT32 offset, UINT16 data)
    turbo_68k_wb(offset, data);
 }
 
-static void load_shippumd(void)
+static void load_kingdmgp(void)
 {
-   UINT8 *TMP;
-   int ta,tb;
-
    romset=9;
 
-   if(!(GFX=AllocateMem(0x800000)))return;
-   if(!(TMP=AllocateMem(0x200000)))return;
-
-   load_tp2_gfx("ma02rom3.bin","ma02rom4.bin",0x200000,TMP,GFX);
-
-   FreeMem(TMP);
-
+   tp3vcu_layer_id_data[0] = add_layer_info(tp3vcu_layer_id_name[0]);
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x20000);
-
    RAMSize=0x34000+0x10000+0x10000;
-
    if(!(RAM=AllocateMem(0x080000)))return;
 
    Z80RAM=RAM+0x34000+0x10000;
@@ -4649,22 +4147,10 @@ static void load_shippumd(void)
    RAM_FG0 = RAM+0x20000;
    GFX_FG0 = RAM+0x34000;
 
-   if(!load_rom("ma02rom5.bin", RAM, 0x08000))return;
-   tb=0;
-   for(ta=0x00000;ta<0x08000;ta++){
-      GFX_FG0[tb++]=(RAM[ta]&0xF0)>>4;
-      GFX_FG0[tb++]=(RAM[ta]&0x0F)>>0;
-   }
-
    memset(RAM+0x00000,0x00,0x34000);
-
-   GFX_FG0_SOLID = make_solid_mask_8x8(GFX_FG0, 0x400);
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x1FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -4689,63 +4175,32 @@ static void load_shippumd(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x100000);
-   ByteSwap(RAM,0x34000);
-
-   AddMemFetch(0x000000, 0x0FFFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x218000, 0x21FFFF, turbo_68k_rb, NULL);                 // turbo comm ram
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x0FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x21C03C, 0x21C03D, TimerRead, NULL);                    // TIMER
    AddReadWord(0x218000, 0x21FFFF, turbo_68k_rw, NULL);                 // turbo comm ram
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x218000, 0x21FFFF, turbo_68k_wb, NULL);                // turbo comm ram
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x500000, 0x503FFF, NULL, RAM+0x020000);                // TEXT RAM (FG0 RAM)
    AddWriteWord(0x218000, 0x21FFFF, turbo_68k_ww, NULL);                // turbo comm ram
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
-static void load_mahoudai(void)
+static void load_sstriker(void)
 {
-   UINT8 *TMP;
-
    romset=10;
-
-   if(!(GFX=AllocateMem(0x400000)))return;
-   if(!(TMP=AllocateMem(0x100000)))return;
-
-   load_tp2_gfx("ra_ma_01.03","ra_ma_01.04",0x100000,TMP,GFX);
-
-   FreeMem(TMP);
 
    if (!init_tilequeue()) return;
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x10000);
-
    RAMSize=0x34000+0x10000+0x10000;
-
    if(!(RAM=AllocateMem(0x080000)))return;
 
    /*-----[Sound Setup]-----*/
@@ -4799,17 +4254,15 @@ static void load_mahoudai(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x0FFFF;
    init_tp2vcu(0);
+   tp3vcu_layer_id_data[0] = add_layer_info(tp3vcu_layer_id_name[0]);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
    init_tile_cache();
 
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
 
-   if (is_current_game("sstriker")) {
+   if (is_current_game("sstriker") || is_current_game("sstrikerk")) {
      // Skip Hardware Check
 
      WriteWord68k(&ROM[0x014Ca],0x4E71);          // nop
@@ -4818,7 +4271,7 @@ static void load_mahoudai(void)
 
      WriteLong68k(&ROM[0x03858],0x13FC0000);      // move.b #$00,$AA0000
      WriteLong68k(&ROM[0x0385c],0x00AA0000);      //
-   } else {
+   } else if (is_current_game("mahoudai")) {
      // Skip Hardware Check
 
      WriteWord68k(&ROM[0x014C2],0x4E71);          // nop
@@ -4835,42 +4288,23 @@ static void load_mahoudai(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
-   ByteSwap(RAM,0x34000);
-
-   AddMemFetch(0x000000, 0x07FFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x218000, 0x21FFFF, turbo_68k_rb, NULL);                 // turbo comm ram
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x07FFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x21C03C, 0x21C03D, TimerRead, NULL);                    // TIMER
    AddReadWord(0x218000, 0x21FFFF, turbo_68k_rw, NULL);                 // turbo comm ram
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x218000, 0x21FFFF, turbo_68k_wb, NULL);                // turbo comm ram
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x500000, 0x503FFF, NULL, RAM+0x020000);                // TEXT RAM (FG0 RAM)
    AddWriteWord(0x218000, 0x21FFFF, turbo_68k_ww, NULL);                // turbo comm ram
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
 /******************************************************************************/
@@ -4880,13 +4314,6 @@ static void load_mahoudai(void)
 static UINT32 gfx_fg0_dirty_count;
 static UINT32 GFX_FG0_DIRTY[GFX_FG0_COUNT];
 static UINT8 GFX_FG0_SOLID_2[GFX_FG0_COUNT];
-
-static int tp3vcu_layer_id_data[1];
-
-static char *tp3vcu_layer_id_name[1] =
-{
-   "FG0",
-};
 
 static void tp3vcu_load_update(void);
 static void tp3vcu_update_gfx_fg0(void);
@@ -5464,41 +4891,21 @@ static UINT16 batrider_68k_z80rom_rw(UINT32 offset)
 
 static void load_batrider(void)
 {
-   UINT8 *TMP;
-
    romset=11;
-
-   if(!(GFX=AllocateMem(0x2000000)))return;
-   if(!(TMP=AllocateMem(0x0400000)))return;
-
-   load_tp2_gfx("rom-1.bin","rom-2.bin",0x400000,TMP,GFX);
-   load_tp2_gfx("rom-3.bin","rom-4.bin",0x400000,TMP,&GFX[0x1000000]);
-
-   FreeMem(TMP);
 
    if (!init_tilequeue()) return;
 
    RAMSize=0x34000+0x10000+0x10000;
-
    if(!(RAM=AllocateMem(0x080000)))return;
 
-   if(!(PCMROM = AllocateMem(0x140000*2))) return;
-   if(!load_rom("rom-5.bin", PCMROM+0x040000, 0x100000)) return;
-   if(!load_rom("rom-6.bin", PCMROM+0x140000 + 0x40000, 0x100000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&batrider_m6295),PCMROM+0x00000,0x140000);
-   PCMBanksize=0x140000;
-
-   Z80ROM = RAM+0x34000+0x10000;
-
    if(!(BR_Z80_ROM = AllocateMem(0x10*0xC000))) return;
-   if(!load_rom("snd.u77", RAM, 0x40000)) return;          // Z80 SOUND ROM
 
    // Apply Speed Patch
 
-   RAM[0x029F]=0xD3; // OUTA (AAh)
-   RAM[0x02A0]=0xAA; //
+   Z80ROM[0x029F]=0xD3; // OUTA (AAh)
+   Z80ROM[0x02A0]=0xAA; //
 
-   br_init_z80_bank(RAM);
+   br_init_z80_bank(Z80ROM);
 
    SetStopZ80Mode2(0x0299);
 
@@ -5529,8 +4936,6 @@ static void load_batrider(void)
 
    /*-----------------------*/
 
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x80000);
-
    RAM_FG0 = RAM+0x00000;
    RAM_GFX_FG0 = RAM+0x24000;
    GFX_FG0 = RAM+0x34000;
@@ -5539,9 +4944,6 @@ static void load_batrider(void)
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x3FFFF;
    init_tp2vcu(0);
 
    init_tp3vcu();
@@ -5551,28 +4953,28 @@ static void load_batrider(void)
 
    set_colour_mapper(&col_map_xbbb_bbgg_gggr_rrrr);
 
-   if(is_current_game("batridra")){
+   if(is_current_game("batriderja")){
 
-   // Fix bad checksums
+       // Fix bad checksums
 
-   WriteWord68k(&ROM[0x177A4],0x6100 - 0x18);
+       WriteWord68k(&ROM[0x177A4],0x6100 - 0x18);
 
-   // Fix some comm timeouts
+       // Fix some comm timeouts
 
-   WriteLong68k(&ROM[0x16CEC],0x4E714E71);      // nop
-   WriteWord68k(&ROM[0x170B0],0x4E71);          // nop
+       WriteLong68k(&ROM[0x16CEC],0x4E714E71);      // nop
+       WriteWord68k(&ROM[0x170B0],0x4E71);          // nop
 
    }
-   else{
+   else { // if (is_current_game("batrider")){ batrider / batrideru / batriderj
 
-   // Fix bad checksums
+       // Fix bad checksums
 
-   WriteWord68k(&ROM[0x177E4],0x6100 - 0x18);
+       WriteWord68k(&ROM[0x177E4],0x6100 - 0x18);
 
-   // Fix some comm timeouts
+       // Fix some comm timeouts
 
-   WriteLong68k(&ROM[0x16D2C],0x4E714E71);      // nop
-   WriteWord68k(&ROM[0x170F0],0x4E71);          // nop
+       WriteLong68k(&ROM[0x16D2C],0x4E714E71);      // nop
+       WriteWord68k(&ROM[0x170F0],0x4E71);          // nop
 
    }
 
@@ -5596,40 +4998,21 @@ static void load_batrider(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x200000);
-   ByteSwap(RAM,0x034000);
-
-   AddMemFetch(0x000000, 0x1FFFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x1FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x200000, 0x20FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x200000, 0x20FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x400000, 0x40000F, tp2vcu_0_rb_alt, NULL);              // GCU RAM (SCREEN)
    AddReadByte(0x500000, 0x5000FF, batrider_ioc_68k_rb, NULL);          // turbo comm ram
    AddReadByte(0x300000, 0x37FFFF, batrider_68k_z80rom_rb, NULL);       // z80 rom check
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x1FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x200000, 0x20FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x400000, 0x40000F, tp2vcu_0_rw_alt, NULL);              // GCU RAM (SCREEN)
    AddReadWord(0x500000, 0x5000FF, batrider_ioc_68k_rw, NULL);          // turbo comm ram
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x200000, 0x20FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x500000, 0x5000FF, batrider_ioc_68k_wb, NULL);         // turbo comm ram
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x200000, 0x20FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x400000, 0x40000F, tp2vcu_0_ww_alt, NULL);             // GCU RAM (SCREEN)
    AddWriteWord(0x500000, 0x5000FF, batrider_ioc_68k_ww, NULL);         // turbo comm ram
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
 /******* Sound Comm by BouKiCHi *******/
@@ -5756,18 +5139,16 @@ static void sound_bgaregga_ww(UINT32 offset, UINT16 data)
 
 static struct ROM_INFO rom_bbakraid[] =
 {
-
   LOAD8_16( ROM1, "prg0u022.new", 0x000000, 0x080000, 0xfa8d38d3 ),
   LOAD8_16( ROM1, "prg1u023.new", 0x000000+1, 0x080000, 0x4ae9aa64 ),
-
   LOAD8_16( ROM1, "prg2u021.bin", 0x100000, 0x080000, 0xffba8656 ),
   LOAD8_16( ROM1, "prg3u024.bin", 0x100000+1, 0x080000, 0x834b8ad6 ),
-  { "sndu027.bin", 0x20000, 0xe62ab246 , 0,0,0 },//REGION_ROM2, 0, LOAD_NORMAL },
-  { "gfxu0510.bin", 0x400000, 0x9cca3446 , 0,0,0 }, // REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "gfxu0511.bin", 0x400000, 0xe16472c0 , 0,0,0 }, // REGION_GFX1, 0x400000, LOAD_NORMAL },
-  { "gfxu0512.bin", 0x400000, 0xa2a281d5 , 0,0,0 }, // REGION_GFX1, 0x800000, LOAD_NORMAL },
-  { "gfxu0513.bin", 0x400000, 0x8bb635a0 , 0,0,0 }, // REGION_GFX1, 0xc00000, LOAD_NORMAL },
 
+  LOAD( ROM2, "sndu0720.bin", 0x00000, 0x20000, 0xe62ab246),
+  LOAD( GFX1, "gfxu0510.bin", 0x000000, 0x400000, 0x9cca3446),
+  LOAD( GFX1, "gfxu0512.bin", 0x400000, 0x400000, 0xa2a281d5),
+  LOAD( GFX1, "gfxu0511.bin", 0x800000, 0x400000, 0xe16472c0),
+  LOAD( GFX1, "gfxu0513.bin", 0xc00000, 0x400000, 0x8bb635a0),
   LOAD( SMP1, "rom6.829", 0x000000, 0x400000, 0x8848b4a0 /*0x464f2900*/ ),
   LOAD( SMP1, "rom7.830", 0x400000, 0x400000, 0xd6224267 /*0xa1c27c04*/ ),
   LOAD( SMP1, "rom8.831", 0x800000, 0x400000, 0xa101dfb0 /*0x262914c3*/ ),
@@ -5775,37 +5156,26 @@ static struct ROM_INFO rom_bbakraid[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_bbakrada[] =
+static struct ROM_INFO rom_bbakraidja[] =
 {
-
   LOAD8_16( ROM1, "prg0u022.bin", 0x000000, 0x080000, 0x0dd59512 ),
   LOAD8_16( ROM1, "prg1u023.bin", 0x000000+1, 0x080000, 0xfecde223 ),
-
   LOAD8_16( ROM1, "prg2u021.bin", 0x100000, 0x080000, 0xffba8656 ),
   LOAD8_16( ROM1, "prg3u024.bin", 0x100000+1, 0x080000, 0x834b8ad6 ),
-  { "sndu027.bin", 0x20000, 0xe62ab246 , 0,0,0 }, // REGION_ROM2, 0, LOAD_NORMAL },
-  { "gfxu0510.bin", 0x400000, 0x9cca3446 , 0,0,0 }, // REGION_GFX1, 0x000000, LOAD_NORMAL },
-  { "gfxu0511.bin", 0x400000, 0xe16472c0 , 0,0,0 }, // REGION_GFX1, 0x400000, LOAD_NORMAL },
-  { "gfxu0512.bin", 0x400000, 0xa2a281d5 , 0,0,0 }, // REGION_GFX1, 0x800000, LOAD_NORMAL },
-  { "gfxu0513.bin", 0x400000, 0x8bb635a0 , 0,0,0 }, // REGION_GFX1, 0xc00000, LOAD_NORMAL },
 
-  LOAD( SMP1, "rom6.829", 0x000000, 0x400000, 0x8848b4a0 /*0x464f2900*/ ),
-  LOAD( SMP1, "rom7.830", 0x400000, 0x400000, 0xd6224267 /*0xa1c27c04*/ ),
-  LOAD( SMP1, "rom8.831", 0x800000, 0x400000, 0xa101dfb0 /*0x262914c3*/ ),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
-static void setup_garega_z80(char *name) {
+static void setup_garega_z80() {
   if(!(BR_Z80_ROM = AllocateMem(0x10*0xC000))) return;
-  if(!load_rom(name, RAM, 0x20000)) return;          // Z80 SOUND ROM
 
    // Apply Speed Patch
 /* katharsis let's see what happens without the patch
    RAM[0x029F]=0xD3; // OUTA (AAh)
    RAM[0x02A0]=0xAA; //
 */
-   br_init_z80_bank(RAM);
+   br_init_z80_bank(Z80ROM);
 
    SetStopZ80Mode2(0x0299);
 
@@ -5837,15 +5207,14 @@ static void setup_garega_z80(char *name) {
    AddZ80AInit();
 }
 
-static void setup_bakraid_z80(char *name) {
+static void setup_bakraid_z80() {
   if(!(BR_Z80_ROM = AllocateMem(0x10*0xC000))) return;
-  if(!load_rom(name, RAM, 0x20000)) return;          // Z80 SOUND ROM
 
   // speed hack
-  RAM[0x103d] = 0xD3; // OUTA (AAh)
-  RAM[0x103e] = 0xaa;
+  Z80ROM[0x103d] = 0xD3; // OUTA (AAh)
+  Z80ROM[0x103e] = 0xaa;
 
-   br_init_z80_bank(RAM);
+   br_init_z80_bank(Z80ROM);
 
    // SetStopZ80Mode2(0x0299);
 
@@ -5931,14 +5300,10 @@ static void myStop68000(UINT32 address, UINT8 data)
 }
 
 static void load_bbakraid() {
-  UINT8 *TMP;
-
   default_eeprom = bbakraid_eeprom;
   default_eeprom_size = sizeof(bbakraid_eeprom);
   EEPROM_init(&eeprom_interface_93C66);
   load_eeprom();
-
-  ByteSwap(ROM,get_region_size(REGION_ROM1));
 
   romset=11; // batrider... Used for drawing.
 
@@ -5946,18 +5311,7 @@ static void load_bbakraid() {
    RAMSize=0x34000+0x10000+0x10000;
 
    if(!(RAM=AllocateMem(0x080000)))return;
-   Z80ROM = RAM+0x34000+0x10000;
-   setup_bakraid_z80("sndu027.bin");
-
-   if(!(GFX=AllocateMem(0x2000000)))return;
-   if(!(TMP=AllocateMem(0x0400000)))return;
-
-   load_tp2_gfx("Gfxu0510.bin","Gfxu0511.bin",0x400000,TMP,GFX);
-   load_tp2_gfx("Gfxu0512.bin","Gfxu0513.bin",0x400000,TMP,&GFX[0x1000000]);
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x80000);
+   setup_bakraid_z80();
 
    RAM_FG0 = RAM+0x00000;
    RAM_GFX_FG0 = RAM+0x24000;
@@ -5967,9 +5321,6 @@ static void load_bbakraid() {
 
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x3FFFF;
    init_tp2vcu(0);
 
    init_tp3vcu();
@@ -5981,35 +5332,24 @@ static void load_bbakraid() {
 
    // Starscream
 
-   AddMemFetch(0x000000, 0x1FFFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadBW(0x000000, 0x1FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
+   Add68000Code(0,0,REGION_CPU1);
    AddRWBW(0x200000, 0x20FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x400000, 0x40000F, tp2vcu_0_rb_alt, NULL);              // GCU RAM (SCREEN)
    AddReadByte(0x500000, 0x5000FF, batrider_ioc_68k_rb, NULL);          // turbo comm ram
    AddReadByte(0x300000, 0x37FFFF, batrider_68k_z80rom_rb, NULL);       // z80 rom check
-   AddReadByte(0x300000, 0x37FFFF, batrider_68k_z80rom_rw, NULL);       // z80 rom check
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
+   AddReadWord(0x300000, 0x37FFFF, batrider_68k_z80rom_rw, NULL);       // z80 rom check
    AddReadWord(0x400000, 0x40000F, tp2vcu_0_rw_alt, NULL);              // GCU RAM (SCREEN)
    AddReadWord(0x500000, 0x5000FF, batrider_ioc_68k_rw, NULL);          // turbo comm ram
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
    AddWriteByte(0x500000, 0x5000FF, batrider_ioc_68k_wb, NULL);         // turbo comm ram
    AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);                   // Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
    AddWriteWord(0x400000, 0x40000F, tp2vcu_0_ww_alt, NULL);             // GCU RAM (SCREEN)
    AddWriteWord(0x500000, 0x5000FF, batrider_ioc_68k_ww, NULL);         // turbo comm ram
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
 
    AddResetHandler(&quiet_reset_handler);
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 
    // Hacks
 
@@ -6231,57 +5571,25 @@ static void bgaregga_ioc_68k_ww(UINT32 offset, UINT16 data)
 
 static void load_bgaregga(void)
 {
-   UINT8 *TMP;
-   int ta,tb;
-
-   if(!(GFX=AllocateMem(0x1000000)))return;
-   if(!(TMP=AllocateMem(0x0200000)))return;
-
-   load_tp2_gfx("rom4.bin","rom2.bin",0x200000,TMP,GFX);
-   load_tp2_gfx("rom3.bin","rom1.bin",0x200000,TMP,&GFX[0x800000]);
-
-   FreeMem(TMP);
-
-   GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x40000);
-
    romset=14;
 
    if (!init_tilequeue()) return;
+   tp3vcu_layer_id_data[0] = add_layer_info(tp3vcu_layer_id_name[0]);
    RAMSize=0x34000+0x10000+0x10000;
-
    if(!(RAM=AllocateMem(0x080000)))return;
 
-   /*-----[Sound Setup]-----*/
-
-   if(!(PCMROM = AllocateMem(0x140000))) return;
-   if(!load_rom("rom5.bin", PCMROM+0x040000, 0x100000)) return;
-   ADPCMSetBuffers(((struct ADPCMinterface*)&bgaregga_m6295),PCMROM+0x00000,0x140000);
-   PCMBanksize = 0x140000;
-
-   Z80ROM = RAM+0x34000+0x10000;
-   setup_garega_z80("snd.bin");
+   Z80ROM = load_region[REGION_CPU2];
+   setup_garega_z80();
 
    /*-----------------------*/
 
    RAM_FG0 = RAM+0x20000;
-   GFX_FG0 = RAM+0x34000;
-
-   if(!load_rom("text.bin", RAM, 0x08000))return;
-   tb=0;
-   for(ta=0x00000;ta<0x08000;ta++){
-      GFX_FG0[tb++]=(RAM[ta]&0xF0)>>4;
-      GFX_FG0[tb++]=(RAM[ta]&0x0F)>>0;
-   }
+   GFX_FG0 = NULL;
 
    memset(RAM+0x00000,0x00,0x34000);
 
-   GFX_FG0_SOLID = make_solid_mask_8x8(GFX_FG0, 0x400);
-
    tp2vcu[0].VRAM     = RAM+0x11000;
    tp2vcu[0].SCROLL   = RAM+0x11000+0x8000;
-   tp2vcu[0].GFX_BG   = GFX;
-   tp2vcu[0].MASK_BG  = GFX_BG0_SOLID;
-   tp2vcu[0].tile_max = 0x3FFFF;
    init_tp2vcu(0);
 
    InitPaletteMap(RAM+0x10000, 0x80, 0x10, 0x8000);
@@ -6303,84 +5611,67 @@ static void load_bgaregga(void)
 /*
  *  StarScream Stuff follows
  */
-   ByteSwap(ROM,0x100000);
-   ByteSwap(RAM,0x034000);
-
    if (!strcmp(current_game->main_name,"bgareggacn") ||
-       !strcmp(current_game->main_name,"bgareggahk")) { // Korean version
+       !strcmp(current_game->main_name,"bgareggahk") || // hk version
+       !strcmp(current_game->main_name,"bgaregganv") || // hk version
+       !strcmp(current_game->main_name,"bgareggat2")) { // hk version
      // Prevents ROM test
-     WriteLong(&ROM[0x15b64],0x4e714e71); // nop
+     WriteLong68k(&ROM[0x15b64],0x4e714e71); // nop
      // Prevents RAM test
-     WriteLong(&ROM[0x15b68],0x4e714e71); // nop
+     WriteLong68k(&ROM[0x15b68],0x4e714e71); // nop
 
      // Prevents bad tests from looping
-     WriteWord(&ROM[0x15aa0],0x4e71); // nop
+     WriteWord68k(&ROM[0x15aa0],0x4e71); // nop
 
      // Remove insert coin while playing
-     WriteWord(&ROM[0x222a],0x4e71);
+     WriteWord68k(&ROM[0x222a],0x4e71);
 
      // Speed hack
-     WriteWord(&ROM[0x1f5e],0x4239);
-     WriteWord(&ROM[0x1f60],0xaa);
-     WriteWord(&ROM[0x1f62],0);
-     WriteWord(&ROM[0x1f64],0x4e71);
+     WriteWord68k(&ROM[0x1f5e],0x4239);
+     WriteWord68k(&ROM[0x1f60],0xaa);
+     WriteWord68k(&ROM[0x1f62],0);
+     WriteWord68k(&ROM[0x1f64],0x4e71);
    } else { // Normal version
      // Prevents ROM test
-     WriteLong(&ROM[0x15acc],0x4e714e71); // nop
+     WriteLong68k(&ROM[0x15acc],0x4e714e71); // nop
      // Prevents RAM test
-     WriteLong(&ROM[0x15ad0],0x4e714e71); // nop
+     WriteLong68k(&ROM[0x15ad0],0x4e714e71); // nop
 
      // Fix bad checksums
 
-     WriteWord(&ROM[0x15B24],0x6100 - 0x1E);
+     WriteWord68k(&ROM[0x15B24],0x6100 - 0x1E);
 
-     /* Skip video count check (remove insert coin while playing) */
-     WriteWord(&ROM[0x021FA],0x4E71);
+     /* Skip video count check 68k(remove insert coin while playing) */
+     WriteWord68k(&ROM[0x021FA],0x4E71);
 
      // Speed hack
-     WriteWord(&ROM[0x1f2e],0x4239);
-     WriteWord(&ROM[0x1f30],0xaa);
-     WriteWord(&ROM[0x1f32],0);
-     WriteWord(&ROM[0x1f34],0x4e71);
+     WriteWord68k(&ROM[0x1f2e],0x4239);
+     WriteWord68k(&ROM[0x1f30],0xaa);
+     WriteWord68k(&ROM[0x1f32],0);
+     WriteWord68k(&ROM[0x1f34],0x4e71);
    }
-
-   AddMemFetch(0x000000, 0x0FFFFF, ROM+0x000000-0x000000);      // 68000 ROM
-   AddMemFetch(-1, -1, NULL);
    AddResetHandler(&quiet_reset_handler);
 
-   AddReadByte(0x000000, 0x0FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);                 // 68000 RAM
    AddReadByte(0x300000, 0x30000F, tp2vcu_0_rb, NULL);                  // GCU RAM (SCREEN)
    AddReadByte(0x218000, 0x21FFFF, bgaregga_ioc_68k_rb, NULL);           // turbo comm ram
    AddReadByte(0x600000, 0x6000ff, NULL, commram);             // sound comm
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);               // <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x0FFFFF, NULL, ROM+0x000000);                 // 68000 ROM
-   AddReadWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                 // 68000 RAM
    AddReadWord(0x300000, 0x30000F, tp2vcu_0_rw, NULL);                  // GCU RAM (SCREEN)
    AddReadWord(0x218000, 0x21FFFF, bgaregga_ioc_68k_rw, NULL);           // turbo comm ram
    AddReadWord(0x600000, 0x6000ff, NULL, commram);             // sound comm
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);               // <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteByte(0x218000, 0x21FFFF, bgaregga_ioc_68k_wb, NULL);          // turbo comm ram
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);                   // Trap Idle 68000
    AddWriteByte(0x600000, 0x601000, sound_bgaregga_wb, NULL);            // sound comm
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);             // <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x100000, 0x10FFFF, NULL, RAM+0x000000);                // 68000 RAM
    AddWriteWord(0x300000, 0x30000F, tp2vcu_0_ww, NULL);                 // GCU RAM (SCREEN)
    AddWriteWord(0x400000, 0x400FFF, NULL, RAM+0x010000);                // COLOUR RAM
    AddWriteWord(0x500000, 0x503FFF, NULL, RAM+0x020000);                // TEXT RAM (FG0 RAM)
    AddWriteWord(0x600000, 0x601000, sound_bgaregga_ww, NULL);            // sound comm
    AddWriteWord(0x218000, 0x21FFFF, bgaregga_ioc_68k_ww, NULL);          // turbo comm ram
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);             // <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();     // Set Starscream mem pointers...
+   finish_conf_68000(0);     // Set Starscream mem pointers...
 }
 
 static const int toaplan2_interrupt[ROM_COUNT] =
@@ -6408,6 +5699,7 @@ extern UINT16 z80sp;
 #endif
 static void execute_kbash(void)
 {
+    start_frame = s68000readOdometer();
    if((romset==8)){
 
       update_paddle();
@@ -6416,15 +5708,17 @@ static void execute_kbash(void)
 
    if((romset==11)){
 
-      cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(28,60));    // M68000 28MHz (60fps)
+      cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 28MHz (60fps)
       cpu_interrupt(CPU_68K_0, 2);
+      // Peekaboo: the protection generates an irq during writes to its device
+      // the irq is masked by the vbl with musashi if we don't execute at least 1 cycle after this
       cpu_execute_cycles(CPU_68K_0,1);
       cpu_interrupt(CPU_68K_0, 4);
 
    }
    else{
 
-     cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(28,60));    // M68000 20MHz (60fps) (real game is only 16MHz)
+     cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 20MHz (60fps) (real game is only 16MHz)
 
      cpu_interrupt(CPU_68K_0, toaplan2_interrupt[romset]);
 
@@ -6500,14 +5794,11 @@ static void DrawTileQueue(void)
 
    TerminateTileQueue();
 
-   if(romset == 11){
+   if(romset == 11){ // batrider
 
    for(pri=0;pri<MAX_PRI;pri++){
       tile_ptr = first_tile[pri];
 
-#ifdef USE_CACHE
-      clear_tile_cache();
-#endif
       switch(pri&3){
 
       case 0x00:        // BG: skip blank, check solid
@@ -6516,22 +5807,16 @@ static void DrawTileQueue(void)
 
       while(tile_ptr->next){
          ta = tile_ptr->tile;
-         ta = object_bank[ta>>15] | (ta & 0x7FFF);
+#if USE_TILEQUEUE
+	 GFX = gfx[tile_ptr->chip*2];
+	 GFX_BG0_SOLID = gfx_solid[tile_ptr->chip*2];
+#endif
+         ta = (object_bank[ta>>13]>>2) | (ta & 0x1FFF);
          if(GFX_BG0_SOLID[ta]!=0){                      // No pixels; skip
 	   if(GFX_BG0_SOLID[ta]==1)                    // Some pixels; trans
-               Draw8x8_Trans_Mapped_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
+               Draw16x16_Trans_Mapped_Rot(&GFX[ta<<8],tile_ptr->x,tile_ptr->y,tile_ptr->map);
             else {                                        // all pixels; solid
-#ifdef USE_CACHE
-	      if ((tile_cache[ta]) && (cache_map[ta] == tile_ptr->map)) {
-		Move8x8_Rot(tile_cache[ta],tile_ptr->x,tile_ptr->y,NULL);
-	      } else {
-#endif
-		Draw8x8_Mapped_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
-#ifdef USE_CACHE
-		add_tile_cache_Rot(NULL,tile_ptr->x,tile_ptr->y,ta);
-		cache_map[ta] = tile_ptr->map;
-	      }
-#endif
+		Draw16x16_Mapped_Rot(&GFX[ta<<8],tile_ptr->x,tile_ptr->y,tile_ptr->map);
 	    }
          }
          tile_ptr = tile_ptr->next;
@@ -6543,21 +5828,15 @@ static void DrawTileQueue(void)
       while(tile_ptr->next){
          ta = tile_ptr->tile;
          ta = object_bank[ta>>15] | (ta & 0x7FFF);
+#if USE_TILEQUEUE
+	 GFX = gfx[tile_ptr->chip*2+1];
+	 GFX_BG0_SOLID = gfx_solid[tile_ptr->chip*2+1];
+#endif
          if(GFX_BG0_SOLID[ta]!=0){                      // No pixels; skip
             if(GFX_BG0_SOLID[ta]==1)                    // Some pixels; trans
                Draw8x8_Trans_Mapped_flip_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
             else {                                       // all pixels; solid
-#ifdef USE_CACHE
-	      if (tile_cache[ta] && (cache_map[ta] == tile_ptr->map)) {
-		Move8x8_Rot(tile_cache[ta],tile_ptr->x,tile_ptr->y,NULL);
-	      } else {
-#endif
 		Draw8x8_Mapped_flip_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
-#ifdef USE_CACHE
-		add_tile_cache_Rot(NULL,tile_ptr->x,tile_ptr->y,ta);
-		cache_map[ta] = tile_ptr->map;
-	    }
-#endif
 	    }
          }
          tile_ptr = tile_ptr->next;
@@ -6574,9 +5853,6 @@ static void DrawTileQueue(void)
    for(pri=0;pri<MAX_PRI;pri++){
       tile_ptr = first_tile[pri];
 
-#ifdef USE_CACHE
-      clear_tile_cache();
-#endif
       switch(pri&3){
 
       case 0x00:        // BG: skip blank, check solid
@@ -6585,21 +5861,15 @@ static void DrawTileQueue(void)
 
       while(tile_ptr->next){
          ta = tile_ptr->tile;
+#if USE_TILEQUEUE
+	 GFX = gfx[tile_ptr->chip*2];
+	 GFX_BG0_SOLID = gfx_solid[tile_ptr->chip*2];
+#endif
          if(GFX_BG0_SOLID[ta]!=0){                      // No pixels; skip
-            if(GFX_BG0_SOLID[ta]==1)                    // Some pixels; trans
-               Draw8x8_Trans_Mapped_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
-            else {                                        // all pixels; solid
-#ifdef USE_CACHE
-	      if (tile_cache[ta] && cache_map[ta] == tile_ptr->map) {
-		Move8x8_Rot(tile_cache[ta],tile_ptr->x,tile_ptr->y,NULL);
-	      } else {
-#endif
-		Draw8x8_Mapped_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map);
-#ifdef USE_CACHE
-		add_tile_cache_Rot(NULL,tile_ptr->x,tile_ptr->y,ta);
-		cache_map[ta] = tile_ptr->map;
-	      }
-#endif
+            if(GFX_BG0_SOLID[ta]==1) {                   // Some pixels; trans
+               Draw16x16_Trans_Mapped_Rot(&GFX[ta<<8],tile_ptr->x,tile_ptr->y,tile_ptr->map);
+	    } else {                                        // all pixels; solid
+		Draw16x16_Mapped_Rot(&GFX[ta<<8],tile_ptr->x,tile_ptr->y,tile_ptr->map);
 	    }
          }
          tile_ptr = tile_ptr->next;
@@ -6610,24 +5880,15 @@ static void DrawTileQueue(void)
 
       while(tile_ptr->next){
          ta = tile_ptr->tile;
+#if USE_TILEQUEUE
+	 GFX = gfx[tile_ptr->chip*2+1];
+	 GFX_BG0_SOLID = gfx_solid[tile_ptr->chip*2+1];
+#endif
          if(GFX_BG0_SOLID[ta]!=0){                      // No pixels; skip
             if(GFX_BG0_SOLID[ta]==1)                    // Some pixels; trans
                Draw8x8_Trans_Mapped_flip_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
-            else {                                       // all pixels; solid
-/* It's better NOT to use the cache for sprites, because some games are using
- * a flip effect to draw 2 halves of a big sprite -> with the cache you loose
- * the fliping effect ! */
-//#ifdef USE_CACHE
-//	      if (tile_cache[ta] && cache_map[ta] == tile_ptr->map) {
-//		Move8x8_Rot(tile_cache[ta],tile_ptr->x,tile_ptr->y,NULL);
-//	      } else {
-//#endif
+	    else {                                       // all pixels; solid
 		Draw8x8_Mapped_flip_Rot(&GFX[ta<<6],tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
-//#ifdef USE_CACHE
-//		add_tile_cache_Rot(NULL,tile_ptr->x,tile_ptr->y,ta);
-//		cache_map[ta] = tile_ptr->map;
-//	      }
-//#endif
 	    }
 	 }
          tile_ptr = tile_ptr->next;
@@ -6665,10 +5926,16 @@ static const UINT16 scr_ofs[ROM_COUNT][8] =
 static void DrawToaplan2(void)
 {
    int x,y,ta,x_ofs,y_ofs;
-   int zz,zzz,zzzz,x16,y16,i,z,loop_start,loop_end,loop_inc;
+   int zz,zzz,zzzz,x16,y16,i,z;
    int xx,xxx,xxxx,yyy,old_x,old_y;
    UINT8 *MAP,*RAM_BG;
    UINT32 tile_max,spr_max,pri;
+   if (RefreshBuffers) {
+       if (is_current_game("fixeighb") || romset == 9 || romset == 10 || romset == 14) {
+	   GFX_FG0 = gfx[2];
+	   GFX_FG0_SOLID = gfx_solid[2];
+       }
+   }
 
    if (!GFX_FG0) {
      GFX_FG0 = gfx[0];
@@ -6728,22 +5995,20 @@ static void DrawToaplan2(void)
 		wise) is wrong and unknown.
 */
 
-   if (romset == 13) { // batsugun
-     // Batsugun apparently needs to start by its 2nd gfx controler (unsure)
-     tile_start = tp2vcu[0].tile_max + 1;
-     loop_start = 1; loop_end = 0-1; loop_inc = -1;
-   } else {
-     tile_start = 0;
-     loop_start = 0; loop_end = vcu_num; loop_inc = 1;
-   }
-
-   for(i = loop_start; i != loop_end; i+=loop_inc){
+   for(i = 0; i != vcu_num; i++){
+#ifndef USE_TILEQUEUE
+   clear_bitmap(pbitmap);
+   GFX = gfx[i*2];
+   GFX_BG0_SOLID = gfx_solid[i*2];
+#endif
 
    // BG0
    // ---
 
-   tile_max = tp2vcu[i].tile_max;
+   tile_max = get_region_size(REGION_GFX1+i*2)/0x100;
+   int sprite_max = get_region_size(REGION_GFX1+i*2)/0x40;
    if(check_layer_enabled(layer_id_data[i][0])){
+       // printf("layer : %d %s tile_start %x\n",i,layer_id_name[i][0],tile_start);
 
    RAM_BG = tp2vcu[i].VRAM;
 
@@ -6754,10 +6019,17 @@ static void DrawToaplan2(void)
 
    START_SCROLL_512x512_4_16(32,32,320,240);
 
-   ta=(ReadWord(&RAM_BG[2+zz])<<2)&tile_max;
+   ta=(ReadWord(&RAM_BG[2+zz]))%tile_max;
 
       if(ta!=0){
 	pri = ReadWord(&RAM_BG[zz]);
+	if (romset == 13 && i == 1 && (pri & 0x7f) == 0x7a) {
+	    // some weird garbage in bg0 for chip 1 at start of level 1
+	    // this is priority 4, so it's not intended to be invisible
+	    // mame uses 1 separate bitmap / chip here and filters output based on the 12bpp color components...
+	    // I might be obliged to do that at some point, for now I'd like to try to filter it out...
+	    continue;
+	}
 	MAP_PALETTE_MAPPED_NEW(
 			       (pri&0x7F),
          16,
@@ -6765,12 +6037,22 @@ static void DrawToaplan2(void)
 	 );
 
       pri = ((pri&0x0E00)>>7);
-
-      QueueTile(ta+0, x,   y,   MAP, 0, pri);
-      QueueTile(ta+1, x+8, y,   MAP, 0, pri);
-      QueueTile(ta+2, x,   y+8, MAP, 0, pri);
-      QueueTile(ta+3, x+8, y+8, MAP, 0, pri);
-
+#if USE_TILEQUEUE
+      QueueTile(ta+0, x,   y,   MAP, 0, pri,i);
+#else
+#define draw_sprite(ta,x,y)                                          \
+      if(GFX_BG0_SOLID[ta]!=0){                                      \
+      if(GFX_BG0_SOLID[(ta)]==1)                                     \
+          pdraw8x8_Mask_Trans_Mapped_Rot(&GFX[(ta)<<6],x,y,MAP,pri); \
+      else {                                                         \
+          pdraw8x8_Mask_Mapped_Rot(&GFX[(ta)<<6],x,y,MAP,pri);       \
+      }                                                              \
+      }
+      draw_sprite(ta,x,y);
+      draw_sprite(ta+1,x+8,y);
+      draw_sprite(ta+2,x,y+8);
+      draw_sprite(ta+3,x+8,y+8);
+#endif
       }
 
    END_SCROLL_512x512_4_16();
@@ -6791,7 +6073,7 @@ static void DrawToaplan2(void)
 
    START_SCROLL_512x512_4_16(32,32,320,240);
 
-      ta=(ReadWord(&RAM_BG[2+zz])<<2)&tile_max;
+      ta=(ReadWord(&RAM_BG[2+zz]))%tile_max;
 
       if(ta!=0){
 
@@ -6802,12 +6084,17 @@ static void DrawToaplan2(void)
          MAP
       );
 
-      pri = 1+ ((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
 
-      QueueTile(ta+0, x,   y,   MAP, 0, pri);
-      QueueTile(ta+1, x+8, y,   MAP, 0, pri);
-      QueueTile(ta+2, x,   y+8, MAP, 0, pri);
-      QueueTile(ta+3, x+8, y+8, MAP, 0, pri);
+#if USE_TILEQUEUE
+      pri = 1+((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
+      QueueTile(ta+0, x,   y,   MAP, 0, pri,i);
+#else
+      pri = ((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
+      draw_sprite(ta,x,y);
+      draw_sprite(ta+1,x+8,y);
+      draw_sprite(ta+2,x,y+8);
+      draw_sprite(ta+3,x+8,y+8);
+#endif
 
       }
 
@@ -6829,7 +6116,7 @@ static void DrawToaplan2(void)
 
    START_SCROLL_512x512_4_16(32,32,320,240);
 
-      ta=(ReadWord(&RAM_BG[2+zz])<<2)&tile_max;
+      ta=(ReadWord(&RAM_BG[2+zz]))%tile_max;
 
       if(ta!=0){
 
@@ -6839,12 +6126,18 @@ static void DrawToaplan2(void)
          MAP
       );
 
-      pri = 2+ ((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
 
-      QueueTile(ta+0, x,   y,   MAP, 0, pri);
-      QueueTile(ta+1, x+8, y,   MAP, 0, pri);
-      QueueTile(ta+2, x,   y+8, MAP, 0, pri);
-      QueueTile(ta+3, x+8, y+8, MAP, 0, pri);
+#if USE_TILEQUEUE
+      pri = 2+((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
+      // printf("bg2: %d,%d,%x (%x)\n",x,y,ta,ReadWord(&RAM_BG[2+zz]));
+      QueueTile(ta+0, x,   y,   MAP, 0, pri,i);
+#else
+      pri = ((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
+      draw_sprite(ta,x,y);
+      draw_sprite(ta+1,x+8,y);
+      draw_sprite(ta+2,x,y+8);
+      draw_sprite(ta+3,x+8,y+8);
+#endif
 
       }
 
@@ -6870,7 +6163,7 @@ static void DrawToaplan2(void)
 
    spr_max = 0x800;
 
-   if(romset == 2){
+   if(romset == 2){ // pipibibi
 
       for(zz = 0; zz < 0x800; zz += 8){
 
@@ -6890,9 +6183,9 @@ static void DrawToaplan2(void)
 
    for(zz = 0; (UINT32)zz < spr_max; zz += 8){
 
-     if((ReadWord(&RAM_BG[zz])&0x8000)!=0){
+     if((ReadWord(&RAM_BG[zz])&0x8000)!=0){ // sprite show ?
 
-      if((ReadWord(&RAM_BG[zz])&0x4000)==0){
+      if((ReadWord(&RAM_BG[zz])&0x4000)==0){ // multi sprite
 
          x=((ReadWord(&RAM_BG[zz+4])>>7)+32-x_ofs)&0x1FF;
          y=((ReadWord(&RAM_BG[zz+6])>>7)+32-y_ofs)&0x1FF;
@@ -6907,8 +6200,8 @@ static void DrawToaplan2(void)
 
       old_x = x;
       old_y = y;
-      ta  = (ReadWord(&RAM_BG[zz]) << 16) | (ReadWord(&RAM_BG[zz+2]));
-      ta &= tile_max;
+      ta  = ((ReadWord(&RAM_BG[zz])&3) << 16) | (ReadWord(&RAM_BG[zz+2]));
+      ta %= sprite_max;
 
       MAP_PALETTE_MAPPED_NEW(
          (ReadWord(&RAM_BG[zz])>>2)&0x3F,
@@ -6919,8 +6212,11 @@ static void DrawToaplan2(void)
       xxx=RAM_BG[zz+4]&15;
       yyy=RAM_BG[zz+6]&15;
 
-      pri = 3+ ((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
-
+#if USE_TILEQUEUE
+      pri = 3+((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
+#else
+      pri = ((ReadWord(&RAM_BG[zz])&0x0E00)>>7);
+#endif
       switch((ReadWord(&RAM_BG[zz])>>12)&3){ // flip x/y
       case 0x00:
       xxxx=x;
@@ -6929,7 +6225,20 @@ static void DrawToaplan2(void)
       xx=xxx;
       do{
          if((x>24)&&(y>24)&&(x<320+32)&&(y<240+32)){
-            QueueTile(ta, x, y, MAP, 0, pri);
+#if USE_TILEQUEUE
+            QueueTile(ta, x, y, MAP, 0, pri,i);
+#else
+#undef draw_sprite
+#define draw_sprite(ta,x,y,flip)                                          \
+    if(GFX_BG0_SOLID[ta]!=0){                                             \
+      if(GFX_BG0_SOLID[(ta)]==1)                                          \
+          pdraw8x8_Mask_Trans_Mapped_flip_Rot(&GFX[(ta)<<6],x,y,MAP,flip,pri); \
+      else {                                                              \
+          pdraw8x8_Mask_Mapped_flip_Rot(&GFX[(ta)<<6],x,y,MAP,flip,pri);       \
+      }                                                                   \
+    }
+      draw_sprite(ta,x,y,0);
+#endif
          }
          ta++;
          x=(x+8)&0x1FF;
@@ -6937,6 +6246,7 @@ static void DrawToaplan2(void)
       y=(y+8)&0x1FF;
       }while(yyy--);
       break;
+
       case 0x01:
       x=(x-7)&0x1FF;
       xxxx=x;
@@ -6945,7 +6255,11 @@ static void DrawToaplan2(void)
       xx=xxx;
       do{
          if((x>24)&&(y>24)&&(x<320+32)&&(y<240+32)){
-            QueueTile(ta, x, y, MAP, 1, pri);
+#if USE_TILEQUEUE
+            QueueTile(ta, x, y, MAP, 1, pri,i);
+#else
+	    draw_sprite(ta,x,y,1);
+#endif
          }
          ta++;
          x=(x-8)&0x1FF;
@@ -6953,6 +6267,7 @@ static void DrawToaplan2(void)
       y=(y+8)&0x1FF;
       }while(yyy--);
       break;
+
       case 0x02:
       y=(y-7)&0x1FF;
       xxxx=x;
@@ -6961,7 +6276,11 @@ static void DrawToaplan2(void)
       xx=xxx;
       do{
          if((x>24)&&(y>24)&&(x<320+32)&&(y<240+32)){
-            QueueTile(ta, x, y, MAP, 2, pri);
+#if USE_TILEQUEUE
+            QueueTile(ta, x, y, MAP, 2, pri,i);
+#else
+	    draw_sprite(ta,x,y,2);
+#endif
          }
          ta++;
          x=(x+8)&0x1FF;
@@ -6969,6 +6288,7 @@ static void DrawToaplan2(void)
       y=(y-8)&0x1FF;
       }while(yyy--);
       break;
+
       case 0x03:
       x=(x-7)&0x1FF;
       y=(y-7)&0x1FF;
@@ -6978,7 +6298,11 @@ static void DrawToaplan2(void)
       xx=xxx;
       do{
          if((x>24)&&(y>24)&&(x<320+32)&&(y<240+32)){
-            QueueTile(ta, x, y, MAP, 3, pri);
+#if USE_TILEQUEUE
+            QueueTile(ta, x, y, MAP, 3, pri,i);
+#else
+	    draw_sprite(ta,x,y,3);
+#endif
          }
          ta++;
          x=(x-8)&0x1FF;
@@ -6994,14 +6318,11 @@ static void DrawToaplan2(void)
 
    }
 
-   if (romset == 13) // batsugun
-     tile_start = 0;
-   else
-     tile_start = tp2vcu[i].tile_max + 1;
-
    }
 
+#if USE_TILEQUEUE
    DrawTileQueue();
+#endif
 
    // EXTRA FG0 LAYER (Tatsujin 2, Fix Eight)
 
@@ -7010,9 +6331,6 @@ static void DrawToaplan2(void)
      if(check_layer_enabled(tp3vcu_layer_id_data[0])){
 
    zz=0;
-#ifdef USE_CACHE
-   clear_tile_cache();
-#endif
    for(y=32;y<240+32;y+=8,zz+=48){
    for(x=32;x<320+32;x+=8,zz+=2){
       z=ReadWord(&RAM_FG0[zz])&0x3FF;
@@ -7027,17 +6345,7 @@ static void DrawToaplan2(void)
          if(GFX_FG0_SOLID[z]==1)		// Some pixels; trans
             Draw8x8_Trans_Mapped_Rot(&GFX_FG0[z<<6],x,y,MAP);
          else {					// all pixels; solid
-#ifdef USE_CACHE
-	    if (tile_cache[z] && cache_map[z] == MAP) {
-	      Move8x8_Rot(tile_cache[z],x,y,NULL);
-	    } else {
-#endif
 	      Draw8x8_Mapped_Rot(&GFX_FG0[z<<6],x,y,MAP);
-#ifdef USE_CACHE
-	      add_tile_cache_Rot(NULL,x,y,z);
-	      cache_map[z] = MAP;
-	    }
-#endif
 	 }
       }
    }
@@ -7150,6 +6458,16 @@ bit#7 = Screen Invert
 
 */
 
+static struct VIDEO_INFO video_batsugun = // vertical, dual layout
+{
+   DrawToaplan2,
+   320,
+   240,
+   32,
+   VIDEO_ROTATE_270 |
+   VIDEO_ROTATABLE,
+   dual_gfx
+};
 static struct VIDEO_INFO video_bgareggahk =
 {
    DrawToaplan2,
@@ -7168,6 +6486,7 @@ static struct VIDEO_INFO video_kbash =
    32,
    VIDEO_ROTATE_NORMAL |
    VIDEO_ROTATABLE,
+   raizing_gfxdecodeinfo
 };
 static struct DIR_INFO dir_batrider[] =
 {
@@ -7177,27 +6496,11 @@ static struct DIR_INFO dir_batrider[] =
    { NULL, },
 };
 GAME( batrider, "Armed Police Batrider (B)" /* "Feb 13 1998" */, RAIZING, 1998, GAME_SHOOT,
-	.input = input_bgareggahk,
 	.dsw = dsw_batrider,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
+	.romsw = romsw_batrider,
 	.sound = sound_batrider,
 );
-static struct DIR_INFO dir_batridra[] =
-{
-   { "armed_police_batrider", },
-   { "batridra", },
-   { ROMOF("batrider"), },
-   { CLONEOF("batrider"), },
-   { NULL, },
-};
-CLONE(batridra, batrider, "Armed Police Batrider (A)" /* "Dec 22 1997" */, RAIZING, 1997 /* 1998 on title screen */, GAME_SHOOT,
-	.input = input_bgareggahk,
-	.dsw = dsw_batrider,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
-	.sound = sound_batrider,
-);
+CLNEI( batriderja,batrider,"Armed Police Batrider (Japan,older version) (Mon Dec 22 1997)",RAIZING,1998, GAME_SHOOT );
 static struct DIR_INFO dir_batsugun[] =
 {
    { "batsugun", },
@@ -7206,11 +6509,12 @@ static struct DIR_INFO dir_batsugun[] =
 GAME( batsugun, "Batsugun", TOAPLAN, 1993, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_batsugun,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.board = "TP030",
+	.video = &video_batsugun,
 	.sound = sound_batsugun,
 );
+CLNEI( batsuguna,batsugun,"Batsugun (older set)",TOAPLAN,1993, GAME_SHOOT );
+CLNEI( batsugunsp,batsugun,"Batsugun - Special Version",TOAPLAN,1993, GAME_SHOOT );
 static struct DIR_INFO dir_bgareggacn[] =
 {
    { "battle_gareggc", },
@@ -7220,12 +6524,8 @@ static struct DIR_INFO dir_bgareggacn[] =
    { ROMOF("bgaregga"), },
    { NULL, },
 };
-CLONE(bgareggacn, bgaregga, "Battle Garegga Chinese version" /* "Apr 2 1996" */, RAIZING, 1996, GAME_SHOOT,
-	.input = input_bgareggahk,
+CLONE( bgareggacn, bgaregga, "Battle Garegga Chinese version" /* "Apr 2 1996" */, RAIZING, 1996, GAME_SHOOT,
 	.dsw = dsw_bgareggahk,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
-	.sound = sound_bgaregga,
 );
 static struct DIR_INFO dir_bgaregga[] =
 {
@@ -7238,10 +6538,15 @@ static struct DIR_INFO dir_bgaregga[] =
    { NULL, },
 };
 GAME( bgaregga, "Battle Garegga" /* "Feb 3 1996" */, RAIZING, 1996, GAME_SHOOT,
-	.input = input_bgareggahk,
 	.dsw = dsw_bgaregga,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
+	.sound = sound_bgaregga,
+);
+CLNEI( bgaregganv,bgaregga,"Battle Garegga - New Version (Austria / Hong Kong) (Sat Mar 2 1996)",RAIZING,1996, GAME_SHOOT,
+	.dsw = dsw_bgaregga,
+	.sound = sound_bgaregga,
+);
+CLNEI( bgareggat2,bgaregga,"Battle Garegga - Type 2 (Europe / USA / Japan / Asia) (Sat Mar 2 1996)",RAIZING,1996, GAME_SHOOT,
+	.dsw = dsw_bgaregga,
 	.sound = sound_bgaregga,
 );
 static struct DIR_INFO dir_bgareggahk[] =
@@ -7253,25 +6558,21 @@ static struct DIR_INFO dir_bgareggahk[] =
    { ROMOF("bgaregga"), },
    { NULL, },
 };
-CLONE(bgareggahk, bgaregga, "Battle Garegga Hong Kong Ver.", RAIZING, 1996, GAME_SHOOT,
-	.input = input_bgareggahk,
+CLONE( bgareggahk, bgaregga, "Battle Garegga Hong Kong Ver.", RAIZING, 1996, GAME_SHOOT,
 	.dsw = dsw_bgareggahk,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.sound = sound_bgaregga,
 );
-static struct DIR_INFO dir_bbakrada[] =
+static struct DIR_INFO dir_bbakraidja[] =
 {
+   { "bbakraidja", },
    { "bbakrada", },
    { "battlebakraid(japan)", },
    { ROMOF("bbakraid"), },
    { CLONEOF("bbakraid"), },
    { NULL, },
 };
-CLONE(bbakrada, bbakraid, "Battle Bakraid normal version" /* "Apr 7 1999" */, RAIZING, 1999, GAME_SHOOT,
-	.input = input_bgareggahk,
+CLONE(bbakraidja, bbakraid, "Battle Bakraid normal version Apr 7 1999" , RAIZING, 1999, GAME_SHOOT,
 	.dsw = dsw_bbakraid,
-	.video = &video_bgareggahk,
 	.exec = execute_bbakraid,
 	.long_name_jpn = "???",
 	.board = "TP021",
@@ -7284,13 +6585,12 @@ static struct DIR_INFO dir_bbakraid[] =
    { "bbakraid_prg", },
    { NULL, },
 };
-GAME( bbakraid, "Battle Bakraid unlimited version" /* "Jun 8 1999" */, RAIZING, 1999, GAME_SHOOT,
-	.input = input_bgareggahk,
+GAME( bbakraid, "Battle Bakraid unlimited version Jun 8 1999", RAIZING, 1999, GAME_SHOOT,
 	.dsw = dsw_bbakraid,
-	.video = &video_bgareggahk,
 	.exec = execute_bbakraid,
 	.long_name_jpn = "???",
 	.board = "TP021",
+	.romsw = romsw_batrider,
 	.sound = sound_bbakraid,
 );
 static struct DIR_INFO dir_dogyuun[] =
@@ -7301,10 +6601,9 @@ static struct DIR_INFO dir_dogyuun[] =
 GAME( dogyuun, "Dogyuun", TOAPLAN, 1992 /* check the "notice" screen */, GAME_SHOOT,
 	.input = input_dogyuun,
 	.dsw = dsw_dogyuun,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.long_name_jpn = "âhâMâàü[âô",
 	.board = "TP022",
+	.video = &video_batsugun,
 	.sound = sound_vfive,
 );
 static struct DIR_INFO dir_fixeight[] =
@@ -7316,8 +6615,6 @@ static struct DIR_INFO dir_fixeight[] =
 GAME( fixeight, "Fix Eight", TOAPLAN, 1992, GAME_SHOOT | GAME_PARTIALLY_WORKING,
 	.input = input_fixeight,
 	.dsw = dsw_fixeight,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.board = "TP026",
 	.sound = sound_vfive,
 );
@@ -7326,6 +6623,7 @@ static struct DIR_INFO dir_fixeighb[] =
    { "fix_eight_bootleg", },
    { "fixeighb", },
    { "fixeightb", },
+   { "fixeightbl", },
    { ROMOF("fixeight"), },
    { CLONEOF("fixeight"), },
    { NULL, },
@@ -7333,10 +6631,9 @@ static struct DIR_INFO dir_fixeighb[] =
 CLONE(fixeighb, fixeight, "Fix Eight Bootleg", BOOTLEG, 1992, GAME_SHOOT,
 	.input = input_fixeight,
 	.dsw = dsw_fixeight,
-	.video = &video_bgareggahk,
 	.exec = execute_truxton2,
+	.sound = sound_vfive,
 	.board = "TP026",
-	.sound = sound_fixeighb,
 );
 static struct DIR_INFO dir_ghox[] =
 {
@@ -7346,8 +6643,6 @@ static struct DIR_INFO dir_ghox[] =
 GAME( ghox, "Ghox", TOAPLAN, 1991, GAME_BREAKOUT,
 	.input = input_vfive,
 	.dsw = dsw_ghox,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.long_name_jpn = "âSü[âNâX",
 	.board = "TP021",
 );
@@ -7362,25 +6657,12 @@ static struct DIR_INFO dir_grindstm[] =
 CLONE(grindstm, vfive, "Grind Stormer", TOAPLAN, 1992, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_grindstm,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.board = "TP027",
 	.sound = sound_vfive,
 );
-static struct DIR_INFO dir_kgpe[] =
-{
-   { "kgpe", },
-   { ROMOF("shippumd"), },
-   { CLONEOF("shippumd"), },
-   { NULL, },
-};
-CLONE(kgpe, shippumd, "Kingdom Grand Prix", RAIZING, 1994, GAME_SHOOT,
-	.input = input_bgareggahk,
-	.dsw = dsw_kgpe,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
+GMEI( kingdmgp,"Kingdom Grandprix",RAIZING,1994, GAME_RACE,
+	.dsw = dsw_kingdmgp,
 	.long_name_jpn = "Ä¾òùûéû@‘†ìÉí",
-	.sound = sound_kbash,
 );
 static struct DIR_INFO dir_kbash[] =
 {
@@ -7390,6 +6672,8 @@ static struct DIR_INFO dir_kbash[] =
 };
 GME( kbash, "Knuckle Bash", TOAPLAN, 1993, GAME_BEAT,
 	.long_name_jpn = "âiâbâNâïâoâbâVâà",
+	.input = input_kbash,
+	.video = &video_kbash,
 	.board = "TP023",
 );
 static struct DIR_INFO dir_kbash2[] =
@@ -7402,55 +6686,27 @@ CLONE( kbash2, kbash, "Knuckle Bash 2 (bootleg)", TOAPLAN, 1993, GAME_BEAT,
 	.input = input_kbash,
 	.dsw = dsw_kbash2,
 	.video = &video_kbash,
-	.exec = execute_kbash,
 	.long_name_jpn = "âiâbâNâïâoâbâVâà",
 	.board = "TP023",
 	.sound = sound_kbash2,
-);
-static struct DIR_INFO dir_mahoudai[] =
-{
-   { "mahou_daisakusen", },
-   { "mahoudai", },
-   { NULL, },
-};
-GAME( mahoudai, "Mahou Daisakusen", RAIZING, 1993, GAME_SHOOT,
-	.input = input_bgareggahk,
-	.dsw = dsw_mahoudai,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
-	.long_name_jpn = "ûéû@‘†ìÉí",
-	.sound = sound_kbash,
 );
 static struct DIR_INFO dir_pipibibsbl[] =
 {
    { "pipi_and_bibi", },
    { "pipibibi", },
    { "pipibibsbl", },
-   { ROMOF("whoopee"), },
-   { CLONEOF("whoopee"), },
    { NULL, },
 };
 GAME(pipibibsbl, "Pipi and Bibi's", BOOTLEG, 1991, GAME_PLATFORM | GAME_ADULT,
 	.input = input_pipibibsbl,
 	.dsw = dsw_pipibibsbl,
 	.video = &video_kbash,
-	.exec = execute_kbash,
 	.long_name_jpn = "âtü[ârü[ (bootleg)",
 	.sound = sound_whoopee,
 );
-static struct DIR_INFO dir_shippumd[] =
-{
-   { "shippu_mahou_daisakusen", },
-   { "shippumd", },
-   { NULL, },
-};
-GAME( shippumd, "Shippu Mahou Daisakusen", RAIZING, 1994, GAME_SHOOT,
-	.input = input_bgareggahk,
+CLNEI( shippumd,kingdmgp,"Shippu Mahou Daisakusen (Japan)",RAIZING,1994, GAME_RACE,
 	.dsw = dsw_shippumd,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.long_name_jpn = "Ä¾òùûéû@‘†ìÉí",
-	.sound = sound_kbash,
 );
 static struct DIR_INFO dir_snowbro2[] =
 {
@@ -7462,7 +6718,6 @@ GAME( snowbro2, "Snow Bros 2", TOAPLAN, 1994, GAME_PLATFORM,
 	.input = input_snowbro2,
 	.dsw = dsw_snowbro2,
 	.video = &video_kbash,
-	.exec = execute_kbash,
 	.long_name_jpn = "âXâmü[âuâëâUü[âYéQ",
 	.sound = sound_truxton2,
 );
@@ -7476,7 +6731,6 @@ static struct DIR_INFO dir_truxton2[] =
 GAME( truxton2, "Tatsujin 2", TOAPLAN, 1992, GAME_SHOOT,
 	.input = input_truxton2,
 	.dsw = dsw_truxton2,
-	.video = &video_bgareggahk,
 	.exec = execute_truxton2,
 	.long_name_jpn = "ÆBÉlë¤",
 	.board = "TP024",
@@ -7492,7 +6746,6 @@ GAME( tekipaki, "Teki Paki", TOAPLAN, 1991, GAME_PUZZLE,
 	.input = input_tekipaki,
 	.dsw = dsw_tekipaki,
 	.video = &video_kbash,
-	.exec = execute_kbash,
 	.long_name_jpn = "É“”]âQü[âÇü@âeâLâpâL",
 	.board = "TP020",
 );
@@ -7507,8 +6760,6 @@ static struct DIR_INFO dir_vfive[] =
 GAME(vfive, "V Five", TOAPLAN, 1993, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_vfive,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
 	.board = "TP027",
 	.sound = sound_vfive,
 );
@@ -7516,21 +6767,21 @@ static struct DIR_INFO dir_whoopee[] =
 {
    { "whoopee", },
    { "pipibibs", },
+   { ROMOF("pipibibsbl"), },
+   { CLONEOF("pipibibsbl"), },
    { NULL, },
 };
 GAME( whoopee, "Whoopee", TOAPLAN, 1991, GAME_PLATFORM | GAME_ADULT,
 	.input = input_tekipaki,
 	.dsw = dsw_whoopee,
 	.video = &video_kbash,
-	.exec = execute_kbash,
 	.long_name_jpn = "âtü[ârü[",
 	.sound = sound_whoopee,
 );
 
-CLONEI(sstriker, mahoudai, "Sorcer Striker (World)", TOAPLAN, 1993, GAME_SHOOT,
-	.dsw = sstriker_dsw,
-	.input = input_bgareggahk,
-	.video = &video_bgareggahk,
-	.exec = execute_kbash,
-	.sound = sound_kbash
+GMEI( sstriker,"Sorcer Striker (set 1)",RAIZING,1993, GAME_SHOOT);
+CLNEI( sstrikerk,sstriker,"Sorcer Striker (Korea)",RAIZING,1993, GAME_SHOOT,
+	.dsw = dsw_sstrikerk);
+CLNEI( mahoudai,sstriker,"Mahou Daisakusen (Japan)",RAIZING,1993, GAME_SHOOT,
+	.dsw = dsw_mahoudai
 	);
