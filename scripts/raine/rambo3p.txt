@@ -1,0 +1,49 @@
+script "P1 Infinite Energy"  
+run:
+    poke $801407 $E0
+script "P1 Infinite Normal Bombs"  
+run:
+    poke $801405 $08
+script "P1 Infinite Super Bombs"  
+run:
+    poke $801421 $02
+script "P1 Invincibility"  
+run:
+    poke $801497 $02
+script "P1 Infinite Big Weapon Time" \
+ "comm:Get the item first"  
+run:
+    poke $801425 $FF
+script "P1 Infinite Big Sights Time" \
+ "comm:Get the item first"  
+run:
+    poke $801429 $FF
+script "P1 Infinite Fast Shoot Time" \
+ "comm:Get the item first"  
+run:
+    poke $801427 $FF
+script " "  
+script "P2 Infinite Energy"  
+run:
+    poke $801507 $E0
+script "P2 Infinite Normal Bombs"  
+run:
+    poke $801505 $08
+script "P2 Infinite Super Bombs"  
+run:
+    poke $801521 $02
+script "P2 Invincibility"  
+run:
+    poke $801597 $02
+script "P2 Infinite Big Weapon Time" \
+ "comm:Get the item first"  
+run:
+    poke $801525 $FF
+script "P2 Infinite Big Sights Time" \
+ "comm:Get the item first"  
+run:
+    poke $801529 $FF
+script "P2 Infinite Fast Shoot Time" \
+ "comm:Get the item first"  
+run:
+    poke $801527 $FF

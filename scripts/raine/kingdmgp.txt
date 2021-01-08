@@ -1,0 +1,50 @@
+script "Infinite Credits"  
+run:
+    poke $10041D $09
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $100555 $09
+script "P1 Infinite Bombs"  
+run:
+    poke $1012D7 $09
+script "P1 Invincibility" \
+ "comm:See the Dip Switch Menu to enable an alternate 'P1 Invincibility' cheat. But the cheat is better as the dipswitch causes a game crash when P2 is selected."  
+run:
+    poke $1012D5 $03
+script "P1 Maximum Main Weapon Power" \
+ "comm:To be used before game starts"  
+run:
+    poke $1012DF $03
+script "P1 Maximum Extra Weapon Power"  
+run:
+    poke $1012D9 $02
+script "P1 Select Extra Weapon" \
+ "comm:Get an extra weapon first" \
+ "0x01/Front"\
+ "0x02/Homing" 
+run:
+    poke $1012DB param|(peek($1012DB)&~$03)
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $100557 $09
+script "P2 Infinite Bombs"  
+run:
+    poke $1013D7 $09
+script "P2 Invincibility"  
+run:
+    poke $1013D5 $03
+script "P2 Maximum Main Weapon Power" \
+ "comm:To be used before game starts"  
+run:
+    poke $1013DF $03
+script "P2 Maximum Extra Weapon Power"  
+run:
+    poke $1013D9 $02
+script "P2 Select Extra Weapon" \
+ "comm:Get an extra weapon first" \
+ "0x01/Front"\
+ "0x02/Homing" 
+run:
+    poke $1013DB param|(peek($1013DB)&~$03)

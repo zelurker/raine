@@ -1,0 +1,20 @@
+script "Infinite Credits"  
+run:
+    poke $100049 $09
+script "Infinite Lives"  
+run:
+    poke $100115 $06
+script "Infinite Missiles"  
+run:
+    poke $10012B $11
+script "Invincibility"  
+on:
+    temp0=peek($0033B0)
+run:
+    poke $0033B0 $60
+off:
+    poke $0033B0 temp0
+script "See End Sequence after this Round Now!" \
+ "comm:Enable the cheat during play"  
+on:
+    poke $100117 $07

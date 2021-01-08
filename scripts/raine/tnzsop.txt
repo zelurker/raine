@@ -1,0 +1,26 @@
+script "Infinite Lives"  
+run:
+    poke $E6BE $03
+script "Infinite Time"  
+run:
+    poke $E6C2 $3F
+script "Infinite SCUBA Air"  
+run:
+    poke $E729 $00
+script "Invincibility"  
+run:
+    poke $E715 $3C
+    poke $E714 $FF
+script "Select Weapon" \
+ "0x01/Arrows"\
+ "0x02/Bombs"\
+ "0x04/Flames"\
+ "0x08/Laser" 
+run:
+    poke $EF28 param
+script "Select Starting Level" \
+ inter=1,13,1 
+run:
+    if (peek($E6C1)==$00)
+      poke $E6C1 (param-$1)
+    endif
