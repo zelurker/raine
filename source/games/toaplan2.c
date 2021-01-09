@@ -1921,21 +1921,12 @@ static struct ROM_INFO rom_batsugun[] =
     /* Secondary CPU is a Toaplan marked chip, (TS-007-Spy  TOA PLAN) */
     /* It's a NEC V25 (PLCC94) (program uploaded by main CPU) */
   LOAD_SW16( CPU1, "tp030_1a.bin", 0x000000, 0x080000, 0xcb1d4554),
-#if 0
-  LOAD( GFX1, "tp030_3l.bin", 0x100000, 0x100000, 0x3024b793),
-  LOAD( GFX1, "tp030_3h.bin", 0x200000, 0x100000, 0xed75730b),
-  LOAD( GFX1, "tp030_4l.bin", 0x400000, 0x100000, 0xfedb9861),
-  LOAD( GFX1, "tp030_4h.bin", 0x500000, 0x100000, 0xd482948b),
-  LOAD( GFX1, "tp030_5.bin", 0x000000, 0x100000, 0xbcf5ba05),
-  LOAD( GFX1, "tp030_6.bin", 0x300000, 0x100000, 0x0666fecd),
-#else
   LOAD( GFX1, "tp030_3l.bin", 0x000000, 0x100000, 0x3024b793),
   LOAD( GFX1, "tp030_3h.bin", 0x100000, 0x100000, 0xed75730b),
   LOAD( GFX1, "tp030_4l.bin", 0x200000, 0x100000, 0xfedb9861),
   LOAD( GFX1, "tp030_4h.bin", 0x300000, 0x100000, 0xd482948b),
   LOAD( GFX3, "tp030_5.bin", 0x000000, 0x100000, 0xbcf5ba05),
   LOAD( GFX3, "tp030_6.bin", 0x100000, 0x100000, 0x0666fecd),
-#endif
   LOAD( SMP1, "tp030_2.bin", 0x00000, 0x40000, 0x276146f5),
    {           NULL,          0,          0, 0, 0, 0, },
 };
@@ -6008,7 +5999,6 @@ static void DrawToaplan2(void)
    tile_max = get_region_size(REGION_GFX1+i*2)/0x100;
    int sprite_max = get_region_size(REGION_GFX1+i*2)/0x40;
    if(check_layer_enabled(layer_id_data[i][0])){
-       // printf("layer : %d %s tile_start %x\n",i,layer_id_name[i][0],tile_start);
 
    RAM_BG = tp2vcu[i].VRAM;
 
@@ -6023,22 +6013,28 @@ static void DrawToaplan2(void)
 
       if(ta!=0){
 	pri = ReadWord(&RAM_BG[zz]);
-	if (romset == 13 && i == 1 && (pri & 0x7f) == 0x7a) {
+	// printf("%d,%d,%x color %x\n",x,y,ta,pri & 0x7f);
+	int color = pri & 0x7f;
+	if (romset == 13 && i == 1 &&
+		((color == 0x7a && (ta&0xfff0)==0x2250) || // stage 1
+		 (color == 0x60 && ta==0xaa5))) // stage 3
+	    // All this is about batsugun and clones, romset 13
 	    // some weird garbage in bg0 for chip 1 at start of level 1
 	    // this is priority 4, so it's not intended to be invisible
 	    // mame uses 1 separate bitmap / chip here and filters output based on the 12bpp color components...
 	    // I might be obliged to do that at some point, for now I'd like to try to filter it out...
+	    // Stage 4 : the ship is hidden by clouds at a time, but it might not be a bug
+	    // Stage 5 : some parts of the boss are all black, this is definetely something fixed by the mame bitmaps...
 	    continue;
-	}
 	MAP_PALETTE_MAPPED_NEW(
-			       (pri&0x7F),
+		color,
          16,
          MAP
 	 );
 
       pri = ((pri&0x0E00)>>7);
 #if USE_TILEQUEUE
-      QueueTile(ta+0, x,   y,   MAP, 0, pri,i);
+      QueueTile(ta, x,   y,   MAP, 0, pri,i);
 #else
 #define draw_sprite(ta,x,y)                                          \
       if(GFX_BG0_SOLID[ta]!=0){                                      \
@@ -6513,8 +6509,18 @@ GAME( batsugun, "Batsugun", TOAPLAN, 1993, GAME_SHOOT,
 	.video = &video_batsugun,
 	.sound = sound_batsugun,
 );
-CLNEI( batsuguna,batsugun,"Batsugun (older set)",TOAPLAN,1993, GAME_SHOOT );
-CLNEI( batsugunsp,batsugun,"Batsugun - Special Version",TOAPLAN,1993, GAME_SHOOT );
+CLNEI( batsuguna,batsugun,"Batsugun (older set)",TOAPLAN,1993, GAME_SHOOT,
+	.input = input_vfive,
+	.dsw = dsw_batsugun,
+	.video = &video_batsugun,
+	.sound = sound_batsugun,
+	);
+CLNEI( batsugunsp,batsugun,"Batsugun - Special Version",TOAPLAN,1993, GAME_SHOOT,
+	.input = input_vfive,
+	.dsw = dsw_batsugun,
+	.video = &video_batsugun,
+	.sound = sound_batsugun,
+	);
 static struct DIR_INFO dir_bgareggacn[] =
 {
    { "battle_gareggc", },
