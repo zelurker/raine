@@ -75,6 +75,7 @@ void init_assoc(int kind) {
 	    if (n < 0x1000) n += 3;
 
 	    if (n >= 0x1000) {
+		print_debug("assoc: 1st needle : %x\n",n);
 		needle[0] = 0x3f; // search for fe3f then (2nd form !)
 		needle[1] = 0xfe;
 		// This 2nd form is for fightfev
@@ -96,7 +97,7 @@ void init_assoc(int kind) {
 	    if (n < 0x1000) {
 		type = 2;
 		adr = ReadWord(&Z80ROM[n]);
-		print_debug("assoc found type 2 at adr = %x\n",adr);
+		print_debug("assoc found type 2 at adr = %x read from n=%x\n",adr,n);
 	    } else {
 		type = 0;
 		print_debug("assoc not found type 2\n");
@@ -297,11 +298,15 @@ int handle_sound_cmd(int cmd) {
 	    return 0;
 	}
 	if (mode == EAT_TWO) {
+	    print_debug("assoc: eat two %x\n",cmd);
 	    mode = ONE_SOUND;
 	    return 0;
 	} else if (mode == ONE_SOUND) {
+	    print_debug("assoc: eat one %x\n",cmd);
 	    mode = MUSIC;
-	    return 0;
+	    if (cmd >= 0x20)
+		// particularty here, the eat one seems to work only on cmds >= 0x20...
+		return 0;
 	}
 
 
@@ -335,29 +340,36 @@ int handle_sound_cmd(int cmd) {
 	if (cmd == 4 || cmd == 5 || cmd == 0x10) {
 	    // if music is playing then 4 stops it immediately
 	    // 5 is fading on the currently playing note !slow)
+	    print_debug("assoc: cmd %x sound and mute\n",cmd);
 	    mode = SOUND; // all commands after this are eaten, maybe for sound?
 	    if (active)
 		mute_song();
-	} else if (cmd == 7 || cmd == 8) mode = MUSIC;
-	else if (cmd == 0xa)
+	} else if (cmd == 7 || cmd == 8) {
+	    mode = MUSIC;
+	    print_debug("assoc: cmd %x music\n",cmd);
+	} else if (cmd == 0xa) {
 	    mode = FADEOUT;
+	    print_debug("assoc: cmd %x fadeout\n",cmd);
 	// b, c, d are ignored
 	// e slows down music until the next part where it takes back its
 	// normal speed -> impossible to emulate !
-	else if (cmd == 0x14 && is_current_game("wakuwak7"))
+	} else if (cmd == 0x14 && is_current_game("wakuwak7")) {
 	    mode = EAT_TWO;
-	else if (Z80ROM[adr + cmd] == 1)
+	} else if (Z80ROM[adr + cmd] == 1) {
+	    print_debug("assoc: rom = 1 on cmd %x, eat one ?\n",cmd);
 	    // Note : 1a and 1c and 1e are those which really output sound the
 	    // others just eat the following byte (for wakuwak7)
 	    // I assume the 1 means they eat 1 byte here, but I am not certain
 	    mode = ONE_SOUND;
-	else // all the others are ignored
+	} else { // all the others are ignored
 	    no_return = 1;
+	}
 	if (!no_return)
 	    return 0;
-	if (active && Z80ROM[adr + cmd] == 2)
+	if (active && Z80ROM[adr + cmd] == 2) {
+	    print_debug("assoc: song on cmd %x\n",cmd);
 	    mute_song();
-	else if (Z80ROM[adr + cmd] != 2)
+	} else if (Z80ROM[adr + cmd] != 2)
 	    return 0; // return if it's not a song
 	break;
     case 1: // garou
