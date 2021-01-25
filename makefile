@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.91.10"
+VERSION = "0.91.11"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -39,6 +39,9 @@ USE_CURL = 1
 
 # use mame 6502 ?
 # MAME_6502 = 1
+
+# use gens sh2
+# GENS_SH2 = 1
 
 # For osx : use frameworks or brew shared libs ?
 # Actually frameworks are a convenience for end users, to build them use
@@ -550,6 +553,10 @@ ifdef USE_MUSASHI
 	OBJDIRS += $(OBJDIR)/Musashi
 endif
 
+ifdef GENS_SH2
+	OBJDIRS += $(OBJDIR)/gens_sh2
+endif
+
 OBJDIRS += $(OBJDIR)/68020
 
 ifdef SDL
@@ -734,6 +741,11 @@ ASM020= $(OBJDIR)/68020/newcpu.o \
 	$(OBJDIR)/68020/cpustbl.o \
 	$(OBJDIR)/68020/cpudefs.o \
 	$(OBJDIR)/68020/a020core.o
+endif
+
+ifdef GENS_SH2
+SH2 = $(OBJDIR)/gens_sh2/sh2a.o \
+	  $(OBJDIR)/gens_sh2/sh2.o
 endif
 
 # STARSCREAM 68000 core
@@ -1105,6 +1117,11 @@ OBJS +=	$(OBJDIR)/sdl/blit.o \
 
 ifdef USE_CURL
 OBJS += $(OBJDIR)/curl.o
+endif
+
+ifdef GENS_SH2
+	OBJS += $(SH2)
+	AFLAGS += -Isource/gens_sh2
 endif
 
 ifndef NO_ASM
