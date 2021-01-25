@@ -1,1 +1,20 @@
-tetrist.txt
+script "P1 Select Perm. Current Shape" \
+ "0x0101/Red"\
+ "0x0202/Orange"\
+ "0x0303/Blue"\
+ "0x0404/Purple"\
+ "0x0505/Green"\
+ "0x0606/Cyan"\
+ "0x0707/Yellow"
+run:
+    dpoke $1054da param
+script "P1 Select Temp. Current Shape" \
+ "0x0101/Red"\
+ "0x0202/Orange"\
+ "0x0303/Blue"\
+ "0x0404/Purple"\
+ "0x0505/Green"\
+ "0x0606/Cyan"\
+ "0x0707/Yellow"
+change:
+    dpoke $1054da param
