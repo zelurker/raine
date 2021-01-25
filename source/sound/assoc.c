@@ -13,8 +13,6 @@
 #include "ingame.h" // print_ingame
 #include "savegame.h"
 
-#define VERBOSE 0
-
 #ifdef RAINE_DOS
 static void start_music_fadeout(double time) {
     // Does nothing in dos
@@ -24,7 +22,7 @@ static void start_music_fadeout(double time) {
 // active : same role as cdda.playing, except that neocd and neogeo share the
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!
-static int type,adr,active,end_sound_codes;
+static int type,adr,adr2,active,end_sound_codes;
 static char *track[256],loop[256];
 int disable_assoc,last_song;
 enum {
@@ -53,12 +51,12 @@ static int search(int len, UINT8 *needle, int n) {
 }
 
 void init_assoc(int kind) {
+    adr2 = 0;
     if (kind == 1) { // neogeo
 	/* Some roms have a version + an author in them, but apparently
 	 * there are some variants, so they must be recognized on something
 	 * else. So I just check the instruction, it must be ld (ld),adr
 	 * ($21) */
-	char *err = "";
 	end_sound_codes = 0x1e; // normal last code for the sounds for type 1
 	if (!strncmp((char*)&Z80ROM[0x3e],"Ver 3.0 by MAKOTO",17)) {
 	    // Search 7e: ld a,(hl)
@@ -89,7 +87,7 @@ void init_assoc(int kind) {
 		    printf("found fe%x at %x\n",needle[0],n);
 		    n -= 7;
 		    if (Z80ROM[n-1] != 0x21) {
-			printf("but not 21 !\n");
+			print_debug("assoc type 0\n");
 			type = 0;
 			return;
 		    }
@@ -97,17 +95,15 @@ void init_assoc(int kind) {
 	    }
 	    if (n < 0x1000) {
 		type = 2;
-		printf("found type 2 at adr = %x\n",n);
 		adr = ReadWord(&Z80ROM[n]);
+		print_debug("assoc found type 2 at adr = %x\n",adr);
 	    } else {
 		type = 0;
-		printf("not found type 2\n");
+		print_debug("assoc not found type 2\n");
 	    }
 	} else if (!strncmp((char*)&Z80ROM[0x101],"SYSTEM",6)) {
 	    type = 3; // sonicwi2/3
-#if VERBOSE
-	    printf("assoc: sonicwi2/3 detected\n");
-#endif
+	    print_debug("assoc: sonicwi2/3 detected\n");
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Ver 2.0",7) ||
 		!strncmp((char*)&Z80ROM[0x3e],"Ver 1.5",7) ||
 		!strncmp((char*)&Z80ROM[0x3e],"Ver 8.3",7)) {
@@ -124,31 +120,33 @@ void init_assoc(int kind) {
 		if (Z80ROM[n-8] == 0x21) {
 		    type = 2;
 		    adr = ReadWord(&Z80ROM[n-7]);
-		    printf("found type 2 at adr = %x -> %x\n",n-7,adr);
+		    print_debug("assoc: found type 2 at adr = %x -> %x\n",n-7,adr);
 		    break;
 		}
 	    }
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.1 ",21) ||
 		!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 0.0 ",21)) {
 	    adr = 0x14f;
-	    err = "kof96";
 	    type = 1;
+	    print_debug("assoc: kof96 type 1 adr 14f\n");
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 1.1 ",21)) {
 	    adr = 0x17d;
-	    err = "kof97";
 	    type = 1;
+	    print_debug("assoc: kof97 type 1 adr 17d\n");
 	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver(ROM)Ver 1.9 00/03/22",33)) {
 	    adr = 0x184;
-	    err = "kof2k";
 	    type = 1;
 	    end_sound_codes = 0x1f;
+	    print_debug("assoc: kof2k type 1 adr 184\n");
 	} else if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.7",24) ||
 		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24)) {
 	    adr = 0x184;
-	    err = "kof98/garou";
 	    type = 1;
-	} else if (!strncmp(current_game->main_name,"mslug",5))
+	    print_debug("assoc: kof98/garou type 1 adr 184\n");
+	} else if (!strncmp(current_game->main_name,"mslug",5)) {
 	    type = 4; // mslug, except mslug4/5 (lowest priority)
+	    print_debug("assoc: mslug type 4\n");
+	}
 	if (type == 1) {
 	    // The type 1 are all garou variants, but with a sound table at
 	    // different adresses. The funny thing is that even with the rom
@@ -156,15 +154,24 @@ void init_assoc(int kind) {
 	    // expect...
 	    if (Z80ROM[adr-1] != 0x21) {
 		type = 0;
-		printf("%s variant not recognized\n",err);
+		print_debug("assoc: variant not recognized\n");
 		return;
 	    }
 	    adr = ReadWord(&Z80ROM[adr]);
+	    adr2 = ReadWord(&Z80ROM[0x10fe]);
+	    print_debug("assoc adr %x adr2 %x\n",adr,adr2);
+	    if (ReadWord(&Z80ROM[adr2]) != 0) {
+		print_debug("adr2 invalid\n");
+		adr2 = 0;
+	    }
 	}
-    } else if (kind == 2)
+    } else if (kind == 2) {
 	type = 10; // gunbird
-    else if (kind == 3) // bublbobl
+	print_debug("assoc: gunbird\n");
+    } else if (kind == 3) { // bublbobl
 	type = 11;
+	print_debug("assoc: bublbobl\n");
+    }
     if (type == 1) mode = MUSIC;
     if (type) {
 	prepare_cdda_save(ASCII_ID('T','R','C','K'));
@@ -253,18 +260,13 @@ void load_assoc(char *section) {
 static void mute_song() {
     // It's quite a hassle to change the 2 variables together, but on neocd
     // active != cdda.playing since they are started by the game itself !
-#if VERBOSE
-    printf("mute song mode %d\n",mode);
-#endif
+    print_debug("assoc: mute song mode %d\n",mode);
     active = 0;
     cdda.playing = CDDA_STOP;
 }
 
 int handle_sound_cmd(int cmd) {
     if (disable_assoc || !type) return 0;
-#if VERBOSE
-    printf("cmd %x mode %d\n",cmd,mode);
-#endif
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after
@@ -362,6 +364,7 @@ int handle_sound_cmd(int cmd) {
 	// Garou has modes + interruptable songs !
 	if (mode == ONE_SOUND) {
 	    // Eats the next byte as sound, then switch to music
+	    print_debug("assoc: byte eaten for one sound : %x\n",cmd);
 	    mode = MUSIC;
 	    return 0;
 	} else if (mode == FADEOUT) {
@@ -395,19 +398,29 @@ int handle_sound_cmd(int cmd) {
 	if (cmd >= 6 && cmd <= 9) mode = MUSIC;
 	else if ((cmd >= 0x15 && cmd <= end_sound_codes) &&
 	       mode != ONE_SOUND) {
+	    print_debug("assoc: cmd %x (one sound)\n",cmd);
 	    mode = ONE_SOUND;
 	    return 0;
 	} else if (cmd == 0xa) {
 	    mode = FADEOUT;
+	    print_debug("assoc: cmd %x (fadeout)\n",cmd);
 	    return 0;
 	} else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
 	    // cmd 0xa is one_sound, handled just before
-	    return 0; // these commands don't seem to do anything !
-	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1)
+	    print_debug("assoc: cmd %x (nothing)\n",cmd);
+	    return 1; // these commands don't seem to do anything !
+	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) {
 	    mode = SOUND;
+	    print_debug("assoc: cmd %x (sound)\n",cmd);
+	}
 	if (mode == SOUND) return 0;
 	if (active && (cmd == 4 || cmd == 3 || cmd == 1 ||
 		    (cmd >= 0x20 && Z80ROM[adr + cmd - 0x20] == 2))) {
+	    if (adr2 && ReadWord(&Z80ROM[adr2 + (cmd-0x20)*2]) == 0) {
+		print_debug("assoc: adr2 contains 0 for this code, ignoring (%x) !\n",cmd);
+		return 0;
+	    }
+	    print_debug("assoc: cmd %x (mute song)\n",cmd);
 	    mute_song();
 	}
 	break;
@@ -427,9 +440,7 @@ int handle_sound_cmd(int cmd) {
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
 	// MUSIC
-#if VERBOSE
-	printf("playing song %x track %s\n",cmd,track[cmd]);
-#endif
+	print_debug("assoc: playing song %x track %s\n",cmd,track[cmd]);
 	if (*track[cmd] && exists(track[cmd])) {
 	    cdda.track = cmd; // for restoration
 	    cdda.skip_silence = 1;
