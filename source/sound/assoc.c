@@ -267,6 +267,7 @@ static void mute_song() {
 }
 
 int handle_sound_cmd(int cmd) {
+    // return 1 to say command was handled
     if (disable_assoc || !type) return 0;
     switch (type) {
     case 4:
@@ -344,19 +345,15 @@ int handle_sound_cmd(int cmd) {
 	    mode = SOUND; // all commands after this are eaten, maybe for sound?
 	    if (active)
 		mute_song();
-	} else if (cmd == 7 || cmd == 8) {
-	    mode = MUSIC;
-	    print_debug("assoc: cmd %x music\n",cmd);
 	} else if (cmd == 0xa) {
 	    mode = FADEOUT;
 	    print_debug("assoc: cmd %x fadeout\n",cmd);
-	// b, c, d are ignored
 	// e slows down music until the next part where it takes back its
 	// normal speed -> impossible to emulate !
-	} else if (cmd == 0x14 && is_current_game("wakuwak7")) {
+	} else if (cmd == 0x14) {
 	    mode = EAT_TWO;
-	} else if (Z80ROM[adr + cmd] == 1) {
-	    print_debug("assoc: rom = 1 on cmd %x, eat one ?\n",cmd);
+	} else if (cmd == 0x1a || cmd == 0x1c || cmd == 0x1e) {
+	    print_debug("assoc: cmd %x eat one ?\n",cmd);
 	    // Note : 1a and 1c and 1e are those which really output sound the
 	    // others just eat the following byte (for wakuwak7)
 	    // I assume the 1 means they eat 1 byte here, but I am not certain
