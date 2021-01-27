@@ -5017,8 +5017,10 @@ void load_neocd() {
 	AddWriteByte(0xd00000, 0xdfffff, save_ram_wb, NULL);
 	AddWriteWord(0xd00000, 0xdfffff, save_ram_ww, NULL);
 	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
-	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart)
+	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart) {
 	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
+	    AddSaveData_ext("68k_bank",&bank_68k,sizeof(bank_68k));
+	}
 	// Mirror ram for some games
 	// The only game so far I saw using this is magdrop2, but only if speed
 	// hacks are forbidden ! Which is really really weird, but anyway
