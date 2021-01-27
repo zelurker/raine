@@ -1073,6 +1073,20 @@ static void z80_set_audio_bank(UINT16 region, UINT16 bank) {
     return;
 }
 
+static void set_68k_bank(UINT32 offset, UINT16 data) {
+    if (data != bank_68k) {
+	bank_68k = data;
+	int n = ((data & 7) + 1)*0x100000;
+	if (n + 0x100000 > get_region_size(REGION_CPU1)) {
+	    n = 0x100000;
+	    print_debug("set_68k_bank: received data %x too high\n",data);
+	}
+	print_debug("set_68k_bank set bank %d\n",n);
+	UINT8 *adr = load_region[REGION_CPU1]+n;
+	set_68000_io(0,0x200000,0x2fffff, NULL, adr);
+    }
+}
+
 static void restore_bank() {
   int new_bank = palbank;
   palbank = -1;
@@ -1106,7 +1120,13 @@ static void restore_bank() {
       }
       game_vectors_set = 1-game_vectors_set;
       neogeo_select_bios_vectors(1-game_vectors_set);
+      if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart) {
+	  int old = bank_68k;
+	  bank_68k = 255;
+	  set_68k_bank(0,old);
+      }
   }
+  print_debug("end restore bank\n");
 }
 
 static void system_control_w(UINT32 offset, UINT16 data)
@@ -2825,20 +2845,6 @@ static void write_pal(UINT32 offset, UINT16 data) {
   WriteWord(&RAM_PAL[offset],data);
 /*  get_scanline();
   print_debug("write_pal %x,%x scanline %d\n",offset,data,scanline); */
-}
-
-static void set_68k_bank(UINT32 offset, UINT16 data) {
-    if (data != bank_68k) {
-	bank_68k = data;
-	int n = ((data & 7) + 1)*0x100000;
-	if (n + 0x100000 > get_region_size(REGION_CPU1)) {
-	    n = 0x100000;
-	    print_debug("set_68k_bank: received data %x too high\n",data);
-	}
-	print_debug("set_68k_bank set bank %d\n",n);
-	UINT8 *adr = load_region[REGION_CPU1]+n;
-	set_68000_io(0,0x200000,0x2fffff, NULL, adr);
-    }
 }
 
 static void kof99_bankswitch_w(UINT32 offset, UINT16 data) {
