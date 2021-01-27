@@ -111,6 +111,7 @@ extern struct COLOUR_MAPPER col_map_rrrr_gggg_bbbb_xxxx_68k;
 extern struct COLOUR_MAPPER col_map_bbbb_bggg_ggrr_rrrx_xxxx_xxxx_xxxx_xxxx;
 extern struct COLOUR_MAPPER col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb;
 extern struct COLOUR_MAPPER col_map_24bit_rgb;
+extern struct COLOUR_MAPPER col_map_12bit_xbgr_rev_2bpp;
 
 void set_colour_mapper(COLOUR_MAPPER *colour_mapper);
 
@@ -206,10 +207,15 @@ extern UINT8 *coltab[MAX_COLBANKS];
 
 // MAP_PALETTE_2BPP(mapper, bank, cols)
 
-#define MAP_PALETTE_2BPP(mapper,bank,cols)        \
-   coltab[bank>>2]+((bank&3)<<2);                 \
-   if((bank_status[bank>>2]&(1<<(bank&3))) == 0)  \
-      mapper(bank, cols);                         \
+#define MAP_PALETTE_2BPP(mapper,bank,cols)                             \
+   coltab[bank>>2]+((bank&3)<<2)* (internal_bpp(display_cfg.bpp) / 8); \
+   if((bank_status[bank>>2]&(1<<(bank&3))) == 0)                       \
+      mapper(bank, cols);
+
+#define MAP_PALETTE_MAPPED_2BPP_NEW(bank,cols,dst)                           \
+   dst = coltab[bank>>2]+((bank&3)<<2)* (internal_bpp(display_cfg.bpp) / 8); \
+   if((bank_status[bank>>2]&(1<<(bank&3))) == 0)                             \
+      current_cmap_func(bank, cols);
 
 /*-----[Macro Mappers]-----*/
 
@@ -217,8 +223,6 @@ void Map_12bit_RGBx(int bank, int cols);
 void Map_12bit_RGBx_68k(int bank, int cols);
 
 void Map_12bit_xRGB(int bank, int cols);
-
-void Map_12bit_xBGR_Rev_2BPP(int bank, int cols);
 
 void Map_15bit_xRGB(int bank, int cols);
 void Map_15bit_xBGR(int bank, int cols);

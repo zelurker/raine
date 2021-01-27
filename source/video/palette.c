@@ -1017,29 +1017,29 @@ struct COLOUR_MAPPER col_map_rrrr_gggg_bbbb_rgbx_rev =
 };
 
 // Map_15bit_RRRRGGGGBBBBRGBx
-#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)		\
-void NAME(UINT32 bank, UINT32 cols)	\
-{							\
-   UINT16 yy;						\
-   UINT16 *ta;						\
-   TYPE *ct,res;					\
-                                                        \
-   bank_status[bank] = cols;                            \
-   ta = (UINT16 *) (RAM_PAL+(bank<<5));                 \
-   ct = (TYPE*)coltab[bank];                            \
-   do{                                                  \
-      yy = (*ta++) >> 1;                                \
-                                                        \
-      PEN_FUNC(                             \
-         ((yy&0x7800)>>7) | ((yy&0x0004)<<1),           \
-         ((yy&0x0780)>>3) | ((yy&0x0002)<<2),           \
-         ((yy&0x0078)<<1) | ((yy&0x0001)<<3),           \
-         res                                            \
-      );                                                \
-                                                        \
-      *ct++ = res;                                      \
-                                                        \
-   }while(--cols);                                      \
+#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)   \
+static void NAME(UINT32 bank, UINT32 cols)    \
+{                                             \
+   UINT16 yy;                                 \
+   UINT16 *ta;                                \
+   TYPE *ct,res;                              \
+                                              \
+   bank_status[bank] = cols;                  \
+   ta = (UINT16 *) (RAM_PAL+(bank<<5));       \
+   ct = (TYPE*)coltab[bank];                  \
+   do{                                        \
+      yy = (*ta++) >> 1;                      \
+                                              \
+      PEN_FUNC(                               \
+         ((yy&0x7800)>>7) | ((yy&0x0004)<<1), \
+         ((yy&0x0780)>>3) | ((yy&0x0002)<<2), \
+         ((yy&0x0078)<<1) | ((yy&0x0001)<<3), \
+         res                                  \
+      );                                      \
+                                              \
+      *ct++ = res;                            \
+                                              \
+   }while(--cols);                            \
 }
 
 BUILD_MAPPER5(Map_15bit_RRRRGGGGBBBBRGBx_8,UINT8,GET_PEN_FOR_COLOUR_8)
@@ -1060,29 +1060,29 @@ struct COLOUR_MAPPER col_Map_15bit_RRRRGGGGBBBBRGBx =
 
 // Map_15bit_xRGBRRRRGGGGBBBB
 #undef BUILD_MAPPER5
-#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)		\
-void NAME(UINT32 bank, UINT32 cols)	\
-{							\
-   UINT16 yy;						\
-   UINT16 *ta;						\
-   TYPE *ct,res;					\
-                                                        \
-   bank_status[bank] = cols;                            \
-   ta = (UINT16 *) (RAM_PAL+(bank<<5));                 \
-   ct = (TYPE*)coltab[bank];                            \
-   do{                                                  \
-      yy = (*ta++);                                     \
-                                                        \
-      PEN_FUNC(                             \
-         ((yy&0x0F00)>>4) | ((yy&0x4000)>>11),           \
-         ((yy&0x00F0)>>0) | ((yy&0x2000)>>10),           \
-         ((yy&0x000F)<<4) | ((yy&0x1000)>>9),           \
-         res                                            \
-      );                                                \
-                                                        \
-      *ct++ = res;                                      \
-                                                        \
-   }while(--cols);                                      \
+#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)    \
+static void NAME(UINT32 bank, UINT32 cols)     \
+{                                              \
+   UINT16 yy;                                  \
+   UINT16 *ta;                                 \
+   TYPE *ct,res;                               \
+                                               \
+   bank_status[bank] = cols;                   \
+   ta = (UINT16 *) (RAM_PAL+(bank<<5));        \
+   ct = (TYPE*)coltab[bank];                   \
+   do{                                         \
+      yy = (*ta++);                            \
+                                               \
+      PEN_FUNC(                                \
+         ((yy&0x0F00)>>4) | ((yy&0x4000)>>11), \
+         ((yy&0x00F0)>>0) | ((yy&0x2000)>>10), \
+         ((yy&0x000F)<<4) | ((yy&0x1000)>>9),  \
+         res                                   \
+      );                                       \
+                                               \
+      *ct++ = res;                             \
+                                               \
+   }while(--cols);                             \
 }
 
 int get_pen(int red, int green, int blue, int yy) {
@@ -1124,7 +1124,7 @@ struct COLOUR_MAPPER col_Map_15bit_xRGBRRRRGGGGBBBB =
 };
 #undef BUILD_MAPPER5
 #define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)   \
-void NAME(UINT32 bank, UINT32 cols)           \
+static void NAME(UINT32 bank, UINT32 cols)    \
 {                                             \
    UINT16 yy;                                 \
    UINT16 *ta;                                \
@@ -1299,28 +1299,28 @@ struct COLOUR_MAPPER col_map_rrrr_rggg_ggbb_bbbx_rev =
 /******************************************************************************/
 // Map_12bit_xBGR_Rev
 #define BUILD_MAPPER4(NAME, TYPE, PEN_FUNC)		\
-void NAME(UINT32 bank, UINT32 cols)	\
-{							\
-   UINT16 yy;						\
-   UINT16 *ta;						\
-   TYPE *ct,res;					\
-							\
-   bank_status[bank] = cols;				\
-   ta = (UINT16 *) (RAM_PAL+(bank<<5)+30);		\
-   ct = (TYPE *)coltab[bank];				\
-   do{							\
-      yy = (*ta--) & 0x0FFF;				\
-							\
-      PEN_FUNC(						\
-         (yy&0x000F)<<4,				\
-         (yy&0x00F0),				\
-         (yy&0x0F00)>>4,				\
-         res						\
-      );						\
-							\
-      *ct++ = res;					\
-							\
-   }while(--cols);					\
+static void NAME(UINT32 bank, UINT32 cols) \
+{                                          \
+   UINT16 yy;                              \
+   UINT16 *ta;                             \
+   TYPE *ct,res;                           \
+                                           \
+   bank_status[bank] = cols;               \
+   ta = (UINT16 *) (RAM_PAL+(bank<<5)+30); \
+   ct = (TYPE *)coltab[bank];              \
+   do{                                     \
+      yy = (*ta--) & 0x0FFF;               \
+                                           \
+      PEN_FUNC(                            \
+         (yy&0x000F)<<4,                   \
+         (yy&0x00F0),                      \
+         (yy&0x0F00)>>4,                   \
+         res                               \
+      );                                   \
+                                           \
+      *ct++ = res;                         \
+                                           \
+   }while(--cols);                         \
 }
 
 BUILD_MAPPER4(Map_12bit_xBGR_Rev_8,UINT8,GET_PEN_FOR_COLOUR_8)
@@ -1347,29 +1347,47 @@ struct COLOUR_MAPPER col_map_xxxx_bbbb_gggg_rrrr_rev =
 /*                                                                            */
 /******************************************************************************/
 
-void Map_12bit_xBGR_Rev_2BPP(int bank, int cols)
-{
-   UINT16 yy;
-   UINT16 *ta;
-   UINT8 *ct,res;
-
-   bank_status[bank>>2]|= 1<<(bank&3);
-   ta = (UINT16 *) (RAM_PAL+(bank<<3)+6);
-   ct = coltab[bank>>2]+((bank&3)<<2);
-   do{
-      yy = (*ta--) & 0x0FFF;
-
-      GET_PEN_FOR_COLOUR_8(
-         (yy&0x000F)<<2,
-         (yy&0x00F0)>>2,
-         (yy&0x0F00)>>6,
-         res
-      );
-
-      *ct++ = res;
-
-   }while(--cols);
+#undef BUILD_MAPPER
+#define BUILD_MAPPER(NAME,TYPE,PEN_FUNC,size)        \
+void NAME(UINT32 bank, UINT32 cols)                  \
+{                                                    \
+   UINT16 yy;                                        \
+   UINT16 *ta;                                       \
+   TYPE *ct,res;                                     \
+                                                     \
+   bank_status[bank>>2]|= 1<<(bank&3);               \
+   ta = (UINT16 *) (RAM_PAL+(bank<<3)+6);            \
+   ct = (TYPE*)(coltab[bank>>2]+((bank&3)<<2)*size); \
+   do{                                               \
+      yy = (*ta--) & 0x0FFF;                         \
+                                                     \
+      PEN_FUNC(                                      \
+         (yy&0x000F)<<4,                             \
+         (yy&0x00F0),                                \
+         (yy&0x0F00)>>4,                             \
+         res                                         \
+      );                                             \
+                                                     \
+      *ct++ = res;                                   \
+                                                     \
+   }while(--cols);                                   \
 }
+
+BUILD_MAPPER(Map_12bit_xBGR_Rev_2BPP, UINT8,GET_PEN_FOR_COLOUR_8,1);
+BUILD_MAPPER(Map_12bit_xBGR_Rev_2BPP_15, UINT16,GET_PEN_FOR_COLOUR_15,2);
+BUILD_MAPPER(Map_12bit_xBGR_Rev_2BPP_16, UINT16,GET_PEN_FOR_COLOUR_16,2);
+BUILD_MAPPER(Map_12bit_xBGR_Rev_2BPP_24, UINT32,GET_PEN_FOR_COLOUR_24,4);
+BUILD_MAPPER(Map_12bit_xBGR_Rev_2BPP_32, UINT32,GET_PEN_FOR_COLOUR_32,4);
+
+struct COLOUR_MAPPER col_map_12bit_xbgr_rev_2bpp =
+{
+   "12bit xbgr_rev 2bpp",
+   Map_12bit_xBGR_Rev_2BPP,
+   Map_12bit_xBGR_Rev_2BPP_15,
+   Map_12bit_xBGR_Rev_2BPP_16,
+   Map_12bit_xBGR_Rev_2BPP_24,
+   Map_12bit_xBGR_Rev_2BPP_32,
+};
 
 /******************************************************************************/
 /* 12-bit RGBx (12-bit mapping)                                               */
@@ -2286,28 +2304,28 @@ struct COLOUR_MAPPER col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb =
 
 
 #undef BUILD_MAPPER
-#define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)				\
-void NAME(UINT32 bank, UINT32 cols)					\
-{									\
-  UINT32 yy,*ta;							\
-  TYPE *ct,res;								\
-									\
-    bank_status[bank] = cols--;						\
-    ct = (TYPE *) coltab[bank]+1;					\
-    ta = (UINT32 *) (RAM_PAL+(bank<<6)+4);				\
-   do{									\
-      yy = *ta++;							\
-									\
-      PEN_FUNC(								\
-	       (yy&0xFf)>>0,						\
-	       (yy&0x00Ff00)>>8,					\
-	       (yy&0xFf0000)>>16,					\
-	       res							\
-	       );							\
-									\
-      *ct++ = res;							\
-									\
-   }while(--cols);							\
+#define BUILD_MAPPER(NAME, TYPE, PEN_FUNC) \
+void NAME(UINT32 bank, UINT32 cols)        \
+{                                          \
+  UINT32 yy,*ta;                           \
+  TYPE *ct,res;                            \
+                                           \
+    bank_status[bank] = cols--;            \
+    ct = (TYPE *) coltab[bank]+1;          \
+    ta = (UINT32 *) (RAM_PAL+(bank<<6)+4); \
+   do{                                     \
+      yy = *ta++;                          \
+                                           \
+      PEN_FUNC(                            \
+               (yy&0xFf)>>0,               \
+               (yy&0x00Ff00)>>8,           \
+               (yy&0xFf0000)>>16,          \
+               res                         \
+               );                          \
+                                           \
+      *ct++ = res;                         \
+                                           \
+   }while(--cols);                         \
 }
 
 void Map_24bit_RGB_8(UINT32 bank, UINT32 cols)
@@ -2324,8 +2342,6 @@ void Map_24bit_RGB_8(UINT32 bank, UINT32 cols)
       yr = (yy&0xF8)>>3; // 5 bits
       yg = (yy&0x00Fc00)>>10; // 6 bits
       yb = (yy&0xF80000)>>19; // 5 bits
-
-      yy = yr | (yg<<5) | (yb<<11);
 
       GET_PEN_FOR_COLOUR_8(
 			   yr<<3,

@@ -11,40 +11,82 @@
 #include "sasound.h"		// sample support routines
 #include "savegame.h"
 
-
 static struct ROM_INFO rom_cabalbl[] =
 {
-/*
-   { "cabal_01.bin", 0x00010000, 0x55c44764, 0, 0, 0, },
-   { "cabal_02.bin", 0x00010000, 0x0e1ec30e, 0, 0, 0, },
-   { "cabal_03.bin", 0x00010000, 0x7065e840, 0, 0, 0, },
-   { "cabal_04.bin", 0x00010000, 0x34d3cac8, 0, 0, 0, },
-   { "cabal_05.bin", 0x00010000, 0x4e49c28e, 0, 0, 0, },
-   { "cabal_08.bin", 0x00010000, 0x702735c9, 0, 0, 0, },
-   { "cabal_07.bin", 0x00010000, 0x581a50c1, 0, 0, 0, },
-   { "cabal_06.bin", 0x00010000, 0x6a0e739d, 0, 0, 0, },
-*/
-   { "tad-1.5e", 0x00080000, 0x8324a7fe, 0, 0, 0, },
-   { "cabal_09.bin", 0x00010000, 0x4ffa7fe3, 0, 0, 0, },
-   { "cabal_10.bin", 0x00010000, 0x958789b6, 0, 0, 0, },
-   { "cabal_11.bin", 0x00010000, 0xd308a543, 0, 0, 0, },
-/*
-   { "cabal_12.bin", 0x00010000, 0x543fcb37, 0, 0, 0, },
-   { "cabal_13.bin", 0x00010000, 0xd28d921e, 0, 0, 0, },
-   { "cabal_14.bin", 0x00010000, 0x420b0801, 0, 0, 0, },
-   { "cabal_15.bin", 0x00010000, 0x1023319b, 0, 0, 0, },
-   { "cabal_16.bin", 0x00010000, 0x77bc7a60, 0, 0, 0, },
-   { "cabal_17.bin", 0x00010000, 0x3b6d2b09, 0, 0, 0, },
-   { "cabal_18.bin", 0x00010000, 0x0bc50075, 0, 0, 0, },
-   { "cabal_19.bin", 0x00010000, 0x67e4fe47, 0, 0, 0, },
-*/
-   { "tad-2.7s", 0x00080000, 0x13ca7ae1, 0, 0, 0, },
-   { "cabal_21.bin", 0x00010000, 0x96d5e8af, 0, 0, 0, },
-   { "cabal_22.bin", 0x00010000, 0x78c4af27, 0, 0, 0, },
-   { "cabal_23.bin", 0x00010000, 0xd763a47c, 0, 0, 0, },
-   { "cabal_24.bin", 0x00010000, 0x00abbe0c, 0, 0, 0, },
-   {         "5-6s", 0x00004000, 0x6a76955a, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
+  LOAD_16_8( CPU1, "cabal_24.bin", 0x00000, 0x10000, 0x00abbe0c),
+  LOAD_16_8( CPU1, "cabal_22.bin", 0x00001, 0x10000, 0x78c4af27),
+  LOAD_16_8( CPU1, "cabal_23.bin", 0x20000, 0x10000, 0xd763a47c),
+  LOAD_16_8( CPU1, "cabal_21.bin", 0x20001, 0x10000, 0x96d5e8af),
+  LOAD( ROM2, "cabal_11.bin", 0x0000, 0x10000, 0xd308a543),
+	/* The bootleg versions use a sub-board instead of the mask roms
+	   the content is the same as the mask roms */
+  LOAD( GFX1, "cabal_20.bin", 0x00000, 0x08000, 0x189033fd), /* characters */
+  LOAD_16_8( GFX2, "cabal_15.bin", 0x00000, 0x10000, 0x1023319b),
+  LOAD_16_8( GFX2, "cabal_17.bin", 0x00001, 0x10000, 0x3b6d2b09),
+  LOAD_16_8( GFX2, "cabal_14.bin", 0x20000, 0x10000, 0x420b0801),
+  LOAD_16_8( GFX2, "cabal_16.bin", 0x20001, 0x10000, 0x77bc7a60),
+  LOAD_16_8( GFX2, "cabal_12.bin", 0x40000, 0x10000, 0x543fcb37),
+  LOAD_16_8( GFX2, "cabal_18.bin", 0x40001, 0x10000, 0x0bc50075),
+  LOAD_16_8( GFX2, "cabal_13.bin", 0x60000, 0x10000, 0xd28d921e),
+  LOAD_16_8( GFX2, "cabal_19.bin", 0x60001, 0x10000, 0x67e4fe47),
+  LOAD_16_8( GFX3, "cabal_04.bin", 0x00000, 0x10000, 0x34d3cac8),
+  LOAD_16_8( GFX3, "cabal_05.bin", 0x00001, 0x10000, 0x4e49c28e),
+  LOAD_16_8( GFX3, "cabal_03.bin", 0x20000, 0x10000, 0x7065e840),
+  LOAD_16_8( GFX3, "cabal_06.bin", 0x20001, 0x10000, 0x6a0e739d),
+  LOAD_16_8( GFX3, "cabal_02.bin", 0x40000, 0x10000, 0x0e1ec30e),
+  LOAD_16_8( GFX3, "cabal_07.bin", 0x40001, 0x10000, 0x581a50c1),
+  LOAD_16_8( GFX3, "cabal_01.bin", 0x60000, 0x10000, 0x55c44764),
+  LOAD_16_8( GFX3, "cabal_08.bin", 0x60001, 0x10000, 0x702735c9),
+  // There is an ultra minimum z80 code in these 2 roms just to read the samples starting at address 100
+  // each word gives an offset for a sample, the sample itself starts by its size (high then low), then the data
+  LOAD( SOUND1, "cabal_09.bin", 0x00000, 0x10000, 0x4ffa7fe3), /* Z80 code/adpcm data */
+  LOAD( SOUND2, "cabal_10.bin", 0x00000, 0x10000, 0x958789b6), /* Z80 code/adpcm data */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static gfx_layout text_layout =
+{
+	8,8,
+	RGN_FRAC(1,1),
+	2,
+	{ 0,4 },
+	{ 3, 2, 1, 0, 8+3, 8+2, 8+1, 8+0},
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16 },
+	16*8
+};
+
+static gfx_layout tile_layout =
+{
+	16,16,
+	RGN_FRAC(1,1),
+	4,
+	{ 8, 12, 0, 4 },
+	{ 3, 2, 1, 0, 16+3, 16+2, 16+1, 16+0,
+			32*16+3, 32*16+2, 32*16+1, 32*16+0, 33*16+3, 33*16+2, 33*16+1, 33*16+0 },
+	{ 0*32, 1*32, 2*32, 3*32, 4*32, 5*32, 6*32, 7*32,
+			8*32, 9*32, 10*32,  11*32,  12*32,  13*32, 14*32,  15*32 },
+	64*16
+};
+
+static gfx_layout sprite_layout =
+{
+	16,16,
+	RGN_FRAC(1,1),
+	4,
+	{ 8, 12, 0, 4 },
+	{ 3, 2, 1, 0, 16+3, 16+2, 16+1, 16+0,
+			32+3, 32+2, 32+1, 32+0, 48+3, 48+2, 48+1, 48+0 },
+	{ 30*32, 28*32, 26*32, 24*32, 22*32, 20*32, 18*32, 16*32,
+			14*32, 12*32, 10*32,  8*32,  6*32,  4*32,  2*32,  0*32 },
+	64*16
+};
+
+static struct GFX_LIST cabal_gfx[] =
+{
+    { REGION_GFX1, &text_layout, },
+    { REGION_GFX2, &tile_layout, },
+    { REGION_GFX3, &sprite_layout, },
+    { -1 },
 };
 
 static struct INPUT_INFO input_cabalbl[] =
@@ -154,7 +196,6 @@ static struct SOUND_INFO sound_cabalbl[] =
    { 0,             NULL,                 },
 };
 
-
 static int sp_status=0xFF;
 
 static void CabalSoundWrite68k(UINT32 offset, UINT8 data)
@@ -224,195 +265,14 @@ static void CabalSoundWriteZ80(UINT16 offset, UINT8 data)
    }
 }
 
+static int gfx_init;
+
 static void load_cabalbl(void)
 {
    int ta,tb,tc;
-
-   if(!(ROM=AllocateMem(0x40000))) return;
-   if(!(RAM=AllocateMem(0x100000))) return;
-   if(!(GFX=AllocateMem(0x210000))) return;
-
-   if(!load_rom("5-6s", RAM, 0x4000)) return;		// FG0 GFX (2 bitplanes)
-   tb=0;
-   for(ta=0;ta<0x4000;ta++){
-      tc=RAM[ta];
-      GFX[tb+3]=((tc&0x80)>>7)<<1;
-      GFX[tb+2]=((tc&0x40)>>6)<<1;
-      GFX[tb+1]=((tc&0x20)>>5)<<1;
-      GFX[tb+0]=((tc&0x10)>>4)<<1;
-      GFX[tb+3]|=((tc&0x08)>>3)<<0;
-      GFX[tb+2]|=((tc&0x04)>>2)<<0;
-      GFX[tb+1]|=((tc&0x02)>>1)<<0;
-      GFX[tb+0]|=((tc&0x01)>>0)<<0;
-      GFX[tb+3]|=0x0C;
-      GFX[tb+2]|=0x0C;
-      GFX[tb+1]|=0x0C;
-      GFX[tb+0]|=0x0C;
-      tb+=4;
-   }
-/*
-   if(!load_rom("cabal_01.bin",&RAM[0x30000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_02.bin",&RAM[0x20000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_03.bin",&RAM[0x10000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_04.bin",&RAM[0x00000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_08.bin",&RAM[0x70000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_07.bin",&RAM[0x60000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_06.bin",&RAM[0x50000],0x10000)) return;	// SPR GFX
-   if(!load_rom("cabal_05.bin",&RAM[0x40000],0x10000)) return;	// SPR GFX
-*/
-   if(!load_rom("tad-1.5e",&RAM[0x80000],0x80000)) return;	// SPR GFX
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x30000+ta]=RAM[0xe0000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x20000+ta]=RAM[0xc0000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x10000+ta]=RAM[0xa0000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x00000+ta]=RAM[0x80000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x40000+ta]=RAM[0x80000+ta+ta+1];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x50000+ta]=RAM[0xa0000+ta+ta+1];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x60000+ta]=RAM[0xc0000+ta+ta+1];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x70000+ta]=RAM[0xe0000+ta+ta+1];
-   }
-
-   tb=0x10000;
-   for(ta=0;ta<0x40000;ta++){
-      tc=RAM[ta];
-      GFX[tb+3]=((tc&0x80)>>7)<<1;
-      GFX[tb+2]=((tc&0x40)>>6)<<1;
-      GFX[tb+1]=((tc&0x20)>>5)<<1;
-      GFX[tb+0]=((tc&0x10)>>4)<<1;
-      GFX[tb+3]|=((tc&0x08)>>3)<<0;
-      GFX[tb+2]|=((tc&0x04)>>2)<<0;
-      GFX[tb+1]|=((tc&0x02)>>1)<<0;
-      GFX[tb+0]|=((tc&0x01)>>0)<<0;
-      tc=RAM[ta+0x40000];
-      GFX[tb+3]|=((tc&0x80)>>7)<<3;
-      GFX[tb+2]|=((tc&0x40)>>6)<<3;
-      GFX[tb+1]|=((tc&0x20)>>5)<<3;
-      GFX[tb+0]|=((tc&0x10)>>4)<<3;
-      GFX[tb+3]|=((tc&0x08)>>3)<<2;
-      GFX[tb+2]|=((tc&0x04)>>2)<<2;
-      GFX[tb+1]|=((tc&0x02)>>1)<<2;
-      GFX[tb+0]|=((tc&0x01)>>0)<<2;
-      tb+=4;
-   }
-/*
-   if(!load_rom("cabal_12.bin",&RAM[0x20000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_13.bin",&RAM[0x30000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_14.bin",&RAM[0x10000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_15.bin",&RAM[0x00000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_18.bin",&RAM[0x60000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_19.bin",&RAM[0x70000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_16.bin",&RAM[0x50000],0x10000)) return;	// BG0 GFX
-   if(!load_rom("cabal_17.bin",&RAM[0x40000],0x10000)) return;	// BG0 GFX
-*/
-   if(!load_rom("tad-2.7s",&RAM[0x80000],0x80000)) return;	// SPR GFX
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x30000+ta]=RAM[0xe0000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x20000+ta]=RAM[0xc0000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x10000+ta]=RAM[0xa0000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x00000+ta]=RAM[0x80000+ta+ta];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x50000+ta]=RAM[0xa0000+ta+ta+1];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x40000+ta]=RAM[0x80000+ta+ta+1];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x60000+ta]=RAM[0xc0000+ta+ta+1];
-   }
-   for(ta=0;ta<0x10000;ta++){
-      RAM[0x70000+ta]=RAM[0xe0000+ta+ta+1];
-   }
-
-   tb=0x110000;
-   for(ta=0;ta<0x40000;ta+=2){
-      tc=RAM[ta];
-      GFX[tb+3]=((tc&0x80)>>7)<<1;
-      GFX[tb+2]=((tc&0x40)>>6)<<1;
-      GFX[tb+1]=((tc&0x20)>>5)<<1;
-      GFX[tb+0]=((tc&0x10)>>4)<<1;
-      GFX[tb+3]|=((tc&0x08)>>3)<<0;
-      GFX[tb+2]|=((tc&0x04)>>2)<<0;
-      GFX[tb+1]|=((tc&0x02)>>1)<<0;
-      GFX[tb+0]|=((tc&0x01)>>0)<<0;
-      tc=RAM[ta+0x40000];
-      GFX[tb+3]|=((tc&0x80)>>7)<<3;
-      GFX[tb+2]|=((tc&0x40)>>6)<<3;
-      GFX[tb+1]|=((tc&0x20)>>5)<<3;
-      GFX[tb+0]|=((tc&0x10)>>4)<<3;
-      GFX[tb+3]|=((tc&0x08)>>3)<<2;
-      GFX[tb+2]|=((tc&0x04)>>2)<<2;
-      GFX[tb+1]|=((tc&0x02)>>1)<<2;
-      GFX[tb+0]|=((tc&0x01)>>0)<<2;
-      tb+=4;
-      tc=RAM[ta+1];
-      GFX[tb+3]=((tc&0x80)>>7)<<1;
-      GFX[tb+2]=((tc&0x40)>>6)<<1;
-      GFX[tb+1]=((tc&0x20)>>5)<<1;
-      GFX[tb+0]=((tc&0x10)>>4)<<1;
-      GFX[tb+3]|=((tc&0x08)>>3)<<0;
-      GFX[tb+2]|=((tc&0x04)>>2)<<0;
-      GFX[tb+1]|=((tc&0x02)>>1)<<0;
-      GFX[tb+0]|=((tc&0x01)>>0)<<0;
-      tc=RAM[ta+0x40001];
-      GFX[tb+3]|=((tc&0x80)>>7)<<3;
-      GFX[tb+2]|=((tc&0x40)>>6)<<3;
-      GFX[tb+1]|=((tc&0x20)>>5)<<3;
-      GFX[tb+0]|=((tc&0x10)>>4)<<3;
-      GFX[tb+3]|=((tc&0x08)>>3)<<2;
-      GFX[tb+2]|=((tc&0x04)>>2)<<2;
-      GFX[tb+1]|=((tc&0x02)>>1)<<2;
-      GFX[tb+0]|=((tc&0x01)>>0)<<2;
-      tb+=12;
-      if((tb&0xFF)==0){tb-=0xF8;}
-      else{if((tb&0xFF)==8){tb-=8;}}
-   }
-
-   for(ta=0;ta<0x210000;ta++){
-      GFX[ta]^=15;
-   }
-
-   if(!load_rom("cabal_24.bin", RAM, 0x10000)) return;	// MAIN 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom("cabal_22.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
-   if(!load_rom("cabal_23.bin", RAM, 0x10000)) return;	// MAIN 68000
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x20000]=RAM[ta];
-   }
-   if(!load_rom("cabal_21.bin", RAM, 0x10000)) return;
-   for(ta=0;ta<0x10000;ta++){
-      ROM[ta+ta+0x20001]=RAM[ta];
-   }
-
-   /*-------[SOUND SYSTEM INIT]-------*/
-
-   Z80ROM=RAM+0x20000;
-   if(!load_rom("cabal_11.bin", Z80ROM, 0x10000)) return;	// Z80 SOUND ROM
+   gfx_init = 0;
+   RAMSize=0x30000;
+   if(!(RAM = AllocateMem(RAMSize))) return;
 
    // Apply Speed Patch
    // -----------------
@@ -449,36 +309,30 @@ static void load_cabalbl(void)
 
    AddZ80AInit();
 
-   if(!(PCMROM = AllocateMem(0x20000))) return;
-   if(!load_rom("cabal_09.bin", PCMROM+0x00000, 0x10000)) return;
-   if(!load_rom("cabal_10.bin", PCMROM+0x10000, 0x10000)) return;
+   tc = 0x102;
+   for(ta=0;ta<5;ta++,tc+=2){
+       tb = ReadWord(&PCMROM[tc]);
+       smp16_romlist_chip_a[ta].data = PCMROM+(tb+2);
+       smp16_romlist_chip_a[ta].size = ReadWord68k(&PCMROM[tb]);
+       smp16_romlist_chip_a[ta].type = 0;
+   }
 
-     tc = 0x102;
-     for(ta=0;ta<5;ta++,tc+=2){
-        tb = ReadWord(&PCMROM[tc+0x00000]);
-        smp16_romlist_chip_a[ta].data = PCMROM+0x00000+(tb+2);
-        smp16_romlist_chip_a[ta].size = ReadWord68k(&PCMROM[tb+0x00000]);
-        smp16_romlist_chip_a[ta].type = 0;
-     }
-
-     tc = 0x102;
-     for(ta=0;ta<7;ta++,tc+=2){
-        tb = ReadWord(&PCMROM[tc+0x10000]);
-        smp16_romlist_chip_b[ta].data = PCMROM+0x10000+(tb+2);
-        smp16_romlist_chip_b[ta].size = ReadWord68k(&PCMROM[tb+0x10000]);
-        smp16_romlist_chip_b[ta].type = 0;
-     }
+   UINT8 *PCMROM2 = load_region[REGION_SOUND2];
+   tc = 0x102;
+   for(ta=0;ta<7;ta++,tc+=2){
+       tb = ReadWord(&PCMROM2[tc]);
+       smp16_romlist_chip_b[ta].data = PCMROM2+(tb+2);
+       smp16_romlist_chip_b[ta].size = ReadWord68k(&PCMROM2[tb]);
+       smp16_romlist_chip_b[ta].type = 0;
+   }
 
    /*-----------------------*/
 
    memset(RAM+0x00000,0x00,0x20000);
    memset(RAM+0x05400,0xFF,0x00100);
 
-   RAMSize=0x30000;
-
    set_colour_mapper(&col_map_xxxx_bbbb_gggg_rrrr_rev);
    InitPaletteMap(RAM+0x4C00, 0x40, 0x10, 0x1000);
-
 
    // 68000 Speed hack
    // ----------------
@@ -498,41 +352,19 @@ static void load_cabalbl(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x40000);
-   ByteSwap(RAM,0x20000);
-
-   AddMemFetch(0x000000, 0x03FFFF, ROM+0x000000-0x000000);	// 68000 ROM
-   AddMemFetch(-1, -1, NULL);
-
-   AddReadByte(0x000000, 0x03FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadByte(0x040000, 0x043FFF, NULL, RAM+0x000000);			// 68000 RAM
-   AddReadByte(0x060000, 0x0607FF, NULL, RAM+0x004000);			// FG0 RAM
+   Add68000Code(0,0,REGION_CPU1);
+   add_68000_ram(0,0x040000, 0x043FFF, RAM+0x000000);			// 68000 RAM
+   add_68000_ram(0, 0x060000, 0x0607FF, RAM+0x004000);			// FG0 RAM
    AddReadByte(0x0E8000, 0x0E800F, CabalSoundRead68k, NULL);		// COIN RAM
-   AddReadByte(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
-   AddReadByte(-1, -1, NULL, NULL);
 
-   AddReadWord(0x000000, 0x03FFFF, NULL, ROM+0x000000);			// 68000 ROM
-   AddReadWord(0x040000, 0x043FFF, NULL, RAM+0x000000);			// 68000 RAM
-   AddReadWord(0x060000, 0x0607FF, NULL, RAM+0x004000);			// FG0 RAM
    AddReadWord(0x0A0000, 0x0A001F, NULL, RAM+0x005410);			// INPUT RAM
-   AddReadWord(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
-   AddReadWord(-1, -1,NULL, NULL);
 
-   AddWriteByte(0x040000, 0x043FFF, NULL, RAM+0x000000);		// 68000 RAM
-   AddWriteByte(0x060000, 0x0607FF, NULL, RAM+0x004000);		// FG0 RAM
    AddWriteByte(0x0E8000, 0x0E800F, CabalSoundWrite68k, NULL);		// SOUND COMM
    AddWriteByte(0xAA0000, 0xAA0001, Stop68000, NULL);			// Trap Idle 68000
-   AddWriteByte(0x000000, 0xFFFFFF, DefBadWriteByte, NULL);		// <Bad Writes>
-   AddWriteByte(-1, -1, NULL, NULL);
 
-   AddWriteWord(0x040000, 0x043FFF, NULL, RAM+0x000000);		// 68000 RAM
-   AddWriteWord(0x060000, 0x0607FF, NULL, RAM+0x004000);		// FG0 RAM
    AddWriteWord(0x080000, 0x0803FF, NULL, RAM+0x004800);		// BG0 RAM
    AddWriteWord(0x0E0000, 0x0E07FF, NULL, RAM+0x004C00);		// COLOR RAM
-   AddWriteWord(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
-   AddWriteWord(-1, -1, NULL, NULL);
-
-   AddInitMemory();	// Set Starscream mem pointers...
+   finish_conf_68000(0);
 }
 
 static void execute_cabalbl(void)
@@ -568,13 +400,29 @@ static void execute_cabalbl(void)
    cpu_int_nmi(CPU_Z80_0);
 }
 
-static void DrawCabal(void)
+static void draw_cabal(void)
 {
    int x,y,x16,y16;
    int zz,zzzz,ta;
    UINT8 *MAP;
 
    ClearPaletteMap();
+   UINT8 *bg0 = load_region[REGION_GFX2], *spr = load_region[REGION_GFX3];
+   if (!gfx_init) {
+       gfx_init = 1;
+       int bg0_size = get_region_size(REGION_GFX2);
+       for (int n=0; n<bg0_size; n++) {
+	   bg0[n] ^= 0xf;
+       }
+       int spr_size = get_region_size(REGION_GFX3);
+       for (int n=0; n<spr_size; n++) {
+	   spr[n] ^= 0xf;
+       }
+       int gfx_size = get_region_size(REGION_GFX1);
+       for (int n=0; n<gfx_size; n++) {
+	   GFX[n] ^= 0x3;
+       }
+   }
 
    x16=16;
    y16=16;
@@ -583,69 +431,70 @@ static void DrawCabal(void)
    zzzz=zzzz&0x3FF;
 
    for(y=(16+y16);y<(224+32);y+=16){
-   zz=zzzz;
-   for(x=(16+x16);x<(256+32);x+=16){
+       zz=zzzz;
+       for(x=(16+x16);x<(256+32);x+=16){
 
-      MAP_PALETTE_MAPPED_NEW(
-               (ReadWord(&RAM[0x4800+zz])>>12)|0x20,  // 0x20 o 0x30 è lo stesso perchè i colori sono uguali
-               16,        MAP
-            );
+	   MAP_PALETTE_MAPPED_NEW(
+		   (ReadWord(&RAM[0x4800+zz])>>12)|0x20,  // 0x20 o 0x30 è lo stesso perchè i colori sono uguali
+		   16,        MAP
+		   );
 
-      Draw16x16_Mapped_Rot(&GFX[((ReadWord(&RAM[0x4800+zz])&0xFFF)<<8)+0x110000],x,y,MAP);
+	   Draw16x16_Mapped_Rot(&bg0[(ReadWord(&RAM[0x4800+zz])&0xFFF)<<8],x,y,MAP);
 
-      zz+=2;
-      if((zz&0x1F)==0){zz-=0x20;}
-   }
-   zzzz+=0x20;
-   zzzz=zzzz&0x3FF;
+	   zz+=2;
+	   if((zz&0x1F)==0){zz-=0x20;}
+       }
+       zzzz+=0x20;
+       zzzz=zzzz&0x3FF;
    }
 
    for(zz=0x3FF8;zz>=0x3800;zz-=8){
 
-   if((RAM[zz+1]&0x01)==1){
+       if((RAM[zz+1]&0x01)==1){
 
-   y=16+RAM[zz+0];
-   x=(32+ReadWord(&RAM[zz+4]))&0x1FF;
+	   y=16+RAM[zz+0];
+	   x=(32+ReadWord(&RAM[zz+4]))&0x1FF;
 
-   if((x>16)&&(y>16)&&(x<256+32)&&(y<224+32)){
-   ta=ReadWord(&RAM[zz+2])&0xFFF;
-   if(ta!=0){
+	   if((x>16)&&(y>16)&&(x<256+32)&&(y<224+32)){
+	       ta=ReadWord(&RAM[zz+2])&0xFFF;
+	       if(ta!=0){
 
-      MAP_PALETTE_MAPPED_NEW(
-               (RAM[zz+5]>>3)+0x10,
-               16,        MAP
-            );
+		   MAP_PALETTE_MAPPED_NEW(
+			   (RAM[zz+5]>>3)+0x10,
+			   16,        MAP
+			   );
 
-      switch(RAM[zz+5]&0x04){
-      case 0x00: Draw16x16_Trans_Mapped_FlipX_Rot(&GFX[(ta<<8)+0x10000],x,y,MAP);  break;
-      case 0x04: Draw16x16_Trans_Mapped_FlipXY_Rot(&GFX[(ta<<8)+0x10000],x,y,MAP); break;
-      }
+		   switch(RAM[zz+5]&0x04){
+		   case 0x00: Draw16x16_Trans_Mapped_Rot(&spr[(ta<<8)],x,y,MAP);  break;
+		   case 0x04: Draw16x16_Trans_Mapped_FlipY_Rot(&spr[(ta<<8)],x,y,MAP); break;
+		   }
+
+	       }
+
+	   }
+
+       }
 
    }
 
-   }
-
-   }
-
-   }
-
+   set_colour_mapper(&col_map_12bit_xbgr_rev_2bpp);
    zz=0x80;
    for(y=32;y<224+32;y+=8){
-   for(x=32;x<256+32;x+=8,zz+=2){
+       for(x=32;x<256+32;x+=8,zz+=2){
 
-   if((ta=ReadWord(&RAM[0x4000+zz])&0x03FF)!=0){
+	   if((ta=ReadWord(&RAM[0x4000+zz])&0x03FF)!=0){
 
-      MAP = MAP_PALETTE_2BPP(
-               Map_12bit_xBGR_Rev_2BPP,
-               (ReadWord(&RAM[0x4000+zz])>>10),
-               4
-            );
+	       int col = ReadWord(&RAM[0x4000+zz])>>10;
+	       MAP_PALETTE_MAPPED_2BPP_NEW(
+		       col,
+		       4,        MAP
+		       );
+	       Draw8x8_Trans_Mapped_Rot(&GFX[ta<<6],x,y,MAP);
+	   }
 
-      Draw8x8_Trans_Mapped_Rot(&GFX[ta<<6],x,y,MAP);
+       }
    }
-
-   }
-   }
+   set_colour_mapper(&col_map_xxxx_bbbb_gggg_rrrr_rev);
 }
 
 
@@ -657,11 +506,12 @@ static void DrawCabal(void)
 */
 static struct VIDEO_INFO video_cabalbl =
 {
-   DrawCabal,
+   draw_cabal,
    256,
    224,
    32,
    VIDEO_ROTATE_NORMAL| VIDEO_ROTATABLE,
+   cabal_gfx
 };
 static struct DIR_INFO dir_cabalbl[] =
 {
