@@ -11,6 +11,7 @@
 #include "sasound.h"		// sample support routines
 #include "savegame.h"
 #include "timer.h"
+#include "decode.h"
 
 static struct ROM_INFO rom_cabalbl[] =
 {
@@ -242,14 +243,12 @@ UINT8 CabalSoundReadZ80(UINT16 offset)
    switch(offset&15){
       case 0x08:
          ta=latch2;
-	 // bitswap 7,2,4,5,3,6,1,0
+	 ta = BITSWAP8(ta, 7,2,4,5,3,6,1,0);
 	 // thanks to mame for finding this, I was about myself to make something like that, this thing didn't have any sense at all !
-	 ta = (ta&0x8b)|((ta>>4)&4)|((ta>>1)&0x10)|((ta<<1)&0x20)|((ta&4)<<4);
       break;
       case 0x0A:
          ta=latch;
-	 // bitswap 7,2,4,5,3,6,1,0
-	 ta = (ta&0x8b)|((ta>>4)&4)|((ta>>1)&0x10)|((ta<<1)&0x20)|((ta&4)<<4);
+	 ta = BITSWAP8(ta, 7,2,4,5,3,6,1,0);
       break;
       case 6:
       ta = RAM[0x5422];
