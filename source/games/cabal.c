@@ -10,6 +10,7 @@
 #include "smp16bit.h"
 #include "sasound.h"		// sample support routines
 #include "savegame.h"
+#include "timer.h"
 
 static struct ROM_INFO rom_cabalbl[] =
 {
@@ -91,27 +92,29 @@ static struct GFX_LIST cabal_gfx[] =
 
 static struct INPUT_INFO input_cabalbl[] =
 {
-   INP0( COIN1, 0x005404, 0x06 ),
+  INP0( P1_UP, 0x5419, 0x01),
+  INP0( P1_DOWN, 0x5419, 0x02),
+  INP0( P1_LEFT, 0x5419, 0x04),
+  INP0( P1_RIGHT, 0x5419, 0x08),
+  INP0( P2_UP, 0x5419, 0x10),
+  INP0( P2_DOWN, 0x5419, 0x20),
+  INP0( P2_LEFT, 0x5419, 0x40),
+  INP0( P2_RIGHT, 0x5419, 0x80),
 
-   INP0( P1_START, 0x005421, 0x80 ),
-   INP0( P1_UP, 0x005419, 0x01 ),
-   INP0( P1_DOWN, 0x005419, 0x02 ),
-   INP0( P1_LEFT, 0x005419, 0x04 ),
-   INP0( P1_RIGHT, 0x005419, 0x08 ),
-   INP0( P1_B1, 0x005420, 0x01 ),
-   INP0( P1_B2, 0x005420, 0x02 ),
-   INP0( P1_B3, 0x005421, 0x20 ),
+  INP0( P1_B1, 0x5420, 0x01),
+  INP0( P1_B2, 0x5420, 0x02),
+  INP0( P2_B1, 0x5420, 0x04),
+  INP0( P2_B2, 0x5420, 0x08),
+  INP0( UNKNOWN, 0x5420, 0xf0),
+  INP0( UNKNOWN, 0x5421, 0x0f),
+  INP0( P2_B3, 0x5421, 0x10),
+  INP0( P1_B3, 0x5421, 0x20),
+  INP0( P2_START, 0x5421, 0x40),
+  INP0( P1_START, 0x5421, 0x80),
 
-   INP0( P2_START, 0x005421, 0x40 ),
-   INP0( P2_UP, 0x005419, 0x10 ),
-   INP0( P2_DOWN, 0x005419, 0x20 ),
-   INP0( P2_LEFT, 0x005419, 0x40 ),
-   INP0( P2_RIGHT, 0x005419, 0x80 ),
-   INP0( P2_B1, 0x005420, 0x04 ),
-   INP0( P2_B2, 0x005420, 0x08 ),
-   INP0( P2_B3, 0x005421, 0x10 ),
-
-   END_INPUT
+  INP1( COIN1, 0x5422, 0x01),
+  INP1( COIN2, 0x5422, 0x02),
+  END_INPUT
 };
 
 static struct DSW_DATA dsw_data_cabal_0[] =
@@ -175,8 +178,8 @@ static struct SMP16_ROM smp16_romlist_chip_b[16];	// Fill in later
 static struct SMP16buffer_interface smp16_interface =
 {
    2,					// 2 chips
-   { 22000,
-     22000 },				// rate
+   { 8000,
+     8000 },				// rate
    { smp16_romlist_chip_a,
      smp16_romlist_chip_b },		// rom list
 };
@@ -184,9 +187,9 @@ static struct SMP16buffer_interface smp16_interface =
 static struct YM2151interface ym2151_interface =
 {
    1,			// 1 chip
-   3579580, // 4000000,		// 4 MHz
+   3579545, // 4000000,		// 4 MHz
    { YM3012_VOL(255,OSD_PAN_LEFT,255,OSD_PAN_RIGHT) },
-   { NULL } //z80_irq_handler }
+   { z80_irq_handler }
 };
 
 static struct SOUND_INFO sound_cabalbl[] =
@@ -196,15 +199,20 @@ static struct SOUND_INFO sound_cabalbl[] =
    { 0,             NULL,                 },
 };
 
-static int sp_status=0xFF;
+static int latch2,ack_68k;
 
 static void CabalSoundWrite68k(UINT32 offset, UINT8 data)
 {
-   switch(offset&15){
-      case 0x01:
-         latch=data;
-         sp_status=1;
-            print_debug("68000 Sends:%02x\n",latch);
+   switch(offset&0xe){
+   case 0:
+       latch = data;
+       break;
+      case 2:
+         latch2=data;
+      break;
+      case 8:
+      cpu_int_nmi(CPU_Z80_0);
+      cpu_execute_cycles(CPU_Z80_0,50); // to fix coins which "stick" ! (doesn't seem to work with musashi ?!!)
       break;
    }
 }
@@ -215,7 +223,8 @@ static UINT8 CabalSoundRead68k(UINT32 offset)
 
    switch(offset&15){
       case 0x05:
-         ret = RAM[0x5404];
+         ret = ack_68k;
+         // ret = RAM[0x5404];
       break;
       default:
          ret = 0xFF;
@@ -232,12 +241,18 @@ UINT8 CabalSoundReadZ80(UINT16 offset)
 
    switch(offset&15){
       case 0x08:
-         ta=sp_status;
+         ta=latch2;
+	 // bitswap 7,2,4,5,3,6,1,0
+	 // thanks to mame for finding this, I was about myself to make something like that, this thing didn't have any sense at all !
+	 ta = (ta&0x8b)|((ta>>4)&4)|((ta>>1)&0x10)|((ta<<1)&0x20)|((ta&4)<<4);
       break;
       case 0x0A:
-         sp_status=0xFF;
          ta=latch;
-            print_debug("Z80 Receives:%02x\n",latch);
+	 // bitswap 7,2,4,5,3,6,1,0
+	 ta = (ta&0x8b)|((ta>>4)&4)|((ta>>1)&0x10)|((ta<<1)&0x20)|((ta&4)<<4);
+      break;
+      case 6:
+      ta = RAM[0x5422];
       break;
       default:
          ta=0xFF;
@@ -259,6 +274,7 @@ static void CabalSoundWriteZ80(UINT16 offset, UINT8 data)
          data&=0x7F;
          if((data>0)&&(data<16)) SMP16buffer_request(1,data-1);
       break;
+      case 0xc: ack_68k = data; print_debug("ack_68k=%x for latch\n",ack_68k); break;
       default:
          print_debug("Z80Write:%04x,%02x [%04x]\n",offset,data,z80pc);
       break;
@@ -269,7 +285,9 @@ static int gfx_init;
 
 static void load_cabalbl(void)
 {
+    setup_z80_frame(CPU_Z80_0,3759545/60);
    int ta,tb,tc;
+   latch = latch2 = ack_68k = 0xff;
    gfx_init = 0;
    RAMSize=0x30000;
    if(!(RAM = AllocateMem(RAMSize))) return;
@@ -292,44 +310,45 @@ static void load_cabalbl(void)
    AddZ80AReadByte(0x4000, 0x400D, CabalSoundReadZ80,     	NULL);		// 68000 + OTHER I/O
    AddZ80AReadByte(0x8000, 0xFFFF, NULL,			Z80ROM+0x8000);	// MORE ROM
    AddZ80AReadByte(0x0000, 0xFFFF, DefBadReadZ80,		NULL);		// <bad reads>
-   AddZ80AReadByte(-1, -1, NULL, NULL);
 
    AddZ80AWriteByte(0x2000, 0x27FF, NULL,                   	Z80ROM+0x2000);	// Z80 RAM
    AddZ80AWriteByte(0x400E, 0x400F, YM2151WriteZ80,         	NULL);		// YM2151 I/O
    AddZ80AWriteByte(0x4000, 0x400D, CabalSoundWriteZ80,     	NULL);		// 68000 + OTHER I/O
    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);		// <bad writes>
-   AddZ80AWriteByte(-1, -1, NULL, NULL);
 
    AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,           NULL);
-   AddZ80AReadPort(  -1,   -1, NULL,                    NULL);
 
    AddZ80AWritePort(0xAA, 0xAA, StopZ80Mode2,           NULL);
    AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,         NULL);
-   AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
-
    AddZ80AInit();
 
    tc = 0x102;
-   for(ta=0;ta<5;ta++,tc+=2){
+   ta=0;
+   do {
        tb = ReadWord(&PCMROM[tc]);
        smp16_romlist_chip_a[ta].data = PCMROM+(tb+2);
        smp16_romlist_chip_a[ta].size = ReadWord68k(&PCMROM[tb]);
        smp16_romlist_chip_a[ta].type = 0;
-   }
+       ta++,tc+=2;
+   } while (tb != ReadWord(&PCMROM[tc]));
+   smp16_romlist_chip_a[ta].data = NULL;
 
    UINT8 *PCMROM2 = load_region[REGION_SOUND2];
    tc = 0x102;
-   for(ta=0;ta<7;ta++,tc+=2){
+   ta=0;
+   do {
        tb = ReadWord(&PCMROM2[tc]);
        smp16_romlist_chip_b[ta].data = PCMROM2+(tb+2);
        smp16_romlist_chip_b[ta].size = ReadWord68k(&PCMROM2[tb]);
        smp16_romlist_chip_b[ta].type = 0;
-   }
+       ta++,tc+=2;
+   } while (tb != ReadWord(&PCMROM2[tc]));
+   smp16_romlist_chip_b[ta].data = NULL;
 
    /*-----------------------*/
 
-   memset(RAM+0x00000,0x00,0x20000);
-   memset(RAM+0x05400,0xFF,0x00100);
+   // memset(RAM+0x00000,0x00,0x20000);
+   // memset(RAM+0x05400,0xFF,0x00100);
 
    set_colour_mapper(&col_map_xxxx_bbbb_gggg_rrrr_rev);
    InitPaletteMap(RAM+0x4C00, 0x40, 0x10, 0x1000);
@@ -354,6 +373,10 @@ static void load_cabalbl(void)
 
    Add68000Code(0,0,REGION_CPU1);
    add_68000_ram(0,0x040000, 0x043FFF, RAM+0x000000);			// 68000 RAM
+   // Not sure wether it's used or not, just saw a jsr to ram in the rom so...
+   // but it might be related to something unused like a debug dip.
+   // Anyway the memfetch doesn't do any harm
+   AddMemFetch(0x40000, 0x43fff, RAM - 0x40000);
    add_68000_ram(0, 0x060000, 0x0607FF, RAM+0x004000);			// FG0 RAM
    AddReadByte(0x0E8000, 0x0E800F, CabalSoundRead68k, NULL);		// COIN RAM
 
@@ -369,35 +392,10 @@ static void load_cabalbl(void)
 
 static void execute_cabalbl(void)
 {
-   static int coin_toggle;
+    execute_z80_audio_frame();
 
-   if((RAM[0x5404]&0x07)!=7){
-      if(coin_toggle==0){
-         coin_toggle=1;
-      }
-      else{
-         RAM[0x5404]|=0x07;
-      }
-   }
-   else{
-      coin_toggle=0;
-   }
-
-   // Main 68000 (8MHz)
-   // -----------------
-
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(12,60));	// M68000 12MHz (60fps)
+    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(10,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 1);
-
-   // Sound Z80 (4MHz)
-   // ----------------
-
-   cpu_execute_cycles(CPU_Z80_0, 4000000/60);		// Sound Z80
-   /*#ifdef RAINE_DEBUG
-      print_debug("Z80PC0:%04x\n",z80pc);
-#endif*/
-   cpu_interrupt(CPU_Z80_0, 0x38);
-   cpu_int_nmi(CPU_Z80_0);
 }
 
 static void draw_cabal(void)
