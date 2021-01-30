@@ -418,6 +418,10 @@ int handle_sound_cmd(int cmd) {
 	    // cmd 0xa is one_sound, handled just before
 	    print_debug("assoc: cmd %x (nothing)\n",cmd);
 	    return 1; // these commands don't seem to do anything !
+	} else if (cmd == 0x20) {
+	    // 20 is a special case, it's a blank song, used to stop currently playing song
+	    mute_song();
+	    return 0;
 	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) {
 	    mode = SOUND;
 	    print_debug("assoc: cmd %x (sound)\n",cmd);
