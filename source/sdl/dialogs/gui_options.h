@@ -1,4 +1,4 @@
-#include "sdl/gui/menu.h"
+#include "gui/menu.h"
 
 extern TMenu *gui_options;
 

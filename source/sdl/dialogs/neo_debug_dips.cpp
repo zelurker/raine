@@ -8,7 +8,7 @@
 #include "control.h"
 #include "neocd/neocd.h"
 #include "starhelp.h"
-#include "sdl/dialogs/dlg_dsw.h"
+#include "dialogs/dlg_dsw.h"
 #include "files.h"
 #include "neo_debug_dips.h"
 

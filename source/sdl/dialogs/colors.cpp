@@ -1,7 +1,7 @@
-#include "sdl/gui/menu.h"
-#include "sdl/compat.h"
-#include "sdl/gui/tfont.h"
-#include "sdl/dialogs/colors.h"
+#include "gui/menu.h"
+#include "compat.h"
+#include "gui/tfont.h"
+#include "dialogs/colors.h"
 
 static int r,g,b,a,cindex;
 

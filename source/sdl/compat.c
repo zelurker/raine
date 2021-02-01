@@ -14,8 +14,8 @@
 #include "control_internal.h"
 #include "blit_x2.h"
 #include "video/res.h"
-#include "sdl/dialogs/messagebox.h"
-#include "sdl/opengl.h"
+#include "dialogs/messagebox.h"
+#include "opengl.h"
 #include "loadpng.h"
 #include "version.h"
 

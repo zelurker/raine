@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-#include "sdl/gui/menuitem.h"
+#include "gui/menuitem.h"
 
 void init_scripts();
 void add_scripts(menu_item_t *menu);

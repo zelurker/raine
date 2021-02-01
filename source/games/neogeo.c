@@ -17,7 +17,7 @@
 
 extern struct SOUND_INFO sound_neocd[];
 
-// Bios names are in neocd_options.c in sdl/dialogs, not really convenient
+// Bios names are in neocd_options.c in dialogs, not really convenient
 // but this is not updated often...
 static struct ROM_INFO rom_bios[] = // struct used to select bios
 {

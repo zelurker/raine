@@ -17,8 +17,8 @@
 #include "blit.h"
 #include "files.h"
 #ifdef SDL
-#include "sdl/SDL_gfx/SDL_rotozoom.h"
-#include "sdl/blit_sdl.h"
+#include "SDL_gfx/SDL_rotozoom.h"
+#include "blit_sdl.h"
 #endif
 
 // the people taking care of libc were really crazy when they decided that you had

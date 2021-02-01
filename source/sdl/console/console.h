@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 
-#include "sdl/gui/tconsole.h"
+#include "gui/tconsole.h"
 #include "parser.h"
 
 class TRaineConsole : public TConsole

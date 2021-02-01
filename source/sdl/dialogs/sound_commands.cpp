@@ -6,11 +6,11 @@
 #include "timer.h"
 #include "cpumain.h"
 #include "raine.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "profile.h"
 #include "files.h"
 #include "sound/assoc.h"
-#include "sdl/dialogs/fsel.h"
+#include "dialogs/fsel.h"
 #include "neocd/cdda.h"
 
 static TMenu *menu;

@@ -22,7 +22,7 @@
 #include "loadpng.h"
 #include "bezel.h"
 #ifndef RAINE_DOS
-#include "sdl/SDL_gfx/SDL_framerate.h"
+#include "SDL_gfx/SDL_framerate.h"
 #endif
 
 /* Still a collision here between winalleg.h and control.h */

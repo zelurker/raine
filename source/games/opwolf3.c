@@ -13,7 +13,7 @@
 #include "tc200obj.h"
 #include "sasound.h"		// sample support routines
 #ifdef SDL
-#include "sdl/control_internal.h"
+#include "control_internal.h"
 #endif
 
 

@@ -1,9 +1,9 @@
 #include "../gui/menu.h"
 #include "video_info.h"
-#include "sdl/compat.h"
+#include "compat.h"
 #include "blit.h"
-#include "sdl/blit_sdl.h"
-#include "sdl/display_sdl.h"
+#include "blit_sdl.h"
+#include "display_sdl.h"
 #include "raine.h"
 
 static menu_item_t video_menu[20];

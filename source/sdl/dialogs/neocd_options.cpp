@@ -3,7 +3,7 @@
 #include "neocd/neocd.h"
 #include "neocd/cdrom.h"
 #include "neocd/cdda.h"
-#include "sdl/dialogs/fsel.h"
+#include "dialogs/fsel.h"
 #include "raine.h"
 #include "SDL_image.h"
 #include "neocd/cache.h"
@@ -12,7 +12,7 @@
 #include "68000/starhelp.h"
 #include "neo_softdips.h"
 #include "neo_debug_dips.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 
 static char *neo_names[] =
 {

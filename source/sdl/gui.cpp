@@ -415,7 +415,7 @@ void setup_font()
   }
 }
 
-extern UINT32 videoflags; // sdl/display.c
+extern UINT32 videoflags; // display.c
 int goto_debuger = 0;
 
 void StartGUI(void)

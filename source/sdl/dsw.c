@@ -16,7 +16,7 @@
 #endif
 #include "gui/menu.h"
 #include "dialogs/dlg_dsw.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "mz80help.h"
 #include "newmem.h"
 

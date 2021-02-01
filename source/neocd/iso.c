@@ -3,7 +3,7 @@
 #ifdef RAINE_DOS
 #include "alleg/gui/rgui.h"
 #else
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #endif
 
 /* Extremely simplified iso image handling, can handle only files in the

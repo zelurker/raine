@@ -12,7 +12,7 @@
 #include "m6502hlp.h"
 #endif
 #include "games/default.h"
-#include "sdl/gui.h" // goto_debuger
+#include "gui.h" // goto_debuger
 #ifdef MAME_Z80
 #include "mame/handlers.h"
 #endif

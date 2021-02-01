@@ -24,7 +24,7 @@
 #endif
 #include "alleg/gui/sound.h" // old_draw
 #else
-#include "sdl/gui.h"
+#include "gui.h"
 #endif
 #include "sasound.h"            // Sound Sample stuff
 #include "dsw.h"                // Dipswitch stuff
@@ -52,12 +52,12 @@
 #include "config.h"             // Command Line + Config file routines
 #include "history.h" // hist_open
 #ifndef RAINE_DOS
-#include "sdl/SDL_gfx/SDL_framerate.h"
+#include "SDL_gfx/SDL_framerate.h"
 #endif
 #include "neocd/cdda.h"
 #include "arpro.h"
 #ifdef HAS_CONSOLE
-#include "sdl/console/scripts.h"
+#include "console/scripts.h"
 #endif
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...

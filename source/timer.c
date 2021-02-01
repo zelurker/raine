@@ -6,7 +6,7 @@
 #include "2151intf.h"
 #include "mz80help.h"
 #include "sasound.h"
-#include "sdl/gui.h" // goto_debuger
+#include "gui.h" // goto_debuger
 
 // Number of cycles before reseting the cycles counter and the timers
 #define MAX_CYCLES 0x40000000

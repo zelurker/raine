@@ -10,7 +10,7 @@
  */
 
 #include "gameinc.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "pd4990a.h"
 #include "files.h"
 #include "2610intf.h"
@@ -30,13 +30,13 @@
 #include "history.h"
 #include "display.h"
 #ifdef RAINE_DEBUG
-#include "sdl/gui.h"
+#include "gui.h"
 #endif
 #ifndef RAINE_DOS
-#include "sdl/control_internal.h"
-#include "sdl/dialogs/fsel.h"
-#include "sdl/gui.h"
-#include "sdl/dialogs/neo_debug_dips.h"
+#include "control_internal.h"
+#include "dialogs/fsel.h"
+#include "gui.h"
+#include "dialogs/neo_debug_dips.h"
 #else
 #include "alleg/gui/rgui.h"
 #endif

@@ -11,7 +11,7 @@
 #include "pdraw.h"
 #include "blit.h"
 #ifdef SDL
-#include "sdl/SDL_gfx/SDL_rotozoom.h"
+#include "SDL_gfx/SDL_rotozoom.h"
 #endif
 
 /******************************************************************************/

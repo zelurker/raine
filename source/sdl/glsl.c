@@ -9,12 +9,12 @@
 #endif
 #include "files.h"
 #include "debug.h"
-#include "sdl/compat.h"
+#include "compat.h"
 #include "blit.h"
-#include "sdl/blit_sdl.h"
-#include "sdl/display_sdl.h"
-#include "sdl/opengl.h"
-#include "sdl/dialogs/messagebox.h"
+#include "blit_sdl.h"
+#include "display_sdl.h"
+#include "opengl.h"
+#include "dialogs/messagebox.h"
 #include "math/matrix.h"
 #include "translate.h"
 

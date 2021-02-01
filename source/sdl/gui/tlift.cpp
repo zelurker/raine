@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "../SDL_gfx/SDL_gfxPrimitives.h"
 #include "menu.h"
-#include "sdl/display_sdl.h"
+#include "display_sdl.h"
 
 /* Deluxe lift, with auto-repeat arrow keys, and the thumb is moveable with
  * the mouse, either directly or page by page */

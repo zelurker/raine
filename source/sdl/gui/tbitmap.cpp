@@ -1,9 +1,9 @@
 #include "tbitmap.h"
-#include "sdl/compat.h"
+#include "compat.h"
 #include "raine.h"
 #include "games.h"
 #include "blit.h"
-#include "sdl/blit_sdl.h"
+#include "blit_sdl.h"
 #include "palette.h"
 
 TBitmap::TBitmap(menu_item_t *my_menu) : TStatic(my_menu) 

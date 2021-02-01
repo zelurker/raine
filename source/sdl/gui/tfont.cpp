@@ -7,13 +7,13 @@
 #include <string.h>
 #include <stdio.h>
 #include "files.h"
-#include "sdl/compat.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "compat.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "tfont.h"
 #include <dirent.h>
 #include "confile.h"
 #include "menu.h"
-#include "sdl/display_sdl.h"
+#include "display_sdl.h"
 
 int min_font_size = 8;
 static int max_font_size = 30;

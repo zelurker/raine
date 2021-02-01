@@ -3,7 +3,7 @@
 #include "files.h"
 #include "scripts.h"
 #include "console.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "profile.h"
 
 #define MAX_PARAM 90

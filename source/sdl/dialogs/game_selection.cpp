@@ -5,8 +5,8 @@
 #include "raine.h"
 #include "games.h"
 #include "files.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
-#include "sdl/dialogs/romdirs.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "dialogs/romdirs.h"
 
 /* This is so far the most complex dialog in the sdl version :
  *  - it changes the bg picture while browsing the list of games

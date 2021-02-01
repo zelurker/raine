@@ -7,7 +7,7 @@
 #include "files.h"
 #include "newmem.h"
 #include "starhelp.h"
-#include "sdl/gui.h"
+#include "gui.h"
 #include "ingame.h"
 
 #define MAX_BREAK 10

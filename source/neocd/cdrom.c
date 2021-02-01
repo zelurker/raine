@@ -20,7 +20,7 @@
 #include "display.h"
 #ifndef RAINE_DOS
 #include "display_sdl.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #else
 #include <ctype.h>
 #include "alleg/gui/rgui.h"

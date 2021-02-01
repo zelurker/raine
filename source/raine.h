@@ -29,7 +29,7 @@ extern "C" {
 #define GFX_ARCMON				 AL_ID('A','R','C','M')
 #endif
 #else
-#include "sdl/compat.h"
+#include "compat.h"
 #endif
 
 #ifdef MEMORY_DEBUG
@@ -320,7 +320,7 @@ typedef struct DISPLAY_CFG
    UINT32 triple_buffer;		// triple buffer mode {0,1}
    UINT32 eagle_fx; 		// use eagle effect {0,1}
 #endif
-   UINT16 stretch; // see sdl/dialogs/video_options.cpp for meaning
+   UINT16 stretch; // see dialogs/video_options.cpp for meaning
 
 #ifndef SDL
    UINT32 fast_set_pal; 		// fast or slow(compatable) set pal {0,1}

@@ -5,7 +5,7 @@
 #include "debug.h"
 #endif
 #include <SDL.h>
-#include <sdl/SDL_gfx/SDL_framerate.h>
+#include <SDL_gfx/SDL_framerate.h>
 
 float fps = 60.0,default_fps;
 

@@ -7,14 +7,14 @@
 #include "version.h"
 #include "files.h" // get_shared
 #include "history.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "gui/tfont.h"
 #include "control.h"
-#include "sdl/control_internal.h"
+#include "control_internal.h"
 #if HAS_NEO
 #include <SDL_sound.h>
 #endif
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "games.h"
 
 class TAbout_menu : public TBitmap_menu

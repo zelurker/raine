@@ -1,8 +1,8 @@
 #include "raine.h"
 #include "../gui/menu.h"
 #include "../compat.h"
-#include "sdl/dialogs/messagebox.h"
-#include "sdl/dialogs/fsel.h"
+#include "dialogs/messagebox.h"
+#include "dialogs/fsel.h"
 #include "romdir.h"
 #include "games.h"
 

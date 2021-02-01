@@ -16,7 +16,7 @@
 #include "dxsmp.h"
 #include "galdxm.h"
 #ifdef SDL
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #endif
 
 extern void hs_load (void);

@@ -1,10 +1,10 @@
-#include "sdl/gui/menu.h"
+#include "gui/menu.h"
 #include "arpro.h"
-#include "sdl/compat.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
-#include "sdl/dialogs/cheats.h"
+#include "compat.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "dialogs/cheats.h"
 #ifdef HAS_CONSOLE
-#include "sdl/console/scripts.h"
+#include "console/scripts.h"
 #endif
 
 class TCheatDlg : public TMenu

@@ -10,7 +10,7 @@
 #include "dxsmp.h"
 #include "savegame.h"
 #ifdef SDL
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 // disable draw_trans_sprite for now
 #define draw_trans_sprite(dst,src,x,y)
 #endif

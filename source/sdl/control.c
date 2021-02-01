@@ -31,16 +31,16 @@
 #include "ingame.h"
 #include "savegame.h"           // Save/Load game stuff
 #include "profile.h" // switch_fps_mode
-#include "sdl/display_sdl.h"
+#include "display_sdl.h"
 #include "blit.h" // SetupScreenBitmap
 #include "video/newspr.h" // init_video_core
 #include "control_internal.h"
 #include "display.h"
 #include "bezel.h"
 #ifdef HAS_CONSOLE
-#include "sdl/console/console.h"
+#include "console/console.h"
 #endif
-#include "sdl/dialogs/cheats.h"
+#include "dialogs/cheats.h"
 #include "sound/sasound.h"
 #include "hiscore.h"
 #include "neocd/cdda.h"

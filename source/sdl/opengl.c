@@ -9,19 +9,19 @@
 #include <SDL_opengl.h>
 #endif
 #undef WINAPI
-#include "sdl/compat.h"
+#include "compat.h"
 #include "blit.h"
 #include "blit_sdl.h"
 #include "games.h"
-#include "sdl/display_sdl.h"
+#include "display_sdl.h"
 #include "files.h"
 #include "newmem.h"
 #include "raine.h" // ReadWord/WriteWord
-#include "sdl/glsl.h"
+#include "glsl.h"
 #ifdef MessageBox
 #undef MessageBox
 #endif
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "str_opaque.h"
 #ifndef GL_PIXEL_UNPACK_BUFFER
 #define GL_PIXEL_UNPACK_BUFFER GL_PIXEL_UNPACK_BUFFER_ARB // ???!

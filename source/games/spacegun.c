@@ -13,7 +13,7 @@
 #include "taitosnd.h"
 #include "gun.h"
 #ifdef SDL
-#include "sdl/control_internal.h"
+#include "control_internal.h"
 #endif
 
 

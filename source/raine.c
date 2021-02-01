@@ -17,7 +17,7 @@
 #include "alleg/gui/about.h"
 #include "loadpng.h"
 #else
-#include "sdl/gui.h"
+#include "gui.h"
 #ifdef USE_CURL
 #include <curl/curl.h>
 #endif

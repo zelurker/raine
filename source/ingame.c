@@ -21,9 +21,9 @@
 #include "blit.h"
 #include "config.h"
 #ifdef HAS_CONSOLE
-#include "sdl/console/scripts.h"
+#include "console/scripts.h"
 #endif
-#include "sdl/opengl.h"
+#include "opengl.h"
 #include "video/str_opaque.h"
 
 char fps_buff[32];		// fps() message string

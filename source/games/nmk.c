@@ -26,7 +26,7 @@
 #include "savegame.h"
 #include "blit.h" // clear_game_screen (when bg0 is disabled)
 #include "nmk004.h"
-#include "sdl/gui.h" // goto_debuger
+#include "gui.h" // goto_debuger
 #include "profile.h" // fps
 
 static void (*ExecuteSoundFrame)();	// Pointer to ExecuteSoundFrame rountine (sound cpu work for 1 frame), used for pausegame + playsound

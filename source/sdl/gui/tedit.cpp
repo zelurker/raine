@@ -1,6 +1,6 @@
 #include "tedit.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
-#include "sdl/dialogs/messagebox.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "dialogs/messagebox.h"
 #include "menu.h"
 #include "files.h"
 

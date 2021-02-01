@@ -28,7 +28,7 @@
 #include "video/res.h"
 #include "tc005rot.h"
 #ifdef HAS_CONSOLE
-#include "sdl/console/console.h"
+#include "console/console.h"
 #endif
 #include "blit.h"
 #include "speed_hack.h"

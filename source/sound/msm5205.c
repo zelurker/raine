@@ -422,8 +422,6 @@ void MSM5205buffer_setpan( int num, int data )
  * nmis / second !
  */
 
-extern UINT8 *Z80RAM; // mz80help
-
 int live_msm_decode(int chip, int adr,int len) {
   // returns 1 if the sample was actually started, 0 otherwise.
   if (len > 0) {

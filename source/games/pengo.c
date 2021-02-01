@@ -110,7 +110,7 @@ Issue confirmed, it happens also in the original hardware.
 #include "history.h"
 #include "hiscore.h"
 #ifdef SDL
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #endif
 
 

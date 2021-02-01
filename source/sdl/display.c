@@ -14,11 +14,11 @@
 #ifdef RAINE_UNIX
 #include <unistd.h>
 #endif
-#include "sdl/gui/menu.h"
+#include "gui/menu.h"
 #include "bezel.h"
 #include "winpos.h"
-#include "sdl/opengl.h"
-#include "sdl/display_sdl.h"
+#include "opengl.h"
+#include "display_sdl.h"
 #include "bld.h"
 #include "profile.h"
 

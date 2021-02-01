@@ -6,7 +6,7 @@
 #include "neocd/cdda.h"
 #include "sasound.h"
 #ifdef SDL
-#include "sdl/compat.h" // exists
+#include "compat.h" // exists
 #endif
 #include "raine.h" // Z80ROM
 #include "games.h" // current_game

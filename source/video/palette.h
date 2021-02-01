@@ -17,7 +17,7 @@ extern "C" {
 
 #ifdef SDL
 
-#include "sdl/compat.h"
+#include "compat.h"
 
 #define GET_PEN_FOR_COLOUR_15(red, green, blue, result, ...) \
       result = SDL_MapRGB(color_format, red, green, blue)

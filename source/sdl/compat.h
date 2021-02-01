@@ -96,7 +96,7 @@ void StartGUI();
 // Files
 int exists(char *filename);
 
-// defined in sdl/control.c, but only for the sdl version
+// defined in control.c, but only for the sdl version
 #define get_mouse_mickeys my_get_mouse_mickeys
 void my_get_mouse_mickeys(int *mx, int *my);
 
@@ -126,7 +126,7 @@ void sdl_create_overlay( int w, int h);
 #define create_bitmap(w, h) sdl_create_bitmap_ex(display_cfg.bpp,w,h)
 
 extern void load_message(char *);
-#include "sdl/SDL_gfx/SDL_rotozoom.h"
+#include "SDL_gfx/SDL_rotozoom.h"
 
 #define load_explicit_progress(a,b) load_progress("emudx",(a)*100/(b))
 

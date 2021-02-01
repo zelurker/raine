@@ -4,8 +4,8 @@
 #include "palette.h"
 #include "tilemod.h"
 #include "newspr.h"
-#include "sdl/gui/tbitmap.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "gui/tbitmap.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "sprite_viewer.h"
 
 static int layer = 0;

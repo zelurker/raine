@@ -4,16 +4,16 @@
 #include "palette.h"
 #include "newspr.h"
 #include "translator.h"
-#include "sdl/gui/tbitmap.h"
-#include "sdl/blit_sdl.h"
-#include "sdl/dialogs/messagebox.h"
+#include "gui/tbitmap.h"
+#include "blit_sdl.h"
+#include "dialogs/messagebox.h"
 #include "neocd/neocd.h"
 #include "neocd/cdrom.h"
 #include "neocd/cache.h"
 #include "files.h"
 #include "starhelp.h"
 #if HAS_CONSOLE
-#include "sdl/console/parser.h"
+#include "console/parser.h"
 #endif
 #include "games.h"
 

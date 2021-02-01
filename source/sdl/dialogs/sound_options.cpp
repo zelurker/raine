@@ -6,7 +6,7 @@
 #include "neocd/neocd.h"
 #include "neocd/cdda.h"
 #include "games.h"
-#include "sdl/dialogs/sound_commands.h"
+#include "dialogs/sound_commands.h"
 #include "sound/assoc.h"
 
 static TMenu *menu;

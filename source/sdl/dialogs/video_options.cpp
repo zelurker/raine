@@ -9,16 +9,16 @@
 #include "raine.h" // display_cfg
 #include "video_info.h"
 #include "blit.h"
-#include "sdl/blit_sdl.h"
+#include "blit_sdl.h"
 #include "control.h"
-// #include "sdl/control_internal.h"
+// #include "control_internal.h"
 #include "display.h"
-#include "sdl/display_sdl.h"
+#include "display_sdl.h"
 #ifdef MessageBox
 #undef MessageBox
 #endif
-#include "sdl/dialogs/messagebox.h"
-#include "sdl/dialogs/fsel.h"
+#include "dialogs/messagebox.h"
+#include "dialogs/fsel.h"
 #include "bld.h"
 #include "files.h"
 #include "glsl.h"

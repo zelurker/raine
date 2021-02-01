@@ -6,9 +6,9 @@
 #include "tfont.h"
 #include "tedit.h"
 #include "control.h"
-#include "sdl/control_internal.h"
+#include "control_internal.h"
 #include "tconsole.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #include "games.h"
 
 void split_command(char *field, char **argv, int *argc, int max) {

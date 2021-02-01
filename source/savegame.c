@@ -23,10 +23,10 @@
 #include "rgui.h" // raine file selector...
 #else
 // #include "compat.h"
-// #include "sdl/SDL_gfx/SDL_rotozoom.h"
-// #include "sdl/blit_sdl.h"
+// #include "SDL_gfx/SDL_rotozoom.h"
+// #include "blit_sdl.h"
 #include "dialogs/fsel.h"
-#include "sdl/dialogs/messagebox.h"
+#include "dialogs/messagebox.h"
 #endif
 
 #include "timer.h" // update_timers

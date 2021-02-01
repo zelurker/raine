@@ -85,7 +85,7 @@ buffer before calling the gui */
  */
 
 #include "raine.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "video/palette.h"
 #include "version.h"
 #include "games.h"
@@ -94,14 +94,14 @@ buffer before calling the gui */
 #include "widget.h"
 #include "tslider.h"
 #include "tedit.h"
-#include "sdl/SDL_gfx/SDL_framerate.h"
-#include "sdl/SDL_gfx/SDL_rotozoom.h"
+#include "SDL_gfx/SDL_framerate.h"
+#include "SDL_gfx/SDL_rotozoom.h"
 #include <SDL_image.h>
 #include "blit.h"
-#include "sdl/display_sdl.h"
-#include "sdl/blit_sdl.h"
+#include "display_sdl.h"
+#include "blit_sdl.h"
 #include "display.h" // ScreenChange
-#include "sdl/dialogs/gui_options.h"
+#include "dialogs/gui_options.h"
 #include "tlift.h"
 #include "control.h"
 #include "tbitmap.h"

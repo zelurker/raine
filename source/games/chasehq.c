@@ -14,7 +14,7 @@
 #include "taitosnd.h"
 #include "zoom/16x16.h"		// 16x8 zoomed sprite routines
 #ifdef SDL
-#include "sdl/control_internal.h" // analog support
+#include "control_internal.h" // analog support
 #endif
 
 

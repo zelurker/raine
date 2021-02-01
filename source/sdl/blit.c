@@ -12,12 +12,12 @@
 #include "bezel.h"
 #include "video/scale2x.h"
 #include "video/scale3x.h"
-#include "sdl/SDL_gfx/SDL_framerate.h"
+#include "SDL_gfx/SDL_framerate.h"
 #include "sasound.h" // sa_pause_sound
 #include "palette.h"
 #include <math.h>
 #include "cpuid.h"
-#include "sdl/display_sdl.h"
+#include "display_sdl.h"
 #include "emudx.h"
 #include "blit_x2.h"
 #include "blit_sdl.h"
@@ -25,7 +25,7 @@
 #include "newspr.h" // init_video_core
 #include "video/priorities.h"
 #include "neocd/neocd.h"
-#include "sdl/opengl.h"
+#include "opengl.h"
 #include "demos.h"
 
 SDL_Surface *sdl_game_bitmap;

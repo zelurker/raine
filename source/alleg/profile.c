@@ -6,7 +6,7 @@
 #endif
 #ifdef SDL
 #include <SDL.h>
-#include <sdl/SDL_gfx/SDL_framerate.h>
+#include <SDL_gfx/SDL_framerate.h>
 #endif
 
 float fps = 60.0,default_fps;

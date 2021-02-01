@@ -1,14 +1,14 @@
 #include "../gui/menu.h"
 #include "../compat.h"
 #include "control.h"
-#include "sdl/control_internal.h"
-#include "sdl/dialogs/messagebox.h"
-#include "sdl/dialogs/about.h" // TMoveStatic
+#include "control_internal.h"
+#include "dialogs/messagebox.h"
+#include "dialogs/about.h" // TMoveStatic
 #include "games.h" // current_game
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "ingame.h"
 #include "newmem.h"
-#include "sdl/gui/tedit.h"
+#include "gui/tedit.h"
 #include "files.h"
 
 /* This is currently the bigest file in the dialogs directory.

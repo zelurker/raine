@@ -16,7 +16,7 @@
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
 #include "2610intf.h"
 #ifdef SDL
-#include "sdl/control_internal.h"
+#include "control_internal.h"
 #endif
 
 #include "taito_z.h"

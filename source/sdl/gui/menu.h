@@ -2,7 +2,7 @@
 #define MENU_CPP
 
 #include <SDL.h>
-#include "sdl/SDL_gfx/SDL_framerate.h"
+#include "SDL_gfx/SDL_framerate.h"
 #include "menuitem.h" // C only
 
 #ifdef __cplusplus

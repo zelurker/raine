@@ -29,7 +29,7 @@
 #include "display.h" // load/save_screen_settings
 #include "files.h"
 #ifdef HAS_CONSOLE
-#include "sdl/console/scripts.h"
+#include "console/scripts.h"
 #endif
 #include "sound/assoc.h"
 #ifdef SDL

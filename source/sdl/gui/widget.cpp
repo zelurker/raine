@@ -1,7 +1,7 @@
 #include "widget.h"
-#include "sdl/SDL_gfx/SDL_gfxPrimitives.h"
-#include "sdl/compat.h"
-#include "sdl/gui/tconsole.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "compat.h"
+#include "gui/tconsole.h"
 
 /* Basic widgets for TMenu, see menu.cpp comments at the top for an
  * introduction to the gui.
