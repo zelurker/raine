@@ -17,7 +17,7 @@
 VERSION = "0.91.12"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -346,6 +346,11 @@ else
 # linux
 
 SDL = 1
+ifeq (${SDL},1)
+SDLCONFIG = "sdl-config"
+else
+SDLCONFIG = "sdl2-config"
+endif
 
 ifdef DARWIN
 DESTDIR = Raine.app
@@ -377,10 +382,8 @@ endif
 
 RAINE_EXE = raine
 
-ifndef SDL
    RAINE_DAT = raine.dat
    RAINE_LNG = brasil.cfg dansk.cfg espanol.cfg french2.cfg german2.cfg japanese.cfg spanish.cfg turkish.cfg catala.cfg dutch.cfg euskera.cfg french.cfg german.cfg polish.cfg svenska.cfg czech.cfg english.cfg finnish.cfg galego.cfg italian.cfg portugal.cfg template.cfg
-endif
    RAINE_UNIX = 1
 
 ifdef VERBOSE
@@ -474,7 +477,10 @@ endif
 endif
 
 ifdef SDL
-INCDIR += -I source/sdl
+ifeq (${SDL},2)
+	INCDIR += -Isource/sdl2
+endif
+INCDIR += -Isource/sdl
 else
 INCDIR += -Isource/alleg/gui
 endif
@@ -482,7 +488,10 @@ endif
 # To allow cross-compilation, we need one dir / target
 OBJDIR = $(OSTYPE)
 ifdef SDL
-OBJDIR = $(OSTYPE)-sdl
+OBJDIR = ${OSTYPE}-sdl
+ifeq (${SDL},2)
+	OBJDIR = ${OSTYPE}-sdl2
+endif
 endif
 
 ifndef NO_ASM
@@ -682,8 +691,8 @@ CFLAGS_MCU += -DUSE_BEZELS=1
 endif
 
 ifdef SDL
-CFLAGS += -DSDL
-CFLAGS_MCU += -DSDL
+CFLAGS += -DSDL=${SDL}
+CFLAGS_MCU += -DSDL=${SDL}
 else
 OBJDIRS +=  \
 	$(OBJDIR)/alleg/gui \
@@ -1177,9 +1186,9 @@ CFLAGS_MCU += -DDARWIN
 LFLAGS += -Wl,-no_pie,-allow_heap_execute,-no_compact_unwind
 else  #DARWIN
 ifdef target
-CFLAGS += $(shell /usr/${target}/bin/sdl-config --cflags)
+CFLAGS += $(shell /usr/${target}/bin/${SDLCONFIG} --cflags)
 else
-CFLAGS += $(shell sdl-config --cflags)
+CFLAGS += $(shell ${SDLCONFIG} --cflags)
 endif
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
@@ -1192,12 +1201,12 @@ endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
 ifdef target
-LIBS += $(shell /usr/${target}/bin/sdl-config --libs) -lSDL_ttf -lSDL_image
+LIBS += $(shell /usr/${target}/bin/${SDLCONFIG} --libs) -lSDL_ttf -lSDL_image
 ifdef USE_CURL
 LIBS += $(shell /usr/${target}/bin/curl-config --libs) # -lefence
 endif
 else
-LIBS += $(shell sdl-config --libs) -lSDL_ttf -lSDL_image
+LIBS += $(shell ${SDLCONFIG} --libs) -lSDL_ttf -lSDL_image
 ifdef USE_CURL
 LIBS += $(shell curl-config --libs) # -lefence
 endif
@@ -1240,7 +1249,7 @@ locale/it/LC_MESSAGES/raine.mo: locale/it.po
 locale/es/LC_MESSAGES/raine.mo: locale/es.po
 	msgfmt -c -v -o $@ $<
 
-CFLAGS_BS := -Wall -O2 $(shell sdl-config --cflags) $(INCDIR) -DSTANDALONE -DNO_GZIP -c
+CFLAGS_BS := -Wall -O2 $(shell ${SDLCONFIG} --cflags) $(INCDIR) -DSTANDALONE -DNO_GZIP -c
 
 # Using gcc here instead of $(CC) because we don't want a 32 bit binary in
 # an amd64 arch.
@@ -1248,13 +1257,13 @@ byteswap: $(OBJDIR)/byteswap.o $(OBJDIR)/files_b.o $(OBJDIR)/newmem_b.o
 	gcc -o byteswap $^
 
 $(OBJDIR)/byteswap.o: source/byteswap.c
-	gcc $(CFLAGS_BS) -DSDL -o $@ $<
+	gcc $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
 
 $(OBJDIR)/files_b.o: source/files.c
-	gcc $(CFLAGS_BS) -DSDL -o $@ $<
+	gcc $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
 
 $(OBJDIR)/newmem_b.o: source/newmem.c
-	gcc $(CFLAGS_BS) -DSDL -o $@ $<
+	gcc $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
 
 depend:
 	@echo dependencies : if you get an error here, install the required dev package
@@ -1262,7 +1271,7 @@ ifndef RAINE_DOS
 	@echo -n libpng:
 	@libpng-config --version
 	@echo -n SDL:
-	@sdl-config --version
+	@${SDLCONFIG} --version
 endif
 ifdef RAINE_UNIX
 ifndef SDL
