@@ -28,7 +28,11 @@ void init_cdda() {}
 void prepare_cdda_save(UINT32 id) {}
 #else
 
+#if SDL == 1
+// Stupid sdl2 removed completely the audio cd api, so we can't support this anymore
+// although it's true it was probably very rarely used !
 static SDL_CD *cdrom;
+#endif
 
 static char *find_file(char *pattern,char *path){
   static char name[256];
@@ -89,15 +93,19 @@ static char *find_file(char *pattern,char *path){
 void cdda_stop() {
   // usefull before loading a game...
   cdda.playing = CDDA_STOP;
+#if SDL == 1
   if (cdrom)
     SDL_CDStop(cdrom);
+#endif
 }
 
 static void cdda_resume() {
   if (cdda.playing==CDDA_PAUSE) {//was in pause, so resume & let stop/play again
     cdda.playing = CDDA_PLAY;
+#if SDL == 1
     if (cdrom)
       SDL_CDResume(cdrom);
+#endif
   }
 }
 
@@ -142,6 +150,7 @@ static int cdda_play(int track,int loop)
   else
       str[0] = 0;
 
+#if SDL == 1
   if (!str3) {
     // defaults to direct cdda reading...
     if (!cdrom) {
@@ -169,6 +178,7 @@ static int cdda_play(int track,int loop)
       return 1;
     }
   }
+#endif
 
   if (str3) {
     print_debug("cdda play - mp3 found str:%s.\n",str);
@@ -200,11 +210,13 @@ static void	cdda_pause(void)
   print_debug("cdda pause\n");
   if (cdda.playing)
     cdda.playing = CDDA_PAUSE;
+#if SDL == 1
   if (cdrom)
       // Notice : pause and resume are totally unreliable with sdl !
       // All this should be replace by something to access the data on the
       // tracks directly, but I am not sure it exists a cross platform solution
     SDL_CDPause(cdrom);
+#endif
 }
 
 void do_cdda( int command, int track_number_bcd)
@@ -248,11 +260,13 @@ void do_cdda( int command, int track_number_bcd)
 
 void init_cdda() {
   cdda.playing = cdda.track = cdda.pos = start_index = 0;
+#if SDL == 1
   if (cdrom) {
     SDL_CDStop(cdrom);
     SDL_CDClose(cdrom);
     cdrom = NULL;
   }
+#endif
 }
 
 static void restore_cdda() {
