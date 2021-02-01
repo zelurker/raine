@@ -1,9 +1,8 @@
 #!/usr/bin/perl
 
-use v5.10;
 use lib ".";
 use source::bonus::genres;
-use strict;
+use common::sense;
 
 my %raine_loads =
 ( "ROM_LOAD16_BYTE" => "LOAD_8_16",
