@@ -39,7 +39,9 @@ sub get_genre($$) {
 			if ($genre =~ /Shoot/i) {
 				$genre = "GAME_SHOOT";
 			} elsif ($genre =~ /Fight/i) {
-				$genre = "GAME_BEAT";
+			    $genre = "GAME_FIGHT";
+			} elsif ($genre =~ /Beat/i) {
+			    $genre = "GAME_BEAT";
 			} elsif ($genre =~ /(Puzzle|Mahjong)/) {
 				$genre = "GAME_PUZZLE";
 			} elsif ($genre =~ /Quiz/) {
@@ -56,6 +58,8 @@ sub get_genre($$) {
 				$genre = "GAME_BREAKOUT";
 			} elsif ($genre =~ /Maze/) {
 				$genre = "GAME_MAZE";
+			} elsif ($genre =~ /Action/) {
+				$genre = "GAME_MISC";
 			} else {
 				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
 				$genre = "GAME_MISC";
