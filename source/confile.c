@@ -58,7 +58,11 @@ static int config_installed = FALSE;
 /* With all the buffers allocated before for cheats.cfg, I made a segfault
    with default parameters of electric fence !!! */
 
-#define DATA_BLOCK 4096
+// What was the reason of this DATA_BLOCK again ?
+// it was 4096 by default, meaning each token has a minimum size of 4096 (each name and each value !)
+// Seems awfully a lot to me... Maybe it was something to avoid some too small mallocs ?
+// Anyway I'll test with a 4 value instead, seems to work for now...
+#define DATA_BLOCK 4
 
 char *get_data_ptr(CONFIG *cfg,UINT32 size) {
   char *new_ptr;
@@ -392,9 +396,10 @@ static void load_config_file(CONFIG **config, char *filename, char *savefile)
    if (length > 0) {
      FILE *f = fopen(filename, "rb");
       if (f) {
-	 char *tmp = malloc(length);
+	 char *tmp = malloc(length+1);
 	 if (tmp) {
 	    fread(tmp, 1, length, f);
+	    tmp[length] = 0;
 	    set_config(config, tmp, length, savefile);
 	    free(tmp);
 	 }
