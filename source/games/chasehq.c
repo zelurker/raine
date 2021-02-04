@@ -17,7 +17,21 @@
 #include "control_internal.h" // analog support
 #endif
 #include "blit.h"
+#include "files.h"
 
+extern struct ROMSW_DATA romsw_data_taito_jap_us[];
+
+static struct ROMSW_INFO romsw_nightstr[] =
+{
+   { 0x07fFFF, 0x03, romsw_data_taito_jap_us },
+   { 0,        0,    NULL },
+};
+
+static struct ROMSW_INFO romsw_chasehq[] =
+{
+   { 0x03fFFF, 0x03, romsw_data_taito_jap_us },
+   { 0,        0,    NULL },
+};
 
 static struct ROM_INFO rom_chasehq[] =
 {
@@ -219,7 +233,7 @@ static struct ROM_INFO rom_nightstr[] =
    {   "b91-43.bin", 0x00020000, 0x3e6f727a, 0, 0, 0, },
    {   "b91-44.bin", 0x00020000, 0x4bc30adf, 0, 0, 0, },
    {   "b91-45.bin", 0x00020000, 0x7ad63421, 0, 0, 0, },
-   {   "b91-46.bin", 0x00020000, 0xe870be95, 0, 0, 0, },
+   {   "b91-46.bin", 0x00020000, 0x9f778e03, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -895,7 +909,7 @@ static void load_chasehqj(void)
 static void clear_chase_hq(void)
 {
    RemoveTaitoYM2610();
-
+   save_debug("ROM.bin",ROM,0x80000,1);
 }
 
 static void load_nightstr(void)
@@ -1407,6 +1421,7 @@ static void load_nightstr(void)
 static void ClearNightStr(void)
 {
    RemoveTaitoYM2610();
+   save_debug("ROM.bin",ROM,0x80000,1);
 }
 
 static void execute_nightstr(void)
@@ -2431,6 +2446,7 @@ static struct DIR_INFO dir_chasehq[] =
 };
 GAME( chasehq, "Chase HQ", TAITO, 1988, GAME_RACE,
 	.input = input_chasehq,
+	.romsw = romsw_chasehq,
 	.dsw = dsw_chasehq,
 	.clear = clear_chase_hq,
 	.video = &video_nightstr,
@@ -2448,6 +2464,7 @@ static struct DIR_INFO dir_chasehqj[] =
 };
 GAME(chasehqj, "Chase HQ (Japan)", TAITO, 1988, GAME_RACE,
 	.input = input_chasehq,
+	.romsw = romsw_chasehq,
 	.dsw = dsw_chasehq,
 	.clear = clear_chase_hq,
 	.video = &video_nightstr,
@@ -2463,6 +2480,7 @@ static struct DIR_INFO dir_nightstr[] =
 };
 GME( nightstr, "Night Striker", TAITO, 1989, GAME_RACE | GAME_SHOOT | GAME_PARTIALLY_WORKING,
 	.clear = ClearNightStr,
+	.romsw = romsw_nightstr,
 	.board = "b91",
 );
 

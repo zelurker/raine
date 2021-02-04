@@ -1031,7 +1031,7 @@ static struct DSW_INFO dsw_mjnquest[] =
   { 0, 0, NULL }
 };
 
-static struct ROMSW_DATA romsw_data_taito_jap_us[] =
+struct ROMSW_DATA romsw_data_taito_jap_us[] =
 {
    { "Taito Japan",           0x01 },
    { "Taito America",         0x02 },
