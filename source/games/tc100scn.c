@@ -178,7 +178,7 @@ static void scroll_512_bg0_lscroll(TC0100SCN_LAYER *tc_layer, int trans) {
     int n;
     INT16 *offs = &bgscroll_ram[y+8-bmp_y];
 
-    if (y<32) {
+    if (y<24) {
       zz = zzzz = (zzzz+(WIDTH*N/8))&(WIDTH*HEIGHT*N/(8*8)-1);
       continue;
     }
