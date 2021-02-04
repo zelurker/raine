@@ -16,34 +16,40 @@
 #ifdef SDL
 #include "control_internal.h" // analog support
 #endif
+#include "blit.h"
 
 
 static struct ROM_INFO rom_chasehq[] =
 {
-   {  "b52-28.4", 0x00080000, 0x963bc82b, 0, 0, 0, },
-   {  "b52-29.27", 0x00080000, 0x8366d27c, 0, 0, 0, },
-   {  "b52-30.4", 0x00080000, 0x1b8cc647, 0, 0, 0, },
+   {  "b52-28.4", 0x00080000, 0x963bc82b, 0, 0, 0, }, // tc0105rod
+   {  "b52-29.27", 0x00080000, 0x8366d27c, 0, 0, 0, }, // tc0100scn src 8x8
+
+   {  "b52-30.4", 0x00080000, 0x1b8cc647, 0, 0, 0, }, // sprites 2 (obj_b)
    {  "b52-31.6", 0x00080000, 0xf1998e20, 0, 0, 0, },
    {  "b52-32.8", 0x00080000, 0x8620780c, 0, 0, 0, },
    {  "b52-33.10", 0x00080000, 0xe6f4b8c4, 0, 0, 0, },
-   {  "b52-34.5", 0x00080000, 0x7d8dce36, 0, 0, 0, },
+
+   {  "b52-34.5", 0x00080000, 0x7d8dce36, 0, 0, 0, }, // sprites 1 (obj_a)
    {  "b52-35.7", 0x00080000, 0x78eeec0d, 0, 0, 0, },
    {  "b52-36.9", 0x00080000, 0x61e89e91, 0, 0, 0, },
    {  "b52-37.11", 0x00080000, 0xf02e47b9, 0, 0, 0, },
-   {  "b52-38.34", 0x00080000, 0x5b5bf7f6, 0, 0, 0, },
-   {   "b52-50.66", 0x00010000, 0xc189781c, 0, 0, 0, },
+
+   {  "b52-38.34", 0x00080000, 0x5b5bf7f6, 0, 0, 0, }, // sprite map
+
+   {   "b52-50.66", 0x00010000, 0xc189781c, 0, 0, 0, }, // unused
    {   "b52-51.65", 0x00010000, 0x30cc1f79, 0, 0, 0, },
-   {  "b52-129.30", 0x00020000, 0x0eaebc08, 0, 0, 0, },
-   {  "b52-130.36", 0x00020000, 0x4e7beb46, 0, 0, 0, },
-   {  "b52-131.37", 0x00020000, 0xaa945d83, 0, 0, 0, },
-   {  "b52-132.39", 0x00010000, 0xa2f54789, 0, 0, 0, },
-   {  "b52-133.55", 0x00010000, 0x12232f95, 0, 0, 0, },
-   {  "b52-136.29", 0x00020000, 0x2f414df0, 0, 0, 0, },
-   {  "b52-137.51", 0x00010000, 0x37abb74a, 0, 0, 0, },
-   { "b52-113.73", 0x00080000, 0x2c6a3a05, 0, 0, 0, },
+
+   {  "b52-129.30", 0x00020000, 0x0eaebc08, 0, 0, 0, }, // 68k last
+   {  "b52-130.36", 0x00020000, 0x4e7beb46, 0, 0, 0, }, // 68k 1
+   {  "b52-131.37", 0x00020000, 0xaa945d83, 0, 0, 0, }, // 68k 3
+   {  "b52-132.39", 0x00010000, 0xa2f54789, 0, 0, 0, }, // 68kb 1
+   {  "b52-133.55", 0x00010000, 0x12232f95, 0, 0, 0, }, // 68kb 2
+   {  "b52-136.29", 0x00020000, 0x2f414df0, 0, 0, 0, }, // 68k 2
+   {  "b52-137.51", 0x00010000, 0x37abb74a, 0, 0, 0, }, // z80
+   { "b52-113.73", 0x00080000, 0x2c6a3a05, 0, 0, 0, }, // adpcm samples 3,2,1
    { "b52-114.72", 0x00080000, 0x3a73d6b1, 0, 0, 0, },
    { "b52-115.71", 0x00080000, 0x4e117e93, 0, 0, 0, },
-   { "b52-116.70", 0x00080000, 0xad46983c, 0, 0, 0, },
+   { "b52-116.70", 0x00080000, 0xad46983c, 0, 0, 0, }, // delta-t
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -2119,20 +2125,15 @@ static void DrawChaseHQ(void)
    int mask_count;
    int mask_pos[32];
    int mask_pos_y[32];
-   UINT16 scroll_store;
 
    ClearPaletteMap();
+   // clear_game_screen(0);
 
    // Init tc0100scn emulation
    // ------------------------
 
    tc0100scn_layer_count = 0;
    tc0100scn[0].ctrl = ReadWord(RAM_SCROLL+12);
-
-   scroll_store = ReadWord(RAM_SCROLL+0);
-
-   WriteWord(RAM_SCROLL+0,scroll_store+ReadWord(RAM_VIDEO+0xC100));
-   WriteWord(RAM_SCROLL+2,scroll_store+ReadWord(RAM_VIDEO+0xC400));
 
    // Find Mask Sprites
    // -----------------
@@ -2302,8 +2303,6 @@ static void DrawChaseHQ(void)
    // ---
 
    render_tc0100scn_layer_mapped(0,2,1);
-
-   WriteWord(RAM_SCROLL+0,scroll_store);
 
    tc0150rod_show_palette();
 }
