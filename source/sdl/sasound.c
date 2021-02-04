@@ -219,7 +219,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        sound_init = 1;
        strcpy(driver_name,"SDL ");
        SDL_AudioDriverName(&driver_name[4], 32);
-       printf("driver name : %s\n",driver_name);
+       print_debug("sound driver name : %s\n",driver_name);
        // set_sound_variables(0);
        SDL_PauseAudio(0);
    }
@@ -417,7 +417,6 @@ void set_sample_pos(int pos) {
   }
   if (sample) {
     Sound_Seek(sample,pos*10/(441*4));
-    if (done_flag) printf("fix ok\n");
     done_flag = 0;
   } else if (fbin) {
     fseek(fbin,pos,SEEK_SET);
@@ -435,7 +434,7 @@ static void close_sample() {
 #if HAS_NEO
   if (sample) {
     Sound_FreeSample(sample);
-    printf("free sample (close_sample)\n");
+    print_debug("free sample (close_sample)\n");
   }
   sample = NULL;
 #endif
