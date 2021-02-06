@@ -32,12 +32,12 @@ while (<F>) {
 	chomp;
 	s/\r//;
 	if (/^\$info\=(.+)/) {
+		s/tharrier/tforceh/;
+		s/blkheartj/blkhearj/;
 		if (/tnzs,/) {
 			$_ .= "tnzsb,tnzs2,";
 		} elsif (/=bgaregga,/) {
 			$_ .= "battleg,";
-		} elsif (/=1944j,$/) {
-			$_ .= "1944";
 		} elsif (/=tharrier,/) {
 			$_ .= "tforceh";
 		} elsif (/=megablst,/) {
@@ -51,12 +51,10 @@ while (<F>) {
 		my $list = $1;
 		my @list = split /\,/,$list;
 		$skip = 1;
-		if (!/=1944,/) {
-			foreach (@list) {
-				my $game = $_;
-				if (grep { $game eq $_} @games) {
-					$skip = 0;
-				}
+		foreach (@list) {
+			my $game = $_;
+			if (grep { $game eq $_} @games) {
+				$skip = 0;
 			}
 		}
 	} elsif (/^\$(.+?)\=/) { # toutes les consoles etc de ness sont arrivées là-dedans !
