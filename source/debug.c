@@ -35,10 +35,11 @@ void print_debug(const char *format, ...)
 {
   if(debug_mode){
 
-      char debug_str[256];
+      char debug_str[300];
       va_list ap;
       va_start(ap,format);
-      vsprintf(debug_str,format,ap);
+      vsnprintf(debug_str,300,format,ap);
+      debug_str[299] = 0;
       va_end(ap);
 
       /* RAINE_WIN32 has some restrictions : when the computer freezes, */
@@ -80,7 +81,8 @@ void open_debug(void)
 	}
 #if defined(RAINE_WIN32) || defined(RAINE_DOS)
 	fclose(file_debug);
-	strcpy(debug_name,str);
+	strncpy(debug_name,str,256);
+	debug_name[255] = 0;
 #endif
       } else
 	file_debug = stderr;
