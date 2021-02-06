@@ -328,7 +328,7 @@ static struct ROMSW_DATA romsw_data_the_nz_story_0[] =
    { NULL,                    0    },
 };
 
-static struct ROMSW_INFO romsw_tnzsb[] =
+static struct ROMSW_INFO romsw_tnzs[] =
 {
    { 0x2007FFF, 0x03, romsw_data_the_nz_story_0 },
    { 0,        0,    NULL },
@@ -412,7 +412,7 @@ static struct DSW_DATA dsw_data_the_nz_story_1[] =
    { NULL,                    0,   },
 };
 
-static struct DSW_INFO dsw_tnzsb[] =
+static struct DSW_INFO dsw_tnzs[] =
 {
    { 0x000000, 0xFF, dsw_data_the_nz_story_0 },
    { 0x000001, 0xFF, dsw_data_the_nz_story_1 },
@@ -421,7 +421,7 @@ static struct DSW_INFO dsw_tnzsb[] =
 
 
 
-static struct ROM_INFO rom_tnzsb[] =
+static struct ROM_INFO rom_tnzs[] =
 {
   LOAD( ROM1, "nzsb5324.bin", 0, 0x20000, 0xd66824c6),
   LOAD( ROM2, "nzsb5325.bin", 0, 0x10000, 0xd6ac4e71),
@@ -437,7 +437,7 @@ static struct ROM_INFO rom_tnzsb[] =
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
-static struct INPUT_INFO input_tnzsb[] =
+static struct INPUT_INFO input_kageki[] =
 {
    INP0( COIN1, 0x020004, 0x10 ),
    INP0( COIN2, 0x020004, 0x20 ),
@@ -475,7 +475,7 @@ static struct YM2203interface ym2203_bootleg_interface =
    {NULL}
 };
 
-static struct SOUND_INFO sound_tnzsb[] =
+static struct SOUND_INFO sound_tnzs[] =
 {
    { SOUND_YM2203,  &ym2203_bootleg_interface, },
    { 0,             NULL,                      },
@@ -2073,7 +2073,7 @@ static void load_drtoppel(void)
    seta_x1.scr_y	= 0;
 }
 
-static void load_tnzsb(void)
+static void load_tnzs(void)
 {
    UINT8 *TMP;
 
@@ -2820,7 +2820,7 @@ static void load_plumppop(void)
    seta_x1.scr_y	= 0;
 }
 
-static void execute_tnzsb(void)
+static void execute_tnzs(void)
 {
    static UINT32 coin_flip_a,coin_flip_b;
    static UINT32 coin_store_a,coin_store_b;
@@ -3032,7 +3032,7 @@ static struct VIDEO_INFO video_insectx =
    VIDEO_ROTATE_180 |
    VIDEO_ROTATABLE,
 };
-static struct VIDEO_INFO video_tnzsb =
+static struct VIDEO_INFO video_tnzs =
 {
    DrawTNZSSystem,
    256,
@@ -3049,7 +3049,7 @@ static struct DIR_INFO dir_arknoid2[] =
    { "arknoid2", },
    { NULL, },
 };
-#define execute_arknoid2 execute_tnzsb
+#define execute_arknoid2 execute_tnzs
 GME( arknoid2, "Arkanoid 2 Revenge of Doh", TAITO, 1987, GAME_BREAKOUT,
 	.long_name_jpn = "アルカノイド　リベンジオブＤＯＨ",
 	.board = "B08",
@@ -3074,9 +3074,9 @@ static struct DIR_INFO dir_chukatai[] =
 GAME( chukatai, "Chuka Taisen", TAITO, 1988, GAME_SHOOT,
 	.input = input_chukatai,
 	.dsw = dsw_chukatai,
-	.romsw = romsw_tnzsb,
-	.video = &video_tnzsb,
-	.exec = execute_tnzsb,
+	.romsw = romsw_tnzs,
+	.video = &video_tnzs,
+	.exec = execute_tnzs,
 	.board = "B44",
 	.sound = sound_arknoid2,
 );
@@ -3092,7 +3092,7 @@ GAME( drtoppel, "Dr Toppel Tankentai", TAITO, 1987, GAME_SHOOT,
 	.dsw = dsw_drtoppel,
 	.romsw = romsw_drtoppel,
 	.video = &video_drtoppel,
-	.exec = execute_tnzsb,
+	.exec = execute_tnzs,
 	.board = "B19",
 	.sound = sound_arknoid2,
 );
@@ -3108,7 +3108,7 @@ GAME( extrmatn, "Extermination", TAITO, 1987, GAME_SHOOT,
 	.dsw = dsw_extrmatn,
 	.romsw = romsw_extrmatn,
 	.video = &video_arknoid2,
-	.exec = execute_tnzsb,
+	.exec = execute_tnzs,
 	.long_name_jpn = "エクスターミネーション",
 	.board = "B06",
 	.sound = sound_arknoid2,
@@ -3135,11 +3135,11 @@ static struct DIR_INFO dir_kageki[] =
    { NULL, },
 };
 GAME( kageki, "Kageki", TAITO, 1988, GAME_BEAT,
-	.input = input_tnzsb,
+	.input = input_kageki,
 	.dsw = dsw_kageki,
-	.romsw = romsw_tnzsb /*kageki_romsw */,
+	.romsw = romsw_tnzs /*kageki_romsw */,
 	.video = &video_drtoppel,
-	.exec = execute_tnzsb,
+	.exec = execute_tnzs,
 	.long_name_jpn = "火激",
 	.board = "B35",
 	.sound = sound_kageki,
@@ -3154,23 +3154,24 @@ GAME( plumppop, "Plump Pop", TAITO, 1987, GAME_BREAKOUT,
 	.input = input_plumppop,
 	.dsw = dsw_plumppop,
 	.romsw = romsw_plumppop,
-	.video = &video_tnzsb,
-	.exec = execute_tnzsb,
+	.video = &video_tnzs,
+	.exec = execute_tnzs,
 	.board = "A98",
 	.sound = sound_arknoid2,
 );
-static struct DIR_INFO dir_tnzsb[] =
+static struct DIR_INFO dir_tnzs[] =
 {
    { "the_nz_story_bootleg", },
-   { "tnzsb", },
+   { "tnzs", },
    { "tnzs", },
    { NULL, },
 };
-GME(tnzsb, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
+GME(tnzs, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
+	.input = input_kageki,
 	.long_name_jpn = "ニュージーランドストーリー (bootleg)",
 );
-#define load_tnzsb load_tnzsjo
-CLNEI( tnzsjo, tnzsb, "The New Zealand Story (old tnzs raine set)", TAITO, 1988, GAME_PLATFORM,
+#define load_tnzs load_tnzsjo
+CLNEI( tnzsjo, tnzs, "The New Zealand Story (old tnzs raine set)", TAITO, 1988, GAME_PLATFORM,
 	.long_name_jpn = "ニュージーランドストーリー",
 	.input = input_tnzs,
 	.board = "B53",
@@ -3183,7 +3184,7 @@ static struct DIR_INFO dir_tnzsop[] =
    { "tnzs2" },
    { NULL, },
 };
-CLNE(tnzsop, tnzsb, "The New Zealand Story (World, Prototype)", TAITO, 1988, GAME_PLATFORM,
+CLNE(tnzsop, tnzs, "The New Zealand Story (World, Prototype)", TAITO, 1988, GAME_PLATFORM,
 	.long_name_jpn = "ニュージーランドストーリーエキストラ",
 	.input = input_tnzs,
      );

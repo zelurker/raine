@@ -1328,7 +1328,7 @@
   DRV(kageki)
   DRV(plumppop)
   DRV(tnzsjo)
-  DRV(tnzsb)
+  DRV(tnzs)
   DRV(tnzsop)
 
 // zerozone.c
