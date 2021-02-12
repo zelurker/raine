@@ -14,10 +14,10 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.91.12"
+VERSION = "0.91.13"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -64,7 +64,7 @@ HAS_CONSOLE = 1
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # choosing x86_64 here sets NO_ASM to 1 automatically.
-# target=i686-w64-mingw32
+target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
@@ -346,11 +346,6 @@ else
 # linux
 
 SDL = 1
-ifeq (${SDL},1)
-SDLCONFIG = "sdl-config"
-else
-SDLCONFIG = "sdl2-config"
-endif
 
 ifdef DARWIN
 DESTDIR = Raine.app
@@ -450,6 +445,12 @@ ifdef RAINE_DEBUG
  ifndef SDL
 INCDIR +=	-Isource/alleg/debug
   endif
+endif
+
+ifeq (${SDL},1)
+SDLCONFIG = "sdl-config"
+else
+SDLCONFIG = "sdl2-config"
 endif
 
 ifndef VERBOSE
