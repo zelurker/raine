@@ -156,12 +156,7 @@ typedef struct mz80context CONTEXTMZ80;
 #define z80intPending  Z80.irq_state
 #define mz80GetContext(a) z80_get_context(a)
 #define mz80SetContext(a) z80_set_context(a)
-#define mz80int(vector)                                  \
-{                                                        \
-    z80_set_irq_line(vector,INPUT_LINE_IRQ0,HOLD_LINE);  \
-    z80_execute(100);                             \
-    z80_set_irq_line(vector,INPUT_LINE_IRQ0,CLEAR_LINE); \
-}
+void mz80int(int vector);
 #define cyclesRemaining z80_ICount
 #define _z80iff (Z80.iff1|(Z80.iff2<<1))
 #define mz80nmi()                                  \
