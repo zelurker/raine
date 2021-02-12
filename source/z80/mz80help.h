@@ -16,7 +16,11 @@ extern "C" {
 #define MAX_Z80_PORT	(16)
 
 extern UINT8 *ROM_BANK[MAX_Z80];
+#ifndef MAME_Z80
 extern INT32 z80_offdata; // defined in makez80.c for the asm
+#else
+extern INT64 z80_offdata; // defined in makez80.c for the asm
+#endif
 
 #ifndef MAME_Z80
 extern struct mz80context	Z80_context[MAX_Z80];

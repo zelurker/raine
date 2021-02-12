@@ -38,7 +38,7 @@ extern INT32 z80_offdata; // defined in makez80.c (asm)
 #else
 Z80_Regs Z80_context[MAX_Z80];
 UINT32 dwElapsedTicks;
-INT32 z80_offdata;
+INT64 z80_offdata;
 #endif
 struct MemoryReadByte	Z80_memory_rb[MAX_Z80][MAX_Z80_DATA];
 struct MemoryWriteByte	Z80_memory_wb[MAX_Z80][MAX_Z80_DATA];
