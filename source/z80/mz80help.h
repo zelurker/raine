@@ -16,10 +16,10 @@ extern "C" {
 #define MAX_Z80_PORT	(16)
 
 extern UINT8 *ROM_BANK[MAX_Z80];
-#ifndef MAME_Z80
+#if !defined(MAME_Z80) || !defined(__x86_64__)
 extern INT32 z80_offdata; // defined in makez80.c for the asm
-#else
-extern INT64 z80_offdata; // defined in makez80.c for the asm
+#elif defined(__x86_64__)
+extern INT64 z80_offdata;
 #endif
 
 #ifndef MAME_Z80
