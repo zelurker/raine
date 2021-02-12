@@ -3567,6 +3567,7 @@ void z80_reset(void)
 	Z80.after_ei = FALSE;
 	Z80.dwElapsedTicks = 0;
 	Z80.halt = 0;
+	irq_pending = 0;
 
 #ifdef DAISY
 	if (Z80.daisy)
