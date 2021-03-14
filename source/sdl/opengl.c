@@ -6,6 +6,7 @@
 #include <GLES/glext.h>
 // #include <GLES2/gl2.h>
 #else
+#define GL_GLEXT_LEGACY // to try not to include glext.h which redefines the GL_GLEXT_VERSION which shouldn't have gone to SDL_opengl.h !
 #include <SDL_opengl.h>
 #endif
 #undef WINAPI

@@ -3,6 +3,7 @@
 // Go figure : this support is totally broken in windows !!!
 #define GL_GLEXT_PROTOTYPES
 #endif
+// Can't define GL_GLEXT_LEGACY here to get rid of the annoying warning about GL_GLEXT_VERSION
 #include <SDL_opengl.h>
 #ifdef MessageBox
 #undef MessageBox
