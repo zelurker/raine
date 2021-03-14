@@ -618,7 +618,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##BPP##_FlipY(ARG_PRI)  \
       line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
       pline = pbitmap->line[y+yy] + x;                                \
       for(xx=(SIZE-1); xx>=0; xx--,SPR++){                            \
-        if(SPR[xx] && pline[xx] <= pri) {                             \
+        if(*SPR && pline[xx] <= pri) {                             \
           line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                     \
           pline[xx] = pri;                                            \
         }                                                             \
@@ -636,7 +636,7 @@ void pdraw##SIZE##x##SIZE##_Mask_Trans_Mapped_##BPP##_FlipXY(ARG_PRI) \
       line = ((UINT##BPP *)GameBitmap->line[y+yy]) + x;               \
       pline = pbitmap->line[y+yy] + x;                                \
       for(xx=(SIZE-1); xx>=0; xx--,SPR++){                            \
-        if(SPR[xx] && pline[xx] <= pri) {                             \
+        if(*SPR && pline[xx] <= pri) {                             \
           line[xx] = ((UINT##BPP *)cmap)[ *SPR ];                     \
           pline[xx] = pri;                                            \
         }                                                             \
