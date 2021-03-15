@@ -6,8 +6,13 @@
 #include <GLES/glext.h>
 // #include <GLES2/gl2.h>
 #else
+
+#ifdef RAINE_UNIX
+// apparently windows doesn't like this !
 #define GL_GLEXT_LEGACY // to try not to include glext.h which redefines the GL_GLEXT_VERSION which shouldn't have gone to SDL_opengl.h !
+#endif
 #include <SDL_opengl.h>
+
 #endif
 #undef WINAPI
 #include "compat.h"
