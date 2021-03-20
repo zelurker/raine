@@ -10,7 +10,7 @@
  */
 
 #include "gameinc.h"
-#include "dialogs/messagebox.h"
+#include "sdl/dialogs/messagebox.h"
 #include "pd4990a.h"
 #include "files.h"
 #include "2610intf.h"
@@ -30,13 +30,13 @@
 #include "history.h"
 #include "display.h"
 #ifdef RAINE_DEBUG
-#include "gui.h"
+#include "sdl/gui.h"
 #endif
 #ifndef RAINE_DOS
-#include "control_internal.h"
-#include "dialogs/fsel.h"
-#include "gui.h"
-#include "dialogs/neo_debug_dips.h"
+#include "sdl/control_internal.h"
+#include "sdl/dialogs/fsel.h"
+#include "sdl/gui.h"
+#include "sdl/dialogs/neo_debug_dips.h"
 #else
 #include "alleg/gui/rgui.h"
 #endif
@@ -48,7 +48,6 @@
 #include "sound/assoc.h"
 #include "bld.h"
 #include "alpha.h"
-#include "version.h"
 
 // #define NEOGEO_MCARD_16BITS 1
 
@@ -618,7 +617,7 @@ static void write_sound_command(UINT32 offset, UINT16 data) {
     latch = data;
     cpu_int_nmi(CPU_Z80_0);
 
-// #if !defined(HAS_CZ80) && !defined(MAME_Z80)
+#ifndef HAS_CZ80
     // Very few games seem to need this, but Ironclad is one of them (you loose
     // the z80 just after choosing "start game" if you don't do this !)
     // Also mslug produces bad cd songs without this !!!
@@ -627,7 +626,7 @@ static void write_sound_command(UINT32 offset, UINT16 data) {
     cpu_execute_cycles(CPU_Z80_0, 60000);
     dwElapsedTicks = ticks; // say this never happened
     ExitOnEI = 0;
-// #endif
+#endif
   }
 }
 
@@ -688,7 +687,8 @@ static void get_scanline() {
     int cycles = s68000readOdometer() - start_frame;
     // The +0xf0 is to try to make garou happy, it freezes on a certain stage 3 otherwise
     // sadly I can't check it works, lost the savegame and the details of the problem !
-    scanline = ((cycles * NB_LINES / current_neo_frame) + 0xf0);
+    // See the call from read_videoreg, the value of the scanline is expected to go from f0 to 1ff, see details there
+    scanline = cycles * NB_LINES / current_neo_frame + 0xf0;
   }
 }
 
@@ -712,15 +712,15 @@ static void update_interrupts(void)
 	   // For some unknown reason this seems to be
 	   // necessary for last blade 2
 	   // Without this, the stack is filled !!!
-	   debug(DBG_IRQ,"received vbl, still waiting for ack sr=%x\n",s68000_sr);
+	   debug(DBG_IRQ,"received vbl, still waiting for ack sr=%x\n",s68000context.sr);
 	   return;
        }
     }
 
-    if (s68000_interrupts & (1<<level)) {
+    if (s68000context.interrupts[0] & (1<<level)) {
       debug(DBG_IRQ,"irq already pending, ignoring...\n");
     } else {
-	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000_sr);
+	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000context.sr);
 	cpu_interrupt(CPU_68K_0,level);
 	if (level == vbl)
 	    irq.wait_for_vbl_ack = 1;
@@ -735,10 +735,10 @@ static void update_interrupts(void)
   }
   else {
 #ifdef RAINE_DEBUG
-    if (s68000_interrupts & 7)
-      print_debug("should be cleared. %x\n",s68000_interrupts);
+    if (s68000context.interrupts[0] & 7)
+      print_debug("should be cleared. %x\n",s68000context.interrupts[0]);
 #endif
-    s68000_interrupts &= ~7;
+    s68000context.interrupts[0] &= ~7;
     irq.wait_for_vbl_ack = 0;
   }
 }
@@ -748,7 +748,7 @@ static void check_hbl() {
 	// irq.start is a timer, in pixels, 0x180 ticks / line
 	// so if irq.start < 0x180 then there is a timer interrupt on this
 	// line
-	debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x irq.start %d\n",scanline,s68000_interrupts,s68000_pc,s68000_sr,irq.start);
+	debug(DBG_RASTER,"hbl on %d interrupts %x pc %x sr %x irq.start %d\n",scanline,s68000context.interrupts[0],s68000readPC(),s68000context.sr,irq.start);
 	if (irq.control & IRQ1CTRL_AUTOLOAD_REPEAT) {
 	    if (irq.pos == 0xffffffff)
 		irq.start = -1000;
@@ -836,7 +836,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
   switch((offset >> 1) & 7) {
     case 0x00: // Address register
       video_pointer = data;
-      // debug(DBG_IRQ,"set video pointer to %x from %x\n",data,s68000_pc);
+      // debug(DBG_IRQ,"set video pointer to %x from %x\n",data,s68000readPC());
       break;
     case 0x01:  // Write data register
       if (raster_frame && scanline > start_line && raster_bitmap &&
@@ -918,7 +918,7 @@ static UINT16 read_videoreg(UINT32 offset) {
 	      // All the dev docs said about this was that the highest bit was 1 for the displayed area
 	      // which is actually wrong ! This counter goes from f8 to 1ff, and the vbl starts at line f0
 	      // ends at line $10, so much more than 8 lines are not visible on screen !
-	      debug(DBG_RASTER,"access vcounter %x frame_counter %x from pc=%x scanline=%d final value %x\n",vcounter,neogeo_frame_counter,s68000_pc,scanline,(vcounter << 7) | (neogeo_frame_counter & 7));
+	      debug(DBG_RASTER,"access vcounter %x frame_counter %x from pc=%x scanline=%d final value %x\n",vcounter,neogeo_frame_counter,s68000readPC(),scanline,(vcounter << 7) | (neogeo_frame_counter & 7));
 
 	      return (vcounter << 7) | ((neogeo_frame_counter) & 7);
 	    }
@@ -1073,20 +1073,6 @@ static void z80_set_audio_bank(UINT16 region, UINT16 bank) {
     return;
 }
 
-static void set_68k_bank(UINT32 offset, UINT16 data) {
-    if (data != bank_68k) {
-	bank_68k = data;
-	int n = ((data & 7) + 1)*0x100000;
-	if (n + 0x100000 > get_region_size(REGION_CPU1)) {
-	    n = 0x100000;
-	    print_debug("set_68k_bank: received data %x too high\n",data);
-	}
-	print_debug("set_68k_bank set bank %d\n",n);
-	UINT8 *adr = load_region[REGION_CPU1]+n;
-	set_68000_io(0,0x200000,0x2fffff, NULL, adr);
-    }
-}
-
 static void restore_bank() {
   int new_bank = palbank;
   palbank = -1;
@@ -1120,13 +1106,7 @@ static void restore_bank() {
       }
       game_vectors_set = 1-game_vectors_set;
       neogeo_select_bios_vectors(1-game_vectors_set);
-      if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart) {
-	  int old = bank_68k;
-	  bank_68k = 255;
-	  set_68k_bank(0,old);
-      }
   }
-  print_debug("end restore bank\n");
 }
 
 static void system_control_w(UINT32 offset, UINT16 data)
@@ -1147,7 +1127,7 @@ static void system_control_w(UINT32 offset, UINT16 data)
     case 0x03: /* unknown - uPD4990 pin ? */     // mc 2 write enable
     case 0x04: /* unknown - HC32 middle pin 10 */ // mc register select/normal
 	       // writes 0 here when the memory card has been detected
-	       // print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000_pc, offset & 0x07, bit,data,LongSc(s68000context.areg[7]),LongSc(s68000context.areg[7]+4));
+	       // print_debug("PC: %x  Unmapped system control write.  Offset: %x  bank: %x data %x return %x ret2 %x\n", s68000readPC(), offset & 0x07, bit,data,LongSc(s68000context.areg[7]),LongSc(s68000context.areg[7]+4));
 	       break;
   }
 }
@@ -1476,8 +1456,8 @@ void neogeo_read_gamename(void)
       restore_memcard(); // called after loading
   }
   /* update window title with game name */
-  char neocd_wm_title[180];
-  sprintf(neocd_wm_title,"Raine %s - %s",VERSION,config_game_name);
+  char neocd_wm_title[160];
+  sprintf(neocd_wm_title,"Raine - %s",config_game_name);
   SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
 }
 
@@ -2215,18 +2195,6 @@ static void neogeo_hreset(void)
 #endif
       WriteLongSc(&RAM[0x11c810], default_anim); // default anime data for load progress
       // First time init
-#if USE_MUSASHI == 2
-#ifdef BOOT_BIOS
-      REG_PC = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
-#else
-      REG_PC = 0xc00582; // 0xc0a822;
-#endif
-      m68ki_set_sr(0x2700);
-      REG_A[7] = 0x10F300;
-      REG_USP = 0x10F400;
-      s68000_interrupts = 0;
-      m68k_get_context(&M68000_context[0]);
-#else // USE_MUSASHI
 #ifdef BOOT_BIOS
       M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
 #else
@@ -2237,7 +2205,6 @@ static void neogeo_hreset(void)
       M68000_context[0].asp = 0x10F400;
       M68000_context[0].interrupts[0] = 0;
       s68000SetContext(&M68000_context[0]);
-#endif
 #ifndef BOOT_BIOS
       if (!neogeo_cdrom_process_ipl(NULL)) {
 	  ErrorMsg("Error: Error while processing IPL.TXT.\n");
@@ -2248,13 +2215,8 @@ static void neogeo_hreset(void)
   } else {
       z80_enabled = 1; // always enabled in neogeo
       irq3_pending = 1;
-#if USE_MUSASHI == 2
-      REG_A[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
-      REG_PC = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
-#else
       s68000context.areg[7] = M68000_context[0].areg[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
       s68000context.pc = M68000_context[0].pc = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
-#endif
       aes = (neogeo_bios == 22 || neogeo_bios == 23);
       if (aes)
 	  input_buffer[5] &= 0x7f;
@@ -2419,7 +2381,7 @@ static int read_upload(int offset) {
    * directly... so at least it shows this thing is really used after all ! */
 
     int zone = get_upload_type();
-  // print_debug("read_upload: offset %x offset2 %x offset_dst %x zone %x bank %x size %x pc:%x\n",offset,offset2,offset_dst,zone,bank,size,s68000_pc);
+  // print_debug("read_upload: offset %x offset2 %x offset_dst %x zone %x bank %x size %x pc:%x\n",offset,offset2,offset_dst,zone,bank,size,s68000readPC());
   // int bank = m68k_read_memory_8(0x10FEDB);
   offset &= 0xfffff;
 
@@ -2565,7 +2527,7 @@ static void do_dma(char *name,UINT8 *dest, int max) {
     int n;
     int fix = (dest == neogeo_fix_memory); // special case for fix !
     if (dma == 0xfe6d || dma == 0xfe3d || dma == 0xe2dd) { // transfer in words
-	print_debug("dma transfer from %s (%x) to %x len %x in words (dma %x) from %x type:%x\n",name,upload_src,target,upload_len,dma,s68000_pc,upload_type);
+	print_debug("dma transfer from %s (%x) to %x len %x in words (dma %x) from %x type:%x\n",name,upload_src,target,upload_len,dma,s68000readPC(),upload_type);
 	UINT8 *src = dest;
 	if (upload_src < 0x200000) {
 	    src += upload_src;
@@ -2600,7 +2562,7 @@ static void do_dma(char *name,UINT8 *dest, int max) {
     } else if (dma == 0xf2dd) { // transfer again but words inverted (useless !)
 	// for each word abcd in source, generate abcd and then cdab !
 	UINT32 target = ReadLongSc(&upload_param[4]);
-	print_debug("dma transfer from %s (%x) to %x len %x in words with inversion from %x\n",name,upload_src,target,upload_len,s68000_pc);
+	print_debug("dma transfer from %s (%x) to %x len %x in words with inversion from %x\n",name,upload_src,target,upload_len,s68000readPC());
 	if (upload_len > max/4) upload_len = max/4;
 	UINT8 *src = dest;
 	UINT8 *dst = get_target(target,&upload_len);
@@ -2611,7 +2573,7 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	}
     } else if (dma == 0xfef5) {
 	// fill with address WriteLongSc / all adrs
-	print_debug("%s fill with adr dma %x src %x len %x from %x\n",name,dma,upload_src,upload_len,s68000_pc);
+	print_debug("%s fill with adr dma %x src %x len %x from %x\n",name,dma,upload_src,upload_len,s68000readPC());
 	if (upload_len > max/4) upload_len = max/4;
 	if (upload_src < 0x200000)
 	    for (n=upload_src; upload_len > 0; n+=4, upload_len--) {
@@ -2632,7 +2594,7 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	    }
     } else if (dma == 0xcffd) {
 	// fill with address WriteLong68k / adr * 2
-	print_debug("%s fill with adr dma %x len %x from %x\n",name,dma,upload_len,s68000_pc);
+	print_debug("%s fill with adr dma %x len %x from %x\n",name,dma,upload_len,s68000readPC());
 	if (upload_len > max/4) upload_len = max/4;
 	if (fix) {
 	    for (n=0; upload_len > 0; n+=4, upload_len--) {
@@ -2647,7 +2609,7 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	    }
 	}
     } else {
-	print_debug("%s fill with %x dma %x src %x len %x from %x\n",name,upload_fill,dma,upload_src,upload_len,s68000_pc);
+	print_debug("%s fill with %x dma %x src %x len %x from %x\n",name,upload_fill,dma,upload_src,upload_len,s68000readPC());
 	if (upload_len > max/2) upload_len = max/2;
 	for (n=(upload_src < 0x200000 ? upload_src : 0); upload_len > 0; n+=2, upload_len--) {
 	    if (fix) {
@@ -2690,10 +2652,10 @@ static void upload_cmd_w(UINT32 offset, UINT8 data) {
 	    } else if (upload_type == 0) // spr
 		do_dma("spr",&GFX[spr_bank<<20],0x800000-(spr_bank<<20));
 	    else {
-		print_debug("unknown fill %x upload_type %x dma %x from %x\n",upload_src,upload_type,dma,s68000_pc);
+		print_debug("unknown fill %x upload_type %x dma %x from %x\n",upload_src,upload_type,dma,s68000readPC());
 	    }
 	} else {
-	    print_debug("upload: unknown dma %x from %x\n",dma,s68000_pc);
+	    print_debug("upload: unknown dma %x from %x\n",dma,s68000readPC());
 	}
     }
   }
@@ -2738,7 +2700,7 @@ static void write_upload(int offset, int data) {
 
 static void load_files(UINT32 offset, UINT16 data) {
   offset = ReadLongSc(&RAM[0x10f6a0]);
-  print_debug("load_files command %x from %x offset %x\n",data,s68000_pc,offset);
+  print_debug("load_files command %x from %x offset %x\n",data,s68000readPC(),offset);
 
   if (data == 0x550) {
     if (RAM[0x115a06 ^ 1]>32 && RAM[0x115a06 ^ 1] < 127) {
@@ -2782,7 +2744,7 @@ static void cdda_cmd(UINT32 offset, UINT8 data) {
   }
   if (data <= 7) {
     if (data != last_cdda_cmd || last_cdda_track != track) {
-      print_debug("data : %d %d pc:%x\n",RAM[0x10f6f7],RAM[0x10F6F9],s68000_pc);
+      print_debug("data : %d %d pc:%x\n",RAM[0x10f6f7],RAM[0x10F6F9],s68000readPC());
       last_cdda_cmd = data;
       last_cdda_track = track;
       do_cdda(data,RAM[0x10f6f8 ^ 1]);
@@ -2811,16 +2773,9 @@ void myStop68000(UINT32 adr, UINT8 data) {
 	else
 	    RAM[s68000context.areg[5]+(adr & 0x7fff)] &= mask;
 	bclr ^= 1;
-	printf("bclr %d sr %x\n",bclr,s68000_sr);
+	printf("bclr %d sr %x\n",bclr,s68000context.sr);
     }
 #endif
-}
-
-static UINT16 my_read_ff011c(UINT32 offset) {
-    // The bios always reads the region as a word, so it's handled in read_reg
-    // the problem is with the GetLanguageSwitch function, which reads a byte, and doesn't know what to do with the returned word
-    // so we must define a byte handler here for it
-    return input_buffer[10];
 }
 
 static UINT16 read_reg(UINT32 offset) {
@@ -2834,7 +2789,7 @@ static UINT16 read_reg(UINT32 offset) {
     // booted. I keep the code for reference only.
     return 0xff | (region_code << 8);
   }
-  print_debug("RW %x -> ffff [pc=%x]\n",offset,s68000_pc);
+  print_debug("RW %x -> ffff [pc=%x]\n",offset,s68000readPC());
   return 0xffff;
 }
 
@@ -2845,6 +2800,20 @@ static void write_pal(UINT32 offset, UINT16 data) {
   WriteWord(&RAM_PAL[offset],data);
 /*  get_scanline();
   print_debug("write_pal %x,%x scanline %d\n",offset,data,scanline); */
+}
+
+static void set_68k_bank(UINT32 offset, UINT16 data) {
+    if (data != bank_68k) {
+	bank_68k = data;
+	int n = ((data & 7) + 1)*0x100000;
+	if (n + 0x100000 > get_region_size(REGION_CPU1)) {
+	    n = 0x100000;
+	    print_debug("set_68k_bank: received data %x too high\n",data);
+	}
+	print_debug("set_68k_bank set bank %d\n",n);
+	UINT8 *adr = load_region[REGION_CPU1]+n;
+	set_68000_io(0,0x200000,0x2fffff, NULL, adr);
+    }
 }
 
 static void kof99_bankswitch_w(UINT32 offset, UINT16 data) {
@@ -3106,7 +3075,7 @@ static UINT16 fatfury2_prot_rw(UINT32 offset) {
     case 0x36004:
     case 0x3600c: return ((res & 0xf0) >> 4) | ((res & 0x0f) << 4);
     default:
-		  printf("unknown fatufury2_prot_rw from %x : %x\n",s68000_pc,offset);
+		  printf("unknown fatufury2_prot_rw from %x : %x\n",s68000readPC(),offset);
     }
     return 0;
 }
@@ -3127,7 +3096,7 @@ static void fatfury2_prot_ww(UINT32 offset, UINT16 data) {
     case 0x36008:
     case 0x3600c: fatfury2_prot_data <<= 8; break;
     default:
-		  printf("unknown protwrite from %x: %x,%x\n",s68000_pc,offset,data);
+		  printf("unknown protwrite from %x: %x,%x\n",s68000readPC(),offset,data);
     }
 }
 
@@ -4262,7 +4231,7 @@ static UINT16 mslugx_prot_r(UINT32 offset) {
 	    }
 	    break;
     default:
-	    print_debug("unknown mslugx_prot_r pc:%x offset %x\n",s68000_pc,offset);
+	    print_debug("unknown mslugx_prot_r pc:%x offset %x\n",s68000readPC(),offset);
     }
     return res;
 }
@@ -4544,7 +4513,7 @@ static void lans2004_vx_decrypt()
 }
 
 static UINT16 neogeo_unmapped_r(UINT32 offset) {
-    int pc = s68000_pc;
+    int pc = s68000readPC();
     // apparently used at least by magical drop 2, just after entering a name
     // exactly when the game asks if you want to save !
     // So the mame guys say that this hardware returns for unmapped memory
@@ -5023,10 +4992,8 @@ void load_neocd() {
 	AddWriteByte(0xd00000, 0xdfffff, save_ram_wb, NULL);
 	AddWriteWord(0xd00000, 0xdfffff, save_ram_ww, NULL);
 	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
-	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart) {
+	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart)
 	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
-	    AddSaveData_ext("68k_bank",&bank_68k,sizeof(bank_68k));
-	}
 	// Mirror ram for some games
 	// The only game so far I saw using this is magdrop2, but only if speed
 	// hacks are forbidden ! Which is really really weird, but anyway
@@ -5050,7 +5017,6 @@ void load_neocd() {
 	// cdrom : there are probably some more adresses of interest in this area
 	// but I found only this one so far (still missing the ones used to control
 	// the cd audio from the bios when exiting from a game).
-	AddReadByte(0xff011c,0xff011c,my_read_ff011c,NULL);
 	AddReadBW(0xff0000, 0xffffff, read_reg, NULL);
 	AddWriteByte(0xff011c, 0xff011c, NULL, &input_buffer[10-1]); // 10 !
 	AddWriteWord(0xff0002, 0xff0003, load_files, NULL);
@@ -5111,7 +5077,7 @@ void neocd_function(int vector) {
   // function...
   int pc = cpu_get_pc(CPU_68K_0);
   char buff[6];
-  print_debug("neocd_function: initial pc %x, sr %x a7 %x raster_frame %d\n",pc,s68000_sr,s68000_areg[7],raster_frame);
+  print_debug("neocd_function: initial pc %x, sr %x a7 %x raster_frame %d\n",pc,s68000context.sr,s68000context.areg[7],raster_frame);
   if (pc < 0x200000) {
     memcpy(buff,&RAM[pc],6);
     WriteWord(&RAM[pc],0x4239); // stop 68000 here
@@ -5125,27 +5091,21 @@ void neocd_function(int vector) {
     WriteWord(&neocd_bios[pc+4],0);
     pc += 0xc00000;
   }
-#if USE_MUSASHI < 2
   s68000GetContext(&M68000_context[0]);
   s68000context.pc = adr;
-#else
-  m68ki_cpu_core tmp;
-  m68k_get_context(&tmp);
-  REG_PC = adr;
-#endif
-  s68000_areg[5] = 0x108000;
-  if (!s68000_areg[7]) {
+  s68000context.areg[5] = 0x108000;
+  if (!s68000context.areg[7]) {
       print_debug("neocd_function: setup stack ?\n");
-      s68000_areg[7] = 0x10F300;
+      s68000context.areg[7] = 0x10F300;
   }
-  s68000_areg[7] -= 4*8*2; // ???
-  int old_adr = s68000_areg[7];
+  s68000context.areg[7] -= 4*8*2; // ???
+  int old_adr = s68000context.areg[7];
   int old_val = ReadLongSc(&RAM[old_adr]);
-  WriteLongSc(&RAM[s68000_areg[7]],pc);
+  WriteLongSc(&RAM[s68000context.areg[7]],pc);
   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(32,60));
   WriteLongSc(&RAM[old_adr],old_val);
-  if (s68000_pc != pc+6) {
-    print_debug("*** got pc = %x instead of %x after frame 11c810:%x vector was %x\n",s68000_pc,pc+6,ReadLongSc(&RAM[0x11c810]),adr);
+  if (s68000context.pc != pc+6) {
+    print_debug("*** got pc = %x instead of %x after frame 11c810:%x vector was %x\n",s68000context.pc,pc+6,ReadLongSc(&RAM[0x11c810]),adr);
     /* Last blade 2, just before the 1st fight : it tries to access some data
      * for the animation just after it loaded a prg over it. Well the prg
      * seems to have bad data, so it was probably supposed to read the data
@@ -5159,11 +5119,7 @@ void neocd_function(int vector) {
   } else if (pc > 0xc00000) {
     memcpy(&neocd_bios[pc- 0xc00000],buff,6);
   }
-#if USE_MUSASHI < 2
   s68000SetContext(&M68000_context[0]);
-#else
-  m68k_set_context(&tmp);
-#endif
 }
 
 void loading_progress_function() {
@@ -5293,12 +5249,6 @@ void execute_neocd() {
   if (!raster_bitmap)
       raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
 	      320,224);
-  if (z80_enabled /* && !irq.disable */ && RaineSoundCard) {
-      /* Normally irq.disable is an optimization heree,
-       * except that the 007Z bios tests the z80 communication
-       * while irqs are disabled, so it's better to allow this here */
-      execute_z80_audio_frame();
-  }
   if ((irq.control & (IRQ1CTRL_ENABLE)) && !disable_irq1) {
       debug(DBG_RASTER,"raster frame irq.start %d in lines %d\n",irq.start,irq.start/0x180);
 
@@ -5346,7 +5296,7 @@ void execute_neocd() {
 		   * sure to loop on it for each scanline, so that any irq can
 		   * be executed */
 		  stopped_68k = 0;
-		  s68000_pc -= 6;
+		  s68000context.pc -= 6;
 		  rolled = 1;
 	      }
 	      update_interrupts();
@@ -5380,7 +5330,19 @@ void execute_neocd() {
       // the 68k frame does not need to be sliced any longer, we
       // execute cycles on the z80 upon receiving a command !
       raster_frame = 0;
-      cpu_execute_cycles(CPU_68K_0, current_neo_frame);
+      /* I didn't think I needed to be precise on the vbl position for a normal frame, but apparently garou checks the
+       * screen counter until it finds a number between 0 and 2, which is possible only if the vbl is not started at line 0 !
+       * It seems requires by mslug2 too */
+      int first_part = current_neo_frame * 0xf0 / NB_LINES; // f0 = start of vbl
+      int rest = current_neo_frame - first_part;
+      if (!stopped_68k)
+	  cpu_execute_cycles(CPU_68K_0, first_part);
+      if (stopped_68k && current_game->exec == &loading_progress_function) {
+	  // It means we started loading things, best to exit this frame now !
+	  return;
+      }
+      stopped_68k = 0;
+      cpu_execute_cycles(CPU_68K_0, rest);
       if (allowed_speed_hacks) {
 	  /* Speed hacks are searched ONLY in the normal frame because we
 	   * could find places waiting for an hbl and not a vbl if using also
@@ -5395,7 +5357,7 @@ void execute_neocd() {
 		  current_neo_frame = desired_68k_speed;
 	  }
 	  if (!stopped_68k && frame_count++ > 60) {
-	      pc = s68000_pc & 0xffffff;
+	      pc = s68000readPC() & 0xffffff;
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
 
 	      if (pc < 0x200000) {
@@ -5471,14 +5433,23 @@ void execute_neocd() {
       } // allowed_speed_hacks
   }
   start_line -= START_SCREEN;
+  if (z80_enabled /* && !irq.disable */ && RaineSoundCard) {
+      /* Normally irq.disable is an optimization heree,
+       * except that the 007Z bios tests the z80 communication
+       * while irqs are disabled, so it's better to allow this here */
+      execute_z80_audio_frame();
+  }
   if (!raster_frame) {
+      // Puting this before the if (allowed_speed_hacks) breaks pbobblen title screen !
+      // probably some incompatibility with the speed hack ?
+      // anyway keeping it here fixes it
       vblank_interrupt_pending = 1;	   /* vertical blank, after speed hacks */
       update_interrupts();
   }
   /* Add a timer tick to the pd4990a */
   pd4990a_addretrace();
   if (is_neocd()) {
-      if (s68000_pc == 0xc0e602) { // start button
+      if (s68000readPC() == 0xc0e602) { // start button
 	  // For start, irqs are disabled, maybe it expects them to come back
 	  // from the cd ?
 	  Stop68000(0,0);
