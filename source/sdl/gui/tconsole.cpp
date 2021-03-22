@@ -13,6 +13,7 @@
 
 void split_command(char *field, char **argv, int *argc, int max) {
   char *s = field;
+  char *copie = strdup(field);
   *argc = 0;
   for (int n=0; n<max; n++)
       argv[n] = NULL;
@@ -55,12 +56,13 @@ void split_command(char *field, char **argv, int *argc, int max) {
 	      } else
 		  argv[(*argc)++] = s;
 	      if (*argc == max) {
-		  printf("split_command: max arguments : %d for command %s !\n",max,field);
+		  printf("split_command: max arguments : %d for command %s !\n",max,copie);
 		  exit(1);
 	      }
 	  }
       }
   }
+  free(copie);
 }
 
 static int dummy_handler(int cause) { return 0; }
