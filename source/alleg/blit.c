@@ -648,8 +648,10 @@ void ReClipScreen(void)
     desty = 0;
   }
 
+#ifdef USE_BEZELS
   if(GameScreen.yview < disp_screen_y && GameScreen.xview < disp_screen_x)
     bezel_fix_screen_coordinates(&destx,&desty,GameScreen.xview,GameScreen.yview,disp_screen_x,disp_screen_y);
+#endif
 
   if(oldyview < disp_screen_y){
     yyy = oldyview;

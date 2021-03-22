@@ -118,14 +118,7 @@ void init_lang() {
 #ifndef RAINE_DOS
     static char buf[20];
     snprintf(buf,20,"LANGUAGE=%s",language);
-#ifdef RAINE_WIN32
-    /* I had SDL_putenv not working in native windows but maybe it was related
-     * to an old dll. Anyway using putenv + an updated dll works so I'll leave
-     * it like this for now ! */
     putenv(buf);
-#else
-    SDL_putenv(buf);
-#endif
     /* 1st argument of setlocale is *not* a bit mask, and since I don't want numeric conversions here I need to call it twice */
     setlocale(LC_ALL,"");
     setlocale(LC_NUMERIC,"C");

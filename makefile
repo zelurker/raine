@@ -887,8 +887,12 @@ ASSOC += \
 	$(OBJDIR)/sdl/dialogs/sound_commands.o \
 	$(OBJDIR)/sdl/dialogs/neocd_options.o \
 	$(OBJDIR)/sdl/dialogs/neo_softdips.o \
-	$(OBJDIR)/sdl/dialogs/neo_debug_dips.o \
-	$(OBJDIR)/sdl/dialogs/translator.o
+	$(OBJDIR)/sdl/dialogs/neo_debug_dips.o
+
+ifeq (${SDL},1)
+ASSOC += $(OBJDIR)/sdl/dialogs/translator.o
+endif
+
 endif
 
 2151 = 	$(OBJDIR)/sound/ym2151.o \
@@ -1036,8 +1040,11 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/soundcfg.o \
 	$(OBJDIR)/speed_hack.o \
 	$(OBJDIR)/savepng.o \
- 	$(OBJDIR)/loadroms.o \
-	$(OBJDIR)/bezel.o
+ 	$(OBJDIR)/loadroms.o
+
+ifdef USE_BEZELS
+CORE +=	$(OBJDIR)/bezel.o
+endif
 
 ifdef RAINE32
     CORE += $(OBJDIR)/translate.o

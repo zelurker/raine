@@ -36,7 +36,9 @@
 #include "video/newspr.h" // init_video_core
 #include "control_internal.h"
 #include "display.h"
+#ifdef USE_BEZELS
 #include "bezel.h"
+#endif
 #ifdef HAS_CONSOLE
 #include "console/console.h"
 #endif
@@ -1350,9 +1352,11 @@ static void handle_event(SDL_Event *event) {
       reset_ingame_timer();
 
       break;
+#ifdef USE_BEZELS
     case SDL_VIDEOEXPOSE:
       display_bezel();
       break;
+#endif
     case SDL_JOYHATMOTION:
       /* Hats are a windows speciality. In linux, they are seen as 2 separate
        * axis. Since axis simplify the way to handle them, I don't really see

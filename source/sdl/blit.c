@@ -223,8 +223,10 @@ void ReClipScreen(void)
 		 xxx2 = display_cfg.screen_x;
 	     }
 	 }
+#ifdef USE_BEZELS
 	 bezel_fix_screen_size(&xxx2,&yyy2);
 	 bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
+#endif
 #ifdef DARWIN
 	 if (display_cfg.video_mode == 1 && overlays_workarounds) {
 	     // I have a bug here which makes the overlay invisible if it doesn't start
@@ -276,6 +278,7 @@ void ReClipScreen(void)
 	 area2.w = xxx;
 	 area2.h = yyy;
      }
+#ifdef USE_BEZELS
      if (!sdl_overlay) {
 	 int x = area2.x, y = area2.y, w = area2.w, h = area2.h;
 	 // printf("fixing bezel %d %d %d %d - zone du jeu %d %d %d %d scale %d\n",x,y,w,h,xxx,yyy,destx,desty,use_scale2x);
@@ -286,6 +289,7 @@ void ReClipScreen(void)
      }
 
      display_bezel();
+#endif
      if (GameViewBitmap)
 	 clear_bitmap(GameViewBitmap);
 
@@ -295,8 +299,11 @@ void ReClipScreen(void)
      // if (reading_demo) display_cfg.screen_y += 8;
  }
 
+#ifdef USE_BEZELS
   if(yview2 <= disp_screen_y && xview2 <= disp_screen_x && current_game)
     bezel_fix_screen_coordinates(&destx,&desty,xview2,yview2,disp_screen_x,disp_screen_y);
+#endif
+
   if(yview < disp_screen_y){
     yyy = yview;
     yoff2 = GameScreen.ytop;

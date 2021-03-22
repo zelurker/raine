@@ -443,7 +443,9 @@ static void get_best_resolution_dlg(const VIDEO_INFO *vid,int *w,int *h) {
   *w = vid->screen_x;
   *h = vid->screen_y;
 
+#ifdef USE_BEZELS
   bezel_fix_screen_size(w,h);
+#endif
   if (vid->flags & VIDEO_ROTATE_90 || (vid->flags & 3)==VIDEO_ROTATE_270) {
     ta = *w; *w = *h; *h = ta; // vertiacal inversion...
   }
