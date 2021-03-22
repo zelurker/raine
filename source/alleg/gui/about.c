@@ -160,6 +160,7 @@ static char *OSName(void)
 }
 
 char raine_cpu_model[80];
+extern char *current_year; // raine.c
 
 int about_proc(int msg, DIALOG *d, int c)
 {
@@ -171,7 +172,7 @@ int about_proc(int msg, DIALOG *d, int c)
     Unselect_Button(d);
     FadeGUI();
     check_cpu();
-    sprintf(about0, EMUNAME " " VERSION " (c)1998-2019 " HANDLE);
+    sprintf(about0, EMUNAME " " VERSION " (c)1998-%s " HANDLE,current_year);
     sprintf(about1, "Compiled on " __DATE__ " (" __TIME__ ")");
 #ifdef __GNUC__
     {

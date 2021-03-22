@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*									      */
-/*	   RAINE (680x0 arcade emulation) v0.35 (c) 1998-2020 Raine Team      */
+/*	   RAINE (680x0 arcade emulation) v0.35 (c) 1998-2020+ Raine Team      */
 /*									      */
 /******************************************************************************/
 
@@ -162,6 +162,8 @@ static void mymprotect(void* adr) {
 }
 #endif
 
+char *current_year = __DATE__; // used also in sdl/dialogs/about.cpp
+
 int main(int argc,char *argv[])
 {
    int i;
@@ -232,7 +234,11 @@ int main(int argc,char *argv[])
     // Anyway we should disable the console in windows, it's uggly and broken.
      printf(" RAINE");
 #endif
-    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-2020(!) " HANDLE);
+     current_year = strchr(current_year,' ');
+     if (current_year) current_year = strchr(current_year+1,' ');
+     if (current_year) current_year++;
+     else current_year = "?";
+    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-%s(!) " HANDLE,current_year);
 
    printf("\n\n");
 

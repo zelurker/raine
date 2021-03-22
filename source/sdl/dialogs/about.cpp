@@ -796,7 +796,7 @@ int show_moves(int sel) {
 
 static menu_item_t about_items[] =
 {
-  { EMUNAME " " VERSION " (c)1998-2020 " HANDLE, NULL, NULL },
+  { "", NULL, NULL },
   { "Compiled on " __DATE__ " " __TIME__ , NULL, NULL },
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
@@ -841,6 +841,8 @@ static TAbout_menu *about_menu;
 static char gcc_version[30];
 static char about_cpu[64];
 
+extern char *current_year; // defined in raine.c
+
 int do_about(int sel) {
     char *path;
 #ifdef __GNUC__
@@ -864,6 +866,9 @@ int do_about(int sel) {
 #else
     sprintf(gcc_version,"with an unknown gcc ???");
 #endif
+    char title[80];
+    snprintf(title,80, EMUNAME " " VERSION " (c)1998-%s " HANDLE,current_year);
+    about_items[0].label = title;
     about_items[2].label = gcc_version;
     path = get_shared("bitmaps/raine_logo.png");
     snprintf(about_cpu, 64, "CPU: %s", raine_cpu_model);
