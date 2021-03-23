@@ -140,7 +140,7 @@ void init_scripts() {
 	    int argc;
 	    char *argv[100];
 	    char **margv = argv;
-	    split_command(buff,argv,&argc,100);
+	    split_command(buff,argv,&argc,200); // there are about 130 levels to choose from for pbobble2 !
 	    if (argc < 2) {
 		printf("init_scripts: script without title: %s\n",buff);
 		fclose(f);
