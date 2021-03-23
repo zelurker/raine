@@ -6,7 +6,7 @@
 #include "dialogs/messagebox.h"
 #include "profile.h"
 
-#define MAX_PARAM 90
+#define MAX_PARAM 190
 
 typedef struct {
   char *title;
@@ -138,7 +138,7 @@ void init_scripts() {
 		script[nb_scripts].change = NULL;
 	    script[nb_scripts].changing = 0;
 	    int argc;
-	    char *argv[100];
+	    char *argv[200];
 	    char **margv = argv;
 	    split_command(buff,argv,&argc,200); // there are about 130 levels to choose from for pbobble2 !
 	    if (argc < 2) {
