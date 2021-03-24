@@ -71,6 +71,8 @@
 #define DBG_SPRITES 4
 #define DBG_LEVEL 0
 
+// BOOT_BIOS : boots the bios, but stays in the bios if doing that, you never reach the game
+// very likely because of the lack of emulation for the cdrom irq... !
 // #define BOOT_BIOS 1
 
 #ifndef RAINE_DEBUG
@@ -1423,7 +1425,7 @@ void neogeo_read_gamename(void)
     game++;
 
   if (neocd_id == 0x48 || neocd_id == 0x0221 || neocd_id == 0x96 ||
-	  neocd_id == 0x92) {
+	  neocd_id == 0x92 ) { // kabukikl tst/bmi
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
     // nor for magical drop 2 (it sets manually the vbl bit for the controls
     // on the main menu to work, which makes the speed hack much more complex!
@@ -5413,17 +5415,24 @@ void execute_neocd() {
 		  current_neo_frame = desired_68k_speed;
 	  }
 	  if (!stopped_68k && frame_count++ > 60 && current_neo_frame < desired_68k_speed) {
-	      pc = s68000readPC() & 0xffffff;
+	      pc = s68000_pc & 0xffffff;
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
 
 	      if (pc < 0x200000) {
 		  // printf("testing speed hack... pc=%x pc: %x pc-6:%x\n",pc,ReadWord(&RAM[pc]),ReadWord(&RAM[pc-6]));
 		  not_stopped_frames = 0;
-		  if ((ReadWord(&RAM[pc]) == 0xb06e || ReadWord(&RAM[pc]) == 0x4a2d || ReadWord(&RAM[pc]) == 0x4a28) &&
+#if 1
+		  // The 4a2d / 67fa is used by all the kof games, the trick with this one is that the speed hack works
+		  // but after that there is a jump table in ram which gets totally corruped and sends the pc out of bounds
+		  // not sure if it's the jump table itself or some crc error which creates the crash, but it's shared by all
+		  // the kof games, so the best is to comment this out
+		  if ((ReadWord(&RAM[pc]) == 0xb06e || /* ReadWord(&RAM[pc]) == 0x4a2d || */ ReadWord(&RAM[pc]) == 0x4a28) &&
 			  (ReadWord(&RAM[pc+4]) == 0x67fa ||
 			   ReadWord(&RAM[pc+4]) == 0x6bfa)) {
 		      apply_hack(pc,"beq/bmi");
-		  } else if (ReadWord(&RAM[pc]) == 0x4a39 &&
+		  } else
+#endif
+		      if (ReadWord(&RAM[pc]) == 0x4a39 &&
 			  ReadWord(&RAM[pc+6]) == 0x6bf8) { // tst.b/bmi
 		      apply_hack(pc,"tst/bmi");
 		      WriteWord(&RAM[pc+6],0x4e71); // nop
