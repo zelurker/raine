@@ -1401,7 +1401,8 @@ void neogeo_read_gamename(void)
   while (game->name && game->id != neocd_id)
     game++;
 
-  if (neocd_id == 0x48 || neocd_id == 0x0221 || !strncmp(current_game->main_name,"aof3",4)) {
+  if (neocd_id == 0x48 || neocd_id == 0x0221 || neocd_id == 0x96 ||
+	  neocd_id == 0x92) {
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
     // nor for magical drop 2 (it sets manually the vbl bit for the controls
     // on the main menu to work, which makes the speed hack much more complex!
@@ -1458,7 +1459,11 @@ void neogeo_read_gamename(void)
   /* update window title with game name */
   char neocd_wm_title[160];
   sprintf(neocd_wm_title,"Raine - %s",config_game_name);
+#if SDL==1
   SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
+#elif SDL==2
+  SDL_SetWindowTitle(win,neocd_wm_title);
+#endif
 }
 
 static struct ROMSW_DATA romsw_data_neocd[] =
@@ -5356,7 +5361,7 @@ void execute_neocd() {
 		  // It's the only way I found which works so far... !
 		  current_neo_frame = desired_68k_speed;
 	  }
-	  if (!stopped_68k && frame_count++ > 60) {
+	  if (!stopped_68k && frame_count++ > 60 && current_neo_frame < desired_68k_speed) {
 	      pc = s68000readPC() & 0xffffff;
 	      UINT8 *RAM = get_userdata(CPU_68K_0,pc);
 
