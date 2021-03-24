@@ -343,7 +343,7 @@ void init_load_type() {
 		}
 	    } else {
 		int n = nb_tracks-1;
-		if (!exists(mp3_track[n])) {
+		if (n >= 0 && !exists(mp3_track[n])) {
 		    char *ext = strrchr(mp3_track[n],'.');
 		    if (ext) {
 			char *exts[] = { "mp3","ogg","flac", NULL };
@@ -871,12 +871,6 @@ void neogeo_cdrom_load_title(void)
     }
   }
 
-#ifndef RAINE_DOS
-  if (sdl_screen->w != display_cfg.screen_x ||
-      sdl_screen->h != display_cfg.screen_y ||
-      sdl_screen->format->BitsPerPixel != display_cfg.bpp)
-    ScreenChange();
-#endif
   DrawNormal();
   memset(video_spr_usage,0,(size-0x5a0)/128); // Clear the sprite usage !!!
   free(buff);
