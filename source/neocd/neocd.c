@@ -1482,11 +1482,7 @@ void neogeo_read_gamename(void)
   /* update window title with game name */
   char neocd_wm_title[160];
   sprintf(neocd_wm_title,"Raine - %s",config_game_name);
-#if SDL==1
   SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
-#elif SDL==2
-  SDL_SetWindowTitle(win,neocd_wm_title);
-#endif
 }
 
 static struct ROMSW_DATA romsw_data_neocd[] =
@@ -5301,12 +5297,6 @@ void execute_neocd() {
   if (!raster_bitmap)
       raster_bitmap = create_bitmap_ex(bitmap_color_depth(GameBitmap),
 	      320,224);
-  if (z80_enabled /* && !irq.disable */ && RaineSoundCard) {
-      /* Normally irq.disable is an optimization heree,
-       * except that the 007Z bios tests the z80 communication
-       * while irqs are disabled, so it's better to allow this here */
-      execute_z80_audio_frame();
-  }
   if ((irq.control & (IRQ1CTRL_ENABLE)) && !disable_irq1) {
       debug(DBG_RASTER,"raster frame irq.start %d in lines %d\n",irq.start,irq.start/0x180);
 
