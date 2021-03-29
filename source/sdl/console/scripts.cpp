@@ -125,6 +125,11 @@ void init_scripts() {
 	    myfgets(buff,10240,f);
 	while (*buff && buff[strlen(buff)-1] == '\\')
 	    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
+	char *com = strstr(buff,"\"com");
+	if (com) { // comments can be on multiple lines !!!
+	    while (!strchr(com+1,'"'))
+		myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
+	}
 	if (!strncmp(buff,"script \"",8) ||
 		!strncmp(buff,"hidden \"",8)) {
 	    if (nb_scripts == nb_alloc) {
