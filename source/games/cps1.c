@@ -1694,17 +1694,37 @@ static UINT16 sf2dongb_rw(UINT32 offset) {
     return 0;
 }
 
+static void restore_hack() {
+    // This function tries to restore old savegames with an outdated speed hack inside to point to the new one, what a hassle !
+   int size_code = get_region_size(REGION_CPU1);
+   UINT8 *base = s68k_get_userdata(0,s68000_areg[7] & 0xffffff);
+    if (s68000_pc > size_code && s68000_pc < size_code+32) {
+	printf("old pc %x\n",s68000_pc);
+	s68000_pc = s68000_pc - size_code + 0x50000;
+	printf("new pc %x\n",s68000_pc);
+    } else {
+	int ret = ReadLongSc(&base[s68000_areg[7]+2]);
+	printf("nothing to fix pc : %x ret %x\n",s68000_pc,ret);
+	if (ret > 0x400000 && ret < 0x400020) {
+	    WriteLongSc(&base[s68000_areg[7]+2],ret-0x400000+0x500000);
+	    printf("return address fixed : %x\n",ReadLongSc(&base[s68000_areg[7]+2]));
+	} else if (ret == 0x3ffff6 || ret == 0x1ffff6 || ret == 0x27fff6) { // msh case size_code = 400000 but the speed hack is just before the end of the rom !
+	    // 1ffff6 is dimahoo, 27fff6 for 19xx !
+	    WriteLongSc(&base[s68000_areg[7]+2],0x50000e);
+	    printf("return address fixed : %x\n",ReadLongSc(&base[s68000_areg[7]+2]));
+	}
+    }
+}
+
 void finish_conf_cps1()
 {
    AddZ80AInit();
    max_hack_counter = 22;
    z80_speed_hack = 0;
 
-   int size_code = get_region_size(REGION_CPU1);
    if (is_current_game("sf2dongb"))
        AddReadWord(0x180000, 0x1fffff, sf2dongb_rw, NULL);
    AddMemFetch(0x500000, 0x500020, space_hack - 0x500000);
-   print_debug("space_hack mapped at %x\n",size_code);
    AddReadBW(0x500000, 0x500020, NULL, space_hack);
 
    finish_conf_68000(0);
@@ -2440,6 +2460,7 @@ static uint32 cps2_read32(uint32 adr) {
 void load_cps2() {
   // UINT16 *rom = load_region[REGION_ROM1];
 /*   int size = get_region_size(REGION_USER1)/2,i,size_code; */
+    default_frame = CPU_FRAME_MHz(16,60);
   size_code = get_region_size(REGION_ROM1);
   ByteSwap(ROM, size_code );
   cps2crpt();
@@ -2502,6 +2523,7 @@ void load_cps2() {
 
   AddMemFetch(0x000000, size_code-1, ROM+0x000000-0x000000);
   AddMemFetch(0xff0000, 0xffffff, RAM+0x040000-0xff0000);
+  AddLoadCallback(restore_hack);
   /* This is a kabuki like encryption : "encrypted" on the data bus, decoded on the
      pc bus. No way to tell if a byte should go on 1 bus or the other, so we must keep
      the 2 versions at the same time... */
@@ -2733,6 +2755,7 @@ static void dynamic_hack() {
   if (cpu_frame_count < 800 && strcmp(current_game->main_name,"qad")) {
     if (ReadWord(&ROM[pc]) == 0x46fc && ReadWord(&ROM[pc+2]) == 0x2000 &&
 	ReadWord(&ROM[pc+8]) == 0x67f6) { // pzloop2j
+	printf("apply hack at frame %d\n",cpu_frame_count);
       apply_hack(pc+4,0);
       max_hack_counter = 0;
     } else {
@@ -2775,7 +2798,7 @@ LAB_002F:
         BEQ.S   LAB_002E                ;000966: 67EE
 	!!! */
       max_hack_counter = 0; // hack counter useless here
-      apply_hack(pc-10,4);
+      apply_hack(pc-10,0);
     } else if (ReadWord(&ROM[pc+22]) == 0x82d && ReadWord(&ROM[pc+28]) == 0x66f8)
       apply_hack(pc+0x16,1);
     else if (ReadWord(&ROM[pc-6]) == 0x4a39 && ReadWord(&ROM[pc]) == 0x66f8)
@@ -2859,7 +2882,8 @@ LAB_002F:
     print_ingame(120,gettext("Speed hack not found, slowing down..."));
     print_debug("Failed to find speed hack\n");
     speed_hack = 1;
-      frame_68k = default_frame;
+    frame_68k = default_frame;
+    printf("default_frame %d\n",default_frame);
   }
   if (speed_hack)
     undo_counter = 10;
