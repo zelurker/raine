@@ -1,4 +1,4 @@
-########################################
+#######################################
 ##                                    ##
 ##                RAINE               ##
 ##                                    ##
@@ -399,7 +399,7 @@ ifndef SDL
 ALLEGRO_CFLAGS = "$(shell allegro-config --cflags)"
 endif
 
-   INCDIR += $(PNG_CFLAGS) $(ALLEGRO_CFLAGS) -I$(X11BASE)/include -I$(LOCALBASE)/include
+   INCDIR += $(PNG_CFLAGS) $(ALLEGRO_CFLAGS)
 
 
    DEFINE = -D__RAINE__ \
@@ -598,15 +598,6 @@ ifndef CROSSCOMPILE
 INCDIR += -I/usr/local/include
 endif
 
-ifdef RAINE_UNIX
-	# windows uses /usr/include so it's handy when cross compiling from linux
-ifeq ($(wildcard /usr/include/muParser),)
-	INCDIR += -I/usr/local/include/muParser
-else
-	INCDIR += -I/usr/include/muParser
-endif
-endif
-
 ifdef USE_MUSASHI
 DEFINE += -DMUSASHI_CNF=\"m68kconf-raine.h\" -DUSE_MUSASHI=$(USE_MUSASHI)
 endif
@@ -616,9 +607,11 @@ ifndef BIGENDIAN
 DEFINE += -DLSB_FIRST
 endif
 
+# The -fno-stack-protector is because of a stack smash which happens on only 1 computer and which does not make any sense at all !
+# see comment in TConsole::TConsole
 ifdef RAINE_DEBUG
 CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation
-CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation
+CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation -fno-stack-protector
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
 # the 68020 core in dos. -Wno-trigraphs suppress some anoying warnings with
@@ -640,7 +633,7 @@ CFLAGS += $(INCDIR) \
 	-fexpensive-optimizations \
 	-ffast-math \
 	-w \
-	-fomit-frame-pointer
+	-fomit-frame-pointer -fno-stack-protector
 
 # This is required for gcc-2.9x (bug in -fomit-frame-pointer)
 ifeq ($(GCC_MAJOR),2)
@@ -804,7 +797,6 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/newspr.o \
 	$(OBJDIR)/video/spr64.o \
 	$(OBJDIR)/video/cache.o \
-	$(OBJDIR)/video/res.o \
 	$(OBJDIR)/video/scale2x.o \
 	$(OBJDIR)/video/scale3x.o \
 	$(VIDEO_CORE)/str/6x8_8.o \
@@ -828,6 +820,10 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/c/str_opaque.o \
 	$(OBJDIR)/video/c/common.o \
 	$(OBJDIR)/video/c/pdraw.o
+
+ifneq (${SDL},2)
+	VIDEO += $(OBJDIR)/video/res.o
+endif
 
 ifndef NO_ASM
 VIDEO += \
@@ -1091,9 +1087,12 @@ CORE += $(OBJDIR)/sdl/SDL_gfx/SDL_framerate.o
 endif
 
 ifdef SDL
-CORE += \
-	$(OBJDIR)/sdl/SDL_gfx/SDL_rotozoom.o \
-	$(OBJDIR)/sdl/SDL_gfx/SDL_gfxPrimitives.o
+
+ifneq (${SDL},2)
+CORE += $(OBJDIR)/sdl/SDL_gfx/SDL_gfxPrimitives.o
+CORE +=	$(OBJDIR)/sdl/SDL_gfx/SDL_rotozoom.o
+endif
+
 endif
 
 # Mame Support (eeprom and handlers for the sound interface)

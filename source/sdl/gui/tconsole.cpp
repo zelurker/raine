@@ -96,6 +96,8 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   edit_child = new TEdit(&edit_menu);
   visible = is_visible;
   interactive = NULL;
+  // For some unknown reason, this simple line to get muparser version creates a stack smash when leaving this constructor
+  // but only on 1 computer ! No obvious reason for that, the simplest workaround seems to use the gcc -fno-stack-protector option
   print(pretty_emu_name " " VERSION " console based on muParser v%s", mu::Parser().GetVersion().c_str());
 }
 
