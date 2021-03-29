@@ -60,11 +60,11 @@ off:
     dpoke $02F108 $1E84
 script " "  
 script "Add Character Option to Test Menu" \
- "comm:Select "CHARACTER" to access the menu.
-Pick "OBJECT" for sprites,
-"SCROLL1" for the game's font,
-"SCROLL2" for the game's foreground tiles,
-and "SCROLL3" for background tiles.
+ "comm:Select 'CHARACTER' to access the menu.
+Pick 'OBJECT' for sprites,
+'SCROLL1' for the game's font,
+'SCROLL2' for the game's foreground tiles,
+and 'SCROLL3' for background tiles.
 
 Controls:
 Up: Scroll down.

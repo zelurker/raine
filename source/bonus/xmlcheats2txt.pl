@@ -188,6 +188,7 @@ foreach ($ref->findnodes("//cheat")) {
 	next if ($_->findvalue('./@desc') =~ /Sound Test/i);
 	print 'script "',$_->findvalue('./@desc'),'" ';
 	my $com = $_->findnodes('./comment');
+	$com =~ s/"/'/g;
 	print "\\\n \"comm:$com\" " if ($com);
 	foreach my $param ($_->findnodes("./parameter")) {
 		if ($param) {
