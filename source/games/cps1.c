@@ -1694,24 +1694,29 @@ static UINT16 sf2dongb_rw(UINT32 offset) {
     return 0;
 }
 
+static int my_hack;
+
 static void restore_hack() {
     // This function tries to restore old savegames with an outdated speed hack inside to point to the new one, what a hassle !
+    if (my_hack == 0) return; // no hack installed, nothing to do
    int size_code = get_region_size(REGION_CPU1);
    s68000_areg[7] &= 0xffffff;
    UINT8 *base = s68k_get_userdata(0,s68000_areg[7] );
+   if (!base) return;
     if (s68000_pc > size_code && s68000_pc < size_code+32) {
 	printf("old pc %x\n",s68000_pc);
 	s68000_pc = s68000_pc - size_code + 0x50000;
 	printf("new pc %x\n",s68000_pc);
     } else {
 	int ret = ReadLongSc(&base[s68000_areg[7]+2]);
-	printf("nothing to fix pc : %x ret %x\n",s68000_pc,ret);
-	if (ret > 0x400000 && ret < 0x400020) {
-	    WriteLongSc(&base[s68000_areg[7]+2],ret-0x400000+0x500000);
+	printf("nothing to fix pc : %x ret %x my_hack %d\n",s68000_pc,ret,my_hack);
+	int val = my_hack == 1 ? 0x50000e : 0x500010;
+	if (ret > size_code && ret < size_code+0x20) {
+	    WriteLongSc(&base[s68000_areg[7]+2],val);
 	    printf("return address fixed : %x\n",ReadLongSc(&base[s68000_areg[7]+2]));
 	} else if (ret == 0x3ffff6 || ret == 0x1ffff6 || ret == 0x27fff6) { // msh case size_code = 400000 but the speed hack is just before the end of the rom !
 	    // 1ffff6 is dimahoo, 27fff6 for 19xx !
-	    WriteLongSc(&base[s68000_areg[7]+2],0x50000e);
+	    WriteLongSc(&base[s68000_areg[7]+2],val);
 	    printf("return address fixed : %x\n",ReadLongSc(&base[s68000_areg[7]+2]));
 	}
     }
@@ -1719,10 +1724,12 @@ static void restore_hack() {
 
 void finish_conf_cps1()
 {
+    my_hack = 0;
    AddZ80AInit();
    max_hack_counter = 22;
    z80_speed_hack = 0;
 
+   AddLoadCallback(restore_hack);
    if (is_current_game("sf2dongb"))
        AddReadWord(0x180000, 0x1fffff, sf2dongb_rw, NULL);
    AddMemFetch(0x500000, 0x500020, space_hack - 0x500000);
@@ -2524,7 +2531,6 @@ void load_cps2() {
 
   AddMemFetch(0x000000, size_code-1, ROM+0x000000-0x000000);
   AddMemFetch(0xff0000, 0xffffff, RAM+0x040000-0xff0000);
-  AddLoadCallback(restore_hack);
   /* This is a kabuki like encryption : "encrypted" on the data bus, decoded on the
      pc bus. No way to tell if a byte should go on 1 bus or the other, so we must keep
      the 2 versions at the same time... */
@@ -2691,6 +2697,7 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
   if (loop_end < 0x100) {
       // just insert some code at the end of the rom...
       int n;
+      my_hack = 1;
       for (n=0; n<8; n+=2) {
 	  pWriteWord(&space_hack[n],ReadWord(&ROM[loop_start+n]));
       }
@@ -2703,6 +2710,7 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
       pWriteWord(&ROM[loop_start+6],0x4e71); // nop
       return;
   }
+  my_hack = 2;
   free+=22;
   apply_rom_hack(space_hack,22-12,4);
   print_ingame(300,gettext("Long hack jump at %x..."),loop_end);
