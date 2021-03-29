@@ -1697,7 +1697,8 @@ static UINT16 sf2dongb_rw(UINT32 offset) {
 static void restore_hack() {
     // This function tries to restore old savegames with an outdated speed hack inside to point to the new one, what a hassle !
    int size_code = get_region_size(REGION_CPU1);
-   UINT8 *base = s68k_get_userdata(0,s68000_areg[7] & 0xffffff);
+   s68000_areg[7] &= 0xffffff;
+   UINT8 *base = s68k_get_userdata(0,s68000_areg[7] );
     if (s68000_pc > size_code && s68000_pc < size_code+32) {
 	printf("old pc %x\n",s68000_pc);
 	s68000_pc = s68000_pc - size_code + 0x50000;
