@@ -11,7 +11,7 @@ off:
 script "Enable 'Alternate World' Levels" \
  "comm:Drunk on Title Screen and different maps, Same as 'Fire,LEFT,RIGHT,Fire' on Title Screen"
 on:
-    poke $40A276 $01
+    poke $40A27a $01
 script "Disable 'Alternate World' Levels"
 on:
     poke $40A276 $00
