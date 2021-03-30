@@ -127,8 +127,10 @@ void init_scripts() {
 	    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
 	char *com = strstr(buff,"\"com");
 	if (com) { // comments can be on multiple lines !!!
-	    while (!strchr(com+1,'"'))
-		myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
+	    while (!strchr(com+1,'"')) {
+		strcat(buff,"\n");
+		myfgets(buff+strlen(buff),10240-strlen(buff),f);
+	    }
 	}
 	if (!strncmp(buff,"script \"",8) ||
 		!strncmp(buff,"hidden \"",8)) {
