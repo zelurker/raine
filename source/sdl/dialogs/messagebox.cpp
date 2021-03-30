@@ -9,6 +9,15 @@ static int button_proc(int sel) {
   return 1; // exit menu
 }
 
+static char *cherche(char *s, int len, char c) {
+    // Search a char backwards in a string, from len to 0
+    for (int n=len; n>=0; n--) {
+	if (s[n] == c)
+	    return &s[n];
+    }
+    return NULL;
+}
+
 int MessageBox(char *title, char *the_content, char *mybtn) {
   menu_item_t *menu;
   int nb_lines = 0;
@@ -29,6 +38,15 @@ int MessageBox(char *title, char *the_content, char *mybtn) {
   }
 
   start = s = content;
+  if (!strstr(s,"\n")) {
+      // Cut the lines if they are longer than say 80 chars
+      char *b;
+      while (strlen(s) > 80 && (b = cherche(s,80,' '))) {
+	  *b = "\n"[0];
+	  s = b+1;
+      }
+      s = start;
+  }
   while ((s = strstr(s,"\n"))) {
     nb_lines++;
     s++;
