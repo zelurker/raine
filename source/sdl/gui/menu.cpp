@@ -176,7 +176,7 @@ void read_menu_config() {
   return_mandatory = raine_get_config_int("GUI", "return_mandatory", 0);
   use_transparency = raine_get_config_int("GUI", "use_transparency", 1);
   fg_color = raine_get_config_hex("GUI", "fg_color", mymakecol(255,255,255));
-  bg_color = raine_get_config_hex("GUI", "bg_color", makecol_alpha(0x11,0x07,0x78,128));
+  bg_color = raine_get_config_hex("GUI", "bg_color", makecol_alpha(0x11,0x07,0x68,192));
   fgframe_color = raine_get_config_hex("GUI", "fgframe_color", mymakecol(255,255,255));
   bgframe_color = raine_get_config_hex("GUI", "bgframe_color", mymakecol(0,0,128));
   cslider_border = raine_get_config_hex("GUI", "slider_border", mymakecol(0,0,0));
