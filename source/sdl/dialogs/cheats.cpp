@@ -6,6 +6,7 @@
 #ifdef HAS_CONSOLE
 #include "console/scripts.h"
 #endif
+#include "dialogs/messagebox.h"
 
 class TCheatDlg : public TMenu
 {
@@ -16,16 +17,58 @@ class TCheatDlg : public TMenu
       TMenu::disp_menu(n,y,w,h);
       draw_bot_frame();
     }
+    char *get_cheat_info() {
+      static char cheat_info[512];
+      if (sel < CheatCount) {
+	snprintf(cheat_info,512,"Info: %s",CheatList[sel].info);
+      } else {
+	snprintf(cheat_info,512,get_script_comment(sel));
+      }
+      cheat_info[511] = 0;
+      return cheat_info;
+    }
+    void handle_mouse(SDL_Event *event) {
+	if (event->type == SDL_MOUSEBUTTONDOWN) {
+	    char *cheat_info = get_cheat_info();
+	    int base = work_area.y+work_area.h;
+	    int w=0,h=0;
+	    if (font) font->dimensions(cheat_info,&w,&h);
+	    if (w > sdl_screen->w || h > sdl_screen->h-base) {
+		if (event->button.y > base)
+		    MessageBox("info",cheat_info,"OK");
+	    }
+	}
+    }
     void draw_bot_frame() {
       int base = work_area.y+work_area.h;
-      boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
-      char cheat_info[256];
-      if (sel < CheatCount) {
-	snprintf(cheat_info,256,"Info: %s",CheatList[sel].info);
-      } else {
-	snprintf(cheat_info,256,get_script_comment(sel));
-      }
-      font->put_string(HMARGIN,base,cheat_info,fg_frame,bg_frame);
+      char *cheat_info = get_cheat_info();
+      int w=0,h=0;
+      if (font) font->dimensions(cheat_info,&w,&h);
+      char *b;
+      // The display here is on 1 line, so filter out the \n
+      while ((b = strstr(cheat_info,"\n")))
+	  *b = ' ';
+      if (w > sdl_screen->w || h > sdl_screen->h-base) {
+	  // Make the bottom frame to "flash" when text is too long
+	  static int frame,inc;
+	  if (!inc) inc = 1;
+
+	  int r = bg_frame >> 24, g = (bg_frame >> 16) & 255, b = (bg_frame >> 8) & 255;
+	  r = (30-frame)*r/30;
+	  g = (30-frame)*g/30;
+	  b = (30-frame)*b/30;
+	  frame += inc;
+	  if (frame <= 0) {
+	      frame = 0;
+	      inc = 1;
+	  } else if (frame >= 30) {
+	      frame = 30;
+	      inc = -1;
+	  }
+	  boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,mymakecol(r,g,b));
+      } else
+	  boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
+      font->put_string(HMARGIN,base,cheat_info,fg_frame,0);
       if (!(sdl_screen->flags & SDL_DOUBLEBUF)) {
 	SDL_Rect area;
 	area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = sdl_screen->h-base;
