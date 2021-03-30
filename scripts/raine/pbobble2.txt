@@ -14,7 +14,7 @@ on:
     poke $40A27a $01
 script "Disable 'Alternate World' Levels"
 on:
-    poke $40A276 $00
+    poke $40A27a $00
 script "Finish this Round Now! Puzzle+Vs Mode" \
  "comm:Works on P1 Versus + Puzzle Mode"
 on:
