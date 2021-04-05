@@ -1590,7 +1590,11 @@ vclean:
 	@echo make vclean is no longer necessary, just type make clean
 
 # Installation part (Only for Unix)
+ifndef SDL
 install: install_dirs $(RAINE_LNG) $(RAINE_EXE)
+else
+install: install_dirs $(RAINE_EXE)
+endif
 	strip $(RAINE_EXE)
 ifdef RAINE_UNIX
 	@echo installing $(RAINE_EXE) in $(bindir)
