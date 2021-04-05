@@ -68,6 +68,8 @@ HAS_CONSOLE = 1
 # target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
+SDL = 1
+
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
 # better leave it commented for now until really tested.
@@ -267,7 +269,6 @@ ifdef RAINE32
 
    # MINGW32
 
-SDL = 1
 ifdef NO_ASM
 	RAINE_EXE = raine.exe
 else
@@ -344,8 +345,6 @@ else
 endif
 else
 # linux
-
-SDL = 1
 
 ifdef DARWIN
 DESTDIR = Raine.app
@@ -1632,8 +1631,10 @@ install_dirs:
 	$(MD) -p $(bindir) $(rainedata) $(langdir) $(romdir) $(artdir) $(emudxdir) $(prefix)/share/pixmaps
 	$(MD) -p $(prefix)/share/applications $(bitmaps_dir) $(fonts_dir) $(scripts_dir) $(shaders_dir)
 
+ifndef SDL
 $(RAINE_LNG):
 	$(INSTALL_DATA) config/language/$@ $(langdir)
+endif
 
 else
 	@echo There is no needs to install for a win32/dos system
