@@ -3551,12 +3551,12 @@ static void draw_ssi(void)
    if (!init_gfx)
      finish_setup_gfx();
 
-     MAP_PALETTE_MAPPED_NEW(
-            0,
-              16,
-              map
-            );
-     clear_game_screen(ReadLong(&map[0]));
+   MAP_PALETTE_MAPPED_NEW(
+	   0,
+	   16,
+	   map
+	   );
+   clear_game_screen(ReadLong(&map[0]));
 
    // only sprites, and apparently there are no priorities to handle
    // (because the sprites are probably grouped since there are big sprites)
