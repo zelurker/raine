@@ -378,9 +378,9 @@ int main(int argc,char *argv[])
      dirp++;
    }
 
-   sprintf(dir_cfg.screen_dir,"%sscreens" SLASH, dir_cfg.exe_path);
-   sprintf(dir_cfg.emudx_dir,"%semudx" SLASH, dir_cfg.share_path);
-   sprintf(dir_cfg.artwork_dir,"%sartwork" SLASH, dir_cfg.share_path);
+   snprintf(dir_cfg.screen_dir,FILENAME_MAX,"%sscreens" SLASH, dir_cfg.exe_path);
+   snprintf(dir_cfg.emudx_dir,FILENAME_MAX,"%semudx" SLASH, dir_cfg.share_path);
+   snprintf(dir_cfg.artwork_dir,FILENAME_MAX,"%sartwork" SLASH, dir_cfg.share_path);
    init_rom_dir();
 
    load_main_config();
