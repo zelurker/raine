@@ -405,7 +405,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   case 1: // 68k
       snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
-      sprintf(cmd+strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
+      snprintf(cmd+strlen(cmd),1024-strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
       ByteSwap(&ptr[start],end-start);
       break;
   case 3:
