@@ -415,14 +415,15 @@ int handle_sound_cmd(int cmd) {
 	    print_debug("assoc: cmd %x (fadeout)\n",cmd);
 	    return 0;
 	} else if ((cmd >= 0x8 && cmd <= 0xc) || (cmd >= 0xf && cmd < 0x14)) {
-	    // cmd 0xa is one_sound, handled just before
 	    print_debug("assoc: cmd %x (nothing)\n",cmd);
 	    return 1; // these commands don't seem to do anything !
 	} else if (cmd == 0x20) {
 	    // 20 is a special case, it's a blank song, used to stop currently playing song
 	    mute_song();
 	    return 0;
-	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1) {
+	} else if (cmd < 0x20 && cmd != 2 && cmd != 3 && cmd != 1 && cmd != 0) {
+	    // Matrim seems to use commands 1, 3, 7 and 0 as reset, 0 was not used before, hope it's ok for the others...
+	    // 0 checked for kof98 & matrim, it's just ignored
 	    mode = SOUND;
 	    print_debug("assoc: cmd %x (sound)\n",cmd);
 	}
@@ -449,6 +450,7 @@ int handle_sound_cmd(int cmd) {
     last_song = cmd;
 #ifdef RAINE_DEBUG
     print_ingame(180,"playing %x track %s\n",cmd,track[cmd]);
+    print_debug("assoc: playing %x track %s\n",cmd,track[cmd]);
 #endif
     if (cmd > 1 && track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
