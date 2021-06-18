@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.91.15"
+VERSION = "0.91.16"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -65,9 +65,11 @@ HAS_CONSOLE = 1
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # choosing x86_64 here sets NO_ASM to 1 automatically.
 # target=i686-w64-mingw32
-# target=x86_64-w64-mingw32
+target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
+# which lib to use :
+# SDL = 1 or SDL = 2, or comment the line for allegro
 SDL = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
@@ -576,6 +578,11 @@ OBJDIRS += \
 	$(OBJDIR)/sdl/dialogs \
 	$(OBJDIR)/sdl/console
 
+ifeq (${SDL},2)
+OBJDIRS += $(OBJDIR)/sdl2 \
+	$(OBJDIR)/sdl2/gui
+endif
+
 else
 OBJDIRS += $(OBJDIR)/alleg \
 	$(OBJDIR)/alleg/png
@@ -982,7 +989,6 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/sprite_viewer.o \
 	$(OBJDIR)/sdl/dialogs/colors.o \
 	$(OBJDIR)/sdl/gui/tfont.o \
-	$(OBJDIR)/sdl/gui/menu.o \
 	$(OBJDIR)/sdl/gui/widget.o \
 	$(OBJDIR)/sdl/gui/tslider.o \
 	$(OBJDIR)/sdl/gui/tedit.o \
@@ -992,6 +998,12 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/game_selection.o \
 	$(OBJDIR)/sdl/dialogs/romdirs.o \
 	$(OBJDIR)/sdl/dialogs/dlg_dsw.o
+
+ifeq (${SDL},1)
+	GUI += $(OBJDIR)/sdl/gui/menu.o
+else
+	GUI += $(OBJDIR)/sdl2/gui/menu.o
+endif
 
 else
 GUI=	$(OBJDIR)/alleg/gui/gui.o \
