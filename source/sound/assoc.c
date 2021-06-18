@@ -172,7 +172,8 @@ void init_assoc(int kind) {
     } else if (kind == 3) { // bublbobl
 	type = 11;
 	print_debug("assoc: bublbobl\n");
-    }
+    } else if (kind == 4) // cps2
+	type = 20;
     if (type == 1) mode = MUSIC;
     if (type) {
 	prepare_cdda_save(ASCII_ID('T','R','C','K'));
@@ -264,6 +265,49 @@ static void mute_song() {
     print_debug("assoc: mute song mode %d\n",mode);
     active = 0;
     cdda.playing = CDDA_STOP;
+}
+
+static int process_song(int cmd) {
+    // Separate the last part of handle_sound_cmd for drivers which have a special way with commands like cps2
+    if (cmd > 255) return 0; // Only cps2 can have commands > 255, I assume all the songs are <= 255 but I can't be sure !
+    last_song = cmd;
+#ifdef RAINE_DEBUG
+    print_ingame(180,"playing %x track %s\n",cmd,track[cmd]);
+    print_debug("assoc: playing %x track %s\n",cmd,track[cmd]);
+#endif
+    if (cmd > 1 && track[cmd]) {
+	// An association to an empty track allows to just forbid playing this
+	// MUSIC
+	print_debug("assoc: playing song %x track %s\n",cmd,track[cmd]);
+	if (*track[cmd] && exists(track[cmd])) {
+	    cdda.track = cmd; // for restoration
+	    cdda.skip_silence = 1;
+	    load_sample(track[cmd]);
+	    cdda.loop = loop[cmd];
+	    active = 1;
+	} else if (*track[cmd])
+	    printf("does not exist %s\n",track[cmd]);
+	else
+	    printf("no assoc for %x\n",cmd);
+	return 1;
+    }
+    return 0;
+}
+
+int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
+    if (offset == 7 && cmd == 0) {
+	// Offset 7 seems to be the voice, and 0 seems to be the voice generally used by songs
+	// The buffer seems to be initialized from offset 0, and the sound command itself is at offset 0 on 2 bytes.
+	int ret = process_song(ReadWord68k(&shared[0]));
+	if (ret) {
+	    // Mute the cps2 music since it's handled
+	    memset(shared,0,16);
+	    shared[0] = 255;
+	} else
+	    mute_song();
+	return ret;
+    }
+    return 0;
 }
 
 int handle_sound_cmd(int cmd) {
@@ -447,27 +491,6 @@ int handle_sound_cmd(int cmd) {
     }
     /* At this point all the sound commands have already returned, we are
      * left with something which is a song number in cmd */
-    last_song = cmd;
-#ifdef RAINE_DEBUG
-    print_ingame(180,"playing %x track %s\n",cmd,track[cmd]);
-    print_debug("assoc: playing %x track %s\n",cmd,track[cmd]);
-#endif
-    if (cmd > 1 && track[cmd]) {
-	// An association to an empty track allows to just forbid playing this
-	// MUSIC
-	print_debug("assoc: playing song %x track %s\n",cmd,track[cmd]);
-	if (*track[cmd] && exists(track[cmd])) {
-	    cdda.track = cmd; // for restoration
-	    cdda.skip_silence = 1;
-	    load_sample(track[cmd]);
-	    cdda.loop = loop[cmd];
-	    active = 1;
-	} else if (*track[cmd])
-	    printf("does not exist %s\n",track[cmd]);
-	else
-	    printf("no assoc for %x\n",cmd);
-	return 1;
-    }
-    return 0;
+    return process_song(cmd);
 }
 

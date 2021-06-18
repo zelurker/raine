@@ -2,6 +2,8 @@
 extern "C" {
 #endif
 
+#include "deftypes.h"
+
 extern int disable_assoc,last_song,use_music;
 
 void init_assoc(int kind);
@@ -15,6 +17,7 @@ void assoc(int cmd, char *t);
 void save_assoc(char *section);
 void load_assoc(char *section);
 int handle_sound_cmd(int cmd);
+int handle_cps2_cmd(UINT8 *shared, int offset, int cmd);
 int get_assoc_type();
 
 #ifdef __cplusplus

@@ -16,9 +16,15 @@
 static TMenu *menu;
 static int command;
 
+extern "C" void cps2_test_sound(int);
+
 static int test_command(int sel) {
-    latch = command;
-    cpu_int_nmi(audio_cpu);
+    if (get_assoc_type() == 20)
+	cps2_test_sound(command);
+    else {
+	latch = command;
+	cpu_int_nmi(audio_cpu);
+    }
     return 0;
 }
 
@@ -39,10 +45,19 @@ static int stop(int sel) {
 	if (get_assoc_type() != 4) { // except mslug/2/3/x
 	    send(7); // music mode for 3countb and most neogeo games
 	}
-    }
+    } else if (get_assoc_type() == 20) // cps2
+	send(0xff00);
     command = old;
     return 0;
 }
+
+#define TICKS_PER_SEC 258
+/* Thanks to mame for pointing super gem fighters to calibrate this timer.
+   We don't seem to find the same number as mame, but on the other hand we use 60 fps
+   and not 59.633 so maybe it counts for something ! */
+#define Z80_FRAME CPU_FRAME_MHz(8,30)
+
+static int nb_ticks, nb_executed;
 
 class TSoundCmd : public TMenu {
   public:
@@ -50,8 +65,27 @@ class TSoundCmd : public TMenu {
       TMenu(title,menu)
       {}
     void update_fg_layer(int nb_to_update) {
-	execute_z80_audio_frame();
-	execute_z80_audio_frame();
+	if (get_assoc_type() == 20) { // cps2
+	    int slices,n;
+	    // The gui is at 30 fps...
+	    slices = ((++nb_ticks)*TICKS_PER_SEC)/30-nb_executed;
+	    if (nb_ticks >= 30) {
+		nb_ticks = 0;
+		nb_executed = 0;
+	    } else {
+		nb_executed += slices;
+	    }
+
+	    if (Z80ROM) {
+		for (n=0; n< slices; n++) {
+		    cpu_execute_cycles(CPU_Z80_0, Z80_FRAME/slices);
+		    cpu_interrupt(CPU_Z80_0, 0x38);
+		}
+	    }
+	} else {
+	    execute_z80_audio_frame();
+	    execute_z80_audio_frame();
+	}
 	TMenu::update_fg_layer(nb_to_update);
     }
 };
@@ -293,6 +327,20 @@ int do_sound_cmd(int sel) {
 	add_value(0x30);
 	add_value(0x32);
 	break;
+    case 20: // cps2
+	// I didn't find yet how to get the list of songs, all we have is last_song, and usually they start at 1...
+	{
+	    int last = last_song;
+	    // 3e is the song for the qsound logo in sfa2, but it's not constant in all the games
+	    // 3f is a 2nd song played in the background in channel 10 while this song is playing, I just hope it's an exception !
+	    // I take this as a default maximum, some games will probably have more songs like that but since it considers last_song 1st,
+	    // it should be ok...
+	    if (last < 0x3e) last = 0x3f;
+	    if (last < 1 || last > NB_VALUES) last = NB_VALUES;
+	    for (int n=1; n<=last; n++)
+		add_value(n);
+	}
+	break;
     default: // includes mslug and gunbird...
 	for (int n=0x20; n<0x40; n++)
 	    add_value(n);
@@ -303,7 +351,6 @@ int do_sound_cmd(int sel) {
 	printf("too many values : %d\n",sound_menu[0].values_list_size);
 	exit(1);
     }
-    command = sound_menu[0].values_list[0];
 
     reset_ingame_timer(); // For sound we'd better init this here...
     start_cpu_main();

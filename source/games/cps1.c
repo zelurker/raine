@@ -53,6 +53,7 @@
 #include "speed_hack.h"
 #include "bld.h"
 #include "alpha.h"
+#include "sound/assoc.h"
 
 /* Output ports */
 #define CPS1_OBJ_BASE		0x00	/* Base address of objects */
@@ -2251,7 +2252,17 @@ static void qsound_sharedram1_w(UINT32 offset, UINT16 data)
 static void qsound_sharedram1_wb(UINT32 offset, UINT8 data)
 {
   offset = ((offset & 0x1fff) >> 1);
-  qsound_sharedram1[offset] = data;
+  if (!handle_cps2_cmd(qsound_sharedram1,offset,data)) {
+      qsound_sharedram1[offset] = data;
+      // if (offset != 0xffe)
+	//  printf("wb %x,%x\n",offset,data);
+  }
+}
+
+void cps2_test_sound(int command) {
+    // Test a sound command for the sound commands dialog
+    memset(qsound_sharedram1,0,16);
+    WriteWord68k(&qsound_sharedram1[0],command);
 }
 
 static UINT16 qsound_sharedram2_r(UINT32 offset)
@@ -2468,6 +2479,7 @@ static uint32 cps2_read32(uint32 adr) {
 void load_cps2() {
   // UINT16 *rom = load_region[REGION_ROM1];
 /*   int size = get_region_size(REGION_USER1)/2,i,size_code; */
+    init_assoc(4);
     default_frame = CPU_FRAME_MHz(16,60);
   size_code = get_region_size(REGION_ROM1);
   ByteSwap(ROM, size_code );
