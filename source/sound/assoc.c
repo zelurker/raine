@@ -50,6 +50,8 @@ static int search(int len, UINT8 *needle, int n) {
     return n;
 }
 
+static int qsound_base,qsound_playing;
+
 void init_assoc(int kind) {
     adr2 = 0;
     if (kind == 1) { // neogeo
@@ -172,8 +174,31 @@ void init_assoc(int kind) {
     } else if (kind == 3) { // bublbobl
 	type = 11;
 	print_debug("assoc: bublbobl\n");
-    } else if (kind == 4) // cps2
+    } else if (kind == 4) { // cps2
 	type = 20;
+	UINT8 needle[] = { 0x11, 0, 0xf1 };
+	int n = 0x100;
+	n = search(2,needle,n+1);
+	if (n > 0x200 || n < 0x100) {
+	    printf("didn't find needle, aborting sound associations\n");
+	    type = 0;
+	    return;
+	}
+	printf("found needle at %x\n",n);
+	needle[0] = 0x21;
+	do {
+	    n = search(1,needle,n+1);
+	    if (n > 0x300 || n < 0x100) {
+		printf("didn't find needle, aborting sound associations\n");
+		type = 0;
+		return;
+	    }
+	} while (Z80ROM[n+2] != 0x56);
+	qsound_base = ReadWord(&Z80ROM[n])+6;
+	qsound_playing = 0;
+	printf("final qsound base : %x\n",qsound_base);
+    }
+
     if (type == 1) mode = MUSIC;
     if (type) {
 	prepare_cdda_save(ASCII_ID('T','R','C','K'));
@@ -295,18 +320,29 @@ static int process_song(int cmd) {
 }
 
 int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
-    if (offset == 7 && shared[0] == 0) {
-	// The buffer seems to be initialized from offset 0, and the sound command itself is at offset 0 on 2 bytes.
-	// Now I thought offset 7 was the voice and 0 was always used for the music, but it's not the case for all the games
-	// 2nd approach : offset 0 is at 0 for all the songs ?
-	int ret = process_song(ReadWord68k(&shared[0]));
-	if (ret) {
-	    // Mute the cps2 music since it's handled
-	    memset(shared,0,16);
-	    shared[0] = 255;
-	} else
-	    mute_song();
-	return ret;
+    if (offset == 7) {
+	cmd = ReadWord68k(&shared[0]);
+	if (cmd >= 0xff00) { // mute all
+	    if (qsound_playing) {
+		qsound_playing = 0;
+		mute_song();
+	    }
+	    return 0;
+	}
+	UINT8 *base = Z80ROM + qsound_base + cmd*4;
+	// This table gives the sound offset data on 3 bytes (cleverly converted to a bank + offset in the rom)
+	// the 1st byte seems to be 0 for the songs
+	int offset = (base[0]<<16) + (base[1]<<8) + base[2];
+	if (Z80ROM[offset] == 0) {
+	    int ret = process_song(cmd);
+	    if (ret) {
+		// Mute the cps2 music since it's handled
+		memset(shared,0,16);
+		shared[0] = 255;
+	    } else
+		mute_song();
+	    return ret;
+	}
     }
     return 0;
 }
