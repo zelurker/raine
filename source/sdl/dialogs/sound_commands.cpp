@@ -336,8 +336,7 @@ int do_sound_cmd(int sel) {
 	    // I take this as a default maximum, some games will probably have more songs like that but since it considers last_song 1st,
 	    // it should be ok...
 	    if (last < 0x3e) last = 0x3f;
-	    if (last < 1 || last > NB_VALUES) last = NB_VALUES;
-	    for (int n=1; n<=last; n++)
+	    for (int n=(last < NB_VALUES ? 1 : last-NB_VALUES+2); n<=last; n++)
 		add_value(n);
 	}
 	break;

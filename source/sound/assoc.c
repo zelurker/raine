@@ -295,9 +295,10 @@ static int process_song(int cmd) {
 }
 
 int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
-    if (offset == 7 && cmd == 0) {
-	// Offset 7 seems to be the voice, and 0 seems to be the voice generally used by songs
+    if (offset == 7 && shared[0] == 0) {
 	// The buffer seems to be initialized from offset 0, and the sound command itself is at offset 0 on 2 bytes.
+	// Now I thought offset 7 was the voice and 0 was always used for the music, but it's not the case for all the games
+	// 2nd approach : offset 0 is at 0 for all the songs ?
 	int ret = process_song(ReadWord68k(&shared[0]));
 	if (ret) {
 	    // Mute the cps2 music since it's handled

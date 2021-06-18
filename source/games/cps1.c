@@ -2255,7 +2255,7 @@ static void qsound_sharedram1_wb(UINT32 offset, UINT8 data)
   if (!handle_cps2_cmd(qsound_sharedram1,offset,data)) {
       qsound_sharedram1[offset] = data;
       // if (offset != 0xffe)
-	//  printf("wb %x,%x\n",offset,data);
+	// printf("wb %x,%x\n",offset,data);
   }
 }
 
@@ -2293,6 +2293,7 @@ static void qsound_sharedram2_wb(UINT32 offset, UINT8 data)
 void load_qsound()
 {
   const char *name = parent_name();
+    init_assoc(4);
   load_common(0);
   if (load_error) return;
   default_frame = CPU_FRAME_MHz(12,60);
