@@ -265,11 +265,9 @@ static menu_item_t sound_menu[] =
 {
     { _("Command"), NULL, &command, 3, {32, 57, 1} },
     { _("Test"), &test_command },
-#ifdef RAINE_DEBUG
     // There is not much point in having this outside debug builds
     { _("Test this"), &test_command, &command, ITEM_HEXEDIT, { 2, 0, 150 },
        	{ "",(char*)&command,"0","0"} },
-#endif
     { _("Stop"), &stop },
     { _("Associate..."), &associate },
     { _("Manage associations"), &associations },
