@@ -176,10 +176,33 @@ void init_assoc(int kind) {
 	print_debug("assoc: bublbobl\n");
     } else if (kind == 4) { // cps2
 	type = 20;
+	if (!Z80ROM) {
+	    printf("no z80 rom, aborting sound associations...\n");
+	    type = 0;
+	    return;
+	}
 	UINT8 needle[] = { 0x11, 0, 0xf1 };
 	int n = 0x100;
-	n = search(2,needle,n+1);
+	n = search(3,needle,n+1);
 	if (n > 0x200 || n < 0x100) {
+	    needle[0] = 0xed;
+	    needle[1] = 0x5b;
+	    n = search(2,needle,1);
+	    if (n < 0x200) {
+		int adr = ReadWord(&Z80ROM[n]);
+		if (adr < 0x8000) {
+		    needle[0] = 0x21;
+		    needle[1] = 6;
+		    needle[2] = 0;
+		    int n2 = search(3,needle,n+1);
+		    if (n2 > n && n2 - n < 0x100) {
+			qsound_base = ReadWord(&Z80ROM[adr])+6;
+			qsound_playing = 0;
+			printf("found alt method qsound_base %x\n",qsound_base);
+			return;
+		    }
+		}
+	    }
 	    printf("didn't find needle, aborting sound associations\n");
 	    type = 0;
 	    return;
@@ -189,7 +212,7 @@ void init_assoc(int kind) {
 	do {
 	    n = search(1,needle,n+1);
 	    if (n > 0x300 || n < 0x100) {
-		printf("didn't find needle, aborting sound associations\n");
+		printf("didn't find needle2, aborting sound associations\n");
 		type = 0;
 		return;
 	    }
@@ -320,6 +343,7 @@ static int process_song(int cmd) {
 }
 
 int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
+    if (type == 0) return 0;
     if (offset == 7) {
 	cmd = ReadWord68k(&shared[0]);
 	if (cmd >= 0xff00) { // mute all
@@ -333,10 +357,12 @@ int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
 	// This table gives the sound offset data on 3 bytes (cleverly converted to a bank + offset in the rom)
 	// the 1st byte seems to be 0 for the songs
 	int offset = (base[0]<<16) + (base[1]<<8) + base[2];
+	offset &= get_region_size(REGION_ROM2)-1;
 	if (Z80ROM[offset] == 0) {
 	    int ret = process_song(cmd);
 	    if (ret) {
 		// Mute the cps2 music since it's handled
+		qsound_playing = 1;
 		memset(shared,0,16);
 		shared[0] = 255;
 	    } else
