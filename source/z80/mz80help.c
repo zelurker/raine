@@ -322,6 +322,21 @@ static void add_mz80_port_region_rb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2, 
    port_count_rb[cpu]++;
 }
 
+void insert_z80_port_wb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2) {
+    for (int n=0; n<port_count_wb[cpu]; n++)
+	if (Z80_port_wb[cpu][n].lowIoAddr == d0 &&
+		Z80_port_wb[cpu][n].highIoAddr == d1 &&
+		Z80_port_wb[cpu][n].IOCall == d2)
+	    return;
+    if (port_count_wb[cpu])
+	memmove(&Z80_port_wb[cpu][1],&Z80_port_wb[cpu][0],sizeof(struct z80PortWrite)*port_count_wb[cpu]);
+    port_count_wb[cpu]++;
+    Z80_port_wb[cpu][0].lowIoAddr = d0;
+    Z80_port_wb[cpu][0].highIoAddr = d1;
+    Z80_port_wb[cpu][0].IOCall = d2;
+    Z80_port_wb[cpu][0].pUserArea = NULL;
+}
+
 static void add_mz80_port_region_wb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
 {
    Z80_port_wb[cpu][port_count_wb[cpu]].lowIoAddr  = d0;

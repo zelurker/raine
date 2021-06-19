@@ -269,6 +269,9 @@ execute a cpu for some cycles
 
 void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 {
+#ifdef SDL
+    if (goto_debuger) return;
+#endif
    switch_cpu(cpu_id);
 
    switch(cpu_id){
