@@ -1260,7 +1260,7 @@ commands_t commands[] =
   "Notice that you can edit scripts with a text editor, they are saved in scripts/neocd/gamename.txt or scripts/raine/gamename.txt where gamename is the short game name (given on the status line)" },
   { "start_script", &do_start_script, "start_script \"name\" : enable a script when next frame is drawn",
       "Equivalent to turn a script on using the cheats dialog (when it's not hidden)" },
-  { "regs", &do_regs, "regs : show registers" },
+  { "regs", &do_regs, "regs : show registers", "Notice that the registers are directly assigned to some variables. d0-d7 a0-a7 sp, pc for the 68000/68020, a,b,c,de,f,hl, pc and iff for the z80. You can use these variables in expressions, change them, etc..."},
   { "watch", &do_watch, "watch [read] [adr] [size] [value] : adds/lists watchpoints", "when passing adr, adds a watch point on adr (2 actually, 1 for the byte, and 1 for the word), which are trigered everytime something is writen to this adress.\n"
   "Without argument, list the watch points defined.\n"
  "If read is passed, then watch for the reads (the default is to watch for the writes). If size is passed in the last argument, then watch for a zone of size bytes instead of just 1 adress. if size > 2, then only the word accesses are watched for now.\n"
@@ -1287,7 +1287,10 @@ commands_t commands[] =
   { "irq", &do_irq, "irq [nb] : execute instructions until we are out of the irq. Can be executed anywhere, even if some values have been put onto the stack. When passing an irq number trigers this irq (but don't execute any cycles)" },
   { "list", &do_list, "list [address] : disassemble at address or around current pc if asm listing is available (ram.bin.s for neocd, ROM.bin.s for normal roms)." },
   { "l", &do_list, },
-  { "break", &do_break, "break [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint", },
+  { "break", &do_break, "break [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint","Notice that the breakpoints are implemented using 2 bytes which are written at the address you give :\n"
+  "illegal instruction for the 68000/68020 if using musashi (64 bits usually)\n"
+  "reset instruction for starscream (68000)\n"
+  "out 0xab,a for the z80\nSo you must be careful to place these where there is no risk to branch in the middle of the breakpoint, and for the z80 the ab port should not be used."},
   { "until", &do_until, "(u)ntil pc : executes cycles until pc reaches value given in parameter. Can be interrupted with ESC or Ctrl-C" },
   { "u", &do_until },
   { "print_ingame", &do_print_ingame, "print_ingame nb_frames msg [arguments...]\nthis is a script command only, it useless from the console.\nDisplays a message at the bottom of the screen while the game is running\n(max 3 arguments)" },
