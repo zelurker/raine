@@ -4461,7 +4461,7 @@ CLNEI( spf2xjd, spf2t, "Super Puzzle Fighter II X (Japan 960531 Phoenix Edition)
   .input = input_p2b2);
 CLNEI( ddsomud, ddsom, "Dungeons & Dragons: Shadow over Mystara (USA 960619 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT,
   .input = input_p4b4);
-CLNEI( gigaman2, megaman2, "Giga Man 2: The Power Fighters (bootleg of Mega Man 2: The Power Fighters)", BOOTLEG, 1996, GAME_BEAT,
+CLNEI( gigaman2, megaman2, "Giga Man 2: The Power Fighters (bootleg of Mega Man 2: The Power Fighters)", BOOTLEG, 1996, GAME_BEAT|GAME_NOT_WORKING,
   .input = input_p2b3);
 CLNEI( megamn2d, megaman2, "Mega Man 2: The Power Fighters (USA 960708 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT,
   .input = input_p2b3);
