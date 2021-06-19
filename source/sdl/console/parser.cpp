@@ -25,7 +25,7 @@ static value_type land(value_type v1, value_type v2) { return int(v1) && int(v2)
 static value_type Not(value_type v1) { return ~int(rint(v1)); }
 static value_type LogNot(value_type v1) { return !int(rint(v1)); }
 
-double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
+double sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
 static double param;
 static std::vector<double> vec;
 double frame;
@@ -88,10 +88,8 @@ void get_regs(int cpu) {
 	zf = (Z80_context[num].z80af&0xff);
 	zb = (Z80_context[num].z80bc>>8);
 	zc = (Z80_context[num].z80bc&0xff);
-	zd = (Z80_context[num].z80de>>8);
-	ze = (Z80_context[num].z80de&0xff);
-	zh = (Z80_context[num].z80hl>>8);
-	zl = (Z80_context[num].z80hl&0xff);
+	zde = Z80_context[num].z80de;
+	zhl = Z80_context[num].z80hl;
 #ifdef MAME_Z80
 	pc = Z80_context[num].pc.d;
 	iff = Z80_context[num].iff1|(Z80_context[num].iff2<<1);
@@ -141,8 +139,8 @@ void set_regs(int cpu) {
     case 2:
 	Z80_context[num].z80af = (int(za)<<8)|int(zf);
 	Z80_context[num].z80bc = (int(zb)<<8)|int(zc);
-	Z80_context[num].z80de = (int(zd)<<8)|int(ze);
-	Z80_context[num].z80hl = (int(zh)<<8)|int(zl);
+	Z80_context[num].z80de = int(zde);
+	Z80_context[num].z80hl = int(zhl);
 #ifdef MAME_Z80
 	Z80_context[num].pc.d = pc;
 	Z80_context[num].iff1 = ((int)iff) & 1;
@@ -272,19 +270,15 @@ int parse(char *orig)
       p.DefineVar("a",&za);
       p.DefineVar("b",&zb);
       p.DefineVar("c",&zc);
-      p.DefineVar("d",&zd);
-      p.DefineVar("e",&ze);
+      p.DefineVar("de",&zde);
       p.DefineVar("f",&zf);
-      p.DefineVar("h",&zh);
-      p.DefineVar("l",&zl);
+      p.DefineVar("hl",&zhl);
       p.DefineVar("iff",&iff);
       p.DefineVar("pc",&pc);
       p.DefineVar("param",&param);
       p.DefineVar("frame",&frame);
       initialised = 1;
     }
-//    p.DefineVar("a", &fVal);
-//    p.DefineFun("MyFunc", MyFunction);
     p.SetExpr(expr);
     res = p.Eval();
 

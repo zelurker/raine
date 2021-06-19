@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern double sr, pc, a[8], d[8],za,zb,zc,zd,ze,zf,zh,zl,iff;
+extern double sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
 
 extern int get_cpu_id();
 int parse(char *expr);
