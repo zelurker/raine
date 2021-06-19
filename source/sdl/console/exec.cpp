@@ -9,12 +9,14 @@
 #include "starhelp.h"
 #include "gui.h"
 #include "ingame.h"
+#include "mz80help.h"
 
 #define MAX_BREAK 10
 typedef struct {
   UINT32 adr;
   UINT16 old;
   char *cond;
+  int cpu;
 } tbreak;
 
 static int used_break;
@@ -42,6 +44,17 @@ static void exec_break() {
     (*resethandler)();
   }
 #endif
+}
+
+static void z80_port_break(UINT16 port, UINT16 data) {
+  int n;
+  for (n=0; n<used_break; n++) {
+    if (breakp[n].adr == ((UINT32)z80pc-2)) {
+      goto_debuger = n+1;
+      StopZ80(0,0);
+    } else
+	printf("z80break: %x != %x\n",breakp[n].adr,z80pc);
+  }
 }
 
 void (*old_f3)(UINT8 data);
@@ -83,15 +96,20 @@ void do_break(int argc, char **argv) {
 	F3SystemEEPROMAccess=&my_illg;
     }
     int cpu_id = get_cpu_id();
-    if (cpu_id >> 4 != 1)
-	throw "breakpoints only for 68000 for now";
+#ifdef USE_MUSASHI
+    if (cpu_id >> 4 != 1 && cpu_id >> 4 != 2 && cpu_id >> 4 != 3)
+	throw "breakpoints only for 68000 & 68020 & z80 for now";
+#else
+    if (cpu_id >> 4 != 1 && cpu_id >> 4 != 2)
+	throw "breakpoints only for 68000 & z80 for now (use musashi for the 68020)";
+#endif
   if (argc == 1) {
     if (used_break == 0) {
       if (cons) cons->print("no breakpoint");
     } else if (cons) {
       int n;
       for (n=0; n<used_break; n++) {
-	cons->print("break #%d at %x cond:%s",n,breakp[n].adr,(breakp[n].cond ? breakp[n].cond : "none"));
+	cons->print("break #%d at %x cond:%s cpu:%s",n,breakp[n].adr,(breakp[n].cond ? breakp[n].cond : "none"),get_cpu_name_from_cpu_id(breakp[n].cpu));
       }
     }
   } else if (argc == 3) {
@@ -103,7 +121,7 @@ void do_break(int argc, char **argv) {
       return;
     }
     int adr = breakp[nb].adr;
-    UINT8 *ptr = get_userdata(cpu_id,adr);
+    UINT8 *ptr = get_userdata(breakp[nb].cpu,adr);
     WriteWord(&ptr[adr],breakp[nb].old); // restore
     if (breakp[nb].cond)
       free(breakp[nb].cond);
@@ -113,6 +131,10 @@ void do_break(int argc, char **argv) {
     if (cons) cons->print("breakpoint #%d deleted",nb);
     return;
   } else {
+      if (used_break == MAX_BREAK) {
+	  cons->print("maximum nb of breakpoints reached !");
+	  return;
+      }
     int adr = parse(argv[1]),n;
     for (n=0; n<used_break; n++) {
       if (abs(adr-(int)breakp[n].adr)<2) {
@@ -130,12 +152,19 @@ void do_break(int argc, char **argv) {
       return;
     }
     breakp[used_break].old = ReadWord(&ptr[adr]);
+    breakp[used_break].cpu = cpu_id;
     breakp[used_break].cond = NULL;
-#if USE_MUSASHI == 2
-    WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
+#ifdef USE_MUSASHI
+    if (cpu_id >> 4 == 1 || cpu_id >> 4 == 3)
+	WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
 #else
-    WriteWord(&ptr[adr],0x4e70); // reset
+    if (cpu_id >> 4 == 1)
+	WriteWord(&ptr[adr],0x4e70); // reset
 #endif
+    if (cpu_id >> 4 == 2) { // z80
+	insert_z80_port_wb(cpu_id & 0xf,0xab,0xab,(void*)&z80_port_break);
+	WriteWord68k(&ptr[adr],0xd3ab);
+    }
     breakp[used_break++].adr = adr;
 #if USE_MUSASHI < 2
     if (s68000context.resethandler != &exec_break) {
@@ -153,6 +182,9 @@ void do_break(int argc, char **argv) {
 int check_irq(UINT32 adr) {
     int irq = 0;
     int cpu_id = get_cpu_id();
+    if (cpu_id >> 4 != 1 && cpu_id != 3)
+	// 68000 & 68020 only
+	return 0;
     if (s68000_sr >= 0x2100) {
 	UINT8 *ptr = get_userdata(cpu_id,s68000_areg[7]);
 	if (!ptr) {
@@ -175,10 +207,13 @@ int check_irq(UINT32 adr) {
 
 // return the irq were were in or 0 ir no irq
 int check_breakpoint() {
-    int cpu_id = get_cpu_id();
     int irq = 0;
     if (goto_debuger > 0 && goto_debuger <= MAX_BREAK) {
 	int n = goto_debuger-1;
+	int cpu_id = breakp[n].cpu;
+	set_cpu_id(cpu_id);
+	switch_cpu(cpu_id);
+	get_regs();
 	if (pc == breakp[n].adr || pc == breakp[n].adr+2) {
 	    UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
 	    WriteWord(&ptr[breakp[n].adr],breakp[n].old);
@@ -197,6 +232,7 @@ int check_breakpoint() {
 	    cons->set_visible();
 	    goto_debuger = 0;
 	    cons->print("breakpoint #%d at %x",n,breakp[n].adr);
+	    disp_instruction();
 	}
     }
     return irq;
@@ -240,27 +276,35 @@ static int used_offs[0x100];
 void restore_breakpoints() {
   int n;
   for (n=0; n<used_break; n++) {
-    UINT8 *ptr = get_userdata(get_cpu_id(),breakp[n].adr);
-    if (ReadWord(&ptr[breakp[n].adr]) == breakp[n].old) {
-      printf("found breakpoint to restore : %d\n",n);
-      // 1 : get the pc out of the breakpoint
-      while (pc >= breakp[n].adr && pc < breakp[n].adr+2) {
-	do_cycles(get_cpu_id(),0);
+      int cpu_id = breakp[n].cpu;
+      UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
+      if (ReadWord(&ptr[breakp[n].adr]) == breakp[n].old) {
+	  // 1 : get the pc out of the breakpoint
+	  while (pc >= breakp[n].adr && pc < breakp[n].adr+2) {
+	      do_cycles(get_cpu_id(),0);
+	  }
+	  // 2 : restore it
+	  UINT32 adr = breakp[n].adr;
+#ifdef USE_MUSASHI
+	  if (cpu_id >> 4 == 1 || cpu_id >> 4 == 3)
+	      WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
+#else
+	  if (cpu_id >> 4 == 1)
+	      WriteWord(&ptr[adr],0x4e70); // reset
+#endif
+	  if (cpu_id >> 4 == 2) { // z80
+	      WriteWord68k(&ptr[adr],0xd3ab);
+	  }
       }
-      // 2 : restore it
-      UINT32 adr = breakp[n].adr;
-      WriteWord(&ptr[adr],0x4e70); // reset
-      printf("breakpoint restored, pc = %x\n",int(pc));
-    }
   }
 
   // Also frees the offsets when leaving the console...
   for (n=0; n<0x100; n++)
-    if (used_offs[n]) {
-      used_offs[n] = 0;
-      free(offs[n]);
-      offs[n] = NULL;
-    }
+      if (used_offs[n]) {
+	  used_offs[n] = 0;
+	  free(offs[n]);
+	  offs[n] = NULL;
+      }
 }
 
 void do_cond(int argc, char **argv) {

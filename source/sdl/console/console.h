@@ -32,6 +32,8 @@ class TRaineConsole : public TConsole
 
 extern TRaineConsole *cons;
 int get_cpu_id();
+void set_cpu_id(int cpu);
+char *get_cpu_name_from_cpu_id(int cpu_id);
 }
 #endif
 

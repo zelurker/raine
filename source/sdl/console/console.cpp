@@ -24,6 +24,7 @@ static UINT32 nb_search, nb_alloc_search, *search;
 #define getadr(a) ((cpu_id>>4) == 1 ? ((a)^1) : (a))
 
 int get_cpu_id() { return cpu_id; }
+void set_cpu_id(int cpu) { cpu_id = cpu; } // when initialized from breakpoints !
 
 #define MAX_WATCH 10
 
@@ -1303,10 +1304,29 @@ commands_t commands[] =
 
 static int lastw,lasth;
 
+char *get_cpu_name_from_cpu_id(int cpu_id) {
+    static char buff[10];
+    switch (cpu_id >> 4) {
+    case 1:
+	sprintf(buff,"68000"); break;
+    case 2: sprintf(buff,"Z80"); break;
+    case 3: sprintf(buff,"68020"); break;
+    default:
+	    cons->print("unknown cpu");
+	    cpu_id = 0;
+    }
+    if (cpu_id)
+	sprintf(buff+strlen(buff),"%c",65+(cpu_id & 0xf));
+    return buff;
+}
+
 int do_console(int sel) {
-    init_cpuid();
+    int irq;
+    if (goto_debuger > 0 && goto_debuger < 100)
+	irq = check_breakpoint();
+    else
+	init_cpuid();
     cpu_get_ram(cpu_id,ram,&nb_ram);
-    int irq = 0;
     if (!cons || lastw!=screen->w || lasth!=screen->h) {
 	if (cons)
 	    delete cons;
@@ -1344,26 +1364,11 @@ int do_console(int sel) {
 	}
 #endif
 	goto_debuger = 0;
-    } else
-	irq = check_breakpoint();
+    }
     if (cons) {
 	cons->set_visible();
-	char buff[256];
-	switch (cpu_id >> 4) {
-	case 0:
-	    cons->print("no cpu initialised yet"); break;
-	case 1:
-	    sprintf(buff,"using 68000"); break;
-	case 2: sprintf(buff,"using Z80"); break;
-	case 3: sprintf(buff,"using 68020"); break;
-	default:
-		cons->print("unknown cpu");
-		cpu_id = 0;
-	}
-	if (cpu_id) {
-	    sprintf(buff+strlen(buff),"%c",65+(cpu_id & 0xf));
-	    cons->print(buff);
-	}
+	if (cpu_id)
+	    cons->print("using %s",get_cpu_name_from_cpu_id(cpu_id));
     }
     if (goto_debuger >= 0) {
 	cons->execute();

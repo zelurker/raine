@@ -151,6 +151,7 @@ void set_regs(int cpu) {
 	Z80_context[num].z80pc = pc;
 	Z80_context[num].z80iff = iff;
 #endif
+	mz80SetContext(&Z80_context[num]);
 	break;
 #ifndef NO020
     case 3:
