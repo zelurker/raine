@@ -4124,11 +4124,11 @@ msgstr ""
 msgid "Translator"
 msgstr "Traducteur"
 
-msgid "Transparency for 1 (25% default)"
-msgstr "Transparence pour 1 (25% normalement)"
+msgid "Transparency for 1 (25%% default)"
+msgstr "Transparence pour 1 (25%% normalement)"
 
-msgid "Transparency for 2 (50% default)"
-msgstr "Transparence pour 2 (50% normalement)"
+msgid "Transparency for 2 (50%% default)"
+msgstr "Transparence pour 2 (50%% normalement)"
 
 msgid "Transparent masks / rotation"
 msgstr "Masques de transparence / rotation"

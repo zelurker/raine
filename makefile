@@ -17,7 +17,7 @@
 VERSION = "0.91.18"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -547,6 +547,7 @@ OBJDIRS=$(OBJDIR)                \
 	$(OBJDIR)/neocd				 \
 	locale/fr/LC_MESSAGES \
 	locale/es/LC_MESSAGES \
+	locale/pt/LC_MESSAGES \
 	locale/it/LC_MESSAGES
 
 OBJDIRS += $(OBJDIR)/z80
@@ -1251,6 +1252,7 @@ all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/raine.pot \
 	locale/fr/LC_MESSAGES/raine.mo \
 	locale/es/LC_MESSAGES/raine.mo \
+	locale/pt/LC_MESSAGES/raine.mo \
 	locale/it/LC_MESSAGES/raine.mo
 
 locale/raine.pot:
@@ -1259,6 +1261,9 @@ locale/raine.pot:
 	rm -f locale/tmp
 
 locale/fr/LC_MESSAGES/raine.mo: locale/french.po
+	msgfmt -c -v -o $@ $<
+
+locale/pt/LC_MESSAGES/raine.mo: locale/pt_br.po
 	msgfmt -c -v -o $@ $<
 
 locale/it/LC_MESSAGES/raine.mo: locale/it.po
