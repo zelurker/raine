@@ -4058,13 +4058,11 @@ msgstr "Trackball"
 msgid "Translator"
 msgstr "Tradutor"
 
-#, c-format
-msgid "Transparency for 1 (25%% default)"
-msgstr "Transparência pra 1 (25%% padrão)"
+msgid "Transparency for 1 (25% default)"
+msgstr "Transparência pra 1 (25% padrão)"
 
-#, c-format
-msgid "Transparency for 2 (50%% default)"
-msgstr "Transparência pra 2 (50%% padrão)"
+msgid "Transparency for 2 (50% default)"
+msgstr "Transparência pra 2 (50% padrão)"
 
 msgid "Turbo Mode"
 msgstr "Modo Turbo"
