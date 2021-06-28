@@ -1192,7 +1192,8 @@ beg:
 	       // or space is not an issue... !
 	       sprintf(url,"http://archive.org/download/arcade_2020bb/%s.zip",dir);
 	   else
-	       sprintf(url,"http://archive.org/download/arcade_%s/%s.zip",dir,dir);
+	       // There is a raine all roms directory for 0.91.4 !
+	       sprintf(url,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/Raine v0.91.4 Fullroms.zip/roms/%s.zip",dir);
 	   printf("would try %s\n",url);
 	   char name[80];
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
