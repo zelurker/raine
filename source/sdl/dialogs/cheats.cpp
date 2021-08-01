@@ -69,11 +69,9 @@ class TCheatDlg : public TMenu
       } else
 	  boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
       font->put_string(HMARGIN,base,cheat_info,fg_frame,0);
-      if (!(sdl_screen->flags & SDL_DOUBLEBUF)) {
-	SDL_Rect area;
-	area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = sdl_screen->h-base;
-	do_update(&area);
-      }
+      SDL_Rect area;
+      area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = sdl_screen->h-base;
+      do_update(&area);
     }
     int get_max_bot_frame_dimensions(int &w, int &h) {
       unsigned int max = 0, maxnb = -1;

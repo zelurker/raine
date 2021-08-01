@@ -2,7 +2,6 @@
 #include <SDL_image.h>
 #include <dirent.h>
 #include "display.h"
-#include "display_sdl.h"
 #include "dejap.h"
 #include "games/games.h"
 #include "config.h"
@@ -36,6 +35,12 @@
 #include "console/console.h"
 #include "console/scripts.h"
 #endif
+#if SDL == 2
+#include "sdl2/compat.h"
+#include "sdl2/display_sdl.h"
+#else
+#include "display_sdl.h"
+#endif
 #include "arpro.h" // CheatCount
 
 #include "neocd/neocd.h"
@@ -53,8 +58,10 @@ static int WantPlay;
 int repeat_delay, repeat_interval;
 
 void read_gui_config() {
+#if SDL < 2
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
   repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
+#endif
   read_game_list_config();
 #if HAS_NEO
   restore_cdrom_config();
@@ -68,8 +75,10 @@ void read_gui_config() {
 }
 
 void write_gui_config() {
+#if SDL < 2
   raine_set_config_int("GUI","repeat_delay",repeat_delay);
   raine_set_config_int("GUI","repeat_interval",repeat_interval);
+#endif
   save_game_list_config();
 #if HAS_NEO
   save_cdrom_config();
@@ -82,6 +91,7 @@ void write_gui_config() {
   raine_set_config_int("GUI","pause_on_focus",pause_on_focus);
 }
 
+#if SDL < 2
 static int set_repeat_rate(int sel) {
   SDL_EnableKeyRepeat(repeat_delay,
 		      repeat_interval);
@@ -99,6 +109,11 @@ int add_gui_options(menu_item_t *menu) {
   menu[1] = gui_options_menu[1];
   return 2;
 }
+#else
+int add_gui_options(menu_item_t *menu) {
+    return 0;
+}
+#endif
 
 static TDialog *loading_dialog;
 static int progress_count;
@@ -438,11 +453,13 @@ void StartGUI(void)
     print_debug("StartGUI(): prepare international\n");
 #endif
 
+#if SDL < 2
    // We need to know if we have hw overlay support, and the only way to know
    // is to try to create one...
     if (display_cfg.video_mode == 1 && !sdl_overlay && display_cfg.bpp >= 16) {
 	sdl_create_overlay(display_cfg.screen_x,display_cfg.screen_y);
     }
+#endif
 
    while(!WantQuit){		// ----- Main Loop ------
 
@@ -518,7 +535,9 @@ void StartGUI(void)
 	       raine_cfg.no_gui = 0;
 	       WantQuit = 0;
 	   }
+#if SDL < 2
 	   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
+#endif
 	       SDL_ShowCursor(1);
 	   if (GameMouse)
 	       SDL_WM_GrabInput(SDL_GRAB_OFF);

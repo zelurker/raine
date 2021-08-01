@@ -547,7 +547,12 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
      }
      palette_size = n;
      // printf("preparation on %d colors, total size %d colorkey %d\n",palette_size,4*palette_size*NB_STEPS*palette_size,bmp->format->colorkey);
+#if SDL==2
+     UINT32 key;
+     if (SDL_GetColorKey(bmp,&key) < 0 || key != 0) {
+#else
      if (bmp->format->colorkey != 0) {
+#endif
        MessageBox(_("Error"),_("raine_logo.png must have the 1st color of the palette\n(color 0) as transparent"));
        CYC = NULL;
      } else {
@@ -565,6 +570,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
 	       colors[(i+1)].g*step/(NB_STEPS-1);
 	     CYC[start+i*4+2] = colors[i].b*((NB_STEPS-1)-step)/(NB_STEPS-1)+
 	       colors[(i+1)].b*step/(NB_STEPS-1);
+	     CYC[start+i*4+3] = 255;
 	   }
 	   // last color of the palette takes color 1, not color 0
 	   CYC[start+i*4+0] = colors[i].r*((NB_STEPS-1)-step)/(NB_STEPS-1)+
@@ -573,6 +579,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
 	     colors[(+1)].g*step/(NB_STEPS-1);
 	   CYC[start+i*4+2] = colors[i].b*((NB_STEPS-1)-step)/(NB_STEPS-1)+
 	     colors[(+1)].b*step/(NB_STEPS-1);
+	   CYC[start+i*4+3] = 255;
 	 }
 	 memcpy(colors,&CYC[start],palette_size*4);
        }
@@ -593,7 +600,14 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
        indice = 0;
        tt = 0;
      }
+#if SDL == 2
+     SDL_Color *colors = bmp->format->palette->colors;
+     memcpy(colors,&CYC[indice],palette_size*4);
+#else
+     // In theory SDL_SetColors should be the same as the memcpy above
+     // except apparently it does tricks to say the surface changed for blits
      SDL_SetColors(bmp,(SDL_Color*)&CYC[indice],0,palette_size);
+#endif
      tt++;
     SDL_Rect dest;
 
@@ -601,8 +615,15 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
     dest.y = fgdst.y+HMARGIN;
     dest.w = bmp->w;
     dest.h = bmp->h;
+#if SDL == 2
+    SDL_Texture *tex = SDL_CreateTextureFromSurface(rend, bmp);
+    SDL_RenderCopy(rend,tex,NULL,&dest);
+    SDL_RenderPresent(rend);
+    SDL_DestroyTexture(tex);
+#else
     SDL_BlitSurface(bmp,NULL,sdl_screen,&dest);
     do_update(&dest);
+#endif
   }
   TBitmap_menu::update_fg_layer(nb_to_update);
 }
@@ -877,7 +898,13 @@ int do_about(int sel) {
 #if HAS_NEO
     char about_sound[80];
 #endif
+#if SDL == 1
     const SDL_version *version = SDL_Linked_Version();
+#else
+    SDL_version sversion;
+    SDL_version *version = &sversion;
+    SDL_GetVersion(&sversion);
+#endif
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();
     sprintf(about_sdl,"Linked with SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,

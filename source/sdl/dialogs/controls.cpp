@@ -1,5 +1,9 @@
 #include "../gui/menu.h"
+#if SDL == 1
 #include "../compat.h"
+#else
+#include "sdl2/compat.h"
+#endif
 #include "control.h"
 #include "control_internal.h"
 #include "dialogs/messagebox.h"
@@ -73,7 +77,11 @@ static char *get_key_name(int key) {
     strcat(keyname,"LALT ");
   if (mod & KMOD_RALT)
     strcat(keyname,"RALT ");
+#if SDL == 1
   strcat(keyname,SDL_GetKeyName((SDLKey)key));
+#else
+  strcat(keyname,SDL_GetKeyName(key));
+#endif
   if (key & 0x200) { // special scancode encoding for unknown keys
     sprintf(&keyname[strlen(keyname)]," (%x)",key & 0x1ff);
   }

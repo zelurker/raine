@@ -50,39 +50,18 @@ void setup_video_driver() {
 }
 #endif
 
-static int gl_init;
-
 void adjust_gui_resolution() {
   // To be called just before starting the gui, when already with a video mode
   // 1st keep the current video mode parameters for video info...
   video = SDL_GetVideoInfo();
   screen_flags = sdl_screen->flags;
 
-  if (screen_flags & SDL_OPENGL && gl_init) {
-      // just restore the opengl mode to its defaults so that the blits work
-      int videoflags = screen_flags | SDL_OPENGLBLIT;
-#ifdef RAINE_UNIX
-      if (screen_flags & (SDL_FULLSCREEN|SDL_NOFRAME))
-	  // A super bug in linux apparently, maybe not for all window managers ?
-	  // Anyway borderless with opengl -> window totally invisible !
-	  // fullscreen with opengl -> double buffer impossible to handle, getting some kind of slow flashing !
-	  // best solution : disable opengl for these 2 cases !
-	  videoflags &= ~SDL_OPENGLBLIT;
-#endif
-      gl_init = 0;
-      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
-      int bpp = sdl_screen->format->BitsPerPixel;
-      sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,bpp,(videoflags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
-      return;
-  }
-
   if (keep_vga && (sdl_screen->w < 640 || sdl_screen->h < 480)) {
     if (!strcmp(driver,"fbcon")) {
       SDL_QuitSubSystem(SDL_INIT_VIDEO);
       SDL_InitSubSystem(SDL_INIT_VIDEO);
     }
-    sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
+    sdl_screen = SDL_SetVideoMode(640,480,display_cfg.bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
 #ifdef DARWIN
   else if (display_cfg.video_mode == 1 && overlays_workarounds) {
@@ -97,12 +76,12 @@ void adjust_gui_resolution() {
 #endif
   if (sdl_screen->format->BitsPerPixel < 16 && strcmp(driver,"fbcon")) {
       print_debug("adjust_gui_res: depth correction...\n");
-    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
+    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,16,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
-  if (sdl_screen->flags & (SDL_DOUBLEBUF |SDL_HWSURFACE)) {
+  if (sdl_screen->flags & (SDL_DOUBLEBUF |SDL_HWSURFACE|SDL_OPENGL)) {
     print_debug("adjust_gui_res: disabling double buffer/opengl/doublebuffer\n");
     int bpp = sdl_screen->format->BitsPerPixel;
-    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE);
+    sdl_screen = SDL_SetVideoMode(sdl_screen->w,sdl_screen->h,bpp,(sdl_screen->flags | SDL_ANYFORMAT) & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL);
   }
   SDL_ShowCursor(SDL_ENABLE);
   if (sdl_screen->flags & (SDL_DOUBLEBUF|SDL_HWSURFACE)) {
@@ -415,7 +394,6 @@ static SDL_Surface *new_set_gfx_mode() {
 #endif
       SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
       SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.dbuf );
-      gl_init = 1;
       // SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       // filter out the unused flags
       // for double buffer normally it should have no impact but actually it
@@ -430,7 +408,7 @@ static SDL_Surface *new_set_gfx_mode() {
 
   if (gui_level) {
       print_debug("new_set_gfx_mode: limiting flags on gui_level\n");
-      videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE;
+      videoflags = videoflags & ~SDL_DOUBLEBUF & ~SDL_HWSURFACE & ~SDL_OPENGL;
   }
   if (!sdl_screen || display_cfg.screen_x != sdl_screen->w ||
     display_cfg.screen_y != sdl_screen->h ||

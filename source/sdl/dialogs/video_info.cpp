@@ -44,10 +44,16 @@ class TVideo_menu : public TMenu
 };
 
 TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
-  char driver[128];
 
   memset(video_menu,0,sizeof(video_menu));
+#if SDL==2
+  SDL_DisplayMode mode;
+  SDL_GetCurrentDisplayMode(0, &mode);
+  sprintf(video_mode_label,"%dx%d",mode.w,mode.h);
+#else
+  char driver[128];
   sprintf(video_mode_label,"%dx%d, %d bpp",video->current_w, video->current_h, video->vfmt->BitsPerPixel);
+#endif
   print_menu_string(0,_("Current display"),video_mode_label);
   menu = video_menu;
   if (display_cfg.video_mode == 0) {
@@ -66,6 +72,7 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
       video_menu[8].label = NULL;
       return;
   }
+#if SDL==1
   if ( SDL_VideoDriverName(driver, sizeof(driver)) ) {
     print_menu_string(1,_("Video driver name"),driver);
   }
@@ -91,6 +98,9 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
     video_menu[12].label = _("Currently using scale3x");
   else
     video_menu[12].label = _("Using unscaled blits");
+#else
+  print_menu_string(1,_("Video driver name"), (char*)SDL_GetCurrentVideoDriver());
+#endif
 
 }
 

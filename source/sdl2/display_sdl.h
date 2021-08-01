@@ -26,19 +26,11 @@ typedef struct {
 extern togl_options ogl;
 
 extern int prefered_yuv_format;
-extern int desktop_w,desktop_h,desktop_bpp;
-#ifdef DARWIN
-extern int overlays_workarounds;
-#endif
-extern UINT32 screen_flags; // flags of the game screen, before gui adjustement
+extern int desktop_w,desktop_h;
 
 void resize(int call);
-int lock_surface(SDL_Surface *s);
 void adjust_gui_resolution();
 void set_opengl_filter(int filter);
-#ifdef RAINE_WIN32
-void setup_video_driver();
-#endif
 
 #ifdef __cplusplus
 }

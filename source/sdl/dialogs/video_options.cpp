@@ -41,8 +41,10 @@ static int my_toggle_fullscreen(int sel) {
   toggle_fullscreen();
   adjust_gui_resolution();
   video_options->draw();
+#if SDL==1
   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
     SDL_ShowCursor(SDL_ENABLE);
+#endif
   clear_raine_screen();
   video_options->draw();
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
@@ -71,6 +73,7 @@ static int my_toggle_border(int sel) {
     return 1;
 }
 
+#if SDL==1
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
     MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose 1"),_("Ok"));
@@ -101,6 +104,7 @@ static menu_item_t blits_options[] =
 	{ _("Off"), _("Halfheight"), _("Fullheight"), _("Fullheight + Double width") } },
     {  NULL },
 };
+#endif
 
 static void preinit_ogl_options();
 
@@ -166,8 +170,10 @@ int renderer_options(int sel) {
     preinit_ogl_options();
     switch(display_cfg.video_mode) {
     case 0: menu = new TDialog(_("OpenGL Options"), ogl_options); break;
+#if SDL==1
     case 1: menu = new TDialog(_("Overlays Options"), overlays_options); break;
     case 2: menu = new TDialog(_("Blits Options"), blits_options); break;
+#endif
     default:
 	    MessageBox(_("Error"),_("No options for this renderer ? Strange !"),_("OK"));
 	    return 0;
@@ -197,9 +203,9 @@ static menu_item_t bld_options[] =
 {
 { _("Use blending files (.bld)"),NULL,&use_bld,2,{0,1},{_("No"),_("Yes")} },
 { _("Reset transparency values to default"), &reset_transp },
-{ _("Transparency for 1 (25% default)"), NULL, &bld1, ITEM_INTEDIT,
+{ _("Transparency for 1 (25\% default)"), NULL, &bld1, ITEM_INTEDIT,
     { 3, 0, 50, 0, 100},{""} },
-{ _("Transparency for 2 (50% default)"), NULL, &bld2, ITEM_INTEDIT,
+{ _("Transparency for 2 (50\% default)"), NULL, &bld2, ITEM_INTEDIT,
     { 3, 0, 50, 0, 100},{""} },
 { NULL },
     };
@@ -254,14 +260,16 @@ static menu_item_t video_items[] =
 };
 
 int do_video_options(int sel) {
+#if SDL==1
     int old_stretch = display_cfg.stretch;
 #ifdef RAINE_WIN32
     UINT32 old_driver = display_cfg.video_driver;
 #endif
+#endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo(_("Video options"), video_items);
     video_options->execute();
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) && SDL==1
     if (old_driver != display_cfg.video_driver) {
 	if (sdl_overlay) {
 	    SDL_FreeYUVOverlay(sdl_overlay);
@@ -275,6 +283,7 @@ int do_video_options(int sel) {
     }
 #endif
     SetupScreenBitmap();
+#if SDL==1
     if ((sdl_overlay != NULL || display_cfg.video_mode == 1) &&
 	    display_cfg.video_mode != 2) {
 	// explicitely clear scanlines when overlays are enabled
@@ -285,6 +294,7 @@ int do_video_options(int sel) {
 	DestroyScreenBitmap(); // init hq2x/3x, switch gamebitmap to 16bpp
 	// + recall InitLUTs by recreating game_bitmap when enabling hq2x/3x
     }
+#endif
     return 0; // (oldx != display_cfg.screen_x || oldy != display_cfg.screen_y);
 }
 

@@ -34,6 +34,10 @@ typedef struct BITMAP            /* a bitmap structure */
 BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h);
 void clear_bitmap(BITMAP *bitmap);
 #define sdl_create_bitmap(w, h) sdl_create_bitmap_ex(display_cfg.bpp,w,h)
+#define SDL_WM_SetCaption(title1,title2) SDL_SetWindowTitle(win,title1)
+#define SDL_WM_GrabInput SDL_SetRelativeMouseMode
+#define SDL_GRAB_ON SDL_TRUE
+#define SDL_GRAB_OFF SDL_FALSE
 struct BITMAP *surface_to_bmp(SDL_Surface *s);
 void acquire_bitmap(BITMAP *bmp);
 void release_bitmap(BITMAP *bmp);
@@ -43,13 +47,10 @@ void destroy_bitmap(struct BITMAP *bmp);
 #define RGB SDL_Color
 
 // Misc
-int  save_pcx(const char *filename, BITMAP *bmp, const RGB
-	      *pal);
 static inline SDL_Surface *get_surface_from_bmp(BITMAP *bmp) {
   return (SDL_Surface *)bmp->extra;
 }
 
-extern BITMAP *screen;
 struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, int h);
 UINT16 bytes_per_pixel(BITMAP *screen);
 
@@ -113,8 +114,11 @@ void my_get_mouse_mickeys(int *mx, int *my);
   lineColor(get_surface_from_bmp(bitmap),x1,y1,x2,y2,color)
 
 
-extern SDL_Surface *sdl_screen;
 extern SDL_PixelFormat *color_format;
+extern SDL_Window *win;
+#define screen win
+extern SDL_Surface *sdl_screen;
+extern SDL_Renderer *rend;
 
 void setup_gfx_modes();
 
@@ -125,7 +129,6 @@ void sdl_create_overlay( int w, int h);
 #define create_bitmap(w, h) sdl_create_bitmap_ex(display_cfg.bpp,w,h)
 
 extern void load_message(char *);
-#include "SDL_gfx/SDL_rotozoom.h"
 
 #define load_explicit_progress(a,b) load_progress("emudx",(a)*100/(b))
 
@@ -139,15 +142,9 @@ extern void load_message(char *);
      mysrc = SDL_CreateRGBSurface(SDL_SWSURFACE,myw,myh, \
        fmt->BitsPerPixel,fmt->Rmask,fmt->Gmask,fmt->Bmask,fmt->Amask); \
      SDL_BlitSurface(get_surface_from_bmp(src),&r,mysrc,NULL); \
-   } else \
+   } else { \
      mysrc = get_surface_from_bmp(src); \
-   if (mysrc->w == w2 && mysrc->h == h2) \
      SDL_BlitSurface(mysrc,NULL,get_surface_from_bmp(dst),NULL); \
-   else { \
-     SDL_Surface *scaled = rotozoomSurfaceXY(mysrc, 0.0, \
-      (w2)*1.0/(w1),(h2)*1.0/(h1),0); \
-     SDL_BlitSurface(scaled, NULL, get_surface_from_bmp(dst), NULL); \
-     SDL_FreeSurface(scaled); \
    } \
    if ((x1) || (y1)) SDL_FreeSurface(mysrc); \
 }

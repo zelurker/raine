@@ -146,9 +146,8 @@ void TSpriteMenu::draw_bot_frame() {
   if (sprite_x >= 0) {
     sprintf(s,"sprite %d,%d:%x",sprite_x,sprite_y,sprite_no);
     font->put_string(HMARGIN,base,s,fg_frame,bg_frame);
-  SDL_Rect area;
-  area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = sdl_screen->h-base;
-  if (!(sdl_screen->flags & SDL_DOUBLEBUF))
+    SDL_Rect area;
+    area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = sdl_screen->h-base;
     do_update(&area);
   }
 }
