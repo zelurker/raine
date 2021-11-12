@@ -2229,7 +2229,6 @@ static void neogeo_hreset(void)
       REG_A[7] = 0x10F300;
       REG_USP = 0x10F400;
       s68000_interrupts = 0;
-      m68k_get_context(&M68000_context[0]);
 #else // USE_MUSASHI
 #ifdef BOOT_BIOS
       M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
@@ -2240,7 +2239,6 @@ static void neogeo_hreset(void)
       M68000_context[0].areg[7] = 0x10F300;
       M68000_context[0].asp = 0x10F400;
       M68000_context[0].interrupts[0] = 0;
-      s68000SetContext(&M68000_context[0]);
 #endif
 #ifndef BOOT_BIOS
       if (!neogeo_cdrom_process_ipl(NULL)) {
@@ -2265,6 +2263,7 @@ static void neogeo_hreset(void)
       else
 	  input_buffer[5] |= 0x80;
   }
+  s68000GetContext(&M68000_context[0]);
   watchdog_counter = 9;
   display_position_interrupt_pending = 0;
   vblank_interrupt_pending = 0;
@@ -4548,7 +4547,7 @@ static void lans2004_vx_decrypt()
 }
 
 static UINT16 neogeo_unmapped_r(UINT32 offset) {
-    int pc = s68000_pc;
+    int pc = s68000_pc & 0xffffff;
     // apparently used at least by magical drop 2, just after entering a name
     // exactly when the game asks if you want to save !
     // So the mame guys say that this hardware returns for unmapped memory
