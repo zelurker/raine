@@ -532,6 +532,7 @@ static struct SAVE_BUFFER save_buffer[2];
 extern uint32 current_cpu_num[16];
 
 static uint32 m68k_read8(uint32 adr) {
+    adr &= 0xffffff;
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
     int max = data_count_rb[cpu];
     int n;
@@ -547,6 +548,7 @@ static uint32 m68k_read8(uint32 adr) {
 }
 
 static uint32 m68k_read16(uint32 adr) {
+    adr &= 0xffffff;
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
     int max = data_count_rw[cpu];
     int n;
@@ -563,6 +565,7 @@ static uint32 m68k_read16(uint32 adr) {
 }
 
 static uint32 m68k_read32(uint32 adr) {
+    adr &= 0xffffff; // needed for games like burningf !
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
     int max = data_count_rw[cpu];
     int n;
@@ -579,6 +582,7 @@ static uint32 m68k_read32(uint32 adr) {
 }
 
 static void m68k_write8(uint32 adr,uint32 data) {
+    adr &= 0xffffff;
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
     int max = data_count_wb[cpu];
     int n;
@@ -590,11 +594,13 @@ static void m68k_write8(uint32 adr,uint32 data) {
 		return;
 	    }
 	    WriteByte(M68000_dataregion_wb[cpu][n].userdata+(adr^1), data);
+	    return;
 	}
     }
 }
 
 static void m68k_write16(uint32 adr,uint32 data) {
+    adr &= 0xffffff;
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
     int max = data_count_ww[cpu];
     int n;
@@ -606,11 +612,13 @@ static void m68k_write16(uint32 adr,uint32 data) {
 		return;
 	    }
 	    WriteWord(M68000_dataregion_ww[cpu][n].userdata+adr, data);
+	    return;
 	}
     }
 }
 
 static void m68k_write32(uint32 adr,uint32 data) {
+    adr &= 0xffffff;
     int cpu = current_cpu_num[CPU_68K_0 >> 4];
     int max = data_count_ww[cpu];
     int n;
@@ -623,6 +631,7 @@ static void m68k_write32(uint32 adr,uint32 data) {
 		return;
 	    }
 	    WriteLongSc(M68000_dataregion_ww[cpu][n].userdata+adr,data);
+	    return;
 	}
     }
 }
