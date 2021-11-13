@@ -1333,23 +1333,29 @@ static void handle_event(SDL_Event *event) {
       break;
     case SDL_MOUSEBUTTONDOWN:
       if (reading_demo) break;
-      ta = find_input_from_mbtn(event->button.button,0);
-      if (ta >= 0) {
-	autofire_timer[InputList[ta].auto_rate] = 0;
-	input_valid = is_input_valid(ta);
-	update_input_buffer(ta,input_valid);
-	if (input_valid)
-	    add_valid_input(ta);
-      }
+      ta = -1;
+      do {
+	  ta = find_input_from_mbtn(event->button.button,ta+1);
+	  if (ta >= 0) {
+	      autofire_timer[InputList[ta].auto_rate] = 0;
+	      input_valid = is_input_valid(ta);
+	      update_input_buffer(ta,input_valid);
+	      if (input_valid)
+		  add_valid_input(ta);
+	  }
+      } while (ta >= 0);
       mouse_b |= event->button.button;
       break;
     case SDL_MOUSEBUTTONUP:
       if (reading_demo) break;
-      ta = find_input_from_mbtn(event->button.button,0);
-      if (ta >= 0) {
-	update_input_buffer(ta,0);
-	remove_valid_input(ta);
-      }
+      ta = -1;
+      do {
+	  ta = find_input_from_mbtn(event->button.button,ta+1);
+	  if (ta >= 0) {
+	      update_input_buffer(ta,0);
+	      remove_valid_input(ta);
+	  }
+      } while (ta >= 0);
       mouse_b &= ~event->button.button;
       break;
     case SDL_VIDEORESIZE:
