@@ -148,6 +148,7 @@ STARSCREAM_IDENTIFIERS(S68020,s68020)
 #define s68000_sr s68000context.sr
 #define s68000_interrupts s68000context.interrupts[0]
 #define s68000_pc s68000context.pc
+#define s68000_read_pc s68000readPC()
 #define s68000_areg s68000context.areg
 #define s68000_dreg s68000context.dreg
 #define s68000_cycles_run s68000context.odometer
@@ -158,6 +159,7 @@ STARSCREAM_IDENTIFIERS(S68020,s68020)
 #define s68000_sr m68ki_get_sr()
 #define s68000_interrupts m68ki_cpu.int_level
 #define s68000_pc REG_PC
+#define s68000_read_pc REG_PC
 #define s68000_areg REG_A
 #define s68000_dreg REG_D
 #define s68000releaseTimeslice m68k_end_timeslice

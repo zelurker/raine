@@ -10,6 +10,7 @@
 #include "gui.h"
 #include "ingame.h"
 #include "mz80help.h"
+#include "emumain.h"
 
 #define MAX_BREAK 10
 typedef struct {
@@ -28,7 +29,7 @@ static void (*resethandler)();
 static void exec_break() {
   int n;
   for (n=0; n<used_break; n++) {
-    if (breakp[n].adr == s68000_pc-2) {
+    if (breakp[n].adr == s68000_read_pc-2) {
       goto_debuger = n+1;
       Stop68000(0,0);
       /* Sadly, there is no way to correct the pc from here in starscream, so
@@ -39,7 +40,7 @@ static void exec_break() {
     }
   }
 #if USE_MUSASHI < 2
-  if (resethandler && resethandler != quiet_reset_handler) {
+  if (resethandler && resethandler != quiet_reset_handler && resethandler != reset_game_hardware) {
     printf("calling prev reset handler\n");
     (*resethandler)();
   }

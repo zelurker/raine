@@ -860,19 +860,19 @@ void Stop68000(UINT32 address, UINT8 data)
 
 UINT8 DefBadReadByte(UINT32 address)
 {
-  print_debug("RB(%06x) [%06x]\n",address,s68000_pc);
+  print_debug("RB(%06x) [%06x]\n",address,s68000_read_pc);
   return 0xFF;
 }
 
 UINT16 DefBadReadWord(UINT32 address)
 {
-       print_debug("RW(%06x) [%06x]\n",address,s68000_pc);
+       print_debug("RW(%06x) [%06x]\n",address,s68000_read_pc);
    return 0x0000;
 }
 
 void DefBadWriteByte(UINT32 address, UINT8 data)
 {
-      print_debug("WB(%06x,%02x) [%06x]\n",address,data,s68000_pc);
+      print_debug("WB(%06x,%02x) [%06x]\n",address,data,s68000_read_pc);
 #ifdef RAINE_DEBUG
       if (s68000_pc & 0xff000000) {
 	printf("68k out of bounds\n");
@@ -884,7 +884,7 @@ void DefBadWriteByte(UINT32 address, UINT8 data)
 
 void DefBadWriteWord(UINT32 address, UINT16 data)
 {
-      print_debug("WW(%06x,%04x) [%06x]\n",address,data,s68000_pc);
+      print_debug("WW(%06x,%04x) [%06x]\n",address,data,s68000_read_pc);
 }
 
 typedef struct OLD_CONTEXT
