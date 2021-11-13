@@ -2173,11 +2173,14 @@ static void apply_hack(int pc,char *comment) {
 }
 
 static int frame_count;
+static int upload_type,mx,my;
 
 static void neogeo_hreset(void)
 {
     if (strcmp(current_game->main_name,"neocd")) // different
 	save_game_config(); // to save the region when it has just changed !
+    // Setting these 2 to 255 emulates standard inputs, it's not really required, but it makes a cleaner test mode for inputs
+    mx = my = 255;
   frame_count = 0;
   fix_cur = -1;
   fix_write = 0;
@@ -2334,7 +2337,6 @@ void postprocess_ipl() {
  * the sprites memory and the fix memory to initialize them from the cd for
  * example. */
 
-static int upload_type,mx,my;
 static UINT8 upload_param[0x10],dma_mode[9*2];
 
 static void do_fix_conv() {
@@ -3015,7 +3017,7 @@ static void mslug3_bankswitch_w(UINT32 offset, UINT16 data) {
     set_68000_io(0,0x200000,0x2fffff, NULL, &ROM[bankaddress]);
 }
 
-static int controller;
+static int controller,init1;
 
 static void io_control_w(UINT32 offset, UINT32 data) {
     offset &= 0x7f;
@@ -3026,14 +3028,16 @@ static void io_control_w(UINT32 offset, UINT32 data) {
 		* Changed more than once / frame, so we must change the input
 		* here */
 	       if (GameMouse == 1) {
-		   if (controller == 1) input_buffer[1] = my;
-		   else input_buffer[1] = mx;
+		   if (controller == 0) input_buffer[1] = mx;
+		   else if (controller == 1) input_buffer[1] = my;
+		   else input_buffer[1] = init1;
+		   // else input_buffer[1] = mx;
 	       } else if (GameMouse == 2) {
 		   /* Choosing joystick or paddle input is done in the soft
 		    * dips. The best way to handle this would be to test the
 		    * value of the soft dip in ram and return the right input
 		    * here, this way of doing things here is a hack... ! */
-		   if (controller & 0x10) {
+		   if (controller & 0x1) {
 		       input_buffer[1] = input_buffer[2];
 		       input_buffer[3] = input_buffer[4];
 		   } else {
@@ -5241,22 +5245,21 @@ void loading_progress_function() {
 void execute_neocd() {
     start_frame = s68000readOdometer();
     if (GameMouse == 1) {
+	init1 = input_buffer[1];
+	// if (controller & 0x10) input_buffer[1] = mx;
+	if (controller == 1) input_buffer[1] = my;
 	int dx,dy;
 	GetMouseMickeys(&dx,&dy);
 	mx -= dx; my -= dy;
-	if (!(input_buffer[2] & 1)) my++;
-	if (!(input_buffer[2] & 2)) my--;
-	if (!(input_buffer[2] & 4)) mx++;
-	if (!(input_buffer[2] & 8)) mx--;
     } else if (GameMouse == 2) {
 	int dx,dy;
 	GetMouseMickeys(&dx,&dy);
 	mx += dx;
-	if (!(input_buffer[2] & 4)) mx++;
-	if (!(input_buffer[2] & 8)) mx--;
+	if (!(input_buffer[2] & 4)) mx--;
+	if (!(input_buffer[2] & 8)) mx++;
 	// Here, my is mouse x for player 2
-	if (!(input_buffer[4] & 4)) my++;
-	if (!(input_buffer[4] & 8)) my--;
+	if (!(input_buffer[4] & 4)) my--;
+	if (!(input_buffer[4] & 8)) my++;
     }
 
     if (!is_neocd()) {

@@ -164,8 +164,8 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
   INP0( COIN2, 6, 2 ),
   INP0( SERVICE, 6, 4 ),
   /* having this ACTIVE_HIGH causes you to start with 2 credits using USA bios roms; if ACTIVE_HIGH + IN4 bit 6 ACTIVE_HIGH = AES 'mode' */
-  INP0( UNKNOWN, 6, 8 ),
-  INP0( UNKNOWN, 6, 0x10 ), // same as previous
+  INP0( COIN3, 6, 8 ),
+  INP0( COIN4, 6, 0x10 ), // same as previous
   /* what is this? When ACTIVE_HIGH + IN4 bit 6 ACTIVE_LOW MVS-4 slot is detected */
   { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0x20, BIT_ACTIVE_0 },
   { KB_DEF_SPECIAL, MSG_UNKNOWN, 6, 0xc0, BIT_ACTIVE_1 }, // calendar
@@ -181,21 +181,16 @@ static struct INPUT_INFO input_neogeo[] = // 2 players, 4 buttons
 static struct INPUT_INFO input_irrmaze[] = // trackball
 {
     INCL_INP( neogeo ),
-    INP0( UNKNOWN, 1, 0xff ), // trackball
+    /* These inputs are special : irrmaze expects a trackball to be mapped in place of the standard inputs
+     * but its specific bios is lost. So we swap the contents of input_buffer[1] based on the controller variable,
+     * which is changed many times by frame, see neocd.c for details about that. */
 
-    INP0( P1_UP, 2, 1 ),
-    INP0( P1_DOWN, 2, 2 ),
-    INP0( P1_LEFT, 2, 4 ),
-    INP0( P1_RIGHT, 2, 8 ),
-  { KB_DEF_P2_UP, MSG_P2_UP, 0x03, 0x01, BIT_ACTIVE_0 },
-  { KB_DEF_P2_DOWN, MSG_P2_DOWN, 0x03, 0x02, BIT_ACTIVE_0 },
-  { KB_DEF_P2_LEFT, MSG_P2_LEFT, 0x03, 0x04, BIT_ACTIVE_0 },
-  { KB_DEF_P2_RIGHT, MSG_P2_RIGHT, 0x03, 0x08, BIT_ACTIVE_0 },
+    INP0( UNUSED, 3, 0xf ), // trackball p2 / inputs
+    INP0( P1_B1, 3, 0x10),
+    INP0( P1_B2, 3, 0x20),
+    INP0( P2_B1, 3, 0x40),
+    INP0( P2_B2, 3, 0x80),
     INP0( UNKNOWN, 3, 0xf), // unused
-  { KB_DEF_P1_B1, "Player1 A", 0x03, 0x10, BIT_ACTIVE_0 },
-  { KB_DEF_P1_B2, "Player1 B", 0x03, 0x20, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B1, "Player2 A", 0x03, 0x40, BIT_ACTIVE_0 },
-  { KB_DEF_P2_B2, "Player2 B", 0x03, 0x80, BIT_ACTIVE_0 },
 
   END_INPUT
 };
@@ -204,6 +199,12 @@ static struct INPUT_INFO input_popbounc[] = // trackball
 {
     INCL_INP( irrmaze ),
 
+    INP0( UNUSED, 1, 0xff ), // trackball p1 / inputs
+
+    INP0( P1_UP, 2, 1 ),
+    INP0( P1_DOWN, 2, 2 ),
+    INP0( P1_LEFT, 2, 4 ),
+    INP0( P1_RIGHT, 2, 8 ),
     INP0( P1_B1, 2, 0x90 ), // Actually bit7 is when control = paddle
     // and bit4 is normal button1 when control = joystick
     INP0( P1_B2, 2, 0x20 ), // I don't think b2 and b3 are used anyway... !
