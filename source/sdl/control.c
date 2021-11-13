@@ -485,7 +485,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 	    // working !
 	    for (n=0; n<InputCount; n++)
 		if (input_src[srcCount].offset == InputList[n].Address &&
-			input_src[srcCount].bit_mask == InputList[n].Bit) {
+			input_src[srcCount].bit_mask & InputList[n].Bit) {
 		    old = InputCount;
 		    InputCount = n;
 		    break;
@@ -1314,7 +1314,9 @@ static void handle_event(SDL_Event *event) {
 
       break;
     case SDL_MOUSEMOTION:
-      if (reading_demo) break;
+      // The cpu_frame_count test is because for some reason we get a SDL_MOUSEMOTION message when launching the emulation
+      // if we want to keep the default values it's best to filter it out like that
+      if (reading_demo || cpu_frame_count < 3) break;
       mickey_x = event->motion.xrel;
       mickey_y = event->motion.yrel;
       mouse_x += mickey_x;
