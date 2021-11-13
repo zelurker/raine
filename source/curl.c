@@ -53,6 +53,12 @@ int get_url(char *file, char *url)
 {
   FILE *pagefile;
   int ret;
+  // The spaces are now forbidden in the url...
+  char *s = strchr(url,' ');
+  while (s) {
+      *s = '+';
+      s = strchr(s+1,' ');
+  }
 
   // All the init stuff is taken care in raine.c, so that the connection can be re-used
   // internet archive is sadly regularly slow, it has a heavy traffic clearly so we use
@@ -79,7 +85,7 @@ int get_url(char *file, char *url)
   if (ret == CURLE_OK)
       curl_easy_getinfo(curl_handle,CURLINFO_CONTENT_TYPE,&ct);
   if (strcmp(ct,"application/zip")) {
-      printf("curl: didn't get application/zip, aborting...\n");
+      printf("curl: didn't get application/zip, aborting... (%s) ret=%x\n",ct,ret);
       return 1;
   }
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 0);
