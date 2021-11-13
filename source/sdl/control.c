@@ -95,6 +95,8 @@ int mouse_x,mouse_y,mouse_b;
 static int min_x,max_x,min_y,max_y;
 
 static int mickey_x, mickey_y;
+float mouse_scale = 0.33;
+float mickey_x_scaled, mickey_y_scaled;
 
 void set_mouse_range(int x1, int y1, int x2, int y2) {
   min_x = x1;
@@ -106,8 +108,8 @@ void set_mouse_range(int x1, int y1, int x2, int y2) {
 }
 
 void my_get_mouse_mickeys(int *mx, int *my) {
-  *mx = mickey_x;
-  *my = mickey_y;
+  *mx = trunc(mickey_x_scaled);
+  *my = trunc(mickey_y_scaled);
 }
 
 void (*GetMouseMickeys)(int *mx,int *my) = &my_get_mouse_mickeys;
@@ -537,6 +539,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 void init_inputs(void)
 {
    const INPUT_INFO *input_src;
+   mickey_x_scaled = mickey_y_scaled = 0.0;
 
    memset(key,0,sizeof(key));
    memset(jstate,0,sizeof(jstate));
@@ -1319,10 +1322,12 @@ static void handle_event(SDL_Event *event) {
       if (reading_demo || cpu_frame_count < 3) break;
       mickey_x = event->motion.xrel;
       mickey_y = event->motion.yrel;
-      mouse_x += mickey_x;
+      mickey_x_scaled += mickey_x * mouse_scale;
+      mickey_y_scaled += mickey_y * mouse_scale;
+      mouse_x += mickey_x_scaled;
       if (mouse_x > max_x) mouse_x = max_x;
       else if (mouse_x < min_x) mouse_x = min_x;
-      mouse_y += mickey_y;
+      mouse_y += mickey_y_scaled;
       if (mouse_y > max_y) mouse_y = max_y;
       else if (mouse_y < min_y) mouse_y = min_y;
       break;
@@ -1512,6 +1517,8 @@ void update_inputs(void)
 
   // in case nothing moves, reset the mouse mickeys to 0 !
   mickey_x = mickey_y = 0;
+  mickey_x_scaled -= trunc(mickey_x_scaled);
+  mickey_y_scaled -= trunc(mickey_y_scaled);
 
   /* update valid inputs : this is not an option, it allows auto fire to work
    * and certain games insist on some inputs to be valid only if they last

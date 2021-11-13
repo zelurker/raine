@@ -579,7 +579,7 @@ class TControl : public TMenu {
       }
       if (n == 3) // layers
 	return layer_info_count;
-      if (n >= 7) // all load/save inputs
+      if (n >= 8) // all load/save inputs
 	  return use_custom_keys;
       return 1;
     }
@@ -1004,6 +1004,17 @@ static int get_inputs(int sel) {
     return 0;
 }
 
+int mouse_sens;
+extern "C" float mouse_scale; // controls.c
+static char label_mouse[80];
+
+static int set_mouse_sens(int sel) {
+    if (mouse_sens < 5) mouse_sens = 5;
+    mouse_scale = mouse_sens/100.0;
+    sprintf(label_mouse,_("Mouse Sensitivity: %d%%"),mouse_sens);
+    return 0;
+}
+
 static menu_item_t controls_menu[] =
 {
   { _("Raine controls"), &do_emu_controls },
@@ -1013,6 +1024,7 @@ static menu_item_t controls_menu[] =
   { _("Autofire..."), &setup_autofire },
   { _("Autofire controls"), &autofire_controls },
   { _("Analog controls..."), &setup_analog },
+  { _("Mouse Sensitivity"), &set_mouse_sens, &mouse_sens, ITEM_SLIDER, {100, 10, 300, 0, 0, 0} },
   { _("Load inputs from..."), &do_load },
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
@@ -1047,6 +1059,12 @@ static int switch_to_custom(int sel) {
 }
 
 int do_controls(int sel) {
+    mouse_sens = mouse_scale * 100;
+    controls_menu[7].values_list[3] = cslider_border;
+    controls_menu[7].values_list[5] = cslider_lift;
+    controls_menu[7].values_list[4] = mymakecol(160,160,160);
+    controls_menu[7].label = label_mouse;
+    sprintf(label_mouse,_("Mouse Sensitivity: %d%%"),mouse_sens);
   if (use_custom_keys) {
     switch_to_custom(0);
   } else if (current_game) {
