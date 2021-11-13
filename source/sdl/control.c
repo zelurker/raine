@@ -1334,6 +1334,7 @@ static void handle_event(SDL_Event *event) {
 	if (input_valid)
 	    add_valid_input(ta);
       }
+      mouse_b |= event->button.button;
       break;
     case SDL_MOUSEBUTTONUP:
       if (reading_demo) break;
@@ -1342,6 +1343,7 @@ static void handle_event(SDL_Event *event) {
 	update_input_buffer(ta,0);
 	remove_valid_input(ta);
       }
+      mouse_b &= ~event->button.button;
       break;
     case SDL_VIDEORESIZE:
       display_cfg.screen_x = event->resize.w;
