@@ -190,7 +190,6 @@ static struct INPUT_INFO input_irrmaze[] = // trackball
     INP0( P1_B2, 3, 0x20),
     INP0( P2_B1, 3, 0x40),
     INP0( P2_B2, 3, 0x80),
-    INP0( UNKNOWN, 3, 0xf), // unused
 
   END_INPUT
 };
