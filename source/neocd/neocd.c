@@ -1233,6 +1233,8 @@ static void restore_memcard() {
       f = fopen(path,"rb");
       if (f) {
 	  fread(saveram.ram, 0x10000, 1, f);
+	  if (saveram.ram[0x10] == 66)
+	      ByteSwap(saveram.ram,0x10000);
 	  fclose(f);
       }
   }
@@ -1250,6 +1252,11 @@ static void save_memcard() {
 	memcard_write = 0;
     }
     if (!is_neocd() && saveram.ram) {
+	if (saveram.unlock) {
+	    MessageBox(gettext("Warning"), gettext("Can't save the backup ram, it's unlocked"),gettext("OK"));
+	    return;
+	}
+
 	char str[16];
 	memcpy(str,saveram.ram+0x10,16);
 	ByteSwap((UINT8*)str,16);
@@ -1261,7 +1268,9 @@ static void save_memcard() {
 	    snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
 	    FILE *f = fopen(path,"wb");
 	    if (f) {
+		ByteSwap(saveram.ram,0x10000);
 		fwrite(saveram.ram,0x10000,1,f);
+		ByteSwap(saveram.ram,0x10000);
 		fclose(f);
 	    }
 	}
@@ -5030,6 +5039,8 @@ void load_neocd() {
 	AddWriteByte(0xd00000, 0xdfffff, save_ram_wb, NULL);
 	AddWriteWord(0xd00000, 0xdfffff, save_ram_ww, NULL);
 	AddReadBW(0xd00000, 0xd0ffff, NULL, (UINT8*)saveram.ram);
+	// AddReadByte(0xd00000,  0xd0ffff, read_saveram_byte,NULL);
+	// AddReadWord(0xd00000,  0xd0ffff, read_saveram_word,NULL);
 	if (get_region_size(REGION_CPU1) > 0x100000 && !pvc_cart) {
 	    AddWriteBW(0x2ffff0, 0x2fffff, set_68k_bank, NULL);
 	    AddSaveData_ext("68k_bank",&bank_68k,sizeof(bank_68k));
