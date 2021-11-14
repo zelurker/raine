@@ -2243,14 +2243,14 @@ static void neogeo_hreset(void)
       s68000_interrupts = 0;
 #else // USE_MUSASHI
 #ifdef BOOT_BIOS
-      M68000_context[0].pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
+      s68000context.pc = ReadLongSc(&neocd_bios[4]); // 0xc00582; // 0xc0a822;
 #else
-      M68000_context[0].pc = 0xc00582; // 0xc0a822;
+      s68000context.pc = 0xc00582; // 0xc0a822;
 #endif
-      M68000_context[0].sr = 0x2700;
-      M68000_context[0].areg[7] = 0x10F300;
-      M68000_context[0].asp = 0x10F400;
-      M68000_context[0].interrupts[0] = 0;
+      s68000context.sr = 0x2700;
+      s68000context.areg[7] = 0x10F300;
+      s68000context.asp = 0x10F400;
+      s68000context.interrupts[0] = 0;
 #endif
 #ifndef BOOT_BIOS
       if (!neogeo_cdrom_process_ipl(NULL)) {
@@ -2266,8 +2266,8 @@ static void neogeo_hreset(void)
       REG_A[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
       REG_PC = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
 #else
-      s68000context.areg[7] = M68000_context[0].areg[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
-      s68000context.pc = M68000_context[0].pc = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
+      s68000context.areg[7] = ReadLongSc(&ROM[0]); // required for at least fatfury3 !
+      s68000context.pc = ReadLongSc(&ROM[4]); // required for at least fatfury3 !
 #endif
       aes = (neogeo_bios == 22 || neogeo_bios == 23);
       if (aes)
