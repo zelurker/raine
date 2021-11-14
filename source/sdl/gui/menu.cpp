@@ -577,7 +577,7 @@ void TMenu::setup_bg_layer(SDL_Surface *bitmap) {
     SDL_Surface *zoomed;
     if (!color_format) color_format = sdl_screen->format;
     if (border) {
-      bg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE,src.w,src.h,display_cfg.bpp,color_format->Rmask,color_format->Gmask,color_format->Bmask,color_format->Amask);
+      bg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE,src.w,src.h,display_cfg.bpp,color_format->Rmask,color_format->Gmask,color_format->Bmask,0);
       if (display_cfg.bpp == 8)
 	SDL_SetPalette(bg_layer,SDL_LOGPAL,(SDL_Color*)pal,0,256);
 
@@ -1040,6 +1040,9 @@ void TMenu::update_bg_layer(SDL_Rect *region) {
   src.y = tmp.y-bgdst.y;
   src.w = tmp.w;
   src.h = tmp.h;
+  // src.x < 0 works with normal blits, but not with opengl blits !
+  if (src.x < 0) { src.w += src.x; tmp.x -= src.x; src.x = 0; }
+  if (src.y < 0) { src.h += src.y; tmp.y -= src.y; src.y = 0; }
   // with the clipped coordinates !
   SDL_SetClipRect(sdl_screen,&tmp);
   SDL_BlitSurface(bg_layer,&src,sdl_screen,&tmp);
@@ -1111,6 +1114,34 @@ void TMenu::do_update(SDL_Rect *region) {
 			  SDL_UpdateRect(sdl_screen,r.x,r.y,r.w,r.h);
 		  }
 	  }
+	  if (sdl_screen->flags & SDL_OPENGL) {
+	      int val;
+	      SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER,&val);
+	      if (val) {
+		  SDL_GL_SwapBuffers();
+		  if (region) {
+		      if (region->x+region->w > sdl_screen->w)
+			  region->w = sdl_screen->w - region->x;
+		      if (region->y+region->h > sdl_screen->h)
+			  region->h = sdl_screen->h - region->y;
+		      SDL_UpdateRect(sdl_screen, region->x,region->y,region->w,region->h);
+		  } else
+		      SDL_UpdateRect(sdl_screen, 0,0,0,0);
+		  // SDL_GL_SwapBuffers();
+	      }
+#ifdef RAINE_UNIX
+	      else
+		  /* It's highly unlikely this is ever needed because I could never disable double buffer in opengl ! */
+		  glFlush();
+#if defined(RAINE_DEBUG)
+	      int gl_error = glGetError( );
+
+	      if( gl_error != GL_NO_ERROR ) {
+		  fprintf( stderr, "testgl: OpenGL error: %d\n", gl_error );
+	      }
+#endif
+#endif
+	  }
   }
 }
 
@@ -1142,7 +1173,7 @@ void TMenu::redraw_fg_layer() {
       print_debug("rebuilding fg_layer\n");
       return draw();
   }
-  if (!sdl_screen->pixels || (sdl_screen->flags & SDL_OPENGL)) {
+  if (!sdl_screen->pixels || (!opengl_blits && (sdl_screen->flags & SDL_OPENGL))) {
       printf("adjust_gui_resolution from redraw_fg_layer\n");
       adjust_gui_resolution();
   }

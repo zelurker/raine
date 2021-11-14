@@ -148,6 +148,7 @@ static menu_item_t ogl_options[] =
 {
     { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { _("DrawPixels (no shaders)"), _("Texture (possible shaders)") }, },
     { _("Double buffer"), NULL, &ogl.dbuf, 2, { 0, 1 }, {_("No"),_("Yes")} },
+    { _("Opengl Blits"), NULL, &opengl_blits, 2, { 0, 1 }, {_("No"),_("Yes")} },
     { _("Save opengl screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
     { _("Shader"), &choose_shader,&bidon,1,{0},{ogl.shader}},
     { _("OpenGL overlay interface"), NULL, &ogl.overlay, 2, { 0, 1 }, {_("No"),_("Yes")} },
