@@ -57,9 +57,15 @@
 #include "display.h" // setup_gfx_modes
 #include "blit.h"
 #include "cpuid.h"
-#if defined(__i386__) && defined(RAINE_UNIX)
+#if defined(__i386__)
 #include "move.h"
+#include "spr16x8.h"
+#ifdef RAINE_UNIX
 #include <sys/mman.h>
+#endif
+#ifdef RAINE_WIN32
+#include <memoryapi.h>
+#endif
 #endif
 
 struct RAINE_CFG raine_cfg;
@@ -188,8 +194,23 @@ int main(int argc,char *argv[])
 #ifdef GFX_FBCON
    FILE *f;
 #endif
-#if defined(__i386__) && defined(RAINE_UNIX)
+#if defined(__i386__)
+#if defined(RAINE_UNIX)
    mymprotect(&init_moveasm);
+#endif
+#if defined(RAINE_WIN32)
+   long unsigned int old;
+   MEMORY_BASIC_INFORMATION info;
+   if (VirtualQuery(&init_moveasm, &info, sizeof(info))) {
+       printf("baseaddress %x diff %d\n",info.BaseAddress,((void*)&init_moveasm) - info.BaseAddress);
+       printf("region size %d\n",info.RegionSize);
+   }
+   // The big mess here is that I don't know any way to get the base address
+   // of the page containing the function... so I just do some really rough
+   // approximation, hoping not to miss anything. Tested everything I could
+   // think of, but I might miss a detail... !
+   VirtualProtect(&init_spr16x8asm - 0x100000,0x800000, PAGE_EXECUTE_READWRITE, &old);
+#endif
 #endif
 
   /* This just helps some window managers to grab some info from the
