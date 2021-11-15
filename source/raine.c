@@ -200,16 +200,11 @@ int main(int argc,char *argv[])
 #endif
 #if defined(RAINE_WIN32)
    long unsigned int old;
-   MEMORY_BASIC_INFORMATION info;
-   if (VirtualQuery(&init_moveasm, &info, sizeof(info))) {
-       printf("baseaddress %x diff %d\n",info.BaseAddress,((void*)&init_moveasm) - info.BaseAddress);
-       printf("region size %d\n",info.RegionSize);
-   }
    // The big mess here is that I don't know any way to get the base address
    // of the page containing the function... so I just do some really rough
    // approximation, hoping not to miss anything. Tested everything I could
    // think of, but I might miss a detail... !
-   VirtualProtect(&init_spr16x8asm - 0x100000,0x800000, PAGE_EXECUTE_READWRITE, &old);
+   VirtualProtect(&init_spr16x8asm-0x70000,0x100000, PAGE_EXECUTE_READWRITE, &old);
 #endif
 #endif
 
