@@ -108,6 +108,10 @@ buffer before calling the gui */
 #include "sasound.h"
 #include "neocd/neocd.h"
 #include "newmem.h" // GetMemoryPoolSize
+#ifdef RAINE_UNIX
+ // SDL_opengl.h is required for a part specific to linux later...
+#include <SDL_opengl.h>
+#endif
 
 static int return_mandatory = 0, use_transparency = 1;
 int emulate_mouse_cursor = 0,keep_vga,gui_level;
