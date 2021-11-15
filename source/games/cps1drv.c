@@ -4635,7 +4635,7 @@ static struct INPUT_INFO input_cps1_3b[] =
   INP0( P2_B2, 0x03, 0x20),
   INP0( P2_B3, 0x03, 0x40),
 #ifndef RAINE_DOS
-  INP0( P2_B1B2, 2, 0x30),
+  INP0( P2_B1B2, 3, 0x30),
 #endif
   INP0( UNKNOWN, 0x03, 0x80),
   END_INPUT
