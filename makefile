@@ -88,6 +88,19 @@ ifeq ("${target}","x86_64-w64-mingw32")
 endif
 endif
 
+ifeq ("${MSYSTEM}","MINGW64")
+	NO_ASM = 1
+	MINGDIR = 1
+	RAINE32 = 1
+	OSTYPE = mingw64
+endif
+
+ifeq ("${MSYSTEM}","MINGW32")
+	MINGDIR = 1
+	RAINE32 = 1
+	OSTYPE = mingw32
+endif
+
 ifdef NO_ASM
 ASM_VIDEO_CORE =
 MAME_Z80 = 1
@@ -198,7 +211,9 @@ endif
 ifdef MINGDIR
 # mingw
 RAINE32 = 1
+ifndef OSTYPE
 OSTYPE = mingw32
+endif
 endif
 
 RM =	@rm -f
@@ -282,7 +297,7 @@ ifdef CROSSCOMPILE
 	MD = @mkdir
 else
 ifndef ASM
-   ASM = @nasmw.exe # auto-detection broken for mingw !!!
+   ASM = @nasm.exe # auto-detection broken for mingw !!!
 endif
    MD = @mkdir.exe # to avoid the built-in command... strange it's necessary...
 endif
@@ -320,6 +335,7 @@ ifndef RAINE_DEBUG
   LFLAGS = -mwindows
 endif
 else
+
 ifeq ("${target}","i686-pc-msdosdjgpp")
    RAINE_EXE = Raine.exe
    RAINE_DOS = 1
@@ -1215,7 +1231,11 @@ ifdef HAS_NEO
 ifdef CROSSCOMPILE
   LIBS += -lSDL_sound -lFLAC # -lmodplug
 else
+ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
+LIBS += -lSDL_sound
+else
 LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libsmpeg.a
+endif # wildcard
 endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
@@ -1664,6 +1684,9 @@ endif
 ifdef USE_MUSASHI
 source/Musashi/m68kops.c source/Musashi/m68kops.h: $(OBJDIR)/Musashi/m68kmake
 	cd source/Musashi && ../../$(OBJDIR)/Musashi/m68kmake
+
+$(OBJDIR)/Musashi/m68kmake.o: source/Musashi/m68kmake.c
+	$(CC) -c -o $@ $<
 
 $(OBJDIR)/Musashi/m68kmake: $(OBJDIR)/Musashi/m68kmake.o
 ifdef CROSSCOMPILE
