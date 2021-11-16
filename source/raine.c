@@ -60,6 +60,7 @@
 #if defined(__i386__)
 #include "move.h"
 #include "spr16x8.h"
+#include "str6x8.h"
 #ifdef RAINE_UNIX
 #include <sys/mman.h>
 #endif
@@ -200,11 +201,45 @@ int main(int argc,char *argv[])
 #endif
 #if defined(RAINE_WIN32)
    long unsigned int old;
-   // The big mess here is that I don't know any way to get the base address
-   // of the page containing the function... so I just do some really rough
-   // approximation, hoping not to miss anything. Tested everything I could
-   // think of, but I might miss a detail... !
-   VirtualProtect(&init_spr16x8asm-0x70000,0x100000, PAGE_EXECUTE_READWRITE, &old);
+#if 1
+   void *adr = &init_spr16x8asm-0x1000;
+   MEMORY_BASIC_INFORMATION info;
+   /* The solution to query the areas : problem is there not a single area in windows, but many
+    * I found 4 so far, might be more. I'll keep this for now, because it seems safer when built
+    * in debug mode from linux for some reason ! */
+   int ret = VirtualQuery(adr,&info,sizeof(info));
+   if (ret) {
+       printf("got base %x length %d\n",info.BaseAddress,info.RegionSize);
+       if (adr >= info.BaseAddress && adr <= info.BaseAddress + info.RegionSize)
+	   printf("contains adr offset %x\n",adr - info.BaseAddress);
+       VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
+       ret = VirtualQuery(&init_str6x8asm,&info,sizeof(info));
+       if (ret) {
+	   printf("2nd virtualprotect base %x length %d\n",info.BaseAddress,info.RegionSize);
+	   VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
+       } else
+	   exit(1);
+       extern void Init020_00();
+       ret = VirtualQuery(&Init020_00,&info, sizeof(info));
+       if (ret) {
+	   printf("3rd virtualprotect base %x length %d\n",info.BaseAddress,info.RegionSize);
+	   VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
+       } else
+	   exit(1);
+       extern void DoCycles();
+       ret = VirtualQuery(&DoCycles,&info, sizeof(info));
+       if (ret) {
+	   printf("4th virtualprotect base %x length %d\n",info.BaseAddress,info.RegionSize);
+	   VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
+       } else
+	   exit(1);
+   } else
+#endif
+       // The big mess here is that I don't know any way to get the base address
+       // of the page containing the function... so I just do some really rough
+       // approximation, hoping not to miss anything. Tested everything I could
+       // think of, but I might miss a detail... !
+       VirtualProtect(&init_spr16x8asm-0x70000,0x100000, PAGE_EXECUTE_READWRITE, &old);
 #endif
 #endif
 
