@@ -30,13 +30,17 @@
 #include <curl/curl.h>
 #include <string.h>
 #include "gui.h" // load_progress
+#include "files.h"
+
+static unsigned long total_size;
 
 static int progress_callback(void *clientp,
                              curl_off_t dltotal,
                              curl_off_t dlnow,
                              curl_off_t ultotal,
                              curl_off_t ulnow) {
-    if (dltotal == 0) return 0;
+    if (dltotal == 0 && total_size == 0) return 0;
+    if (!dltotal) dltotal = total_size;
     curl_progress_f(dlnow*100/dltotal);
     return 0; // non 0 to abort transfer
 }
@@ -80,6 +84,28 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 1);
 
   /* open the file */
+  // Since the download from internet archive doesn't give the size before the download, I need to get it from the static index of their files...
+  s = strrchr(url,'/');
+  s++;
+  char fname[20];
+  strcpy(fname,"roms/");
+  strcat(fname,s);
+  total_size = 0;
+  FILE *f = fopen("index_roms.html","r");
+  if (f) {
+      char buff[256];
+      while (!feof(f)) {
+	  myfgets(buff,256,f);
+	  char *s2 = strstr(buff,fname);
+	  if (s2) {
+	      s2 = strstr(s2+1,"size");
+	      total_size = atol(s2+6);
+	      break;
+	  }
+      }
+      fclose(f);
+  }
+
   ret = curl_easy_perform(curl_handle);
   char *ct = "";
   if (ret == CURLE_OK)
