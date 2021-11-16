@@ -1004,11 +1004,11 @@ void ExecuteF3SystemFrameB(void)
     reset_game_hardware();
   }
   else {
+      cpu_interrupt(CPU_M68020_0, 2);	// Interrupt#2 [Video End]
+      cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
       cpu_interrupt(CPU_M68020_0, 3);	// Interrupt#3 [Video Start]
       cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
       cpu_interrupt(CPU_M68020_0, 5);	// Interrupt#5 [Occasionally used, for timing I think]
-      cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
-      cpu_interrupt(CPU_M68020_0, 2);	// Interrupt#2 [Video End]
       cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
   }
 }
