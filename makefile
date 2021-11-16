@@ -1346,7 +1346,11 @@ ifdef RAINE32
 
 # Add a nice little icon...
 
-$(OBJDIR)/raine.res:	source/raine.rc
+${OBJDIR}/raine.ico: raine.xpm
+	# Use image magick convert to convert this to ico...
+	convert raine.xpm raine.ico
+
+$(OBJDIR)/raine.res:	source/raine.rc ${OBJDIR}/raine.ico
 	$(WINDRES) -O coff -o $(OBJDIR)/raine.res -i source/raine.rc
 endif
 
