@@ -73,7 +73,9 @@ static void CLI_Help(void)
 	"\n"
 	"-game/-g [gamename]            : Select a game to load (see game list)\n"
 	"-rp \"path\"                   : use this path as 1st rom path\n"
-	"-gamelist/-gl                  : Quick list of all games\n"
+	"-gamelist/-gl [-rol/-ror]      : Quick list of all games\n"
+	"                                 with -rol display games rotated at 90°\n"
+	"                                 with -ror display games rotated at 270°\n"
 	"-gameinfo/-listinfo|-li <gamename> : List info for a game, or all games\n"
 	"-romcheck/-rc <gamename>       : Check roms are valid for a game, or all games\n"
 	"-romcheck-full/-rcf <gamename> : like romcheck, but load all the games, very slow now\n"
@@ -391,18 +393,27 @@ static void CLI_geometry(void) {
     if (x >= 0 || y >= 0) {
 	if (x < 0) x = 0;
 	if (y < 0) y = 0;
+#if SDL == 1
 	char buf[80];
 	sprintf(buf,"%d,%d",x,y);
 	raine_set_config_string("Display","position",buf);
+#else
+	raine_set_config_int("Display","posx",x);
+	raine_set_config_int("Display","posy",y);
+#endif
 #ifndef RAINE_DOS
 	display_cfg.fullscreen = 0;
 	display_cfg.noborder = 1;
 #endif
+#if SDL == 1
 	// I would have used setenv here, but windows doesn't know setenv... !!!
 	static char buffer[100];
 	snprintf(buffer,100,"SDL_VIDEO_WINDOW_POS=%s",buf);
 	buffer[99] = 0;
 	putenv(buffer);
+#else
+	SDL_SetWindowPosition(win,x,y);
+#endif
     }
 }
 
@@ -868,12 +879,23 @@ static void CLI_game_list(void)
 {
    int ta;
 
-   for(ta=0; ta<game_count; ta++)
+   int rot = 0;
+   for (ta=0; ta<ArgCount; ta++) {
+       if (!strcmp(ArgList[ta],"-rol"))
+	   rot = 3;
+       else if (!strcmp(ArgList[ta],"-ror"))
+	   rot = 1;
+   }
 
-         printf("%-8s : %-30s\n", game_list[ta]->main_name, game_list[ta]->long_name);
+   int count = 0;
+   for(ta=0; ta<game_count; ta++)
+       if (!rot || (rot && (game_list[ta]->video->flags & 3)==rot)) {
+	   printf("%-8s : %-30s\n", game_list[ta]->main_name, game_list[ta]->long_name);
+	   count++;
+       }
 
    printf("\n");
-   printf("%d Games Supported\n\n", game_count);
+   printf("%d Games Supported %s\n\n", count,(rot ? "(with rotation)" : ""));
 
    exit(0);
 }
