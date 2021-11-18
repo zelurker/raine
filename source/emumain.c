@@ -239,7 +239,7 @@ UINT32 run_game_emulation(void)
       do_load_state(str);
    }
 #ifdef SDL
-   fpsm.use_cpu_frame_count = 1;
+   fpsm.cpu_frame_count = &cpu_frame_count;
 #endif
 
    while(!quit_loop && current_game){

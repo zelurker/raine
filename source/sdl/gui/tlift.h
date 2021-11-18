@@ -13,7 +13,7 @@ class TLift {
   public:
     TLift(int x,int y,int h,int *mytop, int *mydispitems,int *myrows,
       int *myupdate_count,
-      SDL_Surface *suft, int myfgcol, int mybgcol, int mythumbcol);
+      int myfgcol, int mybgcol, int mythumbcol);
     virtual ~TLift() {}
     int get_width() { return w; }
     void draw();
@@ -22,7 +22,12 @@ class TLift {
     void update();
     int handle_mouse(SDL_Event *event);
     // Since fg_layer does not exist when we setup the lift, we need this :
+#if SDL==1
     void set_surface(SDL_Surface *mysurf) { s = mysurf; }
+#else
+    // If I didn't miss anything, rendering should be targeted to this texture without passing anything
+    void set_surface(SDL_Texture *tex) { }
+#endif
     virtual int produce_joystick_event(int axis_x, int axis_y);
     virtual void next_page();
     virtual void prev_page();

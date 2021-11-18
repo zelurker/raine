@@ -11,7 +11,7 @@ TSlider::TSlider(menu_item_t *my_menu) : TStatic(my_menu)
   int cslider_bar    = menu->values_list[4];
   int cslider_lift   = menu->values_list[5];
 
-  lift = new TLift(0,0,0,menu->value_int,&nb_disp_items,&rows,&update_count,NULL,cslider_border,cslider_bar,cslider_lift);
+  lift = new TLift(0,0,0,menu->value_int,&nb_disp_items,&rows,&update_count,cslider_border,cslider_bar,cslider_lift);
 }
 
 int TSlider::get_width(TFont *font) {

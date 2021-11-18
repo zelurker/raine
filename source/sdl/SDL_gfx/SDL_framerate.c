@@ -13,7 +13,7 @@
 
 #include "SDL_framerate.h"
 
-extern unsigned int pc_timer,cpu_frame_count;
+static int pc_timer;
 
 /*
    Initialize the framerate manager
@@ -37,8 +37,8 @@ int SDL_setFramerate(FPSmanager * manager, float frate)
 {
     if ((frate >= FPS_LOWER_LIMIT) && (frate <= FPS_UPPER_LIMIT)) {
 	manager->rateticks = (1000.0 / frate);
-	if (manager->use_cpu_frame_count) {
-	  manager->framecount = cpu_frame_count;
+	if (manager->cpu_frame_count) {
+	  manager->framecount = *manager->cpu_frame_count;
 	} else
 	  manager->framecount = 0;
 	manager->lastticks = SDL_GetTicks() - manager->framecount*manager->rateticks;
@@ -65,7 +65,7 @@ float SDL_getFramerate(FPSmanager * manager)
  * a constant framerate but get framerate stats anyway */
 int SDL_get_frame_count(FPSmanager * manager) {
   if (manager->rateticks > 0) {
-    if (manager->use_cpu_frame_count) manager->framecount = cpu_frame_count;
+    if (manager->cpu_frame_count) manager->framecount = *manager->cpu_frame_count;
     pc_timer = (SDL_GetTicks() - manager->lastticks) / manager->rateticks;
     return pc_timer;
   }
@@ -76,9 +76,6 @@ int SDL_get_frame_count(FPSmanager * manager) {
   Delay execution to maintain a constant framerate. Calculate fps.
 */
 
-extern Uint32 cpu_frame_count;
-
-
 void SDL_framerateDelay(FPSmanager * manager)
 {
     Uint32 current_ticks;
@@ -88,8 +85,8 @@ void SDL_framerateDelay(FPSmanager * manager)
     /*
      * Next frame
      */
-    if (manager->use_cpu_frame_count) {
-      manager->framecount = cpu_frame_count;
+    if (manager->cpu_frame_count) {
+      manager->framecount = *manager->cpu_frame_count;
     } else {
       manager->framecount++;
     }

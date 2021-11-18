@@ -7,15 +7,12 @@
 /* Deluxe lift, with auto-repeat arrow keys, and the thumb is moveable with
  * the mouse, either directly or page by page */
 
-extern int repeat_interval, repeat_delay; // in gui.cpp
-
 TLift::TLift(int myx,int myy,int myh,int *mytop, int *mydispitems,int *myrows,
   int *myupdate_count,
-  SDL_Surface *surf, int myfgcol, int mybgcol,int mythumbcol)
+  int myfgcol, int mybgcol,int mythumbcol)
 {
   x = myx; y = myy; h = myh; w = 20;
   top = mytop; nb_disp_items = mydispitems; rows = myrows;
-  s = surf;
   fgcol = myfgcol;
   bgcol = mybgcol;
   thumbcol = mythumbcol;
@@ -31,7 +28,7 @@ void TLift::press(int pressed) {
   } else if (pressed == 2) {
     if (*top + *rows < *nb_disp_items) {
       (*top)++;
-    } 
+    }
   }
 }
 
@@ -171,8 +168,10 @@ void TLift::update() {
 }
 
 void TLift::draw() {
+#if SDL == 1
   int locked = lock_surface(s);
   if (locked < 0) return;
+#endif
   rectangleColor(s,x,y,x+w-1,y+h-1,fgcol);
   boxColor(s,x+1,y+1,x+w-2,y+h-2,bgcol);
 
@@ -214,8 +213,10 @@ void TLift::draw() {
     rectangleColor(s,ylift,y+1,ylift+size,y+h-2,fgcol);
     boxColor(s,ylift+1,y+1,ylift+size-1,y+h-2,thumbcol);
   }
+#if SDL == 1
   if (locked)
     SDL_UnlockSurface(s);
+#endif
 }
 
 void TLift::draw(SDL_Surface *mys, int ax, int ay, int aw, int ah)

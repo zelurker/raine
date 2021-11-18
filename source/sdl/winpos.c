@@ -2,6 +2,7 @@
 #include "SDL_syswm.h"
 #endif
 #include <stdlib.h>
+#include "compat.h"
 
 /* We do this one separately because we need to include windows.h and its
  * very incompatible with most headers used by raine (deftypes.h for a start)
@@ -10,6 +11,7 @@
 extern void raine_set_config_string(const char *section, const char *name, char *val);
 
 void update_window_pos() {
+#if SDL == 1
 #ifndef ANDROID
    static SDL_SysWMinfo pInfo;
    SDL_VERSION(&pInfo.version);
@@ -48,6 +50,13 @@ void update_window_pos() {
    buffer[99] = 0;
    putenv(buffer);
 #endif
+#else
+   int x,y;
+   SDL_GetWindowPosition(win,&x,&y);
+   raine_set_config_int("Display","posx",x);
+   raine_set_config_int("Display","posy",y);
+#endif
+
    /* For linux : in linux we usually have decent window managers, so it should
     * not be of any interest to save the window position here.
     * + it would collide with wm's intelligent placement

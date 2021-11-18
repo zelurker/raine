@@ -1359,8 +1359,6 @@ static void handle_event(SDL_Event *event) {
       mouse_b &= ~event->button.button;
       break;
     case SDL_VIDEORESIZE:
-      display_cfg.screen_x = event->resize.w;
-      display_cfg.screen_y = event->resize.h;
       resize(1);
       SetupScreenBitmap();
       init_video_core();

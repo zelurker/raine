@@ -50,12 +50,53 @@
 #include "str_opaque.h"
 #include "control_internal.h"
 #include "version.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "newmem.h"
 
 static int WantScreen;
 static int WantQuit;
 static int WantPlay;
 
-int repeat_delay, repeat_interval;
+static void save_menu_config() {
+  raine_set_config_int("GUI", "return_mandatory", return_mandatory);
+  raine_set_config_int("GUI", "use_transparency", use_transparency);
+
+  raine_set_config_32bit_hex("GUI", "fg_color", fg_color);
+  raine_set_config_32bit_hex("GUI", "bg_color", bg_color);
+  raine_set_config_32bit_hex("GUI", "fgframe_color", fgframe_color);
+  raine_set_config_32bit_hex("GUI", "bgframe_color", bgframe_color);
+
+  raine_set_config_32bit_hex("GUI", "slider_border", cslider_border);
+  raine_set_config_32bit_hex("GUI", "slider_bar", cslider_bar);
+  raine_set_config_32bit_hex("GUI", "slider_lift", cslider_lift);
+
+  raine_set_config_32bit_hex("GUI", "bg_dialog_bar", bg_dialog_bar);
+  raine_set_config_int("GUI", "keep_vga", keep_vga);
+}
+
+static void read_menu_config() {
+  return_mandatory = raine_get_config_int("GUI", "return_mandatory", 0);
+  use_transparency = raine_get_config_int("GUI", "use_transparency", 1);
+  fg_color = raine_get_config_hex("GUI", "fg_color", mymakecol(255,255,255));
+  bg_color = raine_get_config_hex("GUI", "bg_color", makecol_alpha(0x11,0x07,0x78,128));
+  fgframe_color = raine_get_config_hex("GUI", "fgframe_color", mymakecol(255,255,255));
+  bgframe_color = raine_get_config_hex("GUI", "bgframe_color", mymakecol(0,0,128));
+  cslider_border = raine_get_config_hex("GUI", "slider_border", mymakecol(0,0,0));
+  cslider_bar = raine_get_config_hex("GUI", "slider_bar", mymakecol(0xc0,0xc0,0xc0));
+  cslider_lift = raine_get_config_hex("GUI", "slider_lift", mymakecol(0xff,0xff,0xff));
+  bg_dialog_bar = raine_get_config_hex("GUI", "bg_dialog_bar", mymakecol(0,0,0));
+  keep_vga = raine_get_config_int("GUI","keep_vga",1);
+}
+
+static void save_font_config() {
+  raine_set_config_int("GUI", "min_font_size", min_font_size);
+  raine_set_config_int("GUI", "max_font_size", max_font_size);
+}
+
+static void read_font_config() {
+  min_font_size = raine_get_config_int("GUI", "min_font_size", 8);
+  max_font_size = raine_get_config_int("GUI", "max_font_size", 30);
+}
 
 void read_gui_config() {
 #if SDL < 2
@@ -363,6 +404,10 @@ static menu_item_t main_items[] =
 { NULL, NULL, NULL },
 };
 
+char* get_emuname() {
+    return EMUNAME " " VERSION;
+}
+
 class TMain_menu : public TMenu
 {
   public:
@@ -390,7 +435,39 @@ class TMain_menu : public TMenu
 	return 1;
     }
   }
+  char *get_bot_frame_text();
+  void draw_top_frame() {
+      int w_title,h_title;
+      font->dimensions(title,&w_title,&h_title);
+#if SDL==1
+      boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
+      font->put_string(HMARGIN,0,get_emuname(),fg_frame,bg_frame);
+      font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
+#else
+      boxColor(rend,0,0,desktop->w,h_title-1,bg_frame);
+      font->put_string(HMARGIN,0,get_emuname(),fg_frame,bg_frame);
+      font->put_string(desktop->w-w_title,0,title,fg_frame,bg_frame);
+#endif
+  }
 };
+
+char *TMain_menu::get_bot_frame_text() {
+  int size = GetMemoryPoolSize()/1024; // Minimum Kb
+  static char game[100];
+  snprintf(game,100,"%s",(current_game ? current_game->long_name :_("No game loaded")));
+  if (current_game) {
+      snprintf(&game[strlen(game)], 100-strlen(game),
+	      " (%s)",current_game->main_name);
+      if (size < 1024)
+	  snprintf(&game[strlen(game)],100-strlen(game),
+		  " (%d Kb)",size);
+      else
+	  snprintf(&game[strlen(game)], 100-strlen(game),
+		  " (%d Mb)",size/1024);
+  }
+  game[99] = 0;
+  return game;
+}
 
 static void do_main_menu() {
   int old_region;
@@ -433,8 +510,18 @@ void setup_font()
 extern UINT32 videoflags; // display.c
 int goto_debuger = 0;
 
+#if SDL == 2
+static int my_resize(int sx, sy) {
+    return resize(1,sx,sy);
+}
+#endif
+
 void StartGUI(void)
 {
+#if SDL == 2
+    resize_hook = &my_resize;
+    get_shared_hook = &get_shared;
+#endif
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 
 #ifdef RAINE_DEBUG

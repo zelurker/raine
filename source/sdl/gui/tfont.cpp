@@ -6,7 +6,6 @@
 
 #include <string.h>
 #include <stdio.h>
-#include "files.h"
 #include "compat.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "tfont.h"
@@ -15,18 +14,14 @@
 #include "menu.h"
 #include "display_sdl.h"
 
+#if SDL==2
+#define stringColor(surf,x,y,s,col) stringColor(rend,x,y,s,col)
+#define boxColor(surf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#define sdl_screen NULL
+#endif
+
 int min_font_size = 8;
-static int max_font_size = 30;
-
-void save_font_config() {
-  raine_set_config_int("GUI", "min_font_size", min_font_size);
-  raine_set_config_int("GUI", "max_font_size", max_font_size);
-}
-
-void read_font_config() {
-  min_font_size = raine_get_config_int("GUI", "min_font_size", 8);
-  max_font_size = raine_get_config_int("GUI", "max_font_size", 30);
-}
+int max_font_size = 30;
 
 // These lists of 3 values are ranges : min, max, step
 static menu_item_t font_options[] =
@@ -63,7 +58,7 @@ TFont::TFont(char *myfont) {
 
 void TFont::select_ideal_font(int ideal_width, int ideal_height) {
   unsigned int bestw = 0, besth=0;
-  char *fdir = get_shared("fonts");
+  char *fdir = (*get_shared_hook)("fonts");
   DIR *dir = opendir(fdir);
   loaded_font = NULL;
   if (dir) {
@@ -109,9 +104,9 @@ void TFont::load_font(char *myfont) {
   if (strchr(myfont,'/') == 0) {
     char tpath[1024];
     sprintf(tpath,"fonts/%s",myfont);
-    f = fopen(get_shared(tpath),"rb");
+    f = fopen((*get_shared_hook)(tpath),"rb");
   } else
-    f = fopen(get_shared(myfont),"rb");
+    f = fopen((*get_shared_hook)(myfont),"rb");
 
   if (f) {
     fseek(f,0L,SEEK_END);
@@ -228,8 +223,6 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
     if (!s[0]) return;
   if (!ttf)
     return TFont::surf_string_tr(surf,x,y,s,color,w);
-  if (!*s)
-    return;
   SDL_Rect dest;
   SDL_Color sc;
   sc.b = (color >> 8) & 0xff;
@@ -242,14 +235,29 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
   else
       sf = TTF_RenderText_Solid(ttf,s,sc );
   dest.x = x; dest.y = y;
+  dest.w = sf->w; dest.h = sf->h;
+
   if (w && w < sf->w) {
       SDL_Rect src;
       src.w = w;
       src.h = sf->h;
       src.x = src.y = 0;
+#if SDL==2
+      SDL_Texture *tex = SDL_CreateTextureFromSurface(rend,sf);
+      SDL_RenderCopy(rend,tex,&src,&dest);
+      SDL_DestroyTexture(tex);
+#else
       SDL_BlitSurface(sf,&src,surf,&dest);
-  } else
+#endif
+  } else {
+#if SDL==2
+      SDL_Texture *tex = SDL_CreateTextureFromSurface(rend,sf);
+      SDL_RenderCopy(rend,tex,NULL,&dest);
+      SDL_DestroyTexture(tex);
+#else
       SDL_BlitSurface(sf,NULL,surf,&dest);
+#endif
+  }
   SDL_FreeSurface(sf);
 }
 
@@ -275,14 +283,28 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
       sf = TTF_RenderText_Shaded(ttf,s,sc,bg);
   // SDL_SetColorKey(sf,SDL_SRCCOLORKEY | SDL_RLEACCEL,0);
   dest.x = x; dest.y = y;
+  dest.w = sf->w; dest.h = sf->h;
   if (w && w < sf->w) {
       SDL_Rect src;
       src.w = w;
       src.h = sf->h;
       src.x = src.y = 0;
+#if SDL==2
+      SDL_Texture *tex = SDL_CreateTextureFromSurface(rend,sf);
+      SDL_RenderCopy(rend,tex,&src,&dest);
+      SDL_DestroyTexture(tex);
+#else
       SDL_BlitSurface(sf,&src,surf,&dest);
-  } else
+#endif
+  } else {
+#if SDL==2
+      SDL_Texture *tex = SDL_CreateTextureFromSurface(rend,sf);
+      SDL_RenderCopy(rend,tex,NULL,&dest);
+      SDL_DestroyTexture(tex);
+#else
       SDL_BlitSurface(sf,NULL,surf,&dest);
+#endif
+  }
   SDL_FreeSurface(sf);
 }
 
@@ -291,7 +313,7 @@ void TFont_ttf::load_font(char *myfont) {
     myfont = "Vera.ttf";
   char tpath[1024];
   sprintf(tpath,"fonts/%s",myfont);
-  ttf = TTF_OpenFont(get_shared(tpath),charHeight*3/2);
+  ttf = TTF_OpenFont((*get_shared_hook)(tpath),charHeight*3/2);
   if ( ttf == NULL ) {
     fprintf(stderr, "Couldn't load %d pt font from %s: %s\n",
 	charHeight, myfont, SDL_GetError());

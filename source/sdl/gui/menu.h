@@ -1,3 +1,7 @@
+#if SDL == 2
+#include "sdl2/gui/menu.h"
+#endif
+
 #ifndef MENU_CPP
 #define MENU_CPP
 
@@ -14,6 +18,13 @@
 /* If values_list_size == 3, and there are no labels for this list, then it's
  * a special interval list. Format { min, max, step }. It's an easy way to
  * allow big ranges of values */
+
+extern int repeat_interval, repeat_delay;
+extern int return_mandatory, use_transparency;
+
+// resize_hook : called when the gui window is resized. Returns 1 if the new size is accepted
+extern int (*resize_hook)(int sx,int sy);
+extern char * (*get_shared_hook)(char *name);
 
 // size of the key buffer to choose a menu entry by its label
 #define MAX_KEYBUF 20
@@ -132,8 +143,6 @@ class TMenu {
     void set_title(char *my_title) {
       title = my_title;
     }
-    // overload this one to change just the emuname on the top frame
-    virtual char* get_emuname();
     virtual int can_exit();
     virtual void set_sel(int mysel) { sel = mysel; reset_top(); }
 };

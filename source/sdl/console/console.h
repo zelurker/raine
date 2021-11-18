@@ -20,7 +20,12 @@ class TRaineConsole : public TConsole
       dump_cols = ((maxlen-7)/4)&~7;
       use_transparency = 0;
     }
+    ~TRaineConsole() {
+	save_history();
+    }
     virtual void  execute();
+    void load_history();
+    void save_history();
     virtual void handle_mouse(SDL_Event *event);
     virtual void unknown_command(int argc, char **argv);
     virtual int run_cmd(char *field);

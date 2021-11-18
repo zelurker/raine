@@ -10,6 +10,7 @@
 #include "tconsole.h"
 #include "dialogs/messagebox.h"
 #include "games.h"
+#include "SDL_gfx/SDL_gfxPrimitives.h"
 
 void split_command(char *field, char **argv, int *argc, int max) {
   char *s = field;
@@ -66,6 +67,7 @@ void split_command(char *field, char **argv, int *argc, int max) {
 }
 
 static int dummy_handler(int cause) { return 0; }
+int key_console;
 
 #define MAX_FIELD 8192
 
@@ -102,28 +104,12 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
 }
 
 TConsole::~TConsole() {
-    save_history();
   for (int n=0; n<nb_items; n++) {
     free((void*)menu[n].label);
   }
   free(menu);
   delete edit_child;
   delete field;
-}
-
-void TConsole::save_history() {
-    char buf[FILENAME_MAX];
-    if (!current_game) return;
-    snprintf(buf,FILENAME_MAX,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
-    edit_child->save_history(buf);
-}
-
-void TConsole::load_history() {
-    if (current_game) {
-	char buf[FILENAME_MAX];
-	snprintf(buf,FILENAME_MAX,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
-	edit_child->load_history(buf);
-    }
 }
 
 /* void TConsole::compute_nb_items() {
@@ -267,7 +253,7 @@ static int myx, myy, myw, myh, myxoptions;
 void TConsole::display_fglayer_footer(int x,int &y,int w, int xoptions) {
   myx = x; myy=y; myw =w; myh=edit_child->get_height(font);
   myxoptions=xoptions;
-  edit_child->disp(fg_layer,font,x,y,w,myh,fg,bg,
+  edit_child->disp(NULL,font,x,y,w,myh,fg,bg,
     xoptions);
 }
 
@@ -282,12 +268,20 @@ void TConsole::fglayer_footer_update() {
   edit_child->update();
   SDL_Rect dst;
   dst.x = myx; dst.y = myy; dst.w = myw; dst.h = myh;
+#if SDL==2
+  boxColor(rend,dst.x,dst.y,dst.x+dst.w-1,dst.h+dst.y-1,bgsdl);
+#else
   SDL_FillRect(fg_layer,&dst,bgsdl);
-  edit_child->disp(fg_layer,font,myx,myy,myw,myh,fg,bg,
+#endif
+  edit_child->disp(NULL,font,myx,myy,myw,myh,fg,bg,
 	  myxoptions);
   SDL_Rect to;
   to.x = dst.x + fgdst.x; to.y = dst.y+fgdst.y;
+#if SDL==2
+  SDL_RenderCopy(rend,fg_layer,&dst,&to);
+#else
   SDL_BlitSurface(fg_layer,&dst,sdl_screen,&to);
+#endif
   do_update(&to);
 }
 
@@ -460,7 +454,6 @@ int TConsole::handler(int cause) {
 
 void TConsole::execute()
 {
-    key_console = get_console_key();
     TDialog::execute();
     visible = 0;
 }

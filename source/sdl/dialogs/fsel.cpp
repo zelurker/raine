@@ -12,6 +12,7 @@
 #include <fnmatch.h>
 #endif
 #include "fsel.h"
+#include "gui.h"
 
 class TFileSel : public TMenu
 {
@@ -227,7 +228,7 @@ char* TFileSel::get_emuname() {
   if (title2 && *title2)
     return title2;
   else
-    return TMenu::get_emuname();
+    return ::get_emuname();
 }
 
 static char res_file[FILENAME_MAX+1];

@@ -3,9 +3,7 @@
 
 #include <SDL_ttf.h>
 
-extern int min_font_size;
-void save_font_config();
-void read_font_config();
+extern int min_font_size,max_font_size;
 
 class TFont {
   protected:

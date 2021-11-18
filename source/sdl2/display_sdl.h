@@ -28,7 +28,7 @@ extern togl_options ogl;
 extern int prefered_yuv_format;
 extern int desktop_w,desktop_h;
 
-void resize(int call);
+int resize(int call,int sx,int sy);
 void adjust_gui_resolution();
 void set_opengl_filter(int filter);
 

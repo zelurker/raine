@@ -18,7 +18,11 @@ extern "C" {
 #define mymakecol(r,g,b) (((r)<<24)|((g)<<16)|((b)<<8)|255)
 #define makecol_alpha(r,g,b,a) (((r)<<24)|((g)<<16)|((b)<<8)|(a))
 // converts a gfx to SDL_Color format :
+#if SDL == 2
+#define gfx_to_sdlcolor(format,c) SDL_MapRGBA(format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
+#else
 #define gfx_to_sdlcolor(surf,c) SDL_MapRGBA(surf->format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
+#endif
 
 #define NB_VALUES 75
 
@@ -43,8 +47,6 @@ extern int emulate_mouse_cursor;
 void sort_menu(menu_item_t *menu);
 void setup_mouse_cursor(SDL_Surface *mycursor);
 int add_menu_options(menu_item_t *menu);
-void read_menu_config();
-void save_menu_config();
 
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 

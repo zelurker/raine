@@ -1,7 +1,11 @@
 #ifndef TCONSOLE_H
 #define TCONSOLE_H
 
+#if SDL==2
+#include "sdl2/gui/menu.h"
+#else
 #include "menu.h"
+#endif
 #include "tedit.h"
 
 #ifdef __cplusplus
@@ -41,11 +45,12 @@ class ConsExcept {
 
 typedef void (*tinteractive)(char *);
 
+extern int key_console;
+
 class TConsole : public TDialog
 {
   protected:
     int nb_alloc, nb_used;
-    int key_console;
     int unicode,visible;
     menu_item_t edit_menu;
     TEdit *edit_child;
@@ -63,8 +68,6 @@ class TConsole : public TDialog
     ~TConsole();
     // virtual void compute_nb_items();
     virtual void print(const char *format, ...);
-    virtual void save_history();
-    virtual void load_history();
     virtual void post_print(); // easier than overloading print
     virtual void setup_fg_layer();
     virtual int get_fglayer_footer_height();

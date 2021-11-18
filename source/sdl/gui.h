@@ -3,6 +3,7 @@ extern "C" {
 #endif
 
 extern int goto_debuger;
+char* get_emuname();
 
 void read_gui_config();
 void write_gui_config();

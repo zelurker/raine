@@ -17,7 +17,7 @@
 VERSION = "0.91.21"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -496,7 +496,8 @@ endif
 
 ifdef SDL
 ifeq (${SDL},2)
-	INCDIR += -Isource/sdl2
+	# gui is an implicit include directory with sdl1, it must become explicit here for the files which moved to the sdl2 directory
+	INCDIR += -Isource/sdl2 -Isource/sdl2/gui -Isource/sdl/gui -Isource/sdl2/SDL_gfx -Isource/sdl/SDL_gfx
 endif
 INCDIR += -Isource/sdl
 else
@@ -597,6 +598,7 @@ OBJDIRS += \
 
 ifeq (${SDL},2)
 OBJDIRS += $(OBJDIR)/sdl2 \
+	$(OBJDIR)/sdl2/SDL_gfx \
 	$(OBJDIR)/sdl2/gui
 endif
 
@@ -1008,7 +1010,6 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/gui/tfont.o \
 	$(OBJDIR)/sdl/gui/widget.o \
 	$(OBJDIR)/sdl/gui/tslider.o \
-	$(OBJDIR)/sdl/gui/tedit.o \
 	$(OBJDIR)/sdl/gui/tlift.o \
 	$(OBJDIR)/sdl/gui/tbitmap.o \
 	$(CONSOLE) \
@@ -1017,9 +1018,11 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/dlg_dsw.o
 
 ifeq (${SDL},1)
-	GUI += $(OBJDIR)/sdl/gui/menu.o
+	GUI += $(OBJDIR)/sdl/gui/menu.o \
+	$(OBJDIR)/sdl/gui/tedit.o
 else
-	GUI += $(OBJDIR)/sdl2/gui/menu.o
+	GUI += $(OBJDIR)/sdl2/gui/menu.o \
+	$(OBJDIR)/sdl2/gui/tedit.o
 endif
 
 else
@@ -1119,6 +1122,9 @@ ifdef SDL
 ifneq (${SDL},2)
 CORE += $(OBJDIR)/sdl/SDL_gfx/SDL_gfxPrimitives.o
 CORE +=	$(OBJDIR)/sdl/SDL_gfx/SDL_rotozoom.o
+else
+CORE += $(OBJDIR)/sdl2/SDL_gfx/SDL_gfxPrimitives.o
+CORE +=	$(OBJDIR)/sdl2/SDL_gfx/SDL_rotozoom.o
 endif
 
 endif
@@ -1709,6 +1715,11 @@ source/Musashi/m68k.h:
 	cd source/Musashi && git submodule update
 
 endif
+
+test_gui: $(OBJDIR)/test_gui.o $(OBJDIR)/sdl2/gui/menu.o $(OBJDIR)/sdl/gui/widget.o $(OBJDIR)/sdl/gui/tslider.o $(OBJDIR)/sdl2/gui/tedit.o $(OBJDIR)/sdl2/SDL_gfx/SDL_gfxPrimitives.o \
+	$(OBJDIR)/sdl/gui/tfont.o $(OBJDIR)/sdl/gui/tlift.o $(OBJDIR)/sdl/SDL_gfx/SDL_framerate.o $(OBJDIR)/sdl/gui/tconsole.o $(OBJDIR)/sdl/dialogs/messagebox.o \
+	$(OBJDIR)/sdl2/SDL_gfx/SDL_rotozoom.o
+	$(LDV) $(LDFLAGS) $(LFLAGS) -o $@ -DSDL=2 `sdl2-config --cflags` `sdl2-config --libs` $^ -lSDL2_image -lSDL2_ttf -lmuparser
 
 uninstall:
 ifdef RAINE_UNIX

@@ -217,14 +217,17 @@ void ScreenChange(void)
    //show_mouse(screen);
 }
 
-void resize(int call) {
+int resize(int call,int sx,int sy) {
   // Minimum size
   static int last_time;
-  if (display_cfg.screen_x < 320)
-    display_cfg.screen_x = 320;
-  if (display_cfg.screen_y < 200)
-    display_cfg.screen_y = 200;
-
+  if (keep_vga && (sx < 640 || sy < 480))
+      return 0;
+  if (sx < 320) sx = 320;
+  if (sy < 200) sy = 200;
+  if (sx == display_cfg.screen_x && sy == display_cfg.screen_y)
+      return 0;
+  display_cfg.screen_x = sx;
+  display_cfg.screen_y = sy;
 
   if (current_game && display_cfg.keep_ratio ) {
     // keep aspect ratio
@@ -275,6 +278,7 @@ void resize(int call) {
       print_debug("calling ScreenChange from resize\n");
       ScreenChange();
   }
+  return 1;
 }
 
 void set_default_video_mode() {

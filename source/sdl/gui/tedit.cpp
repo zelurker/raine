@@ -2,7 +2,6 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "dialogs/messagebox.h"
 #include "menu.h"
-#include "files.h"
 
 TEdit::TEdit(menu_item_t *my_menu) : TStatic(my_menu)
 {
@@ -252,6 +251,15 @@ void TEdit::save_history(char *name) {
 	    fprintf(f,"%s\n",history[n]);
 	fclose(f);
     }
+}
+
+static int myfgets(char *buff, int size, FILE *f) {
+    *buff = 0;
+    fgets(buff,size,f);
+    int len = strlen(buff);
+    while (len > 0 && buff[len-1] < 32 && buff[len-1] > 0)
+	buff[--len] = 0;
+    return len;
 }
 
 void TEdit::load_history(char *name) {

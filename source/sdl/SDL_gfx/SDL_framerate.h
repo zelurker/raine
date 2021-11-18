@@ -33,7 +33,7 @@ extern "C" {
 	Uint32 framecount;
 	float rateticks;
 	Uint32 lastticks;
-	int use_cpu_frame_count;
+	Uint32 *cpu_frame_count;
     } FPSmanager;
 
     extern FPSmanager fpsm;

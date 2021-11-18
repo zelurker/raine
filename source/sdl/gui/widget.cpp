@@ -1,7 +1,12 @@
 #include "widget.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "compat.h"
-#include "gui/tconsole.h"
+#include "gui/tconsole.h" // get ansilen from there...
+
+#if SDL == 2
+#define rectangleColor(s,x,y,w,h,col) rectangleColor(rend,x,y,w,h,col)
+#define boxColor(s,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#endif
 
 /* Basic widgets for TMenu, see menu.cpp comments at the top for an
  * introduction to the gui.
@@ -191,6 +196,9 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
 }
 
 int TProgressBar::get_width(TFont *font) {
+#if SDL==2
+    return desktop->w/2;
+#endif
   return sdl_screen->w/2;
 }
 

@@ -112,12 +112,13 @@ buffer before calling the gui */
  // SDL_opengl.h is required for a part specific to linux later...
 #include <SDL_opengl.h>
 #endif
+#include "gui.h"
 
-static int return_mandatory = 0, use_transparency = 1;
+int return_mandatory = 0, use_transparency = 1;
 int emulate_mouse_cursor = 0,keep_vga,gui_level;
 static int mouse_erased,unicode;
 
-extern int repeat_interval, repeat_delay; // in gui.cpp
+int repeat_interval, repeat_delay;
 
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h) {
   for (int my=1+y; my<y+h-1; my++) {
@@ -223,6 +224,12 @@ void sort_menu(menu_item_t *menu) {
 }
 
 static TMenu *caller;
+int (*resize_hook)(int sx,int sy);
+static char* my_get_shared(char *s) {
+    return s;
+}
+
+char * (*get_shared_hook)(char *name) = &my_get_shared;
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame,int to_translate) {
     header = NULL;
@@ -452,34 +459,11 @@ int TMenu::can_exit() {
   return 1; // nobody refuses the exit
 }
 
-char* TMenu::get_emuname() {
-  return EMUNAME " " VERSION;
-}
-
 void TMenu::draw_top_frame() {
-  int w_title,h_title;
-  font->dimensions(title,&w_title,&h_title);
-  boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
-  font->put_string(HMARGIN,0,get_emuname(),fg_frame,bg_frame);
-  font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
 }
 
 char* TMenu::get_bot_frame_text() {
-  int size = GetMemoryPoolSize()/1024; // Minimum Kb
-  static char game[100];
-  snprintf(game,100,"%s",(current_game ? current_game->long_name :_("No game loaded")));
-  if (current_game) {
-      snprintf(&game[strlen(game)], 100-strlen(game),
-	      " (%s)",current_game->main_name);
-      if (size < 1024)
-	  snprintf(&game[strlen(game)],100-strlen(game),
-		  " (%d Kb)",size);
-      else
-	  snprintf(&game[strlen(game)], 100-strlen(game),
-		  " (%d Mb)",size/1024);
-  }
-  game[99] = 0;
-  return game;
+    return "";
 }
 
 int TMenu::get_max_bot_frame_dimensions(int &w, int &h) {
@@ -765,7 +749,7 @@ void TMenu::setup_fg_layer() {
     int y = 0;
     skip_fglayer_header(y);
     lift = new TLift(width_max-20,y,h-y-get_fglayer_footer_height()-HMARGIN,
-	    &top,&nb_disp_items,&rows,&update_count,fg_layer,cslider_border,cslider_bar,cslider_lift);
+	    &top,&nb_disp_items,&rows,&update_count,cslider_border,cslider_bar,cslider_lift);
   }
   if (use_transparency)
     fg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA,w,h,
@@ -1966,7 +1950,7 @@ void TMenu::execute() {
     font = NULL;
   }
   SDL_initFramerate(&fpsm);
-  fpsm.use_cpu_frame_count = 0;
+  fpsm.cpu_frame_count = NULL;
   SDL_setFramerate(&fpsm,30);
   if (caller != this) {
     parent = caller; // update parent for persistant dialogs

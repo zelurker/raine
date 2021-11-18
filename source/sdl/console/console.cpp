@@ -16,6 +16,7 @@
 #include "neocd/cache.h"
 #include "arpro.h"
 
+extern "C" int get_console_key(); // control.c
 static int cpu_id;
 extern void do_if(int argc, char **argv);
 static UINT32 ram[0x100*2],ram_size[0x100],nb_ram;
@@ -249,6 +250,21 @@ static int del_watch(int nb) {
   nb_watch--;
   cons->print("watch point #%d deleted",nb);
   return 1;
+}
+
+void TRaineConsole::save_history() {
+    char buf[FILENAME_MAX];
+    if (!current_game) return;
+    snprintf(buf,FILENAME_MAX,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
+    edit_child->save_history(buf);
+}
+
+void TRaineConsole::load_history() {
+    if (current_game) {
+	char buf[FILENAME_MAX];
+	snprintf(buf,FILENAME_MAX,"%ssavedata" SLASH "%s.hist", dir_cfg.exe_path, current_game->main_name);
+	edit_child->load_history(buf);
+    }
 }
 
 int TRaineConsole::run_cmd(char *string) {
@@ -1333,6 +1349,7 @@ int do_console(int sel) {
     if (!cons || lastw!=screen->w || lasth!=screen->h) {
 	if (cons)
 	    delete cons;
+	key_console = get_console_key();
 	cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,1000, commands);
 	lastw = screen->w;
 	lasth = screen->h;
