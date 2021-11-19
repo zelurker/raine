@@ -177,8 +177,9 @@ void TDesktop::draw(SDL_Rect *r) {
     static int count;
     int step;
     int w = desktop->w, h = desktop->h;
+    float ratio = w*1.0/h;
     for (step=0; step<=10; step++) {
-	int x1 = w*step/10+count*4/3;
+	int x1 = w*step/10+count*ratio;
 	int y1 = h*step/10+count;
 	SDL_RenderDrawLine(rend,x1,0,w,y1);
 	SDL_RenderDrawLine(rend,w,y1,w-x1,h);
@@ -186,7 +187,7 @@ void TDesktop::draw(SDL_Rect *r) {
 	SDL_RenderDrawLine(rend,0,h-x1,x1,0);
     }
     count++;
-    if (count == 48) count = 0;
+    if (count >= desktop->h/10) count = 0;
 }
 
 static TMenu *caller;
