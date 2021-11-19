@@ -1,3 +1,8 @@
+#if SDL==2
+#warning useful
+#include "sdl2/gui/tedit.h"
+#endif
+
 #ifndef TEDIT_H
 #define TEDIT_H
 

@@ -1,3 +1,8 @@
+#if SDL == 2
+#warning was useful
+#include "sdl2/compat.h"
+#endif
+
 #ifndef SDL_COMPAT_H
 #define SDL_COMPAT_H
 

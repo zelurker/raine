@@ -4,7 +4,6 @@
 #include "raine.h"
 #include "version.h"
 #include "tfont.h"
-#include "tedit.h"
 #include "control.h"
 #include "control_internal.h"
 #include "tconsole.h"

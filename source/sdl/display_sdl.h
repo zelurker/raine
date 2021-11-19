@@ -1,3 +1,8 @@
+#if SDL == 2
+#warning was useful
+#include "sdl2/display_sdl.h"
+#endif
+
 // extensions for SDL
 
 #ifndef DISPLAY_SDL_H
