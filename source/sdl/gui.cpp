@@ -190,7 +190,9 @@ void setup_curl_dlg(char *name) {
     load_items[3].label = name;
     if (raine_cfg.no_gui)
 	return;
+#if SDL==1
     loading_dialog->update_bg_layer(NULL);
+#endif
     delete loading_dialog;
     loading_dialog = new TDialog(_("Loading Game"),load_items);
     loading_dialog->draw();
