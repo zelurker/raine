@@ -487,7 +487,7 @@ void TMenu::draw_frame(SDL_Rect *r) {
   TFont *old_font;
   len_bot = get_max_bot_frame_dimensions(w_game,h_game);
 
-  sprintf(top_string,"%s %s",get_emuname(),title);
+  sprintf(top_string,"%s %s",get_top_string(),title);
   len_top = strlen(top_string);
 
   old_font = font;

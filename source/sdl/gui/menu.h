@@ -77,6 +77,7 @@ class TMenu {
     void toggle_header();
     virtual ~TMenu();
     void set_transparency(int transp) { use_transparency = transp; }
+    virtual char* get_top_string() { return ""; }
     virtual void draw_top_frame();
     virtual char* get_bot_frame_text();
     virtual int get_max_bot_frame_dimensions(int &w, int &h);

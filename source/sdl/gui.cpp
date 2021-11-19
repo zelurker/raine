@@ -404,52 +404,45 @@ static menu_item_t main_items[] =
 { NULL, NULL, NULL },
 };
 
-char* get_emuname() {
+int TMain_menu::can_be_displayed(int n) {
+    switch(n) {
+    case 0: // Play Game
+    case 1: // game options
+	return current_game != NULL;
+    case 2: // Region
+	return current_game != NULL && current_game->romsw != NULL;
+    case 3: // cheats
+	return current_game != NULL && (CheatCount > 0
+#ifdef HAS_CONSOLE
+		|| nb_scripts > 0
+#endif
+		);
+    case 4: // dsw
+	return current_game != NULL && current_game->dsw != NULL;
+    default:
+	if (strstr(main_items[n].label,"command.dat"))
+	    return nb_commands > 0;
+	return 1;
+    }
+}
+
+char* TMain_menu::get_top_string() {
     return EMUNAME " " VERSION;
 }
 
-class TMain_menu : public TMenu
-{
-  public:
-  TMain_menu(char *my_title, menu_item_t *mymenu) :
-    TMenu(my_title,mymenu)
-    {}
-  virtual int can_be_displayed(int n) {
-    switch(n) {
-      case 0: // Play Game
-      case 1: // game options
-        return current_game != NULL;
-      case 2: // Region
-        return current_game != NULL && current_game->romsw != NULL;
-      case 3: // cheats
-        return current_game != NULL && (CheatCount > 0
-#ifdef HAS_CONSOLE
-	    || nb_scripts > 0
-#endif
-	    );
-      case 4: // dsw
-        return current_game != NULL && current_game->dsw != NULL;
-      default:
-	if (strstr(main_items[n].label,"command.dat"))
-	  return nb_commands > 0;
-	return 1;
-    }
-  }
-  char *get_bot_frame_text();
-  void draw_top_frame() {
-      int w_title,h_title;
-      font->dimensions(title,&w_title,&h_title);
+void TMain_menu::draw_top_frame() {
+    int w_title,h_title;
+    font->dimensions(title,&w_title,&h_title);
 #if SDL==1
-      boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
-      font->put_string(HMARGIN,0,get_emuname(),fg_frame,bg_frame);
-      font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
+    boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
+    font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
+    font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
 #else
-      boxColor(rend,0,0,desktop->w,h_title-1,bg_frame);
-      font->put_string(HMARGIN,0,get_emuname(),fg_frame,bg_frame);
-      font->put_string(desktop->w-w_title,0,title,fg_frame,bg_frame);
+    boxColor(rend,0,0,desktop->w,h_title-1,bg_frame);
+    font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
+    font->put_string(desktop->w-w_title,0,title,fg_frame,bg_frame);
 #endif
-  }
-};
+}
 
 char *TMain_menu::get_bot_frame_text() {
   int size = GetMemoryPoolSize()/1024; // Minimum Kb
@@ -520,8 +513,8 @@ void StartGUI(void)
 {
 #if SDL == 2
     resize_hook = &my_resize;
-    get_shared_hook = &get_shared;
 #endif
+    get_shared_hook = &get_shared;
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 
 #ifdef RAINE_DEBUG

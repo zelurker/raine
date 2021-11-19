@@ -14,7 +14,7 @@
 #include "fsel.h"
 #include "gui.h"
 
-class TFileSel : public TMenu
+class TFileSel : public TMain_menu
 {
   protected:
     int nb_files;
@@ -25,12 +25,15 @@ class TFileSel : public TMenu
     char path[FILENAME_MAX];
     char *res_file;
     TFileSel(char *my_title, char *mypath, char **myext, char *res_str,int opts = 0, char* mytitle2 = NULL);
-    virtual char* get_emuname();
+    virtual char* get_top_string();
     virtual ~TFileSel();
     virtual void compute_nb_items();
     virtual int get_fgcolor(int n);
     int can_be_selected(int n) {
       return can_be_displayed(n);
+    }
+    int can_be_displayed(int n) {
+	return 1;
     }
     virtual void set_dir(char *mypath);
     virtual int mychdir(int n);
@@ -93,8 +96,8 @@ class TPathDlg : public TMenu
   TPathDlg(char *my_title, menu_item_t *menu) :
     TMenu(my_title,menu, NULL,-1, -1,-1,-1, /* to_translate */ 0)
   {}
-  char *get_emuname() {
-    return dlg->get_emuname();
+  char *get_top_string() {
+    return dlg->get_top_string();
   }
 };
 
@@ -185,7 +188,7 @@ static int sort_menu(const void *a, const void *b) {
 #define SAVE 2
 
 TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, int opts,char *mytitle2) :
-  TMenu(my_title,NULL,NULL,-1, -1,-1,-1, /* to_translate */ 0)
+  TMain_menu(my_title,NULL)
 {
   char *s;
   title2 = mytitle2;
@@ -224,11 +227,11 @@ TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, in
   res_file = res_str;
 }
 
-char* TFileSel::get_emuname() {
+char* TFileSel::get_top_string() {
   if (title2 && *title2)
     return title2;
   else
-    return ::get_emuname();
+    return TMain_menu::get_top_string();
 }
 
 static char res_file[FILENAME_MAX+1];
