@@ -18,21 +18,32 @@ static menu_item_t menu[14]; // 14 soft dips max
 
 static char* get_str(int &strings) {
     // Get a string from the string array
+    UINT8 *ptr = (is_neocd() ? RAM : ROM);
     char str[13];
-    if (is_neocd())
-	memcpy(str,&RAM[strings],12);
-    else
-	memcpy(str,&ROM[strings],12);
+    while (ptr[strings ^ 1] == 32)
+	strings++;
+    memcpy(str,&ptr[strings],12);
 
-    for (int n=0; n<12; n++)
+    int n;
+    for (n=0; n<12; n++)
 	if (str[n] == 0) {
 	    printf("bad string %s\n",str);
 	    throw 1; // Normally strings are padded with spaces, no 0 !
-	}
-    strings += 12;
+	} else if (str[n] == 9) break;
     ByteSwap((UINT8*)str,12);
-    int n = 11;
-    while (str[n] == ' ')
+    // samsho3 neocd separates its strings by char 9 (tab)...
+    if (n<12) {
+	strings += n+1;
+	for (n=0; n<12; n++) {
+	    if (str[n] == 9) {
+		str[n] = 0;
+		break;
+	    }
+	}
+    } else
+	strings += 12;
+    n = 11;
+    while (str[n] == ' ' || str[n] == 9)
 	n--;
     str[++n] = 0;
     return strdup(str);
@@ -82,6 +93,7 @@ int do_soft_dips(int sel) {
     if (current_game->load_game != &load_neocd) return 0;
     int base = (is_neocd() ? ReadLongSc(&RAM[0x11e]) : ReadLongSc(&ROM[0x11e]));
     // mslug has a link to an address in its 1st rom bank, > 0x200000
+    printf("base %x\n",base);
     if (base > 0x200000) {
        if (is_neocd()) return 0;
        base -= 0x100000; // there is a hole between 100000 and 200000 for ram
