@@ -24,6 +24,7 @@ extern int GameMouse;
 /*                                                                            */
 /******************************************************************************/
 
+// The order of this enum is linked to the array def_input in control.h
 enum {
    KB_DEF_COIN1 = 0x100,	// Coin A
    KB_DEF_COIN2,		// Coin B
@@ -153,6 +154,9 @@ enum {
    KB_DEF_P2_B1B2B3,
    KB_DEF_P2_B2B3B4,
    KB_DEF_P1_B4B5B6,
+
+   KB_DEF_P3_B1B2,
+   KB_DEF_P4_B1B2,
 #endif
 
    KB_DEF_NEXT_GAME,
@@ -263,6 +267,8 @@ extern char MSG_P1_B1B2[];
 extern char MSG_P1_B1B2B3[];
 extern char MSG_P1_B4B5B6[];
 extern char MSG_P1_AB[];
+extern char MSG_P3_B1B2[];
+extern char MSG_P4_B1B2[];
 
 extern char MSG_P1_A[];    // Mahjong controls[]; at least in mahjong quest...
 extern char MSG_P1_E[];

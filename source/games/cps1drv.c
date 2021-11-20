@@ -4669,6 +4669,9 @@ static struct INPUT_INFO input_cps1_3players[] =
   INP0( P3_UP, 0x04, 0x08),
   INP0( P3_B1, 0x04, 0x10),
   INP0( P3_B2, 0x04, 0x20),
+#ifndef RAINE_DOS
+  INP0( P3_B1B2, 4, 0x30),
+#endif
   INP0( COIN3, 0x04, 0x40),
   INP0( P3_START, 0x04, 0x80),
   END_INPUT
@@ -4684,6 +4687,9 @@ static struct INPUT_INFO input_cps1_4players[] =
   INP0( P4_UP, 0x06, 0x08),
   INP0( P4_B1, 0x06, 0x10),
   INP0( P4_B2, 0x06, 0x20),
+#ifndef RAINE_DOS
+  INP0( P4_B1B2, 6, 0x30),
+#endif
   INP0( COIN4, 0x06, 0x40),
   INP0( P4_START, 0x06, 0x80),
   END_INPUT

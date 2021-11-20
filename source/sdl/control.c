@@ -128,6 +128,7 @@ typedef struct joystick_state {
 joystick_state jstate[MAX_JOY];
 
 // must be global for the controls dialog
+// The categ field has the only purpose to sort the inputs in the control dialog !
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
 #ifdef RAINE_WIN32
@@ -260,6 +261,8 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { 0,           0, 0, "Player2 B1+B2+B3", P2C },
  { 0,           0, 0, "Player2 B2+B3+B4", P2C },
  { 0,           0, 0, "Player1 B4+B5+B6", P1C },
+ { 0,           0, 0, "Player3 B1+B2", P3C },
+ { 0,           0, 0, "Player4 B1+B2", P4C },
 
  { 0,           0, 0, "Next Game", SYS },
  { 0,           0, 0, "Prev Game", SYS },
@@ -1614,6 +1617,8 @@ char MSG_P1_AB[]        = _("Player1 A+B");
 char MSG_P1_B1B2[]      = _("Player1 B1+B2");
 char MSG_P1_B1B2B3[]    = _("Player1 B1+B2+B3");
 char MSG_P1_B4B5B6[]    = _("Player1 B4+B5+B6");
+char MSG_P3_B1B2[]      = _("Player3 B1+B2");
+char MSG_P4_B1B2[]      = _("Player4 B1+B2");
 
 char MSG_P2_START[]     = _("Player2 Start");
 
@@ -1826,27 +1831,6 @@ char MSG_ALT[]        = _("Alternate");
 
 /******************************************************************************/
 
-#ifndef SDL
-static void key_pause_scroll_up(void)
-{
-   raine_cfg.req_pause_scroll |= 1;
-}
-
-static void key_pause_scroll_down(void)
-{
-   raine_cfg.req_pause_scroll |= 2;
-}
-
-static void key_pause_scroll_left(void)
-{
-   raine_cfg.req_pause_scroll |= 4;
-}
-
-static void key_pause_scroll_right(void)
-{
-   raine_cfg.req_pause_scroll |= 8;
-}
-#endif
 void inputs_preinit() {
   int n;
   SDL_Event event;
@@ -1856,7 +1840,11 @@ void inputs_preinit() {
     joy[n] = SDL_JoystickOpen(n);
     // Memorize the joystick name because calls to this function are very
     // slow for some reason... !
+#if SDL==2
     joy_name[n] = strdup(SDL_JoystickName(joy[n]));
+#else
+    joy_name[n] = strdup(SDL_JoystickName(n));
+#endif
     printf("joy %d opened (%s), numaxes %d\n",n,joy_name[n],SDL_JoystickNumAxes(joy[n]));
   }
 
