@@ -71,7 +71,7 @@ static int lost_focus;
 
 int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
   analog_maxy,analog_normx,analog_normy,
-  app_state = SDL_APPMOUSEFOCUS|SDL_APPINPUTFOCUS, pause_on_focus;
+   pause_on_focus;
 // analog_normx & normy are the normalized position of the stick after
 // calibration (between -16384 and +16384 inclusive).
 Uint8 key[0x300];
@@ -332,12 +332,16 @@ void toggle_fullscreen() {
     display_cfg.winx = display_cfg.screen_x;
     display_cfg.winy = display_cfg.screen_y;
   }
+#if SDL == 1
   resize(1);
   SetupScreenBitmap();
   if (current_game) {
     init_video_core();
     reset_ingame_timer();
   }
+#else
+  SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+#endif
 }
 
 #ifdef HAS_CONSOLE
@@ -1227,10 +1231,13 @@ static void handle_event(SDL_Event *event) {
   switch (event->type) {
     case SDL_KEYDOWN:
       input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
-      if (!input) { // special encoding for scancodes (unknown keys)
+      if (!input || input >= 0x300) { // special encoding for scancodes (unknown keys)
 	input = event->key.keysym.scancode | 0x200;
       }
-      key[input] = 1;
+      if (input < 0x300)
+	  key[input] = 1;
+      else
+	  printf("big key sym down : %x scan %x\n",event->key.keysym.sym,event->key.keysym.scancode);
       if (!reading_demo) {
 	  ta = -1;
 	  /* We allow that 1 key is mapped to more than 1 control (loop)
@@ -1264,10 +1271,13 @@ static void handle_event(SDL_Event *event) {
       break;
     case SDL_KEYUP:
       input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
-      if (!input) { // special encoding for scancodes (unknown keys)
+      if (!input || input >= 0x300) { // special encoding for scancodes (unknown keys)
 	input = event->key.keysym.scancode | 0x200;
       }
-      key[input] = 0;
+      if (input < 0x300)
+	  key[input] = 0;
+      else
+	  printf("big key up : %x scan %x\n",event->key.keysym.sym,event->key.keysym.scancode);
       if (reading_demo) break;
       ta = -1;
       if (input == def_input_emu[6].scancode) {
@@ -1358,12 +1368,21 @@ static void handle_event(SDL_Event *event) {
       } while (ta >= 0);
       mouse_b &= ~event->button.button;
       break;
+#if SDL==1
     case SDL_VIDEORESIZE:
       resize(1);
       SetupScreenBitmap();
       init_video_core();
       reset_ingame_timer();
-
+#else
+    case SDL_WINDOWEVENT:
+      if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+	  resize(1,event->window.data1,event->window.data2);
+      } else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+	  lost_focus = 0;
+      else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+	  lost_focus = 1;
+#endif
       break;
 #ifdef USE_BEZELS
     case SDL_VIDEOEXPOSE:
@@ -1497,13 +1516,11 @@ static void handle_event(SDL_Event *event) {
       break;
     case SDL_QUIT:
       exit(0);
+#if SDL==1
     case SDL_ACTIVEEVENT:
-      if (event->active.gain)
-	  app_state |= event->active.state;
-      else
-	  app_state &= ~event->active.state;
       lost_focus = 0;
       break;
+#endif
   }
 }
 
@@ -1547,8 +1564,7 @@ void update_inputs(void)
   while (SDL_PollEvent(&event)) {
     handle_event(&event);
   }
-  if (! raine_cfg.req_pause_game && !(app_state & SDL_APPINPUTFOCUS) &&
-	  pause_on_focus ) {
+  if (! raine_cfg.req_pause_game && pause_on_focus ) {
       lost_focus++;
       // lost input -> go to pause
       if (lost_focus >= 2)
@@ -1840,7 +1856,7 @@ void inputs_preinit() {
     joy[n] = SDL_JoystickOpen(n);
     // Memorize the joystick name because calls to this function are very
     // slow for some reason... !
-    joy_name[n] = strdup(SDL_JoystickName(n));
+    joy_name[n] = strdup(SDL_JoystickName(joy[n]));
     printf("joy %d opened (%s), numaxes %d\n",n,joy_name[n],SDL_JoystickNumAxes(joy[n]));
   }
 

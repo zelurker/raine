@@ -17,6 +17,14 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "games.h"
 
+#if SDL == 2
+#define filledPolygonColor(sf,tabx,taby,nb,col) filledPolygonColor(rend,tabx,taby,nb,col)
+#define	polygonColor(sf,tabx,taby,nb,col) polygonColor(rend,tabx,taby,nb,col)
+#define lineColor(sf,x1,y1,x2,y2,coul) lineColor(rend,x1,y1,x2,y2,coul)
+#define filledEllipseColor(sf, x, y, w,h, col) filledEllipseColor(rend,x,y,w,h,col)
+#define filledCircleColor(sf, x, y, w, c) filledCircleColor(rend,x,y,w,c)
+#endif
+
 class TAbout_menu : public TBitmap_menu
 {
   private:
@@ -593,6 +601,7 @@ TAbout_menu::~TAbout_menu() {
 
 void TAbout_menu::update_fg_layer(int nb_to_update) {
   static unsigned int tt = 0;
+  TBitmap_menu::update_fg_layer(nb_to_update);
   if (nb_to_update >= 0 && bmp && CYC) {
      int indice = (tt*palette_size*4);
      // printf("indice %d\n",indice);
@@ -600,6 +609,7 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
        indice = 0;
        tt = 0;
      }
+     SDL_Rect dest;
 #if SDL == 2
      SDL_Color *colors = bmp->format->palette->colors;
      memcpy(colors,&CYC[indice],palette_size*4);
@@ -609,23 +619,28 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
      SDL_SetColors(bmp,(SDL_Color*)&CYC[indice],0,palette_size);
 #endif
      tt++;
-    SDL_Rect dest;
 
-    dest.x = fgdst.x+(fg_layer->w-bmp->w)/2;
-    dest.y = fgdst.y+HMARGIN;
     dest.w = bmp->w;
     dest.h = bmp->h;
 #if SDL == 2
+    dest.x = (fgdst.w-bmp->w)/2;
+    dest.y = HMARGIN;
+    int ret = SDL_SetRenderTarget(rend,fg_layer);
+    if (ret < 0) {
+	printf("SDL_SetRenderTarget %d : %s\n",ret,SDL_GetError());
+	exit(1);
+    }
     SDL_Texture *tex = SDL_CreateTextureFromSurface(rend, bmp);
     SDL_RenderCopy(rend,tex,NULL,&dest);
-    SDL_RenderPresent(rend);
     SDL_DestroyTexture(tex);
+    SDL_SetRenderTarget(rend,NULL);
 #else
+    dest.x = fgdst.x+(fgdst.w-bmp->w)/2;
+    dest.y = fgdst.y+HMARGIN;
     SDL_BlitSurface(bmp,NULL,sdl_screen,&dest);
     do_update(&dest);
 #endif
   }
-  TBitmap_menu::update_fg_layer(nb_to_update);
 }
 
 static menu_item_t *menu;

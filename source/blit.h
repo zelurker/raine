@@ -13,7 +13,6 @@ typedef struct RAINEBITMAP
 } RAINEBITMAP;
 
 extern RAINEBITMAP GameScreen;
-extern int use_scale2x;
 extern int recording_video,video_fps,last_video_frame;
 extern BITMAP *GameBitmap; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
 extern BITMAP *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)

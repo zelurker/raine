@@ -109,14 +109,9 @@ void my_get_mouse_mickeys(int *mx, int *my);
    #define ASSERT(condition)
 #endif
 
-// Allegro -> SDL_gfx primitives
-#define line(bitmap,x1,y1,x2,y2,color) \
-  lineColor(get_surface_from_bmp(bitmap),x1,y1,x2,y2,color)
-
-
 extern SDL_PixelFormat *color_format;
 extern SDL_Window *win;
-#define screen win
+#define screen sdl_screen
 extern SDL_Surface *sdl_screen;
 extern SDL_Renderer *rend;
 

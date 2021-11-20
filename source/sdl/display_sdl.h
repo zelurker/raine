@@ -1,5 +1,4 @@
 #if SDL == 2
-#warning was useful
 #include "sdl2/display_sdl.h"
 #endif
 
@@ -41,7 +40,9 @@ extern const SDL_VideoInfo *video;
 
 void resize(int call);
 int lock_surface(SDL_Surface *s);
+#if SDL == 1
 void adjust_gui_resolution();
+#endif
 void set_opengl_filter(int filter);
 #ifdef RAINE_WIN32
 void setup_video_driver();

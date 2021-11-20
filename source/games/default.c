@@ -137,7 +137,9 @@ void ClearDefault(void)
 #ifdef SDL
     unregister_driver_emu_keys();
 #endif
+#if SDL != 2
   use_scale2x = 0;
+#endif
 #if AS_NEO
   use_music = 0;
 #endif

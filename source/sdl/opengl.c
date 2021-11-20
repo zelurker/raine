@@ -12,6 +12,7 @@
 #define GL_GLEXT_LEGACY // to try not to include glext.h which redefines the GL_GLEXT_VERSION which shouldn't have gone to SDL_opengl.h !
 #endif
 #include <SDL_opengl.h>
+#include <GL/glu.h>
 
 #endif
 #undef WINAPI
@@ -45,7 +46,7 @@ void check_error(char *msg) {
 	fprintf( stderr, "%s: OpenGL error: %d\n", msg,gl_error );
     }
 
-    char *sdl_error = SDL_GetError( );
+    const char *sdl_error = SDL_GetError( );
 
     if( sdl_error[0] != '\0' ) {
 	fprintf(stderr, "%s: SDL error '%s'\n",msg, sdl_error);
@@ -218,7 +219,11 @@ void get_ogl_infos() {
 	GetAttribute( SDL_GL_MULTISAMPLEBUFFERS, &ogl.infos.fsaa_buffers );
 	GetAttribute( SDL_GL_MULTISAMPLESAMPLES, &ogl.infos.fsaa_samples );
 	GetAttribute( SDL_GL_ACCELERATED_VISUAL, &ogl.infos.accel );
+#if SDL==2
+	ogl.infos.vbl = SDL_GL_GetSwapInterval();
+#else
 	GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
+#endif
 	check_error("end ogl_infos");
 }
 
@@ -345,7 +350,11 @@ void opengl_text(char *msg, int x, int y) {
 // Called at the end of a frame
 void finish_opengl() {
     if (ogl.dbuf)
+#if SDL==2
+	SDL_GL_SwapWindow(win);
+#else
 	SDL_GL_SwapBuffers();
+#endif
     else
 	glFlush();
 #ifdef RAINE_DEBUG

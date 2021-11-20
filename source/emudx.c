@@ -119,8 +119,10 @@ void load_emudx(const char *name, int tiles, int sprites,
     allegro_message("couldn't load the dx file.\n");
     video->screen_x = emudx_oldwidth;
     video->screen_y = emudx_oldheight;
+#if !defined(SDL) || SDL < 2
     if(wants_switch_res)
       switch_res(current_game->video);
+#endif
     return;
   }
   video->draw_game = draw_emudx;

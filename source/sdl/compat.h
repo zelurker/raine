@@ -1,5 +1,4 @@
 #if SDL == 2
-#warning was useful
 #include "sdl2/compat.h"
 #endif
 
@@ -48,8 +47,6 @@ void destroy_bitmap(struct BITMAP *bmp);
 #define RGB SDL_Color
 
 // Misc
-int  save_pcx(const char *filename, BITMAP *bmp, const RGB
-	      *pal);
 static inline SDL_Surface *get_surface_from_bmp(BITMAP *bmp) {
   return (SDL_Surface *)bmp->extra;
 }

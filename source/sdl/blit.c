@@ -41,7 +41,7 @@ RAINEBITMAP GameScreen;
 static int destx, desty, xxx, yyy, xoff2, yoff2;
 
 static void my_save_png(char *full_name) {
-    if ((sdl_screen->flags & SDL_OPENGL) && ogl.save)
+    if ((display_cfg.video_mode == 0) && ogl.save)
 	ogl_save_png(full_name);
     else
 	save_png(full_name, GameViewBitmap, pal);

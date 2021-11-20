@@ -247,22 +247,6 @@ BITMAP *surface_to_bmp(SDL_Surface *s) {
   return bmp;
 }
 
-BITMAP *overlay_to_bmp(SDL_Overlay *s) {
-  int a;
-  BITMAP *bmp;
-  // Works for packed yuv only
-
-  bmp = malloc( sizeof(BITMAP) + sizeof(char*) * s->h);
-  bmp->extra = (void*)s;
-  bmp->w = s->w; bmp->h = s->h;
-  bmp->x_ofs = bmp->y_ofs = 0;
-  for (a=0; a < s->h; a++)
-    bmp->line[a] = (UINT8 *)s->pixels[0]+a*s->pitches[0];
-  bmp->dat = s->pixels[0];
-  bmp->id = 2; // overlay
-  return bmp;
-}
-
 void sdl_create_overlay( int w, int h) {
   if (sdl_screen->flags & SDL_OPENGL) {
       print_debug("no overlays with opengl\n");
@@ -331,7 +315,6 @@ void sdl_create_overlay( int w, int h) {
 /*     SDL_Quit(-1); */
 /*   } */
 
-  // return overlay_to_bmp(s);
   ReClipScreen();
   if (GameBitmap) {
     SDL_Surface *sdl_game_bitmap = get_surface_from_bmp(GameBitmap);

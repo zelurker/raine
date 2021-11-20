@@ -1,9 +1,13 @@
-/* 
+#if SDL==2
+#include "sdl2/SDL_gfx/SDL_gfxPrimitives.h"
+#endif
+
+/*
 
  SDL_gfxPrimitives: graphics primitives for SDL
 
  LGPL (c) A. Schiffler
- 
+
 */
 
 #ifndef _SDL_gfxPrimitives_h

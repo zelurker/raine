@@ -15,6 +15,12 @@
 #include "gui/tedit.h"
 #include "files.h"
 
+#if SDL==2
+#define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#define hlineColor(sf,x,y,x2,col) hlineColor(rend,x,y,x2,col)
+#define vlineColor(sf,x,y,y2,col) vlineColor(rend,x,y,y2,col)
+#endif
+
 /* This is currently the bigest file in the dialogs directory.
  * But it's not because of long complicated code, it's just because it does
  * a lot of things, like translating inputs to text for keyboard, joystick
@@ -716,7 +722,7 @@ int TCalibrate::compute_fglayer_height() {
 #define analog2screen(x) ((w-20)/2+(x)*(w-20)/(2*32767))
 
 void TCalibrate::display_fglayer_header(int &y) {
-  int w = fg_layer->w;
+  int w = fgdst.w;
   int by = y+(w-20)/2; // center
   int bx = w/2;
   myy = y;
@@ -737,12 +743,12 @@ void TCalibrate::display_fglayer_header(int &y) {
       bx+10,y+analog2screen(analog_maxy),mymakecol(255,0,0));
   if (cy)
     hlineColor(fg_layer,bx-10,bx+10,y+analog2screen(cy),mymakecol(255,255,255));
-  y += fg_layer->w-18;
+  y += fgdst.w-18;
 }
 
 void TCalibrate::skip_fglayer_header(int &y) {
   if (fg_layer)
-    y += fg_layer->w-18;
+    y += fgdst.w-18;
 }
 
 void TCalibrate::handle_joystick(SDL_Event *event) {
@@ -763,18 +769,22 @@ void TCalibrate::handle_joystick(SDL_Event *event) {
 	  analog_maxy = cy;
       } else
         break;
+#if SDL == 1
       int y = myy;
       display_fglayer_header(y);
       SDL_Rect dest,from;
       dest.x = fgdst.x+10;
       dest.y = fgdst.y+10;
-      dest.w = fg_layer->w-20;
-      dest.h = fg_layer->w-20;
+      dest.w = fgdst.w-20;
+      dest.h = fgdst.w-20;
       from.x = 10; from.y = 10;
-      from.w = from.h = fg_layer->w-20;
+      from.w = from.h = fgdst.w-20;
       SDL_FillRect(sdl_screen,&dest,0);
       SDL_BlitSurface(fg_layer,&from,sdl_screen,&dest);
       do_update(&dest);
+#else
+      draw();
+#endif
       // printf("redraw %d %d %d %d cx %d cy %d\n",analog_minx,analog_maxx,analog_miny,analog_maxy,cx,cy);
     }
     break;

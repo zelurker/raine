@@ -45,7 +45,6 @@ extern int emulate_mouse_cursor;
 #endif
 
 void sort_menu(menu_item_t *menu);
-void setup_mouse_cursor(SDL_Surface *mycursor);
 int add_menu_options(menu_item_t *menu);
 
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);

@@ -235,7 +235,9 @@ static menu_item_t game_options[] =
   { _("Load game"), &my_load },
   { _("Save game"), &my_save },
   { _("Graphical layers..."), &graphical_layers },
+#if SDL==1
   { _("Sprite viewer"), &sprite_viewer },
+#endif
 #if defined(HAS_NEO) && SDL==1
   { _("Edit screen"), &do_screen },
   { _("Edit msg"), &do_msg },

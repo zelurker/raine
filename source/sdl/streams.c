@@ -389,13 +389,18 @@ void update_monitoring() {
 	if (monitoring) {
 	    int h2 = h;
 	    h -= 100;
+#if SDL==1
 	    for (i=0; i<mixing_buff_len; i+=2) {
 		int x = i*w/mixing_buff_len;
 		int y = mixing_buff[i]*50/32767;
 		int y2 = mixing_buff[i+1]*50/32767;
+		// This is rather bad news for sdl2 : sdl2_gfx supports only renderers for its drawing functions
+		// there is no line function for SDL_Surface afaik ! The only way to do that would be to draw directly
+		// on the renderer after having drawn this bitmap on it... I'll keep it for later... !
 		line(GameBitmap,x+border,h+border,x+border,h+y+border,pen);
 		line(GameBitmap,x+border,h2+border,x+border,h2+y2+border,pen);
 	    }
+#endif
 	} else
 	    print_ingame(1,gettext("Recording to wav..."));
 	if (!f_record) {

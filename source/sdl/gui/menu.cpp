@@ -224,12 +224,6 @@ void sort_menu(menu_item_t *menu) {
 }
 
 static TMenu *caller;
-int (*resize_hook)(int sx,int sy);
-static char* my_get_shared(char *s) {
-    return s;
-}
-
-char * (*get_shared_hook)(char *name) = &my_get_shared;
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame,int to_translate) {
     header = NULL;

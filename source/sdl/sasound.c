@@ -217,9 +217,11 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 	   Sound_Init(); // init sdl_sound
 #endif
        sound_init = 1;
+#if SDL == 1
        strcpy(driver_name,"SDL ");
        SDL_AudioDriverName(&driver_name[4], 32);
        print_debug("sound driver name : %s\n",driver_name);
+#endif
        // set_sound_variables(0);
        SDL_PauseAudio(0);
    }

@@ -252,7 +252,11 @@ static int myx, myy, myw, myh, myxoptions;
 void TConsole::display_fglayer_footer(int x,int &y,int w, int xoptions) {
   myx = x; myy=y; myw =w; myh=edit_child->get_height(font);
   myxoptions=xoptions;
+#if SDL==2
   edit_child->disp(NULL,font,x,y,w,myh,fg,bg,
+#else
+  edit_child->disp(fg_layer,font,x,y,w,myh,fg,bg,
+#endif
     xoptions);
 }
 
@@ -269,10 +273,11 @@ void TConsole::fglayer_footer_update() {
   dst.x = myx; dst.y = myy; dst.w = myw; dst.h = myh;
 #if SDL==2
   boxColor(rend,dst.x,dst.y,dst.x+dst.w-1,dst.h+dst.y-1,bgsdl);
+  edit_child->disp(NULL,font,myx,myy,myw,myh,fg,bg,
 #else
   SDL_FillRect(fg_layer,&dst,bgsdl);
+  edit_child->disp(fg_layer,font,myx,myy,myw,myh,fg,bg,
 #endif
-  edit_child->disp(NULL,font,myx,myy,myw,myh,fg,bg,
 	  myxoptions);
   SDL_Rect to;
   to.x = dst.x + fgdst.x; to.y = dst.y+fgdst.y;

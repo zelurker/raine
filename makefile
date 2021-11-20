@@ -70,7 +70,7 @@ HAS_CONSOLE = 1
 
 # which lib to use :
 # SDL = 1 or SDL = 2, or comment the line for allegro
-SDL = 1
+SDL = 2
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
@@ -599,6 +599,7 @@ OBJDIRS += \
 ifeq (${SDL},2)
 OBJDIRS += $(OBJDIR)/sdl2 \
 	$(OBJDIR)/sdl2/SDL_gfx \
+	$(OBJDIR)/sdl2/sdl_sound \
 	$(OBJDIR)/sdl2/gui
 endif
 
@@ -822,8 +823,6 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/newspr.o \
 	$(OBJDIR)/video/spr64.o \
 	$(OBJDIR)/video/cache.o \
-	$(OBJDIR)/video/scale2x.o \
-	$(OBJDIR)/video/scale3x.o \
 	$(VIDEO_CORE)/str/6x8_8.o \
 	$(VIDEO_CORE)/str/6x8_16.o \
 	$(VIDEO_CORE)/str/6x8_32.o \
@@ -832,10 +831,6 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(VIDEO_CORE)/16x8_16.o \
 	$(VIDEO_CORE)/16x8_32.o \
 		\
-	$(VIDEO_CORE)/blit_x2/8.o \
-	$(VIDEO_CORE)/blit_x2/16.o \
-	$(VIDEO_CORE)/blit_x2/24.o \
-	$(VIDEO_CORE)/blit_x2/32.o \
 	$(OBJDIR)/video/zoom/16x16.o \
 	$(OBJDIR)/video/zoom/16x16_16.o \
 	$(OBJDIR)/video/zoom/16x16_32.o \
@@ -847,15 +842,23 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/c/pdraw.o
 
 ifneq (${SDL},2)
-	VIDEO += $(OBJDIR)/video/res.o
+VIDEO += $(OBJDIR)/video/res.o \
+	$(VIDEO_CORE)/blit_x2/8.o \
+	$(VIDEO_CORE)/blit_x2/16.o \
+	$(VIDEO_CORE)/blit_x2/24.o \
+	$(VIDEO_CORE)/blit_x2/32.o \
+	$(OBJDIR)/video/scale2x.o \
+	$(OBJDIR)/video/scale3x.o
 endif
 
 ifndef NO_ASM
+ifneq (${SDL},2)
 VIDEO += \
 	$(OBJDIR)/video/hq2x16.o \
 	$(OBJDIR)/video/hq2x32.o \
 	$(OBJDIR)/video/hq3x16.o \
 	$(OBJDIR)/video/hq3x32.o
+endif
 endif
 
 ifdef ASM_VIDEO_CORE
@@ -1005,13 +1008,11 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 	$(OBJDIR)/sdl/dialogs/controls.o \
 	$(OBJDIR)/sdl/dialogs/cheats.o \
 	$(OBJDIR)/sdl/dialogs/game_options.o \
-	$(OBJDIR)/sdl/dialogs/sprite_viewer.o \
 	$(OBJDIR)/sdl/dialogs/colors.o \
 	$(OBJDIR)/sdl/gui/tfont.o \
 	$(OBJDIR)/sdl/gui/widget.o \
 	$(OBJDIR)/sdl/gui/tslider.o \
 	$(OBJDIR)/sdl/gui/tlift.o \
-	$(OBJDIR)/sdl/gui/tbitmap.o \
 	$(CONSOLE) \
 	$(OBJDIR)/sdl/dialogs/game_selection.o \
 	$(OBJDIR)/sdl/dialogs/romdirs.o \
@@ -1019,6 +1020,8 @@ GUI=	$(OBJDIR)/sdl/gui.o \
 
 ifeq (${SDL},1)
 	GUI += $(OBJDIR)/sdl/gui/menu.o \
+	$(OBJDIR)/sdl/gui/tbitmap.o \
+	$(OBJDIR)/sdl/dialogs/sprite_viewer.o \
 	$(OBJDIR)/sdl/gui/tedit.o
 else
 	GUI += $(OBJDIR)/sdl2/gui/menu.o \
@@ -1075,10 +1078,6 @@ endif
 
 ifdef RAINE32
     CORE += $(OBJDIR)/translate.o
-endif
-
-ifdef DARWIN
-	CORE += $(OBJDIR)/SDLMain.o
 endif
 
 UNZIP = $(OBJDIR)/mini-unzip/unzip.o \
@@ -1155,15 +1154,23 @@ OBJS +=	 \
 	$(DEBUG)
 
 ifdef SDL
-OBJS +=	$(OBJDIR)/sdl/blit.o \
-	$(OBJDIR)/sdl/display.o \
+OBJS +=	 \
 	$(OBJDIR)/sdl/winpos.o \
-	$(OBJDIR)/sdl/compat.o \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/math/matrix.o \
 	$(OBJDIR)/sdl/glsl.o \
 	$(OBJDIR)/sdl/profile.o
+
+ifeq (${SDL},1)
+OBJS += $(OBJDIR)/sdl/blit.o \
+	$(OBJDIR)/sdl/display.o \
+	$(OBJDIR)/sdl/compat.o
+else
+OBJS += $(OBJDIR)/sdl2/blit.o \
+	$(OBJDIR)/sdl2/display.o \
+	$(OBJDIR)/sdl2/compat.o
+endif
 
 ifdef USE_CURL
 OBJS += $(OBJDIR)/curl.o
@@ -1175,7 +1182,9 @@ ifdef GENS_SH2
 endif
 
 ifndef NO_ASM
+ifneq (${SDL},2)
 OBJS +=  $(OBJDIR)/sdl/gen_conv.o
+endif
 endif
 
 else
@@ -1210,22 +1219,14 @@ CFLAGS += -DALLEGRO_SOUND
 else
 # avoid allegro when we can, sdl is much more reliable for sound
 OBJS += $(OBJDIR)/sdl/sasound.o
-
-ifdef DARWIN
-# Official SDL1.2 frameworks (SDL / image / ttf) in /Library/Frameworks
-CFLAGS += -I/usr/local/include/SDL/ -DDARWIN
-ifdef FRAMEWORK
-LIBS += -framework SDL -framework SDL_ttf -framework SDL_image -framework Cocoa -framework OpenGL
-LIBS += -framework SDL_sound -framework intl -liconv
-else
-LIBS += -lSDL -lSDL_ttf -lSDL_image -framework Cocoa -framework OpenGL
-LIBS += -lSDL_sound -lintl -liconv
+ifeq (${SDL},2)
+OBJS += $(OBJDIR)/sdl2/sdl_sound/SDL_sound.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_mp3.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_wav.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_vorbis.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_raw.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_flac.o
 endif
-AFLAGS = -f macho -O1 -D__RAINE__ -DRAINE_UNIX -DDARWIN
-SFLAGS += -DDARWIN
-CFLAGS_MCU += -DDARWIN
-LFLAGS += -Wl,-no_pie,-allow_heap_execute,-no_compact_unwind
-else  #DARWIN
 ifdef target
 CFLAGS += $(shell /usr/${target}/bin/${SDLCONFIG} --cflags)
 else
@@ -1246,23 +1247,29 @@ endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
 ifdef target
-LIBS += $(shell /usr/${target}/bin/${SDLCONFIG} --libs) -lSDL_ttf -lSDL_image
+LIBS += $(shell /usr/${target}/bin/${SDLCONFIG} --libs) -lSDL2_ttf -lSDL2_image
 ifdef USE_CURL
 LIBS += $(shell /usr/${target}/bin/curl-config --libs) # -lefence
 endif
 else
+ifeq (${SDL},1)
 LIBS += $(shell ${SDLCONFIG} --libs) -lSDL_ttf -lSDL_image
+else
+LIBS += $(shell ${SDLCONFIG} --libs) -lSDL2_ttf -lSDL2_image
+endif
 ifdef USE_CURL
 LIBS += $(shell curl-config --libs) # -lefence
 endif
 endif
 ifdef HAS_NEO
 ifdef RAINE_UNIX
+ifeq (${SDL},1)
 ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
 LIBS += -lSDL_sound
 else
 CFLAGS += -I/usr/local/include/SDL
 LIBS += /usr/local/lib/libSDL_sound.a -lFLAC -lvorbisfile
+endif
 endif
 else
 # windows
@@ -1270,7 +1277,6 @@ else
 LIBS += -logg -lvorbisfile -lws2_32 -lintl -lssp
 endif
 endif # HAS_NEO
-endif
 endif
 endif
 
@@ -1395,7 +1401,7 @@ $(D7Z)/%.o: source/7z/%.c
             rm -f $(D7Z)/$*.d
 
 tags:
-	ctags -R source
+	ctags --kinds-c=+fpdvx -R source
 
 converter: source/bonus/converter.c
 	$(CCV) $(CFLAGS) -c $< -o $(OBJDIR)/converter.o
@@ -1420,10 +1426,6 @@ compress: $(RAINE_EXE)
 	   upx -9 $(RAINE_EXE)
 
 # compile object from standard c
-
-$(OBJDIR)/%.o: source/%.m
-	@echo Strange apple nib file $<...
-	$(CCV) $(CFLAGS) -MD -c $< -o $@
 
 $(OBJDIR)/%.o: source/%.c
 	@echo Compiling $<...

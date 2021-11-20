@@ -228,6 +228,9 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
   sc.b = (color >> 8) & 0xff;
   sc.g = (color >> 16) & 0xff;
   sc.r = (color >> 24) & 0xff;
+#if SDL == 2
+  sc.a = 0xff;
+#endif
   SDL_Surface *sf;
   int is_utf = test_utf((const unsigned char*)s);
   if (is_utf)

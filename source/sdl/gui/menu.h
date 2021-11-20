@@ -22,9 +22,7 @@
 extern int repeat_interval, repeat_delay;
 extern int return_mandatory, use_transparency;
 
-// resize_hook : called when the gui window is resized. Returns 1 if the new size is accepted
-extern int (*resize_hook)(int sx,int sy);
-extern char * (*get_shared_hook)(char *name);
+void setup_mouse_cursor(SDL_Surface *mycursor);
 
 // size of the key buffer to choose a menu entry by its label
 #define MAX_KEYBUF 20

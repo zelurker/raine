@@ -21,10 +21,14 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 #define MAX_KEYBUF 20
 
 class TDesktop {
+    private:
+	SDL_Texture *pic;
     public:
 	int w,h;
 	TDesktop();
-	void draw(SDL_Rect *r);
+	// Set a picture as the background, returns 1 if the picture was correctly loaded
+	int set_picture(const char *name);
+	void draw();
 };
 
 // This desktop replaces the bg_layer there was for sdl-1.2
@@ -153,8 +157,7 @@ class TMenu {
 
 class TBitmap_menu : public TMenu {
   protected:
-    SDL_Texture *bmp;
-    int bmp_w,bmp_h;
+    SDL_Surface *bmp;
   public:
     TBitmap_menu(char *my_title, menu_item_t *mymenu, char *bitmap_path);
     ~TBitmap_menu();

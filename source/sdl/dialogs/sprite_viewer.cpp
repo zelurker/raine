@@ -8,6 +8,10 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "sprite_viewer.h"
 
+#if SDL==2
+#define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#endif
+
 static int layer = 0;
 static UINT32 start_sprite = 0, last_sprite = 0;
 static UINT16 tabsprite[640/8*480/8];

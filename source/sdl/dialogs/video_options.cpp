@@ -39,14 +39,14 @@ static int my_toggle_fullscreen(int sel) {
     // int oldx = display_cfg.screen_x, oldy = display_cfg.screen_y;
   display_cfg.fullscreen ^= 1;
   toggle_fullscreen();
+#if SDL==1
   adjust_gui_resolution();
   video_options->draw();
-#if SDL==1
   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
     SDL_ShowCursor(SDL_ENABLE);
-#endif
   clear_raine_screen();
   video_options->draw();
+#endif
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
 
@@ -238,10 +238,14 @@ static menu_item_t video_items[] =
   { _("SDL default (windib since 1.2.10)"), _("windib (good for ogl)"),_("directx (good for hw overlays/blits)")} },
 #endif
 {  _("Video renderer"), NULL, (int*)&display_cfg.video_mode,
+#if SDL==2
+    2, {0, 3},{ _("OpenGL"), _("sdl2 native")} },
+#else
 #if defined(__x86_64__) || defined(NO_ASM)
     2, {0, 2},{ _("OpenGL"), _("Normal blits")} },
 #else
     3, {0, 1, 2},{ _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
+#endif
 #endif
 { _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
 { _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },

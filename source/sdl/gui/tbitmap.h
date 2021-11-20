@@ -1,3 +1,4 @@
+#if SDL == 1
 #include "widget.h"
 
 /* TBitmap : a bitmap drawn dynamically
@@ -15,8 +16,8 @@ class TBitmap : public TStatic {
     int get_width(TFont *font = NULL) { return menu->values_list[0]; }
     int get_height(TFont *font = NULL) { return menu->values_list[1]; }
     int can_draw_selection() { return 1; }
-    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h, 
+    virtual void disp(SDL_Surface *s, TFont *font, int x, int y, int w, int h,
   int fg, int bg, int xoptions);
 };
 
-    
+#endif

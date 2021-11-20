@@ -7,6 +7,7 @@
 #include "files.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "dialogs/romdirs.h"
+#include "gui.h"
 
 /* This is so far the most complex dialog in the sdl version :
  *  - it changes the bg picture while browsing the list of games
@@ -16,6 +17,10 @@
  *  Anyway, even if it makes quite a big source file, it's not even comparable
  *  to the big mess that was required to do that in allegro.
  *  It remains relatively easy to read for what it does. */
+
+#if SDL==2
+#define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#endif
 
 static int game_list_mode,company,status = 1,category,driver,clones = 1,short_names;
 
@@ -72,6 +77,7 @@ static menu_item_t header[] =
     { NULL },
 };
 
+#if SDL == 1
 static SDL_Rect get_max_area(SDL_Rect &work_area, SDL_Rect &fgdst) {
   SDL_Rect bg = work_area;
   if (fgdst.x < bg.x) {
@@ -90,6 +96,7 @@ static SDL_Rect get_max_area(SDL_Rect &work_area, SDL_Rect &fgdst) {
   }
   return bg;
 }
+#endif
 
 void read_game_list_config() {
    game_list_mode	= raine_get_config_int( "GUI", "game_list_mode", 1);
@@ -172,6 +179,7 @@ class TGame_sel : public TMenu
       }
 
       if (exists(buffer)) {
+#if SDL == 1
 	SDL_Surface *surf = IMG_Load(buffer);
 	if (surf) {
 	  setup_bg_layer(surf);
@@ -187,7 +195,12 @@ class TGame_sel : public TMenu
 	update_bg_layer(&bg);
 	SDL_BlitSurface(fg_layer,NULL,sdl_screen,&fgdst);
 	do_update(&bg);
-	strcpy(current_picture,buffer);
+#else
+	if (desktop->set_picture(buffer))
+	    strcpy(current_picture,buffer);
+	else
+	    return 0;
+#endif
 	return 1;
       }
       return 0;
@@ -198,10 +211,6 @@ class TGame_sel : public TMenu
 	  image_counter = 0;
 	  last_sel = sel;
 	  draw_bot_frame();
-	  if (sdl_screen->flags & SDL_DOUBLEBUF) {
-	      do_update(NULL);
-	      draw_bot_frame();
-	  }
       } else if (++image_counter == 10 && sel >= 0) {
 	  // Wait at least 10 ticks before updating the picture
 	  // it allows the selection to be moved smoothly with the mouse
@@ -246,6 +255,7 @@ class TGame_sel : public TMenu
 	  // Still here -> no picture at all then !
 	  if (current_picture[0]) { // is there a previously loaded picture ?
 	      // In this case erase it
+#if SDL == 1
 	      TMenu::update_fg_layer(nb_to_update);
 	      setup_bg_layer(NULL);
 	      SDL_Rect bg = get_max_area(work_area,fgdst);
@@ -254,6 +264,9 @@ class TGame_sel : public TMenu
 	      do_update(&bg);
 	      current_picture[0] = 0;
 	      return;
+#else
+	      desktop->set_picture(NULL);
+#endif
 	  }
       }
       TMenu::update_fg_layer(nb_to_update);
@@ -340,10 +353,12 @@ void TGame_sel::draw_bot_frame() {
   font->put_string(sdl_screen->w-w_year,base,year_string,fg_frame,bg_frame);
   font->put_string(fw,base+h_year,company_string,fg_frame,bg_frame);
   font->put_string(sdl_screen->w-w_categ,base+h_year,category_string,fg_frame,bg_frame);
+#if SDL == 1
   SDL_Rect area;
   area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = h_bot;
   if (!(sdl_screen->flags & SDL_DOUBLEBUF))
     do_update(&area);
+#endif
 }
 
 void TGame_sel::draw_frame(SDL_Rect *r) {

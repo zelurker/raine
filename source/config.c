@@ -254,7 +254,11 @@ int actual_load_neo_game(void)
     if (current_game)
       ClearDefault();
     current_game = (GAME_MAIN *)&game_neocd;
+#if SDL==1
     if (!screen) {
+#elif SDL == 2
+    if (!win) {
+#endif
 #ifndef RAINE_DOS
 	sdl_init();
 #endif

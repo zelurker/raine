@@ -236,6 +236,7 @@ static void load_game_proc()
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function
 
+#if SDL == 1
     if((display_cfg.auto_mode_change && display_cfg.video_mode == 2) || // normal blits
 	     display_cfg.keep_ratio) { // && switch_res(current_game->video))){
       switch_res(current_game->video);
@@ -247,12 +248,15 @@ static void load_game_proc()
       }
       update_stretch();
     }
+#endif
 
     progress_count = 0;
     curl_progress = 0;
     load_items[0].label = _("Applying GFX Layouts and stuff..."); // init
     if (!raine_cfg.no_gui) {
+#if SDL == 1
 	adjust_gui_resolution();
+#endif
 	loading_dialog = new TDialog(_("Loading Game"),load_items);
 	loading_dialog->draw();
     }
@@ -502,11 +506,13 @@ void setup_font()
   }
 }
 
+#if !defined(SDL) || SDL==1
 extern UINT32 videoflags; // display.c
+#endif
 int goto_debuger = 0;
 
 #if SDL == 2
-static int my_resize(int sx, sy) {
+static int my_resize(int sx, int sy) {
     return resize(1,sx,sy);
 }
 #endif
@@ -515,9 +521,10 @@ void StartGUI(void)
 {
 #if SDL == 2
     resize_hook = &my_resize;
-#endif
     get_shared_hook = &get_shared;
+#else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
+#endif
 
 #ifdef RAINE_DEBUG
     print_debug("StartGUI(): START\n");
@@ -613,11 +620,18 @@ void StartGUI(void)
 	   if (GameMouse)
 	       SDL_WM_GrabInput(SDL_GRAB_ON);
 #endif
+#if SDL == 2
+	   if (GameScreen.xview)
+	       SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
+	   printf("setup screen bitmap %d,%d\n",GameScreen.xview,GameScreen.yview);
+#endif
 	   if(run_game_emulation()){ // In no gui mode, tab will reactivate the gui (req. by bubbles)
 	       raine_cfg.no_gui = 0;
 	       WantQuit = 0;
 	   }
-#if SDL < 2
+#if SDL == 2
+	   SDL_RenderSetLogicalSize(rend, 0,0);
+#else
 	   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
 #endif
 	       SDL_ShowCursor(1);

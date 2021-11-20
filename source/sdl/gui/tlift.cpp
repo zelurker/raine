@@ -3,6 +3,14 @@
 #include "../SDL_gfx/SDL_gfxPrimitives.h"
 #include "menu.h"
 #include "display_sdl.h"
+#include "compat.h"
+
+#if SDL == 2
+#define rectangleColor(sf,x,y,w,h,col) rectangleColor(rend,x,y,w,h,col)
+#define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#define filledTrigonColor(s,x,y,x2,y2,x3,y3,col) filledTrigonColor(rend,x,y,x2,y2,x3,y3,col)
+#define lineColor(s,x,y,x2,y2,fgcol) lineColor(rend,x,y,x2,y2,fgcol)
+#endif
 
 /* Deluxe lift, with auto-repeat arrow keys, and the thumb is moveable with
  * the mouse, either directly or page by page */

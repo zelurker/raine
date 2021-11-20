@@ -113,7 +113,7 @@
 #define setcolor(c) SDL_SetRenderDrawColor(rend,(c)>>24,((c)>>16)&0xff,((c)>>8)&0xff,(c)&0xff)
 
 int return_mandatory = 0, use_transparency = 1;
-int keep_vga,gui_level;
+int keep_vga = 1,gui_level;
 
 int repeat_interval, repeat_delay; // in gui.cpp
 
@@ -132,8 +132,14 @@ menu_item_t menu_options[] =
   { _("Minimum GUI resolution = VGA"), NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
 };
 
-int fg_color, bg_color,fgframe_color,bgframe_color,cslider_border,
-  cslider_bar,cslider_lift,bg_dialog_bar;
+int fg_color = mymakecol(255,255,255),
+    bg_color = makecol_alpha(0x11,0x07,0x78,128),
+    fgframe_color = mymakecol(255,255,255),
+    bgframe_color = mymakecol(0,0,128),
+    cslider_border = mymakecol(0,0,0),
+    cslider_bar = mymakecol(0xc0,0xc0,0xc0),
+    cslider_lift = mymakecol(0xff,0xff,0xff),
+    bg_dialog_bar = mymakecol(0,0,0);
 
 int add_menu_options(menu_item_t *menu) {
   menu[0] = menu_options[0];
@@ -165,13 +171,24 @@ void sort_menu(menu_item_t *menu) {
   }
 }
 
+static SDL_Surface screen_info;
+
 TDesktop::TDesktop() {
     SDL_GetRendererOutputSize(rend,&w,&h);
+    sdl_screen = &screen_info;
+    SDL_Rect usable;
+    SDL_GetDisplayUsableBounds(0, &usable);
+    screen->w = usable.w; screen->h = usable.h;
+    pic = NULL;
 }
 
-void TDesktop::draw(SDL_Rect *r) {
+void TDesktop::draw() {
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(rend);
+    if (pic) {
+	SDL_RenderCopy(rend,pic,NULL,NULL);
+	return;
+    }
 
     SDL_SetRenderDrawColor(rend, 0xff, 0xff, 0xff, 0xFF);
     static int count;
@@ -188,6 +205,18 @@ void TDesktop::draw(SDL_Rect *r) {
     }
     count++;
     if (count >= desktop->h/10) count = 0;
+}
+
+int TDesktop::set_picture(const char *name) {
+    if (pic) {
+	SDL_DestroyTexture(pic);
+	pic = NULL;
+    }
+    if (name) {
+	pic = IMG_LoadTexture(rend,name);
+	return pic != NULL;
+    }
+    return 0;
 }
 
 static TMenu *caller;
@@ -754,7 +783,7 @@ void TMenu::blit_area(int x,int y,int w,int h) {
     to.h = from.h;
     SDL_Rect tmp = to;
     if (use_transparency)
-	desktop->draw(&to);
+	desktop->draw();
     SDL_RenderCopy(rend,fg_layer,&from,&tmp);
     // do_update(&to);
 }
@@ -883,7 +912,7 @@ void TMenu::draw() {
 
   draw_frame();
 
-  desktop->draw(NULL);
+  desktop->draw();
   if (!fg_layer)
       setup_fg_layer();
   update_fg_layer();
@@ -898,7 +927,7 @@ void TMenu::redraw_fg_layer() {
   }
   update_fg_layer(-1);
   if (use_transparency)
-    desktop->draw(&fgdst);
+    desktop->draw();
   else
     printf("skip update bg\n");
   SDL_RenderCopy(rend,fg_layer,NULL,&fgdst);
@@ -1319,7 +1348,7 @@ void TMenu::handle_key(SDL_Event *event) {
 
 void TMenu::redraw(SDL_Rect *r) {
   draw_frame(r);
-  desktop->draw(r);
+  desktop->draw();
   if (!r) {
       SDL_RenderCopy(rend,fg_layer,NULL,&fgdst);
       do_update(NULL);
@@ -1654,6 +1683,11 @@ void TMenu::execute() {
       case SDL_WINDOWEVENT:
 	if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 	    if (!resize_hook || (*resize_hook)(event.window.data1,event.window.data2)) {
+		if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
+		    SDL_SetWindowSize(win,640,480);
+		    break;
+		}
+
 		if (font) {
 		    delete font;
 		    font = NULL;
@@ -1725,12 +1759,12 @@ void TMenu::execute() {
     parent->draw();
     caller = parent;
   } else {
-      desktop->draw(NULL);
+      desktop->draw();
     caller = NULL;
   }
   gui_level--;
   parent = NULL; // to be on the safe side
-  SDL_StopTextInput();
+  if (gui_level == 0) SDL_StopTextInput();
 }
 
 // TBitmap_menu : a menu with a bitmap on top of it
@@ -1742,29 +1776,25 @@ void TMenu::execute() {
 TBitmap_menu::TBitmap_menu(char *my_title, menu_item_t *mymenu, char *bitmap_path) :
   TMenu(my_title,mymenu)
 {
-  bmp = IMG_LoadTexture(rend,bitmap_path);
+  bmp = IMG_Load(bitmap_path);
   if (!bmp) {
     printf("TBitmap_menu: couldn't load %s\n",bitmap_path);
-  } else {
-      UINT32 format;
-      int access;
-      SDL_QueryTexture(bmp,&format,&access,&bmp_w,&bmp_h);
   }
 }
 
 TBitmap_menu::~TBitmap_menu() {
   if (bmp) {
-    SDL_DestroyTexture(bmp);
+    SDL_FreeSurface(bmp);
   }
 }
 
 void TBitmap_menu::setup_font(unsigned int len_frame) {
   TMenu::setup_font(len_frame);
   if (bmp) {
-      if (bmp_w+2*HMARGIN > width_max)
-	  width_max = bmp_w+2*HMARGIN;
+      if (bmp->w+2*HMARGIN > width_max)
+	  width_max = bmp->w+2*HMARGIN;
       int h2;
-      h2 = (desktop->h-bmp_h-2)/(nb_items + 4 + 6); // margin
+      h2 = (desktop->h-bmp->h-2)/(nb_items + 4 + 6); // margin
       if (h2 < font->get_font_height() && h2 < font->get_font_width()) {
 	  delete font;
 	  font = new TFont_ttf(h2);
@@ -1776,17 +1806,19 @@ void TBitmap_menu::setup_font(unsigned int len_frame) {
 void TBitmap_menu::display_fglayer_header(int &y) {
   if (bmp) {
     SDL_Rect dest;
-    dest.x = (fgdst.w - bmp_w)/2;
+    dest.x = (fgdst.w - bmp->w)/2;
     dest.y = y;
 
-    SDL_RenderCopy(rend,bmp,NULL,&dest);
-    y += bmp_h+2;
+    SDL_Texture *tex = SDL_CreateTextureFromSurface(rend,bmp);
+    SDL_RenderCopy(rend,tex,NULL,&dest);
+    SDL_DestroyTexture(tex);
+    y += bmp->h+2;
   }
 }
 
 void TBitmap_menu::skip_fglayer_header(int &y) {
   if (bmp) {
-    y += bmp_h+2;
+    y += bmp->h+2;
   }
 }
 

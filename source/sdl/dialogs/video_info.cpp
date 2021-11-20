@@ -1,10 +1,10 @@
 #include "../gui/menu.h"
 #include "video_info.h"
 #include "compat.h"
-#include "blit.h"
 #include "blit_sdl.h"
 #include "display_sdl.h"
 #include "raine.h"
+#include "res.h"
 
 static menu_item_t video_menu[20];
 
@@ -19,10 +19,13 @@ static void print_tf_state(int n, char *label, int test) {
     printf("received test %d for %s\n",test,label);
     exit(1);
   }
-  video_menu[n].values_list_size = 2;
-  video_menu[n].values_list[1] = 1;
-  video_menu[n].values_list_label[0] = _("No");
-  video_menu[n].values_list_label[1] = _("Yes");
+  video_menu[n].values_list_size = 3;
+  video_menu[n].values_list[0] = -1;
+  video_menu[n].values_list[1] = 0;
+  video_menu[n].values_list[2] = 1;
+  video_menu[n].values_list_label[0] = _("Adaptive");
+  video_menu[n].values_list_label[1] = _("No");
+  video_menu[n].values_list_label[2] = _("Yes");
 }
 
 static void print_menu_string(int n, char *label, char *s) {

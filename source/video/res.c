@@ -55,7 +55,9 @@ void InitLUTs(void)
 
 int wants_switch_res;
 int stretchx, stretchy; // max stretch size, keeping ratio
+#if SDL != 2
 int use_scale2x;
+#endif
 
 // chooses the best possible resolution for the video info passed (usually from the
 // current game)

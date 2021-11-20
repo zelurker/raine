@@ -178,7 +178,14 @@ void TStatic::prev_list_item() {}
 
 void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
   int fg, int bg, int xoptions) {
-  x = (s->w-w)/2;
+    int sw;
+#if SDL == 2
+    int sh;
+    SDL_GetRendererOutputSize(rend,&sw,&sh);
+#else
+    sw = s->w;
+#endif
+  x = (sw-w)/2;
   rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));
   int pcent;
   int prev = x+1;

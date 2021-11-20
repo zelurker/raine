@@ -8,6 +8,10 @@
 #endif
 #include "dialogs/messagebox.h"
 
+#if SDL==2
+#define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#endif
+
 class TCheatDlg : public TMenu
 {
   public:
