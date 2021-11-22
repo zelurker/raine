@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+#if SDL == 2
+extern SDL_GLContext *context;
+#endif
+
 void ogl_save_png(char *name);
 void opengl_reshape(int w, int h);
 void get_ogl_infos();

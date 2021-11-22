@@ -380,11 +380,18 @@ void SetupScreenBitmap(void)
      // GameBitmap = sdl_create_overlay(GameScreen.xfull, GameScreen.yfull);
      // GameBitmap = create_system_bitmap( GameScreen.xfull, GameScreen.yfull);
      GameViewBitmap = sdl_create_sub_bitmap(GameBitmap, GameScreen.xtop, GameScreen.ytop, GameScreen.xview, GameScreen.yview);
-     game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
-     if (!game_tex) {
-	 printf("couldn't create game texture : %s\n",SDL_GetError());
-	 exit(1);
-     }
+     if (ogl.render) {
+	 if (game_tex) {
+	     printf("Already a game texture\n");
+	     exit(1);
+	 }
+	 game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
+	 if (!game_tex) {
+	     printf("couldn't create game texture : %s\n",SDL_GetError());
+	     exit(1);
+	 }
+     } else
+	 game_tex = NULL;
      SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
      if (display_cfg.video_mode == 0)
 	 ScreenChange();
@@ -401,7 +408,9 @@ void DestroyScreenBitmap(void)
 {
   destroy_bitmap(GameBitmap);
   destroy_bitmap(GameViewBitmap);
-  SDL_DestroyTexture(game_tex);
+  if (game_tex)
+      SDL_DestroyTexture(game_tex);
+  game_tex = NULL;
   GameBitmap = NULL;
   GameViewBitmap = NULL;
   sdl_game_bitmap = NULL;
@@ -466,6 +475,12 @@ void DrawNormal(void)
        return;
    }
 
+   if (!game_tex)
+       game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
+   if (!game_tex) {
+       printf("no texture\n");
+       exit(1);
+   }
    SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
    SDL_RenderCopy(rend,game_tex,NULL,NULL);
    SDL_RenderPresent(rend);

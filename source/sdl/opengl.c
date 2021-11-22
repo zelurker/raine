@@ -94,28 +94,42 @@ void ogl_save_png(char *name) {
     save_png_surf_rev(name,s);
 }
 
+SDL_GLContext *context;
+
 void opengl_reshape(int w, int h) {
+    /* There is a conflict between rend and context for the use of glDrawPixels and glBitmap
+     * These 2 functions produce nothing visible on screen if using any rendering function after the gl context has been created
+     * I couldn't find the cause nor restore the normal behavior no matter what I tried.
+     * There seems to be only 2 solutions : destroy the renderer or detroy the gl context so they do not conflict
+     * I choose to destroy the gl context, so it's destroyed when exiting from here in gui.cpp, after the call to run_game_emulation
+     * and recreated here... */
+    SDL_GL_ResetAttributes();
+    if (!context)
+	context = SDL_GL_CreateContext(win);
+    if (!context) {
+	SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_GL_CreateContext(): %s\n", SDL_GetError());
+	exit(2);
+    }
     desk_w = w; desk_h = h;
-    glViewport(0, 0, w, h);
     // Reset the coordinate system before modifying
-#ifndef ANDROID
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
-    // Set the clipping volume
-    gluOrtho2D(0.0f, (GLfloat) w, 0.0, (GLfloat) h);
-#else
-    glOrthof(0.0f, (GLfloat) w, 0.0, (GLfloat) h,-1,1); // equiv to gluOrtho2d without -1,1
-#endif
+    glOrtho(0.0, w, 0.0, h, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport(0, 0, w, h);
 
 #ifndef ANDROID
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
+    glPixelStorei(GL_UNPACK_LSB_FIRST,0);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,4);
     if (ogl.render == 1) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
+    check_error("end opengl_reshape");
 #endif
 }
 
@@ -203,6 +217,7 @@ void get_ogl_infos() {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_ALPHA_TEST);
 	glDisable(GL_BLEND);
+	glDisable(GL_LIGHTING);
 #ifndef ANDROID
 	glDisable(GL_POLYGON_SMOOTH);
 #endif
@@ -215,7 +230,6 @@ void get_ogl_infos() {
 
 
 	if (ogl.render == 1 && strcmp(ogl.shader,"None")) {
-		printf("read_shader...\n");
 		read_shader(ogl.shader);
 	}
 	if (ogl.vendor) {
@@ -305,8 +319,6 @@ void opengl_text(char *msg, int x, int y) {
 	*/
 	int i,j;
 	char tmp[20*2];
-	// Maybe the font should also be unpacked to 4 bytes boundary ?
-	// Not sure it would make a big difference...
 	for (i=0; i<256; i++) {
 	    for (j=0; j<20; j++) {
 		WriteWord(&tmp[(19-j)*2],ReadWord(&font[(i*20+j)*2]));
@@ -360,13 +372,13 @@ void opengl_text(char *msg, int x, int y) {
 
 // Called at the end of a frame
 void finish_opengl() {
-    if (ogl.dbuf)
+    if (ogl.dbuf) {
 #if SDL==2
 	SDL_GL_SwapWindow(win);
 #else
 	SDL_GL_SwapBuffers();
 #endif
-    else
+    } else
 	glFlush();
 #ifdef RAINE_DEBUG
     /* Check for error conditions. */

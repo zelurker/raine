@@ -35,8 +35,8 @@ struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  // A considerable change compared to sdl-1.2... !
 	  // The format here is just one I chose, 32 bits is almost mandatory in 3d, but for GameBitmap we don't need alpha
 	  // so rgbx becomes the 1st choice
-	  if (SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_RGBX8888,&bpp,&r,&g,&b,&a))
-	  else {
+	  if (!SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_RGBX8888,&bpp,&r,&g,&b,&a))
+	  {
 	      printf("masks pas ok\n");
 	      exit(1);
 	  }
@@ -126,7 +126,7 @@ void sdl_init() {
 		SDL_WINDOWPOS_UNDEFINED,
 		display_cfg.screen_x,
 		display_cfg.screen_y,
-		SDL_WINDOW_RESIZABLE ); // | SDL_WINDOW_OPENGL);
+		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
 	if (!sf) {
@@ -135,12 +135,9 @@ void sdl_init() {
 	    SDL_SetWindowIcon(win,sf);
 	}
 
-/*	SDL_GLContext *context = SDL_GL_CreateContext(win);
-	if (!context) {
-	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_GL_CreateContext(): %s\n", SDL_GetError());
-	    exit(2);
-	}
-*/
+	// if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1)< 0 || SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3) < 0)
+	//    printf("pb setting opengl version\n");
+
 	inputs_preinit();
 
 	atexit(sdl_done);

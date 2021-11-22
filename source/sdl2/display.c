@@ -153,6 +153,8 @@ void save_screen_settings(char *section)
 void init_display() {
 }
 
+extern SDL_Texture *game_tex;
+
 void ScreenChange(void)
 {
     get_ogl_infos();

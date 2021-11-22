@@ -52,6 +52,7 @@
 #include "version.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "newmem.h"
+#include "opengl.h"
 
 static int WantScreen;
 static int WantQuit;
@@ -635,6 +636,12 @@ void StartGUI(void)
 	       WantQuit = 0;
 	   }
 #if SDL == 2
+	   if (!rend)
+	       rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	   if (context) {
+	       SDL_GL_DeleteContext(context);
+	       context = NULL;
+	   }
 	   if (display_cfg.video_mode > 0)
 	       SDL_RenderSetLogicalSize(rend, 0,0);
 #else
