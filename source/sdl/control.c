@@ -48,6 +48,7 @@
 #include "neocd/cdda.h"
 #include "newmem.h"
 #include "emumain.h"
+#include "opengl.h"
 
 /* The difference in the sdl version :
  * instead of looping for every frame in all the available inputs to the game
@@ -131,7 +132,7 @@ joystick_state jstate[MAX_JOY];
 // The categ field has the only purpose to sort the inputs in the control dialog !
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) || SDL==2
  { SDLK_3,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #else
  { SDLK_z,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
@@ -144,7 +145,7 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { SDLK_y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
  { SDLK_u,       0x00, 0, "Def Test",    SYS      },      // KB_DEF_TEST,
 
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) || SDL==2
  { SDLK_1,       JOY(1,0,9,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
 #else
  { SDLK_a,       JOY(1,0,9,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
@@ -334,6 +335,9 @@ void toggle_fullscreen() {
     display_cfg.fullscreen = 1;
     display_cfg.winx = display_cfg.screen_x;
     display_cfg.winy = display_cfg.screen_y;
+#if SDL==2
+    SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
+#endif
   }
 #if SDL == 1
   resize(1);
@@ -344,8 +348,11 @@ void toggle_fullscreen() {
   }
 #else
   SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-  if (!display_cfg.fullscreen)
+  if (!display_cfg.fullscreen) {
+      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
       SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
+  }
+  ScreenChange();
 #endif
 }
 
@@ -397,37 +404,37 @@ static void cold_boot() {
 // must be global for the controls dialog
 struct DEF_INPUT_EMU def_input_emu[] =
 {
- { SDLK_s | (KMOD_LCTRL<<16),       0x00,           _("Save Screenshot"), key_save_screen     },
- { SDLK_RETURN | (KMOD_LCTRL<<16),       0x00,           _("Fullscreen"), toggle_fullscreen     },
- { SDLK_PAGEUP,    0x00,           _("Increase frameskip"), frame_skip_up  },
- { SDLK_PAGEDOWN,    0x00,           _("Decrease frameskip"), frame_skip_down  },
- { SDLK_HOME,    0x00,           _("Increase cpu skip"),    cpu_speed_up},
- { SDLK_END,     0x00,           _("Decrease cpu skip"),    cpu_slow_down},
+ { SDLK_s ,       0x00,           _("Save Screenshot"), KMOD_CTRL, key_save_screen     },
+ { SDLK_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen     },
+ { SDLK_PAGEUP,    0x00,           _("Increase frameskip"), 0, frame_skip_up  },
+ { SDLK_PAGEDOWN,    0x00,           _("Decrease frameskip"), 0, frame_skip_down  },
+ { SDLK_HOME,    0x00,           _("Increase cpu skip"),    0, cpu_speed_up},
+ { SDLK_END,     0x00,           _("Decrease cpu skip"),    0, cpu_slow_down},
  // You must keep this one the 6th input, see special handling (KEYUP event)
- { SDLK_DELETE,  0x00,           _("Toggle limit speed"),   toggle_limit_speed},
- { SDLK_F2,      0x00,           _("Save game"),            GameSave},
- { SDLK_F3,      0x00,           _("Switch save slot"),     next_save_slot},
- { SDLK_F4,      0x00,           _("Load game"),            GameLoad},
+ { SDLK_DELETE,  0x00,           _("Toggle limit speed"),   0, toggle_limit_speed},
+ { SDLK_F2,      0x00,           _("Save game"),            0, GameSave},
+ { SDLK_F3,      0x00,           _("Switch save slot"),     0, next_save_slot},
+ { SDLK_F4,      0x00,           _("Load game"),            0, GameLoad},
 #ifdef DARWIN
- { SDLK_F12,     0x00,           _("Switch fps display"),   switch_fps_mode},
+ { SDLK_F12,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
 #else
- { SDLK_F11,     0x00,           _("Switch fps display"),   switch_fps_mode},
+ { SDLK_F11,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
 #endif
- { SDLK_F1,      0x00,           _("Reset game"),           cold_boot},
- { SDLK_p,       0x00,           _("Pause game"),           key_pause_game},
- { SDLK_ESCAPE,     0x00,           _("Stop emulation"),    key_stop_emulation_esc},
- { SDLK_TAB,     0x00,           _("Return to gui"),        key_stop_emulation_tab},
+ { SDLK_F1,      0x00,           _("Reset game"),           0, cold_boot},
+ { SDLK_p,       0x00,           _("Pause game"),           0, key_pause_game},
+ { SDLK_ESCAPE,     0x00,           _("Stop emulation"),    0, key_stop_emulation_esc},
+ { SDLK_TAB,     0x00,           _("Return to gui"),        0, key_stop_emulation_tab},
  // { SDLK_WORLD_18,   0x00,           _("Switch Mixer"), switch_mixer },
- { SDLK_F2 | (KMOD_CTRL<<16), 0x00, _("Save game with name"), GameSaveName },
- { SDLK_F4 | (KMOD_CTRL<<16), 0x00, _("Load game with name"), GameLoadName },
- { SDLK_F2 | (KMOD_SHIFT<<16), 0x00, _("Save demo"), GameSaveDemo },
- { SDLK_F4 | (KMOD_SHIFT<<16), 0x00, _("Load demo"), GameLoadDemo },
- { SDLK_SPACE, 0x00, _("Fwd 1 frame in pause"), key_pause_fwd},
+ { SDLK_F2 , 0x00, _("Save game with name"), KMOD_CTRL, GameSaveName },
+ { SDLK_F4 , 0x00, _("Load game with name"), KMOD_CTRL, GameLoadName },
+ { SDLK_F2 , 0x00, _("Save demo"), KMOD_SHIFT, GameSaveDemo },
+ { SDLK_F4 , 0x00, _("Load demo"), KMOD_SHIFT, GameLoadDemo },
+ { SDLK_SPACE, 0x00, _("Fwd 1 frame in pause"), 0, key_pause_fwd},
 #ifdef HAS_CONSOLE
- { 31 /* TILDE */, 0x00, _("Console"), call_console},
+ { 31 /* TILDE */, 0x00, _("Console"), 0, call_console},
 #endif
- { SDLK_c | (KMOD_ALT<<16), 0x00, _("Cheats"), call_cheats},
- { SDLK_F4 | (KMOD_ALT<<16),       0x00,           _("Quit w/o saving"), key_quit     },
+ { SDLK_c , 0x00, _("Cheats"), KMOD_ALT, call_cheats},
+ { SDLK_F4,       0x00,           _("Quit w/o saving"), KMOD_ALT, key_quit     },
 };
 
 struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
@@ -633,6 +640,8 @@ static void load_emu_keys(char *section, struct DEF_INPUT_EMU *list_emu, int nb)
 	// Forces modifiers for scrolling keys (previously in pause only)
 	list_emu[ta].scancode = scan;
       }
+      strcat(key_name,"_kmod");
+      list_emu[ta].kmod = raine_get_config_int(section,key_name,0);
    }
 }
 
@@ -664,7 +673,6 @@ void load_game_keys(char *section)
 	snprintf(other_name,64,"%s_link",key_name);
 	link = raine_get_config_int(section,other_name,0);
 	if (link) {
-	  printf("link from %d to %d\n",ta,link);
 	  InputList[ta].link = link;
 	  InputList[link] = InputList[ta];
 	  InputList[link].link = ta;
@@ -778,7 +786,6 @@ void load_default_keys(char *section)
      int n;
      for (n=0; n<SDL_NumJoysticks(); n++) {
        if (!strcmp(analog_name,joy_name[n])) {
-	 printf("Found analog device %s\n",analog_name);
 	 analog_num = n;
 	 break;
        }
@@ -873,6 +880,8 @@ void save_emulator_keys(char *section)
       sprintf(key_name,"%s",def_input_emu[ta].name);
       no_spaces(key_name);
       raine_set_config_int(section,key_name,def_input_emu[ta].scancode);
+      strcat(key_name,"_kmod");
+      raine_set_config_int(section,key_name,def_input_emu[ta].kmod);
    }
 }
 
@@ -1215,8 +1224,8 @@ static int check_layer_key(int input)
 
 static int check_emu_inputs(DEF_INPUT_EMU *emu_input, int nb, int input, int modifier) {
   while (nb--) {
-    if ((emu_input->scancode & 0xffff) == input) {
-      int kmod = emu_input->scancode >> 16;
+    if (emu_input->scancode == input) {
+      int kmod = emu_input->kmod;
       if ((modifier == 0 && kmod == 0) ||
 	  (modifier && (kmod & modifier) == (modifier & (KMOD_CTRL|KMOD_ALT|KMOD_SHIFT
 #if SDL==2

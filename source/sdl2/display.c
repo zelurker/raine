@@ -38,13 +38,16 @@ void display_read_config() {
        display_cfg.video_mode = 3;
    int x,y;
    SDL_GetWindowPosition(win,&x,&y);
-   int x2 = raine_get_config_int("Display", "posx", x);
-   int y2 = raine_get_config_int("Display", "posy", y);
-   if (x2 != x || y2 != y)
-       SDL_SetWindowPosition(win,x2,y2);
+   display_cfg.posx = raine_get_config_int("Display", "posx", x);
+   display_cfg.posy = raine_get_config_int("Display", "posy", y);
+   if (display_cfg.posx != x || display_cfg.posy != y) {
+       SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+   }
 
    display_cfg.screen_x = raine_get_config_int( "Display", "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int( "Display", "screen_y", display_cfg.screen_y);
+   display_cfg.winx = raine_get_config_int( "Display", "winx", 640);
+   display_cfg.winy = raine_get_config_int( "Display", "winy", 480);
    video_fps = raine_get_config_int( "Display", "video_fps", 15); // when recording video
    char *s = raine_get_config_string("Display", "max_fps", "60");
    if (*s)
@@ -76,8 +79,6 @@ void set_opengl_filter(int filter) {
 }
 
 void display_write_config() {
-  if (!display_cfg.fullscreen && !display_cfg.noborder)
-      update_window_pos();
 
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
 #ifdef RAINE_WIN32
@@ -86,6 +87,10 @@ void display_write_config() {
    print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
    raine_set_config_int("Display", "screen_y", display_cfg.screen_y);
+   if (!display_cfg.fullscreen)
+       SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
+   raine_set_config_int("Display", "posx", display_cfg.posx);
+   raine_set_config_int("Display", "posy", display_cfg.posy);
    raine_set_config_int("Display", "winx", display_cfg.winx);
    raine_set_config_int("Display", "winy", display_cfg.winy);
    raine_set_config_int("Display", "video_fps", video_fps);
@@ -160,6 +165,8 @@ void ScreenChange(void)
     get_ogl_infos();
     int w,h;
     SDL_GetRendererOutputSize(rend,&w,&h);
+    ReClipScreen();
+    sdl_screen->w = w; sdl_screen->h = h;
     opengl_reshape(w,h);
 }
 

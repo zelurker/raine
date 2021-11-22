@@ -174,13 +174,8 @@ int exists(char *filename) {
 }
 
 SDL_PixelFormat *color_format;
-#if SDL==1
 SDL_Surface *sdl_screen;
 SDL_Overlay *sdl_overlay;
-#else
-SDL_Window *win;
-SDL_Renderer *rend;
-#endif
 
 void sdl_init() {
   /* Initialize the SDL library */
@@ -188,11 +183,7 @@ void sdl_init() {
     if (!init) {
 	init = 1;
 	if ( SDL_Init(
-#if SDL==1
 		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_CDROM
-#else // sdl2 flags
-		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER
-#endif
 		    ) < 0 ) {
 	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
 	    exit(2);
@@ -205,17 +196,7 @@ void sdl_init() {
 	char title[20];
 	snprintf(title,20,"%s v%s",EMUNAME,VERSION);
 	title[19] = 0;
-#if SDL==1
 	SDL_WM_SetCaption(title,title);
-#else
-	win = SDL_CreateWindow(title,
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		display_cfg.screen_x,
-		display_cfg.screen_y,
-		SDL_WINDOW_RESIZABLE);
-	rend = SDL_CreateRenderer(win,-1,0);
-#endif
 
 	inputs_preinit();
 

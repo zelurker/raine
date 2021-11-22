@@ -39,8 +39,8 @@ extern TDesktop *desktop;
 
 extern int repeat_interval, repeat_delay;
 extern int return_mandatory, use_transparency;
-// resize_hook : called when the gui window is resized. Returns 1 if the new size is accepted
-extern int (*resize_hook)(int sx,int sy);
+// All windows event are passed to this hook, returns 1 only if
+extern int (*window_event_hook)(SDL_Event *event);
 extern char * (*get_shared_hook)(char *name);
 
 class TMenu {

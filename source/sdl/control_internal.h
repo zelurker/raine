@@ -19,6 +19,7 @@ typedef struct DEF_INPUT_EMU
    UINT32 scancode;
    UINT32 joycode;
    char *name;
+   int kmod;
    void  (*proc)();
 } DEF_INPUT_EMU;
 

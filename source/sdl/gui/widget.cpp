@@ -192,7 +192,11 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
   for (pcent=5; pcent<=*(menu->value_int); pcent += 5) {
     int cur = x+(pcent * (w-2)/100);
     int color = 255*pcent/100;
+#if SDL==2
+    boxColor(s,prev,y+1,cur,y+h-2,makecol_alpha(255,0,0,color));
+#else
     boxColor(s,prev,y+1,cur,y+h-2,mymakecol(color,0,0));
+#endif
     prev = cur;
   }
   char buff[8];

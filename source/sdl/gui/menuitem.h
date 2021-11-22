@@ -16,7 +16,7 @@ extern "C" {
 // SDL_gfx does its own mapping of colors and requires to be passed colors
 // in this format...
 #define mymakecol(r,g,b) (((r)<<24)|((g)<<16)|((b)<<8)|255)
-#define makecol_alpha(r,g,b,a) (((r)<<24)|((g)<<16)|((b)<<8)|(a))
+#define makecol_alpha(r,g,b,a) (((r&0xff)<<24)|((g&0xff)<<16)|((b&0xff)<<8)|(a&0xff))
 // converts a gfx to SDL_Color format :
 #if SDL == 2
 #define gfx_to_sdlcolor(format,c) SDL_MapRGBA(format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)

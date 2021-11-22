@@ -1155,7 +1155,6 @@ OBJS +=	 \
 
 ifdef SDL
 OBJS +=	 \
-	$(OBJDIR)/sdl/winpos.o \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/math/matrix.o \
@@ -1165,6 +1164,7 @@ OBJS +=	 \
 ifeq (${SDL},1)
 OBJS += $(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/display.o \
+	$(OBJDIR)/sdl/winpos.o \
 	$(OBJDIR)/sdl/compat.o
 else
 OBJS += $(OBJDIR)/sdl2/blit.o \

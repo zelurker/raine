@@ -269,10 +269,10 @@ static void do_capture() {
 
 static struct DEF_INPUT_EMU list_emu[] =
 {
- { SDLK_BACKSPACE,  0x00, _("Toggle capture mode"), toggle_capture_mode },
- { SDLK_RIGHT,      0x00, _("Next sprite block"), next_sprite_block     },
- { SDLK_LEFT,       0x00, _("Prev sprite block"), prev_sprite_block     },
- { SDLK_c,          0x00, _("Capture block"), do_capture },
+ { SDLK_BACKSPACE,  0x00, _("Toggle capture mode"), 0, toggle_capture_mode },
+ { SDLK_RIGHT,      0x00, _("Next sprite block"), 0, next_sprite_block     },
+ { SDLK_LEFT,       0x00, _("Prev sprite block"), 0, prev_sprite_block     },
+ { SDLK_c,          0x00, _("Capture block"), 0, do_capture },
 };
 #endif
 static int frame_neo;

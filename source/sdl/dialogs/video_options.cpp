@@ -35,20 +35,20 @@ class TVideo : public TMenu
 static TVideo *video_options;
 extern "C" void toggle_fullscreen(); // from control_internal.h normally, but windows.h is allergic !
 
+#if SDL==1
 static int my_toggle_fullscreen(int sel) {
     // int oldx = display_cfg.screen_x, oldy = display_cfg.screen_y;
   display_cfg.fullscreen ^= 1;
   toggle_fullscreen();
-#if SDL==1
   adjust_gui_resolution();
   video_options->draw();
   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
     SDL_ShowCursor(SDL_ENABLE);
   clear_raine_screen();
   video_options->draw();
-#endif
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
+#endif
 
 static char oldenv[10];
 
@@ -247,7 +247,10 @@ static menu_item_t video_items[] =
     3, {0, 1, 2},{ _("OpenGL"), _("YUV overlays"),_("Normal blits")} },
 #endif
 #endif
+#if SDL==1
+    // fullscreen from here is a nuisance, it's easier to handle from the keyboard handler
 { _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
+#endif
 { _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
 { _("Use double buffer (ignored by opengl)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
 { _("Blend file options..."), &do_bld },

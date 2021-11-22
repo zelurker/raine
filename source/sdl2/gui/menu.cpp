@@ -205,7 +205,7 @@ void TDesktop::draw() {
 	SDL_RenderDrawLine(rend,x1,0,w,y1);
 	SDL_RenderDrawLine(rend,w,y1,w-x1,h);
 	SDL_RenderDrawLine(rend,w-x1,h,0,h-y1);
-	SDL_RenderDrawLine(rend,0,h-x1,x1,0);
+	SDL_RenderDrawLine(rend,0,h-y1,x1,0);
     }
     count++;
     if (count >= sdl_screen->h/10) count = 0;
@@ -227,7 +227,7 @@ int TDesktop::set_picture(const char *name) {
 }
 
 static TMenu *caller;
-int (*resize_hook)(int sx,int sy);
+int (*window_event_hook)(SDL_Event *event);
 static char* my_get_shared(char *s) {
     return s;
 }
@@ -1696,8 +1696,8 @@ void TMenu::execute() {
         handle_joystick(&event);
 	break;
       case SDL_WINDOWEVENT:
-	if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-	    if (!resize_hook || (*resize_hook)(event.window.data1,event.window.data2)) {
+	if (!*window_event_hook || (*window_event_hook)(&event)) {
+	    if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 		if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
 		    SDL_SetWindowSize(win,640,480);
 		    break;

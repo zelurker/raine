@@ -6,6 +6,7 @@
 
 /* We do this one separately because we need to include windows.h and its
  * very incompatible with most headers used by raine (deftypes.h for a start)
+ * It's some very old code for sdl-1.2 and for windows only, useless in sdl2... !
  */
 
 extern void raine_set_config_string(const char *section, const char *name, char *val);

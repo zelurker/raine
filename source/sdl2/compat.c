@@ -122,11 +122,11 @@ void sdl_init() {
 	snprintf(title,20,"%s v%s",EMUNAME,VERSION);
 	title[19] = 0;
 	win = SDL_CreateWindow(title,
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		display_cfg.screen_x,
-		display_cfg.screen_y,
-		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		display_cfg.posx,
+		display_cfg.posy,
+		(display_cfg.fullscreen ? display_cfg.winx : display_cfg.screen_x),
+		(display_cfg.fullscreen ? display_cfg.winy : display_cfg.screen_y),
+		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | (display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
 	if (!sf) {

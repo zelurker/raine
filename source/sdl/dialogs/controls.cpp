@@ -66,10 +66,9 @@ static char *get_joy_name(int code) {
   return strdup(name);
 }
 
-static char *get_key_name(int key) {
+static char *get_key_name(int key, int mod) {
   char keyname[80];
   keyname[0] = 0;
-  int mod = key>>16;
   if (mod & KMOD_LCTRL)
     strcat(keyname,"LCTRL ");
   if (mod & KMOD_RCTRL)
@@ -284,14 +283,16 @@ static int do_input(int sel) {
 		break;
 	case 3:
 		def_input_emu[indice].scancode = inp_key;
+		def_input_emu[indice].kmod = 0;
 		free(cols[sel*2+0]);
-		cols[sel*2+0] = get_key_name(inp_key);
+		cols[sel*2+0] = get_key_name(inp_key,0);
 		break;
       }
     } else {
-      def_input_emu[indice].scancode = inp_key | (inp_mod << 16);
+      def_input_emu[indice].scancode = inp_key;
+      def_input_emu[indice].kmod = inp_mod;
       free(cols[sel*2+0]);
-      cols[sel*2+0] = get_key_name(inp_key);
+      cols[sel*2+0] = get_key_name(inp_key,inp_mod);
     }
   } else {
     def_input_emu[indice].joycode = inp_joy;
@@ -323,7 +324,7 @@ static int do_kb_input(int sel) {
     } else {
       layer_info_list[sel].keycode = inp_key;
       free(cols[sel]);
-      cols[sel] = get_key_name(inp_key);
+      cols[sel] = get_key_name(inp_key,0);
     }
   }
   controls->setup_font(40);
@@ -375,7 +376,7 @@ static int do_input_ingame(int sel) {
 	printf("defaults not updated use_custom %d base_input %d\n",use_custom_keys,base_input);
       }
       free(cols[sel*3+0]);
-      cols[sel*3+0] = get_key_name(inp_key);
+      cols[sel*3+0] = get_key_name(inp_key,0);
     }
   } else if (inp_joy) {
     InputList[nb].Joy = inp_joy;
@@ -404,7 +405,7 @@ static int do_emu_controls(int sel) {
   for (int n=0; n<nb; n++) {
     menu[n].label = def_input_emu[n].name;
     menu[n].menu_func = &do_input;
-    cols[n*2+0] = get_key_name(def_input_emu[n].scancode);
+    cols[n*2+0] = get_key_name(def_input_emu[n].scancode,def_input_emu[n].kmod);
     cols[n*2+1] = get_joy_name(def_input_emu[n].joycode);
   }
   for (int a=0; a<nb; a++)
@@ -440,7 +441,7 @@ static int do_layers_controls(int sel) {
   for (int n=0; n<nb; n++) {
     menu[n].label = layer_info_list[n].name;
     menu[n].menu_func = &do_kb_input;
-    cols[n] = get_key_name(layer_info_list[n].keycode);
+    cols[n] = get_key_name(layer_info_list[n].keycode,0);
   }
   // A multi column dialog of only 1 column... oh well it is to copy the way
   // the other inputs dialogs work, and it might be easier this way anyway...
@@ -540,7 +541,7 @@ static int do_ingame_controls(int sel) {
       menu[mynb].label = convert_command(InputList[n].InputName);
       menu[mynb].menu_func = &do_input_ingame;
       menu[mynb].values_list[0] = n;
-      cols[mynb*3+0] = get_key_name(InputList[n].Key);
+      cols[mynb*3+0] = get_key_name(InputList[n].Key,0);
       cols[mynb*3+1] = get_joy_name(InputList[n].Joy);
       cols[mynb*3+2] = get_mouse_name(InputList[n].mousebtn);
       categ[mynb] = def_input[InputList[n].default_key & 0xff].categ;

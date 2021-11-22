@@ -23,7 +23,13 @@ TLift::TLift(int myx,int myy,int myh,int *mytop, int *mydispitems,int *myrows,
   top = mytop; nb_disp_items = mydispitems; rows = myrows;
   fgcol = myfgcol;
   bgcol = mybgcol;
+  int a = bgcol & 0xff, b = (bgcol >> 8) & 0xff, g = (bgcol >> 16) & 0xff, r = (bgcol >> 24);
+  bgcol_gfx = makecol_alpha(a,b,g,r);
+  a = fgcol & 0xff; b = (fgcol >> 8) & 0xff; g = (fgcol >> 16) & 0xff; r = (fgcol >> 24);
+  fgcol_gfx = makecol_alpha(a,b,g,r);
   thumbcol = mythumbcol;
+  a = thumbcol & 0xff; b = (thumbcol >> 8) & 0xff; g = (thumbcol >> 16) & 0xff; r = (thumbcol >> 24);
+  thumbcol_gfx = makecol_alpha(a,b,g,r);
   update_count = myupdate_count;
   thumb_pos = phase_repeat = pressed = 0; // No button pressed
 }
@@ -175,6 +181,12 @@ void TLift::update() {
   }
 }
 
+#if SDL == 2
+#define fgcol fgcol_gfx
+#define bgcol bgcol_gfx
+#define thumbcol thumbcol_gfx
+#endif
+
 void TLift::draw() {
 #if SDL == 1
   int locked = lock_surface(s);
@@ -200,8 +212,8 @@ void TLift::draw() {
     // top varies from 0 to nb_disp_items-rows...
     ylift = *top*ymax/ (*nb_disp_items-*rows) + y+12;
 
-    rectangleColor(s,x+1,ylift,x+w-2,ylift+size,fgcol);
     boxColor(s,x+1,ylift+1,x+w-2,ylift+size-1,thumbcol);
+    rectangleColor(s,x,ylift,x+w-1,ylift+size,fgcol);
   } else { // horizontal
     filledTrigonColor(s,x+2,y+h/2,x+10,y+3,x+10,y+h-4,fgcol);
     lineColor(s,x+12,y+1,x+12,y+h-1,fgcol);

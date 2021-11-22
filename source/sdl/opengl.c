@@ -103,7 +103,6 @@ void opengl_reshape(int w, int h) {
      * There seems to be only 2 solutions : destroy the renderer or detroy the gl context so they do not conflict
      * I choose to destroy the gl context, so it's destroyed when exiting from here in gui.cpp, after the call to run_game_emulation
      * and recreated here... */
-    SDL_GL_ResetAttributes();
     if (!context)
 	context = SDL_GL_CreateContext(win);
     if (!context) {

@@ -3,13 +3,14 @@
 
 #ifdef __cplusplus
 #include "sdl/gui/menu.h"
+#include "display_sdl.h"
 
 class TMain_menu : public TMenu
 {
   public:
   TMain_menu(char *my_title, menu_item_t *mymenu) :
     TMenu(my_title,mymenu)
-    {}
+    { desktop_w = desktop->w; desktop_h = desktop->h; }
   int can_be_displayed(int n);
   char *get_bot_frame_text();
   void draw_top_frame();

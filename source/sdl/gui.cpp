@@ -515,15 +515,22 @@ extern UINT32 videoflags; // display.c
 int goto_debuger = 0;
 
 #if SDL == 2
-static int my_resize(int sx, int sy) {
-    return resize(1,sx,sy);
+static int win_event(SDL_Event *event) {
+    if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+	return resize(1,event->window.data1,event->window.data2);
+    } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
+	if (event->common.timestamp < 1000) // probably some fancy window manager event
+	    // fix it : it doesn't generate a new window moved event
+	    SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+    }
+    return 0; // Not handled anything else
 }
 #endif
 
 void StartGUI(void)
 {
 #if SDL == 2
-    resize_hook = &my_resize;
+    window_event_hook = &win_event;
 #else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 #endif

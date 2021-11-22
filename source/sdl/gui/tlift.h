@@ -8,7 +8,7 @@ class TLift {
     int x,y,w,h;
     int *top,*nb_disp_items,*rows,*update_count;
     SDL_Surface *s;
-    int fgcol, bgcol,thumbcol;
+    int fgcol, bgcol,thumbcol,fgcol_gfx,bgcol_gfx,thumbcol_gfx;
     int pressed,phase_repeat,timer,size,ylift,thumb_pos,ymax,orig_top;
   public:
     TLift(int x,int y,int h,int *mytop, int *mydispitems,int *myrows,
