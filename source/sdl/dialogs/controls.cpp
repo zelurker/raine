@@ -28,7 +28,7 @@
  * finally setup the analog inputs.
  * None of this is complicated, but together it produces a big file... ! */
 
-static UINT32 inp_key,inp_joy,inp_mouse;
+static UINT32 inp_key,inp_joy,inp_mouse,inp_mod;
 static menu_item_t *menu;
 
 static char *get_joy_name(int code) {
@@ -70,7 +70,6 @@ static char *get_key_name(int key) {
   char keyname[80];
   keyname[0] = 0;
   int mod = key>>16;
-  key &= 0xffff;
   if (mod & KMOD_LCTRL)
     strcat(keyname,"LCTRL ");
   if (mod & KMOD_RCTRL)
@@ -83,6 +82,12 @@ static char *get_key_name(int key) {
     strcat(keyname,"LALT ");
   if (mod & KMOD_RALT)
     strcat(keyname,"RALT ");
+#if SDL==2
+  if (mod & KMOD_RGUI)
+      strcat(keyname,"RGUI ");
+  if (mod & KMOD_LGUI)
+      strcat(keyname,"LGUI ");
+#endif
 #if SDL == 1
   strcat(keyname,SDL_GetKeyName((SDLKey)key));
 #else
@@ -141,16 +146,27 @@ void TInput::handle_key(SDL_Event *event) {
 	case SDLK_RSHIFT:
 	case SDLK_LALT:
 	case SDLK_RALT:
+#if SDL==2
+	case SDLK_RGUI:
+	case SDLK_LGUI:
+#endif
 	  return;
 	default:
 	  break;
 	}
       }
+      /* A small modification in sdl2 which forced me to ad the inp_mod variable :
+       * in sdl-1.2 when pressing a modifier key you got 1st the keydown event for the key itself
+       * and the modifier stored in the mod part of the event was modified after that, which allowed
+       * to handle these keys like any other.
+       * With sdl2 the modifiers are modified before you get the keydown event ! So the best is to
+       * return these modifiers separately, they are needed only for the emu keys anyway... */
       if (event->key.keysym.sym) {
-	inp_key = event->key.keysym.sym | ((event->key.keysym.mod & 0x4fc3) << 16);
+	inp_key = event->key.keysym.sym;
       } else {
-	inp_key = (event->key.keysym.scancode|0x200) | ((event->key.keysym.mod & 0x4fc3) << 16);
+	inp_key = (event->key.keysym.scancode|0x200);
       }
+      inp_mod =  event->key.keysym.mod & 0x4fc3;
       exit_menu = 1;
   }
 }
@@ -273,7 +289,7 @@ static int do_input(int sel) {
 		break;
       }
     } else {
-      def_input_emu[indice].scancode = inp_key;
+      def_input_emu[indice].scancode = inp_key | (inp_mod << 16);
       free(cols[sel*2+0]);
       cols[sel*2+0] = get_key_name(inp_key);
     }

@@ -36,6 +36,7 @@
 
 static UINT8 *font;
 static int gl_format,gl_type;
+static int desk_w,desk_h;
 
 void check_error(char *msg) {
 #ifdef RAINE_DEBUG
@@ -68,7 +69,7 @@ void ogl_save_png(char *name) {
     // How big is the image going to be (targas are tightly packed)
     // lImageSize = iViewport[2] * 3 * iViewport[3];
 
-    s = SDL_CreateRGBSurface(SDL_SWSURFACE,sdl_screen->w,sdl_screen->h,
+    s = SDL_CreateRGBSurface(SDL_SWSURFACE,desk_w,desk_h,
 	    f->BitsPerPixel,f->Rmask,f->Gmask,f->Bmask,f->Amask);
 
     // Read bits from color buffer
@@ -94,6 +95,7 @@ void ogl_save_png(char *name) {
 }
 
 void opengl_reshape(int w, int h) {
+    desk_w = w; desk_h = h;
     glViewport(0, 0, w, h);
     // Reset the coordinate system before modifying
 #ifndef ANDROID
@@ -138,7 +140,11 @@ static const char* myglGetString( GLenum id) {
 void get_ogl_infos() {
 	check_error("start ogl_infos");
 	int format_error = 0;
+#if SDL==1
 	switch (sdl_screen->format->BitsPerPixel) {
+#else
+        switch(display_cfg.bpp) {
+#endif
 	case 16:
 		gl_format = GL_RGB;
 #ifdef ANDROID
@@ -153,6 +159,7 @@ void get_ogl_infos() {
 		gl_format = GL_RGBA;
 		gl_type = GL_UNSIGNED_INT_24_8_OES;
 #else
+#if SDL == 1
 		switch (sdl_screen->format->Bshift) {
 		case 0:
 			gl_format = GL_BGRA;
@@ -169,6 +176,10 @@ void get_ogl_infos() {
 		default:
 			format_error = 1;
 		}
+#else
+			gl_format = GL_RGBA;
+			gl_type = GL_UNSIGNED_INT_8_8_8_8;
+#endif
 #endif
 		break;
 	default:
@@ -259,9 +270,9 @@ void draw_opengl(int linear) {
 	draw_shader(linear);
     } else {
 	// Current Raster Position always at bottom left hand corner of window
-	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
 	glPixelZoom((GLfloat)area_overlay.w/(GLfloat)GameScreen.xview,
 		-(GLfloat)area_overlay.h/(GLfloat)GameScreen.yview);
+	glRasterPos2i(area_overlay.x, area_overlay.y+area_overlay.h-1);
 	glDrawPixels(GameScreen.xview,GameScreen.yview,gl_format,gl_type,GameViewBitmap->line[0]);
     }
 }
@@ -310,15 +321,15 @@ void opengl_text(char *msg, int x, int y) {
     }
 
     if (x == -1000 && y == -1000) { // center
-	x = (sdl_screen->w-strlen(msg)*10)/2;
-	y = (sdl_screen->h-20)/2;
+	x = (desk_w-strlen(msg)*10)/2;
+	y = (desk_h-20)/2;
     } else {
 	if (x<0)
-	    x = sdl_screen->w+x*10;
+	    x = desk_w+x*10;
 	else
 	    x *= 10;
 	if (y < 0)
-	    y = sdl_screen->h+y*20;
+	    y = desk_h+y*20;
 	else
 	    y *= 20;
     }

@@ -117,7 +117,7 @@ int keep_vga = 1,gui_level;
 
 int repeat_interval, repeat_delay; // in gui.cpp
 
-static SDL_PixelFormat *fg_format;
+SDL_PixelFormat *fg_format;
 
 TDesktop *desktop;
 
@@ -139,7 +139,8 @@ int fg_color = mymakecol(255,255,255),
     cslider_border = mymakecol(0,0,0),
     cslider_bar = mymakecol(0xc0,0xc0,0xc0),
     cslider_lift = mymakecol(0xff,0xff,0xff),
-    bg_dialog_bar = mymakecol(0,0,0);
+    bg_dialog_bar = mymakecol(0,0,0),
+    bg_dialog_bar_gfx = makecol_alpha(255,0,0,0);
 
 int add_menu_options(menu_item_t *menu) {
   menu[0] = menu_options[0];
@@ -174,26 +175,29 @@ void sort_menu(menu_item_t *menu) {
 static SDL_Surface screen_info;
 
 TDesktop::TDesktop() {
-    SDL_GetRendererOutputSize(rend,&w,&h);
+    SDL_GetRendererOutputSize(rend,&screen_info.w,&screen_info.h);
     sdl_screen = &screen_info;
     SDL_Rect usable;
     SDL_GetDisplayUsableBounds(0, &usable);
-    screen->w = usable.w; screen->h = usable.h;
+    w = usable.w; h = usable.h;
     pic = NULL;
+    fg_format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
 }
 
 void TDesktop::draw() {
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(rend);
     if (pic) {
+	SDL_RenderSetLogicalSize(rend, picw,pich);
 	SDL_RenderCopy(rend,pic,NULL,NULL);
+	SDL_RenderSetLogicalSize(rend, 0,0);
 	return;
     }
 
     SDL_SetRenderDrawColor(rend, 0xff, 0xff, 0xff, 0xFF);
     static int count;
     int step;
-    int w = desktop->w, h = desktop->h;
+    int w = sdl_screen->w, h = sdl_screen->h;
     float ratio = w*1.0/h;
     for (step=0; step<=10; step++) {
 	int x1 = w*step/10+count*ratio;
@@ -204,7 +208,7 @@ void TDesktop::draw() {
 	SDL_RenderDrawLine(rend,0,h-x1,x1,0);
     }
     count++;
-    if (count >= desktop->h/10) count = 0;
+    if (count >= sdl_screen->h/10) count = 0;
 }
 
 int TDesktop::set_picture(const char *name) {
@@ -214,6 +218,9 @@ int TDesktop::set_picture(const char *name) {
     }
     if (name) {
 	pic = IMG_LoadTexture(rend,name);
+	UINT32 access;
+	int format;
+	SDL_QueryTexture(pic,&access,&format,&picw,&pich);
 	return pic != NULL;
     }
     return 0;
@@ -299,6 +306,9 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
     bg_frame = bgframe_color;
   } else
     bg_frame = mybg_frame;
+  int a = bg_frame & 0xff, b = (bg_frame >> 8) & 0xff, g = (bg_frame >> 16) & 0xff, r = (bg_frame >> 24);
+  // sdl_gfx has an arbitrary mapping for colors, abgr intel !
+  bg_frame_gfx = makecol_alpha(a,b,g,r);
   font_name = "Vera.ttf";
   lift = NULL;
   keybuf[0] = 0;
@@ -309,7 +319,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
   work_area.h = 0;
   rows = 0;
   work_area.x = 0;
-  work_area.w = desktop->w;
+  work_area.w = sdl_screen->w;
   use_transparency = ::use_transparency;
 }
 
@@ -468,7 +478,7 @@ int TMenu::get_max_bot_frame_dimensions(int &w, int &h) {
 void TMenu::draw_bot_frame() {
   int base = work_area.y+work_area.h;
   char *game = get_bot_frame_text();
-  boxColor(rend,0,base,desktop->w,desktop->h,bg_frame);
+  boxColor(rend,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
   font->put_string(HMARGIN,base,game,fg_frame,bg_frame);
 }
 
@@ -508,7 +518,7 @@ void TMenu::draw_frame(SDL_Rect *r) {
   font->dimensions(title,&w_title,&h_title);
   len_bot = get_max_bot_frame_dimensions(w_game,h_game);
 
-  int base = desktop->h-h_game;
+  int base = sdl_screen->h-h_game;
 
   work_area.y = h_title;
   work_area.h = (base - (h_title));
@@ -605,14 +615,14 @@ void TMenu::setup_font(unsigned int len_frame) {
 
   if (font) delete font;
   if (len_max + len_max_options + 3 > len_frame) {
-    w = desktop->w/(len_max+len_max_options + 3); // ideal font width & height, with some
+    w = sdl_screen->w/(len_max+len_max_options + 3); // ideal font width & height, with some
   } else {
-    w = desktop->w/(len_frame); // ideal font width & height, with some
+    w = sdl_screen->w/(len_frame); // ideal font width & height, with some
   }
   if (nb_disp_items + nb == 0) return;
   int hheader = 0;
   if (!header) skip_fglayer_header(hheader);
-  h = (desktop->h - 40 - hheader)/(nb_disp_items+nb); // margin
+  h = (sdl_screen->h - 40 - hheader)/(nb_disp_items+nb); // margin
   h = h*4/9; // This 5/11 is just the result of tests, so that the main
   // menu fits on the screen without scrollbar when loading bublbobl !
   // Actually it's probably dependant of the font (size w != size h).
@@ -662,7 +672,7 @@ void TMenu::setup_fg_layer() {
   int w,h;
 
   work_area.x = 0;
-  work_area.w = desktop->w;
+  work_area.w = sdl_screen->w;
   w = width_max;
   h = compute_fglayer_height();
   fgdst.x = (work_area.w-w)/2;
@@ -692,8 +702,6 @@ void TMenu::setup_fg_layer() {
       printf("fg_layer creation problem (%d,%d) : %s\n",w,h,SDL_GetError());
       exit(1);
   }
-  if (!fg_format)
-      fg_format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
   if (use_transparency)
       SDL_SetTextureBlendMode(fg_layer, SDL_BLENDMODE_BLEND);
   if (lift)
@@ -910,9 +918,9 @@ void TMenu::do_update(SDL_Rect *region) {
 
 void TMenu::draw() {
 
+  desktop->draw();
   draw_frame();
 
-  desktop->draw();
   if (!fg_layer)
       setup_fg_layer();
   update_fg_layer();
@@ -1251,6 +1259,11 @@ void TMenu::handle_key(SDL_Event *event) {
 	  int n,seldisp;
 	  strncat(keybuf,event->text.text,MAX_KEYBUF-1);
 	  keybuf[MAX_KEYBUF-1] = 0;
+	  if (keybuf[0] >= '0' && keybuf[0] <= '9') {
+	      // Just give up on numbers, too many stupid matches
+	      keybuf[0] = 0;
+	      break;
+	  }
 	  index = strlen(keybuf);
 	  if (sel >= 0 && child[sel]->handle_key_buff(keybuf)) {
 	      update_fg_layer();
@@ -1303,7 +1316,7 @@ void TMenu::handle_key(SDL_Event *event) {
 	      if (!found) {
 		  // Let's say that the new key is the start of a new selection
 		  // then...
-		  if (index == 1) { // if it's already the 1st one, forget it
+		  if ((size_t)index == strlen(keybuf)) { // if it's already the 1st one, forget it
 		      keybuf[0] = 0;
 		      break;
 		  }
@@ -1325,15 +1338,17 @@ void TMenu::handle_key(SDL_Event *event) {
 		  for (n=seldisp+1; n<nb_disp_items; n++) {
 		      const char *s = skip_esc(menu[menu_disp[n]].label);
 		      if (can_be_selected(menu_disp[n]) &&
-			      !strnicmp(s,keybuf,index))
+			      !strnicmp(s,keybuf,index)) {
 			  break;
+		      }
 		  }
 		  if (n == nb_disp_items) {
 		      for (n=0; n<seldisp; n++) {
 			  const char *s = skip_esc(menu[menu_disp[n]].label);
 			  if (can_be_selected(menu_disp[n]) &&
-				  !strnicmp(s,keybuf,index))
+				  !strnicmp(s,keybuf,index)) {
 			      break;
+			  }
 		      }
 		      if (n == seldisp) { // no other entry
 			  exec_menu_item();
@@ -1347,8 +1362,8 @@ void TMenu::handle_key(SDL_Event *event) {
 }
 
 void TMenu::redraw(SDL_Rect *r) {
-  draw_frame(r);
   desktop->draw();
+  draw_frame(r);
   if (!r) {
       SDL_RenderCopy(rend,fg_layer,NULL,&fgdst);
       do_update(NULL);
@@ -1694,8 +1709,8 @@ void TMenu::execute() {
 		}
 		SDL_DestroyTexture(fg_layer);
 		fg_layer = NULL;
-		desktop->w = event.window.data1;
-		desktop->h = event.window.data2;
+		sdl_screen->w = event.window.data1;
+		sdl_screen->h = event.window.data2;
 		draw();
 	    }
 	}
@@ -1794,7 +1809,7 @@ void TBitmap_menu::setup_font(unsigned int len_frame) {
       if (bmp->w+2*HMARGIN > width_max)
 	  width_max = bmp->w+2*HMARGIN;
       int h2;
-      h2 = (desktop->h-bmp->h-2)/(nb_items + 4 + 6); // margin
+      h2 = (sdl_screen->h-bmp->h-2)/(nb_items + 4 + 6); // margin
       if (h2 < font->get_font_height() && h2 < font->get_font_width()) {
 	  delete font;
 	  font = new TFont_ttf(h2);
@@ -1860,8 +1875,8 @@ void TDialog::draw_frame(SDL_Rect *r) {
   if (!font) setup_font(0);
   work_area.x = 0;
   work_area.y = 0;
-  work_area.w = desktop->w;
-  work_area.h = desktop->h-40;
+  work_area.w = sdl_screen->w;
+  work_area.h = sdl_screen->h-40;
 }
 
 // TMenuMultiCol : a multi colomn version of TMenu

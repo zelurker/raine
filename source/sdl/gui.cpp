@@ -85,6 +85,8 @@ static void read_menu_config() {
   cslider_bar = raine_get_config_hex("GUI", "slider_bar", mymakecol(0xc0,0xc0,0xc0));
   cslider_lift = raine_get_config_hex("GUI", "slider_lift", mymakecol(0xff,0xff,0xff));
   bg_dialog_bar = raine_get_config_hex("GUI", "bg_dialog_bar", mymakecol(0,0,0));
+  int a = bg_dialog_bar & 0xff, b = (bg_dialog_bar >> 8) & 0xff, g = (bg_dialog_bar >> 16) & 0xff, r = (bg_dialog_bar >> 24);
+  bg_dialog_bar_gfx = makecol_alpha(a,b,g,r);
   keep_vga = raine_get_config_int("GUI","keep_vga",1);
 }
 
@@ -444,9 +446,9 @@ void TMain_menu::draw_top_frame() {
     font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
     font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
 #else
-    boxColor(rend,0,0,desktop->w,h_title-1,bg_frame);
+    boxColor(rend,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
     font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
-    font->put_string(desktop->w-w_title,0,title,fg_frame,bg_frame);
+    font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
 #endif
 }
 
@@ -521,10 +523,10 @@ void StartGUI(void)
 {
 #if SDL == 2
     resize_hook = &my_resize;
-    get_shared_hook = &get_shared;
 #else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 #endif
+    get_shared_hook = &get_shared;
 
 #ifdef RAINE_DEBUG
     print_debug("StartGUI(): START\n");
@@ -621,16 +623,20 @@ void StartGUI(void)
 	       SDL_WM_GrabInput(SDL_GRAB_ON);
 #endif
 #if SDL == 2
-	   if (GameScreen.xview)
-	       SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
-	   printf("setup screen bitmap %d,%d\n",GameScreen.xview,GameScreen.yview);
+	   if (GameScreen.xview) {
+	       if (display_cfg.video_mode > 0)
+		   SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
+	       else if (display_cfg.video_mode == 0)
+		   ScreenChange();
+	   }
 #endif
 	   if(run_game_emulation()){ // In no gui mode, tab will reactivate the gui (req. by bubbles)
 	       raine_cfg.no_gui = 0;
 	       WantQuit = 0;
 	   }
 #if SDL == 2
-	   SDL_RenderSetLogicalSize(rend, 0,0);
+	   if (display_cfg.video_mode > 0)
+	       SDL_RenderSetLogicalSize(rend, 0,0);
 #else
 	   if (!(sdl_screen->flags & SDL_DOUBLEBUF) && !emulate_mouse_cursor)
 #endif

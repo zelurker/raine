@@ -127,7 +127,13 @@ class TGame_sel : public TMenu
 	image_counter = 0;
 	w_year = h_year = w_categ = h_categ = 0;
     }
+#if SDL == 2
+    ~TGame_sel() {
+	desktop->set_picture(NULL);
+    }
+#endif
     virtual void compute_nb_items();
+    void regen();
 
   int can_be_displayed(int n) {
     switch (game_list_mode) {
@@ -306,7 +312,11 @@ void TGame_sel::draw_top_frame() {
   }
   snprintf(mytitle,80,"%s %d",s,nb_disp_items);
   font->dimensions(mytitle,&w_title,&h_title);
+#if SDL==2
+  boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
+#else
   boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
+#endif
   font->put_string(fw,0,title,fg_frame,bg_frame);
   font->put_string(sdl_screen->w-w_title,0,mytitle,fg_frame,bg_frame);
 }
@@ -329,7 +339,11 @@ void TGame_sel::draw_bot_frame() {
     h_bot = h_categ + h_year;
   }
   int base = sdl_screen->h-h_bot;
+#if SDL==1
   boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
+#else
+  boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
+#endif
   char game_string[140],year_string[80],category_string[80],company_string[100];
   snprintf(game_string,140,_("Game : %s"),(sel >= 0 ? game_list[sel]->long_name : "-"));
   snprintf(company_string,100,_("Company : %s"),(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
@@ -361,7 +375,7 @@ void TGame_sel::draw_bot_frame() {
 #endif
 }
 
-void TGame_sel::draw_frame(SDL_Rect *r) {
+void TGame_sel::regen() {
   compute_nb_items();
   if (font) {
       // Force the regeneration of the font because it's associated to width_max
@@ -369,6 +383,10 @@ void TGame_sel::draw_frame(SDL_Rect *r) {
       delete font;
       font = NULL;
   }
+  redraw(NULL);
+}
+
+void TGame_sel::draw_frame(SDL_Rect *r) {
   if (!font) setup_font(80);
 
   draw_top_frame();
@@ -422,7 +440,7 @@ static void compute_avail() {
 int recompute_list() {
     // options
     compute_avail();
-    game_sel->draw_frame();
+    game_sel->regen();
     game_sel->draw();
     return 0;
 }

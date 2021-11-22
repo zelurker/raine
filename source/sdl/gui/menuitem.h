@@ -37,7 +37,7 @@ typedef struct {
 
 // default colors
 extern int fg_color, bg_color,fgframe_color,bgframe_color,cslider_border,
-  cslider_bar,cslider_lift,bg_dialog_bar,keep_vga,
+  cslider_bar,cslider_lift,bg_dialog_bar,keep_vga,bg_dialog_bar_gfx,
   gui_level;
 
 #if SDL == 1

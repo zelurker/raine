@@ -155,11 +155,14 @@ void init_display() {
 
 void ScreenChange(void)
 {
+    get_ogl_infos();
+    int w,h;
+    SDL_GetRendererOutputSize(rend,&w,&h);
+    opengl_reshape(w,h);
 }
 
 int resize(int call,int sx,int sy) {
   // Minimum size
-  static int last_time;
   if (keep_vga && (sx < 640 || sy < 480)) {
       SDL_SetWindowSize(win,640,480);
       return 0;
@@ -171,47 +174,8 @@ int resize(int call,int sx,int sy) {
       return 0;
   display_cfg.screen_x = sx;
   display_cfg.screen_y = sy;
+  if (changed) SDL_SetWindowSize(win,sx,sy);
 
-  if (current_game && display_cfg.keep_ratio ) {
-    // keep aspect ratio
-    VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
-#ifdef USE_BEZELS
-    double ratio = get_bezel_ratio();
-    if (ratio < 0)
-#else
-	double
-#endif
-      ratio = video->screen_x*1.0/video->screen_y;
-    if (video->flags & VIDEO_ROTATE_90 || (video->flags & 3)==VIDEO_ROTATE_270)
-      ratio = 1/ratio;
-
-    /* Resize to keep ratio but always within the size chosen by the user */
-    if (time(NULL) - last_time > 1) {
-	/* this timing thing is to try to detect windows managers which block
-	 * resize commands, like compiz.
-	 * Basically when a window size matches the fullscreen size, it switches
-	 * its state to fullscreen. At this point the window can't be resized
-	 * anymore, any resize attempt will result in another resize message
-	 * sent immediately to restore it to fullscreen, which can create
-	 * a stupid loop. So this timing here is to try to detect this kind
-	 * of loop. Never understood this behavior anyway... */
-	changed = 1;
-	if (ratio < 1)
-	    display_cfg.screen_x = ratio * display_cfg.screen_y;
-	else
-	    display_cfg.screen_y = display_cfg.screen_x / ratio;
-    } else
-	printf("blocking ratio correction\n");
-    last_time = time(NULL);
-
-    display_cfg.screen_x &= ~1; // even number
-    // odd numbers can crash sdl_createyuvoverlay when libefence is in use !
-
-    if (changed) SDL_SetWindowSize(win,display_cfg.screen_x,display_cfg.screen_y);
-#ifdef USE_BEZELS
-    bezel_fix_screen_size(&display_cfg.screen_x,&display_cfg.screen_y);
-#endif
-  }
   if (call) {
       print_debug("calling ScreenChange from resize\n");
       ScreenChange();

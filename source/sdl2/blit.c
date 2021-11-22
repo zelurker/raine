@@ -22,6 +22,7 @@ BITMAP *GameBitmap = NULL; 	// *Full* Bitmap for generating the game screen (eg.
 BITMAP *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
 SDL_Texture *game_tex;
 
+extern void ScreenChange(void);
 UINT32 pause_time;
 int recording_video = 0,last_video_frame,video_fps;
 
@@ -160,14 +161,12 @@ void ReClipScreen(void)
 		 double dif_ratio = fabs(ratio-0.75);
 		 if (dif_ratio > 0.001 && dif_ratio < 0.05) {
 		     game_y = 0.75*game_x;
-		     printf("fixing aspect ratio to 0.75 - new res %d x %d\n",game_x,game_y);
 		 }
 	     } else {
 		 double ratio = game_x*1.0/game_x;
 		 double dif_ratio = fabs(ratio-0.75);
 		 if (dif_ratio > 0.001 && dif_ratio < 0.05) {
 		     game_x = 0.75*game_y;
-		     printf("fixing aspect ratio to 0.75 - new res %d x %d\n",game_x,game_y);
 		 }
 	     }
 	 }
@@ -387,8 +386,11 @@ void SetupScreenBitmap(void)
 	 exit(1);
      }
      SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
-     SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
-     printf("setup screen bitmap %d,%d\n",GameScreen.xview,GameScreen.yview);
+     if (display_cfg.video_mode == 0)
+	 ScreenChange();
+     else
+	 SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
+
    } while (oldbpp != display_cfg.bpp);
    init_video_core(); // GameBitmap just changed -> regen all the functions
    // which depend on it !

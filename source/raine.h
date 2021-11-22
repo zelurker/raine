@@ -307,7 +307,10 @@ typedef struct DISPLAY_CFG
 #ifndef SDL
    UINT32 screen_type;			// pc screen display type {..MODX,VB2L,VBAF..}
 #else
-   UINT32 video_mode,video_driver;
+   UINT32 video_mode;
+#if SDL==1
+   UINT32 video_driver;
+#endif
    // Now video_mode : 0 = opengl, 1 = yuv overlays, 2 = normal blits
    // video_driver is for windows only, which windows driver to use.
    UINT32 winx,winy; // size of window (used when toggling fullscreen)

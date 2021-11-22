@@ -344,6 +344,8 @@ void toggle_fullscreen() {
   }
 #else
   SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+  if (!display_cfg.fullscreen)
+      SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
 #endif
 }
 
@@ -1216,7 +1218,11 @@ static int check_emu_inputs(DEF_INPUT_EMU *emu_input, int nb, int input, int mod
     if ((emu_input->scancode & 0xffff) == input) {
       int kmod = emu_input->scancode >> 16;
       if ((modifier == 0 && kmod == 0) ||
-	  (modifier && (kmod & modifier) == (modifier & (KMOD_CTRL|KMOD_ALT|KMOD_SHIFT)))) {
+	  (modifier && (kmod & modifier) == (modifier & (KMOD_CTRL|KMOD_ALT|KMOD_SHIFT
+#if SDL==2
+							 |KMOD_GUI
+#endif
+							 )))) {
 	emu_input->proc();
 	return 1;
       }
@@ -1234,13 +1240,10 @@ static void handle_event(SDL_Event *event) {
   switch (event->type) {
     case SDL_KEYDOWN:
       input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
-      if (!input || input >= 0x300) { // special encoding for scancodes (unknown keys)
+      if (!(input & 0xfffffff)) { // special encoding for scancodes (unknown keys)
 	input = event->key.keysym.scancode | 0x200;
       }
-      if (input < 0x300)
-	  key[input] = 1;
-      else
-	  printf("big key sym down : %x scan %x\n",event->key.keysym.sym,event->key.keysym.scancode);
+      key[input & 0x1ff] = 1;
       if (!reading_demo) {
 	  ta = -1;
 	  /* We allow that 1 key is mapped to more than 1 control (loop)
@@ -1273,14 +1276,11 @@ static void handle_event(SDL_Event *event) {
 	handled = check_layer_key(input);
       break;
     case SDL_KEYUP:
-      input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
-      if (!input || input >= 0x300) { // special encoding for scancodes (unknown keys)
+      input = event->key.keysym.sym; //  | ((event->key.keysym.mod & 0x4fc0)<<16);
+      if (!(input & 0xfffffff)) { // special encoding for scancodes (unknown keys)
 	input = event->key.keysym.scancode | 0x200;
       }
-      if (input < 0x300)
-	  key[input] = 0;
-      else
-	  printf("big key up : %x scan %x\n",event->key.keysym.sym,event->key.keysym.scancode);
+      key[input & 0x1ff] = 0;
       if (reading_demo) break;
       ta = -1;
       if (input == def_input_emu[6].scancode) {
@@ -1305,7 +1305,7 @@ static void handle_event(SDL_Event *event) {
 	  int x;
 
 	  for(x=0;x<InputCount;x++){
-	    if(key[InputList[x].Key]){
+	    if(key[InputList[x].Key & 0x1ff]){
 	      int found_valid = 0;
 	      int n;
 	      for (n=0; n<nb_valid_inputs; n++) {

@@ -120,6 +120,12 @@ static int mouse_erased,unicode;
 
 int repeat_interval, repeat_delay;
 
+static char* my_get_shared(char *s) {
+    return s;
+}
+
+char * (*get_shared_hook)(char *name) = &my_get_shared;
+
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h) {
   for (int my=1+y; my<y+h-1; my++) {
     UINT8 *pixel = ((UINT8*)s->pixels)+my*s->pitch+x*s->format->BytesPerPixel;

@@ -21,6 +21,7 @@
 
 extern int repeat_interval, repeat_delay;
 extern int return_mandatory, use_transparency;
+extern char * (*get_shared_hook)(char *name);
 
 void setup_mouse_cursor(SDL_Surface *mycursor);
 

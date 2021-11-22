@@ -59,6 +59,7 @@ int main(int argc, char * argv[])
 	SDL_PumpEvents();
 
 	TMenu *main_menu = new TMenu(_("Main menu"),main_items);
+	desktop->set_picture("screens/1941.png");
 	main_menu->execute();
 	delete main_menu;
 

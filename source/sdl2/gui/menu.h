@@ -11,6 +11,7 @@
 #include "widget.h"
 #include "translate.h"
 
+extern SDL_PixelFormat *fg_format;
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 
 /* If values_list_size == 3, and there are no labels for this list, then it's
@@ -23,6 +24,7 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 class TDesktop {
     private:
 	SDL_Texture *pic;
+	int picw,pich;
     public:
 	int w,h;
 	TDesktop();
@@ -58,6 +60,7 @@ class TMenu {
     int fg,bg, // colors for the fg layer
       bgsdl, // still bg color of the fg layer but in sdl format
       fg_frame,bg_frame, // colors for the frames (top & bottom)
+      bg_frame_gfx, // sdl_gfx specific mapping !
       last_update,update_count;
     SDL_Rect work_area, // Area between the 2 frames
       fgdst; // area used by the fg layer (menu) on screen

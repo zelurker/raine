@@ -68,7 +68,7 @@ void toggle_fullscreen();
 /* Active inputs (allows to switch from default to custom inputs/game) */
 typedef struct INPUT
 {
-   UINT16 Key;			// keyboard code for this input
+   UINT32 Key;			// keyboard code for this input
    UINT32 Joy;			// joystick code for this input
    UINT32 mousebtn;
    char *InputName;		// input name string
