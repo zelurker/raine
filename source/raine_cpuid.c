@@ -16,7 +16,7 @@
 #ifdef SDL
 #include <SDL_cpuinfo.h>
 #endif
-#include "cpuid.h"
+#include "raine_cpuid.h"
 
 UINT32 raine_cpu_capabilities;
 /*
