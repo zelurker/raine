@@ -107,6 +107,17 @@ void sdl_init() {
     static int init;
     if (!init) {
 	init = 1;
+	// The only way to get decent parameters from SDL_OpenAudio is to use
+	// the directsound driver. The default is to use something called
+	// wasapi for me, which gives me F32LSB samples ! I would have to
+	// write a callback for float numbers for this one !
+	// Using SDL_OpenAudioDevice instead allows to choose which parameters
+	// can be changed, a way to remember my device prefers 48 KHz, now
+	// the audio takes very little cpu in the emulation...
+	static char buffer[100];
+	snprintf(buffer,100,"SDL_AUDIODRIVER=directsound");
+	buffer[99] = 0;
+	putenv(buffer);
 	if ( SDL_Init(
 		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS
 		    ) < 0 ) {
@@ -127,7 +138,12 @@ void sdl_init() {
 		display_cfg.posy,
 		display_cfg.screen_x,
 		display_cfg.screen_y,
-		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL |
+		(display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+	// Without this hint in windows : start a game in windowed mode, use alt-return in game
+	// to switch to fullscreen, press esc to call the gui -> crash with the error :
+	// fg_layer creation problem (782,785) : CreateTexture(D3DPOOL_DEFAULT): INVALIDCALL
+	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
 	if (!sf) {
