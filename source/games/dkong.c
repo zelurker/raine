@@ -470,7 +470,7 @@ void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
 
 static int layer_id_data[2];
 static int draw_emudx_tile;
-static BITMAP *flame_red, *flame_blue;
+static al_bitmap *flame_red, *flame_blue;
 
 #define tile_index zz
 #define BORDER 16
@@ -647,7 +647,7 @@ static void draw_emudx() {
 	    {
 	      // flame effects
 	      // int col = ((color >> 1) & 0x03) | ((color << 2) & 0x04);
-	      BITMAP *flame = flame_red;
+	      al_bitmap *flame = flame_red;
 	      (void)flame; // used only by allegro, no warning this way
 	      if(subcol==0 && (code==61 || code==62)) {
 		code+=28; // Fire that fears (1st level)
@@ -838,7 +838,7 @@ static void load_dkong() {
 #endif
 	if (!flame_red) {
 	  emudx_file dat = open_emudx_file("dkongg.dx2");
-	  BITMAP *bmp;
+	  al_bitmap *bmp;
 	  flame_red = create_bitmap_ex(16,56,49);
 	  flame_blue = create_bitmap_ex(16,56,49);
 	  bmp = emudx_bitmap(dat,418);

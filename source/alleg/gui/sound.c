@@ -171,7 +171,7 @@ void *old_draw = NULL;
 extern int screen_valid;
 extern int SampleVol[MAX_STREAM_CHANNELS];
 static void *player = NULL;
-extern BITMAP *BlitSource;
+extern al_bitmap *BlitSource;
 
 static void INLINE helper(DIALOG *dlg,AL_METHOD(int, proc, (int, struct DIALOG *, int )),
    int x, int y, int w, int h,   /* position and size of the object */

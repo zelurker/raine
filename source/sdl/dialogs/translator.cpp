@@ -197,7 +197,7 @@ class TTransMenu : public TDialog {
 };
 
 void TTransMenu::create_child(int n) {
-    if (menu[n].values_list_size == ITEM_TBITMAP) {
+    if (menu[n].values_list_size == ITEM_Tal_bitmap) {
 	child[n] = new TTransBitmap(&menu[n]);
 	if (!((TTransBitmap *)child[n])->font) {
 	    exit_menu = 1;
@@ -672,14 +672,14 @@ static menu_item_t msg_menu[] =
 {
     { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { "hidden" } },
     { _("Insert special code..."), &insert_code },
-    { "", &draw_translator, &base_no, ITEM_TBITMAP, { 320, 256, 8 } },
+    { "", &draw_translator, &base_no, ITEM_Tal_bitmap, { 320, 256, 8 } },
     { NULL, NULL, NULL }
 };
 
 static menu_item_t screen_menu[] =
 {
     { str_offset, &set_entry, &cur_entry, 3, {0, 1000, 1}, { "hidden" } },
-    { "", &draw_translator, &base_no, ITEM_TBITMAP, { 320, 256, 8 } },
+    { "", &draw_translator, &base_no, ITEM_Tal_bitmap, { 320, 256, 8 } },
     { NULL, NULL, NULL }
 };
 
@@ -910,7 +910,7 @@ class TTransSS2Menu : public TMenu {
 };
 
 void TTransSS2Menu::create_child(int n) {
-    if (menu[n].values_list_size == ITEM_TBITMAP) {
+    if (menu[n].values_list_size == ITEM_Tal_bitmap) {
 	child[n] = new TTransSS2(&menu[n]);
     } else
 	TMenu::create_child(n);

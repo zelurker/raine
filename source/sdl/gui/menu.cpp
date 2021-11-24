@@ -374,7 +374,7 @@ void TMenu::create_child(int n) {
     child[n] = new TSlider(&menu[n]);
   else if (menu[n].values_list_size == ITEM_EDIT)
     child[n] = new TEdit(&menu[n]);
-  else if (menu[n].values_list_size == ITEM_TBITMAP)
+  else if (menu[n].values_list_size == ITEM_Tal_bitmap)
     child[n] = new TBitmap(&menu[n]);
   else if (menu[n].values_list_size == ITEM_FLOATEDIT)
     child[n] = new TFloatEdit(&menu[n]);

@@ -1,4 +1,4 @@
-#define NOGDI // define this before including windows.h to avoid BITMAP !
+#define NOGDI // define this before including windows.h to avoid al_bitmap !
 #ifdef ANDROID
 #include <GLES/gl.h>
 #else
@@ -203,7 +203,7 @@ void setup_gfx_modes() {
   set_default_video_mode();
 }
 
-void clear_bitmap(BITMAP *screen) {
+void clear_bitmap(al_bitmap *screen) {
   int len = screen->w*screen->h*bytes_per_pixel(screen);
   SDL_Surface *s = get_surface_from_bmp(screen);
   if (s->pixels) {

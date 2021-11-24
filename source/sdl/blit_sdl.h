@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-typedef void blit_x2_func(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h);
+typedef void blit_x2_func(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h);
 extern SDL_Rect area_overlay;
 
 extern blit_x2_func *my_blit_x2_y1,*my_blit_x2_y2;

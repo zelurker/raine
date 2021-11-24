@@ -64,7 +64,7 @@ UINT32 tile_start;
 */
 
 static struct TILE_Q *TileQueue;               // full list
-BITMAP *pbitmap = NULL; // global, because used by the pdraw functions
+al_bitmap *pbitmap = NULL; // global, because used by the pdraw functions
 
 void init_pbitmap() {
   // Prepare the mask functions to draw to the priority bitmap

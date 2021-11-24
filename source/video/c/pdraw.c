@@ -48,7 +48,7 @@ wether a pixel must be drawn or not. They are usually used to draw sprites.
 
  */
 
-extern BITMAP *BackBitmap;
+extern al_bitmap *BackBitmap;
 #define declare_spr(SIZE,BPP)                                    \
 void pdraw##SIZE##x##SIZE##_Mapped_##BPP(ARG_PRI)                \
 {                                                                \

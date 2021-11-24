@@ -9,11 +9,7 @@ extern "C" {
 #include <SDL.h>
 #include "deftypes.h"
 
-#ifndef WINAPI
-// windows.h has a wonderfull name collision with BITMAP !
-// usually windows.h is not included, so we assume that we don't need both
-// declarations at the same time !
-typedef struct BITMAP            /* a bitmap structure */
+typedef struct al_bitmap            /* a bitmap structure */
 {
    int w, h;                     /* width and height in pixels */
    int clip;                     /* flag if clipping is turned on */
@@ -28,33 +24,32 @@ typedef struct BITMAP            /* a bitmap structure */
    int y_ofs;                    /* vertical offset (for sub-bitmaps) */
    int seg;                      /* bitmap segment */
    Uint8 *line[0];
-} BITMAP;
+} al_bitmap;
 
 // Bitmap functions
-BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h);
-void clear_bitmap(BITMAP *bitmap);
+al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h);
+void clear_bitmap(al_bitmap *bitmap);
 #define sdl_create_bitmap(w, h) sdl_create_bitmap_ex(display_cfg.bpp,w,h)
 #define SDL_WM_SetCaption(title1,title2) SDL_SetWindowTitle(win,title1)
 #define SDL_WM_GrabInput SDL_SetRelativeMouseMode
 #define SDL_GRAB_ON SDL_TRUE
 #define SDL_GRAB_OFF SDL_FALSE
-struct BITMAP *surface_to_bmp(SDL_Surface *s);
-void acquire_bitmap(BITMAP *bmp);
-void release_bitmap(BITMAP *bmp);
+struct al_bitmap *surface_to_bmp(SDL_Surface *s);
+void acquire_bitmap(al_bitmap *bmp);
+void release_bitmap(al_bitmap *bmp);
 
-void destroy_bitmap(struct BITMAP *bmp);
+void destroy_bitmap(struct al_bitmap *bmp);
 
 #define RGB SDL_Color
 
 // Misc
-static inline SDL_Surface *get_surface_from_bmp(BITMAP *bmp) {
+static inline SDL_Surface *get_surface_from_bmp(al_bitmap *bmp) {
   return (SDL_Surface *)bmp->extra;
 }
 
-struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, int h);
-UINT16 bytes_per_pixel(BITMAP *screen);
+struct al_bitmap *sdl_create_sub_bitmap(struct al_bitmap *src, int x, int y, int w, int h);
+UINT16 bytes_per_pixel(al_bitmap *screen);
 
-#endif
 #ifndef RAINE_WIN32
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
@@ -160,7 +155,7 @@ extern void load_message(char *);
 }
 
 // lovely callback to avoid the violent name collision between allegro and
-// windows about BITMAP. I think BITMAP has probably been removed from allegro
+// windows about al_bitmap. I think al_bitmap has probably been removed from allegro
 // now, I should check that one day... !
 void save_png_surf_rev(char *name, SDL_Surface *s);
 

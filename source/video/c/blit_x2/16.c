@@ -6,7 +6,7 @@
 
 #include "raine.h"
 
-void raine_blit_x2_y1_16(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
+void raine_blit_x2_y1_16(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
 	int x, y;
 	int new_x;
@@ -25,7 +25,7 @@ void raine_blit_x2_y1_16(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, i
 	release_bitmap(dest);
 }
 
-void raine_blit_x2_y2_16(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
+void raine_blit_x2_y2_16(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
 	int x, y;
 	int new_x, new_y;

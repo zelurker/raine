@@ -189,8 +189,8 @@ static UINT8 col_remap[4][0x40];
 
 static UINT8 *zoom16_ofs;
 
-static BITMAP *pixel_bitmap;
-static BITMAP *bitmap_store;
+static al_bitmap *pixel_bitmap;
+static al_bitmap *bitmap_store;
 static int pixel_blit;
 static UINT8 map_data[256];
 static UINT8 mapped[256];

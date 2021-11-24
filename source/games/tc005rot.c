@@ -133,11 +133,11 @@ static UINT8 *GFX_BG;
 UINT8 rot_pens;
 // static UINT8 rot_map[64];
 
-static BITMAP *pixel_bitmap;
+static al_bitmap *pixel_bitmap;
 
 typedef void tc005rot_drawing_func(long f1x, long f1y, long f1xd,long f1yd,long f2xd,long f2yd,UINT8 *map, int transp);
 
-static BITMAP *bitmap_store;
+static al_bitmap *bitmap_store;
 
 void tc0005rot_set_bitmap(void)
 {

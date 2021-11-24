@@ -50,8 +50,8 @@ void release_gui();
 
 void Unselect_Button(DIALOG *d);
 void FadeGUI(void);
-BITMAP *make_mapped_bitmap(BITMAP *src, int *start, PALETTE *src_pal, UINT32 cols);
-void destroy_mapped_bitmap(BITMAP *dest, UINT32 cols);
+al_bitmap *make_mapped_bitmap(al_bitmap *src, int *start, PALETTE *src_pal, UINT32 cols);
+void destroy_mapped_bitmap(al_bitmap *dest, UINT32 cols);
 void set_gui_palette(void);
 void MakeGUIBack(void);
 void raine_centre_dialog(DIALOG *dialog);

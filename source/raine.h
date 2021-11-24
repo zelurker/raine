@@ -20,6 +20,7 @@ extern "C" {
 
 #ifndef SDL
 #include <allegro.h>
+#define al_bitmap BITMAP
 #ifdef RAINE_UNIX
 // Well sorry : these are defined only in allegro dos...
 #define GFX_DRIVER_VGA

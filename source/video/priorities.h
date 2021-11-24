@@ -103,7 +103,7 @@ void ClearTileQueue(void);
 void TerminateTileQueue(void);
 int init_tilequeue();
 
-extern BITMAP *pbitmap;
+extern al_bitmap *pbitmap;
 
 void init_pbitmap();
 

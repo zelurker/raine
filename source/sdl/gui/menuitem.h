@@ -81,7 +81,7 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 #define ITEM_EDIT (-3)
 
 /* TBitmap (see tbitmap.h) */
-#define ITEM_TBITMAP (-4)
+#define ITEM_Tal_bitmap (-4)
 
 /* TFloatEdit
  * parameters :

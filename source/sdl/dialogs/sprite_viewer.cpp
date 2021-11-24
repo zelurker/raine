@@ -137,7 +137,7 @@ int TMyBitmap::handle_mouse(SDL_Event *event) {
 }
 
 void TSpriteMenu::create_child(int n) {
-  if (menu[n].values_list_size == ITEM_TBITMAP) {
+  if (menu[n].values_list_size == ITEM_Tal_bitmap) {
     child[n] = new TMyBitmap(&menu[n]);
   } else
     TMenu::create_child(n);
@@ -167,7 +167,7 @@ static int redraw(int sel) {
 static menu_item_t sprites_menu[] =
 {
   { _("layer"), &redraw, &layer, 1 }, // init in sprite_viewer
-  { "", &draw_sprites, NULL, ITEM_TBITMAP, { 640, 480, 8 } },
+  { "", &draw_sprites, NULL, ITEM_Tal_bitmap, { 640, 480, 8 } },
   { NULL, NULL, NULL }
 };
 

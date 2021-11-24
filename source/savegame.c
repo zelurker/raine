@@ -875,7 +875,7 @@ void store_picture(gzFile fout) {
 
     SDL_Surface *scaled = rotozoomSurfaceXY(view,
       0.0, 0.25, 0.25, 0);
-    BITMAP *scaled_bmp = surface_to_bmp(scaled);
+    al_bitmap *scaled_bmp = surface_to_bmp(scaled);
    save_png(buff,scaled_bmp,pal);
    destroy_bitmap(scaled_bmp);
    SDL_FreeSurface(view);

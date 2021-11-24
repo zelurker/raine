@@ -104,7 +104,7 @@
 #include "neocd/neocd.h"
 #include "newmem.h" // GetMemoryPoolSize
 #ifdef RAINE_UNIX
-#define NOGDI // define this before including windows.h to avoid BITMAP !
+#define NOGDI // define this before including windows.h to avoid al_bitmap !
 #define GL_GLEXT_LEGACY // to try not to include glext.h which redefines the GL_GLEXT_VERSION which shouldn't have gone to SDL_opengl.h !
 #include <SDL_opengl.h> // super annoying windows.h collides here !
 #endif

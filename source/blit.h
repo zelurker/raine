@@ -2,7 +2,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef struct RAINEBITMAP
+typedef struct raine_bitmap
 {
    int xfull;		// Full bitmap width
    int yfull;		// Full bitmap height
@@ -10,12 +10,12 @@ typedef struct RAINEBITMAP
    int ytop;		// Y offset of viewable area
    int xview;		// Viewable bitmap width
    int yview;		// Viewable bitmap height
-} RAINEBITMAP;
+} raine_bitmap;
 
-extern RAINEBITMAP GameScreen;
+extern raine_bitmap GameScreen;
 extern int recording_video,video_fps,last_video_frame;
-extern BITMAP *GameBitmap; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
-extern BITMAP *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
+extern al_bitmap *GameBitmap; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
+extern al_bitmap *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
 
 extern UINT32 pause_time;
 

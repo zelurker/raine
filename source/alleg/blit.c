@@ -28,8 +28,8 @@
 /* Still a collision here between winalleg.h and control.h */
 void init_gui_inputs_paused(void);
 void init_gui_inputs(void);
-BITMAP *GameBitmap; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
-BITMAP *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
+al_bitmap *GameBitmap; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
+al_bitmap *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
 
 static int triple_frame;
 static int destx, desty, xxx, yyy, xoff2, yoff2;
@@ -60,10 +60,10 @@ int key_data[MAX_LAYER_INFO]=
 
 static void scroll_async(int page);
 
-RAINEBITMAP GameScreen;
+raine_bitmap GameScreen;
 
-BITMAP *BlitSource;		// *Full*
-BITMAP *BlitViewSource; 	// *Viewable* part of bitmap
+al_bitmap *BlitSource;		// *Full*
+al_bitmap *BlitViewSource; 	// *Viewable* part of bitmap
 
 void get_screen_coordinates(int *Xoff2,int *Yoff2, int *Destx, int *Desty, int *Xxx, int *Yyy){
   *Xoff2 = xoff2;
@@ -86,7 +86,7 @@ void get_screen_coordinates(int *Xoff2,int *Yoff2, int *Destx, int *Desty, int *
 
 */
 
-void raine_blit_eagle(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
+void raine_blit_eagle(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
    UINT32 ta;
 
@@ -122,7 +122,7 @@ static UINT32 ds;
 UINT32 es,oldes;
 #endif
 
-static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
+static void raine_blit_scale2x(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
    UINT32 ta;
 
@@ -269,9 +269,9 @@ static void update_screen_palette(PALETTE palette)
 #endif
 }
 
-extern BITMAP *tpage[3];
+extern al_bitmap *tpage[3];
 
-void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, UINT32 x2, UINT32 y2, UINT32 w, UINT32 h)
+void raine_fast_blit(al_bitmap *source, al_bitmap *dest, UINT32 x1, UINT32 y1, UINT32 x2, UINT32 y2, UINT32 w, UINT32 h)
 {
 #if defined(RAINE_UNIX) || defined(RAINE_WIN32)
   int force_update = (display_cfg.bpp > 8);

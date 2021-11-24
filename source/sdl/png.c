@@ -5,12 +5,12 @@
 
 int _png_compression_level = Z_BEST_COMPRESSION;
 
-BITMAP *load_png(const char *filename, RGB *pal) {
+al_bitmap *load_png(const char *filename, RGB *pal) {
   SDL_Surface *s = IMG_Load(filename);
   return surface_to_bmp(s);
 }
 
-BITMAP *load_png_from_zip(unzFile uf, RGB *pal) {
+al_bitmap *load_png_from_zip(unzFile uf, RGB *pal) {
   unz_file_info file_info;
   UINT8 *buffer;
   SDL_RWops *rw;

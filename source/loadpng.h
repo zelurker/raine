@@ -16,11 +16,11 @@ extern int _png_compression_level;
 
 
 /* Load a PNG from disk. */
-extern BITMAP *load_png(const char *filename, RGB *pal);
-extern BITMAP *load_png_from_zip(unzFile uf, RGB *pal);
+extern al_bitmap *load_png(const char *filename, RGB *pal);
+extern al_bitmap *load_png_from_zip(unzFile uf, RGB *pal);
 
 /* Save a bitmap to disk in PNG format. */
-extern int save_png(const char *filename, BITMAP *bmp, const RGB *pal);
+extern int save_png(const char *filename, al_bitmap *bmp, const RGB *pal);
 
 #ifdef __cplusplus
 }

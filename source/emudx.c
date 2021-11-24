@@ -12,7 +12,7 @@
 /* This is the support for the graphics emudx files. For the sound, see dxsmp.c in the
    sound directory. */
 
-BITMAP **emudx_tiles;
+al_bitmap **emudx_tiles;
 UINT8 *emudx_sprites,*emudx_sprites32,*emudx_chars;
 UINT32 emudx_nb_tiles,emudx_transp;
 
@@ -54,10 +54,10 @@ void close_emudx(emudx_file dat) {
   }
 }
 
-BITMAP *emudx_bitmap(emudx_file dat, int nb) {
+al_bitmap *emudx_bitmap(emudx_file dat, int nb) {
   char name[10];
   int err;
-  BITMAP *bmp;
+  al_bitmap *bmp;
   PALETTE pal;
 
   sprintf(name,"%03d.png",nb);
@@ -92,7 +92,7 @@ void load_emudx(const char *name, int tiles, int sprites,
      color 1, on a 2 colors palette, and the driver must handle the palette for
      these sprites */
   emudx_file dat;
-  BITMAP *obj,*bmp;
+  al_bitmap *obj,*bmp;
   int i,ta;
   VIDEO_INFO *video = (VIDEO_INFO*)current_game->video;
   int dkong_exception = (strstr(name,"dkongg.dx") != NULL);
@@ -128,7 +128,7 @@ void load_emudx(const char *name, int tiles, int sprites,
   video->draw_game = draw_emudx;
 
   // one more tile for dkong but different dimensions (so... crazy !!!)
-  if (!(emudx_tiles = (BITMAP **)AllocateMem(sizeof(BITMAP*)*tiles))) return;
+  if (!(emudx_tiles = (al_bitmap **)AllocateMem(sizeof(al_bitmap*)*tiles))) return;
   int bpp = display_cfg.bpp / 8;
   if (!(emudx_sprites = AllocateMem(16*16*bpp*(sprites)))) return;
   if (!(emudx_sprites32 = AllocateMem(32*32*bpp*(sprites32-start_sprites32+1)))) return;

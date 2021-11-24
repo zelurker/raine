@@ -197,7 +197,7 @@ static inline void outportw(unsigned short port, unsigned short value)
 #define enable()	asm(" sti")
 #define disable()	asm(" cli")
 
-BITMAP *tpage[3];
+al_bitmap *tpage[3];
 
 void clear_raine_screen() {
   if(display_cfg.triple_buffer){

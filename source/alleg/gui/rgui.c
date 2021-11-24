@@ -1336,8 +1336,8 @@ int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, i
 #define BUFFER_GUI
 
 #ifdef BUFFER_GUI
-static BITMAP *screen_old=NULL;
-static BITMAP *screen_new=NULL;
+static al_bitmap *screen_old=NULL;
+static al_bitmap *screen_new=NULL;
 static int oxygen_level;
 #endif
 

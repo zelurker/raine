@@ -84,7 +84,7 @@ extern gamestr game_company,game_year,game_sound,game_strtype;
 #define GAME_LIST 1
 #define GAME_SWITCH_RES 10
 #define GAME_DATA 14 // index of data info fields (start)
-#define GAME_BITMAP 19
+#define GAME_al_bitmap 19
 
 DIALOG game_select_opts[] =
   {

@@ -50,7 +50,7 @@ struct RGUI_CFG rgui_cfg;
 
 PALETTE gui_pal;
 
-static	 BITMAP *snapshot=NULL;
+static	 al_bitmap *snapshot=NULL;
 static int snapshot_cols;
 
 
@@ -362,7 +362,7 @@ void set_gui_palette(void)
 
 void FadeGUI(void)
 {
-   BITMAP *fade_backdrop;
+   al_bitmap *fade_backdrop;
    UINT8 *BIT;
    UINT32 ta,tb;
    UINT8 convert[256];
@@ -405,9 +405,9 @@ void FadeGUI(void)
 }
 
 // for any mapped bitmap including mouse and logos in the dialogs...
-BITMAP *make_mapped_bitmap(BITMAP *src, int *start, PALETTE *src_pal, UINT32 cols)
+al_bitmap *make_mapped_bitmap(al_bitmap *src, int *start, PALETTE *src_pal, UINT32 cols)
 {
-   BITMAP *dest;
+   al_bitmap *dest;
    UINT8 *line,*line_2;
    int ta,x,y;
 
@@ -441,9 +441,9 @@ BITMAP *make_mapped_bitmap(BITMAP *src, int *start, PALETTE *src_pal, UINT32 col
    return dest;
 }
 
-BITMAP *make_mapped_bitmap_2(BITMAP *src, int *start, PALETTE *src_pal, UINT32 cols)
+al_bitmap *make_mapped_bitmap_2(al_bitmap *src, int *start, PALETTE *src_pal, UINT32 cols)
 {
-   BITMAP *dest;
+   al_bitmap *dest;
    UINT8 *line,*line_2;
    int ta,x,y;
 
@@ -477,7 +477,7 @@ BITMAP *make_mapped_bitmap_2(BITMAP *src, int *start, PALETTE *src_pal, UINT32 c
    // Without breaking the palette in 16bpp. But I don't need this now !
 }
 
-void destroy_mapped_bitmap(BITMAP *dest, UINT32 cols)
+void destroy_mapped_bitmap(al_bitmap *dest, UINT32 cols)
 {
   //if (display_cfg.bpp == 8) {
     free_pens(cols);
@@ -919,37 +919,37 @@ static char* game_type_name(int type,int len)
 static void setup_game_bitmap()
 {
   int new_scale,hx,hy,vx,vy;
-  game_select[GAME_BITMAP].dp	= snapshot;
+  game_select[GAME_al_bitmap].dp	= snapshot;
   new_scale = text_height(gui_main_font);
   hx = 130 * new_scale / 8;
   hy = 76 * new_scale / 8;
   vx = 70 * new_scale / 8;
   vy = 120 * new_scale / 8;
   if (snapshot->w > snapshot->h) { // horizontal
-    game_select[GAME_BITMAP].x = game_select[0].x+(150*new_scale)/8;
-    game_select[GAME_BITMAP].y = game_select[0].y+(145*new_scale)/8+5;
-    game_select[GAME_BITMAP].w	  = (snapshot->w < hx ? snapshot->w : hx);
-    game_select[GAME_BITMAP].h	  = (snapshot->h < hy ? snapshot->h : hy);
+    game_select[GAME_al_bitmap].x = game_select[0].x+(150*new_scale)/8;
+    game_select[GAME_al_bitmap].y = game_select[0].y+(145*new_scale)/8+5;
+    game_select[GAME_al_bitmap].w	  = (snapshot->w < hx ? snapshot->w : hx);
+    game_select[GAME_al_bitmap].h	  = (snapshot->h < hy ? snapshot->h : hy);
   } else { // vertical
-    game_select[GAME_BITMAP].x = game_select[0].x + (235*new_scale)/8;
-    game_select[GAME_BITMAP].y = game_select[0].y + (100*new_scale)/8+5;
-    game_select[GAME_BITMAP].w	  = (snapshot->w < vx ? snapshot->w : vx);
-    game_select[GAME_BITMAP].h	  = (snapshot->h < vy ? snapshot->h : vy);
+    game_select[GAME_al_bitmap].x = game_select[0].x + (235*new_scale)/8;
+    game_select[GAME_al_bitmap].y = game_select[0].y + (100*new_scale)/8+5;
+    game_select[GAME_al_bitmap].w	  = (snapshot->w < vx ? snapshot->w : vx);
+    game_select[GAME_al_bitmap].h	  = (snapshot->h < vy ? snapshot->h : vy);
   }
 }
 
 void destroy_snapshot(int redraw)
 {
   if ((redraw) && (listbox_active)) // stupid allegro...
-    rectfill(screen, game_select[GAME_BITMAP].x, game_select[GAME_BITMAP].y, game_select[GAME_BITMAP].x+game_select[GAME_BITMAP].w-1, game_select[GAME_BITMAP].y+game_select[GAME_BITMAP].h-1, CGUI_BOX_COL_MIDDLE);
+    rectfill(screen, game_select[GAME_al_bitmap].x, game_select[GAME_al_bitmap].y, game_select[GAME_al_bitmap].x+game_select[GAME_al_bitmap].w-1, game_select[GAME_al_bitmap].y+game_select[GAME_al_bitmap].h-1, CGUI_BOX_COL_MIDDLE);
   destroy_mapped_bitmap(snapshot,snapshot_cols);
   snapshot = NULL;
 }
 
-static BITMAP* load_snapshot(const char *name)
+static al_bitmap* load_snapshot(const char *name)
 {
   char str[256];
-  BITMAP *snapshot;
+  al_bitmap *snapshot;
   PALETTE my_palette;
 
   if (text_height(gui_main_font) > 8)
@@ -1071,7 +1071,7 @@ const char *listbox_getter(int index, int *list_size)
      // Redraw titles
        for (ta = -4; ta < 0; ta++)
 	 SEND_MESSAGE(&game_select[GAME_DATA+ta], MSG_DRAW, 0);
-       SEND_MESSAGE(&game_select[GAME_BITMAP],MSG_DRAW,0);
+       SEND_MESSAGE(&game_select[GAME_al_bitmap],MSG_DRAW,0);
      }
      return NULL;
 /*    case -3:			// Act Keyboard Input */
@@ -1233,7 +1233,7 @@ int load_game_proc(int msg, DIALOG *d, int c)
 }
 
 void load_game_gui() {
-   BITMAP *load_mouse;
+   al_bitmap *load_mouse;
    int ta;
      load_mouse = make_mapped_bitmap_2(RaineData[mouse_busy].dat, &ta, RaineData[mouse_busy_pal].dat, 16);
      set_mouse_sprite(load_mouse);
@@ -2200,12 +2200,12 @@ void free_all_pens(void)
 // MakeGUIBack():
 // Make a faded copy of the game screen to go behind the gui.
 
-static BITMAP *backdrop = NULL;
+static al_bitmap *backdrop = NULL;
 static PALETTE backdrop_pal;
 
 void MakeGUIBack(void)
 {
-   BITMAP *gui_backdrop = NULL;
+   al_bitmap *gui_backdrop = NULL;
 
    PALETTE new_pal;
    UINT8 *BIT;
@@ -2291,7 +2291,7 @@ void MakeGUIBack(void)
 
        double scalex, scaley,scale;
        int sx,sy;
-       BITMAP *bmp = NULL;
+       al_bitmap *bmp = NULL;
        int loaded = 1;
 
        if(rgui_cfg.bg_image[0]) {
@@ -2307,8 +2307,8 @@ void MakeGUIBack(void)
        }
 
        if(!bmp){
-	 if (RaineData[Backdrop].type == DAT_BITMAP) {
-	   bmp = ((BITMAP *)RaineData[Backdrop].dat);
+	 if (RaineData[Backdrop].type == DAT_al_bitmap) {
+	   bmp = ((al_bitmap *)RaineData[Backdrop].dat);
 	   loaded = 0;
 	   memcpy(&backdrop_pal, RaineData[Backdrop_pal].dat, 256*4);
 	 } else {

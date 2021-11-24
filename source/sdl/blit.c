@@ -30,13 +30,13 @@
 
 SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
-BITMAP *GameBitmap = NULL; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
-BITMAP *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
+al_bitmap *GameBitmap = NULL; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
+al_bitmap *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
 
 UINT32 pause_time;
 int recording_video = 0,last_video_frame,video_fps;
 
-RAINEBITMAP GameScreen;
+raine_bitmap GameScreen;
 
 static int destx, desty, xxx, yyy, xoff2, yoff2;
 
@@ -477,7 +477,7 @@ void DestroyScreenBitmap(void)
 extern void *old_draw; // dlg_sound
 
 #ifndef NO_ASM
-static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
+static void raine_blit_scale2x(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
    UINT32 ta;
 
@@ -555,7 +555,7 @@ static void raine_blit_scale2x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int 
 #endif
 }
 
-static void raine_blit_scale3x(BITMAP *src, BITMAP *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
+static void raine_blit_scale3x(al_bitmap *src, al_bitmap *dest, int s_x, int s_y, int d_x, int d_y, int w, int h)
 {
    UINT32 ta;
 
@@ -700,7 +700,7 @@ static void ConvertRGBtoYV12(SDL_Surface *s, SDL_Overlay *o, int monochrome, int
 }
 #endif
 
-static void raine_fast_blit(BITMAP *source, BITMAP *dest, UINT32 x1, UINT32 y1, UINT32 x2, UINT32 y2, UINT32 w, UINT32 h)
+static void raine_fast_blit(al_bitmap *source, al_bitmap *dest, UINT32 x1, UINT32 y1, UINT32 x2, UINT32 y2, UINT32 w, UINT32 h)
 {
   SDL_Rect area1;
   int ret;

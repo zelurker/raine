@@ -36,7 +36,7 @@
 #define bytes_per_pixel(b) bitmap_color_depth(b)/8
 #endif
 
-static BITMAP *bezel_bitmap;
+static al_bitmap *bezel_bitmap;
 static PALETTE bezel_pal;
 static float x,y,w,h;
 static int bezel_width, bezel_height; // Size for the unscaled game screen
@@ -106,7 +106,7 @@ void load_bezel() {
   char name[256],game_name[32];
   char *s,file[30],*arg;
   char alphafile[30];
-  BITMAP *alpha_bitmap;
+  al_bitmap *alpha_bitmap;
 
   if (display_cfg.bpp == 8)
     return;
@@ -434,7 +434,7 @@ void display_bezel() {
     int bw = bezel_width, bh = bezel_height;
     int multw =1, multh = 1;
     int xoff2,yoff2,destx,desty,xxx,yyy;
-    BITMAP *scaled_bezel;
+    al_bitmap *scaled_bezel;
 
     if (!bw || !bh) {
 	    // if wants_switch_res = 0, then the bezel is not initalised when arriving here...

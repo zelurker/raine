@@ -610,7 +610,7 @@ static int decode_block(DECODER_DATA *dec, int *dat, int dc, int ac, int qt, int
 /* putpixel_lc:
  *  Draws a pixel onto a 24bit bitmap, given its luminance and chrominance.
  */
-static void putpixel_lc(BITMAP *bmp, int xx, int yy, int y, int cb, int cr)
+static void putpixel_lc(al_bitmap *bmp, int xx, int yy, int y, int cb, int cr)
 {
    int r, g, b;
 
@@ -630,10 +630,10 @@ static void putpixel_lc(BITMAP *bmp, int xx, int yy, int y, int cb, int cr)
 /* load_memory_jpg:
  *  Decodes a jpg image from a memory chunk.
  */
-BITMAP *load_memory_jpg(void *data, RGB *pal)
+al_bitmap *load_memory_jpg(void *data, RGB *pal)
 {
    DECODER_DATA dec;
-   BITMAP *bmp;
+   al_bitmap *bmp;
    PALETTE tmppal;
    int y1[64], y2[64], y3[64], y4[64], cb[64], cr[64];
    int dc_y, dc_cb, dc_cr;
@@ -883,10 +883,10 @@ BITMAP *load_memory_jpg(void *data, RGB *pal)
 /* load_jpg:
  *  Loads a jpg image file (duh!).
  */
-BITMAP *load_jpg(char *filename, RGB *pal)
+al_bitmap *load_jpg(char *filename, RGB *pal)
 {
    PACKFILE *f;
-   BITMAP *bmp;
+   al_bitmap *bmp;
    long size;
    unsigned char *data;
 

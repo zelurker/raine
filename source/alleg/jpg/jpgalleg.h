@@ -18,12 +18,12 @@ extern "C" {
 /* load_memory_jpg:
  *  Decodes a JPG image from a block of memory data.
  */
-BITMAP *load_memory_jpg(void *data, RGB *pal);
+al_bitmap *load_memory_jpg(void *data, RGB *pal);
 
 /* load_jpg:
  *  Decodes a JPG image from a standard JPG file.
  */
-BITMAP *load_jpg(char *filename, RGB *pal);
+al_bitmap *load_jpg(char *filename, RGB *pal);
 
 #endif
 

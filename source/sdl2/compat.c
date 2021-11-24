@@ -20,7 +20,7 @@
 #include "version.h"
 #include <SDL_image.h>
 
-struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
+struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
   // Init a fake bitmap to point to a newly created sdl_surface
   UINT32 r=0,g=0,b=0,a=0; // masks if necessary...
   SDL_Surface *s;
@@ -50,11 +50,11 @@ struct BITMAP *sdl_create_bitmap_ex(int bpp, int w, int h) {
 
 // Not sure the locking functions are usefull, they are used only in the C
 // video functions apparently. I should investigate about that...
-void acquire_bitmap(BITMAP *bmp) {
+void acquire_bitmap(al_bitmap *bmp) {
   SDL_LockSurface(get_surface_from_bmp(bmp));
 }
 
-void release_bitmap(BITMAP *bmp) {
+void release_bitmap(al_bitmap *bmp) {
   SDL_UnlockSurface(get_surface_from_bmp(bmp));
 }
 
@@ -154,11 +154,11 @@ void sdl_done() {
   SDL_Quit();
 }
 
-BITMAP *surface_to_bmp(SDL_Surface *s) {
+al_bitmap *surface_to_bmp(SDL_Surface *s) {
   int a;
-  BITMAP *bmp;
+  al_bitmap *bmp;
 
-  bmp = malloc( sizeof(BITMAP) + sizeof(char*) * s->h);
+  bmp = malloc( sizeof(al_bitmap) + sizeof(char*) * s->h);
   bmp->extra = (void*)s;
   bmp->w = s->w; bmp->h = s->h;
   bmp->x_ofs = bmp->y_ofs = 0;
@@ -169,7 +169,7 @@ BITMAP *surface_to_bmp(SDL_Surface *s) {
   return bmp;
 }
 
-void destroy_bitmap(BITMAP *bmp) {
+void destroy_bitmap(al_bitmap *bmp) {
   if (bmp) {
     if (bmp->extra) {
       if (bmp->id == 0) { // real bitmap (not sub bitmap)
@@ -185,7 +185,7 @@ void destroy_bitmap(BITMAP *bmp) {
   }
 }
 
-UINT16 bytes_per_pixel(BITMAP *screen) {
+UINT16 bytes_per_pixel(al_bitmap *screen) {
   if (screen->extra)
     return ((screen->id&2) == 2 ? 2 // overlay
 	: ((SDL_Surface*)screen->extra)->format->BytesPerPixel);
@@ -194,11 +194,11 @@ UINT16 bytes_per_pixel(BITMAP *screen) {
   return 0;
 }
 
-struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, int h) {
+struct al_bitmap *sdl_create_sub_bitmap(struct al_bitmap *src, int x, int y, int w, int h) {
   /* Apparently a sub bitmap is just a bitmap with x_ofs and y_ofs correctly */
   /* initialised... */
 
-  BITMAP *bmp;
+  al_bitmap *bmp;
   int bpp;
   int n;
 
@@ -207,7 +207,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
   else
     bpp = bytes_per_pixel(src);
 
-  bmp = malloc( sizeof(struct BITMAP) + sizeof(char*) * h);
+  bmp = malloc( sizeof(struct al_bitmap) + sizeof(char*) * h);
   bmp->dat = src->dat;
   bmp->w = w; bmp->h = h;
   bmp->x_ofs = x;
@@ -244,7 +244,7 @@ struct BITMAP *sdl_create_sub_bitmap(struct BITMAP *src, int x, int y, int w, in
 }
 
 void save_png_surf_rev(char *name, SDL_Surface *s) {
-    BITMAP *b = surface_to_bmp(s);
+    al_bitmap *b = surface_to_bmp(s);
     int a;
     // Flip the picture, it's upside down in opengl
     for (a=0; a < b->h; a++) {

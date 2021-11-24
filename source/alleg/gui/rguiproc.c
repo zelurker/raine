@@ -118,8 +118,8 @@ int d_raine_box_proc(int msg, DIALOG *d, int c)
 
 typedef struct WINDOW_DATA
 {
-   BITMAP *back_cache;
-   BITMAP *window;
+   al_bitmap *back_cache;
+   al_bitmap *window;
    UINT32  back_x;
    UINT32  back_y;
    UINT32  back_w;
@@ -323,7 +323,7 @@ int d_raine_oxygen_proc(int msg, DIALOG *d, int c)
 
 int raine_slider_proc(int msg, DIALOG *d, int c)
 {
-   BITMAP *slhan = NULL;
+   al_bitmap *slhan = NULL;
    int sfg;                /* slider foreground color */
    int vert = TRUE;        /* flag: is slider vertical? */
    int hh = 7;             /* handle height (width for horizontal sliders) */
@@ -340,7 +340,7 @@ int raine_slider_proc(int msg, DIALOG *d, int c)
 
    /* set up the metrics for the control */
    if (d->dp != NULL) {
-      slhan = (BITMAP *)d->dp;
+      slhan = (al_bitmap *)d->dp;
       if (vert)
 	 hh = slhan->h;
       else

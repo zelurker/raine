@@ -57,8 +57,8 @@ The jpgalleg.h file holds the JPGalleg library function prototypes; actually
 there are only two functions available to the user: load_jpg() and
 load_memory_jpg(). Here are their prototypes:
 
-BITMAP *load_jpg(char *filename, RGB *pal);
-BITMAP *load_memory_jpg(void *data, RGB *pal);
+al_bitmap *load_jpg(char *filename, RGB *pal);
+al_bitmap *load_memory_jpg(void *data, RGB *pal);
 
 load_jpg() works exactly like the standard load_*() Allegro image loading
 functions, so take a look at the Allegro help for details on how to use them.
@@ -93,7 +93,7 @@ Now you have the datafile. To load the images from within a program, do this:
 
 bmp = load_memory_jpg(data[JPG_DATA].dat, NULL);
 
-Here I suppose "bmp" is a pointer to a BITMAP, "data" is an already loaded
+Here I suppose "bmp" is a pointer to a al_bitmap, "data" is an already loaded
 datafile, and "JPG_DATA" is the name of your JPG object into the datafile.
 If all goes ok, you should now have your JPG image decoded into bmp.
 

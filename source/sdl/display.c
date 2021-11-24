@@ -1,4 +1,4 @@
-#define NOGDI // define this before including windows.h to avoid BITMAP !
+#define NOGDI // define this before including windows.h to avoid al_bitmap !
 #ifdef ANDROID
 #include <GLES/gl.h>
 #else
@@ -33,7 +33,7 @@ int disp_screen_x, prefered_yuv_format;
 int overlays_workarounds = 1;
 #endif
 int disp_screen_y;
-BITMAP *screen;
+al_bitmap *screen;
 UINT32 videoflags;
 int desktop_w,desktop_h,desktop_bpp;
 static char driver[128];
@@ -694,7 +694,7 @@ int lock_surface(SDL_Surface *s) {
   return 0;
 }
 
-void clear_bitmap(BITMAP *screen) {
+void clear_bitmap(al_bitmap *screen) {
   int len = screen->w*screen->h*bytes_per_pixel(screen);
   SDL_Surface *s = get_surface_from_bmp(screen);
   int locked = lock_surface(s);

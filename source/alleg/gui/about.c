@@ -164,7 +164,7 @@ extern char *current_year; // raine.c
 
 int about_proc(int msg, DIALOG *d, int c)
 {
-  BITMAP *logo;
+  al_bitmap *logo;
   int ret = x_raine_button_proc(msg, d, c);
 
   if(ret==D_CLOSE){
@@ -365,7 +365,7 @@ extern struct SOUND_CHIP sound_chip_list[]; // declared in sasound / alsound
 int about_game_proc(int msg, DIALOG *d, int c)
 {
    char *text_data;
-   BITMAP *logo,*logo_2=0;
+   al_bitmap *logo,*logo_2=0;
    PALETTE *logo_pal;
    DATAFILE *company_logo;
    const DIR_INFO *dir_list;

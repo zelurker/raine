@@ -19,8 +19,8 @@ Transparent Direct-Mapped
 
 */
 
-static BITMAP *mask_bitmap;
-void init_spr16x16asm_mask(BITMAP *my_bitmap)
+static al_bitmap *mask_bitmap;
+void init_spr16x16asm_mask(al_bitmap *my_bitmap)
 {
   mask_bitmap = my_bitmap;
 }

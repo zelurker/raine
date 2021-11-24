@@ -131,7 +131,7 @@ static int assigned_banks, current_bank;
 static UINT32 zbank[4];
 static UINT8 bank_68k,fixed_layer_bank_type,*pvc_cart;
 int capture_new_pictures;
-static BITMAP *raster_bitmap;
+static al_bitmap *raster_bitmap;
 static void draw_neocd();
 static void draw_sprites(int start, int end, int start_line, int end_line);
 static UINT8 dark_screen; // only neogeo ?

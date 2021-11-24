@@ -18,7 +18,7 @@ Transparent Direct-Mapped
 */
 
 void init_spr16x16asm_8(void);
-void init_spr16x16asm_mask(BITMAP *bitmap);
+void init_spr16x16asm_mask(al_bitmap *bitmap);
 
 // 16x16 mapped sprites
 

@@ -123,9 +123,9 @@ static void generate_332_palette(PALETTE pal)
 /* really_load_png:
  *  Worker routine, used by load_png and load_memory_png.
  */
-static BITMAP *really_load_png(png_structp png_ptr, png_infop info_ptr, RGB *pal)
+static al_bitmap *really_load_png(png_structp png_ptr, png_infop info_ptr, RGB *pal)
 {
-    BITMAP *bmp;
+    al_bitmap *bmp;
     PALETTE tmppal;
     png_uint_32 width, height, rowbytes;
     int bit_depth, color_type, interlace_type;
@@ -278,10 +278,10 @@ static BITMAP *really_load_png(png_structp png_ptr, png_infop info_ptr, RGB *pal
 /* load_png:
  *  Load a PNG file from disk, doing colour coversion if required.
  */
-BITMAP *load_png(const char *filename, RGB *pal)
+al_bitmap *load_png(const char *filename, RGB *pal)
 {
     FILE *fp;
-    BITMAP *bmp;
+    al_bitmap *bmp;
     png_structp png_ptr;
     png_infop info_ptr;
 
@@ -347,9 +347,9 @@ BITMAP *load_png(const char *filename, RGB *pal)
     return bmp;
 }
 
-BITMAP *load_png_from_zip(unzFile uf, RGB *pal)
+al_bitmap *load_png_from_zip(unzFile uf, RGB *pal)
 {
-    BITMAP *bmp;
+    al_bitmap *bmp;
     png_structp png_ptr;
     png_infop info_ptr;
 
@@ -446,10 +446,10 @@ static int check_if_png_memory(const void *buffer)
 /* load_memory_png:
  *  Load a PNG file from memory, doing colour coversion if required.
  */
-BITMAP *load_memory_png(const void *buffer, int bufsize, RGB *pal)
+al_bitmap *load_memory_png(const void *buffer, int bufsize, RGB *pal)
 {
     MEMORY_READER_STATE memory_reader_state;
-    BITMAP *bmp;
+    al_bitmap *bmp;
     png_structp png_ptr;
     png_infop info_ptr;
 

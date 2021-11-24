@@ -63,7 +63,7 @@ static int limitx, gamex;
 
 static int layer_size[3]; // Sizes of the sprites in the layer
 static UINT8 layer_base[3]; // palette base for the layers
-static BITMAP *layer_bitmap[3], *layer_pbitmap[3];
+static al_bitmap *layer_bitmap[3], *layer_pbitmap[3];
 
 static short vblank_irq,sound_irq,romset,unknown_irq;
 // romset uses bits :
@@ -2370,8 +2370,8 @@ static void execute_esprade(void)
 
 static void blit_cave_layer(int num) {
   UINT8 *RAM_BG,*pbline,*pline;
-  BITMAP *plbitmap = layer_pbitmap[num];
-  BITMAP *lbitmap = layer_bitmap[num];
+  al_bitmap *plbitmap = layer_pbitmap[num];
+  al_bitmap *lbitmap = layer_bitmap[num];
   int x,y;
 
   switch(num) {
@@ -2551,7 +2551,7 @@ static void reset_spr16() {
   }
 }
 
-static BITMAP *old_bitmap,*old_pbitmap;
+static al_bitmap *old_bitmap,*old_pbitmap;
 
 static void create_cave_layer(int i, UINT16 *scrolly) {
   old_bitmap = GameBitmap;

@@ -10,10 +10,10 @@ extern "C" {
 #define hq3x_32 _hq3x_32
 #endif
 
-void hq2x_16(BITMAP* src, BITMAP* dst, int x1, int y1, int x2, int y2, int w, int h);
-void hq2x_32(BITMAP* src, BITMAP* dst, int x1, int y1, int x2, int y2, int w, int h);
-void hq3x_16(BITMAP* src, BITMAP* dst, int x1, int y1, int x2, int y2, int w, int h);
-void hq3x_32(BITMAP* src, BITMAP* dst, int x1, int y1, int x2, int y2, int w, int h);
+void hq2x_16(al_bitmap* src, al_bitmap* dst, int x1, int y1, int x2, int y2, int w, int h);
+void hq2x_32(al_bitmap* src, al_bitmap* dst, int x1, int y1, int x2, int y2, int w, int h);
+void hq3x_16(al_bitmap* src, al_bitmap* dst, int x1, int y1, int x2, int y2, int w, int h);
+void hq3x_32(al_bitmap* src, al_bitmap* dst, int x1, int y1, int x2, int y2, int w, int h);
 
 #ifdef __cplusplus
 }
