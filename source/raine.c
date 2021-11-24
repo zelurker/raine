@@ -562,10 +562,8 @@ int main(int argc,char *argv[])
 
    if (audio_sample_rate < 15000)
       audio_sample_rate = 11025;
-   else if (audio_sample_rate < 30000)
-	 audio_sample_rate = 22050;
-      else
-	 audio_sample_rate = 44100;
+   else if (audio_sample_rate > 48000)
+       audio_sample_rate = 48000;
 
    // KEYBOARD DEFAULT
 
