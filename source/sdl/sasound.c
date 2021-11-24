@@ -175,7 +175,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    pause_sound = 0;		/* pause flag off */
    if (!opened_audio) {
        SDL_AudioSpec spec;
-       spec.freq = 48000; // sample_rate;
+       spec.freq = sample_rate;
        spec.format = AUDIO_S16LSB;
        spec.channels = 2;
        int len = sample_rate/fps;
@@ -204,17 +204,13 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 #endif
 #endif
        spec.userdata = NULL;
-       for (int n=0; n< SDL_GetNumAudioDevices(0); n++) {
-	   printf("audio device %d:%s\n",n,SDL_GetAudioDeviceName(n,0));
-       }
        spec.callback = my_callback;
-       if ((RaineSoundCard = SDL_OpenAudioDevice(NULL, 0, &spec, &gotspec, 0)) == 0 ) {
-	   fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+       if ( SDL_OpenAudio(&spec, &gotspec) < 0 ) {
+	   fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
 	   RaineSoundCard = 0;
 	   return 1;
        }
-       printf("openaudio: desired samples %d, got %d freq %d,%d format %d,%d device %d\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format,RaineSoundCard);
-       printf("status %d\n",SDL_GetAudioStatus());
+       printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
        audio_sample_rate = gotspec.freq;
        opened_audio = 1;
 #if HAS_NEO
@@ -226,20 +222,12 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        strcpy(driver_name,"SDL ");
        SDL_AudioDriverName(&driver_name[4], 32);
        print_debug("sound driver name : %s\n",driver_name);
-#else
-       strncpy(driver_name,SDL_GetCurrentAudioDriver(),40);
-       printf("audio driver %s RaineSoundCard %d\n",driver_name,RaineSoundCard);
 #endif
        // set_sound_variables(0);
-       SDL_FlushEvents(SDL_AUDIODEVICEADDED, SDL_AUDIODEVICEREMOVED);
-       SDL_UnlockAudioDevice(RaineSoundCard);
        SDL_PauseAudio(0);
-       SDL_PauseAudioDevice(RaineSoundCard,0);
-       // RaineSoundCard = 1;
    }
    if(!init_sound_emulators()) {
-       printf("status at end of init %d\n",SDL_GetAudioStatus());
-       return FALSE;  // Everything fine
+     return FALSE;  // Everything fine
    }
 
    return TRUE;
