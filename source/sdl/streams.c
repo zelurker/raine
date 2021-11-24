@@ -382,6 +382,7 @@ static int updated_recording;
 void update_monitoring() {
     if ((recording && updated_recording)) {
 	int i;
+#if SDL==1
 	int w = current_game->video->screen_x;
 	int h = current_game->video->screen_y - 50;
 	int pen = makecol(255,255,255);
@@ -389,7 +390,6 @@ void update_monitoring() {
 	if (monitoring) {
 	    int h2 = h;
 	    h -= 100;
-#if SDL==1
 	    for (i=0; i<mixing_buff_len; i+=2) {
 		int x = i*w/mixing_buff_len;
 		int y = mixing_buff[i]*50/32767;
@@ -400,8 +400,8 @@ void update_monitoring() {
 		line(GameBitmap,x+border,h+border,x+border,h+y+border,pen);
 		line(GameBitmap,x+border,h2+border,x+border,h2+y2+border,pen);
 	    }
-#endif
 	} else
+#endif
 	    print_ingame(1,gettext("Recording to wav..."));
 	if (!f_record) {
 	    char path[1024];

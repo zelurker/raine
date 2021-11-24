@@ -4,7 +4,7 @@
 #include "sasound.h"
 #include "emudx.h"
 #include "blit.h"
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "profile.h"
 #include "emumain.h" // set_reset_function
 #include "dxsmp.h"

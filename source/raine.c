@@ -56,7 +56,7 @@
 #include "dejap.h" // default config files in raine.dat
 #include "display.h" // setup_gfx_modes
 #include "blit.h"
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #if defined(__i386__)
 #include "move.h"
 #include "spr16x8.h"

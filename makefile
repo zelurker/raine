@@ -497,7 +497,7 @@ endif
 ifdef SDL
 ifeq (${SDL},2)
 	# gui is an implicit include directory with sdl1, it must become explicit here for the files which moved to the sdl2 directory
-	INCDIR += -Isource/sdl2 -Isource/sdl2/gui -Isource/sdl/gui -Isource/sdl2/SDL_gfx -Isource/sdl/SDL_gfx
+	INCDIR += -Isource/sdl2 -Isource/sdl2/gui -Isource/sdl/gui -Isource/sdl2/SDL_gfx -Isource/sdl/SDL_gfx -Isource/sdl2/sdl_sound
 endif
 INCDIR += -Isource/sdl
 else
@@ -1062,7 +1062,7 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/confile.o \
 	$(OBJDIR)/files.o \
 	$(OBJDIR)/newmem.o \
-	$(OBJDIR)/cpuid.o \
+	$(OBJDIR)/raine_cpuid.o \
 	$(OBJDIR)/cpumain.o \
 	$(OBJDIR)/emumain.o \
 	$(OBJDIR)/demos.o \
@@ -1358,11 +1358,7 @@ ifdef RAINE32
 
 # Add a nice little icon...
 
-${OBJDIR}/raine.ico: raine.xpm
-	# Use image magick convert to convert this to ico...
-	convert raine.xpm raine.ico
-
-$(OBJDIR)/raine.res:	source/raine.rc ${OBJDIR}/raine.ico
+$(OBJDIR)/raine.res:	source/raine.rc raine.ico
 	$(WINDRES) -O coff -o $(OBJDIR)/raine.res -i source/raine.rc
 endif
 

@@ -233,7 +233,7 @@ static int ifps;
 
 static menu_item_t video_items[] =
 {
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) && SDL<2
 {  _("SDL video driver"), NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
   { _("SDL default (windib since 1.2.10)"), _("windib (good for ogl)"),_("directx (good for hw overlays/blits)")} },
 #endif
@@ -272,7 +272,7 @@ static menu_item_t video_items[] =
 int do_video_options(int sel) {
 #if SDL==1
     int old_stretch = display_cfg.stretch;
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) && SDL<2
     UINT32 old_driver = display_cfg.video_driver;
 #endif
 #endif

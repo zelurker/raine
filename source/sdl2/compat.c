@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include "raine.h"
 #include <sys/stat.h>
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "video/tilemod.h" // internal_bpp
 #include "blit.h" // ReClipScreen
 #include <SDL_ttf.h>
@@ -108,7 +108,7 @@ void sdl_init() {
     if (!init) {
 	init = 1;
 	if ( SDL_Init(
-		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER
+		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS
 		    ) < 0 ) {
 	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
 	    exit(2);

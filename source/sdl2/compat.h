@@ -40,6 +40,10 @@ void release_bitmap(al_bitmap *bmp);
 
 void destroy_bitmap(struct al_bitmap *bmp);
 
+#ifdef RGB
+#undef RGB
+#endif
+
 #define RGB SDL_Color
 
 // Misc

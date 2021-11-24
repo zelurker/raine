@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include "raine.h"
 #include <sys/stat.h>
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "video/tilemod.h" // internal_bpp
 #include "blit.h" // ReClipScreen
 #include <SDL_ttf.h>

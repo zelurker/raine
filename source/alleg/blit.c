@@ -16,7 +16,7 @@
 #include "profile.h" // reset_ingame_timer
 #include "tilemod.h"
 #include "scale2x.h"
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "blitasm.h"
 #include "video/res.h"
 #include "loadpng.h"

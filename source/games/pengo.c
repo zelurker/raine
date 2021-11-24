@@ -104,7 +104,7 @@ Issue confirmed, it happens also in the original hardware.
 #include "decode.h"
 #include "emudx.h"
 #include "alpha.h"
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "emumain.h" // set_reset_function
 #include "savegame.h"
 #include "history.h"

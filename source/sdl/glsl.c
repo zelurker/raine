@@ -41,7 +41,7 @@ static PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = 0;
 static PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocation = 0;
 static PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = 0;
 static PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = 0;
-static PFNGLACTIVETEXTUREPROC glActiveTexture = 0;
+static PFNGLACTIVETEXTUREPROC myglActiveTexture = 0;
 
 static PFNGLVALIDATEPROGRAMPROC glValidateProgram = 0;
 static PFNGLDELETEPROGRAMPROC glDeleteProgram = 0;
@@ -347,7 +347,7 @@ void read_shader(char *shader) {
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
 	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
 	glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)glGetProcAddress("glEnableVertexAttribArray");
-	glActiveTexture = (PFNGLACTIVETEXTUREPROC)glGetProcAddress("glActiveTexture");
+	myglActiveTexture = (PFNGLACTIVETEXTUREPROC)glGetProcAddress("glActiveTexture");
 	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)glGetProcAddress("glVertexAttribPointer");
 	glValidateProgram = (PFNGLVALIDATEPROGRAMPROC)glGetProcAddress("glValidateProgram");
 	glDeleteProgram = (PFNGLDELETEPROGRAMPROC)glGetProcAddress("glDeleteProgram");
@@ -379,6 +379,10 @@ void read_shader(char *shader) {
 	MessageBox(gettext("Warning"),gettext("No shader support on your hardware"),gettext("ok"));
 	return;
     }
+#else
+// Broken for some unknown reason in windows, simplest solution, rename the
+// static and use this macro for the others... !
+#define myglActiveTexture glActiveTexture
 #endif
 
     delete_shaders();
@@ -631,7 +635,7 @@ void draw_shader(int linear)
     if (pass[0].glprogram) {
 
 	int n;
-	glActiveTexture(GL_TEXTURE0 + 1); // Used as texture shader parameter !
+	myglActiveTexture(GL_TEXTURE0 + 1); // Used as texture shader parameter !
 	for (n=0; n<=nb_pass; n++) {
 
 	    GLuint glprogram = pass[n].glprogram;
@@ -717,7 +721,7 @@ void draw_shader(int linear)
 	    render_texture(linear);
 	}
 	glUseProgram(0); // all shaders off now
-	glActiveTexture(GL_TEXTURE0); // return to default textures for texts
+	myglActiveTexture(GL_TEXTURE0); // return to default textures for texts
 	check_error("ret draw_shader");
 	return;
     }

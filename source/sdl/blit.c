@@ -16,7 +16,7 @@
 #include "sasound.h" // sa_pause_sound
 #include "palette.h"
 #include <math.h>
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "display_sdl.h"
 #include "emudx.h"
 #include "blit_x2.h"

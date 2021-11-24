@@ -37,7 +37,7 @@ void display_read_config() {
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 3);
    if (display_cfg.video_mode != 0 && display_cfg.video_mode != 3)
        display_cfg.video_mode = 3;
-   int x,y;
+   int x = 0,y = 0;
    SDL_GetWindowPosition(win,&x,&y);
    display_cfg.posx = raine_get_config_int("Display", "posx", x);
    display_cfg.posy = raine_get_config_int("Display", "posy", y);
@@ -82,7 +82,7 @@ void set_opengl_filter(int filter) {
 void display_write_config() {
 
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) && SDL<2
    raine_set_config_int("Display", "video_driver", display_cfg.video_driver);
 #endif
    print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);

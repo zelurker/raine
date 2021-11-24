@@ -15,7 +15,7 @@
 #include "version.h" // Little funny gcc version (!)
 #include "dejap.h" // companies logos in raine.dat
 #include "history.h"
-#include "cpuid.h"
+#include "raine_cpuid.h"
 #include "config.h"
 
 char about0[64];

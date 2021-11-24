@@ -12,7 +12,7 @@
 #include "control.h"
 #include "control_internal.h"
 #if HAS_NEO
-#include <SDL_sound.h>
+#include "SDL_sound.h"
 #endif
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "games.h"
