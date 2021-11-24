@@ -94,7 +94,9 @@ void ogl_save_png(char *name) {
     save_png_surf_rev(name,s);
 }
 
+#if SDL == 2
 SDL_GLContext *context;
+#endif
 
 void opengl_reshape(int w, int h) {
     /* There is a conflict between rend and context for the use of glDrawPixels and glBitmap
@@ -103,12 +105,14 @@ void opengl_reshape(int w, int h) {
      * There seems to be only 2 solutions : destroy the renderer or detroy the gl context so they do not conflict
      * I choose to destroy the gl context, so it's destroyed when exiting from here in gui.cpp, after the call to run_game_emulation
      * and recreated here... */
+#if SDL == 2
     if (!context)
 	context = SDL_GL_CreateContext(win);
     if (!context) {
 	SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_GL_CreateContext(): %s\n", SDL_GetError());
 	exit(2);
     }
+#endif
     desk_w = w; desk_h = h;
     // Reset the coordinate system before modifying
     glMatrixMode(GL_PROJECTION);

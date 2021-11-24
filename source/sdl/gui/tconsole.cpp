@@ -230,6 +230,10 @@ void TConsole::print(const char *format, ...)
     child[nb_items] = new TStatic(&menu[nb_items]);
   nb_items++;
 
+#if SDL == 2
+  SDL_DestroyTexture(fg_layer);
+  fg_layer = NULL;
+#endif
   draw();
   post_print();
 }
@@ -272,21 +276,29 @@ void TConsole::fglayer_footer_update() {
   SDL_Rect dst;
   dst.x = myx; dst.y = myy; dst.w = myw; dst.h = myh;
 #if SDL==2
-  boxColor(rend,dst.x,dst.y,dst.x+dst.w-1,dst.h+dst.y-1,bgsdl);
+  int ret = SDL_SetRenderTarget(rend,fg_layer);
+  if (ret < 0) {
+      printf("rendertarget error\n");
+      exit(1);
+  }
+  // boxColor(rend,dst.x,dst.y,dst.x+dst.w-1,dst.h+dst.y-1,0xffff0000 /* bgsdl */);
+  setcolor(bgsdl);
+  SDL_RenderFillRect(rend,&dst);
   edit_child->disp(NULL,font,myx,myy,myw,myh,fg,bg,
 #else
   SDL_FillRect(fg_layer,&dst,bgsdl);
   edit_child->disp(fg_layer,font,myx,myy,myw,myh,fg,bg,
 #endif
 	  myxoptions);
+#if SDL==1
   SDL_Rect to;
   to.x = dst.x + fgdst.x; to.y = dst.y+fgdst.y;
-#if SDL==2
-  SDL_RenderCopy(rend,fg_layer,&dst,&to);
-#else
   SDL_BlitSurface(fg_layer,&dst,sdl_screen,&to);
-#endif
   do_update(&to);
+#else
+  SDL_SetRenderTarget(rend,NULL);
+  redraw(NULL);
+#endif
 }
 
 int TConsole::fglayer_footer_handle_key(SDL_Event *event) {

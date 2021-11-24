@@ -121,12 +121,13 @@ void sdl_init() {
 	char title[20];
 	snprintf(title,20,"%s v%s",EMUNAME,VERSION);
 	title[19] = 0;
+	// don't send fullscreen here because SDL_SetWindowPosition is affected by window decorations at least in linux and we can't get the decorations size in fullscreen
 	win = SDL_CreateWindow(title,
 		display_cfg.posx,
 		display_cfg.posy,
-		(display_cfg.fullscreen ? display_cfg.winx : display_cfg.screen_x),
-		(display_cfg.fullscreen ? display_cfg.winy : display_cfg.screen_y),
-		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | (display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+		display_cfg.screen_x,
+		display_cfg.screen_y,
+		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
 	if (!sf) {

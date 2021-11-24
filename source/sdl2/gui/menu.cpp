@@ -109,9 +109,6 @@
 #include <SDL_opengl.h> // super annoying windows.h collides here !
 #endif
 
- // Useful macro to easily assign a color from a variable...
-#define setcolor(c) SDL_SetRenderDrawColor(rend,(c)>>24,((c)>>16)&0xff,((c)>>8)&0xff,(c)&0xff)
-
 int return_mandatory = 0, use_transparency = 1;
 int keep_vga = 1,gui_level;
 
@@ -122,7 +119,11 @@ SDL_PixelFormat *fg_format;
 TDesktop *desktop;
 
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h) {
-    boxColor(rend,x,y,x+w-1,y+h-1,0xffffff80);
+    // Problem is I don't see any way to make a simple xor cursor here...
+    // so for now the work around is to make it slimer (width forced to 3),
+    // since it's blinking it's very usable...
+    // xor one later maybe...
+    boxColor(rend,x,y,x+2,y+h-1,0xffffff80);
 }
 
 menu_item_t menu_options[] =
@@ -188,16 +189,38 @@ void TDesktop::draw() {
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(rend);
     if (pic) {
+	if (work_area.w) {
+	    // The SetLogicalSize can't move the origin, so it's not appropriate here
+	    // and we have to make our dest rect
+	    double ratio1 = work_area.w*1.0/picw;
+	    double ratio2 = work_area.h*1.0/pich;
+	    double ratio = MIN(ratio1,ratio2);
+	    SDL_Rect dest;
+	    int w = picw*ratio, h = pich*ratio;
+	    dest.x = (work_area.w-w)/2+work_area.x;
+	    dest.y = (work_area.h-h)/2+work_area.y;
+	    dest.w = w;
+	    dest.h = h;
+	    SDL_RenderCopy(rend,pic,NULL,&dest);
+	    return;
+	}
 	SDL_RenderSetLogicalSize(rend, picw,pich);
 	SDL_RenderCopy(rend,pic,NULL,NULL);
 	SDL_RenderSetLogicalSize(rend, 0,0);
 	return;
     }
+    if (work_area.w)
+	SDL_RenderSetViewport(rend,&work_area);
 
     SDL_SetRenderDrawColor(rend, 0xff, 0xff, 0xff, 0xFF);
     static int count;
     int step;
-    int w = sdl_screen->w, h = sdl_screen->h;
+    int hlimit;
+    if (work_area.w)
+	hlimit = work_area.h;
+    else
+	hlimit = sdl_screen->h;
+    int w = sdl_screen->w-1, h = hlimit-1;
     float ratio = w*1.0/h;
     for (step=0; step<=10; step++) {
 	int x1 = w*step/10+count*ratio;
@@ -208,7 +231,8 @@ void TDesktop::draw() {
 	SDL_RenderDrawLine(rend,0,h-y1,x1,0);
     }
     count++;
-    if (count >= sdl_screen->h/10) count = 0;
+    if (count >= hlimit/10) count = 0;
+    SDL_RenderSetViewport(rend,NULL);
 }
 
 int TDesktop::set_picture(const char *name) {
@@ -355,6 +379,7 @@ TMenu::~TMenu() {
     delete lift;
   if (fg_layer)
     SDL_DestroyTexture(fg_layer);
+  desktop->set_work_area(NULL);
 }
 
 int TMenu::can_be_displayed(int n) {
@@ -471,52 +496,37 @@ char* TMenu::get_bot_frame_text() {
 
 int TMenu::get_max_bot_frame_dimensions(int &w, int &h) {
   char *game = get_bot_frame_text();
-  if (font) font->dimensions(game,&w,&h);
+  if (!*game) {
+      w = h = 0;
+  } else if (font) font->dimensions(game,&w,&h);
   return strlen(game);
 }
 
 void TMenu::draw_bot_frame() {
-  int base = work_area.y+work_area.h;
-  char *game = get_bot_frame_text();
-  boxColor(rend,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
-  font->put_string(HMARGIN,base,game,fg_frame,bg_frame);
+    char *game = get_bot_frame_text();
+    if (*game) {
+	int base = work_area.y+work_area.h;
+	boxColor(rend,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
+	font->put_string(HMARGIN,base,game,fg_frame,bg_frame);
+    }
 }
 
 void TMenu::draw_frame(SDL_Rect *r) {
   int w_game, h_game;
   int w_title,h_title;
-  int len_top=0, len_bot;
-  TFont *old_font;
-  len_bot = get_max_bot_frame_dimensions(w_game,h_game);
 
-  old_font = font;
-  font = NULL;
-  /* if (!font) */ setup_font((len_top > len_bot ? len_top : len_bot));
-  if (old_font && old_font->get_font_width() == font->get_font_width() &&
-      old_font->get_font_height() == font->get_font_height()) {
-    delete font;
-    font = old_font;
-  } else {
-      if (old_font)
-	  delete old_font;
-    if (fg_layer) {
-      /* In case the font just changed, then we must recreate fg_layer
-       * Notice that this thing here is a particularity in windows
-       * in linux when we arrive in the message loop, we start by normal events
-       * (keyboard, mouse, timers...). In windows, 1 of the 1st events received
-       * is an expose event. The consequence is a redraw which arrives here.
-       * Since the 1st calculation of the font is an approximation, the 2nd
-       * one is almost sure to be different here, and so we must absolutely
-       * redraw fg_layer (otherwise the expose event would just blit the old
-       * fg_layer, and then any mouse move would use the new font size over
-       * a blit using the old font size). */
-      setup_fg_layer();
-      redraw_fg_layer();
-    }
-  }
+  // Big remake of this one, because the old one was calling compute_nb_items
+  // which was recreating the whole list of children which was creating a pure mess
+  // Now it's dangerous and might create problems... let's cross fingers !
 
-  font->dimensions(title,&w_title,&h_title);
-  len_bot = get_max_bot_frame_dimensions(w_game,h_game);
+  int len_top = strlen(title);
+  int len_bot = strlen(get_bot_frame_text());
+  if (!font) setup_font(MAX(len_bot,len_top));
+  get_max_bot_frame_dimensions(w_game,h_game);
+  if (*title)
+      font->dimensions(title,&w_title,&h_title);
+  else
+      w_title = h_title = 0;
 
   int base = sdl_screen->h-h_game;
 
@@ -530,6 +540,7 @@ void TMenu::draw_frame(SDL_Rect *r) {
   if (!r || r->y+r->h > base) {
     draw_bot_frame();
   }
+  desktop->set_work_area(&work_area);
 }
 
 void TMenu::compute_width_from_font() {
@@ -867,9 +878,6 @@ void TMenu::update_fg_layer(int nb_to_update) {
       exit(1);
   }
   if (nb_to_update < 0) {
-    // Use SDL_FillRect instead of boxColor because we don't want blending here
-    // Clear the whole fg layer here, not related to header, done only if
-    // redrawing everything
     setcolor(bgsdl);
     SDL_RenderClear(rend);
     display_fglayer_header(y);
@@ -894,7 +902,11 @@ void TMenu::update_fg_layer(int nb_to_update) {
     h = child[index]->get_height(font);
 
     if (nb_to_update < 0 || nb_to_update == index) {
-      disp_menu(index,y,w,h);
+	setcolor(bgsdl);
+	SDL_Rect r = { HMARGIN, y, w, h };
+	// Clear the background in case we draw an option which had just its length reduced
+	SDL_RenderFillRect(rend,&r);
+	disp_menu(index,y,w,h);
       // if (nb_to_update == index) {
 	//  blit_area(fw,y,w,h);
       // }
@@ -1750,7 +1762,7 @@ void TMenu::execute() {
     // if we want to handle animations on the bg layer 1 day...
     if (top != oldtop)
       redraw_fg_layer();
-    else if (!focus && sel != oldsel) {
+    else if (!focus && (sel != oldsel)) {
       update_fg_layer(-1);
       redraw(NULL);
     } else if (focus && hsel != oldsel) {
@@ -1857,7 +1869,7 @@ void TDialog::compute_width_from_font() {
 
 void TDialog::display_fglayer_header(int &y) {
   if (*title) {
-    boxColor(rend,1,1,fgdst.w-2,htitle-1,bg_dialog_bar);
+    boxColor(rend,1,1,fgdst.w-2,htitle-1,bg_dialog_bar_gfx);
     font->surf_string_tr(NULL,1,1,title,fg);
     rectangleColor(rend,0,0,fgdst.w-1,htitle,fg);
     y += htitle + 2;
@@ -1877,6 +1889,7 @@ void TDialog::draw_frame(SDL_Rect *r) {
   work_area.y = 0;
   work_area.w = sdl_screen->w;
   work_area.h = sdl_screen->h-40;
+  desktop->set_work_area(&work_area);
 }
 
 // TMenuMultiCol : a multi colomn version of TMenu

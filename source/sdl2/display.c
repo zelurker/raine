@@ -31,6 +31,7 @@ float max_fps;
 int disp_screen_x;
 int disp_screen_y;
 int desktop_w,desktop_h;
+int top,left,bottom,right; // window decorations (sdl2)
 
 void display_read_config() {
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 3);

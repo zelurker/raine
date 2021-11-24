@@ -86,8 +86,10 @@ static void read_menu_config() {
   cslider_bar = raine_get_config_hex("GUI", "slider_bar", mymakecol(0xc0,0xc0,0xc0));
   cslider_lift = raine_get_config_hex("GUI", "slider_lift", mymakecol(0xff,0xff,0xff));
   bg_dialog_bar = raine_get_config_hex("GUI", "bg_dialog_bar", mymakecol(0,0,0));
+#if SDL == 2
   int a = bg_dialog_bar & 0xff, b = (bg_dialog_bar >> 8) & 0xff, g = (bg_dialog_bar >> 16) & 0xff, r = (bg_dialog_bar >> 24);
   bg_dialog_bar_gfx = makecol_alpha(a,b,g,r);
+#endif
   keep_vga = raine_get_config_int("GUI","keep_vga",1);
 }
 
@@ -102,10 +104,12 @@ static void read_font_config() {
 }
 
 void read_gui_config() {
-#if SDL < 2
+#if SDL == 2
+#define SDL_DEFAULT_REPEAT_DELAY 500
+#define SDL_DEFAULT_REPEAT_INTERVAL 30
+#endif
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
   repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
-#endif
   read_game_list_config();
 #if HAS_NEO
   restore_cdrom_config();
@@ -519,9 +523,15 @@ static int win_event(SDL_Event *event) {
     if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 	return resize(1,event->window.data1,event->window.data2);
     } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	if (event->common.timestamp < 1000) // probably some fancy window manager event
+	if (event->common.timestamp < 1000) { // probably some fancy window manager event
 	    // fix it : it doesn't generate a new window moved event
 	    SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+	    if (!top && !left) {
+		SDL_GetWindowBordersSize(win,&top,&left,&bottom,&right);
+		if (display_cfg.fullscreen)
+		    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
+	    }
+	}
     }
     return 0; // Not handled anything else
 }

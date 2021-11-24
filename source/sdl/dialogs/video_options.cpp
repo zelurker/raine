@@ -277,7 +277,7 @@ int do_video_options(int sel) {
 #endif
 #endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
-    video_options = new TVideo(_("Video options"), video_items);
+    video_options = new TVideo(_(""), video_items);
     video_options->execute();
 #if defined(RAINE_WIN32) && SDL==1
     if (old_driver != display_cfg.video_driver) {

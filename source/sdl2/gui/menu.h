@@ -25,12 +25,20 @@ class TDesktop {
     private:
 	SDL_Texture *pic;
 	int picw,pich;
+	SDL_Rect work_area;
     public:
 	int w,h;
 	TDesktop();
 	// Set a picture as the background, returns 1 if the picture was correctly loaded
 	int set_picture(const char *name);
 	void draw();
+	void set_work_area(SDL_Rect *r) {
+	    if (r)
+		work_area = *r;
+	    else {
+		work_area = {0,0,0,0};
+	    }
+	}
 };
 
 // This desktop replaces the bg_layer there was for sdl-1.2
@@ -42,6 +50,9 @@ extern int return_mandatory, use_transparency;
 // All windows event are passed to this hook, returns 1 only if
 extern int (*window_event_hook)(SDL_Event *event);
 extern char * (*get_shared_hook)(char *name);
+
+ // Useful macro to easily assign a color from a variable...
+#define setcolor(c) SDL_SetRenderDrawColor(rend,(c)>>24,((c)>>16)&0xff,((c)>>8)&0xff,(c)&0xff)
 
 class TMenu {
   protected:

@@ -349,7 +349,8 @@ void toggle_fullscreen() {
 #else
   SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
   if (!display_cfg.fullscreen) {
-      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+      // TODO : check this in windows, I bet the behavior is different !
+      SDL_SetWindowPosition(win,display_cfg.posx-left,display_cfg.posy-top);
       SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
   }
   ScreenChange();
