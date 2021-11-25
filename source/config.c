@@ -2044,7 +2044,11 @@ void load_game_config(void)
 
    // Load Key Settings
 
+#if SDL==2
+   sprintf(str,"%s:keyconfig_sdl2", current_game->main_name);
+#else
    sprintf(str,"%s:keyconfig", current_game->main_name);
+#endif
    load_game_keys(str);
 
 #ifndef SDL
@@ -2125,7 +2129,11 @@ void save_game_config(void)
 
    // Save Key Settings
 
+#if SDL==2
+   sprintf(str,"%s:keyconfig_sdl2", current_game->main_name);
+#else
    sprintf(str,"%s:keyconfig", current_game->main_name);
+#endif
    save_game_keys(str);
 
 #ifndef SDL

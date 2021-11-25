@@ -190,6 +190,12 @@ static void winprotect(void *adr) {
 }
 #endif
 
+#if SDL==2
+#define KEYCONF "key_config_sdl2"
+#else
+#define KEYCONF "key_config"
+#endif
+
 int main(int argc,char *argv[])
 {
    int i;
@@ -567,8 +573,8 @@ int main(int argc,char *argv[])
 
    // KEYBOARD DEFAULT
 
-   load_default_keys("default_game_key_config");
-   int mouse_sens = raine_get_config_int( "default_game_key_config",      "mouse_sensitivity",           33);
+   load_default_keys("default_game_" KEYCONF);
+   int mouse_sens = raine_get_config_int( "default_game_" KEYCONF,      "mouse_sensitivity",           33);
    extern float mouse_scale;
    mouse_scale = mouse_sens / 100.0;
 
@@ -591,7 +597,7 @@ int main(int argc,char *argv[])
 
    // KEYBOARD EMULATOR
 
-   load_emulator_keys("emulator_key_config");
+   load_emulator_keys("emulator_" KEYCONF);
 
    // JOYSTICK EMULATOR
 
@@ -817,9 +823,9 @@ int main(int argc,char *argv[])
 
    // KEYBOARD DEFAULT
 
-   save_default_keys("default_game_key_config");
+   save_default_keys("default_game_" KEYCONF);
    mouse_sens = mouse_scale * 100;
-   raine_set_config_int("default_game_key_config","mouse_sensitivity",mouse_sens);
+   raine_set_config_int("default_game_" KEYCONF,"mouse_sensitivity",mouse_sens);
 
 #ifndef SDL
    // JOYSTICK DEFAULT
@@ -829,7 +835,7 @@ int main(int argc,char *argv[])
 
    // KEYBOARD EMULATOR
 
-   save_emulator_keys("emulator_key_config");
+   save_emulator_keys("emulator_" KEYCONF);
 
    // JOYSTICK EMULATOR
 

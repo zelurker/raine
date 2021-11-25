@@ -156,12 +156,12 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { SDLK_LEFT,    JOY(1,AXIS_LEFT(0),0,0), 0, "Def P1 Left",P1D       },      // KB_DEF_P1_LEFT,
  { SDLK_RIGHT,   JOY(1,AXIS_RIGHT(0),0,0), 0, "Def P1 Right",P1D      },      // KB_DEF_P1_RIGHT,
 
- { SDLK_v,       JOY(1,0,1,0), 1, "Def P1 Button 1", P1B      },      // KB_DEF_P1_B1,
- { SDLK_b,       JOY(1,0,2,0), 3, "Def P1 Button 2", P1B      },      // KB_DEF_P1_B2,
- { SDLK_n,       JOY(1,0,3,0), 2, "Def P1 Button 3", P1B      },      // KB_DEF_P1_B3,
- { SDLK_g,       JOY(1,0,4,0), 0, "Def P1 Button 4", P1B      },      // KB_DEF_P1_B4,
- { SDLK_h,       JOY(1,0,5,0), 0, "Def P1 Button 5", P1B      },      // KB_DEF_P1_B5,
- { SDLK_j,       JOY(1,0,6,0), 0, "Def P1 Button 6", P1B      },      // KB_DEF_P1_B6,
+ { SDLK_LCTRL,       JOY(1,0,1,0), 1, "Def P1 Button 1", P1B      },      // KB_DEF_P1_B1,
+ { SDLK_LESS,       JOY(1,0,2,0), 3, "Def P1 Button 2", P1B      },      // KB_DEF_P1_B2,
+ { SDLK_LALT,       JOY(1,0,3,0), 2, "Def P1 Button 3", P1B      },      // KB_DEF_P1_B3,
+ { SDLK_LSHIFT,       JOY(1,0,4,0), 0, "Def P1 Button 4", P1B      },      // KB_DEF_P1_B4,
+ { SDLK_CAPSLOCK,       JOY(1,0,5,0), 0, "Def P1 Button 5", P1B      },      // KB_DEF_P1_B5,
+ { SDLK_w,       JOY(1,0,6,0), 0, "Def P1 Button 6", P1B      },      // KB_DEF_P1_B6,
  { SDLK_m,       JOY(1,0,7,0), 0, "Def P1 Button 7", P1B      },      // KB_DEF_P1_B7,
  { SDLK_k,       JOY(1,0,8,0), 0, "Def P1 Button 8", P1B      },      // KB_DEF_P1_B8,
 

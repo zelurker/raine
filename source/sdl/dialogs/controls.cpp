@@ -19,6 +19,10 @@
 #define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
 #define hlineColor(sf,x,y,x2,col) hlineColor(rend,x,y,x2,col)
 #define vlineColor(sf,x,y,y2,col) vlineColor(rend,x,y,y2,col)
+
+#define KEYCONF ":keyconfig_sdl2"
+#else
+#define KEYCONF ":keyconfig"
 #endif
 
 /* This is currently the bigest file in the dialogs directory.
@@ -905,7 +909,7 @@ static int do_load(int sel) {
     FILE *f = fopen(str,"r");
     while (f && !feof(f)) {
 	myfgets(str,FILENAME_MAX,f);
-	char *s = strstr(str,":keyconfig");
+	char *s = strstr(str,KEYCONF);
 	if (s && !strncmp(str,"[$",2)) {
 	    if (nb_used == nb_alloc) {
 		nb_alloc += 10;
@@ -935,7 +939,7 @@ static int do_load(int sel) {
 	snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
 	raine_set_config_file(str);
 
-	snprintf(str,FILENAME_MAX,"$%s:keyconfig", menu[selected].label);
+	snprintf(str,FILENAME_MAX,"$%s" KEYCONF, menu[selected].label);
 	char *s = str;
 	while ((s = strchr(s,' ')))
 	    *s = '_';
@@ -967,7 +971,7 @@ static int do_save(int sel) {
 
 	// Save Key Settings
 
-	sprintf(str,"$%s:keyconfig", dest);
+	sprintf(str,"$%s" KEYCONF, dest);
 	save_game_keys(str);
 	raine_pop_config_state();
     }
@@ -987,7 +991,7 @@ static int get_inputs(int sel) {
     conf[0] = 0;
     while (f && !feof(f)) {
 	myfgets(str,FILENAME_MAX,f);
-	char *s = strstr(str,":keyconfig]");
+	char *s = strstr(str,KEYCONF);
 	if (s && strncmp(str,"[$",2) && str[0] == '[') {
 	    *s = 0;
 	    strncpy(conf,&str[1],256);
@@ -1019,7 +1023,7 @@ static int get_inputs(int sel) {
 	snprintf(str,FILENAME_MAX,"%sconfig/games.cfg", dir_cfg.exe_path);
 	raine_set_config_file(str);
 
-	snprintf(str,FILENAME_MAX,"%s:keyconfig", menu[selected].label);
+	snprintf(str,FILENAME_MAX,"%s" KEYCONF, menu[selected].label);
 	printf("loading keys from %s\n",str);
 	load_game_keys(str);
 	raine_pop_config_state();
