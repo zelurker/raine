@@ -715,6 +715,10 @@ void raine_set_config_string(const char *section, const char *name, char *val)
    CONFIG *the_config;
    CONFIG_ENTRY *p, *prev;
    char section_name[256];
+   if (!*name) {
+       printf("raine_set_config_string: no name !\n");
+       exit(1);
+   }
 
    init_config(TRUE);
 
