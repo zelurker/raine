@@ -383,6 +383,10 @@ void TGame_sel::regen() {
       delete font;
       font = NULL;
   }
+#if SDL==2
+  SDL_DestroyTexture(fg_layer);
+  fg_layer = NULL;
+#endif
   redraw(NULL);
 }
 

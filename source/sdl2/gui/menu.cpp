@@ -809,6 +809,11 @@ void TMenu::blit_area(int x,int y,int w,int h) {
 
 void TMenu::update_header_entry(int nb) {
     if (header) {
+	int ret = SDL_SetRenderTarget(rend,fg_layer);
+	if (ret < 0) {
+	    printf("update_header_entry: RenderTarget failed ?\n");
+	    exit(1);
+	}
 	int y = HMARGIN;
 	int w = width_max - HMARGIN;
 	for (int n=0; header[n].label; n++) {
@@ -817,11 +822,12 @@ void TMenu::update_header_entry(int nb) {
 	      // if there is only 1 indice to update, clear the bg for it
 	      boxColor(rend,HMARGIN, y, w, h, bgsdl);
 	      disp_header(n,y,w,h);
-	      blit_area(HMARGIN,y,w,h);
+	      // blit_area(HMARGIN,y,w,h);
 	      break;
 	  }
 	  y += h;
 	}
+	SDL_SetRenderTarget(rend,NULL);
     }
 }
 
@@ -1776,8 +1782,10 @@ void TMenu::execute() {
 	redraw(NULL);
       }
     } else if (focus && hsel >= 0) {
-	if (h_child[hsel]->can_draw_selection())
+	if (h_child[hsel]->can_draw_selection()) {
 	    update_header_entry(hsel);
+	    redraw(NULL);
+	}
     }
     SDL_framerateDelay(&fpsm);
   }

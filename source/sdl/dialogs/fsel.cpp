@@ -442,62 +442,66 @@ int TFileSel::get_fgcolor(int n) {
 
 void TFileSel::set_dir(char *mypath) {
     chdir(mypath);
-  if (mypath != path)
-    strcpy(path,mypath);
-  if (!strstr(path,SLASH)) {
-    getcwd(path,1024);
-  }
-  if (font) {
-    delete font;
-    font = NULL;
-  }
-  set_title(path);
-  draw();
-  strcpy(res_file,path);
-  if (path[strlen(path)-1] != SLASH[0])
-    strcat(res_file,SLASH); // To show it's a path more easily
+    if (mypath != path)
+	strcpy(path,mypath);
+    if (!strstr(path,SLASH)) {
+	getcwd(path,1024);
+    }
+    if (font) {
+	delete font;
+	font = NULL;
+    }
+#if SDL==2
+    SDL_DestroyTexture(fg_layer);
+    fg_layer = NULL;
+#endif
+    set_title(path);
+    draw();
+    strcpy(res_file,path);
+    if (path[strlen(path)-1] != SLASH[0])
+	strcat(res_file,SLASH); // To show it's a path more easily
 }
 
 int TFileSel::mychdir(int n) {
     char *old = NULL;
-  if (n == 0) { // ..
-    char *s = strrchr(path,SLASH[0]);
-    if (s) {
-      *s = 0;
-      old = strdup(s+1);
+    if (n == 0) { // ..
+	char *s = strrchr(path,SLASH[0]);
+	if (s) {
+	    *s = 0;
+	    old = strdup(s+1);
 #ifdef RAINE_WIN32
-      if (s[-1] == SLASH[0]) { s[-1] = 0; // double \ in windows
-	printf("double replace for %s\n",path);
-      }
+	    if (s[-1] == SLASH[0]) { s[-1] = 0; // double \ in windows
+		printf("double replace for %s\n",path);
+	    }
 #endif
-    }
+	}
 #ifdef RAINE_WIN32
-    if (strlen(path)==2) // only the drive letter is left
-      strcat(path,SLASH);
+	if (strlen(path)==2) // only the drive letter is left
+	    strcat(path,SLASH);
 #else
-    if (!*path)
-      strcpy(path,SLASH);
+	if (!*path)
+	    strcpy(path,SLASH);
 #endif
-  } else
+    } else
 #ifdef RAINE_WIN32
-      if (menu[n].values_list_label[0]) {
-	  sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].values_list_label[0]);
-      } else
+	if (menu[n].values_list_label[0]) {
+	    sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].values_list_label[0]);
+	} else
 #endif
-	  sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].label);
-  set_dir(path);
-  if (old) {
-      for (n=0; n<nb_items; n++)
-	  if (!strcmp(menu[n].label,old)) {
-	      sel = n;
-	      break;
-	  }
-      free(old);
-  }
-  top = 0;
-  if (top + rows - 1 < sel) top = sel-rows+1;
+	    sprintf(&path[strlen(path)],"%s%s",SLASH,menu[n].label);
+    set_dir(path);
+    if (old) {
+	for (n=0; n<nb_items; n++)
+	    if (!strcmp(menu[n].label,old)) {
+		sel = n;
+		break;
+	    }
+	free(old);
+    }
+    top = 0;
+    if (top + rows - 1 < sel) top = sel-rows+1;
 
-  return 0;
+    return 0;
 }
 
 int TFileSel::myexec_file(int sel) {
