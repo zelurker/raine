@@ -15,7 +15,7 @@ static void print_tf_state(int n, char *label, int test) {
   video_menu[n].label = label;
   video_menu[n].value_int = &status[n];
   status[n] = test;
-  if (test != 0 && test != 1) {
+  if (test != 0 && test != 1 && test != -1) {
     printf("received test %d for %s\n",test,label);
     exit(1);
   }
@@ -71,7 +71,7 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
       print_tf_state(4,_("OpenGL double buffer"), ogl.infos.dbuf);
       print_tf_state(5,_("FSAA (multisampling)"), ogl.infos.fsaa_buffers);
       print_tf_state(6,_("Acceleration"), ogl.infos.accel);
-      print_tf_state(7,_("OpenGL VBL (force sync)"), ogl.infos.vbl);
+      print_tf_state(7,_("OpenGL vsync"), ogl.infos.vbl);
       video_menu[8].label = NULL;
       return;
   }

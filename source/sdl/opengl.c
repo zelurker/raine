@@ -106,8 +106,14 @@ void opengl_reshape(int w, int h) {
      * I choose to destroy the gl context, so it's destroyed when exiting from here in gui.cpp, after the call to run_game_emulation
      * and recreated here... */
 #if SDL == 2
-    if (!context)
+    if (!context) {
 	context = SDL_GL_CreateContext(win);
+	if (SDL_GL_SetSwapInterval(-1) < 0) {
+	    ogl.infos.vbl = 1;
+	    SDL_GL_SetSwapInterval(1);
+	} else
+	    ogl.infos.vbl = -1;
+    }
     if (!context) {
 	SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_GL_CreateContext(): %s\n", SDL_GetError());
 	exit(2);
