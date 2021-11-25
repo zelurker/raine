@@ -353,6 +353,16 @@ void toggle_fullscreen() {
       SDL_SetWindowPosition(win,display_cfg.posx-left,display_cfg.posy-top);
       SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
   }
+  if (context) {
+      /* This is because of the hint opengl in windows, the unintended consequence is a white
+       * screen when switching fullscreen mode, so workaround, recreate context in this case.
+       * Strangely Linux has the problem too when sending the hint, but destroying the context
+       * here works only when switching to fullscreen in linux, not to windowed mode, maybe because
+       * there are size/position corrections ? Anyway I just don't send the hint in linux, this ʍay
+       * everyone seems happy ! */
+      SDL_GL_DeleteContext(context);
+      context = NULL;
+  }
   ScreenChange();
 #endif
 }
