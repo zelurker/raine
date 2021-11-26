@@ -138,6 +138,15 @@ void sdl_init() {
 	SDL_Rect usable;
 	SDL_GetDisplayUsableBounds(0, &usable);
 	if (display_cfg.fullscreen)
+#ifdef RAINE_WIN32
+	    win = SDL_CreateWindow(title,
+		    0,
+		    0,
+		    usable.w,
+		    usable.h,
+		    SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL |
+		    SDL_WINDOW_FULLSCREEN_DESKTOP);
+#else
 	    // see comments about broken fullscreen in control.c
 	    win = SDL_CreateWindow(title,
 		    0,
@@ -145,6 +154,7 @@ void sdl_init() {
 		    usable.w,
 		    usable.h,
 		    SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+#endif
 	else
 	    win = SDL_CreateWindow(title,
 		    display_cfg.posx,
