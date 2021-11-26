@@ -791,22 +791,6 @@ void TMenu::display_fglayer_header(int &y) {
   }
 }
 
-void TMenu::blit_area(int x,int y,int w,int h) {
-    /* Blit only 1 entry, in this case, update bg, then fg, then screen */
-    SDL_Rect from, to;
-    from.x = x; from.y = y; from.h = h;
-    from.w = w;
-    to.x = fgdst.x+x;
-    to.y = fgdst.y+y;
-    to.w = from.w;
-    to.h = from.h;
-    SDL_Rect tmp = to;
-    if (use_transparency)
-	desktop->draw();
-    SDL_RenderCopy(rend,fg_layer,&from,&tmp);
-    // do_update(&to);
-}
-
 void TMenu::update_header_entry(int nb) {
     if (header) {
 	int ret = SDL_SetRenderTarget(rend,fg_layer);

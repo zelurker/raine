@@ -27,7 +27,6 @@ extern togl_options ogl;
 
 extern int prefered_yuv_format;
 extern int desktop_w,desktop_h;
-extern int top,left,bottom,right;
 
 int resize(int call,int sx,int sy);
 void adjust_gui_resolution();

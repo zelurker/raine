@@ -356,15 +356,10 @@ void toggle_fullscreen() {
       SDL_SetWindowPosition(win,0,0);
       SDL_SetWindowSize(win,desktop_w,desktop_h);
   } else {
-      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+      SDL_SetWindowPosition(win,display_cfg.posx ,display_cfg.posy );
       SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
   }
   // SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-  if (!display_cfg.fullscreen) {
-      // TODO : check this in windows, I bet the behavior is different !
-      SDL_SetWindowPosition(win,display_cfg.posx-left,display_cfg.posy-top);
-      SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
-  }
   if (context) {
       /* This is because of the hint opengl in windows, the unintended consequence is a white
        * screen when switching fullscreen mode, so workaround, recreate context in this case.

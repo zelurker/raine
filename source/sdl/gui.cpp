@@ -526,15 +526,10 @@ static int win_event(SDL_Event *event) {
 	if (event->common.timestamp < 1000) { // probably some fancy window manager event
 	    if (display_cfg.fullscreen) {
 		// See comments about broken toggle fullscreen in control.c
-		left = event->window.data1;
-		bottom = event->window.data2;
 		SDL_SetWindowPosition(win,0,0);
 		return 0;
 	    }
 	    SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
-	    if (!top && !left) {
-		SDL_GetWindowBordersSize(win,&top,&left,&bottom,&right);
-	    }
 	}
     }
     return 0; // Not handled anything else

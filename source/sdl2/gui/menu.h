@@ -158,7 +158,6 @@ class TMenu {
       return fg;
     }
     virtual void disp_menu(int n,int y,int w,int h);
-    virtual void blit_area(int x,int y,int w,int h);
     virtual void update_header_entry(int nb);
     virtual void disp_header(int n,int y,int w,int h);
     int get_list_index(int n);
