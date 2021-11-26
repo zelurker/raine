@@ -629,6 +629,12 @@ flee:
     check_error("read_shader");
 }
 
+void reset_shaders() {
+    // stop all shaders eventually used by sdl !
+    glUseProgram(0);
+}
+
+
 void draw_shader(int linear)
 {
     check_error("start draw_shader");

@@ -392,7 +392,7 @@ void SetupScreenBitmap(void)
 	 }
      } else
 	 game_tex = NULL;
-     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
+     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");  // make the scaled rendering look smoother.
      if (display_cfg.video_mode == 0)
 	 ScreenChange();
      else
@@ -482,6 +482,8 @@ void DrawNormal(void)
        exit(1);
    }
    SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
+   SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
+   SDL_RenderClear(rend);
    SDL_RenderCopy(rend,game_tex,NULL,NULL);
    SDL_RenderPresent(rend);
 

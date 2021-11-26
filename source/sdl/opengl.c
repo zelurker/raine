@@ -120,6 +120,7 @@ void opengl_reshape(int w, int h) {
     }
 #endif
     desk_w = w; desk_h = h;
+    reset_shaders();
     // Reset the coordinate system before modifying
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

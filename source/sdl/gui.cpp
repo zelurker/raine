@@ -534,12 +534,25 @@ static int win_event(SDL_Event *event) {
     }
     return 0; // Not handled anything else
 }
+
+static void gui_end() {
+    // Actually a simple call to reset_shaders might be enough here
+    // the problem is that calling glsl functions is messy and doing it from the gui wouldn't be nice
+    // so maybe it's better to keep the hook for now with this inside...
+    if (GameScreen.xview) {
+	if (display_cfg.video_mode > 0)
+	    SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
+	else if (display_cfg.video_mode == 0)
+	    ScreenChange();
+    }
+}
 #endif
 
 void StartGUI(void)
 {
 #if SDL == 2
     window_event_hook = &win_event;
+    gui_end_hook = &gui_end;
 #else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 #endif
@@ -638,14 +651,6 @@ void StartGUI(void)
 #ifndef RAINE_DEBUG
 	   if (GameMouse)
 	       SDL_WM_GrabInput(SDL_GRAB_ON);
-#endif
-#if SDL == 2
-	   if (GameScreen.xview) {
-	       if (display_cfg.video_mode > 0)
-		   SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);
-	       else if (display_cfg.video_mode == 0)
-		   ScreenChange();
-	   }
 #endif
 	   if(run_game_emulation()){ // In no gui mode, tab will reactivate the gui (req. by bubbles)
 	       raine_cfg.no_gui = 0;

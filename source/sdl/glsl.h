@@ -6,8 +6,9 @@ extern "C" {
 #endif
 
 void read_shader(char *shader);
-void delete_shaders(); 
+void delete_shaders();
 void draw_shader(int linear);
+void reset_shaders();
 
 #ifdef __cplusplus
 }

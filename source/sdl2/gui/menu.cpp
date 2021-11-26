@@ -257,6 +257,7 @@ static char* my_get_shared(char *s) {
 }
 
 char * (*get_shared_hook)(char *name) = &my_get_shared;
+void (*gui_end_hook)();
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame,int to_translate) {
     if (!desktop)
@@ -1654,6 +1655,7 @@ void TMenu::exec_menu_item() {
 
 void TMenu::execute() {
 
+    SDL_RenderSetLogicalSize(rend, 0,0);
     update_count = 0;
     gui_level++;
   SDL_Event event;
@@ -1784,6 +1786,7 @@ void TMenu::execute() {
   gui_level--;
   parent = NULL; // to be on the safe side
   if (gui_level == 0) SDL_StopTextInput();
+  if (gui_end_hook) (*gui_end_hook)();
 }
 
 // TBitmap_menu : a menu with a bitmap on top of it
