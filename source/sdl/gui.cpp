@@ -521,7 +521,7 @@ int goto_debuger = 0;
 #if SDL == 2
 static int win_event(SDL_Event *event) {
     if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-	return resize(1,event->window.data1,event->window.data2);
+	resize(1,event->window.data1,event->window.data2);
     } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
 	if (event->common.timestamp < 1000) { // probably some fancy window manager event
 	    if (display_cfg.fullscreen) {
@@ -532,7 +532,7 @@ static int win_event(SDL_Event *event) {
 	    SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	}
     }
-    return 0; // Not handled anything else
+    return 1;
 }
 
 static void gui_end() {
