@@ -109,6 +109,7 @@ void TRaineDesktop::draw() {
 	// We are in 30 fps in the gui, so we'll run 2 frames here
 	const VIDEO_INFO *vid_info = current_game->video;
 	saUpdateSound(1);
+	hs_update();
 	if(current_game->exec) current_game->exec();
 	saUpdateSound(1);
 	if(current_game->exec) current_game->exec();
