@@ -135,13 +135,23 @@ void sdl_init() {
 	snprintf(title,20,"%s v%s",EMUNAME,VERSION);
 	title[19] = 0;
 	// don't send fullscreen here because SDL_SetWindowPosition is affected by window decorations at least in linux and we can't get the decorations size in fullscreen
-	win = SDL_CreateWindow(title,
-		display_cfg.posx,
-		display_cfg.posy,
-		display_cfg.screen_x,
-		display_cfg.screen_y,
-		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL |
-		(display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+	SDL_Rect usable;
+	SDL_GetDisplayUsableBounds(0, &usable);
+	if (display_cfg.fullscreen)
+	    // see comments about broken fullscreen in control.c
+	    win = SDL_CreateWindow(title,
+		    0,
+		    0,
+		    usable.w,
+		    usable.h,
+		    SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	else
+	    win = SDL_CreateWindow(title,
+		    display_cfg.posx,
+		    display_cfg.posy,
+		    display_cfg.screen_x,
+		    display_cfg.screen_y,
+		    SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 #ifdef RAINE_WIN32
 	// Without this hint in windows : start a game in windowed mode, use alt-return in game
 	// to switch to fullscreen, press esc to call the gui -> crash with the error :

@@ -347,7 +347,19 @@ void toggle_fullscreen() {
     reset_ingame_timer();
   }
 #else
-  SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+  // For some totally unknown reason, SDL_SetWindowFullscreen here is totally broken on my laptop but works on my desktop !
+  // they both have very similar software configuration, windowmaker, same xorg, just the desktop uses some nvidia card and the laptop an intel
+  // anyway the problem is the window receives quite a few events when going to fullscreen, in the end it's minimized and hidden, and bye bye, if I try to force call
+  // SDL_ShowWindow then the screen starts to blink because the window manager keeps on trying to hide it !
+  // Calling instead these 2 functions to manually set the position and the size which should be totally equivalent fixes the problem !!!
+  if (display_cfg.fullscreen) {
+      SDL_SetWindowPosition(win,0,0);
+      SDL_SetWindowSize(win,desktop_w,desktop_h);
+  } else {
+      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+      SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
+  }
+  // SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
   if (!display_cfg.fullscreen) {
       // TODO : check this in windows, I bet the behavior is different !
       SDL_SetWindowPosition(win,display_cfg.posx-left,display_cfg.posy-top);

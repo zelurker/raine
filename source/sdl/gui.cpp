@@ -524,12 +524,16 @@ static int win_event(SDL_Event *event) {
 	return resize(1,event->window.data1,event->window.data2);
     } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
 	if (event->common.timestamp < 1000) { // probably some fancy window manager event
-	    // fix it : it doesn't generate a new window moved event
+	    if (display_cfg.fullscreen) {
+		// See comments about broken toggle fullscreen in control.c
+		left = event->window.data1;
+		bottom = event->window.data2;
+		SDL_SetWindowPosition(win,0,0);
+		return 0;
+	    }
 	    SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	    if (!top && !left) {
 		SDL_GetWindowBordersSize(win,&top,&left,&bottom,&right);
-		if (display_cfg.fullscreen)
-		    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 	    }
 	}
     }
