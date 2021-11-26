@@ -352,17 +352,20 @@ void toggle_fullscreen() {
   // anyway the problem is the window receives quite a few events when going to fullscreen, in the end it's minimized and hidden, and bye bye, if I try to force call
   // SDL_ShowWindow then the screen starts to blink because the window manager keeps on trying to hide it !
   // Calling instead these 2 functions to manually set the position and the size which should be totally equivalent fixes the problem !!!
-#ifndef RAINE_WIN32
   if (display_cfg.fullscreen) {
+#ifndef RAINE_WIN32
       SDL_SetWindowPosition(win,0,0);
       SDL_SetWindowSize(win,desktop_w,desktop_h);
+#else
+      SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
+#endif
   } else {
+#ifdef RAINE_WIN32
+      SDL_SetWindowFullscreen(win,0);
+#endif
       SDL_SetWindowPosition(win,display_cfg.posx ,display_cfg.posy );
       SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
   }
-#else
-  SDL_SetWindowFullscreen(win,display_cfg.fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-#endif
   if (context) {
       /* This is because of the hint opengl in windows, the unintended consequence is a white
        * screen when switching fullscreen mode, so workaround, recreate context in this case.
