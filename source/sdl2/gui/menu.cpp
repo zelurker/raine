@@ -1672,6 +1672,7 @@ void TMenu::execute() {
   if (caller != this) {
     parent = caller; // update parent for persistant dialogs
   }
+  int w = sdl_screen->w, h = sdl_screen->h;
 
   draw();
   caller = this; // init after calling draw
@@ -1724,6 +1725,17 @@ void TMenu::execute() {
       }
       if (exit_menu) break;
     }
+    if ((w != sdl_screen->w || h != sdl_screen->h) && fg_layer) {
+	if (font) {
+	    delete font;
+	    font = NULL;
+	}
+	SDL_DestroyTexture(fg_layer);
+	fg_layer = NULL;
+	w = sdl_screen->w; h = sdl_screen->h;
+	draw();
+    }
+
     SDL_setFramerate(&fpsm,30);
     if (exit_menu) break;
     if (lift) {
