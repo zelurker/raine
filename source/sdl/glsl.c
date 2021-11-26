@@ -327,6 +327,7 @@ static GLint get_attrib_loc(GLuint prog, const char *name)
 }
 
 void init_glsl() {
+#ifdef RAINE_WIN32
 	glCreateProgram = (PFNGLCREATEPROGRAMPROC)glGetProcAddress("glCreateProgram");
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
 	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
@@ -358,6 +359,7 @@ void init_glsl() {
 	    && glGetProgramiv && glGetProgramInfoLog && glGetUniformLocation
 	    && glUniform1i && glUniform2fv && glUniform4fv;
 	no_shader_support = !no_shader_support;
+#endif
 }
 
 void read_shader(char *shader) {
