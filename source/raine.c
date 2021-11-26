@@ -179,7 +179,7 @@ static void winprotect(void *adr) {
     * in debug mode from linux for some reason ! */
    int ret = VirtualQuery(adr,&info,sizeof(info));
    if (ret) {
-       void *old;
+       DWORD old;
        printf("got base %x length %d\n",info.BaseAddress,info.RegionSize);
        ret = VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
        if (!ret) {
