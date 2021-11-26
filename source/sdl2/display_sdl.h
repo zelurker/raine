@@ -24,6 +24,7 @@ typedef struct {
 } togl_options;
 
 extern togl_options ogl;
+extern SDL_Texture *game_tex;
 
 extern int prefered_yuv_format;
 extern int desktop_w,desktop_h;

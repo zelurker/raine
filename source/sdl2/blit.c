@@ -20,7 +20,6 @@ SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
 al_bitmap *GameBitmap = NULL; 	// *Full* Bitmap for generating the game screen (eg. 0,0 to 320+32,240+32)
 al_bitmap *GameViewBitmap; 	// *Viewable* Bitmap for saving (pcx) the game screen (eg. 16,16 to 320+16,240+16)
-SDL_Texture *game_tex;
 
 extern void ScreenChange(void);
 UINT32 pause_time;

@@ -22,7 +22,7 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 #define MAX_KEYBUF 20
 
 class TDesktop {
-    private:
+    protected:
 	SDL_Texture *pic;
 	int picw,pich;
 	SDL_Rect work_area;
@@ -31,7 +31,7 @@ class TDesktop {
 	TDesktop();
 	// Set a picture as the background, returns 1 if the picture was correctly loaded
 	int set_picture(const char *name);
-	void draw();
+	virtual void draw();
 	void set_work_area(SDL_Rect *r) {
 	    if (r)
 		work_area = *r;

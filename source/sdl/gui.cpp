@@ -53,10 +53,91 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "newmem.h"
 #include "opengl.h"
+#include "palette.h"
+#include "cpumain.h"
 
 static int WantScreen;
 static int WantQuit;
 static int WantPlay;
+
+#if SDL == 2
+
+// A Raine desktop, which starts the game in the background as soon as it's loaded, but only until it's played
+class TRaineDesktop : public TDesktop
+{
+    private:
+	int tgame;
+    public:
+	TRaineDesktop();
+	void preinit();
+	virtual void draw();
+	void end_preinit();
+};
+
+#define rdesktop ((TRaineDesktop*)desktop)
+
+TRaineDesktop::TRaineDesktop() : TDesktop()
+{
+    tgame = 0;
+}
+
+void TRaineDesktop::preinit() {
+    SetupScreenBitmap();
+    init_video_core();
+    reset_palette_map();
+    start_cpu_main();
+    saInitSoundCard( RaineSoundCard, audio_sample_rate );
+    if (is_neocd())
+	sa_unpause_sound();
+    reset_ingame_timer();
+    tgame = 1;
+}
+
+void TRaineDesktop::end_preinit() {
+    tgame = 2;
+}
+
+void TRaineDesktop::draw() {
+    // tgame values :
+    // 0 : the normal desktop
+    // 1 : run the game until we play
+    // 2 : just take the last screeshot of the game
+    if (!current_game || !game_tex) tgame = 0;
+    if (!tgame) return TDesktop::draw();
+    if (tgame == 1) {
+	// We are in 30 fps in the gui, so we'll run 2 frames here
+	const VIDEO_INFO *vid_info = current_game->video;
+	saUpdateSound(1);
+	if(current_game->exec) current_game->exec();
+	saUpdateSound(1);
+	if(current_game->exec) current_game->exec();
+	vid_info->draw_game();
+    }
+
+    SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
+    SDL_RenderClear(rend);
+    SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
+    if (work_area.w) {
+	// The SetLogicalSize can't move the origin, so it's not appropriate here
+	// and we have to make our dest rect
+	double ratio1 = work_area.w*1.0/GameScreen.xview;
+	double ratio2 = work_area.h*1.0/GameScreen.yview;
+	double ratio = MIN(ratio1,ratio2);
+	SDL_Rect dest;
+	int w = GameScreen.xview*ratio, h = GameScreen.yview*ratio;
+	dest.x = (work_area.w-w)/2+work_area.x;
+	dest.y = (work_area.h-h)/2+work_area.y;
+	dest.w = w;
+	dest.h = h;
+	SDL_RenderCopy(rend,game_tex,NULL,&dest);
+	return;
+    }
+    SDL_RenderSetLogicalSize(rend, GameScreen.xview,GameScreen.yview);
+    SDL_RenderCopy(rend,pic,NULL,NULL);
+    SDL_RenderSetLogicalSize(rend, 0,0);
+}
+
+#endif
 
 static void save_menu_config() {
   raine_set_config_int("GUI", "return_mandatory", return_mandatory);
@@ -551,6 +632,7 @@ static void gui_end() {
 void StartGUI(void)
 {
 #if SDL == 2
+    desktop = new TRaineDesktop();
     window_event_hook = &win_event;
     gui_end_hook = &gui_end;
 #else
@@ -590,9 +672,13 @@ void StartGUI(void)
 
 */
 
-       if(raine_cfg.req_load_game)
+       if(raine_cfg.req_load_game) {
 
 	   do_load_game();
+#if SDL == 2
+	   if (current_game) rdesktop->preinit();
+#endif
+       }
 
        if(!raine_cfg.no_gui)	// GUI MODE
        {
@@ -620,6 +706,9 @@ void StartGUI(void)
 
 	       WantPlay = 0;
        }
+#if SDL==2
+       rdesktop->end_preinit();
+#endif
 
        if(current_game && (display_cfg.auto_mode_change && display_cfg.video_mode == 2)) {
 	   switch_res(current_game->video);
