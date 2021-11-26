@@ -56,6 +56,7 @@
 #include "palette.h"
 #include "cpumain.h"
 
+extern "C" void init_glsl();
 static int WantScreen;
 static int WantQuit;
 static int WantPlay;
@@ -633,6 +634,9 @@ void StartGUI(void)
 {
 #if SDL == 2
     desktop = new TRaineDesktop();
+#ifdef RAINE_WIN32
+    init_glsl();
+#endif
     window_event_hook = &win_event;
     gui_end_hook = &gui_end;
 #else
@@ -748,10 +752,6 @@ void StartGUI(void)
 #if SDL == 2
 	   if (!rend)
 	       rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	   if (context) {
-	       SDL_GL_DeleteContext(context);
-	       context = NULL;
-	   }
 	   if (display_cfg.video_mode > 0)
 	       SDL_RenderSetLogicalSize(rend, 0,0);
 #else

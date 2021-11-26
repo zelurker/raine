@@ -326,23 +326,7 @@ static GLint get_attrib_loc(GLuint prog, const char *name)
     return -1;
 }
 
-void read_shader(char *shader) {
-    /* The idea is to try to make the code as readable as possible (it's
-     * about string manipulation in C, so there won't be any miracle !), but
-     * I'll have a separate block of code for each tag, and since there are
-     * only shader, vertex and fragment here, it should do...
-     *
-     * Also I saw somewhere on the web that sometimes they use src instead of
-     * cdata even though it's not part of 1.1 specification, but I added
-     * support for it anyway... */
-
-    char *vertex_src = NULL, *frag_src = NULL;
-    char *buf = my_load_file(shader);
-    int vertex_used_src = 0, frag_used_src = 0;
-#ifdef RAINE_WIN32
-    if (no_shader_support) return;
-    if (!glCreateProgram) {
-	//bind shader functions
+void init_glsl() {
 	glCreateProgram = (PFNGLCREATEPROGRAMPROC)glGetProcAddress("glCreateProgram");
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)glGetProcAddress("glUniformMatrix4fv");
 	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONARBPROC)glGetProcAddress("glGetAttribLocation");
@@ -374,6 +358,26 @@ void read_shader(char *shader) {
 	    && glGetProgramiv && glGetProgramInfoLog && glGetUniformLocation
 	    && glUniform1i && glUniform2fv && glUniform4fv;
 	no_shader_support = !no_shader_support;
+}
+
+void read_shader(char *shader) {
+    /* The idea is to try to make the code as readable as possible (it's
+     * about string manipulation in C, so there won't be any miracle !), but
+     * I'll have a separate block of code for each tag, and since there are
+     * only shader, vertex and fragment here, it should do...
+     *
+     * Also I saw somewhere on the web that sometimes they use src instead of
+     * cdata even though it's not part of 1.1 specification, but I added
+     * support for it anyway... */
+
+    char *vertex_src = NULL, *frag_src = NULL;
+    char *buf = my_load_file(shader);
+    int vertex_used_src = 0, frag_used_src = 0;
+#ifdef RAINE_WIN32
+    if (no_shader_support) return;
+    if (!glCreateProgram) {
+	//bind shader functions
+	init_glsl();
     }
     if (no_shader_support) {
 	MessageBox(gettext("Warning"),gettext("No shader support on your hardware"),gettext("ok"));

@@ -9,6 +9,7 @@ void read_shader(char *shader);
 void delete_shaders();
 void draw_shader(int linear);
 void reset_shaders();
+void init_glsl();
 
 #ifdef __cplusplus
 }
