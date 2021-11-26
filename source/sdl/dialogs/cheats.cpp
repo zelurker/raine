@@ -10,6 +10,7 @@
 
 #if SDL==2
 #define boxColor(sf,x,y,w,h,col) boxColor(rend,x,y,w,h,col)
+#define bg_frame bg_frame_gfx
 #endif
 
 class TCheatDlg : public TMenu
@@ -19,7 +20,9 @@ class TCheatDlg : public TMenu
     {}
     void disp_menu(int n,int y,int w,int h) {
       TMenu::disp_menu(n,y,w,h);
+#if SDL == 1
       draw_bot_frame();
+#endif
     }
     char *get_cheat_info() {
       static char cheat_info[512];
@@ -43,7 +46,7 @@ class TCheatDlg : public TMenu
 	    }
 	}
     }
-    void draw_bot_frame() {
+    virtual void draw_bot_frame() {
       int base = work_area.y+work_area.h;
       char *cheat_info = get_cheat_info();
       int w=0,h=0;
@@ -73,9 +76,11 @@ class TCheatDlg : public TMenu
       } else
 	  boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame);
       font->put_string(HMARGIN,base,cheat_info,fg_frame,0);
+#if SDL < 2
       SDL_Rect area;
       area.x = 0; area.y = base; area.w = sdl_screen->w; area.h = sdl_screen->h-base;
       do_update(&area);
+#endif
     }
     int get_max_bot_frame_dimensions(int &w, int &h) {
       unsigned int max = 0, maxnb = -1;
