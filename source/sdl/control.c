@@ -526,8 +526,15 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 	    // Otherwise it prevents combinations like A+B in neocd from
 	    // working !
 	    for (n=0; n<InputCount; n++)
+		// Exact bit masks for normal inputs, only part of it to overwrite unknown or unused input
+		// to be totally exact, I should split the bitmask of unknown/unused inputs, but I'll try to
+		// forget this part to see how it works...
 		if (input_src[srcCount].offset == InputList[n].Address &&
-			input_src[srcCount].bit_mask & InputList[n].Bit) {
+			(input_src[srcCount].bit_mask == InputList[n].Bit ||
+			((input_src[srcCount].bit_mask & InputList[n].Bit) &&
+			 (InputList[n].default_key == KB_DEF_UNKNOWN ||
+			 InputList[n].default_key == KB_DEF_UNUSED)))) {
+		    printf("overwriting %s with %s\n",InputList[n].InputName,input_src[srcCount].name);
 		    old = InputCount;
 		    InputCount = n;
 		    break;
@@ -562,7 +569,10 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 	    // Check if some other inputs match the bit mask and remove them
 	    for (n=InputCount; n<old; n++) {
 		if (input_src[srcCount].offset == InputList[n].Address &&
-			input_src[srcCount].bit_mask & InputList[n].Bit) {
+			(input_src[srcCount].bit_mask == InputList[n].Bit ||
+			((input_src[srcCount].bit_mask & InputList[n].Bit) &&
+			 (InputList[n].default_key == KB_DEF_UNKNOWN ||
+			 InputList[n].default_key == KB_DEF_UNUSED)))) {
 		    if (old > n+1)
 			memmove(&InputList[n],&InputList[n+1],
 				(old-(n+1))*sizeof(struct INPUT));
