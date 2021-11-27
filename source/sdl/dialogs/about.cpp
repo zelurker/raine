@@ -23,6 +23,8 @@
 #define lineColor(sf,x1,y1,x2,y2,coul) lineColor(rend,x1,y1,x2,y2,coul)
 #define filledEllipseColor(sf, x, y, w,h, col) filledEllipseColor(rend,x,y,w,h,col)
 #define filledCircleColor(sf, x, y, w, c) filledCircleColor(rend,x,y,w,c)
+#undef mymakecol
+#define mymakecol(r,g,b) (((255)<<24)|((b)<<16)|((g)<<8)|r)
 #endif
 
 class TAbout_menu : public TBitmap_menu
@@ -176,7 +178,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    case 'B':
 	    case 'b':	col = mymakecol(255,238,0); break;
 	    case 'C':
-	    case 'c':	col = mymakecol(0,255,64); break;
+	    case 'c':	col = mymakecol(0,255,0); break;
 	    case 'D':
 	    case 'd':	col = mymakecol(0,170,255); break;
 	    case 'P':
