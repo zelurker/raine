@@ -180,6 +180,7 @@ void sdl_init() {
 	// if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1)< 0 || SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3) < 0)
 	//    printf("pb setting opengl version\n");
 
+	color_format = SDL_AllocFormat( SDL_PIXELFORMAT_RGBX8888);
 	inputs_preinit();
 
 	atexit(sdl_done);
@@ -187,11 +188,11 @@ void sdl_init() {
 }
 
 void sdl_done() {
-  // This should also save the sdl specific params... Later !
-  print_debug("sdl_done...\n");
+    // called at the very end, after main has finished and the debug file is already closed... !
   inputs_done();
   TTF_Quit();
   opengl_done();
+  SDL_FreeFormat(color_format);
   SDL_Quit();
 }
 
@@ -257,8 +258,6 @@ struct al_bitmap *sdl_create_sub_bitmap(struct al_bitmap *src, int x, int y, int
     bmp->line[n] = src->line[n+y] + bpp*x;
   bmp->extra = src->extra;
   bmp->id = src->id+1; // sub bitmap
-  color_format = sdl_game_bitmap->format;
-  print_debug("color_format: game bitmap format bpp %d\n",sdl_game_bitmap->format->BitsPerPixel);
 
   if (!(display_cfg.video_mode == 0) &&
 	  (!current_game ||
