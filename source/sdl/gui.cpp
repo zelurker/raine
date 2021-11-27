@@ -55,6 +55,8 @@
 #include "opengl.h"
 #include "palette.h"
 #include "cpumain.h"
+#include "mz80help.h"
+#include "starhelp.h"
 
 extern "C" void init_glsl();
 static int WantScreen;
@@ -96,6 +98,15 @@ void TRaineDesktop::preinit() {
 
 void TRaineDesktop::end_preinit() {
     tgame = 2;
+    // start_cpu_main will be recalled by run_game_emulation which will force a cpu context switch
+    // if there's only 1 cpu active in a category, it means its context will be cleared
+    // so to be safe we save the context if there is only 1 cpu in a category
+    // 68020 & 6502 should be safe
+    if (MZ80Engine == 1)
+	mz80GetContext(&Z80_context[0]);
+    if (StarScreamEngine == 1)
+	s68000GetContext(&M68000_context[0]);
+
 }
 
 void TRaineDesktop::draw() {
@@ -114,6 +125,8 @@ void TRaineDesktop::draw() {
 	saUpdateSound(1);
 	if(current_game->exec) current_game->exec();
 	vid_info->draw_game();
+	overlay_ingame_interface(0);
+	skip_frame_count+=2;
     }
 
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
