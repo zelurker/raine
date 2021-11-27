@@ -226,8 +226,6 @@ void ReClipScreen(void)
      area2.y = desty; // y2;
      area2.w = xxx;
      area2.h = yyy;
-     if (GameViewBitmap)
-	 clear_bitmap(GameViewBitmap);
 
      RefreshBuffers=1;
      // if (reading_demo) display_cfg.screen_y += 8;
