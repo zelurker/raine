@@ -94,6 +94,7 @@ void TRaineDesktop::preinit() {
 	sa_unpause_sound();
     reset_ingame_timer();
     tgame = 1;
+    clear_ingame_message_list(); // don't keep the messages about cpus reset...
 }
 
 void TRaineDesktop::end_preinit() {
@@ -125,8 +126,6 @@ void TRaineDesktop::draw() {
 	saUpdateSound(1);
 	if(current_game->exec) current_game->exec();
 	vid_info->draw_game();
-	overlay_ingame_interface(0);
-	skip_frame_count+=2;
     }
 
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
