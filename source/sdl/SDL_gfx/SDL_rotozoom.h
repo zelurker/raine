@@ -1,3 +1,6 @@
+#if SDL == 2
+#include "sdl2/SDL_gfx/SDL_rotozoom.h"
+#endif
 
 /*
 
@@ -42,8 +45,8 @@ extern "C" {
     } tColorY;
 
 
-/* 
- 
+/*
+
  rotozoomSurface()
 
  Rotates and zoomes a 32bit or 8bit 'src' surface to newly created 'dst' surface.
@@ -64,11 +67,11 @@ extern "C" {
 					  int *dstheight);
 
     void rotozoomSurfaceSizeXY
-    (int width, int height, double angle, double zoomx, double zoomy, 
+    (int width, int height, double angle, double zoomx, double zoomy,
      int *dstwidth, int *dstheight);
 
-/* 
- 
+/*
+
  zoomSurface()
 
  Zoomes a 32bit or 8bit 'src' surface to newly created 'dst' surface.
