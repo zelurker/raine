@@ -17,8 +17,7 @@ class TMain_menu : public TMenu
     }
   int can_be_displayed(int n);
   char *get_bot_frame_text();
-  void draw_top_frame();
-  char* get_top_string();
+  virtual char* get_top_string();
 };
 
 extern "C" {

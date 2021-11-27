@@ -181,7 +181,7 @@ int sprite_viewer(int sel) {
 	tile_list[n].width, tile_list[n].height);
     sprites_menu[0].values_list_label[n] = strdup(buff);
   }
-  sprite_menu = new TSpriteMenu(_("Sprites viewer"),sprites_menu);
+  sprite_menu = new TSpriteMenu("",sprites_menu);
   sprite_menu->execute();
   delete sprite_menu;
   sprite_menu = NULL;

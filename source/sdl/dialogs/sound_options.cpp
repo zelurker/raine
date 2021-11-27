@@ -64,7 +64,7 @@ class TSoundDlg : public TMenu {
 
 int do_sound_options(int sel) {
     int old = recording;
-  menu = new TSoundDlg(_("Sound options"), sound_menu);
+  menu = new TSoundDlg("", sound_menu);
   menu->execute();
   delete menu;
   if (recording == 2)

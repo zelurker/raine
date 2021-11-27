@@ -488,9 +488,6 @@ int TMenu::can_exit() {
   return 1; // nobody refuses the exit
 }
 
-void TMenu::draw_top_frame() {
-}
-
 char* TMenu::get_bot_frame_text() {
     return "";
 }
@@ -1653,6 +1650,22 @@ void TMenu::exec_menu_item() {
   }
 }
 
+char *TMenu::get_top_string() {
+    // string to be displayed on the left, if different from title
+    // if returns empty string then nothing is displayed on top
+    return (char*)title;
+}
+
+void TMenu::draw_top_frame() {
+    if (!*get_top_string()) return;
+    int w_title,h_title;
+    font->dimensions(title,&w_title,&h_title);
+    boxColor(rend,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
+    font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
+    if (strcmp(get_top_string(),title))
+	font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
+}
+
 void TMenu::execute() {
 
     SDL_RenderSetLogicalSize(rend, 0,0);
@@ -1784,6 +1797,10 @@ void TMenu::execute() {
 	    update_header_entry(hsel);
 	    redraw(NULL);
 	}
+    } else {
+	// this case was not redrawn with sdl-1.2, that is a dialog without any selection
+	// here we do a redraw for the desktop !
+	redraw(NULL);
     }
     SDL_framerateDelay(&fpsm);
   }

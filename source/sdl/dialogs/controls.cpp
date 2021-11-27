@@ -267,7 +267,7 @@ static int get_def_indice(const char *name) {
 static int do_input(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
   int indice = get_def_indice(menu[sel].label);
-  TInput *input = new TInput(_("Input"),menu_input,0,1);
+  TInput *input = new TInput("",menu_input,0,1);
   input->execute();
   delete input;
   if (inp_key) {
@@ -311,7 +311,7 @@ static int do_input(int sel) {
 static int do_kb_input(int sel) {
   // same thing as do_input, but keyboard only (for layers)
   inp_key = inp_joy = inp_mouse = 0;
-  TInput *input = new TInput(_("Input"),kb_only,0,1,0);
+  TInput *input = new TInput("",kb_only,0,1,0);
   input->execute();
   delete input;
   if (inp_key) {
@@ -339,7 +339,7 @@ static int do_kb_input(int sel) {
 static int do_input_ingame(int sel) {
   inp_key = inp_joy = inp_mouse = 0;
   int nb = menu[sel].values_list[0];
-  TInput *input = new TInput(_("Input"),menu_input,1,0);
+  TInput *input = new TInput("",menu_input,1,0);
   input->execute();
   delete input;
   if (inp_key) {
@@ -426,7 +426,7 @@ static int do_emu_controls(int sel) {
 	      cols[b*2+1] = str;
 	  }
 
-  controls = new TMyMenuMultiCol(_("Raine Controls"),menu,2,cols);
+  controls = new TMyMenuMultiCol("",menu,2,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<nb*2; n++) {
@@ -449,7 +449,7 @@ static int do_layers_controls(int sel) {
   }
   // A multi column dialog of only 1 column... oh well it is to copy the way
   // the other inputs dialogs work, and it might be easier this way anyway...
-  controls = new TMyMenuMultiCol(_("Raine Controls"),menu,1,cols);
+  controls = new TMyMenuMultiCol("",menu,1,cols);
   controls->execute();
   delete controls;
   for (int n=0; n<nb; n++) {
@@ -572,7 +572,7 @@ static int do_ingame_controls(int sel) {
 	      cols[a*3+2] = cols[b*3+2];
 	      cols[b*3+2] = str;
 	  }
-  controls = new TMyMenuMultiCol(_("Ingame Controls"),menu,3,cols);
+  controls = new TMyMenuMultiCol("",menu,3,cols);
   controls->execute();
   delete controls;
   for (n=0; n<mynb*3; n++) {
@@ -651,7 +651,7 @@ static int setup_autofire(int sel) {
     free(menu);
     return 0;
   }
-  TMenu *controls = new TMenu(_("Autofire..."),menu);
+  TMenu *controls = new TMenu("",menu);
   controls->execute();
   delete controls;
   // Now we must check if autofire was disabled for a newly created control
@@ -1103,7 +1103,7 @@ int do_controls(int sel) {
   } else
     controls_menu[2].label = NULL;
 
-  ctrl = new TControl(_("Controls"), controls_menu);
+  ctrl = new TControl("", controls_menu);
   ctrl->execute();
   delete ctrl;
   ctrl = NULL;

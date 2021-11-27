@@ -158,7 +158,7 @@ int do_cheats(int sel) {
 #ifdef HAS_CONSOLE
   add_scripts(&menu[CheatCount]);
 #endif
-  TCheatDlg *cheats = new TCheatDlg(_("Cheats"),menu);
+  TCheatDlg *cheats = new TCheatDlg("",menu);
   cheats->execute();
   delete cheats;
   for (int n=0; n<CheatCount; n++) {

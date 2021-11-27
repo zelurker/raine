@@ -167,6 +167,7 @@ class TMenu {
     }
     virtual int can_exit();
     virtual void set_sel(int mysel) { sel = mysel; reset_top(); }
+    virtual char *get_top_string();
 };
 
 class TBitmap_menu : public TMenu {

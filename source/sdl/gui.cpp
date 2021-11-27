@@ -539,20 +539,6 @@ char* TMain_menu::get_top_string() {
     return EMUNAME " " VERSION;
 }
 
-void TMain_menu::draw_top_frame() {
-    int w_title,h_title;
-    font->dimensions(title,&w_title,&h_title);
-#if SDL==1
-    boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame);
-    font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
-    font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
-#else
-    boxColor(rend,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
-    font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
-    font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
-#endif
-}
-
 char *TMain_menu::get_bot_frame_text() {
   int size = GetMemoryPoolSize()/1024; // Minimum Kb
   static char game[100];

@@ -170,7 +170,7 @@ static int do_paths(int sel) {
   }
 #endif
   selected_path = -1;
-  TMenu *menu = new TPathDlg((char*)_("Path selection"),paths->get_menu());
+  TMenu *menu = new TPathDlg("",paths->get_menu());
   menu->execute();
   if (selected_path >= 0)
     dlg->set_dir((char*)paths->get_menu()[selected_path].label);

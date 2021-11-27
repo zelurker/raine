@@ -69,7 +69,7 @@ int do_gui_options(int sel) {
       printf("too many gui options !\n");
       exit(1);
   }
-  gui_options = new TMenu(_("Options"), gui_menu);
+  gui_options = new TMenu("", gui_menu);
   gui_options->execute();
   delete gui_options;
 

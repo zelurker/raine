@@ -56,7 +56,7 @@ int do_dirs(int sel) {
   menu[3].menu_func = &do_m68kdis;
   menu[4].menu_func = &do_dz80;
 
-  TMenu *mbox = new TMenu(_("Directories"),menu);
+  TMenu *mbox = new TMenu("",menu);
   mbox->execute();
   delete mbox;
   free(menu);

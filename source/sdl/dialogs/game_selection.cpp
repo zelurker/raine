@@ -64,7 +64,7 @@ static int do_options(int sel) {
     }
     options[3].values_list_label[0] = _("All companies");
     sort_menu(options);
-    TMenu *mymenu = new TMenu(_("Options"),options);
+    TMenu *mymenu = new TMenu("",options);
     mymenu->execute();
     delete mymenu;
     recompute_list();

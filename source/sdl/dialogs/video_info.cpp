@@ -108,7 +108,7 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
 }
 
 int do_video(int sel) {
-  TVideo_menu *video_menu = new TVideo_menu(_("Video info"));
+  TVideo_menu *video_menu = new TVideo_menu("");
   video_menu->execute();
   delete video_menu;
   return 0;

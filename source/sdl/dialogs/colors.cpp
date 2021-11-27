@@ -67,7 +67,7 @@ static int set_gui_color(int sel) {
   }
   return 0;
 }
-  
+
 static int get_color_from_index() {
   switch(cindex) {
     case 0: return fg_color;
@@ -140,7 +140,7 @@ static int change_color(int sel) {
 
 
 int do_colors(int sel) {
-  TMenu *tmenu = new TMenu(_("Colors"),colors_menu);
+  TMenu *tmenu = new TMenu("",colors_menu);
   tmenu->execute();
   delete tmenu;
   return 0;

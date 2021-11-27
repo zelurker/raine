@@ -278,7 +278,7 @@ class TGame_options : public TMenu {
 int do_game_options(int sel) {
     if (fabs(default_fps) < 1e-4)
 	default_fps = fps;
-    TGame_options *menu = new TGame_options(_("Game options"),game_options);
+    TGame_options *menu = new TGame_options("",game_options);
     menu->execute();
     delete menu;
     return exit_options;

@@ -38,7 +38,7 @@ void Tdlg_dsw::validate_dsw() {
 }
 
 int do_dlg_dsw(int sel) {
-  Tdlg_dsw *dlg = new Tdlg_dsw(_("Dipswitches"),dsw_items);
+  Tdlg_dsw *dlg = new Tdlg_dsw("",dsw_items);
   dlg->execute();
   delete dlg;
   return 0;

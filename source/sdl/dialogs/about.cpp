@@ -800,7 +800,7 @@ end_loop:
 
     TMenu *about_menu;
     if (!do_command)
-	about_menu = new TAbout(_("About this game"),menu, NULL,-1, -1,-1,-1, /* to_translate */ 0);
+	about_menu = new TAbout("",menu, NULL,-1, -1,-1,-1, /* to_translate */ 0);
     else
 	about_menu = new TMoves_menu((char*)menu_commands[sel].label,menu);
     about_menu->execute();
@@ -822,7 +822,7 @@ int show_moves(int sel) {
     int n;
     for (n=0; n<nb_commands; n++)
 	menu_commands[n].menu_func = &about_game;
-    TMenu *menu = new TMenu(_("Special moves..."),menu_commands,
+    TMenu *menu = new TMenu("",menu_commands,
 	   NULL,-1, -1,-1,-1, /* to_translate */ 0);
     menu->execute();
     delete menu;
@@ -939,7 +939,7 @@ int do_about(int sel) {
     snprintf(about_cpu,64,"CPU: %s at %d MHz",raine_cpu_model,cycles_per_second/1000000);
   }
 #endif
-  about_menu = new TAbout_menu(_("About..."),about_items, path);
+  about_menu = new TAbout_menu("",about_items, path);
   about_menu->execute();
   delete about_menu;
   about_menu = NULL;
