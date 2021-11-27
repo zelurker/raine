@@ -152,20 +152,21 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	if (s > old) {
 	    // Eventually display what's before
 	    *s = 0;
-	    int w,h;
-	    font->dimensions(old,&w,&h);
+	    int myw,myh;
+	    font->dimensions(old,&myw,&myh);
 	    font->surf_string(sf,x,y,old,fg,bg,w);
-	    x += w;
+	    x += myw;
 	    *s = pre;
 	}
 	s++;
-	font->dimensions("mp",&w,&h);
+	int myw,myh;
+	font->dimensions("mp",&myw,&myh);
 	int col = 0;
 	char str[4];
 	TFont *f0 = NULL;
 	str[0] = *s;
 	str[1] = 0;
-	TSketcher *d = new TSketcher(sf,x,y,w,h,10,9);
+	TSketcher *d = new TSketcher(sf,x,y,myw,myh,10,9);
 	if (pre == '_') {
 	    switch(*s) {
 	    case 'A':
@@ -257,7 +258,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	// font->dimensions(str,&w,&h);
 	// w += 2; // some small margin
 	if (col)
-	    filledEllipseColor(sf, x+w/2, y+h/2, w/2,h/2, col);
+	    filledEllipseColor(sf, x+myw/2, y+myh/2, myw/2,myh/2, col);
 
 	if (strlen(str) > 2) {
 	    // Try to find a font size which fits in this space !
@@ -300,7 +301,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 
 	if (pre == '@') {
 	    // Very special case, W Button, 1 letter.
-	    font->surf_string(sf,x+w/4,y,str,(col ? 0 : fg),bg,w);
+	    font->surf_string(sf,x+myw/4,y,str,(col ? 0 : fg),bg,w);
 	    goto end_loop;
 	}
 
@@ -464,15 +465,15 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    d->lineC(1,4,3,6,white);
 	    d->lineC(8,2,8,6,white);
 	} else if (*s == '`' && pre == '_') {
-	    filledCircleColor(sf, x+w/2, y+h/2, w/10, white);
+	    filledCircleColor(sf, x+myw/2, y+myh/2, myw/10, white);
 	} else if (str[1] == 0) {
 	    int ws,hs;
 	    font->dimensions(str,&ws,&hs);
-	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg,w);
+	    font->surf_string(sf,x+(myw-ws)/2,y,str,(col ? 0 : fg),bg,w);
 	} else {
 	    int ws,hs;
 	    font->dimensions(str,&ws,&hs);
-	    font->surf_string(sf,x+(w-ws)/2,y,str,(col ? 0 : fg),bg,w);
+	    font->surf_string(sf,x+(myw-ws)/2,y,str,(col ? 0 : fg),bg,w);
 	}
 	if (f0) {
 	    delete font;
@@ -483,7 +484,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 end_loop:
 	s++;
 	old = s;
-	x += w;
+	x += myw;
     }
 
     if (*old)
