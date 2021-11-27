@@ -8,6 +8,10 @@
 #include "unzip.h"
 #include "gui.h" // load_progress (through load_explicit_progress)
 #include "loadpng.h"
+#ifdef SDL
+#include "SDL_gfx/SDL_rotozoom.h"
+#include "menuitem.h"
+#endif
 
 /* This is the support for the graphics emudx files. For the sound, see dxsmp.c in the
    sound directory. */
@@ -248,7 +252,7 @@ void load_emudx(const char *name, int tiles, int sprites,
 	      UINT32 *src = (UINT32*)bmp->line[0];
 	      UINT8 *dest = emudx_chars + (i-first_char)*0x100;
 	      for (sx=0; sx<16*16; sx++)
-		  if (src[sx] != 0xff00ff) {
+		  if (src[sx] != emudx_transp) {
 		      dest[sx] = 1;
 		  } else
 		      dest[sx] = 0;

@@ -126,22 +126,29 @@ extern void load_message(char *);
 
 #define load_explicit_progress(a,b) load_progress("emudx",(a)*100/(b))
 
-#define stretch_blit(src,dst,x1,y1,w1,h1,x2,y2,w2,h2) \
-{  SDL_Surface *mysrc; \
-   if ((x1) || (y1)) { \
-     SDL_Rect r; \
-     int myw = (w1), myh = (h1); \
-     r.x = x1; r.y = y1; r.w = myw; r.h = myh; \
-     SDL_PixelFormat *fmt = get_surface_from_bmp(src)->format; \
-     mysrc = SDL_CreateRGBSurface(SDL_SWSURFACE,myw,myh, \
+#define stretch_blit(src,dst,x1,y1,w1,h1,x2,y2,w2,h2)                  \
+{  SDL_Surface *mysrc;                                                 \
+   if ((x1) || (y1)) {                                                 \
+     SDL_Rect r;                                                       \
+     int myw = (w1), myh = (h1);                                       \
+     r.x = x1; r.y = y1; r.w = myw; r.h = myh;                         \
+     SDL_PixelFormat *fmt = get_surface_from_bmp(src)->format;         \
+     mysrc = SDL_CreateRGBSurface(SDL_SWSURFACE,myw,myh,               \
        fmt->BitsPerPixel,fmt->Rmask,fmt->Gmask,fmt->Bmask,fmt->Amask); \
-     SDL_BlitSurface(get_surface_from_bmp(src),&r,mysrc,NULL); \
-   } else { \
-     mysrc = get_surface_from_bmp(src); \
-     SDL_BlitSurface(mysrc,NULL,get_surface_from_bmp(dst),NULL); \
-   } \
-   if ((x1) || (y1)) SDL_FreeSurface(mysrc); \
+     SDL_BlitSurface(get_surface_from_bmp(src),&r,mysrc,NULL);         \
+   } else                                                              \
+     mysrc = get_surface_from_bmp(src);                                \
+   if (mysrc->w == w2 && mysrc->h == h2)                               \
+     SDL_BlitSurface(mysrc,NULL,get_surface_from_bmp(dst),NULL);       \
+   else {                                                              \
+     SDL_Surface *scaled = rotozoomSurfaceXY(mysrc, 0.0,               \
+      (w2)*1.0/(w1),(h2)*1.0/(h1),0);                                  \
+     SDL_BlitSurface(scaled, NULL, get_surface_from_bmp(dst), NULL);   \
+     SDL_FreeSurface(scaled);                                          \
+   }                                                                   \
+   if ((x1) || (y1)) SDL_FreeSurface(mysrc);                           \
 }
+
 
 
 #define blit(src,dst,x1,y1,x2,y2,w1,h1) \

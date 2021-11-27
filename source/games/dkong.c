@@ -11,6 +11,7 @@
 #include "savegame.h"
 #ifdef SDL
 #include "dialogs/messagebox.h"
+#include "SDL_gfx/SDL_rotozoom.h"
 // disable draw_trans_sprite for now
 #define draw_trans_sprite(dst,src,x,y)
 #endif
@@ -607,10 +608,11 @@ static void draw_emudx() {
 	// code -= 5;
 	Draw16x16_Trans_Mapped_Rot(&emudx_chars[code<<8],x,sy,map);
       } else {
-	if (code != 0xc0 || curlev == 4)
+	if (code != 0xc0 || curlev == 4) {
 	  // only draw the ladders (c0) in level 4.
 	  // The other dx levels have the ladders already drawn.
 	  Draw16x16_Trans_Rot(&emudx_sprites[code<<(8+bpp/2)],x,sy,0);
+	}
       }
     }
     END_SCROLL_n_16(512,512,1);
