@@ -32,7 +32,7 @@ typedef struct LAYER_INFO
 {
    int enabled;
    int flip;
-   UINT16 keycode;
+   UINT32 keycode;
    char *name;
 } LAYER_INFO;
 
