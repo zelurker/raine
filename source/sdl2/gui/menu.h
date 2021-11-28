@@ -48,7 +48,7 @@ extern TDesktop *desktop;
 extern int repeat_interval, repeat_delay;
 extern int return_mandatory, use_transparency;
 // All windows event are passed to this hook, returns 1 only if
-extern int (*window_event_hook)(SDL_Event *event); // to react to windows event while in gui
+extern void (*event_hook)(SDL_Event *event); // to react to windows or gamecontrollers events
 extern char * (*get_shared_hook)(char *name); // to get a shared directory
 extern void (*gui_end_hook)(); // called at the end of execute, to setup game screen eventually
 

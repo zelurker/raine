@@ -747,7 +747,7 @@ static void load_dkong() {
   AddZ80ARead(0x0000, 0xFFFF, DefBadReadZ80,		NULL);
   AddZ80AWrite(0x0000, 0xFFFF, DefBadWriteZ80,		NULL);
 
-  AddZ80AReadPort(0x00, 0xFF, DefBadReadZ80,			NULL);	// <bad reads>
+  AddZ80AReadPort(0x00, 0xFF, DefBadReadPortZ80,			NULL);	// <bad reads>
   AddZ80AReadPort(-1, -1, NULL, NULL);
 
   AddZ80AWritePort(0x00, 0xFF, DefBadWritePortZ80,			NULL);	// <bad reads>

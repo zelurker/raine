@@ -63,9 +63,24 @@
  * convinient for the gui inputs at least, so we won something from it for
  * sure ! :) */
 
-SDL_Joystick *joy[MAX_JOY];
-char *joy_name[MAX_JOY];
-int bad_axes[MAX_JOY*MAX_AXIS];
+typedef struct joystick_state {
+  int pos_axis[MAX_AXIS];
+  UINT8 hat[MAX_HAT];
+} joystick_state;
+
+typedef struct {
+    SDL_Joystick *joy;
+    SDL_GameController *controller;
+    char *name;
+    // The index is the index used in raine to know which joystick it is for the inputs
+    // the instance is what is returned in the which field for its events... !
+    int index,instance;
+    joystick_state jstate;
+} tjoy;
+static int nb_joy;
+
+tjoy joy[MAX_JOY];
+
 char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 static int lost_focus;
@@ -80,6 +95,33 @@ UINT8 input_buffer[0x100];
 int GameMouse,use_leds;
 int use_custom_keys;
 int joy_use_custom_keys;
+
+char *get_joy_name(int n) {
+    for (int ta=0; ta<nb_joy; ta++)
+	if (joy[ta].index == n)
+	    return joy[ta].name;
+    return "???";
+}
+
+int is_game_controller(int n) {
+#if SDL < 2
+    return 0;
+#else
+    return joy[n].controller != NULL;
+#endif
+}
+
+int get_joy_input(int num, int axe, int button, int hat) {
+    // It's just some converssion from the JOY macro using the new player index
+    // but since JOY must return constants because it's used for the default inputs
+    // we use this function for everything which doesn't need to be constant
+    num = joy[num].index+1; // the JOY macro takes num from 1
+    return JOY(num, axe, button, hat);
+}
+
+int get_joy_naxes(int n) {
+    return SDL_JoystickNumAxes(joy[n].joy);
+}
 
 /* Removed led handling for now. In SDL there is no direct support for that
  * and it's obvious that having direct access to the keyboard to be able
@@ -115,41 +157,39 @@ void my_get_mouse_mickeys(int *mx, int *my) {
 
 void (*GetMouseMickeys)(int *mx,int *my) = &my_get_mouse_mickeys;
 
+#if SDL != 2
+#define SDL_CONTROLLER_BUTTON_START 8
+#endif
 /******************************************************************************/
 /*                                                                            */
 /*                        DEFAULT GAME KEY SETTINGS                           */
 /*                                                                            */
 /******************************************************************************/
 
-typedef struct joystick_state {
-  int pos_axis[MAX_AXIS];
-  UINT8 hat[MAX_HAT];
-} joystick_state;
-
-joystick_state jstate[MAX_JOY];
-
 // must be global for the controls dialog
 // The categ field has the only purpose to sort the inputs in the control dialog !
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
 #if defined(RAINE_WIN32) || SDL==2
- { SDLK_3,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
+ { SDLK_3,       JOY(1,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #else
  { SDLK_z,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #endif
+#if SDL == 2
+ { SDLK_4,       JOY(2,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
+ { SDLK_7,       JOY(3,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
+ { SDLK_8,       JOY(4,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
+#else
  { SDLK_4,       JOY(2,0,10,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
  { SDLK_7,       JOY(3,0,10,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
  { SDLK_8,       JOY(4,0,10,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
+#endif
 
  { SDLK_t,       0x00, 0, "Def Tilt",    SYS      },      // KB_DEF_TILT,
  { SDLK_y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
  { SDLK_u,       0x00, 0, "Def Test",    SYS      },      // KB_DEF_TEST,
 
-#if defined(RAINE_WIN32) || SDL==2
- { SDLK_1,       JOY(1,0,9,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
-#else
- { SDLK_a,       JOY(1,0,9,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
-#endif
+ { SDLK_1,       JOY(1,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
 
  { SDLK_UP,      JOY(1,AXIS_LEFT(1),0,0), 0, "Def P1 Up",P1D         },      // KB_DEF_P1_UP,
  { SDLK_DOWN,    JOY(1,AXIS_RIGHT(1),0,0), 0, "Def P1 Down",P1D       },      // KB_DEF_P1_DOWN,
@@ -165,7 +205,7 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { SDLK_m,       JOY(1,0,7,0), 0, "Def P1 Button 7", P1B      },      // KB_DEF_P1_B7,
  { SDLK_k,       JOY(1,0,8,0), 0, "Def P1 Button 8", P1B      },      // KB_DEF_P1_B8,
 
- { SDLK_2,       JOY(2,0,9,0), 0, "Def P2 Start", P2S        },      // KB_DEF_P2_START,
+ { SDLK_2,       JOY(2,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P2 Start", P2S        },      // KB_DEF_P2_START,
 
  { SDLK_s,       JOY(2,AXIS_LEFT(1),0,0), 0, "Def P2 Up", P2D            },      // KB_DEF_P2_UP,
  { SDLK_x,       JOY(2,AXIS_RIGHT(1),0,0), 0, "Def P2 Down", P2D          },      // KB_DEF_P2_DOWN,
@@ -181,7 +221,7 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { SDLK_f,       JOY(2,0,7,0), 0, "Def P2 Button 7", P2B      },      // KB_DEF_P2_B7,
  { SDLK_g,       JOY(2,0,8,0), 0, "Def P2 Button 8", P2B      },      // KB_DEF_P2_B8,
 
- { SDLK_5,       JOY(3,0,9,0), 0, "Def P3 Start",P3S         },      // KB_DEF_P3_START,
+ { SDLK_5,       JOY(3,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P3 Start",P3S         },      // KB_DEF_P3_START,
 
  { 0,       JOY(3,AXIS_LEFT(1),0,0), 0, "Def P3 Up", P3D            },      // KB_DEF_P2_UP,
  { 0,       JOY(3,AXIS_RIGHT(1),0,0), 0, "Def P3 Down", P3D          },      // KB_DEF_P2_DOWN,
@@ -197,7 +237,7 @@ struct DEF_INPUT def_input[KB_DEF_COUNT] =
  { 0x00,        JOY(3,0,7,0), 0, "Def P3 Button 7", P3B      },      // KB_DEF_P3_B7,
  { 0x00,        JOY(3,0,8,0), 0, "Def P3 Button 8", P3B      },      // KB_DEF_P3_B8,
 
- { SDLK_6,       JOY(4,0,9,0), 0, "Def P4 Start", P4S         },      // KB_DEF_P4_START,
+ { SDLK_6,       JOY(4,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P4 Start", P4S         },      // KB_DEF_P4_START,
 
  { 0,       JOY(4,AXIS_LEFT(1),0,0), 0, "Def P4 Up", P4D            },      // KB_DEF_P2_UP,
  { 0,       JOY(4,AXIS_RIGHT(1),0,0), 0, "Def P4 Down", P4D          },      // KB_DEF_P2_DOWN,
@@ -407,6 +447,106 @@ int get_console_key() {
 static struct DEF_INPUT_EMU *driver_emu_list = NULL;
 static int driver_nb_emu_inputs;
 
+static void update_index(int n, int index) {
+    // This function because SDL_JoystickSetPlayerIndex does not work on most joysticks !
+    if (joy[n].controller)
+	joy[n].index = SDL_GameControllerGetPlayerIndex(joy[n].controller);
+    else {
+	if (joy[n].index == index) {
+	    joy[n].index = nb_joy;
+	    for (int ta=0; ta<nb_joy; ta++) {
+		if (ta == n) continue;
+		if (joy[ta].index == nb_joy) {
+		    printf("already found index to update for %d\n",ta);
+		    exit(1);
+		}
+	    }
+	}
+    }
+}
+
+int get_joy_index_from_playerindex(int index) {
+#if SDL == 2
+    for (int ta=0; ta<nb_joy; ta++) {
+	if (joy[ta].index == index)
+	    return ta;
+    }
+    return -1;
+#else
+    return index; // not sure for sdl1, indexes don't make much sense there...
+#endif
+}
+
+int get_joy_index_from_instance(int inst) {
+#if SDL == 2
+    for (int ta=0; ta<nb_joy; ta++) {
+	if (joy[ta].instance == inst)
+	    return ta;
+    }
+    return -1;
+#else
+    return inst; // function does not exist in sdl1, hotpluging is not supported
+#endif
+}
+
+static int get_joy_index(int n) {
+    SDL_JoystickGUID guid;
+    guid = SDL_JoystickGetDeviceGUID(n);
+    char guid_str[35];
+    SDL_JoystickGetGUIDString(guid,guid_str,35);
+    int index = raine_get_config_int("emulator_joy_config",guid_str,-1);
+    if (index == -1) {
+	if (joy[n].controller)
+	    index = SDL_GameControllerGetPlayerIndex(joy[n].controller);
+	else
+	    index = SDL_JoystickGetPlayerIndex(joy[n].joy);
+	if (index == -1) {
+	    index = nb_joy;
+	    printf("can't get any index, using %d\n",index);
+	    // Function doesn't work for most joysticks, but anyway... !!!
+	    SDL_JoystickSetPlayerIndex(joy[n].joy,index);
+	}
+	printf("no index found, %d assigned\n",index);
+    } else {
+	printf("got index %d from config\n",index);
+	SDL_GameControllerSetPlayerIndex(joy[n].controller,index);
+	for (int ta=0; ta<n; ta++) {
+	    update_index(ta,index);
+	    printf("%d: index %d\n",ta,joy[ta].index);
+	}
+    }
+    return index;
+}
+
+static void del_controller(int n) {
+    if (joy[n].controller)
+	SDL_GameControllerClose(joy[n].controller);
+    else
+	SDL_JoystickClose(joy[n].joy);
+    joy[n].controller = NULL;
+    for (int ta=n+1; ta<nb_joy; ta++) {
+	printf("%d -> %d\n",ta,ta-1);
+	joy[ta-1] = joy[ta];
+    }
+    memset(&joy[nb_joy-1],0,sizeof(tjoy));
+    nb_joy--;
+}
+
+static void add_game_controller(int n) {
+    char *name = (char*)SDL_GameControllerNameForIndex(n);
+    joy[n].name = name;
+    joy[n].controller = SDL_GameControllerOpen(n);
+    memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
+    if (!joy[n].controller) {
+	printf("open failed: %s\n",SDL_GetError());
+	exit(1);
+    }
+    joy[n].index = get_joy_index(n);
+    joy[n].instance = SDL_JoystickGetDeviceInstanceID(n);
+    nb_joy++;
+    printf("controller %d opened (%s) index %d\n",n,joy[n].name,joy[n].index);
+}
+
 static void cold_boot() {
     hs_close(); // save hiscores BEFORE erasing the ram !
 #if HAS_NEO
@@ -592,9 +732,12 @@ void init_inputs(void)
    mickey_x_scaled = mickey_y_scaled = 0.0;
 
    memset(key,0,sizeof(key));
-   memset(jstate,0,sizeof(jstate));
    memset(autofire_timer,0,sizeof(autofire_timer));
    memset(stick_logic,0,sizeof(stick_logic));
+   for (int n=0; n<MAX_JOY; n++) {
+       if (joy[n].joy || joy[n].controller)
+	   memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
+   }
 
    nb_valid_inputs = 0;
 
@@ -615,7 +758,10 @@ void release_inputs(void)
   // just release the inputs when coming back from the gui...
 
   memset(key,0,sizeof(key));
-  memset(jstate,0,sizeof(jstate));
+  for (int n=0; n<MAX_JOY; n++) {
+      if (joy[n].joy || joy[n].controller)
+	  memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
+  }
   memset(autofire_timer,0,sizeof(autofire_timer));
   memset(stick_logic,0,sizeof(stick_logic));
 
@@ -819,10 +965,10 @@ void load_default_keys(char *section)
    if (analog_name[0]) {
      int n;
      for (n=0; n<SDL_NumJoysticks(); n++) {
-       if (!strcmp(analog_name,joy_name[n])) {
-	 analog_num = n;
-	 break;
-       }
+	 if (!strcmp(analog_name,joy[n].name)) {
+	     analog_num = n;
+	     break;
+	 }
      }
      if (analog_num > -1) {
        analog_stick= raine_get_config_int(section,"analog_stick",0);
@@ -921,6 +1067,7 @@ void save_emulator_keys(char *section)
 
 void load_emulator_joys(char *section)
 {
+    printf("load_emulator joys\n");
    int ta;
    char joy_name[64];
    int nb = raine_get_emu_nb_ctrl();
@@ -942,6 +1089,13 @@ void save_emulator_joys(char *section)
       sprintf(joy_name,"%s",def_input_emu[ta].name);
       no_spaces(joy_name);
       raine_set_config_int(section,joy_name,def_input_emu[ta].joycode);
+   }
+   for (ta=0; ta<nb_joy; ta++) {
+       SDL_JoystickGUID guid;
+       guid = SDL_JoystickGetDeviceGUID(ta);
+       char guid_str[35];
+       SDL_JoystickGetGUIDString(guid,guid_str,35);
+       raine_set_config_int(section,guid_str,joy[ta].index);
    }
 }
 
@@ -1235,7 +1389,7 @@ static void check_emu_joy_event(int jevent) {
 }
 
 int get_axis_from_hat(int which, int hat) {
-  return SDL_JoystickNumAxes(joy[which]) + (hat)*2;
+  return SDL_JoystickNumAxes(joy[which].joy) + (hat)*2;
 }
 
 static int check_layer_key(int input)
@@ -1275,12 +1429,94 @@ static int check_emu_inputs(DEF_INPUT_EMU *emu_input, int nb, int input, int mod
   return 0;
 }
 
-static void handle_event(SDL_Event *event) {
-  int input,which,axis,value,modifier,jevent, hat, ta;
+static void handle_joy_axis(int which, int axis, int value) {
+    int jevent = 0;
+    if (value <= -16000 && joy[which].jstate.pos_axis[axis] > -1) {
+	if (joy[which].jstate.pos_axis[axis] == 1) {
+	    /* Special case for joysticks : sometimes they move so fast from one
+	     * side to the other that we get nothing for the central position.
+	     * In this case raine rejects the opposite control so we'd better
+	     * avoid this here... */
+	    remove_joy_event(get_joy_input(which,AXIS_RIGHT(axis),0,0));
+	}
+	joy[which].jstate.pos_axis[axis] = -1;
+	add_joy_event((jevent = get_joy_input(which,AXIS_LEFT(axis),0,0)));
+    } else if (value >= 16000 && joy[which].jstate.pos_axis[axis] < 1) {
+	if (joy[which].jstate.pos_axis[axis] == -1)
+	    remove_joy_event(get_joy_input(which,AXIS_LEFT(axis),0,0));
+	joy[which].jstate.pos_axis[axis] = 1;
+	add_joy_event((jevent = get_joy_input(which,AXIS_RIGHT(axis),0,0)));
+    } else if ((joy[which].jstate.pos_axis[axis] == -1 && value >= -16000) ||
+	    (joy[which].jstate.pos_axis[axis] == 1 && value <= 16000)) {
+	/* With my choice to encode joystick events, there is no way to know
+	 * if this is the end of a right or left movement. So I end both of
+	 * them !
+	 * It shouldn't matter all that much, this remains very fast */
+	remove_joy_event(get_joy_input(which, AXIS_LEFT(axis),0,0));
+	remove_joy_event(get_joy_input(which, AXIS_RIGHT(axis),0,0));
+	joy[which].jstate.pos_axis[axis] = 0;
+    }
+    if (jevent)
+	check_emu_joy_event(jevent);
+}
+
+void control_handle_event(SDL_Event *event) {
+  int input,which,axis,value,modifier,jevent,  ta;
   DEF_INPUT_EMU *emu_input;
-  int input_valid,nb,changed,base_axis;
+  int input_valid,nb;
 
   switch (event->type) {
+  case SDL_CONTROLLERBUTTONDOWN:
+      which = get_joy_index_from_instance(event->cbutton.which);
+      switch (event->cbutton.button) {
+      case SDL_CONTROLLER_BUTTON_DPAD_UP:
+	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,-16000);
+	  return;
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,16000);
+	  return;
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,-16000);
+	  return;
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,16000);
+	  return;
+      }
+      add_joy_event((jevent = get_joy_input(which,0,event->cbutton.button+1,0)));
+      check_emu_joy_event(jevent);
+      break;
+  case SDL_CONTROLLERBUTTONUP:
+      which = get_joy_index_from_instance(event->cbutton.which);
+      switch (event->cbutton.button) {
+      case SDL_CONTROLLER_BUTTON_DPAD_UP:
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,0);
+	  return;
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,0);
+	  return;
+      }
+      remove_joy_event(get_joy_input(which,0,event->cbutton.button+1,0));
+      break;
+  case SDL_CONTROLLERDEVICEADDED:
+      {
+	  int n = event->cdevice.which;
+	  printf("Game controller device %d added.\n", n);
+	  if (joy[n].controller) {
+	      printf("Already have controller %d\n",n);
+	  } else
+	      add_game_controller(n);
+      }
+      break;
+
+  case SDL_CONTROLLERDEVICEREMOVED:
+      {
+	  int n = event->cdevice.which;
+	  printf("bye controller %d\n",n);
+	  del_controller(n);
+      }
+      break;
     case SDL_KEYDOWN:
       input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
       if (!(input & 0xfffffff)) { // special encoding for scancodes (unknown keys)
@@ -1435,59 +1671,17 @@ static void handle_event(SDL_Event *event) {
       display_bezel();
       break;
 #endif
-    case SDL_JOYHATMOTION:
-      /* Hats are a windows speciality. In linux, they are seen as 2 separate
-       * axis. Since axis simplify the way to handle them, I don't really see
-       * any good reasons to handle hats separately, but it's windows, and
-       * they love to make things complicated... and this code is not trivial
-       * because a hat sends only the position it is in (8 possible positions
-       * + center), so to emulate a real joystick we have to emulate more
-       * than 1 event for 1 position change of the hat */
-      which = event->jhat.which+1;
-      hat = event->jhat.hat+1;
-      value = event->jhat.value;
-      changed = jstate[which].hat[hat] & (~value);
-      // Emulate the hat like a virtual stick
-      base_axis = get_axis_from_hat(which-1,hat-1);
-      // changed contains the bitmask of the axis which need to be centered !
-      event->jaxis.which = which-1;
-      event->type = SDL_JOYAXISMOTION;
-
-      event->jaxis.value = 0;
-      if (changed & (SDL_HAT_LEFT | SDL_HAT_RIGHT)) {
-	event->jaxis.axis = base_axis;
-	handle_event(event);
-      }
-      if (changed & (SDL_HAT_UP | SDL_HAT_DOWN)) {
-	event->jaxis.axis = base_axis+1;
-	handle_event(event);
-      }
-
-      // Now send the events corresponding to the current position
-      if (value & SDL_HAT_LEFT) {
-	event->jaxis.axis = base_axis + 0;
-	event->jaxis.value = -32700;
-	handle_event(event);
-      }
-      if (value & SDL_HAT_RIGHT) {
-	event->jaxis.axis = base_axis + 0;
-	event->jaxis.value = 32700;
-	handle_event(event);
-      }
-      if (value & SDL_HAT_UP) {
-	event->jaxis.axis = base_axis + 1;
-	event->jaxis.value = -32700;
-	handle_event(event);
-      }
-      if (value & SDL_HAT_DOWN) {
-	event->jaxis.axis = base_axis + 1;
-	event->jaxis.value = 32000;
-	handle_event(event);
-      }
-      jstate[which].hat[hat] = event->jhat.value;
+    case SDL_CONTROLLERAXISMOTION:
+      which = get_joy_index_from_instance(event->caxis.which);
+      axis = event->caxis.axis;
+      value = event->caxis.value;
+      handle_joy_axis(which,axis,value);
       break;
     case SDL_JOYAXISMOTION:
-      which = event->jaxis.which+1;
+      which = get_joy_index_from_instance(event->jaxis.which);
+      if (is_game_controller(which)) {
+	  return;
+      }
       axis = event->jaxis.axis;
       value = event->jaxis.value;
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
@@ -1524,41 +1718,22 @@ static void handle_event(SDL_Event *event) {
 	  }
 	}
       }
-      jevent = 0;
-      if (value < -16000 && jstate[which].pos_axis[axis] > -1) {
-	if (jstate[which].pos_axis[axis] == 1) {
-	  /* Special case for joysticks : sometimes they move so fast from one
-	   * side to the other that we get nothing for the central position.
-	   * In this case raine rejects the opposite control so we'd better
-	   * avoid this here... */
-	  remove_joy_event(JOY(which,AXIS_RIGHT(axis),0,0));
-	}
-	jstate[which].pos_axis[axis] = -1;
-	add_joy_event((jevent = JOY(which,AXIS_LEFT(axis),0,0)));
-      } else if (value > 16000 && jstate[which].pos_axis[axis] < 1) {
-	if (jstate[which].pos_axis[axis] == -1)
-	  remove_joy_event(JOY(which,AXIS_LEFT(axis),0,0));
-	jstate[which].pos_axis[axis] = 1;
-	add_joy_event((jevent = JOY(which,AXIS_RIGHT(axis),0,0)));
-      } else if ((jstate[which].pos_axis[axis] == -1 && value > -16000) ||
-	  (jstate[which].pos_axis[axis] == 1 && value < 16000)) {
-	/* With my choice to encode joystick events, there is no way to know
-	 * if this is the end of a right or left movement. So I end both of
-	 * them !
-	 * It shouldn't matter all that much, this remains very fast */
-	remove_joy_event(JOY(which, AXIS_LEFT(axis),0,0));
-	remove_joy_event(JOY(which, AXIS_RIGHT(axis),0,0));
-	jstate[which].pos_axis[axis] = 0;
-      }
-      if (jevent)
-	check_emu_joy_event(jevent);
+      handle_joy_axis(which, axis, value);
       break;
     case SDL_JOYBUTTONDOWN:
-      add_joy_event((jevent = JOY(event->jbutton.which+1,0,event->jbutton.button+1,0)));
+      which = get_joy_index_from_instance(event->jaxis.which);
+      if (is_game_controller(which)) {
+	  return;
+      }
+      add_joy_event((jevent = get_joy_input(which,0,event->jbutton.button+1,0)));
       check_emu_joy_event(jevent);
       break;
     case SDL_JOYBUTTONUP:
-      remove_joy_event(JOY(event->jbutton.which+1,0,event->jbutton.button+1,0));
+      which = get_joy_index_from_instance(event->jaxis.which);
+      if (is_game_controller(which)) {
+	  return;
+      }
+      remove_joy_event(get_joy_input(which,0,event->jbutton.button+1,0));
       break;
     case SDL_QUIT:
       exit(0);
@@ -1607,8 +1782,9 @@ void update_inputs(void)
     }
   }
 
+  SDL_PumpEvents();
   while (SDL_PollEvent(&event)) {
-    handle_event(&event);
+    control_handle_event(&event);
   }
   if (! raine_cfg.req_pause_game && pause_on_focus ) {
       lost_focus++;
@@ -1878,17 +2054,24 @@ void inputs_preinit() {
   int n;
   SDL_Event event;
   int handled;
-  memset(bad_axes,0,sizeof(bad_axes));
   for (n=0; n<SDL_NumJoysticks(); n++) {
-    joy[n] = SDL_JoystickOpen(n);
-    // Memorize the joystick name because calls to this function are very
-    // slow for some reason... !
-#if SDL==2
-    joy_name[n] = strdup(SDL_JoystickName(joy[n]));
-#else
-    joy_name[n] = strdup(SDL_JoystickName(n));
+#if SDL == 2
+      if (SDL_IsGameController(n)) {
+	  add_game_controller(n);
+	  continue;
+      }
 #endif
-    printf("joy %d opened (%s), numaxes %d\n",n,joy_name[n],SDL_JoystickNumAxes(joy[n]));
+      joy[n].joy = SDL_JoystickOpen(n);
+      // Memorize the joystick name because calls to this function are very
+      // slow for some reason... !
+#if SDL==2
+      joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
+#else
+      joy[n].name = SDL_JoystickName(n);
+#endif
+      joy[n].index = get_joy_index(n);
+      nb_joy++;
+      printf("joy %d opened (%s), numaxes %d\n",n,joy[n].name,SDL_JoystickNumAxes(joy[n].joy));
   }
 
   // Some peripherals like a certain microsoft keyboard is recognized as a
@@ -1917,9 +2100,10 @@ void inputs_preinit() {
 void inputs_done() {
   int n;
   for (n=0; n<SDL_NumJoysticks(); n++)
-    if (joy[n]) {
-	SDL_JoystickClose(joy[n]);
-	free(joy_name[n]);
-    }
+    if (joy[n].joy) {
+	SDL_JoystickClose(joy[n].joy);
+	// free(joy[n].name);
+    } else if (joy[n].controller)
+	SDL_GameControllerClose(joy[n].controller);
 }
 

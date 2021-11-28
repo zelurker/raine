@@ -121,7 +121,7 @@ void sdl_init() {
 	putenv(buffer);
 #endif
 	if ( SDL_Init(
-		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS
+		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS | SDL_INIT_JOYSTICK
 		    ) < 0 ) {
 	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
 	    exit(2);
@@ -156,12 +156,20 @@ void sdl_init() {
 		    SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 #endif
 	else
-	    win = SDL_CreateWindow(title,
-		    display_cfg.posx,
-		    display_cfg.posy,
-		    display_cfg.screen_x,
-		    display_cfg.screen_y,
-		    SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	    if (display_cfg.posx || display_cfg.posy)
+		win = SDL_CreateWindow(title,
+			display_cfg.posx,
+			display_cfg.posy,
+			display_cfg.screen_x,
+			display_cfg.screen_y,
+			SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	    else
+		win = SDL_CreateWindow(title,
+			SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED,
+			display_cfg.screen_x,
+			display_cfg.screen_y,
+			SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 #ifdef RAINE_WIN32
 	// Without this hint in windows : start a game in windowed mode, use alt-return in game
 	// to switch to fullscreen, press esc to call the gui -> crash with the error :

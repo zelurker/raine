@@ -35,14 +35,16 @@
 static UINT32 inp_key,inp_joy,inp_mouse,inp_mod;
 static menu_item_t *menu;
 
-static char *get_joy_name(int code) {
+static char *my_get_joy_name(int code) {
   if (!code)
     return strdup("");
   else if ((code & 0xff)-1 >= SDL_NumJoysticks())
       return strdup("Not here");
   char name[80];
   // sprintf(name,"Joy %d ",code & 0xff);
-  snprintf(name,30,"Joy %d (%s",code & 0xff,joy_name[(code & 0xff)-1]);
+  snprintf(name,30,"Joy %d (%s",code & 0xff,get_joy_name((code & 0xff)-1));
+  int which = get_joy_index_from_playerindex((code & 0xff)-1);
+  int is_controller = is_game_controller(which);
   name[30] = 0;
   if (strlen(name) == 29)
       strcat(name,"...");
@@ -52,21 +54,68 @@ static char *get_joy_name(int code) {
   int btn = (code >> 16) & 0xff;
   if (!btn) {
     char *direction;
-    if (stick & 2) {
-      if (stick & 1)
-        direction = _("DOWN");
-      else
-	direction = _("UP");
+    if (!is_controller) {
+	if (stick & 2) {
+	    if (stick & 1)
+		direction = _("DOWN");
+	    else
+		direction = _("UP");
+	} else {
+	    if (stick & 1)
+		direction = _("RIGHT");
+	    else
+		direction = _("LEFT");
+	}
     } else {
-      if (stick & 1)
-	direction = _("RIGHT");
-      else
-	direction = _("LEFT");
+	if (stick & 2) {
+	    if (stick & 1)
+		direction = "-";
+	    else
+		direction = "+";
+	} else {
+	    if (stick & 1)
+		direction = "+";
+	    else
+		direction = "-";
+	}
     }
-    sprintf(&name[strlen(name)],"Stick %d %s",stick/4,direction);
+#if SDL==2
+    if (is_controller) {
+	// For info we can't use the sdl2 functions to get the axis/buttons names
+	// because they want some enum as parameter, and c++ refuses to convert an int to an enum !
+	switch(stick/2) {
+	case SDL_CONTROLLER_AXIS_LEFTX: strcat(name,"leftx"); break;
+	case SDL_CONTROLLER_AXIS_LEFTY: strcat(name,"lefty"); break;
+	case SDL_CONTROLLER_AXIS_RIGHTX: strcat(name,"rightx"); break;
+	case SDL_CONTROLLER_AXIS_RIGHTY: strcat(name,"righty"); break;
+	case SDL_CONTROLLER_AXIS_TRIGGERLEFT: strcat(name,"trigger left"); break;
+	case SDL_CONTROLLER_AXIS_TRIGGERRIGHT: strcat(name,"trigger right"); break;
+	}
+	sprintf(&name[strlen(name)],"%s",direction);
+    } else
+#endif
+	sprintf(&name[strlen(name)],"Stick %d %s",stick/4,direction);
     return strdup(name);
   }
-  sprintf(&name[strlen(name)],"Btn %d",btn);
+#if SDL==2
+  if (is_controller) {
+      switch(btn-1) {
+      case SDL_CONTROLLER_BUTTON_A: strcat(name,"A"); break;
+      case SDL_CONTROLLER_BUTTON_B: strcat(name,"B"); break;
+      case SDL_CONTROLLER_BUTTON_X: strcat(name,"X"); break;
+      case SDL_CONTROLLER_BUTTON_Y: strcat(name,"Y"); break;
+      case SDL_CONTROLLER_BUTTON_BACK: strcat(name,"BACK"); break;
+      case SDL_CONTROLLER_BUTTON_GUIDE: strcat(name,"GUIDE"); break;
+      case SDL_CONTROLLER_BUTTON_START: strcat(name,"START"); break;
+      case SDL_CONTROLLER_BUTTON_LEFTSTICK: strcat(name,_("Left stick")); break;
+      case SDL_CONTROLLER_BUTTON_RIGHTSTICK: strcat(name,_("Right Stick")); break;
+      case SDL_CONTROLLER_BUTTON_LEFTSHOULDER: strcat(name,_("Left shoulder")); break;
+      case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: strcat(name,_("Right shoulder")); break;
+      default: sprintf(&name[strlen(name)],"Btn %d",btn);
+      }
+  } else
+#endif
+      sprintf(&name[strlen(name)],"Btn %d",btn);
   return strdup(name);
 }
 
@@ -175,55 +224,101 @@ void TInput::handle_key(SDL_Event *event) {
 }
 
 void TInput::handle_joystick(SDL_Event *event) {
-	if (!must_handle_joy)
-		return;
+    if (!must_handle_joy)
+	return;
+
   int which, axis, value,hat;
   switch (event->type) {
     case SDL_JOYAXISMOTION:
-      which = event->jaxis.which+1;
+      which = get_joy_index_from_instance(event->jaxis.which);
+      if (is_game_controller(which)) {
+	  return;
+      }
       axis = event->jaxis.axis;
       value = event->jaxis.value;
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
 	return;
       }
-      if (bad_axes[MAX_AXIS*(which-1)+axis]) {
-	  printf("skipping bad axis\n");
-	  return;
-      }
-      if (axis > SDL_JoystickNumAxes(joy[which-1]))
+      if (axis > get_joy_naxes(which))
 	  return;
       if (value < -20000) {
-	inp_joy = JOY(which,AXIS_LEFT(axis),0,0);
+	inp_joy = get_joy_input(which,AXIS_LEFT(axis),0,0);
 	exit_menu = 1;
       } else if (value > 20000) {
-	inp_joy = JOY(which,AXIS_RIGHT(axis),0,0);
+	inp_joy = get_joy_input(which,AXIS_RIGHT(axis),0,0);
 	exit_menu = 1;
       }
       break;
     case SDL_JOYBUTTONUP:
-      inp_joy = JOY(event->jbutton.which+1,0,event->jbutton.button+1,0);
+      which = get_joy_index_from_instance(event->jbutton.which);
+      if (is_game_controller(which)) {
+	  return;
+      }
+      inp_joy = get_joy_input(which,0,event->jbutton.button+1,0);
       exit_menu = 1;
       break;
+    case SDL_CONTROLLERAXISMOTION:
+      which = get_joy_index_from_instance(event->cbutton.which);
+      axis = event->caxis.axis;
+      value = event->caxis.value;
+      if (value <= -16000) {
+	  inp_joy = get_joy_input(which, AXIS_LEFT(axis),0,0);
+	  exit_menu = 1;
+      } else if (value >= 16000) {
+	  inp_joy = get_joy_input(which, AXIS_RIGHT(axis),0,0);
+	  exit_menu = 1;
+      }
+      break;
+    case SDL_CONTROLLERBUTTONUP:
+      which = get_joy_index_from_instance(event->cbutton.which);
+      switch (event->cbutton.button) {
+      case SDL_CONTROLLER_BUTTON_DPAD_UP:
+	  event->type = SDL_CONTROLLERAXISMOTION;
+	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTY;
+	  event->caxis.value = -16000;
+	  return handle_joystick(event);
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	  event->type = SDL_CONTROLLERAXISMOTION;
+	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTY;
+	  event->caxis.value = 16000;
+	  return handle_joystick(event);
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+	  event->type = SDL_CONTROLLERAXISMOTION;
+	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTX;
+	  event->caxis.value = -16000;
+	  return handle_joystick(event);
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	  event->type = SDL_CONTROLLERAXISMOTION;
+	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTX;
+	  event->caxis.value = 16000;
+	  return handle_joystick(event);
+      }
+      inp_joy = get_joy_input(which,0,event->cbutton.button+1,0);
+      exit_menu = 1;
+      SDL_FlushEvents(SDL_JOYBUTTONDOWN,SDL_JOYBUTTONUP);
+      break;
     case SDL_JOYHATMOTION:
-      which = event->jhat.which;
+      which = get_joy_index_from_instance(event->jhat.which);
+      if (is_game_controller(which)) {
+	  return;
+      }
       hat = event->jhat.hat;
       axis = get_axis_from_hat(which,hat);
-      which++;
       switch(event->jhat.value) { // take only 1 of the 4 positions
 	case SDL_HAT_LEFT:
-	  inp_joy = JOY(which,AXIS_LEFT(axis),0,0);
+	  inp_joy = get_joy_input(which,AXIS_LEFT(axis),0,0);
 	  exit_menu = 1;
 	  break;
 	case SDL_HAT_UP:
-	  inp_joy = JOY(which,AXIS_LEFT(axis+1),0,0);
+	  inp_joy = get_joy_input(which,AXIS_LEFT(axis+1),0,0);
 	  exit_menu = 1;
 	  break;
 	case SDL_HAT_RIGHT:
-	  inp_joy = JOY(which,AXIS_RIGHT(axis),0,0);
+	  inp_joy = get_joy_input(which,AXIS_RIGHT(axis),0,0);
 	  exit_menu = 1;
 	  break;
 	case SDL_HAT_DOWN:
-	  inp_joy = JOY(which,AXIS_RIGHT(axis+1),0,0);
+	  inp_joy = get_joy_input(which,AXIS_RIGHT(axis+1),0,0);
 	  exit_menu = 1;
 	  break;
       }
@@ -301,7 +396,7 @@ static int do_input(int sel) {
   } else {
     def_input_emu[indice].joycode = inp_joy;
     free(cols[sel*2+1]);
-    cols[sel*2+1] = get_joy_name(def_input_emu[indice].joycode);
+    cols[sel*2+1] = my_get_joy_name(def_input_emu[indice].joycode);
   }
   controls->setup_font(40);
   controls->draw();
@@ -387,7 +482,7 @@ static int do_input_ingame(int sel) {
     if (!use_custom_keys && !base_input)
       def_input[InputList[nb].default_key & 0xff].joycode = inp_joy;
     free(cols[sel*3+1]);
-    cols[sel*3+1] = get_joy_name(inp_joy);
+    cols[sel*3+1] = my_get_joy_name(inp_joy);
   } else if (inp_mouse) {
     InputList[nb].mousebtn = inp_mouse;
     if (!use_custom_keys && !base_input)
@@ -410,7 +505,7 @@ static int do_emu_controls(int sel) {
     menu[n].label = def_input_emu[n].name;
     menu[n].menu_func = &do_input;
     cols[n*2+0] = get_key_name(def_input_emu[n].scancode,def_input_emu[n].kmod);
-    cols[n*2+1] = get_joy_name(def_input_emu[n].joycode);
+    cols[n*2+1] = my_get_joy_name(def_input_emu[n].joycode);
   }
   for (int a=0; a<nb; a++)
       for (int b=a+1; b<nb; b++)
@@ -546,7 +641,7 @@ static int do_ingame_controls(int sel) {
       menu[mynb].menu_func = &do_input_ingame;
       menu[mynb].values_list[0] = n;
       cols[mynb*3+0] = get_key_name(InputList[n].Key,0);
-      cols[mynb*3+1] = get_joy_name(InputList[n].Joy);
+      cols[mynb*3+1] = my_get_joy_name(InputList[n].Joy);
       cols[mynb*3+2] = get_mouse_name(InputList[n].mousebtn);
       categ[mynb] = def_input[InputList[n].default_key & 0xff].categ;
       mynb++;
@@ -828,7 +923,7 @@ static int setup_analog(int sel) {
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   selected = nb;
   for (n=0; n<nb; n++) {
-    menu[n].label = strdup(joy_name[n]);
+    menu[n].label = strdup(get_joy_name(n));
     menu[n].menu_func = &select_joy;
   }
   menu[n].label = _("No analog device");
@@ -853,7 +948,7 @@ static int setup_analog(int sel) {
     analog_name[0] = 0;
     return 0;
   }
-  nb = SDL_JoystickNumAxes(joy[analog_num])/2;
+  nb = get_joy_naxes(analog_num)/2;
   if (nb == 1) {
     analog_stick = 0;
   } else {

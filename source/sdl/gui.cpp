@@ -600,20 +600,30 @@ extern UINT32 videoflags; // display.c
 int goto_debuger = 0;
 
 #if SDL == 2
-static int win_event(SDL_Event *event) {
-    if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-	resize(1,event->window.data1,event->window.data2);
-    } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	if (event->common.timestamp < 1000) { // probably some fancy window manager event
-	    if (display_cfg.fullscreen) {
-		// See comments about broken toggle fullscreen in control.c
-		SDL_SetWindowPosition(win,0,0);
-		return 0;
+static void my_event(SDL_Event *event) {
+    switch (event->type) {
+    case SDL_CONTROLLERDEVICEADDED:
+    case SDL_CONTROLLERDEVICEREMOVED:
+	control_handle_event(event);
+	break;
+    case SDL_WINDOWEVENT:
+	if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+	    resize(1,event->window.data1,event->window.data2);
+	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
+	    if (event->common.timestamp < 2000 && display_cfg.posy) { // probably some fancy window manager event
+		// Specific to some window managers which seem to correct window placement after adding decorations in linux
+		// well we don't want this correction
+		// Notice the timestamp is sadly some moving target, I got it at more than 1000 with 2 gamepads and 1 joystick adding events...
+		// which makes this thing rather unprecise...
+		if (display_cfg.fullscreen) {
+		    // See comments about broken toggle fullscreen in control.c
+		    SDL_SetWindowPosition(win,0,0);
+		    return;
+		}
+		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	    }
-	    SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	}
     }
-    return 1;
 }
 
 static void gui_end() {
@@ -636,7 +646,7 @@ void StartGUI(void)
 #ifdef RAINE_WIN32
     init_glsl();
 #endif
-    window_event_hook = &win_event;
+    event_hook = &my_event;
     gui_end_hook = &gui_end;
 #else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));

@@ -29,6 +29,10 @@ typedef struct DEF_INPUT_EMU
  * axes... */
 #define JOY(NUM_JOY, AXE, BUTTON, HAT_NUM) \
   (NUM_JOY) | (AXE<<8) | ((BUTTON)<<16) | ((HAT_NUM)<<24)
+int get_joy_input(int num, int axe, int button, int hat);
+int is_game_controller(int n);
+int get_joy_index_from_instance(int inst);
+int get_joy_index_from_playerindex(int index);
 /* Notice : which must start at 1 otherwise joystick1 left is mapeed to 0
  * which is equivalent to no mapping.
  * Same thing for button number which must start at 1
@@ -47,9 +51,6 @@ typedef struct DEF_INPUT_EMU
 #define MAX_JOY 16
 #define MAX_HAT 16
 
-extern SDL_Joystick *joy[MAX_JOY];
-extern char* joy_name[MAX_JOY];
-extern int bad_axes[MAX_JOY*MAX_AXIS];
 extern char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
 
@@ -65,6 +66,9 @@ void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb);
 void unregister_driver_emu_keys();
 
 void toggle_fullscreen();
+
+char *get_joy_name(int n);
+int get_joy_naxes(int n);
 
 /* Active inputs (allows to switch from default to custom inputs/game) */
 typedef struct INPUT
@@ -127,6 +131,7 @@ void inputs_done();
 int get_axis_from_hat(int which, int hat);
 int get_console_key();
 int has_input(int inp);
+void control_handle_event(SDL_Event *event);
 
 #ifdef __cplusplus
 }

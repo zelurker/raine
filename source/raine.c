@@ -603,7 +603,8 @@ int main(int argc,char *argv[])
 
    load_emulator_joys("emulator_joy_config");
 
-   raine_pop_config_state();
+   // We don't want to erase what's just been read, I need it for joysticks guid a little later...
+   // raine_pop_config_state();
 
    // JOYSTICK ALLEGRO
 

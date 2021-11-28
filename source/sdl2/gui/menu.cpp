@@ -251,7 +251,7 @@ int TDesktop::set_picture(const char *name) {
 }
 
 static TMenu *caller;
-int (*window_event_hook)(SDL_Event *event);
+void (*event_hook)(SDL_Event *event);
 static char* my_get_shared(char *s) {
     return s;
 }
@@ -1711,26 +1711,31 @@ void TMenu::execute() {
       case SDL_JOYHATMOTION:
       case SDL_JOYBUTTONDOWN:
       case SDL_JOYBUTTONUP:
+      case SDL_CONTROLLERBUTTONUP:
+      case SDL_CONTROLLERBUTTONDOWN:
+      case SDL_CONTROLLERAXISMOTION:
         handle_joystick(&event);
 	break;
       case SDL_WINDOWEVENT:
-	if (!*window_event_hook || (*window_event_hook)(&event)) {
-	    if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-		if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
-		    SDL_SetWindowSize(win,640,480);
-		    break;
-		}
-
-		if (font) {
-		    delete font;
-		    font = NULL;
-		}
-		SDL_DestroyTexture(fg_layer);
-		fg_layer = NULL;
-		sdl_screen->w = event.window.data1;
-		sdl_screen->h = event.window.data2;
-		draw();
+      case SDL_CONTROLLERDEVICEADDED:
+      case SDL_CONTROLLERDEVICEREMOVED:
+	if (*event_hook)
+	    (*event_hook)(&event);
+	if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+	    if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
+		SDL_SetWindowSize(win,640,480);
+		break;
 	    }
+
+	    if (font) {
+		delete font;
+		font = NULL;
+	    }
+	    SDL_DestroyTexture(fg_layer);
+	    fg_layer = NULL;
+	    sdl_screen->w = event.window.data1;
+	    sdl_screen->h = event.window.data2;
+	    draw();
 	}
 	break;
       case SDL_QUIT:
