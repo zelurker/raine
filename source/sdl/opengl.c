@@ -108,11 +108,6 @@ void opengl_reshape(int w, int h) {
 #if SDL == 2
     if (!context) {
 	context = SDL_GL_CreateContext(win);
-	if (SDL_GL_SetSwapInterval(-1) < 0) {
-	    ogl.infos.vbl = 1;
-	    SDL_GL_SetSwapInterval(1);
-	} else
-	    ogl.infos.vbl = -1;
     }
     if (!context) {
 	SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_GL_CreateContext(): %s\n", SDL_GetError());
@@ -138,6 +133,17 @@ void opengl_reshape(int w, int h) {
     if (ogl.render == 1) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    }
+    if (!ogl.dbuf) {
+	SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
+    } else {
+	if (SDL_GL_SetSwapInterval(-1) < 0) {
+	    ogl.infos.vbl = 1;
+	    SDL_GL_SetSwapInterval(1);
+	} else
+	    ogl.infos.vbl = -1;
+	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
     }
     check_error("end opengl_reshape");
 #endif
@@ -389,7 +395,13 @@ void finish_opengl() {
 	SDL_GL_SwapBuffers();
 #endif
     } else
+#if SDL==2
+	// Paradox yeah, apparently glFlush displays nothing
+	// and the good way is to use this, eventually disabling double buffer first
+	SDL_GL_SwapWindow(win);
+#else
 	glFlush();
+#endif
 #ifdef RAINE_DEBUG
     /* Check for error conditions. */
     check_error("finish_opengl");
