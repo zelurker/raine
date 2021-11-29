@@ -465,6 +465,20 @@ static void update_index(int n, int index) {
     }
 }
 
+int get_joy_playerindex(int n) {
+    return joy[n].index;
+}
+
+void set_joy_playerindex(int n, int index) {
+    // This one is for the controls.cpp graphic interface
+    // it does no checks, just assign things, that's all
+    joy[n].index = index;
+    if (joy[n].controller)
+	SDL_GameControllerSetPlayerIndex(joy[n].controller,index);
+    else
+	SDL_JoystickSetPlayerIndex(joy[n].joy,index);
+}
+
 int get_joy_index_from_playerindex(int index) {
 #if SDL == 2
     for (int ta=0; ta<nb_joy; ta++) {
@@ -509,6 +523,10 @@ static int get_joy_index(int n) {
 	printf("no index found, %d assigned\n",index);
     } else {
 	printf("got index %d from config\n",index);
+	if (index >= SDL_NumJoysticks()) {
+	    index = SDL_NumJoysticks()-1;
+	    printf("but index >= numjoysticks (%d), setting to %d\n",SDL_NumJoysticks(),index);
+	}
 	SDL_GameControllerSetPlayerIndex(joy[n].controller,index);
 	for (int ta=0; ta<n; ta++) {
 	    update_index(ta,index);
@@ -533,14 +551,26 @@ static void del_controller(int n) {
 }
 
 static void add_game_controller(int n) {
-    char *name = (char*)SDL_GameControllerNameForIndex(n);
-    joy[n].name = name;
-    joy[n].controller = SDL_GameControllerOpen(n);
-    memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
-    if (!joy[n].controller) {
-	printf("open failed: %s\n",SDL_GetError());
-	exit(1);
+    if (SDL_IsGameController(n)) {
+	joy[n].controller = SDL_GameControllerOpen(n);
+	joy[n].name = (char*)SDL_GameControllerNameForIndex(n);
+	if (!joy[n].controller) {
+	    printf("open controller failed: %s\n",SDL_GetError());
+	    exit(1);
+	}
+    } else {
+	joy[n].joy = SDL_JoystickOpen(n);
+	if (!joy[n].joy) {
+	    printf("open joy failed: %s\n",SDL_GetError());
+	    exit(1);
+	}
+#if SDL==2
+	joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
+#else
+	joy[n].name = SDL_JoystickName(n);
+#endif
     }
+    memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
     joy[n].index = get_joy_index(n);
     joy[n].instance = SDL_JoystickGetDeviceInstanceID(n);
     nb_joy++;
@@ -1503,7 +1533,7 @@ void control_handle_event(SDL_Event *event) {
       {
 	  int n = event->cdevice.which;
 	  printf("Game controller device %d added.\n", n);
-	  if (joy[n].controller) {
+	  if (joy[n].controller || joy[n].joy) {
 	      printf("Already have controller %d\n",n);
 	  } else
 	      add_game_controller(n);
@@ -2055,23 +2085,7 @@ void inputs_preinit() {
   SDL_Event event;
   int handled;
   for (n=0; n<SDL_NumJoysticks(); n++) {
-#if SDL == 2
-      if (SDL_IsGameController(n)) {
-	  add_game_controller(n);
-	  continue;
-      }
-#endif
-      joy[n].joy = SDL_JoystickOpen(n);
-      // Memorize the joystick name because calls to this function are very
-      // slow for some reason... !
-#if SDL==2
-      joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
-#else
-      joy[n].name = SDL_JoystickName(n);
-#endif
-      joy[n].index = get_joy_index(n);
-      nb_joy++;
-      printf("joy %d opened (%s), numaxes %d\n",n,joy[n].name,SDL_JoystickNumAxes(joy[n].joy));
+      add_game_controller(n);
   }
 
   // Some peripherals like a certain microsoft keyboard is recognized as a

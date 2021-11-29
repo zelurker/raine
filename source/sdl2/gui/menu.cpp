@@ -1805,6 +1805,7 @@ void TMenu::execute() {
     } else {
 	// this case was not redrawn with sdl-1.2, that is a dialog without any selection
 	// here we do a redraw for the desktop !
+	update_fg_layer(0); // to update the about raine bitmap when no selection is visible !
 	redraw(NULL);
     }
     SDL_framerateDelay(&fpsm);

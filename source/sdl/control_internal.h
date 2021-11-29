@@ -33,6 +33,8 @@ int get_joy_input(int num, int axe, int button, int hat);
 int is_game_controller(int n);
 int get_joy_index_from_instance(int inst);
 int get_joy_index_from_playerindex(int index);
+int get_joy_playerindex(int n);
+void set_joy_playerindex(int n, int index);
 /* Notice : which must start at 1 otherwise joystick1 left is mapeed to 0
  * which is equivalent to no mapping.
  * Same thing for button number which must start at 1

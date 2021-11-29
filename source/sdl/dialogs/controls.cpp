@@ -38,7 +38,7 @@ static menu_item_t *menu;
 static char *my_get_joy_name(int code) {
   if (!code)
     return strdup("");
-  else if ((code & 0xff)-1 >= SDL_NumJoysticks())
+  else if (get_joy_index_from_playerindex((code & 0xff)-1) < 0)
       return strdup("Not here");
   char name[80];
   // sprintf(name,"Joy %d ",code & 0xff);
@@ -701,7 +701,7 @@ class TControl : public TMenu {
       }
       if (n == 3) // layers
 	return layer_info_count;
-      if (n >= 8) // all load/save inputs
+      if (n >= 9) // all load/save inputs
 	  return use_custom_keys;
       return 1;
     }
@@ -1141,6 +1141,51 @@ static int set_mouse_sens(int sel) {
     return 0;
 }
 
+class TJoy : public TMenu {
+    public:
+    TJoy(char *myname, menu_item_t *menu) : TMenu(myname,menu)
+    {}
+    int can_be_displayed(int n) {
+	if (n == selected)
+	    return 0;
+	return 1;
+    }
+};
+
+static int do_joy_index(int sel) {
+    int nb_joy = SDL_NumJoysticks(),n;
+    if (nb_joy <= 1) {
+	MessageBox("Info","You need at least 2 joysticks for that","OK");
+	return 0;
+    }
+    menu_item_t *my_menu = (menu_item_t*)calloc(nb_joy+1,sizeof(menu_item_t));
+    for (n=0; n<nb_joy; n++) {
+	my_menu[n].label = get_joy_name(n);
+	my_menu[n].menu_func = &select_joy;
+    }
+    my_menu[n].label = NULL;
+    selected = -1;
+    TJoy *menu = new TJoy("Which index to change ?",my_menu);
+    menu->execute();
+    delete menu;
+
+    if (selected >= 0) {
+	int n1 = get_joy_index_from_playerindex(selected);
+	int index = get_joy_playerindex(n1);
+	menu = new TJoy("With which one ?",my_menu);
+	menu->execute();
+	delete menu;
+
+	int n2 = get_joy_index_from_playerindex(selected);
+	int index2 = get_joy_playerindex(n2);
+	set_joy_playerindex(n1,index2);
+	set_joy_playerindex(n2,index);
+    }
+
+    free(my_menu);
+    return 0;
+}
+
 static menu_item_t controls_menu[] =
 {
   { _("Raine controls"), &do_emu_controls },
@@ -1151,6 +1196,7 @@ static menu_item_t controls_menu[] =
   { _("Autofire controls"), &autofire_controls },
   { _("Analog controls..."), &setup_analog },
   { _("Mouse Sensitivity"), &set_mouse_sens, &mouse_sens, ITEM_SLIDER, {100, 10, 300, 0, 0, 0} },
+  { _("Joysticks indexes"), &do_joy_index },
   { _("Load inputs from..."), &do_load },
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
