@@ -457,8 +457,7 @@ static void update_index(int n, int index) {
 	    for (int ta=0; ta<nb_joy; ta++) {
 		if (ta == n) continue;
 		if (joy[ta].index == nb_joy) {
-		    printf("already found index to update for %d\n",ta);
-		    exit(1);
+		    fatal_error("already found index to update for %d",ta);
 		}
 	    }
 	}
@@ -555,14 +554,12 @@ static void add_game_controller(int n) {
 	joy[n].controller = SDL_GameControllerOpen(n);
 	joy[n].name = (char*)SDL_GameControllerNameForIndex(n);
 	if (!joy[n].controller) {
-	    printf("open controller failed: %s\n",SDL_GetError());
-	    exit(1);
+	    fatal_error("open controller failed: %s",SDL_GetError());
 	}
     } else {
 	joy[n].joy = SDL_JoystickOpen(n);
 	if (!joy[n].joy) {
-	    printf("open joy failed: %s\n",SDL_GetError());
-	    exit(1);
+	    fatal_error("open joy failed: %s",SDL_GetError());
 	}
 #if SDL==2
 	joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
@@ -1336,8 +1333,7 @@ static void key_up(int ta) {
 
 static void add_valid_input(int ta) {
     if (nb_valid_inputs == MAX_VALID_INPUTS) {
-	fprintf(stderr,"too many valid inputs\n");
-	exit(1);
+	fatal_error("too many valid inputs");
     }
     int n;
     for (n=0; n<nb_valid_inputs; n++) {

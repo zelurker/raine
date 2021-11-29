@@ -384,8 +384,7 @@ void TMenu::create_child(int n) {
     child[n] = new TIntEdit(&menu[n]);
 
   else {
-    printf("unknown extension %d\n",menu[n].values_list_size);
-    exit(1);
+    fatal_error("unknown extension %d",menu[n].values_list_size);
   }
 }
 
@@ -765,8 +764,7 @@ void TMenu::setup_fg_layer() {
     lift->set_surface(fg_layer);
   bgsdl = gfx_to_sdlcolor(fg_layer,bg);
   if (!fg_layer) {
-    printf("fg layer creation failed: %s\n",SDL_GetError());
-    exit(1);
+    fatal_error("fg layer creation failed: %s",SDL_GetError());
   }
   // SDL_SetAlpha(fg_layer,SDL_SRCALPHA | SDL_RLEACCEL,(fw > 10 ? 128 : 128+48));
   fgdst.w = fg_layer->w; // w & h are not used normaly, but just in case...
@@ -1941,8 +1939,7 @@ void TMenu::execute() {
      * blit a transparent surface to it, you need to read from the hw
      * surface to compute the transparency and this is extremely slow !
      * So we'll just use an intermediate surface for that... */
-    printf("this gui doesn't work for now on hw surfaces\n");
-    exit(1);
+    fatal_error("this gui doesn't work for now on hw surfaces");
   }
 
   if (font) {
@@ -2179,8 +2176,7 @@ void TDialog::display_fglayer_header(int &y) {
     else
       bg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE,sdl_screen->w,sdl_screen->h,display_cfg.bpp,color_format->Rmask,color_format->Gmask,color_format->Bmask,color_format->Amask);
     if (!bg_layer) {
-      printf("erreur création bg_layer\n");
-      exit(1);
+      fatal_error("erreur création bg_layer");
     }
     SDL_BlitSurface(sdl_screen,NULL,bg_layer,NULL);
   }

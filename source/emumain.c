@@ -389,8 +389,7 @@ UINT32 run_game_emulation(void)
 	    fclose(f2);
 	    fprintf(stderr,"compensated\n");
 	  } else {
-	    fprintf(stderr,"*** too bad !!! %s ***\n",full_name1);
-	    exit(1);
+	    fatal_error("*** too bad !!! %s ***",full_name1);
 	  }
 	}
       }

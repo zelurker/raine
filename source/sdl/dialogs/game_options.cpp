@@ -98,8 +98,7 @@ static menu_item_t *get_savegames(int for_saving) {
 	  stat(fpath,&buf);
 	  int ret = strftime(saves[used].date,sizeof(saves[used].date),"%x %X",localtime((const time_t*)&buf.st_mtime));
 	  if (!ret) {
-	    printf("couldn't store date\n");
-	    exit(1);
+	    fatal_error("couldn't store date");
 	  }
 #if 0
 	  int taille = get_saved_picture(fin,&s);

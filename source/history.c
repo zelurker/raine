@@ -87,8 +87,7 @@ void hist_open(char *name,const char *game) {
 #endif
 	  }
 	  if (old_size) {
-	      printf("history: subsection inside subsection !\n");
-	      exit(1);
+	      fatal_error("history: subsection inside subsection !");
 	  }
 	  old_size = size;
 	  old_use = used;

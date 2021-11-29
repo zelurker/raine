@@ -19,6 +19,17 @@
 #include "loadpng.h"
 #include "version.h"
 
+void sdl_fatal_error(const char *file, const char *func, int line, char *format, ...) {
+    char msg[512];
+    va_list ap;
+    va_start(ap,format);
+    snprintf(msg,512,"function %s file %s line %d\n",func,file,line);
+    snprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
+    va_end(ap);
+    fprintf(stderr,"Error: %s",msg);
+    exit(1);
+}
+
 static SDL_PixelFormat overlay_format = {
   NULL,
   16,
@@ -185,8 +196,7 @@ void sdl_init() {
 	if ( SDL_Init(
 		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_JOYSTICK|SDL_INIT_CDROM
 		    ) < 0 ) {
-	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
-	    exit(2);
+	    fatal_error( "Couldn't initialize SDL: %s",SDL_GetError());
 	}
 	if ( TTF_Init() < 0 ) {
 	    fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
@@ -324,8 +334,7 @@ UINT16 bytes_per_pixel(al_bitmap *screen) {
   if (screen->extra)
     return ((screen->id&2) == 2 ? 2 // overlay
 	: ((SDL_Surface*)screen->extra)->format->BytesPerPixel);
-  printf("no vtable and no extras for this bitmap !!!\n");
-  exit(1);
+  fatal_error("no vtable and no extras for this bitmap !!!");
   return 0;
 }
 

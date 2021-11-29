@@ -512,8 +512,7 @@ int joy_key_select_proc(int msg, DIALOG *d, int c)
 		    * input enabled when the dialog starts */
 		   ignored_inputs[nb_ignored++] = tb;
 		   if (nb_ignored >= 256) {
-		     printf("too many joystick inputs to ignore, bye bye...\n");
-		     exit(1);
+		     fatal_error("too many joystick inputs to ignore, bye bye...");
 		   }
 		 } else {
 		   int found = 0;

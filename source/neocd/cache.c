@@ -12,6 +12,7 @@
 #include "starhelp.h"
 #include "ingame.h"
 #include "games.h"
+#include "compat.h"
 
 #ifdef PSP
 #define printf	pspDebugScreenPrintf
@@ -119,8 +120,7 @@ void restore_override(int all) {
 	int size = size_file(fn);
 	if (!size) continue;
 	if (size != list[n].len && strncmp(list[n].name,"msg",3)) {
-	    printf("list: %s %x size_file %x\n",list[n].name,list[n].len,size);
-	    exit(1);
+	    fatal_error("list: %s %x size_file %x",list[n].name,list[n].len,size);
 	}
 	FILE *f = fopen(fn,"rb");
 	if (!f) continue;
@@ -144,8 +144,7 @@ void restore_override(int all) {
 	int size = size_file(fn);
 	if (!size) continue;
 	if (size != list[n].len) {
-	    printf("list: %s %x size_file %x\n",list[n].name,list[n].len,size);
-	    exit(1);
+	    fatal_error("list: %s %x size_file %x",list[n].name,list[n].len,size);
 	}
 	FILE *f = fopen(fn,"rb");
 	if (!f) continue;
@@ -383,8 +382,7 @@ static UINT8 *fill_upload(UINT8 *buff, int *len, int type)
 			case PCM_TYPE:
 				neogeo_cdrom_load_pcm_file(tcache->name, tcache->offset); break;
 			default:
-				printf("unknown type passed to fill_upload\n");
-				exit(1);
+				fatal_error("unknown type passed to fill_upload");
 			}
 		}
 		tcache++;

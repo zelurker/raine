@@ -27,6 +27,8 @@ typedef struct al_bitmap            /* a bitmap structure */
 } al_bitmap;
 
 // Bitmap functions
+#define fatal_error(format, ...) sdl_fatal_error(__FILE__,__func__,__LINE__, format, ## __VA_ARGS__)
+void sdl_fatal_error(const char *file, const char*func, int line, char *format, ...);
 al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h);
 void clear_bitmap(al_bitmap *bitmap);
 #define sdl_create_bitmap(w, h) sdl_create_bitmap_ex(display_cfg.bpp,w,h)

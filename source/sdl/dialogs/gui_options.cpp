@@ -66,8 +66,7 @@ int do_gui_options(int sel) {
   gui_menu[nb].label = _("Directories...");
   gui_menu[nb].menu_func = &do_dirs;
   if (nb >= MAX_GUI-1) { // -1 because we need a NULL at the end
-      printf("too many gui options !\n");
-      exit(1);
+      fatal_error("too many gui options !");
   }
   gui_options = new TMenu("", gui_menu);
   gui_options->execute();

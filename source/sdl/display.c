@@ -106,8 +106,7 @@ void adjust_gui_resolution() {
   }
   SDL_ShowCursor(SDL_ENABLE);
   if (sdl_screen->flags & (SDL_DOUBLEBUF|SDL_HWSURFACE)) {
-    printf("gros débile frappe encore\n");
-    exit(1);
+    fatal_error("gros débile frappe encore");
   }
 }
 
@@ -498,8 +497,7 @@ static SDL_Surface *new_set_gfx_mode() {
       videoflags &= ~SDL_OPENGL;
       if ( (s = SDL_SetVideoMode(display_cfg.screen_x, display_cfg.screen_y,
 	      bpp, videoflags)) == NULL ) {
-	fprintf(stderr,"could not setup %dx%d %d bpp really\n",display_cfg.screen_x,display_cfg.screen_y,display_cfg.bpp);
-	exit(25);
+	fatal_error("could not setup %dx%d %d bpp really",display_cfg.screen_x,display_cfg.screen_y,display_cfg.bpp);
       }
     }
     sdl_screen = s;

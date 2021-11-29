@@ -788,8 +788,7 @@ static UINT32 load_gfx_region(UINT32 region)
 	       while (load_region[newr] && newr <= REGION_GFX5)
 		   newr++;
 	       if (load_region[newr]) {
-		   printf("duplicate region, and no more free region !\n");
-		   exit(1);
+		   fatal_error("duplicate region, and no more free region !");
 	       }
 	       load_region[newr] = AllocateMem(get_region_size(region));
 	       if (!load_region[newr]) {
@@ -830,8 +829,7 @@ static UINT32 load_gfx_region(UINT32 region)
      }
 
       if (nb >= MAX_GFX) {
-	allegro_message("nb >= MAX_GFX in loadroms ! this is incredible !\n");
-	exit(1);
+	fatal_error("nb >= MAX_GFX in loadroms ! this is incredible !");
       }
 
       if((gfx[nb] = load_region[region] = decode_gfx(buffer, reg_size, gfx_list->layout,&region_size[region]))) {
@@ -1096,8 +1094,7 @@ beg:
      last_rom = rom;
    }
    if (loaded_roms > roms_count) {
-     printf("error loaded_roms (%d) > roms_count (%d)\n",loaded_roms,roms_count);
-     exit(1);
+     fatal_error("error loaded_roms (%d) > roms_count (%d)",loaded_roms,roms_count);
    }
    load_progress(rom,loaded_roms*100/roms_count);
    dir_list = current_game->dir_list;

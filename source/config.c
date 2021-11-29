@@ -54,8 +54,7 @@ void CLI_region() {
 	ArgPosition++;
 	override_region = atoi(ArgList[ArgPosition]);
     } else {
-	printf("-region requires a parameter\n");
-	exit(1);
+	fatal_error("-region requires a parameter");
     }
 }
 
@@ -1126,8 +1125,7 @@ void find_romof(const struct DIR_INFO *dir_list, int *romof) {
       GAME_MAIN *game_romof;
       romof_list[(*romof)++] = (dir_list->maindir) + 1;
       if (*romof >= 4) {
-	fprintf(stderr,"romof too big (%d), shouldn't happen.\n",*romof);
-	exit(1);
+	fatal_error("romof too big (%d), shouldn't happen.",*romof);
       }
       // ... and if parent is a clone too...
       game_romof = find_game(dir_list->maindir+1);
@@ -1723,12 +1721,10 @@ static int intArg(int min, int max, char *errNoArg, char *errOutofLimits) {
 	mode = atoi(ArgList[ArgPosition]);
     }
     else {
-	printf("%s\n",errNoArg);
-	exit(1);
+	fatal_error("%s",errNoArg);
     }
     if (mode < min || mode > max) {
-	printf("%s\n",errOutofLimits);
-	exit(1);
+	fatal_error("%s",errOutofLimits);
     }
     return mode;
 }

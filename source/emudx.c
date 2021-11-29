@@ -12,6 +12,7 @@
 #include "SDL_gfx/SDL_rotozoom.h"
 #include "menuitem.h"
 #endif
+#include "compat.h"
 
 /* This is the support for the graphics emudx files. For the sound, see dxsmp.c in the
    sound directory. */
@@ -156,8 +157,7 @@ void load_emudx(const char *name, int tiles, int sprites,
     obj = emudx_bitmap(dat,i);
     emudx_tiles[i-1] = create_bitmap(width,height);
     if (!emudx_tiles[i-1]) {
-      printf("failed to alloc bitmap %dx%d\n",obj->w,obj->h);
-      exit(1);
+      fatal_error("failed to alloc bitmap %dx%d",obj->w,obj->h);
     }
     if (width != obj->w || height != obj->h) {
       if (dkong_exception) {// exception : border of 48 pixels !!!

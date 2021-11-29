@@ -31,6 +31,7 @@ puser is relative to 0x0000
 #include "newmem.h"
 #include "cpumain.h" // Z80_0
 #include "version.h" // to force a recompilation if RAINE_DEBUG is defined
+#include "compat.h"
 
 #ifndef MAME_Z80
 struct mz80context	Z80_context[MAX_Z80];
@@ -1070,8 +1071,7 @@ void z80_init_banks_area(int cpu,UINT8 *rombase, int rom_size, UINT32 offset,
   bank_offset[cpu] = offset;
   bank_len[cpu] = len2;
   if (nb_banks[cpu] > MAX_BANKS) {
-    allegro_message("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);
-    exit(1);
+    fatal_error("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);
   }
 
   ROM_BANK[cpu] = AllocateMem(size);
@@ -1113,8 +1113,7 @@ void z80_init_banks_area_gap(int cpu,UINT8 *rombase, int rom_size,
   size = nb_banks[cpu] * (bank_start + len); // must copy the rom for each bank
   bank_offset[cpu] = offset;
   if (nb_banks[cpu] > MAX_BANKS) {
-    allegro_message("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);
-    exit(1);
+    fatal_error("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);
   }
 
   ROM_BANK[cpu] = AllocateMem(size);
@@ -1153,8 +1152,7 @@ void z80_init_banks_area_ofs(int cpu,UINT8 *rombase, int rom_size, UINT32 offset
   size = nb_banks[cpu] * (offset + len); // must copy the rom for each bank
   bank_offset[cpu] = offset;
   if (nb_banks[cpu] > MAX_BANKS) {
-    allegro_message("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);
-    exit(1);
+    fatal_error("cpu %d nb_banks (%d) > MAX_BANKS",cpu,nb_banks[cpu]);
   }
 
   ROM_BANK[cpu] = AllocateMem(size);

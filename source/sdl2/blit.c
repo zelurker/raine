@@ -378,13 +378,11 @@ void SetupScreenBitmap(void)
      // GameBitmap = create_system_bitmap( GameScreen.xfull, GameScreen.yfull);
      GameViewBitmap = sdl_create_sub_bitmap(GameBitmap, GameScreen.xtop, GameScreen.ytop, GameScreen.xview, GameScreen.yview);
      if (game_tex) {
-	 printf("Already a game texture\n");
-	 exit(1);
+	 fatal_error("Already a game texture");
      }
      game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
      if (!game_tex) {
-	 printf("couldn't create game texture : %s\n",SDL_GetError());
-	 exit(1);
+	 fatal_error("couldn't create game texture : %s",SDL_GetError());
      }
      SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");  // make the scaled rendering look smoother.
      if (display_cfg.video_mode == 0)
@@ -472,8 +470,7 @@ void DrawNormal(void)
    if (!game_tex)
        game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
    if (!game_tex) {
-       printf("no texture\n");
-       exit(1);
+       fatal_error("no texture");
    }
    SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
    SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);

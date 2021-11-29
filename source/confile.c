@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include "debug.h"
 #include "files.h"
+#include "compat.h"
 #if !defined(RAINE_WIN32) && !defined(stricmp)
 #define stricmp strcasecmp
 #endif
@@ -70,8 +71,7 @@ char *get_data_ptr(CONFIG *cfg,UINT32 size) {
   UINT32 offset;
 
   if (size == 0){
-    fprintf(stderr,"get_data_ptr: Allocation of 0 byte !!!\n");
-    exit(1);
+    fatal_error("get_data_ptr: Allocation of 0 byte !!!");
   }
   if (!cfg->data_buf) { // No buffer allocated yet...
     cfg->data_size = size + DATA_BLOCK;
@@ -100,16 +100,14 @@ char *get_data_ptr(CONFIG *cfg,UINT32 size) {
     if (prev->name){
       offset = prev->name - cfg->data_buf;
       if (offset > cfg->current_size || offset < 0) {
-	fprintf(stderr,"get_data_ptr: Allocation problem !!!\n");
-	exit(1);
+	fatal_error("get_data_ptr: Allocation problem !!!");
       }
       prev->name = new_ptr + offset;
     }
     if (prev->data){
       offset = prev->data - cfg->data_buf;
       if (offset > cfg->current_size || offset < 0) {
-	fprintf(stderr,"get_data_ptr: Allocation problem !!!\n");
-	exit(1);
+	fatal_error("get_data_ptr: Allocation problem !!!");
       }
       prev->data = new_ptr + offset;
     }
@@ -274,8 +272,7 @@ static int get_line(char *data, int length, char *name, char *val)
       buf[pos] = data[pos];
    }
    if (pos > 255) {
-     printf("overflow buffer %d\n",pos);
-     exit(1);
+     fatal_error("overflow buffer %d",pos);
    }
 
    buf[MIN(pos,255)] = 0;
@@ -716,8 +713,7 @@ void raine_set_config_string(const char *section, const char *name, char *val)
    CONFIG_ENTRY *p, *prev;
    char section_name[256];
    if (!*name) {
-       printf("raine_set_config_string: no name !\n");
-       exit(1);
+       fatal_error("raine_set_config_string: no name !");
    }
 
    init_config(TRUE);

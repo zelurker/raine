@@ -574,8 +574,7 @@ void init_display() {
 #else
 	printf("%s\n",raine_translate_text("Get Display Doctor from www.scitechsoft.com to fix this."));
 #endif
-	printf("%s\n\n",raine_translate_text("Mail about this problem is not appreciated!"));
-	exit(1);
+	fatal_error("%s",raine_translate_text("Mail about this problem is not appreciated!"));
       }
   }
   display_cfg.screen_type = gfx_driver->id; // get rid of autodetect effect

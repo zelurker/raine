@@ -15,6 +15,7 @@
 #include <string.h> // memcpy
 #include "tilemod.h" // max_tile_sprites
 #include "blit.h"
+#include "compat.h"
 
 UINT8 **tile_cache;
 UINT8 **cache_map;
@@ -46,8 +47,7 @@ void init_tile_cache() {
 // Same thing, but 4 times the size for flipping.
 void init_tile_cachex4() {
   if (!max_tile_sprites) {
-    allegro_message("init_tile_cache called before make_solid_mask_8x8");
-    exit(1);
+    fatal_error("init_tile_cache called before make_solid_mask_8x8");
   }
   tile_cache = (UINT8**)AllocateMem(max_tile_sprites*sizeof(UINT8*)*4);
   cache_map = (UINT8**)AllocateMem(max_tile_sprites*4*sizeof(UINT8*));

@@ -49,6 +49,7 @@
 #include "bld.h"
 #include "alpha.h"
 #include "version.h"
+#include "compat.h"
 
 // #define NEOGEO_MCARD_16BITS 1
 
@@ -1751,8 +1752,7 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 			    if (capture_mode == 1) {
 				current_bank++;
 				if (current_bank > assigned_banks) {
-				    printf("banks error: %d > %d\n",current_bank,assigned_banks);
-				    exit(1);
+				    fatal_error("banks error: %d > %d",current_bank,assigned_banks);
 				}
 			    }
 			    bank = banks[current_bank];
@@ -1774,8 +1774,7 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 			    continue;
 			assigned_banks++;
 			if (assigned_banks == MAX_BANKS) {
-			    printf("color banks overflow\n");
-			    exit(1);
+			    fatal_error("color banks overflow");
 			}
 			banks[assigned_banks] = tileatr >> 8;
 			continue;
@@ -1827,8 +1826,7 @@ static void draw_sprites_capture(int start, int end, int start_line, int end_lin
 		    }
 		}
 		if (sx+offx < 0) {
-		    printf("bye: %d,%d rzx %d offx %d\n",sx+offx,sy+16,rzx,offx);
-		    exit(1);
+		    fatal_error("bye: %d,%d rzx %d offx %d",sx+offx,sy+16,rzx,offx);
 		}
 		// printf("sprite %d,%d,%x\n",sx,sy,tileno);
 		if (sx >= mousex && sx < mousex+16 && sy>= mousey && sy < mousey+16)
@@ -2560,12 +2558,10 @@ UINT8 *get_target(UINT32 target,int *size) {
 		print_debug("adjust fix target size %x\n",*size);
 	    }
 	} else {
-	    printf("can't find target %x upload_type %x\n",target,upload_type);
-	    exit(1);
+	    fatal_error("can't find target %x upload_type %x",target,upload_type);
 	}
     } else {
-	printf("don't know how to handle target %x\n",target);
-	exit(1);
+	fatal_error("don't know how to handle target %x",target);
     }
     return dst;
 }
@@ -2592,8 +2588,7 @@ static void do_dma(char *name,UINT8 *dest, int max) {
 	    if ((target & 0xe00000) != 0xe00000) {
 		// Normaly this should go through upload_write,
 		// I absolutely need something in the upload area here
-		printf("dma e2dd, target %x upload_type %x\n",target,upload_type);
-		exit(1);
+		fatal_error("dma e2dd, target %x upload_type %x",target,upload_type);
 	    }
 	    target -= 0xe00000;
 	    for (n=0; upload_len > 0; n+=2, upload_len--) {
@@ -5117,8 +5112,7 @@ void neocd_function(int vector) {
 	print_debug("neocd_function default %x\n",adr);
 	break;
       default:
-	printf("unknown vector %x\n",vector);
-	exit(1);
+	fatal_error("unknown vector %x",vector);
     }
   }
 

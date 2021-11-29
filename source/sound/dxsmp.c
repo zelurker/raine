@@ -11,6 +11,7 @@
 #include "wav.h"
 #include "gui.h"
 #include "files.h"
+#include "compat.h"
 
 /* DX Samples : my first idea was to add these in sasound.c and to mix them
  * after
@@ -102,16 +103,14 @@ void read_dx_file() {
     }
     rw = SDL_RWFromMem(buffer, file_info.uncompressed_size);
     if (!SDL_LoadWAV_RW(rw,1,&wave,&wav_buffer,&len_in_bytes)) {
-      printf("couldn't load sample %d: %s\n",i,SDL_GetError());
-      exit(1);
+      fatal_error("couldn't load sample %d: %s",i,SDL_GetError());
     }
     unzCloseCurrentFile(dat);	// Is this needed when open failed?
 
     if (SDL_BuildAudioCVT(&wav_cvt,
 			  wave.format, wave.channels, wave.freq,
 			  gotspec.format, gotspec.channels,gotspec.freq) == -1) {
-      printf("can't build converter\n");
-      exit(1);
+      fatal_error("can't build converter");
     }
 
     wav_cvt.buf = sample_data[i].data = AllocateMem(len_in_bytes*wav_cvt.len_mult);

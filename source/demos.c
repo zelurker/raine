@@ -97,8 +97,7 @@ static void build_offsets_table()
     if (!found) {
       offsets[nb++] = inp->offset;
       if (nb >= MAX_OFS) {
-	allegro_message("buffer overflow for the demo.");
-	exit(1);
+	fatal_error("buffer overflow for the demo.");
       }
     }
     inp++;

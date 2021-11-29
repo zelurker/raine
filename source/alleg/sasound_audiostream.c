@@ -333,8 +333,7 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
     printf("create stream len %d\n",len);
     hVoice[channel] = play_audio_stream(len,16,0,audio_sample_rate,SampleVol[channel],SamplePan[channel]);
     if (!hVoice[channel]) {
-      allegro_message("allocate_voice failed !\n");
-      exit(1);
+      fatal_error("allocate_voice failed !");
     }
 
     playing[channel] = 1;	/* use front surface */

@@ -62,8 +62,7 @@ void convert_wav(unsigned char *buf, int len, char **dest, int *ldest)
 	      n++;
 	  }
       } else {
-	  printf("conversion unknown !\n");
-	  exit(1);
+	  fatal_error("conversion unknown !");
       }
   } else { // stereo 16 bits already
       if (rate == audio_sample_rate*2) {
@@ -81,8 +80,7 @@ void convert_wav(unsigned char *buf, int len, char **dest, int *ldest)
 	      n++;
 	  }
       } else {
-	  printf("conversion unknown !\n");
-	  exit(1);
+	  fatal_error("conversion unknown !");
       }
   }
 }

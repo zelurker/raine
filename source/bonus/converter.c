@@ -121,8 +121,7 @@ static void convert(char *name) {
   
   fout = gzopen("temp.gz","wb9");
   if (!fout) {
-    printf("can't create temp.gz !\n");
-    exit(1);
+    fatal_error("can't create temp.gz !");
   }
 
   int savegame_version = pack_mgetl(fin);
@@ -160,8 +159,7 @@ static void convert(char *name) {
 
   char *buffer = malloc(SIZE);
   if (!buffer) {
-    printf("can't allocate %d bytes\n",SIZE);
-    exit(1);
+    fatal_error("can't allocate %d bytes",SIZE);
   }
 
    while (1){

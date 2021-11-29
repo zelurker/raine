@@ -5,6 +5,7 @@
 #include "streams.h"
 #include <stdlib.h> // exit
 #include <string.h>
+#include "compat.h"
 
 static int channel[MAX_DAC];
 static int output[MAX_DAC];
@@ -66,8 +67,7 @@ void DAC_data_w(int num,int data)
 		output[num] = out;
 		my_buff[my_output_len++] = out;
 		if (my_output_len >= MY_BUFF_LEN) {
-		  fprintf(stderr,"DAC overflow\n");
-		  exit(1);
+		  fatal_error("DAC overflow");
 		}
 	}
 }
@@ -84,8 +84,7 @@ void DAC_signed_data_w(int num,int data)
 		output[num] = out;
 		my_buff[my_output_len++] = out;
 		if (my_output_len >= MY_BUFF_LEN) {
-		  fprintf(stderr,"DAC overflow\n");
-		  exit(1);
+		  fatal_error("DAC overflow");
 		}
 	}
 }

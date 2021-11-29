@@ -101,8 +101,7 @@ void TSketcher::poly(int col, ...)
 	y = va_arg(ap,int);
 	if (x >= 0) {
 	    if (nb == PMAX) {
-		printf("poly overflow !\n");
-		exit(1);
+		fatal_error("poly overflow !");
 	    }
 	    tabx[nb] = x;
 	    taby[nb++] = y;
@@ -630,8 +629,7 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
     dest.y = HMARGIN;
     int ret = SDL_SetRenderTarget(rend,fg_layer);
     if (ret < 0) {
-	printf("SDL_SetRenderTarget %d : %s\n",ret,SDL_GetError());
-	exit(1);
+	fatal_error("SDL_SetRenderTarget %d : %s",ret,SDL_GetError());
     }
     SDL_Texture *tex = SDL_CreateTextureFromSurface(rend, bmp);
     SDL_RenderCopy(rend,tex,NULL,&dest);

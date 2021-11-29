@@ -765,8 +765,7 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 				     rz_src->format->Rmask, rz_src->format->Gmask,
 				     rz_src->format->Bmask, rz_src->format->Amask);
 	    if (!rz_dst) {
-	      printf("SDL_CreateRGBSurface %d,%d,32bpp failed: %s\n",dstwidth,dstheight,SDL_GetError());
-	      exit(1);
+	      fatal_error("SDL_CreateRGBSurface %d,%d,32bpp failed: %s",dstwidth,dstheight,SDL_GetError());
 	    }
 	} else {
 	    /*
@@ -774,8 +773,7 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 	     */
 	    rz_dst = SDL_CreateRGBSurface(SDL_SWSURFACE, dstwidth, dstheight, 8, 0, 0, 0, 0);
 	    if (!rz_dst) {
-	      printf("SDL_CreateRGBSurface %d,%d failed: %s\n",dstwidth,dstheight,SDL_GetError());
-	      exit(1);
+	      fatal_error("SDL_CreateRGBSurface %d,%d failed: %s",dstwidth,dstheight,SDL_GetError());
 	    }
 	}
 

@@ -56,8 +56,7 @@ void split_command(char *field, char **argv, int *argc, int max) {
 	      } else
 		  argv[(*argc)++] = s;
 	      if (*argc == max) {
-		  printf("split_command: max arguments : %d for command %s !\n",max,copie);
-		  exit(1);
+		  fatal_error("split_command: max arguments : %d for command %s !",max,copie);
 	      }
 	  }
       }
@@ -278,8 +277,7 @@ void TConsole::fglayer_footer_update() {
 #if SDL==2
   int ret = SDL_SetRenderTarget(rend,fg_layer);
   if (ret < 0) {
-      printf("rendertarget error\n");
-      exit(1);
+      fatal_error("rendertarget error");
   }
   // boxColor(rend,dst.x,dst.y,dst.x+dst.w-1,dst.h+dst.y-1,0xffff0000 /* bgsdl */);
   setcolor(bgsdl);

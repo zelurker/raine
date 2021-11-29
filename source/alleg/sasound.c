@@ -340,8 +340,7 @@ void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, 
 
     hVoice[channel] = allocate_voice( lpWave[channel] );
     if (hVoice[channel]<0) {
-      allegro_message("allocate_voice failed !\n");
-      exit(1);
+      fatal_error("allocate_voice failed !");
     }
 
     voice_set_playmode(hVoice[channel],PLAYMODE_LOOP);

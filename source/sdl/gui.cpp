@@ -589,8 +589,7 @@ void setup_font()
    fread(ingame_font,1,1792,f);
    fclose(f);
   } else {
-    printf("no font, byebye !\n");
-    exit(1);
+    fatal_error("no font, byebye !");
   }
 }
 

@@ -413,8 +413,7 @@ void TMenu::create_child(int n) {
     child[n] = new TIntEdit(&menu[n]);
 
   else {
-    printf("unknown extension %d\n",menu[n].values_list_size);
-    exit(1);
+    fatal_error("unknown extension %d",menu[n].values_list_size);
   }
 }
 
@@ -708,8 +707,7 @@ void TMenu::setup_fg_layer() {
   }
   fg_layer = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,w,h);
   if (!fg_layer) {
-      printf("fg_layer creation problem (%d,%d) : %s\n",w,h,SDL_GetError());
-      exit(1);
+      fatal_error("fg_layer creation problem (%d,%d) : %s",w,h,SDL_GetError());
   }
   if (use_transparency)
       SDL_SetTextureBlendMode(fg_layer, SDL_BLENDMODE_BLEND);
@@ -717,8 +715,7 @@ void TMenu::setup_fg_layer() {
     lift->set_surface(fg_layer);
   bgsdl = gfx_to_sdlcolor(fg_format,bg);
   if (!fg_layer) {
-    printf("fg layer creation failed: %s\n",SDL_GetError());
-    exit(1);
+    fatal_error("fg layer creation failed: %s",SDL_GetError());
   }
   // SDL_SetAlpha(fg_layer,SDL_SRCALPHA | SDL_RLEACCEL,(fw > 10 ? 128 : 128+48));
   fgdst.w = w; // Here is a trick to keep w & h since they can't be directly accessed for a texture !
@@ -793,8 +790,7 @@ void TMenu::update_header_entry(int nb) {
     if (header) {
 	int ret = SDL_SetRenderTarget(rend,fg_layer);
 	if (ret < 0) {
-	    printf("update_header_entry: RenderTarget failed ?\n");
-	    exit(1);
+	    fatal_error("update_header_entry: RenderTarget failed ?");
 	}
 	int y = HMARGIN;
 	int w = width_max - HMARGIN;
@@ -862,8 +858,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
   int y = HMARGIN;
   int ret = SDL_SetRenderTarget(rend,fg_layer);
   if (ret < 0) {
-      printf("SDL_SetRenderTarget %d : %s\n",ret,SDL_GetError());
-      exit(1);
+      fatal_error("SDL_SetRenderTarget %d : %s",ret,SDL_GetError());
   }
   if (nb_to_update < 0) {
     setcolor(bgsdl);

@@ -410,8 +410,7 @@ kept.
 		if (0x80000000 != dwResult)
 		{
 			m6502zpGetContext(&sCpu1);
-			printf("Invalid instruction at %.2x\n", sCpu1.m6502pc);
-			exit(1);
+			fatal_error("Invalid instruction at %.2x", sCpu1.m6502pc);
 		}
 	}
 

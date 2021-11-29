@@ -21,8 +21,7 @@ int process_adr(UINT8 *base, UINT16 dAddr, dz80_buff buff)
     pDis = malloc(sizeof(DISZ80));
     if (pDis == NULL)
       {
-	printf("Cannot allocate %ld bytes\n", sizeof(DISZ80));
-	exit(1);
+	fatal_error("Cannot allocate %ld bytes", sizeof(DISZ80));
       }
 
     /* Set up dZ80's structure - not a lot */

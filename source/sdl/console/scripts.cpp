@@ -184,8 +184,7 @@ void init_scripts() {
 		    // in this case all the remaining arguments are in the format value/description
 		    script[nb_scripts].nb_param = argc - 2;
 		    if (argc - 2 > MAX_PARAM) {
-			printf("too many arguments for %s (%d)\n",buff,argc-2);
-			exit(1);
+			fatal_error("too many arguments for %s (%d)",buff,argc-2);
 		    }
 		    for (int n=0; n<argc-2; n++) {
 			char *s = strchr(margv[n+2],'/');

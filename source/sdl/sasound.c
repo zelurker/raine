@@ -665,8 +665,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	if (!cdda.pos) {
 	    fbin = fopen(neocd_path,"rb");
 	    if (!fbin) {
-		printf("could not open neocd_path for music : %s\n",neocd_path);
-		exit(1);
+		fatal_error("could not open neocd_path for music : %s",neocd_path);
 	    }
 	}
 	if (end_pos == 0 || last_start != start_index) { // new track ?

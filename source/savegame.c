@@ -136,8 +136,7 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
   }
   if (strlen(name) > EXT_NAME) {
-      printf("AddSaveData_ext: name overflow: %zd: %s\n",strlen(name),name);
-      exit(1);
+      fatal_error("AddSaveData_ext: name overflow: %zd: %s",strlen(name),name);
   }
 
   for (n=0; n<SaveDataCount; n++) {
@@ -192,8 +191,7 @@ UINT32 SaveCallbackCount,savecbptr_count;
 
 static int find_callback(int flags, void *callback) {
     if (SaveCallbackCount == SIZE_CALLB) {
-	printf("callbacks overflow, sorry !\n");
-	exit(1);
+	fatal_error("callbacks overflow, sorry !");
     }
     int n;
     for (n=0; n<SaveCallbackCount; n++)
@@ -205,8 +203,7 @@ static int find_callback(int flags, void *callback) {
 
 void AddLoadCallback_ptr(void *callback,void *arg) {
     if (savecbptr_count == SIZE_CALLB) {
-	printf("callbackptr overflow\n");
-	exit(1);
+	fatal_error("callbackptr overflow");
     }
     int n;
     for (n=0; n<savecbptr_count; n++) {

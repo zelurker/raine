@@ -183,8 +183,7 @@ static void winprotect(void *adr) {
        printf("got base %x length %d\n",info.BaseAddress,info.RegionSize);
        ret = VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
        if (!ret) {
-	   printf("virtualprotect fails !\n");
-	   exit(1);
+	   fatal_error("virtualprotect fails !");
        }
    }
 }
@@ -408,8 +407,7 @@ int main(int argc,char *argv[])
       if(!RaineData){
 	RaineData = load_datafile("raine.dat"); // try current directory
 	if(!RaineData){
-	  allegro_message("Unable to find raine.dat (must be in raine dir, or attached to raine.exe)\n");
-	  exit(1);
+	  fatal_error("Unable to find raine.dat (must be in raine dir, or attached to raine.exe)");
 	}
       }
    }
@@ -469,8 +467,7 @@ int main(int argc,char *argv[])
        patchlevel = atoi(s+1);
      version_id = patchlevel | (minor << 8) | (major << 16);
    } else {
-     fprintf(stderr,"Bad version number. Should be major.minor[.patchlevel]\n");
-     exit(1);
+     fatal_error("Bad version number. Should be major.minor[.patchlevel]");
    }
    if (raine_cfg.version_no != version_id) {
      raine_cfg.version_no = version_id;

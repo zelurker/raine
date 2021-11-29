@@ -20,6 +20,20 @@
 #include "version.h"
 #include <SDL_image.h>
 
+void sdl_fatal_error(const char *file, const char *func, int line, char *format, ...) {
+    char msg[512];
+    va_list ap;
+    va_start(ap,format);
+    snprintf(msg,512,"function %s file %s line %d\n",func,file,line);
+    snprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
+    va_end(ap);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+	    "Error",
+	    msg,
+	    NULL);
+    exit(1);
+}
+
 struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
   // Init a fake bitmap to point to a newly created sdl_surface
   UINT32 r=0,g=0,b=0,a=0; // masks if necessary...
@@ -37,8 +51,7 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  // so rgbx becomes the 1st choice
 	  if (!SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_RGBX8888,&bpp,&r,&g,&b,&a))
 	  {
-	      printf("masks pas ok\n");
-	      exit(1);
+	      fatal_error("masks pas ok");
 	  }
       }
   }
@@ -123,8 +136,7 @@ void sdl_init() {
 	if ( SDL_Init(
 		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS | SDL_INIT_JOYSTICK
 		    ) < 0 ) {
-	    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
-	    exit(2);
+	    fatal_error( "Couldn't initialize SDL: %s",SDL_GetError());
 	}
 	if ( TTF_Init() < 0 ) {
 	    fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
@@ -239,8 +251,7 @@ UINT16 bytes_per_pixel(al_bitmap *screen) {
   if (screen->extra)
     return ((screen->id&2) == 2 ? 2 // overlay
 	: ((SDL_Surface*)screen->extra)->format->BytesPerPixel);
-  printf("no vtable and no extras for this bitmap !!!\n");
-  exit(1);
+  fatal_error("no vtable and no extras for this bitmap !!!");
   return 0;
 }
 

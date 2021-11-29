@@ -15,6 +15,7 @@
 #include "newmem.h"
 #include "emumain.h"
 #include "cpumain.h"
+#include "compat.h"
 
 #if USE_MUSASHI < 2
 struct S68000CONTEXT            M68000_context[MAX_68000];
@@ -182,8 +183,7 @@ void add_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
    M68000_dataregion_rb[cpu][data_count_rb[cpu]].memorycall = d2;
    M68000_dataregion_rb[cpu][data_count_rb[cpu]].userdata   = d3 - d0;
    if (data_count_rb[cpu]++ >= MAX_DATA) {
-     fprintf(stderr,"overflow rb\n");
-     exit(1);
+     fatal_error("overflow rb");
    }
 
 }
@@ -196,8 +196,7 @@ void add_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
    M68000_dataregion_rw[cpu][data_count_rw[cpu]].memorycall = d2;
    M68000_dataregion_rw[cpu][data_count_rw[cpu]].userdata   = d3 - d0;
    if (data_count_rw[cpu]++ >= MAX_DATA) {
-     fprintf(stderr,"overflow rw\n");
-     exit(1);
+     fatal_error("overflow rw");
    }
 
 }
@@ -210,8 +209,7 @@ void add_68000_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
    M68000_dataregion_wb[cpu][data_count_wb[cpu]].memorycall = d2;
    M68000_dataregion_wb[cpu][data_count_wb[cpu]].userdata   = d3 - d0;
    if (data_count_wb[cpu]++ >= MAX_DATA) {
-     fprintf(stderr,"overflow wb\n");
-     exit(1);
+     fatal_error("overflow wb");
    }
 
 }
@@ -357,8 +355,7 @@ void add_68000_ww(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
    M68000_dataregion_ww[cpu][data_count_ww[cpu]].memorycall = d2;
    M68000_dataregion_ww[cpu][data_count_ww[cpu]].userdata   = d3 - d0;
    if (data_count_ww[cpu]++ >= MAX_DATA) {
-     fprintf(stderr,"overflow add_68000_ww\n");
-     exit(1);
+     fatal_error("overflow add_68000_ww");
    }
 
 }
@@ -375,8 +372,7 @@ void set_68000_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
     }
   }
   if (i>=data_count_rb[cpu]) {
-    fprintf(stderr,"couldn't set rb %x - %x\n",d0,d1);
-    exit(1);
+    fatal_error("couldn't set rb %x - %x",d0,d1);
   }
 }
 
@@ -392,8 +388,7 @@ void set_68000_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
     }
   }
   if (i>=data_count_rw[cpu]) {
-    fprintf(stderr,"couldn't set rw %x - %x\n",d0,d1);
-    exit(1);
+    fatal_error("couldn't set rw %x - %x",d0,d1);
   }
 }
 
@@ -998,8 +993,7 @@ void finish_conf_68000(int cpu) {
    else if (cpu == 0)
 	   AddInitMemory();	// Set Starscream mem pointers...
    else {
-	   fprintf(stderr,"can't finish conf for 68000 #%d\n",cpu);
-	   exit(1);
+	   fatal_error("can't finish conf for 68000 #%d",cpu);
    }
 }
 

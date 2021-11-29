@@ -354,8 +354,7 @@ static int get_def_indice(const char *name) {
     for (int n=0; n<nb; n++)
 	if (!strcmp(def_input_emu[n].name,name))
 	    return n;
-    printf("not found def_input_emu name : %s\n",name);
-    exit(1);
+    fatal_error("not found def_input_emu name : %s",name);
     return -1;
 }
 

@@ -76,8 +76,7 @@ void open_debug(void)
 
       if (debug_mode < 2) {
 	if(!(file_debug=fopen(str,"w"))){
-	  printf("Unable to write to %s\n",str);
-	  exit(1);
+	  fatal_error("Unable to write to %s",str);
 	}
 #if defined(RAINE_WIN32) || defined(RAINE_DOS)
 	fclose(file_debug);

@@ -665,8 +665,7 @@ void load_arpro_cheats(const char *mysection)
 			CheatList[CheatCount].active = CheatList[CheatCount].old_value = 0;
 			CheatCount++;
 			if (CheatCount >= CHEAT_MAX) {
-			  printf("cheats overflow\n");
-			  exit(1);
+			  fatal_error("cheats overflow");
 			}
 		}
 	}

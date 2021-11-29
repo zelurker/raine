@@ -17,6 +17,7 @@
 #include "es5506.h"
 #include "streams.h"
 #include "loadroms.h"
+#include "compat.h"
 
 int es5506_voice_filters;
 //#define DUMP 1
@@ -2129,8 +2130,7 @@ WRITE_HANDLER( ES5505_data_0_wb )
   } else {
     mem_mask = 0x00ff;
   }
-  fprintf(stderr,"mem_mask bad\n");
-  exit(1);
+  fatal_error("mem_mask bad");
   es5505_reg_write(&es5506[0], offset>>1, data, mem_mask);
 }
 

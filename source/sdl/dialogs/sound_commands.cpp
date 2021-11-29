@@ -12,6 +12,7 @@
 #include "sound/assoc.h"
 #include "dialogs/fsel.h"
 #include "neocd/cdda.h"
+#include "compat.h"
 
 static TMenu *menu;
 static int command;
@@ -345,8 +346,7 @@ int do_sound_cmd(int sel) {
     }
 
     if (sound_menu[0].values_list_size >= NB_VALUES) {
-	printf("too many values : %d\n",sound_menu[0].values_list_size);
-	exit(1);
+	fatal_error("too many values : %d",sound_menu[0].values_list_size);
     }
 
     reset_ingame_timer(); // For sound we'd better init this here...

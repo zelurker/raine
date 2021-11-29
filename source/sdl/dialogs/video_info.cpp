@@ -16,8 +16,7 @@ static void print_tf_state(int n, char *label, int test) {
   video_menu[n].value_int = &status[n];
   status[n] = test;
   if (test != 0 && test != 1 && test != -1) {
-    printf("received test %d for %s\n",test,label);
-    exit(1);
+    fatal_error("received test %d for %s",test,label);
   }
   video_menu[n].values_list_size = 3;
   video_menu[n].values_list[0] = -1;

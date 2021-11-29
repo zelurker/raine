@@ -92,8 +92,7 @@ static int get_sprite_map(UINT32 n) {
 	n -= combo_loc[x].size;
 	x++;
     }
-    printf("map overflow\n");
-    exit(1);
+    fatal_error("map overflow");
 }
 
 TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
@@ -290,8 +289,7 @@ static void move_ref(int diff) {
 		    continue;
 		if ((UINT32)ReadLongSc(&RAM[reference[n].ref[x]]) !=
 			reference[n].adr) {
-		    printf("reference mismatch base %x ref %d\n",base,x);
-		    exit(1);
+		    fatal_error("reference mismatch base %x ref %d",base,x);
 		}
 		WriteLongSc(&RAM[reference[n].ref[x]],
 			reference[n].adr-diff);
@@ -480,8 +478,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 			    printf("creating new combination at %x used_map %x\n",loc,used_map);
 			    return 1;
 			} else {
-			    printf("map full %d >= %d\n",used_map,size_map);
-			    exit(1);
+			    fatal_error("map full %d >= %d",used_map,size_map);
 			}
 		    }
 		}

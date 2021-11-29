@@ -27,6 +27,7 @@
 #endif
 #include "ingame.h"
 #include "7z.h"
+#include "compat.h"
 
 // cdrom_speed : used only for the speed of the loading animations
 int cdrom_speed;
@@ -1581,8 +1582,7 @@ unsigned neogeo_cdrom_test_files(unsigned char *Ptr, loading_params *param)
     {
       //console_printf("Internal Error loading file: %s",FileName);
       //SDL_Delay(1000);
-      printf("internal error loading file %s\n",FileName);
-      exit(1);
+      fatal_error("internal error loading file %s",FileName);
       // ExitCallback(1,2,NULL);
     }
 

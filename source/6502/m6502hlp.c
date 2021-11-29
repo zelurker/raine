@@ -166,8 +166,7 @@ void AddM6502AROMBase(UINT8 *d0)
 {
 #ifdef MAME_6502
     if (!m6502.insn) {
-	printf("AddM6502AROMBase: call 1st m6502_init or m65c02_init !\n");
-	exit(1);
+	fatal_error("AddM6502AROMBase: call 1st m6502_init or m65c02_init !");
     }
    m6502.m6502Base = d0;
    m6502_get_context(&M6502_context[0]);
@@ -326,8 +325,7 @@ void AddM6502BROMBase(UINT8 *d0)
 {
 #ifdef MAME_6502
     if (!m6502.insn) {
-	printf("AddM6502BROMBase: call 1st m6502_init or m65c02_init !\n");
-	exit(1);
+	fatal_error("AddM6502BROMBase: call 1st m6502_init or m65c02_init !");
     }
    m6502.m6502Base = d0;
    m6502_get_context(&M6502_context[1]);
@@ -406,8 +404,7 @@ void AddM6502CROMBase(UINT8 *d0)
 {
 #ifdef MAME_6502
     if (!m6502.insn) {
-	printf("AddM6502CROMBase: call 1st m6502_init or m65c02_init !\n");
-	exit(1);
+	fatal_error("AddM6502CROMBase: call 1st m6502_init or m65c02_init !");
     }
    m6502.m6502Base = d0;
    m6502_get_context(&M6502_context[2]);
