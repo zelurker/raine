@@ -1274,7 +1274,7 @@ endif
 else
 # windows
 # and these libs are used by SDL_sound/FLAC
-LIBS += -logg -lvorbisfile -lws2_32 -lintl -lssp
+LIBS += -lws2_32 -lintl -lssp
 endif
 endif # HAS_NEO
 endif
