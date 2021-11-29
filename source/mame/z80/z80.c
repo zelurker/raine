@@ -208,7 +208,6 @@ static void fatalerror(char *format, ...) {
 int z80_ICount;
 Z80_Regs Z80;
 static UINT32 EA;
-static int irq_pending,pending_vector;
 
 static UINT8 SZ[256];		/* zero and sign flags */
 static UINT8 SZ_BIT[256];	/* zero, sign and parity/overflow (=zero) flags for BIT opcode */
@@ -3342,8 +3341,10 @@ OP(op,ff) { RST(0x38);											} /* RST  7           */
 static void take_interrupt()
 {
     int irq_vector = Z80.irq_vector;
-    if (irq_pending) irq_vector = pending_vector;
-    irq_pending = 0;
+    if (Z80.irq_pending) {
+	irq_vector = Z80.pending_vector;
+	Z80.irq_pending = 0;
+    }
 	/* there isn't a valid previous program counter */
 	PRVPC = -1;
 
@@ -3414,8 +3415,8 @@ static void take_interrupt()
 
 void mz80int(int vector) {
     /* The raine way to do interrupts, avoid to handle the irq line, guessing how long it must stay active, here we just set irq_pending, and it's taken when available */
-    irq_pending = 1;
-    pending_vector = vector;
+    Z80.irq_pending = 1;
+    Z80.pending_vector = vector;
 }
 
 /****************************************************************************
@@ -3567,7 +3568,7 @@ void z80_reset(void)
 	Z80.after_ei = FALSE;
 	Z80.dwElapsedTicks = 0;
 	Z80.halt = 0;
-	irq_pending = 0;
+	Z80.irq_pending = 0;
 
 #ifdef DAISY
 	if (Z80.daisy)
@@ -3615,7 +3616,7 @@ int z80_execute(int cycles)
 	do
 	{
 		/* check for IRQs before each instruction */
-		if ((Z80.irq_state != CLEAR_LINE || irq_pending) && IFF1 && !Z80.after_ei)
+		if ((Z80.irq_state != CLEAR_LINE || Z80.irq_pending) && IFF1 && !Z80.after_ei)
 			take_interrupt();
 		Z80.after_ei = FALSE;
 

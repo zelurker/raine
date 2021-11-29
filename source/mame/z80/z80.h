@@ -45,6 +45,7 @@ typedef struct
 	UINT8	after_ei;			/* are we in the EI shadow? */
 	int irq_vector;
 	UINT32 dwElapsedTicks;
+	int irq_pending,pending_vector;
 	// z80Base will make debuger functions much easier
 	UINT8 *z80Base;
 #ifdef DAISY

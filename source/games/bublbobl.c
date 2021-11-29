@@ -1115,12 +1115,20 @@ static void execute_bublbobl(void)
        int ta;
        for(ta=0;ta<CPU_SLICE;ta++)
        {
-	   if(cpu_get_pc(CPU_Z80_0) != 0x01ED)
+	   if(cpu_get_pc(CPU_Z80_0) != 0x01ED
+#ifdef MAME_Z80
+		   || Z80.irq_pending
+#endif
+		   )
 	   {
 	       cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Main Z80 8MHz (60fps)
 	   }
 
-	   if(cpu_get_pc(CPU_Z80_1) != 0x000A)
+	   if(cpu_get_pc(CPU_Z80_1) != 0x000A
+#ifdef MAME_Z80
+		   || Z80.irq_pending
+#endif
+		   )
 	   {
 	       cpu_execute_cycles(CPU_Z80_1, CPU_FRAME_MHz(6,60)/CPU_SLICE);  // Sub Z80 8MHz (60fps)
 	   }
@@ -1140,12 +1148,20 @@ static void execute_bublbobl(void)
        while (frame > 0) {
 	   switch_cpu(CPU_Z80_2);
 	   UINT32 elapsed = execute_one_z80_audio_frame(frame);
-	   if(cpu_get_pc(CPU_Z80_0) != 0x01ED)
+	   if(cpu_get_pc(CPU_Z80_0) != 0x01ED
+#ifdef MAME_Z80
+		   || Z80.irq_pending
+#endif
+		   )
 	   {
 	       cpu_execute_cycles(CPU_Z80_0, elapsed*2);  // 6 MHz
 	   }
 
-	   if(cpu_get_pc(CPU_Z80_1) != 0x000A)
+	   if(cpu_get_pc(CPU_Z80_1) != 0x000A
+#ifdef MAME_Z80
+		   || Z80.irq_pending
+#endif
+		   )
 	   {
 	       cpu_execute_cycles(CPU_Z80_1, elapsed*2);  // Sub Z80 6MHz
 	   }
