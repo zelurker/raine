@@ -692,10 +692,19 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 	if (included) { // only if some inputs were included
 	    // Otherwise it prevents combinations like A+B in neocd from
 	    // working !
-	    for (n=0; n<InputCount; n++)
+	    for (n=0; n<InputCount; n++) {
 		// Exact bit masks for normal inputs, only part of it to overwrite unknown or unused input
 		// to be totally exact, I should split the bitmask of unknown/unused inputs, but I'll try to
 		// forget this part to see how it works...
+		if ((input_src[srcCount].default_key == KB_DEF_UNKNOWN ||
+			    input_src[srcCount].default_key == KB_DEF_UNUSED) &&
+			(input_src[srcCount].bit_mask & InputList[n].Bit)) {
+		    // overwritten by unused/unknown -> the old input simply disappears in this case...
+		    printf("Erase input %d, InputCount %d\n",n,InputCount);
+		    memmove(&InputList[n],&InputList[n+1],(InputCount-n)*sizeof(struct INPUT));
+		    InputCount--;
+		    n--; continue;
+		}
 		if (input_src[srcCount].offset == InputList[n].Address &&
 			(input_src[srcCount].bit_mask == InputList[n].Bit ||
 			((input_src[srcCount].bit_mask & InputList[n].Bit) &&
@@ -706,6 +715,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 		    InputCount = n;
 		    break;
 		}
+	    }
 	}
 
 	UINT16 def = InputList[InputCount].default_key = input_src[srcCount].default_key;
