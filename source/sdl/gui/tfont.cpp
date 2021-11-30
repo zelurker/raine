@@ -154,10 +154,14 @@ void TFont::put_string(int x, int y, const char *s, int color, int bgcolor) {
   surf_string(sdl_screen,x,y,s,color,bgcolor,0);
 }
 
+#define conv_col(col) ((col&255)<<24)|(((col>>8)&255)<<16)|(((col>>16)&255)<<8)|((col>>24)&255)
 void TFont::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int color,int w) {
+#if SDL==2
+    color = conv_col(color);
+#endif
   if (loaded_font)
     gfxPrimitivesSetFont(loaded_font,charWidth,charHeight);
-  if (charWidth*strlen(s) > (unsigned)w) {
+  if (charWidth*strlen(s) > (unsigned)w && w!=0) {
       int len = w/charWidth;
       char *dup = strdup(s);
       dup[len+1] = 0;
@@ -168,7 +172,10 @@ void TFont::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int co
 }
 
 void TFont::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor, int w) {
-  if (charWidth*strlen(s) > (unsigned)w) {
+#if SDL == 2
+    bgcolor = conv_col(bgcolor);
+#endif
+  if (charWidth*strlen(s) > (unsigned)w && w!=0) {
       int len = w/charWidth;
       char *dup = strdup(s);
       dup[len+1] = 0;
