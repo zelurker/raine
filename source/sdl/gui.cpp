@@ -194,7 +194,7 @@ static void save_font_config() {
 }
 
 static void read_font_config() {
-  min_font_size = raine_get_config_int("GUI", "min_font_size", 8);
+  min_font_size = raine_get_config_int("GUI", "min_font_size", 10);
   max_font_size = raine_get_config_int("GUI", "max_font_size", 30);
 }
 
