@@ -122,28 +122,23 @@ static char *my_get_joy_name(int code) {
 static char *get_key_name(int key, int mod) {
   char keyname[80];
   keyname[0] = 0;
-  if (mod & KMOD_LCTRL)
-    strcat(keyname,"LCTRL ");
-  if (mod & KMOD_RCTRL)
-    strcat(keyname,"RCTRL ");
-  if (mod & KMOD_LSHIFT)
-    strcat(keyname,"LSHIFT ");
-  if (mod & KMOD_RSHIFT)
-    strcat(keyname,"RSHIFT ");
-  if (mod & KMOD_LALT)
-    strcat(keyname,"LALT ");
-  if (mod & KMOD_RALT)
-    strcat(keyname,"RALT ");
+  if (mod & (KMOD_LCTRL|KMOD_RCTRL))
+    strcat(keyname,"CTRL ");
+  if (mod & (KMOD_LSHIFT|KMOD_RSHIFT))
+    strcat(keyname,"SHIFT ");
+  if (mod & (KMOD_LALT|KMOD_RALT))
+    strcat(keyname,"ALT ");
 #if SDL==2
-  if (mod & KMOD_RGUI)
-      strcat(keyname,"RGUI ");
-  if (mod & KMOD_LGUI)
-      strcat(keyname,"LGUI ");
+  if (mod & (KMOD_RGUI|KMOD_LGUI))
+      strcat(keyname,"GUI ");
 #endif
 #if SDL == 1
   strcat(keyname,SDL_GetKeyName((SDLKey)key));
 #else
-  strcat(keyname,SDL_GetKeyName(key));
+  if (key & 0x200)
+      strcat(keyname,SDL_GetScancodeName((SDL_Scancode)(key & (~0x200))));
+  else
+      strcat(keyname,SDL_GetKeyName(key));
 #endif
   if (key & 0x200) { // special scancode encoding for unknown keys
     sprintf(&keyname[strlen(keyname)]," (%x)",key & 0x1ff);
@@ -213,7 +208,7 @@ void TInput::handle_key(SDL_Event *event) {
        * to handle these keys like any other.
        * With sdl2 the modifiers are modified before you get the keydown event ! So the best is to
        * return these modifiers separately, they are needed only for the emu keys anyway... */
-      if (event->key.keysym.sym) {
+      if ((inp_key & 0xfffffff)) {
 	inp_key = event->key.keysym.sym;
       } else {
 	inp_key = (event->key.keysym.scancode|0x200);

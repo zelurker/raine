@@ -860,7 +860,7 @@ static void load_emu_keys(char *section, struct DEF_INPUT_EMU *list_emu, int nb)
 	list_emu[ta].scancode = scan;
       }
       strcat(key_name,"_kmod");
-      list_emu[ta].kmod = raine_get_config_int(section,key_name,0);
+      list_emu[ta].kmod = raine_get_config_int(section,key_name,list_emu[ta].kmod);
    }
 }
 
