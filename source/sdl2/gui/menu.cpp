@@ -1476,6 +1476,10 @@ void TMenu::handle_mouse(SDL_Event *event) {
 	    handle_button(event,index);
       }
       break;
+    case SDL_MOUSEWHEEL:
+      if (event->wheel.y > 0) prev_page();
+      else if (event->wheel.y < 0) next_page();
+      break;
   }
 }
 
@@ -1699,6 +1703,7 @@ void TMenu::execute() {
       case SDL_MOUSEMOTION:
       case SDL_MOUSEBUTTONUP:
       case SDL_MOUSEBUTTONDOWN:
+      case SDL_MOUSEWHEEL:
         handle_mouse(&event);
 	break;
       case SDL_JOYAXISMOTION:
