@@ -135,14 +135,20 @@ void opengl_reshape(int w, int h) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
     if (!ogl.dbuf) {
+#if SDL == 2
 	SDL_GL_SetSwapInterval(0);
+#endif
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
     } else {
+#if SDL == 2
 	if (SDL_GL_SetSwapInterval(-1) < 0) {
 	    ogl.infos.vbl = 1;
 	    SDL_GL_SetSwapInterval(1);
 	} else
 	    ogl.infos.vbl = -1;
+#else
+	ogl.infos.vbl = 1;
+#endif
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
     }
     check_error("end opengl_reshape");

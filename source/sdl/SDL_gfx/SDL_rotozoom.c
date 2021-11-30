@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include "SDL_rotozoom.h"
+#include "compat.h"
 
 #define MAX(a,b)    (((a) > (b)) ? (a) : (b))
 

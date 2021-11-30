@@ -10,7 +10,7 @@
 #include "loadpng.h"
 #ifdef SDL
 #include "SDL_gfx/SDL_rotozoom.h"
-#include "menuitem.h"
+#include "gui/menuitem.h"
 #endif
 #include "compat.h"
 

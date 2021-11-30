@@ -70,7 +70,9 @@ typedef struct joystick_state {
 
 typedef struct {
     SDL_Joystick *joy;
+#if SDL == 2
     SDL_GameController *controller;
+#endif
     char *name;
     // The index is the index used in raine to know which joystick it is for the inputs
     // the instance is what is returned in the which field for its events... !
@@ -447,6 +449,7 @@ int get_console_key() {
 static struct DEF_INPUT_EMU *driver_emu_list = NULL;
 static int driver_nb_emu_inputs;
 
+#if SDL == 2
 static void update_index(int n, int index) {
     // This function because SDL_JoystickSetPlayerIndex does not work on most joysticks !
     if (joy[n].controller)
@@ -463,6 +466,7 @@ static void update_index(int n, int index) {
 	}
     }
 }
+#endif
 
 int get_joy_playerindex(int n) {
     return joy[n].index;
@@ -472,10 +476,12 @@ void set_joy_playerindex(int n, int index) {
     // This one is for the controls.cpp graphic interface
     // it does no checks, just assign things, that's all
     joy[n].index = index;
+#if SDL == 2
     if (joy[n].controller)
 	SDL_GameControllerSetPlayerIndex(joy[n].controller,index);
     else
 	SDL_JoystickSetPlayerIndex(joy[n].joy,index);
+#endif
 }
 
 int get_joy_index_from_playerindex(int index) {
@@ -503,6 +509,7 @@ int get_joy_index_from_instance(int inst) {
 }
 
 static int get_joy_index(int n) {
+#if SDL == 2
     SDL_JoystickGUID guid;
     guid = SDL_JoystickGetDeviceGUID(n);
     char guid_str[35];
@@ -533,14 +540,21 @@ static int get_joy_index(int n) {
 	}
     }
     return index;
+#else
+    return 0; // no guid in sdl1.2
+#endif
 }
 
+#if SDL == 2
 static void del_controller(int n) {
-    if (joy[n].controller)
+    if (joy[n].controller) {
 	SDL_GameControllerClose(joy[n].controller);
-    else
+	joy[n].controller = NULL;
+    } else
+    {
 	SDL_JoystickClose(joy[n].joy);
-    joy[n].controller = NULL;
+	joy[n].joy = NULL;
+    }
     for (int ta=n+1; ta<nb_joy; ta++) {
 	printf("%d -> %d\n",ta,ta-1);
 	joy[ta-1] = joy[ta];
@@ -548,15 +562,19 @@ static void del_controller(int n) {
     memset(&joy[nb_joy-1],0,sizeof(tjoy));
     nb_joy--;
 }
+#endif
 
 static void add_game_controller(int n) {
+#if SDL == 2
     if (SDL_IsGameController(n)) {
 	joy[n].controller = SDL_GameControllerOpen(n);
 	joy[n].name = (char*)SDL_GameControllerNameForIndex(n);
 	if (!joy[n].controller) {
 	    fatal_error("open controller failed: %s",SDL_GetError());
 	}
-    } else {
+    } else
+#endif
+    {
 	joy[n].joy = SDL_JoystickOpen(n);
 	if (!joy[n].joy) {
 	    fatal_error("open joy failed: %s",SDL_GetError());
@@ -564,12 +582,16 @@ static void add_game_controller(int n) {
 #if SDL==2
 	joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
 #else
-	joy[n].name = SDL_JoystickName(n);
+	joy[n].name = (char*)SDL_JoystickName(n);
 #endif
     }
     memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
     joy[n].index = get_joy_index(n);
+#if SDL == 2
     joy[n].instance = SDL_JoystickGetDeviceInstanceID(n);
+#else
+    joy[n].instance = n;
+#endif
     nb_joy++;
     printf("controller %d opened (%s) index %d\n",n,joy[n].name,joy[n].index);
 }
@@ -774,7 +796,11 @@ void init_inputs(void)
    memset(autofire_timer,0,sizeof(autofire_timer));
    memset(stick_logic,0,sizeof(stick_logic));
    for (int n=0; n<MAX_JOY; n++) {
-       if (joy[n].joy || joy[n].controller)
+       if (joy[n].joy
+#if SDL == 2
+	       || joy[n].controller
+#endif
+	       )
 	   memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
    }
 
@@ -798,7 +824,11 @@ void release_inputs(void)
 
   memset(key,0,sizeof(key));
   for (int n=0; n<MAX_JOY; n++) {
-      if (joy[n].joy || joy[n].controller)
+      if (joy[n].joy
+#if SDL == 2
+	      || joy[n].controller
+#endif
+	      )
 	  memset(&joy[n].jstate,0,sizeof(joy[n].jstate));
   }
   memset(autofire_timer,0,sizeof(autofire_timer));
@@ -1129,6 +1159,7 @@ void save_emulator_joys(char *section)
       no_spaces(joy_name);
       raine_set_config_int(section,joy_name,def_input_emu[ta].joycode);
    }
+#if SDL == 2
    for (ta=0; ta<nb_joy; ta++) {
        SDL_JoystickGUID guid;
        guid = SDL_JoystickGetDeviceGUID(ta);
@@ -1136,6 +1167,7 @@ void save_emulator_joys(char *section)
        SDL_JoystickGetGUIDString(guid,guid_str,35);
        raine_set_config_int(section,guid_str,joy[ta].index);
    }
+#endif
 }
 
 void update_rjoy_list(void)
@@ -1504,6 +1536,7 @@ void control_handle_event(SDL_Event *event) {
   int input_valid,nb;
 
   switch (event->type) {
+#if SDL == 2
   case SDL_CONTROLLERBUTTONDOWN:
       which = get_joy_index_from_instance(event->cbutton.which);
       switch (event->cbutton.button) {
@@ -1555,6 +1588,13 @@ void control_handle_event(SDL_Event *event) {
 	  del_controller(n);
       }
       break;
+    case SDL_CONTROLLERAXISMOTION:
+      which = get_joy_index_from_instance(event->caxis.which);
+      axis = event->caxis.axis;
+      value = event->caxis.value;
+      handle_joy_axis(which,axis,value);
+      break;
+#endif
     case SDL_KEYDOWN:
       input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
       if (!(input & 0xfffffff)) { // special encoding for scancodes (unknown keys)
@@ -1709,12 +1749,6 @@ void control_handle_event(SDL_Event *event) {
       display_bezel();
       break;
 #endif
-    case SDL_CONTROLLERAXISMOTION:
-      which = get_joy_index_from_instance(event->caxis.which);
-      axis = event->caxis.axis;
-      value = event->caxis.value;
-      handle_joy_axis(which,axis,value);
-      break;
     case SDL_JOYAXISMOTION:
       which = get_joy_index_from_instance(event->jaxis.which);
       if (is_game_controller(which)) {
@@ -2125,7 +2159,10 @@ void inputs_done() {
     if (joy[n].joy) {
 	SDL_JoystickClose(joy[n].joy);
 	// free(joy[n].name);
-    } else if (joy[n].controller)
+    }
+#if SDL == 2
+    else if (joy[n].controller)
 	SDL_GameControllerClose(joy[n].controller);
+#endif
 }
 

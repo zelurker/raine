@@ -252,6 +252,7 @@ void TInput::handle_joystick(SDL_Event *event) {
       inp_joy = get_joy_input(which,0,event->jbutton.button+1,0);
       exit_menu = 1;
       break;
+#if SDL==2
     case SDL_CONTROLLERAXISMOTION:
       which = get_joy_index_from_instance(event->cbutton.which);
       axis = event->caxis.axis;
@@ -292,6 +293,7 @@ void TInput::handle_joystick(SDL_Event *event) {
       exit_menu = 1;
       SDL_FlushEvents(SDL_JOYBUTTONDOWN,SDL_JOYBUTTONUP);
       break;
+#endif
     case SDL_JOYHATMOTION:
       which = get_joy_index_from_instance(event->jhat.which);
       if (is_game_controller(which)) {
