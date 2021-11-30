@@ -698,9 +698,11 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 		// forget this part to see how it works...
 		if ((input_src[srcCount].default_key == KB_DEF_UNKNOWN ||
 			    input_src[srcCount].default_key == KB_DEF_UNUSED) &&
+			input_src[srcCount].offset == InputList[n].Address &&
 			(input_src[srcCount].bit_mask & InputList[n].Bit)) {
 		    // overwritten by unused/unknown -> the old input simply disappears in this case...
-		    printf("Erase input %d, InputCount %d\n",n,InputCount);
+		    // printf("Erase input %s, InputCount %d offset %x mask %x from %s off %x mask %x\n",InputList[n].InputName,InputCount,InputList[n].Address,InputList[n].Bit,
+			//    input_src[srcCount].name,input_src[srcCount].offset,input_src[srcCount].bit_mask);
 		    memmove(&InputList[n],&InputList[n+1],(InputCount-n)*sizeof(struct INPUT));
 		    InputCount--;
 		    n--; continue;
@@ -710,7 +712,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 			((input_src[srcCount].bit_mask & InputList[n].Bit) &&
 			 (InputList[n].default_key == KB_DEF_UNKNOWN ||
 			 InputList[n].default_key == KB_DEF_UNUSED)))) {
-		    printf("overwriting %s with %s\n",InputList[n].InputName,input_src[srcCount].name);
+		    // printf("overwriting %s with %s\n",InputList[n].InputName,input_src[srcCount].name);
 		    old = InputCount;
 		    InputCount = n;
 		    break;
