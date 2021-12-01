@@ -669,7 +669,7 @@ struct DEF_INPUT_EMU def_input_emu[] =
  { SDL_SCANCODE_F4 , 0x00, _("Load demo"), KMOD_SHIFT, GameLoadDemo },
  { SDL_SCANCODE_SPACE, 0x00, _("Fwd 1 frame in pause"), 0, key_pause_fwd},
 #ifdef HAS_CONSOLE
- { 31 /* TILDE */, 0x00, _("Console"), 0, call_console},
+ { SDL_SCANCODE_GRAVE, 0x00, _("Console"), 0, call_console},
 #endif
  { SDL_SCANCODE_C , 0x00, _("Cheats"), KMOD_ALT, call_cheats},
  { SDL_SCANCODE_F4,       0x00,           _("Quit w/o saving"), KMOD_ALT, key_quit     },

@@ -318,9 +318,7 @@ int TConsole::fglayer_footer_handle_key(SDL_Event *event) {
 	  event->key.keysym.sym = SDLK_END;
 	}
       }
-    } else if ((key_console < 0x200 && event->key.keysym.sym == key_console) ||
-               (key_console > 0x200 && event->key.keysym.scancode == key_console-0x200)) {
-      // 0x200 is to handle "unknown" keys ie, keys without a SDLK constant
+    } else if (event->key.keysym.scancode == key_console) {
       exit_menu = 1;
       return 0;
     }
