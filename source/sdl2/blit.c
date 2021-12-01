@@ -95,6 +95,8 @@ void get_overlay_area(int *x, int *y, int *w, int *h) {
   *h = area_overlay.h;
 }
 
+int integer_scaling = 1;
+
 void ReClipScreen(void)
 {
    // clip x
@@ -173,10 +175,18 @@ void ReClipScreen(void)
 	 /* Now fix the aspect ratio of the overlay inside the game screen */
 	 int xxx2,yyy2,destx2,desty2;
 	 if (ratio1 < ratio2) {
-	     xxx2 = display_cfg.screen_x;
-	     yyy2 = round(ratio1 * game_y);
-	     destx2 = 0;
+	     if (integer_scaling) {
+		 int ratio = display_cfg.screen_x / game_x;
+		 xxx2 = game_x * ratio;
+		 yyy2 = game_y * ratio;
+		 printf("1st ineger scaling %d,%d\n",xxx2,yyy2);
+	     } else {
+		 xxx2 = display_cfg.screen_x;
+		 yyy2 = round(ratio1 * game_y);
+	     }
+	     destx2 = (display_cfg.screen_x - xxx2)/2;
 	     desty2 = (display_cfg.screen_y - yyy2)/2;
+	     printf("desty %d\n",desty2);
 	     if (desty2 < 0) {
 		 /* Out of limits, harmless for texture, creates black screen
 		  * in win32 when using drawpixels.
@@ -186,9 +196,16 @@ void ReClipScreen(void)
 		 yyy2 = display_cfg.screen_y;
 	     }
 	 } else {
-	     yyy2 = display_cfg.screen_y;
-	     xxx2 = round(ratio2 * game_x);
-	     desty2 = 0;
+	     if (integer_scaling) {
+		 int ratio = display_cfg.screen_y / game_y;
+		 yyy2 = game_y * ratio;
+		 xxx2 = game_x * ratio;
+		 printf("2nd ineger scaling %d,%d ratio %d\n",xxx2,yyy2,ratio);
+	     } else {
+		 yyy2 = display_cfg.screen_y;
+		 xxx2 = round(ratio2 * game_x);
+	     }
+	     desty2 = (display_cfg.screen_y - yyy2)/2;
 	     destx2 = (display_cfg.screen_x - xxx2) /2;
 	     if (destx2 < 0) {
 		 // copy the out of limits code from ratio1 < ratio2

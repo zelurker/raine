@@ -163,6 +163,7 @@ static menu_item_t ogl_options[] =
     { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {_("No"), _("Yes") } },
     { _("Keep aspect ratio"), NULL, &display_cfg.keep_ratio, 2, {0, 1}, {_("No"),_("Yes")} },
     { _("OpenGL filtering"), NULL, &ogl.filter, 2, { GL_NEAREST, GL_LINEAR }, { _("Nearest"), _("Linear") } },
+    { _("Integer scaling"), NULL, &integer_scaling, 2, {0, 1}, {_("No"),_("Yes")} },
     {  NULL },
 };
 
@@ -281,7 +282,7 @@ int do_video_options(int sel) {
 #endif
 #endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
-    video_options = new TVideo(_(""), video_items);
+    video_options = new TVideo("", video_items);
     video_options->execute();
 #if defined(RAINE_WIN32) && SDL==1
     if (old_driver != display_cfg.video_driver) {

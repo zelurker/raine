@@ -9,6 +9,7 @@
 #include <time.h>
 #include "raine.h"
 #include "blit.h"
+#include "blit_sdl.h"
 #include "palette.h"
 #include "compat.h"
 #include "video/res.h"
@@ -165,6 +166,7 @@ void display_read_config() {
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
 #endif
    ogl.dbuf = raine_get_config_int("display","ogl_dbuf",1);
+   integer_scaling = raine_get_config_int("display","integer_scaling",0);
    ogl.render = raine_get_config_int("display","ogl_render",1);
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1);
    ogl.save = raine_get_config_int("display","ogl_save",1);
@@ -216,6 +218,7 @@ void display_write_config() {
    raine_set_config_int("display", "fix_aspect_ratio", display_cfg.fix_aspect_ratio);
    raine_set_config_int("display", "prefered_yuv_format", prefered_yuv_format);
    raine_set_config_int("display", "ogl_dbuf", ogl.dbuf);
+   raine_set_config_int("display", "integer_scaling", integer_scaling);
    raine_set_config_int("display", "ogl_render", ogl.render);
    raine_set_config_int("display", "ogl_overlay", ogl.overlay);
    raine_set_config_int("display", "ogl_save", ogl.save);
