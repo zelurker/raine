@@ -159,8 +159,33 @@ void my_get_mouse_mickeys(int *mx, int *my) {
 
 void (*GetMouseMickeys)(int *mx,int *my) = &my_get_mouse_mickeys;
 
-#if SDL != 2
-#define SDL_CONTROLLER_BUTTON_START 8
+#if SDL < 2
+typedef enum
+{
+    SDL_CONTROLLER_BUTTON_INVALID = -1,
+    SDL_CONTROLLER_BUTTON_A,
+    SDL_CONTROLLER_BUTTON_B,
+    SDL_CONTROLLER_BUTTON_X,
+    SDL_CONTROLLER_BUTTON_Y,
+    SDL_CONTROLLER_BUTTON_BACK,
+    SDL_CONTROLLER_BUTTON_GUIDE,
+    SDL_CONTROLLER_BUTTON_START,
+    SDL_CONTROLLER_BUTTON_LEFTSTICK,
+    SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+    SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+    SDL_CONTROLLER_BUTTON_DPAD_UP,
+    SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+    SDL_CONTROLLER_BUTTON_MISC1,    /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button */
+    SDL_CONTROLLER_BUTTON_PADDLE1,  /* Xbox Elite paddle P1 */
+    SDL_CONTROLLER_BUTTON_PADDLE2,  /* Xbox Elite paddle P3 */
+    SDL_CONTROLLER_BUTTON_PADDLE3,  /* Xbox Elite paddle P2 */
+    SDL_CONTROLLER_BUTTON_PADDLE4,  /* Xbox Elite paddle P4 */
+    SDL_CONTROLLER_BUTTON_TOUCHPAD, /* PS4/PS5 touchpad button */
+    SDL_CONTROLLER_BUTTON_MAX
+} SDL_GameControllerButton;
 #endif
 /******************************************************************************/
 /*                                                                            */
@@ -173,124 +198,124 @@ void (*GetMouseMickeys)(int *mx,int *my) = &my_get_mouse_mickeys;
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
 #if defined(RAINE_WIN32) || SDL==2
- { SDLK_3,       JOY(1,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
+ { SDL_SCANCODE_3,       JOY(1,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #else
- { SDLK_z,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
+ { SDL_SCANCODE_Z,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
 #endif
 #if SDL == 2
- { SDLK_4,       JOY(2,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
- { SDLK_7,       JOY(3,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
- { SDLK_8,       JOY(4,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
+ { SDL_SCANCODE_4,       JOY(2,0,0,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
+ { SDL_SCANCODE_7,       JOY(3,0,0,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
+ { SDL_SCANCODE_8,       JOY(4,0,0,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
 #else
- { SDLK_4,       JOY(2,0,10,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
- { SDLK_7,       JOY(3,0,10,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
- { SDLK_8,       JOY(4,0,10,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
+ { SDL_SCANCODE_4,       JOY(2,0,10,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
+ { SDL_SCANCODE_7,       JOY(3,0,10,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
+ { SDL_SCANCODE_8,       JOY(4,0,10,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
 #endif
 
- { SDLK_t,       0x00, 0, "Def Tilt",    SYS      },      // KB_DEF_TILT,
- { SDLK_y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
- { SDLK_u,       0x00, 0, "Def Test",    SYS      },      // KB_DEF_TEST,
+ { SDL_SCANCODE_T,       0x00, 0, "Def Tilt",    SYS      },      // KB_DEF_TILT,
+ { SDL_SCANCODE_Y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
+ { SDL_SCANCODE_U,       0x00, 0, "Def Test",    SYS      },      // KB_DEF_TEST,
 
- { SDLK_1,       JOY(1,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
+ { SDL_SCANCODE_1,       JOY(1,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P1 Start",P1S      },      // KB_DEF_P1_START,
 
- { SDLK_UP,      JOY(1,AXIS_LEFT(1),0,0), 0, "Def P1 Up",P1D         },      // KB_DEF_P1_UP,
- { SDLK_DOWN,    JOY(1,AXIS_RIGHT(1),0,0), 0, "Def P1 Down",P1D       },      // KB_DEF_P1_DOWN,
- { SDLK_LEFT,    JOY(1,AXIS_LEFT(0),0,0), 0, "Def P1 Left",P1D       },      // KB_DEF_P1_LEFT,
- { SDLK_RIGHT,   JOY(1,AXIS_RIGHT(0),0,0), 0, "Def P1 Right",P1D      },      // KB_DEF_P1_RIGHT,
+ { SDL_SCANCODE_UP,      JOY(1,AXIS_LEFT(1),0,0), 0, "Def P1 Up",P1D         },      // KB_DEF_P1_UP,
+ { SDL_SCANCODE_DOWN,    JOY(1,AXIS_RIGHT(1),0,0), 0, "Def P1 Down",P1D       },      // KB_DEF_P1_DOWN,
+ { SDL_SCANCODE_LEFT,    JOY(1,AXIS_LEFT(0),0,0), 0, "Def P1 Left",P1D       },      // KB_DEF_P1_LEFT,
+ { SDL_SCANCODE_RIGHT,   JOY(1,AXIS_RIGHT(0),0,0), 0, "Def P1 Right",P1D      },      // KB_DEF_P1_RIGHT,
 
- { SDLK_LCTRL,       JOY(1,0,1,0), 1, "Def P1 Button 1", P1B      },      // KB_DEF_P1_B1,
- { SDLK_LESS,       JOY(1,0,2,0), 3, "Def P1 Button 2", P1B      },      // KB_DEF_P1_B2,
- { SDLK_LALT,       JOY(1,0,3,0), 2, "Def P1 Button 3", P1B      },      // KB_DEF_P1_B3,
- { SDLK_LSHIFT,       JOY(1,0,4,0), 0, "Def P1 Button 4", P1B      },      // KB_DEF_P1_B4,
- { SDLK_CAPSLOCK,       JOY(1,0,5,0), 0, "Def P1 Button 5", P1B      },      // KB_DEF_P1_B5,
- { SDLK_w,       JOY(1,0,6,0), 0, "Def P1 Button 6", P1B      },      // KB_DEF_P1_B6,
- { SDLK_m,       JOY(1,0,7,0), 0, "Def P1 Button 7", P1B      },      // KB_DEF_P1_B7,
- { SDLK_k,       JOY(1,0,8,0), 0, "Def P1 Button 8", P1B      },      // KB_DEF_P1_B8,
+ { SDL_SCANCODE_A,       JOY(1,0,SDL_CONTROLLER_BUTTON_A+1,0), 1, "Def P1 Button 1", P1B      },      // KB_DEF_P1_B1,
+ { SDL_SCANCODE_S,       JOY(1,0,SDL_CONTROLLER_BUTTON_B+1,0), 3, "Def P1 Button 2", P1B      },      // KB_DEF_P1_B2,
+ { SDL_SCANCODE_D,       JOY(1,0,SDL_CONTROLLER_BUTTON_X+1,0), 2, "Def P1 Button 3", P1B      },      // KB_DEF_P1_B3,
+ { SDL_SCANCODE_Z,       JOY(1,0,SDL_CONTROLLER_BUTTON_Y+1,0), 0, "Def P1 Button 4", P1B      },      // KB_DEF_P1_B4,
+ { SDL_SCANCODE_X,       JOY(1,0,SDL_CONTROLLER_BUTTON_LEFTSHOULDER+1,0), 0, "Def P1 Button 5", P1B      },      // KB_DEF_P1_B5,
+ { SDL_SCANCODE_C,       JOY(1,0,SDL_CONTROLLER_BUTTON_RIGHTSHOULDER+1,0), 0, "Def P1 Button 6", P1B      },      // KB_DEF_P1_B6,
+ { SDL_SCANCODE_Q,       JOY(1,0,SDL_CONTROLLER_BUTTON_DPAD_LEFT+1,0), 0, "Def P1 Button 7", P1B      },      // KB_DEF_P1_B7,
+ { SDL_SCANCODE_W,       JOY(1,0,SDL_CONTROLLER_BUTTON_DPAD_RIGHT+1,0), 0, "Def P1 Button 8", P1B      },      // KB_DEF_P1_B8,
 
- { SDLK_2,       JOY(2,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P2 Start", P2S        },      // KB_DEF_P2_START,
+ { SDL_SCANCODE_2,       JOY(2,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P2 Start", P2S        },      // KB_DEF_P2_START,
 
- { SDLK_s,       JOY(2,AXIS_LEFT(1),0,0), 0, "Def P2 Up", P2D            },      // KB_DEF_P2_UP,
- { SDLK_x,       JOY(2,AXIS_RIGHT(1),0,0), 0, "Def P2 Down", P2D          },      // KB_DEF_P2_DOWN,
- { SDLK_z,       JOY(2,AXIS_LEFT(0),0,0), 0, "Def P2 Left", P2D          },      // KB_DEF_P2_LEFT,
- { SDLK_c,       JOY(2,AXIS_RIGHT(0),0,0), 0, "Def P2 Right", P2D         },      // KB_DEF_P2_RIGHT,
+ { 0,       JOY(2,AXIS_LEFT(1),0,0), 0, "Def P2 Up", P2D            },      // KB_DEF_P2_UP,
+ { 0,       JOY(2,AXIS_RIGHT(1),0,0), 0, "Def P2 Down", P2D          },      // KB_DEF_P2_DOWN,
+ { 0,       JOY(2,AXIS_LEFT(0),0,0), 0, "Def P2 Left", P2D          },      // KB_DEF_P2_LEFT,
+ { 0,       JOY(2,AXIS_RIGHT(0),0,0), 0, "Def P2 Right", P2D         },      // KB_DEF_P2_RIGHT,
 
- { SDLK_q,       JOY(2,0,1,0), 0, "Def P2 Button 1", P2B      },      // KB_DEF_P2_B1,
- { SDLK_w,       JOY(2,0,2,0), 0, "Def P2 Button 2", P2B      },      // KB_DEF_P2_B2,
- { SDLK_e,       JOY(2,0,3,0), 0, "Def P2 Button 3", P2B      },      // KB_DEF_P2_B3,
- { SDLK_r,       JOY(2,0,4,0), 0, "Def P2 Button 4", P2B      },      // KB_DEF_P2_B4,
- { SDLK_a,       JOY(2,0,5,0), 0, "Def P2 Button 5", P2B      },      // KB_DEF_P2_B5,
- { SDLK_d,       JOY(2,0,6,0), 0, "Def P2 Button 6", P2B      },      // KB_DEF_P2_B6,
- { SDLK_f,       JOY(2,0,7,0), 0, "Def P2 Button 7", P2B      },      // KB_DEF_P2_B7,
- { SDLK_g,       JOY(2,0,8,0), 0, "Def P2 Button 8", P2B      },      // KB_DEF_P2_B8,
+ { SDL_SCANCODE_KP_4,       JOY(2,0,SDL_CONTROLLER_BUTTON_A+1,0), 0, "Def P2 Button 1", P2B      },      // KB_DEF_P2_B1,
+ { SDL_SCANCODE_KP_5,       JOY(2,0,SDL_CONTROLLER_BUTTON_B+1,0), 0, "Def P2 Button 2", P2B      },      // KB_DEF_P2_B2,
+ { SDL_SCANCODE_KP_6,       JOY(2,0,SDL_CONTROLLER_BUTTON_X+1,0), 0, "Def P2 Button 3", P2B      },      // KB_DEF_P2_B3,
+ { SDL_SCANCODE_KP_1,       JOY(2,0,SDL_CONTROLLER_BUTTON_Y+1,0), 0, "Def P2 Button 4", P2B      },      // KB_DEF_P2_B4,
+ { SDL_SCANCODE_KP_2,       JOY(2,0,SDL_CONTROLLER_BUTTON_LEFTSHOULDER+1,0), 0, "Def P2 Button 5", P2B      },      // KB_DEF_P2_B5,
+ { SDL_SCANCODE_KP_3,       JOY(2,0,SDL_CONTROLLER_BUTTON_RIGHTSHOULDER+1,0), 0, "Def P2 Button 6", P2B      },      // KB_DEF_P2_B6,
+ { SDL_SCANCODE_KP_7,       JOY(2,0,SDL_CONTROLLER_BUTTON_DPAD_LEFT+1,0), 0, "Def P2 Button 7", P2B      },      // KB_DEF_P2_B7,
+ { SDL_SCANCODE_KP_8,       JOY(2,0,SDL_CONTROLLER_BUTTON_DPAD_RIGHT+1,0), 0, "Def P2 Button 8", P2B      },      // KB_DEF_P2_B8,
 
- { SDLK_5,       JOY(3,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P3 Start",P3S         },      // KB_DEF_P3_START,
+ { SDL_SCANCODE_5,       JOY(3,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P3 Start",P3S         },      // KB_DEF_P3_START,
 
- { 0,       JOY(3,AXIS_LEFT(1),0,0), 0, "Def P3 Up", P3D            },      // KB_DEF_P2_UP,
- { 0,       JOY(3,AXIS_RIGHT(1),0,0), 0, "Def P3 Down", P3D          },      // KB_DEF_P2_DOWN,
- { 0,       JOY(3,AXIS_LEFT(0),0,0), 0, "Def P3 Left", P3D          },      // KB_DEF_P2_LEFT,
- { 0,       JOY(3,AXIS_RIGHT(0),0,0), 0, "Def P3 Right", P3D         },      // KB_DEF_P2_RIGHT,
+ { 0,       JOY(3,AXIS_LEFT(1),0,0), 0, "Def P3 Up", P3D            },      // KB_DEF_P3_UP,
+ { 0,       JOY(3,AXIS_RIGHT(1),0,0), 0, "Def P3 Down", P3D          },      // KB_DEF_P3_DOWN,
+ { 0,       JOY(3,AXIS_LEFT(0),0,0), 0, "Def P3 Left", P3D          },      // KB_DEF_P3_LEFT,
+ { 0,       JOY(3,AXIS_RIGHT(0),0,0), 0, "Def P3 Right", P3D         },      // KB_DEF_P3_RIGHT,
 
- { 0x00,        JOY(3,0,1,0), 0, "Def P3 Button 1", P3B      },      // KB_DEF_P3_B1,
- { 0x00,        JOY(3,0,2,0), 0, "Def P3 Button 2", P3B      },      // KB_DEF_P3_B2,
- { 0x00,        JOY(3,0,3,0), 0, "Def P3 Button 3", P3B      },      // KB_DEF_P3_B3,
- { 0x00,        JOY(3,0,4,0), 0, "Def P3 Button 4", P3B      },      // KB_DEF_P3_B4,
- { 0x00,        JOY(3,0,5,0), 0, "Def P3 Button 5", P3B      },      // KB_DEF_P3_B5,
- { 0x00,        JOY(3,0,6,0), 0, "Def P3 Button 6", P3B      },      // KB_DEF_P3_B6,
- { 0x00,        JOY(3,0,7,0), 0, "Def P3 Button 7", P3B      },      // KB_DEF_P3_B7,
- { 0x00,        JOY(3,0,8,0), 0, "Def P3 Button 8", P3B      },      // KB_DEF_P3_B8,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_A+1,0), 0, "Def P3 Button 1", P3B      },      // KB_DEF_P3_B1,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_B+1,0), 0, "Def P3 Button 2", P3B      },      // KB_DEF_P3_B2,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_X+1,0), 0, "Def P3 Button 3", P3B      },      // KB_DEF_P3_B3,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_Y+1,0), 0, "Def P3 Button 4", P3B      },      // KB_DEF_P3_B4,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_LEFTSHOULDER+1,0), 0, "Def P3 Button 5", P3B      },      // KB_DEF_P3_B5,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_RIGHTSHOULDER+1,0), 0, "Def P3 Button 6", P3B      },      // KB_DEF_P3_B6,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_DPAD_LEFT+1,0), 0, "Def P3 Button 7", P3B      },      // KB_DEF_P3_B7,
+ { 0x00,        JOY(3,0,SDL_CONTROLLER_BUTTON_DPAD_RIGHT+1,0), 0, "Def P3 Button 8", P3B      },      // KB_DEF_P3_B8,
 
- { SDLK_6,       JOY(4,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P4 Start", P4S         },      // KB_DEF_P4_START,
+ { SDL_SCANCODE_6,       JOY(4,0,SDL_CONTROLLER_BUTTON_START+1,0), 0, "Def P4 Start", P4S         },      // KB_DEF_P4_START,
 
- { 0,       JOY(4,AXIS_LEFT(1),0,0), 0, "Def P4 Up", P4D            },      // KB_DEF_P2_UP,
- { 0,       JOY(4,AXIS_RIGHT(1),0,0), 0, "Def P4 Down", P4D          },      // KB_DEF_P2_DOWN,
- { 0,       JOY(4,AXIS_LEFT(0),0,0), 0, "Def P4 Left", P4D          },      // KB_DEF_P2_LEFT,
- { 0,       JOY(4,AXIS_RIGHT(0),0,0), 0, "Def P4 Right", P4D         },      // KB_DEF_P2_RIGHT,
+ { 0,       JOY(4,AXIS_LEFT(1),0,0), 0, "Def P4 Up", P4D            },      // KB_DEF_P4_UP,
+ { 0,       JOY(4,AXIS_RIGHT(1),0,0), 0, "Def P4 Down", P4D          },      // KB_DEF_P4_DOWN,
+ { 0,       JOY(4,AXIS_LEFT(0),0,0), 0, "Def P4 Left", P4D          },      // KB_DEF_P4_LEFT,
+ { 0,       JOY(4,AXIS_RIGHT(0),0,0), 0, "Def P4 Right", P4D         },      // KB_DEF_P4_RIGHT,
 
- { 0x00,        JOY(4,0,1,0), 0, "Def P4 Button 1", P4B      },      // KB_DEF_P4_B1,
- { 0x00,        JOY(4,0,2,0), 0, "Def P4 Button 2", P4B      },      // KB_DEF_P4_B2,
- { 0x00,        JOY(4,0,3,0), 0, "Def P4 Button 3", P4B      },      // KB_DEF_P4_B3,
- { 0x00,        JOY(4,0,4,0), 0, "Def P4 Button 4", P4B      },      // KB_DEF_P4_B4,
- { 0x00,        JOY(4,0,5,0), 0, "Def P4 Button 5", P4B      },      // KB_DEF_P4_B5,
- { 0x00,        JOY(4,0,6,0), 0, "Def P4 Button 6", P4B      },      // KB_DEF_P4_B6,
- { 0x00,        JOY(4,0,7,0), 0, "Def P4 Button 7", P4B      },      // KB_DEF_P4_B7,
- { 0x00,        JOY(4,0,8,0), 0, "Def P4 Button 8", P4B      },      // KB_DEF_P4_B8,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_A+1,0), 0, "Def P4 Button 1", P4B      },      // KB_DEF_P4_B1,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_B+1,0), 0, "Def P4 Button 2", P4B      },      // KB_DEF_P4_B2,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_X+1,0), 0, "Def P4 Button 3", P4B      },      // KB_DEF_P4_B3,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_Y+1,0), 0, "Def P4 Button 4", P4B      },      // KB_DEF_P4_B4,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_LEFTSHOULDER+1,0), 0, "Def P4 Button 5", P4B      },      // KB_DEF_P4_B5,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_RIGHTSHOULDER+1,0), 0, "Def P4 Button 6", P4B      },      // KB_DEF_P4_B6,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_DPAD_LEFT+1,0), 0, "Def P4 Button 7", P4B      },      // KB_DEF_P4_B7,
+ { 0x00,        JOY(4,0,SDL_CONTROLLER_BUTTON_DPAD_RIGHT+1,0), 0, "Def P4 Button 8", P4B      },      // KB_DEF_P4_B8,
 
- { SDLK_LCTRL,0x00, 0, "Def Flipper 1 Left", P1B   },      // KB_DEF_FLIPPER_1_L,
- { SDLK_RCTRL,0x00, 0, "Def Flipper 1 Right", P1B  },      // KB_DEF_FLIPPER_1_R,
- { SDLK_LSHIFT,  0x00, 0, "Def Flipper 2 Left", P2B   },      // KB_DEF_FLIPPER_2_L,
- { SDLK_RSHIFT,  0x00, 0, "Def Flipper 2 Right", P2B  },      // KB_DEF_FLIPPER_2_R,
- { SDLK_BACKSLASH,0x00, 0, "Def Tilt Left", SYS        },      // KB_DEF_TILT_L,
- { SDLK_SLASH,   0x00, 0, "Def Tilt Right", SYS       },      // KB_DEF_TILT_R,
- { SDLK_z,       0x00, 0, "Def Button 1 Left", P1B    },      // KB_DEF_B1_L,
- { SDLK_e,    0x00, 0, "Def Button 1 Right", P1B   },      // KB_DEF_B1_R,
+ { SDL_SCANCODE_LCTRL,0x00, 0, "Def Flipper 1 Left", P1B   },      // KB_DEF_FLIPPER_1_L,
+ { SDL_SCANCODE_RCTRL,0x00, 0, "Def Flipper 1 Right", P1B  },      // KB_DEF_FLIPPER_1_R,
+ { SDL_SCANCODE_LSHIFT,  0x00, 0, "Def Flipper 2 Left", P2B   },      // KB_DEF_FLIPPER_2_L,
+ { SDL_SCANCODE_RSHIFT,  0x00, 0, "Def Flipper 2 Right", P2B  },      // KB_DEF_FLIPPER_2_R,
+ { SDL_SCANCODE_BACKSLASH,0x00, 0, "Def Tilt Left", SYS        },      // KB_DEF_TILT_L,
+ { SDL_SCANCODE_SLASH,   0x00, 0, "Def Tilt Right", SYS       },      // KB_DEF_TILT_R,
+ { SDL_SCANCODE_Z,       0x00, 0, "Def Button 1 Left", P1B    },      // KB_DEF_B1_L,
+ { SDL_SCANCODE_E,    0x00, 0, "Def Button 1 Right", P1B   },      // KB_DEF_B1_R,
 
  // Mahjong controls, at least in mahjong quest...
- { SDLK_a,       0x00, 0, "Def P1 A", P1B             }, // KB_DEF_P1_A
- { SDLK_e,       0x00, 0, "Def P1 E", P1B             }, // KB_DEF_P1_E
- { SDLK_i,       0x00, 0, "Def P1 I", P1B             }, // KB_DEF_P1_I
- { SDLK_m,       0x00, 0, "Def P1 M", P1B             }, // KB_DEF_P1_M
- { SDLK_LCTRL,0x00, 0, "Def P1 Kan", P1B           }, // KB_DEF_P1_KAN
- { SDLK_b,       0x00, 0, "Def P1 B", P1B             }, // KB_DEF_P1_B
- { SDLK_f,       0x00, 0, "Def P1 F", P1B             }, // KB_DEF_P1_F
- { SDLK_j,       0x00, 0, "Def P1 J", P1B             }, // KB_DEF_P1_J
- { SDLK_n,       0x00, 0, "Def P1 N", P1B             }, // KB_DEF_P1_N
- { SDLK_LSHIFT,  0x00, 0, "Def P1 Reach", P1B         }, // KB_DEF_P1_REACH
- { SDLK_c,       0x00, 0, "Def P1 C", P1B             }, // KB_DEF_P1_C
- { SDLK_g,       0x00, 0, "Def P1 G", P1B             }, // KB_DEF_P1_G
- { SDLK_k,       0x00, 0, "Def P1 K", P1B             }, // KB_DEF_P1_K
- { SDLK_SPACE,   0x00, 0, "Def P1 Chi", P1B           }, // KB_DEF_P1_CHI
- { SDLK_z,       0x00, 0, "Def P1 Ron", P1B           }, // KB_DEF_P1_RON,
- { SDLK_d,       0x00, 0, "Def P1 D", P1B             }, // KB_DEF_P1_D
- { SDLK_h,       0x00, 0, "Def P1 H", P1B             }, // KB_DEF_P1_H
- { SDLK_l,       0x00, 0, "Def P1 L", P1B             }, // KB_DEF_P1_L
- { SDLK_LALT,     0x00, 0, "Def P1 Pon", P1B           }, // KB_DEF_P1_PON
+ { SDL_SCANCODE_A,       0x00, 0, "Def P1 A", P1B             }, // KB_DEF_P1_A
+ { SDL_SCANCODE_E,       0x00, 0, "Def P1 E", P1B             }, // KB_DEF_P1_E
+ { SDL_SCANCODE_I,       0x00, 0, "Def P1 I", P1B             }, // KB_DEF_P1_I
+ { SDL_SCANCODE_M,       0x00, 0, "Def P1 M", P1B             }, // KB_DEF_P1_M
+ { SDL_SCANCODE_LCTRL,0x00, 0, "Def P1 Kan", P1B           }, // KB_DEF_P1_KAN
+ { SDL_SCANCODE_B,       0x00, 0, "Def P1 B", P1B             }, // KB_DEF_P1_B
+ { SDL_SCANCODE_F,       0x00, 0, "Def P1 F", P1B             }, // KB_DEF_P1_F
+ { SDL_SCANCODE_J,       0x00, 0, "Def P1 J", P1B             }, // KB_DEF_P1_J
+ { SDL_SCANCODE_N,       0x00, 0, "Def P1 N", P1B             }, // KB_DEF_P1_N
+ { SDL_SCANCODE_LSHIFT,  0x00, 0, "Def P1 Reach", P1B         }, // KB_DEF_P1_REACH
+ { SDL_SCANCODE_C,       0x00, 0, "Def P1 C", P1B             }, // KB_DEF_P1_C
+ { SDL_SCANCODE_G,       0x00, 0, "Def P1 G", P1B             }, // KB_DEF_P1_G
+ { SDL_SCANCODE_K,       0x00, 0, "Def P1 K", P1B             }, // KB_DEF_P1_K
+ { SDL_SCANCODE_SPACE,   0x00, 0, "Def P1 Chi", P1B           }, // KB_DEF_P1_CHI
+ { SDL_SCANCODE_Z,       0x00, 0, "Def P1 Ron", P1B           }, // KB_DEF_P1_RON,
+ { SDL_SCANCODE_D,       0x00, 0, "Def P1 D", P1B             }, // KB_DEF_P1_D
+ { SDL_SCANCODE_H,       0x00, 0, "Def P1 H", P1B             }, // KB_DEF_P1_H
+ { SDL_SCANCODE_L,       0x00, 0, "Def P1 L", P1B             }, // KB_DEF_P1_L
+ { SDL_SCANCODE_LALT,     0x00, 0, "Def P1 Pon", P1B           }, // KB_DEF_P1_PON
 
  { 0,           0, 0, "Def Service A", SYS }, // KB_DEF_SERVICE_A
  { 0,           0, 0, "Def Service B", SYS }, // KB_DEF_SERVICE_B
  { 0,           0, 0, "Def Service C", SYS }, // KB_DEF_SERVICE_C
 
- { SDLK_r,       0x00, 0, "Def Button 2 Left", P2B    },      // KB_DEF_B2_L,
- { SDLK_t,    0x00, 0, "Def Button 2 Right", P2B   },      // KB_DEF_B2_R,
+ { SDL_SCANCODE_R,       0x00, 0, "Def Button 2 Left", P2B    },      // KB_DEF_B2_L,
+ { SDL_SCANCODE_T,    0x00, 0, "Def Button 2 Right", P2B   },      // KB_DEF_B2_R,
 
  { 0,           0, 0, "Player1 B1+B2", P1C }, // p1_b1B2
  { 0,           0, 0, "Player1 B3+B4", P1C },
@@ -617,37 +642,37 @@ static void cold_boot() {
 // must be global for the controls dialog
 struct DEF_INPUT_EMU def_input_emu[] =
 {
- { SDLK_s ,       0x00,           _("Save Screenshot"), KMOD_CTRL, key_save_screen     },
- { SDLK_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen     },
- { SDLK_PAGEUP,    0x00,           _("Increase frameskip"), 0, frame_skip_up  },
- { SDLK_PAGEDOWN,    0x00,           _("Decrease frameskip"), 0, frame_skip_down  },
- { SDLK_HOME,    0x00,           _("Increase cpu skip"),    0, cpu_speed_up},
- { SDLK_END,     0x00,           _("Decrease cpu skip"),    0, cpu_slow_down},
+ { SDL_SCANCODE_S ,       0x00,           _("Save Screenshot"), KMOD_CTRL, key_save_screen     },
+ { SDL_SCANCODE_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen     },
+ { SDL_SCANCODE_PAGEUP,    0x00,           _("Increase frameskip"), 0, frame_skip_up  },
+ { SDL_SCANCODE_PAGEDOWN,    0x00,           _("Decrease frameskip"), 0, frame_skip_down  },
+ { SDL_SCANCODE_HOME,    0x00,           _("Increase cpu skip"),    0, cpu_speed_up},
+ { SDL_SCANCODE_END,     0x00,           _("Decrease cpu skip"),    0, cpu_slow_down},
  // You must keep this one the 6th input, see special handling (KEYUP event)
- { SDLK_DELETE,  0x00,           _("Toggle limit speed"),   0, toggle_limit_speed},
- { SDLK_F2,      0x00,           _("Save game"),            0, GameSave},
- { SDLK_F3,      0x00,           _("Switch save slot"),     0, next_save_slot},
- { SDLK_F4,      0x00,           _("Load game"),            0, GameLoad},
+ { SDL_SCANCODE_DELETE,  0x00,           _("Toggle limit speed"),   0, toggle_limit_speed},
+ { SDL_SCANCODE_F2,      0x00,           _("Save game"),            0, GameSave},
+ { SDL_SCANCODE_F3,      0x00,           _("Switch save slot"),     0, next_save_slot},
+ { SDL_SCANCODE_F4,      0x00,           _("Load game"),            0, GameLoad},
 #ifdef DARWIN
- { SDLK_F12,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
+ { SDL_SCANCODE_F12,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
 #else
- { SDLK_F11,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
+ { SDL_SCANCODE_F11,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
 #endif
- { SDLK_F1,      0x00,           _("Reset game"),           0, cold_boot},
- { SDLK_p,       0x00,           _("Pause game"),           0, key_pause_game},
- { SDLK_ESCAPE,     0x00,           _("Stop emulation"),    0, key_stop_emulation_esc},
- { SDLK_TAB,     0x00,           _("Return to gui"),        0, key_stop_emulation_tab},
- // { SDLK_WORLD_18,   0x00,           _("Switch Mixer"), switch_mixer },
- { SDLK_F2 , 0x00, _("Save game with name"), KMOD_CTRL, GameSaveName },
- { SDLK_F4 , 0x00, _("Load game with name"), KMOD_CTRL, GameLoadName },
- { SDLK_F2 , 0x00, _("Save demo"), KMOD_SHIFT, GameSaveDemo },
- { SDLK_F4 , 0x00, _("Load demo"), KMOD_SHIFT, GameLoadDemo },
- { SDLK_SPACE, 0x00, _("Fwd 1 frame in pause"), 0, key_pause_fwd},
+ { SDL_SCANCODE_F1,      0x00,           _("Reset game"),           0, cold_boot},
+ { SDL_SCANCODE_P,       0x00,           _("Pause game"),           0, key_pause_game},
+ { SDL_SCANCODE_ESCAPE,     0x00,           _("Stop emulation"),    0, key_stop_emulation_esc},
+ { SDL_SCANCODE_TAB,     0x00,           _("Return to gui"),        0, key_stop_emulation_tab},
+ // { SDL_SCANCODE_WORLD_18,   0x00,           _("Switch Mixer"), switch_mixer },
+ { SDL_SCANCODE_F2 , 0x00, _("Save game with name"), KMOD_CTRL, GameSaveName },
+ { SDL_SCANCODE_F4 , 0x00, _("Load game with name"), KMOD_CTRL, GameLoadName },
+ { SDL_SCANCODE_F2 , 0x00, _("Save demo"), KMOD_SHIFT, GameSaveDemo },
+ { SDL_SCANCODE_F4 , 0x00, _("Load demo"), KMOD_SHIFT, GameLoadDemo },
+ { SDL_SCANCODE_SPACE, 0x00, _("Fwd 1 frame in pause"), 0, key_pause_fwd},
 #ifdef HAS_CONSOLE
  { 31 /* TILDE */, 0x00, _("Console"), 0, call_console},
 #endif
- { SDLK_c , 0x00, _("Cheats"), KMOD_ALT, call_cheats},
- { SDLK_F4,       0x00,           _("Quit w/o saving"), KMOD_ALT, key_quit     },
+ { SDL_SCANCODE_C , 0x00, _("Cheats"), KMOD_ALT, call_cheats},
+ { SDL_SCANCODE_F4,       0x00,           _("Quit w/o saving"), KMOD_ALT, key_quit     },
 };
 
 struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
@@ -1596,10 +1621,7 @@ void control_handle_event(SDL_Event *event) {
       break;
 #endif
     case SDL_KEYDOWN:
-      input = event->key.keysym.sym; // | ((event->key.keysym.mod & 0x4fc0)<<16);
-      if (!(input & 0xfffffff)) { // special encoding for scancodes (unknown keys)
-	input = event->key.keysym.scancode | 0x200;
-      }
+      input = event->key.keysym.scancode; // | ((event->key.keysym.mod & 0x4fc0)<<16);
       key[input & 0x1ff] = 1;
       if (!reading_demo) {
 	  ta = -1;
@@ -1633,10 +1655,7 @@ void control_handle_event(SDL_Event *event) {
 	handled = check_layer_key(input);
       break;
     case SDL_KEYUP:
-      input = event->key.keysym.sym; //  | ((event->key.keysym.mod & 0x4fc0)<<16);
-      if (!(input & 0xfffffff)) { // special encoding for scancodes (unknown keys)
-	input = event->key.keysym.scancode | 0x200;
-      }
+      input = event->key.keysym.scancode; //  | ((event->key.keysym.mod & 0x4fc0)<<16);
       key[input & 0x1ff] = 0;
       if (reading_demo) break;
       ta = -1;

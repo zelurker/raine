@@ -133,12 +133,9 @@ static char *get_key_name(int key, int mod) {
       strcat(keyname,"GUI ");
 #endif
 #if SDL == 1
-  strcat(keyname,SDL_GetKeyName((SDLKey)key));
+  sprintf(keyname,"%x",key); // no way to get a name from a scancode in sdl1.2
 #else
-  if (key & 0x200)
-      strcat(keyname,SDL_GetScancodeName((SDL_Scancode)(key & (~0x200))));
-  else
-      strcat(keyname,SDL_GetKeyName(key));
+  strcat(keyname,SDL_GetScancodeName((SDL_Scancode)key));
 #endif
   if (key & 0x200) { // special scancode encoding for unknown keys
     sprintf(&keyname[strlen(keyname)]," (%x)",key & 0x1ff);
@@ -208,11 +205,7 @@ void TInput::handle_key(SDL_Event *event) {
        * to handle these keys like any other.
        * With sdl2 the modifiers are modified before you get the keydown event ! So the best is to
        * return these modifiers separately, they are needed only for the emu keys anyway... */
-      if ((inp_key & 0xfffffff)) {
-	inp_key = event->key.keysym.sym;
-      } else {
-	inp_key = (event->key.keysym.scancode|0x200);
-      }
+      inp_key = event->key.keysym.scancode;
       inp_mod =  event->key.keysym.mod & 0x4fc3;
       exit_menu = 1;
   }
