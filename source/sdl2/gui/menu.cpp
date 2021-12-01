@@ -1821,7 +1821,7 @@ void TMenu::execute() {
   gui_level--;
   parent = NULL; // to be on the safe side
   if (gui_level == 0) SDL_StopTextInput();
-  if (gui_end_hook) (*gui_end_hook)();
+  if (gui_end_hook && gui_level == 0) (*gui_end_hook)();
 }
 
 // TBitmap_menu : a menu with a bitmap on top of it
