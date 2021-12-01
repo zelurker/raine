@@ -906,6 +906,8 @@ void no_spaces(char *str)
 static void load_emu_keys(char *section, struct DEF_INPUT_EMU *list_emu, int nb) {
   int ta,scan;
   char key_name[64];
+  if (raine_get_config_int(section,"version",0) == 0)
+      return;
    for(ta=0;ta<nb;ta++){
       sprintf(key_name,"%s",list_emu[ta].name);
       no_spaces(key_name);
@@ -923,6 +925,9 @@ void load_game_keys(char *section)
 {
    int ta;
    char key_name[64],other_name[64];
+
+   if (raine_get_config_int(section,"version",0) == 0)
+       return;
 
    use_custom_keys = raine_get_config_int(section,"use_custom_keys",0);
    // load keys if using custom keys
@@ -982,6 +987,7 @@ void save_game_keys(char *section)
    // clear the old settings first (keep the file tidy)
 
    raine_clear_config_section(section);
+   raine_set_config_int(section,"version",1);
 
    // save keys if using custom keys
 
@@ -1052,6 +1058,8 @@ void load_default_keys(char *section)
    char key_name[64],other_name[64];
 
    use_custom_keys = 0;
+   if (raine_get_config_int(section,"version",0) == 0)
+       return;
 
    strncpy(analog_name,raine_get_config_string(section,"analog_name",""),40);
    analog_name[79] = 0;
@@ -1098,6 +1106,7 @@ void save_default_keys(char *section)
    int ta;
    char key_name[64],other_name[64];
 
+   raine_set_config_int(section,"version",1);
    if (analog_num >= 0) {
      raine_set_config_string(section,"analog_name",analog_name);
      raine_set_config_int(section,"analog_stick",analog_stick);
@@ -1150,6 +1159,7 @@ void save_emulator_keys(char *section)
    char key_name[64];
    int nb = raine_get_emu_nb_ctrl();
 
+   raine_set_config_int(section,"version",1);
    for(ta=0;ta<nb;ta++){
       sprintf(key_name,"%s",def_input_emu[ta].name);
       no_spaces(key_name);

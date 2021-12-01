@@ -184,15 +184,15 @@ void TInput::handle_key(SDL_Event *event) {
     case SDL_KEYDOWN:
       if (ignore_mod) {
 	switch(event->key.keysym.sym) {
-        case SDLK_LCTRL:
-	case SDLK_RCTRL:
-	case SDLK_LSHIFT:
-	case SDLK_RSHIFT:
-	case SDLK_LALT:
-	case SDLK_RALT:
+        case SDL_SCANCODE_LCTRL:
+	case SDL_SCANCODE_RCTRL:
+	case SDL_SCANCODE_LSHIFT:
+	case SDL_SCANCODE_RSHIFT:
+	case SDL_SCANCODE_LALT:
+	case SDL_SCANCODE_RALT:
 #if SDL==2
-	case SDLK_RGUI:
-	case SDLK_LGUI:
+	case SDL_SCANCODE_RGUI:
+	case SDL_SCANCODE_LGUI:
 #endif
 	  return;
 	default:
@@ -355,7 +355,7 @@ static int do_input(int sel) {
   input->execute();
   delete input;
   if (inp_key) {
-    if (inp_key == SDLK_ESCAPE) {
+    if (inp_key == SDL_SCANCODE_ESCAPE) {
       int ret = MessageBox(_("Question"),_("What do you want to do ?"),
         _("Delete the key|"
 	"Delete the joystick ctrl|"
@@ -399,7 +399,7 @@ static int do_kb_input(int sel) {
   input->execute();
   delete input;
   if (inp_key) {
-    if (inp_key == SDLK_ESCAPE) {
+    if (inp_key == SDL_SCANCODE_ESCAPE) {
       int ret = MessageBox(_("Question"),_("What do you want to do ?"),
         _("Delete the key"));
       switch(ret) {
@@ -427,7 +427,7 @@ static int do_input_ingame(int sel) {
   input->execute();
   delete input;
   if (inp_key) {
-    if (inp_key == SDLK_ESCAPE) {
+    if (inp_key == SDL_SCANCODE_ESCAPE) {
       int ret = MessageBox(_("Question"),_("What do you want to do ?"),
         _("Delete the key|"
 	"Delete the joystick ctrl|"
