@@ -862,7 +862,7 @@ UINT8 DefBadReadByte(UINT32 address)
 UINT16 DefBadReadWord(UINT32 address)
 {
        print_debug("RW(%06x) [%06x]\n",address,s68000_read_pc);
-   return 0x0000;
+   return 0xffff;
 }
 
 void DefBadWriteByte(UINT32 address, UINT8 data)
