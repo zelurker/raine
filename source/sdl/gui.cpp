@@ -486,6 +486,7 @@ static int load_neo_game(int sel) {
 #endif
 
 extern int do_sound_options(int sel);
+static TMain_menu *main_menu;
 
 static menu_item_t main_items[] =
 {
@@ -615,6 +616,13 @@ static void gui_end() {
 	else if (display_cfg.video_mode == 0)
 	    ScreenChange();
     }
+    if (!main_menu)
+	sa_unpause_sound();
+}
+
+static void gui_start() {
+    if (!main_menu)
+	sa_pause_sound();
 }
 #endif
 
@@ -631,7 +639,7 @@ static void do_main_menu() {
     }
   }
 
-  TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
+  main_menu = new TMain_menu(_("Main menu"),main_items);
   main_menu->execute();
   if (current_game && current_game->romsw && old_region != region_code)
       reset_game_hardware();
@@ -641,6 +649,7 @@ static void do_main_menu() {
   // At this level a hook can't do it... !
   gui_end();
 #endif
+  main_menu = NULL;
 }
 
 void StartGUI(void)
@@ -652,6 +661,7 @@ void StartGUI(void)
 #endif
     event_hook = &my_event;
     gui_end_hook = &gui_end;
+    gui_start_hook = &gui_start;
 #else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 #endif

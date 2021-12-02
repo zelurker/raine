@@ -258,6 +258,7 @@ static char* my_get_shared(char *s) {
 
 char * (*get_shared_hook)(char *name) = &my_get_shared;
 void (*gui_end_hook)();
+void (*gui_start_hook)();
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame,int to_translate) {
     if (!desktop)
@@ -1666,6 +1667,9 @@ void TMenu::draw_top_frame() {
 }
 
 void TMenu::execute() {
+
+    if (gui_start_hook && !gui_level)
+	(*gui_start_hook)();
 
     SDL_RenderSetLogicalSize(rend, 0,0);
     update_count = 0;
