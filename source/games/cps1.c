@@ -1,5 +1,4 @@
 /*****************************************************************************/
-/*									     */
 /*		     CAPCOM SYSTEM 1 / CPS1 (C) 1990 CAPCOM		     */
 /* Based on the mame source, but lots of things were rewritten...	     */
 /* Thnaks to the mame team to show how all this works anyway !		     */
@@ -1511,19 +1510,10 @@ static UINT16 protection_rw(UINT32 offset)
    if (pang3 && offset == 0x7a/2)
       return cps1_eeprom_port_r(0);
 
-   if (offset == 0x28) {
-       // Hack for the rasters, the phoenix bootlegs wait for scanline 262 here
-       // at boot...
-       static int res;
-       if (res)
-	   res = 0;
-       else
-	   res = 262;
-       return res;
-   }
-
    return cps1_port[offset];
 }
+
+static int scanline1, scanline2;
 
 static void protection_ww(UINT32 offset, UINT16 data)
 {
@@ -1541,8 +1531,13 @@ static void protection_ww(UINT32 offset, UINT16 data)
        cps1_port[cps1_game_config->layer_control/2] = data;
    else if (sf2m3 && offset >= 0xa0/2 && offset < 0xc4/2) {
        cps1_port[offset - 0xa0/2] = data;
+   } else if (offset == 0x50/2) {
+       scanline1 = data & 0x1ff;
+       cps1_port[offset] = data;
+   } else if (offset == 0x52/2) {
+       scanline2 = data & 0x1ff;
+       cps1_port[offset] = data;
    } else {
-       // printf("cps1_port_w %x,%x pang3 %x\n",offset*2,data,pang3);
        cps1_port[offset] = data;
    }
    //data = COMBINE_DATA(&cps1_port[offset]);
@@ -1579,7 +1574,6 @@ static void cps1_ioc_wb(UINT32 offset, UINT8 data)
 static void cps1_ioc_ww(UINT32 offset, UINT16 data)
 {
    offset &= 0x1FF;
-   // printf("ioc_ww %x,%x\n",offset,data);
    if ((offset >= 0x188 && offset <= 0x18f) ||
 	   (sf2m3 && offset >= 0x198 && offset <= 0x19f) ) {
      cps1_sound_fade_timer = data & 0xff;
@@ -1616,9 +1610,9 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
     // printf("ioc_rb %x\n",offset);
    // I love byte accesses using starscream, they require the ^ 1 in the end
    // and games like sf2ce insist on reading the 2 bytes !
-    if (abs(offset - cps1_game_config->in2_addr) <= 1)
+    if (offset == cps1_game_config->in2_addr || offset == cps1_game_config->in2_addr+1)
 	return input_buffer[(4+offset - cps1_game_config->in2_addr) ^ 1];
-    else if (abs(offset - cps1_game_config->in3_addr) <= 1)
+    else if (offset == cps1_game_config->in3_addr || offset == cps1_game_config->in3_addr+1)
 	return input_buffer[(6+offset - cps1_game_config->in3_addr) ^ 1];
     else if (sf2m3 && abs(offset - 0x186) <= 1)
 	return input_buffer[5];
@@ -1633,7 +1627,7 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
        if (offset < 0x1a) offset -= 0x18; // input_buffer[0], then dsw
        offset &= (~1);
        return input_buffer[offset];
-   }   else if (offset >= 0x100) {
+   } else if (offset >= 0x100) {
      int ret = protection_rw((offset - 0x100)>>1);
      if (offset & 1) return ret & 0xff;
      else return ret >> 8;
@@ -1877,9 +1871,12 @@ static void cps2_reset() {
   undo_hack();
 }
 
+static int stopped_68k;
+
 static void myStop68000(UINT32 adr, UINT8 data) {
   if (hack_counter++ >= max_hack_counter) {
     Stop68000(0,0);
+    stopped_68k = 1;
   }
 }
 
@@ -1982,6 +1979,7 @@ void load_common(int cps2)
    int size_code;
    int rotate_screen = (current_game->video->flags) & 3;
    old_palette = NULL;
+   memset(cps1_port,255,sizeof(cps1_port));
 
    set_reset_function(cps2_reset);
    RAMSize=0x80000+0x10000;
@@ -2077,7 +2075,7 @@ void load_common(int cps2)
    layer_id_data[2] = add_layer_info(layer_id_name[2]);
    layer_id_data[3] = add_layer_info(layer_id_name[3]);
 
-   memset(RAM+0x00000,0x00,0x80000);
+   memset(RAM+0x00000,0x00,RAMSize);
 
    speed_hack = 0; // Not found yet...
    frame_68k = CPU_FRAME_MHz(32,60); // 32 Mhz at the begining...
@@ -2663,6 +2661,7 @@ void load_cps2() {
     cps2_qsound_volume = 0x2021;
   else
     cps2_qsound_volume = 0xe021;
+  cps2_qsound_volume &= ~0x4000; // clear bit 14 to tell we have some more ram in 0x660000
   AddReadBW(0x804030, 0x804031, NULL, (UINT8*)&cps2_qsound_volume);
 
   AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
@@ -2687,7 +2686,9 @@ void load_cps2() {
   }
 #endif
 
-  // WriteWord(&ROM[0xfa2],0x60fe);
+  // These 2 scanlines are initialized like that for cps2
+  // it's tested by some phoenix games, like avspd at boot
+  scanline1 = scanline2 = 262;
 }
 
 #define SLICES 4
@@ -2995,9 +2996,26 @@ static int nb_ticks, nb_executed;
 void execute_cps2_frame(void)
 {
   int n,slices;
+  stopped_68k = 0;
   hack_counter = 0;
 
-  cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
+#if EMULATE_RASTERS
+  cps1_port[0x28] &= 0x1ff;
+  if (cps1_port[0x28] > 0 && cps1_port[0x28] < 240) {
+      cpu_execute_cycles(CPU_68K_0, frame_68k*cps1_port[0x28]/262);	  // Main 68000
+      cps1_port[0x28] = 0;
+      cpu_interrupt(CPU_68K_0,4);
+      if (!stopped_68k)
+	  cpu_execute_cycles(CPU_68K_0, frame_68k*(240-scanline1)/262);	  // Main 68000
+  } else {
+      if (scanline1 == 0) {
+	  cpu_interrupt(CPU_68K_0,4);
+      }
+#endif
+      cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
+#if EMULATE_RASTERS
+  }
+#endif
 
   slices = ((++nb_ticks)*TICKS_PER_SEC)/fps-nb_executed;
   if (nb_ticks >= fps) {
@@ -3020,6 +3038,12 @@ void execute_cps2_frame(void)
     undo_hack();
 
   cpu_interrupt(CPU_68K_0, 2);
+  cps1_port[0x28] = scanline1;
+  cps1_port[0x2a] = scanline2;
+#if EMULATE_RASTERS
+  if (cps1_port[0x28] > 0 && cps1_port[0x28] < 240)
+      cpu_execute_cycles(CPU_68K_0, frame_68k*22/262);	  // Main 68000
+#endif
 }
 
 static void update_transmasks(void)
