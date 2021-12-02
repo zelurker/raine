@@ -556,26 +556,6 @@ char *TMain_menu::get_bot_frame_text() {
   return game;
 }
 
-static void do_main_menu() {
-  int old_region;
-  // init romsw
-  if (current_game && current_game->romsw) {
-    main_items[2].values_list_size = LanguageSw.Count;
-    main_items[2].value_int = &region_code;
-    old_region = region_code = GetLanguageSwitch();
-    for (int n=0; n<LanguageSw.Count; n++) {
-      main_items[2].values_list[n] = n;
-      main_items[2].values_list_label[n] = LanguageSw.data[n].Mode;
-    }
-  }
-
-  TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
-  main_menu->execute();
-  if (current_game && current_game->romsw && old_region != region_code)
-      reset_game_hardware();
-  delete main_menu;
-}
-
 void setup_font()
 {
   if (ingame_font) {
@@ -637,6 +617,31 @@ static void gui_end() {
     }
 }
 #endif
+
+static void do_main_menu() {
+  int old_region;
+  // init romsw
+  if (current_game && current_game->romsw) {
+    main_items[2].values_list_size = LanguageSw.Count;
+    main_items[2].value_int = &region_code;
+    old_region = region_code = GetLanguageSwitch();
+    for (int n=0; n<LanguageSw.Count; n++) {
+      main_items[2].values_list[n] = n;
+      main_items[2].values_list_label[n] = LanguageSw.data[n].Mode;
+    }
+  }
+
+  TMain_menu *main_menu = new TMain_menu(_("Main menu"),main_items);
+  main_menu->execute();
+  if (current_game && current_game->romsw && old_region != region_code)
+      reset_game_hardware();
+  delete main_menu;
+#if SDL==2
+  // Apparently a simple SDL_DestroyTexture from the delete main_menu is enough to turn the screen upside down if we don't call gui_end here...
+  // At this level a hook can't do it... !
+  gui_end();
+#endif
+}
 
 void StartGUI(void)
 {

@@ -300,6 +300,7 @@ void render_texture(int linear) {
 }
 
 void draw_opengl(int linear) {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     if (ogl.render == 1) {
