@@ -589,12 +589,15 @@ static void my_event(SDL_Event *event) {
     case SDL_WINDOWEVENT:
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 	    resize(1,event->window.data1,event->window.data2);
-	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
+	}
+#ifndef RAINE_WIN32
+	else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
 	    if (event->common.timestamp < 2000 && display_cfg.posy) { // probably some fancy window manager event
 		// Specific to some window managers which seem to correct window placement after adding decorations in linux
 		// well we don't want this correction
 		// Notice the timestamp is sadly some moving target, I got it at more than 1000 with 2 gamepads and 1 joystick adding events...
 		// which makes this thing rather unprecise...
+		printf("timestamp %d pos %d,%d\n",event->common.timestamp,display_cfg.posx,display_cfg.posy);
 		if (display_cfg.fullscreen) {
 		    // See comments about broken toggle fullscreen in control.c
 		    SDL_SetWindowPosition(win,0,0);
@@ -603,6 +606,7 @@ static void my_event(SDL_Event *event) {
 		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	    }
 	}
+#endif
     }
 }
 
