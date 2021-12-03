@@ -1622,7 +1622,6 @@ void control_handle_event(SDL_Event *event) {
 #endif
     case SDL_KEYDOWN:
       input = event->key.keysym.scancode; // | ((event->key.keysym.mod & 0x4fc0)<<16);
-      printf("input %x\n",input);
       key[input & 0x1ff] = 1;
       if (!reading_demo) {
 	  ta = -1;
@@ -1657,7 +1656,6 @@ void control_handle_event(SDL_Event *event) {
       break;
     case SDL_KEYUP:
       input = event->key.keysym.scancode; //  | ((event->key.keysym.mod & 0x4fc0)<<16);
-      printf("up %x\n",input);
       key[input & 0x1ff] = 0;
       if (reading_demo) break;
       ta = -1;
