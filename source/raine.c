@@ -219,7 +219,7 @@ int main(int argc,char *argv[])
 #ifdef GFX_FBCON
    FILE *f;
 #endif
-#if defined(__i386__)
+#if defined(__i386__) && !defined(NO_ASM)
 #if defined(RAINE_UNIX)
    mymprotect(&init_moveasm);
 #endif
