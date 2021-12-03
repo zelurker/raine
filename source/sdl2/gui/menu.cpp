@@ -1414,7 +1414,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
   if (event->type == SDL_MOUSEMOTION) {
     mx = event->motion.x;
     my = event->motion.y;
-  } else {
+  } else if (event->type != SDL_MOUSEWHEEL) {
     mx = event->button.x;
     my = event->button.y;
   }
@@ -1422,7 +1422,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
   if (event->type == SDL_MOUSEMOTION)  {
     event->motion.x -= fgdst.x;
     event->motion.y -= fgdst.y;
-  } else {
+  } else if (event->type != SDL_MOUSEWHEEL) {
     event->button.x -= fgdst.x;
     event->button.y -= fgdst.y;
   }
