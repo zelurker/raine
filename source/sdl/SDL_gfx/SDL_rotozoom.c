@@ -16,7 +16,9 @@
 #include "SDL_rotozoom.h"
 #include "compat.h"
 
+#ifndef MAX
 #define MAX(a,b)    (((a) > (b)) ? (a) : (b))
+#endif
 
 /*
 

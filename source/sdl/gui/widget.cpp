@@ -186,7 +186,6 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
     sw = s->w;
 #endif
   x = (sw-w)/2;
-  rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));
   int pcent;
   int prev = x+1;
   for (pcent=5; pcent<=*(menu->value_int); pcent += 5) {
@@ -199,6 +198,7 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
 #endif
     prev = cur;
   }
+  rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));
   char buff[8];
   sprintf(buff,"%d %%",*(menu->value_int));
   int myw,myh;

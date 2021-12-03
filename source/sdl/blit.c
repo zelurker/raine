@@ -106,6 +106,8 @@ void get_overlay_area(int *x, int *y, int *w, int *h) {
   *h = area_overlay.h;
 }
 
+int integer_scaling;
+
 void ReClipScreen(void)
 {
    // clip x
@@ -200,8 +202,14 @@ void ReClipScreen(void)
 	 /* Now fix the aspect ratio of the overlay inside the game screen */
 	 int xxx2,yyy2,destx2,desty2;
 	 if (ratio1 < ratio2) {
-	     xxx2 = display_cfg.screen_x;
-	     yyy2 = round(ratio1 * game_y);
+	     if (integer_scaling) {
+		 int ratio = display_cfg.screen_x / game_x;
+		 xxx2 = game_x * ratio;
+		 yyy2 = game_y * ratio;
+	     } else {
+		 xxx2 = display_cfg.screen_x;
+		 yyy2 = round(ratio1 * game_y);
+	     }
 	     destx2 = 0;
 	     desty2 = (display_cfg.screen_y - yyy2)/2;
 	     if (desty2 < 0) {
@@ -213,8 +221,14 @@ void ReClipScreen(void)
 		 yyy2 = display_cfg.screen_y;
 	     }
 	 } else {
-	     yyy2 = display_cfg.screen_y;
-	     xxx2 = round(ratio2 * game_x);
+	     if (integer_scaling) {
+		 int ratio = display_cfg.screen_y / game_y;
+		 yyy2 = game_y * ratio;
+		 xxx2 = game_x * ratio;
+	     } else {
+		 yyy2 = display_cfg.screen_y;
+		 xxx2 = round(ratio2 * game_x);
+	     }
 	     desty2 = 0;
 	     destx2 = (display_cfg.screen_x - xxx2) /2;
 	     if (destx2 < 0) {

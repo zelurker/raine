@@ -93,6 +93,7 @@ static int get_sprite_map(UINT32 n) {
 	x++;
     }
     fatal_error("map overflow");
+    return 0; // just to avoid a warning if no return here
 }
 
 TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)

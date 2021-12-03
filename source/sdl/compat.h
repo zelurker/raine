@@ -11,6 +11,7 @@ extern "C" {
 // Compatibility layer with allegro
 
 #include <SDL.h>
+#include "SDL_scancode.h"
 #include "deftypes.h"
 
 #ifndef WINAPI

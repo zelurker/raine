@@ -197,20 +197,10 @@ typedef enum
 // The categ field has the only purpose to sort the inputs in the control dialog !
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
-#if defined(RAINE_WIN32) || SDL==2
  { SDL_SCANCODE_3,       JOY(1,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
-#else
- { SDL_SCANCODE_Z,       JOY(1,0,10,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
-#endif
-#if SDL == 2
  { SDL_SCANCODE_4,       JOY(2,0,0,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
  { SDL_SCANCODE_7,       JOY(3,0,0,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
  { SDL_SCANCODE_8,       JOY(4,0,0,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
-#else
- { SDL_SCANCODE_4,       JOY(2,0,10,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
- { SDL_SCANCODE_7,       JOY(3,0,10,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
- { SDL_SCANCODE_8,       JOY(4,0,10,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
-#endif
 
  { SDL_SCANCODE_T,       0x00, 0, "Def Tilt",    SYS      },      // KB_DEF_TILT,
  { SDL_SCANCODE_Y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
@@ -1632,6 +1622,7 @@ void control_handle_event(SDL_Event *event) {
 #endif
     case SDL_KEYDOWN:
       input = event->key.keysym.scancode; // | ((event->key.keysym.mod & 0x4fc0)<<16);
+      printf("input %x\n",input);
       key[input & 0x1ff] = 1;
       if (!reading_demo) {
 	  ta = -1;
@@ -1666,6 +1657,7 @@ void control_handle_event(SDL_Event *event) {
       break;
     case SDL_KEYUP:
       input = event->key.keysym.scancode; //  | ((event->key.keysym.mod & 0x4fc0)<<16);
+      printf("up %x\n",input);
       key[input & 0x1ff] = 0;
       if (reading_demo) break;
       ta = -1;

@@ -183,7 +183,7 @@ void TInput::handle_key(SDL_Event *event) {
   switch (event->type) {
     case SDL_KEYDOWN:
       if (ignore_mod) {
-	switch(event->key.keysym.sym) {
+	switch(event->key.keysym.scancode) {
         case SDL_SCANCODE_LCTRL:
 	case SDL_SCANCODE_RCTRL:
 	case SDL_SCANCODE_LSHIFT:
