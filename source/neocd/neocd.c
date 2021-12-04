@@ -831,7 +831,7 @@ static void update_raster() {
     blit(GameBitmap,raster_bitmap,16,start_line+16,
 	    0,start_line,
 	    neocd_video.screen_x,
-	    scanline-START_SCREEN-start_line);
+	    scanline-start_line);
     start_line = scanline;
 }
 
