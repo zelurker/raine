@@ -660,8 +660,9 @@ int TMenu::compute_fglayer_height() {
   if (rows > nb_disp_items)
     rows = nb_disp_items;
   reset_top();
-  if (top+rows > nb_disp_items)
+  if (top+rows > nb_disp_items) {
     rows = nb_disp_items - top;
+  }
   if (top >= 0) {
     do {
       h = 2*HMARGIN + get_fglayer_footer_height();
@@ -1145,6 +1146,8 @@ int TMenu::get_seldisp() {
   for (n=0; n<nb_disp_items; n++) {
     if (menu_disp[n] == sel) break;
   }
+  if (n == nb_disp_items)
+      return n-1;
   return n;
 }
 
