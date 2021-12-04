@@ -245,7 +245,7 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
   else
       sf = TTF_RenderText_Solid(ttf,s,sc );
   dest.x = x; dest.y = y;
-  dest.w = sf->w; dest.h = sf->h;
+  dest.w = (w ? MIN(sf->w,w) : sf->w); dest.h = sf->h;
 
   if (w && w < sf->w) {
       SDL_Rect src;
@@ -297,7 +297,7 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
       sf = TTF_RenderText_Shaded(ttf,s,sc,bg);
   // SDL_SetColorKey(sf,SDL_SRCCOLORKEY | SDL_RLEACCEL,0);
   dest.x = x; dest.y = y;
-  dest.w = sf->w; dest.h = sf->h;
+  dest.w = (w ? MIN(w,sf->w) : sf->w); dest.h = sf->h;
   if (w && w < sf->w) {
       SDL_Rect src;
       src.w = w;

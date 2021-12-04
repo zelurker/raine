@@ -618,6 +618,9 @@ void TMenu::setup_font(unsigned int len_frame) {
     len = get_fglayer_footer_len();
     if (len > len_max + len_max_options)
       len_max = len;
+    len = strlen(get_top_string());
+    if (len > len_max + len_max_options)
+	len_max = len;
   }
 
   adjust_len_max_options(len_max_options);
@@ -1662,11 +1665,23 @@ char *TMenu::get_top_string() {
 void TMenu::draw_top_frame() {
     if (!*get_top_string()) return;
     int w_title,h_title;
-    font->dimensions(title,&w_title,&h_title);
+    char *s = get_top_string();
+    do {
+	font->dimensions(s,&w_title,&h_title);
+	if (w_title > work_area.w / 2 && strlen(s) > 2)
+	    s++;
+    } while (w_title > work_area.w / 2 && strlen(s) > 2);
     boxColor(rend,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
-    font->put_string(HMARGIN,0,get_top_string(),fg_frame,bg_frame);
-    if (strcmp(get_top_string(),title))
-	font->put_string(sdl_screen->w-w_title,0,title,fg_frame,bg_frame);
+    font->put_string(HMARGIN,0,s,fg_frame,bg_frame);
+    if (strcmp(get_top_string(),title)) {
+	s = (char*)title;
+	do {
+	    font->dimensions(s,&w_title,&h_title);
+	    if (w_title > work_area.w / 2 && strlen(s) > 2)
+		s++;
+	} while (w_title > work_area.w / 2 && strlen(s) > 2);
+	font->put_string(sdl_screen->w-w_title,0,s,fg_frame,bg_frame);
+    }
 }
 
 void TMenu::execute() {
@@ -1897,6 +1912,12 @@ void TDialog::compute_width_from_font() {
     TMenu::compute_width_from_font();
     if (*title) {
 	int w;
+	int w_title, h_title;
+	do {
+	    font->dimensions(title,&w_title,&h_title);
+	    if (w_title > work_area.w && strlen(title) > 2)
+		title++;
+	} while (w_title > work_area.w && strlen(title) > 2);
 	font->dimensions(title,&w,&htitle);
 	w+=2; htitle+=2; // with border
 	if (w > width_max)
@@ -1906,9 +1927,9 @@ void TDialog::compute_width_from_font() {
 
 void TDialog::display_fglayer_header(int &y) {
   if (*title) {
-    boxColor(rend,1,1,fgdst.w-2,htitle-1,bg_dialog_bar_gfx);
-    font->surf_string_tr(NULL,1,1,title,fg);
-    rectangleColor(rend,0,0,fgdst.w-1,htitle,fg);
+      boxColor(rend,1,1,fgdst.w-2,htitle-1,bg_dialog_bar_gfx);
+      font->surf_string_tr(NULL,1,1,title,fg);
+      rectangleColor(rend,0,0,fgdst.w-1,htitle,fg);
     y += htitle + 2;
   }
   TMenu::display_fglayer_header(y);
