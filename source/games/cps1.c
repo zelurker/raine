@@ -1734,6 +1734,8 @@ void finish_conf_cps1()
    RAM_SCROLL1 = NULL; // Init after the 1st frame...
    AddSaveData(SAVE_USER_1, (UINT8 *)&cps1_port, sizeof(UINT16)*0x100);
    AddSaveData(SAVE_USER_2, (UINT8 *)&latch, sizeof(int));
+   AddSaveData(SAVE_USER_3, (UINT8 *)&scanline1, sizeof(scanline1));
+   AddSaveData(SAVE_USER_4, (UINT8 *)&scanline2, sizeof(scanline2));
    if (!strcmp(current_game->main_name,"sf2rb2")) {
      /* Patch out protection check */
      UINT16 *rom = (UINT16 *)load_region[REGION_ROM1];
@@ -1870,10 +1872,6 @@ static void cps2_reset() {
   }
 
   undo_hack();
-  if (cps_version == 2) {
-      speed_hack = 1; // speed hacks disabled because of rasters
-      undo_counter = 10;
-  }
 }
 
 static int stopped_68k;
@@ -1976,6 +1974,7 @@ static INLINE UINT16 cps2_port(int offset)
 }
 
 struct COLOUR_MAPPER *color_mapper;
+static int start_search,stopped_speed;
 
 void load_common(int cps2)
 {
@@ -1985,6 +1984,7 @@ void load_common(int cps2)
    int rotate_screen = (current_game->video->flags) & 3;
    old_palette = NULL;
    memset(cps1_port,255,sizeof(cps1_port));
+   stopped_speed = start_search = 0;
 
    set_reset_function(cps2_reset);
    RAMSize=0x80000+0x10000;
@@ -2694,8 +2694,6 @@ void load_cps2() {
   // These 2 scanlines are initialized like that for cps2
   // it's tested by some phoenix games, like avspd at boot
   scanline1 = scanline2 = 262;
-  frame_68k = default_frame;
-  speed_hack = 1; // no speed hack with rasters in cps2 for now
 }
 
 #define SLICES 4
@@ -2781,10 +2779,9 @@ static void dynamic_hack() {
 #endif
 
 #if 1
-  if (cpu_frame_count < 800 && strcmp(current_game->main_name,"qad")) {
+  if (cpu_frame_count - start_search < 800 && strcmp(current_game->main_name,"qad")) {
     if (ReadWord(&ROM[pc]) == 0x46fc && ReadWord(&ROM[pc+2]) == 0x2000 &&
 	ReadWord(&ROM[pc+8]) == 0x67f6) { // pzloop2j
-	printf("apply hack at frame %d\n",cpu_frame_count);
       apply_hack(pc+4,0);
       max_hack_counter = 0;
     } else {
@@ -3035,6 +3032,23 @@ void execute_cps2_frame(void)
   }
 
   if (min1 < 240) {
+      if (speed_hack) {
+	  int size_code = get_region_size(REGION_CPU1);
+	  int nb=0;
+	  while (s68000_pc > size_code || s68000_sr & 0x200) {
+	      // outside of rom or in vbl
+	      // 5 lines of frame execution to get out of it
+	      // once is enough for msh...
+	      cpu_execute_cycles(CPU_68K_0,default_frame*5/262);
+	      nb++;
+	  }
+	  // printf("sorti en %d fois\n",nb);
+	  undo_hack();
+	  frame_68k = default_frame;
+	  stopped_speed = 1;
+      }
+
+
       if (!raster_bitmap) {
 	  raster_bitmap = create_bitmap_ex(display_cfg.bpp,GameScreen.xview,GameScreen.yview);
 	  if (!raster_bitmap)
@@ -3060,6 +3074,11 @@ void execute_cps2_frame(void)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min1)/262);	  // Main 68000
       }
   } else {
+      if (stopped_speed) {
+	  start_search = cpu_frame_count;
+	  stopped_speed = 0;
+	  frame_68k = CPU_FRAME_MHz(32,60);
+      }
       if (scanline1 == 0) {
 	  cpu_interrupt(CPU_68K_0,4);
       }
@@ -3082,6 +3101,14 @@ void execute_cps2_frame(void)
 	  cpu_execute_cycles(CPU_Z80_0, Z80_FRAME/slices);
 	  cpu_interrupt(CPU_Z80_0, 0x38);
       }
+  }
+  if (min1 > 240) {
+      // only when no rasters
+      if (!speed_hack) {
+	  dynamic_hack();
+      }
+      if (!hack_counter && speed_hack && cpu_frame_count < 800 && undo_counter--<=0)
+	  undo_hack();
   }
 
   if (min1 < 240 || min2 < 240)
