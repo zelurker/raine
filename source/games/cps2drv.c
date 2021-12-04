@@ -4,6 +4,7 @@
 #define DRV_DEF_SOUND sound_qsound
 #define DRV_DEF_INPUT input_p2b6
 #define DRV_DEF_DSW NULL
+#define DRV_DEF_CLEAR clear_cps2
 /* cps2 drivers, see cps1.c for the code (VERY similar to cps1) */
 
 #include "gameinc.h"

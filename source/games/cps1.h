@@ -14,7 +14,7 @@ void load_cps1_10(void);
 void load_cps1_12(void);
 void load_sf2m3(void);
 void load_sf2m8(void);
-void clear_cps1(void);
+void clear_cps2(void);
 void execute_cps1_frame(void);
 void execute_ganbare(void);
 void draw_cps1(void);

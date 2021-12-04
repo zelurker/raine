@@ -1849,6 +1849,7 @@ static void qsound_set_z80()
 }
 
 static int cps2_reset_ready;
+static int undo_counter;
 
 static void cps2_reset() {
   const ROMSW_INFO *romsw_src;
@@ -1869,6 +1870,10 @@ static void cps2_reset() {
   }
 
   undo_hack();
+  if (cps_version == 2) {
+      speed_hack = 1; // speed hacks disabled because of rasters
+      undo_counter = 10;
+  }
 }
 
 static int stopped_68k;
@@ -2689,12 +2694,12 @@ void load_cps2() {
   // These 2 scanlines are initialized like that for cps2
   // it's tested by some phoenix games, like avspd at boot
   scanline1 = scanline2 = 262;
+  frame_68k = default_frame;
+  speed_hack = 1; // no speed hack with rasters in cps2 for now
 }
 
 #define SLICES 4
 #define Z80_FRAME CPU_FRAME_MHz(4,60)/SLICES
-
-static int undo_counter;
 
 static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
   // This is the worst speed hack so far. The code is too short to be
@@ -2775,6 +2780,7 @@ static void dynamic_hack() {
   }
 #endif
 
+#if 1
   if (cpu_frame_count < 800 && strcmp(current_game->main_name,"qad")) {
     if (ReadWord(&ROM[pc]) == 0x46fc && ReadWord(&ROM[pc+2]) == 0x2000 &&
 	ReadWord(&ROM[pc+8]) == 0x67f6) { // pzloop2j
@@ -2910,6 +2916,9 @@ LAB_002F:
   }
   if (speed_hack)
     undo_counter = 10;
+#else
+    frame_68k = default_frame;
+#endif
 }
 
 void execute_cps1_frame(void)
@@ -2993,20 +3002,63 @@ void execute_qsound_frame(void)
 
 static int nb_ticks, nb_executed;
 
+static void draw_cps1_partial(int scanline);
+static int min1,min2;
+static al_bitmap *raster_bitmap;
+#define EMULATE_RASTERS 1
+
+void clear_cps2() {
+    if (raster_bitmap)
+	destroy_bitmap(raster_bitmap);
+    raster_bitmap = NULL;
+}
+
 void execute_cps2_frame(void)
 {
   int n,slices;
   stopped_68k = 0;
   hack_counter = 0;
+  min1 = min2 = 260;
 
 #if EMULATE_RASTERS
   cps1_port[0x28] &= 0x1ff;
-  if (cps1_port[0x28] > 0 && cps1_port[0x28] < 240) {
-      cpu_execute_cycles(CPU_68K_0, frame_68k*cps1_port[0x28]/262);	  // Main 68000
-      cps1_port[0x28] = 0;
+  cps1_port[0x2a] &= 0x1ff;
+  int port1;
+  if (cps1_port[0x28] < cps1_port[0x2a]) {
+      min1 = cps1_port[0x28];
+      port1 = 0x28;
+      min2 = MIN(cps1_port[0x2a],240);
+  } else {
+      min1 = cps1_port[0x2a];
+      port1 = 0x2a;
+      min2 = MIN(cps1_port[0x28],240);
+  }
+
+  if (min1 < 240) {
+      if (!raster_bitmap) {
+	  raster_bitmap = create_bitmap_ex(display_cfg.bpp,GameScreen.xview,GameScreen.yview);
+	  if (!raster_bitmap)
+	      fatal_error("can't create raster bitmap");
+      }
+      cpu_execute_cycles(CPU_68K_0, frame_68k*min1/262);	  // Main 68000
+      cps1_port[port1] = 0;
       cpu_interrupt(CPU_68K_0,4);
-      if (!stopped_68k)
-	  cpu_execute_cycles(CPU_68K_0, frame_68k*(240-scanline1)/262);	  // Main 68000
+      draw_cps1_partial(min1);
+      blit(GameBitmap, raster_bitmap, 16, 16, 0, 0, GameScreen.xview, min1);
+
+      if (min2 < 240) {
+	  if (!stopped_68k)
+	      cpu_execute_cycles(CPU_68K_0, frame_68k*(min2-min1)/262);	  // Main 68000
+	  cpu_interrupt(CPU_68K_0,4);
+	  draw_cps1_partial(min2);
+	  cps1_port[port1 == 0x28 ? 0x2a : 0x28] = 0;
+	  blit(GameBitmap, raster_bitmap, 16, 16+min1, 0, min1, GameScreen.xview, min2-min1);
+	  if (!stopped_68k)
+	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min2)/262);	  // Main 68000
+      } else {
+	  if (!stopped_68k)
+	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min1)/262);	  // Main 68000
+      }
   } else {
       if (scanline1 == 0) {
 	  cpu_interrupt(CPU_68K_0,4);
@@ -3031,17 +3083,14 @@ void execute_cps2_frame(void)
 	  cpu_interrupt(CPU_Z80_0, 0x38);
       }
   }
-  if (!speed_hack) {
-    dynamic_hack();
-  }
-  if (!hack_counter && speed_hack && cpu_frame_count < 800 && undo_counter--<=0)
-    undo_hack();
 
+  if (min1 < 240 || min2 < 240)
+      draw_cps1_partial(240); // the vbl replaces the scroll registers to their normal values so we must draw the bitmap now !
   cpu_interrupt(CPU_68K_0, 2);
   cps1_port[0x28] = scanline1;
   cps1_port[0x2a] = scanline2;
 #if EMULATE_RASTERS
-  if (cps1_port[0x28] > 0 && cps1_port[0x28] < 240)
+  if (min1 < 240 && !stopped_68k)
       cpu_execute_cycles(CPU_68K_0, frame_68k*22/262);	  // Main 68000
 #endif
 }
@@ -3867,8 +3916,11 @@ static void render_cps2_layer(int layer, int priority)
   }
 }
 
-void draw_cps1(void)
+static void draw_cps1_partial(int scanline)
 {
+    if (cps_version == 2 && (min1 < 240 || min2 < 240) && scanline < 0) {
+	return; // raster effects have already been drawn for line 240
+    }
    int layercontrol = cps1_port[cps1_game_config->layer_control/2];
    int l0 = (layercontrol >> 0x06) & 3,
      l1 = (layercontrol >> 0x08) & 3,
@@ -3993,8 +4045,10 @@ void draw_cps1(void)
        }
      }
 
-     pri_ctrl = cps2_port(CPS2_OBJ_PRI);
-     memcpy(cps2_buffered_obj, cps2_objbase(), cps2_obj_size);
+     // if (scanline < 0) {
+	 pri_ctrl = cps2_port(CPS2_OBJ_PRI);
+	 memcpy(cps2_buffered_obj, cps2_objbase(), cps2_obj_size);
+     //}
 
    } else {
 
@@ -4012,3 +4066,11 @@ void draw_cps1(void)
    }
 }
 
+void draw_cps1() {
+    draw_cps1_partial(-1);
+    if (min2 < 240) {
+	blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min2);
+    } else if (min1 < 240) {
+	blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min1);
+    }
+}
