@@ -49,6 +49,7 @@
 #include "newmem.h"
 #include "emumain.h"
 #include "opengl.h"
+#include "files.h"
 
 /* The difference in the sdl version :
  * instead of looping for every frame in all the available inputs to the game
@@ -1566,7 +1567,7 @@ static void handle_joy_axis(int which, int axis, int value) {
 void control_handle_event(SDL_Event *event) {
   int input,which,axis,value,modifier,jevent,  ta;
   DEF_INPUT_EMU *emu_input;
-  int input_valid,nb;
+  int input_valid,nb,hat,changed,base_axis;
 
   switch (event->type) {
 #if SDL == 2
@@ -1776,6 +1777,54 @@ void control_handle_event(SDL_Event *event) {
       display_bezel();
       break;
 #endif
+    case SDL_JOYHATMOTION:
+      // Ok here we remap automatically hats to joysticks events on axes which don't exist...
+      which = event->jhat.which;
+      if (is_game_controller(which)) {
+	  return;
+      }
+      hat = event->jhat.hat+1;
+      value = event->jhat.value;
+      changed = joy[which].jstate.hat[hat] & (~value);
+      // Emulate the hat like a virtual stick
+      base_axis = get_axis_from_hat(which,hat-1);
+      // changed contains the bitmask of the axis which need to be centered !
+      event->jaxis.which = event->jhat.which;
+      event->type = SDL_JOYAXISMOTION;
+
+      event->jaxis.value = 0;
+      if (changed & (SDL_HAT_LEFT | SDL_HAT_RIGHT)) {
+	event->jaxis.axis = base_axis;
+	control_handle_event(event);
+      }
+      if (changed & (SDL_HAT_UP | SDL_HAT_DOWN)) {
+	event->jaxis.axis = base_axis+1;
+	control_handle_event(event);
+      }
+
+      // Now send the events corresponding to the current position
+      if (value & SDL_HAT_LEFT) {
+	event->jaxis.axis = base_axis + 0;
+	event->jaxis.value = -32700;
+	control_handle_event(event);
+      }
+      if (value & SDL_HAT_RIGHT) {
+	event->jaxis.axis = base_axis + 0;
+	event->jaxis.value = 32700;
+	control_handle_event(event);
+      }
+      if (value & SDL_HAT_UP) {
+	event->jaxis.axis = base_axis + 1;
+	event->jaxis.value = -32700;
+	control_handle_event(event);
+      }
+      if (value & SDL_HAT_DOWN) {
+	event->jaxis.axis = base_axis + 1;
+	event->jaxis.value = 32000;
+	control_handle_event(event);
+      }
+      joy[which].jstate.hat[hat] = event->jhat.value;
+      break;
     case SDL_JOYAXISMOTION:
       which = get_joy_index_from_instance(event->jaxis.which);
       if (is_game_controller(which)) {
@@ -2153,6 +2202,13 @@ void inputs_preinit() {
   int n;
   SDL_Event event;
   int handled;
+  FILE *f = fopen(get_shared("mappings"),"r");
+  if (f) {
+      fclose(f);
+      int ret = SDL_GameControllerAddMappingsFromFile(get_shared("mappings"));
+      printf("mappings added %d\n",ret);
+  }
+
   for (n=0; n<SDL_NumJoysticks(); n++) {
       add_game_controller(n);
   }
