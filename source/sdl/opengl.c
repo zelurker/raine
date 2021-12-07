@@ -60,17 +60,27 @@ void ogl_save_png(char *name) {
     // unsigned long lImageSize;   // Size in bytes of image
     GLint iViewport[4];         // Viewport in pixels
     SDL_Surface *s;
-    int bpp = sdl_screen->format->BitsPerPixel;
-    SDL_PixelFormat *f = sdl_screen->format;
 
     // Get the viewport dimensions
     glGetIntegerv(GL_VIEWPORT, iViewport);
+
+#if SDL < 2
+    int bpp = sdl_screen->format->BitsPerPixel;
+    SDL_PixelFormat *f = sdl_screen->format;
 
     // How big is the image going to be (targas are tightly packed)
     // lImageSize = iViewport[2] * 3 * iViewport[3];
 
     s = SDL_CreateRGBSurface(SDL_SWSURFACE,desk_w,desk_h,
 	    f->BitsPerPixel,f->Rmask,f->Gmask,f->Bmask,f->Amask);
+#else
+    UINT32 r,g,b,a;
+    int bpp;
+    SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_RGBX8888,&bpp,&r,&g,&b,&a);
+    // Why are a and r inverted here ? Good question... !
+    s = SDL_CreateRGBSurface(SDL_SWSURFACE,desk_w,desk_h,
+	    bpp,a,g,b,r);
+#endif
 
     // Read bits from color buffer
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
