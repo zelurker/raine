@@ -4095,9 +4095,11 @@ static void draw_cps1_partial(int scanline)
 
 void draw_cps1() {
     draw_cps1_partial(-1);
-    if (min2 < 240) {
-	blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min2);
-    } else if (min1 < 240) {
-	blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min1);
+    if (cps_version == 2) {
+	if (min2 < 240) {
+	    blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min2);
+	} else if (min1 < 240) {
+	    blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min1);
+	}
     }
 }
