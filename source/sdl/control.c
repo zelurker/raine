@@ -471,11 +471,19 @@ static void update_index(int n, int index) {
 	joy[n].index = SDL_GameControllerGetPlayerIndex(joy[n].controller);
     else {
 	if (joy[n].index == index) {
-	    joy[n].index = nb_joy;
+	    if (nb_joy == index)
+		joy[n].index = 0;
+	    else
+		joy[n].index = nb_joy;
+	    char used[nb_joy];
+	    memset(used,0,nb_joy);
 	    for (int ta=0; ta<nb_joy; ta++) {
-		if (ta == n) continue;
-		if (joy[ta].index == nb_joy) {
-		    fatal_error("already found index to update for %d",ta);
+		used[joy[ta].index]++;
+		if (used[joy[ta].index] > 1) {
+		    printf("index %d used more than once, complete reset !\n",ta);
+		    for (n=0; n<nb_joy; n++)
+			joy[n].index = n;
+		    return;
 		}
 	    }
 	}
